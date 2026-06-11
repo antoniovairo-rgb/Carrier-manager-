@@ -2767,6 +2767,8 @@ function LiveMatch({player,opponent,context="career",onMatchEnd}){
     const diff=(player.ovr||65)-opp;
     return clamp(Math.round(50+diff*0.28+rng(-5,5)),22,78);
   });
+  const possessionRef=useRef(50);
+  useEffect(()=>{possessionRef.current=possession;},[possession]);
   const [ballPos,setBallPos]=useState({x:50,y:50});
   const [mxStats,setMxStats]=useState({shots:0,oppShots:0,fouls:0,corners:0});
   const [waveEvent,setWaveEvent]=useState(null);
@@ -2906,25 +2908,36 @@ function LiveMatch({player,opponent,context="career",onMatchEnd}){
     return()=>clearInterval(iv);
   },[phase,hlIdx,situations,pPos.x,pPos.y]);// eslint-disable-line
 
-  // Continuous formation drift during playing phase — keeps all players visibly moving
+  // Formation drift during playing phase — 4-3-3, depth reacts to possession
   useEffect(()=>{
     if(phase!=="playing")return;
     const iv=setInterval(()=>{
+      const poss=possessionRef.current; // 20-80; >50 = home dominates
+      // away block depth: home pressing → away retreats (higher x); away pressing → pushes up (lower x)
+      const awayBlock=clamp(68+(poss-50)*0.38,55,88);
+      const homeBlock=clamp(32-(poss-50)*0.30,12,52);
       setMatchPlayers(prev=>prev.map((pl,idx)=>{
         if(pl.team==="ref")return pl;
-        const r=(Math.random()-0.5)*3;
+        const n=(Math.random()-0.5)*2; // small noise ±1
         if(pl.team==="away"){
-          // Away: drift forward/backward slightly, vary width
-          return{...pl,
-            x:clamp(pl.x+(Math.random()-0.46)*9+r,44,93),
-            y:clamp(pl.y+(Math.random()-0.5)*7,4,96)};
+          const ai=idx-10; // 0=GK, 1-4=Def, 5-7=Mid, 8-10=Fwd
+          let tx,ty;
+          if(ai===0){tx=96;ty=50;}
+          else if(ai<=4){tx=awayBlock+6+(Math.random()-0.5)*3;ty=12+(ai-1)*20;}
+          else if(ai<=7){tx=awayBlock-8+(Math.random()-0.5)*4;ty=14+(ai-5)*30;}
+          else{tx=awayBlock-22+(Math.random()-0.5)*5;ty=18+(ai-8)*32;}
+          return{...pl,x:clamp(pl.x+(tx-pl.x)*0.14+n*0.4,44,97),y:clamp(pl.y+(ty-pl.y)*0.10+n*0.5,4,96)};
         }else{
-          return{...pl,
-            x:clamp(pl.x+(Math.random()-0.54)*8+r,4,84),
-            y:clamp(pl.y+(Math.random()-0.5)*6,4,96)};
+          const hi=idx; // 0=GK, 1-4=Def, 5-7=Mid, 8-9=Fwd
+          let tx,ty;
+          if(hi===0){tx=4;ty=50;}
+          else if(hi<=4){tx=homeBlock-5+(Math.random()-0.5)*3;ty=12+(hi-1)*20;}
+          else if(hi<=7){tx=homeBlock+8+(Math.random()-0.5)*4;ty=14+(hi-5)*30;}
+          else{tx=homeBlock+20+(Math.random()-0.5)*5;ty=18+(hi-8)*32;}
+          return{...pl,x:clamp(pl.x+(tx-pl.x)*0.12+n*0.4,3,90),y:clamp(pl.y+(ty-pl.y)*0.09+n*0.5,4,96)};
         }
       }));
-    },1400);
+    },1000);
     return()=>clearInterval(iv);
   },[phase]);
 
