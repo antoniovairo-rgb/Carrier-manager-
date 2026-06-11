@@ -3316,7 +3316,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd}){
             </div>
 
             {/* RIGHT: info + action panel */}
-            <div style={isNarrow?{position:"absolute",bottom:0,left:0,right:0,zIndex:5,background:"rgba(8,13,28,0.94)",borderTop:"1px solid rgba(255,255,255,0.14)",backdropFilter:"blur(6px)"}:{flex:1,display:"flex",flexDirection:"column",background:"#0f172a",borderLeft:"1px solid rgba(255,255,255,0.08)",minWidth:0,overflow:"hidden"}}>
+            <div style={isNarrow?{position:"absolute",bottom:0,left:0,right:0,zIndex:5,background:"rgba(5,10,20,0.55)",borderTop:"1px solid rgba(255,255,255,0.08)",backdropFilter:"blur(3px)"}:{flex:1,display:"flex",flexDirection:"column",background:"#0f172a",borderLeft:"1px solid rgba(255,255,255,0.08)",minWidth:0,overflow:"hidden"}}>
 
               {/* Action zone — only during HL phases */}
               {phase==="hl_move"&&curSit&&(
@@ -3383,7 +3383,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd}){
                       const isSel=i===selectedActionIdx;
                       return(
                         <button key={i} onClick={()=>handleAction(a)}
-                          style={{padding:"8px 10px",background:isSel?"rgba(37,99,235,0.20)":"rgba(255,255,255,0.04)",border:isSel?"1.5px solid rgba(96,165,250,0.40)":"1px solid rgba(255,255,255,0.08)",borderRadius:8,color:"#fff",cursor:"pointer",fontFamily:"inherit",display:"flex",alignItems:"center",justifyContent:"space-between",transition:"all .1s",transform:isSel?"scale(1.02)":"scale(1)"}}>
+                          style={{padding:"8px 10px",background:isSel?"rgba(37,99,235,0.15)":"rgba(255,255,255,0.02)",border:isSel?"1.5px solid rgba(96,165,250,0.30)":"1px solid rgba(255,255,255,0.06)",borderRadius:8,color:"#fff",cursor:"pointer",fontFamily:"inherit",display:"flex",alignItems:"center",justifyContent:"space-between",transition:"all .1s",transform:isSel?"scale(1.02)":"scale(1)"}}>
                           <div style={{display:"flex",alignItems:"center",gap:6}}>
                             <div style={{width:18,height:18,borderRadius:"50%",background:isSel?"#2563eb":"rgba(255,255,255,0.1)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:9,fontWeight:900,color:isSel?"#fff":"rgba(255,255,255,0.5)",flexShrink:0}}>{i+1}</div>
                             <div style={{fontSize:11,fontWeight:isSel?700:400,color:"#e2e8f0",textAlign:"left"}}>{a.label}</div>
