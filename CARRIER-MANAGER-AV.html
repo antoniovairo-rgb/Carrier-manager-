@@ -3005,14 +3005,14 @@ function LiveMatch({player,opponent,context="career",onMatchEnd}){
       if(k.has("ArrowDown") ||k.has("s"))dx=-2.5;
       if(k.has("ArrowRight")||k.has("d"))dy=+2.5;
       if(k.has("ArrowLeft") ||k.has("a"))dy=-2.5;
-      if(!sit?.lockMovement&&(dx||dy)&&phase==="hl_move"){
+      if(!sit?.lockMovement&&(dx||dy)&&(phase==="hl_move"||phase==="hl_choose")){
         const now=Date.now();
         if(now-lastKbdMoveRef.current>400){
           lastKbdMoveRef.current=now;
           setPPos(p=>({x:clamp(p.x+dx,mz.x[0],mz.x[1]),y:clamp(p.y+dy,mz.y[0],mz.y[1])}));
-          movesLeftRef.current=0;setMovesLeft(0);
-          // first move → immediately go to choose
-          setTimeout(()=>setPhase("hl_choose"),200);
+          const nm=Math.max(0,movesLeftRef.current-1);
+          movesLeftRef.current=nm;setMovesLeft(nm);
+          if(phase==="hl_move")setTimeout(()=>setPhase("hl_choose"),200);
         }
       }
       moveRef.current=requestAnimationFrame(loop);
@@ -3026,12 +3026,12 @@ function LiveMatch({player,opponent,context="career",onMatchEnd}){
     const sit=situations[hlIdx];
     if(sit?.lockMovement)return;
     const mz=sit?.moveZone||{x:[0,100],y:[0,100]};
-    // First move → immediately unlock actions
     defDistRef.current=Math.min(100,defDistRef.current+12);
     setDefDist(defDistRef.current);
-    movesLeftRef.current=0;setMovesLeft(0);
     setPPos(p=>({x:clamp(p.x+dx,mz.x[0],mz.x[1]),y:clamp(p.y+dy,mz.y[0],mz.y[1])}));
-    setTimeout(()=>setPhase("hl_choose"),200);
+    const nm=Math.max(0,movesLeftRef.current-1);
+    movesLeftRef.current=nm;setMovesLeft(nm);
+    if(phase==="hl_move")setTimeout(()=>setPhase("hl_choose"),200);
   };
 
   const handleAction=useCallback((action)=>{
@@ -3301,6 +3301,16 @@ function LiveMatch({player,opponent,context="career",onMatchEnd}){
               {phase==="hl_choose"&&curSit&&(
                 <div style={{padding:"8px 8px",borderBottom:"1px solid rgba(255,255,255,0.08)"}}>
                   <div style={{fontSize:8,color:"rgba(255,255,255,0.45)",marginBottom:4}}>{clock}' — {curSit.text}</div>
+                  {/* DPad still visible in hl_choose when moves remain */}
+                  {movesLeft>0&&(
+                    <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:5}}>
+                      <DPad onMove={handleDPad} dark/>
+                      <div style={{flex:1}}>
+                        <div style={{fontSize:8,color:"rgba(255,255,255,0.4)",marginBottom:2}}>📍 {ZONES[zone]?.label}</div>
+                        <div style={{fontSize:9,color:"#60a5fa",fontWeight:700}}>{"●".repeat(movesLeft)}{"○".repeat(Math.max(0,curSit.maxMoves-movesLeft))} {movesLeft} mov</div>
+                      </div>
+                    </div>
+                  )}
                   {/* Defender pressure badge */}
                   <div style={{display:"flex",alignItems:"center",gap:5,marginBottom:5,padding:"3px 6px",borderRadius:5,background:defDist<25?"rgba(239,68,68,0.2)":defDist<50?"rgba(249,115,22,0.15)":"rgba(74,222,128,0.1)",border:`1px solid ${defDist<25?"rgba(239,68,68,0.4)":defDist<50?"rgba(249,115,22,0.3)":"rgba(74,222,128,0.2)"}`}}>
                     <span style={{fontSize:9}}>{defDist<25?"⚠️":"🏃"}</span>
