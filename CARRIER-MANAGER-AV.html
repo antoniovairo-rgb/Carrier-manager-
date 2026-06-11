@@ -2385,8 +2385,8 @@ function DPad({onMove,dark=false}){
   const btn=(lbl,dx,dy)=>(
     <button onPointerDown={e=>{e.preventDefault();onMove(dx,dy);}}
       style={{width:SZ,height:SZ,borderRadius:9,
-        background:dark?"rgba(255,255,255,0.05)":"rgba(30,42,60,0.08)",
-        border:dark?"1px solid rgba(255,255,255,0.10)":"1px solid "+TH.cardBorder,
+        background:"transparent",
+        border:dark?"1px solid rgba(255,255,255,0.18)":"1px solid "+TH.cardBorder,
         color:dark?"#fff":TH.text,fontSize:16,cursor:"pointer",
         display:"flex",alignItems:"center",justifyContent:"center",
         userSelect:"none",WebkitUserSelect:"none",touchAction:"none",
@@ -3316,7 +3316,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd}){
             </div>
 
             {/* RIGHT: info + action panel */}
-            <div style={isNarrow?{position:"absolute",bottom:0,left:0,right:0,zIndex:5,background:"rgba(5,10,20,0.55)",borderTop:"1px solid rgba(255,255,255,0.08)",backdropFilter:"blur(3px)"}:{flex:1,display:"flex",flexDirection:"column",background:"#0f172a",borderLeft:"1px solid rgba(255,255,255,0.08)",minWidth:0,overflow:"hidden"}}>
+            <div style={isNarrow?{position:"absolute",bottom:0,left:0,right:0,zIndex:5,background:"transparent",border:"none"}:{flex:1,display:"flex",flexDirection:"column",background:"#0f172a",borderLeft:"1px solid rgba(255,255,255,0.08)",minWidth:0,overflow:"hidden"}}>
 
               {/* Action zone — only during HL phases */}
               {phase==="hl_move"&&curSit&&(
@@ -3383,7 +3383,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd}){
                       const isSel=i===selectedActionIdx;
                       return(
                         <button key={i} onClick={()=>handleAction(a)}
-                          style={{padding:"8px 10px",background:isSel?"rgba(37,99,235,0.15)":"rgba(255,255,255,0.02)",border:isSel?"1.5px solid rgba(96,165,250,0.30)":"1px solid rgba(255,255,255,0.06)",borderRadius:8,color:"#fff",cursor:"pointer",fontFamily:"inherit",display:"flex",alignItems:"center",justifyContent:"space-between",transition:"all .1s",transform:isSel?"scale(1.02)":"scale(1)"}}>
+                          style={{padding:"8px 10px",background:isSel?"rgba(37,99,235,0.12)":"transparent",border:isSel?"1.5px solid rgba(96,165,250,0.35)":"1px solid rgba(255,255,255,0.15)",borderRadius:8,color:"#fff",cursor:"pointer",fontFamily:"inherit",display:"flex",alignItems:"center",justifyContent:"space-between",transition:"all .1s",transform:isSel?"scale(1.02)":"scale(1)"}}>
                           <div style={{display:"flex",alignItems:"center",gap:6}}>
                             <div style={{width:18,height:18,borderRadius:"50%",background:isSel?"#2563eb":"rgba(255,255,255,0.1)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:9,fontWeight:900,color:isSel?"#fff":"rgba(255,255,255,0.5)",flexShrink:0}}>{i+1}</div>
                             <div style={{fontSize:11,fontWeight:isSel?700:400,color:"#e2e8f0",textAlign:"left"}}>{a.label}</div>
@@ -5676,7 +5676,7 @@ function App(){
   };
   const wrap=ch=>(
     <div className="cpm-root" style={{minHeight:"100vh",background:TH.bgGrad,color:TH.text,fontFamily:"'Barlow','Segoe UI',sans-serif",position:"relative"}}>
-      <div style={{position:"fixed",bottom:6,right:8,zIndex:9999,fontSize:10,color:"rgba(255,255,255,0.30)",pointerEvents:"none",letterSpacing:"0.04em",fontFamily:"monospace"}}>CPM {GAME_VERSION}</div>
+      <div style={{position:"fixed",bottom:6,right:8,zIndex:9999,fontSize:11,color:"#fff",pointerEvents:"none",letterSpacing:"0.05em",fontFamily:"monospace",background:"rgba(0,0,0,0.55)",padding:"2px 7px",borderRadius:6}}>CPM {GAME_VERSION}</div>
       <style>{`
         *{box-sizing:border-box;}
         .cpm-root{padding:12px 8px 100px;}
