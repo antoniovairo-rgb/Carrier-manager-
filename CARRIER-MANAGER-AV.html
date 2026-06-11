@@ -2863,9 +2863,25 @@ function LiveMatch({player,opponent,context="career",onMatchEnd}){
     const sit=situations[hlIdx];
     const isDef=sit?.type==="def";
     const isNearGoal=["area","bordo"].includes(sit?.zones?.[0]);
-    // pressing interval: shorter near goal, longer at midfield/defense
     const pressingMs=isNearGoal?550:isDef?700:650;
     const iv=setInterval(()=>{
+      // Rigore / punizione: area libera, avversari in fila fuori dal box
+      if(sit?.lockMovement){
+        setMatchPlayers(prev=>prev.map((pl,idx)=>{
+          if(pl.team==="ref")return pl;
+          if(pl.team==="away"){
+            const ai=idx-10; // 0..10
+            return{...pl,
+              x:clamp(pl.x+(74+Math.random()*4-pl.x)*0.32,64,81),
+              y:pl.y+((8+ai*8)-pl.y)*0.28};
+          }else{
+            return{...pl,
+              x:clamp(pl.x+((76+Math.random()*12)-pl.x)*0.25,68,91),
+              y:pl.y+((10+idx*7)-pl.y)*0.20};
+          }
+        }));
+        return;
+      }
       setMatchPlayers(prev=>prev.map((pl,idx)=>{
         if(pl.team==="ref")return pl;
         const r=(Math.random()-0.5)*3.5;
@@ -2873,17 +2889,14 @@ function LiveMatch({player,opponent,context="career",onMatchEnd}){
           const dpx=pPos.x-pl.x,dpy=pPos.y-pl.y;
           const dist=Math.sqrt(dpx*dpx+dpy*dpy);
           if(dist>28){
-            // converge toward player
             const step=Math.min(7,dist*0.2);
             return{...pl,x:clamp(pl.x+dpx/dist*step+r,isDef?5:40,97),y:clamp(pl.y+dpy/dist*step*0.6+r,3,97)};
           }else{
-            // close: fan out around player to cut passing lanes
             const angle=(idx*1.57+Math.random()*0.8);
             const spread=10+Math.random()*10;
             return{...pl,x:clamp(pPos.x+Math.cos(angle)*spread+r,isDef?5:40,97),y:clamp(pPos.y+Math.sin(angle)*spread+r,3,97)};
           }
         }else{
-          // home teammates: drift to support positions near player
           const supportX=clamp(pPos.x-(5+Math.random()*15)+r,3,85);
           const supportY=clamp(pPos.y+(Math.random()-0.5)*30+r,3,97);
           return{...pl,x:pl.x+(supportX-pl.x)*0.12,y:pl.y+(supportY-pl.y)*0.08};
@@ -2892,6 +2905,28 @@ function LiveMatch({player,opponent,context="career",onMatchEnd}){
     },pressingMs);
     return()=>clearInterval(iv);
   },[phase,hlIdx,situations,pPos.x,pPos.y]);// eslint-disable-line
+
+  // Continuous formation drift during playing phase — keeps all players visibly moving
+  useEffect(()=>{
+    if(phase!=="playing")return;
+    const iv=setInterval(()=>{
+      setMatchPlayers(prev=>prev.map((pl,idx)=>{
+        if(pl.team==="ref")return pl;
+        const r=(Math.random()-0.5)*3;
+        if(pl.team==="away"){
+          // Away: drift forward/backward slightly, vary width
+          return{...pl,
+            x:clamp(pl.x+(Math.random()-0.46)*9+r,44,93),
+            y:clamp(pl.y+(Math.random()-0.5)*7,4,96)};
+        }else{
+          return{...pl,
+            x:clamp(pl.x+(Math.random()-0.54)*8+r,4,84),
+            y:clamp(pl.y+(Math.random()-0.5)*6,4,96)};
+        }
+      }));
+    },1400);
+    return()=>clearInterval(iv);
+  },[phase]);
 
   // Flash cleanup
   useEffect(()=>{
@@ -2928,14 +2963,13 @@ function LiveMatch({player,opponent,context="career",onMatchEnd}){
               if(pl.team==="ref")return pl;
               const r=(Math.random()-0.5)*2.5;
               if(pl.team==="away"){
-                // Away defends (x→high toward canvas top) when home has ball
-                // Away attacks (x→low toward canvas bottom = home half) when away has ball
                 const shift=isHomeGain?Math.random()*5+2:-Math.random()*5-2;
-                return{...pl,x:Math.min(92,Math.max(48,pl.x+shift+r))};
+                const yShift=(Math.random()-0.5)*7;
+                return{...pl,x:Math.min(92,Math.max(48,pl.x+shift+r)),y:clamp(pl.y+yShift,4,96)};
               }else{
-                // Home attacks (x→high) when home has ball; retreats (x→low) when away attacks
                 const shift=isHomeGain?Math.random()*4+1:-Math.random()*4-1;
-                return{...pl,x:Math.min(90,Math.max(5,pl.x+shift+r))};
+                const yShift=(Math.random()-0.5)*6;
+                return{...pl,x:Math.min(90,Math.max(5,pl.x+shift+r)),y:clamp(pl.y+yShift,4,96)};
               }
             }));
           }
