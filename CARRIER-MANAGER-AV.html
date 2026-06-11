@@ -803,6 +803,7 @@ function generateProContracts(player){
   }
   return{offers,forced,perf:Math.round(perf*10)/10};
 }
+const GAME_VERSION="0.9.2";
 const SAVE_VERSION=5;
 const SLOT_KEYS=["cpm-v3","cpm-v3-s2","cpm-v3-s3"]; // slot 0 backward-compatible
 const storage={
@@ -5674,7 +5675,8 @@ function App(){
     refreshSlots();
   };
   const wrap=ch=>(
-    <div className="cpm-root" style={{minHeight:"100vh",background:TH.bgGrad,color:TH.text,fontFamily:"'Barlow','Segoe UI',sans-serif"}}>
+    <div className="cpm-root" style={{minHeight:"100vh",background:TH.bgGrad,color:TH.text,fontFamily:"'Barlow','Segoe UI',sans-serif",position:"relative"}}>
+      <div style={{position:"fixed",bottom:6,right:8,zIndex:9999,fontSize:10,color:"rgba(255,255,255,0.30)",pointerEvents:"none",letterSpacing:"0.04em",fontFamily:"monospace"}}>CPM {GAME_VERSION}</div>
       <style>{`
         *{box-sizing:border-box;}
         .cpm-root{padding:12px 8px 100px;}
