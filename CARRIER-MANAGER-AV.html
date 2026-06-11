@@ -1307,7 +1307,8 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
     ballX:50,ballY:50,
     prevPX:50,prevPY:50,isMoving:false,movingTimer:0,
     particles:[],frameId:null,lastT:0,
-    livePos:[],fogPhase:0,photoFlashT:0
+    livePos:[],fogPhase:0,photoFlashT:0,
+    netBulgeTop:0,netBulgeBot:0
   });
   const propsRef=useRef({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,onWalkoutDone,avatarId,actionZoom,allPlayers,homeClub,ballX:ballX||50,ballY:ballY||50,waveEvent,driftTargets,timeOfDay:timeOfDay||"night",attendance:attendance||500});
   useEffect(()=>{propsRef.current={playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,onWalkoutDone,avatarId,actionZoom,allPlayers,homeClub,ballX:ballX||50,ballY:ballY||50,waveEvent,driftTargets,timeOfDay:timeOfDay||"night",attendance:attendance||500};},[playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,onWalkoutDone,avatarId,actionZoom,allPlayers,homeClub,ballX,ballY,waveEvent,driftTargets,timeOfDay,attendance]);
@@ -1351,108 +1352,127 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
     pgv.addColorStop(0,"rgba(255,255,255,0.04)");pgv.addColorStop(0.6,"rgba(0,0,0,0)");pgv.addColorStop(1,"rgba(0,0,0,0.28)");
     gc.fillStyle=pgv;gc.fillRect(FX,FY,FW,FH);
 
-    function drawStadium(ctx,t){
-      var p=propsRef.current;
-      var hCol=p.homeCol||"#2563eb",oCol=p.oppCol||"#dc2626";
-      var isNight=p.timeOfDay==="night";
-      // Background bowl — deeper blue-black at night
-      ctx.fillStyle=isNight?"#010208":"#02040b";ctx.fillRect(0,0,PW,PH);
-      var bowlG=ctx.createRadialGradient(FCX,FCY,40,FCX,FCY,260);
+    // ── Crowd + stadium static pre-bake (Phase 3) ──────────────────────────────
+    const crowdOff=document.createElement("canvas");crowdOff.width=PW;crowdOff.height=PH;
+    const cctx=crowdOff.getContext("2d");
+    let _crowdKey="";
+    function bakeCrowd(hCol,oCol,fillRatio,isNight){
+      const key=hCol+oCol+fillRatio.toFixed(2)+(isNight?"n":"d");
+      if(key===_crowdKey)return;
+      _crowdKey=key;
+      cctx.clearRect(0,0,PW,PH);
+      // Bowl background
+      cctx.fillStyle=isNight?"#010208":"#02040b";cctx.fillRect(0,0,PW,PH);
+      const bowlG=cctx.createRadialGradient(FCX,FCY,40,FCX,FCY,260);
       bowlG.addColorStop(0,"rgba(20,80,40,0.14)");bowlG.addColorStop(1,"rgba(0,0,0,0.6)");
-      ctx.fillStyle=bowlG;ctx.fillRect(0,0,PW,PH);
-      // Team-colored fans: top=75% home, bottom=30% home, sides=65%
-      function bakeStandDyn(x,y,w,h,homeRatio){
+      cctx.fillStyle=bowlG;cctx.fillRect(0,0,PW,PH);
+      // Seat rows per stand zone
+      function bakeSD(x,y,w,h,homeRatio){
         if(w<3||h<3)return;
-        var cw=4,rh=4,cols=Math.ceil(w/cw),rows=Math.ceil(h/rh);
-        for(var r=0;r<rows;r++){
-          ctx.fillStyle=r%2===0?"#12142a":"#0e1020";ctx.globalAlpha=1;
-          ctx.fillRect(x,y+r*rh,w,rh);
-        }
-        for(var r=0;r<rows;r++){
-          var isHome=r<rows*homeRatio;
-          var base=isHome?hCol:oCol;
-          var da=Math.max(0.15,0.55-r*(0.35/Math.max(rows,1)));
-          for(var c=0;c<cols;c++){
-            var sc=((r*17+c*13)^(r*7+c*3))%7;
-            ctx.fillStyle=base;ctx.globalAlpha=da*(0.5+sc*0.05);
-            ctx.fillRect(x+c*cw,y+r*rh+1,cw-1,rh-2);
-            if(sc===0){ctx.fillStyle="#e5e7eb";ctx.globalAlpha=da*0.35;ctx.fillRect(x+c*cw,y+r*rh+1,cw-1,rh-2);}
+        const cw=4,rh=4,cols=Math.ceil(w/cw),rows=Math.ceil(h/rh);
+        for(let r=0;r<rows;r++){cctx.fillStyle=r%2===0?"#12142a":"#0e1020";cctx.globalAlpha=1;cctx.fillRect(x,y+r*rh,w,rh);}
+        for(let r=0;r<rows;r++){
+          const base=r<rows*homeRatio?hCol:oCol;
+          const da=Math.max(0.15,0.55-r*(0.35/Math.max(rows,1)));
+          for(let c=0;c<cols;c++){
+            const sc=((r*17+c*13)^(r*7+c*3))%7;
+            cctx.fillStyle=base;cctx.globalAlpha=da*(0.5+sc*0.05);cctx.fillRect(x+c*cw,y+r*rh+1,cw-1,rh-2);
+            if(sc===0){cctx.fillStyle="#e5e7eb";cctx.globalAlpha=da*0.35;cctx.fillRect(x+c*cw,y+r*rh+1,cw-1,rh-2);}
           }
-          if(r%2===0){ctx.fillStyle="#000";ctx.globalAlpha=0.15;ctx.fillRect(x,y+r*rh+rh-1,w,1);}
+          if(r%2===0){cctx.fillStyle="#000";cctx.globalAlpha=0.15;cctx.fillRect(x,y+r*rh+rh-1,w,1);}
         }
-        ctx.globalAlpha=1;
+        cctx.globalAlpha=1;
       }
-      bakeStandDyn(FX,2,FW,FY-3,0.75);
-      bakeStandDyn(FX,FY+FH+2,FW,PH-FY-FH-4,0.30);
-      bakeStandDyn(0,FY,FX-1,FH,0.65);
-      bakeStandDyn(FX+FW+1,FY,PW-FX-FW-1,FH,0.65);
-      // Ola wave top+bottom stands — amplified on goal waveEvent
-      var waveSpd=t*0.0012;
-      var wEvt=p.waveEvent;
-      var waveAge=wEvt?(Date.now()-wEvt.t):999999; // age in ms (both Date.now())
-      var goalBurst=Math.max(0,1-waveAge/5000); // 1→0 over 5s
-      var waveAmp=4.5+goalBurst*14;            // 4.5 idle → up to 18.5 on goal
-      var waveAlpha=0.22+goalBurst*0.30;
-      var flashCol=wEvt&&goalBurst>0.05?(wEvt.home?p.homeCol:"#ef4444"):"#fff";
-      for(var wi=0;wi<Math.ceil(FW/5);wi++){
-        var wx2=FX+wi*5,wh2=Math.max(0,Math.sin(waveSpd*3+wi*0.22)*waveAmp);
-        if(wh2>0.5){ctx.save();ctx.globalAlpha=waveAlpha;ctx.fillStyle=flashCol;ctx.fillRect(wx2,2,5,Math.min(wh2,FY-3));ctx.fillRect(wx2,FY+FH+2,5,Math.min(wh2,PH-FY-FH-4));ctx.restore();}
-      }
-      // Photo flashes — more frequent during goal burst
-      var flashRate=0.012+goalBurst*0.06;
-      if(Math.random()<flashRate){
-        var fx2=FX+Math.random()*FW,fy2=2+Math.random()*(FY-5);
-        var fgrd=ctx.createRadialGradient(fx2,fy2,0,fx2,fy2,8);
-        fgrd.addColorStop(0,"rgba(255,255,255,0.7)");fgrd.addColorStop(1,"rgba(255,255,255,0)");
-        ctx.fillStyle=fgrd;ctx.fillRect(fx2-8,fy2-8,16,16);
-      }
-      // Stands behind goals
-      const topGrad=ctx.createLinearGradient(0,0,0,FY);
-      topGrad.addColorStop(0,"#0d1520");topGrad.addColorStop(1,"#1a2840");
-      ctx.fillStyle=topGrad;ctx.fillRect(0,0,PW,FY);
-      const botGrad=ctx.createLinearGradient(0,FY+FH,0,PH);
-      botGrad.addColorStop(0,"#1a2840");botGrad.addColorStop(1,"#0d1520");
-      ctx.fillStyle=botGrad;ctx.fillRect(0,FY+FH,PW,PH-FY-FH);
-      // Side stands
-      const lGrad=ctx.createLinearGradient(0,0,FX,0);
-      lGrad.addColorStop(0,"#0d1520");lGrad.addColorStop(1,"#1a2840");
-      ctx.fillStyle=lGrad;ctx.fillRect(0,FY,FX,FH);
-      const rGrad=ctx.createLinearGradient(FX+FW,0,PW,0);
-      rGrad.addColorStop(0,"#1a2840");rGrad.addColorStop(1,"#0d1520");
-      ctx.fillStyle=rGrad;ctx.fillRect(FX+FW,FY,PW-FX-FW,FH);
-      // Crowd dots — density scales with attendance, brighter on goal burst
-      var att=p.attendance||500;
-      // attendance → crowd fill ratio 0.15 (empty) … 1.0 (sold out)
-      var fillRatio=Math.min(1,Math.max(0.15,(att-150)/75000*0.85+0.15));
-      const palette=["#e11d48","#f59e0b","#3b82f6","#10b981","#fff","#a855f7","#fbbf24","#ef4444"];
-      const oscSpeed=0.001+goalBurst*0.004;
-      const baseAlpha=0.5+goalBurst*0.22;
-      const wave=Math.sin(t*oscSpeed)*(0.8+goalBurst*2.5);
-      // top/bottom stands — pixel size shrinks at high attendance (denser crowd)
-      var dotW=att>30000?3:att>8000?4:5;
+      bakeSD(FX,2,FW,FY-3,0.75);bakeSD(FX,FY+FH+2,FW,PH-FY-FH-4,0.30);
+      bakeSD(0,FY,FX-1,FH,0.65);bakeSD(FX+FW+1,FY,PW-FX-FW-1,FH,0.65);
+      // Stand gradients
+      const tG=cctx.createLinearGradient(0,0,0,FY);tG.addColorStop(0,"#0d1520");tG.addColorStop(1,"#1a2840");
+      cctx.fillStyle=tG;cctx.fillRect(0,0,PW,FY);
+      const bG=cctx.createLinearGradient(0,FY+FH,0,PH);bG.addColorStop(0,"#1a2840");bG.addColorStop(1,"#0d1520");
+      cctx.fillStyle=bG;cctx.fillRect(0,FY+FH,PW,PH-FY-FH);
+      const lG=cctx.createLinearGradient(0,0,FX,0);lG.addColorStop(0,"#0d1520");lG.addColorStop(1,"#1a2840");
+      cctx.fillStyle=lG;cctx.fillRect(0,FY,FX,FH);
+      const rG=cctx.createLinearGradient(FX+FW,0,PW,0);rG.addColorStop(0,"#1a2840");rG.addColorStop(1,"#0d1520");
+      cctx.fillStyle=rG;cctx.fillRect(FX+FW,FY,PW-FX-FW,FH);
+      // Crowd dots (static snapshot — ola animation added per-frame on top)
+      const dotW=fillRatio>0.6?3:fillRatio>0.3?4:5;
+      const pal=["#e11d48","#f59e0b","#3b82f6","#10b981","#fff","#a855f7","#fbbf24","#ef4444"];
       [[FX,2,FW,FY-4],[FX,FY+FH+4,FW,PH-FY-FH-6]].forEach(([sx,sy,sw,sh])=>{
-        if(sh<4)return;
-        const cols=Math.floor(sw/dotW),rows=Math.floor(sh/dotW);
+        if(sh<4)return;const cols=Math.floor(sw/dotW),rows=Math.floor(sh/dotW);
         for(let r=0;r<rows;r++)for(let c=0;c<cols;c++){
-          // sparse fill: skip seats deterministically based on fillRatio
-          if(((r*31+c*17)%100)/100>fillRatio&&goalBurst<0.1)continue;
-          ctx.fillStyle=palette[(r*7+c*13)%palette.length];
-          ctx.globalAlpha=baseAlpha+Math.sin(t*oscSpeed+r*0.5+c*0.4)*0.12;
-          ctx.fillRect(sx+c*(sw/cols)+1,sy+r*(sh/rows)+1+wave,Math.max(sw/cols-1,1),Math.max(sh/rows-1,1));
+          if(((r*31+c*17)%100)/100>fillRatio)continue;
+          cctx.fillStyle=pal[(r*7+c*13)%pal.length];cctx.globalAlpha=0.52;
+          cctx.fillRect(sx+c*(sw/cols)+1,sy+r*(sh/rows)+1,Math.max(sw/cols-1,1),Math.max(sh/rows-1,1));
         }
       });
-      // side stands
       [[2,FY,FX-4,FH],[FX+FW+4,FY,PW-FX-FW-6,FH]].forEach(([sx,sy,sw,sh])=>{
-        if(sw<4)return;
-        const cols=Math.floor(sw/dotW),rows=Math.floor(sh/dotW);
+        if(sw<4)return;const cols=Math.floor(sw/dotW),rows=Math.floor(sh/dotW);
         for(let r=0;r<rows;r++)for(let c=0;c<cols;c++){
-          if(((r*29+c*19)%100)/100>fillRatio&&goalBurst<0.1)continue;
-          ctx.fillStyle=palette[(r*5+c*11)%palette.length];
-          ctx.globalAlpha=(0.45+goalBurst*0.18)+Math.sin(t*oscSpeed+r*0.6+c*0.3)*0.1;
-          ctx.fillRect(sx+c*(sw/cols)+1,sy+r*(sh/rows)+1,Math.max(sw/cols-1,1),Math.max(sh/rows-1,1));
+          if(((r*29+c*19)%100)/100>fillRatio)continue;
+          cctx.fillStyle=pal[(r*5+c*11)%pal.length];cctx.globalAlpha=0.46;
+          cctx.fillRect(sx+c*(sw/cols)+1,sy+r*(sh/rows)+1,Math.max(sw/cols-1,1),Math.max(sh/rows-1,1));
         }
       });
-      ctx.globalAlpha=1;
+      cctx.globalAlpha=1;
+      // Advertising boards around pitch
+      const ads=[{col:"#1e3a8a",t:"NIKE"},{col:"#dc2626",t:"ADIDAS"},{col:"#065f46",t:"PUMA"},
+                 {col:"#7c3aed",t:"EA FC"},{col:"#0369a1",t:"PEPSI"},{col:"#c2410c",t:"BUDW"},
+                 {col:"#1e40af",t:"VISA"},{col:"#166534",t:"HEINEKEN"}];
+      const bH=5,bPad=1,bW=Math.floor(FW/ads.length);
+      cctx.font="bold 4px Arial,sans-serif";cctx.textBaseline="middle";cctx.textAlign="center";
+      ads.forEach((b,i)=>{
+        const bx=FX+i*bW;
+        cctx.fillStyle=b.col;cctx.globalAlpha=0.92;
+        cctx.fillRect(bx+bPad,FY-bH-bPad,bW-bPad*2,bH);
+        cctx.fillRect(bx+bPad,FY+FH+bPad,bW-bPad*2,bH);
+        cctx.fillStyle="#fff";cctx.globalAlpha=1;
+        cctx.fillText(b.t,bx+bW/2,FY-bH/2-bPad);
+        cctx.fillText(b.t,bx+bW/2,FY+FH+bH/2+bPad);
+      });
+      cctx.globalAlpha=1;
+      // Night: floodlight towers at canvas corners
+      if(isNight){
+        [[6,6],[PW-6,6],[6,PH-6],[PW-6,PH-6]].forEach(([tx,ty])=>{
+          const fg=cctx.createRadialGradient(tx,ty,0,tx,ty,48);
+          fg.addColorStop(0,"rgba(255,248,200,0.38)");fg.addColorStop(0.5,"rgba(255,248,200,0.08)");fg.addColorStop(1,"rgba(255,248,200,0)");
+          cctx.fillStyle=fg;cctx.fillRect(tx-48,ty-48,96,96);
+          cctx.fillStyle="#aaa";cctx.fillRect(tx-1,ty,2,16); // pole
+          cctx.fillStyle="rgba(255,248,200,0.9)";cctx.fillRect(tx-4,ty-2,8,3); // lamp head
+        });
+      }
+    }
+
+    function drawStadium(ctx,t){
+      const p=propsRef.current;
+      const hCol=p.homeCol||"#2563eb",oCol=p.oppCol||"#dc2626";
+      const att=p.attendance||500;
+      const fillRatio=Math.min(1,Math.max(0.15,(att-150)/75000*0.85+0.15));
+      const isNight=p.timeOfDay==="night";
+      // Draw pre-baked static crowd (invalidates when colours/fill change)
+      bakeCrowd(hCol,oCol,fillRatio,isNight);
+      ctx.drawImage(crowdOff,0,0);
+      // ── Dynamic: ola wave + photo flashes (per-frame) ──
+      const wEvt=p.waveEvent;
+      const waveAge=wEvt?(Date.now()-wEvt.t):999999;
+      const goalBurst=Math.max(0,1-waveAge/5000);
+      const waveSpd=t*0.0012,waveAmp=4.5+goalBurst*14,waveAlpha=0.22+goalBurst*0.30;
+      const flashCol=wEvt&&goalBurst>0.05?(wEvt.home?p.homeCol:"#ef4444"):"#fff";
+      for(let wi=0;wi<Math.ceil(FW/5);wi++){
+        const wx=FX+wi*5,wh=Math.max(0,Math.sin(waveSpd*3+wi*0.22)*waveAmp);
+        if(wh>0.5){ctx.save();ctx.globalAlpha=waveAlpha;ctx.fillStyle=flashCol;ctx.fillRect(wx,2,5,Math.min(wh,FY-3));ctx.fillRect(wx,FY+FH+2,5,Math.min(wh,PH-FY-FH-4));ctx.restore();}
+      }
+      if(Math.random()<0.012+goalBurst*0.06){
+        const fx=FX+Math.random()*FW,fy=2+Math.random()*(FY-5);
+        const fg=ctx.createRadialGradient(fx,fy,0,fx,fy,8);
+        fg.addColorStop(0,"rgba(255,255,255,0.7)");fg.addColorStop(1,"rgba(255,255,255,0)");
+        ctx.fillStyle=fg;ctx.fillRect(fx-8,fy-8,16,16);
+      }
+      // Goal burst crowd colour overlay
+      if(goalBurst>0.05){
+        ctx.save();ctx.globalAlpha=goalBurst*0.18;ctx.fillStyle=flashCol;
+        ctx.fillRect(FX,2,FW,FY-3);ctx.fillRect(FX,FY+FH+2,FW,PH-FY-FH-4);
+        ctx.restore();
+      }
     }
 
     function drawPitch(ctx){
@@ -1502,19 +1522,38 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
       const arcR=FH*0.095;
       ctx.beginPath();ctx.arc(FCX,FY+paH,arcR,Math.PI,0,true);ctx.stroke();  // top arc
       ctx.beginPath();ctx.arc(FCX,FY+FH-paH,arcR,0,Math.PI,true);ctx.stroke(); // bottom arc
-      // Goals (nets) outside field
-      const gW=FW*0.28,gD=12;
-      const gX=FCX-gW/2;
-      ctx.fillStyle="rgba(255,255,255,0.10)";
-      ctx.fillRect(gX,FY-gD,gW,gD);
-      ctx.fillRect(gX,FY+FH,gW,gD);
-      ctx.strokeStyle="rgba(255,255,255,0.55)";ctx.lineWidth=1;
-      ctx.strokeRect(gX,FY-gD,gW,gD);
-      ctx.strokeRect(gX,FY+FH,gW,gD);
-      // Goal posts
-      ctx.strokeStyle="#fff";ctx.lineWidth=2;
+      // Goals: net grid with optional bulge animation
+      const gW=FW*0.28,gD=12,gX=FCX-gW/2;
+      const bT=s.netBulgeTop||0,bB=s.netBulgeBot||0;
+      function drawNet(gx2,gy2,w,h,bulge,dirY){
+        // net fill
+        ctx.save();ctx.fillStyle="rgba(255,255,255,0.07)";ctx.fillRect(gx2,gy2,w,h);
+        // grid lines
+        ctx.strokeStyle="rgba(255,255,255,0.32)";ctx.lineWidth=0.5;
+        const COLS=10,ROWS=3;
+        for(let c=0;c<=COLS;c++){
+          const nx=gx2+c/COLS*w;
+          const bx=bulge*Math.sin(c/COLS*Math.PI)*4;
+          const backY=gy2+(dirY>0?h:0);const openY=gy2+(dirY>0?0:h);
+          ctx.beginPath();ctx.moveTo(nx,openY);ctx.quadraticCurveTo(nx+bx,gy2+h*0.5,nx+bx,backY);ctx.stroke();
+        }
+        for(let r=0;r<=ROWS;r++){
+          const t2=r/ROWS;
+          const ny=gy2+(dirY>0?t2*h:(1-t2)*h);
+          const pushY=bulge*dirY*t2*5;
+          ctx.beginPath();ctx.moveTo(gx2,ny+pushY);ctx.lineTo(gx2+w,ny+pushY);ctx.stroke();
+        }
+        // frame (posts+crossbar)
+        ctx.strokeStyle="rgba(255,255,255,0.55)";ctx.lineWidth=1;ctx.strokeRect(gx2,gy2,w,h);
+        ctx.restore();
+      }
+      drawNet(gX,FY-gD,gW,gD,bT,-1);  // top goal (away net)
+      drawNet(gX,FY+FH,gW,gD,bB,1);   // bottom goal (home net)
+      // Goal posts — white, on top of net
+      ctx.save();ctx.strokeStyle="#fff";ctx.lineWidth=2;
       ctx.beginPath();ctx.moveTo(gX,FY);ctx.lineTo(gX,FY-gD);ctx.lineTo(gX+gW,FY-gD);ctx.lineTo(gX+gW,FY);ctx.stroke();
       ctx.beginPath();ctx.moveTo(gX,FY+FH);ctx.lineTo(gX,FY+FH+gD);ctx.lineTo(gX+gW,FY+FH+gD);ctx.lineTo(gX+gW,FY+FH);ctx.stroke();
+      ctx.restore();
       // Penalty spots
       ctx.fillStyle="#fff";
       ctx.beginPath();ctx.arc(FCX,FY+FH*0.115,2,0,Math.PI*2);ctx.fill();
@@ -1784,6 +1823,9 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
       if(dxM>0.05||dyM>0.05){s.isMoving=true;s.movingTimer=12;}
       else if(s.movingTimer>0){s.movingTimer--;if(s.movingTimer<=0)s.isMoving=false;}
       s.prevPX=p.playerX;s.prevPY=p.playerY;
+      // Net bulge: decay over 1.5s, spike on fresh waveEvent
+      const wEvtNow=p.waveEvent;
+      if(wEvtNow){const age=Date.now()-wEvtNow.t;if(age<1500){const b=Math.max(0,1-age/1500);if(wEvtNow.home)s.netBulgeTop=b;else s.netBulgeBot=b;}else{s.netBulgeTop=Math.max(0,s.netBulgeTop-0.04);s.netBulgeBot=Math.max(0,s.netBulgeBot-0.04);}}else{s.netBulgeTop=Math.max(0,s.netBulgeTop-0.04);s.netBulgeBot=Math.max(0,s.netBulgeBot-0.04);}
 
       ctx.clearRect(0,0,PW,PH);
       const isShoulderZoom=p.actionZoom;
