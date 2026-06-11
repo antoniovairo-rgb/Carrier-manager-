@@ -2770,9 +2770,9 @@ function LiveMatch({player,opponent,context="career",onMatchEnd}){
   });
   const possessionRef=useRef(50);
   useEffect(()=>{possessionRef.current=possession;},[possession]);
+  const [ballPos,setBallPos]=useState({x:50,y:50});
   const ballPosRef=useRef({x:50,y:50});
   useEffect(()=>{ballPosRef.current=ballPos;},[ballPos]);
-  const [ballPos,setBallPos]=useState({x:50,y:50});
   const [mxStats,setMxStats]=useState({shots:0,oppShots:0,fouls:0,corners:0});
   const [waveEvent,setWaveEvent]=useState(null);
   const [actionEffect,setActionEffect]=useState(null);
