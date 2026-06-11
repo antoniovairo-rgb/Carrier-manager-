@@ -803,7 +803,7 @@ function generateProContracts(player){
   }
   return{offers,forced,perf:Math.round(perf*10)/10};
 }
-const GAME_VERSION="0.9.3";
+const GAME_VERSION="0.9.4";
 const SAVE_VERSION=5;
 const SLOT_KEYS=["cpm-v3","cpm-v3-s2","cpm-v3-s3"]; // slot 0 backward-compatible
 const storage={
@@ -1589,7 +1589,7 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
 
     // Player sprite — top-down jersey with head, motion blur, hero star
     function drawPlayer(ctx,cx,cy,col,col2,isHero,num,isMoving,facingDown,t){
-      const R=isHero?11:7.5;
+      const R=7.5;
       const jw=R*1.0,jh=R*1.55,jr=R*0.26;
 
       // Motion blur trail (elongated shadow in "running" direction when moving)
@@ -2770,6 +2770,8 @@ function LiveMatch({player,opponent,context="career",onMatchEnd}){
   });
   const possessionRef=useRef(50);
   useEffect(()=>{possessionRef.current=possession;},[possession]);
+  const ballPosRef=useRef({x:50,y:50});
+  useEffect(()=>{ballPosRef.current=ballPos;},[ballPos]);
   const [ballPos,setBallPos]=useState({x:50,y:50});
   const [mxStats,setMxStats]=useState({shots:0,oppShots:0,fouls:0,corners:0});
   const [waveEvent,setWaveEvent]=useState(null);
@@ -2909,42 +2911,49 @@ function LiveMatch({player,opponent,context="career",onMatchEnd}){
     return()=>clearInterval(iv);
   },[phase,hlIdx,situations,pPos.x,pPos.y]);// eslint-disable-line
 
-  // Formation drift during playing phase — 4-3-3 with possession-reactive depth + patrol oscillation
+  // Formation drift during playing phase — ball-reactive + patrol oscillation
   useEffect(()=>{
     if(phase!=="playing")return;
     let tick=0;
     const iv=setInterval(()=>{
       tick++;
       const poss=possessionRef.current;
-      const awayBlock=clamp(68+(poss-50)*0.38,55,88);
-      const homeBlock=clamp(32-(poss-50)*0.30,12,52);
-      const T=tick*0.18; // slow time base for smooth oscillation
+      const ball=ballPosRef.current; // ball.x 0-100 (0=home goal, 100=away goal)
+      const T=tick*0.55;
+      // depth: when ball deep in away half (x>60), away team retreats to own box
+      const awayDepth=clamp(62+(poss-50)*0.4+(ball.x-50)*0.25,48,92);
+      const homeDepth=clamp(38-(poss-50)*0.3-(ball.x-50)*0.18,8,55);
+      // lateral anchor: players cluster around ball Y
+      const ballY=ball.y;
       setMatchPlayers(prev=>prev.map((pl,idx)=>{
         if(pl.team==="ref")return pl;
         if(pl.team==="away"){
           const ai=idx-10;
           let tx,ty;
-          if(ai===0){tx=96;ty=50;}
-          else if(ai<=4){tx=awayBlock+6;ty=12+(ai-1)*20;}
-          else if(ai<=7){tx=awayBlock-8;ty=14+(ai-5)*30;}
-          else{tx=awayBlock-22;ty=18+(ai-8)*32;}
-          // patrol oscillation: each player has its own phase so they don't sync
-          tx+=Math.sin(T+ai*1.3)*4;
-          ty+=Math.cos(T*0.8+ai*0.9)*5;
-          return{...pl,x:clamp(pl.x+(tx-pl.x)*0.18,44,97),y:clamp(pl.y+(ty-pl.y)*0.14,4,96)};
+          // GK stays back
+          if(ai===0){tx=97;ty=50;}
+          // defenders spread around ball Y, shifted by role offset
+          else if(ai<=4){const off=[-28,-9,9,28][ai-1];tx=awayDepth+4;ty=clamp(ballY+off,8,92);}
+          // midfielders track ball more closely
+          else if(ai<=7){const off=[-18,0,18][ai-5];tx=awayDepth-14;ty=clamp(ballY+off,6,94);}
+          // forwards press high, shadow hero
+          else{const off=[-14,14,0][ai-8];tx=awayDepth-30;ty=clamp(ballY+off,5,95);}
+          tx+=Math.sin(T+ai*1.7)*5;
+          ty+=Math.cos(T*0.9+ai*1.2)*6;
+          return{...pl,x:clamp(pl.x+(tx-pl.x)*0.32,44,98),y:clamp(pl.y+(ty-pl.y)*0.28,3,97)};
         }else{
           const hi=idx;
           let tx,ty;
-          if(hi===0){tx=4;ty=50;}
-          else if(hi<=4){tx=homeBlock-5;ty=12+(hi-1)*20;}
-          else if(hi<=7){tx=homeBlock+8;ty=14+(hi-5)*30;}
-          else{tx=homeBlock+20;ty=18+(hi-8)*32;}
-          tx+=Math.sin(T*0.9+hi*1.1)*3;
-          ty+=Math.cos(T*0.7+hi*1.0)*4;
-          return{...pl,x:clamp(pl.x+(tx-pl.x)*0.15,3,90),y:clamp(pl.y+(ty-pl.y)*0.12,4,96)};
+          if(hi===0){tx=3;ty=50;}
+          else if(hi<=4){const off=[-28,-9,9,28][hi-1];tx=homeDepth-4;ty=clamp(ballY+off,8,92);}
+          else if(hi<=7){const off=[-18,0,18][hi-5];tx=homeDepth+12;ty=clamp(ballY+off,6,94);}
+          else{const off=[-14,14,0][hi-8];tx=homeDepth+26;ty=clamp(ballY+off,5,95);}
+          tx+=Math.sin(T*0.85+hi*1.5)*4;
+          ty+=Math.cos(T*0.75+hi*1.1)*5;
+          return{...pl,x:clamp(pl.x+(tx-pl.x)*0.28,2,92),y:clamp(pl.y+(ty-pl.y)*0.24,3,97)};
         }
       }));
-    },800);
+    },300);
     return()=>clearInterval(iv);
   },[phase]);
 
