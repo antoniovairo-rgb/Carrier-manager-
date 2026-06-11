@@ -1549,8 +1549,8 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
 
     // Player sprite — top-down jersey with head, motion blur, hero star
     function drawPlayer(ctx,cx,cy,col,col2,isHero,num,isMoving,facingDown,t){
-      const R=isHero?12:8.5;
-      const jw=R*1.5,jh=R*1.8,jr=R*0.35;
+      const R=isHero?11:7.5;
+      const jw=R*1.0,jh=R*1.55,jr=R*0.26;
 
       // Motion blur trail (elongated shadow in "running" direction when moving)
       if(isMoving){
@@ -1588,8 +1588,8 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
       ctx.closePath();ctx.fill();
       // sleeves
       ctx.fillStyle=isHero?"#d97706":col;
-      ctx.beginPath();ctx.ellipse(cx-jw/2-R*0.32,cy-jh*0.1,R*0.38,R*0.52,Math.PI*0.14,0,Math.PI*2);ctx.fill();
-      ctx.beginPath();ctx.ellipse(cx+jw/2+R*0.32,cy-jh*0.1,R*0.38,R*0.52,-Math.PI*0.14,0,Math.PI*2);ctx.fill();
+      ctx.beginPath();ctx.ellipse(cx-jw/2-R*0.22,cy-jh*0.1,R*0.26,R*0.4,Math.PI*0.14,0,Math.PI*2);ctx.fill();
+      ctx.beginPath();ctx.ellipse(cx+jw/2+R*0.22,cy-jh*0.1,R*0.26,R*0.4,-Math.PI*0.14,0,Math.PI*2);ctx.fill();
       // collar
       ctx.fillStyle=isHero?"#fff":(col2||"rgba(255,255,255,0.9)");
       ctx.beginPath();ctx.ellipse(cx,cy-jh/2+R*0.18,R*0.36,R*0.19,0,0,Math.PI*2);ctx.fill();
@@ -1631,7 +1631,7 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
 
     function drawBall(ctx,bx,by,t){
       const spin=t*0.004;
-      const R=7.5;
+      const R=5;
       // drop shadow — bigger and darker
       ctx.save();ctx.globalAlpha=0.38;ctx.fillStyle="#000";
       ctx.beginPath();ctx.ellipse(bx,by+R*0.65,R*0.82,R*0.28,0,0,Math.PI*2);ctx.fill();ctx.restore();
@@ -3187,7 +3187,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd}){
           </div>
 
           {/* ── Field + Panel: responsive layout ── */}
-          <div style={{display:"flex",flexDirection:isNarrow?"column":"row",alignItems:"stretch",minHeight:0}}>
+          <div style={isNarrow?{position:"relative"}:{display:"flex",flexDirection:"row",alignItems:"stretch",minHeight:0}}>
 
             {/* FIELD — 72% wide on desktop, full width on narrow */}
             <div style={{flex:isNarrow?"none":"0 0 72%",position:"relative",overflow:"hidden"}}>
@@ -3220,7 +3220,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd}){
             </div>
 
             {/* RIGHT: info + action panel */}
-            <div style={{flex:1,display:"flex",flexDirection:isNarrow?"row":"column",background:"#0f172a",borderLeft:isNarrow?"none":"1px solid rgba(255,255,255,0.08)",borderTop:isNarrow?"1px solid rgba(255,255,255,0.08)":"none",minWidth:0,overflow:"hidden",maxHeight:isNarrow?130:9999}}>
+            <div style={isNarrow?{position:"absolute",bottom:0,left:0,right:0,zIndex:5,background:"rgba(8,13,28,0.94)",borderTop:"1px solid rgba(255,255,255,0.14)",backdropFilter:"blur(6px)"}:{flex:1,display:"flex",flexDirection:"column",background:"#0f172a",borderLeft:"1px solid rgba(255,255,255,0.08)",minWidth:0,overflow:"hidden"}}>
 
               {/* Action zone — only during HL phases */}
               {phase==="hl_move"&&curSit&&(
@@ -3324,8 +3324,8 @@ function LiveMatch({player,opponent,context="career",onMatchEnd}){
                 </div>
               </div>
 
-              {/* Live commentary feed */}
-              <div style={{flex:1,padding:"6px 10px",overflowY:"auto",minHeight:0}}>
+              {/* Live commentary feed — hidden on mobile overlay */}
+              <div style={{flex:1,padding:"6px 10px",overflowY:"auto",minHeight:0,display:isNarrow?"none":"block"}}>
                 <div style={{fontSize:7,color:"rgba(255,255,255,0.3)",fontWeight:700,letterSpacing:1,textTransform:"uppercase",marginBottom:4}}>📻 CRONACA</div>
                 {coms.length===0
                   ?<div style={{fontSize:9,color:"rgba(255,255,255,0.2)",fontStyle:"italic"}}>In attesa…</div>
