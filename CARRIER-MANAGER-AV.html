@@ -928,7 +928,7 @@ const NEWSPAPERS=[
   {id:"lastampa",  name:"La Stampa Sport",       short:"La Stampa",  color:"#16a34a",e:"🗞️",tone:"analitico"},
   {id:"skysport",  name:"Sky Sport 24",          short:"Sky Sport",  color:"#0099d6",e:"📡",tone:"diretto"},
 ];
-const GAME_VERSION="2.4.0"; // Sprint 14 + migliorie UI
+const GAME_VERSION="2.4.1"; // fix standings hook violation
 const SAVE_VERSION=5;
 // Sprint 11 — S11.1 Coach data
 const COACH_NAMES=["Rossi","Ferrari","Bianchi","Conti","Greco","Mancini","Pirlo","Gattuso","Capello","De Zerbi","Allegri","Conte","Spalletti","Inzaghi","Sarri","Mihajlovic"];
@@ -5872,6 +5872,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
   const[player,setPlayer]=useState(init);
   const[tab,setTab]=useState("dashboard");
   const[screen,setScreen]=useState("dashboard");
+  const[standingsLg,setStandingsLg]=useState(null); // null = use player's own league
   const[matchOpp,setMatchOpp]=useState(null);
   const[matchIsHome,setMatchIsHome]=useState(true);
   const[lastMatch,setLastMatch]=useState(null);
@@ -6927,8 +6928,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
       {tab==="standings"&&(()=>{
         const allLeagues=[...new Set(CLUBS.map(c=>c.lg).filter(Boolean))];
         const myLeague=player.club?.lg||(player.proStatus==="u18"?"U18 Primavera":"Serie A");
-        const [selLg,setSelLg]=React.useState(myLeague);
-        // Generate snapshot for other leagues
+        const selLg=standingsLg||myLeague;
         const getRows=(lg)=>{
           if(lg===myLeague)return player.standings||[];
           const clubs=CLUBS.filter(c=>c.lg===lg);
@@ -6952,10 +6952,9 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
         const zoneOf=(i)=>{if(i===0)return"champ";if(i<4)return"cl";if(i<6)return"el";if(i===6)return"conf";if(i>=N-3&&N>6)return"rel";return null;};
         return(
         <div style={{display:"flex",flexDirection:"column",gap:8}}>
-          {/* League selector */}
           <div style={{overflowX:"auto",display:"flex",gap:6,paddingBottom:4}}>
             {allLeagues.map(lg=>(
-              <button key={lg} onClick={()=>setSelLg(lg)} style={{flexShrink:0,padding:"4px 10px",borderRadius:14,border:"1px solid "+(selLg===lg?TH.primary:TH.cardBorder),background:selLg===lg?TH.primary:"#fff",color:selLg===lg?"#fff":TH.muted,fontSize:10,cursor:"pointer",fontWeight:selLg===lg?700:400,whiteSpace:"nowrap"}}>{lg}{lg===myLeague?" ★":""}</button>
+              <button key={lg} onClick={()=>setStandingsLg(lg)} style={{flexShrink:0,padding:"4px 10px",borderRadius:14,border:"1px solid "+(selLg===lg?TH.primary:TH.cardBorder),background:selLg===lg?TH.primary:"#fff",color:selLg===lg?"#fff":TH.muted,fontSize:10,cursor:"pointer",fontWeight:selLg===lg?700:400,whiteSpace:"nowrap"}}>{lg}{lg===myLeague?" ★":""}</button>
             ))}
           </div>
           <Card>
@@ -6987,7 +6986,6 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
                 </tbody>
               </table>
             </div>
-            {/* Zone legend */}
             <div style={{display:"flex",flexWrap:"wrap",gap:"2px 10px",marginTop:8}}>
               {[["#f59e0b","🏆 Campione"],["#3b82f6","⬆ CL (1-4)"],["#f97316","🟠 EL (5-6)"],["#22c55e","🟢 Conf. (7)"],["#ef4444","⬇ Retrocesse"]].map(([c,l])=>(
                 <span key={l} style={{fontSize:8,color:c,fontWeight:600}}>{l}</span>
