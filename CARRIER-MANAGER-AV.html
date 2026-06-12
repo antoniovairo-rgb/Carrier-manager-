@@ -473,6 +473,23 @@ const WEEKLY_EVENTS=[
 ];
 
 /* ========================================
+   WEEKLY RANDOM EVENTS — life events (10 pool)
+   Fire during doAdvanceWeek when weekLived=false (25% chance)
+======================================== */
+const WEEKLY_RANDOM_EVENTS=[
+  {txt:"🤝 Il tuo agente ti chiama: interesse concreto da parte di un club importante. Sei motivato!",ef:{morale:9,popularity:6}},
+  {txt:"🎽 Il club presenta la nuova maglia. Sei in prima fila per la foto. Grande hype tra i tifosi!",ef:{popularity:8,morale:5}},
+  {txt:"🌧️ Settimana di carichi molto pesanti. Lo spogliatoio è stanco ma unito.",ef:{fatigue:10,morale:-3}},
+  {txt:"🎂 Compleanno di un compagno. Cena di squadra: il gruppo si compatta.",ef:{morale:9,fatigue:-4}},
+  {txt:"📱 Un tuo gol va virale sui social. La tua popolarità cresce di molto.",ef:{popularity:13,morale:6}},
+  {txt:"🧑‍⚕️ Visita medica di routine: risultati ottimi. Sei in piena forma atletica.",ef:{fatigue:-12,morale:5,form:4}},
+  {txt:"😤 Tensione negli allenamenti dopo una brutta settimana. Serve concentrazione.",ef:{morale:-7,fatigue:5}},
+  {txt:"🌟 Uno scout di un club europeo ti osserva nell'allenamento aperto. La voce si diffonde.",ef:{morale:11,popularity:9,value:0.1}},
+  {txt:"📰 Un grande quotidiano sportivo ti dedica un articolo di fondo. La tua notorietà aumenta.",ef:{popularity:10,morale:5,value:0.05}},
+  {txt:"💬 Il capitano elogia il tuo impegno davanti a tutto il gruppo. Il mister annuisce.",ef:{morale:10,coachTrust:6}},
+];
+
+/* ========================================
    SITUATIONS  (con moveZone e startZone)
 ======================================== */
 const S=(text,zones,mz,sz,actions,lock=false,mm=-1,intro="",type="off")=>{
@@ -795,7 +812,7 @@ function generateProContracts(player){
   }
   return{offers,forced,perf:Math.round(perf*10)/10};
 }
-const GAME_VERSION="1.1.2";
+const GAME_VERSION="1.2.0";
 const SAVE_VERSION=5;
 const SLOT_KEYS=["cpm-v3","cpm-v3-s2","cpm-v3-s3"]; // slot 0 backward-compatible
 const storage={
@@ -3862,6 +3879,131 @@ function ProTransitionScreen({player,onChoose}){
 }
 
 /* ========================================
+   SEASON END SCREEN  (Sprint 2 — B06/B05)
+======================================== */
+function SeasonEndScreen({data,player,onNewSeason}){
+  const{season,club,finalStandings,playerStats,champion,playerPos,isChampion}=data;
+  const trophies=player.trophies||[];
+  const numTeams=finalStandings?.length||18;
+  const isRelegated=playerPos>=numTeams-2;
+  const isPromoted=playerPos<=2;
+  const bgColor=isChampion?"#fef9c3":isPromoted?"#f0fdf4":isRelegated?"#fff1f2":"#f8fafc";
+  const borderColor=isChampion?"#fde68a":isPromoted?"#bbf7d0":isRelegated?"#fecaca":TH.cardBorder;
+  const statusEmoji=isChampion?"🏆":isPromoted?"⬆️":isRelegated?"⬇️":"🏁";
+  const statusLabel=isChampion?"CAMPIONE!":isPromoted?"ZONA PROMOZIONE":isRelegated?"ZONA RETROCESSIONE":"Fine stagione";
+
+  // sorted standings already from doAdvanceWeek
+  const sorted=finalStandings||[];
+  const playerClubId=club?.id||club?.n;
+  const isPlayerRow=t=>t.id===playerClubId||(t.n||t.name)===(club?.n||club?.name);
+
+  const renderRow=(t,i)=>(
+    <div key={t.id||i} style={{display:"flex",alignItems:"center",gap:8,padding:"5px 8px",borderRadius:6,
+      background:isPlayerRow(t)?"#eff6ff":i>=numTeams-3?"#fff1f2":i<3?"#fefce8":"transparent",
+      borderLeft:i===0?"3px solid #fde68a":i>=numTeams-3?"3px solid #fca5a5":"3px solid transparent",
+      marginBottom:2}}>
+      <div style={{fontSize:11,fontWeight:700,color:i<3?TH.warning:TH.muted,width:18,textAlign:"right"}}>{i+1}</div>
+      <div style={{flex:1,fontSize:11,fontWeight:isPlayerRow(t)?700:400,color:isPlayerRow(t)?TH.primary:TH.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>
+        {t.n||t.name}{isPlayerRow(t)?" 👈":""}
+      </div>
+      <div style={{fontSize:10,color:TH.muted,minWidth:60,textAlign:"right"}}>{t.played}G {t.gf}-{t.ga}</div>
+      <div style={{fontSize:12,fontWeight:900,color:TH.text,minWidth:28,textAlign:"right"}}>{t.pts}</div>
+    </div>
+  );
+
+  // Show top-3, player row if outside top-3, bottom-3 (with ellipsis separators)
+  let rows=[];
+  if(sorted.length>0){
+    const topN=sorted.slice(0,3);
+    const botN=sorted.slice(-3);
+    const playerInTop=playerPos<3;
+    const playerInBot=playerPos>=sorted.length-3;
+    rows=[...topN.map((t,i)=>renderRow(t,i))];
+    if(!playerInTop&&!playerInBot){
+      rows.push(<div key="sep1" style={{textAlign:"center",fontSize:10,color:TH.faint,padding:"2px 0"}}>…</div>);
+      rows.push(renderRow(sorted[playerPos],playerPos));
+    }
+    if(!playerInBot||(sorted.length<=6)){
+      if(!playerInTop&&!playerInBot)rows.push(<div key="sep2" style={{textAlign:"center",fontSize:10,color:TH.faint,padding:"2px 0"}}>…</div>);
+      botN.forEach((t,i)=>{ const ri=sorted.length-3+i; if(ri>2&&ri!==playerPos)rows.push(renderRow(t,ri)); });
+    }else if(sorted.length>3){
+      rows.push(<div key="sep2" style={{textAlign:"center",fontSize:10,color:TH.faint,padding:"2px 0"}}>…</div>);
+      botN.forEach((t,i)=>{ const ri=sorted.length-3+i; if(ri>2)rows.push(renderRow(t,ri)); });
+    }
+  }
+
+  return(
+    <div style={{width:"100%"}}>
+      <div style={{textAlign:"center",marginBottom:14,paddingTop:6}}>
+        <div style={{fontSize:44,marginBottom:6}}>{statusEmoji}</div>
+        <h1 style={{fontSize:20,fontWeight:900,margin:"0 0 4px",color:TH.text}}>Fine Stagione {season}</h1>
+        <p style={{color:TH.muted,fontSize:12,margin:0}}>{club?.n||club?.name} · {club?.lg||"Pro"}</p>
+      </div>
+
+      {/* Status banner */}
+      <Card style={{marginBottom:12,padding:"12px 16px"}} bg={bgColor} border={borderColor}>
+        <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8}}>
+          <div style={{fontSize:13,fontWeight:900,color:TH.text}}>{statusEmoji} {statusLabel}</div>
+          <div style={{fontSize:10,color:TH.muted}}>Pos. {playerPos+1}/{numTeams}</div>
+        </div>
+        <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:8,textAlign:"center"}}>
+          {[{l:"Partite",v:playerStats.matches,e:"🎮"},{l:"Gol",v:playerStats.goals,e:"⚽"},{l:"Assist",v:playerStats.assists,e:"🎯"},{l:"OVR",v:playerStats.ovr,e:"⭐"}].map(s=>(
+            <div key={s.l}>
+              <div style={{fontSize:20}}>{s.e}</div>
+              <div style={{fontSize:22,fontWeight:900,color:TH.text}}>{s.v}</div>
+              <div style={{fontSize:9,color:TH.muted}}>{s.l}</div>
+            </div>
+          ))}
+        </div>
+        {isChampion&&<div style={{marginTop:10,padding:"8px 12px",background:"#fef08a",borderRadius:8,fontSize:12,fontWeight:800,color:"#713f12",textAlign:"center"}}>🏆 Hai vinto la {club?.lg||"lega"}! Trofeo aggiunto all'albo d'oro!</div>}
+      </Card>
+
+      {/* Champion banner */}
+      {champion&&!isChampion&&(
+        <Card style={{marginBottom:12,padding:"10px 14px",textAlign:"center"}} bg="#fefce8" border="#fde68a">
+          <div style={{fontSize:12,fontWeight:700,color:"#713f12"}}>🏆 Campione: <strong>{champion.n||champion.name}</strong> · {champion.pts} pt</div>
+        </Card>
+      )}
+
+      {/* Standings */}
+      {sorted.length>0&&(
+        <Card style={{marginBottom:12,padding:"12px 14px"}}>
+          <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>📊 Classifica finale</div>
+          <div style={{display:"flex",justifyContent:"flex-end",gap:12,fontSize:9,color:TH.faint,marginBottom:4,paddingRight:4}}>
+            <span>PG GF-GA</span><span style={{minWidth:28,textAlign:"right"}}>PT</span>
+          </div>
+          {rows}
+          <div style={{display:"flex",gap:10,marginTop:8,fontSize:9,flexWrap:"wrap"}}>
+            <span style={{color:TH.warning}}>🟡 Top 3 · promozione</span>
+            <span style={{color:TH.danger}}>🔴 Ultimi 3 · retrocessione</span>
+          </div>
+        </Card>
+      )}
+
+      {/* Albo d'oro */}
+      {trophies.length>0&&(
+        <Card style={{marginBottom:12,padding:"12px 14px"}}>
+          <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>🏆 Albo d'oro</div>
+          {trophies.map((t,i)=>(
+            <div key={i} style={{display:"flex",alignItems:"center",gap:8,padding:"5px 0",borderBottom:i<trophies.length-1?"1px solid "+TH.cardBorder:"none"}}>
+              <span style={{fontSize:16}}>🏆</span>
+              <div style={{flex:1}}>
+                <div style={{fontSize:12,fontWeight:700,color:TH.text}}>Stagione {t.season}</div>
+                <div style={{fontSize:10,color:TH.muted}}>{t.club} · {t.league}</div>
+              </div>
+            </div>
+          ))}
+        </Card>
+      )}
+
+      <Btn onClick={onNewSeason} v="primary" fw style={{padding:"16px",fontSize:15,marginTop:4}}>
+        🆕 Inizia Stagione {season+1} →
+      </Btn>
+    </div>
+  );
+}
+
+/* ========================================
    HOME SCREEN — slot salvataggio
 ======================================== */
 function HomeScreen({onNew,onLoad,onDelete,onImport,slots}){
@@ -5146,6 +5288,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
   const[screen,setScreen]=useState("dashboard");
   const[matchOpp,setMatchOpp]=useState(null);
   const[lastMatch,setLastMatch]=useState(null);
+  const[seasonEndData,setSeasonEndData]=useState(null);
   // Backward compat: auto-generate missing/stale calendar/standings for old saves
   useEffect(()=>{
     let changed=false;
@@ -5163,6 +5306,10 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
     }
     if(!newP.aiData){
       newP={...newP,aiData:{lastOpponentTactic:null,scoutReports:{},pressReports:{}}};
+      changed=true;
+    }
+    if(!newP.trophies){
+      newP={...newP,trophies:[]};
       changed=true;
     }
     if(changed){setPlayer(newP);}
@@ -5416,41 +5563,40 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
     });
   };
 
-  // advance week: calendar-driven, simulates missed matches, resets season at week>38
+  // advance week: calendar-driven, simulates missed matches; intercepts season end for rich screen
   const doAdvanceWeek=()=>{
     setShowAdvanceConfirm(false);
-    const willEnterNewSeason=player.week>38;
-    const willContractExpire=willEnterNewSeason&&(player.contract?.duration||1)<=1;
     const isInU18=(player.proStatus||"u18")==="u18";
     const weekVal=player.week||1;
+
+    // U18 season end → ProTransitionScreen (unchanged behaviour)
     if(isInU18&&weekVal>=38){
       const hist={season:player.season||1,club:player.club?.name||player.club?.n,goals:player.goals||0,assists:player.assists||0,matches:player.matches||0,ovr:player.ovr||60};
       setPlayer(p=>({...p,u18Seasons:(p.u18Seasons||0)+1,history:[...(p.history||[]),hist],log:[`🏁 Fine U18 S.${p.season||1}: ${p.goals||0}⚽ ${p.assists||0}🎯`,...(p.log||[])].slice(0,60)}));
       setScreen("proTransition");
       return;
     }
-    setPlayer(p=>{
-      if(p.week>38){
-        // new season: reset stats, standings, calendar
+
+    // Pro season end → SeasonEndScreen
+    if(!isInU18&&weekVal>38){
+      const finalStandings=[...(player.standings||[])].sort((a,b)=>b.pts-a.pts||b.gd-a.gd||b.gf-a.gf);
+      const clubId=player.club?.id||player.club?.n;
+      const playerPos=finalStandings.findIndex(t=>t.id===clubId||(t.n||t.name)===(player.club?.n||player.club?.name));
+      const champion=finalStandings[0]||null;
+      const isChampion=playerPos===0;
+      // Save history + trophies into player state now
+      setPlayer(p=>{
         const hist={season:p.season,club:p.club?.name||p.club?.n,goals:p.goals,assists:p.assists,matches:p.matches,ovr:p.ovr};
-        const newSeason=(p.season||1)+1;
-        const newAge=(p.age||17)+1;
-        const lc=getLeagueClubs(p);
-        const newStandings=initStandings(lc);
-        const seed=newSeason*777+hashStr(p.club?.id||p.club?.n||"u18");
-        const newCalendar=generateSeasonCalendar(p.club||{id:"u18",n:"U18"},lc,seed);
-        const newContract={...p.contract,duration:(p.contract?.duration||1)-1,expiresAtSeason:p.contract?.expiresAtSeason||newSeason+1};
-        const contractExpired=newContract.duration<=0;
-        // Aging regression: physical decay after 30 (60% chance, one stat)
-        let agedStats={...p.stats};
-        if(newAge>=31&&Math.random()<0.6){
-          const dk=Math.random()<0.5?'velocità':'fisico';
-          agedStats={...agedStats,[dk]:clamp(agedStats[dk]-1,1,99)};
-        }
-        const newOvr=calcOvr(agedStats);
-        const agingLog=newAge>=31&&newOvr<(p.ovr||60)?`📉 Età ${newAge}: leggero calo fisico`:`🎂 ${newAge} anni — stagione ${newSeason} inizia`;
-        return{...p,season:newSeason,age:newAge,week:1,weekLived:false,goals:0,assists:0,matches:0,fatigue:0,skillPoints:(p.skillPoints||0)+2,stats:agedStats,ovr:newOvr,contract:newContract,contractExpired,history:[...(p.history||[]),hist],log:[`🏁 Fine S.${p.season}: ${p.goals}⚽ ${p.assists}🎯`,agingLog,...(p.log||[])].slice(0,60),standings:newStandings,calendar:newCalendar,matchHistory:[]};
-      }
+        const newTrophies=isChampion?[...(p.trophies||[]),{season:p.season,club:p.club?.n||p.club?.name,league:p.club?.lg}]:(p.trophies||[]);
+        return{...p,history:[...(p.history||[]),hist],trophies:newTrophies,log:[`🏁 Fine S.${p.season}: ${p.goals}⚽ ${p.assists}🎯`,...(p.log||[])].slice(0,60)};
+      });
+      setSeasonEndData({season:player.season,club:player.club,finalStandings,playerStats:{goals:player.goals||0,assists:player.assists||0,matches:player.matches||0,ovr:player.ovr||60},champion,playerPos:Math.max(0,playerPos),isChampion});
+      setScreen("seasonEnd");
+      return;
+    }
+
+    // Normal week advance
+    setPlayer(p=>{
       // if this week had a scheduled unplayed match, auto-simulate it
       const md=(p.calendar||[]).find(m=>m.week===(p.week||1)&&!m.played);
       let updP={...p};
@@ -5459,8 +5605,8 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
         const opp=lc.find(c=>c.id===md.opponentId)||lc.find(c=>c.n===md.opponentName);
         if(opp){
           const sim=simulateMatch(p.club,opp,p.ovr||65,md.isHome);
-          const clubId=p.club?.id||p.club?.n;
-          const newSt=updateStandings(p.standings||initStandings(getLeagueClubs(p)),clubId,sim);
+          const cId=p.club?.id||p.club?.n;
+          const newSt=updateStandings(p.standings||initStandings(getLeagueClubs(p)),cId,sim);
           const newCal=(p.calendar||[]).map(m=>m.week===(p.week||1)&&!m.played?{...m,played:true,result:{homeScore:sim.homeScore,awayScore:sim.awayScore,won:sim.won,drew:sim.drew},simulated:true}:m);
           const newHistory=[...(p.matchHistory||[]),{week:p.week||1,opponent:opp.n,oppAbbr:opp.a,oppCol:opp.c,homeScore:sim.homeScore,awayScore:sim.awayScore,goals:0,assists:0,rating:sim.rating,won:sim.won,drew:sim.drew,simulated:true}].slice(-200);
           updP={...updP,standings:newSt,calendar:newCal,matchHistory:newHistory,matches:(p.matches||0)+1,goals:p.goals,assists:p.assists,morale:clamp(p.morale+(sim.won?3:sim.drew?1:-2),0,100)};
@@ -5469,11 +5615,48 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
       const wk=p.week||1;const isJanuary=wk>=19&&wk<=22;
       if(Math.random()<(isJanuary?0.15:0.08)&&p.matches>3){const offer=generateTransferOffer(p);if(offer)setTransferOffer(offer);}
       if(wk===19)setTimeout(()=>notify("🏷️ Mercato invernale aperto — più offerte in arrivo!","#0ea5e9"),100);
+      // Random weekly life event (25% chance when week not yet lived)
+      if(!p.weekLived&&!p.injured&&Math.random()<0.25){
+        const re=WEEKLY_RANDOM_EVENTS[Math.floor(Math.random()*WEEKLY_RANDOM_EVENTS.length)];
+        const ef=re.ef||{};
+        const extras={morale:clamp((p.morale||70)+(ef.morale||0),0,100),fatigue:clamp((p.fatigue||0)+(ef.fatigue||0),0,100),form:clamp((p.form||70)+(ef.form||0),0,100),popularity:clamp((p.popularity||20)+(ef.popularity||0),0,100),coachTrust:clamp((p.coachTrust||60)+(ef.coachTrust||0),0,100),value:Math.max(0.5,(p.value||0.8)+(ef.value||0))};
+        setTimeout(()=>setWeekLiveModal({event:re,changes:{morale:ef.morale||0,form:ef.form||0,fatigue:ef.fatigue||0}}),100);
+        updP={...updP,...extras};
+      }
       if(p.injured&&(p.injuryWeeks||0)>0){return{...updP,week:(p.week||1)+1,weekLived:false,injuryWeeks:p.injuryWeeks-1,injured:p.injuryWeeks-1>0,fatigue:Math.max(0,(p.fatigue||0)-8)};}
       return{...updP,week:(p.week||1)+1,weekLived:false};
     });
-    if(willContractExpire)notify("📋 Contratto scaduto! Rinnova o cerca un nuovo club.",TH.warning);
     notify("⏭️ Settimana avanzata");
+  };
+
+  // new season: reset stats, advance calendar — called from SeasonEndScreen
+  const doStartNewSeason=()=>{
+    const willContractExpire=(player.contract?.duration||1)<=1;
+    setPlayer(p=>{
+      const newSeason=(p.season||1)+1;
+      const newAge=(p.age||17)+1;
+      const lc=getLeagueClubs(p);
+      const newStandings=initStandings(lc);
+      const seed=newSeason*777+hashStr(p.club?.id||p.club?.n||"u18");
+      const newCalendar=generateSeasonCalendar(p.club||{id:"u18",n:"U18"},lc,seed);
+      const newContract={...p.contract,duration:(p.contract?.duration||1)-1,expiresAtSeason:p.contract?.expiresAtSeason||newSeason+1};
+      const contractExpired=newContract.duration<=0;
+      let agedStats={...p.stats};
+      if(newAge>=31&&Math.random()<0.6){
+        const dk=Math.random()<0.5?'velocità':'fisico';
+        agedStats={...agedStats,[dk]:clamp(agedStats[dk]-1,1,99)};
+      }
+      const newOvr=calcOvr(agedStats);
+      const agingLog=newAge>=31&&newOvr<(p.ovr||60)?`📉 Età ${newAge}: leggero calo fisico`:`🎂 ${newAge} anni — stagione ${newSeason} inizia`;
+      return{...p,season:newSeason,age:newAge,week:1,weekLived:false,goals:0,assists:0,matches:0,fatigue:0,skillPoints:(p.skillPoints||0)+2,stats:agedStats,ovr:newOvr,contract:newContract,contractExpired,log:[agingLog,...(p.log||[])].slice(0,60),standings:newStandings,calendar:newCalendar,matchHistory:[]};
+    });
+    setSeasonEndData(null);
+    setScreen("dashboard");
+    setTab("dashboard");
+    setTimeout(()=>{
+      notify("🆕 Nuova stagione iniziata!",TH.success);
+      if(willContractExpire)setTimeout(()=>notify("📋 Contratto scaduto! Rinnova o cerca un nuovo club.",TH.warning),3200);
+    },200);
   };
 
   // pro transition: generate fresh calendar + standings for new club/league
@@ -5529,6 +5712,12 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
   if(screen==="proTransition")return(
     <div style={{width:"100%"}}>
       <ProTransitionScreen player={player} onChoose={onProChoose}/>
+    </div>
+  );
+
+  if(screen==="seasonEnd"&&seasonEndData)return(
+    <div style={{width:"100%"}}>
+      <SeasonEndScreen data={seasonEndData} player={player} onNewSeason={doStartNewSeason}/>
     </div>
   );
 
@@ -5949,8 +6138,47 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
             <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>Attributi</div>
             {Object.entries(player.stats).map(([k,v])=><StatBar key={k} label={k} value={v}/>)}
           </Card>
-          {(player.history||[]).length>0&&<Card><div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>Stagioni precedenti</div>{(player.history||[]).map((h,i)=><div key={i} style={{display:"flex",justifyContent:"space-between",padding:"6px 0",borderBottom:i<(player.history||[]).length-1?"1px solid "+TH.cardBorder:"none"}}><div><div style={{fontWeight:700,fontSize:12,color:TH.text}}>S.{h.season}</div><div style={{fontSize:10,color:TH.muted}}>{h.club}</div></div><div style={{display:"flex",gap:10,fontSize:11}}><span>⚽{h.goals}</span><span>🎯{h.assists}</span><span style={{color:TH.warning,fontWeight:700}}>{h.ovr}ovr</span></div></div>)}</Card>}
-          <Card><div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>Obiettivi</div>{[{l:"Prima partita",done:(player.totalMatches||0)>=1,e:"🎮"},{l:"10 gol",done:(player.totalGoals||0)>=10,e:"⚽"},{l:"50 gol",done:(player.totalGoals||0)>=50,e:"🔥"},{l:"OVR 80+",done:ovr>=80,e:"⭐"},{l:"OVR 90+",done:ovr>=90,e:"🌟"},{l:"5 stagioni",done:(player.season||1)>5,e:"📅"}].map(o=><div key={o.l} style={{display:"flex",alignItems:"center",gap:8,padding:"6px 0",borderBottom:"1px solid "+TH.cardBorder}}><span style={{fontSize:14}}>{o.e}</span><span style={{flex:1,fontSize:11,color:o.done?TH.text:TH.faint}}>{o.l}</span><span>{o.done?"✅":"⬜"}</span></div>)}</Card>
+          {/* Albo d'oro trofei */}
+          {(player.trophies||[]).length>0&&(
+            <Card bg="#fefce8" border="#fde68a">
+              <div style={{fontSize:10,color:"#713f12",textTransform:"uppercase",letterSpacing:1.5,fontWeight:700,marginBottom:8}}>🏆 Albo d'oro — {(player.trophies||[]).length} trofeo{(player.trophies||[]).length!==1?"i":""}</div>
+              {(player.trophies||[]).map((t,i)=>(
+                <div key={i} style={{display:"flex",alignItems:"center",gap:8,padding:"5px 0",borderBottom:i<(player.trophies||[]).length-1?"1px solid #fde68a":"none"}}>
+                  <span style={{fontSize:18}}>🏆</span>
+                  <div style={{flex:1}}>
+                    <div style={{fontSize:12,fontWeight:800,color:"#713f12"}}>Campione · S.{t.season}</div>
+                    <div style={{fontSize:10,color:"#92400e"}}>{t.club} · {t.league}</div>
+                  </div>
+                </div>
+              ))}
+            </Card>
+          )}
+          {/* Career history */}
+          {(player.history||[]).length>0&&(
+            <Card>
+              <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>📋 Stagioni precedenti</div>
+              {(player.history||[]).map((h,i)=>{
+                const isChamp=(player.trophies||[]).some(t=>t.season===h.season);
+                return(
+                  <div key={i} style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"7px 0",borderBottom:i<(player.history||[]).length-1?"1px solid "+TH.cardBorder:"none"}}>
+                    <div>
+                      <div style={{display:"flex",alignItems:"center",gap:4}}>
+                        <div style={{fontWeight:700,fontSize:12,color:TH.text}}>S.{h.season}</div>
+                        {isChamp&&<span style={{fontSize:9,padding:"1px 5px",borderRadius:6,background:"#fef9c3",color:"#713f12",fontWeight:700}}>🏆</span>}
+                      </div>
+                      <div style={{fontSize:10,color:TH.muted}}>{h.club}</div>
+                    </div>
+                    <div style={{display:"flex",gap:10,fontSize:11,alignItems:"center"}}>
+                      <span>⚽{h.goals}</span>
+                      <span>🎯{h.assists}</span>
+                      <span style={{color:TH.warning,fontWeight:700}}>{h.ovr}ovr</span>
+                    </div>
+                  </div>
+                );
+              })}
+            </Card>
+          )}
+          <Card><div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>Obiettivi</div>{[{l:"Prima partita",done:(player.totalMatches||0)>=1,e:"🎮"},{l:"10 gol",done:(player.totalGoals||0)>=10,e:"⚽"},{l:"50 gol",done:(player.totalGoals||0)>=50,e:"🔥"},{l:"OVR 80+",done:ovr>=80,e:"⭐"},{l:"OVR 90+",done:ovr>=90,e:"🌟"},{l:"5 stagioni",done:(player.season||1)>5,e:"📅"},{l:"1 trofeo",done:(player.trophies||[]).length>=1,e:"🏆"},{l:"3 trofei",done:(player.trophies||[]).length>=3,e:"👑"}].map(o=><div key={o.l} style={{display:"flex",alignItems:"center",gap:8,padding:"6px 0",borderBottom:"1px solid "+TH.cardBorder}}><span style={{fontSize:14}}>{o.e}</span><span style={{flex:1,fontSize:11,color:o.done?TH.text:TH.faint}}>{o.l}</span><span>{o.done?"✅":"⬜"}</span></div>)}</Card>
           <AISettingsCard player={player}/>
         </div>
       )}
