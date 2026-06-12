@@ -473,6 +473,23 @@ const WEEKLY_EVENTS=[
 ];
 
 /* ========================================
+   WEEKLY RANDOM EVENTS — life events (10 pool)
+   Fire during doAdvanceWeek when weekLived=false (25% chance)
+======================================== */
+const WEEKLY_RANDOM_EVENTS=[
+  {txt:"🤝 Il tuo agente ti chiama: interesse concreto da parte di un club importante. Sei motivato!",ef:{morale:9,popularity:6}},
+  {txt:"🎽 Il club presenta la nuova maglia. Sei in prima fila per la foto. Grande hype tra i tifosi!",ef:{popularity:8,morale:5}},
+  {txt:"🌧️ Settimana di carichi molto pesanti. Lo spogliatoio è stanco ma unito.",ef:{fatigue:10,morale:-3}},
+  {txt:"🎂 Compleanno di un compagno. Cena di squadra: il gruppo si compatta.",ef:{morale:9,fatigue:-4}},
+  {txt:"📱 Un tuo gol va virale sui social. La tua popolarità cresce di molto.",ef:{popularity:13,morale:6}},
+  {txt:"🧑‍⚕️ Visita medica di routine: risultati ottimi. Sei in piena forma atletica.",ef:{fatigue:-12,morale:5,form:4}},
+  {txt:"😤 Tensione negli allenamenti dopo una brutta settimana. Serve concentrazione.",ef:{morale:-7,fatigue:5}},
+  {txt:"🌟 Uno scout di un club europeo ti osserva nell'allenamento aperto. La voce si diffonde.",ef:{morale:11,popularity:9,value:0.1}},
+  {txt:"📰 Un grande quotidiano sportivo ti dedica un articolo di fondo. La tua notorietà aumenta.",ef:{popularity:10,morale:5,value:0.05}},
+  {txt:"💬 Il capitano elogia il tuo impegno davanti a tutto il gruppo. Il mister annuisce.",ef:{morale:10,coachTrust:6}},
+];
+
+/* ========================================
    SITUATIONS  (con moveZone e startZone)
 ======================================== */
 const S=(text,zones,mz,sz,actions,lock=false,mm=-1,intro="",type="off")=>{
@@ -648,6 +665,18 @@ const OUTCOME_TX={
   save:["🧤 SALVATO! Che intervento!","🛡️ Blocchi la conclusione! Grande difesa."],
 };
 const STADIUMS=["Stadio Olimpico Giovanile","Arena Primavera","Centro Sportivo Coverciano","Stadio Braglia Academy","Arena Caduti di Brema U18","Campo Sportivo Vismara"];
+const STADIUM_POOLS=[
+  {min:85,s:["San Siro","Stadio Olimpico","Allianz Stadium","Stadio Maradona","Wembley","Anfield","Camp Nou","Estadio Bernabéu","Signal Iduna Park","Etihad Stadium"]},
+  {min:68,s:["Stadio Artemio Franchi","Gewiss Stadium","Stadio Bentegodi","Stadio Dall'Ara","Stadio Luigi Ferraris","Volksparkstadion","King Power Stadium","Estadio de Mestalla"]},
+  {min:50,s:["Stadio Silvio Piola","Stadio Adriatico","Stadio Romeo Menti","Stadio Carlo Castellani","Estadio de Gran Canaria","Stade de la Beaujoire"]},
+  {min:0,s:["Stadio Brumana","Campo Sportivo Comunale","Stadio Cino e Lillo Del Duca","Campo Crespi","Arena Cimini","Stadio Tardini"]},
+];
+function getStadiumName(club){
+  if(club?.isU18)return pick(STADIUMS);
+  const p=club?.p||60;
+  const pool=(STADIUM_POOLS.find(sp=>p>=sp.min)||STADIUM_POOLS[STADIUM_POOLS.length-1]).s;
+  return pool[hashStr((club?.id||club?.n||"x"))%pool.length];
+}
 const NATIONS=["Italia","Spagna","Francia","Germania","Inghilterra","Portogallo","Brasile","Argentina","Olanda","Belgio"];
 const SAVE_KEY="cpm-v3";
 const FORMATION_HOME=[[5,50],[22,15],[22,35],[22,65],[22,85],[40,25],[40,50],[40,75],[60,20],[65,50],[60,80]];
@@ -795,7 +824,16 @@ function generateProContracts(player){
   }
   return{offers,forced,perf:Math.round(perf*10)/10};
 }
-const GAME_VERSION="1.1.0";
+function generateSeasonObjectives(player){
+  const ovr=player.ovr||60;
+  const t=clamp(Math.floor(ovr/5),5,18);
+  const objs=[{type:"goals",target:t,label:`Segna ${t} gol`,bonus:{morale:15,coachTrust:10,value:0.2}}];
+  const p=player.club?.p||50;
+  const standT=p>=80?3:p>=65?6:p>=50?9:12;
+  objs.push({type:"standing",target:standT,label:`Finisci nei primi ${standT}`,bonus:{popularity:15,value:0.25}});
+  return objs;
+}
+const GAME_VERSION="1.7.0";
 const SAVE_VERSION=5;
 const SLOT_KEYS=["cpm-v3","cpm-v3-s2","cpm-v3-s3"]; // slot 0 backward-compatible
 const storage={
@@ -1062,7 +1100,7 @@ async function generatePressAnalysis(matchResult,playerPerf){
    NAME POOLS + ROSTER HELPERS  (BUG 3,8)
 ======================================== */
 const FIRSTNAMES_IT=["Marco","Luca","Andrea","Francesco","Giovanni","Matteo","Davide","Roberto","Michele","Antonio","Paolo","Riccardo","Stefano","Alberto","Nicola","Giorgio","Filippo","Lorenzo","Emanuele","Federico","Simone","Christian","Daniele","Alessandro","Giacomo"];
-const SURNAMES_IT=["Rossi","Ferrari","Bianchi","Romano","Conti","Bruno","Ricci","Russo","Gallo","De Luca","Esposito","Ferrara","Leone","Fontana","Caruso","Costa","Amato","Marini","Greco","Colombo","Marchetti","Barbieri","Longo","Poli","Mancini","Gentile","De Rosa","Ferraro","Vitale","Pellegrini"];
+const SURNAMES_IT=["Rossi","Ferrari","Bianchi","Romano","Conti","Bruno","Ricci","Russo","Gallo","Farina","Esposito","Ferrara","Leone","Fontana","Caruso","Costa","Amato","Marini","Greco","Colombo","Marchetti","Barbieri","Longo","Poli","Mancini","Gentile","Testa","Ferraro","Vitale","Pellegrini"];
 const FIRSTNAMES_EN=["James","John","Michael","David","Steven","Daniel","Thomas","Jack","Harry","Oliver","George","Callum","Luke","Ryan","Adam","Peter","Matthew","Nathan","Sam","Lee","Chris","Rob","Wayne","Gary","Dean"];
 const SURNAMES_EN=["Smith","Jones","Williams","Brown","Davis","Wilson","Taylor","Johnson","Clarke","Evans","Thomas","Roberts","Walker","White","Hall","Martin","King","Lewis","Harris","Wright","Scott","Young","Turner","Hill","Baker"];
 const FIRSTNAMES_ES=["Carlos","Miguel","José","Luis","Alejandro","Pedro","Jorge","Sergio","Manuel","Adrián","Javier","David","Pablo","Víctor","Diego","Álvaro","Fernando","Rubén","Raúl","Antonio"];
@@ -1090,7 +1128,10 @@ function generateTeamRoster(club,season){
   const names=NAME_BY_NAT[nat]||NAME_BY_NAT["🇮🇹"];
   const roles=["Portiere","Difensore","Difensore","Terzino","Terzino","Mediano","Centrocampista","Trequartista","Ala","Ala","Centravanti"];
   const base=hashStr((club?.id||club?.n||"x")+"_"+(season||1));
-  return roles.map((role,i)=>{const s=(base+(i*7919))>>>0;const first=names.first[s%names.first.length];const last=names.last[(s>>4)%names.last.length];return{name:`${first} ${last}`,role};});
+  // Shuffle first and last name pools with different seeds → unique names, no duplicates
+  const firstPool=seededShuffle([...names.first],base);
+  const lastPool=seededShuffle([...names.last],base^0x9E3779B9);
+  return roles.map((role,i)=>({name:`${firstPool[i%firstPool.length]} ${lastPool[i%lastPool.length]}`,role}));
 }
 function seededShuffle(arr,seed){
   const a=[...arr];let s=(seed*1664525+1013904223)>>>0;
@@ -1573,14 +1614,15 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
         cctx.fillText(b.t,bx+bW/2,FY+FH+bH/2+bPad);
       });
       cctx.globalAlpha=1;
-      // Night: floodlight towers at canvas corners
+      // Night: floodlight towers at canvas corners — top 2 pole goes down, bottom 2 pole goes up
       if(isNight){
-        [[6,6],[PW-6,6],[6,PH-6],[PW-6,PH-6]].forEach(([tx,ty])=>{
-          const fg=cctx.createRadialGradient(tx,ty,0,tx,ty,48);
-          fg.addColorStop(0,"rgba(255,248,200,0.38)");fg.addColorStop(0.5,"rgba(255,248,200,0.08)");fg.addColorStop(1,"rgba(255,248,200,0)");
-          cctx.fillStyle=fg;cctx.fillRect(tx-48,ty-48,96,96);
-          cctx.fillStyle="#aaa";cctx.fillRect(tx-1,ty,2,16); // pole
-          cctx.fillStyle="rgba(255,248,200,0.9)";cctx.fillRect(tx-4,ty-2,8,3); // lamp head
+        [[6,6,1],[PW-6,6,1],[6,PH-26,-1],[PW-6,PH-26,-1]].forEach(([tx,ty,pDir])=>{
+          const fg=cctx.createRadialGradient(tx,ty,0,tx,ty,54);
+          fg.addColorStop(0,"rgba(255,248,200,0.42)");fg.addColorStop(0.5,"rgba(255,248,200,0.10)");fg.addColorStop(1,"rgba(255,248,200,0)");
+          cctx.fillStyle=fg;cctx.fillRect(tx-54,ty-54,108,108);
+          // Pole extends inward (top: downward, bottom: upward)
+          cctx.fillStyle="#aaa";cctx.fillRect(tx-1,pDir>0?ty:ty-16,2,16);
+          cctx.fillStyle="rgba(255,248,200,0.9)";cctx.fillRect(tx-4,pDir>0?ty-3:ty-18,8,3); // lamp head
         });
       }
     }
@@ -1614,6 +1656,20 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
       if(goalBurst>0.05){
         ctx.save();ctx.globalAlpha=goalBurst*0.18;ctx.fillStyle=flashCol;
         ctx.fillRect(FX,2,FW,FY-3);ctx.fillRect(FX,FY+FH+2,FW,PH-FY-FH-4);
+        ctx.restore();
+      }
+      // Night: floodlight glow on stands (clipped to stand areas only)
+      if(isNight){
+        ctx.save();
+        ctx.beginPath();
+        ctx.rect(0,0,PW,FY);ctx.rect(0,FY+FH,PW,PH-FY-FH);
+        ctx.rect(0,FY,FX,FH);ctx.rect(FX+FW,FY,PW-FX-FW,FH);
+        ctx.clip();
+        [[6,6],[PW-6,6],[6,PH-26],[PW-6,PH-26]].forEach(([tx,ty])=>{
+          const sg=ctx.createRadialGradient(tx,ty,8,tx,ty,PH*0.5);
+          sg.addColorStop(0,"rgba(255,248,200,0.28)");sg.addColorStop(0.4,"rgba(255,248,200,0.07)");sg.addColorStop(1,"rgba(255,248,200,0)");
+          ctx.fillStyle=sg;ctx.fillRect(0,0,PW,PH);
+        });
         ctx.restore();
       }
     }
@@ -1701,10 +1757,39 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
       ctx.fillStyle="#fff";
       ctx.beginPath();ctx.arc(FCX,FY+FH*0.115,2,0,Math.PI*2);ctx.fill();
       ctx.beginPath();ctx.arc(FCX,FY+FH*0.885,2,0,Math.PI*2);ctx.fill();
-      // Corner arcs
+      // Corner arcs (single arc line per corner, inward facing)
       ctx.strokeStyle="rgba(255,255,255,0.6)";ctx.lineWidth=1;
       [[FX,FY,0,Math.PI*0.5],[FX+FW,FY,Math.PI*0.5,Math.PI],[FX,FY+FH,Math.PI*1.5,Math.PI*2],[FX+FW,FY+FH,Math.PI,Math.PI*1.5]]
         .forEach(([cx,cy,a1,a2])=>{ctx.beginPath();ctx.arc(cx,cy,8,a1,a2);ctx.stroke();});
+      // Corner flags: small orange flag at each corner
+      ctx.save();
+      [[FX,FY,1,1],[FX+FW,FY,-1,1],[FX,FY+FH,1,-1],[FX+FW,FY+FH,-1,-1]].forEach(([cx,cy,dx,dy])=>{
+        ctx.strokeStyle="#fff";ctx.lineWidth=1;
+        ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(cx,cy+dy*14);ctx.stroke(); // pole
+        ctx.fillStyle="#f59e0b";
+        ctx.beginPath();ctx.moveTo(cx,cy+dy*14);ctx.lineTo(cx+dx*9,cy+dy*9);ctx.lineTo(cx,cy+dy*5);ctx.closePath();ctx.fill(); // flag
+        ctx.fillStyle="rgba(255,255,255,0.6)";ctx.beginPath();ctx.arc(cx,cy,1.5,0,Math.PI*2);ctx.fill(); // base dot
+      });
+      ctx.restore();
+      // Side advertising boards — alternating team colors along both touchlines
+      const hColAd=propsRef.current.homeCol||"#22c55e",oColAd=propsRef.current.oppCol||"#ef4444";
+      const adColors=[hColAd,oColAd,"#fff","#f59e0b"];
+      const adSlot=Math.round(FH/14);
+      ctx.save();ctx.globalAlpha=0.80;
+      for(let ai=0;ai<14;ai++){
+        ctx.fillStyle=adColors[ai%adColors.length];
+        const ay=FY+ai*adSlot;
+        ctx.fillRect(FX-5,ay,4,adSlot-1);    // left touchline
+        ctx.fillRect(FX+FW+1,ay,4,adSlot-1); // right touchline
+      }
+      ctx.restore();
+      // Benches (panchine) — both on left touchline, either side of halfway
+      ctx.save();
+      ctx.fillStyle="rgba(100,130,200,0.30)";ctx.strokeStyle="rgba(255,255,255,0.35)";ctx.lineWidth=0.5;
+      ctx.fillRect(FX-18,FCY+12,13,28);ctx.strokeRect(FX-18,FCY+12,13,28); // home bench
+      ctx.fillStyle="rgba(200,100,100,0.30)";
+      ctx.fillRect(FX-18,FCY-40,13,28);ctx.strokeRect(FX-18,FCY-40,13,28); // away bench
+      ctx.restore();
       // Zone highlight — animated pulsing glow
       const z=propsRef.current.zone;
       const t2=propsRef.current._t||0;
@@ -2028,6 +2113,9 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
           }
           // All players with smooth livePos drift
           const allP=p.allPlayers||[];
+          // Pre-assign per-team jersey numbers: home teammates=1-9,11 (skip #10 = hero), away=1-11
+          const _H_NUMS=[1,2,3,4,5,6,7,8,9,11];let _hn=0,_an=0;
+          const _jerseyNums=allP.map(pl=>{if(!pl)return 0;if(pl.team==="home")return _H_NUMS[_hn++]||_hn+11;if(pl.team==="away")return ++_an;return 0;});
           // Init or resize livePos array
           if(s.livePos.length!==allP.length){
             s.livePos=allP.map(function(pl){
@@ -2065,9 +2153,9 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
             var pl=item.pl,i=item.i;
             if(!pl||!s.livePos[i])return;
             var isHero=pl.isHero||pl.isPlayer;
-            var col=pl.team==="home"?(p.homeCol||"#22c55e"):pl.team==="ref"?"#f59e0b":(p.oppCol||"#ef4444");
-            var col2=pl.team==="ref"?"#111":"#fff";
-            drawPlayer(ctx,s.livePos[i].cx,s.livePos[i].cy,col,col2,isHero,i+1,s.isMoving&&isHero,true,t);
+            var col=pl.team==="home"?(pl.gk?"#22d3ee":(p.homeCol||"#22c55e")):pl.team==="ref"?"#f59e0b":(p.oppCol||"#ef4444");
+            var col2=pl.team==="ref"?"#111":(pl.gk?"#0e7490":"#fff");
+            drawPlayer(ctx,s.livePos[i].cx,s.livePos[i].cy,col,col2,isHero,_jerseyNums[i]||i+1,s.isMoving&&isHero,true,t);
           });
           // Protagonist (always drawn separately on top)
           const heroCx=gx(p.playerY),heroCy=gy(p.playerX);
@@ -2790,17 +2878,17 @@ function rosterRows(roster){
   roster.forEach((p,i)=>{
     const r=(p.role||"").toUpperCase();
     const entry={...p,num:p.num||i+1};
-    if(r==="GK"||r==="POR")gk.push(entry);
-    else if(r==="DEF")def.push(entry);
-    else if(r==="MID"||r==="CEN"||r==="CENTROCAMPISTA")mid.push(entry);
-    else att.push(entry);
+    if(r==="GK"||r==="POR"||r.includes("PORTIERE"))gk.push(entry);
+    else if(r==="DEF"||r.includes("DIFENSORE")||r.includes("TERZINO"))def.push(entry);
+    else if(r==="MID"||r==="CEN"||r.includes("CENTROCAMPISTA")||r.includes("MEDIANO")||r.includes("TREQUARTISTA")||r.includes("MEZZALA"))mid.push(entry);
+    else att.push(entry); // Ala, Centravanti, ATT, etc.
   });
   return[att,mid,def,gk].filter(r=>r.length>0);
 }
 
 /* Single team formation column */
-function TeamFormation({team,roster,isHome}){
-  const col=team?.c||team?.col||"#3b82f6";
+function TeamFormation({team,roster,isHome,kitCol}){
+  const col=kitCol||team?.c||team?.col||"#3b82f6";
   const rows=rosterRows(roster);
   const playerIdx=isHome?roster.findIndex((_,i)=>i===roster.length-1):-1;
   return(
@@ -2812,11 +2900,11 @@ function TeamFormation({team,roster,isHome}){
       </div>
       {/* formation rows: ATT at top, GK at bottom */}
       {rows.map((row,ri)=>(
-        <div key={ri} style={{display:"flex",justifyContent:"center",gap:isHome?6:6,flexWrap:"nowrap"}}>
+        <div key={ri} style={{display:"flex",justifyContent:"center",gap:3,flexWrap:"wrap",marginBottom:2}}>
           {row.map((pl,pi)=>{
             const globalIdx=roster.indexOf(pl);
             const isP=isHome&&globalIdx===roster.length-1;
-            return<JerseyIcon key={pi} color={col} number={pl.num} name={pl.name} isPlayer={isP} size={42}/>;
+            return<JerseyIcon key={pi} color={col} number={pl.num} name={pl.name} isPlayer={isP} size={34}/>;
           })}
         </div>
       ))}
@@ -2825,24 +2913,29 @@ function TeamFormation({team,roster,isHome}){
 }
 
 /* FORMATION VIEW */
-function FormationView({homeTeam,awayTeam,player,homeRoster,awayRoster,onContinue,onSkip,oppTactic,oppTacticLoading}){
+function FormationView({homeTeam,awayTeam,player,homeRoster,awayRoster,onContinue,onSkip,oppTactic,oppTacticLoading,homeKitCol,awayKitCol}){
   useEffect(()=>{
     const h=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();onContinue();}};
     window.addEventListener("keydown",h);return()=>window.removeEventListener("keydown",h);
   },[onContinue]);
   const hRoster=homeRoster||generateTeamRoster(homeTeam,player?.season||1).map((r,i)=>i===10?{name:player?.name||"Tu",role:"ATT"}:r);
   const aRoster=awayRoster||generateTeamRoster(awayTeam,player?.season||1);
-  // Assign shirt numbers: GK=1, then by order
-  const withNums=(roster)=>{let n=1;return roster.map(p=>({...p,num:n++}));};
+  // Home: hero (last slot) = #10, teammates = 1-9 + 11 (skip #10)
+  const HOME_NUMS=[1,2,3,4,5,6,7,8,9,11];
+  const withNums=(roster,isHome=false)=>{
+    if(!isHome){let n=1;return roster.map(p=>({...p,num:n++}));}
+    let ni=0;
+    return roster.map((p,i)=>({...p,num:i===roster.length-1?10:HOME_NUMS[ni++]||i+1}));
+  };
   return(
     <div style={{width:"100%",background:"linear-gradient(180deg,#0a0e1a 0%,#0d1528 100%)",borderRadius:10,padding:"12px 8px 10px",minHeight:320}}>
       {/* divider line */}
       <div style={{textAlign:"center",fontSize:8,color:"rgba(255,255,255,0.25)",letterSpacing:4,textTransform:"uppercase",marginBottom:10}}>— FORMAZIONI —</div>
       <div style={{display:"flex",gap:4,alignItems:"flex-start"}}>
-        <TeamFormation team={homeTeam} roster={withNums(hRoster)} isHome={true}/>
+        <TeamFormation team={homeTeam} roster={withNums(hRoster,true)} isHome={true} kitCol={homeKitCol}/>
         {/* center divider */}
         <div style={{width:1,alignSelf:"stretch",background:"rgba(255,255,255,0.08)",margin:"0 2px"}}/>
-        <TeamFormation team={awayTeam} roster={withNums(aRoster)} isHome={false}/>
+        <TeamFormation team={awayTeam} roster={withNums(aRoster,false)} isHome={false} kitCol={awayKitCol}/>
       </div>
       <div style={{marginTop:12}}>
         <AIDecisionOverlay tactic={oppTactic} loading={oppTacticLoading}/>
@@ -2856,8 +2949,8 @@ function FormationView({homeTeam,awayTeam,player,homeRoster,awayRoster,onContinu
 }
 
 /* WALKOUT OVERLAY */
-function WalkoutOverlay({homeTeam,homeRoster,onDone}){
-  const STEPS=80;
+function WalkoutOverlay({homeTeam,homeRoster,opponent,isHome=true,matchWeek,onDone}){
+  const STEPS=88;
   const [tick,setTick]=useState(0);
   useEffect(()=>{if(tick>=STEPS)return;const t=setTimeout(()=>setTick(n=>n+1),50);return()=>clearTimeout(t);},[tick]);
   useEffect(()=>{if(tick>=STEPS)onDone();},[tick,onDone]);
@@ -2865,23 +2958,39 @@ function WalkoutOverlay({homeTeam,homeRoster,onDone}){
   const roster=homeRoster||[{name:"Portiere",role:"GK"},{name:"Difensore 2",role:"DEF"},{name:"Difensore 3",role:"DEF"},{name:"Terzino S.",role:"DEF"},{name:"Terzino D.",role:"DEF"},{name:"Mediano",role:"MID"},{name:"Centrocampista",role:"MID"},{name:"Mezzala",role:"MID"},{name:"Ala Sinistra",role:"ATT"},{name:"Ala Destra",role:"ATT"},{name:"Centravanti",role:"ATT"}];
   const visible=Math.min(11,Math.floor((tick/STEPS)*13));
   const pct=Math.round((tick/STEPS)*100);
+  // Stadium & atmosphere
+  const venueTeam=isHome?homeTeam:opponent;
+  const stadiumName=getStadiumName(venueTeam);
+  const crowd=calcAttendance(venueTeam,"career");
+  const crowdStr=crowd>=10000?`${(crowd/1000).toFixed(0)}k`:`${crowd}`;
+  const phase=pct<30?"🚶 Arrivo al tunnel":pct<65?"🏟️ Ingresso in campo":"📣 Il pubblico esplode";
+  const HOME_NUMS=[1,2,3,4,5,6,7,8,9,10,11];
   return(
-    <div style={{position:"absolute",inset:0,background:"linear-gradient(180deg,rgba(3,8,20,0.92) 0%,rgba(5,18,38,0.96) 60%,rgba(3,8,20,0.98) 100%)",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",zIndex:10,backdropFilter:"blur(3px)"}}>
-      {/* Stadium floodlights glow */}
-      <div style={{position:"absolute",top:0,left:0,right:0,height:3,background:`linear-gradient(90deg,transparent,${col},transparent)`,opacity:0.6}}/>
+    <div style={{position:"absolute",inset:0,background:"linear-gradient(180deg,rgba(3,8,20,0.94) 0%,rgba(5,18,38,0.97) 60%,rgba(3,8,20,0.99) 100%)",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",zIndex:10,backdropFilter:"blur(3px)"}}>
+      {/* Floodlight glow strips */}
+      <div style={{position:"absolute",top:0,left:0,right:0,height:3,background:`linear-gradient(90deg,transparent,${col},transparent)`,opacity:0.7}}/>
       <div style={{position:"absolute",bottom:0,left:0,right:0,height:3,background:`linear-gradient(90deg,transparent,${col},transparent)`,opacity:0.4}}/>
+      {/* Match info bar */}
+      <div style={{position:"absolute",top:10,left:0,right:0,display:"flex",justifyContent:"center",gap:10,alignItems:"center"}}>
+        <span style={{fontSize:9,color:"rgba(255,255,255,0.4)",letterSpacing:2,textTransform:"uppercase"}}>{isHome?"🏟️ CASA":"✈️ TRASFERTA"}</span>
+        {opponent&&<span style={{fontSize:9,color:"rgba(255,255,255,0.25)"}}>vs {opponent?.n||opponent?.name}</span>}
+        {matchWeek&&<span style={{fontSize:9,color:"rgba(255,255,255,0.22)"}}>W.{matchWeek}</span>}
+      </div>
       {/* Header */}
-      <div style={{textAlign:"center",marginBottom:14}}>
-        <div style={{fontSize:9,color:"rgba(255,255,255,0.35)",letterSpacing:5,textTransform:"uppercase",marginBottom:4}}>⚽ Ingresso in campo</div>
+      <div style={{textAlign:"center",marginBottom:10}}>
+        <div style={{fontSize:9,color:"rgba(255,255,255,0.3)",letterSpacing:4,textTransform:"uppercase",marginBottom:4}}>{phase}</div>
         <TeamBadge team={homeTeam} size={36}/>
         <div style={{fontSize:18,fontWeight:900,color:"#fff",marginTop:6,textShadow:`0 0 24px ${col}88`}}>{homeTeam?.n||homeTeam?.name||"Squadra"}</div>
-        <div style={{fontSize:10,color:"rgba(255,255,255,0.3)",letterSpacing:2}}>{homeTeam?.lg||homeTeam?.nat||""}</div>
+        <div style={{display:"flex",justifyContent:"center",gap:10,marginTop:4}}>
+          <span style={{fontSize:9,color:"rgba(255,255,255,0.3)"}}>🏟️ {stadiumName}</span>
+          <span style={{fontSize:9,color:"rgba(255,255,255,0.3)"}}>👥 {crowdStr}</span>
+        </div>
       </div>
       {/* Player list */}
       <div style={{display:"flex",flexDirection:"column",gap:2,width:"100%",maxWidth:280,padding:"0 12px"}}>
         {roster.slice(0,visible).map((pl,i)=>{
           const isLast=i===visible-1;
-          const jerseyNum=[1,2,3,4,5,6,7,8,9,10,11][i]||i+1;
+          const jerseyNum=HOME_NUMS[i]||i+1;
           return(
             <div key={i} style={{display:"flex",alignItems:"center",gap:8,padding:"3px 10px",background:isLast?`${col}22`:"transparent",borderRadius:6,borderLeft:isLast?`2px solid ${col}`:"2px solid transparent",transition:"all 0.2s"}}>
               <div style={{width:20,height:20,borderRadius:"50%",background:isLast?col:`${col}55`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:9,fontWeight:900,color:"#fff",flexShrink:0}}>{jerseyNum}</div>
@@ -2917,7 +3026,7 @@ const resolveKitConflict=(homeCol,awayCol)=>{
 /* ========================================
    LIVE MATCH  (req #3,#4,#5,#6,#8)
 ======================================== */
-function LiveMatch({player,opponent,context="career",onMatchEnd}){
+function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true}){
   const [numHL]=useState(()=>context==="trial"?rng(2,3):rng(2,4));
   const [hlTimes]=useState(()=>{const step=Math.floor(82/numHL)||12;return Array.from({length:numHL},(_,i)=>8+step*i+rng(0,Math.max(1,step-4)));});
   const [situations]=useState(()=>seededShuffle([...SITUATIONS],(player.season||1)*1000+(player.week||1)*13).slice(0,numHL));
@@ -2937,7 +3046,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd}){
     const j=(x,y,d=4)=>({x:clamp(x+rng(-d,d),3,97),y:clamp(y+rng(-d,d),3,97)});
     return[
       // Home team (10 outfield + GK, protagonist is separate)
-      {...j(5,50),team:"home"},{...j(18,12),team:"home"},{...j(18,38),team:"home"},
+      {...j(8,50),team:"home",gk:true},{...j(18,12),team:"home"},{...j(18,38),team:"home"},
       {...j(18,62),team:"home"},{...j(18,88),team:"home"},{...j(38,25),team:"home"},
       {...j(38,50),team:"home"},{...j(38,75),team:"home"},{...j(55,22),team:"home"},{...j(55,78),team:"home"},
       // Away team (11)
@@ -3486,7 +3595,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd}){
     <div style={{width:"100%"}}>
       {phase==="matchday"&&!showScout&&<MatchdayCard homeTeam={player.club||opponent} awayTeam={opponent} stadium={stadium} attendance={attendance} league={player.club?.lg||(player.club?.isU18||context==="trial"?"Primavera U18":null)} onContinue={handleGoToFormations} onSkip={()=>setPhase("playing")} scoutReport={scoutReport} scoutLoading={scoutLoading} onShowScout={()=>setShowScout(true)}/>}
       {phase==="matchday"&&showScout&&<ScoutReportScreen report={scoutReport} opponent={opponent} loading={scoutLoading} onClose={()=>setShowScout(false)}/>}
-      {phase==="formations"&&<FormationView homeTeam={player.club||opponent} awayTeam={opponent} player={player} homeRoster={homeRoster} awayRoster={awayRoster} onContinue={()=>setPhase("walkout")} onSkip={()=>setPhase("playing")} oppTactic={oppTactic} oppTacticLoading={oppTacticLoading}/>}
+      {phase==="formations"&&<FormationView homeTeam={player.club||opponent} awayTeam={opponent} player={player} homeRoster={homeRoster} awayRoster={awayRoster} onContinue={()=>setPhase("walkout")} onSkip={()=>setPhase("playing")} oppTactic={oppTactic} oppTacticLoading={oppTacticLoading} homeKitCol={homeKitCol} awayKitCol={awayKitCol}/>}
 
       {(show3D||phase==="walkout")&&(
         <Card style={{padding:0,overflow:"hidden",marginBottom:10}} shadow>
@@ -3543,7 +3652,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd}){
                 driftTargets={driftTargetsRef.current} timeOfDay={timeOfDay}
                 attendance={attendance} actionEffect={actionEffect}
                 onWalkoutDone={()=>setPhase("playing")}/>
-              {phase==="walkout"&&<WalkoutOverlay homeTeam={player.club||opponent} homeRoster={homeRoster} onDone={()=>setPhase("playing")}/>}
+              {phase==="walkout"&&<WalkoutOverlay homeTeam={player.club||opponent} homeRoster={homeRoster} opponent={opponent} isHome={isMatchHome} matchWeek={player.week} onDone={()=>setPhase("playing")}/>}
               {screenFlash&&<div style={{position:"absolute",inset:0,background:screenFlash.col,zIndex:20,pointerEvents:"none",animation:`fadeFlash ${screenFlash.dur}ms ease-out forwards`}}/>}
               {floatGoal&&<div key={floatGoal.key} style={{position:"absolute",top:"30%",left:0,right:0,textAlign:"center",fontSize:22,fontWeight:900,color:floatGoal.col,textShadow:"0 0 24px currentColor",animation:"floatUp 1.4s ease-out forwards",zIndex:21,pointerEvents:"none"}}>{floatGoal.text}</div>}
               {/* HL intro stays on field as cinematic overlay */}
@@ -3849,6 +3958,208 @@ function ProTransitionScreen({player,onChoose}){
       );})}
       <div style={{fontSize:10,color:TH.faint,textAlign:"center",marginTop:10}}>Scegli con cura — questa decisione definirà la tua carriera professionale.</div>
       </div>{/* end cpm-proto */}
+    </div>
+  );
+}
+
+/* ========================================
+   SEASON END SCREEN  (Sprint 2 — B06/B05)
+======================================== */
+function SeasonEndScreen({data,player,onNewSeason}){
+  const{season,club,finalStandings,playerStats,champion,playerPos,isChampion}=data;
+  const trophies=player.trophies||[];
+  const numTeams=finalStandings?.length||18;
+  const isRelegated=playerPos>=numTeams-2;
+  const isPromoted=playerPos<=2;
+  const bgColor=isChampion?"#fef9c3":isPromoted?"#f0fdf4":isRelegated?"#fff1f2":"#f8fafc";
+  const borderColor=isChampion?"#fde68a":isPromoted?"#bbf7d0":isRelegated?"#fecaca":TH.cardBorder;
+  const statusEmoji=isChampion?"🏆":isPromoted?"⬆️":isRelegated?"⬇️":"🏁";
+  const statusLabel=isChampion?"CAMPIONE!":isPromoted?"ZONA PROMOZIONE":isRelegated?"ZONA RETROCESSIONE":"Fine stagione";
+
+  // sorted standings already from doAdvanceWeek
+  const sorted=finalStandings||[];
+  const playerClubId=club?.id||club?.n;
+  const isPlayerRow=t=>t.id===playerClubId||(t.n||t.name)===(club?.n||club?.name);
+
+  const renderRow=(t,i)=>(
+    <div key={t.id||i} style={{display:"flex",alignItems:"center",gap:8,padding:"5px 8px",borderRadius:6,
+      background:isPlayerRow(t)?"#eff6ff":i>=numTeams-3?"#fff1f2":i<3?"#fefce8":"transparent",
+      borderLeft:i===0?"3px solid #fde68a":i>=numTeams-3?"3px solid #fca5a5":"3px solid transparent",
+      marginBottom:2}}>
+      <div style={{fontSize:11,fontWeight:700,color:i<3?TH.warning:TH.muted,width:18,textAlign:"right"}}>{i+1}</div>
+      <div style={{flex:1,fontSize:11,fontWeight:isPlayerRow(t)?700:400,color:isPlayerRow(t)?TH.primary:TH.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>
+        {t.n||t.name}{isPlayerRow(t)?" 👈":""}
+      </div>
+      <div style={{fontSize:10,color:TH.muted,minWidth:60,textAlign:"right"}}>{t.played}G {t.gf}-{t.ga}</div>
+      <div style={{fontSize:12,fontWeight:900,color:TH.text,minWidth:28,textAlign:"right"}}>{t.pts}</div>
+    </div>
+  );
+
+  // Show top-3, player row if outside top-3, bottom-3 (with ellipsis separators)
+  let rows=[];
+  if(sorted.length>0){
+    const topN=sorted.slice(0,3);
+    const botN=sorted.slice(-3);
+    const playerInTop=playerPos<3;
+    const playerInBot=playerPos>=sorted.length-3;
+    rows=[...topN.map((t,i)=>renderRow(t,i))];
+    if(!playerInTop&&!playerInBot){
+      rows.push(<div key="sep1" style={{textAlign:"center",fontSize:10,color:TH.faint,padding:"2px 0"}}>…</div>);
+      rows.push(renderRow(sorted[playerPos],playerPos));
+    }
+    if(!playerInBot||(sorted.length<=6)){
+      if(!playerInTop&&!playerInBot)rows.push(<div key="sep2" style={{textAlign:"center",fontSize:10,color:TH.faint,padding:"2px 0"}}>…</div>);
+      botN.forEach((t,i)=>{ const ri=sorted.length-3+i; if(ri>2&&ri!==playerPos)rows.push(renderRow(t,ri)); });
+    }else if(sorted.length>3){
+      rows.push(<div key="sep2" style={{textAlign:"center",fontSize:10,color:TH.faint,padding:"2px 0"}}>…</div>);
+      botN.forEach((t,i)=>{ const ri=sorted.length-3+i; if(ri>2)rows.push(renderRow(t,ri)); });
+    }
+  }
+
+  return(
+    <div style={{width:"100%"}}>
+      <div style={{textAlign:"center",marginBottom:14,paddingTop:6}}>
+        <div style={{fontSize:44,marginBottom:6}}>{statusEmoji}</div>
+        <h1 style={{fontSize:20,fontWeight:900,margin:"0 0 4px",color:TH.text}}>Fine Stagione {season}</h1>
+        <p style={{color:TH.muted,fontSize:12,margin:0}}>{club?.n||club?.name} · {club?.lg||"Pro"}</p>
+      </div>
+
+      {/* Status banner */}
+      <Card style={{marginBottom:12,padding:"12px 16px"}} bg={bgColor} border={borderColor}>
+        <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8}}>
+          <div style={{fontSize:13,fontWeight:900,color:TH.text}}>{statusEmoji} {statusLabel}</div>
+          <div style={{fontSize:10,color:TH.muted}}>Pos. {playerPos+1}/{numTeams}</div>
+        </div>
+        <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:8,textAlign:"center"}}>
+          {[{l:"Partite",v:playerStats.matches,e:"🎮"},{l:"Gol",v:playerStats.goals,e:"⚽"},{l:"Assist",v:playerStats.assists,e:"🎯"},{l:"OVR",v:playerStats.ovr,e:"⭐"}].map(s=>(
+            <div key={s.l}>
+              <div style={{fontSize:20}}>{s.e}</div>
+              <div style={{fontSize:22,fontWeight:900,color:TH.text}}>{s.v}</div>
+              <div style={{fontSize:9,color:TH.muted}}>{s.l}</div>
+            </div>
+          ))}
+        </div>
+        {isChampion&&<div style={{marginTop:10,padding:"8px 12px",background:"#fef08a",borderRadius:8,fontSize:12,fontWeight:800,color:"#713f12",textAlign:"center"}}>🏆 Hai vinto la {club?.lg||"lega"}! Trofeo aggiunto all'albo d'oro!</div>}
+      </Card>
+
+      {/* Champion banner */}
+      {champion&&!isChampion&&(
+        <Card style={{marginBottom:12,padding:"10px 14px",textAlign:"center"}} bg="#fefce8" border="#fde68a">
+          <div style={{fontSize:12,fontWeight:700,color:"#713f12"}}>🏆 Campione: <strong>{champion.n||champion.name}</strong> · {champion.pts} pt</div>
+        </Card>
+      )}
+
+      {/* Standings */}
+      {sorted.length>0&&(
+        <Card style={{marginBottom:12,padding:"12px 14px"}}>
+          <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>📊 Classifica finale</div>
+          <div style={{display:"flex",justifyContent:"flex-end",gap:12,fontSize:9,color:TH.faint,marginBottom:4,paddingRight:4}}>
+            <span>PG GF-GA</span><span style={{minWidth:28,textAlign:"right"}}>PT</span>
+          </div>
+          {rows}
+          <div style={{display:"flex",gap:10,marginTop:8,fontSize:9,flexWrap:"wrap"}}>
+            <span style={{color:TH.warning}}>🟡 Top 3 · promozione</span>
+            <span style={{color:TH.danger}}>🔴 Ultimi 3 · retrocessione</span>
+          </div>
+        </Card>
+      )}
+
+      {/* Albo d'oro */}
+      {trophies.length>0&&(
+        <Card style={{marginBottom:12,padding:"12px 14px"}}>
+          <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>🏆 Albo d'oro</div>
+          {trophies.map((t,i)=>(
+            <div key={i} style={{display:"flex",alignItems:"center",gap:8,padding:"5px 0",borderBottom:i<trophies.length-1?"1px solid "+TH.cardBorder:"none"}}>
+              <span style={{fontSize:16}}>🏆</span>
+              <div style={{flex:1}}>
+                <div style={{fontSize:12,fontWeight:700,color:TH.text}}>Stagione {t.season}</div>
+                <div style={{fontSize:10,color:TH.muted}}>{t.club} · {t.league}</div>
+              </div>
+            </div>
+          ))}
+        </Card>
+      )}
+
+      <Btn onClick={onNewSeason} v="primary" fw style={{padding:"16px",fontSize:15,marginTop:4}}>
+        🆕 Inizia Stagione {season+1} →
+      </Btn>
+    </div>
+  );
+}
+
+/* ========================================
+   CLUB PRESENTATION SCREEN  (Sprint 3 — S3-A)
+   Shown after any new signing (transfer or first pro contract)
+======================================== */
+function ClubPresentationScreen({club,contractType,playerName,onContinue}){
+  const col=club?.col||club?.c||TH.primary;
+  const stadiumName=getStadiumName(club);
+  const COACH_QUOTES=[
+    "Sei esattamente il profilo che cercavamo. Benvenuto in famiglia.",
+    "Ho visto le tue partite. So già che farai grandi cose con noi.",
+    "Qui troverai il campo che meriti. Dai il massimo ogni giorno.",
+    "Questo club ha bisogno di giocatori con la tua mentalità. Vai.",
+    "Punta a diventare il protagonista di questa stagione. Ci conto.",
+    "Non deludermi. So che ne sei capace. Buona fortuna.",
+  ];
+  const ATMOS=[
+    "📸 I fotografi dei media ti attendono fuori dal centro sportivo.",
+    "📣 La curva ha già lanciato un coro con il tuo nome.",
+    "🤝 Il presidente ti stringe la mano davanti alle telecamere.",
+    "🏟️ Il tuo numero di maglia è già in vendita allo store del club.",
+    "📰 I giornalisti fanno a gara per farti le prime domande.",
+    "👥 Decine di tifosi aspettavano fuori dal centro sportivo.",
+  ];
+  const qIdx=hashStr((club?.id||"x")+(playerName||""))%COACH_QUOTES.length;
+  const aIdx=hashStr((club?.n||"x")+(contractType||""))%ATMOS.length;
+  const type=(contractType||"").toLowerCase();
+  const verb=type.includes("prest")?"in prestito al":type.includes("primo")||type.includes("profess")?"firma il primo contratto con":"firma per";
+  const headline=`${playerName} ${verb} ${club?.n||"il club"}!`;
+  const[tick,setTick]=useState(0);
+  useEffect(()=>{if(tick>=60)return;const t=setTimeout(()=>setTick(n=>n+1),70);return()=>clearTimeout(t);},[tick]);
+  const pct=Math.round((tick/60)*100);
+  return(
+    <div style={{width:"100%"}}>
+      {/* Club hero banner */}
+      <div style={{width:"100%",background:`linear-gradient(135deg,${col}28,${col}0a)`,border:`1px solid ${col}55`,borderRadius:16,padding:"18px 16px",textAlign:"center",marginBottom:12}}>
+        <div style={{fontSize:9,color:TH.muted,letterSpacing:3,textTransform:"uppercase",marginBottom:8}}>🎉 Ufficiale</div>
+        <TeamBadge team={club} size={64}/>
+        <h1 style={{fontSize:20,fontWeight:900,margin:"10px 0 2px",color:TH.text}}>{club?.n||club?.name}</h1>
+        <div style={{fontSize:11,color:TH.muted,marginBottom:6}}>{club?.lg||club?.nat||"Professionismo"}</div>
+        <div style={{fontSize:11,color:col,fontWeight:700,padding:"3px 10px",background:`${col}22`,borderRadius:8,display:"inline-block"}}>{contractType}</div>
+      </div>
+      {/* Headline */}
+      <Card bg="#f0fdf4" border="#bbf7d0" style={{marginBottom:10,padding:"10px 14px"}}>
+        <div style={{fontSize:9,color:TH.success,textTransform:"uppercase",letterSpacing:1.5,marginBottom:4}}>📰 Manchette</div>
+        <div style={{fontSize:13,fontWeight:700,color:TH.text,lineHeight:1.4}}>{headline}</div>
+      </Card>
+      {/* Stadium + prestige */}
+      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8,marginBottom:10}}>
+        <Card style={{padding:"10px 12px"}}>
+          <div style={{fontSize:9,color:TH.muted,marginBottom:3}}>🏟️ Stadio</div>
+          <div style={{fontSize:11,fontWeight:700,color:TH.text,lineHeight:1.3}}>{stadiumName}</div>
+        </Card>
+        <Card style={{padding:"10px 12px",textAlign:"center"}}>
+          <div style={{fontSize:9,color:TH.muted,marginBottom:3}}>Prestige</div>
+          <div style={{fontSize:22,fontWeight:900,color:col,lineHeight:1}}>{club?.p||60}</div>
+        </Card>
+      </div>
+      {/* Coach quote */}
+      <Card style={{marginBottom:10,padding:"12px 14px"}}>
+        <div style={{fontSize:9,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:6}}>💬 Il mister dice</div>
+        <div style={{fontSize:12,color:TH.text,lineHeight:1.6,fontStyle:"italic"}}>"{COACH_QUOTES[qIdx]}"</div>
+      </Card>
+      {/* Atmosphere */}
+      <Card bg="#fefce8" border="#fde68a" style={{marginBottom:14,padding:"10px 14px"}}>
+        <div style={{fontSize:12,color:"#713f12"}}>{ATMOS[aIdx]}</div>
+      </Card>
+      {/* Progress */}
+      <div style={{height:2,background:TH.cardBorder,borderRadius:2,marginBottom:14,overflow:"hidden"}}>
+        <div style={{height:"100%",width:`${pct}%`,background:`linear-gradient(90deg,${col},#f59e0b)`,transition:"width .07s"}}/>
+      </div>
+      <Btn onClick={onContinue} v="primary" fw style={{padding:"16px",fontSize:15}}>
+        🏟️ Inizia la tua storia a {club?.n||"questo club"} →
+      </Btn>
     </div>
   );
 }
@@ -5130,6 +5441,93 @@ function AISettingsCard({player}){
 }
 
 /* ========================================
+   NATIONAL CALLUP SCREEN  (Sprint 7)
+======================================== */
+const NAT_DATA={
+  "Italia":    {flag:"🇮🇹",col:"#003399",col2:"#fff",opp:"Brasile"},
+  "Spagna":    {flag:"🇪🇸",col:"#AA151B",col2:"#F1BF00",opp:"Germania"},
+  "Francia":   {flag:"🇫🇷",col:"#002395",col2:"#fff",opp:"Portogallo"},
+  "Germania":  {flag:"🇩🇪",col:"#1a1a1a",col2:"#FFCE00",opp:"Francia"},
+  "Inghilterra":{flag:"🏴󠁧󠁢󠁥󠁮󠁧󠁿",col:"#003c8f",col2:"#fff",opp:"Argentina"},
+  "Portogallo":{flag:"🇵🇹",col:"#006600",col2:"#EE1111",opp:"Spagna"},
+  "Brasile":   {flag:"🇧🇷",col:"#009C3B",col2:"#FFDF00",opp:"Argentina"},
+  "Argentina": {flag:"🇦🇷",col:"#74ACDF",col2:"#fff",opp:"Brasile"},
+  "Olanda":    {flag:"🇳🇱",col:"#FF4F00",col2:"#fff",opp:"Germania"},
+  "Belgio":    {flag:"🇧🇪",col:"#1a1a1a",col2:"#FDDA24",opp:"Francia"},
+};
+function NationalCallupScreen({data,onConfirm}){
+  const{nation,isFirst,homeScore,awayScore,goals,assists,won,drew,newCaps}=data;
+  const nd=NAT_DATA[nation]||{flag:"🏳",col:"#1e40af",col2:"#fff",opp:"Avversario"};
+  const{flag,col,col2,opp}=nd;
+  const res=won?"VITTORIA":drew?"PAREGGIO":"SCONFITTA";
+  const resCol=won?TH.success:drew?TH.warning:TH.danger;
+  const[shown,setShown]=React.useState(false);
+  React.useEffect(()=>{const t=setTimeout(()=>setShown(true),60);return()=>clearTimeout(t);},[]);
+  return(
+    <div style={{width:"100%",background:`linear-gradient(160deg,${col}30 0%,#050810 55%)`,minHeight:"100vh",display:"flex",flexDirection:"column",alignItems:"center",padding:"24px 16px 32px",boxSizing:"border-box",opacity:shown?1:0,transition:"opacity 0.45s",overflowY:"auto"}}>
+      {isFirst&&<div style={{background:`${TH.accent}20`,border:`1px solid ${TH.accent}55`,borderRadius:8,padding:"7px 18px",marginBottom:18,fontSize:10,color:TH.accent,letterSpacing:2,textTransform:"uppercase",fontWeight:800,textAlign:"center"}}>★ Milestone di Carriera — Prima Convocazione ★</div>}
+      <div style={{fontSize:54,marginBottom:4,lineHeight:1}}>{flag}</div>
+      <div style={{fontSize:10,color:TH.muted,letterSpacing:2.5,textTransform:"uppercase",marginBottom:4}}>Convocazione Nazionale</div>
+      <div style={{fontSize:26,fontWeight:900,color:"#fff",marginBottom:2}}>Nazionale {nation}</div>
+      <div style={{fontSize:12,color:TH.muted,marginBottom:22}}>Cap #{newCaps}</div>
+      {/* Jersey */}
+      <div style={{marginBottom:22,filter:`drop-shadow(0 0 20px ${col}99)`}}>
+        <svg width="92" height="104" viewBox="0 0 92 104">
+          <defs>
+            <linearGradient id="ng" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stopColor={col}/>
+              <stop offset="100%" stopColor={col} stopOpacity="0.75"/>
+            </linearGradient>
+          </defs>
+          <path d="M23 13 Q11 16 7 26 L2 47 L21 49 L21 92 L71 92 L71 49 L90 47 L85 26 Q81 16 69 13 Q59 7 46 6 Q33 7 23 13Z" fill="url(#ng)" stroke={col2} strokeWidth="1.6"/>
+          <path d="M31 13 Q38 22 46 22 Q54 22 61 13" fill="none" stroke={col2} strokeWidth="1.4"/>
+          <text x="46" y="65" textAnchor="middle" fill={col2} fontSize="21" fontWeight="900" fontFamily="Arial,sans-serif">10</text>
+        </svg>
+      </div>
+      {/* Match result */}
+      <Card style={{width:"100%",maxWidth:360,padding:"14px 16px",marginBottom:14}}>
+        <div style={{fontSize:9,color:TH.muted,letterSpacing:2,textTransform:"uppercase",textAlign:"center",marginBottom:10}}>Amichevole Internazionale</div>
+        <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:8,marginBottom:8}}>
+          <span style={{fontSize:11,color:TH.muted,flex:1,textAlign:"right"}}>{flag} {nation}</span>
+          <div style={{display:"flex",alignItems:"center",gap:7,padding:"6px 14px",background:"rgba(255,255,255,0.05)",borderRadius:8}}>
+            <span style={{fontSize:32,fontWeight:900,color:TH.text,lineHeight:1}}>{homeScore}</span>
+            <span style={{fontSize:14,color:TH.faint}}>–</span>
+            <span style={{fontSize:32,fontWeight:900,color:TH.text,lineHeight:1}}>{awayScore}</span>
+          </div>
+          <span style={{fontSize:11,color:TH.muted,flex:1}}>vs {opp}</span>
+        </div>
+        <div style={{textAlign:"center",fontSize:13,fontWeight:700,color:resCol,marginBottom:12}}>{res}</div>
+        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}>
+          {[{l:"Gol",v:goals,e:"⚽",c:TH.warning},{l:"Assist",v:assists,e:"🎯",c:TH.accent}].map(s=>(
+            <Card key={s.l} style={{padding:"8px 6px",textAlign:"center"}}>
+              <div style={{fontSize:16,marginBottom:2}}>{s.e}</div>
+              <div style={{fontSize:22,fontWeight:900,color:s.c}}>{s.v}</div>
+              <div style={{fontSize:9,color:TH.muted,textTransform:"uppercase"}}>{s.l}</div>
+            </Card>
+          ))}
+        </div>
+      </Card>
+      {/* Boosts */}
+      <Card style={{width:"100%",maxWidth:360,padding:"12px 16px",marginBottom:24}}>
+        <div style={{fontSize:9,color:TH.muted,letterSpacing:2,textTransform:"uppercase",marginBottom:10}}>Bonus Permanente</div>
+        <div style={{display:"flex",justifyContent:"space-around"}}>
+          {[{l:"Popolarità",v:"+18",e:"📈",c:TH.success},{l:"Valore",v:"+€0.35M",e:"💶",c:TH.warning},{l:"Morale",v:"+15",e:"😊",c:TH.accent}].map(b=>(
+            <div key={b.l} style={{textAlign:"center"}}>
+              <div style={{fontSize:16,marginBottom:2}}>{b.e}</div>
+              <div style={{fontSize:15,fontWeight:800,color:b.c}}>{b.v}</div>
+              <div style={{fontSize:9,color:TH.muted}}>{b.l}</div>
+            </div>
+          ))}
+        </div>
+      </Card>
+      <Btn onClick={onConfirm} v="green" fw style={{padding:"14px",fontSize:15,maxWidth:360,fontWeight:800}}>
+        🏳️ Accetta la Convocazione
+      </Btn>
+    </div>
+  );
+}
+
+/* ========================================
    CAREER APP  (req #9,#10,#12,#13,#14)
 ======================================== */
 function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
@@ -5137,7 +5535,10 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
   const[tab,setTab]=useState("dashboard");
   const[screen,setScreen]=useState("dashboard");
   const[matchOpp,setMatchOpp]=useState(null);
+  const[matchIsHome,setMatchIsHome]=useState(true);
   const[lastMatch,setLastMatch]=useState(null);
+  const[seasonEndData,setSeasonEndData]=useState(null);
+  const[presentationData,setPresentationData]=useState(null);
   // Backward compat: auto-generate missing/stale calendar/standings for old saves
   useEffect(()=>{
     let changed=false;
@@ -5157,6 +5558,26 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
       newP={...newP,aiData:{lastOpponentTactic:null,scoutReports:{},pressReports:{}}};
       changed=true;
     }
+    if(!newP.trophies){
+      newP={...newP,trophies:[]};
+      changed=true;
+    }
+    if(!('transferListed' in newP)){
+      newP={...newP,transferListed:false};
+      changed=true;
+    }
+    if(!('trainedThisWeek' in newP)){
+      newP={...newP,trainedThisWeek:false};
+      changed=true;
+    }
+    if(!('seasonObjectives' in newP)){
+      newP={...newP,seasonObjectives:generateSeasonObjectives(newP)};
+      changed=true;
+    }
+    if(!('nationalCaps' in newP)){
+      newP={...newP,nationalCaps:0,lastNationalSeason:0};
+      changed=true;
+    }
     if(changed){setPlayer(newP);}
   },[]);// eslint-disable-line
   const[notif,setNotif]=useState(null);
@@ -5166,6 +5587,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
   const[showAdvanceConfirm,setShowAdvanceConfirm]=useState(false);
   const[showMatchPrompt,setShowMatchPrompt]=useState(null); // {md} — pending match prompt
   const[lastSaved,setLastSaved]=useState(null);           // timestamp
+  const[nationalCallupData,setNationalCallupData]=useState(null);
 
   const notify=(msg,color=TH.primary)=>{setNotif({msg,color});setTimeout(()=>setNotif(null),2800);};
 
@@ -5284,7 +5706,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
     const lc=getLeagueClubs(player);
     const opp=lc.find(c=>c.id===md.opponentId)||lc.find(c=>c.n===md.opponentName)||pick(lc.filter(c=>c.id!==player.club?.id&&c.n!==player.club?.n));
     if(!opp){notify("Nessun avversario disponibile.",TH.danger);return;}
-    setMatchOpp(opp);setScreen("match");
+    setMatchOpp(opp);setMatchIsHome(md.isHome!==false);setScreen("match");
   };
 
   // Anti-double-click / rapid-Enter guard
@@ -5408,41 +5830,40 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
     });
   };
 
-  // advance week: calendar-driven, simulates missed matches, resets season at week>38
+  // advance week: calendar-driven, simulates missed matches; intercepts season end for rich screen
   const doAdvanceWeek=()=>{
     setShowAdvanceConfirm(false);
-    const willEnterNewSeason=player.week>38;
-    const willContractExpire=willEnterNewSeason&&(player.contract?.duration||1)<=1;
     const isInU18=(player.proStatus||"u18")==="u18";
     const weekVal=player.week||1;
+
+    // U18 season end → ProTransitionScreen (unchanged behaviour)
     if(isInU18&&weekVal>=38){
       const hist={season:player.season||1,club:player.club?.name||player.club?.n,goals:player.goals||0,assists:player.assists||0,matches:player.matches||0,ovr:player.ovr||60};
       setPlayer(p=>({...p,u18Seasons:(p.u18Seasons||0)+1,history:[...(p.history||[]),hist],log:[`🏁 Fine U18 S.${p.season||1}: ${p.goals||0}⚽ ${p.assists||0}🎯`,...(p.log||[])].slice(0,60)}));
       setScreen("proTransition");
       return;
     }
-    setPlayer(p=>{
-      if(p.week>38){
-        // new season: reset stats, standings, calendar
+
+    // Pro season end → SeasonEndScreen
+    if(!isInU18&&weekVal>38){
+      const finalStandings=[...(player.standings||[])].sort((a,b)=>b.pts-a.pts||b.gd-a.gd||b.gf-a.gf);
+      const clubId=player.club?.id||player.club?.n;
+      const playerPos=finalStandings.findIndex(t=>t.id===clubId||(t.n||t.name)===(player.club?.n||player.club?.name));
+      const champion=finalStandings[0]||null;
+      const isChampion=playerPos===0;
+      // Save history + trophies into player state now
+      setPlayer(p=>{
         const hist={season:p.season,club:p.club?.name||p.club?.n,goals:p.goals,assists:p.assists,matches:p.matches,ovr:p.ovr};
-        const newSeason=(p.season||1)+1;
-        const newAge=(p.age||17)+1;
-        const lc=getLeagueClubs(p);
-        const newStandings=initStandings(lc);
-        const seed=newSeason*777+hashStr(p.club?.id||p.club?.n||"u18");
-        const newCalendar=generateSeasonCalendar(p.club||{id:"u18",n:"U18"},lc,seed);
-        const newContract={...p.contract,duration:(p.contract?.duration||1)-1,expiresAtSeason:p.contract?.expiresAtSeason||newSeason+1};
-        const contractExpired=newContract.duration<=0;
-        // Aging regression: physical decay after 30 (60% chance, one stat)
-        let agedStats={...p.stats};
-        if(newAge>=31&&Math.random()<0.6){
-          const dk=Math.random()<0.5?'velocità':'fisico';
-          agedStats={...agedStats,[dk]:clamp(agedStats[dk]-1,1,99)};
-        }
-        const newOvr=calcOvr(agedStats);
-        const agingLog=newAge>=31&&newOvr<(p.ovr||60)?`📉 Età ${newAge}: leggero calo fisico`:`🎂 ${newAge} anni — stagione ${newSeason} inizia`;
-        return{...p,season:newSeason,age:newAge,week:1,weekLived:false,goals:0,assists:0,matches:0,fatigue:0,skillPoints:(p.skillPoints||0)+2,stats:agedStats,ovr:newOvr,contract:newContract,contractExpired,history:[...(p.history||[]),hist],log:[`🏁 Fine S.${p.season}: ${p.goals}⚽ ${p.assists}🎯`,agingLog,...(p.log||[])].slice(0,60),standings:newStandings,calendar:newCalendar,matchHistory:[]};
-      }
+        const newTrophies=isChampion?[...(p.trophies||[]),{season:p.season,club:p.club?.n||p.club?.name,league:p.club?.lg}]:(p.trophies||[]);
+        return{...p,history:[...(p.history||[]),hist],trophies:newTrophies,log:[`🏁 Fine S.${p.season}: ${p.goals}⚽ ${p.assists}🎯`,...(p.log||[])].slice(0,60)};
+      });
+      setSeasonEndData({season:player.season,club:player.club,finalStandings,playerStats:{goals:player.goals||0,assists:player.assists||0,matches:player.matches||0,ovr:player.ovr||60},champion,playerPos:Math.max(0,playerPos),isChampion});
+      setScreen("seasonEnd");
+      return;
+    }
+
+    // Normal week advance
+    setPlayer(p=>{
       // if this week had a scheduled unplayed match, auto-simulate it
       const md=(p.calendar||[]).find(m=>m.week===(p.week||1)&&!m.played);
       let updP={...p};
@@ -5451,21 +5872,87 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
         const opp=lc.find(c=>c.id===md.opponentId)||lc.find(c=>c.n===md.opponentName);
         if(opp){
           const sim=simulateMatch(p.club,opp,p.ovr||65,md.isHome);
-          const clubId=p.club?.id||p.club?.n;
-          const newSt=updateStandings(p.standings||initStandings(getLeagueClubs(p)),clubId,sim);
+          const cId=p.club?.id||p.club?.n;
+          const newSt=updateStandings(p.standings||initStandings(getLeagueClubs(p)),cId,sim);
           const newCal=(p.calendar||[]).map(m=>m.week===(p.week||1)&&!m.played?{...m,played:true,result:{homeScore:sim.homeScore,awayScore:sim.awayScore,won:sim.won,drew:sim.drew},simulated:true}:m);
           const newHistory=[...(p.matchHistory||[]),{week:p.week||1,opponent:opp.n,oppAbbr:opp.a,oppCol:opp.c,homeScore:sim.homeScore,awayScore:sim.awayScore,goals:0,assists:0,rating:sim.rating,won:sim.won,drew:sim.drew,simulated:true}].slice(-200);
           updP={...updP,standings:newSt,calendar:newCal,matchHistory:newHistory,matches:(p.matches||0)+1,goals:p.goals,assists:p.assists,morale:clamp(p.morale+(sim.won?3:sim.drew?1:-2),0,100)};
         }
       }
       const wk=p.week||1;const isJanuary=wk>=19&&wk<=22;
-      if(Math.random()<(isJanuary?0.15:0.08)&&p.matches>3){const offer=generateTransferOffer(p);if(offer)setTransferOffer(offer);}
+      const offerProb=p.transferListed?(isJanuary?0.32:0.18):(isJanuary?0.15:0.08);
+      if(Math.random()<offerProb&&p.matches>3){const offer=generateTransferOffer(p);if(offer)setTransferOffer(offer);}
       if(wk===19)setTimeout(()=>notify("🏷️ Mercato invernale aperto — più offerte in arrivo!","#0ea5e9"),100);
-      if(p.injured&&(p.injuryWeeks||0)>0){return{...updP,week:(p.week||1)+1,weekLived:false,injuryWeeks:p.injuryWeeks-1,injured:p.injuryWeeks-1>0,fatigue:Math.max(0,(p.fatigue||0)-8)};}
-      return{...updP,week:(p.week||1)+1,weekLived:false};
+      // Random weekly life event (25% chance when week not yet lived)
+      if(!p.weekLived&&!p.injured&&Math.random()<0.25){
+        const re=WEEKLY_RANDOM_EVENTS[Math.floor(Math.random()*WEEKLY_RANDOM_EVENTS.length)];
+        const ef=re.ef||{};
+        const extras={morale:clamp((p.morale||70)+(ef.morale||0),0,100),fatigue:clamp((p.fatigue||0)+(ef.fatigue||0),0,100),form:clamp((p.form||70)+(ef.form||0),0,100),popularity:clamp((p.popularity||20)+(ef.popularity||0),0,100),coachTrust:clamp((p.coachTrust||60)+(ef.coachTrust||0),0,100),value:Math.max(0.5,(p.value||0.8)+(ef.value||0))};
+        setTimeout(()=>setWeekLiveModal({event:re,changes:{morale:ef.morale||0,form:ef.form||0,fatigue:ef.fatigue||0}}),100);
+        updP={...updP,...extras};
+      }
+      if(p.injured&&(p.injuryWeeks||0)>0){return{...updP,week:(p.week||1)+1,weekLived:false,trainedThisWeek:false,injuryWeeks:p.injuryWeeks-1,injured:p.injuryWeeks-1>0,fatigue:Math.max(0,(p.fatigue||0)-8)};}
+      return{...updP,week:(p.week||1)+1,weekLived:false,trainedThisWeek:false};
     });
-    if(willContractExpire)notify("📋 Contratto scaduto! Rinnova o cerca un nuovo club.",TH.warning);
     notify("⏭️ Settimana avanzata");
+    // ── National team call-up check ──
+    if(!isInU18&&(player.popularity||0)>=55&&(player.ovr||0)>=70&&!player.injured){
+      const caps=player.nationalCaps||0;
+      const lastNat=player.lastNationalSeason||0;
+      const curSeas=player.season||1;
+      const isFirst=caps===0;
+      const seasonOpen=curSeas>lastNat;
+      if((isFirst||seasonOpen)&&Math.random()<(isFirst?0.22:0.13)){
+        const goals=Math.random()<0.40?rng(1,2):0;
+        const assists=!goals&&Math.random()<0.30?1:0;
+        const hS=rng(1,4),aS=rng(0,3);
+        setTimeout(()=>{
+          setNationalCallupData({nation:player.nation||"Italia",isFirst,homeScore:hS,awayScore:aS,goals,assists,won:hS>aS,drew:hS===aS,newCaps:caps+1});
+          setScreen("nationalCallup");
+        },700);
+      }
+    }
+  };
+
+  // new season: reset stats, advance calendar — called from SeasonEndScreen
+  const doStartNewSeason=()=>{
+    const willContractExpire=(player.contract?.duration||1)<=1;
+    // Evaluate season objectives pre-reset
+    const sortedSt=[...(player.standings||[])].sort((a,b)=>b.pts-a.pts||(b.gd||0)-(a.gd||0));
+    const cId=player.club?.id||player.club?.n;
+    const clubPos=sortedSt.findIndex(t=>t.id===cId||(t.n||t.name)===(player.club?.n||player.club?.name));
+    let bonM=0,bonCT=0,bonPop=0,bonVal=0;
+    const objLogs=[];
+    (player.seasonObjectives||[]).forEach(obj=>{
+      const cur=obj.type==="goals"?(player.goals||0):obj.type==="assists"?(player.assists||0):obj.type==="matches"?(player.matches||0):clubPos>=0?clubPos+1:99;
+      const done=obj.type==="standing"?cur<=obj.target:cur>=obj.target;
+      if(done){bonM+=(obj.bonus?.morale||0);bonCT+=(obj.bonus?.coachTrust||0);bonPop+=(obj.bonus?.popularity||0);bonVal+=(obj.bonus?.value||0);objLogs.push(`✅ ${obj.label}`);}
+      else{bonM-=8;bonCT-=5;objLogs.push(`❌ Mancato: ${obj.label}`);}
+    });
+    setPlayer(p=>{
+      const newSeason=(p.season||1)+1;
+      const newAge=(p.age||17)+1;
+      const lc=getLeagueClubs(p);
+      const newStandings=initStandings(lc);
+      const seed=newSeason*777+hashStr(p.club?.id||p.club?.n||"u18");
+      const newCalendar=generateSeasonCalendar(p.club||{id:"u18",n:"U18"},lc,seed);
+      const newContract={...p.contract,duration:(p.contract?.duration||1)-1,expiresAtSeason:p.contract?.expiresAtSeason||newSeason+1};
+      const contractExpired=newContract.duration<=0;
+      let agedStats={...p.stats};
+      if(newAge>=31&&Math.random()<0.6){const dk=Math.random()<0.5?'velocità':'fisico';agedStats={...agedStats,[dk]:clamp(agedStats[dk]-1,1,99)};}
+      const newOvr=calcOvr(agedStats);
+      const agingLog=newAge>=31&&newOvr<(p.ovr||60)?`📉 Età ${newAge}: leggero calo fisico`:`🎂 ${newAge} anni — stagione ${newSeason} inizia`;
+      const newObjectives=generateSeasonObjectives({...p,ovr:newOvr});
+      return{...p,season:newSeason,age:newAge,week:1,weekLived:false,goals:0,assists:0,matches:0,fatigue:0,skillPoints:(p.skillPoints||0)+2,stats:agedStats,ovr:newOvr,contract:newContract,contractExpired,morale:clamp((p.morale||70)+bonM,0,100),coachTrust:clamp((p.coachTrust||60)+bonCT,0,100),popularity:clamp((p.popularity||20)+bonPop,0,100),value:Math.max(0.5,(p.value||0.8)+bonVal),log:[agingLog,...objLogs,...(p.log||[])].slice(0,60),standings:newStandings,calendar:newCalendar,matchHistory:[],seasonObjectives:newObjectives};
+    });
+    setSeasonEndData(null);
+    setScreen("dashboard");
+    setTab("dashboard");
+    setTimeout(()=>{
+      notify("🆕 Nuova stagione iniziata!",TH.success);
+      if(objLogs.length)setTimeout(()=>notify(objLogs.join(" · "),objLogs.every(m=>m.startsWith("✅"))?TH.success:TH.warning),1400);
+      if(willContractExpire)setTimeout(()=>notify("📋 Contratto scaduto! Rinnova o cerca un nuovo club.",TH.warning),3200);
+    },200);
   };
 
   // pro transition: generate fresh calendar + standings for new club/league
@@ -5479,15 +5966,26 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
       const newStandings=initStandings(lc.length?lc:getLeagueClubs(p));
       const seed=newSeason*777+hashStr(targetClub?.id||targetClub?.n||"u18");
       const newCalendar=generateSeasonCalendar(targetClub||{id:"u18",n:"U18"},lc.length?lc:getLeagueClubs(p),seed);
-      const base={...p,week:1,weekLived:false,season:newSeason,age:newAge,goals:0,assists:0,matches:0,matchHistory:[],fatigue:clamp((p.fatigue||0)-30,0,100),skillPoints:(p.skillPoints||0)+2,morale:clamp((p.morale||70)+(offer.moralBonus||0),0,100),contract:{duration:offer.duration||1,wage:offer.wage||500,expiresAtSeason:newSeason+(offer.duration||1)},standings:newStandings,calendar:newCalendar};
+      const base={...p,week:1,weekLived:false,season:newSeason,age:newAge,goals:0,assists:0,matches:0,matchHistory:[],fatigue:clamp((p.fatigue||0)-30,0,100),skillPoints:(p.skillPoints||0)+2,morale:clamp((p.morale||70)+(offer.moralBonus||0),0,100),contract:{duration:offer.duration||1,wage:offer.wage||500,expiresAtSeason:newSeason+(offer.duration||1)},standings:newStandings,calendar:newCalendar,seasonObjectives:generateSeasonObjectives({...p,club:targetClub})};
       if(offer.isStayU18){
         return{...base,log:[`🔄 Resto in Under 18 (S.${newSeason})`,...(p.log||[])].slice(0,60)};
       }
       return{...base,club:offer.club,isU18:false,proStatus:"pro",value:Math.max(0.5,(p.value||0.8)+0.5),popularity:clamp((p.popularity||20)+15,0,100),log:[`🎓 PROFESSIONISTA! ${offer.contractType} con ${offer.club?.n||offer.club?.name}!`,...(p.log||[])].slice(0,60)};
     });
-    setScreen("dashboard");setTab("dashboard");
-    notify("🎓 Nuova stagione iniziata!",TH.success);
+    if(offer.isStayU18){setScreen("dashboard");setTab("dashboard");notify("🔄 Resti in Under 18!",TH.warning);return;}
+    setPresentationData({club:offer.club,contractType:offer.contractType||"Primo contratto professionistico",playerName:player.name});
+    setScreen("clubPresentation");setTab("dashboard");
+    notify("🎓 Sei diventato professionista!",TH.success);
   },[]);// eslint-disable-line
+
+  const onNationalConfirm=()=>{
+    if(!nationalCallupData)return;
+    const d=nationalCallupData;
+    setPlayer(p=>({...p,nationalCaps:d.newCaps,lastNationalSeason:p.season||1,popularity:clamp((p.popularity||20)+18,0,100),value:Math.max(0.5,(p.value||0.8)+0.35),morale:clamp((p.morale||70)+15,0,100),log:[`🏳️ Cap ${d.newCaps} — ${d.nation} ${d.homeScore}-${d.awayScore} (${d.won?"V":d.drew?"P":"S"}) ${d.goals}⚽ ${d.assists}🎯`,...(p.log||[])].slice(0,60)}));
+    setNationalCallupData(null);
+    setScreen("dashboard");
+    setTimeout(()=>notify(`🏳️ Convocazione in ${d.nation}! Popolarità +18 · Valore +€0.35M`,TH.accent),100);
+  };
 
   const upgradeSkill=k=>{if(!player.skillPoints)return;setPlayer(p=>{const ns={...p.stats,[k]:clamp(p.stats[k]+rng(1,3),1,99)};return{...p,stats:ns,ovr:calcOvr(ns),skillPoints:p.skillPoints-1};});notify(`${k} migliorato!`,TH.accent);};
 
@@ -5510,10 +6008,11 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
       const newStandings=initStandings(lcs);
       const seed=(p.season||1)*777+hashStr(tc.club.id||tc.club.n||"x");
       const newCalendar=generateSeasonCalendar(newClub,lcs,seed);
-      return{...p,club:newClub,isU18:false,proStatus:"pro",contractExpired:false,morale:clamp(p.morale+(tc.moralBonus||10),0,100),offerHistory:[...(p.offerHistory||[]),{club:tc.club.n,type:tc.type,season:p.season,accepted:true}],log:[`🔄 ${tc.type}: ${tc.club.n} (${tc.club.lg||tc.club.nat})!`,...(p.log||[])].slice(0,60),standings:newStandings,calendar:newCalendar};
+      return{...p,club:newClub,isU18:false,proStatus:"pro",contractExpired:false,transferListed:false,morale:clamp(p.morale+(tc.moralBonus||10),0,100),offerHistory:[...(p.offerHistory||[]),{club:tc.club.n,type:tc.type,season:p.season,accepted:true}],log:[`🔄 ${tc.type}: ${tc.club.n} (${tc.club.lg||tc.club.nat})!`,...(p.log||[])].slice(0,60),standings:newStandings,calendar:newCalendar};
     });
     setTransferOffer(null);
-    notify(`✅ Benvenuto a ${tc.club.n}!`,TH.success);
+    setPresentationData({club:tc.club,contractType:tc.type,playerName:player.name});
+    setScreen("clubPresentation");
   };
 
   const ovr=player.ovr||calcOvr(player.stats),week=player.week||1,season=player.season||1;
@@ -5521,6 +6020,18 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
   if(screen==="proTransition")return(
     <div style={{width:"100%"}}>
       <ProTransitionScreen player={player} onChoose={onProChoose}/>
+    </div>
+  );
+
+  if(screen==="seasonEnd"&&seasonEndData)return(
+    <div style={{width:"100%"}}>
+      <SeasonEndScreen data={seasonEndData} player={player} onNewSeason={doStartNewSeason}/>
+    </div>
+  );
+
+  if(screen==="clubPresentation"&&presentationData)return(
+    <div style={{width:"100%"}}>
+      <ClubPresentationScreen club={presentationData.club} contractType={presentationData.contractType} playerName={presentationData.playerName} onContinue={()=>{setPresentationData(null);setScreen("dashboard");setTab("dashboard");}}/>
     </div>
   );
 
@@ -5532,7 +6043,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
         <button onClick={()=>{setScreen("dashboard");setTab("dashboard");}} style={{background:"none",border:"none",color:TH.muted,cursor:"pointer",fontSize:13,marginBottom:8,display:"flex",alignItems:"center",gap:6}}>← Carriera</button>
         {usePhaserRenderer
           ?<FootballMatch2D playerData={player} squadAColor={player.club?.col||player.club?.c||"#22c55e"} squadBColor={matchOpp?.col||matchOpp?.c||"#ef4444"} duration={300} onMatchEnd={phaserMatchEnd}/>
-          :<LiveMatch player={player} opponent={matchOpp} context="career" onMatchEnd={onMatchEnd}/>
+          :<LiveMatch player={player} opponent={matchOpp} context="career" onMatchEnd={onMatchEnd} isMatchHome={matchIsHome}/>
         }
       </div>
     );
@@ -5546,6 +6057,12 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
     const r=lastMatch,rating=r.rating,rc=rating>=8?TH.success:rating>=6.5?TH.warning:TH.danger;
     return <div style={{width:"100%"}}><Card style={{textAlign:"center",padding:"24px",maxWidth:560,margin:"0 auto"}}><div style={{fontSize:10,color:TH.muted,letterSpacing:2,marginBottom:8}}>POST MATCH</div><div style={{fontSize:28,fontWeight:900,marginBottom:4,color:TH.text}}><span style={{color:TH.success}}>{r.homeScore}</span><span style={{color:TH.faint,margin:"0 10px"}}>–</span><span style={{color:TH.danger}}>{r.awayScore}</span></div><p style={{color:TH.muted,fontSize:12,margin:"0 0 14px"}}>vs {r.opponent}</p><div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:8,marginBottom:14}}>{[{l:"Gol",v:r.goals,e:"⚽"},{l:"Assist",v:r.assists,e:"🎯"},{l:"Voto",v:rating,e:"⭐",c:rc}].map(s=><Card key={s.l} style={{padding:"10px 6px",textAlign:"center"}}><div style={{fontSize:16,marginBottom:2}}>{s.e}</div><div style={{fontSize:20,fontWeight:900,color:s.c||TH.warning}}>{s.v}</div><div style={{fontSize:9,color:TH.muted}}>{s.l}</div></Card>)}</div><div style={{fontSize:50,fontWeight:900,color:rc,lineHeight:1,marginBottom:4}}>{rating}</div><div style={{fontSize:12,color:rc,marginBottom:14}}>{rating>=8?"Eccellente!":rating>=7?"Buona partita":rating>=6?"Sufficiente":"Da migliorare"}</div>{lastPressReport&&<Btn onClick={()=>setScreen("press")} v="secondary" fw style={{padding:"10px",fontSize:13,marginBottom:8}}>📰 Rassegna Stampa</Btn>}<Btn onClick={()=>setScreen("dashboard")} v="green" fw style={{padding:"13px",fontSize:14}}>🏟️ Torna alla Dashboard <span className="kbd" style={{opacity:0.7,fontSize:11}}>Enter</span></Btn></Card></div>;
   }
+
+  if(screen==="nationalCallup"&&nationalCallupData)return(
+    <div style={{width:"100%"}}>
+      <NationalCallupScreen data={nationalCallupData} onConfirm={onNationalConfirm}/>
+    </div>
+  );
 
   const tabs=[{id:"dashboard",e:"🏠",l:"Home",k:"M"},{id:"calendar",e:"📅",l:"Calendario",k:"C"},{id:"standings",e:"📊",l:"Classifica",k:"F"},{id:"training",e:"💪",l:"Allena",k:"T"},{id:"profile",e:"👤",l:"Profilo",k:"R"}];
 
@@ -5671,11 +6188,71 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
           <Btn onClick={()=>{const renewWage=clamp(Math.round((player.contract?.wage||500)*((player.goals||0)>10?1.15:(player.goals||0)>5?1.05:0.9)),300,50000);setTransferOffer({club:player.club,type:"Rinnovo contratto",isRenewal:true,minutaggio:player.ovr>=75?80:60,wage:renewWage,duration:rng(1,3),moralBonus:5,growthBonus:5});}} v="primary" fw>Rinnova contratto</Btn>
         </Card>
       )}
+      {/* Transfer listed banner / request */}
+      {tab==="dashboard"&&(player.proStatus||"u18")==="pro"&&(
+        player.transferListed
+          ?(
+            <Card bg="#fef9c3" border="#fde68a" style={{marginBottom:8,padding:"10px 14px"}}>
+              <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:8}}>
+                <div>
+                  <div style={{fontSize:11,fontWeight:700,color:"#713f12"}}>📢 Sei sul mercato — le offerte arriveranno più spesso</div>
+                  <div style={{fontSize:10,color:"#92400e",marginTop:2}}>Morale e fiducia del mister sono calati. Puoi annullare la richiesta.</div>
+                </div>
+                <Btn onClick={()=>{setPlayer(p=>({...p,transferListed:false,morale:clamp(p.morale+5,0,100),log:["📢 Richiesta di cessione ritirata.",...(p.log||[])].slice(0,60)}));notify("Richiesta di cessione ritirata.",TH.muted);}} v="ghost" style={{flexShrink:0,fontSize:11,padding:"6px 10px"}}>Annulla</Btn>
+              </div>
+            </Card>
+          )
+          :(week<=35&&!player.contractExpired&&(
+            <Card style={{marginBottom:8,padding:"8px 14px"}}>
+              <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:8}}>
+                <div style={{fontSize:10,color:TH.muted}}>Vuoi cambiare aria? Richiedi la cessione per ricevere più offerte.</div>
+                <Btn onClick={()=>{setPlayer(p=>({...p,transferListed:true,coachTrust:clamp((p.coachTrust||60)-10,0,100),morale:clamp(p.morale-8,0,100),log:["📢 Hai richiesto la cessione. Il mercato si anima.",...(p.log||[])].slice(0,60)}));notify("📢 Richiesta di cessione presentata. Aspettati offerte.",TH.warning);}} v="secondary" style={{flexShrink:0,fontSize:11,padding:"6px 10px"}}>📢 Richiedi cessione</Btn>
+              </div>
+            </Card>
+          ))
+      )}
+      {/* Injury banner */}
+      {tab==="dashboard"&&player.injured&&(
+        <Card bg="#fff1f2" border="#fecaca" style={{marginBottom:8,padding:"12px 14px"}}>
+          <div style={{fontSize:11,fontWeight:700,color:"#b91c1c",marginBottom:4}}>🤕 Infortuno — recupero in corso</div>
+          <div style={{fontSize:11,color:"#991b1b",marginBottom:8}}>Settimane di stop rimanenti: <strong>{player.injuryWeeks||0}</strong>. Non puoi giocare finché non sei guarito.</div>
+          <div style={{height:6,background:"#fee2e2",borderRadius:3,overflow:"hidden"}}>
+            <div style={{height:"100%",width:`${100-Math.min(100,((player.injuryWeeks||0)/4)*100)}%`,background:"#ef4444",borderRadius:3,transition:"width .4s"}}/>
+          </div>
+        </Card>
+      )}
+      {/* Season objectives progress */}
+      {tab==="dashboard"&&(player.seasonObjectives||[]).length>0&&(
+        <Card style={{marginBottom:8,padding:"10px 14px"}}>
+          <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>🎯 Obiettivi Stagione {season}</div>
+          {(player.seasonObjectives||[]).map((obj,i)=>{
+            let cur=0;
+            if(obj.type==="goals")cur=player.goals||0;
+            else if(obj.type==="assists")cur=player.assists||0;
+            else if(obj.type==="matches")cur=player.matches||0;
+            else if(obj.type==="standing"){const ss=[...(player.standings||[])].sort((a,b)=>b.pts-a.pts||(b.gd||0)-(a.gd||0));const ci=player.club?.id||player.club?.n;const pi=ss.findIndex(t=>t.id===ci||(t.n||t.name)===(player.club?.n||player.club?.name));cur=pi>=0?pi+1:99;}
+            const done=obj.type==="standing"?cur<=obj.target:cur>=obj.target;
+            const pct=obj.type==="standing"?Math.min(100,Math.max(0,Math.round((1-(cur-1)/Math.max(1,obj.target))*100))):Math.min(100,Math.round((cur/Math.max(1,obj.target))*100));
+            return(
+              <div key={i} style={{marginBottom:i<(player.seasonObjectives||[]).length-1?10:0}}>
+                <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:3}}>
+                  <div style={{fontSize:11,color:done?TH.success:TH.text,fontWeight:done?700:400}}>{done?"✅ ":"🎯 "}{obj.label}</div>
+                  <div style={{fontSize:10,color:done?TH.success:TH.muted,fontWeight:600}}>{obj.type==="standing"?`${cur===99?"–":cur}° / top ${obj.target}`:`${cur} / ${obj.target}`}</div>
+                </div>
+                <div style={{height:4,background:"#e2e8f0",borderRadius:2,overflow:"hidden"}}>
+                  <div style={{height:"100%",width:`${pct}%`,background:done?TH.success:TH.primary,borderRadius:2,transition:"width .4s"}}/>
+                </div>
+              </div>
+            );
+          })}
+        </Card>
+      )}
       {tab==="dashboard"&&(
         <div className="cpm-dash-grid">
           <Card border="#bbf7d0" bg="#f0fdf4">
             <div style={{fontSize:10,color:TH.success,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>Stagione {season} · W.{week}/38</div>
-            <div style={{display:"flex",justifyContent:"space-around",marginBottom:14}}>{[{l:"Partite",v:player.matches||0},{l:"Gol",v:player.goals||0},{l:"Assist",v:player.assists||0}].map(s=><div key={s.l} style={{textAlign:"center"}}><div style={{fontSize:28,fontWeight:900,color:TH.success}}>{s.v}</div><div style={{fontSize:10,color:TH.muted}}>{s.l}</div></div>)}</div>
+            <div style={{display:"flex",justifyContent:"space-around",marginBottom:10}}>{[{l:"Partite",v:player.matches||0},{l:"Gol",v:player.goals||0},{l:"Assist",v:player.assists||0}].map(s=><div key={s.l} style={{textAlign:"center"}}><div style={{fontSize:28,fontWeight:900,color:TH.success}}>{s.v}</div><div style={{fontSize:10,color:TH.muted}}>{s.l}</div></div>)}</div>
+            {(()=>{const last5=(player.matchHistory||[]).filter(m=>!m.simulated).slice(-5);if(!last5.length)return null;return(<div style={{display:"flex",alignItems:"center",gap:4,marginBottom:12}}><span style={{fontSize:9,color:TH.faint,marginRight:2}}>ULTIMI 5</span>{last5.map((m,i)=><div key={i} title={`vs ${m.opponent||""} ${m.homeScore}–${m.awayScore}`} style={{width:22,height:22,borderRadius:4,background:m.won?"#16a34a":m.drew?"#ca8a04":"#dc2626",display:"flex",alignItems:"center",justifyContent:"center",fontSize:9,fontWeight:800,color:"#fff"}}>{m.won?"V":m.drew?"P":"S"}</div>)}</div>);})()}
             {/* CONTINUA — smart primary CTA */}
             {(()=>{
               const cs=getContinuaState();
@@ -5871,9 +6448,37 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
             ))}
           </Card>
           <Card>
-            <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:6}}>Allenamento libero</div>
-            <p style={{fontSize:12,color:TH.muted,margin:"0 0 10px"}}>Migliora un attributo casuale (+fatica).</p>
-            <Btn onClick={()=>{if((player.fatigue||0)>80){notify("Sei troppo stanco!",TH.danger);return;}const k=pick(Object.keys(player.stats));setPlayer(p=>{const ns={...p.stats,[k]:clamp(p.stats[k]+rng(1,2),1,99)};return{...p,stats:ns,ovr:calcOvr(ns),fatigue:clamp((p.fatigue||0)+10,0,100)};});notify(`Allenamento: ${k} +1!`,TH.success);}} fw>💪 Allenati (Fatica +10)</Btn>
+            <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>Sessione settimanale</div>
+            {player.trainedThisWeek
+              ?<div style={{textAlign:"center",padding:"18px 0",color:TH.success,fontSize:12,fontWeight:700}}>✅ Hai già allenato questa settimana.<br/><span style={{fontSize:11,color:TH.muted,fontWeight:400}}>Torna la prossima settimana.</span></div>
+              :<div style={{display:"flex",flexDirection:"column",gap:8}}>
+                {[
+                  {id:"fisico",e:"💪",l:"Fisico",desc:"velocità +, fisico +",fatCost:14,fn:(st)=>({velocità:clamp(st.velocità+rng(1,2),1,99),fisico:clamp(st.fisico+rng(1,2),1,99)})},
+                  {id:"tecnico",e:"⚽",l:"Tecnico",desc:"tecnica +, tiro +",fatCost:12,fn:(st)=>({tecnica:clamp(st.tecnica+rng(1,2),1,99),tiro:clamp(st.tiro+rng(1,2),1,99)})},
+                  {id:"tattico",e:"🎯",l:"Tattico",desc:"passaggio +, posizionamento +",fatCost:10,fn:(st)=>({passaggio:clamp(st.passaggio+rng(1,2),1,99),posizionamento:clamp(st.posizionamento+rng(1,2),1,99)})},
+                  {id:"recupero",e:"🧘",l:"Recupero",desc:"fatica −25, morale +8",fatCost:-25,fn:()=>({})},
+                ].map(s=>{
+                  const tooTired=(player.fatigue||0)>85&&s.id!=="recupero";
+                  return(
+                    <button key={s.id} disabled={tooTired} onClick={()=>{
+                      if(s.id==="recupero"){
+                        setPlayer(p=>({...p,fatigue:Math.max(0,(p.fatigue||0)-25),morale:clamp((p.morale||70)+8,0,100),trainedThisWeek:true}));
+                        notify("🧘 Recupero completato! Fatica −25, Morale +8",TH.success);
+                      }else{
+                        setPlayer(p=>{const gained=s.fn(p.stats);const ns={...p.stats,...gained};return{...p,stats:ns,ovr:calcOvr(ns),fatigue:clamp((p.fatigue||0)+s.fatCost,0,100),trainedThisWeek:true};});
+                        notify(`${s.e} Sessione ${s.l} completata! Fatica +${s.fatCost}`,TH.success);
+                      }
+                    }} style={{width:"100%",padding:"11px 14px",borderRadius:10,border:`1px solid ${tooTired?"#e5e7eb":TH.cardBorder}`,background:tooTired?"#f3f4f6":TH.card,cursor:tooTired?"not-allowed":"pointer",fontFamily:"inherit",display:"flex",justifyContent:"space-between",alignItems:"center",opacity:tooTired?0.5:1,transition:"background .15s"}}>
+                      <div style={{textAlign:"left"}}>
+                        <div style={{fontSize:12,fontWeight:700,color:tooTired?TH.faint:TH.text}}>{s.e} {s.l}</div>
+                        <div style={{fontSize:10,color:TH.muted}}>{s.desc}</div>
+                      </div>
+                      <div style={{fontSize:10,color:s.id==="recupero"?TH.success:TH.danger,fontWeight:600}}>{s.id==="recupero"?"−25 fat.":"+"+s.fatCost+" fat."}</div>
+                    </button>
+                  );
+                })}
+              </div>
+            }
           </Card>
         </div>
       )}
@@ -5936,13 +6541,118 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
             <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:6}}>
               {[{l:"Gol stag.",v:player.goals||0},{l:"Assist stag.",v:player.assists||0},{l:"Partite stag.",v:player.matches||0},{l:"Gol tot.",v:player.totalGoals||0},{l:"Assist tot.",v:player.totalAssists||0},{l:"Valore",v:`${player.value||0.8}M€`}].map(s=><div key={s.l} style={{background:"#f8fafc",borderRadius:8,padding:"7px",border:"1px solid "+TH.cardBorder}}><div style={{fontSize:9,color:TH.faint,marginBottom:2}}>{s.l}</div><div style={{fontSize:14,fontWeight:700,color:TH.text}}>{s.v}</div></div>)}
             </div>
+            {(player.nationalCaps||0)>0&&(
+              <div style={{marginTop:10,padding:"9px 12px",background:`${(NAT_DATA[player.nation||"Italia"]||{col:"#003399"}).col}18`,borderRadius:8,border:`1px solid ${(NAT_DATA[player.nation||"Italia"]||{col:"#003399"}).col}40`,display:"flex",alignItems:"center",gap:10}}>
+                <span style={{fontSize:22}}>{(NAT_DATA[player.nation||"Italia"]||{flag:"🏳"}).flag}</span>
+                <div style={{flex:1}}>
+                  <div style={{fontSize:12,fontWeight:800,color:TH.text}}>Nazionale {player.nation}</div>
+                  <div style={{fontSize:10,color:TH.muted}}>{player.nationalCaps} cap{(player.nationalCaps||0)!==1?"":"s"} internazionale{(player.nationalCaps||0)!==1?"i":""}</div>
+                </div>
+                <span style={{fontSize:18,fontWeight:900,color:TH.accent}}>{player.nationalCaps}</span>
+              </div>
+            )}
           </Card>
           <Card>
             <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>Attributi</div>
             {Object.entries(player.stats).map(([k,v])=><StatBar key={k} label={k} value={v}/>)}
           </Card>
-          {(player.history||[]).length>0&&<Card><div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>Stagioni precedenti</div>{(player.history||[]).map((h,i)=><div key={i} style={{display:"flex",justifyContent:"space-between",padding:"6px 0",borderBottom:i<(player.history||[]).length-1?"1px solid "+TH.cardBorder:"none"}}><div><div style={{fontWeight:700,fontSize:12,color:TH.text}}>S.{h.season}</div><div style={{fontSize:10,color:TH.muted}}>{h.club}</div></div><div style={{display:"flex",gap:10,fontSize:11}}><span>⚽{h.goals}</span><span>🎯{h.assists}</span><span style={{color:TH.warning,fontWeight:700}}>{h.ovr}ovr</span></div></div>)}</Card>}
-          <Card><div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>Obiettivi</div>{[{l:"Prima partita",done:(player.totalMatches||0)>=1,e:"🎮"},{l:"10 gol",done:(player.totalGoals||0)>=10,e:"⚽"},{l:"50 gol",done:(player.totalGoals||0)>=50,e:"🔥"},{l:"OVR 80+",done:ovr>=80,e:"⭐"},{l:"OVR 90+",done:ovr>=90,e:"🌟"},{l:"5 stagioni",done:(player.season||1)>5,e:"📅"}].map(o=><div key={o.l} style={{display:"flex",alignItems:"center",gap:8,padding:"6px 0",borderBottom:"1px solid "+TH.cardBorder}}><span style={{fontSize:14}}>{o.e}</span><span style={{flex:1,fontSize:11,color:o.done?TH.text:TH.faint}}>{o.l}</span><span>{o.done?"✅":"⬜"}</span></div>)}</Card>
+          {/* Albo d'oro trofei */}
+          {(player.trophies||[]).length>0&&(
+            <Card bg="#fefce8" border="#fde68a">
+              <div style={{fontSize:10,color:"#713f12",textTransform:"uppercase",letterSpacing:1.5,fontWeight:700,marginBottom:8}}>🏆 Albo d'oro — {(player.trophies||[]).length} trofeo{(player.trophies||[]).length!==1?"i":""}</div>
+              {(player.trophies||[]).map((t,i)=>(
+                <div key={i} style={{display:"flex",alignItems:"center",gap:8,padding:"5px 0",borderBottom:i<(player.trophies||[]).length-1?"1px solid #fde68a":"none"}}>
+                  <span style={{fontSize:18}}>🏆</span>
+                  <div style={{flex:1}}>
+                    <div style={{fontSize:12,fontWeight:800,color:"#713f12"}}>Campione · S.{t.season}</div>
+                    <div style={{fontSize:10,color:"#92400e"}}>{t.club} · {t.league}</div>
+                  </div>
+                </div>
+              ))}
+            </Card>
+          )}
+          {/* Timeline stagioni */}
+          {(player.history||[]).length>0&&(
+            <Card>
+              <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:12}}>📋 Timeline Stagioni</div>
+              {[...(player.history||[])].reverse().map((h,i,arr)=>{
+                const isChamp=(player.trophies||[]).some(t=>t.season===h.season);
+                return(
+                  <div key={i} style={{display:"flex",gap:10,paddingBottom:i<arr.length-1?10:0}}>
+                    <div style={{display:"flex",flexDirection:"column",alignItems:"center",width:16,flexShrink:0,paddingTop:1}}>
+                      <div style={{width:10,height:10,borderRadius:"50%",background:isChamp?"#f59e0b":TH.primary,flexShrink:0,border:"2px solid #fff",boxShadow:`0 0 0 2px ${isChamp?"#f59e0b":TH.primary}44`}}/>
+                      {i<arr.length-1&&<div style={{width:2,flex:1,background:TH.cardBorder,minHeight:12,marginTop:2}}/>}
+                    </div>
+                    <div style={{flex:1,paddingBottom:2}}>
+                      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:1}}>
+                        <div style={{display:"flex",alignItems:"center",gap:5}}>
+                          <span style={{fontSize:11,fontWeight:800,color:TH.text}}>S.{h.season}</span>
+                          {isChamp&&<span style={{fontSize:8,padding:"1px 6px",borderRadius:10,background:"#fef9c3",color:"#713f12",fontWeight:700}}>🏆 Campione</span>}
+                        </div>
+                        <span style={{fontSize:10,color:TH.warning,fontWeight:700}}>{h.ovr} OVR</span>
+                      </div>
+                      <div style={{fontSize:10,color:TH.muted,marginBottom:3}}>{h.club}</div>
+                      <div style={{display:"flex",gap:10,fontSize:10}}>
+                        <span>⚽ {h.goals}</span>
+                        <span>🎯 {h.assists}</span>
+                        {h.matches!=null&&<span style={{color:TH.faint}}>👕 {h.matches}</span>}
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </Card>
+          )}
+          {(()=>{
+            const tm=player.totalMatches||0;const tg=player.totalGoals||0;
+            const ta=player.totalAssists||0;const tr=(player.trophies||[]).length;
+            const nc=player.nationalCaps||0;const isPro=player.proStatus==="pro";
+            const mileCats=[
+              {cat:"👕 Presenze",items:[
+                {l:"10 partite",e:"👟",done:tm>=10},
+                {l:"25 partite",e:"🎯",done:tm>=25},
+                {l:"50 partite",e:"⚡",done:tm>=50},
+                {l:"100 partite",e:"💎",done:tm>=100},
+              ]},
+              {cat:"⚽ Gol",items:[
+                {l:"10 gol",e:"⚽",done:tg>=10},
+                {l:"20 gol",e:"🔥",done:tg>=20},
+                {l:"50 gol",e:"💥",done:tg>=50},
+                {l:"100 gol",e:"👑",done:tg>=100},
+              ]},
+              {cat:"📈 Crescita",items:[
+                {l:"OVR 70",e:"⭐",done:ovr>=70},
+                {l:"OVR 80",e:"🌟",done:ovr>=80},
+                {l:"OVR 90",e:"✨",done:ovr>=90},
+                {l:"OVR 95",e:"🚀",done:ovr>=95},
+              ]},
+              {cat:"🏆 Carriera",items:[
+                {l:"Pro",e:"🎽",done:isPro},
+                {l:"1 Trofeo",e:"🏆",done:tr>=1},
+                {l:"3 Trofei",e:"🥇",done:tr>=3},
+                {l:"Nazionale",e:"🌍",done:nc>=1},
+              ]},
+            ];
+            return(
+              <Card>
+                <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:12}}>🏅 Milestone</div>
+                {mileCats.map(cat=>(
+                  <div key={cat.cat} style={{marginBottom:10}}>
+                    <div style={{fontSize:9,color:TH.faint,textTransform:"uppercase",letterSpacing:1,marginBottom:6}}>{cat.cat}</div>
+                    <div style={{display:"flex",flexWrap:"wrap",gap:6}}>
+                      {cat.items.map(b=>(
+                        <div key={b.l} style={{display:"flex",alignItems:"center",gap:4,padding:"4px 10px",borderRadius:20,fontSize:10,fontWeight:600,background:b.done?"#16a34a22":"rgba(0,0,0,0.04)",border:`1px solid ${b.done?"#16a34a66":TH.cardBorder}`,color:b.done?"#16a34a":TH.faint,transition:"all .2s"}}>
+                          <span style={{fontSize:12}}>{b.e}</span>
+                          <span>{b.l}</span>
+                          {b.done&&<span style={{fontSize:9,marginLeft:2}}>✓</span>}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </Card>
+            );
+          })()}
           <AISettingsCard player={player}/>
         </div>
       )}
