@@ -921,7 +921,14 @@ const NPC_PERSONAS=[
   {id:"fantasioso",  e:"🎭", name:"Fantasioso",  desc:"Imprevedibile e creativo",         lambdaMod:+0.08, trustMod:+2},
 ];
 function getClubPersona(club){const h=hashStr((club?.id||club?.n||"x"));return NPC_PERSONAS[Math.abs(h)%NPC_PERSONAS.length];}
-const GAME_VERSION="2.3.3"; // fix GK drift preset offset
+const NEWSPAPERS=[
+  {id:"gazzetta",  name:"Gazzetta dello Sport", short:"Gazzetta",   color:"#e8000d",e:"📰",tone:"epico"},
+  {id:"corriere",  name:"Corriere dello Sport",  short:"Corriere",   color:"#003da5",e:"📋",tone:"critico"},
+  {id:"tuttosport",name:"Tuttosport",            short:"Tuttosport", color:"#7c3aed",e:"📄",tone:"drammatico"},
+  {id:"lastampa",  name:"La Stampa Sport",       short:"La Stampa",  color:"#16a34a",e:"🗞️",tone:"analitico"},
+  {id:"skysport",  name:"Sky Sport 24",          short:"Sky Sport",  color:"#0099d6",e:"📡",tone:"diretto"},
+];
+const GAME_VERSION="2.4.0"; // Sprint 14 + migliorie UI
 const SAVE_VERSION=5;
 // Sprint 11 — S11.1 Coach data
 const COACH_NAMES=["Rossi","Ferrari","Bianchi","Conti","Greco","Mancini","Pirlo","Gattuso","Capello","De Zerbi","Allegri","Conte","Spalletti","Inzaghi","Sarri","Mihajlovic"];
@@ -1102,7 +1109,7 @@ async function generateScoutReport(opponentClub,playerStats,recentMatches){
 }
 
 // ---- LOCAL PRESS ANALYSIS (always available, no API needed) ----
-function generateLocalPressAnalysis(matchResult,playerPerf){
+function generateLocalPressAnalysis(matchResult,playerPerf,playerCtx={}){
   const won=matchResult.won,drew=matchResult.drew,lost=!won&&!drew;
   const goals=playerPerf.goals||0,assists=playerPerf.assists||0;
   const rating=playerPerf.rating||6.0;
@@ -1113,44 +1120,88 @@ function generateLocalPressAnalysis(matchResult,playerPerf){
   const score=`${hs}-${as}`;
   const starPerf=goals>=2||assists>=2||rating>=8;
   const badPerf=goals===0&&assists===0&&rating<6;
-
-  // Context detection
   const isDerby=(matchResult.isDerby)||false;
-  const isRecord=(matchResult.isRecord)||false;
 
-  // Newspaper A — Gazzetta dello Sport style
+  // Historical memory context
+  const arc=ARCHETYPES.find(a=>a.id===(playerCtx.archetype?.id||playerCtx.archetype));
+  const arcName=arc?arc.name:null;
+  const recs=playerCtx.records||{topSeasonGoals:0,topSeasonAssists:0,topOvr:60};
+  const isGB=(playerCtx.goldenBoys||[]).length>0;
+  const season=playerCtx.season||1;
+  const age=playerCtx.age||20;
+  // Streak from matchHistory
+  const recent=(playerCtx.matchHistory||[]).slice(-4);
+  let streakType=won?"win":drew?"draw":"loss",streakLen=1;
+  for(let i=recent.length-1;i>=0;i--){const r=recent[i];const rt=r.won?"win":r.drew?"draw":"loss";if(rt===streakType)streakLen++;else break;}
+  const onStreak=streakLen>=3;
+  // MVP surname from roster (fallback pool)
+  const FALLBACK_SURNAMES=["Ferrari","Ricci","De Rossi","Galli","Mancini","Colombo","Bianchi","Greco","Conti","Pellegrini"];
+  const roster=(playerPerf.homeRoster||[]).filter(r=>r.name&&!r.name.includes(name));
+  const pickSurname=()=>{if(roster.length>0)return roster[Math.floor(Math.random()*roster.length)].name.split(" ").pop();return FALLBACK_SURNAMES[Math.floor(Math.random()*FALLBACK_SURNAMES.length)];};
+
+  // Memoria tag
+  const memoriaTag=recs.topSeasonGoals>=10?`🏅 Record: ${recs.topSeasonGoals} gol in una stagione`:
+    isGB?`🏆 Golden Boy S.${(playerCtx.goldenBoys||[])[0]||season}`:
+    age<=19?`✨ Enfant prodige (${age} anni)`:
+    season>=5?`📖 Veterano — ${season}ª stagione`:null;
+
+  // GAZZETTA (epico)
   const headA=won
-    ?(starPerf?`${name} da urlo: doppietta e ${club} batte ${opp} ${score}`
+    ?(isDerby?`🔥 DERBY VINTO! ${club} domina ${opp} ${score} — la città esplode`
+      :onStreak?`${streakLen}ª VITTORIA DI FILA! Il ${club} è inarrestabile: ${score}`
+      :starPerf&&arcName?`${arcName} in stato di grazia: ${name} trascina il ${club} ${score}`
       :`Vittoria di carattere: ${club} supera ${opp} ${score}`)
     :drew
-    ?(starPerf?`${name} salva il pareggio: ${club}-${opp} ${score} con brivido`
+    ?(starPerf?`${name} salva il pari: ${club}–${opp} ${score} con una giocata decisiva`
       :`Pari combattuto: ${club} e ${opp} dividono la posta ${score}`)
-    :(badPerf?`Serata no: ${club} cede ${score} ad ${opp}, ${name} si sblocchi`
-      :`Sconfitta che brucia: ${opp} sbanca ${score}, ${club} ci riprovi`);
+    :(isDerby?`🖤 Derby perso ${score} — giornata nera per il ${club}`
+      :badPerf?`Serata da dimenticare: ${club} cede ${score}, serve di più da ${name}`
+      :`Sconfitta che brucia: ${opp} vince ${score}`);
 
-  // Newspaper B — Corriere dello Sport style
+  // CORRIERE (critico/analitico)
   const headB=won
-    ?(goals>0?`⚽ ${name} decide la sfida — il ${club} vola con il ${score}`
-      :`Solidità e cuore: tre punti pesanti per il ${club}`)
+    ?(isGB?`Golden Boy ${name} ancora decisivo: ${goals>0?goals+" gol":"assist"} e ${club} avanti S.${season}`
+      :goals>0?`${name} decide — ${goals} reti e ${club} conquista 3 punti (voto ${rating})`
+      :`Solidità premia il ${club}: clean sheet e vittoria ${score} su ${opp}`)
     :drew
-    ?`Equilibrio totale: uno a uno morale tra ${club} e ${opp}`
-    :(lost?`Mister sotto esame dopo il ${score}: il ${club} deve ripartire`
-      :`Senza vittoria: la crisi del ${club} continua`);
+    ?(recs.topSeasonGoals>0?`${name} a quota ${goals} gol stagionali ma il ${club} non va oltre ${score}`
+      :`Equilibrio totale: ${club}–${opp} ${score}, la classifica non sorride`)
+    :(badPerf?`Sotto analisi: ${name} al minimo (${rating}/10), il ${club} deve reagire`
+      :`Il ${club} cede ${score} a ${opp}: il mister è sotto esame`);
 
-  // Newspaper C — Tuttosport style
+  // TUTTOSPORT (drammatico/emotivo)
   const headC=won
-    ?`🏆 ${club} dominante! ${score} e tre punti in sacca`
+    ?(isDerby?`RIVALI KO! ${score} — il ${club} domina il derby, che serata!`
+      :starPerf?`SPETTACOLO! ${name} è un fenomeno: ${club} vince ${score}`
+      :`VITTORIA FONDAMENTALE! ${club} ${score} — tre punti d'oro!`)
     :drew
-    ?`Punto d'oro in trasferta o rimpianto casalingo? ${score} divide i pareri`
-    :`Allarme rosso: il ${club} cade ${score}, serve una svolta`;
+    ?`Rimpianto enorme! Il ${club} non sfonda: finisce ${score} con ${opp}`
+    :(onStreak&&streakLen>=2?`SPIRALE NEGATIVA: ${streakLen}ª senza vittoria — ${score} la condanna`
+      :`ALLARME ROSSO! ${club} cade ${score} — serve una scossa`);
 
-  // Player rating card
+  // LA STAMPA (analitico/tattico)
+  const headD=won
+    ?(goals>0&&assists>0?`Dati: ${name} con ${goals}G+${assists}A — efficienza da top player per il ${club}`
+      :goals>0?`Analisi: ${goals} reti e posizionamento premiato nel ${score}`
+      :`Tattica vincente: il ${club} domina e porta a casa i 3 punti vs ${opp}`)
+    :drew
+    ?`Il ${score} riflette l'equilibrio tattico: ${club} e ${opp} si equivalgono`
+    :`Studio: lacune difensive del ${club} sfruttate da ${opp}, ${score}`;
+
+  // SKY SPORT (diretto/telegraphic)
+  const headE=won
+    ?`✅ ${club} ${score} ${opp}${goals>0?` | ${name} x${goals}`:""} | +3pts`
+    :drew
+    ?`🟡 ${club} ${score} ${opp} | Pari | ${name} ${rating}★`
+    :`❌ ${club} ${score} ${opp} | Sconfitta | ${name} ${rating}★`;
+
+  // Player rating
   const ratingLabel=rating>=9?"FENOMENALE":rating>=8?"OTTIMO":rating>=7?"BUONO":rating>=6?"SUFFICIENTE":rating>=5?"INSUFFICIENTE":"DA DIMENTICARE";
   const ratingColor=rating>=8?"#16a34a":rating>=6?"#d97706":"#dc2626";
 
-  // MOTM
-  const motmCandidates=won?[name,"Il portiere","Il capitano"]:drew?[name,"Il difensore","Il centrocampista"]:["Il portiere","Il difensore","Il centrocampista"];
-  const motm=starPerf?name:motmCandidates[1];
+  // MVP: real surname from roster when possible
+  const motmSurname=pickSurname();
+  const motm=starPerf?name:won?motmSurname:motmSurname;
 
   // Flop
   const flopMsg=badPerf?`${name} — prestazione opaca, fatica a incidere`
@@ -1161,46 +1212,39 @@ function generateLocalPressAnalysis(matchResult,playerPerf){
   const tactNote=won
     ?(goals>0?`Il pressing alto ha soffocato ${opp}. ${name} ha sfruttato ogni spazio.`
       :`Blocco difensivo impeccabile. Il contropiede ha fatto la differenza.`)
-    :drew
-    ?`Partita tatticamente chiusa. Entrambe le squadre hanno preferito non rischiare.`
+    :drew?`Partita tatticamente chiusa. Entrambe le squadre hanno preferito non rischiare.`
     :`${opp} ha sfruttato le transizioni rapide. Il ${club} ha sofferto in fase difensiva.`;
 
-  // Fan reactions
   const fanReactions=won
     ?["I tifosi esultano: serata perfetta!","Tre punti che valgono oro! Avanti così!"]
-    :drew
-    ?["Tifosi divisi: punto guadagnato o due persi?","Si poteva vincere, ma un punto è pur sempre un punto."]
+    :drew?["Tifosi divisi: punto guadagnato o due persi?","Si poteva vincere, ma un punto è pur sempre un punto."]
     :["Fischi a fine partita — i tifosi chiedono di più.","Delusione in curva: servono risposte immediate."];
 
-  // Quotes
   const quotes=won
-    ?[`"${name} ha fatto la differenza oggi. Sono orgoglioso della squadra." — Mister`
-      ,`"Vittoria di squadra. Andiamo avanti step by step." — ${name}`]
+    ?[`"${name} ha fatto la differenza oggi. Sono orgoglioso della squadra." — Mister`,`"Vittoria di squadra. Andiamo avanti step by step." — ${name}`]
     :drew
-    ?[`"Ci mancava quel guizzo finale. Portiamo a casa un punto." — Mister`
-      ,`"Non sono soddisfatto del pareggio, ma la squadra ha lottato." — ${name}`]
-    :[`"Dobbiamo analizzare gli errori e reagire subito." — Mister`
-      ,`"Sconfitta che fa male. Ci rifaremo la prossima settimana." — ${name}`];
+    ?[`"Ci mancava quel guizzo finale. Portiamo a casa un punto." — Mister`,`"Non sono soddisfatto del pareggio, ma la squadra ha lottato." — ${name}`]
+    :[`"Dobbiamo analizzare gli errori e reagire subito." — Mister`,`"Sconfitta che fa male. Ci rifaremo la prossima settimana." — ${name}`];
 
   const trending=won
     ?(goals>0?`#${name.replace(/\s/g,"")}Gol🔥`:`#${club.replace(/\s/g,"")}Vince`)
-    :drew?`#${club.replace(/\s/g,"")}Pareggio`
-    :`#${club.replace(/\s/g,"")}Riparti`;
+    :drew?`#${club.replace(/\s/g,"")}Pareggio`:`#${club.replace(/\s/g,"")}Riparti`;
 
   return{
-    headlines:[headA,headB,headC],
-    papers:["Gazzetta dello Sport","Corriere dello Sport","Tuttosport"],
+    headlines:[headA,headB,headC,headD,headE],
+    papers:NEWSPAPERS.map(p=>p.name),
+    paperColors:NEWSPAPERS.map(p=>p.color),
+    paperEmojis:NEWSPAPERS.map(p=>p.e),
     playerRating:{value:rating,label:ratingLabel,color:ratingColor,goals,assists},
-    motm,flop:flopMsg,
-    tacticalNote:tactNote,
-    fanReactions,quotes,trending,
+    motm,flop:flopMsg,tacticalNote:tactNote,
+    fanReactions,quotes,trending,memoriaTag,
     isLocal:true,
   };
 }
 
-async function generatePressAnalysis(matchResult,playerPerf){
+async function generatePressAnalysis(matchResult,playerPerf,playerCtx={}){
   if(_aiMockMode){
-    return generateLocalPressAnalysis(matchResult,playerPerf);
+    return generateLocalPressAnalysis(matchResult,playerPerf,playerCtx);
   }
   const sys="Sei un giornalista sportivo italiano. Scrivi reazioni media post-partita. Rispondi SOLO con JSON valido.";
   const msg=`Post-partita:\n- Risultato: ${matchResult.homeScore}-${matchResult.awayScore} (${matchResult.won?"Vittoria":matchResult.drew?"Pareggio":"Sconfitta"})\n- Giocatore: ${playerPerf.name}, ${playerPerf.club}, ${playerPerf.goals} gol, ${playerPerf.assists} assist, voto ${playerPerf.rating}/10\n- Avversario: ${matchResult.opponent} (Prestige: ${playerPerf.oppPrestige||65}/99)\n\nJSON: {"headlines":["titolo 1","titolo 2"],"quotes":["citazione"],"trending":"hashtag"}`;
@@ -1209,7 +1253,7 @@ async function generatePressAnalysis(matchResult,playerPerf){
     const local=generateLocalPressAnalysis(matchResult,playerPerf);
     return{...local,...res.data,isLocal:false};
   }
-  return generateLocalPressAnalysis(matchResult,playerPerf);
+  return generateLocalPressAnalysis(matchResult,playerPerf,playerCtx);
 }
 
 /* ========================================
@@ -1946,16 +1990,15 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
       ctx.save();ctx.globalAlpha=0.32;ctx.fillStyle="#000";
       ctx.beginPath();ctx.ellipse(cx+(isMoving?1.5:0),cy+R*0.6,R*0.88,R*0.26,0,0,Math.PI*2);ctx.fill();ctx.restore();
 
-      // Hero outer glow ring
+      // Hero outer glow ring — compact so hero is same visual size as teammates
       if(isHero){
         ctx.save();
-        ctx.shadowColor="#f59e0b";ctx.shadowBlur=16;
-        ctx.strokeStyle="#f59e0b";ctx.lineWidth=2.5;ctx.globalAlpha=0.88;
-        ctx.beginPath();ctx.arc(cx,cy,R+6,0,Math.PI*2);ctx.stroke();
-        // second inner ring (pulsing)
+        ctx.shadowColor="#f59e0b";ctx.shadowBlur=7;
+        ctx.strokeStyle="#f59e0b";ctx.lineWidth=1.5;ctx.globalAlpha=0.80;
+        ctx.beginPath();ctx.arc(cx,cy,R+2,0,Math.PI*2);ctx.stroke();
         const pulse=0.5+Math.sin((t||0)*0.004)*0.35;
-        ctx.globalAlpha=pulse*0.45;ctx.lineWidth=1.2;
-        ctx.beginPath();ctx.arc(cx,cy,R+10,0,Math.PI*2);ctx.stroke();
+        ctx.globalAlpha=pulse*0.28;ctx.lineWidth=0.8;
+        ctx.beginPath();ctx.arc(cx,cy,R+4,0,Math.PI*2);ctx.stroke();
         ctx.restore();
       }
 
@@ -2793,9 +2836,9 @@ function ScoutReportScreen({report,opponent,onClose,loading}){
 function PressScreen({report,matchResult,onClose}){
   if(!report)return null;
   const won=matchResult?.won,drew=matchResult?.drew;
-  const papers=report.papers||["Gazzetta","Corriere","Tuttosport"];
+  const papers=report.papers||["Gazzetta","Corriere","Tuttosport","La Stampa","Sky Sport"];
   const pr=report.playerRating;
-  const paperColors=["#dc2626","#1d4ed8","#7c3aed"];
+  const paperColors=report.paperColors||["#e8000d","#003da5","#7c3aed","#16a34a","#0099d6"];
   return(
     <div style={{display:"flex",flexDirection:"column",gap:10}}>
       {/* Header */}
@@ -2804,6 +2847,7 @@ function PressScreen({report,matchResult,onClose}){
           <div>
             <div style={{fontSize:9,color:TH.primary,fontWeight:700,letterSpacing:2}}>RASSEGNA STAMPA</div>
             <div style={{fontSize:15,fontWeight:900,color:TH.text}}>Post-Partita</div>
+            {report.memoriaTag&&<div style={{fontSize:9,color:TH.accent,marginTop:2}}>{report.memoriaTag}</div>}
           </div>
           <div style={{textAlign:"center"}}>
             <div style={{fontSize:28}}>{won?"🏆":drew?"🤝":"📉"}</div>
@@ -3618,7 +3662,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     const rbCapped=Math.min(mStats.rb,20);
     const resultBonus=score.home>score.away?0.35:score.home===score.away?0.0:-0.30;
     const raw=clamp(5.8+rbCapped*0.115+resultBonus,4.0,10.0);
-    onMatchEnd({goals:mStats.goals,assists:mStats.assists,homeScore:score.home,awayScore:score.away,won:score.home>score.away,drew:score.home===score.away,opponent:opponent?.name||opponent?.n,oppAbbr:opponent?.abbr||opponent?.a,oppCol:opponent?.col||opponent?.c,rating:Math.round(raw*10)/10,context,oppTactic:oppTactic||null,scoutReport:scoutReport||null});
+    onMatchEnd({goals:mStats.goals,assists:mStats.assists,homeScore:score.home,awayScore:score.away,won:score.home>score.away,drew:score.home===score.away,opponent:opponent?.name||opponent?.n,oppAbbr:opponent?.abbr||opponent?.a,oppCol:opponent?.col||opponent?.c,rating:Math.round(raw*10)/10,context,oppTactic:oppTactic||null,scoutReport:scoutReport||null,homeRoster});
   };
 
   // Keyboard — direct closure calls; re-registers when phase/hlIdx/situations change.
@@ -4086,7 +4130,7 @@ function ProTransitionScreen({player,onChoose}){
               <div style={{fontWeight:700,fontSize:13,color:TH.text}}>{o.club?.n||o.club?.name}</div>
               <div style={{fontSize:11,color:o.isMain?TH.primary:o.isStayU18?TH.warning:TH.muted,fontWeight:600}}>{o.contractType}</div>
               <div style={{fontSize:10,color:TH.muted,marginTop:1}}>
-                {o.role} · €{o.wage}/sett. · {o.duration} stagion{o.duration===1?"e":"i"}
+                {o.role} · €{o.wage?Math.round(o.wage*52/1000*10)/10+"k/anno":"–"} · {o.duration} stagion{o.duration===1?"e":"i"}
               </div>
               <div style={{display:"flex",gap:5,marginTop:4,flexWrap:"wrap"}}>
                 <span style={{fontSize:9,padding:"2px 6px",borderRadius:10,background:o.moralBonus>=0?"#dcfce7":"#fee2e2",color:o.moralBonus>=0?TH.success:TH.danger}}>
@@ -6086,7 +6130,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
     const newInjured=!player.injured&&((postFatigue>82&&injRoll<0.07)||(postFatigue>68&&injRoll<0.03));
     const injuryWeeks=newInjured?(postFatigue>82?rng(2,4):1):0;
     // Generate press analysis async (non-blocking)
-    generatePressAnalysis(result,{name:player.name,club:player.club?.n||player.club?.name||"–",goals:result.goals,assists:result.assists,rating:result.rating,oppPrestige:player.standings?undefined:(result.oppPrestige||65)}).then(press=>{
+    generatePressAnalysis(result,{name:player.name,club:player.club?.n||player.club?.name||"–",goals:result.goals,assists:result.assists,rating:result.rating,oppPrestige:player.standings?undefined:(result.oppPrestige||65),homeRoster:result.homeRoster||[]},{archetype:player.archetype,records:player.records,goldenBoys:player.goldenBoys,matchHistory:player.matchHistory,season:player.season,age:player.age}).then(press=>{
       setLastPressReport(press);
       setPlayer(p=>{
         const matchdayId=`S${p.season||1}W${p.week||1}`;
@@ -6119,7 +6163,8 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
       const matchdayId=`S${p.season||1}W${p.week||1}`;
       const baseAiData=p.aiData||{lastOpponentTactic:null,scoutReports:{},pressReports:{}};
       const newAiData={...baseAiData,lastOpponentTactic:result.oppTactic?{...result.oppTactic,week:p.week||1}:baseAiData.lastOpponentTactic,scoutReports:result.scoutReport?{...baseAiData.scoutReports,[matchdayId]:result.scoutReport}:baseAiData.scoutReports};
-      return{...p,stats:ns,ovr:newOvr,goals:p.goals+result.goals,assists:p.assists+result.assists,matches:p.matches+1,totalGoals:p.totalGoals+result.goals,totalAssists:p.totalAssists+result.assists,totalMatches:p.totalMatches+1,morale:clamp(p.morale+moD,0,100),fatigue:postFatigue,...(newInjured?{injured:true,injuryWeeks}:{}),week:(p.week||1)+1,weekLived:false,log:[logE,...(p.log||[])].slice(0,60),matchHistory:newHistory,standings:newStandings,calendar:newCal,aiData:newAiData};
+      const formD=result.won?8:result.drew?2:-5;
+      return{...p,stats:ns,ovr:newOvr,goals:p.goals+result.goals,assists:p.assists+result.assists,matches:p.matches+1,totalGoals:p.totalGoals+result.goals,totalAssists:p.totalAssists+result.assists,totalMatches:p.totalMatches+1,morale:clamp(p.morale+moD,0,100),form:clamp((p.form||70)+formD,30,95),fatigue:postFatigue,...(newInjured?{injured:true,injuryWeeks}:{}),week:(p.week||1)+1,weekLived:false,log:[logE,...(p.log||[])].slice(0,60),matchHistory:newHistory,standings:newStandings,calendar:newCal,aiData:newAiData};
     });
     setScreen("postmatch");setTab("dashboard");
     if(newInjured)notify(`🩹 Infortunio muscolare! Recupero: ${injuryWeeks} settiman${injuryWeeks===1?"a":"e"}.`,TH.danger);
@@ -6258,8 +6303,13 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
         const newTrophies=cr.isChamp?[...(p.trophies||[]),{season:p.season||1,club:p.club?.n,league:"Coppa",type:"cup"}]:(p.trophies||[]);
         updP={...updP,cup:{...p.cup,round:(p.cup?.round||1)+1,nextWeek:cr.nextWeek,eliminated:!cr.won,champion:cr.isChamp,results:newCupResults},trophies:newTrophies};
       }
-      if(p.injured&&(p.injuryWeeks||0)>0){return{...updP,week:(p.week||1)+1,weekLived:false,trainedThisWeek:false,injuryWeeks:p.injuryWeeks-1,injured:p.injuryWeeks-1>0,fatigue:Math.max(0,(p.fatigue||0)-8)};}
-      return{...updP,week:(p.week||1)+1,weekLived:false,trainedThisWeek:false};
+      // Natural weekly recovery: fatigue -6, form drifts toward baseline 65
+      const baseForm=updP.form||p.form||70;
+      const naturalForm=clamp(Math.round(baseForm*0.92+65*0.08),30,95);
+      const baseFat=updP.fatigue!=null?updP.fatigue:(p.fatigue||0);
+      const naturalFat=Math.max(0,baseFat-6);
+      if(p.injured&&(p.injuryWeeks||0)>0){return{...updP,week:(p.week||1)+1,weekLived:false,trainedThisWeek:false,injuryWeeks:p.injuryWeeks-1,injured:p.injuryWeeks-1>0,fatigue:Math.max(0,baseFat-12),form:naturalForm};}
+      return{...updP,week:(p.week||1)+1,weekLived:false,trainedThisWeek:false,fatigue:naturalFat,form:naturalForm};
     });
     notify("⏭️ Settimana avanzata");
     // S11.2: club crisis alert (once at week 1 per season)
@@ -6447,7 +6497,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
     const tc=transferOffer;
     if(tc.isRenewal){
       // Contract renewal: same club, new contract terms, clear expired flag
-      setPlayer(p=>({...p,contract:{duration:tc.duration||2,wage:tc.wage||p.contract?.wage||500,expiresAtSeason:(p.season||1)+(tc.duration||2)},contractExpired:false,morale:clamp(p.morale+(tc.moralBonus||5),0,100),log:[`📋 Rinnovo contratto: ${tc.duration||2} stagion${(tc.duration||2)===1?"e":"i"} a €${tc.wage||p.contract?.wage}/sett.`,...(p.log||[])].slice(0,60)}));
+      setPlayer(p=>({...p,contract:{duration:tc.duration||2,wage:tc.wage||p.contract?.wage||500,expiresAtSeason:(p.season||1)+(tc.duration||2)},contractExpired:false,morale:clamp(p.morale+(tc.moralBonus||5),0,100),log:[`📋 Rinnovo contratto: ${tc.duration||2} stagion${(tc.duration||2)===1?"e":"i"} a €${Math.round((tc.wage||p.contract?.wage||0)*52/1000)}k/anno`,...(p.log||[])].slice(0,60)}));
       setTransferOffer(null);
       notify(`✅ Contratto rinnovato con ${tc.club?.n||"il club"}!`,TH.success);
       return;
@@ -6771,7 +6821,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
             <div style={{height:3,background:"#e2e8f0",borderRadius:2,marginTop:10}}><div style={{height:"100%",width:`${(week/38)*100}%`,background:TH.success,borderRadius:2,transition:"width .4s"}}/></div>
           </Card>
           <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
-            {[{l:"Morale",v:player.morale||70,e:"😄",c:((player.morale||70)>60)?TH.success:((player.morale||70)>30)?TH.warning:TH.danger},{l:"Forma",v:100-(player.fatigue||0),e:"💪",c:((player.fatigue||0)<40)?TH.success:((player.fatigue||0)<70)?TH.warning:TH.danger},{l:"Fiducia mister",v:player.coachTrust||60,e:"🤝",c:TH.primary},{l:"Popolarità",v:player.popularity||20,e:"⭐",c:TH.accent}].map(it=>(
+            {[{l:"Morale",v:player.morale||70,e:"😄",c:((player.morale||70)>60)?TH.success:((player.morale||70)>30)?TH.warning:TH.danger},{l:"Forma",v:player.form||70,e:"💪",c:((player.form||70)>=70)?TH.success:((player.form||70)>=50)?TH.warning:TH.danger},{l:"Fiducia mister",v:player.coachTrust||60,e:"🤝",c:TH.primary},{l:"Popolarità",v:player.popularity||20,e:"⭐",c:TH.accent}].map(it=>(
               <Card key={it.l} style={{padding:"12px 14px"}}>
                 <div style={{fontSize:18,marginBottom:3}}>{it.e}</div><div style={{fontSize:10,color:TH.muted,marginBottom:2}}>{it.l}</div>
                 <div style={{fontSize:18,fontWeight:800,color:it.c}}>{it.v}</div>
@@ -6874,21 +6924,79 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
       )}
 
       {/* STANDINGS */}
-      {tab==="standings"&&(
-        <Card>
-          <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:10}}>
-            Classifica {player.club?.lg||(player.proStatus==="u18"?"U18 Primavera":"–")} — S.{season}
+      {tab==="standings"&&(()=>{
+        const allLeagues=[...new Set(CLUBS.map(c=>c.lg).filter(Boolean))];
+        const myLeague=player.club?.lg||(player.proStatus==="u18"?"U18 Primavera":"Serie A");
+        const [selLg,setSelLg]=React.useState(myLeague);
+        // Generate snapshot for other leagues
+        const getRows=(lg)=>{
+          if(lg===myLeague)return player.standings||[];
+          const clubs=CLUBS.filter(c=>c.lg===lg);
+          if(!clubs.length)return[];
+          const seed=(player.season||1)*1000+hashStr(lg);
+          let r=seed;const rand=()=>{r=((r*1664525+1013904223)&0xffffffff)>>>0;return r/0xffffffff;};
+          const md=player.matches||10;
+          return [...clubs].map(club=>{
+            const base=Math.round((club.p||50)/99*md*0.55);
+            const wins=clamp(base+Math.round((rand()-0.5)*4),0,md);
+            const draws=clamp(Math.round(rand()*2),0,md-wins);
+            const losses=Math.max(0,md-wins-draws);
+            const gf=wins*2+draws+Math.round(rand()*4);
+            const ga=losses*2+draws+Math.round(rand()*4);
+            return{id:club.id,n:club.n,a:club.a,abbr:club.a,c:club.c,col:club.c,played:md,wins,draws,losses,gf,ga,gd:gf-ga,pts:wins*3+draws};
+          }).sort((a,b)=>b.pts-a.pts||b.gd-a.gd);
+        };
+        const rows=getRows(selLg);
+        const N=rows.length;
+        const ZONE_COLORS={cl:"#3b82f6",el:"#f97316",conf:"#22c55e",rel:"#ef4444",champ:"#f59e0b"};
+        const zoneOf=(i)=>{if(i===0)return"champ";if(i<4)return"cl";if(i<6)return"el";if(i===6)return"conf";if(i>=N-3&&N>6)return"rel";return null;};
+        return(
+        <div style={{display:"flex",flexDirection:"column",gap:8}}>
+          {/* League selector */}
+          <div style={{overflowX:"auto",display:"flex",gap:6,paddingBottom:4}}>
+            {allLeagues.map(lg=>(
+              <button key={lg} onClick={()=>setSelLg(lg)} style={{flexShrink:0,padding:"4px 10px",borderRadius:14,border:"1px solid "+(selLg===lg?TH.primary:TH.cardBorder),background:selLg===lg?TH.primary:"#fff",color:selLg===lg?"#fff":TH.muted,fontSize:10,cursor:"pointer",fontWeight:selLg===lg?700:400,whiteSpace:"nowrap"}}>{lg}{lg===myLeague?" ★":""}</button>
+            ))}
           </div>
-          <div style={{overflowX:"auto"}}>
-            <table style={{width:"100%",borderCollapse:"collapse",fontSize:11}}>
-              <thead><tr>{["#","Club","G","V","P","S","Gf","Gs","Diff","Pts"].map(h=><th key={h} style={{textAlign:h==="Club"?"left":"center",padding:"4px 4px",fontSize:9,color:TH.faint,textTransform:"uppercase",letterSpacing:.5,borderBottom:"1px solid "+TH.cardBorder}}>{h}</th>)}</tr></thead>
-              <tbody>
-                {(player.standings||[]).map((t,i)=>{const my=t.id===player.club?.id||t.n===player.club?.n;return<tr key={t.id||t.n} style={{background:my?"#eff6ff":"transparent"}}><td style={{textAlign:"center",padding:"5px 4px",color:i<3?TH.warning:TH.muted,fontWeight:i<3?700:400}}>{i+1}</td><td style={{padding:"5px 4px",fontWeight:my?700:400,color:my?TH.primary:TH.text,whiteSpace:"nowrap"}}><span style={{display:"inline-block",width:10,height:10,borderRadius:"50%",background:t.col||t.c,marginRight:4,verticalAlign:"middle"}}/>{t.abbr||t.a}{my&&" ★"}</td><td style={{textAlign:"center",padding:"5px 4px",color:TH.muted}}>{t.played}</td><td style={{textAlign:"center",padding:"5px 4px",color:TH.success}}>{t.wins}</td><td style={{textAlign:"center",padding:"5px 4px",color:TH.muted}}>{t.draws}</td><td style={{textAlign:"center",padding:"5px 4px",color:TH.danger}}>{t.losses}</td><td style={{textAlign:"center",padding:"5px 4px",color:TH.muted}}>{t.gf}</td><td style={{textAlign:"center",padding:"5px 4px",color:TH.muted}}>{t.ga}</td><td style={{textAlign:"center",padding:"5px 4px",color:t.gd>0?TH.success:t.gd<0?TH.danger:TH.muted}}>{t.gd>0?"+":""}{t.gd}</td><td style={{textAlign:"center",padding:"5px 4px",fontWeight:700,color:TH.warning}}>{t.pts}</td></tr>;})}
-              </tbody>
-            </table>
-          </div>
-        </Card>
-      )}
+          <Card>
+            <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:10}}>
+              Classifica {selLg} — S.{season}{selLg!==myLeague&&<span style={{fontSize:8,color:TH.faint,marginLeft:4}}>(proiezione)</span>}
+            </div>
+            <div style={{overflowX:"auto"}}>
+              <table style={{width:"100%",borderCollapse:"collapse",fontSize:11}}>
+                <thead><tr>{["","#","Club","G","V","P","S","Gf","Gs","Diff","Pts"].map(h=><th key={h} style={{textAlign:h==="Club"?"left":"center",padding:"4px 3px",fontSize:9,color:TH.faint,textTransform:"uppercase",letterSpacing:.5,borderBottom:"1px solid "+TH.cardBorder}}>{h}</th>)}</tr></thead>
+                <tbody>
+                  {rows.map((t,i)=>{
+                    const my=selLg===myLeague&&(t.id===player.club?.id||t.n===player.club?.n);
+                    const zone=zoneOf(i);
+                    const zc=zone?ZONE_COLORS[zone]:null;
+                    return<tr key={t.id||t.n} style={{background:my?"#eff6ff":"transparent"}}>
+                      <td style={{width:3,padding:0}}><div style={{width:3,height:28,background:zc||"transparent",borderRadius:1}}/></td>
+                      <td style={{textAlign:"center",padding:"5px 3px",color:zone?zc:TH.muted,fontWeight:zone?700:400}}>{i+1}</td>
+                      <td style={{padding:"5px 3px",fontWeight:my?700:400,color:my?TH.primary:TH.text,whiteSpace:"nowrap"}}><span style={{display:"inline-block",width:9,height:9,borderRadius:"50%",background:t.col||t.c,marginRight:3,verticalAlign:"middle"}}/>{t.abbr||t.a}{my&&" ★"}</td>
+                      <td style={{textAlign:"center",padding:"5px 3px",color:TH.muted}}>{t.played}</td>
+                      <td style={{textAlign:"center",padding:"5px 3px",color:TH.success}}>{t.wins}</td>
+                      <td style={{textAlign:"center",padding:"5px 3px",color:TH.muted}}>{t.draws}</td>
+                      <td style={{textAlign:"center",padding:"5px 3px",color:TH.danger}}>{t.losses}</td>
+                      <td style={{textAlign:"center",padding:"5px 3px",color:TH.muted}}>{t.gf}</td>
+                      <td style={{textAlign:"center",padding:"5px 3px",color:TH.muted}}>{t.ga}</td>
+                      <td style={{textAlign:"center",padding:"5px 3px",color:t.gd>0?TH.success:t.gd<0?TH.danger:TH.muted}}>{t.gd>0?"+":""}{t.gd}</td>
+                      <td style={{textAlign:"center",padding:"5px 3px",fontWeight:700,color:TH.warning}}>{t.pts}</td>
+                    </tr>;
+                  })}
+                </tbody>
+              </table>
+            </div>
+            {/* Zone legend */}
+            <div style={{display:"flex",flexWrap:"wrap",gap:"2px 10px",marginTop:8}}>
+              {[["#f59e0b","🏆 Campione"],["#3b82f6","⬆ CL (1-4)"],["#f97316","🟠 EL (5-6)"],["#22c55e","🟢 Conf. (7)"],["#ef4444","⬇ Retrocesse"]].map(([c,l])=>(
+                <span key={l} style={{fontSize:8,color:c,fontWeight:600}}>{l}</span>
+              ))}
+            </div>
+          </Card>
+        </div>
+        );
+      })()}
 
       {/* COPPA — standings tab */}
       {tab==="standings"&&(player.proStatus||"u18")==="pro"&&player.cup&&(
@@ -7043,7 +7151,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
           {player.contract&&<Card style={{padding:"12px 14px"}}>
             <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>📄 Contratto</div>
             <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:6}}>
-              {[{l:"Stipendio",v:`€${player.contract.wage||"–"}/sett.`},{l:"Durata",v:`${player.contract.duration||"–"} stagion${player.contract.duration===1?"e":"i"}`},{l:"Scade stagione",v:`S.${player.contract.expiresAtSeason||"–"}`},{l:"Status",v:(player.proStatus||"u18")==="u18"?"Under 18":"Professionista"}].map(s=><div key={s.l} style={{background:"#f8fafc",borderRadius:8,padding:"7px",border:"1px solid "+TH.cardBorder}}><div style={{fontSize:9,color:TH.faint,marginBottom:2}}>{s.l}</div><div style={{fontSize:12,fontWeight:700,color:TH.text}}>{s.v}</div></div>)}
+              {[{l:"Stipendio",v:player.contract.wage?`€${Math.round(player.contract.wage*52/1000*10)/10}k/anno`:"–"},{l:"Durata",v:`${player.contract.duration||"–"} stagion${player.contract.duration===1?"e":"i"}`},{l:"Scade stagione",v:`S.${player.contract.expiresAtSeason||"–"}`},{l:"Status",v:(player.proStatus||"u18")==="u18"?"Under 18":"Professionista"}].map(s=><div key={s.l} style={{background:"#f8fafc",borderRadius:8,padding:"7px",border:"1px solid "+TH.cardBorder}}><div style={{fontSize:9,color:TH.faint,marginBottom:2}}>{s.l}</div><div style={{fontSize:12,fontWeight:700,color:TH.text}}>{s.v}</div></div>)}
             </div>
           </Card>}
           <Card>
@@ -7062,7 +7170,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
               <OvrRing value={ovr} size={48}/>
             </div>
             <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:6}}>
-              {[{l:"Gol stag.",v:player.goals||0},{l:"Assist stag.",v:player.assists||0},{l:"Partite stag.",v:player.matches||0},{l:"Gol tot.",v:player.totalGoals||0},{l:"Assist tot.",v:player.totalAssists||0},{l:"Valore",v:`${player.value||0.8}M€`}].map(s=><div key={s.l} style={{background:"#f8fafc",borderRadius:8,padding:"7px",border:"1px solid "+TH.cardBorder}}><div style={{fontSize:9,color:TH.faint,marginBottom:2}}>{s.l}</div><div style={{fontSize:14,fontWeight:700,color:TH.text}}>{s.v}</div></div>)}
+              {[{l:"Gol stag.",v:player.goals||0},{l:"Assist stag.",v:player.assists||0},{l:"Partite stag.",v:player.matches||0},{l:"Gol tot.",v:player.totalGoals||0},{l:"Assist tot.",v:player.totalAssists||0},{l:"Valore",v:`${parseFloat((player.value||0.8).toFixed(1))}M€`}].map(s=><div key={s.l} style={{background:"#f8fafc",borderRadius:8,padding:"7px",border:"1px solid "+TH.cardBorder}}><div style={{fontSize:9,color:TH.faint,marginBottom:2}}>{s.l}</div><div style={{fontSize:14,fontWeight:700,color:TH.text}}>{s.v}</div></div>)}
             </div>
             {(player.nationalCaps||0)>0&&(
               <div style={{marginTop:10,padding:"9px 12px",background:`${(NAT_DATA[player.nation||"Italia"]||{col:"#003399"}).col}18`,borderRadius:8,border:`1px solid ${(NAT_DATA[player.nation||"Italia"]||{col:"#003399"}).col}40`,display:"flex",alignItems:"center",gap:10}}>
