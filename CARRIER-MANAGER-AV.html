@@ -803,7 +803,7 @@ function generateProContracts(player){
   }
   return{offers,forced,perf:Math.round(perf*10)/10};
 }
-const GAME_VERSION="1.0.0";
+const GAME_VERSION="1.0.1";
 const SAVE_VERSION=5;
 const SLOT_KEYS=["cpm-v3","cpm-v3-s2","cpm-v3-s3"]; // slot 0 backward-compatible
 const storage={
@@ -4820,7 +4820,9 @@ function TrialFlow({player:initPlayer,onComplete}){
 function AISettingsCard({player}){
   const[key,setKey]=useState(()=>localStorage.getItem("cpm-api-key")||"");
   const[mock,setMock]=useState(()=>localStorage.getItem("cpm-ai-mock")==="true");
+  const[renderer,setRenderer]=useState(()=>localStorage.getItem("cpm-renderer")||"classic");
   const[saved,setSaved]=useState(false);
+  const toggleRenderer=()=>{const next=renderer==="classic"?"phaser":"classic";localStorage.setItem("cpm-renderer",next);setRenderer(next);};
   const saveKey=()=>{
     localStorage.setItem("cpm-api-key",key.trim());
     setSaved(true);setTimeout(()=>setSaved(false),2000);
@@ -4847,6 +4849,13 @@ function AISettingsCard({player}){
           <div style={{fontSize:10,color:TH.faint}}>Risposte simulate (test senza API)</div>
         </div>
         <button onClick={toggleMock} style={{padding:"5px 14px",borderRadius:20,border:"none",background:mock?"#dcfce7":TH.cardBorder,color:mock?TH.success:TH.muted,fontWeight:700,cursor:"pointer",fontSize:11,fontFamily:"inherit"}}>{mock?"ON":"OFF"}</button>
+      </div>
+      <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"8px 0",borderTop:"1px solid "+TH.cardBorder}}>
+        <div>
+          <div style={{fontSize:11,color:TH.text,fontWeight:600}}>Renderer Partita</div>
+          <div style={{fontSize:10,color:TH.faint}}>{renderer==="phaser"?"11v11 Phaser · simulazione arcade":"Canvas 2D · sistema highlight interattivo"}</div>
+        </div>
+        <button onClick={toggleRenderer} style={{padding:"5px 14px",borderRadius:20,border:"none",background:renderer==="phaser"?"#dbeafe":TH.cardBorder,color:renderer==="phaser"?TH.primary:TH.muted,fontWeight:700,cursor:"pointer",fontSize:11,fontFamily:"inherit"}}>{renderer==="phaser"?"Phaser":"Classic"}</button>
       </div>
       {player&&player.aiData?.lastOpponentTactic&&(
         <div style={{marginTop:8,padding:"8px 10px",background:"#f8fafc",borderRadius:8,border:"1px solid "+TH.cardBorder}}>
@@ -5254,12 +5263,19 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
     </div>
   );
 
-  if(screen==="match"&&matchOpp)return(
-    <div style={{width:"100%"}}>
-      <button onClick={()=>{setScreen("dashboard");setTab("dashboard");}} style={{background:"none",border:"none",color:TH.muted,cursor:"pointer",fontSize:13,marginBottom:8,display:"flex",alignItems:"center",gap:6}}>← Carriera</button>
-      <LiveMatch player={player} opponent={matchOpp} context="career" onMatchEnd={onMatchEnd}/>
-    </div>
-  );
+  if(screen==="match"&&matchOpp){
+    const usePhaserRenderer=localStorage.getItem("cpm-renderer")==="phaser";
+    const phaserMatchEnd=stats=>onMatchEnd({goals:stats.playerGoals||stats.goals||0,assists:stats.playerAssists||stats.assists||0,homeScore:stats.squadAGoals,awayScore:stats.squadBGoals,won:stats.result==="WIN",drew:stats.result==="DRAW",opponent:matchOpp?.name||matchOpp?.n,oppAbbr:matchOpp?.a||matchOpp?.abbr,oppCol:matchOpp?.col||matchOpp?.c,rating:stats.rating,context:"career",oppTactic:null,scoutReport:null});
+    return(
+      <div style={{width:"100%"}}>
+        <button onClick={()=>{setScreen("dashboard");setTab("dashboard");}} style={{background:"none",border:"none",color:TH.muted,cursor:"pointer",fontSize:13,marginBottom:8,display:"flex",alignItems:"center",gap:6}}>← Carriera</button>
+        {usePhaserRenderer
+          ?<FootballMatch2D playerData={player} squadAColor={player.club?.col||player.club?.c||"#22c55e"} squadBColor={matchOpp?.col||matchOpp?.c||"#ef4444"} duration={300} onMatchEnd={phaserMatchEnd}/>
+          :<LiveMatch player={player} opponent={matchOpp} context="career" onMatchEnd={onMatchEnd}/>
+        }
+      </div>
+    );
+  }
 
   if(screen==="press"&&lastPressReport){
     return <div style={{width:"100%"}}><PressScreen report={lastPressReport} matchResult={lastMatch} onClose={()=>setScreen("dashboard")}/></div>;
