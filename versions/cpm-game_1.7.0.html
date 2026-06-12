@@ -833,36 +833,8 @@ function generateSeasonObjectives(player){
   objs.push({type:"standing",target:standT,label:`Finisci nei primi ${standT}`,bonus:{popularity:15,value:0.25}});
   return objs;
 }
-const GAME_VERSION="2.0.0";
+const GAME_VERSION="1.7.0";
 const SAVE_VERSION=5;
-// Sprint 11 — S11.1 Coach data
-const COACH_NAMES=["Rossi","Ferrari","Bianchi","Conti","Greco","Mancini","Pirlo","Gattuso","Capello","De Zerbi","Allegri","Conte","Spalletti","Inzaghi","Sarri","Mihajlovic"];
-const COACH_STYLES=[
-  {style:"Offensivo",trustMod:+5,desc:"Ama i gol, premia chi attacca"},
-  {style:"Difensivo",trustMod:-5,desc:"Rigore tattico, esige sacrificio"},
-  {style:"Bilanciato",trustMod:0,desc:"Equilibrio tra fase e creatività"},
-  {style:"Pressing",trustMod:+3,desc:"Alta intensità, fisico essenziale"},
-  {style:"Contropiede",trustMod:-3,desc:"Efficienza sopra la brillantezza"},
-  {style:"Possesso Palla",trustMod:+8,desc:"Valorizza tecnica e visione"},
-];
-// Sprint 11 — S11.4 Derby database
-const DERBIES={
-  "juve-inter":{name:"Derby d'Italia",e:"⚡"},"inter-juve":{name:"Derby d'Italia",e:"⚡"},
-  "milan-inter":{name:"Derby di Milano",e:"🔴"},"inter-milan":{name:"Derby di Milano",e:"🔴"},
-  "roma-lazio":{name:"Derby della Capitale",e:"🐺"},"lazio-roma":{name:"Derby della Capitale",e:"🐺"},
-  "juve-tor":{name:"Derby di Torino",e:"🏔️"},"tor-juve":{name:"Derby di Torino",e:"🏔️"},
-  "napoli-roma":{name:"Derby del Sole",e:"☀️"},"roma-napoli":{name:"Derby del Sole",e:"☀️"},
-  "rma-bar":{name:"El Clásico",e:"👑"},"bar-rma":{name:"El Clásico",e:"👑"},
-  "rma-atm":{name:"Derbi Madrileño",e:"🌆"},"atm-rma":{name:"Derbi Madrileño",e:"🌆"},
-  "mun-mcy":{name:"Manchester Derby",e:"🌹"},"mcy-mun":{name:"Manchester Derby",e:"🌹"},
-  "mun-liv":{name:"North-West Derby",e:"🥀"},"liv-mun":{name:"North-West Derby",e:"🥀"},
-  "ars-tot":{name:"North London Derby",e:"🔫"},"tot-ars":{name:"North London Derby",e:"🔫"},
-  "bay-bvb":{name:"Der Klassiker",e:"🦁"},"bvb-bay":{name:"Der Klassiker",e:"🦁"},
-  "psg-marse":{name:"Le Classique",e:"🗼"},"marse-psg":{name:"Le Classique",e:"🗼"},
-  "gal-fenk":{name:"Istanbul Derby",e:"🌙"},"fenk-gal":{name:"Istanbul Derby",e:"🌙"},
-  "ajax-feye":{name:"De Klassieker",e:"🌷"},"feye-ajax":{name:"De Klassieker",e:"🌷"},
-};
-function isDerby(aId,bId){return DERBIES[`${aId}-${bId}`]||DERBIES[`${bId}-${aId}`]||null;}
 const SLOT_KEYS=["cpm-v3","cpm-v3-s2","cpm-v3-s3"]; // slot 0 backward-compatible
 const storage={
   save:async(d,slot=0)=>{
@@ -1187,10 +1159,9 @@ function generateSeasonCalendar(playerClub,leagueClubs,seed){
 function initStandings(clubs){
   return[...clubs].map(c=>({...c,played:0,wins:0,draws:0,losses:0,gf:0,ga:0,gd:0,pts:0}));
 }
-// simulate all other matches when player matchday ends; prestigeShifts = {clubId: delta}
-function updateStandings(standings,playerClubId,playerResult,prestigeShifts){
+// simulate all other matches when player matchday ends
+function updateStandings(standings,playerClubId,playerResult){
   if(!standings?.length)return[];
-  const sh=prestigeShifts||{};
   const s=standings.map(t=>({...t}));
   if(playerResult){
     const pt=s.find(t=>t.id===playerClubId||t.n===playerClubId);
@@ -1202,12 +1173,14 @@ function updateStandings(standings,playerClubId,playerResult,prestigeShifts){
   }
   const myId=playerClubId;
   const others=s.filter(t=>t.id!==myId&&t.n!==myId);
+  // If odd count, last team plays a ghost opponent (prestige 65) so all teams stay equal on matches played
   const paired=[...others];
   if(paired.length%2!==0){
     const byeTeam=paired[paired.length-1];
-    const byeP=clamp((byeTeam.p||65)+(sh[byeTeam.id||byeTeam.n]||0),30,99);
-    const diff=clamp((byeP-65)/30,-1,1);
-    const lH=clamp(1.15+diff*0.4,0.25,2.3);const lA=clamp(1.00-diff*0.35,0.20,2.1);
+    const ghostP=65;
+    const diff=clamp(((byeTeam.p||65)-ghostP)/30,-1,1);
+    const lH=clamp(1.15+diff*0.4,0.25,2.3);
+    const lA=clamp(1.00-diff*0.35,0.20,2.1);
     const bG=poissonGoals(lH),gG=poissonGoals(lA);
     byeTeam.played++;byeTeam.gf+=bG;byeTeam.ga+=gG;byeTeam.gd=byeTeam.gf-byeTeam.ga;
     if(bG>gG){byeTeam.wins++;byeTeam.pts+=3;}else if(bG<gG){byeTeam.losses++;}
@@ -1216,12 +1189,11 @@ function updateStandings(standings,playerClubId,playerResult,prestigeShifts){
   }
   for(let i=0;i+1<paired.length;i+=2){
     const h=paired[i],a=paired[i+1];
-    const hP=clamp((h.p||65)+(sh[h.id||h.n]||0),30,99);
-    const aP=clamp((a.p||65)+(sh[a.id||a.n]||0),30,99);
-    const diff=clamp((hP-aP)/30,-1,1);
+    const diff=clamp(((h.p||65)-(a.p||65))/30,-1,1);
     const lambdaH=clamp(1.15+diff*0.4,0.25,2.3);
     const lambdaA=clamp(1.00-diff*0.35,0.20,2.1);
-    const hG=poissonGoals(lambdaH);const aG=poissonGoals(lambdaA);
+    const hG=poissonGoals(lambdaH);
+    const aG=poissonGoals(lambdaA);
     h.played++;a.played++;h.gf+=hG;h.ga+=aG;h.gd=h.gf-h.ga;
     a.gf+=aG;a.ga+=hG;a.gd=a.gf-a.ga;
     if(hG>aG){h.wins++;h.pts+=3;a.losses++;}else if(hG<aG){a.wins++;a.pts+=3;h.losses++;}
@@ -1249,15 +1221,14 @@ function poissonGoals(lambda){
   do{k++;p*=Math.random();}while(p>L&&k<6);
   return Math.max(0,k-1);
 }
-// Quick simulation for skipped/missed match weeks — uses club prestige + playerOvr influence
-function simulateMatch(playerClub,opponent,playerOvr,isHome=true){
+// Quick simulation for skipped/missed match weeks — uses club prestige, not individual player OVR
+function simulateMatch(playerClub,opponent,_unused,isHome=true){
   const clubP=playerClub?.p||65;
   const oppP=opponent?.p||65;
-  const ovrBonus=clamp(((playerOvr||65)-65)/180,-0.18,0.22);
   const homeFactor=isHome?0.15:-0.15;
   const diff=clamp((clubP-oppP)/30,-1,1);
-  const lambdaH=clamp(1.15+diff*0.5+homeFactor+ovrBonus,0.25,2.4);
-  const lambdaA=clamp(1.00-diff*0.45-homeFactor-ovrBonus*0.5,0.20,2.2);
+  const lambdaH=clamp(1.15+diff*0.5+homeFactor,0.25,2.4);
+  const lambdaA=clamp(1.00-diff*0.45-homeFactor,0.20,2.2);
   const hG=poissonGoals(lambdaH);
   const aG=poissonGoals(lambdaA);
   return{homeScore:hG,awayScore:aG,won:hG>aG,drew:hG===aG,goals:0,assists:0,rating:hG>aG?6.5:hG===aG?6.0:5.5,opponent:opponent?.n||opponent?.name,oppAbbr:opponent?.a||opponent?.abbr,oppCol:opponent?.c||opponent?.col,simulated:true};
@@ -3994,11 +3965,11 @@ function ProTransitionScreen({player,onChoose}){
 /* ========================================
    SEASON END SCREEN  (Sprint 2 — B06/B05)
 ======================================== */
-function SeasonEndScreen({data,player,onNewSeason,onRetire}){
+function SeasonEndScreen({data,player,onNewSeason}){
   const{season,club,finalStandings,playerStats,champion,playerPos,isChampion}=data;
   const trophies=player.trophies||[];
   const numTeams=finalStandings?.length||18;
-  const isRelegated=playerPos>=numTeams-3;
+  const isRelegated=playerPos>=numTeams-2;
   const isPromoted=playerPos<=2;
   const bgColor=isChampion?"#fef9c3":isPromoted?"#f0fdf4":isRelegated?"#fff1f2":"#f8fafc";
   const borderColor=isChampion?"#fde68a":isPromoted?"#bbf7d0":isRelegated?"#fecaca":TH.cardBorder;
@@ -4109,12 +4080,6 @@ function SeasonEndScreen({data,player,onNewSeason,onRetire}){
         </Card>
       )}
 
-      {onRetire&&(player.age||17)>=35&&(
-        <div style={{marginBottom:8,padding:"10px 14px",borderRadius:10,background:"#fef3c7",border:"1px solid #fde68a",textAlign:"center"}}>
-          <div style={{fontSize:11,color:"#92400e",marginBottom:6}}>Hai {player.age} anni. Vuoi concludere qui la tua carriera?</div>
-          <Btn onClick={onRetire} v="danger" fw>🎽 Ritirati — Fine Carriera</Btn>
-        </div>
-      )}
       <Btn onClick={onNewSeason} v="primary" fw style={{padding:"16px",fontSize:15,marginTop:4}}>
         🆕 Inizia Stagione {season+1} →
       </Btn>
@@ -5563,125 +5528,6 @@ function NationalCallupScreen({data,onConfirm}){
 }
 
 /* ========================================
-   RETIREMENT UTILITIES + CAREER END SCREEN  (Sprint 9)
-======================================== */
-function calcLegacyScore(p){
-  const goals=p.totalGoals||0;
-  const assists=p.totalAssists||0;
-  const trophies=(p.trophies||[]).length;
-  const caps=p.nationalCaps||0;
-  const history=p.history||[];
-  const peakOvr=history.reduce((mx,h)=>Math.max(mx,h.ovr||0),p.ovr||60);
-  const seasons=Math.max(0,(p.season||1)-1);
-  let score=0;
-  score+=Math.min(goals*2,300);
-  score+=Math.min(assists,100);
-  score+=trophies*80;
-  score+=Math.min(caps*10,150);
-  score+=clamp((peakOvr-65)*5,0,150);
-  score+=Math.min(seasons*5,100);
-  return Math.round(clamp(score,0,1000));
-}
-function getLegacyGrade(score){
-  if(score>=900)return{label:"Leggenda Assoluta",e:"👑",color:"#7c3aed"};
-  if(score>=750)return{label:"Campione",e:"🏆",color:"#b45309"};
-  if(score>=600)return{label:"Professionista Eccellente",e:"⭐",color:"#0369a1"};
-  if(score>=400)return{label:"Onesta Carriera",e:"✅",color:"#16a34a"};
-  if(score>=200)return{label:"Carriera Solida",e:"💪",color:"#4b5563"};
-  return{label:"Inizio Promettente",e:"🌱",color:"#6b7280"};
-}
-function generateRetirementBio(p,legacyScore){
-  const name=p.name||"Il giocatore";
-  const seasons=Math.max(0,(p.season||1)-1);
-  const goals=p.totalGoals||0;
-  const matches=p.totalMatches||0;
-  const trophies=(p.trophies||[]).length;
-  const caps=p.nationalCaps||0;
-  const clubs=[...new Set((p.history||[]).map(h=>h.club).filter(Boolean))];
-  const lastClub=p.club?.n||clubs[clubs.length-1]||"–";
-  const grade=getLegacyGrade(legacyScore);
-  let bio=`${name} ha disputato ${seasons} stagioni da professionista, realizzando ${goals} gol in ${matches} presenze.`;
-  if(trophies>0)bio+=` Ha conquistato ${trophies} titolo${trophies>1?"":""}${trophies>1?" istituzionali":"istituzionale"}.`;
-  if(caps>0)bio+=` ${caps} cap${caps>1?"s":""} con la Nazionale.`;
-  if(clubs.length>1)bio+=` Ha vestito la maglia di ${clubs.slice(-3).join(", ")}.`;
-  bio+=` Ultima squadra: ${lastClub}. Legacy score: ${legacyScore} — "${grade.label}".`;
-  return bio;
-}
-
-function CareerEndScreen({retData,onNewGame}){
-  const{player:p,legacyScore}=retData;
-  const grade=getLegacyGrade(legacyScore);
-  const bio=generateRetirementBio(p,legacyScore);
-  const trophies=p.trophies||[];
-  const history=p.history||[];
-  const bestSeason=history.reduce((best,h)=>(!best||h.goals>best.goals)?h:best,null);
-  const clubs=[...new Set(history.map(h=>h.club).filter(Boolean))];
-  const pct=Math.round((legacyScore/1000)*100);
-  return(
-    <div style={{width:"100%",paddingBottom:40}}>
-      <div style={{textAlign:"center",padding:"24px 16px 16px"}}>
-        <div style={{fontSize:52,marginBottom:8}}>🎽</div>
-        <h1 style={{fontSize:22,fontWeight:900,margin:"0 0 4px",color:TH.text}}>Fine Carriera</h1>
-        <p style={{fontSize:13,color:TH.muted,margin:0}}>{p.name} · {p.age} anni</p>
-      </div>
-
-      <Card style={{marginBottom:12,padding:"16px",textAlign:"center"}} bg={grade.color+"11"} border={grade.color+"44"}>
-        <div style={{fontSize:32,marginBottom:4}}>{grade.e}</div>
-        <div style={{fontSize:16,fontWeight:900,color:grade.color,marginBottom:6}}>{grade.label}</div>
-        <div style={{fontSize:11,color:TH.muted,marginBottom:10}}>Legacy Score: {legacyScore} / 1000</div>
-        <div style={{background:TH.cardBorder,borderRadius:10,height:8,overflow:"hidden",marginBottom:4}}>
-          <div style={{width:`${pct}%`,height:"100%",background:grade.color,borderRadius:10,transition:"width 1s"}}/>
-        </div>
-      </Card>
-
-      <Card style={{marginBottom:12,padding:"14px 16px"}}>
-        <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:10}}>📊 Statistiche Carriera</div>
-        <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:8,textAlign:"center",marginBottom:10}}>
-          {[{l:"Stagioni",v:Math.max(0,(p.season||1)-1),e:"📅"},{l:"Partite",v:p.totalMatches||0,e:"🎮"},{l:"Gol",v:p.totalGoals||0,e:"⚽"},{l:"Assist",v:p.totalAssists||0,e:"🎯"},{l:"Trofei",v:trophies.length,e:"🏆"},{l:"Caps",v:p.nationalCaps||0,e:"🌍"}].map(s=>(
-            <div key={s.l} style={{background:TH.bg,borderRadius:8,padding:"8px 4px"}}>
-              <div style={{fontSize:18}}>{s.e}</div>
-              <div style={{fontSize:20,fontWeight:900,color:TH.text}}>{s.v}</div>
-              <div style={{fontSize:9,color:TH.muted}}>{s.l}</div>
-            </div>
-          ))}
-        </div>
-        {bestSeason&&<div style={{background:"#fef9c3",borderRadius:8,padding:"8px 10px",fontSize:11,color:"#78350f"}}>⭐ Miglior stagione: S.{bestSeason.season} con {bestSeason.goals} gol · OVR {bestSeason.ovr}</div>}
-      </Card>
-
-      {clubs.length>0&&(
-        <Card style={{marginBottom:12,padding:"12px 14px"}}>
-          <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>🏟️ Club della Carriera</div>
-          <div style={{display:"flex",flexWrap:"wrap",gap:6}}>
-            {clubs.map((c,i)=><div key={i} style={{padding:"4px 10px",borderRadius:20,background:TH.bg,border:`1px solid ${TH.cardBorder}`,fontSize:10,color:TH.text}}>{c}</div>)}
-          </div>
-        </Card>
-      )}
-
-      {trophies.length>0&&(
-        <Card style={{marginBottom:12,padding:"12px 14px"}}>
-          <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>🏆 Albo d'Oro</div>
-          {trophies.map((t,i)=>(
-            <div key={i} style={{display:"flex",alignItems:"center",gap:8,padding:"4px 0",borderBottom:i<trophies.length-1?"1px solid "+TH.cardBorder:"none"}}>
-              <span style={{fontSize:16}}>🏆</span>
-              <div><div style={{fontSize:11,fontWeight:700,color:TH.text}}>S.{t.season} · {t.club}</div><div style={{fontSize:10,color:TH.muted}}>{t.league}</div></div>
-            </div>
-          ))}
-        </Card>
-      )}
-
-      <Card style={{marginBottom:16,padding:"14px 16px"}}>
-        <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>📖 Biografia</div>
-        <p style={{fontSize:11,color:TH.text,lineHeight:1.6,margin:0}}>{bio}</p>
-      </Card>
-
-      <Btn onClick={onNewGame} v="primary" fw style={{padding:"16px",fontSize:15}}>
-        🏠 Torna al Menu Principale
-      </Btn>
-    </div>
-  );
-}
-
-/* ========================================
    CAREER APP  (req #9,#10,#12,#13,#14)
 ======================================== */
 function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
@@ -5732,18 +5578,6 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
       newP={...newP,nationalCaps:0,lastNationalSeason:0};
       changed=true;
     }
-    if(!('clubPrestigeShifts' in newP)){
-      newP={...newP,clubPrestigeShifts:{}};
-      changed=true;
-    }
-    if(!('cup' in newP)){
-      newP={...newP,cup:null};
-      changed=true;
-    }
-    if(!('coach' in newP)){
-      newP={...newP,coach:{name:"Mister "+pick(COACH_NAMES),style:"Bilanciato",trustMod:0}};
-      changed=true;
-    }
     if(changed){setPlayer(newP);}
   },[]);// eslint-disable-line
   const[notif,setNotif]=useState(null);
@@ -5754,8 +5588,6 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
   const[showMatchPrompt,setShowMatchPrompt]=useState(null); // {md} — pending match prompt
   const[lastSaved,setLastSaved]=useState(null);           // timestamp
   const[nationalCallupData,setNationalCallupData]=useState(null);
-  const[retirementData,setRetirementData]=useState(null);
-  const[currentMatchDerby,setCurrentMatchDerby]=useState(null);
 
   const notify=(msg,color=TH.primary)=>{setNotif({msg,color});setTimeout(()=>setNotif(null),2800);};
 
@@ -5874,10 +5706,6 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
     const lc=getLeagueClubs(player);
     const opp=lc.find(c=>c.id===md.opponentId)||lc.find(c=>c.n===md.opponentName)||pick(lc.filter(c=>c.id!==player.club?.id&&c.n!==player.club?.n));
     if(!opp){notify("Nessun avversario disponibile.",TH.danger);return;}
-    // S11.4: detect derby
-    const derby=isDerby(player.club?.id,opp.id||md.opponentId);
-    setCurrentMatchDerby(derby||null);
-    if(derby)setTimeout(()=>notify(`🔥 ${derby.e} ${derby.name}! Atmosfera incandescente!`,"#f59e0b"),200);
     setMatchOpp(opp);setMatchIsHome(md.isHome!==false);setScreen("match");
   };
 
@@ -5938,17 +5766,13 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
       setLastPressReport(press);
       setPlayer(p=>{
         const matchdayId=`S${p.season||1}W${p.week||1}`;
-        const allPR={...(p.aiData?.pressReports||{}),[matchdayId]:press};
-        const prKeys=Object.keys(allPR);const trimmedPR=prKeys.length>50?Object.fromEntries(prKeys.slice(-50).map(k=>[k,allPR[k]])):allPR;
-        const newAiData={...(p.aiData||{lastOpponentTactic:null,scoutReports:{},pressReports:{}}),pressReports:trimmedPR};
+        const newAiData={...(p.aiData||{lastOpponentTactic:null,scoutReports:{},pressReports:{}}),pressReports:{...(p.aiData?.pressReports||{}),[matchdayId]:press}};
         return{...p,aiData:newAiData};
       });
     });
     setPlayer(p=>{
       let ns={...p.stats};
-      // S10.5: age curve — strong growth <22, gradual 22-27, none after
-      const growthPct=p.age<22?0.30:p.age<=24?0.15:p.age<=27?0.08:0;
-      if(growthPct>0&&Math.random()<growthPct){const k=pick(Object.keys(p.stats));ns={...ns,[k]:clamp(p.stats[k]+1,1,99)};}
+      if(Math.random()<.3&&p.age<22){const k=pick(Object.keys(p.stats));ns={...ns,[k]:clamp(p.stats[k]+1,1,99)};}
       if(result.goals>1&&Math.random()<.5)ns={...ns,tiro:clamp(ns.tiro+1,1,99)};
       if(result.assists>0&&Math.random()<.4)ns={...ns,passaggio:clamp(ns.passaggio+1,1,99)};
       const newOvr=calcOvr(ns);
@@ -5956,7 +5780,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
       const logE=`⚽ vs ${result.opponent} (${result.homeScore}-${result.awayScore}) | ${result.goals}⚽ ${result.assists}🎯 | ${result.rating}★`;
       const newHistory=[...(p.matchHistory||[]),{week:p.week||1,opponent:result.opponent,oppAbbr:result.oppAbbr,oppCol:result.oppCol,homeScore:result.homeScore,awayScore:result.awayScore,goals:result.goals,assists:result.assists,rating:result.rating,won:result.won,drew:result.drew}].slice(-200);
       const clubId=p.club?.id||p.club?.n;
-      const newStandings=updateStandings(p.standings||initStandings(getLeagueClubs(p)),clubId,result,p.clubPrestigeShifts||{});
+      const newStandings=updateStandings(p.standings||initStandings(getLeagueClubs(p)),clubId,result);
       const newCal=(p.calendar||[]).map(md=>md.week===(p.week||1)&&!md.played?{...md,played:true,result:{homeScore:result.homeScore,awayScore:result.awayScore,won:result.won,drew:result.drew}}:md);
       const matchdayId=`S${p.season||1}W${p.week||1}`;
       const baseAiData=p.aiData||{lastOpponentTactic:null,scoutReports:{},pressReports:{}};
@@ -5965,8 +5789,6 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
     });
     setScreen("postmatch");setTab("dashboard");
     if(newInjured)notify(`🩹 Infortunio muscolare! Recupero: ${injuryWeeks} settiman${injuryWeeks===1?"a":"e"}.`,TH.danger);
-    // S11.4: derby win bonus
-    if(currentMatchDerby&&result.won){setTimeout(()=>notify(`🔥 ${currentMatchDerby.e||""} ${currentMatchDerby.name} VINTO! Popolarità +12!`,"#f59e0b"),600);setPlayer(p=>({...p,popularity:clamp((p.popularity||20)+12,0,100)}));}
   };
 
   // "Vivi la settimana" — applies events/form changes, does NOT advance week counter
@@ -6040,23 +5862,6 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
       return;
     }
 
-    // S10.3: pre-compute cup result (uses player closure, notification fired after setPlayer)
-    const wkNow=player.week||1;
-    const cupCheck=(()=>{
-      if(isInU18||!player.cup?.active||player.cup?.eliminated||wkNow!==player.cup?.nextWeek)return null;
-      const lc=getLeagueClubs(player);
-      const bracketClubs=(player.cup.bracket||[]).map(id=>lc.find(c=>c.id===id||c.n===id)).filter(Boolean);
-      const opponents=bracketClubs.filter(c=>c.id!==player.club?.id&&c.n!==player.club?.n);
-      const opp=opponents.length?pick(opponents):(lc[Math.floor(Math.random()*lc.length)]);
-      if(!opp)return null;
-      const sim=simulateMatch(player.club,opp,player.ovr||65,true);
-      const won=sim.won||(sim.drew&&Math.random()<0.55);
-      const roundNum=player.cup.round;
-      const roundNames=["","R16","Quarti","Semifinale","FINALE"];
-      const nextWeeks=[0,9,18,27,0];
-      return{won,opp,sim,roundNum,roundName:roundNames[roundNum]||`R${roundNum}`,nextWeek:won&&roundNum<4?nextWeeks[roundNum]:null,isChamp:won&&roundNum===4};
-    })();
-
     // Normal week advance
     setPlayer(p=>{
       // if this week had a scheduled unplayed match, auto-simulate it
@@ -6068,49 +5873,28 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
         if(opp){
           const sim=simulateMatch(p.club,opp,p.ovr||65,md.isHome);
           const cId=p.club?.id||p.club?.n;
-          const newSt=updateStandings(p.standings||initStandings(getLeagueClubs(p)),cId,sim,p.clubPrestigeShifts||{});
+          const newSt=updateStandings(p.standings||initStandings(getLeagueClubs(p)),cId,sim);
           const newCal=(p.calendar||[]).map(m=>m.week===(p.week||1)&&!m.played?{...m,played:true,result:{homeScore:sim.homeScore,awayScore:sim.awayScore,won:sim.won,drew:sim.drew},simulated:true}:m);
           const newHistory=[...(p.matchHistory||[]),{week:p.week||1,opponent:opp.n,oppAbbr:opp.a,oppCol:opp.c,homeScore:sim.homeScore,awayScore:sim.awayScore,goals:0,assists:0,rating:sim.rating,won:sim.won,drew:sim.drew,simulated:true}].slice(-200);
           updP={...updP,standings:newSt,calendar:newCal,matchHistory:newHistory,matches:(p.matches||0)+1,goals:p.goals,assists:p.assists,morale:clamp(p.morale+(sim.won?3:sim.drew?1:-2),0,100)};
         }
       }
-      const wk=p.week||1;
-      // S11.5: transfer windows only (summer W1-5, winter W19-23)
-      const isSummerWin=wk>=1&&wk<=5;const isWinterWin=wk>=19&&wk<=23;
-      const inWindow=p.transferListed||(isSummerWin||isWinterWin);
-      const offerProb=inWindow?(p.transferListed?0.28:0.12):0;
-      if(Math.random()<offerProb&&p.matches>=0){const offer=generateTransferOffer(p);if(offer)setTransferOffer(offer);}
-      if(wk===1)setTimeout(()=>notify("🏷️ Mercato estivo aperto! Settimane 1-5.","#0ea5e9"),200);
-      if(wk===6)setTimeout(()=>notify("🔒 Mercato estivo chiuso.","#64748b"),200);
-      if(wk===19)setTimeout(()=>notify("🏷️ Mercato invernale aperto! Settimane 19-23.","#0ea5e9"),200);
-      if(wk===24)setTimeout(()=>notify("🔒 Mercato invernale chiuso.","#64748b"),200);
-      // S9.1: random life events now fire on every advance (no weekLived guard) — random life events must fire every advance, not just once
-      if(!p.injured&&Math.random()<0.25){
+      const wk=p.week||1;const isJanuary=wk>=19&&wk<=22;
+      const offerProb=p.transferListed?(isJanuary?0.32:0.18):(isJanuary?0.15:0.08);
+      if(Math.random()<offerProb&&p.matches>3){const offer=generateTransferOffer(p);if(offer)setTransferOffer(offer);}
+      if(wk===19)setTimeout(()=>notify("🏷️ Mercato invernale aperto — più offerte in arrivo!","#0ea5e9"),100);
+      // Random weekly life event (25% chance when week not yet lived)
+      if(!p.weekLived&&!p.injured&&Math.random()<0.25){
         const re=WEEKLY_RANDOM_EVENTS[Math.floor(Math.random()*WEEKLY_RANDOM_EVENTS.length)];
         const ef=re.ef||{};
         const extras={morale:clamp((p.morale||70)+(ef.morale||0),0,100),fatigue:clamp((p.fatigue||0)+(ef.fatigue||0),0,100),form:clamp((p.form||70)+(ef.form||0),0,100),popularity:clamp((p.popularity||20)+(ef.popularity||0),0,100),coachTrust:clamp((p.coachTrust||60)+(ef.coachTrust||0),0,100),value:Math.max(0.5,(p.value||0.8)+(ef.value||0))};
         setTimeout(()=>setWeekLiveModal({event:re,changes:{morale:ef.morale||0,form:ef.form||0,fatigue:ef.fatigue||0}}),100);
         updP={...updP,...extras};
       }
-      // S10.3: apply cup state update
-      if(cupCheck){
-        const cr=cupCheck;
-        const newCupResults=[...(p.cup?.results||[]),{round:cr.roundNum,name:cr.roundName,opponent:cr.opp.n,homeScore:cr.sim.homeScore,awayScore:cr.sim.awayScore,won:cr.won}];
-        const newTrophies=cr.isChamp?[...(p.trophies||[]),{season:p.season||1,club:p.club?.n,league:"Coppa",type:"cup"}]:(p.trophies||[]);
-        updP={...updP,cup:{...p.cup,round:(p.cup?.round||1)+1,nextWeek:cr.nextWeek,eliminated:!cr.won,champion:cr.isChamp,results:newCupResults},trophies:newTrophies};
-      }
       if(p.injured&&(p.injuryWeeks||0)>0){return{...updP,week:(p.week||1)+1,weekLived:false,trainedThisWeek:false,injuryWeeks:p.injuryWeeks-1,injured:p.injuryWeeks-1>0,fatigue:Math.max(0,(p.fatigue||0)-8)};}
       return{...updP,week:(p.week||1)+1,weekLived:false,trainedThisWeek:false};
     });
     notify("⏭️ Settimana avanzata");
-    // S11.2: club crisis alert (once at week 1 per season)
-    if((player.week||1)===1){const cid=player.club?.id||player.club?.n;const cShift=(player.clubPrestigeShifts||{})[cid||""]||0;if(cid&&cShift<=-10)setTimeout(()=>notify(`⚠️ ${player.club?.n||"Il tuo club"} è in crisi! Presidenza instabile.`,"#ef4444"),1500);}
-    // S10.3: cup result notification
-    if(cupCheck){
-      const cr=cupCheck;
-      setTimeout(()=>notify(`🏆 Coppa · ${cr.roundName}: ${cr.won?"✅ PASSA":"❌ ELIMINATO"} vs ${cr.opp.n} (${cr.sim.homeScore}-${cr.sim.awayScore}${cr.sim.drew&&cr.won?" d.c.r.":""})`,cr.won?TH.success:TH.danger),900);
-      if(cr.isChamp)setTimeout(()=>notify("🏆🏆 HAI VINTO LA COPPA NAZIONALE! Straordinario!","#f59e0b"),2800);
-    }
     // ── National team call-up check ──
     if(!isInU18&&(player.popularity||0)>=55&&(player.ovr||0)>=70&&!player.injured){
       const caps=player.nationalCaps||0;
@@ -6130,19 +5914,8 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
     }
   };
 
-  const doRetire=()=>{
-    const hist={season:player.season,club:player.club?.n||player.club?.name,goals:player.goals,assists:player.assists,matches:player.matches,ovr:player.ovr};
-    const updPlayer={...player,history:[...(player.history||[]),hist].slice(-50),trophies:player.trophies||[]};
-    const score=calcLegacyScore(updPlayer);
-    setRetirementData({player:updPlayer,legacyScore:score});
-    setSeasonEndData(null);
-    setScreen("careerEnd");
-  };
-
   // new season: reset stats, advance calendar — called from SeasonEndScreen
   const doStartNewSeason=()=>{
-    const newAgePre=(player.age||17)+1;
-    if(newAgePre>=40){doRetire();return;}
     const willContractExpire=(player.contract?.duration||1)<=1;
     // Evaluate season objectives pre-reset
     const sortedSt=[...(player.standings||[])].sort((a,b)=>b.pts-a.pts||(b.gd||0)-(a.gd||0));
@@ -6161,68 +5934,16 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
       const newAge=(p.age||17)+1;
       const lc=getLeagueClubs(p);
       const newStandings=initStandings(lc);
-      const seed=(newSeason*7919+newSeason*newSeason*31)%2147483647+hashStr(p.club?.id||p.club?.n||"u18")*17;
+      const seed=newSeason*777+hashStr(p.club?.id||p.club?.n||"u18");
       const newCalendar=generateSeasonCalendar(p.club||{id:"u18",n:"U18"},lc,seed);
       const newContract={...p.contract,duration:(p.contract?.duration||1)-1,expiresAtSeason:p.contract?.expiresAtSeason||newSeason+1};
       const contractExpired=newContract.duration<=0;
       let agedStats={...p.stats};
-      // S9.4: graduated decay across all attributes, starts at 28
-      if(newAge>=28){
-        const decayP=newAge>=35?0.82:newAge>=32?0.62:newAge>=28?0.28:0;
-        const physK=['velocità','fisico'];
-        const techK=['tiro','tecnica','dribbling','posizionamento'];
-        if(Math.random()<decayP){const dk=newAge>=31?(Math.random()<0.6?pick(physK):pick(techK)):pick(physK);agedStats={...agedStats,[dk]:clamp((agedStats[dk]||70)-1,1,99)};}
-        if(newAge>=35&&Math.random()<0.45){const dk2=pick(['velocità','fisico','tecnica','dribbling']);agedStats={...agedStats,[dk2]:clamp((agedStats[dk2]||70)-1,1,99)};}
-      }
+      if(newAge>=31&&Math.random()<0.6){const dk=Math.random()<0.5?'velocità':'fisico';agedStats={...agedStats,[dk]:clamp(agedStats[dk]-1,1,99)};}
       const newOvr=calcOvr(agedStats);
-      const agingLog=newAge>=28&&newOvr<(p.ovr||60)?`📉 Età ${newAge}: calo fisico`:`🎂 ${newAge} anni — stagione ${newSeason} inizia`;
+      const agingLog=newAge>=31&&newOvr<(p.ovr||60)?`📉 Età ${newAge}: leggero calo fisico`:`🎂 ${newAge} anni — stagione ${newSeason} inizia`;
       const newObjectives=generateSeasonObjectives({...p,ovr:newOvr});
-      const prevHist={season:p.season,club:p.club?.n||p.club?.name,goals:p.goals||0,assists:p.assists||0,matches:p.matches||0,ovr:p.ovr||60};
-      // S10.1: compute prestige shifts based on final standings
-      const sortedForShifts=[...(p.standings||[])].sort((a,b)=>b.pts-a.pts||b.gd-a.gd||b.gf-a.gf);
-      const nT=sortedForShifts.length;
-      const prevShifts=p.clubPrestigeShifts||{};
-      const updatedShifts={...prevShifts};
-      sortedForShifts.forEach((t,i)=>{
-        const ck=t.id||t.n;const cur=prevShifts[ck]||0;
-        let delta=0;
-        if(i===0)delta=4;else if(i<3)delta=2;else if(i<6)delta=1;
-        else if(i>=nT-3)delta=-5;else if(i>=nT-6)delta=-2;
-        else delta=Math.random()<0.25?(Math.random()<0.5?1:-1):0;
-        updatedShifts[ck]=clamp(cur+delta,-15,15);
-      });
-      // S10.2: detect relegation (bottom 3) for player's club
-      const playerClubRelegated=nT>0&&(p.club?.id||p.club?.n)&&sortedForShifts.findIndex(t=>t.id===(p.club?.id||p.club?.n)||t.n===(p.club?.n||p.club?.id))>=nT-3;
-      // S11.1: coach change (20% per season)
-      let newCoach=p.coach||{name:"Mister "+pick(COACH_NAMES),style:"Bilanciato",trustMod:0};
-      const coachChanged=Math.random()<0.20;
-      if(coachChanged){
-        const cs=pick(COACH_STYLES);
-        newCoach={name:"Mister "+pick(COACH_NAMES),style:cs.style,trustMod:cs.trustMod};
-      }
-      // S11.3: emerging club every 5 seasons
-      if(newSeason%5===0&&nT>0){
-        const midClubs=sortedForShifts.filter((_,i)=>i>=4&&i<=nT-5);
-        if(midClubs.length){
-          const rising=pick(midClubs);const rk=rising.id||rising.n;
-          updatedShifts[rk]=clamp((updatedShifts[rk]||0)+12,-15,20);
-        }
-      }
-      // S11.6: generational phenomenon every 8 seasons
-      const phenomNames=["E. Santos","K. Müller","A. Diallo","T. Nakamura","R. Alvarez","M. Okafor","F. Dupont","L. Costa"];
-      const isPhenomSeason=(newSeason%8===0||newSeason%8===1)&&Math.random()<0.45;
-      // S10.3: initialize Coppa Nazionale for pro players
-      let newCup=null;
-      if((p.proStatus||"u18")==="pro"&&p.club){
-        const lcAll=lc.length?lc:getLeagueClubs(p);
-        const cupTeams=shuffle([...lcAll]).slice(0,Math.min(16,lcAll.length));
-        if(!cupTeams.some(t=>t.id===p.club?.id||t.n===p.club?.n))cupTeams[0]=p.club;
-        newCup={active:true,round:1,nextWeek:9,eliminated:false,champion:false,results:[],bracket:cupTeams.map(t=>t.id||t.n)};
-      }
-      const coachLog=coachChanged?`🧑‍💼 Nuovo allenatore: ${newCoach.name} (${newCoach.style})`:null;
-      const phenomLog=isPhenomSeason?`⚡ Fenomeno generazionale annunciato!`:null;
-      const relegLog=playerClubRelegated?`⬇️ Club retrocesso: calo prestige e morale`:null;
-      return{...p,season:newSeason,age:newAge,week:1,weekLived:false,goals:0,assists:0,matches:0,fatigue:0,skillPoints:(p.skillPoints||0)+2,stats:agedStats,ovr:newOvr,contract:newContract,contractExpired,morale:clamp((p.morale||70)+bonM+(playerClubRelegated?-10:0),0,100),coachTrust:clamp((p.coachTrust||60)+bonCT+(playerClubRelegated?-8:0)+(coachChanged?newCoach.trustMod:0),0,100),popularity:clamp((p.popularity||20)+bonPop,0,100),value:Math.max(0.5,(p.value||0.8)+bonVal+(playerClubRelegated?-0.3:0)),log:[agingLog,...objLogs,...[coachLog,phenomLog,relegLog].filter(Boolean),...(p.log||[])].slice(0,60),standings:newStandings,calendar:newCalendar,matchHistory:[],seasonObjectives:newObjectives,history:[...(p.history||[]),prevHist].slice(-50),clubPrestigeShifts:updatedShifts,cup:newCup,coach:newCoach};
+      return{...p,season:newSeason,age:newAge,week:1,weekLived:false,goals:0,assists:0,matches:0,fatigue:0,skillPoints:(p.skillPoints||0)+2,stats:agedStats,ovr:newOvr,contract:newContract,contractExpired,morale:clamp((p.morale||70)+bonM,0,100),coachTrust:clamp((p.coachTrust||60)+bonCT,0,100),popularity:clamp((p.popularity||20)+bonPop,0,100),value:Math.max(0.5,(p.value||0.8)+bonVal),log:[agingLog,...objLogs,...(p.log||[])].slice(0,60),standings:newStandings,calendar:newCalendar,matchHistory:[],seasonObjectives:newObjectives};
     });
     setSeasonEndData(null);
     setScreen("dashboard");
@@ -6231,8 +5952,6 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
       notify("🆕 Nuova stagione iniziata!",TH.success);
       if(objLogs.length)setTimeout(()=>notify(objLogs.join(" · "),objLogs.every(m=>m.startsWith("✅"))?TH.success:TH.warning),1400);
       if(willContractExpire)setTimeout(()=>notify("📋 Contratto scaduto! Rinnova o cerca un nuovo club.",TH.warning),3200);
-      if(coachChanged)setTimeout(()=>notify(`🧑‍💼 Cambio panchina: ${newCoach.name} (${newCoach.style})`,TH.warning),2400);
-      if(isPhenomSeason)setTimeout(()=>notify("⚡ Un nuovo fenomeno generazionale sta emergendo nel calcio mondiale!","#7c3aed"),4000);
     },200);
   };
 
@@ -6245,7 +5964,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
       const _lc0=offer.isStayU18?[]:CLUBS.filter(c=>c.lg===offer.club?.lg);
       const lc=offer.isStayU18?getLeagueClubs(p):(_lc0.length>=4?_lc0:getLeagueClubs({...p,club:offer.club,proStatus:"pro"}));
       const newStandings=initStandings(lc.length?lc:getLeagueClubs(p));
-      const seed=(newSeason*7919+newSeason*newSeason*31)%2147483647+hashStr(targetClub?.id||targetClub?.n||"u18")*17;
+      const seed=newSeason*777+hashStr(targetClub?.id||targetClub?.n||"u18");
       const newCalendar=generateSeasonCalendar(targetClub||{id:"u18",n:"U18"},lc.length?lc:getLeagueClubs(p),seed);
       const base={...p,week:1,weekLived:false,season:newSeason,age:newAge,goals:0,assists:0,matches:0,matchHistory:[],fatigue:clamp((p.fatigue||0)-30,0,100),skillPoints:(p.skillPoints||0)+2,morale:clamp((p.morale||70)+(offer.moralBonus||0),0,100),contract:{duration:offer.duration||1,wage:offer.wage||500,expiresAtSeason:newSeason+(offer.duration||1)},standings:newStandings,calendar:newCalendar,seasonObjectives:generateSeasonObjectives({...p,club:targetClub})};
       if(offer.isStayU18){
@@ -6287,16 +6006,13 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
       const lc2=CLUBS.filter(c=>c.nat===tc.club.nat);
       const lcs=lc.length>=4?lc:lc2.length>=4?lc2:CLUBS.slice(0,16);
       const newStandings=initStandings(lcs);
-      const _s=(p.season||1);const seed=(_s*7919+_s*_s*31)%2147483647+hashStr(tc.club.id||tc.club.n||"x")*17;
+      const seed=(p.season||1)*777+hashStr(tc.club.id||tc.club.n||"x");
       const newCalendar=generateSeasonCalendar(newClub,lcs,seed);
       return{...p,club:newClub,isU18:false,proStatus:"pro",contractExpired:false,transferListed:false,morale:clamp(p.morale+(tc.moralBonus||10),0,100),offerHistory:[...(p.offerHistory||[]),{club:tc.club.n,type:tc.type,season:p.season,accepted:true}],log:[`🔄 ${tc.type}: ${tc.club.n} (${tc.club.lg||tc.club.nat})!`,...(p.log||[])].slice(0,60),standings:newStandings,calendar:newCalendar};
     });
     setTransferOffer(null);
     setPresentationData({club:tc.club,contractType:tc.type,playerName:player.name});
     setScreen("clubPresentation");
-    // S11.7: record transfer bonus (OVR≥85 to prestige≥90 club)
-    const isRecordTransfer=(player.ovr||65)>=85&&(tc.club?.p||0)>=90;
-    if(isRecordTransfer){setTimeout(()=>notify(`🌟 TRASFERIMENTO RECORD! Popolarità e valore alle stelle!`,"#f59e0b"),800);setPlayer(p=>({...p,popularity:clamp((p.popularity||20)+20,0,100),value:Math.min((p.value||1)*1.5,50)}));}
   };
 
   const ovr=player.ovr||calcOvr(player.stats),week=player.week||1,season=player.season||1;
@@ -6307,15 +6023,9 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
     </div>
   );
 
-  if(screen==="careerEnd"&&retirementData)return(
-    <div style={{width:"100%"}}>
-      <CareerEndScreen retData={retirementData} onNewGame={()=>window.location.reload()}/>
-    </div>
-  );
-
   if(screen==="seasonEnd"&&seasonEndData)return(
     <div style={{width:"100%"}}>
-      <SeasonEndScreen data={seasonEndData} player={player} onNewSeason={doStartNewSeason} onRetire={(player.age||17)>=35?doRetire:undefined}/>
+      <SeasonEndScreen data={seasonEndData} player={player} onNewSeason={doStartNewSeason}/>
     </div>
   );
 
@@ -6393,7 +6103,6 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
             <div style={{fontSize:13,color:TH.muted,marginBottom:6}}>
               {showMatchPrompt.isHome?"🏟️ Casa":"✈️ Trasferta"} · {showMatchPrompt.opponentName}
             </div>
-            {isDerby(player.club?.id,showMatchPrompt.opponentId)&&<div style={{fontSize:12,fontWeight:700,color:"#f59e0b",background:"rgba(245,158,11,0.12)",borderRadius:8,padding:"4px 12px",marginBottom:8,display:"inline-block"}}>{isDerby(player.club?.id,showMatchPrompt.opponentId).e} {isDerby(player.club?.id,showMatchPrompt.opponentId).name}</div>}
             <div style={{fontSize:11,color:TH.faint,marginBottom:18}}>W.{player.week||1} — cosa vuoi fare?</div>
             <div style={{display:"flex",flexDirection:"column",gap:10}}>
               <Btn onClick={()=>{setShowMatchPrompt(null);startMatch();}} v="green" fw style={{padding:"14px",fontSize:14}}>
@@ -6476,7 +6185,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
         <Card bg="#fef3c7" border="#f59e0b" style={{marginBottom:8,padding:"12px 14px"}}>
           <div style={{fontSize:11,fontWeight:700,color:"#92400e",marginBottom:4}}>📋 Contratto scaduto — sei svincolato</div>
           <div style={{fontSize:11,color:"#78350f",marginBottom:8}}>Rinnova con il tuo club o aspetta un'offerta dal mercato.</div>
-          <Btn onClick={()=>{const growthMult=(player.goals||0)>10?1.15:(player.goals||0)>5?1.05:0.95;const rawWage=Math.round((player.contract?.wage||500)*growthMult);const ovrCap=Math.round((player.ovr||65)*220);const renewWage=clamp(rawWage,300,Math.min(ovrCap,20000));setTransferOffer({club:player.club,type:"Rinnovo contratto",isRenewal:true,minutaggio:player.ovr>=75?80:60,wage:renewWage,duration:rng(1,3),moralBonus:5,growthBonus:5});}} v="primary" fw>Rinnova contratto</Btn>
+          <Btn onClick={()=>{const renewWage=clamp(Math.round((player.contract?.wage||500)*((player.goals||0)>10?1.15:(player.goals||0)>5?1.05:0.9)),300,50000);setTransferOffer({club:player.club,type:"Rinnovo contratto",isRenewal:true,minutaggio:player.ovr>=75?80:60,wage:renewWage,duration:rng(1,3),moralBonus:5,growthBonus:5});}} v="primary" fw>Rinnova contratto</Btn>
         </Card>
       )}
       {/* Transfer listed banner / request */}
@@ -6716,31 +6425,6 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
               </tbody>
             </table>
           </div>
-        </Card>
-      )}
-
-      {/* COPPA — standings tab */}
-      {tab==="standings"&&(player.proStatus||"u18")==="pro"&&player.cup&&(
-        <Card style={{marginTop:8}}>
-          <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>🏆 Coppa Nazionale — S.{season}</div>
-          {player.cup.eliminated?(
-            <div style={{fontSize:11,color:TH.danger}}>❌ Eliminato al {["","R16","Quarti","Semifinale","Finale"][player.cup.round-1]||`Round ${player.cup.round-1}`}</div>
-          ):player.cup.champion?(
-            <div style={{fontSize:12,fontWeight:700,color:"#f59e0b"}}>🏆🏆 CAMPIONE DI COPPA!</div>
-          ):(
-            <div style={{fontSize:11,color:TH.primary}}>⚽ In gara · prossimo turno: settimana {player.cup.nextWeek||"–"}</div>
-          )}
-          {(player.cup.results||[]).length>0&&(
-            <div style={{marginTop:8}}>
-              {player.cup.results.map((r,i)=>(
-                <div key={i} style={{display:"flex",gap:8,alignItems:"center",padding:"4px 0",borderTop:"1px solid "+TH.cardBorder,fontSize:10}}>
-                  <span style={{color:TH.faint,minWidth:60}}>{r.name}</span>
-                  <span style={{flex:1,color:TH.text}}>{r.opponent}</span>
-                  <span style={{fontWeight:700,color:r.won?TH.success:TH.danger}}>{r.homeScore}-{r.awayScore} {r.won?"✅":"❌"}</span>
-                </div>
-              ))}
-            </div>
-          )}
         </Card>
       )}
 
@@ -7099,45 +6783,6 @@ function App(){
   if(phase==="career"&&player)return wrap(<CareerApp player={player} currentSlot={currentSlot} onRefreshSlots={refreshSlots}/>);
   return wrap(<div style={{textAlign:"center",color:TH.faint}}>Stato non riconosciuto.</div>);
 }
-
-// S10.4 — Dev 50-season headless simulation (run in browser console: runCPMTest50())
-window.runCPMTest50=function(verbose=false){
-  let p={name:"TestPlayer",age:17,season:1,week:1,weekLived:false,proStatus:"pro",ovr:70,goals:0,assists:0,matches:0,totalGoals:0,totalAssists:0,totalMatches:0,morale:70,fatigue:0,form:70,popularity:30,coachTrust:60,value:1.2,skillPoints:2,trophies:[],nationalCaps:0,lastNationalSeason:0,clubPrestigeShifts:{},cup:null,contract:{duration:2,wage:800,expiresAtSeason:3},stats:{velocità:72,tecnica:70,fisico:68,mentalità:68,tiro:74,passaggio:65,dribbling:70,posizionamento:70},club:{id:"juve",n:"Juventus",a:"JUV",p:95,c:"#000",c2:"#fff",nat:"🇮🇹",lg:"Serie A"},history:[],matchHistory:[],log:[],seasonObjectives:[],aiData:{pressReports:{},scoutReports:{},lastOpponentTactic:null}};
-  const lc=CLUBS.filter(c=>c.lg==="Serie A");
-  p.standings=initStandings(lc);p.calendar=generateSeasonCalendar(p.club,lc,p.season*7919);p.seasonObjectives=generateSeasonObjectives(p);
-  const anomalies=[];const log=[];
-  for(let s=1;s<=50;s++){
-    p.season=s;p.week=1;p.goals=0;p.assists=0;p.matches=0;
-    for(let w=1;w<=38;w++){
-      p.week=w;
-      const md=(p.calendar||[]).find(m=>m.week===w&&!m.played);
-      if(md){
-        const opp=lc.find(c=>c.id===md.opponentId)||lc[0];
-        const sim=simulateMatch(p.club,opp,p.ovr,md.isHome);
-        p.goals+=sim.won?rng(0,2):0;p.assists+=sim.won&&Math.random()<0.4?1:0;p.matches++;p.totalMatches++;p.totalGoals+=p.goals;
-        p.standings=updateStandings(p.standings,p.club?.id,sim,p.clubPrestigeShifts||{});
-        p.calendar=p.calendar.map(m=>m.week===w&&!m.played?{...m,played:true,result:sim}:m);
-      }
-    }
-    // Age & decay
-    p.age++;
-    if(p.age>=28){const physK=['velocità','fisico'];const techK=['tiro','tecnica','dribbling'];const decP=p.age>=35?0.82:p.age>=32?0.62:0.28;if(Math.random()<decP){const dk=p.age>=31?(Math.random()<0.6?pick(physK):pick(techK)):pick(physK);p.stats[dk]=clamp(p.stats[dk]-1,1,99);}}
-    p.ovr=calcOvr(p.stats);
-    // Checks
-    const ovrOK=p.ovr>=1&&p.ovr<=99;const ageOK=p.age<40||p.age>=40;const noNaN=!Object.values(p.stats).some(isNaN);
-    const standOK=p.standings?.length===lc.length;
-    if(!ovrOK||!noNaN||!standOK)anomalies.push({season:s,age:p.age,ovr:p.ovr,ovrOK,noNaN,standOK});
-    if(verbose||s%10===0)log.push({s,age:p.age,ovr:Math.round(p.ovr),goals:p.goals,wage:p.contract?.wage});
-    // New season
-    const seed=(s+1)*7919+(s+1)*(s+1)*31;
-    p.standings=initStandings(lc);p.calendar=generateSeasonCalendar(p.club,lc,seed);
-    p.contract={...p.contract,duration:(p.contract?.duration||1)-1};
-    if(p.age>=40){log.push({s,msg:"RITIRO CORRETTO a età "+p.age});break;}
-  }
-  console.log("=== CPM Test 50 Stagioni ===");console.table(log);
-  if(anomalies.length)console.warn("ANOMALIE:",anomalies);else console.log("✅ NESSUNA ANOMALIA RILEVATA");
-  return{log,anomalies};
-};
 
 ReactDOM.createRoot(document.getElementById('root')).render(React.createElement(App));
 requestAnimationFrame(window._hide);

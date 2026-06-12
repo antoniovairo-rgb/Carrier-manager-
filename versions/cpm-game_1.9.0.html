@@ -833,36 +833,8 @@ function generateSeasonObjectives(player){
   objs.push({type:"standing",target:standT,label:`Finisci nei primi ${standT}`,bonus:{popularity:15,value:0.25}});
   return objs;
 }
-const GAME_VERSION="2.0.0";
+const GAME_VERSION="1.9.0";
 const SAVE_VERSION=5;
-// Sprint 11 — S11.1 Coach data
-const COACH_NAMES=["Rossi","Ferrari","Bianchi","Conti","Greco","Mancini","Pirlo","Gattuso","Capello","De Zerbi","Allegri","Conte","Spalletti","Inzaghi","Sarri","Mihajlovic"];
-const COACH_STYLES=[
-  {style:"Offensivo",trustMod:+5,desc:"Ama i gol, premia chi attacca"},
-  {style:"Difensivo",trustMod:-5,desc:"Rigore tattico, esige sacrificio"},
-  {style:"Bilanciato",trustMod:0,desc:"Equilibrio tra fase e creatività"},
-  {style:"Pressing",trustMod:+3,desc:"Alta intensità, fisico essenziale"},
-  {style:"Contropiede",trustMod:-3,desc:"Efficienza sopra la brillantezza"},
-  {style:"Possesso Palla",trustMod:+8,desc:"Valorizza tecnica e visione"},
-];
-// Sprint 11 — S11.4 Derby database
-const DERBIES={
-  "juve-inter":{name:"Derby d'Italia",e:"⚡"},"inter-juve":{name:"Derby d'Italia",e:"⚡"},
-  "milan-inter":{name:"Derby di Milano",e:"🔴"},"inter-milan":{name:"Derby di Milano",e:"🔴"},
-  "roma-lazio":{name:"Derby della Capitale",e:"🐺"},"lazio-roma":{name:"Derby della Capitale",e:"🐺"},
-  "juve-tor":{name:"Derby di Torino",e:"🏔️"},"tor-juve":{name:"Derby di Torino",e:"🏔️"},
-  "napoli-roma":{name:"Derby del Sole",e:"☀️"},"roma-napoli":{name:"Derby del Sole",e:"☀️"},
-  "rma-bar":{name:"El Clásico",e:"👑"},"bar-rma":{name:"El Clásico",e:"👑"},
-  "rma-atm":{name:"Derbi Madrileño",e:"🌆"},"atm-rma":{name:"Derbi Madrileño",e:"🌆"},
-  "mun-mcy":{name:"Manchester Derby",e:"🌹"},"mcy-mun":{name:"Manchester Derby",e:"🌹"},
-  "mun-liv":{name:"North-West Derby",e:"🥀"},"liv-mun":{name:"North-West Derby",e:"🥀"},
-  "ars-tot":{name:"North London Derby",e:"🔫"},"tot-ars":{name:"North London Derby",e:"🔫"},
-  "bay-bvb":{name:"Der Klassiker",e:"🦁"},"bvb-bay":{name:"Der Klassiker",e:"🦁"},
-  "psg-marse":{name:"Le Classique",e:"🗼"},"marse-psg":{name:"Le Classique",e:"🗼"},
-  "gal-fenk":{name:"Istanbul Derby",e:"🌙"},"fenk-gal":{name:"Istanbul Derby",e:"🌙"},
-  "ajax-feye":{name:"De Klassieker",e:"🌷"},"feye-ajax":{name:"De Klassieker",e:"🌷"},
-};
-function isDerby(aId,bId){return DERBIES[`${aId}-${bId}`]||DERBIES[`${bId}-${aId}`]||null;}
 const SLOT_KEYS=["cpm-v3","cpm-v3-s2","cpm-v3-s3"]; // slot 0 backward-compatible
 const storage={
   save:async(d,slot=0)=>{
@@ -5740,10 +5712,6 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
       newP={...newP,cup:null};
       changed=true;
     }
-    if(!('coach' in newP)){
-      newP={...newP,coach:{name:"Mister "+pick(COACH_NAMES),style:"Bilanciato",trustMod:0}};
-      changed=true;
-    }
     if(changed){setPlayer(newP);}
   },[]);// eslint-disable-line
   const[notif,setNotif]=useState(null);
@@ -5755,7 +5723,6 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
   const[lastSaved,setLastSaved]=useState(null);           // timestamp
   const[nationalCallupData,setNationalCallupData]=useState(null);
   const[retirementData,setRetirementData]=useState(null);
-  const[currentMatchDerby,setCurrentMatchDerby]=useState(null);
 
   const notify=(msg,color=TH.primary)=>{setNotif({msg,color});setTimeout(()=>setNotif(null),2800);};
 
@@ -5874,10 +5841,6 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
     const lc=getLeagueClubs(player);
     const opp=lc.find(c=>c.id===md.opponentId)||lc.find(c=>c.n===md.opponentName)||pick(lc.filter(c=>c.id!==player.club?.id&&c.n!==player.club?.n));
     if(!opp){notify("Nessun avversario disponibile.",TH.danger);return;}
-    // S11.4: detect derby
-    const derby=isDerby(player.club?.id,opp.id||md.opponentId);
-    setCurrentMatchDerby(derby||null);
-    if(derby)setTimeout(()=>notify(`🔥 ${derby.e} ${derby.name}! Atmosfera incandescente!`,"#f59e0b"),200);
     setMatchOpp(opp);setMatchIsHome(md.isHome!==false);setScreen("match");
   };
 
@@ -5965,8 +5928,6 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
     });
     setScreen("postmatch");setTab("dashboard");
     if(newInjured)notify(`🩹 Infortunio muscolare! Recupero: ${injuryWeeks} settiman${injuryWeeks===1?"a":"e"}.`,TH.danger);
-    // S11.4: derby win bonus
-    if(currentMatchDerby&&result.won){setTimeout(()=>notify(`🔥 ${currentMatchDerby.e||""} ${currentMatchDerby.name} VINTO! Popolarità +12!`,"#f59e0b"),600);setPlayer(p=>({...p,popularity:clamp((p.popularity||20)+12,0,100)}));}
   };
 
   // "Vivi la settimana" — applies events/form changes, does NOT advance week counter
@@ -6074,16 +6035,10 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
           updP={...updP,standings:newSt,calendar:newCal,matchHistory:newHistory,matches:(p.matches||0)+1,goals:p.goals,assists:p.assists,morale:clamp(p.morale+(sim.won?3:sim.drew?1:-2),0,100)};
         }
       }
-      const wk=p.week||1;
-      // S11.5: transfer windows only (summer W1-5, winter W19-23)
-      const isSummerWin=wk>=1&&wk<=5;const isWinterWin=wk>=19&&wk<=23;
-      const inWindow=p.transferListed||(isSummerWin||isWinterWin);
-      const offerProb=inWindow?(p.transferListed?0.28:0.12):0;
-      if(Math.random()<offerProb&&p.matches>=0){const offer=generateTransferOffer(p);if(offer)setTransferOffer(offer);}
-      if(wk===1)setTimeout(()=>notify("🏷️ Mercato estivo aperto! Settimane 1-5.","#0ea5e9"),200);
-      if(wk===6)setTimeout(()=>notify("🔒 Mercato estivo chiuso.","#64748b"),200);
-      if(wk===19)setTimeout(()=>notify("🏷️ Mercato invernale aperto! Settimane 19-23.","#0ea5e9"),200);
-      if(wk===24)setTimeout(()=>notify("🔒 Mercato invernale chiuso.","#64748b"),200);
+      const wk=p.week||1;const isJanuary=wk>=19&&wk<=22;
+      const offerProb=p.transferListed?(isJanuary?0.32:0.18):(isJanuary?0.15:0.08);
+      if(Math.random()<offerProb&&p.matches>3){const offer=generateTransferOffer(p);if(offer)setTransferOffer(offer);}
+      if(wk===19)setTimeout(()=>notify("🏷️ Mercato invernale aperto — più offerte in arrivo!","#0ea5e9"),100);
       // S9.1: random life events now fire on every advance (no weekLived guard) — random life events must fire every advance, not just once
       if(!p.injured&&Math.random()<0.25){
         const re=WEEKLY_RANDOM_EVENTS[Math.floor(Math.random()*WEEKLY_RANDOM_EVENTS.length)];
@@ -6103,8 +6058,6 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
       return{...updP,week:(p.week||1)+1,weekLived:false,trainedThisWeek:false};
     });
     notify("⏭️ Settimana avanzata");
-    // S11.2: club crisis alert (once at week 1 per season)
-    if((player.week||1)===1){const cid=player.club?.id||player.club?.n;const cShift=(player.clubPrestigeShifts||{})[cid||""]||0;if(cid&&cShift<=-10)setTimeout(()=>notify(`⚠️ ${player.club?.n||"Il tuo club"} è in crisi! Presidenza instabile.`,"#ef4444"),1500);}
     // S10.3: cup result notification
     if(cupCheck){
       const cr=cupCheck;
@@ -6193,24 +6146,6 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
       });
       // S10.2: detect relegation (bottom 3) for player's club
       const playerClubRelegated=nT>0&&(p.club?.id||p.club?.n)&&sortedForShifts.findIndex(t=>t.id===(p.club?.id||p.club?.n)||t.n===(p.club?.n||p.club?.id))>=nT-3;
-      // S11.1: coach change (20% per season)
-      let newCoach=p.coach||{name:"Mister "+pick(COACH_NAMES),style:"Bilanciato",trustMod:0};
-      const coachChanged=Math.random()<0.20;
-      if(coachChanged){
-        const cs=pick(COACH_STYLES);
-        newCoach={name:"Mister "+pick(COACH_NAMES),style:cs.style,trustMod:cs.trustMod};
-      }
-      // S11.3: emerging club every 5 seasons
-      if(newSeason%5===0&&nT>0){
-        const midClubs=sortedForShifts.filter((_,i)=>i>=4&&i<=nT-5);
-        if(midClubs.length){
-          const rising=pick(midClubs);const rk=rising.id||rising.n;
-          updatedShifts[rk]=clamp((updatedShifts[rk]||0)+12,-15,20);
-        }
-      }
-      // S11.6: generational phenomenon every 8 seasons
-      const phenomNames=["E. Santos","K. Müller","A. Diallo","T. Nakamura","R. Alvarez","M. Okafor","F. Dupont","L. Costa"];
-      const isPhenomSeason=(newSeason%8===0||newSeason%8===1)&&Math.random()<0.45;
       // S10.3: initialize Coppa Nazionale for pro players
       let newCup=null;
       if((p.proStatus||"u18")==="pro"&&p.club){
@@ -6219,10 +6154,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
         if(!cupTeams.some(t=>t.id===p.club?.id||t.n===p.club?.n))cupTeams[0]=p.club;
         newCup={active:true,round:1,nextWeek:9,eliminated:false,champion:false,results:[],bracket:cupTeams.map(t=>t.id||t.n)};
       }
-      const coachLog=coachChanged?`🧑‍💼 Nuovo allenatore: ${newCoach.name} (${newCoach.style})`:null;
-      const phenomLog=isPhenomSeason?`⚡ Fenomeno generazionale annunciato!`:null;
-      const relegLog=playerClubRelegated?`⬇️ Club retrocesso: calo prestige e morale`:null;
-      return{...p,season:newSeason,age:newAge,week:1,weekLived:false,goals:0,assists:0,matches:0,fatigue:0,skillPoints:(p.skillPoints||0)+2,stats:agedStats,ovr:newOvr,contract:newContract,contractExpired,morale:clamp((p.morale||70)+bonM+(playerClubRelegated?-10:0),0,100),coachTrust:clamp((p.coachTrust||60)+bonCT+(playerClubRelegated?-8:0)+(coachChanged?newCoach.trustMod:0),0,100),popularity:clamp((p.popularity||20)+bonPop,0,100),value:Math.max(0.5,(p.value||0.8)+bonVal+(playerClubRelegated?-0.3:0)),log:[agingLog,...objLogs,...[coachLog,phenomLog,relegLog].filter(Boolean),...(p.log||[])].slice(0,60),standings:newStandings,calendar:newCalendar,matchHistory:[],seasonObjectives:newObjectives,history:[...(p.history||[]),prevHist].slice(-50),clubPrestigeShifts:updatedShifts,cup:newCup,coach:newCoach};
+      return{...p,season:newSeason,age:newAge,week:1,weekLived:false,goals:0,assists:0,matches:0,fatigue:0,skillPoints:(p.skillPoints||0)+2,stats:agedStats,ovr:newOvr,contract:newContract,contractExpired,morale:clamp((p.morale||70)+bonM+(playerClubRelegated?-10:0),0,100),coachTrust:clamp((p.coachTrust||60)+bonCT+(playerClubRelegated?-8:0),0,100),popularity:clamp((p.popularity||20)+bonPop,0,100),value:Math.max(0.5,(p.value||0.8)+bonVal+(playerClubRelegated?-0.3:0)),log:[agingLog,...objLogs,...(playerClubRelegated?['⬇️ Club retrocesso: calo di prestige e morale']:['']),...(p.log||[])].filter(Boolean).slice(0,60),standings:newStandings,calendar:newCalendar,matchHistory:[],seasonObjectives:newObjectives,history:[...(p.history||[]),prevHist].slice(-50),clubPrestigeShifts:updatedShifts,cup:newCup};
     });
     setSeasonEndData(null);
     setScreen("dashboard");
@@ -6231,8 +6163,6 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
       notify("🆕 Nuova stagione iniziata!",TH.success);
       if(objLogs.length)setTimeout(()=>notify(objLogs.join(" · "),objLogs.every(m=>m.startsWith("✅"))?TH.success:TH.warning),1400);
       if(willContractExpire)setTimeout(()=>notify("📋 Contratto scaduto! Rinnova o cerca un nuovo club.",TH.warning),3200);
-      if(coachChanged)setTimeout(()=>notify(`🧑‍💼 Cambio panchina: ${newCoach.name} (${newCoach.style})`,TH.warning),2400);
-      if(isPhenomSeason)setTimeout(()=>notify("⚡ Un nuovo fenomeno generazionale sta emergendo nel calcio mondiale!","#7c3aed"),4000);
     },200);
   };
 
@@ -6294,9 +6224,6 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
     setTransferOffer(null);
     setPresentationData({club:tc.club,contractType:tc.type,playerName:player.name});
     setScreen("clubPresentation");
-    // S11.7: record transfer bonus (OVR≥85 to prestige≥90 club)
-    const isRecordTransfer=(player.ovr||65)>=85&&(tc.club?.p||0)>=90;
-    if(isRecordTransfer){setTimeout(()=>notify(`🌟 TRASFERIMENTO RECORD! Popolarità e valore alle stelle!`,"#f59e0b"),800);setPlayer(p=>({...p,popularity:clamp((p.popularity||20)+20,0,100),value:Math.min((p.value||1)*1.5,50)}));}
   };
 
   const ovr=player.ovr||calcOvr(player.stats),week=player.week||1,season=player.season||1;
@@ -6393,7 +6320,6 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
             <div style={{fontSize:13,color:TH.muted,marginBottom:6}}>
               {showMatchPrompt.isHome?"🏟️ Casa":"✈️ Trasferta"} · {showMatchPrompt.opponentName}
             </div>
-            {isDerby(player.club?.id,showMatchPrompt.opponentId)&&<div style={{fontSize:12,fontWeight:700,color:"#f59e0b",background:"rgba(245,158,11,0.12)",borderRadius:8,padding:"4px 12px",marginBottom:8,display:"inline-block"}}>{isDerby(player.club?.id,showMatchPrompt.opponentId).e} {isDerby(player.club?.id,showMatchPrompt.opponentId).name}</div>}
             <div style={{fontSize:11,color:TH.faint,marginBottom:18}}>W.{player.week||1} — cosa vuoi fare?</div>
             <div style={{display:"flex",flexDirection:"column",gap:10}}>
               <Btn onClick={()=>{setShowMatchPrompt(null);startMatch();}} v="green" fw style={{padding:"14px",fontSize:14}}>
