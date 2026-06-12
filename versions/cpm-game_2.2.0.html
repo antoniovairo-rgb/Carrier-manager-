@@ -443,82 +443,33 @@ function TeamBadge({team,size=40}) {
    WEEKLY EVENTS  (req #9)
 ======================================== */
 const WEEKLY_EVENTS=[
-  // ── TRAINING — POSITIVE ──────────────────────────────────────────────────
-  {w:12,txt:"💪 Allenamento eccellente! Il mister ti nota.",ef:{morale:10,form:6,coachTrust:8,fatigue:-6}},
-  {w:10,txt:"👏 Elogio pubblico del mister in conferenza.",ef:{morale:13,popularity:6,coachTrust:7}},
-  {w:8,txt:"🎯 Sessione tecnica perfetta. Tecnica e velocità migliorano.",ef:{tecnica:1,velocità:1,morale:5}},
-  {w:7,txt:"💊 Recupero fisico sorprendente. Energia al top.",ef:{fatigue:-22,morale:7,form:9}},
-  {w:7,txt:"⭐ Partitella straordinaria. Tutti ti guardano.",ef:{morale:10,coachTrust:7,form:7}},
-  {w:6,txt:"🏃 Lavoro specifico sulla velocità col preparatore.",ef:{velocità:1,fatigue:8}},
-  {w:6,txt:"⚽ Extra tiri in porta. Conclusioni migliorate.",ef:{tiro:1,fatigue:5}},
-  {w:5,txt:"🎯 Lavoro sui passaggi. Visione di gioco in crescita.",ef:{passaggio:1,morale:4}},
-  {w:5,txt:"💪 Palestra intensiva. Fisico più forte.",ef:{fisico:1,fatigue:14}},
-  {w:5,txt:"🧠 Sessione tattica intensa. Posizionamento migliorato.",ef:{posizionamento:1,mentalità:1}},
-  {w:7,txt:"🌀 Dribbling drill col preparatore tecnico. Piedi magici.",ef:{dribbling:1,tecnica:1,fatigue:8}},
-  {w:6,txt:"🧘 Sessione mindfulness pre-allenamento. Concentrazione alle stelle.",ef:{mentalità:1,morale:6,fatigue:-5}},
-  {w:6,txt:"🏋️ Recupero fisico stellare. Corpo come nuovo.",ef:{fatigue:-20,form:7,morale:6}},
-  {w:5,txt:"🎯 Lavoro specifico sui calci piazzati col vice-allenatore.",ef:{tiro:1,passaggio:1,morale:4}},
-  {w:5,txt:"🔬 Test atletico eccellente. Il preparatore è entusiasta.",ef:{form:8,morale:7,coachTrust:5}},
-  {w:5,txt:"🏆 MVP settimana in allenamento. Il gruppo ti rispetta.",ef:{morale:11,coachTrust:8,popularity:4}},
-  {w:5,txt:"🧤 Il portiere amico ti aiuta a migliorare il tiro.",ef:{tiro:1,morale:5}},
-  {w:4,txt:"🥗 Piano nutrizionale rivisto. Energia e forma al top.",ef:{fatigue:-14,form:6,morale:4}},
-  {w:4,txt:"🧠 Studio video avversario. Visione tattica rivoluzionaria.",ef:{mentalità:1,posizionamento:1,morale:3}},
-  {w:4,txt:"🎶 Playlist motivazionale pre-allenamento. Sprint record.",ef:{velocità:1,morale:8,form:5}},
-  {w:4,txt:"💥 Colpo di testa al limite in partitella. Il mister sorride.",ef:{fisico:1,morale:7,coachTrust:4}},
-  {w:4,txt:"📊 Report tecnico positivo del direttore sportivo.",ef:{coachTrust:6,morale:8,value:0.1}},
-  {w:3,txt:"🌱 Crescita silenziosa ma costante. Il lavoro paga.",ef:{morale:6,form:5,mentalità:1}},
-  {w:3,txt:"🏖️ Weekend libero concesso dal mister. Torni carico.",ef:{fatigue:-25,morale:10,form:5}},
-  // ── SOCIAL & MEDIA — POSITIVE ────────────────────────────────────────────
-  {w:8,txt:"📺 Intervista sui media: ottima impressione.",ef:{popularity:9,morale:6,value:0.1}},
-  {w:7,txt:"📈 Il tuo valore sale grazie alle prestazioni.",ef:{value:0.2,popularity:4,morale:5}},
-  {w:7,txt:"🌟 Un grande club ti osserva! La voce si diffonde.",ef:{popularity:10,morale:8,value:0.3}},
-  {w:6,txt:"💬 Supporto caloroso dei tifosi dopo la gara.",ef:{morale:9,popularity:7}},
-  {w:6,txt:"🔥 Sei in un momento di grazia. Tutto funziona.",ef:{form:12,morale:8,fatigue:-8}},
-  {w:5,txt:"🤝 Grande sintonia con un compagno. Spirito di squadra alto.",ef:{morale:8,coachTrust:3}},
-  {w:5,txt:"📱 Un tuo video va virale: mezzo milione di views.",ef:{popularity:14,morale:7,value:0.15}},
-  {w:4,txt:"🎙️ Intervista esclusiva. Il pubblico ti segue ovunque.",ef:{popularity:11,morale:6,value:0.1}},
-  {w:4,txt:"🌍 Feature su un magazine europeo. Interesse internazionale.",ef:{popularity:12,morale:8,value:0.2}},
-  {w:4,txt:"🎖️ Premio miglior giovane del mese assegnato dal club.",ef:{popularity:10,morale:12,value:0.15}},
-  {w:4,txt:"📺 Ospite in TV: ottima impressione, popolarità alle stelle.",ef:{popularity:13,morale:9,value:0.1}},
-  {w:3,txt:"🤩 Un tuo fan ti ferma per strada. Ti senti una star.",ef:{morale:9,popularity:5}},
-  {w:3,txt:"🏆 Citato in una top list di giovani europei.",ef:{popularity:12,value:0.2,morale:9}},
-  // ── TEAM / CLUB — POSITIVE ───────────────────────────────────────────────
-  {w:5,txt:"🍽️ Cena col presidente. Ti promette un futuro da titolare.",ef:{morale:12,coachTrust:6,popularity:5}},
-  {w:4,txt:"💬 Il capitano ti porta in giro per la città. Amicizia solida.",ef:{morale:10,coachTrust:5}},
-  {w:4,txt:"🌄 Ritiro pre-campionato fantastico. Gruppo unito come mai.",ef:{morale:11,form:7,fatigue:-8}},
-  {w:4,txt:"🏠 Ambiente familiare sereno. Testa libera, gambe leggere.",ef:{morale:9,fatigue:-10,form:6}},
-  {w:3,txt:"⭐ Il club annuncia bonus se raggiungi 10 gol. Motivazione!",ef:{morale:14,form:8}},
-  {w:3,txt:"🎮 Gaming session con i compagni. Legame fortissimo.",ef:{morale:8,coachTrust:3}},
-  // ── NEGATIVE — FATIGUE / PHYSICAL ────────────────────────────────────────
-  {w:11,txt:"😓 Piccolo affaticamento muscolare. Serve riposo.",ef:{fatigue:16,form:-5,morale:-4}},
-  {w:7,txt:"🩹 Fastidio muscolare. Devi ridurre i carichi.",ef:{fatigue:22,form:-8,morale:-6}},
-  {w:6,txt:"😔 Momento di black-out. Tutto sembra più difficile.",ef:{form:-10,morale:-10,fatigue:8}},
-  {w:5,txt:"🌧️ Settimana di carichi pesanti. Corpo al limite.",ef:{fatigue:26,form:-6,morale:-5}},
-  {w:4,txt:"🤒 Piccolo problema di salute. Recupero necessario.",ef:{fatigue:32,form:-13,morale:-8}},
-  {w:6,txt:"❄️ Clima rigido agli allenamenti. Dolori muscolari.",ef:{fatigue:18,form:-5,morale:-4}},
-  {w:5,txt:"🏥 Controllo medico: affaticamento notato. Carichi ridotti.",ef:{fatigue:20,form:-7,morale:-5}},
-  {w:5,txt:"🧳 Trasferta lunga e snervante. Jet-lag alle stelle.",ef:{fatigue:24,morale:-7,form:-5}},
-  {w:4,txt:"🔋 Riserve energetiche al minimo. Serve riposo assoluto.",ef:{fatigue:28,form:-9,morale:-7}},
-  {w:3,txt:"🌡️ Caldo eccessivo. Allenamento ridotto per precauzione.",ef:{fatigue:15,form:-4}},
-  {w:3,txt:"🤒 Raffreddore leggero. Non ti ferma ma rallenta tutto.",ef:{fatigue:20,form:-8,morale:-5}},
-  // ── NEGATIVE — TEAM / SOCIAL ─────────────────────────────────────────────
-  {w:9,txt:"😤 Discussione in spogliatoio. Tensione alta.",ef:{morale:-11,coachTrust:-5}},
-  {w:8,txt:"🗣️ Richiamo dell'allenatore. Non sei al massimo.",ef:{morale:-12,coachTrust:-7,form:-5}},
-  {w:7,txt:"📰 Critica pesante dai media. Pressione psicologica.",ef:{morale:-9,fatigue:5}},
-  {w:5,txt:"⚠️ Escluso dai titolari. Situazione difficile.",ef:{morale:-16,coachTrust:-9}},
-  {w:5,txt:"🔄 Un nuovo acquisto minaccia il tuo posto.",ef:{morale:-11,coachTrust:-5,form:-4}},
-  {w:5,txt:"😡 Discussione con il vice-allenatore. Atmosfera tesa.",ef:{morale:-10,coachTrust:-6}},
-  {w:5,txt:"🔄 Cambio di modulo: perdi il ruolo ideale.",ef:{morale:-9,coachTrust:-4,form:-5}},
-  {w:4,txt:"⚔️ Rivalità accesa con un compagno per il posto.",ef:{morale:-10,coachTrust:-4}},
-  {w:4,txt:"🎙️ Dichiarazione fraintesa dalla stampa. Piccola polemica.",ef:{morale:-8,popularity:-5}},
-  {w:4,txt:"⚠️ Richiamo per ritardo agli allenamenti. Situazione delicata.",ef:{morale:-10,coachTrust:-8}},
-  {w:4,txt:"🤦 Errore grossolano in partitella. Imbarazzo nello spogliatoio.",ef:{morale:-9,coachTrust:-5,form:-4}},
-  {w:3,txt:"👎 Fischi in partitella. I compagni ti criticano.",ef:{morale:-12,form:-6}},
-  {w:3,txt:"📉 Periodo down. Il mister ti parla in privato.",ef:{morale:-11,coachTrust:-5,form:-7}},
-  {w:3,txt:"📵 Il club limita i social per una settimana. Frustrazione.",ef:{morale:-6,popularity:-3}},
-  {w:3,txt:"🏗️ Lavori al centro sportivo. Allenamenti disturbati.",ef:{fatigue:12,morale:-5,form:-4}},
-  {w:3,txt:"😤 Incomprensione tattica con il centrocampista titolare.",ef:{morale:-8,coachTrust:-3}},
-  {w:2,txt:"😶 Il club acquista un attaccante nel tuo ruolo. Paura.",ef:{morale:-14,coachTrust:-6,form:-5}},
+  {w:12,txt:"💪 Allenamento eccellente! Il mister ti nota.", ef:{morale:10,form:6,coachTrust:8,fatigue:-6}},
+  {w:10,txt:"👏 Elogio pubblico del mister in conferenza.", ef:{morale:13,popularity:6,coachTrust:7}},
+  {w:8,txt:"📺 Intervista sui media: ottima impressione.", ef:{popularity:9,morale:6,value:0.1}},
+  {w:7,txt:"🎯 Sessione tecnica perfetta. Tecnica+Velocità migliorano.", ef:{tecnica:1,velocità:1,morale:5}},
+  {w:7,txt:"💊 Recupero fisico sorprendente. Energia al top.", ef:{fatigue:-22,morale:7,form:9}},
+  {w:6,txt:"🤝 Grande sintonia con un compagno. Spirito di squadra alto.", ef:{morale:8,coachTrust:3}},
+  {w:6,txt:"⭐ Partitella straordinaria. Tutti ti guardano.", ef:{morale:10,coachTrust:7,form:7}},
+  {w:5,txt:"📈 Il tuo valore sale grazie alle prestazioni.", ef:{value:0.2,popularity:4,morale:5}},
+  {w:6,txt:"🔥 Sei in un momento di grazia. Tutto funziona.", ef:{form:12,morale:8,fatigue:-8}},
+  {w:5,txt:"🌟 Un grande club ti osserva! La voce si diffonde.", ef:{popularity:10,morale:8,value:0.3}},
+  {w:7,txt:"💬 Supporto caloroso dei tifosi dopo la gara.", ef:{morale:9,popularity:7}},
+  {w:5,txt:"🧠 Sessione tattica intensa. Posizionamento migliorato.", ef:{posizionamento:1,mentalità:1}},
+  {w:5,txt:"🏃 Lavoro specifico sulla velocità col preparatore.", ef:{velocità:1,fatigue:8}},
+  {w:5,txt:"⚽ Extra tiri in porta. Conclusioni migliorate.", ef:{tiro:1,fatigue:5}},
+  {w:4,txt:"🎯 Lavoro sui passaggi. Visione di gioco in crescita.", ef:{passaggio:1,morale:4}},
+  {w:4,txt:"💪 Palestra intensiva. Fisico più forte.", ef:{fisico:1,fatigue:14}},
+  // Negative
+  {w:11,txt:"😓 Piccolo affaticamento muscolare. Serve riposo.", ef:{fatigue:16,form:-5,morale:-4}},
+  {w:9,txt:"😤 Discussione in spogliatoio. Tensione alta.", ef:{morale:-11,coachTrust:-5}},
+  {w:8,txt:"🗣️ Richiamo dell'allenatore. Non sei al massimo.", ef:{morale:-12,coachTrust:-7,form:-5}},
+  {w:7,txt:"📰 Critica pesante dai media. Pressione psicologica.", ef:{morale:-9,fatigue:5}},
+  {w:7,txt:"🩹 Fastidio muscolare. Devi ridurre i carichi.", ef:{fatigue:22,form:-8,morale:-6}},
+  {w:6,txt:"😔 Momento di black-out. Tutto sembra più difficile.", ef:{form:-10,morale:-10,fatigue:8}},
+  {w:5,txt:"⚠️ Escluso dai titolari. Situazione difficile.", ef:{morale:-16,coachTrust:-9}},
+  {w:5,txt:"🔄 Un nuovo acquisto minaccia il tuo posto.", ef:{morale:-11,coachTrust:-5,form:-4}},
+  {w:4,txt:"🌧️ Settimana di carichi pesanti. Corpo al limite.", ef:{fatigue:26,form:-6,morale:-5}},
+  {w:3,txt:"🤒 Piccolo problema di salute. Recupero necessario.", ef:{fatigue:32,form:-13,morale:-8}},
 ];
 
 /* ========================================
@@ -526,31 +477,16 @@ const WEEKLY_EVENTS=[
    Fire during doAdvanceWeek when weekLived=false (25% chance)
 ======================================== */
 const WEEKLY_RANDOM_EVENTS=[
-  {txt:"🤝 Il tuo agente chiama: interesse concreto da un club importante. Sei motivato!",ef:{morale:9,popularity:6}},
-  {txt:"🎽 Il club presenta la nuova maglia. Sei in prima fila per la foto. Grande hype!",ef:{popularity:8,morale:5}},
-  {txt:"🌧️ Settimana di carichi pesanti. Lo spogliatoio è stanco ma unito.",ef:{fatigue:10,morale:-3}},
+  {txt:"🤝 Il tuo agente ti chiama: interesse concreto da parte di un club importante. Sei motivato!",ef:{morale:9,popularity:6}},
+  {txt:"🎽 Il club presenta la nuova maglia. Sei in prima fila per la foto. Grande hype tra i tifosi!",ef:{popularity:8,morale:5}},
+  {txt:"🌧️ Settimana di carichi molto pesanti. Lo spogliatoio è stanco ma unito.",ef:{fatigue:10,morale:-3}},
   {txt:"🎂 Compleanno di un compagno. Cena di squadra: il gruppo si compatta.",ef:{morale:9,fatigue:-4}},
-  {txt:"📱 Un tuo gol va virale sui social. La popolarità cresce di molto.",ef:{popularity:13,morale:6}},
-  {txt:"🧑‍⚕️ Visita medica di routine: risultati ottimi. Sei in piena forma.",ef:{fatigue:-12,morale:5,form:4}},
+  {txt:"📱 Un tuo gol va virale sui social. La tua popolarità cresce di molto.",ef:{popularity:13,morale:6}},
+  {txt:"🧑‍⚕️ Visita medica di routine: risultati ottimi. Sei in piena forma atletica.",ef:{fatigue:-12,morale:5,form:4}},
   {txt:"😤 Tensione negli allenamenti dopo una brutta settimana. Serve concentrazione.",ef:{morale:-7,fatigue:5}},
-  {txt:"🌟 Uno scout europeo ti osserva nell'allenamento aperto. La voce si diffonde.",ef:{morale:11,popularity:9,value:0.1}},
-  {txt:"📰 Un grande quotidiano sportivo ti dedica un articolo. La notorietà cresce.",ef:{popularity:10,morale:5,value:0.05}},
+  {txt:"🌟 Uno scout di un club europeo ti osserva nell'allenamento aperto. La voce si diffonde.",ef:{morale:11,popularity:9,value:0.1}},
+  {txt:"📰 Un grande quotidiano sportivo ti dedica un articolo di fondo. La tua notorietà aumenta.",ef:{popularity:10,morale:5,value:0.05}},
   {txt:"💬 Il capitano elogia il tuo impegno davanti a tutto il gruppo. Il mister annuisce.",ef:{morale:10,coachTrust:6}},
-  {txt:"🏆 Nomina a sorpresa: sei in lista per il premio mensile del club!",ef:{morale:12,popularity:8,value:0.1}},
-  {txt:"🎙️ Intervista flash post-allenamento. Rispondi con classe. I tifosi ti amano di più.",ef:{popularity:9,morale:6}},
-  {txt:"🍕 Pizza e relax col gruppo. La settimana finisce bene.",ef:{morale:8,fatigue:-8}},
-  {txt:"🔑 Ti viene affidata una fascia da capitano in una partitella. Responsabilità e orgoglio.",ef:{morale:13,mentalità:1,coachTrust:5}},
-  {txt:"📊 Analisi video individuale col mister. Esce un piano di crescita su misura.",ef:{coachTrust:8,form:5,morale:6}},
-  {txt:"🎁 Il club regala gadget personalizzati. Piccola sorpresa, grande morale.",ef:{morale:7,popularity:4}},
-  {txt:"🚂 Viaggio in treno con la squadra. Legame umano fortissimo.",ef:{morale:8,coachTrust:4,fatigue:-5}},
-  {txt:"📸 Servizio fotografico per il sito del club. Ti senti una star.",ef:{popularity:8,morale:6}},
-  {txt:"⚠️ Qualcuno diffonde voci su un tuo possibile trasferimento. Distrazione.",ef:{morale:-6,fatigue:6}},
-  {txt:"🌩️ Temporale annulla l'allenamento. Giornata libera inaspettata.",ef:{fatigue:-15,morale:5}},
-  {txt:"😰 Pressione esterna per i prossimi risultati. Caricarsi o crollare.",ef:{morale:-8,fatigue:7}},
-  {txt:"🎤 Compagno famoso fa una battuta su di te in conferenza. Ti scuoti.",ef:{morale:-5,popularity:5}},
-  {txt:"🏟️ Visita allo stadio da solo la sera. Ispirazione e brividi.",ef:{morale:11,mentalità:1}},
-  {txt:"🧊 Bagni di ghiaccio post-allenamento. Recupero accelerato.",ef:{fatigue:-18,form:7}},
-  {txt:"🔥 Mini-torneo tra reparti. Il tuo team vince. Euforia totale.",ef:{morale:12,form:8,coachTrust:3}},
 ];
 
 /* ========================================
@@ -921,7 +857,7 @@ const NPC_PERSONAS=[
   {id:"fantasioso",  e:"🎭", name:"Fantasioso",  desc:"Imprevedibile e creativo",         lambdaMod:+0.08, trustMod:+2},
 ];
 function getClubPersona(club){const h=hashStr((club?.id||club?.n||"x"));return NPC_PERSONAS[Math.abs(h)%NPC_PERSONAS.length];}
-const GAME_VERSION="2.3.0"; // Sprint 13
+const GAME_VERSION="2.2.0"; // Sprint 12
 const SAVE_VERSION=5;
 // Sprint 11 — S11.1 Coach data
 const COACH_NAMES=["Rossi","Ferrari","Bianchi","Conti","Greco","Mancini","Pirlo","Gattuso","Capello","De Zerbi","Allegri","Conte","Spalletti","Inzaghi","Sarri","Mihajlovic"];
@@ -5882,14 +5818,6 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
       newP={...newP,archetype:ARCHETYPES[0]};
       changed=true;
     }
-    if(!('goldenBoys' in newP)){
-      newP={...newP,goldenBoys:[]};
-      changed=true;
-    }
-    if(!('records' in newP)){
-      newP={...newP,records:{topSeasonGoals:0,topSeasonAssists:0,topOvr:newP.ovr||60}};
-      changed=true;
-    }
     if(changed){setPlayer(newP);}
   },[]);// eslint-disable-line
   const[notif,setNotif]=useState(null);
@@ -6151,7 +6079,6 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
         if(ef.fisico)newStats.fisico=clamp(p.stats.fisico+(ef.fisico),1,99);
         if(ef.posizionamento)newStats.posizionamento=clamp(p.stats.posizionamento+(ef.posizionamento),1,99);
         if(ef.mentalità)newStats.mentalità=clamp(p.stats.mentalità+(ef.mentalità),1,99);
-        if(ef.dribbling)newStats.dribbling=clamp(p.stats.dribbling+(ef.dribbling),1,99);
         upd={...upd,...extras,stats:newStats,ovr:calcOvr(newStats),log:[ev.txt,...(p.log||[])].slice(0,60)};
         setTimeout(()=>setWeekLiveModal({event:ev,changes:{morale:ef.morale||0,form:ef.form||0,fatigue:ef.fatigue||0}}),50);
       }else{
@@ -6309,14 +6236,6 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
       if(done){bonM+=(obj.bonus?.morale||0);bonCT+=(obj.bonus?.coachTrust||0);bonPop+=(obj.bonus?.popularity||0);bonVal+=(obj.bonus?.value||0);objLogs.push(`✅ ${obj.label}`);}
       else{bonM-=8;bonCT-=5;objLogs.push(`❌ Mancato: ${obj.label}`);}
     });
-    // S13.4: Golden Boy — age ≤23, pro, goals+assists ≥10 in season
-    const isGB=(player.proStatus||"u18")==="pro"&&(player.age||17)<=23&&((player.goals||0)+(player.assists||0))>=10&&!(player.goldenBoys||[]).includes(player.season||1);
-    const gbSeasons=isGB?[...(player.goldenBoys||[]),player.season||1]:(player.goldenBoys||[]);
-    // S13.5: Records update
-    const _rec=player.records||{topSeasonGoals:0,topSeasonAssists:0,topOvr:60};
-    const newRecords={topSeasonGoals:Math.max(_rec.topSeasonGoals,player.goals||0),topSeasonAssists:Math.max(_rec.topSeasonAssists,player.assists||0),topOvr:Math.max(_rec.topOvr,player.ovr||60)};
-    const isNewGoalRecord=(player.goals||0)>_rec.topSeasonGoals&&_rec.topSeasonGoals>0;
-    const isNewAssistRecord=(player.assists||0)>_rec.topSeasonAssists&&_rec.topSeasonAssists>0;
     setPlayer(p=>{
       const newSeason=(p.season||1)+1;
       const newAge=(p.age||17)+1;
@@ -6383,8 +6302,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
       const coachLog=coachChanged?`🧑‍💼 Nuovo allenatore: ${newCoach.name} (${newCoach.style})`:null;
       const phenomLog=isPhenomSeason?`⚡ Fenomeno generazionale annunciato!`:null;
       const relegLog=playerClubRelegated?`⬇️ Club retrocesso: calo prestige e morale`:null;
-      const gbLog=isGB?`🏆 Golden Boy Stagione ${p.season||1}! Miglior giovane d'Europa.`:null;
-      return{...p,season:newSeason,age:newAge,week:1,weekLived:false,goals:0,assists:0,matches:0,fatigue:0,skillPoints:(p.skillPoints||0)+2,stats:agedStats,ovr:newOvr,contract:newContract,contractExpired,morale:clamp((p.morale||70)+bonM+(playerClubRelegated?-10:0)+(isGB?15:0),0,100),coachTrust:clamp((p.coachTrust||60)+bonCT+(playerClubRelegated?-8:0)+(coachChanged?newCoach.trustMod:0),0,100),popularity:clamp((p.popularity||20)+bonPop+(isGB?25:0),0,100),value:Math.max(0.5,(p.value||0.8)+bonVal+(playerClubRelegated?-0.3:0)+(isGB?0.8:0)),log:[agingLog,...objLogs,...[gbLog,coachLog,phenomLog,relegLog].filter(Boolean),...(p.log||[])].slice(0,60),standings:newStandings,calendar:newCalendar,matchHistory:[],seasonObjectives:newObjectives,history:[...(p.history||[]),prevHist].slice(-50),clubPrestigeShifts:updatedShifts,cup:newCup,coach:newCoach,goldenBoys:gbSeasons,records:newRecords};
+      return{...p,season:newSeason,age:newAge,week:1,weekLived:false,goals:0,assists:0,matches:0,fatigue:0,skillPoints:(p.skillPoints||0)+2,stats:agedStats,ovr:newOvr,contract:newContract,contractExpired,morale:clamp((p.morale||70)+bonM+(playerClubRelegated?-10:0),0,100),coachTrust:clamp((p.coachTrust||60)+bonCT+(playerClubRelegated?-8:0)+(coachChanged?newCoach.trustMod:0),0,100),popularity:clamp((p.popularity||20)+bonPop,0,100),value:Math.max(0.5,(p.value||0.8)+bonVal+(playerClubRelegated?-0.3:0)),log:[agingLog,...objLogs,...[coachLog,phenomLog,relegLog].filter(Boolean),...(p.log||[])].slice(0,60),standings:newStandings,calendar:newCalendar,matchHistory:[],seasonObjectives:newObjectives,history:[...(p.history||[]),prevHist].slice(-50),clubPrestigeShifts:updatedShifts,cup:newCup,coach:newCoach};
     });
     setSeasonEndData(null);
     setScreen("dashboard");
@@ -6395,9 +6313,6 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
       if(willContractExpire)setTimeout(()=>notify("📋 Contratto scaduto! Rinnova o cerca un nuovo club.",TH.warning),3200);
       if(coachChanged)setTimeout(()=>notify(`🧑‍💼 Cambio panchina: ${newCoach.name} (${newCoach.style})`,TH.warning),2400);
       if(isPhenomSeason)setTimeout(()=>notify("⚡ Un nuovo fenomeno generazionale sta emergendo nel calcio mondiale!","#7c3aed"),4000);
-      if(isGB)setTimeout(()=>notify("🏆 GOLDEN BOY! Sei il miglior giovane d'Europa! Pop. +25 · Valore +0.8M","#f59e0b"),5200);
-      if(isNewGoalRecord)setTimeout(()=>notify(`🎯 RECORD PERSONALE! ${player.goals||0} gol in una stagione!`,"#f59e0b"),3600);
-      if(isNewAssistRecord)setTimeout(()=>notify(`🎯 RECORD PERSONALE! ${player.assists||0} assist in una stagione!`,"#f59e0b"),3800);
     },200);
   };
 
@@ -6985,24 +6900,6 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
               </div>
             </Card>
           );})()}
-          {/* S13.5: Records + Golden Boy */}
-          {((player.records?.topSeasonGoals>0)||(player.goldenBoys?.length>0))&&(
-            <Card style={{padding:"12px 14px"}}>
-              <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,fontWeight:700,marginBottom:8}}>🏅 Record Personali</div>
-              <div style={{display:"flex",flexWrap:"wrap",gap:6,marginBottom:(player.goldenBoys?.length>0)?8:0}}>
-                {(player.records?.topSeasonGoals>0)&&<span style={{fontSize:11,background:"#fef3c7",color:"#92400e",padding:"3px 10px",borderRadius:8,fontWeight:700}}>⚽ {player.records.topSeasonGoals} gol/stag.</span>}
-                {(player.records?.topSeasonAssists>0)&&<span style={{fontSize:11,background:"#dbeafe",color:"#1e40af",padding:"3px 10px",borderRadius:8,fontWeight:700}}>🎯 {player.records.topSeasonAssists} assist/stag.</span>}
-                {(player.records?.topOvr>60)&&<span style={{fontSize:11,background:"#f0fdf4",color:"#166534",padding:"3px 10px",borderRadius:8,fontWeight:700}}>📈 OVR max {player.records.topOvr}</span>}
-              </div>
-              {(player.goldenBoys?.length>0)&&(
-                <div style={{display:"flex",flexWrap:"wrap",gap:5}}>
-                  {(player.goldenBoys||[]).map(s=>(
-                    <span key={s} style={{fontSize:11,background:"linear-gradient(135deg,#f59e0b,#d97706)",color:"#fff",padding:"3px 10px",borderRadius:8,fontWeight:700}}>🏆 Golden Boy S.{s}</span>
-                  ))}
-                </div>
-              )}
-            </Card>
-          )}
           {/* U18 status banner */}
           {(player.proStatus||"u18")==="u18"&&(
             <Card bg="#eff6ff" border="#bfdbfe" style={{padding:"12px 14px"}}>
