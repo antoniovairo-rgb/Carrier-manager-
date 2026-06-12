@@ -921,7 +921,7 @@ const NPC_PERSONAS=[
   {id:"fantasioso",  e:"🎭", name:"Fantasioso",  desc:"Imprevedibile e creativo",         lambdaMod:+0.08, trustMod:+2},
 ];
 function getClubPersona(club){const h=hashStr((club?.id||club?.n||"x"));return NPC_PERSONAS[Math.abs(h)%NPC_PERSONAS.length];}
-const GAME_VERSION="2.3.2"; // fix GK lateral clamp
+const GAME_VERSION="2.3.3"; // fix GK drift preset offset
 const SAVE_VERSION=5;
 // Sprint 11 — S11.1 Coach data
 const COACH_NAMES=["Rossi","Ferrari","Bianchi","Conti","Greco","Mancini","Pirlo","Gattuso","Capello","De Zerbi","Allegri","Conte","Spalletti","Inzaghi","Sarri","Mihajlovic"];
@@ -3228,13 +3228,14 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   const driftTargetsRef=useRef(null);
   const velRef=useRef({});
   const DRIFT_PRESETS={
-    attack:[{x:22,y:18},{x:22,y:38},{x:22,y:62},{x:22,y:82},{x:42,y:25},{x:42,y:75},{x:62,y:22},{x:62,y:50},{x:62,y:78}],
-    attack_goal:[{x:22,y:18},{x:22,y:38},{x:22,y:62},{x:22,y:82},{x:38,y:20},{x:38,y:80},{x:55,y:15},{x:65,y:50},{x:55,y:85}],
-    wide_right:[{x:22,y:18},{x:22,y:38},{x:22,y:62},{x:22,y:82},{x:42,y:25},{x:42,y:75},{x:60,y:85},{x:68,y:70},{x:72,y:90}],
-    midfield:[{x:22,y:18},{x:22,y:38},{x:22,y:62},{x:22,y:82},{x:42,y:25},{x:42,y:50},{x:42,y:75},{x:55,y:30},{x:55,y:70}],
-    retreat:[{x:12,y:25},{x:12,y:50},{x:12,y:75},{x:25,y:15},{x:25,y:50},{x:25,y:85},{x:35,y:30},{x:35,y:55},{x:35,y:70}],
-    defend_goal:[{x:8,y:20},{x:8,y:45},{x:8,y:55},{x:8,y:80},{x:18,y:30},{x:18,y:50},{x:18,y:70},{x:28,y:38},{x:28,y:62}],
-    opp_goal:[{x:72,y:18},{x:72,y:38},{x:72,y:62},{x:72,y:82},{x:62,y:25},{x:62,y:75},{x:50,y:22},{x:50,y:50},{x:50,y:78}],
+    // index 0 = home GK (always fixed in goal centre), indices 1-9 = home outfield
+    attack:    [{x:5,y:50},{x:22,y:18},{x:22,y:38},{x:22,y:62},{x:22,y:82},{x:42,y:25},{x:42,y:75},{x:62,y:22},{x:62,y:50},{x:62,y:78}],
+    attack_goal:[{x:5,y:50},{x:22,y:18},{x:22,y:38},{x:22,y:62},{x:22,y:82},{x:38,y:20},{x:38,y:80},{x:55,y:15},{x:65,y:50},{x:55,y:85}],
+    wide_right: [{x:5,y:50},{x:22,y:18},{x:22,y:38},{x:22,y:62},{x:22,y:82},{x:42,y:25},{x:42,y:75},{x:60,y:85},{x:68,y:70},{x:72,y:90}],
+    midfield:  [{x:5,y:50},{x:22,y:18},{x:22,y:38},{x:22,y:62},{x:22,y:82},{x:42,y:25},{x:42,y:50},{x:42,y:75},{x:55,y:30},{x:55,y:70}],
+    retreat:   [{x:5,y:50},{x:12,y:25},{x:12,y:50},{x:12,y:75},{x:25,y:15},{x:25,y:50},{x:25,y:85},{x:35,y:30},{x:35,y:55},{x:35,y:70}],
+    defend_goal:[{x:5,y:50},{x:8,y:20},{x:8,y:45},{x:8,y:55},{x:8,y:80},{x:18,y:30},{x:18,y:50},{x:18,y:70},{x:28,y:38},{x:28,y:62}],
+    opp_goal:  [{x:5,y:50},{x:72,y:18},{x:72,y:38},{x:72,y:62},{x:72,y:82},{x:62,y:25},{x:62,y:75},{x:50,y:22},{x:50,y:50},{x:50,y:78}],
   };
 
   const keysRef=useRef(new Set());
