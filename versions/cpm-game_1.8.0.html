@@ -833,7 +833,7 @@ function generateSeasonObjectives(player){
   objs.push({type:"standing",target:standT,label:`Finisci nei primi ${standT}`,bonus:{popularity:15,value:0.25}});
   return objs;
 }
-const GAME_VERSION="1.9.0";
+const GAME_VERSION="1.8.0";
 const SAVE_VERSION=5;
 const SLOT_KEYS=["cpm-v3","cpm-v3-s2","cpm-v3-s3"]; // slot 0 backward-compatible
 const storage={
@@ -1159,10 +1159,9 @@ function generateSeasonCalendar(playerClub,leagueClubs,seed){
 function initStandings(clubs){
   return[...clubs].map(c=>({...c,played:0,wins:0,draws:0,losses:0,gf:0,ga:0,gd:0,pts:0}));
 }
-// simulate all other matches when player matchday ends; prestigeShifts = {clubId: delta}
-function updateStandings(standings,playerClubId,playerResult,prestigeShifts){
+// simulate all other matches when player matchday ends
+function updateStandings(standings,playerClubId,playerResult){
   if(!standings?.length)return[];
-  const sh=prestigeShifts||{};
   const s=standings.map(t=>({...t}));
   if(playerResult){
     const pt=s.find(t=>t.id===playerClubId||t.n===playerClubId);
@@ -1174,12 +1173,14 @@ function updateStandings(standings,playerClubId,playerResult,prestigeShifts){
   }
   const myId=playerClubId;
   const others=s.filter(t=>t.id!==myId&&t.n!==myId);
+  // If odd count, last team plays a ghost opponent (prestige 65) so all teams stay equal on matches played
   const paired=[...others];
   if(paired.length%2!==0){
     const byeTeam=paired[paired.length-1];
-    const byeP=clamp((byeTeam.p||65)+(sh[byeTeam.id||byeTeam.n]||0),30,99);
-    const diff=clamp((byeP-65)/30,-1,1);
-    const lH=clamp(1.15+diff*0.4,0.25,2.3);const lA=clamp(1.00-diff*0.35,0.20,2.1);
+    const ghostP=65;
+    const diff=clamp(((byeTeam.p||65)-ghostP)/30,-1,1);
+    const lH=clamp(1.15+diff*0.4,0.25,2.3);
+    const lA=clamp(1.00-diff*0.35,0.20,2.1);
     const bG=poissonGoals(lH),gG=poissonGoals(lA);
     byeTeam.played++;byeTeam.gf+=bG;byeTeam.ga+=gG;byeTeam.gd=byeTeam.gf-byeTeam.ga;
     if(bG>gG){byeTeam.wins++;byeTeam.pts+=3;}else if(bG<gG){byeTeam.losses++;}
@@ -1188,12 +1189,11 @@ function updateStandings(standings,playerClubId,playerResult,prestigeShifts){
   }
   for(let i=0;i+1<paired.length;i+=2){
     const h=paired[i],a=paired[i+1];
-    const hP=clamp((h.p||65)+(sh[h.id||h.n]||0),30,99);
-    const aP=clamp((a.p||65)+(sh[a.id||a.n]||0),30,99);
-    const diff=clamp((hP-aP)/30,-1,1);
+    const diff=clamp(((h.p||65)-(a.p||65))/30,-1,1);
     const lambdaH=clamp(1.15+diff*0.4,0.25,2.3);
     const lambdaA=clamp(1.00-diff*0.35,0.20,2.1);
-    const hG=poissonGoals(lambdaH);const aG=poissonGoals(lambdaA);
+    const hG=poissonGoals(lambdaH);
+    const aG=poissonGoals(lambdaA);
     h.played++;a.played++;h.gf+=hG;h.ga+=aG;h.gd=h.gf-h.ga;
     a.gf+=aG;a.ga+=hG;a.gd=a.gf-a.ga;
     if(hG>aG){h.wins++;h.pts+=3;a.losses++;}else if(hG<aG){a.wins++;a.pts+=3;h.losses++;}
@@ -3970,7 +3970,7 @@ function SeasonEndScreen({data,player,onNewSeason,onRetire}){
   const{season,club,finalStandings,playerStats,champion,playerPos,isChampion}=data;
   const trophies=player.trophies||[];
   const numTeams=finalStandings?.length||18;
-  const isRelegated=playerPos>=numTeams-3;
+  const isRelegated=playerPos>=numTeams-2;
   const isPromoted=playerPos<=2;
   const bgColor=isChampion?"#fef9c3":isPromoted?"#f0fdf4":isRelegated?"#fff1f2":"#f8fafc";
   const borderColor=isChampion?"#fde68a":isPromoted?"#bbf7d0":isRelegated?"#fecaca":TH.cardBorder;
@@ -5704,14 +5704,6 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
       newP={...newP,nationalCaps:0,lastNationalSeason:0};
       changed=true;
     }
-    if(!('clubPrestigeShifts' in newP)){
-      newP={...newP,clubPrestigeShifts:{}};
-      changed=true;
-    }
-    if(!('cup' in newP)){
-      newP={...newP,cup:null};
-      changed=true;
-    }
     if(changed){setPlayer(newP);}
   },[]);// eslint-disable-line
   const[notif,setNotif]=useState(null);
@@ -5909,9 +5901,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
     });
     setPlayer(p=>{
       let ns={...p.stats};
-      // S10.5: age curve — strong growth <22, gradual 22-27, none after
-      const growthPct=p.age<22?0.30:p.age<=24?0.15:p.age<=27?0.08:0;
-      if(growthPct>0&&Math.random()<growthPct){const k=pick(Object.keys(p.stats));ns={...ns,[k]:clamp(p.stats[k]+1,1,99)};}
+      if(Math.random()<.3&&p.age<22){const k=pick(Object.keys(p.stats));ns={...ns,[k]:clamp(p.stats[k]+1,1,99)};}
       if(result.goals>1&&Math.random()<.5)ns={...ns,tiro:clamp(ns.tiro+1,1,99)};
       if(result.assists>0&&Math.random()<.4)ns={...ns,passaggio:clamp(ns.passaggio+1,1,99)};
       const newOvr=calcOvr(ns);
@@ -5919,7 +5909,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
       const logE=`⚽ vs ${result.opponent} (${result.homeScore}-${result.awayScore}) | ${result.goals}⚽ ${result.assists}🎯 | ${result.rating}★`;
       const newHistory=[...(p.matchHistory||[]),{week:p.week||1,opponent:result.opponent,oppAbbr:result.oppAbbr,oppCol:result.oppCol,homeScore:result.homeScore,awayScore:result.awayScore,goals:result.goals,assists:result.assists,rating:result.rating,won:result.won,drew:result.drew}].slice(-200);
       const clubId=p.club?.id||p.club?.n;
-      const newStandings=updateStandings(p.standings||initStandings(getLeagueClubs(p)),clubId,result,p.clubPrestigeShifts||{});
+      const newStandings=updateStandings(p.standings||initStandings(getLeagueClubs(p)),clubId,result);
       const newCal=(p.calendar||[]).map(md=>md.week===(p.week||1)&&!md.played?{...md,played:true,result:{homeScore:result.homeScore,awayScore:result.awayScore,won:result.won,drew:result.drew}}:md);
       const matchdayId=`S${p.season||1}W${p.week||1}`;
       const baseAiData=p.aiData||{lastOpponentTactic:null,scoutReports:{},pressReports:{}};
@@ -6001,23 +5991,6 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
       return;
     }
 
-    // S10.3: pre-compute cup result (uses player closure, notification fired after setPlayer)
-    const wkNow=player.week||1;
-    const cupCheck=(()=>{
-      if(isInU18||!player.cup?.active||player.cup?.eliminated||wkNow!==player.cup?.nextWeek)return null;
-      const lc=getLeagueClubs(player);
-      const bracketClubs=(player.cup.bracket||[]).map(id=>lc.find(c=>c.id===id||c.n===id)).filter(Boolean);
-      const opponents=bracketClubs.filter(c=>c.id!==player.club?.id&&c.n!==player.club?.n);
-      const opp=opponents.length?pick(opponents):(lc[Math.floor(Math.random()*lc.length)]);
-      if(!opp)return null;
-      const sim=simulateMatch(player.club,opp,player.ovr||65,true);
-      const won=sim.won||(sim.drew&&Math.random()<0.55);
-      const roundNum=player.cup.round;
-      const roundNames=["","R16","Quarti","Semifinale","FINALE"];
-      const nextWeeks=[0,9,18,27,0];
-      return{won,opp,sim,roundNum,roundName:roundNames[roundNum]||`R${roundNum}`,nextWeek:won&&roundNum<4?nextWeeks[roundNum]:null,isChamp:won&&roundNum===4};
-    })();
-
     // Normal week advance
     setPlayer(p=>{
       // if this week had a scheduled unplayed match, auto-simulate it
@@ -6029,7 +6002,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
         if(opp){
           const sim=simulateMatch(p.club,opp,p.ovr||65,md.isHome);
           const cId=p.club?.id||p.club?.n;
-          const newSt=updateStandings(p.standings||initStandings(getLeagueClubs(p)),cId,sim,p.clubPrestigeShifts||{});
+          const newSt=updateStandings(p.standings||initStandings(getLeagueClubs(p)),cId,sim);
           const newCal=(p.calendar||[]).map(m=>m.week===(p.week||1)&&!m.played?{...m,played:true,result:{homeScore:sim.homeScore,awayScore:sim.awayScore,won:sim.won,drew:sim.drew},simulated:true}:m);
           const newHistory=[...(p.matchHistory||[]),{week:p.week||1,opponent:opp.n,oppAbbr:opp.a,oppCol:opp.c,homeScore:sim.homeScore,awayScore:sim.awayScore,goals:0,assists:0,rating:sim.rating,won:sim.won,drew:sim.drew,simulated:true}].slice(-200);
           updP={...updP,standings:newSt,calendar:newCal,matchHistory:newHistory,matches:(p.matches||0)+1,goals:p.goals,assists:p.assists,morale:clamp(p.morale+(sim.won?3:sim.drew?1:-2),0,100)};
@@ -6047,23 +6020,10 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
         setTimeout(()=>setWeekLiveModal({event:re,changes:{morale:ef.morale||0,form:ef.form||0,fatigue:ef.fatigue||0}}),100);
         updP={...updP,...extras};
       }
-      // S10.3: apply cup state update
-      if(cupCheck){
-        const cr=cupCheck;
-        const newCupResults=[...(p.cup?.results||[]),{round:cr.roundNum,name:cr.roundName,opponent:cr.opp.n,homeScore:cr.sim.homeScore,awayScore:cr.sim.awayScore,won:cr.won}];
-        const newTrophies=cr.isChamp?[...(p.trophies||[]),{season:p.season||1,club:p.club?.n,league:"Coppa",type:"cup"}]:(p.trophies||[]);
-        updP={...updP,cup:{...p.cup,round:(p.cup?.round||1)+1,nextWeek:cr.nextWeek,eliminated:!cr.won,champion:cr.isChamp,results:newCupResults},trophies:newTrophies};
-      }
       if(p.injured&&(p.injuryWeeks||0)>0){return{...updP,week:(p.week||1)+1,weekLived:false,trainedThisWeek:false,injuryWeeks:p.injuryWeeks-1,injured:p.injuryWeeks-1>0,fatigue:Math.max(0,(p.fatigue||0)-8)};}
       return{...updP,week:(p.week||1)+1,weekLived:false,trainedThisWeek:false};
     });
     notify("⏭️ Settimana avanzata");
-    // S10.3: cup result notification
-    if(cupCheck){
-      const cr=cupCheck;
-      setTimeout(()=>notify(`🏆 Coppa · ${cr.roundName}: ${cr.won?"✅ PASSA":"❌ ELIMINATO"} vs ${cr.opp.n} (${cr.sim.homeScore}-${cr.sim.awayScore}${cr.sim.drew&&cr.won?" d.c.r.":""})`,cr.won?TH.success:TH.danger),900);
-      if(cr.isChamp)setTimeout(()=>notify("🏆🏆 HAI VINTO LA COPPA NAZIONALE! Straordinario!","#f59e0b"),2800);
-    }
     // ── National team call-up check ──
     if(!isInU18&&(player.popularity||0)>=55&&(player.ovr||0)>=70&&!player.injured){
       const caps=player.nationalCaps||0;
@@ -6131,30 +6091,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
       const agingLog=newAge>=28&&newOvr<(p.ovr||60)?`📉 Età ${newAge}: calo fisico`:`🎂 ${newAge} anni — stagione ${newSeason} inizia`;
       const newObjectives=generateSeasonObjectives({...p,ovr:newOvr});
       const prevHist={season:p.season,club:p.club?.n||p.club?.name,goals:p.goals||0,assists:p.assists||0,matches:p.matches||0,ovr:p.ovr||60};
-      // S10.1: compute prestige shifts based on final standings
-      const sortedForShifts=[...(p.standings||[])].sort((a,b)=>b.pts-a.pts||b.gd-a.gd||b.gf-a.gf);
-      const nT=sortedForShifts.length;
-      const prevShifts=p.clubPrestigeShifts||{};
-      const updatedShifts={...prevShifts};
-      sortedForShifts.forEach((t,i)=>{
-        const ck=t.id||t.n;const cur=prevShifts[ck]||0;
-        let delta=0;
-        if(i===0)delta=4;else if(i<3)delta=2;else if(i<6)delta=1;
-        else if(i>=nT-3)delta=-5;else if(i>=nT-6)delta=-2;
-        else delta=Math.random()<0.25?(Math.random()<0.5?1:-1):0;
-        updatedShifts[ck]=clamp(cur+delta,-15,15);
-      });
-      // S10.2: detect relegation (bottom 3) for player's club
-      const playerClubRelegated=nT>0&&(p.club?.id||p.club?.n)&&sortedForShifts.findIndex(t=>t.id===(p.club?.id||p.club?.n)||t.n===(p.club?.n||p.club?.id))>=nT-3;
-      // S10.3: initialize Coppa Nazionale for pro players
-      let newCup=null;
-      if((p.proStatus||"u18")==="pro"&&p.club){
-        const lcAll=lc.length?lc:getLeagueClubs(p);
-        const cupTeams=shuffle([...lcAll]).slice(0,Math.min(16,lcAll.length));
-        if(!cupTeams.some(t=>t.id===p.club?.id||t.n===p.club?.n))cupTeams[0]=p.club;
-        newCup={active:true,round:1,nextWeek:9,eliminated:false,champion:false,results:[],bracket:cupTeams.map(t=>t.id||t.n)};
-      }
-      return{...p,season:newSeason,age:newAge,week:1,weekLived:false,goals:0,assists:0,matches:0,fatigue:0,skillPoints:(p.skillPoints||0)+2,stats:agedStats,ovr:newOvr,contract:newContract,contractExpired,morale:clamp((p.morale||70)+bonM+(playerClubRelegated?-10:0),0,100),coachTrust:clamp((p.coachTrust||60)+bonCT+(playerClubRelegated?-8:0),0,100),popularity:clamp((p.popularity||20)+bonPop,0,100),value:Math.max(0.5,(p.value||0.8)+bonVal+(playerClubRelegated?-0.3:0)),log:[agingLog,...objLogs,...(playerClubRelegated?['⬇️ Club retrocesso: calo di prestige e morale']:['']),...(p.log||[])].filter(Boolean).slice(0,60),standings:newStandings,calendar:newCalendar,matchHistory:[],seasonObjectives:newObjectives,history:[...(p.history||[]),prevHist].slice(-50),clubPrestigeShifts:updatedShifts,cup:newCup};
+      return{...p,season:newSeason,age:newAge,week:1,weekLived:false,goals:0,assists:0,matches:0,fatigue:0,skillPoints:(p.skillPoints||0)+2,stats:agedStats,ovr:newOvr,contract:newContract,contractExpired,morale:clamp((p.morale||70)+bonM,0,100),coachTrust:clamp((p.coachTrust||60)+bonCT,0,100),popularity:clamp((p.popularity||20)+bonPop,0,100),value:Math.max(0.5,(p.value||0.8)+bonVal),log:[agingLog,...objLogs,...(p.log||[])].slice(0,60),standings:newStandings,calendar:newCalendar,matchHistory:[],seasonObjectives:newObjectives,history:[...(p.history||[]),prevHist].slice(-50)};
     });
     setSeasonEndData(null);
     setScreen("dashboard");
@@ -6645,31 +6582,6 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
         </Card>
       )}
 
-      {/* COPPA — standings tab */}
-      {tab==="standings"&&(player.proStatus||"u18")==="pro"&&player.cup&&(
-        <Card style={{marginTop:8}}>
-          <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>🏆 Coppa Nazionale — S.{season}</div>
-          {player.cup.eliminated?(
-            <div style={{fontSize:11,color:TH.danger}}>❌ Eliminato al {["","R16","Quarti","Semifinale","Finale"][player.cup.round-1]||`Round ${player.cup.round-1}`}</div>
-          ):player.cup.champion?(
-            <div style={{fontSize:12,fontWeight:700,color:"#f59e0b"}}>🏆🏆 CAMPIONE DI COPPA!</div>
-          ):(
-            <div style={{fontSize:11,color:TH.primary}}>⚽ In gara · prossimo turno: settimana {player.cup.nextWeek||"–"}</div>
-          )}
-          {(player.cup.results||[]).length>0&&(
-            <div style={{marginTop:8}}>
-              {player.cup.results.map((r,i)=>(
-                <div key={i} style={{display:"flex",gap:8,alignItems:"center",padding:"4px 0",borderTop:"1px solid "+TH.cardBorder,fontSize:10}}>
-                  <span style={{color:TH.faint,minWidth:60}}>{r.name}</span>
-                  <span style={{flex:1,color:TH.text}}>{r.opponent}</span>
-                  <span style={{fontWeight:700,color:r.won?TH.success:TH.danger}}>{r.homeScore}-{r.awayScore} {r.won?"✅":"❌"}</span>
-                </div>
-              ))}
-            </div>
-          )}
-        </Card>
-      )}
-
       {/* TRAINING */}
       {tab==="training"&&(
         <div style={{display:"flex",flexDirection:"column",gap:12}}>
@@ -7025,45 +6937,6 @@ function App(){
   if(phase==="career"&&player)return wrap(<CareerApp player={player} currentSlot={currentSlot} onRefreshSlots={refreshSlots}/>);
   return wrap(<div style={{textAlign:"center",color:TH.faint}}>Stato non riconosciuto.</div>);
 }
-
-// S10.4 — Dev 50-season headless simulation (run in browser console: runCPMTest50())
-window.runCPMTest50=function(verbose=false){
-  let p={name:"TestPlayer",age:17,season:1,week:1,weekLived:false,proStatus:"pro",ovr:70,goals:0,assists:0,matches:0,totalGoals:0,totalAssists:0,totalMatches:0,morale:70,fatigue:0,form:70,popularity:30,coachTrust:60,value:1.2,skillPoints:2,trophies:[],nationalCaps:0,lastNationalSeason:0,clubPrestigeShifts:{},cup:null,contract:{duration:2,wage:800,expiresAtSeason:3},stats:{velocità:72,tecnica:70,fisico:68,mentalità:68,tiro:74,passaggio:65,dribbling:70,posizionamento:70},club:{id:"juve",n:"Juventus",a:"JUV",p:95,c:"#000",c2:"#fff",nat:"🇮🇹",lg:"Serie A"},history:[],matchHistory:[],log:[],seasonObjectives:[],aiData:{pressReports:{},scoutReports:{},lastOpponentTactic:null}};
-  const lc=CLUBS.filter(c=>c.lg==="Serie A");
-  p.standings=initStandings(lc);p.calendar=generateSeasonCalendar(p.club,lc,p.season*7919);p.seasonObjectives=generateSeasonObjectives(p);
-  const anomalies=[];const log=[];
-  for(let s=1;s<=50;s++){
-    p.season=s;p.week=1;p.goals=0;p.assists=0;p.matches=0;
-    for(let w=1;w<=38;w++){
-      p.week=w;
-      const md=(p.calendar||[]).find(m=>m.week===w&&!m.played);
-      if(md){
-        const opp=lc.find(c=>c.id===md.opponentId)||lc[0];
-        const sim=simulateMatch(p.club,opp,p.ovr,md.isHome);
-        p.goals+=sim.won?rng(0,2):0;p.assists+=sim.won&&Math.random()<0.4?1:0;p.matches++;p.totalMatches++;p.totalGoals+=p.goals;
-        p.standings=updateStandings(p.standings,p.club?.id,sim,p.clubPrestigeShifts||{});
-        p.calendar=p.calendar.map(m=>m.week===w&&!m.played?{...m,played:true,result:sim}:m);
-      }
-    }
-    // Age & decay
-    p.age++;
-    if(p.age>=28){const physK=['velocità','fisico'];const techK=['tiro','tecnica','dribbling'];const decP=p.age>=35?0.82:p.age>=32?0.62:0.28;if(Math.random()<decP){const dk=p.age>=31?(Math.random()<0.6?pick(physK):pick(techK)):pick(physK);p.stats[dk]=clamp(p.stats[dk]-1,1,99);}}
-    p.ovr=calcOvr(p.stats);
-    // Checks
-    const ovrOK=p.ovr>=1&&p.ovr<=99;const ageOK=p.age<40||p.age>=40;const noNaN=!Object.values(p.stats).some(isNaN);
-    const standOK=p.standings?.length===lc.length;
-    if(!ovrOK||!noNaN||!standOK)anomalies.push({season:s,age:p.age,ovr:p.ovr,ovrOK,noNaN,standOK});
-    if(verbose||s%10===0)log.push({s,age:p.age,ovr:Math.round(p.ovr),goals:p.goals,wage:p.contract?.wage});
-    // New season
-    const seed=(s+1)*7919+(s+1)*(s+1)*31;
-    p.standings=initStandings(lc);p.calendar=generateSeasonCalendar(p.club,lc,seed);
-    p.contract={...p.contract,duration:(p.contract?.duration||1)-1};
-    if(p.age>=40){log.push({s,msg:"RITIRO CORRETTO a età "+p.age});break;}
-  }
-  console.log("=== CPM Test 50 Stagioni ===");console.table(log);
-  if(anomalies.length)console.warn("ANOMALIE:",anomalies);else console.log("✅ NESSUNA ANOMALIA RILEVATA");
-  return{log,anomalies};
-};
 
 ReactDOM.createRoot(document.getElementById('root')).render(React.createElement(App));
 requestAnimationFrame(window._hide);
