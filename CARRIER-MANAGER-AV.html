@@ -795,7 +795,7 @@ function generateProContracts(player){
   }
   return{offers,forced,perf:Math.round(perf*10)/10};
 }
-const GAME_VERSION="1.1.0";
+const GAME_VERSION="1.1.1";
 const SAVE_VERSION=5;
 const SLOT_KEYS=["cpm-v3","cpm-v3-s2","cpm-v3-s3"]; // slot 0 backward-compatible
 const storage={
@@ -2028,6 +2028,9 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
           }
           // All players with smooth livePos drift
           const allP=p.allPlayers||[];
+          // Pre-assign per-team jersey numbers so home=1..N, away=1..M independently
+          let _hn=0,_an=0;
+          const _jerseyNums=allP.map(pl=>{if(!pl)return 0;if(pl.team==="home")return ++_hn;if(pl.team==="away")return ++_an;return 0;});
           // Init or resize livePos array
           if(s.livePos.length!==allP.length){
             s.livePos=allP.map(function(pl){
@@ -2067,7 +2070,7 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
             var isHero=pl.isHero||pl.isPlayer;
             var col=pl.team==="home"?(p.homeCol||"#22c55e"):pl.team==="ref"?"#f59e0b":(p.oppCol||"#ef4444");
             var col2=pl.team==="ref"?"#111":"#fff";
-            drawPlayer(ctx,s.livePos[i].cx,s.livePos[i].cy,col,col2,isHero,i+1,s.isMoving&&isHero,true,t);
+            drawPlayer(ctx,s.livePos[i].cx,s.livePos[i].cy,col,col2,isHero,_jerseyNums[i]||i+1,s.isMoving&&isHero,true,t);
           });
           // Protagonist (always drawn separately on top)
           const heroCx=gx(p.playerY),heroCy=gy(p.playerX);
@@ -2790,10 +2793,10 @@ function rosterRows(roster){
   roster.forEach((p,i)=>{
     const r=(p.role||"").toUpperCase();
     const entry={...p,num:p.num||i+1};
-    if(r==="GK"||r==="POR")gk.push(entry);
-    else if(r==="DEF")def.push(entry);
-    else if(r==="MID"||r==="CEN"||r==="CENTROCAMPISTA")mid.push(entry);
-    else att.push(entry);
+    if(r==="GK"||r==="POR"||r.includes("PORTIERE"))gk.push(entry);
+    else if(r==="DEF"||r.includes("DIFENSORE")||r.includes("TERZINO"))def.push(entry);
+    else if(r==="MID"||r==="CEN"||r.includes("CENTROCAMPISTA")||r.includes("MEDIANO")||r.includes("TREQUARTISTA")||r.includes("MEZZALA"))mid.push(entry);
+    else att.push(entry); // Ala, Centravanti, ATT, etc.
   });
   return[att,mid,def,gk].filter(r=>r.length>0);
 }
@@ -2812,11 +2815,11 @@ function TeamFormation({team,roster,isHome}){
       </div>
       {/* formation rows: ATT at top, GK at bottom */}
       {rows.map((row,ri)=>(
-        <div key={ri} style={{display:"flex",justifyContent:"center",gap:isHome?6:6,flexWrap:"nowrap"}}>
+        <div key={ri} style={{display:"flex",justifyContent:"center",gap:3,flexWrap:"wrap",marginBottom:2}}>
           {row.map((pl,pi)=>{
             const globalIdx=roster.indexOf(pl);
             const isP=isHome&&globalIdx===roster.length-1;
-            return<JerseyIcon key={pi} color={col} number={pl.num} name={pl.name} isPlayer={isP} size={42}/>;
+            return<JerseyIcon key={pi} color={col} number={pl.num} name={pl.name} isPlayer={isP} size={34}/>;
           })}
         </div>
       ))}
