@@ -833,7 +833,7 @@ function generateSeasonObjectives(player){
   objs.push({type:"standing",target:standT,label:`Finisci nei primi ${standT}`,bonus:{popularity:15,value:0.25}});
   return objs;
 }
-const GAME_VERSION="2.1.0";
+const GAME_VERSION="2.0.0";
 const SAVE_VERSION=5;
 // Sprint 11 — S11.1 Coach data
 const COACH_NAMES=["Rossi","Ferrari","Bianchi","Conti","Greco","Mancini","Pirlo","Gattuso","Capello","De Zerbi","Allegri","Conte","Spalletti","Inzaghi","Sarri","Mihajlovic"];
@@ -3127,7 +3127,6 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   const [floatGoal,setFloatGoal]=useState(null);
   const [movesLeft,setMovesLeft]=useState(0);
   const [pressureBar,setPressureBar]=useState(1);
-  const [paused,setPaused]=useState(false);
   const pressureRef=useRef(1);
   const [defDist,setDefDist]=useState(100); // 0=on you 100=far
   const defDistRef=useRef(100);
@@ -3182,18 +3181,18 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
 
   // hl_intro auto-advance → hl_move after 2.5s (tap/key to skip)
   useEffect(()=>{
-    if(phase!=="hl_intro"||paused)return;
+    if(phase!=="hl_intro")return;
     const mm=situations[hlIdx]?.maxMoves??1;
     const go=()=>{movesLeftRef.current=mm;setMovesLeft(mm);moveCoolRef.current=0;pressureRef.current=1;setPressureBar(1);defDistRef.current=80+Math.random()*20;setDefDist(defDistRef.current);setPhase("hl_move");};
     const t=setTimeout(go,2500);
     const onKey=e=>{if(e.key===" "||e.key==="Enter"){clearTimeout(t);go();}};
     document.addEventListener("keydown",onKey);
     return()=>{clearTimeout(t);document.removeEventListener("keydown",onKey);};
-  },[phase,hlIdx,situations,paused]);// eslint-disable-line
+  },[phase,hlIdx,situations]);// eslint-disable-line
 
   // Pressure timer during hl_move — depletes over ~8s, auto-advances on expiry
   useEffect(()=>{
-    if(phase!=="hl_move"||paused)return;
+    if(phase!=="hl_move")return;
     const sit=situations[hlIdx];
     if(sit?.lockMovement||sit?.maxMoves===0)return; // no pressure on penalty/free kick
     const TOTAL=8000,STEP=100;
@@ -3209,11 +3208,11 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
       if(pressureRef.current<=0){clearInterval(iv);setPhase("hl_choose");}
     },STEP);
     return()=>clearInterval(iv);
-  },[phase,hlIdx,situations,paused]);// eslint-disable-line
+  },[phase,hlIdx,situations]);// eslint-disable-line
 
   // Continuous AI pressing during all HL phases — opponents and teammates always move
   useEffect(()=>{
-    if(!["hl_intro","hl_move","hl_choose"].includes(phase)||paused)return;
+    if(!["hl_intro","hl_move","hl_choose"].includes(phase))return;
     const sit=situations[hlIdx];
     const isDef=sit?.type==="def";
     const isNearGoal=["area","bordo"].includes(sit?.zones?.[0]);
@@ -3267,11 +3266,11 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
       }));
     },pressingMs);
     return()=>clearInterval(iv);
-  },[phase,hlIdx,situations,pPos.x,pPos.y,paused]);// eslint-disable-line
+  },[phase,hlIdx,situations,pPos.x,pPos.y]);// eslint-disable-line
 
   // Formation drift during playing phase — ball-reactive + patrol oscillation
   useEffect(()=>{
-    if(phase!=="playing"||paused)return;
+    if(phase!=="playing")return;
     let tick=0;
     const iv=setInterval(()=>{
       tick++;
@@ -3323,7 +3322,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
       }));
     },300);
     return()=>clearInterval(iv);
-  },[phase,paused]);
+  },[phase]);
 
   // Flash cleanup
   useEffect(()=>{
@@ -3341,7 +3340,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
 
   // Clock — more commentary, possession updates
   useEffect(()=>{
-    if(phase!=="playing"||paused)return;
+    if(phase!=="playing")return;
     const iv=setInterval(()=>{
       setClock(c=>{
         const nx=c+1;
@@ -3401,7 +3400,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
       });
     },300);
     return()=>clearInterval(iv);
-  },[phase,hlIdx,addCom,oppPrestige,player.ovr,paused]);
+  },[phase,hlIdx,addCom,oppPrestige,player.ovr]);
 
   // Ball attachment — sync ballPos to pPos during highlight phases so ball stays on player
   useEffect(()=>{
@@ -3412,7 +3411,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
 
   // Idle drift — player keeps moving during "playing" phase based on role
   useEffect(()=>{
-    if(phase!=="playing"||paused)return;
+    if(phase!=="playing")return;
     const pos=player.position||"ATT";
     const isGK=["POR","GK","Portiere"].includes(pos);
     const isDef=["DC","TD","TS","DEF","Difensore","Terzino"].includes(pos);
@@ -3428,7 +3427,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
       });
     },2800);
     return()=>clearInterval(iv);
-  },[phase,player.position,paused]);// eslint-disable-line
+  },[phase,player.position]);// eslint-disable-line
 
   const selectedActionIdxRef=useRef(0);
   selectedActionIdxRef.current=selectedActionIdx;
@@ -3530,11 +3529,6 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     const sit=situations[hlIdx];
     const onD=e=>{
       keysRef.current.add(e.key);
-      // Pause toggle: Escape or P during active match
-      if((e.key==="Escape"||e.key==="p"||e.key==="P")&&["playing","hl_intro","hl_move","hl_choose","hl_result"].includes(phase)){
-        e.preventDefault();e.stopImmediatePropagation();setPaused(v=>!v);return;
-      }
-      if(paused)return; // block all other input while paused
       if((phase==="hl_move"||phase==="hl_choose")&&["ArrowUp","ArrowDown","ArrowLeft","ArrowRight","w","a","s","d"].includes(e.key))e.preventDefault();
       // In hl_move: 0/1/2/3 skip movement and go straight to action
       if(phase==="hl_move"&&(["0","1","2","3"].includes(e.key)||e.key==="Numpad0")){
@@ -3577,7 +3571,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     document.addEventListener("keydown",onD);
     document.addEventListener("keyup",onU);
     return()=>{document.removeEventListener("keydown",onD);document.removeEventListener("keyup",onU);};
-  },[phase,hlIdx,situations,paused]);// eslint-disable-line
+  },[phase,hlIdx,situations]);// eslint-disable-line
 
   // Fire pending action when hl_choose becomes active (from 0/1/2/3 in hl_move)
   useEffect(()=>{
@@ -3589,14 +3583,14 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
 
   // Auto-continue 1s after action result
   useEffect(()=>{
-    if(phase!=="hl_result"||paused)return;
+    if(phase!=="hl_result")return;
     const t=setTimeout(handleContinue,1000);
     return()=>clearTimeout(t);
-  },[phase,hlIdx,paused]);// eslint-disable-line
+  },[phase,hlIdx]);// eslint-disable-line
 
   // Auto-tackle: if player takes too long in hl_choose, defender steals
   useEffect(()=>{
-    if(phase!=="hl_choose"||paused)return;
+    if(phase!=="hl_choose")return;
     const sit=situations[hlIdx];
     if(!sit)return;
     // Delay scales with defDist: far defender = more time (6-10s), close = less (3-5s)
@@ -3615,7 +3609,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
       setPhase("hl_result");
     },baseDelay);
     return()=>clearTimeout(t);
-  },[phase,hlIdx,situations,clock,paused]);// eslint-disable-line
+  },[phase,hlIdx,situations,clock]);// eslint-disable-line
 
   const curSit=situations[hlIdx];
   const winning=score.home>score.away,losing=score.home<score.away;
@@ -3647,17 +3641,11 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
             {/* Centre — clock, possession, context */}
             <div style={{textAlign:"center",flex:"0 0 auto",padding:"0 8px"}}>
               <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:5,marginBottom:2}}>
-                {phase==="playing"&&!paused&&<div style={{width:6,height:6,borderRadius:"50%",background:"#ef4444",boxShadow:"0 0 6px #ef4444",animation:"pulse 1s infinite",flexShrink:0}}/>}
-                {paused&&["playing","hl_intro","hl_move","hl_choose","hl_result"].includes(phase)&&<div style={{width:6,height:6,borderRadius:"50%",background:"#f59e0b",flexShrink:0}}/>}
+                {phase==="playing"&&<div style={{width:6,height:6,borderRadius:"50%",background:"#ef4444",boxShadow:"0 0 6px #ef4444",animation:"pulse 1s infinite",flexShrink:0}}/>}
                 <div style={{padding:"2px 10px",borderRadius:14,fontSize:12,fontWeight:900,background:winning?"rgba(34,197,94,0.18)":losing?"rgba(239,68,68,0.18)":"rgba(255,255,255,0.09)",color:winning?"#4ade80":losing?"#f87171":"#f1f5f9",letterSpacing:.5}}>
                   {phase==="walkout"?"🏃":phase==="ended"?"FT":`${clock}'`}
                 </div>
                 <div style={{fontSize:11}}>{timeOfDay==="day"?"☀️":"🌙"}</div>
-                {["playing","hl_intro","hl_move","hl_choose","hl_result"].includes(phase)&&(
-                  <button onClick={()=>setPaused(v=>!v)} style={{background:"none",border:"none",cursor:"pointer",fontSize:13,padding:"2px 4px",color:"rgba(255,255,255,0.6)",lineHeight:1}} title={paused?"Riprendi (P)":"Pausa (P)"}>
-                    {paused?"▶":"⏸"}
-                  </button>
-                )}
               </div>
               <div style={{fontSize:7,color:"rgba(255,255,255,0.25)",letterSpacing:1,textTransform:"uppercase",marginBottom:3}}>
                 {phase==="walkout"?"Ingresso in campo":phase==="ended"?"Fine partita":player.club?.lg||"Campionato"}
@@ -3696,14 +3684,6 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
               {phase==="walkout"&&<WalkoutOverlay homeTeam={player.club||opponent} homeRoster={homeRoster} opponent={opponent} isHome={isMatchHome} matchWeek={player.week} onDone={()=>setPhase("playing")}/>}
               {screenFlash&&<div style={{position:"absolute",inset:0,background:screenFlash.col,zIndex:20,pointerEvents:"none",animation:`fadeFlash ${screenFlash.dur}ms ease-out forwards`}}/>}
               {floatGoal&&<div key={floatGoal.key} style={{position:"absolute",top:"30%",left:0,right:0,textAlign:"center",fontSize:22,fontWeight:900,color:floatGoal.col,textShadow:"0 0 24px currentColor",animation:"floatUp 1.4s ease-out forwards",zIndex:21,pointerEvents:"none"}}>{floatGoal.text}</div>}
-              {/* Pause overlay */}
-              {paused&&["playing","hl_intro","hl_move","hl_choose","hl_result"].includes(phase)&&(
-                <div style={{position:"absolute",inset:0,background:"rgba(5,8,20,0.78)",backdropFilter:"blur(4px)",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",zIndex:30,cursor:"pointer"}} onClick={()=>setPaused(false)}>
-                  <div style={{fontSize:38,marginBottom:6,filter:"drop-shadow(0 0 16px rgba(245,158,11,0.8))"}}>⏸</div>
-                  <div style={{fontSize:18,fontWeight:900,color:"#f59e0b",letterSpacing:3,textTransform:"uppercase",marginBottom:8}}>PAUSA</div>
-                  <div style={{fontSize:11,color:"rgba(255,255,255,0.45)",letterSpacing:1}}>Premi P o tocca per riprendere</div>
-                </div>
-              )}
               {/* HL intro stays on field as cinematic overlay */}
               {phase==="hl_intro"&&curSit&&(
                 <div style={{position:"absolute",inset:0,background:"rgba(5,8,20,0.88)",backdropFilter:"blur(6px)",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",zIndex:8,padding:"0 14px",cursor:"pointer"}} onClick={()=>{const mm=situations[hlIdx]?.maxMoves??1;movesLeftRef.current=mm;setMovesLeft(mm);moveCoolRef.current=0;pressureRef.current=1;setPressureBar(1);setPhase("hl_move");}}>
