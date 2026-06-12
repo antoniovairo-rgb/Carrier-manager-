@@ -690,12 +690,7 @@ const clamp=(v,lo,hi)=>Math.max(lo,Math.min(hi,v));
 const pick=arr=>arr[Math.floor(Math.random()*arr.length)];
 const shuffle=arr=>{const a=[...arr];for(let i=a.length-1;i>0;i--){const j=rng(0,i);[a[i],a[j]]=[a[j],a[i]];}return a;};
 const wPick=evts=>{const tot=evts.reduce((s,e)=>s+(e.w||1),0);let r=Math.random()*tot;for(const e of evts){r-=(e.w||1);if(r<=0)return e;}return evts[0];};
-function baseStats(archetype){
-  const b={velocità:rng(55,72),tecnica:rng(54,70),fisico:rng(50,68),mentalità:rng(50,68),tiro:rng(60,74),passaggio:rng(48,65),dribbling:rng(55,72),posizionamento:rng(55,70)};
-  const arc=ARCHETYPES.find(a=>a.id===(archetype?.id||archetype));
-  if(arc)Object.entries(arc.bonus).forEach(([k,v])=>{if(b[k]!==undefined)b[k]=clamp(b[k]+v,40,90);});
-  return Object.fromEntries(Object.entries(b).map(([k,v])=>[k,clamp(v,1,99)]));
-}
+function baseStats(){return{velocità:clamp(rng(55,72),1,99),tecnica:clamp(rng(54,70),1,99),fisico:clamp(rng(50,68),1,99),mentalità:clamp(rng(50,68),1,99),tiro:clamp(rng(60,74),1,99),passaggio:clamp(rng(48,65),1,99),dribbling:clamp(rng(55,72),1,99),posizionamento:clamp(rng(55,70),1,99)};}
 function calcOvr(s){return Math.round((s.tiro*2.5+s.tecnica*2+s.velocità*1.5+s.dribbling*1.5+s.posizionamento*1.5+s.mentalità+s.fisico+s.passaggio)/11.5);}
 function succRate(action,stats,playerX,oppPrestige=65){
   const sv=stats[action.stat]||60;
@@ -838,26 +833,7 @@ function generateSeasonObjectives(player){
   objs.push({type:"standing",target:standT,label:`Finisci nei primi ${standT}`,bonus:{popularity:15,value:0.25}});
   return objs;
 }
-/* ── S12: Player archetypes ── */
-const ARCHETYPES=[
-  {id:"bomber",       e:"💪", name:"Bomber",           desc:"Potenza e istinto del gol",        bonus:{tiro:+8,fisico:+5,posizionamento:+6,velocità:-2,passaggio:-3},    favored:["tiro","posizionamento","fisico"]},
-  {id:"fantasista",   e:"🪄", name:"Fantasista",        desc:"Tecnica sopraffina e imprevedibile",bonus:{tecnica:+8,dribbling:+7,passaggio:+4,fisico:-4,tiro:-2},          favored:["tecnica","dribbling","passaggio"]},
-  {id:"velocista",    e:"⚡", name:"Velocista",         desc:"Rapidità devastante sulla fascia",  bonus:{velocità:+10,dribbling:+5,fisico:+3,tiro:-4,mentalità:-2},         favored:["velocità","dribbling","fisico"]},
-  {id:"trequartista", e:"🎨", name:"Trequartista",      desc:"Visione e assist al top",           bonus:{passaggio:+9,tecnica:+6,mentalità:+5,fisico:-3,tiro:-3},           favored:["passaggio","tecnica","mentalità"]},
-  {id:"leader",       e:"🦁", name:"Leader",            desc:"Trascinatore mentale e fisico",     bonus:{mentalità:+9,fisico:+6,posizionamento:+4,velocità:-2,dribbling:-2}, favored:["mentalità","fisico","posizionamento"]},
-  {id:"centravanti",  e:"🎯", name:"Centravanti",       desc:"Equilibrio perfetto in area",       bonus:{tiro:+5,posizionamento:+6,tecnica:+4,passaggio:+2,velocità:-2},    favored:["tiro","posizionamento","tecnica"]},
-  {id:"enfant",       e:"✨", name:"Enfant Prodige",    desc:"Potenziale sconfinato, crescita x2",bonus:{tecnica:+4,velocità:+4,tiro:+3,dribbling:+3,mentalità:+2},        favored:["tecnica","velocità","tiro","dribbling","mentalità","passaggio","fisico","posizionamento"]},
-  {id:"tuttocampista",e:"⚖️",name:"Tuttocampista",     desc:"Nessun punto debole, nessun picco", bonus:{tiro:+2,tecnica:+2,velocità:+2,fisico:+2,mentalità:+2,passaggio:+2,dribbling:+2,posizionamento:+2}, favored:["tiro","tecnica","velocità","fisico","mentalità","passaggio","dribbling","posizionamento"]},
-];
-/* ── S12: NPC Club Personas (deterministic from club id hash) ── */
-const NPC_PERSONAS=[
-  {id:"dominatore",  e:"👑", name:"Dominatore",  desc:"Possesso e pressione costante", lambdaMod:+0.15, trustMod:+3},
-  {id:"contropiede", e:"🗡️", name:"Contropiede", desc:"Efficiente e letale in ripartenza",lambdaMod:-0.10, trustMod:-2},
-  {id:"pressing",    e:"🔥", name:"Pressing",    desc:"Alta intensità, ritmo forsennato", lambdaMod:+0.05, trustMod:+1},
-  {id:"fantasioso",  e:"🎭", name:"Fantasioso",  desc:"Imprevedibile e creativo",         lambdaMod:+0.08, trustMod:+2},
-];
-function getClubPersona(club){const h=hashStr((club?.id||club?.n||"x"));return NPC_PERSONAS[Math.abs(h)%NPC_PERSONAS.length];}
-const GAME_VERSION="2.2.0"; // Sprint 12
+const GAME_VERSION="2.1.0";
 const SAVE_VERSION=5;
 // Sprint 11 — S11.1 Coach data
 const COACH_NAMES=["Rossi","Ferrari","Bianchi","Conti","Greco","Mancini","Pirlo","Gattuso","Capello","De Zerbi","Allegri","Conte","Spalletti","Inzaghi","Sarri","Mihajlovic"];
@@ -1280,11 +1256,8 @@ function simulateMatch(playerClub,opponent,playerOvr,isHome=true){
   const ovrBonus=clamp(((playerOvr||65)-65)/180,-0.18,0.22);
   const homeFactor=isHome?0.15:-0.15;
   const diff=clamp((clubP-oppP)/30,-1,1);
-  // S12.6: club persona tweaks lambda
-  const oppPersona=getClubPersona(opponent);
-  const personaMod=oppPersona?oppPersona.lambdaMod*0.5:0;
-  const lambdaH=clamp(1.15+diff*0.5+homeFactor+ovrBonus-personaMod,0.25,2.4);
-  const lambdaA=clamp(1.00-diff*0.45-homeFactor-ovrBonus*0.5+personaMod,0.20,2.2);
+  const lambdaH=clamp(1.15+diff*0.5+homeFactor+ovrBonus,0.25,2.4);
+  const lambdaA=clamp(1.00-diff*0.45-homeFactor-ovrBonus*0.5,0.20,2.2);
   const hG=poissonGoals(lambdaH);
   const aG=poissonGoals(lambdaA);
   return{homeScore:hG,awayScore:aG,won:hG>aG,drew:hG===aG,goals:0,assists:0,rating:hG>aG?6.5:hG===aG?6.0:5.5,opponent:opponent?.n||opponent?.name,oppAbbr:opponent?.a||opponent?.abbr,oppCol:opponent?.c||opponent?.col,simulated:true};
@@ -2870,7 +2843,6 @@ function MatchdayCard({homeTeam,awayTeam,stadium,attendance,league,onContinue,on
             <TeamBadge team={awayTeam} size={52}/>
             <div style={{fontSize:12,fontWeight:700,color:TH.text,marginTop:4}}>{awayTeam?.name||awayTeam?.n}</div>
             <div style={{fontSize:10,color:TH.muted}}>OSPITE</div>
-            {(()=>{const p=getClubPersona(awayTeam);return p?<div style={{fontSize:9,color:"#64748b",background:"#f1f5f9",borderRadius:6,padding:"2px 7px",marginTop:3,display:"inline-block"}}>{p.e} {p.name}</div>:null;})()}
           </div>
         </div>
       </div>
@@ -4358,10 +4330,9 @@ function HomeScreen({onNew,onLoad,onDelete,onImport,slots}){
 ======================================== */
 function CreateScreen({onCreate}){
   const[name,setName]=useState(""),[nation,setNation]=useState("Italia"),[avatarId,setAvatarId]=useState(0),[page,setPage]=useState(0);
-  const[archetypeId,setArchetypeId]=useState("bomber");
   const inp={background:"#f8fafc",border:"1px solid "+TH.cardBorder,borderRadius:10,color:TH.text,padding:"10px 14px",fontFamily:"inherit",fontSize:14,width:"100%",boxSizing:"border-box"};
   const lbl={display:"block",fontSize:11,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:6};
-  const go=()=>{if(!name.trim())return;const arc=ARCHETYPES.find(a=>a.id===archetypeId)||ARCHETYPES[0];const stats=baseStats(arc);const age=17;onCreate({name:name.trim(),nation,avatarId,archetype:arc,position:"Attaccante",age,stats,ovr:calcOvr(stats),club:null,trialsDone:0,trialStats:[],season:1,week:1,weekLived:false,u18Seasons:0,isU18:true,proStatus:"u18",goals:0,assists:0,matches:0,totalGoals:0,totalAssists:0,totalMatches:0,morale:70,fatigue:0,popularity:20,skillPoints:2,log:[],history:[],matchHistory:[],value:0.8,coachTrust:60,form:70,transferOffers:[],offerHistory:[],contract:{duration:1,wage:rng(200,500),expiresAtSeason:2},aiData:{lastOpponentTactic:null,scoutReports:{},pressReports:{}},saveVersion:SAVE_VERSION});};
+  const go=()=>{if(!name.trim())return;const stats=baseStats();const age=17;onCreate({name:name.trim(),nation,avatarId,position:"Attaccante",age,stats,ovr:calcOvr(stats),club:null,trialsDone:0,trialStats:[],season:1,week:1,weekLived:false,u18Seasons:0,isU18:true,proStatus:"u18",goals:0,assists:0,matches:0,totalGoals:0,totalAssists:0,totalMatches:0,morale:70,fatigue:0,popularity:20,skillPoints:2,log:[],history:[],matchHistory:[],value:0.8,coachTrust:60,form:70,transferOffers:[],offerHistory:[],contract:{duration:1,wage:rng(200,500),expiresAtSeason:2},aiData:{lastOpponentTactic:null,scoutReports:{},pressReports:{}},saveVersion:SAVE_VERSION});};
   const perPage=6;const totalPages=Math.ceil(AVATARS.length/perPage);const pageAvatars=AVATARS.slice(page*perPage,(page+1)*perPage);
   return(
     <div style={{width:"100%"}}>
@@ -4399,27 +4370,6 @@ function CreateScreen({onCreate}){
             <div style={{fontSize:12,color:TH.primary,fontWeight:700,marginBottom:3}}>📋 Percorso carriera</div>
             <div style={{fontSize:11,color:TH.muted,lineHeight:1.6}}>3 provini → offerte U18 → Serie A Primavera → campionati europei</div>
           </Card>
-          {/* S12.2: Archetype selection */}
-          <div>
-            <label style={lbl}>Archetipo calciatore</label>
-            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:6}}>
-              {ARCHETYPES.map(arc=>{
-                const sel=archetypeId===arc.id;
-                return(
-                  <button key={arc.id} onClick={()=>setArchetypeId(arc.id)} style={{padding:"8px 10px",borderRadius:10,border:`2px solid ${sel?TH.primary:TH.cardBorder}`,background:sel?"#eff6ff":"#f8fafc",cursor:"pointer",textAlign:"left",transition:"border .15s"}}>
-                    <div style={{fontSize:16,marginBottom:2}}>{arc.e}</div>
-                    <div style={{fontSize:11,fontWeight:700,color:sel?TH.primary:TH.text}}>{arc.name}</div>
-                    <div style={{fontSize:9,color:TH.faint,lineHeight:1.4}}>{arc.desc}</div>
-                  </button>
-                );
-              })}
-            </div>
-            {(()=>{const arc=ARCHETYPES.find(a=>a.id===archetypeId);return arc?(
-              <div style={{marginTop:6,padding:"7px 10px",background:"#f0fdf4",borderRadius:8,border:"1px solid #bbf7d0",fontSize:10,color:TH.muted}}>
-                {Object.entries(arc.bonus).map(([k,v])=><span key={k} style={{marginRight:6,color:v>0?TH.success:TH.danger,fontWeight:700}}>{k} {v>0?"+":""}{v}</span>)}
-              </div>
-            ):null;})()}
-          </div>
           <Btn onClick={go} disabled={!name.trim()} fw style={{padding:"14px",fontSize:15}}>⚡ INIZIA I PROVINI</Btn>
         </div>
       </div>{/* end cpm-create */}
@@ -5814,10 +5764,6 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
       newP={...newP,coach:{name:"Mister "+pick(COACH_NAMES),style:"Bilanciato",trustMod:0}};
       changed=true;
     }
-    if(!('archetype' in newP)){
-      newP={...newP,archetype:ARCHETYPES[0]};
-      changed=true;
-    }
     if(changed){setPlayer(newP);}
   },[]);// eslint-disable-line
   const[notif,setNotif]=useState(null);
@@ -6022,13 +5968,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
       let ns={...p.stats};
       // S10.5: age curve — strong growth <22, gradual 22-27, none after
       const growthPct=p.age<22?0.30:p.age<=24?0.15:p.age<=27?0.08:0;
-      if(growthPct>0&&Math.random()<growthPct){
-        // S12.4: archetype favors specific stats (70% chance to pick from favored, 30% random)
-        const arc=ARCHETYPES.find(a=>a.id===(p.archetype?.id||p.archetype));
-        const pool=(arc&&arc.favored.length&&Math.random()<0.70)?arc.favored:Object.keys(p.stats);
-        const k=pick(pool);
-        ns={...ns,[k]:clamp((ns[k]||60)+1,1,99)};
-      }
+      if(growthPct>0&&Math.random()<growthPct){const k=pick(Object.keys(p.stats));ns={...ns,[k]:clamp(p.stats[k]+1,1,99)};}
       if(result.goals>1&&Math.random()<.5)ns={...ns,tiro:clamp(ns.tiro+1,1,99)};
       if(result.assists>0&&Math.random()<.4)ns={...ns,passaggio:clamp(ns.passaggio+1,1,99)};
       const newOvr=calcOvr(ns);
@@ -6882,24 +6822,6 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
       {/* PROFILE  (req #12 – avatar/colori) */}
       {tab==="profile"&&(
         <div style={{display:"flex",flexDirection:"column",gap:12}}>
-          {/* S12.5: Archetype card */}
-          {(()=>{const arc=ARCHETYPES.find(a=>a.id===(player.archetype?.id||player.archetype))||ARCHETYPES[0];return(
-            <Card style={{padding:"12px 14px",background:"linear-gradient(135deg,#0f172a,#1e293b)",border:"1px solid rgba(255,255,255,0.08)"}}>
-              <div style={{display:"flex",alignItems:"center",gap:12}}>
-                <div style={{fontSize:36,lineHeight:1}}>{arc.e}</div>
-                <div style={{flex:1}}>
-                  <div style={{fontSize:10,color:"rgba(255,255,255,0.45)",textTransform:"uppercase",letterSpacing:1.5,marginBottom:2}}>Archetipo</div>
-                  <div style={{fontSize:16,fontWeight:900,color:"#f1f5f9",marginBottom:2}}>{arc.name}</div>
-                  <div style={{fontSize:11,color:"rgba(255,255,255,0.55)"}}>{arc.desc}</div>
-                </div>
-                <div style={{display:"flex",flexDirection:"column",gap:3,alignItems:"flex-end"}}>
-                  {Object.entries(arc.bonus).filter(([,v])=>v>0).slice(0,3).map(([k,v])=>(
-                    <span key={k} style={{fontSize:9,fontWeight:700,color:"#4ade80",background:"rgba(34,197,94,0.15)",padding:"2px 7px",borderRadius:6}}>+{v} {k}</span>
-                  ))}
-                </div>
-              </div>
-            </Card>
-          );})()}
           {/* U18 status banner */}
           {(player.proStatus||"u18")==="u18"&&(
             <Card bg="#eff6ff" border="#bfdbfe" style={{padding:"12px 14px"}}>
