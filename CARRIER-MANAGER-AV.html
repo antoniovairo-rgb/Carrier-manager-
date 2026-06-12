@@ -803,7 +803,7 @@ function generateProContracts(player){
   }
   return{offers,forced,perf:Math.round(perf*10)/10};
 }
-const GAME_VERSION="0.9.7";
+const GAME_VERSION="0.9.8";
 const SAVE_VERSION=5;
 const SLOT_KEYS=["cpm-v3","cpm-v3-s2","cpm-v3-s3"]; // slot 0 backward-compatible
 const storage={
@@ -5041,12 +5041,17 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
   const [lastPressReport,setLastPressReport]=useState(null);
   const onMatchEnd=result=>{
     setLastMatch(result);
+    // Injury: compute before setPlayer so we can notify after
+    const postFatigue=clamp((player.fatigue||0)+rng(12,22),0,100);
+    const injRoll=Math.random();
+    const newInjured=!player.injured&&((postFatigue>82&&injRoll<0.07)||(postFatigue>68&&injRoll<0.03));
+    const injuryWeeks=newInjured?(postFatigue>82?rng(2,4):1):0;
     // Generate press analysis async (non-blocking)
     generatePressAnalysis(result,{name:player.name,club:player.club?.n||player.club?.name||"–",goals:result.goals,assists:result.assists,rating:result.rating,oppPrestige:player.standings?undefined:(result.oppPrestige||65)}).then(press=>{
       setLastPressReport(press);
       setPlayer(p=>{
         const matchdayId=`S${p.season||1}W${p.week||1}`;
-        const newAiData={...( p.aiData||{lastOpponentTactic:null,scoutReports:{},pressReports:{}}),pressReports:{...(p.aiData?.pressReports||{}),[matchdayId]:press}};
+        const newAiData={...(p.aiData||{lastOpponentTactic:null,scoutReports:{},pressReports:{}}),pressReports:{...(p.aiData?.pressReports||{}),[matchdayId]:press}};
         return{...p,aiData:newAiData};
       });
     });
@@ -5059,20 +5064,16 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
       const moD=result.won?6:result.drew?2:-4;
       const logE=`⚽ vs ${result.opponent} (${result.homeScore}-${result.awayScore}) | ${result.goals}⚽ ${result.assists}🎯 | ${result.rating}★`;
       const newHistory=[...(p.matchHistory||[]),{week:p.week||1,opponent:result.opponent,oppAbbr:result.oppAbbr,oppCol:result.oppCol,homeScore:result.homeScore,awayScore:result.awayScore,goals:result.goals,assists:result.assists,rating:result.rating,won:result.won,drew:result.drew}].slice(-200);
-      // update standings with player result + simulate other matches
       const clubId=p.club?.id||p.club?.n;
       const newStandings=updateStandings(p.standings||initStandings(getLeagueClubs(p)),clubId,result);
-      // mark calendar entry as played
       const newCal=(p.calendar||[]).map(md=>md.week===(p.week||1)&&!md.played?{...md,played:true,result:{homeScore:result.homeScore,awayScore:result.awayScore,won:result.won,drew:result.drew}}:md);
       const matchdayId=`S${p.season||1}W${p.week||1}`;
       const baseAiData=p.aiData||{lastOpponentTactic:null,scoutReports:{},pressReports:{}};
-      const newAiData={...baseAiData,
-        lastOpponentTactic:result.oppTactic?{...result.oppTactic,week:p.week||1}:baseAiData.lastOpponentTactic,
-        scoutReports:result.scoutReport?{...baseAiData.scoutReports,[matchdayId]:result.scoutReport}:baseAiData.scoutReports,
-      };
-      return{...p,stats:ns,ovr:newOvr,goals:p.goals+result.goals,assists:p.assists+result.assists,matches:p.matches+1,totalGoals:p.totalGoals+result.goals,totalAssists:p.totalAssists+result.assists,totalMatches:p.totalMatches+1,morale:clamp(p.morale+moD,0,100),fatigue:clamp(p.fatigue+rng(12,22),0,100),week:(p.week||1)+1,weekLived:false,log:[logE,...(p.log||[])].slice(0,60),matchHistory:newHistory,standings:newStandings,calendar:newCal,aiData:newAiData};
+      const newAiData={...baseAiData,lastOpponentTactic:result.oppTactic?{...result.oppTactic,week:p.week||1}:baseAiData.lastOpponentTactic,scoutReports:result.scoutReport?{...baseAiData.scoutReports,[matchdayId]:result.scoutReport}:baseAiData.scoutReports};
+      return{...p,stats:ns,ovr:newOvr,goals:p.goals+result.goals,assists:p.assists+result.assists,matches:p.matches+1,totalGoals:p.totalGoals+result.goals,totalAssists:p.totalAssists+result.assists,totalMatches:p.totalMatches+1,morale:clamp(p.morale+moD,0,100),fatigue:postFatigue,...(newInjured?{injured:true,injuryWeeks}:{}),week:(p.week||1)+1,weekLived:false,log:[logE,...(p.log||[])].slice(0,60),matchHistory:newHistory,standings:newStandings,calendar:newCal,aiData:newAiData};
     });
     setScreen("postmatch");setTab("dashboard");
+    if(newInjured)notify(`🩹 Infortunio muscolare! Recupero: ${injuryWeeks} settiman${injuryWeeks===1?"a":"e"}.`,TH.danger);
   };
 
   // "Vivi la settimana" — applies events/form changes, does NOT advance week counter
@@ -5112,6 +5113,8 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
   // advance week: calendar-driven, simulates missed matches, resets season at week>38
   const doAdvanceWeek=()=>{
     setShowAdvanceConfirm(false);
+    const willEnterNewSeason=player.week>38;
+    const willContractExpire=willEnterNewSeason&&(player.contract?.duration||1)<=1;
     const isInU18=(player.proStatus||"u18")==="u18";
     const weekVal=player.week||1;
     if(isInU18&&weekVal>=38){
@@ -5125,12 +5128,22 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
         // new season: reset stats, standings, calendar
         const hist={season:p.season,club:p.club?.name||p.club?.n,goals:p.goals,assists:p.assists,matches:p.matches,ovr:p.ovr};
         const newSeason=(p.season||1)+1;
+        const newAge=(p.age||17)+1;
         const lc=getLeagueClubs(p);
         const newStandings=initStandings(lc);
         const seed=newSeason*777+hashStr(p.club?.id||p.club?.n||"u18");
         const newCalendar=generateSeasonCalendar(p.club||{id:"u18",n:"U18"},lc,seed);
         const newContract={...p.contract,duration:(p.contract?.duration||1)-1,expiresAtSeason:p.contract?.expiresAtSeason||newSeason+1};
-        return{...p,season:newSeason,age:p.age+1,week:1,weekLived:false,goals:0,assists:0,matches:0,fatigue:0,skillPoints:(p.skillPoints||0)+2,contract:newContract,history:[...(p.history||[]),hist],log:[`🏁 Fine S.${p.season}: ${p.goals}⚽ ${p.assists}🎯`,...(p.log||[])].slice(0,60),standings:newStandings,calendar:newCalendar,matchHistory:[]};
+        const contractExpired=newContract.duration<=0;
+        // Aging regression: physical decay after 30 (60% chance, one stat)
+        let agedStats={...p.stats};
+        if(newAge>=31&&Math.random()<0.6){
+          const dk=Math.random()<0.5?'velocità':'fisico';
+          agedStats={...agedStats,[dk]:clamp(agedStats[dk]-1,1,99)};
+        }
+        const newOvr=calcOvr(agedStats);
+        const agingLog=newAge>=31&&newOvr<(p.ovr||60)?`📉 Età ${newAge}: leggero calo fisico`:`🎂 ${newAge} anni — stagione ${newSeason} inizia`;
+        return{...p,season:newSeason,age:newAge,week:1,weekLived:false,goals:0,assists:0,matches:0,fatigue:0,skillPoints:(p.skillPoints||0)+2,stats:agedStats,ovr:newOvr,contract:newContract,contractExpired,history:[...(p.history||[]),hist],log:[`🏁 Fine S.${p.season}: ${p.goals}⚽ ${p.assists}🎯`,agingLog,...(p.log||[])].slice(0,60),standings:newStandings,calendar:newCalendar,matchHistory:[]};
       }
       // if this week had a scheduled unplayed match, auto-simulate it
       const md=(p.calendar||[]).find(m=>m.week===(p.week||1)&&!m.played);
@@ -5151,6 +5164,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
       if(p.injured&&(p.injuryWeeks||0)>0){return{...updP,week:(p.week||1)+1,weekLived:false,injuryWeeks:p.injuryWeeks-1,injured:p.injuryWeeks-1>0,fatigue:Math.max(0,(p.fatigue||0)-8)};}
       return{...updP,week:(p.week||1)+1,weekLived:false};
     });
+    if(willContractExpire)notify("📋 Contratto scaduto! Rinnova o cerca un nuovo club.",TH.warning);
     notify("⏭️ Settimana avanzata");
   };
 
@@ -5181,6 +5195,13 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
   const acceptTransfer=()=>{
     if(!transferOffer)return;
     const tc=transferOffer;
+    if(tc.isRenewal){
+      // Contract renewal: same club, new contract terms, clear expired flag
+      setPlayer(p=>({...p,contract:{duration:tc.duration||2,wage:tc.wage||p.contract?.wage||500,expiresAtSeason:(p.season||1)+(tc.duration||2)},contractExpired:false,morale:clamp(p.morale+(tc.moralBonus||5),0,100),log:[`📋 Rinnovo contratto: ${tc.duration||2} stagion${(tc.duration||2)===1?"e":"i"} a €${tc.wage||p.contract?.wage}/sett.`,...(p.log||[])].slice(0,60)}));
+      setTransferOffer(null);
+      notify(`✅ Contratto rinnovato con ${tc.club?.n||"il club"}!`,TH.success);
+      return;
+    }
     setPlayer(p=>{
       const newClub={...tc.club,transferType:tc.type,isU18:false};
       const lc=CLUBS.filter(c=>c.lg===tc.club.lg);
@@ -5189,13 +5210,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
       const newStandings=initStandings(lcs);
       const seed=(p.season||1)*777+hashStr(tc.club.id||tc.club.n||"x");
       const newCalendar=generateSeasonCalendar(newClub,lcs,seed);
-      return{...p,
-        club:newClub,isU18:false,proStatus:"pro",
-        morale:clamp(p.morale+(tc.moralBonus||10),0,100),
-        offerHistory:[...(p.offerHistory||[]),{club:tc.club.n,type:tc.type,season:p.season,accepted:true}],
-        log:[`🔄 ${tc.type}: ${tc.club.n} (${tc.club.lg||tc.club.nat})!`,...(p.log||[])].slice(0,60),
-        standings:newStandings,calendar:newCalendar,
-      };
+      return{...p,club:newClub,isU18:false,proStatus:"pro",contractExpired:false,morale:clamp(p.morale+(tc.moralBonus||10),0,100),offerHistory:[...(p.offerHistory||[]),{club:tc.club.n,type:tc.type,season:p.season,accepted:true}],log:[`🔄 ${tc.type}: ${tc.club.n} (${tc.club.lg||tc.club.nat})!`,...(p.log||[])].slice(0,60),standings:newStandings,calendar:newCalendar};
     });
     setTransferOffer(null);
     notify(`✅ Benvenuto a ${tc.club.n}!`,TH.success);
@@ -5342,6 +5357,13 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
       </div>
 
       {/* DASHBOARD */}
+      {tab==="dashboard"&&player.contractExpired&&(
+        <Card bg="#fef3c7" border="#f59e0b" style={{marginBottom:8,padding:"12px 14px"}}>
+          <div style={{fontSize:11,fontWeight:700,color:"#92400e",marginBottom:4}}>📋 Contratto scaduto — sei svincolato</div>
+          <div style={{fontSize:11,color:"#78350f",marginBottom:8}}>Rinnova con il tuo club o aspetta un'offerta dal mercato.</div>
+          <Btn onClick={()=>{const renewWage=clamp(Math.round((player.contract?.wage||500)*((player.goals||0)>10?1.15:(player.goals||0)>5?1.05:0.9)),300,50000);setTransferOffer({club:player.club,type:"Rinnovo contratto",isRenewal:true,minutaggio:player.ovr>=75?80:60,wage:renewWage,duration:rng(1,3),moralBonus:5,growthBonus:5});}} v="primary" fw>Rinnova contratto</Btn>
+        </Card>
+      )}
       {tab==="dashboard"&&(
         <div className="cpm-dash-grid">
           <Card border="#bbf7d0" bg="#f0fdf4">
