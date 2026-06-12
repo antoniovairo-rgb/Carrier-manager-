@@ -833,7 +833,7 @@ function generateSeasonObjectives(player){
   objs.push({type:"standing",target:standT,label:`Finisci nei primi ${standT}`,bonus:{popularity:15,value:0.25}});
   return objs;
 }
-const GAME_VERSION="1.5.1";
+const GAME_VERSION="1.6.0";
 const SAVE_VERSION=5;
 const SLOT_KEYS=["cpm-v3","cpm-v3-s2","cpm-v3-s3"]; // slot 0 backward-compatible
 const storage={
@@ -5441,6 +5441,93 @@ function AISettingsCard({player}){
 }
 
 /* ========================================
+   NATIONAL CALLUP SCREEN  (Sprint 7)
+======================================== */
+const NAT_DATA={
+  "Italia":    {flag:"🇮🇹",col:"#003399",col2:"#fff",opp:"Brasile"},
+  "Spagna":    {flag:"🇪🇸",col:"#AA151B",col2:"#F1BF00",opp:"Germania"},
+  "Francia":   {flag:"🇫🇷",col:"#002395",col2:"#fff",opp:"Portogallo"},
+  "Germania":  {flag:"🇩🇪",col:"#1a1a1a",col2:"#FFCE00",opp:"Francia"},
+  "Inghilterra":{flag:"🏴󠁧󠁢󠁥󠁮󠁧󠁿",col:"#003c8f",col2:"#fff",opp:"Argentina"},
+  "Portogallo":{flag:"🇵🇹",col:"#006600",col2:"#EE1111",opp:"Spagna"},
+  "Brasile":   {flag:"🇧🇷",col:"#009C3B",col2:"#FFDF00",opp:"Argentina"},
+  "Argentina": {flag:"🇦🇷",col:"#74ACDF",col2:"#fff",opp:"Brasile"},
+  "Olanda":    {flag:"🇳🇱",col:"#FF4F00",col2:"#fff",opp:"Germania"},
+  "Belgio":    {flag:"🇧🇪",col:"#1a1a1a",col2:"#FDDA24",opp:"Francia"},
+};
+function NationalCallupScreen({data,onConfirm}){
+  const{nation,isFirst,homeScore,awayScore,goals,assists,won,drew,newCaps}=data;
+  const nd=NAT_DATA[nation]||{flag:"🏳",col:"#1e40af",col2:"#fff",opp:"Avversario"};
+  const{flag,col,col2,opp}=nd;
+  const res=won?"VITTORIA":drew?"PAREGGIO":"SCONFITTA";
+  const resCol=won?TH.success:drew?TH.warning:TH.danger;
+  const[shown,setShown]=React.useState(false);
+  React.useEffect(()=>{const t=setTimeout(()=>setShown(true),60);return()=>clearTimeout(t);},[]);
+  return(
+    <div style={{width:"100%",background:`linear-gradient(160deg,${col}30 0%,#050810 55%)`,minHeight:"100vh",display:"flex",flexDirection:"column",alignItems:"center",padding:"24px 16px 32px",boxSizing:"border-box",opacity:shown?1:0,transition:"opacity 0.45s",overflowY:"auto"}}>
+      {isFirst&&<div style={{background:`${TH.accent}20`,border:`1px solid ${TH.accent}55`,borderRadius:8,padding:"7px 18px",marginBottom:18,fontSize:10,color:TH.accent,letterSpacing:2,textTransform:"uppercase",fontWeight:800,textAlign:"center"}}>★ Milestone di Carriera — Prima Convocazione ★</div>}
+      <div style={{fontSize:54,marginBottom:4,lineHeight:1}}>{flag}</div>
+      <div style={{fontSize:10,color:TH.muted,letterSpacing:2.5,textTransform:"uppercase",marginBottom:4}}>Convocazione Nazionale</div>
+      <div style={{fontSize:26,fontWeight:900,color:"#fff",marginBottom:2}}>Nazionale {nation}</div>
+      <div style={{fontSize:12,color:TH.muted,marginBottom:22}}>Cap #{newCaps}</div>
+      {/* Jersey */}
+      <div style={{marginBottom:22,filter:`drop-shadow(0 0 20px ${col}99)`}}>
+        <svg width="92" height="104" viewBox="0 0 92 104">
+          <defs>
+            <linearGradient id="ng" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stopColor={col}/>
+              <stop offset="100%" stopColor={col} stopOpacity="0.75"/>
+            </linearGradient>
+          </defs>
+          <path d="M23 13 Q11 16 7 26 L2 47 L21 49 L21 92 L71 92 L71 49 L90 47 L85 26 Q81 16 69 13 Q59 7 46 6 Q33 7 23 13Z" fill="url(#ng)" stroke={col2} strokeWidth="1.6"/>
+          <path d="M31 13 Q38 22 46 22 Q54 22 61 13" fill="none" stroke={col2} strokeWidth="1.4"/>
+          <text x="46" y="65" textAnchor="middle" fill={col2} fontSize="21" fontWeight="900" fontFamily="Arial,sans-serif">10</text>
+        </svg>
+      </div>
+      {/* Match result */}
+      <Card style={{width:"100%",maxWidth:360,padding:"14px 16px",marginBottom:14}}>
+        <div style={{fontSize:9,color:TH.muted,letterSpacing:2,textTransform:"uppercase",textAlign:"center",marginBottom:10}}>Amichevole Internazionale</div>
+        <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:8,marginBottom:8}}>
+          <span style={{fontSize:11,color:TH.muted,flex:1,textAlign:"right"}}>{flag} {nation}</span>
+          <div style={{display:"flex",alignItems:"center",gap:7,padding:"6px 14px",background:"rgba(255,255,255,0.05)",borderRadius:8}}>
+            <span style={{fontSize:32,fontWeight:900,color:TH.text,lineHeight:1}}>{homeScore}</span>
+            <span style={{fontSize:14,color:TH.faint}}>–</span>
+            <span style={{fontSize:32,fontWeight:900,color:TH.text,lineHeight:1}}>{awayScore}</span>
+          </div>
+          <span style={{fontSize:11,color:TH.muted,flex:1}}>vs {opp}</span>
+        </div>
+        <div style={{textAlign:"center",fontSize:13,fontWeight:700,color:resCol,marginBottom:12}}>{res}</div>
+        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}>
+          {[{l:"Gol",v:goals,e:"⚽",c:TH.warning},{l:"Assist",v:assists,e:"🎯",c:TH.accent}].map(s=>(
+            <Card key={s.l} style={{padding:"8px 6px",textAlign:"center"}}>
+              <div style={{fontSize:16,marginBottom:2}}>{s.e}</div>
+              <div style={{fontSize:22,fontWeight:900,color:s.c}}>{s.v}</div>
+              <div style={{fontSize:9,color:TH.muted,textTransform:"uppercase"}}>{s.l}</div>
+            </Card>
+          ))}
+        </div>
+      </Card>
+      {/* Boosts */}
+      <Card style={{width:"100%",maxWidth:360,padding:"12px 16px",marginBottom:24}}>
+        <div style={{fontSize:9,color:TH.muted,letterSpacing:2,textTransform:"uppercase",marginBottom:10}}>Bonus Permanente</div>
+        <div style={{display:"flex",justifyContent:"space-around"}}>
+          {[{l:"Popolarità",v:"+18",e:"📈",c:TH.success},{l:"Valore",v:"+€0.35M",e:"💶",c:TH.warning},{l:"Morale",v:"+15",e:"😊",c:TH.accent}].map(b=>(
+            <div key={b.l} style={{textAlign:"center"}}>
+              <div style={{fontSize:16,marginBottom:2}}>{b.e}</div>
+              <div style={{fontSize:15,fontWeight:800,color:b.c}}>{b.v}</div>
+              <div style={{fontSize:9,color:TH.muted}}>{b.l}</div>
+            </div>
+          ))}
+        </div>
+      </Card>
+      <Btn onClick={onConfirm} v="green" fw style={{padding:"14px",fontSize:15,maxWidth:360,fontWeight:800}}>
+        🏳️ Accetta la Convocazione
+      </Btn>
+    </div>
+  );
+}
+
+/* ========================================
    CAREER APP  (req #9,#10,#12,#13,#14)
 ======================================== */
 function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
@@ -5487,6 +5574,10 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
       newP={...newP,seasonObjectives:generateSeasonObjectives(newP)};
       changed=true;
     }
+    if(!('nationalCaps' in newP)){
+      newP={...newP,nationalCaps:0,lastNationalSeason:0};
+      changed=true;
+    }
     if(changed){setPlayer(newP);}
   },[]);// eslint-disable-line
   const[notif,setNotif]=useState(null);
@@ -5496,6 +5587,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
   const[showAdvanceConfirm,setShowAdvanceConfirm]=useState(false);
   const[showMatchPrompt,setShowMatchPrompt]=useState(null); // {md} — pending match prompt
   const[lastSaved,setLastSaved]=useState(null);           // timestamp
+  const[nationalCallupData,setNationalCallupData]=useState(null);
 
   const notify=(msg,color=TH.primary)=>{setNotif({msg,color});setTimeout(()=>setNotif(null),2800);};
 
@@ -5803,6 +5895,23 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
       return{...updP,week:(p.week||1)+1,weekLived:false,trainedThisWeek:false};
     });
     notify("⏭️ Settimana avanzata");
+    // ── National team call-up check ──
+    if(!isInU18&&(player.popularity||0)>=55&&(player.ovr||0)>=70&&!player.injured){
+      const caps=player.nationalCaps||0;
+      const lastNat=player.lastNationalSeason||0;
+      const curSeas=player.season||1;
+      const isFirst=caps===0;
+      const seasonOpen=curSeas>lastNat;
+      if((isFirst||seasonOpen)&&Math.random()<(isFirst?0.22:0.13)){
+        const goals=Math.random()<0.40?rng(1,2):0;
+        const assists=!goals&&Math.random()<0.30?1:0;
+        const hS=rng(1,4),aS=rng(0,3);
+        setTimeout(()=>{
+          setNationalCallupData({nation:player.nation||"Italia",isFirst,homeScore:hS,awayScore:aS,goals,assists,won:hS>aS,drew:hS===aS,newCaps:caps+1});
+          setScreen("nationalCallup");
+        },700);
+      }
+    }
   };
 
   // new season: reset stats, advance calendar — called from SeasonEndScreen
@@ -5868,6 +5977,15 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
     setScreen("clubPresentation");setTab("dashboard");
     notify("🎓 Sei diventato professionista!",TH.success);
   },[]);// eslint-disable-line
+
+  const onNationalConfirm=()=>{
+    if(!nationalCallupData)return;
+    const d=nationalCallupData;
+    setPlayer(p=>({...p,nationalCaps:d.newCaps,lastNationalSeason:p.season||1,popularity:clamp((p.popularity||20)+18,0,100),value:Math.max(0.5,(p.value||0.8)+0.35),morale:clamp((p.morale||70)+15,0,100),log:[`🏳️ Cap ${d.newCaps} — ${d.nation} ${d.homeScore}-${d.awayScore} (${d.won?"V":d.drew?"P":"S"}) ${d.goals}⚽ ${d.assists}🎯`,...(p.log||[])].slice(0,60)}));
+    setNationalCallupData(null);
+    setScreen("dashboard");
+    setTimeout(()=>notify(`🏳️ Convocazione in ${d.nation}! Popolarità +18 · Valore +€0.35M`,TH.accent),100);
+  };
 
   const upgradeSkill=k=>{if(!player.skillPoints)return;setPlayer(p=>{const ns={...p.stats,[k]:clamp(p.stats[k]+rng(1,3),1,99)};return{...p,stats:ns,ovr:calcOvr(ns),skillPoints:p.skillPoints-1};});notify(`${k} migliorato!`,TH.accent);};
 
@@ -5939,6 +6057,12 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
     const r=lastMatch,rating=r.rating,rc=rating>=8?TH.success:rating>=6.5?TH.warning:TH.danger;
     return <div style={{width:"100%"}}><Card style={{textAlign:"center",padding:"24px",maxWidth:560,margin:"0 auto"}}><div style={{fontSize:10,color:TH.muted,letterSpacing:2,marginBottom:8}}>POST MATCH</div><div style={{fontSize:28,fontWeight:900,marginBottom:4,color:TH.text}}><span style={{color:TH.success}}>{r.homeScore}</span><span style={{color:TH.faint,margin:"0 10px"}}>–</span><span style={{color:TH.danger}}>{r.awayScore}</span></div><p style={{color:TH.muted,fontSize:12,margin:"0 0 14px"}}>vs {r.opponent}</p><div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:8,marginBottom:14}}>{[{l:"Gol",v:r.goals,e:"⚽"},{l:"Assist",v:r.assists,e:"🎯"},{l:"Voto",v:rating,e:"⭐",c:rc}].map(s=><Card key={s.l} style={{padding:"10px 6px",textAlign:"center"}}><div style={{fontSize:16,marginBottom:2}}>{s.e}</div><div style={{fontSize:20,fontWeight:900,color:s.c||TH.warning}}>{s.v}</div><div style={{fontSize:9,color:TH.muted}}>{s.l}</div></Card>)}</div><div style={{fontSize:50,fontWeight:900,color:rc,lineHeight:1,marginBottom:4}}>{rating}</div><div style={{fontSize:12,color:rc,marginBottom:14}}>{rating>=8?"Eccellente!":rating>=7?"Buona partita":rating>=6?"Sufficiente":"Da migliorare"}</div>{lastPressReport&&<Btn onClick={()=>setScreen("press")} v="secondary" fw style={{padding:"10px",fontSize:13,marginBottom:8}}>📰 Rassegna Stampa</Btn>}<Btn onClick={()=>setScreen("dashboard")} v="green" fw style={{padding:"13px",fontSize:14}}>🏟️ Torna alla Dashboard <span className="kbd" style={{opacity:0.7,fontSize:11}}>Enter</span></Btn></Card></div>;
   }
+
+  if(screen==="nationalCallup"&&nationalCallupData)return(
+    <div style={{width:"100%"}}>
+      <NationalCallupScreen data={nationalCallupData} onConfirm={onNationalConfirm}/>
+    </div>
+  );
 
   const tabs=[{id:"dashboard",e:"🏠",l:"Home",k:"M"},{id:"calendar",e:"📅",l:"Calendario",k:"C"},{id:"standings",e:"📊",l:"Classifica",k:"F"},{id:"training",e:"💪",l:"Allena",k:"T"},{id:"profile",e:"👤",l:"Profilo",k:"R"}];
 
@@ -6417,6 +6541,16 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
             <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:6}}>
               {[{l:"Gol stag.",v:player.goals||0},{l:"Assist stag.",v:player.assists||0},{l:"Partite stag.",v:player.matches||0},{l:"Gol tot.",v:player.totalGoals||0},{l:"Assist tot.",v:player.totalAssists||0},{l:"Valore",v:`${player.value||0.8}M€`}].map(s=><div key={s.l} style={{background:"#f8fafc",borderRadius:8,padding:"7px",border:"1px solid "+TH.cardBorder}}><div style={{fontSize:9,color:TH.faint,marginBottom:2}}>{s.l}</div><div style={{fontSize:14,fontWeight:700,color:TH.text}}>{s.v}</div></div>)}
             </div>
+            {(player.nationalCaps||0)>0&&(
+              <div style={{marginTop:10,padding:"9px 12px",background:`${(NAT_DATA[player.nation||"Italia"]||{col:"#003399"}).col}18`,borderRadius:8,border:`1px solid ${(NAT_DATA[player.nation||"Italia"]||{col:"#003399"}).col}40`,display:"flex",alignItems:"center",gap:10}}>
+                <span style={{fontSize:22}}>{(NAT_DATA[player.nation||"Italia"]||{flag:"🏳"}).flag}</span>
+                <div style={{flex:1}}>
+                  <div style={{fontSize:12,fontWeight:800,color:TH.text}}>Nazionale {player.nation}</div>
+                  <div style={{fontSize:10,color:TH.muted}}>{player.nationalCaps} cap{(player.nationalCaps||0)!==1?"":"s"} internazionale{(player.nationalCaps||0)!==1?"i":""}</div>
+                </div>
+                <span style={{fontSize:18,fontWeight:900,color:TH.accent}}>{player.nationalCaps}</span>
+              </div>
+            )}
           </Card>
           <Card>
             <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>Attributi</div>
