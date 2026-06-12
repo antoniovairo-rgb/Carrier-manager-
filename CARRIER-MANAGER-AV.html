@@ -921,7 +921,7 @@ const NPC_PERSONAS=[
   {id:"fantasioso",  e:"🎭", name:"Fantasioso",  desc:"Imprevedibile e creativo",         lambdaMod:+0.08, trustMod:+2},
 ];
 function getClubPersona(club){const h=hashStr((club?.id||club?.n||"x"));return NPC_PERSONAS[Math.abs(h)%NPC_PERSONAS.length];}
-const GAME_VERSION="2.3.0"; // Sprint 13
+const GAME_VERSION="2.3.1"; // fix GK drift
 const SAVE_VERSION=5;
 // Sprint 11 — S11.1 Coach data
 const COACH_NAMES=["Rossi","Ferrari","Bianchi","Conti","Greco","Mancini","Pirlo","Gattuso","Capello","De Zerbi","Allegri","Conte","Spalletti","Inzaghi","Sarri","Mihajlovic"];
@@ -3395,21 +3395,27 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
         }else{
           const hi=idx;
           let tx,ty;
-          if(hi===0){tx=3;ty=clamp(50+(ballY-50)*0.35,30,70);}
-          else if(hi<=4){const off=[-28,-9,9,28][hi-1];tx=homeDepth-4;ty=clamp(ballY+off,8,92);}
-          else if(hi<=7){const off=[-18,0,18][hi-5];tx=homeDepth+12;ty=clamp(ballY+off,6,94);}
-          else{
-            const off=[-14,14,0][hi-8];
-            const runBonus=poss>60?clamp((poss-60)*0.5,0,12):0;
-            tx=homeDepth+26+runBonus;
-            ty=clamp(ballY+off+(poss>60?off>0?6:-6:0),5,95);
+          if(hi===0){
+            // GK: fixed in goal — no oscillation, tight x clamp
+            tx=3;ty=clamp(50+(ballY-50)*0.35,28,72);
+            ty+=Math.cos(T*0.75)*1.5; // minimal lateral sway only
+          }else{
+            if(hi<=4){const off=[-28,-9,9,28][hi-1];tx=homeDepth-4;ty=clamp(ballY+off,8,92);}
+            else if(hi<=7){const off=[-18,0,18][hi-5];tx=homeDepth+12;ty=clamp(ballY+off,6,94);}
+            else{
+              const off=[-14,14,0][hi-8];
+              const runBonus=poss>60?clamp((poss-60)*0.5,0,12):0;
+              tx=homeDepth+26+runBonus;
+              ty=clamp(ballY+off+(poss>60?off>0?6:-6:0),5,95);
+            }
+            tx+=Math.sin(T*0.85+hi*1.5)*4;
+            ty+=Math.cos(T*0.75+hi*1.1)*5;
           }
-          tx+=Math.sin(T*0.85+hi*1.5)*4;
-          ty+=Math.cos(T*0.75+hi*1.1)*5;
           const vh=velRef.current[idx]||{vx:0,vy:0};
           const nvxh=clamp(vh.vx*0.70+(tx-pl.x)*0.12,-6,6);
           const nvyh=clamp(vh.vy*0.70+(ty-pl.y)*0.10,-6,6);
           velRef.current[idx]={vx:nvxh,vy:nvyh};
+          if(hi===0)return{...pl,x:clamp(pl.x+nvxh,2,12),y:clamp(pl.y+nvyh,20,80)};
           return{...pl,x:clamp(pl.x+nvxh,2,92),y:clamp(pl.y+nvyh,3,97)};
         }
       }));
