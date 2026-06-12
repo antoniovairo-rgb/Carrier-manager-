@@ -824,7 +824,26 @@ function generateProContracts(player){
   }
   return{offers,forced,perf:Math.round(perf*10)/10};
 }
-const GAME_VERSION="1.4.0";
+function generateSeasonObjectives(player){
+  const pos=player.position||"Attaccante";
+  const ovr=player.ovr||60;
+  const objs=[];
+  if(["Portiere","Difensore","Terzino"].includes(pos)){
+    const t=clamp(Math.floor(ovr/4.5),6,22);
+    objs.push({type:"matches",target:t,label:`Disputa ${t} partite`,bonus:{morale:12,coachTrust:8}});
+  }else if(["Mediano","Centrocampista"].includes(pos)){
+    const t=clamp(Math.floor(ovr/7),3,12);
+    objs.push({type:"assists",target:t,label:`Realizza ${t} assist`,bonus:{morale:12,coachTrust:10,popularity:8}});
+  }else{
+    const t=clamp(Math.floor(ovr/5),5,18);
+    objs.push({type:"goals",target:t,label:`Segna ${t} gol`,bonus:{morale:15,coachTrust:10,value:0.2}});
+  }
+  const p=player.club?.p||50;
+  const standT=p>=80?3:p>=65?6:p>=50?9:12;
+  objs.push({type:"standing",target:standT,label:`Finisci nei primi ${standT}`,bonus:{popularity:15,value:0.25}});
+  return objs;
+}
+const GAME_VERSION="1.5.0";
 const SAVE_VERSION=5;
 const SLOT_KEYS=["cpm-v3","cpm-v3-s2","cpm-v3-s3"]; // slot 0 backward-compatible
 const storage={
@@ -5430,6 +5449,10 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
       newP={...newP,trainedThisWeek:false};
       changed=true;
     }
+    if(!('seasonObjectives' in newP)){
+      newP={...newP,seasonObjectives:generateSeasonObjectives(newP)};
+      changed=true;
+    }
     if(changed){setPlayer(newP);}
   },[]);// eslint-disable-line
   const[notif,setNotif]=useState(null);
@@ -5751,6 +5774,18 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
   // new season: reset stats, advance calendar — called from SeasonEndScreen
   const doStartNewSeason=()=>{
     const willContractExpire=(player.contract?.duration||1)<=1;
+    // Evaluate season objectives pre-reset
+    const sortedSt=[...(player.standings||[])].sort((a,b)=>b.pts-a.pts||(b.gd||0)-(a.gd||0));
+    const cId=player.club?.id||player.club?.n;
+    const clubPos=sortedSt.findIndex(t=>t.id===cId||(t.n||t.name)===(player.club?.n||player.club?.name));
+    let bonM=0,bonCT=0,bonPop=0,bonVal=0;
+    const objLogs=[];
+    (player.seasonObjectives||[]).forEach(obj=>{
+      const cur=obj.type==="goals"?(player.goals||0):obj.type==="assists"?(player.assists||0):obj.type==="matches"?(player.matches||0):clubPos>=0?clubPos+1:99;
+      const done=obj.type==="standing"?cur<=obj.target:cur>=obj.target;
+      if(done){bonM+=(obj.bonus?.morale||0);bonCT+=(obj.bonus?.coachTrust||0);bonPop+=(obj.bonus?.popularity||0);bonVal+=(obj.bonus?.value||0);objLogs.push(`✅ ${obj.label}`);}
+      else{bonM-=8;bonCT-=5;objLogs.push(`❌ Mancato: ${obj.label}`);}
+    });
     setPlayer(p=>{
       const newSeason=(p.season||1)+1;
       const newAge=(p.age||17)+1;
@@ -5761,19 +5796,18 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
       const newContract={...p.contract,duration:(p.contract?.duration||1)-1,expiresAtSeason:p.contract?.expiresAtSeason||newSeason+1};
       const contractExpired=newContract.duration<=0;
       let agedStats={...p.stats};
-      if(newAge>=31&&Math.random()<0.6){
-        const dk=Math.random()<0.5?'velocità':'fisico';
-        agedStats={...agedStats,[dk]:clamp(agedStats[dk]-1,1,99)};
-      }
+      if(newAge>=31&&Math.random()<0.6){const dk=Math.random()<0.5?'velocità':'fisico';agedStats={...agedStats,[dk]:clamp(agedStats[dk]-1,1,99)};}
       const newOvr=calcOvr(agedStats);
       const agingLog=newAge>=31&&newOvr<(p.ovr||60)?`📉 Età ${newAge}: leggero calo fisico`:`🎂 ${newAge} anni — stagione ${newSeason} inizia`;
-      return{...p,season:newSeason,age:newAge,week:1,weekLived:false,goals:0,assists:0,matches:0,fatigue:0,skillPoints:(p.skillPoints||0)+2,stats:agedStats,ovr:newOvr,contract:newContract,contractExpired,log:[agingLog,...(p.log||[])].slice(0,60),standings:newStandings,calendar:newCalendar,matchHistory:[]};
+      const newObjectives=generateSeasonObjectives({...p,ovr:newOvr});
+      return{...p,season:newSeason,age:newAge,week:1,weekLived:false,goals:0,assists:0,matches:0,fatigue:0,skillPoints:(p.skillPoints||0)+2,stats:agedStats,ovr:newOvr,contract:newContract,contractExpired,morale:clamp((p.morale||70)+bonM,0,100),coachTrust:clamp((p.coachTrust||60)+bonCT,0,100),popularity:clamp((p.popularity||20)+bonPop,0,100),value:Math.max(0.5,(p.value||0.8)+bonVal),log:[agingLog,...objLogs,...(p.log||[])].slice(0,60),standings:newStandings,calendar:newCalendar,matchHistory:[],seasonObjectives:newObjectives};
     });
     setSeasonEndData(null);
     setScreen("dashboard");
     setTab("dashboard");
     setTimeout(()=>{
       notify("🆕 Nuova stagione iniziata!",TH.success);
+      if(objLogs.length)setTimeout(()=>notify(objLogs.join(" · "),objLogs.every(m=>m.startsWith("✅"))?TH.success:TH.warning),1400);
       if(willContractExpire)setTimeout(()=>notify("📋 Contratto scaduto! Rinnova o cerca un nuovo club.",TH.warning),3200);
     },200);
   };
@@ -5789,7 +5823,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
       const newStandings=initStandings(lc.length?lc:getLeagueClubs(p));
       const seed=newSeason*777+hashStr(targetClub?.id||targetClub?.n||"u18");
       const newCalendar=generateSeasonCalendar(targetClub||{id:"u18",n:"U18"},lc.length?lc:getLeagueClubs(p),seed);
-      const base={...p,week:1,weekLived:false,season:newSeason,age:newAge,goals:0,assists:0,matches:0,matchHistory:[],fatigue:clamp((p.fatigue||0)-30,0,100),skillPoints:(p.skillPoints||0)+2,morale:clamp((p.morale||70)+(offer.moralBonus||0),0,100),contract:{duration:offer.duration||1,wage:offer.wage||500,expiresAtSeason:newSeason+(offer.duration||1)},standings:newStandings,calendar:newCalendar};
+      const base={...p,week:1,weekLived:false,season:newSeason,age:newAge,goals:0,assists:0,matches:0,matchHistory:[],fatigue:clamp((p.fatigue||0)-30,0,100),skillPoints:(p.skillPoints||0)+2,morale:clamp((p.morale||70)+(offer.moralBonus||0),0,100),contract:{duration:offer.duration||1,wage:offer.wage||500,expiresAtSeason:newSeason+(offer.duration||1)},standings:newStandings,calendar:newCalendar,seasonObjectives:generateSeasonObjectives({...p,club:targetClub})};
       if(offer.isStayU18){
         return{...base,log:[`🔄 Resto in Under 18 (S.${newSeason})`,...(p.log||[])].slice(0,60)};
       }
@@ -6027,6 +6061,32 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
           <div style={{height:6,background:"#fee2e2",borderRadius:3,overflow:"hidden"}}>
             <div style={{height:"100%",width:`${100-Math.min(100,((player.injuryWeeks||0)/4)*100)}%`,background:"#ef4444",borderRadius:3,transition:"width .4s"}}/>
           </div>
+        </Card>
+      )}
+      {/* Season objectives progress */}
+      {tab==="dashboard"&&(player.seasonObjectives||[]).length>0&&(
+        <Card style={{marginBottom:8,padding:"10px 14px"}}>
+          <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>🎯 Obiettivi Stagione {season}</div>
+          {(player.seasonObjectives||[]).map((obj,i)=>{
+            let cur=0;
+            if(obj.type==="goals")cur=player.goals||0;
+            else if(obj.type==="assists")cur=player.assists||0;
+            else if(obj.type==="matches")cur=player.matches||0;
+            else if(obj.type==="standing"){const ss=[...(player.standings||[])].sort((a,b)=>b.pts-a.pts||(b.gd||0)-(a.gd||0));const ci=player.club?.id||player.club?.n;const pi=ss.findIndex(t=>t.id===ci||(t.n||t.name)===(player.club?.n||player.club?.name));cur=pi>=0?pi+1:99;}
+            const done=obj.type==="standing"?cur<=obj.target:cur>=obj.target;
+            const pct=obj.type==="standing"?Math.min(100,Math.max(0,Math.round((1-(cur-1)/Math.max(1,obj.target))*100))):Math.min(100,Math.round((cur/Math.max(1,obj.target))*100));
+            return(
+              <div key={i} style={{marginBottom:i<(player.seasonObjectives||[]).length-1?10:0}}>
+                <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:3}}>
+                  <div style={{fontSize:11,color:done?TH.success:TH.text,fontWeight:done?700:400}}>{done?"✅ ":"🎯 "}{obj.label}</div>
+                  <div style={{fontSize:10,color:done?TH.success:TH.muted,fontWeight:600}}>{obj.type==="standing"?`${cur===99?"–":cur}° / top ${obj.target}`:`${cur} / ${obj.target}`}</div>
+                </div>
+                <div style={{height:4,background:"#e2e8f0",borderRadius:2,overflow:"hidden"}}>
+                  <div style={{height:"100%",width:`${pct}%`,background:done?TH.success:TH.primary,borderRadius:2,transition:"width .4s"}}/>
+                </div>
+              </div>
+            );
+          })}
         </Card>
       )}
       {tab==="dashboard"&&(
