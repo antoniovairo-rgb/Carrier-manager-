@@ -803,7 +803,7 @@ function generateProContracts(player){
   }
   return{offers,forced,perf:Math.round(perf*10)/10};
 }
-const GAME_VERSION="0.9.9";
+const GAME_VERSION="1.0.0";
 const SAVE_VERSION=5;
 const SLOT_KEYS=["cpm-v3","cpm-v3-s2","cpm-v3-s3"]; // slot 0 backward-compatible
 const storage={
@@ -2876,10 +2876,14 @@ function LiveMatch({player,opponent,context="career",onMatchEnd}){
           if(pl.team==="ref")return pl;
           if(pl.team==="away"){
             const ai=idx-10; // 0..10
+            // Away GK stays in goal during set pieces (penalty/free kick)
+            if(ai===0)return{...pl,x:clamp(pl.x+(95-pl.x)*0.15,88,98),y:clamp(pl.y+(50-pl.y)*0.12,35,65)};
             return{...pl,
               x:clamp(pl.x+(74+Math.random()*4-pl.x)*0.32,64,81),
               y:pl.y+((8+ai*8)-pl.y)*0.28};
           }else{
+            // Home GK stays in goal during set pieces
+            if(idx===0)return{...pl,x:clamp(pl.x+(3-pl.x)*0.15,2,8),y:clamp(pl.y+(50-pl.y)*0.12,35,65)};
             return{...pl,
               x:clamp(pl.x+((76+Math.random()*12)-pl.x)*0.25,68,91),
               y:pl.y+((10+idx*7)-pl.y)*0.20};
@@ -2891,6 +2895,9 @@ function LiveMatch({player,opponent,context="career",onMatchEnd}){
         if(pl.team==="ref")return pl;
         const r=(Math.random()-0.5)*3.5;
         if(pl.team==="away"){
+          const ai=idx-10;
+          // Away GK: stays in goal, tracks ball laterally
+          if(ai===0){const tyStep=clamp((pPos.y-pl.y)*0.08,-2,2);return{...pl,x:clamp(pl.x,88,98),y:clamp(pl.y+tyStep,28,72)};}
           const dpx=pPos.x-pl.x,dpy=pPos.y-pl.y;
           const dist=Math.sqrt(dpx*dpx+dpy*dpy);
           if(dist>28){
@@ -2902,6 +2909,8 @@ function LiveMatch({player,opponent,context="career",onMatchEnd}){
             return{...pl,x:clamp(pPos.x+Math.cos(angle)*spread+r,isDef?5:40,97),y:clamp(pPos.y+Math.sin(angle)*spread+r,3,97)};
           }
         }else{
+          // Home GK: stays in goal, tracks ball laterally
+          if(idx===0){const tyStep=clamp((pPos.y-pl.y)*0.06,-1.5,1.5);return{...pl,x:clamp(pl.x,2,8),y:clamp(pl.y+tyStep,30,70)};}
           const supportX=clamp(pPos.x-(5+Math.random()*15)+r,3,85);
           const supportY=clamp(pPos.y+(Math.random()-0.5)*30+r,3,97);
           return{...pl,x:pl.x+(supportX-pl.x)*0.12,y:pl.y+(supportY-pl.y)*0.08};
@@ -2932,7 +2941,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd}){
           const ai=idx-10;
           let tx,ty;
           // GK stays back
-          if(ai===0){tx=97;ty=50;}
+          if(ai===0){tx=97;ty=clamp(50+(ballY-50)*0.35,30,70);}
           // defenders spread around ball Y, shifted by role offset
           else if(ai<=4){const off=[-28,-9,9,28][ai-1];tx=awayDepth+4;ty=clamp(ballY+off,8,92);}
           // midfielders track ball more closely
@@ -2945,7 +2954,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd}){
         }else{
           const hi=idx;
           let tx,ty;
-          if(hi===0){tx=3;ty=50;}
+          if(hi===0){tx=3;ty=clamp(50+(ballY-50)*0.35,30,70);}
           else if(hi<=4){const off=[-28,-9,9,28][hi-1];tx=homeDepth-4;ty=clamp(ballY+off,8,92);}
           else if(hi<=7){const off=[-18,0,18][hi-5];tx=homeDepth+12;ty=clamp(ballY+off,6,94);}
           else{const off=[-14,14,0][hi-8];tx=homeDepth+26;ty=clamp(ballY+off,5,95);}
@@ -2994,16 +3003,19 @@ function LiveMatch({player,opponent,context="career",onMatchEnd}){
               if(pl.team==="ref")return pl;
               if(pl.team==="away"){
                 const ai=idx-10; // 0=GK,1-4=DEF,5-7=MID,8-10=FWD
+                // Away GK: lateral tracking only, stays in goal
+                if(ai===0){const tyGk=clamp((ball.y-pl.y)*0.12,-2,2);return{...pl,x:clamp(pl.x,90,98),y:clamp(pl.y+tyGk,30,70)};}
                 // when home gains ball, away pushes up to press; when away gains, they advance
                 let txBias=isHomeGain?-3:4;
                 let tyBias=(ball.y-pl.y)*0.15; // track ball laterally
-                if(ai===0){txBias=0;tyBias=0;} // GK stays
-                else if(ai<=4){txBias*=0.7;} // DEF: moderate press
+                if(ai<=4){txBias*=0.7;} // DEF: moderate press
                 else if(ai<=7){txBias*=1.0;} // MID: full press
                 else{txBias*=1.3;} // FWD: aggressive press
                 const jitter=(Math.random()-0.5)*2;
                 return{...pl,x:clamp(pl.x+txBias+jitter,44,98),y:clamp(pl.y+tyBias+(Math.random()-0.5)*3,3,97)};
               }else{
+                // Home GK: lateral tracking only, stays in goal
+                if(idx===0){const tyGk=clamp((ball.y-pl.y)*0.12,-2,2);return{...pl,x:clamp(pl.x,2,8),y:clamp(pl.y+tyGk,30,70)};}
                 // home team: when home gains ball, push forward
                 const shift=isHomeGain?Math.random()*3+1:-Math.random()*3-1;
                 const tyBias=(ball.y-pl.y)*0.1;
