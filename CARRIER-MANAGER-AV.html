@@ -803,7 +803,7 @@ function generateProContracts(player){
   }
   return{offers,forced,perf:Math.round(perf*10)/10};
 }
-const GAME_VERSION="0.9.6";
+const GAME_VERSION="0.9.7";
 const SAVE_VERSION=5;
 const SLOT_KEYS=["cpm-v3","cpm-v3-s2","cpm-v3-s3"]; // slot 0 backward-compatible
 const storage={
@@ -1316,7 +1316,10 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
 
   useEffect(()=>{
     const canvas=canvasRef.current;if(!canvas)return;
+    const dpr=window.devicePixelRatio||1;
+    canvas.width=PC_PW*dpr;canvas.height=PC_PH*dpr;
     const ctx=canvas.getContext("2d");
+    ctx.scale(dpr,dpr);
     const s=stateRef.current;
     const PW=PC_PW,PH=PC_PH,FX=PC_FX,FY=PC_FY,FW=PC_FW,FH=PC_FH,FCX=PC_FCX,FCY=PC_FCY;
 
@@ -1993,8 +1996,8 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
 
   return(
     <div style={{width:"100%",background:"#0a0e1a",borderRadius:"0 0 12px 12px",overflow:"hidden",display:"flex",justifyContent:"center"}}>
-      <canvas ref={canvasRef} width={PC_PW} height={PC_PH}
-        style={{display:"block",width:"min(100%,420px)",height:"auto",margin:"0 auto"}}/>
+      <canvas ref={canvasRef}
+        style={{display:"block",width:"100%",height:"auto",margin:"0 auto"}}/>
     </div>
   );
 }
@@ -3001,7 +3004,6 @@ function LiveMatch({player,opponent,context="career",onMatchEnd}){
           if(ev.ms)setMxStats(s=>({shots:s.shots+(ev.ms.shots||0),oppShots:s.oppShots+(ev.ms.oppShots||0),fouls:s.fouls+(ev.ms.fouls||0),corners:s.corners+(ev.ms.corners||0)}));
           if(ev.pd&&DRIFT_PRESETS[ev.pd])driftTargetsRef.current=DRIFT_PRESETS[ev.pd];
           if(ev.ef==="team_goal"||ev.ef==="opp_goal")setWaveEvent({t:Date.now(),home:ev.ef==="team_goal"});
-          if(ev.ef==="team_goal"||ev.ef==="opp_goal")setWaveEvent({t:Date.now(),home:ev.ef==="team_goal"});
           // Resolve {H},{H2},{A} name tokens from rosters
           const hAbbr=player.club?.a||player.club?.id?.slice(0,3).toUpperCase()||"HOME";
           const aAbbr=opponent?.a||opponent?.id?.slice(0,3).toUpperCase()||"AWAY";
@@ -3266,7 +3268,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd}){
                 <div style={{fontSize:11}}>{timeOfDay==="day"?"☀️":"🌙"}</div>
               </div>
               <div style={{fontSize:7,color:"rgba(255,255,255,0.25)",letterSpacing:1,textTransform:"uppercase",marginBottom:3}}>
-                {phase==="walkout"?"Ingresso in campo":phase==="ended"?"Fine partita":`HL ${hlIdx+1}/${numHL} · ${player.club?.lg||"Campionato"}`}
+                {phase==="walkout"?"Ingresso in campo":phase==="ended"?"Fine partita":player.club?.lg||"Campionato"}
               </div>
               <div style={{height:5,background:"rgba(255,255,255,0.08)",borderRadius:3,overflow:"hidden",display:"flex",width:80}}>
                 <div style={{width:`${possession}%`,background:homeKitCol,transition:"width .8s",borderRadius:"3px 0 0 3px"}}/>
@@ -5524,11 +5526,18 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
       {tab==="training"&&(
         <div style={{display:"flex",flexDirection:"column",gap:12}}>
           <Card>
-            <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}}><div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5}}>Attributi</div>{(player.skillPoints||0)>0&&<div style={{background:"#f3e8ff",color:TH.accent,padding:"3px 12px",borderRadius:20,fontSize:11,fontWeight:700}}>💡 {player.skillPoints} punti</div>}</div>
+            <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}}>
+              <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5}}>Attributi</div>
+              <div style={{display:"flex",alignItems:"center",gap:6}}>
+                {(player.skillPoints||0)>0
+                  ?<div style={{background:"#f3e8ff",color:TH.accent,padding:"3px 12px",borderRadius:20,fontSize:11,fontWeight:700}}>💡 {player.skillPoints} punti disponibili</div>
+                  :<div style={{fontSize:10,color:TH.faint,fontStyle:"italic"}}>+2 punti a fine stagione</div>}
+              </div>
+            </div>
             {Object.entries(player.stats).map(([k,v])=>(
               <div key={k} style={{display:"flex",alignItems:"center",gap:8,marginBottom:4}}>
                 <div style={{flex:1}}><StatBar label={k} value={v}/></div>
-                {(player.skillPoints||0)>0&&<button onClick={()=>upgradeSkill(k)} style={{width:24,height:24,borderRadius:"50%",border:"1px solid "+TH.accent,background:"#f3e8ff",color:TH.accent,cursor:"pointer",fontSize:13,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>+</button>}
+                <button onClick={()=>upgradeSkill(k)} disabled={!(player.skillPoints>0)} style={{width:24,height:24,borderRadius:"50%",border:"1px solid "+((player.skillPoints||0)>0?TH.accent:"#d1d5db"),background:(player.skillPoints||0)>0?"#f3e8ff":"#f3f4f6",color:(player.skillPoints||0)>0?TH.accent:"#d1d5db",cursor:(player.skillPoints||0)>0?"pointer":"default",fontSize:13,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,transition:"all .15s"}}>+</button>
               </div>
             ))}
           </Card>
