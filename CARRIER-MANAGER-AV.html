@@ -665,6 +665,18 @@ const OUTCOME_TX={
   save:["🧤 SALVATO! Che intervento!","🛡️ Blocchi la conclusione! Grande difesa."],
 };
 const STADIUMS=["Stadio Olimpico Giovanile","Arena Primavera","Centro Sportivo Coverciano","Stadio Braglia Academy","Arena Caduti di Brema U18","Campo Sportivo Vismara"];
+const STADIUM_POOLS=[
+  {min:85,s:["San Siro","Stadio Olimpico","Allianz Stadium","Stadio Maradona","Wembley","Anfield","Camp Nou","Estadio Bernabéu","Signal Iduna Park","Etihad Stadium"]},
+  {min:68,s:["Stadio Artemio Franchi","Gewiss Stadium","Stadio Bentegodi","Stadio Dall'Ara","Stadio Luigi Ferraris","Volksparkstadion","King Power Stadium","Estadio de Mestalla"]},
+  {min:50,s:["Stadio Silvio Piola","Stadio Adriatico","Stadio Romeo Menti","Stadio Carlo Castellani","Estadio de Gran Canaria","Stade de la Beaujoire"]},
+  {min:0,s:["Stadio Brumana","Campo Sportivo Comunale","Stadio Cino e Lillo Del Duca","Campo Crespi","Arena Cimini","Stadio Tardini"]},
+];
+function getStadiumName(club){
+  if(club?.isU18)return pick(STADIUMS);
+  const p=club?.p||60;
+  const pool=(STADIUM_POOLS.find(sp=>p>=sp.min)||STADIUM_POOLS[STADIUM_POOLS.length-1]).s;
+  return pool[hashStr((club?.id||club?.n||"x"))%pool.length];
+}
 const NATIONS=["Italia","Spagna","Francia","Germania","Inghilterra","Portogallo","Brasile","Argentina","Olanda","Belgio"];
 const SAVE_KEY="cpm-v3";
 const FORMATION_HOME=[[5,50],[22,15],[22,35],[22,65],[22,85],[40,25],[40,50],[40,75],[60,20],[65,50],[60,80]];
@@ -812,7 +824,7 @@ function generateProContracts(player){
   }
   return{offers,forced,perf:Math.round(perf*10)/10};
 }
-const GAME_VERSION="1.2.1";
+const GAME_VERSION="1.3.0";
 const SAVE_VERSION=5;
 const SLOT_KEYS=["cpm-v3","cpm-v3-s2","cpm-v3-s3"]; // slot 0 backward-compatible
 const storage={
@@ -2884,8 +2896,8 @@ function FormationView({homeTeam,awayTeam,player,homeRoster,awayRoster,onContinu
 }
 
 /* WALKOUT OVERLAY */
-function WalkoutOverlay({homeTeam,homeRoster,onDone}){
-  const STEPS=80;
+function WalkoutOverlay({homeTeam,homeRoster,opponent,isHome=true,matchWeek,onDone}){
+  const STEPS=88;
   const [tick,setTick]=useState(0);
   useEffect(()=>{if(tick>=STEPS)return;const t=setTimeout(()=>setTick(n=>n+1),50);return()=>clearTimeout(t);},[tick]);
   useEffect(()=>{if(tick>=STEPS)onDone();},[tick,onDone]);
@@ -2893,23 +2905,39 @@ function WalkoutOverlay({homeTeam,homeRoster,onDone}){
   const roster=homeRoster||[{name:"Portiere",role:"GK"},{name:"Difensore 2",role:"DEF"},{name:"Difensore 3",role:"DEF"},{name:"Terzino S.",role:"DEF"},{name:"Terzino D.",role:"DEF"},{name:"Mediano",role:"MID"},{name:"Centrocampista",role:"MID"},{name:"Mezzala",role:"MID"},{name:"Ala Sinistra",role:"ATT"},{name:"Ala Destra",role:"ATT"},{name:"Centravanti",role:"ATT"}];
   const visible=Math.min(11,Math.floor((tick/STEPS)*13));
   const pct=Math.round((tick/STEPS)*100);
+  // Stadium & atmosphere
+  const venueTeam=isHome?homeTeam:opponent;
+  const stadiumName=getStadiumName(venueTeam);
+  const crowd=calcAttendance(venueTeam,"career");
+  const crowdStr=crowd>=10000?`${(crowd/1000).toFixed(0)}k`:`${crowd}`;
+  const phase=pct<30?"🚶 Arrivo al tunnel":pct<65?"🏟️ Ingresso in campo":"📣 Il pubblico esplode";
+  const HOME_NUMS=[1,2,3,4,5,6,7,8,9,10,11];
   return(
-    <div style={{position:"absolute",inset:0,background:"linear-gradient(180deg,rgba(3,8,20,0.92) 0%,rgba(5,18,38,0.96) 60%,rgba(3,8,20,0.98) 100%)",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",zIndex:10,backdropFilter:"blur(3px)"}}>
-      {/* Stadium floodlights glow */}
-      <div style={{position:"absolute",top:0,left:0,right:0,height:3,background:`linear-gradient(90deg,transparent,${col},transparent)`,opacity:0.6}}/>
+    <div style={{position:"absolute",inset:0,background:"linear-gradient(180deg,rgba(3,8,20,0.94) 0%,rgba(5,18,38,0.97) 60%,rgba(3,8,20,0.99) 100%)",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",zIndex:10,backdropFilter:"blur(3px)"}}>
+      {/* Floodlight glow strips */}
+      <div style={{position:"absolute",top:0,left:0,right:0,height:3,background:`linear-gradient(90deg,transparent,${col},transparent)`,opacity:0.7}}/>
       <div style={{position:"absolute",bottom:0,left:0,right:0,height:3,background:`linear-gradient(90deg,transparent,${col},transparent)`,opacity:0.4}}/>
+      {/* Match info bar */}
+      <div style={{position:"absolute",top:10,left:0,right:0,display:"flex",justifyContent:"center",gap:10,alignItems:"center"}}>
+        <span style={{fontSize:9,color:"rgba(255,255,255,0.4)",letterSpacing:2,textTransform:"uppercase"}}>{isHome?"🏟️ CASA":"✈️ TRASFERTA"}</span>
+        {opponent&&<span style={{fontSize:9,color:"rgba(255,255,255,0.25)"}}>vs {opponent?.n||opponent?.name}</span>}
+        {matchWeek&&<span style={{fontSize:9,color:"rgba(255,255,255,0.22)"}}>W.{matchWeek}</span>}
+      </div>
       {/* Header */}
-      <div style={{textAlign:"center",marginBottom:14}}>
-        <div style={{fontSize:9,color:"rgba(255,255,255,0.35)",letterSpacing:5,textTransform:"uppercase",marginBottom:4}}>⚽ Ingresso in campo</div>
+      <div style={{textAlign:"center",marginBottom:10}}>
+        <div style={{fontSize:9,color:"rgba(255,255,255,0.3)",letterSpacing:4,textTransform:"uppercase",marginBottom:4}}>{phase}</div>
         <TeamBadge team={homeTeam} size={36}/>
         <div style={{fontSize:18,fontWeight:900,color:"#fff",marginTop:6,textShadow:`0 0 24px ${col}88`}}>{homeTeam?.n||homeTeam?.name||"Squadra"}</div>
-        <div style={{fontSize:10,color:"rgba(255,255,255,0.3)",letterSpacing:2}}>{homeTeam?.lg||homeTeam?.nat||""}</div>
+        <div style={{display:"flex",justifyContent:"center",gap:10,marginTop:4}}>
+          <span style={{fontSize:9,color:"rgba(255,255,255,0.3)"}}>🏟️ {stadiumName}</span>
+          <span style={{fontSize:9,color:"rgba(255,255,255,0.3)"}}>👥 {crowdStr}</span>
+        </div>
       </div>
       {/* Player list */}
       <div style={{display:"flex",flexDirection:"column",gap:2,width:"100%",maxWidth:280,padding:"0 12px"}}>
         {roster.slice(0,visible).map((pl,i)=>{
           const isLast=i===visible-1;
-          const jerseyNum=[1,2,3,4,5,6,7,8,9,10,11][i]||i+1;
+          const jerseyNum=HOME_NUMS[i]||i+1;
           return(
             <div key={i} style={{display:"flex",alignItems:"center",gap:8,padding:"3px 10px",background:isLast?`${col}22`:"transparent",borderRadius:6,borderLeft:isLast?`2px solid ${col}`:"2px solid transparent",transition:"all 0.2s"}}>
               <div style={{width:20,height:20,borderRadius:"50%",background:isLast?col:`${col}55`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:9,fontWeight:900,color:"#fff",flexShrink:0}}>{jerseyNum}</div>
@@ -2945,7 +2973,7 @@ const resolveKitConflict=(homeCol,awayCol)=>{
 /* ========================================
    LIVE MATCH  (req #3,#4,#5,#6,#8)
 ======================================== */
-function LiveMatch({player,opponent,context="career",onMatchEnd}){
+function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true}){
   const [numHL]=useState(()=>context==="trial"?rng(2,3):rng(2,4));
   const [hlTimes]=useState(()=>{const step=Math.floor(82/numHL)||12;return Array.from({length:numHL},(_,i)=>8+step*i+rng(0,Math.max(1,step-4)));});
   const [situations]=useState(()=>seededShuffle([...SITUATIONS],(player.season||1)*1000+(player.week||1)*13).slice(0,numHL));
@@ -3571,7 +3599,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd}){
                 driftTargets={driftTargetsRef.current} timeOfDay={timeOfDay}
                 attendance={attendance} actionEffect={actionEffect}
                 onWalkoutDone={()=>setPhase("playing")}/>
-              {phase==="walkout"&&<WalkoutOverlay homeTeam={player.club||opponent} homeRoster={homeRoster} onDone={()=>setPhase("playing")}/>}
+              {phase==="walkout"&&<WalkoutOverlay homeTeam={player.club||opponent} homeRoster={homeRoster} opponent={opponent} isHome={isMatchHome} matchWeek={player.week} onDone={()=>setPhase("playing")}/>}
               {screenFlash&&<div style={{position:"absolute",inset:0,background:screenFlash.col,zIndex:20,pointerEvents:"none",animation:`fadeFlash ${screenFlash.dur}ms ease-out forwards`}}/>}
               {floatGoal&&<div key={floatGoal.key} style={{position:"absolute",top:"30%",left:0,right:0,textAlign:"center",fontSize:22,fontWeight:900,color:floatGoal.col,textShadow:"0 0 24px currentColor",animation:"floatUp 1.4s ease-out forwards",zIndex:21,pointerEvents:"none"}}>{floatGoal.text}</div>}
               {/* HL intro stays on field as cinematic overlay */}
@@ -4001,6 +4029,83 @@ function SeasonEndScreen({data,player,onNewSeason}){
 
       <Btn onClick={onNewSeason} v="primary" fw style={{padding:"16px",fontSize:15,marginTop:4}}>
         🆕 Inizia Stagione {season+1} →
+      </Btn>
+    </div>
+  );
+}
+
+/* ========================================
+   CLUB PRESENTATION SCREEN  (Sprint 3 — S3-A)
+   Shown after any new signing (transfer or first pro contract)
+======================================== */
+function ClubPresentationScreen({club,contractType,playerName,onContinue}){
+  const col=club?.col||club?.c||TH.primary;
+  const stadiumName=getStadiumName(club);
+  const COACH_QUOTES=[
+    "Sei esattamente il profilo che cercavamo. Benvenuto in famiglia.",
+    "Ho visto le tue partite. So già che farai grandi cose con noi.",
+    "Qui troverai il campo che meriti. Dai il massimo ogni giorno.",
+    "Questo club ha bisogno di giocatori con la tua mentalità. Vai.",
+    "Punta a diventare il protagonista di questa stagione. Ci conto.",
+    "Non deludermi. So che ne sei capace. Buona fortuna.",
+  ];
+  const ATMOS=[
+    "📸 I fotografi dei media ti attendono fuori dal centro sportivo.",
+    "📣 La curva ha già lanciato un coro con il tuo nome.",
+    "🤝 Il presidente ti stringe la mano davanti alle telecamere.",
+    "🏟️ Il tuo numero di maglia è già in vendita allo store del club.",
+    "📰 I giornalisti fanno a gara per farti le prime domande.",
+    "👥 Decine di tifosi aspettavano fuori dal centro sportivo.",
+  ];
+  const qIdx=hashStr((club?.id||"x")+(playerName||""))%COACH_QUOTES.length;
+  const aIdx=hashStr((club?.n||"x")+(contractType||""))%ATMOS.length;
+  const type=(contractType||"").toLowerCase();
+  const verb=type.includes("prest")?"in prestito al":type.includes("primo")||type.includes("profess")?"firma il primo contratto con":"firma per";
+  const headline=`${playerName} ${verb} ${club?.n||"il club"}!`;
+  const[tick,setTick]=useState(0);
+  useEffect(()=>{if(tick>=60)return;const t=setTimeout(()=>setTick(n=>n+1),70);return()=>clearTimeout(t);},[tick]);
+  const pct=Math.round((tick/60)*100);
+  return(
+    <div style={{width:"100%"}}>
+      {/* Club hero banner */}
+      <div style={{width:"100%",background:`linear-gradient(135deg,${col}28,${col}0a)`,border:`1px solid ${col}55`,borderRadius:16,padding:"18px 16px",textAlign:"center",marginBottom:12}}>
+        <div style={{fontSize:9,color:TH.muted,letterSpacing:3,textTransform:"uppercase",marginBottom:8}}>🎉 Ufficiale</div>
+        <TeamBadge team={club} size={64}/>
+        <h1 style={{fontSize:20,fontWeight:900,margin:"10px 0 2px",color:TH.text}}>{club?.n||club?.name}</h1>
+        <div style={{fontSize:11,color:TH.muted,marginBottom:6}}>{club?.lg||club?.nat||"Professionismo"}</div>
+        <div style={{fontSize:11,color:col,fontWeight:700,padding:"3px 10px",background:`${col}22`,borderRadius:8,display:"inline-block"}}>{contractType}</div>
+      </div>
+      {/* Headline */}
+      <Card bg="#f0fdf4" border="#bbf7d0" style={{marginBottom:10,padding:"10px 14px"}}>
+        <div style={{fontSize:9,color:TH.success,textTransform:"uppercase",letterSpacing:1.5,marginBottom:4}}>📰 Manchette</div>
+        <div style={{fontSize:13,fontWeight:700,color:TH.text,lineHeight:1.4}}>{headline}</div>
+      </Card>
+      {/* Stadium + prestige */}
+      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8,marginBottom:10}}>
+        <Card style={{padding:"10px 12px"}}>
+          <div style={{fontSize:9,color:TH.muted,marginBottom:3}}>🏟️ Stadio</div>
+          <div style={{fontSize:11,fontWeight:700,color:TH.text,lineHeight:1.3}}>{stadiumName}</div>
+        </Card>
+        <Card style={{padding:"10px 12px",textAlign:"center"}}>
+          <div style={{fontSize:9,color:TH.muted,marginBottom:3}}>Prestige</div>
+          <div style={{fontSize:22,fontWeight:900,color:col,lineHeight:1}}>{club?.p||60}</div>
+        </Card>
+      </div>
+      {/* Coach quote */}
+      <Card style={{marginBottom:10,padding:"12px 14px"}}>
+        <div style={{fontSize:9,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:6}}>💬 Il mister dice</div>
+        <div style={{fontSize:12,color:TH.text,lineHeight:1.6,fontStyle:"italic"}}>"{COACH_QUOTES[qIdx]}"</div>
+      </Card>
+      {/* Atmosphere */}
+      <Card bg="#fefce8" border="#fde68a" style={{marginBottom:14,padding:"10px 14px"}}>
+        <div style={{fontSize:12,color:"#713f12"}}>{ATMOS[aIdx]}</div>
+      </Card>
+      {/* Progress */}
+      <div style={{height:2,background:TH.cardBorder,borderRadius:2,marginBottom:14,overflow:"hidden"}}>
+        <div style={{height:"100%",width:`${pct}%`,background:`linear-gradient(90deg,${col},#f59e0b)`,transition:"width .07s"}}/>
+      </div>
+      <Btn onClick={onContinue} v="primary" fw style={{padding:"16px",fontSize:15}}>
+        🏟️ Inizia la tua storia a {club?.n||"questo club"} →
       </Btn>
     </div>
   );
@@ -5290,8 +5395,10 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
   const[tab,setTab]=useState("dashboard");
   const[screen,setScreen]=useState("dashboard");
   const[matchOpp,setMatchOpp]=useState(null);
+  const[matchIsHome,setMatchIsHome]=useState(true);
   const[lastMatch,setLastMatch]=useState(null);
   const[seasonEndData,setSeasonEndData]=useState(null);
+  const[presentationData,setPresentationData]=useState(null);
   // Backward compat: auto-generate missing/stale calendar/standings for old saves
   useEffect(()=>{
     let changed=false;
@@ -5313,6 +5420,10 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
     }
     if(!newP.trophies){
       newP={...newP,trophies:[]};
+      changed=true;
+    }
+    if(!('transferListed' in newP)){
+      newP={...newP,transferListed:false};
       changed=true;
     }
     if(changed){setPlayer(newP);}
@@ -5442,7 +5553,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
     const lc=getLeagueClubs(player);
     const opp=lc.find(c=>c.id===md.opponentId)||lc.find(c=>c.n===md.opponentName)||pick(lc.filter(c=>c.id!==player.club?.id&&c.n!==player.club?.n));
     if(!opp){notify("Nessun avversario disponibile.",TH.danger);return;}
-    setMatchOpp(opp);setScreen("match");
+    setMatchOpp(opp);setMatchIsHome(md.isHome!==false);setScreen("match");
   };
 
   // Anti-double-click / rapid-Enter guard
@@ -5616,7 +5727,8 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
         }
       }
       const wk=p.week||1;const isJanuary=wk>=19&&wk<=22;
-      if(Math.random()<(isJanuary?0.15:0.08)&&p.matches>3){const offer=generateTransferOffer(p);if(offer)setTransferOffer(offer);}
+      const offerProb=p.transferListed?(isJanuary?0.32:0.18):(isJanuary?0.15:0.08);
+      if(Math.random()<offerProb&&p.matches>3){const offer=generateTransferOffer(p);if(offer)setTransferOffer(offer);}
       if(wk===19)setTimeout(()=>notify("🏷️ Mercato invernale aperto — più offerte in arrivo!","#0ea5e9"),100);
       // Random weekly life event (25% chance when week not yet lived)
       if(!p.weekLived&&!p.injured&&Math.random()<0.25){
@@ -5679,8 +5791,10 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
       }
       return{...base,club:offer.club,isU18:false,proStatus:"pro",value:Math.max(0.5,(p.value||0.8)+0.5),popularity:clamp((p.popularity||20)+15,0,100),log:[`🎓 PROFESSIONISTA! ${offer.contractType} con ${offer.club?.n||offer.club?.name}!`,...(p.log||[])].slice(0,60)};
     });
-    setScreen("dashboard");setTab("dashboard");
-    notify("🎓 Nuova stagione iniziata!",TH.success);
+    if(offer.isStayU18){setScreen("dashboard");setTab("dashboard");notify("🔄 Resti in Under 18!",TH.warning);return;}
+    setPresentationData({club:offer.club,contractType:offer.contractType||"Primo contratto professionistico",playerName:player.name});
+    setScreen("clubPresentation");setTab("dashboard");
+    notify("🎓 Sei diventato professionista!",TH.success);
   },[]);// eslint-disable-line
 
   const upgradeSkill=k=>{if(!player.skillPoints)return;setPlayer(p=>{const ns={...p.stats,[k]:clamp(p.stats[k]+rng(1,3),1,99)};return{...p,stats:ns,ovr:calcOvr(ns),skillPoints:p.skillPoints-1};});notify(`${k} migliorato!`,TH.accent);};
@@ -5704,10 +5818,11 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
       const newStandings=initStandings(lcs);
       const seed=(p.season||1)*777+hashStr(tc.club.id||tc.club.n||"x");
       const newCalendar=generateSeasonCalendar(newClub,lcs,seed);
-      return{...p,club:newClub,isU18:false,proStatus:"pro",contractExpired:false,morale:clamp(p.morale+(tc.moralBonus||10),0,100),offerHistory:[...(p.offerHistory||[]),{club:tc.club.n,type:tc.type,season:p.season,accepted:true}],log:[`🔄 ${tc.type}: ${tc.club.n} (${tc.club.lg||tc.club.nat})!`,...(p.log||[])].slice(0,60),standings:newStandings,calendar:newCalendar};
+      return{...p,club:newClub,isU18:false,proStatus:"pro",contractExpired:false,transferListed:false,morale:clamp(p.morale+(tc.moralBonus||10),0,100),offerHistory:[...(p.offerHistory||[]),{club:tc.club.n,type:tc.type,season:p.season,accepted:true}],log:[`🔄 ${tc.type}: ${tc.club.n} (${tc.club.lg||tc.club.nat})!`,...(p.log||[])].slice(0,60),standings:newStandings,calendar:newCalendar};
     });
     setTransferOffer(null);
-    notify(`✅ Benvenuto a ${tc.club.n}!`,TH.success);
+    setPresentationData({club:tc.club,contractType:tc.type,playerName:player.name});
+    setScreen("clubPresentation");
   };
 
   const ovr=player.ovr||calcOvr(player.stats),week=player.week||1,season=player.season||1;
@@ -5724,6 +5839,12 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
     </div>
   );
 
+  if(screen==="clubPresentation"&&presentationData)return(
+    <div style={{width:"100%"}}>
+      <ClubPresentationScreen club={presentationData.club} contractType={presentationData.contractType} playerName={presentationData.playerName} onContinue={()=>{setPresentationData(null);setScreen("dashboard");setTab("dashboard");}}/>
+    </div>
+  );
+
   if(screen==="match"&&matchOpp){
     const usePhaserRenderer=localStorage.getItem("cpm-renderer")==="phaser";
     const phaserMatchEnd=stats=>onMatchEnd({goals:stats.playerGoals||stats.goals||0,assists:stats.playerAssists||stats.assists||0,homeScore:stats.squadAGoals,awayScore:stats.squadBGoals,won:stats.result==="WIN",drew:stats.result==="DRAW",opponent:matchOpp?.name||matchOpp?.n,oppAbbr:matchOpp?.a||matchOpp?.abbr,oppCol:matchOpp?.col||matchOpp?.c,rating:stats.rating,context:"career",oppTactic:null,scoutReport:null});
@@ -5732,7 +5853,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
         <button onClick={()=>{setScreen("dashboard");setTab("dashboard");}} style={{background:"none",border:"none",color:TH.muted,cursor:"pointer",fontSize:13,marginBottom:8,display:"flex",alignItems:"center",gap:6}}>← Carriera</button>
         {usePhaserRenderer
           ?<FootballMatch2D playerData={player} squadAColor={player.club?.col||player.club?.c||"#22c55e"} squadBColor={matchOpp?.col||matchOpp?.c||"#ef4444"} duration={300} onMatchEnd={phaserMatchEnd}/>
-          :<LiveMatch player={player} opponent={matchOpp} context="career" onMatchEnd={onMatchEnd}/>
+          :<LiveMatch player={player} opponent={matchOpp} context="career" onMatchEnd={onMatchEnd} isMatchHome={matchIsHome}/>
         }
       </div>
     );
@@ -5870,6 +5991,29 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
           <div style={{fontSize:11,color:"#78350f",marginBottom:8}}>Rinnova con il tuo club o aspetta un'offerta dal mercato.</div>
           <Btn onClick={()=>{const renewWage=clamp(Math.round((player.contract?.wage||500)*((player.goals||0)>10?1.15:(player.goals||0)>5?1.05:0.9)),300,50000);setTransferOffer({club:player.club,type:"Rinnovo contratto",isRenewal:true,minutaggio:player.ovr>=75?80:60,wage:renewWage,duration:rng(1,3),moralBonus:5,growthBonus:5});}} v="primary" fw>Rinnova contratto</Btn>
         </Card>
+      )}
+      {/* Transfer listed banner / request */}
+      {tab==="dashboard"&&(player.proStatus||"u18")==="pro"&&(
+        player.transferListed
+          ?(
+            <Card bg="#fef9c3" border="#fde68a" style={{marginBottom:8,padding:"10px 14px"}}>
+              <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:8}}>
+                <div>
+                  <div style={{fontSize:11,fontWeight:700,color:"#713f12"}}>📢 Sei sul mercato — le offerte arriveranno più spesso</div>
+                  <div style={{fontSize:10,color:"#92400e",marginTop:2}}>Morale e fiducia del mister sono calati. Puoi annullare la richiesta.</div>
+                </div>
+                <Btn onClick={()=>{setPlayer(p=>({...p,transferListed:false,morale:clamp(p.morale+5,0,100),log:["📢 Richiesta di cessione ritirata.",...(p.log||[])].slice(0,60)}));notify("Richiesta di cessione ritirata.",TH.muted);}} v="ghost" style={{flexShrink:0,fontSize:11,padding:"6px 10px"}}>Annulla</Btn>
+              </div>
+            </Card>
+          )
+          :(week<=35&&!player.contractExpired&&(
+            <Card style={{marginBottom:8,padding:"8px 14px"}}>
+              <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:8}}>
+                <div style={{fontSize:10,color:TH.muted}}>Vuoi cambiare aria? Richiedi la cessione per ricevere più offerte.</div>
+                <Btn onClick={()=>{setPlayer(p=>({...p,transferListed:true,coachTrust:clamp((p.coachTrust||60)-10,0,100),morale:clamp(p.morale-8,0,100),log:["📢 Hai richiesto la cessione. Il mercato si anima.",...(p.log||[])].slice(0,60)}));notify("📢 Richiesta di cessione presentata. Aspettati offerte.",TH.warning);}} v="secondary" style={{flexShrink:0,fontSize:11,padding:"6px 10px"}}>📢 Richiedi cessione</Btn>
+              </div>
+            </Card>
+          ))
       )}
       {tab==="dashboard"&&(
         <div className="cpm-dash-grid">
