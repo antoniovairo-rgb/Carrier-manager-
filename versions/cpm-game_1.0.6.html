@@ -259,9 +259,13 @@ const CLUBS=[
   mkT("cag","Cagliari","CAG",65,"#dc2626","#1d4ed8","🇮🇹","Serie A"),
   mkT("sam","Sampdoria","SAM",67,"#1d4ed8","#dc2626","🇮🇹","Serie A"),
   mkT("gen","Genoa","GEN",66,"#dc2626","#1d4ed8","🇮🇹","Serie A"),
+  mkT("emp","Empoli","EMP",63,"#2563eb","#ffffff","🇮🇹","Serie A"),
   mkT("ver","Verona","VER",67,"#f59e0b","#1d4ed8","🇮🇹","Serie A"),
+  mkT("spe","Spezia","SPE",60,"#e5e7eb","#0f0f0f","🇮🇹","Serie A"),
   mkT("mon2","Monza","MON",64,"#dc2626","#f5f5f5","🇮🇹","Serie A"),
+  mkT("fro","Frosinone","FRO",58,"#f59e0b","#1d4ed8","🇮🇹","Serie A"),
   mkT("lec","Lecce","LEC",62,"#f5c518","#dc2626","🇮🇹","Serie A"),
+  mkT("sal","Salernitana","SAL",57,"#92400e","#f5f5f5","🇮🇹","Serie A"),
   // -- ENGLAND Premier League --
   mkT("mcy","Manchester City","MCY",98,"#93c5fd","#1a1a2e","🏴󠁧󠁢󠁥󠁮󠁧󠁿","Premier League"),
   mkT("liv","Liverpool","LIV",96,"#dc2626","#f59e0b","🏴󠁧󠁢󠁥󠁮󠁧󠁿","Premier League"),
@@ -281,6 +285,8 @@ const CLUBS=[
   mkT("bre","Brentford","BRE",69,"#dc2626","#f5f5f5","🏴󠁧󠁢󠁥󠁮󠁧󠁿","Premier League"),
   mkT("nfo","Nottm Forest","NFO",68,"#dc2626","#f5f5f5","🏴󠁧󠁢󠁥󠁮󠁧󠁿","Premier League"),
   mkT("bou","Bournemouth","BOU",67,"#dc2626","#0f0f0f","🏴󠁧󠁢󠁥󠁮󠁧󠁿","Premier League"),
+  mkT("lut","Luton Town","LUT",60,"#f59e0b","#1d4ed8","🏴󠁧󠁢󠁥󠁮󠁧󠁿","Premier League"),
+  mkT("shf","Sheffield Utd","SHF",58,"#dc2626","#0f0f0f","🏴󠁧󠁢󠁥󠁮󠁧󠁿","Premier League"),
   // -- SPAIN La Liga --
   mkT("rma","Real Madrid","RMA",99,"#f5f5f5","#f59e0b","🇪🇸","La Liga"),
   mkT("bar","Barcelona","BAR",97,"#1d4ed8","#dc2626","🇪🇸","La Liga"),
@@ -299,7 +305,9 @@ const CLUBS=[
   mkT("get","Getafe","GET",64,"#1d4ed8","#f5f5f5","🇪🇸","La Liga"),
   mkT("las","Las Palmas","LPA",62,"#f59e0b","#1d4ed8","🇪🇸","La Liga"),
   mkT("alm","Almería","ALM",60,"#dc2626","#f5f5f5","🇪🇸","La Liga"),
+  mkT("cad","Cádiz","CAD",58,"#f59e0b","#1d4ed8","🇪🇸","La Liga"),
   mkT("esp","Espanyol","ESP",63,"#1d4ed8","#f5f5f5","🇪🇸","La Liga"),
+  mkT("gra","Granada","GRA",61,"#dc2626","#f5f5f5","🇪🇸","La Liga"),
   // -- GERMANY Bundesliga --
   mkT("bay","Bayern Monaco","BAY",99,"#dc2626","#f59e0b","🇩🇪","Bundesliga"),
   mkT("bvb","Borussia Dortmund","BVB",93,"#f59e0b","#0f0f0f","🇩🇪","Bundesliga"),
@@ -795,7 +803,7 @@ function generateProContracts(player){
   }
   return{offers,forced,perf:Math.round(perf*10)/10};
 }
-const GAME_VERSION="1.1.0";
+const GAME_VERSION="1.0.6";
 const SAVE_VERSION=5;
 const SLOT_KEYS=["cpm-v3","cpm-v3-s2","cpm-v3-s3"]; // slot 0 backward-compatible
 const storage={
@@ -829,39 +837,6 @@ const storage={
   },
 };
 const toThree=(gx,gy)=>({x:gx-50,z:(gy/100)*60-30});
-
-/* ========================================
-   DEBUG TOOLS  (console only)
-======================================== */
-window.cpmDebugSimulate=function(nSeasons=10,leagueName="Serie A"){
-  const lc=CLUBS.filter(c=>c.lg===leagueName);
-  if(!lc.length){console.warn("[CPM-DEBUG] Lega non trovata:",leagueName);return;}
-  const playerClub=lc[0];
-  let standings=initStandings(lc);
-  const log=[];
-  for(let s=1;s<=nSeasons;s++){
-    const seed=s*777+hashStr(playerClub.id);
-    const cal=generateSeasonCalendar(playerClub,lc,seed);
-    standings=initStandings(lc);
-    for(let md=0;md<cal.length;md++){
-      const sim=simulateMatch(playerClub,lc.find(c=>c.id===cal[md].opponentId)||lc[1],undefined,cal[md].isHome);
-      standings=updateStandings(standings,playerClub.id,sim);
-    }
-    const mxPlayed=Math.max(...standings.map(t=>t.played));
-    const mnPlayed=Math.min(...standings.map(t=>t.played));
-    const champ=standings[0];
-    const rel=standings.slice(-3).map(t=>t.a||t.n.slice(0,3)).join(",");
-    log.push(`S${s}: CAMPIONE=${champ.a} ${champ.pts}pts  RET=[${rel}]  Partite: min=${mnPlayed} max=${mxPlayed}  Δ=${mxPlayed-mnPlayed}`);
-    if(mxPlayed-mnPlayed>1)log[log.length-1]+=" ⚠️ DISALLINEAMENTO";
-  }
-  console.log(`[CPM-DEBUG] Simulazione ${nSeasons} stagioni — ${leagueName} (${lc.length} club)`);
-  log.forEach(l=>console.log(l));
-  return log;
-};
-window.cpmDebugLeagues=function(){
-  const leghe=["Serie A","Premier League","La Liga","Bundesliga","Ligue 1","Primeira Liga","Eredivisie","Pro League","Süper Lig"];
-  leghe.forEach(lg=>{const n=CLUBS.filter(c=>c.lg===lg).length;console.log(`${lg}: ${n} club`);});
-};
 
 /* ========================================
    CLAUDE AI INTEGRATION
@@ -947,115 +922,18 @@ async function generateScoutReport(opponentClub,playerStats,recentMatches){
   return{weaknesses:["Difesa lenta","Transizioni deboli"],strengths:["Fisico solido","Esperienza"],recommendation:"Mantieni la concentrazione per tutti i 90 minuti.",difficulty:clamp(40+(opponentClub.p||65)/2,30,95)};
 }
 
-// ---- LOCAL PRESS ANALYSIS (always available, no API needed) ----
-function generateLocalPressAnalysis(matchResult,playerPerf){
-  const won=matchResult.won,drew=matchResult.drew,lost=!won&&!drew;
-  const goals=playerPerf.goals||0,assists=playerPerf.assists||0;
-  const rating=playerPerf.rating||6.0;
-  const name=playerPerf.name||"Il giocatore";
-  const club=playerPerf.club||"la squadra";
-  const opp=matchResult.opponent||"l'avversario";
-  const hs=matchResult.homeScore??0,as=matchResult.awayScore??0;
-  const score=`${hs}-${as}`;
-  const starPerf=goals>=2||assists>=2||rating>=8;
-  const badPerf=goals===0&&assists===0&&rating<6;
-
-  // Context detection
-  const isDerby=(matchResult.isDerby)||false;
-  const isRecord=(matchResult.isRecord)||false;
-
-  // Newspaper A — Gazzetta dello Sport style
-  const headA=won
-    ?(starPerf?`${name} da urlo: doppietta e ${club} batte ${opp} ${score}`
-      :`Vittoria di carattere: ${club} supera ${opp} ${score}`)
-    :drew
-    ?(starPerf?`${name} salva il pareggio: ${club}-${opp} ${score} con brivido`
-      :`Pari combattuto: ${club} e ${opp} dividono la posta ${score}`)
-    :(badPerf?`Serata no: ${club} cede ${score} ad ${opp}, ${name} si sblocchi`
-      :`Sconfitta che brucia: ${opp} sbanca ${score}, ${club} ci riprovi`);
-
-  // Newspaper B — Corriere dello Sport style
-  const headB=won
-    ?(goals>0?`⚽ ${name} decide la sfida — il ${club} vola con il ${score}`
-      :`Solidità e cuore: tre punti pesanti per il ${club}`)
-    :drew
-    ?`Equilibrio totale: uno a uno morale tra ${club} e ${opp}`
-    :(lost?`Mister sotto esame dopo il ${score}: il ${club} deve ripartire`
-      :`Senza vittoria: la crisi del ${club} continua`);
-
-  // Newspaper C — Tuttosport style
-  const headC=won
-    ?`🏆 ${club} dominante! ${score} e tre punti in sacca`
-    :drew
-    ?`Punto d'oro in trasferta o rimpianto casalingo? ${score} divide i pareri`
-    :`Allarme rosso: il ${club} cade ${score}, serve una svolta`;
-
-  // Player rating card
-  const ratingLabel=rating>=9?"FENOMENALE":rating>=8?"OTTIMO":rating>=7?"BUONO":rating>=6?"SUFFICIENTE":rating>=5?"INSUFFICIENTE":"DA DIMENTICARE";
-  const ratingColor=rating>=8?"#16a34a":rating>=6?"#d97706":"#dc2626";
-
-  // MOTM
-  const motmCandidates=won?[name,"Il portiere","Il capitano"]:drew?[name,"Il difensore","Il centrocampista"]:["Il portiere","Il difensore","Il centrocampista"];
-  const motm=starPerf?name:motmCandidates[1];
-
-  // Flop
-  const flopMsg=badPerf?`${name} — prestazione opaca, fatica a incidere`
-    :lost?`La difesa collettiva — troppi errori nel reparto arretrato`
-    :"Nessun flop evidente — giornata da archiviare";
-
-  // Tactical note
-  const tactNote=won
-    ?(goals>0?`Il pressing alto ha soffocato ${opp}. ${name} ha sfruttato ogni spazio.`
-      :`Blocco difensivo impeccabile. Il contropiede ha fatto la differenza.`)
-    :drew
-    ?`Partita tatticamente chiusa. Entrambe le squadre hanno preferito non rischiare.`
-    :`${opp} ha sfruttato le transizioni rapide. Il ${club} ha sofferto in fase difensiva.`;
-
-  // Fan reactions
-  const fanReactions=won
-    ?["I tifosi esultano: serata perfetta!","Tre punti che valgono oro! Avanti così!"]
-    :drew
-    ?["Tifosi divisi: punto guadagnato o due persi?","Si poteva vincere, ma un punto è pur sempre un punto."]
-    :["Fischi a fine partita — i tifosi chiedono di più.","Delusione in curva: servono risposte immediate."];
-
-  // Quotes
-  const quotes=won
-    ?[`"${name} ha fatto la differenza oggi. Sono orgoglioso della squadra." — Mister`
-      ,`"Vittoria di squadra. Andiamo avanti step by step." — ${name}`]
-    :drew
-    ?[`"Ci mancava quel guizzo finale. Portiamo a casa un punto." — Mister`
-      ,`"Non sono soddisfatto del pareggio, ma la squadra ha lottato." — ${name}`]
-    :[`"Dobbiamo analizzare gli errori e reagire subito." — Mister`
-      ,`"Sconfitta che fa male. Ci rifaremo la prossima settimana." — ${name}`];
-
-  const trending=won
-    ?(goals>0?`#${name.replace(/\s/g,"")}Gol🔥`:`#${club.replace(/\s/g,"")}Vince`)
-    :drew?`#${club.replace(/\s/g,"")}Pareggio`
-    :`#${club.replace(/\s/g,"")}Riparti`;
-
-  return{
-    headlines:[headA,headB,headC],
-    papers:["Gazzetta dello Sport","Corriere dello Sport","Tuttosport"],
-    playerRating:{value:rating,label:ratingLabel,color:ratingColor,goals,assists},
-    motm,flop:flopMsg,
-    tacticalNote:tactNote,
-    fanReactions,quotes,trending,
-    isLocal:true,
-  };
-}
-
 async function generatePressAnalysis(matchResult,playerPerf){
   if(_aiMockMode){
-    return generateLocalPressAnalysis(matchResult,playerPerf);
+    const won=matchResult.won;
+    return{headlines:[won?`${playerPerf.name} trascina la squadra alla vittoria!`:`Sconfitta amara per il ${playerPerf.club}`,won?`${playerPerf.goals} gol e prestazione da urlo`:"Rimonta mancata, la difesa non tiene"],quotes:[won?`"Una prestazione di carattere, sono soddisfatto."`:`"Dobbiamo fare di più, questa sconfitta brucia."`],trending:won?`#${(playerPerf.name||"").replace(/\s/g,"")}🔥`:`#Rimonta`};
   }
   const sys="Sei un giornalista sportivo italiano. Scrivi reazioni media post-partita. Rispondi SOLO con JSON valido.";
   const msg=`Post-partita:\n- Risultato: ${matchResult.homeScore}-${matchResult.awayScore} (${matchResult.won?"Vittoria":matchResult.drew?"Pareggio":"Sconfitta"})\n- Giocatore: ${playerPerf.name}, ${playerPerf.club}, ${playerPerf.goals} gol, ${playerPerf.assists} assist, voto ${playerPerf.rating}/10\n- Avversario: ${matchResult.opponent} (Prestige: ${playerPerf.oppPrestige||65}/99)\n\nJSON: {"headlines":["titolo 1","titolo 2"],"quotes":["citazione"],"trending":"hashtag"}`;
   const res=await callClaudeAPI(sys,msg);
   if(res.success&&typeof res.data==="object"){
-    const local=generateLocalPressAnalysis(matchResult,playerPerf);
-    return{...local,...res.data,isLocal:false};
+    return{headlines:res.data.headlines||["Partita al triplice fischio"],quotes:res.data.quotes||["Buona prestazione."],trending:res.data.trending||`#${matchResult.won?"Vittoria":"Partita"}`};
   }
-  return generateLocalPressAnalysis(matchResult,playerPerf);
+  return{headlines:[matchResult.won?"Grande vittoria!":"Sconfitta da dimenticare"],quotes:["I tifosi commentano alla fine della partita."],trending:"#CPM"};
 }
 
 /* ========================================
@@ -1097,8 +975,7 @@ function seededShuffle(arr,seed){
   for(let i=a.length-1;i>0;i--){s=(s*1664525+1013904223)>>>0;const j=s%(i+1);[a[i],a[j]]=[a[j],a[i]];}
   return a;
 }
-// calendar-driven match scheduling — 34 matchdays (18 clubs), 4 rest weeks spread evenly
-const _CAL_BREAKS=new Set([7,16,24,30]); // after these 0-based indices → 1 extra rest week
+// calendar-driven match scheduling
 function generateSeasonCalendar(playerClub,leagueClubs,seed){
   if(!playerClub||!leagueClubs?.length)return[];
   const opps=leagueClubs.filter(c=>c.id!==playerClub.id&&c.n!==playerClub.n);
@@ -1110,7 +987,7 @@ function generateSeasonCalendar(playerClub,leagueClubs,seed){
   const cal=[];let week=1;
   for(let i=0;i<all.length&&week<=38;i++){
     cal.push({matchday:i+1,week,opponentId:all[i].id,opponentName:all[i].n||all[i].name,isHome:i<h1.length,played:false,result:null});
-    week+=1+(_CAL_BREAKS.has(i)?1:0);
+    week+=1+(i%3===2?1:0);
   }
   return cal;
 }
@@ -1132,22 +1009,8 @@ function updateStandings(standings,playerClubId,playerResult){
   }
   const myId=playerClubId;
   const others=s.filter(t=>t.id!==myId&&t.n!==myId);
-  // If odd count, last team plays a ghost opponent (prestige 65) so all teams stay equal on matches played
-  const paired=[...others];
-  if(paired.length%2!==0){
-    const byeTeam=paired[paired.length-1];
-    const ghostP=65;
-    const diff=clamp(((byeTeam.p||65)-ghostP)/30,-1,1);
-    const lH=clamp(1.15+diff*0.4,0.25,2.3);
-    const lA=clamp(1.00-diff*0.35,0.20,2.1);
-    const bG=poissonGoals(lH),gG=poissonGoals(lA);
-    byeTeam.played++;byeTeam.gf+=bG;byeTeam.ga+=gG;byeTeam.gd=byeTeam.gf-byeTeam.ga;
-    if(bG>gG){byeTeam.wins++;byeTeam.pts+=3;}else if(bG<gG){byeTeam.losses++;}
-    else{byeTeam.draws++;byeTeam.pts++;}
-    paired.pop();
-  }
-  for(let i=0;i+1<paired.length;i+=2){
-    const h=paired[i],a=paired[i+1];
+  for(let i=0;i+1<others.length;i+=2){
+    const h=others[i],a=others[i+1];
     const diff=clamp(((h.p||65)-(a.p||65))/30,-1,1);
     const lambdaH=clamp(1.15+diff*0.4,0.25,2.3);
     const lambdaA=clamp(1.00-diff*0.35,0.20,2.1);
@@ -1180,14 +1043,12 @@ function poissonGoals(lambda){
   do{k++;p*=Math.random();}while(p>L&&k<6);
   return Math.max(0,k-1);
 }
-// Quick simulation for skipped/missed match weeks — uses club prestige, not individual player OVR
-function simulateMatch(playerClub,opponent,_unused,isHome=true){
-  const clubP=playerClub?.p||65;
-  const oppP=opponent?.p||65;
+// Quick simulation for skipped/missed match weeks
+function simulateMatch(playerClub,opponent,playerOvr,isHome=true){
   const homeFactor=isHome?0.15:-0.15;
-  const diff=clamp((clubP-oppP)/30,-1,1);
-  const lambdaH=clamp(1.15+diff*0.5+homeFactor,0.25,2.4);
-  const lambdaA=clamp(1.00-diff*0.45-homeFactor,0.20,2.2);
+  const diff=clamp((playerOvr||65)-(opponent?.p||65),-30,30);
+  const lambdaH=clamp(1.15+diff/55+homeFactor,0.25,2.4);
+  const lambdaA=clamp(1.00-diff/65-homeFactor,0.20,2.2);
   const hG=poissonGoals(lambdaH);
   const aG=poissonGoals(lambdaA);
   return{homeScore:hG,awayScore:aG,won:hG>aG,drew:hG===aG,goals:0,assists:0,rating:hG>aG?6.5:hG===aG?6.0:5.5,opponent:opponent?.n||opponent?.name,oppAbbr:opponent?.a||opponent?.abbr,oppCol:opponent?.c||opponent?.col,simulated:true};
@@ -2584,104 +2445,34 @@ function ScoutReportScreen({report,opponent,onClose,loading}){
 
 function PressScreen({report,matchResult,onClose}){
   if(!report)return null;
-  const won=matchResult?.won,drew=matchResult?.drew;
-  const papers=report.papers||["Gazzetta","Corriere","Tuttosport"];
-  const pr=report.playerRating;
-  const paperColors=["#dc2626","#1d4ed8","#7c3aed"];
+  const won=matchResult?.won;
   return(
-    <div style={{display:"flex",flexDirection:"column",gap:10}}>
-      {/* Header */}
-      <Card style={{padding:"12px 16px"}}>
-        <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-          <div>
-            <div style={{fontSize:9,color:TH.primary,fontWeight:700,letterSpacing:2}}>RASSEGNA STAMPA</div>
-            <div style={{fontSize:15,fontWeight:900,color:TH.text}}>Post-Partita</div>
-          </div>
-          <div style={{textAlign:"center"}}>
-            <div style={{fontSize:28}}>{won?"🏆":drew?"🤝":"📉"}</div>
-            <div style={{fontSize:10,color:won?TH.success:drew?TH.warning:TH.danger,fontWeight:700}}>
-              {won?"VITTORIA":drew?"PAREGGIO":"SCONFITTA"}
-            </div>
-          </div>
+    <Card style={{padding:14,marginBottom:10}}>
+      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}}>
+        <div>
+          <div style={{fontSize:9,color:TH.primary,fontWeight:700,letterSpacing:2}}>RASSEGNA STAMPA</div>
+          <div style={{fontSize:13,fontWeight:900,color:TH.text}}>Post-Partita</div>
         </div>
-      </Card>
-
-      {/* Newspaper headlines */}
-      <Card style={{padding:"12px 16px"}}>
-        <div style={{fontSize:9,color:TH.muted,fontWeight:700,letterSpacing:2,marginBottom:8}}>PRIME PAGINE</div>
+        <div style={{fontSize:26}}>{won?"🏆":"📰"}</div>
+      </div>
+      <div style={{marginBottom:10}}>
         {(report.headlines||[]).map((h,i)=>(
-          <div key={i} style={{padding:"8px 10px",background:"#f8fafc",borderRadius:6,marginBottom:5,borderLeft:`3px solid ${paperColors[i]||TH.primary}`}}>
-            <div style={{fontSize:8,color:paperColors[i]||TH.primary,fontWeight:700,letterSpacing:1,marginBottom:2}}>{papers[i]||"—"}</div>
-            <div style={{fontSize:12,fontWeight:i===0?800:600,color:TH.text,lineHeight:1.3}}>{h}</div>
+          <div key={i} style={{padding:"7px 10px",background:i===0?"#f0f9ff":"#f8fafc",borderRadius:6,marginBottom:4,borderLeft:`3px solid ${i===0?TH.primary:TH.cardBorder}`}}>
+            <div style={{fontSize:12,fontWeight:i===0?800:600,color:TH.text}}>{h}</div>
           </div>
         ))}
-      </Card>
-
-      {/* Player rating card */}
-      {pr&&(
-        <Card style={{padding:"12px 16px"}}>
-          <div style={{fontSize:9,color:TH.muted,fontWeight:700,letterSpacing:2,marginBottom:8}}>PAGELLA</div>
-          <div style={{display:"flex",alignItems:"center",gap:14}}>
-            <div style={{width:54,height:54,borderRadius:10,background:pr.color,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",flexShrink:0}}>
-              <div style={{fontSize:22,fontWeight:900,color:"#fff",lineHeight:1}}>{pr.value}</div>
-              <div style={{fontSize:7,color:"rgba(255,255,255,0.8)",letterSpacing:0.5}}>VOTO</div>
-            </div>
-            <div>
-              <div style={{fontSize:13,fontWeight:800,color:pr.color}}>{pr.label}</div>
-              <div style={{fontSize:11,color:TH.muted,marginTop:2}}>
-                {pr.goals>0&&<span style={{marginRight:8}}>⚽ {pr.goals} gol</span>}
-                {pr.assists>0&&<span>🎯 {pr.assists} assist</span>}
-                {pr.goals===0&&pr.assists===0&&<span>Partita senza reti personali</span>}
-              </div>
-            </div>
-          </div>
-        </Card>
-      )}
-
-      {/* MOTM + Flop */}
-      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}>
-        <Card style={{padding:"10px 12px"}}>
-          <div style={{fontSize:8,color:TH.success,fontWeight:700,letterSpacing:1,marginBottom:4}}>⭐ MVP</div>
-          <div style={{fontSize:11,fontWeight:700,color:TH.text}}>{report.motm||"—"}</div>
-        </Card>
-        <Card style={{padding:"10px 12px"}}>
-          <div style={{fontSize:8,color:TH.danger,fontWeight:700,letterSpacing:1,marginBottom:4}}>👎 FLOP</div>
-          <div style={{fontSize:11,color:TH.muted,lineHeight:1.3}}>{(report.flop||"—").slice(0,60)}</div>
-        </Card>
       </div>
-
-      {/* Tactical note */}
-      {report.tacticalNote&&(
-        <Card style={{padding:"10px 14px"}}>
-          <div style={{fontSize:8,color:TH.accent,fontWeight:700,letterSpacing:1,marginBottom:4}}>🎯 ANALISI TATTICA</div>
-          <div style={{fontSize:11,color:TH.muted,lineHeight:1.5}}>{report.tacticalNote}</div>
-        </Card>
-      )}
-
-      {/* Fan reactions */}
-      {(report.fanReactions||[]).length>0&&(
-        <Card style={{padding:"10px 14px"}}>
-          <div style={{fontSize:8,color:TH.warning,fontWeight:700,letterSpacing:1,marginBottom:6}}>📣 TIFOSI</div>
-          {report.fanReactions.map((r,i)=><div key={i} style={{fontSize:11,color:TH.muted,padding:"3px 0",borderBottom:i<report.fanReactions.length-1?"1px solid "+TH.cardBorder:"none"}}>"{r}"</div>)}
-        </Card>
-      )}
-
-      {/* Quotes */}
       {(report.quotes||[]).length>0&&(
-        <Card style={{padding:"10px 14px"}}>
-          <div style={{fontSize:8,color:TH.muted,fontWeight:700,letterSpacing:1,marginBottom:6}}>💬 DICHIARAZIONI</div>
-          {report.quotes.map((q,i)=><div key={i} style={{fontSize:11,color:TH.muted,fontStyle:"italic",padding:"4px 0",borderBottom:i<report.quotes.length-1?"1px solid "+TH.cardBorder:"none"}}>{q}</div>)}
-        </Card>
+        <div style={{marginBottom:8}}>
+          {report.quotes.map((q,i)=><div key={i} style={{fontSize:11,color:TH.muted,fontStyle:"italic",padding:"5px 0",borderBottom:"1px solid "+TH.cardBorder}}>💬 {q}</div>)}
+        </div>
       )}
-
-      {/* Trending */}
-      <Card style={{padding:"8px 14px",background:"#f0f9ff"}}>
+      <div style={{background:"#f1f5f9",borderRadius:6,padding:"6px 10px",marginBottom:10}}>
         <span style={{fontSize:11,color:TH.primary,fontWeight:700}}>📈 Trending: </span>
         <span style={{fontSize:11,color:TH.text}}>{report.trending}</span>
-      </Card>
-
-      {onClose&&<Btn onClick={onClose} v="primary" fw style={{padding:"12px",fontSize:13}}>🔙 Torna alla carriera</Btn>}
-    </div>
+      </div>
+      {onClose&&<Btn onClick={onClose} v="primary" fw style={{padding:"10px",fontSize:13}}>🔙 Torna alla carriera</Btn>}
+    </Card>
   );
 }
 
