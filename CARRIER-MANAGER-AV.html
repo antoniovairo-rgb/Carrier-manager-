@@ -962,7 +962,7 @@ const NEWSPAPERS=[
   {id:"lastampa",  name:"La Stampa Sport",       short:"La Stampa",  color:"#16a34a",e:"🗞️",tone:"analitico"},
   {id:"skysport",  name:"Sky Sport 24",          short:"Sky Sport",  color:"#0099d6",e:"📡",tone:"diretto"},
 ];
-const GAME_VERSION="2.9.0"; // Sprint 19 — biografia auto, match del cuore, milestone popup
+const GAME_VERSION="3.0.0"; // Sprint 19+20 — New Game+, Sfide, Locale EN/IT, Career Export
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -5799,12 +5799,22 @@ function HomeScreen({onNew,onLoad,onDelete,onImport,slots}){
 /* ========================================
    CREATE SCREEN  (req #2 – avatar)
 ======================================== */
-function CreateScreen({onCreate}){
+function CreateScreen({onCreate,legacyBonus,onClearLegacy}){
   const[name,setName]=useState(""),[nation,setNation]=useState("Italia"),[avatarId,setAvatarId]=useState(0),[page,setPage]=useState(0);
   const[archetypeId,setArchetypeId]=useState("bomber");
+  const[challengeId,setChallengeId]=useState(null);
   const inp={background:"#f8fafc",border:"1px solid "+TH.cardBorder,borderRadius:10,color:TH.text,padding:"10px 14px",fontFamily:"inherit",fontSize:14,width:"100%",boxSizing:"border-box"};
   const lbl={display:"block",fontSize:11,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:6};
-  const go=()=>{if(!name.trim())return;const arc=ARCHETYPES.find(a=>a.id===archetypeId)||ARCHETYPES[0];const stats=baseStats(arc);const age=17;onCreate({name:name.trim(),nation,avatarId,archetype:arc,position:"Attaccante",age,stats,ovr:calcOvr(stats),club:null,trialsDone:0,trialStats:[],season:1,week:1,weekLived:false,u18Seasons:0,isU18:true,proStatus:"u18",goals:0,assists:0,matches:0,totalGoals:0,totalAssists:0,totalMatches:0,morale:70,fatigue:0,popularity:20,skillPoints:2,log:[],history:[],matchHistory:[],value:0.8,coachTrust:60,form:70,transferOffers:[],offerHistory:[],contract:{duration:1,wage:rng(200,500),expiresAtSeason:2},aiData:{lastOpponentTactic:null,scoutReports:{},pressReports:{}},saveVersion:SAVE_VERSION});};
+  const go=()=>{
+    if(!name.trim())return;
+    const arc=ARCHETYPES.find(a=>a.id===archetypeId)||ARCHETYPES[0];
+    let stats=baseStats(arc);
+    if(legacyBonus?.statBoost){Object.keys(stats).forEach(k=>{stats[k]=clamp(stats[k]+legacyBonus.statBoost,1,99);});}
+    const age=17;
+    const challenge=challengeId?CHALLENGES.find(c=>c.id===challengeId):null;
+    if(onClearLegacy)onClearLegacy();
+    onCreate({name:name.trim(),nation,avatarId,archetype:arc,position:"Attaccante",age,stats,ovr:calcOvr(stats),club:null,trialsDone:0,trialStats:[],season:1,week:1,weekLived:false,u18Seasons:0,isU18:true,proStatus:"u18",goals:0,assists:0,matches:0,totalGoals:0,totalAssists:0,totalMatches:0,morale:legacyBonus?clamp(70+(legacyBonus.moraleBoost||0),0,100):70,fatigue:0,popularity:20,skillPoints:2,log:[],history:[],matchHistory:[],value:0.8,coachTrust:60,form:70,transferOffers:[],offerHistory:[],contract:{duration:1,wage:rng(200,500),expiresAtSeason:2},aiData:{lastOpponentTactic:null,scoutReports:{},pressReports:{}},saveVersion:SAVE_VERSION,...(legacyBonus?{legacyBonusLabel:legacyBonus.label}:{}),...(challenge?{challenge:{id:challenge.id,completed:false,failed:false}}:{})});
+  };
   const perPage=6;const totalPages=Math.ceil(AVATARS.length/perPage);const pageAvatars=AVATARS.slice(page*perPage,(page+1)*perPage);
   return(
     <div style={{width:"100%"}}>
@@ -5863,6 +5873,13 @@ function CreateScreen({onCreate}){
               </div>
             ):null;})()}
           </div>
+          {legacyBonus&&<div style={{padding:"10px 12px",borderRadius:10,background:"linear-gradient(135deg,#7c3aed22,#4f46e522)",border:"1px solid #7c3aed44",marginBottom:6,fontSize:11,color:"#7c3aed",fontWeight:700}}>🌟 Nuova Partita+ attiva — Bonus {legacyBonus.label}: +{legacyBonus.statBoost} a tutti gli attributi</div>}
+          <details style={{marginBottom:6}}>
+            <summary style={{fontSize:11,color:TH.muted,cursor:"pointer",userSelect:"none",padding:"4px 0"}}>⚡ Modalità Sfida <span style={{color:challengeId?TH.warning:"inherit"}}>{challengeId?`(attiva: ${CHALLENGES.find(c=>c.id===challengeId)?.name||""})`:""}</span></summary>
+            <div style={{marginTop:8,display:"flex",flexDirection:"column",gap:6}}>
+              {CHALLENGES.map(ch=>{const sel=challengeId===ch.id;return(<button key={ch.id} onClick={()=>setChallengeId(sel?null:ch.id)} style={{textAlign:"left",padding:"8px 10px",borderRadius:10,border:`2px solid ${sel?"#f59e0b":TH.cardBorder}`,background:sel?"#fef9c3":"#f8fafc",cursor:"pointer"}}><div style={{fontSize:14,marginBottom:2}}>{ch.icon} <span style={{fontWeight:700,fontSize:11}}>{ch.name}</span></div><div style={{fontSize:10,color:TH.muted}}>{ch.desc}</div><div style={{fontSize:9,color:"#f59e0b",marginTop:2}}>{ch.reward}</div></button>);})}
+            </div>
+          </details>
           <Btn onClick={go} disabled={!name.trim()} fw style={{padding:"14px",fontSize:15}}>⚡ INIZIA I PROVINI</Btn>
         </div>
       </div>{/* end cpm-create */}
@@ -7121,7 +7138,7 @@ function generateRetirementBio(p,legacyScore){
   return bio;
 }
 
-function CareerEndScreen({retData,onNewGame}){
+function CareerEndScreen({retData,onNewGame,onNewGamePlus}){
   const{player:p,legacyScore}=retData;
   const grade=getLegacyGrade(legacyScore);
   const bio=generateRetirementBio(p,legacyScore);
@@ -7187,12 +7204,56 @@ function CareerEndScreen({retData,onNewGame}){
         <p style={{fontSize:11,color:TH.text,lineHeight:1.6,margin:0}}>{bio}</p>
       </Card>
 
+      <Btn onClick={()=>{const txt=buildCareerCard(p);if(navigator.clipboard){navigator.clipboard.writeText(txt).then(()=>alert("📋 Riepilogo copiato negli appunti!"));}else{alert(txt);}}} v="ghost" fw style={{padding:"12px",fontSize:13,marginBottom:8}}>
+        📋 Copia Riepilogo Carriera
+      </Btn>
+      {onNewGamePlus&&(()=>{const bonus=legacyScore>=600?{statBoost:3,label:"Leggenda",moraleBoost:15}:legacyScore>=400?{statBoost:2,label:"Veterano",moraleBoost:10}:legacyScore>=200?{statBoost:1,label:"Esperienza",moraleBoost:5}:null;return bonus?(<Btn onClick={()=>onNewGamePlus(bonus)} fw style={{padding:"13px",fontSize:14,marginBottom:10,background:"linear-gradient(135deg,#7c3aed,#4f46e5)",color:"#fff",border:"none"}}>🌟 Nuova Partita+ — Bonus {bonus.label} (+{bonus.statBoost} stats)</Btn>):null;})()}
       <Btn onClick={onNewGame} v="primary" fw style={{padding:"16px",fontSize:15}}>
         🏠 Torna al Menu Principale
       </Btn>
     </div>
   );
 }
+
+/* ========================================
+   SPRINT 19-20 — Challenges, Locale, Career Export
+======================================== */
+const CHALLENGES=[
+  {id:"scalata",icon:"🏔️",name:"La Scalata",desc:"Vinci il campionato entro la stagione 5.",
+   check:p=>(p.trophies||[]).length>0,fail:p=>(p.season||1)>5&&(p.trophies||[]).length===0,reward:"🏆 Scalatore Nato"},
+  {id:"bomber",icon:"🔥",name:"Bomber Puro",desc:"Segna 50 gol in una singola stagione.",
+   check:p=>(p.goals||0)>=50,fail:()=>false,reward:"⚽ Macchina da Gol"},
+  {id:"talento",icon:"💎",name:"Talento Puro",desc:"Raggiungi OVR 90 prima dei 26 anni.",
+   check:p=>(p.ovr||60)>=90&&(p.age||17)<26,fail:p=>(p.age||17)>=26&&(p.ovr||60)<90,reward:"🌟 Predestinato"},
+];
+const LOCALE={
+  IT:{
+    tabs:{dashboard:"Home",calendar:"Calendario",standings:"Classifica",training:"Allena",profile:"Profilo"},
+    liveWeek:"⚡ Vivi la Settimana",rehab:"🏥 Sessione Riabilitazione",weekLived:"✅ Settimana vissuta",advanceWeek:"⏭️ Avanza Settimana",
+  },
+  EN:{
+    tabs:{dashboard:"Home",calendar:"Calendar",standings:"Standings",training:"Training",profile:"Profile"},
+    liveWeek:"⚡ Live Week",rehab:"🏥 Rehab Session",weekLived:"✅ Week Lived",advanceWeek:"⏭️ Advance Week",
+  },
+};
+const buildCareerCard=(p)=>{
+  const sc=calcLegacyScore(p);const g=getLegacyGrade(sc);
+  const seasons=Math.max(0,(p.season||1)-1);
+  const clubs=[...new Set((p.history||[]).map(h=>h.club).filter(Boolean))];
+  return[
+    `⚽ CAREER PLAYER MANAGER`,
+    `${g.e} ${g.label}`,
+    `${p.name} · ${p.nation} · ${p.age} anni`,
+    `━━━━━━━━━━━━━━━━━━━━`,
+    `Stagioni: ${seasons}  Presenze: ${p.totalMatches||0}`,
+    `Gol: ${p.totalGoals||0}  Assist: ${p.totalAssists||0}`,
+    `Trofei: ${(p.trophies||[]).length}  Cap Naz.: ${p.nationalCaps||0}`,
+    `OVR: ${p.ovr||60}  Legacy: ${sc}/1000`,
+    `━━━━━━━━━━━━━━━━━━━━`,
+    clubs.length>0?`Club: ${clubs.join(" → ")}`:"",
+    `#CPM #CareerPlayerManager`,
+  ].filter(Boolean).join("\n");
+};
 
 /* ========================================
    CAREER APP  (req #9,#10,#12,#13,#14)
@@ -7241,7 +7302,7 @@ const generateBio=(p)=>{
   else{lines.push(`OVR ${ovr}: ampi margini di crescita davanti a sé.`);}
   return lines.join(" ");
 };
-function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
+function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLang,onNewGamePlusCB}){
   const[player,setPlayer]=useState(init);
   const[tab,setTab]=useState("dashboard");
   const[screen,setScreen]=useState("dashboard");
@@ -7812,6 +7873,15 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
   const doStartNewSeason=()=>{
     const newAgePre=(player.age||17)+1;
     if(newAgePre>=40){doRetire();return;}
+    // Sprint 19 — challenge check at season boundary
+    if(player.challenge&&!player.challenge.completed&&!player.challenge.failed){
+      const chalDef=CHALLENGES.find(c=>c.id===player.challenge.id);
+      if(chalDef){
+        const chDone=chalDef.check(player);const chFail=chalDef.fail(player);
+        if(chDone){setPlayer(p=>({...p,challenge:{...p.challenge,completed:true}}));setTimeout(()=>notify(`🏆 SFIDA COMPLETATA: ${chalDef.name}! ${chalDef.reward}`,"#7c3aed"),500);}
+        else if(chFail){setPlayer(p=>({...p,challenge:{...p.challenge,failed:true}}));setTimeout(()=>notify(`❌ Sfida fallita: ${chalDef.name}`,TH.danger),500);}
+      }
+    }
     const willContractExpire=(player.contract?.duration||1)<=1;
     // Evaluate season objectives pre-reset
     const sortedSt=[...(player.standings||[])].sort((a,b)=>b.pts-a.pts||(b.gd||0)-(a.gd||0));
@@ -7990,7 +8060,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
 
   if(screen==="careerEnd"&&retirementData)return(
     <div style={{width:"100%"}}>
-      <CareerEndScreen retData={retirementData} onNewGame={()=>window.location.reload()}/>
+      <CareerEndScreen retData={retirementData} onNewGame={()=>window.location.reload()} onNewGamePlus={typeof onNewGamePlusCB==="function"?onNewGamePlusCB:undefined}/>
     </div>
   );
 
@@ -8035,7 +8105,8 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
     </div>
   );
 
-  const tabs=[{id:"dashboard",e:"🏠",l:"Home",k:"M"},{id:"calendar",e:"📅",l:"Calendario",k:"C"},{id:"standings",e:"📊",l:"Classifica",k:"F"},{id:"training",e:"💪",l:"Allena",k:"T"},{id:"profile",e:"👤",l:"Profilo",k:"R"}];
+  const L=LOCALE[lang]||LOCALE.IT;
+  const tabs=[{id:"dashboard",e:"🏠",l:L.tabs.dashboard,k:"M"},{id:"calendar",e:"📅",l:L.tabs.calendar,k:"C"},{id:"standings",e:"📊",l:L.tabs.standings,k:"F"},{id:"training",e:"💪",l:L.tabs.training,k:"T"},{id:"profile",e:"👤",l:L.tabs.profile,k:"R"}];
 
   return(
     <div className="cpm-career">
@@ -8208,6 +8279,16 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
         </div>
       </div>
 
+      {/* Sprint 19 — Career stats mini widget */}
+      {tab==="dashboard"&&(player.totalMatches||0)>0&&(
+        <Card style={{marginBottom:8,padding:"9px 14px"}}>
+          <div style={{display:"flex",justifyContent:"space-around",textAlign:"center"}}>
+            {[{e:"⚽",v:player.totalGoals||0,l:"Gol tot."},{e:"👕",v:player.totalMatches||0,l:"Pres. tot."},{e:"🏆",v:(player.trophies||[]).length,l:"Trofei"},{e:"📅",v:Math.max(0,(player.season||1)-1),l:"Stagioni"}].map(s=>(
+              <div key={s.l}><div style={{fontSize:9,color:TH.faint,marginBottom:1}}>{s.l}</div><div style={{fontSize:16,fontWeight:900,color:TH.text}}>{s.v}</div></div>
+            ))}
+          </div>
+        </Card>
+      )}
       {/* DASHBOARD */}
       {tab==="dashboard"&&player.contractExpired&&(
         <Card bg="#fef3c7" border="#f59e0b" style={{marginBottom:8,padding:"12px 14px"}}>
@@ -8319,7 +8400,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
                 <div style={{background:player.weekLived?"linear-gradient(135deg,#334155,#374151)":player.injured?"linear-gradient(135deg,#3d1515,#3d2215)":"linear-gradient(135deg,#1e3a5f,#1e4d3a)",borderRadius:10,padding:"10px 12px",cursor:player.weekLived?"default":"pointer",opacity:player.weekLived?0.65:1}}
                   onClick={!player.weekLived?liveCurrentWeek:undefined}>
                   <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-                    <div style={{fontSize:12,fontWeight:700,color:"#fff"}}>{player.weekLived?"✅ Settimana vissuta":player.injured?"🏥 Sessione Riabilitazione":"⚡ Vivi la Settimana"}</div>
+                    <div style={{fontSize:12,fontWeight:700,color:"#fff"}}>{player.weekLived?L.weekLived:player.injured?L.rehab:L.liveWeek}</div>
                     <div style={{fontSize:10,color:"rgba(255,255,255,0.5)"}}>W.{week}</div>
                   </div>
                 </div>
@@ -8831,19 +8912,43 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
               </Card>
             );
           })()}
+          {/* Sprint 19 — Challenge status */}
+          {player.challenge&&(()=>{
+            const ch=CHALLENGES.find(c=>c.id===player.challenge.id);
+            if(!ch)return null;
+            const done=player.challenge.completed,failed=player.challenge.failed;
+            return(
+              <Card bg={done?"#f0fdf4":failed?"#fff1f2":"#fefce8"} border={done?"#bbf7d0":failed?"#fecaca":"#fde68a"} style={{padding:"12px 14px"}}>
+                <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:6}}>⚡ Modalità Sfida</div>
+                <div style={{display:"flex",alignItems:"center",gap:10}}>
+                  <div style={{fontSize:28}}>{ch.icon}</div>
+                  <div style={{flex:1}}>
+                    <div style={{fontSize:13,fontWeight:800,color:TH.text}}>{ch.name}</div>
+                    <div style={{fontSize:11,color:TH.muted}}>{ch.desc}</div>
+                  </div>
+                  <div style={{fontSize:20}}>{done?"✅":failed?"❌":"🎯"}</div>
+                </div>
+                {done&&<div style={{marginTop:8,fontSize:12,color:"#16a34a",fontWeight:700}}>{ch.reward} — SFIDA COMPLETATA!</div>}
+                {failed&&<div style={{marginTop:8,fontSize:11,color:"#b91c1c"}}>Sfida fallita. Meglio la prossima!</div>}
+              </Card>
+            );
+          })()}
+          {/* Sprint 20 — Career card copy button in profile */}
+          <Btn onClick={()=>{const txt=buildCareerCard(player);if(navigator.clipboard){navigator.clipboard.writeText(txt).then(()=>notify("📋 Riepilogo copiato!",TH.success));}else{notify("Clipboard non disponibile",TH.warning);}}} v="ghost" fw style={{padding:"10px",fontSize:12}}>📋 Copia Riepilogo Carriera</Btn>
           <AISettingsCard player={player}/>
         </div>
       )}
 
       {/* BOTTOM NAV */}
       <div style={{position:"fixed",bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:600,zIndex:100}}>
-      <div style={{background:"rgba(240,247,255,0.97)",borderTop:"1px solid "+TH.cardBorder,padding:"2px 8px",display:"flex",gap:10,justifyContent:"center",flexWrap:"wrap"}}>
+      <div style={{background:"rgba(240,247,255,0.97)",borderTop:"1px solid "+TH.cardBorder,padding:"2px 8px",display:"flex",gap:10,justifyContent:"center",flexWrap:"wrap",alignItems:"center"}}>
         {[{k:"Enter",l:"Gioca"},{k:"0",l:"Avanza"},{k:"Esc",l:"Indietro"},{k:"Spc",l:"Conferma"}].map(h=>(
           <span key={h.k} style={{fontSize:9,color:TH.muted,display:"flex",alignItems:"center",gap:3}}>
             <span style={{background:"#e2e8f0",borderRadius:3,padding:"1px 5px",fontFamily:"monospace",fontSize:9,color:TH.text}}>{h.k}</span>
             {h.l}
           </span>
         ))}
+        {toggleLang&&<button onClick={toggleLang} style={{marginLeft:"auto",fontSize:9,background:"#e2e8f0",border:"none",borderRadius:4,padding:"2px 7px",cursor:"pointer",color:TH.text,fontWeight:700}}>🌐 {lang}</button>}
       </div>
       <div style={{background:TH.navBg,backdropFilter:"blur(12px)",borderTop:"1px solid "+TH.cardBorder,display:"flex"}}>
         {tabs.map(t=><button key={t.id} onClick={()=>goTab(t.id)} title={`${t.l} [${t.k}]`} style={{flex:1,padding:"10px 4px 6px",border:"none",background:"transparent",cursor:"pointer",fontFamily:"inherit",color:tab===t.id?TH.primary:TH.faint,borderTop:`2px solid ${tab===t.id?TH.primary:"transparent"}`,transition:"all .15s"}}><div style={{fontSize:17}}>{t.e}</div><div style={{fontSize:9,marginTop:1,letterSpacing:.3}}>{t.l}</div><div style={{fontSize:8,color:tab===t.id?TH.primary+"99":TH.faint+"88",marginTop:1,fontFamily:"monospace"}}>[{t.k}]</div></button>)}
@@ -8863,6 +8968,9 @@ function App(){
   const[slots,setSlots]=useState([null,null,null]);
   const[currentSlot,setCurrentSlot]=useState(0);
   const[appMsg,setAppMsg]=useState(null);
+  const[lang,setLang]=useState(()=>localStorage.getItem("cpm-lang")||"IT");
+  const[legacyBonus,setLegacyBonus]=useState(null);
+  const toggleLang=()=>{const nl=lang==="IT"?"EN":"IT";setLang(nl);localStorage.setItem("cpm-lang",nl);};
 
   const appNotify=(msg,color=TH.danger)=>{setAppMsg({msg,color});setTimeout(()=>setAppMsg(null),3500);};
 
@@ -8955,10 +9063,10 @@ function App(){
   );
   if(phase==="loading")return wrap(<div style={{textAlign:"center",paddingTop:80,color:TH.faint}}>Caricamento…</div>);
   if(phase==="home")return wrap(<HomeScreen slots={slots} onNew={startNew} onLoad={loadSave} onDelete={deleteSlot} onImport={importSave}/>);
-  if(phase==="create")return wrap(<CreateScreen onCreate={onCreate}/>);
+  if(phase==="create")return wrap(<CreateScreen onCreate={onCreate} legacyBonus={legacyBonus} onClearLegacy={()=>setLegacyBonus(null)}/>);
   if(phase==="trial"&&player)return wrap(<TrialFlow player={player} onComplete={onTrials}/>);
   if(phase==="offers"&&player)return wrap(<OffersScreen player={player} trialStats={trials} onChoose={onChoose}/>);
-  if(phase==="career"&&player)return wrap(<CareerApp player={player} currentSlot={currentSlot} onRefreshSlots={refreshSlots}/>);
+  if(phase==="career"&&player)return wrap(<CareerApp player={player} currentSlot={currentSlot} onRefreshSlots={refreshSlots} lang={lang} toggleLang={toggleLang} onNewGamePlusCB={(bonus)=>{setLegacyBonus(bonus);setPhase("create");}}/>);
   return wrap(<div style={{textAlign:"center",color:TH.faint}}>Stato non riconosciuto.</div>);
 }
 
