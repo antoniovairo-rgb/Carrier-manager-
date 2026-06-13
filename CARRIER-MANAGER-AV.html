@@ -930,7 +930,7 @@ const NEWSPAPERS=[
   {id:"lastampa",  name:"La Stampa Sport",       short:"La Stampa",  color:"#16a34a",e:"🗞️",tone:"analitico"},
   {id:"skysport",  name:"Sky Sport 24",          short:"Sky Sport",  color:"#0099d6",e:"📡",tone:"diretto"},
 ];
-const GAME_VERSION="2.6.3"; // HL zoom intermedio
+const GAME_VERSION="2.7.0"; // Sprint 17 — momentum, heatmap, rigori
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -2728,7 +2728,7 @@ function colorCharGLB(model,jerHex){
 ===================================================== */
 const PC_PW=360,PC_PH=580,PC_FX=30,PC_FY=40,PC_FW=300,PC_FH=480;
 const PC_FCX=PC_FX+PC_FW/2,PC_FCY=PC_FY+PC_FH/2;
-function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,onWalkoutDone,avatarId,actionZoom,allPlayers,homeClub,ballX,ballY,waveEvent,driftTargets,timeOfDay,attendance,actionEffect,weather}){
+function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,onWalkoutDone,avatarId,actionZoom,allPlayers,homeClub,ballX,ballY,waveEvent,driftTargets,timeOfDay,attendance,actionEffect,weather,heatPoints,showHeatMap}){
   homeCol=homeCol||"#22c55e";oppCol=oppCol||"#ef4444";opponents=opponents||[];
   matchPhase=matchPhase||"match";actionZoom=actionZoom||false;allPlayers=allPlayers||[];
   const canvasRef=useRef(null);
@@ -2741,8 +2741,8 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
     livePos:[],fogPhase:0,photoFlashT:0,
     netBulgeTop:0,netBulgeBot:0
   });
-  const propsRef=useRef({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,onWalkoutDone,avatarId,actionZoom,allPlayers,homeClub,ballX:ballX||50,ballY:ballY||50,waveEvent,driftTargets,timeOfDay:timeOfDay||"night",attendance:attendance||500,weather});
-  useEffect(()=>{propsRef.current={playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,onWalkoutDone,avatarId,actionZoom,allPlayers,homeClub,ballX:ballX||50,ballY:ballY||50,waveEvent,driftTargets,timeOfDay:timeOfDay||"night",attendance:attendance||500,weather};},[playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,onWalkoutDone,avatarId,actionZoom,allPlayers,homeClub,ballX,ballY,waveEvent,driftTargets,timeOfDay,attendance,weather]);
+  const propsRef=useRef({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,onWalkoutDone,avatarId,actionZoom,allPlayers,homeClub,ballX:ballX||50,ballY:ballY||50,waveEvent,driftTargets,timeOfDay:timeOfDay||"night",attendance:attendance||500,weather,heatPoints,showHeatMap});
+  useEffect(()=>{propsRef.current={playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,onWalkoutDone,avatarId,actionZoom,allPlayers,homeClub,ballX:ballX||50,ballY:ballY||50,waveEvent,driftTargets,timeOfDay:timeOfDay||"night",attendance:attendance||500,weather,heatPoints,showHeatMap};},[playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,onWalkoutDone,avatarId,actionZoom,allPlayers,homeClub,ballX,ballY,waveEvent,driftTargets,timeOfDay,attendance,weather,heatPoints,showHeatMap]);
 
   useEffect(()=>{
     const canvas=canvasRef.current;if(!canvas)return;
@@ -3402,6 +3402,23 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
                 const len=30+d*8;
                 ctx.beginPath();ctx.moveTo(FX,ry);ctx.lineTo(FX+len,ry+1);ctx.stroke();
               }
+            }
+            ctx.restore();
+          }
+          // Sprint 17: heat map overlay
+          if(p.showHeatMap&&p.heatPoints&&p.heatPoints.length>0){
+            ctx.save();
+            const hpts=p.heatPoints;
+            const HR=8*s.camZoom;
+            for(let i=Math.max(0,hpts.length-250);i<hpts.length;i++){
+              const pt=hpts[i];
+              const hcx=gx(pt.y),hcy=gy(pt.x);
+              const alp=0.025+((i-Math.max(0,hpts.length-250))/Math.min(250,hpts.length))*0.065;
+              const hg=ctx.createRadialGradient(hcx,hcy,0,hcx,hcy,HR);
+              hg.addColorStop(0,`rgba(255,80,0,${(alp*4).toFixed(3)})`);
+              hg.addColorStop(0.5,`rgba(255,30,0,${(alp*2).toFixed(3)})`);
+              hg.addColorStop(1,"rgba(255,0,0,0)");
+              ctx.fillStyle=hg;ctx.beginPath();ctx.arc(hcx,hcy,HR,0,Math.PI*2);ctx.fill();
             }
             ctx.restore();
           }
@@ -4340,6 +4357,15 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   });
   // Sprint 16 — crowd chant overlay state
   const [crowdChant,setCrowdChant]=useState(null); // {text,type,key}
+  // Sprint 17
+  const [momentum,setMomentum]=useState(50); // 0=away dominance, 100=home dominance
+  const momentumRef=useRef(50);
+  useEffect(()=>{momentumRef.current=momentum;},[momentum]);
+  const heatPointsRef=useRef([]); // {x,y}[] — sampled every 4 playing ticks
+  const pPosRef=useRef({x:58,y:50});
+  useEffect(()=>{pPosRef.current=pPos;},[pPos]);
+  const [showHeatMap,setShowHeatMap]=useState(false);
+  const gkDiveRef=useRef(null); // GK dive direction for rigore
   // context-aware realistic attendance
   const [attendance]=useState(()=>calcAttendance(context==="trial"?null:(player.club||opponent),context));
   // responsive layout: narrow = stacked vertically
@@ -4456,7 +4482,16 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
       const sp=getStartPos(situations[hlIdx]);
       setPPos(sp);
     }
-    if(phase==="hl_choose")setSelectedActionIdx(0);
+    if(phase==="hl_choose"){
+      setSelectedActionIdx(0);
+      // Sprint 17: if rigore, pre-compute GK dive direction
+      if(situations[hlIdx]?.text?.includes("RIGORE")){
+        const dirs=["tl","tc","tr","bl","bc","br"];
+        const w=[18,8,18,22,12,22];let r=Math.random()*100;
+        for(let i=0;i<dirs.length;i++){r-=w[i];if(r<=0){gkDiveRef.current=dirs[i];break;}}
+        if(!gkDiveRef.current)gkDiveRef.current="bc";
+      }
+    }
   },[hlIdx,phase]);// eslint-disable-line
 
   // hl_intro auto-advance → hl_move after 2.5s (tap/key to skip)
@@ -4677,6 +4712,11 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           else if(ev.ms?.shots>0&&Math.random()<0.45)chantFor("near_miss",2000);
           else if(ev.ms?.fouls>0&&Math.random()<0.5)chantFor("foul",1800);
           else if(Math.random()<0.04)chantFor("home",2500); // ambient home chant ~every 25s
+          // Sprint 17: momentum swings from BG events
+          if(ev.ef==="team_goal")setMomentum(m=>clamp(m+25,0,100));
+          else if(ev.ef==="opp_goal")setMomentum(m=>clamp(m-25,0,100));
+          else if(ev.ms?.shots>0)setMomentum(m=>clamp(m+4,0,100));
+          else if(ev.ms?.oppShots>0)setMomentum(m=>clamp(m-4,0,100));
           // Resolve {H},{H2},{A} name tokens from rosters
           const hAbbr=player.club?.a||player.club?.id?.slice(0,3).toUpperCase()||"HOME";
           const aAbbr=opponent?.a||opponent?.id?.slice(0,3).toUpperCase()||"AWAY";
@@ -4687,8 +4727,16 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           const cColor=ev.ef==="team_goal"?"#16a34a":ev.ef==="opp_goal"?"#dc2626":TH.faint;
           addCom(evTxt,cColor,nx);
         }
-        // Possession drift every ~8 ticks
-        if(nx%8===0)setPossession(p=>clamp(p+rng(-2,2),20,80));
+        // Possession drift + momentum drift every ~8 ticks
+        if(nx%8===0){
+          setPossession(p=>clamp(p+rng(-2,2),20,80));
+          setMomentum(m=>clamp(Math.round(m+(50-m)*0.08),0,100));
+        }
+        // Heat map: sample player position every 4 ticks
+        if(nx%4===0){
+          heatPointsRef.current.push({x:pPosRef.current.x,y:pPosRef.current.y});
+          if(heatPointsRef.current.length>300)heatPointsRef.current.shift();
+        }
         return nx;
       });
     },300);
@@ -4818,13 +4866,55 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     else if(isShot&&ok)setActionEffect({type:"spark",col:homeKitCol,key:Date.now()});
     else if(isShot&&!ok)setActionEffect({type:"spark",col:"#ef4444",key:Date.now()});
     else if(isTackle)setActionEffect({type:"dust",key:Date.now()});
-    setOutcome({text:txt,ok,actionLabel:action.label});setChosenAct(action);setPhase("hl_result");
+    setOutcome({text:txt,ok,actionLabel:action.label});setChosenAct(action);
+    setMomentum(m=>clamp(m+(ok?10:-8),0,100));
+    setPhase("hl_result");
     // Generate AI commentary async (non-blocking)
     generateHighlightCommentary(situations[hlIdx],action,{ok},player.stats,zone).then(c=>{
       if(c?.commentary)setAiCommentary(c);
     });
   },[phase,player.stats,pPos.x,clock,addCom,oppPrestige]);
 
+  const RIGORE_DIRS={tl:"alto sinistra",tc:"alto centro",tr:"alto destra",bl:"basso sinistra",bc:"basso centro",br:"basso destra"};
+  const RIGORE_ARROWS={tl:"↖",tc:"⬆",tr:"↗",bl:"↙",bc:"⬇",br:"↘"};
+  const RIGORE_LABELS={tl:"Alto SX",tc:"Alto CTR",tr:"Alto DX",bl:"Basso SX",bc:"Basso CTR",br:"Basso DX"};
+  const handleRigore=(dir)=>{
+    if(phase!=="hl_choose")return;
+    const gkDir=gkDiveRef.current||"bc";
+    const saved=dir===gkDir;
+    const isCorner=["tl","tr","bl","br"].includes(dir);
+    const gkLabel=RIGORE_DIRS[gkDir]||gkDir;
+    const shotLabel=`Rigore ${RIGORE_ARROWS[dir]||""}`.trim();
+    setEnergy(e=>clamp(e-8,0,100));
+    if(saved){
+      const txt=`🧤 PARATA! Il portiere intuisce — vola ${gkLabel}!`;
+      addCom(txt,"#f87171",clock);
+      setScreenFlash({col:"rgba(239,68,68,0.4)",dur:500});
+      setOutcome({text:txt,ok:false,actionLabel:shotLabel});setChosenAct({label:shotLabel,stat:"tiro",nrg:8});
+      setMomentum(m=>clamp(m-15,0,100));
+    }else{
+      const ok=Math.random()<(isCorner?0.88:0.55);
+      if(ok){
+        const txt=`⚽ GOOOAL! Angolo perfetto — portiere va ${gkLabel}.`;
+        addCom(txt,"#16a34a",clock);
+        setScreenFlash({col:"rgba(255,255,255,0.5)",dur:500});
+        setFloatGoal({text:"⚽ GOL!",col:"#f59e0b",key:Date.now()});
+        setScore(s=>({...s,home:s.home+1}));
+        setMStats(s=>({...s,goals:s.goals+1,rb:s.rb+5}));
+        setActionEffect({type:"goal",key:Date.now()});
+        setOutcome({text:txt,ok:true,actionLabel:shotLabel});
+        setMomentum(m=>clamp(m+20,0,100));
+      }else{
+        const txt=`❌ ${pick(["Palo! Che peccato!","Tiro alto — sprecato!","Fuori di poco."])} Portiere andava ${gkLabel}.`;
+        addCom(txt,"#f87171",clock);
+        setScreenFlash({col:"rgba(239,68,68,0.3)",dur:400});
+        setOutcome({text:txt,ok:false,actionLabel:shotLabel});
+        setMomentum(m=>clamp(m-10,0,100));
+      }
+      setChosenAct({label:shotLabel,stat:"tiro",nrg:8});
+    }
+    setPhase("hl_result");
+  };
   const handleContinue=()=>{const nx=hlIdx+1;if(nx>=numHL){setPhase("ended");}else{setHlIdx(nx);setOutcome(null);setChosenAct(null);setPhase("playing");}};
   const handleEnd=()=>{
     const rbCapped=Math.min(mStats.rb,20);
@@ -4909,6 +4999,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     if(phase!=="hl_choose"||paused)return;
     const sit=situations[hlIdx];
     if(!sit)return;
+    if(sit.lockMovement)return; // no auto-tackle for set pieces (penalty/free kick)
     // Delay scales with defDist: far defender = more time (6-10s), close = less (3-5s)
     const baseDelay=defDistRef.current>60?9000:defDistRef.current>35?6000:4000;
     const t=setTimeout(()=>{
@@ -4979,6 +5070,13 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
               <div style={{display:"flex",justifyContent:"space-between",fontSize:7,color:"rgba(255,255,255,0.28)",marginTop:2,width:80}}>
                 <span style={{fontWeight:700,color:"rgba(255,255,255,0.5)"}}>{possession}%</span><span>poss.</span><span style={{fontWeight:700,color:"rgba(255,255,255,0.5)"}}>{100-possession}%</span>
               </div>
+              <div style={{height:4,background:"rgba(255,255,255,0.06)",borderRadius:3,overflow:"hidden",display:"flex",width:80,marginTop:4}}>
+                <div style={{width:`${momentum}%`,background:homeKitCol,transition:"width .7s ease",borderRadius:"3px 0 0 3px"}}/>
+                <div style={{flex:1,background:awayKitCol,borderRadius:"0 3px 3px 0"}}/>
+              </div>
+              <div style={{display:"flex",justifyContent:"space-between",fontSize:7,color:"rgba(255,255,255,0.22)",marginTop:1,width:80}}>
+                <span>⚡</span><span style={{letterSpacing:.5}}>momentum</span><span>⚡</span>
+              </div>
             </div>
             {/* Away team */}
             <div style={{display:"flex",alignItems:"center",gap:7,flexDirection:"row-reverse",minWidth:0,flex:1,justifyContent:"flex-start"}}>
@@ -5002,6 +5100,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                 ballX={ballPos.x} ballY={ballPos.y} waveEvent={waveEvent}
                 driftTargets={driftTargetsRef.current} timeOfDay={timeOfDay}
                 attendance={attendance} actionEffect={actionEffect} weather={weather}
+                heatPoints={heatPointsRef.current} showHeatMap={showHeatMap}
                 onWalkoutDone={()=>setPhase("playing")}/>
               {phase==="walkout"&&<WalkoutOverlay homeTeam={player.club||opponent} homeRoster={homeRoster} opponent={opponent} isHome={isMatchHome} matchWeek={player.week} onDone={()=>setPhase("playing")} weather={weather}/>}
               {screenFlash&&<div style={{position:"absolute",inset:0,background:screenFlash.col,zIndex:20,pointerEvents:"none",animation:`fadeFlash ${screenFlash.dur}ms ease-out forwards`}}/>}
@@ -5039,7 +5138,17 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                   display:"flex",flexDirection:"column",gap:4}}>
                   <div style={{fontSize:7,color:defDist<25?"#f87171":defDist<50?"#f97316":"#4ade80",fontWeight:700,textAlign:"center",marginBottom:2}}>
                     {defDist<25?"⚠️ addosso":defDist<50?"🏃 pressione":"✓ spazio"}</div>
-                  {curSit.actions.map((a,i)=>{
+                  {curSit.text?.includes("RIGORE")?(
+                    <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:4}}>
+                      {["tl","tc","tr","bl","bc","br"].map(dir=>(
+                        <button key={dir} onClick={()=>handleRigore(dir)}
+                          style={{padding:"8px 2px",background:"rgba(0,0,0,0.6)",border:"1px solid rgba(255,255,255,0.2)",borderRadius:7,color:"#fff",cursor:"pointer",fontFamily:"inherit",display:"flex",flexDirection:"column",alignItems:"center",gap:2,touchAction:"manipulation"}}>
+                          <span style={{fontSize:14}}>{RIGORE_ARROWS[dir]}</span>
+                          <span style={{fontSize:7,color:"rgba(255,255,255,0.5)"}}>{RIGORE_LABELS[dir]}</span>
+                        </button>
+                      ))}
+                    </div>
+                  ):curSit.actions.map((a,i)=>{
                     const defPenalty=defDist<25?15:defDist<50?8:0;
                     const rate=Math.max(5,succRate(a,player.stats,pPos.x,oppPrestige)-defPenalty);
                     const rc=rate>70?"#4ade80":rate>50?"#f59e0b":"#f87171";
@@ -5134,7 +5243,20 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                     <strong style={{color:"#f59e0b"}}>1 · 2 · 3</strong> &nbsp;|&nbsp; ←→ Enter
                   </div>
                   <div style={{display:"flex",flexDirection:"column",gap:5}}>
-                    {curSit.actions.map((a,i)=>{
+                    {curSit.text?.includes("RIGORE")?(
+                      <div>
+                        <div style={{fontSize:10,color:"rgba(255,255,255,0.45)",textAlign:"center",marginBottom:8,fontStyle:"italic"}}>🤫 Silenzio. Solo tu e il portiere.</div>
+                        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:5}}>
+                          {["tl","tc","tr","bl","bc","br"].map(dir=>(
+                            <button key={dir} onClick={()=>handleRigore(dir)}
+                              style={{padding:"10px 4px",background:"rgba(0,0,0,0.6)",border:"1px solid rgba(255,255,255,0.18)",borderRadius:8,color:"#fff",cursor:"pointer",fontFamily:"inherit",display:"flex",flexDirection:"column",alignItems:"center",gap:3}}>
+                              <span style={{fontSize:16}}>{RIGORE_ARROWS[dir]}</span>
+                              <span style={{fontSize:8,color:"rgba(255,255,255,0.5)"}}>{RIGORE_LABELS[dir]}</span>
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    ):(curSit.actions||[]).map((a,i)=>{
                       // Defender proximity reduces success rate
                       const defPenalty=defDist<25?15:defDist<50?8:0;
                       const rate=Math.max(5,succRate(a,player.stats,pPos.x,oppPrestige)-defPenalty);
@@ -5189,6 +5311,12 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                 </div>
               </div>
 
+              {/* Heat map toggle */}
+              <div style={{padding:"4px 10px",borderBottom:"1px solid rgba(255,255,255,0.06)"}}>
+                <button onClick={()=>setShowHeatMap(v=>!v)} style={{width:"100%",padding:"4px 8px",borderRadius:6,border:`1px solid ${showHeatMap?"rgba(251,146,60,0.5)":"rgba(255,255,255,0.1)"}`,background:showHeatMap?"rgba(251,146,60,0.12)":"transparent",cursor:"pointer",fontFamily:"inherit",fontSize:10,color:showHeatMap?"#fb923c":"rgba(255,255,255,0.35)",display:"flex",alignItems:"center",justifyContent:"center",gap:5}}>
+                  🌡️ {showHeatMap?"Nascondi heatmap":"Mostra heatmap"}
+                </button>
+              </div>
               {/* Live commentary feed — hidden on mobile overlay */}
               <div style={{flex:1,padding:"6px 10px",overflowY:"auto",minHeight:0,display:isNarrow?"none":"block"}}>
                 <div style={{fontSize:7,color:"rgba(255,255,255,0.3)",fontWeight:700,letterSpacing:1,textTransform:"uppercase",marginBottom:4}}>📻 CRONACA</div>
