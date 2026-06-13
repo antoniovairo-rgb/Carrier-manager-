@@ -962,7 +962,7 @@ const NEWSPAPERS=[
   {id:"lastampa",  name:"La Stampa Sport",       short:"La Stampa",  color:"#16a34a",e:"🗞️",tone:"analitico"},
   {id:"skysport",  name:"Sky Sport 24",          short:"Sky Sport",  color:"#0099d6",e:"📡",tone:"diretto"},
 ];
-const GAME_VERSION="2.8.0"; // Sprint 18 — rehab settimane infortunio, no spoiler intervista
+const GAME_VERSION="2.9.0"; // Sprint 19 — biografia auto, match del cuore, milestone popup
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -7197,6 +7197,50 @@ function CareerEndScreen({retData,onNewGame}){
 /* ========================================
    CAREER APP  (req #9,#10,#12,#13,#14)
 ======================================== */
+const CAREER_MILESTONES=[
+  {id:"g10",check:p=>(p.totalGoals||0)>=10,txt:"⚽ 10 gol in carriera raggiunti!",color:"#16a34a"},
+  {id:"g25",check:p=>(p.totalGoals||0)>=25,txt:"🔥 25 gol in carriera! Bomber in ascesa.",color:"#f59e0b"},
+  {id:"g50",check:p=>(p.totalGoals||0)>=50,txt:"💥 CINQUANTA GOL! Leggenda nascente.",color:"#ef4444"},
+  {id:"g100",check:p=>(p.totalGoals||0)>=100,txt:"👑 CENTO GOL! Sei nella storia del calcio.",color:"#7c3aed"},
+  {id:"m25",check:p=>(p.totalMatches||0)>=25,txt:"👟 25 presenze in carriera!",color:"#0891b2"},
+  {id:"m50",check:p=>(p.totalMatches||0)>=50,txt:"⚡ 50 partite da professionista!",color:"#0891b2"},
+  {id:"m100",check:p=>(p.totalMatches||0)>=100,txt:"💎 100 PRESENZE! Una carriera vera.",color:"#7c3aed"},
+  {id:"ovr75",check:p=>(p.ovr||60)>=75,txt:"📈 OVR 75 — Giocatore di livello!",color:"#059669"},
+  {id:"ovr80",check:p=>(p.ovr||60)>=80,txt:"🌟 OVR 80 — TOP PLAYER!",color:"#d97706"},
+  {id:"ovr90",check:p=>(p.ovr||60)>=90,txt:"✨ OVR 90 — FUORICLASSE assoluto!",color:"#7c3aed"},
+];
+const generateBio=(p)=>{
+  const name=p.name||"Il giocatore";
+  const nation=p.nation||"Italia";
+  const age=p.age||18;
+  const tg=p.totalGoals||0;
+  const tm=p.totalMatches||0;
+  const seasons=(p.season||1)-1;
+  const club=p.club?.n||p.club?.name||"–";
+  const trophies=(p.trophies||[]).length;
+  const ovr=p.ovr||60;
+  const isPro=p.proStatus==="pro";
+  let lines=[];
+  if(seasons===0||tm===0){
+    lines.push(`${name} è un giovane calciatore ${nation} di ${age} anni che sta muovendo i suoi primi passi nel calcio professionistico.`);
+  } else if(tg>=100){
+    lines.push(`${name}, ${age} anni, ${nation}. Cento gol in carriera parlano da soli: è uno degli attaccanti più prolifici del suo campionato.`);
+  } else if(tg>=50){
+    lines.push(`${name} ha scritto con i gol le pagine più belle della sua storia: ${tg} reti in ${tm} presenze, un nome che i difensori temono.`);
+  } else if(tg>=20){
+    lines.push(`${name}, ${age} anni, ${nation}. Con ${tg} gol in ${tm} presenze si è già guadagnato un posto nel panorama calcistico.`);
+  } else {
+    lines.push(`${name} è un calciatore ${nation} di ${age} anni. Con ${tm} presenze alle spalle sta costruendo la sua storia nel calcio.`);
+  }
+  if(trophies>=3){lines.push(`Ha conquistato ${trophies} trofei, diventando un simbolo di vittoria per i club in cui ha militato.`);}
+  else if(trophies===1){lines.push(`Ha già alzato il primo trofeo in carriera — sa cosa significa vincere.`);}
+  else if(isPro&&seasons>1){lines.push(`Attualmente con il ${club}, è ancora a caccia del primo grande titolo.`);}
+  if(ovr>=90){lines.push(`OVR ${ovr}: un fuoriclasse assoluto.`);}
+  else if(ovr>=80){lines.push(`OVR ${ovr}: tra i migliori in circolazione.`);}
+  else if(ovr>=70){lines.push(`OVR ${ovr}: giocatore solido e affidabile.`);}
+  else{lines.push(`OVR ${ovr}: ampi margini di crescita davanti a sé.`);}
+  return lines.join(" ");
+};
 function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
   const[player,setPlayer]=useState(init);
   const[tab,setTab]=useState("dashboard");
@@ -7270,6 +7314,11 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
       newP={...newP,records:{topSeasonGoals:0,topSeasonAssists:0,topOvr:newP.ovr||60}};
       changed=true;
     }
+    if(!('milestones' in newP)){
+      // Pre-populate already-reached milestones to avoid notification spam on old saves
+      newP={...newP,milestones:CAREER_MILESTONES.filter(m=>m.check(newP)).map(m=>m.id)};
+      changed=true;
+    }
     if(changed){setPlayer(newP);}
   },[]);// eslint-disable-line
   const[notif,setNotif]=useState(null);
@@ -7286,6 +7335,15 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
   const[interviewFeedback,setInterviewFeedback]=useState(null); // {tone, label, ef} shown briefly
 
   const notify=(msg,color=TH.primary)=>{setNotif({msg,color});setTimeout(()=>setNotif(null),2800);};
+
+  // Sprint 19 — OVR milestone check (separate useEffect to avoid computing OVR outside setPlayer)
+  useEffect(()=>{
+    if(!player.ovr||!player.milestones)return;
+    const ovrMs=CAREER_MILESTONES.filter(m=>m.id.startsWith("ovr")&&!player.milestones.includes(m.id)&&m.check(player));
+    if(ovrMs.length===0)return;
+    setPlayer(p=>({...p,milestones:[...(p.milestones||[]),...ovrMs.map(m=>m.id)]}));
+    ovrMs.forEach((m,i)=>setTimeout(()=>setNotif({msg:m.txt,color:m.color}),400+i*2200));
+  },[player.ovr]);// eslint-disable-line
 
   // Sprint 15 — apply chosen interview answer to player state
   const applyInterviewAnswer=(ans)=>{
@@ -7494,6 +7552,11 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
     const newInjured=!player.injured&&((postFatigue>82&&injRoll<0.07)||(postFatigue>68&&injRoll<0.03));
     const injuryWeeks=newInjured?(postFatigue>82?rng(2,4):1):0;
     const injuryType=newInjured?(injuryWeeks===1?"contusione":injuryWeeks===2?"stiramento":injuryWeeks===3?"distorsione":"osseo"):null;
+    // Sprint 19 — milestone check (pre-compute before setState so we know which ones just triggered)
+    const prevMilestones=player.milestones||[];
+    const _nextState={...player,totalGoals:(player.totalGoals||0)+result.goals,totalMatches:(player.totalMatches||0)+1};
+    const triggeredMilestones=CAREER_MILESTONES.filter(m=>!m.id.startsWith("ovr")&&!prevMilestones.includes(m.id)&&m.check(_nextState));
+    const newMilestoneIds=triggeredMilestones.map(m=>m.id);
     // Generate press analysis async (non-blocking)
     generatePressAnalysis(result,{name:player.name,club:player.club?.n||player.club?.name||"–",goals:result.goals,assists:result.assists,rating:result.rating,oppPrestige:player.standings?undefined:(result.oppPrestige||65),homeRoster:result.homeRoster||[]},{archetype:player.archetype,records:player.records,goldenBoys:player.goldenBoys,matchHistory:player.matchHistory,season:player.season,age:player.age}).then(press=>{
       setLastPressReport(press);
@@ -7521,7 +7584,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
       const newOvr=calcOvr(ns);
       const moD=result.won?6:result.drew?2:-4;
       const logE=`⚽ vs ${result.opponent} (${result.homeScore}-${result.awayScore}) | ${result.goals}⚽ ${result.assists}🎯 | ${result.rating}★`;
-      const newHistory=[...(p.matchHistory||[]),{week:p.week||1,opponent:result.opponent,oppAbbr:result.oppAbbr,oppCol:result.oppCol,homeScore:result.homeScore,awayScore:result.awayScore,goals:result.goals,assists:result.assists,rating:result.rating,won:result.won,drew:result.drew}].slice(-200);
+      const newHistory=[...(p.matchHistory||[]),{season:p.season||1,week:p.week||1,opponent:result.opponent,oppAbbr:result.oppAbbr,oppCol:result.oppCol,homeScore:result.homeScore,awayScore:result.awayScore,goals:result.goals,assists:result.assists,rating:result.rating,won:result.won,drew:result.drew}].slice(-200);
       const clubId=p.club?.id||p.club?.n;
       const newStandings=updateStandings(p.standings||initStandings(getLeagueClubs(p)),clubId,result,p.clubPrestigeShifts||{});
       const newCal=(p.calendar||[]).map(md=>md.week===(p.week||1)&&!md.played?{...md,played:true,result:{homeScore:result.homeScore,awayScore:result.awayScore,won:result.won,drew:result.drew}}:md);
@@ -7529,10 +7592,11 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
       const baseAiData=p.aiData||{lastOpponentTactic:null,scoutReports:{},pressReports:{}};
       const newAiData={...baseAiData,lastOpponentTactic:result.oppTactic?{...result.oppTactic,week:p.week||1}:baseAiData.lastOpponentTactic,scoutReports:result.scoutReport?{...baseAiData.scoutReports,[matchdayId]:result.scoutReport}:baseAiData.scoutReports};
       const formD=result.won?8:result.drew?2:-5;
-      return{...p,stats:ns,ovr:newOvr,goals:p.goals+result.goals,assists:p.assists+result.assists,matches:p.matches+1,totalGoals:p.totalGoals+result.goals,totalAssists:p.totalAssists+result.assists,totalMatches:p.totalMatches+1,morale:clamp(p.morale+moD,0,100),form:clamp((p.form||70)+formD,30,95),fatigue:postFatigue,...(newInjured?{injured:true,injuryWeeks,injuryType}:{}),week:(p.week||1)+1,weekLived:false,log:[logE,...(p.log||[])].slice(0,60),matchHistory:newHistory,standings:newStandings,calendar:newCal,aiData:newAiData};
+      return{...p,stats:ns,ovr:newOvr,goals:p.goals+result.goals,assists:p.assists+result.assists,matches:p.matches+1,totalGoals:p.totalGoals+result.goals,totalAssists:p.totalAssists+result.assists,totalMatches:p.totalMatches+1,morale:clamp(p.morale+moD,0,100),form:clamp((p.form||70)+formD,30,95),fatigue:postFatigue,...(newInjured?{injured:true,injuryWeeks,injuryType}:{}),week:(p.week||1)+1,weekLived:false,log:[logE,...(p.log||[])].slice(0,60),matchHistory:newHistory,standings:newStandings,calendar:newCal,aiData:newAiData,...(newMilestoneIds.length>0?{milestones:[...(p.milestones||[]),...newMilestoneIds]}:{})};
     });
     setScreen("postmatch");setTab("dashboard");
     if(newInjured){const iT=INJURY_TYPES_META[injuryType]||{label:"Infortunio",icon:"🩹"};notify(`${iT.icon} ${iT.label}! Stop: ${injuryWeeks} settiman${injuryWeeks===1?"a":"e"}.`,TH.danger);}
+    triggeredMilestones.forEach((m,i)=>setTimeout(()=>notify(m.txt,m.color),1200+i*2400));
     // Sprint 15: 15% chance post-match interview
     if(Math.random()<0.15){
       const iw=pickInterviewByCtx(player,result);
@@ -8530,6 +8594,40 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
       {/* PROFILE  (req #12 – avatar/colori) */}
       {tab==="profile"&&(
         <div style={{display:"flex",flexDirection:"column",gap:12}}>
+          {/* Sprint 19 — Biografia automatica */}
+          {(()=>{
+            const bio=generateBio(player);
+            return(
+              <Card style={{padding:"14px 16px",background:"linear-gradient(135deg,#0f172a,#1a1f2e)",border:"1px solid rgba(255,255,255,0.08)"}}>
+                <div style={{fontSize:10,color:"rgba(255,255,255,0.4)",textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>📖 Biografia</div>
+                <div style={{fontSize:12,color:"rgba(255,255,255,0.72)",lineHeight:1.75,fontStyle:"italic"}}>"{bio}"</div>
+              </Card>
+            );
+          })()}
+          {/* Sprint 19 — Match del Cuore */}
+          {(()=>{
+            const bm=(player.matchHistory||[]).filter(m=>m.rating!=null&&!m.simulated&&!m.injured).sort((a,b)=>(b.rating||0)-(a.rating||0))[0];
+            if(!bm)return null;
+            const winLabel=bm.won?"✅ Vittoria":bm.drew?"🤝 Pareggio":"❌ Sconfitta";
+            return(
+              <Card style={{padding:"12px 14px"}}>
+                <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:10}}>🌟 Match del Cuore</div>
+                <div style={{display:"flex",alignItems:"center",gap:12}}>
+                  <div style={{fontSize:30,lineHeight:1}}>⭐</div>
+                  <div style={{flex:1}}>
+                    <div style={{fontSize:13,fontWeight:800,color:TH.text}}>vs {bm.opponent}</div>
+                    <div style={{fontSize:12,color:TH.muted,fontWeight:700}}>{bm.homeScore}–{bm.awayScore} · {winLabel}</div>
+                    <div style={{fontSize:10,color:TH.faint,marginTop:2}}>{bm.season?`S.${bm.season} `:""}{`W.${bm.week}`}</div>
+                    <div style={{display:"flex",gap:8,fontSize:11,marginTop:4}}>
+                      {bm.goals>0&&<span style={{color:TH.success,fontWeight:700}}>⚽ {bm.goals} gol</span>}
+                      {bm.assists>0&&<span style={{color:TH.primary,fontWeight:700}}>🎯 {bm.assists} assist</span>}
+                    </div>
+                  </div>
+                  <div style={{fontSize:24,fontWeight:900,color:TH.warning}}>{bm.rating}★</div>
+                </div>
+              </Card>
+            );
+          })()}
           {/* S12.5: Archetype card */}
           {(()=>{const arc=ARCHETYPES.find(a=>a.id===(player.archetype?.id||player.archetype))||ARCHETYPES[0];return(
             <Card style={{padding:"12px 14px",background:"linear-gradient(135deg,#0f172a,#1e293b)",border:"1px solid rgba(255,255,255,0.08)"}}>
