@@ -15,6 +15,8 @@
 @keyframes shrinkBar{from{width:100%}to{width:0%}}
 @keyframes fadeFlash{0%{opacity:1}100%{opacity:0}}
 @keyframes floatUp{0%{opacity:1;transform:translateY(0) scale(1)}60%{opacity:1;transform:translateY(-30px) scale(1.1)}100%{opacity:0;transform:translateY(-60px) scale(0.9)}}
+@keyframes chantPulse{0%{opacity:0;transform:translateY(8px) scale(0.92)}15%{opacity:1;transform:translateY(0) scale(1)}80%{opacity:1;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(-6px) scale(0.95)}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.35}}
 *{box-sizing:border-box;margin:0;padding:0;}html,body{overflow-x:hidden;background:#f0f7ff;-webkit-tap-highlight-color:transparent;}#root{min-height:100vh;}#ld{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:#f0f7ff;flex-direction:column;gap:14px;z-index:9999;font-family:sans-serif;}.sp{width:36px;height:36px;border:3px solid #e2e8f0;border-top:3px solid #2563eb;border-radius:50%;animation:spin .8s linear infinite;}@keyframes spin{to{transform:rotate(360deg)}}</style>
 </head>
 <body>
@@ -928,7 +930,7 @@ const NEWSPAPERS=[
   {id:"lastampa",  name:"La Stampa Sport",       short:"La Stampa",  color:"#16a34a",e:"🗞️",tone:"analitico"},
   {id:"skysport",  name:"Sky Sport 24",          short:"Sky Sport",  color:"#0099d6",e:"📡",tone:"diretto"},
 ];
-const GAME_VERSION="2.5.1"; // fix: idle drift formation-aware
+const GAME_VERSION="2.6.1"; // Sprint 16 — fix HL zoom + idle drift + weather/chant overlay
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -2020,6 +2022,28 @@ const DERBIES={
   "ajax-feye":{name:"De Klassieker",e:"🌷"},"feye-ajax":{name:"De Klassieker",e:"🌷"},
 };
 function isDerby(aId,bId){return DERBIES[`${aId}-${bId}`]||DERBIES[`${bId}-${aId}`]||null;}
+// Sprint 16 — Weather system
+const WEATHER_TYPES=[
+  {id:"sunny",    name:"Soleggiato",     e:"☀️",  pitchFx:null,      ef:{},              w:5},
+  {id:"cloudy",   name:"Nuvoloso",       e:"🌥️",  pitchFx:null,      ef:{},              w:4},
+  {id:"partly",   name:"Parz. nuvoloso", e:"⛅",  pitchFx:null,      ef:{},              w:3},
+  {id:"rain",     name:"Pioggia",        e:"🌧️",  pitchFx:"rain",    ef:{pass:-5,spd:-3},w:3},
+  {id:"storm",    name:"Temporale",      e:"⛈️",  pitchFx:"storm",   ef:{pass:-10,spd:-6,tiro:-5},w:1},
+  {id:"snow",     name:"Nevicata",       e:"❄️",  pitchFx:"snow",    ef:{pass:-8,spd:-8},w:1},
+  {id:"fog",      name:"Nebbia",         e:"🌫️",  pitchFx:"fog",     ef:{},              w:1},
+  {id:"wind",     name:"Vento forte",    e:"💨",  pitchFx:"wind",    ef:{tiro:-6},       w:2},
+];
+// Sprint 16 — Crowd chants
+const CROWD_CHANTS={
+  goal:["GOOOOOL! 🎉","SÌ SÌ SÌ!!","FANTASTICO!","CHE GOL!!! ⭐","INCREDIBILEEE!"],
+  near_miss:["Ohhhhh! 😱","Che peccato!","QUASIIII!!","Nooo!!"],
+  save:["MIRACOLO! 🧤","Che parata!","PORTIEROOOO!","Strepitoso!"],
+  pressure:["Dai dai daiii! 💪","FORZA FORZA!","Spingiii! 🔥","Alè alè alè!","Non mollare!"],
+  foul:["RIGORE!! 😤","Arbitro venduto!","Espulsioneee!","Vergogna!"],
+  home:["Siamo noi campioni! 🏆","[CLUB]! [CLUB]! [CLUB]!","Forza [CLUB]!","Alé [CLUB] alé! ⚽"],
+  half:["Intervallo!","Prima metà combattuta!","Secondo tempo più forte!"],
+  danger:["Difesa! Difesa! 🛡️","Attenti ragazzi!","TIENITELA!","Non passano!"],
+};
 const SLOT_KEYS=["cpm-v3","cpm-v3-s2","cpm-v3-s3"]; // slot 0 backward-compatible
 const storage={
   save:async(d,slot=0)=>{
@@ -2704,7 +2728,7 @@ function colorCharGLB(model,jerHex){
 ===================================================== */
 const PC_PW=360,PC_PH=580,PC_FX=30,PC_FY=40,PC_FW=300,PC_FH=480;
 const PC_FCX=PC_FX+PC_FW/2,PC_FCY=PC_FY+PC_FH/2;
-function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,onWalkoutDone,avatarId,actionZoom,allPlayers,homeClub,ballX,ballY,waveEvent,driftTargets,timeOfDay,attendance,actionEffect}){
+function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,onWalkoutDone,avatarId,actionZoom,allPlayers,homeClub,ballX,ballY,waveEvent,driftTargets,timeOfDay,attendance,actionEffect,weather}){
   homeCol=homeCol||"#22c55e";oppCol=oppCol||"#ef4444";opponents=opponents||[];
   matchPhase=matchPhase||"match";actionZoom=actionZoom||false;allPlayers=allPlayers||[];
   const canvasRef=useRef(null);
@@ -2717,8 +2741,8 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
     livePos:[],fogPhase:0,photoFlashT:0,
     netBulgeTop:0,netBulgeBot:0
   });
-  const propsRef=useRef({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,onWalkoutDone,avatarId,actionZoom,allPlayers,homeClub,ballX:ballX||50,ballY:ballY||50,waveEvent,driftTargets,timeOfDay:timeOfDay||"night",attendance:attendance||500});
-  useEffect(()=>{propsRef.current={playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,onWalkoutDone,avatarId,actionZoom,allPlayers,homeClub,ballX:ballX||50,ballY:ballY||50,waveEvent,driftTargets,timeOfDay:timeOfDay||"night",attendance:attendance||500};},[playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,onWalkoutDone,avatarId,actionZoom,allPlayers,homeClub,ballX,ballY,waveEvent,driftTargets,timeOfDay,attendance]);
+  const propsRef=useRef({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,onWalkoutDone,avatarId,actionZoom,allPlayers,homeClub,ballX:ballX||50,ballY:ballY||50,waveEvent,driftTargets,timeOfDay:timeOfDay||"night",attendance:attendance||500,weather});
+  useEffect(()=>{propsRef.current={playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,onWalkoutDone,avatarId,actionZoom,allPlayers,homeClub,ballX:ballX||50,ballY:ballY||50,waveEvent,driftTargets,timeOfDay:timeOfDay||"night",attendance:attendance||500,weather};},[playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,onWalkoutDone,avatarId,actionZoom,allPlayers,homeClub,ballX,ballY,waveEvent,driftTargets,timeOfDay,attendance,weather]);
 
   useEffect(()=>{
     const canvas=canvasRef.current;if(!canvas)return;
@@ -3300,11 +3324,11 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
         // --- Top-down full pitch view with contextual camera zoom ---
         const isHL=["hl_move","hl_choose","hl_result","hl_intro"].includes(p.matchPhase);
         // Zoom scales with zone: area/bordo = tightest, midfield/defence = wider
-        const zoneZooms={area:1.65,bordo:1.50,trequarti:1.32,centro:1.22,difesa:1.18,propria:1.15};
-        const baseHL=zoneZooms[p.zone]||1.22;
+        const zoneZooms={area:1.32,bordo:1.20,trequarti:1.11,centro:1.05,difesa:1.02,propria:1.0};
+        const baseHL=zoneZooms[p.zone]||1.06;
         // Extra boost if result just happened (cinematic freeze)
         const isResult=p.matchPhase==="hl_result";
-        const targetZoom=isHL?(isResult?Math.min(baseHL+0.12,1.80):baseHL):1.0;
+        const targetZoom=isHL?(isResult?Math.min(baseHL+0.06,1.40):baseHL):1.0;
         // Camera follows player tightly in high-zoom zones
         const camLerpFactor=isHL?(p.zone==="area"||p.zone==="bordo"?0.07:0.05):0.06;
         const targetCX=isHL?gx(p.playerY):FCX;
@@ -3335,6 +3359,51 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
               zG.addColorStop(1,"rgba(245,158,11,0)");
               ctx.fillStyle=zG;ctx.fillRect(FX,y1,FW,y2-y1);
             }
+          }
+          // Weather overlay effects (drawn over pitch, under players)
+          const wfx=p.weather?.pitchFx;
+          if(wfx){
+            ctx.save();
+            if(wfx==="rain"||wfx==="storm"){
+              // Wet pitch — subtle blue-grey tint
+              ctx.fillStyle="rgba(80,110,180,0.06)";ctx.fillRect(FX,FY,FW,FH);
+              // Falling rain streaks
+              const drops=wfx==="storm"?55:30;
+              ctx.strokeStyle="rgba(160,190,255,0.35)";ctx.lineWidth=0.7;
+              for(let d=0;d<drops;d++){
+                const seed=(d*997+Math.floor(t/20))%1000;
+                const rx=FX+(seed*7%100)/100*FW;
+                const ry=FY+((seed*13+t*0.4)%FH);
+                const len=wfx==="storm"?18:10;
+                ctx.beginPath();ctx.moveTo(rx,ry);ctx.lineTo(rx-2,ry+len);ctx.stroke();
+              }
+            }else if(wfx==="snow"){
+              ctx.fillStyle="rgba(255,255,255,0.08)";ctx.fillRect(FX,FY,FW,FH);
+              ctx.fillStyle="rgba(230,240,255,0.7)";
+              for(let d=0;d<28;d++){
+                const seed=(d*1013+Math.floor(t/40))%1000;
+                const rx=FX+(seed*11%100)/100*FW;
+                const ry=FY+((seed*17+t*0.12)%FH);
+                ctx.beginPath();ctx.arc(rx,ry,1.1,0,Math.PI*2);ctx.fill();
+              }
+            }else if(wfx==="fog"){
+              // Animated fog gradient
+              const fogAlpha=0.18+Math.sin(t*0.0008)*0.06;
+              const fg=ctx.createRadialGradient(FX+FW/2,FY+FH/2,FH*0.1,FX+FW/2,FY+FH/2,FH*0.8);
+              fg.addColorStop(0,"rgba(180,200,220,0)");
+              fg.addColorStop(0.6,`rgba(180,200,220,${fogAlpha})`);
+              fg.addColorStop(1,`rgba(180,200,220,${fogAlpha+0.1})`);
+              ctx.fillStyle=fg;ctx.fillRect(FX,FY,FW,FH);
+            }else if(wfx==="wind"){
+              // Subtle horizontal streaks
+              ctx.strokeStyle="rgba(200,220,255,0.12)";ctx.lineWidth=0.6;
+              for(let d=0;d<10;d++){
+                const ry=FY+((d*73+t*0.25)%FH);
+                const len=30+d*8;
+                ctx.beginPath();ctx.moveTo(FX,ry);ctx.lineTo(FX+len,ry+1);ctx.stroke();
+              }
+            }
+            ctx.restore();
           }
           // All players with smooth livePos drift
           const allP=p.allPlayers||[];
@@ -4176,7 +4245,7 @@ function FormationView({homeTeam,awayTeam,player,homeRoster,awayRoster,onContinu
 }
 
 /* WALKOUT OVERLAY */
-function WalkoutOverlay({homeTeam,homeRoster,opponent,isHome=true,matchWeek,onDone}){
+function WalkoutOverlay({homeTeam,homeRoster,opponent,isHome=true,matchWeek,onDone,weather}){
   const STEPS=88;
   const [tick,setTick]=useState(0);
   useEffect(()=>{if(tick>=STEPS)return;const t=setTimeout(()=>setTick(n=>n+1),50);return()=>clearTimeout(t);},[tick]);
@@ -4198,20 +4267,21 @@ function WalkoutOverlay({homeTeam,homeRoster,opponent,isHome=true,matchWeek,onDo
       <div style={{position:"absolute",top:0,left:0,right:0,height:3,background:`linear-gradient(90deg,transparent,${col},transparent)`,opacity:0.7}}/>
       <div style={{position:"absolute",bottom:0,left:0,right:0,height:3,background:`linear-gradient(90deg,transparent,${col},transparent)`,opacity:0.4}}/>
       {/* Match info bar */}
-      <div style={{position:"absolute",top:10,left:0,right:0,display:"flex",justifyContent:"center",gap:10,alignItems:"center"}}>
+      <div style={{position:"absolute",top:10,left:0,right:0,display:"flex",justifyContent:"center",gap:10,alignItems:"center",flexWrap:"wrap",padding:"0 8px"}}>
         <span style={{fontSize:9,color:"rgba(255,255,255,0.4)",letterSpacing:2,textTransform:"uppercase"}}>{isHome?"🏟️ CASA":"✈️ TRASFERTA"}</span>
         {opponent&&<span style={{fontSize:9,color:"rgba(255,255,255,0.25)"}}>vs {opponent?.n||opponent?.name}</span>}
         {matchWeek&&<span style={{fontSize:9,color:"rgba(255,255,255,0.22)"}}>W.{matchWeek}</span>}
+        {weather&&<span style={{fontSize:9,color:"rgba(255,255,255,0.45)",background:"rgba(255,255,255,0.07)",borderRadius:8,padding:"1px 7px"}}>{weather.e} {weather.name}</span>}
       </div>
       {/* Header */}
       <div style={{textAlign:"center",marginBottom:10}}>
         <div style={{fontSize:9,color:"rgba(255,255,255,0.3)",letterSpacing:4,textTransform:"uppercase",marginBottom:4}}>{phase}</div>
         <TeamBadge team={homeTeam} size={36}/>
         <div style={{fontSize:18,fontWeight:900,color:"#fff",marginTop:6,textShadow:`0 0 24px ${col}88`}}>{homeTeam?.n||homeTeam?.name||"Squadra"}</div>
-        <div style={{display:"flex",justifyContent:"center",gap:10,marginTop:4}}>
+        <div style={{display:"flex",justifyContent:"center",gap:10,marginTop:4,flexWrap:"wrap"}}>
           <span style={{fontSize:9,color:"rgba(255,255,255,0.3)"}}>🏟️ {stadiumName}</span>
           <span style={{fontSize:9,color:"rgba(255,255,255,0.3)"}}>👥 {crowdStr}</span>
-        </div>
+          {(()=>{const cap=venueTeam?.p>=90?75000:venueTeam?.p>=75?40000:venueTeam?.p>=60?18000:venueTeam?.p>=45?6000:1500;const pct=Math.min(100,Math.round(crowd/cap*100));const label=pct>=90?"🔥 INFUOCATO":pct>=70?"⚡ BOLLENTE":pct>=45?"📣 CARICO":"😐 SOBRIO";return<span style={{fontSize:9,color:"rgba(255,255,255,0.45)",background:"rgba(255,255,255,0.07)",borderRadius:8,padding:"1px 7px"}}>{label}</span>;})()}</div>
       </div>
       {/* Player list */}
       <div style={{display:"flex",flexDirection:"column",gap:2,width:"100%",maxWidth:280,padding:"0 12px"}}>
@@ -4260,6 +4330,16 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   const [stadium]=useState(()=>pick(STADIUMS));
   // day or night — seeded by week so same match is always same time
   const [timeOfDay]=useState(()=>(player.week||1)%2===0?"night":"day");
+  // Sprint 16 — weather seeded by week + club (winter weeks get bad weather bonus)
+  const [weather]=useState(()=>{
+    const wk=player.week||1;const isWinter=wk<=10||wk>=33;
+    const seed=hashStr((player.club?.id||"x")+wk+(player.season||1));
+    const pool=WEATHER_TYPES.map(wt=>({...wt,w:isWinter&&["rain","storm","snow","fog"].includes(wt.id)?wt.w*3:wt.w}));
+    let tot=pool.reduce((s,e)=>s+e.w,0);let r=(seed%10000)/10000*tot;
+    for(const wt of pool){r-=wt.w;if(r<=0)return wt;}return pool[0];
+  });
+  // Sprint 16 — crowd chant overlay state
+  const [crowdChant,setCrowdChant]=useState(null); // {text,type,key}
   // context-aware realistic attendance
   const [attendance]=useState(()=>calcAttendance(context==="trial"?null:(player.club||opponent),context));
   // responsive layout: narrow = stacked vertically
@@ -4589,6 +4669,14 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           if(ev.ms)setMxStats(s=>({shots:s.shots+(ev.ms.shots||0),oppShots:s.oppShots+(ev.ms.oppShots||0),fouls:s.fouls+(ev.ms.fouls||0),corners:s.corners+(ev.ms.corners||0)}));
           if(ev.pd&&DRIFT_PRESETS[ev.pd])driftTargetsRef.current=DRIFT_PRESETS[ev.pd];
           if(ev.ef==="team_goal"||ev.ef==="opp_goal")setWaveEvent({t:Date.now(),home:ev.ef==="team_goal"});
+          // Sprint 16 — crowd chant triggers
+          const clubShortName=player.club?.n||player.club?.name||"la squadra";
+          const chantFor=(type,dur=2800)=>{const t=pick(CROWD_CHANTS[type]||CROWD_CHANTS.home);setCrowdChant({text:t.replace(/\[CLUB\]/g,clubShortName),type,key:Date.now()});setTimeout(()=>setCrowdChant(null),dur);};
+          if(ev.ef==="team_goal")setTimeout(()=>chantFor("goal",3500),200);
+          else if(ev.ef==="opp_goal")setTimeout(()=>chantFor("danger",2200),200);
+          else if(ev.ms?.shots>0&&Math.random()<0.45)chantFor("near_miss",2000);
+          else if(ev.ms?.fouls>0&&Math.random()<0.5)chantFor("foul",1800);
+          else if(Math.random()<0.04)chantFor("home",2500); // ambient home chant ~every 25s
           // Resolve {H},{H2},{A} name tokens from rosters
           const hAbbr=player.club?.a||player.club?.id?.slice(0,3).toUpperCase()||"HOME";
           const aAbbr=opponent?.a||opponent?.id?.slice(0,3).toUpperCase()||"AWAY";
@@ -4626,24 +4714,24 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
         const dt=driftTargetsRef.current;
         let nx,ny;
         if(dt){
-          // Protagonist follows the team formation: pull toward role-appropriate slot average
+          // Protagonist smoothly tracks role-appropriate formation slots each 500ms tick
           // GK→slot 0, DEF→slots 1-4, MID→slots 5-7, ATT→slots 8-9
           const slots=isGK?[0]:isDef?[1,2,3,4]:isMid?[5,6,7]:[8,9];
           const tgX=slots.reduce((s,i)=>s+(dt[i]?.x||50),0)/slots.length;
           const tgY=slots.reduce((s,i)=>s+(dt[i]?.y||50),0)/slots.length;
-          // 30% pull per tick toward formation centre + small jitter → gradual, coordinated movement
-          nx=clamp(p.x+(tgX-p.x)*0.30+rng(-3,3),3,97);
-          ny=clamp(p.y+(tgY-p.y)*0.12+rng(-4,4),3,97);
+          // 6% pull per 500ms tick — matches canvas livePos lerp speed
+          nx=clamp(p.x+(tgX-p.x)*0.06+rng(-1,1),3,97);
+          ny=clamp(p.y+(tgY-p.y)*0.06+rng(-1.5,1.5),3,97);
         }else{
           // No preset yet — fall back to original role-based ranges
-          if(isGK){nx=clamp(p.x+rng(-2,2),10,24);ny=clamp(p.y+rng(-3,3),35,65);}
-          else if(isDef){nx=clamp(p.x+rng(-3,3),18,38);ny=clamp(p.y+rng(-4,4),15,85);}
-          else if(isMid){nx=clamp(p.x+rng(-4,4),35,65);ny=clamp(p.y+rng(-5,5),15,85);}
-          else{nx=clamp(p.x+rng(-4,4),52,80);ny=clamp(p.y+rng(-5,5),15,85);}
+          if(isGK){nx=clamp(p.x+rng(-1,1),10,24);ny=clamp(p.y+rng(-1.5,1.5),35,65);}
+          else if(isDef){nx=clamp(p.x+rng(-1.5,1.5),18,38);ny=clamp(p.y+rng(-2,2),15,85);}
+          else if(isMid){nx=clamp(p.x+rng(-2,2),35,65);ny=clamp(p.y+rng(-2.5,2.5),15,85);}
+          else{nx=clamp(p.x+rng(-2,2),52,80);ny=clamp(p.y+rng(-2.5,2.5),15,85);}
         }
         return{x:nx,y:ny};
       });
-    },2800);
+    },500);
     return()=>clearInterval(iv);
   },[phase,player.position,paused]);// eslint-disable-line
 
@@ -4695,7 +4783,12 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   const handleAction=useCallback((action)=>{
     if(phase!=="hl_choose")return;
     const defPenalty=defDistRef.current<25?0.15:defDistRef.current<50?0.08:0;
-    const rate=Math.max(0.05,succRate(action,player.stats,pPos.x,oppPrestige)/100-defPenalty);
+    // Sprint 16: weather modifier on success rate
+    const wef=weather?.ef||{};
+    const weatherPenalty=(action.stat==="passaggio"&&wef.pass?(-wef.pass/100):0)+
+                         (action.stat==="tiro"&&wef.tiro?(-wef.tiro/100):0)+
+                         (action.stat==="velocità"&&wef.spd?(-wef.spd/100):0);
+    const rate=Math.max(0.05,succRate(action,player.stats,pPos.x,oppPrestige)/100-defPenalty-weatherPenalty);
     const adapt=adaptiveDifficulty(player);
     const ok=Math.random()<clamp((rate/adapt)+(Math.random()-.5)*.12,0.05,0.72);
     const key=ok?action.rew:action.fail;
@@ -4869,7 +4962,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                 <div style={{padding:"2px 10px",borderRadius:14,fontSize:12,fontWeight:900,background:winning?"rgba(34,197,94,0.18)":losing?"rgba(239,68,68,0.18)":"rgba(255,255,255,0.09)",color:winning?"#4ade80":losing?"#f87171":"#f1f5f9",letterSpacing:.5}}>
                   {phase==="walkout"?"🏃":phase==="ended"?"FT":`${clock}'`}
                 </div>
-                <div style={{fontSize:11}}>{timeOfDay==="day"?"☀️":"🌙"}</div>
+                <div style={{fontSize:11}} title={weather?.name}>{weather?.e||(timeOfDay==="day"?"☀️":"🌙")}</div>
                 {["playing","hl_intro","hl_move","hl_choose","hl_result"].includes(phase)&&(
                   <button onClick={()=>setPaused(v=>!v)} style={{background:"none",border:"none",cursor:"pointer",fontSize:13,padding:"2px 4px",color:"rgba(255,255,255,0.6)",lineHeight:1}} title={paused?"Riprendi (P)":"Pausa (P)"}>
                     {paused?"▶":"⏸"}
@@ -4908,11 +5001,12 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                 actionZoom={false} allPlayers={matchPlayers} homeClub={player.club||opponent}
                 ballX={ballPos.x} ballY={ballPos.y} waveEvent={waveEvent}
                 driftTargets={driftTargetsRef.current} timeOfDay={timeOfDay}
-                attendance={attendance} actionEffect={actionEffect}
+                attendance={attendance} actionEffect={actionEffect} weather={weather}
                 onWalkoutDone={()=>setPhase("playing")}/>
-              {phase==="walkout"&&<WalkoutOverlay homeTeam={player.club||opponent} homeRoster={homeRoster} opponent={opponent} isHome={isMatchHome} matchWeek={player.week} onDone={()=>setPhase("playing")}/>}
+              {phase==="walkout"&&<WalkoutOverlay homeTeam={player.club||opponent} homeRoster={homeRoster} opponent={opponent} isHome={isMatchHome} matchWeek={player.week} onDone={()=>setPhase("playing")} weather={weather}/>}
               {screenFlash&&<div style={{position:"absolute",inset:0,background:screenFlash.col,zIndex:20,pointerEvents:"none",animation:`fadeFlash ${screenFlash.dur}ms ease-out forwards`}}/>}
               {floatGoal&&<div key={floatGoal.key} style={{position:"absolute",top:"30%",left:0,right:0,textAlign:"center",fontSize:22,fontWeight:900,color:floatGoal.col,textShadow:"0 0 24px currentColor",animation:"floatUp 1.4s ease-out forwards",zIndex:21,pointerEvents:"none"}}>{floatGoal.text}</div>}
+              {crowdChant&&<div key={crowdChant.key} style={{position:"absolute",bottom:"10%",left:0,right:0,textAlign:"center",fontSize:15,fontWeight:900,color:crowdChant.type==="goal"?"#4ade80":crowdChant.type==="danger"?"#f87171":crowdChant.type==="foul"?"#fb923c":"#f8fafc",textShadow:"0 2px 14px rgba(0,0,0,0.85)",animation:"chantPulse 2.8s ease-out forwards",zIndex:22,pointerEvents:"none",letterSpacing:1,textTransform:"uppercase",padding:"0 12px"}}>{crowdChant.text}</div>}
               {/* Pause overlay */}
               {paused&&["playing","hl_intro","hl_move","hl_choose","hl_result"].includes(phase)&&(
                 <div style={{position:"absolute",inset:0,background:"rgba(5,8,20,0.78)",backdropFilter:"blur(4px)",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",zIndex:30,cursor:"pointer"}} onClick={()=>setPaused(false)}>
