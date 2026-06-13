@@ -1113,7 +1113,7 @@ const NEWSPAPERS=[
   {id:"lastampa",  name:"La Stampa Sport",       short:"La Stampa",  color:"#16a34a",e:"🗞️",tone:"analitico"},
   {id:"skysport",  name:"Sky Sport 24",          short:"Sky Sport",  color:"#0099d6",e:"📡",tone:"diretto"},
 ];
-const GAME_VERSION="3.3.1"; // Sprint 22c — rinomina termini tecnici UI: OVR→Livello, Archetipo→Stile di gioco, Golden Boy→Miglior Giovane, Prestige→Prestigio
+const GAME_VERSION="3.4.0"; // Sprint 23 — Il Mondo che Ricorda: matchWeight, BIG MATCH banner, Rivale NPC, Club dei Sogni, worldMemory, scout memory
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -2205,6 +2205,50 @@ const DERBIES={
   "ajax-feye":{name:"De Klassieker",e:"🌷"},"feye-ajax":{name:"De Klassieker",e:"🌷"},
 };
 function isDerby(aId,bId){return DERBIES[`${aId}-${bId}`]||DERBIES[`${bId}-${aId}`]||null;}
+
+/* ========================================
+   MATCH WEIGHT — importance of the match (1-10)
+======================================== */
+function calcMatchWeight(player,opponentId,standings,week){
+  let w=1;
+  if(isDerby(player.club?.id,opponentId))w+=3;
+  // Ex-club memory
+  const isExClub=(player.history||[]).some(h=>h.clubId===opponentId||h.club===opponentId)||(player.worldMemory||[]).some(m=>m.type==="ex_club"&&m.clubId===opponentId);
+  if(isExClub)w+=2;
+  if(standings&&standings.length>0){
+    const sorted=[...standings].sort((a,b)=>b.pts-a.pts||(b.gd||0)-(a.gd||0));
+    const ci=player.club?.id||player.club?.n;
+    const myRank=sorted.findIndex(t=>t.id===ci||(t.n||t.name)===(player.club?.n||player.club?.name))+1;
+    const total=sorted.length;
+    if(myRank>0){
+      const topPts=sorted[0]?.pts||0;const myPts=sorted[myRank-1]?.pts||0;
+      if(week>=28&&myRank<=4&&topPts-myPts<=9)w+=3;   // title race
+      if(week>=25&&myRank>=total-2)w+=2;               // relegation
+      const oppRank=sorted.findIndex(t=>t.id===opponentId||(t.n||t.name)===opponentId)+1;
+      if(myRank<=3&&oppRank>=1&&oppRank<=3)w+=1;       // top vs top
+    }
+  }
+  if(week>=37)w+=3;else if(week>=35)w+=1;             // season finale
+  if(player.rival&&(player.rival.club?.id===opponentId||player.rival.club?.n===opponentId))w+=2;
+  return Math.min(10,w);
+}
+
+/* ========================================
+   RIVAL NPC — parallel career antagonist
+======================================== */
+const RIVAL_FIRST=["Marco","Luca","Federico","Alessandro","Matteo","Lorenzo","Davide","Simone","Francesco","Roberto","Esteban","Pablo","Carlos","Diego","João","Bruno","Antoine","Théo","Kylian","Florian","Leon","Kai","Harry","Mason","Marcus","Phil","Bukayo","Erling","Vinicius","Pedri"];
+const RIVAL_LAST=["Rossi","Ferrari","Conti","Bianchi","Romano","Ricci","Greco","Russo","Moretti","Gallo","García","López","Martínez","Fernández","González","Silva","Santos","Costa","Dupont","Martin","Bernard","Müller","Schmidt","Bauer","Wolf","Smith","Jones","Williams","Brown","Taylor","Saka","Bellingham"];
+function generateRival(player){
+  const fn=pick(RIVAL_FIRST),ln=pick(RIVAL_LAST);
+  const age=clamp((player.age||18)+rng(-1,3),17,24);
+  const ovr=clamp((player.ovr||65)+rng(-4,6),55,88);
+  const lc=getLeagueClubs(player).filter(c=>c.id!==player.club?.id&&c.n!==player.club?.n);
+  const club=lc.length>0?pick(lc.slice(0,Math.min(8,lc.length))):null;
+  return{name:`${fn} ${ln}`,nation:player.nation||"Italia",age,ovr,
+    club:club?{n:club.n,id:club.id,p:club.p,lg:club.lg,c:club.c,nat:club.nat}:null,
+    goals:rng(4,14),totalGoals:rng(6,22),assists:rng(2,8),trophies:0,seasons:1,
+    relationship:"sconosciuto"};
+}
 // Sprint 16 — Weather system
 const WEATHER_TYPES=[
   {id:"sunny",    name:"Soleggiato",     e:"☀️",  pitchFx:null,      ef:{},              w:5},
@@ -2366,7 +2410,7 @@ async function generateHighlightCommentary(situation,action,result,playerStats,z
   return{commentary:result.ok?"Bella giocata!":"Palla persa.",reaction:result.ok?"✅":"❌"};
 }
 
-function generateLocalScoutReport(opponentClub,playerStats,recentMatches){
+function generateLocalScoutReport(opponentClub,playerStats,recentMatches,player){
   const p=opponentClub.p||65;
   const name=opponentClub.n||"Avversario";
   const lg=opponentClub.lg||"";
@@ -2374,6 +2418,13 @@ function generateLocalScoutReport(opponentClub,playerStats,recentMatches){
   // Previous encounters vs this opponent
   const prevH2H=(recentMatches||[]).filter(m=>m.opponent===name);
   const h2hW=prevH2H.filter(m=>m.won).length,h2hD=prevH2H.filter(m=>m.drew).length,h2hL=prevH2H.length-h2hW-h2hD;
+  // worldMemory context
+  const wm=player?.worldMemory||[];
+  const memExClub=wm.find(m=>m.type==="ex_club"&&(m.clubId===opponentClub.id||m.club===name));
+  const memRecord=wm.find(m=>m.type==="record_club"&&(m.clubId===opponentClub.id||m.club===name));
+  const memNote=memExClub?`⚠️ Attenzione: hai già giocato per il ${name} (S.${memExClub.season}). Questa è una gara speciale.`
+    :memRecord?`🏅 Hai segnato il record di gol con il ${name} (${memRecord.value} in S.${memRecord.season}).`
+    :null;
   const h2hNote=prevH2H.length>0?`${h2hW}V-${h2hD}P-${h2hL}S nei precedenti`:"Prima volta vs questa squadra";
   // Weaknesses pool stratified by prestige
   const wkLow=[
@@ -2416,11 +2467,11 @@ function generateLocalScoutReport(opponentClub,playerStats,recentMatches){
   const recSuffix=p>=80?`Il ${name} è una squadra di alto livello: servirà la partita perfetta. ${h2hNote}.`
     :p>=60?`Con un approccio compatto in fase difensiva e ripartenze veloci puoi impensierire il ${name}. ${h2hNote}.`
     :`Il ${name} è alla tua portata — mantieni la concentrazione per tutti i 90 minuti. ${h2hNote}.`;
-  return{weaknesses:shuffledW.slice(0,2),strengths:shuffledS.slice(0,2),recommendation:recBase+recSuffix,difficulty,league:lg,h2h:prevH2H.length>0?{w:h2hW,d:h2hD,l:h2hL,total:prevH2H.length}:null};
+  return{weaknesses:shuffledW.slice(0,2),strengths:shuffledS.slice(0,2),recommendation:recBase+recSuffix,difficulty,league:lg,h2h:prevH2H.length>0?{w:h2hW,d:h2hD,l:h2hL,total:prevH2H.length}:null,memNote:memNote||null};
 }
 async function generateScoutReport(opponentClub,playerStats,recentMatches){
   if(_aiMockMode){
-    return generateLocalScoutReport(opponentClub,playerStats,recentMatches);
+    return generateLocalScoutReport(opponentClub,playerStats,recentMatches,arguments[3]);
   }
   const last5=(recentMatches||[]).slice(-5).map(m=>`${m.opponent} ${m.homeScore}-${m.awayScore} (${m.won?"V":m.drew?"P":"S"})`).join(", ")||"Nessuna partita";
   const sys="Sei uno scout calcistico esperto. Analizza tatticamente con precisione. Rispondi SOLO con JSON valido.";
@@ -2429,7 +2480,7 @@ async function generateScoutReport(opponentClub,playerStats,recentMatches){
   if(res.success&&typeof res.data==="object"){
     return{weaknesses:res.data.weaknesses||["Da analizzare"],strengths:res.data.strengths||["Da analizzare"],recommendation:res.data.recommendation||"Preparati al meglio.",difficulty:clamp(Number(res.data.difficulty)||50,10,99)};
   }
-  return generateLocalScoutReport(opponentClub,playerStats,recentMatches);
+  return generateLocalScoutReport(opponentClub,playerStats,recentMatches,arguments[3]);
 }
 
 // ---- LOCAL PRESS ANALYSIS (always available, no API needed) ----
@@ -4216,6 +4267,12 @@ function ScoutReportScreen({report,opponent,onClose,loading}){
           </div>
         </div>
       </Card>
+      {/* worldMemory note — storia con questa squadra */}
+      {report.memNote&&(
+        <Card bg="#fef3c7" border="#fde68a" style={{padding:"10px 14px"}}>
+          <div style={{fontSize:11,color:"#92400e",fontWeight:700,lineHeight:1.5}}>{report.memNote}</div>
+        </Card>
+      )}
       {/* H2H if available */}
       {report.h2h&&(
         <Card style={{padding:"10px 14px"}}>
@@ -4389,7 +4446,7 @@ function AIDecisionOverlay({tactic,loading}){
 /* ========================================
    MATCHDAY CARD  (req #10 – calendario)
 ======================================== */
-function MatchdayCard({homeTeam,awayTeam,stadium,attendance,league,onContinue,onSkip,scoutReport,scoutLoading,onShowScout}){
+function MatchdayCard({homeTeam,awayTeam,stadium,attendance,league,onContinue,onSkip,scoutReport,scoutLoading,onShowScout,matchWeight=1,matchContext}){
   const weather=pick(["☀️ Sereno","🌥️ Nuvoloso","🌧️ Pioggia leggera","⛅ Parzialmente nuvoloso"]);
   const time=pick(["15:00","17:30","18:00","20:45","19:00"]);
   useEffect(()=>{
@@ -4397,8 +4454,16 @@ function MatchdayCard({homeTeam,awayTeam,stadium,attendance,league,onContinue,on
     window.addEventListener("keydown",h);return()=>window.removeEventListener("keydown",h);
   },[onContinue]);
   const leagueName=league||(homeTeam?.isU18?"Primavera U18":(homeTeam?.lg||"Campionato"));
+  const isBigMatch=matchWeight>=6;
+  const isEpic=matchWeight>=8;
   return(
     <div style={{width:"100%"}}>
+      {isBigMatch&&(
+        <div style={{marginBottom:12,padding:"10px 14px",borderRadius:12,background:isEpic?"linear-gradient(135deg,#7c3aed,#2563eb)":"linear-gradient(135deg,#dc2626,#ea580c)",border:"none",textAlign:"center",boxShadow:"0 4px 24px rgba(0,0,0,0.25)"}}>
+          <div style={{fontSize:isEpic?15:13,fontWeight:900,color:"#fff",letterSpacing:1}}>{isEpic?"🔥 PARTITA EPICA":"⚡ BIG MATCH"}</div>
+          {matchContext&&<div style={{fontSize:10,color:"rgba(255,255,255,0.8)",marginTop:3}}>{matchContext}</div>}
+        </div>
+      )}
       <div style={{textAlign:"center",marginBottom:20}}>
         <div style={{fontSize:10,color:TH.muted,letterSpacing:3,textTransform:"uppercase",marginBottom:8}}>{leagueName}</div>
         <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:20}}>
@@ -4748,7 +4813,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   useEffect(()=>{
     if(context==="trial")return;
     setScoutLoading(true);
-    generateScoutReport(opponent,player.stats,player.matchHistory||[]).then(r=>{setScoutReport(r);setScoutLoading(false);});
+    generateScoutReport(opponent,player.stats,player.matchHistory||[],player).then(r=>{setScoutReport(r);setScoutLoading(false);});
   },[]);// eslint-disable-line
 
   // Async handler: load opponent tactic then go to formations
@@ -5323,7 +5388,14 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
 
   return(
     <div style={{width:"100%"}}>
-      {phase==="matchday"&&!showScout&&<MatchdayCard homeTeam={player.club||opponent} awayTeam={opponent} stadium={stadium} attendance={attendance} league={player.club?.lg||(player.club?.isU18||context==="trial"?"Primavera U18":null)} onContinue={handleGoToFormations} onSkip={()=>setPhase("playing")} scoutReport={scoutReport} scoutLoading={scoutLoading} onShowScout={()=>setShowScout(true)}/>}
+      {phase==="matchday"&&!showScout&&(()=>{
+        const mw=context==="trial"?1:calcMatchWeight(player,opponent?.id||opponent?.n,player.standings||[],player.week||1);
+        const drby=isDerby(player.club?.id,opponent?.id);
+        const isExCl=(player.history||[]).some(h=>h.club===opponent?.n||h.clubId===opponent?.id)||(player.worldMemory||[]).some(m=>m.type==="ex_club"&&m.clubId===opponent?.id);
+        const rivalMatch=player.rival&&(player.rival.club?.id===opponent?.id||player.rival.club?.n===opponent?.n);
+        const mCtx=drby?`${drby.e} ${drby.name}`:isExCl?"🏠 Ritorno al passato — ex squadra":rivalMatch?`🆚 La squadra di ${player.rival?.name||"il tuo rivale"}`:(mw>=8)?"Partita decisiva per il titolo":(mw>=6)?"Scontro diretto in classifica":null;
+        return<MatchdayCard homeTeam={player.club||opponent} awayTeam={opponent} stadium={stadium} attendance={attendance} league={player.club?.lg||(player.club?.isU18||context==="trial"?"Primavera U18":null)} onContinue={handleGoToFormations} onSkip={()=>setPhase("playing")} scoutReport={scoutReport} scoutLoading={scoutLoading} onShowScout={()=>setShowScout(true)} matchWeight={mw} matchContext={mCtx}/>;
+      })()}
       {phase==="matchday"&&showScout&&<ScoutReportScreen report={scoutReport} opponent={opponent} loading={scoutLoading} onClose={()=>setShowScout(false)}/>}
       {phase==="formations"&&<FormationView homeTeam={player.club||opponent} awayTeam={opponent} player={player} homeRoster={homeRoster} awayRoster={awayRoster} onContinue={()=>setPhase("walkout")} onSkip={()=>setPhase("playing")} oppTactic={oppTactic} oppTacticLoading={oppTacticLoading} homeKitCol={homeKitCol} awayKitCol={awayKitCol}/>}
 
@@ -6065,6 +6137,7 @@ function CreateScreen({onCreate,legacyBonus,onClearLegacy}){
   const[name,setName]=useState(""),[nation,setNation]=useState("Italia"),[avatarId,setAvatarId]=useState(0),[page,setPage]=useState(0);
   const[archetypeId,setArchetypeId]=useState("bomber");
   const[challengeId,setChallengeId]=useState(null);
+  const[dreamClub,setDreamClub]=useState(null);
   const inp={background:"#f8fafc",border:"1px solid "+TH.cardBorder,borderRadius:10,color:TH.text,padding:"10px 14px",fontFamily:"inherit",fontSize:14,width:"100%",boxSizing:"border-box"};
   const lbl={display:"block",fontSize:11,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:6};
   const go=()=>{
@@ -6075,7 +6148,7 @@ function CreateScreen({onCreate,legacyBonus,onClearLegacy}){
     const age=17;
     const challenge=challengeId?CHALLENGES.find(c=>c.id===challengeId):null;
     if(onClearLegacy)onClearLegacy();
-    onCreate({name:name.trim(),nation,avatarId,archetype:arc,position:"Attaccante",age,stats,ovr:calcOvr(stats),club:null,trialsDone:0,trialStats:[],season:1,week:1,weekLived:false,u18Seasons:0,isU18:true,proStatus:"u18",goals:0,assists:0,matches:0,totalGoals:0,totalAssists:0,totalMatches:0,morale:legacyBonus?clamp(70+(legacyBonus.moraleBoost||0),0,100):70,fatigue:0,popularity:20,skillPoints:2,log:[],history:[],matchHistory:[],value:0.8,coachTrust:60,form:70,transferOffers:[],offerHistory:[],contract:{duration:1,wage:rng(200,500),expiresAtSeason:2},aiData:{lastOpponentTactic:null,scoutReports:{},pressReports:{}},saveVersion:SAVE_VERSION,...(legacyBonus?{legacyBonusLabel:legacyBonus.label}:{}),...(challenge?{challenge:{id:challenge.id,completed:false,failed:false}}:{})});
+    onCreate({name:name.trim(),nation,avatarId,archetype:arc,position:"Attaccante",age,stats,ovr:calcOvr(stats),club:null,trialsDone:0,trialStats:[],season:1,week:1,weekLived:false,u18Seasons:0,isU18:true,proStatus:"u18",goals:0,assists:0,matches:0,totalGoals:0,totalAssists:0,totalMatches:0,morale:legacyBonus?clamp(70+(legacyBonus.moraleBoost||0),0,100):70,fatigue:0,popularity:20,skillPoints:2,log:[],history:[],matchHistory:[],value:0.8,coachTrust:60,form:70,transferOffers:[],offerHistory:[],contract:{duration:1,wage:rng(200,500),expiresAtSeason:2},aiData:{lastOpponentTactic:null,scoutReports:{},pressReports:{}},dreamClub:dreamClub||null,worldMemory:[],rival:null,saveVersion:SAVE_VERSION,...(legacyBonus?{legacyBonusLabel:legacyBonus.label}:{}),...(challenge?{challenge:{id:challenge.id,completed:false,failed:false}}:{})});
   };
   const perPage=6;const totalPages=Math.ceil(AVATARS.length/perPage);const pageAvatars=AVATARS.slice(page*perPage,(page+1)*perPage);
   return(
@@ -6134,6 +6207,19 @@ function CreateScreen({onCreate,legacyBonus,onClearLegacy}){
                 {Object.entries(arc.bonus).map(([k,v])=><span key={k} style={{marginRight:6,color:v>0?TH.success:TH.danger,fontWeight:700}}>{k} {v>0?"+":""}{v}</span>)}
               </div>
             ):null;})()}
+          </div>
+          {/* Club dei Sogni — emotional north star */}
+          <div>
+            <label style={lbl}>⭐ Club dei sogni <span style={{color:TH.faint,fontWeight:400,textTransform:"none",letterSpacing:0}}>(opzionale)</span></label>
+            <div style={{display:"grid",gridTemplateColumns:"repeat(5,1fr)",gap:5,marginBottom:4}}>
+              {CLUBS.filter(c=>c.p>=83).sort((a,b)=>b.p-a.p).slice(0,15).map(c=>(
+                <button key={c.id} onClick={()=>setDreamClub(dreamClub?.id===c.id?null:c)} title={c.n} style={{padding:"6px 3px",borderRadius:9,border:`2px solid ${dreamClub?.id===c.id?c.c||TH.primary:"transparent"}`,background:dreamClub?.id===c.id?"#eff6ff":"#f8fafc",cursor:"pointer",display:"flex",flexDirection:"column",alignItems:"center",gap:2}}>
+                  <TeamBadge team={c} size={22}/>
+                  <span style={{fontSize:8,fontWeight:700,color:dreamClub?.id===c.id?c.c||TH.primary:TH.faint}}>{c.a}</span>
+                </button>
+              ))}
+            </div>
+            {dreamClub&&<div style={{fontSize:10,color:TH.success,background:"#f0fdf4",borderRadius:8,padding:"6px 10px",border:"1px solid #bbf7d0"}}>🌟 Il tuo sogno è giocare nel <strong>{dreamClub.n}</strong>. Ce la farai?</div>}
           </div>
           {legacyBonus&&<div style={{padding:"10px 12px",borderRadius:10,background:"linear-gradient(135deg,#7c3aed22,#4f46e522)",border:"1px solid #7c3aed44",marginBottom:6,fontSize:11,color:"#7c3aed",fontWeight:700}}>🌟 Nuova Partita+ attiva — Bonus {legacyBonus.label}: +{legacyBonus.statBoost} a tutti gli attributi</div>}
           <details style={{marginBottom:6}}>
@@ -7671,6 +7757,13 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     }
     if(!('achievements' in newP)){newP={...newP,achievements:[]};changed=true;}
     if(!('rivalries' in newP)){newP={...newP,rivalries:[]};changed=true;}
+    if(!('worldMemory' in newP)){newP={...newP,worldMemory:[]};changed=true;}
+    if(!('dreamClub' in newP)){newP={...newP,dreamClub:null};changed=true;}
+    // Generate rival when pro and none exists yet
+    if(!('rival' in newP)||(newP.proStatus==="pro"&&!newP.rival&&newP.club)){
+      newP={...newP,rival:(newP.proStatus==="pro"&&newP.club)?generateRival(newP):null};
+      changed=true;
+    }
     if(changed){setPlayer(newP);}
   },[]);// eslint-disable-line
   const[darkMode,setDarkMode]=useState(()=>localStorage.getItem("cpm-dark")==="1");
@@ -8069,9 +8162,26 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       const isChampion=playerPos===0;
       // Save history + trophies into player state now
       setPlayer(p=>{
-        const hist={season:p.season,club:p.club?.name||p.club?.n,goals:p.goals,assists:p.assists,matches:p.matches,ovr:p.ovr};
+        const hist={season:p.season,club:p.club?.name||p.club?.n,clubId:p.club?.id,goals:p.goals,assists:p.assists,matches:p.matches,ovr:p.ovr};
         const newTrophies=isChampion?[...(p.trophies||[]),{season:p.season,club:p.club?.n||p.club?.name,league:p.club?.lg}]:(p.trophies||[]);
-        return{...p,history:[...(p.history||[]),hist],trophies:newTrophies,log:[`🏁 Fine S.${p.season}: ${p.goals}⚽ ${p.assists}🎯`,...(p.log||[])].slice(0,60)};
+        // worldMemory: record gol stagione
+        let newMem=[...(p.worldMemory||[])];
+        const seasonGoals=p.goals||0;
+        const oldGoalRec=(p.records||{}).topSeasonGoals||0;
+        if(seasonGoals>0&&seasonGoals>oldGoalRec){newMem=[...newMem,{type:"record_club",stat:"gol_stagione",value:seasonGoals,club:p.club?.n,clubId:p.club?.id,season:p.season}];}
+        // Update rival parallel career
+        let rivalUpdate={};
+        if(p.rival){
+          const r=p.rival;
+          const goalGain=rng(7,20);
+          const newOvr=clamp(r.ovr+(r.age<25?rng(0,2):r.age>30?rng(-2,0):rng(-1,1)),52,93);
+          const lc=getLeagueClubs(p).filter(c=>c.id!==p.club?.id&&c.n!==p.club?.n&&c.id!==r.club?.id);
+          const changesClub=Math.random()<0.22&&lc.length>0;
+          const newClub=changesClub?pick(lc.slice(0,Math.min(8,lc.length))):r.club;
+          const newRelationship=(p.season||1)>=3&&r.relationship==="sconosciuto"?"rivale":r.relationship;
+          rivalUpdate={rival:{...r,ovr:newOvr,age:r.age+1,goals:goalGain,totalGoals:(r.totalGoals||0)+goalGain,seasons:(r.seasons||0)+1,club:newClub?{n:newClub.n,id:newClub.id,p:newClub.p,lg:newClub.lg,c:newClub.c}:r.club,relationship:newRelationship}};
+        }
+        return{...p,history:[...(p.history||[]),hist],trophies:newTrophies,worldMemory:newMem,...rivalUpdate,log:[`🏁 Fine S.${p.season}: ${p.goals}⚽ ${p.assists}🎯`,...(p.log||[])].slice(0,60)};
       });
       setSeasonEndData({season:player.season,club:player.club,finalStandings,playerStats:{goals:player.goals||0,assists:player.assists||0,matches:player.matches||0,ovr:player.ovr||60},champion,playerPos:Math.max(0,playerPos),isChampion});
       setScreen("seasonEnd");
@@ -8135,6 +8245,26 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
         const extras={morale:clamp((p.morale||70)+(ef.morale||0),0,100),fatigue:clamp((p.fatigue||0)+(ef.fatigue||0),0,100),form:clamp((p.form||70)+(ef.form||0),0,100),popularity:clamp((p.popularity||20)+(ef.popularity||0),0,100),coachTrust:clamp((p.coachTrust||60)+(ef.coachTrust||0),0,100),value:Math.max(0.5,(p.value||0.8)+(ef.value||0))};
         setTimeout(()=>setWeekLiveModal({event:re,changes:{morale:ef.morale||0,form:ef.form||0,fatigue:ef.fatigue||0}}),100);
         updP={...updP,...extras};
+      }
+      // Sprint 23 — Rival NPC events (20% chance, pro only)
+      if(!p.injured&&(p.proStatus||"u18")==="pro"&&p.rival&&Math.random()<0.20){
+        const r=p.rival;
+        const rn=r.name||"Il tuo rivale";const rc=r.club?.n||"la sua squadra";
+        const rivalEvs=[
+          {txt:`📰 ${rn} eletto miglior giocatore della settimana in ${r.club?.lg||"Serie A"}.`,ef:{morale:-3}},
+          {txt:`⚽ ${rn} ha segnato una doppietta con ${rc}. La sua stagione è impressionante.`,ef:{morale:-4}},
+          {txt:`🤝 Si parla di ${rn}: un top club europeo starebbe valutando un'offerta.`,ef:{morale:-2}},
+          {txt:`🤕 Stop per infortunio! ${rn} sarà fuori 3 settimane. Momento tuo.`,ef:{morale:6}},
+          {txt:`📊 ${rn} supera la tua quota gol stagionale. È un messaggio diretto a te?`,ef:{morale:-5}},
+          {txt:`🏆 ${rn} vince il premio mensile della lega. Sei pronto a rispondere?`,ef:{morale:-3}},
+          {txt:`💪 ${rn} rinnova il contratto con ${rc} fino al 2028. Dice che non si muove.`,ef:{morale:-1}},
+          {txt:`⭐ ${rn} convocato in nazionale per la prima volta. Vi sfiderete anche lì?`,ef:{morale:-4}},
+          {txt:`📈 ${rn} è in forma stratosferica: 6 gol nelle ultime 4 partite.`,ef:{morale:-5}},
+          {txt:`🔄 Sorpresa: ${rn} potrebbe trasferirsi. Forse diventerà un tuo compagno?`,ef:{morale:2}},
+        ];
+        const re=pick(rivalEvs);const ef=re.ef||{};
+        updP={...updP,morale:clamp((updP.morale||p.morale||70)+(ef.morale||0),0,100)};
+        setTimeout(()=>setWeekLiveModal({event:{txt:re.txt,e:"🆚"},changes:{morale:ef.morale||0,form:0,fatigue:0},isRivalEvent:true}),250);
       }
       // S10.3: apply cup state update
       if(cupCheck){
@@ -8359,7 +8489,12 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       const newStandings=initStandings(lcs);
       const _s=(p.season||1);const seed=(_s*7919+_s*_s*31)%2147483647+hashStr(tc.club.id||tc.club.n||"x")*17;
       const newCalendar=generateSeasonCalendar(newClub,lcs,seed);
-      return{...p,club:newClub,isU18:false,proStatus:"pro",contractExpired:false,transferListed:false,morale:clamp(p.morale+(tc.moralBonus||10),0,100),offerHistory:[...(p.offerHistory||[]),{club:tc.club.n,type:tc.type,season:p.season,accepted:true}],log:[`🔄 ${tc.type}: ${tc.club.n} (${tc.club.lg||tc.club.nat})!`,...(p.log||[])].slice(0,60),standings:newStandings,calendar:newCalendar};
+      // worldMemory: record old club as ex-club when transferring away
+      const oldClubMem=p.club&&(p.proStatus==="pro")?[...(p.worldMemory||[]),{type:"ex_club",clubId:p.club.id,club:p.club.n,season:p.season,lg:p.club.lg}]:(p.worldMemory||[]);
+      // Generate rival if becoming pro for first time
+      const needsRival=!p.rival&&p.proStatus!=="pro";
+      const newRival=needsRival?generateRival({...p,club:newClub,proStatus:"pro"}):p.rival;
+      return{...p,club:newClub,isU18:false,proStatus:"pro",contractExpired:false,transferListed:false,morale:clamp(p.morale+(tc.moralBonus||10),0,100),offerHistory:[...(p.offerHistory||[]),{club:tc.club.n,type:tc.type,season:p.season,accepted:true}],log:[`🔄 ${tc.type}: ${tc.club.n} (${tc.club.lg||tc.club.nat})!`,...(p.log||[])].slice(0,60),standings:newStandings,calendar:newCalendar,worldMemory:oldClubMem,rival:newRival};
     });
     setTransferOffer(null);
     setPresentationData({club:tc.club,contractType:tc.type,playerName:player.name});
@@ -8598,6 +8733,12 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       {transferOffer&&(
         <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.4)",zIndex:9997,display:"flex",alignItems:"center",justifyContent:"center",padding:20}}>
           <Card style={{maxWidth:380,width:"100%",padding:"24px"}}>
+            {player.dreamClub&&(transferOffer.club.id===player.dreamClub.id||transferOffer.club.n===player.dreamClub.n)&&(
+              <div style={{background:"linear-gradient(135deg,#f59e0b,#d97706)",borderRadius:12,padding:"10px 14px",marginBottom:14,textAlign:"center"}}>
+                <div style={{fontSize:16,fontWeight:900,color:"#fff"}}>🌟 IL TUO CLUB DEI SOGNI!</div>
+                <div style={{fontSize:11,color:"rgba(255,255,255,0.85)",marginTop:2}}>Ci hai lavorato tutta la carriera. È arrivato il momento.</div>
+              </div>
+            )}
             <div style={{textAlign:"center",marginBottom:16}}>
               <TeamBadge team={transferOffer.club} size={56}/>
               <div style={{fontSize:18,fontWeight:900,color:TH.text,marginTop:8}}>{transferOffer.club.n}</div>
@@ -9080,6 +9221,58 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
               <Card style={{padding:"14px 16px",background:"linear-gradient(135deg,#0f172a,#1a1f2e)",border:"1px solid rgba(255,255,255,0.08)"}}>
                 <div style={{fontSize:10,color:"rgba(255,255,255,0.4)",textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>📖 Biografia</div>
                 <div style={{fontSize:12,color:"rgba(255,255,255,0.72)",lineHeight:1.75,fontStyle:"italic"}}>"{bio}"</div>
+              </Card>
+            );
+          })()}
+          {/* Sprint 23 — Rivale NPC card */}
+          {player.rival&&(()=>{
+            const r=player.rival;
+            const relLabel={sconosciuto:"Sconosciuto",rivale:"🔥 Rivale",rispettato:"🤝 Rispettato",amico:"👥 Compagno di viaggio"}[r.relationship||"sconosciuto"]||"Sconosciuto";
+            const myGoals=player.totalGoals||0;const rGoals=r.totalGoals||0;
+            const isAhead=myGoals>rGoals;
+            return(
+              <Card style={{padding:"12px 14px",background:"linear-gradient(135deg,#1e1b4b,#312e81)",border:"1px solid rgba(99,102,241,0.3)"}}>
+                <div style={{fontSize:10,color:"rgba(165,180,252,0.7)",textTransform:"uppercase",letterSpacing:1.5,marginBottom:10}}>🆚 Il tuo rivale</div>
+                <div style={{display:"flex",alignItems:"center",gap:12,marginBottom:10}}>
+                  <div style={{width:44,height:44,borderRadius:"50%",background:"rgba(99,102,241,0.3)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:22}}>⚽</div>
+                  <div style={{flex:1}}>
+                    <div style={{fontSize:15,fontWeight:900,color:"#e0e7ff"}}>{r.name}</div>
+                    <div style={{fontSize:10,color:"rgba(165,180,252,0.7)"}}>{r.club?.n||"–"} · {r.club?.lg||"–"}</div>
+                    <div style={{fontSize:10,color:"rgba(165,180,252,0.6)",marginTop:2}}>{relLabel}</div>
+                  </div>
+                  <div style={{textAlign:"center"}}>
+                    <div style={{fontSize:22,fontWeight:900,color:"#818cf8"}}>{r.ovr}</div>
+                    <div style={{fontSize:8,color:"rgba(165,180,252,0.5)"}}>LIVELLO</div>
+                  </div>
+                </div>
+                <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:6,textAlign:"center"}}>
+                  {[{l:"Gol carriera",v:rGoals,mine:myGoals},{l:"Stagione attuale",v:r.goals||0},{l:"Stagioni",v:r.seasons||0}].map((s,i)=>(
+                    <div key={i} style={{background:"rgba(0,0,0,0.3)",borderRadius:8,padding:"7px 4px"}}>
+                      <div style={{fontSize:9,color:"rgba(165,180,252,0.5)",marginBottom:1}}>{s.l}</div>
+                      <div style={{fontSize:15,fontWeight:900,color:s.mine!=null?(s.mine>s.v?"#4ade80":s.mine<s.v?"#f87171":"#fbbf24"):"#e0e7ff"}}>{s.v}</div>
+                      {s.mine!=null&&<div style={{fontSize:8,color:"rgba(165,180,252,0.5)"}}>Tu: {s.mine}</div>}
+                    </div>
+                  ))}
+                </div>
+                <div style={{marginTop:8,fontSize:10,color:isAhead?"#4ade80":"#f87171",fontWeight:700,textAlign:"center"}}>
+                  {isAhead?`✅ Sei avanti di ${myGoals-rGoals} gol in carriera`:`⚠️ ${r.name} ti supera di ${rGoals-myGoals} gol in carriera`}
+                </div>
+              </Card>
+            );
+          })()}
+          {/* Sprint 23 — Club dei Sogni card */}
+          {player.dreamClub&&(player.proStatus||"u18")==="pro"&&(()=>{
+            const achieved=(player.history||[]).some(h=>h.clubId===player.dreamClub.id||h.club===player.dreamClub.n)||player.club?.id===player.dreamClub.id||player.club?.n===player.dreamClub.n;
+            return(
+              <Card style={{padding:"11px 14px",background:achieved?"linear-gradient(135deg,#78350f,#92400e)":"linear-gradient(135deg,#1e293b,#0f172a)",border:`1px solid ${achieved?"#f59e0b44":"rgba(255,255,255,0.08)"}`}}>
+                <div style={{display:"flex",alignItems:"center",gap:10}}>
+                  <TeamBadge team={player.dreamClub} size={36}/>
+                  <div style={{flex:1}}>
+                    <div style={{fontSize:10,color:achieved?"#fde68a":"rgba(255,255,255,0.4)",textTransform:"uppercase",letterSpacing:1.5,marginBottom:2}}>{achieved?"🏆 Sogno realizzato!":"⭐ Club dei sogni"}</div>
+                    <div style={{fontSize:14,fontWeight:900,color:achieved?"#fef3c7":"#e2e8f0"}}>{player.dreamClub.n}</div>
+                    <div style={{fontSize:10,color:achieved?"#fde68a80":"rgba(255,255,255,0.35)"}}>{achieved?"Ci hai giocato. Non lo dimenticherai mai.":"Non hai ancora ricevuto un'offerta. Il tuo sogno ti aspetta."}</div>
+                  </div>
+                </div>
               </Card>
             );
           })()}
