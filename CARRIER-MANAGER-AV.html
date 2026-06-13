@@ -928,7 +928,7 @@ const NEWSPAPERS=[
   {id:"lastampa",  name:"La Stampa Sport",       short:"La Stampa",  color:"#16a34a",e:"🗞️",tone:"analitico"},
   {id:"skysport",  name:"Sky Sport 24",          short:"Sky Sport",  color:"#0099d6",e:"📡",tone:"diretto"},
 ];
-const GAME_VERSION="2.5.0"; // Sprint 15 — Interview system
+const GAME_VERSION="2.5.1"; // fix: idle drift formation-aware
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -4614,7 +4614,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     }
   },[pPos.x,pPos.y,phase]);
 
-  // Idle drift — player keeps moving during "playing" phase based on role
+  // Idle drift — player keeps moving during "playing" phase, formation-aware
   useEffect(()=>{
     if(phase!=="playing"||paused)return;
     const pos=player.position||"ATT";
@@ -4623,11 +4623,24 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     const isMid=["CC","CEN","MED","MID","TC","Centrocampista","Mediano","Trequartista"].includes(pos);
     const iv=setInterval(()=>{
       setPPos(p=>{
+        const dt=driftTargetsRef.current;
         let nx,ny;
-        if(isGK){nx=clamp(p.x+rng(-2,2),10,24);ny=clamp(p.y+rng(-3,3),35,65);}
-        else if(isDef){nx=clamp(p.x+rng(-3,3),18,38);ny=clamp(p.y+rng(-4,4),15,85);}
-        else if(isMid){nx=clamp(p.x+rng(-4,4),35,65);ny=clamp(p.y+rng(-5,5),15,85);}
-        else{nx=clamp(p.x+rng(-4,4),52,80);ny=clamp(p.y+rng(-5,5),15,85);}
+        if(dt){
+          // Protagonist follows the team formation: pull toward role-appropriate slot average
+          // GK→slot 0, DEF→slots 1-4, MID→slots 5-7, ATT→slots 8-9
+          const slots=isGK?[0]:isDef?[1,2,3,4]:isMid?[5,6,7]:[8,9];
+          const tgX=slots.reduce((s,i)=>s+(dt[i]?.x||50),0)/slots.length;
+          const tgY=slots.reduce((s,i)=>s+(dt[i]?.y||50),0)/slots.length;
+          // 30% pull per tick toward formation centre + small jitter → gradual, coordinated movement
+          nx=clamp(p.x+(tgX-p.x)*0.30+rng(-3,3),3,97);
+          ny=clamp(p.y+(tgY-p.y)*0.12+rng(-4,4),3,97);
+        }else{
+          // No preset yet — fall back to original role-based ranges
+          if(isGK){nx=clamp(p.x+rng(-2,2),10,24);ny=clamp(p.y+rng(-3,3),35,65);}
+          else if(isDef){nx=clamp(p.x+rng(-3,3),18,38);ny=clamp(p.y+rng(-4,4),15,85);}
+          else if(isMid){nx=clamp(p.x+rng(-4,4),35,65);ny=clamp(p.y+rng(-5,5),15,85);}
+          else{nx=clamp(p.x+rng(-4,4),52,80);ny=clamp(p.y+rng(-5,5),15,85);}
+        }
         return{x:nx,y:ny};
       });
     },2800);
