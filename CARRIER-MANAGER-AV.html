@@ -930,7 +930,7 @@ const NEWSPAPERS=[
   {id:"lastampa",  name:"La Stampa Sport",       short:"La Stampa",  color:"#16a34a",e:"🗞️",tone:"analitico"},
   {id:"skysport",  name:"Sky Sport 24",          short:"Sky Sport",  color:"#0099d6",e:"📡",tone:"diretto"},
 ];
-const GAME_VERSION="2.6.2"; // fix infortunio: decremento settimane, match count, live week guard
+const GAME_VERSION="2.6.3"; // HL zoom intermedio
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -3324,11 +3324,11 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
         // --- Top-down full pitch view with contextual camera zoom ---
         const isHL=["hl_move","hl_choose","hl_result","hl_intro"].includes(p.matchPhase);
         // Zoom scales with zone: area/bordo = tightest, midfield/defence = wider
-        const zoneZooms={area:1.32,bordo:1.20,trequarti:1.11,centro:1.05,difesa:1.02,propria:1.0};
-        const baseHL=zoneZooms[p.zone]||1.06;
+        const zoneZooms={area:1.48,bordo:1.35,trequarti:1.21,centro:1.14,difesa:1.10,propria:1.07};
+        const baseHL=zoneZooms[p.zone]||1.12;
         // Extra boost if result just happened (cinematic freeze)
         const isResult=p.matchPhase==="hl_result";
-        const targetZoom=isHL?(isResult?Math.min(baseHL+0.06,1.40):baseHL):1.0;
+        const targetZoom=isHL?(isResult?Math.min(baseHL+0.10,1.60):baseHL):1.0;
         // Camera follows player tightly in high-zoom zones
         const camLerpFactor=isHL?(p.zone==="area"||p.zone==="bordo"?0.07:0.05):0.06;
         const targetCX=isHL?gx(p.playerY):FCX;
