@@ -1210,12 +1210,12 @@ function baseStats(archetype){
 function calcOvr(s){return Math.round((s.tiro*2.5+s.tecnica*2+s.velocità*1.5+s.dribbling*1.5+s.posizionamento*1.5+s.mentalità+s.fisico+s.passaggio)/11.5);}
 function succRate(action,stats,playerX,oppPrestige=65){
   const sv=stats[action.stat]||60;
-  // Realistic base: even a skilled player has ~45% on a solo vs 65-prestige opponent
-  const base=(sv/99)*0.44+0.09+(action.bon||0)*0.006+(playerX-50)/100*0.03;
+  // Stat-driven base: high-skill players feel the difference
+  const base=(sv/99)*0.52+0.09+(action.bon||0)*0.006+(playerX-50)/100*0.04;
   // Meaningful difficulty penalty
   const diffPenalty=Math.max(0,(oppPrestige-55)/180);
-  // Hard cap at 72%: even tap-ins can be missed
-  return Math.round(clamp(base-diffPenalty,0.05,0.72)*100);
+  // Cap raised to 0.84: elite players succeed reliably on good actions
+  return Math.round(clamp(base-diffPenalty,0.05,0.84)*100);
 }
 // Adaptive difficulty: returns a 0-1 multiplier that makes opponent harder when player is performing well
 function adaptiveDifficulty(player){
@@ -5499,7 +5499,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                          (action.stat==="velocità"&&wef.spd?(-wef.spd/100):0);
     const rate=Math.max(0.05,succRate(action,player.stats,pPos.x,oppPrestige)/100-defPenalty-weatherPenalty);
     const adapt=adaptiveDifficulty(player);
-    const ok=Math.random()<clamp((rate/adapt)+(Math.random()-.5)*.12,0.05,0.72);
+    const ok=Math.random()<clamp((rate/adapt)+(Math.random()-.5)*.06,0.05,0.84);
     const key=ok?action.rew:action.fail;
     const txt=pick(OUTCOME_TX[key]||["Azione completata."]);
     setEnergy(e=>clamp(e-action.nrg,0,100));
@@ -5824,12 +5824,12 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                     return(
                       <button key={i} onClick={()=>handleAction(a)}
                         style={{padding:"10px 5px",background:isSel?"rgba(37,99,235,0.60)":"rgba(0,0,0,0.45)",
-                          border:isSel?"1.5px solid rgba(96,165,250,0.70)":"1px solid rgba(255,255,255,0.18)",
+                          border:isSel?`1.5px solid ${rc}88`:`1px solid ${rc}44`,
                           borderRadius:8,color:"#fff",cursor:"pointer",fontFamily:"inherit",
                           display:"flex",flexDirection:"column",alignItems:"center",gap:2,width:"100%",
                           touchAction:"manipulation"}}>
                         <div style={{fontSize:9,fontWeight:isSel?700:400,color:"#e2e8f0",textAlign:"center",lineHeight:1.3}}>{a.label}</div>
-                        <div style={{fontSize:14,fontWeight:900,color:rc,lineHeight:1}}>{rate}%</div>
+                        <div style={{fontSize:10,color:rc,lineHeight:1,letterSpacing:2}}>{rate>70?"●●●":rate>50?"●●":"●"}</div>
                       </button>
                     );
                   })}
@@ -5929,15 +5929,16 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                       const defPenalty=defDist<25?15:defDist<50?8:0;
                       const rate=Math.max(5,succRate(a,player.stats,pPos.x,oppPrestige)-defPenalty);
                       const rc=rate>70?"#4ade80":rate>50?"#f59e0b":"#f87171";
+                      const ql=rate>70?"Alta":rate>50?"Media":"Bassa";
                       const isSel=i===selectedActionIdx;
                       return(
                         <button key={i} onClick={()=>handleAction(a)}
-                          style={{padding:isNarrow?"12px 10px":"8px 10px",background:isSel?"rgba(37,99,235,0.45)":"rgba(0,0,0,0.52)",border:isSel?"1.5px solid rgba(96,165,250,0.45)":"1px solid rgba(255,255,255,0.15)",borderRadius:8,color:"#fff",cursor:"pointer",fontFamily:"inherit",display:"flex",alignItems:"center",justifyContent:"space-between",transition:"all .1s",transform:isSel?"scale(1.02)":"scale(1)"}}>
+                          style={{padding:isNarrow?"12px 10px":"8px 10px",background:isSel?"rgba(37,99,235,0.45)":"rgba(0,0,0,0.52)",border:isSel?`1.5px solid ${rc}66`:`1px solid ${rc}33`,borderRadius:8,color:"#fff",cursor:"pointer",fontFamily:"inherit",display:"flex",alignItems:"center",justifyContent:"space-between",transition:"all .1s",transform:isSel?"scale(1.02)":"scale(1)"}}>
                           <div style={{display:"flex",alignItems:"center",gap:6}}>
                             <div style={{width:18,height:18,borderRadius:"50%",background:isSel?"#2563eb":"rgba(255,255,255,0.1)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:9,fontWeight:900,color:isSel?"#fff":"rgba(255,255,255,0.5)",flexShrink:0}}>{i+1}</div>
                             <div style={{fontSize:11,fontWeight:isSel?700:400,color:"#e2e8f0",textAlign:"left"}}>{a.label}</div>
                           </div>
-                          <div style={{fontSize:15,fontWeight:900,color:rc,flexShrink:0}}>{rate}%</div>
+                          <div style={{fontSize:9,fontWeight:700,color:rc,flexShrink:0}}>{ql}</div>
                         </button>
                       );
                     })}
