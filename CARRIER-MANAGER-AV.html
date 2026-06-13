@@ -654,6 +654,163 @@ const WEEKLY_RANDOM_EVENTS=[
 ];
 
 /* ========================================
+   SPRINT 24 — A: LO SPOGLIATOIO
+======================================== */
+const TEAMMATE_ARCHETYPES=[
+  {id:"capitano",name:"Il Capitano",icon:"🤝",desc:"Leader silenzioso. Ti difende sempre nello spogliatoio.",bond_bonus:{coachTrust:4,morale:5}},
+  {id:"mentore",name:"Il Mentore",icon:"🧠",desc:"Veterano in declino. Ti insegna più di qualsiasi allenamento.",bond_bonus:{form:4}},
+  {id:"amico",name:"L'Amico",icon:"😄",desc:"Stesso sogno, stessa generazione. Ridete e soffrite insieme.",bond_bonus:{morale:7,fatigue:-6}},
+  {id:"conflittuale",name:"Il Rivale Interno",icon:"😤",desc:"Compete per il tuo posto. Vi sprondate a vicenda senza dirlo.",bond_bonus:{form:6,morale:-2}},
+];
+const SPOGLIATOIO_MOMENTS=[
+  {id:"sm_derby",txt:'{nome} ti mette la mano sulla spalla: «Oggi non è una partita normale.»',archetype:"capitano",choices:[
+    {txt:'«Lo so. Sono pronto.»',ef:{morale:7,coachTrust:3},bond:6},
+    {txt:'«Ci penserò durante il riscaldamento.»',ef:{morale:2},bond:2},
+  ]},
+  {id:"sm_mentor_advice",txt:'{nome} ti ferma in sala video: «Hai visto come si muove il loro terzino? Aspettalo così.»',archetype:"mentore",choices:[
+    {txt:'«Ottima osservazione. Ci lavoro.»',ef:{form:5,coachTrust:4},bond:7},
+    {txt:'«Ci penso io, grazie.»',ef:{form:1},bond:1},
+  ]},
+  {id:"sm_friend_joke",txt:'{nome} ti scrive alle 23: «Domani vinciamo. Ho sognato il tuo gol.»',archetype:"amico",choices:[
+    {txt:'«Perfetto, ci conto sul serio.»',ef:{morale:9,fatigue:-4},bond:8},
+    {txt:'«Dormi. Ci vediamo domani.»',ef:{morale:3},bond:3},
+  ]},
+  {id:"sm_rival_tension",txt:'{nome} si allena un\'ora in più dopo la sessione. Ti fissa prima di andarsene.',archetype:"conflittuale",choices:[
+    {txt:'Resti anche tu. Mezzo giro extra.',ef:{form:7,fatigue:8},bond:5},
+    {txt:'Sorridi e torni negli spogliatoi.',ef:{morale:3,fatigue:-4},bond:1},
+  ]},
+  {id:"sm_bad_result",txt:'Dopo la sconfitta, {nome} rompe il silenzio: «Non possiamo permetterci di perdere così ancora.»',archetype:null,choices:[
+    {txt:'«Hai ragione. Da lunedì si cambia.»',ef:{coachTrust:5,morale:4},bond:4},
+    {txt:'«È colpa del sistema di gioco.»',ef:{coachTrust:-3,morale:-2},bond:-2},
+  ]},
+  {id:"sm_celebration",txt:'Dopo un gol importante, {nome} ti abbraccia forte: «Sei il più forte che abbia mai visto qui.»',archetype:null,choices:[
+    {txt:'«Facciamolo ancora insieme.»',ef:{morale:10,popularity:6},bond:8},
+    {txt:'Sorridi senza dire nulla.',ef:{morale:5},bond:3},
+  ]},
+  {id:"sm_crisis",txt:'Il mister è furioso nello spogliatoio. {nome} ti sussurra: «Stai zitto. Non è il momento.»',archetype:"capitano",choices:[
+    {txt:'Annuisci e ascolti.',ef:{coachTrust:6,morale:2},bond:5},
+    {txt:'Prendi parola comunque.',ef:{coachTrust:-5,morale:5},bond:-3},
+  ]},
+  {id:"sm_mentor_storia",txt:'{nome} ti racconta quella volta che perse la finale: «Quella notte ho capito tutto.»',archetype:"mentore",choices:[
+    {txt:'«Grazie per avermi detto questo.»',ef:{morale:8,form:3},bond:9},
+    {txt:'Annuisci educatamente e vai a cambiarti.',ef:{morale:2},bond:1},
+  ]},
+  {id:"sm_amico_problema",txt:'{nome} non si allena bene da due settimane. Ti chiede un consiglio.',archetype:"amico",choices:[
+    {txt:'«Parliamo stasera. Ti sei fatto condizionare.»',ef:{morale:6,coachTrust:4},bond:9},
+    {txt:'«Non sono il tipo adatto a questi discorsi.»',ef:{morale:1},bond:-2},
+  ]},
+  {id:"sm_rientro",txt:'{nome} ti aspetta fuori dalla sala medica: «Bentornato. Ci mancavi.»',archetype:null,choices:[
+    {txt:'«Avete retto bene senza di me.»',ef:{morale:10,fatigue:-6},bond:6},
+    {txt:'«Sono solo contento di essere qui.»',ef:{morale:7,fatigue:-3},bond:4},
+  ]},
+];
+
+/* ========================================
+   SPRINT 24 — B: OGNI SETTIMANA CONTA (IMPULSI)
+======================================== */
+const WEEKLY_IMPULSES=[
+  {id:"wi_amichevole",cat:"opportunità",txt:"Il tuo agente segnala un'amichevole internazionale extra. Alzerei la visibilità, ma è un viaggio impegnativo.",choices:[
+    {txt:"✅ Ci vado — voglio farmi vedere",ef:{popularity:12,fatigue:14,form:3}},
+    {txt:"❌ Rimango a riposare",ef:{fatigue:-10,morale:5}},
+  ]},
+  {id:"wi_media",cat:"opportunità",txt:"Un canale sportivo ti vuole per una rubrica settimanale. Non è il campo, ma è immagine.",choices:[
+    {txt:"📺 Accetto — è riconoscimento",ef:{popularity:14,value:0.08,fatigue:5}},
+    {txt:"⚽ No, preferisco allenarmi",ef:{form:4,coachTrust:3}},
+  ]},
+  {id:"wi_ciclo_forza",cat:"scelta",txt:"Il preparatore atletico propone un ciclo extra di forza. Duro ma efficace.",choices:[
+    {txt:"💪 Ciclo completo — massimo impegno",ef:{fatigue:15,form:7}},
+    {txt:"🧘 Solo sessione leggera",ef:{fatigue:4,form:2,morale:3}},
+  ]},
+  {id:"wi_riposo",cat:"scelta",txt:"Settimana libera. Puoi allenarti in autonomia o staccare completamente.",choices:[
+    {txt:"🏋️ Mi alleno da solo — non mi fermo mai",ef:{form:6,fatigue:8,coachTrust:3}},
+    {txt:"🌴 Mi riposo davvero",ef:{fatigue:-18,morale:10}},
+  ]},
+  {id:"wi_tensione_spo",cat:"tensione",txt:"C'è tensione nello spogliatoio dopo una brutta settimana. Due compagni hanno litigato. Cosa fai?",choices:[
+    {txt:"🤝 Mediate tra i due",ef:{coachTrust:8,morale:5,popularity:5}},
+    {txt:"😶 Non ti impicci",ef:{morale:-3}},
+    {txt:"🗣️ Segnali la cosa al mister",ef:{coachTrust:6,morale:-4}},
+  ]},
+  {id:"wi_fan_aggression",cat:"tensione",txt:"Un tifoso ti ferma per strada e ti insulta per la prestazione dell'ultimo match.",choices:[
+    {txt:"😤 Rispondi a tono",ef:{morale:5,popularity:-8}},
+    {txt:"🙏 «Scusi, farò meglio»",ef:{popularity:6,morale:-3}},
+    {txt:"🚶 Vai avanti senza rispondere",ef:{morale:2}},
+  ]},
+  {id:"wi_procuratore",cat:"conseguenza",txt:"Il tuo procuratore ti dice che c'è un club interessato, ma serve pazienza.",choices:[
+    {txt:"⏳ Aspettiamo — la pazienza paga",ef:{morale:4}},
+    {txt:"📢 No, voglio muovermi ora",ef:{popularity:4,coachTrust:-5,morale:-4}},
+  ]},
+  {id:"wi_giovane",cat:"opportunità",txt:"Un giocatore della primavera ti chiede di allenarsi con te. Accetti?",choices:[
+    {txt:"✅ Certo — è bello trasmettere",ef:{morale:8,coachTrust:5,popularity:4}},
+    {txt:"❌ Non ho tempo per questo",ef:{morale:-2}},
+  ]},
+  {id:"wi_intervista_sorpresa",cat:"scelta",txt:"Un giornalista famoso vuole un'intervista esclusiva. Argomenti sensibili inclusi.",choices:[
+    {txt:"🔥 Dico tutto — la verità libera",ef:{popularity:14,coachTrust:-6,morale:5}},
+    {txt:"🤝 Rispondo con diplomazia",ef:{popularity:6,coachTrust:3}},
+    {txt:"❌ Declino",ef:{popularity:-3,morale:3}},
+  ]},
+  {id:"wi_social",cat:"conseguenza",txt:"Un tuo post viene frainteso dai media. Come gestisci?",choices:[
+    {txt:"🗑️ Cancello e mi scuso",ef:{popularity:-4,morale:-3}},
+    {txt:"😏 Lascio stare — era ironico",ef:{popularity:6,coachTrust:-4}},
+    {txt:"📝 Chiarisco con un comunicato",ef:{popularity:2,morale:4}},
+  ]},
+  {id:"wi_viaggio",cat:"scelta",txt:"Partenza anticipata per la trasferta. Hai ore libere in albergo.",choices:[
+    {txt:"🎮 Ti rilassi con i compagni",ef:{morale:9,fatigue:-6}},
+    {txt:"📊 Studi il video dell'avversario",ef:{form:5,coachTrust:4}},
+    {txt:"🏃 Fai un allenamento extra in palestra",ef:{form:4,fatigue:6}},
+  ]},
+  {id:"wi_sogno",cat:"conseguenza",txt:"Stanotte hai sognato di segnare il gol decisivo in una finale. Ti svegli carico.",choices:[
+    {txt:"🔥 Cavalco l'onda — oggi è un gran giorno",ef:{morale:10,form:5}},
+    {txt:"😐 Era solo un sogno. Al lavoro.",ef:{form:2,fatigue:-4}},
+  ]},
+  {id:"wi_ex_club",cat:"tensione",txt:"Un tuo ex compagno ti scrive: «Ti mancano i vecchi tempi?»",choices:[
+    {txt:"❤️ «Sì, ma sono felice qui»",ef:{morale:8}},
+    {txt:"😐 «È il calcio. Si va avanti»",ef:{morale:3}},
+    {txt:"😔 «Onestamente, un po' sì»",ef:{morale:-4,popularity:3}},
+  ]},
+  {id:"wi_staff",cat:"opportunità",txt:"Il preparatore atletico ti propone un nuovo metodo di recupero post-allenamento.",choices:[
+    {txt:"🧪 Lo provo — sono curioso",ef:{fatigue:-14,form:4}},
+    {txt:"😐 Resto al metodo classico",ef:{fatigue:-6}},
+  ]},
+  {id:"wi_capitano_sfida",cat:"scelta",txt:"Il capitano organizza una sfida ai tiri in porta. Tutti guardano.",choices:[
+    {txt:"🎯 Accetto — e do il massimo",ef:{form:6,popularity:7,coachTrust:3}},
+    {txt:"🚶 Non mi interessa",ef:{form:1,morale:-3}},
+  ]},
+  {id:"wi_insonnia",cat:"tensione",txt:"Non riesci a dormire. La partita di sabato ti pesa.",choices:[
+    {txt:"📱 Guardi video motivazionali fino all'alba",ef:{morale:6,fatigue:10}},
+    {txt:"🧘 Rispiri, lasci andare, dormi",ef:{morale:4,fatigue:-5,form:3}},
+  ]},
+  {id:"wi_tifosi",cat:"opportunità",txt:"Un gruppo di tifosi ti aspetta fuori dal centro sportivo per foto e autografi.",choices:[
+    {txt:"📸 Mi fermo 20 minuti con loro",ef:{popularity:12,morale:7,fatigue:4}},
+    {txt:"🚗 Sorrido e saluto di corsa",ef:{popularity:4,morale:3}},
+  ]},
+  {id:"wi_sponsor",cat:"opportunità",txt:"Un marchio sportivo propone un contratto di endorsement minore. Un segnale di visibilità.",choices:[
+    {txt:"✅ Firmo — è riconoscimento",ef:{popularity:9,value:0.05,morale:5}},
+    {txt:"⏳ Aspetto qualcosa di più grande",ef:{morale:2}},
+  ]},
+  {id:"wi_polemica",cat:"tensione",txt:"I media ti criticano aspramente dopo una brutta prestazione. Il club non difende nessuno.",choices:[
+    {txt:"💪 La prendo come motivazione",ef:{morale:5,form:4}},
+    {txt:"😤 Mi incazzo — e si vede",ef:{morale:-4,popularity:-6,coachTrust:-3}},
+    {txt:"😶 Silenzio stampa totale",ef:{popularity:-3,morale:2}},
+  ]},
+  {id:"wi_ct_radar",cat:"opportunità",txt:"Il commissario tecnico della tua nazionale ti osserva in allenamento. Sai che guarda.",choices:[
+    {txt:"🔥 Mi supero — voglio essere visto",ef:{form:8,coachTrust:4,fatigue:6}},
+    {txt:"😐 Mi alleno normalmente",ef:{form:2}},
+  ]},
+];
+
+/* ========================================
+   SPRINT 24 — C: LA STAMPA TI RICORDA (GIORNALISTI)
+======================================== */
+const JOURNALIST_POOL=[
+  {id:"j_ferretti",name:"Marco Ferretti",paper:"Gazzetta dello Sport",icon:"📰",color:"#ef4444",type:"critico",desc:"Analitico e spietato. Ti esalta quando meriti, ti demolisce quando sbagli."},
+  {id:"j_esposito",name:"Sofia Esposito",paper:"Sport24",icon:"📺",color:"#3b82f6",type:"fan",desc:"Appassionata. Ha già deciso che sei speciale — ma non tollera tradimenti."},
+  {id:"j_neri",name:"Giovanni Neri",paper:"Il Corriere del Calcio",icon:"🔍",color:"#7c3aed",type:"investigativa",desc:"Caccia gli scoop. Tratta ogni risposta come un indizio."},
+  {id:"j_lombardi",name:"Anna Lombardi",paper:"TuttoSport",icon:"🎙️",color:"#f59e0b",type:"fan",desc:"Ti segue dalla U18. Ha una vera stima nei tuoi confronti."},
+  {id:"j_ricci",name:"Davide Ricci",paper:"FootballItalia",icon:"📊",color:"#10b981",type:"critico",desc:"Statistiche e fredda razionalità. Non mente mai — e non è sempre bello."},
+  {id:"j_greco",name:"Elena Greco",paper:"La Repubblica Sport",icon:"🌐",color:"#8b5cf6",type:"investigativa",desc:"Interesse politico e sportivo si mescolano. Attenzione a cosa riveli."},
+];
+
+/* ========================================
    INJURY SYSTEM — types + rehab activities
 ======================================== */
 const INJURY_TYPES_META={
@@ -1113,7 +1270,7 @@ const NEWSPAPERS=[
   {id:"lastampa",  name:"La Stampa Sport",       short:"La Stampa",  color:"#16a34a",e:"🗞️",tone:"analitico"},
   {id:"skysport",  name:"Sky Sport 24",          short:"Sky Sport",  color:"#0099d6",e:"📡",tone:"diretto"},
 ];
-const GAME_VERSION="3.4.0"; // Sprint 23 — Il Mondo che Ricorda: matchWeight, BIG MATCH banner, Rivale NPC, Club dei Sogni, worldMemory, scout memory
+const GAME_VERSION="3.5.0"; // Sprint 24 — Lo Spogliatoio + Ogni Settimana Conta + La Stampa ti Ricorda
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -2248,6 +2405,34 @@ function generateRival(player){
     club:club?{n:club.n,id:club.id,p:club.p,lg:club.lg,c:club.c,nat:club.nat}:null,
     goals:rng(4,14),totalGoals:rng(6,22),assists:rng(2,8),trophies:0,seasons:1,
     relationship:"sconosciuto"};
+}
+// Sprint 24 — generate 3 teammates for the season (seeded by club+season)
+function generateTeammates(player){
+  const seed=hashStr((player.club?.id||"u18")+"_"+(player.season||1));
+  const sr=(n)=>((seed*9301+49297*(n+1))%233280)/233280;
+  const firstNames=["Lorenzo","Davide","Luca","Marco","Federico","Simone","Andrea","Alessandro","Thomas","Raul","Paulo","Antoine","Stefan","Mohamed","Joshua","Karim","Ivan","Bruno","Sergei","Yannick"];
+  const lastNames=["Ricci","Conti","Ferrari","Greco","Bianchi","Rossi","Mancini","Costa","García","Silva","Müller","Dupont","Santos","Popov","Alves","Okafor","Salah","Diaz","Moura","Traoré"];
+  const archs=[...TEAMMATE_ARCHETYPES];
+  // Fisher-Yates seeded shuffle
+  for(let i=archs.length-1;i>0;i--){const j=Math.floor(sr(i)*( i+1));[archs[i],archs[j]]=[archs[j],archs[i]];}
+  return archs.slice(0,3).map((a,i)=>{
+    const fn=firstNames[Math.floor(sr(i*7+1)*firstNames.length)];
+    const ln=lastNames[Math.floor(sr(i*7+2)*lastNames.length)];
+    return{name:`${fn} ${ln}`,archetype:a.id,icon:a.icon,bond:40};
+  });
+}
+// Sprint 24 — pick 3 journalists (seeded random selection from pool)
+function generateJournalists(){
+  const pool=shuffle([...JOURNALIST_POOL]);
+  return pool.slice(0,3).map(j=>({...j,trust:50,lastTone:null}));
+}
+// Sprint 24 — readable label from journalist trust
+function getJournalistRelLabel(trust){
+  if(trust>=80)return"🌟 Fan sfegatato";
+  if(trust>=65)return"👍 Favorevole";
+  if(trust>=45)return"😐 Neutrale";
+  if(trust>=30)return"😤 Critico";
+  return"🔥 Ostile";
 }
 // Sprint 16 — Weather system
 const WEATHER_TYPES=[
@@ -6148,7 +6333,8 @@ function CreateScreen({onCreate,legacyBonus,onClearLegacy}){
     const age=17;
     const challenge=challengeId?CHALLENGES.find(c=>c.id===challengeId):null;
     if(onClearLegacy)onClearLegacy();
-    onCreate({name:name.trim(),nation,avatarId,archetype:arc,position:"Attaccante",age,stats,ovr:calcOvr(stats),club:null,trialsDone:0,trialStats:[],season:1,week:1,weekLived:false,u18Seasons:0,isU18:true,proStatus:"u18",goals:0,assists:0,matches:0,totalGoals:0,totalAssists:0,totalMatches:0,morale:legacyBonus?clamp(70+(legacyBonus.moraleBoost||0),0,100):70,fatigue:0,popularity:20,skillPoints:2,log:[],history:[],matchHistory:[],value:0.8,coachTrust:60,form:70,transferOffers:[],offerHistory:[],contract:{duration:1,wage:rng(200,500),expiresAtSeason:2},aiData:{lastOpponentTactic:null,scoutReports:{},pressReports:{}},dreamClub:dreamClub||null,worldMemory:[],rival:null,saveVersion:SAVE_VERSION,...(legacyBonus?{legacyBonusLabel:legacyBonus.label}:{}),...(challenge?{challenge:{id:challenge.id,completed:false,failed:false}}:{})});
+    const newPlayerBase={name:name.trim(),nation,avatarId,archetype:arc,position:"Attaccante",age,stats,ovr:calcOvr(stats),club:null,trialsDone:0,trialStats:[],season:1,week:1,weekLived:false,u18Seasons:0,isU18:true,proStatus:"u18",goals:0,assists:0,matches:0,totalGoals:0,totalAssists:0,totalMatches:0,morale:legacyBonus?clamp(70+(legacyBonus.moraleBoost||0),0,100):70,fatigue:0,popularity:20,skillPoints:2,log:[],history:[],matchHistory:[],value:0.8,coachTrust:60,form:70,transferOffers:[],offerHistory:[],contract:{duration:1,wage:rng(200,500),expiresAtSeason:2},aiData:{lastOpponentTactic:null,scoutReports:{},pressReports:{}},dreamClub:dreamClub||null,worldMemory:[],rival:null,saveVersion:SAVE_VERSION,...(legacyBonus?{legacyBonusLabel:legacyBonus.label}:{}),...(challenge?{challenge:{id:challenge.id,completed:false,failed:false}}:{})};
+    onCreate({...newPlayerBase,teammates:generateTeammates(newPlayerBase),journalists:generateJournalists()});
   };
   const perPage=6;const totalPages=Math.ceil(AVATARS.length/perPage);const pageAvatars=AVATARS.slice(page*perPage,(page+1)*perPage);
   return(
@@ -7764,6 +7950,9 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       newP={...newP,rival:(newP.proStatus==="pro"&&newP.club)?generateRival(newP):null};
       changed=true;
     }
+    // Sprint 24 migrations
+    if(!('teammates' in newP)){newP={...newP,teammates:generateTeammates(newP)};changed=true;}
+    if(!('journalists' in newP)){newP={...newP,journalists:generateJournalists()};changed=true;}
     if(changed){setPlayer(newP);}
   },[]);// eslint-disable-line
   const[darkMode,setDarkMode]=useState(()=>localStorage.getItem("cpm-dark")==="1");
@@ -7783,6 +7972,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
   const[interviewModal,setInterviewModal]=useState(null); // {q, paper, opponent, matchCtx}
   const[interviewFeedback,setInterviewFeedback]=useState(null); // {tone, label, ef} shown briefly
   const[coachModal,setCoachModal]=useState(null); // {dialogue, chosen} — Parla col Mister
+  const[misterDiscorsoModal,setMisterDiscorsoModal]=useState(null); // {coachName, line, mw} pre-match speech
 
   const notify=(msg,color=TH.primary)=>{setNotif({msg,color});setTimeout(()=>setNotif(null),2800);};
 
@@ -7799,18 +7989,38 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
   const applyInterviewAnswer=(ans)=>{
     const ef=ans.ef||{};
     const toneLabel={diplomatico:"🤝 Diplomatico",diretto:"🔥 Diretto",umile:"🙏 Umile"}[ans.tone]||ans.tone;
-    setPlayer(p=>({
-      ...p,
-      morale:clamp((p.morale||70)+(ef.m||0),0,100),
-      popularity:clamp((p.popularity||20)+(ef.p||0),0,100),
-      coachTrust:clamp((p.coachTrust||60)+(ef.t||0),0,100),
-      form:clamp((p.form||70)+(ef.f||0),30,95),
-      value:Math.max(0.5,(p.value||0.8)+(ef.v||0)),
-      log:[`🎙️ [${ans.tone}] "${ans.txt.substring(0,45)}…"`,...(p.log||[])].slice(0,60),
-    }));
+    // Sprint 24C: polemic risk — compute from current state before setPlayer
+    const jId=interviewModal?.journalistId;
+    const curJ=jId?(player.journalists||[]).find(j=>j.id===jId):null;
+    const isPolemic=ans.tone==="diretto"&&curJ?.type==="critico"&&(curJ?.trust||50)<45&&Math.random()<0.15;
+    setPlayer(p=>{
+      // Update journalist trust
+      let updJournalists=p.journalists||[];
+      if(jId){
+        updJournalists=updJournalists.map(j=>{
+          if(j.id!==jId)return j;
+          let delta=0;
+          if(ans.tone==="umile")delta=j.type==="fan"?8:j.type==="critico"?5:4;
+          else if(ans.tone==="diplomatico")delta=j.type==="fan"?4:j.type==="critico"?2:3;
+          else if(ans.tone==="diretto")delta=j.type==="fan"?-3:j.type==="critico"?-6:j.type==="investigativa"?2:-4;
+          return{...j,trust:clamp((j.trust||50)+delta,0,100),lastTone:ans.tone};
+        });
+      }
+      return{
+        ...p,
+        journalists:updJournalists,
+        morale:clamp((p.morale||70)+(ef.m||0),0,100),
+        popularity:clamp((p.popularity||20)+(ef.p||0)+(isPolemic?-8:0),0,100),
+        coachTrust:clamp((p.coachTrust||60)+(ef.t||0)+(isPolemic?-5:0),0,100),
+        form:clamp((p.form||70)+(ef.f||0),30,95),
+        value:Math.max(0.5,(p.value||0.8)+(ef.v||0)),
+        log:[`🎙️ [${ans.tone}] "${ans.txt.substring(0,45)}…"`,...(p.log||[])].slice(0,60),
+      };
+    });
     setInterviewFeedback({tone:ans.tone,label:toneLabel,ef});
     setInterviewModal(null);
     setTimeout(()=>setInterviewFeedback(null),2800);
+    if(isPolemic)setTimeout(()=>notify(`🔥 POLEMICA! ${curJ?.name||"Il giornalista"} risponde duramente. Il caso esplode sui social.`,"#ef4444"),600);
   };
 
   // global keyboard shortcuts
@@ -7932,7 +8142,30 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     const derby=isDerby(player.club?.id,opp.id||md.opponentId);
     setCurrentMatchDerby(derby||null);
     if(derby)setTimeout(()=>notify(`🔥 ${derby.e} ${derby.name}! Atmosfera incandescente!`,"#f59e0b"),200);
-    setMatchOpp(opp);setMatchIsHome(md.isHome!==false);setScreen("match");
+    setMatchOpp(opp);setMatchIsHome(md.isHome!==false);
+    // Sprint 24A: mister discorso for high-stakes matches (mw ≥ 7)
+    const mw=calcMatchWeight(player,opp.id||md.opponentId,player.standings||[],player.week||1);
+    if(mw>=7&&player.coach){
+      const styleLines={
+        Offensivo:["Attaccate. Senza paura. Voglio gol.","Premi su di loro dal primo minuto. Non dargli fiato."],
+        Difensivo:["Prima la fase difensiva. Se teniamo zero, vinciamo.","Compatti. Ogni uomo al suo posto."],
+        Pressing:["Alta intensità dal primo secondo. Pressiamo alto!","Benzina piena — ve la chiedo tutta oggi."],
+        Possesso:["Palla a terra. Costruiamo. Non buttiamo via nulla.","Il possesso è potere. Fateli correre."],
+        Bilanciato:["Leggete la partita. Adattatevi.","Volete fare la storia? È qui. È adesso."],
+        Contropiede:["Lasciateli venire. Poi colpite.","Difendiamo e aspettiamo il momento giusto."],
+      };
+      const lines=styleLines[player.coach.style]||styleLines.Bilanciato;
+      setMisterDiscorsoModal({coachName:player.coach.name,line:pick(lines),mw,oppName:opp.n});
+      return; // will start match after user responds
+    }
+    setScreen("match");
+  };
+  const confirmMisterDiscorso=(responseKey)=>{
+    const efMap={pos:{morale:8,coachTrust:5},neu:{morale:3},neg:{morale:-4,fatigue:5}};
+    const ef=efMap[responseKey]||{};
+    setPlayer(p=>({...p,morale:clamp((p.morale||70)+(ef.morale||0),0,100),coachTrust:clamp((p.coachTrust||60)+(ef.coachTrust||0),0,100),fatigue:clamp((p.fatigue||0)+(ef.fatigue||0),0,100)}));
+    setMisterDiscorsoModal(null);
+    setScreen("match");
   };
 
   // Anti-double-click / rapid-Enter guard
@@ -8058,10 +8291,12 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     setScreen("postmatch");setTab("dashboard");
     if(newInjured){const iT=INJURY_TYPES_META[injuryType]||{label:"Infortunio",icon:"🩹"};notify(`${iT.icon} ${iT.label}! Stop: ${injuryWeeks} settiman${injuryWeeks===1?"a":"e"}.`,TH.danger);}
     triggeredMilestones.forEach((m,i)=>setTimeout(()=>notify(m.txt,m.color),1200+i*2400));
-    // Sprint 15: 15% chance post-match interview
+    // Sprint 15: 15% chance post-match interview (Sprint 24C: use journalist if available)
     if(Math.random()<0.15){
       const iw=pickInterviewByCtx(player,result);
-      setTimeout(()=>setInterviewModal({q:iw.q,paper:iw.paper,opponent:result.opponent||null,matchCtx:result.won?"win":result.drew?"draw":"loss"}),900);
+      const pJourno=(player.journalists||[]).length>0&&Math.random()<0.55?pick(player.journalists):null;
+      const paperInfo=pJourno?{...iw.paper,name:pJourno.name,color:pJourno.color,e:pJourno.icon}:iw.paper;
+      setTimeout(()=>setInterviewModal({q:iw.q,paper:paperInfo,opponent:result.opponent||null,matchCtx:result.won?"win":result.drew?"draw":"loss",journalistId:pJourno?.id}),900);
     }
     // S11.4: derby win bonus
     if(currentMatchDerby&&result.won){setTimeout(()=>notify(`🔥 ${currentMatchDerby.e||""} ${currentMatchDerby.name} VINTO! Popolarità +12!`,"#f59e0b"),600);setPlayer(p=>({...p,popularity:clamp((p.popularity||20)+12,0,100)}));}
@@ -8077,6 +8312,34 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     if(newAch.length>0){setPlayer(p=>({...p,achievements:[...(p.achievements||[]),...newAch]}));newAch.forEach((id,i)=>{const def=ACHIEVEMENTS.find(a=>a.id===id);if(def)setTimeout(()=>notify(`${def.icon} Achievement: ${def.name}!`,"#7c3aed"),2000+i*2500);});}
     // S21: rivalry tracking
     if(result.opponent){setPlayer(p=>{const rv=p.rivalries||[];const existing=rv.find(r=>r.opponent===result.opponent);if(existing){const upd=rv.map(r=>r.opponent===result.opponent?{...r,matches:r.matches+1,wins:r.wins+(result.won?1:0),goals:r.goals+result.goals,lastSeason:p.season||1}:r);return{...p,rivalries:upd};}else if(rv.length<10){return{...p,rivalries:[...rv,{opponent:result.opponent,oppAbbr:result.oppAbbr||"???",oppCol:result.oppCol||"#888",matches:1,wins:result.won?1:0,goals:result.goals,lastSeason:p.season||1}]};}return p;});}
+  };
+
+  // Sprint 24 — apply impulse/spogliatoio choice effects (called from weekLiveModal choice buttons)
+  const handleImpulseChoice=(choice)=>{
+    const ef=choice.ef||{};
+    setPlayer(p=>{
+      let updTeammates=p.teammates||[];
+      if(choice.bond!=null&&weekLiveModal?.teammate){
+        const tName=weekLiveModal.teammate.name;
+        updTeammates=updTeammates.map(t=>t.name===tName?{...t,bond:clamp((t.bond||40)+(choice.bond||0),0,100)}:t);
+      }
+      return{...p,teammates:updTeammates,
+        morale:clamp((p.morale||70)+(ef.morale||0),0,100),
+        fatigue:clamp((p.fatigue||0)+(ef.fatigue||0),0,100),
+        form:clamp((p.form||70)+(ef.form||0),30,95),
+        popularity:clamp((p.popularity||20)+(ef.popularity||0),0,100),
+        coachTrust:clamp((p.coachTrust||60)+(ef.coachTrust||0),0,100),
+        value:Math.max(0.5,(p.value||0.8)+(ef.value||0)),
+      };
+    });
+    const bits=[];
+    if(ef.morale)bits.push(`😄${ef.morale>0?"+":""}${ef.morale}`);
+    if(ef.form)bits.push(`💪${ef.form>0?"+":""}${ef.form}`);
+    if(ef.fatigue)bits.push(`⚡${ef.fatigue>0?"+":""}${ef.fatigue}`);
+    if(ef.popularity)bits.push(`⭐${ef.popularity>0?"+":""}${ef.popularity}`);
+    if(ef.coachTrust)bits.push(`🤝${ef.coachTrust>0?"+":""}${ef.coachTrust}`);
+    if(bits.length)notify(bits.join(" "));
+    setWeekLiveModal(null);
   };
 
   // "Vivi la settimana" — applies events/form changes, does NOT advance week counter
@@ -8096,6 +8359,25 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       });
       const iT=INJURY_TYPES_META[type]||{label:"Infortunio",icon:"🩹"};
       setTimeout(()=>setWeekLiveModal({event:{txt:rehab.txt},changes:{fatigue:ef.fatigue||0,morale:ef.morale||0,form:ef.form||0},isRehab:true,rehabIcon:rehab.icon,injuryLabel:iT.label,injuryWeeks:wk}),50);
+      return;
+    }
+    // Sprint 24A: 12% chance spogliatoio moment on match weeks
+    const hasMdThisWeek=(player.calendar||[]).some(md=>md.week===(player.week||1)&&!md.played);
+    if(hasMdThisWeek&&!player.injured&&Math.random()<0.12&&(player.teammates||[]).length>0){
+      const mate=pick(player.teammates);
+      const arcMoments=SPOGLIATOIO_MOMENTS.filter(m=>m.archetype===mate.archetype||m.archetype===null);
+      const moment=pick(arcMoments.length>0?arcMoments:SPOGLIATOIO_MOMENTS);
+      const txt=moment.txt.replace(/\{nome\}/g,mate.name);
+      setPlayer(p=>({...p,weekLived:true}));
+      setTimeout(()=>setWeekLiveModal({event:{txt,e:mate.icon},changes:{},choices:moment.choices,isSpogliatoio:true,teammate:{name:mate.name,icon:mate.icon,archetype:mate.archetype}}),50);
+      return;
+    }
+    // Sprint 24B: 40% chance weekly impulse on non-match weeks
+    if(!hasMdThisWeek&&Math.random()<0.40){
+      const impulse=pick(WEEKLY_IMPULSES);
+      setPlayer(p=>({...p,weekLived:true}));
+      const catIcon={opportunità:"🌟",scelta:"⚡",tensione:"🔥",conseguenza:"🎲"}[impulse.cat]||"💡";
+      setTimeout(()=>setWeekLiveModal({event:{txt:impulse.txt,e:catIcon},changes:{},choices:impulse.choices,isImpulse:true,cat:impulse.cat}),50);
       return;
     }
     const doInterview=Math.random()<0.20; // Sprint 15: 20% chance of interview instead of weekLiveModal
@@ -8128,11 +8410,10 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
         if(ef.mentalità)newStats.mentalità=clamp(p.stats.mentalità+(ef.mentalità),1,99);
         if(ef.dribbling)newStats.dribbling=clamp(p.stats.dribbling+(ef.dribbling),1,99);
         upd={...upd,...extras,stats:newStats,ovr:calcOvr(newStats),log:[ev.txt,...(p.log||[])].slice(0,60)};
-        // Sprint 15: 20% chance show interview instead of weekLiveModal
-        if(doInterview){const iw=pickInterviewByCtx(p);setTimeout(()=>setInterviewModal({q:iw.q,paper:iw.paper,opponent:null,matchCtx:"weekly"}),50);}
+        if(doInterview){const iw=pickInterviewByCtx(p);const pJ=(p.journalists||[]).length>0&&Math.random()<0.55?pick(p.journalists):null;const pi=pJ?{...iw.paper,name:pJ.name,color:pJ.color,e:pJ.icon}:iw.paper;setTimeout(()=>setInterviewModal({q:iw.q,paper:pi,opponent:null,matchCtx:"weekly",journalistId:pJ?.id}),50);}
         else setTimeout(()=>setWeekLiveModal({event:ev,changes:{morale:ef.morale||0,form:ef.form||0,fatigue:ef.fatigue||0}}),50);
       }else{
-        if(doInterview){const iw=pickInterviewByCtx(p);setTimeout(()=>setInterviewModal({q:iw.q,paper:iw.paper,opponent:null,matchCtx:"weekly"}),50);}
+        if(doInterview){const iw=pickInterviewByCtx(p);const pJ=(p.journalists||[]).length>0&&Math.random()<0.55?pick(p.journalists):null;const pi=pJ?{...iw.paper,name:pJ.name,color:pJ.color,e:pJ.icon}:iw.paper;setTimeout(()=>setInterviewModal({q:iw.q,paper:pi,opponent:null,matchCtx:"weekly",journalistId:pJ?.id}),50);}
         else setTimeout(()=>setWeekLiveModal({event:{txt:"⚽ Settimana di allenamento regolare. Nessun evento particolare."},changes:{}}),50);
       }
       return{...p,...upd};
@@ -8419,7 +8700,9 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       const phenomLog=isPhenomSeason?`⚡ Fenomeno generazionale annunciato!`:null;
       const relegLog=playerClubRelegated?`⬇️ Club retrocesso: calo prestige e morale`:null;
       const gbLog=isGB?`🏆 Miglior Giovane d'Europa Stagione ${p.season||1}! Riconoscimento continentale.`:null;
-      return{...p,season:newSeason,age:newAge,week:1,weekLived:false,goals:0,assists:0,matches:0,fatigue:0,skillPoints:(p.skillPoints||0)+2,stats:agedStats,ovr:newOvr,contract:newContract,contractExpired,morale:clamp((p.morale||70)+bonM+(playerClubRelegated?-10:0)+(isGB?15:0),0,100),coachTrust:clamp((p.coachTrust||60)+bonCT+(playerClubRelegated?-8:0)+(coachChanged?newCoach.trustMod:0),0,100),popularity:clamp((p.popularity||20)+bonPop+(isGB?25:0),0,100),value:Math.max(0.5,(p.value||0.8)+bonVal+(playerClubRelegated?-0.3:0)+(isGB?0.8:0)),log:[agingLog,...objLogs,...[gbLog,coachLog,phenomLog,relegLog].filter(Boolean),...(p.log||[])].slice(0,60),standings:newStandings,calendar:newCalendar,matchHistory:[],seasonObjectives:newObjectives,history:[...(p.history||[]),prevHist].slice(-50),clubPrestigeShifts:updatedShifts,cup:newCup,coach:newCoach,goldenBoys:gbSeasons,records:newRecords};
+      const newTeammates=generateTeammates({...p,season:newSeason});
+      const newJournalists=generateJournalists();
+      return{...p,season:newSeason,age:newAge,week:1,weekLived:false,goals:0,assists:0,matches:0,fatigue:0,skillPoints:(p.skillPoints||0)+2,stats:agedStats,ovr:newOvr,contract:newContract,contractExpired,morale:clamp((p.morale||70)+bonM+(playerClubRelegated?-10:0)+(isGB?15:0),0,100),coachTrust:clamp((p.coachTrust||60)+bonCT+(playerClubRelegated?-8:0)+(coachChanged?newCoach.trustMod:0),0,100),popularity:clamp((p.popularity||20)+bonPop+(isGB?25:0),0,100),value:Math.max(0.5,(p.value||0.8)+bonVal+(playerClubRelegated?-0.3:0)+(isGB?0.8:0)),log:[agingLog,...objLogs,...[gbLog,coachLog,phenomLog,relegLog].filter(Boolean),...(p.log||[])].slice(0,60),standings:newStandings,calendar:newCalendar,matchHistory:[],seasonObjectives:newObjectives,history:[...(p.history||[]),prevHist].slice(-50),clubPrestigeShifts:updatedShifts,cup:newCup,coach:newCoach,goldenBoys:gbSeasons,records:newRecords,teammates:newTeammates,journalists:newJournalists};
     });
     setSeasonEndData(null);
     setScreen("dashboard");
@@ -8570,23 +8853,99 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
 
       {/* == WeekLife modal == */}
       {weekLiveModal&&(
-        <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.45)",zIndex:9997,display:"flex",alignItems:"center",justifyContent:"center",padding:20}}>
-          <Card style={{maxWidth:380,width:"100%",padding:"22px"}}>
+        <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.55)",zIndex:9997,display:"flex",alignItems:"center",justifyContent:"center",padding:20}}>
+          <Card style={{maxWidth:400,width:"100%",padding:"22px"}}>
             <div style={{fontSize:11,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:6}}>Settimana {player.week} — {player.club?.name||player.club?.n}</div>
-            <div style={{fontSize:18,marginBottom:weekLiveModal.isRehab?8:14}}>{weekLiveModal.isRehab?"🏥 Riabilitazione":"📋 Questa settimana"}</div>
-            {weekLiveModal.isRehab&&<div style={{fontSize:11,color:"#d97706",marginBottom:12,display:"flex",alignItems:"center",gap:6}}><span>🩹</span><span>{weekLiveModal.injuryLabel} — ancora {weekLiveModal.injuryWeeks} settiman{weekLiveModal.injuryWeeks===1?"a":"e"} di stop</span></div>}
-            <Card bg={weekLiveModal.isRehab?"#fff7ed":"#f0fdf4"} border={weekLiveModal.isRehab?"#fed7aa":"#bbf7d0"} shadow={false} style={{padding:"12px 14px",marginBottom:12}}>
-              <div style={{fontSize:13,color:TH.text,lineHeight:1.7}}>{weekLiveModal.event.txt}</div>
-            </Card>
-            {Object.keys(weekLiveModal.changes||{}).length>0&&(
-              <div style={{display:"flex",gap:8,marginBottom:12,flexWrap:"wrap"}}>
-                {weekLiveModal.changes.morale!==undefined&&weekLiveModal.changes.morale!==0&&<div style={{padding:"4px 10px",borderRadius:20,background:weekLiveModal.changes.morale>0?"#dcfce7":"#fee2e2",color:weekLiveModal.changes.morale>0?TH.success:TH.danger,fontSize:11,fontWeight:700}}>😄 Morale {weekLiveModal.changes.morale>0?"+":""}{weekLiveModal.changes.morale}</div>}
-                {weekLiveModal.changes.form!==undefined&&weekLiveModal.changes.form!==0&&<div style={{padding:"4px 10px",borderRadius:20,background:weekLiveModal.changes.form>0?"#dcfce7":"#fee2e2",color:weekLiveModal.changes.form>0?TH.success:TH.danger,fontSize:11,fontWeight:700}}>💪 Forma {weekLiveModal.changes.form>0?"+":""}{weekLiveModal.changes.form}</div>}
-                {weekLiveModal.changes.fatigue!==undefined&&weekLiveModal.changes.fatigue!==0&&<div style={{padding:"4px 10px",borderRadius:20,background:weekLiveModal.changes.fatigue<0?"#dcfce7":"#fef9c3",color:weekLiveModal.changes.fatigue<0?TH.success:TH.warning,fontSize:11,fontWeight:700}}>⚡ Fatica {weekLiveModal.changes.fatigue>0?"+":""}{weekLiveModal.changes.fatigue}</div>}
+            {weekLiveModal.isSpogliatoio?(
+              <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:12}}>
+                <div style={{fontSize:28}}>{weekLiveModal.teammate?.icon||"👥"}</div>
+                <div>
+                  <div style={{fontSize:11,color:TH.muted,textTransform:"uppercase",letterSpacing:1.2}}>Lo Spogliatoio</div>
+                  <div style={{fontSize:13,fontWeight:800,color:TH.text}}>{weekLiveModal.teammate?.name||"Un compagno"}</div>
+                  <div style={{fontSize:10,color:TH.faint}}>{TEAMMATE_ARCHETYPES.find(a=>a.id===weekLiveModal.teammate?.archetype)?.name||""}</div>
+                </div>
               </div>
+            ):weekLiveModal.isImpulse?(
+              <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:12}}>
+                <div style={{fontSize:26}}>{weekLiveModal.event?.e||"💡"}</div>
+                <div>
+                  <div style={{fontSize:11,color:TH.muted,textTransform:"uppercase",letterSpacing:1.2}}>Impulso settimana</div>
+                  <div style={{fontSize:11,color:{opportunità:"#16a34a",scelta:"#2563eb",tensione:"#dc2626",conseguenza:"#7c3aed"}[weekLiveModal.cat]||TH.primary,fontWeight:700,textTransform:"capitalize"}}>{weekLiveModal.cat}</div>
+                </div>
+              </div>
+            ):(
+              <div style={{fontSize:18,marginBottom:weekLiveModal.isRehab?8:14}}>{weekLiveModal.isRehab?"🏥 Riabilitazione":"📋 Questa settimana"}</div>
             )}
-            <div style={{fontSize:11,color:TH.faint,marginBottom:14}}>{weekLiveModal.isRehab?"Sessione completata. Clicca 'Avanza Settimana' per continuare il recupero.":"La settimana è stata vissuta. Clicca \"Avanza\" per passare alla prossima o gioca la partita prima."}</div>
-            <Btn onClick={()=>setWeekLiveModal(null)} v="primary" fw style={{padding:"11px"}}>✅ Capito</Btn>
+            {weekLiveModal.isRehab&&<div style={{fontSize:11,color:"#d97706",marginBottom:12,display:"flex",alignItems:"center",gap:6}}><span>🩹</span><span>{weekLiveModal.injuryLabel} — ancora {weekLiveModal.injuryWeeks} settiman{weekLiveModal.injuryWeeks===1?"a":"e"} di stop</span></div>}
+            <Card bg={weekLiveModal.isRehab?"#fff7ed":weekLiveModal.isSpogliatoio?"#f0f9ff":weekLiveModal.isImpulse?"#fafaf9":"#f0fdf4"} border={weekLiveModal.isRehab?"#fed7aa":weekLiveModal.isSpogliatoio?"#bae6fd":weekLiveModal.isImpulse?"#e5e7eb":"#bbf7d0"} shadow={false} style={{padding:"12px 14px",marginBottom:12}}>
+              <div style={{fontSize:13,color:TH.text,lineHeight:1.7,fontStyle:weekLiveModal.isSpogliatoio?"italic":"normal"}}>"{weekLiveModal.event.txt}"</div>
+            </Card>
+            {/* Choice buttons for impulse / spogliatoio */}
+            {weekLiveModal.choices&&weekLiveModal.choices.length>0?(
+              <div style={{display:"flex",flexDirection:"column",gap:8,marginBottom:4}}>
+                {weekLiveModal.choices.map((ch,i)=>(
+                  <button key={i} onClick={()=>handleImpulseChoice(ch)} style={{textAlign:"left",background:"transparent",border:`1.5px solid ${TH.cardBorder}`,borderRadius:10,padding:"10px 12px",cursor:"pointer",fontFamily:"inherit",outline:"none",display:"block",width:"100%"}}
+                    onMouseEnter={e=>{e.currentTarget.style.background=TH.bg;e.currentTarget.style.borderColor=TH.primary;}}
+                    onMouseLeave={e=>{e.currentTarget.style.background="transparent";e.currentTarget.style.borderColor=TH.cardBorder;}}>
+                    <div style={{fontSize:13,color:TH.text,lineHeight:1.5}}>{ch.txt}</div>
+                    {ch.ef&&Object.keys(ch.ef).length>0&&(
+                      <div style={{display:"flex",gap:5,flexWrap:"wrap",marginTop:4}}>
+                        {ch.ef.morale!=null&&ch.ef.morale!==0&&<span style={{fontSize:9,color:ch.ef.morale>0?TH.success:TH.danger,fontWeight:700}}>😄{ch.ef.morale>0?"+":""}{ch.ef.morale}</span>}
+                        {ch.ef.form!=null&&ch.ef.form!==0&&<span style={{fontSize:9,color:ch.ef.form>0?TH.success:TH.danger,fontWeight:700}}>💪{ch.ef.form>0?"+":""}{ch.ef.form}</span>}
+                        {ch.ef.fatigue!=null&&ch.ef.fatigue!==0&&<span style={{fontSize:9,color:ch.ef.fatigue<0?TH.success:TH.warning,fontWeight:700}}>⚡{ch.ef.fatigue>0?"+":""}{ch.ef.fatigue}</span>}
+                        {ch.ef.coachTrust!=null&&ch.ef.coachTrust!==0&&<span style={{fontSize:9,color:ch.ef.coachTrust>0?TH.success:TH.danger,fontWeight:700}}>🤝{ch.ef.coachTrust>0?"+":""}{ch.ef.coachTrust}</span>}
+                        {ch.ef.popularity!=null&&ch.ef.popularity!==0&&<span style={{fontSize:9,color:ch.ef.popularity>0?TH.success:TH.danger,fontWeight:700}}>⭐{ch.ef.popularity>0?"+":""}{ch.ef.popularity}</span>}
+                        {ch.bond!=null&&ch.bond!==0&&<span style={{fontSize:9,color:ch.bond>0?"#7c3aed":"#64748b",fontWeight:700}}>💜 Legame{ch.bond>0?"+":""}{ch.bond}</span>}
+                      </div>
+                    )}
+                  </button>
+                ))}
+              </div>
+            ):(
+              <>
+                {Object.keys(weekLiveModal.changes||{}).length>0&&(
+                  <div style={{display:"flex",gap:8,marginBottom:12,flexWrap:"wrap"}}>
+                    {weekLiveModal.changes.morale!==undefined&&weekLiveModal.changes.morale!==0&&<div style={{padding:"4px 10px",borderRadius:20,background:weekLiveModal.changes.morale>0?"#dcfce7":"#fee2e2",color:weekLiveModal.changes.morale>0?TH.success:TH.danger,fontSize:11,fontWeight:700}}>😄 Morale {weekLiveModal.changes.morale>0?"+":""}{weekLiveModal.changes.morale}</div>}
+                    {weekLiveModal.changes.form!==undefined&&weekLiveModal.changes.form!==0&&<div style={{padding:"4px 10px",borderRadius:20,background:weekLiveModal.changes.form>0?"#dcfce7":"#fee2e2",color:weekLiveModal.changes.form>0?TH.success:TH.danger,fontSize:11,fontWeight:700}}>💪 Forma {weekLiveModal.changes.form>0?"+":""}{weekLiveModal.changes.form}</div>}
+                    {weekLiveModal.changes.fatigue!==undefined&&weekLiveModal.changes.fatigue!==0&&<div style={{padding:"4px 10px",borderRadius:20,background:weekLiveModal.changes.fatigue<0?"#dcfce7":"#fef9c3",color:weekLiveModal.changes.fatigue<0?TH.success:TH.warning,fontSize:11,fontWeight:700}}>⚡ Fatica {weekLiveModal.changes.fatigue>0?"+":""}{weekLiveModal.changes.fatigue}</div>}
+                  </div>
+                )}
+                <div style={{fontSize:11,color:TH.faint,marginBottom:14}}>{weekLiveModal.isRehab?"Sessione completata. Clicca 'Avanza Settimana' per continuare il recupero.":"La settimana è stata vissuta. Clicca \"Avanza\" per passare alla prossima o gioca la partita prima."}</div>
+                <Btn onClick={()=>setWeekLiveModal(null)} v="primary" fw style={{padding:"11px"}}>✅ Capito</Btn>
+              </>
+            )}
+          </Card>
+        </div>
+      )}
+
+      {/* == Sprint 24A — Discorso del Mister (pre-BIG MATCH) == */}
+      {misterDiscorsoModal&&(
+        <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.7)",zIndex:9998,display:"flex",alignItems:"center",justifyContent:"center",padding:20}}>
+          <Card style={{maxWidth:400,width:"100%",padding:"22px",background:TH.card,border:`1px solid ${TH.cardBorder}`}}>
+            <div style={{textAlign:"center",marginBottom:14}}>
+              <div style={{fontSize:32,marginBottom:4}}>🧑‍💼</div>
+              <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:2,marginBottom:2}}>Discorso Pre-Partita</div>
+              <div style={{fontSize:14,fontWeight:900,color:TH.accent}}>{misterDiscorsoModal.coachName}</div>
+              {misterDiscorsoModal.mw>=8&&<div style={{fontSize:10,marginTop:4,color:"#f59e0b",fontWeight:700}}>🔥 PARTITA EPICA — questo cambia tutto</div>}
+            </div>
+            <div style={{background:TH.bg,borderRadius:10,padding:"14px 16px",marginBottom:16,borderLeft:`3px solid ${TH.accent}`}}>
+              <div style={{fontSize:14,color:TH.text,lineHeight:1.7,fontStyle:"italic"}}>«{misterDiscorsoModal.line}»</div>
+            </div>
+            <div style={{fontSize:11,color:TH.muted,marginBottom:12,textAlign:"center"}}>vs {misterDiscorsoModal.oppName} — come rispondi?</div>
+            <div style={{display:"flex",flexDirection:"column",gap:8}}>
+              {[
+                {key:"pos",txt:"💪 «Siamo pronti. Niente ci ferma.»",color:"#16a34a",hint:"+8 Morale +5 Fiducia mister"},
+                {key:"neu",txt:"😐 «Ce la metterò tutta, mister.»",color:"#ca8a04",hint:"+3 Morale"},
+                {key:"neg",txt:"😰 «Ho qualche dubbio...»",color:"#dc2626",hint:"-4 Morale +5 Fatica"},
+              ].map(opt=>(
+                <button key={opt.key} onClick={()=>confirmMisterDiscorso(opt.key)} style={{textAlign:"left",background:"transparent",border:`1.5px solid ${opt.color}22`,borderRadius:10,padding:"10px 12px",cursor:"pointer",fontFamily:"inherit",outline:"none",display:"block",width:"100%"}}
+                  onMouseEnter={e=>{e.currentTarget.style.background=`${opt.color}10`;e.currentTarget.style.borderColor=opt.color;}}
+                  onMouseLeave={e=>{e.currentTarget.style.background="transparent";e.currentTarget.style.borderColor=`${opt.color}22`;}}>
+                  <div style={{fontSize:13,color:TH.text}}>{opt.txt}</div>
+                  <div style={{fontSize:10,color:TH.faint,marginTop:2}}>{opt.hint}</div>
+                </button>
+              ))}
+            </div>
           </Card>
         </div>
       )}
@@ -9276,6 +9635,58 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
               </Card>
             );
           })()}
+          {/* Sprint 24A — Lo Spogliatoio card */}
+          {(player.teammates||[]).length>0&&(
+            <Card style={{padding:"12px 14px",background:"linear-gradient(135deg,#0c1a2e,#112240)",border:"1px solid rgba(56,189,248,0.2)"}}>
+              <div style={{fontSize:10,color:"rgba(186,230,253,0.7)",textTransform:"uppercase",letterSpacing:1.5,marginBottom:10}}>👥 Lo Spogliatoio</div>
+              <div style={{display:"flex",flexDirection:"column",gap:8}}>
+                {(player.teammates||[]).map((tm,i)=>{
+                  const arc=TEAMMATE_ARCHETYPES.find(a=>a.id===tm.archetype);
+                  const bond=tm.bond||40;
+                  const bondColor=bond>=70?"#4ade80":bond>=50?"#60a5fa":"#94a3b8";
+                  return(
+                    <div key={i} style={{display:"flex",alignItems:"center",gap:10}}>
+                      <div style={{fontSize:22,width:36,textAlign:"center"}}>{tm.icon||"👤"}</div>
+                      <div style={{flex:1}}>
+                        <div style={{fontSize:12,fontWeight:800,color:"#e0f2fe"}}>{tm.name}</div>
+                        <div style={{fontSize:10,color:"rgba(186,230,253,0.5)"}}>{arc?.name||"Compagno"}</div>
+                      </div>
+                      <div style={{textAlign:"right"}}>
+                        <div style={{fontSize:11,fontWeight:700,color:bondColor}}>{bond}%</div>
+                        <div style={{fontSize:9,color:"rgba(186,230,253,0.4)"}}>legame</div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </Card>
+          )}
+          {/* Sprint 24C — La Stampa card */}
+          {(player.journalists||[]).length>0&&(
+            <Card style={{padding:"12px 14px"}}>
+              <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:10}}>📰 La Stampa</div>
+              <div style={{display:"flex",flexDirection:"column",gap:8}}>
+                {(player.journalists||[]).map((j,i)=>{
+                  const relLabel=getJournalistRelLabel(j.trust||50);
+                  const trustColor=(j.trust||50)>=65?TH.success:(j.trust||50)>=45?TH.muted:(j.trust||50)>=30?TH.warning:TH.danger;
+                  const typeLabel={fan:"Fan",critico:"Critico",investigativa:"Investigativo"}[j.type]||j.type;
+                  return(
+                    <div key={i} style={{display:"flex",alignItems:"center",gap:10,paddingBottom:i<(player.journalists.length-1)?8:0,borderBottom:i<(player.journalists.length-1)?`1px solid ${TH.cardBorder}`:"none"}}>
+                      <div style={{fontSize:20,width:30,textAlign:"center"}}>{j.icon||"📰"}</div>
+                      <div style={{flex:1}}>
+                        <div style={{fontSize:12,fontWeight:800,color:TH.text}}>{j.name}</div>
+                        <div style={{fontSize:10,color:j.color||TH.muted}}>{j.paper} · {typeLabel}</div>
+                      </div>
+                      <div style={{textAlign:"right"}}>
+                        <div style={{fontSize:11,fontWeight:700,color:trustColor}}>{relLabel}</div>
+                        <div style={{fontSize:9,color:TH.faint}}>{j.trust||50}/100</div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </Card>
+          )}
           {/* Sprint 19 — Match del Cuore */}
           {(()=>{
             const bm=(player.matchHistory||[]).filter(m=>m.rating!=null&&!m.simulated&&!m.injured).sort((a,b)=>(b.rating||0)-(a.rating||0))[0];
