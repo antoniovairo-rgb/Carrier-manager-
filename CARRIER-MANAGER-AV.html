@@ -30,7 +30,7 @@ const{useState,useEffect,useRef,useCallback}=React;
 /* ========================================
    LIGHT THEME  (req #1)
 ======================================== */
-const TH = {
+let TH = {
   bg:"#f0f7ff", bgGrad:"linear-gradient(160deg,#e8f4fd 0%,#f0faf4 100%)",
   card:"#ffffff", cardBorder:"#dde6f0", shadow:"0 2px 12px rgba(0,0,0,0.07)",
   text:"#1e293b", muted:"#64748b", faint:"#94a3b8",
@@ -39,6 +39,7 @@ const TH = {
   gold:"#b45309", accent:"#7c3aed",
   navBg:"rgba(255,255,255,0.96)",
 };
+const TH_LIGHT_ORIG=Object.freeze({...TH}); // snapshot for restoring light theme
 const TH_LIGHT=TH; // alias used for dark-mode shadowing
 const TH_DARK={...TH,bg:"#0f172a",bgGrad:"linear-gradient(160deg,#0f172a 0%,#0c1428 100%)",card:"#1e293b",cardBorder:"#334155",shadow:"0 2px 12px rgba(0,0,0,0.4)",text:"#f1f5f9",muted:"#94a3b8",faint:"#64748b",navBg:"rgba(15,23,42,0.97)"};
 
@@ -418,37 +419,101 @@ const CLUBS=[
   mkT("kag","Fatih Karagümrük","FKG",61,"#dc2626","#f5f5f5","🇹🇷","Süper Lig"),
   mkT("pen","Pendikspor","PEN",56,"#1d4ed8","#f5f5f5","🇹🇷","Süper Lig"),
   mkT("sam2","Samsunspor","SAM2",57,"#dc2626","#f5f5f5","🇹🇷","Süper Lig"),
-  // -- ITALIA Serie B --
+  // -- ITALIA Serie B (18 squadre) --
   mkT("par","Parma","PAR",52,"#f59e0b","#1d4ed8","🇮🇹","Serie B"),
   mkT("cre","Cremonese","CRE",48,"#dc2626","#f59e0b","🇮🇹","Serie B"),
   mkT("mod","Modena","MOD",47,"#f59e0b","#1d4ed8","🇮🇹","Serie B"),
   mkT("pal","Palermo","PAL",50,"#dc2626","#f5f5f5","🇮🇹","Serie B"),
   mkT("cat","Catanzaro","CTZ",44,"#dc2626","#f5f5f5","🇮🇹","Serie B"),
-  mkT("spe","Spezia","SPE",49,"#f5f5f5","#0f0f0f","🇮🇹","Serie B"),
-  // -- ENGLAND EFL Championship --
+  mkT("spe","Spezia","SPE",49,"#0f0f0f","#1d4ed8","🇮🇹","Serie B"),
+  mkT("bar2","Bari","BAR",49,"#dc2626","#f5f5f5","🇮🇹","Serie B"),
+  mkT("ven","Venezia","VEN",51,"#0f0f0f","#f97316","🇮🇹","Serie B"),
+  mkT("pis","Pisa","PIS",45,"#1d4ed8","#f5f5f5","🇮🇹","Serie B"),
+  mkT("fro","Frosinone","FRO",47,"#f59e0b","#1d4ed8","🇮🇹","Serie B"),
+  mkT("ces","Cesena","CES",43,"#0f0f0f","#f5f5f5","🇮🇹","Serie B"),
+  mkT("sam","Sampdoria","SAM",53,"#1d4ed8","#dc2626","🇮🇹","Serie B"),
+  mkT("sal","Salernitana","SAL",45,"#7c2d12","#f5f5f5","🇮🇹","Serie B"),
+  mkT("cit","Cittadella","CIT",42,"#7c2d12","#f5f5f5","🇮🇹","Serie B"),
+  mkT("sdt","Südtirol","SDT",40,"#dc2626","#f5f5f5","🇮🇹","Serie B"),
+  mkT("cos","Cosenza","COS",38,"#dc2626","#1d4ed8","🇮🇹","Serie B"),
+  mkT("bre","Brescia","BRE",50,"#1d4ed8","#f5f5f5","🇮🇹","Serie B"),
+  mkT("lec2","Lecco","LCC",38,"#1d4ed8","#dc2626","🇮🇹","Serie B"),
+  // -- ENGLAND EFL Championship (18 squadre) --
   mkT("lut","Luton Town","LUT",51,"#f59e0b","#0f0f0f","🏴󠁧󠁢󠁥󠁮󠁧󠁿","EFL Championship"),
   mkT("mid","Middlesbrough","MID",49,"#dc2626","#f5f5f5","🏴󠁧󠁢󠁥󠁮󠁧󠁿","EFL Championship"),
   mkT("cov","Coventry City","COV",50,"#93c5fd","#f5f5f5","🏴󠁧󠁢󠁥󠁮󠁧󠁿","EFL Championship"),
   mkT("swn","Swansea City","SWN",48,"#f5f5f5","#0f0f0f","🏴󠁧󠁢󠁥󠁮󠁧󠁿","EFL Championship"),
   mkT("shu","Sheffield Utd","SHU",53,"#dc2626","#f5f5f5","🏴󠁧󠁢󠁥󠁮󠁧󠁿","EFL Championship"),
   mkT("ips","Ipswich Town","IPS",52,"#1d4ed8","#f5f5f5","🏴󠁧󠁢󠁥󠁮󠁧󠁿","EFL Championship"),
-  // -- GERMANY 2. Bundesliga --
+  mkT("lee","Leeds United","LEE",56,"#f5f5f5","#f59e0b","🏴󠁧󠁢󠁥󠁮󠁧󠁿","EFL Championship"),
+  mkT("bur","Burnley","BUR",54,"#7c2d12","#93c5fd","🏴󠁧󠁢󠁥󠁮󠁧󠁿","EFL Championship"),
+  mkT("nor","Norwich City","NOR",52,"#f59e0b","#15803d","🏴󠁧󠁢󠁥󠁮󠁧󠁿","EFL Championship"),
+  mkT("wba","West Brom","WBA",53,"#1d4ed8","#f5f5f5","🏴󠁧󠁢󠁥󠁮󠁧󠁿","EFL Championship"),
+  mkT("bri","Bristol City","BRS",48,"#dc2626","#f5f5f5","🏴󠁧󠁢󠁥󠁮󠁧󠁿","EFL Championship"),
+  mkT("milw","Millwall","MIL",47,"#1d4ed8","#f5f5f5","🏴󠁧󠁢󠁥󠁮󠁧󠁿","EFL Championship"),
+  mkT("bla","Blackburn Rovers","BBR",50,"#1d4ed8","#f5f5f5","🏴󠁧󠁢󠁥󠁮󠁧󠁿","EFL Championship"),
+  mkT("pre","Preston NE","PNE",46,"#f5f5f5","#1d4ed8","🏴󠁧󠁢󠁥󠁮󠁧󠁿","EFL Championship"),
+  mkT("car","Cardiff City","CDF",49,"#1d4ed8","#dc2626","🏴󠁧󠁢󠁥󠁮󠁧󠁿","EFL Championship"),
+  mkT("wat","Watford","WAT",51,"#f59e0b","#0f0f0f","🏴󠁧󠁢󠁥󠁮󠁧󠁿","EFL Championship"),
+  mkT("sto","Stoke City","STK",50,"#dc2626","#f5f5f5","🏴󠁧󠁢󠁥󠁮󠁧󠁿","EFL Championship"),
+  mkT("qpr","Queens Park R.","QPR",47,"#93c5fd","#f5f5f5","🏴󠁧󠁢󠁥󠁮󠁧󠁿","EFL Championship"),
+  // -- GERMANY 2. Bundesliga (18 squadre) --
   mkT("hbu","Hamburger SV","HSV",54,"#dc2626","#f5f5f5","🇩🇪","2. Bundesliga"),
   mkT("han","Hannover 96","H96",50,"#15803d","#f5f5f5","🇩🇪","2. Bundesliga"),
   mkT("nub","1. FC Nürnberg","FCN",48,"#dc2626","#f5f5f5","🇩🇪","2. Bundesliga"),
   mkT("kar","Karlsruher SC","KSC",44,"#1d4ed8","#f5f5f5","🇩🇪","2. Bundesliga"),
   mkT("kil","Holstein Kiel","KIE",46,"#dc2626","#f5f5f5","🇩🇪","2. Bundesliga"),
   mkT("kaa","FC Kaiserslautern","FCK",47,"#dc2626","#f5f5f5","🇩🇪","2. Bundesliga"),
-  // -- FRANCE Ligue 2 --
+  mkT("duf","Fortuna Düsseldorf","FDF",51,"#dc2626","#f5f5f5","🇩🇪","2. Bundesliga"),
+  mkT("fur","Greuther Fürth","SGF",46,"#15803d","#f5f5f5","🇩🇪","2. Bundesliga"),
+  mkT("s04","FC Schalke 04","S04",55,"#1d4ed8","#f5f5f5","🇩🇪","2. Bundesliga"),
+  mkT("mag","1. FC Magdeburg","FCM",44,"#1d4ed8","#f59e0b","🇩🇪","2. Bundesliga"),
+  mkT("pad","SC Paderborn","SCP",42,"#1d4ed8","#f5f5f5","🇩🇪","2. Bundesliga"),
+  mkT("ros","FC Hansa Rostock","HRO",43,"#1d4ed8","#f59e0b","🇩🇪","2. Bundesliga"),
+  mkT("brn","E. Braunschweig","EBS",39,"#f59e0b","#1d4ed8","🇩🇪","2. Bundesliga"),
+  mkT("sar","FC Saarbrücken","FCS",41,"#1d4ed8","#0f0f0f","🇩🇪","2. Bundesliga"),
+  mkT("dre","Dynamo Dresden","DDR",44,"#f59e0b","#0f0f0f","🇩🇪","2. Bundesliga"),
+  mkT("stp","FC St. Pauli","STP",52,"#7c2d12","#f5f5f5","🇩🇪","2. Bundesliga"),
+  mkT("osn","VfL Osnabrück","VOS",38,"#15803d","#f5f5f5","🇩🇪","2. Bundesliga"),
+  mkT("arm","Arminia Bielefeld","DSC",49,"#1d4ed8","#f5f5f5","🇩🇪","2. Bundesliga"),
+  // -- FRANCE Ligue 2 (18 squadre) --
   mkT("gre","Grenoble","GRE",40,"#1d4ed8","#f5f5f5","🇫🇷","Ligue 2"),
   mkT("nic2","Niort","NIO",38,"#f5f5f5","#0f0f0f","🇫🇷","Ligue 2"),
-  mkT("val2","Valenciennes","VAL2",42,"#dc2626","#f5f5f5","🇫🇷","Ligue 2"),
+  mkT("val2","Valenciennes","VAL",42,"#dc2626","#f5f5f5","🇫🇷","Ligue 2"),
   mkT("pau","Pau FC","PAU",37,"#1d4ed8","#f59e0b","🇫🇷","Ligue 2"),
-  // -- SPAIN Segunda División --
+  mkT("cae","SM Caen","SMC",51,"#dc2626","#1d4ed8","🇫🇷","Ligue 2"),
+  mkT("lav","Laval","LAV",42,"#f59e0b","#dc2626","🇫🇷","Ligue 2"),
+  mkT("ann","FC Annecy","ANN",43,"#dc2626","#f59e0b","🇫🇷","Ligue 2"),
+  mkT("tro","ES Troyes","EST",48,"#1d4ed8","#f5f5f5","🇫🇷","Ligue 2"),
+  mkT("ami","Amiens SC","ASC",47,"#f5f5f5","#0f0f0f","🇫🇷","Ligue 2"),
+  mkT("dun","USL Dunkerque","ULD",38,"#15803d","#f5f5f5","🇫🇷","Ligue 2"),
+  mkT("gui","EA Guingamp","EAG",49,"#dc2626","#0f0f0f","🇫🇷","Ligue 2"),
+  mkT("rod","Rodez AF","RAF",40,"#dc2626","#f59e0b","🇫🇷","Ligue 2"),
+  mkT("aja2","AC Ajaccio","AJA",44,"#dc2626","#f5f5f5","🇫🇷","Ligue 2"),
+  mkT("bas2","SC Bastia","SCB",45,"#1d4ed8","#f5f5f5","🇫🇷","Ligue 2"),
+  mkT("soch","FC Sochaux","FCO",46,"#f59e0b","#1d4ed8","🇫🇷","Ligue 2"),
+  mkT("aux","AJ Auxerre","AJX",51,"#1d4ed8","#f5f5f5","🇫🇷","Ligue 2"),
+  mkT("que","Quevilly Rouen","QRM",35,"#dc2626","#f5f5f5","🇫🇷","Ligue 2"),
+  mkT("con2","FC Concarneau","CCF",37,"#f5f5f5","#1d4ed8","🇫🇷","Ligue 2"),
+  // -- SPAIN Segunda División (18 squadre) --
   mkT("dep","Deportivo","DEP",48,"#1d4ed8","#f5f5f5","🇪🇸","Segunda División"),
   mkT("real2","Racing Santander","RCN",46,"#15803d","#dc2626","🇪🇸","Segunda División"),
   mkT("lev","Levante","LEV",50,"#dc2626","#f5f5f5","🇪🇸","Segunda División"),
   mkT("tene","Tenerife","TEN",47,"#1d4ed8","#f5f5f5","🇪🇸","Segunda División"),
+  mkT("vld","Real Valladolid","VLL",52,"#7c3aed","#f5f5f5","🇪🇸","Segunda División"),
+  mkT("hue","SD Huesca","SDH",47,"#1d4ed8","#dc2626","🇪🇸","Segunda División"),
+  mkT("bur2","Burgos CF","BCF",44,"#dc2626","#0f0f0f","🇪🇸","Segunda División"),
+  mkT("zgz","Real Zaragoza","RZG",53,"#1d4ed8","#f5f5f5","🇪🇸","Segunda División"),
+  mkT("mir","CD Mirandés","CDM",42,"#dc2626","#f5f5f5","🇪🇸","Segunda División"),
+  mkT("alb","Albacete BP","ABP",43,"#f59e0b","#0f0f0f","🇪🇸","Segunda División"),
+  mkT("elx","Elche CF","ELC",49,"#15803d","#f5f5f5","🇪🇸","Segunda División"),
+  mkT("mal","Málaga CF","MCF",48,"#1d4ed8","#f5f5f5","🇪🇸","Segunda División"),
+  mkT("snd","Sp. de Gijón","SPG",50,"#dc2626","#f5f5f5","🇪🇸","Segunda División"),
+  mkT("ovi","Real Oviedo","ROV",46,"#1d4ed8","#f5f5f5","🇪🇸","Segunda División"),
+  mkT("cad","Cádiz CF","CFC",51,"#f59e0b","#1d4ed8","🇪🇸","Segunda División"),
+  mkT("alm2","UD Almería","UDA",50,"#dc2626","#f5f5f5","🇪🇸","Segunda División"),
+  mkT("cor2","Córdoba CF","COR",41,"#f5f5f5","#15803d","🇪🇸","Segunda División"),
+  mkT("fer","Racing Ferrol","RCF",38,"#15803d","#f5f5f5","🇪🇸","Segunda División"),
 ];
 // (b04 prestige set inline above)
 
@@ -1048,7 +1113,7 @@ const NEWSPAPERS=[
   {id:"lastampa",  name:"La Stampa Sport",       short:"La Stampa",  color:"#16a34a",e:"🗞️",tone:"analitico"},
   {id:"skysport",  name:"Sky Sport 24",          short:"Sky Sport",  color:"#0099d6",e:"📡",tone:"diretto"},
 ];
-const GAME_VERSION="3.2.0"; // Sprint 22 — Scout prematch rico, walkout direction fix, cori espansi, lingua EN/IT estesa, seconde serie
+const GAME_VERSION="3.3.0"; // Sprint 22b — dark mode fix, 18 club seconde serie, transfer/export in profilo, nudge allenamento
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -7609,7 +7674,9 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     if(changed){setPlayer(newP);}
   },[]);// eslint-disable-line
   const[darkMode,setDarkMode]=useState(()=>localStorage.getItem("cpm-dark")==="1");
-  const TH=darkMode?TH_DARK:TH_LIGHT;
+  // Mutate global TH in-place so module-scope components (Card, Btn, StatBar) pick up the theme
+  Object.assign(TH,darkMode?TH_DARK:TH_LIGHT_ORIG);
+  useEffect(()=>{document.body.style.background=TH.bg;},[darkMode]);
   const[notif,setNotif]=useState(null);
   const[weekEvent,setWeekEvent]=useState(null);
   const[transferOffer,setTransferOffer]=useState(null);
@@ -8591,28 +8658,11 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
           <Btn onClick={()=>{const growthMult=(player.goals||0)>10?1.15:(player.goals||0)>5?1.05:0.95;const rawWage=Math.round((player.contract?.wage||500)*growthMult);const ovrCap=Math.round((player.ovr||65)*220);const renewWage=clamp(rawWage,300,Math.min(ovrCap,20000));setTransferOffer({club:player.club,type:"Rinnovo contratto",isRenewal:true,minutaggio:player.ovr>=75?80:60,wage:renewWage,duration:rng(1,3),moralBonus:5,growthBonus:5});}} v="primary" fw>Rinnova contratto</Btn>
         </Card>
       )}
-      {/* Transfer listed banner / request */}
-      {tab==="dashboard"&&(player.proStatus||"u18")==="pro"&&(
-        player.transferListed
-          ?(
-            <Card bg="#fef9c3" border="#fde68a" style={{marginBottom:8,padding:"10px 14px"}}>
-              <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:8}}>
-                <div>
-                  <div style={{fontSize:11,fontWeight:700,color:"#713f12"}}>📢 Sei sul mercato — le offerte arriveranno più spesso</div>
-                  <div style={{fontSize:10,color:"#92400e",marginTop:2}}>Morale e fiducia del mister sono calati. Puoi annullare la richiesta.</div>
-                </div>
-                <Btn onClick={()=>{setPlayer(p=>({...p,transferListed:false,morale:clamp(p.morale+5,0,100),log:["📢 Richiesta di cessione ritirata.",...(p.log||[])].slice(0,60)}));notify("Richiesta di cessione ritirata.",TH.muted);}} v="ghost" style={{flexShrink:0,fontSize:11,padding:"6px 10px"}}>Annulla</Btn>
-              </div>
-            </Card>
-          )
-          :(week<=35&&!player.contractExpired&&(
-            <Card style={{marginBottom:8,padding:"8px 14px"}}>
-              <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:8}}>
-                <div style={{fontSize:10,color:TH.muted}}>Vuoi cambiare aria? Richiedi la cessione per ricevere più offerte.</div>
-                <Btn onClick={()=>{setPlayer(p=>({...p,transferListed:true,coachTrust:clamp((p.coachTrust||60)-10,0,100),morale:clamp(p.morale-8,0,100),log:["📢 Hai richiesto la cessione. Il mercato si anima.",...(p.log||[])].slice(0,60)}));notify("📢 Richiesta di cessione presentata. Aspettati offerte.",TH.warning);}} v="secondary" style={{flexShrink:0,fontSize:11,padding:"6px 10px"}}>📢 Richiedi cessione</Btn>
-              </div>
-            </Card>
-          ))
+      {/* Transfer listed banner (dashboard read-only indicator only) */}
+      {tab==="dashboard"&&(player.proStatus||"u18")==="pro"&&player.transferListed&&(
+        <Card bg="#fef9c3" border="#fde68a" style={{marginBottom:8,padding:"8px 14px"}}>
+          <div style={{fontSize:11,fontWeight:700,color:"#713f12"}}>📢 Sul mercato — vai nel Profilo per gestire la richiesta</div>
+        </Card>
       )}
       {/* Injury banner */}
       {tab==="dashboard"&&player.injured&&(
@@ -8621,6 +8671,18 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
           <div style={{fontSize:11,color:"#991b1b",marginBottom:8}}>Settimane di stop rimanenti: <strong>{player.injuryWeeks||0}</strong>. Non puoi giocare finché non sei guarito.</div>
           <div style={{height:6,background:"#fee2e2",borderRadius:3,overflow:"hidden"}}>
             <div style={{height:"100%",width:`${100-Math.min(100,((player.injuryWeeks||0)/4)*100)}%`,background:"#ef4444",borderRadius:3,transition:"width .4s"}}/>
+          </div>
+        </Card>
+      )}
+      {/* Training nudge — show when training is available */}
+      {tab==="dashboard"&&!player.injured&&!player.trainedThisWeek&&(
+        <Card bg="#f0fdf4" border="#bbf7d0" style={{marginBottom:8,padding:"9px 14px"}}>
+          <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:8}}>
+            <div>
+              <div style={{fontSize:11,fontWeight:700,color:TH.success}}>💪 Allenamento disponibile!</div>
+              <div style={{fontSize:10,color:"#166534",marginTop:1}}>Hai ancora tempo per allenarti questa settimana.</div>
+            </div>
+            <Btn onClick={()=>setTab("training")} v="primary" style={{flexShrink:0,fontSize:11,padding:"6px 12px"}}>Allena →</Btn>
           </div>
         </Card>
       )}
@@ -8718,8 +8780,6 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                 </button>
               </div>
             </details>
-            {/* Export */}
-            <button onClick={exportSave} style={{width:"100%",padding:"7px",borderRadius:9,border:`1px solid ${TH.cardBorder}`,background:"transparent",cursor:"pointer",fontFamily:"inherit",fontSize:11,color:TH.faint,marginBottom:0}}>📁 {L.export||"Esporta salvataggio JSON"}</button>
             <div style={{height:3,background:"#e2e8f0",borderRadius:2,marginTop:10}}><div style={{height:"100%",width:`${(week/38)*100}%`,background:TH.success,borderRadius:2,transition:"width .4s"}}/></div>
           </Card>
           <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
@@ -9120,6 +9180,29 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
               {[{l:"Stipendio",v:player.contract.wage?`€${Math.round(player.contract.wage*52/1000*10)/10}k/anno`:"–"},{l:"Durata",v:`${player.contract.duration||"–"} stagion${player.contract.duration===1?"e":"i"}`},{l:"Scade stagione",v:`S.${player.contract.expiresAtSeason||"–"}`},{l:"Status",v:(player.proStatus||"u18")==="u18"?"Under 18":"Professionista"}].map(s=><div key={s.l} style={{background:"#f8fafc",borderRadius:8,padding:"7px",border:"1px solid "+TH.cardBorder}}><div style={{fontSize:9,color:TH.faint,marginBottom:2}}>{s.l}</div><div style={{fontSize:12,fontWeight:700,color:TH.text}}>{s.v}</div></div>)}
             </div>
           </Card>}
+          {/* Transfer listed management — profile only */}
+          {(player.proStatus||"u18")==="pro"&&(
+            player.transferListed
+              ?<Card bg="#fef9c3" border="#fde68a" style={{padding:"11px 14px"}}>
+                <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:8}}>
+                  <div>
+                    <div style={{fontSize:11,fontWeight:700,color:"#713f12"}}>📢 Sei sul mercato</div>
+                    <div style={{fontSize:10,color:"#92400e",marginTop:2}}>Le offerte arriveranno più spesso. Morale e fiducia mister calati.</div>
+                  </div>
+                  <Btn onClick={()=>{setPlayer(p=>({...p,transferListed:false,morale:clamp(p.morale+5,0,100),log:["📢 Richiesta di cessione ritirata.",...(p.log||[])].slice(0,60)}));notify("Richiesta di cessione ritirata.",TH.muted);}} v="ghost" style={{flexShrink:0,fontSize:11,padding:"6px 10px"}}>Annulla</Btn>
+                </div>
+              </Card>
+              :(week<=35&&!player.contractExpired&&<Card style={{padding:"10px 14px"}}>
+                <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:8}}>
+                  <div style={{fontSize:10,color:TH.muted}}>Vuoi cambiare aria? Richiedi la cessione per ricevere più offerte di mercato.</div>
+                  <Btn onClick={()=>{setPlayer(p=>({...p,transferListed:true,coachTrust:clamp((p.coachTrust||60)-10,0,100),morale:clamp(p.morale-8,0,100),log:["📢 Hai richiesto la cessione. Il mercato si anima.",...(p.log||[])].slice(0,60)}));notify("📢 Richiesta di cessione presentata. Aspettati offerte.",TH.warning);}} v="secondary" style={{flexShrink:0,fontSize:11,padding:"6px 10px"}}>📢 Richiedi cessione</Btn>
+                </div>
+              </Card>)
+          )}
+          {/* Export save — profile utility */}
+          <Card style={{padding:"10px 14px"}} shadow={false}>
+            <button onClick={exportSave} style={{width:"100%",padding:"7px",borderRadius:9,border:`1px solid ${TH.cardBorder}`,background:"transparent",cursor:"pointer",fontFamily:"inherit",fontSize:11,color:TH.faint}}>📁 {L.export||"Esporta salvataggio JSON"}</button>
+          </Card>
           <Card>
             <div style={{display:"flex",gap:14,alignItems:"center",marginBottom:14}}>
               <AvatarSVG id={player.avatarId||0} size={64}/>
