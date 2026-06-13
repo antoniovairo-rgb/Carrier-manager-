@@ -930,7 +930,7 @@ const NEWSPAPERS=[
   {id:"lastampa",  name:"La Stampa Sport",       short:"La Stampa",  color:"#16a34a",e:"🗞️",tone:"analitico"},
   {id:"skysport",  name:"Sky Sport 24",          short:"Sky Sport",  color:"#0099d6",e:"📡",tone:"diretto"},
 ];
-const GAME_VERSION="2.6.1"; // Sprint 16 — fix HL zoom + idle drift + weather/chant overlay
+const GAME_VERSION="2.6.2"; // fix infortunio: decremento settimane, match count, live week guard
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -7288,14 +7288,27 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
     setShowMatchPrompt(null);
     setPlayer(p=>{
       const md2=(p.calendar||[]).find(m=>m.week===(p.week||1)&&!m.played);
-      if(!md2){return{...p,week:(p.week||1)+1,weekLived:false};}
+      const isInjured=p.injured&&(p.injuryWeeks||0)>0;
+      const injBase={injuryWeeks:p.injuryWeeks-1,injured:p.injuryWeeks-1>0,fatigue:Math.max(0,(p.fatigue||0)-10)};
+      if(!md2){
+        // No match this week — just advance (decrement injury if active)
+        return isInjured?{...p,...injBase,week:(p.week||1)+1,weekLived:false}:{...p,week:(p.week||1)+1,weekLived:false};
+      }
       const lc=getLeagueClubs(p);
       const opp=lc.find(c=>c.id===md2.opponentId)||lc.find(c=>c.n===md2.opponentName)||pick(lc.filter(c=>c.id!==p.club?.id));
-      if(!opp){return{...p,week:(p.week||1)+1,weekLived:false};}
+      if(!opp){
+        return isInjured?{...p,...injBase,week:(p.week||1)+1,weekLived:false}:{...p,week:(p.week||1)+1,weekLived:false};
+      }
       const sim=simulateMatch(p.club,opp,p.ovr||65,md2.isHome);
       const clubId=p.club?.id||p.club?.n;
-      const newSt=updateStandings(p.standings||initStandings(lc),clubId,sim);
+      const newSt=updateStandings(p.standings||initStandings(lc),clubId,sim,p.clubPrestigeShifts||{});
       const newCal=(p.calendar||[]).map(m=>m.week===(p.week||1)&&!m.played?{...m,played:true,result:{homeScore:sim.homeScore,awayScore:sim.awayScore,won:sim.won,drew:sim.drew},simulated:true}:m);
+      if(isInjured){
+        // Injured: match counted for standings/calendar but NOT as player's match — decrement recovery
+        const injHistory=[...(p.matchHistory||[]),{week:p.week||1,opponent:opp.n,oppAbbr:opp.a,oppCol:opp.c,homeScore:sim.homeScore,awayScore:sim.awayScore,goals:0,assists:0,rating:null,won:sim.won,drew:sim.drew,simulated:true,injured:true}].slice(-200);
+        notify(`🩹 Infort. (saltata) ${sim.homeScore}–${sim.awayScore} vs ${opp.n}`,sim.won?TH.success:sim.drew?TH.warning:TH.danger);
+        return{...p,...injBase,standings:newSt,calendar:newCal,matchHistory:injHistory,morale:clamp((p.morale||70)+(sim.won?1:sim.drew?0:-1),0,100),week:(p.week||1)+1,weekLived:false};
+      }
       const newHistory=[...(p.matchHistory||[]),{week:p.week||1,opponent:opp.n,oppAbbr:opp.a,oppCol:opp.c,homeScore:sim.homeScore,awayScore:sim.awayScore,goals:0,assists:0,rating:sim.rating,won:sim.won,drew:sim.drew,simulated:true}].slice(-200);
       const moD=sim.won?3:sim.drew?1:-2;
       notify(`Simulazione: ${sim.homeScore}–${sim.awayScore} vs ${opp.n}`,sim.won?TH.success:sim.drew?TH.warning:TH.danger);
@@ -7370,6 +7383,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
   // "Vivi la settimana" — applies events/form changes, does NOT advance week counter
   const liveCurrentWeek=()=>{
     if(player.weekLived){notify("Hai già vissuto questa settimana. Avanza per passare alla prossima.",TH.warning);return;}
+    if(player.injured){notify("Sei infortunato — usa Avanza Settimana per il recupero.",TH.danger);return;}
     const doInterview=Math.random()<0.20; // Sprint 15: 20% chance of interview instead of weekLiveModal
     // International call-up: 5% chance when OVR≥65 and proStatus==="pro"
     if((player.proStatus||"u18")==="pro"&&(player.ovr||60)>=65&&Math.random()<0.05){
@@ -7473,8 +7487,14 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
           const cId=p.club?.id||p.club?.n;
           const newSt=updateStandings(p.standings||initStandings(getLeagueClubs(p)),cId,sim,p.clubPrestigeShifts||{});
           const newCal=(p.calendar||[]).map(m=>m.week===(p.week||1)&&!m.played?{...m,played:true,result:{homeScore:sim.homeScore,awayScore:sim.awayScore,won:sim.won,drew:sim.drew},simulated:true}:m);
-          const newHistory=[...(p.matchHistory||[]),{week:p.week||1,opponent:opp.n,oppAbbr:opp.a,oppCol:opp.c,homeScore:sim.homeScore,awayScore:sim.awayScore,goals:0,assists:0,rating:sim.rating,won:sim.won,drew:sim.drew,simulated:true}].slice(-200);
-          updP={...updP,standings:newSt,calendar:newCal,matchHistory:newHistory,matches:(p.matches||0)+1,goals:p.goals,assists:p.assists,morale:clamp(p.morale+(sim.won?3:sim.drew?1:-2),0,100)};
+          if(p.injured){
+            // Injured: update standings & calendar only — no player match/rating stats
+            const injHist=[...(p.matchHistory||[]),{week:p.week||1,opponent:opp.n,oppAbbr:opp.a,oppCol:opp.c,homeScore:sim.homeScore,awayScore:sim.awayScore,goals:0,assists:0,rating:null,won:sim.won,drew:sim.drew,simulated:true,injured:true}].slice(-200);
+            updP={...updP,standings:newSt,calendar:newCal,matchHistory:injHist,morale:clamp(p.morale+(sim.won?1:sim.drew?0:-1),0,100)};
+          }else{
+            const newHistory=[...(p.matchHistory||[]),{week:p.week||1,opponent:opp.n,oppAbbr:opp.a,oppCol:opp.c,homeScore:sim.homeScore,awayScore:sim.awayScore,goals:0,assists:0,rating:sim.rating,won:sim.won,drew:sim.drew,simulated:true}].slice(-200);
+            updP={...updP,standings:newSt,calendar:newCal,matchHistory:newHistory,matches:(p.matches||0)+1,goals:p.goals,assists:p.assists,morale:clamp(p.morale+(sim.won?3:sim.drew?1:-2),0,100)};
+          }
         }
       }
       const wk=p.week||1;
@@ -7882,11 +7902,11 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
             {isDerby(player.club?.id,showMatchPrompt.opponentId)&&<div style={{fontSize:12,fontWeight:700,color:"#f59e0b",background:"rgba(245,158,11,0.12)",borderRadius:8,padding:"4px 12px",marginBottom:8,display:"inline-block"}}>{isDerby(player.club?.id,showMatchPrompt.opponentId).e} {isDerby(player.club?.id,showMatchPrompt.opponentId).name}</div>}
             <div style={{fontSize:11,color:TH.faint,marginBottom:18}}>W.{player.week||1} — cosa vuoi fare?</div>
             <div style={{display:"flex",flexDirection:"column",gap:10}}>
-              <Btn onClick={()=>{setShowMatchPrompt(null);startMatch();}} v="green" fw style={{padding:"14px",fontSize:14}}>
-                🎮 Gioca la partita
+              <Btn onClick={()=>{if(player.injured){notify("Sei infortunato — non puoi giocare.",TH.danger);return;}setShowMatchPrompt(null);startMatch();}} v="green" fw style={{padding:"14px",fontSize:14,opacity:player.injured?0.4:1}}>
+                {player.injured?"🩹 Non puoi giocare (infortunato)":"🎮 Gioca la partita"}
               </Btn>
               <Btn onClick={simulateAndAdvance} v="secondary" fw style={{padding:"12px",fontSize:13}}>
-                ⚡ Simula e avanza settimana
+                {player.injured?"⏭️ Salta e recupera settimana":"⚡ Simula e avanza settimana"}
               </Btn>
               <Btn onClick={()=>setShowMatchPrompt(null)} v="secondary" fw style={{padding:"10px",fontSize:12,opacity:0.7}}>
                 ✕ Annulla — rimani in dashboard
@@ -8065,14 +8085,14 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
                 <span>▸</span><span>Azioni singole</span>
               </summary>
               <div style={{marginTop:6,display:"flex",flexDirection:"column",gap:6}}>
-                <div style={{background:player.weekLived?"linear-gradient(135deg,#334155,#374151)":"linear-gradient(135deg,#1e3a5f,#1e4d3a)",borderRadius:10,padding:"10px 12px",cursor:player.weekLived?"default":"pointer",opacity:player.weekLived?0.65:1}}
-                  onClick={!player.weekLived?liveCurrentWeek:undefined}>
+                <div style={{background:(player.weekLived||player.injured)?"linear-gradient(135deg,#334155,#374151)":"linear-gradient(135deg,#1e3a5f,#1e4d3a)",borderRadius:10,padding:"10px 12px",cursor:(player.weekLived||player.injured)?"default":"pointer",opacity:(player.weekLived||player.injured)?0.65:1}}
+                  onClick={(!player.weekLived&&!player.injured)?liveCurrentWeek:undefined}>
                   <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
                     <div style={{fontSize:12,fontWeight:700,color:"#fff"}}>{player.weekLived?"✅ Settimana vissuta":"⚡ Vivi la Settimana"}</div>
                     <div style={{fontSize:10,color:"rgba(255,255,255,0.5)"}}>W.{week}</div>
                   </div>
                 </div>
-                <button onClick={()=>{const mdBtn=getThisWeekMatchday();if(mdBtn&&player.weekLived){setShowMatchPrompt(mdBtn);}else{setShowAdvanceConfirm(true);}}} style={{width:"100%",padding:"9px 12px",borderRadius:10,border:`1px solid ${TH.cardBorder}`,background:TH.card,cursor:"pointer",fontFamily:"inherit",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+                <button onClick={()=>{const mdBtn=getThisWeekMatchday();if(mdBtn&&player.weekLived&&!player.injured){setShowMatchPrompt(mdBtn);}else{setShowAdvanceConfirm(true);}}} style={{width:"100%",padding:"9px 12px",borderRadius:10,border:`1px solid ${TH.cardBorder}`,background:TH.card,cursor:"pointer",fontFamily:"inherit",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
                   <span style={{fontSize:12,fontWeight:700,color:TH.text}}>⏭️ Avanza Settimana</span>
                   <span style={{display:"flex",alignItems:"center",gap:4}}>
                     <span className="kbd">A</span><span className="kbd">0</span>
