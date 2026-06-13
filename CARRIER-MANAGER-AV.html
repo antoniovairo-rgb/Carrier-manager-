@@ -39,6 +39,8 @@ const TH = {
   gold:"#b45309", accent:"#7c3aed",
   navBg:"rgba(255,255,255,0.96)",
 };
+const TH_LIGHT=TH; // alias used for dark-mode shadowing
+const TH_DARK={...TH,bg:"#0f172a",bgGrad:"linear-gradient(160deg,#0f172a 0%,#0c1428 100%)",card:"#1e293b",cardBorder:"#334155",shadow:"0 2px 12px rgba(0,0,0,0.4)",text:"#f1f5f9",muted:"#94a3b8",faint:"#64748b",navBg:"rgba(15,23,42,0.97)"};
 
 /* ========================================
    AVATAR PRESETS  (req #2 – 12 varianti)
@@ -587,6 +589,53 @@ const INJURY_REHAB={
   _fallback:{txt:"🏥 Sessione di fisioterapia con il medico del club. Il recupero procede nella norma. Ancora qualche giorno di stop.",ef:{fatigue:-6},icon:"🏥"},
 };
 
+const COACH_DIALOGUES=[
+  {q:"«Questa settimana mi aspetto il massimo da te. Come ti senti fisicamente?»",tone_pos:"💪 Pronto al 100%",tone_neu:"😐 Nella media, mister.",tone_neg:"😓 Un po' stanco, ma ci sono.",ef_pos:{coachTrust:5,morale:6,fatigue:5},ef_neu:{coachTrust:2,morale:2},ef_neg:{coachTrust:-3,fatigue:-8,morale:-4}},
+  {q:"«Sei arrivato tardi all'allenamento. Cosa è successo?»",tone_pos:"🙏 Chiedo scusa, mister. Non si ripeterà.",tone_neu:"🚗 Traffico, mister.",tone_neg:"😤 Era solo cinque minuti.",ef_pos:{coachTrust:8,morale:3},ef_neu:{coachTrust:-2,morale:-2},ef_neg:{coachTrust:-10,morale:-6}},
+  {q:"«Hai visto il video della prossima avversaria. Che impressione ti ha fatto?»",tone_pos:"📊 Difesa alta, possiamo bucarla in profondità.",tone_neu:"😐 Niente di speciale.",tone_neg:"😏 Sono sopravvalutati.",ef_pos:{coachTrust:7,morale:5,form:3},ef_neu:{coachTrust:1},ef_neg:{coachTrust:-5,morale:3}},
+  {q:"«Il pubblico si aspetta molto da te sabato. Come gestisci la pressione?»",tone_pos:"🔥 La pressione mi carica, ci sarò.",tone_neu:"😐 Come sempre, ci penserò.",tone_neg:"😰 Sinceramente un po' di ansia ce l'ho.",ef_pos:{coachTrust:5,morale:8,form:4},ef_neu:{coachTrust:2,morale:2},ef_neg:{coachTrust:-3,morale:-5,mentalità:1}},
+  {q:"«Hai lavorato bene questa settimana. Hai qualcosa da chiedermi?»",tone_pos:"🎯 Voglio più spazio in area, mister.",tone_neu:"🤝 No, sono soddisfatto.",tone_neg:"💶 Penso che meriti uno stipendio più alto.",ef_pos:{coachTrust:6,morale:6},ef_neu:{coachTrust:3,morale:4},ef_neg:{coachTrust:-6,morale:4,value:0.05}},
+  {q:"«C'è tensione nello spogliatoio. Come la vedi tu?»",tone_pos:"🤝 Provo a fare da mediatore tra i compagni.",tone_neu:"😐 Non ne so molto.",tone_neg:"🚶 Fatti loro, penso al campo.",ef_pos:{coachTrust:9,morale:6},ef_neu:{coachTrust:1},ef_neg:{coachTrust:-4,morale:-3}},
+  {q:"«Hai sbagliato un gol facile ieri. Come ci lavori?»",tone_pos:"🏋️ Ho fatto extra reps al tiro, non succederà.",tone_neu:"😐 Capita, la prossima va dentro.",tone_neg:"😤 Era difesa che mi pressava.",ef_pos:{coachTrust:7,form:4,tiro:1},ef_neu:{coachTrust:2},ef_neg:{coachTrust:-6,morale:-5}},
+  {q:"«Stai valutando altre offerte di mercato?»",tone_pos:"❤️ Sono felice qui, mister. Non cerco niente.",tone_neu:"😐 Non mi occupo di queste cose.",tone_neg:"🤔 Valuterò le opportunità giuste.",ef_pos:{coachTrust:10,morale:5},ef_neu:{coachTrust:3},ef_neg:{coachTrust:-8,value:0.1}},
+];
+
+const ACHIEVEMENTS=[
+  // Scoring
+  {id:"hattrick",icon:"🎩",name:"Hat-Trick",desc:"3 gol in una partita",cat:"⚽ Gol"},
+  {id:"perfect",icon:"🌟",name:"Prestazione Perfetta",desc:"Voto 10 in una partita",cat:"⚽ Gol"},
+  {id:"streak5",icon:"🔥",name:"Serie Fuoco",desc:"Gol in 5 partite consecutive",cat:"⚽ Gol"},
+  {id:"freekick",icon:"🎯",name:"Specialista Punizioni",desc:"10 assist totali in carriera",cat:"⚽ Gol"},
+  // Career
+  {id:"debut_pro",icon:"🎽",name:"Esordio Pro",desc:"Prima partita da professionista",cat:"🏟️ Carriera"},
+  {id:"captain",icon:"🤝",name:"Leader",desc:"CoachTrust ≥ 90",cat:"🏟️ Carriera"},
+  {id:"veteran",icon:"🏅",name:"Veterano",desc:"5 stagioni da pro",cat:"🏟️ Carriera"},
+  {id:"loyal",icon:"❤️",name:"Fedele",desc:"3 stagioni nello stesso club",cat:"🏟️ Carriera"},
+  // Trophies
+  {id:"first_trophy",icon:"🏆",name:"Primo Trofeo",desc:"Vinci il primo campionato",cat:"🏆 Trofei"},
+  {id:"double",icon:"🥇",name:"Double",desc:"Vinci campionato + coppa nella stessa stagione",cat:"🏆 Trofei"},
+  {id:"dynasty",icon:"👑",name:"Dinastia",desc:"3 campionati",cat:"🏆 Trofei"},
+  // National
+  {id:"first_cap",icon:"🌍",name:"Esordio Nazionale",desc:"Prima convocazione",cat:"🌍 Nazionale"},
+  {id:"world_class",icon:"⭐",name:"World Class",desc:"20 presenze in Nazionale",cat:"🌍 Nazionale"},
+  // Fitness / Stats
+  {id:"iron",icon:"💪",name:"Fisico di Ferro",desc:"Fisico ≥ 85",cat:"📊 Stats"},
+  {id:"speed_demon",icon:"⚡",name:"Fulmine",desc:"Velocità ≥ 90",cat:"📊 Stats"},
+  {id:"technician",icon:"🎭",name:"Tecnico Puro",desc:"Tecnica ≥ 88",cat:"📊 Stats"},
+  {id:"mental",icon:"🧠",name:"Mentalità Vincente",desc:"Mentalità ≥ 85",cat:"📊 Stats"},
+  // Match moments
+  {id:"comeback",icon:"🔄",name:"Rimonta",desc:"Vinci una partita mentre perdevi",cat:"🎮 Match"},
+  {id:"derby_hero",icon:"🔥",name:"Eroe del Derby",desc:"Segna in un derby",cat:"🎮 Match"},
+  {id:"clutch",icon:"⏱️",name:"Uomo Clutch",desc:"Gol all'80° o oltre",cat:"🎮 Match"},
+  {id:"rigore_ok",icon:"🎯",name:"Rigorista",desc:"Segna 3 rigori",cat:"🎮 Match"},
+  // Growth
+  {id:"growth_10",icon:"📈",name:"Crescita",desc:"Aumenta OVR di 10 in una stagione",cat:"📈 Crescita"},
+  {id:"golden_form",icon:"✨",name:"In Forma d'Oro",desc:"Forma ≥ 90 per una settimana",cat:"📈 Crescita"},
+  // Longevity
+  {id:"age_35",icon:"🎂",name:"Immortale",desc:"Gioca oltre i 35 anni",cat:"🏟️ Carriera"},
+  {id:"seasons_10",icon:"📅",name:"Decennio",desc:"10 stagioni totali",cat:"🏟️ Carriera"},
+];
+
 /* ========================================
    SITUATIONS  (con moveZone e startZone)
 ======================================== */
@@ -695,6 +744,12 @@ S("🔄 Dai e vai! Schema rapido in trequarti.",["trequarti","bordo"],{x:[55,85]
   A("↩️ Dai e vai preciso","passaggio",8,"assist","intercept",12),A("⚡ Accelera in profondità","velocità",6,"goal","intercept",18),A("🎯 Tiro al volo","tiro",-2,"goal","miss",14)],false,3,"🔄 Dai e vai! Scarica e rilanciati immediatamente nello spazio."),
 S("⚡ Corsa di inserimento sul cross!",["trequarti","bordo"],{x:[55,90],y:[18,82]},{x:[58,68],y:[25,40]},[
   A("✈️ Colpo di testa","fisico",7,"goal","miss",16),A("🦵 Tiro di prima","tiro",4,"goal","miss",14),A("🌀 Controllo e tiro","tecnica",3,"goal","miss",12)],false,4,"🏃 Il cross sta per arrivare! Inserisciti con i tempi giusti per attaccare il pallone."),
+S("🌀 TUNNEL! Prova la finta di corpo e passa in mezzo.",["bordo","area"],{x:[72,95],y:[20,80]},{x:[75,88],y:[30,70]},[
+  A("🌀 Tunnel perfetto","dribbling",12,"goal","loose",22),A("⚡ Finta e scatto","velocità",8,"goal","intercept",16),A("🔙 Retropassaggio sicuro","passaggio",2,"assist","intercept",8)],false,2,"🌀 Hai il difensore di fronte. Prova il tunnel per saltarlo!","special"),
+S("🔄 ROVESCIATA! Pallone in area — tentazione assoluta.",["area"],{x:[84,97],y:[25,75]},{x:[85,94],y:[35,65]},[
+  A("🔄 Rovesciata spettacolare","fisico",14,"goal","miss",22),A("🦵 Colpo di testa normale","fisico",4,"goal","miss",14),A("🔙 Controllo e appoggio","tecnica",1,"assist","intercept",6)],true,0,"🔄 Il cross arriva alto. Tenti la rovesciata? Alta difficoltà, massima gloria!","special"),
+S("🦶 RABONA! Il cross con la rabona per stupire tutti.",["trequarti","bordo"],{x:[60,85],y:[10,30]},{x:[65,78],y:[15,40]},[
+  A("🦶 Rabona cross","passaggio",10,"assist","miss",18),A("⚡ Cross normale","passaggio",3,"assist","intercept",10),A("🎯 Tiro a giro","tiro",5,"goal","miss",14)],false,3,"🦶 Hai spazio sulla fascia. Tenti la rabona per crossare con l'esterno destro?","special"),
 
 ];
 
@@ -962,7 +1017,7 @@ const NEWSPAPERS=[
   {id:"lastampa",  name:"La Stampa Sport",       short:"La Stampa",  color:"#16a34a",e:"🗞️",tone:"analitico"},
   {id:"skysport",  name:"Sky Sport 24",          short:"Sky Sport",  color:"#0099d6",e:"📡",tone:"diretto"},
 ];
-const GAME_VERSION="3.0.0"; // Sprint 19+20 — New Game+, Sfide, Locale EN/IT, Career Export
+const GAME_VERSION="3.1.0"; // Sprint 21 — Dark Mode, Coach Dialogue, Achievements, Rivalità, Generazioni
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -7382,6 +7437,8 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     }
     if(changed){setPlayer(newP);}
   },[]);// eslint-disable-line
+  const[darkMode,setDarkMode]=useState(()=>localStorage.getItem("cpm-dark")==="1");
+  const TH=darkMode?TH_DARK:TH_LIGHT;
   const[notif,setNotif]=useState(null);
   const[weekEvent,setWeekEvent]=useState(null);
   const[transferOffer,setTransferOffer]=useState(null);
@@ -7394,6 +7451,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
   const[currentMatchDerby,setCurrentMatchDerby]=useState(null);
   const[interviewModal,setInterviewModal]=useState(null); // {q, paper, opponent, matchCtx}
   const[interviewFeedback,setInterviewFeedback]=useState(null); // {tone, label, ef} shown briefly
+  const[coachModal,setCoachModal]=useState(null); // {dialogue, chosen} — Parla col Mister
 
   const notify=(msg,color=TH.primary)=>{setNotif({msg,color});setTimeout(()=>setNotif(null),2800);};
 
@@ -8411,6 +8469,10 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                     <span style={{fontSize:10,color:TH.muted}}>W.{week}→{week+1}</span>
                   </span>
                 </button>
+                <button onClick={()=>{const d=COACH_DIALOGUES[Math.floor(Math.random()*COACH_DIALOGUES.length)];setCoachModal({dialogue:d,chosen:null});}} style={{width:"100%",padding:"9px 12px",borderRadius:10,border:`1px solid ${TH.accent}44`,background:`${TH.accent}11`,cursor:"pointer",fontFamily:"inherit",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+                  <span style={{fontSize:12,fontWeight:700,color:TH.accent}}>🤝 Parla col Mister</span>
+                  <span style={{fontSize:10,color:TH.muted}}>dialogo</span>
+                </button>
               </div>
             </details>
             {/* Export */}
@@ -8427,8 +8489,11 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
             ))}
           </div>
           {(player.log||[]).length>0&&<Card style={{padding:"12px 14px"}}><div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:6}}>Ultime notizie</div>{(player.log||[]).slice(0,5).map((e,i)=><div key={i} style={{fontSize:11,color:TH.text,padding:"3px 0",borderBottom:i<4?"1px solid "+TH.cardBorder:"none"}}>{e}</div>)}</Card>}
-          <Card style={{padding:"10px 14px"}} shadow={false} bg="#f8fafc">
-            <div style={{fontSize:9,color:TH.faint,textTransform:"uppercase",letterSpacing:1.5,marginBottom:6}}>⌨️ Scorciatoie tastiera</div>
+          <Card style={{padding:"10px 14px"}} shadow={false} bg={darkMode?"#0f172a":"#f8fafc"}>
+            <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:6}}>
+              <div style={{fontSize:9,color:TH.faint,textTransform:"uppercase",letterSpacing:1.5}}>⌨️ Scorciatoie tastiera</div>
+              <button onClick={()=>{const nd=!darkMode;setDarkMode(nd);localStorage.setItem("cpm-dark",nd?"1":"0");}} style={{fontSize:11,padding:"3px 10px",borderRadius:20,border:`1px solid ${TH.cardBorder}`,background:darkMode?"#334155":"#e2e8f0",color:TH.text,cursor:"pointer",fontFamily:"inherit",fontWeight:600}}>{darkMode?"☀️ Chiaro":"🌙 Scuro"}</button>
+            </div>
             <div style={{display:"flex",flexWrap:"wrap",gap:5}}>
               {[["Enter/P","Gioca"],["A/0","Avanza sett."],["S","Salva"],["T","Allena"],["C","Calendario"],["F","Classifica"],["Esc","Indietro"],["←→","Cambia tab"]].map(([k,l])=>(
                 <div key={k} style={{display:"flex",alignItems:"center",gap:4,fontSize:10,color:TH.muted}}>
