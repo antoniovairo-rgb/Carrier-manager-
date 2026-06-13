@@ -811,6 +811,111 @@ const JOURNALIST_POOL=[
 ];
 
 /* ========================================
+   SPRINT 25 — A: IL MOMENTO (career-defining, non-repeatable)
+======================================== */
+const CAREER_MOMENTS=[
+  {id:"cm_rigore_vita",name:"Il Rigore della Vita",
+   trigger:(p)=>p.proStatus==="pro"&&(p.week||1)>=34&&(p.season||1)>=2&&(p.trophies||[]).length===0,
+   prob:0.06,
+   txt:"⚽ Settantesimo minuto. Fischio. Rigore. Ti avvicini al dischetto. Lo stadio trattiene il fiato. Portiere contro te.",
+   choices:[
+     {txt:"💪 Corro verso il pallone. Il mondo può aspettare.",ef:{morale:18,popularity:20,form:10},mem:"Trasformasti il rigore della vita. La curva impazzì."},
+     {txt:"🙋 Cedo il tiro a un compagno. Non me la sento.",ef:{morale:-8,coachTrust:-6},mem:"Lasciasti il rigore decisivo. Alcune scelte non si dimenticano."},
+   ]},
+  {id:"cm_presidente_notte",name:"L'Offerta della Notte",
+   trigger:(p)=>p.proStatus==="pro"&&(p.value||0.8)>=2.0&&(p.season||1)>=3,
+   prob:0.04,
+   txt:"📱 Il presidente ti convoca alle 22:00: «Ho un'offerta sul tavolo. Il doppio del tuo stipendio. Firma adesso o la ritiro.»",
+   choices:[
+     {txt:"✍️ Firmo. È il calcio, non la poesia.",ef:{value:0.8,morale:6,coachTrust:-12,popularity:8},mem:"Firmasti per il doppio. Il club capì."},
+     {txt:"❌ «Non è la mia priorità. Resto per sport.»",ef:{coachTrust:15,morale:12,popularity:18},mem:"Rifiutasti il doppio per lealtà. Divenne leggenda."},
+   ]},
+  {id:"cm_rivale_sorpasso",name:"Il Sorpasso",
+   trigger:(p)=>!!(p.rival&&(p.rival.totalGoals||0)>=(p.totalGoals||0)+5&&(p.season||1)>=3),
+   prob:0.07,
+   txt:"📊 Le statistiche non mentono: il tuo rivale ti ha superato di 5 gol in carriera. Ti arriva un messaggio: «Ci vediamo in cima.»",
+   choices:[
+     {txt:"🔥 «Ci sei già? Allora ho ancora fame.»",ef:{morale:12,form:8},mem:"Rispondesti al sorpasso del rivale con fuoco."},
+     {txt:"😶 Non rispondi. Lavori.",ef:{form:10,fatigue:5},mem:"Silenzio. Lavoro. Risposta sul campo."},
+   ]},
+  {id:"cm_infortunio_grave",name:"Tre Mesi Fuori",
+   trigger:(p)=>!!(p.injured&&(p.injuryWeeks||0)>=3),
+   prob:0.45,
+   txt:"🏥 Il dottore abbassa la voce: «Potrebbe essere più grave del previsto. Tre mesi di stop, forse quattro.» Resto in silenzio.",
+   choices:[
+     {txt:"💪 «Tornerò più forte. Promesso.»",ef:{morale:10,fatigue:-6},mem:"Nella peggiore crisi, promettesti di tornare. E lo facesti."},
+     {txt:"😔 «Quante volte ancora...»",ef:{morale:-5,form:-3},mem:"Quel momento ti scosse nel profondo. Non eri di pietra."},
+   ]},
+  {id:"cm_nazionale_escluso",name:"La Telefonata del CT",
+   trigger:(p)=>p.proStatus==="pro"&&(p.nationalCaps||0)>=5,
+   prob:0.04,
+   txt:"📞 Il CT ti chiama personalmente: «Non sei nella lista per il prossimo torneo. So che fa male. Devi tornare al top.»",
+   choices:[
+     {txt:"🙏 «Capisco. Torno a lavorare.»",ef:{morale:-3,form:6,coachTrust:4},mem:"Accettasti l'esclusione dalla nazionale con classe."},
+     {txt:"😤 «È una scelta sbagliata.»",ef:{morale:6,popularity:-8},mem:"Contestasti l'esclusione dalla nazionale."},
+   ]},
+  {id:"cm_ex_club_finale",name:"Quella Notte",
+   trigger:(p)=>(p.history||[]).length>=2&&(p.worldMemory||[]).some(m=>m.type==="ex_club"),
+   prob:0.05,
+   txt:"📺 La tua ex squadra vince il titolo. Vedi le immagini: i tifosi in piazza, quelli che ti acclamavano. Una fitta al petto.",
+   choices:[
+     {txt:"❤️ «Sono felice per loro. Ero lì anch'io.»",ef:{morale:5,popularity:8},mem:"Guardasti il trionfo dell'ex club senza rimpianti."},
+     {txt:"😔 «Potevo essere lì.»",ef:{morale:-6,form:4},mem:"Quella notte capisti cosa avevi lasciato."},
+   ]},
+  {id:"cm_fan_lettera",name:"La Lettera della Curva",
+   trigger:(p)=>p.proStatus==="pro"&&p.transferListed&&(p.fanLegend||[]).some(f=>f.seasons>=2),
+   prob:0.20,
+   txt:"✉️ Una busta nel tuo armadiello. «Se vai via, non sei mai stato uno di noi.» Firma: la Curva.",
+   choices:[
+     {txt:"🚶 «È il mio lavoro. Andrò avanti.»",ef:{morale:-3,popularity:-10},mem:"Partisti nonostante la lettera della Curva."},
+     {txt:"❤️ «Ritiro la cessione. Resto.»",ef:{morale:14,popularity:22,coachTrust:8,transferListed:false},mem:"La lettera della Curva ti convinse a restare. Leggenda."},
+   ]},
+  {id:"cm_sogno_sfumato",name:"Il Sogno Sfumato",
+   trigger:(p)=>!!(p.dreamClub&&(p.season||1)>=4&&!(p.history||[]).some(h=>h.clubId===p.dreamClub?.id)&&p.club?.id!==p.dreamClub?.id),
+   prob:0.05,
+   txt:"🌟 Il tuo Club dei Sogni annuncia il colpo dell'estate. Non sei tu. Guardi il comunicato in silenzio.",
+   choices:[
+     {txt:"💪 «Ci arriverò. A modo mio.»",ef:{morale:7,form:8},mem:"Quando il sogno sembrò sfumare, trasformasti la delusione in carburante."},
+     {txt:"😔 «Forse non era destino.»",ef:{morale:-8},mem:"Quella notizia ti tolse il fiato."},
+   ]},
+  {id:"cm_fascia_ad_altro",name:"La Fascia ad un Altro",
+   trigger:(p)=>p.proStatus==="pro"&&(p.coachTrust||60)>=75&&!p.isCaptain&&(p.season||1)>=3,
+   prob:0.04,
+   txt:"👕 Il mister annuncia il nuovo capitano. Non è te. Ti guarda negli occhi: «So cosa stai pensando. Dimostrami che ho sbagliato.»",
+   choices:[
+     {txt:"🤝 «Lo capisco, mister. Lavoro.»",ef:{coachTrust:8,morale:3},mem:"Accettasti la fascia ad un altro con dignità. Poi parlò il campo."},
+     {txt:"😤 «Meritavo io quella fascia.»",ef:{coachTrust:-10,morale:5},mem:"Protestasti per la fascia mancata. Il mister non dimenticò."},
+   ]},
+  {id:"cm_scoop",name:"Lo Scoop",
+   trigger:(p)=>(p.journalists||[]).some(j=>j.type==="investigativa"&&(j.trust||50)<40),
+   prob:0.14,
+   txt:"📲 Tweet. Poi articolo. Il giornalista investigativo ha trovato qualcosa. Non tutto era off-the-record.",
+   choices:[
+     {txt:"📝 Rilascio una dichiarazione ufficiale.",ef:{popularity:-4,coachTrust:3},mem:"Gestisti lo scoop con un comunicato. Danno limitato."},
+     {txt:"🤐 Silenzio totale. Lascio che passi.",ef:{popularity:-7,morale:-3},mem:"Il silenzio sullo scoop alimentò le voci."},
+     {txt:"🔥 Rispondo direttamente al giornalista.",ef:{popularity:8,coachTrust:-6,morale:6},mem:"Rispondesti allo scoop a muso duro. Divisivo ma rispettato."},
+   ]},
+];
+
+/* ========================================
+   SPRINT 25 — B: LA CITTÀ (Fan Groups)
+======================================== */
+const ULTRAS_PREFIXES=["Ultras","Fedelissimi","Boys","Brigate","Curva","Fedayn","Irriducibili","Commando","Fronte","Guardiani"];
+const ULTRAS_SUFFIXES=["Nord","Sud","Est","Ovest","Storici","Forever","Eterni","Uniti","Ribelli","1970","del Popolo","Sempre"];
+
+/* ========================================
+   SPRINT 25 — C: IL CAPITANO (team talks)
+======================================== */
+const CAPTAIN_TEAM_TALKS=[
+  "«Questa partita la giochiamo per noi. Non per il contratto, non per i giornali. Per quello che siamo.»",
+  "«Ognuno di voi vale più di quanto pensi. Usciamo da qui sapendo di aver dato tutto.»",
+  "«Non voglio rimpianti. Tutto. Adesso.»",
+  "«Ho visto questa squadra alzarsi nelle situazioni peggiori. È il momento di farlo ancora.»",
+  "«Il pubblico verrà qui per vederci giocare. Noi usciamo per vincere.»",
+  "«Silenzio. Respira. E poi vai — senza pensieri.»",
+];
+
+/* ========================================
    INJURY SYSTEM — types + rehab activities
 ======================================== */
 const INJURY_TYPES_META={
@@ -1270,7 +1375,7 @@ const NEWSPAPERS=[
   {id:"lastampa",  name:"La Stampa Sport",       short:"La Stampa",  color:"#16a34a",e:"🗞️",tone:"analitico"},
   {id:"skysport",  name:"Sky Sport 24",          short:"Sky Sport",  color:"#0099d6",e:"📡",tone:"diretto"},
 ];
-const GAME_VERSION="3.5.0"; // Sprint 24 — Lo Spogliatoio + Ogni Settimana Conta + La Stampa ti Ricorda
+const GAME_VERSION="3.6.0"; // Sprint 25 — Il Momento + La Città ti Ricorda + Il Capitano
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -2433,6 +2538,14 @@ function getJournalistRelLabel(trust){
   if(trust>=45)return"😐 Neutrale";
   if(trust>=30)return"😤 Critico";
   return"🔥 Ostile";
+}
+// Sprint 25 — seeded ultra group name per club
+function generateUltrasName(clubId){
+  const seed=hashStr(String(clubId||"club"));
+  const sr=(n)=>((seed*9301+49297*(n+1))%233280)/233280;
+  const pre=ULTRAS_PREFIXES[Math.floor(sr(1)*ULTRAS_PREFIXES.length)];
+  const suf=ULTRAS_SUFFIXES[Math.floor(sr(2)*ULTRAS_SUFFIXES.length)];
+  return`${pre} ${suf}`;
 }
 // Sprint 16 — Weather system
 const WEATHER_TYPES=[
@@ -7953,6 +8066,11 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     // Sprint 24 migrations
     if(!('teammates' in newP)){newP={...newP,teammates:generateTeammates(newP)};changed=true;}
     if(!('journalists' in newP)){newP={...newP,journalists:generateJournalists()};changed=true;}
+    // Sprint 25 migrations
+    if(!('momentsFired' in newP)){newP={...newP,momentsFired:[]};changed=true;}
+    if(!('isCaptain' in newP)){newP={...newP,isCaptain:false};changed=true;}
+    if(!('captainSince' in newP)){newP={...newP,captainSince:null};changed=true;}
+    if(!('fanLegend' in newP)){newP={...newP,fanLegend:[]};changed=true;}
     if(changed){setPlayer(newP);}
   },[]);// eslint-disable-line
   const[darkMode,setDarkMode]=useState(()=>localStorage.getItem("cpm-dark")==="1");
@@ -7972,7 +8090,8 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
   const[interviewModal,setInterviewModal]=useState(null); // {q, paper, opponent, matchCtx}
   const[interviewFeedback,setInterviewFeedback]=useState(null); // {tone, label, ef} shown briefly
   const[coachModal,setCoachModal]=useState(null); // {dialogue, chosen} — Parla col Mister
-  const[misterDiscorsoModal,setMisterDiscorsoModal]=useState(null); // {coachName, line, mw} pre-match speech
+  const[misterDiscorsoModal,setMisterDiscorsoModal]=useState(null); // {coachName, line, mw, isCaptainTalk?}
+  const[careerMomentModal,setCareerMomentModal]=useState(null);    // Sprint 25A — unique career moment
 
   const notify=(msg,color=TH.primary)=>{setNotif({msg,color});setTimeout(()=>setNotif(null),2800);};
 
@@ -8143,7 +8262,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     setCurrentMatchDerby(derby||null);
     if(derby)setTimeout(()=>notify(`🔥 ${derby.e} ${derby.name}! Atmosfera incandescente!`,"#f59e0b"),200);
     setMatchOpp(opp);setMatchIsHome(md.isHome!==false);
-    // Sprint 24A: mister discorso for high-stakes matches (mw ≥ 7)
+    // Sprint 24A + 25C: pre-match speech based on match weight + captain status
     const mw=calcMatchWeight(player,opp.id||md.opponentId,player.standings||[],player.week||1);
     if(mw>=7&&player.coach){
       const styleLines={
@@ -8155,17 +8274,46 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
         Contropiede:["Lasciateli venire. Poi colpite.","Difendiamo e aspettiamo il momento giusto."],
       };
       const lines=styleLines[player.coach.style]||styleLines.Bilanciato;
-      setMisterDiscorsoModal({coachName:player.coach.name,line:pick(lines),mw,oppName:opp.n});
-      return; // will start match after user responds
+      setMisterDiscorsoModal({coachName:player.coach.name,line:pick(lines),mw,oppName:opp.n,isCaptainTalk:false});
+      return;
+    }
+    // Sprint 25C: captain team talk for medium-stakes matches (mw 5-6)
+    if(mw>=5&&player.isCaptain){
+      setMisterDiscorsoModal({coachName:player.name,line:pick(CAPTAIN_TEAM_TALKS),mw,oppName:opp.n,isCaptainTalk:true});
+      return;
     }
     setScreen("match");
   };
   const confirmMisterDiscorso=(responseKey)=>{
-    const efMap={pos:{morale:8,coachTrust:5},neu:{morale:3},neg:{morale:-4,fatigue:5}};
+    const efMap={
+      pos:{morale:8,coachTrust:5},neu:{morale:3},neg:{morale:-4,fatigue:5},
+      // captain talk keys
+      fire:{morale:10,form:6},calm:{morale:5,coachTrust:4},personal:{morale:8},
+    };
     const ef=efMap[responseKey]||{};
-    setPlayer(p=>({...p,morale:clamp((p.morale||70)+(ef.morale||0),0,100),coachTrust:clamp((p.coachTrust||60)+(ef.coachTrust||0),0,100),fatigue:clamp((p.fatigue||0)+(ef.fatigue||0),0,100)}));
+    setPlayer(p=>({...p,morale:clamp((p.morale||70)+(ef.morale||0),0,100),coachTrust:clamp((p.coachTrust||60)+(ef.coachTrust||0),0,100),fatigue:clamp((p.fatigue||0)+(ef.fatigue||0),0,100),form:clamp((p.form||70)+(ef.form||0),30,95)}));
     setMisterDiscorsoModal(null);
     setScreen("match");
+  };
+  // Sprint 25A — apply career-defining moment choice
+  const handleCareerMoment=(choice)=>{
+    const ef=choice.ef||{};
+    setPlayer(p=>{
+      const newMem=[...(p.worldMemory||[]),{type:"career_moment",label:choice.mem||"Momento importante",season:p.season||1,week:p.week||1}];
+      const newFired=[...(p.momentsFired||[]),careerMomentModal?.id].filter(Boolean);
+      return{...p,
+        worldMemory:newMem,momentsFired:newFired,
+        morale:clamp((p.morale||70)+(ef.morale||0),0,100),
+        form:clamp((p.form||70)+(ef.form||0),30,95),
+        coachTrust:clamp((p.coachTrust||60)+(ef.coachTrust||0),0,100),
+        popularity:clamp((p.popularity||20)+(ef.popularity||0),0,100),
+        value:Math.max(0.5,(p.value||0.8)+(ef.value||0)),
+        transferListed:ef.transferListed===false?false:(p.transferListed||false),
+        log:[`⚡ Momento: ${careerMomentModal?.name||"importante"}`,...(p.log||[])].slice(0,60),
+      };
+    });
+    setCareerMomentModal(null);
+    if((ef.popularity||0)>=15||(ef.morale||0)>=14)setTimeout(()=>notify("⚡ Un momento che non dimenticherai.",TH.accent),400);
   };
 
   // Anti-double-click / rapid-Enter guard
@@ -8563,6 +8711,27 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       return{...updP,week:(p.week||1)+1,weekLived:false,trainedThisWeek:false,fatigue:naturalFat,form:naturalForm};
     });
     notify("⏭️ Settimana avanzata");
+    // Sprint 25A — Career moment trigger (checked OUTSIDE setPlayer to fire modal)
+    {
+      const firedM=player.momentsFired||[];
+      const eligible=CAREER_MOMENTS.filter(m=>!firedM.includes(m.id)&&m.trigger(player));
+      let hit=null;for(const m of eligible){if(Math.random()<m.prob){hit=m;break;}}
+      if(hit)setTimeout(()=>setCareerMomentModal(hit),450);
+    }
+    // Sprint 25C — Captain nomination (pro, coachTrust≥85, not already captain)
+    if(!player.isCaptain&&(player.proStatus||"u18")==="pro"&&(player.coachTrust||60)>=85&&Math.random()<0.12){
+      setTimeout(()=>{
+        setPlayer(p=>({...p,isCaptain:true,captainSince:p.season||1,log:["🤝 Sei il nuovo capitano!",...(p.log||[])].slice(0,60)}));
+        notify("🤝 Il mister ti affida la fascia. Sei il capitano.",TH.accent);
+      },550);
+    }
+    // Sprint 25C — Captain stripping (coachTrust < 40 or transferListed)
+    if(player.isCaptain&&((player.coachTrust||60)<40||player.transferListed)){
+      setTimeout(()=>{
+        setPlayer(p=>({...p,isCaptain:false,log:["😤 Ti è stata tolta la fascia di capitano.",...(p.log||[])].slice(0,60)}));
+        notify("😤 Il mister ti rimuove dalla fascia di capitano.",TH.danger);
+      },550);
+    }
     // S11.2: club crisis alert (once at week 1 per season)
     if((player.week||1)===1){const cid=player.club?.id||player.club?.n;const cShift=(player.clubPrestigeShifts||{})[cid||""]||0;if(cid&&cShift<=-10)setTimeout(()=>notify(`⚠️ ${player.club?.n||"Il tuo club"} è in crisi! Presidenza instabile.`,"#ef4444"),1500);}
     // S10.3: cup result notification
@@ -8702,7 +8871,17 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       const gbLog=isGB?`🏆 Miglior Giovane d'Europa Stagione ${p.season||1}! Riconoscimento continentale.`:null;
       const newTeammates=generateTeammates({...p,season:newSeason});
       const newJournalists=generateJournalists();
-      return{...p,season:newSeason,age:newAge,week:1,weekLived:false,goals:0,assists:0,matches:0,fatigue:0,skillPoints:(p.skillPoints||0)+2,stats:agedStats,ovr:newOvr,contract:newContract,contractExpired,morale:clamp((p.morale||70)+bonM+(playerClubRelegated?-10:0)+(isGB?15:0),0,100),coachTrust:clamp((p.coachTrust||60)+bonCT+(playerClubRelegated?-8:0)+(coachChanged?newCoach.trustMod:0),0,100),popularity:clamp((p.popularity||20)+bonPop+(isGB?25:0),0,100),value:Math.max(0.5,(p.value||0.8)+bonVal+(playerClubRelegated?-0.3:0)+(isGB?0.8:0)),log:[agingLog,...objLogs,...[gbLog,coachLog,phenomLog,relegLog].filter(Boolean),...(p.log||[])].slice(0,60),standings:newStandings,calendar:newCalendar,matchHistory:[],seasonObjectives:newObjectives,history:[...(p.history||[]),prevHist].slice(-50),clubPrestigeShifts:updatedShifts,cup:newCup,coach:newCoach,goldenBoys:gbSeasons,records:newRecords,teammates:newTeammates,journalists:newJournalists};
+      // Sprint 25B: fanLegend — increment seasons for current club
+      let updFanLegend=[...(p.fanLegend||[])];
+      const cId25=p.club?.id||p.club?.n;
+      if(cId25&&(p.proStatus||"u18")==="pro"){
+        const existing=updFanLegend.find(f=>f.clubId===cId25);
+        if(existing){updFanLegend=updFanLegend.map(f=>f.clubId===cId25?{...f,seasons:f.seasons+1}:f);}
+        else{updFanLegend=[...updFanLegend,{clubId:cId25,clubName:p.club?.n||"Club",ultrasName:generateUltrasName(cId25),seasons:1,status:"regular"}];}
+      }
+      // Sprint 25C: captain — reset if coach changed
+      const captainReset=coachChanged&&p.isCaptain;
+      return{...p,season:newSeason,age:newAge,week:1,weekLived:false,goals:0,assists:0,matches:0,fatigue:0,skillPoints:(p.skillPoints||0)+2,stats:agedStats,ovr:newOvr,contract:newContract,contractExpired,morale:clamp((p.morale||70)+bonM+(playerClubRelegated?-10:0)+(isGB?15:0),0,100),coachTrust:clamp((p.coachTrust||60)+bonCT+(playerClubRelegated?-8:0)+(coachChanged?newCoach.trustMod:0),0,100),popularity:clamp((p.popularity||20)+bonPop+(isGB?25:0),0,100),value:Math.max(0.5,(p.value||0.8)+bonVal+(playerClubRelegated?-0.3:0)+(isGB?0.8:0)),log:[agingLog,...objLogs,...[gbLog,coachLog,phenomLog,relegLog].filter(Boolean),...(p.log||[])].slice(0,60),standings:newStandings,calendar:newCalendar,matchHistory:[],seasonObjectives:newObjectives,history:[...(p.history||[]),prevHist].slice(-50),clubPrestigeShifts:updatedShifts,cup:newCup,coach:newCoach,goldenBoys:gbSeasons,records:newRecords,teammates:newTeammates,journalists:newJournalists,fanLegend:updFanLegend,...(captainReset?{isCaptain:false}:{})};
     });
     setSeasonEndData(null);
     setScreen("dashboard");
@@ -8777,7 +8956,17 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       // Generate rival if becoming pro for first time
       const needsRival=!p.rival&&p.proStatus!=="pro";
       const newRival=needsRival?generateRival({...p,club:newClub,proStatus:"pro"}):p.rival;
-      return{...p,club:newClub,isU18:false,proStatus:"pro",contractExpired:false,transferListed:false,morale:clamp(p.morale+(tc.moralBonus||10),0,100),offerHistory:[...(p.offerHistory||[]),{club:tc.club.n,type:tc.type,season:p.season,accepted:true}],log:[`🔄 ${tc.type}: ${tc.club.n} (${tc.club.lg||tc.club.nat})!`,...(p.log||[])].slice(0,60),standings:newStandings,calendar:newCalendar,worldMemory:oldClubMem,rival:newRival};
+      // Sprint 25B: fanLegend — mark legend or traitor on departure
+      let updFL=[...(p.fanLegend||[])];
+      if(p.club&&(p.proStatus||"u18")==="pro"){
+        const cId=p.club.id||p.club.n;
+        const entry=updFL.find(f=>f.clubId===cId);
+        if(entry){
+          const newStatus=entry.seasons>=3&&!p.transferListed?"legend":entry.seasons>=2&&p.transferListed?"traitor":entry.status;
+          updFL=updFL.map(f=>f.clubId===cId?{...f,status:newStatus}:f);
+        }
+      }
+      return{...p,club:newClub,isU18:false,proStatus:"pro",contractExpired:false,transferListed:false,isCaptain:false,morale:clamp(p.morale+(tc.moralBonus||10),0,100),offerHistory:[...(p.offerHistory||[]),{club:tc.club.n,type:tc.type,season:p.season,accepted:true}],log:[`🔄 ${tc.type}: ${tc.club.n} (${tc.club.lg||tc.club.nat})!`,...(p.log||[])].slice(0,60),standings:newStandings,calendar:newCalendar,worldMemory:oldClubMem,rival:newRival,fanLegend:updFL};
     });
     setTransferOffer(null);
     setPresentationData({club:tc.club,contractType:tc.type,playerName:player.name});
@@ -8918,26 +9107,56 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
         </div>
       )}
 
-      {/* == Sprint 24A — Discorso del Mister (pre-BIG MATCH) == */}
+      {/* == Sprint 25A — Career Moment Modal == */}
+      {careerMomentModal&&(
+        <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.75)",zIndex:10001,display:"flex",alignItems:"center",justifyContent:"center",padding:20}}>
+          <Card style={{maxWidth:420,width:"100%",padding:"24px",background:"linear-gradient(135deg,#0f172a,#1a1535)",border:"1px solid rgba(124,58,237,0.4)"}}>
+            <div style={{textAlign:"center",marginBottom:14}}>
+              <div style={{fontSize:14,letterSpacing:3,textTransform:"uppercase",color:"rgba(165,180,252,0.7)",marginBottom:4}}>⚡ Un Momento Che Ricorderai</div>
+              <div style={{fontSize:18,fontWeight:900,color:"#e0e7ff",lineHeight:1.2}}>{careerMomentModal.name}</div>
+            </div>
+            <div style={{background:"rgba(255,255,255,0.04)",borderRadius:10,padding:"14px 16px",marginBottom:18,borderLeft:"3px solid #7c3aed"}}>
+              <div style={{fontSize:13,color:"#c7d2fe",lineHeight:1.75}}>{careerMomentModal.txt}</div>
+            </div>
+            <div style={{display:"flex",flexDirection:"column",gap:9}}>
+              {(careerMomentModal.choices||[]).map((ch,i)=>(
+                <button key={i} onClick={()=>handleCareerMoment(ch)} style={{textAlign:"left",background:"transparent",border:"1.5px solid rgba(165,180,252,0.15)",borderRadius:10,padding:"11px 14px",cursor:"pointer",fontFamily:"inherit",outline:"none",display:"block",width:"100%"}}
+                  onMouseEnter={e=>{e.currentTarget.style.background="rgba(124,58,237,0.12)";e.currentTarget.style.borderColor="rgba(165,180,252,0.5)";}}
+                  onMouseLeave={e=>{e.currentTarget.style.background="transparent";e.currentTarget.style.borderColor="rgba(165,180,252,0.15)";}}>
+                  <div style={{fontSize:13,color:"#e0e7ff",lineHeight:1.5}}>{ch.txt}</div>
+                  {ch.mem&&<div style={{fontSize:10,color:"rgba(165,180,252,0.5)",marginTop:3,fontStyle:"italic"}}>Rimarrà nella storia: "{ch.mem}"</div>}
+                </button>
+              ))}
+            </div>
+          </Card>
+        </div>
+      )}
+
+      {/* == Sprint 24A/25C — Discorso Pre-Partita (mister o capitano) == */}
       {misterDiscorsoModal&&(
         <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.7)",zIndex:9998,display:"flex",alignItems:"center",justifyContent:"center",padding:20}}>
           <Card style={{maxWidth:400,width:"100%",padding:"22px",background:TH.card,border:`1px solid ${TH.cardBorder}`}}>
             <div style={{textAlign:"center",marginBottom:14}}>
-              <div style={{fontSize:32,marginBottom:4}}>🧑‍💼</div>
-              <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:2,marginBottom:2}}>Discorso Pre-Partita</div>
-              <div style={{fontSize:14,fontWeight:900,color:TH.accent}}>{misterDiscorsoModal.coachName}</div>
+              <div style={{fontSize:32,marginBottom:4}}>{misterDiscorsoModal.isCaptainTalk?"🤝":"🧑‍💼"}</div>
+              <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:2,marginBottom:2}}>{misterDiscorsoModal.isCaptainTalk?"Discorso del Capitano":"Discorso Pre-Partita"}</div>
+              <div style={{fontSize:14,fontWeight:900,color:misterDiscorsoModal.isCaptainTalk?TH.success:TH.accent}}>{misterDiscorsoModal.coachName}</div>
               {misterDiscorsoModal.mw>=8&&<div style={{fontSize:10,marginTop:4,color:"#f59e0b",fontWeight:700}}>🔥 PARTITA EPICA — questo cambia tutto</div>}
             </div>
-            <div style={{background:TH.bg,borderRadius:10,padding:"14px 16px",marginBottom:16,borderLeft:`3px solid ${TH.accent}`}}>
+            <div style={{background:TH.bg,borderRadius:10,padding:"14px 16px",marginBottom:16,borderLeft:`3px solid ${misterDiscorsoModal.isCaptainTalk?TH.success:TH.accent}`}}>
               <div style={{fontSize:14,color:TH.text,lineHeight:1.7,fontStyle:"italic"}}>«{misterDiscorsoModal.line}»</div>
             </div>
-            <div style={{fontSize:11,color:TH.muted,marginBottom:12,textAlign:"center"}}>vs {misterDiscorsoModal.oppName} — come rispondi?</div>
+            <div style={{fontSize:11,color:TH.muted,marginBottom:12,textAlign:"center"}}>vs {misterDiscorsoModal.oppName} — {misterDiscorsoModal.isCaptainTalk?"i compagni ti guardano":"come rispondi?"}</div>
             <div style={{display:"flex",flexDirection:"column",gap:8}}>
-              {[
+              {misterDiscorsoModal.isCaptainTalk?[
+                {key:"fire",txt:"🔥 «Questa è la nostra partita. Niente rimpianti.»",color:"#dc2626",hint:"+10 Morale +6 Forma"},
+                {key:"calm",txt:"🧘 «State tranquilli. Facciamo le cose semplici.»",color:"#16a34a",hint:"+5 Morale +4 Fiducia mister"},
+                {key:"personal",txt:"😤 «Non per il club. Per noi. Per questo spogliatoio.»",color:"#7c3aed",hint:"+8 Morale"},
+              ]:[
                 {key:"pos",txt:"💪 «Siamo pronti. Niente ci ferma.»",color:"#16a34a",hint:"+8 Morale +5 Fiducia mister"},
                 {key:"neu",txt:"😐 «Ce la metterò tutta, mister.»",color:"#ca8a04",hint:"+3 Morale"},
                 {key:"neg",txt:"😰 «Ho qualche dubbio...»",color:"#dc2626",hint:"-4 Morale +5 Fatica"},
-              ].map(opt=>(
+              ]
+              .map(opt=>(
                 <button key={opt.key} onClick={()=>confirmMisterDiscorso(opt.key)} style={{textAlign:"left",background:"transparent",border:`1.5px solid ${opt.color}22`,borderRadius:10,padding:"10px 12px",cursor:"pointer",fontFamily:"inherit",outline:"none",display:"block",width:"100%"}}
                   onMouseEnter={e=>{e.currentTarget.style.background=`${opt.color}10`;e.currentTarget.style.borderColor=opt.color;}}
                   onMouseLeave={e=>{e.currentTarget.style.background="transparent";e.currentTarget.style.borderColor=`${opt.color}22`;}}>
@@ -9681,6 +9900,43 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                         <div style={{fontSize:11,fontWeight:700,color:trustColor}}>{relLabel}</div>
                         <div style={{fontSize:9,color:TH.faint}}>{j.trust||50}/100</div>
                       </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </Card>
+          )}
+          {/* Sprint 25C — Capitano badge */}
+          {player.isCaptain&&(
+            <Card style={{padding:"11px 14px",background:"linear-gradient(135deg,#064e3b,#065f46)",border:"1px solid rgba(52,211,153,0.3)"}}>
+              <div style={{display:"flex",alignItems:"center",gap:10}}>
+                <div style={{fontSize:28}}>🤝</div>
+                <div style={{flex:1}}>
+                  <div style={{fontSize:10,color:"rgba(167,243,208,0.7)",textTransform:"uppercase",letterSpacing:1.5,marginBottom:2}}>IL CAPITANO</div>
+                  <div style={{fontSize:13,fontWeight:800,color:"#d1fae5"}}>{player.name}</div>
+                  <div style={{fontSize:10,color:"rgba(167,243,208,0.5)"}}>Capitano dal S.{player.captainSince||player.season}</div>
+                </div>
+                <div style={{fontSize:22}}>🏅</div>
+              </div>
+            </Card>
+          )}
+          {/* Sprint 25B — La Città ti Ricorda */}
+          {(player.fanLegend||[]).length>0&&(
+            <Card style={{padding:"12px 14px"}}>
+              <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:10}}>🏟️ La Città ti Ricorda</div>
+              <div style={{display:"flex",flexDirection:"column",gap:8}}>
+                {(player.fanLegend||[]).map((f,i)=>{
+                  const statusIcon=f.status==="legend"?"🏆":f.status==="traitor"?"😤":"👋";
+                  const statusLabel=f.status==="legend"?"Leggenda":f.status==="traitor"?"Traditore":"Rispettato";
+                  const statusColor=f.status==="legend"?TH.warning:f.status==="traitor"?TH.danger:TH.muted;
+                  return(
+                    <div key={i} style={{display:"flex",alignItems:"center",gap:10,paddingBottom:i<(player.fanLegend.length-1)?8:0,borderBottom:i<(player.fanLegend.length-1)?`1px solid ${TH.cardBorder}`:"none"}}>
+                      <div style={{fontSize:20,width:30,textAlign:"center"}}>{statusIcon}</div>
+                      <div style={{flex:1}}>
+                        <div style={{fontSize:12,fontWeight:800,color:TH.text}}>{f.ultrasName}</div>
+                        <div style={{fontSize:10,color:TH.faint}}>{f.clubName} · {f.seasons} stagion{f.seasons===1?"e":"i"}</div>
+                      </div>
+                      <div style={{fontSize:11,fontWeight:700,color:statusColor}}>{statusLabel}</div>
                     </div>
                   );
                 })}
