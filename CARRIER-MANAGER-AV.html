@@ -930,7 +930,7 @@ const NEWSPAPERS=[
   {id:"lastampa",  name:"La Stampa Sport",       short:"La Stampa",  color:"#16a34a",e:"🗞️",tone:"analitico"},
   {id:"skysport",  name:"Sky Sport 24",          short:"Sky Sport",  color:"#0099d6",e:"📡",tone:"diretto"},
 ];
-const GAME_VERSION="2.7.0"; // Sprint 17 — momentum, heatmap, rigori
+const GAME_VERSION="2.7.1"; // Fix: pPosRef hook order (match not starting bug)
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -4362,8 +4362,6 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   const momentumRef=useRef(50);
   useEffect(()=>{momentumRef.current=momentum;},[momentum]);
   const heatPointsRef=useRef([]); // {x,y}[] — sampled every 4 playing ticks
-  const pPosRef=useRef({x:58,y:50});
-  useEffect(()=>{pPosRef.current=pPos;},[pPos]);
   const [showHeatMap,setShowHeatMap]=useState(false);
   const gkDiveRef=useRef(null); // GK dive direction for rigore
   // context-aware realistic attendance
@@ -4407,6 +4405,8 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   const [hlIdx,setHlIdx]=useState(0);
   // position resets to situation startZone on each new highlight
   const [pPos,setPPos]=useState(()=>getStartPos(situations[0])||{x:58,y:50});
+  const pPosRef=useRef({x:58,y:50});
+  useEffect(()=>{pPosRef.current=pPos;},[pPos]);
   const [mStats,setMStats]=useState({goals:0,assists:0,rb:0});
   const [energy,setEnergy]=useState(100);
   const [coms,setComs]=useState([]);
