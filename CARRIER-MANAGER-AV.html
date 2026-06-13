@@ -1113,7 +1113,7 @@ const NEWSPAPERS=[
   {id:"lastampa",  name:"La Stampa Sport",       short:"La Stampa",  color:"#16a34a",e:"🗞️",tone:"analitico"},
   {id:"skysport",  name:"Sky Sport 24",          short:"Sky Sport",  color:"#0099d6",e:"📡",tone:"diretto"},
 ];
-const GAME_VERSION="3.3.0"; // Sprint 22b — dark mode fix, 18 club seconde serie, transfer/export in profilo, nudge allenamento
+const GAME_VERSION="3.3.1"; // Sprint 22c — rinomina termini tecnici UI: OVR→Livello, Archetipo→Stile di gioco, Golden Boy→Miglior Giovane, Prestige→Prestigio
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -2465,7 +2465,7 @@ function generateLocalPressAnalysis(matchResult,playerPerf,playerCtx={}){
 
   // Memoria tag
   const memoriaTag=recs.topSeasonGoals>=10?`🏅 Record: ${recs.topSeasonGoals} gol in una stagione`:
-    isGB?`🏆 Golden Boy S.${(playerCtx.goldenBoys||[])[0]||season}`:
+    isGB?`🏆 Miglior Giovane d'Europa S.${(playerCtx.goldenBoys||[])[0]||season}`:
     age<=19?`✨ Enfant prodige (${age} anni)`:
     season>=5?`📖 Veterano — ${season}ª stagione`:null;
 
@@ -2484,7 +2484,7 @@ function generateLocalPressAnalysis(matchResult,playerPerf,playerCtx={}){
 
   // CORRIERE (critico/analitico)
   const headB=won
-    ?(isGB?`Golden Boy ${name} ancora decisivo: ${goals>0?goals+" gol":"assist"} e ${club} avanti S.${season}`
+    ?(isGB?`Miglior Giovane ${name} ancora decisivo: ${goals>0?goals+" gol":"assist"} e ${club} avanti S.${season}`
       :goals>0?`${name} decide — ${goals} reti e ${club} conquista 3 punti (voto ${rating})`
       :`Solidità premia il ${club}: clean sheet e vittoria ${score} su ${opp}`)
     :drew
@@ -2746,7 +2746,7 @@ const StatBar=({label,value})=>{
 };
 const OvrRing=({value,size=60})=>{
   const c=value>=80?TH.success:value>=65?TH.warning:TH.danger;
-  return<div style={{width:size,height:size,borderRadius:"50%",flexShrink:0,background:`conic-gradient(${c} ${value}%,#e2e8f0 0)`,display:"flex",alignItems:"center",justifyContent:"center"}}><div style={{width:size-10,height:size-10,borderRadius:"50%",background:TH.card,display:"flex",alignItems:"center",justifyContent:"center",flexDirection:"column"}}><div style={{fontSize:size*.27,fontWeight:900,color:c,lineHeight:1}}>{value}</div><div style={{fontSize:8,color:TH.faint}}>OVR</div></div></div>;
+  return<div style={{width:size,height:size,borderRadius:"50%",flexShrink:0,background:`conic-gradient(${c} ${value}%,#e2e8f0 0)`,display:"flex",alignItems:"center",justifyContent:"center"}}><div style={{width:size-10,height:size-10,borderRadius:"50%",background:TH.card,display:"flex",alignItems:"center",justifyContent:"center",flexDirection:"column"}}><div style={{fontSize:size*.27,fontWeight:900,color:c,lineHeight:1}}>{value}</div><div style={{fontSize:8,color:TH.faint}}>LVL</div></div></div>;
 };
 const Notif=({msg,color})=>msg?<div style={{position:"fixed",top:20,left:"50%",transform:"translateX(-50%)",background:TH.card,border:`2px solid ${color}`,color,padding:"10px 24px",borderRadius:40,fontSize:13,fontWeight:700,zIndex:9999,letterSpacing:.4,pointerEvents:"none",boxShadow:`0 4px 24px ${color}33`}}>{msg}</div>:null;
 
@@ -5685,7 +5685,7 @@ function ProTransitionScreen({player,onChoose}){
         <div style={{display:"flex",gap:10,alignItems:"center"}}>
           <AvatarSVG id={player.avatarId||0} size={46}/>
           <div style={{flex:1}}>
-            <div style={{fontWeight:800,fontSize:14,color:TH.text}}>{player.name} · OVR {player.ovr}</div>
+            <div style={{fontWeight:800,fontSize:14,color:TH.text}}>{player.name} · Livello {player.ovr}</div>
             <div style={{fontSize:11,color:TH.muted}}>Under 18 · Età {player.age} · {player.nation}</div>
             <div style={{fontSize:11,color:TH.warning,marginTop:2}}>⚽ {player.goals} gol · 🎯 {player.assists} assist · {player.matches} gare</div>
           </div>
@@ -5813,7 +5813,7 @@ function SeasonEndScreen({data,player,onNewSeason,onRetire}){
           <div style={{fontSize:10,color:TH.muted}}>Pos. {playerPos+1}/{numTeams}</div>
         </div>
         <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:8,textAlign:"center"}}>
-          {[{l:"Partite",v:playerStats.matches,e:"🎮"},{l:"Gol",v:playerStats.goals,e:"⚽"},{l:"Assist",v:playerStats.assists,e:"🎯"},{l:"OVR",v:playerStats.ovr,e:"⭐"}].map(s=>(
+          {[{l:"Partite",v:playerStats.matches,e:"📅"},{l:"Gol",v:playerStats.goals,e:"⚽"},{l:"Assist",v:playerStats.assists,e:"🎯"},{l:"Livello",v:playerStats.ovr,e:"⭐"}].map(s=>(
             <div key={s.l}>
               <div style={{fontSize:20}}>{s.e}</div>
               <div style={{fontSize:22,fontWeight:900,color:TH.text}}>{s.v}</div>
@@ -5928,7 +5928,7 @@ function ClubPresentationScreen({club,contractType,playerName,onContinue}){
           <div style={{fontSize:11,fontWeight:700,color:TH.text,lineHeight:1.3}}>{stadiumName}</div>
         </Card>
         <Card style={{padding:"10px 12px",textAlign:"center"}}>
-          <div style={{fontSize:9,color:TH.muted,marginBottom:3}}>Prestige</div>
+          <div style={{fontSize:9,color:TH.muted,marginBottom:3}}>Prestigio</div>
           <div style={{fontSize:22,fontWeight:900,color:col,lineHeight:1}}>{club?.p||60}</div>
         </Card>
       </div>
@@ -6116,7 +6116,7 @@ function CreateScreen({onCreate,legacyBonus,onClearLegacy}){
           </Card>
           {/* S12.2: Archetype selection */}
           <div>
-            <label style={lbl}>Archetipo calciatore</label>
+            <label style={lbl}>Stile di gioco</label>
             <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:6}}>
               {ARCHETYPES.map(arc=>{
                 const sel=archetypeId===arc.id;
@@ -7292,7 +7292,7 @@ function NationalCallupScreen({data,onConfirm}){
   React.useEffect(()=>{const t=setTimeout(()=>setShown(true),60);return()=>clearTimeout(t);},[]);
   return(
     <div style={{width:"100%",background:`linear-gradient(160deg,${col}30 0%,#050810 55%)`,minHeight:"100vh",display:"flex",flexDirection:"column",alignItems:"center",padding:"24px 16px 32px",boxSizing:"border-box",opacity:shown?1:0,transition:"opacity 0.45s",overflowY:"auto"}}>
-      {isFirst&&<div style={{background:`${TH.accent}20`,border:`1px solid ${TH.accent}55`,borderRadius:8,padding:"7px 18px",marginBottom:18,fontSize:10,color:TH.accent,letterSpacing:2,textTransform:"uppercase",fontWeight:800,textAlign:"center"}}>★ Milestone di Carriera — Prima Convocazione ★</div>}
+      {isFirst&&<div style={{background:`${TH.accent}20`,border:`1px solid ${TH.accent}55`,borderRadius:8,padding:"7px 18px",marginBottom:18,fontSize:10,color:TH.accent,letterSpacing:2,textTransform:"uppercase",fontWeight:800,textAlign:"center"}}>★ Traguardo di Carriera — Prima Convocazione ★</div>}
       <div style={{fontSize:54,marginBottom:4,lineHeight:1}}>{flag}</div>
       <div style={{fontSize:10,color:TH.muted,letterSpacing:2.5,textTransform:"uppercase",marginBottom:4}}>Convocazione Nazionale</div>
       <div style={{fontSize:26,fontWeight:900,color:"#fff",marginBottom:2}}>Nazionale {nation}</div>
@@ -7437,7 +7437,7 @@ function CareerEndScreen({retData,onNewGame,onNewGamePlus}){
             </div>
           ))}
         </div>
-        {bestSeason&&<div style={{background:"#fef9c3",borderRadius:8,padding:"8px 10px",fontSize:11,color:"#78350f"}}>⭐ Miglior stagione: S.{bestSeason.season} con {bestSeason.goals} gol · OVR {bestSeason.ovr}</div>}
+        {bestSeason&&<div style={{background:"#fef9c3",borderRadius:8,padding:"8px 10px",fontSize:11,color:"#78350f"}}>⭐ Miglior stagione: S.{bestSeason.season} con {bestSeason.goals} gol · Livello {bestSeason.ovr}</div>}
       </Card>
 
       {clubs.length>0&&(
@@ -7486,7 +7486,7 @@ const CHALLENGES=[
    check:p=>(p.trophies||[]).length>0,fail:p=>(p.season||1)>5&&(p.trophies||[]).length===0,reward:"🏆 Scalatore Nato"},
   {id:"bomber",icon:"🔥",name:"Bomber Puro",desc:"Segna 50 gol in una singola stagione.",
    check:p=>(p.goals||0)>=50,fail:()=>false,reward:"⚽ Macchina da Gol"},
-  {id:"talento",icon:"💎",name:"Talento Puro",desc:"Raggiungi OVR 90 prima dei 26 anni.",
+  {id:"talento",icon:"💎",name:"Talento Puro",desc:"Raggiungi Livello 90 prima dei 26 anni.",
    check:p=>(p.ovr||60)>=90&&(p.age||17)<26,fail:p=>(p.age||17)>=26&&(p.ovr||60)<90,reward:"🌟 Predestinato"},
 ];
 const LOCALE={
@@ -7497,7 +7497,7 @@ const LOCALE={
     morale:"Morale",form:"Forma",coachTrust:"Fiducia mister",popularity:"Popolarità",fatigue:"Fatica",
     contract:"Contratto",salary:"Stipendio",expires:"Scade stagione",
     biography:"Biografia",attributes:"Attributi",careerHistory:"Timeline Stagioni",
-    train:"Allena",trainSub:"Migliora i tuoi attributi",skillPts:"Punti Abilità",
+    train:"Allena",trainSub:"Migliora i tuoi attributi",skillPts:"Punti crescita",
     standings:"Classifica",topScorer:"Capocannoniere",
     advanceWeekConfirm:"Avanzare alla settimana successiva?",
     noMatchThisWeek:"Nessuna partita questa settimana",
@@ -7537,7 +7537,7 @@ const buildCareerCard=(p)=>{
     `Stagioni: ${seasons}  Presenze: ${p.totalMatches||0}`,
     `Gol: ${p.totalGoals||0}  Assist: ${p.totalAssists||0}`,
     `Trofei: ${(p.trophies||[]).length}  Cap Naz.: ${p.nationalCaps||0}`,
-    `OVR: ${p.ovr||60}  Legacy: ${sc}/1000`,
+    `Livello: ${p.ovr||60}  Carriera: ${sc}/1000`,
     `━━━━━━━━━━━━━━━━━━━━`,
     clubs.length>0?`Club: ${clubs.join(" → ")}`:"",
     `#CPM #CareerPlayerManager`,
@@ -7555,9 +7555,9 @@ const CAREER_MILESTONES=[
   {id:"m25",check:p=>(p.totalMatches||0)>=25,txt:"👟 25 presenze in carriera!",color:"#0891b2"},
   {id:"m50",check:p=>(p.totalMatches||0)>=50,txt:"⚡ 50 partite da professionista!",color:"#0891b2"},
   {id:"m100",check:p=>(p.totalMatches||0)>=100,txt:"💎 100 PRESENZE! Una carriera vera.",color:"#7c3aed"},
-  {id:"ovr75",check:p=>(p.ovr||60)>=75,txt:"📈 OVR 75 — Giocatore di livello!",color:"#059669"},
-  {id:"ovr80",check:p=>(p.ovr||60)>=80,txt:"🌟 OVR 80 — TOP PLAYER!",color:"#d97706"},
-  {id:"ovr90",check:p=>(p.ovr||60)>=90,txt:"✨ OVR 90 — FUORICLASSE assoluto!",color:"#7c3aed"},
+  {id:"ovr75",check:p=>(p.ovr||60)>=75,txt:"📈 Livello 75 — Giocatore solido e affidabile!",color:"#059669"},
+  {id:"ovr80",check:p=>(p.ovr||60)>=80,txt:"🌟 Livello 80 — TOP PLAYER!",color:"#d97706"},
+  {id:"ovr90",check:p=>(p.ovr||60)>=90,txt:"✨ Livello 90 — FUORICLASSE assoluto!",color:"#7c3aed"},
 ];
 const generateBio=(p)=>{
   const name=p.name||"Il giocatore";
@@ -7585,10 +7585,10 @@ const generateBio=(p)=>{
   if(trophies>=3){lines.push(`Ha conquistato ${trophies} trofei, diventando un simbolo di vittoria per i club in cui ha militato.`);}
   else if(trophies===1){lines.push(`Ha già alzato il primo trofeo in carriera — sa cosa significa vincere.`);}
   else if(isPro&&seasons>1){lines.push(`Attualmente con il ${club}, è ancora a caccia del primo grande titolo.`);}
-  if(ovr>=90){lines.push(`OVR ${ovr}: un fuoriclasse assoluto.`);}
-  else if(ovr>=80){lines.push(`OVR ${ovr}: tra i migliori in circolazione.`);}
-  else if(ovr>=70){lines.push(`OVR ${ovr}: giocatore solido e affidabile.`);}
-  else{lines.push(`OVR ${ovr}: ampi margini di crescita davanti a sé.`);}
+  if(ovr>=90){lines.push(`Valutazione tecnica ${ovr}/99: un fuoriclasse assoluto.`);}
+  else if(ovr>=80){lines.push(`Valutazione tecnica ${ovr}/99: tra i migliori in circolazione.`);}
+  else if(ovr>=70){lines.push(`Valutazione tecnica ${ovr}/99: giocatore solido e affidabile.`);}
+  else{lines.push(`Valutazione tecnica ${ovr}/99: ampi margini di crescita davanti a sé.`);}
   return lines.join(" ");
 };
 function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLang,onNewGamePlusCB}){
@@ -8288,7 +8288,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       const coachLog=coachChanged?`🧑‍💼 Nuovo allenatore: ${newCoach.name} (${newCoach.style})`:null;
       const phenomLog=isPhenomSeason?`⚡ Fenomeno generazionale annunciato!`:null;
       const relegLog=playerClubRelegated?`⬇️ Club retrocesso: calo prestige e morale`:null;
-      const gbLog=isGB?`🏆 Golden Boy Stagione ${p.season||1}! Miglior giovane d'Europa.`:null;
+      const gbLog=isGB?`🏆 Miglior Giovane d'Europa Stagione ${p.season||1}! Riconoscimento continentale.`:null;
       return{...p,season:newSeason,age:newAge,week:1,weekLived:false,goals:0,assists:0,matches:0,fatigue:0,skillPoints:(p.skillPoints||0)+2,stats:agedStats,ovr:newOvr,contract:newContract,contractExpired,morale:clamp((p.morale||70)+bonM+(playerClubRelegated?-10:0)+(isGB?15:0),0,100),coachTrust:clamp((p.coachTrust||60)+bonCT+(playerClubRelegated?-8:0)+(coachChanged?newCoach.trustMod:0),0,100),popularity:clamp((p.popularity||20)+bonPop+(isGB?25:0),0,100),value:Math.max(0.5,(p.value||0.8)+bonVal+(playerClubRelegated?-0.3:0)+(isGB?0.8:0)),log:[agingLog,...objLogs,...[gbLog,coachLog,phenomLog,relegLog].filter(Boolean),...(p.log||[])].slice(0,60),standings:newStandings,calendar:newCalendar,matchHistory:[],seasonObjectives:newObjectives,history:[...(p.history||[]),prevHist].slice(-50),clubPrestigeShifts:updatedShifts,cup:newCup,coach:newCoach,goldenBoys:gbSeasons,records:newRecords};
     });
     setSeasonEndData(null);
@@ -9023,8 +9023,8 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
               <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5}}>Attributi</div>
               <div style={{display:"flex",alignItems:"center",gap:6}}>
                 {(player.skillPoints||0)>0
-                  ?<div style={{background:"#f3e8ff",color:TH.accent,padding:"3px 12px",borderRadius:20,fontSize:11,fontWeight:700}}>💡 {player.skillPoints} punti disponibili</div>
-                  :<div style={{fontSize:10,color:TH.faint,fontStyle:"italic"}}>+2 punti a fine stagione</div>}
+                  ?<div style={{background:"#f3e8ff",color:TH.accent,padding:"3px 12px",borderRadius:20,fontSize:11,fontWeight:700}}>💡 {player.skillPoints} punti crescita</div>
+                  :<div style={{fontSize:10,color:TH.faint,fontStyle:"italic"}}>+2 punti crescita a fine stagione</div>}
               </div>
             </div>
             {Object.entries(player.stats).map(([k,v])=>(
@@ -9113,7 +9113,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
               <div style={{display:"flex",alignItems:"center",gap:12}}>
                 <div style={{fontSize:36,lineHeight:1}}>{arc.e}</div>
                 <div style={{flex:1}}>
-                  <div style={{fontSize:10,color:"rgba(255,255,255,0.45)",textTransform:"uppercase",letterSpacing:1.5,marginBottom:2}}>Archetipo</div>
+                  <div style={{fontSize:10,color:"rgba(255,255,255,0.45)",textTransform:"uppercase",letterSpacing:1.5,marginBottom:2}}>Stile di gioco</div>
                   <div style={{fontSize:16,fontWeight:900,color:"#f1f5f9",marginBottom:2}}>{arc.name}</div>
                   <div style={{fontSize:11,color:"rgba(255,255,255,0.55)"}}>{arc.desc}</div>
                 </div>
@@ -9132,12 +9132,12 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
               <div style={{display:"flex",flexWrap:"wrap",gap:6,marginBottom:(player.goldenBoys?.length>0)?8:0}}>
                 {(player.records?.topSeasonGoals>0)&&<span style={{fontSize:11,background:"#fef3c7",color:"#92400e",padding:"3px 10px",borderRadius:8,fontWeight:700}}>⚽ {player.records.topSeasonGoals} gol/stag.</span>}
                 {(player.records?.topSeasonAssists>0)&&<span style={{fontSize:11,background:"#dbeafe",color:"#1e40af",padding:"3px 10px",borderRadius:8,fontWeight:700}}>🎯 {player.records.topSeasonAssists} assist/stag.</span>}
-                {(player.records?.topOvr>60)&&<span style={{fontSize:11,background:"#f0fdf4",color:"#166534",padding:"3px 10px",borderRadius:8,fontWeight:700}}>📈 OVR max {player.records.topOvr}</span>}
+                {(player.records?.topOvr>60)&&<span style={{fontSize:11,background:"#f0fdf4",color:"#166534",padding:"3px 10px",borderRadius:8,fontWeight:700}}>📈 Livello max {player.records.topOvr}</span>}
               </div>
               {(player.goldenBoys?.length>0)&&(
                 <div style={{display:"flex",flexWrap:"wrap",gap:5}}>
                   {(player.goldenBoys||[]).map(s=>(
-                    <span key={s} style={{fontSize:11,background:"linear-gradient(135deg,#f59e0b,#d97706)",color:"#fff",padding:"3px 10px",borderRadius:8,fontWeight:700}}>🏆 Golden Boy S.{s}</span>
+                    <span key={s} style={{fontSize:11,background:"linear-gradient(135deg,#f59e0b,#d97706)",color:"#fff",padding:"3px 10px",borderRadius:8,fontWeight:700}}>🏆 Miglior Giovane d'Europa S.{s}</span>
                   ))}
                 </div>
               )}
@@ -9301,10 +9301,10 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                 {l:"100 gol",e:"👑",done:tg>=100},
               ]},
               {cat:"📈 Crescita",items:[
-                {l:"OVR 70",e:"⭐",done:ovr>=70},
-                {l:"OVR 80",e:"🌟",done:ovr>=80},
-                {l:"OVR 90",e:"✨",done:ovr>=90},
-                {l:"OVR 95",e:"🚀",done:ovr>=95},
+                {l:"Livello 70",e:"⭐",done:ovr>=70},
+                {l:"Livello 80",e:"🌟",done:ovr>=80},
+                {l:"Livello 90",e:"✨",done:ovr>=90},
+                {l:"Livello 95",e:"🚀",done:ovr>=95},
               ]},
               {cat:"🏆 Carriera",items:[
                 {l:"Pro",e:"🎽",done:isPro},
