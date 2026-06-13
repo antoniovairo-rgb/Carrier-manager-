@@ -7263,6 +7263,7 @@ function CareerEndScreen({retData,onNewGame,onNewGamePlus}){
         📋 Copia Riepilogo Carriera
       </Btn>
       {onNewGamePlus&&(()=>{const bonus=legacyScore>=600?{statBoost:3,label:"Leggenda",moraleBoost:15}:legacyScore>=400?{statBoost:2,label:"Veterano",moraleBoost:10}:legacyScore>=200?{statBoost:1,label:"Esperienza",moraleBoost:5}:null;return bonus?(<Btn onClick={()=>onNewGamePlus(bonus)} fw style={{padding:"13px",fontSize:14,marginBottom:10,background:"linear-gradient(135deg,#7c3aed,#4f46e5)",color:"#fff",border:"none"}}>🌟 Nuova Partita+ — Bonus {bonus.label} (+{bonus.statBoost} stats)</Btn>):null;})()}
+      {onNewGamePlus&&legacyScore>=100&&(<Btn onClick={()=>onNewGamePlus({statBoost:1,label:"Eredità Familiare",moraleBoost:8,generation:true,parentName:p.name,parentTotalGoals:p.totalGoals||0})} v="ghost" fw style={{padding:"12px",fontSize:13,marginBottom:8,border:`1.5px solid #16a34a`,color:"#16a34a"}}>👨‍👦 Gioca come figlio/a di {p.name}</Btn>)}
       <Btn onClick={onNewGame} v="primary" fw style={{padding:"16px",fontSize:15}}>
         🏠 Torna al Menu Principale
       </Btn>
@@ -7435,6 +7436,8 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       newP={...newP,milestones:CAREER_MILESTONES.filter(m=>m.check(newP)).map(m=>m.id)};
       changed=true;
     }
+    if(!('achievements' in newP)){newP={...newP,achievements:[]};changed=true;}
+    if(!('rivalries' in newP)){newP={...newP,rivalries:[]};changed=true;}
     if(changed){setPlayer(newP);}
   },[]);// eslint-disable-line
   const[darkMode,setDarkMode]=useState(()=>localStorage.getItem("cpm-dark")==="1");
@@ -7723,6 +7726,18 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     }
     // S11.4: derby win bonus
     if(currentMatchDerby&&result.won){setTimeout(()=>notify(`🔥 ${currentMatchDerby.e||""} ${currentMatchDerby.name} VINTO! Popolarità +12!`,"#f59e0b"),600);setPlayer(p=>({...p,popularity:clamp((p.popularity||20)+12,0,100)}));}
+    // S21: achievement checks
+    const prevAch=player.achievements||[];
+    const newAch=[];
+    if(result.goals>=3&&!prevAch.includes("hattrick"))newAch.push("hattrick");
+    if((result.rating||0)>=10&&!prevAch.includes("perfect"))newAch.push("perfect");
+    if(result.won&&!result.drew&&(result.homeScore<result.awayScore||(!result.isHome&&result.homeScore<result.awayScore))&&!prevAch.includes("comeback"))newAch.push("comeback");
+    if(currentMatchDerby&&result.goals>0&&!prevAch.includes("derby_hero"))newAch.push("derby_hero");
+    if((player.proStatus||"u18")==="pro"&&(player.totalMatches||0)===0&&!prevAch.includes("debut_pro"))newAch.push("debut_pro");
+    if((player.coachTrust||60)>=90&&!prevAch.includes("captain"))newAch.push("captain");
+    if(newAch.length>0){setPlayer(p=>({...p,achievements:[...(p.achievements||[]),...newAch]}));newAch.forEach((id,i)=>{const def=ACHIEVEMENTS.find(a=>a.id===id);if(def)setTimeout(()=>notify(`${def.icon} Achievement: ${def.name}!`,"#7c3aed"),2000+i*2500);});}
+    // S21: rivalry tracking
+    if(result.opponent){setPlayer(p=>{const rv=p.rivalries||[];const existing=rv.find(r=>r.opponent===result.opponent);if(existing){const upd=rv.map(r=>r.opponent===result.opponent?{...r,matches:r.matches+1,wins:r.wins+(result.won?1:0),goals:r.goals+result.goals,lastSeason:p.season||1}:r);return{...p,rivalries:upd};}else if(rv.length<10){return{...p,rivalries:[...rv,{opponent:result.opponent,oppAbbr:result.oppAbbr||"???",oppCol:result.oppCol||"#888",matches:1,wins:result.won?1:0,goals:result.goals,lastSeason:p.season||1}]};}return p;});}
   };
 
   // "Vivi la settimana" — applies events/form changes, does NOT advance week counter
@@ -8232,6 +8247,48 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
               })}
             </div>
             <div style={{fontSize:10,color:TH.faint,marginTop:10,textAlign:"center"}}>Scegli come rispondere — le tue parole hanno conseguenze.</div>
+          </Card>
+        </div>
+      )}
+
+      {/* == Coach Dialogue Modal == */}
+      {coachModal&&!coachModal.chosen&&(
+        <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.55)",zIndex:9999,display:"flex",alignItems:"center",justifyContent:"center",padding:16}}>
+          <Card style={{maxWidth:420,width:"100%",padding:"20px"}}>
+            <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:14}}>
+              <div style={{fontSize:26}}>🎙️</div>
+              <div>
+                <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5}}>Colloquio col Mister</div>
+                <div style={{fontSize:13,fontWeight:800,color:TH.accent}}>{player.coach?.name||"Il Mister"}</div>
+              </div>
+            </div>
+            <div style={{background:TH.bg,borderRadius:10,padding:"12px 14px",marginBottom:16,borderLeft:`3px solid ${TH.accent}`}}>
+              <div style={{fontSize:14,color:TH.text,lineHeight:1.6,fontStyle:"italic"}}>{coachModal.dialogue.q}</div>
+            </div>
+            <div style={{display:"flex",flexDirection:"column",gap:8}}>
+              {[{key:"pos",label:coachModal.dialogue.tone_pos,ef:coachModal.dialogue.ef_pos,color:"#16a34a"},{key:"neu",label:coachModal.dialogue.tone_neu,ef:coachModal.dialogue.ef_neu,color:"#ca8a04"},{key:"neg",label:coachModal.dialogue.tone_neg,ef:coachModal.dialogue.ef_neg,color:"#dc2626"}].map(opt=>(
+                <button key={opt.key} onClick={()=>{
+                  const ef=opt.ef||{};
+                  setPlayer(p=>({...p,
+                    coachTrust:clamp((p.coachTrust||60)+(ef.coachTrust||0),0,100),
+                    morale:clamp((p.morale||70)+(ef.morale||0),0,100),
+                    fatigue:clamp((p.fatigue||0)+(ef.fatigue||0),0,100),
+                    form:clamp((p.form||70)+(ef.form||0),0,100),
+                    value:Math.max(0.5,(p.value||0.8)+(ef.value||0)),
+                    stats:{...p.stats,...(ef.tiro?{tiro:clamp(p.stats.tiro+(ef.tiro||0),1,99)}:{}),...(ef.mentalità?{mentalità:clamp(p.stats.mentalità+(ef.mentalità||0),1,99)}:{})},
+                  }));
+                  setCoachModal(m=>({...m,chosen:opt.key}));
+                  setTimeout(()=>setCoachModal(null),1800);
+                  const bits=[];if(ef.coachTrust)bits.push(`🤝${ef.coachTrust>0?"+":""}${ef.coachTrust}`);if(ef.morale)bits.push(`😄${ef.morale>0?"+":""}${ef.morale}`);if(ef.fatigue)bits.push(`⚡${ef.fatigue>0?"+":""}${ef.fatigue}`);
+                  notify(`🎙️ ${opt.label.substring(0,30)}… ${bits.join(" ")}`,opt.color);
+                }} style={{textAlign:"left",background:"transparent",border:`1.5px solid ${opt.color}22`,borderRadius:10,padding:"10px 12px",cursor:"pointer",display:"block",width:"100%"}}
+                  onMouseEnter={e=>{e.currentTarget.style.background=`${opt.color}12`;e.currentTarget.style.borderColor=opt.color;}}
+                  onMouseLeave={e=>{e.currentTarget.style.background="transparent";e.currentTarget.style.borderColor=`${opt.color}22`;}}>
+                  <div style={{fontSize:12,color:TH.text,lineHeight:1.5}}>{opt.label}</div>
+                </button>
+              ))}
+            </div>
+            <button onClick={()=>setCoachModal(null)} style={{marginTop:10,width:"100%",padding:"8px",background:"transparent",border:"none",color:TH.faint,cursor:"pointer",fontSize:11}}>Annulla</button>
           </Card>
         </div>
       )}
@@ -8977,6 +9034,48 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
               </Card>
             );
           })()}
+          {/* S21: Achievement Gallery */}
+          {(player.achievements||[]).length>0&&(()=>{
+            const cats=[...new Set(ACHIEVEMENTS.map(a=>a.cat))];
+            return(
+              <Card style={{padding:"12px 14px"}}>
+                <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:10}}>🏅 Achievement ({(player.achievements||[]).length}/{ACHIEVEMENTS.length})</div>
+                {cats.map(cat=>{
+                  const inCat=ACHIEVEMENTS.filter(a=>a.cat===cat);
+                  const unlocked=inCat.filter(a=>(player.achievements||[]).includes(a.id));
+                  if(!unlocked.length)return null;
+                  return(
+                    <div key={cat} style={{marginBottom:8}}>
+                      <div style={{fontSize:9,color:TH.faint,textTransform:"uppercase",letterSpacing:1,marginBottom:4}}>{cat}</div>
+                      <div style={{display:"flex",flexWrap:"wrap",gap:5}}>
+                        {unlocked.map(a=>(
+                          <div key={a.id} title={a.desc} style={{display:"flex",alignItems:"center",gap:4,padding:"4px 10px",borderRadius:20,fontSize:10,fontWeight:600,background:"#7c3aed22",border:"1px solid #7c3aed66",color:"#7c3aed"}}>
+                            <span style={{fontSize:12}}>{a.icon}</span>{a.name}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  );
+                })}
+              </Card>
+            );
+          })()}
+          {/* S21: Top rivalità */}
+          {(player.rivalries||[]).filter(r=>r.matches>=2).length>0&&(
+            <Card style={{padding:"12px 14px"}}>
+              <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:10}}>⚔️ Rivalità</div>
+              {[...(player.rivalries||[])].sort((a,b)=>b.matches-a.matches).slice(0,5).map((r,i)=>(
+                <div key={i} style={{display:"flex",alignItems:"center",gap:8,padding:"5px 0",borderBottom:i<4?"1px solid "+TH.cardBorder:"none"}}>
+                  <div style={{width:8,height:8,borderRadius:"50%",background:r.oppCol||"#888",flexShrink:0}}/>
+                  <div style={{flex:1}}>
+                    <div style={{fontSize:12,fontWeight:700,color:TH.text}}>vs {r.opponent}</div>
+                    <div style={{fontSize:10,color:TH.muted}}>{r.matches} sfide · {r.wins}V · {r.goals}⚽</div>
+                  </div>
+                  <div style={{fontSize:11,fontWeight:700,color:r.wins/r.matches>=0.5?TH.success:TH.danger}}>{Math.round(r.wins/r.matches*100)}% V</div>
+                </div>
+              ))}
+            </Card>
+          )}
           {/* Sprint 19 — Challenge status */}
           {player.challenge&&(()=>{
             const ch=CHALLENGES.find(c=>c.id===player.challenge.id);
