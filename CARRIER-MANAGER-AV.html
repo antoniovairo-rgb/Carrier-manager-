@@ -556,6 +556,38 @@ const WEEKLY_RANDOM_EVENTS=[
 ];
 
 /* ========================================
+   INJURY SYSTEM — types + rehab activities
+======================================== */
+const INJURY_TYPES_META={
+  contusione:{label:"Contusione",icon:"🟡"},
+  stiramento:{label:"Stiramento muscolare",icon:"🟠"},
+  distorsione:{label:"Distorsione",icon:"🔴"},
+  osseo:{label:"Trauma osseo",icon:"🦴"},
+};
+// Keyed by {injuryType: {weeksRemaining: activity}}
+const INJURY_REHAB={
+  contusione:{
+    1:{txt:"🧊 Crioterapia, ghiaccio e bendaggio compressivo. Il fisio è tranquillo: 'Niente di grave, tra qualche giorno torni in gruppo.' Un piccolo sollievo.",ef:{fatigue:-6},icon:"🧊"},
+  },
+  stiramento:{
+    2:{txt:"🏥 Prima sessione di fisioterapia: elettrostimolazione sul quadricipite. C'è ancora fastidio, ma il fisio è ottimista. 'Un'altra settimana di stop, poi si valuta il rientro.'",ef:{fatigue:-5,morale:-4},icon:"⚡"},
+    1:{txt:"🏃 Corsetta leggera sul campo col preparatore. La muscolatura regge. Il mister ti ha visto dalla tribuna e ha annuito soddisfatto. Stai tornando.",ef:{fatigue:-10,form:3,morale:5},icon:"✅"},
+  },
+  distorsione:{
+    3:{txt:"🩻 Risonanza magnetica alla caviglia: lesione di secondo grado. Inizia il protocollo RICE. Il dottore è serio ma sereno: 'Tre settimane e sei a posto.'",ef:{fatigue:-4,morale:-6},icon:"🩻"},
+    2:{txt:"🚴 Lavoro in piscina e cyclette. Il gonfiore scende visibilmente. Il fisio dice che stai recuperando meglio del previsto.",ef:{fatigue:-8,fisico:1},icon:"🏊"},
+    1:{txt:"✅ Visita di controllo: il dottore è soddisfatto. 'Puoi tornare in gruppo domani.' Il mister sorride vedendoti camminare normalmente lungo il corridoio.",ef:{fatigue:-12,form:4,morale:7},icon:"🩺"},
+  },
+  osseo:{
+    4:{txt:"🔪 Intervento in artroscopia presso la clinica del club. L'equipe medica è soddisfatta: 'Decorso nella norma, quattro settimane e rientri gradualmente.' Devi avere pazienza.",ef:{fatigue:-3,morale:-10},icon:"🏥"},
+    3:{txt:"💧 Idroterapia e terapia laser. La cicatrizzazione procede bene. Il fisio ti monitora due volte al giorno. Meno dolore al mattino rispetto a ieri.",ef:{fatigue:-6,mentalità:1},icon:"💧"},
+    2:{txt:"🏋️ Prima sessione di palestra differenziata: solo parte superiore del corpo. Ti senti già più vivo. I compagni vengono a salutarti nello spogliatoio.",ef:{fatigue:-7,fisico:1,morale:5},icon:"💪"},
+    1:{txt:"⚽ Primo allenamento col pallone sul campo. Lento, preciso, controllato. La squadra ti applaude. Il mister: 'Questa settimana sei in panchina, la prossima vediamo.'",ef:{fatigue:-10,form:3,morale:8},icon:"⚽"},
+  },
+  _fallback:{txt:"🏥 Sessione di fisioterapia con il medico del club. Il recupero procede nella norma. Ancora qualche giorno di stop.",ef:{fatigue:-6},icon:"🏥"},
+};
+
+/* ========================================
    SITUATIONS  (con moveZone e startZone)
 ======================================== */
 const S=(text,zones,mz,sz,actions,lock=false,mm=-1,intro="",type="off")=>{
@@ -930,7 +962,7 @@ const NEWSPAPERS=[
   {id:"lastampa",  name:"La Stampa Sport",       short:"La Stampa",  color:"#16a34a",e:"🗞️",tone:"analitico"},
   {id:"skysport",  name:"Sky Sport 24",          short:"Sky Sport",  color:"#0099d6",e:"📡",tone:"diretto"},
 ];
-const GAME_VERSION="2.7.1"; // Fix: pPosRef hook order (match not starting bug)
+const GAME_VERSION="2.8.0"; // Sprint 18 — rehab settimane infortunio, no spoiler intervista
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -7417,7 +7449,8 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
     setPlayer(p=>{
       const md2=(p.calendar||[]).find(m=>m.week===(p.week||1)&&!m.played);
       const isInjured=p.injured&&(p.injuryWeeks||0)>0;
-      const injBase={injuryWeeks:p.injuryWeeks-1,injured:p.injuryWeeks-1>0,fatigue:Math.max(0,(p.fatigue||0)-10)};
+      const recovSim=p.injuryWeeks-1<=0;
+      const injBase={injuryWeeks:p.injuryWeeks-1,injured:!recovSim,...(recovSim?{injuryType:null}:{}),fatigue:Math.max(0,(p.fatigue||0)-10)};
       if(!md2){
         // No match this week — just advance (decrement injury if active)
         return isInjured?{...p,...injBase,week:(p.week||1)+1,weekLived:false}:{...p,week:(p.week||1)+1,weekLived:false};
@@ -7460,6 +7493,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
     const injRoll=Math.random();
     const newInjured=!player.injured&&((postFatigue>82&&injRoll<0.07)||(postFatigue>68&&injRoll<0.03));
     const injuryWeeks=newInjured?(postFatigue>82?rng(2,4):1):0;
+    const injuryType=newInjured?(injuryWeeks===1?"contusione":injuryWeeks===2?"stiramento":injuryWeeks===3?"distorsione":"osseo"):null;
     // Generate press analysis async (non-blocking)
     generatePressAnalysis(result,{name:player.name,club:player.club?.n||player.club?.name||"–",goals:result.goals,assists:result.assists,rating:result.rating,oppPrestige:player.standings?undefined:(result.oppPrestige||65),homeRoster:result.homeRoster||[]},{archetype:player.archetype,records:player.records,goldenBoys:player.goldenBoys,matchHistory:player.matchHistory,season:player.season,age:player.age}).then(press=>{
       setLastPressReport(press);
@@ -7495,10 +7529,10 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
       const baseAiData=p.aiData||{lastOpponentTactic:null,scoutReports:{},pressReports:{}};
       const newAiData={...baseAiData,lastOpponentTactic:result.oppTactic?{...result.oppTactic,week:p.week||1}:baseAiData.lastOpponentTactic,scoutReports:result.scoutReport?{...baseAiData.scoutReports,[matchdayId]:result.scoutReport}:baseAiData.scoutReports};
       const formD=result.won?8:result.drew?2:-5;
-      return{...p,stats:ns,ovr:newOvr,goals:p.goals+result.goals,assists:p.assists+result.assists,matches:p.matches+1,totalGoals:p.totalGoals+result.goals,totalAssists:p.totalAssists+result.assists,totalMatches:p.totalMatches+1,morale:clamp(p.morale+moD,0,100),form:clamp((p.form||70)+formD,30,95),fatigue:postFatigue,...(newInjured?{injured:true,injuryWeeks}:{}),week:(p.week||1)+1,weekLived:false,log:[logE,...(p.log||[])].slice(0,60),matchHistory:newHistory,standings:newStandings,calendar:newCal,aiData:newAiData};
+      return{...p,stats:ns,ovr:newOvr,goals:p.goals+result.goals,assists:p.assists+result.assists,matches:p.matches+1,totalGoals:p.totalGoals+result.goals,totalAssists:p.totalAssists+result.assists,totalMatches:p.totalMatches+1,morale:clamp(p.morale+moD,0,100),form:clamp((p.form||70)+formD,30,95),fatigue:postFatigue,...(newInjured?{injured:true,injuryWeeks,injuryType}:{}),week:(p.week||1)+1,weekLived:false,log:[logE,...(p.log||[])].slice(0,60),matchHistory:newHistory,standings:newStandings,calendar:newCal,aiData:newAiData};
     });
     setScreen("postmatch");setTab("dashboard");
-    if(newInjured)notify(`🩹 Infortunio muscolare! Recupero: ${injuryWeeks} settiman${injuryWeeks===1?"a":"e"}.`,TH.danger);
+    if(newInjured){const iT=INJURY_TYPES_META[injuryType]||{label:"Infortunio",icon:"🩹"};notify(`${iT.icon} ${iT.label}! Stop: ${injuryWeeks} settiman${injuryWeeks===1?"a":"e"}.`,TH.danger);}
     // Sprint 15: 15% chance post-match interview
     if(Math.random()<0.15){
       const iw=pickInterviewByCtx(player,result);
@@ -7511,7 +7545,22 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
   // "Vivi la settimana" — applies events/form changes, does NOT advance week counter
   const liveCurrentWeek=()=>{
     if(player.weekLived){notify("Hai già vissuto questa settimana. Avanza per passare alla prossima.",TH.warning);return;}
-    if(player.injured){notify("Sei infortunato — usa Avanza Settimana per il recupero.",TH.danger);return;}
+    if(player.injured){
+      const type=player.injuryType||"stiramento";
+      const wk=player.injuryWeeks||1;
+      const rehab=(INJURY_REHAB[type]?.[wk])||INJURY_REHAB._fallback;
+      const ef=rehab.ef||{};
+      setPlayer(p=>{
+        const newStats={...p.stats};
+        if(ef.fisico)newStats.fisico=clamp(p.stats.fisico+ef.fisico,1,99);
+        if(ef.mentalità)newStats.mentalità=clamp(p.stats.mentalità+ef.mentalità,1,99);
+        const newOvr=calcOvr(newStats);
+        return{...p,weekLived:true,fatigue:clamp((p.fatigue||0)+(ef.fatigue||0),0,100),morale:clamp((p.morale||70)+(ef.morale||0),0,100),form:clamp((p.form||70)+(ef.form||0),0,100),stats:newStats,ovr:newOvr};
+      });
+      const iT=INJURY_TYPES_META[type]||{label:"Infortunio",icon:"🩹"};
+      setTimeout(()=>setWeekLiveModal({event:{txt:rehab.txt},changes:{fatigue:ef.fatigue||0,morale:ef.morale||0,form:ef.form||0},isRehab:true,rehabIcon:rehab.icon,injuryLabel:iT.label,injuryWeeks:wk}),50);
+      return;
+    }
     const doInterview=Math.random()<0.20; // Sprint 15: 20% chance of interview instead of weekLiveModal
     // International call-up: 5% chance when OVR≥65 and proStatus==="pro"
     if((player.proStatus||"u18")==="pro"&&(player.ovr||60)>=65&&Math.random()<0.05){
@@ -7655,7 +7704,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
       const naturalForm=clamp(Math.round(baseForm*0.92+65*0.08),30,95);
       const baseFat=updP.fatigue!=null?updP.fatigue:(p.fatigue||0);
       const naturalFat=Math.max(0,baseFat-6);
-      if(p.injured&&(p.injuryWeeks||0)>0){return{...updP,week:(p.week||1)+1,weekLived:false,trainedThisWeek:false,injuryWeeks:p.injuryWeeks-1,injured:p.injuryWeeks-1>0,fatigue:Math.max(0,baseFat-12),form:naturalForm};}
+      if(p.injured&&(p.injuryWeeks||0)>0){const recovAdv=p.injuryWeeks-1<=0;return{...updP,week:(p.week||1)+1,weekLived:false,trainedThisWeek:false,injuryWeeks:p.injuryWeeks-1,injured:!recovAdv,...(recovAdv?{injuryType:null}:{}),fatigue:Math.max(0,baseFat-12),form:naturalForm};}
       return{...updP,week:(p.week||1)+1,weekLived:false,trainedThisWeek:false,fatigue:naturalFat,form:naturalForm};
     });
     notify("⏭️ Settimana avanzata");
@@ -7935,8 +7984,9 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
         <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.45)",zIndex:9997,display:"flex",alignItems:"center",justifyContent:"center",padding:20}}>
           <Card style={{maxWidth:380,width:"100%",padding:"22px"}}>
             <div style={{fontSize:11,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:6}}>Settimana {player.week} — {player.club?.name||player.club?.n}</div>
-            <div style={{fontSize:18,marginBottom:14}}>📋 Questa settimana</div>
-            <Card bg="#f0fdf4" border="#bbf7d0" shadow={false} style={{padding:"12px 14px",marginBottom:12}}>
+            <div style={{fontSize:18,marginBottom:weekLiveModal.isRehab?8:14}}>{weekLiveModal.isRehab?"🏥 Riabilitazione":"📋 Questa settimana"}</div>
+            {weekLiveModal.isRehab&&<div style={{fontSize:11,color:"#d97706",marginBottom:12,display:"flex",alignItems:"center",gap:6}}><span>🩹</span><span>{weekLiveModal.injuryLabel} — ancora {weekLiveModal.injuryWeeks} settiman{weekLiveModal.injuryWeeks===1?"a":"e"} di stop</span></div>}
+            <Card bg={weekLiveModal.isRehab?"#fff7ed":"#f0fdf4"} border={weekLiveModal.isRehab?"#fed7aa":"#bbf7d0"} shadow={false} style={{padding:"12px 14px",marginBottom:12}}>
               <div style={{fontSize:13,color:TH.text,lineHeight:1.7}}>{weekLiveModal.event.txt}</div>
             </Card>
             {Object.keys(weekLiveModal.changes||{}).length>0&&(
@@ -7946,7 +7996,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
                 {weekLiveModal.changes.fatigue!==undefined&&weekLiveModal.changes.fatigue!==0&&<div style={{padding:"4px 10px",borderRadius:20,background:weekLiveModal.changes.fatigue<0?"#dcfce7":"#fef9c3",color:weekLiveModal.changes.fatigue<0?TH.success:TH.warning,fontSize:11,fontWeight:700}}>⚡ Fatica {weekLiveModal.changes.fatigue>0?"+":""}{weekLiveModal.changes.fatigue}</div>}
               </div>
             )}
-            <div style={{fontSize:11,color:TH.faint,marginBottom:14}}>La settimana è stata vissuta. Clicca "Avanza" per passare alla prossima o gioca la partita prima.</div>
+            <div style={{fontSize:11,color:TH.faint,marginBottom:14}}>{weekLiveModal.isRehab?"Sessione completata. Clicca 'Avanza Settimana' per continuare il recupero.":"La settimana è stata vissuta. Clicca \"Avanza\" per passare alla prossima o gioca la partita prima."}</div>
             <Btn onClick={()=>setWeekLiveModal(null)} v="primary" fw style={{padding:"11px"}}>✅ Capito</Btn>
           </Card>
         </div>
@@ -7976,23 +8026,12 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
               {(interviewModal.q?.a||[]).map((ans,i)=>{
                 const toneColor=ans.tone==="diretto"?"#ef4444":ans.tone==="umile"?"#16a34a":"#2563eb";
                 const toneLabel=ans.tone==="diretto"?"🔥 Diretto":ans.tone==="umile"?"🙏 Umile":"🤝 Diplomatico";
-                const ef=ans.ef||{};
-                const positives=[];const negatives=[];
-                if(ef.m){(ef.m>0?positives:negatives).push(`Morale ${ef.m>0?"+":""}${ef.m}`);}
-                if(ef.p){(ef.p>0?positives:negatives).push(`Pop. ${ef.p>0?"+":""}${ef.p}`);}
-                if(ef.t){(ef.t>0?positives:negatives).push(`Fiducia ${ef.t>0?"+":""}${ef.t}`);}
-                if(ef.f){(ef.f>0?positives:negatives).push(`Forma ${ef.f>0?"+":""}${ef.f}`);}
-                if(ef.v){(ef.v>0?positives:negatives).push(`Valore ${ef.v>0?"+":""}${ef.v.toFixed(2)}M`);}
                 return(
                   <button key={i} onClick={()=>applyInterviewAnswer(ans)} style={{textAlign:"left",background:"transparent",border:`1.5px solid ${toneColor}20`,borderRadius:10,padding:"10px 12px",cursor:"pointer",transition:"all 0.15s",outline:"none",display:"block",width:"100%"}}
                     onMouseEnter={e=>{e.currentTarget.style.background=`${toneColor}10`;e.currentTarget.style.borderColor=toneColor;}}
                     onMouseLeave={e=>{e.currentTarget.style.background="transparent";e.currentTarget.style.borderColor=`${toneColor}20`;}}>
                     <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:5}}>
                       <span style={{fontSize:10,fontWeight:800,color:toneColor,padding:"2px 8px",borderRadius:20,background:`${toneColor}15`}}>{toneLabel}</span>
-                      <div style={{display:"flex",gap:4,flexWrap:"wrap"}}>
-                        {positives.slice(0,3).map((s,j)=><span key={j} style={{fontSize:9,color:TH.success,fontWeight:700}}>{s}</span>)}
-                        {negatives.slice(0,2).map((s,j)=><span key={j} style={{fontSize:9,color:TH.danger,fontWeight:700}}>{s}</span>)}
-                      </div>
                     </div>
                     <div style={{fontSize:12,color:TH.text,lineHeight:1.5}}>"{ans.txt}"</div>
                   </button>
@@ -8213,10 +8252,10 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
                 <span>▸</span><span>Azioni singole</span>
               </summary>
               <div style={{marginTop:6,display:"flex",flexDirection:"column",gap:6}}>
-                <div style={{background:(player.weekLived||player.injured)?"linear-gradient(135deg,#334155,#374151)":"linear-gradient(135deg,#1e3a5f,#1e4d3a)",borderRadius:10,padding:"10px 12px",cursor:(player.weekLived||player.injured)?"default":"pointer",opacity:(player.weekLived||player.injured)?0.65:1}}
-                  onClick={(!player.weekLived&&!player.injured)?liveCurrentWeek:undefined}>
+                <div style={{background:player.weekLived?"linear-gradient(135deg,#334155,#374151)":player.injured?"linear-gradient(135deg,#3d1515,#3d2215)":"linear-gradient(135deg,#1e3a5f,#1e4d3a)",borderRadius:10,padding:"10px 12px",cursor:player.weekLived?"default":"pointer",opacity:player.weekLived?0.65:1}}
+                  onClick={!player.weekLived?liveCurrentWeek:undefined}>
                   <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-                    <div style={{fontSize:12,fontWeight:700,color:"#fff"}}>{player.weekLived?"✅ Settimana vissuta":"⚡ Vivi la Settimana"}</div>
+                    <div style={{fontSize:12,fontWeight:700,color:"#fff"}}>{player.weekLived?"✅ Settimana vissuta":player.injured?"🏥 Sessione Riabilitazione":"⚡ Vivi la Settimana"}</div>
                     <div style={{fontSize:10,color:"rgba(255,255,255,0.5)"}}>W.{week}</div>
                   </div>
                 </div>
