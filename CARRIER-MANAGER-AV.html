@@ -699,7 +699,7 @@ const SPOGLIATOIO_MOMENTS=[
     {txt:'«Parliamo stasera. Ti sei fatto condizionare.»',ef:{morale:6,coachTrust:4},bond:9},
     {txt:'«Non sono il tipo adatto a questi discorsi.»',ef:{morale:1},bond:-2},
   ]},
-  {id:"sm_rientro",txt:'{nome} ti aspetta fuori dalla sala medica: «Bentornato. Ci mancavi.»',archetype:null,choices:[
+  {id:"sm_rientro",txt:'{nome} ti aspetta fuori dalla sala medica: «Bentornato. Ci mancavi.»',archetype:null,requiresRecovery:true,choices:[
     {txt:'«Avete retto bene senza di me.»',ef:{morale:10,fatigue:-6},bond:6},
     {txt:'«Sono solo contento di essere qui.»',ef:{morale:7,fatigue:-3},bond:4},
   ]},
@@ -8078,6 +8078,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     if(!('hasAgent' in newP)){newP={...newP,hasAgent:false};changed=true;}
     if(!('nationalGoals' in newP)){newP={...newP,nationalGoals:0};changed=true;}
     if(!('presidentModalSeason' in newP)){newP={...newP,presidentModalSeason:0};changed=true;}
+    if(!('justRecovered' in newP)){newP={...newP,justRecovered:false};changed=true;}
     if(changed){setPlayer(newP);}
   },[]);// eslint-disable-line
   const[darkMode,setDarkMode]=useState(()=>localStorage.getItem("cpm-dark")==="1");
@@ -8520,8 +8521,8 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     const hasMdThisWeek=(player.calendar||[]).some(md=>md.week===(player.week||1)&&!md.played);
     if(hasMdThisWeek&&!player.injured&&Math.random()<0.12&&(player.teammates||[]).length>0){
       const mate=pick(player.teammates);
-      const arcMoments=SPOGLIATOIO_MOMENTS.filter(m=>m.archetype===mate.archetype||m.archetype===null);
-      const moment=pick(arcMoments.length>0?arcMoments:SPOGLIATOIO_MOMENTS);
+      const arcMoments=SPOGLIATOIO_MOMENTS.filter(m=>(m.archetype===mate.archetype||m.archetype===null)&&(!m.requiresRecovery||player.justRecovered));
+      const moment=pick(arcMoments.length>0?arcMoments:SPOGLIATOIO_MOMENTS.filter(m=>!m.requiresRecovery||player.justRecovered));
       const txt=moment.txt.replace(/\{nome\}/g,mate.name);
       setPlayer(p=>({...p,weekLived:true}));
       setTimeout(()=>setWeekLiveModal({event:{txt,e:mate.icon},changes:{},choices:moment.choices,isSpogliatoio:true,teammate:{name:mate.name,icon:mate.icon,archetype:mate.archetype}}),50);
@@ -8714,8 +8715,8 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       const naturalForm=clamp(Math.round(baseForm*0.92+65*0.08),30,95);
       const baseFat=updP.fatigue!=null?updP.fatigue:(p.fatigue||0);
       const naturalFat=Math.max(0,baseFat-6);
-      if(p.injured&&(p.injuryWeeks||0)>0){const recovAdv=p.injuryWeeks-1<=0;return{...updP,week:(p.week||1)+1,weekLived:false,trainedThisWeek:false,injuryWeeks:p.injuryWeeks-1,injured:!recovAdv,...(recovAdv?{injuryType:null}:{}),fatigue:Math.max(0,baseFat-12),form:naturalForm};}
-      return{...updP,week:(p.week||1)+1,weekLived:false,trainedThisWeek:false,fatigue:naturalFat,form:naturalForm};
+      if(p.injured&&(p.injuryWeeks||0)>0){const recovAdv=p.injuryWeeks-1<=0;return{...updP,week:(p.week||1)+1,weekLived:false,trainedThisWeek:false,injuryWeeks:p.injuryWeeks-1,injured:!recovAdv,...(recovAdv?{injuryType:null,justRecovered:true}:{justRecovered:false}),fatigue:Math.max(0,baseFat-12),form:naturalForm};}
+      return{...updP,week:(p.week||1)+1,weekLived:false,trainedThisWeek:false,fatigue:naturalFat,form:naturalForm,justRecovered:false};
     });
     notify("⏭️ Settimana avanzata");
     // Sprint 25A — Career moment trigger (checked OUTSIDE setPlayer to fire modal)
@@ -8951,7 +8952,14 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     setTimeout(()=>notify(`🏳️ Convocazione in ${d.nation}! Popolarità +18 · Valore +€0.35M`,TH.accent),100);
   };
 
-  const upgradeSkill=k=>{if(!player.skillPoints)return;setPlayer(p=>{const ns={...p.stats,[k]:clamp(p.stats[k]+rng(1,3),1,99)};return{...p,stats:ns,ovr:calcOvr(ns),skillPoints:p.skillPoints-1};});notify(`${k} migliorato!`,TH.accent);};
+  const upgradeSkill=k=>{
+    setPlayer(p=>{
+      if(!(p.skillPoints>0))return p; // guard inside updater: safe against stale closure double-clicks
+      const ns={...p.stats,[k]:clamp(p.stats[k]+rng(1,3),1,99)};
+      return{...p,stats:ns,ovr:calcOvr(ns),skillPoints:p.skillPoints-1};
+    });
+    notify(`${k} migliorato!`,TH.accent);
+  };
 
   // accept transfer: update club, league, calendar, standings
   const acceptTransfer=()=>{
@@ -8990,7 +8998,8 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
           updFL=updFL.map(f=>f.clubId===cId?{...f,status:newStatus}:f);
         }
       }
-      return{...p,club:newClub,isU18:false,proStatus:"pro",contractExpired:false,transferListed:false,isCaptain:false,morale:clamp(p.morale+(tc.moralBonus||10),0,100),offerHistory:[...(p.offerHistory||[]),{club:tc.club.n,type:tc.type,season:p.season,accepted:true}],log:[`🔄 ${tc.type}: ${tc.club.n} (${tc.club.lg||tc.club.nat})!`,...(p.log||[])].slice(0,60),standings:newStandings,calendar:newCalendar,worldMemory:oldClubMem,rival:newRival,fanLegend:updFL};
+      const newTeammates=generateTeammates({...p,club:newClub});
+      return{...p,club:newClub,isU18:false,proStatus:"pro",contractExpired:false,transferListed:false,isCaptain:false,morale:clamp(p.morale+(tc.moralBonus||10),0,100),offerHistory:[...(p.offerHistory||[]),{club:tc.club.n,type:tc.type,season:p.season,accepted:true}],log:[`🔄 ${tc.type}: ${tc.club.n} (${tc.club.lg||tc.club.nat})!`,...(p.log||[])].slice(0,60),standings:newStandings,calendar:newCalendar,worldMemory:oldClubMem,rival:newRival,fanLegend:updFL,teammates:newTeammates,justRecovered:false};
     });
     setTransferOffer(null);
     setPresentationData({club:tc.club,contractType:tc.type,playerName:player.name});
