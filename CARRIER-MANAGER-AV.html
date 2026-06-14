@@ -1566,7 +1566,7 @@ const NEWSPAPERS=[
   {id:"lastampa",  name:"La Stampa Sport",       short:"La Stampa",  color:"#16a34a",e:"🗞️",tone:"analitico"},
   {id:"skysport",  name:"Sky Sport 24",          short:"Sky Sport",  color:"#0099d6",e:"📡",tone:"diretto"},
 ];
-const GAME_VERSION="3.13.2"; // Fix critico: NpcFace riscritto senza inner component/switch/fragment (Babel mobile)
+const GAME_VERSION="3.13.3"; // Fix critico: startMatch non bloccava più su misterDiscorsoModal (return statement)
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -8541,12 +8541,8 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       };
       const lines=styleLines[player.coach.style]||styleLines.Bilanciato;
       setMisterDiscorsoModal({coachName:player.coach.name,line:pick(lines),mw,oppName:opp.n,isCaptainTalk:false});
-      return;
-    }
-    // Sprint 25C: captain team talk for medium-stakes matches (mw 5-6)
-    if(mw>=5&&player.isCaptain){
+    } else if(mw>=5&&player.isCaptain){
       setMisterDiscorsoModal({coachName:player.name,line:pick(CAPTAIN_TEAM_TALKS),mw,oppName:opp.n,isCaptainTalk:true});
-      return;
     }
     setScreen("match");
   };
