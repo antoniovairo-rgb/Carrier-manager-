@@ -2515,20 +2515,16 @@ function generateRival(player){
     goals:rng(4,14),totalGoals:rng(6,22),assists:rng(2,8),trophies:0,seasons:1,
     relationship:"sconosciuto"};
 }
-// Sprint 24 — generate 3 teammates for the season (seeded by club+season)
+// Sprint 24 — generate 3 teammates from the actual squad roster (seeded by club+season)
 function generateTeammates(player){
   const seed=hashStr((player.club?.id||"u18")+"_"+(player.season||1));
   const sr=(n)=>((seed*9301+49297*(n+1))%233280)/233280;
-  const firstNames=["Lorenzo","Davide","Luca","Marco","Federico","Simone","Andrea","Alessandro","Thomas","Raul","Paulo","Antoine","Stefan","Mohamed","Joshua","Karim","Ivan","Bruno","Sergei","Yannick"];
-  const lastNames=["Ricci","Conti","Ferrari","Greco","Bianchi","Rossi","Mancini","Costa","García","Silva","Müller","Dupont","Santos","Popov","Alves","Okafor","Salah","Diaz","Moura","Traoré"];
+  // Pick names directly from the match roster so they match formation players
+  const roster=generateTeamRoster(player.club||{id:"u18",n:"U18",nat:"🇮🇹"},player.season||1);
+  const pool=seededShuffle(roster.slice(1),seed^0xDEADBEEF); // skip GK, distinct seed for pool shuffle
   const archs=[...TEAMMATE_ARCHETYPES];
-  // Fisher-Yates seeded shuffle
-  for(let i=archs.length-1;i>0;i--){const j=Math.floor(sr(i)*( i+1));[archs[i],archs[j]]=[archs[j],archs[i]];}
-  return archs.slice(0,3).map((a,i)=>{
-    const fn=firstNames[Math.floor(sr(i*7+1)*firstNames.length)];
-    const ln=lastNames[Math.floor(sr(i*7+2)*lastNames.length)];
-    return{name:`${fn} ${ln}`,archetype:a.id,icon:a.icon,bond:40};
-  });
+  for(let i=archs.length-1;i>0;i--){const j=Math.floor(sr(i)*(i+1));[archs[i],archs[j]]=[archs[j],archs[i]];}
+  return archs.slice(0,3).map((a,i)=>({name:pool[i].name,archetype:a.id,icon:a.icon,bond:40}));
 }
 // Sprint 24 — pick 3 journalists (seeded random selection from pool)
 function generateJournalists(){
