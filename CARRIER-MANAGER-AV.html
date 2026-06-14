@@ -431,7 +431,7 @@ const CLUBS=[
   mkT("pis","Pisa","PIS",45,"#1d4ed8","#f5f5f5","🇮🇹","Serie B"),
   mkT("fro","Frosinone","FRO",47,"#f59e0b","#1d4ed8","🇮🇹","Serie B"),
   mkT("ces","Cesena","CES",43,"#0f0f0f","#f5f5f5","🇮🇹","Serie B"),
-  mkT("sam","Sampdoria","SAM",53,"#1d4ed8","#dc2626","🇮🇹","Serie B"),
+  mkT("samp","Sampdoria","SAM",53,"#1d4ed8","#dc2626","🇮🇹","Serie B"),
   mkT("sal","Salernitana","SAL",45,"#7c2d12","#f5f5f5","🇮🇹","Serie B"),
   mkT("cit","Cittadella","CIT",42,"#7c2d12","#f5f5f5","🇮🇹","Serie B"),
   mkT("sdt","Südtirol","SDT",40,"#dc2626","#f5f5f5","🇮🇹","Serie B"),
@@ -517,9 +517,9 @@ const CLUBS=[
 ];
 // (b04 prestige set inline above)
 
-// U18 clubs = Italian clubs with U18 suffix (for starting career)
-const U18_CLUBS = CLUBS.filter(c=>c.nat==="🇮🇹").map(c=>({
-  ...c, n:`${c.n} U18`, isU18:true, p:c.p-10,
+// U18 clubs = top 16 Serie A clubs (Primavera 1) — no Serie B, capped at 16 by prestige
+const U18_CLUBS = CLUBS.filter(c=>c.lg==="Serie A").sort((a,b)=>b.p-a.p).slice(0,16).map(c=>({
+  ...c, n:`${c.n} Primavera`, isU18:true, p:clamp(c.p-12,30,80), lg:"Primavera 1",
 }));
 
 function TeamBadge({team,size=40}) {
@@ -1476,7 +1476,7 @@ const NEWSPAPERS=[
   {id:"lastampa",  name:"La Stampa Sport",       short:"La Stampa",  color:"#16a34a",e:"🗞️",tone:"analitico"},
   {id:"skysport",  name:"Sky Sport 24",          short:"Sky Sport",  color:"#0099d6",e:"📡",tone:"diretto"},
 ];
-const GAME_VERSION="3.10.0"; // Sprint 29 — Memoria Viva
+const GAME_VERSION="3.11.0"; // Sprint 30 — La Carriera Viva + League Fix
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -8206,6 +8206,8 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
   const[showAdvanceConfirm,setShowAdvanceConfirm]=useState(false);
   const[showMatchPrompt,setShowMatchPrompt]=useState(null); // {md} — pending match prompt
   const[focusTrainingStat,setFocusTrainingStat]=useState(null); // Sprint 29: Focus training stat picker
+  const[nationsCupModal,setNationsCupModal]=useState(null); // Sprint 30: Nations Cup event
+  const[showRetireConfirm,setShowRetireConfirm]=useState(false); // Sprint 30: voluntary retirement
   const[lastSaved,setLastSaved]=useState(null);           // timestamp
   const[nationalCallupData,setNationalCallupData]=useState(null);
   const[retirementData,setRetirementData]=useState(null);
@@ -8745,7 +8747,14 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
           const lc=getLeagueClubs(p).filter(c=>c.id!==p.club?.id&&c.n!==p.club?.n&&c.id!==r.club?.id);
           const changesClub=Math.random()<0.22&&lc.length>0;
           const newClub=changesClub?pick(lc.slice(0,Math.min(8,lc.length))):r.club;
-          const newRelationship=(p.season||1)>=3&&r.relationship==="sconosciuto"?"rivale":r.relationship;
+          // Sprint 30 BF1: performance-based relationship evolution
+          let newRelationship=r.relationship||"sconosciuto";
+          if(newRelationship==="sconosciuto"&&(p.season||1)>=2)newRelationship="rivale";
+          const myGoals=p.goals||0;
+          const perfDiff=myGoals-goalGain;
+          if(perfDiff>=5)newRelationship=newRelationship==="rivale"?"rispettato":newRelationship;
+          else if(perfDiff<=-5)newRelationship=newRelationship==="rispettato"?"rivale":newRelationship;
+          if((p.season||1)>=6&&newRelationship==="rispettato"&&Math.random()<0.20)newRelationship="amico";
           rivalUpdate={rival:{...r,ovr:newOvr,age:r.age+1,goals:goalGain,totalGoals:(r.totalGoals||0)+goalGain,seasons:(r.seasons||0)+1,club:newClub?{n:newClub.n,id:newClub.id,p:newClub.p,lg:newClub.lg,c:newClub.c}:r.club,relationship:newRelationship}};
         }
         return{...p,history:[...(p.history||[]),hist],trophies:newTrophies,worldMemory:newMem,...rivalUpdate,log:[`🏁 Fine S.${p.season}: ${p.goals}⚽ ${p.assists}🎯`,...(p.log||[])].slice(0,60)};
@@ -8771,6 +8780,22 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       const nextWeeks=[0,9,18,27,0];
       return{won,opp,sim,roundNum,roundName:roundNames[roundNum]||`R${roundNum}`,nextWeek:won&&roundNum<4?nextWeeks[roundNum]:null,isChamp:won&&roundNum===4};
     })();
+
+    // Sprint 30 BF5: Nations Cup trigger — every 2 pro seasons at week 20
+    if(!isInU18&&weekVal===20&&(player.season||1)%2===0&&(player.nationalCaps||0)>=2&&!(player.worldMemory||[]).some(m=>m.type==="nations_cup"&&m.season===(player.season||1))){
+      const NATION_PRESTIGE={Italia:82,Spagna:90,Francia:85,Germania:87,Inghilterra:88,Portogallo:80,Brasile:91,Argentina:89,Olanda:78,Belgio:79};
+      const myNat=player.nation||"Italia";const myPres=NATION_PRESTIGE[myNat]||75;
+      const opponents=Object.entries(NATION_PRESTIGE).filter(([n])=>n!==myNat).sort(()=>Math.random()-.5).slice(0,3);
+      const seed=hashStr(myNat+(player.season||1));let rs=seed;const sr=()=>{rs=((rs*1664525+1013904223)&0xffffffff)>>>0;return rs/0xffffffff;};
+      let pts=0;const matches=opponents.map(([oppNat,oppPres])=>{
+        const myStr=myPres+(player.ovr||65)*0.3+(player.form||70)*0.15;const oppStr=oppPres+65*0.3+70*0.15;
+        const win=sr()<myStr/(myStr+oppStr)*1.1;const draw=!win&&sr()<0.28;
+        if(win)pts+=3;else if(draw)pts+=1;
+        return{opp:oppNat,won:win,drew:draw,homeScore:win?rng(1,3):draw?rng(0,2):rng(0,1),awayScore:win?rng(0,1):draw?rng(0,2):rng(1,3)};
+      });
+      const qualified=pts>=4;const trophyWon=pts>=7;
+      setTimeout(()=>setNationsCupModal({myNat,season:player.season||1,matches,pts,qualified,trophyWon}),400);
+    }
 
     // Normal week advance
     setPlayer(p=>{
@@ -9517,6 +9542,47 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
         </div>
       )}
 
+      {/* Sprint 30 BF5: Nations Cup Modal */}
+      {nationsCupModal&&(
+        <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.6)",zIndex:9998,display:"flex",alignItems:"center",justifyContent:"center",padding:20}}>
+          <Card style={{maxWidth:380,width:"100%",padding:"22px"}}>
+            <div style={{textAlign:"center",marginBottom:14}}>
+              <div style={{fontSize:30,marginBottom:4}}>🌍</div>
+              <div style={{fontSize:16,fontWeight:900,color:TH.text}}>Coppa delle Nazioni</div>
+              <div style={{fontSize:11,color:TH.muted}}>S.{nationsCupModal.season} · {nationsCupModal.myNat}</div>
+            </div>
+            <div style={{display:"flex",flexDirection:"column",gap:6,marginBottom:14}}>
+              {nationsCupModal.matches.map((m,i)=>(
+                <div key={i} style={{display:"flex",alignItems:"center",gap:8,padding:"7px 10px",borderRadius:8,background:m.won?"#dcfce7":m.drew?"#f1f5f9":"#fee2e2",border:"1px solid "+(m.won?"#86efac":m.drew?"#cbd5e1":"#fca5a5")}}>
+                  <span style={{fontSize:12,flex:1,fontWeight:600,color:TH.text}}>{nationsCupModal.myNat} vs {m.opp}</span>
+                  <span style={{fontSize:12,fontWeight:800,color:m.won?"#16a34a":m.drew?"#64748b":"#dc2626"}}>{m.homeScore}–{m.awayScore}</span>
+                  <span style={{fontSize:10,color:m.won?"#16a34a":m.drew?"#64748b":"#dc2626",fontWeight:700}}>{m.won?"V":m.drew?"P":"S"}</span>
+                </div>
+              ))}
+            </div>
+            <div style={{textAlign:"center",padding:"10px",borderRadius:10,background:nationsCupModal.trophyWon?"#fef3c7":nationsCupModal.qualified?"#eff6ff":"#f1f5f9",marginBottom:14}}>
+              <div style={{fontSize:14,fontWeight:900,color:nationsCupModal.trophyWon?"#92400e":nationsCupModal.qualified?"#1e40af":"#64748b"}}>
+                {nationsCupModal.trophyWon?"🏆 CAMPIONI! Coppa delle Nazioni vinta!":nationsCupModal.qualified?"✅ Qualificati alla fase finale!":"❌ Eliminati dalla fase a gironi"}
+              </div>
+              <div style={{fontSize:10,color:TH.muted,marginTop:3}}>Punti: {nationsCupModal.pts}/9</div>
+            </div>
+            <Btn fw v={nationsCupModal.trophyWon?"primary":"secondary"} onClick={()=>{
+              const nc=nationsCupModal;
+              setPlayer(p=>{
+                const moraleB=nc.trophyWon?18:nc.qualified?10:0;
+                const popB=nc.trophyWon?20:nc.qualified?10:3;
+                const newMem=[...(p.worldMemory||[]),{type:"nations_cup",season:p.season||1,nation:nc.myNat,qualified:nc.qualified,won:nc.trophyWon,pts:nc.pts}];
+                const newTrophies=nc.trophyWon?[...(p.trophies||[]),{season:p.season||1,club:nc.myNat,league:"Coppa delle Nazioni",isNational:true}]:(p.trophies||[]);
+                return{...p,morale:clamp((p.morale||70)+moraleB,0,100),popularity:clamp((p.popularity||20)+popB,0,100),worldMemory:newMem,trophies:newTrophies};
+              });
+              if(nationsCupModal.trophyWon)notify("🏆 Coppa delle Nazioni VINTA! Leggenda nazionale!","#f59e0b");
+              else if(nationsCupModal.qualified)notify("✅ Qualificati! Morale +10.",TH.success);
+              setNationsCupModal(null);
+            }}>Chiudi →</Btn>
+          </Card>
+        </div>
+      )}
+
       {/* HEADER */}
       <div style={{display:"flex",alignItems:"center",gap:12,marginBottom:14}}>
         <AvatarSVG id={player.avatarId||0} size={52}/>
@@ -9864,9 +9930,9 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
           if(!clubs.length)return[];
           const seed=(player.season||1)*1000+hashStr(lg);
           let r=seed;const rand=()=>{r=((r*1664525+1013904223)&0xffffffff)>>>0;return r/0xffffffff;};
-          const md=player.matches||10;
+          const md=(clubs.length-1)*2; // full double round-robin season
           return [...clubs].map(club=>{
-            const base=Math.round((club.p||50)/99*md*0.55);
+            const base=Math.round((club.p||50)/99*md*0.52);
             const wins=clamp(base+Math.round((rand()-0.5)*4),0,md);
             const draws=clamp(Math.round(rand()*2),0,md-wins);
             const losses=Math.max(0,md-wins-draws);
@@ -10284,6 +10350,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
               national_goal:{e:"🌍",label:(m)=>`Primo gol in Nazionale (S.${m.season})`},
               ex_club:{e:"🏟️",label:(m)=>`${m.club||"Club"} — ex squadra (S.${m.season})`},
               career_moment:{e:"⭐",label:(m)=>m.label||`Momento chiave S.${m.season}`},
+              nations_cup:{e:"🌍",label:(m)=>m.won?`🏆 Coppa delle Nazioni vinta! (S.${m.season})`:m.qualified?`Qualificato — Coppa Nazioni S.${m.season}`:`Coppa Nazioni S.${m.season}`},
             };
             const entries=(player.worldMemory||[]).filter(m=>MEM_META[m.type]).slice(-12).reverse();
             if(!entries.length)return null;
@@ -10360,6 +10427,29 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                   <Btn onClick={()=>{setPlayer(p=>({...p,transferListed:true,coachTrust:clamp((p.coachTrust||60)-10,0,100),morale:clamp(p.morale-8,0,100),log:["📢 Hai richiesto la cessione. Il mercato si anima.",...(p.log||[])].slice(0,60)}));notify("📢 Richiesta di cessione presentata. Aspettati offerte.",TH.warning);}} v="secondary" style={{flexShrink:0,fontSize:11,padding:"6px 10px"}}>📢 Richiedi cessione</Btn>
                 </div>
               </Card>)
+          )}
+          {/* Sprint 30 BF6: Ritiro anticipato */}
+          {(player.proStatus||"u18")==="pro"&&(player.age||17)>=32&&(
+            !showRetireConfirm?(
+              <Card style={{padding:"11px 14px",border:"1px solid #fecaca",background:"#fef2f2"}}>
+                <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:8}}>
+                  <div>
+                    <div style={{fontSize:11,fontWeight:700,color:"#991b1b"}}>🏁 Fine carriera</div>
+                    <div style={{fontSize:10,color:"#b91c1c",marginTop:1}}>Puoi ritirarti in qualsiasi momento · Età {player.age||17}</div>
+                  </div>
+                  <Btn onClick={()=>setShowRetireConfirm(true)} v="ghost" style={{flexShrink:0,fontSize:11,padding:"6px 10px",color:"#991b1b",border:"1px solid #fca5a5"}}>Ritirati</Btn>
+                </div>
+              </Card>
+            ):(
+              <Card style={{padding:"14px",border:"1px solid #ef4444",background:"#fef2f2"}}>
+                <div style={{fontSize:12,fontWeight:700,color:"#991b1b",marginBottom:8,textAlign:"center"}}>⚠️ Confermi il ritiro?</div>
+                <div style={{fontSize:11,color:"#b91c1c",textAlign:"center",marginBottom:12}}>La tua carriera terminerà ora. Non potrai tornare a giocare.</div>
+                <div style={{display:"flex",gap:8}}>
+                  <Btn onClick={()=>setShowRetireConfirm(false)} v="secondary" fw>Annulla</Btn>
+                  <Btn onClick={doRetire} v="ghost" fw style={{color:"#dc2626",border:"1px solid #dc2626"}}>Sì, ritirati</Btn>
+                </div>
+              </Card>
+            )
           )}
           {/* Export save — profile utility */}
           <Card style={{padding:"10px 14px"}} shadow={false}>
