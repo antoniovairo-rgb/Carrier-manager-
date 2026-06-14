@@ -519,11 +519,11 @@ const CLUBS=[
 
 // Primavera 1 — tutte le 18 squadre di Serie A
 const U18_CLUBS = CLUBS.filter(c=>c.lg==="Serie A").sort((a,b)=>b.p-a.p).map(c=>({
-  ...c, n:`${c.n} Primavera`, isU18:true, p:clamp(c.p-12,30,80), lg:"Primavera 1",
+  ...c, n:`${c.n} Primavera`, isU18:true, p:Math.max(30,Math.min(80,c.p-12)), lg:"Primavera 1",
 }));
 // Primavera 2 — tutte le 18 squadre di Serie B
 const U18_CLUBS_P2 = CLUBS.filter(c=>c.lg==="Serie B").sort((a,b)=>b.p-a.p).map(c=>({
-  ...c, n:`${c.n} Primavera`, isU18:true, p:clamp(c.p-15,20,65), lg:"Primavera 2",
+  ...c, n:`${c.n} Primavera`, isU18:true, p:Math.max(20,Math.min(65,c.p-15)), lg:"Primavera 2",
 }));
 // Pool completo U18 per la schermata offerte
 const ALL_U18_CLUBS = [...U18_CLUBS, ...U18_CLUBS_P2];
@@ -1485,7 +1485,7 @@ const NEWSPAPERS=[
   {id:"lastampa",  name:"La Stampa Sport",       short:"La Stampa",  color:"#16a34a",e:"🗞️",tone:"analitico"},
   {id:"skysport",  name:"Sky Sport 24",          short:"Sky Sport",  color:"#0099d6",e:"📡",tone:"diretto"},
 ];
-const GAME_VERSION="3.11.1"; // Primavera 1 (18) + Primavera 2 (18 Serie B)
+const GAME_VERSION="3.11.2"; // Fix crash: clamp usata prima della definizione in U18_CLUBS
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
