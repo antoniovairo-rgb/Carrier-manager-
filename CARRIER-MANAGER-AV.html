@@ -1485,7 +1485,7 @@ const NEWSPAPERS=[
   {id:"lastampa",  name:"La Stampa Sport",       short:"La Stampa",  color:"#16a34a",e:"🗞️",tone:"analitico"},
   {id:"skysport",  name:"Sky Sport 24",          short:"Sky Sport",  color:"#0099d6",e:"📡",tone:"diretto"},
 ];
-const GAME_VERSION="3.11.2"; // Fix crash: clamp usata prima della definizione in U18_CLUBS
+const GAME_VERSION="3.12.0"; // Sprint 31 — Match Sync (ball lerp, chant cleanup, hl crowd)
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -5205,6 +5205,8 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   const movesLeftRef=useRef(0);
   const moveCoolRef=useRef(0);
   const driftTargetsRef=useRef(null);
+  const ballTargetRef=useRef({x:50,y:50});
+  const chantTimersRef=useRef([]);
   const velRef=useRef({});
   const DRIFT_PRESETS={
     // index 0 = home GK (always fixed in goal centre), indices 1-9 = home outfield
@@ -5224,6 +5226,15 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   const opponents=useRef([{x:76,y:35},{x:82,y:50},{x:79,y:65}]);
 
   const addCom=useCallback((text,color,t)=>{setComs(p=>[{text,color,t:t??clock},...p].slice(0,16));},[clock]);
+  // Component-scope chantFor — tracks timer IDs so they can be cleared on phase exit
+  const chantFor=(type,dur=2800)=>{
+    const clubN=player.club?.a||player.club?.n||player.club?.name||"la squadra";
+    const pool=CROWD_CHANTS[type]||CROWD_CHANTS.home;
+    const t=pick(pool);
+    setCrowdChant({text:t.replace(/\[CLUB\]/g,clubN),type,key:Date.now()});
+    const tid=setTimeout(()=>setCrowdChant(null),dur);
+    chantTimersRef.current.push(tid);
+  };
 
   // Load scout report on mount (career matches only)
   useEffect(()=>{
@@ -5243,11 +5254,26 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     console.log("[CPM-AI] Opponent tactic:",tactic);
   };
 
+  // Cleanup: cancella cori pendenti e blocca il target del pallone quando si esce dal "playing"
+  useEffect(()=>{
+    if(phase!=="playing"){
+      chantTimersRef.current.forEach(clearTimeout);
+      chantTimersRef.current=[];
+      setCrowdChant(null);
+      ballTargetRef.current=ballPosRef.current; // congela target durante highlight/ended
+    }
+  },[phase]);// eslint-disable-line
+
   // reset position + selectedActionIdx when highlight changes
   useEffect(()=>{
     if(phase==="hl_move"||phase==="hl_intro"){
       const sp=getStartPos(situations[hlIdx]);
       setPPos(sp);
+    }
+    // Coro folla all'ingresso del momento clou
+    if(phase==="hl_intro"){
+      const tid=setTimeout(()=>chantFor("home",1500),200);
+      chantTimersRef.current.push(tid);
     }
     if(phase==="hl_choose"){
       setSelectedActionIdx(0);
@@ -5469,25 +5495,22 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
               }
             }));
           }
-          if(ev.bpos)setBallPos(ev.bpos);
+          if(ev.bpos)ballTargetRef.current=ev.bpos;
           if(ev.ms)setMxStats(s=>({shots:s.shots+(ev.ms.shots||0),oppShots:s.oppShots+(ev.ms.oppShots||0),fouls:s.fouls+(ev.ms.fouls||0),corners:s.corners+(ev.ms.corners||0)}));
           if(ev.pd&&DRIFT_PRESETS[ev.pd])driftTargetsRef.current=DRIFT_PRESETS[ev.pd];
           if(ev.ef==="team_goal"||ev.ef==="opp_goal")setWaveEvent({t:Date.now(),home:ev.ef==="team_goal"});
-          // Sprint 16+22 — crowd chant triggers with match-state awareness
-          const clubShortName=player.club?.a||player.club?.n||player.club?.name||"la squadra";
-          const chantFor=(type,dur=2800)=>{const pool=CROWD_CHANTS[type]||CROWD_CHANTS.home;const t=pick(pool);setCrowdChant({text:t.replace(/\[CLUB\]/g,clubShortName),type,key:Date.now()});setTimeout(()=>setCrowdChant(null),dur);};
+          // Crowd chant triggers — tutti i setTimeout tracciati in chantTimersRef
           if(ev.ef==="team_goal"){
-            setTimeout(()=>chantFor("goal",3800),200);
-            // If winning or comeback, add extra energy chant
-            setScore(prev=>{setTimeout(()=>{if(prev.home>prev.away)chantFor("winning",2400);else if(prev.home<prev.away)chantFor("comeback",2600);},1800);return prev;});
+            chantTimersRef.current.push(setTimeout(()=>chantFor("goal",3800),200));
+            setScore(prev=>{chantTimersRef.current.push(setTimeout(()=>{if(prev.home>prev.away)chantFor("winning",2400);else if(prev.home<prev.away)chantFor("comeback",2600);},1800));return prev;});
           }else if(ev.ef==="opp_goal"){
-            setTimeout(()=>chantFor("danger",2400),200);
-            setScore(prev=>{setTimeout(()=>{if(prev.home<prev.away)chantFor("losing",2600);},1200);return prev;});
+            chantTimersRef.current.push(setTimeout(()=>chantFor("danger",2400),200));
+            setScore(prev=>{chantTimersRef.current.push(setTimeout(()=>{if(prev.home<prev.away)chantFor("losing",2600);},1200));return prev;});
           }else if(ev.ms?.shots>0&&Math.random()<0.45)chantFor("near_miss",2000);
           else if(ev.ms?.fouls>0&&Math.random()<0.5)chantFor("foul",1800);
           else if(nx>75&&score.home>score.away&&Math.random()<0.12)chantFor("winning",2500);
           else if(nx>75&&score.home<score.away&&Math.random()<0.10)chantFor("comeback",2600);
-          else if(Math.random()<0.04)chantFor("home",2500); // ambient home chant ~every 25s
+          else if(Math.random()<0.04)chantFor("home",2500);
           else if(nx===45)chantFor("half",2000);
           // Sprint 17: momentum swings from BG events
           if(ev.ef==="team_goal")setMomentum(m=>clamp(m+25,0,100));
@@ -5515,6 +5538,13 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           if(heatPointsRef.current.length>300)heatPointsRef.current.shift();
         }
         return nx;
+      });
+      // Ball lerp — interpolazione continua verso il target ad ogni tick (300ms)
+      setBallPos(b=>{
+        const bx=ballTargetRef.current.x,by=ballTargetRef.current.y;
+        const dx=bx-b.x,dy=by-b.y;
+        if(Math.abs(dx)<0.3&&Math.abs(dy)<0.3)return b;
+        return{x:b.x+dx*0.25,y:b.y+dy*0.25};
       });
     },300);
     return()=>clearInterval(iv);
