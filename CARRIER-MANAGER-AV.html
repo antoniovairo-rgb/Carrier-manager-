@@ -165,7 +165,7 @@ function NpcFace({skin="#f5c5a3",hair="#2d1800",eye="#5a3e2b",style="short",bear
       <circle cx="52.5" cy="56" r="1.3" fill={hc} opacity="0.20"/>
       <path d="M41 63 Q50 69 59 63" stroke={skin==="#f5c5a3"||skin==="#fad5c0"?"#b06858":"#7a3838"} strokeWidth="2.2" fill="none" strokeLinecap="round"/>
       {beard&&<ellipse cx="50" cy="67" rx="22" ry="9" fill={hc} opacity="0.42"/>}
-      {grey&&<><path d="M31 43 Q30 39 32 36" stroke="#0000" strokeWidth="0.8" fill="none" opacity="0.3"/><path d="M69 43 Q70 39 68 36" stroke="#0000" strokeWidth="0.8" fill="none" opacity="0.3"/></>}
+      {grey&&<><path d="M31 43 Q30 39 32 36" stroke="none" fill="none" opacity="0.3"/><path d="M69 43 Q70 39 68 36" stroke="none" fill="none" opacity="0.3"/></>}
     </svg>
   );
 }
@@ -1562,7 +1562,7 @@ const NEWSPAPERS=[
   {id:"lastampa",  name:"La Stampa Sport",       short:"La Stampa",  color:"#16a34a",e:"🗞️",tone:"analitico"},
   {id:"skysport",  name:"Sky Sport 24",          short:"Sky Sport",  color:"#0099d6",e:"📡",tone:"diretto"},
 ];
-const GAME_VERSION="3.13.0"; // Sprint 32 — Manager proattivo, Walkout 2.0, NpcFace
+const GAME_VERSION="3.13.1"; // Fix: coachModal proattivo non blocca più il prompt partita
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -5125,7 +5125,7 @@ function WalkoutOverlay({homeTeam,homeRoster,awayRoster,opponent,isHome=true,mat
     return(
       <div key={i} style={{display:"flex",alignItems:"center",gap:5,padding:"2px 7px",background:isLast?`${col}28`:"transparent",borderRadius:6,borderLeft:isLast?`2px solid ${col}`:"2px solid transparent",transition:"all 0.2s",marginBottom:1}}>
         <div style={{width:17,height:17,borderRadius:"50%",background:isLast?col:`${col}55`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:8,fontWeight:900,color:"#fff",flexShrink:0}}>{nums?nums[i]:i+1}</div>
-        <div style={{fontSize:10,color:isLast?"#fff":"rgba(255,255,255,0.70)",fontWeight:isLast?700:400,lineHeight:1.1,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",maxWidth:90}}>{pl.name.split(" ").pop()}</div>
+        <div style={{fontSize:10,color:isLast?"#fff":"rgba(255,255,255,0.70)",fontWeight:isLast?700:400,lineHeight:1.1,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",maxWidth:90}}>{(pl.name||"").split(" ").pop()||pl.name||"?"}</div>
         <div style={{fontSize:8,color:"rgba(255,255,255,0.28)",marginLeft:"auto"}}>{pl.role}</div>
       </div>
     );
@@ -8340,6 +8340,8 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
   const[weekLiveModal,setWeekLiveModal]=useState(null);   // {event, changes}
   const[showAdvanceConfirm,setShowAdvanceConfirm]=useState(false);
   const[showMatchPrompt,setShowMatchPrompt]=useState(null); // {md} — pending match prompt
+  const showMatchPromptRef=useRef(null);
+  useEffect(()=>{showMatchPromptRef.current=showMatchPrompt;},[showMatchPrompt]);
   const[focusTrainingStat,setFocusTrainingStat]=useState(null); // Sprint 29: Focus training stat picker
   const[nationsCupModal,setNationsCupModal]=useState(null); // Sprint 30: Nations Cup event
   const[showRetireConfirm,setShowRetireConfirm]=useState(false); // Sprint 30: voluntary retirement
@@ -9045,7 +9047,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       if(fires){
         const pool=COACH_DIALOGUES.filter(d=>d.proactive&&(d.trigger===trigger||!d.trigger));
         const d=pick(pool.length>0?pool:COACH_DIALOGUES.filter(d=>d.proactive));
-        if(d)setTimeout(()=>setCoachModal({dialogue:d,chosen:null,proactive:true}),700);
+        if(d)setTimeout(()=>{if(!showMatchPromptRef.current)setCoachModal({dialogue:d,chosen:null,proactive:true});},900);
       }
     }
     // S11.2: club crisis alert (once at week 1 per season)
