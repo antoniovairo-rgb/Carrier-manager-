@@ -92,9 +92,80 @@ function AvatarSVG({id=0, size=60, border=false}) {
       <ellipse cx="61" cy="46" rx="5.5" ry="5" fill="white"/>
       <circle cx="61" cy="46" r="3.2" fill={p.eye}/>
       <circle cx="62" cy="45" r="1.2" fill="black"/>
-      <ellipse cx="50" cy="56" rx="2.5" ry="2" fill={p.skin==="fad5c0"?"#c09080":"#7c4030"} opacity="0.5"/>
-      <path d="M41 64 Q50 71 59 64" stroke={p.skin==="%f5c5a3"?"#c08070":"#8b4040"} strokeWidth="2.2" fill="none" strokeLinecap="round"/>
+      <ellipse cx="50" cy="56" rx="2.5" ry="2" fill={p.skin==="fad5c0"?"#c09080":"#7c4030"} opacity="0.45"/>
+      {/* nostril dots */}
+      <circle cx="47.5" cy="57.5" r="1.2" fill={p.hair} opacity="0.18"/>
+      <circle cx="52.5" cy="57.5" r="1.2" fill={p.hair} opacity="0.18"/>
+      {/* eye highlights */}
+      <circle cx="37.5" cy="44.5" r="0.8" fill="white" opacity="0.7"/>
+      <circle cx="59.5" cy="44.5" r="0.8" fill="white" opacity="0.7"/>
+      <path d="M41 64 Q50 70 59 64" stroke={p.skin==="#f5c5a3"||p.skin==="#f0c8a0"||p.skin==="#fad5c0"?"#b06858":"#7a3838"} strokeWidth="2.2" fill="none" strokeLinecap="round"/>
       {p.beard && <ellipse cx="50" cy="68" rx="22" ry="10" fill={p.hair} opacity="0.42"/>}
+    </svg>
+  );
+}
+
+// NPC profiles: mister, giornalisti
+const COACH_NPC_FACES=[
+  {skin:"#f5c5a3",hair:"#2d1800",eye:"#5a3e2b",style:"short",beard:false,grey:false},
+  {skin:"#e8b898",hair:"#909090",eye:"#4a6b8a",style:"short",beard:true,grey:true},
+  {skin:"#c8956a",hair:"#1a0800",eye:"#3d2800",style:"medium",beard:false,grey:false},
+  {skin:"#f0c090",hair:"#909090",eye:"#5a3e2b",style:"bald",beard:false,grey:true},
+  {skin:"#7c4a1e",hair:"#0f0500",eye:"#2d1800",style:"short",beard:false,grey:false},
+  {skin:"#fad5c0",hair:"#e8d840",eye:"#5b8dd9",style:"short",beard:false,grey:false},
+];
+const JOURNALIST_NPC_FACES=[
+  {skin:"#f5c5a3",hair:"#d4a820",eye:"#5b8dd9",style:"long",beard:false},
+  {skin:"#e8b898",hair:"#4a2800",eye:"#4a3728",style:"medium",beard:true},
+  {skin:"#b87c4a",hair:"#1a0800",eye:"#2d1800",style:"curly",beard:false},
+  {skin:"#fad5c0",hair:"#909090",eye:"#4a6b8a",style:"short",beard:false},
+  {skin:"#c8956a",hair:"#1a0800",eye:"#3d2800",style:"slick",beard:true},
+];
+// Componente faccina NPC (mister/giornalista) — abito scuro + cravatta o microfono
+function NpcFace({skin="#f5c5a3",hair="#2d1800",eye="#5a3e2b",style="short",beard=false,grey=false,type="coach",size=54}){
+  const hc=grey?"#909090":hair;
+  const suit=type==="coach"?"#1e293b":"#334155";
+  const shirt="#f8fafc";
+  const Hair=()=>{
+    switch(style){
+      case "bald":return null;
+      case "short":return <ellipse cx="50" cy="23" rx="28" ry="14" fill={hc}/>;
+      case "long":return <><ellipse cx="50" cy="23" rx="28" ry="14" fill={hc}/><path d="M22 31 Q16 60 23 78" stroke={hc} strokeWidth="9" fill="none" strokeLinecap="round"/><path d="M78 31 Q84 60 77 78" stroke={hc} strokeWidth="9" fill="none" strokeLinecap="round"/></>;
+      case "curly":return <><ellipse cx="50" cy="21" rx="30" ry="17" fill={hc}/><circle cx="27" cy="33" r="9" fill={hc}/><circle cx="73" cy="33" r="9" fill={hc}/></>;
+      case "slick":return <path d="M22 18 Q50 8 78 18 Q80 38 76 34 Q50 22 24 34 Z" fill={hc}/>;
+      case "medium":return <><ellipse cx="50" cy="23" rx="29" ry="15" fill={hc}/><path d="M21 31 Q19 52 25 63" stroke={hc} strokeWidth="7" fill="none" strokeLinecap="round"/><path d="M79 31 Q81 52 75 63" stroke={hc} strokeWidth="7" fill="none" strokeLinecap="round"/></>;
+      default:return <ellipse cx="50" cy="23" rx="28" ry="14" fill={hc}/>;
+    }
+  };
+  return(
+    <svg viewBox="0 0 100 100" width={size} height={size} style={{borderRadius:"50%",display:"block",overflow:"hidden"}}>
+      <circle cx="50" cy="50" r="50" fill="#e2e8f0"/>
+      {/* Abito */}
+      <path d="M8 100 Q8 70 30 64 Q42 72 50 76 Q58 72 70 64 Q92 70 92 100Z" fill={suit}/>
+      {/* Colletto camicia */}
+      <path d="M36 64 Q50 79 64 64 L60 74 Q50 84 40 74Z" fill={shirt}/>
+      {type==="coach"&&<path d="M46 68 L50 90 L54 68 L52 72 L50 70 L48 72Z" fill="#dc2626"/>}
+      {type==="journalist"&&<rect x="47" y="74" width="6" height="13" rx="3" fill="#94a3b8"/>}
+      <rect x="44" y="63" width="12" height="12" rx="3" fill={skin}/>
+      <ellipse cx="50" cy="49" rx="27" ry="29" fill={skin}/>
+      <Hair/>
+      <ellipse cx="23" cy="49" rx="4" ry="7" fill={skin}/>
+      <ellipse cx="77" cy="49" rx="4" ry="7" fill={skin}/>
+      <path d="M33 37 Q40 34 45 37" stroke={hc} strokeWidth="2.8" fill="none" strokeLinecap="round"/>
+      <path d="M55 37 Q60 34 67 37" stroke={hc} strokeWidth="2.8" fill="none" strokeLinecap="round"/>
+      <ellipse cx="39" cy="45" rx="6" ry="5.5" fill="white"/>
+      <circle cx="39" cy="45" r="3.5" fill={eye}/>
+      <circle cx="40.2" cy="43.8" r="1.4" fill="#111"/>
+      <circle cx="38.2" cy="43.5" r="0.7" fill="white" opacity="0.75"/>
+      <ellipse cx="61" cy="45" rx="6" ry="5.5" fill="white"/>
+      <circle cx="61" cy="45" r="3.5" fill={eye}/>
+      <circle cx="62.2" cy="43.8" r="1.4" fill="#111"/>
+      <circle cx="60.2" cy="43.5" r="0.7" fill="white" opacity="0.75"/>
+      <circle cx="47.5" cy="56" r="1.3" fill={hc} opacity="0.20"/>
+      <circle cx="52.5" cy="56" r="1.3" fill={hc} opacity="0.20"/>
+      <path d="M41 63 Q50 69 59 63" stroke={skin==="#f5c5a3"||skin==="#fad5c0"?"#b06858":"#7a3838"} strokeWidth="2.2" fill="none" strokeLinecap="round"/>
+      {beard&&<ellipse cx="50" cy="67" rx="22" ry="9" fill={hc} opacity="0.42"/>}
+      {grey&&<><path d="M31 43 Q30 39 32 36" stroke="#0000" strokeWidth="0.8" fill="none" opacity="0.3"/><path d="M69 43 Q70 39 68 36" stroke="#0000" strokeWidth="0.8" fill="none" opacity="0.3"/></>}
     </svg>
   );
 }
@@ -962,6 +1033,12 @@ const COACH_DIALOGUES=[
   {q:"«C'è tensione nello spogliatoio. Come la vedi tu?»",tone_pos:"🤝 Provo a fare da mediatore tra i compagni.",tone_neu:"😐 Non ne so molto.",tone_neg:"🚶 Fatti loro, penso al campo.",ef_pos:{coachTrust:9,morale:6},ef_neu:{coachTrust:1},ef_neg:{coachTrust:-4,morale:-3}},
   {q:"«Hai sbagliato un gol facile ieri. Come ci lavori?»",tone_pos:"🏋️ Ho fatto extra reps al tiro, non succederà.",tone_neu:"😐 Capita, la prossima va dentro.",tone_neg:"😤 Era difesa che mi pressava.",ef_pos:{coachTrust:7,form:4,tiro:1},ef_neu:{coachTrust:2},ef_neg:{coachTrust:-6,morale:-5}},
   {q:"«Stai valutando altre offerte di mercato?»",tone_pos:"❤️ Sono felice qui, mister. Non cerco niente.",tone_neu:"😐 Non mi occupo di queste cose.",tone_neg:"🤔 Valuterò le opportunità giuste.",ef_pos:{coachTrust:10,morale:5},ef_neu:{coachTrust:3},ef_neg:{coachTrust:-8,value:0.1}},
+  // Dialoghi proattivi: il mister prende l'iniziativa
+  {q:"«Ehi, come stai? Ti noto un po' diverso ultimamente. Tutto ok?»",tone_pos:"🙏 Grazie per chiedere, mister. Sto migliorando.",tone_neu:"😐 Bene, mister. Niente di grave.",tone_neg:"😶 Non è un momento facile, lo ammetto.",ef_pos:{coachTrust:7,morale:8},ef_neu:{coachTrust:2,morale:2},ef_neg:{coachTrust:4,morale:-3},proactive:true,trigger:"low_form"},
+  {q:"«Questo week mi aspettavo di più da te. Cosa sta succedendo?»",tone_pos:"💪 Ha ragione. Lavoro di più da domani.",tone_neu:"😐 Sto attraversando un momento difficile.",tone_neg:"😤 Il problema non sono io, sono le circostanze.",ef_pos:{coachTrust:8,form:5,morale:4},ef_neu:{coachTrust:2,morale:-2},ef_neg:{coachTrust:-9,morale:-6},proactive:true,trigger:"poor_form"},
+  {q:"«Ottimo lavoro in questi ultimi allenamenti. Mi stai convincendo sempre di più.»",tone_pos:"🔥 Grazie, mister! Voglio continuare così.",tone_neu:"😊 Cerco sempre di dare il massimo.",tone_neg:"😅 Mi aspettavo di sentirmelo dire prima, mister.",ef_pos:{coachTrust:8,morale:9,form:4},ef_neu:{coachTrust:3,morale:4},ef_neg:{coachTrust:-2,morale:2},proactive:true,trigger:"high_trust"},
+  {q:"«Ti vedo stanco. Lo staff medico mi dice che stai forzando troppo. Rallenta.»",tone_pos:"👍 Ha ragione. Seguirò i consigli dello staff.",tone_neu:"😐 Cercherò di gestire meglio i carichi.",tone_neg:"💆 Sto bene, mister. Non si preoccupi.",ef_pos:{coachTrust:6,fatigue:-10,morale:5},ef_neu:{coachTrust:2,fatigue:-5},ef_neg:{coachTrust:-4,morale:-3},proactive:true,trigger:"high_fatigue"},
+  {q:"«Sei diventato uno dei punti fermi di questo spogliatoio. Sono fiero di te.»",tone_pos:"🌟 Grazie, mister. La sua fiducia vale tutto.",tone_neu:"🤝 Faccio solo il mio dovere.",tone_neg:"😅 Apprezzo, ma voglio ancora di più.",ef_pos:{coachTrust:10,morale:11,value:0.05},ef_neu:{coachTrust:5,morale:5},ef_neg:{coachTrust:-2,morale:4},proactive:true,trigger:"high_trust"},
 ];
 
 const ACHIEVEMENTS=[
@@ -1485,7 +1562,7 @@ const NEWSPAPERS=[
   {id:"lastampa",  name:"La Stampa Sport",       short:"La Stampa",  color:"#16a34a",e:"🗞️",tone:"analitico"},
   {id:"skysport",  name:"Sky Sport 24",          short:"Sky Sport",  color:"#0099d6",e:"📡",tone:"diretto"},
 ];
-const GAME_VERSION="3.12.1"; // Match Sync II: clockRef stabile, player pull, formation micro-drift
+const GAME_VERSION="3.13.0"; // Sprint 32 — Manager proattivo, Walkout 2.0, NpcFace
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -5017,77 +5094,77 @@ function FormationView({homeTeam,awayTeam,player,homeRoster,awayRoster,onContinu
 }
 
 /* WALKOUT OVERLAY */
-function WalkoutOverlay({homeTeam,homeRoster,opponent,isHome=true,matchWeek,onDone,weather,isDerbyMatch,isBigGame}){
+function WalkoutOverlay({homeTeam,homeRoster,awayRoster,opponent,isHome=true,matchWeek,onDone,weather,isDerbyMatch,isBigGame}){
   const STEPS=88;
   const [tick,setTick]=useState(0);
   useEffect(()=>{if(tick>=STEPS)return;const t=setTimeout(()=>setTick(n=>n+1),50);return()=>clearTimeout(t);},[tick]);
   useEffect(()=>{if(tick>=STEPS)onDone();},[tick,onDone]);
-  const col=homeTeam?.c||homeTeam?.col||"#22c55e";
-  const roster=homeRoster||[{name:"Portiere",role:"GK"},{name:"Difensore 2",role:"DEF"},{name:"Difensore 3",role:"DEF"},{name:"Terzino S.",role:"DEF"},{name:"Terzino D.",role:"DEF"},{name:"Mediano",role:"MID"},{name:"Centrocampista",role:"MID"},{name:"Mezzala",role:"MID"},{name:"Ala Sinistra",role:"ATT"},{name:"Ala Destra",role:"ATT"},{name:"Centravanti",role:"ATT"}];
+  const homeCol=homeTeam?.c||homeTeam?.col||"#22c55e";
+  const awayCol=opponent?.c||opponent?.col||"#ef4444";
+  const homeList=homeRoster||[{name:"Portiere",role:"GK"},{name:"Difensore",role:"DEF"},{name:"Difensore",role:"DEF"},{name:"Terzino S.",role:"DEF"},{name:"Terzino D.",role:"DEF"},{name:"Mediano",role:"MID"},{name:"Centrocampista",role:"MID"},{name:"Mezzala",role:"MID"},{name:"Ala S.",role:"ATT"},{name:"Ala D.",role:"ATT"},{name:"Centravanti",role:"ATT"}];
+  const awayList=awayRoster||generateTeamRoster(opponent,1);
   const visible=Math.min(11,Math.floor((tick/STEPS)*13));
   const pct=Math.round((tick/STEPS)*100);
-  // Stadium & atmosphere
   const venueTeam=isHome?homeTeam:opponent;
   const stadiumName=getStadiumName(venueTeam);
   const crowd=calcAttendance(venueTeam,"career");
   const crowdStr=crowd>=10000?`${(crowd/1000).toFixed(0)}k`:`${crowd}`;
-  const phase=isDerbyMatch
-    ?(pct<30?"🔥 Tensione nel tunnel — è derby!":pct<65?"⚡ I due club si fronteggiano in campo":"🔥 ATMOSFERA DA DERBY — stadio in delirio")
+  const phaseText=isDerbyMatch
+    ?(pct<30?"🔥 Derby — le squadre escono dalla tribuna...":pct<65?"⚔️ Entrambi i club sul prato — tensione palpabile":"🔥 INFERNO DA DERBY — stadio in fiamme")
     :isBigGame
-    ?(pct<30?"🌟 Arrivo allo stadio — partita enorme":pct<65?"🏆 Ingresso in campo — tutto in palio":"🎆 LO STADIO ESPLODE — è il momento")
-    :(pct<30?"🚶 Arrivo al tunnel":pct<65?"🏟️ Ingresso in campo":"📣 Il pubblico esplode");
-  const HOME_NUMS=[1,2,3,4,5,6,7,8,9,10,11];
+    ?(pct<30?"🌟 Dalla tribuna — match da storia":pct<65?"🏆 Entrambe le squadre in campo":"🎆 LO STADIO ESPLODE — è il momento")
+    :(pct<30?"🚶 Dalla tribuna verso il prato":pct<65?"🏟️ Entrambe le squadre in campo":"📣 Il pubblico esplode");
   const bgGrad=isDerbyMatch
-    ?"linear-gradient(180deg,rgba(30,5,5,0.97) 0%,rgba(20,3,3,0.98) 60%,rgba(10,0,0,0.99) 100%)"
+    ?"linear-gradient(180deg,rgba(30,5,5,0.82) 0%,rgba(20,3,3,0.85) 60%,rgba(10,0,0,0.88) 100%)"
     :isBigGame
-    ?"linear-gradient(180deg,rgba(5,5,30,0.97) 0%,rgba(3,3,20,0.98) 60%,rgba(1,1,10,0.99) 100%)"
-    :"linear-gradient(180deg,rgba(3,8,20,0.94) 0%,rgba(5,18,38,0.97) 60%,rgba(3,8,20,0.99) 100%)";
-  const accentCol=isDerbyMatch?"#ef4444":isBigGame?"#f59e0b":col;
+    ?"linear-gradient(180deg,rgba(5,5,30,0.80) 0%,rgba(3,3,20,0.83) 60%,rgba(1,1,10,0.86) 100%)"
+    :"linear-gradient(180deg,rgba(3,8,20,0.74) 0%,rgba(5,18,38,0.78) 60%,rgba(3,8,20,0.80) 100%)";
+  const accentCol=isDerbyMatch?"#ef4444":isBigGame?"#f59e0b":homeCol;
+  const renderList=(list,col,nums)=>list.slice(0,visible).map((pl,i)=>{
+    const isLast=i===visible-1;
+    return(
+      <div key={i} style={{display:"flex",alignItems:"center",gap:5,padding:"2px 7px",background:isLast?`${col}28`:"transparent",borderRadius:6,borderLeft:isLast?`2px solid ${col}`:"2px solid transparent",transition:"all 0.2s",marginBottom:1}}>
+        <div style={{width:17,height:17,borderRadius:"50%",background:isLast?col:`${col}55`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:8,fontWeight:900,color:"#fff",flexShrink:0}}>{nums?nums[i]:i+1}</div>
+        <div style={{fontSize:10,color:isLast?"#fff":"rgba(255,255,255,0.70)",fontWeight:isLast?700:400,lineHeight:1.1,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",maxWidth:90}}>{pl.name.split(" ").pop()}</div>
+        <div style={{fontSize:8,color:"rgba(255,255,255,0.28)",marginLeft:"auto"}}>{pl.role}</div>
+      </div>
+    );
+  });
   return(
-    <div style={{position:"absolute",inset:0,background:bgGrad,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",zIndex:10,backdropFilter:"blur(3px)"}}>
-      {/* Floodlight glow strips */}
-      <div style={{position:"absolute",top:0,left:0,right:0,height:3,background:`linear-gradient(90deg,transparent,${accentCol},transparent)`,opacity:0.7}}/>
+    <div style={{position:"absolute",inset:0,background:bgGrad,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"flex-start",zIndex:10,backdropFilter:"blur(2px)",overflowY:"auto"}}>
+      <div style={{position:"absolute",top:0,left:0,right:0,height:3,background:`linear-gradient(90deg,transparent,${accentCol},transparent)`,opacity:0.8}}/>
       <div style={{position:"absolute",bottom:0,left:0,right:0,height:3,background:`linear-gradient(90deg,transparent,${accentCol},transparent)`,opacity:0.4}}/>
-      {isDerbyMatch&&<div style={{position:"absolute",top:18,left:0,right:0,textAlign:"center",fontSize:11,fontWeight:900,color:"#ef4444",letterSpacing:4,textTransform:"uppercase",textShadow:"0 0 20px #ef4444"}}>⚔️ DERBY ⚔️</div>}
-      {isBigGame&&!isDerbyMatch&&<div style={{position:"absolute",top:18,left:0,right:0,textAlign:"center",fontSize:11,fontWeight:900,color:"#f59e0b",letterSpacing:4,textTransform:"uppercase",textShadow:"0 0 20px #f59e0b"}}>🌟 BIG MATCH 🌟</div>}
-      {/* Match info bar */}
-      <div style={{position:"absolute",top:10,left:0,right:0,display:"flex",justifyContent:"center",gap:10,alignItems:"center",flexWrap:"wrap",padding:"0 8px"}}>
-        <span style={{fontSize:9,color:"rgba(255,255,255,0.4)",letterSpacing:2,textTransform:"uppercase"}}>{isHome?"🏟️ CASA":"✈️ TRASFERTA"}</span>
-        {opponent&&<span style={{fontSize:9,color:"rgba(255,255,255,0.25)"}}>vs {opponent?.n||opponent?.name}</span>}
-        {matchWeek&&<span style={{fontSize:9,color:"rgba(255,255,255,0.22)"}}>W.{matchWeek}</span>}
-        {weather&&<span style={{fontSize:9,color:"rgba(255,255,255,0.45)",background:"rgba(255,255,255,0.07)",borderRadius:8,padding:"1px 7px"}}>{weather.e} {weather.name}</span>}
+      {isDerbyMatch&&<div style={{position:"absolute",top:6,left:0,right:0,textAlign:"center",fontSize:10,fontWeight:900,color:"#ef4444",letterSpacing:4,textTransform:"uppercase",textShadow:"0 0 18px #ef4444"}}>⚔️ DERBY ⚔️</div>}
+      {isBigGame&&!isDerbyMatch&&<div style={{position:"absolute",top:6,left:0,right:0,textAlign:"center",fontSize:10,fontWeight:900,color:"#f59e0b",letterSpacing:4,textTransform:"uppercase",textShadow:"0 0 18px #f59e0b"}}>🌟 BIG MATCH 🌟</div>}
+      {/* Atmosfera */}
+      <div style={{textAlign:"center",padding:"28px 8px 6px",width:"100%"}}>
+        <div style={{fontSize:9,color:"rgba(255,255,255,0.38)",letterSpacing:3,textTransform:"uppercase",marginBottom:2}}>{phaseText}</div>
+        <div style={{fontSize:8,color:"rgba(255,255,255,0.22)"}}>🏟️ {stadiumName} · 👥 {crowdStr}{weather?` · ${weather.e} ${weather.name}`:""} · {isHome?"CASA":"TRASFERTA"}</div>
       </div>
-      {/* Header */}
-      <div style={{textAlign:"center",marginBottom:10}}>
-        <div style={{fontSize:9,color:"rgba(255,255,255,0.3)",letterSpacing:4,textTransform:"uppercase",marginBottom:4}}>{phase}</div>
-        <TeamBadge team={homeTeam} size={36}/>
-        <div style={{fontSize:18,fontWeight:900,color:"#fff",marginTop:6,textShadow:`0 0 24px ${col}88`}}>{homeTeam?.n||homeTeam?.name||"Squadra"}</div>
-        <div style={{display:"flex",justifyContent:"center",gap:10,marginTop:4,flexWrap:"wrap"}}>
-          <span style={{fontSize:9,color:"rgba(255,255,255,0.3)"}}>🏟️ {stadiumName}</span>
-          <span style={{fontSize:9,color:"rgba(255,255,255,0.3)"}}>👥 {crowdStr}</span>
-          {(()=>{const cap=venueTeam?.p>=90?75000:venueTeam?.p>=75?40000:venueTeam?.p>=60?18000:venueTeam?.p>=45?6000:1500;const pct=Math.min(100,Math.round(crowd/cap*100));const label=pct>=90?"🔥 INFUOCATO":pct>=70?"⚡ BOLLENTE":pct>=45?"📣 CARICO":"😐 SOBRIO";return<span style={{fontSize:9,color:"rgba(255,255,255,0.45)",background:"rgba(255,255,255,0.07)",borderRadius:8,padding:"1px 7px"}}>{label}</span>;})()}</div>
-      </div>
-      {/* Player list */}
-      <div style={{display:"flex",flexDirection:"column",gap:2,width:"100%",maxWidth:280,padding:"0 12px"}}>
-        {roster.slice(0,visible).map((pl,i)=>{
-          const isLast=i===visible-1;
-          const jerseyNum=HOME_NUMS[i]||i+1;
-          return(
-            <div key={i} style={{display:"flex",alignItems:"center",gap:8,padding:"3px 10px",background:isLast?`${col}22`:"transparent",borderRadius:6,borderLeft:isLast?`2px solid ${col}`:"2px solid transparent",transition:"all 0.2s"}}>
-              <div style={{width:20,height:20,borderRadius:"50%",background:isLast?col:`${col}55`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:9,fontWeight:900,color:"#fff",flexShrink:0}}>{jerseyNum}</div>
-              <div style={{flex:1}}>
-                <div style={{fontSize:11,color:isLast?"#fff":"rgba(255,255,255,0.75)",fontWeight:isLast?700:400,lineHeight:1.1}}>{pl.name}</div>
-              </div>
-              <div style={{fontSize:8,color:"rgba(255,255,255,0.3)",fontWeight:600}}>{pl.role}</div>
-            </div>
-          );
-        })}
+      {/* Due formazioni affiancate */}
+      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:6,width:"100%",maxWidth:370,padding:"0 10px"}}>
+        {/* Home */}
+        <div>
+          <div style={{display:"flex",alignItems:"center",gap:5,marginBottom:5,padding:"0 4px"}}>
+            <TeamBadge team={homeTeam} size={20}/>
+            <div style={{fontSize:11,fontWeight:800,color:homeCol,lineHeight:1.1,textShadow:`0 0 12px ${homeCol}88`}}>{homeTeam?.a||homeTeam?.n?.slice(0,6)||"HOME"}</div>
+          </div>
+          {renderList(homeList,homeCol,[1,2,3,4,5,6,7,8,9,10,11])}
+        </div>
+        {/* Away */}
+        <div>
+          <div style={{display:"flex",alignItems:"center",gap:5,marginBottom:5,padding:"0 4px"}}>
+            <TeamBadge team={opponent} size={20}/>
+            <div style={{fontSize:11,fontWeight:800,color:awayCol,lineHeight:1.1,textShadow:`0 0 12px ${awayCol}88`}}>{opponent?.a||opponent?.n?.slice(0,6)||"AWAY"}</div>
+          </div>
+          {renderList(awayList,awayCol,null)}
+        </div>
       </div>
       {/* Progress */}
-      <div style={{width:220,height:2,background:"rgba(255,255,255,0.08)",borderRadius:2,marginTop:14,overflow:"hidden"}}>
-        <div style={{height:"100%",width:`${pct}%`,background:`linear-gradient(90deg,${col},#f59e0b)`,borderRadius:2,transition:"width .05s"}}/>
+      <div style={{width:220,height:2,background:"rgba(255,255,255,0.07)",borderRadius:2,marginTop:12,overflow:"hidden"}}>
+        <div style={{height:"100%",width:`${pct}%`,background:`linear-gradient(90deg,${homeCol},${awayCol})`,borderRadius:2,transition:"width .05s"}}/>
       </div>
-      <div style={{fontSize:8,color:isDerbyMatch?"rgba(239,68,68,0.5)":isBigGame?"rgba(245,158,11,0.5)":"rgba(255,255,255,0.18)",marginTop:5,letterSpacing:2}}>PREMI INVIO PER SALTARE</div>
+      <div style={{fontSize:8,color:isDerbyMatch?"rgba(239,68,68,0.5)":isBigGame?"rgba(245,158,11,0.5)":"rgba(255,255,255,0.16)",marginTop:5,letterSpacing:2}}>PREMI INVIO PER SALTARE</div>
     </div>
   );
 }
@@ -5940,7 +6017,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                 attendance={attendance} actionEffect={actionEffect} weather={weather}
                 heatPoints={heatPointsRef.current} showHeatMap={showHeatMap}
                 onWalkoutDone={()=>setPhase("playing")}/>
-              {phase==="walkout"&&<WalkoutOverlay homeTeam={player.club||opponent} homeRoster={homeRoster} opponent={opponent} isHome={isMatchHome} matchWeek={player.week} onDone={()=>setPhase("playing")} weather={weather} isDerbyMatch={!!drby} isBigGame={mw>=7}/>}
+              {phase==="walkout"&&<WalkoutOverlay homeTeam={player.club||opponent} homeRoster={homeRoster} awayRoster={awayRoster} opponent={opponent} isHome={isMatchHome} matchWeek={player.week} onDone={()=>setPhase("playing")} weather={weather} isDerbyMatch={!!drby} isBigGame={mw>=7}/>}
               {screenFlash&&<div style={{position:"absolute",inset:0,background:screenFlash.col,zIndex:20,pointerEvents:"none",animation:`fadeFlash ${screenFlash.dur}ms ease-out forwards`}}/>}
               {floatGoal&&<div key={floatGoal.key} style={{position:"absolute",top:"30%",left:0,right:0,textAlign:"center",fontSize:22,fontWeight:900,color:floatGoal.col,textShadow:"0 0 24px currentColor",animation:"floatUp 1.4s ease-out forwards",zIndex:21,pointerEvents:"none"}}>{floatGoal.text}</div>}
               {crowdChant&&<div key={crowdChant.key} style={{position:"absolute",bottom:"10%",left:0,right:0,textAlign:"center",fontSize:15,fontWeight:900,color:crowdChant.type==="goal"?"#4ade80":crowdChant.type==="danger"?"#f87171":crowdChant.type==="foul"?"#fb923c":"#f8fafc",textShadow:"0 2px 14px rgba(0,0,0,0.85)",animation:"chantPulse 2.8s ease-out forwards",zIndex:22,pointerEvents:"none",letterSpacing:1,textTransform:"uppercase",padding:"0 12px"}}>{crowdChant.text}</div>}
@@ -8960,6 +9037,17 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
         notify("🤵 Un procuratore ti ha contattato. Ora tratta per te.",TH.success);
       },800);
     }
+    // Manager proattivo: il mister prende l'iniziativa in base allo stato del giocatore
+    if(!isInU18&&(player.proStatus||"u18")==="pro"&&player.club){
+      const frm=player.form||70,mor=player.morale||70,trs=player.coachTrust||60,fat=player.fatigue||0;
+      const trigger=frm<48?"poor_form":mor<35?"low_form":trs>72?"high_trust":fat>68?"high_fatigue":"random";
+      const fires=(frm<48&&Math.random()<0.22)||(mor<35&&Math.random()<0.28)||(trs>72&&Math.random()<0.10)||(fat>68&&Math.random()<0.15)||Math.random()<0.04;
+      if(fires){
+        const pool=COACH_DIALOGUES.filter(d=>d.proactive&&(d.trigger===trigger||!d.trigger));
+        const d=pick(pool.length>0?pool:COACH_DIALOGUES.filter(d=>d.proactive));
+        if(d)setTimeout(()=>setCoachModal({dialogue:d,chosen:null,proactive:true}),700);
+      }
+    }
     // S11.2: club crisis alert (once at week 1 per season)
     if((player.week||1)===1){const cid=player.club?.id||player.club?.n;const cShift=(player.clubPrestigeShifts||{})[cid||""]||0;if(cid&&cShift<=-10)setTimeout(()=>notify(`⚠️ ${player.club?.n||"Il tuo club"} è in crisi! Presidenza instabile.`,"#ef4444"),1500);}
     // S10.3: cup result notification
@@ -9467,9 +9555,9 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
         <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.55)",zIndex:9999,display:"flex",alignItems:"center",justifyContent:"center",padding:16}}>
           <Card style={{maxWidth:420,width:"100%",padding:"20px"}}>
             <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:14}}>
-              <div style={{fontSize:26}}>🎙️</div>
+              {(()=>{const fi=Math.abs((player.coach?.name||"mister").split("").reduce((a,c)=>a+c.charCodeAt(0),0))%COACH_NPC_FACES.length;const f=COACH_NPC_FACES[fi];return<NpcFace {...f} type="coach" size={52}/>;})()}
               <div>
-                <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5}}>Colloquio col Mister</div>
+                <div style={{fontSize:10,color:coachModal.proactive?TH.accent:TH.muted,textTransform:"uppercase",letterSpacing:1.5}}>{coachModal.proactive?"💬 Il mister ti cerca":"🤝 Colloquio col Mister"}</div>
                 <div style={{fontSize:13,fontWeight:800,color:TH.accent}}>{player.coach?.name||"Il Mister"}</div>
               </div>
             </div>
