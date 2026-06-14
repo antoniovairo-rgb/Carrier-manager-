@@ -732,6 +732,22 @@ const WEEKLY_RANDOM_EVENTS=[
   {txt:"🏟️ Visita allo stadio da solo la sera. Ispirazione e brividi.",ef:{morale:11,mentalità:1}},
   {txt:"🧊 Bagni di ghiaccio post-allenamento. Recupero accelerato.",ef:{fatigue:-18,form:7}},
   {txt:"🔥 Mini-torneo tra reparti. Il tuo team vince. Euforia totale.",ef:{morale:12,form:8,coachTrust:3}},
+  // Sprint 33 C8 — gossip, press, sponsor
+  {txt:"🗣️ Si vocifera di tensioni tra tecnico e dirigenza. L'ambiente è carico.",ef:{morale:-5,fatigue:5}},
+  {txt:"📲 Il tuo nome rimbalza online in chiave mercato. Interesse concreto.",ef:{popularity:12,morale:7,value:0.08}},
+  {txt:"🤫 Il ds ti confida: il club ti considera intoccabile. Euforia totale.",ef:{morale:12,coachTrust:7,value:0.06}},
+  {txt:"🎭 Clima pesante dopo voci su un big che vuole andarsene. Unità a rischio.",ef:{morale:-6,coachTrust:-2}},
+  {txt:"🎤 Conferenza stampa: il mister ti elogia davanti ai giornalisti. Visibilità.",ef:{popularity:10,morale:8,coachTrust:3}},
+  {txt:"📡 Sky Sport ti dedica uno speciale. I tuoi numeri vengono analizzati in diretta.",ef:{popularity:11,value:0.07,morale:6}},
+  {txt:"📰 Un giornalista ti critica pesantemente sull'edizione cartacea. Fastidio.",ef:{morale:-9,popularity:-3}},
+  {txt:"🎙️ Sei ospite in un podcast calcistico. La community esplode di commenti.",ef:{popularity:10,morale:5}},
+  {txt:"💼 Contatto con uno sponsor sportivo. Proposta di endorsement personale.",ef:{morale:9,popularity:8,value:0.10}},
+  {txt:"👟 Un brand ti manda materiale tecnico personalizzato. Ti senti una star.",ef:{morale:7,popularity:6}},
+  {txt:"🤝 Il tuo agente finalizza un accordo commerciale secondario. Entrate extra.",ef:{morale:8,popularity:5,value:0.08}},
+  {txt:"📦 Gadget ufficiali dallo sponsor del club distribuiti in spogliatoio. Squadra felice.",ef:{morale:7,fatigue:-5}},
+  {txt:"🏅 Il club annuncia uno sponsor che include il tuo nome sul kit.",ef:{popularity:9,morale:6,value:0.05}},
+  {txt:"🌐 Interview online con un media internazionale. La tua storia fa il giro del mondo.",ef:{popularity:14,morale:8,value:0.06}},
+  {txt:"👁️ Uno scout tedesco ti segue da tre settimane. Lo staff ne parla.",ef:{morale:10,popularity:6,value:0.09}},
 ];
 
 /* ========================================
@@ -1566,7 +1582,7 @@ const NEWSPAPERS=[
   {id:"lastampa",  name:"La Stampa Sport",       short:"La Stampa",  color:"#16a34a",e:"🗞️",tone:"analitico"},
   {id:"skysport",  name:"Sky Sport 24",          short:"Sky Sport",  color:"#0099d6",e:"📡",tone:"diretto"},
 ];
-const GAME_VERSION="3.13.3"; // Fix critico: startMatch non bloccava più su misterDiscorsoModal (return statement)
+const GAME_VERSION="3.14.0"; // Sprint 33: C4 sparklines, C5 highlight contestuali, C7 panchina, C8 eventi+, C10 tab Agente
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -3285,6 +3301,23 @@ const OvrRing=({value,size=60})=>{
   return<div style={{width:size,height:size,borderRadius:"50%",flexShrink:0,background:`conic-gradient(${c} ${value}%,#e2e8f0 0)`,display:"flex",alignItems:"center",justifyContent:"center"}}><div style={{width:size-10,height:size-10,borderRadius:"50%",background:TH.card,display:"flex",alignItems:"center",justifyContent:"center",flexDirection:"column"}}><div style={{fontSize:size*.27,fontWeight:900,color:c,lineHeight:1}}>{value}</div><div style={{fontSize:8,color:TH.faint}}>LVL</div></div></div>;
 };
 const Notif=({msg,color})=>msg?<div style={{position:"fixed",top:20,left:"50%",transform:"translateX(-50%)",background:TH.card,border:`2px solid ${color}`,color,padding:"10px 24px",borderRadius:40,fontSize:13,fontWeight:700,zIndex:9999,letterSpacing:.4,pointerEvents:"none",boxShadow:`0 4px 24px ${color}33`}}>{msg}</div>:null;
+/* Sprint 33 C4 — SVG Sparkline */
+function Sparkline({data,color,width,height}){
+  var w=width||100;var h=height||30;var c=color||TH.primary;
+  if(!data||data.length<2)return <svg width={w} height={h}></svg>;
+  var mn=data[0];var mx=data[0];
+  for(var i=1;i<data.length;i++){if(data[i]<mn)mn=data[i];if(data[i]>mx)mx=data[i];}
+  var rng=mx-mn||1;
+  var pts="";
+  for(var j=0;j<data.length;j++){var px=Math.round(j/(data.length-1)*(w-6)+3);var py=Math.round(h-3-(data[j]-mn)/rng*(h-6));pts+=(j>0?" ":"")+px+","+py;}
+  var lp=pts.split(" ").slice(-1)[0].split(",");
+  return(
+    <svg width={w} height={h} style={{overflow:"visible"}}>
+      <polyline points={pts} fill="none" stroke={c} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+      <circle cx={lp[0]} cy={lp[1]} r="2.5" fill={c}/>
+    </svg>
+  );
+}
 
 /* ========================================
    CROWD + STADIUM (Three.js)
@@ -5185,13 +5218,51 @@ const resolveKitConflict=(homeCol,awayCol)=>{
   return ALT_KITS.reduce((best,k)=>colorDist(homeCol,k)>colorDist(homeCol,best)?k:best,'#f0f0f0');
 };
 
+/* Sprint 33 C5 — contextual situation selection weighted by player stats */
+function selectContextualSituations(all,numHL,player,seed){
+  var stats=player.stats||{};
+  var ovr=player.ovr||60;
+  var tiro=stats.tiro||60;
+  var fisico=stats.fisico||60;
+  var passaggio=stats.passaggio||60;
+  var velocita=stats["velocità"]||60;
+  var pool=all.map(function(sit){
+    var t=sit.type||"off";
+    var w=10;
+    if(t==="def")w=fisico>=70?13:fisico>=55?9:6;
+    if(t==="special")w=ovr>=78?16:ovr>=68?9:4;
+    if(t==="off"){
+      var hasTiro=sit.actions.some(function(a){return a.stat==="tiro";});
+      var hasPass=sit.actions.some(function(a){return a.stat==="passaggio";});
+      var hasVel=sit.actions.some(function(a){return a.stat==="velocità";});
+      if(hasTiro)w=Math.round(w*(0.5+tiro/120));
+      else if(hasPass)w=Math.round(w*(0.5+passaggio/120));
+      else if(hasVel)w=Math.round(w*(0.5+velocita/120));
+    }
+    return{sit:sit,w:Math.max(1,w)};
+  });
+  var result=[];var remaining=pool.slice();var s=seed;
+  for(var i=0;i<numHL&&remaining.length>0;i++){
+    var total=0;for(var j=0;j<remaining.length;j++)total+=remaining[j].w;
+    s=((s*1664525+1013904223)&0x7fffffff);
+    var r=((s%total)+total)%total;
+    var acc=0;var picked=0;
+    for(var k=0;k<remaining.length;k++){acc+=remaining[k].w;if(r<acc){picked=k;break;}}
+    result.push(remaining[picked].sit);
+    remaining.splice(picked,1);
+  }
+  return result;
+}
 /* ========================================
    LIVE MATCH  (req #3,#4,#5,#6,#8)
 ======================================== */
-function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true}){
+function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true,benchStart}){
   const [numHL]=useState(()=>context==="trial"?rng(2,3):rng(2,4));
   const [hlTimes]=useState(()=>{const step=Math.floor(82/numHL)||12;return Array.from({length:numHL},(_,i)=>8+step*i+rng(0,Math.max(1,step-4)));});
-  const [situations]=useState(()=>seededShuffle([...SITUATIONS],(player.season||1)*1000+(player.week||1)*13).slice(0,numHL));
+  const [situations]=useState(()=>selectContextualSituations([...SITUATIONS],numHL,player,(player.season||1)*1000+(player.week||1)*13));
+  // Sprint 33 C7 — bench start mechanic
+  const [onBench,setOnBench]=useState(false);
+  const [benchMinute]=useState(()=>benchStart?46+Math.floor(Math.random()*25):0);
   const [stadium]=useState(()=>pick(STADIUMS));
   // day or night — seeded by week so same match is always same time
   const [timeOfDay]=useState(()=>(player.week||1)%2===0?"night":"day");
@@ -6021,7 +6092,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                 attendance={attendance} actionEffect={actionEffect} weather={weather}
                 heatPoints={heatPointsRef.current} showHeatMap={showHeatMap}
                 onWalkoutDone={()=>setPhase("playing")}/>
-              {phase==="walkout"&&<WalkoutOverlay homeTeam={player.club||opponent} homeRoster={homeRoster} awayRoster={awayRoster} opponent={opponent} isHome={isMatchHome} matchWeek={player.week} onDone={()=>setPhase("playing")} weather={weather} isDerbyMatch={!!drby} isBigGame={mw>=7}/>}
+              {phase==="walkout"&&<WalkoutOverlay homeTeam={player.club||opponent} homeRoster={homeRoster} awayRoster={awayRoster} opponent={opponent} isHome={isMatchHome} matchWeek={player.week} onDone={()=>{if(benchStart)setOnBench(true);setPhase("playing");}} weather={weather} isDerbyMatch={!!drby} isBigGame={mw>=7}/>}
               {screenFlash&&<div style={{position:"absolute",inset:0,background:screenFlash.col,zIndex:20,pointerEvents:"none",animation:`fadeFlash ${screenFlash.dur}ms ease-out forwards`}}/>}
               {floatGoal&&<div key={floatGoal.key} style={{position:"absolute",top:"30%",left:0,right:0,textAlign:"center",fontSize:22,fontWeight:900,color:floatGoal.col,textShadow:"0 0 24px currentColor",animation:"floatUp 1.4s ease-out forwards",zIndex:21,pointerEvents:"none"}}>{floatGoal.text}</div>}
               {crowdChant&&<div key={crowdChant.key} style={{position:"absolute",bottom:"10%",left:0,right:0,textAlign:"center",fontSize:15,fontWeight:900,color:crowdChant.type==="goal"?"#4ade80":crowdChant.type==="danger"?"#f87171":crowdChant.type==="foul"?"#fb923c":"#f8fafc",textShadow:"0 2px 14px rgba(0,0,0,0.85)",animation:"chantPulse 2.8s ease-out forwards",zIndex:22,pointerEvents:"none",letterSpacing:1,textTransform:"uppercase",padding:"0 12px"}}>{crowdChant.text}</div>}
@@ -6042,6 +6113,15 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                   <div style={{fontSize:9,color:"rgba(255,255,255,0.3)",letterSpacing:2,textTransform:"uppercase",marginBottom:10}}>{curSit.type==="def"?"🛡️ DIFESA":"⚔️ ATTACCO"}</div>
                   <div style={{width:90,height:2,background:"rgba(255,255,255,0.15)",borderRadius:2,overflow:"hidden"}}><div style={{height:"100%",background:"#f59e0b",animation:"shrinkBar 2.5s linear forwards"}}/></div>
                   <div style={{fontSize:8,color:"rgba(255,255,255,0.2)",marginTop:6}}>Tocca / Enter per iniziare</div>
+                </div>
+              )}
+              {/* Sprint 33 C7 — Bench start overlay */}
+              {phase==="playing"&&onBench&&(
+                <div style={{position:"absolute",inset:0,background:"rgba(5,8,20,0.92)",backdropFilter:"blur(4px)",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",zIndex:9,padding:"0 24px"}}>
+                  <div style={{fontSize:38,marginBottom:10}}>🪑</div>
+                  <div style={{fontSize:15,fontWeight:900,color:"#e2e8f0",marginBottom:4,textAlign:"center"}}>Stai partendo dalla panchina</div>
+                  <div style={{fontSize:11,color:"rgba(255,255,255,0.50)",marginBottom:22,textAlign:"center"}}>Il mister ti farà entrare al {benchMinute}° minuto</div>
+                  <button onClick={()=>{setOnBench(false);clockRef.current=benchMinute;setClock(benchMinute);}} style={{padding:"13px 28px",borderRadius:12,border:"none",background:"linear-gradient(135deg,#2563eb,#1d4ed8)",color:"#fff",fontWeight:800,fontSize:13,cursor:"pointer",fontFamily:"inherit",boxShadow:"0 4px 16px rgba(37,99,235,0.5)"}}>⚡ Entra in campo al {benchMinute}° →</button>
                 </div>
               )}
               {/* Progress bar inside field bottom */}
@@ -8357,6 +8437,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
   const[interviewFeedback,setInterviewFeedback]=useState(null); // {tone, label, ef} shown briefly
   const[coachModal,setCoachModal]=useState(null); // {dialogue, chosen} — Parla col Mister
   const[misterDiscorsoModal,setMisterDiscorsoModal]=useState(null); // {coachName, line, mw, isCaptainTalk?}
+  const matchBenchStartRef=useRef(false); // Sprint 33 C7
   const[careerMomentModal,setCareerMomentModal]=useState(null);    // Sprint 25A — unique career moment
 
   const notify=(msg,color=TH.primary)=>{setNotif({msg,color});setTimeout(()=>setNotif(null),2800);};
@@ -8466,15 +8547,16 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       else if(k==="F"){e.preventDefault();goTab("standings");}
       else if(k==="C"){e.preventDefault();goTab("calendar");}
       else if(k==="R"){e.preventDefault();goTab("profile");}
+      else if(k==="G"){e.preventDefault();goTab("agente");}
       else if(k==="M"||k==="H"){e.preventDefault();goTab("dashboard");}
       // Arrow keys for tab switching
       else if(e.key==="ArrowLeft"&&!inModal){
         e.preventDefault();
-        const tabs=["dashboard","calendar","standings","training","profile"];
+        const tabs=["dashboard","calendar","standings","training","profile","agente"];
         const cur=tabs.indexOf(tab);if(cur>0)goTab(tabs[cur-1]);
       }else if(e.key==="ArrowRight"&&!inModal){
         e.preventDefault();
-        const tabs=["dashboard","calendar","standings","training","profile"];
+        const tabs=["dashboard","calendar","standings","training","profile","agente"];
         const cur=tabs.indexOf(tab);if(cur<tabs.length-1)goTab(tabs[cur+1]);
       }
     };
@@ -8528,6 +8610,11 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     setCurrentMatchDerby(derby||null);
     if(derby)setTimeout(()=>notify(`🔥 ${derby.e} ${derby.name}! Atmosfera incandescente!`,"#f59e0b"),200);
     setMatchOpp(opp);setMatchIsHome(md.isHome!==false);
+    // Sprint 33 C7 — bench start probability
+    const trust=player.coachTrust||60;
+    const benchProb=trust>=70?0:trust>=50?0.12:trust>=30?0.28:0.45;
+    matchBenchStartRef.current=Math.random()<benchProb;
+    if(matchBenchStartRef.current)notify("🪑 Il mister ti lascia in panchina per ora...",TH.warning);
     // Sprint 24A + 25C: pre-match speech based on match weight + captain status
     const mw=calcMatchWeight(player,opp.id||md.opponentId,player.standings||[],player.week||1);
     if(mw>=7&&player.coach){
@@ -9351,7 +9438,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
         <button onClick={()=>{setScreen("dashboard");setTab("dashboard");}} style={{background:"none",border:"none",color:TH.muted,cursor:"pointer",fontSize:13,marginBottom:8,display:"flex",alignItems:"center",gap:6}}>← Carriera</button>
         {usePhaserRenderer
           ?<FootballMatch2D playerData={player} squadAColor={player.club?.col||player.club?.c||"#22c55e"} squadBColor={matchOpp?.col||matchOpp?.c||"#ef4444"} duration={300} onMatchEnd={phaserMatchEnd}/>
-          :<LiveMatch player={player} opponent={matchOpp} context="career" onMatchEnd={onMatchEnd} isMatchHome={matchIsHome}/>
+          :<LiveMatch player={player} opponent={matchOpp} context="career" onMatchEnd={onMatchEnd} isMatchHome={matchIsHome} benchStart={matchBenchStartRef.current}/>
         }
       </div>
     );
@@ -9374,7 +9461,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
   );
 
   const L=LOCALE[lang]||LOCALE.IT;
-  const tabs=[{id:"dashboard",e:"🏠",l:L.tabs.dashboard,k:"M"},{id:"calendar",e:"📅",l:L.tabs.calendar,k:"C"},{id:"standings",e:"📊",l:L.tabs.standings,k:"F"},{id:"training",e:"💪",l:L.tabs.training,k:"T"},{id:"profile",e:"👤",l:L.tabs.profile,k:"R"}];
+  const tabs=[{id:"dashboard",e:"🏠",l:L.tabs.dashboard,k:"M"},{id:"calendar",e:"📅",l:L.tabs.calendar,k:"C"},{id:"standings",e:"📊",l:L.tabs.standings,k:"F"},{id:"training",e:"💪",l:L.tabs.training,k:"T"},{id:"profile",e:"👤",l:L.tabs.profile,k:"R"},{id:"agente",e:"🤵",l:"Agente",k:"G"}];
 
   return(
     <div className="cpm-career">
@@ -10275,6 +10362,29 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
               </Card>
             );
           })()}
+          {/* Sprint 33 C4 — Statistiche Carriera sparklines */}
+          {(player.history||[]).length>=2&&(()=>{
+            var hist=player.history||[];
+            var goals=hist.map(function(h){return h.goals||0;});goals.push(player.goals||0);
+            var ovrs=hist.map(function(h){return h.ovr||60;});ovrs.push(player.ovr||60);
+            var assists=hist.map(function(h){return h.assists||0;});assists.push(player.assists||0);
+            return(
+              <Card style={{padding:"12px 14px"}}>
+                <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:10}}>📈 Statistiche Carriera</div>
+                <div style={{display:"flex",flexDirection:"column",gap:9}}>
+                  {[{l:"⚽ Gol",data:goals,c:TH.success},{l:"🎯 Assist",data:assists,c:TH.primary},{l:"📊 OVR",data:ovrs,c:TH.warning}].map(function(row){
+                    return(
+                      <div key={row.l} style={{display:"flex",alignItems:"center",gap:10}}>
+                        <div style={{fontSize:11,color:TH.text,fontWeight:700,width:52,flexShrink:0}}>{row.l}</div>
+                        <div style={{flex:1}}><Sparkline data={row.data} color={row.c} width={110} height={26}/></div>
+                        <div style={{fontSize:13,fontWeight:900,color:row.c,width:26,textAlign:"right"}}>{row.data[row.data.length-1]}</div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </Card>
+            );
+          })()}
           {/* Sprint 23 — Rivale NPC card */}
           {player.rival&&(()=>{
             const r=player.rival;
@@ -10801,6 +10911,77 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
           <AISettingsCard player={player}/>
         </div>
       )}
+
+      {/* Sprint 33 C10 — AGENTE TAB */}
+      {tab==="agente"&&(()=>{
+        var AGENT_NAMES=["Marco Gestini","Luigi Pastore","Gianni Ferretti","Roberto Manconi","Fabio Lanzi","Sergio Donato","Andrea Turati","Claudio Venturi"];
+        var aIdx=Math.abs(hashStr(player.name||"x"))%AGENT_NAMES.length;
+        var agentName=AGENT_NAMES[aIdx];
+        var trust=player.coachTrust||60;
+        var trustLabel=trust>=70?"Eccellente":trust>=50?"Buono":trust>=30?"Nella media":"In difficoltà";
+        var trustColor=trust>=70?TH.success:trust>=50?TH.primary:trust>=30?TH.warning:TH.danger;
+        var valRaw=player.value||0.5;
+        var valK=Math.round(valRaw*10000);
+        var valStr=valK>=1000?(valK/1000).toFixed(1)+"M":valK+"k";
+        var week=player.week||1;
+        var txOpen=(week>=19&&week<=24)||(week>=32&&week<=36);
+        var lastRated=(player.matchHistory||[]).filter(function(m){return!m.simulated;}).slice(-1)[0];
+        var lastRating=lastRated?lastRated.rating:0;
+        var perfLabel=lastRating>=8?"Eccellente 🔥":lastRating>=7?"Buona 👍":lastRating>=6?"Sufficiente 👌":lastRating>0?"Da migliorare ⚠️":"–";
+        var perfColor=lastRating>=8?TH.success:lastRating>=7?TH.primary:lastRating>=6?TH.warning:lastRating>0?TH.danger:TH.muted;
+        var speechLine=lastRating>=8?"Sei il giocatore più interessante sul mercato. Aspettiamo le offerte giuste.":lastRating>=7?"Momento positivo. Continuiamo a spingere il tuo nome nei posti giusti.":lastRating>=6?"Rendimento regolare. Serve il salto di qualità per attirare top club.":lastRating>0?"Dobbiamo parlare. Le ultime prestazioni mi preoccupano, amico.":"Sono qui per te. Fammi sapere i tuoi obiettivi per questa stagione.";
+        return(
+          <div style={{display:"flex",flexDirection:"column",gap:12,paddingBottom:8}}>
+            {!player.hasAgent?(
+              <Card style={{padding:"20px",textAlign:"center",background:"linear-gradient(135deg,#0f172a,#1e293b)",border:"1px solid rgba(255,255,255,0.08)"}}>
+                <div style={{fontSize:38,marginBottom:8}}>🤵</div>
+                <div style={{fontSize:14,fontWeight:900,color:"#f1f5f9",marginBottom:6}}>Nessun agente</div>
+                <div style={{fontSize:12,color:"#94a3b8",marginBottom:16,lineHeight:1.7}}>Un procuratore può aprire porte e negoziare condizioni migliori per te nel calciomercato.</div>
+                <Btn onClick={()=>{setPlayer(function(p){return{...p,hasAgent:true};});notify("🤵 Agente ingaggiato!",TH.success);}} v="primary" fw style={{padding:"13px"}}>🤵 Ingaggia un procuratore</Btn>
+              </Card>
+            ):(
+              <div style={{display:"flex",flexDirection:"column",gap:10}}>
+                <Card style={{padding:"13px 14px",background:"linear-gradient(135deg,#0c1a2e,#1a2744)",border:"1px solid rgba(59,130,246,0.3)"}}>
+                  <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:10}}>
+                    <div style={{fontSize:32}}>🤵</div>
+                    <div style={{flex:1}}>
+                      <div style={{fontSize:10,color:"rgba(147,197,253,0.7)",textTransform:"uppercase",letterSpacing:1.5,marginBottom:2}}>IL TUO PROCURATORE</div>
+                      <div style={{fontSize:14,fontWeight:900,color:"#dbeafe"}}>{agentName}</div>
+                      <div style={{fontSize:10,color:"rgba(147,197,253,0.55)"}}>Agente FIFA · Dal S.{Math.max(1,(player.season||1)-1)}</div>
+                    </div>
+                  </div>
+                  <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}>
+                    <div style={{background:"rgba(0,0,0,0.3)",borderRadius:8,padding:"8px 10px"}}>
+                      <div style={{fontSize:9,color:"rgba(147,197,253,0.5)",marginBottom:1}}>VALORE DI MERCATO</div>
+                      <div style={{fontSize:15,fontWeight:900,color:"#93c5fd"}}>€{valStr}</div>
+                    </div>
+                    <div style={{background:"rgba(0,0,0,0.3)",borderRadius:8,padding:"8px 10px"}}>
+                      <div style={{fontSize:9,color:"rgba(147,197,253,0.5)",marginBottom:1}}>RAPPORTO MISTER</div>
+                      <div style={{fontSize:13,fontWeight:800,color:trustColor}}>{trustLabel}</div>
+                    </div>
+                  </div>
+                </Card>
+                <Card style={{padding:"12px 14px"}}>
+                  <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>🏪 Finestra di Mercato</div>
+                  <div style={{display:"flex",alignItems:"center",gap:8,padding:"8px 10px",background:txOpen?"#f0fdf4":"#f8fafc",borderRadius:8,border:"1px solid "+(txOpen?"#bbf7d0":TH.cardBorder)}}>
+                    <div style={{fontSize:18}}>{txOpen?"🟢":"🔴"}</div>
+                    <div>
+                      <div style={{fontSize:12,fontWeight:700,color:txOpen?TH.success:TH.muted}}>{txOpen?"Mercato aperto":"Mercato chiuso"}</div>
+                      <div style={{fontSize:10,color:TH.faint}}>{txOpen?"Offerte in arrivo possibili · Settimana "+week:"Apertura W.19–24 e W.32–36"}</div>
+                    </div>
+                  </div>
+                </Card>
+                <Card style={{padding:"12px 14px"}}>
+                  <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>📊 Rapporto {agentName.split(" ")[0]}</div>
+                  {lastRated&&<div style={{fontSize:12,color:TH.text,marginBottom:6}}>Ultima partita: <span style={{fontWeight:700,color:perfColor}}>{perfLabel}</span></div>}
+                  <div style={{fontSize:11,color:TH.faint,fontStyle:"italic",lineHeight:1.6}}>«{speechLine}»</div>
+                </Card>
+                <Btn onClick={()=>{setPlayer(function(p){return{...p,morale:clamp((p.morale||70)+6,0,100),popularity:clamp((p.popularity||50)+5,0,100)};});notify("🤵 "+agentName+": sto facendo girare il tuo nome. Vedrai i risultati!",TH.primary);}} v="secondary" fw style={{padding:"12px"}}>📞 Contatta l'agente</Btn>
+              </div>
+            )}
+          </div>
+        );
+      })()}
 
       {/* BOTTOM NAV */}
       <div style={{position:"fixed",bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:600,zIndex:100}}>
