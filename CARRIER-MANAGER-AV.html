@@ -517,10 +517,16 @@ const CLUBS=[
 ];
 // (b04 prestige set inline above)
 
-// U18 clubs = top 16 Serie A clubs (Primavera 1) — no Serie B, capped at 16 by prestige
-const U18_CLUBS = CLUBS.filter(c=>c.lg==="Serie A").sort((a,b)=>b.p-a.p).slice(0,16).map(c=>({
+// Primavera 1 — tutte le 18 squadre di Serie A
+const U18_CLUBS = CLUBS.filter(c=>c.lg==="Serie A").sort((a,b)=>b.p-a.p).map(c=>({
   ...c, n:`${c.n} Primavera`, isU18:true, p:clamp(c.p-12,30,80), lg:"Primavera 1",
 }));
+// Primavera 2 — tutte le 18 squadre di Serie B
+const U18_CLUBS_P2 = CLUBS.filter(c=>c.lg==="Serie B").sort((a,b)=>b.p-a.p).map(c=>({
+  ...c, n:`${c.n} Primavera`, isU18:true, p:clamp(c.p-15,20,65), lg:"Primavera 2",
+}));
+// Pool completo U18 per la schermata offerte
+const ALL_U18_CLUBS = [...U18_CLUBS, ...U18_CLUBS_P2];
 
 function TeamBadge({team,size=40}) {
   const c=team?.col||team?.c||"#2563eb", c2=team?.col2||team?.c2||"#fff";
@@ -1340,7 +1346,10 @@ function oppGoalProb(oppPrestige,playerOvr){
 // Returns clubs from player's current league (for standings + opponents)
 function getLeagueClubs(player){
   const isU18=(player?.proStatus||"u18")==="u18"||(player?.club?.isU18&&!player?.club?.transferType);
-  if(isU18||!player?.club)return U18_CLUBS;
+  if(isU18||!player?.club){
+    if(player?.club?.lg==="Primavera 2")return U18_CLUBS_P2;
+    return U18_CLUBS;
+  }
   const lg=player.club.lg||player.club.league;
   if(lg){const lc=CLUBS.filter(c=>c.lg===lg);if(lc.length>=4)return lc;}
   const nat=player.club.nat;
@@ -1476,7 +1485,7 @@ const NEWSPAPERS=[
   {id:"lastampa",  name:"La Stampa Sport",       short:"La Stampa",  color:"#16a34a",e:"🗞️",tone:"analitico"},
   {id:"skysport",  name:"Sky Sport 24",          short:"Sky Sport",  color:"#0099d6",e:"📡",tone:"diretto"},
 ];
-const GAME_VERSION="3.11.0"; // Sprint 30 — La Carriera Viva + League Fix
+const GAME_VERSION="3.11.1"; // Primavera 1 (18) + Primavera 2 (18 Serie B)
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -6654,7 +6663,7 @@ function CreateScreen({onCreate,legacyBonus,onClearLegacy}){
 ======================================== */
 function OffersScreen({player,trialStats,onChoose}){
   const total=trialStats.reduce((a,m)=>a+m.goals,0),avg=Math.round(trialStats.reduce((a,m)=>a+m.rating,0)/trialStats.length*10)/10,perf=total*2+avg*5;
-  const[offers]=useState(()=>[...U18_CLUBS].sort((a,b)=>{const sa=a.p+(Math.random()-.5)*30,sb=b.p+(Math.random()-.5)*30;return perf>50?sb-sa:sa-sb;}).slice(0,perf>50?3:2));
+  const[offers]=useState(()=>[...ALL_U18_CLUBS].sort((a,b)=>{const sa=a.p+(Math.random()-.5)*30,sb=b.p+(Math.random()-.5)*30;return perf>50?sb-sa:sa-sb;}).slice(0,perf>50?3:2));
   const[selIdx,setSelIdx]=useState(0);
   useEffect(()=>{
     const onKey=e=>{
@@ -10719,7 +10728,7 @@ function App(){
   const onTrials=r=>{setTrials(r);setPhase("offers");};
   const onChoose=club=>{
     // generate initial calendar + standings when first choosing a club
-    const lc=U18_CLUBS;
+    const lc=club?.lg==="Primavera 2"?U18_CLUBS_P2:U18_CLUBS;
     const seed=1*777+hashStr(club?.id||club?.n||"u18");
     const calendar=generateSeasonCalendar(club,lc,seed);
     const standings=initStandings(lc);
