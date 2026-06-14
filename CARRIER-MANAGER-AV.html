@@ -1109,6 +1109,52 @@ S("🔄 ROVESCIATA! Pallone in area — tentazione assoluta.",["area"],{x:[84,97
 S("🦶 RABONA! Il cross con la rabona per stupire tutti.",["trequarti","bordo"],{x:[60,85],y:[10,30]},{x:[65,78],y:[15,40]},[
   A("🦶 Rabona cross","passaggio",10,"assist","miss",18),A("⚡ Cross normale","passaggio",3,"assist","intercept",10),A("🎯 Tiro a giro","tiro",5,"goal","miss",14)],false,3,"🦶 Hai spazio sulla fascia. Tenti la rabona per crossare con l'esterno destro?","special"),
 
+/* === NUOVE SITUATIONS SPRINT 27 === */
+/* Tiro da 30 metri */
+S("💥 Tiro da 30 metri! Nessuno si aspetta questa scelta.",["trequarti","centro"],{x:[55,72],y:[25,75]},{x:[58,68],y:[30,70]},[
+  A("💥 Botta col collo pieno","tiro",-12,"goal","miss",16),A("🎯 Destro rasoterra","tiro",-8,"goal","miss",14),A("🔄 Serve in area","passaggio",5,"assist","intercept",8)]),
+/* Colpo di testa difensivo */
+S("✈️ Cross avversario in area! Allontana!",["propria","difesa"],{x:[8,24],y:[20,80]},{x:[10,20],y:[30,70]},[
+  A("✈️ Stacco di testa deciso","fisico",8,"save","goal_against",16),A("🛡️ Chiudi di spalla","fisico",4,"save","goal_against",12),A("📣 Chiama il portiere","tecnica",2,"save","goal_against",6)],false,1,"✈️ Cross pericoloso in area! Allontana con la testa!","def"),
+/* Salvataggio sulla linea */
+S("🧱 SALVATAGGIO SULLA LINEA! Il portiere è battuto.",["propria"],{x:[2,10],y:[30,70]},{x:[3,8],y:[38,62]},[
+  A("🧱 Corpo sulla traiettoria","fisico",12,"save","goal_against",20),A("✋ Devia col piede","tecnica",8,"save","goal_against",16),A("😱 Tentativo disperato","fisico",3,"save","goal_against",12)],false,0,"🚨 Il pallone sta per entrare! Sei l'ultimo uomo!","def"),
+/* Inserimento del terzino in sovrapposizione */
+S("⚡ Sovrapposizione! Il terzino è lanciato in fascia.",["trequarti","bordo"],{x:[58,88],y:[5,20]},{x:[62,78],y:[5,15]},[
+  A("↗️ Cross al centro","passaggio",8,"assist","intercept",12),A("⚡ Taglio verso l'area","velocità",5,"goal","intercept",18),A("↩️ Appoggio corto","passaggio",3,"assist","nothing",6)]),
+/* Contropiede 2v1 */
+S("🚀 Contropiede 2 contro 1! Supera il difensore!",["trequarti","bordo"],{x:[52,88],y:[25,75]},{x:[55,68],y:[35,65]},[
+  A("🎯 Assist al compagno","passaggio",10,"assist","intercept",10),A("⚡ Scatta e tira","velocità",6,"goal","intercept",20),A("🌀 Finta e tiro","tecnica",4,"goal","miss",16)]),
+/* Tap-in da rimbalzo */
+S("🔄 Rimbalzo in area! Arrivaci per primo.",["area"],{x:[82,97],y:[22,78]},{x:[84,93],y:[28,72]},[
+  A("🦵 Spinta di prima","tiro",14,"goal","miss_easy",10),A("✈️ Di testa","fisico",8,"goal","miss",12),A("🌀 Controllo e tiro","tecnica",4,"goal","miss",14)]),
+/* Cross basso teso */
+S("↘️ Cross basso teso! Devia verso la porta.",["area","bordo"],{x:[74,94],y:[15,35]},{x:[76,86],y:[18,28]},[
+  A("🦵 Deviazione al volo","tecnica",6,"goal","miss",14),A("↗️ Sponda per compagno","passaggio",5,"assist","intercept",8),A("💥 Tiro potente","tiro",2,"goal","miss",13)]),
+/* Schema da calcio d'angolo — corto */
+S("📐 Schema corto da corner! Sorpresa tattica.",["trequarti","bordo"],{x:[58,86],y:[85,97]},{x:[60,74],y:[86,95]},[
+  A("🎯 Triangolo e cross","passaggio",7,"assist","intercept",10),A("💥 Tiro a giro","tiro",4,"goal","miss",14),A("🌀 Dribbling e cross","tecnica",5,"assist","nothing",12)],false,3,"📐 Schema! Angolo corto — sorprendi la difesa con il triangolo."),
+/* Punizione indiretta in area */
+S("📐 Punizione indiretta a 5 metri dall'area!",["trequarti"],{x:[62,66],y:[44,56]},{x:[63,65],y:[46,54]},[
+  A("↗️ Palla in area per il colpo di testa","passaggio",8,"assist","intercept",8),A("💥 Tiro sotto la barriera","tiro",6,"goal","miss",12),A("🌀 Giocata corta","tecnica",5,"assist","nothing",6)],true),
+/* Uscita alta portiere avversario */
+S("✈️ Lancio lungo! Il portiere esce. Attacca la palla!",["area","bordo"],{x:[74,96],y:[30,70]},{x:[76,86],y:[35,65]},[
+  A("✈️ Colpo di testa sulla porta","fisico",6,"goal","miss",14),A("🌀 Scavalco il portiere","tecnica",3,"goal","miss_easy",18),A("🎯 Pallone al compagno","passaggio",4,"assist","intercept",8)]),
+/* Palo e tap-in */
+S("💥 PALO! Rimbalza in area. Arriva!",["area"],{x:[83,98],y:[28,72]},{x:[85,95],y:[33,67]},[
+  A("🦵 Prima intenzione!","tiro",16,"goal","miss_easy",10),A("✈️ Di testa al volo","fisico",10,"goal","miss",12),A("🤝 Sponda per compagno","passaggio",6,"assist","intercept",8)]),
+/* Pressing alto — recupero in trequarti avversaria */
+S("🏃 Pressing alto! Rubi palla in trequarti avversaria.",["trequarti"],{x:[55,72],y:[20,80]},{x:[58,68],y:[28,72]},[
+  A("🏃 Pressing aggressivo","velocità",8,"goal","through",20),A("✋ Intercetta il retropassaggio","tecnica",5,"goal","through",14),A("📣 Copri le linee di passaggio","mentalità",4,"recovery","through",10)],false,2,"😤 Il portiere avversario ha palla! Pressa immediatamente!","def"),
+/* Colpo di testa su punizione laterale */
+S("📐 Punizione dalla fascia! Attacca il palo lontano.",["area"],{x:[76,96],y:[18,28]},{x:[78,88],y:[22,26]},[
+  A("✈️ Stacco sul palo lontano","fisico",7,"goal","miss",16),A("🦵 Mezza rovesciata","tecnica",-4,"goal","miss",20),A("🤝 Sponda indietro","passaggio",4,"assist","intercept",8)]),
+/* Lancio lungo per lo scatto */
+S("🎯 Lancio lungo millimetrico! Scatta in profondità.",["trequarti","centro"],{x:[40,72],y:[25,75]},{x:[42,58],y:[30,70]},[
+  A("⚡ Scatto perfetto","velocità",8,"goal","intercept",22),A("🎯 Controlla e tira","tecnica",5,"goal","intercept",16),A("↩️ Rimanda al mittente","passaggio",2,"assist","intercept",8)]),
+/* Duello in velocità sulla fascia */
+S("⚡ Sprint sulla fascia! 1 contro 1 col terzino.",["bordo","trequarti"],{x:[60,88],y:[3,22]},{x:[62,76],y:[5,18]},[
+  A("⚡ Spunto esplosivo","velocità",8,"assist","intercept",20),A("🌀 Dribbling di tecnica","tecnica",5,"assist","nothing",16),A("💥 Tiro cross teso","tiro",3,"goal","miss",13)]),
 ];
 
 const ZONES={
@@ -1161,6 +1207,45 @@ const BG_MATCH=[
   {txt:"🔥 Pressione massima di {H}! Tifosi scatenati.",ef:null,w:3,minClock:75,bpos:{x:75,y:50},pd:"attack"},
   {txt:"💊 Sostituzione avversaria. {A} entra fresco.",ef:null,w:2,minClock:60,bpos:{x:50,y:50},pd:"midfield"},
   {txt:"😓 Le gambe pesano. {H} deve reggere.",ef:null,w:2,minClock:80,bpos:{x:50,y:50},pd:"retreat"},
+  // Winning team entries
+  {txt:"⏱️ {H} gestisce il pallone. Niente rischi ora.",ef:null,w:3,bpos:{x:52,y:50},pd:"midfield",ctx:"winning"},
+  {txt:"😤 {A} si dispera. Il risultato è nero per loro.",ef:null,w:2,bpos:{x:60,y:55},pd:"attack",ctx:"winning"},
+  {txt:"🔒 {H} abbassa il baricentro. Palla all'indietro con sicurezza.",ef:null,w:3,bpos:{x:45,y:50},pd:"midfield",ctx:"winning"},
+  {txt:"📢 Il mister urla: 'Controllate! Non rischiate nulla.'",ef:null,w:2,bpos:{x:50,y:50},pd:"midfield",ctx:"winning"},
+  // Losing team entries
+  {txt:"🔥 {H} deve assolutamente segnare. L'assalto è totale.",ef:null,w:3,bpos:{x:75,y:50},pd:"attack",ctx:"losing"},
+  {txt:"😨 Il tempo passa e {H} è ancora sotto. Panico visibile.",ef:null,w:2,minClock:65,bpos:{x:70,y:52},pd:"attack",ctx:"losing"},
+  {txt:"💥 Tiro disperato di {H} dal limite. Sopra la traversa.",ef:null,w:2,bpos:{x:78,y:50},ms:{shots:1},pd:"attack",ctx:"losing"},
+  {txt:"📢 {H} chiede il cambio di ritmo. Serve un gol subito.",ef:null,w:2,bpos:{x:65,y:50},pd:"attack",ctx:"losing"},
+  // Drawing entries
+  {txt:"⚖️ Partita bloccata. {H} cerca la giocata decisiva.",ef:null,w:3,bpos:{x:60,y:50},pd:"midfield",ctx:"drawing"},
+  {txt:"🎯 Schema da calcio piazzato elaborato dalla panchina di {H}.",ef:null,w:2,bpos:{x:65,y:50},ms:{fouls:1},pd:"attack",ctx:"drawing"},
+  // Early game (first 30 min)
+  {txt:"🌅 Partita appena iniziata. {H} prende le misure.",ef:null,w:2,maxClock:30,bpos:{x:50,y:50},pd:"midfield"},
+  {txt:"🔵 {H} controlla il ritmo nei primi minuti.",ef:null,w:3,maxClock:25,bpos:{x:48,y:50},pd:"midfield"},
+  {txt:"📐 Schema studiato questa settimana. {H} prova l'abbrivio.",ef:null,w:2,maxClock:20,bpos:{x:60,y:55},pd:"attack"},
+  // Physical duels
+  {txt:"💪 Scontro fisico al centro. {H} vince il duello.",ef:null,w:3,poss:+1,bpos:{x:50,y:48},pd:"midfield"},
+  {txt:"⚡ {A} guadagna fallo su calcio di punizione dal centro.",ef:null,w:2,bpos:{x:55,y:52},ms:{fouls:1},pd:"midfield"},
+  {txt:"🤸 Giocata acrobatica di {H}! La palla resta in gioco.",ef:null,w:2,bpos:{x:72,y:60},pd:"attack"},
+  // Goalkeeping
+  {txt:"🧤 {H} spedisce un bolide, attento il portiere avversario!",ef:null,w:2,bpos:{x:82,y:50},ms:{shots:1},pd:"attack_goal"},
+  {txt:"🏳️ Corner conquistato da {H} dopo una bella azione.",ef:null,w:2,bpos:{x:89,y:8},ms:{corners:1},pd:"wide_right"},
+  {txt:"⚠️ Pericolo sugli sviluppi del corner! {A} libera in extremis.",ef:null,w:2,bpos:{x:12,y:50},ms:{oppShots:1},pd:"defend_goal"},
+  {txt:"🛡️ Grande chiusura difensiva di {H}! Pronto sul secondo palo.",ef:null,w:2,poss:+2,bpos:{x:10,y:45},pd:"defend_goal"},
+  // Tactical moments
+  {txt:"🔄 {A} sorprende con il cambio di modulo.",ef:null,w:2,bpos:{x:45,y:52},pd:"midfield"},
+  {txt:"📊 Possesso dominante di {H}: 68% nel secondo tempo.",ef:null,w:2,minClock:45,bpos:{x:50,y:50},pd:"midfield"},
+  {txt:"⚡ Pressing sincrono! {H} ruba palla a metà campo.",ef:null,w:2,poss:+2,bpos:{x:48,y:50},pd:"midfield"},
+  {txt:"🎭 Finta di corpo di {H}: avversario fermo, porta aperta.",ef:null,w:2,bpos:{x:75,y:55},pd:"attack"},
+  // Atmospheric
+  {txt:"🔥 Lo stadio è una bolgia. I tifosi spingono {H}.",ef:null,w:2,bpos:{x:50,y:50},pd:"midfield"},
+  {txt:"📣 Cori assordanti. Il dodicesimo uomo di {H} ci crede.",ef:null,w:2,bpos:{x:55,y:50},pd:"attack"},
+  {txt:"😤 Nervi tesi! Scintille tra i giocatori. L'arbitro media.",ef:null,w:2,bpos:{x:50,y:52},ms:{fouls:1},pd:"midfield"},
+  // Technical highlights
+  {txt:"🌀 Numero tecnico di {H}: tre avversari saltati in cinque metri.",ef:null,w:1,bpos:{x:70,y:65},pd:"attack"},
+  {txt:"💥 Traversa colpita da {H}! Sfortuna clamorosa.",ef:null,w:1,bpos:{x:92,y:50},ms:{shots:1},pd:"attack_goal"},
+  {txt:"😲 Autorete sfiorata! {A} libera sulla linea per un soffio.",ef:null,w:1,bpos:{x:8,y:50},ms:{oppShots:1},pd:"defend_goal"},
 ];
 const OUTCOME_TX={
   goal:["💥 GOOOOOL! Folla in delirio!","⚽ Rete spettacolare!","🔥 Imparabile!","🌟 Fenomenale!"],
@@ -1379,7 +1464,7 @@ const NEWSPAPERS=[
   {id:"lastampa",  name:"La Stampa Sport",       short:"La Stampa",  color:"#16a34a",e:"🗞️",tone:"analitico"},
   {id:"skysport",  name:"Sky Sport 24",          short:"Sky Sport",  color:"#0099d6",e:"📡",tone:"diretto"},
 ];
-const GAME_VERSION="3.7.0"; // Sprint 26 — Agente + Obiettivi Club + Nazionale Completa
+const GAME_VERSION="3.8.0"; // Sprint 27 — Il Copione della Partita
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -4911,7 +4996,7 @@ function FormationView({homeTeam,awayTeam,player,homeRoster,awayRoster,onContinu
 }
 
 /* WALKOUT OVERLAY */
-function WalkoutOverlay({homeTeam,homeRoster,opponent,isHome=true,matchWeek,onDone,weather}){
+function WalkoutOverlay({homeTeam,homeRoster,opponent,isHome=true,matchWeek,onDone,weather,isDerbyMatch,isBigGame}){
   const STEPS=88;
   const [tick,setTick]=useState(0);
   useEffect(()=>{if(tick>=STEPS)return;const t=setTimeout(()=>setTick(n=>n+1),50);return()=>clearTimeout(t);},[tick]);
@@ -4925,13 +5010,25 @@ function WalkoutOverlay({homeTeam,homeRoster,opponent,isHome=true,matchWeek,onDo
   const stadiumName=getStadiumName(venueTeam);
   const crowd=calcAttendance(venueTeam,"career");
   const crowdStr=crowd>=10000?`${(crowd/1000).toFixed(0)}k`:`${crowd}`;
-  const phase=pct<30?"🚶 Arrivo al tunnel":pct<65?"🏟️ Ingresso in campo":"📣 Il pubblico esplode";
+  const phase=isDerbyMatch
+    ?(pct<30?"🔥 Tensione nel tunnel — è derby!":pct<65?"⚡ I due club si fronteggiano in campo":"🔥 ATMOSFERA DA DERBY — stadio in delirio")
+    :isBigGame
+    ?(pct<30?"🌟 Arrivo allo stadio — partita enorme":pct<65?"🏆 Ingresso in campo — tutto in palio":"🎆 LO STADIO ESPLODE — è il momento")
+    :(pct<30?"🚶 Arrivo al tunnel":pct<65?"🏟️ Ingresso in campo":"📣 Il pubblico esplode");
   const HOME_NUMS=[1,2,3,4,5,6,7,8,9,10,11];
+  const bgGrad=isDerbyMatch
+    ?"linear-gradient(180deg,rgba(30,5,5,0.97) 0%,rgba(20,3,3,0.98) 60%,rgba(10,0,0,0.99) 100%)"
+    :isBigGame
+    ?"linear-gradient(180deg,rgba(5,5,30,0.97) 0%,rgba(3,3,20,0.98) 60%,rgba(1,1,10,0.99) 100%)"
+    :"linear-gradient(180deg,rgba(3,8,20,0.94) 0%,rgba(5,18,38,0.97) 60%,rgba(3,8,20,0.99) 100%)";
+  const accentCol=isDerbyMatch?"#ef4444":isBigGame?"#f59e0b":col;
   return(
-    <div style={{position:"absolute",inset:0,background:"linear-gradient(180deg,rgba(3,8,20,0.94) 0%,rgba(5,18,38,0.97) 60%,rgba(3,8,20,0.99) 100%)",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",zIndex:10,backdropFilter:"blur(3px)"}}>
+    <div style={{position:"absolute",inset:0,background:bgGrad,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",zIndex:10,backdropFilter:"blur(3px)"}}>
       {/* Floodlight glow strips */}
-      <div style={{position:"absolute",top:0,left:0,right:0,height:3,background:`linear-gradient(90deg,transparent,${col},transparent)`,opacity:0.7}}/>
-      <div style={{position:"absolute",bottom:0,left:0,right:0,height:3,background:`linear-gradient(90deg,transparent,${col},transparent)`,opacity:0.4}}/>
+      <div style={{position:"absolute",top:0,left:0,right:0,height:3,background:`linear-gradient(90deg,transparent,${accentCol},transparent)`,opacity:0.7}}/>
+      <div style={{position:"absolute",bottom:0,left:0,right:0,height:3,background:`linear-gradient(90deg,transparent,${accentCol},transparent)`,opacity:0.4}}/>
+      {isDerbyMatch&&<div style={{position:"absolute",top:18,left:0,right:0,textAlign:"center",fontSize:11,fontWeight:900,color:"#ef4444",letterSpacing:4,textTransform:"uppercase",textShadow:"0 0 20px #ef4444"}}>⚔️ DERBY ⚔️</div>}
+      {isBigGame&&!isDerbyMatch&&<div style={{position:"absolute",top:18,left:0,right:0,textAlign:"center",fontSize:11,fontWeight:900,color:"#f59e0b",letterSpacing:4,textTransform:"uppercase",textShadow:"0 0 20px #f59e0b"}}>🌟 BIG MATCH 🌟</div>}
       {/* Match info bar */}
       <div style={{position:"absolute",top:10,left:0,right:0,display:"flex",justifyContent:"center",gap:10,alignItems:"center",flexWrap:"wrap",padding:"0 8px"}}>
         <span style={{fontSize:9,color:"rgba(255,255,255,0.4)",letterSpacing:2,textTransform:"uppercase"}}>{isHome?"🏟️ CASA":"✈️ TRASFERTA"}</span>
@@ -4969,7 +5066,7 @@ function WalkoutOverlay({homeTeam,homeRoster,opponent,isHome=true,matchWeek,onDo
       <div style={{width:220,height:2,background:"rgba(255,255,255,0.08)",borderRadius:2,marginTop:14,overflow:"hidden"}}>
         <div style={{height:"100%",width:`${pct}%`,background:`linear-gradient(90deg,${col},#f59e0b)`,borderRadius:2,transition:"width .05s"}}/>
       </div>
-      <div style={{fontSize:8,color:"rgba(255,255,255,0.18)",marginTop:5,letterSpacing:2}}>PREMI INVIO PER SALTARE</div>
+      <div style={{fontSize:8,color:isDerbyMatch?"rgba(239,68,68,0.5)":isBigGame?"rgba(245,158,11,0.5)":"rgba(255,255,255,0.18)",marginTop:5,letterSpacing:2}}>PREMI INVIO PER SALTARE</div>
     </div>
   );
 }
@@ -5493,7 +5590,9 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     const weatherPenalty=(action.stat==="passaggio"&&wef.pass?(-wef.pass/100):0)+
                          (action.stat==="tiro"&&wef.tiro?(-wef.tiro/100):0)+
                          (action.stat==="velocità"&&wef.spd?(-wef.spd/100):0);
-    const rate=Math.max(0.05,succRate(action,player.stats,pPos.x,oppPrestige)/100-defPenalty-weatherPenalty);
+    const momentumBonus=(momentumRef.current-50)/1000; // ±5% at extremes
+    const fatiguePenalty=Math.max(0,(player.fatigue||0)-65)/350; // up to -10% at 100 fatigue
+    const rate=Math.max(0.05,succRate(action,player.stats,pPos.x,oppPrestige)/100-defPenalty-weatherPenalty+momentumBonus-fatiguePenalty);
     const adapt=adaptiveDifficulty(player);
     const ok=Math.random()<clamp((rate/adapt)+(Math.random()-.5)*.06,0.05,0.84);
     const key=ok?action.rew:action.fail;
@@ -5683,6 +5782,9 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   // Kit conflict resolution — away team gets alt kit if colors too similar
   const homeKitCol=player.club?.col||player.club?.c||"#22c55e";
   const awayKitCol=resolveKitConflict(homeKitCol,opponent?.col||opponent?.c||"#ef4444");
+  // Derby + big-game detection (used by WalkoutOverlay and MatchdayCard)
+  const drby=isDerby(player.club?.id,opponent?.id);
+  const mw=context==="trial"?1:calcMatchWeight(player,opponent?.id||opponent?.n,player.standings||[],player.week||1);
 
   return(
     <div style={{width:"100%"}}>
@@ -5766,7 +5868,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                 attendance={attendance} actionEffect={actionEffect} weather={weather}
                 heatPoints={heatPointsRef.current} showHeatMap={showHeatMap}
                 onWalkoutDone={()=>setPhase("playing")}/>
-              {phase==="walkout"&&<WalkoutOverlay homeTeam={player.club||opponent} homeRoster={homeRoster} opponent={opponent} isHome={isMatchHome} matchWeek={player.week} onDone={()=>setPhase("playing")} weather={weather}/>}
+              {phase==="walkout"&&<WalkoutOverlay homeTeam={player.club||opponent} homeRoster={homeRoster} opponent={opponent} isHome={isMatchHome} matchWeek={player.week} onDone={()=>setPhase("playing")} weather={weather} isDerbyMatch={!!drby} isBigGame={mw>=7}/>}
               {screenFlash&&<div style={{position:"absolute",inset:0,background:screenFlash.col,zIndex:20,pointerEvents:"none",animation:`fadeFlash ${screenFlash.dur}ms ease-out forwards`}}/>}
               {floatGoal&&<div key={floatGoal.key} style={{position:"absolute",top:"30%",left:0,right:0,textAlign:"center",fontSize:22,fontWeight:900,color:floatGoal.col,textShadow:"0 0 24px currentColor",animation:"floatUp 1.4s ease-out forwards",zIndex:21,pointerEvents:"none"}}>{floatGoal.text}</div>}
               {crowdChant&&<div key={crowdChant.key} style={{position:"absolute",bottom:"10%",left:0,right:0,textAlign:"center",fontSize:15,fontWeight:900,color:crowdChant.type==="goal"?"#4ade80":crowdChant.type==="danger"?"#f87171":crowdChant.type==="foul"?"#fb923c":"#f8fafc",textShadow:"0 2px 14px rgba(0,0,0,0.85)",animation:"chantPulse 2.8s ease-out forwards",zIndex:22,pointerEvents:"none",letterSpacing:1,textTransform:"uppercase",padding:"0 12px"}}>{crowdChant.text}</div>}
