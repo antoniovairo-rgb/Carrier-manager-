@@ -1476,7 +1476,7 @@ const NEWSPAPERS=[
   {id:"lastampa",  name:"La Stampa Sport",       short:"La Stampa",  color:"#16a34a",e:"🗞️",tone:"analitico"},
   {id:"skysport",  name:"Sky Sport 24",          short:"Sky Sport",  color:"#0099d6",e:"📡",tone:"diretto"},
 ];
-const GAME_VERSION="3.9.0"; // Sprint 28 — La Memoria del Mondo
+const GAME_VERSION="3.10.0"; // Sprint 29 — Memoria Viva
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -5690,7 +5690,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     const rbCapped=Math.min(mStats.rb,20);
     const resultBonus=score.home>score.away?0.35:score.home===score.away?0.0:-0.30;
     const raw=clamp(5.8+rbCapped*0.115+resultBonus,4.0,10.0);
-    onMatchEnd({goals:mStats.goals,assists:mStats.assists,homeScore:score.home,awayScore:score.away,won:score.home>score.away,drew:score.home===score.away,opponent:opponent?.name||opponent?.n,oppAbbr:opponent?.abbr||opponent?.a,oppCol:opponent?.col||opponent?.c,rating:Math.round(raw*10)/10,context,oppTactic:oppTactic||null,scoutReport:scoutReport||null,homeRoster});
+    onMatchEnd({goals:mStats.goals,assists:mStats.assists,homeScore:score.home,awayScore:score.away,won:score.home>score.away,drew:score.home===score.away,opponent:opponent?.name||opponent?.n,oppAbbr:opponent?.abbr||opponent?.a,oppCol:opponent?.col||opponent?.c,rating:Math.round(raw*10)/10,context,oppTactic:oppTactic||null,scoutReport:scoutReport||null,homeRoster,shots:mxStats.shots,oppShots:mxStats.oppShots,fouls:mxStats.fouls,corners:mxStats.corners,possession:Math.round(possession)});
   };
 
   // Keyboard — direct closure calls; re-registers when phase/hlIdx/situations change.
@@ -8205,6 +8205,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
   const[weekLiveModal,setWeekLiveModal]=useState(null);   // {event, changes}
   const[showAdvanceConfirm,setShowAdvanceConfirm]=useState(false);
   const[showMatchPrompt,setShowMatchPrompt]=useState(null); // {md} — pending match prompt
+  const[focusTrainingStat,setFocusTrainingStat]=useState(null); // Sprint 29: Focus training stat picker
   const[lastSaved,setLastSaved]=useState(null);           // timestamp
   const[nationalCallupData,setNationalCallupData]=useState(null);
   const[retirementData,setRetirementData]=useState(null);
@@ -9189,7 +9190,8 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
 
   if(screen==="postmatch"&&lastMatch){
     const r=lastMatch,rating=r.rating,rc=rating>=8?TH.success:rating>=6.5?TH.warning:TH.danger;
-    return <div style={{width:"100%"}}><Card style={{textAlign:"center",padding:"24px",maxWidth:560,margin:"0 auto"}}><div style={{fontSize:10,color:TH.muted,letterSpacing:2,marginBottom:8}}>POST MATCH</div><div style={{fontSize:28,fontWeight:900,marginBottom:4,color:TH.text}}><span style={{color:TH.success}}>{r.homeScore}</span><span style={{color:TH.faint,margin:"0 10px"}}>–</span><span style={{color:TH.danger}}>{r.awayScore}</span></div><p style={{color:TH.muted,fontSize:12,margin:"0 0 14px"}}>vs {r.opponent}</p><div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:8,marginBottom:14}}>{[{l:"Gol",v:r.goals,e:"⚽"},{l:"Assist",v:r.assists,e:"🎯"},{l:"Voto",v:rating,e:"⭐",c:rc}].map(s=><Card key={s.l} style={{padding:"10px 6px",textAlign:"center"}}><div style={{fontSize:16,marginBottom:2}}>{s.e}</div><div style={{fontSize:20,fontWeight:900,color:s.c||TH.warning}}>{s.v}</div><div style={{fontSize:9,color:TH.muted}}>{s.l}</div></Card>)}</div><div style={{fontSize:50,fontWeight:900,color:rc,lineHeight:1,marginBottom:4}}>{rating}</div><div style={{fontSize:12,color:rc,marginBottom:14}}>{rating>=8?"Eccellente!":rating>=7?"Buona partita":rating>=6?"Sufficiente":"Da migliorare"}</div>{lastPressReport&&<Btn onClick={()=>setScreen("press")} v="secondary" fw style={{padding:"10px",fontSize:13,marginBottom:8}}>📰 Rassegna Stampa</Btn>}<Btn onClick={()=>setScreen("dashboard")} v="green" fw style={{padding:"13px",fontSize:14}}>🏟️ Torna alla Dashboard <span className="kbd" style={{opacity:0.7,fontSize:11}}>Enter</span></Btn></Card></div>;
+    const hasMatchStats=r.shots!=null;
+    return <div style={{width:"100%"}}><Card style={{textAlign:"center",padding:"24px",maxWidth:560,margin:"0 auto"}}><div style={{fontSize:10,color:TH.muted,letterSpacing:2,marginBottom:8}}>POST MATCH</div><div style={{fontSize:28,fontWeight:900,marginBottom:4,color:TH.text}}><span style={{color:TH.success}}>{r.homeScore}</span><span style={{color:TH.faint,margin:"0 10px"}}>–</span><span style={{color:TH.danger}}>{r.awayScore}</span></div><p style={{color:TH.muted,fontSize:12,margin:"0 0 14px"}}>vs {r.opponent}</p><div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:8,marginBottom:10}}>{[{l:"Gol",v:r.goals,e:"⚽"},{l:"Assist",v:r.assists,e:"🎯"},{l:"Voto",v:rating,e:"⭐",c:rc}].map(s=><Card key={s.l} style={{padding:"10px 6px",textAlign:"center"}}><div style={{fontSize:16,marginBottom:2}}>{s.e}</div><div style={{fontSize:20,fontWeight:900,color:s.c||TH.warning}}>{s.v}</div><div style={{fontSize:9,color:TH.muted}}>{s.l}</div></Card>)}</div>{hasMatchStats&&<div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:6,marginBottom:14,background:TH.bg,borderRadius:10,padding:"8px 6px"}}>{[{l:"Tiri",v:`${r.shots}–${r.oppShots}`,e:"🎯"},{l:"Possesso",v:`${r.possession}%`,e:"⚽"},{l:"Falli",v:r.fouls,e:"🟡"},{l:"Corner",v:r.corners,e:"🏳️"}].map(s=><div key={s.l} style={{textAlign:"center"}}><div style={{fontSize:9,color:TH.faint,marginBottom:1}}>{s.e}</div><div style={{fontSize:12,fontWeight:700,color:TH.text}}>{s.v}</div><div style={{fontSize:8,color:TH.muted}}>{s.l}</div></div>)}</div>}<div style={{fontSize:50,fontWeight:900,color:rc,lineHeight:1,marginBottom:4}}>{rating}</div><div style={{fontSize:12,color:rc,marginBottom:14}}>{rating>=8?"Eccellente!":rating>=7?"Buona partita":rating>=6?"Sufficiente":"Da migliorare"}</div>{lastPressReport&&<Btn onClick={()=>setScreen("press")} v="secondary" fw style={{padding:"10px",fontSize:13,marginBottom:8}}>📰 Rassegna Stampa</Btn>}<Btn onClick={()=>setScreen("dashboard")} v="green" fw style={{padding:"13px",fontSize:14}}>🏟️ Torna alla Dashboard <span className="kbd" style={{opacity:0.7,fontSize:11}}>Enter</span></Btn></Card></div>;
   }
 
   if(screen==="nationalCallup"&&nationalCallupData)return(
@@ -9498,6 +9500,15 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                 Prestigio club: <strong>{transferOffer.club.p}</strong>
               </div>
             </Card>
+            {/* Sprint 29 — MW7: agent counter-offer */}
+            {player.hasAgent&&!transferOffer.isRenewal&&!transferOffer._counter&&(
+              <div style={{background:"#eff6ff",borderRadius:10,padding:"9px 12px",marginBottom:10,border:"1px solid #bfdbfe"}}>
+                <div style={{fontSize:10,color:TH.primary,fontWeight:700,marginBottom:4}}>🤵 Il tuo agente propone un counter:</div>
+                <div style={{fontSize:11,color:TH.text}}>Stipendio: <strong>€{Math.round((transferOffer.wage||500)*1.20*52/1000*10)/10}k/anno</strong> · Durata: <strong>{(transferOffer.duration||2)+1} stagioni</strong></div>
+                <button onClick={()=>setTransferOffer(o=>({...o,wage:Math.round((o.wage||500)*1.20),duration:(o.duration||2)+1,_counter:true}))} style={{marginTop:6,padding:"5px 12px",borderRadius:8,border:"1px solid "+TH.primary,background:"#fff",color:TH.primary,fontSize:11,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>Proponi counter →</button>
+              </div>
+            )}
+            {transferOffer._counter&&<div style={{fontSize:10,color:TH.success,fontWeight:700,marginBottom:8,textAlign:"center"}}>✅ Counter accettato dal club! Stipendio e durata aggiornati.</div>}
             <div style={{display:"flex",gap:10}}>
               <Btn onClick={()=>setTransferOffer(null)} v="secondary" fw>Rifiuta</Btn>
               <Btn onClick={acceptTransfer} v="primary" fw>Accetta →</Btn>
@@ -9536,6 +9547,23 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
           </div>
         </Card>
       )}
+      {/* Sprint 29 — MW2: Recent form strip */}
+      {tab==="dashboard"&&(()=>{
+        const recent=[...(player.matchHistory||[])].filter(m=>!m.simulated).reverse().slice(0,5);
+        if(recent.length<1)return null;
+        return(
+          <div style={{display:"flex",alignItems:"center",gap:6,marginBottom:8,padding:"6px 2px"}}>
+            <span style={{fontSize:9,color:TH.muted,letterSpacing:1,textTransform:"uppercase",minWidth:36}}>Forma</span>
+            {recent.map((m,i)=>{
+              const c=m.won?"#16a34a":m.drew?"#64748b":"#dc2626";
+              const bg=m.won?"#dcfce7":m.drew?"#f1f5f9":"#fee2e2";
+              const lbl=m.won?"V":m.drew?"P":"S";
+              return<div key={i} style={{width:28,height:28,borderRadius:"50%",background:bg,border:`2px solid ${c}`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:10,fontWeight:800,color:c,flexShrink:0}} title={`vs ${m.opponent||"?"} ${m.homeScore}-${m.awayScore}`}>{lbl}</div>;
+            })}
+            <span style={{fontSize:9,color:TH.faint,marginLeft:2}}>ultime {recent.length}</span>
+          </div>
+        );
+      })()}
       {/* DASHBOARD */}
       {tab==="dashboard"&&player.contractExpired&&(
         <Card bg="#fef3c7" border="#f59e0b" style={{marginBottom:8,padding:"12px 14px"}}>
@@ -9991,6 +10019,29 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                     </button>
                   );
                 })}
+                {/* Sprint 29 — MW6: Allenamento Focus */}
+                {!focusTrainingStat?(
+                  <button onClick={()=>setFocusTrainingStat("pick")} disabled={(player.fatigue||0)>85} style={{width:"100%",padding:"11px 14px",borderRadius:10,border:`1px solid ${(player.fatigue||0)>85?"#e5e7eb":"#a78bfa"}`,background:(player.fatigue||0)>85?"#f3f4f6":"#f5f3ff",cursor:(player.fatigue||0)>85?"not-allowed":"pointer",fontFamily:"inherit",display:"flex",justifyContent:"space-between",alignItems:"center",opacity:(player.fatigue||0)>85?0.5:1}}>
+                    <div style={{textAlign:"left"}}><div style={{fontSize:12,fontWeight:700,color:"#7c3aed"}}>🎯 Focus</div><div style={{fontSize:10,color:TH.muted}}>scegli 1 attributo → +2 garantito</div></div>
+                    <div style={{fontSize:10,color:TH.danger,fontWeight:600}}>+18 fat.</div>
+                  </button>
+                ):(
+                  <div style={{border:"1px solid #a78bfa",borderRadius:10,padding:"10px 12px",background:"#f5f3ff"}}>
+                    <div style={{fontSize:10,color:"#7c3aed",fontWeight:700,marginBottom:8,textTransform:"uppercase",letterSpacing:1}}>🎯 Focus — scegli attributo:</div>
+                    <div style={{display:"flex",flexWrap:"wrap",gap:6,marginBottom:8}}>
+                      {Object.entries(player.stats).map(([k,v])=>(
+                        <button key={k} onClick={()=>{
+                          setPlayer(p=>{const ns={...p.stats,[k]:clamp((p.stats[k]||60)+2,1,99)};return{...p,stats:ns,ovr:calcOvr(ns),fatigue:clamp((p.fatigue||0)+18,0,100),trainedThisWeek:true};});
+                          notify(`🎯 Focus su ${k}: +2! Fatica +18`,TH.accent);
+                          setFocusTrainingStat(null);
+                        }} style={{padding:"5px 10px",borderRadius:8,border:"1px solid #a78bfa",background:"#ede9fe",color:"#5b21b6",fontSize:11,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>
+                          {k} <span style={{opacity:0.55,fontWeight:400}}>{v}</span>
+                        </button>
+                      ))}
+                    </div>
+                    <button onClick={()=>setFocusTrainingStat(null)} style={{fontSize:10,color:TH.muted,background:"none",border:"none",cursor:"pointer",fontFamily:"inherit"}}>✕ Annulla</button>
+                  </div>
+                )}
               </div>
             }
           </Card>
@@ -10225,6 +10276,35 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
               )}
             </Card>
           )}
+          {/* Sprint 29 — MW1: Memoria della Carriera */}
+          {(()=>{
+            const MEM_META={
+              derby_win:{e:"⚔️",label:(m)=>`${m.derbyName||"Derby"} vinto! (S.${m.season})`},
+              national_debut:{e:"🏳️",label:(m)=>`Debutto in Nazionale (S.${m.season})`},
+              national_goal:{e:"🌍",label:(m)=>`Primo gol in Nazionale (S.${m.season})`},
+              ex_club:{e:"🏟️",label:(m)=>`${m.club||"Club"} — ex squadra (S.${m.season})`},
+              career_moment:{e:"⭐",label:(m)=>m.label||`Momento chiave S.${m.season}`},
+            };
+            const entries=(player.worldMemory||[]).filter(m=>MEM_META[m.type]).slice(-12).reverse();
+            if(!entries.length)return null;
+            return(
+              <Card style={{padding:"12px 14px"}}>
+                <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:10}}>🧠 Memoria della Carriera</div>
+                <div style={{display:"flex",flexDirection:"column",gap:6}}>
+                  {entries.map((m,i)=>{
+                    const meta=MEM_META[m.type];
+                    return(
+                      <div key={i} style={{display:"flex",alignItems:"center",gap:8,padding:"5px 0",borderTop:i>0?"1px solid "+TH.cardBorder:"none"}}>
+                        <div style={{fontSize:16,flexShrink:0,width:24,textAlign:"center"}}>{meta.e}</div>
+                        <div style={{fontSize:11,color:TH.text,flex:1}}>{meta.label(m)}</div>
+                        {m.score&&<div style={{fontSize:10,color:TH.muted,fontWeight:600}}>{m.score}</div>}
+                      </div>
+                    );
+                  })}
+                </div>
+              </Card>
+            );
+          })()}
           {/* U18 status banner */}
           {(player.proStatus||"u18")==="u18"&&(
             <Card bg="#eff6ff" border="#bfdbfe" style={{padding:"12px 14px"}}>
