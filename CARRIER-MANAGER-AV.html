@@ -1246,6 +1246,18 @@ const BG_MATCH=[
   {txt:"🌀 Numero tecnico di {H}: tre avversari saltati in cinque metri.",ef:null,w:1,bpos:{x:70,y:65},pd:"attack"},
   {txt:"💥 Traversa colpita da {H}! Sfortuna clamorosa.",ef:null,w:1,bpos:{x:92,y:50},ms:{shots:1},pd:"attack_goal"},
   {txt:"😲 Autorete sfiorata! {A} libera sulla linea per un soffio.",ef:null,w:1,bpos:{x:8,y:50},ms:{oppShots:1},pd:"defend_goal"},
+  // Sub-events — in-match incidents with gameplay effect
+  {txt:"🟥 ESPULSIONE! {A} vede il rosso! Siamo in superiorità numerica!",ef:"opp_red",w:0.25,bpos:{x:50,y:50},pd:"midfield"},
+  {txt:"🚑 Infortunio muscolare per {A}! Il giocatore lascia il campo tra i fischi.",ef:"opp_injury",w:0.40,bpos:{x:55,y:48},pd:"midfield"},
+  {txt:"🟥 Fallo da dietro di {A} — arbitro senza esitazioni: rosso diretto!",ef:"opp_red",w:0.20,bpos:{x:38,y:52},pd:"midfield"},
+  {txt:"🚑 {A} a terra dopo uno scontro di gioco. Barella in campo.",ef:"opp_injury",w:0.35,bpos:{x:45,y:55},pd:"midfield"},
+  // Derby-only BG events
+  {txt:"⚔️ DERBY! I tifosi di {H} esplodono. La città è in fiamme!",ef:null,derbyOnly:true,w:3,bpos:{x:50,y:50},pd:"midfield"},
+  {txt:"🔥 Tensione massima al derby: {A} e {H} si affrontano corpo a corpo.",ef:null,derbyOnly:true,w:2,bpos:{x:50,y:50},ms:{fouls:1},pd:"midfield"},
+  {txt:"📣 Un coro da brividi in curva. Il derby si sente nell'aria.",ef:null,derbyOnly:true,w:2,bpos:{x:55,y:50},pd:"attack"},
+  {txt:"💥 Entrata dura di {A}! Cartellino giallo immediato nel derby.",ef:null,derbyOnly:true,w:2,bpos:{x:48,y:52},ms:{fouls:1},pd:"midfield"},
+  {txt:"🏟️ Lo stadio rugge: è il derby, nulla conta di più.",ef:null,derbyOnly:true,w:3,bpos:{x:50,y:50},pd:"midfield"},
+  {txt:"⚡ Ritmo forsennato! Nel derby non si fa prigionieri.",ef:null,derbyOnly:true,w:2,bpos:{x:60,y:50},pd:"attack"},
 ];
 const OUTCOME_TX={
   goal:["💥 GOOOOOL! Folla in delirio!","⚽ Rete spettacolare!","🔥 Imparabile!","🌟 Fenomenale!"],
@@ -1464,7 +1476,7 @@ const NEWSPAPERS=[
   {id:"lastampa",  name:"La Stampa Sport",       short:"La Stampa",  color:"#16a34a",e:"🗞️",tone:"analitico"},
   {id:"skysport",  name:"Sky Sport 24",          short:"Sky Sport",  color:"#0099d6",e:"📡",tone:"diretto"},
 ];
-const GAME_VERSION="3.8.0"; // Sprint 27 — Il Copione della Partita
+const GAME_VERSION="3.9.0"; // Sprint 28 — La Memoria del Mondo
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -5414,10 +5426,12 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
         if(hlIdx<hlTimes.length&&nx>=hlTimes[hlIdx]){setPhase("hl_intro");return nx;}
         // Commentary ~30% chance per tick (1 every ~3 min average)
         if(Math.random()<0.30){
-          const eligible=BG_MATCH.filter(e=>!e.minClock||nx>=e.minClock);
+          const eligible=BG_MATCH.filter(e=>(!e.minClock||nx>=e.minClock)&&(!e.maxClock||nx<=e.maxClock)&&(!e.derbyOnly||!!drby));
           const ev=wPick(eligible);
           if(ev.ef==="team_goal")setScore(s=>({...s,home:s.home+1}));
           if(ev.ef==="opp_goal"){setScore(s=>({...s,away:s.away+1}));setPossession(p=>clamp(p-4,20,80));setScreenFlash({col:"rgba(239,68,68,0.22)",dur:500});}
+          if(ev.ef==="opp_red"){setMomentum(m=>clamp(m+20,0,100));setPossession(p=>clamp(p+8,20,80));setScreenFlash({col:"rgba(22,163,74,0.20)",dur:600});}
+          if(ev.ef==="opp_injury"){setMomentum(m=>clamp(m+8,0,100));setScreenFlash({col:"rgba(245,158,11,0.15)",dur:400});}
           if(ev.poss){
             setPossession(p=>clamp(p+(ev.poss||0),20,80));
             const isHomeGain=ev.poss>0;
@@ -5477,8 +5491,8 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           const hN=homeRoster[Math.floor(Math.random()*(homeRoster.length-1))].name.split(" ").pop()+" ("+hAbbr+")";
           const hN2=homeRoster[Math.floor(Math.random()*(homeRoster.length-1))].name.split(" ").pop()+" ("+hAbbr+")";
           const aN=awayRoster[Math.floor(Math.random()*awayRoster.length)].name.split(" ").pop()+" ("+aAbbr+")";
-          const evTxt=ev.txt.replace(/{H2}/g,hN2).replace(/{H}/g,hN).replace(/{A}/g,aN);
-          const cColor=ev.ef==="team_goal"?"#16a34a":ev.ef==="opp_goal"?"#dc2626":TH.faint;
+          const evTxt=ev.txt.replace(/{H2}/g,hN2).replace(/{H}/g,hN).replace(/{A}/g,aN).replace(/{DERBY}/g,drby?.name||"Derby");
+          const cColor=ev.ef==="team_goal"?"#16a34a":ev.ef==="opp_goal"?"#dc2626":ev.ef==="opp_red"?"#16a34a":ev.ef==="opp_injury"?"#f59e0b":TH.faint;
           addCom(evTxt,cColor,nx);
         }
         // Possession drift + momentum drift every ~8 ticks
@@ -8177,6 +8191,8 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     if(!('nationalGoals' in newP)){newP={...newP,nationalGoals:0};changed=true;}
     if(!('presidentModalSeason' in newP)){newP={...newP,presidentModalSeason:0};changed=true;}
     if(!('justRecovered' in newP)){newP={...newP,justRecovered:false};changed=true;}
+    // Sprint 28 migrations
+    if(!('leagueArchive' in newP)){newP={...newP,leagueArchive:[]};changed=true;}
     if(changed){setPlayer(newP);}
   },[]);// eslint-disable-line
   const[darkMode,setDarkMode]=useState(()=>localStorage.getItem("cpm-dark")==="1");
@@ -8552,8 +8568,23 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       const paperInfo=pJourno?{...iw.paper,name:pJourno.name,color:pJourno.color,e:pJourno.icon}:iw.paper;
       setTimeout(()=>setInterviewModal({q:iw.q,paper:paperInfo,opponent:result.opponent||null,matchCtx:result.won?"win":result.drew?"draw":"loss",journalistId:pJourno?.id}),900);
     }
-    // S11.4: derby win bonus
-    if(currentMatchDerby&&result.won){setTimeout(()=>notify(`🔥 ${currentMatchDerby.e||""} ${currentMatchDerby.name} VINTO! Popolarità +12!`,"#f59e0b"),600);setPlayer(p=>({...p,popularity:clamp((p.popularity||20)+12,0,100)}));}
+    // S11.4 / Sprint 28: derby morale swing + worldMemory
+    if(currentMatchDerby){
+      const drbyName=currentMatchDerby.name||"Derby";
+      const drbyE=currentMatchDerby.e||"⚔️";
+      if(result.won){
+        setTimeout(()=>notify(`🔥 ${drbyE} ${drbyName} VINTO! Morale +20 · Pop. +15!`,"#f59e0b"),600);
+        setPlayer(p=>{
+          const mem={type:"derby_win",derbyName:drbyName,season:p.season||1,week:p.week||1,goals:result.goals,score:`${result.homeScore}-${result.awayScore}`,desc:`Vittoria nel ${drbyName}! S.${p.season||1}`};
+          return{...p,popularity:clamp((p.popularity||20)+15,0,100),morale:clamp((p.morale||70)+20,0,100),worldMemory:[...(p.worldMemory||[]),mem].slice(-40)};
+        });
+      }else if(!result.drew){
+        setTimeout(()=>notify(`😔 ${drbyE} ${drbyName} perso. Morale -15.`,TH.danger),600);
+        setPlayer(p=>({...p,morale:clamp((p.morale||70)-15,0,100)}));
+      }else{
+        setTimeout(()=>notify(`🤝 ${drbyE} ${drbyName}: pareggio. La rivalità continua.`,TH.warning),600);
+      }
+    }
     // S21: achievement checks
     const prevAch=player.achievements||[];
     const newAch=[];
@@ -8994,7 +9025,12 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       }
       // Sprint 25C: captain — reset if coach changed
       const captainReset=coachChanged&&p.isCaptain;
-      return{...p,season:newSeason,age:newAge,week:1,weekLived:false,goals:0,assists:0,matches:0,fatigue:0,skillPoints:(p.skillPoints||0)+2,stats:agedStats,ovr:newOvr,contract:newContract,contractExpired,morale:clamp((p.morale||70)+bonM+(playerClubRelegated?-10:0)+(isGB?15:0),0,100),coachTrust:clamp((p.coachTrust||60)+bonCT+(playerClubRelegated?-8:0)+(coachChanged?newCoach.trustMod:0),0,100),popularity:clamp((p.popularity||20)+bonPop+(isGB?25:0),0,100),value:Math.max(0.5,(p.value||0.8)+bonVal+(playerClubRelegated?-0.3:0)+(isGB?0.8:0)),log:[agingLog,...objLogs,...[gbLog,coachLog,phenomLog,relegLog].filter(Boolean),...(p.log||[])].slice(0,60),standings:newStandings,calendar:newCalendar,matchHistory:[],seasonObjectives:newObjectives,history:[...(p.history||[]),prevHist].slice(-50),clubPrestigeShifts:updatedShifts,cup:newCup,coach:newCoach,goldenBoys:gbSeasons,records:newRecords,teammates:newTeammates,journalists:newJournalists,fanLegend:updFanLegend,...(captainReset?{isCaptain:false}:{})};
+      // Sprint 28: leagueArchive — record this season's result
+      const champion=sortedForShifts[0];
+      const relegated=nT>3?sortedForShifts.slice(nT-3).map(t=>t.n||t.id):[];
+      const archiveEntry={season:p.season||1,league:p.club?.lg||"–",champion:champion?.n||"–",championId:champion?.id||"–",playerClub:p.club?.n||"–",playerPos:(p.standings||[]).length>0?sortedForShifts.findIndex(t=>(t.id&&t.id===(p.club?.id||p.club?.n))||(t.n&&t.n===(p.club?.n||p.club?.id)))+1:0,playerGoals:p.goals||0,playerAssists:p.assists||0,relegated};
+      const newLeagueArchive=[...(p.leagueArchive||[]),archiveEntry].slice(-20);
+      return{...p,season:newSeason,age:newAge,week:1,weekLived:false,goals:0,assists:0,matches:0,fatigue:0,skillPoints:(p.skillPoints||0)+2,stats:agedStats,ovr:newOvr,contract:newContract,contractExpired,morale:clamp((p.morale||70)+bonM+(playerClubRelegated?-10:0)+(isGB?15:0),0,100),coachTrust:clamp((p.coachTrust||60)+bonCT+(playerClubRelegated?-8:0)+(coachChanged?newCoach.trustMod:0),0,100),popularity:clamp((p.popularity||20)+bonPop+(isGB?25:0),0,100),value:Math.max(0.5,(p.value||0.8)+bonVal+(playerClubRelegated?-0.3:0)+(isGB?0.8:0)),log:[agingLog,...objLogs,...[gbLog,coachLog,phenomLog,relegLog].filter(Boolean),...(p.log||[])].slice(0,60),standings:newStandings,calendar:newCalendar,matchHistory:[],seasonObjectives:newObjectives,history:[...(p.history||[]),prevHist].slice(-50),clubPrestigeShifts:updatedShifts,cup:newCup,coach:newCoach,goldenBoys:gbSeasons,records:newRecords,teammates:newTeammates,journalists:newJournalists,fanLegend:updFanLegend,leagueArchive:newLeagueArchive,...(captainReset?{isCaptain:false}:{})};
     });
     setSeasonEndData(null);
     setScreen("dashboard");
@@ -9860,6 +9896,26 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
         </div>
         );
       })()}
+
+      {/* LEAGUE ARCHIVE — standings tab */}
+      {tab==="standings"&&(player.leagueArchive||[]).length>0&&(
+        <Card style={{marginTop:8}}>
+          <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:10}}>📚 Albo d'Oro — Ultime stagioni</div>
+          {[...(player.leagueArchive||[])].reverse().slice(0,5).map((e,i)=>(
+            <div key={i} style={{display:"flex",alignItems:"flex-start",gap:8,padding:"7px 0",borderTop:i>0?"1px solid "+TH.cardBorder:"none"}}>
+              <div style={{minWidth:26,textAlign:"center",fontSize:12,fontWeight:700,color:TH.warning}}>S.{e.season}</div>
+              <div style={{flex:1}}>
+                <div style={{fontSize:11,color:TH.text,fontWeight:600}}>🏆 {e.champion}<span style={{fontSize:9,color:TH.muted,fontWeight:400,marginLeft:4}}>{e.league}</span></div>
+                <div style={{fontSize:10,color:TH.muted,marginTop:1}}>
+                  Tu: {e.playerClub}{e.playerPos>0?` · ${e.playerPos}° posto`:""}
+                  {(e.playerGoals||0)>0?` · ${e.playerGoals}⚽`:""}{(e.playerAssists||0)>0?` · ${e.playerAssists}🎯`:""}
+                </div>
+                {(e.relegated||[]).length>0&&<div style={{fontSize:9,color:TH.danger,marginTop:1}}>⬇ {e.relegated.join(", ")}</div>}
+              </div>
+            </div>
+          ))}
+        </Card>
+      )}
 
       {/* COPPA — standings tab */}
       {tab==="standings"&&(player.proStatus||"u18")==="pro"&&player.cup&&(
