@@ -1485,7 +1485,7 @@ const NEWSPAPERS=[
   {id:"lastampa",  name:"La Stampa Sport",       short:"La Stampa",  color:"#16a34a",e:"🗞️",tone:"analitico"},
   {id:"skysport",  name:"Sky Sport 24",          short:"Sky Sport",  color:"#0099d6",e:"📡",tone:"diretto"},
 ];
-const GAME_VERSION="3.12.0"; // Sprint 31 — Match Sync (ball lerp, chant cleanup, hl crowd)
+const GAME_VERSION="3.12.1"; // Match Sync II: clockRef stabile, player pull, formation micro-drift
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -5167,6 +5167,8 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   const [aiCommentary,setAiCommentary]=useState(null);
 
   const [clock,setClock]=useState(0);
+  const clockRef=useRef(0);
+  useEffect(()=>{clockRef.current=clock;},[clock]);
   const [score,setScore]=useState({home:0,away:0});
   const [phase,setPhase]=useState(context==="trial"?"playing":"matchday");
   const [hlIdx,setHlIdx]=useState(0);
@@ -5225,7 +5227,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   const oppPrestige=opponent?.p||opponent?.prestige||65;
   const opponents=useRef([{x:76,y:35},{x:82,y:50},{x:79,y:65}]);
 
-  const addCom=useCallback((text,color,t)=>{setComs(p=>[{text,color,t:t??clock},...p].slice(0,16));},[clock]);
+  const addCom=useCallback((text,color,t)=>{setComs(p=>[{text,color,t:t??clockRef.current},...p].slice(0,16));},[]); // stable — clockRef via ref, non dipende da clock state
   // Component-scope chantFor — tracks timer IDs so they can be cleared on phase exit
   const chantFor=(type,dur=2800)=>{
     const clubN=player.club?.a||player.club?.n||player.club?.name||"la squadra";
@@ -5495,7 +5497,11 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
               }
             }));
           }
-          if(ev.bpos)ballTargetRef.current=ev.bpos;
+          if(ev.bpos){
+            ballTargetRef.current=ev.bpos;
+            // Protagonista si avvicina verso la zona palla (pull leggero, 8% per tick)
+            setPPos(p=>({x:clamp(p.x+(ev.bpos.x-p.x)*0.08+(Math.random()-0.5)*1.5,3,97),y:clamp(p.y+(ev.bpos.y-p.y)*0.06+(Math.random()-0.5)*1.5,3,97)}));
+          }
           if(ev.ms)setMxStats(s=>({shots:s.shots+(ev.ms.shots||0),oppShots:s.oppShots+(ev.ms.oppShots||0),fouls:s.fouls+(ev.ms.fouls||0),corners:s.corners+(ev.ms.corners||0)}));
           if(ev.pd&&DRIFT_PRESETS[ev.pd])driftTargetsRef.current=DRIFT_PRESETS[ev.pd];
           if(ev.ef==="team_goal"||ev.ef==="opp_goal")setWaveEvent({t:Date.now(),home:ev.ef==="team_goal"});
@@ -5532,6 +5538,19 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           setPossession(p=>clamp(p+rng(-2,2),20,80));
           setMomentum(m=>clamp(Math.round(m+(50-m)*0.08),0,100));
         }
+        // Formation micro-drift — ogni 3 tick i giocatori si avvicinano lentamente al preset corrente
+        if(nx%3===0&&driftTargetsRef.current){
+          const dt=driftTargetsRef.current;
+          setMatchPlayers(prev=>prev.map((pl,idx)=>{
+            if(pl.team==="ref")return pl;
+            if(pl.team==="home"){
+              const s=dt[Math.min(idx,dt.length-1)];
+              return{...pl,x:clamp(pl.x+(s.x-pl.x)*0.04+(Math.random()-0.5)*0.6,2,98),y:clamp(pl.y+(s.y-pl.y)*0.04+(Math.random()-0.5)*0.6,2,98)};
+            }
+            // Away: jitter leggero senza slot fisso
+            return{...pl,x:clamp(pl.x+(Math.random()-0.5)*0.7,2,98),y:clamp(pl.y+(Math.random()-0.5)*0.7,2,98)};
+          }));
+        }
         // Heat map: sample player position every 4 ticks
         if(nx%4===0){
           heatPointsRef.current.push({x:pPosRef.current.x,y:pPosRef.current.y});
@@ -5548,7 +5567,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
       });
     },300);
     return()=>clearInterval(iv);
-  },[phase,hlIdx,addCom,oppPrestige,player.ovr,paused]);
+  },[phase,hlIdx,oppPrestige,player.ovr,paused]); // addCom rimosso: ora stabile (clockRef)
 
   // Ball attachment — sync ballPos to pPos during highlight phases so ball stays on player
   useEffect(()=>{
