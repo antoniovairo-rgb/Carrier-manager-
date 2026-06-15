@@ -1582,7 +1582,7 @@ const NEWSPAPERS=[
   {id:"lastampa",  name:"La Stampa Sport",       short:"La Stampa",  color:"#16a34a",e:"🗞️",tone:"analitico"},
   {id:"skysport",  name:"Sky Sport 24",          short:"Sky Sport",  color:"#0099d6",e:"📡",tone:"diretto"},
 ];
-const GAME_VERSION="3.15.0"; // Sprint 34: tattiche mid-match, highlight concatenati, sostituzioni NPC
+const GAME_VERSION="3.15.1"; // Sprint 34+: highlight dinamici per andamento, avversario, forma, situazione
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -5276,9 +5276,33 @@ const SUB_EVENTS=[
   {txt:"⏱️ Un compagno esce infortunato — il gruppo si compatta.",energy:0,mom:8},
 ];
 function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true,benchStart}){
-  const [numHL]=useState(()=>context==="trial"?rng(2,3):rng(2,4));
-  const [hlTimes]=useState(()=>{const step=Math.floor(82/numHL)||12;return Array.from({length:numHL},(_,i)=>8+step*i+rng(0,Math.max(1,step-4)));});
-  const [situations]=useState(()=>selectContextualSituations([...SITUATIONS],numHL,player,(player.season||1)*1000+(player.week||1)*13));
+  // Dynamic HL count — based on match conditions, NOT random
+  const numHLRef=useRef(0);
+  const hlTimesRef=useRef([]);
+  const [numHL,setNumHL]=useState(()=>{
+    var oppP=opponent?.p||opponent?.prestige||65;
+    var form=player.form||70;
+    var fat=player.fatigue||0;
+    var mwv=context==="trial"?1:calcMatchWeight(player,opponent?.id||opponent?.n,player.standings||[],player.week||1);
+    var n=2;
+    if(mwv>=8)n+=2;else if(mwv>=5)n+=1;  // big match = more moments
+    if(oppP>=78)n+=1;else if(oppP<=40)n-=1; // top opp = more contested
+    if(form>=82)n+=1;else if(form<55)n-=1;  // in-form = more involved
+    if(fat>75)n-=1;                           // tired = fewer moments
+    var v=clamp(n,2,context==="trial"?3:7);
+    numHLRef.current=v;
+    return v;
+  });
+  const [hlTimes,setHlTimes]=useState(()=>{
+    var n=numHLRef.current;
+    var step=Math.floor(82/n)||12;
+    var v=Array.from({length:n},function(_,i){return 8+step*i+rng(0,Math.max(1,step-4));});
+    hlTimesRef.current=v;
+    return v;
+  });
+  const [situations,setSituations]=useState(()=>selectContextualSituations([...SITUATIONS],numHLRef.current,player,(player.season||1)*1000+(player.week||1)*13));
+  useEffect(()=>{numHLRef.current=numHL;},[numHL]);
+  useEffect(()=>{hlTimesRef.current=hlTimes;},[hlTimes]);
   // Sprint 33 C7 — bench start mechanic
   const [onBench,setOnBench]=useState(false);
   const [benchMinute]=useState(()=>benchStart?46+Math.floor(Math.random()*25):0);
@@ -5288,6 +5312,9 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   const tacticFiredRef=useRef([false,false]);
   const [subEvent,setSubEvent]=useState(null); // string or null
   const subFiredRef=useRef(false);
+  // Dynamic HL — reactive queue (opp_goal) + desperate flag (losing 0-2 at 72')
+  const reactiveHLQueueRef=useRef([]);
+  const desperateFiredRef=useRef(false);
   const [stadium]=useState(()=>pick(STADIUMS));
   // day or night — seeded by week so same match is always same time
   const [timeOfDay]=useState(()=>(player.week||1)%2===0?"night":"day");
@@ -5347,6 +5374,8 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   const clockRef=useRef(0);
   useEffect(()=>{clockRef.current=clock;},[clock]);
   const [score,setScore]=useState({home:0,away:0});
+  const scoreRef=useRef({home:0,away:0});
+  useEffect(()=>{scoreRef.current=score;},[score]);
   const [phase,setPhase]=useState(context==="trial"?"playing":"matchday");
   const [hlIdx,setHlIdx]=useState(0);
   // position resets to situation startZone on each new highlight
@@ -5666,16 +5695,48 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
         const tid3=setTimeout(()=>setSubEvent(null),3500);
         chantTimersRef.current.push(tid3);
       }
+      // Dynamic HL — process reactive queue (e.g. queued after opp_goal)
+      if(reactiveHLQueueRef.current.length>0&&numHLRef.current<8){
+        var nxtMn=reactiveHLQueueRef.current[0];
+        if(ck>=nxtMn){
+          reactiveHLQueueRef.current.shift();
+          var extras=selectContextualSituations([...SITUATIONS],1,player,Date.now()^(ck*31));
+          if(extras.length>0){
+            setSituations(function(prev){return[...prev,extras[0]];});
+            var addT=ck+2;
+            setHlTimes(function(prev){var v=[...prev,addT];hlTimesRef.current=v;return v;});
+            setNumHL(function(prev){var v=prev+1;numHLRef.current=v;return v;});
+            addCom("⚡ Risposta immediata — il momento è tuo!",TH.primary,ck);
+          }
+        }
+      }
+      // Dynamic HL — desperate situation: losing by ≥2 at 72', add one last chance
+      if(ck===72&&!desperateFiredRef.current&&numHLRef.current<8){
+        var sc=scoreRef.current;
+        if(sc.away-sc.home>=2){
+          desperateFiredRef.current=true;
+          var dextra=selectContextualSituations([...SITUATIONS],1,player,Date.now()^997);
+          if(dextra.length>0){
+            setSituations(function(prev){return[...prev,dextra[0]];});
+            var dtime=76+rng(0,4);
+            setHlTimes(function(prev){var v=[...prev,dtime];hlTimesRef.current=v;return v;});
+            setNumHL(function(prev){var v=prev+1;numHLRef.current=v;return v;});
+            addCom("🆘 Situazione disperata — serve un miracolo!","#ef4444",ck);
+          }
+        }
+      }
       setClock(c=>{
         const nx=c+1;
         if(nx>=90){setPhase("ended");return 90;}
-        if(hlIdx<hlTimes.length&&nx>=hlTimes[hlIdx]){setPhase("hl_intro");return nx;}
+        if(hlIdx<hlTimesRef.current.length&&nx>=hlTimesRef.current[hlIdx]){setPhase("hl_intro");return nx;}
         // Commentary ~30% chance per tick (1 every ~3 min average)
         if(Math.random()<0.30){
           const eligible=BG_MATCH.filter(e=>(!e.minClock||nx>=e.minClock)&&(!e.maxClock||nx<=e.maxClock)&&(!e.derbyOnly||!!drby));
           const ev=wPick(eligible);
           if(ev.ef==="team_goal")setScore(s=>({...s,home:s.home+1}));
-          if(ev.ef==="opp_goal"){setScore(s=>({...s,away:s.away+1}));setPossession(p=>clamp(p-4,20,80));setScreenFlash({col:"rgba(239,68,68,0.22)",dur:500});}
+          if(ev.ef==="opp_goal"){setScore(s=>({...s,away:s.away+1}));setPossession(p=>clamp(p-4,20,80));setScreenFlash({col:"rgba(239,68,68,0.22)",dur:500});
+            // Dynamic HL — queue a reactive highlight a few minutes after conceding
+            if(nx<75&&numHLRef.current<8)reactiveHLQueueRef.current.push(nx+rng(4,8));}
           if(ev.ef==="opp_red"){setMomentum(m=>clamp(m+20,0,100));setPossession(p=>clamp(p+8,20,80));setScreenFlash({col:"rgba(22,163,74,0.20)",dur:600});}
           if(ev.ef==="opp_injury"){setMomentum(m=>clamp(m+8,0,100));setScreenFlash({col:"rgba(245,158,11,0.15)",dur:400});}
           if(ev.poss){
@@ -5955,7 +6016,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   };
   const handleContinue=()=>{
     const nx=hlIdx+1;
-    if(nx>=numHL){setPhase("ended");}
+    if(nx>=numHLRef.current){setPhase("ended");}
     else{
       var didSucceed=outcome&&outcome.ok;
       setHlIdx(nx);setOutcome(null);setChosenAct(null);
