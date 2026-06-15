@@ -1582,7 +1582,7 @@ const NEWSPAPERS=[
   {id:"lastampa",  name:"La Stampa Sport",       short:"La Stampa",  color:"#16a34a",e:"🗞️",tone:"analitico"},
   {id:"skysport",  name:"Sky Sport 24",          short:"Sky Sport",  color:"#0099d6",e:"📡",tone:"diretto"},
 ];
-const GAME_VERSION="3.15.1"; // Sprint 34+: highlight dinamici per andamento, avversario, forma, situazione
+const GAME_VERSION="3.16.0"; // Sprint 35: Agente Pro v2 — task settimanale, situazione contratto, rinnovo potenziato
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -9175,6 +9175,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     }
 
     // Normal week advance
+    const prevAgentTask=player.agentTask; // Sprint 35: capture before setPlayer for notify
     setPlayer(p=>{
       // if this week had a scheduled unplayed match, auto-simulate it
       const md=(p.calendar||[]).find(m=>m.week===(p.week||1)&&!m.played);
@@ -9201,7 +9202,8 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       // S11.5: transfer windows only (summer W1-5, winter W19-23)
       const isSummerWin=wk>=1&&wk<=5;const isWinterWin=wk>=19&&wk<=23;
       const inWindow=p.transferListed||(isSummerWin||isWinterWin);
-      const offerProb=inWindow?(p.transferListed?0.28:0.12):0;
+      const agentSearchBoost=(p.agentTask==="cerca_offerte"&&p.hasAgent)?0.15:0;
+      const offerProb=inWindow?(p.transferListed?0.28:Math.min(0.35,0.12+agentSearchBoost)):(agentSearchBoost>0?agentSearchBoost*0.4:0);
       if(Math.random()<offerProb&&p.matches>=0){const offer=generateTransferOffer(p);if(offer)setTransferOffer(offer);}
       if(wk===1)setTimeout(()=>notify("🏷️ Mercato estivo aperto! Settimane 1-5.","#0ea5e9"),200);
       if(wk===6)setTimeout(()=>notify("🔒 Mercato estivo chiuso.","#64748b"),200);
@@ -9242,6 +9244,14 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
         const newTrophies=cr.isChamp?[...(p.trophies||[]),{season:p.season||1,club:p.club?.n,league:"Coppa",type:"cup"}]:(p.trophies||[]);
         updP={...updP,cup:{...p.cup,round:(p.cup?.round||1)+1,nextWeek:cr.nextWeek,eliminated:!cr.won,champion:cr.isChamp,results:newCupResults},trophies:newTrophies};
       }
+      // Sprint 35 — Agent task resolution (effects applied before recovery)
+      if(updP.agentTask&&p.hasAgent){
+        var atk=updP.agentTask;
+        if(atk==="immagine"){updP={...updP,popularity:clamp((updP.popularity||20)+4,0,100)};}
+        else if(atk==="silenzio"){updP={...updP,coachTrust:clamp((updP.coachTrust||60)+6,0,100)};}
+        else if(atk==="rinnovo"){updP={...updP,agentRenewalBonus:Math.min((updP.agentRenewalBonus||0)+0.10,0.30)};}
+        updP={...updP,agentTask:null};
+      }
       // Natural weekly recovery: fatigue -6, form drifts toward baseline 65
       const baseForm=updP.form||p.form||70;
       const naturalForm=clamp(Math.round(baseForm*0.92+65*0.08),30,95);
@@ -9251,6 +9261,12 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       return{...updP,week:(p.week||1)+1,weekLived:false,trainedThisWeek:false,fatigue:naturalFat,form:naturalForm,justRecovered:false};
     });
     notify("⏭️ Settimana avanzata");
+    // Sprint 35 — Agent task result notification
+    if(prevAgentTask&&player.hasAgent){
+      const _TASK_RES={cerca_offerte:"🔍 Ho girato il tuo nome — aspettati notizie dal mercato!",rinnovo:"📋 Contatti per il rinnovo avviati. Bonus +10% accumulato.",immagine:"📣 La tua immagine pubblica cresce. +4 popolarità.",silenzio:"🤐 Il mister apprezza la discrezione. +6 fiducia."};
+      const _msg=_TASK_RES[prevAgentTask];
+      if(_msg)setTimeout(()=>notify("🤵 "+_msg,TH.primary),420);
+    }
     // Sprint 25A — Career moment trigger (checked OUTSIDE setPlayer to fire modal)
     {
       const firedM=player.momentsFired||[];
@@ -9516,11 +9532,14 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     if(tc.isRenewal){
       // Contract renewal: same club, new contract terms, clear expired flag
       const baseRenewalWage=tc.wage||player.contract?.wage||500;
-      const finalRenewalWage=player.hasAgent?Math.round(baseRenewalWage*1.15):baseRenewalWage;
-      const agentNote=player.hasAgent?" 🤵 +15%":"";
-      setPlayer(p=>({...p,contract:{duration:tc.duration||2,wage:finalRenewalWage,expiresAtSeason:(p.season||1)+(tc.duration||2)},contractExpired:false,morale:clamp(p.morale+(tc.moralBonus||5),0,100),log:[`📋 Rinnovo contratto: ${tc.duration||2} stagion${(tc.duration||2)===1?"e":"i"} a €${Math.round(finalRenewalWage*52/1000)}k/anno${agentNote}`,...(p.log||[])].slice(0,60)}));
+      const renewalTaskBonus=player.agentRenewalBonus||0;
+      const agentMult=player.hasAgent?1.15:1.0;
+      const finalRenewalWage=Math.round(baseRenewalWage*agentMult*(1+renewalTaskBonus));
+      const agentPct=Math.round((agentMult-1)*100+(renewalTaskBonus*100));
+      const agentNote=(player.hasAgent||renewalTaskBonus>0)?` 🤵 +${agentPct}%`:"";
+      setPlayer(p=>({...p,contract:{duration:tc.duration||2,wage:finalRenewalWage,expiresAtSeason:(p.season||1)+(tc.duration||2)},contractExpired:false,agentRenewalBonus:0,morale:clamp(p.morale+(tc.moralBonus||5),0,100),log:[`📋 Rinnovo contratto: ${tc.duration||2} stagion${(tc.duration||2)===1?"e":"i"} a €${Math.round(finalRenewalWage*52/1000)}k/anno${agentNote}`,...(p.log||[])].slice(0,60)}));
       setTransferOffer(null);
-      notify(`✅ Contratto rinnovato${player.hasAgent?" · Agente ha negoziato +15%":""}!`,TH.success);
+      notify(`✅ Contratto rinnovato${agentNote||""}!`,TH.success);
       return;
     }
     setPlayer(p=>{
@@ -11099,7 +11118,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
         </div>
       )}
 
-      {/* Sprint 33 C10 — AGENTE TAB */}
+      {/* Sprint 35 — AGENTE TAB v2: contratto + task settimanale */}
       {tab==="agente"&&(()=>{
         var AGENT_NAMES=["Marco Gestini","Luigi Pastore","Gianni Ferretti","Roberto Manconi","Fabio Lanzi","Sergio Donato","Andrea Turati","Claudio Venturi"];
         var aIdx=Math.abs(hashStr(player.name||"x"))%AGENT_NAMES.length;
@@ -11111,23 +11130,39 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
         var valK=Math.round(valRaw*10000);
         var valStr=valK>=1000?(valK/1000).toFixed(1)+"M":valK+"k";
         var week=player.week||1;
-        var txOpen=(week>=19&&week<=24)||(week>=32&&week<=36);
+        var txOpen=(week>=1&&week<=5)||(week>=19&&week<=23);
         var lastRated=(player.matchHistory||[]).filter(function(m){return!m.simulated;}).slice(-1)[0];
         var lastRating=lastRated?lastRated.rating:0;
-        var perfLabel=lastRating>=8?"Eccellente 🔥":lastRating>=7?"Buona 👍":lastRating>=6?"Sufficiente 👌":lastRating>0?"Da migliorare ⚠️":"–";
-        var perfColor=lastRating>=8?TH.success:lastRating>=7?TH.primary:lastRating>=6?TH.warning:lastRating>0?TH.danger:TH.muted;
-        var speechLine=lastRating>=8?"Sei il giocatore più interessante sul mercato. Aspettiamo le offerte giuste.":lastRating>=7?"Momento positivo. Continuiamo a spingere il tuo nome nei posti giusti.":lastRating>=6?"Rendimento regolare. Serve il salto di qualità per attirare top club.":lastRating>0?"Dobbiamo parlare. Le ultime prestazioni mi preoccupano, amico.":"Sono qui per te. Fammi sapere i tuoi obiettivi per questa stagione.";
+        var speechLine=lastRating>=8?"Sei il giocatore più richiesto sul mercato. Aspettiamo le offerte giuste.":lastRating>=7?"Momento positivo. Sto spingendo il tuo nome nei posti giusti.":lastRating>=6?"Rendimento regolare. Serve il salto di qualità per attirare top club.":lastRating>0?"Dobbiamo parlare. Le ultime prestazioni mi preoccupano.":"Sono qui per te. Dimmi i tuoi obiettivi per questa stagione.";
+        // Contract stats
+        var wage=player.contract?.wage||500;
+        var wageYear=Math.round(wage*52/1000*10)/10;
+        var expiresS=player.contract?.expiresAtSeason||(player.season||1)+1;
+        var seasonLeft=expiresS-(player.season||1);
+        var marketWage=Math.round((player.ovr||65)*210/1000*10)/10;
+        var isUnderpaid=wageYear<marketWage*0.80;
+        var isExpiringSoon=seasonLeft<=1;
+        // Agent tasks
+        var TASKS=[
+          {k:"cerca_offerte",e:"🔍",l:"Cerca offerte",d:"Aumenta la probabilità di ricevere un'offerta nelle finestre di mercato"},
+          {k:"rinnovo",e:"📋",l:"Prepara rinnovo",d:"Negozia condizioni migliori: +10% stipendio al prossimo rinnovo"},
+          {k:"immagine",e:"📣",l:"Costruisci immagine",d:"+4 popolarità questa settimana"},
+          {k:"silenzio",e:"🤐",l:"Silenzio stampa",d:"+6 fiducia allenatore questa settimana"},
+        ];
+        var currentTask=player.agentTask;
+        var taskDef=currentTask?TASKS.find(function(t){return t.k===currentTask;}):null;
         return(
           <div style={{display:"flex",flexDirection:"column",gap:12,paddingBottom:8}}>
             {!player.hasAgent?(
               <Card style={{padding:"20px",textAlign:"center",background:"linear-gradient(135deg,#0f172a,#1e293b)",border:"1px solid rgba(255,255,255,0.08)"}}>
                 <div style={{fontSize:38,marginBottom:8}}>🤵</div>
                 <div style={{fontSize:14,fontWeight:900,color:"#f1f5f9",marginBottom:6}}>Nessun agente</div>
-                <div style={{fontSize:12,color:"#94a3b8",marginBottom:16,lineHeight:1.7}}>Un procuratore può aprire porte e negoziare condizioni migliori per te nel calciomercato.</div>
-                <Btn onClick={()=>{setPlayer(function(p){return{...p,hasAgent:true};});notify("🤵 Agente ingaggiato!",TH.success);}} v="primary" fw style={{padding:"13px"}}>🤵 Ingaggia un procuratore</Btn>
+                <div style={{fontSize:12,color:"#94a3b8",marginBottom:16,lineHeight:1.7}}>Un procuratore può aprire porte, negoziare contratti migliori e gestire la tua immagine.</div>
+                <Btn onClick={function(){setPlayer(function(p){return{...p,hasAgent:true};});notify("🤵 Agente ingaggiato!",TH.success);}} v="primary" fw style={{padding:"13px"}}>🤵 Ingaggia un procuratore</Btn>
               </Card>
             ):(
               <div style={{display:"flex",flexDirection:"column",gap:10}}>
+                {/* Agent header card */}
                 <Card style={{padding:"13px 14px",background:"linear-gradient(135deg,#0c1a2e,#1a2744)",border:"1px solid rgba(59,130,246,0.3)"}}>
                   <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:10}}>
                     <div style={{fontSize:32}}>🤵</div>
@@ -11135,6 +11170,10 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                       <div style={{fontSize:10,color:"rgba(147,197,253,0.7)",textTransform:"uppercase",letterSpacing:1.5,marginBottom:2}}>IL TUO PROCURATORE</div>
                       <div style={{fontSize:14,fontWeight:900,color:"#dbeafe"}}>{agentName}</div>
                       <div style={{fontSize:10,color:"rgba(147,197,253,0.55)"}}>Agente FIFA · Dal S.{Math.max(1,(player.season||1)-1)}</div>
+                    </div>
+                    <div style={{background:"rgba(59,130,246,0.15)",borderRadius:8,padding:"6px 10px",textAlign:"center",flexShrink:0}}>
+                      <div style={{fontSize:9,color:"rgba(147,197,253,0.5)"}}>MERCATO</div>
+                      <div style={{fontSize:11,fontWeight:800,color:txOpen?"#86efac":"#94a3b8"}}>{txOpen?"🟢 APERTO":"🔴 CHIUSO"}</div>
                     </div>
                   </div>
                   <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}>
@@ -11148,22 +11187,80 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                     </div>
                   </div>
                 </Card>
-                <Card style={{padding:"12px 14px"}}>
-                  <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>🏪 Finestra di Mercato</div>
-                  <div style={{display:"flex",alignItems:"center",gap:8,padding:"8px 10px",background:txOpen?"#f0fdf4":"#f8fafc",borderRadius:8,border:"1px solid "+(txOpen?"#bbf7d0":TH.cardBorder)}}>
-                    <div style={{fontSize:18}}>{txOpen?"🟢":"🔴"}</div>
-                    <div>
-                      <div style={{fontSize:12,fontWeight:700,color:txOpen?TH.success:TH.muted}}>{txOpen?"Mercato aperto":"Mercato chiuso"}</div>
-                      <div style={{fontSize:10,color:TH.faint}}>{txOpen?"Offerte in arrivo possibili · Settimana "+week:"Apertura W.19–24 e W.32–36"}</div>
+                {/* Contract status card */}
+                <Card style={{padding:"12px 14px",border:"1px solid "+(isExpiringSoon||isUnderpaid?"#fca5a5":TH.cardBorder)}}>
+                  <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>📋 Situazione Contratto</div>
+                  <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:6,marginBottom:8}}>
+                    <div style={{background:"#f8fafc",borderRadius:7,padding:"7px 9px"}}>
+                      <div style={{fontSize:9,color:TH.muted}}>STIPENDIO ATTUALE</div>
+                      <div style={{fontSize:13,fontWeight:800,color:TH.text}}>€{wageYear}k/anno</div>
+                    </div>
+                    <div style={{background:"#f8fafc",borderRadius:7,padding:"7px 9px"}}>
+                      <div style={{fontSize:9,color:TH.muted}}>STIMA MERCATO</div>
+                      <div style={{fontSize:13,fontWeight:800,color:isUnderpaid?TH.danger:TH.success}}>€{marketWage}k/anno</div>
+                    </div>
+                    <div style={{background:"#f8fafc",borderRadius:7,padding:"7px 9px"}}>
+                      <div style={{fontSize:9,color:TH.muted}}>SCADENZA</div>
+                      <div style={{fontSize:13,fontWeight:800,color:isExpiringSoon?TH.danger:TH.text}}>S.{expiresS}{isExpiringSoon?" ⚠️":""}</div>
+                    </div>
+                    <div style={{background:"#f8fafc",borderRadius:7,padding:"7px 9px"}}>
+                      <div style={{fontSize:9,color:TH.muted}}>STAGIONI RIMASTE</div>
+                      <div style={{fontSize:13,fontWeight:800,color:seasonLeft<=1?TH.danger:TH.text}}>{seasonLeft} stagion{seasonLeft===1?"e":"i"}</div>
                     </div>
                   </div>
+                  {(isExpiringSoon||isUnderpaid)&&(
+                    <div style={{padding:"6px 10px",borderRadius:7,background:isExpiringSoon?"#fee2e2":"#fff7ed",border:"1px solid "+(isExpiringSoon?"#fca5a5":"#fed7aa"),fontSize:10,color:isExpiringSoon?TH.danger:"#92400e",fontWeight:600}}>
+                      {isExpiringSoon&&!isUnderpaid?"⚠️ Contratto in scadenza — usa il task Prepara rinnovo!":isUnderpaid&&!isExpiringSoon?"💸 Sei sottopagato rispetto al mercato. L'agente può aiutarti.":"⚠️ Contratto in scadenza e stipendio sotto mercato!"}
+                    </div>
+                  )}
+                  {(player.agentRenewalBonus||0)>0&&(
+                    <div style={{marginTop:6,padding:"5px 9px",borderRadius:7,background:"#eff6ff",border:"1px solid #bfdbfe",fontSize:10,color:TH.primary,fontWeight:600}}>
+                      🤵 Bonus rinnovo accumulato: +{Math.round((player.agentRenewalBonus||0)*100)}% — verrà applicato al prossimo rinnovo
+                    </div>
+                  )}
                 </Card>
+                {/* Agent task card */}
                 <Card style={{padding:"12px 14px"}}>
-                  <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>📊 Rapporto {agentName.split(" ")[0]}</div>
-                  {lastRated&&<div style={{fontSize:12,color:TH.text,marginBottom:6}}>Ultima partita: <span style={{fontWeight:700,color:perfColor}}>{perfLabel}</span></div>}
+                  <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>🎯 Task Settimanale</div>
+                  {currentTask?(
+                    <div>
+                      <div style={{padding:"10px 12px",borderRadius:9,background:"#eff6ff",border:"1px solid #bfdbfe",marginBottom:8}}>
+                        <div style={{fontSize:12,fontWeight:700,color:TH.primary}}>{taskDef?taskDef.e+" "+taskDef.l:"Task assegnato"}</div>
+                        <div style={{fontSize:10,color:TH.muted,marginTop:2}}>{taskDef?taskDef.d:"In esecuzione..."}</div>
+                      </div>
+                      <div style={{fontSize:10,color:TH.muted,textAlign:"center"}}>✅ Risultato all'avanzamento settimana</div>
+                    </div>
+                  ):(
+                    <div>
+                      <div style={{fontSize:11,color:TH.muted,marginBottom:8}}>Assegna un compito all'agente per questa settimana:</div>
+                      <div style={{display:"flex",flexDirection:"column",gap:6}}>
+                        {TASKS.map(function(t){return(
+                          <button key={t.k} onClick={function(){setPlayer(function(p){return{...p,agentTask:t.k};});notify("🤵 Task assegnato: "+t.l,TH.primary);}} style={{display:"flex",alignItems:"flex-start",gap:8,padding:"9px 10px",borderRadius:9,border:"1px solid "+TH.cardBorder,background:"#f8fafc",cursor:"pointer",textAlign:"left",fontFamily:"inherit",width:"100%"}}>
+                            <span style={{fontSize:18,flexShrink:0,lineHeight:1.1}}>{t.e}</span>
+                            <div>
+                              <div style={{fontSize:11,fontWeight:700,color:TH.text}}>{t.l}</div>
+                              <div style={{fontSize:10,color:TH.muted,lineHeight:1.4}}>{t.d}</div>
+                            </div>
+                          </button>
+                        );})}
+                      </div>
+                    </div>
+                  )}
+                </Card>
+                {/* Active offer — agent opinion */}
+                {transferOffer&&!transferOffer.isRenewal&&(
+                  <Card style={{padding:"12px 14px",background:"#eff6ff",border:"1px solid #bfdbfe"}}>
+                    <div style={{fontSize:10,color:TH.primary,fontWeight:700,textTransform:"uppercase",letterSpacing:1.5,marginBottom:6}}>🤵 Opinione agente — Offerta attiva</div>
+                    <div style={{fontSize:11,color:TH.text,lineHeight:1.6,fontStyle:"italic"}}>
+                      «{(transferOffer.club?.p||60)>=(player.club?.p||60)+10?"Questa offerta è un salto di qualità. Vale la pena valutarla seriamente.":(transferOffer.wage||500)>(player.contract?.wage||500)*1.20?"Lo stipendio è nettamente superiore. Dal punto di vista economico, è interessante.":transferOffer.minutaggio>=80?"Il minutaggio garantito è ottimo per il tuo sviluppo. Considerala.":"È un'offerta nella norma. Dipende dalle tue ambizioni."}»
+                    </div>
+                  </Card>
+                )}
+                {/* Agent speech */}
+                <Card style={{padding:"12px 14px"}}>
+                  <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:6}}>💬 {agentName.split(" ")[0]} ti dice:</div>
                   <div style={{fontSize:11,color:TH.faint,fontStyle:"italic",lineHeight:1.6}}>«{speechLine}»</div>
                 </Card>
-                <Btn onClick={()=>{setPlayer(function(p){return{...p,morale:clamp((p.morale||70)+6,0,100),popularity:clamp((p.popularity||50)+5,0,100)};});notify("🤵 "+agentName+": sto facendo girare il tuo nome. Vedrai i risultati!",TH.primary);}} v="secondary" fw style={{padding:"12px"}}>📞 Contatta l'agente</Btn>
               </div>
             )}
           </div>
