@@ -1582,7 +1582,7 @@ const NEWSPAPERS=[
   {id:"lastampa",  name:"La Stampa Sport",       short:"La Stampa",  color:"#16a34a",e:"🗞️",tone:"analitico"},
   {id:"skysport",  name:"Sky Sport 24",          short:"Sky Sport",  color:"#0099d6",e:"📡",tone:"diretto"},
 ];
-const GAME_VERSION="3.14.1"; // Fix: misterDiscorsoModal dangling state dopo PressScreen close
+const GAME_VERSION="3.15.0"; // Sprint 34: tattiche mid-match, highlight concatenati, sostituzioni NPC
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -5256,6 +5256,25 @@ function selectContextualSituations(all,numHL,player,seed){
 /* ========================================
    LIVE MATCH  (req #3,#4,#5,#6,#8)
 ======================================== */
+// Sprint 34 — istruzioni tattiche mid-match (2 momenti: ~28' e ~63')
+const TACTIC_MOMENTS=[
+  [// primo tempo ~28'
+    {key:"pressing",txt:"🔴 Pressing alto",hint:"Recupera palla subito",bonus:0.07},
+    {key:"possesso",txt:"🔵 Tieni palla",hint:"Costruisci con pazienza",bonus:0.04},
+    {key:"verticale",txt:"⚡ Gioco verticale",hint:"Cerca l'attaccante subito",bonus:0.09},
+  ],
+  [// secondo tempo ~63'
+    {key:"allin",txt:"⚔️ Attacco totale",hint:"Tutti avanti — zero rischi",bonus:0.10},
+    {key:"gestisci",txt:"🛡️ Gestisci",hint:"Chiudi gli spazi, non rischiare",bonus:-0.01},
+    {key:"cambio",txt:"🔄 Nuova intensità",hint:"Riparti con energia fresca",bonus:0.06},
+  ],
+];
+const SUB_EVENTS=[
+  {txt:"🔄 Cambio tattico: entra un compagno con energia fresca!",energy:15,mom:6},
+  {txt:"💪 Il mister ti chiede di alzarti: fisicamente stai benissimo.",energy:8,mom:10},
+  {txt:"🎯 Modulo più offensivo nel finale — liberi di attaccare.",energy:5,mom:12},
+  {txt:"⏱️ Un compagno esce infortunato — il gruppo si compatta.",energy:0,mom:8},
+];
 function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true,benchStart}){
   const [numHL]=useState(()=>context==="trial"?rng(2,3):rng(2,4));
   const [hlTimes]=useState(()=>{const step=Math.floor(82/numHL)||12;return Array.from({length:numHL},(_,i)=>8+step*i+rng(0,Math.max(1,step-4)));});
@@ -5263,6 +5282,12 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   // Sprint 33 C7 — bench start mechanic
   const [onBench,setOnBench]=useState(false);
   const [benchMinute]=useState(()=>benchStart?46+Math.floor(Math.random()*25):0);
+  // Sprint 34 — tactic moments + chained highlights + sub events
+  const [tacticMoment,setTacticMoment]=useState(null); // null | {idx}
+  const tacticBonusRef=useRef(0);
+  const tacticFiredRef=useRef([false,false]);
+  const [subEvent,setSubEvent]=useState(null); // string or null
+  const subFiredRef=useRef(false);
   const [stadium]=useState(()=>pick(STADIUMS));
   // day or night — seeded by week so same match is always same time
   const [timeOfDay]=useState(()=>(player.week||1)%2===0?"night":"day");
@@ -5390,6 +5415,13 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     chantTimersRef.current.push(tid);
   };
 
+  // Sprint 34 — tactic choice handler
+  const handleTactic=useCallback((opt)=>{
+    tacticBonusRef.current=opt.bonus;
+    setTacticMoment(null);
+    addCom(`🎯 "${opt.txt}" — ${opt.hint}`,TH.primary,clockRef.current);
+  },[addCom]);
+
   // Load scout report on mount (career matches only)
   useEffect(()=>{
     if(context==="trial")return;
@@ -5414,6 +5446,8 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
       chantTimersRef.current.forEach(clearTimeout);
       chantTimersRef.current=[];
       setCrowdChant(null);
+      setTacticMoment(null); // Sprint 34: pulisce tactic modal se HL scatta prima dei 6s
+      setSubEvent(null);
       ballTargetRef.current=ballPosRef.current; // congela target durante highlight/ended
     }
   },[phase]);// eslint-disable-line
@@ -5609,6 +5643,29 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   useEffect(()=>{
     if(phase!=="playing"||paused)return;
     const iv=setInterval(()=>{
+      // Sprint 34 — tactic moments + sub events (checked via clockRef, outside setClock)
+      const ck=clockRef.current;
+      if(ck===28&&!tacticFiredRef.current[0]){
+        tacticFiredRef.current[0]=true;
+        setTacticMoment({idx:0});
+        const tid=setTimeout(()=>setTacticMoment(null),6000);
+        chantTimersRef.current.push(tid);
+      }
+      if(ck===63&&!tacticFiredRef.current[1]){
+        tacticFiredRef.current[1]=true;
+        setTacticMoment({idx:1});
+        const tid2=setTimeout(()=>setTacticMoment(null),6000);
+        chantTimersRef.current.push(tid2);
+      }
+      if(ck>=65&&ck<=70&&!subFiredRef.current&&Math.random()<0.38){
+        subFiredRef.current=true;
+        const sub=pick(SUB_EVENTS);
+        setSubEvent(sub.txt);
+        if(sub.energy>0)setEnergy(e=>clamp(e+sub.energy,0,100));
+        setMomentum(m=>clamp(m+sub.mom,0,100));
+        const tid3=setTimeout(()=>setSubEvent(null),3500);
+        chantTimersRef.current.push(tid3);
+      }
       setClock(c=>{
         const nx=c+1;
         if(nx>=90){setPhase("ended");return 90;}
@@ -5816,7 +5873,8 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                          (action.stat==="velocità"&&wef.spd?(-wef.spd/100):0);
     const momentumBonus=(momentumRef.current-50)/1000; // ±5% at extremes
     const fatiguePenalty=Math.max(0,(player.fatigue||0)-65)/350; // up to -10% at 100 fatigue
-    const rate=Math.max(0.05,succRate(action,player.stats,pPos.x,oppPrestige)/100-defPenalty-weatherPenalty+momentumBonus-fatiguePenalty);
+    const tacticMod=tacticBonusRef.current||0;
+    const rate=Math.max(0.05,succRate(action,player.stats,pPos.x,oppPrestige)/100-defPenalty-weatherPenalty+momentumBonus-fatiguePenalty+tacticMod);
     const adapt=adaptiveDifficulty(player);
     const ok=Math.random()<clamp((rate/adapt)+(Math.random()-.5)*.06,0.05,0.84);
     const key=ok?action.rew:action.fail;
@@ -5895,7 +5953,19 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     }
     setPhase("hl_result");
   };
-  const handleContinue=()=>{const nx=hlIdx+1;if(nx>=numHL){setPhase("ended");}else{setHlIdx(nx);setOutcome(null);setChosenAct(null);setPhase("playing");}};
+  const handleContinue=()=>{
+    const nx=hlIdx+1;
+    if(nx>=numHL){setPhase("ended");}
+    else{
+      var didSucceed=outcome&&outcome.ok;
+      setHlIdx(nx);setOutcome(null);setChosenAct(null);
+      // Sprint 34 — 30% chain highlight if previous action succeeded
+      if(didSucceed&&Math.random()<0.30){
+        setFloatGoal({text:"⚡ CATENA!",col:"#f59e0b",key:Date.now()});
+        setPhase("hl_intro");
+      }else{setPhase("playing");}
+    }
+  };
   const handleEnd=()=>{
     const rbCapped=Math.min(mStats.rb,20);
     const resultBonus=score.home>score.away?0.35:score.home===score.away?0.0:-0.30;
@@ -6122,6 +6192,27 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                   <div style={{fontSize:15,fontWeight:900,color:"#e2e8f0",marginBottom:4,textAlign:"center"}}>Stai partendo dalla panchina</div>
                   <div style={{fontSize:11,color:"rgba(255,255,255,0.50)",marginBottom:22,textAlign:"center"}}>Il mister ti farà entrare al {benchMinute}° minuto</div>
                   <button onClick={()=>{setOnBench(false);clockRef.current=benchMinute;setClock(benchMinute);}} style={{padding:"13px 28px",borderRadius:12,border:"none",background:"linear-gradient(135deg,#2563eb,#1d4ed8)",color:"#fff",fontWeight:800,fontSize:13,cursor:"pointer",fontFamily:"inherit",boxShadow:"0 4px 16px rgba(37,99,235,0.5)"}}>⚡ Entra in campo al {benchMinute}° →</button>
+                </div>
+              )}
+              {/* Sprint 34 — Sub event banner */}
+              {phase==="playing"&&subEvent&&(
+                <div style={{position:"absolute",top:"12%",left:"4%",right:"4%",zIndex:7,background:"rgba(5,8,20,0.84)",backdropFilter:"blur(4px)",borderRadius:10,padding:"8px 12px",border:"1px solid rgba(255,255,255,0.10)",textAlign:"center",pointerEvents:"none"}}>
+                  <div style={{fontSize:11,color:"#e2e8f0",fontWeight:700,lineHeight:1.4}}>{subEvent}</div>
+                </div>
+              )}
+              {/* Sprint 34 — Tactic moment overlay */}
+              {phase==="playing"&&tacticMoment&&!paused&&!onBench&&(
+                <div style={{position:"absolute",bottom:14,left:4,right:4,zIndex:8,background:"rgba(5,8,20,0.93)",backdropFilter:"blur(8px)",borderRadius:11,padding:"9px 10px",border:"1px solid rgba(59,130,246,0.30)"}}>
+                  <div style={{fontSize:7,color:"#93c5fd",fontWeight:700,letterSpacing:1.5,marginBottom:6,textTransform:"uppercase",textAlign:"center"}}>🎯 Istruzione Mister</div>
+                  <div style={{display:"flex",gap:5}}>
+                    {TACTIC_MOMENTS[tacticMoment.idx].map(function(opt){return(
+                      <button key={opt.key} onClick={function(){handleTactic(opt);}} style={{flex:1,padding:"6px 4px",background:"rgba(255,255,255,0.05)",border:"1px solid rgba(255,255,255,0.12)",borderRadius:7,color:"#e2e8f0",cursor:"pointer",fontFamily:"inherit",display:"flex",flexDirection:"column",alignItems:"center",gap:2,touchAction:"manipulation"}}>
+                        <div style={{fontSize:9,fontWeight:700,textAlign:"center",lineHeight:1.3}}>{opt.txt}</div>
+                        <div style={{fontSize:7,color:"rgba(255,255,255,0.42)",textAlign:"center",lineHeight:1.3}}>{opt.hint}</div>
+                        <div style={{fontSize:7,fontWeight:700,color:opt.bonus>0?"#4ade80":opt.bonus<0?"#f87171":"#94a3b8"}}>{opt.bonus>0?"+":""}{Math.round(opt.bonus*100)}%</div>
+                      </button>
+                    );})}
+                  </div>
                 </div>
               )}
               {/* Progress bar inside field bottom */}
