@@ -1582,7 +1582,7 @@ const NEWSPAPERS=[
   {id:"lastampa",  name:"La Stampa Sport",       short:"La Stampa",  color:"#16a34a",e:"🗞️",tone:"analitico"},
   {id:"skysport",  name:"Sky Sport 24",          short:"Sky Sport",  color:"#0099d6",e:"📡",tone:"diretto"},
 ];
-const GAME_VERSION="3.14.0"; // Sprint 33: C4 sparklines, C5 highlight contestuali, C7 panchina, C8 eventi+, C10 tab Agente
+const GAME_VERSION="3.14.1"; // Fix: misterDiscorsoModal dangling state dopo PressScreen close
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -8737,6 +8737,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
   const [lastPressReport,setLastPressReport]=useState(null);
   const onMatchEnd=result=>{
     setLastMatch(result);
+    setMisterDiscorsoModal(null); // safety net: clear any stale pre-match coach speech
     // Injury: compute before setPlayer so we can notify after
     const postFatigue=clamp((player.fatigue||0)+rng(12,22),0,100);
     const injRoll=Math.random();
@@ -9440,6 +9441,40 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
           ?<FootballMatch2D playerData={player} squadAColor={player.club?.col||player.club?.c||"#22c55e"} squadBColor={matchOpp?.col||matchOpp?.c||"#ef4444"} duration={300} onMatchEnd={phaserMatchEnd}/>
           :<LiveMatch player={player} opponent={matchOpp} context="career" onMatchEnd={onMatchEnd} isMatchHome={matchIsHome} benchStart={matchBenchStartRef.current}/>
         }
+        {misterDiscorsoModal&&(
+          <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.75)",zIndex:9999,display:"flex",alignItems:"center",justifyContent:"center",padding:20}}>
+            <Card style={{maxWidth:400,width:"100%",padding:"22px",background:TH.card,border:`1px solid ${TH.cardBorder}`}}>
+              <div style={{textAlign:"center",marginBottom:14}}>
+                <div style={{fontSize:32,marginBottom:4}}>{misterDiscorsoModal.isCaptainTalk?"🤝":"🧑‍💼"}</div>
+                <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:2,marginBottom:2}}>{misterDiscorsoModal.isCaptainTalk?"Discorso del Capitano":"Discorso Pre-Partita"}</div>
+                <div style={{fontSize:14,fontWeight:900,color:misterDiscorsoModal.isCaptainTalk?TH.success:TH.accent}}>{misterDiscorsoModal.coachName}</div>
+                {misterDiscorsoModal.mw>=8&&<div style={{fontSize:10,marginTop:4,color:"#f59e0b",fontWeight:700}}>🔥 PARTITA EPICA — questo cambia tutto</div>}
+              </div>
+              <div style={{background:TH.bg,borderRadius:10,padding:"14px 16px",marginBottom:16,borderLeft:`3px solid ${misterDiscorsoModal.isCaptainTalk?TH.success:TH.accent}`}}>
+                <div style={{fontSize:14,color:TH.text,lineHeight:1.7,fontStyle:"italic"}}>«{misterDiscorsoModal.line}»</div>
+              </div>
+              <div style={{fontSize:11,color:TH.muted,marginBottom:12,textAlign:"center"}}>vs {misterDiscorsoModal.oppName} — {misterDiscorsoModal.isCaptainTalk?"i compagni ti guardano":"come rispondi?"}</div>
+              <div style={{display:"flex",flexDirection:"column",gap:8}}>
+                {(misterDiscorsoModal.isCaptainTalk?[
+                  {key:"fire",txt:"🔥 «Questa è la nostra partita. Niente rimpianti.»",color:"#dc2626",hint:"+10 Morale +6 Forma"},
+                  {key:"calm",txt:"🧘 «State tranquilli. Facciamo le cose semplici.»",color:"#16a34a",hint:"+5 Morale +4 Fiducia mister"},
+                  {key:"personal",txt:"😤 «Non per il club. Per noi. Per questo spogliatoio.»",color:"#7c3aed",hint:"+8 Morale"},
+                ]:[
+                  {key:"pos",txt:"💪 «Siamo pronti. Niente ci ferma.»",color:"#16a34a",hint:"+8 Morale +5 Fiducia mister"},
+                  {key:"neu",txt:"😐 «Ce la metterò tutta, mister.»",color:"#ca8a04",hint:"+3 Morale"},
+                  {key:"neg",txt:"😰 «Ho qualche dubbio...»",color:"#dc2626",hint:"-4 Morale +5 Fatica"},
+                ]).map(function(opt){return(
+                  <button key={opt.key} onClick={()=>confirmMisterDiscorso(opt.key)} style={{textAlign:"left",background:"transparent",border:`1.5px solid ${opt.color}22`,borderRadius:10,padding:"10px 12px",cursor:"pointer",fontFamily:"inherit",outline:"none",display:"block",width:"100%"}}
+                    onMouseEnter={function(e){e.currentTarget.style.background=opt.color+"10";e.currentTarget.style.borderColor=opt.color;}}
+                    onMouseLeave={function(e){e.currentTarget.style.background="transparent";e.currentTarget.style.borderColor=opt.color+"22";}}>
+                    <div style={{fontSize:13,color:TH.text}}>{opt.txt}</div>
+                    <div style={{fontSize:10,color:TH.faint,marginTop:2}}>{opt.hint}</div>
+                  </button>
+                );})}
+              </div>
+            </Card>
+          </div>
+        )}
       </div>
     );
   }
