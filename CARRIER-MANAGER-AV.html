@@ -1582,7 +1582,7 @@ const NEWSPAPERS=[
   {id:"lastampa",  name:"La Stampa Sport",       short:"La Stampa",  color:"#16a34a",e:"🗞️",tone:"analitico"},
   {id:"skysport",  name:"Sky Sport 24",          short:"Sky Sport",  color:"#0099d6",e:"📡",tone:"diretto"},
 ];
-const GAME_VERSION="3.17.1"; // UX: tactic moment overlay redesigned — countdown, testo chiaro, hover, hint esplicite
+const GAME_VERSION="3.17.2"; // fix: rimosso pannello tattico — il mister decide in autonomia, il giocatore esegue
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -5307,19 +5307,10 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   const [onBench,setOnBench]=useState(false);
   const [benchMinute]=useState(()=>benchStart?46+Math.floor(Math.random()*25):0);
   // Sprint 34 — tactic moments + chained highlights + sub events
-  const [tacticMoment,setTacticMoment]=useState(null); // null | {idx}
-  const [tacticCountdown,setTacticCountdown]=useState(6); // visible countdown
   const tacticBonusRef=useRef(0);
   const tacticFiredRef=useRef([false,false]);
   const [subEvent,setSubEvent]=useState(null); // string or null
   const subFiredRef=useRef(false);
-  // Countdown effect: tick every second while tactic modal is open
-  useEffect(()=>{
-    if(!tacticMoment){setTacticCountdown(6);return;}
-    setTacticCountdown(6);
-    const iv=setInterval(()=>setTacticCountdown(function(n){return Math.max(0,n-1);}),1000);
-    return()=>clearInterval(iv);
-  },[tacticMoment]);
   // Dynamic HL — reactive queue (opp_goal) + desperate flag (losing 0-2 at 72')
   const reactiveHLQueueRef=useRef([]);
   const desperateFiredRef=useRef(false);
@@ -5453,12 +5444,6 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   };
 
   // Sprint 34 — tactic choice handler
-  const handleTactic=useCallback((opt)=>{
-    tacticBonusRef.current=opt.bonus;
-    setTacticMoment(null);
-    addCom(`🎯 "${opt.txt}" — ${opt.hint}`,TH.primary,clockRef.current);
-  },[addCom]);
-
   // Load scout report on mount (career matches only)
   useEffect(()=>{
     if(context==="trial")return;
@@ -5483,7 +5468,6 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
       chantTimersRef.current.forEach(clearTimeout);
       chantTimersRef.current=[];
       setCrowdChant(null);
-      setTacticMoment(null); // Sprint 34: pulisce tactic modal se HL scatta prima dei 6s
       setSubEvent(null);
       ballTargetRef.current=ballPosRef.current; // congela target durante highlight/ended
     }
@@ -5684,15 +5668,20 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
       const ck=clockRef.current;
       if(ck===28&&!tacticFiredRef.current[0]){
         tacticFiredRef.current[0]=true;
-        setTacticMoment({idx:0});
-        const tid=setTimeout(()=>setTacticMoment(null),6000);
-        chantTimersRef.current.push(tid);
+        // Il MISTER sceglie la tattica — il giocatore la esegue
+        var sc0=scoreRef.current;var diff0=sc0.home-sc0.away;
+        var opts0=TACTIC_MOMENTS[0];
+        var cho0=diff0>=1?opts0.find(function(o){return o.key==="possesso";})||opts0[1]:diff0<=-1?opts0.find(function(o){return o.key==="verticale";})||opts0[2]:opts0[Math.floor(Math.random()*opts0.length)];
+        tacticBonusRef.current=cho0.bonus;
+        addCom("📢 Mister: «"+cho0.txt+"» — "+cho0.hint,TH.primary,ck);
       }
       if(ck===63&&!tacticFiredRef.current[1]){
         tacticFiredRef.current[1]=true;
-        setTacticMoment({idx:1});
-        const tid2=setTimeout(()=>setTacticMoment(null),6000);
-        chantTimersRef.current.push(tid2);
+        var sc1=scoreRef.current;var diff1=sc1.home-sc1.away;
+        var opts1=TACTIC_MOMENTS[1];
+        var cho1=diff1>=1?opts1.find(function(o){return o.key==="gestisci";})||opts1[1]:diff1<=-1?opts1.find(function(o){return o.key==="allin";})||opts1[0]:opts1.find(function(o){return o.key==="cambio";})||opts1[2];
+        tacticBonusRef.current=cho1.bonus;
+        addCom("📢 Mister: «"+cho1.txt+"» — "+cho1.hint,TH.primary,ck);
       }
       if(ck>=65&&ck<=70&&!subFiredRef.current&&Math.random()<0.38){
         subFiredRef.current=true;
@@ -6269,36 +6258,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                   <div style={{fontSize:11,color:"#e2e8f0",fontWeight:700,lineHeight:1.4}}>{subEvent}</div>
                 </div>
               )}
-              {/* Sprint 34/38 — Tactic moment overlay, redesigned for clarity */}
-              {phase==="playing"&&tacticMoment&&!paused&&!onBench&&(
-                <div style={{position:"absolute",bottom:4,left:4,right:4,zIndex:8,background:"rgba(4,7,18,0.97)",backdropFilter:"blur(10px)",borderRadius:13,padding:"10px 10px 8px",border:"1px solid rgba(59,130,246,0.45)",boxShadow:"0 4px 24px rgba(0,0,0,0.7)"}}>
-                  {/* Header row with countdown */}
-                  <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:8}}>
-                    <div>
-                      <div style={{fontSize:9,color:"#93c5fd",fontWeight:800,letterSpacing:1.5,textTransform:"uppercase"}}>🎯 Il Mister ti chiede</div>
-                      <div style={{fontSize:10,color:"#e2e8f0",fontWeight:600,marginTop:1}}>Scegli il tuo approccio — influenza le azioni seguenti</div>
-                    </div>
-                    <div style={{background:tacticCountdown<=2?"rgba(239,68,68,0.25)":"rgba(59,130,246,0.20)",border:"1px solid "+(tacticCountdown<=2?"rgba(239,68,68,0.5)":"rgba(59,130,246,0.4)"),borderRadius:8,padding:"4px 8px",textAlign:"center",minWidth:34,flexShrink:0}}>
-                      <div style={{fontSize:14,fontWeight:900,color:tacticCountdown<=2?"#f87171":"#93c5fd",lineHeight:1}}>{tacticCountdown}</div>
-                      <div style={{fontSize:7,color:"rgba(255,255,255,0.4)"}}>sec</div>
-                    </div>
-                  </div>
-                  {/* Option buttons */}
-                  <div style={{display:"flex",gap:5}}>
-                    {TACTIC_MOMENTS[tacticMoment.idx].map(function(opt){return(
-                      <button key={opt.key} onClick={function(){handleTactic(opt);}} style={{flex:1,padding:"8px 5px",background:"rgba(255,255,255,0.05)",border:"1px solid rgba(255,255,255,0.15)",borderRadius:9,color:"#e2e8f0",cursor:"pointer",fontFamily:"inherit",display:"flex",flexDirection:"column",alignItems:"center",gap:3,touchAction:"manipulation",transition:"background .1s"}}
-                        onMouseEnter={function(e){e.currentTarget.style.background="rgba(59,130,246,0.18)";e.currentTarget.style.borderColor="rgba(59,130,246,0.5)";}}
-                        onMouseLeave={function(e){e.currentTarget.style.background="rgba(255,255,255,0.05)";e.currentTarget.style.borderColor="rgba(255,255,255,0.15)";}}>
-                        <div style={{fontSize:18,lineHeight:1}}>{opt.e}</div>
-                        <div style={{fontSize:10,fontWeight:800,textAlign:"center",lineHeight:1.2,color:"#f1f5f9"}}>{opt.txt}</div>
-                        <div style={{fontSize:8,color:"rgba(255,255,255,0.55)",textAlign:"center",lineHeight:1.3}}>{opt.hint}</div>
-                        <div style={{fontSize:9,fontWeight:800,color:opt.bonus>0?"#4ade80":opt.bonus<0?"#f87171":"#94a3b8",marginTop:1}}>{opt.bonus>0?"+":""}{Math.round(opt.bonus*100)}% succ.</div>
-                      </button>
-                    );})}
-                  </div>
-                  <div style={{textAlign:"center",fontSize:8,color:"rgba(255,255,255,0.25)",marginTop:6}}>Se non scegli, il gioco continua senza bonus tattico</div>
-                </div>
-              )}
+              {/* Tactic moment: il mister decide in automatico, notifica via addCom */}
               {/* Progress bar inside field bottom */}
               {show3D&&<div style={{position:"absolute",bottom:0,left:0,right:0,height:3,background:"rgba(255,255,255,0.1)"}}>
                 <div style={{height:"100%",width:`${pct}%`,background:"linear-gradient(90deg,"+TH.success+","+TH.warning+")",transition:"width .3s"}}/>
