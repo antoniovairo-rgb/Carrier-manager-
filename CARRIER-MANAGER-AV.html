@@ -17,7 +17,7 @@
 @keyframes floatUp{0%{opacity:1;transform:translateY(0) scale(1)}60%{opacity:1;transform:translateY(-30px) scale(1.1)}100%{opacity:0;transform:translateY(-60px) scale(0.9)}}
 @keyframes chantPulse{0%{opacity:0;transform:translateY(8px) scale(0.92)}15%{opacity:1;transform:translateY(0) scale(1)}80%{opacity:1;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(-6px) scale(0.95)}}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.35}}
-*{box-sizing:border-box;margin:0;padding:0;}html,body{overflow-x:hidden;background:#f0f7ff;-webkit-tap-highlight-color:transparent;}#root{min-height:100vh;}#ld{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:#f0f7ff;flex-direction:column;gap:14px;z-index:9999;font-family:sans-serif;}.sp{width:36px;height:36px;border:3px solid #e2e8f0;border-top:3px solid #2563eb;border-radius:50%;animation:spin .8s linear infinite;}@keyframes spin{to{transform:rotate(360deg)}}</style>
+*{box-sizing:border-box;margin:0;padding:0;}html,body{height:100%;overflow:hidden;background:#f0f7ff;-webkit-tap-highlight-color:transparent;}#root{height:100%;display:flex;flex-direction:column;}#ld{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:#f0f7ff;flex-direction:column;gap:14px;z-index:9999;font-family:sans-serif;}.sp{width:36px;height:36px;border:3px solid #e2e8f0;border-top:3px solid #2563eb;border-radius:50%;animation:spin .8s linear infinite;}@keyframes spin{to{transform:rotate(360deg)}}</style>
 </head>
 <body>
 <div id="ld"><div class="sp"></div><div style="font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#2563eb;font-weight:700">CAREER PLAYER MANAGER</div></div>
@@ -1582,7 +1582,7 @@ const NEWSPAPERS=[
   {id:"lastampa",  name:"La Stampa Sport",       short:"La Stampa",  color:"#16a34a",e:"🗞️",tone:"analitico"},
   {id:"skysport",  name:"Sky Sport 24",          short:"Sky Sport",  color:"#0099d6",e:"📡",tone:"diretto"},
 ];
-const GAME_VERSION="3.16.0"; // Sprint 35: Agente Pro v2 — task settimanale, situazione contratto, rinnovo potenziato
+const GAME_VERSION="3.17.0"; // Sprint 38: viewport-lock responsive — no browser scroll, sidebar desktop 900px+
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -11268,8 +11268,8 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       })()}
 
       {/* BOTTOM NAV */}
-      <div style={{position:"fixed",bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:600,zIndex:100}}>
-      <div style={{background:"rgba(240,247,255,0.97)",borderTop:"1px solid "+TH.cardBorder,padding:"2px 8px",display:"flex",gap:10,justifyContent:"center",flexWrap:"wrap",alignItems:"center"}}>
+      <div className="cpm-nav-bar" style={{zIndex:100}}>
+      <div className="cpm-nav-hint" style={{borderTop:"1px solid "+TH.cardBorder}}>
         {[{k:"Enter",l:"Gioca"},{k:"0",l:"Avanza"},{k:"Esc",l:"Indietro"},{k:"Spc",l:"Conferma"}].map(h=>(
           <span key={h.k} style={{fontSize:9,color:TH.muted,display:"flex",alignItems:"center",gap:3}}>
             <span style={{background:"#e2e8f0",borderRadius:3,padding:"1px 5px",fontFamily:"monospace",fontSize:9,color:TH.text}}>{h.k}</span>
@@ -11278,8 +11278,8 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
         ))}
         {toggleLang&&<button onClick={toggleLang} style={{marginLeft:"auto",fontSize:9,background:"#e2e8f0",border:"none",borderRadius:4,padding:"2px 7px",cursor:"pointer",color:TH.text,fontWeight:700}}>🌐 {lang}</button>}
       </div>
-      <div style={{background:TH.navBg,backdropFilter:"blur(12px)",borderTop:"1px solid "+TH.cardBorder,display:"flex",alignItems:"stretch"}}>
-        {tabs.map(t=><button key={t.id} onClick={()=>goTab(t.id)} title={`${t.l} [${t.k}]`} style={{flex:1,padding:"10px 4px 6px",border:"none",background:"transparent",cursor:"pointer",fontFamily:"inherit",color:tab===t.id?TH.primary:TH.faint,borderTop:`2px solid ${tab===t.id?TH.primary:"transparent"}`,transition:"all .15s"}}><div style={{fontSize:17}}>{t.e}</div><div style={{fontSize:9,marginTop:1,letterSpacing:.3}}>{t.l}</div><div style={{fontSize:8,color:tab===t.id?TH.primary+"99":TH.faint+"88",marginTop:1,fontFamily:"monospace"}}>[{t.k}]</div></button>)}
+      <div className="cpm-nav-tabs" style={{background:TH.navBg,borderTop:"1px solid "+TH.cardBorder}}>
+        {tabs.map(t=><button key={t.id} className={tab===t.id?"cpm-tab-act":""} onClick={()=>goTab(t.id)} title={`${t.l} [${t.k}]`} style={{flex:1,padding:"10px 4px 6px",border:"none",background:"transparent",cursor:"pointer",fontFamily:"inherit",color:tab===t.id?TH.primary:TH.faint,borderTop:`2px solid ${tab===t.id?TH.primary:"transparent"}`,transition:"all .15s"}}><div style={{fontSize:17}}>{t.e}</div><div style={{fontSize:9,marginTop:1,letterSpacing:.3}}>{t.l}</div><div style={{fontSize:8,color:tab===t.id?TH.primary+"99":TH.faint+"88",marginTop:1,fontFamily:"monospace"}}>[{t.k}]</div></button>)}
         {toggleLang&&<button onClick={toggleLang} title="Cambia lingua / Change language" style={{padding:"6px 10px",border:"none",borderLeft:`1px solid ${TH.cardBorder}`,background:"transparent",cursor:"pointer",fontFamily:"inherit",color:TH.faint,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:1}}><div style={{fontSize:14}}>🌐</div><div style={{fontSize:8,marginTop:1,letterSpacing:.3,fontWeight:700}}>{lang}</div></button>}
       </div>
       </div>{/* end bottom nav wrapper */}
@@ -11342,34 +11342,29 @@ function App(){
     refreshSlots();
   };
   const wrap=ch=>(
-    <div className="cpm-root" style={{minHeight:"100vh",background:TH.bgGrad,color:TH.text,fontFamily:"'Barlow','Segoe UI',sans-serif",position:"relative"}}>
+    <div className="cpm-root" style={{background:TH.bgGrad,color:TH.text,fontFamily:"'Barlow','Segoe UI',sans-serif"}}>
       <div style={{position:"fixed",bottom:6,right:8,zIndex:9999,fontSize:11,color:"#fff",pointerEvents:"none",letterSpacing:"0.05em",fontFamily:"monospace",background:"rgba(0,0,0,0.55)",padding:"2px 7px",borderRadius:6}}>CPM {GAME_VERSION}</div>
       <style>{`
         *{box-sizing:border-box;}
-        .cpm-root{padding:12px 8px 100px;}
-        @media(min-width:560px){.cpm-root{padding:14px 14px 100px;}}
-        @media(min-width:900px){.cpm-root{padding:16px 28px 100px;}}
-        @media(min-width:1280px){.cpm-root{padding:18px 48px 100px;}}
-        /* Responsive page containers — replaces all fixed maxWidth */
+        html,body,#root{height:100%;}
+        .cpm-root{height:100%;display:flex;flex-direction:column;overflow:hidden;}
+        .cpm-scroll{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;padding:12px 8px 80px;}
+        @media(min-width:560px){.cpm-scroll{padding:14px 14px 80px;}}
+        @media(min-width:900px){.cpm-scroll{padding:16px 24px 20px 244px;}}
+        @media(min-width:1280px){.cpm-scroll{padding:18px 48px 20px 268px;}}
         .cpm-page{width:100%;}
         @media(min-width:900px){.cpm-page{max-width:960px;margin:0 auto;}}
         @media(min-width:1280px){.cpm-page{max-width:1140px;}}
-        /* Career main area */
-        .cpm-career{width:100%;position:relative;padding-bottom:72px;}
-        @media(min-width:900px){.cpm-career{max-width:1140px;margin:0 auto;}}
-        /* Dashboard 2-column grid on desktop */
+        .cpm-career{width:100%;position:relative;}
+        @media(min-width:900px){.cpm-career{max-width:100%;margin:0;}}
         .cpm-dash-grid{display:flex;flex-direction:column;gap:12px;}
         @media(min-width:900px){.cpm-dash-grid{display:grid;grid-template-columns:1fr 1fr;align-items:start;}}
-        /* Offer cards grid */
         .cpm-offers{display:flex;flex-direction:column;gap:10px;}
         @media(min-width:900px){.cpm-offers{display:grid;grid-template-columns:1fr 1fr;}}
-        /* ProTransition offers */
         .cpm-proto{display:flex;flex-direction:column;gap:8px;}
         @media(min-width:900px){.cpm-proto{display:grid;grid-template-columns:1fr 1fr;}}
-        /* HomeScreen slots */
         .cpm-slots{display:flex;flex-direction:column;gap:8px;}
         @media(min-width:900px){.cpm-slots{display:grid;grid-template-columns:1fr 1fr 1fr;}}
-        /* Create screen 2-col on desktop */
         .cpm-create{display:flex;flex-direction:column;gap:16px;}
         @media(min-width:900px){.cpm-create{display:grid;grid-template-columns:1fr 1fr;align-items:start;gap:20px;}}
         select option{background:#fff;}
@@ -11379,15 +11374,27 @@ function App(){
         button:active:not(:disabled){transform:scale(.97);}
         input,select{outline:none;}
         input:focus,select:focus{border-color:${TH.primary}!important;box-shadow:0 0 0 3px ${TH.primary}22!important;}
-        /* Keyboard focus indicator — visible for keyboard users, hidden for mouse */
         :focus-visible{outline:2px solid ${TH.primary}!important;outline-offset:2px!important;}
         button:focus-visible{outline:2px solid ${TH.primary}!important;outline-offset:2px!important;}
-        /* Shortcut badge */
         .kbd{display:inline-block;padding:1px 5px;border-radius:4px;background:#e2e8f0;color:#475569;font-size:9px;font-family:monospace;font-weight:700;letter-spacing:0.3px;border:1px solid #cbd5e1;}
         @keyframes slideIn{from{opacity:0;transform:translateX(-10px);}to{opacity:1;transform:translateX(0);}}
+        .cpm-nav-bar{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:600px;z-index:100;}
+        .cpm-nav-hint{background:rgba(240,247,255,0.97);border-top:1px solid #e2e8f0;padding:2px 8px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap;align-items:center;}
+        .cpm-nav-tabs{display:flex;align-items:stretch;backdrop-filter:blur(12px);border-top:1px solid #e2e8f0;}
+        @media(min-width:900px){
+          .cpm-nav-bar{position:fixed;top:0;left:0;bottom:0;right:auto;width:220px;transform:none;max-width:none;display:flex;flex-direction:column;border-right:1px solid rgba(100,116,139,0.18);border-bottom:none;}
+          .cpm-nav-hint{display:none;}
+          .cpm-nav-tabs{flex:1;flex-direction:column;border-top:none;border-bottom:none;overflow-y:auto;padding-top:8px;}
+          .cpm-nav-tabs button{flex:none!important;width:100%;padding:12px 16px!important;justify-content:flex-start;gap:10px;border-top:none!important;border-left:3px solid transparent;border-right:none;text-align:left;display:flex!important;flex-direction:row!important;align-items:center!important;}
+          .cpm-nav-tabs button.cpm-tab-act{border-left-color:${TH.primary}!important;background:${TH.primary}11;}
+          .cpm-nav-tabs button div:nth-child(1){font-size:20px!important;margin:0!important;}
+          .cpm-nav-tabs button div:nth-child(2){font-size:12px!important;font-weight:600;letter-spacing:0.2px;}
+          .cpm-nav-tabs button div:nth-child(3){display:none;}
+          .cpm-nav-lang{display:none;}
+        }
       `}</style>
       <Notif msg={appMsg?.msg} color={appMsg?.color}/>
-      {ch}
+      <div className="cpm-scroll">{ch}</div>
     </div>
   );
   if(phase==="loading")return wrap(<div style={{textAlign:"center",paddingTop:80,color:TH.faint}}>Caricamento…</div>);
