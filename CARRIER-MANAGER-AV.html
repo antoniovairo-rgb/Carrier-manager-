@@ -1624,7 +1624,7 @@ const NEWSPAPERS=[
   {id:"lastampa",  name:"La Stampa Sport",       short:"La Stampa",  color:"#16a34a",e:"🗞️",tone:"analitico"},
   {id:"skysport",  name:"Sky Sport 24",          short:"Sky Sport",  color:"#0099d6",e:"📡",tone:"diretto"},
 ];
-const GAME_VERSION="3.26.0"; // Sprint 45 — Canvas più largo (460×580, ratio 0.79), fix doppio cursore HL
+const GAME_VERSION="3.26.1"; // Sprint 45b — LiveMatch fullscreen mobile 100dvh, canvas max-fit
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -4382,13 +4382,8 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
   },[matchPhase]);
 
   return(
-    <div style={isDesktop
-      ?{height:"100%",background:"#0a0e1a",borderRadius:"0 0 12px 12px",overflow:"hidden",display:"flex",justifyContent:"center",alignItems:"center"}
-      :{width:"100%",background:"#0a0e1a",borderRadius:"0 0 12px 12px",overflow:"hidden",display:"flex",justifyContent:"center"}}>
-      <canvas ref={canvasRef}
-        style={isDesktop
-          ?{display:"block",height:"100%",width:"auto",maxWidth:"100%"}
-          :{display:"block",width:"100%",height:"auto"}}/>
+    <div style={{height:"100%",background:"#0a0e1a",borderRadius:"0 0 12px 12px",overflow:"hidden",display:"flex",justifyContent:"center",alignItems:"center"}}>
+      <canvas ref={canvasRef} style={{display:"block",maxWidth:"100%",maxHeight:"100%",width:"auto",height:"auto"}}/>
     </div>
   );
 }
@@ -6215,7 +6210,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   const mw=context==="trial"?1:calcMatchWeight(player,opponent?.id||opponent?.n,player.standings||[],player.week||1);
 
   return(
-    <div style={{width:"100%",maxWidth:1100,marginLeft:"auto",marginRight:"auto"}}>
+    <div style={{width:"100%",maxWidth:isNarrow?undefined:1100,marginLeft:"auto",marginRight:"auto",...isNarrow&&{height:"100%"}}}>
       {phase==="matchday"&&!showScout&&(()=>{
         const mw=context==="trial"?1:calcMatchWeight(player,opponent?.id||opponent?.n,player.standings||[],player.week||1);
         const drby=isDerby(player.club?.id,opponent?.id);
@@ -6228,7 +6223,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
       {phase==="formations"&&<FormationView homeTeam={player.club||opponent} awayTeam={opponent} player={player} homeRoster={homeRoster} awayRoster={awayRoster} onContinue={()=>setPhase("walkout")} onSkip={()=>setPhase("playing")} oppTactic={oppTactic} oppTacticLoading={oppTacticLoading} homeKitCol={homeKitCol} awayKitCol={awayKitCol}/>}
 
       {(show3D||phase==="walkout")&&(
-        <Card style={{padding:0,overflow:"hidden",marginBottom:10,display:"flex",flexDirection:"column",maxHeight:"calc(100vh - 20px)"}} shadow>
+        <Card style={{padding:0,overflow:"hidden",marginBottom:isNarrow?0:10,display:"flex",flexDirection:"column",...isNarrow?{height:"100%"}:{maxHeight:"calc(100vh - 20px)"}}} shadow>
           {/* ── Scoreboard Premium ── */}
           <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"7px 12px",borderBottom:"1px solid rgba(255,255,255,0.08)",background:"linear-gradient(135deg,#060d1e 0%,#0f1e3a 100%)",flex:"0 0 auto"}}>
             {/* Home team */}
@@ -6283,10 +6278,10 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           </div>
 
           {/* ── Field + Panel: responsive layout ── */}
-          <div style={isNarrow?{position:"relative",minHeight:`calc(100vw * ${(PC_PH/PC_PW).toFixed(4)})`}:{display:"flex",flexDirection:"row",alignItems:"stretch",flex:1,minHeight:0,overflow:"hidden"}}>
+          <div style={isNarrow?{flex:1,minHeight:0,position:"relative",overflow:"hidden"}:{display:"flex",flexDirection:"row",alignItems:"stretch",flex:1,minHeight:0,overflow:"hidden"}}>
 
             {/* FIELD — height-constrained on desktop, full width on narrow */}
-            <div style={{flex:isNarrow?"none":"0 0 auto",position:"relative",overflow:"hidden",alignSelf:isNarrow?"auto":"stretch",cursor:"default"}}>
+            <div style={isNarrow?{position:"absolute",inset:0,overflow:"hidden",cursor:"default"}:{flex:"0 0 auto",position:"relative",overflow:"hidden",alignSelf:"stretch",cursor:"default"}}>
               <PitchCanvas playerX={pPos.x} playerY={pPos.y} zone={zone}
                 homeCol={homeKitCol} oppCol={awayKitCol}
                 opponents={opponents.current} matchPhase={matchPhase3D} avatarId={player.avatarId||0}
@@ -9933,12 +9928,14 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     const usePhaserRenderer=localStorage.getItem("cpm-renderer")==="phaser";
     const phaserMatchEnd=stats=>onMatchEnd({goals:stats.playerGoals||stats.goals||0,assists:stats.playerAssists||stats.assists||0,homeScore:stats.squadAGoals,awayScore:stats.squadBGoals,won:stats.result==="WIN",drew:stats.result==="DRAW",opponent:matchOpp?.name||matchOpp?.n,oppAbbr:matchOpp?.a||matchOpp?.abbr,oppCol:matchOpp?.col||matchOpp?.c,rating:stats.rating,context:matchContext||"career",oppTactic:null,scoutReport:null});
     return(
-      <div style={{width:"100%"}}>
-        <button onClick={()=>{setScreen("dashboard");setTab("dashboard");}} style={{background:"none",border:"none",color:TH.muted,cursor:"pointer",fontSize:13,marginBottom:8,display:"flex",alignItems:"center",gap:6}}>← Carriera</button>
+      <div style={{width:"100%",...isNarrow&&{display:"flex",flexDirection:"column",height:"100dvh",overflow:"hidden"}}}>
+        <button onClick={()=>{setScreen("dashboard");setTab("dashboard");}} style={{background:"none",border:"none",color:TH.muted,cursor:"pointer",fontSize:13,marginBottom:isNarrow?0:8,display:"flex",alignItems:"center",gap:6,flexShrink:0}}>← Carriera</button>
+        <div style={isNarrow?{flex:1,minHeight:0,overflow:"hidden"}:undefined}>
         {usePhaserRenderer
           ?<FootballMatch2D playerData={player} squadAColor={player.club?.col||player.club?.c||"#22c55e"} squadBColor={matchOpp?.col||matchOpp?.c||"#ef4444"} duration={300} onMatchEnd={phaserMatchEnd}/>
           :<LiveMatch player={player} opponent={matchOpp} context={matchContext||"career"} onMatchEnd={onMatchEnd} isMatchHome={matchIsHome} benchStart={matchBenchStartRef.current}/>
         }
+        </div>
         {misterDiscorsoModal&&(
           <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.75)",zIndex:9999,display:"flex",alignItems:"center",justifyContent:"center",padding:20}}>
             <Card style={{maxWidth:400,width:"100%",padding:"22px",background:TH.card,border:`1px solid ${TH.cardBorder}`}}>
