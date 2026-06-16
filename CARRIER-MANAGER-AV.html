@@ -1708,7 +1708,7 @@ const NEWSPAPERS=[
   {id:"lastampa",  name:"La Stampa Sport",       short:"La Stampa",  color:"#16a34a",e:"🗞️",tone:"analitico"},
   {id:"skysport",  name:"Sky Sport 24",          short:"Sky Sport",  color:"#0099d6",e:"📡",tone:"diretto"},
 ];
-const GAME_VERSION="3.33.1"; // Hotfix: bilanciamento premi (PdO, GB, Young Player)
+const GAME_VERSION="3.34.0"; // Sprint 54 — Negoziazione Contratti: trattativa multi-step
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -9138,6 +9138,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
   const[notif,setNotif]=useState(null);
   const[weekEvent,setWeekEvent]=useState(null);
   const[transferOffer,setTransferOffer]=useState(null);
+  const[negoModal,setNegoModal]=useState(null); // Sprint 54: contract negotiation
   const[weekLiveModal,setWeekLiveModal]=useState(null);   // {event, changes}
   const[showAdvanceConfirm,setShowAdvanceConfirm]=useState(false);
   const[showMatchPrompt,setShowMatchPrompt]=useState(null); // {md} — pending match prompt
@@ -10442,6 +10443,35 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     setScreen("match");
   };
 
+  // Sprint 54: Contract negotiation helpers
+  const openNegoModal=()=>{
+    const growthMult=(player.goals||0)>12?1.18:(player.goals||0)>6?1.08:0.97;
+    const rawWage=Math.round((player.contract?.wage||500)*growthMult);
+    const ovrCap=Math.round((player.ovr||65)*220);
+    const baseWage=clamp(rawWage,300,Math.min(ovrCap,20000));
+    const baseDur=rng(1,3);
+    setNegoModal({baseWage,baseDuration:baseDur,step:"choose",playerAsk:null,clubFinalWage:null,clubFinalDuration:null});
+  };
+  const _evalNego=(askWage,baseWage)=>{
+    const ovr=player.ovr||65;const goals=player.goals||0;const assists=player.assists||0;
+    const playerScore=(ovr-55)*2.5+goals*3.5+assists*1.5+(player.popularity||20)*0.3+(player.coachTrust||60)*0.2;
+    const clubGenerosity=(player.club?.p||65)*1.3;
+    const maxMult=1+Math.min(0.40,playerScore/(clubGenerosity*7));
+    const askMult=askWage/baseWage;
+    if(askMult<=1)return{result:"accept",wage:askWage};
+    if(askMult<=maxMult+0.03)return{result:"accept",wage:askWage};
+    if(askMult<=maxMult*1.18)return{result:"counter",wage:Math.round(baseWage*(1+(maxMult-1)*0.7))};
+    return{result:"reject"};
+  };
+  const _acceptNegoWage=(wage,duration)=>{
+    const agentMult=player.hasAgent?1.15:1.0;
+    const finalWage=Math.round(wage*agentMult);
+    const annKStr=`€${Math.round(finalWage*52/1000)}k/anno`;
+    setPlayer(p=>({...p,contract:{duration,wage:finalWage,expiresAtSeason:(p.season||1)+duration},contractExpired:false,agentRenewalBonus:0,morale:clamp((p.morale||70)+8,0,100),diary:[...(p.diary||[]),{season:p.season||1,week:p.week||1,type:"contract_renewal",e:"📋",headline:"Contratto rinnovato!",body:`${duration} ann${duration===1?"o":"i"} con ${p.club?.n||"–"} · ${annKStr}${p.hasAgent?" (+15% agente)":""}`,color:"#2563eb"}].slice(-80),log:[`📋 Rinnovo: ${duration} stag. a ${annKStr}`,...(p.log||[])].slice(0,60)}));
+    setNegoModal(null);setTransferOffer(null);
+    notify(`✅ Contratto rinnovato! ${duration} ann${duration===1?"o":"i"} · ${annKStr}`,TH.success);
+  };
+
   const upgradeSkill=k=>{
     setPlayer(p=>{
       if(!(p.skillPoints>0))return p; // guard inside updater: safe against stale closure double-clicks
@@ -10929,6 +10959,90 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
         </div>
       )}
 
+      {/* Sprint 54: Contract Negotiation Modal */}
+      {negoModal&&(()=>{
+        const{baseWage,baseDuration,step,playerAsk,clubFinalWage,clubFinalDuration}=negoModal;
+        const annK=w=>Math.round((w||baseWage)*52/1000);
+        const agentMult=player.hasAgent?1.15:1.0;
+        const opts=[
+          {label:"Accetta l'offerta del club",wage:baseWage,pct:0,desc:"Rinnovo sicuro alle condizioni proposte"},
+          {label:"Chiedi +15%",wage:Math.round(baseWage*1.15),pct:15,desc:"Richiesta moderata — buone probabilità di successo"},
+          {label:"Chiedi +30%",wage:Math.round(baseWage*1.30),pct:30,desc:"Richiesta ambiziosa — il club potrebbe resistere"},
+        ];
+        return(
+          <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.55)",zIndex:9998,display:"flex",alignItems:"center",justifyContent:"center",padding:20}}>
+            <Card style={{maxWidth:380,width:"100%",padding:"22px"}}>
+              <div style={{textAlign:"center",marginBottom:14}}>
+                <div style={{fontSize:28,marginBottom:4}}>📋</div>
+                <div style={{fontSize:15,fontWeight:900,color:TH.text}}>Negoziazione Contratto</div>
+                <div style={{fontSize:11,color:TH.muted,marginTop:2}}>{player.club?.n||"–"} · S.{player.season||1}</div>
+              </div>
+              {/* Offer summary */}
+              <div style={{background:"#f0fdf4",borderRadius:10,padding:"10px 14px",marginBottom:16,border:"1px solid #bbf7d0"}}>
+                <div style={{fontSize:10,color:TH.muted,marginBottom:4}}>Proposta del club</div>
+                <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+                  <div>
+                    <div style={{fontSize:13,fontWeight:800,color:TH.success}}>€{annK(baseWage)}k / anno</div>
+                    <div style={{fontSize:10,color:TH.muted,marginTop:2}}>{baseDuration} ann{baseDuration===1?"o":"i"} · €{baseWage}/sett.{player.hasAgent&&<span style={{color:TH.accent}}> → +15% agente</span>}</div>
+                  </div>
+                  <div style={{fontSize:20,fontWeight:900,color:TH.success}}>✔</div>
+                </div>
+              </div>
+
+              {step==="choose"&&(
+                <div>
+                  <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.2,marginBottom:10}}>La tua richiesta</div>
+                  <div style={{display:"flex",flexDirection:"column",gap:8,marginBottom:16}}>
+                    {opts.map((o,i)=>(
+                      <button key={i} onClick={()=>{
+                        if(o.pct===0){_acceptNegoWage(o.wage,baseDuration);return;}
+                        const res=_evalNego(o.wage,baseWage);
+                        if(res.result==="accept"){_acceptNegoWage(o.wage,baseDuration);}
+                        else if(res.result==="counter"){setNegoModal(m=>({...m,step:"club_counter",playerAsk:o.label,clubFinalWage:res.wage,clubFinalDuration:baseDuration}));}
+                        else{setNegoModal(m=>({...m,step:"rejected",playerAsk:o.label}));}
+                      }} style={{padding:"10px 14px",borderRadius:10,border:"1.5px solid "+TH.cardBorder,background:"#f8fafc",textAlign:"left",cursor:"pointer",fontFamily:"inherit",transition:"all .12s"}}>
+                        <div style={{fontSize:12,fontWeight:700,color:TH.text}}>{o.label}</div>
+                        <div style={{fontSize:10,color:TH.muted,marginTop:2}}>{o.desc}</div>
+                        {o.pct>0&&<div style={{fontSize:11,fontWeight:700,color:TH.primary,marginTop:3}}>€{annK(o.wage)}k / anno{player.hasAgent&&` → €${annK(Math.round(o.wage*agentMult))}k con agente`}</div>}
+                      </button>
+                    ))}
+                  </div>
+                  <Btn onClick={()=>setNegoModal(null)} v="ghost" fw style={{fontSize:11}}>Annulla</Btn>
+                </div>
+              )}
+
+              {step==="club_counter"&&(
+                <div>
+                  <div style={{background:"#fff7ed",borderRadius:10,padding:"12px",marginBottom:14,border:"1px solid #fed7aa"}}>
+                    <div style={{fontSize:11,fontWeight:700,color:"#c2410c",marginBottom:4}}>🤝 Il club fa una contro-offerta</div>
+                    <div style={{fontSize:12,color:TH.text}}>Stipendio proposto: <strong style={{color:TH.success}}>€{annK(clubFinalWage)}k / anno</strong></div>
+                    <div style={{fontSize:10,color:TH.muted,marginTop:2}}>{clubFinalDuration} ann{clubFinalDuration===1?"o":"i"} · non accettano la tua richiesta di {playerAsk?.replace("Chiedi","")}</div>
+                  </div>
+                  <div style={{display:"flex",gap:8}}>
+                    <Btn onClick={()=>{_acceptNegoWage(clubFinalWage,clubFinalDuration);}} v="primary" fw>✅ Accetta counter</Btn>
+                    <Btn onClick={()=>setNegoModal(null)} v="secondary" fw>Rifiuta</Btn>
+                  </div>
+                </div>
+              )}
+
+              {step==="rejected"&&(
+                <div>
+                  <div style={{background:"#fff1f2",borderRadius:10,padding:"12px",marginBottom:14,border:"1px solid #fecaca",textAlign:"center"}}>
+                    <div style={{fontSize:16,marginBottom:4}}>❌</div>
+                    <div style={{fontSize:12,fontWeight:700,color:"#b91c1c",marginBottom:4}}>Il club rifiuta la tua richiesta</div>
+                    <div style={{fontSize:10,color:"#9f1239"}}>La direzione sportiva ritiene la tua richiesta eccessiva.</div>
+                  </div>
+                  <div style={{display:"flex",gap:8}}>
+                    <Btn onClick={()=>{_acceptNegoWage(baseWage,baseDuration);}} v="primary" fw>Accetta offerta base</Btn>
+                    <Btn onClick={()=>setNegoModal(null)} v="secondary" fw>Chiudi</Btn>
+                  </div>
+                </div>
+              )}
+            </Card>
+          </div>
+        );
+      })()}
+
       {/* Sprint 42: Euro Group Stage Modal */}
       {euroGroupModal&&(
         <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.65)",zIndex:9998,display:"flex",alignItems:"center",justifyContent:"center",padding:20}}>
@@ -11058,7 +11172,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
         <Card bg="#fef3c7" border="#f59e0b" style={{marginBottom:8,padding:"12px 14px"}}>
           <div style={{fontSize:11,fontWeight:700,color:"#92400e",marginBottom:4}}>📋 Contratto scaduto — sei svincolato</div>
           <div style={{fontSize:11,color:"#78350f",marginBottom:8}}>Rinnova con il tuo club o aspetta un'offerta dal mercato.</div>
-          <Btn onClick={()=>{const growthMult=(player.goals||0)>10?1.15:(player.goals||0)>5?1.05:0.95;const rawWage=Math.round((player.contract?.wage||500)*growthMult);const ovrCap=Math.round((player.ovr||65)*220);const renewWage=clamp(rawWage,300,Math.min(ovrCap,20000));setTransferOffer({club:player.club,type:"Rinnovo contratto",isRenewal:true,minutaggio:player.ovr>=75?80:60,wage:renewWage,duration:rng(1,3),moralBonus:5,growthBonus:5});}} v="primary" fw>Rinnova contratto</Btn>
+          <Btn onClick={openNegoModal} v="primary" fw>📋 Negozia rinnovo</Btn>
         </Card>
       )}
       {/* Transfer listed banner (dashboard read-only indicator only) */}
@@ -12079,6 +12193,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
               first_national_goal:{e:"🌍",color:"#0ea5e9"},
               cup_trophy:{e:"🏆",color:"#f59e0b"},
               euro_mondiale_trophy:{e:"🌍",color:"#7c3aed"},
+              contract_renewal:{e:"📋",color:"#2563eb"},
             };
             const dEntries=[...(player.diary||[])].reverse().slice(0,15);
             return(
@@ -12154,6 +12269,12 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                 </div>
               </Card>
               :(week<=35&&!player.contractExpired&&<Card style={{padding:"10px 14px"}}>
+                {(player.contract?.duration||2)<=1&&(
+                  <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:8,marginBottom:8}}>
+                    <div style={{fontSize:10,color:"#d97706"}}>⚠️ Ultimo anno · tratta ora per rinnovare.</div>
+                    <Btn onClick={openNegoModal} v="primary" style={{flexShrink:0,fontSize:11,padding:"6px 12px"}}>📋 Rinnova</Btn>
+                  </div>
+                )}
                 <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:8}}>
                   <div style={{fontSize:10,color:TH.muted}}>Vuoi cambiare aria? Richiedi la cessione per ricevere più offerte di mercato.</div>
                   <Btn onClick={()=>{setPlayer(p=>({...p,transferListed:true,coachTrust:clamp((p.coachTrust||60)-10,0,100),morale:clamp(p.morale-8,0,100),log:["📢 Hai richiesto la cessione. Il mercato si anima.",...(p.log||[])].slice(0,60)}));notify("📢 Richiesta di cessione presentata. Aspettati offerte.",TH.warning);}} v="secondary" style={{flexShrink:0,fontSize:11,padding:"6px 10px"}}>📢 Richiedi cessione</Btn>
