@@ -1582,7 +1582,7 @@ const NEWSPAPERS=[
   {id:"lastampa",  name:"La Stampa Sport",       short:"La Stampa",  color:"#16a34a",e:"🗞️",tone:"analitico"},
   {id:"skysport",  name:"Sky Sport 24",          short:"Sky Sport",  color:"#0099d6",e:"📡",tone:"diretto"},
 ];
-const GAME_VERSION="3.17.2"; // fix: rimosso pannello tattico — il mister decide in autonomia, il giocatore esegue
+const GAME_VERSION="3.17.3"; // fix: walkout — ingresso dalla tribuna (sideline) e formazioni complete fino all'11
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -4015,26 +4015,26 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
       const p=propsRef.current;
       s.walkProgress=Math.min(1,s.walkProgress+0.007);
       ctx.fillStyle="rgba(5,8,16,0.6)";ctx.fillRect(0,0,PW,PH);
-      // Tunnel mouth at BOTTOM of field (home team's end — tribuna principale)
-      const tX=FCX,tY=FY+FH-30;
-      ctx.fillStyle="#060d1c";ctx.beginPath();ctx.ellipse(tX,tY,28,38,0,0,Math.PI*2);ctx.fill();
-      ctx.strokeStyle="#f59e0b";ctx.lineWidth=2.5;ctx.beginPath();ctx.ellipse(tX,tY,28,38,0,0,Math.PI*2);ctx.stroke();
-      // Teams walking in two lines toward centre
+      // Tunnel mouth on LEFT SIDELINE at halfway line — where benches are
+      const tX=FX-20,tY=FCY;
+      ctx.fillStyle="#060d1c";ctx.beginPath();ctx.ellipse(tX,tY,18,28,Math.PI/2,0,Math.PI*2);ctx.fill();
+      ctx.strokeStyle="#f59e0b";ctx.lineWidth=2.5;ctx.beginPath();ctx.ellipse(tX,tY,18,28,Math.PI/2,0,Math.PI*2);ctx.stroke();
+      // Teams walking in two horizontal lines from sideline toward centre
       const np=Math.min(11,Math.floor(s.walkProgress*13));
       for(let i=0;i<np;i++){
         const prog=Math.min(1,(s.walkProgress*13-i)/8);
         const isHome=i%2===0;
-        const offX=(isHome?-14:14);
-        const wx=tX+offX;
-        const wy=tY+(FCY-tY)*prog+i*6;
+        const offY=(isHome?-14:14);
+        const wx=tX+(FCX-tX)*prog;
+        const wy=tY+offY+i*3;
         const col=isHome?(p.homeCol||"#22c55e"):(p.oppCol||"#ef4444");
         drawPlayer(ctx,wx,wy,col,"#fff",false,i+1,prog>0.1,true,t);
       }
-      // Protagonist last, alone in centre
+      // Protagonist last, alone at centre line
       if(s.walkProgress>0.6){
         const pp=Math.min(1,(s.walkProgress-0.6)/0.4);
-        const wx=tX;
-        const wy=tY+(FCY-tY)*pp;
+        const wx=tX+(FCX-tX)*pp;
+        const wy=tY;
         drawPlayer(ctx,wx,wy,p.homeCol||"#22c55e","#f59e0b",true,10,pp>0.05,true,t);
       }
       ctx.fillStyle="#f59e0b";ctx.font="bold 16px sans-serif";
@@ -4055,7 +4055,7 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
           ctx.translate(cX,cY);ctx.rotate(cSeed*Math.PI);ctx.fillRect(-2,0,4,7);ctx.restore();
         }
       }
-      if(s.walkProgress>=1&&!s.walkDone){s.walkDone=true;propsRef.current.onWalkoutDone&&propsRef.current.onWalkoutDone();}
+      // Phase transition controlled by WalkoutOverlay — do not fire onWalkoutDone here
     }
 
     // Shoulder-cam: draw a perspective-shifted view centered behind the hero
@@ -5257,18 +5257,35 @@ function selectContextualSituations(all,numHL,player,seed){
    LIVE MATCH  (req #3,#4,#5,#6,#8)
 ======================================== */
 // Sprint 34 — istruzioni tattiche mid-match (2 momenti: ~28' e ~63')
-const TACTIC_MOMENTS=[
-  [// primo tempo ~28' — il mister chiama l'approccio tattico
-    {key:"pressing",e:"🔴",txt:"Pressing alto",hint:"Recupera palla alta, ritmo serrato",bonus:0.07},
-    {key:"possesso",e:"🔵",txt:"Tieni palla",hint:"Costruisci con pazienza dal basso",bonus:0.04},
-    {key:"verticale",e:"⚡",txt:"Gioco verticale",hint:"Cerca subito l'attaccante in profondità",bonus:0.09},
-  ],
-  [// secondo tempo ~63' — momento chiave della gara
-    {key:"allin",e:"⚔️",txt:"Attacco totale",hint:"Tutti avanti, zero rischi difensivi",bonus:0.10},
-    {key:"gestisci",e:"🛡️",txt:"Gestisci il risultato",hint:"Chiudi gli spazi, non rischiare nulla",bonus:-0.01},
-    {key:"cambio",e:"🔄",txt:"Nuova intensità",hint:"Entra con energia fresca e ritmo alto",bonus:0.06},
-  ],
-];
+// Ordini del mister — ogni voce ha effetti reali: bonus azioni, delta possesso, delta momentum, preset formazione NPC
+const COACH_ORDERS={
+  pressing:  {e:"🔴",txt:"Pressing alto",    ctx:"Recuperate palla alta, non lasciate costruire. Intensità massima.",  bonus:0.07,poss:-3,mom:9, drift:"midfield"},
+  possesso:  {e:"🔵",txt:"Tieni palla",      ctx:"Rallenta, costruisci dal basso. Non regalare nulla.",                bonus:0.04,poss:8, mom:-3,drift:"midfield"},
+  verticale: {e:"⚡",txt:"Gioco verticale",  ctx:"Cerca subito la profondità. L'attaccante è libero.",                bonus:0.09,poss:-4,mom:7, drift:"attack"},
+  all_in:    {e:"⚔️",txt:"Attacco totale",   ctx:"Tutti avanti. Il pareggio non serve — vuoi i 3 punti.",             bonus:0.11,poss:-7,mom:14,drift:"attack_goal"},
+  consolida: {e:"🔒",txt:"Consolida",        ctx:"Chiudi gli spazi, non rischiare. Un gol subito adesso è un disastro.", bonus:0.03,poss:8,mom:-6,drift:"retreat"},
+  cerca_gol: {e:"🎯",txt:"Cerca il gol",     ctx:"Un gol e torniamo in gioco. Muoviti nelle zone giuste.",            bonus:0.10,poss:-5,mom:11,drift:"attack_goal"},
+  cavalca:   {e:"🔥",txt:"Cavalca il momento",ctx:"Stiamo dominando. Continua così, hai l'uomo libero.",              bonus:0.12,poss:3, mom:8, drift:"attack"},
+  intelligente:{e:"🧠",txt:"Gioca intelligente",ctx:"Sei stanco, lo vedo. Scegli il momento giusto — non sprecare.",  bonus:0.05,poss:4, mom:0, drift:"midfield"},
+  rimonta:   {e:"🚨",txt:"ORA O MAI PIÙ",    ctx:"Mancano pochi minuti. Dimentica la tattica — VAI e non tornare.",  bonus:0.14,poss:-8,mom:18,drift:"attack_goal"},
+  gestisci_1:{e:"🛡️",txt:"Gestisci il vantaggio",ctx:"Un gol di vantaggio. Tienilo. Spazio zero agli avversari.",   bonus:0.04,poss:6, mom:-4,drift:"retreat"},
+};
+// Scelta intelligente dell'ordine: legge punteggio, tempo rimanente, momentum, stanchezza
+function selectCoachOrder(ck,score,momentum,fatigue){
+  var diff=score.home-score.away;
+  var tLeft=90-ck;
+  var isFirstHalf=ck<46;
+  if(diff<=-1&&tLeft<=12)return"rimonta";
+  if(diff<=-2)return"all_in";
+  if(diff===-1&&!isFirstHalf)return"cerca_gol";
+  if(diff>=1&&tLeft<=18)return"gestisci_1";
+  if(diff>=2)return"consolida";
+  if(diff===0&&tLeft<=18)return"verticale";
+  if(momentum>=72)return"cavalca";
+  if(momentum<=30)return"pressing";
+  if(fatigue>=68)return"intelligente";
+  return isFirstHalf?"pressing":"verticale";
+}
 const SUB_EVENTS=[
   {txt:"🔄 Cambio tattico: entra un compagno con energia fresca!",energy:15,mom:6},
   {txt:"💪 Il mister ti chiede di alzarti: fisicamente stai benissimo.",energy:8,mom:10},
