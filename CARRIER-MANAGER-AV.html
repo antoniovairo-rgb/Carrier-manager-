@@ -1624,7 +1624,7 @@ const NEWSPAPERS=[
   {id:"lastampa",  name:"La Stampa Sport",       short:"La Stampa",  color:"#16a34a",e:"🗞️",tone:"analitico"},
   {id:"skysport",  name:"Sky Sport 24",          short:"Sky Sport",  color:"#0099d6",e:"📡",tone:"diretto"},
 ];
-const GAME_VERSION="3.26.3"; // Sprint 45d — HL zoom ridotto ~15% per zona
+const GAME_VERSION="3.26.4"; // Sprint 45e — fix campo piccolo desktop, fix doppio DPad HL, fix mobile field layout
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -4382,8 +4382,13 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
   },[matchPhase]);
 
   return(
-    <div style={{height:"100%",background:"#0a0e1a",borderRadius:"0 0 12px 12px",overflow:"hidden",display:"flex",justifyContent:"center",alignItems:"center"}}>
-      <canvas ref={canvasRef} style={{display:"block",maxWidth:"100%",maxHeight:"100%",width:"auto",height:"auto"}}/>
+    <div style={isDesktop
+      ?{height:"100%",background:"#0a0e1a",borderRadius:"0 0 12px 12px",overflow:"hidden",display:"flex",justifyContent:"center",alignItems:"center"}
+      :{width:"100%",background:"#0a0e1a",borderRadius:"0 0 12px 12px",overflow:"hidden",display:"flex",justifyContent:"center"}}>
+      <canvas ref={canvasRef}
+        style={isDesktop
+          ?{display:"block",height:"100%",width:"auto",maxWidth:"100%"}
+          :{display:"block",width:"100%",height:"auto"}}/>
     </div>
   );
 }
@@ -6278,10 +6283,10 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           </div>
 
           {/* ── Field + Panel: responsive layout ── */}
-          <div style={isNarrow?{flex:1,minHeight:0,position:"relative",overflow:"hidden"}:{display:"flex",flexDirection:"row",alignItems:"stretch",flex:1,minHeight:0,overflow:"hidden"}}>
+          <div style={isNarrow?{position:"relative"}:{display:"flex",flexDirection:"row",alignItems:"stretch",flex:1,minHeight:0,overflow:"hidden"}}>
 
             {/* FIELD — height-constrained on desktop, full width on narrow */}
-            <div style={isNarrow?{position:"absolute",inset:0,overflow:"hidden",cursor:"default"}:{flex:"0 0 auto",position:"relative",overflow:"hidden",alignSelf:"stretch",cursor:"default"}}>
+            <div style={isNarrow?{position:"relative",overflow:"hidden",cursor:"default"}:{flex:"0 0 auto",position:"relative",overflow:"hidden",alignSelf:"stretch",cursor:"default"}}>
               <PitchCanvas playerX={pPos.x} playerY={pPos.y} zone={zone}
                 homeCol={homeKitCol} oppCol={awayKitCol}
                 opponents={opponents.current} matchPhase={matchPhase3D} avatarId={player.avatarId||0}
@@ -6407,7 +6412,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
             <div style={isNarrow?{position:"absolute",bottom:0,left:0,right:0,zIndex:5,background:"transparent",border:"none"}:{flex:1,display:"flex",flexDirection:"column",background:"#0f172a",borderLeft:"1px solid rgba(255,255,255,0.08)",minWidth:180,overflow:"hidden"}}>
 
               {/* Action zone — only during HL phases */}
-              {(phase==="hl_move"||(phase==="hl_choose"&&movesLeft>0))&&curSit&&(
+              {phase==="hl_move"&&curSit&&(
                 <div style={{padding:"8px 10px",borderBottom:"1px solid rgba(255,255,255,0.08)"}}>
                   <div style={{color:"#f59e0b",fontSize:10,fontWeight:700,marginBottom:5}}>{clock}' — {curSit.text}</div>
                   <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:5}}>
