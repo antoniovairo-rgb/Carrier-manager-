@@ -1624,7 +1624,7 @@ const NEWSPAPERS=[
   {id:"lastampa",  name:"La Stampa Sport",       short:"La Stampa",  color:"#16a34a",e:"🗞️",tone:"analitico"},
   {id:"skysport",  name:"Sky Sport 24",          short:"Sky Sport",  color:"#0099d6",e:"📡",tone:"diretto"},
 ];
-const GAME_VERSION="3.22.0"; // Sprint 41 — Coppa Nazionale 2.0: giocabile, calendario, ai rigori, doppio, migrazione save
+const GAME_VERSION="3.23.0"; // Sprint 42 — European Club Competitions: UCL/UEL/UECL group stage + knockout, qualificazione standings
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -8710,6 +8710,8 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     if(!('justRecovered' in newP)){newP={...newP,justRecovered:false};changed=true;}
     // Sprint 28 migrations
     if(!('leagueArchive' in newP)){newP={...newP,leagueArchive:[]};changed=true;}
+    // Sprint 42 migrations
+    if(!('euro' in newP)){newP={...newP,euro:null};changed=true;}
     if(changed){setPlayer(newP);}
   },[]);// eslint-disable-line
   const[darkMode,setDarkMode]=useState(()=>localStorage.getItem("cpm-dark")==="1");
@@ -8726,6 +8728,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
   useEffect(()=>{showMatchPromptRef.current=showMatchPrompt;},[showMatchPrompt]);
   const[focusTrainingStat,setFocusTrainingStat]=useState(null); // Sprint 29: Focus training stat picker
   const[nationsCupModal,setNationsCupModal]=useState(null); // Sprint 30: Nations Cup event
+  const[euroGroupModal,setEuroGroupModal]=useState(null); // Sprint 42: European group stage
   const[showRetireConfirm,setShowRetireConfirm]=useState(false); // Sprint 30: voluntary retirement
   const[lastSaved,setLastSaved]=useState(null);           // timestamp
   const[nationalCallupData,setNationalCallupData]=useState(null);
@@ -9318,6 +9321,25 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
 
     // S41: cup handled via calendar entries — no pre-compute needed
 
+    // Sprint 42: European group stage trigger at week 10
+    if(!isInU18&&weekVal===10&&player.euro?.active&&player.euro?.phase==="group"){
+      const _eOpps=player.euro.groupOpponents||[];
+      let _eseed42=hashStr((player.club?.id||"x")+(player.season||1)+"eg");let _er42=_eseed42;
+      const _er42d=()=>{_er42=((_er42*1664525+1013904223)&0xffffffff)>>>0;return _er42/0xffffffff;};
+      let _euroPts=0;const _grpRes=[];
+      _eOpps.forEach(opp=>{
+        const _myStr=(player.ovr||65)*1.1+(player.form||70)*0.2;
+        const _oppStr=(opp.p||65)+22;
+        const _hW=_er42d()<_myStr/(_myStr+_oppStr)*1.1;const _hD=!_hW&&_er42d()<0.28;
+        if(_hW)_euroPts+=3;else if(_hD)_euroPts+=1;
+        _grpRes.push({opp:opp.n,oppCol:opp.c,home:true,won:_hW,drew:_hD,hs:_hW?rng(1,3):_hD?rng(0,2):rng(0,1),as:_hW?rng(0,1):_hD?rng(0,2):rng(1,3)});
+        const _aW=_er42d()<_myStr/(_myStr+_oppStr)*0.9;const _aD=!_aW&&_er42d()<0.28;
+        if(_aW)_euroPts+=3;else if(_aD)_euroPts+=1;
+        _grpRes.push({opp:opp.n,oppCol:opp.c,home:false,won:_aW,drew:_aD,hs:_aW?rng(0,1):_aD?rng(0,2):rng(1,3),as:_aW?rng(1,3):_aD?rng(0,2):rng(0,1)});
+      });
+      const _euroQ=_euroPts>=7;
+      setTimeout(()=>setEuroGroupModal({competition:player.euro.competition,groupOpponents:_eOpps,groupResults:_grpRes,pts:_euroPts,qualified:_euroQ,season:player.season||1}),500);
+    }
     // Sprint 30 BF5: Nations Cup trigger — every 2 pro seasons at week 20
     if(!isInU18&&weekVal===20&&(player.season||1)%2===0&&(player.nationalCaps||0)>=2&&!(player.worldMemory||[]).some(m=>m.type==="nations_cup"&&m.season===(player.season||1))){
       const NATION_PRESTIGE={Italia:82,Spagna:90,Francia:85,Germania:87,Inghilterra:88,Portogallo:80,Brasile:91,Argentina:89,Olanda:78,Belgio:79};
@@ -9420,6 +9442,28 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
         setTimeout(()=>setWeekLiveModal({event:{txt:re.txt,e:"🆚"},changes:{morale:ef.morale||0,form:0,fatigue:0},isRivalEvent:true}),250);
       }
       // S41: cup state is now applied inside the isCupMd branch above
+      // S42: European knockout auto-sim (R16@w20, SF@w27, Final@w34)
+      {const _ew=p.week||1;const _koMap={r16:20,sf:27,final:34};const _akp=p.euro?.phase&&_koMap[p.euro.phase]===_ew?p.euro.phase:null;
+      if(!p.injured&&(p.proStatus||"u18")==="pro"&&p.euro?.active&&_akp){
+        const _KN={r16:"Ottavi di Finale",sf:"Semifinale",final:"Finale"};
+        const _KNX={r16:"sf",sf:"final",final:"champion"};
+        const _usedIds=[...(p.euro.groupOpponents||[]).map(o=>o.id),...(p.euro.koResults||[]).map(r=>r.oppId)].filter(Boolean);
+        const _minPr=p.euro.competition==="UCL"?82:p.euro.competition==="UEL"?65:52;
+        const _addPr=_akp==="final"?10:_akp==="sf"?5:0;
+        const _koPool=CLUBS.filter(c=>c.lg!==(p.club?.lg||"Serie A")&&!c.isU18&&c.p>=_minPr&&!_usedIds.includes(c.id));
+        const _koOpp=_koPool.length?pick(_koPool):CLUBS.find(c=>c.lg!==(p.club?.lg||"Serie A"))||CLUBS[0];
+        const _myStr=(p.ovr||65)*1.1+(p.form||70)*0.2;const _oppStr=(_koOpp?.p||70)+22+_addPr;
+        const _koWon=Math.random()<_myStr/(_myStr+_oppStr)*(_akp==="final"?0.95:1.05);
+        const _nextPh=_koWon?_KNX[_akp]:"eliminated";
+        const _isChamp=_koWon&&_akp==="final";
+        const _hs=_koWon?rng(1,2):rng(0,1);const _as=_koWon?rng(0,1):rng(1,2);
+        const _newKR=[...(p.euro.koResults||[]),{phase:_akp,name:_KN[_akp],oppId:_koOpp?.id,opp:_koOpp?.n,homeScore:_hs,awayScore:_as,won:_koWon}];
+        const _newTrEuro=_isChamp?[...(p.trophies||[]),{season:p.season||1,club:p.club?.n,league:p.euro.competition,type:"euro"}]:(p.trophies||[]);
+        updP={...updP,euro:{...p.euro,phase:_nextPh,koResults:_newKR,champion:_isChamp,eliminated:!_koWon},trophies:_newTrEuro};
+        const _ec=p.euro.competition;const _pn=_KN[_akp];const _koOppN=_koOpp?.n||"–";
+        setTimeout(()=>notify(`🌍 ${_ec} · ${_pn}: ${_koWon?"✅ PASSA":"❌ ELIMINATO"} vs ${_koOppN} (${_hs}–${_as})`,_koWon?TH.success:TH.danger),700);
+        if(_isChamp)setTimeout(()=>notify(`🏆🌍 HAI VINTO LA ${_ec}! LEGGENDA EUROPEA!`,"#f59e0b"),2500);
+      }}
       // Sprint 35 — Agent task resolution (effects applied before recovery)
       if(updP.agentTask&&p.hasAgent){
         var atk=updP.agentTask;
@@ -9617,6 +9661,22 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
         const r16Opp=pick(cupTeams.filter(t=>t.id!==p.club?.id&&t.n!==p.club?.n))||cupTeams[0];
         if(r16Opp)newCalendar=[...newCalendar,{matchday:990,week:CUP_ROUND_WEEKS[1],opponentId:r16Opp.id,opponentName:r16Opp.n||r16Opp.name,isHome:true,played:false,result:null,type:"cup",competition:"Coppa Nazionale",cupRound:1,cupRoundName:CUP_ROUND_NAMES[1]}];
       }
+      // S42: European qualification based on final standings (1st→UCL, 2nd-3rd→UEL, 4th→UECL)
+      let newEuro=null;
+      if((p.proStatus||"u18")==="pro"&&p.club&&nT>0){
+        const _epos=sortedForShifts.findIndex(t=>(t.id&&t.id===(p.club?.id||p.club?.n))||(t.n&&t.n===(p.club?.n||p.club?.id)));
+        if(_epos>=0&&_epos<=3){
+          const _ec=_epos===0?"UCL":_epos<=2?"UEL":"UECL";
+          const _minP=_ec==="UCL"?78:_ec==="UEL"?62:50;
+          const _maxP=_ec==="UCL"?99:_ec==="UEL"?88:74;
+          const _epool=CLUBS.filter(c=>c.lg!==(p.club?.lg||"Serie A")&&!c.isU18&&c.p>=_minP&&c.p<=_maxP);
+          let _eseed=hashStr((p.club?.id||"x")+"euro"+(newSeason||2));let _er=_eseed;
+          const _erd=()=>{_er=((_er*1664525+1013904223)&0xffffffff)>>>0;return _er/0xffffffff;};
+          const _eshuf=[..._epool].sort(()=>_erd()-0.5);
+          const _gopp=_eshuf.slice(0,3);
+          if(_gopp.length>=3)newEuro={active:true,competition:_ec,phase:"group",groupOpponents:_gopp,pts:0,groupResults:[],qualified:false,champion:false,eliminated:false,koResults:[],koRound:0};
+        }
+      }
       const coachLog=coachChanged?`🧑‍💼 Nuovo allenatore: ${newCoach.name} (${newCoach.style})`:null;
       const phenomLog=isPhenomSeason?`⚡ Fenomeno generazionale annunciato!`:null;
       const relegLog=playerClubRelegated?`⬇️ Club retrocesso: calo prestige e morale`:null;
@@ -9638,7 +9698,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       const relegated=nT>3?sortedForShifts.slice(nT-3).map(t=>t.n||t.id):[];
       const archiveEntry={season:p.season||1,league:p.club?.lg||"–",champion:champion?.n||"–",championId:champion?.id||"–",playerClub:p.club?.n||"–",playerPos:(p.standings||[]).length>0?sortedForShifts.findIndex(t=>(t.id&&t.id===(p.club?.id||p.club?.n))||(t.n&&t.n===(p.club?.n||p.club?.id)))+1:0,playerGoals:p.goals||0,playerAssists:p.assists||0,relegated};
       const newLeagueArchive=[...(p.leagueArchive||[]),archiveEntry].slice(-20);
-      return{...p,season:newSeason,age:newAge,week:1,weekLived:false,goals:0,assists:0,matches:0,fatigue:0,skillPoints:(p.skillPoints||0)+2,stats:agedStats,ovr:newOvr,contract:newContract,contractExpired,morale:clamp((p.morale||70)+bonM+(playerClubRelegated?-10:0)+(isGB?15:0),0,100),coachTrust:clamp((p.coachTrust||60)+bonCT+(playerClubRelegated?-8:0)+(coachChanged?newCoach.trustMod:0),0,100),popularity:clamp((p.popularity||20)+bonPop+(isGB?25:0),0,100),value:Math.max(0.5,(p.value||0.8)+bonVal+(playerClubRelegated?-0.3:0)+(isGB?0.8:0)),log:[agingLog,...objLogs,...[gbLog,coachLog,phenomLog,relegLog].filter(Boolean),...(p.log||[])].slice(0,60),standings:newStandings,calendar:newCalendar,matchHistory:[],seasonObjectives:newObjectives,history:[...(p.history||[]),prevHist].slice(-50),clubPrestigeShifts:updatedShifts,cup:newCup,coach:newCoach,goldenBoys:gbSeasons,records:newRecords,teammates:newTeammates,journalists:newJournalists,fanLegend:updFanLegend,leagueArchive:newLeagueArchive,...(captainReset?{isCaptain:false}:{})};
+      return{...p,season:newSeason,age:newAge,week:1,weekLived:false,goals:0,assists:0,matches:0,fatigue:0,skillPoints:(p.skillPoints||0)+2,stats:agedStats,ovr:newOvr,contract:newContract,contractExpired,morale:clamp((p.morale||70)+bonM+(playerClubRelegated?-10:0)+(isGB?15:0),0,100),coachTrust:clamp((p.coachTrust||60)+bonCT+(playerClubRelegated?-8:0)+(coachChanged?newCoach.trustMod:0),0,100),popularity:clamp((p.popularity||20)+bonPop+(isGB?25:0),0,100),value:Math.max(0.5,(p.value||0.8)+bonVal+(playerClubRelegated?-0.3:0)+(isGB?0.8:0)),log:[agingLog,...objLogs,...[gbLog,coachLog,phenomLog,relegLog].filter(Boolean),...(p.log||[])].slice(0,60),standings:newStandings,calendar:newCalendar,matchHistory:[],seasonObjectives:newObjectives,history:[...(p.history||[]),prevHist].slice(-50),clubPrestigeShifts:updatedShifts,cup:newCup,euro:newEuro,coach:newCoach,goldenBoys:gbSeasons,records:newRecords,teammates:newTeammates,journalists:newJournalists,fanLegend:updFanLegend,leagueArchive:newLeagueArchive,...(captainReset?{isCaptain:false}:{})};
     });
     // S41: double achievement — won league + cup same season
     {const _sd=[...(player.standings||[])].sort((a,b)=>b.pts-a.pts||b.gd-a.gd||b.gf-a.gf);const _ch=_sd[0];const _pid=player.club?.id||player.club?.n;if(player.cup?.champion&&_ch&&(_ch.id===_pid||_ch.n===player.club?.n)&&!(player.achievements||[]).includes("double")){setTimeout(()=>{setPlayer(p=>({...p,achievements:[...(p.achievements||[]),"double"]}));notify("🏆🏆🏆 DOPPIO! Campionato + Coppa nella stessa stagione! Leggendario!","#f59e0b");},1200);}}
@@ -10167,6 +10227,40 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
         </div>
       )}
 
+      {/* Sprint 42: Euro Group Stage Modal */}
+      {euroGroupModal&&(
+        <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.65)",zIndex:9998,display:"flex",alignItems:"center",justifyContent:"center",padding:20}}>
+          <Card style={{maxWidth:400,width:"100%",padding:"22px",maxHeight:"90vh",overflowY:"auto"}}>
+            <div style={{textAlign:"center",marginBottom:14}}>
+              <div style={{fontSize:30,marginBottom:4}}>🌍</div>
+              <div style={{fontSize:16,fontWeight:900,color:TH.text}}>{euroGroupModal.competition} — Fase a Gironi</div>
+              <div style={{fontSize:11,color:TH.muted}}>S.{euroGroupModal.season}</div>
+            </div>
+            <div style={{display:"flex",flexDirection:"column",gap:5,marginBottom:12}}>
+              {(euroGroupModal.groupResults||[]).map((r,i)=>(
+                <div key={i} style={{display:"flex",alignItems:"center",gap:8,padding:"6px 10px",borderRadius:8,background:r.won?"#dcfce7":r.drew?"#f1f5f9":"#fee2e2",border:"1px solid "+(r.won?"#86efac":r.drew?"#cbd5e1":"#fca5a5")}}>
+                  <span style={{fontSize:10,color:TH.faint,minWidth:34,textAlign:"center"}}>{r.home?"Casa":"Trasf."}</span>
+                  <span style={{fontSize:11,flex:1,fontWeight:600,color:TH.text}}>vs {r.opp}</span>
+                  <span style={{fontSize:12,fontWeight:800,color:r.won?"#16a34a":r.drew?"#64748b":"#dc2626"}}>{r.hs}–{r.as}</span>
+                  <span style={{fontSize:10,fontWeight:700,color:r.won?"#16a34a":r.drew?"#64748b":"#dc2626"}}>{r.won?"V":r.drew?"P":"S"}</span>
+                </div>
+              ))}
+            </div>
+            <div style={{textAlign:"center",padding:"10px",borderRadius:10,background:euroGroupModal.qualified?"#eff6ff":"#f1f5f9",marginBottom:14}}>
+              <div style={{fontSize:14,fontWeight:900,color:euroGroupModal.qualified?"#1e40af":"#64748b"}}>
+                {euroGroupModal.qualified?"✅ Qualificato agli Ottavi!":"❌ Eliminato dalla fase a gironi"}
+              </div>
+              <div style={{fontSize:10,color:TH.muted,marginTop:3}}>Punti: {euroGroupModal.pts}/18</div>
+            </div>
+            <Btn fw v={euroGroupModal.qualified?"primary":"secondary"} onClick={()=>{
+              const eg=euroGroupModal;
+              setPlayer(p=>({...p,morale:clamp((p.morale||70)+(eg.qualified?8:0),0,100),popularity:clamp((p.popularity||20)+(eg.qualified?5:0),0,100),euro:{...p.euro,phase:eg.qualified?"r16":"eliminated",groupResults:eg.groupResults,pts:eg.pts,qualified:eg.qualified,eliminated:!eg.qualified}}));
+              if(eg.qualified)notify("✅ Qualificato agli Ottavi di "+eg.competition+"!",TH.primary);
+              setEuroGroupModal(null);
+            }}>Avanti →</Btn>
+          </Card>
+        </div>
+      )}
       {/* Sprint 30 BF5: Nations Cup Modal */}
       {nationsCupModal&&(
         <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.6)",zIndex:9998,display:"flex",alignItems:"center",justifyContent:"center",padding:20}}>
@@ -10520,6 +10614,50 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
               )}
               {(player.cup.results||[]).length===0&&!player.cup.eliminated&&!player.cup.champion&&(
                 <div style={{fontSize:10,color:TH.faint}}>Nessun turno disputato ancora questa stagione.</div>
+              )}
+            </Card>
+          )}
+          {/* EURO — calendar tab European section */}
+          {(player.proStatus||"u18")==="pro"&&player.euro?.active&&(
+            <Card style={{borderLeft:"3px solid #1d4ed8"}}>
+              <div style={{fontSize:10,color:"#1e40af",textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>🌍 {player.euro.competition} — S.{season}</div>
+              {player.euro.champion?(
+                <div style={{fontSize:13,fontWeight:800,color:"#1d4ed8",marginBottom:6}}>🏆🌍 CAMPIONE {player.euro.competition}!</div>
+              ):player.euro.phase==="eliminated"?(
+                <div style={{fontSize:11,color:TH.danger,marginBottom:6}}>❌ Eliminato — {{group:"Fase a Gironi",r16:"Ottavi",sf:"Semifinale",final:"Finale"}[player.euro.phase]||"–"}</div>
+              ):player.euro.phase==="group"?(
+                <div style={{fontSize:11,color:"#3b82f6",marginBottom:6}}>📋 Fase a Gironi · gironi alla W.10</div>
+              ):(
+                <div style={{fontSize:11,color:"#3b82f6",marginBottom:6}}>🌍 In gara · <strong>{{r16:"Ottavi",sf:"Semifinale",final:"Finale"}[player.euro.phase]||player.euro.phase}</strong></div>
+              )}
+              {(player.euro.groupResults||[]).length>0&&(
+                <div>
+                  <div style={{fontSize:9,color:TH.faint,marginBottom:4}}>Fase a Gironi ({player.euro.pts||0}/18 pt)</div>
+                  {(player.euro.groupResults||[]).map((r,i)=>(
+                    <div key={i} style={{display:"flex",gap:8,alignItems:"center",padding:"4px 0",borderTop:"1px solid "+TH.cardBorder,fontSize:11}}>
+                      <span style={{minWidth:20,fontSize:9,background:r.won?"#f0fdf4":"#fff1f2",border:`1px solid ${r.won?TH.success:TH.danger}`,borderRadius:4,padding:"1px 4px",textAlign:"center",fontWeight:700,color:r.won?TH.success:TH.danger}}>{r.won?"V":r.drew?"P":"S"}</span>
+                      <span style={{fontSize:9,color:TH.faint,minWidth:36}}>{r.home?"Casa":"Trasf."}</span>
+                      <span style={{flex:1,color:TH.text,fontWeight:600}}>vs {r.opp}</span>
+                      <span style={{fontSize:12,fontWeight:700,color:TH.text}}>{r.hs}–{r.as}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+              {(player.euro.koResults||[]).length>0&&(
+                <div style={{marginTop:8}}>
+                  <div style={{fontSize:9,color:TH.faint,marginBottom:4}}>Fase ad Eliminazione Diretta</div>
+                  {(player.euro.koResults||[]).map((r,i)=>(
+                    <div key={i} style={{display:"flex",gap:8,alignItems:"center",padding:"4px 0",borderTop:"1px solid "+TH.cardBorder,fontSize:11}}>
+                      <span style={{minWidth:20,fontSize:9,background:r.won?"#f0fdf4":"#fff1f2",border:`1px solid ${r.won?TH.success:TH.danger}`,borderRadius:4,padding:"1px 4px",textAlign:"center",fontWeight:700,color:r.won?TH.success:TH.danger}}>{r.won?"V":"X"}</span>
+                      <span style={{fontSize:9,color:TH.faint,minWidth:60}}>{r.name}</span>
+                      <span style={{flex:1,color:TH.text,fontWeight:600}}>vs {r.opp}</span>
+                      <span style={{fontSize:12,fontWeight:700,color:TH.text}}>{r.homeScore}–{r.awayScore}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+              {!(player.euro.groupResults||[]).length&&!(player.euro.koResults||[]).length&&(
+                <div style={{fontSize:10,color:TH.faint}}>La fase a gironi si gioca alla settimana 10.</div>
               )}
             </Card>
           )}
