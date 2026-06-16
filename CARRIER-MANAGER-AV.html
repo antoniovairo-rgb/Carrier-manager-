@@ -1708,7 +1708,7 @@ const NEWSPAPERS=[
   {id:"lastampa",  name:"La Stampa Sport",       short:"La Stampa",  color:"#16a34a",e:"🗞️",tone:"analitico"},
   {id:"skysport",  name:"Sky Sport 24",          short:"Sky Sport",  color:"#0099d6",e:"📡",tone:"diretto"},
 ];
-const GAME_VERSION="3.33.0"; // Sprint 53 — Europeo & Mondiale: tornei internazionali giocabili
+const GAME_VERSION="3.33.1"; // Hotfix: bilanciamento premi (PdO, GB, Young Player)
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -3340,12 +3340,13 @@ function generateSeasonAwards(player, finalStandings){
   const playerScorerPos=allScorers.findIndex(s=>s.isPlayer);
   const playerWinsScarpa=playerScorerPos===0;
 
-  // --- Pallone d'Oro candidates ---
+  // --- Pallone d'Oro candidates --- top players in league, not player's club level
+  const _topP=Math.max(leaguePrestige+18,82); // top players are always high-prestige
   const playerPalScore=myOvr*0.38+myGoals*1.1+myAssists*0.75+(isChampion?18:0);
   const palCandidates=Array.from({length:3},(_,i)=>{
-    const cOvr=clamp(leaguePrestige+Math.round((_h(i*13+7)%22)-8),55,95);
-    const cGoals=Math.round(leaguePrestige*0.18+(_h(i*11+2)%14));
-    const cAssists=Math.round(_h(i*7+4)%9);
+    const cOvr=clamp(_topP+Math.round((_h(i*13+7)%16)-4),72,97);
+    const cGoals=Math.max(16,Math.round(_topP*0.22+(_h(i*11+2)%14)));
+    const cAssists=Math.round(_h(i*7+4)%9)+2;
     const cChamp=i===0&&!isChampion;
     return{name:lgRec.topScorers[i+1]?.name||`Campione ${i+2}`,club:finalStandings?.[i]?.n||"–",ovr:cOvr,goals:cGoals,assists:cAssists,score:cOvr*0.38+cGoals*1.1+cAssists*0.75+(cChamp?18:0)};
   });
@@ -3353,12 +3354,12 @@ function generateSeasonAwards(player, finalStandings){
     .sort((a,b)=>b.score-a.score);
   const playerWinsPallone=allPal[0].isPlayer;
 
-  // --- Young Player (U23) ---
+  // --- Young Player (U23) — raised bar: >=14 G+A and >=7 goals minimum
   const isYoung=(player.age||17)<=23;
-  const youngGoals=Math.round(_h(88)%14+3);
-  const youngWinner=isYoung&&myGoals+myAssists>=6
+  const youngGoals=Math.max(12,Math.round(_h(88)%10+10));
+  const youngWinner=isYoung&&myGoals>=7&&myGoals+myAssists>=14
     ?{name:player.name,goals:myGoals,assists:myAssists,isPlayer:true}
-    :{name:lgRec.topScorers[Math.floor(_h(44)/25)]?.name||"Giovane Talento",goals:youngGoals,assists:Math.round(_h(55)%7),isPlayer:false};
+    :{name:lgRec.topScorers[Math.floor(_h(44)/25)]?.name||"Giovane Talento",goals:youngGoals,assists:Math.round(_h(55)%7)+2,isPlayer:false};
 
   // --- Season record check ---
   const beatSeasonRecord=myGoals>lgRec.seasonRecord.goals;
@@ -10241,8 +10242,8 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       if(done){bonM+=(obj.bonus?.morale||0);bonCT+=(obj.bonus?.coachTrust||0);bonPop+=(obj.bonus?.popularity||0);bonVal+=(obj.bonus?.value||0);objLogs.push(`✅ ${obj.label}`);}
       else{bonM-=8;bonCT-=5;objLogs.push(`❌ Mancato: ${obj.label}`);}
     });
-    // S13.4: Golden Boy — age ≤23, pro, goals+assists ≥10 in season
-    const isGB=(player.proStatus||"u18")==="pro"&&(player.age||17)<=23&&((player.goals||0)+(player.assists||0))>=10&&!(player.goldenBoys||[]).includes(player.season||1);
+    // S13.4: Golden Boy — age ≤21, pro, goals+assists ≥20 AND goals ≥10, once per career, 55% random competition
+    const isGB=(player.proStatus||"u18")==="pro"&&(player.age||17)<=21&&(player.goals||0)>=10&&((player.goals||0)+(player.assists||0))>=20&&(player.goldenBoys||[]).length===0&&Math.random()<0.55;
     const gbSeasons=isGB?[...(player.goldenBoys||[]),player.season||1]:(player.goldenBoys||[]);
     // S13.5: Records update
     const _rec=player.records||{topSeasonGoals:0,topSeasonAssists:0,topOvr:60};
