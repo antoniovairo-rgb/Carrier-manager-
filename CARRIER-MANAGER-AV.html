@@ -1624,7 +1624,7 @@ const NEWSPAPERS=[
   {id:"lastampa",  name:"La Stampa Sport",       short:"La Stampa",  color:"#16a34a",e:"🗞️",tone:"analitico"},
   {id:"skysport",  name:"Sky Sport 24",          short:"Sky Sport",  color:"#0099d6",e:"📡",tone:"diretto"},
 ];
-const GAME_VERSION="3.24.0"; // Sprint 43 — National matches playable: friendly callup + Nations Cup via LiveMatch
+const GAME_VERSION="3.25.0"; // Sprint 44 — LiveMatch UX/UI: height-based canvas, no page scroll, mobile cronaca strip, isNarrow 640px
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -3577,7 +3577,7 @@ function colorCharGLB(model,jerHex){
 ===================================================== */
 const PC_PW=360,PC_PH=580,PC_FX=30,PC_FY=40,PC_FW=300,PC_FH=480;
 const PC_FCX=PC_FX+PC_FW/2,PC_FCY=PC_FY+PC_FH/2;
-function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,onWalkoutDone,avatarId,actionZoom,allPlayers,homeClub,ballX,ballY,waveEvent,driftTargets,timeOfDay,attendance,actionEffect,weather,heatPoints,showHeatMap}){
+function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,onWalkoutDone,avatarId,actionZoom,allPlayers,homeClub,ballX,ballY,waveEvent,driftTargets,timeOfDay,attendance,actionEffect,weather,heatPoints,showHeatMap,isDesktop=false}){
   homeCol=homeCol||"#22c55e";oppCol=oppCol||"#ef4444";opponents=opponents||[];
   matchPhase=matchPhase||"match";actionZoom=actionZoom||false;allPlayers=allPlayers||[];
   const canvasRef=useRef(null);
@@ -4382,9 +4382,13 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
   },[matchPhase]);
 
   return(
-    <div style={{width:"100%",background:"#0a0e1a",borderRadius:"0 0 12px 12px",overflow:"hidden",display:"flex",justifyContent:"center"}}>
+    <div style={isDesktop
+      ?{height:"100%",background:"#0a0e1a",borderRadius:"0 0 12px 12px",overflow:"hidden",display:"flex",justifyContent:"center",alignItems:"center"}
+      :{width:"100%",background:"#0a0e1a",borderRadius:"0 0 12px 12px",overflow:"hidden",display:"flex",justifyContent:"center"}}>
       <canvas ref={canvasRef}
-        style={{display:"block",width:"100%",height:"auto",margin:"0 auto"}}/>
+        style={isDesktop
+          ?{display:"block",height:"100%",width:"auto",maxWidth:"100%"}
+          :{display:"block",width:"100%",height:"auto"}}/>
     </div>
   );
 }
@@ -5395,9 +5399,9 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   const gkDiveRef=useRef(null); // GK dive direction for rigore
   // context-aware realistic attendance
   const [attendance]=useState(()=>calcAttendance(context==="trial"?null:(player.club||opponent),context));
-  // responsive layout: narrow = stacked vertically
-  const [isNarrow,setIsNarrow]=useState(()=>window.innerWidth<430);
-  useEffect(()=>{const fn=()=>setIsNarrow(window.innerWidth<430);window.addEventListener("resize",fn);return()=>window.removeEventListener("resize",fn);},[]);
+  // responsive layout: narrow = stacked vertically (phones + tablets up to 640px)
+  const [isNarrow,setIsNarrow]=useState(()=>window.innerWidth<640);
+  useEffect(()=>{const fn=()=>setIsNarrow(window.innerWidth<640);window.addEventListener("resize",fn);return()=>window.removeEventListener("resize",fn);},[]);
   // persistent seeded rosters for both teams
   const [homeRoster]=useState(()=>{const r=generateTeamRoster(player.club||opponent,player.season||1);r[10]={name:player.name,role:"Centravanti"};return r;});
   const [awayRoster]=useState(()=>generateTeamRoster(opponent,player.season||1));
@@ -6224,9 +6228,9 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
       {phase==="formations"&&<FormationView homeTeam={player.club||opponent} awayTeam={opponent} player={player} homeRoster={homeRoster} awayRoster={awayRoster} onContinue={()=>setPhase("walkout")} onSkip={()=>setPhase("playing")} oppTactic={oppTactic} oppTacticLoading={oppTacticLoading} homeKitCol={homeKitCol} awayKitCol={awayKitCol}/>}
 
       {(show3D||phase==="walkout")&&(
-        <Card style={{padding:0,overflow:"hidden",marginBottom:10}} shadow>
+        <Card style={{padding:0,overflow:"hidden",marginBottom:10,display:"flex",flexDirection:"column",maxHeight:"calc(100vh - 20px)"}} shadow>
           {/* ── Scoreboard Premium ── */}
-          <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"7px 12px",borderBottom:"1px solid rgba(255,255,255,0.08)",background:"linear-gradient(135deg,#060d1e 0%,#0f1e3a 100%)"}}>
+          <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"7px 12px",borderBottom:"1px solid rgba(255,255,255,0.08)",background:"linear-gradient(135deg,#060d1e 0%,#0f1e3a 100%)",flex:"0 0 auto"}}>
             {/* Home team */}
             <div style={{display:"flex",alignItems:"center",gap:7,minWidth:0,flex:1}}>
               <TeamBadge team={player.club||opponent} size={28}/>
@@ -6279,10 +6283,10 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           </div>
 
           {/* ── Field + Panel: responsive layout ── */}
-          <div style={isNarrow?{position:"relative",minHeight:`calc(100vw * ${(PC_PH/PC_PW).toFixed(4)})`}:{display:"flex",flexDirection:"row",alignItems:"stretch",minHeight:0}}>
+          <div style={isNarrow?{position:"relative",minHeight:`calc(100vw * ${(PC_PH/PC_PW).toFixed(4)})`}:{display:"flex",flexDirection:"row",alignItems:"stretch",flex:1,minHeight:0,overflow:"hidden"}}>
 
-            {/* FIELD — 72% wide on desktop, full width on narrow */}
-            <div style={{flex:isNarrow?"none":"0 0 72%",position:"relative",overflow:"hidden",alignSelf:"flex-start"}}>
+            {/* FIELD — height-constrained on desktop, full width on narrow */}
+            <div style={{flex:isNarrow?"none":"0 0 auto",position:"relative",overflow:"hidden",alignSelf:isNarrow?"auto":"stretch"}}>
               <PitchCanvas playerX={pPos.x} playerY={pPos.y} zone={zone}
                 homeCol={homeKitCol} oppCol={awayKitCol}
                 opponents={opponents.current} matchPhase={matchPhase3D} avatarId={player.avatarId||0}
@@ -6291,6 +6295,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                 driftTargets={driftTargetsRef.current} timeOfDay={timeOfDay}
                 attendance={attendance} actionEffect={actionEffect} weather={weather}
                 heatPoints={heatPointsRef.current} showHeatMap={showHeatMap}
+                isDesktop={!isNarrow}
                 onWalkoutDone={()=>setPhase("playing")}/>
               {phase==="walkout"&&<WalkoutOverlay homeTeam={player.club||opponent} homeRoster={homeRoster} awayRoster={awayRoster} opponent={opponent} isHome={isMatchHome} matchWeek={player.week} onDone={()=>{if(benchStart)setOnBench(true);setPhase("playing");}} weather={weather} isDerbyMatch={!!drby} isBigGame={mw>=7}/>}
               {screenFlash&&<div style={{position:"absolute",inset:0,background:screenFlash.col,zIndex:20,pointerEvents:"none",animation:`fadeFlash ${screenFlash.dur}ms ease-out forwards`}}/>}
@@ -6386,10 +6391,25 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                   <div style={{fontSize:7,color:"rgba(255,255,255,0.22)",textAlign:"center"}}>Enter →</div>
                 </div>
               )}
+              {/* ── MOBILE CRONACA STRIP — bottom-left, visible during playing/hl phases ── */}
+              {isNarrow&&["playing","hl_move","hl_choose"].includes(phase)&&coms.length>0&&(
+                <div style={{position:"absolute",bottom:0,left:0,width:"54%",zIndex:6,
+                  background:"rgba(5,8,20,0.72)",backdropFilter:"blur(3px)",
+                  borderTopRightRadius:10,padding:"5px 8px 6px",pointerEvents:"none"}}>
+                  {coms.slice(0,3).map((c,i)=>(
+                    <div key={i} style={{fontSize:8,color:i===0?c.color:"rgba(255,255,255,0.4)",lineHeight:1.3,
+                      paddingBottom:i<2?"2px 0":"0",
+                      borderBottom:i<2?"1px solid rgba(255,255,255,0.06)":"none",
+                      overflow:"hidden",whiteSpace:"nowrap",textOverflow:"ellipsis"}}>
+                      <span style={{color:"rgba(255,255,255,0.3)",marginRight:3,fontSize:7}}>{c.t}'</span>{c.text}
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
 
             {/* RIGHT: info + action panel */}
-            <div style={isNarrow?{position:"absolute",bottom:0,left:0,right:0,zIndex:5,background:"transparent",border:"none"}:{flex:1,display:"flex",flexDirection:"column",background:"#0f172a",borderLeft:"1px solid rgba(255,255,255,0.08)",minWidth:0,overflow:"hidden"}}>
+            <div style={isNarrow?{position:"absolute",bottom:0,left:0,right:0,zIndex:5,background:"transparent",border:"none"}:{flex:1,display:"flex",flexDirection:"column",background:"#0f172a",borderLeft:"1px solid rgba(255,255,255,0.08)",minWidth:180,overflow:"hidden"}}>
 
               {/* Action zone — only during HL phases */}
               {(phase==="hl_move"||(phase==="hl_choose"&&movesLeft>0))&&curSit&&(
