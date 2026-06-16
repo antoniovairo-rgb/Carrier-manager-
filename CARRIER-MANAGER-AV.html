@@ -1708,7 +1708,7 @@ const NEWSPAPERS=[
   {id:"lastampa",  name:"La Stampa Sport",       short:"La Stampa",  color:"#16a34a",e:"🗞️",tone:"analitico"},
   {id:"skysport",  name:"Sky Sport 24",          short:"Sky Sport",  color:"#0099d6",e:"📡",tone:"diretto"},
 ];
-const GAME_VERSION="3.31.0"; // Sprint 51 — Record Storici + Diario Automatico
+const GAME_VERSION="3.32.0"; // Sprint 52 — Coppa Nazionale Pro completa: bracket simulation + visualizzazione
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -8913,6 +8913,27 @@ const buildCareerCard=(p)=>{
 /* ========================================
    CAREER APP  (req #9,#10,#12,#13,#14)
 ======================================== */
+
+// Sprint 52: simulate all non-player cup bracket matches for a given round
+const _simCupOtherMatches=(cup,playerClubId,opponentId,playerWon,homeScore,awayScore)=>{
+  const cupRound=cup.round||1;
+  const roundKey=["r16","quarters","semi","final"][cupRound-1]||`r${cupRound}`;
+  const survivors=cup.cupSurvivors||(cup.bracket||[]);
+  const otherIds=survivors.filter(id=>id!==playerClubId&&id!==opponentId);
+  const getClub=id=>CLUBS.find(c=>c.id===id||c.n===id)||{id,n:String(id||"?"),p:70,c:"#888",a:String(id||"?").slice(0,3).toUpperCase()};
+  const bracketMatches=[];
+  for(let i=0;i<otherIds.length;i+=2){
+    if(!otherIds[i+1])break;
+    const hc=getClub(otherIds[i]);const ac=getClub(otherIds[i+1]);
+    const sr=simulateMatch(hc,ac,70,true);
+    const mWon=sr.won||(sr.drew&&Math.random()<0.55);
+    bracketMatches.push({home:otherIds[i],away:otherIds[i+1],homeScore:sr.homeScore,awayScore:sr.awayScore,winner:mWon?otherIds[i]:otherIds[i+1]});
+  }
+  bracketMatches.push({home:playerClubId,away:opponentId,homeScore,awayScore,winner:playerWon?playerClubId:opponentId,isPlayer:true});
+  const nextSurvivors=[...(playerWon?[playerClubId]:[]),...bracketMatches.filter(m=>!m.isPlayer).map(m=>m.winner)];
+  return{roundKey,bracketMatches,nextSurvivors};
+};
+
 const CAREER_MILESTONES=[
   {id:"g10",check:p=>(p.totalGoals||0)>=10,txt:"⚽ 10 gol in carriera raggiunti!",color:"#16a34a"},
   {id:"g25",check:p=>(p.totalGoals||0)>=25,txt:"🔥 25 gol in carriera! Bomber in ascesa.",color:"#f59e0b"},
@@ -9622,13 +9643,19 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
         const cupRound=p.cup?.round||1;
         const newCupResults=[...(p.cup?.results||[]),{round:cupRound,name:_CRN[cupRound]||`R${cupRound}`,opponent:result.opponent,homeScore:result.homeScore,awayScore:result.awayScore,won:isCupWon,penalties:isCupPenalties}];
         const newTrophies=(isCupWon&&cupRound===4)?[...(p.trophies||[]),{season:p.season||1,club:p.club?.n,league:"Coppa",type:"cup"}]:(p.trophies||[]);
-        cupUpdate2={cup:{...p.cup,round:cupRound+1,nextWeek:isCupWon&&cupRound<4?_CRW[cupRound+1]:null,eliminated:!isCupWon,champion:isCupWon&&cupRound===4,results:newCupResults},trophies:newTrophies};
+        // Sprint 52: simulate other bracket matches and compute survivors
+        const _pId=p.club?.id||p.club?.n;
+        const _oppId=cupCalEntry?.opponentId||result.opponent;
+        const _cm52=_simCupOtherMatches(p.cup,_pId,_oppId,isCupWon,result.homeScore,result.awayScore);
+        const newBracketMatches={...(p.cup.cupBracketMatches||{}),[_cm52.roundKey]:_cm52.bracketMatches};
+        cupUpdate2={cup:{...p.cup,round:cupRound+1,nextWeek:isCupWon&&cupRound<4?_CRW[cupRound+1]:null,eliminated:!isCupWon,champion:isCupWon&&cupRound===4,results:newCupResults,cupBracketMatches:newBracketMatches,cupSurvivors:_cm52.nextSurvivors},trophies:newTrophies};
         if(isCupWon&&cupRound<4){
           const nextRound=cupRound+1;const nextWeek=_CRW[nextRound];
-          const lc2=getLeagueClubs(p);const bc=(p.cup?.bracket||[]).map(id=>lc2.find(c=>c.id===id||c.n===id)).filter(Boolean);
-          const usedOp=newCupResults.map(r=>r.opponent);
-          const nxtOpp=pick(bc.filter(c=>c.id!==p.club?.id&&c.n!==p.club?.n&&!usedOp.includes(c.n)))||pick(bc.filter(c=>c.id!==p.club?.id));
-          if(nxtOpp&&nextWeek)extraCupCal=[{matchday:990+nextRound,week:nextWeek,opponentId:nxtOpp.id,opponentName:nxtOpp.n||nxtOpp.name,isHome:Math.random()<0.5,played:false,result:null,type:"cup",competition:"Coppa Nazionale",cupRound:nextRound,cupRoundName:_CRN[nextRound]}];
+          // Sprint 52: pick next opp from survivors (not from full bracket)
+          const _surv52=_cm52.nextSurvivors.filter(id=>id!==_pId);
+          const nxtOppId=pick(_surv52)||null;
+          const nxtOpp=nxtOppId?(CLUBS.find(c=>c.id===nxtOppId||c.n===nxtOppId)||{id:nxtOppId,n:nxtOppId}):null;
+          if(nxtOpp&&nextWeek)extraCupCal=[{matchday:990+nextRound,week:nextWeek,opponentId:nxtOpp.id||nxtOppId,opponentName:nxtOpp.n||nxtOppId,isHome:Math.random()<0.5,played:false,result:null,type:"cup",competition:"Coppa Nazionale",cupRound:nextRound,cupRoundName:_CRN[nextRound]}];
         }
       }
       const newCal=[...(p.calendar||[]).map(md=>md.week===(p.week||1)&&!md.played&&(_isCup?md.type==="cup":md.type!=="cup")?{...md,played:true,result:{homeScore:result.homeScore,awayScore:result.awayScore,won:result.won,drew:result.drew}}:md),...extraCupCal];
@@ -9641,6 +9668,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       if((p.totalGoals||0)===0&&result.goals>0)_md51.push({season:p.season||1,week:p.week||1,type:"first_goal",e:"⚽",headline:"Primo gol in carriera!",body:`${result.goals} gol contro ${result.opponent} (${result.homeScore}-${result.awayScore})`,color:"#16a34a"});
       if(result.goals>=3)_md51.push({season:p.season||1,week:p.week||1,type:"hattrick",e:"🎩",headline:"Hat-trick!",body:`${result.goals} gol contro ${result.opponent} (${result.homeScore}-${result.awayScore}) · S.${p.season||1}`,color:"#f59e0b"});
       triggeredMilestones.forEach(m=>_md51.push({season:p.season||1,week:p.week||1,type:"milestone",e:"🏅",headline:m.txt,body:`S.${p.season||1} · Settimana ${p.week||1}`,color:m.color}));
+      if(isCupFinal)_md51.push({season:p.season||1,week:p.week||1,type:"cup_trophy",e:"🏆",headline:"Campione di Coppa Nazionale!",body:`🏆 ${p.club?.n||""} vince la Coppa · S.${p.season||1} (${result.homeScore}-${result.awayScore} vs ${result.opponent})`,color:"#f59e0b"});
       const newDiary51=[...(p.diary||[]),..._md51].slice(-80);
       return{...p,stats:ns,ovr:newOvr,goals:p.goals+result.goals,assists:p.assists+result.assists,matches:p.matches+1,totalGoals:p.totalGoals+result.goals,totalAssists:p.totalAssists+result.assists,totalMatches:p.totalMatches+1,morale:clamp(p.morale+moD,0,100),form:clamp((p.form||70)+formD,30,95),fatigue:postFatigue,...(newInjured?{injured:true,injuryWeeks,injuryType}:{}),week:(p.week||1)+1,weekLived:false,log:[logE,...(p.log||[])].slice(0,60),matchHistory:newHistory,standings:newStandings,calendar:newCal,aiData:newAiData,...(newMilestoneIds.length>0?{milestones:[...(p.milestones||[]),...newMilestoneIds]}:{}),...cupUpdate2,diary:newDiary51};
     });
@@ -9950,16 +9978,22 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
             const cpPen=!sim.won&&sim.drew&&cupWon;
             const newCupResults=[...(p.cup?.results||[]),{round:cupRound,name:_CRN[cupRound]||`R${cupRound}`,opponent:opp.n,homeScore:sim.homeScore,awayScore:sim.awayScore,won:cupWon,penalties:cpPen}];
             const newTrophies=(cupWon&&cupRound===4)?[...(p.trophies||[]),{season:p.season||1,club:p.club?.n,league:"Coppa",type:"cup"}]:(p.trophies||[]);
+            // Sprint 52: simulate other bracket matches
+            const _pId52=p.club?.id||p.club?.n;
+            const _cm52s=_simCupOtherMatches(p.cup,_pId52,opp.id||opp.n,cupWon,sim.homeScore,sim.awayScore);
+            const newBM52={...(p.cup.cupBracketMatches||{}),[_cm52s.roundKey]:_cm52s.bracketMatches};
             let newCal=(p.calendar||[]).map(m=>m.week===(p.week||1)&&m.type==="cup"&&!m.played?{...m,played:true,result:{homeScore:sim.homeScore,awayScore:sim.awayScore,won:cupWon,drew:sim.drew},simulated:true}:m);
             if(cupWon&&cupRound<4){
               const nextRound=cupRound+1;const nextWeek=_CRW[nextRound];
-              const bc=(p.cup?.bracket||[]).map(id=>lc.find(c=>c.id===id||c.n===id)).filter(Boolean);
-              const usedOp=newCupResults.map(r=>r.opponent);
-              const nxtOpp=pick(bc.filter(c=>c.id!==p.club?.id&&c.n!==p.club?.n&&!usedOp.includes(c.n)))||pick(bc.filter(c=>c.id!==p.club?.id));
-              if(nxtOpp&&nextWeek)newCal=[...newCal,{matchday:990+nextRound,week:nextWeek,opponentId:nxtOpp.id,opponentName:nxtOpp.n||nxtOpp.name,isHome:Math.random()<0.5,played:false,result:null,type:"cup",competition:"Coppa Nazionale",cupRound:nextRound,cupRoundName:_CRN[nextRound]}];
+              const _surv52s=_cm52s.nextSurvivors.filter(id=>id!==_pId52);
+              const nxtOppId=pick(_surv52s)||null;
+              const nxtOpp=nxtOppId?(CLUBS.find(c=>c.id===nxtOppId||c.n===nxtOppId)||{id:nxtOppId,n:nxtOppId}):null;
+              if(nxtOpp&&nextWeek)newCal=[...newCal,{matchday:990+nextRound,week:nextWeek,opponentId:nxtOpp.id||nxtOppId,opponentName:nxtOpp.n||nxtOppId,isHome:Math.random()<0.5,played:false,result:null,type:"cup",competition:"Coppa Nazionale",cupRound:nextRound,cupRoundName:_CRN[nextRound]}];
             }
             const newHist=[...(p.matchHistory||[]),{week:p.week||1,opponent:opp.n,oppAbbr:opp.a,oppCol:opp.c,homeScore:sim.homeScore,awayScore:sim.awayScore,goals:0,assists:0,rating:sim.rating,won:cupWon,drew:false,simulated:true,cup:true,cupRound:_CRN[cupRound]}].slice(-200);
-            updP={...updP,calendar:newCal,matchHistory:newHist,matches:(p.matches||0)+1,morale:clamp(p.morale+(cupWon?3:-2),0,100),cup:{...p.cup,round:cupRound+1,nextWeek:cupWon&&cupRound<4?_CRW[cupRound+1]:null,eliminated:!cupWon,champion:cupWon&&cupRound===4,results:newCupResults},trophies:newTrophies};
+            // Sprint 52: diary entry for cup win
+            const _cupDiary52=cupWon&&cupRound===4?[{season:p.season||1,week:p.week||1,type:"cup_trophy",e:"🏆",headline:"Campione di Coppa Nazionale!",body:`🏆 ${p.club?.n||""} vince la Coppa · S.${p.season||1} (sim.)`,color:"#f59e0b"}]:[];
+            updP={...updP,calendar:newCal,matchHistory:newHist,matches:(p.matches||0)+1,morale:clamp(p.morale+(cupWon?3:-2),0,100),cup:{...p.cup,round:cupRound+1,nextWeek:cupWon&&cupRound<4?_CRW[cupRound+1]:null,eliminated:!cupWon,champion:cupWon&&cupRound===4,results:newCupResults,cupBracketMatches:newBM52,cupSurvivors:_cm52s.nextSurvivors},trophies:newTrophies,diary:[...(p.diary||[]),..._cupDiary52].slice(-80)};
             setTimeout(()=>notify(`🏆 Coppa · ${_CRN[cupRound]}: ${cupWon?"✅ PASSA (sim.)":"❌ ELIMINATO (sim.)"} vs ${opp.n} (${sim.homeScore}-${sim.awayScore}${cpPen?" · ai rigori":""})`,cupWon?TH.success:TH.danger),900);
             if(cupWon&&cupRound===4)setTimeout(()=>notify("🏆🏆 HAI VINTO LA COPPA NAZIONALE! Straordinario!","#f59e0b"),2800);
           } else {
@@ -10211,7 +10245,8 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
         const lcAll=lc.length?lc:getLeagueClubs(p);
         const cupTeams=shuffle([...lcAll]).slice(0,Math.min(16,lcAll.length));
         if(!cupTeams.some(t=>t.id===p.club?.id||t.n===p.club?.n))cupTeams[0]=p.club;
-        newCup={active:true,round:1,nextWeek:9,eliminated:false,champion:false,results:[],bracket:cupTeams.map(t=>t.id||t.n)};
+        const _s52cupBracket=cupTeams.map(t=>t.id||t.n);
+        newCup={active:true,round:1,nextWeek:9,eliminated:false,champion:false,results:[],bracket:_s52cupBracket,cupSurvivors:_s52cupBracket,cupBracketMatches:{}};
         const r16Opp=pick(cupTeams.filter(t=>t.id!==p.club?.id&&t.n!==p.club?.n))||cupTeams[0];
         if(r16Opp)newCalendar=[...newCalendar,{matchday:990,week:CUP_ROUND_WEEKS[1],opponentId:r16Opp.id,opponentName:r16Opp.n||r16Opp.name,isHome:true,played:false,result:null,type:"cup",competition:"Coppa Nazionale",cupRound:1,cupRoundName:CUP_ROUND_NAMES[1]}];
       }
@@ -11199,7 +11234,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                 </div>);
               })()}
               {(player.cup.results||[]).length>0&&(
-                <div>
+                <div style={{marginBottom:4}}>
                   {player.cup.results.map((r,i)=>(
                     <div key={i} style={{display:"flex",gap:8,alignItems:"center",padding:"5px 0",borderTop:"1px solid "+TH.cardBorder,fontSize:11}}>
                       <span style={{minWidth:24,fontSize:9,background:r.won?"#f0fdf4":"#fff1f2",border:`1px solid ${r.won?TH.success:TH.danger}`,borderRadius:4,padding:"1px 4px",textAlign:"center",fontWeight:700,color:r.won?TH.success:TH.danger}}>{r.won?"V":"X"}</span>
@@ -11210,6 +11245,36 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                   ))}
                 </div>
               )}
+              {/* Sprint 52 — bracket results for other teams */}
+              {(()=>{
+                const bm=player.cup.cupBracketMatches||{};
+                const playedRounds=[{k:"r16",l:"R16"},{k:"quarters",l:"Quarti"},{k:"semi",l:"Semi"},{k:"final",l:"Finale"}].filter(r=>(bm[r.k]||[]).length>0);
+                if(!playedRounds.length)return null;
+                const pId=player.club?.id||player.club?.n;
+                const getAbbr=id=>{const c=CLUBS.find(c=>c.id===id||c.n===id);return c?.a||String(id||"?").slice(0,3).toUpperCase();};
+                return(
+                  <div style={{marginTop:8,paddingTop:8,borderTop:"1px solid "+TH.cardBorder}}>
+                    <div style={{fontSize:8,color:TH.faint,textTransform:"uppercase",letterSpacing:1.5,marginBottom:6}}>Risultati completi del tabellone</div>
+                    {playedRounds.map((r,ri)=>(
+                      <div key={r.k} style={{marginBottom:ri<playedRounds.length-1?10:0}}>
+                        <div style={{fontSize:8,color:"#92400e",fontWeight:700,textTransform:"uppercase",letterSpacing:1,marginBottom:4}}>{r.l}</div>
+                        {(bm[r.k]||[]).map((m,mi)=>{
+                          const isP=m.isPlayer;
+                          const hWon=m.winner===m.home;
+                          const pIsHome=m.home===pId;const pIsAway=m.away===pId;
+                          return(
+                            <div key={mi} style={{display:"flex",alignItems:"center",gap:4,padding:"3px 0",borderTop:mi>0?"1px solid "+TH.cardBorder:"none",background:isP?"#fffbeb":"transparent",borderRadius:isP?4:0}}>
+                              <span style={{fontSize:9,fontWeight:hWon?700:400,color:isP&&pIsHome?TH.warning:(hWon?TH.text:TH.faint),flex:1,minWidth:0,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{isP&&pIsHome?"⭐ ":""}{getAbbr(m.home)}</span>
+                              <span style={{fontSize:9,fontWeight:600,color:isP?"#d97706":TH.faint,minWidth:32,textAlign:"center"}}>{m.homeScore}–{m.awayScore}</span>
+                              <span style={{fontSize:9,fontWeight:!hWon?700:400,color:isP&&pIsAway?TH.warning:(!hWon?TH.text:TH.faint),flex:1,textAlign:"right",minWidth:0,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{getAbbr(m.away)}{isP&&pIsAway?" ⭐":""}</span>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    ))}
+                  </div>
+                );
+              })()}
               {(player.cup.results||[]).length===0&&!player.cup.eliminated&&!player.cup.champion&&(
                 <div style={{fontSize:10,color:TH.faint}}>Nessun turno disputato ancora questa stagione.</div>
               )}
@@ -11914,6 +11979,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
               record:{e:"📈",color:"#7c3aed"},
               first_national:{e:"🏳️",color:"#2563eb"},
               first_national_goal:{e:"🌍",color:"#0ea5e9"},
+              cup_trophy:{e:"🏆",color:"#f59e0b"},
             };
             const dEntries=[...(player.diary||[])].reverse().slice(0,15);
             return(
