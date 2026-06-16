@@ -1624,7 +1624,7 @@ const NEWSPAPERS=[
   {id:"lastampa",  name:"La Stampa Sport",       short:"La Stampa",  color:"#16a34a",e:"🗞️",tone:"analitico"},
   {id:"skysport",  name:"Sky Sport 24",          short:"Sky Sport",  color:"#0099d6",e:"📡",tone:"diretto"},
 ];
-const GAME_VERSION="3.26.7"; // Sprint 45h — fix mobile gioca partita: portal ReactDOM su body bypassa overflow-scrolling
+const GAME_VERSION="3.26.8"; // Sprint 45i — revert wrapper a {width:100%} stabile, gioca partita mobile fix
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -9932,8 +9932,8 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
   if(screen==="match"&&matchOpp){
     const usePhaserRenderer=localStorage.getItem("cpm-renderer")==="phaser";
     const phaserMatchEnd=stats=>onMatchEnd({goals:stats.playerGoals||stats.goals||0,assists:stats.playerAssists||stats.assists||0,homeScore:stats.squadAGoals,awayScore:stats.squadBGoals,won:stats.result==="WIN",drew:stats.result==="DRAW",opponent:matchOpp?.name||matchOpp?.n,oppAbbr:matchOpp?.a||matchOpp?.abbr,oppCol:matchOpp?.col||matchOpp?.c,rating:stats.rating,context:matchContext||"career",oppTactic:null,scoutReport:null});
-    const matchEl=(
-      <div style={isNarrow?{position:"fixed",top:0,left:0,right:0,bottom:0,zIndex:999,background:TH.bg,overflowY:"auto"}:{width:"100%"}}>
+    return(
+      <div style={{width:"100%"}}>
         <button onClick={()=>{setScreen("dashboard");setTab("dashboard");}} style={{background:"none",border:"none",color:TH.muted,cursor:"pointer",fontSize:13,marginBottom:8,display:"flex",alignItems:"center",gap:6}}>← Carriera</button>
         {usePhaserRenderer
           ?<FootballMatch2D playerData={player} squadAColor={player.club?.col||player.club?.c||"#22c55e"} squadBColor={matchOpp?.col||matchOpp?.c||"#ef4444"} duration={300} onMatchEnd={phaserMatchEnd}/>
@@ -9975,7 +9975,6 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
         )}
       </div>
     );
-    return isNarrow ? ReactDOM.createPortal(matchEl,document.body) : matchEl;
   }
 
   if(screen==="press"&&lastPressReport){
