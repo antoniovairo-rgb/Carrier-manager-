@@ -1624,7 +1624,7 @@ const NEWSPAPERS=[
   {id:"lastampa",  name:"La Stampa Sport",       short:"La Stampa",  color:"#16a34a",e:"🗞️",tone:"analitico"},
   {id:"skysport",  name:"Sky Sport 24",          short:"Sky Sport",  color:"#0099d6",e:"📡",tone:"diretto"},
 ];
-const GAME_VERSION="3.26.9"; // Sprint 45j — zero padding cpm-scroll su mobile durante match, card calc(100dvh-30px)
+const GAME_VERSION="3.27.0"; // Sprint 46 — World League ecosystem: classifiche reali settimana per settimana per tutte le leghe
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -3278,6 +3278,38 @@ function updateStandings(standings,playerClubId,playerResult,prestigeShifts){
     else{h.draws++;h.pts++;a.draws++;a.pts++;}
   }
   return s.sort((a,b)=>b.pts-a.pts||b.gd-a.gd||b.gf-a.gf);
+}
+// Sprint 46 — World League ecosystem: deterministic week-by-week standings for all leagues
+// Seeded xorshift32 PRNG: same seed → same sequence, no Math.random()
+function seededRng(seed){let s=(seed>>>0)||1;return()=>{s^=s<<13;s^=s>>>17;s^=s<<5;s>>>=0;return s/4294967296;};}
+// Poisson goals with external RNG (same lambda logic as updateStandings / poissonGoals)
+function seededPoissonGoals(lambda,rng){const L=Math.exp(-Math.min(lambda,6));let k=0,p=1;do{k++;p*=rng();}while(p>L&&k<9);return Math.max(0,k-1);}
+// Compute world league standings deterministically for (lg, season, currentWeek)
+// Calling twice with same args always returns identical result — safe to compute on-demand
+function calcWorldStandings(lg,season,currentWeek){
+  const clubs=CLUBS.filter(c=>c.lg===lg&&!c.isU18);
+  if(clubs.length<2)return[];
+  const st=clubs.map(c=>({...c,played:0,wins:0,draws:0,losses:0,gf:0,ga:0,gd:0,pts:0}));
+  const lgH=hashStr(lg)>>>0;
+  const wMax=Math.min(currentWeek||1,38);
+  for(let w=1;w<=wMax;w++){
+    const rng=seededRng((lgH+season*100003+w*9973)>>>0);
+    // Fisher-Yates shuffle with seeded rng to get this week's pairings
+    const ord=clubs.map((_,i)=>i);
+    for(let i=ord.length-1;i>0;i--){const j=Math.floor(rng()*(i+1));[ord[i],ord[j]]=[ord[j],ord[i]];}
+    for(let i=0;i+1<ord.length;i+=2){
+      const h=st[ord[i]],a=st[ord[i+1]];
+      const pd=clamp(((h.p||50)-(a.p||50))/30,-1,1);
+      const lH=clamp(1.15+pd*0.4,0.3,2.5),lA=clamp(1.00-pd*0.35,0.25,2.2);
+      const hG=seededPoissonGoals(lH,rng),aG=seededPoissonGoals(lA,rng);
+      h.played++;a.played++;h.gf+=hG;h.ga+=aG;h.gd=h.gf-h.ga;
+      a.gf+=aG;a.ga+=hG;a.gd=a.gf-a.ga;
+      if(hG>aG){h.wins++;h.pts+=3;a.losses++;}
+      else if(hG<aG){a.wins++;a.pts+=3;h.losses++;}
+      else{h.draws++;h.pts++;a.draws++;a.pts++;}
+    }
+  }
+  return[...st].sort((a,b)=>b.pts-a.pts||b.gd-a.gd||b.gf-a.gf);
 }
 // context-aware realistic attendance
 function calcAttendance(homeClub,context){
@@ -10790,20 +10822,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
         const selLg=standingsLg||myLeague;
         const getRows=(lg)=>{
           if(lg===myLeague)return player.standings||[];
-          const clubs=CLUBS.filter(c=>c.lg===lg);
-          if(!clubs.length)return[];
-          const seed=(player.season||1)*1000+hashStr(lg);
-          let r=seed;const rand=()=>{r=((r*1664525+1013904223)&0xffffffff)>>>0;return r/0xffffffff;};
-          const md=(clubs.length-1)*2; // full double round-robin season
-          return [...clubs].map(club=>{
-            const base=Math.round((club.p||50)/99*md*0.52);
-            const wins=clamp(base+Math.round((rand()-0.5)*4),0,md);
-            const draws=clamp(Math.round(rand()*2),0,md-wins);
-            const losses=Math.max(0,md-wins-draws);
-            const gf=wins*2+draws+Math.round(rand()*4);
-            const ga=losses*2+draws+Math.round(rand()*4);
-            return{id:club.id,n:club.n,a:club.a,abbr:club.a,c:club.c,col:club.c,played:md,wins,draws,losses,gf,ga,gd:gf-ga,pts:wins*3+draws};
-          }).sort((a,b)=>b.pts-a.pts||b.gd-a.gd);
+          return calcWorldStandings(lg,player.season||1,player.week||1);
         };
         const rows=getRows(selLg);
         const N=rows.length;
@@ -10818,7 +10837,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
           </div>
           <Card>
             <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:10}}>
-              Classifica {selLg} — S.{season}{selLg!==myLeague&&<span style={{fontSize:8,color:TH.faint,marginLeft:4}}>(proiezione)</span>}
+              Classifica {selLg} — S.{season}{selLg===myLeague?<span style={{fontSize:8,color:TH.success,marginLeft:4}}>● Live</span>:<span style={{fontSize:8,color:TH.faint,marginLeft:4}}>W.{player.week||1}/38</span>}
             </div>
             <div style={{overflowX:"auto"}}>
               <table style={{width:"100%",borderCollapse:"collapse",fontSize:11}}>
