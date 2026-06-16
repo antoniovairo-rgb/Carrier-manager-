@@ -1708,7 +1708,7 @@ const NEWSPAPERS=[
   {id:"lastampa",  name:"La Stampa Sport",       short:"La Stampa",  color:"#16a34a",e:"🗞️",tone:"analitico"},
   {id:"skysport",  name:"Sky Sport 24",          short:"Sky Sport",  color:"#0099d6",e:"📡",tone:"diretto"},
 ];
-const GAME_VERSION="3.32.0"; // Sprint 52 — Coppa Nazionale Pro completa: bracket simulation + visualizzazione
+const GAME_VERSION="3.33.0"; // Sprint 53 — Europeo & Mondiale: tornei internazionali giocabili
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -9127,6 +9127,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     if(!('euro' in newP)){newP={...newP,euro:null};changed=true;}
     // Sprint 43 migrations
     if(!('nationsCupQueue' in newP)){newP={...newP,nationsCupQueue:null};changed=true;}
+    if(!('euroMondiale' in newP)){newP={...newP,euroMondiale:null};changed=true;} // Sprint 53
     if(changed){setPlayer(newP);}
   },[]);// eslint-disable-line
   const[darkMode,setDarkMode]=useState(()=>localStorage.getItem("cpm-dark")==="1");
@@ -9493,6 +9494,60 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
   const onMatchEnd=result=>{
     setLastMatch(result);
     setMisterDiscorsoModal(null); // safety net: clear any stale pre-match coach speech
+    // Sprint 53: Europeo/Mondiale match — early return
+    if(result.context==="euroMondiale_group"||result.context==="euroMondiale_ko"){
+      setMatchContext("career");
+      const isGrp=result.context==="euroMondiale_group";
+      const _emKoWon=!isGrp&&(result.won||(result.drew&&Math.random()<0.5));
+      const _emCurQ=player.euroMondiale||{};
+      const _emGroupIdx=(_emCurQ.groupMatchIdx||0)+1;
+      const _emGroupPts=(_emCurQ.groupPts||0)+(result.won?3:result.drew?1:0);
+      const _emAllGroupDone=isGrp&&_emGroupIdx>=(_emCurQ.groupOpponents||[]).length;
+      const _emGroupQualified=_emAllGroupDone&&_emGroupPts>=3;
+      const _emGroupOut=_emAllGroupDone&&!_emGroupQualified;
+      const _emKoPhase=_emCurQ.koPhase||"semi";
+      const _emIsChamp=!isGrp&&_emKoWon&&_emKoPhase==="final";
+      const _emIsFinalist=!isGrp&&_emKoWon&&_emKoPhase==="semi";
+      const _allNat=["Italia","Spagna","Francia","Germania","Inghilterra","Portogallo","Brasile","Argentina","Olanda","Belgio"];
+      setPlayer(p=>{
+        const em=p.euroMondiale||{};
+        if(isGrp){
+          const newGM=[...(em.groupMatches||[]),{opp:result.opponent,won:result.won,drew:result.drew,homeScore:result.homeScore,awayScore:result.awayScore,goals:result.goals||0}];
+          const newIdx=_emGroupIdx; const newPts=_emGroupPts;
+          if(_emAllGroupDone){
+            const qualified=_emGroupQualified;
+            const koOppPool=_allNat.filter(n=>n!==(p.nation||"Italia")&&!(em.groupOpponents||[]).includes(n));
+            const koOpp=pick(koOppPool)||_allNat[0];
+            return{...p,euroMondiale:{...em,phase:qualified?"semi":"done",groupMatchIdx:newIdx,groupPts:newPts,groupMatches:newGM,qualified,eliminated:!qualified,koOpponent:qualified?koOpp:null,koPhase:qualified?"semi":null,done:!qualified}};
+          }
+          return{...p,euroMondiale:{...em,groupMatchIdx:newIdx,groupPts:newPts,groupMatches:newGM}};
+        }
+        // KO phase
+        const koPhase=em.koPhase||"semi";
+        const koWon=_emKoWon;
+        const newKOR=[...(em.koResults||[]),{phase:koPhase,opp:result.opponent,won:koWon,homeScore:result.homeScore,awayScore:result.awayScore,goals:result.goals||0,penalties:result.drew&&koWon}];
+        const isChamp=koWon&&koPhase==="final";
+        const nextPhase=koWon&&koPhase==="semi"?"final":null;
+        const finalOppPool=_allNat.filter(n=>n!==(p.nation||"Italia")&&n!==em.koOpponent&&!(em.groupOpponents||[]).includes(n));
+        const finalOpp=nextPhase?pick(finalOppPool)||_allNat[0]:null;
+        const newMem=isChamp?[...(p.worldMemory||[]),{type:"euro_mondiale",season:p.season||1,type_em:em.type,won:true}]:(p.worldMemory||[]);
+        const newTrophies=isChamp?[...(p.trophies||[]),{season:p.season||1,club:p.nation||"Italia",league:em.type||"Torneo",isNational:true,type:"int"}]:(p.trophies||[]);
+        const _emDiary=isChamp?[{season:p.season||1,week:p.week||1,type:"euro_mondiale_trophy",e:"🌍",headline:`${em.type||"Torneo"} VINTO!`,body:`${p.nation||"Italia"} Campione ${em.type||"Torneo"} S.${p.season||1}!`,color:"#7c3aed"}]:[];
+        const morD=isChamp?25:koWon?12:-8;const popD=isChamp?25:koWon?10:0;
+        return{...p,euroMondiale:{...em,koPhase:nextPhase,koOpponent:finalOpp,koResults:newKOR,champion:isChamp,eliminated:!koWon,done:!nextPhase,phase:nextPhase||"done"},worldMemory:newMem,trophies:newTrophies,diary:[...(p.diary||[]),..._emDiary].slice(-80),morale:clamp((p.morale||70)+morD,0,100),popularity:clamp((p.popularity||20)+popD,0,100)};
+      });
+      if(isGrp){
+        if(_emGroupOut)setTimeout(()=>notify(`😔 ${_emCurQ.type||"Torneo"}: eliminato dalla fase a gironi.`,TH.danger),400);
+        else if(_emGroupQualified)setTimeout(()=>notify(`🌍 ${_emCurQ.type||"Torneo"}: qualificato alle semifinali! (${_emGroupPts} pt)`,TH.success),400);
+        else setTimeout(()=>notify(`🌍 ${_emCurQ.type||"Torneo"}: partita ${_emGroupIdx}/2 · ${result.won?"✅":result.drew?"🤝":"❌"}. Punti: ${_emGroupPts}/6`,TH.accent),300);
+      } else {
+        if(_emIsChamp)setTimeout(()=>notify(`🏆🌍 ${_emCurQ.type||"Torneo"} VINTO! ${player.nation||"Italia"} CAMPIONI!`,"#f59e0b"),400);
+        else if(_emIsFinalist)setTimeout(()=>notify(`🌍 ${_emCurQ.type||"Torneo"}: sei in FINALE!`,TH.success),400);
+        else setTimeout(()=>notify(`😔 ${_emCurQ.type||"Torneo"}: eliminato in ${_emKoPhase==="semi"?"Semifinale":"Finale"}.`,TH.danger),400);
+      }
+      setScreen("postmatch");setTab("dashboard");
+      return;
+    }
     // Sprint 43: national / Nations Cup match — early return, no week advance, no injury/standings
     if(result.context==="national"||result.context==="nationsCup"){
       const isNat=result.context==="national";
@@ -9916,8 +9971,8 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
         setTimeout(()=>setEuroGroupModal({competition:player.euro.competition,groupOpponents:player.euro.groupOpponents||[],groupResults:player.euro.groupResults||[],pts:player.euro.pts||0,qualified:_euroQ,season:player.season||1}),500);
       }
     }
-    // Sprint 43: Nations Cup trigger — every 2 pro seasons at week 20, now sets playable queue
-    if(!isInU18&&weekVal===20&&(player.season||1)%2===0&&(player.nationalCaps||0)>=2&&!(player.worldMemory||[]).some(m=>m.type==="nations_cup"&&m.season===(player.season||1))&&!player.nationsCupQueue?.active){
+    // Sprint 43: Nations Cup trigger — every 2 pro seasons at week 20 (Sprint 53: skip on euroMondiale years)
+    if(!isInU18&&weekVal===20&&(player.season||1)%2===0&&(player.season||1)%4!==0&&(player.nationalCaps||0)>=2&&!(player.worldMemory||[]).some(m=>m.type==="nations_cup"&&m.season===(player.season||1))&&!player.nationsCupQueue?.active){
       const _allNat=["Italia","Spagna","Francia","Germania","Inghilterra","Portogallo","Brasile","Argentina","Olanda","Belgio"];
       const _oppPool=_allNat.filter(n=>n!==(player.nation||"Italia"));
       const _seed=hashStr((player.nation||"Italia")+(player.season||1));
@@ -9926,6 +9981,18 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       const _opps=_shuffled.slice(0,3);
       setPlayer(p=>({...p,nationsCupQueue:{active:true,opponents:_opps,matchIdx:0,pts:0,matches:[],done:false,season:p.season||1}}));
       setTimeout(()=>notify("🌍 Sei convocato per la Coppa delle Nazioni! Gioca le 3 partite dal tuo profilo.",TH.accent),500);
+    }
+    // Sprint 53: Europeo/Mondiale — ogni 4 stagioni pro a settimana 24
+    if(!isInU18&&weekVal===24&&(player.season||1)%4===0&&(player.nationalCaps||0)>=3&&!player.euroMondiale?.active&&!(player.worldMemory||[]).some(m=>m.type==="euro_mondiale"&&m.season===(player.season||1))){
+      const _emType=(player.season||1)%8===0?"Mondiale":"Europeo";
+      const _allNat=["Italia","Spagna","Francia","Germania","Inghilterra","Portogallo","Brasile","Argentina","Olanda","Belgio"];
+      const _oppPool=_allNat.filter(n=>n!==(player.nation||"Italia"));
+      const _seed=hashStr((player.nation||"Italia")+_emType+(player.season||1));
+      let _sr=_seed;const _srng=()=>{_sr=((_sr*1664525+1013904223)&0xffffffff)>>>0;return _sr/0xffffffff;};
+      const _shuffled=[..._oppPool].sort(()=>_srng()-.5);
+      const _groupOpps=_shuffled.slice(0,2);
+      setPlayer(p=>({...p,euroMondiale:{active:true,type:_emType,season:p.season||1,phase:"group",groupOpponents:_groupOpps,groupMatchIdx:0,groupPts:0,groupMatches:[],koPhase:null,koOpponent:null,koResults:[],qualified:false,champion:false,eliminated:false,done:false}}));
+      setTimeout(()=>notify(`🌍 ${_emType} — Convocato con ${player.nation||"Italia"}! Gioca dal pannello Nazione.`,TH.accent),500);
     }
 
     // Normal week advance
@@ -10358,6 +10425,19 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     setMatchOpp({id:nd.id,n:oppName,a:nd.a,p:nd.p,c:nd.c,c2:nd.c2,nat:nd.nat});
     setMatchIsHome(true);
     setMatchContext("nationsCup");
+    setScreen("match");
+  };
+  const startEuroMondialeMatch=()=>{ // Sprint 53
+    const em=player.euroMondiale;
+    if(!em||!em.active||em.done)return;
+    let oppName;
+    if(em.phase==="group")oppName=(em.groupOpponents||[])[em.groupMatchIdx||0]||"Spagna";
+    else oppName=em.koOpponent||"Germania";
+    const nd=NAT_CLUB_DATA[oppName]||{id:"xx-nt",a:"INT",p:85,c:"#1a1a1a",c2:"#fff",nat:"🏳️"};
+    matchBenchStartRef.current=false;
+    setMatchOpp({id:nd.id,n:oppName,a:nd.a,p:nd.p,c:nd.c,c2:nd.c2,nat:nd.nat});
+    setMatchIsHome((em.groupMatchIdx||0)%2===0);
+    setMatchContext(em.phase==="group"?"euroMondiale_group":"euroMondiale_ko");
     setScreen("match");
   };
 
@@ -11040,6 +11120,22 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
           <Btn fw onClick={startNationsCupMatch} style={{padding:"11px",fontSize:13}}>🏟️ Gioca Partita Nazionali</Btn>
         </Card>
       )}
+      {/* Sprint 53: Europeo/Mondiale pending card */}
+      {tab==="dashboard"&&player.euroMondiale?.active&&!player.euroMondiale?.done&&(()=>{
+        const em=player.euroMondiale;
+        const phaseLabel={group:`Gironi · Partita ${(em.groupMatchIdx||0)+1}/2`,semi:"Semifinale",final:"Finale"}[em.phase]||"–";
+        const oppName=em.phase==="group"?(em.groupOpponents||[])[em.groupMatchIdx||0]:em.koOpponent;
+        const emCol=em.type==="Mondiale"?"#4f46e5":"#0369a1";
+        return(
+          <Card style={{marginBottom:8,padding:"12px 14px",border:`1px solid ${emCol}`,background:`${emCol}10`}}>
+            <div style={{fontSize:10,color:emCol,textTransform:"uppercase",letterSpacing:1.5,marginBottom:6}}>{em.type==="Mondiale"?"🌍 Coppa del Mondo":"🏆 Europeo"} · S.{em.season} · {phaseLabel}</div>
+            <div style={{fontSize:12,color:TH.text,fontWeight:600,marginBottom:2}}>vs {oppName||"?"}</div>
+            {em.phase==="group"&&<div style={{fontSize:10,color:TH.muted,marginBottom:10}}>Punti gironi: {em.groupPts||0}/6 · Serve min. 3pt per qualificarsi</div>}
+            {em.phase!=="group"&&<div style={{fontSize:10,color:TH.muted,marginBottom:10}}>Partita da eliminazione diretta · Nessun pareggio</div>}
+            <Btn fw onClick={startEuroMondialeMatch} style={{padding:"11px",fontSize:13,background:emCol,color:"#fff"}}>{em.type==="Mondiale"?"🌍":"🏆"} Gioca per la Nazionale</Btn>
+          </Card>
+        );
+      })()}
       {/* Season objectives progress */}
       {tab==="dashboard"&&(player.seasonObjectives||[]).length>0&&(
         <Card style={{marginBottom:8,padding:"10px 14px"}}>
@@ -11947,6 +12043,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
               ex_club:{e:"🏟️",label:(m)=>`${m.club||"Club"} — ex squadra (S.${m.season})`},
               career_moment:{e:"⭐",label:(m)=>m.label||`Momento chiave S.${m.season}`},
               nations_cup:{e:"🌍",label:(m)=>m.won?`🏆 Coppa delle Nazioni vinta! (S.${m.season})`:m.qualified?`Qualificato — Coppa Nazioni S.${m.season}`:`Coppa Nazioni S.${m.season}`},
+              euro_mondiale:{e:"🌍",label:(m)=>m.won?`🏆 ${m.type_em||"Torneo"} VINTO! (S.${m.season})`:`${m.type_em||"Torneo"} S.${m.season}`},
             };
             const entries=(player.worldMemory||[]).filter(m=>MEM_META[m.type]).slice(-12).reverse();
             if(!entries.length)return null;
@@ -11980,6 +12077,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
               first_national:{e:"🏳️",color:"#2563eb"},
               first_national_goal:{e:"🌍",color:"#0ea5e9"},
               cup_trophy:{e:"🏆",color:"#f59e0b"},
+              euro_mondiale_trophy:{e:"🌍",color:"#7c3aed"},
             };
             const dEntries=[...(player.diary||[])].reverse().slice(0,15);
             return(
