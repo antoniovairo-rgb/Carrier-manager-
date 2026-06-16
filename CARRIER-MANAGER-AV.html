@@ -700,6 +700,15 @@ const WEEKLY_EVENTS=[
   {w:3,txt:"🏗️ Lavori al centro sportivo. Allenamenti disturbati.",ef:{fatigue:12,morale:-5,form:-4}},
   {w:3,txt:"😤 Incomprensione tattica con il centrocampista titolare.",ef:{morale:-8,coachTrust:-3}},
   {w:2,txt:"😶 Il club acquista un attaccante nel tuo ruolo. Paura.",ef:{morale:-14,coachTrust:-6,form:-5}},
+  // Sprint 40 — nuovi eventi settimanali
+  {w:5,txt:"⚔️ Settimana pre-derby. Tensione altissima al centro sportivo.",ef:{morale:6,fatigue:8,form:4}},
+  {w:4,txt:"📱 Un tuo gol è diventato virale sui social. I tifosi ti contattano in massa.",ef:{popularity:12,morale:8,value:0.04}},
+  {w:4,txt:"📰 I media parlano di interesse dall'estero per te. Voci di mercato.",ef:{popularity:8,morale:5,value:0.05}},
+  {w:3,txt:"🎉 Un gruppo di tifosi ha fondato un fan club ufficiale a tuo nome.",ef:{popularity:14,morale:10}},
+  {w:4,txt:"🌍 Voci di un osservatore della nazionale in tribuna per osservarti.",ef:{morale:8,form:5,popularity:6}},
+  {w:6,txt:"🎙️ Un veterano dello spogliatoio ti svela segreti del mestiere. Lezione preziosa.",ef:{form:5,coachTrust:6,morale:7}},
+  {w:5,txt:"💚 Settimana di recupero mentale dopo una brutta partita. Il mister ti supporta.",ef:{morale:9,form:4,coachTrust:5}},
+  {w:5,txt:"🩹 Fastidio muscolare in allenamento. Nulla di grave — ma un campanello d'allarme.",ef:{fatigue:10,form:-4,morale:-3}},
 ];
 
 /* ========================================
@@ -892,6 +901,23 @@ const WEEKLY_IMPULSES=[
   {id:"wi_ct_radar",cat:"opportunità",txt:"Il commissario tecnico della tua nazionale ti osserva in allenamento. Sai che guarda.",choices:[
     {txt:"🔥 Mi supero — voglio essere visto",ef:{form:8,coachTrust:4,fatigue:6}},
     {txt:"😐 Mi alleno normalmente",ef:{form:2}},
+  ]},
+  {id:"wi_giornalista_mercato",cat:"tensione",txt:"Un giornalista ti chiede in conferenza se vuoi essere ceduto. Le telecamere sono puntate su di te.",choices:[
+    {txt:"🤐 Resto focalizzato sulla squadra",ef:{coachTrust:6,popularity:3,morale:2}},
+    {txt:"📢 Ammetto che ci sto pensando",ef:{coachTrust:-8,popularity:7,morale:-4}},
+    {txt:"😏 Dico che decido a fine stagione",ef:{coachTrust:-2,popularity:4}},
+  ]},
+  {id:"wi_vice_infortunato",cat:"leadership",txt:"Il vice-capitano si fa male. Il mister ti chiede di guidare il gruppo in questo momento difficile.",choices:[
+    {txt:"💪 Prendo le responsabilità — sono pronto",ef:{coachTrust:10,morale:6,fatigue:5,form:4}},
+    {txt:"😐 Faccio il mio — nient'altro",ef:{coachTrust:2,morale:2}},
+  ]},
+  {id:"wi_prestito_inverno",cat:"opportunità",txt:"Un club di una categoria inferiore ti vuole in prestito per giocare con continuità. Il club lascia a te la scelta.",choices:[
+    {txt:"✅ Vado — ho bisogno di giocare",ef:{form:8,morale:9,coachTrust:-5,value:0.06}},
+    {txt:"❌ Resto e mi batto qui",ef:{coachTrust:5,morale:4,fatigue:5}},
+  ]},
+  {id:"wi_nazionale_b",cat:"opportunità",txt:"Sei convocato per un raduno della nazionale Under B. Opportunità di farti vedere a livello internazionale.",choices:[
+    {txt:"🌍 Vado — mi metto in mostra",ef:{popularity:12,form:6,morale:10,fatigue:8}},
+    {txt:"🏠 Resto con il club — è un momento delicato",ef:{coachTrust:8,morale:3,form:3}},
   ]},
 ];
 
@@ -1258,6 +1284,15 @@ S("🎯 Lancio lungo millimetrico! Scatta in profondità.",["trequarti","centro"
 /* Duello in velocità sulla fascia */
 S("⚡ Sprint sulla fascia! 1 contro 1 col terzino.",["bordo","trequarti"],{x:[60,88],y:[3,22]},{x:[62,76],y:[5,18]},[
   A("⚡ Spunto esplosivo","velocità",8,"assist","intercept",20),A("🌀 Dribbling di tecnica","tecnica",5,"assist","nothing",16),A("💥 Tiro cross teso","tiro",3,"goal","miss",13)]),
+/* Rigore nel finale */
+S("🔴 RIGORE! Sul dischetto a 5' dalla fine. Respira. Tira.",["area"],{x:[84,90],y:[44,56]},{x:[86,89],y:[47,53]},[
+  A("💥 Angolo basso — potenza","tiro",12,"goal","miss_easy",10),A("🌀 Cucchiaio — glaciale","tecnica",2,"goal","miss_easy",20),A("⚡ Incrociato rasoterra","velocità",6,"goal","miss",14)]),
+/* Rimonta — sotto di due gol */
+S("🔙 Siamo sotto 0-2. Segnare adesso cambia tutto.",["trequarti","bordo"],{x:[55,80],y:[25,75]},{x:[58,72],y:[30,70]},[
+  A("🔥 Prendo in mano la squadra","mentalità",8,"goal","through",18),A("⚡ Scatto in verticale","velocità",6,"goal","intercept",16),A("🎯 Lancio smarcante","passaggio",5,"assist","intercept",12)]),
+/* Doppia marcatura */
+S("👥 Doppia marcatura! Due difensori ti raddoppiano.",["trequarti"],{x:[55,70],y:[20,80]},{x:[58,68],y:[28,72]},[
+  A("🌀 Dribbling stretto — li elimino entrambi","tecnica",10,"goal","intercept",18),A("↩️ Dai e ricevi — smarca il compagno","passaggio",7,"assist","intercept",14),A("⚡ Scatto diagonale istantaneo","velocità",5,"goal","intercept",16)]),
 ];
 
 const ZONES={
@@ -1361,6 +1396,13 @@ const BG_MATCH=[
   {txt:"💥 Entrata dura di {A}! Cartellino giallo immediato nel derby.",ef:null,derbyOnly:true,w:2,bpos:{x:48,y:52},ms:{fouls:1},pd:"midfield"},
   {txt:"🏟️ Lo stadio rugge: è il derby, nulla conta di più.",ef:null,derbyOnly:true,w:3,bpos:{x:50,y:50},pd:"midfield"},
   {txt:"⚡ Ritmo forsennato! Nel derby non si fa prigionieri.",ef:null,derbyOnly:true,w:2,bpos:{x:60,y:50},pd:"attack"},
+  // Injury time & late-game drama
+  {txt:"⏱️ Recupero concesso! L'arbitro mostra il tabellino. Tutto ancora in gioco.",ef:null,w:1,bpos:{x:50,y:50},pd:"midfield"},
+  {txt:"📺 VAR in corso... schermo luminoso in campo. L'arbitro corre verso il monitor.",ef:null,w:0.8,bpos:{x:50,y:50},pd:"midfield"},
+  {txt:"🩹 {P} si tocca la coscia. Due minuti a terra — poi si rialza tra gli applausi.",ef:null,w:1.5,bpos:{x:50,y:50},pd:"midfield"},
+  {txt:"🟡 Fallo tattico di {A}! Cartellino meritato ma {H} guadagna metà campo.",ef:null,w:2,bpos:{x:40,y:50},ms:{fouls:1},pd:"midfield"},
+  {txt:"🔥 {H} preme alla ricerca del pareggio. La difesa avversaria inizia a vacillare.",ef:null,w:2,poss:3,bpos:{x:65,y:50},pd:"attack"},
+  {txt:"💪 {H} non molla. La squadra ritrova energia dal nulla — si sente nell'aria.",ef:null,w:1.5,poss:2,bpos:{x:55,y:50},pd:"midfield"},
 ];
 const OUTCOME_TX={
   goal:["💥 GOOOOOL! Folla in delirio!","⚽ Rete spettacolare!","🔥 Imparabile!","🌟 Fenomenale!"],
@@ -1582,7 +1624,7 @@ const NEWSPAPERS=[
   {id:"lastampa",  name:"La Stampa Sport",       short:"La Stampa",  color:"#16a34a",e:"🗞️",tone:"analitico"},
   {id:"skysport",  name:"Sky Sport 24",          short:"Sky Sport",  color:"#0099d6",e:"📡",tone:"diretto"},
 ];
-const GAME_VERSION="3.20.0"; // Sprint 39 — Mercato Trasferimenti: finestra mercato interattiva, lista transfer, fai girare il nome
+const GAME_VERSION="3.21.0"; // Sprint 40 — Content Expansion: +3 SITUATIONS, +6 BG_MATCH, +8 WEEKLY_EVENTS, +4 WEEKLY_INCIDENTS
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
