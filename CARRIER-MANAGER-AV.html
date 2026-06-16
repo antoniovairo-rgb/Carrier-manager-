@@ -1624,7 +1624,7 @@ const NEWSPAPERS=[
   {id:"lastampa",  name:"La Stampa Sport",       short:"La Stampa",  color:"#16a34a",e:"🗞️",tone:"analitico"},
   {id:"skysport",  name:"Sky Sport 24",          short:"Sky Sport",  color:"#0099d6",e:"📡",tone:"diretto"},
 ];
-const GAME_VERSION="3.27.0"; // Sprint 46 — World League ecosystem: classifiche reali settimana per settimana per tutte le leghe
+const GAME_VERSION="3.27.1"; // Sprint 47 — Full EN/IT translation: getContinuaState, match prompt, weekLive modal
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -8547,6 +8547,7 @@ const CHALLENGES=[
 const LOCALE={
   IT:{
     tabs:{dashboard:"Home",calendar:"Calendario",standings:"Classifica",training:"Allena",profile:"Profilo"},
+    agent:"Agente",
     liveWeek:"⚡ Vivi la Settimana",rehab:"🏥 Sessione Riabilitazione",weekLived:"✅ Settimana vissuta",advanceWeek:"⏭️ Avanza Settimana",
     season:"Stagione",week:"Settimana",matches:"Partite",goals:"Gol",assists:"Assist",
     morale:"Morale",form:"Forma",coachTrust:"Fiducia mister",popularity:"Popolarità",fatigue:"Fatica",
@@ -8561,9 +8562,26 @@ const LOCALE={
     talkCoach:"Parla col Mister",singleActions:"Azioni singole",
     export:"Esporta salvataggio JSON",toggleDark:"Scuro",toggleLight:"Chiaro",
     langChanged:"Lingua: Italiano 🇮🇹",
+    backToCareer:"← Carriera",backToDashboard:"🏟️ Torna alla Dashboard",
+    postMatch:"POST MATCH",
+    goalLabel:"Gol",assistLabel:"Assist",ratingLabel:"Voto",
+    shots:"Tiri",possession:"Possesso",fouls:"Falli",corners:"Corner",
+    ratingExcellent:"Eccellente!",ratingGood:"Buona partita",ratingSufficient:"Sufficiente",ratingPoor:"Da migliorare",
+    pressReview:"📰 Rassegna Stampa",
+    liveWeekSub:"allenamento, eventi e crescita",
+    homeMatch:"Casa",awayMatch:"Trasferta",cup:"Coppa",
+    rehabWeeksLeft:"sett. rimanenti",stopWeeksLeft:"sett. di stop rimanenti",
+    advanceInjured:"⏭️ Avanza (infortunato)",
+    matchPromptTitle:"Hai una partita!",matchPromptCup:"Gara di Coppa!",matchPromptWhat:"cosa vuoi fare?",
+    understood:"✅ Capito",cannotPlayInjured:"Non puoi giocare (infortunato)",
+    skipAndRecover:"⏭️ Salta e recupera settimana",cancelStay:"rimani in dashboard",
+    weekHeader:"Settimana",thisWeek:"Questa settimana",
+    weekLivedNote:"La settimana è stata vissuta. Clicca \"Avanza\" per passare alla prossima o gioca la partita prima.",
+    rehabCompletedNote:"Sessione completata. Clicca 'Avanza Settimana' per continuare il recupero.",
   },
   EN:{
     tabs:{dashboard:"Home",calendar:"Calendar",standings:"Standings",training:"Training",profile:"Profile"},
+    agent:"Agent",
     liveWeek:"⚡ Live Week",rehab:"🏥 Rehab Session",weekLived:"✅ Week Lived",advanceWeek:"⏭️ Advance Week",
     season:"Season",week:"Week",matches:"Matches",goals:"Goals",assists:"Assists",
     morale:"Morale",form:"Form",coachTrust:"Coach Trust",popularity:"Popularity",fatigue:"Fatigue",
@@ -8578,6 +8596,22 @@ const LOCALE={
     talkCoach:"Talk to Coach",singleActions:"Single Actions",
     export:"Export save JSON",toggleDark:"Dark",toggleLight:"Light",
     langChanged:"Language: English 🇬🇧",
+    backToCareer:"← Career",backToDashboard:"🏟️ Back to Dashboard",
+    postMatch:"POST MATCH",
+    goalLabel:"Goals",assistLabel:"Assists",ratingLabel:"Rating",
+    shots:"Shots",possession:"Possession",fouls:"Fouls",corners:"Corners",
+    ratingExcellent:"Excellent!",ratingGood:"Good game",ratingSufficient:"Sufficient",ratingPoor:"Needs work",
+    pressReview:"📰 Press Review",
+    liveWeekSub:"training, events and growth",
+    homeMatch:"Home",awayMatch:"Away",cup:"Cup",
+    rehabWeeksLeft:"weeks left",stopWeeksLeft:"weeks out remaining",
+    advanceInjured:"⏭️ Advance (injured)",
+    matchPromptTitle:"You have a match!",matchPromptCup:"Cup Match!",matchPromptWhat:"what do you want to do?",
+    understood:"✅ Got it",cannotPlayInjured:"Can't play (injured)",
+    skipAndRecover:"⏭️ Skip and recover week",cancelStay:"stay on dashboard",
+    weekHeader:"Week",thisWeek:"This week",
+    weekLivedNote:"Week completed. Click 'Advance' to go to the next or play the match first.",
+    rehabCompletedNote:"Session completed. Click 'Advance Week' to continue your recovery.",
   },
 };
 const buildCareerCard=(p)=>{
@@ -8647,6 +8681,7 @@ const generateBio=(p)=>{
   return lines.join(" ");
 };
 function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLang,onNewGamePlusCB}){
+  const L=LOCALE[lang]||LOCALE.IT; // disponibile fin dall'inizio, usato anche negli early return
   const[player,setPlayer]=useState(init);
   const[tab,setTab]=useState("dashboard");
   const[screen,setScreen]=useState("dashboard");
@@ -9095,14 +9130,14 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       const iWeeks=player.injuryWeeks||1;
       const iType=player.injuryType||"stiramento";
       if(!player.weekLived){
-        return{label:"🏥 Sessione Riabilitazione",sub:`${iWeeks} sett. rimanenti · ${INJURY_TYPES_META[iType]?.label||iType}`,color:"#ea580c",disabled:false};
+        return{label:L.rehab,sub:`${iWeeks} ${L.rehabWeeksLeft} · ${INJURY_TYPES_META[iType]?.label||iType}`,color:"#ea580c",disabled:false};
       }
-      return{label:"⏭️ Avanza (infortunato)",sub:`${iWeeks} sett. di stop rimanenti`,color:"#dc2626",disabled:false};
+      return{label:L.advanceInjured,sub:`${iWeeks} ${L.stopWeeksLeft}`,color:"#dc2626",disabled:false};
     }
-    if(!player.weekLived)return{label:"⚡ Vivi la Settimana",sub:"allenamento, eventi e crescita",color:TH.primary,disabled:false};
+    if(!player.weekLived)return{label:L.liveWeek,sub:L.liveWeekSub,color:TH.primary,disabled:false};
     const md=getThisWeekMatchday();
-    if(md){const isCupM=md.type==="cup";return{label:`${isCupM?"🏆":"⚽"} Gioca vs ${md.opponentName}`,sub:isCupM?`Coppa · ${md.cupRoundName||"Round"} · W.${md.week}`:`${md.isHome?"🏟️ Casa":"✈️ Trasferta"} · W.${md.week}`,color:isCupM?"#f59e0b":"#16a34a",disabled:false};}
-    return{label:"⏭️ Avanza Settimana",sub:`W.${player.week||1} → W.${(player.week||1)+1}`,color:TH.primary,disabled:false};
+    if(md){const isCupM=md.type==="cup";return{label:`${isCupM?"🏆":"⚽"} ${L.playMatch} vs ${md.opponentName}`,sub:isCupM?`${L.cup} · ${md.cupRoundName||"Round"} · W.${md.week}`:`${md.isHome?`🏟️ ${L.homeMatch}`:`✈️ ${L.awayMatch}`} · W.${md.week}`,color:isCupM?"#f59e0b":"#16a34a",disabled:false};}
+    return{label:L.advanceWeek,sub:`W.${player.week||1} → W.${(player.week||1)+1}`,color:TH.primary,disabled:false};
   };
 
   const [lastPressReport,setLastPressReport]=useState(null);
@@ -9975,7 +10010,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     const phaserMatchEnd=stats=>onMatchEnd({goals:stats.playerGoals||stats.goals||0,assists:stats.playerAssists||stats.assists||0,homeScore:stats.squadAGoals,awayScore:stats.squadBGoals,won:stats.result==="WIN",drew:stats.result==="DRAW",opponent:matchOpp?.name||matchOpp?.n,oppAbbr:matchOpp?.a||matchOpp?.abbr,oppCol:matchOpp?.col||matchOpp?.c,rating:stats.rating,context:matchContext||"career",oppTactic:null,scoutReport:null});
     return(
       <div style={{width:"100%"}}>
-        <button onClick={()=>{setScreen("dashboard");setTab("dashboard");}} style={{background:"none",border:"none",color:TH.muted,cursor:"pointer",fontSize:13,marginBottom:8,display:"flex",alignItems:"center",gap:6}}>← Carriera</button>
+        <button onClick={()=>{setScreen("dashboard");setTab("dashboard");}} style={{background:"none",border:"none",color:TH.muted,cursor:"pointer",fontSize:13,marginBottom:8,display:"flex",alignItems:"center",gap:6}}>{L.backToCareer}</button>
         {usePhaserRenderer
           ?<FootballMatch2D playerData={player} squadAColor={player.club?.col||player.club?.c||"#22c55e"} squadBColor={matchOpp?.col||matchOpp?.c||"#ef4444"} duration={300} onMatchEnd={phaserMatchEnd}/>
           :<LiveMatch player={player} opponent={matchOpp} context={matchContext||"career"} onMatchEnd={onMatchEnd} isMatchHome={matchIsHome} benchStart={matchBenchStartRef.current}/>
@@ -10025,7 +10060,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
   if(screen==="postmatch"&&lastMatch){
     const r=lastMatch,rating=r.rating,rc=rating>=8?TH.success:rating>=6.5?TH.warning:TH.danger;
     const hasMatchStats=r.shots!=null;
-    return <div style={{width:"100%"}}><Card style={{textAlign:"center",padding:"24px",maxWidth:560,margin:"0 auto"}}><div style={{fontSize:10,color:TH.muted,letterSpacing:2,marginBottom:8}}>POST MATCH</div><div style={{fontSize:28,fontWeight:900,marginBottom:4,color:TH.text}}><span style={{color:TH.success}}>{r.homeScore}</span><span style={{color:TH.faint,margin:"0 10px"}}>–</span><span style={{color:TH.danger}}>{r.awayScore}</span></div><p style={{color:TH.muted,fontSize:12,margin:"0 0 14px"}}>vs {r.opponent}</p><div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:8,marginBottom:10}}>{[{l:"Gol",v:r.goals,e:"⚽"},{l:"Assist",v:r.assists,e:"🎯"},{l:"Voto",v:rating,e:"⭐",c:rc}].map(s=><Card key={s.l} style={{padding:"10px 6px",textAlign:"center"}}><div style={{fontSize:16,marginBottom:2}}>{s.e}</div><div style={{fontSize:20,fontWeight:900,color:s.c||TH.warning}}>{s.v}</div><div style={{fontSize:9,color:TH.muted}}>{s.l}</div></Card>)}</div>{hasMatchStats&&<div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:6,marginBottom:14,background:TH.bg,borderRadius:10,padding:"8px 6px"}}>{[{l:"Tiri",v:`${r.shots}–${r.oppShots}`,e:"🎯"},{l:"Possesso",v:`${r.possession}%`,e:"⚽"},{l:"Falli",v:r.fouls,e:"🟡"},{l:"Corner",v:r.corners,e:"🏳️"}].map(s=><div key={s.l} style={{textAlign:"center"}}><div style={{fontSize:9,color:TH.faint,marginBottom:1}}>{s.e}</div><div style={{fontSize:12,fontWeight:700,color:TH.text}}>{s.v}</div><div style={{fontSize:8,color:TH.muted}}>{s.l}</div></div>)}</div>}<div style={{fontSize:50,fontWeight:900,color:rc,lineHeight:1,marginBottom:4}}>{rating}</div><div style={{fontSize:12,color:rc,marginBottom:14}}>{rating>=8?"Eccellente!":rating>=7?"Buona partita":rating>=6?"Sufficiente":"Da migliorare"}</div>{lastPressReport&&<Btn onClick={()=>setScreen("press")} v="secondary" fw style={{padding:"10px",fontSize:13,marginBottom:8}}>📰 Rassegna Stampa</Btn>}<Btn onClick={()=>setScreen("dashboard")} v="green" fw style={{padding:"13px",fontSize:14}}>🏟️ Torna alla Dashboard <span className="kbd" style={{opacity:0.7,fontSize:11}}>Enter</span></Btn></Card></div>;
+    return <div style={{width:"100%"}}><Card style={{textAlign:"center",padding:"24px",maxWidth:560,margin:"0 auto"}}><div style={{fontSize:10,color:TH.muted,letterSpacing:2,marginBottom:8}}>{L.postMatch}</div><div style={{fontSize:28,fontWeight:900,marginBottom:4,color:TH.text}}><span style={{color:TH.success}}>{r.homeScore}</span><span style={{color:TH.faint,margin:"0 10px"}}>–</span><span style={{color:TH.danger}}>{r.awayScore}</span></div><p style={{color:TH.muted,fontSize:12,margin:"0 0 14px"}}>vs {r.opponent}</p><div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:8,marginBottom:10}}>{[{l:L.goalLabel,v:r.goals,e:"⚽"},{l:L.assistLabel,v:r.assists,e:"🎯"},{l:L.ratingLabel,v:rating,e:"⭐",c:rc}].map(s=><Card key={s.l} style={{padding:"10px 6px",textAlign:"center"}}><div style={{fontSize:16,marginBottom:2}}>{s.e}</div><div style={{fontSize:20,fontWeight:900,color:s.c||TH.warning}}>{s.v}</div><div style={{fontSize:9,color:TH.muted}}>{s.l}</div></Card>)}</div>{hasMatchStats&&<div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:6,marginBottom:14,background:TH.bg,borderRadius:10,padding:"8px 6px"}}>{[{l:L.shots,v:`${r.shots}–${r.oppShots}`,e:"🎯"},{l:L.possession,v:`${r.possession}%`,e:"⚽"},{l:L.fouls,v:r.fouls,e:"🟡"},{l:L.corners,v:r.corners,e:"🏳️"}].map(s=><div key={s.l} style={{textAlign:"center"}}><div style={{fontSize:9,color:TH.faint,marginBottom:1}}>{s.e}</div><div style={{fontSize:12,fontWeight:700,color:TH.text}}>{s.v}</div><div style={{fontSize:8,color:TH.muted}}>{s.l}</div></div>)}</div>}<div style={{fontSize:50,fontWeight:900,color:rc,lineHeight:1,marginBottom:4}}>{rating}</div><div style={{fontSize:12,color:rc,marginBottom:14}}>{rating>=8?L.ratingExcellent:rating>=7?L.ratingGood:rating>=6?L.ratingSufficient:L.ratingPoor}</div>{lastPressReport&&<Btn onClick={()=>setScreen("press")} v="secondary" fw style={{padding:"10px",fontSize:13,marginBottom:8}}>{L.pressReview}</Btn>}<Btn onClick={()=>setScreen("dashboard")} v="green" fw style={{padding:"13px",fontSize:14}}>{L.backToDashboard} <span className="kbd" style={{opacity:0.7,fontSize:11}}>Enter</span></Btn></Card></div>;
   }
 
   if(screen==="nationalCallup"&&nationalCallupData)return(
@@ -10034,8 +10069,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     </div>
   );
 
-  const L=LOCALE[lang]||LOCALE.IT;
-  const tabs=[{id:"dashboard",e:"🏠",l:L.tabs.dashboard,k:"M"},{id:"calendar",e:"📅",l:L.tabs.calendar,k:"C"},{id:"standings",e:"📊",l:L.tabs.standings,k:"F"},{id:"training",e:"💪",l:L.tabs.training,k:"T"},{id:"profile",e:"👤",l:L.tabs.profile,k:"R"},{id:"agente",e:"🤵",l:"Agente",k:"G"}];
+  const tabs=[{id:"dashboard",e:"🏠",l:L.tabs.dashboard,k:"M"},{id:"calendar",e:"📅",l:L.tabs.calendar,k:"C"},{id:"standings",e:"📊",l:L.tabs.standings,k:"F"},{id:"training",e:"💪",l:L.tabs.training,k:"T"},{id:"profile",e:"👤",l:L.tabs.profile,k:"R"},{id:"agente",e:"🤵",l:L.agent,k:"G"}];
 
   return(
     <div className="cpm-career">
@@ -10047,7 +10081,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       {weekLiveModal&&(
         <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.55)",zIndex:9997,display:"flex",alignItems:"center",justifyContent:"center",padding:20}}>
           <Card style={{maxWidth:400,width:"100%",padding:"22px"}}>
-            <div style={{fontSize:11,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:6}}>Settimana {player.week} — {player.club?.name||player.club?.n}</div>
+            <div style={{fontSize:11,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:6}}>{L.weekHeader} {player.week} — {player.club?.name||player.club?.n}</div>
             {weekLiveModal.isSpogliatoio?(
               <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:12}}>
                 <div style={{fontSize:28}}>{weekLiveModal.teammate?.icon||"👥"}</div>
@@ -10102,8 +10136,8 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                     {weekLiveModal.changes.fatigue!==undefined&&weekLiveModal.changes.fatigue!==0&&<div style={{padding:"4px 10px",borderRadius:20,background:weekLiveModal.changes.fatigue<0?"#dcfce7":"#fef9c3",color:weekLiveModal.changes.fatigue<0?TH.success:TH.warning,fontSize:11,fontWeight:700}}>⚡ Fatica {weekLiveModal.changes.fatigue>0?"+":""}{weekLiveModal.changes.fatigue}</div>}
                   </div>
                 )}
-                <div style={{fontSize:11,color:TH.faint,marginBottom:14}}>{weekLiveModal.isRehab?"Sessione completata. Clicca 'Avanza Settimana' per continuare il recupero.":"La settimana è stata vissuta. Clicca \"Avanza\" per passare alla prossima o gioca la partita prima."}</div>
-                <Btn onClick={()=>setWeekLiveModal(null)} v="primary" fw style={{padding:"11px"}}>✅ Capito</Btn>
+                <div style={{fontSize:11,color:TH.faint,marginBottom:14}}>{weekLiveModal.isRehab?L.rehabCompletedNote:L.weekLivedNote}</div>
+                <Btn onClick={()=>setWeekLiveModal(null)} v="primary" fw style={{padding:"11px"}}>{L.understood}</Btn>
               </>
             )}
           </Card>
@@ -10278,21 +10312,21 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
             ):(
               <div style={{fontSize:32,marginBottom:8}}>⚽</div>
             )}
-            <div style={{fontSize:17,fontWeight:900,color:TH.text,marginBottom:4}}>{showMatchPrompt.type==="cup"?"Gara di Coppa!":"Hai una partita!"}</div>
+            <div style={{fontSize:17,fontWeight:900,color:TH.text,marginBottom:4}}>{showMatchPrompt.type==="cup"?L.matchPromptCup:L.matchPromptTitle}</div>
             <div style={{fontSize:13,color:TH.muted,marginBottom:6}}>
-              {showMatchPrompt.type==="cup"?"🏠 Casa":"" }{showMatchPrompt.type!=="cup"&&(showMatchPrompt.isHome?"🏟️ Casa":"✈️ Trasferta")} · {showMatchPrompt.opponentName}
+              {showMatchPrompt.type==="cup"?`🏠 ${L.homeMatch}`:"" }{showMatchPrompt.type!=="cup"&&(showMatchPrompt.isHome?`🏟️ ${L.homeMatch}`:`✈️ ${L.awayMatch}`)} · {showMatchPrompt.opponentName}
             </div>
             {showMatchPrompt.type!=="cup"&&isDerby(player.club?.id,showMatchPrompt.opponentId)&&<div style={{fontSize:12,fontWeight:700,color:"#f59e0b",background:"rgba(245,158,11,0.12)",borderRadius:8,padding:"4px 12px",marginBottom:8,display:"inline-block"}}>{isDerby(player.club?.id,showMatchPrompt.opponentId).e} {isDerby(player.club?.id,showMatchPrompt.opponentId).name}</div>}
-            <div style={{fontSize:11,color:TH.faint,marginBottom:18}}>W.{player.week||1} — cosa vuoi fare?</div>
+            <div style={{fontSize:11,color:TH.faint,marginBottom:18}}>W.{player.week||1} — {L.matchPromptWhat}</div>
             <div style={{display:"flex",flexDirection:"column",gap:10}}>
-              <Btn onClick={()=>{if(player.injured){notify("Sei infortunato — non puoi giocare.",TH.danger);return;}setShowMatchPrompt(null);startMatch();}} v="green" fw style={{padding:"14px",fontSize:14,opacity:player.injured?0.4:1}}>
-                {player.injured?"🩹 Non puoi giocare (infortunato)":`🎮 ${L.playMatch||"Gioca"} la partita`}
+              <Btn onClick={()=>{if(player.injured){notify(L.cannotPlayInjured,TH.danger);return;}setShowMatchPrompt(null);startMatch();}} v="green" fw style={{padding:"14px",fontSize:14,opacity:player.injured?0.4:1}}>
+                {player.injured?`🩹 ${L.cannotPlayInjured}`:`🎮 ${L.playMatch} la partita`}
               </Btn>
               <Btn onClick={simulateAndAdvance} v="secondary" fw style={{padding:"12px",fontSize:13}}>
-                {player.injured?"⏭️ Salta e recupera settimana":`⚡ ${L.simulateMatch||"Simula"} e avanza settimana`}
+                {player.injured?`⏭️ ${L.skipAndRecover}`:`⚡ ${L.simulateMatch} e avanza settimana`}
               </Btn>
               <Btn onClick={()=>setShowMatchPrompt(null)} v="secondary" fw style={{padding:"10px",fontSize:12,opacity:0.7}}>
-                ✕ {L.cancel||"Annulla"} — rimani in dashboard
+                ✕ {L.cancel} — {L.cancelStay}
               </Btn>
             </div>
           </Card>
