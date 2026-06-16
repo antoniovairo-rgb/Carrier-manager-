@@ -1624,7 +1624,7 @@ const NEWSPAPERS=[
   {id:"lastampa",  name:"La Stampa Sport",       short:"La Stampa",  color:"#16a34a",e:"🗞️",tone:"analitico"},
   {id:"skysport",  name:"Sky Sport 24",          short:"Sky Sport",  color:"#0099d6",e:"📡",tone:"diretto"},
 ];
-const GAME_VERSION="3.26.8"; // Sprint 45i — revert wrapper a {width:100%} stabile, gioca partita mobile fix
+const GAME_VERSION="3.26.9"; // Sprint 45j — zero padding cpm-scroll su mobile durante match, card calc(100dvh-30px)
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -6228,7 +6228,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
       {phase==="formations"&&<FormationView homeTeam={player.club||opponent} awayTeam={opponent} player={player} homeRoster={homeRoster} awayRoster={awayRoster} onContinue={()=>setPhase("walkout")} onSkip={()=>setPhase("playing")} oppTactic={oppTactic} oppTacticLoading={oppTacticLoading} homeKitCol={homeKitCol} awayKitCol={awayKitCol}/>}
 
       {(show3D||phase==="walkout")&&(
-        <Card style={{padding:0,overflow:"hidden",display:"flex",flexDirection:"column",...isNarrow?{height:"calc(100dvh - 40px)",minHeight:500}:{height:"calc(100vh - 80px)",minHeight:500}}} shadow>
+        <Card style={{padding:0,overflow:"hidden",display:"flex",flexDirection:"column",...isNarrow?{height:"calc(100dvh - 30px)",minHeight:500}:{height:"calc(100vh - 80px)",minHeight:500}}} shadow>
           {/* ── Scoreboard Premium ── */}
           <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"7px 12px",borderBottom:"1px solid rgba(255,255,255,0.08)",background:"linear-gradient(135deg,#060d1e 0%,#0f1e3a 100%)",flex:"0 0 auto"}}>
             {/* Home team */}
@@ -8618,6 +8618,15 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
   const[player,setPlayer]=useState(init);
   const[tab,setTab]=useState("dashboard");
   const[screen,setScreen]=useState("dashboard");
+  // Sprint 45j: rimuovi padding cpm-scroll durante il match su mobile per eliminare spazio bianco
+  useEffect(()=>{
+    const el=document.querySelector('.cpm-scroll');
+    if(!el)return;
+    const narrow=window.innerWidth<640;
+    if(screen==="match"&&narrow){el.style.padding="0";el.style.overflowY="hidden";}
+    else{el.style.padding="";el.style.overflowY="";}
+    return()=>{el.style.padding="";el.style.overflowY="";};
+  },[screen]);
   const[standingsLg,setStandingsLg]=useState(null); // null = use player's own league
   const[matchOpp,setMatchOpp]=useState(null);
   const[matchIsHome,setMatchIsHome]=useState(true);
