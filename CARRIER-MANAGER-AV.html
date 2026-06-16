@@ -1624,7 +1624,7 @@ const NEWSPAPERS=[
   {id:"lastampa",  name:"La Stampa Sport",       short:"La Stampa",  color:"#16a34a",e:"🗞️",tone:"analitico"},
   {id:"skysport",  name:"Sky Sport 24",          short:"Sky Sport",  color:"#0099d6",e:"📡",tone:"diretto"},
 ];
-const GAME_VERSION="3.27.3"; // Sprint 45L — Mobile match: 100dvh root, cronaca below field (no overlay)
+const GAME_VERSION="3.28.0"; // Sprint 48 — Heatmap removed; euro competitions fully playable; euro auto-sim in doAdvanceWeek
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -6553,12 +6553,6 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                 </div>
               </div>
 
-              {/* Heat map toggle */}
-              <div style={{padding:"4px 10px",borderBottom:"1px solid rgba(255,255,255,0.06)"}}>
-                <button onClick={()=>setShowHeatMap(v=>!v)} style={{width:"100%",padding:"4px 8px",borderRadius:6,border:`1px solid ${showHeatMap?"rgba(251,146,60,0.5)":"rgba(255,255,255,0.1)"}`,background:showHeatMap?"rgba(251,146,60,0.12)":"transparent",cursor:"pointer",fontFamily:"inherit",fontSize:10,color:showHeatMap?"#fb923c":"rgba(255,255,255,0.35)",display:"flex",alignItems:"center",justifyContent:"center",gap:5}}>
-                  🌡️ {showHeatMap?"Nascondi heatmap":"Mostra heatmap"}
-                </button>
-              </div>
               {/* Live commentary feed — hidden on mobile overlay */}
               <div style={{flex:1,padding:"6px 10px",overflowY:"auto",minHeight:0,display:isNarrow?"none":"block"}}>
                 <div style={{fontSize:7,color:"rgba(255,255,255,0.3)",fontWeight:700,letterSpacing:1,textTransform:"uppercase",marginBottom:4}}>📻 CRONACA</div>
@@ -6577,13 +6571,14 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
         </Card>
       )}
 
-      {/* Mobile cronaca — below the card, fills the space under the 3D field */}
+      {/* Mobile cronaca — below the card */}
       {isNarrow&&(show3D||phase==="walkout")&&coms.length>0&&(
-        <div style={{flexShrink:0,background:"#050810",padding:"5px 10px 7px",borderTop:"1px solid rgba(255,255,255,0.07)"}}>
-          {coms.slice(0,3).map((c,i)=>(
+        <div style={{flexShrink:0,background:"#050810",padding:"5px 10px 8px",borderTop:"1px solid rgba(255,255,255,0.07)"}}>
+          <div style={{fontSize:7,color:"rgba(255,255,255,0.28)",fontWeight:700,letterSpacing:1,textTransform:"uppercase",marginBottom:3}}>📻 CRONACA</div>
+          {coms.slice(0,8).map((c,i)=>(
             <div key={i} style={{fontSize:9,color:i===0?c.color:"rgba(255,255,255,0.45)",lineHeight:1.35,
-              padding:i<2?"0 0 3px":"0",
-              borderBottom:i<2?"1px solid rgba(255,255,255,0.06)":"none",
+              padding:i<7?"0 0 2px":"0",
+              borderBottom:i<7?"1px solid rgba(255,255,255,0.05)":"none",
               overflow:"hidden",whiteSpace:"nowrap",textOverflow:"ellipsis"}}>
               <span style={{color:"rgba(255,255,255,0.3)",marginRight:3,fontSize:8,fontWeight:700}}>{c.t}'</span>{c.text}
             </div>
@@ -9007,9 +9002,13 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     const md=getThisWeekMatchday();
     if(!md){notify("Nessuna partita programmata questa settimana.",TH.warning);return;}
     const lc=getLeagueClubs(player);
-    const opp=lc.find(c=>c.id===md.opponentId)||lc.find(c=>c.n===md.opponentName)||pick(lc.filter(c=>c.id!==player.club?.id&&c.n!==player.club?.n));
+    const isEuroMd=md.type==="euro_group"||md.type==="euro";
+    const opp=isEuroMd
+      ?(md.opponentData||CLUBS.find(c=>c.id===md.opponentId)||CLUBS.find(c=>c.n===md.opponentName))
+      :(lc.find(c=>c.id===md.opponentId)||lc.find(c=>c.n===md.opponentName)||pick(lc.filter(c=>c.id!==player.club?.id&&c.n!==player.club?.n)));
     if(!opp){notify("Nessun avversario disponibile.",TH.danger);return;}
-    // S11.4: detect derby
+    if(isEuroMd) setMatchContext(md.type==="euro"?"euro_ko":"euro_group");
+    // S11.4: detect derby (not applicable for euro but harmless)
     const derby=isDerby(player.club?.id,opp.id||md.opponentId);
     setCurrentMatchDerby(derby||null);
     if(derby)setTimeout(()=>notify(`🔥 ${derby.e} ${derby.name}! Atmosfera incandescente!`,"#f59e0b"),200);
@@ -9102,16 +9101,50 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
         return isInjured?{...p,...injBase,week:(p.week||1)+1,weekLived:false}:{...p,week:(p.week||1)+1,weekLived:false};
       }
       const lc=getLeagueClubs(p);
-      const opp=lc.find(c=>c.id===md2.opponentId)||lc.find(c=>c.n===md2.opponentName)||pick(lc.filter(c=>c.id!==p.club?.id));
+      const isEuroG=md2.type==="euro_group";const isEuroKO=md2.type==="euro";
+      const opp=(isEuroG||isEuroKO)
+        ?(md2.opponentData||CLUBS.find(c=>c.id===md2.opponentId)||CLUBS.find(c=>c.n===md2.opponentName))
+        :(lc.find(c=>c.id===md2.opponentId)||lc.find(c=>c.n===md2.opponentName)||pick(lc.filter(c=>c.id!==p.club?.id)));
       if(!opp){
         return isInjured?{...p,...injBase,week:(p.week||1)+1,weekLived:false}:{...p,week:(p.week||1)+1,weekLived:false};
       }
       const sim=simulateMatch(p.club,opp,p.ovr||65,md2.isHome);
+      const newCal=(p.calendar||[]).map(m=>m.week===(p.week||1)&&!m.played?{...m,played:true,result:{homeScore:sim.homeScore,awayScore:sim.awayScore,won:sim.won,drew:sim.drew},simulated:true}:m);
+      // Euro group stage match
+      if(isEuroG){
+        const pts=sim.won?3:sim.drew?1:0;
+        const newGR=[...(p.euro?.groupResults||[]),{opp:opp.n,oppCol:opp.c,home:md2.isHome,won:sim.won,drew:sim.drew,hs:sim.homeScore,as:sim.awayScore}];
+        const newPts=(p.euro?.pts||0)+pts;
+        notify(`🌍 ${md2.competition} (sim): ${sim.homeScore}–${sim.awayScore} vs ${opp.n}`,sim.won?TH.success:sim.drew?TH.warning:TH.danger);
+        return{...p,calendar:newCal,matchHistory:[...(p.matchHistory||[]),{week:p.week||1,opponent:opp.n,oppAbbr:opp.a,oppCol:opp.c,homeScore:sim.homeScore,awayScore:sim.awayScore,goals:0,assists:0,rating:sim.rating,won:sim.won,drew:sim.drew,simulated:true,euro:true}].slice(-200),matches:(p.matches||0)+1,morale:clamp(p.morale+(sim.won?3:sim.drew?1:-2),0,100),week:(p.week||1)+1,weekLived:false,euro:{...p.euro,groupResults:newGR,pts:newPts}};
+      }
+      // Euro knockout match
+      if(isEuroKO){
+        const _KN={r16:"Ottavi di Finale",sf:"Semifinale",final:"Finale"};
+        const _KNX={r16:"sf",sf:"final",final:"champion"};
+        const phase=md2.euroPhase;const won=sim.won||(sim.drew&&Math.random()<0.55);
+        const nextPh=won?(_KNX[phase]||"champion"):"eliminated";
+        const isChamp=won&&phase==="final";
+        const newKR=[...(p.euro?.koResults||[]),{phase,name:_KN[phase]||phase,oppId:opp.id,opp:opp.n,homeScore:sim.homeScore,awayScore:sim.awayScore,won}];
+        const newTr=isChamp?[...(p.trophies||[]),{season:p.season||1,club:p.club?.n,league:md2.competition,type:"euro"}]:(p.trophies||[]);
+        const nextKOWeek={sf:27,final:34};
+        let calAfterKO=newCal;
+        if(won&&!isChamp){
+          // Schedule next round
+          const _usedIds=[...(p.euro?.groupOpponents||[]).map(o=>o.id),...newKR.map(r=>r.oppId)].filter(Boolean);
+          const _minPr=md2.competition==="UCL"?82:md2.competition==="UEL"?65:52;
+          const _koPool=CLUBS.filter(c=>c.lg!==(p.club?.lg||"Serie A")&&!c.isU18&&c.p>=_minPr&&!_usedIds.includes(c.id));
+          const _nOpp=_koPool.length?pick(_koPool):CLUBS.find(c=>c.lg!==(p.club?.lg||"Serie A"))||CLUBS[0];
+          const nPhase=_KNX[phase];const nWeek=nextKOWeek[nPhase];const nName=_KN[nPhase];
+          if(_nOpp&&nWeek)calAfterKO=[...newCal,{matchday:996,week:nWeek,opponentId:_nOpp.id,opponentName:_nOpp.n,isHome:Math.random()<0.5,played:false,result:null,type:"euro",competition:md2.competition,euroPhase:nPhase,cupRoundName:nName,opponentData:_nOpp}];
+        }
+        notify(`🌍 ${md2.competition} (sim): ${sim.homeScore}–${sim.awayScore} vs ${opp.n} — ${won?"✅ PASSA":"❌ ELIMINATO"}`,won?TH.success:TH.danger);
+        return{...p,calendar:calAfterKO,matchHistory:[...(p.matchHistory||[]),{week:p.week||1,opponent:opp.n,oppAbbr:opp.a,oppCol:opp.c,homeScore:sim.homeScore,awayScore:sim.awayScore,goals:0,assists:0,rating:sim.rating,won,drew:sim.drew,simulated:true,euro:true,euroPhase:phase}].slice(-200),matches:(p.matches||0)+1,morale:clamp(p.morale+(won?5:sim.drew?1:-3),0,100),week:(p.week||1)+1,weekLived:false,euro:{...p.euro,phase:nextPh,koResults:newKR,champion:isChamp,eliminated:!won},trophies:newTr};
+      }
+      // League/Cup match
       const clubId=p.club?.id||p.club?.n;
       const newSt=updateStandings(p.standings||initStandings(lc),clubId,sim,p.clubPrestigeShifts||{});
-      const newCal=(p.calendar||[]).map(m=>m.week===(p.week||1)&&!m.played?{...m,played:true,result:{homeScore:sim.homeScore,awayScore:sim.awayScore,won:sim.won,drew:sim.drew},simulated:true}:m);
       if(isInjured){
-        // Injured: match counted for standings/calendar but NOT as player's match — decrement recovery
         const injHistory=[...(p.matchHistory||[]),{week:p.week||1,opponent:opp.n,oppAbbr:opp.a,oppCol:opp.c,homeScore:sim.homeScore,awayScore:sim.awayScore,goals:0,assists:0,rating:null,won:sim.won,drew:sim.drew,simulated:true,injured:true}].slice(-200);
         notify(`🩹 Infort. (saltata) ${sim.homeScore}–${sim.awayScore} vs ${opp.n}`,sim.won?TH.success:sim.drew?TH.warning:TH.danger);
         return{...p,...injBase,standings:newSt,calendar:newCal,matchHistory:injHistory,morale:clamp((p.morale||70)+(sim.won?1:sim.drew?0:-1),0,100),week:(p.week||1)+1,weekLived:false};
@@ -9134,7 +9167,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     }
     if(!player.weekLived)return{label:L.liveWeek,sub:L.liveWeekSub,color:TH.primary,disabled:false};
     const md=getThisWeekMatchday();
-    if(md){const isCupM=md.type==="cup";return{label:`${isCupM?"🏆":"⚽"} ${L.playMatch} vs ${md.opponentName}`,sub:isCupM?`${L.cup} · ${md.cupRoundName||"Round"} · W.${md.week}`:`${md.isHome?`🏟️ ${L.homeMatch}`:`✈️ ${L.awayMatch}`} · W.${md.week}`,color:isCupM?"#f59e0b":"#16a34a",disabled:false};}
+    if(md){const isCupM=md.type==="cup";const isEuroM=md.type==="euro_group"||md.type==="euro";return{label:`${isCupM?"🏆":isEuroM?"🌍":"⚽"} ${L.playMatch} vs ${md.opponentName}`,sub:isCupM?`${L.cup} · ${md.cupRoundName||"Round"} · W.${md.week}`:isEuroM?`${md.competition||"Europa"} · ${md.cupRoundName||"Gironi"} · W.${md.week}`:`${md.isHome?`🏟️ ${L.homeMatch}`:`✈️ ${L.awayMatch}`} · W.${md.week}`,color:isCupM?"#f59e0b":isEuroM?"#1d4ed8":"#16a34a",disabled:false};}
     return{label:L.advanceWeek,sub:`W.${player.week||1} → W.${(player.week||1)+1}`,color:TH.primary,disabled:false};
   };
 
@@ -9193,6 +9226,44 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
           setTimeout(()=>notify(`🌍 Nations Cup: Partita ${newIdx}/3 completata — ancora ${(q?.opponents||[]).length-newIdx} da giocare!`,TH.accent),300);
         }
       }
+      return;
+    }
+    // S48: Euro group / knockout match end
+    if(result.context==="euro_group"||result.context==="euro_ko"){
+      const isGrp=result.context==="euro_group";
+      setMatchContext("career");
+      setPlayer(p=>{
+        const md=(p.calendar||[]).find(m=>m.week===(p.week||1)&&(m.type==="euro_group"||m.type==="euro")&&!m.played);
+        const newCal=(p.calendar||[]).map(m=>m.week===(p.week||1)&&(m.type==="euro_group"||m.type==="euro")&&!m.played?{...m,played:true,result:{homeScore:result.homeScore,awayScore:result.awayScore,won:result.won,drew:result.drew},simulated:false}:m);
+        const newHist=[...(p.matchHistory||[]),{week:p.week||1,opponent:result.opponent,oppAbbr:result.oppAbbr,oppCol:result.oppCol,homeScore:result.homeScore,awayScore:result.awayScore,goals:result.goals||0,assists:result.assists||0,rating:result.rating,won:result.won,drew:result.drew,euro:true}].slice(-200);
+        if(isGrp){
+          const pts=result.won?3:result.drew?1:0;
+          const newGR=[...(p.euro?.groupResults||[]),{opp:result.opponent,oppCol:result.oppCol,home:md?.isHome,won:result.won,drew:result.drew,hs:result.homeScore,as:result.awayScore}];
+          const newPts=(p.euro?.pts||0)+pts;
+          return{...p,calendar:newCal,matchHistory:newHist,goals:(p.goals||0)+(result.goals||0),assists:(p.assists||0)+(result.assists||0),matches:(p.matches||0)+1,morale:clamp((p.morale||70)+(result.won?5:result.drew?1:-2),0,100),euro:{...p.euro,groupResults:newGR,pts:newPts}};
+        }
+        // Euro KO
+        const _KN={r16:"Ottavi di Finale",sf:"Semifinale",final:"Finale"};
+        const _KNX={r16:"sf",sf:"final",final:"champion"};
+        const phase=md?.euroPhase||"r16";
+        const nextPh=result.won?(_KNX[phase]||"champion"):"eliminated";
+        const isChamp=result.won&&phase==="final";
+        const newKR=[...(p.euro?.koResults||[]),{phase,name:_KN[phase]||phase,opp:result.opponent,homeScore:result.homeScore,awayScore:result.awayScore,won:result.won}];
+        const newTr=isChamp?[...(p.trophies||[]),{season:p.season||1,club:p.club?.n,league:p.euro?.competition||"Europa",type:"euro"}]:(p.trophies||[]);
+        let calAfterKO=newCal;
+        if(result.won&&!isChamp){
+          const _usedIds=[...(p.euro?.groupOpponents||[]).map(o=>o.id),...newKR.map(r=>r.oppId)].filter(Boolean);
+          const _minPr=p.euro?.competition==="UCL"?82:p.euro?.competition==="UEL"?65:52;
+          const _koPool=CLUBS.filter(c=>c.lg!==(p.club?.lg||"Serie A")&&!c.isU18&&c.p>=_minPr&&!_usedIds.includes(c.id));
+          const _nOpp=_koPool.length?pick(_koPool):CLUBS.find(c=>c.lg!==(p.club?.lg||"Serie A"))||CLUBS[0];
+          const nPhase=_KNX[phase];const nWeek={sf:27,final:34}[nPhase];const nName=_KN[nPhase];
+          if(_nOpp&&nWeek)calAfterKO=[...newCal,{matchday:996,week:nWeek,opponentId:_nOpp.id,opponentName:_nOpp.n,isHome:Math.random()<0.5,played:false,result:null,type:"euro",competition:p.euro?.competition,euroPhase:nPhase,cupRoundName:nName,opponentData:_nOpp}];
+        }
+        return{...p,calendar:calAfterKO,matchHistory:newHist,goals:(p.goals||0)+(result.goals||0),assists:(p.assists||0)+(result.assists||0),matches:(p.matches||0)+1,morale:clamp((p.morale||70)+(result.won?8:result.drew?2:-3),0,100),popularity:clamp((p.popularity||20)+(result.won?6:0),0,100),euro:{...p.euro,phase:nextPh,koResults:newKR,champion:isChamp,eliminated:!result.won},trophies:newTr};
+      });
+      if(result.won&&result.context==="euro_ko")setTimeout(()=>notify(`🌍 PASSA il turno europeo! Prossimo avversario in programma.`,TH.success),300);
+      if(result.context==="euro_ko"&&result.won){const _r=player.euro;if(_r?.competition)setTimeout(()=>{if(_r.phase==="r16")notify(`🏆 Ai quarti di finale ${_r.competition}!`,"#f59e0b",2500);},800);}
+      setScreen("postmatch");setTab("dashboard");
       return;
     }
     // Injury: compute before setPlayer so we can notify after
@@ -9477,24 +9548,14 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
 
     // S41: cup handled via calendar entries — no pre-compute needed
 
-    // Sprint 42: European group stage trigger at week 10
-    if(!isInU18&&weekVal===10&&player.euro?.active&&player.euro?.phase==="group"){
-      const _eOpps=player.euro.groupOpponents||[];
-      let _eseed42=hashStr((player.club?.id||"x")+(player.season||1)+"eg");let _er42=_eseed42;
-      const _er42d=()=>{_er42=((_er42*1664525+1013904223)&0xffffffff)>>>0;return _er42/0xffffffff;};
-      let _euroPts=0;const _grpRes=[];
-      _eOpps.forEach(opp=>{
-        const _myStr=(player.ovr||65)*1.1+(player.form||70)*0.2;
-        const _oppStr=(opp.p||65)+22;
-        const _hW=_er42d()<_myStr/(_myStr+_oppStr)*1.1;const _hD=!_hW&&_er42d()<0.28;
-        if(_hW)_euroPts+=3;else if(_hD)_euroPts+=1;
-        _grpRes.push({opp:opp.n,oppCol:opp.c,home:true,won:_hW,drew:_hD,hs:_hW?rng(1,3):_hD?rng(0,2):rng(0,1),as:_hW?rng(0,1):_hD?rng(0,2):rng(1,3)});
-        const _aW=_er42d()<_myStr/(_myStr+_oppStr)*0.9;const _aD=!_aW&&_er42d()<0.28;
-        if(_aW)_euroPts+=3;else if(_aD)_euroPts+=1;
-        _grpRes.push({opp:opp.n,oppCol:opp.c,home:false,won:_aW,drew:_aD,hs:_aW?rng(0,1):_aD?rng(0,2):rng(1,3),as:_aW?rng(1,3):_aD?rng(0,2):rng(0,1)});
-      });
-      const _euroQ=_euroPts>=7;
-      setTimeout(()=>setEuroGroupModal({competition:player.euro.competition,groupOpponents:_eOpps,groupResults:_grpRes,pts:_euroPts,qualified:_euroQ,season:player.season||1}),500);
+    // Sprint 48: group stage is now calendar-based (played via LiveMatch) — check completion at week 15+
+    if(!isInU18&&weekVal>=15&&player.euro?.active&&player.euro?.phase==="group"){
+      const totalGroupMatches=(player.euro.groupOpponents||[]).length*2;
+      const playedGroupMatches=(player.euro.groupResults||[]).length;
+      if(playedGroupMatches>=totalGroupMatches){
+        const _euroQ=(player.euro.pts||0)>=7;
+        setTimeout(()=>setEuroGroupModal({competition:player.euro.competition,groupOpponents:player.euro.groupOpponents||[],groupResults:player.euro.groupResults||[],pts:player.euro.pts||0,qualified:_euroQ,season:player.season||1}),500);
+      }
     }
     // Sprint 43: Nations Cup trigger — every 2 pro seasons at week 20, now sets playable queue
     if(!isInU18&&weekVal===20&&(player.season||1)%2===0&&(player.nationalCaps||0)>=2&&!(player.worldMemory||[]).some(m=>m.type==="nations_cup"&&m.season===(player.season||1))&&!player.nationsCupQueue?.active){
@@ -9516,11 +9577,41 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       let updP={...p};
       if(md){
         const lc=getLeagueClubs(p);
-        const opp=lc.find(c=>c.id===md.opponentId)||lc.find(c=>c.n===md.opponentName);
+        const isEuroG=md.type==="euro_group";const isEuroKO=md.type==="euro";
+        const opp=(isEuroG||isEuroKO)
+          ?(md.opponentData||CLUBS.find(c=>c.id===md.opponentId)||CLUBS.find(c=>c.n===md.opponentName))
+          :(lc.find(c=>c.id===md.opponentId)||lc.find(c=>c.n===md.opponentName));
         if(opp){
           const sim=simulateMatch(p.club,opp,p.ovr||65,md.isHome);
           const isCupMd=md.type==="cup";
-          if(isCupMd){
+          if(isEuroG){
+            const egPts=(sim.won?3:sim.drew?1:0);
+            const newGR=[...(p.euro?.groupResults||[]),{opponent:opp.n,homeScore:sim.homeScore,awayScore:sim.awayScore,won:sim.won,drew:sim.drew,pts:egPts}];
+            const newCal2=(p.calendar||[]).map(m=>m.matchday===md.matchday?{...m,played:true,result:{homeScore:sim.homeScore,awayScore:sim.awayScore,won:sim.won,drew:sim.drew},simulated:true}:m);
+            updP={...updP,calendar:newCal2,euro:{...p.euro,groupResults:newGR,pts:(p.euro?.pts||0)+egPts},morale:clamp(p.morale+(sim.won?2:sim.drew?0:-1),0,100)};
+            setTimeout(()=>notify(`🌍 ${md.competition||"Euro"} Gruppo (sim.) vs ${opp.n}: ${sim.homeScore}-${sim.awayScore} · +${egPts}pt`,sim.won?TH.success:sim.drew?"#64748b":TH.danger),900);
+          } else if(isEuroKO){
+            const koWon=sim.won||(sim.drew&&Math.random()<0.55);
+            const cpPen=!sim.won&&sim.drew&&koWon;
+            const koPhase=md.euroPhase||p.euro?.phase||"r16";
+            const koRound=(p.euro?.koRound||0)+1;
+            const newKOR=[...(p.euro?.koResults||[]),{phase:koPhase,opponent:opp.n,homeScore:sim.homeScore,awayScore:sim.awayScore,won:koWon,penalties:cpPen}];
+            const _nxtPhaseMap={r16:"sf",sf:"final",final:"champion"};
+            const newEuroPhase=koWon?(_nxtPhaseMap[koPhase]||"champion"):"eliminated";
+            const euroWon=newEuroPhase==="champion";
+            const newTrophies4=euroWon?[...(p.trophies||[]),{season:p.season||1,club:p.club?.n,league:md.competition||"UCL",type:"euro"}]:(p.trophies||[]);
+            let newCal3=(p.calendar||[]).map(m=>m.matchday===md.matchday?{...m,played:true,result:{homeScore:sim.homeScore,awayScore:sim.awayScore,won:koWon,drew:sim.drew},simulated:true}:m);
+            if(koWon&&!euroWon){
+              const nextPhase=_nxtPhaseMap[koPhase]||"sf";
+              const _phaseWks={r16:20,sf:26,final:32};const nextWk=_phaseWks[nextPhase]||28;
+              const _koPool2=CLUBS.filter(c=>c.lg!==(p.club?.lg||"Serie A")&&!c.isU18&&c.p>=(md.competition==="UCL"?80:62));
+              const _nxtOpp2=_koPool2.length?pick(_koPool2):CLUBS[0];
+              if(_nxtOpp2)newCal3=[...newCal3,{matchday:996+koRound,week:nextWk,opponentId:_nxtOpp2.id,opponentName:_nxtOpp2.n,isHome:Math.random()<0.5,played:false,result:null,type:"euro",competition:md.competition,euroPhase:nextPhase,cupRoundName:nextPhase==="final"?"Finale":"Semifinale",opponentData:_nxtOpp2}];
+            }
+            updP={...updP,calendar:newCal3,euro:{...p.euro,phase:newEuroPhase,koResults:newKOR,koRound},trophies:newTrophies4,morale:clamp(p.morale+(koWon?5:-3),0,100),popularity:clamp((p.popularity||20)+(koWon?8:0),0,100)};
+            setTimeout(()=>notify(`🌍 ${md.competition||"Euro"} ${koPhase.toUpperCase()} (sim.) vs ${opp.n}: ${sim.homeScore}-${sim.awayScore}${cpPen?" · ai rig.":""} · ${koWon?"✅":"❌"}`,koWon?TH.success:TH.danger),900);
+            if(euroWon)setTimeout(()=>notify(`🏆🏆 HAI VINTO LA ${md.competition}! STRAORDINARIO!`,"#f59e0b"),2800);
+          } else if(isCupMd){
             // S41: cup auto-sim — no standings update; resolve draws by penalties (55%)
             const _CRW=[0,9,19,28,35];const _CRN=["","R16","Quarti","Semifinale","FINALE"];
             const cupRound=p.cup?.round||1;
@@ -9593,29 +9684,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
         updP={...updP,morale:clamp((updP.morale||p.morale||70)+(ef.morale||0),0,100)};
         setTimeout(()=>setWeekLiveModal({event:{txt:re.txt,e:"🆚"},changes:{morale:ef.morale||0,form:0,fatigue:0},isRivalEvent:true}),250);
       }
-      // S41: cup state is now applied inside the isCupMd branch above
-      // S42: European knockout auto-sim (R16@w20, SF@w27, Final@w34)
-      {const _ew=p.week||1;const _koMap={r16:20,sf:27,final:34};const _akp=p.euro?.phase&&_koMap[p.euro.phase]===_ew?p.euro.phase:null;
-      if(!p.injured&&(p.proStatus||"u18")==="pro"&&p.euro?.active&&_akp){
-        const _KN={r16:"Ottavi di Finale",sf:"Semifinale",final:"Finale"};
-        const _KNX={r16:"sf",sf:"final",final:"champion"};
-        const _usedIds=[...(p.euro.groupOpponents||[]).map(o=>o.id),...(p.euro.koResults||[]).map(r=>r.oppId)].filter(Boolean);
-        const _minPr=p.euro.competition==="UCL"?82:p.euro.competition==="UEL"?65:52;
-        const _addPr=_akp==="final"?10:_akp==="sf"?5:0;
-        const _koPool=CLUBS.filter(c=>c.lg!==(p.club?.lg||"Serie A")&&!c.isU18&&c.p>=_minPr&&!_usedIds.includes(c.id));
-        const _koOpp=_koPool.length?pick(_koPool):CLUBS.find(c=>c.lg!==(p.club?.lg||"Serie A"))||CLUBS[0];
-        const _myStr=(p.ovr||65)*1.1+(p.form||70)*0.2;const _oppStr=(_koOpp?.p||70)+22+_addPr;
-        const _koWon=Math.random()<_myStr/(_myStr+_oppStr)*(_akp==="final"?0.95:1.05);
-        const _nextPh=_koWon?_KNX[_akp]:"eliminated";
-        const _isChamp=_koWon&&_akp==="final";
-        const _hs=_koWon?rng(1,2):rng(0,1);const _as=_koWon?rng(0,1):rng(1,2);
-        const _newKR=[...(p.euro.koResults||[]),{phase:_akp,name:_KN[_akp],oppId:_koOpp?.id,opp:_koOpp?.n,homeScore:_hs,awayScore:_as,won:_koWon}];
-        const _newTrEuro=_isChamp?[...(p.trophies||[]),{season:p.season||1,club:p.club?.n,league:p.euro.competition,type:"euro"}]:(p.trophies||[]);
-        updP={...updP,euro:{...p.euro,phase:_nextPh,koResults:_newKR,champion:_isChamp,eliminated:!_koWon},trophies:_newTrEuro};
-        const _ec=p.euro.competition;const _pn=_KN[_akp];const _koOppN=_koOpp?.n||"–";
-        setTimeout(()=>notify(`🌍 ${_ec} · ${_pn}: ${_koWon?"✅ PASSA":"❌ ELIMINATO"} vs ${_koOppN} (${_hs}–${_as})`,_koWon?TH.success:TH.danger),700);
-        if(_isChamp)setTimeout(()=>notify(`🏆🌍 HAI VINTO LA ${_ec}! LEGGENDA EUROPEA!`,"#f59e0b"),2500);
-      }}
+      // S48: Euro KO matches are now calendar-based (scheduled via euroGroupModal) — no auto-sim here
       // Sprint 35 — Agent task resolution (effects applied before recovery)
       if(updP.agentTask&&p.hasAgent){
         var atk=updP.agentTask;
@@ -9828,7 +9897,15 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
           const _erd=()=>{_er=((_er*1664525+1013904223)&0xffffffff)>>>0;return _er/0xffffffff;};
           const _eshuf=[..._epool].sort(()=>_erd()-0.5);
           const _gopp=_eshuf.slice(0,3);
-          if(_gopp.length>=3)newEuro={active:true,competition:_ec,phase:"group",groupOpponents:_gopp,pts:0,groupResults:[],qualified:false,champion:false,eliminated:false,koResults:[],koRound:0};
+          if(_gopp.length>=3){
+            newEuro={active:true,competition:_ec,phase:"group",groupOpponents:_gopp,pts:0,groupResults:[],qualified:false,champion:false,eliminated:false,koResults:[],koRound:0};
+            // Add 6 playable group stage matches to the new season calendar (home+away vs each opponent)
+            const _egWeeks=[[5,true],[7,true],[9,true],[11,false],[13,false],[15,false]];
+            _gopp.forEach((opp,i)=>{
+              newCalendar=[...newCalendar,{matchday:900+i,week:_egWeeks[i][0],opponentId:opp.id,opponentName:opp.n,isHome:true,played:false,result:null,type:"euro_group",competition:_ec,opponentData:opp}];
+              newCalendar=[...newCalendar,{matchday:903+i,week:_egWeeks[i+3][0],opponentId:opp.id,opponentName:opp.n,isHome:false,played:false,result:null,type:"euro_group",competition:_ec,opponentData:opp}];
+            });
+          }
         }
       }
       const coachLog=coachChanged?`🧑‍💼 Nuovo allenatore: ${newCoach.name} (${newCoach.style})`:null;
@@ -10309,12 +10386,14 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
           <Card style={{maxWidth:380,width:"100%",padding:"24px",textAlign:"center"}}>
             {showMatchPrompt.type==="cup"?(
               <><div style={{fontSize:32,marginBottom:4}}>🏆</div><div style={{fontSize:11,fontWeight:700,color:"#d97706",background:"#fef3c7",border:"1px solid #fde68a",borderRadius:8,padding:"3px 12px",display:"inline-block",marginBottom:6}}>COPPA NAZIONALE · {showMatchPrompt.cupRoundName||"Round"}</div></>
+            ):showMatchPrompt.type==="euro_group"||showMatchPrompt.type==="euro"?(
+              <><div style={{fontSize:32,marginBottom:4}}>🌍</div><div style={{fontSize:11,fontWeight:700,color:"#1e40af",background:"#dbeafe",border:"1px solid #93c5fd",borderRadius:8,padding:"3px 12px",display:"inline-block",marginBottom:6}}>{showMatchPrompt.competition||"EUROPA"} · {showMatchPrompt.cupRoundName||"Fase a Gironi"}</div></>
             ):(
               <div style={{fontSize:32,marginBottom:8}}>⚽</div>
             )}
-            <div style={{fontSize:17,fontWeight:900,color:TH.text,marginBottom:4}}>{showMatchPrompt.type==="cup"?L.matchPromptCup:L.matchPromptTitle}</div>
+            <div style={{fontSize:17,fontWeight:900,color:TH.text,marginBottom:4}}>{showMatchPrompt.type==="cup"?L.matchPromptCup:(showMatchPrompt.type==="euro_group"||showMatchPrompt.type==="euro")?"Partita Europea!":L.matchPromptTitle}</div>
             <div style={{fontSize:13,color:TH.muted,marginBottom:6}}>
-              {showMatchPrompt.type==="cup"?`🏠 ${L.homeMatch}`:"" }{showMatchPrompt.type!=="cup"&&(showMatchPrompt.isHome?`🏟️ ${L.homeMatch}`:`✈️ ${L.awayMatch}`)} · {showMatchPrompt.opponentName}
+              {(showMatchPrompt.type==="cup"||showMatchPrompt.type==="euro_group"||showMatchPrompt.type==="euro")?`🏠 ${L.homeMatch}`:"" }{(showMatchPrompt.type!=="cup"&&showMatchPrompt.type!=="euro_group"&&showMatchPrompt.type!=="euro")&&(showMatchPrompt.isHome?`🏟️ ${L.homeMatch}`:`✈️ ${L.awayMatch}`)} · {showMatchPrompt.opponentName}
             </div>
             {showMatchPrompt.type!=="cup"&&isDerby(player.club?.id,showMatchPrompt.opponentId)&&<div style={{fontSize:12,fontWeight:700,color:"#f59e0b",background:"rgba(245,158,11,0.12)",borderRadius:8,padding:"4px 12px",marginBottom:8,display:"inline-block"}}>{isDerby(player.club?.id,showMatchPrompt.opponentId).e} {isDerby(player.club?.id,showMatchPrompt.opponentId).name}</div>}
             <div style={{fontSize:11,color:TH.faint,marginBottom:18}}>W.{player.week||1} — {L.matchPromptWhat}</div>
@@ -10416,8 +10495,19 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
             </div>
             <Btn fw v={euroGroupModal.qualified?"primary":"secondary"} onClick={()=>{
               const eg=euroGroupModal;
-              setPlayer(p=>({...p,morale:clamp((p.morale||70)+(eg.qualified?8:0),0,100),popularity:clamp((p.popularity||20)+(eg.qualified?5:0),0,100),euro:{...p.euro,phase:eg.qualified?"r16":"eliminated",groupResults:eg.groupResults,pts:eg.pts,qualified:eg.qualified,eliminated:!eg.qualified}}));
-              if(eg.qualified)notify("✅ Qualificato agli Ottavi di "+eg.competition+"!",TH.primary);
+              setPlayer(p=>{
+                let newCal=p.calendar||[];
+                if(eg.qualified){
+                  // Schedule R16 as playable calendar entry at week 20
+                  const _usedIds=(p.euro?.groupOpponents||[]).map(o=>o.id);
+                  const _minPr=eg.competition==="UCL"?82:eg.competition==="UEL"?65:52;
+                  const _koPool=CLUBS.filter(c=>c.lg!==(p.club?.lg||"Serie A")&&!c.isU18&&c.p>=_minPr&&!_usedIds.includes(c.id));
+                  const _r16Opp=_koPool.length?pick(_koPool):CLUBS.find(c=>c.lg!==(p.club?.lg||"Serie A"))||CLUBS[0];
+                  if(_r16Opp)newCal=[...newCal,{matchday:995,week:20,opponentId:_r16Opp.id,opponentName:_r16Opp.n,isHome:Math.random()<0.5,played:false,result:null,type:"euro",competition:eg.competition,euroPhase:"r16",cupRoundName:"Ottavi di Finale",opponentData:_r16Opp}];
+                }
+                return{...p,calendar:newCal,morale:clamp((p.morale||70)+(eg.qualified?8:0),0,100),popularity:clamp((p.popularity||20)+(eg.qualified?5:0),0,100),euro:{...p.euro,phase:eg.qualified?"r16":"eliminated",groupResults:eg.groupResults,pts:eg.pts,qualified:eg.qualified,eliminated:!eg.qualified}};
+              });
+              if(eg.qualified)notify("✅ Qualificato agli Ottavi di "+eg.competition+"! Partita programmata alla W.20.",TH.primary);
               setEuroGroupModal(null);
             }}>Avanti →</Btn>
           </Card>
