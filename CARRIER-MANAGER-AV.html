@@ -1624,7 +1624,7 @@ const NEWSPAPERS=[
   {id:"lastampa",  name:"La Stampa Sport",       short:"La Stampa",  color:"#16a34a",e:"🗞️",tone:"analitico"},
   {id:"skysport",  name:"Sky Sport 24",          short:"Sky Sport",  color:"#0099d6",e:"📡",tone:"diretto"},
 ];
-const GAME_VERSION="3.25.0"; // Sprint 44 — LiveMatch UX/UI: height-based canvas, no page scroll, mobile cronaca strip, isNarrow 640px
+const GAME_VERSION="3.25.1"; // Sprint 44b — LiveMatch maxWidth:1100px centrato, campo occupa ~55% del layout
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -6215,7 +6215,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   const mw=context==="trial"?1:calcMatchWeight(player,opponent?.id||opponent?.n,player.standings||[],player.week||1);
 
   return(
-    <div style={{width:"100%"}}>
+    <div style={{width:"100%",maxWidth:1100,marginLeft:"auto",marginRight:"auto"}}>
       {phase==="matchday"&&!showScout&&(()=>{
         const mw=context==="trial"?1:calcMatchWeight(player,opponent?.id||opponent?.n,player.standings||[],player.week||1);
         const drby=isDerby(player.club?.id,opponent?.id);
