@@ -1582,7 +1582,7 @@ const NEWSPAPERS=[
   {id:"lastampa",  name:"La Stampa Sport",       short:"La Stampa",  color:"#16a34a",e:"🗞️",tone:"analitico"},
   {id:"skysport",  name:"Sky Sport 24",          short:"Sky Sport",  color:"#0099d6",e:"📡",tone:"diretto"},
 ];
-const GAME_VERSION="3.17.3"; // fix: walkout — ingresso dalla tribuna (sideline) e formazioni complete fino all'11
+const GAME_VERSION="3.17.4"; // mister intelligente: ordini contestuali con effetti reali su possession/momentum/drift
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -5685,20 +5685,23 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
       const ck=clockRef.current;
       if(ck===28&&!tacticFiredRef.current[0]){
         tacticFiredRef.current[0]=true;
-        // Il MISTER sceglie la tattica — il giocatore la esegue
-        var sc0=scoreRef.current;var diff0=sc0.home-sc0.away;
-        var opts0=TACTIC_MOMENTS[0];
-        var cho0=diff0>=1?opts0.find(function(o){return o.key==="possesso";})||opts0[1]:diff0<=-1?opts0.find(function(o){return o.key==="verticale";})||opts0[2]:opts0[Math.floor(Math.random()*opts0.length)];
-        tacticBonusRef.current=cho0.bonus;
-        addCom("📢 Mister: «"+cho0.txt+"» — "+cho0.hint,TH.primary,ck);
+        var key0=selectCoachOrder(ck,scoreRef.current,momentumRef.current,player.fatigue||0);
+        var ord0=COACH_ORDERS[key0]||COACH_ORDERS.pressing;
+        tacticBonusRef.current=ord0.bonus;
+        if(ord0.poss!==0)setPossession(function(p){return clamp(p+ord0.poss,20,80);});
+        setMomentum(function(m){return clamp(m+(ord0.mom||0),0,100);});
+        if(ord0.drift&&DRIFT_PRESETS[ord0.drift])driftTargetsRef.current=DRIFT_PRESETS[ord0.drift];
+        addCom("📢 "+ord0.e+" Mister: «"+ord0.ctx+"»","#93c5fd",ck);
       }
       if(ck===63&&!tacticFiredRef.current[1]){
         tacticFiredRef.current[1]=true;
-        var sc1=scoreRef.current;var diff1=sc1.home-sc1.away;
-        var opts1=TACTIC_MOMENTS[1];
-        var cho1=diff1>=1?opts1.find(function(o){return o.key==="gestisci";})||opts1[1]:diff1<=-1?opts1.find(function(o){return o.key==="allin";})||opts1[0]:opts1.find(function(o){return o.key==="cambio";})||opts1[2];
-        tacticBonusRef.current=cho1.bonus;
-        addCom("📢 Mister: «"+cho1.txt+"» — "+cho1.hint,TH.primary,ck);
+        var key1=selectCoachOrder(ck,scoreRef.current,momentumRef.current,player.fatigue||0);
+        var ord1=COACH_ORDERS[key1]||COACH_ORDERS.verticale;
+        tacticBonusRef.current=ord1.bonus;
+        if(ord1.poss!==0)setPossession(function(p){return clamp(p+ord1.poss,20,80);});
+        setMomentum(function(m){return clamp(m+(ord1.mom||0),0,100);});
+        if(ord1.drift&&DRIFT_PRESETS[ord1.drift])driftTargetsRef.current=DRIFT_PRESETS[ord1.drift];
+        addCom("📢 "+ord1.e+" Mister: «"+ord1.ctx+"»","#93c5fd",ck);
       }
       if(ck>=65&&ck<=70&&!subFiredRef.current&&Math.random()<0.38){
         subFiredRef.current=true;
@@ -5748,7 +5751,17 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           const eligible=BG_MATCH.filter(e=>(!e.minClock||nx>=e.minClock)&&(!e.maxClock||nx<=e.maxClock)&&(!e.derbyOnly||!!drby));
           const ev=wPick(eligible);
           if(ev.ef==="team_goal")setScore(s=>({...s,home:s.home+1}));
-          if(ev.ef==="opp_goal"){setScore(s=>({...s,away:s.away+1}));setPossession(p=>clamp(p-4,20,80));setScreenFlash({col:"rgba(239,68,68,0.22)",dur:500});
+          if(ev.ef==="opp_goal"){setScore(s=>{
+            var newAway=s.away+1;var newDiff=s.home-newAway;
+            var reactKey=newDiff<=-2?"all_in":newDiff===-1?"cerca_gol":"pressing";
+            var reactOrd=COACH_ORDERS[reactKey];
+            if(reactOrd){
+              tacticBonusRef.current=reactOrd.bonus;
+              if(reactOrd.drift&&DRIFT_PRESETS[reactOrd.drift])driftTargetsRef.current=DRIFT_PRESETS[reactOrd.drift];
+              setTimeout(function(){addCom("📢 "+reactOrd.e+" Mister: «"+reactOrd.ctx+"»","#ef4444",nx);},300);
+            }
+            return{...s,away:newAway};
+          });setPossession(p=>clamp(p-4,20,80));setScreenFlash({col:"rgba(239,68,68,0.22)",dur:500});
             // Dynamic HL — queue a reactive highlight a few minutes after conceding
             if(nx<75&&numHLRef.current<8)reactiveHLQueueRef.current.push(nx+rng(4,8));}
           if(ev.ef==="opp_red"){setMomentum(m=>clamp(m+20,0,100));setPossession(p=>clamp(p+8,20,80));setScreenFlash({col:"rgba(22,163,74,0.20)",dur:600});}
