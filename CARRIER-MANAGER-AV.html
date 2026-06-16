@@ -1582,7 +1582,7 @@ const NEWSPAPERS=[
   {id:"lastampa",  name:"La Stampa Sport",       short:"La Stampa",  color:"#16a34a",e:"🗞️",tone:"analitico"},
   {id:"skysport",  name:"Sky Sport 24",          short:"Sky Sport",  color:"#0099d6",e:"📡",tone:"diretto"},
 ];
-const GAME_VERSION="3.19.0"; // Sprint 37 — Carriera Multi-Stagione: fase carriera, narrativa, momento stagione, stato contratto
+const GAME_VERSION="3.20.0"; // Sprint 39 — Mercato Trasferimenti: finestra mercato interattiva, lista transfer, fai girare il nome
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -8591,6 +8591,10 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       newP={...newP,trainingStreak:0,lastTrainingType:null};
       changed=true;
     }
+    if(!('windowOfferUsed' in newP)){
+      newP={...newP,windowOfferUsed:false};
+      changed=true;
+    }
     if(!('seasonObjectives' in newP)){
       newP={...newP,seasonObjectives:generateSeasonObjectives(newP)};
       changed=true;
@@ -9347,7 +9351,9 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       const naturalFat=Math.max(0,baseFat-6);
       if(p.injured&&(p.injuryWeeks||0)>0){const recovAdv=p.injuryWeeks-1<=0;return{...updP,week:(p.week||1)+1,weekLived:false,trainedThisWeek:false,trainingStreak:0,lastTrainingType:null,injuryWeeks:p.injuryWeeks-1,injured:!recovAdv,...(recovAdv?{injuryType:null,justRecovered:true}:{justRecovered:false}),fatigue:Math.max(0,baseFat-12),form:naturalForm};}
       const nextStreak=p.trainedThisWeek?(p.trainingStreak||0):0;
-      return{...updP,week:(p.week||1)+1,weekLived:false,trainedThisWeek:false,trainingStreak:nextStreak,fatigue:naturalFat,form:naturalForm,justRecovered:false};
+      const nextWk=(p.week||1)+1;
+      const winReset=nextWk===19; // finestra invernale apre → reset ricerca mercato
+      return{...updP,week:nextWk,weekLived:false,trainedThisWeek:false,trainingStreak:nextStreak,windowOfferUsed:winReset?false:(p.windowOfferUsed||false),fatigue:naturalFat,form:naturalForm,justRecovered:false};
     });
     notify("⏭️ Settimana avanzata");
     // Sprint 35 — Agent task result notification
@@ -11294,6 +11300,54 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                     </div>
                   </div>
                 </Card>
+                {/* Finestra di Mercato */}
+                {txOpen&&(
+                  <Card style={{padding:"12px 14px",background:"#ecfdf5",border:"1px solid #6ee7b7"}}>
+                    <div style={{fontSize:10,color:"#065f46",textTransform:"uppercase",letterSpacing:1.5,marginBottom:10,fontWeight:700}}>
+                      🌊 Finestra di Mercato — {week>=19?"Inverno":"Estate"} · Sett. {week}
+                    </div>
+                    {/* Transfer listed toggle */}
+                    {player.transferListed?(
+                      <div style={{padding:"9px 11px",borderRadius:9,background:"#fee2e2",border:"1px solid #fca5a5",display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:8}}>
+                        <div>
+                          <div style={{fontSize:11,fontWeight:700,color:"#dc2626"}}>📋 Sei in lista transfer</div>
+                          <div style={{fontSize:9,color:"#7f1d1d",marginTop:1}}>Il mercato si muove — aspetta le offerte.</div>
+                        </div>
+                        <button onClick={function(){setPlayer(function(p){return{...p,transferListed:false,coachTrust:clamp((p.coachTrust||60)+5,0,100)};});notify("✅ Rimosso dalla lista. +5 fiducia mister.",TH.success);}} style={{padding:"5px 11px",borderRadius:7,border:"1px solid #dc2626",background:"#fff",color:"#dc2626",fontSize:10,fontWeight:700,cursor:"pointer",fontFamily:"inherit",flexShrink:0}}>
+                          Rimuoviti
+                        </button>
+                      </div>
+                    ):(
+                      <button onClick={function(){setPlayer(function(p){return{...p,transferListed:true,coachTrust:clamp((p.coachTrust||60)-8,0,100)};});notify("📋 In lista transfer. −8 fiducia mister.",TH.warning);}} style={{width:"100%",padding:"9px 12px",borderRadius:9,border:"1px solid #6ee7b7",background:"#f0fdf4",display:"flex",alignItems:"center",justifyContent:"space-between",cursor:"pointer",fontFamily:"inherit",marginBottom:8}}>
+                        <div style={{textAlign:"left"}}>
+                          <div style={{fontSize:11,fontWeight:700,color:"#065f46"}}>📋 Mettiti in lista transfer</div>
+                          <div style={{fontSize:9,color:"#6b7280",marginTop:1}}>Più visibilità — ma il mister lo saprà</div>
+                        </div>
+                        <div style={{fontSize:9,color:"#dc2626",fontWeight:600,flexShrink:0}}>−8 trust</div>
+                      </button>
+                    )}
+                    {/* Genera offerta */}
+                    {!player.windowOfferUsed?(
+                      <button onClick={function(){
+                        var offer=generateTransferOffer(player);
+                        if(offer){
+                          setTransferOffer(offer);
+                          setPlayer(function(p){return{...p,windowOfferUsed:true};});
+                          notify("📨 Offerta ricevuta! Vai alla dashboard.",TH.success);
+                        }else{
+                          setPlayer(function(p){return{...p,windowOfferUsed:true};});
+                          notify("🔍 Nessun club interessato al momento.",TH.muted);
+                        }
+                      }} style={{width:"100%",padding:"10px 12px",borderRadius:9,border:"none",background:"#059669",color:"#fff",fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>
+                        🔍 Fai girare il nome — cerca offerta
+                      </button>
+                    ):(
+                      <div style={{padding:"8px 10px",borderRadius:8,background:"#f8fafc",border:"1px solid #d1fae5",fontSize:10,color:TH.muted,textAlign:"center"}}>
+                        ✅ Ricerca effettuata questa finestra · Prossima: {week>=19?"Estate S."+(player.season||1)+1:"Inverno W.19"}
+                      </div>
+                    )}
+                  </Card>
+                )}
                 {/* Contract status card */}
                 <Card style={{padding:"12px 14px",border:"1px solid "+(isExpiringSoon||isUnderpaid?"#fca5a5":TH.cardBorder)}}>
                   <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>📋 Situazione Contratto</div>
