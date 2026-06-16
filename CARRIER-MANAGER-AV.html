@@ -1624,7 +1624,7 @@ const NEWSPAPERS=[
   {id:"lastampa",  name:"La Stampa Sport",       short:"La Stampa",  color:"#16a34a",e:"🗞️",tone:"analitico"},
   {id:"skysport",  name:"Sky Sport 24",          short:"Sky Sport",  color:"#0099d6",e:"📡",tone:"diretto"},
 ];
-const GAME_VERSION="3.23.0"; // Sprint 42 — European Club Competitions: UCL/UEL/UECL group stage + knockout, qualificazione standings
+const GAME_VERSION="3.24.0"; // Sprint 43 — National matches playable: friendly callup + Nations Cup via LiveMatch
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -8279,13 +8279,24 @@ const NAT_DATA={
   "Olanda":    {flag:"🇳🇱",col:"#FF4F00",col2:"#fff",opp:"Germania"},
   "Belgio":    {flag:"🇧🇪",col:"#1a1a1a",col2:"#FDDA24",opp:"Francia"},
 };
-function NationalCallupScreen({data,onConfirm}){
-  const{nation,isFirst,homeScore,awayScore,goals,assists,won,drew,newCaps,opp:dataOpp}=data;
+const NAT_CLUB_DATA={
+  "Italia":{id:"it-nt",a:"ITA",p:82,c:"#003399",c2:"#fff",nat:"🇮🇹"},
+  "Spagna":{id:"es-nt",a:"ESP",p:90,c:"#AA151B",c2:"#F1BF00",nat:"🇪🇸"},
+  "Francia":{id:"fr-nt",a:"FRA",p:85,c:"#002395",c2:"#fff",nat:"🇫🇷"},
+  "Germania":{id:"de-nt",a:"GER",p:87,c:"#1a1a1a",c2:"#FFCE00",nat:"🇩🇪"},
+  "Inghilterra":{id:"en-nt",a:"ENG",p:88,c:"#003c8f",c2:"#fff",nat:"🏴󠁧󠁢󠁥󠁮󠁧󠁿"},
+  "Portogallo":{id:"pt-nt",a:"POR",p:80,c:"#006600",c2:"#EE1111",nat:"🇵🇹"},
+  "Brasile":{id:"br-nt",a:"BRA",p:91,c:"#009C3B",c2:"#FFDF00",nat:"🇧🇷"},
+  "Argentina":{id:"ar-nt",a:"ARG",p:89,c:"#74ACDF",c2:"#fff",nat:"🇦🇷"},
+  "Olanda":{id:"nl-nt",a:"NED",p:78,c:"#FF4F00",c2:"#fff",nat:"🇳🇱"},
+  "Belgio":{id:"be-nt",a:"BEL",p:79,c:"#1a1a1a",c2:"#FDDA24",nat:"🇧🇪"},
+};
+function NationalCallupScreen({data,onPlay}){
+  const{nation,isFirst,newCaps,opp:dataOpp}=data;
   const nd=NAT_DATA[nation]||{flag:"🏳",col:"#1e40af",col2:"#fff",opp:"Avversario"};
   const{flag,col,col2}=nd;
   const opp=dataOpp||nd.opp||"Avversario";
-  const res=won?"VITTORIA":drew?"PAREGGIO":"SCONFITTA";
-  const resCol=won?TH.success:drew?TH.warning:TH.danger;
+  const oppNd=NAT_DATA[opp]||{flag:"🏳",col:"#888",col2:"#fff"};
   const[shown,setShown]=React.useState(false);
   React.useEffect(()=>{const t=setTimeout(()=>setShown(true),60);return()=>clearTimeout(t);},[]);
   return(
@@ -8294,7 +8305,7 @@ function NationalCallupScreen({data,onConfirm}){
       <div style={{fontSize:54,marginBottom:4,lineHeight:1}}>{flag}</div>
       <div style={{fontSize:10,color:TH.muted,letterSpacing:2.5,textTransform:"uppercase",marginBottom:4}}>Convocazione Nazionale</div>
       <div style={{fontSize:26,fontWeight:900,color:"#fff",marginBottom:2}}>Nazionale {nation}</div>
-      <div style={{fontSize:12,color:TH.muted,marginBottom:22}}>Cap #{newCaps}</div>
+      <div style={{fontSize:12,color:TH.muted,marginBottom:22}}>Cap #{newCaps} · Amichevole Internazionale</div>
       {/* Jersey */}
       <div style={{marginBottom:22,filter:`drop-shadow(0 0 20px ${col}99)`}}>
         <svg width="92" height="104" viewBox="0 0 92 104">
@@ -8309,34 +8320,28 @@ function NationalCallupScreen({data,onConfirm}){
           <text x="46" y="65" textAnchor="middle" fill={col2} fontSize="21" fontWeight="900" fontFamily="Arial,sans-serif">10</text>
         </svg>
       </div>
-      {/* Match result */}
-      <Card style={{width:"100%",maxWidth:360,padding:"14px 16px",marginBottom:14}}>
-        <div style={{fontSize:9,color:TH.muted,letterSpacing:2,textTransform:"uppercase",textAlign:"center",marginBottom:10}}>Amichevole Internazionale</div>
-        <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:8,marginBottom:8}}>
-          <span style={{fontSize:11,color:TH.muted,flex:1,textAlign:"right"}}>{flag} {nation}</span>
-          <div style={{display:"flex",alignItems:"center",gap:7,padding:"6px 14px",background:"rgba(255,255,255,0.05)",borderRadius:8}}>
-            <span style={{fontSize:32,fontWeight:900,color:TH.text,lineHeight:1}}>{homeScore}</span>
-            <span style={{fontSize:14,color:TH.faint}}>–</span>
-            <span style={{fontSize:32,fontWeight:900,color:TH.text,lineHeight:1}}>{awayScore}</span>
+      {/* Pre-match info */}
+      <Card style={{width:"100%",maxWidth:360,padding:"14px 16px",marginBottom:20}}>
+        <div style={{fontSize:9,color:TH.muted,letterSpacing:2,textTransform:"uppercase",textAlign:"center",marginBottom:12}}>Prossima Partita</div>
+        <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:8}}>
+          <div style={{textAlign:"center",flex:1}}>
+            <div style={{fontSize:28,lineHeight:1,marginBottom:4}}>{flag}</div>
+            <div style={{fontSize:11,fontWeight:700,color:TH.text}}>{nation}</div>
           </div>
-          <span style={{fontSize:11,color:TH.muted,flex:1}}>vs {opp}</span>
-        </div>
-        <div style={{textAlign:"center",fontSize:13,fontWeight:700,color:resCol,marginBottom:12}}>{res}</div>
-        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}>
-          {[{l:"Gol",v:goals,e:"⚽",c:TH.warning},{l:"Assist",v:assists,e:"🎯",c:TH.accent}].map(s=>(
-            <Card key={s.l} style={{padding:"8px 6px",textAlign:"center"}}>
-              <div style={{fontSize:16,marginBottom:2}}>{s.e}</div>
-              <div style={{fontSize:22,fontWeight:900,color:s.c}}>{s.v}</div>
-              <div style={{fontSize:9,color:TH.muted,textTransform:"uppercase"}}>{s.l}</div>
-            </Card>
-          ))}
+          <div style={{textAlign:"center",padding:"8px 14px",background:"rgba(255,255,255,0.05)",borderRadius:8}}>
+            <div style={{fontSize:24,fontWeight:900,color:TH.muted}}>VS</div>
+          </div>
+          <div style={{textAlign:"center",flex:1}}>
+            <div style={{fontSize:28,lineHeight:1,marginBottom:4}}>{oppNd.flag}</div>
+            <div style={{fontSize:11,fontWeight:700,color:TH.text}}>{opp}</div>
+          </div>
         </div>
       </Card>
-      {/* Boosts */}
+      {/* Boosts preview */}
       <Card style={{width:"100%",maxWidth:360,padding:"12px 16px",marginBottom:24}}>
-        <div style={{fontSize:9,color:TH.muted,letterSpacing:2,textTransform:"uppercase",marginBottom:10}}>Bonus Permanente</div>
+        <div style={{fontSize:9,color:TH.muted,letterSpacing:2,textTransform:"uppercase",marginBottom:10}}>Bonus dopo la partita</div>
         <div style={{display:"flex",justifyContent:"space-around"}}>
-          {[{l:"Popolarità",v:"+18",e:"📈",c:TH.success},{l:"Valore",v:"+€0.35M",e:"💶",c:TH.warning},{l:"Morale",v:"+15",e:"😊",c:TH.accent}].map(b=>(
+          {[{l:"Popolarità",v:"+8",e:"📈",c:TH.success},{l:"Valore",v:"+€0.15M",e:"💶",c:TH.warning},{l:"Morale",v:"+12",e:"😊",c:TH.accent}].map(b=>(
             <div key={b.l} style={{textAlign:"center"}}>
               <div style={{fontSize:16,marginBottom:2}}>{b.e}</div>
               <div style={{fontSize:15,fontWeight:800,color:b.c}}>{b.v}</div>
@@ -8345,8 +8350,8 @@ function NationalCallupScreen({data,onConfirm}){
           ))}
         </div>
       </Card>
-      <Btn onClick={onConfirm} v="green" fw style={{padding:"14px",fontSize:15,maxWidth:360,fontWeight:800}}>
-        🏳️ Accetta la Convocazione
+      <Btn onClick={onPlay} v="green" fw style={{padding:"14px",fontSize:15,maxWidth:360,fontWeight:800}}>
+        🏟️ Gioca la Partita
       </Btn>
     </div>
   );
@@ -8713,6 +8718,8 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     if(!('leagueArchive' in newP)){newP={...newP,leagueArchive:[]};changed=true;}
     // Sprint 42 migrations
     if(!('euro' in newP)){newP={...newP,euro:null};changed=true;}
+    // Sprint 43 migrations
+    if(!('nationsCupQueue' in newP)){newP={...newP,nationsCupQueue:null};changed=true;}
     if(changed){setPlayer(newP);}
   },[]);// eslint-disable-line
   const[darkMode,setDarkMode]=useState(()=>localStorage.getItem("cpm-dark")==="1");
@@ -8731,6 +8738,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
   const[nationsCupModal,setNationsCupModal]=useState(null); // Sprint 30: Nations Cup event
   const[euroGroupModal,setEuroGroupModal]=useState(null); // Sprint 42: European group stage
   const[showRetireConfirm,setShowRetireConfirm]=useState(false); // Sprint 30: voluntary retirement
+  const[matchContext,setMatchContext]=useState("career"); // Sprint 43: "career"|"national"|"nationsCup"
   const[lastSaved,setLastSaved]=useState(null);           // timestamp
   const[nationalCallupData,setNationalCallupData]=useState(null);
   const[retirementData,setRetirementData]=useState(null);
@@ -9040,6 +9048,59 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
   const onMatchEnd=result=>{
     setLastMatch(result);
     setMisterDiscorsoModal(null); // safety net: clear any stale pre-match coach speech
+    // Sprint 43: national / Nations Cup match — early return, no week advance, no injury/standings
+    if(result.context==="national"||result.context==="nationsCup"){
+      const isNat=result.context==="national";
+      setPlayer(p=>{
+        const newCaps=(p.nationalCaps||0)+1;
+        const prevGoals=p.nationalGoals||0;
+        const newNatGoals=prevGoals+(result.goals||0);
+        const newMem=[...(p.worldMemory||[])];
+        if(isNat&&nationalCallupData?.isFirst)newMem.push({type:"national_debut",label:`Debutto in Nazionale — ${p.nation||"Italia"}`,season:p.season||1,week:p.week||1});
+        if(result.goals>0&&prevGoals===0)newMem.push({type:"national_goal",label:`Primo gol in Nazionale — ${p.nation||"Italia"}`,season:p.season||1,week:p.week||1});
+        const moD=result.won?12:result.drew?4:-2;
+        const logE=`${isNat?"🏳️ Amichevole":"🌍 Nations Cup"}: ${result.homeScore}-${result.awayScore} vs ${result.opponent||"?"} — ${result.goals}⚽ ${result.assists}🎯`;
+        let newNCQ=p.nationsCupQueue;
+        if(!isNat&&newNCQ?.active&&!newNCQ.done){
+          const nIdx=(newNCQ.matchIdx||0)+1;
+          const nPts=(newNCQ.pts||0)+(result.won?3:result.drew?1:0);
+          const nMatches=[...(newNCQ.matches||[]),{opp:result.opponent,won:result.won,drew:result.drew,homeScore:result.homeScore,awayScore:result.awayScore}];
+          const allDone2=nIdx>=(newNCQ.opponents||[]).length;
+          newNCQ={...newNCQ,matchIdx:nIdx,pts:nPts,matches:nMatches,done:allDone2};
+        }
+        return{...p,nationalCaps:newCaps,nationalGoals:newNatGoals,lastNationalSeason:p.season||1,worldMemory:newMem,morale:clamp((p.morale||70)+moD,0,100),popularity:clamp((p.popularity||20)+8,0,100),value:Math.max(0.5,(p.value||0.8)+0.15),nationsCupQueue:newNCQ,log:[logE,...(p.log||[])].slice(0,60)};
+      });
+      setNationalCallupData(null);
+      if(isNat){
+        setMatchContext("career");
+        setTimeout(()=>notify(`🏳️ Cap #${(player.nationalCaps||0)+1} — ${player.nation||"Italia"}! ${result.won?"VITTORIA ✅":"Partita completata"}.`,TH.accent),100);
+        setScreen("postmatch");setTab("dashboard");
+      } else {
+        setMatchContext("career");
+        const q=player.nationsCupQueue;
+        const prevIdx=q?.matchIdx||0;
+        const newIdx=prevIdx+1;
+        const newPts=(q?.pts||0)+(result.won?3:result.drew?1:0);
+        const allMatches=[...(q?.matches||[]),{opp:result.opponent,won:result.won,drew:result.drew,homeScore:result.homeScore,awayScore:result.awayScore}];
+        const allDone=newIdx>=(q?.opponents||[]).length;
+        setScreen("dashboard");setTab("dashboard");
+        if(allDone){
+          const qualified=newPts>=4;const trophyWon=newPts>=7;
+          setPlayer(p=>{
+            const ncMem=[...(p.worldMemory||[]),{type:"nations_cup",season:p.season||1,nation:p.nation||"Italia",qualified,won:trophyWon,pts:newPts}];
+            const ncTrophies=trophyWon?[...(p.trophies||[]),{season:p.season||1,club:p.nation||"Italia",league:"Coppa delle Nazioni",isNational:true}]:(p.trophies||[]);
+            const ncMoraleB=trophyWon?18:qualified?10:0;
+            const ncPopB=trophyWon?20:qualified?10:3;
+            return{...p,morale:clamp((p.morale||70)+ncMoraleB,0,100),popularity:clamp((p.popularity||20)+ncPopB,0,100),worldMemory:ncMem,trophies:ncTrophies,nationsCupQueue:{...p.nationsCupQueue,done:true}};
+          });
+          setTimeout(()=>setNationsCupModal({myNat:player.nation||"Italia",season:player.season||1,matches:allMatches,pts:newPts,qualified,trophyWon}),500);
+          if(trophyWon)setTimeout(()=>notify("🏆 Coppa delle Nazioni VINTA! Leggenda nazionale!","#f59e0b"),1200);
+        } else {
+          setTimeout(()=>notify(`🌍 Nations Cup: Partita ${newIdx}/3 completata — ancora ${(q?.opponents||[]).length-newIdx} da giocare!`,TH.accent),300);
+        }
+      }
+      return;
+    }
     // Injury: compute before setPlayer so we can notify after
     const postFatigue=clamp((player.fatigue||0)+rng(12,22),0,100);
     const injRoll=Math.random();
@@ -9341,20 +9402,16 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       const _euroQ=_euroPts>=7;
       setTimeout(()=>setEuroGroupModal({competition:player.euro.competition,groupOpponents:_eOpps,groupResults:_grpRes,pts:_euroPts,qualified:_euroQ,season:player.season||1}),500);
     }
-    // Sprint 30 BF5: Nations Cup trigger — every 2 pro seasons at week 20
-    if(!isInU18&&weekVal===20&&(player.season||1)%2===0&&(player.nationalCaps||0)>=2&&!(player.worldMemory||[]).some(m=>m.type==="nations_cup"&&m.season===(player.season||1))){
-      const NATION_PRESTIGE={Italia:82,Spagna:90,Francia:85,Germania:87,Inghilterra:88,Portogallo:80,Brasile:91,Argentina:89,Olanda:78,Belgio:79};
-      const myNat=player.nation||"Italia";const myPres=NATION_PRESTIGE[myNat]||75;
-      const opponents=Object.entries(NATION_PRESTIGE).filter(([n])=>n!==myNat).sort(()=>Math.random()-.5).slice(0,3);
-      const seed=hashStr(myNat+(player.season||1));let rs=seed;const sr=()=>{rs=((rs*1664525+1013904223)&0xffffffff)>>>0;return rs/0xffffffff;};
-      let pts=0;const matches=opponents.map(([oppNat,oppPres])=>{
-        const myStr=myPres+(player.ovr||65)*0.3+(player.form||70)*0.15;const oppStr=oppPres+65*0.3+70*0.15;
-        const win=sr()<myStr/(myStr+oppStr)*1.1;const draw=!win&&sr()<0.28;
-        if(win)pts+=3;else if(draw)pts+=1;
-        return{opp:oppNat,won:win,drew:draw,homeScore:win?rng(1,3):draw?rng(0,2):rng(0,1),awayScore:win?rng(0,1):draw?rng(0,2):rng(1,3)};
-      });
-      const qualified=pts>=4;const trophyWon=pts>=7;
-      setTimeout(()=>setNationsCupModal({myNat,season:player.season||1,matches,pts,qualified,trophyWon}),400);
+    // Sprint 43: Nations Cup trigger — every 2 pro seasons at week 20, now sets playable queue
+    if(!isInU18&&weekVal===20&&(player.season||1)%2===0&&(player.nationalCaps||0)>=2&&!(player.worldMemory||[]).some(m=>m.type==="nations_cup"&&m.season===(player.season||1))&&!player.nationsCupQueue?.active){
+      const _allNat=["Italia","Spagna","Francia","Germania","Inghilterra","Portogallo","Brasile","Argentina","Olanda","Belgio"];
+      const _oppPool=_allNat.filter(n=>n!==(player.nation||"Italia"));
+      const _seed=hashStr((player.nation||"Italia")+(player.season||1));
+      let _sr=_seed;const _srng=()=>{_sr=((_sr*1664525+1013904223)&0xffffffff)>>>0;return _sr/0xffffffff;};
+      const _shuffled=[..._oppPool].sort(()=>_srng()-.5);
+      const _opps=_shuffled.slice(0,3);
+      setPlayer(p=>({...p,nationsCupQueue:{active:true,opponents:_opps,matchIdx:0,pts:0,matches:[],done:false,season:p.season||1}}));
+      setTimeout(()=>notify("🌍 Sei convocato per la Coppa delle Nazioni! Gioca le 3 partite dal tuo profilo.",TH.accent),500);
     }
 
     // Normal week advance
@@ -9542,20 +9599,12 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       const isFirst=caps===0;
       const seasonOpen=curSeas>lastNat;
       if((isFirst||seasonOpen)&&Math.random()<(isFirst?0.22:0.13)){
-        // Fix BUG2: OVR-based win probability
-        const _novr=player.ovr||65;const _nfrm=player.form||70;
-        const _nwin=Math.random()<(_novr*0.55+_nfrm*0.15+5)/100*1.1;
-        const _ndraw=!_nwin&&Math.random()<0.22;
-        const goals=(_nwin&&Math.random()<0.45)?rng(1,2):0;
-        const assists=(!goals&&Math.random()<0.30)?1:0;
-        const hS=_nwin?rng(1,3):_ndraw?rng(0,2):rng(0,1);
-        const aS=_nwin?rng(0,1):_ndraw?rng(0,2):rng(1,3);
-        // Fix BUG3: avversario variabile
+        // Sprint 43: match will be played interactively — pass only lobby data
         const _allNat=["Italia","Spagna","Francia","Germania","Inghilterra","Portogallo","Brasile","Argentina","Olanda","Belgio"];
         const _oppPool=_allNat.filter(n=>n!==(player.nation||"Italia"));
         const _callupOpp=_oppPool[Math.floor(Math.random()*_oppPool.length)]||"Avversario";
         setTimeout(()=>{
-          setNationalCallupData({nation:player.nation||"Italia",isFirst,homeScore:hS,awayScore:aS,goals,assists,won:hS>aS,drew:hS===aS,newCaps:caps+1,opp:_callupOpp});
+          setNationalCallupData({nation:player.nation||"Italia",isFirst,newCaps:caps+1,opp:_callupOpp});
           setScreen("nationalCallup");
         },700);
       }
@@ -9751,20 +9800,27 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     notify("🎓 Sei diventato professionista!",TH.success);
   },[]);// eslint-disable-line
 
-  const onNationalConfirm=()=>{
-    if(!nationalCallupData)return;
-    const d=nationalCallupData;
-    setPlayer(p=>{
-      const prevGoals=p.nationalGoals||0;
-      const newNatGoals=prevGoals+(d.goals||0);
-      const newMem=[...(p.worldMemory||[])];
-      if(d.isFirst)newMem.push({type:"national_debut",label:`Debutto in Nazionale — ${d.nation}`,season:p.season||1,week:p.week||1});
-      if((d.goals||0)>0&&prevGoals===0)newMem.push({type:"national_goal",label:`Primo gol in Nazionale — ${d.nation}`,season:p.season||1,week:p.week||1});
-      return{...p,nationalCaps:d.newCaps,nationalGoals:newNatGoals,lastNationalSeason:p.season||1,worldMemory:newMem,popularity:clamp((p.popularity||20)+18,0,100),value:Math.max(0.5,(p.value||0.8)+0.35),morale:clamp((p.morale||70)+15,0,100),log:[`🏳️ Cap ${d.newCaps} — ${d.nation} ${d.homeScore}-${d.awayScore} (${d.won?"V":d.drew?"P":"S"}) ${d.goals}⚽ ${d.assists}🎯`,...(p.log||[])].slice(0,60)};
-    });
-    setNationalCallupData(null);
-    setScreen("dashboard");
-    setTimeout(()=>notify(`🏳️ Convocazione in ${d.nation}! Popolarità +18 · Valore +€0.35M`,TH.accent),100);
+  const startNationalMatch=()=>{
+    const callup=nationalCallupData;
+    if(!callup)return;
+    const oppName=callup.opp||"Avversario";
+    const nd=NAT_CLUB_DATA[oppName]||{id:"xx-nt",a:"INT",p:75,c:"#888888",c2:"#fff",nat:"🏳️"};
+    matchBenchStartRef.current=false;
+    setMatchOpp({id:nd.id,n:oppName,a:nd.a,p:nd.p,c:nd.c,c2:nd.c2,nat:nd.nat});
+    setMatchIsHome(true);
+    setMatchContext("national");
+    setScreen("match");
+  };
+  const startNationsCupMatch=()=>{
+    const q=player.nationsCupQueue;
+    if(!q||!q.active||q.done)return;
+    const oppName=(q.opponents||[])[q.matchIdx||0]||"Avversario";
+    const nd=NAT_CLUB_DATA[oppName]||{id:"xx-nt",a:"INT",p:75,c:"#888888",c2:"#fff",nat:"🏳️"};
+    matchBenchStartRef.current=false;
+    setMatchOpp({id:nd.id,n:oppName,a:nd.a,p:nd.p,c:nd.c,c2:nd.c2,nat:nd.nat});
+    setMatchIsHome(true);
+    setMatchContext("nationsCup");
+    setScreen("match");
   };
 
   const upgradeSkill=k=>{
@@ -9855,13 +9911,13 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
 
   if(screen==="match"&&matchOpp){
     const usePhaserRenderer=localStorage.getItem("cpm-renderer")==="phaser";
-    const phaserMatchEnd=stats=>onMatchEnd({goals:stats.playerGoals||stats.goals||0,assists:stats.playerAssists||stats.assists||0,homeScore:stats.squadAGoals,awayScore:stats.squadBGoals,won:stats.result==="WIN",drew:stats.result==="DRAW",opponent:matchOpp?.name||matchOpp?.n,oppAbbr:matchOpp?.a||matchOpp?.abbr,oppCol:matchOpp?.col||matchOpp?.c,rating:stats.rating,context:"career",oppTactic:null,scoutReport:null});
+    const phaserMatchEnd=stats=>onMatchEnd({goals:stats.playerGoals||stats.goals||0,assists:stats.playerAssists||stats.assists||0,homeScore:stats.squadAGoals,awayScore:stats.squadBGoals,won:stats.result==="WIN",drew:stats.result==="DRAW",opponent:matchOpp?.name||matchOpp?.n,oppAbbr:matchOpp?.a||matchOpp?.abbr,oppCol:matchOpp?.col||matchOpp?.c,rating:stats.rating,context:matchContext||"career",oppTactic:null,scoutReport:null});
     return(
       <div style={{width:"100%"}}>
         <button onClick={()=>{setScreen("dashboard");setTab("dashboard");}} style={{background:"none",border:"none",color:TH.muted,cursor:"pointer",fontSize:13,marginBottom:8,display:"flex",alignItems:"center",gap:6}}>← Carriera</button>
         {usePhaserRenderer
           ?<FootballMatch2D playerData={player} squadAColor={player.club?.col||player.club?.c||"#22c55e"} squadBColor={matchOpp?.col||matchOpp?.c||"#ef4444"} duration={300} onMatchEnd={phaserMatchEnd}/>
-          :<LiveMatch player={player} opponent={matchOpp} context="career" onMatchEnd={onMatchEnd} isMatchHome={matchIsHome} benchStart={matchBenchStartRef.current}/>
+          :<LiveMatch player={player} opponent={matchOpp} context={matchContext||"career"} onMatchEnd={onMatchEnd} isMatchHome={matchIsHome} benchStart={matchBenchStartRef.current}/>
         }
         {misterDiscorsoModal&&(
           <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.75)",zIndex:9999,display:"flex",alignItems:"center",justifyContent:"center",padding:20}}>
@@ -9913,7 +9969,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
 
   if(screen==="nationalCallup"&&nationalCallupData)return(
     <div style={{width:"100%"}}>
-      <NationalCallupScreen data={nationalCallupData} onConfirm={onNationalConfirm}/>
+      <NationalCallupScreen data={nationalCallupData} onPlay={startNationalMatch}/>
     </div>
   );
 
@@ -10297,16 +10353,6 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
               <div style={{fontSize:10,color:TH.muted,marginTop:3}}>Punti: {nationsCupModal.pts}/9</div>
             </div>
             <Btn fw v={nationsCupModal.trophyWon?"primary":"secondary"} onClick={()=>{
-              const nc=nationsCupModal;
-              setPlayer(p=>{
-                const moraleB=nc.trophyWon?18:nc.qualified?10:0;
-                const popB=nc.trophyWon?20:nc.qualified?10:3;
-                const newMem=[...(p.worldMemory||[]),{type:"nations_cup",season:p.season||1,nation:nc.myNat,qualified:nc.qualified,won:nc.trophyWon,pts:nc.pts}];
-                const newTrophies=nc.trophyWon?[...(p.trophies||[]),{season:p.season||1,club:nc.myNat,league:"Coppa delle Nazioni",isNational:true}]:(p.trophies||[]);
-                return{...p,morale:clamp((p.morale||70)+moraleB,0,100),popularity:clamp((p.popularity||20)+popB,0,100),worldMemory:newMem,trophies:newTrophies,nationalCaps:(p.nationalCaps||0)+3,log:[`🌍 Nations Cup S.${p.season||1}: ${nc.trophyWon?"🏆 CAMPIONI":"pts "+nc.pts+"/9"} — +3 caps`,...(p.log||[])].slice(0,60)};
-              });
-              if(nationsCupModal.trophyWon)notify("🏆 Coppa delle Nazioni VINTA! Leggenda nazionale!","#f59e0b");
-              else if(nationsCupModal.qualified)notify("✅ Qualificati! Morale +10.",TH.success);
               setNationsCupModal(null);
             }}>Chiudi →</Btn>
           </Card>
@@ -10416,6 +10462,17 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
             ))}
           </div>
           <button onClick={()=>setPlayer(p=>({...p,presidentModalSeason:p.season||1}))} style={{width:"100%",padding:"7px 12px",background:"rgba(234,179,8,0.15)",border:"1px solid rgba(234,179,8,0.4)",borderRadius:8,color:"#fde68a",fontSize:12,fontWeight:700,cursor:"pointer"}}>Capito, Presidente</button>
+        </Card>
+      )}
+      {/* Sprint 43: Nations Cup pending card */}
+      {tab==="dashboard"&&player.nationsCupQueue?.active&&!player.nationsCupQueue?.done&&(
+        <Card style={{marginBottom:8,padding:"12px 14px",border:"1px solid #1d4ed8",background:"#eff6ff"}}>
+          <div style={{fontSize:10,color:"#1d4ed8",textTransform:"uppercase",letterSpacing:1.5,marginBottom:6}}>🌍 Coppa delle Nazioni · Stagione {player.nationsCupQueue.season}</div>
+          <div style={{fontSize:12,color:TH.text,fontWeight:600,marginBottom:2}}>
+            Avversario: {(player.nationsCupQueue.opponents||[])[player.nationsCupQueue.matchIdx||0]||"?"} — Partita {(player.nationsCupQueue.matchIdx||0)+1}/3
+          </div>
+          <div style={{fontSize:10,color:TH.muted,marginBottom:10}}>Punti accumulati: {player.nationsCupQueue.pts||0}/9</div>
+          <Btn fw onClick={startNationsCupMatch} style={{padding:"11px",fontSize:13}}>🏟️ Gioca Partita Nazionali</Btn>
         </Card>
       )}
       {/* Season objectives progress */}
