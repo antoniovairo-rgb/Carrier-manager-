@@ -1624,7 +1624,7 @@ const NEWSPAPERS=[
   {id:"lastampa",  name:"La Stampa Sport",       short:"La Stampa",  color:"#16a34a",e:"🗞️",tone:"analitico"},
   {id:"skysport",  name:"Sky Sport 24",          short:"Sky Sport",  color:"#0099d6",e:"📡",tone:"diretto"},
 ];
-const GAME_VERSION="3.26.4"; // Sprint 45e — fix campo piccolo desktop, fix doppio DPad HL, fix mobile field layout
+const GAME_VERSION="3.26.5"; // Sprint 45f — Card height:calc(100vh-80px) su desktop, campo riempie viewport
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -6228,7 +6228,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
       {phase==="formations"&&<FormationView homeTeam={player.club||opponent} awayTeam={opponent} player={player} homeRoster={homeRoster} awayRoster={awayRoster} onContinue={()=>setPhase("walkout")} onSkip={()=>setPhase("playing")} oppTactic={oppTactic} oppTacticLoading={oppTacticLoading} homeKitCol={homeKitCol} awayKitCol={awayKitCol}/>}
 
       {(show3D||phase==="walkout")&&(
-        <Card style={{padding:0,overflow:"hidden",display:"flex",flexDirection:"column",...(isNarrow&&(show3D||phase==="walkout"))?{position:"fixed",top:0,left:0,right:0,bottom:0,zIndex:50}:{marginBottom:10,maxHeight:"calc(100vh - 20px)"}}} shadow>
+        <Card style={{padding:0,overflow:"hidden",display:"flex",flexDirection:"column",...(isNarrow&&(show3D||phase==="walkout"))?{position:"fixed",top:0,left:0,right:0,bottom:0,zIndex:50}:isNarrow?{marginBottom:10,maxHeight:"calc(100vh - 20px)"}:{height:"calc(100vh - 80px)",minHeight:500}}} shadow>
           {/* ── Scoreboard Premium ── */}
           <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"7px 12px",borderBottom:"1px solid rgba(255,255,255,0.08)",background:"linear-gradient(135deg,#060d1e 0%,#0f1e3a 100%)",flex:"0 0 auto"}}>
             {/* Home team */}
