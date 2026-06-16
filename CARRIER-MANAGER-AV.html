@@ -1708,7 +1708,7 @@ const NEWSPAPERS=[
   {id:"lastampa",  name:"La Stampa Sport",       short:"La Stampa",  color:"#16a34a",e:"🗞️",tone:"analitico"},
   {id:"skysport",  name:"Sky Sport 24",          short:"Sky Sport",  color:"#0099d6",e:"📡",tone:"diretto"},
 ];
-const GAME_VERSION="3.30.0"; // Sprint 50 — Training Attivo: 3 sessioni/settimana, slot visuali, fatica scalabile
+const GAME_VERSION="3.31.0"; // Sprint 51 — Record Storici + Diario Automatico
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -9013,6 +9013,10 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       newP={...newP,sessionsThisWeek:newP.trainedThisWeek?1:0,sessionLog:[]};
       changed=true;
     }
+    if(!('diary' in newP)){ // Sprint 51
+      newP={...newP,diary:[]};
+      changed=true;
+    }
     if(!('trainingStreak' in newP)){
       newP={...newP,trainingStreak:0,lastTrainingType:null};
       changed=true;
@@ -9488,7 +9492,11 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
           const allDone2=nIdx>=(newNCQ.opponents||[]).length;
           newNCQ={...newNCQ,matchIdx:nIdx,pts:nPts,matches:nMatches,done:allDone2};
         }
-        return{...p,nationalCaps:newCaps,nationalGoals:newNatGoals,lastNationalSeason:p.season||1,worldMemory:newMem,morale:clamp((p.morale||70)+moD,0,100),popularity:clamp((p.popularity||20)+8,0,100),value:Math.max(0.5,(p.value||0.8)+0.15),nationsCupQueue:newNCQ,log:[logE,...(p.log||[])].slice(0,60)};
+        // Sprint 51: diary for national events
+        const _nat51=[];
+        if(isNat&&nationalCallupData?.isFirst)_nat51.push({season:p.season||1,week:p.week||1,type:"first_national",e:"🏳️",headline:`Debutto in Nazionale — ${p.nation||"Italia"}!`,body:`${result.homeScore}-${result.awayScore} vs ${result.opponent||"?"} · ${result.won?"Vittoria":""}${result.drew?"Pareggio":""}${!result.won&&!result.drew?"Sconfitta":""}`,color:"#2563eb"});
+        if(result.goals>0&&(p.nationalGoals||0)===0)_nat51.push({season:p.season||1,week:p.week||1,type:"first_national_goal",e:"🌍",headline:`Primo gol con la Nazionale!`,body:`${result.goals} gol vs ${result.opponent||"?"} (${result.homeScore}-${result.awayScore}) · ${p.nation||"Italia"}`,color:"#7c3aed"});
+        return{...p,nationalCaps:newCaps,nationalGoals:newNatGoals,lastNationalSeason:p.season||1,worldMemory:newMem,morale:clamp((p.morale||70)+moD,0,100),popularity:clamp((p.popularity||20)+8,0,100),value:Math.max(0.5,(p.value||0.8)+0.15),nationsCupQueue:newNCQ,log:[logE,...(p.log||[])].slice(0,60),diary:[...(p.diary||[]),..._nat51].slice(-80)};
       });
       setNationalCallupData(null);
       if(isNat){
@@ -9628,7 +9636,13 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       const baseAiData=p.aiData||{lastOpponentTactic:null,scoutReports:{},pressReports:{}};
       const newAiData={...baseAiData,lastOpponentTactic:result.oppTactic?{...result.oppTactic,week:p.week||1}:baseAiData.lastOpponentTactic,scoutReports:result.scoutReport?{...baseAiData.scoutReports,[matchdayId]:result.scoutReport}:baseAiData.scoutReports};
       const formD=result.won?8:result.drew?2:-5;
-      return{...p,stats:ns,ovr:newOvr,goals:p.goals+result.goals,assists:p.assists+result.assists,matches:p.matches+1,totalGoals:p.totalGoals+result.goals,totalAssists:p.totalAssists+result.assists,totalMatches:p.totalMatches+1,morale:clamp(p.morale+moD,0,100),form:clamp((p.form||70)+formD,30,95),fatigue:postFatigue,...(newInjured?{injured:true,injuryWeeks,injuryType}:{}),week:(p.week||1)+1,weekLived:false,log:[logE,...(p.log||[])].slice(0,60),matchHistory:newHistory,standings:newStandings,calendar:newCal,aiData:newAiData,...(newMilestoneIds.length>0?{milestones:[...(p.milestones||[]),...newMilestoneIds]}:{}),...cupUpdate2};
+      // Sprint 51: auto-diary entries for this match
+      const _md51=[];
+      if((p.totalGoals||0)===0&&result.goals>0)_md51.push({season:p.season||1,week:p.week||1,type:"first_goal",e:"⚽",headline:"Primo gol in carriera!",body:`${result.goals} gol contro ${result.opponent} (${result.homeScore}-${result.awayScore})`,color:"#16a34a"});
+      if(result.goals>=3)_md51.push({season:p.season||1,week:p.week||1,type:"hattrick",e:"🎩",headline:"Hat-trick!",body:`${result.goals} gol contro ${result.opponent} (${result.homeScore}-${result.awayScore}) · S.${p.season||1}`,color:"#f59e0b"});
+      triggeredMilestones.forEach(m=>_md51.push({season:p.season||1,week:p.week||1,type:"milestone",e:"🏅",headline:m.txt,body:`S.${p.season||1} · Settimana ${p.week||1}`,color:m.color}));
+      const newDiary51=[...(p.diary||[]),..._md51].slice(-80);
+      return{...p,stats:ns,ovr:newOvr,goals:p.goals+result.goals,assists:p.assists+result.assists,matches:p.matches+1,totalGoals:p.totalGoals+result.goals,totalAssists:p.totalAssists+result.assists,totalMatches:p.totalMatches+1,morale:clamp(p.morale+moD,0,100),form:clamp((p.form||70)+formD,30,95),fatigue:postFatigue,...(newInjured?{injured:true,injuryWeeks,injuryType}:{}),week:(p.week||1)+1,weekLived:false,log:[logE,...(p.log||[])].slice(0,60),matchHistory:newHistory,standings:newStandings,calendar:newCal,aiData:newAiData,...(newMilestoneIds.length>0?{milestones:[...(p.milestones||[]),...newMilestoneIds]}:{}),...cupUpdate2,diary:newDiary51};
     });
     setScreen("postmatch");setTab("dashboard");
     if(newInjured){const iT=INJURY_TYPES_META[injuryType]||{label:"Infortunio",icon:"🩹"};notify(`${iT.icon} ${iT.label}! Stop: ${injuryWeeks} settiman${injuryWeeks===1?"a":"e"}.`,TH.danger);}
@@ -9843,10 +9857,16 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
           youngYears:_aw.youngPlayer.playerWins?[...(prevAwards.youngYears||[]),p.season]:(prevAwards.youngYears||[]),
           seasonRecords:_aw.seasonRecord.beaten?[...(prevAwards.seasonRecords||[]),{season:p.season,goals:p.goals||0}]:(prevAwards.seasonRecords||[]),
         };
+        // Sprint 51: diary entries for season-end awards
+        const _se51=[];
+        if(_aw.palloneOro.playerWins)_se51.push({season:p.season||1,week:38,type:"pallone_oro",e:"🏆",headline:"Pallone d'Oro!",body:`Miglior giocatore S.${p.season||1} — ${p.goals||0}⚽ ${p.assists||0}🎯 · ${p.club?.n||""}`,color:"#f59e0b"});
+        if(_aw.scarpaOro.playerWins)_se51.push({season:p.season||1,week:38,type:"scarpa_oro",e:"👟",headline:"Scarpa d'Oro!",body:`Capocannoniere S.${p.season||1} con ${p.goals||0} gol · ${p.club?.lg||""}`,color:"#ef4444"});
+        if(_aw.seasonRecord.beaten)_se51.push({season:p.season||1,week:38,type:"record",e:"📈",headline:"Record stagionale battuto!",body:`${p.goals||0} gol in S.${p.season||1} — nuovo primato di lega!`,color:"#7c3aed"});
         return{...p,history:[...(p.history||[]),hist],trophies:newTrophies,worldMemory:newMem,...rivalUpdate,
           morale:clamp((p.morale||70)+_awMorale,0,100),
           popularity:clamp((p.popularity||20)+_awPop,0,100),
           playerAwards:newPlayerAwards,
+          diary:[...(p.diary||[]),..._se51].slice(-80),
           log:[`🏁 Fine S.${p.season}: ${p.goals}⚽ ${p.assists}🎯${_aw.palloneOro.playerWins?" 🏆PdO":""}${_aw.scarpaOro.playerWins?" ⚽SdO":""}${_aw.seasonRecord.beaten?" 📈REC":""}`,...(p.log||[])].slice(0,60)};
       });
       setSeasonEndData({season:player.season,club:player.club,finalStandings,playerStats:{goals:player.goals||0,assists:player.assists||0,matches:player.matches||0,ovr:player.ovr||60},champion,playerPos:Math.max(0,playerPos),isChampion});
@@ -11343,6 +11363,43 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
         </Card>
       )}
 
+      {/* Sprint 51 — All-Time Scorer Ranking */}
+      {tab==="standings"&&(()=>{
+        const lg=player.club?.lg;
+        const lr=LEAGUE_RECORDS[lg]||null;
+        if(!lr)return null;
+        const totalG=player.totalGoals||0;
+        const myEntry={name:player.name,goals:totalG,isPlayer:true};
+        const allScorers=[...lr.topScorers,myEntry].sort((a,b)=>b.goals-a.goals);
+        const myIdx=allScorers.findIndex(s=>s.isPlayer);
+        const nextTarget=myIdx>0?allScorers[myIdx-1]:null;
+        const toNext=nextTarget?nextTarget.goals-totalG:0;
+        return(
+          <Card style={{marginTop:8}}>
+            <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:10}}>📊 Marcatori Storici — {lg}</div>
+            <div style={{display:"flex",gap:8,alignItems:"center",marginBottom:10,background:"#fef3c7",borderRadius:10,padding:"8px 12px",border:"1px solid #f59e0b"}}>
+              <div style={{fontSize:22,fontWeight:900,color:"#92400e",minWidth:32}}>#{myIdx+1}</div>
+              <div style={{flex:1}}>
+                <div style={{fontSize:12,fontWeight:800,color:"#92400e"}}>{player.name}</div>
+                <div style={{fontSize:10,color:"#a16207"}}>{totalG} gol in carriera</div>
+              </div>
+              {myIdx===0&&totalG>0&&<div style={{fontSize:16}}>👑</div>}
+            </div>
+            <div style={{display:"flex",flexDirection:"column",gap:3}}>
+              {allScorers.slice(0,6).map((s,i)=>(
+                <div key={i} style={{display:"flex",alignItems:"center",gap:8,padding:"5px 8px",borderRadius:8,background:s.isPlayer?"#fef9c3":"transparent",border:s.isPlayer?"1px solid #fde68a":"none"}}>
+                  <div style={{minWidth:20,fontSize:10,fontWeight:700,color:i===0?"#f59e0b":TH.faint}}>#{i+1}</div>
+                  <div style={{flex:1,fontSize:10,color:s.isPlayer?TH.primary:TH.text,fontWeight:s.isPlayer?700:400}}>{s.name}{s.isPlayer?" ⭐":""}</div>
+                  <div style={{fontSize:11,fontWeight:700,color:s.isPlayer?"#f59e0b":TH.muted}}>{s.goals}</div>
+                </div>
+              ))}
+            </div>
+            {toNext>0&&nextTarget&&<div style={{marginTop:8,padding:"6px 10px",background:"#f0fdf4",borderRadius:8,fontSize:10,color:"#166534"}}>🎯 {toNext} gol per superare {nextTarget.name} (#{myIdx})</div>}
+            {myIdx===0&&totalG>0&&<div style={{marginTop:8,padding:"6px 10px",background:"linear-gradient(135deg,#fef3c7,#fde68a)",borderRadius:8,fontSize:11,fontWeight:700,color:"#92400e",textAlign:"center"}}>👑 Sei il miglior marcatore storico della {lg}!</div>}
+          </Card>
+        );
+      })()}
+
       {/* COPPA — standings tab */}
       {tab==="standings"&&(player.proStatus||"u18")==="pro"&&player.cup&&(
         <Card style={{marginTop:8}}>
@@ -11846,6 +11903,42 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
               </Card>
             );
           })()}
+          {/* Sprint 51 — Diario di Carriera */}
+          {(player.diary||[]).length>0&&(()=>{
+            const DTYPE={
+              first_goal:{e:"⚽",color:"#16a34a"},
+              hattrick:{e:"🎩",color:"#f59e0b"},
+              milestone:{e:"🏅",color:"#7c3aed"},
+              pallone_oro:{e:"🏆",color:"#f59e0b"},
+              scarpa_oro:{e:"👟",color:"#ef4444"},
+              record:{e:"📈",color:"#7c3aed"},
+              first_national:{e:"🏳️",color:"#2563eb"},
+              first_national_goal:{e:"🌍",color:"#0ea5e9"},
+            };
+            const dEntries=[...(player.diary||[])].reverse().slice(0,15);
+            return(
+              <Card style={{padding:"12px 14px"}}>
+                <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:14}}>📖 Diario di Carriera</div>
+                <div style={{position:"relative",paddingLeft:4}}>
+                  <div style={{position:"absolute",left:11,top:4,bottom:4,width:2,background:TH.cardBorder,borderRadius:1}}/>
+                  {dEntries.map((entry,i)=>{
+                    const meta=DTYPE[entry.type]||{e:"⭐",color:TH.muted};
+                    return(
+                      <div key={i} style={{display:"flex",gap:10,marginBottom:i<dEntries.length-1?14:0,position:"relative",alignItems:"flex-start"}}>
+                        <div style={{width:24,height:24,borderRadius:"50%",background:meta.color,display:"flex",alignItems:"center",justifyContent:"center",fontSize:11,flexShrink:0,zIndex:1,boxShadow:"0 0 0 3px white, 0 0 0 4px "+meta.color+"44"}}>{meta.e}</div>
+                        <div style={{flex:1,paddingTop:2}}>
+                          <div style={{fontSize:11,fontWeight:700,color:TH.text,lineHeight:1.3}}>{entry.headline}</div>
+                          <div style={{fontSize:10,color:TH.muted,marginTop:2}}>{entry.body}</div>
+                          <div style={{fontSize:9,color:TH.faint,marginTop:3}}>Stagione {entry.season} · Settimana {entry.week}</div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </Card>
+            );
+          })()}
+
           {/* U18 status banner */}
           {(player.proStatus||"u18")==="u18"&&(
             <Card bg="#eff6ff" border="#bfdbfe" style={{padding:"12px 14px"}}>
