@@ -1582,7 +1582,7 @@ const NEWSPAPERS=[
   {id:"lastampa",  name:"La Stampa Sport",       short:"La Stampa",  color:"#16a34a",e:"🗞️",tone:"analitico"},
   {id:"skysport",  name:"Sky Sport 24",          short:"Sky Sport",  color:"#0099d6",e:"📡",tone:"diretto"},
 ];
-const GAME_VERSION="3.18.0"; // Sprint 36 — Training Loop 2.0: intensità, streak, coach bonus, recupero
+const GAME_VERSION="3.19.0"; // Sprint 37 — Carriera Multi-Stagione: fase carriera, narrativa, momento stagione, stato contratto
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -6614,6 +6614,35 @@ function ProTransitionScreen({player,onChoose}){
 }
 
 /* ========================================
+   CAREER PHASE + SEASON NARRATIVE HELPERS (Sprint 37)
+======================================== */
+function getCareerPhase(age){
+  if(age<=21)return{label:"Giovane Promessa",e:"🌱",desc:"Stai costruendo le basi. Il tuo meglio è ancora davanti.",col:"#16a34a",bg:"#f0fdf4",border:"#bbf7d0"};
+  if(age<=26)return{label:"Titolare Affermato",e:"⭐",desc:"Hai trovato la tua dimensione. Ora è il momento di importi.",col:"#2563eb",bg:"#eff6ff",border:"#bfdbfe"};
+  if(age<=30)return{label:"Nel Pieno della Forma",e:"🔥",desc:"Questo è il tuo picco. Ogni stagione conta doppio.",col:"#d97706",bg:"#fff7ed",border:"#fed7aa"};
+  if(age<=34)return{label:"Veterano",e:"🎖️",desc:"L'esperienza vale oro. Guida i giovani con il tuo esempio.",col:"#7c3aed",bg:"#f5f3ff",border:"#ddd6fe"};
+  return{label:"Fine Carriera",e:"🎽",desc:"Ogni partita potrebbe essere l'ultima. Goditi il momento.",col:"#64748b",bg:"#f8fafc",border:"#e2e8f0"};
+}
+function getSeasonNarrative(goals,assists,matches,playerPos,numTeams,isChampion,isRelegated){
+  if(isChampion&&goals>=15)return"Stagione da campione assoluto. Il titolo, i gol, la leadership — hai avuto tutto.";
+  if(isChampion)return"Stagione da campione. Il trofeo parla per te. Questa si ricorda.";
+  if(isRelegated)return"Una stagione difficile. La retrocessione fa male — ma è da lì che i grandi si rialzano.";
+  if(goals>=20)return"Stagione da bomber puro. 20+ gol parlano da soli — questo è livello fuoriclasse.";
+  if(goals>=12||assists>=12)return"Numeri importanti, contributo determinante. La squadra ti ha sentito.";
+  if(playerPos<=2)return"Hai sfiorato la vetta. Con questo livello, il salto è solo questione di tempo.";
+  if(matches<10)return"Poco spazio quest'anno. Ma chi si allena in silenzio e aspetta il momento — viene premiato.";
+  return"Una stagione di crescita silenziosa. Il lavoro invisibile di oggi è il risultato di domani.";
+}
+function getBestSeasonMatch(matchHistory){
+  if(!matchHistory||!matchHistory.length)return null;
+  return[...matchHistory].sort(function(a,b){
+    var sa=(a.goals||0)*3+(a.assists||0)*2+(a.rating||6)+(a.won?2:0);
+    var sb=(b.goals||0)*3+(b.assists||0)*2+(b.rating||6)+(b.won?2:0);
+    return sb-sa;
+  })[0];
+}
+
+/* ========================================
    SEASON END SCREEN  (Sprint 2 — B06/B05)
 ======================================== */
 function SeasonEndScreen({data,player,onNewSeason,onRetire}){
@@ -6626,6 +6655,11 @@ function SeasonEndScreen({data,player,onNewSeason,onRetire}){
   const borderColor=isChampion?"#fde68a":isPromoted?"#bbf7d0":isRelegated?"#fecaca":TH.cardBorder;
   const statusEmoji=isChampion?"🏆":isPromoted?"⬆️":isRelegated?"⬇️":"🏁";
   const statusLabel=isChampion?"CAMPIONE!":isPromoted?"ZONA PROMOZIONE":isRelegated?"ZONA RETROCESSIONE":"Fine stagione";
+  const phase=getCareerPhase(player.age||17);
+  const narrative=getSeasonNarrative(playerStats.goals||0,playerStats.assists||0,playerStats.matches||0,playerPos,numTeams,isChampion,isRelegated);
+  const bestMatch=getBestSeasonMatch(player.matchHistory||[]);
+  const contractYearsLeft=(player.contract?.duration||0);
+  const contractExpiredNow=contractYearsLeft<=0;
 
   // sorted standings already from doAdvanceWeek
   const sorted=finalStandings||[];
@@ -6693,6 +6727,32 @@ function SeasonEndScreen({data,player,onNewSeason,onRetire}){
         {isChampion&&<div style={{marginTop:10,padding:"8px 12px",background:"#fef08a",borderRadius:8,fontSize:12,fontWeight:800,color:"#713f12",textAlign:"center"}}>🏆 Hai vinto la {club?.lg||"lega"}! Trofeo aggiunto all'albo d'oro!</div>}
       </Card>
 
+      {/* Fase carriera + narrativa */}
+      <Card style={{marginBottom:12,padding:"12px 14px",background:phase.bg,border:"1px solid "+phase.border}}>
+        <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:6}}>
+          <span style={{fontSize:22}}>{phase.e}</span>
+          <div>
+            <div style={{fontSize:12,fontWeight:800,color:phase.col}}>{phase.label} · {player.age} anni</div>
+            <div style={{fontSize:10,color:TH.muted}}>{phase.desc}</div>
+          </div>
+        </div>
+        <div style={{fontSize:11,color:TH.text,lineHeight:1.55,fontStyle:"italic",borderTop:"1px solid "+phase.border,paddingTop:8,marginTop:2}}>"{narrative}"</div>
+      </Card>
+
+      {/* Momento della stagione */}
+      {bestMatch&&(bestMatch.goals>0||bestMatch.assists>0||(bestMatch.rating||0)>=8)&&(
+        <Card style={{marginBottom:12,padding:"12px 14px"}}>
+          <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:6}}>⚡ Momento della stagione</div>
+          <div style={{display:"flex",alignItems:"center",gap:10}}>
+            <div style={{fontSize:26,lineHeight:1}}>{bestMatch.goals>=2?"🔥":bestMatch.goals>=1?"⚽":bestMatch.assists>=1?"🎯":"⭐"}</div>
+            <div style={{flex:1}}>
+              <div style={{fontSize:12,fontWeight:700,color:TH.text}}>vs {bestMatch.opponent||bestMatch.oppAbbr||"?"} · {bestMatch.homeScore}-{bestMatch.awayScore}</div>
+              <div style={{fontSize:10,color:TH.muted}}>{bestMatch.goals>0?bestMatch.goals+"⚽ ":""}{bestMatch.assists>0?bestMatch.assists+"🎯 ":""}{bestMatch.rating?"★ "+bestMatch.rating:""} · {bestMatch.won?"Vittoria":bestMatch.drew?"Pareggio":"Sconfitta"}</div>
+            </div>
+          </div>
+        </Card>
+      )}
+
       {/* Champion banner */}
       {champion&&!isChampion&&(
         <Card style={{marginBottom:12,padding:"10px 14px",textAlign:"center"}} bg="#fefce8" border="#fde68a">
@@ -6730,6 +6790,17 @@ function SeasonEndScreen({data,player,onNewSeason,onRetire}){
           ))}
         </Card>
       )}
+
+      {/* Contract status */}
+      <div style={{marginBottom:8,padding:"8px 12px",borderRadius:8,background:contractExpiredNow?"#fff1f2":contractYearsLeft===1?"#fff7ed":"#f0fdf4",border:"1px solid "+(contractExpiredNow?"#fca5a5":contractYearsLeft===1?"#fed7aa":"#bbf7d0"),display:"flex",alignItems:"center",gap:8}}>
+        <span style={{fontSize:16}}>{contractExpiredNow?"❌":contractYearsLeft===1?"⚠️":"📄"}</span>
+        <div>
+          <div style={{fontSize:11,fontWeight:700,color:contractExpiredNow?"#dc2626":contractYearsLeft===1?"#d97706":"#16a34a"}}>
+            {contractExpiredNow?"Contratto scaduto — tratta il rinnovo o trova una squadra":contractYearsLeft===1?"Ultimo anno di contratto — occhio alle offerte":"Contratto attivo · "+contractYearsLeft+" ann"+(contractYearsLeft===1?"o":"i") + " rimanent"+(contractYearsLeft===1?"e":"i")}
+          </div>
+          {(player.contract?.wage||0)>0&&<div style={{fontSize:9,color:TH.muted}}>€{Math.round((player.contract.wage||0)*52/1000)}k / anno</div>}
+        </div>
+      </div>
 
       {onRetire&&(player.age||17)>=35&&(
         <div style={{marginBottom:8,padding:"10px 14px",borderRadius:10,background:"#fef3c7",border:"1px solid #fde68a",textAlign:"center"}}>
@@ -10070,6 +10141,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
               <div key={s.l}><div style={{fontSize:9,color:TH.faint,marginBottom:1}}>{s.l}</div><div style={{fontSize:16,fontWeight:900,color:TH.text}}>{s.v}</div></div>
             ))}
           </div>
+          {(()=>{var ph=getCareerPhase(player.age||17);return(<div style={{display:"flex",alignItems:"center",gap:6,marginTop:8,paddingTop:7,borderTop:"1px solid "+TH.cardBorder}}><span style={{fontSize:14}}>{ph.e}</span><span style={{fontSize:10,fontWeight:700,color:ph.col}}>{ph.label}</span><span style={{fontSize:9,color:TH.faint,marginLeft:"auto"}}>{player.age} anni · S.{player.season||1}</span></div>);})()}
         </Card>
       )}
       {/* Sprint 29 — MW2: Recent form strip */}
