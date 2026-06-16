@@ -8280,9 +8280,10 @@ const NAT_DATA={
   "Belgio":    {flag:"🇧🇪",col:"#1a1a1a",col2:"#FDDA24",opp:"Francia"},
 };
 function NationalCallupScreen({data,onConfirm}){
-  const{nation,isFirst,homeScore,awayScore,goals,assists,won,drew,newCaps}=data;
+  const{nation,isFirst,homeScore,awayScore,goals,assists,won,drew,newCaps,opp:dataOpp}=data;
   const nd=NAT_DATA[nation]||{flag:"🏳",col:"#1e40af",col2:"#fff",opp:"Avversario"};
-  const{flag,col,col2,opp}=nd;
+  const{flag,col,col2}=nd;
+  const opp=dataOpp||nd.opp||"Avversario";
   const res=won?"VITTORIA":drew?"PAREGGIO":"SCONFITTA";
   const resCol=won?TH.success:drew?TH.warning:TH.danger;
   const[shown,setShown]=React.useState(false);
@@ -9532,19 +9533,29 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     // S11.2: club crisis alert (once at week 1 per season)
     if((player.week||1)===1){const cid=player.club?.id||player.club?.n;const cShift=(player.clubPrestigeShifts||{})[cid||""]||0;if(cid&&cShift<=-10)setTimeout(()=>notify(`⚠️ ${player.club?.n||"Il tuo club"} è in crisi! Presidenza instabile.`,"#ef4444"),1500);}
     // S41: cup auto-sim notifications are fired inside the auto-sim block (via setTimeout)
-    // ── National team call-up check ──
-    if(!isInU18&&(player.popularity||0)>=55&&(player.ovr||0)>=70&&!player.injured){
+    // ── National team call-up check (BUG4 fix: skip busy weeks to avoid modal/screen conflicts) ──
+    const _callupBusyWk=[9,10,19,20,28,35].includes(weekVal);
+    if(!isInU18&&!_callupBusyWk&&(player.popularity||0)>=55&&(player.ovr||0)>=70&&!player.injured){
       const caps=player.nationalCaps||0;
       const lastNat=player.lastNationalSeason||0;
       const curSeas=player.season||1;
       const isFirst=caps===0;
       const seasonOpen=curSeas>lastNat;
       if((isFirst||seasonOpen)&&Math.random()<(isFirst?0.22:0.13)){
-        const goals=Math.random()<0.40?rng(1,2):0;
-        const assists=!goals&&Math.random()<0.30?1:0;
-        const hS=rng(1,4),aS=rng(0,3);
+        // Fix BUG2: OVR-based win probability
+        const _novr=player.ovr||65;const _nfrm=player.form||70;
+        const _nwin=Math.random()<(_novr*0.55+_nfrm*0.15+5)/100*1.1;
+        const _ndraw=!_nwin&&Math.random()<0.22;
+        const goals=(_nwin&&Math.random()<0.45)?rng(1,2):0;
+        const assists=(!goals&&Math.random()<0.30)?1:0;
+        const hS=_nwin?rng(1,3):_ndraw?rng(0,2):rng(0,1);
+        const aS=_nwin?rng(0,1):_ndraw?rng(0,2):rng(1,3);
+        // Fix BUG3: avversario variabile
+        const _allNat=["Italia","Spagna","Francia","Germania","Inghilterra","Portogallo","Brasile","Argentina","Olanda","Belgio"];
+        const _oppPool=_allNat.filter(n=>n!==(player.nation||"Italia"));
+        const _callupOpp=_oppPool[Math.floor(Math.random()*_oppPool.length)]||"Avversario";
         setTimeout(()=>{
-          setNationalCallupData({nation:player.nation||"Italia",isFirst,homeScore:hS,awayScore:aS,goals,assists,won:hS>aS,drew:hS===aS,newCaps:caps+1});
+          setNationalCallupData({nation:player.nation||"Italia",isFirst,homeScore:hS,awayScore:aS,goals,assists,won:hS>aS,drew:hS===aS,newCaps:caps+1,opp:_callupOpp});
           setScreen("nationalCallup");
         },700);
       }
@@ -10292,7 +10303,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                 const popB=nc.trophyWon?20:nc.qualified?10:3;
                 const newMem=[...(p.worldMemory||[]),{type:"nations_cup",season:p.season||1,nation:nc.myNat,qualified:nc.qualified,won:nc.trophyWon,pts:nc.pts}];
                 const newTrophies=nc.trophyWon?[...(p.trophies||[]),{season:p.season||1,club:nc.myNat,league:"Coppa delle Nazioni",isNational:true}]:(p.trophies||[]);
-                return{...p,morale:clamp((p.morale||70)+moraleB,0,100),popularity:clamp((p.popularity||20)+popB,0,100),worldMemory:newMem,trophies:newTrophies};
+                return{...p,morale:clamp((p.morale||70)+moraleB,0,100),popularity:clamp((p.popularity||20)+popB,0,100),worldMemory:newMem,trophies:newTrophies,nationalCaps:(p.nationalCaps||0)+3,log:[`🌍 Nations Cup S.${p.season||1}: ${nc.trophyWon?"🏆 CAMPIONI":"pts "+nc.pts+"/9"} — +3 caps`,...(p.log||[])].slice(0,60)};
               });
               if(nationsCupModal.trophyWon)notify("🏆 Coppa delle Nazioni VINTA! Leggenda nazionale!","#f59e0b");
               else if(nationsCupModal.qualified)notify("✅ Qualificati! Morale +10.",TH.success);
