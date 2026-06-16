@@ -1624,7 +1624,7 @@ const NEWSPAPERS=[
   {id:"lastampa",  name:"La Stampa Sport",       short:"La Stampa",  color:"#16a34a",e:"🗞️",tone:"analitico"},
   {id:"skysport",  name:"Sky Sport 24",          short:"Sky Sport",  color:"#0099d6",e:"📡",tone:"diretto"},
 ];
-const GAME_VERSION="3.25.1"; // Sprint 44b — LiveMatch maxWidth:1100px centrato, campo occupa ~55% del layout
+const GAME_VERSION="3.26.0"; // Sprint 45 — Canvas più largo (460×580, ratio 0.79), fix doppio cursore HL
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -3575,7 +3575,7 @@ function colorCharGLB(model,jerHex){
    PITCH CANVAS — Modern 2D portrait football renderer
    Goals at top/bottom (vertical Sensible Soccer style)
 ===================================================== */
-const PC_PW=360,PC_PH=580,PC_FX=30,PC_FY=40,PC_FW=300,PC_FH=480;
+const PC_PW=460,PC_PH=580,PC_FX=80,PC_FY=40,PC_FW=300,PC_FH=480;
 const PC_FCX=PC_FX+PC_FW/2,PC_FCY=PC_FY+PC_FH/2;
 function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,onWalkoutDone,avatarId,actionZoom,allPlayers,homeClub,ballX,ballY,waveEvent,driftTargets,timeOfDay,attendance,actionEffect,weather,heatPoints,showHeatMap,isDesktop=false}){
   homeCol=homeCol||"#22c55e";oppCol=oppCol||"#ef4444";opponents=opponents||[];
@@ -6286,7 +6286,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           <div style={isNarrow?{position:"relative",minHeight:`calc(100vw * ${(PC_PH/PC_PW).toFixed(4)})`}:{display:"flex",flexDirection:"row",alignItems:"stretch",flex:1,minHeight:0,overflow:"hidden"}}>
 
             {/* FIELD — height-constrained on desktop, full width on narrow */}
-            <div style={{flex:isNarrow?"none":"0 0 auto",position:"relative",overflow:"hidden",alignSelf:isNarrow?"auto":"stretch"}}>
+            <div style={{flex:isNarrow?"none":"0 0 auto",position:"relative",overflow:"hidden",alignSelf:isNarrow?"auto":"stretch",cursor:"default"}}>
               <PitchCanvas playerX={pPos.x} playerY={pPos.y} zone={zone}
                 homeCol={homeKitCol} oppCol={awayKitCol}
                 opponents={opponents.current} matchPhase={matchPhase3D} avatarId={player.avatarId||0}
