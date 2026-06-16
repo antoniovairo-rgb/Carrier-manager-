@@ -1624,7 +1624,7 @@ const NEWSPAPERS=[
   {id:"lastampa",  name:"La Stampa Sport",       short:"La Stampa",  color:"#16a34a",e:"🗞️",tone:"analitico"},
   {id:"skysport",  name:"Sky Sport 24",          short:"Sky Sport",  color:"#0099d6",e:"📡",tone:"diretto"},
 ];
-const GAME_VERSION="3.26.2"; // Sprint 45c — fix mobile match: Card position:fixed solo in-game, wrapper normale
+const GAME_VERSION="3.26.3"; // Sprint 45d — HL zoom ridotto ~15% per zona
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -4173,7 +4173,7 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
         // --- Top-down full pitch view with contextual camera zoom ---
         const isHL=["hl_move","hl_choose","hl_result","hl_intro"].includes(p.matchPhase);
         // Zoom scales with zone: area/bordo = tightest, midfield/defence = wider
-        const zoneZooms={area:1.48,bordo:1.35,trequarti:1.21,centro:1.14,difesa:1.10,propria:1.07};
+        const zoneZooms={area:1.28,bordo:1.18,trequarti:1.10,centro:1.06,difesa:1.04,propria:1.02};
         const baseHL=zoneZooms[p.zone]||1.12;
         // Extra boost if result just happened (cinematic freeze)
         const isResult=p.matchPhase==="hl_result";
