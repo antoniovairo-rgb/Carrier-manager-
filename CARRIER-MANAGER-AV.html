@@ -1582,7 +1582,7 @@ const NEWSPAPERS=[
   {id:"lastampa",  name:"La Stampa Sport",       short:"La Stampa",  color:"#16a34a",e:"🗞️",tone:"analitico"},
   {id:"skysport",  name:"Sky Sport 24",          short:"Sky Sport",  color:"#0099d6",e:"📡",tone:"diretto"},
 ];
-const GAME_VERSION="3.17.4"; // mister intelligente: ordini contestuali con effetti reali su possession/momentum/drift
+const GAME_VERSION="3.18.0"; // Sprint 36 — Training Loop 2.0: intensità, streak, coach bonus, recupero
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -8516,6 +8516,10 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       newP={...newP,trainedThisWeek:false};
       changed=true;
     }
+    if(!('trainingStreak' in newP)){
+      newP={...newP,trainingStreak:0,lastTrainingType:null};
+      changed=true;
+    }
     if(!('seasonObjectives' in newP)){
       newP={...newP,seasonObjectives:generateSeasonObjectives(newP)};
       changed=true;
@@ -9270,8 +9274,9 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       const naturalForm=clamp(Math.round(baseForm*0.92+65*0.08),30,95);
       const baseFat=updP.fatigue!=null?updP.fatigue:(p.fatigue||0);
       const naturalFat=Math.max(0,baseFat-6);
-      if(p.injured&&(p.injuryWeeks||0)>0){const recovAdv=p.injuryWeeks-1<=0;return{...updP,week:(p.week||1)+1,weekLived:false,trainedThisWeek:false,injuryWeeks:p.injuryWeeks-1,injured:!recovAdv,...(recovAdv?{injuryType:null,justRecovered:true}:{justRecovered:false}),fatigue:Math.max(0,baseFat-12),form:naturalForm};}
-      return{...updP,week:(p.week||1)+1,weekLived:false,trainedThisWeek:false,fatigue:naturalFat,form:naturalForm,justRecovered:false};
+      if(p.injured&&(p.injuryWeeks||0)>0){const recovAdv=p.injuryWeeks-1<=0;return{...updP,week:(p.week||1)+1,weekLived:false,trainedThisWeek:false,trainingStreak:0,lastTrainingType:null,injuryWeeks:p.injuryWeeks-1,injured:!recovAdv,...(recovAdv?{injuryType:null,justRecovered:true}:{justRecovered:false}),fatigue:Math.max(0,baseFat-12),form:naturalForm};}
+      const nextStreak=p.trainedThisWeek?(p.trainingStreak||0):0;
+      return{...updP,week:(p.week||1)+1,weekLived:false,trainedThisWeek:false,trainingStreak:nextStreak,fatigue:naturalFat,form:naturalForm,justRecovered:false};
     });
     notify("⏭️ Settimana avanzata");
     // Sprint 35 — Agent task result notification
@@ -10510,58 +10515,75 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
             ))}
           </Card>
           <Card>
-            <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>Sessione settimanale</div>
+            <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8}}>
+              <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5}}>Sessione settimanale</div>
+              {(player.trainingStreak||0)>=2&&<div style={{background:"#fff7ed",color:"#ea580c",padding:"3px 10px",borderRadius:20,fontSize:10,fontWeight:700}}>🔥 {player.trainingStreak} sett. di fila</div>}
+            </div>
             {player.trainedThisWeek
-              ?<div style={{textAlign:"center",padding:"18px 0",color:TH.success,fontSize:12,fontWeight:700}}>✅ Hai già allenato questa settimana.<br/><span style={{fontSize:11,color:TH.muted,fontWeight:400}}>Torna la prossima settimana.</span></div>
+              ?<div style={{textAlign:"center",padding:"18px 0",color:TH.success,fontSize:12,fontWeight:700}}>✅ Allenamento completato.<br/><span style={{fontSize:11,color:TH.muted,fontWeight:400}}>Torna la prossima settimana.</span></div>
               :<div style={{display:"flex",flexDirection:"column",gap:8}}>
                 {[
-                  {id:"fisico",e:"💪",l:"Fisico",desc:"velocità +, fisico +",fatCost:14,fn:(st)=>({velocità:clamp(st.velocità+rng(1,2),1,99),fisico:clamp(st.fisico+rng(1,2),1,99)})},
-                  {id:"tecnico",e:"⚽",l:"Tecnico",desc:"tecnica +, tiro +",fatCost:12,fn:(st)=>({tecnica:clamp(st.tecnica+rng(1,2),1,99),tiro:clamp(st.tiro+rng(1,2),1,99)})},
-                  {id:"tattico",e:"🎯",l:"Tattico",desc:"passaggio +, posizionamento +",fatCost:10,fn:(st)=>({passaggio:clamp(st.passaggio+rng(1,2),1,99),posizionamento:clamp(st.posizionamento+rng(1,2),1,99)})},
-                  {id:"recupero",e:"🧘",l:"Recupero",desc:"fatica −25, morale +8",fatCost:-25,fn:()=>({})},
+                  {id:"fisico", e:"💪",l:"Fisico",  desc:"Velocità · Fisico",     a:"fisico",   b:"velocità",     col:"#16a34a"},
+                  {id:"tecnico",e:"⚽",l:"Tecnico", desc:"Tecnica · Tiro",         a:"tecnica",  b:"tiro",          col:"#2563eb"},
+                  {id:"tattico",e:"🎯",l:"Tattico", desc:"Passaggio · Posiz.",     a:"passaggio",b:"posizionamento",col:"#d97706"},
+                  {id:"mentale",e:"🧠",l:"Mentale", desc:"Mentalità · Dribbling",  a:"mentalità",b:"dribbling",     col:"#7c3aed"},
                 ].map(s=>{
-                  const tooTired=(player.fatigue||0)>85&&s.id!=="recupero";
+                  const fat=player.fatigue||0;
+                  const tooTired=fat>85;
+                  const isSameType=(player.lastTrainingType||null)===s.id;
+                  const streak=player.trainingStreak||0;
+                  const streakB=isSameType&&streak>=2?1:0;
+                  const coachB=(player.coachTrust||60)>=75?1:0;
+                  const doTrain=(intensive)=>{
+                    if(tooTired){notify("💤 Troppo stanco!",TH.danger);return;}
+                    const fatCost=intensive?22:12;
+                    if(intensive&&fat>70&&Math.random()<0.12){
+                      setPlayer(p=>({...p,injured:true,injuryWeeks:2,injuryType:"muscolare",trainedThisWeek:true,trainingStreak:isSameType?streak+1:1,lastTrainingType:s.id}));
+                      notify("😱 Infortunio muscolare! 2 sett. di stop.",TH.danger);return;
+                    }
+                    const gainA=rng(1,2)+(intensive?1:0)+streakB+coachB;
+                    const gainB=rng(1,2)+(intensive?rng(1,2):0)+streakB;
+                    const newStreak=isSameType?streak+1:1;
+                    setPlayer(p=>{
+                      const ns={...p.stats};
+                      ns[s.a]=clamp((ns[s.a]||60)+gainA,1,99);
+                      ns[s.b]=clamp((ns[s.b]||60)+gainB,1,99);
+                      return{...p,stats:ns,ovr:calcOvr(ns),fatigue:clamp((p.fatigue||0)+fatCost,0,100),trainedThisWeek:true,trainingStreak:newStreak,lastTrainingType:s.id};
+                    });
+                    var msg=s.e+" +"+gainA+" "+s.a+", +"+gainB+" "+s.b+(streakB?" 🔥":"")+(coachB&&intensive?" 🧑‍🏫":"");
+                    notify(msg,TH.success);
+                  };
                   return(
-                    <button key={s.id} disabled={tooTired} onClick={()=>{
-                      if(s.id==="recupero"){
-                        setPlayer(p=>({...p,fatigue:Math.max(0,(p.fatigue||0)-25),morale:clamp((p.morale||70)+8,0,100),trainedThisWeek:true}));
-                        notify("🧘 Recupero completato! Fatica −25, Morale +8",TH.success);
-                      }else{
-                        setPlayer(p=>{const gained=s.fn(p.stats);const ns={...p.stats,...gained};return{...p,stats:ns,ovr:calcOvr(ns),fatigue:clamp((p.fatigue||0)+s.fatCost,0,100),trainedThisWeek:true};});
-                        notify(`${s.e} Sessione ${s.l} completata! Fatica +${s.fatCost}`,TH.success);
-                      }
-                    }} style={{width:"100%",padding:"11px 14px",borderRadius:10,border:`1px solid ${tooTired?"#e5e7eb":TH.cardBorder}`,background:tooTired?"#f3f4f6":TH.card,cursor:tooTired?"not-allowed":"pointer",fontFamily:"inherit",display:"flex",justifyContent:"space-between",alignItems:"center",opacity:tooTired?0.5:1,transition:"background .15s"}}>
-                      <div style={{textAlign:"left"}}>
-                        <div style={{fontSize:12,fontWeight:700,color:tooTired?TH.faint:TH.text}}>{s.e} {s.l}</div>
-                        <div style={{fontSize:10,color:TH.muted}}>{s.desc}</div>
+                    <div key={s.id} style={{border:"1px solid "+(tooTired?"#e5e7eb":s.col+"44"),borderRadius:10,padding:"9px 10px",background:tooTired?"#f9fafb":s.col+"09",opacity:tooTired?0.55:1}}>
+                      <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:6}}>
+                        <div>
+                          <span style={{fontSize:13,fontWeight:800,color:tooTired?TH.faint:s.col}}>{s.e} {s.l}</span>
+                          <span style={{fontSize:10,color:TH.muted,marginLeft:6}}>{s.desc}</span>
+                        </div>
+                        {isSameType&&streak>=1&&<span style={{fontSize:10,color:"#ea580c",fontWeight:700}}>🔥×{streak}</span>}
                       </div>
-                      <div style={{fontSize:10,color:s.id==="recupero"?TH.success:TH.danger,fontWeight:600}}>{s.id==="recupero"?"−25 fat.":"+"+s.fatCost+" fat."}</div>
-                    </button>
+                      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:6}}>
+                        <button disabled={tooTired} onClick={()=>doTrain(false)} style={{padding:"7px 4px",borderRadius:8,border:"1px solid "+s.col+"66",background:tooTired?"#f3f4f6":s.col+"14",color:tooTired?TH.faint:s.col,fontSize:11,fontWeight:700,cursor:tooTired?"not-allowed":"pointer",fontFamily:"inherit",lineHeight:1.4}}>
+                          Normale<br/><span style={{fontSize:9,fontWeight:400,opacity:.75}}>+{1+streakB+coachB}‑{2+streakB+coachB} · 💧+12</span>
+                        </button>
+                        <button disabled={tooTired} onClick={()=>doTrain(true)} style={{padding:"7px 4px",borderRadius:8,border:"1px solid "+s.col,background:tooTired?"#f3f4f6":s.col,color:tooTired?"#999":"#fff",fontSize:11,fontWeight:700,cursor:tooTired?"not-allowed":"pointer",fontFamily:"inherit",lineHeight:1.4}}>
+                          Intensivo<br/><span style={{fontSize:9,fontWeight:400,opacity:.85}}>+{2+streakB+coachB}‑{3+streakB+coachB} · 💧+22⚠️</span>
+                        </button>
+                      </div>
+                    </div>
                   );
                 })}
-                {/* Sprint 29 — MW6: Allenamento Focus */}
-                {!focusTrainingStat?(
-                  <button onClick={()=>setFocusTrainingStat("pick")} disabled={(player.fatigue||0)>85} style={{width:"100%",padding:"11px 14px",borderRadius:10,border:`1px solid ${(player.fatigue||0)>85?"#e5e7eb":"#a78bfa"}`,background:(player.fatigue||0)>85?"#f3f4f6":"#f5f3ff",cursor:(player.fatigue||0)>85?"not-allowed":"pointer",fontFamily:"inherit",display:"flex",justifyContent:"space-between",alignItems:"center",opacity:(player.fatigue||0)>85?0.5:1}}>
-                    <div style={{textAlign:"left"}}><div style={{fontSize:12,fontWeight:700,color:"#7c3aed"}}>🎯 Focus</div><div style={{fontSize:10,color:TH.muted}}>scegli 1 attributo → +2 garantito</div></div>
-                    <div style={{fontSize:10,color:TH.danger,fontWeight:600}}>+18 fat.</div>
-                  </button>
-                ):(
-                  <div style={{border:"1px solid #a78bfa",borderRadius:10,padding:"10px 12px",background:"#f5f3ff"}}>
-                    <div style={{fontSize:10,color:"#7c3aed",fontWeight:700,marginBottom:8,textTransform:"uppercase",letterSpacing:1}}>🎯 Focus — scegli attributo:</div>
-                    <div style={{display:"flex",flexWrap:"wrap",gap:6,marginBottom:8}}>
-                      {Object.entries(player.stats).map(([k,v])=>(
-                        <button key={k} onClick={()=>{
-                          setPlayer(p=>{const ns={...p.stats,[k]:clamp((p.stats[k]||60)+2,1,99)};return{...p,stats:ns,ovr:calcOvr(ns),fatigue:clamp((p.fatigue||0)+18,0,100),trainedThisWeek:true};});
-                          notify(`🎯 Focus su ${k}: +2! Fatica +18`,TH.accent);
-                          setFocusTrainingStat(null);
-                        }} style={{padding:"5px 10px",borderRadius:8,border:"1px solid #a78bfa",background:"#ede9fe",color:"#5b21b6",fontSize:11,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>
-                          {k} <span style={{opacity:0.55,fontWeight:400}}>{v}</span>
-                        </button>
-                      ))}
-                    </div>
-                    <button onClick={()=>setFocusTrainingStat(null)} style={{fontSize:10,color:TH.muted,background:"none",border:"none",cursor:"pointer",fontFamily:"inherit"}}>✕ Annulla</button>
+                <div style={{border:"1px solid #0ea5e944",borderRadius:10,padding:"9px 10px",background:"#f0f9ff"}}>
+                  <div style={{fontSize:12,fontWeight:800,color:"#0284c7",marginBottom:6}}>🛌 Recupero</div>
+                  <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:6}}>
+                    <button onClick={()=>{setPlayer(p=>({...p,fatigue:Math.max(0,(p.fatigue||0)-15),morale:clamp((p.morale||70)+6,0,100),trainedThisWeek:true,trainingStreak:0,lastTrainingType:null}));notify("🧘 Recupero attivo: fatica −15, morale +6",TH.success);}} style={{padding:"7px 4px",borderRadius:8,border:"1px solid #0ea5e966",background:"#e0f2fe",color:"#0284c7",fontSize:11,fontWeight:700,cursor:"pointer",fontFamily:"inherit",lineHeight:1.4}}>
+                      Attivo<br/><span style={{fontSize:9,fontWeight:400,opacity:.75}}>💧−15 · 😊+6</span>
+                    </button>
+                    <button onClick={()=>{setPlayer(p=>({...p,fatigue:Math.max(0,(p.fatigue||0)-30),morale:clamp((p.morale||70)+12,0,100),form:clamp((p.form||60)+3,0,100),trainedThisWeek:true,trainingStreak:0,lastTrainingType:null}));notify("🛌 Riposo completo: fatica −30, morale +12, forma +3",TH.success);}} style={{padding:"7px 4px",borderRadius:8,border:"1px solid #0ea5e9",background:"#0ea5e9",color:"#fff",fontSize:11,fontWeight:700,cursor:"pointer",fontFamily:"inherit",lineHeight:1.4}}>
+                      Completo<br/><span style={{fontSize:9,fontWeight:400,opacity:.85}}>💧−30 · 😊+12</span>
+                    </button>
                   </div>
-                )}
+                </div>
               </div>
             }
           </Card>
