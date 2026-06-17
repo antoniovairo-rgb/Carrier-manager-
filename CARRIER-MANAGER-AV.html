@@ -2099,7 +2099,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="3.59.0"; // Sprint 79 — Ball physics, prestige formation, outcome variety
+const GAME_VERSION="3.60.0"; // Sprint 80 — Stadium visual variety per prestige
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -4216,7 +4216,8 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
     const cctx=crowdOff.getContext("2d");
     let _crowdKey="";
     function bakeCrowd(hCol,oCol,fillRatio,isNight){
-      const key=hCol+oCol+fillRatio.toFixed(2)+(isNight?"n":"d");
+      const _prest80=propsRef.current.homeClub?.p||65;
+      const key=hCol+oCol+fillRatio.toFixed(2)+(isNight?"n":"d")+(_prest80>=80?"E":_prest80>=60?"M":"L");
       if(key===_crowdKey)return;
       _crowdKey=key;
       cctx.clearRect(0,0,PW,PH);
@@ -4274,10 +4275,20 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
       });
       cctx.globalAlpha=1;
       // Advertising boards around pitch
-      const ads=[{col:"#1e3a8a",t:"NIKE"},{col:"#dc2626",t:"ADIDAS"},{col:"#065f46",t:"PUMA"},
-                 {col:"#7c3aed",t:"EA FC"},{col:"#0369a1",t:"PEPSI"},{col:"#c2410c",t:"BUDW"},
-                 {col:"#1e40af",t:"VISA"},{col:"#166534",t:"HEINEKEN"}];
-      const bH=5,bPad=1,bW=Math.floor(FW/ads.length);
+      // Sprint 80 — prestige-tier advertising boards
+      const ads=_prest80>=80?[
+        {col:"#003399",t:"UEFA"},{col:"#c8a800",t:"CHAMP"},{col:"#1e3a8a",t:"MASTERC"},
+        {col:"#b91c1c",t:"EMIRATES"},{col:"#065f46",t:"ROLEX"},{col:"#0369a1",t:"NISSAN"},
+        {col:"#7c3aed",t:"DIAGEO"},{col:"#1e40af",t:"HEINEKEN"}
+      ]:_prest80>=60?[
+        {col:"#1e3a8a",t:"NIKE"},{col:"#dc2626",t:"ADIDAS"},{col:"#065f46",t:"PUMA"},
+        {col:"#7c3aed",t:"EA FC"},{col:"#0369a1",t:"PEPSI"},{col:"#c2410c",t:"BUDW"},
+        {col:"#1e40af",t:"VISA"},{col:"#166534",t:"HEINEKEN"}
+      ]:[
+        {col:"#374151",t:"LOCALE"},{col:"#78350f",t:"CALCIO"},{col:"#1f2937",t:"STADIO"},
+        {col:"#4b5563",t:"SPORT"},{col:"#374151",t:"CLUB"},{col:"#78350f",t:"ARENA"}
+      ];
+      const bH=_prest80>=80?7:_prest80>=60?5:4,bPad=1,bW=Math.floor(FW/ads.length);
       cctx.font="bold 4px Arial,sans-serif";cctx.textBaseline="middle";cctx.textAlign="center";
       ads.forEach((b,i)=>{
         const bx=FX+i*bW;
@@ -4289,15 +4300,18 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
         cctx.fillText(b.t,bx+bW/2,FY+FH+bH/2+bPad);
       });
       cctx.globalAlpha=1;
-      // Night: floodlight towers at canvas corners — top 2 pole goes down, bottom 2 pole goes up
+      // Night: floodlight towers — Sprint 80: size/brightness by prestige
       if(isNight){
-        [[6,6,1],[PW-6,6,1],[6,PH-26,-1],[PW-6,PH-26,-1]].forEach(([tx,ty,pDir])=>{
-          const fg=cctx.createRadialGradient(tx,ty,0,tx,ty,54);
-          fg.addColorStop(0,"rgba(255,248,200,0.42)");fg.addColorStop(0.5,"rgba(255,248,200,0.10)");fg.addColorStop(1,"rgba(255,248,200,0)");
-          cctx.fillStyle=fg;cctx.fillRect(tx-54,ty-54,108,108);
-          // Pole extends inward (top: downward, bottom: upward)
+        const floodR=_prest80>=80?80:_prest80>=60?54:38;
+        const floodA=_prest80>=80?0.58:_prest80>=60?0.42:0.24;
+        // Elite stadiums: 6 towers; standard: 4; small: 4 dimmer
+        const towers=_prest80>=80?[[6,6,1],[PW/2,4,1],[PW-6,6,1],[6,PH-26,-1],[PW/2,PH-24,-1],[PW-6,PH-26,-1]]:[[6,6,1],[PW-6,6,1],[6,PH-26,-1],[PW-6,PH-26,-1]];
+        towers.forEach(([tx,ty,pDir])=>{
+          const fg=cctx.createRadialGradient(tx,ty,0,tx,ty,floodR);
+          fg.addColorStop(0,`rgba(255,248,200,${floodA})`);fg.addColorStop(0.5,`rgba(255,248,200,${(floodA*0.24).toFixed(2)})`);fg.addColorStop(1,"rgba(255,248,200,0)");
+          cctx.fillStyle=fg;cctx.fillRect(tx-floodR,ty-floodR,floodR*2,floodR*2);
           cctx.fillStyle="#aaa";cctx.fillRect(tx-1,pDir>0?ty:ty-16,2,16);
-          cctx.fillStyle="rgba(255,248,200,0.9)";cctx.fillRect(tx-4,pDir>0?ty-3:ty-18,8,3); // lamp head
+          cctx.fillStyle="rgba(255,248,200,0.9)";cctx.fillRect(tx-4,pDir>0?ty-3:ty-18,8,3);
         });
       }
     }
@@ -4770,6 +4784,8 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
         propsRef.current._t=t;
         drawStadium(ctx,t);
         drawPitch(ctx);
+        // Sprint 80 — pitch quality overlay: low-prestige clubs have worn/muddy grass
+        {const _pq80=propsRef.current.homeClub?.p||65;if(_pq80<55){ctx.save();ctx.globalAlpha=_pq80<42?0.11:0.055;ctx.fillStyle="rgba(130,100,50,1)";ctx.fillRect(FX,FY,FW,FH);ctx.restore();}}
 
         if(p.matchPhase!=="walkout"){
           const isHLph=["hl_move","hl_choose","hl_result","hl_intro"].includes(p.matchPhase);
