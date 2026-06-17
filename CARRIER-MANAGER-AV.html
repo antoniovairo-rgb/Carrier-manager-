@@ -1864,17 +1864,17 @@ const BG_MATCH=[
   {txt:"🩹 {P} si tocca il polpaccio dopo un contrasto. Respira e ricomincia.",ef:null,w:1.5,bpos:{x:50,y:50},pd:"midfield"},
 ];
 const OUTCOME_TX={
-  goal:["💥 GOOOOOL! Folla in delirio!","⚽ Rete spettacolare!","🔥 Imparabile!","🌟 Fenomenale!"],
-  assist:["🎯 Assist perfetto!","🤝 Passaggio da manuale!","🎯 Visione assoluta!"],
-  miss_easy:["😱 Porta aperta, fuori!","💔 Errore imperdonabile..."],
-  miss:["😬 Tiro fuori!","😔 Para il portiere.","❌ Tiro debole."],
-  intercept:["❌ Intercettato.","😔 Passaggio impreciso."],
-  nothing:["😐 Situazione non sfruttata."],
-  goal_against:["😨 Gol avversario.","💔 Supera e segna."],
-  recovery:["💪 Pallone recuperato!","🛡️ Grande intervento!","✋ Anticipo perfetto!"],
-  through:["😬 L'avversario passa.","❌ Non ce la fai.","😔 Supera la pressione."],
-  foul:["🟡 Fallo! Sei stato ammonito.","⚠️ Rischio fallo! Punizione concessa."],
-  save:["🧤 SALVATO! Che intervento!","🛡️ Blocchi la conclusione! Grande difesa."],
+  goal:["💥 GOOOOOL! Folla in delirio!","⚽ Rete spettacolare!","🔥 Imparabile!","🌟 Fenomenale!","🎯 Destro perfetto — nessuna speranza!","⚡ Un lampo! In gol!","💫 Che capolavoro — gol dell'anno!","🏆 Senza storia — gol splendido!"],
+  assist:["🎯 Assist perfetto!","🤝 Passaggio da manuale!","🎯 Visione assoluta!","⚡ Lancio millimetrico — compagno solo!","🌀 Giocata di classe pura!","👁️ Ha visto il taglio prima di tutti."],
+  miss_easy:["😱 Porta aperta, fuori!","💔 Errore imperdonabile...","🤦 Gol clamorosamente sprecato!","😬 Incredibile — porta spalancata!"],
+  miss:["😬 Tiro fuori!","😔 Para il portiere.","❌ Tiro debole, para comodo.","💨 Sopra la traversa — che rimpianto!","😤 Palo! Fortuna avversaria.","😕 Il portiere vola e devia in corner.","❌ Murato dalla difesa.","😔 Tiro centrale — parata facile."],
+  intercept:["❌ Intercettato.","😔 Passaggio impreciso.","✋ La difesa chiude in anticipo.","😤 Palla recuperata dagli avversari."],
+  nothing:["😐 Situazione non sfruttata.","😑 Scelta sbagliata — momento perso.","💭 Poteva fare molto di più."],
+  goal_against:["😨 Gol avversario.","💔 Supera e segna.","😰 Errore difensivo — costoso.","💣 Non ci si crede."],
+  recovery:["💪 Pallone recuperato!","🛡️ Grande intervento!","✋ Anticipo perfetto!","🧱 Muro invalicabile!","🔒 Intercetto netto — palla nostra!"],
+  through:["😬 L'avversario passa.","❌ Non ce la fai.","😔 Supera la pressione.","💨 Troppo veloce — ti ha saltato."],
+  foul:["🟡 Fallo! Sei stato ammonito.","⚠️ Rischio fallo! Punizione concessa.","😤 Cartellino meritato — attento."],
+  save:["🧤 SALVATO! Che intervento!","🛡️ Blocchi la conclusione! Grande difesa.","🚨 Para in tuffo — miracoloso!","💪 Muro invalicabile — palla sua!"],
 };
 const STADIUMS=["Stadio Olimpico Giovanile","Arena Primavera","Centro Sportivo Coverciano","Stadio Braglia Academy","Arena Caduti di Brema U18","Campo Sportivo Vismara"];
 const STADIUM_POOLS=[
@@ -2099,7 +2099,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="3.58.0"; // Sprint 78 — New Situations + Score-aware HL selection
+const GAME_VERSION="3.59.0"; // Sprint 79 — Ball physics, prestige formation, outcome variety
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -6020,17 +6020,19 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   // 22 players + referee — generated once per match
   const [matchPlayers,setMatchPlayers]=useState(()=>{
     const j=(x,y,d=4)=>({x:clamp(x+rng(-d,d),3,97),y:clamp(y+rng(-d,d),3,97)});
+    // Sprint 79 — prestige-aware away formation: elite teams press higher (lower x = closer to home goal)
+    const _oppP79=opponent?.p||opponent?.prestige||65;
+    const aOff=_oppP79>=75?-6:_oppP79>=60?0:6; // high prestige presses, low prestige sits deep
     return[
       // Home team (10 outfield + GK, protagonist is separate)
       {...j(8,50),team:"home",gk:true},{...j(18,12),team:"home"},{...j(18,38),team:"home"},
       {...j(18,62),team:"home"},{...j(18,88),team:"home"},{...j(38,25),team:"home"},
       {...j(38,50),team:"home"},{...j(38,75),team:"home"},{...j(55,22),team:"home"},{...j(55,78),team:"home"},
-      // Away team (11)
-      {...j(95,50),team:"away"},{...j(82,12),team:"away"},{...j(82,38),team:"away"},
-      {...j(82,62),team:"away"},{...j(82,88),team:"away"},{...j(62,25),team:"away"},
-      {...j(62,50),team:"away"},{...j(62,75),team:"away"},{...j(48,20),team:"away"},
-      {...j(48,50),team:"away"},{...j(48,80),team:"away"},
-      // Referee removed — not needed for gameplay
+      // Away team (prestige-shifted)
+      {...j(95,50),team:"away"},{...j(82+aOff,12),team:"away"},{...j(82+aOff,38),team:"away"},
+      {...j(82+aOff,62),team:"away"},{...j(82+aOff,88),team:"away"},{...j(62+aOff,25),team:"away"},
+      {...j(62+aOff,50),team:"away"},{...j(62+aOff,75),team:"away"},{...j(48+aOff,20),team:"away"},
+      {...j(48+aOff,50),team:"away"},{...j(48+aOff,80),team:"away"},
     ];
   });
 
@@ -6474,7 +6476,9 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           else if(nx>75&&score.home>score.away&&Math.random()<0.12)chantFor("winning",2500);
           else if(nx>75&&score.home<score.away&&Math.random()<0.10)chantFor("comeback",2600);
           else if(Math.random()<0.04)chantFor("home",2500);
-          else if(nx===45)chantFor("half",2000);
+          else if(nx===45){chantFor("half",2000);}
+          // Sprint 79 — halftime commentary summary
+          if(nx===45){const _htDiff79=scoreRef.current.home-scoreRef.current.away;addCom(_htDiff79>0?"⏸️ Fine primo tempo. Siamo in vantaggio — testa dritta nel secondo!":_htDiff79<0?"⏸️ Intervallo difficile. Reagiamo nel secondo tempo — ci crediamo!":"⏸️ Primo tempo: 0-0. Tutto ancora aperto — il gol cambia tutto.","#93c5fd",45);}
           // Sprint 17: momentum swings from BG events
           if(ev.ef==="team_goal")setMomentum(m=>clamp(m+25,0,100));
           else if(ev.ef==="opp_goal")setMomentum(m=>clamp(m-25,0,100));
@@ -6661,6 +6665,14 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
       if(_st77.includes("Cross")||_st77.includes("cross")||_st77.includes("Corner")||_st77.includes("corner")||_st77.includes("Punizione"))
         pendingChainSitRef.current=pick([CHAIN_SITS.header,CHAIN_SITS.mischia,CHAIN_SITS.second_ball]);
     }
+    // Sprint 79 — ball moves toward outcome position for visual coherence
+    const _by79=pPosRef.current.y;
+    if(key==="goal")ballTargetRef.current={x:97,y:clamp(_by79+rng(-12,12),22,78)};
+    else if(key==="miss"||key==="miss_easy")ballTargetRef.current={x:rng(89,98),y:ok?clamp(_by79+rng(-10,10),22,78):rng(5,95)};
+    else if(key==="assist")ballTargetRef.current={x:rng(86,95),y:clamp(_by79+rng(-18,18),12,88)};
+    else if(key==="intercept"||key==="through")ballTargetRef.current={x:rng(45,72),y:clamp(_by79+rng(-20,20),8,92)};
+    else if(key==="recovery"||key==="save")ballTargetRef.current={x:rng(18,45),y:clamp(_by79+rng(-15,15),10,90)};
+    else if(key==="goal_against")ballTargetRef.current={x:rng(2,12),y:clamp(_by79+rng(-15,15),20,80)};
     setPhase("hl_result");
     // Generate AI commentary async (non-blocking)
     generateHighlightCommentary(situations[hlIdx],action,{ok},player.stats,zone).then(c=>{
