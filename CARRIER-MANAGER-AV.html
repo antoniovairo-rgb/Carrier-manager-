@@ -1791,6 +1791,51 @@ const BG_MATCH=[
   {txt:"🟡 Fallo tattico di {A}! Cartellino meritato ma {H} guadagna metà campo.",ef:null,w:2,bpos:{x:40,y:50},ms:{fouls:1},pd:"midfield"},
   {txt:"🔥 {H} preme alla ricerca del pareggio. La difesa avversaria inizia a vacillare.",ef:null,w:2,poss:3,bpos:{x:65,y:50},pd:"attack"},
   {txt:"💪 {H} non molla. La squadra ritrova energia dal nulla — si sente nell'aria.",ef:null,w:1.5,poss:2,bpos:{x:55,y:50},pd:"midfield"},
+  // Palo / traversa (Sprint 76)
+  {txt:"🔩 PALO! {H} ci va vicinissimo — il legno salva il portiere avversario.",ef:null,w:1.5,bpos:{x:93,y:50},ms:{shots:1},pd:"attack_goal"},
+  {txt:"🔩 TRAVERSA! Colpo di testa di {H}, la palla si spegne fuori.",ef:null,w:1.2,bpos:{x:92,y:52},ms:{shots:1},pd:"attack_goal"},
+  {txt:"🔩 Palo interno e fuori! {H} non riesce a crederci. Che sfortuna.",ef:null,w:0.9,bpos:{x:94,y:48},ms:{shots:1},pd:"attack_goal"},
+  {txt:"🛑 Salvataggio sulla linea! Il tiro di {A} spazzato da un difensore di {H}.",ef:null,w:1.2,bpos:{x:5,y:50},ms:{oppShots:1},pd:"defend_goal"},
+  // Rigore fischiato (Sprint 76)
+  {txt:"🟡 Rigore per {H}! Fallo netto in area — nessun dubbio per l'arbitro.",ef:null,w:0.8,bpos:{x:92,y:50},ms:{fouls:1},pd:"attack_goal"},
+  {txt:"👋 Mani in area di {A}! L'arbitro indica il dischetto — stadio in delirio.",ef:null,w:0.6,bpos:{x:88,y:50},ms:{fouls:1},pd:"attack_goal"},
+  // Contropiede (Sprint 76)
+  {txt:"⚡ Contropiede fulmineo di {H}! Tre contro due — accelerazione devastante.",ef:null,w:2,poss:3,bpos:{x:70,y:50},pd:"attack"},
+  {txt:"🔥 {H} lancia in profondità — {H2} scatta oltre la linea difensiva.",ef:null,w:2.5,bpos:{x:72,y:55},pd:"attack"},
+  {txt:"💨 Transizione rapida: {A} perde palla e {H} parte in contropiede 2v1.",ef:null,w:2,poss:2,bpos:{x:60,y:48},pd:"attack"},
+  // Pressing coordinato (Sprint 76)
+  {txt:"🔴 Pressing alto coordinato di {H}: tre giocatori chiudono il portiere avversario.",ef:null,w:2,poss:3,bpos:{x:15,y:50},pd:"midfield"},
+  {txt:"🎯 Pressing premiato: {H} recupera palla nell'ultimo terzo. Pericoloso!",ef:null,w:2,poss:2,bpos:{x:18,y:52},pd:"midfield"},
+  // Duelli aerei (Sprint 76)
+  {txt:"✈️ Duello aereo al centro. {H} vince di testa e serve {H2}.",ef:null,w:2.5,poss:1,bpos:{x:50,y:50},pd:"midfield"},
+  {txt:"✈️ Cross dalla destra — stacco potente di {H}! Palla fuori di pochissimo.",ef:null,w:1.5,bpos:{x:90,y:88},ms:{shots:1},pd:"attack_goal"},
+  // Intervallo / secondo tempo (Sprint 76)
+  {txt:"📊 All'intervallo il mister chiede più pressing. {H} ascolta.",ef:null,w:2,minClock:44,maxClock:46,bpos:{x:50,y:50},pd:"midfield"},
+  {txt:"🔵 Secondo tempo. {H} esce dagli spogliatoi con tutt'altra intensità.",ef:null,w:2,minClock:45,maxClock:51,bpos:{x:50,y:50},pd:"midfield"},
+  // Winning (Sprint 76)
+  {txt:"🔒 {H} rallenta il gioco con personalità — palla a terra, tempo che passa.",ef:null,w:2.5,bpos:{x:42,y:50},pd:"midfield",ctx:"winning"},
+  {txt:"😤 {A} si dispera in attacco. La porta di {H} sembra lontanissima.",ef:null,w:2,bpos:{x:78,y:52},ms:{shots:1},pd:"attack",ctx:"winning"},
+  {txt:"⏱️ {H} gestisce con esperienza. Ogni secondo vale oro.",ef:null,w:2,minClock:70,bpos:{x:48,y:50},pd:"midfield",ctx:"winning"},
+  {txt:"🧊 Sangue freddo totale. {H} non si fa sorprendere — palla conservata.",ef:null,w:2,bpos:{x:45,y:50},pd:"retreat",ctx:"winning"},
+  // Losing (Sprint 76)
+  {txt:"🚨 Il mister agita le braccia dalla panchina. Ci vuole il gol adesso.",ef:null,w:2.5,bpos:{x:70,y:50},pd:"attack",ctx:"losing"},
+  {txt:"💥 {H} ci prova ancora! Tiro potente — para in tuffo il portiere avversario.",ef:null,w:2,bpos:{x:80,y:50},ms:{shots:1},pd:"attack_goal",ctx:"losing"},
+  {txt:"⏱️ Il tempo stringe e {H} è ancora sotto. Ogni secondo brucia.",ef:null,w:2,minClock:70,bpos:{x:72,y:50},pd:"attack",ctx:"losing"},
+  {txt:"🔥 Follia offensiva di {H}! Anche il difensore sale in attacco.",ef:null,w:1.5,minClock:80,bpos:{x:78,y:50},pd:"attack_goal",ctx:"losing"},
+  // Drawing (Sprint 76)
+  {txt:"🎯 Partita da vincere — {H} cerca la giocata decisiva.",ef:null,w:2,bpos:{x:60,y:50},pd:"attack",ctx:"drawing"},
+  {txt:"📊 Equilibrio assoluto. La prima disattenzione potrebbe decidere tutto.",ef:null,w:2,minClock:65,bpos:{x:55,y:50},pd:"midfield",ctx:"drawing"},
+  {txt:"⚖️ {H} e {A} si equivalgono. Il dettaglio farà la differenza.",ef:null,w:2,bpos:{x:50,y:50},pd:"midfield",ctx:"drawing"},
+  // Con protagonista {P} (Sprint 76)
+  {txt:"👟 {P} scatta sulla fascia — l'avversario lo segue a fatica.",ef:null,w:1.5,bpos:{x:65,y:85},pd:"wide_right"},
+  {txt:"⚡ {P} si gira in un fazzoletto e salta due avversari.",ef:null,w:1.5,bpos:{x:68,y:60},pd:"attack"},
+  {txt:"😤 {P} protegge palla col corpo — aspetta il momento giusto per servire.",ef:null,w:1.5,bpos:{x:55,y:52},pd:"midfield"},
+  {txt:"🌀 {P} lancia in verticale — la difesa è aperta.",ef:null,w:1.5,bpos:{x:70,y:50},pd:"attack"},
+  // Atmosferici extra (Sprint 76)
+  {txt:"📣 La curva risponde al gesto del capitano — boato impressionante.",ef:null,w:1.5,bpos:{x:50,y:50},pd:"midfield"},
+  {txt:"🏟️ Stadio esaurito. L'atmosfera è qualcosa di mai visto.",ef:null,w:1,maxClock:15,bpos:{x:50,y:50},pd:"midfield"},
+  {txt:"😓 Le gambe pesano — terza partita in sette giorni, ma si va avanti.",ef:null,w:1.5,minClock:75,bpos:{x:50,y:50},pd:"retreat"},
+  {txt:"🩹 {P} si tocca il polpaccio dopo un contrasto. Respira e ricomincia.",ef:null,w:1.5,bpos:{x:50,y:50},pd:"midfield"},
 ];
 const OUTCOME_TX={
   goal:["💥 GOOOOOL! Folla in delirio!","⚽ Rete spettacolare!","🔥 Imparabile!","🌟 Fenomenale!"],
@@ -2028,7 +2073,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="3.55.0"; // Sprint 75 — Sistema Cartellini
+const GAME_VERSION="3.56.0"; // Sprint 76 — Live Match 2.0 Phase 1
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -6302,7 +6347,8 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
         if(hlIdx<hlTimesRef.current.length&&nx>=hlTimesRef.current[hlIdx]){setPhase("hl_intro");return nx;}
         // Commentary ~30% chance per tick (1 every ~3 min average)
         if(Math.random()<0.30){
-          const eligible=BG_MATCH.filter(e=>(!e.minClock||nx>=e.minClock)&&(!e.maxClock||nx<=e.maxClock)&&(!e.derbyOnly||!!drby));
+          const _sc76=scoreRef.current;const _sd76=_sc76.home-_sc76.away;const _sctx76=_sd76>0?"winning":_sd76<0?"losing":"drawing";
+          const eligible=BG_MATCH.filter(e=>(!e.minClock||nx>=e.minClock)&&(!e.maxClock||nx<=e.maxClock)&&(!e.derbyOnly||!!drby)&&(!e.ctx||e.ctx===_sctx76));
           const ev=wPick(eligible);
           if(ev.ef==="team_goal")setScore(s=>({...s,home:s.home+1}));
           if(ev.ef==="opp_goal"){setScore(s=>{
@@ -6380,7 +6426,8 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           const hN=homeRoster[Math.floor(Math.random()*(homeRoster.length-1))].name.split(" ").pop()+" ("+hAbbr+")";
           const hN2=homeRoster[Math.floor(Math.random()*(homeRoster.length-1))].name.split(" ").pop()+" ("+hAbbr+")";
           const aN=awayRoster[Math.floor(Math.random()*awayRoster.length)].name.split(" ").pop()+" ("+aAbbr+")";
-          const evTxt=ev.txt.replace(/{H2}/g,hN2).replace(/{H}/g,hN).replace(/{A}/g,aN).replace(/{DERBY}/g,drby?.name||"Derby");
+          const _pN76=player.name.split(" ").pop();
+          const evTxt=ev.txt.replace(/{H2}/g,hN2).replace(/{H}/g,hN).replace(/{A}/g,aN).replace(/{P}/g,_pN76).replace(/{DERBY}/g,drby?.name||"Derby");
           const cColor=ev.ef==="team_goal"?"#16a34a":ev.ef==="opp_goal"?"#dc2626":ev.ef==="opp_red"?"#16a34a":ev.ef==="opp_injury"?"#f59e0b":TH.faint;
           addCom(evTxt,cColor,nx);
         }
