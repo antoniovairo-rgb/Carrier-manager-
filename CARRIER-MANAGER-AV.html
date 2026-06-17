@@ -1377,6 +1377,230 @@ S("🔙 Siamo sotto 0-2. Segnare adesso cambia tutto.",["trequarti","bordo"],{x:
 /* Doppia marcatura */
 S("👥 Doppia marcatura! Due difensori ti raddoppiano.",["trequarti"],{x:[55,70],y:[20,80]},{x:[58,68],y:[28,72]},[
   A("🌀 Dribbling stretto — li elimino entrambi","tecnica",10,"goal","intercept",18),A("↩️ Dai e ricevi — smarca il compagno","passaggio",7,"assist","intercept",14),A("⚡ Scatto diagonale istantaneo","velocità",5,"goal","intercept",16)]),
+
+/* === SPRINT 55 — 100+ NUOVE SITUAZIONI === */
+
+/* AREA — VARIAZIONI AVANZATE */
+S("🤝 Sponda e rimorchio in area!",["area"],{x:[82,97],y:[25,75]},{x:[84,94],y:[30,70]},[
+  A("🤝 Sponda corta e tira","tecnica",6,"goal","miss",14),A("🦵 Prima intenzione","tiro",4,"goal","miss_easy",12),A("↩️ Retropassaggio al limite","passaggio",3,"assist","intercept",8)]),
+S("💨 Prima intenzione su cross basso!",["area"],{x:[80,97],y:[22,78]},{x:[82,92],y:[28,72]},[
+  A("💥 Tiro di prima potente","tiro",6,"goal","miss",16),A("🎯 Deviazione controllata","tecnica",4,"goal","miss",13),A("🤝 Sponda al compagno","passaggio",5,"assist","intercept",8)]),
+S("🎯 Tiro ad incrociare sul palo lontano!",["bordo","area"],{x:[75,95],y:[20,45]},{x:[78,88],y:[25,40]},[
+  A("🎯 Incrociato sul palo lontano","tiro",8,"goal","miss",14),A("🌀 Finta e interno piede","tecnica",5,"goal","miss",13),A("↗️ Cross basso sul secondo palo","passaggio",4,"assist","intercept",8)]),
+S("✈️ Colpo di testa potente da centro area!",["area"],{x:[78,96],y:[28,72]},{x:[80,90],y:[33,67]},[
+  A("✈️ Testa potente angolato","fisico",8,"goal","miss",16),A("🎯 Testa preciso al centro","fisico",4,"goal","miss",13),A("🌀 Colpo di testa smorzato per compagno","tecnica",2,"assist","intercept",11)]),
+S("🛑 Stop di petto e tiro fulmineo!",["area","bordo"],{x:[76,95],y:[22,78]},{x:[78,88],y:[28,72]},[
+  A("🛑 Stop e tiro netto","tecnica",7,"goal","miss",14),A("💥 Volée immediata","tiro",4,"goal","miss",13),A("↩️ Controllo e serve il compagno","passaggio",3,"assist","intercept",8)]),
+S("↘️ Tocco morbido a porta vuota!",["area"],{x:[84,98],y:[20,40]},{x:[86,96],y:[22,36]},[
+  A("↘️ Tocco sotto morbido","passaggio",8,"assist","intercept",10),A("🦵 Tiro a porta semiaperta","tiro",5,"goal","miss",13),A("🌀 Dribbling portiere e appoggia","tecnica",3,"assist","miss_easy",16)]),
+S("🦶 Tiro col mancino a sorpresa!",["bordo","area"],{x:[73,94],y:[22,78]},{x:[76,86],y:[28,72]},[
+  A("🦶 Mancino angolato","tiro",5,"goal","miss",14),A("🌀 Finta e mancino","tecnica",3,"goal","miss",13),A("↗️ Cross col mancino","passaggio",4,"assist","intercept",8)]),
+S("⚡ Sforbiciata acrobatica!",["area"],{x:[78,96],y:[22,78]},{x:[80,90],y:[28,72]},[
+  A("⚡ Sforbiciata al volo","fisico",-3,"goal","miss",22),A("🦵 Tiro di collo","tiro",4,"goal","miss",14),A("🎯 Controllo e tira","tecnica",6,"goal","miss",12)]),
+S("🔄 Gol di spalle alla porta!",["area"],{x:[82,97],y:[25,75]},{x:[84,93],y:[30,70]},[
+  A("🔄 Tacco in porta","tecnica",-5,"goal","miss_easy",22),A("🔙 Retropassaggio all'accorrente","passaggio",3,"assist","intercept",10),A("🌀 Giratone e tiro","tecnica",0,"goal","miss",14)]),
+S("🦵 Cucchiaio in area!",["area","bordo"],{x:[76,96],y:[25,75]},{x:[78,88],y:[30,70]},[
+  A("🦵 Cucchiaio rasoterra","tecnica",-2,"goal","miss_easy",18),A("💥 Tiro diretto","tiro",4,"goal","miss",13),A("🎯 Pallonetto morbido","tecnica",0,"goal","miss",12)]),
+S("🌀 Finta di esterno e tiro interno!",["area","bordo"],{x:[74,95],y:[22,78]},{x:[76,86],y:[28,72]},[
+  A("🌀 Finta e interno","tecnica",6,"goal","miss",15),A("🦵 Esterno subito","tiro",3,"goal","miss",13),A("↗️ Scarica per il compagno","passaggio",4,"assist","intercept",8)]),
+S("💥 Tiro di potenza sul palo corto!",["bordo","area"],{x:[73,94],y:[18,42]},{x:[76,86],y:[22,36]},[
+  A("💥 Potenza sul palo corto","tiro",5,"goal","miss",16),A("🎯 Piazzato sul palo lontano","tecnica",4,"goal","miss",13),A("↗️ Cross sul secondo palo","passaggio",5,"assist","intercept",8)]),
+S("🤸 Rovesciata in corsa!",["area"],{x:[80,97],y:[25,75]},{x:[82,92],y:[30,70]},[
+  A("🤸 Acrobazia istintiva in porta","tecnica",-8,"goal","miss",22),A("🦵 Tiro di collo d'istinto","tiro",2,"goal","miss",14),A("🎯 Controllo e conclude","tecnica",5,"goal","miss",13)]),
+S("⚽ Porta spalancata — spingila!",["area"],{x:[84,98],y:[28,72]},{x:[86,96],y:[33,67]},[
+  A("⚽ Prima intenzione — dentro!","tiro",20,"goal","miss_easy",8),A("🎯 Piazzata angolata","tecnica",14,"goal","miss",10),A("✈️ Di testa per sicurezza","fisico",10,"goal","miss",12)]),
+S("😱 Errore del portiere! Palla libera.",["area"],{x:[84,98],y:[28,72]},{x:[86,96],y:[33,67]},[
+  A("🦵 Prima intenzione subito!","tiro",16,"goal","miss_easy",8),A("🎯 Tocco preciso per il gol","tecnica",12,"goal","miss",10),A("🌀 Dribbla il portiere e segna","dribbling",8,"goal","miss",14)]),
+
+/* SET PIECES — VARIAZIONI */
+S("🏳️ Corner sul primo palo!",["area","bordo"],{x:[76,96],y:[75,90]},{x:[78,88],y:[76,88]},[
+  A("🦵 Tiro di prima all'angolino","tiro",4,"goal","miss",16),A("🔄 Tacco verso compagno","tecnica",-2,"assist","intercept",12),A("✈️ Stacco sul primo palo","fisico",5,"goal","miss",14)]),
+S("⚡ Corner basso teso — devia!",["area"],{x:[78,96],y:[25,75]},{x:[80,90],y:[30,70]},[
+  A("🦵 Deviazione rasoterra","tecnica",6,"goal","miss",14),A("💥 Prima intenzione potente","tiro",4,"goal","miss",13),A("🤝 Sponda per il compagno","passaggio",5,"assist","intercept",8)]),
+S("📐 Punizione a effetto — curva!",["trequarti"],{x:[62,72],y:[40,60]},{x:[64,70],y:[43,57]},[
+  A("📐 Curva a rientrare","tiro",8,"goal","miss",12),A("💥 Tiro piatto rasoterra","tiro",5,"goal","miss",11),A("↗️ Palla sul secondo palo","passaggio",6,"assist","miss",8)],true),
+S("⚡ Rimessa rapida dal portiere!",["difesa","centro"],{x:[5,30],y:[30,70]},{x:[8,22],y:[38,62]},[
+  A("⚡ Scatto in profondità subito","velocità",7,"goal","intercept",18),A("🎯 Posizionamento smarcato","posizionamento",5,"goal","intercept",14),A("🔄 Schema combinato rapido","passaggio",4,"assist","intercept",10)]),
+S("📐 Angolo sul secondo palo!",["area"],{x:[76,96],y:[20,30]},{x:[78,88],y:[22,28]},[
+  A("✈️ Taglio sul secondo palo","fisico",7,"goal","miss",16),A("💥 Tiro di prima al volo","tiro",3,"goal","miss",14),A("🤝 Sponda verso il centro dell'area","passaggio",4,"assist","intercept",8)]),
+S("📐 Punizione — muro a 9 metri!",["trequarti","bordo"],{x:[68,76],y:[44,56]},{x:[70,75],y:[46,54]},[
+  A("💥 Botta sopra la barriera","tiro",6,"goal","miss",13),A("↗️ Tocco per il compagno","passaggio",5,"assist","miss",8),A("🎯 Tiro a girare sul palo","tecnica",2,"goal","miss",14)],true),
+S("🏳️ Angolo corto — triangola!",["trequarti","bordo"],{x:[60,80],y:[88,97]},{x:[62,74],y:[89,96]},[
+  A("🎯 Cross a rientrare","passaggio",7,"assist","intercept",10),A("💥 Tiro a giro verso il palo lontano","tiro",5,"goal","miss",14),A("🌀 Dribbling e cross in area","tecnica",4,"assist","nothing",12)],false,3,"📐 Angolo corto! Sorprendi la difesa con il triangolo."),
+S("↗️ Schema da rimessa laterale!",["trequarti"],{x:[55,78],y:[0,15]},{x:[58,70],y:[3,12]},[
+  A("↗️ Cross immediato in area","passaggio",5,"assist","intercept",10),A("⚡ Scatto sul secondo palo","velocità",4,"goal","intercept",16),A("↩️ Giocata corta con triangolo","tecnica",6,"assist","nothing",12)]),
+
+/* CROSS — VARIAZIONI */
+S("🎯 Cross a rientrare dalla destra!",["bordo","trequarti"],{x:[64,88],y:[72,97]},{x:[66,82],y:[74,95]},[
+  A("🎯 Cross a rientrare perfetto","passaggio",7,"assist","miss",11),A("🦵 Tiro a giro forte sul portiere","tiro",4,"goal","miss",14),A("↗️ Cross alto sul primo palo","passaggio",4,"assist","intercept",8)]),
+S("↘️ Cross rasoterra al centro!",["bordo","area"],{x:[72,94],y:[18,82]},{x:[74,86],y:[20,78]},[
+  A("↘️ Rasoterra preciso al compagno","passaggio",8,"assist","intercept",10),A("💥 Tiro diretto in porta","tiro",3,"goal","miss",13),A("🤸 Deviazione acrobatica col tacco","tecnica",-4,"goal","miss",16)]),
+S("✈️ Cross al secondo palo — attacca!",["area","bordo"],{x:[74,96],y:[65,90]},{x:[76,88],y:[70,88]},[
+  A("✈️ Stacco sul secondo palo","fisico",7,"goal","miss",16),A("🦵 Tiro di prima al volo","tiro",4,"goal","miss",14),A("🤝 Sponda verso il centro","passaggio",5,"assist","intercept",8)]),
+S("⚡ Cross di prima senza guardare!",["bordo","trequarti"],{x:[62,88],y:[10,90]},{x:[64,80],y:[15,85]},[
+  A("⚡ Cross cieco di prima","passaggio",5,"assist","intercept",13),A("🎯 Cross a rientrare guardato","passaggio",7,"assist","miss",10),A("🦵 Tiro senza pensarci","tiro",-5,"goal","miss",13)]),
+S("⚽ Volée su cross alzato!",["area"],{x:[78,96],y:[22,78]},{x:[80,90],y:[28,72]},[
+  A("⚽ Volée di collo potente","tiro",2,"goal","miss",16),A("✈️ Colpo di testa al volo","fisico",4,"goal","miss",14),A("🎯 Controllo e tiro fermo","tecnica",6,"goal","miss",12)]),
+S("🌀 Cross d'esterno su cross basso!",["bordo","area"],{x:[74,94],y:[8,28]},{x:[76,86],y:[10,24]},[
+  A("🌀 Esterno a rientrare","passaggio",5,"assist","intercept",11),A("💥 Tiro dall'angolo stretto","tiro",2,"goal","miss",14),A("↗️ Cross interno normale","passaggio",6,"assist","intercept",8)]),
+S("✈️ Testa su cross dalla trequarti!",["area","bordo"],{x:[76,96],y:[30,70]},{x:[78,88],y:[35,65]},[
+  A("✈️ Testa di potenza","fisico",6,"goal","miss",16),A("🎯 Testa piazzata all'angolo","fisico",4,"goal","miss",13),A("🌀 Testa smorzata per il compagno","tecnica",2,"assist","intercept",10)]),
+S("⚡ Cross dal fondo — angolo stretto!",["area"],{x:[84,98],y:[12,28]},{x:[86,96],y:[14,24]},[
+  A("↗️ Cross sul primo palo","passaggio",5,"assist","intercept",12),A("🦵 Tiro da posizione impossibile","tiro",-8,"goal","miss",18),A("↘️ Rasoterra rasente il palo","passaggio",4,"assist","intercept",10)]),
+
+/* DRIBBLING — AVANZATO */
+S("🔄 Roulette sul difensore!",["bordo","trequarti"],{x:[62,90],y:[20,80]},{x:[64,78],y:[28,72]},[
+  A("🔄 Roulette di classe","tecnica",7,"goal","intercept",20),A("⚡ Finta e scatto","velocità",5,"goal","intercept",16),A("↩️ Appoggio sicuro al compagno","passaggio",2,"assist","intercept",8)]),
+S("🌀 Elastico in area!",["area","bordo"],{x:[75,96],y:[20,80]},{x:[78,88],y:[28,72]},[
+  A("🌀 Elastico e tiro netto","dribbling",4,"goal","intercept",20),A("💥 Tiro diretto senza finte","tiro",3,"goal","miss",13),A("↗️ Cross dopo dribbling","passaggio",4,"assist","intercept",10)]),
+S("🦵 Step-over e via!",["bordo","trequarti"],{x:[60,88],y:[20,80]},{x:[62,76],y:[28,72]},[
+  A("🦵 Step-over e scatto","velocità",6,"goal","intercept",18),A("🌀 Step-over e cross","dribbling",4,"assist","intercept",14),A("💥 Finta e tiro immediato","tiro",3,"goal","miss",13)]),
+S("💨 Finta di corpo e scatto!",["trequarti","bordo"],{x:[58,88],y:[20,80]},{x:[60,76],y:[28,72]},[
+  A("💨 Finta rapida e scatto","velocità",6,"goal","intercept",18),A("🌀 Finta di corpo e cross","dribbling",4,"assist","intercept",14),A("🎯 Assist dopo la finta","passaggio",5,"assist","intercept",10)]),
+S("🏃 Dribbling sulla linea di fondo!",["area"],{x:[82,98],y:[10,25]},{x:[84,96],y:[12,22]},[
+  A("↗️ Cross al centro da fondo","passaggio",6,"assist","intercept",12),A("🌀 Scarta il portiere da fondo","dribbling",-2,"goal","miss_easy",18),A("🦵 Tiro da angolo impossibile","tiro",-8,"goal","miss",14)]),
+S("🌀 Scarta il portiere in uscita!",["area","bordo"],{x:[76,96],y:[28,72]},{x:[78,88],y:[33,67]},[
+  A("🌀 Scarta col dribbling","dribbling",4,"goal","miss_easy",20),A("💥 Tiro diretto sul portiere","tiro",-4,"goal","miss",12),A("↗️ Assist al compagno libero","passaggio",5,"assist","intercept",8)]),
+S("🌀 Tunnel in area! Passa in mezzo.",["area"],{x:[80,97],y:[25,75]},{x:[82,92],y:[30,70]},[
+  A("🌀 Tunnel e tiro netto","dribbling",8,"goal","loose",22),A("🦵 Tiro diretto più sicuro","tiro",3,"goal","miss",13),A("↩️ Retropassaggio fuori area","passaggio",2,"assist","intercept",8)]),
+S("⚡ Scatto puro — nessuno ti segue!",["trequarti","bordo"],{x:[55,88],y:[20,80]},{x:[58,72],y:[28,72]},[
+  A("⚡ Scatto esplosivo in profondità","velocità",9,"goal","intercept",22),A("🎯 Controllo e conclude","tecnica",5,"goal","intercept",16),A("↗️ Cross al volo in corsa","passaggio",4,"assist","intercept",10)]),
+S("🔄 Hocus pocus sulla fascia!",["bordo","trequarti"],{x:[60,88],y:[5,30]},{x:[62,76],y:[8,25]},[
+  A("🔄 Hocus pocus e cross","dribbling",5,"assist","intercept",22),A("⚡ Finta e scatto sulla fascia","velocità",4,"assist","intercept",16),A("💥 Tiro a giro sul portiere","tiro",3,"goal","miss",13)]),
+S("🌀 Cambio di direzione a 180°!",["bordo","trequarti"],{x:[58,88],y:[20,80]},{x:[60,74],y:[28,72]},[
+  A("🌀 Virata istantanea e scatto","velocità",6,"goal","intercept",18),A("🎯 Giro e cross","dribbling",4,"assist","intercept",14),A("💥 Tiro dopo la virata","tiro",2,"goal","miss",13)]),
+S("🦵 Dribbla il terzino e crossa!",["bordo","trequarti"],{x:[60,88],y:[68,97]},{x:[62,78],y:[72,95]},[
+  A("🌀 Dribbling netto e cross","dribbling",5,"assist","intercept",18),A("⚡ Scatto in velocità","velocità",4,"assist","intercept",16),A("↗️ Cross immediato senza dribblare","passaggio",6,"assist","intercept",8)]),
+S("🤸 Controllo acrobatico e tiro!",["area","bordo"],{x:[74,96],y:[22,78]},{x:[76,88],y:[28,72]},[
+  A("🤸 Controllo acrobatico e tira","tecnica",3,"goal","miss",18),A("✈️ Testa al volo","fisico",4,"goal","miss",14),A("🦵 Tiro di prima","tiro",2,"goal","miss",13)]),
+S("🌀 Dribbling in spazio ristretto!",["area","bordo"],{x:[75,97],y:[22,78]},{x:[78,90],y:[28,72]},[
+  A("🌀 Dribbling stretto e tiro","dribbling",8,"goal","intercept",18),A("⚡ Tiro rapido senza dribblare","tiro",3,"goal","miss",14),A("↗️ Serve il compagno libero","passaggio",4,"assist","intercept",10)]),
+
+/* TREQUARTI — AVANZATO */
+S("🔄 Cambio gioco rapido 50 metri!",["centro","trequarti"],{x:[40,70],y:[20,80]},{x:[42,60],y:[28,72]},[
+  A("🔄 Lancio lungo di prima","passaggio",5,"assist","intercept",10),A("⚡ Avanza e cambia lato","velocità",3,"goal","intercept",15),A("🎯 Passaggio corto e triangolo","tecnica",4,"assist","intercept",8)]),
+S("🎯 Chip pass oltre la difesa!",["trequarti","bordo"],{x:[56,84],y:[22,78]},{x:[58,74],y:[28,72]},[
+  A("🎯 Chip millimetrico","tecnica",6,"assist","intercept",13),A("⚡ Lancio piatto in profondità","passaggio",4,"assist","intercept",10),A("🌀 Avanza e crea spazio","velocità",3,"goal","intercept",16)]),
+S("🕳️ Palla al buco tra i centrali!",["trequarti"],{x:[55,78],y:[25,75]},{x:[58,70],y:[30,70]},[
+  A("🕳️ Filtrante tra i centrali","passaggio",9,"assist","intercept",12),A("💥 Tiro dal limite invece","tiro",-5,"goal","miss",14),A("⚡ Avanza tu stesso","velocità",4,"goal","intercept",16)]),
+S("✈️ Spizzata aerea per il compagno!",["trequarti","bordo"],{x:[55,84],y:[25,75]},{x:[58,74],y:[30,70]},[
+  A("✈️ Spizzata di testa","fisico",5,"assist","intercept",11),A("🎯 Colpo di testa mirato","fisico",3,"assist","miss",10),A("🔙 Retropassaggio per riorganizzare","passaggio",2,"assist","intercept",6)]),
+S("🎯 Stop e tiro fulmineo!",["trequarti","bordo"],{x:[60,82],y:[25,75]},{x:[62,76],y:[30,70]},[
+  A("🎯 Stop e tiro preciso","tecnica",5,"goal","miss",14),A("💥 Prima intenzione senza stop","tiro",2,"goal","miss",13),A("↩️ Controlla e serve","passaggio",4,"assist","intercept",8)]),
+S("🏃 Fai il velo per il compagno!",["trequarti","bordo"],{x:[58,84],y:[22,78]},{x:[60,74],y:[28,72]},[
+  A("🏃 Faccio il velo e attacco","posizionamento",5,"goal","intercept",16),A("↩️ Ricevo dopo il velo","passaggio",6,"assist","intercept",10),A("⚡ Scatto oltre il velo","velocità",4,"goal","intercept",14)]),
+S("⚡ Assist rasoterra in area piccola!",["area"],{x:[82,98],y:[22,78]},{x:[84,94],y:[28,72]},[
+  A("⚡ Rasoterra preciso per il compagno","passaggio",9,"assist","intercept",10),A("🦵 Tiro di prima invece","tiro",5,"goal","miss_easy",12),A("🤸 Tacco verso il compagno libero","tecnica",-2,"assist","intercept",14)]),
+S("🌀 Penetrazione centrale in dribbling!",["trequarti","bordo"],{x:[58,86],y:[35,65]},{x:[60,72],y:[38,62]},[
+  A("🌀 Dribbling centrale e tiro","dribbling",5,"goal","intercept",18),A("⚡ Spunto esplosivo verso porta","velocità",4,"goal","intercept",16),A("↩️ Dai e vai in verticale","passaggio",5,"assist","intercept",10)]),
+S("🎯 Assist di prima al compagno libero!",["trequarti","bordo"],{x:[58,86],y:[22,78]},{x:[60,74],y:[28,72]},[
+  A("🎯 Assist di prima senza guardare","passaggio",7,"assist","intercept",12),A("💥 Tiro a sorpresa senza assist","tiro",2,"goal","miss",14),A("🌀 Finta e serve dopo la finta","tecnica",4,"assist","intercept",10)]),
+S("↩️ Rimorchio al limite dell'area!",["trequarti","bordo"],{x:[60,84],y:[22,78]},{x:[62,76],y:[28,72]},[
+  A("↩️ Rimorchio e tiro","tecnica",5,"goal","miss",14),A("🎯 Rimorchio e serve il compagno","passaggio",6,"assist","intercept",10),A("⚡ Rimorchio e scatto","velocità",4,"goal","intercept",15)]),
+S("🦶 Tacco al limite! Colpo di classe.",["bordo","trequarti"],{x:[62,84],y:[25,75]},{x:[64,76],y:[30,70]},[
+  A("🦶 Tacco in porta","tecnica",-3,"goal","miss",20),A("🦵 Tiro interno piede classico","tiro",3,"goal","miss",13),A("↩️ Tacco per il compagno libero","passaggio",4,"assist","intercept",10)]),
+S("💡 Smarcamento improvviso!",["trequarti","bordo"],{x:[55,84],y:[22,78]},{x:[58,72],y:[28,72]},[
+  A("💡 Finta e scarta il difensore","dribbling",6,"goal","intercept",16),A("⚡ Taglio improvviso diagonale","velocità",5,"goal","intercept",14),A("🎯 Schema concordato coi compagni","passaggio",6,"assist","intercept",10)]),
+S("🎯 Taglio diagonale e tiro!",["trequarti","bordo"],{x:[58,86],y:[22,78]},{x:[60,74],y:[28,72]},[
+  A("🎯 Taglio diagonale e tiro","velocità",6,"goal","intercept",18),A("🌀 Dribbling dopo il taglio","dribbling",4,"goal","intercept",14),A("↩️ Appoggio per il compagno","passaggio",4,"assist","intercept",8)]),
+
+/* CENTROCAMPO — AVANZATO */
+S("⚡ Smistamento rapidissimo a un tocco!",["centro","trequarti"],{x:[38,65],y:[22,78]},{x:[40,56],y:[28,72]},[
+  A("⚡ Uno-due e smista subito","passaggio",7,"assist","intercept",8),A("🔄 Cambia lato rapidamente","passaggio",5,"assist","intercept",6),A("🏃 Avanza col pallone","velocità",3,"goal","intercept",14)]),
+S("📏 Cambio di gioco lungo 50 metri!",["centro","difesa"],{x:[30,60],y:[20,80]},{x:[33,52],y:[28,72]},[
+  A("📏 Lancio lungo 50m di prima","passaggio",5,"assist","intercept",10),A("🔄 Cambio campo 30m","passaggio",4,"assist","intercept",8),A("↩️ Mantieni il possesso sicuro","passaggio",2,"assist","nothing",5)]),
+S("🎯 Verticale filtrante di prima!",["centro","trequarti"],{x:[38,65],y:[22,78]},{x:[40,56],y:[28,72]},[
+  A("🎯 Verticale filtrante di prima","passaggio",8,"assist","intercept",11),A("⚡ Avanza in profondità tu stesso","velocità",5,"goal","intercept",16),A("🌀 Dribbling e avanza","dribbling",3,"goal","intercept",13)]),
+S("🔥 Triangolo veloce 3 contro 2!",["trequarti","bordo"],{x:[55,84],y:[22,78]},{x:[58,72],y:[28,72]},[
+  A("🔥 Triangolo e vai","tecnica",7,"goal","intercept",18),A("↩️ Dai e vai subito","passaggio",6,"assist","intercept",10),A("⚡ Scatto in verticale","velocità",5,"goal","intercept",16)]),
+S("🌀 Parabola d'esterno — cambio gioco!",["centro","difesa"],{x:[30,58],y:[20,80]},{x:[33,50],y:[28,72]},[
+  A("🌀 Parabola d'esterno 40m","passaggio",6,"assist","intercept",10),A("📏 Lancio lungo di collo","passaggio",4,"assist","intercept",8),A("↩️ Passaggio sicuro corto","passaggio",2,"assist","nothing",5)]),
+S("🏃 Ricezione di spalle e giratone!",["centro"],{x:[38,60],y:[28,72]},{x:[42,54],y:[32,68]},[
+  A("🌀 Giratone e avanza","tecnica",5,"goal","intercept",14),A("↩️ Dai e ricevi subito","passaggio",4,"assist","intercept",8),A("💥 Tiro dal limite dopo giratone","tiro",-6,"goal","miss",14)]),
+S("🎯 Lanci lunghi — alzati e controlla!",["difesa","centro"],{x:[15,45],y:[22,78]},{x:[18,38],y:[28,72]},[
+  A("✈️ Colpo di testa e smista","fisico",5,"assist","intercept",8),A("🛑 Stop di petto e avanza","tecnica",4,"goal","intercept",12),A("⚡ Scatta e controlla al volo","velocità",3,"goal","intercept",14)]),
+S("⚡ Break verticale — lancia la transizione!",["centro","trequarti"],{x:[40,68],y:[22,78]},{x:[42,58],y:[28,72]},[
+  A("⚡ Lancio in profondità immediato","passaggio",7,"assist","intercept",11),A("🏃 Avanza col pallone di corsa","velocità",5,"goal","intercept",16),A("🔄 Smista sul lato libero","passaggio",5,"assist","intercept",8)]),
+S("🧠 Gioco aereo a centrocampo!",["centro","trequarti"],{x:[38,68],y:[22,78]},{x:[40,58],y:[28,72]},[
+  A("✈️ Stacco e indirizza il compagno","fisico",6,"assist","intercept",10),A("💪 Contrasto fisico in aria","fisico",4,"recovery","through",12),A("🌀 Finta e lascia passare","tecnica",2,"assist","nothing",8)]),
+S("💪 Recupero in pressing aggressivo!",["centro","trequarti"],{x:[38,70],y:[20,80]},{x:[42,60],y:[28,72]},[
+  A("💪 Contrasto duro sull'avversario","fisico",5,"recovery","foul",16),A("✋ Intercetta la traiettoria","tecnica",4,"recovery","through",12),A("🏃 Sprint di copertura","velocità",6,"recovery","through",14)],false,2,"💪 L'avversario parte in transizione! Bloccalo subito!","def"),
+
+/* DIFESA — AVANZATA */
+S("🛑 Chiusura urgente sull'attaccante!",["difesa","propria"],{x:[15,45],y:[20,80]},{x:[18,38],y:[28,72]},[
+  A("🛑 Chiusura immediata","velocità",8,"recovery","through",20),A("💪 Contrasto fisico deciso","fisico",5,"recovery","foul",16),A("📣 Posizionamento strategico","posizionamento",4,"recovery","through",12)],false,2,"🚨 L'attaccante è solo in campo aperto! Chiudigli la strada!","def"),
+S("🤼 Raddoppio difensivo!",["difesa","centro"],{x:[18,55],y:[20,80]},{x:[22,42],y:[28,72]},[
+  A("🤼 Raddoppio coordinato col compagno","tecnica",6,"recovery","through",14),A("🏃 Sprint di copertura urgente","velocità",5,"recovery","through",16),A("📣 Chiamo il compagno a raddoppiare","tecnica",3,"recovery","nothing",8)],false,2,"🤝 Raddoppia sul portatore! Superiamo l'emergenza.","def"),
+S("✋ Intercetto in verticale!",["centro","difesa"],{x:[22,58],y:[22,78]},{x:[26,46],y:[28,72]},[
+  A("✋ Anticipo sulla traiettoria","tecnica",8,"recovery","through",13),A("⚡ Sprint anticipato","velocità",6,"recovery","through",16),A("💪 Contrasto di spalla","fisico",4,"recovery","foul",12)],false,2,"👁️ Il passaggio sta per partire! Anticipalo!","def"),
+S("🛡️ Fallo tattico — ferma il contropiede!",["centro","trequarti"],{x:[38,70],y:[20,80]},{x:[40,58],y:[28,72]},[
+  A("🛡️ Fallo intelligente in zona","mentalità",5,"save","foul",10),A("⚡ Recupero in velocità invece","velocità",6,"recovery","through",18),A("💪 Contrasto pulito senza fallo","fisico",3,"recovery","foul",14)],false,2,"🧠 Meglio un fallo tattico che un gol subito!","def"),
+S("🧱 Blocco del tiro in area!",["propria"],{x:[5,22],y:[22,78]},{x:[7,18],y:[30,70]},[
+  A("🧱 Blocco col corpo sulla traiettoria","fisico",9,"save","goal_against",16),A("✋ Devia col piede sul palo","tecnica",5,"save","goal_against",12),A("😱 Tentativo disperato","fisico",3,"save","goal_against",10)],false,0,"💥 Tiro in arrivo! Mettiti sulla traiettoria!","def"),
+S("🏃 Recupero sulla linea di fondo!",["propria"],{x:[2,15],y:[10,30]},{x:[4,12],y:[12,26]},[
+  A("🏃 Sprint disperato sulla linea","velocità",7,"save","goal_against",20),A("✋ Intercetto prima del fondo","tecnica",5,"save","goal_against",14),A("📣 Chiamo il portiere","tecnica",2,"save","goal_against",8)],false,1,"⚡ Palla verso il fondo — ultima chance!","def"),
+S("✈️ Sfida aerea su lancio lungo!",["propria","difesa"],{x:[8,30],y:[22,78]},{x:[10,25],y:[28,72]},[
+  A("✈️ Stacco dominante","fisico",8,"save","goal_against",14),A("💪 Contrasto fisico in volo","fisico",5,"save","goal_against",12),A("📣 Chiamo il portiere","tecnica",4,"save","goal_against",8)],false,1,"✈️ Lancio lungo in area! Vinci il duello aereo!","def"),
+S("🤝 Copertura del compagno fuori posizione!",["difesa","propria"],{x:[5,35],y:[20,80]},{x:[8,28],y:[28,72]},[
+  A("🤝 Copro la sua posizione","posizionamento",7,"save","through",12),A("⚡ Sprint per coprire lo spazio","velocità",5,"save","through",16),A("📣 Comunico la situazione","tecnica",4,"save","through",8)],false,2,"🤝 Il compagno è fuori posizione! Copri tu!","def"),
+S("🛑 Uscita difensiva su cross basso!",["propria","difesa"],{x:[8,28],y:[22,78]},{x:[10,22],y:[28,72]},[
+  A("🛑 Blocco deciso il cross","fisico",6,"save","goal_against",14),A("✋ Devia in corner","tecnica",5,"save","goal_against",12),A("📣 Chiamo il portiere","tecnica",3,"save","goal_against",8)],false,1,"⚠️ Cross basso pericoloso! Esci e blocca!","def"),
+S("⚡ Tackle in corsa — è più veloce!",["difesa","centro"],{x:[22,55],y:[20,80]},{x:[25,44],y:[28,72]},[
+  A("⚡ Tackle in corsa preciso","fisico",6,"recovery","foul",16),A("🌀 Indirizza verso il fallo laterale","tecnica",4,"recovery","through",12),A("🏃 Sprint puro di rientro","velocità",5,"recovery","through",14)],false,2,"🏃 L'attaccante fugge in velocità! Raggiungerlo?","def"),
+S("📣 Coordina la difesa!",["propria","difesa"],{x:[5,30],y:[22,78]},{x:[8,24],y:[28,72]},[
+  A("📣 Coordino la linea difensiva","mentalità",6,"save","through",10),A("💪 Contrasto fisico duro","fisico",4,"save","goal_against",14),A("⚡ Pressing immediato sul portatore","velocità",5,"recovery","through",12)],false,1,"📣 Difesa alta! Coordina e non farti sorprendere!","def"),
+S("🏃 Pressing coordinato — recupera!",["trequarti","centro"],{x:[40,72],y:[20,80]},{x:[44,62],y:[28,72]},[
+  A("🏃 Pressing a zona coordinato","velocità",6,"recovery","through",16),A("✋ Intercetta il passaggio","tecnica",5,"recovery","through",12),A("💪 Contrasto duro sull'avversario","fisico",3,"recovery","foul",14)],false,2,"😤 Pressing alto! Recupera nella loro metà!","def"),
+
+/* SITUAZIONI NARRATIVE E SPECIALI */
+S("🔥 Siamo in vantaggio — gestisci!",["trequarti","centro"],{x:[38,75],y:[22,78]},{x:[42,62],y:[28,72]},[
+  A("🔥 Porta palla nell'angolo","tecnica",5,"goal","nothing",12),A("↩️ Passaggio sicuro laterale","passaggio",4,"assist","nothing",6),A("💥 Rilancio offensivo in profondità","velocità",3,"goal","intercept",14)]),
+S("⏱️ Due minuti alla fine — attacca!",["trequarti","bordo"],{x:[55,88],y:[22,78]},{x:[58,74],y:[28,72]},[
+  A("💥 Tiro dalla distanza!","tiro",-3,"goal","miss",14),A("⚡ Sprint verso la porta","velocità",6,"goal","intercept",18),A("🎯 Assist preciso","passaggio",5,"assist","intercept",12)],false,3,"⏱️ Mancano 2 minuti! Adesso o mai più!"),
+S("🌧️ Campo pesante — pioggia torrenziale!",["trequarti","bordo"],{x:[55,88],y:[22,78]},{x:[58,74],y:[28,72]},[
+  A("🌧️ Tiro rasoterra sul bagnato","tiro",5,"goal","miss",14),A("💪 Usa il fisico — campo pesante","fisico",4,"goal","miss",13),A("🎯 Passaggio corto e sicuro","passaggio",4,"assist","intercept",8)]),
+S("🏟️ Derby cittadino! Intensità massima.",["bordo","trequarti"],{x:[58,88],y:[22,78]},{x:[60,76],y:[28,72]},[
+  A("🔥 Tiro potente — adrenalina pura","tiro",4,"goal","miss",16),A("🌀 Dribbling tecnico da campione","dribbling",3,"goal","miss",15),A("🎯 Assist preciso — vinci il derby","passaggio",5,"assist","intercept",10)],false,3,"🏟️ È il derby! Sessantamila tifosi. Solo tu e il pallone."),
+S("💔 Gol contro la tua ex squadra!",["bordo","area"],{x:[70,96],y:[22,78]},{x:[72,86],y:[28,72]},[
+  A("💥 Gol dell'ex — silenzio assoluto","tiro",6,"goal","miss",18),A("🎯 Assist gelido e decisivo","passaggio",5,"assist","intercept",12),A("⚡ Scatto senza rimpianti","velocità",4,"goal","intercept",16)],false,3,"💔 È la partita contro la tua ex squadra. Cosa fai?"),
+S("🌟 Stadio in delirio! Fai il gol dell'anno.",["bordo","area"],{x:[72,96],y:[22,78]},{x:[74,88],y:[28,72]},[
+  A("🌟 Gol dell'anno — ci provo!","tiro",3,"goal","miss",20),A("🎯 Assist decisivo per la vittoria","passaggio",5,"assist","intercept",12),A("⚡ Gioco sul sicuro","velocità",4,"goal","intercept",14)],false,3,"🌟 Lo stadio è in delirio! Fai la cosa più difficile!"),
+S("😤 Siamo in dieci uomini! Difendi.",["difesa","centro"],{x:[18,55],y:[20,80]},{x:[22,42],y:[28,72]},[
+  A("😤 Blocca con tutto il fisico","fisico",7,"recovery","foul",14),A("⚡ Sprint disperato di copertura","velocità",6,"recovery","through",18),A("🧠 Intelligenza tattica — posizionati","mentalità",5,"recovery","nothing",12)],false,2,"😤 Espulsione! Siamo in dieci. Ogni pallone è oro.","def"),
+S("🎯 Superiorità numerica — sfruttala!",["trequarti","bordo"],{x:[55,88],y:[22,78]},{x:[58,74],y:[28,72]},[
+  A("🎯 Sfrutta lo spazio in più","passaggio",7,"assist","intercept",10),A("⚡ Scatto senza pressione","velocità",5,"goal","intercept",16),A("💥 Tiro con fiducia","tiro",3,"goal","miss",14)]),
+S("🏃 Rimessa dal portiere — verticale!",["difesa","centro"],{x:[10,40],y:[25,75]},{x:[12,32],y:[30,70]},[
+  A("🏃 Scatto in profondità","velocità",6,"goal","intercept",16),A("🎯 Triangolo col portiere","passaggio",4,"assist","intercept",8),A("🧠 Costruisci con qualità","tecnica",3,"assist","nothing",6)]),
+S("⚡ Rimessa laterale rapida — sorpresa!",["trequarti","centro"],{x:[42,72],y:[0,15]},{x:[45,62],y:[3,12]},[
+  A("⚡ Rimessa rapida e scatti","velocità",6,"goal","intercept",16),A("↗️ Rimessa lunga in area","passaggio",5,"assist","intercept",10),A("🎯 Schema concordato dalla rimessa","tecnica",6,"assist","nothing",12)]),
+S("🎭 Guadagna una punizione!",["bordo","area"],{x:[73,96],y:[22,78]},{x:[75,88],y:[28,72]},[
+  A("🌀 Dribbling provocatorio — il fallo c'è!","dribbling",4,"assist","intercept",12),A("⚡ Scatto improvviso provocatorio","velocità",4,"assist","through",12),A("💥 Tiro potente invece","tiro",3,"goal","miss",14)]),
+S("🔴 RIGORE PARATO! Arriva sulla ribattuta!",["area"],{x:[84,98],y:[28,72]},{x:[86,96],y:[33,67]},[
+  A("⚡ Arriva di sprint sulla ribattuta","velocità",12,"goal","miss_easy",12),A("🦵 Tiro di prima sul rimbalzo","tiro",8,"goal","miss",12),A("🤝 Servi il compagno libero","passaggio",6,"assist","intercept",10)],false,0,"🔴 Il portiere ha parato! La palla rimbalza in area!"),
+S("📋 Schema doppio dai e vai!",["trequarti","bordo"],{x:[55,85],y:[22,78]},{x:[58,72],y:[28,72]},[
+  A("📋 Schema a tre — dai, ricevi, tira","passaggio",9,"goal","intercept",18),A("⚡ Primo triangolo e scatta","velocità",6,"goal","intercept",16),A("🎯 Terzo uomo smarcato","passaggio",7,"assist","intercept",12)],false,4,"📋 Schema a tre! Dai, ricevi, dai ancora e arriva in porta."),
+S("💥 Bordata da centrocampo!",["trequarti"],{x:[55,72],y:[28,72]},{x:[57,68],y:[32,68]},[
+  A("💥 Bordata potente","tiro",-10,"goal","miss",18),A("🎯 Tiro controllato","tiro",-5,"goal","miss",14),A("↗️ Serve in area per il compagno","passaggio",5,"assist","intercept",8)]),
+S("🌀 Azione individuale — porta il pallone!",["trequarti","bordo"],{x:[55,88],y:[22,78]},{x:[58,74],y:[28,72]},[
+  A("🌀 Dribbling individuale feroce","dribbling",5,"goal","intercept",18),A("⚡ Sprint verso la porta","velocità",4,"goal","intercept",16),A("🎯 Serve un compagno smarcato","passaggio",5,"assist","intercept",10)]),
+S("🧠 Anticipo tattico — leggi il gioco!",["centro","trequarti"],{x:[38,70],y:[22,78]},{x:[40,58],y:[28,72]},[
+  A("🧠 Anticipi la giocata avversaria","mentalità",7,"recovery","through",12),A("⚡ Sprint anticipato","velocità",5,"recovery","through",14),A("↩️ Posizionamento preventivo","posizionamento",4,"recovery","nothing",8)]),
+S("🎯 Lancio millimetrico in profondità!",["centro","difesa"],{x:[28,60],y:[22,78]},{x:[30,50],y:[28,72]},[
+  A("🎯 Lancio in profondità perfetto","passaggio",8,"assist","intercept",12),A("⚡ Avanza di corsa e lancia","velocità",5,"assist","intercept",10),A("💥 Tiro lungo dal centrocampo","tiro",-15,"goal","miss",16)]),
+S("🤸 Salvataggio acrobatico impossibile!",["propria","difesa"],{x:[5,25],y:[22,78]},{x:[7,20],y:[28,72]},[
+  A("🤸 Salvataggio acrobatico","fisico",8,"save","goal_against",20),A("✋ Devia di piede sul palo","tecnica",6,"save","goal_against",14),A("📣 Chiamo il portiere","tecnica",3,"save","goal_against",8)],false,0,"🤸 Gol sicuro! Fai l'impossibile per salvare!","def"),
+S("🔙 Costruzione dal basso!",["propria","difesa"],{x:[5,30],y:[25,75]},{x:[8,22],y:[30,70]},[
+  A("🔙 Smarcati per ricevere","posizionamento",5,"assist","intercept",8),A("⚡ Scatto per dargli una soluzione","velocità",4,"assist","intercept",10),A("💪 Offri il fisico per la palla lunga","fisico",3,"assist","intercept",6)]),
+S("⚽ Taglio sul palo lontano — tempismo!",["area","bordo"],{x:[76,96],y:[30,50]},{x:[78,88],y:[33,48]},[
+  A("⚽ Taglio preciso sul palo lontano","velocità",7,"goal","miss",18),A("✈️ Testa in profondità","fisico",5,"goal","miss",15),A("↩️ Serve il compagno al centro","passaggio",4,"assist","intercept",8)]),
+S("🌀 Portiere in uscita — scartalo!",["area","bordo"],{x:[75,96],y:[28,72]},{x:[77,88],y:[32,68]},[
+  A("⚡ Tiro immediato prima che esca","tiro",4,"goal","miss",14),A("🌀 Scarta il portiere in uscita","dribbling",5,"goal","miss_easy",20),A("↗️ Passa al compagno a porta vuota","passaggio",7,"assist","intercept",10)]),
+S("📐 Punizione da posizione defilata!",["bordo","trequarti"],{x:[70,85],y:[10,25]},{x:[72,82],y:[12,22]},[
+  A("📐 Punizione a rientrare","tiro",5,"goal","miss",13),A("↗️ Cross sul secondo palo","passaggio",6,"assist","miss",8),A("🎯 Palla sul primo palo","passaggio",4,"assist","intercept",8)],true),
+S("🎯 Assist d'esterno piede!",["trequarti","bordo"],{x:[58,86],y:[22,78]},{x:[60,74],y:[28,72]},[
+  A("🎯 Esterno piede preciso","passaggio",6,"assist","intercept",12),A("💥 Tiro d'esterno a sorpresa","tiro",2,"goal","miss",14),A("🌀 Finta e interno piede","tecnica",4,"assist","intercept",10)]),
+S("💥 Bordata dal limite!",["trequarti"],{x:[55,72],y:[28,72]},{x:[57,68],y:[32,68]},[
+  A("💥 Collo pieno potente","tiro",-8,"goal","miss",18),A("🎯 Tiro controllato","tiro",-4,"goal","miss",14),A("↗️ Serve in area per il compagno","passaggio",5,"assist","intercept",8)]),
 ];
 
 const ZONES={
@@ -1708,7 +1932,7 @@ const NEWSPAPERS=[
   {id:"lastampa",  name:"La Stampa Sport",       short:"La Stampa",  color:"#16a34a",e:"🗞️",tone:"analitico"},
   {id:"skysport",  name:"Sky Sport 24",          short:"Sky Sport",  color:"#0099d6",e:"📡",tone:"diretto"},
 ];
-const GAME_VERSION="3.34.0"; // Sprint 54 — Negoziazione Contratti: trattativa multi-step
+const GAME_VERSION="3.35.0"; // Sprint 55 — 100+ nuove situazioni match
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
