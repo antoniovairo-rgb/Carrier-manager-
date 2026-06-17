@@ -2012,7 +2012,7 @@ const NEWSPAPERS=[
   {id:"lastampa",  name:"La Stampa Sport",       short:"La Stampa",  color:"#16a34a",e:"🗞️",tone:"analitico"},
   {id:"skysport",  name:"Sky Sport 24",          short:"Sky Sport",  color:"#0099d6",e:"📡",tone:"diretto"},
 ];
-const GAME_VERSION="3.49.0"; // Sprint 69 — Legame Speciale (bond milestones)
+const GAME_VERSION="3.50.0"; // Sprint 70 — Storico Allenatori
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -9704,6 +9704,9 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     if(!('weeklyFocusType' in newP)){ // Sprint 65: weekly training focus
       newP={...newP,weeklyFocusType:null};changed=true;
     }
+    if(!('coachHistory' in newP)){ // Sprint 70: coach career history
+      newP={...newP,coachHistory:[]};changed=true;
+    }
     if(changed){setPlayer(newP);}
   },[]);// eslint-disable-line
   const[darkMode,setDarkMode]=useState(()=>localStorage.getItem("cpm-dark")==="1");
@@ -11016,7 +11019,10 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       const relegated=nT>3?sortedForShifts.slice(nT-3).map(t=>t.n||t.id):[];
       const archiveEntry={season:p.season||1,league:p.club?.lg||"–",champion:champion?.n||"–",championId:champion?.id||"–",playerClub:p.club?.n||"–",playerPos:(p.standings||[]).length>0?sortedForShifts.findIndex(t=>(t.id&&t.id===(p.club?.id||p.club?.n))||(t.n&&t.n===(p.club?.n||p.club?.id)))+1:0,playerGoals:p.goals||0,playerAssists:p.assists||0,relegated};
       const newLeagueArchive=[...(p.leagueArchive||[]),archiveEntry].slice(-20);
-      return{...p,season:newSeason,age:newAge,week:1,weekLived:false,goals:0,assists:0,matches:0,fatigue:0,skillPoints:(p.skillPoints||0)+2,stats:agedStats,ovr:newOvr,contract:newContract,contractExpired,morale:clamp((p.morale||70)+bonM+(playerClubRelegated?-10:0)+(isGB?15:0),0,100),coachTrust:clamp((p.coachTrust||60)+bonCT+(playerClubRelegated?-8:0)+(coachChanged?newCoach.trustMod:0),0,100),popularity:clamp((p.popularity||20)+bonPop+(isGB?25:0),0,100),value:Math.max(0.5,(p.value||0.8)+bonVal+(playerClubRelegated?-0.3:0)+(isGB?0.8:0)),log:[agingLog,...objLogs,...[gbLog,coachLog,phenomLog,relegLog].filter(Boolean),...(p.log||[])].slice(0,60),standings:newStandings,calendar:newCalendar,matchHistory:[],seasonObjectives:newObjectives,history:[...(p.history||[]),prevHist].slice(-50),clubPrestigeShifts:updatedShifts,cup:newCup,euro:newEuro,coach:newCoach,goldenBoys:gbSeasons,records:newRecords,teammates:newTeammates,journalists:newJournalists,fanLegend:updFanLegend,leagueArchive:newLeagueArchive,...(captainReset?{isCaptain:false}:{})};
+      // Sprint 70: record coach tenure stats before coach possibly changes
+      const _ch70={name:p.coach?.name||"Il Mister",style:p.coach?.style||"Bilanciato",season:p.season||1,goals:p.goals||0,assists:p.assists||0,matches:p.matches||0,ovr:p.ovr||60,coachTrust:p.coachTrust||60,coachChanged};
+      const newCoachHistory=[...(p.coachHistory||[]),_ch70].slice(-20);
+      return{...p,season:newSeason,age:newAge,week:1,weekLived:false,goals:0,assists:0,matches:0,fatigue:0,skillPoints:(p.skillPoints||0)+2,stats:agedStats,ovr:newOvr,contract:newContract,contractExpired,morale:clamp((p.morale||70)+bonM+(playerClubRelegated?-10:0)+(isGB?15:0),0,100),coachTrust:clamp((p.coachTrust||60)+bonCT+(playerClubRelegated?-8:0)+(coachChanged?newCoach.trustMod:0),0,100),popularity:clamp((p.popularity||20)+bonPop+(isGB?25:0),0,100),value:Math.max(0.5,(p.value||0.8)+bonVal+(playerClubRelegated?-0.3:0)+(isGB?0.8:0)),log:[agingLog,...objLogs,...[gbLog,coachLog,phenomLog,relegLog].filter(Boolean),...(p.log||[])].slice(0,60),standings:newStandings,calendar:newCalendar,matchHistory:[],seasonObjectives:newObjectives,history:[...(p.history||[]),prevHist].slice(-50),clubPrestigeShifts:updatedShifts,cup:newCup,euro:newEuro,coach:newCoach,goldenBoys:gbSeasons,records:newRecords,teammates:newTeammates,journalists:newJournalists,fanLegend:updFanLegend,leagueArchive:newLeagueArchive,coachHistory:newCoachHistory,...(captainReset?{isCaptain:false}:{})};
     });
     // S41: double achievement — won league + cup same season
     {const _sd=[...(player.standings||[])].sort((a,b)=>b.pts-a.pts||b.gd-a.gd||b.gf-a.gf);const _ch=_sd[0];const _pid=player.club?.id||player.club?.n;if(player.cup?.champion&&_ch&&(_ch.id===_pid||_ch.n===player.club?.n)&&!(player.achievements||[]).includes("double")){setTimeout(()=>{setPlayer(p=>({...p,achievements:[...(p.achievements||[]),"double"]}));notify("🏆🏆🏆 DOPPIO! Campionato + Coppa nella stessa stagione! Leggendario!","#f59e0b");},1200);}}
@@ -12835,6 +12841,34 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
               </Card>
             );
           })()}
+          {/* Sprint 70 — Storico Allenatori */}
+          {(player.coachHistory||[]).length>0&&(()=>{
+            const _ch70=[...(player.coachHistory||[])].reverse();
+            return(
+              <Card style={{padding:"12px 14px"}}>
+                <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>🧑‍💼 Storico Allenatori</div>
+                <div style={{display:"flex",flexDirection:"column",gap:0}}>
+                  {_ch70.slice(0,6).map((ch,i)=>{
+                    const _cColor=(ch.coachTrust||60)>=70?TH.success:(ch.coachTrust||60)>=50?TH.primary:TH.warning;
+                    const _isLast=i>=Math.min(_ch70.length,6)-1;
+                    return(
+                      <div key={i} style={{display:"flex",alignItems:"center",gap:8,padding:"7px 0",borderBottom:_isLast?"none":`1px solid ${TH.cardBorder}`}}>
+                        <div style={{fontSize:18,width:24,textAlign:"center",flexShrink:0}}>🧑‍💼</div>
+                        <div style={{flex:1,minWidth:0}}>
+                          <div style={{fontSize:11,fontWeight:700,color:TH.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{ch.name}</div>
+                          <div style={{fontSize:9,color:TH.muted}}>{ch.style} · S.{ch.season}{ch.coachChanged?" · ↩ cambio":""}</div>
+                        </div>
+                        <div style={{textAlign:"right",flexShrink:0}}>
+                          <div style={{fontSize:11,fontWeight:700,color:TH.text}}>{ch.goals}<span style={{fontSize:9,color:TH.muted}}>⚽</span> {ch.assists}<span style={{fontSize:9,color:TH.muted}}>🎯</span></div>
+                          <div style={{fontSize:9,color:_cColor,fontWeight:600}}>CT {ch.coachTrust||60}</div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </Card>
+            );
+          })()}
           {/* Sprint 57 — Rivale NPC card potenziata */}
           {player.rival&&(()=>{
             const r=player.rival;
@@ -13579,6 +13613,37 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                     </div>
                   </div>
                 </Card>
+                {/* Sprint 70 — Il Tuo Allenatore */}
+                {(()=>{
+                  var _cs70=COACH_STYLES.find(function(s){return s.style===(player.coach?.style||"Bilanciato");});
+                  var _ct70=player.coachTrust||60;
+                  var _ctLabel70=_ct70>=85?"Fiducia Totale":_ct70>=70?"Fiducioso":_ct70>=50?"Neutro":_ct70>=30?"In Dubbio":"In Crisi";
+                  var _ctColor70=_ct70>=70?TH.success:_ct70>=50?TH.primary:_ct70>=30?TH.warning:TH.danger;
+                  return(
+                    <Card style={{padding:"12px 14px"}}>
+                      <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:10}}>🧑‍💼 Il Tuo Allenatore</div>
+                      <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:10}}>
+                        <NpcFaceCoach coachName={player.coach?.name||"mister"} size={42}/>
+                        <div style={{flex:1,minWidth:0}}>
+                          <div style={{fontSize:13,fontWeight:800,color:TH.text}}>{player.coach?.name||"Il Mister"}</div>
+                          <div style={{fontSize:10,color:TH.accent,fontWeight:600,marginBottom:1}}>{player.coach?.style||"Bilanciato"}</div>
+                          <div style={{fontSize:10,color:TH.muted,lineHeight:1.4}}>{_cs70?.desc||"Approccio equilibrato"}</div>
+                        </div>
+                        <div style={{textAlign:"center",flexShrink:0,background:TH.bg,borderRadius:8,padding:"6px 10px"}}>
+                          <div style={{fontSize:14,fontWeight:900,color:_ctColor70}}>{_ct70}</div>
+                          <div style={{fontSize:8,color:TH.faint}}>fiducia</div>
+                        </div>
+                      </div>
+                      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:3}}>
+                        <div style={{fontSize:10,color:TH.muted}}>Rapporto attuale</div>
+                        <div style={{fontSize:10,fontWeight:700,color:_ctColor70}}>{_ctLabel70}</div>
+                      </div>
+                      <div style={{height:4,background:"#e2e8f0",borderRadius:2,overflow:"hidden"}}>
+                        <div style={{height:"100%",width:`${_ct70}%`,background:_ctColor70,borderRadius:2,transition:"width .4s"}}/>
+                      </div>
+                    </Card>
+                  );
+                })()}
                 {/* Finestra di Mercato */}
                 {txOpen&&(
                   <Card style={{padding:"12px 14px",background:"#ecfdf5",border:"1px solid #6ee7b7"}}>
