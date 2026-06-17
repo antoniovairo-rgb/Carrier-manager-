@@ -2012,7 +2012,7 @@ const NEWSPAPERS=[
   {id:"lastampa",  name:"La Stampa Sport",       short:"La Stampa",  color:"#16a34a",e:"🗞️",tone:"analitico"},
   {id:"skysport",  name:"Sky Sport 24",          short:"Sky Sport",  color:"#0099d6",e:"📡",tone:"diretto"},
 ];
-const GAME_VERSION="3.50.0"; // Sprint 70 — Storico Allenatori
+const GAME_VERSION="3.51.0"; // Sprint 71 — Bacheca Trofei
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -12838,6 +12838,37 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                     <span style={{fontSize:9,color:TH.faint,minWidth:60,textAlign:"right"}}>gol a fine stagione</span>
                   </div>
                 )}
+              </Card>
+            );
+          })()}
+          {/* Sprint 71 — Bacheca Trofei */}
+          {(player.trophies||[]).length>0&&(()=>{
+            const _tr=player.trophies||[];
+            const _groups=[
+              {key:"league",label:"Campionato",e:"🥇",filter:t=>!t.type&&!t.isNational},
+              {key:"cup",label:"Coppa",e:"🏆",filter:t=>t.type==="cup"},
+              {key:"euro",label:"Europa",e:"⭐",filter:t=>t.type==="euro"},
+              {key:"int",label:"Nazionale",e:"🌍",filter:t=>t.type==="int"||t.isNational},
+            ].map(g=>({...g,items:_tr.filter(g.filter)})).filter(g=>g.items.length>0);
+            return(
+              <Card style={{padding:"12px 14px",background:"linear-gradient(135deg,#1c0d04,#2d1507)",border:"1px solid rgba(234,179,8,0.35)"}}>
+                <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:10}}>
+                  <div style={{fontSize:10,color:"#fde68a",textTransform:"uppercase",letterSpacing:1.5}}>🏆 Bacheca Trofei</div>
+                  <div style={{fontSize:13,fontWeight:900,color:"#fde68a"}}>{_tr.length} trofei</div>
+                </div>
+                {_groups.map((g,gi)=>(
+                  <div key={g.key} style={{marginBottom:gi<_groups.length-1?10:0}}>
+                    <div style={{fontSize:9,color:"rgba(253,230,138,0.55)",textTransform:"uppercase",letterSpacing:1.2,marginBottom:5}}>{g.e} {g.label} · {g.items.length}</div>
+                    <div style={{display:"flex",flexWrap:"wrap",gap:5}}>
+                      {g.items.map((t,i)=>(
+                        <div key={i} style={{background:"rgba(253,230,138,0.08)",border:"1px solid rgba(253,230,138,0.18)",borderRadius:7,padding:"5px 8px"}}>
+                          <div style={{fontSize:10,fontWeight:700,color:"#fef3c7",marginBottom:1}}>{t.league||"Campionato"}</div>
+                          <div style={{fontSize:8,color:"rgba(253,230,138,0.45)"}}>S.{t.season} · {(t.club||"").slice(0,14)}</div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ))}
               </Card>
             );
           })()}
