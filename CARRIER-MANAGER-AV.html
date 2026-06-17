@@ -2012,7 +2012,7 @@ const NEWSPAPERS=[
   {id:"lastampa",  name:"La Stampa Sport",       short:"La Stampa",  color:"#16a34a",e:"🗞️",tone:"analitico"},
   {id:"skysport",  name:"Sky Sport 24",          short:"Sky Sport",  color:"#0099d6",e:"📡",tone:"diretto"},
 ];
-const GAME_VERSION="3.52.1"; // Hotfix: fix ?.[1] Babel parse error (line 9056)
+const GAME_VERSION="3.53.0"; // Sprint 73 — Obiettivo Live
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -10251,6 +10251,9 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     const isCupWon=cupCalEntry?(result.won||(result.drew&&Math.random()<0.55)):false;
     const isCupPenalties=!!(cupCalEntry&&!result.won&&result.drew&&isCupWon);
     const isCupFinal=!!(cupCalEntry&&(player.cup?.round||1)===4&&isCupWon);
+    // Sprint 73 — Obiettivo Live: detect newly completed season objectives
+    const _prevGoals73=player.goals||0,_prevAssists73=player.assists||0,_prevMatches73=player.matches||0;
+    const _objCompleted73=(player.seasonObjectives||[]).filter(o=>(o.type==="goals"&&_prevGoals73<o.target&&(_prevGoals73+(result.goals||0))>=o.target)||(o.type==="assists"&&_prevAssists73<o.target&&(_prevAssists73+(result.assists||0))>=o.target)||(o.type==="matches"&&_prevMatches73<o.target&&(_prevMatches73+1)>=o.target));
     setPlayer(p=>{
       let ns={...p.stats};
       // S10.5: age curve — strong growth <22, gradual 22-27, none after
@@ -10313,9 +10316,13 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       const _ws66=getWinStreak(newHistory);
       if(_ws66.type==='win'&&[3,5,8].includes(_ws66.count))_md51.push({season:p.season||1,week:p.week||1,type:"milestone",e:"🏆",headline:`${_ws66.count} vittorie consecutive!`,body:`Striscia vincente: ${_ws66.count} partite di fila · S.${p.season||1}`,color:"#16a34a"});
       if(_ws66.type==='loss'&&_ws66.count===3)_md51.push({season:p.season||1,week:p.week||1,type:"milestone",e:"📉",headline:"3 sconfitte consecutive — momento di crisi.",body:`Striscia negativa · trovare la reazione · S.${p.season||1}`,color:"#dc2626"});
+      // Sprint 73: diary for newly completed objectives
+      _objCompleted73.forEach(o=>_md51.push({season:p.season||1,week:p.week||1,type:"milestone",e:"🎯",headline:`Obiettivo: ${o.label}`,body:`Traguardo stagionale completato! S.${p.season||1} · Settimana ${p.week||1}`,color:"#16a34a"}));
       const newDiary51=[...(p.diary||[]),..._md51].slice(-80);
       return{...p,stats:ns,ovr:newOvr,goals:p.goals+result.goals,assists:p.assists+result.assists,matches:p.matches+1,totalGoals:p.totalGoals+result.goals,totalAssists:p.totalAssists+result.assists,totalMatches:p.totalMatches+1,morale:clamp(p.morale+moD,0,100),form:clamp((p.form||70)+formD,30,95),fatigue:postFatigue,...(newInjured?{injured:true,injuryWeeks,injuryType}:{}),week:(p.week||1)+1,weekLived:false,log:[logE,...(p.log||[])].slice(0,60),matchHistory:newHistory,standings:newStandings,calendar:newCal,aiData:newAiData,...(newMilestoneIds.length>0?{milestones:[...(p.milestones||[]),...newMilestoneIds]}:{}),...cupUpdate2,diary:newDiary51,goalStreak:newGoalStreak,bestGoalStreak:newBestStreak};
     });
+    // Sprint 73: notify objective completions
+    if(_objCompleted73.length)_objCompleted73.forEach((o,i)=>setTimeout(()=>notify(`🎯 ${o.label}!`,TH.success),700+i*1800));
     setScreen("postmatch");setTab("dashboard");
     if(newInjured){const iT=INJURY_TYPES_META[injuryType]||{label:"Infortunio",icon:"🩹"};notify(`${iT.icon} ${iT.label}! Stop: ${injuryWeeks} settiman${injuryWeeks===1?"a":"e"}.`,TH.danger);}
     triggeredMilestones.forEach((m,i)=>setTimeout(()=>notify(m.txt,m.color),1200+i*2400));
@@ -11973,7 +11980,8 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
               <div key={i} style={{marginBottom:i<(player.seasonObjectives||[]).length-1?10:0}}>
                 <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:3}}>
                   <div style={{fontSize:11,color:done?TH.success:TH.text,fontWeight:done?700:400}}>{done?"✅ ":"🎯 "}{obj.label}</div>
-                  <div style={{fontSize:10,color:done?TH.success:TH.muted,fontWeight:600}}>{obj.type==="standing"?`${cur===99?"–":cur}° / top ${obj.target}`:`${cur} / ${obj.target}`}</div>
+                  {/* Sprint 73 — badge completato */}
+                  {done?<span style={{fontSize:8,background:"#dcfce7",color:"#16a34a",padding:"1px 6px",borderRadius:5,fontWeight:700,flexShrink:0}}>FATTO</span>:<div style={{fontSize:10,color:TH.muted,fontWeight:600}}>{obj.type==="standing"?`${cur===99?"–":cur}° / top ${obj.target}`:`${cur} / ${obj.target}`}</div>}
                 </div>
                 <div style={{height:4,background:"#e2e8f0",borderRadius:2,overflow:"hidden"}}>
                   <div style={{height:"100%",width:`${pct}%`,background:done?TH.success:TH.primary,borderRadius:2,transition:"width .4s"}}/>
