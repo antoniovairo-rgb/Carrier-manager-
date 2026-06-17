@@ -1003,6 +1003,56 @@ const WEEKLY_IMPULSES=[
     {txt:"🌍 Vado — mi metto in mostra",ef:{popularity:12,form:6,morale:10,fatigue:8}},
     {txt:"🏠 Resto con il club — è un momento delicato",ef:{coachTrust:8,morale:3,form:3}},
   ]},
+  // Sprint 61 — nuovi impulsi
+  {id:"wi_podcast",cat:"personale",txt:"Un podcaster sportivo di successo ti invita per un'intervista. Potresti aprire tanti nuovi fan.",choices:[
+    {txt:"🎙️ Accetto — voglio raccontarmi",ef:{popularity:14,morale:7,value:0.08}},
+    {txt:"😶 Sono riservato — preferisco il campo",ef:{morale:4,coachTrust:3}},
+  ]},
+  {id:"wi_donazione",cat:"personale",txt:"Un'associazione benefica ti chiede di partecipare a una partita di solidarietà. Visibilità vs riposo.",choices:[
+    {txt:"💖 Lo faccio — sport e solidarietà",ef:{popularity:10,morale:9,fatigue:7}},
+    {txt:"🏃 Passo — ho bisogno di recuperare",ef:{fatigue:-8,morale:3}},
+  ]},
+  {id:"wi_fan_speciale",cat:"personale",txt:"Un bambino con la tua maglia ti aspetta fuori dallo stadio: «Sei la mia ispirazione.» Ti fermi?",choices:[
+    {txt:"💛 Mi fermo, parlo con lui, selfie e firma",ef:{morale:14,popularity:8,value:0.03}},
+    {txt:"😔 Sono di fretta — un sorriso e via",ef:{morale:3}},
+  ]},
+  {id:"wi_analisi_video",cat:"formazione",txt:"Il preparatore atletico ti propone due ore extra di analisi video sui tuoi movimenti. Noioso ma utile.",choices:[
+    {txt:"📽️ Lo faccio — ogni dettaglio conta",ef:{form:6,fatigue:6,mentalità:1,posizionamento:1}},
+    {txt:"😪 Ho già troppe cose in testa",ef:{morale:4,fatigue:-5}},
+  ]},
+  {id:"wi_crioterapia",cat:"formazione",txt:"Il preparatore consiglia la crioterapia post-allenamento. «Ti farà bene ma è un inferno.»",choices:[
+    {txt:"🧊 Ci provo — tutto per la forma",ef:{fatigue:-16,form:6,morale:3}},
+    {txt:"🚿 Preferisco la doccia calda normale",ef:{fatigue:-7,morale:5}},
+  ]},
+  {id:"wi_veterano_allenamento",cat:"formazione",txt:"Un veterano della squadra si offre di allenarti in privato. È un'opportunità rara.",choices:[
+    {txt:"💪 Accetto subito — esperienza preziosa",ef:{form:7,coachTrust:5,morale:7,fatigue:6}},
+    {txt:"😐 Ho già il mio programma",ef:{morale:2}},
+  ]},
+  {id:"wi_cena_squadra",cat:"sociale",txt:"Il capitano organizza una cena di squadra per rafforzare l'unità del gruppo. Partecipi?",choices:[
+    {txt:"🍽️ Ci sono — la squadra prima di tutto",ef:{morale:9,coachTrust:5,fatigue:4}},
+    {txt:"🏠 Resto a casa — ho bisogno di riposare",ef:{fatigue:-8,morale:3}},
+  ]},
+  {id:"wi_giovani_accademia",cat:"sociale",txt:"Il club ti chiede di visitare la scuola calcio e ispirare i giovani. Saranno emozionatissimi.",choices:[
+    {txt:"👶 Vado — è un gesto che vale",ef:{popularity:9,morale:11,value:0.05}},
+    {txt:"😐 Non è il momento giusto per me",ef:{morale:2}},
+  ]},
+  {id:"wi_campo_bagnato",cat:"scelta",txt:"Il campo è fradicio di pioggia. Al coperto (tecnica) o in campo aperto (fisico)?",choices:[
+    {txt:"⛈️ All'aperto — il vero campo si gioca in tutte le condizioni",ef:{fisico:1,fatigue:13,form:5}},
+    {txt:"🏋️ Al coperto — tecnica e tattica senza rischi",ef:{tecnica:1,fatigue:7,form:3}},
+  ]},
+  {id:"wi_sponsor_auto",cat:"opportunità",txt:"Una casa automobilistica ti offre un accordo sponsorship. Macchina in cambio di 3 post social.",choices:[
+    {txt:"🚗 Firmo — è un bel riconoscimento",ef:{popularity:8,value:0.08,morale:7}},
+    {txt:"🤝 Passo — voglio restare autentico",ef:{morale:5,coachTrust:3}},
+  ]},
+  {id:"wi_derby_semana",cat:"tensione",txt:"È la settimana del derby. L'ambiente è elettrico e i tifosi ti fermano ovunque. Come gestisci?",choices:[
+    {txt:"🔥 Mi carico — per questi momenti esisto",ef:{form:8,morale:9,fatigue:5}},
+    {txt:"🎯 Resto concentrato e in silenzio",ef:{mentalità:1,form:4,fatigue:-3}},
+    {txt:"😰 Ammetto di essere un po' teso",ef:{mentalità:1,coachTrust:4,morale:-4}},
+  ]},
+  {id:"wi_figlia_mister",cat:"personale",txt:"La figlia del mister ti ferma dopo l'allenamento: «Papà parla sempre di te. Sei il suo preferito.»",choices:[
+    {txt:"😊 «È un onore. Gli sarò sempre grato.»",ef:{coachTrust:9,morale:8}},
+    {txt:"😅 Ridi imbarazzato e cambi argomento",ef:{morale:4}},
+  ]},
 ];
 
 /* ========================================
@@ -1932,7 +1982,7 @@ const NEWSPAPERS=[
   {id:"lastampa",  name:"La Stampa Sport",       short:"La Stampa",  color:"#16a34a",e:"🗞️",tone:"analitico"},
   {id:"skysport",  name:"Sky Sport 24",          short:"Sky Sport",  color:"#0099d6",e:"📡",tone:"diretto"},
 ];
-const GAME_VERSION="3.40.0"; // Sprint 60 — Verifica Trimestrale del Mister
+const GAME_VERSION="3.41.0"; // Sprint 61 — Nuovi Impulsi (×12) & Sfide Espanse (×5 + progress)
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -9173,6 +9223,18 @@ const CHALLENGES=[
    check:p=>(p.goals||0)>=50,fail:()=>false,reward:"⚽ Macchina da Gol"},
   {id:"talento",icon:"💎",name:"Talento Puro",desc:"Raggiungi Livello 90 prima dei 26 anni.",
    check:p=>(p.ovr||60)>=90&&(p.age||17)<26,fail:p=>(p.age||17)>=26&&(p.ovr||60)<90,reward:"🌟 Predestinato"},
+  // Sprint 61 — nuove sfide
+  {id:"fedele",icon:"❤️",name:"Fedele per Sempre",desc:"Gioca almeno 5 stagioni nello stesso club.",
+   check:p=>(p.fanLegend||[]).some(f=>f.seasons>=5),fail:()=>false,reward:"🏟️ Bandiera del Club"},
+  {id:"nazionale_star",icon:"🌍",name:"Centurione",desc:"Raggiungi 20 presenze in Nazionale.",
+   check:p=>(p.nationalCaps||0)>=20,fail:()=>false,reward:"🌟 Capitano Azzurro"},
+  {id:"sempreverde",icon:"🎂",name:"Sempreverde",desc:"Gioca ancora a 34 anni o oltre.",
+   check:p=>(p.age||17)>=34&&(p.matches||0)>0&&(p.proStatus||"u18")==="pro",fail:()=>false,reward:"🏅 Immortale"},
+  {id:"assist_machine",icon:"🎯",name:"Assist Machine",desc:"Totalizza 75 assist in carriera.",
+   check:p=>(p.totalAssists||0)>=75,fail:()=>false,reward:"🎯 Playmaker Leggendario"},
+  {id:"scalata_rapida",icon:"🚀",name:"Scalata Rapida",desc:"Vinci un trofeo nelle prime 3 stagioni da pro.",
+   check:p=>{const proStart=(p.u18Seasons||0)+1;return(p.trophies||[]).some(t=>(t.season||0)<=proStart+2);},
+   fail:p=>((p.season||1)-(p.u18Seasons||0))>3&&(p.trophies||[]).length===0,reward:"⚡ Meteora d'Oro"},
 ];
 const LOCALE={
   IT:{
@@ -13100,15 +13162,30 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
               ))}
             </Card>
           )}
-          {/* Sprint 19 — Challenge status */}
+          {/* Sprint 19/61 — Challenge status with progress */}
           {player.challenge&&(()=>{
             const ch=CHALLENGES.find(c=>c.id===player.challenge.id);
             if(!ch)return null;
             const done=player.challenge.completed,failed=player.challenge.failed;
+            // Sprint 61: compute progress pct for active challenges
+            const getChallengeProgress=(id)=>{
+              const p=player;
+              if(id==="scalata")return{cur:(p.trophies||[]).length,max:1,label:"trofeo"};
+              if(id==="bomber")return{cur:p.goals||0,max:50,label:"gol stagione"};
+              if(id==="talento")return{cur:Math.min(p.ovr||60,90),max:90,label:"livello OVR"};
+              if(id==="fedele")return{cur:Math.max(0,...(p.fanLegend||[]).map(f=>f.seasons)),max:5,label:"stagioni stesso club"};
+              if(id==="nazionale_star")return{cur:p.nationalCaps||0,max:20,label:"presenze nazionale"};
+              if(id==="sempreverde")return{cur:Math.min(p.age||17,34),max:34,label:"anni"};
+              if(id==="assist_machine")return{cur:p.totalAssists||0,max:75,label:"assist carriera"};
+              if(id==="scalata_rapida")return{cur:(p.trophies||[]).length,max:1,label:"trofeo"};
+              return null;
+            };
+            const prog=!done&&!failed?getChallengeProgress(player.challenge.id):null;
+            const pct=prog?Math.min(100,Math.round((prog.cur/prog.max)*100)):0;
             return(
               <Card bg={done?"#f0fdf4":failed?"#fff1f2":"#fefce8"} border={done?"#bbf7d0":failed?"#fecaca":"#fde68a"} style={{padding:"12px 14px"}}>
                 <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:6}}>⚡ Modalità Sfida</div>
-                <div style={{display:"flex",alignItems:"center",gap:10}}>
+                <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:prog?8:0}}>
                   <div style={{fontSize:28}}>{ch.icon}</div>
                   <div style={{flex:1}}>
                     <div style={{fontSize:13,fontWeight:800,color:TH.text}}>{ch.name}</div>
@@ -13116,6 +13193,14 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                   </div>
                   <div style={{fontSize:20}}>{done?"✅":failed?"❌":"🎯"}</div>
                 </div>
+                {prog&&<div>
+                  <div style={{display:"flex",justifyContent:"space-between",fontSize:10,color:TH.muted,marginBottom:3}}>
+                    <span>Progresso</span><span style={{fontWeight:700,color:pct>=100?TH.success:TH.text}}>{prog.cur}/{prog.max} {prog.label}</span>
+                  </div>
+                  <div style={{height:5,background:"#e2e8f0",borderRadius:3,overflow:"hidden"}}>
+                    <div style={{height:"100%",width:`${pct}%`,background:pct>=100?TH.success:"#f59e0b",borderRadius:3,transition:"width .4s"}}/>
+                  </div>
+                </div>}
                 {done&&<div style={{marginTop:8,fontSize:12,color:"#16a34a",fontWeight:700}}>{ch.reward} — SFIDA COMPLETATA!</div>}
                 {failed&&<div style={{marginTop:8,fontSize:11,color:"#b91c1c"}}>Sfida fallita. Meglio la prossima!</div>}
               </Card>
