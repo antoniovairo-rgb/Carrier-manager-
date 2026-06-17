@@ -1932,7 +1932,7 @@ const NEWSPAPERS=[
   {id:"lastampa",  name:"La Stampa Sport",       short:"La Stampa",  color:"#16a34a",e:"🗞️",tone:"analitico"},
   {id:"skysport",  name:"Sky Sport 24",          short:"Sky Sport",  color:"#0099d6",e:"📡",tone:"diretto"},
 ];
-const GAME_VERSION="3.39.0"; // Sprint 59 — Capocannonieri Live, Media Voto, Goal Streak
+const GAME_VERSION="3.40.0"; // Sprint 60 — Verifica Trimestrale del Mister
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -9318,6 +9318,36 @@ const generateLeagueScorers=(player)=>{
   scorers.push({name:player.name,club:player.club?.a||player.club?.n||"–",goals:player.goals||0,isPlayer:true});
   return scorers.sort((a,b)=>b.goals-a.goals).slice(0,12);
 };
+/* Sprint 60 — Verifica Trimestrale del Mister */
+const MONTHLY_COACH_REVIEWS=[
+  {perf:"excellent",lines:[
+    "Sei in un momento di forma straordinaria. Continua così e questa stagione sarà memorabile.",
+    "I numeri parlano chiaro: sei tra i migliori in questo momento. Il club è orgoglioso di te.",
+    "Non potrei chiedere di meglio. Stai dimostrando ogni settimana chi sei davvero.",
+  ],choices:[
+    {txt:"💪 Grazie, mister. Non mi fermo qui.",ef:{coachTrust:8,morale:9,form:4}},
+    {txt:"😊 È il lavoro di squadra che fa la differenza.",ef:{coachTrust:6,morale:6,popularity:4}},
+    {txt:"🔥 Voglio fare ancora meglio nel girone di ritorno.",ef:{coachTrust:4,morale:7,form:6}},
+  ]},
+  {perf:"medium",lines:[
+    "Non è il tuo momento migliore, ma vedo impegno. Dobbiamo lavorare insieme per sbloccarti.",
+    "I numeri sono nella media. So che puoi fare di più — cosa ti frena in questo periodo?",
+    "Sei solido, affidabile. Ma non possiamo accontentarci. Il prossimo mese voglio di più.",
+  ],choices:[
+    {txt:"💪 Ha ragione. Alzo il ritmo da domani.",ef:{coachTrust:7,form:5,morale:4}},
+    {txt:"😐 Sto trovando il ritmo giusto. Ci vuole pazienza.",ef:{coachTrust:3,morale:3}},
+    {txt:"🧠 Ho idee per migliorare. Mi dia fiducia.",ef:{coachTrust:5,form:3,morale:5}},
+  ]},
+  {perf:"bad",lines:[
+    "Devo essere diretto: questo non è il tuo livello. Dobbiamo parlare seriamente.",
+    "Non posso ignorare le ultime settimane. Sei lontano da ciò che mi aspetto. Cosa succede?",
+    "Sono preoccupato. Se non cambia qualcosa, dovrò prendere decisioni difficili.",
+  ],choices:[
+    {txt:"🙏 Ha ragione. Mi allenerò il doppio.",ef:{coachTrust:9,form:5,fatigue:8,morale:-4}},
+    {txt:"😤 Sono in un momento difficile ma tornerò.",ef:{coachTrust:2,morale:5}},
+    {txt:"🗣️ Ho bisogno di più spazio per esprimermi.",ef:{coachTrust:-4,morale:8,fatigue:-6}},
+  ]},
+];
 const generateBio=(p)=>{
   const name=p.name||"Il giocatore";
   const nation=p.nation||"Italia";
@@ -9546,6 +9576,9 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     if(!('goalStreak' in newP)){ // Sprint 59: goal streak tracking
       newP={...newP,goalStreak:0,bestGoalStreak:0};changed=true;
     }
+    if(!('lastMonthlyReview' in newP)){ // Sprint 60: quarterly coach review
+      newP={...newP,lastMonthlyReview:0};changed=true;
+    }
     if(changed){setPlayer(newP);}
   },[]);// eslint-disable-line
   const[darkMode,setDarkMode]=useState(()=>localStorage.getItem("cpm-dark")==="1");
@@ -9576,6 +9609,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
   const[misterDiscorsoModal,setMisterDiscorsoModal]=useState(null); // {coachName, line, mw, isCaptainTalk?}
   const matchBenchStartRef=useRef(false); // Sprint 33 C7
   const[careerMomentModal,setCareerMomentModal]=useState(null);    // Sprint 25A — unique career moment
+  const[monthlyReviewModal,setMonthlyReviewModal]=useState(null);  // Sprint 60: quarterly coach review
 
   const notify=(msg,color=TH.primary)=>{setNotif({msg,color});setTimeout(()=>setNotif(null),2800);};
 
@@ -10242,6 +10276,19 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       });
       const iT=INJURY_TYPES_META[type]||{label:"Infortunio",icon:"🩹"};
       setTimeout(()=>setWeekLiveModal({event:{txt:rehab.txt},changes:{fatigue:ef.fatigue||0,morale:ef.morale||0,form:ef.form||0},isRehab:true,rehabIcon:rehab.icon,injuryLabel:iT.label,injuryWeeks:wk}),50);
+      return;
+    }
+    // Sprint 60: quarterly coach review (W8/16/24/32, pro only, once per trigger week)
+    const _reviewWeeks=[8,16,24,32];
+    const _curW=player.week||1;
+    if(_reviewWeeks.includes(_curW)&&_curW!==(player.lastMonthlyReview||0)&&(player.proStatus||"u18")==="pro"&&!player.injured){
+      const _form=player.form||70;
+      const _perf=_form>=72?"excellent":_form>=55?"medium":"bad";
+      const _rev=MONTHLY_COACH_REVIEWS.find(r=>r.perf===_perf)||MONTHLY_COACH_REVIEWS[1];
+      const _line=pick(_rev.lines);
+      const _cName=(player.coach?.name||"Il Mister");
+      setPlayer(p=>({...p,weekLived:true,lastMonthlyReview:_curW}));
+      setTimeout(()=>setMonthlyReviewModal({perf:_perf,line:_line,choices:_rev.choices,coachName:_cName,week:_curW,season:player.season||1}),60);
       return;
     }
     // Sprint 24A: 12% chance spogliatoio moment on match weeks
@@ -11290,6 +11337,42 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
               ))}
             </div>
             <button onClick={()=>setCoachModal(null)} style={{marginTop:10,width:"100%",padding:"8px",background:"transparent",border:"none",color:TH.faint,cursor:"pointer",fontSize:11}}>Annulla</button>
+          </Card>
+        </div>
+      )}
+
+      {/* == Sprint 60: Verifica Trimestrale del Mister == */}
+      {monthlyReviewModal&&(
+        <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.6)",zIndex:9997,display:"flex",alignItems:"center",justifyContent:"center",padding:20}}>
+          <Card style={{maxWidth:380,width:"100%",padding:"22px 20px",textAlign:"center"}}>
+            <div style={{fontSize:11,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:10}}>
+              🧑‍💼 Verifica Trimestrale · S.{monthlyReviewModal.season} W.{monthlyReviewModal.week}
+            </div>
+            <div style={{fontSize:13,fontWeight:800,color:TH.accent,marginBottom:4}}>{monthlyReviewModal.coachName}</div>
+            <div style={{background:TH.bg,borderRadius:10,padding:"14px 16px",marginBottom:16,borderLeft:`3px solid ${monthlyReviewModal.perf==="excellent"?TH.success:monthlyReviewModal.perf==="bad"?TH.danger:TH.warning}`}}>
+              <div style={{fontSize:13,color:TH.text,lineHeight:1.7,fontStyle:"italic"}}>«{monthlyReviewModal.line}»</div>
+            </div>
+            <div style={{fontSize:11,color:TH.muted,marginBottom:14}}>Come rispondi al tuo allenatore?</div>
+            <div style={{display:"flex",flexDirection:"column",gap:8}}>
+              {monthlyReviewModal.choices.map((ch,i)=>(
+                <button key={i} onClick={()=>{
+                  const ef=ch.ef||{};
+                  setPlayer(p=>({...p,
+                    coachTrust:clamp((p.coachTrust||60)+(ef.coachTrust||0),0,100),
+                    morale:clamp((p.morale||70)+(ef.morale||0),0,100),
+                    form:clamp((p.form||70)+(ef.form||0),30,95),
+                    fatigue:clamp((p.fatigue||0)+(ef.fatigue||0),0,100),
+                    popularity:clamp((p.popularity||20)+(ef.popularity||0),0,100),
+                    diary:[...(p.diary||[]),{season:p.season||1,week:p.week||1,type:"milestone",e:"🧑‍💼",headline:`Verifica trimestrale: ${monthlyReviewModal.perf==="excellent"?"ottima forma":"media forma"}`,body:`W.${p.week||1} — risposta: "${ch.txt}"`,color:monthlyReviewModal.perf==="excellent"?"#16a34a":monthlyReviewModal.perf==="bad"?"#dc2626":"#ca8a04"}].slice(-80),
+                  }));
+                  setMonthlyReviewModal(null);
+                  const cts=(ef.coachTrust||0);notify(`${ch.txt.slice(0,30)} ${cts>0?"→ +"+cts+" fiducia":cts<0?"→ "+cts+" fiducia":""}`,cts>0?TH.success:cts<0?TH.danger:TH.muted);
+                }} style={{padding:"10px 12px",borderRadius:10,border:`1px solid ${TH.cardBorder}`,background:TH.bg,cursor:"pointer",fontFamily:"inherit",fontSize:12,color:TH.text,textAlign:"left",lineHeight:1.5}}>
+                  {ch.txt}
+                </button>
+              ))}
+            </div>
+            <button onClick={()=>setMonthlyReviewModal(null)} style={{marginTop:12,width:"100%",padding:"8px",background:"transparent",border:"none",color:TH.faint,cursor:"pointer",fontSize:11}}>Rimanda a dopo</button>
           </Card>
         </div>
       )}
