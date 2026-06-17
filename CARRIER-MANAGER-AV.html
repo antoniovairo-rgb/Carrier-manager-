@@ -1932,7 +1932,7 @@ const NEWSPAPERS=[
   {id:"lastampa",  name:"La Stampa Sport",       short:"La Stampa",  color:"#16a34a",e:"🗞️",tone:"analitico"},
   {id:"skysport",  name:"Sky Sport 24",          short:"Sky Sport",  color:"#0099d6",e:"📡",tone:"diretto"},
 ];
-const GAME_VERSION="3.38.0"; // Sprint 58 — Fine Carriera Narrativa Potenziata
+const GAME_VERSION="3.39.0"; // Sprint 59 — Capocannonieri Live, Media Voto, Goal Streak
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -9299,6 +9299,25 @@ const CAREER_MILESTONES=[
   {id:"ovr80",check:p=>(p.ovr||60)>=80,txt:"🌟 Livello 80 — TOP PLAYER!",color:"#d97706"},
   {id:"ovr90",check:p=>(p.ovr||60)>=90,txt:"✨ Livello 90 — FUORICLASSE assoluto!",color:"#7c3aed"},
 ];
+/* Sprint 59 — Classifica Marcatori Live */
+const generateLeagueScorers=(player)=>{
+  const week=Math.min(player.week||1,38);
+  const season=player.season||1;
+  const league=player.club?.lg;
+  if(!league)return[];
+  const rivals=CLUBS.filter(c=>c.lg===league&&c.id!==player.club?.id).slice(0,17);
+  const FNAMES=["Luca","Marco","Diego","Carlos","Ahmed","Kai","Lucas","Leon","Robert","Kylian","Victor","Romelu","Erling","Vinicius","Mohamed"];
+  const LNAMES=["Gomez","Silva","Müller","Torres","Benzema","Salah","Vlahovic","Dybala","Immobile","Dzeko","Lacazette","Haaland","Mbappé","Neymar","Lewandowski"];
+  const scorers=rivals.map(c=>{
+    const seed=hashStr(c.id+"_"+season+"_s59");
+    const rate=0.30+(c.p||60)/99*0.45;
+    const goals=Math.max(0,Math.round(rate*week)+((seed%5)-2));
+    const name=FNAMES[seed%FNAMES.length]+" "+LNAMES[(seed*7)%LNAMES.length];
+    return{name,club:c.a||c.n,goals,isPlayer:false};
+  });
+  scorers.push({name:player.name,club:player.club?.a||player.club?.n||"–",goals:player.goals||0,isPlayer:true});
+  return scorers.sort((a,b)=>b.goals-a.goals).slice(0,12);
+};
 const generateBio=(p)=>{
   const name=p.name||"Il giocatore";
   const nation=p.nation||"Italia";
@@ -9523,6 +9542,9 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     if(!('tutorialDone' in newP)){ // Sprint 56: skip tutorial for existing saves
       newP={...newP,tutorialDone:(newP.totalMatches||0)>0||(newP.season||1)>1};
       changed=true;
+    }
+    if(!('goalStreak' in newP)){ // Sprint 59: goal streak tracking
+      newP={...newP,goalStreak:0,bestGoalStreak:0};changed=true;
     }
     if(changed){setPlayer(newP);}
   },[]);// eslint-disable-line
@@ -10121,8 +10143,12 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       if(result.goals>=3)_md51.push({season:p.season||1,week:p.week||1,type:"hattrick",e:"🎩",headline:"Hat-trick!",body:`${result.goals} gol contro ${result.opponent} (${result.homeScore}-${result.awayScore}) · S.${p.season||1}`,color:"#f59e0b"});
       triggeredMilestones.forEach(m=>_md51.push({season:p.season||1,week:p.week||1,type:"milestone",e:"🏅",headline:m.txt,body:`S.${p.season||1} · Settimana ${p.week||1}`,color:m.color}));
       if(isCupFinal)_md51.push({season:p.season||1,week:p.week||1,type:"cup_trophy",e:"🏆",headline:"Campione di Coppa Nazionale!",body:`🏆 ${p.club?.n||""} vince la Coppa · S.${p.season||1} (${result.homeScore}-${result.awayScore} vs ${result.opponent})`,color:"#f59e0b"});
+      // Sprint 59: goal streak tracking
+      const newGoalStreak=result.goals>0?(p.goalStreak||0)+1:0;
+      const newBestStreak=Math.max(p.bestGoalStreak||0,newGoalStreak);
+      if([3,5,8,10].includes(newGoalStreak))_md51.push({season:p.season||1,week:p.week||1,type:"milestone",e:"🔥",headline:`Serie di ${newGoalStreak} partite consecutive in gol!`,body:`In rete nelle ultime ${newGoalStreak} partite · S.${p.season||1}`,color:"#f59e0b"});
       const newDiary51=[...(p.diary||[]),..._md51].slice(-80);
-      return{...p,stats:ns,ovr:newOvr,goals:p.goals+result.goals,assists:p.assists+result.assists,matches:p.matches+1,totalGoals:p.totalGoals+result.goals,totalAssists:p.totalAssists+result.assists,totalMatches:p.totalMatches+1,morale:clamp(p.morale+moD,0,100),form:clamp((p.form||70)+formD,30,95),fatigue:postFatigue,...(newInjured?{injured:true,injuryWeeks,injuryType}:{}),week:(p.week||1)+1,weekLived:false,log:[logE,...(p.log||[])].slice(0,60),matchHistory:newHistory,standings:newStandings,calendar:newCal,aiData:newAiData,...(newMilestoneIds.length>0?{milestones:[...(p.milestones||[]),...newMilestoneIds]}:{}),...cupUpdate2,diary:newDiary51};
+      return{...p,stats:ns,ovr:newOvr,goals:p.goals+result.goals,assists:p.assists+result.assists,matches:p.matches+1,totalGoals:p.totalGoals+result.goals,totalAssists:p.totalAssists+result.assists,totalMatches:p.totalMatches+1,morale:clamp(p.morale+moD,0,100),form:clamp((p.form||70)+formD,30,95),fatigue:postFatigue,...(newInjured?{injured:true,injuryWeeks,injuryType}:{}),week:(p.week||1)+1,weekLived:false,log:[logE,...(p.log||[])].slice(0,60),matchHistory:newHistory,standings:newStandings,calendar:newCal,aiData:newAiData,...(newMilestoneIds.length>0?{milestones:[...(p.milestones||[]),...newMilestoneIds]}:{}),...cupUpdate2,diary:newDiary51,goalStreak:newGoalStreak,bestGoalStreak:newBestStreak};
     });
     setScreen("postmatch");setTab("dashboard");
     if(newInjured){const iT=INJURY_TYPES_META[injuryType]||{label:"Infortunio",icon:"🩹"};notify(`${iT.icon} ${iT.label}! Stop: ${injuryWeeks} settiman${injuryWeeks===1?"a":"e"}.`,TH.danger);}
@@ -11692,8 +11718,31 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
         <div className="cpm-dash-grid">
           <Card border="#bbf7d0" bg="#f0fdf4">
             <div style={{fontSize:10,color:TH.success,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>{L.season} {season} · {L.week} {week}/38</div>
-            <div style={{display:"flex",justifyContent:"space-around",marginBottom:10}}>{[{l:L.matches,v:player.matches||0},{l:L.goals,v:player.goals||0},{l:L.assists,v:player.assists||0}].map(s=><div key={s.l} style={{textAlign:"center"}}><div style={{fontSize:28,fontWeight:900,color:TH.success}}>{s.v}</div><div style={{fontSize:10,color:TH.muted}}>{s.l}</div></div>)}</div>
-            {(()=>{const last5=(player.matchHistory||[]).filter(m=>!m.simulated).slice(-5);if(!last5.length)return null;return(<div style={{display:"flex",alignItems:"center",gap:4,marginBottom:12}}><span style={{fontSize:9,color:TH.faint,marginRight:2}}>ULTIMI 5</span>{last5.map((m,i)=><div key={i} title={`vs ${m.opponent||""} ${m.homeScore}–${m.awayScore}`} style={{width:22,height:22,borderRadius:4,background:m.won?"#16a34a":m.drew?"#ca8a04":"#dc2626",display:"flex",alignItems:"center",justifyContent:"center",fontSize:9,fontWeight:800,color:"#fff"}}>{m.won?"V":m.drew?"P":"S"}</div>)}</div>);})()}
+            {(()=>{
+              const ratedMatches=(player.matchHistory||[]).filter(m=>!m.simulated&&m.rating>0);
+              const avgRat=ratedMatches.length>=3?Math.round(ratedMatches.slice(-10).reduce((s,m)=>s+(m.rating||0),0)/Math.min(10,ratedMatches.length)*10)/10:null;
+              const gs=player.goalStreak||0;
+              return(
+                <div style={{display:"flex",justifyContent:"space-around",marginBottom:8,gap:4}}>
+                  {[{l:L.matches,v:player.matches||0},{l:L.goals,v:player.goals||0},{l:L.assists,v:player.assists||0},...(avgRat?[{l:"Media",v:avgRat,c:"#7c3aed"}]:[])].map((s,i)=>(
+                    <div key={i} style={{textAlign:"center",flex:1}}>
+                      <div style={{fontSize:s.c?22:28,fontWeight:900,color:s.c||TH.success}}>{s.v}</div>
+                      <div style={{fontSize:9,color:TH.muted}}>{s.l}</div>
+                    </div>
+                  ))}
+                </div>
+              );
+            })()}
+            {(()=>{
+              const last5=(player.matchHistory||[]).filter(m=>!m.simulated).slice(-5);
+              const gs=player.goalStreak||0;
+              return(
+                <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:10}}>
+                  {last5.length>0?<div style={{display:"flex",alignItems:"center",gap:4}}><span style={{fontSize:9,color:TH.faint,marginRight:2}}>ULTIMI 5</span>{last5.map((m,i)=><div key={i} title={`vs ${m.opponent||""} ${m.homeScore}–${m.awayScore}`} style={{width:22,height:22,borderRadius:4,background:m.won?"#16a34a":m.drew?"#ca8a04":"#dc2626",display:"flex",alignItems:"center",justifyContent:"center",fontSize:9,fontWeight:800,color:"#fff"}}>{m.won?"V":m.drew?"P":"S"}</div>)}</div>:<div/>}
+                  {gs>=3&&<div style={{background:"#fff7ed",border:"1px solid #fed7aa",borderRadius:12,padding:"2px 8px",fontSize:9,color:"#c2410c",fontWeight:800,flexShrink:0}}>🔥 {gs} di fila</div>}
+                </div>
+              );
+            })()}
             {/* CONTINUA — smart primary CTA */}
             {(()=>{
               const cs=getContinuaState();
@@ -12026,6 +12075,38 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
               ))}
             </div>
           </Card>
+          {/* Sprint 59 — Capocannonieri (solo lega del giocatore) */}
+          {selLg===myLeague&&(()=>{
+            const scorers=generateLeagueScorers(player);
+            if(!scorers.length)return null;
+            const playerPos=scorers.findIndex(s=>s.isPlayer);
+            return(
+              <Card style={{padding:"12px 14px",marginTop:8}}>
+                <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:10}}>
+                  ⚽ Capocannonieri — S.{season} · W.{week}/38
+                </div>
+                <div style={{display:"flex",flexDirection:"column",gap:0}}>
+                  {scorers.map((s,i)=>{
+                    const isMe=s.isPlayer;
+                    const medal=i===0?"🥇":i===1?"🥈":i===2?"🥉":null;
+                    return(
+                      <div key={i} style={{display:"flex",alignItems:"center",gap:8,padding:"5px 4px",borderRadius:6,background:isMe?"#eff6ff":"transparent",border:isMe?"1px solid #bfdbfe":"1px solid transparent",marginBottom:2}}>
+                        <div style={{width:18,textAlign:"center",fontSize:11,flexShrink:0,color:i<3?["#f59e0b","#9ca3af","#b45309"][i]:TH.faint,fontWeight:700}}>{medal||i+1}</div>
+                        <div style={{flex:1,minWidth:0}}>
+                          <span style={{fontSize:11,fontWeight:isMe?800:400,color:isMe?TH.primary:TH.text}}>{s.name}</span>
+                          <span style={{fontSize:9,color:TH.faint,marginLeft:5}}>{s.club}</span>
+                        </div>
+                        <div style={{fontSize:13,fontWeight:900,color:isMe?TH.primary:TH.text,minWidth:22,textAlign:"right"}}>{s.goals}</div>
+                      </div>
+                    );
+                  })}
+                </div>
+                {playerPos>=0&&<div style={{fontSize:10,color:TH.muted,marginTop:8,textAlign:"center"}}>
+                  {playerPos===0?"🥇 Sei il capocannoniere della lega!":playerPos<=2?`🥈 Sei #${playerPos+1} in classifica marcatori`:`Sei #${playerPos+1} — ${scorers[0].goals-(player.goals||0)} gol dal leader`}
+                </div>}
+              </Card>
+            );
+          })()}
         </div>
         );
       })()}
