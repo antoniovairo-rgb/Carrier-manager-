@@ -2012,7 +2012,23 @@ const NEWSPAPERS=[
   {id:"lastampa",  name:"La Stampa Sport",       short:"La Stampa",  color:"#16a34a",e:"🗞️",tone:"analitico"},
   {id:"skysport",  name:"Sky Sport 24",          short:"Sky Sport",  color:"#0099d6",e:"📡",tone:"diretto"},
 ];
-const GAME_VERSION="3.53.0"; // Sprint 73 — Obiettivo Live
+// Sprint 74: seeded NPC jersey number assignment per club/season
+const _genNpcJerseyNums=(club,season)=>{
+  let s=Math.abs(hashStr((club?.id||"x")+"_jrs_"+(season||1)))||7919;
+  const used=new Set();const out=[];
+  while(out.length<10){s=((s*1664525)+1013904223)>>>0;const n=(s%99)+1;if(!used.has(n)){used.add(n);out.push(n);}}
+  return out;
+};
+const _getAvailNums=(club,season,trust,fanLegend)=>{
+  const npc=new Set(_genNpcJerseyNums(club,season));
+  const free=[...Array(99)].map((_,i)=>i+1).filter(n=>!npc.has(n));
+  const sac=(fanLegend||[]).filter(f=>f.clubId===club?.id).reduce((m,f)=>Math.max(m,f.seasons||0),0);
+  const pri=Math.min(100,(trust||50)*0.5+sac*10);
+  if(pri>=70)return free;
+  if(pri>=40)return free.filter(n=>n>=10);
+  return free.filter(n=>n>=20);
+};
+const GAME_VERSION="3.54.0"; // Sprint 74 — Numero di Maglia
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -4066,7 +4082,7 @@ function colorCharGLB(model,jerHex){
 ===================================================== */
 const PC_PW=460,PC_PH=580,PC_FX=80,PC_FY=40,PC_FW=300,PC_FH=480;
 const PC_FCX=PC_FX+PC_FW/2,PC_FCY=PC_FY+PC_FH/2;
-function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,onWalkoutDone,avatarId,actionZoom,allPlayers,homeClub,ballX,ballY,waveEvent,driftTargets,timeOfDay,attendance,actionEffect,weather,heatPoints,showHeatMap,isDesktop=false}){
+function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,onWalkoutDone,avatarId,actionZoom,allPlayers,homeClub,ballX,ballY,waveEvent,driftTargets,timeOfDay,attendance,actionEffect,weather,heatPoints,showHeatMap,isDesktop=false,heroJerseyNum=10}){
   homeCol=homeCol||"#22c55e";oppCol=oppCol||"#ef4444";opponents=opponents||[];
   matchPhase=matchPhase||"match";actionZoom=actionZoom||false;allPlayers=allPlayers||[];
   const canvasRef=useRef(null);
@@ -4566,7 +4582,7 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
         const pp=Math.min(1,(s.walkProgress-0.6)/0.4);
         const wx=tX+(FCX-tX)*pp;
         const wy=tY;
-        drawPlayer(ctx,wx,wy,p.homeCol||"#22c55e","#f59e0b",true,10,pp>0.05,true,t);
+        drawPlayer(ctx,wx,wy,p.homeCol||"#22c55e","#f59e0b",true,p.heroJerseyNum||10,pp>0.05,true,t);
       }
       ctx.fillStyle="#f59e0b";ctx.font="bold 16px sans-serif";
       ctx.textAlign="center";ctx.textBaseline="middle";
@@ -4621,7 +4637,7 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
       for(let n=0;n<=4;n++){ctx.beginPath();ctx.moveTo(gpX-gHalfW*2.5+n*(gHalfW*5/4),gpY-gH*1.5);ctx.lineTo(gpX-gHalfW*2.5+n*(gHalfW*5/4),gpY);ctx.stroke();}
       ctx.restore();
       // Hero sprite, larger, at bottom of shoulder view
-      drawPlayer(ctx,cx,cy+40,col,col2,true,10,s.isMoving,true,t);
+      drawPlayer(ctx,cx,cy+40,col,col2,true,p.heroJerseyNum||10,s.isMoving,true,t);
     }
 
     function render(t){
@@ -4646,7 +4662,7 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
         drawStadium(ctx,t);
         drawShoulderOverlay(ctx,hcx,hcy,p.homeCol||"#22c55e","#f59e0b",t);
         // Hero sprite at center
-        ctx.save();ctx.translate(hcx,hcy+24);drawPlayer(ctx,0,0,p.homeCol||"#22c55e","#f59e0b",true,10,s.isMoving,true,t);ctx.restore();
+        ctx.save();ctx.translate(hcx,hcy+24);drawPlayer(ctx,0,0,p.homeCol||"#22c55e","#f59e0b",true,p.heroJerseyNum||10,s.isMoving,true,t);ctx.restore();
         // Opponents — translate to position first then scale around that point
         const oppList=p.opponents||[];
         oppList.slice(0,3).forEach((op,i)=>{
@@ -4762,9 +4778,11 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
           }
           // All players with smooth livePos drift
           const allP=p.allPlayers||[];
-          // Pre-assign per-team jersey numbers: home teammates=1-9,11 (skip #10 = hero), away=1-11
-          const _H_NUMS=[1,2,3,4,5,6,7,8,9,11];let _hn=0,_an=0;
-          const _jerseyNums=allP.map(pl=>{if(!pl)return 0;if(pl.team==="home")return _H_NUMS[_hn++]||_hn+11;if(pl.team==="away")return ++_an;return 0;});
+          // Pre-assign per-team jersey numbers: home teammates exclude hero's num, hero gets heroJerseyNum
+          const _heroJNum=p.heroJerseyNum||10;
+          const _H_NUMS=[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15].filter(n=>n!==_heroJNum).slice(0,10);
+          let _hn=0,_an=0;
+          const _jerseyNums=allP.map(pl=>{if(!pl)return 0;if(pl.isHero||pl.isPlayer)return _heroJNum;if(pl.team==="home")return _H_NUMS[_hn++]||_hn+15;if(pl.team==="away")return ++_an;return 0;});
           // Init or resize livePos array
           if(s.livePos.length!==allP.length){
             s.livePos=allP.map(function(pl){
@@ -4811,7 +4829,7 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
           // Check if hero already in allPlayers
           const heroInAll=(allP||[]).some(pl=>pl.isHero||pl.isPlayer);
           if(!heroInAll){
-            drawPlayer(ctx,heroCx,heroCy,p.homeCol||"#22c55e","#f59e0b",true,10,s.isMoving,true,t);
+            drawPlayer(ctx,heroCx,heroCy,p.homeCol||"#22c55e","#f59e0b",true,_heroJNum,s.isMoving,true,t);
           }
           // Ball — lerp toward BG_MATCH synced position
           var tBX=p.ballX!=null?p.ballX:p.playerX;
@@ -5637,12 +5655,13 @@ function FormationView({homeTeam,awayTeam,player,homeRoster,awayRoster,onContinu
   },[onContinue]);
   const hRoster=homeRoster||generateTeamRoster(homeTeam,player?.season||1).map((r,i)=>i===10?{name:player?.name||"Tu",role:"ATT"}:r);
   const aRoster=awayRoster||generateTeamRoster(awayTeam,player?.season||1);
-  // Home: hero (last slot) = #10, teammates = 1-9 + 11 (skip #10)
-  const HOME_NUMS=[1,2,3,4,5,6,7,8,9,11];
+  // Home: hero (last slot) = player jersey num, teammates = 1-15 excluding hero's num
+  const _heroNum=player?.jerseyNum||10;
+  const HOME_NUMS=[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15].filter(n=>n!==_heroNum).slice(0,10);
   const withNums=(roster,isHome=false)=>{
     if(!isHome){let n=1;return roster.map(p=>({...p,num:n++}));}
     let ni=0;
-    return roster.map((p,i)=>({...p,num:i===roster.length-1?10:HOME_NUMS[ni++]||i+1}));
+    return roster.map((p,i)=>({...p,num:i===roster.length-1?_heroNum:HOME_NUMS[ni++]||i+1}));
   };
   return(
     <div style={{width:"100%",background:"linear-gradient(180deg,#0a0e1a 0%,#0d1528 100%)",borderRadius:10,padding:"12px 8px 10px",minHeight:320}}>
@@ -6784,7 +6803,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                 driftTargets={driftTargetsRef.current} timeOfDay={timeOfDay}
                 attendance={attendance} actionEffect={actionEffect} weather={weather}
                 heatPoints={heatPointsRef.current} showHeatMap={showHeatMap}
-                isDesktop={!isNarrow}
+                isDesktop={!isNarrow} heroJerseyNum={player.jerseyNum||10}
                 onWalkoutDone={()=>setPhase("playing")}/>
               {phase==="walkout"&&<WalkoutOverlay homeTeam={player.club||opponent} homeRoster={homeRoster} awayRoster={awayRoster} opponent={opponent} isHome={isMatchHome} matchWeek={player.week} onDone={()=>{if(benchStart)setOnBench(true);setPhase("playing");}} weather={weather} isDerbyMatch={!!drby} isBigGame={mw>=7}/>}
               {screenFlash&&<div style={{position:"absolute",inset:0,background:screenFlash.col,zIndex:20,pointerEvents:"none",animation:`fadeFlash ${screenFlash.dur}ms ease-out forwards`}}/>}
@@ -9707,6 +9726,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     if(!('coachHistory' in newP)){ // Sprint 70: coach career history
       newP={...newP,coachHistory:[]};changed=true;
     }
+    if(!('jerseyNum' in newP)){newP={...newP,jerseyNum:10,jerseyNumSeason:0};changed=true;} // Sprint 74
     if(changed){setPlayer(newP);}
   },[]);// eslint-disable-line
   const[darkMode,setDarkMode]=useState(()=>localStorage.getItem("cpm-dark")==="1");
@@ -9738,6 +9758,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
   const matchBenchStartRef=useRef(false); // Sprint 33 C7
   const[careerMomentModal,setCareerMomentModal]=useState(null);    // Sprint 25A — unique career moment
   const[monthlyReviewModal,setMonthlyReviewModal]=useState(null);  // Sprint 60: quarterly coach review
+  const[jerseyPickModal,setJerseyPickModal]=useState(false); // Sprint 74: jersey number picker
 
   const notify=(msg,color=TH.primary)=>{setNotif({msg,color});setTimeout(()=>setNotif(null),2800);};
 
@@ -11029,7 +11050,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       // Sprint 70: record coach tenure stats before coach possibly changes
       const _ch70={name:p.coach?.name||"Il Mister",style:p.coach?.style||"Bilanciato",season:p.season||1,goals:p.goals||0,assists:p.assists||0,matches:p.matches||0,ovr:p.ovr||60,coachTrust:p.coachTrust||60,coachChanged};
       const newCoachHistory=[...(p.coachHistory||[]),_ch70].slice(-20);
-      return{...p,season:newSeason,age:newAge,week:1,weekLived:false,goals:0,assists:0,matches:0,fatigue:0,skillPoints:(p.skillPoints||0)+2,stats:agedStats,ovr:newOvr,contract:newContract,contractExpired,morale:clamp((p.morale||70)+bonM+(playerClubRelegated?-10:0)+(isGB?15:0),0,100),coachTrust:clamp((p.coachTrust||60)+bonCT+(playerClubRelegated?-8:0)+(coachChanged?newCoach.trustMod:0),0,100),popularity:clamp((p.popularity||20)+bonPop+(isGB?25:0),0,100),value:Math.max(0.5,(p.value||0.8)+bonVal+(playerClubRelegated?-0.3:0)+(isGB?0.8:0)),log:[agingLog,...objLogs,...[gbLog,coachLog,phenomLog,relegLog].filter(Boolean),...(p.log||[])].slice(0,60),standings:newStandings,calendar:newCalendar,matchHistory:[],seasonObjectives:newObjectives,history:[...(p.history||[]),prevHist].slice(-50),clubPrestigeShifts:updatedShifts,cup:newCup,euro:newEuro,coach:newCoach,goldenBoys:gbSeasons,records:newRecords,teammates:newTeammates,journalists:newJournalists,fanLegend:updFanLegend,leagueArchive:newLeagueArchive,coachHistory:newCoachHistory,...(captainReset?{isCaptain:false}:{})};
+      return{...p,season:newSeason,age:newAge,week:1,weekLived:false,goals:0,assists:0,matches:0,fatigue:0,skillPoints:(p.skillPoints||0)+2,stats:agedStats,ovr:newOvr,contract:newContract,contractExpired,morale:clamp((p.morale||70)+bonM+(playerClubRelegated?-10:0)+(isGB?15:0),0,100),coachTrust:clamp((p.coachTrust||60)+bonCT+(playerClubRelegated?-8:0)+(coachChanged?newCoach.trustMod:0),0,100),popularity:clamp((p.popularity||20)+bonPop+(isGB?25:0),0,100),value:Math.max(0.5,(p.value||0.8)+bonVal+(playerClubRelegated?-0.3:0)+(isGB?0.8:0)),log:[agingLog,...objLogs,...[gbLog,coachLog,phenomLog,relegLog].filter(Boolean),...(p.log||[])].slice(0,60),standings:newStandings,calendar:newCalendar,matchHistory:[],seasonObjectives:newObjectives,history:[...(p.history||[]),prevHist].slice(-50),clubPrestigeShifts:updatedShifts,cup:newCup,euro:newEuro,coach:newCoach,goldenBoys:gbSeasons,records:newRecords,teammates:newTeammates,journalists:newJournalists,fanLegend:updFanLegend,leagueArchive:newLeagueArchive,coachHistory:newCoachHistory,jerseyNumSeason:0,...(captainReset?{isCaptain:false}:{})};
     });
     // S41: double achievement — won league + cup same season
     {const _sd=[...(player.standings||[])].sort((a,b)=>b.pts-a.pts||b.gd-a.gd||b.gf-a.gf);const _ch=_sd[0];const _pid=player.club?.id||player.club?.n;if(player.cup?.champion&&_ch&&(_ch.id===_pid||_ch.n===player.club?.n)&&!(player.achievements||[]).includes("double")){setTimeout(()=>{setPlayer(p=>({...p,achievements:[...(p.achievements||[]),"double"]}));notify("🏆🏆🏆 DOPPIO! Campionato + Coppa nella stessa stagione! Leggendario!","#f59e0b");},1200);}}
@@ -11060,7 +11081,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       const newStandings=initStandings(lc.length?lc:getLeagueClubs(p));
       const seed=(newSeason*7919+newSeason*newSeason*31)%2147483647+hashStr(targetClub?.id||targetClub?.n||"u18")*17;
       const newCalendar=generateSeasonCalendar(targetClub||{id:"u18",n:"U18"},lc.length?lc:getLeagueClubs(p),seed);
-      const base={...p,week:1,weekLived:false,season:newSeason,age:newAge,goals:0,assists:0,matches:0,matchHistory:[],fatigue:clamp((p.fatigue||0)-30,0,100),skillPoints:(p.skillPoints||0)+2,morale:clamp((p.morale||70)+(offer.moralBonus||0),0,100),contract:{duration:offer.duration||1,wage:offer.wage||500,expiresAtSeason:newSeason+(offer.duration||1)},standings:newStandings,calendar:newCalendar,seasonObjectives:generateSeasonObjectives({...p,club:targetClub})};
+      const base={...p,week:1,weekLived:false,season:newSeason,age:newAge,goals:0,assists:0,matches:0,matchHistory:[],fatigue:clamp((p.fatigue||0)-30,0,100),skillPoints:(p.skillPoints||0)+2,morale:clamp((p.morale||70)+(offer.moralBonus||0),0,100),contract:{duration:offer.duration||1,wage:offer.wage||500,expiresAtSeason:newSeason+(offer.duration||1)},standings:newStandings,calendar:newCalendar,seasonObjectives:generateSeasonObjectives({...p,club:targetClub}),jerseyNumSeason:0}; // Sprint 74: reset jersey pick
       if(offer.isStayU18){
         return{...base,log:[`🔄 Resto in Under 18 (S.${newSeason})`,...(p.log||[])].slice(0,60)};
       }
@@ -11321,6 +11342,38 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       )}
       {/* Week event toast */}
       {weekEvent&&<div style={{position:"fixed",top:70,left:"50%",transform:"translateX(-50%)",background:TH.card,border:"1px solid "+TH.cardBorder,color:TH.text,padding:"12px 20px",borderRadius:12,fontSize:12,fontWeight:600,zIndex:9998,boxShadow:TH.shadow,maxWidth:340,textAlign:"center"}}>{weekEvent.txt}</div>}
+      {/* Sprint 74: Jersey number picker modal */}
+      {jerseyPickModal&&(()=>{
+        const avail=_getAvailNums(player.club,player.season||1,player.coachTrust||50,player.fanLegend||[]);
+        const sac=(player.fanLegend||[]).filter(f=>f.clubId===player.club?.id).reduce((m,f)=>Math.max(m,f.seasons||0),0);
+        const pri=Math.min(100,(player.coachTrust||50)*0.5+sac*10);
+        const priLabel=pri>=70?"Alta (qualsiasi numero)":pri>=40?"Media (nr. ≥10)":"Bassa (nr. ≥20)";
+        return(
+          <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.75)",zIndex:9999,display:"flex",alignItems:"center",justifyContent:"center",padding:16}}>
+            <Card style={{maxWidth:420,width:"100%",padding:"20px",background:TH.card,border:"1px solid #1d4ed8",maxHeight:"85vh",overflowY:"auto"}}>
+              <div style={{textAlign:"center",marginBottom:14}}>
+                <div style={{fontSize:32,marginBottom:4}}>👕</div>
+                <div style={{fontSize:10,color:"#93c5fd",textTransform:"uppercase",letterSpacing:2,marginBottom:2}}>Numero di Maglia</div>
+                <div style={{fontSize:14,fontWeight:900,color:TH.text}}>Stagione {player.season||1}</div>
+              </div>
+              <div style={{background:TH.bg,borderRadius:8,padding:"10px 12px",marginBottom:12,fontSize:11,color:TH.muted}}>
+                <div>Priorità: <strong style={{color:pri>=70?"#4ade80":pri>=40?"#fbbf24":"#f87171"}}>{priLabel}</strong></div>
+                <div style={{marginTop:4}}>Stagioni al club: {sac} · Fiducia mister: {player.coachTrust||50}</div>
+                <div style={{marginTop:4,color:"#60a5fa"}}>Numeri disponibili: {avail.length}/89</div>
+              </div>
+              <div style={{display:"flex",flexWrap:"wrap",gap:6,marginBottom:16}}>
+                {avail.map(n=>(
+                  <button key={n} onClick={()=>{setPlayer(p=>({...p,jerseyNum:n,jerseyNumSeason:p.season||1}));setJerseyPickModal(false);notify(`👕 Numero #${n} scelto per la stagione!`,"#1d4ed8");}}
+                    style={{width:42,height:38,background:(player.jerseyNum||10)===n?"#1d4ed8":"rgba(59,130,246,0.12)",border:(player.jerseyNum||10)===n?"2px solid #3b82f6":"1px solid rgba(59,130,246,0.3)",borderRadius:8,color:(player.jerseyNum||10)===n?"#fff":"#93c5fd",fontSize:13,fontWeight:700,cursor:"pointer"}}>
+                    {n}
+                  </button>
+                ))}
+              </div>
+              <Btn v="ghost" fw onClick={()=>setJerseyPickModal(false)} style={{fontSize:12}}>Annulla</Btn>
+            </Card>
+          </div>
+        );
+      })()}
 
       {/* == WeekLife modal == */}
       {weekLiveModal&&(
@@ -11935,6 +11988,23 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
             ))}
           </div>
           <button onClick={()=>setPlayer(p=>({...p,presidentModalSeason:p.season||1}))} style={{width:"100%",padding:"7px 12px",background:"rgba(234,179,8,0.15)",border:"1px solid rgba(234,179,8,0.4)",borderRadius:8,color:"#fde68a",fontSize:12,fontWeight:700,cursor:"pointer"}}>Capito, Presidente</button>
+        </Card>
+      )}
+      {/* Sprint 74: Jersey number pick card — shown week 1-3 if not yet picked this season */}
+      {tab==="dashboard"&&(player.jerseyNumSeason||0)<(player.season||1)&&(player.week||1)<=3&&(
+        <Card style={{marginBottom:8,padding:"13px 14px",background:"linear-gradient(135deg,#0c1a2e,#0d2140)",border:"1px solid rgba(59,130,246,0.45)"}}>
+          <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:10}}>
+            <div style={{fontSize:22}}>👕</div>
+            <div>
+              <div style={{fontSize:10,color:"#93c5fd",textTransform:"uppercase",letterSpacing:1.5,fontWeight:700}}>Numero di Maglia</div>
+              <div style={{fontSize:11,color:"rgba(147,197,253,0.7)"}}>Stagione {player.season||1} · scegli il tuo numero</div>
+            </div>
+          </div>
+          <div style={{fontSize:12,color:"#bfdbfe",marginBottom:12}}>Il tuo attuale numero è <strong style={{color:"#60a5fa",fontSize:14}}>#{player.jerseyNum||10}</strong>. Puoi cambiarlo oppure tenerlo.</div>
+          <div style={{display:"flex",gap:8}}>
+            <Btn onClick={()=>setJerseyPickModal(true)} fw style={{padding:"9px",fontSize:12,background:"#1d4ed8",color:"#fff"}}>👕 Scegli Numero</Btn>
+            <Btn onClick={()=>setPlayer(p=>({...p,jerseyNumSeason:p.season||1}))} v="ghost" style={{padding:"9px",fontSize:12,flexShrink:0}}>Tieni #{player.jerseyNum||10}</Btn>
+          </div>
         </Card>
       )}
       {/* Sprint 43: Nations Cup pending card */}
