@@ -2099,7 +2099,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="3.60.0"; // Sprint 80 — Stadium visual variety per prestige
+const GAME_VERSION="3.61.0"; // Sprint 81 — Bug consolidation: attendance, stadium, scorers, jersey confirm, Pallone d'Oro, weekly events dedup
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -3743,7 +3743,8 @@ function generateSeasonAwards(player, finalStandings){
   });
   const allPal=[...palCandidates,{name:player.name,club:player.club?.n,ovr:myOvr,goals:myGoals,assists:myAssists,score:playerPalScore,isPlayer:true}]
     .sort((a,b)=>b.score-a.score);
-  const playerWinsPallone=allPal[0].isPlayer;
+  // Sprint 81: must have ≥6 goals or ≥8 assists to be eligible for Pallone d'Oro
+  const playerWinsPallone=allPal[0].isPlayer&&(myGoals>=6||myAssists>=8);
 
   // --- Young Player (U23) — raised bar: >=14 G+A and >=7 goals minimum
   const isYoung=(player.age||17)<=23;
@@ -3857,16 +3858,18 @@ function calcWorldStandings(lg,season,currentWeek){
 }
 // context-aware realistic attendance
 function calcAttendance(homeClub,context){
+  // Sprint 81 — realistic prestige-based capacity ranges
   const ctx=context||"career";
   if(ctx==="trial")return rng(80,320);
   const p=homeClub?.p||homeClub?.prestige||60;
   const isU18=homeClub?.isU18;
-  if(isU18)return rng(150,900);
-  if(p>=93)return rng(40000,76000);
-  if(p>=80)return rng(16000,42000);
-  if(p>=68)return rng(7000,20000);
-  if(p>=55)return rng(2500,8000);
-  return rng(600,3000);
+  if(isU18)return rng(200,1200);
+  if(p>=90)return rng(45000,78000);
+  if(p>=80)return rng(22000,50000);
+  if(p>=65)return rng(10000,25000);
+  if(p>=52)return rng(4000,12000);
+  if(p>=38)return rng(1200,4500);
+  return rng(300,1500);
 }
 // Poisson-like integer: most matches end 0-0, 1-0, 1-1, 2-1, 2-0
 function poissonGoals(lambda){
@@ -6005,7 +6008,12 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   // Dynamic HL — reactive queue (opp_goal) + desperate flag (losing 0-2 at 72')
   const reactiveHLQueueRef=useRef([]);
   const desperateFiredRef=useRef(false);
-  const [stadium]=useState(()=>pick(STADIUMS));
+  // Sprint 81 — use correct club stadium for pro matches
+  const [stadium]=useState(()=>{
+    if(context==="trial"||(player.club?.isU18))return pick(STADIUMS);
+    const hClub=isMatchHome?(player.club||opponent):opponent;
+    return getStadiumName(hClub);
+  });
   // day or night — seeded by week so same match is always same time
   const [timeOfDay]=useState(()=>(player.week||1)%2===0?"night":"day");
   // Sprint 16 — weather seeded by week + club (winter weeks get bad weather bonus)
@@ -6025,8 +6033,12 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   const heatPointsRef=useRef([]); // {x,y}[] — sampled every 4 playing ticks
   const [showHeatMap,setShowHeatMap]=useState(false);
   const gkDiveRef=useRef(null); // GK dive direction for rigore
-  // context-aware realistic attendance
-  const [attendance]=useState(()=>calcAttendance(context==="trial"?null:(player.club||opponent),context));
+  // Sprint 81 — attendance uses the HOME club (not always player.club)
+  const [attendance]=useState(()=>{
+    if(context==="trial")return calcAttendance(null,"trial");
+    const hClub=isMatchHome?(player.club||opponent):opponent;
+    return calcAttendance(hClub,"career");
+  });
   // responsive layout: narrow = stacked vertically (phones + tablets up to 640px)
   const [isNarrow,setIsNarrow]=useState(()=>window.innerWidth<640);
   useEffect(()=>{const fn=()=>setIsNarrow(window.innerWidth<640);window.addEventListener("resize",fn);return()=>window.removeEventListener("resize",fn);},[]);
@@ -9562,20 +9574,23 @@ const CAREER_MILESTONES=[
   {id:"ovr80",check:p=>(p.ovr||60)>=80,txt:"🌟 Livello 80 — TOP PLAYER!",color:"#d97706"},
   {id:"ovr90",check:p=>(p.ovr||60)>=90,txt:"✨ Livello 90 — FUORICLASSE assoluto!",color:"#7c3aed"},
 ];
-/* Sprint 59 — Classifica Marcatori Live */
+/* Sprint 59 — Classifica Marcatori Live (Sprint 81: fix week guard + name dedup) */
 const generateLeagueScorers=(player)=>{
   const week=Math.min(player.week||1,38);
   const season=player.season||1;
   const league=player.club?.lg;
-  if(!league)return[];
+  // Sprint 81: hide until at least 1 matchday played
+  if(!league||week<=1)return[];
   const rivals=CLUBS.filter(c=>c.lg===league&&c.id!==player.club?.id).slice(0,17);
   const FNAMES=["Luca","Marco","Diego","Carlos","Ahmed","Kai","Lucas","Leon","Robert","Kylian","Victor","Romelu","Erling","Vinicius","Mohamed"];
   const LNAMES=["Gomez","Silva","Müller","Torres","Benzema","Salah","Vlahovic","Dybala","Immobile","Dzeko","Lacazette","Haaland","Mbappé","Neymar","Lewandowski"];
   const scorers=rivals.map(c=>{
     const seed=hashStr(c.id+"_"+season+"_s59");
+    const seed2=hashStr(c.id+"_ln_"+season+"_s59"); // Sprint 81: separate seed for last name → no duplicates
     const rate=0.30+(c.p||60)/99*0.45;
-    const goals=Math.max(0,Math.round(rate*week)+((seed%5)-2));
-    const name=FNAMES[seed%FNAMES.length]+" "+LNAMES[(seed*7)%LNAMES.length];
+    const played=Math.max(0,week-1); // games actually played
+    const goals=Math.max(0,Math.round(rate*played)+((seed%3)-1)); // ±1 swing (was ±2)
+    const name=FNAMES[seed%FNAMES.length]+" "+LNAMES[seed2%LNAMES.length];
     return{name,club:c.a||c.n,goals,isPlayer:false};
   });
   scorers.push({name:player.name,club:player.club?.a||player.club?.n||"–",goals:player.goals||0,isPlayer:true});
@@ -9912,6 +9927,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
   const[careerMomentModal,setCareerMomentModal]=useState(null);    // Sprint 25A — unique career moment
   const[monthlyReviewModal,setMonthlyReviewModal]=useState(null);  // Sprint 60: quarterly coach review
   const[jerseyPickModal,setJerseyPickModal]=useState(false); // Sprint 74: jersey number picker
+  const[pendingJerseyNum,setPendingJerseyNum]=useState(null); // Sprint 81: confirm step
 
   const notify=(msg,color=TH.primary)=>{setNotif({msg,color});setTimeout(()=>setNotif(null),2800);};
 
@@ -10698,7 +10714,11 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     }
     setPlayer(p=>{
       if(p.week>38)return p; // nothing to do if season ended
-      const ev=Math.random()<0.78?wPick(WEEKLY_EVENTS):null;
+      // Sprint 81: exclude events matching last 5 log entries to reduce repetition
+      const _recentLog=(p.log||[]).slice(0,5);
+      const _wevPool=WEEKLY_EVENTS.filter(e=>!_recentLog.some(l=>l===e.txt));
+      const _wevFinal=_wevPool.length>=6?_wevPool:WEEKLY_EVENTS;
+      const ev=Math.random()<0.78?wPick(_wevFinal):null;
       let upd={weekLived:true};
       if(ev){
         const ef=ev.ef||{};
@@ -11517,6 +11537,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
         const sac=(player.fanLegend||[]).filter(f=>f.clubId===player.club?.id).reduce((m,f)=>Math.max(m,f.seasons||0),0);
         const pri=Math.min(100,(player.coachTrust||50)*0.5+sac*10);
         const priLabel=pri>=70?"Alta (qualsiasi numero)":pri>=40?"Media (nr. ≥10)":"Bassa (nr. ≥20)";
+        const selected=pendingJerseyNum!==null?pendingJerseyNum:(player.jerseyNum||10);
         return(
           <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.75)",zIndex:9999,display:"flex",alignItems:"center",justifyContent:"center",padding:16}}>
             <Card style={{maxWidth:420,width:"100%",padding:"20px",background:TH.card,border:"1px solid #1d4ed8",maxHeight:"85vh",overflowY:"auto"}}>
@@ -11530,15 +11551,25 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                 <div style={{marginTop:4}}>Stagioni al club: {sac} · Fiducia mister: {player.coachTrust||50}</div>
                 <div style={{marginTop:4,color:"#60a5fa"}}>Numeri disponibili: {avail.length}/89</div>
               </div>
-              <div style={{display:"flex",flexWrap:"wrap",gap:6,marginBottom:16}}>
+              {/* Sprint 81 — preview of selected number before confirming */}
+              {pendingJerseyNum!==null&&(
+                <div style={{textAlign:"center",marginBottom:10,padding:"8px 12px",background:"#eff6ff",border:"1px solid #bfdbfe",borderRadius:10}}>
+                  <span style={{fontSize:12,color:"#1d4ed8",fontWeight:700}}>Selezione: <strong style={{fontSize:18}}>#{pendingJerseyNum}</strong></span>
+                  <span style={{fontSize:10,color:TH.muted,marginLeft:8}}>— premi Conferma per salvare</span>
+                </div>
+              )}
+              <div style={{display:"flex",flexWrap:"wrap",gap:6,marginBottom:14}}>
                 {avail.map(n=>(
-                  <button key={n} onClick={()=>{setPlayer(p=>({...p,jerseyNum:n,jerseyNumSeason:p.season||1}));setJerseyPickModal(false);notify(`👕 Numero #${n} scelto per la stagione!`,"#1d4ed8");}}
-                    style={{width:42,height:38,background:(player.jerseyNum||10)===n?"#1d4ed8":"rgba(59,130,246,0.12)",border:(player.jerseyNum||10)===n?"2px solid #3b82f6":"1px solid rgba(59,130,246,0.3)",borderRadius:8,color:(player.jerseyNum||10)===n?"#fff":"#93c5fd",fontSize:13,fontWeight:700,cursor:"pointer"}}>
+                  <button key={n} onClick={()=>setPendingJerseyNum(n)}
+                    style={{width:42,height:38,background:selected===n?"#1d4ed8":"rgba(59,130,246,0.12)",border:selected===n?"2px solid #3b82f6":"1px solid rgba(59,130,246,0.3)",borderRadius:8,color:selected===n?"#fff":"#93c5fd",fontSize:13,fontWeight:700,cursor:"pointer"}}>
                     {n}
                   </button>
                 ))}
               </div>
-              <Btn v="ghost" fw onClick={()=>setJerseyPickModal(false)} style={{fontSize:12}}>Annulla</Btn>
+              <div style={{display:"flex",gap:8}}>
+                <Btn v="primary" fw disabled={pendingJerseyNum===null||pendingJerseyNum===(player.jerseyNum||10)} onClick={()=>{if(pendingJerseyNum!==null){setPlayer(p=>({...p,jerseyNum:pendingJerseyNum,jerseyNumSeason:p.season||1}));setPendingJerseyNum(null);setJerseyPickModal(false);notify(`👕 Numero #${pendingJerseyNum} confermato per la stagione!`,"#1d4ed8");}}} style={{fontSize:12}}>✅ Conferma #{pendingJerseyNum||"–"}</Btn>
+                <Btn v="ghost" fw onClick={()=>{setPendingJerseyNum(null);setJerseyPickModal(false);}} style={{fontSize:12}}>Annulla</Btn>
+              </div>
             </Card>
           </div>
         );
