@@ -2102,7 +2102,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="3.62.0"; // Sprint 82 — ~100 stadium names, 20 atmospheric conditions, 4 time-of-day, sky/atmosphere per weather
+const GAME_VERSION="3.63.0"; // Sprint 83 — coppe europee/internazionali visibili, giocabili e integrali; euroMondiale 3 gironi
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -10355,7 +10355,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       const _emGroupIdx=(_emCurQ.groupMatchIdx||0)+1;
       const _emGroupPts=(_emCurQ.groupPts||0)+(result.won?3:result.drew?1:0);
       const _emAllGroupDone=isGrp&&_emGroupIdx>=(_emCurQ.groupOpponents||[]).length;
-      const _emGroupQualified=_emAllGroupDone&&_emGroupPts>=3;
+      const _emGroupQualified=_emAllGroupDone&&_emGroupPts>=4;
       const _emGroupOut=_emAllGroupDone&&!_emGroupQualified;
       const _emKoPhase=_emCurQ.koPhase||"semi";
       const _emIsChamp=!isGrp&&_emKoWon&&_emKoPhase==="final";
@@ -10391,7 +10391,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       if(isGrp){
         if(_emGroupOut)setTimeout(()=>notify(`😔 ${_emCurQ.type||"Torneo"}: eliminato dalla fase a gironi.`,TH.danger),400);
         else if(_emGroupQualified)setTimeout(()=>notify(`🌍 ${_emCurQ.type||"Torneo"}: qualificato alle semifinali! (${_emGroupPts} pt)`,TH.success),400);
-        else setTimeout(()=>notify(`🌍 ${_emCurQ.type||"Torneo"}: partita ${_emGroupIdx}/2 · ${result.won?"✅":result.drew?"🤝":"❌"}. Punti: ${_emGroupPts}/6`,TH.accent),300);
+        else setTimeout(()=>notify(`🌍 ${_emCurQ.type||"Torneo"}: partita ${_emGroupIdx}/${(_emCurQ.groupOpponents||[]).length||3} · ${result.won?"✅":result.drew?"🤝":"❌"}. Punti: ${_emGroupPts}/${((_emCurQ.groupOpponents||[]).length||3)*3}`,TH.accent),300);
       } else {
         if(_emIsChamp)setTimeout(()=>notify(`🏆🌍 ${_emCurQ.type||"Torneo"} VINTO! ${player.nation||"Italia"} CAMPIONI!`,"#f59e0b"),400);
         else if(_emIsFinalist)setTimeout(()=>notify(`🌍 ${_emCurQ.type||"Torneo"}: sei in FINALE!`,TH.success),400);
@@ -10945,7 +10945,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       const _seed=hashStr((player.nation||"Italia")+_emType+(player.season||1));
       let _sr=_seed;const _srng=()=>{_sr=((_sr*1664525+1013904223)&0xffffffff)>>>0;return _sr/0xffffffff;};
       const _shuffled=[..._oppPool].sort(()=>_srng()-.5);
-      const _groupOpps=_shuffled.slice(0,2);
+      const _groupOpps=_shuffled.slice(0,3);
       setPlayer(p=>({...p,euroMondiale:{active:true,type:_emType,season:p.season||1,phase:"group",groupOpponents:_groupOpps,groupMatchIdx:0,groupPts:0,groupMatches:[],koPhase:null,koOpponent:null,koResults:[],qualified:false,champion:false,eliminated:false,done:false}}));
       setTimeout(()=>notify(`🌍 ${_emType} — Convocato con ${player.nation||"Italia"}! Gioca dal pannello Nazione.`,TH.accent),500);
     }
@@ -11337,6 +11337,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       if(isGB)setTimeout(()=>notify("🏆 GOLDEN BOY! Sei il miglior giovane d'Europa! Pop. +25 · Valore +0.8M","#f59e0b"),5200);
       if(isNewGoalRecord)setTimeout(()=>notify(`🎯 RECORD PERSONALE! ${player.goals||0} gol in una stagione!`,"#f59e0b"),3600);
       if(isNewAssistRecord)setTimeout(()=>notify(`🎯 RECORD PERSONALE! ${player.assists||0} assist in una stagione!`,"#f59e0b"),3800);
+      if(newEuro)setTimeout(()=>notify(`${newEuro.competition==="UCL"?"⭐":"🌍"} QUALIFICATO IN ${newEuro.competition}! Partite di gruppo alle settimane 5–15.`,"#1d4ed8"),6500);
     },200);
   };
 
@@ -12312,17 +12313,76 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
           <Btn fw onClick={startNationsCupMatch} style={{padding:"11px",fontSize:13}}>🏟️ Gioca Partita Nazionali</Btn>
         </Card>
       )}
+      {/* Sprint 83: Club European Competition Card (UCL/UEL/UECL) */}
+      {tab==="dashboard"&&(player.proStatus||"u18")==="pro"&&player.euro?.active&&!player.euro?.champion&&!player.euro?.eliminated&&(()=>{
+        const eu=player.euro;
+        const competCol=eu.competition==="UCL"?"#1d4ed8":eu.competition==="UEL"?"#f59e0b":"#7c3aed";
+        const competE=eu.competition==="UCL"?"⭐":eu.competition==="UEL"?"🟡":"🟣";
+        const euroCal=(player.calendar||[]).filter(m=>(m.type==="euro_group"||m.type==="euro"));
+        const euroCalUnplayed=euroCal.filter(m=>!m.played).sort((a,b)=>a.week-b.week);
+        const nextEuroMd=euroCalUnplayed[0];
+        const gr=eu.groupResults||[];
+        const totalGroupMds=(eu.groupOpponents||[]).length*2;
+        const isGroupPhase=eu.phase==="group"||gr.length<totalGroupMds;
+        const isKOPhase=!isGroupPhase&&eu.phase&&eu.phase!=="eliminated";
+        const phaseNames={"r16":"Ottavi di Finale","sf":"Semifinale","final":"Finale"};
+        const phaseLbl=isGroupPhase?"Fase a Gironi":(phaseNames[eu.phase]||eu.phase||"Fase KO");
+        return(
+          <Card style={{marginBottom:8,padding:"12px 14px",border:`2px solid ${competCol}50`,background:`${competCol}08`}}>
+            <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:8}}>
+              <div style={{width:36,height:36,borderRadius:10,background:competCol,display:"flex",alignItems:"center",justifyContent:"center",fontSize:18,flexShrink:0}}>{competE}</div>
+              <div style={{flex:1}}>
+                <div style={{fontSize:12,fontWeight:900,color:competCol}}>{eu.competition} · {phaseLbl}</div>
+                <div style={{fontSize:10,color:TH.muted}}>S.{eu.season||player.season||1}{isGroupPhase?` · ${gr.length}/${totalGroupMds} partite · ${eu.pts||0}pt`:""}</div>
+              </div>
+            </div>
+            {isGroupPhase&&gr.length>0&&(
+              <div style={{display:"flex",flexDirection:"column",gap:2,marginBottom:8}}>
+                {gr.map((r,i)=>{
+                  const oppN=r.opp||r.opponent||"?";
+                  const hs=r.hs!==undefined?r.hs:r.homeScore;
+                  const as=r.as!==undefined?r.as:r.awayScore;
+                  return(
+                    <div key={i} style={{display:"flex",alignItems:"center",gap:6,padding:"3px 8px",borderRadius:6,background:r.won?"#dcfce788":r.drew?"#f1f5f988":"#fee2e288",fontSize:10}}>
+                      <span style={{color:TH.faint,width:18,textAlign:"center"}}>{r.home!==false?"🏠":"✈️"}</span>
+                      <span style={{flex:1,fontWeight:600,color:TH.text}}>vs {oppN}</span>
+                      <span style={{fontWeight:800,color:r.won?"#16a34a":r.drew?"#64748b":"#dc2626",minWidth:30,textAlign:"center"}}>{hs}–{as}</span>
+                      <span style={{fontSize:9,fontWeight:700,color:r.won?"#16a34a":r.drew?"#64748b":"#dc2626",minWidth:12}}>{r.won?"V":r.drew?"P":"S"}</span>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+            {isGroupPhase&&gr.length===0&&(
+              <div style={{fontSize:11,color:TH.muted,marginBottom:8}}>Prime partite a partire dalla settimana 5 — Pronti per il palcoscenico europeo!</div>
+            )}
+            {nextEuroMd&&(
+              <div style={{display:"flex",alignItems:"center",gap:8,padding:"6px 8px",borderRadius:8,background:`${competCol}18`,marginBottom:8}}>
+                <span style={{fontSize:12}}>{nextEuroMd.isHome?"🏠":"✈️"}</span>
+                <div style={{flex:1}}>
+                  <div style={{fontSize:11,fontWeight:700,color:TH.text}}>Prossima: vs {nextEuroMd.opponentName}</div>
+                  <div style={{fontSize:9,color:TH.muted}}>W.{nextEuroMd.week} · {nextEuroMd.competition}</div>
+                </div>
+                {nextEuroMd.week===(player.week||1)&&<span style={{fontSize:9,background:competCol,color:"#fff",borderRadius:8,padding:"2px 8px",fontWeight:700,flexShrink:0}}>ORA!</span>}
+              </div>
+            )}
+            {isKOPhase&&!nextEuroMd&&(
+              <div style={{fontSize:11,color:competCol,fontWeight:700}}>Partita in programma... controlla il calendario.</div>
+            )}
+          </Card>
+        );
+      })()}
       {/* Sprint 53: Europeo/Mondiale pending card */}
       {tab==="dashboard"&&player.euroMondiale?.active&&!player.euroMondiale?.done&&(()=>{
         const em=player.euroMondiale;
-        const phaseLabel={group:`Gironi · Partita ${(em.groupMatchIdx||0)+1}/2`,semi:"Semifinale",final:"Finale"}[em.phase]||"–";
+        const phaseLabel={group:`Gironi · Partita ${(em.groupMatchIdx||0)+1}/${(em.groupOpponents||[]).length||3}`,semi:"Semifinale",final:"Finale"}[em.phase]||"–";
         const oppName=em.phase==="group"?(em.groupOpponents||[])[em.groupMatchIdx||0]:em.koOpponent;
         const emCol=em.type==="Mondiale"?"#4f46e5":"#0369a1";
         return(
           <Card style={{marginBottom:8,padding:"12px 14px",border:`1px solid ${emCol}`,background:`${emCol}10`}}>
             <div style={{fontSize:10,color:emCol,textTransform:"uppercase",letterSpacing:1.5,marginBottom:6}}>{em.type==="Mondiale"?"🌍 Coppa del Mondo":"🏆 Europeo"} · S.{em.season} · {phaseLabel}</div>
             <div style={{fontSize:12,color:TH.text,fontWeight:600,marginBottom:2}}>vs {oppName||"?"}</div>
-            {em.phase==="group"&&<div style={{fontSize:10,color:TH.muted,marginBottom:10}}>Punti gironi: {em.groupPts||0}/6 · Serve min. 3pt per qualificarsi</div>}
+            {em.phase==="group"&&<div style={{fontSize:10,color:TH.muted,marginBottom:10}}>Punti gironi: {em.groupPts||0}/{((em.groupOpponents||[]).length||3)*3} · Serve min. 4pt per qualificarsi</div>}
             {em.phase!=="group"&&<div style={{fontSize:10,color:TH.muted,marginBottom:10}}>Partita da eliminazione diretta · Nessun pareggio</div>}
             <Btn fw onClick={startEuroMondialeMatch} style={{padding:"11px",fontSize:13,background:emCol,color:"#fff"}}>{em.type==="Mondiale"?"🌍":"🏆"} Gioca per la Nazionale</Btn>
           </Card>
@@ -12944,6 +13004,96 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
           )}
         </Card>
       )}
+
+      {/* Sprint 83: Euro (UCL/UEL/UECL) in standings tab */}
+      {tab==="standings"&&(player.proStatus||"u18")==="pro"&&player.euro?.active&&(()=>{
+        const eu=player.euro;
+        const competCol=eu.competition==="UCL"?"#1d4ed8":eu.competition==="UEL"?"#f59e0b":"#7c3aed";
+        const competE=eu.competition==="UCL"?"⭐":eu.competition==="UEL"?"🟡":"🟣";
+        const gr=eu.groupResults||[];
+        const totalGrMds=(eu.groupOpponents||[]).length*2;
+        const phaseNames={"r16":"Ottavi di Finale","sf":"Semifinale","final":"Finale","eliminated":"Eliminato"};
+        const statusLabel=eu.champion?"🏆 CAMPIONE!":eu.eliminated?"❌ Eliminato":(phaseNames[eu.phase]||"Fase a Gironi");
+        return(
+          <Card style={{marginTop:8,padding:"12px 14px",border:`1px solid ${competCol}40`}}>
+            <div style={{fontSize:10,color:competCol,textTransform:"uppercase",letterSpacing:1.5,marginBottom:10,fontWeight:700}}>{competE} {eu.competition} · S.{eu.season||player.season||1}</div>
+            <div style={{fontSize:11,fontWeight:700,color:eu.champion?"#f59e0b":eu.eliminated?TH.danger:competCol,marginBottom:8}}>{statusLabel}</div>
+            {gr.length>0&&(
+              <div>
+                <div style={{fontSize:9,color:TH.faint,textTransform:"uppercase",letterSpacing:1,marginBottom:5}}>Fase a Gironi · {gr.length}/{totalGrMds} partite · {eu.pts||0}pt</div>
+                {gr.map((r,i)=>{
+                  const oppN=r.opp||r.opponent||"?";
+                  const hs=r.hs!==undefined?r.hs:r.homeScore;
+                  const as=r.as!==undefined?r.as:r.awayScore;
+                  return(
+                    <div key={i} style={{display:"flex",alignItems:"center",gap:6,padding:"4px 0",borderTop:"1px solid "+TH.cardBorder,fontSize:10}}>
+                      <span style={{color:TH.faint,width:18,flexShrink:0}}>{r.home!==false?"🏠":"✈️"}</span>
+                      <span style={{flex:1,color:TH.text}}>{oppN}</span>
+                      <span style={{fontWeight:700,color:r.won?"#16a34a":r.drew?"#64748b":"#dc2626"}}>{hs}–{as}</span>
+                      <span style={{fontSize:9,color:r.won?"#16a34a":r.drew?"#64748b":"#dc2626",minWidth:10,textAlign:"right"}}>{r.won?"V":r.drew?"P":"S"}</span>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+            {gr.length===0&&!eu.eliminated&&!eu.champion&&<div style={{fontSize:11,color:TH.muted}}>Gironi: partite alle settimane 5–15</div>}
+            {(eu.koResults||[]).length>0&&(
+              <div style={{marginTop:8}}>
+                <div style={{fontSize:9,color:TH.faint,textTransform:"uppercase",letterSpacing:1,marginBottom:5}}>Fase a Eliminazione Diretta</div>
+                {(eu.koResults||[]).map((r,i)=>(
+                  <div key={i} style={{display:"flex",alignItems:"center",gap:6,padding:"4px 0",borderTop:"1px solid "+TH.cardBorder,fontSize:10}}>
+                    <span style={{color:TH.faint,minWidth:60}}>{r.name||r.phase||"KO"}</span>
+                    <span style={{flex:1,color:TH.text}}>{r.opp||r.opponent||"?"}</span>
+                    <span style={{fontWeight:700,color:r.won?"#16a34a":"#dc2626"}}>{r.homeScore||r.hs||0}–{r.awayScore||r.as||0} {r.won?"✅":"❌"}</span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </Card>
+        );
+      })()}
+
+      {/* Sprint 83: EuroMondiale (Europeo/Mondiale) in standings tab */}
+      {tab==="standings"&&(player.proStatus||"u18")==="pro"&&player.euroMondiale?.active&&(()=>{
+        const em=player.euroMondiale;
+        const emCol=em.type==="Mondiale"?"#4f46e5":"#0369a1";
+        const emE=em.type==="Mondiale"?"🌍":"🏆";
+        const gm=em.groupMatches||[];
+        const koR=em.koResults||[];
+        const totalGrMds=(em.groupOpponents||[]).length;
+        const statusLabel=em.champion?`${emE} CAMPIONE!`:em.eliminated?"❌ Eliminato":(em.phase==="group"?"Fase a Gironi":em.phase==="semi"?"Semifinale":"Finale");
+        return(
+          <Card style={{marginTop:8,padding:"12px 14px",border:`1px solid ${emCol}40`}}>
+            <div style={{fontSize:10,color:emCol,textTransform:"uppercase",letterSpacing:1.5,marginBottom:10,fontWeight:700}}>{emE} {em.type||"Torneo"} · S.{em.season||player.season||1} · {player.nation||"Italia"}</div>
+            <div style={{fontSize:11,fontWeight:700,color:em.champion?"#f59e0b":em.eliminated?TH.danger:emCol,marginBottom:8}}>{statusLabel}</div>
+            {gm.length>0&&(
+              <div>
+                <div style={{fontSize:9,color:TH.faint,textTransform:"uppercase",letterSpacing:1,marginBottom:5}}>Gironi · {gm.length}/{totalGrMds} · {em.groupPts||0}pt</div>
+                {gm.map((r,i)=>(
+                  <div key={i} style={{display:"flex",alignItems:"center",gap:6,padding:"4px 0",borderTop:"1px solid "+TH.cardBorder,fontSize:10}}>
+                    <span style={{flex:1,color:TH.text}}>vs {r.opp||"?"}</span>
+                    <span style={{fontWeight:700,color:r.won?"#16a34a":r.drew?"#64748b":"#dc2626"}}>{r.homeScore||r.hs||0}–{r.awayScore||r.as||0}</span>
+                    <span style={{fontSize:9,color:r.won?"#16a34a":r.drew?"#64748b":"#dc2626",minWidth:10,textAlign:"right"}}>{r.won?"V":r.drew?"P":"S"}</span>
+                  </div>
+                ))}
+              </div>
+            )}
+            {koR.length>0&&(
+              <div style={{marginTop:8}}>
+                <div style={{fontSize:9,color:TH.faint,textTransform:"uppercase",letterSpacing:1,marginBottom:5}}>Fase KO</div>
+                {koR.map((r,i)=>(
+                  <div key={i} style={{display:"flex",alignItems:"center",gap:6,padding:"4px 0",borderTop:"1px solid "+TH.cardBorder,fontSize:10}}>
+                    <span style={{color:TH.faint,minWidth:55}}>{r.phase==="semi"?"Semifinale":r.phase==="final"?"Finale":r.phase||"KO"}</span>
+                    <span style={{flex:1,color:TH.text}}>vs {r.opp||"?"}</span>
+                    <span style={{fontWeight:700,color:r.won?"#16a34a":"#dc2626"}}>{r.homeScore||0}–{r.awayScore||0} {r.won?"✅":"❌"}</span>
+                  </div>
+                ))}
+              </div>
+            )}
+            {gm.length===0&&<div style={{fontSize:11,color:TH.muted}}>Torneo attivo dalla settimana 24 — convocato con la Nazionale!</div>}
+          </Card>
+        );
+      })()}
 
       {/* TRAINING */}
       {tab==="training"&&(
