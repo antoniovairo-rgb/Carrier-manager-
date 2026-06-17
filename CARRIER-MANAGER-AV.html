@@ -2012,7 +2012,7 @@ const NEWSPAPERS=[
   {id:"lastampa",  name:"La Stampa Sport",       short:"La Stampa",  color:"#16a34a",e:"🗞️",tone:"analitico"},
   {id:"skysport",  name:"Sky Sport 24",          short:"Sky Sport",  color:"#0099d6",e:"📡",tone:"diretto"},
 ];
-const GAME_VERSION="3.43.0"; // Sprint 63 — Prossima Partita Scout Preview
+const GAME_VERSION="3.44.0"; // Sprint 64 — Mini Classifica nel Dashboard
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -11979,6 +11979,41 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                 {_h2h.slice(-4).map((m,i)=><div key={i} style={{width:14,height:14,borderRadius:3,background:m.won?"#16a34a":m.drew?"#ca8a04":"#dc2626",display:"flex",alignItems:"center",justifyContent:"center",fontSize:7,fontWeight:800,color:"#fff"}}>{m.won?"V":m.drew?"P":"S"}</div>)}
               </div>
             )}
+          </Card>
+        );
+      })()}
+      {/* Sprint 64 — Mini Classifica nel Dashboard */}
+      {tab==="dashboard"&&(player.proStatus||"u18")==="pro"&&(()=>{
+        const _st=[...(player.standings||[])].sort((a,b)=>b.pts-a.pts||b.gd-a.gd||b.gf-a.gf);
+        if(!_st.some(t=>t.played>0)||_st.length<4)return null;
+        const _myId=player.club?.id,_myN=player.club?.n||player.club?.name;
+        const _myPos=_st.findIndex(t=>t.id===_myId||(t.n||t.name)===_myN);
+        const _N=_st.length;
+        const _show=new Set([0,1,2]);
+        if(_myPos>2)_show.add(_myPos);
+        if(_N>=8){_show.add(_N-2);_show.add(_N-1);}
+        const _idxs=[..._show].sort((a,b)=>a-b);
+        const _rows=[];
+        _idxs.forEach((idx,ii)=>{
+          if(ii>0&&idx-_idxs[ii-1]>1)_rows.push({gap:true,k:`g${ii}`});
+          _rows.push({t:_st[idx],pos:idx+1,me:idx===_myPos,rel:idx>=_N-2&&_N>=8,k:`r${idx}`});
+        });
+        return(
+          <Card style={{marginBottom:8,padding:"10px 14px"}}>
+            <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:6}}>📊 Classifica · W.{player.week||1}/38</div>
+            {_rows.map(r=>{
+              if(r.gap)return<div key={r.k} style={{fontSize:8,color:TH.faint,padding:"1px 0 1px 20px",letterSpacing:1}}>· · ·</div>;
+              const t=r.t;
+              return(
+                <div key={r.k} style={{display:"flex",alignItems:"center",gap:8,padding:"4px 2px",borderBottom:`1px solid ${TH.cardBorder}`,background:r.me?"#eff6ff":r.rel?"#fff1f2":"transparent",borderRadius:r.me||r.rel?4:0}}>
+                  <span style={{fontSize:10,minWidth:14,textAlign:"right",fontWeight:r.me||r.pos<=3?700:400,color:r.me?TH.primary:r.rel?"#dc2626":TH.faint}}>{r.pos}</span>
+                  <div style={{width:16,height:16,flexShrink:0}}><TeamBadge team={t} size={16}/></div>
+                  <span style={{flex:1,fontSize:11,fontWeight:r.me?800:r.pos<=3?700:400,color:r.me?TH.primary:r.rel?"#b91c1c":TH.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{r.me?"★ ":""}{t.a||t.n}</span>
+                  <span style={{fontSize:12,fontWeight:800,color:r.me?TH.primary:TH.text,minWidth:20,textAlign:"right"}}>{t.pts}</span>
+                  <span style={{fontSize:9,color:TH.faint,minWidth:22,textAlign:"right"}}>{t.played}gj</span>
+                </div>
+              );
+            })}
           </Card>
         );
       })()}
