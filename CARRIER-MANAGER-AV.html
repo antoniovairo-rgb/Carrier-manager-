@@ -2028,7 +2028,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="3.54.0"; // Sprint 74 — Numero di Maglia
+const GAME_VERSION="3.55.0"; // Sprint 75 — Sistema Cartellini
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -9727,6 +9727,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       newP={...newP,coachHistory:[]};changed=true;
     }
     if(!('jerseyNum' in newP)){newP={...newP,jerseyNum:10,jerseyNumSeason:0};changed=true;} // Sprint 74
+    if(!('yellAccum' in newP)){newP={...newP,yellAccum:0,isSuspended:false,seasonCards:{y:0,r:0}};changed=true;} // Sprint 75
     if(changed){setPlayer(newP);}
   },[]);// eslint-disable-line
   const[darkMode,setDarkMode]=useState(()=>localStorage.getItem("cpm-dark")==="1");
@@ -10275,6 +10276,12 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     // Sprint 73 — Obiettivo Live: detect newly completed season objectives
     const _prevGoals73=player.goals||0,_prevAssists73=player.assists||0,_prevMatches73=player.matches||0;
     const _objCompleted73=(player.seasonObjectives||[]).filter(o=>(o.type==="goals"&&_prevGoals73<o.target&&(_prevGoals73+(result.goals||0))>=o.target)||(o.type==="assists"&&_prevAssists73<o.target&&(_prevAssists73+(result.assists||0))>=o.target)||(o.type==="matches"&&_prevMatches73<o.target&&(_prevMatches73+1)>=o.target));
+    // Sprint 75 — Sistema Cartellini
+    const _fouls75=result.fouls||0;
+    const _redCard75=!matchBenchStartRef.current&&Math.random()<(_fouls75>=4?0.06:0.018);
+    const _yellowCard75=!_redCard75&&!matchBenchStartRef.current&&Math.random()<(_fouls75>=3?0.28:0.07);
+    const _newYellAccum75=_yellowCard75?((player.yellAccum||0)+1):(player.yellAccum||0);
+    const _susp75=_redCard75||_newYellAccum75>=3;
     setPlayer(p=>{
       let ns={...p.stats};
       // S10.5: age curve — strong growth <22, gradual 22-27, none after
@@ -10339,11 +10346,21 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       if(_ws66.type==='loss'&&_ws66.count===3)_md51.push({season:p.season||1,week:p.week||1,type:"milestone",e:"📉",headline:"3 sconfitte consecutive — momento di crisi.",body:`Striscia negativa · trovare la reazione · S.${p.season||1}`,color:"#dc2626"});
       // Sprint 73: diary for newly completed objectives
       _objCompleted73.forEach(o=>_md51.push({season:p.season||1,week:p.week||1,type:"milestone",e:"🎯",headline:`Obiettivo: ${o.label}`,body:`Traguardo stagionale completato! S.${p.season||1} · Settimana ${p.week||1}`,color:"#16a34a"}));
+      // Sprint 75: card diary entries
+      if(_yellowCard75)_md51.push({season:p.season||1,week:p.week||1,type:"milestone",e:"🟡",headline:"Cartellino Giallo",body:`Ammonito vs ${result.opponent} — accumulo ${_newYellAccum75}/3 · S.${p.season||1}`,color:"#ca8a04"});
+      if(_susp75&&_yellowCard75)_md51.push({season:p.season||1,week:p.week||1,type:"milestone",e:"⛔",headline:"SQUALIFICATO (3° giallo)",body:`Terzo cartellino giallo — salta la prossima partita · S.${p.season||1}`,color:"#dc2626"});
+      if(_redCard75)_md51.push({season:p.season||1,week:p.week||1,type:"milestone",e:"🔴",headline:"ESPULSIONE!",body:`Rosso diretto vs ${result.opponent} · S.${p.season||1} — prossima partita sospesa`,color:"#dc2626"});
+      const _finalYellAccum75=_susp75&&!_redCard75?0:_newYellAccum75;
+      const _newSeasonCards75={y:(p.seasonCards?.y||0)+(_yellowCard75?1:0),r:(p.seasonCards?.r||0)+(_redCard75?1:0)};
       const newDiary51=[...(p.diary||[]),..._md51].slice(-80);
-      return{...p,stats:ns,ovr:newOvr,goals:p.goals+result.goals,assists:p.assists+result.assists,matches:p.matches+1,totalGoals:p.totalGoals+result.goals,totalAssists:p.totalAssists+result.assists,totalMatches:p.totalMatches+1,morale:clamp(p.morale+moD,0,100),form:clamp((p.form||70)+formD,30,95),fatigue:postFatigue,...(newInjured?{injured:true,injuryWeeks,injuryType}:{}),week:(p.week||1)+1,weekLived:false,log:[logE,...(p.log||[])].slice(0,60),matchHistory:newHistory,standings:newStandings,calendar:newCal,aiData:newAiData,...(newMilestoneIds.length>0?{milestones:[...(p.milestones||[]),...newMilestoneIds]}:{}),...cupUpdate2,diary:newDiary51,goalStreak:newGoalStreak,bestGoalStreak:newBestStreak};
+      return{...p,stats:ns,ovr:newOvr,goals:p.goals+result.goals,assists:p.assists+result.assists,matches:p.matches+1,totalGoals:p.totalGoals+result.goals,totalAssists:p.totalAssists+result.assists,totalMatches:p.totalMatches+1,morale:clamp(p.morale+moD,0,100),form:clamp((p.form||70)+formD,30,95),fatigue:postFatigue,...(newInjured?{injured:true,injuryWeeks,injuryType}:{}),week:(p.week||1)+1,weekLived:false,log:[logE,...(p.log||[])].slice(0,60),matchHistory:newHistory,standings:newStandings,calendar:newCal,aiData:newAiData,...(newMilestoneIds.length>0?{milestones:[...(p.milestones||[]),...newMilestoneIds]}:{}),...cupUpdate2,diary:newDiary51,goalStreak:newGoalStreak,bestGoalStreak:newBestStreak,yellAccum:_finalYellAccum75,isSuspended:_susp75||false,seasonCards:_newSeasonCards75};
     });
     // Sprint 73: notify objective completions
     if(_objCompleted73.length)_objCompleted73.forEach((o,i)=>setTimeout(()=>notify(`🎯 ${o.label}!`,TH.success),700+i*1800));
+    // Sprint 75: card notifications
+    if(_yellowCard75)setTimeout(()=>notify(`🟡 Cartellino giallo! Accumulo: ${_newYellAccum75}/3`,"#ca8a04"),1600);
+    if(_susp75&&_yellowCard75)setTimeout(()=>notify("⛔ 3° giallo — SQUALIFICATO per la prossima partita!","#dc2626"),3200);
+    if(_redCard75)setTimeout(()=>notify("🔴 ESPULSIONE! Salta la prossima partita.","#dc2626"),1600);
     setScreen("postmatch");setTab("dashboard");
     if(newInjured){const iT=INJURY_TYPES_META[injuryType]||{label:"Infortunio",icon:"🩹"};notify(`${iT.icon} ${iT.label}! Stop: ${injuryWeeks} settiman${injuryWeeks===1?"a":"e"}.`,TH.danger);}
     triggeredMilestones.forEach((m,i)=>setTimeout(()=>notify(m.txt,m.color),1200+i*2400));
@@ -11050,7 +11067,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       // Sprint 70: record coach tenure stats before coach possibly changes
       const _ch70={name:p.coach?.name||"Il Mister",style:p.coach?.style||"Bilanciato",season:p.season||1,goals:p.goals||0,assists:p.assists||0,matches:p.matches||0,ovr:p.ovr||60,coachTrust:p.coachTrust||60,coachChanged};
       const newCoachHistory=[...(p.coachHistory||[]),_ch70].slice(-20);
-      return{...p,season:newSeason,age:newAge,week:1,weekLived:false,goals:0,assists:0,matches:0,fatigue:0,skillPoints:(p.skillPoints||0)+2,stats:agedStats,ovr:newOvr,contract:newContract,contractExpired,morale:clamp((p.morale||70)+bonM+(playerClubRelegated?-10:0)+(isGB?15:0),0,100),coachTrust:clamp((p.coachTrust||60)+bonCT+(playerClubRelegated?-8:0)+(coachChanged?newCoach.trustMod:0),0,100),popularity:clamp((p.popularity||20)+bonPop+(isGB?25:0),0,100),value:Math.max(0.5,(p.value||0.8)+bonVal+(playerClubRelegated?-0.3:0)+(isGB?0.8:0)),log:[agingLog,...objLogs,...[gbLog,coachLog,phenomLog,relegLog].filter(Boolean),...(p.log||[])].slice(0,60),standings:newStandings,calendar:newCalendar,matchHistory:[],seasonObjectives:newObjectives,history:[...(p.history||[]),prevHist].slice(-50),clubPrestigeShifts:updatedShifts,cup:newCup,euro:newEuro,coach:newCoach,goldenBoys:gbSeasons,records:newRecords,teammates:newTeammates,journalists:newJournalists,fanLegend:updFanLegend,leagueArchive:newLeagueArchive,coachHistory:newCoachHistory,jerseyNumSeason:0,...(captainReset?{isCaptain:false}:{})};
+      return{...p,season:newSeason,age:newAge,week:1,weekLived:false,goals:0,assists:0,matches:0,fatigue:0,skillPoints:(p.skillPoints||0)+2,stats:agedStats,ovr:newOvr,contract:newContract,contractExpired,morale:clamp((p.morale||70)+bonM+(playerClubRelegated?-10:0)+(isGB?15:0),0,100),coachTrust:clamp((p.coachTrust||60)+bonCT+(playerClubRelegated?-8:0)+(coachChanged?newCoach.trustMod:0),0,100),popularity:clamp((p.popularity||20)+bonPop+(isGB?25:0),0,100),value:Math.max(0.5,(p.value||0.8)+bonVal+(playerClubRelegated?-0.3:0)+(isGB?0.8:0)),log:[agingLog,...objLogs,...[gbLog,coachLog,phenomLog,relegLog].filter(Boolean),...(p.log||[])].slice(0,60),standings:newStandings,calendar:newCalendar,matchHistory:[],seasonObjectives:newObjectives,history:[...(p.history||[]),prevHist].slice(-50),clubPrestigeShifts:updatedShifts,cup:newCup,euro:newEuro,coach:newCoach,goldenBoys:gbSeasons,records:newRecords,teammates:newTeammates,journalists:newJournalists,fanLegend:updFanLegend,leagueArchive:newLeagueArchive,coachHistory:newCoachHistory,jerseyNumSeason:0,yellAccum:0,isSuspended:false,seasonCards:{y:0,r:0},...(captainReset?{isCaptain:false}:{})};
     });
     // S41: double achievement — won league + cup same season
     {const _sd=[...(player.standings||[])].sort((a,b)=>b.pts-a.pts||b.gd-a.gd||b.gf-a.gf);const _ch=_sd[0];const _pid=player.club?.id||player.club?.n;if(player.cup?.champion&&_ch&&(_ch.id===_pid||_ch.n===player.club?.n)&&!(player.achievements||[]).includes("double")){setTimeout(()=>{setPlayer(p=>({...p,achievements:[...(p.achievements||[]),"double"]}));notify("🏆🏆🏆 DOPPIO! Campionato + Coppa nella stessa stagione! Leggendario!","#f59e0b");},1200);}}
@@ -11081,7 +11098,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       const newStandings=initStandings(lc.length?lc:getLeagueClubs(p));
       const seed=(newSeason*7919+newSeason*newSeason*31)%2147483647+hashStr(targetClub?.id||targetClub?.n||"u18")*17;
       const newCalendar=generateSeasonCalendar(targetClub||{id:"u18",n:"U18"},lc.length?lc:getLeagueClubs(p),seed);
-      const base={...p,week:1,weekLived:false,season:newSeason,age:newAge,goals:0,assists:0,matches:0,matchHistory:[],fatigue:clamp((p.fatigue||0)-30,0,100),skillPoints:(p.skillPoints||0)+2,morale:clamp((p.morale||70)+(offer.moralBonus||0),0,100),contract:{duration:offer.duration||1,wage:offer.wage||500,expiresAtSeason:newSeason+(offer.duration||1)},standings:newStandings,calendar:newCalendar,seasonObjectives:generateSeasonObjectives({...p,club:targetClub}),jerseyNumSeason:0}; // Sprint 74: reset jersey pick
+      const base={...p,week:1,weekLived:false,season:newSeason,age:newAge,goals:0,assists:0,matches:0,matchHistory:[],fatigue:clamp((p.fatigue||0)-30,0,100),skillPoints:(p.skillPoints||0)+2,morale:clamp((p.morale||70)+(offer.moralBonus||0),0,100),contract:{duration:offer.duration||1,wage:offer.wage||500,expiresAtSeason:newSeason+(offer.duration||1)},standings:newStandings,calendar:newCalendar,seasonObjectives:generateSeasonObjectives({...p,club:targetClub}),jerseyNumSeason:0,yellAccum:0,isSuspended:false,seasonCards:{y:0,r:0}}; // Sprint 74-75: reset jersey+cards
       if(offer.isStayU18){
         return{...base,log:[`🔄 Resto in Under 18 (S.${newSeason})`,...(p.log||[])].slice(0,60)};
       }
@@ -11654,12 +11671,13 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
             </div>
             {showMatchPrompt.type!=="cup"&&isDerby(player.club?.id,showMatchPrompt.opponentId)&&<div style={{fontSize:12,fontWeight:700,color:"#f59e0b",background:"rgba(245,158,11,0.12)",borderRadius:8,padding:"4px 12px",marginBottom:8,display:"inline-block"}}>{isDerby(player.club?.id,showMatchPrompt.opponentId).e} {isDerby(player.club?.id,showMatchPrompt.opponentId).name}</div>}
             <div style={{fontSize:11,color:TH.faint,marginBottom:18}}>W.{player.week||1} — {L.matchPromptWhat}</div>
+            {player.isSuspended&&<div style={{background:"#fef2f2",border:"1px solid #fca5a5",borderRadius:8,padding:"8px 12px",marginBottom:10,fontSize:11,color:"#dc2626",fontWeight:700,textAlign:"center"}}>⛔ Sei squalificato — la partita viene simulata automaticamente</div>}
             <div style={{display:"flex",flexDirection:"column",gap:10}}>
-              <Btn onClick={()=>{if(player.injured){notify(L.cannotPlayInjured,TH.danger);return;}setShowMatchPrompt(null);startMatch();}} v="green" fw style={{padding:"14px",fontSize:14,opacity:player.injured?0.4:1}}>
-                {player.injured?`🩹 ${L.cannotPlayInjured}`:`🎮 ${L.playMatch} la partita`}
+              <Btn onClick={()=>{if(player.injured){notify(L.cannotPlayInjured,TH.danger);return;}if(player.isSuspended){notify("⛔ Sei squalificato — usa Simula","#dc2626");return;}setShowMatchPrompt(null);startMatch();}} v="green" fw style={{padding:"14px",fontSize:14,opacity:(player.injured||player.isSuspended)?0.35:1}}>
+                {player.isSuspended?"⛔ Non puoi giocare (squalificato)":player.injured?`🩹 ${L.cannotPlayInjured}`:`🎮 ${L.playMatch} la partita`}
               </Btn>
-              <Btn onClick={simulateAndAdvance} v="secondary" fw style={{padding:"12px",fontSize:13}}>
-                {player.injured?`⏭️ ${L.skipAndRecover}`:`⚡ ${L.simulateMatch} e avanza settimana`}
+              <Btn onClick={()=>{if(player.isSuspended)setPlayer(p=>({...p,isSuspended:false}));simulateAndAdvance();}} v="secondary" fw style={{padding:"12px",fontSize:13}}>
+                {player.injured?`⏭️ ${L.skipAndRecover}`:player.isSuspended?"⚡ Simula la partita (squalificato)":`⚡ ${L.simulateMatch} e avanza settimana`}
               </Btn>
               <Btn onClick={()=>setShowMatchPrompt(null)} v="secondary" fw style={{padding:"10px",fontSize:12,opacity:0.7}}>
                 ✕ {L.cancel} — {L.cancelStay}
@@ -11988,6 +12006,18 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
             ))}
           </div>
           <button onClick={()=>setPlayer(p=>({...p,presidentModalSeason:p.season||1}))} style={{width:"100%",padding:"7px 12px",background:"rgba(234,179,8,0.15)",border:"1px solid rgba(234,179,8,0.4)",borderRadius:8,color:"#fde68a",fontSize:12,fontWeight:700,cursor:"pointer"}}>Capito, Presidente</button>
+        </Card>
+      )}
+      {/* Sprint 75: Suspension warning */}
+      {tab==="dashboard"&&player.isSuspended&&(
+        <Card style={{marginBottom:8,padding:"12px 14px",background:"linear-gradient(135deg,#1f0707,#2d0a0a)",border:"1px solid rgba(239,68,68,0.5)"}}>
+          <div style={{display:"flex",alignItems:"center",gap:8}}>
+            <div style={{fontSize:24}}>⛔</div>
+            <div>
+              <div style={{fontSize:11,color:"#f87171",fontWeight:800,textTransform:"uppercase",letterSpacing:1.5}}>Squalificato</div>
+              <div style={{fontSize:11,color:"rgba(248,113,113,0.7)"}}>La prossima partita verrà simulata automaticamente</div>
+            </div>
+          </div>
         </Card>
       )}
       {/* Sprint 74: Jersey number pick card — shown week 1-3 if not yet picked this season */}
@@ -13477,6 +13507,31 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
             <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>{L.attributes||"Attributi"}</div>
             {Object.entries(player.stats).map(([k,v])=><StatBar key={k} label={k} value={v}/>)}
           </Card>
+          {/* Sprint 75: Disciplinary record */}
+          {(player.proStatus||"u18")==="pro"&&(
+            <Card style={{padding:"11px 14px"}}>
+              <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:10}}>🟡 Disciplina — Stagione {player.season||1}</div>
+              <div style={{display:"flex",gap:12,marginBottom:10}}>
+                <div style={{flex:1,textAlign:"center",padding:"8px",background:"#fefce8",borderRadius:8,border:"1px solid #fde68a"}}>
+                  <div style={{fontSize:22,fontWeight:900,color:"#ca8a04"}}>{player.seasonCards?.y||0}</div>
+                  <div style={{fontSize:9,color:"#a16207",textTransform:"uppercase",letterSpacing:1}}>Gialli</div>
+                </div>
+                <div style={{flex:1,textAlign:"center",padding:"8px",background:"#fff1f2",borderRadius:8,border:"1px solid #fecaca"}}>
+                  <div style={{fontSize:22,fontWeight:900,color:"#dc2626"}}>{player.seasonCards?.r||0}</div>
+                  <div style={{fontSize:9,color:"#b91c1c",textTransform:"uppercase",letterSpacing:1}}>Rossi</div>
+                </div>
+                <div style={{flex:2,textAlign:"center",padding:"8px",background:TH.bg,borderRadius:8,border:`1px solid ${TH.cardBorder}`}}>
+                  <div style={{fontSize:14,fontWeight:800,color:(player.yellAccum||0)>=2?"#dc2626":(player.yellAccum||0)===1?"#ca8a04":TH.muted}}>{player.yellAccum||0}/3</div>
+                  <div style={{fontSize:9,color:TH.faint,textTransform:"uppercase",letterSpacing:1}}>Accumulo</div>
+                  <div style={{display:"flex",gap:2,justifyContent:"center",marginTop:4}}>
+                    {[0,1,2].map(i=><div key={i} style={{width:10,height:10,borderRadius:2,background:i<(player.yellAccum||0)?"#ca8a04":"rgba(202,138,4,0.2)"}}/>)}
+                  </div>
+                </div>
+              </div>
+              {player.isSuspended&&<div style={{background:"#fef2f2",border:"1px solid #fca5a5",borderRadius:6,padding:"6px 10px",fontSize:11,color:"#dc2626",fontWeight:700,textAlign:"center"}}>⛔ Squalificato — prossima partita salta</div>}
+              {(player.yellAccum||0)===2&&!player.isSuspended&&<div style={{background:"#fffbeb",border:"1px solid #fde68a",borderRadius:6,padding:"6px 10px",fontSize:11,color:"#ca8a04",fontWeight:600,textAlign:"center"}}>⚠️ Attenzione: ancora 1 giallo = squalifica</div>}
+            </Card>
+          )}
           {/* Albo d'oro trofei */}
           {(player.trophies||[]).length>0&&(
             <Card bg="#fefce8" border="#fde68a">
