@@ -2012,7 +2012,7 @@ const NEWSPAPERS=[
   {id:"lastampa",  name:"La Stampa Sport",       short:"La Stampa",  color:"#16a34a",e:"🗞️",tone:"analitico"},
   {id:"skysport",  name:"Sky Sport 24",          short:"Sky Sport",  color:"#0099d6",e:"📡",tone:"diretto"},
 ];
-const GAME_VERSION="3.52.0"; // Sprint 72 — Chimica di Squadra
+const GAME_VERSION="3.52.1"; // Hotfix: fix ?.[1] Babel parse error (line 9056)
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -9053,7 +9053,7 @@ function CareerEndScreen({retData,onNewGame,onNewGamePlus}){
   const diaryMoments=(p.diary||[]).filter(d=>["first_goal","hattrick","pallone_oro","scarpa_oro","cup_trophy","euro_mondiale_trophy","first_national","milestone"].includes(d.type)).slice(-5).reverse();
   // Hall of Fame: find last known league from history
   const lastLg=history.length>0?history[history.length-1].lg||history[history.length-1].club:null;
-  const lgRecord=lastLg?Object.entries(LEAGUE_RECORDS).find(([k])=>k===lastLg||history.some(h=>h.lg===k))?.[1]:null:null;
+  const lgRecord=lastLg?(Object.entries(LEAGUE_RECORDS).find(([k])=>k===lastLg||history.some(h=>h.lg===k))||[null,null])[1]:null;
   const lgRecordAuto=lgRecord||Object.values(LEAGUE_RECORDS)[0]||null;
   const hofScorers=lgRecordAuto?[...lgRecordAuto.topScorers,{name:p.name,goals:p.totalGoals||0,isPlayer:true}].sort((a,b)=>b.goals-a.goals):[];
   const hofPos=hofScorers.findIndex(s=>s.isPlayer);
