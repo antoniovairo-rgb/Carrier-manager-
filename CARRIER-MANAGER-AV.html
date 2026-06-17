@@ -1932,7 +1932,7 @@ const NEWSPAPERS=[
   {id:"lastampa",  name:"La Stampa Sport",       short:"La Stampa",  color:"#16a34a",e:"🗞️",tone:"analitico"},
   {id:"skysport",  name:"Sky Sport 24",          short:"Sky Sport",  color:"#0099d6",e:"📡",tone:"diretto"},
 ];
-const GAME_VERSION="3.35.0"; // Sprint 55 — 100+ nuove situazioni match
+const GAME_VERSION="3.36.0"; // Sprint 56 — Tutorial Onboarding primo avvio
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -9203,11 +9203,46 @@ const generateBio=(p)=>{
   else{lines.push(`Valutazione tecnica ${ovr}/99: ampi margini di crescita davanti a sé.`);}
   return lines.join(" ");
 };
+/* === SPRINT 56 — TUTORIAL ONBOARDING === */
+const TUTORIAL_STEPS=[
+  {icon:"🌟",title:"Benvenuto in CPM!",text:"Sei {name}, un giovane talento con il sogno di diventare campione. Ogni settimana conta — allenati, gioca le partite e scrivi la tua storia."},
+  {icon:"📋",title:"La Dashboard",text:"Qui trovi le tue statistiche, gli obiettivi stagionali e l'agenda settimanale. I tab in basso ti portano su Calendar, Standings, Training e Profile."},
+  {icon:"⚽",title:"Gioca le Partite",text:"Quando si avvicina una partita appare il tasto GIOCA. Non saltarla! Ogni gol, ogni assist e ogni trofeo restano nel tuo diario di carriera."},
+  {icon:"💪",title:"Allenati Ogni Settimana",text:"Dal tab Training scegli il tipo di allenamento. Migliora le statistiche, aumenta la fiducia del mister e sblocca i milestones. Ora sei pronto — buona carriera!"},
+];
+function TutorialOverlay({name,step,onNext,onSkip}){
+  const s=TUTORIAL_STEPS[step]||TUTORIAL_STEPS[0];
+  const isLast=step===TUTORIAL_STEPS.length-1;
+  const txt=s.text.replace(/\{name\}/g,name||"Campione");
+  const ttl=s.title.replace(/\{name\}/g,name||"Campione");
+  return(
+    <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.78)",zIndex:9999,display:"flex",alignItems:"flex-end",justifyContent:"center",padding:"0 12px 90px"}}>
+      <div style={{background:TH.card,border:`2px solid ${TH.primary}`,borderRadius:20,padding:"26px 22px 20px",maxWidth:400,width:"100%",boxShadow:"0 10px 50px rgba(0,0,0,0.6)"}}>
+        <div style={{fontSize:40,textAlign:"center",marginBottom:8}}>{s.icon}</div>
+        <div style={{fontWeight:800,fontSize:18,color:TH.text,textAlign:"center",marginBottom:10}}>{ttl}</div>
+        <div style={{fontSize:14,color:TH.muted,textAlign:"center",lineHeight:1.65,marginBottom:18}}>{txt}</div>
+        {/* step dots */}
+        <div style={{display:"flex",gap:6,justifyContent:"center",marginBottom:16}}>
+          {TUTORIAL_STEPS.map((_,i)=>(
+            <div key={i} style={{width:i===step?22:8,height:8,borderRadius:4,background:i===step?TH.primary:i<step?TH.success:TH.cardBorder,transition:"width 0.2s"}}/>
+          ))}
+        </div>
+        <div style={{display:"flex",gap:10,alignItems:"center"}}>
+          <button onClick={onSkip} style={{background:"none",border:"none",color:TH.faint,fontSize:12,cursor:"pointer",padding:"8px 4px",textDecoration:"underline",whiteSpace:"nowrap"}}>Salta</button>
+          <button onClick={onNext} style={{flex:1,background:TH.primary,color:"#fff",border:"none",borderRadius:12,padding:"13px 0",fontWeight:800,fontSize:15,cursor:"pointer",letterSpacing:"0.02em"}}>
+            {isLast?"Inizia la carriera! 🚀":"Avanti →"}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
 function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLang,onNewGamePlusCB}){
   const L=LOCALE[lang]||LOCALE.IT; // disponibile fin dall'inizio, usato anche negli early return
   const[player,setPlayer]=useState(init);
   const[tab,setTab]=useState("dashboard");
   const[screen,setScreen]=useState("dashboard");
+  const[tutStep,setTutStep]=useState(0); // Sprint 56: tutorial step (0-3)
   // Sprint 45j: rimuovi padding cpm-scroll durante il match su mobile per eliminare spazio bianco
   useEffect(()=>{
     const el=document.querySelector('.cpm-scroll');
@@ -9353,6 +9388,10 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     // Sprint 43 migrations
     if(!('nationsCupQueue' in newP)){newP={...newP,nationsCupQueue:null};changed=true;}
     if(!('euroMondiale' in newP)){newP={...newP,euroMondiale:null};changed=true;} // Sprint 53
+    if(!('tutorialDone' in newP)){ // Sprint 56: skip tutorial for existing saves
+      newP={...newP,tutorialDone:(newP.totalMatches||0)>0||(newP.season||1)>1};
+      changed=true;
+    }
     if(changed){setPlayer(newP);}
   },[]);// eslint-disable-line
   const[darkMode,setDarkMode]=useState(()=>localStorage.getItem("cpm-dark")==="1");
@@ -10866,6 +10905,18 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
   return(
     <div className="cpm-career">
       <Notif msg={notif?.msg} color={notif?.color}/>
+      {/* Sprint 56 — Tutorial onboarding (solo primo avvio) */}
+      {!player.tutorialDone&&screen==="dashboard"&&(
+        <TutorialOverlay
+          name={player.name}
+          step={tutStep}
+          onNext={()=>{
+            if(tutStep<TUTORIAL_STEPS.length-1){setTutStep(t=>t+1);}
+            else{setPlayer(p=>({...p,tutorialDone:true}));}
+          }}
+          onSkip={()=>setPlayer(p=>({...p,tutorialDone:true}))}
+        />
+      )}
       {/* Week event toast */}
       {weekEvent&&<div style={{position:"fixed",top:70,left:"50%",transform:"translateX(-50%)",background:TH.card,border:"1px solid "+TH.cardBorder,color:TH.text,padding:"12px 20px",borderRadius:12,fontSize:12,fontWeight:600,zIndex:9998,boxShadow:TH.shadow,maxWidth:340,textAlign:"center"}}>{weekEvent.txt}</div>}
 
