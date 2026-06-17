@@ -2012,7 +2012,7 @@ const NEWSPAPERS=[
   {id:"lastampa",  name:"La Stampa Sport",       short:"La Stampa",  color:"#16a34a",e:"🗞️",tone:"analitico"},
   {id:"skysport",  name:"Sky Sport 24",          short:"Sky Sport",  color:"#0099d6",e:"📡",tone:"diretto"},
 ];
-const GAME_VERSION="3.48.0"; // Sprint 68 — Rumor di Mercato nella Finestra
+const GAME_VERSION="3.49.0"; // Sprint 69 — Legame Speciale (bond milestones)
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -10363,13 +10363,37 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
   // Sprint 24 — apply impulse/spogliatoio choice effects (called from weekLiveModal choice buttons)
   const handleImpulseChoice=(choice)=>{
     const ef=choice.ef||{};
+    // Sprint 69: pre-compute bond milestone before setPlayer (reads current player state)
+    let bondMilestone=null;
+    if(choice.bond!=null&&weekLiveModal?.teammate){
+      const tName=weekLiveModal.teammate.name;
+      const mate=(player.teammates||[]).find(t=>t.name===tName);
+      if(mate){
+        const oldBond=mate.bond||40;
+        const newBond=clamp(oldBond+(choice.bond||0),0,100);
+        const already=mate.bondMilestones||[];
+        const crossed=[50,75].filter(m=>oldBond<m&&newBond>=m&&!already.includes(m));
+        if(crossed.length>0){
+          const milestone=Math.max(...crossed);
+          const arcData=TEAMMATE_ARCHETYPES.find(a=>a.id===mate.archetype);
+          bondMilestone={tName:mate.name,tIcon:mate.icon||"👥",milestone,arcData,crossed};
+        }
+      }
+    }
     setPlayer(p=>{
       let updTeammates=p.teammates||[];
       if(choice.bond!=null&&weekLiveModal?.teammate){
         const tName=weekLiveModal.teammate.name;
-        updTeammates=updTeammates.map(t=>t.name===tName?{...t,bond:clamp((t.bond||40)+(choice.bond||0),0,100)}:t);
+        updTeammates=updTeammates.map(t=>{
+          if(t.name!==tName)return t;
+          const oldBond=t.bond||40;
+          const newBond=clamp(oldBond+(choice.bond||0),0,100);
+          const already=t.bondMilestones||[];
+          const crossed=[50,75].filter(m=>oldBond<m&&newBond>=m&&!already.includes(m));
+          return{...t,bond:newBond,bondMilestones:crossed.length?[...already,...crossed]:already};
+        });
       }
-      return{...p,teammates:updTeammates,
+      let upd={...p,teammates:updTeammates,
         morale:clamp((p.morale||70)+(ef.morale||0),0,100),
         fatigue:clamp((p.fatigue||0)+(ef.fatigue||0),0,100),
         form:clamp((p.form||70)+(ef.form||0),30,95),
@@ -10377,6 +10401,23 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
         coachTrust:clamp((p.coachTrust||60)+(ef.coachTrust||0),0,100),
         value:Math.max(0.5,(p.value||0.8)+(ef.value||0)),
       };
+      // Sprint 69: apply archetype bond_bonus on milestone
+      if(bondMilestone){
+        const bb=bondMilestone.arcData?.bond_bonus||{};
+        if(bb.morale)upd.morale=clamp(upd.morale+(bb.morale||0),0,100);
+        if(bb.fatigue)upd.fatigue=clamp(upd.fatigue+(bb.fatigue||0),0,100);
+        if(bb.form)upd.form=clamp(upd.form+(bb.form||0),30,95);
+        if(bb.coachTrust)upd.coachTrust=clamp(upd.coachTrust+(bb.coachTrust||0),0,100);
+        const _ms=bondMilestone.milestone;
+        const _tN=bondMilestone.tName;
+        const _icon=bondMilestone.tIcon;
+        const _diary={season:p.season||1,week:p.week||1,type:"milestone",e:_icon,
+          headline:`Legame ${_ms}% con ${_tN}`,
+          body:`Il rapporto con ${_tN} ha raggiunto il ${_ms}% — bonus archivio attivato · S.${p.season||1}`,
+          color:_ms>=75?"#7c3aed":"#2563eb"};
+        upd.diary=[_diary,...(p.diary||[])].slice(0,80);
+      }
+      return upd;
     });
     const bits=[];
     if(ef.morale)bits.push(`😄${ef.morale>0?"+":""}${ef.morale}`);
@@ -10385,6 +10426,16 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     if(ef.popularity)bits.push(`⭐${ef.popularity>0?"+":""}${ef.popularity}`);
     if(ef.coachTrust)bits.push(`🤝${ef.coachTrust>0?"+":""}${ef.coachTrust}`);
     if(bits.length)notify(bits.join(" "));
+    // Sprint 69: notify bond milestone
+    if(bondMilestone){
+      const bb=bondMilestone.arcData?.bond_bonus||{};
+      const bonusBits=[];
+      if(bb.morale&&bb.morale>0)bonusBits.push(`😄+${bb.morale}`);
+      if(bb.form&&bb.form>0)bonusBits.push(`💪+${bb.form}`);
+      if(bb.coachTrust&&bb.coachTrust>0)bonusBits.push(`🤝+${bb.coachTrust}`);
+      if(bb.fatigue&&bb.fatigue<0)bonusBits.push(`⚡${bb.fatigue}`);
+      setTimeout(()=>notify(`${bondMilestone.tIcon} Legame ${bondMilestone.milestone}%! ${bonusBits.join(" ")||"Bonus attivato"}`,TH.success),350);
+    }
     setWeekLiveModal(null);
   };
 
@@ -12889,17 +12940,29 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                 {(player.teammates||[]).map((tm,i)=>{
                   const arc=TEAMMATE_ARCHETYPES.find(a=>a.id===tm.archetype);
                   const bond=tm.bond||40;
-                  const bondColor=bond>=70?"#4ade80":bond>=50?"#60a5fa":"#94a3b8";
+                  const bondColor=bond>=75?"#a78bfa":bond>=50?"#60a5fa":"#94a3b8";
+                  const milestones=tm.bondMilestones||[];
+                  const has50=milestones.includes(50);
+                  const has75=milestones.includes(75);
                   return(
-                    <div key={i} style={{display:"flex",alignItems:"center",gap:10}}>
-                      <div style={{fontSize:22,width:36,textAlign:"center"}}>{tm.icon||"👤"}</div>
-                      <div style={{flex:1}}>
-                        <div style={{fontSize:12,fontWeight:800,color:"#e0f2fe"}}>{tm.name}</div>
-                        <div style={{fontSize:10,color:"rgba(186,230,253,0.5)"}}>{arc?.name||"Compagno"}</div>
+                    <div key={i} style={{display:"flex",flexDirection:"column",gap:4,paddingBottom:i<(player.teammates.length-1)?8:0,borderBottom:i<(player.teammates.length-1)?"1px solid rgba(56,189,248,0.1)":"none"}}>
+                      <div style={{display:"flex",alignItems:"center",gap:10}}>
+                        <div style={{fontSize:22,width:36,textAlign:"center"}}>{tm.icon||"👤"}</div>
+                        <div style={{flex:1}}>
+                          <div style={{fontSize:12,fontWeight:800,color:"#e0f2fe"}}>{tm.name}</div>
+                          <div style={{fontSize:10,color:"rgba(186,230,253,0.5)"}}>{arc?.name||"Compagno"}</div>
+                        </div>
+                        <div style={{textAlign:"right"}}>
+                          <div style={{fontSize:11,fontWeight:700,color:bondColor}}>{bond}%</div>
+                          <div style={{display:"flex",gap:3,justifyContent:"flex-end",marginTop:2}}>
+                            <span style={{fontSize:9,padding:"1px 4px",borderRadius:4,background:has50?"#1e40af":"rgba(255,255,255,0.06)",color:has50?"#93c5fd":"rgba(186,230,253,0.25)"}}>50%{has50?" ✓":""}</span>
+                            <span style={{fontSize:9,padding:"1px 4px",borderRadius:4,background:has75?"#5b21b6":"rgba(255,255,255,0.06)",color:has75?"#c4b5fd":"rgba(186,230,253,0.25)"}}>75%{has75?" ✓":""}</span>
+                          </div>
+                        </div>
                       </div>
-                      <div style={{textAlign:"right"}}>
-                        <div style={{fontSize:11,fontWeight:700,color:bondColor}}>{bond}%</div>
-                        <div style={{fontSize:9,color:"rgba(186,230,253,0.4)"}}>legame</div>
+                      {/* Sprint 69 — bond progress bar */}
+                      <div style={{height:4,background:"rgba(255,255,255,0.08)",borderRadius:2,overflow:"hidden",marginLeft:46}}>
+                        <div style={{height:"100%",width:`${bond}%`,background:bond>=75?"#a78bfa":bond>=50?"#60a5fa":"#475569",borderRadius:2,transition:"width 0.4s ease"}}/>
                       </div>
                     </div>
                   );
