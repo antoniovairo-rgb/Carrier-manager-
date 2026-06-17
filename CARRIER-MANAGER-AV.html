@@ -2012,7 +2012,7 @@ const NEWSPAPERS=[
   {id:"lastampa",  name:"La Stampa Sport",       short:"La Stampa",  color:"#16a34a",e:"🗞️",tone:"analitico"},
   {id:"skysport",  name:"Sky Sport 24",          short:"Sky Sport",  color:"#0099d6",e:"📡",tone:"diretto"},
 ];
-const GAME_VERSION="3.46.0"; // Sprint 66 — Striscia Vittorie: Momentum Badge & Diary
+const GAME_VERSION="3.47.0"; // Sprint 67 — Bacheca Record Personali nel Profilo
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -12743,6 +12743,44 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                     );
                   })}
                 </div>
+              </Card>
+            );
+          })()}
+          {/* Sprint 67 — Bacheca Record Personali */}
+          {(()=>{
+            const _hist=player.history||[];
+            const _cur={season:player.season||1,club:player.club?.n||"–",goals:player.goals||0,assists:player.assists||0,matches:player.matches||0,ovr:player.ovr||60};
+            const _all=[..._hist,_cur];
+            const _bst=(f)=>_all.reduce((b,h)=>h[f]>(b?.[f]??-1)?h:b,null);
+            const _bG=_bst('goals'),_bA=_bst('assists'),_bOvr=_bst('ovr'),_bM=_bst('matches');
+            const _w=player.week||1,_g=player.goals||0;
+            const _proj=_w>=5?Math.round(_g/_w*38):null;
+            const _rows=[
+              {e:"⚽",l:"Miglior stagione · gol",v:_bG?.goals||0,ctx:`S.${_bG?.season||1} · ${(_bG?.club||"").slice(0,14)}`},
+              {e:"🎯",l:"Miglior stagione · assist",v:_bA?.assists||0,ctx:`S.${_bA?.season||1} · ${(_bA?.club||"").slice(0,14)}`},
+              {e:"📊",l:"OVR massimo raggiunto",v:_bOvr?.ovr||0,ctx:`S.${_bOvr?.season||1}`},
+              {e:"👕",l:"Più presenze in stagione",v:_bM?.matches||0,ctx:`S.${_bM?.season||1} · ${(_bM?.club||"").slice(0,14)}`},
+            ].filter(r=>r.v>0);
+            if(!_rows.length&&_proj===null)return null;
+            return(
+              <Card style={{padding:"12px 14px"}}>
+                <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>🏅 Record Personali</div>
+                {_rows.map((r,i)=>(
+                  <div key={i} style={{display:"flex",alignItems:"center",gap:8,padding:"4px 0",borderBottom:`1px solid ${TH.cardBorder}`}}>
+                    <span style={{fontSize:13,width:18,flexShrink:0}}>{r.e}</span>
+                    <span style={{flex:1,fontSize:11,color:TH.text}}>{r.l}</span>
+                    <span style={{fontSize:13,fontWeight:800,color:TH.warning,minWidth:22,textAlign:"right"}}>{r.v}</span>
+                    <span style={{fontSize:9,color:TH.faint,minWidth:60,textAlign:"right",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{r.ctx}</span>
+                  </div>
+                ))}
+                {_proj!==null&&(
+                  <div style={{display:"flex",alignItems:"center",gap:8,padding:"5px 0 1px"}}>
+                    <span style={{fontSize:13,width:18,flexShrink:0}}>📈</span>
+                    <span style={{flex:1,fontSize:11,color:TH.muted}}>Proiezione (W.{_w}/38)</span>
+                    <span style={{fontSize:13,fontWeight:800,color:TH.primary}}>~{_proj}</span>
+                    <span style={{fontSize:9,color:TH.faint,minWidth:60,textAlign:"right"}}>gol a fine stagione</span>
+                  </div>
+                )}
               </Card>
             );
           })()}
