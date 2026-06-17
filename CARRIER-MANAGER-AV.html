@@ -1681,6 +1681,32 @@ S("🎯 Assist d'esterno piede!",["trequarti","bordo"],{x:[58,86],y:[22,78]},{x:
   A("🎯 Esterno piede preciso","passaggio",6,"assist","intercept",12),A("💥 Tiro d'esterno a sorpresa","tiro",2,"goal","miss",14),A("🌀 Finta e interno piede","tecnica",4,"assist","intercept",10)]),
 S("💥 Bordata dal limite!",["trequarti"],{x:[55,72],y:[28,72]},{x:[57,68],y:[32,68]},[
   A("💥 Collo pieno potente","tiro",-8,"goal","miss",18),A("🎯 Tiro controllato","tiro",-4,"goal","miss",14),A("↗️ Serve in area per il compagno","passaggio",5,"assist","intercept",8)]),
+
+/* === SPRINT 78 — NUOVE SITUATIONS === */
+S("⚡ Taglio dal lato destro verso il centro!",["bordo","area"],{x:[74,96],y:[58,97]},{x:[76,88],y:[62,92]},[
+  A("🌀 Rientra e tira col sinistro","tecnica",6,"goal","miss",14),A("🎯 Cross teso verso il secondo palo","passaggio",5,"assist","intercept",10),A("💥 Tiro di collo pieno","tiro",2,"goal","miss",13)]),
+S("⚡ Taglio dal lato sinistro verso il centro!",["bordo","area"],{x:[74,96],y:[3,42]},{x:[76,88],y:[8,38]},[
+  A("🌀 Rientra e tira col destro","tecnica",6,"goal","miss",14),A("🎯 Cross teso verso il secondo palo","passaggio",5,"assist","intercept",10),A("💥 Tiro di collo pieno","tiro",2,"goal","miss",13)]),
+S("🌀 Slalom in area! Tre difensori da superare.",["area"],{x:[80,96],y:[22,78]},{x:[82,92],y:[28,72]},[
+  A("🌀 Slalom completato e tiro","dribbling",8,"goal","miss",20),A("⚡ Scatto tra le gambe","velocità",4,"goal","miss",16),A("🎯 Assist per il compagno smarcato","passaggio",6,"assist","intercept",10)],false,2,"🌀 Slalom tra i difensori! Salta tutti e vai.","special"),
+S("🦵 Controbalzo improvviso in area!",["area","bordo"],{x:[74,96],y:[22,78]},{x:[76,88],y:[28,72]},[
+  A("🦵 Controbalzo secco al volo","tiro",7,"goal","miss",15),A("🎯 Controllo e tira","tecnica",5,"goal","miss",13),A("↩️ Serve il compagno","passaggio",3,"assist","intercept",8)]),
+S("🛡️ Ultimo uomo! Devi fermare l'avversario.",["propria","difesa"],{x:[5,28],y:[20,80]},{x:[8,22],y:[30,70]},[
+  A("🛡️ Tackle duro — rischio rosso","fisico",10,"recovery","foul",16),A("⚡ Sprint laterale preventivo","velocità",7,"recovery","through",14),A("📣 Guida i compagni e copri","mentalità",5,"recovery","through",10)],false,2,"🚨 Sei l'ultimo! Se passa, è gol sicuro.","def"),
+S("😱 Il portiere è fuori dai pali! Tira da lontano.",["trequarti","bordo"],{x:[55,78],y:[28,72]},{x:[58,70],y:[32,68]},[
+  A("💥 Tiro da distanza sul palo lontano","tiro",5,"goal","miss",16),A("🎯 Pallonetto morbido — gol dell'anno","tecnica",3,"goal","miss_easy",14),A("🎯 Assist per il compagno in area","passaggio",6,"assist","intercept",10)]),
+S("🔥 CI CREDIAMO! La rimonta è iniziata.",["bordo","area"],{x:[72,96],y:[22,78]},{x:[74,88],y:[28,72]},[
+  A("🔥 Tiro di rabbia — per i tifosi","tiro",6,"goal","miss",16),A("💥 Potenza esplosiva dal limite","tiro",2,"goal","miss",14),A("🌟 Assist da campione","passaggio",7,"assist","intercept",12)],false,3,"🔥 La rimonta è viva. Un gol adesso e tutto è possibile!","special"),
+S("🏃 Corsa in area — stacca di testa in corsa!",["area"],{x:[78,96],y:[22,78]},{x:[80,92],y:[28,72]},[
+  A("✈️ Stacco in corsa potente","fisico",6,"goal","miss",16),A("🎯 Colpo di testa angolato","fisico",4,"goal","miss",14),A("🦵 Lascia passare e tira di piede","tecnica",3,"goal","miss",12)]),
+S("⚡ Difensore saltato! La porta è aperta.",["area"],{x:[80,97],y:[22,78]},{x:[82,93],y:[28,72]},[
+  A("🦵 Tiro sul palo più lontano","tiro",8,"goal","miss",12),A("🎯 Piazzato nell'angolo basso","tecnica",6,"goal","miss",12),A("⚡ Tiro di prima — istinto","velocità",4,"goal","miss",15)]),
+S("🎯 Cucchiaio a giro sul palo lontano!",["bordo","area"],{x:[72,92],y:[20,42]},{x:[74,86],y:[23,38]},[
+  A("🎯 Cucchiaio a giro angolato","tecnica",5,"goal","miss",14),A("💥 Tiro di collo pieno invece","tiro",3,"goal","miss",13),A("↗️ Cross sul secondo palo","passaggio",5,"assist","intercept",8)]),
+S("🧠 Verticalizzazione prima del difensore!",["centro","trequarti"],{x:[38,68],y:[22,78]},{x:[40,58],y:[28,72]},[
+  A("🎯 Verticalizzazione precisa","passaggio",9,"assist","intercept",10),A("⚡ Avanza e tira in corsa","velocità",5,"goal","intercept",16),A("🌀 Finta e supera il pressing","tecnica",5,"goal","intercept",14)]),
+S("🧤 Errore del portiere! Ribattuta in area.",["area"],{x:[84,98],y:[28,72]},{x:[86,96],y:[33,67]},[
+  A("⚡ Arriva in tempo sulla ribattuta","velocità",10,"goal","miss_easy",10),A("🦵 Tiro immediato sul rimbalzo","tiro",8,"goal","miss",12),A("🤝 Serve il compagno più vicino","passaggio",6,"assist","intercept",8)],false,0,"😱 Il portiere ha lasciato sfuggire il pallone!"),
 ];
 
 const ZONES={
@@ -2073,7 +2099,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="3.57.0"; // Sprint 77 — Situation Chaining + DRIFT refinement
+const GAME_VERSION="3.58.0"; // Sprint 78 — New Situations + Score-aware HL selection
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -5818,7 +5844,9 @@ const resolveKitConflict=(homeCol,awayCol)=>{
 };
 
 /* Sprint 33 C5 — contextual situation selection weighted by player stats */
-function selectContextualSituations(all,numHL,player,seed){
+function selectContextualSituations(all,numHL,player,seed,opts){
+  var scoreCtx=opts&&opts.scoreCtx||"drawing";
+  var clockCtx=opts&&opts.clock||0;
   var stats=player.stats||{};
   var ovr=player.ovr||60;
   var tiro=stats.tiro||60;
@@ -5837,6 +5865,19 @@ function selectContextualSituations(all,numHL,player,seed){
       if(hasTiro)w=Math.round(w*(0.5+tiro/120));
       else if(hasPass)w=Math.round(w*(0.5+passaggio/120));
       else if(hasVel)w=Math.round(w*(0.5+velocita/120));
+    }
+    // Sprint 78 — score context weighting
+    if(scoreCtx==="losing"){
+      if(t==="off")w=Math.round(w*1.35);
+      if(t==="def")w=Math.round(w*0.70);
+    }else if(scoreCtx==="winning"){
+      if(t==="def")w=Math.round(w*1.20);
+      if(t==="special")w=Math.round(w*0.80);
+    }
+    // Late-game boost for area/bordo situations
+    if(clockCtx>=70&&t==="off"){
+      var hasArea=sit.zones&&(sit.zones.indexOf("area")>=0||sit.zones.indexOf("bordo")>=0);
+      if(hasArea)w=Math.round(w*1.25);
     }
     return{sit:sit,w:Math.max(1,w)};
   });
@@ -6335,7 +6376,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
         var nxtMn=reactiveHLQueueRef.current[0];
         if(ck>=nxtMn){
           reactiveHLQueueRef.current.shift();
-          var extras=selectContextualSituations([...SITUATIONS],1,player,Date.now()^(ck*31));
+          var extras=selectContextualSituations([...SITUATIONS],1,player,Date.now()^(ck*31),{scoreCtx:_sctx76,clock:ck});
           if(extras.length>0){
             setSituations(function(prev){return[...prev,extras[0]];});
             var addT=ck+2;
@@ -6350,7 +6391,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
         var sc=scoreRef.current;
         if(sc.away-sc.home>=2){
           desperateFiredRef.current=true;
-          var dextra=selectContextualSituations([...SITUATIONS],1,player,Date.now()^997);
+          var dextra=selectContextualSituations([...SITUATIONS],1,player,Date.now()^997,{scoreCtx:"losing",clock:ck});
           if(dextra.length>0){
             setSituations(function(prev){return[...prev,dextra[0]];});
             var dtime=76+rng(0,4);
