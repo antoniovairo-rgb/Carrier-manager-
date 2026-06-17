@@ -1932,7 +1932,7 @@ const NEWSPAPERS=[
   {id:"lastampa",  name:"La Stampa Sport",       short:"La Stampa",  color:"#16a34a",e:"🗞️",tone:"analitico"},
   {id:"skysport",  name:"Sky Sport 24",          short:"Sky Sport",  color:"#0099d6",e:"📡",tone:"diretto"},
 ];
-const GAME_VERSION="3.37.0"; // Sprint 57 — Rival Potenziato: carriera parallela + award tracking
+const GAME_VERSION="3.38.0"; // Sprint 58 — Fine Carriera Narrativa Potenziata
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -8966,27 +8966,51 @@ function CareerEndScreen({retData,onNewGame,onNewGamePlus}){
   const bestSeason=history.reduce((best,h)=>(!best||h.goals>best.goals)?h:best,null);
   const clubs=[...new Set(history.map(h=>h.club).filter(Boolean))];
   const pct=Math.round((legacyScore/1000)*100);
+  // Sprint 58: extra career data
+  const pAwards=p.playerAwards||{palloneOros:[],scarpaOros:[],youngYears:[],seasonRecords:[]};
+  const hasPrizes=(pAwards.palloneOros.length+pAwards.scarpaOros.length+pAwards.youngYears.length)>0;
+  // Pick up to 5 most important diary moments
+  const diaryMoments=(p.diary||[]).filter(d=>["first_goal","hattrick","pallone_oro","scarpa_oro","cup_trophy","euro_mondiale_trophy","first_national","milestone"].includes(d.type)).slice(-5).reverse();
+  // Hall of Fame: find last known league from history
+  const lastLg=history.length>0?history[history.length-1].lg||history[history.length-1].club:null;
+  const lgRecord=lastLg?Object.entries(LEAGUE_RECORDS).find(([k])=>k===lastLg||history.some(h=>h.lg===k))?.[1]:null:null;
+  const lgRecordAuto=lgRecord||Object.values(LEAGUE_RECORDS)[0]||null;
+  const hofScorers=lgRecordAuto?[...lgRecordAuto.topScorers,{name:p.name,goals:p.totalGoals||0,isPlayer:true}].sort((a,b)=>b.goals-a.goals):[];
+  const hofPos=hofScorers.findIndex(s=>s.isPlayer);
+  // Journalist final verdicts
+  const journalists=p.journalists||[];
+  const jVerdict=(j)=>{
+    const t=j.trust||50;
+    if(t>=80)return{txt:`"${p.name} è stato un privilegio seguirlo. Una carriera straordinaria."`,color:"#16a34a"};
+    if(t>=65)return{txt:`"Carriera solida, tanti momenti memorabili. Un giocatore che ha onorato la maglia."`,color:"#0369a1"};
+    if(t>=45)return{txt:`"Nel complesso una carriera di buon livello. Non sempre costante, ma con picchi notevoli."`,color:"#ca8a04"};
+    if(t>=30)return{txt:`"Poteva dare di più. Il talento c'era, la continuità meno."`,color:"#d97706"};
+    return{txt:`"Una carriera travagliata. I numeri parlano chiaro — poteva andare meglio."`,color:"#dc2626"};
+  };
   return(
     <div style={{width:"100%",paddingBottom:40}}>
-      <div style={{textAlign:"center",padding:"24px 16px 16px"}}>
-        <div style={{fontSize:52,marginBottom:8}}>🎽</div>
-        <h1 style={{fontSize:22,fontWeight:900,margin:"0 0 4px",color:TH.text}}>Fine Carriera</h1>
-        <p style={{fontSize:13,color:TH.muted,margin:0}}>{p.name} · {p.age} anni</p>
+      {/* Header */}
+      <div style={{textAlign:"center",padding:"28px 16px 16px"}}>
+        <div style={{fontSize:56,marginBottom:8}}>🎽</div>
+        <h1 style={{fontSize:24,fontWeight:900,margin:"0 0 4px",color:TH.text}}>Fine Carriera</h1>
+        <p style={{fontSize:13,color:TH.muted,margin:0}}>{p.name} · {p.age} anni · {Math.max(0,(p.season||1)-1)} stagioni</p>
       </div>
 
-      <Card style={{marginBottom:12,padding:"16px",textAlign:"center"}} bg={grade.color+"11"} border={grade.color+"44"}>
-        <div style={{fontSize:32,marginBottom:4}}>{grade.e}</div>
-        <div style={{fontSize:16,fontWeight:900,color:grade.color,marginBottom:6}}>{grade.label}</div>
+      {/* Legacy grade */}
+      <Card style={{marginBottom:12,padding:"18px",textAlign:"center"}} bg={grade.color+"11"} border={grade.color+"44"}>
+        <div style={{fontSize:36,marginBottom:4}}>{grade.e}</div>
+        <div style={{fontSize:18,fontWeight:900,color:grade.color,marginBottom:6}}>{grade.label}</div>
         <div style={{fontSize:11,color:TH.muted,marginBottom:10}}>Legacy Score: {legacyScore} / 1000</div>
-        <div style={{background:TH.cardBorder,borderRadius:10,height:8,overflow:"hidden",marginBottom:4}}>
-          <div style={{width:`${pct}%`,height:"100%",background:grade.color,borderRadius:10,transition:"width 1s"}}/>
+        <div style={{background:TH.cardBorder,borderRadius:10,height:8,overflow:"hidden"}}>
+          <div style={{width:`${pct}%`,height:"100%",background:grade.color,borderRadius:10}}/>
         </div>
       </Card>
 
+      {/* Career stats */}
       <Card style={{marginBottom:12,padding:"14px 16px"}}>
         <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:10}}>📊 Statistiche Carriera</div>
-        <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:8,textAlign:"center",marginBottom:10}}>
-          {[{l:"Stagioni",v:Math.max(0,(p.season||1)-1),e:"📅"},{l:"Partite",v:p.totalMatches||0,e:"🎮"},{l:"Gol",v:p.totalGoals||0,e:"⚽"},{l:"Assist",v:p.totalAssists||0,e:"🎯"},{l:"Trofei",v:trophies.length,e:"🏆"},{l:"Caps",v:p.nationalCaps||0,e:"🌍"}].map(s=>(
+        <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:8,textAlign:"center",marginBottom:bestSeason?10:0}}>
+          {[{l:"Stagioni",v:Math.max(0,(p.season||1)-1),e:"📅"},{l:"Partite",v:p.totalMatches||0,e:"🎮"},{l:"Gol",v:p.totalGoals||0,e:"⚽"},{l:"Assist",v:p.totalAssists||0,e:"🎯"},{l:"Trofei",v:trophies.length,e:"🏆"},{l:"Caps Naz.",v:p.nationalCaps||0,e:"🌍"}].map(s=>(
             <div key={s.l} style={{background:TH.bg,borderRadius:8,padding:"8px 4px"}}>
               <div style={{fontSize:18}}>{s.e}</div>
               <div style={{fontSize:20,fontWeight:900,color:TH.text}}>{s.v}</div>
@@ -8997,6 +9021,107 @@ function CareerEndScreen({retData,onNewGame,onNewGamePlus}){
         {bestSeason&&<div style={{background:"#fef9c3",borderRadius:8,padding:"8px 10px",fontSize:11,color:"#78350f"}}>⭐ Miglior stagione: S.{bestSeason.season} con {bestSeason.goals} gol · Livello {bestSeason.ovr}</div>}
       </Card>
 
+      {/* Sprint 58: Premi vinti */}
+      {hasPrizes&&(
+        <Card style={{marginBottom:12,padding:"14px 16px"}}>
+          <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:10}}>🏅 Premi e Riconoscimenti</div>
+          <div style={{display:"flex",flexDirection:"column",gap:6}}>
+            {pAwards.palloneOros.map(s=><div key={"po"+s} style={{display:"flex",alignItems:"center",gap:10,padding:"6px 8px",background:"#fef9c3",borderRadius:8,border:"1px solid #fde68a"}}><span style={{fontSize:20}}>🏆</span><div><div style={{fontSize:12,fontWeight:800,color:"#92400e"}}>Pallone d'Oro</div><div style={{fontSize:10,color:"#78350f"}}>Stagione {s} — miglior giocatore del campionato</div></div></div>)}
+            {pAwards.scarpaOros.map(s=><div key={"so"+s} style={{display:"flex",alignItems:"center",gap:10,padding:"6px 8px",background:"#fee2e2",borderRadius:8,border:"1px solid #fca5a5"}}><span style={{fontSize:20}}>👟</span><div><div style={{fontSize:12,fontWeight:800,color:"#991b1b"}}>Scarpa d'Oro</div><div style={{fontSize:10,color:"#7f1d1d"}}>Stagione {s} — capocannoniere della lega</div></div></div>)}
+            {pAwards.youngYears.map(s=><div key={"yy"+s} style={{display:"flex",alignItems:"center",gap:10,padding:"6px 8px",background:"#ede9fe",borderRadius:8,border:"1px solid #c4b5fd"}}><span style={{fontSize:20}}>💎</span><div><div style={{fontSize:12,fontWeight:800,color:"#5b21b6"}}>Miglior Giovane</div><div style={{fontSize:10,color:"#4c1d95"}}>Stagione {s}</div></div></div>)}
+          </div>
+        </Card>
+      )}
+
+      {/* Sprint 58: Hall of Fame */}
+      {lgRecordAuto&&hofPos>=0&&(
+        <Card style={{marginBottom:12,padding:"14px 16px",background:"linear-gradient(135deg,#1e1b4b 0%,#312e81 100%)",border:"1px solid rgba(99,102,241,0.3)"}}>
+          <div style={{fontSize:10,color:"rgba(165,180,252,0.7)",textTransform:"uppercase",letterSpacing:1.5,marginBottom:10}}>🏟️ Hall of Fame — {lgRecordAuto.league||"Lega"}</div>
+          <div style={{display:"flex",flexDirection:"column",gap:5}}>
+            {hofScorers.slice(0,Math.min(8,hofPos+2)).map((s,i)=>(
+              <div key={i} style={{display:"flex",alignItems:"center",gap:8,padding:"5px 8px",borderRadius:8,background:s.isPlayer?"rgba(99,102,241,0.25)":"rgba(0,0,0,0.2)",border:s.isPlayer?"1px solid rgba(99,102,241,0.5)":"none"}}>
+                <div style={{width:24,textAlign:"center",fontSize:s.isPlayer?14:11,fontWeight:900,color:i===0?"#fbbf24":i===1?"#9ca3af":i===2?"#b45309":"rgba(165,180,252,0.6)"}}>{i+1}</div>
+                <div style={{flex:1,fontSize:12,fontWeight:s.isPlayer?900:600,color:s.isPlayer?"#e0e7ff":"rgba(165,180,252,0.7)"}}>{s.name}{s.isPlayer?" 👈":""}</div>
+                <div style={{fontSize:13,fontWeight:900,color:s.isPlayer?"#818cf8":"rgba(165,180,252,0.6)"}}>{s.goals}</div>
+              </div>
+            ))}
+          </div>
+          <div style={{marginTop:8,textAlign:"center",fontSize:11,color:"rgba(165,180,252,0.7)",fontWeight:700}}>
+            {hofPos===0?"🥇 Sei il capocannoniere di tutti i tempi della lega!":hofPos<=2?`🥈 #${hofPos+1} nella storia della lega — straordinario!`:`#${hofPos+1} nella storia con ${p.totalGoals||0} gol in carriera`}
+          </div>
+        </Card>
+      )}
+
+      {/* Sprint 58: Momenti indimenticabili */}
+      {diaryMoments.length>0&&(
+        <Card style={{marginBottom:12,padding:"14px 16px"}}>
+          <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:10}}>✨ Momenti Indimenticabili</div>
+          <div style={{display:"flex",flexDirection:"column",gap:8}}>
+            {diaryMoments.map((d,i)=>(
+              <div key={i} style={{display:"flex",gap:10,alignItems:"flex-start"}}>
+                <div style={{width:28,height:28,borderRadius:"50%",background:(d.color||"#6b7280")+"22",border:`1.5px solid ${d.color||"#6b7280"}`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:13,flexShrink:0}}>{d.e||"📌"}</div>
+                <div style={{flex:1}}>
+                  <div style={{fontSize:12,fontWeight:800,color:TH.text}}>{d.headline}</div>
+                  <div style={{fontSize:10,color:TH.muted}}>{d.body}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </Card>
+      )}
+
+      {/* Sprint 58: Verdetto dei giornalisti */}
+      {journalists.length>0&&(
+        <Card style={{marginBottom:12,padding:"14px 16px"}}>
+          <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:10}}>📰 Verdetto della Stampa</div>
+          <div style={{display:"flex",flexDirection:"column",gap:10}}>
+            {journalists.map((j,i)=>{
+              const v=jVerdict(j);
+              return(
+                <div key={i} style={{display:"flex",gap:10,alignItems:"flex-start"}}>
+                  <div style={{fontSize:22,flexShrink:0}}>{j.icon||"📰"}</div>
+                  <div style={{flex:1}}>
+                    <div style={{fontSize:11,fontWeight:800,color:TH.text}}>{j.name} <span style={{color:j.color||TH.muted,fontWeight:400,fontSize:10}}>· {j.paper}</span></div>
+                    <div style={{fontSize:11,color:v.color,fontStyle:"italic",lineHeight:1.5,marginTop:2}}>{v.txt}</div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </Card>
+      )}
+
+      {/* Sprint 58: Rivale finale */}
+      {p.rival&&(()=>{
+        const r=p.rival;
+        const isAhead=(p.totalGoals||0)>(r.totalGoals||0);
+        return(
+          <Card style={{marginBottom:12,padding:"14px 16px",background:"linear-gradient(135deg,#1e1b4b,#312e81)",border:"1px solid rgba(99,102,241,0.3)"}}>
+            <div style={{fontSize:10,color:"rgba(165,180,252,0.7)",textTransform:"uppercase",letterSpacing:1.5,marginBottom:10}}>🆚 Il Verdetto Finale — Tu vs {r.name}</div>
+            <div style={{display:"grid",gridTemplateColumns:"1fr auto 1fr",gap:8,alignItems:"center",textAlign:"center"}}>
+              <div style={{background:"rgba(0,0,0,0.3)",borderRadius:10,padding:"10px 6px"}}>
+                <div style={{fontSize:10,color:"rgba(74,222,128,0.7)",marginBottom:2}}>TU</div>
+                <div style={{fontSize:26,fontWeight:900,color:isAhead?"#4ade80":"#f87171"}}>{p.totalGoals||0}</div>
+                <div style={{fontSize:8,color:"rgba(165,180,252,0.4)"}}>GOL CARRIERA</div>
+              </div>
+              <div style={{fontSize:18,color:"rgba(165,180,252,0.4)"}}>⚔️</div>
+              <div style={{background:"rgba(0,0,0,0.3)",borderRadius:10,padding:"10px 6px"}}>
+                <div style={{fontSize:10,color:"rgba(99,102,241,0.7)",marginBottom:2}}>{r.name.split(" ")[0].toUpperCase()}</div>
+                <div style={{fontSize:26,fontWeight:900,color:!isAhead?"#4ade80":"#f87171"}}>{r.totalGoals||0}</div>
+                <div style={{fontSize:8,color:"rgba(165,180,252,0.4)"}}>GOL CARRIERA</div>
+              </div>
+            </div>
+            <div style={{marginTop:10,textAlign:"center",fontSize:12,fontWeight:800,color:isAhead?"#4ade80":"#f87171"}}>
+              {isAhead?`✅ Hai vinto la sfida con ${r.name}. Sarai ricordato come il migliore.`:`😤 ${r.name} ti ha superato. Ma che battaglia incredibile.`}
+            </div>
+            <div style={{marginTop:4,textAlign:"center",fontSize:10,color:"rgba(165,180,252,0.5)"}}>
+              Relazione: {({sconosciuto:"Sconosciuto",rivale:"🔥 Rivalità accesa",rispettato:"🤝 Rispetto reciproco",amico:"👥 Amicizia"})[r.relationship||"sconosciuto"]}
+            </div>
+          </Card>
+        );
+      })()}
+
+      {/* Clubs */}
       {clubs.length>0&&(
         <Card style={{marginBottom:12,padding:"12px 14px"}}>
           <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>🏟️ Club della Carriera</div>
@@ -9006,6 +9131,7 @@ function CareerEndScreen({retData,onNewGame,onNewGamePlus}){
         </Card>
       )}
 
+      {/* Trophies */}
       {trophies.length>0&&(
         <Card style={{marginBottom:12,padding:"12px 14px"}}>
           <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>🏆 Albo d'Oro</div>
@@ -9018,11 +9144,13 @@ function CareerEndScreen({retData,onNewGame,onNewGamePlus}){
         </Card>
       )}
 
+      {/* Biography */}
       <Card style={{marginBottom:16,padding:"14px 16px"}}>
         <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>📖 Biografia</div>
         <p style={{fontSize:11,color:TH.text,lineHeight:1.6,margin:0}}>{bio}</p>
       </Card>
 
+      {/* Actions */}
       <Btn onClick={()=>{const txt=buildCareerCard(p);if(navigator.clipboard){navigator.clipboard.writeText(txt).then(()=>alert("📋 Riepilogo copiato negli appunti!"));}else{alert(txt);}}} v="ghost" fw style={{padding:"12px",fontSize:13,marginBottom:8}}>
         📋 Copia Riepilogo Carriera
       </Btn>
