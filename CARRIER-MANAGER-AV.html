@@ -2012,7 +2012,7 @@ const NEWSPAPERS=[
   {id:"lastampa",  name:"La Stampa Sport",       short:"La Stampa",  color:"#16a34a",e:"🗞️",tone:"analitico"},
   {id:"skysport",  name:"Sky Sport 24",          short:"Sky Sport",  color:"#0099d6",e:"📡",tone:"diretto"},
 ];
-const GAME_VERSION="3.47.0"; // Sprint 67 — Bacheca Record Personali nel Profilo
+const GAME_VERSION="3.48.0"; // Sprint 68 — Rumor di Mercato nella Finestra
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -13562,6 +13562,33 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                         ✅ Ricerca effettuata questa finestra · Prossima: {week>=19?"Estate S."+(player.season||1)+1:"Inverno W.19"}
                       </div>
                     )}
+                    {/* Sprint 68 — Rumor di Mercato */}
+                    {(()=>{
+                      var _s68=hashStr(`rum68_${player.name}_${player.season||1}_${week>=19?'W':'S'}`);
+                      var _pool=CLUBS.filter(function(c){return c.p>=(valRaw*60-5)&&c.p<=(player.ovr||65)+22&&c.id!==player.club?.id&&c.lg!==player.club?.lg;}).slice(0,40);
+                      if(_pool.length<2)return null;
+                      var _usedIdx=new Set();var _ls=_s68;
+                      while(_usedIdx.size<3&&_usedIdx.size<_pool.length){_ls=(_ls*1664525+1013904223)&0x7fffffff;_usedIdx.add(_ls%_pool.length);}
+                      var _rumors=[..._usedIdx].map(function(ci){
+                        var _c=_pool[ci];if(!_c)return null;
+                        var _d=(_c.p||65)-(player.ovr||65);
+                        return{club:_c,int:_d<-8?"🔥 Forte interesse":_d<10?"⚖️ Interesse moderato":"🌡️ Sondaggio iniziale",col:_d<-8?"#dc2626":_d<10?"#d97706":"#6b7280"};
+                      }).filter(Boolean);
+                      if(!_rumors.length)return null;
+                      return(
+                        <div style={{marginTop:10,paddingTop:10,borderTop:"1px solid #a7f3d0"}}>
+                          <div style={{fontSize:9,color:"#065f46",fontWeight:700,textTransform:"uppercase",letterSpacing:1.2,marginBottom:6}}>📡 Voci di Mercato</div>
+                          {_rumors.map(function(r,i){return(
+                            <div key={i} style={{display:"flex",alignItems:"center",gap:8,padding:"4px 0",borderBottom:i<_rumors.length-1?"1px solid #d1fae5":"none"}}>
+                              <div style={{width:20,height:20,flexShrink:0}}><TeamBadge team={r.club} size={20}/></div>
+                              <span style={{flex:1,fontSize:11,color:"#065f46",fontWeight:600,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{r.club.n}</span>
+                              <span style={{fontSize:10,fontWeight:700,color:r.col,flexShrink:0}}>{r.int}</span>
+                            </div>
+                          );})}
+                          <div style={{fontSize:9,color:"#6b7280",marginTop:6,fontStyle:"italic"}}>Solo indiscrezioni — non è garantita un'offerta formale.</div>
+                        </div>
+                      );
+                    })()}
                   </Card>
                 )}
                 {/* Contract status card */}
