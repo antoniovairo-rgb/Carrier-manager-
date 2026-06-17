@@ -2012,7 +2012,7 @@ const NEWSPAPERS=[
   {id:"lastampa",  name:"La Stampa Sport",       short:"La Stampa",  color:"#16a34a",e:"🗞️",tone:"analitico"},
   {id:"skysport",  name:"Sky Sport 24",          short:"Sky Sport",  color:"#0099d6",e:"📡",tone:"diretto"},
 ];
-const GAME_VERSION="3.44.0"; // Sprint 64 — Mini Classifica nel Dashboard
+const GAME_VERSION="3.45.0"; // Sprint 65 — Focus Settimanale Allenamento
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -9692,6 +9692,9 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     if(!('lastMonthlyReview' in newP)){ // Sprint 60: quarterly coach review
       newP={...newP,lastMonthlyReview:0};changed=true;
     }
+    if(!('weeklyFocusType' in newP)){ // Sprint 65: weekly training focus
+      newP={...newP,weeklyFocusType:null};changed=true;
+    }
     if(changed){setPlayer(newP);}
   },[]);// eslint-disable-line
   const[darkMode,setDarkMode]=useState(()=>localStorage.getItem("cpm-dark")==="1");
@@ -10717,11 +10720,11 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       const naturalForm=clamp(Math.round(baseForm*0.92+65*0.08),30,95);
       const baseFat=updP.fatigue!=null?updP.fatigue:(p.fatigue||0);
       const naturalFat=Math.max(0,baseFat-6);
-      if(p.injured&&(p.injuryWeeks||0)>0){const recovAdv=p.injuryWeeks-1<=0;return{...updP,week:(p.week||1)+1,weekLived:false,sessionsThisWeek:0,sessionLog:[],trainingStreak:0,lastTrainingType:null,injuryWeeks:p.injuryWeeks-1,injured:!recovAdv,...(recovAdv?{injuryType:null,justRecovered:true}:{justRecovered:false}),fatigue:Math.max(0,baseFat-12),form:naturalForm};}
+      if(p.injured&&(p.injuryWeeks||0)>0){const recovAdv=p.injuryWeeks-1<=0;return{...updP,week:(p.week||1)+1,weekLived:false,sessionsThisWeek:0,sessionLog:[],trainingStreak:0,lastTrainingType:null,weeklyFocusType:null,injuryWeeks:p.injuryWeeks-1,injured:!recovAdv,...(recovAdv?{injuryType:null,justRecovered:true}:{justRecovered:false}),fatigue:Math.max(0,baseFat-12),form:naturalForm};}
       const nextStreak=(p.sessionsThisWeek||0)>0?(p.trainingStreak||0):0; // Sprint 50: streak based on session count
       const nextWk=(p.week||1)+1;
       const winReset=nextWk===19; // finestra invernale apre → reset ricerca mercato
-      return{...updP,week:nextWk,weekLived:false,sessionsThisWeek:0,sessionLog:[],trainingStreak:nextStreak,windowOfferUsed:winReset?false:(p.windowOfferUsed||false),fatigue:naturalFat,form:naturalForm,justRecovered:false};
+      return{...updP,week:nextWk,weekLived:false,sessionsThisWeek:0,sessionLog:[],trainingStreak:nextStreak,weeklyFocusType:null,windowOfferUsed:winReset?false:(p.windowOfferUsed||false),fatigue:naturalFat,form:naturalForm,justRecovered:false};
     });
     notify("⏭️ Settimana avanzata");
     // Sprint 35 — Agent task result notification
@@ -12556,8 +12559,9 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                   sessionLog:[...(p.sessionLog||[]),{id:intensive?"rec_completo":"rec_attivo",e:intensive?"🛌":"🧘",l:intensive?"Riposo":"Recupero",col:"#0284c7",intensive}]}));
                 notify(`${intensive?"🛌":"🧘"} Recupero: fatica −${fatReduc}, morale +${morB}${fmB?" forma +"+fmB:""}`,TH.success);
               }else{
-                const gainA=rng(1,2)+(intensive?1:0)+streakB+coachB;
-                const gainB=rng(1,2)+(intensive?rng(1,2):0)+streakB;
+                const focusB=(player.weeklyFocusType||null)===s.id?1:0; // Sprint 65
+                const gainA=rng(1,2)+(intensive?1:0)+streakB+coachB+focusB;
+                const gainB=rng(1,2)+(intensive?rng(1,2):0)+streakB+focusB;
                 setPlayer(p=>{
                   const ns={...p.stats};
                   ns[s.a]=clamp((ns[s.a]||60)+gainA,1,99);
@@ -12568,7 +12572,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                     trainingStreak:isSameType?streak+1:1,lastTrainingType:s.id,
                     sessionLog:[...(p.sessionLog||[]),{id:s.id,e:s.e,l:s.l,col:s.col,intensive,gainA,gainB,statA:s.a,statB:s.b}]};
                 });
-                const bonusTxt=(streakB?" 🔥":"")+(coachB&&intensive?" 🧑‍🏫":"");
+                const bonusTxt=(streakB?" 🔥":"")+(coachB&&intensive?" 🧑‍🏫":"")+(focusB?" 🎯":"");
                 notify(`${s.e} +${gainA} ${s.a} · +${gainB} ${s.b}${bonusTxt}`,TH.success);
               }
             };
@@ -12579,6 +12583,25 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                 <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}}>
                   <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5}}>Piano settimanale · 3 sessioni</div>
                   {streak>=2&&<div style={{background:"#fff7ed",color:"#ea580c",padding:"3px 10px",borderRadius:20,fontSize:10,fontWeight:700}}>🔥 {streak} sett. di fila</div>}
+                </div>
+
+                {/* Sprint 65 — Focus della Settimana */}
+                <div style={{marginBottom:12}}>
+                  <div style={{fontSize:9,color:TH.faint,textTransform:"uppercase",letterSpacing:1.2,marginBottom:5}}>🎯 Focus Settimana {player.weeklyFocusType?<span style={{color:TCOL[player.weeklyFocusType],fontWeight:700}}> · {TEMOJI[player.weeklyFocusType]} attivo</span>:""}</div>
+                  <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:5}}>
+                    {TRAIN_TYPES.map(t=>{
+                      const isF=(player.weeklyFocusType||null)===t.id;
+                      return(
+                        <button key={t.id} onClick={()=>setPlayer(p=>({...p,weeklyFocusType:isF?null:t.id}))}
+                          style={{padding:"5px 3px",borderRadius:8,border:`1.5px solid ${isF?t.col:TH.cardBorder}`,background:isF?t.col+"22":"transparent",cursor:"pointer",fontFamily:"inherit",display:"flex",flexDirection:"column",alignItems:"center",gap:1,transition:"all .15s"}}>
+                          <span style={{fontSize:14}}>{t.e}</span>
+                          <span style={{fontSize:8,fontWeight:isF?800:500,color:isF?t.col:TH.muted}}>{t.l}</span>
+                          {isF&&<span style={{fontSize:7,color:t.col,fontWeight:700}}>+1 bonus</span>}
+                        </button>
+                      );
+                    })}
+                  </div>
+                  {!player.weeklyFocusType&&<div style={{fontSize:9,color:TH.faint,marginTop:4,textAlign:"center"}}>Scegli un focus per guadagnare +1 extra su entrambi gli attributi</div>}
                 </div>
 
                 {/* 3 slot visuali */}
