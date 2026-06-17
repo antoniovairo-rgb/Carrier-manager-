@@ -1068,6 +1068,36 @@ const JOURNALIST_POOL=[
 ];
 
 /* ========================================
+   SPRINT 62 — NOTIZIE DELLA LEGA
+======================================== */
+const LEAGUE_NEWS_TEMPLATES=[
+  {e:"🤕",t:"Infortunio a $C: stop di due settimane per il loro attaccante"},
+  {e:"💪",t:"$C recupera il capitano in extremis: torna titolare sabato"},
+  {e:"📢",t:"Mercato in fermento: $C vicino a chiudere un colpo a sorpresa"},
+  {e:"🔄",t:"$C cede un titolare all'estero: affare da 8 milioni"},
+  {e:"🔥",t:"$C in striscia positiva: tre vittorie consecutive, nessuno li ferma"},
+  {e:"📉",t:"Crisi profonda a $C: solo 2 punti nelle ultime cinque giornate"},
+  {e:"⚽",t:"Goleada storica: $C travolge l'avversario per 5-0"},
+  {e:"🟥",t:"Squalifica pesante per il difensore di $C: salterà tre gare"},
+  {e:"🏟️",t:"Record di abbonati: $C registra il sold-out per l'intero girone di ritorno"},
+  {e:"📣",t:"I tifosi di $C protestano davanti alla sede: tensioni con la dirigenza"},
+  {e:"👔",t:"$C cambia modulo: il tecnico sperimenta la difesa a tre"},
+  {e:"🌟",t:"Il giovane talento di $C convocato per la prima volta in nazionale"},
+  {e:"🏆",t:"Lotta al titolo: $C a soli due punti dalla vetta dopo la vittoria di ieri"},
+  {e:"⚠️",t:"$C scivolato in zona retrocessione: -3 dalla salvezza con 8 gare da giocare"},
+  {e:"🎯",t:"Il bomber di $C raggiunge quota 10 reti: già superato il totale dello scorso anno"},
+  {e:"📰",t:"La stampa esalta $C: «Miglior collettivo della giornata di campionato»"},
+  {e:"🔁",t:"Trattativa sorprendente: $C e $C2 valutano uno scambio di prestiti"},
+  {e:"📊",t:"$C è la difesa meno battuta del campionato con soli 8 gol subiti"},
+  {e:"🧤",t:"$C rinnova il portiere fino al 2028: «È il pilastro del nostro futuro»"},
+  {e:"😤",t:"Polemiche arbitrali dopo $C: il tecnico espulso, 2 turni di stop"},
+  {e:"🌧️",t:"Rinviata la partita di $C per maltempo: recupero in infrasettimanale"},
+  {e:"🎉",t:"Centenario del club: $C festeggia con uno spettacolo prima del match di sabato"},
+  {e:"🛒",t:"$C si muove sul mercato degli svincolati: due nomi nel mirino del ds"},
+  {e:"📱",t:"Il capitano di $C pubblica un messaggio d'addio ai tifosi: futuro incerto"},
+];
+
+/* ========================================
    SPRINT 25 — A: IL MOMENTO (career-defining, non-repeatable)
 ======================================== */
 const CAREER_MOMENTS=[
@@ -1982,7 +2012,7 @@ const NEWSPAPERS=[
   {id:"lastampa",  name:"La Stampa Sport",       short:"La Stampa",  color:"#16a34a",e:"🗞️",tone:"analitico"},
   {id:"skysport",  name:"Sky Sport 24",          short:"Sky Sport",  color:"#0099d6",e:"📡",tone:"diretto"},
 ];
-const GAME_VERSION="3.41.0"; // Sprint 61 — Nuovi Impulsi (×12) & Sfide Espanse (×5 + progress)
+const GAME_VERSION="3.42.0"; // Sprint 62 — Notizie della Lega (news feed seeded)
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -9380,6 +9410,27 @@ const generateLeagueScorers=(player)=>{
   scorers.push({name:player.name,club:player.club?.a||player.club?.n||"–",goals:player.goals||0,isPlayer:true});
   return scorers.sort((a,b)=>b.goals-a.goals).slice(0,12);
 };
+/* Sprint 62 — Notizie della Lega (seeded per stagione+settimana) */
+const generateLeagueNews=(player)=>{
+  const league=player.club?.lg;
+  if(!league||(player.proStatus||"u18")==="u18")return[];
+  const clubs=CLUBS.filter(c=>c.lg===league&&c.id!==player.club?.id);
+  if(clubs.length<2)return[];
+  const N=LEAGUE_NEWS_TEMPLATES.length;
+  let s=hashStr(`${player.season||1}_${player.week||1}_ln62`);
+  const idx=[...Array(N).keys()];
+  for(let i=N-1;i>0;i--){s=(s*1664525+1013904223)&0x7fffffff;const j=s%(i+1);[idx[i],idx[j]]=[idx[j],idx[i]];}
+  const out=[];
+  for(let i=0;i<3;i++){
+    const tpl=LEAGUE_NEWS_TEMPLATES[idx[i]];
+    s=(s*1664525+1013904223)&0x7fffffff;const ci=s%clubs.length;
+    s=(s*1664525+1013904223)&0x7fffffff;const ci2=(ci+1+s%Math.max(1,clubs.length-1))%clubs.length;
+    const cN=clubs[ci].n||clubs[ci].a||"–";
+    const cN2=clubs[ci2].n||clubs[ci2].a||"–";
+    out.push({e:tpl.e,txt:tpl.t.replace("$C2",cN2).replace("$C",cN)});
+  }
+  return out;
+};
 /* Sprint 60 — Verifica Trimestrale del Mister */
 const MONTHLY_COACH_REVIEWS=[
   {perf:"excellent",lines:[
@@ -11859,6 +11910,22 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
           })}
         </Card>
       )}
+      {/* Sprint 62 — Notizie della Lega */}
+      {tab==="dashboard"&&(player.proStatus||"u18")==="pro"&&(()=>{
+        const _news=generateLeagueNews(player);
+        if(!_news.length)return null;
+        return(
+          <Card style={{marginBottom:8,padding:"10px 14px"}}>
+            <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>🗞️ Notizie della Settimana</div>
+            {_news.map((n,i)=>(
+              <div key={i} style={{display:"flex",alignItems:"flex-start",gap:8,padding:"5px 0",borderBottom:i<_news.length-1?`1px solid ${TH.cardBorder}`:"none"}}>
+                <span style={{fontSize:14,flexShrink:0,marginTop:1}}>{n.e}</span>
+                <span style={{fontSize:11,color:TH.text,lineHeight:"1.4"}}>{n.txt}</span>
+              </div>
+            ))}
+          </Card>
+        );
+      })()}
       {tab==="dashboard"&&(
         <div className="cpm-dash-grid">
           <Card border="#bbf7d0" bg="#f0fdf4">
