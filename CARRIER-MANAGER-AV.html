@@ -2073,7 +2073,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="3.56.0"; // Sprint 76 — Live Match 2.0 Phase 1
+const GAME_VERSION="3.57.0"; // Sprint 77 — Situation Chaining + DRIFT refinement
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -5891,6 +5891,24 @@ const SUB_EVENTS=[
   {txt:"🎯 Modulo più offensivo nel finale — liberi di attaccare.",energy:5,mom:12},
   {txt:"⏱️ Un compagno esce infortunato — il gruppo si compatta.",energy:0,mom:8},
 ];
+// Sprint 77 — Situation Chaining: dedicated follow-up situations after successful assists
+const CHAIN_SITS={
+  header:S("✈️ Cross in area! Attacca il secondo palo.",["area"],{x:[78,96],y:[20,80]},{x:[80,90],y:[28,72]},[
+    A("✈️ Colpo di testa","fisico",8,"goal","miss",14),
+    A("🦵 Tiro di prima","tiro",-2,"goal","miss",12),
+    A("🤝 Sponda per compagno","passaggio",3,"assist","nothing",7)
+  ]),
+  mischia:S("🌀 Mischia in area! Approfitta del caos.",["area"],{x:[78,96],y:[26,74]},{x:[80,92],y:[33,67]},[
+    A("🦵 Spingila dentro!","tiro",12,"goal","miss",10),
+    A("🎯 Controllo e tiro","tecnica",5,"goal","miss",12),
+    A("✈️ Di testa","fisico",0,"goal","miss",14)
+  ]),
+  second_ball:S("🎯 Secondo tempo sul rimbalzo — istinto puro!",["bordo","area"],{x:[72,94],y:[22,78]},{x:[74,86],y:[30,70]},[
+    A("🦵 Tiro al volo","tiro",4,"goal","miss",15),
+    A("🎯 Prima intenzione","tecnica",2,"goal","miss",13),
+    A("🏃 Avanza in area","velocità",3,"goal","intercept",12)
+  ]),
+};
 function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true,benchStart}){
   // Dynamic HL count — based on match conditions, NOT random
   const numHLRef=useRef(0);
@@ -6030,16 +6048,17 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   const driftTargetsRef=useRef(null);
   const ballTargetRef=useRef({x:50,y:50});
   const chantTimersRef=useRef([]);
+  const pendingChainSitRef=useRef(null); // Sprint 77
   const velRef=useRef({});
   const DRIFT_PRESETS={
     // index 0 = home GK (always fixed in goal centre), indices 1-9 = home outfield
-    attack:    [{x:5,y:50},{x:22,y:18},{x:22,y:38},{x:22,y:62},{x:22,y:82},{x:42,y:25},{x:42,y:75},{x:62,y:22},{x:62,y:50},{x:62,y:78}],
-    attack_goal:[{x:5,y:50},{x:22,y:18},{x:22,y:38},{x:22,y:62},{x:22,y:82},{x:38,y:20},{x:38,y:80},{x:55,y:15},{x:65,y:50},{x:55,y:85}],
-    wide_right: [{x:5,y:50},{x:22,y:18},{x:22,y:38},{x:22,y:62},{x:22,y:82},{x:42,y:25},{x:42,y:75},{x:60,y:85},{x:68,y:70},{x:72,y:90}],
-    midfield:  [{x:5,y:50},{x:22,y:18},{x:22,y:38},{x:22,y:62},{x:22,y:82},{x:42,y:25},{x:42,y:50},{x:42,y:75},{x:55,y:30},{x:55,y:70}],
+    attack:    [{x:5,y:50},{x:22,y:18},{x:22,y:38},{x:22,y:62},{x:22,y:82},{x:44,y:25},{x:44,y:75},{x:64,y:22},{x:64,y:50},{x:64,y:78}],
+    attack_goal:[{x:5,y:50},{x:25,y:20},{x:25,y:42},{x:25,y:58},{x:25,y:80},{x:44,y:22},{x:44,y:78},{x:65,y:16},{x:78,y:50},{x:65,y:84}],
+    wide_right: [{x:5,y:50},{x:22,y:18},{x:22,y:38},{x:22,y:62},{x:22,y:82},{x:44,y:25},{x:44,y:75},{x:62,y:88},{x:70,y:72},{x:76,y:92}],
+    midfield:  [{x:5,y:50},{x:22,y:18},{x:22,y:38},{x:22,y:62},{x:22,y:82},{x:44,y:25},{x:44,y:50},{x:44,y:75},{x:57,y:30},{x:57,y:70}],
     retreat:   [{x:5,y:50},{x:12,y:25},{x:12,y:50},{x:12,y:75},{x:25,y:15},{x:25,y:50},{x:25,y:85},{x:35,y:30},{x:35,y:55},{x:35,y:70}],
-    defend_goal:[{x:5,y:50},{x:8,y:20},{x:8,y:45},{x:8,y:55},{x:8,y:80},{x:18,y:30},{x:18,y:50},{x:18,y:70},{x:28,y:38},{x:28,y:62}],
-    opp_goal:  [{x:5,y:50},{x:72,y:18},{x:72,y:38},{x:72,y:62},{x:72,y:82},{x:62,y:25},{x:62,y:75},{x:50,y:22},{x:50,y:50},{x:50,y:78}],
+    defend_goal:[{x:5,y:50},{x:8,y:20},{x:8,y:42},{x:8,y:58},{x:8,y:80},{x:16,y:30},{x:16,y:50},{x:16,y:70},{x:26,y:38},{x:26,y:62}],
+    opp_goal:  [{x:5,y:50},{x:75,y:18},{x:75,y:38},{x:75,y:62},{x:75,y:82},{x:64,y:25},{x:64,y:75},{x:52,y:22},{x:52,y:50},{x:52,y:78}],
   };
 
   const keysRef=useRef(new Set());
@@ -6595,6 +6614,12 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     else if(isTackle)setActionEffect({type:"dust",key:Date.now()});
     setOutcome({text:txt,ok,actionLabel:action.label});setChosenAct(action);
     setMomentum(m=>clamp(m+(ok?10:-8),0,100));
+    // Sprint 77 — Situation Chaining: cross/corner/punizione assist → header or scramble
+    if(ok&&action.rew==="assist"){
+      const _st77=situations[hlIdx]?.text||"";
+      if(_st77.includes("Cross")||_st77.includes("cross")||_st77.includes("Corner")||_st77.includes("corner")||_st77.includes("Punizione"))
+        pendingChainSitRef.current=pick([CHAIN_SITS.header,CHAIN_SITS.mischia,CHAIN_SITS.second_ball]);
+    }
     setPhase("hl_result");
     // Generate AI commentary async (non-blocking)
     generateHighlightCommentary(situations[hlIdx],action,{ok},player.stats,zone).then(c=>{
@@ -6644,12 +6669,23 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   };
   const handleContinue=()=>{
     const nx=hlIdx+1;
+    // Sprint 77 — Situation Chaining: inject chain before advancing
+    if(pendingChainSitRef.current){
+      const chain=pendingChainSitRef.current;
+      pendingChainSitRef.current=null;
+      setSituations(prev=>{const c=[...prev];c.splice(nx,0,chain);return c;});
+      setHlTimes(prev=>{const c=[...prev];c.splice(nx,0,9999);hlTimesRef.current=c;return c;});
+      setNumHL(prev=>{const v=prev+1;numHLRef.current=v;return v;});
+      setHlIdx(nx);setOutcome(null);setChosenAct(null);
+      setFloatGoal({text:"⚡ CATENA!",col:"#f59e0b",key:Date.now()});
+      setPhase("hl_intro");
+      return;
+    }
     if(nx>=numHLRef.current){setPhase("ended");}
     else{
       var didSucceed=outcome&&outcome.ok;
       setHlIdx(nx);setOutcome(null);setChosenAct(null);
-      // Sprint 34 — 30% chain highlight if previous action succeeded
-      if(didSucceed&&Math.random()<0.30){
+      if(didSucceed&&Math.random()<0.25){
         setFloatGoal({text:"⚡ CATENA!",col:"#f59e0b",key:Date.now()});
         setPhase("hl_intro");
       }else{setPhase("playing");}
