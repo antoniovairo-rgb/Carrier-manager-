@@ -2012,7 +2012,7 @@ const NEWSPAPERS=[
   {id:"lastampa",  name:"La Stampa Sport",       short:"La Stampa",  color:"#16a34a",e:"🗞️",tone:"analitico"},
   {id:"skysport",  name:"Sky Sport 24",          short:"Sky Sport",  color:"#0099d6",e:"📡",tone:"diretto"},
 ];
-const GAME_VERSION="3.45.0"; // Sprint 65 — Focus Settimanale Allenamento
+const GAME_VERSION="3.46.0"; // Sprint 66 — Striscia Vittorie: Momentum Badge & Diary
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -9431,6 +9431,15 @@ const generateLeagueNews=(player)=>{
   }
   return out;
 };
+/* Sprint 66 — Striscia Vittorie helper */
+const getWinStreak=(history)=>{
+  const recent=[...(history||[])].filter(m=>!m.simulated).reverse();
+  if(!recent.length)return{count:0,type:null};
+  const t0=recent[0].won?'win':recent[0].drew?'draw':'loss';
+  let count=0;
+  for(const m of recent){const t=m.won?'win':m.drew?'draw':'loss';if(t!==t0)break;count++;}
+  return{count,type:t0};
+};
 /* Sprint 60 — Verifica Trimestrale del Mister */
 const MONTHLY_COACH_REVIEWS=[
   {perf:"excellent",lines:[
@@ -10297,6 +10306,10 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       const newGoalStreak=result.goals>0?(p.goalStreak||0)+1:0;
       const newBestStreak=Math.max(p.bestGoalStreak||0,newGoalStreak);
       if([3,5,8,10].includes(newGoalStreak))_md51.push({season:p.season||1,week:p.week||1,type:"milestone",e:"🔥",headline:`Serie di ${newGoalStreak} partite consecutive in gol!`,body:`In rete nelle ultime ${newGoalStreak} partite · S.${p.season||1}`,color:"#f59e0b"});
+      // Sprint 66: win streak diary
+      const _ws66=getWinStreak(newHistory);
+      if(_ws66.type==='win'&&[3,5,8].includes(_ws66.count))_md51.push({season:p.season||1,week:p.week||1,type:"milestone",e:"🏆",headline:`${_ws66.count} vittorie consecutive!`,body:`Striscia vincente: ${_ws66.count} partite di fila · S.${p.season||1}`,color:"#16a34a"});
+      if(_ws66.type==='loss'&&_ws66.count===3)_md51.push({season:p.season||1,week:p.week||1,type:"milestone",e:"📉",headline:"3 sconfitte consecutive — momento di crisi.",body:`Striscia negativa · trovare la reazione · S.${p.season||1}`,color:"#dc2626"});
       const newDiary51=[...(p.diary||[]),..._md51].slice(-80);
       return{...p,stats:ns,ovr:newOvr,goals:p.goals+result.goals,assists:p.assists+result.assists,matches:p.matches+1,totalGoals:p.totalGoals+result.goals,totalAssists:p.totalAssists+result.assists,totalMatches:p.totalMatches+1,morale:clamp(p.morale+moD,0,100),form:clamp((p.form||70)+formD,30,95),fatigue:postFatigue,...(newInjured?{injured:true,injuryWeeks,injuryType}:{}),week:(p.week||1)+1,weekLived:false,log:[logE,...(p.log||[])].slice(0,60),matchHistory:newHistory,standings:newStandings,calendar:newCal,aiData:newAiData,...(newMilestoneIds.length>0?{milestones:[...(p.milestones||[]),...newMilestoneIds]}:{}),...cupUpdate2,diary:newDiary51,goalStreak:newGoalStreak,bestGoalStreak:newBestStreak};
     });
@@ -12045,7 +12058,10 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
               return(
                 <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:10}}>
                   {last5.length>0?<div style={{display:"flex",alignItems:"center",gap:4}}><span style={{fontSize:9,color:TH.faint,marginRight:2}}>ULTIMI 5</span>{last5.map((m,i)=><div key={i} title={`vs ${m.opponent||""} ${m.homeScore}–${m.awayScore}`} style={{width:22,height:22,borderRadius:4,background:m.won?"#16a34a":m.drew?"#ca8a04":"#dc2626",display:"flex",alignItems:"center",justifyContent:"center",fontSize:9,fontWeight:800,color:"#fff"}}>{m.won?"V":m.drew?"P":"S"}</div>)}</div>:<div/>}
-                  {gs>=3&&<div style={{background:"#fff7ed",border:"1px solid #fed7aa",borderRadius:12,padding:"2px 8px",fontSize:9,color:"#c2410c",fontWeight:800,flexShrink:0}}>🔥 {gs} di fila</div>}
+                  <div style={{display:"flex",gap:4,alignItems:"center",flexShrink:0}}>
+                    {gs>=3&&<div style={{background:"#fff7ed",border:"1px solid #fed7aa",borderRadius:12,padding:"2px 8px",fontSize:9,color:"#c2410c",fontWeight:800}}>🔥 {gs} di fila</div>}
+                    {(()=>{const _ws=getWinStreak(player.matchHistory);return _ws.count>=3&&_ws.type!=='draw'?<div style={{background:_ws.type==='win'?"#f0fdf4":"#fff1f2",border:`1px solid ${_ws.type==='win'?"#bbf7d0":"#fecaca"}`,borderRadius:12,padding:"2px 8px",fontSize:9,color:_ws.type==='win'?"#166534":"#991b1b",fontWeight:800}}>{_ws.type==='win'?"🏆":"📉"} {_ws.count}{_ws.type==='win'?" V":" S"}</div>:null;})()}
+                  </div>
                 </div>
               );
             })()}
