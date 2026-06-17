@@ -2012,7 +2012,7 @@ const NEWSPAPERS=[
   {id:"lastampa",  name:"La Stampa Sport",       short:"La Stampa",  color:"#16a34a",e:"🗞️",tone:"analitico"},
   {id:"skysport",  name:"Sky Sport 24",          short:"Sky Sport",  color:"#0099d6",e:"📡",tone:"diretto"},
 ];
-const GAME_VERSION="3.51.0"; // Sprint 71 — Bacheca Trofei
+const GAME_VERSION="3.52.0"; // Sprint 72 — Chimica di Squadra
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -12118,6 +12118,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                   <div style={{display:"flex",gap:4,alignItems:"center",flexShrink:0}}>
                     {gs>=3&&<div style={{background:"#fff7ed",border:"1px solid #fed7aa",borderRadius:12,padding:"2px 8px",fontSize:9,color:"#c2410c",fontWeight:800}}>🔥 {gs} di fila</div>}
                     {(()=>{const _ws=getWinStreak(player.matchHistory);return _ws.count>=3&&_ws.type!=='draw'?<div style={{background:_ws.type==='win'?"#f0fdf4":"#fff1f2",border:`1px solid ${_ws.type==='win'?"#bbf7d0":"#fecaca"}`,borderRadius:12,padding:"2px 8px",fontSize:9,color:_ws.type==='win'?"#166534":"#991b1b",fontWeight:800}}>{_ws.type==='win'?"🏆":"📉"} {_ws.count}{_ws.type==='win'?" V":" S"}</div>:null;})()}
+                    {(()=>{const _cm=player.teammates||[];if(!_cm.length)return null;const _tc=Math.round(_cm.reduce((s,t)=>s+(t.bond||40),0)/_cm.length);if(_tc>=70)return<div style={{background:"#f0fdf4",border:"1px solid #bbf7d0",borderRadius:12,padding:"2px 8px",fontSize:9,color:"#166534",fontWeight:800}}>🤝 {_tc}%</div>;if(_tc<38)return<div style={{background:"#fff1f2",border:"1px solid #fecaca",borderRadius:12,padding:"2px 8px",fontSize:9,color:"#991b1b",fontWeight:800}}>👥 {_tc}%</div>;return null;})()}
                   </div>
                 </div>
               );
@@ -12608,6 +12609,10 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
             const streak=player.trainingStreak||0;
             const coachB=(player.coachTrust||60)>=75?1:0;
             const allDone=sessions>=3;
+            // Sprint 72 — team chemistry bonus
+            const _chemMates72=player.teammates||[];
+            const teamChemistry72=_chemMates72.length?Math.round(_chemMates72.reduce((s,t)=>s+(t.bond||40),0)/_chemMates72.length):50;
+            const chemB=teamChemistry72>=70?1:0;
 
             const doTrain=(s,intensive)=>{
               if(allDone){notify("Hai già completato 3 sessioni questa settimana.",TH.warning);return;}
@@ -12633,8 +12638,8 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                 notify(`${intensive?"🛌":"🧘"} Recupero: fatica −${fatReduc}, morale +${morB}${fmB?" forma +"+fmB:""}`,TH.success);
               }else{
                 const focusB=(player.weeklyFocusType||null)===s.id?1:0; // Sprint 65
-                const gainA=rng(1,2)+(intensive?1:0)+streakB+coachB+focusB;
-                const gainB=rng(1,2)+(intensive?rng(1,2):0)+streakB+focusB;
+                const gainA=rng(1,2)+(intensive?1:0)+streakB+coachB+focusB+chemB;
+                const gainB=rng(1,2)+(intensive?rng(1,2):0)+streakB+focusB+chemB;
                 setPlayer(p=>{
                   const ns={...p.stats};
                   ns[s.a]=clamp((ns[s.a]||60)+gainA,1,99);
@@ -12645,7 +12650,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                     trainingStreak:isSameType?streak+1:1,lastTrainingType:s.id,
                     sessionLog:[...(p.sessionLog||[]),{id:s.id,e:s.e,l:s.l,col:s.col,intensive,gainA,gainB,statA:s.a,statB:s.b}]};
                 });
-                const bonusTxt=(streakB?" 🔥":"")+(coachB&&intensive?" 🧑‍🏫":"")+(focusB?" 🎯":"");
+                const bonusTxt=(streakB?" 🔥":"")+(coachB&&intensive?" 🧑‍🏫":"")+(focusB?" 🎯":"")+(chemB?" 🤝":"");
                 notify(`${s.e} +${gainA} ${s.a} · +${gainB} ${s.b}${bonusTxt}`,TH.success);
               }
             };
@@ -12676,6 +12681,14 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                   </div>
                   {!player.weeklyFocusType&&<div style={{fontSize:9,color:TH.faint,marginTop:4,textAlign:"center"}}>Scegli un focus per guadagnare +1 extra su entrambi gli attributi</div>}
                 </div>
+
+                {/* Sprint 72 — Chimica di Squadra */}
+                {_chemMates72.length>0&&(
+                  <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:10,padding:"6px 10px",borderRadius:8,background:teamChemistry72>=70?"#f0fdf4":teamChemistry72<40?"#fff1f2":"#f8fafc",border:`1px solid ${teamChemistry72>=70?"#bbf7d0":teamChemistry72<40?"#fecaca":TH.cardBorder}`}}>
+                    <div style={{fontSize:10,color:teamChemistry72>=70?"#166534":teamChemistry72<40?"#991b1b":TH.muted}}>🤝 Chimica squadra · {teamChemistry72}%</div>
+                    {chemB>0?<span style={{fontSize:9,background:"#dcfce7",color:"#166534",padding:"1px 6px",borderRadius:5,fontWeight:700}}>+1 allenamento</span>:<span style={{fontSize:9,color:TH.faint}}>{teamChemistry72<40?"clima teso":"nella norma"}</span>}
+                  </div>
+                )}
 
                 {/* 3 slot visuali */}
                 <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:6,marginBottom:12}}>
