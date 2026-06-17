@@ -2012,7 +2012,7 @@ const NEWSPAPERS=[
   {id:"lastampa",  name:"La Stampa Sport",       short:"La Stampa",  color:"#16a34a",e:"🗞️",tone:"analitico"},
   {id:"skysport",  name:"Sky Sport 24",          short:"Sky Sport",  color:"#0099d6",e:"📡",tone:"diretto"},
 ];
-const GAME_VERSION="3.42.0"; // Sprint 62 — Notizie della Lega (news feed seeded)
+const GAME_VERSION="3.43.0"; // Sprint 63 — Prossima Partita Scout Preview
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -11923,6 +11923,62 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                 <span style={{fontSize:11,color:TH.text,lineHeight:"1.4"}}>{n.txt}</span>
               </div>
             ))}
+          </Card>
+        );
+      })()}
+      {/* Sprint 63 — Prossima Partita: Scout Preview */}
+      {tab==="dashboard"&&(player.proStatus||"u18")==="pro"&&(()=>{
+        const _cal=player.calendar||[];
+        const _nmd=_cal.find(md=>md.week>=(player.week||1)&&!md.played&&(!md.type||md.type==="league"));
+        if(!_nmd)return null;
+        const _lc=getLeagueClubs(player);
+        const _opp=_lc.find(c=>c.id===_nmd.opponentId)||_lc.find(c=>c.n===_nmd.opponentName)||{n:_nmd.opponentName||"?",a:"???",c:"#888",c2:"#fff",p:60};
+        const _sorted=[...(player.standings||[])].sort((a,b)=>b.pts-a.pts||((b.gf||0)-(b.ga||0))-((a.gf||0)-(a.ga||0)));
+        const _total=_sorted.length;
+        const _pPos=_sorted.findIndex(t=>t.id===player.club?.id||(t.n||t.name)===(player.club?.n||player.club?.name));
+        const _oPos=_sorted.findIndex(t=>t.id===_opp.id||(t.n||t.name)===_opp.n);
+        const _h2h=(player.matchHistory||[]).filter(m=>!m.simulated&&m.opponent===_nmd.opponentName);
+        const _h2hW=_h2h.filter(m=>m.won).length;
+        const _h2hD=_h2h.filter(m=>m.drew).length;
+        const _h2hL=_h2h.filter(m=>!m.won&&!m.drew).length;
+        const _derby=isDerby(player.club?.id,_opp.id||_nmd.opponentId);
+        let _imp=null,_impC="#3b82f6";
+        if(_derby){_imp=`${_derby.e} ${_derby.name}`;_impC="#f59e0b";}
+        else if(_pPos>=0&&_oPos>=0&&_total>0){
+          const pp=_pPos+1,op=_oPos+1;
+          if(pp<=3&&op<=3){_imp="⚔️ Scontro al Vertice";_impC="#7c3aed";}
+          else if(op<=3){_imp="🏆 Sfida ai Leader";_impC="#3b82f6";}
+          else if(op>=_total-2){_imp="⚠️ Zona Retrocessione";_impC="#dc2626";}
+          else if(Math.abs(pp-op)<=2){_imp="🎯 Scontro Diretto";_impC="#059669";}
+        }
+        const _isNow=_nmd.week===(player.week||1);
+        const _pColor=(_opp.p||60)>=80?"#dc2626":(_opp.p||60)>=65?"#d97706":"#16a34a";
+        return(
+          <Card style={{marginBottom:8,padding:"10px 14px",border:`1px solid ${TH.primary}33`}}>
+            <div style={{fontSize:10,color:TH.primary,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>
+              {_isNow?"🏟️ Partita di Questa Settimana":"⏳ Prossima Partita"} · W.{_nmd.week}
+            </div>
+            <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:(_imp||_h2h.length>0)?8:0}}>
+              <TeamBadge team={_opp} size={36}/>
+              <div style={{flex:1,minWidth:0}}>
+                <div style={{fontSize:13,fontWeight:800,color:TH.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{_opp.n||_nmd.opponentName}</div>
+                <div style={{display:"flex",alignItems:"center",gap:6,marginTop:2,flexWrap:"wrap"}}>
+                  {_oPos>=0&&<span style={{fontSize:10,color:TH.muted}}>{_oPos+1}° classifica</span>}
+                  <span style={{fontSize:10,fontWeight:700,color:_pColor}}>Force {_opp.p||60}</span>
+                  <span style={{fontSize:10,color:TH.faint}}>{_nmd.isHome!==false?"🏠 Casa":"✈️ Trasferta"}</span>
+                </div>
+              </div>
+            </div>
+            {_imp&&<div style={{display:"inline-block",fontSize:10,fontWeight:700,color:_impC,background:`${_impC}15`,border:`1px solid ${_impC}40`,borderRadius:12,padding:"2px 10px",marginBottom:_h2h.length>0?8:0}}>{_imp}</div>}
+            {_h2h.length>0&&(
+              <div style={{display:"flex",alignItems:"center",gap:5,fontSize:10,color:TH.muted}}>
+                <span>H2H:</span>
+                {_h2hW>0&&<span style={{fontWeight:700,color:TH.success}}>{_h2hW}V</span>}
+                {_h2hD>0&&<span style={{fontWeight:700,color:TH.warning}}>{_h2hD}P</span>}
+                {_h2hL>0&&<span style={{fontWeight:700,color:TH.danger}}>{_h2hL}S</span>}
+                {_h2h.slice(-4).map((m,i)=><div key={i} style={{width:14,height:14,borderRadius:3,background:m.won?"#16a34a":m.drew?"#ca8a04":"#dc2626",display:"flex",alignItems:"center",justifyContent:"center",fontSize:7,fontWeight:800,color:"#fff"}}>{m.won?"V":m.drew?"P":"S"}</div>)}
+              </div>
+            )}
           </Card>
         );
       })()}
