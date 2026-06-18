@@ -603,6 +603,9 @@ const U18_CLUBS_P2 = CLUBS.filter(c=>c.lg==="Serie B").sort((a,b)=>b.p-a.p).map(
 // Pool completo U18 per la schermata offerte
 const ALL_U18_CLUBS = [...U18_CLUBS, ...U18_CLUBS_P2];
 
+// Sprint 84: Paired leagues for promotion/relegation [upper, lower]
+const LEAGUE_PAIRS=[["Serie A","Serie B"],["Premier League","EFL Championship"],["Bundesliga","2. Bundesliga"],["Ligue 1","Ligue 2"],["La Liga","Segunda División"]];
+
 // ===== LEAGUE_RECORDS — Sprint 49: fictional all-time data per league =====
 const LEAGUE_RECORDS={
   "Serie A":{
@@ -1952,7 +1955,8 @@ function getLeagueClubs(player){
     return U18_CLUBS;
   }
   const lg=player.club.lg||player.club.league;
-  if(lg){const lc=CLUBS.filter(c=>c.lg===lg);if(lc.length>=4)return lc;}
+  const ov=player.leagueOverrides||{}; // Sprint 84: respect dynamic promotion/relegation overrides
+  if(lg){const lc=CLUBS.filter(c=>ov[c.id]?ov[c.id]===lg:c.lg===lg);if(lc.length>=4)return lc;}
   const nat=player.club.nat;
   if(nat){const nc=CLUBS.filter(c=>c.nat===nat);if(nc.length>=4)return nc;}
   return CLUBS.slice(0,16);
@@ -2102,7 +2106,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="3.63.0"; // Sprint 83 — coppe europee/internazionali visibili, giocabili e integrali; euroMondiale 3 gironi
+const GAME_VERSION="3.64.0"; // Sprint 84 — promozioni/retrocessioni dinamiche tra divisioni; fix notifica euro Sprint 83
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -9976,6 +9980,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     }
     if(!('jerseyNum' in newP)){newP={...newP,jerseyNum:10,jerseyNumSeason:0};changed=true;} // Sprint 74
     if(!('yellAccum' in newP)){newP={...newP,yellAccum:0,isSuspended:false,seasonCards:{y:0,r:0}};changed=true;} // Sprint 75
+    if(!('leagueOverrides' in newP)){newP={...newP,leagueOverrides:{}};changed=true;} // Sprint 84
     if(changed){setPlayer(newP);}
   },[]);// eslint-disable-line
   const[darkMode,setDarkMode]=useState(()=>localStorage.getItem("cpm-dark")==="1");
@@ -11204,13 +11209,52 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     const newRecords={topSeasonGoals:Math.max(_rec.topSeasonGoals,player.goals||0),topSeasonAssists:Math.max(_rec.topSeasonAssists,player.assists||0),topOvr:Math.max(_rec.topOvr,player.ovr||60)};
     const isNewGoalRecord=(player.goals||0)>_rec.topSeasonGoals&&_rec.topSeasonGoals>0;
     const isNewAssistRecord=(player.assists||0)>_rec.topSeasonAssists&&_rec.topSeasonAssists>0;
+    // Sprint 84: pre-compute promotion/relegation + euro qualification from current standings (needed outside setPlayer for notifications)
+    const _sfPre=[...(player.standings||[])].sort((a,b)=>b.pts-a.pts||b.gd-a.gd||b.gf-a.gf);
+    const _nTPre=_sfPre.length;
+    const _myLgPre=player.club?.lg;
+    const _myIdPre=player.club?.id||player.club?.n;
+    const _newOvPre={...(player.leagueOverrides||{})};
+    let _playerNextLgPre=null;
+    const _promoLogPre=[];
+    // Fix Sprint 83: euro comp pre-computed here so notification can reference it
+    const _eposPre=_sfPre.findIndex(t=>(t.id&&t.id===_myIdPre)||(t.n&&t.n===(player.club?.n||player.club?.id)));
+    const _willEuroPre=(player.proStatus||"u18")==="pro"&&!!player.club&&_eposPre>=0&&_eposPre<=3&&_nTPre>0;
+    const _euroCompPre=_eposPre===0?"UCL":_eposPre<=2?"UEL":"UECL";
+    // Sprint 84: compute which clubs move between leagues this season
+    const _pairPre=_myLgPre?LEAGUE_PAIRS.find(([u,l])=>u===_myLgPre||l===_myLgPre):null;
+    if(_pairPre&&(player.proStatus||"u18")==="pro"&&_nTPre>=6){
+      const[upperLg,lowerLg]=_pairPre;const _isUpPre=_myLgPre===upperLg;
+      if(_isUpPre){
+        // Bottom 3 of player's (upper) league → relegated
+        const _relPre=_sfPre.slice(Math.max(0,_nTPre-3));
+        _relPre.forEach(c=>{const ck=c.id||c.n;if(ck){_newOvPre[ck]=lowerLg;if(ck===_myIdPre||c.n===player.club?.n)_playerNextLgPre=lowerLg;}});
+        // Top 3 from lower division (simulated by prestige+seed) → promoted
+        const _lwNow=CLUBS.filter(c=>!c.isU18&&(_newOvPre[c.id]?_newOvPre[c.id]===lowerLg:c.lg===lowerLg)&&!_relPre.find(r=>(r.id&&r.id===c.id)||(r.n&&r.n===c.n)));
+        const _lwOrd=_lwNow.map(c=>({...c,_sc:(c.p||60)*2+Math.abs(hashStr(c.id+"_promo"+(player.season||1)))%40-20})).sort((a,b)=>b._sc-a._sc);
+        _lwOrd.slice(0,3).forEach(c=>{if(c.id)_newOvPre[c.id]=upperLg;});
+        if(_relPre.length)_promoLogPre.push(`⬇️ Retrocesse in ${lowerLg}: ${_relPre.map(c=>c.a||c.n).join(", ")}`);
+        if(_lwOrd.length)_promoLogPre.push(`⬆️ Promosse in ${upperLg}: ${_lwOrd.slice(0,3).map(c=>c.a||c.n).join(", ")}`);
+      } else {
+        // Player in lower division — top 3 promoted, bottom 3 of upper relegated here
+        const _promPre=_sfPre.slice(0,3);
+        _promPre.forEach(c=>{const ck=c.id||c.n;if(ck){_newOvPre[ck]=upperLg;if(ck===_myIdPre||c.n===player.club?.n)_playerNextLgPre=upperLg;}});
+        const _upNow=CLUBS.filter(c=>!c.isU18&&(_newOvPre[c.id]?_newOvPre[c.id]===upperLg:c.lg===upperLg)&&!_promPre.find(pr=>(pr.id&&pr.id===c.id)||(pr.n&&pr.n===c.n)));
+        const _upOrd=_upNow.map(c=>({...c,_sc:(c.p||60)*2+Math.abs(hashStr(c.id+"_rel"+(player.season||1)))%40-20})).sort((a,b)=>b._sc-a._sc);
+        _upOrd.slice(Math.max(0,_upOrd.length-3)).forEach(c=>{if(c.id)_newOvPre[c.id]=lowerLg;});
+        if(_promPre.length)_promoLogPre.push(`⬆️ Promosse in ${upperLg}: ${_promPre.map(c=>c.a||c.n).join(", ")}`);
+        if(_upOrd.slice(Math.max(0,_upOrd.length-3)).length)_promoLogPre.push(`⬇️ Retrocesse in ${lowerLg}: ${_upOrd.slice(Math.max(0,_upOrd.length-3)).map(c=>c.a||c.n).join(", ")}`);
+      }
+    }
+    const _nextClubPre=_playerNextLgPre?{...player.club,lg:_playerNextLgPre}:(player.club||null);
     setPlayer(p=>{
       const newSeason=(p.season||1)+1;
       const newAge=(p.age||17)+1;
-      const lc=getLeagueClubs(p);
+      const nextClub84=_nextClubPre||p.club; // Sprint 84: club with updated lg after promotion/relegation
+      const lc=getLeagueClubs({...p,club:nextClub84,leagueOverrides:_newOvPre}); // Sprint 84: override-aware
       const newStandings=initStandings(lc);
-      const seed=(newSeason*7919+newSeason*newSeason*31)%2147483647+hashStr(p.club?.id||p.club?.n||"u18")*17;
-      let newCalendar=generateSeasonCalendar(p.club||{id:"u18",n:"U18"},lc,seed);
+      const seed=(newSeason*7919+newSeason*newSeason*31)%2147483647+hashStr(nextClub84?.id||nextClub84?.n||"u18")*17;
+      let newCalendar=generateSeasonCalendar(nextClub84||{id:"u18",n:"U18"},lc,seed);
       const newContract={...p.contract,duration:(p.contract?.duration||1)-1,expiresAtSeason:p.contract?.expiresAtSeason||newSeason+1};
       const contractExpired=newContract.duration<=0;
       let agedStats={...p.stats};
@@ -11239,8 +11283,9 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
         else delta=Math.random()<0.25?(Math.random()<0.5?1:-1):0;
         updatedShifts[ck]=clamp(cur+delta,-15,15);
       });
-      // S10.2: detect relegation (bottom 3) for player's club
-      const playerClubRelegated=nT>0&&(p.club?.id||p.club?.n)&&sortedForShifts.findIndex(t=>t.id===(p.club?.id||p.club?.n)||t.n===(p.club?.n||p.club?.id))>=nT-3;
+      // S10.2: detect relegation/promotion using Sprint 84 pre-computed values
+      const playerClubRelegated=!!_playerNextLgPre&&!!_pairPre&&_playerNextLgPre===_pairPre[1];
+      const playerClubPromoted=!!_playerNextLgPre&&!!_pairPre&&_playerNextLgPre===_pairPre[0]; // Sprint 84
       // S11.1: coach change (20% per season)
       let newCoach=p.coach||{name:"Mister "+pick(COACH_NAMES),style:"Bilanciato",trustMod:0};
       const coachChanged=Math.random()<0.20;
@@ -11298,7 +11343,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       }
       const coachLog=coachChanged?`🧑‍💼 Nuovo allenatore: ${newCoach.name} (${newCoach.style})`:null;
       const phenomLog=isPhenomSeason?`⚡ Fenomeno generazionale annunciato!`:null;
-      const relegLog=playerClubRelegated?`⬇️ Club retrocesso: calo prestige e morale`:null;
+      const relegLog=playerClubRelegated?`⬇️ ${p.club?.n||"Club"} RETROCESSA in ${_playerNextLgPre}!`:playerClubPromoted?`🆙 ${p.club?.n||"Club"} PROMOSSA in ${_playerNextLgPre}!`:null; // Sprint 84
       const gbLog=isGB?`🏆 Miglior Giovane d'Europa Stagione ${p.season||1}! Riconoscimento continentale.`:null;
       const newTeammates=generateTeammates({...p,season:newSeason});
       const newJournalists=generateJournalists();
@@ -11320,7 +11365,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       // Sprint 70: record coach tenure stats before coach possibly changes
       const _ch70={name:p.coach?.name||"Il Mister",style:p.coach?.style||"Bilanciato",season:p.season||1,goals:p.goals||0,assists:p.assists||0,matches:p.matches||0,ovr:p.ovr||60,coachTrust:p.coachTrust||60,coachChanged};
       const newCoachHistory=[...(p.coachHistory||[]),_ch70].slice(-20);
-      return{...p,season:newSeason,age:newAge,week:1,weekLived:false,goals:0,assists:0,matches:0,fatigue:0,skillPoints:(p.skillPoints||0)+2,stats:agedStats,ovr:newOvr,contract:newContract,contractExpired,morale:clamp((p.morale||70)+bonM+(playerClubRelegated?-10:0)+(isGB?15:0),0,100),coachTrust:clamp((p.coachTrust||60)+bonCT+(playerClubRelegated?-8:0)+(coachChanged?newCoach.trustMod:0),0,100),popularity:clamp((p.popularity||20)+bonPop+(isGB?25:0),0,100),value:Math.max(0.5,(p.value||0.8)+bonVal+(playerClubRelegated?-0.3:0)+(isGB?0.8:0)),log:[agingLog,...objLogs,...[gbLog,coachLog,phenomLog,relegLog].filter(Boolean),...(p.log||[])].slice(0,60),standings:newStandings,calendar:newCalendar,matchHistory:[],seasonObjectives:newObjectives,history:[...(p.history||[]),prevHist].slice(-50),clubPrestigeShifts:updatedShifts,cup:newCup,euro:newEuro,coach:newCoach,goldenBoys:gbSeasons,records:newRecords,teammates:newTeammates,journalists:newJournalists,fanLegend:updFanLegend,leagueArchive:newLeagueArchive,coachHistory:newCoachHistory,jerseyNumSeason:0,yellAccum:0,isSuspended:false,seasonCards:{y:0,r:0},...(captainReset?{isCaptain:false}:{})};
+      return{...p,season:newSeason,age:newAge,week:1,weekLived:false,goals:0,assists:0,matches:0,fatigue:0,skillPoints:(p.skillPoints||0)+2,stats:agedStats,ovr:newOvr,contract:newContract,contractExpired,club:nextClub84||p.club,leagueOverrides:_newOvPre,morale:clamp((p.morale||70)+bonM+(playerClubRelegated?-10:playerClubPromoted?8:0)+(isGB?15:0),0,100),coachTrust:clamp((p.coachTrust||60)+bonCT+(playerClubRelegated?-8:playerClubPromoted?5:0)+(coachChanged?newCoach.trustMod:0),0,100),popularity:clamp((p.popularity||20)+bonPop+(isGB?25:0),0,100),value:Math.max(0.5,(p.value||0.8)+bonVal+(playerClubRelegated?-0.3:playerClubPromoted?0.15:0)+(isGB?0.8:0)),log:[agingLog,...objLogs,...[gbLog,coachLog,phenomLog,relegLog].filter(Boolean),...(p.log||[])].slice(0,60),standings:newStandings,calendar:newCalendar,matchHistory:[],seasonObjectives:newObjectives,history:[...(p.history||[]),prevHist].slice(-50),clubPrestigeShifts:updatedShifts,cup:newCup,euro:newEuro,coach:newCoach,goldenBoys:gbSeasons,records:newRecords,teammates:newTeammates,journalists:newJournalists,fanLegend:updFanLegend,leagueArchive:newLeagueArchive,coachHistory:newCoachHistory,jerseyNumSeason:0,yellAccum:0,isSuspended:false,seasonCards:{y:0,r:0},...(captainReset?{isCaptain:false}:{})}; // Sprint 84: club+leagueOverrides updated
     });
     // S41: double achievement — won league + cup same season
     {const _sd=[...(player.standings||[])].sort((a,b)=>b.pts-a.pts||b.gd-a.gd||b.gf-a.gf);const _ch=_sd[0];const _pid=player.club?.id||player.club?.n;if(player.cup?.champion&&_ch&&(_ch.id===_pid||_ch.n===player.club?.n)&&!(player.achievements||[]).includes("double")){setTimeout(()=>{setPlayer(p=>({...p,achievements:[...(p.achievements||[]),"double"]}));notify("🏆🏆🏆 DOPPIO! Campionato + Coppa nella stessa stagione! Leggendario!","#f59e0b");},1200);}}
@@ -11337,7 +11382,8 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       if(isGB)setTimeout(()=>notify("🏆 GOLDEN BOY! Sei il miglior giovane d'Europa! Pop. +25 · Valore +0.8M","#f59e0b"),5200);
       if(isNewGoalRecord)setTimeout(()=>notify(`🎯 RECORD PERSONALE! ${player.goals||0} gol in una stagione!`,"#f59e0b"),3600);
       if(isNewAssistRecord)setTimeout(()=>notify(`🎯 RECORD PERSONALE! ${player.assists||0} assist in una stagione!`,"#f59e0b"),3800);
-      if(newEuro)setTimeout(()=>notify(`${newEuro.competition==="UCL"?"⭐":"🌍"} QUALIFICATO IN ${newEuro.competition}! Partite di gruppo alle settimane 5–15.`,"#1d4ed8"),6500);
+      if(_willEuroPre)setTimeout(()=>notify(`${_euroCompPre==="UCL"?"⭐":"🌍"} QUALIFICATO IN ${_euroCompPre}! Partite di gruppo alle settimane 5–15.`,"#1d4ed8"),6500); // Sprint 84: fix Sprint 83 scope bug
+      if(_playerNextLgPre&&_pairPre)setTimeout(()=>notify(_playerNextLgPre===_pairPre[1]?`⬇️ ${_nextClubPre?.n||"Il tuo club"} RETROCESSA in ${_playerNextLgPre}!`:`🆙 ${_nextClubPre?.n||"Il tuo club"} PROMOSSA in ${_playerNextLgPre}!`,_playerNextLgPre===_pairPre[1]?TH.danger:TH.success),2600); // Sprint 84
     },200);
   };
 
