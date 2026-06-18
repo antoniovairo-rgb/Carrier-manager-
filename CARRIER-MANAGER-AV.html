@@ -2106,7 +2106,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="3.65.0"; // Sprint 85 — fix qualificazioni europee: guard tier/retrocessione, _epool corretto, _willEuroPre post-relegation
+const GAME_VERSION="3.66.0"; // Sprint 86 — leghe minori (Primeira Liga, Eredivisie ecc.) qualificano top 2 spot europei vs top 4 leghe maggiori
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -11247,7 +11247,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     }
     const _nextClubPre=_playerNextLgPre?{...player.club,lg:_playerNextLgPre}:(player.club||null);
     // Sprint 85: _willEuroPre after pair/relegation — guards: must be upper-tier league, not relegated
-    const _willEuroPre=(player.proStatus||"u18")==="pro"&&!!player.club&&_eposPre>=0&&_eposPre<=3&&_nTPre>0
+    const _willEuroPre=(player.proStatus||"u18")==="pro"&&!!player.club&&_eposPre>=0&&_eposPre<=(_pairPre?3:1)&&_nTPre>0
       &&(!_pairPre||_myLgPre===_pairPre[0])   // solo lega superiore (non Serie B etc.)
       &&_playerNextLgPre!==(_pairPre?.[1]??null); // non retrocessa
     setPlayer(p=>{
@@ -11326,7 +11326,8 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       const _euroTierOk85=!_pairPre||(_pairPre[0]===(p.club?.lg||"Serie A")&&!playerClubRelegated);
       if((p.proStatus||"u18")==="pro"&&p.club&&nT>0&&_euroTierOk85){
         const _epos=sortedForShifts.findIndex(t=>(t.id&&t.id===(p.club?.id||p.club?.n))||(t.n&&t.n===(p.club?.n||p.club?.id)));
-        if(_epos>=0&&_epos<=3){
+        // Sprint 86: leghe minori (senza coppia, es. Primeira Liga) top 2; leghe maggiori top 4
+        if(_epos>=0&&_epos<=(_pairPre?3:1)){
           const _ec=_epos===0?"UCL":_epos<=2?"UEL":"UECL";
           const _minP=_ec==="UCL"?78:_ec==="UEL"?62:50;
           const _maxP=_ec==="UCL"?99:_ec==="UEL"?88:74;
