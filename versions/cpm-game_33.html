@@ -1889,34 +1889,8 @@ const STADIUM_POOLS=[
   {min:35,s:["Stadio Comunale Alfredo Viviani","Campo Sportivo Vincenzo Friscia","Arena Città di Castello","Stadio Angelo Massimino B","Campo Sportivo Giulio Onesti","Estadio de Anoeta B","Stade Paul Lignon","Stadion MOSiR","Arena Lublin","Stadio Iacovone","Campo San Nicolò","Estadio de Pasarón","Stade du Hameau","Arena Czeladź","Stadio Nicola Ceravolo","Campo Sportivo degli Ulivi"]},
   {min:0,s:["Campo Sportivo Parrocchiale","Arena Polivalente","Stadio Civico Nord","Campo Allenamento B","Terreno di Gioco Centrale","Stadio Quartiere","Campo Secondario","Arena Dilettanti","Campo Sportivo Est","Terreno Senza Nome","Stadio Periferia","Campo del Comune"]},
 ];
-const CLUB_STADIUMS={
-  "juve":"Allianz Stadium","inter":"San Siro","milan":"San Siro","napoli":"Stadio Maradona",
-  "roma":"Stadio Olimpico","lazio":"Stadio Olimpico","ata":"Gewiss Stadium","fio":"Stadio Artemio Franchi",
-  "tor":"Stadio Olimpico Grande Torino","bol":"Stadio Dall'Ara","udi":"Friuli - Dacia Arena",
-  "gen":"Stadio Luigi Ferraris","sam":"Stadio Luigi Ferraris","par":"Stadio Tardini",
-  "mon":"U-Power Stadium","emp":"Stadio Carlo Castellani","sas":"Mapei Stadium","lec":"Via del Mare",
-  "sal":"Stadio Arechi","ver":"Stadio Marcantonio Bentegodi","spe":"Stadio Alberto Picco",
-  "cre":"Stadio Giovanni Zini","mcy":"Etihad Stadium","liv":"Anfield","ars":"Emirates Stadium",
-  "che":"Stamford Bridge","mun":"Old Trafford","tot":"Tottenham Hotspur Stadium",
-  "avl":"Villa Park","new":"St. James' Park","eve":"Goodison Park","lei":"King Power Stadium",
-  "whu":"London Stadium","wol":"Molineux Stadium","cry":"Selhurst Park","sou":"St. Mary's Stadium",
-  "bha":"Amex Stadium","bur":"Turf Moor","bou":"Vitality Stadium","brt":"Brentford Community Stadium",
-  "rma":"Estadio Santiago Bernabéu","bar":"Camp Nou","atm":"Estadio Wanda Metropolitano",
-  "sev":"Estadio Ramón Sánchez-Pizjuán","bet":"Estadio Benito Villamarín","val":"Estadio de Mestalla",
-  "vil":"Estadio de la Cerámica","ath":"San Mamés","rso":"Estadio de Anoeta","cel":"Estadio de Balaídos",
-  "bay":"Allianz Arena","bvb":"Signal Iduna Park","rb":"Red Bull Arena Leipzig","lev":"BayArena",
-  "fra":"Deutsche Bank Park","dor":"Westfalenstadion","sch":"Veltins-Arena","hert":"Olympiastadion Berlin",
-  "psg":"Parc des Princes","marse":"Stade Vélodrome","lyon":"Groupama Stadium","lil":"Stade Pierre-Mauroy",
-  "mon69":"Stade Louis II","ren":"Roazhon Park","nice":"Allianz Riviera","len":"Stade Bollaert-Delelis",
-  "ajax":"Johan Cruyff Arena","psv":"Philips Stadion","fey":"De Kuip","azu":"AFAS Stadion",
-  "ben":"Estádio da Luz","por":"Estádio do Dragão","spor":"Estádio José Alvalade",
-  "gal":"Türk Telekom Stadium","fen":"Şükrü Saracoğlu Stadyumu","bes":"Vodafone Park",
-  "bru":"Jan Breydel Stadion","and":"Lotto Park","gbk":"Ghelamco Arena",
-  "cel2":"Celtic Park","ran":"Ibrox Stadium",
-};
 function getStadiumName(club){
   if(club?.isU18)return pick(STADIUMS);
-  if(club?.id&&CLUB_STADIUMS[club.id])return CLUB_STADIUMS[club.id];
   const p=club?.p||60;
   const pool=(STADIUM_POOLS.find(sp=>p>=sp.min)||STADIUM_POOLS[STADIUM_POOLS.length-1]).s;
   return pool[hashStr((club?.id||club?.n||"x"))%pool.length];
@@ -2132,7 +2106,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="3.73.0"; // Sprint 93 — 5 bug fix: stadio per club, jersey secondario, pannelli home-color, calendario bilanciato, partite euro tutte giocabili
+const GAME_VERSION="3.72.0"; // Sprint 92 — Stadium Identity 2D: tifosi colori club, bandiere curva, label competizione, nome stadio, boost derby
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -3826,20 +3800,12 @@ function generateSeasonCalendar(playerClub,leagueClubs,seed){
   const opps=leagueClubs.filter(c=>c.id!==playerClub.id&&c.n!==playerClub.n);
   if(!opps.length)return[];
   const s=seed||1;
-  const homeList=seededShuffle([...opps],s);
-  const awayList=seededShuffle([...opps],s+999);
-  // Interleave home/away: max 2 consecutive same venue
-  const all=[];let consH=0,consA=0,hi=0,ai=0;
-  while(hi<homeList.length||ai<awayList.length){
-    const canH=hi<homeList.length,canA=ai<awayList.length;
-    const forceA=consH>=2&&canA,forceH=consA>=2&&canH;
-    const pickHome=forceH?true:forceA?false:canH&&canA?(consH<=consA):canH;
-    if(pickHome){all.push({opp:homeList[hi++],isHome:true});consH++;consA=0;}
-    else{all.push({opp:awayList[ai++],isHome:false});consA++;consH=0;}
-  }
+  const h1=seededShuffle([...opps],s);
+  const h2=seededShuffle([...opps],s+999);
+  const all=[...h1,...h2];
   const cal=[];let week=1;
   for(let i=0;i<all.length&&week<=38;i++){
-    cal.push({matchday:i+1,week,opponentId:all[i].opp.id,opponentName:all[i].opp.n||all[i].opp.name,isHome:all[i].isHome,played:false,result:null});
+    cal.push({matchday:i+1,week,opponentId:all[i].id,opponentName:all[i].n||all[i].name,isHome:i<h1.length,played:false,result:null});
     week+=1+(_CAL_BREAKS.has(i)?1:0);
   }
   return cal;
@@ -4307,12 +4273,11 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
     top.rotation.x=Math.PI/2;top.position.set(gx+sign*0.85,2.44,-sign*0.5);scene.add(top);
   });
 
-  // Advertising boards — home color tints only
-  const _hC=new THREE.Color(homeHex);
-  const hLight=new THREE.Color(homeHex).lerp(new THREE.Color(0xffffff),0.4);
-  const hDark=new THREE.Color(homeHex).lerp(new THREE.Color(0x000000),0.35);
+  // Advertising boards — alternate home/away colors, more realistic
+  const hColor=new THREE.Color(homeHex),aColor=new THREE.Color(awayHex);
+  const wColor=new THREE.Color(0xfafafa);
   const addAd=(ax,az,aw,ah,rotY,idx)=>{
-    const col=idx%3===0?_hC:idx%3===1?hLight:hDark;
+    const col=idx%3===0?hColor:idx%3===1?aColor:wColor;
     const m=new THREE.Mesh(new THREE.BoxGeometry(aw,ah,0.22),new THREE.MeshLambertMaterial({color:col}));
     m.position.set(ax,ah/2,az);m.rotation.y=rotY;scene.add(m);
     // Small text-like stripe on top
@@ -4611,20 +4576,16 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
       const _clubShort=(propsRef.current.homeClub?.a||propsRef.current.homeClub?.n||"HOME").slice(0,6).toUpperCase();
       const _clubColH=hCol||"#1e3a8a";
       const _compBoardCol=_compLabel.includes("UCL")||_compLabel.includes("Champions")?"#003399":_compLabel.includes("UEL")||_compLabel.includes("Europa")?"#f97316":_compLabel.includes("UECL")||_compLabel.includes("Conference")?"#10b981":_compLabel.includes("COPPA")||_compLabel.includes("Cup")?"#7c3aed":_isDrby?"#b91c1c":"#1e3a8a";
-      // Sponsor boards: tints of home club color (dark/mid/light variants)
-      const _hHex=(_clubColH||"#1e3a8a").replace("#","");
-      const _hR=parseInt(_hHex.slice(0,2),16),_hG=parseInt(_hHex.slice(2,4),16),_hB=parseInt(_hHex.slice(4,6),16);
-      const _hTint=(f)=>`rgb(${Math.round(Math.min(255,_hR+f))},${Math.round(Math.min(255,_hG+f))},${Math.round(Math.min(255,_hB+f))})`;
       const _sponsBase=_prest80>=80?[
-        {col:_hTint(-30),t:"CHAMP"},{col:_hTint(20),t:"MASTERC"},
-        {col:_hTint(-50),t:"EMIRATES"},{col:_hTint(40),t:"ROLEX"},{col:_hTint(-20),t:"NISSAN"},
-        {col:_hTint(60),t:"DIAGEO"}
+        {col:"#c8a800",t:"CHAMP"},{col:"#1e3a8a",t:"MASTERC"},
+        {col:"#b91c1c",t:"EMIRATES"},{col:"#065f46",t:"ROLEX"},{col:"#0369a1",t:"NISSAN"},
+        {col:"#7c3aed",t:"DIAGEO"}
       ]:_prest80>=60?[
-        {col:_hTint(-40),t:"NIKE"},{col:_hTint(30),t:"ADIDAS"},{col:_hTint(-20),t:"PUMA"},
-        {col:_hTint(50),t:"EA FC"},{col:_hTint(-60),t:"PEPSI"},{col:_hTint(10),t:"BUDW"}
+        {col:"#1e3a8a",t:"NIKE"},{col:"#dc2626",t:"ADIDAS"},{col:"#065f46",t:"PUMA"},
+        {col:"#7c3aed",t:"EA FC"},{col:"#0369a1",t:"PEPSI"},{col:"#c2410c",t:"BUDW"}
       ]:[
-        {col:_hTint(-30),t:"LOCALE"},{col:_hTint(20),t:"CALCIO"},{col:_hTint(-50),t:"STADIO"},
-        {col:_hTint(40),t:"SPORT"},{col:_hTint(-10),t:"CLUB"}
+        {col:"#374151",t:"LOCALE"},{col:"#78350f",t:"CALCIO"},{col:"#1f2937",t:"STADIO"},
+        {col:"#4b5563",t:"SPORT"},{col:"#374151",t:"CLUB"}
       ];
       const ads=[
         {col:_compBoardCol,t:_compShort.toUpperCase()}, // competition first
@@ -5029,7 +4990,7 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
         const pp=Math.min(1,(s.walkProgress-0.6)/0.4);
         const wx=tX+(FCX-tX)*pp;
         const wy=tY;
-        drawPlayer(ctx,wx,wy,p.homeCol||"#22c55e",p.homeClub?.c2||"#ffffff",true,p.heroJerseyNum||10,pp>0.05,true,t);
+        drawPlayer(ctx,wx,wy,p.homeCol||"#22c55e","#f59e0b",true,p.heroJerseyNum||10,pp>0.05,true,t);
       }
       ctx.fillStyle="#f59e0b";ctx.font="bold 16px sans-serif";
       ctx.textAlign="center";ctx.textBaseline="middle";
@@ -5278,7 +5239,7 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
           // Check if hero already in allPlayers
           const heroInAll=(allP||[]).some(pl=>pl.isHero||pl.isPlayer);
           if(!heroInAll){
-            drawPlayer(ctx,heroCx,heroCy,p.homeCol||"#22c55e",p.homeClub?.c2||"#ffffff",true,_heroJNum,s.isMoving,true,t);
+            drawPlayer(ctx,heroCx,heroCy,p.homeCol||"#22c55e","#f59e0b",true,_heroJNum,s.isMoving,true,t);
           }
           // Ball — lerp toward BG_MATCH synced position
           var tBX=p.ballX!=null?p.ballX:p.playerX;
@@ -10737,17 +10698,14 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
         return isInjured?{...p,...injBase,week:(p.week||1)+1,weekLived:false}:{...p,week:(p.week||1)+1,weekLived:false};
       }
       const sim=simulateMatch(p.club,opp,p.ovr||65,md2.isHome);
-      // Only mark THIS specific match as played (by matchday id), not all at same week
-      const newCal=(p.calendar||[]).map(m=>m.matchday===md2.matchday?{...m,played:true,result:{homeScore:sim.homeScore,awayScore:sim.awayScore,won:sim.won,drew:sim.drew},simulated:true}:m);
-      // Check if more unplayed euro/cup matches remain at same week after this sim
-      const _pendingSim=newCal.some(m=>m.week===(p.week||1)&&!m.played&&(m.type==="euro_group"||m.type==="euro"||m.type==="cup"));
+      const newCal=(p.calendar||[]).map(m=>m.week===(p.week||1)&&!m.played?{...m,played:true,result:{homeScore:sim.homeScore,awayScore:sim.awayScore,won:sim.won,drew:sim.drew},simulated:true}:m);
       // Euro group stage match
       if(isEuroG){
         const pts=sim.won?3:sim.drew?1:0;
         const newGR=[...(p.euro?.groupResults||[]),{opp:opp.n,oppCol:opp.c,home:md2.isHome,won:sim.won,drew:sim.drew,hs:sim.homeScore,as:sim.awayScore}];
         const newPts=(p.euro?.pts||0)+pts;
         notify(`🌍 ${md2.competition} (sim): ${sim.homeScore}–${sim.awayScore} vs ${opp.n}`,sim.won?TH.success:sim.drew?TH.warning:TH.danger);
-        return{...p,calendar:newCal,matchHistory:[...(p.matchHistory||[]),{week:p.week||1,opponent:opp.n,oppAbbr:opp.a,oppCol:opp.c,homeScore:sim.homeScore,awayScore:sim.awayScore,goals:0,assists:0,rating:sim.rating,won:sim.won,drew:sim.drew,simulated:true,euro:true}].slice(-200),matches:(p.matches||0)+1,morale:clamp(p.morale+(sim.won?3:sim.drew?1:-2),0,100),week:_pendingSim?(p.week||1):(p.week||1)+1,weekLived:_pendingSim?true:false,euro:{...p.euro,groupResults:newGR,pts:newPts}};
+        return{...p,calendar:newCal,matchHistory:[...(p.matchHistory||[]),{week:p.week||1,opponent:opp.n,oppAbbr:opp.a,oppCol:opp.c,homeScore:sim.homeScore,awayScore:sim.awayScore,goals:0,assists:0,rating:sim.rating,won:sim.won,drew:sim.drew,simulated:true,euro:true}].slice(-200),matches:(p.matches||0)+1,morale:clamp(p.morale+(sim.won?3:sim.drew?1:-2),0,100),week:(p.week||1)+1,weekLived:false,euro:{...p.euro,groupResults:newGR,pts:newPts}};
       }
       // Euro knockout match
       if(isEuroKO){
@@ -10770,21 +10728,20 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
           if(_nOpp&&nWeek)calAfterKO=[...newCal,{matchday:996,week:nWeek,opponentId:_nOpp.id,opponentName:_nOpp.n,isHome:Math.random()<0.5,played:false,result:null,type:"euro",competition:md2.competition,euroPhase:nPhase,cupRoundName:nName,opponentData:_nOpp}];
         }
         notify(`🌍 ${md2.competition} (sim): ${sim.homeScore}–${sim.awayScore} vs ${opp.n} — ${won?"✅ PASSA":"❌ ELIMINATO"}`,won?TH.success:TH.danger);
-        return{...p,calendar:calAfterKO,matchHistory:[...(p.matchHistory||[]),{week:p.week||1,opponent:opp.n,oppAbbr:opp.a,oppCol:opp.c,homeScore:sim.homeScore,awayScore:sim.awayScore,goals:0,assists:0,rating:sim.rating,won,drew:sim.drew,simulated:true,euro:true,euroPhase:phase}].slice(-200),matches:(p.matches||0)+1,morale:clamp(p.morale+(won?5:sim.drew?1:-3),0,100),week:_pendingSim?(p.week||1):(p.week||1)+1,weekLived:_pendingSim?true:false,euro:{...p.euro,phase:nextPh,koResults:newKR,champion:isChamp,eliminated:!won},trophies:newTr};
+        return{...p,calendar:calAfterKO,matchHistory:[...(p.matchHistory||[]),{week:p.week||1,opponent:opp.n,oppAbbr:opp.a,oppCol:opp.c,homeScore:sim.homeScore,awayScore:sim.awayScore,goals:0,assists:0,rating:sim.rating,won,drew:sim.drew,simulated:true,euro:true,euroPhase:phase}].slice(-200),matches:(p.matches||0)+1,morale:clamp(p.morale+(won?5:sim.drew?1:-3),0,100),week:(p.week||1)+1,weekLived:false,euro:{...p.euro,phase:nextPh,koResults:newKR,champion:isChamp,eliminated:!won},trophies:newTr};
       }
-      // League/Cup match — check pending euro/cup at same week
-      const _pendingEuro=newCal.some(m=>m.week===(p.week||1)&&!m.played&&(m.type==="euro_group"||m.type==="euro"));
+      // League/Cup match
       const clubId=p.club?.id||p.club?.n;
-      const newSt=_pendingEuro?p.standings:updateStandings(p.standings||initStandings(lc),clubId,sim,p.clubPrestigeShifts||{});
+      const newSt=updateStandings(p.standings||initStandings(lc),clubId,sim,p.clubPrestigeShifts||{});
       if(isInjured){
         const injHistory=[...(p.matchHistory||[]),{week:p.week||1,opponent:opp.n,oppAbbr:opp.a,oppCol:opp.c,homeScore:sim.homeScore,awayScore:sim.awayScore,goals:0,assists:0,rating:null,won:sim.won,drew:sim.drew,simulated:true,injured:true}].slice(-200);
         notify(`🩹 Infort. (saltata) ${sim.homeScore}–${sim.awayScore} vs ${opp.n}`,sim.won?TH.success:sim.drew?TH.warning:TH.danger);
-        return{...p,...injBase,standings:newSt,calendar:newCal,matchHistory:injHistory,morale:clamp((p.morale||70)+(sim.won?1:sim.drew?0:-1),0,100),week:_pendingEuro?(p.week||1):(p.week||1)+1,weekLived:_pendingEuro?true:false};
+        return{...p,...injBase,standings:newSt,calendar:newCal,matchHistory:injHistory,morale:clamp((p.morale||70)+(sim.won?1:sim.drew?0:-1),0,100),week:(p.week||1)+1,weekLived:false};
       }
       const newHistory=[...(p.matchHistory||[]),{week:p.week||1,opponent:opp.n,oppAbbr:opp.a,oppCol:opp.c,homeScore:sim.homeScore,awayScore:sim.awayScore,goals:0,assists:0,rating:sim.rating,won:sim.won,drew:sim.drew,simulated:true}].slice(-200);
       const moD=sim.won?3:sim.drew?1:-2;
       notify(`Simulazione: ${sim.homeScore}–${sim.awayScore} vs ${opp.n}`,sim.won?TH.success:sim.drew?TH.warning:TH.danger);
-      return{...p,standings:newSt,calendar:newCal,matchHistory:newHistory,matches:(p.matches||0)+1,morale:clamp(p.morale+moD,0,100),week:_pendingEuro?(p.week||1):(p.week||1)+1,weekLived:_pendingEuro?true:false};
+      return{...p,standings:newSt,calendar:newCal,matchHistory:newHistory,matches:(p.matches||0)+1,morale:clamp(p.morale+moD,0,100),week:(p.week||1)+1,weekLived:false};
     });
   };
 
