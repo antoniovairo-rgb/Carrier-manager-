@@ -2106,7 +2106,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="3.70.1"; // Sprint 90.1 — Stadium Identity: palette per-club (club.c blend su orizzonte+fog) + palette lega più drammatica
+const GAME_VERSION="3.70.0"; // Sprint 90 — Stadium Identity System: palette unica per lega (cielo, nebbia, erba, luci)
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -4009,80 +4009,24 @@ function makeCrowdTex(homeBias,homeHex,awayHex,prestige=70){
 }
 
 function getStadiumPalette(club){
-  // Helper: hex string/number → {r,g,b} 0-1
-  const toRGB=h=>{const n=typeof h==='string'?parseInt(h.replace('#',''),16):h;return{r:((n>>16)&255)/255,g:((n>>8)&255)/255,b:(n&255)/255};};
-  const toHex=(r,g,b)=>((Math.round(Math.max(0,Math.min(1,r))*255)<<16)|(Math.round(Math.max(0,Math.min(1,g))*255)<<8)|Math.round(Math.max(0,Math.min(1,b))*255));
-  const lerp=(a,b,t)=>a+(b-a)*t;
-
   const lg=club?.lg||"Serie A";
-  const pres=club?.p||65;
-  const clubHex=club?.c||'#3a7bd5';
-  const idHash=club?.id?club.id.split('').reduce((a,c)=>a+c.charCodeAt(0),0):42;
-
-  // League base palettes — more dramatic, clearly different hues
-  const bases={
-    // Serie A: deep midnight blue
-    "Serie A":      {skyT:0x030818,skyH:0x0c2050,fog:0x061430,gA:0x1e4a0a,gB:0x184008,gC:0x224e0c,aCol:0xd0e4ff,aInt:0.50,flood:0xd8eeff},
-    "Serie B":      {skyT:0x050a18,skyH:0x0e2240,fog:0x081628,gA:0x1c4808,gB:0x163c06,gC:0x204c0a,aCol:0xc8dcff,aInt:0.44,flood:0xcce4ff},
-    // Premier League: cold slate grey — like a rainy Manchester night
-    "Premier League":{skyT:0x080c10,skyH:0x1a2830,fog:0x101c22,gA:0x205818,gB:0x1a4c14,gC:0x24601c,aCol:0xb8d4ee,aInt:0.56,flood:0xc0d8ee},
-    "EFL Championship":{skyT:0x090d12,skyH:0x182230,fog:0x0e1a24,gA:0x1e5616,gB:0x184a12,gC:0x225e1a,aCol:0xb4d0e8,aInt:0.48,flood:0xb8d4e8},
-    // Bundesliga: crisp cold white — Dortmund/Bayern broadcast look
-    "Bundesliga":   {skyT:0x04060e,skyH:0x0c1828,fog:0x081020,gA:0x245a12,gB:0x1e500e,gC:0x285e16,aCol:0xfff5e8,aInt:0.62,flood:0xfff8ee},
-    "2. Bundesliga":{skyT:0x06080e,skyH:0x0e1a28,fog:0x0a1220,gA:0x225810,gB:0x1c4e0c,gC:0x265c14,aCol:0xfff0e0,aInt:0.52,flood:0xfff0e0},
-    // Ligue 1: deep purple-violet — Parc des Princes nocturne
-    "Ligue 1":      {skyT:0x0a0416,skyH:0x280a48,fog:0x14062c,gA:0x1c5210,gB:0x16480c,gC:0x205614,aCol:0xe0ccff,aInt:0.48,flood:0xe4d0ff},
-    "Ligue 2":      {skyT:0x08031a,skyH:0x1e0838,fog:0x100424,gA:0x1a500e,gB:0x14460a,gC:0x1e5412,aCol:0xd8c8ff,aInt:0.44,flood:0xd8c8ff},
-    // La Liga: warm orange desert dusk — Camp Nou / Bernabeu summer nights
-    "La Liga":      {skyT:0x1c0800,skyH:0x481800,fog:0x2c1000,gA:0x385810,gB:0x2e4c0a,gC:0x3e6014,aCol:0xffe8c0,aInt:0.60,flood:0xffe8b0},
-    "Segunda División":{skyT:0x180600,skyHorizon:0x3c1400,fog:0x240e00,gA:0x345608,gB:0x2a4a05,gC:0x395e0c,aCol:0xffe0b0,aInt:0.52,flood:0xffdca8},
-    // Primeira Liga: teal Atlantic coast — rainy nights in Lisbon/Porto
-    "Primeira Liga":{skyT:0x020c0e,skyH:0x082030,fog:0x051620,gA:0x205a14,gB:0x1a4e10,gC:0x245e18,aCol:0xc0eeff,aInt:0.54,flood:0xb8f0ff},
-    // Eredivisie: dark grey-blue — windy Amsterdam
-    "Eredivisie":   {skyT:0x060a0e,skyH:0x121e28,fog:0x0c1820,gA:0x225a14,gB:0x1c4e10,gC:0x265e18,aCol:0xc8dcf0,aInt:0.52,flood:0xc8dcf0},
-    // Pro League: very dark, cold
-    "Pro League":   {skyT:0x050810,skyH:0x101e2e,fog:0x0c1828,gA:0x1e5812,gB:0x184c0e,gC:0x225c16,aCol:0xbcd4ee,aInt:0.50,flood:0xbcd4f0},
-    // Süper Lig: warm brick red — Istanbul summer nights
-    "Süper Lig":    {skyT:0x140400,skyH:0x380c00,fog:0x240800,gA:0x305c0e,gB:0x28500a,gC:0x366412,aCol:0xffe0c8,aInt:0.56,flood:0xffd8b0},
+  const palettes={
+    "Serie A":      {skyTop:0x060d1f,skyHorizon:0x1a2d4a,fog:0x0d1c35,grassA:0x2a5c14,grassB:0x245510,grassC:0x2e6617,ambient:0xffffff,ambInt:0.55,flood:0xf4f8ff},
+    "Serie B":      {skyTop:0x0a1020,skyHorizon:0x1c2a3c,fog:0x101a28,grassA:0x285a12,grassB:0x22500e,grassC:0x2c6415,ambient:0xf0f4ff,ambInt:0.50,flood:0xf0f4ff},
+    "Premier League":{skyTop:0x090e18,skyHorizon:0x1c2636,fog:0x111c28,grassA:0x2c6118,grassB:0x265514,grassC:0x316b1c,ambient:0xe8f0ff,ambInt:0.58,flood:0xe8f4ff},
+    "EFL Championship":{skyTop:0x0a1118,skyHorizon:0x1a2230,fog:0x0e1820,grassA:0x2a5e16,grassB:0x245210,grassC:0x2f6819,ambient:0xe8f0ff,ambInt:0.52,flood:0xecf4ff},
+    "Bundesliga":   {skyTop:0x05090f,skyHorizon:0x152030,fog:0x0a1520,grassA:0x2d6315,grassB:0x276010,grassC:0x336a1a,ambient:0xfff8f0,ambInt:0.56,flood:0xfff8f0},
+    "2. Bundesliga":{skyTop:0x080c18,skyHorizon:0x162234,fog:0x0c1828,grassA:0x2b6013,grassB:0x255610,grassC:0x306618,ambient:0xfff8f0,ambInt:0.50,flood:0xfff4e8},
+    "Ligue 1":      {skyTop:0x0d0720,skyHorizon:0x2a1545,fog:0x150d2e,grassA:0x285c12,grassB:0x225010,grassC:0x2c6416,ambient:0xf0e8ff,ambInt:0.52,flood:0xf0e4ff},
+    "Ligue 2":      {skyTop:0x0b0718,skyHorizon:0x221038,fog:0x120a28,grassA:0x265a10,grassB:0x204e0e,grassC:0x2a6214,ambient:0xeee8ff,ambInt:0.48,flood:0xeee4ff},
+    "La Liga":      {skyTop:0x1a0c05,skyHorizon:0x3d1a08,fog:0x251205,grassA:0x3a6010,grassB:0x32550c,grassC:0x406813,ambient:0xfff0d8,ambInt:0.58,flood:0xfff0c8},
+    "Segunda División":{skyTop:0x160c05,skyHorizon:0x341508,fog:0x200e04,grassA:0x375e0e,grassB:0x2f520a,grassC:0x3d6612,ambient:0xffecd8,ambInt:0.52,flood:0xffecc8},
+    "Primeira Liga":{skyTop:0x060f1a,skyHorizon:0x152535,fog:0x0c1c2e,grassA:0x2a5e14,grassB:0x24520f,grassC:0x2f6618,ambient:0xffffff,ambInt:0.54,flood:0xf8ffff},
+    "Eredivisie":   {skyTop:0x080e18,skyHorizon:0x162030,fog:0x0e1828,grassA:0x2b6015,grassB:0x245411,grassC:0x306819,ambient:0xffffff,ambInt:0.55,flood:0xf5f8ff},
+    "Pro League":   {skyTop:0x080c1a,skyHorizon:0x14202e,fog:0x0c1828,grassA:0x2c5e15,grassB:0x265210,grassC:0x316618,ambient:0xeef5ff,ambInt:0.54,flood:0xeef5ff},
+    "Süper Lig":    {skyTop:0x120808,skyHorizon:0x301810,fog:0x1e1008,grassA:0x305e10,grassB:0x285209,grassC:0x366614,ambient:0xfff5e8,ambInt:0.56,flood:0xfff5e8},
   };
-  const b=bases[lg]||bases["Serie A"];
-
-  // Per-club: blend club primary colour into sky horizon (30% weight, max capped)
-  const cr=toRGB(clubHex);
-  const hr=toRGB(b.skyH||b.skyT);
-  const t=0.30; // blend strength
-  const blendedH=toHex(
-    Math.min(lerp(hr.r,cr.r*0.45,t),0.38),
-    Math.min(lerp(hr.g,cr.g*0.45,t),0.38),
-    Math.min(lerp(hr.b,cr.b*0.45,t),0.38)
-  );
-
-  // Per-club grass tone: ±6% brightness shift from id hash
-  const gv=((idHash%7)-3)*0.02; // -0.06 to +0.06
-  const adjG=hex=>{const {r,g,b}=toRGB(hex);return toHex(r+gv,g+gv*1.1,b+gv*0.8);};
-
-  // Per-club fog: blend club colour subtly (15%)
-  const fr=toRGB(b.fog);
-  const blendedFog=toHex(
-    Math.min(lerp(fr.r,cr.r*0.25,0.15),0.22),
-    Math.min(lerp(fr.g,cr.g*0.25,0.15),0.22),
-    Math.min(lerp(fr.b,cr.b*0.25,0.15),0.22)
-  );
-
-  // Flood light: prestige tiers (warm for elite, cool for lower)
-  const flood=pres>85?0xfff8ee:pres>70?b.flood||0xf4f8ff:pres>55?0xeef4ff:0xe8eeff;
-
-  return {
-    skyTop:b.skyT,
-    skyHorizon:blendedH,
-    fog:blendedFog,
-    grassA:adjG(b.gA),
-    grassB:adjG(b.gB),
-    grassC:adjG(b.gC),
-    ambient:b.aCol,
-    ambInt:b.aInt,
-    flood,
-  };
+  return palettes[lg]||palettes["Serie A"];
 }
 
 function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
