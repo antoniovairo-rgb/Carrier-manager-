@@ -2106,7 +2106,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="3.64.0"; // Sprint 84 — promozioni/retrocessioni dinamiche tra divisioni; fix notifica euro Sprint 83
+const GAME_VERSION="3.65.0"; // Sprint 85 — fix qualificazioni europee: guard tier/retrocessione, _epool corretto, _willEuroPre post-relegation
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -11217,9 +11217,8 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     const _newOvPre={...(player.leagueOverrides||{})};
     let _playerNextLgPre=null;
     const _promoLogPre=[];
-    // Fix Sprint 83: euro comp pre-computed here so notification can reference it
+    // Sprint 85: euro position pre-computed for notification — _willEuroPre moved below pair/relegation to add tier guards
     const _eposPre=_sfPre.findIndex(t=>(t.id&&t.id===_myIdPre)||(t.n&&t.n===(player.club?.n||player.club?.id)));
-    const _willEuroPre=(player.proStatus||"u18")==="pro"&&!!player.club&&_eposPre>=0&&_eposPre<=3&&_nTPre>0;
     const _euroCompPre=_eposPre===0?"UCL":_eposPre<=2?"UEL":"UECL";
     // Sprint 84: compute which clubs move between leagues this season
     const _pairPre=_myLgPre?LEAGUE_PAIRS.find(([u,l])=>u===_myLgPre||l===_myLgPre):null;
@@ -11247,6 +11246,10 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       }
     }
     const _nextClubPre=_playerNextLgPre?{...player.club,lg:_playerNextLgPre}:(player.club||null);
+    // Sprint 85: _willEuroPre after pair/relegation — guards: must be upper-tier league, not relegated
+    const _willEuroPre=(player.proStatus||"u18")==="pro"&&!!player.club&&_eposPre>=0&&_eposPre<=3&&_nTPre>0
+      &&(!_pairPre||_myLgPre===_pairPre[0])   // solo lega superiore (non Serie B etc.)
+      &&_playerNextLgPre!==(_pairPre?.[1]??null); // non retrocessa
     setPlayer(p=>{
       const newSeason=(p.season||1)+1;
       const newAge=(p.age||17)+1;
@@ -11318,14 +11321,16 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
         if(r16Opp)newCalendar=[...newCalendar,{matchday:990,week:CUP_ROUND_WEEKS[1],opponentId:r16Opp.id,opponentName:r16Opp.n||r16Opp.name,isHome:true,played:false,result:null,type:"cup",competition:"Coppa Nazionale",cupRound:1,cupRoundName:CUP_ROUND_NAMES[1]}];
       }
       // S42: European qualification based on final standings (1st→UCL, 2nd-3rd→UEL, 4th→UECL)
+      // Sprint 85: tier guard — solo leghe superiori (non Serie B etc.); club retrocessi esclusi
       let newEuro=null;
-      if((p.proStatus||"u18")==="pro"&&p.club&&nT>0){
+      const _euroTierOk85=!_pairPre||(_pairPre[0]===(p.club?.lg||"Serie A")&&!playerClubRelegated);
+      if((p.proStatus||"u18")==="pro"&&p.club&&nT>0&&_euroTierOk85){
         const _epos=sortedForShifts.findIndex(t=>(t.id&&t.id===(p.club?.id||p.club?.n))||(t.n&&t.n===(p.club?.n||p.club?.id)));
         if(_epos>=0&&_epos<=3){
           const _ec=_epos===0?"UCL":_epos<=2?"UEL":"UECL";
           const _minP=_ec==="UCL"?78:_ec==="UEL"?62:50;
           const _maxP=_ec==="UCL"?99:_ec==="UEL"?88:74;
-          const _epool=CLUBS.filter(c=>c.lg!==(p.club?.lg||"Serie A")&&!c.isU18&&c.p>=_minP&&c.p<=_maxP);
+          const _epool=CLUBS.filter(c=>c.lg!==(nextClub84?.lg||p.club?.lg||"Serie A")&&!c.isU18&&c.p>=_minP&&c.p<=_maxP); // Sprint 85: usa nextClub84.lg
           let _eseed=hashStr((p.club?.id||"x")+"euro"+(newSeason||2));let _er=_eseed;
           const _erd=()=>{_er=((_er*1664525+1013904223)&0xffffffff)>>>0;return _er/0xffffffff;};
           const _eshuf=[..._epool].sort(()=>_erd()-0.5);
