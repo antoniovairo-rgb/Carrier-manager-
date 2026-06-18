@@ -2106,7 +2106,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="3.70.0"; // Sprint 90 — Stadium Identity System: palette unica per lega (cielo, nebbia, erba, luci)
+const GAME_VERSION="3.69.0"; // Sprint 89 — Albo d'oro completo: dominator, best finish, raggruppamento per lega
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -4008,27 +4008,6 @@ function makeCrowdTex(homeBias,homeHex,awayHex,prestige=70){
   return new THREE.CanvasTexture(c);
 }
 
-function getStadiumPalette(club){
-  const lg=club?.lg||"Serie A";
-  const palettes={
-    "Serie A":      {skyTop:0x060d1f,skyHorizon:0x1a2d4a,fog:0x0d1c35,grassA:0x2a5c14,grassB:0x245510,grassC:0x2e6617,ambient:0xffffff,ambInt:0.55,flood:0xf4f8ff},
-    "Serie B":      {skyTop:0x0a1020,skyHorizon:0x1c2a3c,fog:0x101a28,grassA:0x285a12,grassB:0x22500e,grassC:0x2c6415,ambient:0xf0f4ff,ambInt:0.50,flood:0xf0f4ff},
-    "Premier League":{skyTop:0x090e18,skyHorizon:0x1c2636,fog:0x111c28,grassA:0x2c6118,grassB:0x265514,grassC:0x316b1c,ambient:0xe8f0ff,ambInt:0.58,flood:0xe8f4ff},
-    "EFL Championship":{skyTop:0x0a1118,skyHorizon:0x1a2230,fog:0x0e1820,grassA:0x2a5e16,grassB:0x245210,grassC:0x2f6819,ambient:0xe8f0ff,ambInt:0.52,flood:0xecf4ff},
-    "Bundesliga":   {skyTop:0x05090f,skyHorizon:0x152030,fog:0x0a1520,grassA:0x2d6315,grassB:0x276010,grassC:0x336a1a,ambient:0xfff8f0,ambInt:0.56,flood:0xfff8f0},
-    "2. Bundesliga":{skyTop:0x080c18,skyHorizon:0x162234,fog:0x0c1828,grassA:0x2b6013,grassB:0x255610,grassC:0x306618,ambient:0xfff8f0,ambInt:0.50,flood:0xfff4e8},
-    "Ligue 1":      {skyTop:0x0d0720,skyHorizon:0x2a1545,fog:0x150d2e,grassA:0x285c12,grassB:0x225010,grassC:0x2c6416,ambient:0xf0e8ff,ambInt:0.52,flood:0xf0e4ff},
-    "Ligue 2":      {skyTop:0x0b0718,skyHorizon:0x221038,fog:0x120a28,grassA:0x265a10,grassB:0x204e0e,grassC:0x2a6214,ambient:0xeee8ff,ambInt:0.48,flood:0xeee4ff},
-    "La Liga":      {skyTop:0x1a0c05,skyHorizon:0x3d1a08,fog:0x251205,grassA:0x3a6010,grassB:0x32550c,grassC:0x406813,ambient:0xfff0d8,ambInt:0.58,flood:0xfff0c8},
-    "Segunda División":{skyTop:0x160c05,skyHorizon:0x341508,fog:0x200e04,grassA:0x375e0e,grassB:0x2f520a,grassC:0x3d6612,ambient:0xffecd8,ambInt:0.52,flood:0xffecc8},
-    "Primeira Liga":{skyTop:0x060f1a,skyHorizon:0x152535,fog:0x0c1c2e,grassA:0x2a5e14,grassB:0x24520f,grassC:0x2f6618,ambient:0xffffff,ambInt:0.54,flood:0xf8ffff},
-    "Eredivisie":   {skyTop:0x080e18,skyHorizon:0x162030,fog:0x0e1828,grassA:0x2b6015,grassB:0x245411,grassC:0x306819,ambient:0xffffff,ambInt:0.55,flood:0xf5f8ff},
-    "Pro League":   {skyTop:0x080c1a,skyHorizon:0x14202e,fog:0x0c1828,grassA:0x2c5e15,grassB:0x265210,grassC:0x316618,ambient:0xeef5ff,ambInt:0.54,flood:0xeef5ff},
-    "Süper Lig":    {skyTop:0x120808,skyHorizon:0x301810,fog:0x1e1008,grassA:0x305e10,grassB:0x285209,grassC:0x366614,ambient:0xfff5e8,ambInt:0.56,flood:0xfff5e8},
-  };
-  return palettes[lg]||palettes["Serie A"];
-}
-
 function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
   // Scale by prestige: XL(>88) / LG(>72) / MD(>55) / SM(<55)
   const p=typeof stadCfg==="number"?stadCfg:stadCfg.prestige||65;
@@ -4094,8 +4073,8 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
     const cb=new THREE.Mesh(new THREE.BoxGeometry(24,2,24),cM);cb.position.set(x,1,z);scene.add(cb);
   });
 
-  // Floodlights — colour from league palette
-  const lightColor=stadCfg.floodColor||0xf4f8ff;
+  // Floodlights — TV broadcast: cool white, high intensity, aimed at pitch
+  const lightColor=0xf4f8ff; // cool stadium white
   [[-sideX+8,-endZ+8],[sideX-8,-endZ+8],[-sideX+8,endZ-8],[sideX-8,endZ-8]].forEach(([x,z])=>{
     const pole=new THREE.Mesh(new THREE.CylinderGeometry(0.3,0.4,floodH,8),stM);
     pole.position.set(x,floodH/2,z);pole.castShadow=true;scene.add(pole);
@@ -5104,16 +5083,15 @@ function ThreeField({playerX,playerY,zone,homeCol="#22c55e",oppCol="#ef4444",opp
     const getH=()=>Math.max(Math.round(Math.min(window.innerHeight*0.72,700)),300);
     const H=getH();
     const scene=new THREE.Scene();
-    // Stadium identity palette — unique per league
-    const _pal=getStadiumPalette(homeClubRef.current);
-    scene.background=new THREE.Color(_pal.skyTop);
-    scene.fog=new THREE.FogExp2(_pal.fog,0.0028);
+    // Evening sky — deep blue-purple gradient atmosphere
+    scene.background=new THREE.Color(0x0a1628);
+    scene.fog=new THREE.FogExp2(0x0d1c35,0.0028);
     const camera=new THREE.PerspectiveCamera(52,W/H,0.1,420);
     camera.position.set(-8,28,-58);camera.lookAt(6,0,2);
     const renderer=new THREE.WebGLRenderer({antialias:true,powerPreference:"high-performance"});
     renderer.setSize(W,H);renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
     renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;
-    renderer.setClearColor(_pal.skyTop,1);
+    renderer.setClearColor(0x050810,1);
     mount.appendChild(renderer.domElement);
     renderer.render(new THREE.Scene(),camera);
     const ro=new ResizeObserver(()=>{
@@ -5127,14 +5105,14 @@ function ThreeField({playerX,playerY,zone,homeCol="#22c55e",oppCol="#ef4444",opp
     const skyGeo=new THREE.SphereGeometry(380,16,8);
     const skyMat=new THREE.ShaderMaterial({
       side:THREE.BackSide,
-      uniforms:{topColor:{value:new THREE.Color(_pal.skyTop)},horizonColor:{value:new THREE.Color(_pal.skyHorizon)},fogColor:{value:new THREE.Color(_pal.fog)}},
+      uniforms:{topColor:{value:new THREE.Color(0x060d1f)},horizonColor:{value:new THREE.Color(0x1a2d4a)},fogColor:{value:new THREE.Color(0x0d1c35)}},
       vertexShader:`varying float vY;void main(){vY=normalize(position).y;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);}`,
       fragmentShader:`uniform vec3 topColor;uniform vec3 horizonColor;varying float vY;void main(){float h=clamp(vY*0.5+0.5,0.0,1.0);gl_FragColor=vec4(mix(horizonColor,topColor,h*h),1.0);}`,
     });
     scene.add(new THREE.Mesh(skyGeo,skyMat));
 
     // TV broadcast lighting: low ambient + strong focused floodlights (no overexposure)
-    scene.add(new THREE.AmbientLight(_pal.ambient,_pal.ambInt));
+    scene.add(new THREE.AmbientLight(0xffffff,0.55));
     const mainLight=new THREE.DirectionalLight(0xfff5e0,0.80);
     mainLight.position.set(12,50,20);mainLight.castShadow=true;
     mainLight.shadow.mapSize.set(1024,1024);
@@ -5148,11 +5126,11 @@ function ThreeField({playerX,playerY,zone,homeCol="#22c55e",oppCol="#ef4444",opp
     fillLight.position.set(-30,25,-15);scene.add(fillLight);
     scene.add(new THREE.HemisphereLight(0x4a6080,0x1a2e10,0.25));
 
-    // Pitch — colour from league palette
-    const grassMat=new THREE.MeshLambertMaterial({color:_pal.grassA});
+    // Pitch — natural muted green, not fluorescent
+    const grassMat=new THREE.MeshLambertMaterial({color:0x2a5c14});
     const grass=new THREE.Mesh(new THREE.PlaneGeometry(100,60),grassMat);grass.rotation.x=-Math.PI/2;grass.receiveShadow=true;scene.add(grass);
     // Alternating stripe pattern — subtle difference
-    for(let i=0;i<10;i++){const sm=new THREE.MeshLambertMaterial({color:i%2?_pal.grassC:_pal.grassB});const s=new THREE.Mesh(new THREE.PlaneGeometry(10,60),sm);s.rotation.x=-Math.PI/2;s.position.set(-45+i*10,0.01,0);scene.add(s);}
+    for(let i=0;i<10;i++){const sm=new THREE.MeshLambertMaterial({color:i%2?0x2e6617:0x245510});const s=new THREE.Mesh(new THREE.PlaneGeometry(10,60),sm);s.rotation.x=-Math.PI/2;s.position.set(-45+i*10,0.01,0);scene.add(s);}
 
     const lm=new THREE.LineBasicMaterial({color:0xffffff,opacity:0.85,transparent:true});
     const addL=pts=>{const g=new THREE.BufferGeometry().setFromPoints(pts.map(([x,y,z])=>new THREE.Vector3(x,y,z)));scene.add(new THREE.Line(g,lm));};
@@ -5168,7 +5146,7 @@ function ThreeField({playerX,playerY,zone,homeCol="#22c55e",oppCol="#ef4444",opp
     mkGoal(-51);mkGoal(51);
     const pres=homeClubRef.current?.p||homeClubRef.current?.prestige||65;
     const sid=(homeClubRef.current?.id||"x").split("").reduce((a,c)=>a+c.charCodeAt(0),0)%4;
-    buildStadium(scene,homeCol,oppCol,{prestige:pres,style:sid,floodColor:_pal.flood});
+    buildStadium(scene,homeCol,oppCol,{prestige:pres,style:sid});
 
     const zh=new THREE.Mesh(new THREE.PlaneGeometry(1,60),new THREE.MeshBasicMaterial({color:0xe8c547,opacity:0,transparent:true,side:THREE.DoubleSide,depthWrite:false}));
     zh.rotation.x=-Math.PI/2;zh.position.y=0.04;scene.add(zh);
