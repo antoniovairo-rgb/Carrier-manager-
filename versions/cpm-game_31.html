@@ -2106,7 +2106,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="3.71.0"; // Sprint 91 — Crowd Atmosphere v2: cori localizzati per lega, meteo riduce affluenza, ola multi-wave da prestige
+const GAME_VERSION="3.70.1"; // Sprint 90.1 — Stadium Identity: palette per-club (club.c blend su orizzonte+fog) + palette lega più drammatica
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -3312,88 +3312,6 @@ const CROWD_CHANTS={
   winning:["CAMPIONIIIII! 🏆","È SEMPRE PIÙ NOSTRA! ✊","INARRESTABILI! ⚡","FORZA CHE VINCIAMO! 🔥","MERAVIGLIOSI! 🌟","FORZA FORZA FORZA! 💪"],
   losing:["NON CI ARRENDIAMO! 💙","TESTA ALTA! ✊","CI CREDO ANCORA! 🔥","FORZA RAGAZZI REAGITE! 💪","NON È ANCORA FINITA! ⚡"],
 };
-// Sprint 91 — Localized chants per league
-const CROWD_CHANTS_LG={
-  "Premier League":{
-    goal:["YEEEES! 🎉","WHAT A GOAL! ⭐","BRILLIANT! 🔥","GET IN! ✊","MAGNIFICEEENT!","UNBELIEVABLE! ⚡","WORLDIE! 🌟","PURE CLASS! 💎"],
-    home:["[CLUB]! [CLUB]! [CLUB]!","Come on [CLUB]! 💪","WE ARE [CLUB]! ⚡","[CLUB] TILL I DIE! ❤️","GLORY GLORY [CLUB]! 🏆","OH WHEN THE REDS GO MARCHING IN! 🎺"],
-    danger:["HOLD IT! 🛡️","DEFEND! DEFEND! 🛡️","CLEAR IT! 😱","COME ON BOYS! 💪","KEEPER! KEEPER! 🧤"],
-    foul:["REF! 😡","YOU'RE CHEATING! 😤","PENALTY! 🚩","OFF! OFF! OFF! 🟥","ABSOLUTE DISGRACE! 🤬"],
-    near_miss:["OHHHH! 😱","SO CLOSE! 😩","AGONY! 😤","THE POST! 😱","KEEPER WAS BEATEN! 😤"],
-    comeback:["COME ON! WE CAN DO IT! 🔥","NEVER GIVE UP! 💪","BELIEVE! ⚡","ONE MORE! ONE MORE! 🎯"],
-    winning:["EASY! EASY! EASY! 🏆","WE'RE GONNA WIN THE LEAGUE! 🎉","CHAMPIONS! 🏆","CAMPEONES! OLÉ OLÉ! 🎊"],
-    losing:["WE NEVER GIVE UP! 💙","COME ON YOU [CLUB]! 🔥","FIGHT FOR THE SHIRT! ✊"],
-  },
-  "EFL Championship":{
-    goal:["YEEEES! 🎉","GET IN! ✊","GREAT GOAL! 🔥","BRILLIANT! ⭐"],
-    home:["[CLUB]! [CLUB]!","Come on [CLUB]! 💪","WE ARE [CLUB]! ⚡"],
-    danger:["CLEAR IT! 😱","DEFEND! 🛡️"],foul:["REF! 😡","PENALTY! 🚩"],
-    near_miss:["OHHHH! 😱","SO CLOSE! 😩"],comeback:["NEVER GIVE UP! 💪"],winning:["CHAMPIONS! 🏆"],losing:["FIGHT! 💙"],
-  },
-  "Bundesliga":{
-    goal:["TOOOOOOR! 🎉","WAHNSINN! ⭐","UNGLAUBLICH! 🔥","JA! JA! JA! ✊","TRAUMTOR! ⚡","HAMMER! 💥","WELTKLASSE! 🌟","WAS FÜR EIN TOR! 😱"],
-    home:["HEY HO, [CLUB]! ⚡","[CLUB]! [CLUB]! [CLUB]! 🏆","AUF [CLUB]! 💪","WIR LIEBEN [CLUB]! ❤️","EIN [CLUB], EIN HERZ! ❤️"],
-    danger:["ABWEHR! ABWEHR! 🛡️","HALT! HALT! 😱","MANNSCHAFT! 💪","HALTEN! 🛡️"],
-    foul:["SCHIRI! 😡","ELFER! 🚩","RAUS! RAUS! 🟥","SKANDAL! 🤬"],
-    near_miss:["OHHHH! 😱","WAS WAR DAS! 😩","PFOSTEN! 😱","KNAPP DANEBEN! 😤"],
-    comeback:["KÄMPFEN! 🔥","NIEMALS AUFGEBEN! 💪","WIR GLAUBEN DARAN! ⚡"],
-    winning:["MEISTER! MEISTER! 🏆","WIR SIND DIE BESTEN! ⚡","CHAMPIONS! 🏆"],
-    losing:["KOPF HOCH! 💙","NICHT AUFGEBEN! 🔥","WIR KOMMEN ZURÜCK! ⚡"],
-  },
-  "2. Bundesliga":{
-    goal:["TOOOOOOR! 🎉","JA! JA! ✊","HAMMER! 💥"],
-    home:["[CLUB]! [CLUB]! 🏆","AUF [CLUB]! 💪"],
-    danger:["ABWEHR! 🛡️"],foul:["SCHIRI! 😡"],near_miss:["OHHHH! 😱"],comeback:["KÄMPFEN! 🔥"],winning:["MEISTER! 🏆"],losing:["KOPF HOCH! 💙"],
-  },
-  "Ligue 1":{
-    goal:["BUUUUUT! 🎉","MAGNIFIQUE! ⭐","INCROYABLE! 🔥","OUI! OUI! OUI! ✊","FANTASTIQUE! ⚡","SUBLIME! 🌟","QUEL BUT! 😍"],
-    home:["ALLEZ [CLUB]! ALLEZ! 💪","[CLUB]! [CLUB]! 🏆","ON EST LÀ! ⚡","OHH [CLUB]! 🔥","[CLUB] ON T'AIME! ❤️"],
-    danger:["DÉGAGEZ! 🛡️","DÉFENSE! DÉFENSE! 🛡️","ATTENTION! 😱","DEHORS! 😤"],
-    foul:["ARBITRE! 😡","PENALTY! 🚩","SCANDALE! 🤬","ROUGE! ROUGE! 🟥"],
-    near_miss:["OHHHH! 😱","TELLEMENT PROCHE! 😩","LE POTEAU! 😱","INCROYABLE! 😤"],
-    comeback:["ON PEUT LE FAIRE! 🔥","JAMAIS SANS COMBATTRE! 💪","ON Y CROIT! ⚡"],
-    winning:["CHAMPIONS! CHAMPIONS! 🏆","ON EST LES MEILLEURS! ⚡","TITRE! TITRE! 🎊"],
-    losing:["JAMAIS LÂCHER! 💙","ON PEUT REVENIR! 🔥","ALLEZ! 💪"],
-  },
-  "Ligue 2":{
-    goal:["BUUUUT! 🎉","OUI! ✊","MAGNIFIQUE! 🔥"],
-    home:["ALLEZ [CLUB]! 💪","[CLUB]! [CLUB]! 🏆"],
-    danger:["DÉFENSE! 🛡️"],foul:["ARBITRE! 😡"],near_miss:["OHHHH! 😱"],comeback:["ON Y CROIT! 🔥"],winning:["CHAMPIONS! 🏆"],losing:["JAMAIS LÂCHER! 💙"],
-  },
-  "La Liga":{
-    goal:["GOOOOOL! 🎉","QUÉ GOLAZO! ⭐","INCREÍBLE! 🔥","SÍ! SÍ! SÍ! ✊","MAGISTRAL! ⚡","ESPECTACULAR! 🌟","¡QUÉ BONITO! 😍"],
-    home:["¡VAMOS [CLUB]! 💪","[CLUB]! [CLUB]! 🏆","¡CAMPEONES! ⚡","¡FUERZA [CLUB]! 🔥","¡OLÉ OLÉ OLÉ! 🎊"],
-    danger:["¡FUERA! 🛡️","¡DEFENSA! DEFENSA! 🛡️","¡ATENTOS! 😱","¡DESPEJAR! 😤"],
-    foul:["¡ÁRBITRO! 😡","¡PENALTI! 🚩","¡ESCÁNDALO! 🤬","¡FUERA! 🟥"],
-    near_miss:["¡OHHHHH! 😱","¡TAN CERCA! 😩","¡EL PALO! 😱","¡QUELLE OPORTUNIDAD! 😤"],
-    comeback:["¡PODEMOS! 🔥","¡NUNCA SE RINDE! 💪","¡YO CREO! ⚡"],
-    winning:["¡CAMPEONES! 🏆","¡SOMOS LOS MEJORES! ⚡","¡A POR ELLOS! 🎊"],
-    losing:["¡NUNCA ABANDONAR! 💙","¡VAMOS, PODEMOS! 🔥","¡ARRIBA [CLUB]! ✊"],
-  },
-  "Segunda División":{
-    goal:["GOOOOOL! 🎉","SÍ! SÍ! ✊","¡QUÉ GOL! 🔥"],
-    home:["¡VAMOS [CLUB]! 💪","[CLUB]! [CLUB]! 🏆"],
-    danger:["¡DEFENSA! 🛡️"],foul:["¡ÁRBITRO! 😡"],near_miss:["¡OHHH! 😱"],comeback:["¡PODEMOS! 🔥"],winning:["¡CAMPEONES! 🏆"],losing:["¡NUNCA ABANDONAR! 💙"],
-  },
-  "Primeira Liga":{
-    goal:["GOOOOLO! 🎉","QUE GOLAÇO! ⭐","INCRÍVEL! 🔥","SIM! SIM! SIM! ✊","ESPETACULAR! ⚡"],
-    home:["FORÇA [CLUB]! 💪","[CLUB]! [CLUB]! 🏆","NÓS SOMOS [CLUB]! ⚡","VAMOS [CLUB]! 🔥"],
-    danger:["DEFESA! DEFESA! 🛡️","FORA! FORA! 😱"],foul:["ÁRBITRO! 😡","PENALTY! 🚩"],
-    near_miss:["OHHHH! 😱","QUE PENA! 😩"],comeback:["NÃO DESISTIR! 💪"],winning:["CAMPEÕES! 🏆"],losing:["FORÇA! 💙"],
-  },
-  "Eredivisie":{
-    goal:["GOAAAAL! 🎉","PRACHTIG! ⭐","GEWELDIG! 🔥","JA! JA! JA! ✊","FANTASTISCH! ⚡"],
-    home:["[CLUB]! [CLUB]! 🏆","HEJA [CLUB]! 💪","WIJ ZIJN [CLUB]! ⚡"],
-    danger:["VERDEDIGING! 🛡️","HOE DAN! 😱"],foul:["SCHEIDS! 😡","PENALTY! 🚩"],
-    near_miss:["OHHHH! 😱","BIJNA! 😩"],comeback:["NOOIT OPGEVEN! 💪"],winning:["KAMPIOENEN! 🏆"],losing:["HOOFD OMHOOG! 💙"],
-  },
-  "Süper Lig":{
-    goal:["GOOOOL! 🎉","MUHTEŞEMDİ! ⭐","İNANILMAZ! 🔥","EVET! EVET! ✊","HARIKA! ⚡","SÜPER! 🌟"],
-    home:["HAYDI [CLUB]! 💪","[CLUB]! [CLUB]! 🏆","BİZ [CLUB]'İZ! ⚡","GİT [CLUB]! 🔥"],
-    danger:["SAVUNMA! 🛡️","DİKKAT! 😱","ENGELLE! 😤"],foul:["HAKEM! 😡","PENALTİ! 🚩","SKANDAL! 🤬"],
-    near_miss:["OHHHH! 😱","ÇOK YAKINDI! 😩","DİREK! 😱"],comeback:["ASLA BITMEZ! 🔥","INANIYORUM! 💪"],winning:["ŞAMPİYON! 🏆"],losing:["ASLA ÖDÜNÇ VERME! 💙"],
-  },
-};
 const SLOT_KEYS=["cpm-v3","cpm-v3-s2","cpm-v3-s3"]; // slot 0 backward-compatible
 const storage={
   save:async(d,slot=0)=>{
@@ -3959,26 +3877,19 @@ function calcWorldStandings(lg,season,currentWeek){
   return[...st].sort((a,b)=>b.pts-a.pts||b.gd-a.gd||b.gf-a.gf);
 }
 // context-aware realistic attendance
-function calcAttendance(homeClub,context,weather){
+function calcAttendance(homeClub,context){
   // Sprint 81 — realistic prestige-based capacity ranges
   const ctx=context||"career";
   if(ctx==="trial")return rng(80,320);
   const p=homeClub?.p||homeClub?.prestige||60;
   const isU18=homeClub?.isU18;
   if(isU18)return rng(200,1200);
-  let base;
-  if(p>=90)base=rng(45000,78000);
-  else if(p>=80)base=rng(22000,50000);
-  else if(p>=65)base=rng(10000,25000);
-  else if(p>=52)base=rng(4000,12000);
-  else if(p>=38)base=rng(1200,4500);
-  else base=rng(300,1500);
-  // Sprint 91 — weather reduces attendance
-  const wid=weather?.id||"";
-  if(wid==="storm"||wid==="blizzard"||wid==="heavy_rain")base=Math.round(base*0.68);
-  else if(wid==="rain"||wid==="snow"||wid==="fog"||wid==="hail")base=Math.round(base*0.84);
-  else if(wid==="drizzle"||wid==="cold")base=Math.round(base*0.93);
-  return base;
+  if(p>=90)return rng(45000,78000);
+  if(p>=80)return rng(22000,50000);
+  if(p>=65)return rng(10000,25000);
+  if(p>=52)return rng(4000,12000);
+  if(p>=38)return rng(1200,4500);
+  return rng(300,1500);
 }
 // Poisson-like integer: most matches end 0-0, 1-0, 1-1, 2-1, 2-0
 function poissonGoals(lambda){
@@ -4572,15 +4483,10 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
       const wEvt=p.waveEvent;
       const waveAge=wEvt?(Date.now()-wEvt.t):999999;
       const goalBurst=Math.max(0,1-waveAge/5000);
-      // Sprint 91 — wave amplitude scales with prestige (elite clubs = louder crowd)
-      const _pres91=p.homeClub?.p||65;
-      const _presScale=_pres91>85?1.6:_pres91>70?1.2:_pres91>55?1.0:0.7;
-      const waveSpd=t*0.0012,waveAmp=(4.5+goalBurst*18)*_presScale,waveAlpha=0.22+goalBurst*0.35;
+      const waveSpd=t*0.0012,waveAmp=4.5+goalBurst*14,waveAlpha=0.22+goalBurst*0.30;
       const flashCol=wEvt&&goalBurst>0.05?(wEvt.home?p.homeCol:"#ef4444"):"#fff";
-      // Multi-wave ripple: two overlapping sine waves for richer ola effect
       for(let wi=0;wi<Math.ceil(FW/5);wi++){
-        const wx=FX+wi*5;
-        const wh=Math.max(0,Math.sin(waveSpd*3+wi*0.22)*waveAmp*0.7+Math.sin(waveSpd*2+wi*0.14)*waveAmp*0.3);
+        const wx=FX+wi*5,wh=Math.max(0,Math.sin(waveSpd*3+wi*0.22)*waveAmp);
         if(wh>0.5){ctx.save();ctx.globalAlpha=waveAlpha;ctx.fillStyle=flashCol;ctx.fillRect(wx,2,5,Math.min(wh,FY-3));ctx.fillRect(wx,FY+FH+2,5,Math.min(wh,PH-FY-FH-4));ctx.restore();}
       }
       if(Math.random()<0.012+goalBurst*0.06){
@@ -6292,9 +6198,9 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   const gkDiveRef=useRef(null); // GK dive direction for rigore
   // Sprint 81 — attendance uses the HOME club (not always player.club)
   const [attendance]=useState(()=>{
-    if(context==="trial")return calcAttendance(null,"trial",weather);
+    if(context==="trial")return calcAttendance(null,"trial");
     const hClub=isMatchHome?(player.club||opponent):opponent;
-    return calcAttendance(hClub,"career",weather);
+    return calcAttendance(hClub,"career");
   });
   // responsive layout: narrow = stacked vertically (phones + tablets up to 640px)
   const [isNarrow,setIsNarrow]=useState(()=>window.innerWidth<640);
@@ -6399,12 +6305,9 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   // Component-scope chantFor — tracks timer IDs so they can be cleared on phase exit
   const chantFor=(type,dur=2800)=>{
     const clubN=player.club?.a||player.club?.n||player.club?.name||"la squadra";
-    const lg=player.club?.lg||"";
-    const lgPool=(CROWD_CHANTS_LG[lg]||{})[type];
-    const pool=lgPool||CROWD_CHANTS[type]||CROWD_CHANTS.home;
+    const pool=CROWD_CHANTS[type]||CROWD_CHANTS.home;
     const t=pick(pool);
-    const clubCol=player.club?.c||"#4ade80";
-    setCrowdChant({text:t.replace(/\[CLUB\]/g,clubN),type,key:Date.now(),clubCol});
+    setCrowdChant({text:t.replace(/\[CLUB\]/g,clubN),type,key:Date.now()});
     const tid=setTimeout(()=>setCrowdChant(null),dur);
     chantTimersRef.current.push(tid);
   };
@@ -7232,14 +7135,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
               {phase==="walkout"&&<WalkoutOverlay homeTeam={player.club||opponent} homeRoster={homeRoster} awayRoster={awayRoster} opponent={opponent} isHome={isMatchHome} matchWeek={player.week} onDone={()=>{if(benchStart)setOnBench(true);setPhase("playing");}} weather={weather} isDerbyMatch={!!drby} isBigGame={mw>=7} heroJerseyNum={player.jerseyNum||10}/>}
               {screenFlash&&<div style={{position:"absolute",inset:0,background:screenFlash.col,zIndex:20,pointerEvents:"none",animation:`fadeFlash ${screenFlash.dur}ms ease-out forwards`}}/>}
               {floatGoal&&<div key={floatGoal.key} style={{position:"absolute",top:"30%",left:0,right:0,textAlign:"center",fontSize:22,fontWeight:900,color:floatGoal.col,textShadow:"0 0 24px currentColor",animation:"floatUp 1.4s ease-out forwards",zIndex:21,pointerEvents:"none"}}>{floatGoal.text}</div>}
-              {crowdChant&&(()=>{
-                const isGoal=crowdChant.type==="goal";
-                const isDanger=crowdChant.type==="danger";
-                const isFoul=crowdChant.type==="foul";
-                const col=isGoal?(crowdChant.clubCol||"#4ade80"):isDanger?"#f87171":isFoul?"#fb923c":"#f8fafc";
-                const fs=isGoal?20:15;
-                return <div key={crowdChant.key} style={{position:"absolute",bottom:"8%",left:"5%",right:"5%",textAlign:"center",fontSize:fs,fontWeight:900,color:col,textShadow:`0 0 22px ${col},0 2px 10px rgba(0,0,0,0.95)`,animation:"chantPulse 2.8s ease-out forwards",zIndex:22,pointerEvents:"none",letterSpacing:1.5,textTransform:"uppercase",padding:"5px 10px",background:isGoal?`linear-gradient(90deg,transparent,rgba(0,0,0,0.55),transparent)`:"transparent",borderRadius:8}}>{crowdChant.text}</div>;
-              })()}
+              {crowdChant&&<div key={crowdChant.key} style={{position:"absolute",bottom:"10%",left:0,right:0,textAlign:"center",fontSize:15,fontWeight:900,color:crowdChant.type==="goal"?"#4ade80":crowdChant.type==="danger"?"#f87171":crowdChant.type==="foul"?"#fb923c":"#f8fafc",textShadow:"0 2px 14px rgba(0,0,0,0.85)",animation:"chantPulse 2.8s ease-out forwards",zIndex:22,pointerEvents:"none",letterSpacing:1,textTransform:"uppercase",padding:"0 12px"}}>{crowdChant.text}</div>}
               {/* Pause overlay */}
               {paused&&["playing","hl_intro","hl_move","hl_choose","hl_result"].includes(phase)&&(
                 <div style={{position:"absolute",inset:0,background:"rgba(5,8,20,0.78)",backdropFilter:"blur(4px)",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",zIndex:30,cursor:"pointer"}} onClick={()=>setPaused(false)}>
