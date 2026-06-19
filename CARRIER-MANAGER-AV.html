@@ -2383,7 +2383,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="3.93.0"; // Sprint 113: Match engine — BG dedup, +35 commentary, 4 coach moments, post-match eval, match events log, role drift
+const GAME_VERSION="3.94.0"; // Sprint 114-115: Rosa 23 giocatori, coerenza assoluta Rosa↔Formazione (jersey numbers identici)
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -14180,7 +14180,14 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
         const stars=Math.round(prestige/20);
         const capP=prestige>=90?62000:prestige>=80?36000:prestige>=65?17500:prestige>=52?8000:prestige>=38?2800:900;
         const capStr=capP>=1000?(capP/1000).toFixed(0)+"k":capP+"";
-        const roster=generateTeamRoster(club,player.season||1);
+        const _rosterRaw=generateTeamRoster(club,player.season||1);
+        const _jNum=player.jerseyNum||10;
+        const _numPool=[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23].filter(n=>n!==_jNum);
+        let _rni=0;
+        const roster=_rosterRaw.map((pl,i)=>{
+          if(i===10)return{...pl,name:player.name,role:player.position||pl.role,jerseyNum:_jNum};
+          return{...pl,jerseyNum:_numPool[_rni++]||i+1};
+        });
         const wage=player.contract?.wage||0;
         const exp=player.contract?.expiresAtSeason||((player.season||1)+1);
         const dur=player.contract?.duration||0;
@@ -14288,7 +14295,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                 const isMe=pl.name===(player.name||"");
                 return(
                   <div key={i} style={{display:"flex",alignItems:"center",gap:8,padding:"4px 6px",borderRadius:6,background:isMe?"rgba(59,130,246,0.1)":"transparent"}}>
-                    <div style={{fontSize:10,color:TH.faint,minWidth:18,textAlign:"right"}}>{i+1+offset}</div>
+                    <div style={{fontSize:10,color:TH.faint,minWidth:18,textAlign:"right"}}>{pl.jerseyNum||i+1+offset}</div>
                     <div style={{fontSize:13,width:18,flexShrink:0}}>{roleIcons[pl.role]||"⚽"}</div>
                     <div style={{flex:1,fontSize:11,color:isMe?TH.primary:TH.text,fontWeight:isMe?700:400}}>{pl.name}</div>
                     <div style={{fontSize:9,color:TH.faint,textAlign:"right"}}>{pl.role}</div>
