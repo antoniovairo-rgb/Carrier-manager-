@@ -2383,7 +2383,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="3.92.0"; // Sprint 113: Match engine — BG dedup, +35 commentary, 4 coach moments, post-match eval, match events log, role drift
+const GAME_VERSION="3.93.0"; // Sprint 113: Match engine — BG dedup, +35 commentary, 4 coach moments, post-match eval, match events log, role drift
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -4060,7 +4060,11 @@ function hashStr(s){let h=5381;for(let i=0;i<s.length;i++){h=((h<<5)+h)^s.charCo
 function generateTeamRoster(club,season){
   const nat=club?.nat||"🇮🇹";
   const names=NAME_BY_NAT[nat]||NAME_BY_NAT["🇮🇹"];
-  const roles=["Portiere","Difensore","Difensore","Terzino","Terzino","Mediano","Centrocampista","Trequartista","Ala","Ala","Centravanti"];
+  // 11 titolari + 12 panchina = 23 giocatori
+  const roles=[
+    "Portiere","Difensore","Difensore","Terzino","Terzino","Mediano","Centrocampista","Trequartista","Ala","Ala","Centravanti",
+    "Portiere","Difensore","Difensore","Terzino","Mediano","Centrocampista","Mezzala","Ala","Centravanti","Attaccante","Jolly","Under-21"
+  ];
   const base=hashStr((club?.id||club?.n||"x")+"_"+(season||1));
   // Shuffle first and last name pools with different seeds → unique names, no duplicates
   const firstPool=seededShuffle([...names.first],base);
@@ -6439,14 +6443,14 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   // homeRoster = football home team; awayRoster = football away team (player is in the correct side)
   const [homeRoster]=useState(()=>{
     const isNatCtxR=context==="national"||context==="nationsCup"||context==="euroMondiale_group"||context==="euroMondiale_ko"||context==="euroMondiale";
-    if(!isMatchHome){return generateTeamRoster(opponent,player.season||1);}
+    if(!isMatchHome){return generateTeamRoster(opponent,player.season||1).slice(0,11);}
     const _hRosterClub=isNatCtxR?(NAT_CLUB_DATA[player.nation||"Italia"]||player.club):player.club||opponent;
-    const r=generateTeamRoster(_hRosterClub,player.season||1);r[10]={name:player.name,role:"Centravanti"};return r;
+    const r=generateTeamRoster(_hRosterClub,player.season||1).slice(0,11);r[10]={name:player.name,role:"Centravanti"};return r;
   });
   const [awayRoster]=useState(()=>{
     const isNatCtxR=context==="national"||context==="nationsCup"||context==="euroMondiale_group"||context==="euroMondiale_ko"||context==="euroMondiale";
-    if(!isMatchHome){const _aClub=isNatCtxR?(NAT_CLUB_DATA[player.nation||"Italia"]||player.club):player.club||opponent;const r=generateTeamRoster(_aClub,player.season||1);r[10]={name:player.name,role:"Centravanti"};return r;}
-    return generateTeamRoster(opponent,player.season||1);
+    if(!isMatchHome){const _aClub=isNatCtxR?(NAT_CLUB_DATA[player.nation||"Italia"]||player.club):player.club||opponent;const r=generateTeamRoster(_aClub,player.season||1).slice(0,11);r[10]={name:player.name,role:"Centravanti"};return r;}
+    return generateTeamRoster(opponent,player.season||1).slice(0,11);
   });
   // 22 players + referee — generated once per match
   const [matchPlayers,setMatchPlayers]=useState(()=>{
@@ -14191,7 +14195,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
           const pi=ss.findIndex(t=>t.id===ci||(t.n||t.name)===(club.n||club.name));
           return pi>=0?{pos:pi+1,total:ss.length,pts:(ss[pi]?.pts||0)}:null;
         })();
-        const roleIcons={Portiere:"🧤",Difensore:"🛡️",Terzino:"🏃",Mediano:"🔄",Centrocampista:"⚙️",Trequartista:"🎨",Ala:"⚡",Centravanti:"🎯"};
+        const roleIcons={Portiere:"🧤",Difensore:"🛡️",Terzino:"🏃",Mediano:"🔄",Centrocampista:"⚙️",Trequartista:"🎨",Mezzala:"🎯",Ala:"⚡",Centravanti:"🎯",Attaccante:"⚡","Under-21":"🌟",Jolly:"🔁"};
         return(
           <div style={{display:"flex",flexDirection:"column",gap:10}}>
             {/* Header Club */}
@@ -14277,19 +14281,37 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
             )}
 
             {/* Rosa */}
-            <Card style={{padding:"10px 14px"}}>
-              <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>👕 Rosa S.{player.season||1}</div>
-              <div style={{display:"flex",flexDirection:"column",gap:2}}>
-                {roster.map((pl,i)=>(
-                  <div key={i} style={{display:"flex",alignItems:"center",gap:8,padding:"4px 6px",borderRadius:6,background:pl.name===(player.name||"")?"rgba(59,130,246,0.1)":"transparent"}}>
-                    <div style={{fontSize:10,color:TH.faint,minWidth:14,textAlign:"right"}}>{i+1}</div>
+            {(()=>{
+              const titolari=roster.slice(0,11);
+              const panchina=roster.slice(11);
+              const renderRow=(pl,i,offset=0)=>{
+                const isMe=pl.name===(player.name||"");
+                return(
+                  <div key={i} style={{display:"flex",alignItems:"center",gap:8,padding:"4px 6px",borderRadius:6,background:isMe?"rgba(59,130,246,0.1)":"transparent"}}>
+                    <div style={{fontSize:10,color:TH.faint,minWidth:18,textAlign:"right"}}>{i+1+offset}</div>
                     <div style={{fontSize:13,width:18,flexShrink:0}}>{roleIcons[pl.role]||"⚽"}</div>
-                    <div style={{flex:1,fontSize:11,color:pl.name===(player.name||"")?TH.primary:TH.text,fontWeight:pl.name===(player.name||"")?700:400}}>{pl.name}</div>
+                    <div style={{flex:1,fontSize:11,color:isMe?TH.primary:TH.text,fontWeight:isMe?700:400}}>{pl.name}</div>
                     <div style={{fontSize:9,color:TH.faint,textAlign:"right"}}>{pl.role}</div>
                   </div>
-                ))}
-              </div>
-            </Card>
+                );
+              };
+              return(
+                <Card style={{padding:"10px 14px"}}>
+                  <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>👕 Rosa S.{player.season||1} <span style={{color:TH.faint,fontWeight:400}}>({roster.length} giocatori)</span></div>
+                  <div style={{fontSize:9,color:TH.primary,fontWeight:700,textTransform:"uppercase",letterSpacing:1,marginBottom:4,marginTop:2}}>Titolari</div>
+                  <div style={{display:"flex",flexDirection:"column",gap:2,marginBottom:8}}>
+                    {titolari.map((pl,i)=>renderRow(pl,i,0))}
+                  </div>
+                  {panchina.length>0&&<>
+                    <div style={{height:1,background:TH.cardBorder,marginBottom:6}}/>
+                    <div style={{fontSize:9,color:TH.muted,fontWeight:700,textTransform:"uppercase",letterSpacing:1,marginBottom:4}}>Panchina</div>
+                    <div style={{display:"flex",flexDirection:"column",gap:2}}>
+                      {panchina.map((pl,i)=>renderRow(pl,i,11))}
+                    </div>
+                  </>}
+                </Card>
+              );
+            })()}
 
             {/* Bacheca Club */}
             {(lgTrophies.length>0||cupTrophies.length>0||euTrophies.length>0)&&(
