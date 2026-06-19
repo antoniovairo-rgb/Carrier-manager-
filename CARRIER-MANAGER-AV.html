@@ -2383,7 +2383,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="3.99.5"; // Sprint 125: remove manual skillPoints UI; add Richiedi Cessione agent flow
+const GAME_VERSION="3.99.6"; // Sprint 126: training growth % indicators; award race progress bars in profile
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -14783,11 +14783,23 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
           <Card>
             <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}}>
               <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5}}>Attributi</div>
-              <div style={{fontSize:10,color:TH.faint,fontStyle:"italic"}}>La crescita avviene automaticamente</div>
+              <div style={{display:"flex",alignItems:"center",gap:8}}>
+                <span style={{fontSize:9,color:"#16a34a",fontWeight:700}}>+1</span><span style={{fontSize:9,color:TH.faint}}>= guadagnato</span>
+                <span style={{fontSize:9,color:TH.faint,marginLeft:4}}>% = prob. crescita</span>
+              </div>
             </div>
-            {Object.entries(player.stats).map(([k,v])=>(
-              <div key={k} style={{marginBottom:4}}><StatBar label={k} value={v}/></div>
-            ))}
+            {(()=>{
+              const _wSlog=player.sessionLog||[];
+              const _wGained=new Set(_wSlog.flatMap(s=>[s.gainA?s.statA:null,s.gainB?s.statB:null].filter(Boolean)));
+              const _dimPct=(v)=>{const sv=v||60;return sv>=92?4:sv>=88?8:sv>=84?14:sv>=80?20:sv>=75?28:sv>=70?35:sv>=65?45:55;};
+              return Object.entries(player.stats).map(([k,v])=>(
+                <div key={k} style={{display:"flex",alignItems:"center",gap:6,marginBottom:4}}>
+                  <div style={{flex:1}}><StatBar label={k} value={v}/></div>
+                  {_wGained.has(k)&&<span style={{fontSize:9,fontWeight:800,color:"#16a34a",background:"#dcfce7",padding:"1px 5px",borderRadius:4,flexShrink:0}}>+1</span>}
+                  <span style={{fontSize:9,color:_dimPct(v)>=35?"#16a34a":_dimPct(v)>=20?"#ca8a04":"#dc2626",minWidth:24,textAlign:"right",flexShrink:0}}>{_dimPct(v)}%</span>
+                </div>
+              ));
+            })()}
           </Card>
           {/* Sprint 50 — Training Attivo: 3 slot settimanali */}
           {(()=>{
@@ -15387,6 +15399,54 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
               )}
             </Card>
           )}
+          {/* Sprint 126 — Corsa ai Premi stagionali */}
+          {(player.proStatus==="pro"&&(player.week||1)>=8)&&(()=>{
+            const _g=player.goals||0,_a=player.assists||0,_ovr=player.ovr||60,_age=player.age||20;
+            const _palOvrOk=_ovr>=78;
+            const _palGoalOk=_g>=14||(_g>=10&&_a>=8);
+            const _palPct=Math.min(100,Math.round(_g/14*100));
+            const _lgPres=player.club?.p||65;
+            const _topEst=Math.max(12,Math.round(_lgPres*0.22));
+            const _scarpaPct=Math.min(100,Math.round(_g/_topEst*100));
+            const _isGB=_age<=23;
+            const _gbPct=_isGB?Math.min(100,Math.round(_g/8*100)):0;
+            const _bar=(pct,col)=>(
+              <div style={{background:"#e5e7eb",borderRadius:4,height:5,overflow:"hidden",marginBottom:2}}>
+                <div style={{width:pct+"%",height:"100%",background:col,borderRadius:4,transition:"width .4s"}}/>
+              </div>
+            );
+            return(
+              <Card style={{padding:"12px 14px"}}>
+                <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:10}}>🎯 Corsa ai Premi — S.{player.season||1}</div>
+                <div style={{marginBottom:10}}>
+                  <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:3}}>
+                    <span style={{fontSize:11,fontWeight:700,color:"#92400e"}}>🏆 Pallone d'Oro</span>
+                    <span style={{fontSize:9,color:TH.muted}}>{_g}/14 gol · OVR {_ovr}{_palOvrOk?" ✓":" (min.78)"}</span>
+                  </div>
+                  {_bar(_palPct,"#fbbf24")}
+                  <div style={{fontSize:9,color:TH.muted}}>{_palOvrOk?(_palGoalOk?"✅ In corsa — mantieni le prestazioni":"Serve: 14+ gol oppure 10G+8A"):"OVR 78+ richiesto"}</div>
+                </div>
+                <div style={{marginBottom:_isGB?10:0}}>
+                  <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:3}}>
+                    <span style={{fontSize:11,fontWeight:700,color:"#991b1b"}}>⚽ Scarpa d'Oro</span>
+                    <span style={{fontSize:9,color:TH.muted}}>{_g} gol · soglia est. ~{_topEst}</span>
+                  </div>
+                  {_bar(_scarpaPct,"#ef4444")}
+                  <div style={{fontSize:9,color:TH.muted}}>{_scarpaPct>=100?"✅ Sei in vetta ai marcatori!":"Devi essere il capocannoniere a fine stagione"}</div>
+                </div>
+                {_isGB&&(
+                  <div>
+                    <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:3}}>
+                      <span style={{fontSize:11,fontWeight:700,color:"#5b21b6"}}>🌟 Miglior Giovane</span>
+                      <span style={{fontSize:9,color:TH.muted}}>{_g}G {_a}A · età {_age}</span>
+                    </div>
+                    {_bar(_gbPct,"#7c3aed")}
+                    <div style={{fontSize:9,color:TH.muted}}>Disponibile fino a 23 anni · target: 8+ gol e buone prestazioni</div>
+                  </div>
+                )}
+              </Card>
+            );
+          })()}
           {/* Sprint 29 — MW1: Memoria della Carriera */}
           {(()=>{
             const MEM_META={
