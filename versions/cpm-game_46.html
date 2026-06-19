@@ -2247,7 +2247,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="3.84.0"; // Sprint 106 — Mercato invernale: finestra card, richiedi cessione, offerta garantita
+const GAME_VERSION="3.83.0"; // Sprint 105 — Campionati Primavera: branding P1/P2, awards, progressione realistica
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -10431,7 +10431,6 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
   const[negoModal,setNegoModal]=useState(null); // Sprint 54: contract negotiation
   const[weekLiveModal,setWeekLiveModal]=useState(null);   // {event, changes}
   const[showAdvanceConfirm,setShowAdvanceConfirm]=useState(false);
-  const[showCessioneConfirm,setShowCessioneConfirm]=useState(false); // Sprint 106
   const[showMatchPrompt,setShowMatchPrompt]=useState(null); // {md} — pending match prompt
   const showMatchPromptRef=useRef(null);
   useEffect(()=>{showMatchPromptRef.current=showMatchPrompt;},[showMatchPrompt]);
@@ -11294,7 +11293,6 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
   // advance week: calendar-driven, simulates missed matches; intercepts season end for rich screen
   const doAdvanceWeek=()=>{
     setShowAdvanceConfirm(false);
-    setShowCessioneConfirm(false); // Sprint 106
     const isInU18=(player.proStatus||"u18")==="u18";
     const weekVal=player.week||1;
 
@@ -11522,7 +11520,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       if(Math.random()<offerProb&&p.matches>=0){const offer=generateTransferOffer(p);if(offer)setTransferOffer(offer);}
       if(wk===1)setTimeout(()=>notify("🏷️ Mercato estivo aperto! Settimane 1-5.","#0ea5e9"),200);
       if(wk===6)setTimeout(()=>notify("🔒 Mercato estivo chiuso.","#64748b"),200);
-      if(wk===19){setTimeout(()=>notify("🏷️ Mercato invernale aperto! Settimane 19-23.","#0ea5e9"),200);if(p.transferListed&&!transferOffer){const _off19=generateTransferOffer(p);if(_off19)setTimeout(()=>setTransferOffer(_off19),600);}}
+      if(wk===19)setTimeout(()=>notify("🏷️ Mercato invernale aperto! Settimane 19-23.","#0ea5e9"),200);
       if(wk===24)setTimeout(()=>notify("🔒 Mercato invernale chiuso.","#64748b"),200);
       // S9.1: random life events now fire on every advance (no weekLived guard) — random life events must fire every advance, not just once
       if(!p.injured&&Math.random()<0.25){
@@ -12827,65 +12825,12 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
           <Btn onClick={openNegoModal} v="primary" fw>📋 Negozia rinnovo</Btn>
         </Card>
       )}
-      {/* Finestra Mercato card — Sprint 106 */}
-      {tab==="dashboard"&&(player.proStatus||"u18")==="pro"&&(()=>{
-        const _wk=player.week||1;
-        const _isSumWin=_wk>=1&&_wk<=5;
-        const _isWinWin=_wk>=19&&_wk<=23;
-        const _inWin=_isSumWin||_isWinWin;
-        const _listed=player.transferListed||false;
-        if(!_inWin&&!_listed)return null;
-        const _winLabel=_isSumWin?"Mercato Estivo":"Mercato Invernale";
-        const _winEnd=_isSumWin?5:23;
-        const _weeksLeft=Math.max(0,_winEnd-_wk+1);
-        return(
-          <Card bg={_listed?"#fef9c3":"#f0f9ff"} border={_listed?"#fde68a":"#bae6fd"} style={{marginBottom:8,padding:"12px 14px"}}>
-            <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:_listed||showCessioneConfirm?8:0}}>
-              <div>
-                <div style={{fontSize:11,fontWeight:800,color:_listed?"#92400e":"#0369a1"}}>
-                  {_listed?"📢 Sei in lista cessioni":`🏷️ ${_winLabel} aperto`}
-                </div>
-                <div style={{fontSize:10,color:_listed?"#a16207":"#0284c7",marginTop:2}}>
-                  {_inWin?`${_weeksLeft} settiman${_weeksLeft===1?"a":"e"} rimanent${_weeksLeft===1?"e":"i"}`:""}{_listed&&!_inWin?" · Finestra chiusa — attendi la prossima apertura":""}
-                </div>
-              </div>
-              {_listed&&!showCessioneConfirm&&(
-                <Btn v="ghost" style={{fontSize:10,padding:"5px 10px",flexShrink:0,border:"1px solid #d97706",color:"#92400e"}}
-                  onClick={()=>{setPlayer(p=>({...p,transferListed:false,morale:clamp(p.morale+5,0,100),log:["📢 Richiesta di cessione ritirata.",...(p.log||[])].slice(0,60)}));notify("Richiesta ritirata.",TH.muted);}}>
-                  Ritira ✕
-                </Btn>
-              )}
-              {!_listed&&!showCessioneConfirm&&_inWin&&(
-                <Btn v="ghost" style={{fontSize:10,padding:"5px 10px",flexShrink:0,border:"1px solid #0369a1",color:"#0369a1"}}
-                  onClick={()=>setShowCessioneConfirm(true)}>
-                  Richiedi cessione →
-                </Btn>
-              )}
-            </div>
-            {showCessioneConfirm&&(
-              <div style={{marginTop:4,padding:"10px 12px",background:"#fff7ed",borderRadius:8,border:"1px solid #fed7aa"}}>
-                <div style={{fontSize:11,fontWeight:700,color:"#92400e",marginBottom:4}}>⚠️ Confermi la richiesta di cessione?</div>
-                <div style={{fontSize:10,color:"#78350f",lineHeight:1.5,marginBottom:8}}>Il club sarà informato. Fiducia mister <strong>−15</strong> · Morale <strong>+5</strong>. Se nessuna offerta arriva entro la finestra, resti.</div>
-                <div style={{display:"flex",gap:8}}>
-                  <Btn v="secondary" style={{flex:1,fontSize:11,padding:"6px"}} onClick={()=>setShowCessioneConfirm(false)}>Annulla</Btn>
-                  <Btn v="primary" style={{flex:1,fontSize:11,padding:"6px"}} onClick={()=>{
-                    setShowCessioneConfirm(false);
-                    setPlayer(p=>({...p,transferListed:true,coachTrust:clamp((p.coachTrust||60)-15,0,100),morale:clamp((p.morale||70)+5,0,100),log:["📢 Hai richiesto la cessione.",...(p.log||[])].slice(0,60)}));
-                    notify("📢 Richiesta di cessione inviata. Il mercato si muoverà.",TH.warning);
-                    if(!transferOffer){const _offC=generateTransferOffer(player);if(_offC)setTimeout(()=>setTransferOffer(_offC),1200);}
-                  }}>Confermo →</Btn>
-                </div>
-              </div>
-            )}
-            {transferOffer&&!transferOffer.isRenewal&&!showCessioneConfirm&&(
-              <div style={{marginTop:6,paddingTop:6,borderTop:`1px solid ${_listed?"#fde68a":"#bae6fd"}`,display:"flex",alignItems:"center",justifyContent:"space-between"}}>
-                <div style={{fontSize:10,color:TH.text}}>📩 <strong>{transferOffer.club?.n}</strong> ha fatto un'offerta</div>
-                <Btn v="primary" style={{fontSize:10,padding:"4px 10px",flexShrink:0}} onClick={()=>setTab("dashboard")}>Vedi →</Btn>
-              </div>
-            )}
-          </Card>
-        );
-      })()}
+      {/* Transfer listed banner (dashboard read-only indicator only) */}
+      {tab==="dashboard"&&(player.proStatus||"u18")==="pro"&&player.transferListed&&(
+        <Card bg="#fef9c3" border="#fde68a" style={{marginBottom:8,padding:"8px 14px"}}>
+          <div style={{fontSize:11,fontWeight:700,color:"#713f12"}}>📢 Sul mercato — vai nel Profilo per gestire la richiesta</div>
+        </Card>
+      )}
       {/* Injury banner */}
       {tab==="dashboard"&&player.injured&&(
         <Card bg="#fff1f2" border="#fecaca" style={{marginBottom:8,padding:"12px 14px"}}>
