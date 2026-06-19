@@ -1616,7 +1616,7 @@ S("⚡ Sprint sulla fascia! 1 contro 1 col terzino.",["bordo","trequarti"],{x:[6
   A("⚡ Spunto esplosivo","velocità",8,"assist","intercept",20),A("🌀 Dribbling di tecnica","tecnica",5,"assist","nothing",16),A("💥 Tiro cross teso","tiro",3,"goal","miss",13)]),
 /* Rigore nel finale */
 S("🔴 RIGORE! Sul dischetto a 5' dalla fine. Respira. Tira.",["area"],{x:[84,90],y:[44,56]},{x:[86,89],y:[47,53]},[
-  A("💥 Angolo basso — potenza","tiro",12,"goal","miss_easy",10),A("🌀 Cucchiaio — glaciale","tecnica",2,"goal","miss_easy",20),A("⚡ Incrociato rasoterra","velocità",6,"goal","miss",14)]),
+  A("💥 Angolo basso — potenza","tiro",12,"goal","miss_easy",10),A("🌀 Cucchiaio — glaciale","tecnica",2,"goal","miss_easy",20),A("⚡ Incrociato rasoterra","velocità",6,"goal","miss",14)],true,0,"⏱ Cinque minuti alla fine. Il rigore che vale tutto. Respira.","off"),
 /* Rimonta — sotto di due gol */
 S("🔙 Siamo sotto 0-2. Segnare adesso cambia tutto.",["trequarti","bordo"],{x:[55,80],y:[25,75]},{x:[58,72],y:[30,70]},[
   A("🔥 Prendo in mano la squadra","mentalità",8,"goal","through",18),A("⚡ Scatto in verticale","velocità",6,"goal","intercept",16),A("🎯 Lancio smarcante","passaggio",5,"assist","intercept",12)]),
@@ -2383,7 +2383,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="3.97.0"; // Sprint 118: Esperienza panchina live — clock/score/fasi warmup→entrata
+const GAME_VERSION="3.97.1"; // Sprint 117b: fix rigore finale (lockMovement mancante) + reset immediato posizioni
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -6683,6 +6683,20 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     if(phase==="hl_move"||phase==="hl_intro"){
       const sp=getStartPos(situations[hlIdx]);
       setPPos(sp);
+      // Sprint 117b: immediately reposition all players for lockMovement (rigore/punizione)
+      if(situations[hlIdx]?.lockMovement){
+        setMatchPlayers(prev=>prev.map((pl,idx)=>{
+          if(pl.team==="ref")return pl;
+          if(pl.team==="away"){
+            const ai=idx-10;
+            if(ai===0)return{...pl,x:95,y:50};
+            return{...pl,x:58+Math.floor(ai*1.2),y:8+ai*8};
+          }else{
+            if(idx===0)return{...pl,x:4,y:50};
+            return{...pl,x:60+Math.floor(idx*0.8),y:10+idx*7};
+          }
+        }));
+      }
     }
     // Coro folla all'ingresso del momento clou
     if(phase==="hl_intro"){
