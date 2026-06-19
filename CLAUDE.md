@@ -187,3 +187,178 @@ Prima di ogni modifica: leggere le righe coinvolte, dichiarare le dipendenze not
 
 Ogni sprint ha: obiettivo, lista task numerata, agent assegnato per task, criteri QA.
 Esempio: "Sprint N — [titolo]: 1. Fix X (Match Engine Dev) 2. Add Y (Data Designer) QA: verifica Z."
+
+---
+
+## Specifica di Design — Fase 2 "Feature Complete"
+
+Questa sezione definisce i requisiti di design per portare CPM a una prima versione feature-complete, stabile e credibile. Ogni punto è vincolante per i prossimi sprint.
+
+---
+
+### 8. Gestione Intelligente delle Convocazioni e delle Sostituzioni
+
+Il giocatore **non deve essere automaticamente titolare** in ogni partita. L'allenatore prende decisioni realistiche basate su:
+
+**Criteri di selezione:**
+- OVR del giocatore vs OVR dei compagni nello stesso ruolo
+- Momento di forma (`player.form`)
+- Condizione fisica / stanchezza accumulata (`player.fatigue`)
+- Fiducia dell'allenatore (`player.coachTrust`)
+- Prestazioni recenti (ultimi 3-5 match da `matchHistory`)
+- Importanza della partita (campionato vs coppa, derby, big game)
+- Stato degli infortuni della rosa
+- Presenza di ruoli di emergenza (giocatore schierato fuori ruolo)
+
+**Esiti possibili per il giocatore:**
+- `"starter"` — parte titolare
+- `"bench"` — parte dalla panchina (può entrare)
+- `"not_called"` — non convocato
+
+**Esperienza in panchina:**
+- Visione della partita con animazione/progress bar
+- Riscaldamento (animazione + dialogo del mister)
+- Istruzioni specifiche prima dell'ingresso
+- Ingresso in momenti diversi: 46', 60', 70', 80' (influenza minuti giocati e impatto stat)
+
+**Sostituzioni durante la partita:**
+- Cambio tattico (cambio modulo/ruolo)
+- Cambio per stanchezza (fatigue alta)
+- Cambio per scarso rendimento (form bassa nell'HL)
+- Cambio per infortunio (evento casuale)
+- Gestione del risultato (difendere vantaggio / cercare pareggio)
+
+**Comunicazione allenatore:**
+- Le scelte devono essere spiegate tramite dialogo testuale inline
+- Nessuna decisione percepita come casuale — motivazione sempre visibile
+- Esempi: "Sei in panchina oggi — voglio farti riposare per il derby di giovedì" / "Entri al 60' — tienici in partita"
+
+**Nuovi campi `player` richiesti:**
+```js
+player.matchStatus    // "starter"|"bench"|"not_called" — calcolato prima di ogni partita
+player.minutesPlayed  // minuti giocati nella partita corrente
+```
+
+---
+
+### 9. Vita da Calciatore e Modalità Carriera Evoluta
+
+**9.1 Ritiro Precampionato** (settimane -2 / -1 prima dell'inizio stagione):
+- Durata variabile (3-7 giorni)
+- Sessioni: allenamento atletico · allenamento tecnico · amichevoli
+- Guadagno fiducia allenatore durante il ritiro
+- Valutazione finale → gerarchie iniziali della stagione
+
+**9.2 Gerarchie di Squadra:**
+```
+U18 → Primavera → Riserve → Titolari → Leader spogliatoio
+```
+- Il giocatore sale/scende in base alle prestazioni
+- La gerarchia influenza: minutaggio, convocazioni, crescita, rinnovi
+
+**9.3 Rapporti con Staff e Compagni:**
+- `coachTrust` (già presente) — fiducia allenatore
+- `assistantCoachRel` — rapporto vice-allenatore
+- `fitnessCoachRel` — rapporto preparatore atletico
+- `teamChemistry` — rapporto compagni (0-100)
+- Le relazioni influenzano: minutaggio, crescita in allenamento, offerte di rinnovo
+
+**9.4 Conferenze e Interviste:**
+- Interviste post-partita (dopo prestazioni notevoli o sconfitte)
+- Conferenze stampa pre-partita importanti
+- Scelte di dialogo con opzioni (diplomatico / ambizioso / critico)
+- Impatto su: `popularity`, `coachTrust`, `teamChemistry`, rapporti con stampa
+
+**9.5 Mercato e Trasferimenti:**
+- `"loan"` — prestito (temporaneo, poi ritorno)
+- `"loan_with_option"` — prestito con diritto di riscatto
+- `"loan_with_obligation"` — prestito con obbligo
+- `"sale"` — cessione definitiva
+- Richiesta di trasferimento da parte del giocatore
+- Promesse dell'allenatore (tipo: "sarai titolare dal mese prossimo")
+
+**9.6 Infortuni e Recupero:**
+- Infortuni con tipologie diverse: muscolare · articolare · frattura · botta
+- Tempi recupero: 1-2 settimane (lieve) / 3-5 settimane (medio) / 6-12 settimane (grave)
+- Riabilitazione: sessioni specifiche durante il recupero
+- Rischio ricaduta (se rientra troppo presto)
+- Rientro graduale (riduzione performance per 2-3 settimane post-infortunio)
+
+```js
+player.injury = null | {
+  type: "muscolare"|"articolare"|"frattura"|"botta",
+  severity: "lieve"|"medio"|"grave",
+  weeksRemaining: number,
+  recoveryPct: 0-100,
+  relapse_risk: 0-1
+}
+```
+
+**9.7 Obiettivi Stagionali:**
+- Obiettivi club (già parzialmente presenti come `seasonObjectives`)
+- Obiettivi personali: `{type:"goals_personal",target:N}` / `{type:"top_ovr",target:N}`
+- Obiettivi allenatore: dichiarati a inizio stagione
+- Obiettivi procuratore: suggeriti periodicamente
+
+**9.8 Premi e Riconoscimenti** (da aggiungere al sistema trofei):
+- Miglior Giovane della Stagione (età ≤ 23, top OVR crescita)
+- Capocannoniere (già presente)
+- Squadra dell'Anno (selezionato se top-3 per ruolo in lega)
+- Pallone d'Oro (già presente)
+- MVP Campionato / MVP Mese
+
+**9.9 Vita Calcistica Dinamica:**
+- Notizie di mercato settimanali (altri trasferimenti simulati)
+- Risultati altri campionati (già simulati, ma da mostrare in dashboard)
+- Record storici aggiornati in real-time
+- Rivalità e derby con bonus atmosfera
+- Eventi speciali: Clasico, Derby della Madonnina, Derby del Nord
+
+---
+
+### 10. Test di Realismo della Carriera
+
+**Simulazioni richieste per validazione:**
+- Almeno 10 stagioni complete
+- Profili: campione / promessa / giocatore medio / riserva
+- Percorsi con trasferimenti, infortuni, crescita lenta, crescita rapida
+
+**Criteri di validazione:**
+- Il giocatore NON diventa titolare troppo facilmente (almeno 2-3 stagioni da riserva)
+- La crescita OVR è credibile (da 50 a 85 in 8-10 stagioni, non in 2)
+- Le convocazioni sono coerenti con `coachTrust` e form
+- Le sostituzioni rispettano il momento della partita
+- Le scelte allenatore sono sempre motivate da dati reali
+
+---
+
+### 11. Stabilità, Qualità e Assenza di Regressioni
+
+**Principio cardine:** ogni nuova feature aumenta profondità senza introdurre bug.
+
+**Sistemi da proteggere (invarianti):**
+- Sistema carriera (state machine `CareerApp`)
+- Partite giocate e simulate (`LiveMatch`, `simulateMatch`)
+- Mercato e contratti (`generateTransferOffer`, `generateProContracts`)
+- Statistiche (`goals`, `assists`, `matchHistory`)
+- Classifiche (`standings`, `updateStandings`)
+- Coppe nazionali (`player.cup`)
+- Competizioni europee (`player.euro`, `player.euroMondiale`)
+- Sistema allenamenti (`_dim`, training loop)
+- Progressione giocatore (`calcOvr`, stat growth)
+- Salvataggi esistenti (backward-compat migration in `useEffect`)
+- Generazione news, cronaca, highlights, IA squadre
+
+**Suite test di non regressione (obbligatoria prima di ogni push):**
+1. Babel transpile check (già presente in ogni sprint)
+2. Creazione nuova carriera — genera calendario e standings
+3. Caricamento save esistente — migrazione campi mancanti
+4. Avanzamento 5+ settimane senza crash
+5. Partita completa giocata (LiveMatch fino a `ended`)
+6. Inizio nuova stagione — promozioni/retrocessioni + euro spots
+
+**Approccio di sviluppo richiesto:**
+- Step piccoli e verificabili — mai più di 300 righe per sprint
+- Validare ogni modifica prima di procedere
+- Correggere immediatamente le regressioni
+- Priorità assoluta: stabilità > nuove feature
