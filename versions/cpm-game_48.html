@@ -2056,27 +2056,14 @@ function baseStats(archetype){
   return Object.fromEntries(Object.entries(b).map(([k,v])=>[k,clamp(v,1,99)]));
 }
 function calcOvr(s){return Math.min(99,Math.round((s.tiro*2.5+s.tecnica*2+s.velocità*1.5+s.dribbling*1.5+s.posizionamento*1.5+s.mentalità+s.fisico+s.passaggio)/11.5));}
-// Sprint 107: bonus successo per archetipo sulle stat di elezione
-const ARCHETYPE_STAT_BONUS={
-  bomber:      {tiro:0.06,fisico:0.04,posizionamento:0.05},
-  fantasista:  {tecnica:0.06,dribbling:0.05,passaggio:0.04},
-  velocista:   {velocità:0.07,dribbling:0.05,fisico:0.03},
-  trequartista:{passaggio:0.07,tecnica:0.05,mentalità:0.04},
-  leader:      {mentalità:0.06,fisico:0.05,posizionamento:0.03},
-  centravanti: {tiro:0.05,posizionamento:0.05,tecnica:0.04},
-  enfant:      {tecnica:0.03,velocità:0.03,tiro:0.02,dribbling:0.02,mentalità:0.02,passaggio:0.02,fisico:0.01,posizionamento:0.01},
-  tuttocampista:{tiro:0.02,tecnica:0.02,velocità:0.02,fisico:0.02,mentalità:0.02,passaggio:0.02,dribbling:0.02,posizionamento:0.02},
-};
-function succRate(action,stats,playerX,oppPrestige=65,archetypeId=null){
+function succRate(action,stats,playerX,oppPrestige=65){
   const sv=stats[action.stat]||60;
   // Stat-driven base: high-skill players feel the difference
   const base=(sv/99)*0.52+0.09+(action.bon||0)*0.006+(playerX-50)/100*0.04;
   // Meaningful difficulty penalty
   const diffPenalty=Math.max(0,(oppPrestige-55)/180);
-  // Sprint 107: archetype bonus on matching stat
-  const arcBonus=archetypeId?(ARCHETYPE_STAT_BONUS[archetypeId]?.[action.stat]||0):0;
   // Cap raised to 0.84: elite players succeed reliably on good actions
-  return Math.round(clamp(base-diffPenalty+arcBonus,0.05,0.84)*100);
+  return Math.round(clamp(base-diffPenalty,0.05,0.84)*100);
 }
 // Adaptive difficulty: returns a 0-1 multiplier that makes opponent harder when player is performing well
 function adaptiveDifficulty(player){
@@ -2224,28 +2211,14 @@ function generateProContracts(player){
 }
 function generateSeasonObjectives(player){
   const ovr=player.ovr||60;
-  const arcId=player.archetype?.id||player.archetype||"";
+  const t=clamp(Math.floor(ovr/5),5,18);
+  const objs=[{type:"goals",target:t,label:`Segna ${t} gol`,bonus:{morale:15,coachTrust:10,value:0.2}}];
   const p=player.club?.p||50;
   const standT=p>=80?3:p>=65?6:p>=50?9:12;
-  // Sprint 107: goal target modulated by archetype
-  const baseT=clamp(Math.floor(ovr/5),5,18);
-  const goalT=["bomber","centravanti"].includes(arcId)?Math.min(baseT+3,22):arcId==="enfant"?Math.max(baseT-2,3):baseT;
-  const objs=[{type:"goals",target:goalT,label:`Segna ${goalT} gol`,bonus:{morale:15,coachTrust:10,value:0.2}}];
   objs.push({type:"standing",target:standT,label:`Finisci nei primi ${standT}`,bonus:{popularity:15,value:0.25}});
-  // Sprint 107: 3rd objective by archetype
-  if(["trequartista","fantasista"].includes(arcId)){
-    const aT=clamp(Math.floor(ovr/7),4,14);objs.push({type:"assists",target:aT,label:`Dai ${aT} assist`,bonus:{coachTrust:10,morale:12,value:0.15}});
-  }else if(arcId==="leader"){
-    const mT=clamp(Math.floor(ovr/4)+3,18,34);objs.push({type:"matches",target:mT,label:`Gioca ${mT} partite da leader`,bonus:{coachTrust:15,morale:10,popularity:8}});
-  }else if(arcId==="velocista"){
-    const mT=clamp(Math.floor(ovr/4)+6,20,34);objs.push({type:"matches",target:mT,label:`Gioca ${mT} partite`,bonus:{coachTrust:10,morale:8}});
-  }else if(arcId==="enfant"){
-    const aT=clamp(Math.floor(ovr/9),2,8);objs.push({type:"assists",target:aT,label:`Dai ${aT} assist`,bonus:{coachTrust:8,morale:15,value:0.2}});
-  }else if(ovr>=75){
-    const aT=clamp(Math.floor(ovr/8),3,12);objs.push({type:"assists",target:aT,label:`Dai ${aT} assist`,bonus:{coachTrust:8,morale:10}});
-  }else{
-    const mT=clamp(Math.floor(ovr/4)+5,15,30);objs.push({type:"matches",target:mT,label:`Gioca ${mT} partite`,bonus:{coachTrust:10,morale:8}});
-  }
+  // Sprint 26A: 3rd objective — assists (OVR≥75) or match appearances (OVR<75)
+  if(ovr>=75){const aT=clamp(Math.floor(ovr/8),3,12);objs.push({type:"assists",target:aT,label:`Dai ${aT} assist`,bonus:{coachTrust:8,morale:10}});}
+  else{const mT=clamp(Math.floor(ovr/4)+5,15,30);objs.push({type:"matches",target:mT,label:`Gioca ${mT} partite`,bonus:{coachTrust:10,morale:8}});}
   return objs;
 }
 /* ── S12: Player archetypes ── */
@@ -2290,7 +2263,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="3.86.0"; // Sprint 107 — Archetipo sulla carriera: succRate bonus, obiettivi personalizzati, crescita biased
+const GAME_VERSION="3.85.0"; // Sprint 103 — Storico campioni: LEAGUE_RECORDS espanso, archiveEntry cup/euro, Record di Carriera
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -6922,7 +6895,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     const momentumBonus=(momentumRef.current-50)/1000; // ±5% at extremes
     const fatiguePenalty=Math.max(0,(player.fatigue||0)-65)/350; // up to -10% at 100 fatigue
     const tacticMod=tacticBonusRef.current||0;
-    const rate=Math.max(0.05,succRate(action,player.stats,pPos.x,oppPrestige,player.archetype?.id||player.archetype)/100-defPenalty-weatherPenalty+momentumBonus-fatiguePenalty+tacticMod);
+    const rate=Math.max(0.05,succRate(action,player.stats,pPos.x,oppPrestige)/100-defPenalty-weatherPenalty+momentumBonus-fatiguePenalty+tacticMod);
     const adapt=adaptiveDifficulty(player);
     const ok=Math.random()<clamp((rate/adapt)+(Math.random()-.5)*.06,0.05,0.84);
     const key=ok?action.rew:action.fail;
@@ -7142,7 +7115,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
       // Find worst action (lowest success) and fail it — defender tackles
       const actions=sit.actions||[];
       if(!actions.length)return;
-      const _arcId107=player.archetype?.id||player.archetype;const worst=actions.reduce((a,b)=>succRate(a,player.stats,pPos.x,oppPrestige,_arcId107)<=succRate(b,player.stats,pPos.x,oppPrestige,_arcId107)?a:b);
+      const worst=actions.reduce((a,b)=>succRate(a,player.stats,pPos.x,oppPrestige)<=succRate(b,player.stats,pPos.x,oppPrestige)?a:b);
       const tackleTexts=["Il difensore anticipa e recupera palla.","Intervento difensivo! Palla persa.","Il pressing paga: il difensore chiude l'azione.","Troppo lento — il marcatore intercetta."];
       const txt=pick(tackleTexts);
       addCom(txt,"#f87171",clock);
@@ -7355,7 +7328,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                     </div>
                   ):curSit.actions.map((a,i)=>{
                     const defPenalty=defDist<25?15:defDist<50?8:0;
-                    const rate=Math.max(5,succRate(a,player.stats,pPos.x,oppPrestige,player.archetype?.id||player.archetype)-defPenalty);
+                    const rate=Math.max(5,succRate(a,player.stats,pPos.x,oppPrestige)-defPenalty);
                     const rc=rate>70?"#4ade80":rate>50?"#f59e0b":"#f87171";
                     const isSel=i===selectedActionIdx;
                     return(
@@ -7463,7 +7436,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                     ):(curSit.actions||[]).map((a,i)=>{
                       // Defender proximity reduces success rate
                       const defPenalty=defDist<25?15:defDist<50?8:0;
-                      const rate=Math.max(5,succRate(a,player.stats,pPos.x,oppPrestige,player.archetype?.id||player.archetype)-defPenalty);
+                      const rate=Math.max(5,succRate(a,player.stats,pPos.x,oppPrestige)-defPenalty);
                       const rc=rate>70?"#4ade80":rate>50?"#f59e0b":"#f87171";
                       const ql=rate>70?"Alta":rate>50?"Media":"Bassa";
                       const isSel=i===selectedActionIdx;
@@ -11798,24 +11771,20 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       const _techGK102=['tecnica','tiro','dribbling','passaggio','posizionamento','mentalità'];
       const _posK102=(p.position||"Attaccante")==="Portiere"?['fisico','mentalità','posizionamento']:(p.position||"Attaccante")==="Difensore"?['fisico','mentalità','tecnica']:(p.position||"Attaccante")==="Centrocampista"?['passaggio','mentalità','tecnica']:['tiro','dribbling','posizionamento'];
       let _growthLog102=null;
-      // Sprint 107: archetype biases growth pool (60% favored, 40% generic)
-      const _arc107=ARCHETYPES.find(a=>a.id===(p.archetype?.id||p.archetype));
-      const _favored107=_arc107?.favored||[];
-      const _pickGrowth107=(genericPool)=>(_favored107.length&&Math.random()<0.60)?pick(_favored107):pick(genericPool);
       if(newAge<=21){
         // Youth acceleration: +1 random stat every season, capped at 85
-        const _gk102=_pickGrowth107(Math.random()<0.55?_physGK102:_techGK102);
+        const _gk102=Math.random()<0.55?pick(_physGK102):pick(_techGK102);
         if((agedStats[_gk102]||70)<85){agedStats={...agedStats,[_gk102]:Math.min(85,(agedStats[_gk102]||70)+1)};_growthLog102=`📈 Crescita giovanile: +1 ${_gk102}`;}
       }else if(newAge>=22&&newAge<=27){
         // Ascent phase: +1 if performance threshold met, capped at 92
         if((p.goals||0)>=10||(p.assists||0)>=10||(p.matches||0)>=25){
-          const _gk102=_pickGrowth107(Math.random()<0.4?_physGK102:_techGK102);
+          const _gk102=Math.random()<0.4?pick(_physGK102):pick(_techGK102);
           if((agedStats[_gk102]||70)<92){agedStats={...agedStats,[_gk102]:Math.min(92,(agedStats[_gk102]||70)+1)};_growthLog102=`📈 Progressione: +1 ${_gk102}`;}
         }
       }
       // Role-specific performance bonus (all ages < 30, elite season)
       if(newAge<30&&((p.goals||0)>=15||(p.assists||0)>=12)){
-        const _pk102=_favored107.length&&Math.random()<0.55?pick(_favored107):pick(_posK102);
+        const _pk102=pick(_posK102);
         if((agedStats[_pk102]||70)<94){agedStats={...agedStats,[_pk102]:Math.min(94,(agedStats[_pk102]||70)+1)};_growthLog102=(_growthLog102?_growthLog102+' · ':'')+`⚡ Prestazione élite: +1 ${_pk102}`;}
       }
       // S9.4: graduated decay across all attributes, starts at 28
