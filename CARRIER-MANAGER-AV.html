@@ -2383,7 +2383,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="3.96.0"; // Sprint 117: Fix rigori (area libera), fix dichiarazioni variabili in rassegna stampa
+const GAME_VERSION="3.97.0"; // Sprint 118: Esperienza panchina live — clock/score/fasi warmup→entrata
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -6409,7 +6409,28 @@ function coachPostMatch(won,drew,goals,assists,rating,opponentPrestige){
   if(rating<5.5)return base+" E la tua performance personale? Devi alzare il livello.";
   return base;
 }
-function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true,benchStart,benchReason=""}){
+// Sprint 118 — bench experience pools
+const _BENCH_OBS=[
+  "Segui ogni movimento dalla panchina, occhi fissi sul campo.",
+  "Il mister ti guarda di tanto in tanto dal bordo del campo.",
+  "Ti stai riscaldando mentalmente: ogni pallone lo vivi come se fossi in campo.",
+  "I tuoi compagni lottano — tu sei pronto a dare il tuo contributo.",
+  "La curva inizia a scandire il tuo nome.",
+  "Analizzi gli spazi, stai già ragionando da titolare.",
+];
+const _BENCH_WARMUP=[
+  "Inizi a correre lungo la linea laterale. Il pubblico ti incita.",
+  "Il preparatore atletico ti affianca: corsa, scatti, allunghi.",
+  "Il mister ti chiama sotto: stai per ricevere le istruzioni.",
+];
+const _BENCH_ENTRY=[
+  `"Entra con personalità. Abbiamo bisogno di te." — Mister`,
+  `"Hai 30 minuti per fare la differenza. Spacca tutto." — Mister`,
+  `"Porta energia. Corri su ogni pallone." — Mister`,
+  `"Fai quello che sai fare. Ti sei allenato bene." — Mister`,
+  `"Mostra di cosa sei capace. È il tuo momento." — Mister`,
+];
+function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true,benchStart,benchReason="",entryMinute=60}){
   // Dynamic HL count — based on match conditions, NOT random
   const numHLRef=useRef(0);
   const hlTimesRef=useRef([]);
@@ -6437,9 +6458,10 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   const [situations,setSituations]=useState(()=>selectContextualSituations([...SITUATIONS],numHLRef.current,player,(player.season||1)*1000+(player.week||1)*13));
   useEffect(()=>{numHLRef.current=numHL;},[numHL]);
   useEffect(()=>{hlTimesRef.current=hlTimes;},[hlTimes]);
-  // Sprint 33 C7 — bench start mechanic
+  // Sprint 33 C7 / Sprint 118 — bench start mechanic
   const [onBench,setOnBench]=useState(false);
-  const [benchMinute]=useState(()=>benchStart?46+Math.floor(Math.random()*25):0);
+  const [benchMinute]=useState(()=>benchStart?entryMinute:0);
+  const [benchPhase,setBenchPhase]=useState("watching"); // Sprint 118: "watching"|"warmup"|"entering"
   // Sprint 34 — tactic moments + chained highlights + sub events
   const tacticBonusRef=useRef(0);
   const tacticFiredRef=useRef([false,false,false,false]); // Sprint 113: 4 slots (28', 63', 75', 85')
@@ -6537,6 +6559,18 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   const [score,setScore]=useState({home:0,away:0});
   const scoreRef=useRef({home:0,away:0});
   useEffect(()=>{scoreRef.current=score;},[score]);
+  // Sprint 118 — bench phase progression (watching→warmup→entering)
+  useEffect(()=>{
+    if(!onBench||phase!=="playing")return;
+    if(clock>=benchMinute&&benchPhase!=="entering")setBenchPhase("entering");
+    else if(clock>=benchMinute-5&&benchPhase==="watching")setBenchPhase("warmup");
+  },[clock]);// eslint-disable-line
+  // Sprint 118 — auto-dismiss bench overlay at entry time
+  useEffect(()=>{
+    if(benchPhase!=="entering"||!onBench)return;
+    const t=setTimeout(()=>{setOnBench(false);setBenchPhase("watching");},2000);
+    return()=>clearTimeout(t);
+  },[benchPhase,onBench]);
   const [phase,setPhase]=useState(context==="trial"?"playing":"matchday");
   const [hlIdx,setHlIdx]=useState(0);
   // position resets to situation startZone on each new highlight
@@ -7578,16 +7612,66 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                   <div style={{fontSize:8,color:"rgba(255,255,255,0.2)",marginTop:6}}>Tocca / Enter per iniziare</div>
                 </div>
               )}
-              {/* Sprint 116 — Bench start overlay (improved) */}
-              {phase==="playing"&&onBench&&(
-                <div style={{position:"absolute",inset:0,background:"rgba(5,8,20,0.92)",backdropFilter:"blur(4px)",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",zIndex:9,padding:"0 28px"}}>
-                  <div style={{fontSize:38,marginBottom:8}}>🪑</div>
-                  <div style={{fontSize:15,fontWeight:900,color:"#e2e8f0",marginBottom:4,textAlign:"center"}}>Sei in panchina</div>
-                  {benchReason&&<div style={{fontSize:11,color:"rgba(255,255,255,0.55)",marginBottom:8,textAlign:"center",fontStyle:"italic",lineHeight:1.5}}>"{benchReason}"</div>}
-                  <div style={{fontSize:11,color:"rgba(255,255,255,0.40)",marginBottom:22,textAlign:"center"}}>Pronto a entrare al <span style={{color:"#f59e0b",fontWeight:700}}>{benchMinute}'</span></div>
-                  <button onClick={()=>{setOnBench(false);clockRef.current=benchMinute;setClock(benchMinute);}} style={{padding:"13px 28px",borderRadius:12,border:"none",background:"linear-gradient(135deg,#2563eb,#1d4ed8)",color:"#fff",fontWeight:800,fontSize:13,cursor:"pointer",fontFamily:"inherit",boxShadow:"0 4px 16px rgba(37,99,235,0.5)"}}>⚡ Entra in campo al {benchMinute}' →</button>
-                </div>
-              )}
+              {/* Sprint 118 — Bench experience: live watching → warmup → entry instructions */}
+              {phase==="playing"&&onBench&&(()=>{
+                const isEntering=benchPhase==="entering";
+                const isWarmup=benchPhase==="warmup";
+                const obsMsg=_BENCH_OBS[clock%_BENCH_OBS.length];
+                const warmMsg=_BENCH_WARMUP[Math.floor(clock/3)%_BENCH_WARMUP.length];
+                const entryMsg=pick(_BENCH_ENTRY);
+                const homeTeamName=isMatchHome?(player.club?.a||player.club?.n||"NOI"):(opponent?.a||opponent?.n||"LORO");
+                const awayTeamName=isMatchHome?(opponent?.a||opponent?.n||"LORO"):(player.club?.a||player.club?.n||"NOI");
+                if(isEntering)return(
+                  <div style={{position:"absolute",inset:0,background:"rgba(5,8,20,0.95)",backdropFilter:"blur(6px)",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",zIndex:9,padding:"0 28px"}}>
+                    <div style={{fontSize:40,marginBottom:10,animation:"floatUp 0.8s ease-out forwards"}}>⚡</div>
+                    <div style={{fontSize:17,fontWeight:900,color:"#f59e0b",marginBottom:10,textAlign:"center",textShadow:"0 0 20px #f59e0b"}}>Entri in campo!</div>
+                    <div style={{fontSize:12,color:"rgba(255,255,255,0.75)",textAlign:"center",fontStyle:"italic",lineHeight:1.6,maxWidth:260}}>{entryMsg}</div>
+                  </div>
+                );
+                return(
+                  <div style={{position:"absolute",inset:0,background:"rgba(5,8,20,0.90)",backdropFilter:"blur(3px)",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",zIndex:9,padding:"0 24px"}}>
+                    {/* Score + Clock strip */}
+                    <div style={{background:"rgba(255,255,255,0.06)",border:"1px solid rgba(255,255,255,0.12)",borderRadius:12,padding:"10px 24px",marginBottom:14,display:"flex",alignItems:"center",gap:20}}>
+                      <div style={{textAlign:"center"}}>
+                        <div style={{fontSize:9,color:"rgba(255,255,255,0.35)",textTransform:"uppercase",letterSpacing:1,marginBottom:2}}>{homeTeamName}</div>
+                        <div style={{fontSize:26,fontWeight:900,color:"#e2e8f0",lineHeight:1}}>{score.home}</div>
+                      </div>
+                      <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:3}}>
+                        <div style={{fontSize:20,color:"#f59e0b",fontWeight:900,lineHeight:1}}>{clock}'</div>
+                        <div style={{width:24,height:1,background:"rgba(255,255,255,0.2)"}}/>
+                        <div style={{fontSize:8,color:"rgba(255,255,255,0.3)",letterSpacing:1}}>LIVE</div>
+                      </div>
+                      <div style={{textAlign:"center"}}>
+                        <div style={{fontSize:9,color:"rgba(255,255,255,0.35)",textTransform:"uppercase",letterSpacing:1,marginBottom:2}}>{awayTeamName}</div>
+                        <div style={{fontSize:26,fontWeight:900,color:"#e2e8f0",lineHeight:1}}>{score.away}</div>
+                      </div>
+                    </div>
+                    {/* Icon + Status */}
+                    <div style={{fontSize:32,marginBottom:8}}>{isWarmup?"🏃":"🪑"}</div>
+                    <div style={{fontSize:14,fontWeight:900,color:"#e2e8f0",marginBottom:6,textAlign:"center"}}>
+                      {isWarmup?"Riscaldamento in corso!":"Sei in panchina"}
+                    </div>
+                    {/* Reason (only while watching) */}
+                    {!isWarmup&&benchReason&&<div style={{fontSize:10,color:"rgba(255,255,255,0.45)",marginBottom:8,textAlign:"center",fontStyle:"italic",lineHeight:1.5,maxWidth:240}}>"{benchReason}"</div>}
+                    {/* Live commentary line */}
+                    <div style={{fontSize:11,color:isWarmup?"#f59e0b":"rgba(255,255,255,0.5)",marginBottom:14,textAlign:"center",lineHeight:1.5,minHeight:36,maxWidth:260}}>
+                      {isWarmup?warmMsg:obsMsg}
+                    </div>
+                    {/* Entry minute indicator */}
+                    {!isWarmup&&(
+                      <div style={{fontSize:10,color:"rgba(255,255,255,0.35)",marginBottom:16,textAlign:"center"}}>
+                        Entri al <span style={{color:"#f59e0b",fontWeight:700}}>{benchMinute}'</span>
+                        {" "}·{" "}<span style={{color:"rgba(255,255,255,0.25)"}}>{Math.max(0,benchMinute-clock)} min al cambio</span>
+                      </div>
+                    )}
+                    {isWarmup&&<div style={{fontSize:10,color:"rgba(255,165,0,0.7)",marginBottom:16,textAlign:"center",fontWeight:700}}>Entri al {benchMinute}' — pronto?</div>}
+                    {/* Skip button */}
+                    <button onClick={()=>{setOnBench(false);setBenchPhase("watching");clockRef.current=benchMinute;setClock(benchMinute);}} style={{padding:"10px 22px",borderRadius:10,border:"1px solid rgba(255,255,255,0.15)",background:"rgba(255,255,255,0.06)",color:"rgba(255,255,255,0.6)",fontWeight:700,fontSize:11,cursor:"pointer",fontFamily:"inherit"}}>
+                      Salta al {benchMinute}' →
+                    </button>
+                  </div>
+                );
+              })()}
               {/* Sprint 34 — Sub event banner */}
               {phase==="playing"&&subEvent&&(
                 <div style={{position:"absolute",top:"12%",left:"4%",right:"4%",zIndex:7,background:"rgba(5,8,20,0.84)",backdropFilter:"blur(4px)",borderRadius:10,padding:"8px 12px",border:"1px solid rgba(255,255,255,0.10)",textAlign:"center",pointerEvents:"none"}}>
@@ -12507,7 +12591,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
         <div style={{flex:1,overflow:"hidden",display:"flex",flexDirection:"column"}}>
         {usePhaserRenderer
           ?<FootballMatch2D playerData={player} squadAColor={player.club?.col||player.club?.c||"#22c55e"} squadBColor={matchOpp?.col||matchOpp?.c||"#ef4444"} duration={300} onMatchEnd={phaserMatchEnd}/>
-          :<LiveMatch player={player} opponent={matchOpp} context={matchContext||"career"} onMatchEnd={onMatchEnd} isMatchHome={matchIsHome} benchStart={matchBenchStartRef.current} benchReason={matchBenchStartRef.current?(coachDecision?.reason||""):"" }/>
+          :<LiveMatch player={player} opponent={matchOpp} context={matchContext||"career"} onMatchEnd={onMatchEnd} isMatchHome={matchIsHome} benchStart={matchBenchStartRef.current} benchReason={matchBenchStartRef.current?(coachDecision?.reason||""):""} entryMinute={coachDecision?.entryMinute||60}/>
         }
         </div>
         {misterDiscorsoModal&&(
