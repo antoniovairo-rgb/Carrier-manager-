@@ -686,22 +686,6 @@ const LEAGUE_RECORDS={
       {name:"Hakan Çelik",goals:191},{name:"Ali Kaya",goals:162},{name:"Emre Şahin",goals:134},
     ]
   },
-  "Serie B":{
-    allTimeScorer:{name:"Adriano Valli",goals:178,club:"Parma",era:"1984–2002"},
-    seasonRecord:{name:"Marco Trevisan",goals:29,club:"Venezia",season:"2005-06"},
-    topScorers:[
-      {name:"Adriano Valli",goals:178},{name:"Roberto Cestaro",goals:149},
-      {name:"Franco Gargiulo",goals:121},{name:"Luca Meneghetti",goals:95},{name:"Dario Osti",goals:78},
-    ]
-  },
-  "EFL Championship":{
-    allTimeScorer:{name:"Dean Whitfield",goals:163,club:"Norwich City",era:"1988–2006"},
-    seasonRecord:{name:"Billy Horton",goals:34,club:"Leicester City",season:"2013-14"},
-    topScorers:[
-      {name:"Dean Whitfield",goals:163},{name:"Gary Pemberton",goals:141},
-      {name:"Billy Horton",goals:119},{name:"Steve Charlton",goals:88},{name:"Tony Bainbridge",goals:72},
-    ]
-  },
 };
 const _LR_DEFAULT={
   allTimeScorer:{name:"Giovanni Caruso",goals:194,club:"–",era:"1985–2003"},
@@ -2263,7 +2247,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="3.85.0"; // Sprint 103 — Storico campioni: LEAGUE_RECORDS espanso, archiveEntry cup/euro, Record di Carriera
+const GAME_VERSION="3.84.0"; // Sprint 106 — Mercato invernale: finestra card, richiedi cessione, offerta garantita
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -11916,7 +11900,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       // Sprint 28: leagueArchive — record this season's result
       const champion=sortedForShifts[0];
       const relegated=nT>3?sortedForShifts.slice(nT-3).map(t=>t.n||t.id):[];
-      const archiveEntry={season:p.season||1,league:p.club?.lg||"–",champion:champion?.n||"–",championId:champion?.id||"–",playerClub:p.club?.n||"–",playerPos:(p.standings||[]).length>0?sortedForShifts.findIndex(t=>(t.id&&t.id===(p.club?.id||p.club?.n))||(t.n&&t.n===(p.club?.n||p.club?.id)))+1:0,playerGoals:p.goals||0,playerAssists:p.assists||0,relegated,isPlayerCupChamp:p.cup?.champion===true,isPlayerEuroChamp:(p.euro?.champion||false)||(p.euroMondiale?.champion||false)}; // Sprint 103
+      const archiveEntry={season:p.season||1,league:p.club?.lg||"–",champion:champion?.n||"–",championId:champion?.id||"–",playerClub:p.club?.n||"–",playerPos:(p.standings||[]).length>0?sortedForShifts.findIndex(t=>(t.id&&t.id===(p.club?.id||p.club?.n))||(t.n&&t.n===(p.club?.n||p.club?.id)))+1:0,playerGoals:p.goals||0,playerAssists:p.assists||0,relegated};
       const newLeagueArchive=[...(p.leagueArchive||[]),archiveEntry].slice(-20);
       // Sprint 70: record coach tenure stats before coach possibly changes
       const _ch70={name:p.coach?.name||"Il Mister",style:p.coach?.style||"Bilanciato",season:p.season||1,goals:p.goals||0,assists:p.assists||0,matches:p.matches||0,ovr:p.ovr||60,coachTrust:p.coachTrust||60,coachChanged};
@@ -13595,35 +13579,6 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
         );
       })()}
 
-      {/* RECORD DI CARRIERA — Sprint 103 */}
-      {tab==="standings"&&(player.proStatus||"u18")==="pro"&&(()=>{
-        const arch=player.leagueArchive||[];
-        if(!arch.length)return null;
-        const recs=player.records||{topSeasonGoals:0,topSeasonAssists:0,topOvr:60};
-        const leagueTitles=(player.trophies||[]).length;
-        const cupTitles=arch.filter(e=>e.isPlayerCupChamp).length;
-        const euroTitles=arch.filter(e=>e.isPlayerEuroChamp).length;
-        const bestPos=arch.reduce((b,e)=>e.playerPos>0&&(b===0||e.playerPos<b)?e.playerPos:b,0);
-        const top3Streak=(()=>{let best=0,cur=0;[...arch].reverse().forEach(e=>{if(e.playerPos>0&&e.playerPos<=3){cur++;best=Math.max(best,cur);}else cur=0;});return best;})();
-        return(
-          <Card style={{marginBottom:8,padding:"12px 14px"}}>
-            <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:10}}>📋 Record di Carriera</div>
-            <div style={{display:"flex",gap:6,flexWrap:"wrap",marginBottom:10}}>
-              {leagueTitles>0&&<span style={{fontSize:10,padding:"3px 9px",borderRadius:10,background:"#fef9c3",color:"#92400e",fontWeight:700,border:"1px solid #fde68a"}}>🏆 {leagueTitles} titol{leagueTitles===1?"o":"i"}</span>}
-              {cupTitles>0&&<span style={{fontSize:10,padding:"3px 9px",borderRadius:10,background:"#fff7ed",color:"#c2410c",fontWeight:700,border:"1px solid #fed7aa"}}>🥇 {cupTitles} copp{cupTitles===1?"a":"e"}</span>}
-              {euroTitles>0&&<span style={{fontSize:10,padding:"3px 9px",borderRadius:10,background:"#eff6ff",color:"#1d4ed8",fontWeight:700,border:"1px solid #bfdbfe"}}>🌍 {euroTitles} euro/mondiale</span>}
-              {leagueTitles===0&&cupTitles===0&&euroTitles===0&&<span style={{fontSize:10,color:TH.faint,fontStyle:"italic"}}>Nessun trofeo ancora</span>}
-            </div>
-            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:6}}>
-              {recs.topSeasonGoals>0&&<div style={{background:"#fef3c7",borderRadius:8,padding:"6px 10px"}}><div style={{fontSize:9,color:"#a16207",textTransform:"uppercase",letterSpacing:1}}>⚽ Record gol/stag.</div><div style={{fontSize:15,fontWeight:900,color:"#92400e"}}>{recs.topSeasonGoals}</div></div>}
-              {recs.topSeasonAssists>0&&<div style={{background:"#eff6ff",borderRadius:8,padding:"6px 10px"}}><div style={{fontSize:9,color:"#1e40af",textTransform:"uppercase",letterSpacing:1}}>🎯 Record assist/stag.</div><div style={{fontSize:15,fontWeight:900,color:"#1d4ed8"}}>{recs.topSeasonAssists}</div></div>}
-              {recs.topOvr>60&&<div style={{background:"#f0fdf4",borderRadius:8,padding:"6px 10px"}}><div style={{fontSize:9,color:"#166534",textTransform:"uppercase",letterSpacing:1}}>📈 Miglior livello</div><div style={{fontSize:15,fontWeight:900,color:"#15803d"}}>{recs.topOvr}</div></div>}
-              {bestPos>0&&<div style={{background:bestPos===1?"#fef9c3":"#f8fafc",borderRadius:8,padding:"6px 10px"}}><div style={{fontSize:9,color:bestPos===1?"#a16207":TH.muted,textTransform:"uppercase",letterSpacing:1}}>🏅 Miglior piazz.</div><div style={{fontSize:15,fontWeight:900,color:bestPos===1?"#92400e":TH.text}}>{bestPos}°{bestPos===1?" 👑":""}</div></div>}
-            </div>
-            {top3Streak>=2&&<div style={{marginTop:8,fontSize:10,color:TH.muted,borderTop:"1px solid "+TH.cardBorder,paddingTop:6}}>⚡ {top3Streak} stagioni consecutive nei top 3</div>}
-          </Card>
-        );
-      })()}
       {/* LEAGUE ARCHIVE — standings tab */}
       {tab==="standings"&&(()=>{
         const arch=[...(player.leagueArchive||[])].reverse();
@@ -13672,12 +13627,10 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                         <div key={i} style={{display:"flex",alignItems:"flex-start",gap:8,padding:"6px 0",borderTop:i>0?"1px solid "+TH.cardBorder:"none",background:isChamp?"#fef9c388":"transparent",borderRadius:isChamp?6:0}}>
                           <div style={{minWidth:28,textAlign:"center",fontSize:11,fontWeight:700,color:TH.muted}}>S.{e.season}</div>
                           <div style={{flex:1}}>
-                            <div style={{display:"flex",alignItems:"center",gap:5,flexWrap:"wrap"}}>
+                            <div style={{display:"flex",alignItems:"center",gap:5}}>
                               <span style={{fontSize:11,fontWeight:isChamp?800:600,color:isChamp?"#713f12":TH.text}}>
                                 {isChamp?"🏆":""} {e.champion}
                               </span>
-                              {e.isPlayerCupChamp&&<span style={{fontSize:9,padding:"1px 5px",borderRadius:8,background:"#fff7ed",color:"#c2410c",fontWeight:700,border:"1px solid #fed7aa"}}>🥇 Coppa</span>}
-                              {e.isPlayerEuroChamp&&<span style={{fontSize:9,padding:"1px 5px",borderRadius:8,background:"#eff6ff",color:"#1d4ed8",fontWeight:700,border:"1px solid #bfdbfe"}}>🌍 Euro</span>}
                             </div>
                             <div style={{fontSize:10,color:isTop3?TH.primary:TH.muted,marginTop:1}}>
                               {isTop3?"⭐ ":""}{e.playerClub}{e.playerPos>0?` · ${e.playerPos}°`:""}
