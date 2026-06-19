@@ -2383,7 +2383,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="3.99.1"; // Sprint 121b: bench fix — player excluded from formation/walkout when starting on bench
+const GAME_VERSION="3.99.2"; // Sprint 122: euro immersion (FormationView/WalkoutOverlay), group table, KO bracket, coach→Club tab, home/away fix
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -6139,7 +6139,7 @@ function TeamFormation({team,roster,isHome,kitCol}){
 }
 
 /* FORMATION VIEW */
-function FormationView({homeTeam,awayTeam,player,homeRoster,awayRoster,onContinue,onSkip,oppTactic,oppTacticLoading,homeKitCol,awayKitCol}){
+function FormationView({homeTeam,awayTeam,player,homeRoster,awayRoster,onContinue,onSkip,oppTactic,oppTacticLoading,homeKitCol,awayKitCol,competition=null,euroRound=null}){
   useEffect(()=>{
     const h=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();onContinue();}};
     window.addEventListener("keydown",h);return()=>window.removeEventListener("keydown",h);
@@ -6172,10 +6172,22 @@ function FormationView({homeTeam,awayTeam,player,homeRoster,awayRoster,onContinu
     let n=0;
     return roster.map((p,i)=>{if(i===10)return{...p,num:HOME_NUMS[n]||11};n++;return{...p,num:HOME_NUMS[n-1]||i+1};});
   };
+  const _isEuro=!!competition;
+  const _ecFull122={UCL:"⭐ UEFA Champions League",UEL:"🟡 UEFA Europa League",UECL:"🟣 UEFA Conference League"}[competition]||`🌍 ${competition||""}`;
+  const _ecCol122={UCL:"#93c5fd",UEL:"#fde68a",UECL:"#c4b5fd"}[competition]||"#93c5fd";
   return(
     <div style={{width:"100%",background:"linear-gradient(180deg,#0a0e1a 0%,#0d1528 100%)",borderRadius:10,padding:"12px 8px 10px",minHeight:320}}>
-      {/* divider line */}
-      <div style={{textAlign:"center",fontSize:8,color:"rgba(255,255,255,0.25)",letterSpacing:4,textTransform:"uppercase",marginBottom:10}}>— FORMAZIONI —</div>
+      {/* Competition header */}
+      {_isEuro?(
+        <div style={{textAlign:"center",marginBottom:10}}>
+          <div style={{display:"inline-flex",alignItems:"center",gap:6,background:"rgba(30,64,175,0.25)",border:`1px solid ${_ecCol122}44`,borderRadius:20,padding:"3px 14px"}}>
+            <span style={{fontSize:10,fontWeight:800,color:_ecCol122,letterSpacing:1}}>{_ecFull122}</span>
+            {euroRound&&<span style={{fontSize:9,color:"rgba(255,255,255,0.4)"}}>· {euroRound}</span>}
+          </div>
+        </div>
+      ):(
+        <div style={{textAlign:"center",fontSize:8,color:"rgba(255,255,255,0.25)",letterSpacing:4,textTransform:"uppercase",marginBottom:10}}>— FORMAZIONI —</div>
+      )}
       <div style={{display:"flex",gap:4,alignItems:"flex-start"}}>
         <TeamFormation team={homeTeam} roster={withNums(hRoster,true)} isHome={true} kitCol={homeKitCol}/>
         {/* center divider */}
@@ -6194,7 +6206,7 @@ function FormationView({homeTeam,awayTeam,player,homeRoster,awayRoster,onContinu
 }
 
 /* WALKOUT OVERLAY */
-function WalkoutOverlay({homeTeam,homeRoster,awayRoster,opponent,isHome=true,matchWeek,onDone,weather,isDerbyMatch,isBigGame,heroJerseyNum=10,playerName="",benchStart=false}){
+function WalkoutOverlay({homeTeam,homeRoster,awayRoster,opponent,isHome=true,matchWeek,onDone,weather,isDerbyMatch,isBigGame,heroJerseyNum=10,playerName="",benchStart=false,isEuroMatch=false,euroCompetition=null,euroRound=null}){
   const STEPS=88;
   const [tick,setTick]=useState(0);
   useEffect(()=>{if(tick>=STEPS)return;const t=setTimeout(()=>setTick(n=>n+1),50);return()=>clearTimeout(t);},[tick]);
@@ -6209,8 +6221,12 @@ function WalkoutOverlay({homeTeam,homeRoster,awayRoster,opponent,isHome=true,mat
   const stadiumName=getStadiumName(venueTeam);
   const crowd=calcAttendance(venueTeam,"career");
   const crowdStr=crowd>=10000?`${(crowd/1000).toFixed(0)}k`:`${crowd}`;
+  const _ecE122={UCL:"⭐",UEL:"🟡",UECL:"🟣"}[euroCompetition]||"🌍";
+  const _ecFull122={UCL:"UEFA Champions League",UEL:"UEFA Europa League",UECL:"UEFA Conference League"}[euroCompetition]||"Europa";
   const phaseText=isDerbyMatch
     ?(pct<30?"🔥 Derby — le squadre escono dalla tribuna...":pct<65?"⚔️ Entrambi i club sul prato — tensione palpabile":"🔥 INFERNO DA DERBY — stadio in fiamme")
+    :isEuroMatch
+    ?(pct<30?`${_ecE122} ${_ecFull122}${euroRound?` · ${euroRound}`:""} — le squadre entrano in campo`:pct<65?`🌍 Entrambe le squadre sul prato europeo`:`🎆 LO STADIO ESPLODE — notte europea!`)
     :isBigGame
     ?(pct<30?"🌟 Dalla tribuna — match da storia":pct<65?"🏆 Entrambe le squadre in campo":"🎆 LO STADIO ESPLODE — è il momento")
     :(pct<30?"🚶 Dalla tribuna verso il prato":pct<65?"🏟️ Entrambe le squadre in campo":"📣 Il pubblico esplode");
@@ -6238,7 +6254,8 @@ function WalkoutOverlay({homeTeam,homeRoster,awayRoster,opponent,isHome=true,mat
       <div style={{position:"absolute",top:0,left:0,right:0,height:3,background:`linear-gradient(90deg,transparent,${accentCol},transparent)`,opacity:0.8}}/>
       <div style={{position:"absolute",bottom:0,left:0,right:0,height:3,background:`linear-gradient(90deg,transparent,${accentCol},transparent)`,opacity:0.4}}/>
       {isDerbyMatch&&<div style={{position:"absolute",top:6,left:0,right:0,textAlign:"center",fontSize:10,fontWeight:900,color:"#ef4444",letterSpacing:4,textTransform:"uppercase",textShadow:"0 0 18px #ef4444"}}>⚔️ DERBY ⚔️</div>}
-      {isBigGame&&!isDerbyMatch&&<div style={{position:"absolute",top:6,left:0,right:0,textAlign:"center",fontSize:10,fontWeight:900,color:"#f59e0b",letterSpacing:4,textTransform:"uppercase",textShadow:"0 0 18px #f59e0b"}}>🌟 BIG MATCH 🌟</div>}
+      {isBigGame&&!isDerbyMatch&&!isEuroMatch&&<div style={{position:"absolute",top:6,left:0,right:0,textAlign:"center",fontSize:10,fontWeight:900,color:"#f59e0b",letterSpacing:4,textTransform:"uppercase",textShadow:"0 0 18px #f59e0b"}}>🌟 BIG MATCH 🌟</div>}
+      {isEuroMatch&&!isDerbyMatch&&<div style={{position:"absolute",top:6,left:0,right:0,textAlign:"center",fontSize:10,fontWeight:900,color:{UCL:"#93c5fd",UEL:"#fde68a",UECL:"#c4b5fd"}[euroCompetition]||"#93c5fd",letterSpacing:3,textTransform:"uppercase",textShadow:`0 0 18px ${{UCL:"#3b82f6",UEL:"#f59e0b",UECL:"#8b5cf6"}[euroCompetition]||"#3b82f6"}`}}>{_ecE122} {_ecFull122.toUpperCase()} {_ecE122}</div>}
       {/* Atmosfera */}
       <div style={{textAlign:"center",padding:"28px 8px 6px",width:"100%"}}>
         <div style={{fontSize:9,color:"rgba(255,255,255,0.38)",letterSpacing:3,textTransform:"uppercase",marginBottom:2}}>{phaseText}</div>
@@ -7510,7 +7527,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
         return<MatchdayCard homeTeam={homeTeamObj} awayTeam={awayTeamObj} stadium={stadium} attendance={attendance} league={isNatCtx?"Nazionale":player.club?.lg||(player.club?.isU18||context==="trial"?(player.club?.lg||"Primavera"):null)} onContinue={handleGoToFormations} onSkip={()=>setPhase("playing")} scoutReport={scoutReport} scoutLoading={scoutLoading} onShowScout={()=>setShowScout(true)} matchWeight={mw} matchContext={mCtx}/>;
       })()}
       {phase==="matchday"&&showScout&&<ScoutReportScreen report={scoutReport} opponent={opponent} loading={scoutLoading} onClose={()=>setShowScout(false)}/>}
-      {phase==="formations"&&<FormationView homeTeam={homeTeamObj} awayTeam={awayTeamObj} player={player} homeRoster={homeRoster} awayRoster={awayRoster} onContinue={()=>setPhase("walkout")} onSkip={()=>setPhase("playing")} oppTactic={oppTactic} oppTacticLoading={oppTacticLoading} homeKitCol={scoreHomeCol} awayKitCol={scoreAwayCol}/>}
+      {phase==="formations"&&<FormationView homeTeam={homeTeamObj} awayTeam={awayTeamObj} player={player} homeRoster={homeRoster} awayRoster={awayRoster} onContinue={()=>setPhase("walkout")} onSkip={()=>setPhase("playing")} oppTactic={oppTactic} oppTacticLoading={oppTacticLoading} homeKitCol={scoreHomeCol} awayKitCol={scoreAwayCol} competition={(context==="euro_group"||context==="euro_ko")?(player.euro?.competition||null):null} euroRound={(context==="euro_group")?`Giornata ${(player.euro?.groupResults||[]).length+1}/6`:(context==="euro_ko")?({r16:"Ottavi di Finale",sf:"Semifinale",final:"Finale"}[player.euro?.phase]||"KO"):null}/>}
 
       {(show3D||phase==="walkout")&&(
         <Card style={{padding:0,overflow:"hidden",display:"flex",flexDirection:"column",...isNarrow?{flex:1,minHeight:0}:{height:"calc(100vh - 80px)",minHeight:500}}} shadow>
@@ -7592,7 +7609,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                 isDerbyMatch={!!drby} isBigGame={mw>=7}
                 competitionLabel={context==="euro_group"||context==="euro"?(player.euro?.competition||"UEFA"):(context==="cup"?"COPPA NAZIONALE":(context==="national"||context==="nationsCup"||context==="euroMondiale"?"NAZIONALE":(player.club?.lg||"")))}
                 onWalkoutDone={()=>setPhase("playing")}/>
-              {phase==="walkout"&&<WalkoutOverlay homeTeam={homeTeamObj} homeRoster={homeRoster} awayRoster={awayRoster} opponent={awayTeamObj} isHome={isMatchHome} matchWeek={player.week} onDone={()=>{if(benchStart)setOnBench(true);setPhase("playing");}} weather={weather} isDerbyMatch={!!drby} isBigGame={mw>=7} heroJerseyNum={player.jerseyNum||10} playerName={player.name} benchStart={benchStart}/>}
+              {phase==="walkout"&&<WalkoutOverlay homeTeam={homeTeamObj} homeRoster={homeRoster} awayRoster={awayRoster} opponent={awayTeamObj} isHome={isMatchHome} matchWeek={player.week} onDone={()=>{if(benchStart)setOnBench(true);setPhase("playing");}} weather={weather} isDerbyMatch={!!drby} isBigGame={mw>=7} heroJerseyNum={player.jerseyNum||10} playerName={player.name} benchStart={benchStart} isEuroMatch={context==="euro_group"||context==="euro_ko"} euroCompetition={player.euro?.competition||null} euroRound={(context==="euro_group")?`Giornata ${(player.euro?.groupResults||[]).length+1}/6`:(context==="euro_ko")?({r16:"Ottavi di Finale",sf:"Semifinale",final:"Finale"}[player.euro?.phase]||"KO"):null}/>}
               {screenFlash&&<div style={{position:"absolute",inset:0,background:screenFlash.col,zIndex:20,pointerEvents:"none",animation:`fadeFlash ${screenFlash.dur}ms ease-out forwards`}}/>}
               {floatGoal&&<div key={floatGoal.key} style={{position:"absolute",top:"30%",left:0,right:0,textAlign:"center",fontSize:22,fontWeight:900,color:floatGoal.col,textShadow:"0 0 24px currentColor",animation:"floatUp 1.4s ease-out forwards",zIndex:21,pointerEvents:"none"}}>{floatGoal.text}</div>}
               {/* Sprint 97 — pressure border */}
@@ -13032,14 +13049,29 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
           <Card style={{maxWidth:380,width:"100%",padding:"24px",textAlign:"center"}}>
             {showMatchPrompt.type==="cup"?(
               <><div style={{fontSize:32,marginBottom:4}}>🏆</div><div style={{fontSize:11,fontWeight:700,color:"#d97706",background:"#fef3c7",border:"1px solid #fde68a",borderRadius:8,padding:"3px 12px",display:"inline-block",marginBottom:6}}>COPPA NAZIONALE · {showMatchPrompt.cupRoundName||"Round"}</div></>
-            ):showMatchPrompt.type==="euro_group"||showMatchPrompt.type==="euro"?(
-              <><div style={{fontSize:32,marginBottom:4}}>🌍</div><div style={{fontSize:11,fontWeight:700,color:"#1e40af",background:"#dbeafe",border:"1px solid #93c5fd",borderRadius:8,padding:"3px 12px",display:"inline-block",marginBottom:6}}>{showMatchPrompt.competition||"EUROPA"} · {showMatchPrompt.cupRoundName||"Fase a Gironi"}</div></>
-            ):(
+            ):showMatchPrompt.type==="euro_group"||showMatchPrompt.type==="euro"?(()=>{
+              const _ec=showMatchPrompt.competition||player.euro?.competition||"UCL";
+              const _ecFull={UCL:"⭐ UEFA Champions League",UEL:"🟡 UEFA Europa League",UECL:"🟣 UEFA Conference League"}[_ec]||`🌍 ${_ec}`;
+              const _ecCol={UCL:"#1e40af",UEL:"#92400e",UECL:"#5b21b6"}[_ec]||"#1e40af";
+              const _ecBg={UCL:"#dbeafe",UEL:"#fef3c7",UECL:"#ede9fe"}[_ec]||"#dbeafe";
+              const _ecBorder={UCL:"#93c5fd",UEL:"#fde68a",UECL:"#c4b5fd"}[_ec]||"#93c5fd";
+              const _ecE={UCL:"⭐",UEL:"🟡",UECL:"🟣"}[_ec]||"🌍";
+              const _grPts=player.euro?.pts||0;const _grPlayed=(player.euro?.groupResults||[]).length;
+              const _round=showMatchPrompt.type==="euro_group"?`Giornata ${_grPlayed+1}/6`:(showMatchPrompt.cupRoundName||"KO");
+              return(
+                <>
+                  <div style={{fontSize:34,marginBottom:4}}>{_ecE}</div>
+                  <div style={{fontSize:11,fontWeight:700,color:_ecCol,background:_ecBg,border:`1px solid ${_ecBorder}`,borderRadius:8,padding:"3px 14px",display:"inline-block",marginBottom:4}}>{_ecFull}</div>
+                  <div style={{fontSize:10,color:_ecCol,marginBottom:showMatchPrompt.type==="euro_group"?4:6}}>{_round}</div>
+                  {showMatchPrompt.type==="euro_group"&&_grPlayed>0&&<div style={{fontSize:10,color:"#64748b",marginBottom:4}}>Girone: {_grPts} pt su {_grPlayed} gare</div>}
+                </>
+              );
+            })():(
               <div style={{fontSize:32,marginBottom:8}}>⚽</div>
             )}
             <div style={{fontSize:17,fontWeight:900,color:TH.text,marginBottom:4}}>{showMatchPrompt.type==="cup"?L.matchPromptCup:(showMatchPrompt.type==="euro_group"||showMatchPrompt.type==="euro")?"Partita Europea!":L.matchPromptTitle}</div>
             <div style={{fontSize:13,color:TH.muted,marginBottom:6}}>
-              {(showMatchPrompt.type==="cup"||showMatchPrompt.type==="euro_group"||showMatchPrompt.type==="euro")?`🏠 ${L.homeMatch}`:"" }{(showMatchPrompt.type!=="cup"&&showMatchPrompt.type!=="euro_group"&&showMatchPrompt.type!=="euro")&&(showMatchPrompt.isHome?`🏟️ ${L.homeMatch}`:`✈️ ${L.awayMatch}`)} · {showMatchPrompt.opponentName}
+              {showMatchPrompt.isHome?`🏟️ ${L.homeMatch}`:`✈️ ${L.awayMatch}`} · {showMatchPrompt.opponentName}
             </div>
             {showMatchPrompt.type!=="cup"&&isDerby(player.club?.id,showMatchPrompt.opponentId)&&<div style={{fontSize:12,fontWeight:700,color:"#f59e0b",background:"rgba(245,158,11,0.12)",borderRadius:8,padding:"4px 12px",marginBottom:8,display:"inline-block"}}>{isDerby(player.club?.id,showMatchPrompt.opponentId).e} {isDerby(player.club?.id,showMatchPrompt.opponentId).name}</div>}
             <div style={{fontSize:11,color:TH.faint,marginBottom:10}}>W.{player.week||1} — {L.matchPromptWhat}</div>
@@ -13984,50 +14016,111 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
               )}
             </Card>
           )}
-          {/* EURO — calendar tab European section */}
-          {(player.proStatus||"u18")==="pro"&&player.euro?.active&&(
-            <Card style={{borderLeft:"3px solid #1d4ed8"}}>
-              <div style={{fontSize:10,color:"#1e40af",textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>🌍 {player.euro.competition} — S.{season}</div>
-              {player.euro.champion?(
-                <div style={{fontSize:13,fontWeight:800,color:"#1d4ed8",marginBottom:6}}>🏆🌍 CAMPIONE {player.euro.competition}!</div>
-              ):player.euro.phase==="eliminated"?(
-                <div style={{fontSize:11,color:TH.danger,marginBottom:6}}>❌ Eliminato — {{group:"Fase a Gironi",r16:"Ottavi",sf:"Semifinale",final:"Finale"}[player.euro.phase]||"–"}</div>
-              ):player.euro.phase==="group"?(
-                <div style={{fontSize:11,color:"#3b82f6",marginBottom:6}}>📋 Fase a Gironi · gironi alla W.10</div>
-              ):(
-                <div style={{fontSize:11,color:"#3b82f6",marginBottom:6}}>🌍 In gara · <strong>{{r16:"Ottavi",sf:"Semifinale",final:"Finale"}[player.euro.phase]||player.euro.phase}</strong></div>
-              )}
-              {(player.euro.groupResults||[]).length>0&&(
-                <div>
-                  <div style={{fontSize:9,color:TH.faint,marginBottom:4}}>Fase a Gironi ({player.euro.pts||0}/18 pt)</div>
-                  {(player.euro.groupResults||[]).map((r,i)=>(
-                    <div key={i} style={{display:"flex",gap:8,alignItems:"center",padding:"4px 0",borderTop:"1px solid "+TH.cardBorder,fontSize:11}}>
-                      <span style={{minWidth:20,fontSize:9,background:r.won?"#f0fdf4":"#fff1f2",border:`1px solid ${r.won?TH.success:TH.danger}`,borderRadius:4,padding:"1px 4px",textAlign:"center",fontWeight:700,color:r.won?TH.success:TH.danger}}>{r.won?"V":r.drew?"P":"S"}</span>
-                      <span style={{fontSize:9,color:TH.faint,minWidth:36}}>{r.home?"Casa":"Trasf."}</span>
-                      <span style={{flex:1,color:TH.text,fontWeight:600}}>vs {r.opp}</span>
-                      <span style={{fontSize:12,fontWeight:700,color:TH.text}}>{r.hs}–{r.as}</span>
-                    </div>
-                  ))}
+          {/* EURO — calendar tab European section (Sprint 122) */}
+          {(player.proStatus||"u18")==="pro"&&player.euro?.active&&(()=>{
+            const eu=player.euro;
+            const _ec=eu.competition||"UCL";
+            const _ecFull={UCL:"UEFA Champions League",UEL:"UEFA Europa League",UECL:"UEFA Conference League"}[_ec]||_ec;
+            const _ecE={UCL:"⭐",UEL:"🟡",UECL:"🟣"}[_ec]||"🌍";
+            const _ecCol={UCL:"#1e40af",UEL:"#92400e",UECL:"#5b21b6"}[_ec]||"#1e40af";
+            const _ecBorder={UCL:"#3b82f6",UEL:"#f59e0b",UECL:"#8b5cf6"}[_ec]||"#3b82f6";
+            const gr=eu.groupResults||[];
+            const koR=eu.koResults||[];
+            const groupOpps=eu.groupOpponents||[];
+            // Build player group row
+            const _pG={w:0,d:0,l:0,gf:0,ga:0,pts:0};
+            gr.forEach(r=>{
+              if(r.won){_pG.w++;_pG.pts+=3;}else if(r.drew){_pG.d++;_pG.pts+=1;}else{_pG.l++;}
+              _pG.gf+=(r.hs||0);_pG.ga+=(r.as||0);
+            });
+            // Simulate other teams' group rows (seeded, stable)
+            const _simRow=(opp,seed)=>{
+              const played=gr.length;// how many rounds have passed
+              const h=n=>Math.abs(hashStr(_ec+(opp?.id||opp?.n||"x")+seed+n))%10;
+              let w=0,d=0,l=0,gf=0,ga=0;
+              for(let i=0;i<played;i++){
+                const r=h(i*7+3);
+                if(r<4){w++;gf+=h(i*3+1)+1;ga+=h(i*5);}
+                else if(r<6){d++;gf+=h(i*3)+1;ga+=h(i*5)+1;}
+                else{l++;gf+=h(i*3);ga+=h(i*5+2)+1;}
+              }
+              return{n:opp?.a||opp?.n||"?",w,d,l,gf,ga,pts:w*3+d,isPlayer:false};
+            };
+            const allRows=[
+              {n:(player.club?.a||player.club?.n||"TU"),w:_pG.w,d:_pG.d,l:_pG.l,gf:_pG.gf,ga:_pG.ga,pts:_pG.pts,isPlayer:true},
+              ...groupOpps.map((o,i)=>_simRow(o,i*17+5))
+            ].sort((a,b)=>b.pts-a.pts||(b.gf-b.ga)-(a.gf-a.ga));
+            const phaseLabel=eu.champion?`${_ecE} CAMPIONE!`:eu.eliminated?"❌ Eliminato":{group:"Fase a Gironi",r16:"Ottavi di Finale",sf:"Semifinale",final:"Finale"}[eu.phase]||eu.phase||"–";
+            const KO_NAMES={r16:"Ottavi di Finale",sf:"Semifinale",final:"Finale"};
+            return(
+              <Card style={{borderLeft:`3px solid ${_ecBorder}`,padding:"12px 14px"}}>
+                {/* Header */}
+                <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:10}}>
+                  <div>
+                    <div style={{fontSize:10,color:_ecCol,textTransform:"uppercase",letterSpacing:1.5,fontWeight:700}}>{_ecE} {_ecFull}</div>
+                    <div style={{fontSize:9,color:TH.faint}}>S.{eu.season||season} · {player.club?.nat||"🏳️"} {player.club?.n||"–"}</div>
+                  </div>
+                  <div style={{fontSize:11,fontWeight:700,color:eu.champion?"#f59e0b":eu.eliminated?TH.danger:_ecBorder,textAlign:"right"}}>{phaseLabel}</div>
                 </div>
-              )}
-              {(player.euro.koResults||[]).length>0&&(
-                <div style={{marginTop:8}}>
-                  <div style={{fontSize:9,color:TH.faint,marginBottom:4}}>Fase ad Eliminazione Diretta</div>
-                  {(player.euro.koResults||[]).map((r,i)=>(
-                    <div key={i} style={{display:"flex",gap:8,alignItems:"center",padding:"4px 0",borderTop:"1px solid "+TH.cardBorder,fontSize:11}}>
-                      <span style={{minWidth:20,fontSize:9,background:r.won?"#f0fdf4":"#fff1f2",border:`1px solid ${r.won?TH.success:TH.danger}`,borderRadius:4,padding:"1px 4px",textAlign:"center",fontWeight:700,color:r.won?TH.success:TH.danger}}>{r.won?"V":"X"}</span>
-                      <span style={{fontSize:9,color:TH.faint,minWidth:60}}>{r.name}</span>
-                      <span style={{flex:1,color:TH.text,fontWeight:600}}>vs {r.opp}</span>
-                      <span style={{fontSize:12,fontWeight:700,color:TH.text}}>{r.homeScore}–{r.awayScore}</span>
+                {/* Group stage table */}
+                {gr.length>0&&(
+                  <div style={{marginBottom:koR.length>0?12:0}}>
+                    <div style={{fontSize:8,color:TH.faint,textTransform:"uppercase",letterSpacing:1.5,marginBottom:6}}>CLASSIFICA GIRONE · {gr.length}/6 gare</div>
+                    {/* Table header */}
+                    <div style={{display:"grid",gridTemplateColumns:"16px 1fr 22px 22px 22px 22px 22px 22px 28px",gap:2,padding:"3px 4px",borderBottom:"1px solid "+TH.cardBorder,marginBottom:2}}>
+                      {["","Squadra","G","V","P","S","GF","GA","Pt"].map((h,i)=><div key={i} style={{fontSize:7,color:TH.faint,textAlign:i>1?"center":"left",fontWeight:700,letterSpacing:.5}}>{h}</div>)}
                     </div>
-                  ))}
-                </div>
-              )}
-              {!(player.euro.groupResults||[]).length&&!(player.euro.koResults||[]).length&&(
-                <div style={{fontSize:10,color:TH.faint}}>La fase a gironi si gioca alla settimana 10.</div>
-              )}
-            </Card>
-          )}
+                    {allRows.map((row,ri)=>{
+                      const isQ=ri<2;// top 2 qualify
+                      return(
+                        <div key={ri} style={{display:"grid",gridTemplateColumns:"16px 1fr 22px 22px 22px 22px 22px 22px 28px",gap:2,padding:"3px 4px",background:row.isPlayer?"rgba(59,130,246,0.08)":"transparent",borderRadius:4,alignItems:"center"}}>
+                          <div style={{fontSize:8,color:isQ?_ecBorder:TH.faint,fontWeight:700,textAlign:"center"}}>{ri+1}</div>
+                          <div style={{fontSize:10,color:row.isPlayer?_ecBorder:TH.text,fontWeight:row.isPlayer?700:400,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{row.n}{row.isPlayer?" ⭐":""}</div>
+                          {[row.w+row.d+row.l,row.w,row.d,row.l,row.gf,row.ga,row.pts].map((v,vi)=>(
+                            <div key={vi} style={{fontSize:9,textAlign:"center",fontWeight:vi===6?700:400,color:vi===6?(row.isPlayer?_ecBorder:TH.text):TH.muted}}>{v}</div>
+                          ))}
+                        </div>
+                      );
+                    })}
+                    {/* Results list */}
+                    <div style={{marginTop:8}}>
+                      <div style={{fontSize:8,color:TH.faint,textTransform:"uppercase",letterSpacing:1,marginBottom:4}}>Risultati</div>
+                      {gr.map((r,i)=>(
+                        <div key={i} style={{display:"flex",gap:6,alignItems:"center",padding:"3px 0",borderTop:"1px solid "+TH.cardBorder,fontSize:10}}>
+                          <span style={{fontSize:8,background:r.won?"#dcfce7":r.drew?"#fef9c3":"#fee2e2",color:r.won?"#16a34a":r.drew?"#854d0e":"#dc2626",borderRadius:3,padding:"1px 4px",fontWeight:700,minWidth:14,textAlign:"center"}}>{r.won?"V":r.drew?"P":"S"}</span>
+                          <span style={{fontSize:8,color:TH.faint,minWidth:30}}>{r.home?"🏟️":"✈️"}</span>
+                          <span style={{flex:1,color:TH.text}}>vs {r.opp}</span>
+                          <span style={{fontWeight:700,color:TH.text}}>{r.hs}–{r.as}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                {/* KO bracket */}
+                {koR.length>0&&(
+                  <div style={{borderTop:gr.length>0?"1px solid "+TH.cardBorder:"none",paddingTop:gr.length>0?10:0}}>
+                    <div style={{fontSize:8,color:TH.faint,textTransform:"uppercase",letterSpacing:1.5,marginBottom:6}}>FASE AD ELIMINAZIONE DIRETTA</div>
+                    {[{k:"r16",l:"Ottavi"},{k:"sf",l:"Semifinale"},{k:"final",l:"Finale"}].map(phase=>{
+                      const r=koR.find(r=>r.phase===phase.k);
+                      if(!r)return null;
+                      return(
+                        <div key={phase.k} style={{display:"flex",alignItems:"center",gap:6,padding:"5px 6px",marginBottom:4,background:r.won?"rgba(22,163,74,0.08)":"rgba(220,38,38,0.06)",borderRadius:6,border:`1px solid ${r.won?"rgba(22,163,74,0.2)":"rgba(220,38,38,0.2)"}`}}>
+                          <span style={{fontSize:8,fontWeight:700,color:_ecCol,minWidth:52}}>{phase.l}</span>
+                          <span style={{flex:1,fontSize:10,color:TH.text,fontWeight:600}}>vs {r.opp}</span>
+                          <span style={{fontSize:11,fontWeight:700,color:TH.text}}>{r.homeScore}–{r.awayScore}</span>
+                          <span style={{fontSize:9,fontWeight:700,color:r.won?"#16a34a":"#dc2626"}}>{r.won?"✅":"❌"}</span>
+                        </div>
+                      );
+                    })}
+                    {eu.champion&&<div style={{fontSize:11,fontWeight:900,color:"#f59e0b",textAlign:"center",marginTop:6,padding:"6px",background:"rgba(245,158,11,0.12)",borderRadius:6}}>🏆 CAMPIONE {_ecFull}!</div>}
+                  </div>
+                )}
+                {gr.length===0&&koR.length===0&&(
+                  <div style={{fontSize:10,color:TH.faint}}>Fase a gironi dal W.5 — convocato per {_ecFull}!</div>
+                )}
+              </Card>
+            );
+          })()}
           {/* Week grid — shows ⚽ on match weeks even if not yet played */}
           <Card>
             <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:10}}>Stagione {season} — calendario</div>
@@ -14489,6 +14582,38 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                 </div>
               </div>
             </Card>
+
+            {/* Allenatore — spostato da tab Agente (Sprint 122) */}
+            {(()=>{
+              const _cs=COACH_STYLES.find(s=>s.style===(player.coach?.style||"Bilanciato"));
+              const _ct=player.coachTrust||60;
+              const _ctLabel=_ct>=85?"Fiducia Totale":_ct>=70?"Fiducioso":_ct>=50?"Neutro":_ct>=30?"In Dubbio":"In Crisi";
+              const _ctColor=_ct>=70?TH.success:_ct>=50?TH.primary:_ct>=30?TH.warning:TH.danger;
+              return(
+                <Card style={{padding:"12px 14px"}}>
+                  <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:10}}>🧑‍💼 Allenatore</div>
+                  <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:10}}>
+                    <NpcFaceCoach coachName={player.coach?.name||"mister"} size={42}/>
+                    <div style={{flex:1,minWidth:0}}>
+                      <div style={{fontSize:13,fontWeight:800,color:TH.text}}>{player.coach?.name||"Il Mister"}</div>
+                      <div style={{fontSize:10,color:TH.accent,fontWeight:600,marginBottom:1}}>{player.coach?.style||"Bilanciato"}</div>
+                      <div style={{fontSize:10,color:TH.muted,lineHeight:1.4}}>{_cs?.desc||"Approccio equilibrato"}</div>
+                    </div>
+                    <div style={{textAlign:"center",flexShrink:0,background:TH.bg,borderRadius:8,padding:"6px 10px"}}>
+                      <div style={{fontSize:14,fontWeight:900,color:_ctColor}}>{_ct}</div>
+                      <div style={{fontSize:8,color:TH.faint}}>fiducia</div>
+                    </div>
+                  </div>
+                  <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:3}}>
+                    <div style={{fontSize:10,color:TH.muted}}>Rapporto attuale</div>
+                    <div style={{fontSize:10,fontWeight:700,color:_ctColor}}>{_ctLabel}</div>
+                  </div>
+                  <div style={{height:4,background:"#e2e8f0",borderRadius:2,overflow:"hidden"}}>
+                    <div style={{height:"100%",width:`${_ct}%`,background:_ctColor,borderRadius:2,transition:"width .4s"}}/>
+                  </div>
+                </Card>
+              );
+            })()}
 
             {/* Obiettivi stagionali */}
             {objs.length>0&&(
@@ -15690,37 +15815,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                     </div>
                   </div>
                 </Card>
-                {/* Sprint 70 — Il Tuo Allenatore */}
-                {(()=>{
-                  var _cs70=COACH_STYLES.find(function(s){return s.style===(player.coach?.style||"Bilanciato");});
-                  var _ct70=player.coachTrust||60;
-                  var _ctLabel70=_ct70>=85?"Fiducia Totale":_ct70>=70?"Fiducioso":_ct70>=50?"Neutro":_ct70>=30?"In Dubbio":"In Crisi";
-                  var _ctColor70=_ct70>=70?TH.success:_ct70>=50?TH.primary:_ct70>=30?TH.warning:TH.danger;
-                  return(
-                    <Card style={{padding:"12px 14px"}}>
-                      <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:10}}>🧑‍💼 Il Tuo Allenatore</div>
-                      <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:10}}>
-                        <NpcFaceCoach coachName={player.coach?.name||"mister"} size={42}/>
-                        <div style={{flex:1,minWidth:0}}>
-                          <div style={{fontSize:13,fontWeight:800,color:TH.text}}>{player.coach?.name||"Il Mister"}</div>
-                          <div style={{fontSize:10,color:TH.accent,fontWeight:600,marginBottom:1}}>{player.coach?.style||"Bilanciato"}</div>
-                          <div style={{fontSize:10,color:TH.muted,lineHeight:1.4}}>{_cs70?.desc||"Approccio equilibrato"}</div>
-                        </div>
-                        <div style={{textAlign:"center",flexShrink:0,background:TH.bg,borderRadius:8,padding:"6px 10px"}}>
-                          <div style={{fontSize:14,fontWeight:900,color:_ctColor70}}>{_ct70}</div>
-                          <div style={{fontSize:8,color:TH.faint}}>fiducia</div>
-                        </div>
-                      </div>
-                      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:3}}>
-                        <div style={{fontSize:10,color:TH.muted}}>Rapporto attuale</div>
-                        <div style={{fontSize:10,fontWeight:700,color:_ctColor70}}>{_ctLabel70}</div>
-                      </div>
-                      <div style={{height:4,background:"#e2e8f0",borderRadius:2,overflow:"hidden"}}>
-                        <div style={{height:"100%",width:`${_ct70}%`,background:_ctColor70,borderRadius:2,transition:"width .4s"}}/>
-                      </div>
-                    </Card>
-                  );
-                })()}
+                {/* Allenatore — ora nel tab Club */}
                 {/* Finestra di Mercato */}
                 {txOpen&&(
                   <Card style={{padding:"12px 14px",background:"#ecfdf5",border:"1px solid #6ee7b7"}}>
