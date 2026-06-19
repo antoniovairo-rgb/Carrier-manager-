@@ -2383,7 +2383,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="3.98.0"; // Sprint 119+120: infortuni severity/recovery/relapse, interviste teamChemistry/ambizioso/critico/notable
+const GAME_VERSION="3.99.0"; // Sprint 121: bench flow fix — no entry minute revealed, HL blocking, random warmup timing
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -3528,12 +3528,12 @@ function calcCoachDecision(player,matchWeight=1){
     status="bench";
     entryMinute=trust>=60?46:trust>=40?60:73;
     reason=fatigue>78
-      ?`Troppa stanchezza accumulata. Parti dalla panchina, entra al ${entryMinute}' fresco.`
+      ?"Troppa stanchezza accumulata. Parti dalla panchina e tieniti pronto."
       :form<40
-      ?`Sei in un momento di appannamento. Parti dalla panchina, entra al ${entryMinute}' e dimostra chi sei.`
+      ?"Sei in un momento di appannamento. Parti dalla panchina e dimostra chi sei quando entri."
       :trust<40
-      ?`C'è qualcuno davanti a te in questo momento. Parti dalla panchina, entra al ${entryMinute}'.`
-      :`Scelta tattica: oggi parti dalla panchina. Pronto a entrare al ${entryMinute}'.`;
+      ?"C'è qualcuno davanti a te in questo momento. Parti dalla panchina — potresti entrare nel corso della partita."
+      :"Scelta tattica: oggi parti dalla panchina. Rimani concentrato e pronto.";
   } else {
     status="starter";
     reason=trust>=80
@@ -6460,7 +6460,11 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   useEffect(()=>{hlTimesRef.current=hlTimes;},[hlTimes]);
   // Sprint 33 C7 / Sprint 118 — bench start mechanic
   const [onBench,setOnBench]=useState(false);
+  const onBenchRef=useRef(false);
+  useEffect(()=>{onBenchRef.current=onBench;},[onBench]);
   const [benchMinute]=useState(()=>benchStart?entryMinute:0);
+  // Sprint 121 — randomized warmup timing (player can't predict entry minute)
+  const [benchWarmupAt]=useState(()=>benchStart?Math.max(1,entryMinute-Math.floor(Math.random()*10+5)):0);
   const [benchPhase,setBenchPhase]=useState("watching"); // Sprint 118: "watching"|"warmup"|"entering"
   // Sprint 34 — tactic moments + chained highlights + sub events
   const tacticBonusRef=useRef(0);
@@ -6559,11 +6563,11 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   const [score,setScore]=useState({home:0,away:0});
   const scoreRef=useRef({home:0,away:0});
   useEffect(()=>{scoreRef.current=score;},[score]);
-  // Sprint 118 — bench phase progression (watching→warmup→entering)
+  // Sprint 118/121 — bench phase progression (watching→warmup→entering), warmup at randomized benchWarmupAt
   useEffect(()=>{
     if(!onBench||phase!=="playing")return;
     if(clock>=benchMinute&&benchPhase!=="entering")setBenchPhase("entering");
-    else if(clock>=benchMinute-5&&benchPhase==="watching")setBenchPhase("warmup");
+    else if(clock>=benchWarmupAt&&benchPhase==="watching")setBenchPhase("warmup");
   },[clock]);// eslint-disable-line
   // Sprint 118 — auto-dismiss bench overlay at entry time
   useEffect(()=>{
@@ -6973,7 +6977,10 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
       setClock(c=>{
         const nx=c+1;
         if(nx>=90){setPhase("ended");return 90;}
-        if(hlIdx<hlTimesRef.current.length&&nx>=hlTimesRef.current[hlIdx]){setPhase("hl_intro");return nx;}
+        if(hlIdx<hlTimesRef.current.length&&nx>=hlTimesRef.current[hlIdx]){
+          if(onBenchRef.current){setHlIdx(hi=>hi+1);}else{setPhase("hl_intro");}
+          return nx;
+        }
         // Sprint 94 — Weather commentary (15% chance when bad weather)
         const _wfx94=weather?.pitchFx;
         if(_wfx94&&Math.random()<0.15){
@@ -7660,28 +7667,22 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                         <div style={{fontSize:26,fontWeight:900,color:"#e2e8f0",lineHeight:1}}>{score.away}</div>
                       </div>
                     </div>
-                    {/* Icon + Status */}
-                    <div style={{fontSize:32,marginBottom:8}}>{isWarmup?"🏃":"🪑"}</div>
-                    <div style={{fontSize:14,fontWeight:900,color:"#e2e8f0",marginBottom:6,textAlign:"center"}}>
-                      {isWarmup?"Riscaldamento in corso!":"Sei in panchina"}
+                    {/* Status chip */}
+                    <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:10}}>
+                      <div style={{width:8,height:8,borderRadius:"50%",background:isWarmup?"#f59e0b":"#64748b",boxShadow:isWarmup?"0 0 8px #f59e0b":undefined,animation:isWarmup?"pulse 1.2s infinite":undefined}}/>
+                      <div style={{fontSize:11,fontWeight:800,color:isWarmup?"#f59e0b":"rgba(255,255,255,0.6)",letterSpacing:1.5,textTransform:"uppercase"}}>
+                        {isWarmup?"RISCALDAMENTO":"A DISPOSIZIONE"}
+                      </div>
                     </div>
                     {/* Reason (only while watching) */}
                     {!isWarmup&&benchReason&&<div style={{fontSize:10,color:"rgba(255,255,255,0.45)",marginBottom:8,textAlign:"center",fontStyle:"italic",lineHeight:1.5,maxWidth:240}}>"{benchReason}"</div>}
                     {/* Live commentary line */}
-                    <div style={{fontSize:11,color:isWarmup?"#f59e0b":"rgba(255,255,255,0.5)",marginBottom:14,textAlign:"center",lineHeight:1.5,minHeight:36,maxWidth:260}}>
+                    <div style={{fontSize:11,color:isWarmup?"#f59e0b":"rgba(255,255,255,0.5)",marginBottom:16,textAlign:"center",lineHeight:1.5,minHeight:36,maxWidth:260}}>
                       {isWarmup?warmMsg:obsMsg}
                     </div>
-                    {/* Entry minute indicator */}
-                    {!isWarmup&&(
-                      <div style={{fontSize:10,color:"rgba(255,255,255,0.35)",marginBottom:16,textAlign:"center"}}>
-                        Entri al <span style={{color:"#f59e0b",fontWeight:700}}>{benchMinute}'</span>
-                        {" "}·{" "}<span style={{color:"rgba(255,255,255,0.25)"}}>{Math.max(0,benchMinute-clock)} min al cambio</span>
-                      </div>
-                    )}
-                    {isWarmup&&<div style={{fontSize:10,color:"rgba(255,165,0,0.7)",marginBottom:16,textAlign:"center",fontWeight:700}}>Entri al {benchMinute}' — pronto?</div>}
-                    {/* Skip button */}
+                    {/* Skip button — no minute shown */}
                     <button onClick={()=>{setOnBench(false);setBenchPhase("watching");clockRef.current=benchMinute;setClock(benchMinute);}} style={{padding:"10px 22px",borderRadius:10,border:"1px solid rgba(255,255,255,0.15)",background:"rgba(255,255,255,0.06)",color:"rgba(255,255,255,0.6)",fontWeight:700,fontSize:11,cursor:"pointer",fontFamily:"inherit"}}>
-                      Salta al {benchMinute}' →
+                      Salta →
                     </button>
                   </div>
                 );
@@ -13048,7 +13049,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                 <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:coachDecision.reason?5:0}}>
                   <span style={{fontSize:15}}>{coachDecision.status==="starter"?"🟢":coachDecision.status==="bench"?"🟡":"⛔"}</span>
                   <span style={{fontSize:12,fontWeight:800,color:coachDecision.status==="starter"?TH.success:coachDecision.status==="bench"?"#d97706":"#dc2626"}}>
-                    {coachDecision.status==="starter"?"Sei Titolare":coachDecision.status==="bench"?`Panchina — entri al ${coachDecision.entryMinute}'`:"Non Convocato"}
+                    {coachDecision.status==="starter"?"Sei Titolare":coachDecision.status==="bench"?"Panchina — a disposizione":"Non Convocato"}
                   </span>
                 </div>
                 {coachDecision.reason&&<div style={{fontSize:11,color:TH.muted,lineHeight:1.5,fontStyle:"italic"}}>"{coachDecision.reason}"</div>}
@@ -13058,7 +13059,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
             <div style={{display:"flex",flexDirection:"column",gap:10}}>
               {coachDecision?.status!=="not_called"&&(
                 <Btn onClick={()=>{if(player.injured){notify(L.cannotPlayInjured,TH.danger);return;}if(player.isSuspended){notify("⛔ Sei squalificato — usa Simula","#dc2626");return;}setShowMatchPrompt(null);setCoachDecision(null);startMatch();}} v="green" fw style={{padding:"14px",fontSize:14,opacity:(player.injured||player.isSuspended)?0.35:1}}>
-                  {player.isSuspended?"⛔ Non puoi giocare (squalificato)":player.injured?`🩹 ${L.cannotPlayInjured}`:coachDecision?.status==="bench"?`🪑 Gioca (entri al ${coachDecision.entryMinute}')`:`🎮 ${L.playMatch} la partita`}
+                  {player.isSuspended?"⛔ Non puoi giocare (squalificato)":player.injured?`🩹 ${L.cannotPlayInjured}`:coachDecision?.status==="bench"?`🪑 Gioca (inizio in panchina)`:`🎮 ${L.playMatch} la partita`}
                 </Btn>
               )}
               <Btn onClick={()=>{if(player.isSuspended)setPlayer(p=>({...p,isSuspended:false}));simulateAndAdvance();}} v="secondary" fw style={{padding:"12px",fontSize:13}}>
