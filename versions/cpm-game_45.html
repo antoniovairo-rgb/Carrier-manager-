@@ -2157,19 +2157,12 @@ function generateProContracts(player){
   const perf=Math.min(10,(player.goals||0)*0.35+(player.matches||0)*0.12+(ovr-50)/6);
   const agentMult=player.hasAgent?1.15:1.0; // Sprint 26B: agent negotiation bonus
   const offers=[];
-  // 1. Same club first pro contract — conditional on performance (Sprint 105)
-  const parentName=((player.club?.n||player.club?.name||"?")+"").replace(/\s+(Primavera|U18)\s*$/i,"").trim();
+  // 1. Same club first pro contract (always available)
+  const parentName=((player.club?.n||player.club?.name||"?")+"").replace(/\s+U18\s*$/i,"").trim();
   const parentClub={...(player.club||{}),n:parentName,name:parentName,isU18:false,p:(player.club?.p||55)+12};
   // Sprint 98: realistic wage scaling (weekly €) — OVR 60=€900/w, 70=€2k, 80=€5k, 90=€15k
   const _wageBase98=ovr<65?ovr*14:ovr<70?ovr*28:ovr<75?ovr*55:ovr<80?ovr*90:ovr<85?ovr*150:ovr<90?ovr*250:ovr*380;
-  // Sprint 105: First Team offer requires minimum performance threshold
-  const _qualifiesFirstTeam105=ovr>=64&&perf>=3.5;
-  if(_qualifiesFirstTeam105){
-    offers.push({id:"same_pro",club:parentClub,contractType:"Primo contratto professionistico",wage:Math.round(clamp(_wageBase98+rng(-100,200),400,50000)*agentMult),duration:rng(1,3),role:ovr>=72?"Titolare giovane":ovr>=65?"Giovane promessa":"Aggregato alla rosa",moralBonus:14,growthBonus:perf>5?20:10,isMain:true});
-  }else{
-    // Non confermato in prima squadra: proposta ridotta o solo prestito
-    offers.push({id:"same_pro",club:parentClub,contractType:ovr>=60?"Aggregato alla rosa (prestito interno)":"Non confermato — svincolo",wage:Math.round(clamp(_wageBase98*0.65+rng(-50,100),300,8000)*agentMult),duration:1,role:"Riserva giovane",moralBonus:-4,growthBonus:6,isMain:false,isNonConfirmed:true});
-  }
+  offers.push({id:"same_pro",club:parentClub,contractType:"Primo contratto professionistico",wage:Math.round(clamp(_wageBase98+rng(-100,200),400,50000)*agentMult),duration:rng(1,3),role:ovr>=72?"Titolare giovane":ovr>=65?"Giovane promessa":"Riserva/Giovane",moralBonus:14,growthBonus:perf>5?20:10,isMain:true});
   // 2. External club (credibility-filtered)
   if(perf>2||forced){
     // OVR < 65 → only lower-tier clubs; OVR 65-72 → mid; OVR 73+ → higher
@@ -2247,7 +2240,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="3.83.0"; // Sprint 105 — Campionati Primavera: branding P1/P2, awards, progressione realistica
+const GAME_VERSION="3.82.1"; // Sprint 104B — Audit fix: matchday:996 unico per round, skillPoints migrazione, ThreeField rimosso
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -5797,7 +5790,7 @@ function MatchdayCard({homeTeam,awayTeam,stadium,attendance,league,onContinue,on
     const h=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();onContinue();}};
     window.addEventListener("keydown",h);return()=>window.removeEventListener("keydown",h);
   },[onContinue]);
-  const leagueName=league||(homeTeam?.isU18?(homeTeam?.lg||"Primavera"):(homeTeam?.lg||"Campionato"));
+  const leagueName=league||(homeTeam?.isU18?"Primavera U18":(homeTeam?.lg||"Campionato"));
   // Sprint 99: competition identity
   const _compId99=leagueName==="UCL"?"UCL":leagueName==="UEL"?"UEL":leagueName==="UECL"?"UECL":leagueName==="Coppa Nazionale"?"CUP":leagueName==="Nazionale"?"NAT":"LEAGUE";
   const _compStyle99={UCL:{bg:"linear-gradient(135deg,#1e3a8a,#2563eb)",e:"⭐",label:"UEFA Champions League",col:"#93c5fd"},UEL:{bg:"linear-gradient(135deg,#9a3412,#f97316)",e:"🌍",label:"UEFA Europa League",col:"#fed7aa"},UECL:{bg:"linear-gradient(135deg,#4c1d95,#7c3aed)",e:"🌍",label:"UEFA Conference League",col:"#ddd6fe"},CUP:{bg:"linear-gradient(135deg,#713f12,#f59e0b)",e:"🏆",label:"Coppa Nazionale",col:"#fef08a"},NAT:{bg:"linear-gradient(135deg,#064e3b,#059669)",e:"🌍",label:"Competizione Nazionale",col:"#6ee7b7"},LEAGUE:{bg:`linear-gradient(135deg,${homeTeam?.c||"#1e293b"},${homeTeam?.c2||"#334155"})`,e:"⚽",label:leagueName,col:"rgba(255,255,255,0.85)"}};
@@ -7145,7 +7138,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
         const isExCl=(player.history||[]).some(h=>h.club===opponent?.n||h.clubId===opponent?.id)||(player.worldMemory||[]).some(m=>m.type==="ex_club"&&m.clubId===opponent?.id);
         const rivalMatch=player.rival&&(player.rival.club?.id===opponent?.id||player.rival.club?.n===opponent?.n);
         const mCtx=drby?`${drby.e} ${drby.name}`:isExCl?"🏠 Ritorno al passato — ex squadra":rivalMatch?`🆚 La squadra di ${player.rival?.name||"il tuo rivale"}`:(mw>=8)?"Partita decisiva per il titolo":(mw>=6)?"Scontro diretto in classifica":null;
-        return<MatchdayCard homeTeam={homeTeamObj} awayTeam={opponent} stadium={stadium} attendance={attendance} league={isNatCtx?"Nazionale":player.club?.lg||(player.club?.isU18||context==="trial"?(player.club?.lg||"Primavera"):null)} onContinue={handleGoToFormations} onSkip={()=>setPhase("playing")} scoutReport={scoutReport} scoutLoading={scoutLoading} onShowScout={()=>setShowScout(true)} matchWeight={mw} matchContext={mCtx}/>;
+        return<MatchdayCard homeTeam={homeTeamObj} awayTeam={opponent} stadium={stadium} attendance={attendance} league={isNatCtx?"Nazionale":player.club?.lg||(player.club?.isU18||context==="trial"?"Primavera U18":null)} onContinue={handleGoToFormations} onSkip={()=>setPhase("playing")} scoutReport={scoutReport} scoutLoading={scoutLoading} onShowScout={()=>setShowScout(true)} matchWeight={mw} matchContext={mCtx}/>;
       })()}
       {phase==="matchday"&&showScout&&<ScoutReportScreen report={scoutReport} opponent={opponent} loading={scoutLoading} onClose={()=>setShowScout(false)}/>}
       {phase==="formations"&&<FormationView homeTeam={homeTeamObj} awayTeam={opponent} player={player} homeRoster={homeRoster} awayRoster={awayRoster} onContinue={()=>setPhase("walkout")} onSkip={()=>setPhase("playing")} oppTactic={oppTactic} oppTacticLoading={oppTacticLoading} homeKitCol={scoreHomeCol} awayKitCol={scoreAwayCol}/>}
@@ -7551,17 +7544,17 @@ function ProTransitionScreen({player,onChoose}){
   return(
     <div style={{width:"100%"}}>
       <div style={{textAlign:"center",marginBottom:14,paddingTop:6}}>
-        {(()=>{const _lg=player.club?.lg||"Primavera 1";const _isP2=_lg==="Primavera 2";return(<><div style={{fontSize:44,marginBottom:6}}>{_isP2?"🥈":"🎓"}</div><h1 style={{fontSize:19,fontWeight:900,margin:"0 0 4px",color:TH.text}}>Fine stagione {_lg}</h1><p style={{color:TH.muted,fontSize:12,margin:0}}>Stagione {u18S+1} completata · {_lg}</p></>);})()}
+        <div style={{fontSize:44,marginBottom:6}}>🎓</div>
+        <h1 style={{fontSize:19,fontWeight:900,margin:"0 0 4px",color:TH.text}}>Fine stagione Under 18</h1>
+        <p style={{color:TH.muted,fontSize:12,margin:0}}>Stagione {u18S+1} in Under 18 completata</p>
       </div>
-      {/* Primavera awards */}
-      {(()=>{const _aws=(player.primaveraAwards||[]).filter(a=>a.season===player.season);if(!_aws.length)return null;return(<div style={{display:"flex",gap:6,flexWrap:"wrap",marginBottom:10,justifyContent:"center"}}>{_aws.map((a,i)=><span key={i} style={{fontSize:11,padding:"4px 10px",borderRadius:12,background:a.type==="campione_primavera"?"#fef9c3":"#eff6ff",color:a.type==="campione_primavera"?"#92400e":TH.primary,fontWeight:700,border:`1px solid ${a.type==="campione_primavera"?"#fde68a":"#bfdbfe"}`}}>{a.type==="campione_primavera"?`🏆 Campione ${a.league}`:`⚽ Capocannoniere ${a.league} (${a.goals} gol)`}</span>)}</div>);})()}
       {/* Player status card */}
       <Card style={{marginBottom:12,padding:"12px 14px"}} bg={forced?"#fff1f2":"#eff6ff"} border={forced?"#fecaca":"#bfdbfe"}>
         <div style={{display:"flex",gap:10,alignItems:"center"}}>
           <AvatarSVG id={player.avatarId||0} size={46}/>
           <div style={{flex:1}}>
             <div style={{fontWeight:800,fontSize:14,color:TH.text}}>{player.name} · Livello {player.ovr}</div>
-            <div style={{fontSize:11,color:TH.muted}}>{player.club?.lg||"Primavera"} · Età {player.age} · {player.nation}</div>
+            <div style={{fontSize:11,color:TH.muted}}>Under 18 · Età {player.age} · {player.nation}</div>
             <div style={{fontSize:11,color:TH.warning,marginTop:2}}>⚽ {player.goals} gol · 🎯 {player.assists} assist · {player.matches} gare</div>
           </div>
           <div style={{textAlign:"right",flexShrink:0}}>
@@ -7605,7 +7598,6 @@ function ProTransitionScreen({player,onChoose}){
                 <span style={{fontSize:9,padding:"2px 6px",borderRadius:10,background:"#f3e8ff",color:TH.accent}}>📈+{o.growthBonus}</span>
                 {o.isLastChance&&<span style={{fontSize:9,padding:"2px 6px",borderRadius:10,background:"#fef9c3",color:TH.warning}}>⚠️ Ultima chance U18</span>}
                 {o.isMain&&<span style={{fontSize:9,padding:"2px 6px",borderRadius:10,background:"#eff6ff",color:TH.primary}}>⭐ Consigliato</span>}
-                {o.isNonConfirmed&&<span style={{fontSize:9,padding:"2px 6px",borderRadius:10,background:"#fee2e2",color:TH.danger}}>❌ Non confermato</span>}
               </div>
             </div>
             <Btn onClick={()=>onChoose(o)} v={o.isMain?"primary":o.isStayU18?"secondary":"ghost"} style={{flexShrink:0,padding:"9px 12px",fontSize:12}}>
@@ -10417,8 +10409,6 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     if(!('yellAccum' in newP)){newP={...newP,yellAccum:0,isSuspended:false,seasonCards:{y:0,r:0}};changed=true;} // Sprint 75
     if(!('leagueOverrides' in newP)){newP={...newP,leagueOverrides:{}};changed=true;} // Sprint 84
     if(!('skillPoints' in newP)||newP.skillPoints==null){newP={...newP,skillPoints:0};changed=true;} // Sprint 104B
-    if(!('u18Goals' in newP)){newP={...newP,u18Goals:0,u18Assists:0,u18Matches:0};changed=true;} // Sprint 105
-    if(!('primaveraAwards' in newP)){newP={...newP,primaveraAwards:[]};changed=true;} // Sprint 105
     if(changed){setPlayer(newP);}
   },[]);// eslint-disable-line
   const[darkMode,setDarkMode]=useState(()=>localStorage.getItem("cpm-dark")==="1");
@@ -11296,28 +11286,10 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     const isInU18=(player.proStatus||"u18")==="u18";
     const weekVal=player.week||1;
 
-    // U18 season end → ProTransitionScreen
+    // U18 season end → ProTransitionScreen (unchanged behaviour)
     if(isInU18&&weekVal>=38){
-      const _lg105=player.club?.lg||"Primavera 1";
-      const hist={season:player.season||1,club:player.club?.name||player.club?.n,goals:player.goals||0,assists:player.assists||0,matches:player.matches||0,ovr:player.ovr||60,league:_lg105};
-      // Award detection: Capocannoniere (≥8 gol, ratio ≥0.55) e Campione Primavera
-      const _srtd105=[...(player.standings||[])].sort((a,b)=>b.pts-a.pts||(b.gf-b.ga)-(a.gf-a.ga)||b.gf-a.gf);
-      const _myPos105=_srtd105.findIndex(t=>t.id===player.club?.id||(t.n||t.name)===(player.club?.n||player.club?.name));
-      const _isChamp105=_myPos105===0&&_srtd105.length>1;
-      const _isCapo105=(player.goals||0)>=8&&(player.goals||0)/Math.max(1,player.matches||1)>=0.55;
-      const _newAwards105=[];
-      if(_isCapo105)_newAwards105.push({type:"capocannoniere_primavera",league:_lg105,season:player.season||1,goals:player.goals||0});
-      if(_isChamp105)_newAwards105.push({type:"campione_primavera",league:_lg105,season:player.season||1});
-      setPlayer(p=>({
-        ...p,
-        u18Seasons:(p.u18Seasons||0)+1,
-        u18Goals:(p.u18Goals||0)+(p.goals||0),
-        u18Assists:(p.u18Assists||0)+(p.assists||0),
-        u18Matches:(p.u18Matches||0)+(p.matches||0),
-        primaveraAwards:[...(p.primaveraAwards||[]),..._newAwards105],
-        history:[...(p.history||[]),hist],
-        log:[`🏁 Fine ${_lg105} S.${p.season||1}: ${p.goals||0}⚽ ${p.assists||0}🎯`,...(p.log||[])].slice(0,60)
-      }));
+      const hist={season:player.season||1,club:player.club?.name||player.club?.n,goals:player.goals||0,assists:player.assists||0,matches:player.matches||0,ovr:player.ovr||60};
+      setPlayer(p=>({...p,u18Seasons:(p.u18Seasons||0)+1,history:[...(p.history||[]),hist],log:[`🏁 Fine U18 S.${p.season||1}: ${p.goals||0}⚽ ${p.assists||0}🎯`,...(p.log||[])].slice(0,60)}));
       setScreen("proTransition");
       return;
     }
@@ -11947,8 +11919,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     if(offer.isStayU18){setScreen("dashboard");setTab("dashboard");notify("🔄 Resti in Under 18!",TH.warning);return;}
     setPresentationData({club:offer.club,contractType:offer.contractType||"Primo contratto professionistico",playerName:player.name});
     setScreen("clubPresentation");setTab("dashboard");
-    if(offer.isNonConfirmed){notify("📋 Non confermato in prima squadra — hai trovato comunque una sistemazione.",TH.warning);}
-    else{notify("🎓 Sei diventato professionista!",TH.success);}
+    notify("🎓 Sei diventato professionista!",TH.success);
   },[]);// eslint-disable-line
 
   const startNationalMatch=()=>{
@@ -13436,7 +13407,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       {/* STANDINGS */}
       {tab==="standings"&&(()=>{
         const allLeagues=[...new Set(CLUBS.map(c=>c.lg).filter(Boolean))];
-        const myLeague=player.club?.lg||(player.proStatus==="u18"?"Primavera 1":"Serie A");
+        const myLeague=player.club?.lg||(player.proStatus==="u18"?"U18 Primavera":"Serie A");
         const selLg=standingsLg||myLeague;
         const getRows=(lg)=>{
           if(lg===myLeague)return player.standings||[];
