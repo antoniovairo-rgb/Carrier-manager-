@@ -2383,7 +2383,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="3.97.1"; // Sprint 117b: fix rigore finale (lockMovement mancante) + reset immediato posizioni
+const GAME_VERSION="3.98.0"; // Sprint 119+120: infortuni severity/recovery/relapse, interviste teamChemistry/ambizioso/critico/notable
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -10832,6 +10832,12 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     if(!('nationalGoals' in newP)){newP={...newP,nationalGoals:0};changed=true;}
     if(!('presidentModalSeason' in newP)){newP={...newP,presidentModalSeason:0};changed=true;}
     if(!('justRecovered' in newP)){newP={...newP,justRecovered:false};changed=true;}
+    // Sprint 119 migrations
+    if(!('injurySeverity' in newP)){newP={...newP,injurySeverity:null};changed=true;}
+    if(!('originalInjuryWeeks' in newP)){newP={...newP,originalInjuryWeeks:newP.injuryWeeks||0};changed=true;}
+    if(!('returnPenaltyWeeks' in newP)){newP={...newP,returnPenaltyWeeks:0};changed=true;}
+    // Sprint 120 migrations
+    if(!('teamChemistry' in newP)){newP={...newP,teamChemistry:60};changed=true;}
     // Sprint 28 migrations
     if(!('leagueArchive' in newP)){newP={...newP,leagueArchive:[]};changed=true;}
     // Sprint 42 migrations
@@ -10943,6 +10949,8 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
           return{...j,trust:clamp((j.trust||50)+delta,0,100),lastTone:ans.tone};
         });
       }
+      // Sprint 120: teamChemistry delta by tone
+      const _tcDelta=ans.tone==="umile"?4:ans.tone==="diplomatico"?2:-3;
       return{
         ...p,
         journalists:updJournalists,
@@ -10951,6 +10959,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
         coachTrust:clamp((p.coachTrust||60)+(ef.t||0)+(isPolemic?-5:0),0,100),
         form:clamp((p.form||70)+(ef.f||0),30,95),
         value:Math.max(0.5,(p.value||0.8)+(ef.v||0)),
+        teamChemistry:clamp((p.teamChemistry||60)+_tcDelta,0,100),
         log:[`🎙️ [${ans.tone}] "${ans.txt.substring(0,45)}…"`,...(p.log||[])].slice(0,60),
       };
     });
@@ -11411,6 +11420,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     const newInjured=!player.injured&&((postFatigue>82&&injRoll<0.07)||(postFatigue>68&&injRoll<0.03));
     const injuryWeeks=newInjured?(postFatigue>82?rng(2,4):1):0;
     const injuryType=newInjured?(injuryWeeks===1?"contusione":injuryWeeks===2?"stiramento":injuryWeeks===3?"distorsione":"osseo"):null;
+    const injurySeverity=newInjured?(injuryWeeks<=1?"lieve":injuryWeeks<=3?"medio":"grave"):null; // Sprint 119
     // Sprint 19 — milestone check (pre-compute before setState so we know which ones just triggered)
     const prevMilestones=player.milestones||[];
     const _nextState={...player,totalGoals:(player.totalGoals||0)+result.goals,totalMatches:(player.totalMatches||0)+1};
@@ -11520,7 +11530,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       const newDiary51=[...(p.diary||[]),..._md51].slice(-80);
       // Sprint 88: don't advance week if there are still unplayed euro/cup matches at the same week
       const _pendingOther=newCal.some(m=>m.week===(p.week||1)&&!m.played&&(m.type==="euro_group"||m.type==="euro"||(m.type==="cup"&&!_isCup)));
-      return{...p,stats:ns,ovr:newOvr,goals:p.goals+result.goals,assists:p.assists+result.assists,matches:p.matches+1,totalGoals:p.totalGoals+result.goals,totalAssists:p.totalAssists+result.assists,totalMatches:p.totalMatches+1,morale:clamp(p.morale+moD,0,100),form:clamp((p.form||70)+formD,30,95),fatigue:postFatigue,...(newInjured?{injured:true,injuryWeeks,injuryType}:{}),week:_pendingOther?(p.week||1):(p.week||1)+1,weekLived:_pendingOther?true:false,log:[logE,...(p.log||[])].slice(0,60),matchHistory:newHistory,standings:newStandings,calendar:newCal,aiData:newAiData,...(newMilestoneIds.length>0?{milestones:[...(p.milestones||[]),...newMilestoneIds]}:{}),...cupUpdate2,diary:newDiary51,goalStreak:newGoalStreak,bestGoalStreak:newBestStreak,yellAccum:_finalYellAccum75,isSuspended:_susp75||false,seasonCards:_newSeasonCards75};
+      return{...p,stats:ns,ovr:newOvr,goals:p.goals+result.goals,assists:p.assists+result.assists,matches:p.matches+1,totalGoals:p.totalGoals+result.goals,totalAssists:p.totalAssists+result.assists,totalMatches:p.totalMatches+1,morale:clamp(p.morale+moD,0,100),form:clamp((p.form||70)+formD,30,95),fatigue:postFatigue,...(newInjured?{injured:true,injuryWeeks,injuryType,injurySeverity,originalInjuryWeeks:injuryWeeks,returnPenaltyWeeks:0}:{}),week:_pendingOther?(p.week||1):(p.week||1)+1,weekLived:_pendingOther?true:false,log:[logE,...(p.log||[])].slice(0,60),matchHistory:newHistory,standings:newStandings,calendar:newCal,aiData:newAiData,...(newMilestoneIds.length>0?{milestones:[...(p.milestones||[]),...newMilestoneIds]}:{}),...cupUpdate2,diary:newDiary51,goalStreak:newGoalStreak,bestGoalStreak:newBestStreak,yellAccum:_finalYellAccum75,isSuspended:_susp75||false,seasonCards:_newSeasonCards75};
     });
     // Sprint 73: notify objective completions
     if(_objCompleted73.length)_objCompleted73.forEach((o,i)=>setTimeout(()=>notify(`🎯 ${o.label}!`,TH.success),700+i*1800));
@@ -11537,12 +11547,19 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       setTimeout(()=>notify(`🏆 Coppa · ${_rn}: ${isCupWon?"✅ PASSA":"❌ ELIMINATO"} vs ${result.opponent} (${result.homeScore}-${result.awayScore}${isCupPenalties?" · ai rigori":""})`,isCupWon?TH.success:TH.danger),400);
       if(isCupFinal)setTimeout(()=>notify("🏆🏆 HAI VINTO LA COPPA NAZIONALE! Straordinario!","#f59e0b"),2000);
     }
-    // Sprint 15: 15% chance post-match interview (Sprint 24C: use journalist if available)
-    if(Math.random()<0.15){
+    // Sprint 120: smart interview trigger — always for notable matches, 18% for normal
+    const _oppPres=matchOpp?.p||matchOpp?.prestige||50;
+    const _margin=Math.abs((result.homeScore||0)-(result.awayScore||0));
+    const _isHattrick=result.goals>=3;
+    const _isBigWin=result.won&&_oppPres>=70&&_margin>=2;
+    const _isBigLoss=!result.won&&!result.drew&&_margin>=3;
+    const _interviewChance=_isHattrick?0.96:(_isBigWin||_isBigLoss)?0.85:0.18;
+    if(Math.random()<_interviewChance){
       const iw=pickInterviewByCtx(player,result);
       const pJourno=(player.journalists||[]).length>0&&Math.random()<0.55?pick(player.journalists):null;
       const paperInfo=pJourno?{...iw.paper,name:pJourno.name,color:pJourno.color,e:pJourno.icon}:iw.paper;
-      setTimeout(()=>setInterviewModal({q:iw.q,paper:paperInfo,opponent:result.opponent||null,matchCtx:result.won?"win":result.drew?"draw":"loss",journalistId:pJourno?.id}),900);
+      const _notable=_isHattrick?"hattrick":_isBigWin?"bigwin":_isBigLoss?"bigloss":null;
+      setTimeout(()=>setInterviewModal({q:iw.q,paper:paperInfo,opponent:result.opponent||null,matchCtx:result.won?"win":result.drew?"draw":"loss",journalistId:pJourno?.id,notable:_notable}),900);
     }
     // S11.4 / Sprint 28: derby morale swing + worldMemory
     if(currentMatchDerby){
@@ -12037,11 +12054,25 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       const naturalForm=clamp(Math.round(baseForm*0.92+65*0.08),30,95);
       const baseFat=updP.fatigue!=null?updP.fatigue:(p.fatigue||0);
       const naturalFat=Math.max(0,baseFat-6);
-      if(p.injured&&(p.injuryWeeks||0)>0){const recovAdv=p.injuryWeeks-1<=0;return{...updP,week:(p.week||1)+1,weekLived:false,sessionsThisWeek:0,sessionLog:[],trainingStreak:0,lastTrainingType:null,weeklyFocusType:null,injuryWeeks:p.injuryWeeks-1,injured:!recovAdv,...(recovAdv?{injuryType:null,justRecovered:true}:{justRecovered:false}),fatigue:Math.max(0,baseFat-12),form:naturalForm};}
+      if(p.injured&&(p.injuryWeeks||0)>0){
+        // Sprint 119: relapse risk — if fatigue high while still recovering
+        const relapseRoll=Math.random();
+        if((p.injuryWeeks||0)===1&&(baseFat||0)>72&&relapseRoll<0.10){
+          setTimeout(()=>notify("😰 Ricaduta! Torna in stop per un'altra settimana.",TH.danger),300);
+          return{...updP,week:(p.week||1)+1,weekLived:false,sessionsThisWeek:0,sessionLog:[],trainingStreak:0,lastTrainingType:null,weeklyFocusType:null,injuryWeeks:1,injured:true,justRecovered:false,fatigue:Math.max(0,baseFat-8),form:naturalForm};
+        }
+        const recovAdv=p.injuryWeeks-1<=0;
+        return{...updP,week:(p.week||1)+1,weekLived:false,sessionsThisWeek:0,sessionLog:[],trainingStreak:0,lastTrainingType:null,weeklyFocusType:null,injuryWeeks:p.injuryWeeks-1,injured:!recovAdv,...(recovAdv?{injuryType:null,injurySeverity:null,justRecovered:true,returnPenaltyWeeks:2}:{justRecovered:false}),fatigue:Math.max(0,baseFat-12),form:naturalForm};
+      }
       const nextStreak=(p.sessionsThisWeek||0)>0?(p.trainingStreak||0):0; // Sprint 50: streak based on session count
       const nextWk=(p.week||1)+1;
       const winReset=nextWk===19; // finestra invernale apre → reset ricerca mercato
-      return{...updP,week:nextWk,weekLived:false,sessionsThisWeek:0,sessionLog:[],trainingStreak:nextStreak,weeklyFocusType:null,windowOfferUsed:winReset?false:(p.windowOfferUsed||false),fatigue:naturalFat,form:naturalForm,justRecovered:false};
+      // Sprint 119: gradual return penalty — form reduced for 2 weeks after recovery
+      const retPen=p.returnPenaltyWeeks||0;
+      const retFormPen=retPen>0?-6:0;
+      const nextRetPen=Math.max(0,retPen-1);
+      const formWithReturn=clamp(naturalForm+retFormPen,30,95);
+      return{...updP,week:nextWk,weekLived:false,sessionsThisWeek:0,sessionLog:[],trainingStreak:nextStreak,weeklyFocusType:null,windowOfferUsed:winReset?false:(p.windowOfferUsed||false),fatigue:naturalFat,form:formWithReturn,justRecovered:false,returnPenaltyWeeks:nextRetPen};
     });
     notify("⏭️ Settimana avanzata");
     // Sprint 35 — Agent task result notification
@@ -12865,7 +12896,10 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                 <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5}}>Intervista</div>
                 <div style={{fontSize:13,fontWeight:800,color:interviewModal.paper?.color||TH.primary}}>{interviewModal.paper?.name||"Giornalista"}</div>
               </div>
-              {interviewModal.matchCtx&&<div style={{marginLeft:"auto",fontSize:10,padding:"3px 9px",borderRadius:20,background:interviewModal.matchCtx==="win"?"#dcfce7":interviewModal.matchCtx==="loss"?"#fee2e2":"#fef9c3",color:interviewModal.matchCtx==="win"?TH.success:interviewModal.matchCtx==="loss"?TH.danger:TH.warning,fontWeight:700}}>{interviewModal.matchCtx==="win"?"VITTORIA":interviewModal.matchCtx==="loss"?"SCONFITTA":interviewModal.matchCtx==="draw"?"PAREGGIO":"SETTIMANALE"}</div>}
+              <div style={{marginLeft:"auto",display:"flex",flexDirection:"column",alignItems:"flex-end",gap:3}}>
+                {interviewModal.matchCtx&&<div style={{fontSize:10,padding:"3px 9px",borderRadius:20,background:interviewModal.matchCtx==="win"?"#dcfce7":interviewModal.matchCtx==="loss"?"#fee2e2":"#fef9c3",color:interviewModal.matchCtx==="win"?TH.success:interviewModal.matchCtx==="loss"?TH.danger:TH.warning,fontWeight:700}}>{interviewModal.matchCtx==="win"?"VITTORIA":interviewModal.matchCtx==="loss"?"SCONFITTA":interviewModal.matchCtx==="draw"?"PAREGGIO":"SETTIMANALE"}</div>}
+                {interviewModal.notable&&<div style={{fontSize:9,padding:"2px 7px",borderRadius:20,background:"#fef3c7",color:"#b45309",fontWeight:700}}>{interviewModal.notable==="hattrick"?"⚽ HAT-TRICK":interviewModal.notable==="bigwin"?"🏆 BIG WIN":"💢 BIG LOSS"}</div>}
+              </div>
             </div>
             {/* Question */}
             <div style={{background:TH.bg,borderRadius:10,padding:"12px 14px",marginBottom:16,borderLeft:`3px solid ${interviewModal.paper?.color||TH.primary}`}}>
@@ -12876,14 +12910,18 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
             {/* Answer choices */}
             <div style={{display:"flex",flexDirection:"column",gap:10}}>
               {(interviewModal.q?.a||[]).map((ans,i)=>{
-                const toneColor=ans.tone==="diretto"?"#ef4444":ans.tone==="umile"?"#16a34a":"#2563eb";
-                const toneLabel=ans.tone==="diretto"?"🔥 Diretto":ans.tone==="umile"?"🙏 Umile":"🤝 Diplomatico";
+                // Sprint 120: ambizioso/critico labels
+                const toneColor=ans.tone==="diretto"?"#f97316":ans.tone==="umile"?"#7c3aed":"#2563eb";
+                const toneLabel=ans.tone==="diretto"?"🔥 Ambizioso":ans.tone==="umile"?"🎯 Critico":"🤝 Diplomatico";
+                const tcDelta=ans.tone==="umile"?"+4":ans.tone==="diplomatico"?"+2":"-3";
+                const tcHint=`Chimica ${tcDelta}`;
                 return(
                   <button key={i} onClick={()=>applyInterviewAnswer(ans)} style={{textAlign:"left",background:"transparent",border:`1.5px solid ${toneColor}20`,borderRadius:10,padding:"10px 12px",cursor:"pointer",transition:"all 0.15s",outline:"none",display:"block",width:"100%"}}
                     onMouseEnter={e=>{e.currentTarget.style.background=`${toneColor}10`;e.currentTarget.style.borderColor=toneColor;}}
                     onMouseLeave={e=>{e.currentTarget.style.background="transparent";e.currentTarget.style.borderColor=`${toneColor}20`;}}>
-                    <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:5}}>
+                    <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:5}}>
                       <span style={{fontSize:10,fontWeight:800,color:toneColor,padding:"2px 8px",borderRadius:20,background:`${toneColor}15`}}>{toneLabel}</span>
+                      <span style={{fontSize:9,color:"rgba(99,102,241,0.7)",fontWeight:600}}>👥 {tcHint}</span>
                     </div>
                     <div style={{fontSize:12,color:TH.text,lineHeight:1.5}}>"{ans.txt}"</div>
                   </button>
@@ -13365,14 +13403,34 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
           </Card>
         );
       })()}
-      {/* Injury banner */}
-      {tab==="dashboard"&&player.injured&&(
-        <Card bg="#fff1f2" border="#fecaca" style={{marginBottom:8,padding:"12px 14px"}}>
-          <div style={{fontSize:11,fontWeight:700,color:"#b91c1c",marginBottom:4}}>🤕 Infortuno — recupero in corso</div>
-          <div style={{fontSize:11,color:"#991b1b",marginBottom:8}}>Settimane di stop rimanenti: <strong>{player.injuryWeeks||0}</strong>. Non puoi giocare finché non sei guarito.</div>
-          <div style={{height:6,background:"#fee2e2",borderRadius:3,overflow:"hidden"}}>
-            <div style={{height:"100%",width:`${100-Math.min(100,((player.injuryWeeks||0)/4)*100)}%`,background:"#ef4444",borderRadius:3,transition:"width .4s"}}/>
-          </div>
+      {/* Sprint 119 — Injury banner with severity + real recovery % */}
+      {tab==="dashboard"&&player.injured&&(()=>{
+        const iT=INJURY_TYPES_META[player.injuryType||"contusione"]||{label:"Infortunio",icon:"🩹"};
+        const sev=player.injurySeverity||"lieve";
+        const sevColor=sev==="grave"?"#b91c1c":sev==="medio"?"#c2410c":"#d97706";
+        const sevLabel=sev==="grave"?"🔴 Grave":sev==="medio"?"🟠 Medio":"🟡 Lieve";
+        const orig=player.originalInjuryWeeks||Math.max(player.injuryWeeks||1,1);
+        const recPct=Math.round(((orig-(player.injuryWeeks||0))/orig)*100);
+        return(
+          <Card bg="#fff1f2" border="#fecaca" style={{marginBottom:8,padding:"12px 14px"}}>
+            <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:6}}>
+              <div style={{fontSize:11,fontWeight:700,color:"#b91c1c"}}>{iT.icon} {iT.label}</div>
+              <div style={{fontSize:10,fontWeight:700,color:sevColor,background:`${sevColor}18`,padding:"2px 8px",borderRadius:20}}>{sevLabel}</div>
+            </div>
+            <div style={{display:"flex",justifyContent:"space-between",fontSize:10,color:"#991b1b",marginBottom:6}}>
+              <span>⏳ {player.injuryWeeks||0} settiman{(player.injuryWeeks||0)===1?"a":"e"} rimanenti</span>
+              <span style={{fontWeight:700,color:recPct>=50?"#15803d":"#991b1b"}}>Recupero {recPct}%</span>
+            </div>
+            <div style={{height:6,background:"#fee2e2",borderRadius:3,overflow:"hidden"}}>
+              <div style={{height:"100%",width:`${recPct}%`,background:recPct>=80?"#16a34a":recPct>=40?"#f97316":"#ef4444",borderRadius:3,transition:"width .4s"}}/>
+            </div>
+          </Card>
+        );
+      })()}
+      {/* Sprint 119 — Return penalty banner (gradual return form penalty) */}
+      {tab==="dashboard"&&!player.injured&&(player.returnPenaltyWeeks||0)>0&&(
+        <Card bg="#fffbeb" border="#fde68a" style={{marginBottom:8,padding:"10px 14px"}}>
+          <div style={{fontSize:11,color:"#92400e"}}><strong>🏃 Rientro graduale</strong> — ancora {player.returnPenaltyWeeks} settiman{player.returnPenaltyWeeks===1?"a":"e"} di adattamento. Form ridotta del 6%.</div>
         </Card>
       )}
       {/* Training nudge — show when training slots available */}
