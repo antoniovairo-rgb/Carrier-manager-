@@ -2383,7 +2383,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="3.99.0"; // Sprint 121: bench flow fix — no entry minute revealed, HL blocking, random warmup timing
+const GAME_VERSION="3.99.1"; // Sprint 121b: bench fix — player excluded from formation/walkout when starting on bench
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -6194,7 +6194,7 @@ function FormationView({homeTeam,awayTeam,player,homeRoster,awayRoster,onContinu
 }
 
 /* WALKOUT OVERLAY */
-function WalkoutOverlay({homeTeam,homeRoster,awayRoster,opponent,isHome=true,matchWeek,onDone,weather,isDerbyMatch,isBigGame,heroJerseyNum=10,playerName=""}){
+function WalkoutOverlay({homeTeam,homeRoster,awayRoster,opponent,isHome=true,matchWeek,onDone,weather,isDerbyMatch,isBigGame,heroJerseyNum=10,playerName="",benchStart=false}){
   const STEPS=88;
   const [tick,setTick]=useState(0);
   useEffect(()=>{if(tick>=STEPS)return;const t=setTimeout(()=>setTick(n=>n+1),50);return()=>clearTimeout(t);},[tick]);
@@ -6223,8 +6223,8 @@ function WalkoutOverlay({homeTeam,homeRoster,awayRoster,opponent,isHome=true,mat
   // Check if player is in away roster
   const playerInAwayList=awayList[10]&&awayList[10].name===playerName;
   const awayJerseyNums=playerInAwayList?[...[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15].filter(n=>n!==heroJerseyNum).slice(0,10),heroJerseyNum]:null;
-  const renderList=(list,col,nums)=>list.slice(0,visible).map((pl,i)=>{
-    const isLast=i===visible-1;
+  const renderList=(list,col,nums,noHero=false)=>list.slice(0,visible).map((pl,i)=>{
+    const isLast=!noHero&&i===visible-1;
     return(
       <div key={i} style={{display:"flex",alignItems:"center",gap:5,padding:"2px 7px",background:isLast?`${col}28`:"transparent",borderRadius:6,borderLeft:isLast?`2px solid ${col}`:"2px solid transparent",transition:"all 0.2s",marginBottom:1}}>
         <div style={{width:17,height:17,borderRadius:"50%",background:isLast?col:`${col}55`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:8,fontWeight:900,color:"#fff",flexShrink:0}}>{nums?nums[i]:i+1}</div>
@@ -6252,7 +6252,7 @@ function WalkoutOverlay({homeTeam,homeRoster,awayRoster,opponent,isHome=true,mat
             <TeamBadge team={homeTeam} size={20}/>
             <div style={{fontSize:11,fontWeight:800,color:homeCol,lineHeight:1.1,textShadow:`0 0 12px ${homeCol}88`}}>{homeTeam?.a||homeTeam?.n?.slice(0,6)||"HOME"}</div>
           </div>
-          {renderList(homeList,homeCol,[...[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15].filter(n=>n!==heroJerseyNum).slice(0,10),heroJerseyNum])}
+          {renderList(homeList,homeCol,benchStart?null:[...[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15].filter(n=>n!==heroJerseyNum).slice(0,10),heroJerseyNum],benchStart)}
         </div>
         {/* Away */}
         <div>
@@ -6260,7 +6260,7 @@ function WalkoutOverlay({homeTeam,homeRoster,awayRoster,opponent,isHome=true,mat
             <TeamBadge team={opponent} size={20}/>
             <div style={{fontSize:11,fontWeight:800,color:awayCol,lineHeight:1.1,textShadow:`0 0 12px ${awayCol}88`}}>{opponent?.a||opponent?.n?.slice(0,6)||"AWAY"}</div>
           </div>
-          {renderList(awayList,awayCol,awayJerseyNums)}
+          {renderList(awayList,awayCol,benchStart?null:awayJerseyNums,benchStart&&!playerInAwayList)}
         </div>
       </div>
       {/* Progress */}
@@ -6521,11 +6521,11 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     const isNatCtxR=context==="national"||context==="nationsCup"||context==="euroMondiale_group"||context==="euroMondiale_ko"||context==="euroMondiale";
     if(!isMatchHome){return generateTeamRoster(opponent,player.season||1).slice(0,11);}
     const _hRosterClub=isNatCtxR?(NAT_CLUB_DATA[player.nation||"Italia"]||player.club):player.club||opponent;
-    const r=generateTeamRoster(_hRosterClub,player.season||1).slice(0,11);r[10]={name:player.name,role:"Centravanti"};return r;
+    const r=generateTeamRoster(_hRosterClub,player.season||1).slice(0,11);if(!benchStart)r[10]={name:player.name,role:"Centravanti"};return r;
   });
   const [awayRoster]=useState(()=>{
     const isNatCtxR=context==="national"||context==="nationsCup"||context==="euroMondiale_group"||context==="euroMondiale_ko"||context==="euroMondiale";
-    if(!isMatchHome){const _aClub=isNatCtxR?(NAT_CLUB_DATA[player.nation||"Italia"]||player.club):player.club||opponent;const r=generateTeamRoster(_aClub,player.season||1).slice(0,11);r[10]={name:player.name,role:"Centravanti"};return r;}
+    if(!isMatchHome){const _aClub=isNatCtxR?(NAT_CLUB_DATA[player.nation||"Italia"]||player.club):player.club||opponent;const r=generateTeamRoster(_aClub,player.season||1).slice(0,11);if(!benchStart)r[10]={name:player.name,role:"Centravanti"};return r;}
     return generateTeamRoster(opponent,player.season||1).slice(0,11);
   });
   // 22 players + referee — generated once per match
@@ -7592,7 +7592,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                 isDerbyMatch={!!drby} isBigGame={mw>=7}
                 competitionLabel={context==="euro_group"||context==="euro"?(player.euro?.competition||"UEFA"):(context==="cup"?"COPPA NAZIONALE":(context==="national"||context==="nationsCup"||context==="euroMondiale"?"NAZIONALE":(player.club?.lg||"")))}
                 onWalkoutDone={()=>setPhase("playing")}/>
-              {phase==="walkout"&&<WalkoutOverlay homeTeam={homeTeamObj} homeRoster={homeRoster} awayRoster={awayRoster} opponent={awayTeamObj} isHome={isMatchHome} matchWeek={player.week} onDone={()=>{if(benchStart)setOnBench(true);setPhase("playing");}} weather={weather} isDerbyMatch={!!drby} isBigGame={mw>=7} heroJerseyNum={player.jerseyNum||10} playerName={player.name}/>}
+              {phase==="walkout"&&<WalkoutOverlay homeTeam={homeTeamObj} homeRoster={homeRoster} awayRoster={awayRoster} opponent={awayTeamObj} isHome={isMatchHome} matchWeek={player.week} onDone={()=>{if(benchStart)setOnBench(true);setPhase("playing");}} weather={weather} isDerbyMatch={!!drby} isBigGame={mw>=7} heroJerseyNum={player.jerseyNum||10} playerName={player.name} benchStart={benchStart}/>}
               {screenFlash&&<div style={{position:"absolute",inset:0,background:screenFlash.col,zIndex:20,pointerEvents:"none",animation:`fadeFlash ${screenFlash.dur}ms ease-out forwards`}}/>}
               {floatGoal&&<div key={floatGoal.key} style={{position:"absolute",top:"30%",left:0,right:0,textAlign:"center",fontSize:22,fontWeight:900,color:floatGoal.col,textShadow:"0 0 24px currentColor",animation:"floatUp 1.4s ease-out forwards",zIndex:21,pointerEvents:"none"}}>{floatGoal.text}</div>}
               {/* Sprint 97 — pressure border */}
