@@ -2383,7 +2383,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="3.99.4"; // Sprint 124: FK positioning, euro KO flow fix (dynamic week, safety net, threshold)
+const GAME_VERSION="3.99.5"; // Sprint 125: remove manual skillPoints UI; add Richiedi Cessione agent flow
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -12101,6 +12101,22 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
         else if(atk==="rinnovo"){updP={...updP,agentRenewalBonus:Math.min((updP.agentRenewalBonus||0)+0.10,0.30)};}
         updP={...updP,agentTask:null};
       }
+      // Sprint 125: Transfer request resolution — club evaluates after 2 weeks
+      if(updP.transferRequest?.status==="pending"){
+        const _trWk=updP.transferRequest.week||1;const _curWk=updP.week||1;
+        if((_curWk-_trWk)>=2){
+          const _pres=updP.club?.p||65;
+          const _acceptProb=_pres<65?0.65:_pres<80?0.45:0.25;
+          if(Math.random()<_acceptProb){
+            updP={...updP,transferRequest:{...updP.transferRequest,status:"accepted"},transferListed:true};
+            setTimeout(()=>notify("🤝 Il club accetta la tua richiesta. Sei in lista transfer.",TH.success),300);
+          }else{
+            const _ctPen=Math.random()<0.5?-8:-5;
+            updP={...updP,transferRequest:{...updP.transferRequest,status:"rejected"},coachTrust:clamp((updP.coachTrust||60)+_ctPen,0,100)};
+            setTimeout(()=>notify(`❌ Il club respinge la cessione (${_ctPen} fiducia mister).`,TH.danger),300);
+          }
+        }
+      }
       // Natural weekly recovery: fatigue -6, form drifts toward baseline 65
       // Sprint 104: safety-net — auto-sim any remaining unplayed matches on this week
       if(_weekMds.length>1){
@@ -12466,9 +12482,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       // Sprint 70: record coach tenure stats before coach possibly changes
       const _ch70={name:p.coach?.name||"Il Mister",style:p.coach?.style||"Bilanciato",season:p.season||1,goals:p.goals||0,assists:p.assists||0,matches:p.matches||0,ovr:p.ovr||60,coachTrust:p.coachTrust||60,coachChanged};
       const newCoachHistory=[...(p.coachHistory||[]),_ch70].slice(-20);
-      // Sprint 102: skillPoints per fascia età (era Sprint 98 sempre condizionale)
-      const _spGain102=newAge<=19?1:newAge<=27?((p.goals||0)>=5||(p.assists||0)>=5||(p.matches||0)>=20?1:0):((p.goals||0)>=12||(p.assists||0)>=12?1:0);
-      return{...p,season:newSeason,age:newAge,week:1,weekLived:false,goals:0,assists:0,matches:0,fatigue:0,skillPoints:(p.skillPoints||0)+_spGain102,stats:agedStats,ovr:newOvr,contract:newContract,contractExpired,club:nextClub84||p.club,leagueOverrides:_newOvPre,morale:clamp((p.morale||70)+bonM+(playerClubRelegated?-10:playerClubPromoted?8:0)+(isGB?15:0),0,100),coachTrust:clamp((p.coachTrust||60)+bonCT+(playerClubRelegated?-8:playerClubPromoted?5:0)+(coachChanged?newCoach.trustMod:0),0,100),popularity:clamp((p.popularity||20)+bonPop+(isGB?25:0),0,100),value:Math.max(0.5,(p.value||0.8)+bonVal+(playerClubRelegated?-0.3:playerClubPromoted?0.15:0)+(isGB?0.8:0)),log:[agingLog,...objLogs,...[_growthLog102,gbLog,coachLog,phenomLog,relegLog].filter(Boolean),...(p.log||[])].slice(0,60),standings:newStandings,calendar:newCalendar,matchHistory:[],seasonObjectives:newObjectives,history:[...(p.history||[]),prevHist].slice(-50),clubPrestigeShifts:updatedShifts,cup:newCup,euro:newEuro,coach:newCoach,goldenBoys:gbSeasons,records:newRecords,teammates:newTeammates,journalists:newJournalists,fanLegend:updFanLegend,leagueArchive:newLeagueArchive,coachHistory:newCoachHistory,jerseyNumSeason:0,yellAccum:0,isSuspended:false,seasonCards:{y:0,r:0},lastLeagueShift:_lastShiftPre,...(captainReset?{isCaptain:false}:{})}; // Sprint 84: club+leagueOverrides updated
+      return{...p,season:newSeason,age:newAge,week:1,weekLived:false,goals:0,assists:0,matches:0,fatigue:0,skillPoints:0,stats:agedStats,ovr:newOvr,contract:newContract,contractExpired,club:nextClub84||p.club,leagueOverrides:_newOvPre,morale:clamp((p.morale||70)+bonM+(playerClubRelegated?-10:playerClubPromoted?8:0)+(isGB?15:0),0,100),coachTrust:clamp((p.coachTrust||60)+bonCT+(playerClubRelegated?-8:playerClubPromoted?5:0)+(coachChanged?newCoach.trustMod:0),0,100),popularity:clamp((p.popularity||20)+bonPop+(isGB?25:0),0,100),value:Math.max(0.5,(p.value||0.8)+bonVal+(playerClubRelegated?-0.3:playerClubPromoted?0.15:0)+(isGB?0.8:0)),log:[agingLog,...objLogs,...[_growthLog102,gbLog,coachLog,phenomLog,relegLog].filter(Boolean),...(p.log||[])].slice(0,60),standings:newStandings,calendar:newCalendar,matchHistory:[],seasonObjectives:newObjectives,history:[...(p.history||[]),prevHist].slice(-50),clubPrestigeShifts:updatedShifts,cup:newCup,euro:newEuro,coach:newCoach,goldenBoys:gbSeasons,records:newRecords,teammates:newTeammates,journalists:newJournalists,fanLegend:updFanLegend,leagueArchive:newLeagueArchive,coachHistory:newCoachHistory,jerseyNumSeason:0,yellAccum:0,isSuspended:false,seasonCards:{y:0,r:0},lastLeagueShift:_lastShiftPre,...(captainReset?{isCaptain:false}:{})}; // Sprint 84: club+leagueOverrides updated
     });
     // S41: double achievement — won league + cup same season
     {const _sd=[...(player.standings||[])].sort((a,b)=>b.pts-a.pts||b.gd-a.gd||b.gf-a.gf);const _ch=_sd[0];const _pid=player.club?.id||player.club?.n;if(player.cup?.champion&&_ch&&(_ch.id===_pid||_ch.n===player.club?.n)&&!(player.achievements||[]).includes("double")){setTimeout(()=>{setPlayer(p=>({...p,achievements:[...(p.achievements||[]),"double"]}));notify("🏆🏆🏆 DOPPIO! Campionato + Coppa nella stessa stagione! Leggendario!","#f59e0b");},1200);}}
@@ -12501,7 +12515,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       const newStandings=initStandings(lc.length?lc:getLeagueClubs(p));
       const seed=(newSeason*7919+newSeason*newSeason*31)%2147483647+hashStr(targetClub?.id||targetClub?.n||"u18")*17;
       const newCalendar=generateSeasonCalendar(targetClub||{id:"u18",n:"U18"},lc.length?lc:getLeagueClubs(p),seed);
-      const base={...p,week:1,weekLived:false,season:newSeason,age:newAge,goals:0,assists:0,matches:0,matchHistory:[],fatigue:clamp((p.fatigue||0)-30,0,100),skillPoints:(p.skillPoints||0)+1,morale:clamp((p.morale||70)+(offer.moralBonus||0),0,100),contract:{duration:offer.duration||1,wage:offer.wage||500,expiresAtSeason:newSeason+(offer.duration||1)},standings:newStandings,calendar:newCalendar,seasonObjectives:generateSeasonObjectives({...p,club:targetClub}),jerseyNumSeason:0,yellAccum:0,isSuspended:false,seasonCards:{y:0,r:0}}; // Sprint 74-75: reset jersey+cards
+      const base={...p,week:1,weekLived:false,season:newSeason,age:newAge,goals:0,assists:0,matches:0,matchHistory:[],fatigue:clamp((p.fatigue||0)-30,0,100),morale:clamp((p.morale||70)+(offer.moralBonus||0),0,100),contract:{duration:offer.duration||1,wage:offer.wage||500,expiresAtSeason:newSeason+(offer.duration||1)},standings:newStandings,calendar:newCalendar,seasonObjectives:generateSeasonObjectives({...p,club:targetClub}),jerseyNumSeason:0,yellAccum:0,isSuspended:false,seasonCards:{y:0,r:0}}; // Sprint 74-75: reset jersey+cards
       if(offer.isStayU18){
         return{...base,log:[`🔄 Resto in Under 18 (S.${newSeason})`,...(p.log||[])].slice(0,60)};
       }
@@ -12582,14 +12596,6 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     notify(`✅ Contratto rinnovato! ${duration} ann${duration===1?"o":"i"} · ${annKStr}`,TH.success);
   };
 
-  const upgradeSkill=k=>{
-    setPlayer(p=>{
-      if(!(p.skillPoints>0))return p; // guard inside updater: safe against stale closure double-clicks
-      const ns={...p.stats,[k]:clamp(p.stats[k]+rng(1,3),1,99)};
-      return{...p,stats:ns,ovr:calcOvr(ns),skillPoints:p.skillPoints-1};
-    });
-    notify(`${k} migliorato!`,TH.accent);
-  };
 
   // accept transfer: update club, league, calendar, standings
   const acceptTransfer=()=>{
@@ -14777,17 +14783,10 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
           <Card>
             <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}}>
               <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5}}>Attributi</div>
-              <div style={{display:"flex",alignItems:"center",gap:6}}>
-                {(player.skillPoints||0)>0
-                  ?<div style={{background:"#f3e8ff",color:TH.accent,padding:"3px 12px",borderRadius:20,fontSize:11,fontWeight:700}}>💡 {player.skillPoints} punti crescita</div>
-                  :<div style={{fontSize:10,color:TH.faint,fontStyle:"italic"}}>+2 punti crescita a fine stagione</div>}
-              </div>
+              <div style={{fontSize:10,color:TH.faint,fontStyle:"italic"}}>La crescita avviene automaticamente</div>
             </div>
             {Object.entries(player.stats).map(([k,v])=>(
-              <div key={k} style={{display:"flex",alignItems:"center",gap:8,marginBottom:4}}>
-                <div style={{flex:1}}><StatBar label={k} value={v}/></div>
-                <button onClick={()=>upgradeSkill(k)} disabled={!(player.skillPoints>0)} style={{width:24,height:24,borderRadius:"50%",border:"1px solid "+((player.skillPoints||0)>0?TH.accent:"#d1d5db"),background:(player.skillPoints||0)>0?"#f3e8ff":"#f3f4f6",color:(player.skillPoints||0)>0?TH.accent:"#d1d5db",cursor:(player.skillPoints||0)>0?"pointer":"default",fontSize:13,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,transition:"all .15s"}}>+</button>
-              </div>
+              <div key={k} style={{marginBottom:4}}><StatBar label={k} value={v}/></div>
             ))}
           </Card>
           {/* Sprint 50 — Training Attivo: 3 slot settimanali */}
@@ -15971,6 +15970,44 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                     </div>
                   )}
                 </Card>
+                {/* Sprint 125 — Richiedi Cessione */}
+                {(()=>{
+                  var tr=player.transferRequest;
+                  var hasPending=tr&&tr.status==="pending";
+                  var hasAccepted=tr&&tr.status==="accepted";
+                  var hasRejected=tr&&tr.status==="rejected";
+                  return(
+                    <Card style={{padding:"12px 14px",border:"1px solid "+(hasPending?"#fbbf24":hasAccepted?"#6ee7b7":hasRejected?"#fca5a5":TH.cardBorder)}}>
+                      <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>🚪 Richiedi Cessione</div>
+                      {hasPending?(
+                        <div style={{padding:"9px 11px",borderRadius:9,background:"#fffbeb",border:"1px solid #fde68a"}}>
+                          <div style={{fontSize:11,fontWeight:700,color:"#92400e"}}>⏳ Richiesta in valutazione</div>
+                          <div style={{fontSize:9,color:"#78350f",marginTop:2}}>Il club sta valutando la tua richiesta. Risposta entro 2 settimane.</div>
+                        </div>
+                      ):hasAccepted?(
+                        <div style={{padding:"9px 11px",borderRadius:9,background:"#f0fdf4",border:"1px solid #86efac"}}>
+                          <div style={{fontSize:11,fontWeight:700,color:"#166534"}}>✅ Richiesta accettata — sei in lista transfer</div>
+                          <div style={{fontSize:9,color:"#14532d",marginTop:2}}>Il club ti metterà sul mercato. Aspetta le offerte.</div>
+                          <button onClick={function(){setPlayer(function(p){return{...p,transferRequest:null,transferListed:false,coachTrust:clamp((p.coachTrust||60)+5,0,100)};});notify("↩️ Richiesta ritirata. +5 fiducia mister.",TH.success);}} style={{marginTop:6,padding:"4px 10px",borderRadius:7,border:"1px solid #16a34a",background:"#fff",color:"#16a34a",fontSize:10,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>Ritira richiesta</button>
+                        </div>
+                      ):hasRejected?(
+                        <div style={{padding:"9px 11px",borderRadius:9,background:"#fef2f2",border:"1px solid #fca5a5"}}>
+                          <div style={{fontSize:11,fontWeight:700,color:"#991b1b"}}>❌ Richiesta respinta</div>
+                          <div style={{fontSize:9,color:"#7f1d1d",marginTop:2}}>Il club non intende cedere. Il rapporto col mister ne risente.</div>
+                          <button onClick={function(){setPlayer(function(p){return{...p,transferRequest:null};});}} style={{marginTop:6,padding:"4px 10px",borderRadius:7,border:"1px solid #dc2626",background:"#fff",color:"#dc2626",fontSize:10,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>Chiudi</button>
+                        </div>
+                      ):(
+                        <div>
+                          <div style={{fontSize:10,color:TH.muted,marginBottom:8,lineHeight:1.5}}>Incarica il tuo agente di presentare una richiesta formale di cessione al club. La risposta arriverà entro 2 settimane.</div>
+                          <button onClick={function(){setPlayer(function(p){return{...p,transferRequest:{season:p.season||1,week:p.week||1,status:"pending"},coachTrust:clamp((p.coachTrust||60)-10,0,100)};});notify("🚪 Richiesta di cessione inviata. −10 fiducia mister.",TH.warning);}} style={{width:"100%",padding:"10px 12px",borderRadius:9,border:"1px solid #fca5a5",background:"#fff1f2",color:"#dc2626",fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>
+                            🚪 Richiedi Cessione
+                          </button>
+                          <div style={{fontSize:9,color:TH.muted,marginTop:6,textAlign:"center"}}>Attenzione: riduce la fiducia del mister (−10)</div>
+                        </div>
+                      )}
+                    </Card>
+                  );
+                })()}
                 {/* Agent task card */}
                 <Card style={{padding:"12px 14px"}}>
                   <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>🎯 Task Settimanale</div>
