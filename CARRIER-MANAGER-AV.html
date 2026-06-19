@@ -2383,7 +2383,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="3.99.3"; // Sprint 123: crowd realism (3D+2D), coach-decision ref lock
+const GAME_VERSION="3.99.4"; // Sprint 124: FK positioning, euro KO flow fix (dynamic week, safety net, threshold)
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -6704,17 +6704,42 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     if(phase==="hl_move"||phase==="hl_intro"){
       const sp=getStartPos(situations[hlIdx]);
       setPPos(sp);
-      // Sprint 117b: immediately reposition all players for lockMovement (rigore/punizione)
+      // Sprint 117b/124: realistic positioning for lockMovement (rigore/punizione)
       if(situations[hlIdx]?.lockMovement){
+        const sit=situations[hlIdx];
+        const szX=(sit.startZone.x[0]+sit.startZone.x[1])/2;
+        const szY=(sit.startZone.y[0]+sit.startZone.y[1])/2;
+        const isPenalty=szX>85;
+        const isFlankFK=!isPenalty&&(szY<22||szY>78);
         setMatchPlayers(prev=>prev.map((pl,idx)=>{
           if(pl.team==="ref")return pl;
           if(pl.team==="away"){
             const ai=idx-10;
-            if(ai===0)return{...pl,x:95,y:50};
-            return{...pl,x:58+Math.floor(ai*1.2),y:8+ai*8};
+            if(ai===0)return{...pl,x:96,y:50}; // Away GK on goal line
+            if(isPenalty){return{...pl,x:82+(ai%3)*5,y:20+ai*7};}
+            if(isFlankFK){
+              // Pack the box for flank/corner FK
+              const bx=[84,87,90,82,86,88,79,83,77,75];
+              const by=[32,50,68,40,57,42,24,66,38,62];
+              return{...pl,x:bx[ai-1]||82,y:by[ai-1]||50};
+            }
+            // Direct FK: tight defensive wall of 4 at x:70 + back line
+            const wx=[70,70,70,70,79,79,84,87,87,91];
+            const wy=[43,48,53,58,35,65,50,38,62,50];
+            return{...pl,x:wx[ai-1]||78,y:wy[ai-1]||50};
           }else{
-            if(idx===0)return{...pl,x:4,y:50};
-            return{...pl,x:60+Math.floor(idx*0.8),y:10+idx*7};
+            if(idx===0)return{...pl,x:4,y:50}; // Home GK
+            if(isPenalty){return{...pl,x:82+(idx%3)*5,y:20+idx*7};}
+            if(isFlankFK){
+              // Runners in box + wide support
+              const bx=[88,91,88,84,82,76,76,72,68];
+              const by=[36,50,64,42,58,30,70,45,55];
+              return{...pl,x:bx[idx-1]||82,y:by[idx-1]||50};
+            }
+            // Direct FK: attackers attacking box, midfield cover
+            const ax=[87,89,85,82,80,76,72,68,65];
+            const ay=[38,50,62,32,68,44,56,36,64];
+            return{...pl,x:ax[idx-1]||80,y:ay[idx-1]||50};
           }
         }));
       }
@@ -11232,7 +11257,6 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
         const isChamp=won&&phase==="final";
         const newKR=[...(p.euro?.koResults||[]),{phase,name:_KN[phase]||phase,oppId:opp.id,opp:opp.n,homeScore:sim.homeScore,awayScore:sim.awayScore,won}];
         const newTr=isChamp?[...(p.trophies||[]),{season:p.season||1,club:p.club?.n,league:md2.competition,type:"euro"}]:(p.trophies||[]);
-        const nextKOWeek={sf:27,final:34};
         let calAfterKO=newCal;
         if(won&&!isChamp){
           // Schedule next round
@@ -11240,7 +11264,11 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
           const _minPr=md2.competition==="UCL"?82:md2.competition==="UEL"?65:52;
           const _koPool=CLUBS.filter(c=>c.lg!==(p.club?.lg||"Serie A")&&!c.isU18&&c.p>=_minPr&&!_usedIds.includes(c.id));
           const _nOpp=_koPool.length?pick(_koPool):CLUBS.find(c=>c.lg!==(p.club?.lg||"Serie A"))||CLUBS[0];
-          const nPhase=_KNX[phase];const nWeek=nextKOWeek[nPhase];const nName=_KN[nPhase];
+          const nPhase=_KNX[phase];
+          // Sprint 124: dynamic week — never in the past, always at least 3 weeks ahead
+          const _nWBase=nPhase==="sf"?27:nPhase==="final"?34:null;
+          const nWeek=_nWBase!=null?Math.max(_nWBase,(p.week||1)+3):null;
+          const nName=_KN[nPhase];
           const _koRd11120=(p.euro?.koRound||0)+1; // Sprint 104B: unique matchday per round
           if(_nOpp&&nWeek)calAfterKO=[...newCal,{matchday:996+_koRd11120,week:nWeek,opponentId:_nOpp.id,opponentName:_nOpp.n,isHome:Math.random()<0.5,played:false,result:null,type:"euro",competition:md2.competition,euroPhase:nPhase,cupRoundName:nName,opponentData:_nOpp}];
         }
@@ -11421,7 +11449,11 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
           const _minPr=p.euro?.competition==="UCL"?82:p.euro?.competition==="UEL"?65:52;
           const _koPool=CLUBS.filter(c=>c.lg!==(p.club?.lg||"Serie A")&&!c.isU18&&c.p>=_minPr&&!_usedIds.includes(c.id));
           const _nOpp=_koPool.length?pick(_koPool):CLUBS.find(c=>c.lg!==(p.club?.lg||"Serie A"))||CLUBS[0];
-          const nPhase=_KNX[phase];const nWeek={sf:27,final:34}[nPhase];const nName=_KN[nPhase];
+          const nPhase=_KNX[phase];
+          // Sprint 124: dynamic week — never in the past
+          const _nWBase124=nPhase==="sf"?27:nPhase==="final"?34:null;
+          const nWeek=_nWBase124!=null?Math.max(_nWBase124,(p.week||1)+3):null;
+          const nName=_KN[nPhase];
           const _koRd11300=newKR.length; // Sprint 104B: unique matchday per round
           if(_nOpp&&nWeek)calAfterKO=[...newCal,{matchday:996+_koRd11300,week:nWeek,opponentId:_nOpp.id,opponentName:_nOpp.n,isHome:Math.random()<0.5,played:false,result:null,type:"euro",competition:p.euro?.competition,euroPhase:nPhase,cupRoundName:nName,opponentData:_nOpp}];
         }
@@ -11890,13 +11922,28 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
 
     // S41: cup handled via calendar entries — no pre-compute needed
 
-    // Sprint 48: group stage is now calendar-based (played via LiveMatch) — check completion at week 15+
+    // Sprint 48/124: group stage calendar-based — check completion at week 15+
     if(!isInU18&&weekVal>=15&&player.euro?.active&&player.euro?.phase==="group"){
       const totalGroupMatches=(player.euro.groupOpponents||[]).length*2;
       const playedGroupMatches=(player.euro.groupResults||[]).length;
       if(playedGroupMatches>=totalGroupMatches){
-        const _euroQ=(player.euro.pts||0)>=7;
+        const _euroQ=(player.euro.pts||0)>=5; // Sprint 124: 5pt (≥1V+2P) — was 7
         setTimeout(()=>setEuroGroupModal({competition:player.euro.competition,groupOpponents:player.euro.groupOpponents||[],groupResults:player.euro.groupResults||[],pts:player.euro.pts||0,qualified:_euroQ,season:player.season||1}),500);
+      }
+    }
+    // Sprint 124: safety net — if past week 21 and euro still "group" with all games done (modal not confirmed)
+    if(!isInU18&&weekVal>=21&&player.euro?.active&&player.euro?.phase==="group"&&!euroGroupModal){
+      const _sgTotal=(player.euro.groupOpponents||[]).length*2;
+      const _sgDone=(player.euro.groupResults||[]).length>=_sgTotal;
+      if(_sgDone){
+        const _sgQ=(player.euro.pts||0)>=5;
+        if(_sgQ){
+          const _sgUsed=(player.euro.groupOpponents||[]).map(o=>o.id);
+          const _sgMin=player.euro.competition==="UCL"?82:player.euro.competition==="UEL"?65:52;
+          const _sgPool=CLUBS.filter(c=>c.lg!==(player.club?.lg||"Serie A")&&!c.isU18&&c.p>=_sgMin&&!_sgUsed.includes(c.id));
+          const _sgOpp=_sgPool.length?pick(_sgPool):CLUBS.find(c=>c.lg!==(player.club?.lg||"Serie A"))||CLUBS[0];
+          if(_sgOpp){setPlayer(p=>({...p,calendar:[...(p.calendar||[]),{matchday:995,week:Math.max(23,(p.week||1)+2),opponentId:_sgOpp.id,opponentName:_sgOpp.n,isHome:Math.random()<0.5,played:false,result:null,type:"euro",competition:p.euro?.competition,euroPhase:"r16",cupRoundName:"Ottavi di Finale",opponentData:_sgOpp}],euro:{...p.euro,phase:"r16",qualified:true,eliminated:false}}));setTimeout(()=>notify(`⭐ ${player.euro?.competition}: Ottavi di Finale programmati!`,TH.accent),400);}
+        }else{setPlayer(p=>({...p,euro:{...p.euro,phase:"eliminated",eliminated:true,qualified:false}}));setTimeout(()=>notify(`❌ ${player.euro?.competition}: eliminato dalla fase a gironi.`,TH.danger),400);}
       }
     }
     // Sprint 43: Nations Cup trigger — every 2 pro seasons at week 20 (Sprint 53: skip on euroMondiale years)
@@ -13275,16 +13322,17 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
               setPlayer(p=>{
                 let newCal=p.calendar||[];
                 if(eg.qualified){
-                  // Schedule R16 as playable calendar entry at week 20
+                  // Sprint 124: dynamic R16 week — never in the past, at least 2w ahead
+                  const _r16Wk=Math.max(20,(p.week||1)+2);
                   const _usedIds=(p.euro?.groupOpponents||[]).map(o=>o.id);
                   const _minPr=eg.competition==="UCL"?82:eg.competition==="UEL"?65:52;
                   const _koPool=CLUBS.filter(c=>c.lg!==(p.club?.lg||"Serie A")&&!c.isU18&&c.p>=_minPr&&!_usedIds.includes(c.id));
                   const _r16Opp=_koPool.length?pick(_koPool):CLUBS.find(c=>c.lg!==(p.club?.lg||"Serie A"))||CLUBS[0];
-                  if(_r16Opp)newCal=[...newCal,{matchday:995,week:20,opponentId:_r16Opp.id,opponentName:_r16Opp.n,isHome:Math.random()<0.5,played:false,result:null,type:"euro",competition:eg.competition,euroPhase:"r16",cupRoundName:"Ottavi di Finale",opponentData:_r16Opp}];
+                  if(_r16Opp)newCal=[...newCal,{matchday:995,week:_r16Wk,opponentId:_r16Opp.id,opponentName:_r16Opp.n,isHome:Math.random()<0.5,played:false,result:null,type:"euro",competition:eg.competition,euroPhase:"r16",cupRoundName:"Ottavi di Finale",opponentData:_r16Opp}];
                 }
                 return{...p,calendar:newCal,morale:clamp((p.morale||70)+(eg.qualified?8:0),0,100),popularity:clamp((p.popularity||20)+(eg.qualified?5:0),0,100),euro:{...p.euro,phase:eg.qualified?"r16":"eliminated",groupResults:eg.groupResults,pts:eg.pts,qualified:eg.qualified,eliminated:!eg.qualified}};
               });
-              if(eg.qualified)notify("✅ Qualificato agli Ottavi di "+eg.competition+"! Partita programmata alla W.20.",TH.primary);
+              if(eg.qualified)notify("✅ Qualificato agli Ottavi di "+eg.competition+"! Partita programmata.",TH.primary);
               setEuroGroupModal(null);
             }}>Avanti →</Btn>
           </Card>
