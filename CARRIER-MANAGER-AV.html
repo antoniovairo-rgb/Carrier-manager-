@@ -2383,7 +2383,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="3.95.0"; // Sprint 116: Decisione intelligente allenatore — titolare/panchina/non convocato con motivazione testuale
+const GAME_VERSION="3.96.0"; // Sprint 117: Fix rigori (area libera), fix dichiarazioni variabili in rassegna stampa
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -4038,11 +4038,17 @@ function generateLocalPressAnalysis(matchResult,playerPerf,playerCtx={}){
     :drew?["Tifosi divisi: punto guadagnato o due persi?","Si poteva vincere, ma un punto è pur sempre un punto."]
     :["Fischi a fine partita — i tifosi chiedono di più.","Delusione in curva: servono risposte immediate."];
 
+  const _mWin=[`"${name} ha fatto la differenza stasera. Sono orgoglioso della squadra."`,`"Prestazione maiuscola. Questo gruppo non smette mai di sorprendermi."`,`"Tre punti meritatissimi. ${name} ha giocato a un livello superiore."`,`"Avevamo preparato bene la partita e si è visto in campo."`,`"Non era semplice, ma i ragazzi hanno risposto presente. Bravi tutti."`,`"${name} è in un momento di grazia. Continuiamo così."`];
+  const _pWin=[`"Vittoria di squadra. Andiamo avanti step by step."`,`"Tre punti fondamentali. Il lavoro paga sempre."`,`"Dedico questa vittoria ai tifosi che ci hanno sostenuto."`,`"Volevamo questi tre punti e li abbiamo conquistati con sacrificio."`,`"Stiamo crescendo come gruppo. È bello farne parte."`,`"Il mister ci ha dato le indicazioni giuste. Abbiamo eseguito alla perfezione."`];
+  const _mDraw=[`"Ci mancava quel guizzo finale. Portiamo a casa un punto."`,`"Pareggio che può starci, ma sappiamo di poter fare di più."`,`"Non siamo stati cinici sotto porta. Dobbiamo migliorare lì."`,`"Un punto in trasferta ha il suo valore. Testa alla prossima."`,`"La squadra ha lottato fino alla fine. Posso rimproverare poco."`,`"Avremmo meritato di più, ma il calcio è anche questo."`];
+  const _pDraw=[`"Non sono soddisfatto del pareggio, ma la squadra ha lottato."`,`"Volevamo i tre punti. Dobbiamo essere più concreti."`,`"Un punto è un punto. Guardiamo avanti con fiducia."`,`"Mi aspettavo di vincere, ma rispetto il risultato. Prossima volta."`,`"Abbiamo creato tanto, ci è mancato il gol. Continueremo a provarci."`,`"Il pareggio brucia, ma la prestazione c'è stata. Testa bassa e lavoro."`];
+  const _mLoss=[`"Dobbiamo analizzare gli errori e reagire subito."`,`"Partita da dimenticare in fretta. Ci alleneremo duro questa settimana."`,`"Abbiamo subito gol evitabili. Serve più concentrazione difensiva."`,`"Non accetto prestazioni del genere. Parleremo chiaramente in spogliatoio."`,`"Sconfitta meritata. Prendiamoci le responsabilità e ripartiamo."`,`"Il risultato fa male, ma ci aiuterà a crescere. Torneremo più forti."`];
+  const _pLoss=[`"Sconfitta che fa male. Ci rifaremo la prossima settimana."`,`"Non eravamo al 100%. Ma le scuse non servono, serve lavorare."`,`"Abbiamo deluso i tifosi. Ce lo meritiamo. Torneremo più cattivi."`,`"Partita storta. Succede. L'importante è rialzarsi subito."`,`"Non sono riuscito a incidere come volevo. Lavorerò per migliorare."`,`"Brucia tanto. Ma questa è la spinta giusta per la settimana di allenamento."`];
   const quotes=won
-    ?[`"${name} ha fatto la differenza oggi. Sono orgoglioso della squadra." — Mister`,`"Vittoria di squadra. Andiamo avanti step by step." — ${name}`]
+    ?[pick(_mWin)+` — Mister`,pick(_pWin)+` — ${name}`]
     :drew
-    ?[`"Ci mancava quel guizzo finale. Portiamo a casa un punto." — Mister`,`"Non sono soddisfatto del pareggio, ma la squadra ha lottato." — ${name}`]
-    :[`"Dobbiamo analizzare gli errori e reagire subito." — Mister`,`"Sconfitta che fa male. Ci rifaremo la prossima settimana." — ${name}`];
+    ?[pick(_mDraw)+` — Mister`,pick(_pDraw)+` — ${name}`]
+    :[pick(_mLoss)+` — Mister`,pick(_pLoss)+` — ${name}`];
 
   const trending=won
     ?(goals>0?`#${name.replace(/\s/g,"")}Gol🔥`:`#${club.replace(/\s/g,"")}Vince`)
@@ -6709,13 +6715,13 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
             // Away GK stays in goal during set pieces (penalty/free kick)
             if(ai===0)return{...pl,x:clamp(pl.x+(95-pl.x)*0.15,88,98),y:clamp(pl.y+(50-pl.y)*0.12,35,65)};
             return{...pl,
-              x:clamp(pl.x+(74+Math.random()*4-pl.x)*0.32,64,81),
+              x:clamp(pl.x+(58+Math.random()*8-pl.x)*0.32,52,68),
               y:pl.y+((8+ai*8)-pl.y)*0.28};
           }else{
             // Home GK stays in goal during set pieces
             if(idx===0)return{...pl,x:clamp(pl.x+(3-pl.x)*0.15,2,8),y:clamp(pl.y+(50-pl.y)*0.12,35,65)};
             return{...pl,
-              x:clamp(pl.x+((76+Math.random()*12)-pl.x)*0.25,68,91),
+              x:clamp(pl.x+((60+Math.random()*10)-pl.x)*0.25,52,70),
               y:pl.y+((10+idx*7)-pl.y)*0.20};
           }
         }));
@@ -7654,7 +7660,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                 <div style={{padding:"8px 10px",borderBottom:"1px solid rgba(255,255,255,0.08)"}}>
                   <div style={{color:"#f59e0b",fontSize:10,fontWeight:700,marginBottom:5}}>{clock}' — {curSit.text}</div>
                   <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:5}}>
-                    <DPad onMove={handleDPad} dark size={isNarrow?52:42}/>
+                    {!curSit.lockMovement&&<DPad onMove={handleDPad} dark size={isNarrow?52:42}/>}
                     <div style={{flex:1}}>
                       <div style={{fontSize:8,color:"rgba(255,255,255,0.4)",marginBottom:3}}>📍 {ZONES[zone]?.label} · WASD</div>
                       {curSit.maxMoves>0&&<div style={{fontSize:9,color:"#60a5fa",fontWeight:700,marginBottom:3}}>{"●".repeat(movesLeft)}{"○".repeat(Math.max(0,curSit.maxMoves-movesLeft))} {movesLeft} mov</div>}
