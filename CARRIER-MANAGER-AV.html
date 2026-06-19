@@ -2383,7 +2383,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="3.99.2"; // Sprint 122: euro immersion (FormationView/WalkoutOverlay), group table, KO bracket, coach→Club tab, home/away fix
+const GAME_VERSION="3.99.3"; // Sprint 123: crowd realism (3D+2D), coach-decision ref lock
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -4548,7 +4548,7 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
   const sideD=xl?26:lg?20:md?16:13;
   const endW=xl?126:lg?118:md?110:100;
   const sideW=xl?84:lg?76:md?68:60;
-  const crowdBias=xl?0.91:lg?0.80:md?0.65:0.50;
+  const crowdBias=xl?0.93:lg?0.91:md?0.89:0.86; // Sprint 123: side stands always home-dominant
   // Style variation: 0=standard, 1=modern dark, 2=compact bowl, 3=traditional
   const roofOpacity=style===1?0.90:style===2?0.70:0.80;
   const roofColor=style===1?0x333344:style===3?0x888877:0x555566;
@@ -4833,8 +4833,8 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
         }
         cctx.globalAlpha=1;
       }
-      bakeSD(FX,2,FW,FY-3,0.75);bakeSD(FX,FY+FH+2,FW,PH-FY-FH-4,0.30);
-      bakeSD(0,FY,FX-1,FH,0.65);bakeSD(FX+FW+1,FY,PW-FX-FW-1,FH,0.65);
+      bakeSD(FX,2,FW,FY-3,0.93);bakeSD(FX,FY+FH+2,FW,PH-FY-FH-4,0.22); // Sprint 123: home end 93%, away end 22%
+      bakeSD(0,FY,FX-1,FH,0.91);bakeSD(FX+FW+1,FY,PW-FX-FW-1,FH,0.91); // Sprint 123: side stands 91% home
       // Stand gradients — Sprint 82: color from atmosphere palette
       const sL=atmo[1],sD=atmo[2];
       const tG=cctx.createLinearGradient(0,0,0,FY);tG.addColorStop(0,sD);tG.addColorStop(1,sL);
@@ -10906,13 +10906,12 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
   const[showMatchPrompt,setShowMatchPrompt]=useState(null); // {md} — pending match prompt
   const showMatchPromptRef=useRef(null);
   useEffect(()=>{showMatchPromptRef.current=showMatchPrompt;},[showMatchPrompt]);
-  // Sprint 116 — calculate coach decision when match prompt opens
+  // Sprint 116/123 — calculate and lock coach decision when match prompt opens
   useEffect(()=>{
-    if(!showMatchPrompt){setCoachDecision(null);return;}
+    if(!showMatchPrompt){setCoachDecision(null);coachDecisionRef.current=null;return;}
     const isLeague=showMatchPrompt.type!=="cup"&&showMatchPrompt.type!=="euro_group"&&showMatchPrompt.type!=="euro";
-    if(!isLeague){setCoachDecision({status:"starter",reason:"",entryMinute:0});return;}
-    const mw=calcMatchWeight(player,showMatchPrompt.opponentId,player.standings||[],player.week||1);
-    setCoachDecision(calcCoachDecision(player,mw));
+    const cd=isLeague?calcCoachDecision(player,calcMatchWeight(player,showMatchPrompt.opponentId,player.standings||[],player.week||1)):{status:"starter",reason:"",entryMinute:0};
+    setCoachDecision(cd);coachDecisionRef.current=cd; // ref lock: startMatch always reads same decision shown in UI
   },[showMatchPrompt]);// eslint-disable-line
   const[focusTrainingStat,setFocusTrainingStat]=useState(null); // Sprint 29: Focus training stat picker
   const[nationsCupModal,setNationsCupModal]=useState(null); // Sprint 30: Nations Cup event
@@ -10929,6 +10928,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
   const[misterDiscorsoModal,setMisterDiscorsoModal]=useState(null); // {coachName, line, mw, isCaptainTalk?}
   const matchBenchStartRef=useRef(false); // Sprint 33 C7
   const[coachDecision,setCoachDecision]=useState(null); // {status,reason,entryMinute} — Sprint 116
+  const coachDecisionRef=useRef(null); // Sprint 123: lock decision at modal-open time
   const matchTypeRef=useRef("league"); // Sprint 88: track current match type ("league"|"cup"|"euro_group"|"euro"|"national"|"nationsCup"|"euroMondiale")
   const[careerMomentModal,setCareerMomentModal]=useState(null);    // Sprint 25A — unique career moment
   const[monthlyReviewModal,setMonthlyReviewModal]=useState(null);  // Sprint 60: quarterly coach review
@@ -11114,9 +11114,9 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     if(derby)setTimeout(()=>notify(`🔥 ${derby.e} ${derby.name}! Atmosfera incandescente!`,"#f59e0b"),200);
     matchTypeRef.current=md.type||"league"; // Sprint 88
     setMatchOpp(opp);setMatchIsHome(md.isHome!==false);
-    // Sprint 116 — coach decision (replaces old bench probability)
+    // Sprint 116/123 — coach decision locked at modal-open time (ref guarantees same value shown in UI)
     const mwForDecision=calcMatchWeight(player,opp.id||md.opponentId,player.standings||[],player.week||1);
-    const _cd116=coachDecision||calcCoachDecision(player,mwForDecision);
+    const _cd116=coachDecisionRef.current||coachDecision||calcCoachDecision(player,mwForDecision);
     matchBenchStartRef.current=_cd116.status==="bench";
     if(_cd116.status==="bench")notify("🪑 "+_cd116.reason,TH.warning);
     else if(_cd116.status==="not_called"){notify("⛔ Non sei convocato questa settimana.",TH.danger);setCoachDecision(null);return;}
