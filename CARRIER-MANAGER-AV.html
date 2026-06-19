@@ -2383,7 +2383,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="3.94.0"; // Sprint 114-115: Rosa 23 giocatori, coerenza assoluta Rosa↔Formazione (jersey numbers identici)
+const GAME_VERSION="3.95.0"; // Sprint 116: Decisione intelligente allenatore — titolare/panchina/non convocato con motivazione testuale
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -3501,6 +3501,50 @@ function calcMatchWeight(player,opponentId,standings,week){
   if(week>=37)w+=3;else if(week>=35)w+=1;             // season finale
   if(player.rival&&(player.rival.club?.id===opponentId||player.rival.club?.n===opponentId))w+=2;
   return Math.min(10,w);
+}
+
+/* ========================================
+   COACH DECISION — titolare / panchina / non convocato
+======================================== */
+function calcCoachDecision(player,matchWeight=1){
+  const trust=clamp(player.coachTrust||60,0,100);
+  const form=clamp(player.form||60,0,100);
+  const fatigue=clamp(player.fatigue||0,0,100);
+  // recent 3-match average rating (fallback 6.0)
+  const recent=(player.matchHistory||[]).slice(-3).map(m=>m.rating||6.0);
+  const avgRating=recent.length>0?recent.reduce((s,r)=>s+r,0)/recent.length:6.0;
+  // score 0-100
+  let score=trust*0.40+form*0.25+(100-fatigue)*0.20+(avgRating-5)*7.5;
+  // big match boost — coach puts his best player in crucial games
+  if(matchWeight>=7)score+=10;
+  score=clamp(score,0,100);
+  let status,reason,entryMinute=60;
+  if(trust<12||(score<25&&trust<30)){
+    status="not_called";
+    reason=trust<12
+      ?"Il mister non ha fiducia in te in questo momento. Non sei nei convocati."
+      :(fatigue>80?"Non sei in condizione fisica di giocare. Ti serve riposo.":"Il tecnico ha preferito altri. Lavora in allenamento per riconquistare un posto.");
+  } else if(score<50||fatigue>78){
+    status="bench";
+    entryMinute=trust>=60?46:trust>=40?60:73;
+    reason=fatigue>78
+      ?`Troppa stanchezza accumulata. Parti dalla panchina, entra al ${entryMinute}' fresco.`
+      :form<40
+      ?`Sei in un momento di appannamento. Parti dalla panchina, entra al ${entryMinute}' e dimostra chi sei.`
+      :trust<40
+      ?`C'è qualcuno davanti a te in questo momento. Parti dalla panchina, entra al ${entryMinute}'.`
+      :`Scelta tattica: oggi parti dalla panchina. Pronto a entrare al ${entryMinute}'.`;
+  } else {
+    status="starter";
+    reason=trust>=80
+      ?"Sei il suo uomo di fiducia. Titolare inamovibile."
+      :matchWeight>=7
+      ?"Partita cruciale — il mister conta su di te dal primo minuto."
+      :avgRating>=7.0
+      ?"Le ultime prestazioni ti hanno guadagnato la maglia da titolare."
+      :"Sei in formazione. Dai il massimo.";
+  }
+  return{status,reason,entryMinute};
 }
 
 /* ========================================
@@ -6359,7 +6403,7 @@ function coachPostMatch(won,drew,goals,assists,rating,opponentPrestige){
   if(rating<5.5)return base+" E la tua performance personale? Devi alzare il livello.";
   return base;
 }
-function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true,benchStart}){
+function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true,benchStart,benchReason=""}){
   // Dynamic HL count — based on match conditions, NOT random
   const numHLRef=useRef(0);
   const hlTimesRef=useRef([]);
@@ -7528,13 +7572,14 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                   <div style={{fontSize:8,color:"rgba(255,255,255,0.2)",marginTop:6}}>Tocca / Enter per iniziare</div>
                 </div>
               )}
-              {/* Sprint 33 C7 — Bench start overlay */}
+              {/* Sprint 116 — Bench start overlay (improved) */}
               {phase==="playing"&&onBench&&(
-                <div style={{position:"absolute",inset:0,background:"rgba(5,8,20,0.92)",backdropFilter:"blur(4px)",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",zIndex:9,padding:"0 24px"}}>
-                  <div style={{fontSize:38,marginBottom:10}}>🪑</div>
-                  <div style={{fontSize:15,fontWeight:900,color:"#e2e8f0",marginBottom:4,textAlign:"center"}}>Stai partendo dalla panchina</div>
-                  <div style={{fontSize:11,color:"rgba(255,255,255,0.50)",marginBottom:22,textAlign:"center"}}>Il mister ti farà entrare al {benchMinute}° minuto</div>
-                  <button onClick={()=>{setOnBench(false);clockRef.current=benchMinute;setClock(benchMinute);}} style={{padding:"13px 28px",borderRadius:12,border:"none",background:"linear-gradient(135deg,#2563eb,#1d4ed8)",color:"#fff",fontWeight:800,fontSize:13,cursor:"pointer",fontFamily:"inherit",boxShadow:"0 4px 16px rgba(37,99,235,0.5)"}}>⚡ Entra in campo al {benchMinute}° →</button>
+                <div style={{position:"absolute",inset:0,background:"rgba(5,8,20,0.92)",backdropFilter:"blur(4px)",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",zIndex:9,padding:"0 28px"}}>
+                  <div style={{fontSize:38,marginBottom:8}}>🪑</div>
+                  <div style={{fontSize:15,fontWeight:900,color:"#e2e8f0",marginBottom:4,textAlign:"center"}}>Sei in panchina</div>
+                  {benchReason&&<div style={{fontSize:11,color:"rgba(255,255,255,0.55)",marginBottom:8,textAlign:"center",fontStyle:"italic",lineHeight:1.5}}>"{benchReason}"</div>}
+                  <div style={{fontSize:11,color:"rgba(255,255,255,0.40)",marginBottom:22,textAlign:"center"}}>Pronto a entrare al <span style={{color:"#f59e0b",fontWeight:700}}>{benchMinute}'</span></div>
+                  <button onClick={()=>{setOnBench(false);clockRef.current=benchMinute;setClock(benchMinute);}} style={{padding:"13px 28px",borderRadius:12,border:"none",background:"linear-gradient(135deg,#2563eb,#1d4ed8)",color:"#fff",fontWeight:800,fontSize:13,cursor:"pointer",fontFamily:"inherit",boxShadow:"0 4px 16px rgba(37,99,235,0.5)"}}>⚡ Entra in campo al {benchMinute}' →</button>
                 </div>
               )}
               {/* Sprint 34 — Sub event banner */}
@@ -10733,6 +10778,14 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
   const[showMatchPrompt,setShowMatchPrompt]=useState(null); // {md} — pending match prompt
   const showMatchPromptRef=useRef(null);
   useEffect(()=>{showMatchPromptRef.current=showMatchPrompt;},[showMatchPrompt]);
+  // Sprint 116 — calculate coach decision when match prompt opens
+  useEffect(()=>{
+    if(!showMatchPrompt){setCoachDecision(null);return;}
+    const isLeague=showMatchPrompt.type!=="cup"&&showMatchPrompt.type!=="euro_group"&&showMatchPrompt.type!=="euro";
+    if(!isLeague){setCoachDecision({status:"starter",reason:"",entryMinute:0});return;}
+    const mw=calcMatchWeight(player,showMatchPrompt.opponentId,player.standings||[],player.week||1);
+    setCoachDecision(calcCoachDecision(player,mw));
+  },[showMatchPrompt]);// eslint-disable-line
   const[focusTrainingStat,setFocusTrainingStat]=useState(null); // Sprint 29: Focus training stat picker
   const[nationsCupModal,setNationsCupModal]=useState(null); // Sprint 30: Nations Cup event
   const[euroGroupModal,setEuroGroupModal]=useState(null); // Sprint 42: European group stage
@@ -10747,6 +10800,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
   const[coachModal,setCoachModal]=useState(null); // {dialogue, chosen} — Parla col Mister
   const[misterDiscorsoModal,setMisterDiscorsoModal]=useState(null); // {coachName, line, mw, isCaptainTalk?}
   const matchBenchStartRef=useRef(false); // Sprint 33 C7
+  const[coachDecision,setCoachDecision]=useState(null); // {status,reason,entryMinute} — Sprint 116
   const matchTypeRef=useRef("league"); // Sprint 88: track current match type ("league"|"cup"|"euro_group"|"euro"|"national"|"nationsCup"|"euroMondiale")
   const[careerMomentModal,setCareerMomentModal]=useState(null);    // Sprint 25A — unique career moment
   const[monthlyReviewModal,setMonthlyReviewModal]=useState(null);  // Sprint 60: quarterly coach review
@@ -10929,11 +10983,12 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     if(derby)setTimeout(()=>notify(`🔥 ${derby.e} ${derby.name}! Atmosfera incandescente!`,"#f59e0b"),200);
     matchTypeRef.current=md.type||"league"; // Sprint 88
     setMatchOpp(opp);setMatchIsHome(md.isHome!==false);
-    // Sprint 33 C7 — bench start probability
-    const trust=player.coachTrust||60;
-    const benchProb=trust>=70?0:trust>=50?0.12:trust>=30?0.28:0.45;
-    matchBenchStartRef.current=Math.random()<benchProb;
-    if(matchBenchStartRef.current)notify("🪑 Il mister ti lascia in panchina per ora...",TH.warning);
+    // Sprint 116 — coach decision (replaces old bench probability)
+    const mwForDecision=calcMatchWeight(player,opp.id||md.opponentId,player.standings||[],player.week||1);
+    const _cd116=coachDecision||calcCoachDecision(player,mwForDecision);
+    matchBenchStartRef.current=_cd116.status==="bench";
+    if(_cd116.status==="bench")notify("🪑 "+_cd116.reason,TH.warning);
+    else if(_cd116.status==="not_called"){notify("⛔ Non sei convocato questa settimana.",TH.danger);setCoachDecision(null);return;}
     // Sprint 24A + 25C: pre-match speech based on match weight + captain status
     const mw=calcMatchWeight(player,opp.id||md.opponentId,player.standings||[],player.week||1);
     if(mw>=7&&player.coach){
@@ -12446,7 +12501,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
         <div style={{flex:1,overflow:"hidden",display:"flex",flexDirection:"column"}}>
         {usePhaserRenderer
           ?<FootballMatch2D playerData={player} squadAColor={player.club?.col||player.club?.c||"#22c55e"} squadBColor={matchOpp?.col||matchOpp?.c||"#ef4444"} duration={300} onMatchEnd={phaserMatchEnd}/>
-          :<LiveMatch player={player} opponent={matchOpp} context={matchContext||"career"} onMatchEnd={onMatchEnd} isMatchHome={matchIsHome} benchStart={matchBenchStartRef.current}/>
+          :<LiveMatch player={player} opponent={matchOpp} context={matchContext||"career"} onMatchEnd={onMatchEnd} isMatchHome={matchIsHome} benchStart={matchBenchStartRef.current} benchReason={matchBenchStartRef.current?(coachDecision?.reason||""):"" }/>
         }
         </div>
         {misterDiscorsoModal&&(
@@ -12844,14 +12899,28 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
               {(showMatchPrompt.type==="cup"||showMatchPrompt.type==="euro_group"||showMatchPrompt.type==="euro")?`🏠 ${L.homeMatch}`:"" }{(showMatchPrompt.type!=="cup"&&showMatchPrompt.type!=="euro_group"&&showMatchPrompt.type!=="euro")&&(showMatchPrompt.isHome?`🏟️ ${L.homeMatch}`:`✈️ ${L.awayMatch}`)} · {showMatchPrompt.opponentName}
             </div>
             {showMatchPrompt.type!=="cup"&&isDerby(player.club?.id,showMatchPrompt.opponentId)&&<div style={{fontSize:12,fontWeight:700,color:"#f59e0b",background:"rgba(245,158,11,0.12)",borderRadius:8,padding:"4px 12px",marginBottom:8,display:"inline-block"}}>{isDerby(player.club?.id,showMatchPrompt.opponentId).e} {isDerby(player.club?.id,showMatchPrompt.opponentId).name}</div>}
-            <div style={{fontSize:11,color:TH.faint,marginBottom:18}}>W.{player.week||1} — {L.matchPromptWhat}</div>
+            <div style={{fontSize:11,color:TH.faint,marginBottom:10}}>W.{player.week||1} — {L.matchPromptWhat}</div>
+            {/* Sprint 116 — Coach Decision Card */}
+            {coachDecision&&showMatchPrompt.type!=="cup"&&showMatchPrompt.type!=="euro_group"&&showMatchPrompt.type!=="euro"&&(
+              <div style={{background:coachDecision.status==="starter"?"rgba(34,197,94,0.08)":coachDecision.status==="bench"?"rgba(245,158,11,0.10)":"rgba(239,68,68,0.10)",border:`1px solid ${coachDecision.status==="starter"?"rgba(34,197,94,0.25)":coachDecision.status==="bench"?"rgba(245,158,11,0.30)":"rgba(239,68,68,0.30)"}`,borderRadius:10,padding:"10px 14px",marginBottom:12,textAlign:"left"}}>
+                <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:coachDecision.reason?5:0}}>
+                  <span style={{fontSize:15}}>{coachDecision.status==="starter"?"🟢":coachDecision.status==="bench"?"🟡":"⛔"}</span>
+                  <span style={{fontSize:12,fontWeight:800,color:coachDecision.status==="starter"?TH.success:coachDecision.status==="bench"?"#d97706":"#dc2626"}}>
+                    {coachDecision.status==="starter"?"Sei Titolare":coachDecision.status==="bench"?`Panchina — entri al ${coachDecision.entryMinute}'`:"Non Convocato"}
+                  </span>
+                </div>
+                {coachDecision.reason&&<div style={{fontSize:11,color:TH.muted,lineHeight:1.5,fontStyle:"italic"}}>"{coachDecision.reason}"</div>}
+              </div>
+            )}
             {player.isSuspended&&<div style={{background:"#fef2f2",border:"1px solid #fca5a5",borderRadius:8,padding:"8px 12px",marginBottom:10,fontSize:11,color:"#dc2626",fontWeight:700,textAlign:"center"}}>⛔ Sei squalificato — la partita viene simulata automaticamente</div>}
             <div style={{display:"flex",flexDirection:"column",gap:10}}>
-              <Btn onClick={()=>{if(player.injured){notify(L.cannotPlayInjured,TH.danger);return;}if(player.isSuspended){notify("⛔ Sei squalificato — usa Simula","#dc2626");return;}setShowMatchPrompt(null);startMatch();}} v="green" fw style={{padding:"14px",fontSize:14,opacity:(player.injured||player.isSuspended)?0.35:1}}>
-                {player.isSuspended?"⛔ Non puoi giocare (squalificato)":player.injured?`🩹 ${L.cannotPlayInjured}`:`🎮 ${L.playMatch} la partita`}
-              </Btn>
+              {coachDecision?.status!=="not_called"&&(
+                <Btn onClick={()=>{if(player.injured){notify(L.cannotPlayInjured,TH.danger);return;}if(player.isSuspended){notify("⛔ Sei squalificato — usa Simula","#dc2626");return;}setShowMatchPrompt(null);setCoachDecision(null);startMatch();}} v="green" fw style={{padding:"14px",fontSize:14,opacity:(player.injured||player.isSuspended)?0.35:1}}>
+                  {player.isSuspended?"⛔ Non puoi giocare (squalificato)":player.injured?`🩹 ${L.cannotPlayInjured}`:coachDecision?.status==="bench"?`🪑 Gioca (entri al ${coachDecision.entryMinute}')`:`🎮 ${L.playMatch} la partita`}
+                </Btn>
+              )}
               <Btn onClick={()=>{if(player.isSuspended)setPlayer(p=>({...p,isSuspended:false}));simulateAndAdvance();}} v="secondary" fw style={{padding:"12px",fontSize:13}}>
-                {player.injured?`⏭️ ${L.skipAndRecover}`:player.isSuspended?"⚡ Simula la partita (squalificato)":`⚡ ${L.simulateMatch} e avanza settimana`}
+                {player.injured?`⏭️ ${L.skipAndRecover}`:player.isSuspended?"⚡ Simula la partita (squalificato)":coachDecision?.status==="not_called"?"⚡ Simula partita (non convocato)":`⚡ ${L.simulateMatch} e avanza settimana`}
               </Btn>
               <Btn onClick={()=>setShowMatchPrompt(null)} v="secondary" fw style={{padding:"10px",fontSize:12,opacity:0.7}}>
                 ✕ {L.cancel} — {L.cancelStay}
