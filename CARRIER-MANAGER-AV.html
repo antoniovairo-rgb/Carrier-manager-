@@ -2426,7 +2426,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.2.7"; // Sprint 157: area HL initial player positioning — no more penalty-like look for rovesciata
+const GAME_VERSION="4.2.8"; // Sprint 158: national match priority in main CTA — single play button, clear sequencing
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -11589,6 +11589,11 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       doAdvanceWeek();return;                            // advance with injury penalty
     }
     if(!player.weekLived){liveCurrentWeek();return;}
+    // Sprint 158: national match priority routing
+    const _ncq2=player.nationsCupQueue;
+    if(_ncq2?.active&&!_ncq2?.done){startNationsCupMatch();return;}
+    const _em2=player.euroMondiale;
+    if(_em2?.active&&!_em2?.done){startEuroMondialeMatch();return;}
     const md=getThisWeekMatchday();
     if(md){setShowMatchPrompt(md);return;} // always ask: Gioca / Simula / Annulla
     doAdvanceWeek();
@@ -11681,6 +11686,22 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       return{label:L.advanceInjured,sub:`${iWeeks} ${L.stopWeeksLeft}`,color:"#dc2626",disabled:false};
     }
     if(!player.weekLived)return{label:L.liveWeek,sub:L.liveWeekSub,color:TH.primary,disabled:false};
+    // Sprint 158: national team matches have priority over club matches
+    const _ncq=player.nationsCupQueue;
+    if(_ncq?.active&&!_ncq?.done){
+      const _ncOpp=(_ncq.opponents||[])[_ncq.matchIdx||0]||"?";
+      const _ncIdx=_ncq.matchIdx||0;
+      const _clubMd=getThisWeekMatchday();
+      return{label:`🌍 Gioca vs ${_ncOpp} — Coppa Nazioni`,sub:`Partita ${_ncIdx+1}/3 · ${_ncq.pts||0}pt${_clubMd?` · poi: ${_clubMd.opponentName} W.${_clubMd.week}`:""}`,color:"#1d4ed8",disabled:false,action:"nationsCup"};
+    }
+    const _em=player.euroMondiale;
+    if(_em?.active&&!_em?.done){
+      const _emType=_em.type||"Torneo";
+      const _emOpp=_em.phase==="group"?(_em.groupOpponents||[])[_em.groupMatchIdx||0]:_em.koOpponent;
+      const _emCol=_emType==="Mondiale"?"#4f46e5":"#0369a1";
+      const _clubMd=getThisWeekMatchday();
+      return{label:`${_emType==="Mondiale"?"🌍":"🏆"} ${_emType} — vs ${_emOpp||"?"}`,sub:`${_emType==="Mondiale"?"Coppa del Mondo":"Europeo"}${_clubMd?` · poi: ${_clubMd.opponentName} W.${_clubMd.week}`:""}`,color:_emCol,disabled:false,action:"euroMondiale"};
+    }
     const md=getThisWeekMatchday();
     if(md){const isCupM=md.type==="cup";const isEuroM=md.type==="euro_group"||md.type==="euro";return{label:`${isCupM?"🏆":isEuroM?"🌍":"⚽"} ${L.playMatch} vs ${md.opponentName}`,sub:isCupM?`${L.cup} · ${md.cupRoundName||"Round"} · W.${md.week}`:isEuroM?`${md.competition||"Europa"} · ${md.cupRoundName||"Gironi"} · W.${md.week}`:`${md.isHome?`🏟️ ${L.homeMatch}`:`✈️ ${L.awayMatch}`} · W.${md.week}`,color:isCupM?"#f59e0b":isEuroM?"#1d4ed8":"#16a34a",disabled:false};}
     return{label:L.advanceWeek,sub:`W.${player.week||1} → W.${(player.week||1)+1}`,color:TH.primary,disabled:false};
@@ -13983,17 +14004,24 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
           </div>
         </Card>
       )}
-      {/* Sprint 43: Nations Cup pending card */}
-      {tab==="dashboard"&&player.nationsCupQueue?.active&&!player.nationsCupQueue?.done&&(
-        <Card style={{marginBottom:8,padding:"12px 14px",border:"1px solid #1d4ed8",background:"#eff6ff"}}>
-          <div style={{fontSize:10,color:"#1d4ed8",textTransform:"uppercase",letterSpacing:1.5,marginBottom:6}}>🌍 Coppa delle Nazioni · Stagione {player.nationsCupQueue.season}</div>
-          <div style={{fontSize:12,color:TH.text,fontWeight:600,marginBottom:2}}>
-            Avversario: {(player.nationsCupQueue.opponents||[])[player.nationsCupQueue.matchIdx||0]||"?"} — Partita {(player.nationsCupQueue.matchIdx||0)+1}/3
-          </div>
-          <div style={{fontSize:10,color:TH.muted,marginBottom:10}}>Punti accumulati: {player.nationsCupQueue.pts||0}/9</div>
-          <Btn fw onClick={startNationsCupMatch} style={{padding:"11px",fontSize:13}}>🏟️ Gioca Partita Nazionali</Btn>
-        </Card>
-      )}
+      {/* Sprint 43: Nations Cup pending card — Sprint 158: play via main CTA, card is info-only */}
+      {tab==="dashboard"&&player.nationsCupQueue?.active&&!player.nationsCupQueue?.done&&(()=>{
+        const _ncq=player.nationsCupQueue;
+        const _ncOpp=(_ncq.opponents||[])[_ncq.matchIdx||0]||"?";
+        const _ncIdx=_ncq.matchIdx||0;
+        const _clubMd=getThisWeekMatchday();
+        return(
+          <Card style={{marginBottom:8,padding:"12px 14px",border:"1px solid #1d4ed8",background:"#eff6ff"}}>
+            <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:6}}>
+              <div style={{fontSize:10,color:"#1d4ed8",textTransform:"uppercase",letterSpacing:1.5,flex:1}}>🌍 Coppa delle Nazioni · S.{_ncq.season}</div>
+              <div style={{fontSize:9,background:"#1d4ed8",color:"#fff",borderRadius:8,padding:"2px 8px",fontWeight:700}}>PRIORITÀ</div>
+            </div>
+            <div style={{fontSize:12,color:TH.text,fontWeight:700,marginBottom:2}}>vs {_ncOpp} — Partita {_ncIdx+1}/3</div>
+            <div style={{fontSize:10,color:TH.muted,marginBottom:_clubMd?8:0}}>Punti accumulati: {_ncq.pts||0}/9</div>
+            {_clubMd&&<div style={{fontSize:10,color:"#64748b",background:"rgba(0,0,0,0.04)",borderRadius:6,padding:"4px 8px"}}>⏭️ Dopo: {_clubMd.opponentName} · {_clubMd.isHome?"Casa":"Trasferta"} · W.{_clubMd.week}</div>}
+          </Card>
+        );
+      })()}
       {/* Sprint 83: Club European Competition Card (UCL/UEL/UECL) */}
       {tab==="dashboard"&&(player.proStatus||"u18")==="pro"&&player.euro?.active&&!player.euro?.champion&&!player.euro?.eliminated&&(()=>{
         const eu=player.euro;
@@ -14053,19 +14081,23 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
           </Card>
         );
       })()}
-      {/* Sprint 53: Europeo/Mondiale pending card */}
+      {/* Sprint 53: Europeo/Mondiale pending card — Sprint 158: play via main CTA, card is info-only */}
       {tab==="dashboard"&&player.euroMondiale?.active&&!player.euroMondiale?.done&&(()=>{
         const em=player.euroMondiale;
         const phaseLabel={group:`Gironi · Partita ${(em.groupMatchIdx||0)+1}/${(em.groupOpponents||[]).length||3}`,semi:"Semifinale",final:"Finale"}[em.phase]||"–";
         const oppName=em.phase==="group"?(em.groupOpponents||[])[em.groupMatchIdx||0]:em.koOpponent;
         const emCol=em.type==="Mondiale"?"#4f46e5":"#0369a1";
+        const _clubMd=getThisWeekMatchday();
         return(
           <Card style={{marginBottom:8,padding:"12px 14px",border:`1px solid ${emCol}`,background:`${emCol}10`}}>
-            <div style={{fontSize:10,color:emCol,textTransform:"uppercase",letterSpacing:1.5,marginBottom:6}}>{em.type==="Mondiale"?"🌍 Coppa del Mondo":"🏆 Europeo"} · S.{em.season} · {phaseLabel}</div>
-            <div style={{fontSize:12,color:TH.text,fontWeight:600,marginBottom:2}}>vs {oppName||"?"}</div>
-            {em.phase==="group"&&<div style={{fontSize:10,color:TH.muted,marginBottom:10}}>Punti gironi: {em.groupPts||0}/{((em.groupOpponents||[]).length||3)*3} · Serve min. 4pt per qualificarsi</div>}
-            {em.phase!=="group"&&<div style={{fontSize:10,color:TH.muted,marginBottom:10}}>Partita da eliminazione diretta · Nessun pareggio</div>}
-            <Btn fw onClick={startEuroMondialeMatch} style={{padding:"11px",fontSize:13,background:emCol,color:"#fff"}}>{em.type==="Mondiale"?"🌍":"🏆"} Gioca per la Nazionale</Btn>
+            <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:6}}>
+              <div style={{fontSize:10,color:emCol,textTransform:"uppercase",letterSpacing:1.5,flex:1}}>{em.type==="Mondiale"?"🌍 Coppa del Mondo":"🏆 Europeo"} · S.{em.season} · {phaseLabel}</div>
+              <div style={{fontSize:9,background:emCol,color:"#fff",borderRadius:8,padding:"2px 8px",fontWeight:700}}>PRIORITÀ</div>
+            </div>
+            <div style={{fontSize:12,color:TH.text,fontWeight:700,marginBottom:2}}>vs {oppName||"?"}</div>
+            {em.phase==="group"&&<div style={{fontSize:10,color:TH.muted,marginBottom:_clubMd?8:0}}>Punti gironi: {em.groupPts||0}/{((em.groupOpponents||[]).length||3)*3} · Serve min. 4pt per qualificarsi</div>}
+            {em.phase!=="group"&&<div style={{fontSize:10,color:TH.muted,marginBottom:_clubMd?8:0}}>Partita da eliminazione diretta · Nessun pareggio</div>}
+            {_clubMd&&<div style={{fontSize:10,color:"#64748b",background:"rgba(0,0,0,0.04)",borderRadius:6,padding:"4px 8px"}}>⏭️ Dopo: {_clubMd.opponentName} · {_clubMd.isHome?"Casa":"Trasferta"} · W.{_clubMd.week}</div>}
           </Card>
         );
       })()}
