@@ -2426,7 +2426,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.3.0"; // Sprint 160: DPad+actions below field on mobile; stats hidden during HL phases
+const GAME_VERSION="4.4.0"; // Sprint 161/162: auto-training, coach msg in wizard, remove Allena tab, canvas maxHeight fix
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -5884,7 +5884,7 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
       <canvas ref={canvasRef}
         style={isDesktop
           ?{display:"block",height:"100%",width:"auto",maxWidth:"100%"}
-          :{display:"block",width:"100%",height:"auto"}}/>
+          :{display:"block",maxWidth:"100%",width:"auto",height:"auto",maxHeight:"52vh"}}/>
     </div>
   );
 }
@@ -10840,6 +10840,7 @@ const generateLeagueNews=(player)=>{
   if(!league||(player.proStatus||"u18")==="u18")return[];
   const clubs=CLUBS.filter(c=>c.lg===league&&c.id!==player.club?.id);
   if(clubs.length<2)return[];
+  if((player.week||1)<=2)return[]; // Sprint 161: no match-based news in pre-season weeks
   const N=LEAGUE_NEWS_TEMPLATES.length;
   let s=hashStr(`${player.season||1}_${player.week||1}_ln62`);
   const idx=[...Array(N).keys()];
@@ -10953,9 +10954,9 @@ const generateBio=(p)=>{
 /* === SPRINT 56 — TUTORIAL ONBOARDING === */
 const TUTORIAL_STEPS=[
   {icon:"🌟",title:"Benvenuto in CPM!",text:"Sei {name}, un giovane talento con il sogno di diventare campione. Ogni settimana conta — allenati, gioca le partite e scrivi la tua storia."},
-  {icon:"📋",title:"La Dashboard",text:"Qui trovi le tue statistiche, gli obiettivi stagionali e l'agenda settimanale. I tab in basso ti portano su Calendar, Standings, Training e Profile."},
+  {icon:"📋",title:"La Dashboard",text:"Qui trovi le tue statistiche, gli obiettivi stagionali e l'agenda settimanale. I tab in basso ti portano su Calendar, Standings e Profile."},
   {icon:"⚽",title:"Gioca le Partite",text:"Quando si avvicina una partita appare il tasto GIOCA. Non saltarla! Ogni gol, ogni assist e ogni trofeo restano nel tuo diario di carriera."},
-  {icon:"💪",title:"Allenati Ogni Settimana",text:"Dal tab Training scegli il tipo di allenamento. Migliora le statistiche, aumenta la fiducia del mister e sblocca i milestones. Ora sei pronto — buona carriera!"},
+  {icon:"💪",title:"Allenamento Automatico",text:"Ogni settimana il mister prepara il piano di allenamento. Avanza la settimana per ricevere il suo feedback e far crescere i tuoi attributi. Ora sei pronto — buona carriera!"},
 ];
 function TutorialOverlay({name,step,onNext,onSkip}){
   const s=TUTORIAL_STEPS[step]||TUTORIAL_STEPS[0];
@@ -11408,7 +11409,6 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       if(k==="P"&&screen==="dashboard"){e.preventDefault();if(getThisWeekMatchday())startMatch();}
       else if(k==="A"&&screen==="dashboard"){e.preventDefault();const mdA=getThisWeekMatchday();if(mdA&&player.weekLived){setShowMatchPrompt(mdA);}else{setShowAdvanceConfirm(true);}}
       else if(k==="S"){e.preventDefault();doSave();}
-      else if(k==="T"){e.preventDefault();goTab("training");}
       else if(k==="F"){e.preventDefault();goTab("standings");}
       else if(k==="C"){e.preventDefault();goTab("calendar");}
       else if(k==="R"){e.preventDefault();goTab("profile");}
@@ -11419,11 +11419,11 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       // Arrow keys for tab switching
       else if(e.key==="ArrowLeft"&&!inModal){
         e.preventDefault();
-        const tabs=["dashboard","calendar","standings","club","training","profile","agente","coppe","nazionale"];
+        const tabs=["dashboard","calendar","standings","club","profile","agente","coppe","nazionale"];
         const cur=tabs.indexOf(tab);if(cur>0)goTab(tabs[cur-1]);
       }else if(e.key==="ArrowRight"&&!inModal){
         e.preventDefault();
-        const tabs=["dashboard","calendar","standings","club","training","profile","agente","coppe","nazionale"];
+        const tabs=["dashboard","calendar","standings","club","profile","agente","coppe","nazionale"];
         const cur=tabs.indexOf(tab);if(cur<tabs.length-1)goTab(tabs[cur+1]);
       }
     };
@@ -12092,6 +12092,12 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
   // "Vivi la settimana" — applies events/form changes, does NOT advance week counter
   const liveCurrentWeek=()=>{
     if(player.weekLived){notify("Hai già vissuto questa settimana. Avanza per passare alla prossima.",TH.warning);return;}
+    // Sprint 161: coach plan message shown in weekLiveModal
+    const _liveCoachMsg=(player.proStatus||"u18")==="u18"?null:(()=>{
+      const _f=player.fatigue||0;const _r=(player.matchHistory||[]).slice(-3);
+      const _a=_r.length?_r.reduce((s,m)=>s+(m.rating||6.5),0)/_r.length:6.5;
+      return _f>85?"Sei a pezzi. Riposo assoluto — non si allena in queste condizioni.":_f>65?"Stai spingendo troppo. Lavoro leggero e poi recupero.":_a>=7.5?"Stai volando — intensifico il lavoro tecnico per sfruttare il momento.":_a<=5.5?"Dobbiamo migliorare. Doppio lavoro tecnico e fisico.":"Questa settimana puntiamo su tecnica e fisico. Segui il piano.";
+    })();
     if(player.injured){
       const type=player.injuryType||"stiramento";
       const wk=player.injuryWeeks||1;
@@ -12129,7 +12135,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       const moment=pick(arcMoments.length>0?arcMoments:SPOGLIATOIO_MOMENTS.filter(m=>!m.requiresRecovery||player.justRecovered));
       const txt=moment.txt.replace(/\{nome\}/g,mate.name);
       setPlayer(p=>({...p,weekLived:true}));
-      setTimeout(()=>setWeekLiveModal({event:{txt,e:mate.icon},changes:{},choices:moment.choices,isSpogliatoio:true,teammate:{name:mate.name,icon:mate.icon,archetype:mate.archetype}}),50);
+      setTimeout(()=>setWeekLiveModal({event:{txt,e:mate.icon},changes:{},choices:moment.choices,isSpogliatoio:true,teammate:{name:mate.name,icon:mate.icon,archetype:mate.archetype},coachMsg:_liveCoachMsg}),50);
       return;
     }
     // Sprint 24B: 40% chance weekly impulse on non-match weeks
@@ -12137,7 +12143,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       const impulse=pick(WEEKLY_IMPULSES);
       setPlayer(p=>({...p,weekLived:true}));
       const catIcon={opportunità:"🌟",scelta:"⚡",tensione:"🔥",conseguenza:"🎲"}[impulse.cat]||"💡";
-      setTimeout(()=>setWeekLiveModal({event:{txt:impulse.txt,e:catIcon},changes:{},choices:impulse.choices,isImpulse:true,cat:impulse.cat}),50);
+      setTimeout(()=>setWeekLiveModal({event:{txt:impulse.txt,e:catIcon},changes:{},choices:impulse.choices,isImpulse:true,cat:impulse.cat,coachMsg:_liveCoachMsg}),50);
       return;
     }
     const doInterview=Math.random()<0.20; // Sprint 15: 20% chance of interview instead of weekLiveModal
@@ -12175,10 +12181,10 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
         if(ef.dribbling)newStats.dribbling=clamp(p.stats.dribbling+(ef.dribbling),1,99);
         upd={...upd,...extras,stats:newStats,ovr:calcOvr(newStats),log:[ev.txt,...(p.log||[])].slice(0,60)};
         if(doInterview){const iw=pickInterviewByCtx(p);const pJ=(p.journalists||[]).length>0&&Math.random()<0.55?pick(p.journalists):null;const pi=pJ?{...iw.paper,name:pJ.name,color:pJ.color,e:pJ.icon}:iw.paper;setTimeout(()=>setInterviewModal({q:iw.q,paper:pi,opponent:null,matchCtx:"weekly",journalistId:pJ?.id}),50);}
-        else setTimeout(()=>setWeekLiveModal({event:ev,changes:{morale:ef.morale||0,form:ef.form||0,fatigue:ef.fatigue||0}}),50);
+        else setTimeout(()=>setWeekLiveModal({event:ev,changes:{morale:ef.morale||0,form:ef.form||0,fatigue:ef.fatigue||0},coachMsg:_liveCoachMsg}),50);
       }else{
         if(doInterview){const iw=pickInterviewByCtx(p);const pJ=(p.journalists||[]).length>0&&Math.random()<0.55?pick(p.journalists):null;const pi=pJ?{...iw.paper,name:pJ.name,color:pJ.color,e:pJ.icon}:iw.paper;setTimeout(()=>setInterviewModal({q:iw.q,paper:pi,opponent:null,matchCtx:"weekly",journalistId:pJ?.id}),50);}
-        else setTimeout(()=>setWeekLiveModal({event:{txt:"⚽ Settimana di allenamento regolare. Nessun evento particolare."},changes:{}}),50);
+        else setTimeout(()=>setWeekLiveModal({event:{txt:"⚽ Settimana di allenamento regolare. Nessun evento particolare."},changes:{},coachMsg:_liveCoachMsg}),50);
       }
       return{...p,...upd};
     });
@@ -12530,7 +12536,32 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
         const recovAdv=p.injuryWeeks-1<=0;
         return{...updP,week:(p.week||1)+1,weekLived:false,sessionsThisWeek:0,sessionLog:[],trainingStreak:0,lastTrainingType:null,weeklyFocusType:null,injuryWeeks:p.injuryWeeks-1,injured:!recovAdv,...(recovAdv?{injuryType:null,injurySeverity:null,justRecovered:true,returnPenaltyWeeks:2}:{justRecovered:false}),fatigue:Math.max(0,baseFat-12),form:naturalForm};
       }
-      const nextStreak=(p.sessionsThisWeek||0)>0?(p.trainingStreak||0):0; // Sprint 50: streak based on session count
+      // Sprint 161: auto-training when user didn't visit the Training tab
+      let _autoFatD=0,_didAutoTrain=false;
+      if((p.sessionsThisWeek||0)<3){
+        _didAutoTrain=true;
+        const _s2t3=(k)=>({"velocità":"fisico","fisico":"fisico","tecnica":"tecnico","tiro":"tecnico","passaggio":"tattico","posizionamento":"tattico","mentalità":"mentale","dribbling":"mentale"})[k]||"fisico";
+        const _TT3={fisico:{a:"fisico",b:"velocità"},tecnico:{a:"tecnica",b:"tiro"},tattico:{a:"passaggio",b:"posizionamento"},mentale:{a:"mentalità",b:"dribbling"}};
+        const _fat3=naturalFat;const _vt3=_fat3>85,_hf3=_fat3>65;
+        const _sr3=Object.entries(updP.stats||p.stats||{}).sort((a,b)=>a[1]-b[1]);
+        const _t03=_s2t3(_sr3[0]?.[0]||"fisico");const _t1r3=_s2t3(_sr3[1]?.[0]||"tecnica");
+        const _t13=_t1r3!==_t03?_t1r3:_s2t3(_sr3[2]?.[0]||"mentale");
+        const _plan3=_vt3?["rec","rec","rec"]:_hf3?[_t03,"rec","rec"]:[_t03,_t13,_t03];
+        const _rec3=(updP.matchHistory||p.matchHistory||[]).slice(-3);
+        const _avg3=_rec3.length?_rec3.reduce((s,m)=>s+(m.rating||6.5),0)/_rec3.length:6.5;
+        const _mult3=(_avg3>=7.5?1.2:_avg3>=6.5?1:_avg3>=5.5?0.88:0.75)*((updP.form||p.form||60)>=75?1.1:(updP.form||p.form||60)<=35?0.9:1)*((p.coachTrust||60)>=80?1.12:(p.coachTrust||60)>=65?1:0.92);
+        const _dim3=(sv)=>{const v=sv||60;return v>=92?0.04:v>=88?0.08:v>=84?0.14:v>=80?0.20:v>=75?0.28:v>=70?0.35:v>=65?0.45:0.55;};
+        let _ns3={...updP.stats||p.stats};let _md3=0;
+        _plan3.forEach(tid=>{
+          if(tid==="rec"){_autoFatD-=18;_md3+=6;return;}
+          const s=_TT3[tid];if(!s)return;
+          if(Math.random()<Math.min(0.85,_dim3(_ns3[s.a])*_mult3))_ns3[s.a]=clamp((_ns3[s.a]||60)+1,1,99);
+          if(Math.random()<Math.min(0.55,_dim3(_ns3[s.b])*0.5*_mult3))_ns3[s.b]=clamp((_ns3[s.b]||60)+1,1,99);
+          _autoFatD+=10;
+        });
+        updP={...updP,stats:_ns3,ovr:calcOvr(_ns3),morale:clamp((updP.morale||p.morale||70)+_md3,0,100)};
+      }
+      const nextStreak=(p.sessionsThisWeek||0)>0||_didAutoTrain?(p.trainingStreak||0)+(_didAutoTrain?1:0):0;
       const nextWk=(p.week||1)+1;
       const winReset=nextWk===19; // finestra invernale apre → reset ricerca mercato
       // Sprint 119: gradual return penalty — form reduced for 2 weeks after recovery
@@ -12538,7 +12569,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       const retFormPen=retPen>0?-6:0;
       const nextRetPen=Math.max(0,retPen-1);
       const formWithReturn=clamp(naturalForm+retFormPen,30,95);
-      return{...updP,week:nextWk,weekLived:false,sessionsThisWeek:0,sessionLog:[],trainingStreak:nextStreak,weeklyFocusType:null,windowOfferUsed:winReset?false:(p.windowOfferUsed||false),fatigue:naturalFat,form:formWithReturn,justRecovered:false,returnPenaltyWeeks:nextRetPen};
+      return{...updP,week:nextWk,weekLived:false,sessionsThisWeek:0,sessionLog:[],trainingStreak:nextStreak,weeklyFocusType:null,windowOfferUsed:winReset?false:(p.windowOfferUsed||false),fatigue:clamp(naturalFat+_autoFatD,0,100),form:formWithReturn,justRecovered:false,returnPenaltyWeeks:nextRetPen};
     });
     notify("⏭️ Settimana avanzata");
     // Sprint 130 — MVP del Mese (triggered at end of weeks 6, 12, 18, 24)
@@ -13174,7 +13205,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     </div>
   );
 
-  const tabs=[{id:"dashboard",e:"🏠",l:L.tabs.dashboard,k:"M"},{id:"calendar",e:"📅",l:L.tabs.calendar,k:"C"},{id:"standings",e:"📊",l:L.tabs.standings,k:"F"},{id:"club",e:"🏟️",l:"Club",k:"S"},{id:"training",e:"💪",l:L.tabs.training,k:"T"},{id:"profile",e:"👤",l:L.tabs.profile,k:"R"},{id:"agente",e:"🤵",l:L.agent,k:"G"},{id:"coppe",e:"🏆",l:"Coppe",k:"K"},{id:"nazionale",e:"🌍",l:"Naz.",k:"N"}];
+  const tabs=[{id:"dashboard",e:"🏠",l:L.tabs.dashboard,k:"M"},{id:"calendar",e:"📅",l:L.tabs.calendar,k:"C"},{id:"standings",e:"📊",l:L.tabs.standings,k:"F"},{id:"club",e:"🏟️",l:"Club",k:"S"},{id:"profile",e:"👤",l:L.tabs.profile,k:"R"},{id:"agente",e:"🤵",l:L.agent,k:"G"},{id:"coppe",e:"🏆",l:"Coppe",k:"K"},{id:"nazionale",e:"🌍",l:"Naz.",k:"N"}];
 
   return(
     <div className="cpm-career">
@@ -13297,6 +13328,15 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                   </div>
                 )}
                 <div style={{fontSize:11,color:TH.faint,marginBottom:14}}>{weekLiveModal.isRehab?L.rehabCompletedNote:L.weekLivedNote}</div>
+                {weekLiveModal.coachMsg&&!weekLiveModal.isRehab&&(
+                  <div style={{background:"rgba(255,255,255,0.04)",border:"1px solid rgba(255,255,255,0.12)",borderRadius:8,padding:"9px 12px",marginBottom:10,display:"flex",gap:8,alignItems:"flex-start"}}>
+                    <div style={{fontSize:16,flexShrink:0}}>🧑‍🏫</div>
+                    <div>
+                      <div style={{fontSize:9,color:TH.faint,textTransform:"uppercase",letterSpacing:1,marginBottom:2}}>Mister</div>
+                      <div style={{fontSize:11,color:TH.muted,fontStyle:"italic"}}>"{weekLiveModal.coachMsg}"</div>
+                    </div>
+                  </div>
+                )}
                 <Btn onClick={()=>setWeekLiveModal(null)} v="primary" fw style={{padding:"11px"}}>{L.understood}</Btn>
               </>
             )}
@@ -13907,18 +13947,6 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       {tab==="dashboard"&&!player.injured&&(player.returnPenaltyWeeks||0)>0&&(
         <Card bg="#fffbeb" border="#fde68a" style={{marginBottom:8,padding:"10px 14px"}}>
           <div style={{fontSize:11,color:"#92400e"}}><strong>🏃 Rientro graduale</strong> — ancora {player.returnPenaltyWeeks} settiman{player.returnPenaltyWeeks===1?"a":"e"} di adattamento. Form ridotta del 6%.</div>
-        </Card>
-      )}
-      {/* Training nudge — show when training slots available */}
-      {tab==="dashboard"&&!player.injured&&(player.sessionsThisWeek||0)<3&&(
-        <Card bg="#f0fdf4" border="#bbf7d0" style={{marginBottom:8,padding:"9px 14px"}}>
-          <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:8}}>
-            <div>
-              <div style={{fontSize:11,fontWeight:700,color:TH.success}}>💪 {3-(player.sessionsThisWeek||0)} sess. di allenamento disponibili</div>
-              <div style={{fontSize:10,color:"#166534",marginTop:1}}>{(player.sessionsThisWeek||0)===0?"Piano settimanale da completare — 3 sessioni disponibili":`${player.sessionsThisWeek} completate · ${3-(player.sessionsThisWeek||0)} rimast${3-(player.sessionsThisWeek||0)===1?"a":"e"}`}</div>
-            </div>
-            <Btn onClick={()=>setTab("training")} v="primary" style={{flexShrink:0,fontSize:11,padding:"6px 12px"}}>Allena →</Btn>
-          </div>
         </Card>
       )}
       {/* Sprint 26A — Il Presidente ti convoca (weeks 1-3, once per season) */}
