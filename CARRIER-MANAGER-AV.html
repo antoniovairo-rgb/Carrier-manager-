@@ -2406,7 +2406,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.0.5"; // Sprint 135: fix nazionale bug (club→nat team name in bench overlay) + Tab Nazionale dedicato
+const GAME_VERSION="4.0.6"; // Sprint 136: fix euro competition label (Premier League→UCL/UEL/UECL in MatchdayCard/scoreboard)
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -7634,7 +7634,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
         const isExCl=(player.history||[]).some(h=>h.club===opponent?.n||h.clubId===opponent?.id)||(player.worldMemory||[]).some(m=>m.type==="ex_club"&&m.clubId===opponent?.id);
         const rivalMatch=player.rival&&(player.rival.club?.id===opponent?.id||player.rival.club?.n===opponent?.n);
         const mCtx=drby?`${drby.e} ${drby.name}`:isExCl?"🏠 Ritorno al passato — ex squadra":rivalMatch?`🆚 La squadra di ${player.rival?.name||"il tuo rivale"}`:(mw>=8)?"Partita decisiva per il titolo":(mw>=6)?"Scontro diretto in classifica":null;
-        return<MatchdayCard homeTeam={homeTeamObj} awayTeam={awayTeamObj} stadium={stadium} attendance={attendance} league={isNatCtx?"Nazionale":player.club?.lg||(player.club?.isU18||context==="trial"?(player.club?.lg||"Primavera"):null)} onContinue={handleGoToFormations} onSkip={()=>setPhase("playing")} scoutReport={scoutReport} scoutLoading={scoutLoading} onShowScout={()=>setShowScout(true)} matchWeight={mw} matchContext={mCtx}/>;
+        return<MatchdayCard homeTeam={homeTeamObj} awayTeam={awayTeamObj} stadium={stadium} attendance={attendance} league={isNatCtx?"Nazionale":(context==="euro_group"||context==="euro_ko")?(player.euro?.competition||"UCL"):context==="cup"?"Coppa Nazionale":player.club?.lg||(player.club?.isU18||context==="trial"?(player.club?.lg||"Primavera"):null)} onContinue={handleGoToFormations} onSkip={()=>setPhase("playing")} scoutReport={scoutReport} scoutLoading={scoutLoading} onShowScout={()=>setShowScout(true)} matchWeight={mw} matchContext={mCtx}/>;
       })()}
       {phase==="matchday"&&showScout&&<ScoutReportScreen report={scoutReport} opponent={opponent} loading={scoutLoading} onClose={()=>setShowScout(false)}/>}
       {phase==="formations"&&<FormationView homeTeam={homeTeamObj} awayTeam={awayTeamObj} player={player} homeRoster={homeRoster} awayRoster={awayRoster} onContinue={()=>setPhase("walkout")} onSkip={()=>setPhase("playing")} oppTactic={oppTactic} oppTacticLoading={oppTacticLoading} homeKitCol={scoreHomeCol} awayKitCol={scoreAwayCol} competition={(context==="euro_group"||context==="euro_ko")?(player.euro?.competition||null):null} euroRound={(context==="euro_group")?`Giornata ${(player.euro?.groupResults||[]).length+1}/6`:(context==="euro_ko")?({r16:"Ottavi di Finale",sf:"Semifinale",final:"Finale"}[player.euro?.phase]||"KO"):null}/>}
@@ -7670,7 +7670,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
 {(()=>{
                   if(phase==="walkout")return"Ingresso in campo";
                   if(phase==="ended")return"Fine partita";
-                  const _lbl=isNatCtx?"🌍 Nazionale":context==="euro_group"||context==="euro"?{UCL:"⭐ UCL",UEL:"🌍 UEL",UECL:"🌍 UECL"}[player.euro?.competition||"UCL"]||"🌍 Europa":context==="cup"?"🏆 Coppa":homeTeamObj?.lg||"Campionato";
+                  const _lbl=isNatCtx?"🌍 Nazionale":(context==="euro_group"||context==="euro_ko"||context==="euro")?{UCL:"⭐ UCL",UEL:"🌍 UEL",UECL:"🌍 UECL"}[player.euro?.competition||"UCL"]||"🌍 Europa":context==="cup"?"🏆 Coppa":homeTeamObj?.lg||"Campionato";
                   return _lbl;
                 })()}
               </div>
@@ -7717,7 +7717,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                 heatPoints={heatPointsRef.current} showHeatMap={showHeatMap}
                 isDesktop={!isNarrow} heroJerseyNum={player.jerseyNum||10}
                 isDerbyMatch={!!drby} isBigGame={mw>=7}
-                competitionLabel={context==="euro_group"||context==="euro"?(player.euro?.competition||"UEFA"):(context==="cup"?"COPPA NAZIONALE":(context==="national"||context==="nationsCup"||context==="euroMondiale"?"NAZIONALE":(player.club?.lg||"")))}
+                competitionLabel={(context==="euro_group"||context==="euro_ko"||context==="euro")?(player.euro?.competition||"UEFA"):(context==="cup"?"COPPA NAZIONALE":(context==="national"||context==="nationsCup"||context==="euroMondiale"?"NAZIONALE":(player.club?.lg||"")))}
                 onWalkoutDone={()=>setPhase("playing")}/>
               {phase==="walkout"&&<WalkoutOverlay homeTeam={homeTeamObj} homeRoster={homeRoster} awayRoster={awayRoster} opponent={awayTeamObj} isHome={isMatchHome} matchWeek={player.week} onDone={()=>{if(benchStart)setOnBench(true);setPhase("playing");}} weather={weather} isDerbyMatch={!!drby} isBigGame={mw>=7} heroJerseyNum={player.jerseyNum||10} playerName={player.name} benchStart={benchStart} isEuroMatch={context==="euro_group"||context==="euro_ko"} euroCompetition={player.euro?.competition||null} euroRound={(context==="euro_group")?`Giornata ${(player.euro?.groupResults||[]).length+1}/6`:(context==="euro_ko")?({r16:"Ottavi di Finale",sf:"Semifinale",final:"Finale"}[player.euro?.phase]||"KO"):null}/>}
               {screenFlash&&<div style={{position:"absolute",inset:0,background:screenFlash.col,zIndex:20,pointerEvents:"none",animation:`fadeFlash ${screenFlash.dur}ms ease-out forwards`}}/>}
