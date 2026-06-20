@@ -2426,7 +2426,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.2.1"; // Sprint 151: null-safety sweep — morale||70 in all 12 remaining update paths
+const GAME_VERSION="4.2.2"; // Sprint 152: stat counter hardening — ||0 guards on goals/assists/matches counters + migration
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -11231,6 +11231,9 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     // Sprint 134: nuovi premi di lega in playerAwards
     if(newP.playerAwards&&!('leagueMvpYears' in newP.playerAwards)){newP={...newP,playerAwards:{...newP.playerAwards,leagueMvpYears:[],leagueTopScorerYears:[],teamOfYearYears:[]}};changed=true;}
     if((newP.form||70)<30||(newP.form||70)>95){newP={...newP,form:clamp(newP.form||70,30,95)};changed=true;} // Sprint 150: normalize form to canonical [30,95]
+    if(!('totalGoals' in newP)){newP={...newP,totalGoals:0};changed=true;} // Sprint 152
+    if(!('totalAssists' in newP)){newP={...newP,totalAssists:0};changed=true;} // Sprint 152
+    if(!('totalMatches' in newP)){newP={...newP,totalMatches:0};changed=true;} // Sprint 152
     if(changed){setPlayer(newP);}
   },[]);// eslint-disable-line
   const[darkMode,setDarkMode]=useState(()=>localStorage.getItem("cpm-dark")==="1");
@@ -11902,7 +11905,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       const newDiary51=[...(p.diary||[]),..._md51].slice(-80);
       // Sprint 88: don't advance week if there are still unplayed euro/cup matches at the same week
       const _pendingOther=newCal.some(m=>m.week===(p.week||1)&&!m.played&&(m.type==="euro_group"||m.type==="euro"||(m.type==="cup"&&!_isCup)));
-      return{...p,stats:ns,ovr:newOvr,goals:p.goals+result.goals,assists:p.assists+result.assists,matches:p.matches+1,totalGoals:p.totalGoals+result.goals,totalAssists:p.totalAssists+result.assists,totalMatches:p.totalMatches+1,morale:clamp((p.morale||70)+moD,0,100),form:clamp((p.form||70)+formD,30,95),fatigue:postFatigue,...(newInjured?{injured:true,injuryWeeks,injuryType,injurySeverity,originalInjuryWeeks:injuryWeeks,returnPenaltyWeeks:0}:{}),week:_pendingOther?(p.week||1):(p.week||1)+1,weekLived:_pendingOther?true:false,log:[logE,...(p.log||[])].slice(0,60),matchHistory:newHistory,standings:newStandings,calendar:newCal,aiData:newAiData,...(newMilestoneIds.length>0?{milestones:[...(p.milestones||[]),...newMilestoneIds]}:{}),...cupUpdate2,diary:newDiary51,goalStreak:newGoalStreak,bestGoalStreak:newBestStreak,yellAccum:_finalYellAccum75,isSuspended:_susp75||false,seasonCards:_newSeasonCards75};
+      return{...p,stats:ns,ovr:newOvr,goals:(p.goals||0)+result.goals,assists:(p.assists||0)+result.assists,matches:(p.matches||0)+1,totalGoals:(p.totalGoals||0)+result.goals,totalAssists:(p.totalAssists||0)+result.assists,totalMatches:(p.totalMatches||0)+1,morale:clamp((p.morale||70)+moD,0,100),form:clamp((p.form||70)+formD,30,95),fatigue:postFatigue,...(newInjured?{injured:true,injuryWeeks,injuryType,injurySeverity,originalInjuryWeeks:injuryWeeks,returnPenaltyWeeks:0}:{}),week:_pendingOther?(p.week||1):(p.week||1)+1,weekLived:_pendingOther?true:false,log:[logE,...(p.log||[])].slice(0,60),matchHistory:newHistory,standings:newStandings,calendar:newCal,aiData:newAiData,...(newMilestoneIds.length>0?{milestones:[...(p.milestones||[]),...newMilestoneIds]}:{}),...cupUpdate2,diary:newDiary51,goalStreak:newGoalStreak,bestGoalStreak:newBestStreak,yellAccum:_finalYellAccum75,isSuspended:_susp75||false,seasonCards:_newSeasonCards75};
     });
     // Sprint 73: notify objective completions
     if(_objCompleted73.length)_objCompleted73.forEach((o,i)=>setTimeout(()=>notify(`🎯 ${o.label}!`,TH.success),700+i*1800));
