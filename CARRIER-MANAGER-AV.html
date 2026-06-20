@@ -2426,7 +2426,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.0.8"; // Sprint 138: calendar shows all competitions sorted by week, H-A-H-A-H-A euro slots
+const GAME_VERSION="4.0.9"; // Sprint 139: coach-driven training — allenatore assegna il piano, OVR condizionato da forma e prestazioni
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -15083,187 +15083,154 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
             <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}}>
               <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5}}>Attributi</div>
               <div style={{display:"flex",alignItems:"center",gap:8}}>
-                <span style={{fontSize:9,color:"#16a34a",fontWeight:700}}>+1</span><span style={{fontSize:9,color:TH.faint}}>= guadagnato</span>
-                <span style={{fontSize:9,color:TH.faint,marginLeft:4}}>% = prob. crescita</span>
+                <span style={{fontSize:9,color:"#16a34a",fontWeight:700}}>+1</span><span style={{fontSize:9,color:TH.faint}}>= guadagnato settimana</span>
               </div>
             </div>
             {(()=>{
               const _wSlog=player.sessionLog||[];
               const _wGained=new Set(_wSlog.flatMap(s=>[s.gainA?s.statA:null,s.gainB?s.statB:null].filter(Boolean)));
-              const _dimPct=(v)=>{const sv=v||60;return sv>=92?4:sv>=88?8:sv>=84?14:sv>=80?20:sv>=75?28:sv>=70?35:sv>=65?45:55;};
               return Object.entries(player.stats).map(([k,v])=>(
                 <div key={k} style={{display:"flex",alignItems:"center",gap:6,marginBottom:4}}>
                   <div style={{flex:1}}><StatBar label={k} value={v}/></div>
                   {_wGained.has(k)&&<span style={{fontSize:9,fontWeight:800,color:"#16a34a",background:"#dcfce7",padding:"1px 5px",borderRadius:4,flexShrink:0}}>+1</span>}
-                  <span style={{fontSize:9,color:_dimPct(v)>=35?"#16a34a":_dimPct(v)>=20?"#ca8a04":"#dc2626",minWidth:24,textAlign:"right",flexShrink:0}}>{_dimPct(v)}%</span>
                 </div>
               ));
             })()}
           </Card>
-          {/* Sprint 50 — Training Attivo: 3 slot settimanali */}
+          {/* Sprint 139 — Coach-driven training: allenatore assegna il piano, giocatore esegue */}
           {(()=>{
-            const TRAIN_TYPES=[
-              {id:"fisico", e:"💪",l:"Fisico",  desc:"Velocità · Fisico",     a:"fisico",   b:"velocità",     col:"#16a34a"},
-              {id:"tecnico",e:"⚽",l:"Tecnico", desc:"Tecnica · Tiro",         a:"tecnica",  b:"tiro",          col:"#2563eb"},
-              {id:"tattico",e:"🎯",l:"Tattico", desc:"Passaggio · Posiz.",     a:"passaggio",b:"posizionamento",col:"#d97706"},
-              {id:"mentale",e:"🧠",l:"Mentale", desc:"Mentalità · Dribbling",  a:"mentalità",b:"dribbling",     col:"#7c3aed"},
-            ];
-            const TEMOJI={fisico:"💪",tecnico:"⚽",tattico:"🎯",mentale:"🧠",rec_attivo:"🧘",rec_completo:"🛌"};
-            const TCOL={fisico:"#16a34a",tecnico:"#2563eb",tattico:"#d97706",mentale:"#7c3aed",rec_attivo:"#0284c7",rec_completo:"#0284c7"};
+            const _TT={
+              fisico: {id:"fisico", e:"💪",l:"Fisico",  a:"fisico",   b:"velocità",     col:"#16a34a"},
+              tecnico:{id:"tecnico",e:"⚽",l:"Tecnico", a:"tecnica",  b:"tiro",          col:"#2563eb"},
+              tattico:{id:"tattico",e:"🎯",l:"Tattico", a:"passaggio",b:"posizionamento",col:"#d97706"},
+              mentale:{id:"mentale",e:"🧠",l:"Mentale", a:"mentalità",b:"dribbling",     col:"#7c3aed"},
+            };
+            const fat=player.fatigue||0;
             const sessions=player.sessionsThisWeek||0;
             const slog=player.sessionLog||[];
-            const fat=player.fatigue||0;
-            const tooTired=fat>88;
-            const streak=player.trainingStreak||0;
-            const coachB=(player.coachTrust||60)>=75?1:0;
             const allDone=sessions>=3;
-            // Sprint 72 — team chemistry bonus
-            const _chemMates72=player.teammates||[];
-            const teamChemistry72=_chemMates72.length?Math.round(_chemMates72.reduce((s,t)=>s+(t.bond||40),0)/_chemMates72.length):50;
-            const chemB=teamChemistry72>=70?1:0;
+            const streak=player.trainingStreak||0;
+            const coachTrust=player.coachTrust||60;
 
-            // Sprint 112: rendimenti decrescenti — probabilità di +1 in base al valore attuale
+            // Coach picks plan: focus on 2 weakest stat groups
+            const _s2t=(k)=>({"velocità":"fisico","fisico":"fisico","tecnica":"tecnico","tiro":"tecnico","passaggio":"tattico","posizionamento":"tattico","mentalità":"mentale","dribbling":"mentale"})[k]||"fisico";
+            const _sorted=Object.entries(player.stats||{}).sort((a,b)=>a[1]-b[1]);
+            const _t0=_s2t(_sorted[0]?.[0]||"fisico");
+            const _t1_raw=_s2t(_sorted[1]?.[0]||"tecnica");
+            const _t1=_t1_raw!==_t0?_t1_raw:_s2t(_sorted[2]?.[0]||"mentale");
+
+            const veryTired=fat>85;const highFat=fat>65;
+            const _plan=veryTired
+              ?["rec_completo","rec_attivo","rec_completo"]
+              :highFat
+              ?[_t0,"rec_attivo","rec_completo"]
+              :[_t0,_t1,_t0];
+
+            // Recent match performance → growth multiplier
+            const _recent=(player.matchHistory||[]).slice(-3);
+            const _avgRating=_recent.length?_recent.reduce((s,m)=>s+(parseFloat(m.rating)||6.5),0)/_recent.length:6.5;
+            const _perfMult=_avgRating>=7.5?1.20:_avgRating>=6.5?1.0:_avgRating>=5.5?0.88:0.75;
+            const _formMult=(player.form||60)>=75?1.10:(player.form||60)<=35?0.90:1.0;
+            const _trustMult=coachTrust>=80?1.12:coachTrust>=65?1.0:0.92;
+            const _mult=_perfMult*_formMult*_trustMult;
+
+            // Coach message
+            const _t0name=_TT[_t0]?.l||_t0;
+            const _t1name=_TT[_t1]?.l||_t1;
+            const _coachMsg=veryTired
+              ?"Sei a pezzi. Riposo assoluto — non si allena in queste condizioni."
+              :highFat
+              ?`Stai spingendo troppo. Un lavoro leggero su ${_t0name}, poi recupero totale.`
+              :_avgRating>=7.5
+              ?`Stai giocando bene — intensifico su ${_t0name} e ${_t1name} per sfruttare questo momento.`
+              :_avgRating<=5.5
+              ?`Dobbiamo migliorare. Doppio lavoro su ${_t0name} e poi ${_t1name}.`
+              :`Questa settimana puntiamo su ${_t0name} e ${_t1name}. Segui il piano.`;
+            const _fitMsg=veryTired?"⚠️ Il preparatore ti ferma: rischio infortuni.":highFat?"💧 Il preparatore inserisce sessioni di recupero.":streak>=3?"🔥 Stai mantenendo continuità — il preparatore è soddisfatto.":"";
+
+            // Dim: rendimenti decrescenti
             const _dim=(sv)=>{const v=sv||60;return v>=92?0.04:v>=88?0.08:v>=84?0.14:v>=80?0.20:v>=75?0.28:v>=70?0.35:v>=65?0.45:0.55;};
-            const doTrain=(s,intensive)=>{
-              if(allDone){notify("Hai già completato 3 sessioni questa settimana.",TH.warning);return;}
-              if(tooTired&&!s.isRec){notify("💤 Troppo stanco per allenarsi!",TH.danger);return;}
-              const slotFatPenalty=Math.max(0,sessions-1)*5;
-              const fatCost=s.isRec?0:((intensive?20:11)+slotFatPenalty);
-              const fatReduc=s.isRec?(intensive?28:14):0;
-              const isSameType=(player.lastTrainingType||null)===s.id;
-              const streakB=isSameType&&streak>=2?1:0;
-              if(!s.isRec&&intensive&&fat>72&&Math.random()<0.08){
-                setPlayer(p=>({...p,injured:true,injuryWeeks:2,injuryType:"muscolare",
-                  sessionsThisWeek:(p.sessionsThisWeek||0)+1,
-                  sessionLog:[...(p.sessionLog||[]),{id:s.id,e:s.e,l:s.l,col:s.col,intensive:true,injury:true}],
-                  trainingStreak:isSameType?streak+1:1,lastTrainingType:s.id}));
-                notify("😱 Infortunio muscolare! 2 sett. di stop.",TH.danger);return;
-              }
-              if(s.isRec){
-                const morB=intensive?12:6;const fmB=intensive?3:0;
-                setPlayer(p=>({...p,fatigue:Math.max(0,(p.fatigue||0)-fatReduc),
-                  morale:clamp((p.morale||70)+morB,0,100),form:clamp((p.form||60)+fmB,0,100),
-                  sessionsThisWeek:(p.sessionsThisWeek||0)+1,trainingStreak:0,lastTrainingType:null,
-                  sessionLog:[...(p.sessionLog||[]),{id:intensive?"rec_completo":"rec_attivo",e:intensive?"🛌":"🧘",l:intensive?"Riposo":"Recupero",col:"#0284c7",intensive}]}));
-                notify(`${intensive?"🛌":"🧘"} Recupero: fatica −${fatReduc}, morale +${morB}${fmB?" forma +"+fmB:""}`,TH.success);
-              }else{
-                const focusB=(player.weeklyFocusType||null)===s.id?1:0;
-                // Sprint 112: probabilità con rendimenti decrescenti (no più +1/+2 fissi)
-                const _bp=(streakB?0.06:0)+(coachB?0.05:0)+(focusB?0.06:0)+(chemB?0.04:0);
-                const _im=intensive?1.5:1.0;
-                const _pA=Math.min(0.85,_dim(player.stats[s.a])*_im+_bp);
-                const _pB=Math.min(0.55,_dim(player.stats[s.b])*0.5*_im+_bp*0.5);
-                const gainA=Math.random()<_pA?1:0;
-                const gainB=Math.random()<_pB?1:0;
-                setPlayer(p=>{
-                  const ns={...p.stats};
-                  if(gainA)ns[s.a]=clamp((ns[s.a]||60)+1,1,99);
-                  if(gainB)ns[s.b]=clamp((ns[s.b]||60)+1,1,99);
-                  return{...p,stats:ns,ovr:calcOvr(ns),
-                    fatigue:clamp((p.fatigue||0)+fatCost,0,100),
-                    sessionsThisWeek:(p.sessionsThisWeek||0)+1,
-                    trainingStreak:isSameType?streak+1:1,lastTrainingType:s.id,
-                    sessionLog:[...(p.sessionLog||[]),{id:s.id,e:s.e,l:s.l,col:s.col,intensive,gainA,gainB,statA:s.a,statB:s.b}]};
-                });
-                const bonusTxt=(streakB?" 🔥":"")+(coachB&&intensive?" 🧑‍🏫":"")+(focusB?" 🎯":"")+(chemB?" 🤝":"");
-                const gainTxt=gainA&&gainB?`+1 ${s.a} · +1 ${s.b}`:gainA?`+1 ${s.a}`:gainB?`+1 ${s.b}`:"nessun progresso questa volta";
-                notify(`${s.e} ${gainTxt}${bonusTxt}`,gainA||gainB?TH.success:TH.muted);
-              }
+
+            const executePlan=()=>{
+              if(allDone){notify("Piano già completato questa settimana.",TH.warning);return;}
+              let ns={...player.stats};
+              let fatDelta=0;let morDelta=0;let formDelta=0;
+              const newLog=[...slog];
+              const gained={};
+              _plan.forEach((tid)=>{
+                const isRec=tid==="rec_attivo"||tid==="rec_completo";
+                if(isRec){
+                  const full=tid==="rec_completo";
+                  fatDelta-=(full?26:13);morDelta+=(full?10:5);formDelta+=(full?2:1);
+                  newLog.push({id:tid,e:full?"🛌":"🧘",l:full?"Riposo":"Recupero",col:"#0284c7"});
+                }else{
+                  const s=_TT[tid];if(!s)return;
+                  const _pA=Math.min(0.85,_dim(ns[s.a])*_mult);
+                  const _pB=Math.min(0.55,_dim(ns[s.b])*0.5*_mult);
+                  const gA=Math.random()<_pA?1:0;const gB=Math.random()<_pB?1:0;
+                  if(gA){ns[s.a]=clamp((ns[s.a]||60)+1,1,99);gained[s.a]=(gained[s.a]||0)+1;}
+                  if(gB){ns[s.b]=clamp((ns[s.b]||60)+1,1,99);gained[s.b]=(gained[s.b]||0)+1;}
+                  fatDelta+=10;
+                  newLog.push({id:s.id,e:s.e,l:s.l,col:s.col,gainA:gA,gainB:gB,statA:s.a,statB:s.b});
+                }
+              });
+              setPlayer(p=>({...p,stats:ns,ovr:calcOvr(ns),
+                fatigue:clamp((p.fatigue||0)+fatDelta,0,100),
+                morale:clamp((p.morale||70)+morDelta,0,100),
+                form:clamp((p.form||60)+formDelta,0,100),
+                sessionsThisWeek:3,sessionLog:newLog,
+                trainingStreak:(p.trainingStreak||0)+1,lastTrainingType:_plan[0],
+                weeklyFocusType:_t0}));
+              const gkeys=Object.keys(gained);
+              const gtxt=gkeys.length?gkeys.map(k=>`+${gained[k]} ${k}`).join(" · "):"nessuna crescita questa volta";
+              notify(`✅ ${gtxt}`,gkeys.length?TH.success:TH.muted);
             };
 
             return(
               <Card>
-                {/* Header: sessioni + fatica + streak */}
-                <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:10}}>
+                {/* Coach message */}
+                <div style={{display:"flex",alignItems:"flex-start",gap:10,marginBottom:10,padding:"8px 10px",background:"#f8fafc",borderRadius:8,border:"1px solid "+TH.cardBorder}}>
+                  <div style={{fontSize:22,flexShrink:0}}>🧑‍🏫</div>
                   <div style={{flex:1}}>
-                    <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:3}}>
-                      Sessioni settimanali · {sessions}/3
-                    </div>
-                    <div style={{display:"flex",gap:4}}>
-                      {Array.from({length:3},(_,i)=>{
-                        const sl=slog[i];
-                        return(
-                          <div key={i} style={{flex:1,height:6,borderRadius:3,background:sl?sl.col:TH.cardBorder,transition:"background .3s",position:"relative"}}>
-                            {sl?.injury&&<span style={{position:"absolute",top:-6,left:"50%",transform:"translateX(-50%)",fontSize:8}}>⚠️</span>}
-                          </div>
-                        );
-                      })}
-                    </div>
-                  </div>
-                  <div style={{textAlign:"right",flexShrink:0}}>
-                    <div style={{fontSize:11,fontWeight:700,color:fat>70?TH.danger:fat>45?TH.warning:TH.success}}>💧 {fat}/100</div>
-                    {streak>=2&&<div style={{fontSize:9,color:"#ea580c",fontWeight:700}}>🔥 {streak} sett.</div>}
+                    <div style={{fontSize:9,color:TH.faint,textTransform:"uppercase",letterSpacing:1,marginBottom:2}}>Mister · Piano W.{week}</div>
+                    <div style={{fontSize:12,color:TH.text,fontStyle:"italic"}}>"{_coachMsg}"</div>
+                    {_fitMsg&&<div style={{fontSize:10,color:"#0284c7",marginTop:4}}>{_fitMsg}</div>}
                   </div>
                 </div>
 
-                {/* Chimica compatta */}
-                {_chemMates72.length>0&&chemB>0&&(
-                  <div style={{fontSize:9,color:"#166534",background:"#f0fdf4",borderRadius:6,padding:"3px 8px",marginBottom:8,display:"inline-block"}}>🤝 Chimica squadra +5% probabilità</div>
-                )}
+                {/* Session pills */}
+                <div style={{display:"flex",gap:6,marginBottom:10}}>
+                  {_plan.map((tid,i)=>{
+                    const isRec=tid==="rec_attivo"||tid==="rec_completo";
+                    const t=isRec?{e:tid==="rec_completo"?"🛌":"🧘",l:tid==="rec_completo"?"Riposo":"Recupero",col:"#0284c7"}:_TT[tid];
+                    const done=slog[i];
+                    return(
+                      <div key={i} style={{flex:1,padding:"8px 4px",borderRadius:8,border:`1.5px solid ${t?.col+(done?"88":"44")}`,background:t?.col+(done?"22":"0a"),textAlign:"center",transition:"all .3s"}}>
+                        <div style={{fontSize:18}}>{done?"✅":t?.e||"?"}</div>
+                        <div style={{fontSize:9,fontWeight:700,color:t?.col,marginTop:2}}>{t?.l||tid}</div>
+                      </div>
+                    );
+                  })}
+                </div>
+
+                {/* Context indicators */}
+                <div style={{display:"flex",gap:6,marginBottom:10,flexWrap:"wrap"}}>
+                  <div style={{fontSize:10,padding:"3px 8px",borderRadius:6,fontWeight:700,background:fat>70?"#fee2e2":fat>45?"#fef3c7":"#f0fdf4",color:fat>70?TH.danger:fat>45?"#92400e":"#166534"}}>💧 {fat}/100</div>
+                  <div style={{fontSize:10,padding:"3px 8px",borderRadius:6,fontWeight:700,background:"#f0f9ff",color:"#0284c7"}}>⭐ Forma {player.form||60}</div>
+                  {_recent.length>0&&<div style={{fontSize:10,padding:"3px 8px",borderRadius:6,fontWeight:700,background:_avgRating>=7?"#f0fdf4":_avgRating<=5.5?"#fee2e2":"#f8fafc",color:_avgRating>=7?TH.success:_avgRating<=5.5?TH.danger:TH.faint}}>📊 Voto {_avgRating.toFixed(1)}</div>}
+                  {_mult!==1&&<div style={{fontSize:10,padding:"3px 8px",borderRadius:6,fontWeight:700,background:_mult>1?"#f0fdf4":"#fff7ed",color:_mult>1?"#166534":"#92400e"}}>{_mult>1?`↑ ${Math.round((_mult-1)*100)}% efficacia`:`↓ ${Math.round((1-_mult)*100)}% efficacia`}</div>}
+                  {streak>=3&&<div style={{fontSize:10,padding:"3px 8px",borderRadius:6,fontWeight:700,background:"#fff7ed",color:"#ea580c"}}>🔥 {streak} sett. consecutive</div>}
+                </div>
 
                 {allDone?(
                   <div style={{textAlign:"center",padding:"14px 0",color:TH.success,fontSize:13,fontWeight:800}}>
-                    ✅ Piano completato!<br/><span style={{fontSize:11,color:TH.muted,fontWeight:400}}>Avanza la settimana per i progressi.</span>
+                    ✅ Piano completato!<br/>
+                    <div style={{fontSize:10,color:TH.muted,fontWeight:400,marginTop:4}}>
+                      {(()=>{const g=(slog||[]).filter(s=>s.gainA||s.gainB);return g.length?g.map(s=>`+1 ${s.gainA?s.statA:""}${s.gainA&&s.gainB?" · ":""}${s.gainB?s.statB:""}`).join(" · "):"Nessuna crescita questa settimana.";})()}
+                    </div>
                   </div>
                 ):(
-                  <div style={{display:"flex",flexDirection:"column",gap:5}}>
-                    {/* Focus: chip compatta */}
-                    <div style={{display:"flex",gap:4,marginBottom:4,flexWrap:"wrap"}}>
-                      <span style={{fontSize:9,color:TH.faint,alignSelf:"center"}}>Focus:</span>
-                      {TRAIN_TYPES.map(t=>{
-                        const isF=(player.weeklyFocusType||null)===t.id;
-                        return(
-                          <button key={t.id} onClick={()=>setPlayer(p=>({...p,weeklyFocusType:isF?null:t.id}))}
-                            style={{padding:"2px 8px",borderRadius:12,border:`1.5px solid ${isF?t.col:TH.cardBorder}`,background:isF?t.col+"22":"transparent",cursor:"pointer",fontFamily:"inherit",fontSize:9,fontWeight:isF?800:500,color:isF?t.col:TH.faint,transition:"all .15s"}}>
-                            {t.e} {t.l}{isF?" ✓":""}
-                          </button>
-                        );
-                      })}
-                    </div>
-                    {/* Avviso sessione extra */}
-                    {sessions===1&&<div style={{fontSize:9,color:TH.warning,padding:"2px 6px"}}>⚠️ 2ª sessione: +5 fatica extra</div>}
-                    {sessions===2&&<div style={{fontSize:9,color:TH.danger,padding:"2px 6px"}}>⚠️ 3ª sessione: +10 fatica extra · rischio infortuni</div>}
-
-                    {/* Training types: 1 riga per tipo, 2 tasti (normale/intensivo) */}
-                    {TRAIN_TYPES.map(s=>{
-                      const isSameType=(player.lastTrainingType||null)===s.id;
-                      const slotPen=Math.max(0,sessions-1)*5;
-                      const _pANorm=Math.round(_dim(player.stats[s.a])*100);
-                      const _pBNorm=Math.round(_dim(player.stats[s.b])*0.5*100);
-                      return(
-                        <div key={s.id} style={{display:"flex",alignItems:"center",gap:6,padding:"7px 8px",borderRadius:10,border:"1px solid "+(tooTired?"#e5e7eb":s.col+"40"),background:tooTired?"#f9fafb":s.col+"07",opacity:tooTired?0.55:1}}>
-                          <div style={{fontSize:18,flexShrink:0}}>{s.e}</div>
-                          <div style={{flex:1,minWidth:0}}>
-                            <div style={{fontSize:11,fontWeight:800,color:tooTired?TH.faint:s.col}}>
-                              {s.l}{isSameType&&streak>=1&&<span style={{fontSize:9,color:"#ea580c",marginLeft:5}}>🔥{streak}</span>}
-                            </div>
-                            <div style={{fontSize:9,color:TH.faint}}>{s.a} · {s.b} · ~{_pANorm}%/{_pBNorm}% chance</div>
-                          </div>
-                          <div style={{display:"flex",gap:4,flexShrink:0}}>
-                            <button disabled={tooTired} onClick={()=>doTrain(s,false)}
-                              style={{padding:"5px 10px",borderRadius:7,border:"1px solid "+s.col+"66",background:tooTired?"#f3f4f6":s.col+"18",color:tooTired?TH.faint:s.col,fontSize:10,fontWeight:700,cursor:tooTired?"not-allowed":"pointer",fontFamily:"inherit",whiteSpace:"nowrap"}}>
-                              Allena<br/><span style={{fontSize:8,fontWeight:400,opacity:.75}}>💧+{11+slotPen}</span>
-                            </button>
-                            <button disabled={tooTired} onClick={()=>doTrain(s,true)}
-                              style={{padding:"5px 10px",borderRadius:7,border:"1px solid "+s.col,background:tooTired?"#f3f4f6":s.col,color:tooTired?"#999":"#fff",fontSize:10,fontWeight:700,cursor:tooTired?"not-allowed":"pointer",fontFamily:"inherit",whiteSpace:"nowrap"}}>
-                              ⚡Int.<br/><span style={{fontSize:8,fontWeight:400,opacity:.85}}>💧+{20+slotPen}</span>
-                            </button>
-                          </div>
-                        </div>
-                      );
-                    })}
-                    {/* Recupero */}
-                    <div style={{display:"flex",gap:5,marginTop:2}}>
-                      <button onClick={()=>doTrain({id:"rec_attivo",e:"🧘",l:"Recupero",isRec:true},false)}
-                        style={{flex:1,padding:"7px 4px",borderRadius:9,border:"1px solid #0ea5e966",background:"#e0f2fe",color:"#0284c7",fontSize:10,fontWeight:700,cursor:"pointer",fontFamily:"inherit",textAlign:"center"}}>
-                        🧘 Recupero attivo<br/><span style={{fontSize:8,fontWeight:400,opacity:.8}}>💧−14 · 😊+6</span>
-                      </button>
-                      <button onClick={()=>doTrain({id:"rec_completo",e:"🛌",l:"Riposo",isRec:true},true)}
-                        style={{flex:1,padding:"7px 4px",borderRadius:9,border:"1px solid #0ea5e9",background:"#0ea5e9",color:"#fff",fontSize:10,fontWeight:700,cursor:"pointer",fontFamily:"inherit",textAlign:"center"}}>
-                        🛌 Riposo completo<br/><span style={{fontSize:8,fontWeight:400,opacity:.85}}>💧−28 · 😊+12</span>
-                      </button>
-                    </div>
-                  </div>
+                  <Btn onClick={executePlan} v="green" fw>▶ Esegui Piano Allenamento</Btn>
                 )}
               </Card>
             );
