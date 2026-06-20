@@ -2426,7 +2426,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.4.3"; // Sprint 165: double-goal fix, transparent HL overlay, DPad in hl_choose, 5-line cronaca, away stand visible
+const GAME_VERSION="4.4.4"; // Sprint 166: remove success% from action buttons, stats bar merged into mobile cronaca section
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -7972,7 +7972,6 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                               style={{padding:"10px",background:_sel2?"rgba(37,99,235,0.65)":"rgba(0,0,0,0.55)",border:_sel2?`1.5px solid ${_rc2}88`:`1px solid ${_rc2}44`,borderRadius:8,color:"#fff",cursor:"pointer",fontFamily:"inherit",display:"flex",alignItems:"center",gap:8,transition:"all .1s",boxShadow:"0 2px 6px rgba(0,0,0,0.4)"}}>
                               <div style={{width:18,height:18,borderRadius:"50%",background:_sel2?"#2563eb":"rgba(255,255,255,0.15)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:9,fontWeight:900,color:"#fff",flexShrink:0}}>{_oi+1}</div>
                               <div style={{fontSize:11,fontWeight:700,color:"#fff",flex:1,textAlign:"left",textShadow:"0 1px 3px rgba(0,0,0,0.7)"}}>{a.label}</div>
-                              <div style={{fontSize:9,color:_rc2,fontWeight:800,textShadow:"0 1px 3px rgba(0,0,0,0.7)"}}>{Math.round(_rt2)}%</div>
                             </button>
                           );
                         })}
@@ -8070,7 +8069,6 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                       const defPenalty=defDist<25?15:defDist<50?8:0;
                       const rate=Math.max(5,succRate(a,player.stats,pPos.x,oppPrestige,player.archetype?.id||player.archetype)-defPenalty);
                       const rc=rate>70?"#4ade80":rate>50?"#f59e0b":"#f87171";
-                      const ql=rate>70?"Alta":rate>50?"Media":"Bassa";
                       const isSel=i===selectedActionIdx;
                       return(
                         <button key={i} onClick={()=>handleAction(a)}
@@ -8096,8 +8094,8 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                 </div>
               )}
 
-              {/* Stats grid — hidden on mobile during HL phases (controls take that space) */}
-              {!(isNarrow&&(phase==="hl_move"||phase==="hl_choose"||phase==="hl_result"))&&<div style={{padding:"8px 10px",borderBottom:"1px solid rgba(255,255,255,0.08)"}}>
+              {/* Stats grid — desktop only (mobile has compact stats bar in cronaca section below) */}
+              {!isNarrow&&<div style={{padding:"8px 10px",borderBottom:"1px solid rgba(255,255,255,0.08)"}}>
                 <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"4px 8px"}}>
                   <div style={{textAlign:"center"}}>
                     <div style={{fontSize:18,fontWeight:900,color:"#4ade80",lineHeight:1}}>{mStats.goals}</div>
@@ -8142,14 +8140,24 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
         </Card>
       )}
 
-      {/* Mobile cronaca — below the card, hidden during HL to free space for DPad */}
-      {isNarrow&&!["hl_move","hl_choose","hl_result","hl_intro"].includes(phase)&&(show3D||phase==="walkout")&&coms.length>0&&(
+      {/* Mobile cronaca + compact stats — below the card, hidden during HL to free space for DPad */}
+      {isNarrow&&!["hl_move","hl_choose","hl_result","hl_intro"].includes(phase)&&(show3D||phase==="walkout")&&(
         <div style={{flexShrink:0,background:"#050810",padding:"5px 10px 8px",borderTop:"1px solid rgba(255,255,255,0.07)"}}>
+          {/* Compact stats bar */}
+          {(()=>{const _rb_cs=Math.min(mStats.rb,20);const _raw_cs=clamp(5.8+_rb_cs*0.115+(score.home>score.away?0.35:score.home<score.away?-0.30:0),4.0,10.0);const _r_cs=Math.round(_raw_cs*10)/10;const _rc_cs=_r_cs>=8?"#4ade80":_r_cs>=6.5?"#f59e0b":"#f87171";return(
+            <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:5,paddingBottom:4,borderBottom:"1px solid rgba(255,255,255,0.07)"}}>
+              <span style={{fontSize:9,fontWeight:900,color:"#4ade80"}}>⚽ {mStats.goals}</span>
+              <span style={{fontSize:9,fontWeight:900,color:"#60a5fa"}}>🎯 {mStats.assists}</span>
+              <span style={{fontSize:9,fontWeight:700,color:energy>50?"#4ade80":energy>25?"#f59e0b":"#f87171"}}>⚡ {energy}%</span>
+              <span style={{fontSize:9,fontWeight:900,color:_rc_cs}}>⭐ {_r_cs}</span>
+              <span style={{fontSize:8,color:"rgba(255,255,255,0.3)",marginLeft:"auto"}}>📍 {ZONES[zone]?.label||zone}</span>
+            </div>
+          );})()}
           <div style={{fontSize:7,color:"rgba(255,255,255,0.28)",fontWeight:700,letterSpacing:1,textTransform:"uppercase",marginBottom:3}}>📻 CRONACA</div>
-          {coms.slice(0,5).map((c,i)=>(
+          {coms.slice(0,4).map((c,i)=>(
             <div key={i} style={{fontSize:9,color:i===0?c.color:"rgba(255,255,255,0.45)",lineHeight:1.35,
-              padding:i<4?"0 0 2px":"0",
-              borderBottom:i<4?"1px solid rgba(255,255,255,0.05)":"none",
+              padding:i<3?"0 0 2px":"0",
+              borderBottom:i<3?"1px solid rgba(255,255,255,0.05)":"none",
               overflow:"hidden",whiteSpace:"nowrap",textOverflow:"ellipsis"}}>
               <span style={{color:"rgba(255,255,255,0.3)",marginRight:3,fontSize:8,fontWeight:700}}>{c.t}'</span>{c.text}
             </div>
