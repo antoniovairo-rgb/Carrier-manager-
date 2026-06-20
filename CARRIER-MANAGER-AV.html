@@ -2426,7 +2426,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.2.8"; // Sprint 158: national match priority in main CTA — single play button, clear sequencing
+const GAME_VERSION="4.2.9"; // Sprint 159: rovesciata box positioning; unique situations per national match
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -6606,7 +6606,8 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     hlTimesRef.current=v;
     return v;
   });
-  const [situations,setSituations]=useState(()=>selectContextualSituations([...SITUATIONS],numHLRef.current,player,(player.season||1)*1000+(player.week||1)*13));
+  // Sprint 159: include opponent+context in seed so consecutive national matches never share situations
+  const [situations,setSituations]=useState(()=>selectContextualSituations([...SITUATIONS],numHLRef.current,player,(player.season||1)*1000+(player.week||1)*13+hashStr((opponent?.n||opponent?.id||context||""))));
   const situationsRef=useRef(situations);
   useEffect(()=>{situationsRef.current=situations;},[situations]);
   useEffect(()=>{numHLRef.current=numHL;},[numHL]);
@@ -6849,19 +6850,27 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
         const sit=situations[hlIdx];
         const szX=(sit.startZone.x[0]+sit.startZone.x[1])/2;
         const szY=(sit.startZone.y[0]+sit.startZone.y[1])/2;
-        const isPenalty=szX>85;
+        // Sprint 159: text-based detection so rovesciata (lockMovement+area) isn't misclassified as penalty
+        const isPenalty=sit.text?.includes("RIGORE");
         const isFlankFK=!isPenalty&&(szY<22||szY>78);
+        const isAreaPlay=!isPenalty&&!isFlankFK&&sit.zones?.[0]==="area";
         setMatchPlayers(prev=>prev.map((pl,idx)=>{
           if(pl.team==="ref")return pl;
           if(pl.team==="away"){
             const ai=idx-10;
-            if(ai===0)return{...pl,x:96,y:50}; // Away GK on goal line
+            if(ai===0)return{...pl,x:97,y:50}; // Away GK on goal line
             if(isPenalty){return{...pl,x:82+(ai%3)*5,y:20+ai*7};}
             if(isFlankFK){
               // Pack the box for flank/corner FK
               const bx=[84,87,90,82,86,88,79,83,77,75];
               const by=[32,50,68,40,57,42,24,66,38,62];
               return{...pl,x:bx[ai-1]||82,y:by[ai-1]||50};
+            }
+            if(isAreaPlay){
+              // Sprint 159: crowded box — rovesciata, cross, open-play area situations
+              const rx=[92,88,85,90,82,86,79,83,94,77];
+              const ry=[szY-12,szY+10,szY-4,szY+16,szY,szY-18,szY+8,szY-6,szY+20,szY-14];
+              return{...pl,x:clamp(rx[ai-1]||88,76,97),y:clamp(ry[ai-1]??szY,4,96)};
             }
             // Direct FK: tight defensive wall of 4 at x:70 + back line
             const wx=[70,70,70,70,79,79,84,87,87,91];
@@ -6875,6 +6884,12 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
               const bx=[88,91,88,84,82,76,76,72,68];
               const by=[36,50,64,42,58,30,70,45,55];
               return{...pl,x:bx[idx-1]||82,y:by[idx-1]||50};
+            }
+            if(isAreaPlay){
+              // Sprint 159: crowded box — attackers in the area attacking the cross
+              const hx=[szX,szX-3,szX+3,szX-6,szX+4,szX-9,szX-11,szX-7,szX-13];
+              const hy=[szY-10,szY+10,szY,szY-16,szY+16,szY-4,szY+4,szY-22,szY+22];
+              return{...pl,x:clamp(hx[idx-1]||szX,70,96),y:clamp(hy[idx-1]??szY,4,96)};
             }
             // Direct FK: attackers attacking box, midfield cover
             const ax=[87,89,85,82,80,76,72,68,65];
