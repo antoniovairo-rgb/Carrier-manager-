@@ -2426,7 +2426,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.1.6"; // Sprint 146: hide transfer badge unless player is on loan
+const GAME_VERSION="4.1.7"; // Sprint 147: richiedi cessione only in agent tab
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -13798,7 +13798,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
         const _weeksLeft=Math.max(0,_winEnd-_wk+1);
         return(
           <Card bg={_listed?"#fef9c3":"#f0f9ff"} border={_listed?"#fde68a":"#bae6fd"} style={{marginBottom:8,padding:"12px 14px"}}>
-            <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:_listed||showCessioneConfirm?8:0}}>
+            <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:_listed?8:0}}>
               <div>
                 <div style={{fontSize:11,fontWeight:800,color:_listed?"#92400e":"#0369a1"}}>
                   {_listed?"📢 Sei in lista cessioni":`🏷️ ${_winLabel} aperto`}
@@ -13807,35 +13807,14 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                   {_inWin?`${_weeksLeft} settiman${_weeksLeft===1?"a":"e"} rimanent${_weeksLeft===1?"e":"i"}`:""}{_listed&&!_inWin?" · Finestra chiusa — attendi la prossima apertura":""}
                 </div>
               </div>
-              {_listed&&!showCessioneConfirm&&(
+              {_listed&&(
                 <Btn v="ghost" style={{fontSize:10,padding:"5px 10px",flexShrink:0,border:"1px solid #d97706",color:"#92400e"}}
                   onClick={()=>{setPlayer(p=>({...p,transferListed:false,morale:clamp(p.morale+5,0,100),log:["📢 Richiesta di cessione ritirata.",...(p.log||[])].slice(0,60)}));notify("Richiesta ritirata.",TH.muted);}}>
                   Ritira ✕
                 </Btn>
               )}
-              {!_listed&&!showCessioneConfirm&&_inWin&&(
-                <Btn v="ghost" style={{fontSize:10,padding:"5px 10px",flexShrink:0,border:"1px solid #0369a1",color:"#0369a1"}}
-                  onClick={()=>setShowCessioneConfirm(true)}>
-                  Richiedi cessione →
-                </Btn>
-              )}
             </div>
-            {showCessioneConfirm&&(
-              <div style={{marginTop:4,padding:"10px 12px",background:"#fff7ed",borderRadius:8,border:"1px solid #fed7aa"}}>
-                <div style={{fontSize:11,fontWeight:700,color:"#92400e",marginBottom:4}}>⚠️ Confermi la richiesta di cessione?</div>
-                <div style={{fontSize:10,color:"#78350f",lineHeight:1.5,marginBottom:8}}>Il club sarà informato. Fiducia mister <strong>−15</strong> · Morale <strong>+5</strong>. Se nessuna offerta arriva entro la finestra, resti.</div>
-                <div style={{display:"flex",gap:8}}>
-                  <Btn v="secondary" style={{flex:1,fontSize:11,padding:"6px"}} onClick={()=>setShowCessioneConfirm(false)}>Annulla</Btn>
-                  <Btn v="primary" style={{flex:1,fontSize:11,padding:"6px"}} onClick={()=>{
-                    setShowCessioneConfirm(false);
-                    setPlayer(p=>({...p,transferListed:true,coachTrust:clamp((p.coachTrust||60)-15,0,100),morale:clamp((p.morale||70)+5,0,100),log:["📢 Hai richiesto la cessione.",...(p.log||[])].slice(0,60)}));
-                    notify("📢 Richiesta di cessione inviata. Il mercato si muoverà.",TH.warning);
-                    if(!transferOffer){const _offC=generateTransferOffer(player);if(_offC)setTimeout(()=>setTransferOffer(_offC),1200);}
-                  }}>Confermo →</Btn>
-                </div>
-              </div>
-            )}
-            {transferOffer&&!transferOffer.isRenewal&&!showCessioneConfirm&&(
+            {transferOffer&&!transferOffer.isRenewal&&(
               <div style={{marginTop:6,paddingTop:6,borderTop:`1px solid ${_listed?"#fde68a":"#bae6fd"}`,display:"flex",alignItems:"center",justifyContent:"space-between"}}>
                 <div style={{fontSize:10,color:TH.text}}>📩 <strong>{transferOffer.club?.n}</strong> ha fatto un'offerta</div>
                 <Btn v="primary" style={{fontSize:10,padding:"4px 10px",flexShrink:0}} onClick={()=>setTab("dashboard")}>Vedi →</Btn>
@@ -15829,16 +15808,10 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                   <Btn onClick={()=>{setPlayer(p=>({...p,transferListed:false,morale:clamp(p.morale+5,0,100),log:["📢 Richiesta di cessione ritirata.",...(p.log||[])].slice(0,60)}));notify("Richiesta di cessione ritirata.",TH.muted);}} v="ghost" style={{flexShrink:0,fontSize:11,padding:"6px 10px"}}>Annulla</Btn>
                 </div>
               </Card>
-              :(week<=35&&!player.contractExpired&&<Card style={{padding:"10px 14px"}}>
-                {(player.contract?.duration||2)<=1&&(
-                  <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:8,marginBottom:8}}>
-                    <div style={{fontSize:10,color:"#d97706"}}>⚠️ Ultimo anno · tratta ora per rinnovare.</div>
-                    <Btn onClick={openNegoModal} v="primary" style={{flexShrink:0,fontSize:11,padding:"6px 12px"}}>📋 Rinnova</Btn>
-                  </div>
-                )}
+              :((player.contract?.duration||2)<=1&&week<=35&&!player.contractExpired&&<Card style={{padding:"10px 14px"}}>
                 <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:8}}>
-                  <div style={{fontSize:10,color:TH.muted}}>Vuoi cambiare aria? Richiedi la cessione per ricevere più offerte di mercato.</div>
-                  <Btn onClick={()=>{setPlayer(p=>({...p,transferListed:true,coachTrust:clamp((p.coachTrust||60)-10,0,100),morale:clamp(p.morale-8,0,100),log:["📢 Hai richiesto la cessione. Il mercato si anima.",...(p.log||[])].slice(0,60)}));notify("📢 Richiesta di cessione presentata. Aspettati offerte.",TH.warning);}} v="secondary" style={{flexShrink:0,fontSize:11,padding:"6px 10px"}}>📢 Richiedi cessione</Btn>
+                  <div style={{fontSize:10,color:"#d97706"}}>⚠️ Ultimo anno · tratta ora per rinnovare.</div>
+                  <Btn onClick={openNegoModal} v="primary" style={{flexShrink:0,fontSize:11,padding:"6px 12px"}}>📋 Rinnova</Btn>
                 </div>
               </Card>)
           )}
