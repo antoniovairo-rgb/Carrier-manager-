@@ -2383,7 +2383,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="3.99.7"; // Sprint 127: dedicated Coppe tab (cup bracket + euro group + palmares)
+const GAME_VERSION="3.99.8"; // Sprint 128: world results in dashboard (other leagues, seeded)
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -10626,6 +10626,30 @@ const generateLeagueNews=(player)=>{
   }
   return out;
 };
+/* Sprint 128 — Risultati Internazionali (altri campionati, seeded) */
+const generateWorldResults=(player)=>{
+  const playerLg=player.club?.lg||"Serie A";
+  const TOP_LGS=["Premier League","La Liga","Bundesliga","Ligue 1","Serie A","Eredivisie"].filter(lg=>lg!==playerLg).slice(0,3);
+  const wk=player.week||1;const ss=player.season||1;
+  const out=[];
+  TOP_LGS.forEach(lg=>{
+    const lc=CLUBS.filter(c=>c.lg===lg&&!c.isU18);
+    if(lc.length<2)return;
+    for(let mi=0;mi<2;mi++){
+      let s=Math.abs(hashStr(`wr128_${ss}_${wk}_${lg}_${mi}`));
+      const hi=s%lc.length;s=(s*1664525+1013904223)&0x7fffffff;
+      const ai=(hi+1+s%Math.max(1,lc.length-1))%lc.length;
+      const h=lc[hi];const a=lc[ai];
+      s=(s*1664525+1013904223)&0x7fffffff;
+      const pd=(h.p||60)/(((h.p||60)+(a.p||60))||120);
+      const hg=Math.min(6,Math.round(pd*2.8+(s%4)*0.35));
+      s=(s*1664525+1013904223)&0x7fffffff;
+      const ag=Math.min(6,Math.round((1-pd)*2.8+(s%4)*0.35));
+      out.push({lg,h:h.a||h.n,a:a.a||a.n,hg,ag});
+    }
+  });
+  return out;
+};
 /* Sprint 66 — Striscia Vittorie helper */
 const getWinStreak=(history)=>{
   const recent=[...(history||[])].filter(m=>!m.simulated).reverse();
@@ -13733,6 +13757,29 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
               <div key={i} style={{display:"flex",alignItems:"flex-start",gap:8,padding:"5px 0",borderBottom:i<_news.length-1?`1px solid ${TH.cardBorder}`:"none"}}>
                 <span style={{fontSize:14,flexShrink:0,marginTop:1}}>{n.e}</span>
                 <span style={{fontSize:11,color:TH.text,lineHeight:"1.4"}}>{n.txt}</span>
+              </div>
+            ))}
+          </Card>
+        );
+      })()}
+      {/* Sprint 128 — Risultati Internazionali */}
+      {tab==="dashboard"&&(player.proStatus||"u18")==="pro"&&(()=>{
+        const _wr=generateWorldResults(player);
+        if(!_wr.length)return null;
+        const _lgs=[...new Set(_wr.map(r=>r.lg))];
+        return(
+          <Card style={{marginBottom:8,padding:"10px 14px"}}>
+            <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>🌍 Risultati Internazionali — W.{player.week||1}</div>
+            {_lgs.map((lg,li)=>(
+              <div key={lg} style={{marginBottom:li<_lgs.length-1?10:0}}>
+                <div style={{fontSize:9,color:TH.faint,fontWeight:700,marginBottom:4,textTransform:"uppercase",letterSpacing:1}}>{lg}</div>
+                {_wr.filter(r=>r.lg===lg).map((r,ri)=>(
+                  <div key={ri} style={{display:"flex",alignItems:"center",gap:4,padding:"3px 0",borderTop:ri>0?"1px solid "+TH.cardBorder:"none"}}>
+                    <span style={{flex:1,fontSize:10,fontWeight:r.hg>r.ag?700:400,color:r.hg>r.ag?TH.text:TH.faint,textAlign:"right",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{r.h}</span>
+                    <span style={{fontSize:11,fontWeight:700,minWidth:34,textAlign:"center"}}>{r.hg}–{r.ag}</span>
+                    <span style={{flex:1,fontSize:10,fontWeight:r.ag>r.hg?700:400,color:r.ag>r.hg?TH.text:TH.faint,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{r.a}</span>
+                  </div>
+                ))}
               </div>
             ))}
           </Card>
