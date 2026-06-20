@@ -2426,7 +2426,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.2.0"; // Sprint 150: stabilization — form bounds [30,95], morale null-safety, migration normalization
+const GAME_VERSION="4.2.1"; // Sprint 151: null-safety sweep — morale||70 in all 12 remaining update paths
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -11594,7 +11594,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
           if(_nOpp&&nWeek)calAfterKO=[...newCal,{matchday:996+_koRd11120,week:nWeek,opponentId:_nOpp.id,opponentName:_nOpp.n,isHome:Math.random()<0.5,played:false,result:null,type:"euro",competition:md2.competition,euroPhase:nPhase,cupRoundName:nName,opponentData:_nOpp}];
         }
         notify(`🌍 ${md2.competition} (sim): ${sim.homeScore}–${sim.awayScore} vs ${opp.n} — ${won?"✅ PASSA":"❌ ELIMINATO"}`,won?TH.success:TH.danger);
-        return{...p,calendar:calAfterKO,matchHistory:[...(p.matchHistory||[]),{week:p.week||1,opponent:opp.n,oppAbbr:opp.a,oppCol:opp.c,homeScore:sim.homeScore,awayScore:sim.awayScore,goals:0,assists:0,rating:sim.rating,won,drew:sim.drew,simulated:true,euro:true,euroPhase:phase}].slice(-200),matches:(p.matches||0)+1,morale:clamp(p.morale+(won?5:sim.drew?1:-3),0,100),week:_pendingSim?(p.week||1):(p.week||1)+1,weekLived:_pendingSim?true:false,euro:{...p.euro,phase:nextPh,koResults:newKR,champion:isChamp,eliminated:!won},trophies:newTr};
+        return{...p,calendar:calAfterKO,matchHistory:[...(p.matchHistory||[]),{week:p.week||1,opponent:opp.n,oppAbbr:opp.a,oppCol:opp.c,homeScore:sim.homeScore,awayScore:sim.awayScore,goals:0,assists:0,rating:sim.rating,won,drew:sim.drew,simulated:true,euro:true,euroPhase:phase}].slice(-200),matches:(p.matches||0)+1,morale:clamp((p.morale||70)+(won?5:sim.drew?1:-3),0,100),week:_pendingSim?(p.week||1):(p.week||1)+1,weekLived:_pendingSim?true:false,euro:{...p.euro,phase:nextPh,koResults:newKR,champion:isChamp,eliminated:!won},trophies:newTr};
       }
       // League/Cup match — check pending euro/cup at same week
       const _pendingEuro=newCal.some(m=>m.week===(p.week||1)&&!m.played&&(m.type==="euro_group"||m.type==="euro"));
@@ -11609,7 +11609,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       const newHistory=[...(p.matchHistory||[]),{week:p.week||1,opponent:opp.n,oppAbbr:opp.a,oppCol:opp.c,homeScore:sim.homeScore,awayScore:sim.awayScore,goals:_sPS131.goals,assists:_sPS131.assists,rating:sim.rating,won:sim.won,drew:sim.drew,simulated:true}].slice(-200);
       const moD=sim.won?3:sim.drew?1:-2;
       notify(`Simulazione: ${sim.homeScore}–${sim.awayScore} vs ${opp.n}`,sim.won?TH.success:sim.drew?TH.warning:TH.danger);
-      return{...p,standings:newSt,calendar:newCal,matchHistory:newHistory,matches:(p.matches||0)+1,goals:(p.goals||0)+_sPS131.goals,totalGoals:(p.totalGoals||0)+_sPS131.goals,assists:(p.assists||0)+_sPS131.assists,totalAssists:(p.totalAssists||0)+_sPS131.assists,morale:clamp(p.morale+moD,0,100),week:_pendingEuro?(p.week||1):(p.week||1)+1,weekLived:_pendingEuro?true:false};
+      return{...p,standings:newSt,calendar:newCal,matchHistory:newHistory,matches:(p.matches||0)+1,goals:(p.goals||0)+_sPS131.goals,totalGoals:(p.totalGoals||0)+_sPS131.goals,assists:(p.assists||0)+_sPS131.assists,totalAssists:(p.totalAssists||0)+_sPS131.assists,morale:clamp((p.morale||70)+moD,0,100),week:_pendingEuro?(p.week||1):(p.week||1)+1,weekLived:_pendingEuro?true:false};
     });
   };
 
@@ -11902,7 +11902,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       const newDiary51=[...(p.diary||[]),..._md51].slice(-80);
       // Sprint 88: don't advance week if there are still unplayed euro/cup matches at the same week
       const _pendingOther=newCal.some(m=>m.week===(p.week||1)&&!m.played&&(m.type==="euro_group"||m.type==="euro"||(m.type==="cup"&&!_isCup)));
-      return{...p,stats:ns,ovr:newOvr,goals:p.goals+result.goals,assists:p.assists+result.assists,matches:p.matches+1,totalGoals:p.totalGoals+result.goals,totalAssists:p.totalAssists+result.assists,totalMatches:p.totalMatches+1,morale:clamp(p.morale+moD,0,100),form:clamp((p.form||70)+formD,30,95),fatigue:postFatigue,...(newInjured?{injured:true,injuryWeeks,injuryType,injurySeverity,originalInjuryWeeks:injuryWeeks,returnPenaltyWeeks:0}:{}),week:_pendingOther?(p.week||1):(p.week||1)+1,weekLived:_pendingOther?true:false,log:[logE,...(p.log||[])].slice(0,60),matchHistory:newHistory,standings:newStandings,calendar:newCal,aiData:newAiData,...(newMilestoneIds.length>0?{milestones:[...(p.milestones||[]),...newMilestoneIds]}:{}),...cupUpdate2,diary:newDiary51,goalStreak:newGoalStreak,bestGoalStreak:newBestStreak,yellAccum:_finalYellAccum75,isSuspended:_susp75||false,seasonCards:_newSeasonCards75};
+      return{...p,stats:ns,ovr:newOvr,goals:p.goals+result.goals,assists:p.assists+result.assists,matches:p.matches+1,totalGoals:p.totalGoals+result.goals,totalAssists:p.totalAssists+result.assists,totalMatches:p.totalMatches+1,morale:clamp((p.morale||70)+moD,0,100),form:clamp((p.form||70)+formD,30,95),fatigue:postFatigue,...(newInjured?{injured:true,injuryWeeks,injuryType,injurySeverity,originalInjuryWeeks:injuryWeeks,returnPenaltyWeeks:0}:{}),week:_pendingOther?(p.week||1):(p.week||1)+1,weekLived:_pendingOther?true:false,log:[logE,...(p.log||[])].slice(0,60),matchHistory:newHistory,standings:newStandings,calendar:newCal,aiData:newAiData,...(newMilestoneIds.length>0?{milestones:[...(p.milestones||[]),...newMilestoneIds]}:{}),...cupUpdate2,diary:newDiary51,goalStreak:newGoalStreak,bestGoalStreak:newBestStreak,yellAccum:_finalYellAccum75,isSuspended:_susp75||false,seasonCards:_newSeasonCards75};
     });
     // Sprint 73: notify objective completions
     if(_objCompleted73.length)_objCompleted73.forEach((o,i)=>setTimeout(()=>notify(`🎯 ${o.label}!`,TH.success),700+i*1800));
@@ -12319,7 +12319,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
             const egPts=(sim.won?3:sim.drew?1:0);
             const newGR=[...(p.euro?.groupResults||[]),{opponent:opp.n,homeScore:sim.homeScore,awayScore:sim.awayScore,won:sim.won,drew:sim.drew,pts:egPts}];
             const newCal2=(p.calendar||[]).map(m=>m.matchday===md.matchday?{...m,played:true,result:{homeScore:sim.homeScore,awayScore:sim.awayScore,won:sim.won,drew:sim.drew},simulated:true}:m);
-            updP={...updP,calendar:newCal2,euro:{...p.euro,groupResults:newGR,pts:(p.euro?.pts||0)+egPts},morale:clamp(p.morale+(sim.won?2:sim.drew?0:-1),0,100)};
+            updP={...updP,calendar:newCal2,euro:{...p.euro,groupResults:newGR,pts:(p.euro?.pts||0)+egPts},morale:clamp((p.morale||70)+(sim.won?2:sim.drew?0:-1),0,100)};
             setTimeout(()=>notify(`🌍 ${md.competition||"Euro"} Gruppo (sim.) vs ${opp.n}: ${sim.homeScore}-${sim.awayScore} · +${egPts}pt`,sim.won?TH.success:sim.drew?"#64748b":TH.danger),900);
           } else if(isEuroKO){
             const koWon=sim.won||(sim.drew&&Math.random()<0.55);
@@ -12339,7 +12339,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
               const _nxtOpp2=_koPool2.length?pick(_koPool2):CLUBS[0];
               if(_nxtOpp2)newCal3=[...newCal3,{matchday:996+koRound,week:nextWk,opponentId:_nxtOpp2.id,opponentName:_nxtOpp2.n,isHome:Math.random()<0.5,played:false,result:null,type:"euro",competition:md.competition,euroPhase:nextPhase,cupRoundName:nextPhase==="final"?"Finale":"Semifinale",opponentData:_nxtOpp2}];
             }
-            updP={...updP,calendar:newCal3,euro:{...p.euro,phase:newEuroPhase,koResults:newKOR,koRound},trophies:newTrophies4,morale:clamp(p.morale+(koWon?5:-3),0,100),popularity:clamp((p.popularity||20)+(koWon?8:0),0,100)};
+            updP={...updP,calendar:newCal3,euro:{...p.euro,phase:newEuroPhase,koResults:newKOR,koRound},trophies:newTrophies4,morale:clamp((p.morale||70)+(koWon?5:-3),0,100),popularity:clamp((p.popularity||20)+(koWon?8:0),0,100)};
             setTimeout(()=>notify(`🌍 ${md.competition||"Euro"} ${koPhase.toUpperCase()} (sim.) vs ${opp.n}: ${sim.homeScore}-${sim.awayScore}${cpPen?" · ai rig.":""} · ${koWon?"✅":"❌"}`,koWon?TH.success:TH.danger),900);
             if(euroWon)setTimeout(()=>notify(`🏆🏆 HAI VINTO LA ${md.competition}! STRAORDINARIO!`,"#f59e0b"),2800);
           } else if(isCupMd){
@@ -12365,7 +12365,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
             const newHist=[...(p.matchHistory||[]),{week:p.week||1,opponent:opp.n,oppAbbr:opp.a,oppCol:opp.c,homeScore:sim.homeScore,awayScore:sim.awayScore,goals:0,assists:0,rating:sim.rating,won:cupWon,drew:false,simulated:true,cup:true,cupRound:_CRN[cupRound]}].slice(-200);
             // Sprint 52: diary entry for cup win
             const _cupDiary52=cupWon&&cupRound===4?[{season:p.season||1,week:p.week||1,type:"cup_trophy",e:"🏆",headline:"Campione di Coppa Nazionale!",body:`🏆 ${p.club?.n||""} vince la Coppa · S.${p.season||1} (sim.)`,color:"#f59e0b"}]:[];
-            updP={...updP,calendar:newCal,matchHistory:newHist,matches:(p.matches||0)+1,morale:clamp(p.morale+(cupWon?3:-2),0,100),cup:{...p.cup,round:cupRound+1,nextWeek:cupWon&&cupRound<4?_CRW[cupRound+1]:null,eliminated:!cupWon,champion:cupWon&&cupRound===4,results:newCupResults,cupBracketMatches:newBM52,cupSurvivors:_cm52s.nextSurvivors},trophies:newTrophies,diary:[...(p.diary||[]),..._cupDiary52].slice(-80)};
+            updP={...updP,calendar:newCal,matchHistory:newHist,matches:(p.matches||0)+1,morale:clamp((p.morale||70)+(cupWon?3:-2),0,100),cup:{...p.cup,round:cupRound+1,nextWeek:cupWon&&cupRound<4?_CRW[cupRound+1]:null,eliminated:!cupWon,champion:cupWon&&cupRound===4,results:newCupResults,cupBracketMatches:newBM52,cupSurvivors:_cm52s.nextSurvivors},trophies:newTrophies,diary:[...(p.diary||[]),..._cupDiary52].slice(-80)};
             setTimeout(()=>notify(`🏆 Coppa · ${_CRN[cupRound]}: ${cupWon?"✅ PASSA (sim.)":"❌ ELIMINATO (sim.)"} vs ${opp.n} (${sim.homeScore}-${sim.awayScore}${cpPen?" · ai rigori":""})`,cupWon?TH.success:TH.danger),900);
             if(cupWon&&cupRound===4)setTimeout(()=>notify("🏆🏆 HAI VINTO LA COPPA NAZIONALE! Straordinario!","#f59e0b"),2800);
           } else {
@@ -12374,11 +12374,11 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
             const newCal=(p.calendar||[]).map(m=>m.week===(p.week||1)&&!m.played&&m.type!=="cup"?{...m,played:true,result:{homeScore:sim.homeScore,awayScore:sim.awayScore,won:sim.won,drew:sim.drew},simulated:true}:m);
             if(p.injured){
               const injHist=[...(p.matchHistory||[]),{week:p.week||1,opponent:opp.n,oppAbbr:opp.a,oppCol:opp.c,homeScore:sim.homeScore,awayScore:sim.awayScore,goals:0,assists:0,rating:null,won:sim.won,drew:sim.drew,simulated:true,injured:true}].slice(-200);
-              updP={...updP,standings:newSt,calendar:newCal,matchHistory:injHist,morale:clamp(p.morale+(sim.won?1:sim.drew?0:-1),0,100)};
+              updP={...updP,standings:newSt,calendar:newCal,matchHistory:injHist,morale:clamp((p.morale||70)+(sim.won?1:sim.drew?0:-1),0,100)};
             }else{
               const _ps131=_pSimStats(sim,p.ovr||65,p.archetype?.id||p.archetype||"");
               const newHistory=[...(p.matchHistory||[]),{week:p.week||1,opponent:opp.n,oppAbbr:opp.a,oppCol:opp.c,homeScore:sim.homeScore,awayScore:sim.awayScore,goals:_ps131.goals,assists:_ps131.assists,rating:sim.rating,won:sim.won,drew:sim.drew,simulated:true}].slice(-200);
-              updP={...updP,standings:newSt,calendar:newCal,matchHistory:newHistory,matches:(p.matches||0)+1,goals:(p.goals||0)+_ps131.goals,totalGoals:(p.totalGoals||0)+_ps131.goals,assists:(p.assists||0)+_ps131.assists,totalAssists:(p.totalAssists||0)+_ps131.assists,morale:clamp(p.morale+(sim.won?3:sim.drew?1:-2),0,100)};
+              updP={...updP,standings:newSt,calendar:newCal,matchHistory:newHistory,matches:(p.matches||0)+1,goals:(p.goals||0)+_ps131.goals,totalGoals:(p.totalGoals||0)+_ps131.goals,assists:(p.assists||0)+_ps131.assists,totalAssists:(p.totalAssists||0)+_ps131.assists,morale:clamp((p.morale||70)+(sim.won?3:sim.drew?1:-2),0,100)};
             }
           }
         }
@@ -12973,7 +12973,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       const finalRenewalWage=Math.round(baseRenewalWage*agentMult*(1+renewalTaskBonus));
       const agentPct=Math.round((agentMult-1)*100+(renewalTaskBonus*100));
       const agentNote=(player.hasAgent||renewalTaskBonus>0)?` 🤵 +${agentPct}%`:"";
-      setPlayer(p=>({...p,contract:{duration:tc.duration||2,wage:finalRenewalWage,expiresAtSeason:(p.season||1)+(tc.duration||2)},contractExpired:false,agentRenewalBonus:0,morale:clamp(p.morale+(tc.moralBonus||5),0,100),log:[`📋 Rinnovo contratto: ${tc.duration||2} stagion${(tc.duration||2)===1?"e":"i"} a ${_fmtWageY133(finalRenewalWage)}/anno${agentNote}`,...(p.log||[])].slice(0,60)}));
+      setPlayer(p=>({...p,contract:{duration:tc.duration||2,wage:finalRenewalWage,expiresAtSeason:(p.season||1)+(tc.duration||2)},contractExpired:false,agentRenewalBonus:0,morale:clamp((p.morale||70)+(tc.moralBonus||5),0,100),log:[`📋 Rinnovo contratto: ${tc.duration||2} stagion${(tc.duration||2)===1?"e":"i"} a ${_fmtWageY133(finalRenewalWage)}/anno${agentNote}`,...(p.log||[])].slice(0,60)}));
       setTransferOffer(null);
       notify(`✅ Contratto rinnovato${agentNote||""}!`,TH.success);
       return;
@@ -13013,7 +13013,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
         // Sprint 98: reset current-season stats on transfer (total career stats preserved)
         goals:0,assists:0,matches:0,
         contract:_newContract98,coach:_newCoach98,coachTrust:50,
-        morale:clamp(p.morale+(tc.moralBonus||10),0,100),offerHistory:[...(p.offerHistory||[]),{club:tc.club.n,type:tc.type,season:p.season,accepted:true}],log:[`🔄 ${tc.type}: ${tc.club.n} (${tc.club.lg||tc.club.nat})!`,...(p.log||[])].slice(0,60),standings:newStandings,calendar:newCalendar,worldMemory:oldClubMem,rival:newRival,fanLegend:updFL,teammates:newTeammates,justRecovered:false};
+        morale:clamp((p.morale||70)+(tc.moralBonus||10),0,100),offerHistory:[...(p.offerHistory||[]),{club:tc.club.n,type:tc.type,season:p.season,accepted:true}],log:[`🔄 ${tc.type}: ${tc.club.n} (${tc.club.lg||tc.club.nat})!`,...(p.log||[])].slice(0,60),standings:newStandings,calendar:newCalendar,worldMemory:oldClubMem,rival:newRival,fanLegend:updFL,teammates:newTeammates,justRecovered:false};
     });
     setTransferOffer(null);
     setPresentationData({club:tc.club,contractType:tc.type,playerName:player.name});
@@ -13819,7 +13819,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
               </div>
               {_listed&&(
                 <Btn v="ghost" style={{fontSize:10,padding:"5px 10px",flexShrink:0,border:"1px solid #d97706",color:"#92400e"}}
-                  onClick={()=>{setPlayer(p=>({...p,transferListed:false,morale:clamp(p.morale+5,0,100),log:["📢 Richiesta di cessione ritirata.",...(p.log||[])].slice(0,60)}));notify("Richiesta ritirata.",TH.muted);}}>
+                  onClick={()=>{setPlayer(p=>({...p,transferListed:false,morale:clamp((p.morale||70)+5,0,100),log:["📢 Richiesta di cessione ritirata.",...(p.log||[])].slice(0,60)}));notify("Richiesta ritirata.",TH.muted);}}>
                   Ritira ✕
                 </Btn>
               )}
@@ -15815,7 +15815,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                     <div style={{fontSize:11,fontWeight:700,color:"#713f12"}}>📢 Sei sul mercato</div>
                     <div style={{fontSize:10,color:"#92400e",marginTop:2}}>Le offerte arriveranno più spesso. Morale e fiducia mister calati.</div>
                   </div>
-                  <Btn onClick={()=>{setPlayer(p=>({...p,transferListed:false,morale:clamp(p.morale+5,0,100),log:["📢 Richiesta di cessione ritirata.",...(p.log||[])].slice(0,60)}));notify("Richiesta di cessione ritirata.",TH.muted);}} v="ghost" style={{flexShrink:0,fontSize:11,padding:"6px 10px"}}>Annulla</Btn>
+                  <Btn onClick={()=>{setPlayer(p=>({...p,transferListed:false,morale:clamp((p.morale||70)+5,0,100),log:["📢 Richiesta di cessione ritirata.",...(p.log||[])].slice(0,60)}));notify("Richiesta di cessione ritirata.",TH.muted);}} v="ghost" style={{flexShrink:0,fontSize:11,padding:"6px 10px"}}>Annulla</Btn>
                 </div>
               </Card>
               :((player.contract?.duration||2)<=1&&week<=35&&!player.contractExpired&&<Card style={{padding:"10px 14px"}}>
