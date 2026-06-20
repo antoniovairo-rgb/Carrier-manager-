@@ -2406,7 +2406,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.0.3"; // Sprint 133: realistic wage progression 30k(U18)→20M(peak), unified helper _ovrToWageWeekly133
+const GAME_VERSION="4.0.4"; // Sprint 134: league awards (Capocannoniere/MVP/Giovane/SquadraAnno) + European PdO/SdO + real roster names
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -4174,7 +4174,7 @@ function generateSeasonCalendar(playerClub,leagueClubs,seed){
   }
   return cal;
 }
-// ===== Sprint 49: Season Awards Generator =====
+// ===== Sprint 49/134: Season Awards Generator =====
 function generateSeasonAwards(player, finalStandings){
   const lg=player.club?.lg||"Serie A";
   const lgRec=LEAGUE_RECORDS[lg]||_LR_DEFAULT;
@@ -4184,79 +4184,126 @@ function generateSeasonAwards(player, finalStandings){
   const isChampion=finalStandings?.length>0&&(finalStandings[0]?.id===player.club?.id||finalStandings[0]?.n===player.club?.n);
   const leaguePrestige=player.club?.p||65;
   const season=player.season||1;
-  // seeded helper (deterministic per season+league)
   const _h=n=>Math.abs(hashStr(lg+"_"+season+"_"+n))%100;
 
-  // --- Simulated top scorers ---
-  const _genScorerName=(idx)=>{
-    if(lgRec.topScorers?.[idx]?.name)return lgRec.topScorers[idx].name;
-    const clubIdx=finalStandings?.[idx];
-    const clubNat=clubIdx?.nat||"🇮🇹";
-    const namePool=NAME_BY_NAT[clubNat]||NAME_BY_NAT["🇮🇹"];
-    const rng1=hashStr(lg+"_scorer_"+idx+"_f")%namePool.first.length;
-    const rng2=hashStr(lg+"_scorer_"+idx+"_l")%namePool.last.length;
-    return namePool.first[rng1]+" "+namePool.last[rng2];
+  // Sprint 134: names from real club rosters (deterministic via generateTeamRoster)
+  const _clubFwd=(club,seedStr)=>{
+    if(!club)return null;
+    const roster=generateTeamRoster(club,season);
+    const fwdRoles=["Centravanti","Attaccante","Ala","Trequartista"];
+    const fwds=roster.filter(p=>fwdRoles.includes(p.role));
+    const si=Math.abs(hashStr(seedStr))%(fwds.length||roster.length);
+    return(fwds.length?fwds[si]:roster[si])?.name||roster[0]?.name||null;
   };
-  const simScorers=Array.from({length:6},(_,i)=>{
-    const base=Math.max(3,Math.round(leaguePrestige*0.22+4+(_h(i*17+3)%16)));
-    return{name:_genScorerName(i),goals:base,club:finalStandings?.[i]?.n||"–"};
+  const _clubYoung=(club,seedStr)=>{
+    if(!club)return null;
+    const roster=generateTeamRoster(club,season);
+    return(roster.find(p=>p.role==="Under-21")||roster[roster.length-1])?.name||null;
+  };
+
+  // === PREMI DI LEGA ===
+
+  // 1. Capocannoniere della lega — simulated scorers from real club rosters
+  const simLeagueScorers=Array.from({length:6},(_,i)=>{
+    const club=finalStandings?.[i%Math.max(1,finalStandings?.length||1)];
+    const base=Math.max(4,Math.round(leaguePrestige*0.20+4+(_h(i*17+3)%14)));
+    const name=(club?_clubFwd(club,`lgsc_${i}_${season}`):null)||lgRec.topScorers?.[i]?.name||"Calciatore";
+    return{name,goals:base,club:club?.n||"–"};
   });
-  const allScorers=[...simScorers,{name:player.name,goals:myGoals,club:player.club?.n,isPlayer:true}]
+  const allLeagueScorers=[...simLeagueScorers,{name:player.name,goals:myGoals,club:player.club?.n,isPlayer:true}]
     .sort((a,b)=>b.goals-a.goals);
-  const playerScorerPos=allScorers.findIndex(s=>s.isPlayer);
-  const playerWinsScarpa=playerScorerPos===0;
+  const playerLeagueScorerPos=allLeagueScorers.findIndex(s=>s.isPlayer);
+  const playerWinsLeagueTopScorer=playerLeagueScorerPos===0;
 
-  // --- Pallone d'Oro candidates --- top players in league, not player's club level
-  const _topP=Math.max(leaguePrestige+18,82); // top players are always high-prestige
-  const playerPalScore=myOvr*0.38+myGoals*1.1+myAssists*0.75+(isChampion?18:0);
-  const _genPalName=(idx)=>{
-    if(lgRec.topScorers?.[idx+1]?.name)return lgRec.topScorers[idx+1].name;
-    const clubIdx=finalStandings?.[idx];
-    const clubNat=clubIdx?.nat||"🇮🇹";
-    const namePool=NAME_BY_NAT[clubNat]||NAME_BY_NAT["🇮🇹"];
-    const rng1=hashStr(lg+"_pal_"+idx+"_f")%namePool.first.length;
-    const rng2=hashStr(lg+"_pal_"+idx+"_l")%namePool.last.length;
-    return namePool.first[rng1]+" "+namePool.last[rng2];
-  };
-  const palCandidates=Array.from({length:3},(_,i)=>{
-    const cOvr=clamp(_topP+Math.round((_h(i*13+7)%16)-4),72,97);
-    const cGoals=Math.max(16,Math.round(_topP*0.22+(_h(i*11+2)%14)));
-    const cAssists=Math.round(_h(i*7+4)%9)+2;
+  // 2. MVP della Stagione (miglior calciatore del campionato)
+  const playerMvpScore=myOvr*0.40+myGoals*1.0+myAssists*0.80+(isChampion?15:0);
+  const simLeagueMvp=Array.from({length:3},(_,i)=>{
+    const club=finalStandings?.[i%Math.max(1,finalStandings?.length||1)];
+    const cOvr=clamp(leaguePrestige+Math.round((_h(i*13+7)%14)-3),68,96);
+    const cGoals=Math.max(7,Math.round(leaguePrestige*0.15+(_h(i*11+2)%12)));
+    const cAssists=Math.round(_h(i*7+4)%8)+2;
     const cChamp=i===0&&!isChampion;
-    return{name:_genPalName(i),club:finalStandings?.[i]?.n||"–",ovr:cOvr,goals:cGoals,assists:cAssists,score:cOvr*0.38+cGoals*1.1+cAssists*0.75+(cChamp?18:0)};
+    const name=(club?_clubFwd(club,`lgmvp_${i}_${season}`):null)||lgRec.topScorers?.[i+1]?.name||"Calciatore";
+    return{name,club:club?.n||"–",ovr:cOvr,goals:cGoals,assists:cAssists,score:cOvr*0.40+cGoals*1.0+cAssists*0.80+(cChamp?15:0)};
   });
-  const allPal=[...palCandidates,{name:player.name,club:player.club?.n,ovr:myOvr,goals:myGoals,assists:myAssists,score:playerPalScore,isPlayer:true}]
+  const allLeagueMvp=[...simLeagueMvp,{name:player.name,club:player.club?.n,ovr:myOvr,goals:myGoals,assists:myAssists,score:playerMvpScore,isPlayer:true}]
     .sort((a,b)=>b.score-a.score);
-  // Sprint 81: must have ≥6 goals or ≥8 assists to be eligible for Pallone d'Oro
-  // Sprint 98: higher bar — need 14+ goals OR (10+ goals AND 8+ assists), plus OVR≥78 and top-3 finish
-  const _palTop3=allPal.slice(0,3).some(c=>c.isPlayer);
-  const playerWinsPallone=allPal[0].isPlayer&&_palTop3&&myOvr>=78&&(myGoals>=14||(myGoals>=10&&myAssists>=8));
+  const playerWinsLeagueMvp=allLeagueMvp[0].isPlayer&&myOvr>=70&&(myGoals>=8||myAssists>=8);
 
-  // --- Young Player (U23) — raised bar: >=14 G+A and >=7 goals minimum
+  // 3. Giovane dell'Anno della lega (U23)
   const isYoung=(player.age||17)<=23;
-  const youngGoals=Math.max(12,Math.round(_h(88)%10+10));
-  const youngWinner=isYoung&&myGoals>=7&&myGoals+myAssists>=14
+  const youngLgClub=finalStandings?.[Math.abs(_h(88))%Math.max(1,Math.min(5,finalStandings?.length||1))];
+  const youngLgName=(youngLgClub?_clubYoung(youngLgClub,`lgyoung_${season}`):null)||lgRec.topScorers?.[2]?.name||"Giovane Talento";
+  const youngLgGoals=Math.max(6,Math.round(_h(88)%9+6));
+  const playerWinsLeagueYoung=isYoung&&myGoals>=5&&myGoals+myAssists>=10;
+  const leagueYoungWinner=playerWinsLeagueYoung
     ?{name:player.name,goals:myGoals,assists:myAssists,isPlayer:true}
-    :{name:lgRec.topScorers[Math.floor(_h(44)/25)]?.name||"Giovane Talento",goals:youngGoals,assists:Math.round(_h(55)%7)+2,isPlayer:false};
+    :{name:youngLgName,goals:youngLgGoals,assists:Math.round(_h(55)%7)+2,isPlayer:false};
 
-  // --- Season record check ---
+  // 4. Squadra dell'Anno della lega
+  const playerInTeamOfYear=(myOvr>=78&&(myGoals>=10||myAssists>=8))||(myOvr>=82&&(myGoals>=6||myAssists>=6));
+
+  // === PREMI EUROPEI (cross-league, molto più rari) ===
+
+  // Candidati europei da altri campionati (nomi da roster reali)
+  const _euLeagues=["Serie A","Premier League","Bundesliga","Ligue 1","La Liga"].filter(l=>l!==lg);
+  const _euClubs=_euLeagues.map((euLg,li)=>{
+    const ec=CLUBS.filter(c=>c.lg===euLg).sort((a,b)=>b.p-a.p);
+    return ec[Math.abs(_h(li*31+7))%Math.min(3,ec.length)]||ec[0]||null;
+  }).filter(Boolean);
+
+  // Scarpa d'Oro UEFA: capocannoniere in Europa
+  const euScorerCands=_euClubs.map((club,i)=>{
+    const name=_clubFwd(club,`eusc_${i}_${season}`)||club.n;
+    const goals=Math.max(18,Math.round(club.p*0.30+(_h(i*19+5)%14)));
+    return{name,goals,club:club.n,league:club.lg};
+  });
+  const allEuScorers=[...euScorerCands,...simLeagueScorers.slice(0,3).map(s=>({...s,league:lg})),
+    {name:player.name,goals:myGoals,club:player.club?.n,league:lg,isPlayer:true}]
+    .sort((a,b)=>b.goals-a.goals);
+  const euScorerPos=allEuScorers.findIndex(s=>s.isPlayer);
+  const playerWinsScarpaOro=euScorerPos===0&&myGoals>=28; // 28+ gol E primo in Europa
+
+  // Pallone d'Oro UEFA: miglior giocatore in Europa
+  const euPalCands=_euClubs.map((club,i)=>{
+    const name=_clubFwd(club,`eupal_${i}_${season}`)||club.n;
+    const cOvr=clamp(84+Math.round((_h(i*23+11)%10)-2),82,97);
+    const cGoals=Math.max(20,Math.round(club.p*0.24+(_h(i*17+3)%10)));
+    const cAssists=Math.round(_h(i*9+6)%8)+3;
+    return{name,club:club.n,league:club.lg,ovr:cOvr,goals:cGoals,assists:cAssists,score:cOvr*0.38+cGoals*1.1+cAssists*0.75+18};
+  });
+  const playerPalScore=myOvr*0.38+myGoals*1.1+myAssists*0.75+(isChampion?18:0);
+  const allEuPal=[...euPalCands,{name:player.name,club:player.club?.n,league:lg,ovr:myOvr,goals:myGoals,assists:myAssists,score:playerPalScore,isPlayer:true}]
+    .sort((a,b)=>b.score-a.score);
+  const _euPalTop5=allEuPal.slice(0,5).some(c=>c.isPlayer);
+  // Requisiti eccezionali: OVR≥85, campione, 22+ gol O (18+ gol + 10+ assist)
+  const playerWinsPalloneOro=allEuPal[0].isPlayer&&_euPalTop5&&myOvr>=85&&isChampion&&
+    (myGoals>=22||(myGoals>=18&&myAssists>=10));
+
+  // --- Record stagionale ---
   const beatSeasonRecord=myGoals>lgRec.seasonRecord.goals;
   const nearSeasonRecord=!beatSeasonRecord&&myGoals>=lgRec.seasonRecord.goals-4&&myGoals>0;
 
-  // --- All-time scorer position ---
+  // --- Posizione all-time ---
   const playerCareerGoals=player.totalGoals||0;
   let allTimePos=lgRec.topScorers.findIndex(s=>playerCareerGoals>=s.goals);
   if(allTimePos===-1)allTimePos=lgRec.topScorers.length;
   const beatAllTime=playerCareerGoals>lgRec.allTimeScorer.goals;
 
-  // --- Rival comparison ---
+  // --- Rivale ---
   const rival=player.rival;
   const rivalGoals=rival?.goals||0;
 
   return{
-    palloneOro:{winner:allPal[0],playerWins:playerWinsPallone,top3:allPal.slice(0,3)},
-    scarpaOro:{winner:allScorers[0],playerWins:playerWinsScarpa,top3:allScorers.slice(0,3),playerPos:playerScorerPos},
-    youngPlayer:{winner:youngWinner,playerWins:youngWinner.isPlayer,isYoungEligible:isYoung},
+    // Europei
+    palloneOro:{winner:allEuPal[0],playerWins:playerWinsPalloneOro,top3:allEuPal.slice(0,3)},
+    scarpaOro:{winner:allEuScorers[0],playerWins:playerWinsScarpaOro,top3:allEuScorers.slice(0,3),playerPos:euScorerPos},
+    // Di lega (Sprint 134)
+    leagueMvp:{winner:allLeagueMvp[0],playerWins:playerWinsLeagueMvp,top3:allLeagueMvp.slice(0,3)},
+    leagueTopScorer:{winner:allLeagueScorers[0],playerWins:playerWinsLeagueTopScorer,top3:allLeagueScorers.slice(0,3),playerPos:playerLeagueScorerPos},
+    leagueYoung:{winner:leagueYoungWinner,playerWins:playerWinsLeagueYoung,isYoungEligible:isYoung},
+    leagueTeamOfYear:playerInTeamOfYear,
+    youngPlayer:{winner:leagueYoungWinner,playerWins:playerWinsLeagueYoung,isYoungEligible:isYoung}, // compat
     seasonRecord:{record:lgRec.seasonRecord,playerGoals:myGoals,beaten:beatSeasonRecord,near:nearSeasonRecord},
     allTime:{record:lgRec.allTimeScorer,playerCareerGoals,beaten:beatAllTime,position:allTimePos},
     rival:rival?{name:rival.name,goals:rivalGoals,playerGoals:myGoals,playerWins:myGoals>rivalGoals,relLabel:{sconosciuto:"Sconosciuto",rivale:"🔥 Rivale",rispettato:"🤝 Rispettato",amico:"👥 Amico"}[rival.relationship||"sconosciuto"]}:null,
@@ -8211,9 +8258,10 @@ function getBestSeasonMatch(matchHistory){
    SEASON AWARDS SCREEN  (Sprint 49)
 ======================================== */
 function SeasonAwardsScreen({awards,player,season,club,onContinue}){
-  const{palloneOro,scarpaOro,youngPlayer,seasonRecord,allTime,rival}=awards;
+  const{palloneOro,scarpaOro,leagueMvp,leagueTopScorer,leagueYoung,leagueTeamOfYear,youngPlayer,seasonRecord,allTime,rival}=awards;
   const lg=club?.lg||"Pro";
   const pWinsBoth=palloneOro.playerWins&&scarpaOro.playerWins;
+  const anyLeaguePrize=(leagueMvp?.playerWins||leagueTopScorer?.playerWins||leagueYoung?.playerWins||leagueTeamOfYear);
   const anyRecord=seasonRecord.beaten||allTime.beaten;
 
   const SectionLabel=({children})=>(
@@ -8238,35 +8286,82 @@ function SeasonAwardsScreen({awards,player,season,club,onContinue}){
         <h1 style={{fontSize:18,fontWeight:900,margin:"0 0 4px",color:TH.text}}>Premi Stagione {season}</h1>
         <p style={{color:TH.muted,fontSize:12,margin:"0 0 4px"}}>{lg} · Cerimonia di Fine Stagione</p>
         {pWinsBoth&&<div style={{display:"inline-block",marginTop:6,background:"linear-gradient(135deg,#fef08a,#fde047)",color:"#713f12",fontWeight:900,fontSize:12,padding:"4px 14px",borderRadius:20}}>🌟 STAGIONE LEGGENDARIA!</div>}
+        {anyLeaguePrize&&!pWinsBoth&&<div style={{display:"inline-block",marginTop:6,background:"linear-gradient(135deg,#dbeafe,#bfdbfe)",color:"#1e40af",fontWeight:900,fontSize:12,padding:"4px 14px",borderRadius:20}}>⭐ STAGIONE STRAORDINARIA!</div>}
       </div>
 
-      {/* Pallone d'Oro */}
+      {/* PREMI DI LEGA (Sprint 134) */}
+      <Card style={{marginBottom:10,padding:"14px 16px"}}>
+        <SectionLabel>🏅 PREMI DI LEGA — {lg}</SectionLabel>
+
+        {/* Capocannoniere */}
+        <div style={{marginBottom:10}}>
+          <div style={{fontSize:11,fontWeight:800,color:TH.text,marginBottom:4}}>⚽ Capocannoniere del Campionato</div>
+          {(leagueTopScorer?.top3||[]).map((c,i)=>(
+            <ScoreRow key={i} rank={i} name={c.name} val={c.goals} label="gol" isPlayer={!!c.isPlayer} extra={c.club}/>
+          ))}
+          {leagueTopScorer?.playerWins&&<div style={{marginTop:4,padding:"6px 10px",background:"#dcfce7",borderRadius:8,fontSize:11,fontWeight:800,color:"#166534"}}>🥇 Sei il capocannoniere della {lg}!</div>}
+          {!leagueTopScorer?.playerWins&&(leagueTopScorer?.playerPos||0)>2&&<div style={{fontSize:10,color:TH.muted,marginTop:3,textAlign:"right"}}>La tua posizione: {(leagueTopScorer?.playerPos||0)+1}ª · {player.goals||0} gol</div>}
+        </div>
+
+        {/* MVP della Stagione */}
+        <div style={{borderTop:"1px solid "+TH.cardBorder,paddingTop:10,marginBottom:10}}>
+          <div style={{fontSize:11,fontWeight:800,color:TH.text,marginBottom:4}}>🏆 MVP della Stagione</div>
+          {(leagueMvp?.top3||[]).map((c,i)=>(
+            <ScoreRow key={i} rank={i} name={c.name} val={c.goals} label="⚽" isPlayer={!!c.isPlayer} extra={c.club}/>
+          ))}
+          {leagueMvp?.playerWins&&<div style={{marginTop:4,padding:"6px 10px",background:"#fefce8",borderRadius:8,fontSize:11,fontWeight:800,color:"#92400e"}}>🏆 Miglior calciatore della {lg}!</div>}
+        </div>
+
+        {/* Giovane dell'Anno + Squadra dell'Anno */}
+        <div style={{display:"flex",gap:8,borderTop:"1px solid "+TH.cardBorder,paddingTop:10}}>
+          {(leagueYoung||youngPlayer)?.isYoungEligible&&(
+            <div style={{flex:1,background:(leagueYoung||youngPlayer)?.playerWins?"#ede9fe":"#f8fafc",borderRadius:8,padding:"8px 10px",border:"1px solid "+((leagueYoung||youngPlayer)?.playerWins?"#c4b5fd":TH.cardBorder)}}>
+              <div style={{fontSize:10,color:TH.muted,marginBottom:2}}>💎 GIOVANE DELL'ANNO</div>
+              <div style={{fontSize:11,fontWeight:700,color:(leagueYoung||youngPlayer)?.playerWins?"#5b21b6":TH.text}}>{(leagueYoung||youngPlayer)?.winner?.name||"–"}</div>
+              <div style={{fontSize:10,color:TH.muted}}>{(leagueYoung||youngPlayer)?.winner?.goals||0}⚽ {(leagueYoung||youngPlayer)?.winner?.assists||0}🎯</div>
+            </div>
+          )}
+          {leagueTeamOfYear&&(
+            <div style={{flex:1,background:"#f0f9ff",borderRadius:8,padding:"8px 10px",border:"1px solid #bae6fd"}}>
+              <div style={{fontSize:10,color:TH.muted,marginBottom:2}}>📋 SQUADRA DELL'ANNO</div>
+              <div style={{fontSize:11,fontWeight:700,color:"#0369a1"}}>Selezionato!</div>
+              <div style={{fontSize:10,color:TH.muted}}>{player.name} nell'XI ideale</div>
+            </div>
+          )}
+          {!leagueTeamOfYear&&!(leagueYoung||youngPlayer)?.isYoungEligible&&(
+            <div style={{fontSize:11,color:TH.muted}}>Continua a crescere per entrare nell'XI ideale della lega.</div>
+          )}
+        </div>
+      </Card>
+
+      {/* PREMI EUROPEI */}
       <Card style={{marginBottom:10,padding:"14px 16px",background:palloneOro.playerWins?"#fefce8":TH.card,border:palloneOro.playerWins?"1.5px solid #fde68a":"1px solid "+TH.cardBorder}}>
-        <SectionLabel>🏆 PALLONE D'ORO {season}</SectionLabel>
+        <SectionLabel>🌍 PALLONE D'ORO UEFA {season}</SectionLabel>
+        <div style={{fontSize:10,color:TH.muted,marginBottom:6}}>Migliori calciatori d'Europa</div>
         {palloneOro.top3.map((c,i)=>(
-          <ScoreRow key={i} rank={i} name={c.name} val={c.goals} label="⚽" isPlayer={!!c.isPlayer} extra={c.club}/>
+          <ScoreRow key={i} rank={i} name={c.name} val={c.goals} label="⚽" isPlayer={!!c.isPlayer} extra={c.league||c.club}/>
         ))}
         {palloneOro.playerWins&&(
           <div style={{marginTop:10,padding:"10px 12px",background:"linear-gradient(135deg,#fef08a,#fde047)",borderRadius:10,textAlign:"center"}}>
-            <div style={{fontSize:14,fontWeight:900,color:"#713f12"}}>🏆 Hai vinto il Pallone d'Oro!</div>
-            <div style={{fontSize:11,color:"#92400e",marginTop:2}}>Un momento storico per la tua carriera.</div>
+            <div style={{fontSize:14,fontWeight:900,color:"#713f12"}}>🏆 Hai vinto il Pallone d'Oro UEFA!</div>
+            <div style={{fontSize:11,color:"#92400e",marginTop:2}}>Il riconoscimento più prestigioso del calcio europeo.</div>
           </div>
         )}
         {!palloneOro.playerWins&&rival&&palloneOro.winner.name===rival.name&&(
-          <div style={{marginTop:8,padding:"8px 12px",background:"#fff1f2",borderRadius:8,fontSize:11,color:"#991b1b",fontWeight:700}}>😤 {rival.name} ti ha battuto per il Pallone d'Oro. Risponderai il prossimo anno?</div>
+          <div style={{marginTop:8,padding:"8px 12px",background:"#fff1f2",borderRadius:8,fontSize:11,color:"#991b1b",fontWeight:700}}>😤 {rival.name} ti ha battuto per il Pallone d'Oro UEFA. Risponderai il prossimo anno?</div>
         )}
       </Card>
 
-      {/* Scarpa d'Oro */}
       <Card style={{marginBottom:10,padding:"14px 16px",background:scarpaOro.playerWins?"#f0fdf4":TH.card,border:scarpaOro.playerWins?"1.5px solid #bbf7d0":"1px solid "+TH.cardBorder}}>
-        <SectionLabel>⚽ SCARPA D'ORO — CAPOCANNONIERE</SectionLabel>
+        <SectionLabel>👟 SCARPA D'ORO UEFA {season}</SectionLabel>
+        <div style={{fontSize:10,color:TH.muted,marginBottom:6}}>Top scorer nei campionati europei</div>
         {scarpaOro.top3.map((c,i)=>(
-          <ScoreRow key={i} rank={i} name={c.name} val={c.goals} label="gol" isPlayer={!!c.isPlayer} extra={c.club}/>
+          <ScoreRow key={i} rank={i} name={c.name} val={c.goals} label="gol" isPlayer={!!c.isPlayer} extra={c.league||c.club}/>
         ))}
         {!scarpaOro.playerWins&&scarpaOro.playerPos>2&&(
-          <div style={{marginTop:6,fontSize:11,color:TH.muted,textAlign:"right"}}>La tua posizione: {scarpaOro.playerPos+1}ª · {player.goals||0} gol</div>
+          <div style={{marginTop:6,fontSize:11,color:TH.muted,textAlign:"right"}}>La tua posizione europea: {scarpaOro.playerPos+1}ª · {player.goals||0} gol</div>
         )}
-        {scarpaOro.playerWins&&<div style={{marginTop:8,padding:"8px 12px",background:"#dcfce7",borderRadius:8,fontSize:12,fontWeight:800,color:"#166534",textAlign:"center"}}>🥇 Capocannoniere ufficiale della {lg}!</div>}
+        {scarpaOro.playerWins&&<div style={{marginTop:8,padding:"8px 12px",background:"#dcfce7",borderRadius:8,fontSize:12,fontWeight:800,color:"#166534",textAlign:"center"}}>🥇 Capocannoniere d'Europa! La Scarpa d'Oro UEFA è tua!</div>}
       </Card>
 
       {/* Record check */}
@@ -8301,13 +8396,7 @@ function SeasonAwardsScreen({awards,player,season,club,onContinue}){
         </Card>
       )}
 
-      {/* Young Player */}
-      {youngPlayer.playerWins&&(
-        <Card style={{marginBottom:10,padding:"12px 16px",background:"#f0f9ff",border:"1.5px solid #bae6fd"}}>
-          <div style={{fontSize:13,fontWeight:900,color:"#0369a1",marginBottom:2}}>🌟 GIOVANE DELL'ANNO — {lg}</div>
-          <div style={{fontSize:11,color:TH.muted}}>{player.goals||0} gol · {player.assists||0} assist · {player.age} anni — il futuro è tuo.</div>
-        </Card>
-      )}
+      {/* Young Player — ora mostrato nel blocco PREMI DI LEGA (Sprint 134) */}
 
       {/* Rival */}
       {rival&&(
@@ -10323,8 +10412,8 @@ function CareerEndScreen({retData,onNewGame,onNewGamePlus}){
   const clubs=[...new Set(history.map(h=>h.club).filter(Boolean))];
   const pct=Math.round((legacyScore/1000)*100);
   // Sprint 58: extra career data
-  const pAwards=p.playerAwards||{palloneOros:[],scarpaOros:[],youngYears:[],seasonRecords:[]};
-  const hasPrizes=(pAwards.palloneOros.length+pAwards.scarpaOros.length+pAwards.youngYears.length)>0;
+  const pAwards=p.playerAwards||{palloneOros:[],scarpaOros:[],youngYears:[],seasonRecords:[],leagueMvpYears:[],leagueTopScorerYears:[],teamOfYearYears:[]};
+  const hasPrizes=(pAwards.palloneOros.length+pAwards.scarpaOros.length+pAwards.youngYears.length+(pAwards.leagueMvpYears||[]).length+(pAwards.leagueTopScorerYears||[]).length+(pAwards.teamOfYearYears||[]).length)>0;
   // Pick up to 5 most important diary moments
   const diaryMoments=(p.diary||[]).filter(d=>["first_goal","hattrick","pallone_oro","scarpa_oro","cup_trophy","euro_mondiale_trophy","first_national","milestone"].includes(d.type)).slice(-5).reverse();
   // Hall of Fame: find last known league from history
@@ -10382,9 +10471,14 @@ function CareerEndScreen({retData,onNewGame,onNewGamePlus}){
         <Card style={{marginBottom:12,padding:"14px 16px"}}>
           <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:10}}>🏅 Premi e Riconoscimenti</div>
           <div style={{display:"flex",flexDirection:"column",gap:6}}>
-            {pAwards.palloneOros.map(s=><div key={"po"+s} style={{display:"flex",alignItems:"center",gap:10,padding:"6px 8px",background:"#fef9c3",borderRadius:8,border:"1px solid #fde68a"}}><span style={{fontSize:20}}>🏆</span><div><div style={{fontSize:12,fontWeight:800,color:"#92400e"}}>Pallone d'Oro</div><div style={{fontSize:10,color:"#78350f"}}>Stagione {s} — miglior giocatore del campionato</div></div></div>)}
-            {pAwards.scarpaOros.map(s=><div key={"so"+s} style={{display:"flex",alignItems:"center",gap:10,padding:"6px 8px",background:"#fee2e2",borderRadius:8,border:"1px solid #fca5a5"}}><span style={{fontSize:20}}>👟</span><div><div style={{fontSize:12,fontWeight:800,color:"#991b1b"}}>Scarpa d'Oro</div><div style={{fontSize:10,color:"#7f1d1d"}}>Stagione {s} — capocannoniere della lega</div></div></div>)}
-            {pAwards.youngYears.map(s=><div key={"yy"+s} style={{display:"flex",alignItems:"center",gap:10,padding:"6px 8px",background:"#ede9fe",borderRadius:8,border:"1px solid #c4b5fd"}}><span style={{fontSize:20}}>💎</span><div><div style={{fontSize:12,fontWeight:800,color:"#5b21b6"}}>Miglior Giovane</div><div style={{fontSize:10,color:"#4c1d95"}}>Stagione {s}</div></div></div>)}
+            {/* Premi Europei */}
+            {pAwards.palloneOros.map(s=><div key={"po"+s} style={{display:"flex",alignItems:"center",gap:10,padding:"6px 8px",background:"#fef9c3",borderRadius:8,border:"1px solid #fde68a"}}><span style={{fontSize:20}}>🏆</span><div><div style={{fontSize:12,fontWeight:800,color:"#92400e"}}>Pallone d'Oro UEFA</div><div style={{fontSize:10,color:"#78350f"}}>Stagione {s} — miglior calciatore d'Europa</div></div></div>)}
+            {pAwards.scarpaOros.map(s=><div key={"so"+s} style={{display:"flex",alignItems:"center",gap:10,padding:"6px 8px",background:"#fee2e2",borderRadius:8,border:"1px solid #fca5a5"}}><span style={{fontSize:20}}>👟</span><div><div style={{fontSize:12,fontWeight:800,color:"#991b1b"}}>Scarpa d'Oro UEFA</div><div style={{fontSize:10,color:"#7f1d1d"}}>Stagione {s} — capocannoniere d'Europa</div></div></div>)}
+            {/* Premi di Lega (Sprint 134) */}
+            {(pAwards.leagueMvpYears||[]).map(s=><div key={"lm"+s} style={{display:"flex",alignItems:"center",gap:10,padding:"6px 8px",background:"#eef2ff",borderRadius:8,border:"1px solid #c7d2fe"}}><span style={{fontSize:20}}>🏅</span><div><div style={{fontSize:12,fontWeight:800,color:"#4338ca"}}>MVP della Stagione</div><div style={{fontSize:10,color:"#3730a3"}}>Stagione {s} — miglior calciatore del campionato</div></div></div>)}
+            {(pAwards.leagueTopScorerYears||[]).map(s=><div key={"lt"+s} style={{display:"flex",alignItems:"center",gap:10,padding:"6px 8px",background:"#f0fdf4",borderRadius:8,border:"1px solid #bbf7d0"}}><span style={{fontSize:20}}>⚽</span><div><div style={{fontSize:12,fontWeight:800,color:"#15803d"}}>Capocannoniere del Campionato</div><div style={{fontSize:10,color:"#166534"}}>Stagione {s} — bomber dell'anno</div></div></div>)}
+            {pAwards.youngYears.map(s=><div key={"yy"+s} style={{display:"flex",alignItems:"center",gap:10,padding:"6px 8px",background:"#ede9fe",borderRadius:8,border:"1px solid #c4b5fd"}}><span style={{fontSize:20}}>💎</span><div><div style={{fontSize:12,fontWeight:800,color:"#5b21b6"}}>Giovane dell'Anno</div><div style={{fontSize:10,color:"#4c1d95"}}>Stagione {s} — miglior Under 23 del campionato</div></div></div>)}
+            {(pAwards.teamOfYearYears||[]).map(s=><div key={"ty"+s} style={{display:"flex",alignItems:"center",gap:10,padding:"6px 8px",background:"#f0f9ff",borderRadius:8,border:"1px solid #bae6fd"}}><span style={{fontSize:20}}>📋</span><div><div style={{fontSize:12,fontWeight:800,color:"#0369a1"}}>Squadra dell'Anno</div><div style={{fontSize:10,color:"#075985"}}>Stagione {s} — selezionato nell'XI ideale della lega</div></div></div>)}
           </div>
         </Card>
       )}
@@ -11024,6 +11118,8 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     if(!('u18Goals' in newP)){newP={...newP,u18Goals:0,u18Assists:0,u18Matches:0};changed=true;} // Sprint 105
     if(!('primaveraAwards' in newP)){newP={...newP,primaveraAwards:[]};changed=true;} // Sprint 105
     if(!('mvpMonthAwards' in newP)){newP={...newP,mvpMonthAwards:[]};changed=true;} // Sprint 130
+    // Sprint 134: nuovi premi di lega in playerAwards
+    if(newP.playerAwards&&!('leagueMvpYears' in newP.playerAwards)){newP={...newP,playerAwards:{...newP.playerAwards,leagueMvpYears:[],leagueTopScorerYears:[],teamOfYearYears:[]}};changed=true;}
     if(changed){setPlayer(newP);}
   },[]);// eslint-disable-line
   const[darkMode,setDarkMode]=useState(()=>localStorage.getItem("cpm-dark")==="1");
@@ -12000,26 +12096,33 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
         const _aw=generateSeasonAwards(p,finalStandings);
         // Sprint 57: rival earns awards when they outperform the player
         if(rivalUpdate.rival){const _rAws={palloneOros:[...(rivalUpdate.rival.awards?.palloneOros||[])],scarpaOros:[...(rivalUpdate.rival.awards?.scarpaOros||[])]};if(rivalUpdate.rival.goals>=(p.goals||0)&&rivalUpdate.rival.goals>=16&&!_aw.palloneOro.playerWins)_rAws.palloneOros=[..._rAws.palloneOros,p.season||1];if(rivalUpdate.rival.goals>=(p.goals||0)&&rivalUpdate.rival.goals>=13&&!_aw.scarpaOro.playerWins)_rAws.scarpaOros=[..._rAws.scarpaOros,p.season||1];rivalUpdate={rival:{...rivalUpdate.rival,awards:_rAws}};}
-        const _awMorale=(_aw.palloneOro.playerWins?15:0)+(_aw.scarpaOro.playerWins?10:0)+(_aw.youngPlayer.playerWins?8:0)+(_aw.seasonRecord.beaten?12:0)-(_aw.rival&&!_aw.rival.playerWins?4:0);
-        const _awPop=(_aw.palloneOro.playerWins?12:0)+(_aw.scarpaOro.playerWins?8:0)+(_aw.youngPlayer.playerWins?6:0);
+        const _awMorale=(_aw.palloneOro.playerWins?20:0)+(_aw.scarpaOro.playerWins?15:0)+(_aw.leagueMvp?.playerWins?10:0)+(_aw.leagueTopScorer?.playerWins?8:0)+(_aw.youngPlayer.playerWins?6:0)+(_aw.leagueTeamOfYear?4:0)+(_aw.seasonRecord.beaten?12:0)-(_aw.rival&&!_aw.rival.playerWins?4:0);
+        const _awPop=(_aw.palloneOro.playerWins?18:0)+(_aw.scarpaOro.playerWins?12:0)+(_aw.leagueMvp?.playerWins?8:0)+(_aw.leagueTopScorer?.playerWins?6:0)+(_aw.youngPlayer.playerWins?5:0)+(_aw.leagueTeamOfYear?3:0);
         const prevAwards=p.playerAwards||{palloneOros:[],scarpaOros:[],youngYears:[],seasonRecords:[]};
         const newPlayerAwards={
           palloneOros:_aw.palloneOro.playerWins?[...(prevAwards.palloneOros||[]),p.season]:(prevAwards.palloneOros||[]),
           scarpaOros:_aw.scarpaOro.playerWins?[...(prevAwards.scarpaOros||[]),p.season]:(prevAwards.scarpaOros||[]),
           youngYears:_aw.youngPlayer.playerWins?[...(prevAwards.youngYears||[]),p.season]:(prevAwards.youngYears||[]),
           seasonRecords:_aw.seasonRecord.beaten?[...(prevAwards.seasonRecords||[]),{season:p.season,goals:p.goals||0}]:(prevAwards.seasonRecords||[]),
+          // Sprint 134: nuovi premi di lega
+          leagueMvpYears:_aw.leagueMvp?.playerWins?[...(prevAwards.leagueMvpYears||[]),p.season]:(prevAwards.leagueMvpYears||[]),
+          leagueTopScorerYears:_aw.leagueTopScorer?.playerWins?[...(prevAwards.leagueTopScorerYears||[]),p.season]:(prevAwards.leagueTopScorerYears||[]),
+          teamOfYearYears:_aw.leagueTeamOfYear?[...(prevAwards.teamOfYearYears||[]),p.season]:(prevAwards.teamOfYearYears||[]),
         };
-        // Sprint 51: diary entries for season-end awards
+        // Sprint 51/134: diary entries for season-end awards
         const _se51=[];
-        if(_aw.palloneOro.playerWins)_se51.push({season:p.season||1,week:38,type:"pallone_oro",e:"🏆",headline:"Pallone d'Oro!",body:`Miglior giocatore S.${p.season||1} — ${p.goals||0}⚽ ${p.assists||0}🎯 · ${p.club?.n||""}`,color:"#f59e0b"});
-        if(_aw.scarpaOro.playerWins)_se51.push({season:p.season||1,week:38,type:"scarpa_oro",e:"👟",headline:"Scarpa d'Oro!",body:`Capocannoniere S.${p.season||1} con ${p.goals||0} gol · ${p.club?.lg||""}`,color:"#ef4444"});
+        if(_aw.palloneOro.playerWins)_se51.push({season:p.season||1,week:38,type:"pallone_oro",e:"🏆",headline:"Pallone d'Oro UEFA!",body:`Miglior calciatore d'Europa S.${p.season||1} — ${p.goals||0}⚽ ${p.assists||0}🎯`,color:"#f59e0b"});
+        if(_aw.scarpaOro.playerWins)_se51.push({season:p.season||1,week:38,type:"scarpa_oro",e:"👟",headline:"Scarpa d'Oro UEFA!",body:`Capocannoniere d'Europa S.${p.season||1} con ${p.goals||0} gol`,color:"#ef4444"});
+        if(_aw.leagueTopScorer?.playerWins)_se51.push({season:p.season||1,week:38,type:"league_top_scorer",e:"⚽",headline:`Capocannoniere — ${p.club?.lg||"Lega"}!`,body:`${p.goals||0} gol in S.${p.season||1} · miglior marcatore del campionato`,color:"#16a34a"});
+        if(_aw.leagueMvp?.playerWins)_se51.push({season:p.season||1,week:38,type:"league_mvp",e:"🏅",headline:`MVP della Stagione — ${p.club?.lg||"Lega"}!`,body:`Miglior calciatore del campionato S.${p.season||1}`,color:"#6366f1"});
+        if(_aw.leagueTeamOfYear)_se51.push({season:p.season||1,week:38,type:"team_of_year",e:"📋",headline:"Squadra dell'Anno!",body:`Selezionato nell'XI ideale della ${p.club?.lg||"Lega"} S.${p.season||1}`,color:"#0ea5e9"});
         if(_aw.seasonRecord.beaten)_se51.push({season:p.season||1,week:38,type:"record",e:"📈",headline:"Record stagionale battuto!",body:`${p.goals||0} gol in S.${p.season||1} — nuovo primato di lega!`,color:"#7c3aed"});
         return{...p,history:[...(p.history||[]),hist],trophies:newTrophies,worldMemory:newMem,...rivalUpdate,
           morale:clamp((p.morale||70)+_awMorale,0,100),
           popularity:clamp((p.popularity||20)+_awPop,0,100),
           playerAwards:newPlayerAwards,
           diary:[...(p.diary||[]),..._se51].slice(-80),
-          log:[`🏁 Fine S.${p.season}: ${p.goals}⚽ ${p.assists}🎯${_aw.palloneOro.playerWins?" 🏆PdO":""}${_aw.scarpaOro.playerWins?" ⚽SdO":""}${_aw.seasonRecord.beaten?" 📈REC":""}`,...(p.log||[])].slice(0,60)};
+          log:[`🏁 Fine S.${p.season}: ${p.goals}⚽ ${p.assists}🎯${_aw.palloneOro.playerWins?" 🌍PdO":""}${_aw.scarpaOro.playerWins?" 👟SdO":""}${_aw.leagueTopScorer?.playerWins?" ⚽Cap":""}${_aw.leagueMvp?.playerWins?" 🏅MVP":""}${_aw.leagueTeamOfYear?" 📋XI":""}${_aw.seasonRecord.beaten?" 📈REC":""}`,...(p.log||[])].slice(0,60)};
       });
       // Sprint 87: compute awards before setSeasonEndData so we can pass them
       const _awards=generateSeasonAwards(player,finalStandings);
@@ -15568,17 +15671,22 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
               )}
             </Card>
           )}
-          {/* Sprint 126 — Corsa ai Premi stagionali */}
+          {/* Sprint 134 — Corsa ai Premi (lega + europei) */}
           {(player.proStatus==="pro"&&(player.week||1)>=8)&&(()=>{
             const _g=player.goals||0,_a=player.assists||0,_ovr=player.ovr||60,_age=player.age||20;
-            const _palOvrOk=_ovr>=78;
-            const _palGoalOk=_g>=14||(_g>=10&&_a>=8);
-            const _palPct=Math.min(100,Math.round(_g/14*100));
             const _lgPres=player.club?.p||65;
-            const _topEst=Math.max(12,Math.round(_lgPres*0.22));
-            const _scarpaPct=Math.min(100,Math.round(_g/_topEst*100));
+            // Premi di lega
+            const _topEst=Math.max(8,Math.round(_lgPres*0.20));
+            const _capoPct=Math.min(100,Math.round(_g/_topEst*100));
+            const _mvpGoalOk=_g>=8||_a>=8;
+            const _mvpPct=Math.min(100,Math.round((_g+_a)/16*100));
             const _isGB=_age<=23;
-            const _gbPct=_isGB?Math.min(100,Math.round(_g/8*100)):0;
+            const _gbPct=_isGB?Math.min(100,Math.round((_g+_a)/10*100)):0;
+            // Premi europei (soglie molto più alte)
+            const _palOvrOk=_ovr>=85;
+            const _palGoalOk=_g>=22||(_g>=18&&_a>=10);
+            const _palPct=Math.min(100,Math.round(_g/22*100));
+            const _scarpaEuPct=Math.min(100,Math.round(_g/28*100));
             const _bar=(pct,col)=>(
               <div style={{background:"#e5e7eb",borderRadius:4,height:5,overflow:"hidden",marginBottom:2}}>
                 <div style={{width:pct+"%",height:"100%",background:col,borderRadius:4,transition:"width .4s"}}/>
@@ -15586,32 +15694,56 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
             );
             return(
               <Card style={{padding:"12px 14px"}}>
-                <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:10}}>🎯 Corsa ai Premi — S.{player.season||1}</div>
-                <div style={{marginBottom:10}}>
-                  <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:3}}>
-                    <span style={{fontSize:11,fontWeight:700,color:"#92400e"}}>🏆 Pallone d'Oro</span>
-                    <span style={{fontSize:9,color:TH.muted}}>{_g}/14 gol · OVR {_ovr}{_palOvrOk?" ✓":" (min.78)"}</span>
+                <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>🎯 Corsa ai Premi — S.{player.season||1}</div>
+                {/* Premi di lega */}
+                <div style={{fontSize:9,color:TH.primary,fontWeight:700,marginBottom:6,textTransform:"uppercase",letterSpacing:1}}>🏅 DI LEGA</div>
+                <div style={{marginBottom:8}}>
+                  <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:2}}>
+                    <span style={{fontSize:11,fontWeight:700,color:"#15803d"}}>⚽ Capocannoniere</span>
+                    <span style={{fontSize:9,color:TH.muted}}>{_g} gol · soglia ~{_topEst}</span>
                   </div>
-                  {_bar(_palPct,"#fbbf24")}
-                  <div style={{fontSize:9,color:TH.muted}}>{_palOvrOk?(_palGoalOk?"✅ In corsa — mantieni le prestazioni":"Serve: 14+ gol oppure 10G+8A"):"OVR 78+ richiesto"}</div>
+                  {_bar(_capoPct,"#16a34a")}
+                  <div style={{fontSize:9,color:TH.muted}}>{_capoPct>=100?"✅ Sei il bomber della lega!":"Sii il top scorer del campionato"}</div>
                 </div>
-                <div style={{marginBottom:_isGB?10:0}}>
-                  <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:3}}>
-                    <span style={{fontSize:11,fontWeight:700,color:"#991b1b"}}>⚽ Scarpa d'Oro</span>
-                    <span style={{fontSize:9,color:TH.muted}}>{_g} gol · soglia est. ~{_topEst}</span>
+                <div style={{marginBottom:_isGB?8:0}}>
+                  <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:2}}>
+                    <span style={{fontSize:11,fontWeight:700,color:"#4338ca"}}>🏅 MVP Stagione</span>
+                    <span style={{fontSize:9,color:TH.muted}}>{_g}G {_a}A · OVR {_ovr}</span>
                   </div>
-                  {_bar(_scarpaPct,"#ef4444")}
-                  <div style={{fontSize:9,color:TH.muted}}>{_scarpaPct>=100?"✅ Sei in vetta ai marcatori!":"Devi essere il capocannoniere a fine stagione"}</div>
+                  {_bar(_mvpPct,"#6366f1")}
+                  <div style={{fontSize:9,color:TH.muted}}>{_ovr>=70?(_mvpGoalOk?"✅ In corsa per l'MVP!":"Serve: 8+ gol o 8+ assist"):"OVR 70+ richiesto"}</div>
                 </div>
                 {_isGB&&(
-                  <div>
-                    <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:3}}>
-                      <span style={{fontSize:11,fontWeight:700,color:"#5b21b6"}}>🌟 Miglior Giovane</span>
+                  <div style={{marginBottom:8}}>
+                    <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:2}}>
+                      <span style={{fontSize:11,fontWeight:700,color:"#5b21b6"}}>💎 Giovane dell'Anno</span>
                       <span style={{fontSize:9,color:TH.muted}}>{_g}G {_a}A · età {_age}</span>
                     </div>
                     {_bar(_gbPct,"#7c3aed")}
-                    <div style={{fontSize:9,color:TH.muted}}>Disponibile fino a 23 anni · target: 8+ gol e buone prestazioni</div>
+                    <div style={{fontSize:9,color:TH.muted}}>U23 · target: 5+ gol e 10+ G+A</div>
                   </div>
+                )}
+                {/* Premi europei — solo se in corsa realistica */}
+                {_ovr>=78&&(
+                  <>
+                    <div style={{fontSize:9,color:"#f59e0b",fontWeight:700,marginBottom:6,marginTop:8,textTransform:"uppercase",letterSpacing:1,borderTop:"1px solid "+TH.cardBorder,paddingTop:8}}>🌍 EUROPEI (rare)</div>
+                    <div style={{marginBottom:8}}>
+                      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:2}}>
+                        <span style={{fontSize:11,fontWeight:700,color:"#92400e"}}>🏆 Pallone d'Oro UEFA</span>
+                        <span style={{fontSize:9,color:TH.muted}}>{_g}G · OVR {_ovr}{_palOvrOk?" ✓":" (min.85)"}</span>
+                      </div>
+                      {_bar(_palPct,"#fbbf24")}
+                      <div style={{fontSize:9,color:TH.muted}}>{_palOvrOk?(_palGoalOk?"✅ In corsa — devi anche vincere il campionato":"Serve: 22+ gol oppure 18G+10A, E vincere il titolo"):"OVR 85+ e titolo richiesti"}</div>
+                    </div>
+                    <div>
+                      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:2}}>
+                        <span style={{fontSize:11,fontWeight:700,color:"#991b1b"}}>👟 Scarpa d'Oro UEFA</span>
+                        <span style={{fontSize:9,color:TH.muted}}>{_g}/28 gol in Europa</span>
+                      </div>
+                      {_bar(_scarpaEuPct,"#ef4444")}
+                      <div style={{fontSize:9,color:TH.muted}}>{_scarpaEuPct>=100?"✅ Sei tra i migliori marcatori d'Europa!":"Devi battere i bomber di tutti i campionati europei (≥28 gol)"}</div>
+                    </div>
+                  </>
                 )}
               </Card>
             );
@@ -15678,6 +15810,9 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
               euro_mondiale_trophy:{e:"🌍",color:"#7c3aed"},
               contract_renewal:{e:"📋",color:"#2563eb"},
               mvp_mese:{e:"⭐",color:"#f59e0b"},
+              league_top_scorer:{e:"⚽",color:"#16a34a"}, // Sprint 134
+              league_mvp:{e:"🏅",color:"#6366f1"},
+              team_of_year:{e:"📋",color:"#0ea5e9"},
             };
             const dEntries=[...(player.diary||[])].reverse().slice(0,15);
             return(
