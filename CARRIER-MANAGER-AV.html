@@ -2426,7 +2426,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.4.1"; // Sprint 163: canvas maxHeight fixed to 320px, cronaca hidden during HL phases
+const GAME_VERSION="4.4.2"; // Sprint 164: DPad+actions overlaid on canvas during HL, canvas full height restored
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -5884,7 +5884,7 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
       <canvas ref={canvasRef}
         style={isDesktop
           ?{display:"block",height:"100%",width:"auto",maxWidth:"100%"}
-          :{display:"block",maxWidth:"100%",width:"auto",height:"auto",maxHeight:"320px"}}/>
+          :{display:"block",maxWidth:"100%",width:"auto",height:"auto"}}/>
     </div>
   );
 }
@@ -7925,13 +7925,69 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                 <div style={{height:"100%",width:`${pct}%`,background:"linear-gradient(90deg,"+TH.success+","+TH.warning+")",transition:"width .3s"}}/>
               </div>}
 
+              {/* Mobile HL overlay — DPad + actions on canvas, narrow only */}
+              {isNarrow&&phase==="hl_move"&&curSit&&(
+                <div style={{position:"absolute",bottom:0,left:0,right:0,zIndex:16,background:"rgba(5,8,20,0.86)",backdropFilter:"blur(3px)",padding:"8px 10px 10px"}}>
+                  <div style={{color:"#f59e0b",fontSize:10,fontWeight:700,marginBottom:5}}>{clock}' — {curSit.text}</div>
+                  <div style={{display:"flex",alignItems:"center",gap:10}}>
+                    {!curSit.lockMovement&&<DPad onMove={handleDPad} dark size={40}/>}
+                    <div style={{flex:1}}>
+                      {curSit.maxMoves>0&&<div style={{display:"flex",justifyContent:"space-between",fontSize:8,color:"rgba(255,255,255,0.4)",marginBottom:3}}><span>{"●".repeat(movesLeft)}{"○".repeat(Math.max(0,curSit.maxMoves-movesLeft))} {movesLeft} mov</span><span>⏱ {Math.round(pressureBar*100)}%</span></div>}
+                      {curSit.maxMoves>0&&<div style={{height:3,background:"rgba(255,255,255,0.12)",borderRadius:2}}><div style={{height:"100%",width:(pressureBar*100)+"%",background:pressureBar>0.4?"#f59e0b":pressureBar>0.2?"#f97316":"#ef4444",borderRadius:2,transition:"width 0.1s"}}/></div>}
+                      <div style={{fontSize:8,color:"rgba(255,255,255,0.3)",marginTop:3}}>📍 {ZONES[zone]?.label}</div>
+                    </div>
+                    <button onClick={()=>setPhase("hl_choose")} style={{padding:"10px 12px",borderRadius:8,border:"none",background:"#2563eb",color:"#fff",fontWeight:800,fontSize:14,cursor:"pointer",fontFamily:"inherit",flexShrink:0}}>✅</button>
+                  </div>
+                </div>
+              )}
+              {isNarrow&&phase==="hl_choose"&&curSit&&(
+                <div style={{position:"absolute",bottom:0,left:0,right:0,zIndex:16,background:"rgba(5,8,20,0.92)",backdropFilter:"blur(3px)",padding:"8px 10px 10px"}}>
+                  <div style={{fontSize:9,color:"rgba(255,255,255,0.45)",marginBottom:5}}>{clock}' — {curSit.text} &nbsp;·&nbsp; <span style={{color:defDist<25?"#f87171":defDist<50?"#f97316":"#4ade80",fontWeight:700}}>{defDist<25?"⚠ Addosso":defDist<50?"Vicino":"Libero"}</span></div>
+                  {curSit.text?.includes("RIGORE")?(
+                    <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:5}}>
+                      {["tl","tc","tr","bl","bc","br"].map(dir=>(
+                        <button key={dir} onClick={()=>handleRigore(dir)} style={{padding:"9px 4px",background:"rgba(0,0,0,0.6)",border:"1px solid rgba(255,255,255,0.18)",borderRadius:8,color:"#fff",cursor:"pointer",fontFamily:"inherit",display:"flex",flexDirection:"column",alignItems:"center",gap:3}}>
+                          <span style={{fontSize:16}}>{RIGORE_ARROWS[dir]}</span>
+                          <span style={{fontSize:8,color:"rgba(255,255,255,0.5)"}}>{RIGORE_LABELS[dir]}</span>
+                        </button>
+                      ))}
+                    </div>
+                  ):(
+                    <div style={{display:"flex",flexDirection:"column",gap:5}}>
+                      {(curSit.actions||[]).map((a,_oi)=>{
+                        const _dp2=defDist<25?15:defDist<50?8:0;
+                        const _rt2=Math.max(5,succRate(a,player.stats,pPos.x,oppPrestige,player.archetype?.id||player.archetype)-_dp2);
+                        const _rc2=_rt2>70?"#4ade80":_rt2>50?"#f59e0b":"#f87171";
+                        const _sel2=_oi===selectedActionIdx;
+                        return(
+                          <button key={_oi} onClick={()=>handleAction(a)}
+                            style={{padding:"10px",background:_sel2?"rgba(37,99,235,0.45)":"rgba(0,0,0,0.52)",border:_sel2?`1.5px solid ${_rc2}66`:`1px solid ${_rc2}33`,borderRadius:8,color:"#fff",cursor:"pointer",fontFamily:"inherit",display:"flex",alignItems:"center",gap:8,transition:"all .1s"}}>
+                            <div style={{width:18,height:18,borderRadius:"50%",background:_sel2?"#2563eb":"rgba(255,255,255,0.1)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:9,fontWeight:900,color:_sel2?"#fff":"rgba(255,255,255,0.5)",flexShrink:0}}>{_oi+1}</div>
+                            <div style={{fontSize:11,fontWeight:_sel2?700:400,color:"#e2e8f0",flex:1,textAlign:"left"}}>{a.label}</div>
+                            <div style={{fontSize:9,color:_rc2,fontWeight:700}}>{Math.round(_rt2)}%</div>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
+              )}
+              {isNarrow&&phase==="hl_result"&&outcome&&(
+                <div style={{position:"absolute",bottom:0,left:0,right:0,zIndex:16,background:outcome.ok?"rgba(5,50,20,0.93)":"rgba(50,5,5,0.93)",backdropFilter:"blur(3px)",padding:"10px 12px 12px"}}>
+                  <div style={{fontSize:14,fontWeight:900,color:outcome.ok?"#4ade80":"#f87171",marginBottom:3}}>{outcome.ok?"✅":"❌"} {chosenAct?.label}</div>
+                  <div style={{fontSize:11,color:"rgba(255,255,255,0.8)",lineHeight:1.4,marginBottom:4}}>{outcome.text}</div>
+                  {aiCommentary&&<div style={{fontSize:9,color:"rgba(255,255,255,0.55)",fontStyle:"italic"}}>{aiCommentary.reaction} {aiCommentary.commentary}</div>}
+                  <div style={{fontSize:8,color:"rgba(255,255,255,0.3)",marginTop:4}}>auto / Enter →</div>
+                </div>
+              )}
+
             </div>
 
-            {/* RIGHT: info + action panel — Sprint 160: mobile shows below field */}
-            <div style={isNarrow?{background:"#0f172a",borderTop:"1px solid rgba(255,255,255,0.10)"}:{flex:1,display:"flex",flexDirection:"column",background:"#0f172a",borderLeft:"1px solid rgba(255,255,255,0.08)",minWidth:180,overflow:"hidden"}}>
+            {/* RIGHT: info + action panel — desktop only for HL controls */}
+            <div style={isNarrow?(["hl_move","hl_choose","hl_result","hl_intro"].includes(phase)?{display:"none"}:{background:"#0f172a",borderTop:"1px solid rgba(255,255,255,0.10)"}):{flex:1,display:"flex",flexDirection:"column",background:"#0f172a",borderLeft:"1px solid rgba(255,255,255,0.08)",minWidth:180,overflow:"hidden"}}>
 
-              {/* Action zone — only during HL phases */}
-              {phase==="hl_move"&&curSit&&(
+              {/* Action zone — desktop only (mobile has overlay on canvas) */}
+              {!isNarrow&&phase==="hl_move"&&curSit&&(
                 <div style={{padding:"8px 10px",borderBottom:"1px solid rgba(255,255,255,0.08)"}}>
                   <div style={{color:"#f59e0b",fontSize:10,fontWeight:700,marginBottom:5}}>{clock}' — {curSit.text}</div>
                   <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:5}}>
@@ -7964,8 +8020,8 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                 </div>
               )}
 
-              {/* Sprint 160: hl_choose now visible on mobile below the field */}
-              {phase==="hl_choose"&&curSit&&(
+              {/* hl_choose — desktop only (mobile has overlay on canvas) */}
+              {!isNarrow&&phase==="hl_choose"&&curSit&&(
                 <div style={{padding:"8px 8px",borderBottom:"1px solid rgba(255,255,255,0.08)"}}>
                   <div style={{fontSize:8,color:"rgba(255,255,255,0.45)",marginBottom:4}}>{clock}' — {curSit.text}</div>
                   {/* DPad still visible in hl_choose when moves remain */}
@@ -8022,8 +8078,8 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                 </div>
               )}
 
-              {/* Sprint 160: hl_result now visible on mobile below the field */}
-              {phase==="hl_result"&&outcome&&(
+              {/* hl_result — desktop only (mobile has overlay on canvas) */}
+              {!isNarrow&&phase==="hl_result"&&outcome&&(
                 <div style={{padding:"10px",background:outcome.ok?"rgba(5,50,20,0.7)":"rgba(50,5,5,0.7)",borderBottom:"1px solid rgba(255,255,255,0.08)"}}>
                   <div style={{fontSize:14,fontWeight:900,color:outcome.ok?"#4ade80":"#f87171",marginBottom:4}}>{outcome.ok?"✅":"❌"} {chosenAct?.label}</div>
                   <div style={{fontSize:11,color:"rgba(255,255,255,0.8)",lineHeight:1.4,marginBottom:4}}>{outcome.text}</div>
