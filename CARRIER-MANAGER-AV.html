@@ -1476,11 +1476,11 @@ const ACHIEVEMENTS=[
 /* ========================================
    SITUATIONS  (con moveZone e startZone)
 ======================================== */
-const S=(text,zones,mz,sz,actions,lock=false,mm=-1,intro="",type="off")=>{
+const S=(text,zones,mz,sz,actions,lock=false,mm=-1,intro="",type="off",ctx=null)=>{
   // Infer maxMoves from first zone when not explicitly passed (mm=-1)
   const z0=zones[0];
   const inferredMM=mm>=0?mm:z0==="area"?2:z0==="bordo"?2:3;
-  return{text,zones,moveZone:mz,startZone:sz,actions,lockMovement:lock,maxMoves:lock?0:inferredMM,intro,type};
+  return{text,zones,moveZone:mz,startZone:sz,actions,lockMovement:lock,maxMoves:lock?0:inferredMM,intro,type,ctx};
 };
 const A=(label,stat,bon,rew,fail,nrg)=>({label,stat,bon,rew,fail,nrg});
 const SITUATIONS=[
@@ -1639,7 +1639,7 @@ S("🔴 RIGORE! Sul dischetto a 5' dalla fine. Respira. Tira.",["area"],{x:[84,9
   A("💥 Angolo basso — potenza","tiro",12,"goal","miss_easy",10),A("🌀 Cucchiaio — glaciale","tecnica",2,"goal","miss_easy",20),A("⚡ Incrociato rasoterra","velocità",6,"goal","miss",14)],true,0,"⏱ Cinque minuti alla fine. Il rigore che vale tutto. Respira.","off"),
 /* Rimonta — sotto di due gol */
 S("🔙 Siamo sotto 0-2. Segnare adesso cambia tutto.",["trequarti","bordo"],{x:[55,80],y:[25,75]},{x:[58,72],y:[30,70]},[
-  A("🔥 Prendo in mano la squadra","mentalità",8,"goal","through",18),A("⚡ Scatto in verticale","velocità",6,"goal","intercept",16),A("🎯 Lancio smarcante","passaggio",5,"assist","intercept",12)]),
+  A("🔥 Prendo in mano la squadra","mentalità",8,"goal","through",18),A("⚡ Scatto in verticale","velocità",6,"goal","intercept",16),A("🎯 Lancio smarcante","passaggio",5,"assist","intercept",12)],false,-1,"","off","losing"),
 /* Doppia marcatura */
 S("👥 Doppia marcatura! Due difensori ti raddoppiano.",["trequarti"],{x:[55,70],y:[20,80]},{x:[58,68],y:[28,72]},[
   A("🌀 Dribbling stretto — li elimino entrambi","tecnica",10,"goal","intercept",18),A("↩️ Dai e ricevi — smarca il compagno","passaggio",7,"assist","intercept",14),A("⚡ Scatto diagonale istantaneo","velocità",5,"goal","intercept",16)]),
@@ -1820,7 +1820,7 @@ S("🏃 Pressing coordinato — recupera!",["trequarti","centro"],{x:[40,72],y:[
 
 /* SITUAZIONI NARRATIVE E SPECIALI */
 S("🔥 Siamo in vantaggio — gestisci!",["trequarti","centro"],{x:[38,75],y:[22,78]},{x:[42,62],y:[28,72]},[
-  A("🔥 Porta palla nell'angolo","tecnica",5,"goal","nothing",12),A("↩️ Passaggio sicuro laterale","passaggio",4,"assist","nothing",6),A("💥 Rilancio offensivo in profondità","velocità",3,"goal","intercept",14)]),
+  A("🔥 Porta palla nell'angolo","tecnica",5,"goal","nothing",12),A("↩️ Passaggio sicuro laterale","passaggio",4,"assist","nothing",6),A("💥 Rilancio offensivo in profondità","velocità",3,"goal","intercept",14)],false,-1,"","off","winning"),
 S("⏱️ Due minuti alla fine — attacca!",["trequarti","bordo"],{x:[55,88],y:[22,78]},{x:[58,74],y:[28,72]},[
   A("💥 Tiro dalla distanza!","tiro",-3,"goal","miss",14),A("⚡ Sprint verso la porta","velocità",6,"goal","intercept",18),A("🎯 Assist preciso","passaggio",5,"assist","intercept",12)],false,3,"⏱️ Mancano 2 minuti! Adesso o mai più!"),
 S("🌧️ Campo pesante — pioggia torrenziale!",["trequarti","bordo"],{x:[55,88],y:[22,78]},{x:[58,74],y:[28,72]},[
@@ -1882,7 +1882,7 @@ S("🛡️ Ultimo uomo! Devi fermare l'avversario.",["propria","difesa"],{x:[5,2
 S("😱 Il portiere è fuori dai pali! Tira da lontano.",["trequarti","bordo"],{x:[55,78],y:[28,72]},{x:[58,70],y:[32,68]},[
   A("💥 Tiro da distanza sul palo lontano","tiro",5,"goal","miss",16),A("🎯 Pallonetto morbido — gol dell'anno","tecnica",3,"goal","miss_easy",14),A("🎯 Assist per il compagno in area","passaggio",6,"assist","intercept",10)]),
 S("🔥 CI CREDIAMO! La rimonta è iniziata.",["bordo","area"],{x:[72,96],y:[22,78]},{x:[74,88],y:[28,72]},[
-  A("🔥 Tiro di rabbia — per i tifosi","tiro",6,"goal","miss",16),A("💥 Potenza esplosiva dal limite","tiro",2,"goal","miss",14),A("🌟 Assist da campione","passaggio",7,"assist","intercept",12)],false,3,"🔥 La rimonta è viva. Un gol adesso e tutto è possibile!","special"),
+  A("🔥 Tiro di rabbia — per i tifosi","tiro",6,"goal","miss",16),A("💥 Potenza esplosiva dal limite","tiro",2,"goal","miss",14),A("🌟 Assist da campione","passaggio",7,"assist","intercept",12)],false,3,"🔥 La rimonta è viva. Un gol adesso e tutto è possibile!","special","losing"),
 S("🏃 Corsa in area — stacca di testa in corsa!",["area"],{x:[78,96],y:[22,78]},{x:[80,92],y:[28,72]},[
   A("✈️ Stacco in corsa potente","fisico",6,"goal","miss",16),A("🎯 Colpo di testa angolato","fisico",4,"goal","miss",14),A("🦵 Lascia passare e tira di piede","tecnica",3,"goal","miss",12)]),
 S("⚡ Difensore saltato! La porta è aperta.",["area"],{x:[80,97],y:[22,78]},{x:[82,93],y:[28,72]},[
@@ -2426,7 +2426,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.1.8"; // Sprint 148: fix bench entry minute — survived coachDecision reset via ref
+const GAME_VERSION="4.1.9"; // Sprint 149: HL score ctx — skip situations with wrong score context
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -6580,6 +6580,8 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     return v;
   });
   const [situations,setSituations]=useState(()=>selectContextualSituations([...SITUATIONS],numHLRef.current,player,(player.season||1)*1000+(player.week||1)*13));
+  const situationsRef=useRef(situations);
+  useEffect(()=>{situationsRef.current=situations;},[situations]);
   useEffect(()=>{numHLRef.current=numHL;},[numHL]);
   useEffect(()=>{hlTimesRef.current=hlTimes;},[hlTimes]);
   // Sprint 33 C7 / Sprint 118 — bench start mechanic
@@ -7127,7 +7129,12 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
         const nx=c+1;
         if(nx>=90){setPhase("ended");return 90;}
         if(hlIdx<hlTimesRef.current.length&&nx>=hlTimesRef.current[hlIdx]){
-          if(onBenchRef.current){setHlIdx(hi=>hi+1);}else{setPhase("hl_intro");}
+          if(onBenchRef.current){setHlIdx(hi=>hi+1);}else{
+            const _sc=scoreRef.current;
+            const _realCtx=_sc.home>_sc.away?"winning":_sc.home<_sc.away?"losing":"drawing";
+            const _sitCtx=situationsRef.current[hlIdx]?.ctx||null;
+            if(_sitCtx&&_sitCtx!==_realCtx){setHlIdx(hi=>hi+1);}else{setPhase("hl_intro");}
+          }
           return nx;
         }
         // Sprint 94 — Weather commentary (15% chance when bad weather)
