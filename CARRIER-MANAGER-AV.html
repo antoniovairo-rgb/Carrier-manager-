@@ -2426,7 +2426,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.2.4"; // Sprint 154: simulateAndAdvance resets training state (sessionsThisWeek/sessionLog/weeklyFocusType) on all 6 advance paths
+const GAME_VERSION="4.2.5"; // Sprint 155: national team uses own kit colors and chant identity (not club's)
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -6769,12 +6769,15 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   const addCom=useCallback((text,color,t)=>{setComs(p=>[{text,color,t:t??clockRef.current},...p].slice(0,16));},[]); // stable — clockRef via ref, non dipende da clock state
   // Component-scope chantFor — tracks timer IDs so they can be cleared on phase exit
   const chantFor=(type,dur=2800)=>{
-    const clubN=player.club?.a||player.club?.n||player.club?.name||"la squadra";
-    const lg=player.club?.lg||"";
+    // Sprint 155: use national team identity when in national context
+    const _isNat=context==="national"||context==="nationsCup"||context==="euroMondiale_group"||context==="euroMondiale_ko"||context==="euroMondiale";
+    const _natD=_isNat?(NAT_CLUB_DATA[player.nation||"Italia"]||{a:"ITA",c:"#003399"}):null;
+    const clubN=_isNat?(_natD?.a||player.nation||"Nazionale"):(player.club?.a||player.club?.n||player.club?.name||"la squadra");
+    const lg=_isNat?"":( player.club?.lg||"");
     const lgPool=(CROWD_CHANTS_LG[lg]||{})[type];
     const pool=lgPool||CROWD_CHANTS[type]||CROWD_CHANTS.home;
     const t=pick(pool);
-    const clubCol=player.club?.c||"#4ade80";
+    const clubCol=_isNat?(_natD?.c||"#003399"):(player.club?.c||"#4ade80");
     setCrowdChant({text:t.replace(/\[CLUB\]/g,clubN),type,key:Date.now(),clubCol});
     const tid=setTimeout(()=>setCrowdChant(null),dur);
     chantTimersRef.current.push(tid);
@@ -7639,7 +7642,8 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   const heroKitCol=isNatCtx?(_myNatData?.c||"#003399"):(player.club?.c||"#22c55e");
   const heroKitCol2=isNatCtx?(_myNatData?.c2||"#ffffff"):(player.club?.c2||"#ffffff");
   // PitchCanvas kit colors: homeCol=player's team, oppCol=opponent (pitch layout: player always attacks from "home" side)
-  const homeKitCol=player.club?.c||"#22c55e";
+  // Sprint 155: use national kit color when in national context
+  const homeKitCol=isNatCtx?(_myNatData?.c||"#003399"):(player.club?.c||"#22c55e");
   const awayKitCol=resolveKitConflict(homeKitCol,opponent?.c||"#ef4444");
   // Scoreboard display colors: left=TRUE home team, right=TRUE away team
   const scoreHomeCol=isNatCtx?heroKitCol:isMatchHome?(player.club?.c||"#22c55e"):(opponent?.c||"#ef4444");
