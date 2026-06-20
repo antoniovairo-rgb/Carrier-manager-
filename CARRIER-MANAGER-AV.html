@@ -2426,7 +2426,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.1.9"; // Sprint 149: HL score ctx — skip situations with wrong score context
+const GAME_VERSION="4.2.0"; // Sprint 150: stabilization — form bounds [30,95], morale null-safety, migration normalization
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -10998,7 +10998,7 @@ const TrainPanel=({player,setPlayer,notify})=>{
       if(isRec){const full=tid==="rec_completo";fatD-=(full?26:13);morD+=(full?10:5);formD+=(full?2:1);newLog.push({id:tid,e:full?"🛌":"🧘",l:full?"Riposo":"Recupero",col:"#0284c7"});}
       else{const s=_TT[tid];if(!s)return;const pA=Math.min(0.85,_dim(ns[s.a])*_mult);const pB=Math.min(0.55,_dim(ns[s.b])*0.5*_mult);const gA=Math.random()<pA?1:0;const gB=Math.random()<pB?1:0;if(gA){ns[s.a]=clamp((ns[s.a]||60)+1,1,99);gained[s.a]=(gained[s.a]||0)+1;}if(gB){ns[s.b]=clamp((ns[s.b]||60)+1,1,99);gained[s.b]=(gained[s.b]||0)+1;}fatD+=10;newLog.push({id:s.id,e:s.e,l:s.l,col:s.col,gainA:gA,gainB:gB,statA:s.a,statB:s.b});}
     });
-    setPlayer(p=>({...p,stats:ns,ovr:calcOvr(ns),fatigue:clamp((p.fatigue||0)+fatD,0,100),morale:clamp((p.morale||70)+morD,0,100),form:clamp((p.form||60)+formD,0,100),sessionsThisWeek:3,sessionLog:newLog,trainingStreak:(p.trainingStreak||0)+1,lastTrainingType:_plan[0],weeklyFocusType:_t0}));
+    setPlayer(p=>({...p,stats:ns,ovr:calcOvr(ns),fatigue:clamp((p.fatigue||0)+fatD,0,100),morale:clamp((p.morale||70)+morD,0,100),form:clamp((p.form||60)+formD,30,95),sessionsThisWeek:3,sessionLog:newLog,trainingStreak:(p.trainingStreak||0)+1,lastTrainingType:_plan[0],weeklyFocusType:_t0}));
     const gkeys=Object.keys(gained);
     notify(`✅ W.${week}: ${gkeys.length?gkeys.map(k=>`+${gained[k]} ${k}`).join(" · "):"nessuna crescita questa settimana"}`,gkeys.length?TH.success:TH.muted);
   },[]);
@@ -11230,6 +11230,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     if(!('mvpMonthAwards' in newP)){newP={...newP,mvpMonthAwards:[]};changed=true;} // Sprint 130
     // Sprint 134: nuovi premi di lega in playerAwards
     if(newP.playerAwards&&!('leagueMvpYears' in newP.playerAwards)){newP={...newP,playerAwards:{...newP.playerAwards,leagueMvpYears:[],leagueTopScorerYears:[],teamOfYearYears:[]}};changed=true;}
+    if((newP.form||70)<30||(newP.form||70)>95){newP={...newP,form:clamp(newP.form||70,30,95)};changed=true;} // Sprint 150: normalize form to canonical [30,95]
     if(changed){setPlayer(newP);}
   },[]);// eslint-disable-line
   const[darkMode,setDarkMode]=useState(()=>localStorage.getItem("cpm-dark")==="1");
@@ -11566,7 +11567,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
         const newGR=[...(p.euro?.groupResults||[]),{opp:opp.n,oppCol:opp.c,home:md2.isHome,won:sim.won,drew:sim.drew,hs:sim.homeScore,as:sim.awayScore}];
         const newPts=(p.euro?.pts||0)+pts;
         notify(`🌍 ${md2.competition} (sim): ${sim.homeScore}–${sim.awayScore} vs ${opp.n}`,sim.won?TH.success:sim.drew?TH.warning:TH.danger);
-        return{...p,calendar:newCal,matchHistory:[...(p.matchHistory||[]),{week:p.week||1,opponent:opp.n,oppAbbr:opp.a,oppCol:opp.c,homeScore:sim.homeScore,awayScore:sim.awayScore,goals:0,assists:0,rating:sim.rating,won:sim.won,drew:sim.drew,simulated:true,euro:true}].slice(-200),matches:(p.matches||0)+1,morale:clamp(p.morale+(sim.won?3:sim.drew?1:-2),0,100),week:_pendingSim?(p.week||1):(p.week||1)+1,weekLived:_pendingSim?true:false,euro:{...p.euro,groupResults:newGR,pts:newPts}};
+        return{...p,calendar:newCal,matchHistory:[...(p.matchHistory||[]),{week:p.week||1,opponent:opp.n,oppAbbr:opp.a,oppCol:opp.c,homeScore:sim.homeScore,awayScore:sim.awayScore,goals:0,assists:0,rating:sim.rating,won:sim.won,drew:sim.drew,simulated:true,euro:true}].slice(-200),matches:(p.matches||0)+1,morale:clamp((p.morale||70)+(sim.won?3:sim.drew?1:-2),0,100),week:_pendingSim?(p.week||1):(p.week||1)+1,weekLived:_pendingSim?true:false,euro:{...p.euro,groupResults:newGR,pts:newPts}};
       }
       // Euro knockout match
       if(isEuroKO){
@@ -12055,7 +12056,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
         if(ef.fisico)newStats.fisico=clamp(p.stats.fisico+ef.fisico,1,99);
         if(ef.mentalità)newStats.mentalità=clamp(p.stats.mentalità+ef.mentalità,1,99);
         const newOvr=calcOvr(newStats);
-        return{...p,weekLived:true,fatigue:clamp((p.fatigue||0)+(ef.fatigue||0),0,100),morale:clamp((p.morale||70)+(ef.morale||0),0,100),form:clamp((p.form||70)+(ef.form||0),0,100),stats:newStats,ovr:newOvr};
+        return{...p,weekLived:true,fatigue:clamp((p.fatigue||0)+(ef.fatigue||0),0,100),morale:clamp((p.morale||70)+(ef.morale||0),0,100),form:clamp((p.form||70)+(ef.form||0),30,95),stats:newStats,ovr:newOvr};
       });
       const iT=INJURY_TYPES_META[type]||{label:"Infortunio",icon:"🩹"};
       setTimeout(()=>setWeekLiveModal({event:{txt:rehab.txt},changes:{fatigue:ef.fatigue||0,morale:ef.morale||0,form:ef.form||0},isRehab:true,rehabIcon:rehab.icon,injuryLabel:iT.label,injuryWeeks:wk}),50);
@@ -12112,7 +12113,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
         const extras={
           morale:clamp((p.morale||70)+(ef.morale||0),0,100),
           fatigue:clamp((p.fatigue||0)+(ef.fatigue||0),0,100),
-          form:clamp((p.form||70)+(ef.form||0),0,100),
+          form:clamp((p.form||70)+(ef.form||0),30,95),
           popularity:clamp((p.popularity||20)+(ef.popularity||0),0,100),
           coachTrust:clamp((p.coachTrust||60)+(ef.coachTrust||0),0,100),
           value:Math.max(0.5,(p.value||0.8)+(ef.value||0)),
@@ -12397,7 +12398,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       if(!p.injured&&Math.random()<0.25){
         const re=WEEKLY_RANDOM_EVENTS[Math.floor(Math.random()*WEEKLY_RANDOM_EVENTS.length)];
         const ef=re.ef||{};
-        const extras={morale:clamp((p.morale||70)+(ef.morale||0),0,100),fatigue:clamp((p.fatigue||0)+(ef.fatigue||0),0,100),form:clamp((p.form||70)+(ef.form||0),0,100),popularity:clamp((p.popularity||20)+(ef.popularity||0),0,100),coachTrust:clamp((p.coachTrust||60)+(ef.coachTrust||0),0,100),value:Math.max(0.5,(p.value||0.8)+(ef.value||0))};
+        const extras={morale:clamp((p.morale||70)+(ef.morale||0),0,100),fatigue:clamp((p.fatigue||0)+(ef.fatigue||0),0,100),form:clamp((p.form||70)+(ef.form||0),30,95),popularity:clamp((p.popularity||20)+(ef.popularity||0),0,100),coachTrust:clamp((p.coachTrust||60)+(ef.coachTrust||0),0,100),value:Math.max(0.5,(p.value||0.8)+(ef.value||0))};
         setTimeout(()=>setWeekLiveModal({event:re,changes:{morale:ef.morale||0,form:ef.form||0,fatigue:ef.fatigue||0}}),100);
         updP={...updP,...extras};
       }
@@ -13389,7 +13390,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                     coachTrust:clamp((p.coachTrust||60)+(ef.coachTrust||0),0,100),
                     morale:clamp((p.morale||70)+(ef.morale||0),0,100),
                     fatigue:clamp((p.fatigue||0)+(ef.fatigue||0),0,100),
-                    form:clamp((p.form||70)+(ef.form||0),0,100),
+                    form:clamp((p.form||70)+(ef.form||0),30,95),
                     value:Math.max(0.5,(p.value||0.8)+(ef.value||0)),
                     stats:{...p.stats,...(ef.tiro?{tiro:clamp(p.stats.tiro+(ef.tiro||0),1,99)}:{}),...(ef.mentalità?{mentalità:clamp(p.stats.mentalità+(ef.mentalità||0),1,99)}:{})},
                   }));
