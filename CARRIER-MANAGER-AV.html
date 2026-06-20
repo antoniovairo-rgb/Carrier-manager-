@@ -2426,7 +2426,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.1.1"; // Sprint 141: fix cup match showing league name instead of Coppa Nazionale
+const GAME_VERSION="4.1.2"; // Sprint 142: bench entry minute randomized (46-80' range), no more fixed 60'
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -3569,14 +3569,16 @@ function calcCoachDecision(player,matchWeight=1){
       :(fatigue>80?"Non sei in condizione fisica di giocare. Ti serve riposo.":"Il tecnico ha preferito altri. Lavora in allenamento per riconquistare un posto.");
   } else if(score<50||fatigue>78){
     status="bench";
-    entryMinute=trust>=60?46:trust>=40?60:73;
+    // Sprint 142: variazione realistica del minuto d'ingresso (no più minuto fisso)
+    const _rnd=(min,max)=>min+Math.floor(Math.random()*(max-min+1));
+    entryMinute=trust>=65?_rnd(46,58):trust>=45?_rnd(55,70):_rnd(63,80);
     reason=fatigue>78
-      ?"Troppa stanchezza accumulata. Parti dalla panchina e tieniti pronto."
+      ?`Troppa stanchezza. Panchina — tieniti pronto, puoi entrare intorno al ${entryMinute}'.`
       :form<40
-      ?"Sei in un momento di appannamento. Parti dalla panchina e dimostra chi sei quando entri."
+      ?`Sei in un momento di appannamento. Panchina — entra al ${entryMinute}' e dimostra chi sei.`
       :trust<40
-      ?"C'è qualcuno davanti a te in questo momento. Parti dalla panchina — potresti entrare nel corso della partita."
-      :"Scelta tattica: oggi parti dalla panchina. Rimani concentrato e pronto.";
+      ?`C'è qualcuno davanti a te. Panchina — probabilmente entri intorno al ${entryMinute}'.`
+      :`Scelta tattica: oggi panchina. Preparati ad entrare verso il ${entryMinute}'.`;
   } else {
     status="starter";
     reason=trust>=80
