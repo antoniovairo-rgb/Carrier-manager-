@@ -2226,6 +2226,30 @@ function transferCredibility(playerOvr,playerSeasons,playerMatches,clubPrestige,
   if(playerSeasons<=2&&clubPrestige>82)return false;
   return true;
 }
+// Sprint 133: unified wage helpers — annual € from OVR, weekly from OVR+prestige, formatted string
+function _ovrToAnnualWage133(ovr){
+  const o=clamp(ovr||60,50,99);
+  if(o<=55)return 60000;
+  if(o<60)return 60000+(o-55)*12000;    // 60k–120k
+  if(o<65)return 120000+(o-60)*26000;   // 120k–250k
+  if(o<70)return 250000+(o-65)*90000;   // 250k–700k
+  if(o<75)return 700000+(o-70)*260000;  // 700k–2M
+  if(o<80)return 2000000+(o-75)*600000; // 2M–5M
+  if(o<85)return 5000000+(o-80)*1000000;// 5M–10M
+  if(o<90)return 10000000+(o-85)*1000000;// 10M–15M
+  if(o<95)return 15000000+(o-90)*1000000;// 15M–20M
+  return 20000000;
+}
+function _ovrToWageWeekly133(ovr,prestige){
+  const annual=_ovrToAnnualWage133(ovr||60);
+  const p=prestige||60;
+  const pm=p>=90?1.4:p>=80?1.2:p>=70?1.0:p>=60?0.85:p>=50?0.70:0.55;
+  return Math.round(clamp(annual*pm,0,20000000)/52);
+}
+function _fmtWageY133(weeklyWage){
+  const a=(weeklyWage||0)*52;
+  return a>=1000000?`€${Math.round(a/100000)/10}M`:a>=1000?`€${Math.round(a/100)/10}k`:`€${Math.round(a)}`;
+}
 // generate transfer offer based on player OVR and prestige match
 function generateTransferOffer(player){
   const pOvr=player.ovr||60;
@@ -2264,10 +2288,9 @@ function generateTransferOffer(player){
   const types=["prestito","prestito con riscatto","trasferimento definitivo"];
   const type=pOvr<65?"prestito":pOvr<73?pick(types.slice(0,2)):pick(types);
   const isPrestito=type.includes("prest");
-  // Wage: weekly (€), scales with OVR and club prestige
-  const _baseWage=pOvr<65?pOvr*18:pOvr<70?pOvr*30:pOvr<75?pOvr*55:pOvr<80?pOvr*90:pOvr<85?pOvr*150:pOvr<90?pOvr*250:pOvr*400;
-  const _clubMult=club.p>=90?1.35:club.p>=80?1.15:club.p>=70?1.0:0.85;
-  const wage=Math.round((_baseWage+rng(-_baseWage*0.1,_baseWage*0.1))*_clubMult*(player.hasAgent?1.15:1.0));
+  // Sprint 133: realistic wage from OVR + club prestige
+  const _baseWage=_ovrToWageWeekly133(pOvr,club.p);
+  const wage=Math.round(_baseWage*(1+rng(-0.1,0.1))*(player.hasAgent?1.15:1.0));
   const duration=isPrestito?1:rng(2,4);
   return{club,type,minutaggio:isPrestito?rng(30,70):rng(50,90),moralBonus:rng(5,20),growthBonus:rng(5,15),prestigeRatio:club.p/Math.max(1,currentP),wage,duration};
 }
@@ -2282,15 +2305,15 @@ function generateProContracts(player){
   // 1. Same club first pro contract — conditional on performance (Sprint 105)
   const parentName=((player.club?.n||player.club?.name||"?")+"").replace(/\s+(Primavera|U18)\s*$/i,"").trim();
   const parentClub={...(player.club||{}),n:parentName,name:parentName,isU18:false,p:(player.club?.p||55)+12};
-  // Sprint 98: realistic wage scaling (weekly €) — OVR 60=€900/w, 70=€2k, 80=€5k, 90=€15k
-  const _wageBase98=ovr<65?ovr*14:ovr<70?ovr*28:ovr<75?ovr*55:ovr<80?ovr*90:ovr<85?ovr*150:ovr<90?ovr*250:ovr*380;
+  // Sprint 133: use unified wage helper (weekly €)
+  const _wageWeek133=_ovrToWageWeekly133(ovr,parentClub.p||55);
   // Sprint 105: First Team offer requires minimum performance threshold
   const _qualifiesFirstTeam105=ovr>=64&&perf>=3.5;
   if(_qualifiesFirstTeam105){
-    offers.push({id:"same_pro",club:parentClub,contractType:"Primo contratto professionistico",wage:Math.round(clamp(_wageBase98+rng(-100,200),400,50000)*agentMult),duration:rng(1,3),role:ovr>=72?"Titolare giovane":ovr>=65?"Giovane promessa":"Aggregato alla rosa",moralBonus:14,growthBonus:perf>5?20:10,isMain:true});
+    offers.push({id:"same_pro",club:parentClub,contractType:"Primo contratto professionistico",wage:Math.round(clamp(_wageWeek133*(1+rng(-0.10,0.10)),500,500000)*agentMult),duration:rng(1,3),role:ovr>=72?"Titolare giovane":ovr>=65?"Giovane promessa":"Aggregato alla rosa",moralBonus:14,growthBonus:perf>5?20:10,isMain:true});
   }else{
     // Non confermato in prima squadra: proposta ridotta o solo prestito
-    offers.push({id:"same_pro",club:parentClub,contractType:ovr>=60?"Aggregato alla rosa (prestito interno)":"Non confermato — svincolo",wage:Math.round(clamp(_wageBase98*0.65+rng(-50,100),300,8000)*agentMult),duration:1,role:"Riserva giovane",moralBonus:-4,growthBonus:6,isMain:false,isNonConfirmed:true});
+    offers.push({id:"same_pro",club:parentClub,contractType:ovr>=60?"Aggregato alla rosa (prestito interno)":"Non confermato — svincolo",wage:Math.round(clamp(_wageWeek133*0.65*(1+rng(-0.08,0.08)),300,200000)*agentMult),duration:1,role:"Riserva giovane",moralBonus:-4,growthBonus:6,isMain:false,isNonConfirmed:true});
   }
   // 2. External club (credibility-filtered)
   if(perf>2||forced){
@@ -2300,14 +2323,14 @@ function generateProContracts(player){
     const extPool=CLUBS.filter(c=>c.p>=extMinP&&c.p<=extMaxP&&c.id!==parentClub.id);
     if(extPool.length){
       const ext=pick(extPool);
-      const _extWage98=Math.round(clamp(_wageBase98*0.9+rng(-100,300),400,50000)*agentMult*(ext.p>=80?1.2:1.0));
-      offers.push({id:"external",club:ext,contractType:ovr>=65?"Trasferimento definitivo":"Prestito annuale",wage:_extWage98,duration:ovr>=65?rng(2,3):1,role:ovr>=70?"Titolare":"Titolare garantito",moralBonus:8,growthBonus:15});
+      const _extWage133=Math.round(clamp(_ovrToWageWeekly133(ovr,ext.p)*(1+rng(-0.10,0.15)),400,500000)*agentMult);
+      offers.push({id:"external",club:ext,contractType:ovr>=65?"Trasferimento definitivo":"Prestito annuale",wage:_extWage133,duration:ovr>=65?rng(2,3):1,role:ovr>=70?"Titolare":"Titolare garantito",moralBonus:8,growthBonus:15});
     }
   }
   // 3. Loan to smaller club (always as fallback)
   const loanPool=CLUBS.filter(c=>c.p<68&&c.id!==parentClub.id);
   const loanClub=pick(loanPool.length?loanPool:CLUBS);
-  offers.push({id:"loan_small",club:loanClub,contractType:"Prestito",wage:rng(300,900),duration:1,role:"Minutaggio garantito",moralBonus:4,growthBonus:10});
+  offers.push({id:"loan_small",club:loanClub,contractType:"Prestito",wage:Math.round(clamp(_ovrToWageWeekly133(ovr,loanClub?.p||45)*(1+rng(-0.10,0.10)),300,80000)*agentMult),duration:1,role:"Minutaggio garantito",moralBonus:4,growthBonus:10});
   // 4. Stay another year in U18 (ONLY if under limit)
   if(!forced){
     const isLast=u18S>=1;
@@ -2383,7 +2406,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.0.2"; // Sprint 132: top-flight season-end labels CL/EL/ConL instead of Promozione
+const GAME_VERSION="4.0.3"; // Sprint 133: realistic wage progression 30k(U18)→20M(peak), unified helper _ovrToWageWeekly133
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -8093,7 +8116,7 @@ function ProTransitionScreen({player,onChoose}){
               <div style={{fontWeight:700,fontSize:13,color:TH.text}}>{o.club?.n||o.club?.name}</div>
               <div style={{fontSize:11,color:o.isMain?TH.primary:o.isStayU18?TH.warning:TH.muted,fontWeight:600}}>{o.contractType}</div>
               <div style={{fontSize:10,color:TH.muted,marginTop:1}}>
-                {o.role} · €{o.wage?Math.round(o.wage*52/1000*10)/10+"k/anno":"–"} · {o.duration} stagion{o.duration===1?"e":"i"}
+                {o.role} · {o.wage?_fmtWageY133(o.wage)+"/anno":"–"} · {o.duration} stagion{o.duration===1?"e":"i"}
               </div>
               <div style={{display:"flex",gap:5,marginTop:4,flexWrap:"wrap"}}>
                 <span style={{fontSize:9,padding:"2px 6px",borderRadius:10,background:o.moralBonus>=0?"#dcfce7":"#fee2e2",color:o.moralBonus>=0?TH.success:TH.danger}}>
@@ -8720,7 +8743,7 @@ function SeasonEndScreen({data,player,onNewSeason,onRetire}){
           <div style={{fontSize:11,fontWeight:700,color:contractExpiredNow?"#dc2626":contractYearsLeft===1?"#d97706":"#16a34a"}}>
             {contractExpiredNow?"Contratto scaduto — tratta il rinnovo o trova una squadra":contractYearsLeft===1?"Ultimo anno di contratto — occhio alle offerte":"Contratto attivo · "+contractYearsLeft+" ann"+(contractYearsLeft===1?"o":"i") + " rimanent"+(contractYearsLeft===1?"e":"i")}
           </div>
-          {(player.contract?.wage||0)>0&&<div style={{fontSize:9,color:TH.muted}}>€{Math.round((player.contract.wage||0)*52/1000)}k / anno</div>}
+          {(player.contract?.wage||0)>0&&<div style={{fontSize:9,color:TH.muted}}>{_fmtWageY133(player.contract.wage||0)} / anno</div>}
         </div>
       </div>
 
@@ -8939,7 +8962,7 @@ function CreateScreen({onCreate,legacyBonus,onClearLegacy}){
     const age=17;
     const challenge=challengeId?CHALLENGES.find(c=>c.id===challengeId):null;
     if(onClearLegacy)onClearLegacy();
-    const newPlayerBase={name:name.trim(),nation,avatarId,archetype:arc,position:"Attaccante",age,stats,ovr:calcOvr(stats),club:null,trialsDone:0,trialStats:[],season:1,week:1,weekLived:false,u18Seasons:0,isU18:true,proStatus:"u18",goals:0,assists:0,matches:0,totalGoals:0,totalAssists:0,totalMatches:0,morale:legacyBonus?clamp(70+(legacyBonus.moraleBoost||0),0,100):70,fatigue:0,popularity:20,skillPoints:2,log:[],history:[],matchHistory:[],value:0.8,coachTrust:60,form:70,transferOffers:[],offerHistory:[],contract:{duration:1,wage:rng(200,500),expiresAtSeason:2},aiData:{lastOpponentTactic:null,scoutReports:{},pressReports:{}},dreamClub:dreamClub||null,worldMemory:[],rival:null,saveVersion:SAVE_VERSION,...(legacyBonus?{legacyBonusLabel:legacyBonus.label}:{}),...(challenge?{challenge:{id:challenge.id,completed:false,failed:false}}:{})};
+    const newPlayerBase={name:name.trim(),nation,avatarId,archetype:arc,position:"Attaccante",age,stats,ovr:calcOvr(stats),club:null,trialsDone:0,trialStats:[],season:1,week:1,weekLived:false,u18Seasons:0,isU18:true,proStatus:"u18",goals:0,assists:0,matches:0,totalGoals:0,totalAssists:0,totalMatches:0,morale:legacyBonus?clamp(70+(legacyBonus.moraleBoost||0),0,100):70,fatigue:0,popularity:20,skillPoints:2,log:[],history:[],matchHistory:[],value:0.8,coachTrust:60,form:70,transferOffers:[],offerHistory:[],contract:{duration:1,wage:577,expiresAtSeason:2},aiData:{lastOpponentTactic:null,scoutReports:{},pressReports:{}},dreamClub:dreamClub||null,worldMemory:[],rival:null,saveVersion:SAVE_VERSION,...(legacyBonus?{legacyBonusLabel:legacyBonus.label}:{}),...(challenge?{challenge:{id:challenge.id,completed:false,failed:false}}:{})};
     onCreate({...newPlayerBase,teammates:generateTeammates(newPlayerBase),journalists:generateJournalists()});
   };
   const perPage=6;const totalPages=Math.ceil(AVATARS.length/perPage);const pageAvatars=AVATARS.slice(page*perPage,(page+1)*perPage);
@@ -12692,9 +12715,9 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
   // Sprint 54: Contract negotiation helpers
   const openNegoModal=()=>{
     const growthMult=(player.goals||0)>12?1.18:(player.goals||0)>6?1.08:0.97;
-    const rawWage=Math.round((player.contract?.wage||500)*growthMult);
-    const ovrCap=Math.round((player.ovr||65)*220);
-    const baseWage=clamp(rawWage,300,Math.min(ovrCap,20000));
+    const rawWage=Math.round((player.contract?.wage||577)*growthMult);
+    const ovrCap=_ovrToWageWeekly133(player.ovr||65,player.club?.p||60)*1.25; // Sprint 133
+    const baseWage=clamp(rawWage,500,ovrCap);
     const baseDur=rng(1,3);
     setNegoModal({baseWage,baseDuration:baseDur,step:"choose",playerAsk:null,clubFinalWage:null,clubFinalDuration:null});
   };
@@ -12712,7 +12735,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
   const _acceptNegoWage=(wage,duration)=>{
     const agentMult=player.hasAgent?1.15:1.0;
     const finalWage=Math.round(wage*agentMult);
-    const annKStr=`€${Math.round(finalWage*52/1000)}k/anno`;
+    const annKStr=`${_fmtWageY133(finalWage)}/anno`;
     setPlayer(p=>({...p,contract:{duration,wage:finalWage,expiresAtSeason:(p.season||1)+duration},contractExpired:false,agentRenewalBonus:0,morale:clamp((p.morale||70)+8,0,100),diary:[...(p.diary||[]),{season:p.season||1,week:p.week||1,type:"contract_renewal",e:"📋",headline:"Contratto rinnovato!",body:`${duration} ann${duration===1?"o":"i"} con ${p.club?.n||"–"} · ${annKStr}${p.hasAgent?" (+15% agente)":""}`,color:"#2563eb"}].slice(-80),log:[`📋 Rinnovo: ${duration} stag. a ${annKStr}`,...(p.log||[])].slice(0,60)}));
     setNegoModal(null);setTransferOffer(null);
     notify(`✅ Contratto rinnovato! ${duration} ann${duration===1?"o":"i"} · ${annKStr}`,TH.success);
@@ -12731,7 +12754,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       const finalRenewalWage=Math.round(baseRenewalWage*agentMult*(1+renewalTaskBonus));
       const agentPct=Math.round((agentMult-1)*100+(renewalTaskBonus*100));
       const agentNote=(player.hasAgent||renewalTaskBonus>0)?` 🤵 +${agentPct}%`:"";
-      setPlayer(p=>({...p,contract:{duration:tc.duration||2,wage:finalRenewalWage,expiresAtSeason:(p.season||1)+(tc.duration||2)},contractExpired:false,agentRenewalBonus:0,morale:clamp(p.morale+(tc.moralBonus||5),0,100),log:[`📋 Rinnovo contratto: ${tc.duration||2} stagion${(tc.duration||2)===1?"e":"i"} a €${Math.round(finalRenewalWage*52/1000)}k/anno${agentNote}`,...(p.log||[])].slice(0,60)}));
+      setPlayer(p=>({...p,contract:{duration:tc.duration||2,wage:finalRenewalWage,expiresAtSeason:(p.season||1)+(tc.duration||2)},contractExpired:false,agentRenewalBonus:0,morale:clamp(p.morale+(tc.moralBonus||5),0,100),log:[`📋 Rinnovo contratto: ${tc.duration||2} stagion${(tc.duration||2)===1?"e":"i"} a ${_fmtWageY133(finalRenewalWage)}/anno${agentNote}`,...(p.log||[])].slice(0,60)}));
       setTransferOffer(null);
       notify(`✅ Contratto rinnovato${agentNote||""}!`,TH.success);
       return;
@@ -13323,7 +13346,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
             {player.hasAgent&&!transferOffer.isRenewal&&!transferOffer._counter&&(
               <div style={{background:"#eff6ff",borderRadius:10,padding:"9px 12px",marginBottom:10,border:"1px solid #bfdbfe"}}>
                 <div style={{fontSize:10,color:TH.primary,fontWeight:700,marginBottom:4}}>🤵 Il tuo agente propone un counter:</div>
-                <div style={{fontSize:11,color:TH.text}}>Stipendio: <strong>€{Math.round((transferOffer.wage||500)*1.20*52/1000*10)/10}k/anno</strong> · Durata: <strong>{(transferOffer.duration||2)+1} stagioni</strong></div>
+                <div style={{fontSize:11,color:TH.text}}>Stipendio: <strong>{_fmtWageY133(Math.round((transferOffer.wage||577)*1.20))}/anno</strong> · Durata: <strong>{(transferOffer.duration||2)+1} stagioni</strong></div>
                 <button onClick={()=>setTransferOffer(o=>({...o,wage:Math.round((o.wage||500)*1.20),duration:(o.duration||2)+1,_counter:true}))} style={{marginTop:6,padding:"5px 12px",borderRadius:8,border:"1px solid "+TH.primary,background:"#fff",color:TH.primary,fontSize:11,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>Proponi counter →</button>
               </div>
             )}
@@ -13339,7 +13362,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       {/* Sprint 54: Contract Negotiation Modal */}
       {negoModal&&(()=>{
         const{baseWage,baseDuration,step,playerAsk,clubFinalWage,clubFinalDuration}=negoModal;
-        const annK=w=>Math.round((w||baseWage)*52/1000);
+        const annK=w=>_fmtWageY133(w||baseWage);
         const agentMult=player.hasAgent?1.15:1.0;
         const opts=[
           {label:"Accetta l'offerta del club",wage:baseWage,pct:0,desc:"Rinnovo sicuro alle condizioni proposte"},
@@ -13359,8 +13382,8 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                 <div style={{fontSize:10,color:TH.muted,marginBottom:4}}>Proposta del club</div>
                 <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
                   <div>
-                    <div style={{fontSize:13,fontWeight:800,color:TH.success}}>€{annK(baseWage)}k / anno</div>
-                    <div style={{fontSize:10,color:TH.muted,marginTop:2}}>{baseDuration} ann{baseDuration===1?"o":"i"} · €{baseWage}/sett.{player.hasAgent&&<span style={{color:TH.accent}}> → +15% agente</span>}</div>
+                    <div style={{fontSize:13,fontWeight:800,color:TH.success}}>{annK(baseWage)} / anno</div>
+                    <div style={{fontSize:10,color:TH.muted,marginTop:2}}>{baseDuration} ann{baseDuration===1?"o":"i"} · €{baseWage.toLocaleString()}/sett.{player.hasAgent&&<span style={{color:TH.accent}}> → +15% agente</span>}</div>
                   </div>
                   <div style={{fontSize:20,fontWeight:900,color:TH.success}}>✔</div>
                 </div>
@@ -13380,7 +13403,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                       }} style={{padding:"10px 14px",borderRadius:10,border:"1.5px solid "+TH.cardBorder,background:"#f8fafc",textAlign:"left",cursor:"pointer",fontFamily:"inherit",transition:"all .12s"}}>
                         <div style={{fontSize:12,fontWeight:700,color:TH.text}}>{o.label}</div>
                         <div style={{fontSize:10,color:TH.muted,marginTop:2}}>{o.desc}</div>
-                        {o.pct>0&&<div style={{fontSize:11,fontWeight:700,color:TH.primary,marginTop:3}}>€{annK(o.wage)}k / anno{player.hasAgent&&` → €${annK(Math.round(o.wage*agentMult))}k con agente`}</div>}
+                        {o.pct>0&&<div style={{fontSize:11,fontWeight:700,color:TH.primary,marginTop:3}}>{annK(o.wage)} / anno{player.hasAgent&&` → ${annK(Math.round(o.wage*agentMult))} con agente`}</div>}
                       </button>
                     ))}
                   </div>
@@ -13392,7 +13415,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                 <div>
                   <div style={{background:"#fff7ed",borderRadius:10,padding:"12px",marginBottom:14,border:"1px solid #fed7aa"}}>
                     <div style={{fontSize:11,fontWeight:700,color:"#c2410c",marginBottom:4}}>🤝 Il club fa una contro-offerta</div>
-                    <div style={{fontSize:12,color:TH.text}}>Stipendio proposto: <strong style={{color:TH.success}}>€{annK(clubFinalWage)}k / anno</strong></div>
+                    <div style={{fontSize:12,color:TH.text}}>Stipendio proposto: <strong style={{color:TH.success}}>{annK(clubFinalWage)} / anno</strong></div>
                     <div style={{fontSize:10,color:TH.muted,marginTop:2}}>{clubFinalDuration} ann{clubFinalDuration===1?"o":"i"} · non accettano la tua richiesta di {playerAsk?.replace("Chiedi","")}</div>
                   </div>
                   <div style={{display:"flex",gap:8}}>
@@ -14770,6 +14793,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                 <div style={{flex:1,textAlign:"center",background:TH.cardBg,borderRadius:8,padding:"8px 4px"}}>
                   <div style={{fontSize:14,fontWeight:900,color:TH.success}}>{wage.toLocaleString()}€</div>
                   <div style={{fontSize:9,color:TH.faint,textTransform:"uppercase",letterSpacing:1}}>/ settimana</div>
+                  <div style={{fontSize:9,color:TH.muted,marginTop:1}}>{_fmtWageY133(wage)}/anno</div>
                 </div>
                 <div style={{flex:1,textAlign:"center",background:TH.cardBg,borderRadius:8,padding:"8px 4px"}}>
                   <div style={{fontSize:14,fontWeight:900,color:dur<=1?TH.danger:TH.warning}}>S.{exp}</div>
@@ -16110,12 +16134,12 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
         var lastRating=lastRated?lastRated.rating:0;
         var speechLine=lastRating>=8?"Sei il giocatore più richiesto sul mercato. Aspettiamo le offerte giuste.":lastRating>=7?"Momento positivo. Sto spingendo il tuo nome nei posti giusti.":lastRating>=6?"Rendimento regolare. Serve il salto di qualità per attirare top club.":lastRating>0?"Dobbiamo parlare. Le ultime prestazioni mi preoccupano.":"Sono qui per te. Dimmi i tuoi obiettivi per questa stagione.";
         // Contract stats
-        var wage=player.contract?.wage||500;
-        var wageYear=Math.round(wage*52/1000*10)/10;
+        var wage=player.contract?.wage||577;
+        var wageYear=_fmtWageY133(wage); // Sprint 133: formatted annual wage
         var expiresS=player.contract?.expiresAtSeason||(player.season||1)+1;
         var seasonLeft=expiresS-(player.season||1);
-        var marketWage=Math.round((player.ovr||65)*210/1000*10)/10;
-        var isUnderpaid=wageYear<marketWage*0.80;
+        var marketWage=_fmtWageY133(_ovrToWageWeekly133(player.ovr||65,player.club?.p||60)); // Sprint 133
+        var isUnderpaid=(wage*52)<(_ovrToAnnualWage133(player.ovr||65)*0.80);
         var isExpiringSoon=seasonLeft<=1;
         // Agent tasks
         var TASKS=[
@@ -16244,11 +16268,11 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                   <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:6,marginBottom:8}}>
                     <div style={{background:"#f8fafc",borderRadius:7,padding:"7px 9px"}}>
                       <div style={{fontSize:9,color:TH.muted}}>STIPENDIO ATTUALE</div>
-                      <div style={{fontSize:13,fontWeight:800,color:TH.text}}>€{wageYear}k/anno</div>
+                      <div style={{fontSize:13,fontWeight:800,color:TH.text}}>{wageYear}/anno</div>
                     </div>
                     <div style={{background:"#f8fafc",borderRadius:7,padding:"7px 9px"}}>
                       <div style={{fontSize:9,color:TH.muted}}>STIMA MERCATO</div>
-                      <div style={{fontSize:13,fontWeight:800,color:isUnderpaid?TH.danger:TH.success}}>€{marketWage}k/anno</div>
+                      <div style={{fontSize:13,fontWeight:800,color:isUnderpaid?TH.danger:TH.success}}>{marketWage}/anno</div>
                     </div>
                     <div style={{background:"#f8fafc",borderRadius:7,padding:"7px 9px"}}>
                       <div style={{fontSize:9,color:TH.muted}}>SCADENZA</div>
