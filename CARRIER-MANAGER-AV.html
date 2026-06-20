@@ -2426,7 +2426,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.1.4"; // Sprint 144: fix bench start — onBench now initialized to benchStart prop
+const GAME_VERSION="4.1.5"; // Sprint 145: cronaca — {P} events filtered when player on bench; hero pos frozen
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -7148,8 +7148,8 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           const _sc76=scoreRef.current;const _sd76=_sc76.home-_sc76.away;const _sctx76=_sd76>0?"winning":_sd76<0?"losing":"drawing";
           // Sprint 113: dedup — exclude last 3 BG events to avoid repetition
           const _lastBG=lastBGEvtRef.current;
-          const eligible=BG_MATCH.filter(e=>(!e.minClock||nx>=e.minClock)&&(!e.maxClock||nx<=e.maxClock)&&(!e.derbyOnly||!!drby)&&(!e.ctx||e.ctx===_sctx76)&&!_lastBG.includes(e.txt));
-          const ev=wPick(eligible.length>0?eligible:BG_MATCH.filter(e=>(!e.minClock||nx>=e.minClock)&&(!e.maxClock||nx<=e.maxClock)));
+          const eligible=BG_MATCH.filter(e=>(!e.minClock||nx>=e.minClock)&&(!e.maxClock||nx<=e.maxClock)&&(!e.derbyOnly||!!drby)&&(!e.ctx||e.ctx===_sctx76)&&!_lastBG.includes(e.txt)&&(!onBenchRef.current||!e.txt.includes("{P}")));
+          const ev=wPick(eligible.length>0?eligible:BG_MATCH.filter(e=>(!e.minClock||nx>=e.minClock)&&(!e.maxClock||nx<=e.maxClock)&&(!onBenchRef.current||!e.txt.includes("{P}"))));
           // Sprint 113: record event in dedup buffer
           lastBGEvtRef.current=[ev.txt,..._lastBG].slice(0,3);
           if(ev.ef==="team_goal"){setScore(s=>({...s,home:s.home+1}));setMatchEvents(prev=>[...prev,{min:nx,type:"goal",txt:"⚽ Gol di "+( homeRoster[Math.floor(Math.random()*10)].name.split(" ").pop())}].slice(-12));}
@@ -7203,8 +7203,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           }
           if(ev.bpos){
             ballTargetRef.current=ev.bpos;
-            // Protagonista si avvicina verso la zona palla (pull leggero, 8% per tick)
-            setPPos(p=>({x:clamp(p.x+(ev.bpos.x-p.x)*0.08+(Math.random()-0.5)*1.5,3,97),y:clamp(p.y+(ev.bpos.y-p.y)*0.06+(Math.random()-0.5)*1.5,3,97)}));
+            if(!onBenchRef.current)setPPos(p=>({x:clamp(p.x+(ev.bpos.x-p.x)*0.08+(Math.random()-0.5)*1.5,3,97),y:clamp(p.y+(ev.bpos.y-p.y)*0.06+(Math.random()-0.5)*1.5,3,97)}));
           }
           if(ev.ms)setMxStats(s=>({shots:s.shots+(ev.ms.shots||0),oppShots:s.oppShots+(ev.ms.oppShots||0),fouls:s.fouls+(ev.ms.fouls||0),corners:s.corners+(ev.ms.corners||0)}));
           if(ev.pd&&DRIFT_PRESETS[ev.pd])driftTargetsRef.current=DRIFT_PRESETS[ev.pd];
