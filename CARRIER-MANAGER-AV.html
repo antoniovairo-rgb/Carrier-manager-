@@ -2426,7 +2426,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.2.5"; // Sprint 155: national team uses own kit colors and chant identity (not club's)
+const GAME_VERSION="4.2.6"; // Sprint 156: national team chants in correct language (CROWD_CHANTS_NAT per nation)
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -3762,6 +3762,31 @@ const CROWD_CHANTS_LG={
     home:["HAYDI [CLUB]! 💪","[CLUB]! [CLUB]! 🏆","BİZ [CLUB]'İZ! ⚡","GİT [CLUB]! 🔥"],
     danger:["SAVUNMA! 🛡️","DİKKAT! 😱","ENGELLE! 😤"],foul:["HAKEM! 😡","PENALTİ! 🚩","SKANDAL! 🤬"],
     near_miss:["OHHHH! 😱","ÇOK YAKINDI! 😩","DİREK! 😱"],comeback:["ASLA BITMEZ! 🔥","INANIYORUM! 💪"],winning:["ŞAMPİYON! 🏆"],losing:["ASLA ÖDÜNÇ VERME! 💙"],
+  },
+};
+// Sprint 156 — National chant pools: language-congruent per nation
+// Reuses existing CROWD_CHANTS_LG pools where the language matches; new pool for Brasil only.
+// "Italia" is intentionally omitted → falls through to base CROWD_CHANTS (already Italian).
+const CROWD_CHANTS_NAT={
+  "Inghilterra":CROWD_CHANTS_LG["Premier League"],
+  "Germania":CROWD_CHANTS_LG["Bundesliga"],
+  "Francia":CROWD_CHANTS_LG["Ligue 1"],
+  "Belgio":CROWD_CHANTS_LG["Ligue 1"],
+  "Spagna":CROWD_CHANTS_LG["La Liga"],
+  "Argentina":CROWD_CHANTS_LG["La Liga"],
+  "Portogallo":CROWD_CHANTS_LG["Primeira Liga"],
+  "Olanda":CROWD_CHANTS_LG["Eredivisie"],
+  "Brasile":{
+    goal:["GOOOOL! 🎉","QUE GOLAÇO! ⭐","SENSACIONAL! 🔥","ISSO! ISSO! ✊","FENOMENAL! ⚡","QUE BELEZA! 😍","SHOW DE BOLA! 🌟"],
+    home:["BRASIL! BRASIL! 💪","[CLUB]! [CLUB]! 🏆","É CAMPEÃO! ⚡","OLÉ OLÉ BRASIL! 🎊"],
+    danger:["DEFENDE! DEFENDE! 🛡️","CUIDADO! 😱","ZAGA! 😤"],
+    foul:["ÁRBITRO! 😡","PÊNALTI! 🚩","ABSURDO! 🤬","EXPULSA! 🟥"],
+    near_miss:["OHHHHH! 😱","QUE PENA! 😩","A TRAVE! 😱","BICHO! 😤"],
+    comeback:["BRASIL! BRASIL! 🔥","NÃO DESISTE! 💪","ACREDITA! ⚡"],
+    winning:["HEXA! HEXA! 🏆","É CAMPEÃO! ⚡","BRASIL CAMPEÃO! 🎊"],
+    losing:["VEM BRASIL! 💙","LUTA! 🔥","FORÇA! 💪"],
+    half:["SEGUNDO TEMPO — FORÇA! 🔥","VAMOS EMPURRAR! 💪","É AGORA! ⚡"],
+    urgenza:["AGORA! AGORA! 🔥","FALTAM POUCOS MINUTOS! ⏱️","É ESSE O MOMENTO! ⚡","BRASIL VAI LÁ! 💪"],
   },
 };
 const SLOT_KEYS=["cpm-v3","cpm-v3-s2","cpm-v3-s3"]; // slot 0 backward-compatible
@@ -6769,12 +6794,13 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   const addCom=useCallback((text,color,t)=>{setComs(p=>[{text,color,t:t??clockRef.current},...p].slice(0,16));},[]); // stable — clockRef via ref, non dipende da clock state
   // Component-scope chantFor — tracks timer IDs so they can be cleared on phase exit
   const chantFor=(type,dur=2800)=>{
-    // Sprint 155: use national team identity when in national context
+    // Sprint 155: national team identity; Sprint 156: language-congruent chant pool
     const _isNat=context==="national"||context==="nationsCup"||context==="euroMondiale_group"||context==="euroMondiale_ko"||context==="euroMondiale";
     const _natD=_isNat?(NAT_CLUB_DATA[player.nation||"Italia"]||{a:"ITA",c:"#003399"}):null;
     const clubN=_isNat?(_natD?.a||player.nation||"Nazionale"):(player.club?.a||player.club?.n||player.club?.name||"la squadra");
-    const lg=_isNat?"":( player.club?.lg||"");
-    const lgPool=(CROWD_CHANTS_LG[lg]||{})[type];
+    const lgPool=_isNat
+      ?(CROWD_CHANTS_NAT[player.nation||"Italia"]||{})[type]
+      :(CROWD_CHANTS_LG[player.club?.lg||""]||{})[type];
     const pool=lgPool||CROWD_CHANTS[type]||CROWD_CHANTS.home;
     const t=pick(pool);
     const clubCol=_isNat?(_natD?.c||"#003399"):(player.club?.c||"#4ade80");
