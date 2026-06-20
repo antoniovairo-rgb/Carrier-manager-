@@ -2426,7 +2426,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.0.7"; // Sprint 137: enhanced Coppe tab — full group standings, match calendar, historical winners
+const GAME_VERSION="4.0.8"; // Sprint 138: calendar shows all competitions sorted by week, H-A-H-A-H-A euro slots
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -12696,10 +12696,10 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
           if(_gopp.length>=3){
             newEuro={active:true,competition:_ec,phase:"group",groupOpponents:_gopp,pts:0,groupResults:[],qualified:false,champion:false,eliminated:false,koResults:[],koRound:0};
             // Add 6 playable group stage matches to the new season calendar (home+away vs each opponent)
-            const _egWeeks=[[5,true],[7,true],[10,true],[12,false],[14,false],[16,false]]; // Sprint 104: evita collisione week 9 con cup R16
+            const _egSlots=[{w:5,h:true},{w:7,h:false},{w:10,h:true},{w:12,h:false},{w:14,h:true},{w:16,h:false}]; // Sprint 138: H-A-H-A-H-A alternation
             _gopp.forEach((opp,i)=>{
-              newCalendar=[...newCalendar,{matchday:900+i,week:_egWeeks[i][0],opponentId:opp.id,opponentName:opp.n,isHome:true,played:false,result:null,type:"euro_group",competition:_ec,opponentData:opp}];
-              newCalendar=[...newCalendar,{matchday:903+i,week:_egWeeks[i+3][0],opponentId:opp.id,opponentName:opp.n,isHome:false,played:false,result:null,type:"euro_group",competition:_ec,opponentData:opp}];
+              newCalendar=[...newCalendar,{matchday:900+i*2,week:_egSlots[i*2].w,opponentId:opp.id,opponentName:opp.n,isHome:_egSlots[i*2].h,played:false,result:null,type:"euro_group",competition:_ec,opponentData:opp}];
+              newCalendar=[...newCalendar,{matchday:900+i*2+1,week:_egSlots[i*2+1].w,opponentId:opp.id,opponentName:opp.n,isHome:_egSlots[i*2+1].h,played:false,result:null,type:"euro_group",competition:_ec,opponentData:opp}];
             });
           }
         }
@@ -12716,10 +12716,10 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
           const _gopp99=[..._epool99].sort(()=>_erd99()-0.5).slice(0,3);
           if(_gopp99.length>=3){
             newEuro={active:true,competition:_ec99,phase:"group",groupOpponents:_gopp99,pts:0,groupResults:[],qualified:false,champion:false,eliminated:false,koResults:[],koRound:0};
-            const _egW99=[[5,true],[7,true],[10,true],[12,false],[14,false],[16,false]]; // Sprint 104: fix week 9 collision
+            const _egSlots99=[{w:5,h:true},{w:7,h:false},{w:10,h:true},{w:12,h:false},{w:14,h:true},{w:16,h:false}]; // Sprint 138: H-A-H-A-H-A alternation
             _gopp99.forEach((opp,i)=>{
-              newCalendar=[...newCalendar,{matchday:900+i,week:_egW99[i][0],opponentId:opp.id,opponentName:opp.n,isHome:true,played:false,result:null,type:"euro_group",competition:_ec99,opponentData:opp}];
-              newCalendar=[...newCalendar,{matchday:903+i,week:_egW99[i+3][0],opponentId:opp.id,opponentName:opp.n,isHome:false,played:false,result:null,type:"euro_group",competition:_ec99,opponentData:opp}];
+              newCalendar=[...newCalendar,{matchday:900+i*2,week:_egSlots99[i*2].w,opponentId:opp.id,opponentName:opp.n,isHome:_egSlots99[i*2].h,played:false,result:null,type:"euro_group",competition:_ec99,opponentData:opp}];
+              newCalendar=[...newCalendar,{matchday:900+i*2+1,week:_egSlots99[i*2+1].w,opponentId:opp.id,opponentName:opp.n,isHome:_egSlots99[i*2+1].h,played:false,result:null,type:"euro_group",competition:_ec99,opponentData:opp}];
             });
           }
         }else if(newEuro.competition==="UECL"){
@@ -14250,26 +14250,31 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
         <div style={{display:"flex",flexDirection:"column",gap:12}}>
           {/* Upcoming matches from calendar */}
           {(player.calendar||[]).length>0&&(()=>{
-            const upcoming=(player.calendar||[]).filter(md=>md.week>=(week)&&!md.played).slice(0,5);
+            const upcoming=(player.calendar||[]).filter(md=>md.week>=(week)&&!md.played).sort((a,b)=>a.week-b.week||(a.matchday||0)-(b.matchday||0)).slice(0,8);
             const lc=getLeagueClubs(player);
             if(!upcoming.length)return null;
             return(
               <Card>
                 <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:10}}>Prossime partite</div>
                 {upcoming.map((md,i)=>{
-                  const opp=lc.find(c=>c.id===md.opponentId)||lc.find(c=>c.n===md.opponentName)||{n:md.opponentName,a:"???",c:"#888",c2:"#fff"};
+                  const _isEuro=md.type==="euro_group"||md.type==="euro";
+                  const opp=md.opponentData||(lc.find(c=>c.id===md.opponentId)||lc.find(c=>c.n===md.opponentName)||CLUBS.find(c=>c.id===md.opponentId)||{n:md.opponentName,a:(md.opponentName||"???").slice(0,3).toUpperCase(),c:"#888",c2:"#fff"});
                   const isCur=md.week===week;
+                  const _euroComp=md.competition||(player.euro?.competition||"UCL");
+                  const _compColor=md.type==="cup"?"#d97706":_isEuro?"#7c3aed":isCur?TH.primary:TH.text;
+                  const _compLabel=md.type==="cup"?`Coppa Nazionale · ${md.cupRoundName||"Round"}`:_isEuro?(md.type==="euro_group"?`${_euroComp} · Fase Gruppi`:`${_euroComp} · Fase Eliminatoria`):`Giornata ${md.matchday}`;
                   return(
                     <div key={i} style={{display:"flex",alignItems:"center",gap:10,padding:"7px 0",borderBottom:i<upcoming.length-1?"1px solid "+TH.cardBorder:"none",background:isCur?"#eff6ff":"transparent",borderRadius:isCur?6:0,paddingLeft:isCur?8:0}}>
                       <div style={{width:28,height:28,flexShrink:0}}><TeamBadge team={opp} size={28}/></div>
                       <div style={{flex:1,minWidth:0}}>
-                        <div style={{fontSize:12,fontWeight:isCur?700:500,color:md.type==="cup"?"#d97706":isCur?TH.primary:TH.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>
-                          {isCur&&"▶ "}{md.type==="cup"?"🏆":md.isHome?"🏟️":"✈️"} vs {md.opponentName}
+                        <div style={{fontSize:12,fontWeight:isCur?700:500,color:_compColor,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>
+                          {isCur&&"▶ "}{md.isHome?"🏟️":"✈️"} vs {md.opponentName}
                           {md.type==="cup"&&<span style={{fontSize:9,marginLeft:5,background:"#fef3c7",color:"#92400e",border:"1px solid #fde68a",borderRadius:4,padding:"1px 5px",fontWeight:700}}>{md.cupRoundName||"Coppa"}</span>}
+                          {_isEuro&&<span style={{fontSize:9,marginLeft:5,background:"#ede9fe",color:"#7c3aed",border:"1px solid #ddd6fe",borderRadius:4,padding:"1px 5px",fontWeight:700}}>{_euroComp}</span>}
                         </div>
-                        <div style={{fontSize:10,color:TH.muted}}>{md.type==="cup"?`Coppa Nazionale · ${md.cupRoundName||"Round"}`:`Giornata ${md.matchday}`} · W.{md.week}</div>
+                        <div style={{fontSize:10,color:TH.muted}}>{_compLabel} · W.{md.week}</div>
                       </div>
-                      {isCur&&<Btn onClick={startMatch} v={md.type==="cup"?"gold":"green"} style={{padding:"6px 12px",fontSize:11}}>{md.type==="cup"?"🏆 Gioca →":"Gioca →"}</Btn>}
+                      {isCur&&<Btn onClick={startMatch} v={md.type==="cup"?"gold":"green"} style={{padding:"6px 12px",fontSize:11,background:_isEuro?"#7c3aed":undefined}}>{md.type==="cup"?"🏆 Gioca →":_isEuro?`⭐ ${_euroComp}`:"Gioca →"}</Btn>}
                     </div>
                   );
                 })}
