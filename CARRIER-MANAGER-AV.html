@@ -2426,7 +2426,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.4.2"; // Sprint 164: DPad+actions overlaid on canvas during HL, canvas full height restored
+const GAME_VERSION="4.4.3"; // Sprint 165: double-goal fix, transparent HL overlay, DPad in hl_choose, 5-line cronaca, away stand visible
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -5021,14 +5021,16 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
       const sideDotPal=[hCol,hCol,hCol,hL,hCol,hL,"#ffffff",oCol,hCol,hCol,hL,hCol];
       const dotW=_effectiveFill>0.6?3:_effectiveFill>0.3?4:5;
       // Top stand (home curva) + bottom (away end)
-      [[FX,2,FW,FY-4,homeDotPal],[FX,FY+FH+4,FW,PH-FY-FH-6,awayDotPal]].forEach(([sx,sy,sw,sh,dpal])=>{
+      [[FX,2,FW,FY-4,homeDotPal,0.62],[FX,FY+FH+4,FW,PH-FY-FH-6,awayDotPal,0.90]].forEach(([sx,sy,sw,sh,dpal,dotAlpha])=>{
         if(sh<4)return;const cols=Math.floor(sw/dotW),rows=Math.floor(sh/dotW);
         for(let r=0;r<rows;r++)for(let c=0;c<cols;c++){
           if(((r*31+c*17)%100)/100>_effectiveFill)continue;
-          cctx.fillStyle=dpal[(r*7+c*13)%dpal.length];cctx.globalAlpha=0.62;
+          cctx.fillStyle=dpal[(r*7+c*13)%dpal.length];cctx.globalAlpha=dotAlpha;
           cctx.fillRect(sx+c*(sw/cols)+1,sy+r*(sh/rows)+1,Math.max(sw/cols-1,1),Math.max(sh/rows-1,1));
         }
       });
+      // Away end stripe for visibility
+      {const _awSY=FY+FH+4,_awSH=PH-FY-FH-6;if(_awSH>6){cctx.fillStyle=oCol;cctx.globalAlpha=0.22;cctx.fillRect(FX,_awSY,FW,_awSH);cctx.globalAlpha=1;}}
       // Side stands (mixed home dominant)
       [[2,FY,FX-4,FH],[FX+FW+4,FY,PW-FX-FW-6,FH]].forEach(([sx,sy,sw,sh])=>{
         if(sw<4)return;const cols=Math.floor(sw/dotW),rows=Math.floor(sh/dotW);
@@ -7404,6 +7406,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   const selectedActionIdxRef=useRef(0);
   selectedActionIdxRef.current=selectedActionIdx;
   const pendingActionRef=useRef(null);
+  const _hlActionFiredRef=useRef(false); // guard: prevent double-fire in same HL
 
   // Movement RAF — keyboard input with movesLeft check, 400ms cooldown per move
   const lastKbdMoveRef=useRef(0);
@@ -7448,6 +7451,8 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
 
   const handleAction=useCallback((action)=>{
     if(phase!=="hl_choose")return;
+    if(_hlActionFiredRef.current)return; // prevent double-fire (tap bleed / stale closure)
+    _hlActionFiredRef.current=true;
     const defPenalty=defDistRef.current<25?0.15:defDistRef.current<50?0.08:0;
     // Sprint 16: weather modifier on success rate
     const wef=weather?.ef||{};
@@ -7567,6 +7572,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     setPhase("hl_result");
   };
   const handleContinue=()=>{
+    _hlActionFiredRef.current=false; // reset for next HL
     const nx=hlIdx+1;
     // Sprint 77 — Situation Chaining: inject chain before advancing
     if(pendingChainSitRef.current){
@@ -7927,57 +7933,59 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
 
               {/* Mobile HL overlay — DPad + actions on canvas, narrow only */}
               {isNarrow&&phase==="hl_move"&&curSit&&(
-                <div style={{position:"absolute",bottom:0,left:0,right:0,zIndex:16,background:"rgba(5,8,20,0.86)",backdropFilter:"blur(3px)",padding:"8px 10px 10px"}}>
-                  <div style={{color:"#f59e0b",fontSize:10,fontWeight:700,marginBottom:5}}>{clock}' — {curSit.text}</div>
+                <div style={{position:"absolute",bottom:0,left:0,right:0,zIndex:16,background:"rgba(5,8,20,0.28)",padding:"8px 10px 10px"}}>
+                  <div style={{color:"#f59e0b",fontSize:10,fontWeight:800,textShadow:"0 1px 4px rgba(0,0,0,0.9)",marginBottom:5}}>{clock}' — {curSit.text}</div>
                   <div style={{display:"flex",alignItems:"center",gap:10}}>
                     {!curSit.lockMovement&&<DPad onMove={handleDPad} dark size={40}/>}
                     <div style={{flex:1}}>
-                      {curSit.maxMoves>0&&<div style={{display:"flex",justifyContent:"space-between",fontSize:8,color:"rgba(255,255,255,0.4)",marginBottom:3}}><span>{"●".repeat(movesLeft)}{"○".repeat(Math.max(0,curSit.maxMoves-movesLeft))} {movesLeft} mov</span><span>⏱ {Math.round(pressureBar*100)}%</span></div>}
-                      {curSit.maxMoves>0&&<div style={{height:3,background:"rgba(255,255,255,0.12)",borderRadius:2}}><div style={{height:"100%",width:(pressureBar*100)+"%",background:pressureBar>0.4?"#f59e0b":pressureBar>0.2?"#f97316":"#ef4444",borderRadius:2,transition:"width 0.1s"}}/></div>}
-                      <div style={{fontSize:8,color:"rgba(255,255,255,0.3)",marginTop:3}}>📍 {ZONES[zone]?.label}</div>
+                      {curSit.maxMoves>0&&<div style={{display:"flex",justifyContent:"space-between",fontSize:8,color:"rgba(255,255,255,0.7)",textShadow:"0 1px 3px rgba(0,0,0,0.8)",marginBottom:3}}><span>{"●".repeat(movesLeft)}{"○".repeat(Math.max(0,curSit.maxMoves-movesLeft))} {movesLeft} mov</span><span>⏱ {Math.round(pressureBar*100)}%</span></div>}
+                      {curSit.maxMoves>0&&<div style={{height:3,background:"rgba(255,255,255,0.2)",borderRadius:2}}><div style={{height:"100%",width:(pressureBar*100)+"%",background:pressureBar>0.4?"#f59e0b":pressureBar>0.2?"#f97316":"#ef4444",borderRadius:2,transition:"width 0.1s"}}/></div>}
+                      <div style={{fontSize:8,color:"rgba(255,255,255,0.6)",textShadow:"0 1px 3px rgba(0,0,0,0.8)",marginTop:3}}>📍 {ZONES[zone]?.label}</div>
                     </div>
-                    <button onClick={()=>setPhase("hl_choose")} style={{padding:"10px 12px",borderRadius:8,border:"none",background:"#2563eb",color:"#fff",fontWeight:800,fontSize:14,cursor:"pointer",fontFamily:"inherit",flexShrink:0}}>✅</button>
+                    <button onClick={()=>setPhase("hl_choose")} style={{padding:"10px 12px",borderRadius:8,border:"none",background:"#2563eb",color:"#fff",fontWeight:800,fontSize:14,cursor:"pointer",fontFamily:"inherit",flexShrink:0,boxShadow:"0 2px 8px rgba(0,0,0,0.5)"}}>✅</button>
                   </div>
                 </div>
               )}
               {isNarrow&&phase==="hl_choose"&&curSit&&(
-                <div style={{position:"absolute",bottom:0,left:0,right:0,zIndex:16,background:"rgba(5,8,20,0.92)",backdropFilter:"blur(3px)",padding:"8px 10px 10px"}}>
-                  <div style={{fontSize:9,color:"rgba(255,255,255,0.45)",marginBottom:5}}>{clock}' — {curSit.text} &nbsp;·&nbsp; <span style={{color:defDist<25?"#f87171":defDist<50?"#f97316":"#4ade80",fontWeight:700}}>{defDist<25?"⚠ Addosso":defDist<50?"Vicino":"Libero"}</span></div>
-                  {curSit.text?.includes("RIGORE")?(
-                    <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:5}}>
-                      {["tl","tc","tr","bl","bc","br"].map(dir=>(
-                        <button key={dir} onClick={()=>handleRigore(dir)} style={{padding:"9px 4px",background:"rgba(0,0,0,0.6)",border:"1px solid rgba(255,255,255,0.18)",borderRadius:8,color:"#fff",cursor:"pointer",fontFamily:"inherit",display:"flex",flexDirection:"column",alignItems:"center",gap:3}}>
-                          <span style={{fontSize:16}}>{RIGORE_ARROWS[dir]}</span>
-                          <span style={{fontSize:8,color:"rgba(255,255,255,0.5)"}}>{RIGORE_LABELS[dir]}</span>
-                        </button>
-                      ))}
-                    </div>
-                  ):(
-                    <div style={{display:"flex",flexDirection:"column",gap:5}}>
-                      {(curSit.actions||[]).map((a,_oi)=>{
-                        const _dp2=defDist<25?15:defDist<50?8:0;
-                        const _rt2=Math.max(5,succRate(a,player.stats,pPos.x,oppPrestige,player.archetype?.id||player.archetype)-_dp2);
-                        const _rc2=_rt2>70?"#4ade80":_rt2>50?"#f59e0b":"#f87171";
-                        const _sel2=_oi===selectedActionIdx;
-                        return(
-                          <button key={_oi} onClick={()=>handleAction(a)}
-                            style={{padding:"10px",background:_sel2?"rgba(37,99,235,0.45)":"rgba(0,0,0,0.52)",border:_sel2?`1.5px solid ${_rc2}66`:`1px solid ${_rc2}33`,borderRadius:8,color:"#fff",cursor:"pointer",fontFamily:"inherit",display:"flex",alignItems:"center",gap:8,transition:"all .1s"}}>
-                            <div style={{width:18,height:18,borderRadius:"50%",background:_sel2?"#2563eb":"rgba(255,255,255,0.1)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:9,fontWeight:900,color:_sel2?"#fff":"rgba(255,255,255,0.5)",flexShrink:0}}>{_oi+1}</div>
-                            <div style={{fontSize:11,fontWeight:_sel2?700:400,color:"#e2e8f0",flex:1,textAlign:"left"}}>{a.label}</div>
-                            <div style={{fontSize:9,color:_rc2,fontWeight:700}}>{Math.round(_rt2)}%</div>
+                <div style={{position:"absolute",bottom:0,left:0,right:0,zIndex:16,background:"rgba(5,8,20,0.28)",padding:"8px 10px 10px"}}>
+                  <div style={{fontSize:9,color:"rgba(255,255,255,0.75)",fontWeight:700,textShadow:"0 1px 3px rgba(0,0,0,0.9)",marginBottom:5}}>{clock}' — {curSit.text} &nbsp;·&nbsp; <span style={{color:defDist<25?"#f87171":defDist<50?"#f97316":"#4ade80"}}>{defDist<25?"⚠ Addosso":defDist<50?"Vicino":"Libero"}</span></div>
+                  <div style={{display:"flex",alignItems:"flex-start",gap:10}}>
+                    {!curSit.lockMovement&&<div style={{opacity:movesLeft>0?1:0.3,flexShrink:0}}><DPad onMove={movesLeft>0?handleDPad:()=>{}} dark size={40}/></div>}
+                    {curSit.text?.includes("RIGORE")?(
+                      <div style={{flex:1,display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:5}}>
+                        {["tl","tc","tr","bl","bc","br"].map(dir=>(
+                          <button key={dir} onClick={()=>handleRigore(dir)} style={{padding:"9px 4px",background:"rgba(0,0,0,0.55)",border:"1px solid rgba(255,255,255,0.25)",borderRadius:8,color:"#fff",cursor:"pointer",fontFamily:"inherit",display:"flex",flexDirection:"column",alignItems:"center",gap:3}}>
+                            <span style={{fontSize:16}}>{RIGORE_ARROWS[dir]}</span>
+                            <span style={{fontSize:8,color:"rgba(255,255,255,0.6)"}}>{RIGORE_LABELS[dir]}</span>
                           </button>
-                        );
-                      })}
-                    </div>
-                  )}
+                        ))}
+                      </div>
+                    ):(
+                      <div style={{flex:1,display:"flex",flexDirection:"column",gap:5}}>
+                        {(curSit.actions||[]).map((a,_oi)=>{
+                          const _dp2=defDist<25?15:defDist<50?8:0;
+                          const _rt2=Math.max(5,succRate(a,player.stats,pPos.x,oppPrestige,player.archetype?.id||player.archetype)-_dp2);
+                          const _rc2=_rt2>70?"#4ade80":_rt2>50?"#f59e0b":"#f87171";
+                          const _sel2=_oi===selectedActionIdx;
+                          return(
+                            <button key={_oi} onClick={()=>handleAction(a)}
+                              style={{padding:"10px",background:_sel2?"rgba(37,99,235,0.65)":"rgba(0,0,0,0.55)",border:_sel2?`1.5px solid ${_rc2}88`:`1px solid ${_rc2}44`,borderRadius:8,color:"#fff",cursor:"pointer",fontFamily:"inherit",display:"flex",alignItems:"center",gap:8,transition:"all .1s",boxShadow:"0 2px 6px rgba(0,0,0,0.4)"}}>
+                              <div style={{width:18,height:18,borderRadius:"50%",background:_sel2?"#2563eb":"rgba(255,255,255,0.15)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:9,fontWeight:900,color:"#fff",flexShrink:0}}>{_oi+1}</div>
+                              <div style={{fontSize:11,fontWeight:700,color:"#fff",flex:1,textAlign:"left",textShadow:"0 1px 3px rgba(0,0,0,0.7)"}}>{a.label}</div>
+                              <div style={{fontSize:9,color:_rc2,fontWeight:800,textShadow:"0 1px 3px rgba(0,0,0,0.7)"}}>{Math.round(_rt2)}%</div>
+                            </button>
+                          );
+                        })}
+                      </div>
+                    )}
+                  </div>
                 </div>
               )}
               {isNarrow&&phase==="hl_result"&&outcome&&(
-                <div style={{position:"absolute",bottom:0,left:0,right:0,zIndex:16,background:outcome.ok?"rgba(5,50,20,0.93)":"rgba(50,5,5,0.93)",backdropFilter:"blur(3px)",padding:"10px 12px 12px"}}>
-                  <div style={{fontSize:14,fontWeight:900,color:outcome.ok?"#4ade80":"#f87171",marginBottom:3}}>{outcome.ok?"✅":"❌"} {chosenAct?.label}</div>
-                  <div style={{fontSize:11,color:"rgba(255,255,255,0.8)",lineHeight:1.4,marginBottom:4}}>{outcome.text}</div>
-                  {aiCommentary&&<div style={{fontSize:9,color:"rgba(255,255,255,0.55)",fontStyle:"italic"}}>{aiCommentary.reaction} {aiCommentary.commentary}</div>}
-                  <div style={{fontSize:8,color:"rgba(255,255,255,0.3)",marginTop:4}}>auto / Enter →</div>
+                <div style={{position:"absolute",bottom:0,left:0,right:0,zIndex:16,background:outcome.ok?"rgba(5,50,20,0.55)":"rgba(50,5,5,0.55)",padding:"10px 12px 12px"}}>
+                  <div style={{fontSize:14,fontWeight:900,color:outcome.ok?"#4ade80":"#f87171",marginBottom:3,textShadow:"0 1px 4px rgba(0,0,0,0.8)"}}>{outcome.ok?"✅":"❌"} {chosenAct?.label}</div>
+                  <div style={{fontSize:11,color:"#fff",lineHeight:1.4,marginBottom:4,textShadow:"0 1px 3px rgba(0,0,0,0.7)"}}>{outcome.text}</div>
+                  {aiCommentary&&<div style={{fontSize:9,color:"rgba(255,255,255,0.8)",fontStyle:"italic",textShadow:"0 1px 3px rgba(0,0,0,0.7)"}}>{aiCommentary.reaction} {aiCommentary.commentary}</div>}
                 </div>
               )}
 
@@ -8138,10 +8146,10 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
       {isNarrow&&!["hl_move","hl_choose","hl_result","hl_intro"].includes(phase)&&(show3D||phase==="walkout")&&coms.length>0&&(
         <div style={{flexShrink:0,background:"#050810",padding:"5px 10px 8px",borderTop:"1px solid rgba(255,255,255,0.07)"}}>
           <div style={{fontSize:7,color:"rgba(255,255,255,0.28)",fontWeight:700,letterSpacing:1,textTransform:"uppercase",marginBottom:3}}>📻 CRONACA</div>
-          {coms.slice(0,8).map((c,i)=>(
+          {coms.slice(0,5).map((c,i)=>(
             <div key={i} style={{fontSize:9,color:i===0?c.color:"rgba(255,255,255,0.45)",lineHeight:1.35,
-              padding:i<7?"0 0 2px":"0",
-              borderBottom:i<7?"1px solid rgba(255,255,255,0.05)":"none",
+              padding:i<4?"0 0 2px":"0",
+              borderBottom:i<4?"1px solid rgba(255,255,255,0.05)":"none",
               overflow:"hidden",whiteSpace:"nowrap",textOverflow:"ellipsis"}}>
               <span style={{color:"rgba(255,255,255,0.3)",marginRight:3,fontSize:8,fontWeight:700}}>{c.t}'</span>{c.text}
             </div>
