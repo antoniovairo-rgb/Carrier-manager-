@@ -2426,7 +2426,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.4.0"; // Sprint 161/162: auto-training, coach msg in wizard, remove Allena tab, canvas maxHeight fix
+const GAME_VERSION="4.4.1"; // Sprint 163: canvas maxHeight fixed to 320px, cronaca hidden during HL phases
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -5884,7 +5884,7 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
       <canvas ref={canvasRef}
         style={isDesktop
           ?{display:"block",height:"100%",width:"auto",maxWidth:"100%"}
-          :{display:"block",maxWidth:"100%",width:"auto",height:"auto",maxHeight:"52vh"}}/>
+          :{display:"block",maxWidth:"100%",width:"auto",height:"auto",maxHeight:"320px"}}/>
     </div>
   );
 }
@@ -8078,8 +8078,8 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
         </Card>
       )}
 
-      {/* Mobile cronaca — below the card */}
-      {isNarrow&&(show3D||phase==="walkout")&&coms.length>0&&(
+      {/* Mobile cronaca — below the card, hidden during HL to free space for DPad */}
+      {isNarrow&&!["hl_move","hl_choose","hl_result","hl_intro"].includes(phase)&&(show3D||phase==="walkout")&&coms.length>0&&(
         <div style={{flexShrink:0,background:"#050810",padding:"5px 10px 8px",borderTop:"1px solid rgba(255,255,255,0.07)"}}>
           <div style={{fontSize:7,color:"rgba(255,255,255,0.28)",fontWeight:700,letterSpacing:1,textTransform:"uppercase",marginBottom:3}}>📻 CRONACA</div>
           {coms.slice(0,8).map((c,i)=>(
