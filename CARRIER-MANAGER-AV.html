@@ -2383,7 +2383,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.0.1"; // Sprint 131: fix standings pairing shuffle + simulated match player goals/assists
+const GAME_VERSION="4.0.2"; // Sprint 132: top-flight season-end labels CL/EL/ConL instead of Promozione
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -8327,14 +8327,21 @@ function SeasonEndScreen({data,player,onNewSeason,onRetire}){
   const _isUpperLg99=_pair99?_pair99[0]===_curLg99:null;
   const _promoDestLg99=_pair99?(_isUpperLg99?null:_pair99[0]):null;  // lower→upper
   const _relegDestLg99=_pair99?(_isUpperLg99?_pair99[1]:null):null;  // upper→lower
+  // Sprint 132: detect top-flight (upper league or no pair found → no promotion possible)
+  const _isTopFlight132=_pair99===null||_isUpperLg99===true;
   const trophies=player.trophies||[];
   const numTeams=finalStandings?.length||18;
   const isRelegated=playerPos>=numTeams-3;
-  const isPromoted=playerPos<=2&&!isChampion;
-  const bgColor=isChampion?"#fef9c3":isPromoted?"#f0fdf4":isRelegated?"#fff1f2":"#f8fafc";
-  const borderColor=isChampion?"#fde68a":isPromoted?"#bbf7d0":isRelegated?"#fecaca":TH.cardBorder;
-  const statusEmoji=isChampion?"🏆":isPromoted?"⬆️":isRelegated?"⬇️":"🏁";
-  const statusLabel=isChampion?"CAMPIONE!":isPromoted?"ZONA PROMOZIONE":isRelegated?"ZONA RETROCESSIONE":"Fine stagione";
+  const isPromoted=!_isTopFlight132&&playerPos<=2&&!isChampion;
+  // Sprint 132: European zone flags for top-flight leagues
+  const _isCL132=_isTopFlight132&&playerPos>=1&&playerPos<=3&&!isChampion;
+  const _isEL132=_isTopFlight132&&playerPos>=4&&playerPos<=5;
+  const _isConL132=_isTopFlight132&&playerPos===6;
+  const _isEuroZone132=_isCL132||_isEL132||_isConL132;
+  const bgColor=isChampion?"#fef9c3":(isPromoted||_isEuroZone132)?"#f0fdf4":isRelegated?"#fff1f2":"#f8fafc";
+  const borderColor=isChampion?"#fde68a":(isPromoted||_isEuroZone132)?"#bbf7d0":isRelegated?"#fecaca":TH.cardBorder;
+  const statusEmoji=isChampion?"🏆":_isCL132?"🌍":_isEL132?"🟠":_isConL132?"🟢":isPromoted?"⬆️":isRelegated?"⬇️":"🏁";
+  const statusLabel=isChampion?"CAMPIONE!":_isCL132?"CHAMPIONS LEAGUE":_isEL132?"EUROPA LEAGUE":_isConL132?"CONFERENCE LEAGUE":isPromoted?"PROMOZIONE":isRelegated?"RETROCESSIONE":"Fine stagione";
   const phase=getCareerPhase(player.age||17);
   const _extraNarr100={coachStyle:player.coach?.style,clubPrestige:club?.p||60,season:season||1,isPromoted,euroChamp:euro?.champion,cupChamp:player.cup?.champion};
   const narrative=getSeasonNarrative(playerStats.goals||0,playerStats.assists||0,playerStats.matches||0,playerPos,numTeams,isChampion,isRelegated,_extraNarr100);
@@ -8428,15 +8435,15 @@ function SeasonEndScreen({data,player,onNewSeason,onRetire}){
     <div style={{width:"100%"}}>
       {/* Header cinematico Sprint 87 */}
       <div style={{textAlign:"center",marginBottom:14,paddingTop:6,
-        background:isChampion?"linear-gradient(160deg,#fef9c3,#fef08a,#fef9c3)":isPromoted?"linear-gradient(160deg,#f0fdf4,#bbf7d0,#f0fdf4)":isRelegated?"linear-gradient(160deg,#fff1f2,#fecaca,#fff1f2)":"transparent",
+        background:isChampion?"linear-gradient(160deg,#fef9c3,#fef08a,#fef9c3)":(isPromoted||_isEuroZone132)?"linear-gradient(160deg,#f0fdf4,#bbf7d0,#f0fdf4)":isRelegated?"linear-gradient(160deg,#fff1f2,#fecaca,#fff1f2)":"transparent",
         borderRadius:16,padding:"16px 8px 12px",marginTop:4}}>
         <div style={{fontSize:isChampion?52:44,marginBottom:6,display:"inline-block",
-          animation:isChampion||isPromoted?"pulse87 1.2s ease-in-out infinite":"none"}}>
+          animation:isChampion||isPromoted||_isEuroZone132?"pulse87 1.2s ease-in-out infinite":"none"}}>
           {statusEmoji}
         </div>
         <h1 style={{fontSize:20,fontWeight:900,margin:"0 0 4px",color:TH.text}}>Fine Stagione {season}</h1>
         <p style={{color:TH.muted,fontSize:12,margin:"0 0 6px"}}>{club?.n||club?.name} · {club?.lg||"Pro"}</p>
-        <div style={{fontSize:13,fontWeight:800,fontStyle:"italic",color:isChampion?"#713f12":isRelegated?"#9f1239":isPromoted?"#166534":TH.muted}}>{headline}</div>
+        <div style={{fontSize:13,fontWeight:800,fontStyle:"italic",color:isChampion?"#713f12":isRelegated?"#9f1239":(isPromoted||_isEuroZone132)?"#166534":TH.muted}}>{headline}</div>
         {isChampion&&<div style={{marginTop:8,fontSize:13,fontWeight:800,color:"#713f12",letterSpacing:0.5}}>🎊 Campioni! La lega è vostra! 🎊</div>}
       </div>
       {/* Sprint 100: narrative + coach dialog */}
@@ -8618,36 +8625,75 @@ function SeasonEndScreen({data,player,onNewSeason,onRetire}){
           </div>
           {rows}
           <div style={{display:"flex",gap:10,marginTop:8,fontSize:9,flexWrap:"wrap"}}>
-            <span style={{color:TH.warning}}>🟡 Top 3 · promozione</span>
+            {_isTopFlight132?(
+              <>
+                <span style={{color:"#f59e0b"}}>🏆 Campione</span>
+                <span style={{color:"#3b82f6"}}>🌍 CL (1-4)</span>
+                <span style={{color:"#f97316"}}>🟠 EL (5-6)</span>
+                <span style={{color:"#22c55e"}}>🟢 Conf. (7)</span>
+              </>
+            ):<span style={{color:TH.warning}}>🟡 Top 3 · promozione</span>}
             <span style={{color:TH.danger}}>🔴 Ultimi 3 · retrocessione</span>
           </div>
         </Card>
       )}
 
-      {/* Sprint 87: Promo/Retro riepilogo */}
-      {promoTeams.length>0&&(
+      {/* Sprint 87/132: Movimenti lega — differenziato per top-flight vs lower */}
+      {sorted.length>0&&(
         <Card style={{marginBottom:12,padding:"12px 14px"}}>
-          <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>🔀 Movimenti di lega</div>
-          <div style={{marginBottom:6}}>
-            <div style={{fontSize:10,fontWeight:700,color:"#16a34a",marginBottom:4}}>⬆️ {_promoDestLg99?`Promosse in ${_promoDestLg99}`:"Promosse alla lega superiore"}</div>
-            {promoTeams.map((t,i)=>(
-              <div key={i} style={{display:"flex",alignItems:"center",gap:6,padding:"3px 0",fontSize:11}}>
-                <span style={{color:"#16a34a",fontWeight:700,width:16,textAlign:"right"}}>{i+1}°</span>
-                <span style={{flex:1,color:isPlayerRow(t)?TH.primary:TH.text,fontWeight:isPlayerRow(t)?700:400}}>{t.n||t.name}{isPlayerRow(t)?" 👈":""}</span>
-                <span style={{color:TH.muted,fontSize:10}}>{t.pts}pt</span>
+          {_isTopFlight132?(
+            <>
+              <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>🌍 Qualificazioni Europee</div>
+              {[{label:`🏆/🌍 Champions League`,color:"#3b82f6",teams:sorted.slice(0,4)},{label:"🟠 Europa League",color:"#f97316",teams:sorted.slice(4,6)},{label:"🟢 Conference League",color:"#22c55e",teams:sorted.slice(6,7)}].map(({label,color,teams})=>(
+                <div key={label} style={{marginBottom:8}}>
+                  <div style={{fontSize:10,fontWeight:700,color,marginBottom:3}}>{label}</div>
+                  {teams.map((t,i)=>(
+                    <div key={i} style={{display:"flex",alignItems:"center",gap:6,padding:"2px 0",fontSize:11}}>
+                      <span style={{color,fontWeight:700,width:20,textAlign:"right"}}>{sorted.indexOf(t)+1}°</span>
+                      <span style={{flex:1,color:isPlayerRow(t)?TH.primary:TH.text,fontWeight:isPlayerRow(t)?700:400}}>{t.n||t.name}{isPlayerRow(t)?" 👈":""}</span>
+                      <span style={{color:TH.muted,fontSize:10}}>{t.pts}pt</span>
+                    </div>
+                  ))}
+                </div>
+              ))}
+              <div style={{borderTop:"1px solid "+TH.cardBorder,paddingTop:8}}>
+                <div style={{fontSize:10,fontWeight:700,color:"#dc2626",marginBottom:3}}>⬇️ {_relegDestLg99?`Retrocesse in ${_relegDestLg99}`:"Retrocesse"}</div>
+                {relegTeams.map((t,i)=>(
+                  <div key={i} style={{display:"flex",alignItems:"center",gap:6,padding:"2px 0",fontSize:11}}>
+                    <span style={{color:"#dc2626",fontWeight:700,width:20,textAlign:"right"}}>{sorted.length-2+i}°</span>
+                    <span style={{flex:1,color:isPlayerRow(t)?TH.primary:TH.text,fontWeight:isPlayerRow(t)?700:400}}>{t.n||t.name}{isPlayerRow(t)?" 👈":""}</span>
+                    <span style={{color:TH.muted,fontSize:10}}>{t.pts}pt</span>
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
-          <div style={{borderTop:"1px solid "+TH.cardBorder,paddingTop:8}}>
-            <div style={{fontSize:10,fontWeight:700,color:"#dc2626",marginBottom:4}}>⬇️ {_relegDestLg99?`Retrocesse in ${_relegDestLg99}`:"Retrocesse alla lega inferiore"}</div>
-            {relegTeams.map((t,i)=>(
-              <div key={i} style={{display:"flex",alignItems:"center",gap:6,padding:"3px 0",fontSize:11}}>
-                <span style={{color:"#dc2626",fontWeight:700,width:16,textAlign:"right"}}>{sorted.length-2+i}°</span>
-                <span style={{flex:1,color:isPlayerRow(t)?TH.primary:TH.text,fontWeight:isPlayerRow(t)?700:400}}>{t.n||t.name}{isPlayerRow(t)?" 👈":""}</span>
-                <span style={{color:TH.muted,fontSize:10}}>{t.pts}pt</span>
-              </div>
-            ))}
-          </div>
+            </>
+          ):(
+            promoTeams.length>0&&(
+              <>
+                <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>🔀 Movimenti di lega</div>
+                <div style={{marginBottom:6}}>
+                  <div style={{fontSize:10,fontWeight:700,color:"#16a34a",marginBottom:4}}>⬆️ {_promoDestLg99?`Promosse in ${_promoDestLg99}`:"Promosse alla lega superiore"}</div>
+                  {promoTeams.map((t,i)=>(
+                    <div key={i} style={{display:"flex",alignItems:"center",gap:6,padding:"3px 0",fontSize:11}}>
+                      <span style={{color:"#16a34a",fontWeight:700,width:16,textAlign:"right"}}>{i+1}°</span>
+                      <span style={{flex:1,color:isPlayerRow(t)?TH.primary:TH.text,fontWeight:isPlayerRow(t)?700:400}}>{t.n||t.name}{isPlayerRow(t)?" 👈":""}</span>
+                      <span style={{color:TH.muted,fontSize:10}}>{t.pts}pt</span>
+                    </div>
+                  ))}
+                </div>
+                <div style={{borderTop:"1px solid "+TH.cardBorder,paddingTop:8}}>
+                  <div style={{fontSize:10,fontWeight:700,color:"#dc2626",marginBottom:4}}>⬇️ {_relegDestLg99?`Retrocesse in ${_relegDestLg99}`:"Retrocesse alla lega inferiore"}</div>
+                  {relegTeams.map((t,i)=>(
+                    <div key={i} style={{display:"flex",alignItems:"center",gap:6,padding:"3px 0",fontSize:11}}>
+                      <span style={{color:"#dc2626",fontWeight:700,width:16,textAlign:"right"}}>{sorted.length-2+i}°</span>
+                      <span style={{flex:1,color:isPlayerRow(t)?TH.primary:TH.text,fontWeight:isPlayerRow(t)?700:400}}>{t.n||t.name}{isPlayerRow(t)?" 👈":""}</span>
+                      <span style={{color:TH.muted,fontSize:10}}>{t.pts}pt</span>
+                    </div>
+                  ))}
+                </div>
+              </>
+            )
+          )}
         </Card>
       )}
 
