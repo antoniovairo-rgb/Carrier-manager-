@@ -2426,7 +2426,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.2.3"; // Sprint 153: calcCoachDecision calibration — form [30,95] normalized + OffersScreen div guard
+const GAME_VERSION="4.2.4"; // Sprint 154: simulateAndAdvance resets training state (sessionsThisWeek/sessionLog/weeklyFocusType) on all 6 advance paths
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -11551,7 +11551,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       const injBase={injuryWeeks:p.injuryWeeks-1,injured:!recovSim,...(recovSim?{injuryType:null}:{}),fatigue:Math.max(0,(p.fatigue||0)-10)};
       if(!md2){
         // No match this week — just advance (decrement injury if active)
-        return isInjured?{...p,...injBase,week:(p.week||1)+1,weekLived:false}:{...p,week:(p.week||1)+1,weekLived:false};
+        return isInjured?{...p,...injBase,week:(p.week||1)+1,weekLived:false,sessionsThisWeek:0,sessionLog:[],weeklyFocusType:null}:{...p,week:(p.week||1)+1,weekLived:false,sessionsThisWeek:0,sessionLog:[],weeklyFocusType:null};
       }
       const lc=getLeagueClubs(p);
       const isEuroG=md2.type==="euro_group";const isEuroKO=md2.type==="euro";
@@ -11559,7 +11559,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
         ?(md2.opponentData||CLUBS.find(c=>c.id===md2.opponentId)||CLUBS.find(c=>c.n===md2.opponentName))
         :(lc.find(c=>c.id===md2.opponentId)||lc.find(c=>c.n===md2.opponentName)||pick(lc.filter(c=>c.id!==p.club?.id)));
       if(!opp){
-        return isInjured?{...p,...injBase,week:(p.week||1)+1,weekLived:false}:{...p,week:(p.week||1)+1,weekLived:false};
+        return isInjured?{...p,...injBase,week:(p.week||1)+1,weekLived:false,sessionsThisWeek:0,sessionLog:[],weeklyFocusType:null}:{...p,week:(p.week||1)+1,weekLived:false,sessionsThisWeek:0,sessionLog:[],weeklyFocusType:null};
       }
       const sim=simulateMatch(p.club,opp,p.ovr||65,md2.isHome);
       // Only mark THIS specific match as played (by matchday id), not all at same week
@@ -11572,7 +11572,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
         const newGR=[...(p.euro?.groupResults||[]),{opp:opp.n,oppCol:opp.c,home:md2.isHome,won:sim.won,drew:sim.drew,hs:sim.homeScore,as:sim.awayScore}];
         const newPts=(p.euro?.pts||0)+pts;
         notify(`🌍 ${md2.competition} (sim): ${sim.homeScore}–${sim.awayScore} vs ${opp.n}`,sim.won?TH.success:sim.drew?TH.warning:TH.danger);
-        return{...p,calendar:newCal,matchHistory:[...(p.matchHistory||[]),{week:p.week||1,opponent:opp.n,oppAbbr:opp.a,oppCol:opp.c,homeScore:sim.homeScore,awayScore:sim.awayScore,goals:0,assists:0,rating:sim.rating,won:sim.won,drew:sim.drew,simulated:true,euro:true}].slice(-200),matches:(p.matches||0)+1,morale:clamp((p.morale||70)+(sim.won?3:sim.drew?1:-2),0,100),week:_pendingSim?(p.week||1):(p.week||1)+1,weekLived:_pendingSim?true:false,euro:{...p.euro,groupResults:newGR,pts:newPts}};
+        return{...p,calendar:newCal,matchHistory:[...(p.matchHistory||[]),{week:p.week||1,opponent:opp.n,oppAbbr:opp.a,oppCol:opp.c,homeScore:sim.homeScore,awayScore:sim.awayScore,goals:0,assists:0,rating:sim.rating,won:sim.won,drew:sim.drew,simulated:true,euro:true}].slice(-200),matches:(p.matches||0)+1,morale:clamp((p.morale||70)+(sim.won?3:sim.drew?1:-2),0,100),week:_pendingSim?(p.week||1):(p.week||1)+1,weekLived:_pendingSim?true:false,euro:{...p.euro,groupResults:newGR,pts:newPts},...(!_pendingSim?{sessionsThisWeek:0,sessionLog:[],weeklyFocusType:null}:{})};
       }
       // Euro knockout match
       if(isEuroKO){
@@ -11599,7 +11599,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
           if(_nOpp&&nWeek)calAfterKO=[...newCal,{matchday:996+_koRd11120,week:nWeek,opponentId:_nOpp.id,opponentName:_nOpp.n,isHome:Math.random()<0.5,played:false,result:null,type:"euro",competition:md2.competition,euroPhase:nPhase,cupRoundName:nName,opponentData:_nOpp}];
         }
         notify(`🌍 ${md2.competition} (sim): ${sim.homeScore}–${sim.awayScore} vs ${opp.n} — ${won?"✅ PASSA":"❌ ELIMINATO"}`,won?TH.success:TH.danger);
-        return{...p,calendar:calAfterKO,matchHistory:[...(p.matchHistory||[]),{week:p.week||1,opponent:opp.n,oppAbbr:opp.a,oppCol:opp.c,homeScore:sim.homeScore,awayScore:sim.awayScore,goals:0,assists:0,rating:sim.rating,won,drew:sim.drew,simulated:true,euro:true,euroPhase:phase}].slice(-200),matches:(p.matches||0)+1,morale:clamp((p.morale||70)+(won?5:sim.drew?1:-3),0,100),week:_pendingSim?(p.week||1):(p.week||1)+1,weekLived:_pendingSim?true:false,euro:{...p.euro,phase:nextPh,koResults:newKR,champion:isChamp,eliminated:!won},trophies:newTr};
+        return{...p,calendar:calAfterKO,matchHistory:[...(p.matchHistory||[]),{week:p.week||1,opponent:opp.n,oppAbbr:opp.a,oppCol:opp.c,homeScore:sim.homeScore,awayScore:sim.awayScore,goals:0,assists:0,rating:sim.rating,won,drew:sim.drew,simulated:true,euro:true,euroPhase:phase}].slice(-200),matches:(p.matches||0)+1,morale:clamp((p.morale||70)+(won?5:sim.drew?1:-3),0,100),week:_pendingSim?(p.week||1):(p.week||1)+1,weekLived:_pendingSim?true:false,euro:{...p.euro,phase:nextPh,koResults:newKR,champion:isChamp,eliminated:!won},trophies:newTr,...(!_pendingSim?{sessionsThisWeek:0,sessionLog:[],weeklyFocusType:null}:{})};
       }
       // League/Cup match — check pending euro/cup at same week
       const _pendingEuro=newCal.some(m=>m.week===(p.week||1)&&!m.played&&(m.type==="euro_group"||m.type==="euro"));
@@ -11608,13 +11608,13 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       if(isInjured){
         const injHistory=[...(p.matchHistory||[]),{week:p.week||1,opponent:opp.n,oppAbbr:opp.a,oppCol:opp.c,homeScore:sim.homeScore,awayScore:sim.awayScore,goals:0,assists:0,rating:null,won:sim.won,drew:sim.drew,simulated:true,injured:true}].slice(-200);
         notify(`🩹 Infort. (saltata) ${sim.homeScore}–${sim.awayScore} vs ${opp.n}`,sim.won?TH.success:sim.drew?TH.warning:TH.danger);
-        return{...p,...injBase,standings:newSt,calendar:newCal,matchHistory:injHistory,morale:clamp((p.morale||70)+(sim.won?1:sim.drew?0:-1),0,100),week:_pendingEuro?(p.week||1):(p.week||1)+1,weekLived:_pendingEuro?true:false};
+        return{...p,...injBase,standings:newSt,calendar:newCal,matchHistory:injHistory,morale:clamp((p.morale||70)+(sim.won?1:sim.drew?0:-1),0,100),week:_pendingEuro?(p.week||1):(p.week||1)+1,weekLived:_pendingEuro?true:false,...(!_pendingEuro?{sessionsThisWeek:0,sessionLog:[],weeklyFocusType:null}:{})};
       }
       const _sPS131=_pSimStats(sim,p.ovr||65,p.archetype?.id||p.archetype||"");
       const newHistory=[...(p.matchHistory||[]),{week:p.week||1,opponent:opp.n,oppAbbr:opp.a,oppCol:opp.c,homeScore:sim.homeScore,awayScore:sim.awayScore,goals:_sPS131.goals,assists:_sPS131.assists,rating:sim.rating,won:sim.won,drew:sim.drew,simulated:true}].slice(-200);
       const moD=sim.won?3:sim.drew?1:-2;
       notify(`Simulazione: ${sim.homeScore}–${sim.awayScore} vs ${opp.n}`,sim.won?TH.success:sim.drew?TH.warning:TH.danger);
-      return{...p,standings:newSt,calendar:newCal,matchHistory:newHistory,matches:(p.matches||0)+1,goals:(p.goals||0)+_sPS131.goals,totalGoals:(p.totalGoals||0)+_sPS131.goals,assists:(p.assists||0)+_sPS131.assists,totalAssists:(p.totalAssists||0)+_sPS131.assists,morale:clamp((p.morale||70)+moD,0,100),week:_pendingEuro?(p.week||1):(p.week||1)+1,weekLived:_pendingEuro?true:false};
+      return{...p,standings:newSt,calendar:newCal,matchHistory:newHistory,matches:(p.matches||0)+1,goals:(p.goals||0)+_sPS131.goals,totalGoals:(p.totalGoals||0)+_sPS131.goals,assists:(p.assists||0)+_sPS131.assists,totalAssists:(p.totalAssists||0)+_sPS131.assists,morale:clamp((p.morale||70)+moD,0,100),week:_pendingEuro?(p.week||1):(p.week||1)+1,weekLived:_pendingEuro?true:false,...(!_pendingEuro?{sessionsThisWeek:0,sessionLog:[],weeklyFocusType:null}:{})};
     });
   };
 
