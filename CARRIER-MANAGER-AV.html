@@ -2406,7 +2406,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.0.4"; // Sprint 134: league awards (Capocannoniere/MVP/Giovane/SquadraAnno) + European PdO/SdO + real roster names
+const GAME_VERSION="4.0.5"; // Sprint 135: fix nazionale bug (club→nat team name in bench overlay) + Tab Nazionale dedicato
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -7767,8 +7767,9 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                 const obsMsg=_BENCH_OBS[clock%_BENCH_OBS.length];
                 const warmMsg=_BENCH_WARMUP[Math.floor(clock/3)%_BENCH_WARMUP.length];
                 const entryMsg=pick(_BENCH_ENTRY);
-                const homeTeamName=isMatchHome?(player.club?.a||player.club?.n||"NOI"):(opponent?.a||opponent?.n||"LORO");
-                const awayTeamName=isMatchHome?(opponent?.a||opponent?.n||"LORO"):(player.club?.a||player.club?.n||"NOI");
+                const _myBenchAbbr=isNatCtx?(_myNatData?.a||"NAZ"):(player.club?.a||player.club?.n||"NOI");
+                const homeTeamName=isMatchHome?_myBenchAbbr:(opponent?.a||opponent?.n||"LORO");
+                const awayTeamName=isMatchHome?(opponent?.a||opponent?.n||"LORO"):_myBenchAbbr;
                 if(isEntering)return(
                   <div style={{position:"absolute",inset:0,background:"rgba(5,8,20,0.95)",backdropFilter:"blur(6px)",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",zIndex:9,padding:"0 28px"}}>
                     <div style={{fontSize:40,marginBottom:10,animation:"floatUp 0.8s ease-out forwards"}}>⚡</div>
@@ -11277,15 +11278,16 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       else if(k==="R"){e.preventDefault();goTab("profile");}
       else if(k==="G"){e.preventDefault();goTab("agente");}
       else if(k==="S"){e.preventDefault();goTab("club");}
+      else if(k==="N"){e.preventDefault();goTab("nazionale");}
       else if(k==="M"||k==="H"){e.preventDefault();goTab("dashboard");}
       // Arrow keys for tab switching
       else if(e.key==="ArrowLeft"&&!inModal){
         e.preventDefault();
-        const tabs=["dashboard","calendar","standings","club","training","profile","agente","coppe"];
+        const tabs=["dashboard","calendar","standings","club","training","profile","agente","coppe","nazionale"];
         const cur=tabs.indexOf(tab);if(cur>0)goTab(tabs[cur-1]);
       }else if(e.key==="ArrowRight"&&!inModal){
         e.preventDefault();
-        const tabs=["dashboard","calendar","standings","club","training","profile","agente","coppe"];
+        const tabs=["dashboard","calendar","standings","club","training","profile","agente","coppe","nazionale"];
         const cur=tabs.indexOf(tab);if(cur<tabs.length-1)goTab(tabs[cur+1]);
       }
     };
@@ -13012,7 +13014,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     </div>
   );
 
-  const tabs=[{id:"dashboard",e:"🏠",l:L.tabs.dashboard,k:"M"},{id:"calendar",e:"📅",l:L.tabs.calendar,k:"C"},{id:"standings",e:"📊",l:L.tabs.standings,k:"F"},{id:"club",e:"🏟️",l:"Club",k:"S"},{id:"training",e:"💪",l:L.tabs.training,k:"T"},{id:"profile",e:"👤",l:L.tabs.profile,k:"R"},{id:"agente",e:"🤵",l:L.agent,k:"G"},{id:"coppe",e:"🏆",l:"Coppe",k:"K"}];
+  const tabs=[{id:"dashboard",e:"🏠",l:L.tabs.dashboard,k:"M"},{id:"calendar",e:"📅",l:L.tabs.calendar,k:"C"},{id:"standings",e:"📊",l:L.tabs.standings,k:"F"},{id:"club",e:"🏟️",l:"Club",k:"S"},{id:"training",e:"💪",l:L.tabs.training,k:"T"},{id:"profile",e:"👤",l:L.tabs.profile,k:"R"},{id:"agente",e:"🤵",l:L.agent,k:"G"},{id:"coppe",e:"🏆",l:"Coppe",k:"K"},{id:"nazionale",e:"🌍",l:"Naz.",k:"N"}];
 
   return(
     <div className="cpm-career">
@@ -16515,6 +16517,218 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
         );
       })()}
 
+      {/* Sprint 135 — TAB NAZIONALE */}
+      {tab==="nazionale"&&(()=>{
+        const _isPro=(player.proStatus||"u18")==="pro";
+        const natName=player.nation||"Italia";
+        const nd=NAT_CLUB_DATA[natName]||{id:"it-nt",a:"ITA",p:82,c:"#003399",c2:"#fff",nat:"🇮🇹"};
+        const ndExtra=NAT_DATA[natName]||{flag:nd.nat||"🏳️",col:nd.c||"#003399",col2:nd.c2||"#fff"};
+        const natFlag=ndExtra.flag||nd.nat||"🏳️";
+        const natCol=ndExtra.col||nd.c||"#1e40af";
+        const caps=player.nationalCaps||0;
+        const natGoals=player.nationalGoals||0;
+        const q=player.nationsCupQueue||null;
+        const em=player.euroMondiale||null;
+        const _bar=(won,drew)=><span style={{fontSize:9,fontWeight:700,color:won?"#16a34a":drew?"#d97706":"#dc2626",background:won?"#dcfce7":drew?"#fffbeb":"#fee2e2",padding:"1px 6px",borderRadius:4,minWidth:18,textAlign:"center",display:"inline-block"}}>{won?"V":drew?"P":"S"}</span>;
+        return(
+          <div style={{display:"flex",flexDirection:"column",gap:12}}>
+            {/* Header nazionale */}
+            <Card style={{padding:"16px 14px",background:`linear-gradient(135deg,${natCol}20,${TH.card})`,border:`1px solid ${natCol}55`}}>
+              <div style={{display:"flex",alignItems:"center",gap:14,marginBottom:12}}>
+                <div style={{fontSize:52,lineHeight:1,filter:`drop-shadow(0 0 12px ${natCol}88)`}}>{natFlag}</div>
+                <div>
+                  <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:2,marginBottom:2}}>Nazionale</div>
+                  <div style={{fontSize:20,fontWeight:900,color:TH.text,lineHeight:1.1}}>{natName}</div>
+                  <div style={{fontSize:11,color:natCol,fontWeight:700,marginTop:3}}>Prestige FIFA: {nd.p}/100</div>
+                </div>
+              </div>
+              <div style={{display:"flex",gap:0,borderTop:`1px solid ${TH.cardBorder}`,paddingTop:12}}>
+                {[{v:caps,l:"Presenze",e:"🌍"},{v:natGoals,l:"Gol Naz.",e:"⚽"},{v:caps>0?Math.round((natGoals/caps)*10)/10:0,l:"Media Gol",e:"📊"}].map((s,i)=>(
+                  <div key={i} style={{flex:1,textAlign:"center",borderLeft:i>0?"1px solid "+TH.cardBorder:"none",padding:"0 8px"}}>
+                    <div style={{fontSize:9,marginBottom:2}}>{s.e}</div>
+                    <div style={{fontSize:20,fontWeight:900,color:i===0?natCol:i===1?"#16a34a":TH.muted,lineHeight:1}}>{s.v}</div>
+                    <div style={{fontSize:9,color:TH.muted,marginTop:2}}>{s.l}</div>
+                  </div>
+                ))}
+                <div style={{flex:1,textAlign:"center",borderLeft:"1px solid "+TH.cardBorder,padding:"0 8px",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center"}}>
+                  <div style={{fontSize:12,marginBottom:2}}>{caps>=100?"🌟":caps>=50?"⭐":caps>=20?"🏅":caps>=1?"🎽":"—"}</div>
+                  <div style={{fontSize:9,color:natCol,fontWeight:700}}>{caps>=100?"Leggenda":caps>=50?"Senatore":caps>=20?"Titolare":caps>=1?"Convocato":"—"}</div>
+                </div>
+              </div>
+            </Card>
+
+            {/* Convocazione pendente */}
+            {nationalCallupData&&(
+              <Card style={{padding:"14px",border:`2px solid ${natCol}`,background:`${natCol}0e`}}>
+                <div style={{fontSize:10,color:natCol,textTransform:"uppercase",letterSpacing:2,fontWeight:700,marginBottom:8}}>📨 Convocazione</div>
+                <div style={{fontSize:13,fontWeight:700,color:TH.text,marginBottom:3}}>
+                  {nationalCallupData.isFirst?"🌟 Prima convocazione!":`Cap #${nationalCallupData.newCaps}`}
+                </div>
+                <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:12,padding:"8px 12px",background:TH.bg,borderRadius:8}}>
+                  <span style={{fontSize:22}}>{natFlag}</span>
+                  <span style={{fontWeight:700,fontSize:12}}>{natName}</span>
+                  <span style={{color:TH.muted,fontSize:11,fontWeight:600}}>vs</span>
+                  <span style={{fontSize:22}}>{(NAT_DATA[nationalCallupData.opp]||{}).flag||"🏳️"}</span>
+                  <span style={{fontWeight:700,fontSize:12}}>{nationalCallupData.opp}</span>
+                </div>
+                <Btn v="primary" fw onClick={()=>setScreen("nationalCallup")}>🏟️ Vai alla Convocazione</Btn>
+              </Card>
+            )}
+
+            {/* Coppa delle Nazioni */}
+            {q&&q.active&&!q.done&&(
+              <Card style={{padding:"14px",border:"1px solid #93c5fd",background:"#eff6ff0a"}}>
+                <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:10}}>
+                  <div>
+                    <div style={{fontSize:10,color:"#1d4ed8",textTransform:"uppercase",letterSpacing:1.5,fontWeight:700}}>🌍 Coppa delle Nazioni</div>
+                    <div style={{fontSize:10,color:TH.muted}}>Stagione {q.season} · Partita {(q.matchIdx||0)+1}/3</div>
+                  </div>
+                  <div style={{textAlign:"right"}}>
+                    <div style={{fontSize:22,fontWeight:900,color:"#1d4ed8",lineHeight:1}}>{q.pts||0}<span style={{fontSize:11,color:TH.muted}}>/9</span></div>
+                    <div style={{fontSize:9,color:TH.muted}}>punti</div>
+                  </div>
+                </div>
+                {(q.matches||[]).length>0&&(
+                  <div style={{marginBottom:10,padding:"6px 0",borderTop:"1px solid "+TH.cardBorder}}>
+                    {(q.matches||[]).map((m,i)=>(
+                      <div key={i} style={{display:"flex",alignItems:"center",gap:6,padding:"3px 0"}}>
+                        {_bar(m.won,m.drew)}
+                        <span style={{flex:1,fontSize:10,color:TH.text}}>{natName} vs {m.opp}</span>
+                        <span style={{fontSize:11,fontWeight:700,color:TH.text}}>{m.hs||0}–{m.as||0}</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+                <div style={{padding:"6px 10px",background:"#eff6ff",borderRadius:8,marginBottom:10,fontSize:10,color:"#1d4ed8"}}>
+                  Prossimo: <strong>{natName} vs {(q.opponents||[])[q.matchIdx||0]||"?"}</strong>
+                </div>
+                <Btn v="primary" fw onClick={startNationsCupMatch}>⚽ Gioca Partita</Btn>
+              </Card>
+            )}
+            {q&&q.done&&(
+              <Card style={{padding:"12px 14px",border:"1px solid "+(q.trophyWon?"#fde68a":"#e2e8f0")}}>
+                <div style={{fontSize:10,color:q.trophyWon?"#92400e":"#64748b",textTransform:"uppercase",letterSpacing:1.5,fontWeight:700,marginBottom:6}}>🌍 Coppa delle Nazioni S.{q.season}</div>
+                <div style={{fontSize:12,fontWeight:700,color:q.trophyWon?"#f59e0b":q.qualified?"#16a34a":"#64748b"}}>
+                  {q.trophyWon?"🏆 Campioni!":q.qualified?"✅ Fase finale":q.pts>=3?"Eliminati (fase a gironi)":"❌ Eliminati"}
+                </div>
+                <div style={{fontSize:10,color:TH.muted,marginTop:3}}>Punti: {q.pts||0}/9</div>
+              </Card>
+            )}
+
+            {/* Europeo / Mondiale */}
+            {em&&em.active&&(
+              <Card style={{padding:"14px",border:"1px solid #a5f3fc",background:"#ecfeff0a"}}>
+                <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:10}}>
+                  <div>
+                    <div style={{fontSize:10,color:"#0e7490",textTransform:"uppercase",letterSpacing:1.5,fontWeight:700}}>🌍 {em.type||"Europeo"}</div>
+                    <div style={{fontSize:10,color:TH.muted}}>Stagione {em.season||player.season}</div>
+                  </div>
+                  <div>
+                    {em.champion&&<span style={{fontSize:11,fontWeight:800,color:"#0e7490",background:"#cffafe",padding:"3px 10px",borderRadius:20}}>🏆 CAMPIONI!</span>}
+                    {em.eliminated&&<span style={{fontSize:11,color:TH.danger,background:"#fee2e2",padding:"3px 10px",borderRadius:20,fontWeight:700}}>❌ Eliminati</span>}
+                    {!em.champion&&!em.eliminated&&em.qualified&&<span style={{fontSize:11,color:"#16a34a",background:"#dcfce7",padding:"3px 10px",borderRadius:20,fontWeight:700}}>✅ {em.koPhase==="semi"?"Semifinale":"Fase KO"}</span>}
+                    {!em.champion&&!em.eliminated&&!em.qualified&&<span style={{fontSize:11,color:"#0891b2",background:"#e0f2fe",padding:"3px 10px",borderRadius:20,fontWeight:700}}>Fase Gironi {em.groupMatchIdx||0}/3</span>}
+                  </div>
+                </div>
+                {/* Gironi */}
+                {em.phase==="group"&&(em.groupOpponents||[]).length>0&&(
+                  <div style={{marginBottom:10}}>
+                    <div style={{fontSize:9,color:TH.muted,textTransform:"uppercase",letterSpacing:1,marginBottom:4}}>Girone</div>
+                    {(em.groupMatches||[]).map((m,i)=>(
+                      <div key={i} style={{display:"flex",alignItems:"center",gap:6,padding:"3px 0",borderTop:i>0?"1px solid "+TH.cardBorder:"none"}}>
+                        {m.played
+                          ?<>{_bar(m.won,m.drew)}<span style={{flex:1,fontSize:10,color:TH.text}}>{natName} vs {m.opp}</span><span style={{fontSize:11,fontWeight:700}}>{m.hs||0}–{m.as||0}</span></>
+                          :<><span style={{fontSize:10,color:TH.muted,flex:1}}>vs {m.opp}</span><span style={{fontSize:9,background:"#f1f5f9",color:TH.muted,padding:"1px 6px",borderRadius:4}}>da giocare</span></>
+                        }
+                      </div>
+                    ))}
+                    {em.groupPts>=0&&<div style={{marginTop:6,fontSize:10,color:"#0891b2"}}>Punti girone: <strong>{em.groupPts||0}/9</strong></div>}
+                  </div>
+                )}
+                {/* Fase KO */}
+                {(em.koResults||[]).length>0&&(
+                  <div style={{marginBottom:10}}>
+                    <div style={{fontSize:9,color:TH.muted,textTransform:"uppercase",letterSpacing:1,marginBottom:4}}>Fase KO</div>
+                    {(em.koResults||[]).map((r,i)=>(
+                      <div key={i} style={{display:"flex",alignItems:"center",gap:6,padding:"3px 0",borderTop:i>0?"1px solid "+TH.cardBorder:"none"}}>
+                        {_bar(r.won,false)}
+                        <span style={{fontSize:9,color:TH.muted,minWidth:40,fontWeight:700}}>{r.phase?.toUpperCase()||"KO"}</span>
+                        <span style={{flex:1,fontSize:10,color:TH.text}}>vs {r.opponent?.n||r.opponent||"?"}</span>
+                        <span style={{fontSize:11,fontWeight:700}}>{r.homeScore}–{r.awayScore}</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+                {!em.champion&&!em.eliminated&&!em.done&&(
+                  <Btn v="primary" fw onClick={startEuroMondialeMatch}>
+                    ⚽ Gioca {em.phase==="group"?`Giornata ${(em.groupMatchIdx||0)+1}/3`:"Fase KO"}
+                  </Btn>
+                )}
+              </Card>
+            )}
+
+            {/* In attesa di convocazione */}
+            {_isPro&&caps===0&&!nationalCallupData&&(!q||!q.active||q.done)&&(!em||!em.active)&&(
+              <Card style={{padding:"22px 16px",textAlign:"center"}}>
+                <div style={{fontSize:40,marginBottom:10}}>{natFlag}</div>
+                <div style={{fontSize:13,fontWeight:700,color:TH.text,marginBottom:6}}>In attesa della prima convocazione</div>
+                <div style={{fontSize:11,color:TH.muted,lineHeight:1.5}}>Il CT convoca giocatori con OVR ≥ 70 e popolarità ≥ 55. Continua a crescere — la chiamata arriverà!</div>
+                <div style={{display:"flex",gap:12,justifyContent:"center",marginTop:14}}>
+                  <div style={{textAlign:"center"}}>
+                    <div style={{fontSize:16,fontWeight:800,color:(player.ovr||60)>=70?"#16a34a":"#f59e0b"}}>{player.ovr||60}</div>
+                    <div style={{fontSize:9,color:TH.muted}}>OVR (min. 70)</div>
+                  </div>
+                  <div style={{textAlign:"center"}}>
+                    <div style={{fontSize:16,fontWeight:800,color:(player.popularity||0)>=55?"#16a34a":"#f59e0b"}}>{player.popularity||0}</div>
+                    <div style={{fontSize:9,color:TH.muted}}>Popolarità (min. 55)</div>
+                  </div>
+                </div>
+              </Card>
+            )}
+
+            {/* Non pro */}
+            {!_isPro&&(
+              <Card style={{padding:"22px 16px",textAlign:"center"}}>
+                <div style={{fontSize:40,marginBottom:10}}>{natFlag}</div>
+                <div style={{fontSize:13,fontWeight:700,color:TH.text,marginBottom:6}}>Solo per giocatori pro</div>
+                <div style={{fontSize:11,color:TH.muted}}>Le convocazioni in nazionale partono dalla stagione professionistica. Continua a crescere!</div>
+              </Card>
+            )}
+
+            {/* Storico apparizioni */}
+            {caps>0&&(()=>{
+              const natMem=(player.worldMemory||[]).filter(m=>["national_debut","nations_cup","national_goal"].includes(m.type));
+              const natDiary=(player.diary||[]).filter(d=>["first_national","first_national_goal","cup_trophy","euro_mondiale_trophy"].includes(d.type));
+              if(!natMem.length&&!natDiary.length)return null;
+              return(
+                <Card style={{padding:"12px 14px"}}>
+                  <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>📋 Momenti in Nazionale</div>
+                  {natDiary.slice(-8).reverse().map((d,i)=>(
+                    <div key={i} style={{display:"flex",gap:10,padding:"5px 0",borderTop:i>0?"1px solid "+TH.cardBorder:"none",alignItems:"center"}}>
+                      <span style={{fontSize:18}}>{d.e||"🌍"}</span>
+                      <div>
+                        <div style={{fontSize:11,fontWeight:600,color:TH.text}}>{d.headline||d.type}</div>
+                        {d.body&&<div style={{fontSize:9,color:TH.muted,marginTop:1}}>{d.body}</div>}
+                        <div style={{fontSize:8,color:TH.faint}}>S.{d.season||"?"} · Sett.{d.week||"?"}</div>
+                      </div>
+                    </div>
+                  ))}
+                  {!natDiary.length&&natMem.slice(-4).reverse().map((m,i)=>(
+                    <div key={i} style={{display:"flex",gap:10,padding:"5px 0",borderTop:i>0?"1px solid "+TH.cardBorder:"none",alignItems:"center"}}>
+                      <span style={{fontSize:18}}>{m.type==="national_debut"?"🌍":m.type==="nations_cup"?"🏆":"⚽"}</span>
+                      <div>
+                        <div style={{fontSize:11,fontWeight:600,color:TH.text}}>{m.label||m.type}</div>
+                        <div style={{fontSize:8,color:TH.faint}}>S.{m.season||"?"}</div>
+                      </div>
+                    </div>
+                  ))}
+                </Card>
+              );
+            })()}
+          </div>
+        );
+      })()}
+
       {/* Sprint 127 — COPPE TAB */}
       {tab==="coppe"&&(()=>{
         const cup=player.cup||null;const eu=player.euro||null;const em=player.euroMondiale||null;
@@ -16674,8 +16888,8 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
         ))}
         {toggleLang&&<button onClick={toggleLang} style={{marginLeft:"auto",fontSize:9,background:"#e2e8f0",border:"none",borderRadius:4,padding:"2px 7px",cursor:"pointer",color:TH.text,fontWeight:700}}>🌐 {lang}</button>}
       </div>
-      <div className="cpm-nav-tabs" style={{background:TH.navBg,borderTop:"1px solid "+TH.cardBorder}}>
-        {tabs.map(t=><button key={t.id} className={tab===t.id?"cpm-tab-act":""} onClick={()=>goTab(t.id)} title={`${t.l} [${t.k}]`} style={{flex:1,padding:"10px 4px 6px",border:"none",background:"transparent",cursor:"pointer",fontFamily:"inherit",color:tab===t.id?TH.primary:TH.faint,borderTop:`2px solid ${tab===t.id?TH.primary:"transparent"}`,transition:"all .15s"}}><div style={{fontSize:17}}>{t.e}</div><div style={{fontSize:9,marginTop:1,letterSpacing:.3}}>{t.l}</div><div style={{fontSize:8,color:tab===t.id?TH.primary+"99":TH.faint+"88",marginTop:1,fontFamily:"monospace"}}>[{t.k}]</div></button>)}
+      <div className="cpm-nav-tabs" style={{background:TH.navBg,borderTop:"1px solid "+TH.cardBorder,overflowX:"auto",WebkitOverflowScrolling:"touch",scrollbarWidth:"none"}}>
+        {tabs.map(t=><button key={t.id} className={tab===t.id?"cpm-tab-act":""} onClick={()=>goTab(t.id)} title={`${t.l} [${t.k}]`} style={{flex:"0 0 auto",minWidth:52,padding:"10px 6px 6px",border:"none",background:"transparent",cursor:"pointer",fontFamily:"inherit",color:tab===t.id?TH.primary:TH.faint,borderTop:`2px solid ${tab===t.id?TH.primary:"transparent"}`,transition:"all .15s"}}><div style={{fontSize:17}}>{t.e}</div><div style={{fontSize:9,marginTop:1,letterSpacing:.3}}>{t.l}</div><div style={{fontSize:8,color:tab===t.id?TH.primary+"99":TH.faint+"88",marginTop:1,fontFamily:"monospace"}}>[{t.k}]</div></button>)}
         {toggleLang&&<button onClick={toggleLang} title="Cambia lingua / Change language" style={{padding:"6px 10px",border:"none",borderLeft:`1px solid ${TH.cardBorder}`,background:"transparent",cursor:"pointer",fontFamily:"inherit",color:TH.faint,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:1}}><div style={{fontSize:14}}>🌐</div><div style={{fontSize:8,marginTop:1,letterSpacing:.3,fontWeight:700}}>{lang}</div></button>}
       </div>
       </div>{/* end bottom nav wrapper */}
