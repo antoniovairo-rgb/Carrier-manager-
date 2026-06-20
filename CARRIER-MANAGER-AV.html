@@ -2426,7 +2426,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.2.6"; // Sprint 156: national team chants in correct language (CROWD_CHANTS_NAT per nation)
+const GAME_VERSION="4.2.7"; // Sprint 157: area HL initial player positioning — no more penalty-like look for rovesciata
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -6880,6 +6880,29 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
             const ax=[87,89,85,82,80,76,72,68,65];
             const ay=[38,50,62,32,68,44,56,36,64];
             return{...pl,x:ax[idx-1]||80,y:ay[idx-1]||50};
+          }
+        }));
+      // Sprint 157: non-lockMovement area highlights — place players in the box so it never
+      // looks like a penalty (players outside the area) due to inherited BG_MATCH positions
+      }else if(situations[hlIdx]?.zones?.[0]==="area"){
+        const sit=situations[hlIdx];
+        const szX=(sit.startZone.x[0]+sit.startZone.x[1])/2;
+        const szY=(sit.startZone.y[0]+sit.startZone.y[1])/2;
+        setMatchPlayers(prev=>prev.map((pl,idx)=>{
+          if(pl.team==="ref")return pl;
+          if(pl.team==="away"){
+            const ai=idx-10;
+            if(ai===0)return{...pl,x:97,y:50}; // Away GK on goal line
+            // Defenders inside/around the area, pressed toward ball
+            const rx=[92,88,85,90,82,86,79,83,94,77];
+            const ry=[szY-12,szY+10,szY-4,szY+16,szY,szY-18,szY+8,szY-6,szY+20,szY-14];
+            return{...pl,x:clamp(rx[ai-1]||88,76,97),y:clamp(ry[ai-1]??szY,4,96)};
+          }else{
+            if(idx===0)return{...pl,x:4,y:50}; // Home GK
+            // Attackers crowding the box from various angles
+            const hx=[szX,szX-3,szX+3,szX-6,szX+4,szX-9,szX-11,szX-7,szX-13];
+            const hy=[szY-10,szY+10,szY,szY-16,szY+16,szY-4,szY+4,szY-22,szY+22];
+            return{...pl,x:clamp(hx[idx-1]||szX,70,96),y:clamp(hy[idx-1]??szY,4,96)};
           }
         }));
       }
