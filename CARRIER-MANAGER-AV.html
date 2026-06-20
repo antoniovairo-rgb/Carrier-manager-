@@ -2426,7 +2426,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.1.5"; // Sprint 145: cronaca — {P} events filtered when player on bench; hero pos frozen
+const GAME_VERSION="4.1.6"; // Sprint 146: hide transfer badge unless player is on loan
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -13737,7 +13737,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
           <h1 style={{margin:"1px 0 0",fontSize:17,fontWeight:900,letterSpacing:-.5,color:TH.text}}>{player.name}</h1>
           <div style={{display:"flex",flexWrap:"wrap",alignItems:"center",gap:4,marginTop:1}}>
             <span style={{fontSize:11,color:player.club?.col||player.club?.c||TH.primary,fontWeight:700}}>{player.club?.n||player.club?.name||"–"}</span>
-            {player.club?.transferType&&<span style={{fontSize:9,background:"#eff6ff",color:TH.primary,padding:"1px 7px",borderRadius:8,fontWeight:600,border:"1px solid #bfdbfe"}}>{player.club.transferType}</span>}
+            {player.club?.transferType&&player.club.transferType.includes("prest")&&<span style={{fontSize:9,background:"#eff6ff",color:TH.primary,padding:"1px 7px",borderRadius:8,fontWeight:600,border:"1px solid #bfdbfe"}}>{player.club.transferType}</span>}
             <span style={{fontSize:10,color:TH.muted}}>{player.club?.lg?`· ${player.club.lg}`:player.proStatus==="u18"?"· U18":""} · S.{season} W.{week}/38</span>
           </div>
         </div>
