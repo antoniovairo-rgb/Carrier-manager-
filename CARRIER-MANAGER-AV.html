@@ -2426,7 +2426,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.1.0"; // Sprint 140: training fully automatic — TrainPanel auto-runs on tab open, zero player input
+const GAME_VERSION="4.1.1"; // Sprint 141: fix cup match showing league name instead of Coppa Nazionale
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -11441,6 +11441,8 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       :(lc.find(c=>c.id===md.opponentId)||lc.find(c=>c.n===md.opponentName)||pick(lc.filter(c=>c.id!==player.club?.id&&c.n!==player.club?.n)));
     if(!opp){notify("Nessun avversario disponibile.",TH.danger);return;}
     if(isEuroMd) setMatchContext(md.type==="euro"?"euro_ko":"euro_group");
+    else if(md.type==="cup") setMatchContext("cup");
+    else setMatchContext("career");
     // S11.4: detect derby (not applicable for euro but harmless)
     const derby=isDerby(player.club?.id,opp.id||md.opponentId);
     setCurrentMatchDerby(derby||null);
