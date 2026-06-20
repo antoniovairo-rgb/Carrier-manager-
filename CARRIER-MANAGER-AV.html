@@ -712,6 +712,26 @@ const _LR_DEFAULT={
   ]
 };
 
+// Sprint 137: historical UEFA competition winners
+const EURO_COMP_WINNERS={
+  UCL:[
+    {s:2024,club:"Real Madrid",nat:"🇪🇸"},{s:2023,club:"Manchester City",nat:"🏴󠁧󠁢󠁥󠁮󠁧󠁿"},
+    {s:2022,club:"Real Madrid",nat:"🇪🇸"},{s:2021,club:"Chelsea",nat:"🏴󠁧󠁢󠁥󠁮󠁧󠁿"},
+    {s:2020,club:"Bayern Monaco",nat:"🇩🇪"},{s:2019,club:"Liverpool",nat:"🏴󠁧󠁢󠁥󠁮󠁧󠁿"},
+    {s:2018,club:"Real Madrid",nat:"🇪🇸"},
+  ],
+  UEL:[
+    {s:2024,club:"Atalanta",nat:"🇮🇹"},{s:2023,club:"Siviglia",nat:"🇪🇸"},
+    {s:2022,club:"Eintracht Frankfurt",nat:"🇩🇪"},{s:2021,club:"Villarreal",nat:"🇪🇸"},
+    {s:2020,club:"Siviglia",nat:"🇪🇸"},{s:2019,club:"Chelsea",nat:"🏴󠁧󠁢󠁥󠁮󠁧󠁿"},
+    {s:2018,club:"Atletico Madrid",nat:"🇪🇸"},
+  ],
+  UECL:[
+    {s:2024,club:"Chelsea",nat:"🏴󠁧󠁢󠁥󠁮󠁧󠁿"},{s:2023,club:"West Ham",nat:"🏴󠁧󠁢󠁥󠁮󠁧󠁿"},
+    {s:2022,club:"Roma",nat:"🇮🇹"},
+  ],
+};
+
 function TeamBadge({team,size=40}) {
   const c=team?.col||team?.c||"#2563eb", c2=team?.col2||team?.c2||"#fff";
   const ab=(team?.abbr||team?.a||"??").substring(0,3);
@@ -2406,7 +2426,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.0.6"; // Sprint 136: fix euro competition label (Premier League→UCL/UEL/UECL in MatchdayCard/scoreboard)
+const GAME_VERSION="4.0.7"; // Sprint 137: enhanced Coppe tab — full group standings, match calendar, historical winners
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -16788,56 +16808,130 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                 })()}
               </Card>
             )}
-            {/* COPPA EUROPEA */}
+            {/* COPPA EUROPEA — Sprint 137: full standings, calendar, winners */}
             {_isPro&&eu?.active&&(()=>{
               const _ec=eu.competition||"UCL";
               const _ecFull={UCL:"UEFA Champions League",UEL:"UEFA Europa League",UECL:"UEFA Conference League"}[_ec]||_ec;
               const _ecE={UCL:"⭐",UEL:"🟡",UECL:"🟣"}[_ec]||"🌍";
-              const _ecCol={UCL:"#1e40af",UEL:"#92400e",UECL:"#5b21b6"}[_ec]||"#1e40af";
+              const _ecCol={UCL:"#1e40af",UEL:"#b45309",UECL:"#5b21b6"}[_ec]||"#1e40af";
+              const _ecBg={UCL:"linear-gradient(135deg,#1e3a8a,#2563eb)",UEL:"linear-gradient(135deg,#9a3412,#f97316)",UECL:"linear-gradient(135deg,#4c1d95,#7c3aed)"}[_ec]||"linear-gradient(135deg,#1e3a8a,#2563eb)";
               const _ecBorder={UCL:"#bfdbfe",UEL:"#fde68a",UECL:"#ddd6fe"}[_ec]||"#bfdbfe";
               const gr=eu.groupResults||[];const koR=eu.koResults||[];const groupOpps=eu.groupOpponents||[];
+              const koPhases={r16:"Ottavi",quarters:"Quarti",semi:"Semifinale",final:"Finale"};
               const _pG={w:0,d:0,l:0,gf:0,ga:0,pts:0};
               gr.forEach(r=>{if(r.won){_pG.w++;_pG.pts+=3;}else if(r.drew){_pG.d++;_pG.pts+=1;}else{_pG.l++;}_pG.gf+=(r.hs||0);_pG.ga+=(r.as||0);});
-              const _sr=(o,s)=>{const played=gr.length;const h=n=>Math.abs(hashStr(_ec+(o?.id||o?.n||"x")+s+n))%10;let w=0,d=0,l=0,gf=0,ga=0;for(let i=0;i<played;i++){const r=h(i*7+3);if(r<4){w++;gf+=h(i*3+1)+1;ga+=h(i*5);}else if(r<6){d++;gf+=h(i*3)+1;ga+=h(i*5)+1;}else{l++;gf+=h(i*3);ga+=h(i*5+2)+1;}}return{n:o?.a||o?.n||"?",w,d,l,gf,ga,pts:w*3+d,isPlayer:false};};
-              const allRows=[{n:(player.club?.a||player.club?.n||"TU"),w:_pG.w,d:_pG.d,l:_pG.l,gf:_pG.gf,ga:_pG.ga,pts:_pG.pts,isPlayer:true},...groupOpps.map((o,i)=>_sr(o,"g"+i))].sort((a,b)=>b.pts-a.pts||((b.gf-b.ga)-(a.gf-a.ga))||b.gf-a.gf);
+              const _sr=(o,s)=>{const played=gr.length;const h=n=>Math.abs(hashStr(_ec+(o?.id||o?.n||"x")+s+n))%10;let w=0,d=0,l=0,gf=0,ga=0;for(let i=0;i<played;i++){const r=h(i*7+3);if(r<4){w++;gf+=h(i*3+1)+1;ga+=h(i*5);}else if(r<6){d++;gf+=h(i*3)+1;ga+=h(i*5)+1;}else{l++;gf+=h(i*3);ga+=h(i*5+2)+1;}}return{fullName:o?.n||o?.a||"?",nat:o?.nat||"",w,d,l,gf,ga,pts:w*3+d,isPlayer:false};};
+              const allRows=[{fullName:player.club?.n||player.club?.a||"TU",nat:player.club?.nat||"",w:_pG.w,d:_pG.d,l:_pG.l,gf:_pG.gf,ga:_pG.ga,pts:_pG.pts,isPlayer:true},...groupOpps.map((o,i)=>_sr(o,"g"+i))].sort((a,b)=>b.pts-a.pts||((b.gf-b.ga)-(a.gf-a.ga))||b.gf-a.gf);
+              const euroCal=(player.calendar||[]).filter(m=>m.type==="euro_group"||m.type==="euro").sort((a,b)=>a.week-b.week);
+              const nextEuroMatch=euroCal.find(m=>!m.played);
+              const compWinners=(EURO_COMP_WINNERS[_ec]||[]).slice(0,5);
               return(
-                <Card style={{padding:"12px 14px",border:"1px solid "+_ecBorder}}>
-                  <div style={{fontSize:10,color:_ecCol,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8,fontWeight:700}}>{_ecE} {_ecFull}</div>
-                  <div style={{marginBottom:8}}>
-                    {eu.champion?<span style={{fontSize:11,fontWeight:800,color:"#f59e0b",background:"#fef3c7",padding:"3px 10px",borderRadius:20}}>🏆 CAMPIONE!</span>
-                    :eu.phase==="eliminated"?<span style={{fontSize:11,color:TH.danger,background:"#fee2e2",padding:"3px 10px",borderRadius:20,fontWeight:700}}>❌ Eliminato</span>
-                    :eu.phase==="group"?<span style={{fontSize:10,fontWeight:700,color:_ecCol,background:_ecBorder+"88",padding:"3px 10px",borderRadius:12}}>Girone · {gr.length}/{groupOpps.length*2}</span>
-                    :<span style={{fontSize:10,fontWeight:700,color:"#16a34a",background:"#dcfce7",padding:"3px 10px",borderRadius:12}}>✅ {eu.phase?.toUpperCase()||"KO"}</span>}
+                <Card style={{padding:0,border:"1px solid "+_ecBorder,overflow:"hidden"}}>
+                  {/* Banner header */}
+                  <div style={{background:_ecBg,padding:"10px 14px",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
+                    <div>
+                      <div style={{fontSize:11,fontWeight:900,color:"#fff",letterSpacing:1.5}}>{_ecE} {_ecFull}</div>
+                      <div style={{fontSize:9,color:"rgba(255,255,255,0.7)",marginTop:1}}>Stagione {player.season||1}</div>
+                    </div>
+                    <div>
+                      {eu.champion&&<span style={{fontSize:10,fontWeight:800,color:"#fff",background:"rgba(255,255,255,0.25)",padding:"3px 10px",borderRadius:20}}>🏆 CAMPIONE!</span>}
+                      {eu.phase==="eliminated"&&<span style={{fontSize:10,color:"#fca5a5",background:"rgba(0,0,0,0.3)",padding:"3px 10px",borderRadius:20,fontWeight:700}}>❌ Eliminato</span>}
+                      {!eu.champion&&eu.phase==="group"&&<span style={{fontSize:10,color:"rgba(255,255,255,0.9)",background:"rgba(255,255,255,0.2)",padding:"3px 10px",borderRadius:20,fontWeight:700}}>Girone · {gr.length}/{groupOpps.length*2}</span>}
+                      {!eu.champion&&eu.phase!=="group"&&eu.phase!=="eliminated"&&<span style={{fontSize:10,color:"#d9f99d",background:"rgba(255,255,255,0.15)",padding:"3px 10px",borderRadius:20,fontWeight:700}}>✅ {koPhases[eu.phase]||eu.phase?.toUpperCase()||"KO"}</span>}
+                    </div>
                   </div>
-                  {groupOpps.length>0&&(
-                    <div style={{marginBottom:koR.length>0?10:0}}>
-                      <div style={{fontSize:9,color:TH.muted,textTransform:"uppercase",letterSpacing:1,marginBottom:4}}>Classifica Girone</div>
-                      <div style={{display:"grid",gridTemplateColumns:"1fr 28px 60px 28px",gap:"2px 4px",alignItems:"center"}}>
-                        {["","Pt","VNS","GF-GA"].map((h,i)=><span key={i} style={{fontSize:8,color:TH.faint,fontWeight:700,textAlign:i>0?"center":"left"}}>{h}</span>)}
-                        {allRows.map((row,ri)=>(
-                          <React.Fragment key={ri}>
-                            <span style={{fontSize:10,fontWeight:row.isPlayer?800:500,color:row.isPlayer?_ecCol:TH.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{row.isPlayer?"⭐ ":""}{row.n}</span>
-                            <span style={{fontSize:10,fontWeight:row.isPlayer?800:600,textAlign:"center",color:row.isPlayer?_ecCol:TH.text}}>{row.pts}</span>
-                            <span style={{fontSize:9,textAlign:"center",color:TH.muted}}>{row.w}V·{row.d}P·{row.l}S</span>
-                            <span style={{fontSize:9,textAlign:"center",color:TH.muted}}>{row.gf}–{row.ga}</span>
-                          </React.Fragment>
+                  <div style={{padding:"12px 14px",display:"flex",flexDirection:"column",gap:12}}>
+                    {/* Prossima partita */}
+                    {nextEuroMatch&&(
+                      <div style={{padding:"8px 12px",background:_ecBorder+"66",borderRadius:8,border:"1px solid "+_ecBorder}}>
+                        <div style={{fontSize:9,color:_ecCol,textTransform:"uppercase",letterSpacing:1,fontWeight:700,marginBottom:3}}>⏭ Prossima partita</div>
+                        <div style={{fontSize:11,fontWeight:700,color:TH.text}}>{nextEuroMatch.isHome?(player.club?.n||"Noi"):(nextEuroMatch.opponentName||"Avv.")} vs {nextEuroMatch.isHome?(nextEuroMatch.opponentName||"Avv."):(player.club?.n||"Noi")}</div>
+                        <div style={{fontSize:9,color:TH.muted,marginTop:2}}>{nextEuroMatch.type==="euro_group"?"Fase a Gironi":(nextEuroMatch.cupRoundName||"KO")} · Settimana {nextEuroMatch.week}</div>
+                      </div>
+                    )}
+                    {/* Classifica girone completa */}
+                    {groupOpps.length>0&&(
+                      <div>
+                        <div style={{fontSize:9,color:TH.muted,textTransform:"uppercase",letterSpacing:1.2,fontWeight:700,marginBottom:6}}>📊 Classifica Girone</div>
+                        <div style={{borderRadius:8,overflow:"hidden",border:"1px solid "+TH.cardBorder}}>
+                          <div style={{display:"grid",gridTemplateColumns:"18px 1fr 26px 54px 28px",gap:"0 3px",padding:"4px 8px",background:TH.bg}}>
+                            {["","Squadra","Pt","V N S","GD"].map((h,i)=><span key={i} style={{fontSize:8,color:TH.faint,fontWeight:700,textAlign:i>=2?"center":"left"}}>{h}</span>)}
+                          </div>
+                          {allRows.map((row,ri)=>{
+                            const isQual=ri<=1;
+                            return(
+                              <div key={ri} style={{display:"grid",gridTemplateColumns:"18px 1fr 26px 54px 28px",gap:"0 3px",padding:"5px 8px",background:row.isPlayer?(isQual?_ecBorder+"44":"#fff7ed"):isQual?"#f0fdf4":"transparent",borderTop:"1px solid "+TH.cardBorder}}>
+                                <span style={{fontSize:10,color:isQual?"#16a34a":"#94a3b8",fontWeight:700,textAlign:"center"}}>{ri+1}</span>
+                                <div style={{overflow:"hidden"}}>
+                                  <div style={{fontSize:9,fontWeight:row.isPlayer?800:500,color:row.isPlayer?_ecCol:TH.text,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{row.isPlayer?"⭐ ":""}{row.fullName}</div>
+                                  {row.nat&&<span style={{fontSize:8,color:TH.faint}}>{row.nat}</span>}
+                                </div>
+                                <span style={{fontSize:11,fontWeight:row.isPlayer?900:600,textAlign:"center",color:row.isPlayer?_ecCol:TH.text}}>{row.pts}</span>
+                                <span style={{fontSize:8,textAlign:"center",color:TH.muted}}>{row.w}V·{row.d}N·{row.l}S</span>
+                                <span style={{fontSize:9,textAlign:"center",fontWeight:600,color:(row.gf-row.ga)>0?"#16a34a":(row.gf-row.ga)<0?"#dc2626":TH.muted}}>{row.gf-row.ga>0?"+":""}{row.gf-row.ga}</span>
+                              </div>
+                            );
+                          })}
+                        </div>
+                        <div style={{fontSize:8,color:TH.faint,marginTop:3}}>🟢 Top 2 passano · statistiche avversari stimate</div>
+                      </div>
+                    )}
+                    {/* Calendario completo */}
+                    {euroCal.length>0&&(
+                      <div>
+                        <div style={{fontSize:9,color:TH.muted,textTransform:"uppercase",letterSpacing:1.2,fontWeight:700,marginBottom:6}}>📅 Calendario</div>
+                        <div style={{display:"flex",flexDirection:"column",gap:2}}>
+                          {euroCal.map((m,i)=>{
+                            const isKO=m.type==="euro";
+                            const gNum=euroCal.filter((x,xi)=>xi<=i&&x.type==="euro_group").length;
+                            const roundLbl=isKO?(m.cupRoundName||koPhases[m.euroPhase]||"KO"):`G${gNum}`;
+                            const myClub=player.club?.n||"Noi";
+                            const homeN=m.isHome?myClub:(m.opponentName||"?");
+                            const awayN=m.isHome?(m.opponentName||"?"):myClub;
+                            const bgCol=m.played?(m.result?.won?"#dcfce7":m.result?.drew?"#fffbeb":"#fee2e2"):"transparent";
+                            return(
+                              <div key={i} style={{display:"flex",alignItems:"center",gap:5,padding:"5px 8px",borderRadius:6,background:bgCol,border:"1px solid "+(m.played?"transparent":TH.cardBorder)}}>
+                                <span style={{fontSize:8,color:_ecCol,fontWeight:800,minWidth:22,flexShrink:0}}>{roundLbl}</span>
+                                <span style={{fontSize:8,color:TH.faint,minWidth:20,flexShrink:0}}>W{m.week}</span>
+                                <span style={{flex:1,fontSize:10,fontWeight:500,color:TH.text,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{homeN} vs {awayN}</span>
+                                {m.played
+                                  ?<span style={{fontSize:11,fontWeight:800,color:m.result?.won?"#16a34a":m.result?.drew?"#d97706":"#dc2626",flexShrink:0}}>{m.result?.homeScore}–{m.result?.awayScore}</span>
+                                  :!m.isHome&&<span style={{fontSize:9,color:TH.faint,flexShrink:0}}>✈️</span>
+                                }
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    )}
+                    {/* KO results (se non nel calendario) */}
+                    {koR.length>0&&euroCal.filter(m=>m.type==="euro").length===0&&(
+                      <div>
+                        <div style={{fontSize:9,color:TH.muted,textTransform:"uppercase",letterSpacing:1.2,fontWeight:700,marginBottom:6}}>⚔️ Fase KO</div>
+                        {koR.map((r,i)=>(
+                          <div key={i} style={{display:"flex",alignItems:"center",gap:6,padding:"5px 0",borderTop:i>0?"1px solid "+TH.cardBorder:"none"}}>
+                            {_bar(r.won)}
+                            <span style={{fontSize:9,color:_ecCol,fontWeight:700,minWidth:52}}>{koPhases[r.phase]||r.phase?.toUpperCase()||"KO"}</span>
+                            <span style={{flex:1,fontSize:10,color:TH.text}}>vs {r.opponent?.n||r.opponent||"?"}</span>
+                            <span style={{fontSize:11,fontWeight:700}}>{r.homeScore}–{r.awayScore}</span>
+                          </div>
                         ))}
                       </div>
-                    </div>
-                  )}
-                  {koR.length>0&&(
-                    <div>
-                      <div style={{fontSize:9,color:TH.muted,textTransform:"uppercase",letterSpacing:1,marginBottom:4}}>Fase KO</div>
-                      {koR.map((r,i)=>(
-                        <div key={i} style={{display:"flex",alignItems:"center",gap:6,padding:"4px 0",borderTop:i>0?"1px solid "+TH.cardBorder:"none"}}>
-                          {_bar(r.won)}
-                          <span style={{fontSize:9,color:TH.muted,minWidth:36}}>{r.phase?.toUpperCase()||"KO"}</span>
-                          <span style={{flex:1,fontSize:11,color:TH.text,fontWeight:600}}>vs {r.opponent?.n||r.opponent||"?"}</span>
-                          <span style={{fontSize:11,fontWeight:700}}>{r.homeScore}–{r.awayScore}</span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
+                    )}
+                    {/* Albo d'oro */}
+                    {compWinners.length>0&&(
+                      <div>
+                        <div style={{fontSize:9,color:TH.muted,textTransform:"uppercase",letterSpacing:1.2,fontWeight:700,marginBottom:6}}>🏆 Ultimi Vincitori</div>
+                        {compWinners.map((w,i)=>(
+                          <div key={i} style={{display:"flex",alignItems:"center",gap:8,padding:"4px 0",borderTop:i>0?"1px solid "+TH.cardBorder:"none"}}>
+                            <span style={{fontSize:11}}>{w.nat}</span>
+                            <span style={{flex:1,fontSize:10,fontWeight:i===0?700:400,color:i===0?TH.text:TH.muted}}>{w.club}{i===0?" 🏆":""}</span>
+                            <span style={{fontSize:9,color:TH.faint}}>{w.s}/{String(w.s+1).slice(-2)}</span>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
                 </Card>
               );
             })()}
