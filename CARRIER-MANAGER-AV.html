@@ -2383,7 +2383,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="3.99.6"; // Sprint 126: training growth % indicators; award race progress bars in profile
+const GAME_VERSION="3.99.7"; // Sprint 127: dedicated Coppe tab (cup bracket + euro group + palmares)
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -11076,11 +11076,11 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       // Arrow keys for tab switching
       else if(e.key==="ArrowLeft"&&!inModal){
         e.preventDefault();
-        const tabs=["dashboard","calendar","standings","club","training","profile","agente"];
+        const tabs=["dashboard","calendar","standings","club","training","profile","agente","coppe"];
         const cur=tabs.indexOf(tab);if(cur>0)goTab(tabs[cur-1]);
       }else if(e.key==="ArrowRight"&&!inModal){
         e.preventDefault();
-        const tabs=["dashboard","calendar","standings","club","training","profile","agente"];
+        const tabs=["dashboard","calendar","standings","club","training","profile","agente","coppe"];
         const cur=tabs.indexOf(tab);if(cur<tabs.length-1)goTab(tabs[cur+1]);
       }
     };
@@ -12764,7 +12764,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     </div>
   );
 
-  const tabs=[{id:"dashboard",e:"🏠",l:L.tabs.dashboard,k:"M"},{id:"calendar",e:"📅",l:L.tabs.calendar,k:"C"},{id:"standings",e:"📊",l:L.tabs.standings,k:"F"},{id:"club",e:"🏟️",l:"Club",k:"S"},{id:"training",e:"💪",l:L.tabs.training,k:"T"},{id:"profile",e:"👤",l:L.tabs.profile,k:"R"},{id:"agente",e:"🤵",l:L.agent,k:"G"}];
+  const tabs=[{id:"dashboard",e:"🏠",l:L.tabs.dashboard,k:"M"},{id:"calendar",e:"📅",l:L.tabs.calendar,k:"C"},{id:"standings",e:"📊",l:L.tabs.standings,k:"F"},{id:"club",e:"🏟️",l:"Club",k:"S"},{id:"training",e:"💪",l:L.tabs.training,k:"T"},{id:"profile",e:"👤",l:L.tabs.profile,k:"R"},{id:"agente",e:"🤵",l:L.agent,k:"G"},{id:"coppe",e:"🏆",l:"Coppe",k:"K"}];
 
   return(
     <div className="cpm-career">
@@ -16112,6 +16112,154 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                 </Card>
               </div>
             )}
+          </div>
+        );
+      })()}
+
+      {/* Sprint 127 — COPPE TAB */}
+      {tab==="coppe"&&(()=>{
+        const cup=player.cup||null;const eu=player.euro||null;const em=player.euroMondiale||null;
+        const _isPro=(player.proStatus||"u18")==="pro";
+        const ROUNDS=["","R16","Quarti","Semi","Finale"];
+        const getAbbr=id=>{const c=CLUBS.find(c=>c.id===id||c.n===id);return c?.a||String(id||"?").slice(0,3).toUpperCase();};
+        const trophies=player.trophies||[];
+        const _bar=(won)=><span style={{fontSize:9,fontWeight:700,color:won?"#16a34a":"#dc2626",background:won?"#dcfce7":"#fee2e2",padding:"1px 5px",borderRadius:4,minWidth:16,textAlign:"center",display:"inline-block"}}>{won?"V":"X"}</span>;
+        return(
+          <div style={{display:"flex",flexDirection:"column",gap:12}}>
+            {/* COPPA NAZIONALE */}
+            {_isPro&&cup&&(
+              <Card style={{padding:"12px 14px",border:"1px solid #fde68a"}}>
+                <div style={{fontSize:10,color:"#92400e",textTransform:"uppercase",letterSpacing:1.5,marginBottom:8,fontWeight:700}}>🏆 Coppa Nazionale — S.{player.season||1}</div>
+                <div style={{marginBottom:8}}>
+                  {cup.champion?<span style={{fontSize:11,fontWeight:800,color:"#f59e0b",background:"#fef3c7",padding:"3px 10px",borderRadius:20}}>🏆 CAMPIONE DI COPPA!</span>
+                  :cup.eliminated?<span style={{fontSize:11,color:TH.danger,background:"#fee2e2",padding:"3px 10px",borderRadius:20,fontWeight:700}}>❌ Eliminato al {ROUNDS[cup.round-1]||`R${cup.round-1}`}</span>
+                  :<span style={{fontSize:11,color:"#d97706",background:"#fffbeb",padding:"3px 10px",borderRadius:20,fontWeight:700}}>⏳ {ROUNDS[cup.round]||`R${cup.round}`}</span>}
+                </div>
+                {(cup.results||[]).length>0&&(
+                  <div style={{marginBottom:8}}>
+                    <div style={{fontSize:9,color:TH.muted,textTransform:"uppercase",letterSpacing:1,marginBottom:4}}>Le tue partite</div>
+                    {cup.results.map((r,i)=>(
+                      <div key={i} style={{display:"flex",alignItems:"center",gap:6,padding:"4px 0",borderTop:i>0?"1px solid "+TH.cardBorder:"none"}}>
+                        {_bar(r.won)}
+                        <span style={{fontSize:9,color:TH.muted,minWidth:50}}>{r.name||ROUNDS[i+1]}{r.penalties&&<span style={{color:"#f59e0b"}}> (rig.)</span>}</span>
+                        <span style={{flex:1,fontSize:11,color:TH.text,fontWeight:600}}>vs {r.opponent}</span>
+                        <span style={{fontSize:12,fontWeight:700}}>{r.homeScore}–{r.awayScore}</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+                {(()=>{
+                  const bm=cup.cupBracketMatches||{};const pId=player.club?.id||player.club?.n;
+                  const rounds=[{k:"r16",l:"R16"},{k:"quarters",l:"Quarti"},{k:"semi",l:"Semi"},{k:"final",l:"Finale"}].filter(r=>(bm[r.k]||[]).length>0);
+                  if(!rounds.length)return<div style={{fontSize:10,color:TH.faint}}>Tabellone non ancora disputato.</div>;
+                  return(
+                    <div>
+                      <div style={{fontSize:9,color:TH.muted,textTransform:"uppercase",letterSpacing:1,marginBottom:4}}>Tabellone completo</div>
+                      {rounds.map((r,ri)=>(
+                        <div key={r.k} style={{marginBottom:ri<rounds.length-1?8:0}}>
+                          <div style={{fontSize:9,color:"#92400e",fontWeight:700,marginBottom:3}}>{r.l}</div>
+                          {(bm[r.k]||[]).map((m,mi)=>{
+                            const isP=m.isPlayer;const hWon=m.winner===m.home;
+                            return(
+                              <div key={mi} style={{display:"flex",alignItems:"center",gap:4,padding:"2px 4px",borderRadius:4,background:isP?"#fffbeb":"transparent",marginBottom:1}}>
+                                <span style={{flex:1,fontSize:9,fontWeight:hWon?700:400,color:hWon?TH.text:TH.faint,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{isP&&m.home===pId?"⭐ ":""}{getAbbr(m.home)}</span>
+                                <span style={{fontSize:9,fontWeight:600,color:isP?"#d97706":TH.faint,minWidth:28,textAlign:"center"}}>{m.homeScore}–{m.awayScore}</span>
+                                <span style={{flex:1,fontSize:9,fontWeight:!hWon?700:400,color:!hWon?TH.text:TH.faint,textAlign:"right",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{getAbbr(m.away)}{isP&&m.away===pId?" ⭐":""}</span>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      ))}
+                    </div>
+                  );
+                })()}
+              </Card>
+            )}
+            {/* COPPA EUROPEA */}
+            {_isPro&&eu?.active&&(()=>{
+              const _ec=eu.competition||"UCL";
+              const _ecFull={UCL:"UEFA Champions League",UEL:"UEFA Europa League",UECL:"UEFA Conference League"}[_ec]||_ec;
+              const _ecE={UCL:"⭐",UEL:"🟡",UECL:"🟣"}[_ec]||"🌍";
+              const _ecCol={UCL:"#1e40af",UEL:"#92400e",UECL:"#5b21b6"}[_ec]||"#1e40af";
+              const _ecBorder={UCL:"#bfdbfe",UEL:"#fde68a",UECL:"#ddd6fe"}[_ec]||"#bfdbfe";
+              const gr=eu.groupResults||[];const koR=eu.koResults||[];const groupOpps=eu.groupOpponents||[];
+              const _pG={w:0,d:0,l:0,gf:0,ga:0,pts:0};
+              gr.forEach(r=>{if(r.won){_pG.w++;_pG.pts+=3;}else if(r.drew){_pG.d++;_pG.pts+=1;}else{_pG.l++;}_pG.gf+=(r.hs||0);_pG.ga+=(r.as||0);});
+              const _sr=(o,s)=>{const played=gr.length;const h=n=>Math.abs(hashStr(_ec+(o?.id||o?.n||"x")+s+n))%10;let w=0,d=0,l=0,gf=0,ga=0;for(let i=0;i<played;i++){const r=h(i*7+3);if(r<4){w++;gf+=h(i*3+1)+1;ga+=h(i*5);}else if(r<6){d++;gf+=h(i*3)+1;ga+=h(i*5)+1;}else{l++;gf+=h(i*3);ga+=h(i*5+2)+1;}}return{n:o?.a||o?.n||"?",w,d,l,gf,ga,pts:w*3+d,isPlayer:false};};
+              const allRows=[{n:(player.club?.a||player.club?.n||"TU"),w:_pG.w,d:_pG.d,l:_pG.l,gf:_pG.gf,ga:_pG.ga,pts:_pG.pts,isPlayer:true},...groupOpps.map((o,i)=>_sr(o,"g"+i))].sort((a,b)=>b.pts-a.pts||((b.gf-b.ga)-(a.gf-a.ga))||b.gf-a.gf);
+              return(
+                <Card style={{padding:"12px 14px",border:"1px solid "+_ecBorder}}>
+                  <div style={{fontSize:10,color:_ecCol,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8,fontWeight:700}}>{_ecE} {_ecFull}</div>
+                  <div style={{marginBottom:8}}>
+                    {eu.champion?<span style={{fontSize:11,fontWeight:800,color:"#f59e0b",background:"#fef3c7",padding:"3px 10px",borderRadius:20}}>🏆 CAMPIONE!</span>
+                    :eu.phase==="eliminated"?<span style={{fontSize:11,color:TH.danger,background:"#fee2e2",padding:"3px 10px",borderRadius:20,fontWeight:700}}>❌ Eliminato</span>
+                    :eu.phase==="group"?<span style={{fontSize:10,fontWeight:700,color:_ecCol,background:_ecBorder+"88",padding:"3px 10px",borderRadius:12}}>Girone · {gr.length}/{groupOpps.length*2}</span>
+                    :<span style={{fontSize:10,fontWeight:700,color:"#16a34a",background:"#dcfce7",padding:"3px 10px",borderRadius:12}}>✅ {eu.phase?.toUpperCase()||"KO"}</span>}
+                  </div>
+                  {groupOpps.length>0&&(
+                    <div style={{marginBottom:koR.length>0?10:0}}>
+                      <div style={{fontSize:9,color:TH.muted,textTransform:"uppercase",letterSpacing:1,marginBottom:4}}>Classifica Girone</div>
+                      <div style={{display:"grid",gridTemplateColumns:"1fr 28px 60px 28px",gap:"2px 4px",alignItems:"center"}}>
+                        {["","Pt","VNS","GF-GA"].map((h,i)=><span key={i} style={{fontSize:8,color:TH.faint,fontWeight:700,textAlign:i>0?"center":"left"}}>{h}</span>)}
+                        {allRows.map((row,ri)=>(
+                          <React.Fragment key={ri}>
+                            <span style={{fontSize:10,fontWeight:row.isPlayer?800:500,color:row.isPlayer?_ecCol:TH.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{row.isPlayer?"⭐ ":""}{row.n}</span>
+                            <span style={{fontSize:10,fontWeight:row.isPlayer?800:600,textAlign:"center",color:row.isPlayer?_ecCol:TH.text}}>{row.pts}</span>
+                            <span style={{fontSize:9,textAlign:"center",color:TH.muted}}>{row.w}V·{row.d}P·{row.l}S</span>
+                            <span style={{fontSize:9,textAlign:"center",color:TH.muted}}>{row.gf}–{row.ga}</span>
+                          </React.Fragment>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                  {koR.length>0&&(
+                    <div>
+                      <div style={{fontSize:9,color:TH.muted,textTransform:"uppercase",letterSpacing:1,marginBottom:4}}>Fase KO</div>
+                      {koR.map((r,i)=>(
+                        <div key={i} style={{display:"flex",alignItems:"center",gap:6,padding:"4px 0",borderTop:i>0?"1px solid "+TH.cardBorder:"none"}}>
+                          {_bar(r.won)}
+                          <span style={{fontSize:9,color:TH.muted,minWidth:36}}>{r.phase?.toUpperCase()||"KO"}</span>
+                          <span style={{flex:1,fontSize:11,color:TH.text,fontWeight:600}}>vs {r.opponent?.n||r.opponent||"?"}</span>
+                          <span style={{fontSize:11,fontWeight:700}}>{r.homeScore}–{r.awayScore}</span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </Card>
+              );
+            })()}
+            {/* EUROPEO / MONDIALE */}
+            {_isPro&&em?.active&&(
+              <Card style={{padding:"12px 14px",border:"1px solid #a5f3fc"}}>
+                <div style={{fontSize:10,color:"#0e7490",textTransform:"uppercase",letterSpacing:1.5,marginBottom:8,fontWeight:700}}>🌍 {em.type||"Europeo"} — S.{em.season||player.season||1}</div>
+                <div style={{marginBottom:6}}>
+                  {em.champion?<span style={{fontSize:12,fontWeight:800,color:"#0e7490",background:"#cffafe",padding:"4px 12px",borderRadius:20}}>🏆 CAMPIONE {(em.type||"").toUpperCase()}!</span>
+                  :em.eliminated?<span style={{fontSize:11,color:TH.danger,background:"#fee2e2",padding:"4px 12px",borderRadius:20,fontWeight:700}}>❌ Eliminato</span>
+                  :em.qualified?<span style={{fontSize:11,color:"#16a34a",background:"#dcfce7",padding:"4px 12px",borderRadius:20,fontWeight:700}}>✅ {em.koPhase==="semi"?"Semifinale":"Fase KO"}</span>
+                  :<span style={{fontSize:11,color:"#0891b2",background:"#e0f2fe",padding:"4px 12px",borderRadius:20,fontWeight:700}}>Fase a gironi · {em.groupMatchIdx||0}/3</span>}
+                </div>
+                <div style={{fontSize:10,color:TH.muted}}>Punti girone: {em.groupPts||0}/9{(em.groupMatches||[]).length>0&&<span> · {(em.groupMatches||[]).filter(m=>m.played).length}/{(em.groupMatches||[]).length} partite</span>}</div>
+              </Card>
+            )}
+            {/* STORICO TROFEI */}
+            {trophies.length>0&&(
+              <Card style={{padding:"12px 14px"}}>
+                <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>🏆 Palmares</div>
+                <div style={{display:"flex",flexDirection:"column",gap:5}}>
+                  {trophies.slice().reverse().map((t,i)=>(
+                    <div key={i} style={{display:"flex",alignItems:"center",gap:10,padding:"6px 8px",background:TH.bg,borderRadius:8}}>
+                      <span style={{fontSize:18}}>{t.e||"🏆"}</span>
+                      <div>
+                        <div style={{fontSize:11,fontWeight:700,color:TH.text}}>{t.name||t.type||"Trofeo"}</div>
+                        <div style={{fontSize:9,color:TH.muted}}>S.{t.season||"?"}{t.club?" · "+t.club:t.league?" · "+t.league:""}</div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </Card>
+            )}
+            {!_isPro&&<Card style={{padding:"20px",textAlign:"center"}}><div style={{fontSize:32,marginBottom:8}}>🏆</div><div style={{fontSize:13,fontWeight:700,color:TH.text,marginBottom:4}}>Solo per giocatori pro</div><div style={{fontSize:11,color:TH.muted}}>Le coppe si attivano dalla stagione 2 da professionista.</div></Card>}
+            {_isPro&&!cup&&!eu?.active&&!em?.active&&trophies.length===0&&<Card style={{padding:"20px",textAlign:"center"}}><div style={{fontSize:32,marginBottom:8}}>🏆</div><div style={{fontSize:13,fontWeight:700,color:TH.text,marginBottom:4}}>Nessuna coppa attiva</div><div style={{fontSize:11,color:TH.muted}}>Coppa Nazionale: dal tuo secondo anno pro. Coppe europee: dipendono dal piazzamento.</div></Card>}
           </div>
         );
       })()}
