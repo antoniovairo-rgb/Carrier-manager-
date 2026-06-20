@@ -2383,7 +2383,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.0.0"; // Sprint 130: MVP del Mese award (weeks 6/12/18/24, profile card + diary)
+const GAME_VERSION="4.0.1"; // Sprint 131: fix standings pairing shuffle + simulated match player goals/assists
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -4261,6 +4261,8 @@ function updateStandings(standings,playerClubId,playerResult,prestigeShifts){
   const myId=playerClubId;
   const others=s.filter(t=>t.id!==myId&&t.n!==myId);
   const paired=[...others];
+  // Sprint 131: shuffle pairings so teams don't always face the same opponent
+  for(let _si=paired.length-1;_si>0;_si--){const _sj=Math.floor(Math.random()*(_si+1));[paired[_si],paired[_sj]]=[paired[_sj],paired[_si]];}
   if(paired.length%2!==0){
     const byeTeam=paired[paired.length-1];
     const byeP=clamp((byeTeam.p||65)+(sh[byeTeam.id||byeTeam.n]||0),30,99);
@@ -4362,7 +4364,20 @@ function simulateMatch(playerClub,opponent,playerOvr,isHome=true){
   const lambdaA=clamp(1.00-diff*0.45-homeFactor-ovrBonus*0.5+personaMod,0.20,2.2);
   const hG=poissonGoals(lambdaH);
   const aG=poissonGoals(lambdaA);
-  return{homeScore:hG,awayScore:aG,won:hG>aG,drew:hG===aG,goals:0,assists:0,rating:hG>aG?6.5:hG===aG?6.0:5.5,opponent:opponent?.n||opponent?.name,oppAbbr:opponent?.a||opponent?.abbr,oppCol:opponent?.c||opponent?.col,simulated:true};
+  return{homeScore:hG,awayScore:aG,won:hG>aG,drew:hG===aG,rating:hG>aG?6.5:hG===aG?6.0:5.5,opponent:opponent?.n||opponent?.name,oppAbbr:opponent?.a||opponent?.abbr,oppCol:opponent?.c||opponent?.col,simulated:true};
+}
+// Sprint 131: probabilistic player goals/assists for simulated matches
+function _pSimStats(sim,ovr,archId){
+  const tg=sim.homeScore||0;
+  if(tg===0)return{goals:0,assists:0};
+  const o=ovr||65;
+  const gL=clamp((o-50)/100+(["bomber","centravanti"].includes(archId)?0.12:0)+(sim.won?0.06:0),0.04,0.65);
+  const aL=clamp((o-50)/90+(["trequartista","fantasista"].includes(archId)?0.08:0),0.02,0.40);
+  const r1=Math.random(),r2=Math.random();
+  const pe=x=>Math.exp(-x);
+  const g=r1<pe(gL)?0:r1<pe(gL)*(1+gL)?1:2;
+  const a=r2<pe(aL)?0:r2<pe(aL)*(1+aL)?1:2;
+  return{goals:Math.min(g,tg),assists:Math.min(a,Math.max(0,tg-g))};
 }
 
 /* ========================================
@@ -11309,10 +11324,11 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
         notify(`🩹 Infort. (saltata) ${sim.homeScore}–${sim.awayScore} vs ${opp.n}`,sim.won?TH.success:sim.drew?TH.warning:TH.danger);
         return{...p,...injBase,standings:newSt,calendar:newCal,matchHistory:injHistory,morale:clamp((p.morale||70)+(sim.won?1:sim.drew?0:-1),0,100),week:_pendingEuro?(p.week||1):(p.week||1)+1,weekLived:_pendingEuro?true:false};
       }
-      const newHistory=[...(p.matchHistory||[]),{week:p.week||1,opponent:opp.n,oppAbbr:opp.a,oppCol:opp.c,homeScore:sim.homeScore,awayScore:sim.awayScore,goals:0,assists:0,rating:sim.rating,won:sim.won,drew:sim.drew,simulated:true}].slice(-200);
+      const _sPS131=_pSimStats(sim,p.ovr||65,p.archetype?.id||p.archetype||"");
+      const newHistory=[...(p.matchHistory||[]),{week:p.week||1,opponent:opp.n,oppAbbr:opp.a,oppCol:opp.c,homeScore:sim.homeScore,awayScore:sim.awayScore,goals:_sPS131.goals,assists:_sPS131.assists,rating:sim.rating,won:sim.won,drew:sim.drew,simulated:true}].slice(-200);
       const moD=sim.won?3:sim.drew?1:-2;
       notify(`Simulazione: ${sim.homeScore}–${sim.awayScore} vs ${opp.n}`,sim.won?TH.success:sim.drew?TH.warning:TH.danger);
-      return{...p,standings:newSt,calendar:newCal,matchHistory:newHistory,matches:(p.matches||0)+1,morale:clamp(p.morale+moD,0,100),week:_pendingEuro?(p.week||1):(p.week||1)+1,weekLived:_pendingEuro?true:false};
+      return{...p,standings:newSt,calendar:newCal,matchHistory:newHistory,matches:(p.matches||0)+1,goals:(p.goals||0)+_sPS131.goals,totalGoals:(p.totalGoals||0)+_sPS131.goals,assists:(p.assists||0)+_sPS131.assists,totalAssists:(p.totalAssists||0)+_sPS131.assists,morale:clamp(p.morale+moD,0,100),week:_pendingEuro?(p.week||1):(p.week||1)+1,weekLived:_pendingEuro?true:false};
     });
   };
 
@@ -12072,8 +12088,9 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
               const injHist=[...(p.matchHistory||[]),{week:p.week||1,opponent:opp.n,oppAbbr:opp.a,oppCol:opp.c,homeScore:sim.homeScore,awayScore:sim.awayScore,goals:0,assists:0,rating:null,won:sim.won,drew:sim.drew,simulated:true,injured:true}].slice(-200);
               updP={...updP,standings:newSt,calendar:newCal,matchHistory:injHist,morale:clamp(p.morale+(sim.won?1:sim.drew?0:-1),0,100)};
             }else{
-              const newHistory=[...(p.matchHistory||[]),{week:p.week||1,opponent:opp.n,oppAbbr:opp.a,oppCol:opp.c,homeScore:sim.homeScore,awayScore:sim.awayScore,goals:0,assists:0,rating:sim.rating,won:sim.won,drew:sim.drew,simulated:true}].slice(-200);
-              updP={...updP,standings:newSt,calendar:newCal,matchHistory:newHistory,matches:(p.matches||0)+1,goals:p.goals,assists:p.assists,morale:clamp(p.morale+(sim.won?3:sim.drew?1:-2),0,100)};
+              const _ps131=_pSimStats(sim,p.ovr||65,p.archetype?.id||p.archetype||"");
+              const newHistory=[...(p.matchHistory||[]),{week:p.week||1,opponent:opp.n,oppAbbr:opp.a,oppCol:opp.c,homeScore:sim.homeScore,awayScore:sim.awayScore,goals:_ps131.goals,assists:_ps131.assists,rating:sim.rating,won:sim.won,drew:sim.drew,simulated:true}].slice(-200);
+              updP={...updP,standings:newSt,calendar:newCal,matchHistory:newHistory,matches:(p.matches||0)+1,goals:(p.goals||0)+_ps131.goals,totalGoals:(p.totalGoals||0)+_ps131.goals,assists:(p.assists||0)+_ps131.assists,totalAssists:(p.totalAssists||0)+_ps131.assists,morale:clamp(p.morale+(sim.won?3:sim.drew?1:-2),0,100)};
             }
           }
         }
@@ -12143,18 +12160,27 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
         }
       }
       // Natural weekly recovery: fatigue -6, form drifts toward baseline 65
-      // Sprint 104: safety-net — auto-sim any remaining unplayed matches on this week
+      // Sprint 104/131: auto-sim extra unplayed matches this week — with standings + player stats
       if(_weekMds.length>1){
         let _sCal=[...(updP.calendar||p.calendar||[])];
+        let _xSt=[...(updP.standings||p.standings||[])];
+        let _xg=0,_xa=0,_xm=0,_xH=[];
         _weekMds.slice(1).forEach(xmd=>{
-          if(_sCal.find(m=>m.matchday===xmd.matchday&&m.played))return; // already played by player
+          if(_sCal.find(m=>m.matchday===xmd.matchday&&m.played))return;
           const _xlc=getLeagueClubs(p);
           const _xopp=(xmd.type==="euro_group"||xmd.type==="euro"||xmd.type==="cup")
             ?(xmd.opponentData||CLUBS.find(c=>c.id===xmd.opponentId)||CLUBS.find(c=>c.n===xmd.opponentName))
             :(_xlc.find(c=>c.id===xmd.opponentId)||_xlc.find(c=>c.n===xmd.opponentName));
-          if(_xopp){const _xs=simulateMatch(p.club,_xopp,p.ovr||65,xmd.isHome);_sCal=_sCal.map(m=>m.matchday===xmd.matchday?{...m,played:true,result:{homeScore:_xs.homeScore,awayScore:_xs.awayScore,won:_xs.won,drew:_xs.drew},simulated:true}:m);}
+          if(_xopp){
+            const _xs=simulateMatch(p.club,_xopp,p.ovr||65,xmd.isHome);
+            const _xps=_pSimStats(_xs,p.ovr||65,p.archetype?.id||p.archetype||"");
+            _sCal=_sCal.map(m=>m.matchday===xmd.matchday?{...m,played:true,result:{homeScore:_xs.homeScore,awayScore:_xs.awayScore,won:_xs.won,drew:_xs.drew},simulated:true}:m);
+            if(!xmd.type||xmd.type==="league"){const _xCId=p.club?.id||p.club?.n;_xSt=updateStandings(_xSt,_xCId,_xs,p.clubPrestigeShifts||{});}
+            _xg+=_xps.goals;_xa+=_xps.assists;_xm++;
+            _xH.push({week:p.week||1,opponent:_xopp.n,oppAbbr:_xopp.a,oppCol:_xopp.c,homeScore:_xs.homeScore,awayScore:_xs.awayScore,goals:_xps.goals,assists:_xps.assists,rating:_xs.rating,won:_xs.won,drew:_xs.drew,simulated:true});
+          }
         });
-        updP={...updP,calendar:_sCal};
+        updP={...updP,calendar:_sCal,standings:_xSt,goals:(updP.goals||0)+_xg,totalGoals:(updP.totalGoals||0)+_xg,assists:(updP.assists||0)+_xa,totalAssists:(updP.totalAssists||0)+_xa,matches:(updP.matches||0)+_xm,matchHistory:[...(updP.matchHistory||p.matchHistory||[]),..._xH].slice(-200)};
       }
       const baseForm=updP.form||p.form||70;
       const naturalForm=clamp(Math.round(baseForm*0.92+65*0.08),30,95);
