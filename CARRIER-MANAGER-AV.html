@@ -2383,7 +2383,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="3.99.8"; // Sprint 128: world results in dashboard (other leagues, seeded)
+const GAME_VERSION="3.99.9"; // Sprint 129: national team expanded card with FIFA ranking, stats, EuroMondiale info
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -15671,17 +15671,95 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
             <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:6}}>
               {[{l:"Gol stag.",v:player.goals||0},{l:"Assist stag.",v:player.assists||0},{l:"Partite stag.",v:player.matches||0},{l:"Gol tot.",v:player.totalGoals||0},{l:"Assist tot.",v:player.totalAssists||0},{l:"Valore",v:`${parseFloat((player.value||0.8).toFixed(1))}M€`}].map(s=><div key={s.l} style={{background:"#f8fafc",borderRadius:8,padding:"7px",border:"1px solid "+TH.cardBorder}}><div style={{fontSize:9,color:TH.faint,marginBottom:2}}>{s.l}</div><div style={{fontSize:14,fontWeight:700,color:TH.text}}>{s.v}</div></div>)}
             </div>
-            {(player.nationalCaps||0)>0&&(
-              <div style={{marginTop:10,padding:"9px 12px",background:`${(NAT_DATA[player.nation||"Italia"]||{col:"#003399"}).col}18`,borderRadius:8,border:`1px solid ${(NAT_DATA[player.nation||"Italia"]||{col:"#003399"}).col}40`,display:"flex",alignItems:"center",gap:10}}>
-                <span style={{fontSize:22}}>{(NAT_DATA[player.nation||"Italia"]||{flag:"🏳"}).flag}</span>
-                <div style={{flex:1}}>
-                  <div style={{fontSize:12,fontWeight:800,color:TH.text}}>Nazionale {player.nation}</div>
-                  <div style={{fontSize:10,color:TH.muted}}>{player.nationalCaps} cap · {player.nationalGoals||0} gol in nazionale</div>
-                </div>
-                <span style={{fontSize:18,fontWeight:900,color:TH.accent}}>{player.nationalCaps}</span>
-              </div>
-            )}
           </Card>
+          {/* Sprint 129: Espansione Nazionale */}
+          {(player.nationalCaps||0)>0&&(()=>{
+            const _nd=NAT_DATA[player.nation||"Italia"]||{flag:"🏳",col:"#003399",col2:"#fff"};
+            const _caps=player.nationalCaps||0;
+            const _ngoals=player.nationalGoals||0;
+            const _debut=(player.diary||[]).find(d=>d.type==="first_national");
+            const _debutSeason=_debut?_debut.season:"–";
+            const _nations=Object.entries(NAT_CLUB_DATA).map(([nat,d])=>({nat,p:d.p,flag:NAT_DATA[nat]?.flag||"🏳"}));
+            const _ranked=[..._nations].sort((a,b)=>{
+              const s1=Math.abs(hashStr(`fifa_${a.nat}_${player.season||1}`))%7;
+              const s2=Math.abs(hashStr(`fifa_${b.nat}_${player.season||1}`))%7;
+              return(b.p+s2)-(a.p+s1);
+            });
+            const _myRank=_ranked.findIndex(n=>n.nat===(player.nation||"Italia"))+1;
+            const _curSeason=player.season||1;
+            const _rem=(4-(_curSeason%4))%4;
+            const _nextEM=_curSeason+(_rem||4);
+            const _emType=(Math.floor(_nextEM/4))%2===0?"Europeo":"Mondiale";
+            const _natDiary=(player.diary||[]).filter(d=>["first_national","first_national_goal","euro_mondiale_trophy"].includes(d.type)).slice(0,3);
+            return(
+              <Card style={{padding:"12px 14px"}}>
+                <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:10}}>
+                  <span style={{fontSize:28}}>{_nd.flag}</span>
+                  <div style={{flex:1}}>
+                    <div style={{fontSize:13,fontWeight:900,color:TH.text}}>Nazionale {player.nation}</div>
+                    <div style={{fontSize:10,color:TH.muted}}>Ranking FIFA: #{_myRank}</div>
+                  </div>
+                  <div style={{textAlign:"center",background:`${_nd.col}18`,border:`1px solid ${_nd.col}40`,borderRadius:8,padding:"6px 12px"}}>
+                    <div style={{fontSize:20,fontWeight:900,color:_nd.col}}>{_caps}</div>
+                    <div style={{fontSize:8,color:TH.faint,textTransform:"uppercase",letterSpacing:1}}>Cap</div>
+                  </div>
+                </div>
+                <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:6,marginBottom:10}}>
+                  {[{l:"Gol",v:_ngoals},{l:"Esordio",v:`S.${_debutSeason}`},{l:"Ultimo",v:`S.${player.lastNationalSeason||"–"}`}].map(s=>(
+                    <div key={s.l} style={{background:"#f8fafc",borderRadius:8,padding:"7px",border:"1px solid "+TH.cardBorder,textAlign:"center"}}>
+                      <div style={{fontSize:9,color:TH.faint,marginBottom:2}}>{s.l}</div>
+                      <div style={{fontSize:14,fontWeight:700,color:TH.text}}>{s.v}</div>
+                    </div>
+                  ))}
+                </div>
+                <div style={{fontSize:9,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:5}}>Ranking FIFA</div>
+                {_ranked.slice(0,5).map((n,i)=>(
+                  <div key={n.nat} style={{display:"flex",alignItems:"center",gap:6,padding:"3px 6px",borderRadius:6,background:n.nat===(player.nation||"Italia")?`${_nd.col}14`:"transparent",marginBottom:2}}>
+                    <span style={{fontSize:10,color:TH.faint,minWidth:18,fontWeight:n.nat===(player.nation||"Italia")?900:400}}>#{i+1}</span>
+                    <span style={{fontSize:13}}>{n.flag}</span>
+                    <span style={{fontSize:10,color:TH.text,flex:1,fontWeight:n.nat===(player.nation||"Italia")?800:400}}>{n.nat}</span>
+                    {n.nat===(player.nation||"Italia")&&<span style={{fontSize:8,background:_nd.col,color:"#fff",padding:"1px 5px",borderRadius:4}}>TU</span>}
+                  </div>
+                ))}
+                {_myRank>5&&(
+                  <div style={{display:"flex",alignItems:"center",gap:6,padding:"3px 6px",borderRadius:6,background:`${_nd.col}14`,marginBottom:2}}>
+                    <span style={{fontSize:10,color:TH.faint,minWidth:18,fontWeight:900}}>#{_myRank}</span>
+                    <span style={{fontSize:13}}>{_nd.flag}</span>
+                    <span style={{fontSize:10,color:TH.text,flex:1,fontWeight:800}}>{player.nation}</span>
+                    <span style={{fontSize:8,background:_nd.col,color:"#fff",padding:"1px 5px",borderRadius:4}}>TU</span>
+                  </div>
+                )}
+                {player.euroMondiale?.active&&!player.euroMondiale?.done?(
+                  <div style={{marginTop:10,padding:"6px 10px",background:"#f0fdf4",border:"1px solid #86efac",borderRadius:6,display:"flex",alignItems:"center",gap:8}}>
+                    <span style={{fontSize:16}}>🟢</span>
+                    <div>
+                      <div style={{fontSize:10,fontWeight:700,color:"#15803d"}}>{player.euroMondiale.type||"Torneo"} IN CORSO</div>
+                      <div style={{fontSize:9,color:"#16a34a"}}>Fase: {player.euroMondiale.phase==="group"?"Gironi":"KO"} · {player.euroMondiale.groupPts||0} punti</div>
+                    </div>
+                  </div>
+                ):(
+                  <div style={{marginTop:10,padding:"6px 10px",background:"#f0f9ff",border:"1px solid #bae6fd",borderRadius:6,display:"flex",alignItems:"center",gap:8}}>
+                    <span style={{fontSize:16}}>{_emType==="Europeo"?"🏆":"🌍"}</span>
+                    <div>
+                      <div style={{fontSize:10,fontWeight:700,color:"#0369a1"}}>Prossimo {_emType}</div>
+                      <div style={{fontSize:9,color:"#0284c7"}}>Stagione {_nextEM} · Settimana 24</div>
+                    </div>
+                  </div>
+                )}
+                {_natDiary.length>0&&(
+                  <div style={{marginTop:10}}>
+                    <div style={{fontSize:9,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:5}}>Momenti in Nazionale</div>
+                    {_natDiary.map((d,i)=>(
+                      <div key={i} style={{padding:"5px 8px",background:"#f8fafc",borderRadius:6,marginBottom:4,borderLeft:`3px solid ${d.color||_nd.col}`}}>
+                        <div style={{fontSize:10,fontWeight:700,color:TH.text}}>{d.headline}</div>
+                        <div style={{fontSize:9,color:TH.muted}}>S.{d.season} W.{d.week}</div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </Card>
+            );
+          })()}
           <Card>
             <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>{L.attributes||"Attributi"}</div>
             {Object.entries(player.stats).map(([k,v])=><StatBar key={k} label={k} value={v}/>)}
