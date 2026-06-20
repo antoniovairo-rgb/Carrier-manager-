@@ -2383,7 +2383,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="3.99.9"; // Sprint 129: national team expanded card with FIFA ranking, stats, EuroMondiale info
+const GAME_VERSION="4.0.0"; // Sprint 130: MVP del Mese award (weeks 6/12/18/24, profile card + diary)
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -10939,6 +10939,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     if(!('skillPoints' in newP)||newP.skillPoints==null){newP={...newP,skillPoints:0};changed=true;} // Sprint 104B
     if(!('u18Goals' in newP)){newP={...newP,u18Goals:0,u18Assists:0,u18Matches:0};changed=true;} // Sprint 105
     if(!('primaveraAwards' in newP)){newP={...newP,primaveraAwards:[]};changed=true;} // Sprint 105
+    if(!('mvpMonthAwards' in newP)){newP={...newP,mvpMonthAwards:[]};changed=true;} // Sprint 130
     if(changed){setPlayer(newP);}
   },[]);// eslint-disable-line
   const[darkMode,setDarkMode]=useState(()=>localStorage.getItem("cpm-dark")==="1");
@@ -12180,6 +12181,31 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       return{...updP,week:nextWk,weekLived:false,sessionsThisWeek:0,sessionLog:[],trainingStreak:nextStreak,weeklyFocusType:null,windowOfferUsed:winReset?false:(p.windowOfferUsed||false),fatigue:naturalFat,form:formWithReturn,justRecovered:false,returnPenaltyWeeks:nextRetPen};
     });
     notify("⏭️ Settimana avanzata");
+    // Sprint 130 — MVP del Mese (triggered at end of weeks 6, 12, 18, 24)
+    if([6,12,18,24].includes(weekVal)&&(player.proStatus||"u18")==="pro"&&!player.injured){
+      const _months=["","Ottobre","Novembre","Dicembre","Gennaio"];
+      const _mIdx=weekVal/6;
+      const _mName=_months[_mIdx]||`Mese ${_mIdx}`;
+      const _recentMH=(player.matchHistory||[]).filter(m=>!m.simulated).slice(-6);
+      const _recentGoals=_recentMH.reduce((s,m)=>s+(m.goals||0),0);
+      const _avgRating=_recentMH.length>0?_recentMH.reduce((s,m)=>s+(m.rating||6),0)/_recentMH.length:6;
+      const _pScore=_recentGoals*10+(_avgRating-6)*8+Math.max(0,(player.form||70)-65)*0.3;
+      const _seed=Math.abs(hashStr(`mvp130_${player.season||1}_${weekVal}`));
+      const _pres=player.club?.p||65;
+      const _compGoals=Math.round((_pres/100)*3.2+(_seed%5)*0.6);
+      const _compScore=_compGoals*10+(_seed%4)*2;
+      const _win=_pScore>=_compScore&&_recentGoals>=2;
+      if(_win){
+        setTimeout(()=>{
+          setPlayer(p=>{
+            const _award={season:p.season||1,week:weekVal,month:_mName,goals:_recentGoals,rating:Math.round(_avgRating*10)/10};
+            const _dEntry={season:p.season||1,week:weekVal,type:"mvp_mese",e:"⭐",headline:`MVP ${_mName} — ${p.club?.lg||"Serie A"}`,body:`${_recentGoals} gol e media voto ${Math.round(_avgRating*10)/10} nelle ultime settimane. Riconoscimento mensile.`,color:"#f59e0b"};
+            return{...p,mvpMonthAwards:[...(p.mvpMonthAwards||[]),_award],morale:clamp((p.morale||70)+8,0,100),popularity:clamp((p.popularity||20)+5,0,100),diary:[...(p.diary||[]),_dEntry].slice(-80)};
+          });
+          notify(`⭐ MVP del Mese — ${_mName}! ${_recentGoals} gol recenti.`,"#f59e0b");
+        },700);
+      }
+    }
     // Sprint 35 — Agent task result notification
     if(prevAgentTask&&player.hasAgent){
       const _TASK_RES={cerca_offerte:"🔍 Ho girato il tuo nome — aspettati notizie dal mercato!",rinnovo:"📋 Contatti per il rinnovo avviati. Bonus +10% accumulato.",immagine:"📣 La tua immagine pubblica cresce. +4 popolarità.",silenzio:"🤐 Il mister apprezza la discrezione. +6 fiducia."};
@@ -15494,6 +15520,22 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
               </Card>
             );
           })()}
+          {/* Sprint 130 — Premi del Mese */}
+          {(player.mvpMonthAwards||[]).length>0&&(
+            <Card style={{padding:"12px 14px"}}>
+              <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:10}}>⭐ MVP del Mese</div>
+              {[...(player.mvpMonthAwards||[])].reverse().slice(0,8).map((a,i)=>(
+                <div key={i} style={{display:"flex",alignItems:"center",gap:8,padding:"5px 0",borderBottom:i<Math.min((player.mvpMonthAwards||[]).length,8)-1?"1px solid "+TH.cardBorder:"none"}}>
+                  <span style={{fontSize:18,flexShrink:0}}>⭐</span>
+                  <div style={{flex:1}}>
+                    <div style={{fontSize:11,fontWeight:700,color:TH.text}}>MVP {a.month}</div>
+                    <div style={{fontSize:9,color:TH.muted}}>S.{a.season} · W.{a.week} · {a.goals} gol · voto {a.rating||"–"}</div>
+                  </div>
+                  <span style={{fontSize:9,background:"#fef3c7",color:"#92400e",padding:"2px 7px",borderRadius:10,fontWeight:700,flexShrink:0}}>AWARD</span>
+                </div>
+              ))}
+            </Card>
+          )}
           {/* Sprint 29 — MW1: Memoria della Carriera */}
           {(()=>{
             const MEM_META={
@@ -15539,6 +15581,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
               cup_trophy:{e:"🏆",color:"#f59e0b"},
               euro_mondiale_trophy:{e:"🌍",color:"#7c3aed"},
               contract_renewal:{e:"📋",color:"#2563eb"},
+              mvp_mese:{e:"⭐",color:"#f59e0b"},
             };
             const dEntries=[...(player.diary||[])].reverse().slice(0,15);
             return(
