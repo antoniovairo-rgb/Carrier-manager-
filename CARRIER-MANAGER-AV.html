@@ -2441,7 +2441,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.5.18"; // Sprint 186: crowd dots a piena altezza — angoli grigi eliminati
+const GAME_VERSION="4.5.19"; // Sprint 187: cleanup definitivo — rimossi sponsor/ads/billboard/panchine, gradient semi-trasparente
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -4986,16 +4986,18 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
       // Sprint 183: side stands a piena altezza (y=0..PH) — corners = estensione naturale delle tribune laterali
       bakeSD(FX,2,FW,FY-3,0.93);bakeSD(FX,FY+FH+2,FW,PH-FY-FH-4,0.22); // top/bottom center unchanged
       bakeSD(0,0,FX-1,PH,0.91);bakeSD(FX+FW+1,0,PW-FX-FW-1,PH,0.91);   // side stands: full height
-      // Stand gradients
+      // Stand gradients — semi-transparent atmospheric tint (lascia vedere texture crowd)
       const sL=atmo[1],sD=atmo[2];
       const tG=cctx.createLinearGradient(0,0,0,FY);tG.addColorStop(0,sD);tG.addColorStop(1,sL);
-      cctx.fillStyle=tG;cctx.fillRect(FX,0,FW,FY);
       const bG=cctx.createLinearGradient(0,FY+FH,0,PH);bG.addColorStop(0,sL);bG.addColorStop(1,sD);
-      cctx.fillStyle=bG;cctx.fillRect(FX,FY+FH,FW,PH-FY-FH);
       const lG=cctx.createLinearGradient(0,0,FX,0);lG.addColorStop(0,sD);lG.addColorStop(1,sL);
-      cctx.fillStyle=lG;cctx.fillRect(0,0,FX,PH); // full height
       const rG=cctx.createLinearGradient(FX+FW,0,PW,0);rG.addColorStop(0,sL);rG.addColorStop(1,sD);
-      cctx.fillStyle=rG;cctx.fillRect(FX+FW,0,PW-FX-FW,PH); // full height
+      cctx.globalAlpha=0.38;
+      cctx.fillStyle=tG;cctx.fillRect(FX,0,FW,FY);
+      cctx.fillStyle=bG;cctx.fillRect(FX,FY+FH,FW,PH-FY-FH);
+      cctx.fillStyle=lG;cctx.fillRect(0,0,FX,PH);
+      cctx.fillStyle=rG;cctx.fillRect(FX+FW,0,PW-FX-FW,PH);
+      cctx.globalAlpha=1;
       // Sprint 92 — home stand banner strip (top of home stand, club colour)
       if(FY>10){
         const bStrH=Math.max(3,Math.floor(FY*0.18));
@@ -5086,41 +5088,6 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
         cctx.fillStyle="#f59e0b";cctx.globalAlpha=0.65;
         cctx.fillText("★ BIG MATCH ★",PW/2,FY*0.22);cctx.restore();
       }
-      // Sprint 92 — Competition label board + club name board + prestige sponsors
-      const _compShort=(_compLabel||"").length>10?(_compLabel||"").slice(0,10):(_compLabel||"CAMPIONATO");
-      const _clubShort=(propsRef.current.homeClub?.a||propsRef.current.homeClub?.n||"HOME").slice(0,6).toUpperCase();
-      const _clubColH=hCol||"#1e3a8a";
-      const _compBoardCol=_compLabel.includes("UCL")||_compLabel.includes("Champions")?"#003399":_compLabel.includes("UEL")||_compLabel.includes("Europa")?"#f97316":_compLabel.includes("UECL")||_compLabel.includes("Conference")?"#10b981":_compLabel.includes("COPPA")||_compLabel.includes("Cup")?"#7c3aed":_isDrby?"#b91c1c":"#1e3a8a";
-      // Sponsor boards: tints of home club color (dark/mid/light variants)
-      const _hHex=(_clubColH||"#1e3a8a").replace("#","");
-      const _hR=parseInt(_hHex.slice(0,2),16),_hG=parseInt(_hHex.slice(2,4),16),_hB=parseInt(_hHex.slice(4,6),16);
-      const _hTint=(f)=>`rgb(${Math.round(Math.min(255,_hR+f))},${Math.round(Math.min(255,_hG+f))},${Math.round(Math.min(255,_hB+f))})`;
-      const _sponsBase=_prest80>=80?[
-        {col:_hTint(-30),t:"CHAMP"},{col:_hTint(20),t:"MASTERC"},
-        {col:_hTint(-50),t:"EMIRATES"},{col:_hTint(40),t:"ROLEX"},{col:_hTint(-20),t:"NISSAN"},
-        {col:_hTint(60),t:"DIAGEO"}
-      ]:_prest80>=60?[
-        {col:_hTint(-40),t:"NIKE"},{col:_hTint(30),t:"ADIDAS"},{col:_hTint(-20),t:"PUMA"},
-        {col:_hTint(50),t:"EA FC"},{col:_hTint(-60),t:"PEPSI"},{col:_hTint(10),t:"BUDW"}
-      ]:[
-        {col:_hTint(-30),t:"LOCALE"},{col:_hTint(20),t:"CALCIO"},{col:_hTint(-50),t:"STADIO"},
-        {col:_hTint(40),t:"SPORT"},{col:_hTint(-10),t:"CLUB"}
-      ];
-      const ads=[
-        {col:_clubColH,t:_clubShort},
-        ..._sponsBase
-      ];
-      const bH=_prest80>=80?7:_prest80>=60?5:4,bPad=1,bW=Math.floor(FW/ads.length);
-      cctx.font="bold 4px Arial,sans-serif";cctx.textBaseline="middle";cctx.textAlign="center";
-      ads.forEach((b,i)=>{
-        const bx=FX+i*bW;
-        cctx.fillStyle=b.col;cctx.globalAlpha=0.92;
-        cctx.fillRect(bx+bPad,FY-bH-bPad,bW-bPad*2,bH);
-        cctx.fillRect(bx+bPad,FY+FH+bPad,bW-bPad*2,bH);
-        cctx.fillStyle="#fff";cctx.globalAlpha=1;
-        cctx.fillText(b.t,bx+bW/2,FY-bH/2-bPad);
-        cctx.fillText(b.t,bx+bW/2,FY+FH+bH/2+bPad);
-      });
       cctx.globalAlpha=1;
       // Sprint 92 — Stadium name label in top-left of home stand
       if(FY>12){
@@ -5300,42 +5267,6 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
         ctx.beginPath();ctx.moveTo(cx,cy+dy*14);ctx.lineTo(cx+dx*9,cy+dy*9);ctx.lineTo(cx,cy+dy*5);ctx.closePath();ctx.fill(); // flag
         ctx.fillStyle="rgba(255,255,255,0.6)";ctx.beginPath();ctx.arc(cx,cy,1.5,0,Math.PI*2);ctx.fill(); // base dot
       });
-      ctx.restore();
-      // Side advertising boards — home club color tints along touchlines
-      const hColAd=propsRef.current.stadiumHomeCol||propsRef.current.homeCol||"#22c55e";
-      const _adHex=hColAd.replace("#","");
-      const _adR=parseInt(_adHex.slice(0,2)||"22",16),_adG=parseInt(_adHex.slice(2,4)||"c5",16),_adB=parseInt(_adHex.slice(4,6)||"5e",16);
-      const adTint=(f)=>`rgba(${Math.round(Math.min(255,Math.max(0,_adR+f)))},${Math.round(Math.min(255,Math.max(0,_adG+f)))},${Math.round(Math.min(255,Math.max(0,_adB+f)))},0.85)`;
-      const adSlot=Math.round(FH/14);
-      ctx.save();ctx.globalAlpha=0.80;
-      for(let ai=0;ai<14;ai++){
-        ctx.fillStyle=ai%3===0?adTint(0):ai%3===1?adTint(40):adTint(-40);
-        const ay=FY+ai*adSlot;
-        ctx.fillRect(FX-5,ay,4,adSlot-1);    // left touchline
-        ctx.fillRect(FX+FW+1,ay,4,adSlot-1); // right touchline
-      }
-      ctx.restore();
-      // Sprint 173 v2 — Competition billboard: 2 central boards on touchlines (distinti, not in stands)
-      {const _cLbl=propsRef.current.competitionLabel||propsRef.current.homeClub?.lg||"";
-      const _cShort=(_cLbl||"").length>9?(_cLbl||"").slice(0,9):(_cLbl||"CAMP");
-      const _cCol=_cLbl.includes("UCL")||_cLbl.includes("Champions")?"#003399":_cLbl.includes("UEL")||_cLbl.includes("Europa")?"#f97316":_cLbl.includes("UECL")||_cLbl.includes("Conference")?"#10b981":_cLbl.includes("COPPA")||_cLbl.includes("Cup")?"#7c3aed":"#1e3a8a";
-      const _cbH=adSlot*3-1,_cbW=7,_cbY=FCY-_cbH/2;
-      ctx.save();ctx.globalAlpha=0.93;
-      ctx.fillStyle=_cCol;ctx.fillRect(FX-_cbW-1,_cbY,_cbW,_cbH);ctx.fillRect(FX+FW+2,_cbY,_cbW,_cbH);
-      ctx.strokeStyle="#fff";ctx.globalAlpha=0.75;ctx.lineWidth=0.5;
-      ctx.strokeRect(FX-_cbW-1.5,_cbY-0.5,_cbW+1,_cbH+1);ctx.strokeRect(FX+FW+1.5,_cbY-0.5,_cbW+1,_cbH+1);
-      ctx.globalAlpha=1;ctx.fillStyle="#fff";
-      const _cTfs=Math.max(4,Math.floor(_cbW*0.72));
-      ctx.font=`bold ${_cTfs}px Arial,sans-serif`;ctx.textAlign="center";ctx.textBaseline="middle";
-      ctx.save();ctx.translate(FX-_cbW/2-1,FCY);ctx.rotate(-Math.PI/2);ctx.fillText(_cShort.toUpperCase(),0,0);ctx.restore();
-      ctx.save();ctx.translate(FX+FW+2+_cbW/2,FCY);ctx.rotate(Math.PI/2);ctx.fillText(_cShort.toUpperCase(),0,0);ctx.restore();
-      ctx.restore();}
-      // Benches (panchine) — both on left touchline, either side of halfway
-      ctx.save();
-      ctx.fillStyle="rgba(100,130,200,0.30)";ctx.strokeStyle="rgba(255,255,255,0.35)";ctx.lineWidth=0.5;
-      ctx.fillRect(FX-18,FCY+12,13,28);ctx.strokeRect(FX-18,FCY+12,13,28); // home bench
-      ctx.fillStyle="rgba(200,100,100,0.30)";
-      ctx.fillRect(FX-18,FCY-40,13,28);ctx.strokeRect(FX-18,FCY-40,13,28); // away bench
       ctx.restore();
       // Zone highlight — animated pulsing glow
       const z=propsRef.current.zone;
