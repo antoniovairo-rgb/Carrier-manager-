@@ -2438,7 +2438,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.5.0"; // Sprint 172: hide ALL keyboard shortcut hints on non-desktop (CareerApp + CSS)
+const GAME_VERSION="4.5.1"; // Sprint 173: stadium corners show sky, corner flags use home color, competition board in distinti
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -4985,9 +4985,9 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
       // Stand gradients — Sprint 82: color from atmosphere palette
       const sL=atmo[1],sD=atmo[2];
       const tG=cctx.createLinearGradient(0,0,0,FY);tG.addColorStop(0,sD);tG.addColorStop(1,sL);
-      cctx.fillStyle=tG;cctx.fillRect(0,0,PW,FY);
+      cctx.fillStyle=tG;cctx.fillRect(FX,0,FW,FY);
       const bG=cctx.createLinearGradient(0,FY+FH,0,PH);bG.addColorStop(0,sL);bG.addColorStop(1,sD);
-      cctx.fillStyle=bG;cctx.fillRect(0,FY+FH,PW,PH-FY-FH);
+      cctx.fillStyle=bG;cctx.fillRect(FX,FY+FH,FW,PH-FY-FH);
       const lG=cctx.createLinearGradient(0,0,FX,0);lG.addColorStop(0,sD);lG.addColorStop(1,sL);
       cctx.fillStyle=lG;cctx.fillRect(0,FY,FX,FH);
       const rG=cctx.createLinearGradient(FX+FW,0,PW,0);rG.addColorStop(0,sL);rG.addColorStop(1,sD);
@@ -5004,11 +5004,11 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
       if(_tod==="dusk"){
         const dG=cctx.createLinearGradient(0,0,0,FY);
         dG.addColorStop(0,"rgba(210,80,15,0.28)");dG.addColorStop(1,"rgba(100,30,8,0.06)");
-        cctx.fillStyle=dG;cctx.fillRect(0,0,PW,FY);
+        cctx.fillStyle=dG;cctx.fillRect(FX,0,FW,FY);
       }else if(_tod==="dawn"){
         const dG=cctx.createLinearGradient(0,0,0,FY);
         dG.addColorStop(0,"rgba(80,55,170,0.20)");dG.addColorStop(1,"rgba(30,20,80,0.04)");
-        cctx.fillStyle=dG;cctx.fillRect(0,0,PW,FY);
+        cctx.fillStyle=dG;cctx.fillRect(FX,0,FW,FY);
       }else if(_tod==="night"&&_wid==="starry"){
         cctx.fillStyle="rgba(255,255,255,0.75)";
         for(var _si=0;_si<70;_si++){
@@ -5019,7 +5019,7 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
       }else if(_tod==="day"&&(_wid==="sunny"||_wid==="partly"||_wid==="heat")){
         const dG=cctx.createLinearGradient(0,0,0,FY*0.65);
         dG.addColorStop(0,"rgba(30,80,180,0.18)");dG.addColorStop(1,"rgba(10,40,100,0)");
-        cctx.fillStyle=dG;cctx.fillRect(0,0,PW,FY);
+        cctx.fillStyle=dG;cctx.fillRect(FX,0,FW,FY);
       }
       // Sprint 92 — club-color crowd dots (replaces rainbow palette)
       // Build colour palettes from actual club hex
@@ -5103,8 +5103,7 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
         {col:_hTint(40),t:"SPORT"},{col:_hTint(-10),t:"CLUB"}
       ];
       const ads=[
-        {col:_compBoardCol,t:_compShort.toUpperCase()}, // competition first
-        {col:_clubColH,t:_clubShort},                   // club name second
+        {col:_clubColH,t:_clubShort},
         ..._sponsBase
       ];
       const bH=_prest80>=80?7:_prest80>=60?5:4,bPad=1,bW=Math.floor(FW/ads.length);
@@ -5119,6 +5118,15 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
         cctx.fillText(b.t,bx+bW/2,FY+FH+bH/2+bPad);
       });
       cctx.globalAlpha=1;
+      // Sprint 173 — Central competition board in left "distinti" stand
+      {const _cBH=14;const _cBW=FX-6;const _cBX=3;const _cBY=FCY-_cBH/2;
+      cctx.fillStyle="rgba(0,0,0,0.35)";cctx.globalAlpha=1;cctx.fillRect(_cBX+1,_cBY+1,_cBW,_cBH);
+      cctx.fillStyle=_compBoardCol;cctx.globalAlpha=0.96;cctx.fillRect(_cBX,_cBY,_cBW,_cBH);
+      cctx.strokeStyle="#fff";cctx.globalAlpha=0.75;cctx.lineWidth=1;cctx.strokeRect(_cBX+0.5,_cBY+0.5,_cBW-1,_cBH-1);
+      const _lfs2=Math.max(4,Math.floor(_cBH*0.55));
+      cctx.font=`bold ${_lfs2}px Arial,sans-serif`;cctx.textAlign="center";cctx.textBaseline="middle";
+      cctx.fillStyle="#ffffff";cctx.globalAlpha=1;cctx.fillText(_compShort.toUpperCase(),_cBX+_cBW/2,_cBY+_cBH/2);
+      cctx.globalAlpha=1;}
       // Sprint 92 — Stadium name label in top-left of home stand
       if(FY>12){
         const _stadName=(propsRef.current.homeClub&&typeof getStadiumName==="function")?getStadiumName(propsRef.current.homeClub):"";
@@ -5293,7 +5301,7 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
       [[FX,FY,1,1],[FX+FW,FY,-1,1],[FX,FY+FH,1,-1],[FX+FW,FY+FH,-1,-1]].forEach(([cx,cy,dx,dy])=>{
         ctx.strokeStyle="#fff";ctx.lineWidth=1;
         ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(cx,cy+dy*14);ctx.stroke(); // pole
-        ctx.fillStyle="#f59e0b";
+        ctx.fillStyle=propsRef.current.homeCol||"#f59e0b";
         ctx.beginPath();ctx.moveTo(cx,cy+dy*14);ctx.lineTo(cx+dx*9,cy+dy*9);ctx.lineTo(cx,cy+dy*5);ctx.closePath();ctx.fill(); // flag
         ctx.fillStyle="rgba(255,255,255,0.6)";ctx.beginPath();ctx.arc(cx,cy,1.5,0,Math.PI*2);ctx.fill(); // base dot
       });
