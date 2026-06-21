@@ -2441,7 +2441,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.5.4"; // Sprint 174: U18 club competitionLabel shows Primavera 1/2, not parent league
+const GAME_VERSION="4.5.5"; // Sprint 174 v2: U18 club fix runs before getLeagueClubs; standings reset if player club missing
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -11204,9 +11204,15 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
   useEffect(()=>{
     let changed=false;
     let newP={...player};
+    // Sprint 174 (moved first): refresh U18 club data before getLeagueClubs runs
+    if((newP.proStatus||"u18")==="u18"&&newP.club&&!["Primavera 1","Primavera 2"].includes(newP.club.lg)){
+      const _fc=ALL_U18_CLUBS.find(c=>c.id===newP.club.id);
+      if(_fc){newP={...newP,club:_fc};changed=true;}
+    }
     const lc=getLeagueClubs(newP);
-    // Regenerate standings if missing or league size changed (e.g. after club database expansion)
-    if(!newP.standings||newP.standings.length===0||newP.standings.length!==lc.length){
+    // Regenerate standings if missing, wrong size, or player's club not present (wrong pool)
+    const _clubInStandings=(newP.standings||[]).some(s=>s.id===newP.club?.id);
+    if(!newP.standings||newP.standings.length===0||newP.standings.length!==lc.length||!_clubInStandings){
       newP={...newP,standings:initStandings(lc)};
       changed=true;
     }
@@ -11369,11 +11375,6 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     if(!('totalGoals' in newP)){newP={...newP,totalGoals:0};changed=true;} // Sprint 152
     if(!('totalAssists' in newP)){newP={...newP,totalAssists:0};changed=true;} // Sprint 152
     if(!('totalMatches' in newP)){newP={...newP,totalMatches:0};changed=true;} // Sprint 152
-    // Sprint 174: refresh U18 club data if lg is wrong (old saves stored parent club's lg e.g. "Serie B")
-    if((newP.proStatus||"u18")==="u18"&&newP.club&&!["Primavera 1","Primavera 2"].includes(newP.club.lg)){
-      const _fc=ALL_U18_CLUBS.find(c=>c.id===newP.club.id);
-      if(_fc){newP={...newP,club:_fc};changed=true;}
-    }
     if(changed){setPlayer(newP);}
   },[]);// eslint-disable-line
   const[darkMode,setDarkMode]=useState(()=>localStorage.getItem("cpm-dark")==="1");
