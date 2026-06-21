@@ -2426,7 +2426,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.4.4"; // Sprint 166: remove success% from action buttons, stats bar merged into mobile cronaca section
+const GAME_VERSION="4.4.5"; // Sprint 167: day/night atmosphere fix — sky blue colors, lighter stands for daytime
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -4914,15 +4914,15 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
         return["#0d1530","#1c2248","#08102a",false];
       }
       if(tod==="day"){
-        if(wid==="storm"||wid==="thunder")return["#050810","#080b14","#04060e",false];
-        if(wid==="rain"||wid==="hail")return["#0c1420","#141e30","#0a1018",false];
-        if(wid==="drizzle")return["#0f1a28","#162238","#0c1220",false];
-        if(wid==="fog"||wid==="mist")return["#1c2438","#28304a","#141c2e",false];
-        if(wid==="snow")return["#10182c","#18243e","#0c1220",false];
-        if(wid==="overcast")return["#121c2e","#1a2540","#0e1828",false];
-        if(wid==="sunset")return["#1e0c08","#381808","#140804",false];
-        if(wid==="rainbow")return["#0e2038","#182e52","#0b1630",false];
-        return["#0a1b3d","#162e58","#0d1f40",false];
+        if(wid==="storm"||wid==="thunder")return["#2a3848","#3a4858","#1c2a38",false];
+        if(wid==="rain"||wid==="hail")return["#3c4a58","#4c5a68","#2c3848",false];
+        if(wid==="drizzle")return["#4a5a6a","#5a6a7a","#3a4a5a",false];
+        if(wid==="fog"||wid==="mist")return["#a8b4c0","#b8c4d0","#98a4b0",false];
+        if(wid==="snow")return["#c8d8e8","#d8e8f8","#b8c8d8",false];
+        if(wid==="overcast")return["#6a7888","#7a8898","#5a6878",false];
+        if(wid==="sunset")return["#d04020","#e05030","#b03010",false];
+        if(wid==="rainbow")return["#3a8ac8","#5aa0d8","#2a7ab8",false];
+        return["#5b9bd5","#7ab0d0","#3a7ab5",false];
       }
       // night
       if(wid==="storm"||wid==="thunder")return["#010204","#040608","#020406",true];
@@ -4948,13 +4948,14 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
       // Bowl background — Sprint 82: atmosphere-driven color
       cctx.fillStyle=atmo[0];cctx.fillRect(0,0,PW,PH);
       const bowlG=cctx.createRadialGradient(FCX,FCY,40,FCX,FCY,260);
-      bowlG.addColorStop(0,"rgba(20,80,40,0.14)");bowlG.addColorStop(1,"rgba(0,0,0,0.6)");
+      bowlG.addColorStop(0,"rgba(20,80,40,0.14)");bowlG.addColorStop(1,_tod==="day"?"rgba(0,20,60,0.22)":"rgba(0,0,0,0.6)");
       cctx.fillStyle=bowlG;cctx.fillRect(0,0,PW,PH);
       // Seat rows per stand zone
       function bakeSD(x,y,w,h,homeRatio){
         if(w<3||h<3)return;
         const cw=4,rh=4,cols=Math.ceil(w/cw),rows=Math.ceil(h/rh);
-        for(let r=0;r<rows;r++){cctx.fillStyle=r%2===0?"#12142a":"#0e1020";cctx.globalAlpha=1;cctx.fillRect(x,y+r*rh,w,rh);}
+        const _sE=_tod==="day"?"#8898a8":"#12142a";const _sO=_tod==="day"?"#7888a0":"#0e1020";
+        for(let r=0;r<rows;r++){cctx.fillStyle=r%2===0?_sE:_sO;cctx.globalAlpha=1;cctx.fillRect(x,y+r*rh,w,rh);}
         for(let r=0;r<rows;r++){
           const base=r<rows*homeRatio?hCol:oCol;
           const da=Math.max(0.15,0.55-r*(0.35/Math.max(rows,1)));
@@ -5879,10 +5880,11 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
     }
   },[matchPhase]);
 
+  const _tod_bg=(()=>{const t=timeOfDay||"night";const w=propsRef.current.weather?.id||"sunny";if(t==="day"){if(w==="fog"||w==="mist")return"#a8b4c0";if(w==="snow")return"#c8d8e8";if(w==="overcast")return"#6a7888";if(w==="storm"||w==="thunder")return"#2a3848";if(w==="rain"||w==="hail")return"#3c4a58";if(w==="sunset")return"#c03010";if(w==="rainbow")return"#3a8ac8";return"#5b9bd5";}if(t==="dusk")return"#200e06";if(t==="dawn")return"#0d1530";return"#0a0e1a";})();
   return(
     <div style={isDesktop
-      ?{height:"100%",background:"#0a0e1a",borderRadius:"0 0 12px 12px",overflow:"hidden",display:"flex",justifyContent:"center",alignItems:"center"}
-      :{width:"100%",background:"#0a0e1a",borderRadius:"0 0 12px 12px",overflow:"hidden",display:"flex",justifyContent:"center"}}>
+      ?{height:"100%",background:_tod_bg,borderRadius:"0 0 12px 12px",overflow:"hidden",display:"flex",justifyContent:"center",alignItems:"center"}
+      :{width:"100%",background:_tod_bg,borderRadius:"0 0 12px 12px",overflow:"hidden",display:"flex",justifyContent:"center"}}>
       <canvas ref={canvasRef}
         style={isDesktop
           ?{display:"block",height:"100%",width:"auto",maxWidth:"100%"}
@@ -6869,10 +6871,10 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
               return{...pl,x:bx[ai-1]||82,y:by[ai-1]||50};
             }
             if(isAreaPlay){
-              // Sprint 159: crowded box — rovesciata, cross, open-play area situations
-              const rx=[92,88,85,90,82,86,79,83,94,77];
+              // crowded box — rovesciata, cross, open-play area situations (all x≥82, inside area)
+              const rx=[92,88,85,90,82,86,82,83,94,84];
               const ry=[szY-12,szY+10,szY-4,szY+16,szY,szY-18,szY+8,szY-6,szY+20,szY-14];
-              return{...pl,x:clamp(rx[ai-1]||88,76,97),y:clamp(ry[ai-1]??szY,4,96)};
+              return{...pl,x:clamp(rx[ai-1]||88,82,97),y:clamp(ry[ai-1]??szY,4,96)};
             }
             // Direct FK: tight defensive wall of 4 at x:70 + back line
             const wx=[70,70,70,70,79,79,84,87,87,91];
@@ -6888,10 +6890,10 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
               return{...pl,x:bx[idx-1]||82,y:by[idx-1]||50};
             }
             if(isAreaPlay){
-              // Sprint 159: crowded box — attackers in the area attacking the cross
-              const hx=[szX,szX-3,szX+3,szX-6,szX+4,szX-9,szX-11,szX-7,szX-13];
+              // crowded box — attackers inside area (offsets capped to stay x≥82)
+              const hx=[szX,szX-3,szX+3,szX-6,szX+4,szX-5,szX-2,szX-7,szX+2];
               const hy=[szY-10,szY+10,szY,szY-16,szY+16,szY-4,szY+4,szY-22,szY+22];
-              return{...pl,x:clamp(hx[idx-1]||szX,70,96),y:clamp(hy[idx-1]??szY,4,96)};
+              return{...pl,x:clamp(hx[idx-1]||szX,82,97),y:clamp(hy[idx-1]??szY,4,96)};
             }
             // Direct FK: attackers attacking box, midfield cover
             const ax=[87,89,85,82,80,76,72,68,65];
@@ -6910,16 +6912,16 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           if(pl.team==="away"){
             const ai=idx-10;
             if(ai===0)return{...pl,x:97,y:50}; // Away GK on goal line
-            // Defenders inside/around the area, pressed toward ball
-            const rx=[92,88,85,90,82,86,79,83,94,77];
+            // Defenders packed inside the area (all x≥82)
+            const rx=[92,88,85,90,82,86,82,83,94,84];
             const ry=[szY-12,szY+10,szY-4,szY+16,szY,szY-18,szY+8,szY-6,szY+20,szY-14];
-            return{...pl,x:clamp(rx[ai-1]||88,76,97),y:clamp(ry[ai-1]??szY,4,96)};
+            return{...pl,x:clamp(rx[ai-1]||88,82,97),y:clamp(ry[ai-1]??szY,4,96)};
           }else{
             if(idx===0)return{...pl,x:4,y:50}; // Home GK
-            // Attackers crowding the box from various angles
-            const hx=[szX,szX-3,szX+3,szX-6,szX+4,szX-9,szX-11,szX-7,szX-13];
+            // Attackers crowding the box, all x≥82 (inside area)
+            const hx=[szX,szX-3,szX+3,szX-6,szX+4,szX-5,szX-2,szX-7,szX+2];
             const hy=[szY-10,szY+10,szY,szY-16,szY+16,szY-4,szY+4,szY-22,szY+22];
-            return{...pl,x:clamp(hx[idx-1]||szX,70,96),y:clamp(hy[idx-1]??szY,4,96)};
+            return{...pl,x:clamp(hx[idx-1]||szX,82,97),y:clamp(hy[idx-1]??szY,4,96)};
           }
         }));
       }
