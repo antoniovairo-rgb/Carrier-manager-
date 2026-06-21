@@ -2441,7 +2441,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.5.14"; // Sprint 182: bakeSD+gradient top/bottom full-width — corners = tribune continue
+const GAME_VERSION="4.5.15"; // Sprint 183: side stands full-height — corners scompaiono
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -4983,20 +4983,19 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
         }
         cctx.globalAlpha=1;
       }
-      // Sprint 182: bakeSD top/bottom a tutta larghezza — corners identici alle tribune adiacenti
-      bakeSD(0,2,PW,FY-3,0.93);bakeSD(0,FY+FH+2,PW,PH-FY-FH-4,0.22);
-      bakeSD(0,FY,FX-1,FH,0.91);bakeSD(FX+FW+1,FY,PW-FX-FW-1,FH,0.91); // side stands unchanged
-      // Stand gradients — Sprint 82: color from atmosphere palette
+      // Sprint 183: side stands a piena altezza (y=0..PH) — corners = estensione naturale delle tribune laterali
+      bakeSD(FX,2,FW,FY-3,0.93);bakeSD(FX,FY+FH+2,FW,PH-FY-FH-4,0.22); // top/bottom center unchanged
+      bakeSD(0,0,FX-1,PH,0.91);bakeSD(FX+FW+1,0,PW-FX-FW-1,PH,0.91);   // side stands: full height
+      // Stand gradients
       const sL=atmo[1],sD=atmo[2];
-      // Sprint 182: gradients top/bottom a tutta larghezza — corners coperti dal gradiente
       const tG=cctx.createLinearGradient(0,0,0,FY);tG.addColorStop(0,sD);tG.addColorStop(1,sL);
-      cctx.fillStyle=tG;cctx.fillRect(0,0,PW,FY);
+      cctx.fillStyle=tG;cctx.fillRect(FX,0,FW,FY);
       const bG=cctx.createLinearGradient(0,FY+FH,0,PH);bG.addColorStop(0,sL);bG.addColorStop(1,sD);
-      cctx.fillStyle=bG;cctx.fillRect(0,FY+FH,PW,PH-FY-FH);
+      cctx.fillStyle=bG;cctx.fillRect(FX,FY+FH,FW,PH-FY-FH);
       const lG=cctx.createLinearGradient(0,0,FX,0);lG.addColorStop(0,sD);lG.addColorStop(1,sL);
-      cctx.fillStyle=lG;cctx.fillRect(0,FY,FX,FH);
+      cctx.fillStyle=lG;cctx.fillRect(0,0,FX,PH); // full height
       const rG=cctx.createLinearGradient(FX+FW,0,PW,0);rG.addColorStop(0,sL);rG.addColorStop(1,sD);
-      cctx.fillStyle=rG;cctx.fillRect(FX+FW,FY,PW-FX-FW,FH);
+      cctx.fillStyle=rG;cctx.fillRect(FX+FW,0,PW-FX-FW,PH); // full height
       // Sprint 92 — home stand banner strip (top of home stand, club colour)
       if(FY>10){
         const bStrH=Math.max(3,Math.floor(FY*0.18));
