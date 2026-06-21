@@ -2441,7 +2441,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.5.27"; // Sprint 195: cartelloni su layer fisso (non clippati), angoli cielo chiarissimo
+const GAME_VERSION="4.5.28"; // Sprint 196: highlight espande il campo — niente spazio bianco durante HL su mobile
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -5919,10 +5919,11 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
   },[matchPhase]);
 
   const _tod_bg=(()=>{const t=timeOfDay||"night";const w=propsRef.current.weather?.id||"sunny";if(t==="dusk"){if(w==="storm"||w==="thunder"||w==="rain")return"#100808";if(w==="fog"||w==="mist")return"#1a1215";if(w==="golden")return"#1c1006";return"#200e06";}if(t==="dawn"){if(w==="fog"||w==="mist")return"#141c2e";if(w==="rain"||w==="drizzle")return"#0a1020";return"#0d1530";}if(t==="day"){if(w==="storm"||w==="thunder")return"#2a3848";if(w==="rain"||w==="hail")return"#3c4a58";if(w==="drizzle")return"#4a5a6a";if(w==="fog"||w==="mist")return"#a8b4c0";if(w==="snow")return"#c8d8e8";if(w==="overcast")return"#6a7888";if(w==="sunset")return"#d04020";if(w==="rainbow")return"#3a8ac8";return"#5b9bd5";}if(w==="storm"||w==="thunder")return"#010204";if(w==="fog"||w==="mist")return"#040810";if(w==="snow")return"#060a18";if(w==="rain"||w==="drizzle")return"#010308";return"#010208";})();
+  const _pcHL=!isDesktop&&["hl_move","hl_choose","hl_result","hl_intro"].includes(matchPhase);
   return(
     <div style={isDesktop
       ?{height:"100%",background:_tod_bg,borderRadius:"0 0 12px 12px",overflow:"hidden",display:"flex",justifyContent:"center",alignItems:"center"}
-      :{width:"100%",background:_tod_bg,borderRadius:"0 0 12px 12px",overflow:"hidden",display:"flex",justifyContent:"center"}}>
+      :{width:"100%",background:_tod_bg,borderRadius:"0 0 12px 12px",overflow:"hidden",display:"flex",justifyContent:"center",...(_pcHL?{flex:1}:{})}}>
       <canvas ref={canvasRef}
         style={isDesktop
           ?{display:"block",height:"100%",width:"auto",maxWidth:"100%"}
@@ -7845,10 +7846,11 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           </div>
 
           {/* ── Field + Panel: responsive layout ── */}
-          <div style={isNarrow?{display:"flex",flexDirection:"column"}:{display:"flex",flexDirection:"row",alignItems:"stretch",flex:1,minHeight:0,overflow:"hidden"}}>
+          {(()=>{const _isHL=["hl_move","hl_choose","hl_result","hl_intro"].includes(phase);return(
+          <div style={isNarrow?{display:"flex",flexDirection:"column",...(_isHL?{flex:1,minHeight:0}:{})}:{display:"flex",flexDirection:"row",alignItems:"stretch",flex:1,minHeight:0,overflow:"hidden"}}>
 
             {/* FIELD — height-constrained on desktop, full width on narrow */}
-            <div style={isNarrow?{position:"relative",overflow:"hidden",cursor:"default"}:{flex:"0 0 auto",position:"relative",overflow:"hidden",alignSelf:"stretch",cursor:"default"}}>
+            <div style={isNarrow?{position:"relative",overflow:"hidden",cursor:"default",...(_isHL?{flex:1,minHeight:0}:{})}:{flex:"0 0 auto",position:"relative",overflow:"hidden",alignSelf:"stretch",cursor:"default"}}>
               <PitchCanvas playerX={pPos.x} playerY={pPos.y} zone={zone}
                 homeCol={homeKitCol} oppCol={awayKitCol}
                 opponents={opponents.current} matchPhase={matchPhase3D} avatarId={player.avatarId||0}
@@ -8177,7 +8179,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
               </div>
 
             </div>{/* end right panel */}
-          </div>{/* end field+panel row */}
+          </div>);})()}{/* end field+panel row */}
         </Card>
       )}
 
