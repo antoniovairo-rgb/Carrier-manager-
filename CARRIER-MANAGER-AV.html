@@ -2441,7 +2441,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.5.40"; // Sprint 208: dettagli premium stadio — vomitori, copertura, steward, area tecnica
+const GAME_VERSION="4.5.41"; // Sprint 209: stadium visual refinement — no vomitori, cartelloni curve, bandiere, striscioni, cartello solo distinti
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -5170,46 +5170,122 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
         cctx.fillRect(FX+FW-bW, 0, bW, FY+FH); // pilastro dx: dal top a fine distinti
         cctx.restore();
       }
-      // === DETTAGLI PREMIUM STADIO (Sprint 208) — tutto baked, zero costo per-frame ===
+      // === DETTAGLI PREMIUM STADIO (Sprint 209) — tutto baked, zero costo per-frame ===
       {
         const bW=4;
-        // 1) Vomitori / accessi settori — gap scuri che spezzano la folla in settori
-        cctx.save();cctx.fillStyle="#0a0d14";cctx.globalAlpha=0.45;
-        [FY+FH*0.34,FY+FH*0.67].forEach(_gy=>{
-          cctx.fillRect(bW+1,_gy-1.25,FX-bW-5,2.5);            // distinto sin
-          cctx.fillRect(FX+FW+4,_gy-1.25,PW-FX-FW-bW-5,2.5);  // distinto dx
-        });
-        [FX+FW*0.34,FX+FW*0.67].forEach(_gx=>{
-          cctx.fillRect(_gx-1.25,bW+1,2.5,FY-bW-3);           // curva casa
-          cctx.fillRect(_gx-1.25,FY+FH+4,2.5,PH-FY-FH-bW-5);  // curva ospiti
-        });
-        cctx.restore();
-        // 2) Cresta copertura — linea chiara appena dentro il bordo esterno (tetto in luce) = profondità
+        // 1) Cresta copertura — linea chiara sul bordo esterno = profondità tetto
         const _roofHi=_tod==="day"?"rgba(255,255,255,0.28)":"rgba(186,196,210,0.20)";
         cctx.save();cctx.fillStyle=_roofHi;
-        cctx.fillRect(FX,bW+1,FW,1);          // curva casa
-        cctx.fillRect(FX,PH-bW-2,FW,1);       // curva ospiti
-        cctx.fillRect(bW+1,FY,1,FH);          // distinto sin
-        cctx.fillRect(PW-bW-2,FY,1,FH);       // distinto dx
+        cctx.fillRect(FX,bW+1,FW,1);cctx.fillRect(FX,PH-bW-2,FW,1);
+        cctx.fillRect(bW+1,FY,1,FH);cctx.fillRect(PW-bW-2,FY,1,FH);
         cctx.restore();
-        // 3) Steward / addetti — punti hi-vis radi sui bordi campo dei distinti (no zona billboard)
+        // 2) Steward hi-vis — punti radi sui bordi campo dei distinti
         cctx.save();cctx.fillStyle="rgba(214,232,74,0.90)";
-        for(let _sy=FY+20;_sy<FY+FH-12;_sy+=48){
-          if(Math.abs(_sy-FCY)<62)continue;   // salta la fascia del billboard competizione
-          cctx.beginPath();cctx.arc(FX-9,_sy,1.4,0,Math.PI*2);cctx.fill();
-          cctx.beginPath();cctx.arc(FX+FW+9,_sy,1.4,0,Math.PI*2);cctx.fill();
+        for(let _isy=FY+20;_isy<FY+FH-12;_isy+=48){
+          if(Math.abs(_isy-FCY)<62)continue;
+          cctx.beginPath();cctx.arc(FX-9,_isy,1.4,0,Math.PI*2);cctx.fill();
+          cctx.beginPath();cctx.arc(FX+FW+9,_isy,1.4,0,Math.PI*2);cctx.fill();
         }
         cctx.restore();
-        // 4) Area tecnica — due panchine (dugout) sul distinto sinistro, sfalsate dalla metà campo
+        // 3) Area tecnica — panchine minimaliste (home + away), discrete
+        [[FCY-72,hCol],[FCY+58,oCol]].forEach(([_by,_bc])=>{
+          cctx.save();
+          cctx.fillStyle="#0d1117";cctx.globalAlpha=0.78;cctx.fillRect(FX-12,_by,8,4);
+          cctx.fillStyle=_bc;cctx.globalAlpha=0.72;cctx.fillRect(FX-11,_by+1,6,2);
+          cctx.globalAlpha=1;cctx.restore();
+        });
+        // 4) Cartelloni nelle curve — strisce orizzontali colori casa/ospiti
         {
-          const _dgW=14,_dgX=FX-_dgW-7;        // x[59,73], appena dietro i cartelloni
-          [[FCY-80,hCol],[FCY+66,oCol]].forEach(([_dy,_dcol])=>{
-            cctx.fillStyle="#13161c";cctx.globalAlpha=0.92;cctx.fillRect(_dgX,_dy,_dgW,14);
-            cctx.fillStyle="rgba(255,255,255,0.16)";cctx.globalAlpha=1;cctx.fillRect(_dgX,_dy,_dgW,1);
-            cctx.fillStyle=_dcol;cctx.globalAlpha=0.85;
-            for(let _st=0;_st<3;_st++){cctx.beginPath();cctx.arc(_dgX+4+_st*4,_dy+9,1.4,0,Math.PI*2);cctx.fill();}
-            cctx.globalAlpha=1;
-          });
+          const _cSlot=Math.round(FW/9);
+          cctx.save();cctx.globalAlpha=0.80;
+          for(let _cai=0;_cai<9;_cai++){
+            const _cax=FX+_cai*_cSlot;
+            const _v=_cai%3===0?0:_cai%3===1?45:-35;
+            const _hn=parseInt((hCol||"#22c55e").replace('#',''),16);
+            cctx.fillStyle=`rgb(${Math.min(255,Math.max(0,((_hn>>16)&255)+_v))},${Math.min(255,Math.max(0,((_hn>>8)&255)+_v))},${Math.min(255,Math.max(0,(_hn&255)+_v))})`;
+            cctx.fillRect(_cax,FY-5,_cSlot-1,4);
+            const _vo=_cai%3===0?0:_cai%3===1?40:-30;
+            const _on=parseInt((oCol||"#ef4444").replace('#',''),16);
+            cctx.fillStyle=`rgb(${Math.min(255,Math.max(0,((_on>>16)&255)+_vo))},${Math.min(255,Math.max(0,((_on>>8)&255)+_vo))},${Math.min(255,Math.max(0,(_on&255)+_vo))})`;
+            cctx.fillRect(_cax,FY+FH+1,_cSlot-1,4);
+          }
+          cctx.globalAlpha=1;cctx.restore();
+        }
+        // 5) Bandiere e sciarpe — distribuzione realistica in tutti i settori
+        {
+          cctx.save();
+          // Curva casa: fila densa bandierine home
+          for(let _fi=0;_fi<22;_fi++){
+            const _bfx=FX+6+_fi*(FW-12)/21,_bfy=Math.floor(FY*0.52);
+            cctx.fillStyle=_fi%4===2?"#ffffff":_fi%4===0?hL:hCol;cctx.globalAlpha=0.88;
+            cctx.fillRect(_bfx,_bfy,5,3);
+            cctx.fillStyle="rgba(255,255,255,0.42)";cctx.fillRect(_bfx,_bfy-3,1,3);
+          }
+          // Curva ospiti: bandierine away
+          if(PH-FY-FH>8){
+            const _oFY=FY+FH+Math.floor((PH-FY-FH)*0.40);
+            for(let _fi=0;_fi<14;_fi++){
+              const _bfx=FX+10+_fi*(FW-20)/13;
+              cctx.fillStyle=_fi%3===0?"#ffffff":_fi%3===1?oCol:oL;cctx.globalAlpha=0.82;
+              cctx.fillRect(_bfx,_oFY,4,2);
+              cctx.fillStyle="rgba(255,255,255,0.35)";cctx.fillRect(_bfx,_oFY-2,1,2);
+            }
+          }
+          // Distinti sin: bandierine sparse verticali
+          for(let _fi=0;_fi<6;_fi++){
+            const _dfy=FY+18+_fi*40;if(Math.abs(_dfy-FCY)<40)continue;
+            cctx.fillStyle=_fi%2===0?hCol:"#ffffff";cctx.globalAlpha=0.60;
+            cctx.fillRect(Math.floor(FX*0.38),_dfy,3,5);
+          }
+          // Distinti dx: bandierine sparse
+          for(let _fi=0;_fi<6;_fi++){
+            const _dfy=FY+18+_fi*40;if(Math.abs(_dfy-FCY)<40)continue;
+            cctx.fillStyle=_fi%2===0?hCol:"#ffffff";cctx.globalAlpha=0.60;
+            cctx.fillRect(FX+FW+Math.floor((PW-FX-FW)*0.52),_dfy,3,5);
+          }
+          cctx.globalAlpha=1;cctx.restore();
+        }
+        // 6) Striscioni stile ultras — bande colore integrate nella pixel art
+        {
+          cctx.save();
+          // Curva casa
+          const _sW=Math.round(FW*0.54),_sX=FX+Math.round((FW-_sW)/2);
+          const _sSH=Math.max(3,Math.floor(FY*0.22)),_sSY=Math.floor(FY*0.70);
+          cctx.fillStyle=hCol;cctx.globalAlpha=0.86;cctx.fillRect(_sX,_sSY,_sW,_sSH);
+          cctx.fillStyle="#ffffff";cctx.globalAlpha=0.55;
+          cctx.fillRect(_sX,_sSY,_sW,1);cctx.fillRect(_sX,_sSY+_sSH-1,_sW,1);
+          // Curva ospiti
+          if(PH-FY-FH>10){
+            const _oH=PH-FY-FH,_oSH=Math.max(3,Math.floor(_oH*0.28));
+            const _oSW=Math.round(FW*0.44),_oSX=FX+Math.round((FW-_oSW)/2);
+            const _oSY=FY+FH+Math.floor(_oH*0.58);
+            cctx.fillStyle=oCol;cctx.globalAlpha=0.80;cctx.fillRect(_oSX,_oSY,_oSW,_oSH);
+            cctx.fillStyle="#ffffff";cctx.globalAlpha=0.50;cctx.fillRect(_oSX,_oSY,_oSW,1);
+          }
+          // Distinti — bande sottili a metà altezza
+          cctx.globalAlpha=0.58;cctx.fillStyle=hCol;
+          cctx.fillRect(bW+2,FCY-4,FX-bW-5,3);
+          cctx.fillRect(FX+FW+bW+1,FCY-4,PW-FX-FW-bW*2-3,3);
+          cctx.fillStyle="#ffffff";cctx.globalAlpha=0.30;
+          cctx.fillRect(bW+2,FCY-5,FX-bW-5,1);
+          cctx.fillRect(FX+FW+bW+1,FCY-5,PW-FX-FW-bW*2-3,1);
+          cctx.globalAlpha=1;cctx.restore();
+        }
+        // 7) Chiazze coreografiche — varietà visiva folla senza appesantire
+        {
+          cctx.save();
+          // Curva casa: spotlight caldo centrale + blocchi organizzati
+          const _spG=cctx.createRadialGradient(FCX,FY*0.48,0,FCX,FY*0.48,FW*0.30);
+          _spG.addColorStop(0,"rgba(255,255,255,0.13)");_spG.addColorStop(1,"rgba(255,255,255,0)");
+          cctx.fillStyle=_spG;cctx.fillRect(FX,0,FW,FY);
+          cctx.fillStyle=hCol;cctx.globalAlpha=0.14;cctx.fillRect(FX,0,FW*0.42,FY);
+          cctx.fillStyle="#ffffff";cctx.globalAlpha=0.10;cctx.fillRect(FX+FW*0.55,0,FW*0.45,FY);
+          // Curva ospiti: blocco away color
+          cctx.fillStyle=oCol;cctx.globalAlpha=0.18;cctx.fillRect(FX,FY+FH,FW,PH-FY-FH);
+          // Distinti: sfumatura orizzontale leggera
+          cctx.fillStyle=hCol;cctx.globalAlpha=0.08;
+          cctx.fillRect(0,FY,FX,FH*0.5);cctx.fillRect(FX+FW,FY,PW-FX-FW,FH*0.5);
+          cctx.globalAlpha=1;cctx.restore();
         }
       }
       // Riflettori — struttura sempre visibile agli angoli del campo, glow solo notte/dusk
@@ -5306,13 +5382,12 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
         const _cCol=_cLbl.includes("UCL")||_cLbl.includes("Champions")?"#003399":_cLbl.includes("UEL")||_cLbl.includes("Europa")?"#f97316":_cLbl.includes("UECL")||_cLbl.includes("Conference")?"#10b981":_cLbl.includes("COPPA")||_cLbl.includes("Cup")?"#7c3aed":"#1e3a8a";
         const _cbH=adSlot*3-1,_cbW=7,_cbY=FCY-_cbH/2;
         ctx.save();ctx.globalAlpha=0.93;
-        ctx.fillStyle=_cCol;ctx.fillRect(FX-_cbW-1,_cbY,_cbW,_cbH);ctx.fillRect(FX+FW+2,_cbY,_cbW,_cbH);
+        ctx.fillStyle=_cCol;ctx.fillRect(FX+FW+2,_cbY,_cbW,_cbH);
         ctx.strokeStyle="#fff";ctx.globalAlpha=0.75;ctx.lineWidth=0.5;
-        ctx.strokeRect(FX-_cbW-1.5,_cbY-0.5,_cbW+1,_cbH+1);ctx.strokeRect(FX+FW+1.5,_cbY-0.5,_cbW+1,_cbH+1);
+        ctx.strokeRect(FX+FW+1.5,_cbY-0.5,_cbW+1,_cbH+1);
         ctx.globalAlpha=1;ctx.fillStyle="#fff";
         const _cTfs=Math.max(4,Math.floor(_cbW*0.72));
         ctx.font=`bold ${_cTfs}px Arial,sans-serif`;ctx.textAlign="center";ctx.textBaseline="middle";
-        ctx.save();ctx.translate(FX-_cbW/2-1,FCY);ctx.rotate(-Math.PI/2);ctx.fillText(_cShort.toUpperCase(),0,0);ctx.restore();
         ctx.save();ctx.translate(FX+FW+2+_cbW/2,FCY);ctx.rotate(Math.PI/2);ctx.fillText(_cShort.toUpperCase(),0,0);ctx.restore();
         ctx.restore();
       }
