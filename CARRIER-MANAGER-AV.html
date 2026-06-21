@@ -2441,7 +2441,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.5.25"; // Sprint 193: tutti gli overlay (banner, meteo, wave, burst) estesi a piena larghezza
+const GAME_VERSION="4.5.26"; // Sprint 194: fix architetturale — stadio layer fisso, pitch zooma con clip nel suo frame
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -4980,37 +4980,37 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
         }
         cctx.globalAlpha=1;
       }
-      // Sprint 192: curve piena larghezza → angoli coperti senza codice speciale
-      bakeSD(0,0,PW,FY,0.93);bakeSD(0,FY+FH,PW,PH-FY-FH,0.22);  // curve: x=0..PW (include angoli)
-      bakeSD(0,FY,FX,FH,0.91);bakeSD(FX+FW,FY,PW-FX-FW,FH,0.91); // distinti: solo altezza pitch
-      // Stand gradients — semi-transparent atmospheric tint (lascia vedere texture crowd)
+      // Sprint 194: curve center-only + distinti middle — angoli = sky/meteo (layer statico, non segue camera)
+      bakeSD(FX,0,FW,FY,0.93);bakeSD(FX,FY+FH,FW,PH-FY-FH,0.22);  // curve: solo centro
+      bakeSD(0,FY,FX,FH,0.91);bakeSD(FX+FW,FY,PW-FX-FW,FH,0.91);   // distinti: solo altezza pitch
+      // Stand gradients — semi-transparent atmospheric tint
       const sL=atmo[1],sD=atmo[2];
       const tG=cctx.createLinearGradient(0,0,0,FY);tG.addColorStop(0,sD);tG.addColorStop(1,sL);
       const bG=cctx.createLinearGradient(0,FY+FH,0,PH);bG.addColorStop(0,sL);bG.addColorStop(1,sD);
       const lG=cctx.createLinearGradient(0,0,FX,0);lG.addColorStop(0,sD);lG.addColorStop(1,sL);
       const rG=cctx.createLinearGradient(FX+FW,0,PW,0);rG.addColorStop(0,sL);rG.addColorStop(1,sD);
       cctx.globalAlpha=0.38;
-      cctx.fillStyle=tG;cctx.fillRect(0,0,PW,FY);
-      cctx.fillStyle=bG;cctx.fillRect(0,FY+FH,PW,PH-FY-FH);
+      cctx.fillStyle=tG;cctx.fillRect(FX,0,FW,FY);
+      cctx.fillStyle=bG;cctx.fillRect(FX,FY+FH,FW,PH-FY-FH);
       cctx.fillStyle=lG;cctx.fillRect(0,FY,FX,FH);
       cctx.fillStyle=rG;cctx.fillRect(FX+FW,FY,PW-FX-FW,FH);
       cctx.globalAlpha=1;
-      // Sprint 92 — home stand banner strip (full width, matched to new curve layout)
+      // Home stand banner strip — center only
       if(FY>10){
         const bStrH=Math.max(3,Math.floor(FY*0.18));
-        cctx.fillStyle=hCol;cctx.globalAlpha=0.82;cctx.fillRect(0,FY-bStrH-1,PW,bStrH);
-        cctx.fillStyle="#ffffff";cctx.globalAlpha=0.35;cctx.fillRect(0,FY-bStrH-1,PW,Math.max(1,Math.floor(bStrH*0.3)));
+        cctx.fillStyle=hCol;cctx.globalAlpha=0.82;cctx.fillRect(FX,FY-bStrH-1,FW,bStrH);
+        cctx.fillStyle="#ffffff";cctx.globalAlpha=0.35;cctx.fillRect(FX,FY-bStrH-1,FW,Math.max(1,Math.floor(bStrH*0.3)));
         cctx.globalAlpha=1;
       }
       // Sprint 82 — atmosphere-specific overlays
       if(_tod==="dusk"){
         const dG=cctx.createLinearGradient(0,0,0,FY);
         dG.addColorStop(0,"rgba(210,80,15,0.28)");dG.addColorStop(1,"rgba(100,30,8,0.06)");
-        cctx.fillStyle=dG;cctx.fillRect(0,0,PW,FY);
+        cctx.fillStyle=dG;cctx.fillRect(FX,0,FW,FY);
       }else if(_tod==="dawn"){
         const dG=cctx.createLinearGradient(0,0,0,FY);
         dG.addColorStop(0,"rgba(80,55,170,0.20)");dG.addColorStop(1,"rgba(30,20,80,0.04)");
-        cctx.fillStyle=dG;cctx.fillRect(0,0,PW,FY);
+        cctx.fillStyle=dG;cctx.fillRect(FX,0,FW,FY);
       }else if(_tod==="night"&&_wid==="starry"){
         cctx.fillStyle="rgba(255,255,255,0.75)";
         for(var _si=0;_si<70;_si++){
@@ -5021,7 +5021,7 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
       }else if(_tod==="day"&&(_wid==="sunny"||_wid==="partly"||_wid==="heat")){
         const dG=cctx.createLinearGradient(0,0,0,FY*0.65);
         dG.addColorStop(0,"rgba(30,80,180,0.18)");dG.addColorStop(1,"rgba(10,40,100,0)");
-        cctx.fillStyle=dG;cctx.fillRect(0,0,PW,FY);
+        cctx.fillStyle=dG;cctx.fillRect(FX,0,FW,FY);
       }
       // Sprint 92 — club-color crowd dots (replaces rainbow palette)
       // Build colour palettes from actual club hex
@@ -5036,7 +5036,7 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
       const sideDotPal=[hCol,hCol,hCol,hL,hCol,hL,"#ffffff",hCol,hCol,hL,hCol,hL];
       const dotW=_effectiveFill>0.6?3:_effectiveFill>0.3?4:5;
       // Top stand (home curva) + bottom (away end)
-      [[0,0,PW,FY,homeDotPal,0.62],[0,FY+FH,PW,PH-FY-FH,awayDotPal,0.90]].forEach(([sx,sy,sw,sh,dpal,dotAlpha])=>{
+      [[FX,0,FW,FY,homeDotPal,0.62],[FX,FY+FH,FW,PH-FY-FH,awayDotPal,0.90]].forEach(([sx,sy,sw,sh,dpal,dotAlpha])=>{
         if(sh<4)return;const cols=Math.floor(sw/dotW),rows=Math.floor(sh/dotW);
         for(let r=0;r<rows;r++)for(let c=0;c<cols;c++){
           if(((r*31+c*17)%100)/100>_effectiveFill)continue;
@@ -5045,7 +5045,7 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
         }
       });
       // Away end stripe for visibility
-      {const _awSY=FY+FH,_awSH=PH-FY-FH;if(_awSH>6){cctx.fillStyle=oCol;cctx.globalAlpha=0.45;cctx.fillRect(0,_awSY,PW,_awSH);cctx.globalAlpha=1;}}
+      {const _awSY=FY+FH+4,_awSH=PH-FY-FH-6;if(_awSH>6){cctx.fillStyle=oCol;cctx.globalAlpha=0.45;cctx.fillRect(FX,_awSY,FW,_awSH);cctx.globalAlpha=1;}}
       // Side stands — solo striscia centrale, angoli lasciati vuoti (clearRect dopo)
       [[2,FY,FX-4,FH],[FX+FW+4,FY,PW-FX-FW-6,FH]].forEach(([sx,sy,sw,sh])=>{
         if(sw<4)return;const cols=Math.floor(sw/dotW),rows=Math.floor(sh/dotW);
@@ -5072,7 +5072,7 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
       }
       // Derby / big match: extra colour burst on top stand
       if(_isDrby){
-        cctx.fillStyle=hCol;cctx.globalAlpha=0.22;cctx.fillRect(0,0,PW,FY);cctx.globalAlpha=1;
+        cctx.fillStyle=hCol;cctx.globalAlpha=0.22;cctx.fillRect(FX,2,FW,FY-3);cctx.globalAlpha=1;
         // "DERBY" text in top stand
         cctx.save();cctx.font=`bold ${Math.max(6,Math.floor(FY*0.32))}px Arial,sans-serif`;
         cctx.textAlign="center";cctx.textBaseline="middle";
@@ -5096,7 +5096,43 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
           cctx.restore();
         }
       }
-      // Riflettori (solo notte/dusk — disegnati sulla curva, non servono angoli speciali)
+      // Angoli: sky statico + meteo + riflettori — ora il layer non segue la camera, zero artefatti
+      {
+        const _sc=(_tod==="night"||_tod==="dusk")?atmo[0]:
+          _wid==="sunny"||_wid==="heat"?"#7ec8e3":_wid==="partly"?"#90c8dc":
+          _wid==="overcast"?"#9aabba":_wid==="rain"||_wid==="drizzle"?"#7a8e9a":
+          _wid==="storm"||_wid==="thunder"?"#4e5f6e":_wid==="snow"?"#c8dce8":"#7ec8e3";
+        [[0,0,FX,FY],[FX+FW,0,PW-FX-FW,FY],[0,FY+FH,FX,PH-FY-FH],[FX+FW,FY+FH,PW-FX-FW,PH-FY-FH]]
+          .forEach(([cx,cy,cw,ch])=>{cctx.fillStyle=_sc;cctx.fillRect(cx,cy,cw,ch);});
+        // Sole (giorno soleggiato/parzialmente nuvoloso)
+        if((_tod==="day"||_tod==="dawn")&&(_wid==="sunny"||_wid==="heat"||_wid==="partly")){
+          const sg=cctx.createRadialGradient(PW-FX*0.5,FY*0.45,0,PW-FX*0.5,FY*0.45,FX*0.75);
+          sg.addColorStop(0,"rgba(255,240,50,0.98)");sg.addColorStop(0.3,"rgba(255,215,0,0.55)");sg.addColorStop(1,"rgba(255,200,0,0)");
+          cctx.fillStyle=sg;cctx.fillRect(FX+FW,0,PW-FX-FW,FY);
+        }
+        // Nuvole (coperto/pioggia/parzialmente nuvoloso)
+        if((_tod==="day"||_tod==="dawn")&&(_wid==="overcast"||_wid==="partly"||_wid==="rain"||_wid==="drizzle")){
+          cctx.fillStyle="#e8eff4";cctx.globalAlpha=_wid==="overcast"?0.85:0.60;
+          [{x:8,y:FY*0.5,rx:FX*0.55,ry:FY*0.3},{x:FX*0.5,y:FY*0.28,rx:FX*0.42,ry:FY*0.22}].forEach(({x,y,rx,ry})=>{
+            cctx.beginPath();cctx.ellipse(x,y,rx,ry,0,0,Math.PI*2);cctx.fill();
+          });
+          cctx.globalAlpha=1;
+        }
+        // Pioggia (angoli top)
+        if((_tod==="day"||_tod==="dawn")&&(_wid==="rain"||_wid==="drizzle"||_wid==="storm")){
+          cctx.strokeStyle="rgba(120,155,205,0.65)";cctx.lineWidth=0.9;
+          for(let ri=0;ri<6;ri++){const rx=3+(ri*13)%(FX-6),ry=4+(ri*9)%(FY-8);
+            cctx.beginPath();cctx.moveTo(rx,ry);cctx.lineTo(rx-3,ry+9);cctx.stroke();}
+          cctx.lineWidth=1;
+        }
+        // Neve
+        if((_tod==="day"||_tod==="dawn")&&_wid==="snow"){
+          cctx.fillStyle="rgba(220,238,252,0.92)";
+          for(let si=0;si<6;si++){cctx.beginPath();cctx.arc(4+(si*14)%(FX-8),3+(si*11)%(FY-6),1.6,0,Math.PI*2);cctx.fill();}
+        }
+        cctx.globalAlpha=1;
+      }
+      // Riflettori (solo notte/dusk)
       if(atmo[3]){
         const floodR=_prest80>=80?90:_prest80>=60?64:46;
         const _fA=(_prest80>=80?0.72:_prest80>=60?0.56:0.38)*(_tod==="dusk"?0.55:1);
@@ -5130,13 +5166,13 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
       const waveSpd=t*0.0012,waveAmp=(4.5+goalBurst*18)*_presScale,waveAlpha=0.22+goalBurst*0.35;
       const flashCol=wEvt&&goalBurst>0.05?(wEvt.home?p.homeCol:"#ef4444"):"#fff";
       // Multi-wave ripple: two overlapping sine waves for richer ola effect
-      for(let wi=0;wi<Math.ceil(PW/5);wi++){
-        const wx=wi*5;
+      for(let wi=0;wi<Math.ceil(FW/5);wi++){
+        const wx=FX+wi*5;
         const wh=Math.max(0,Math.sin(waveSpd*3+wi*0.22)*waveAmp*0.7+Math.sin(waveSpd*2+wi*0.14)*waveAmp*0.3);
         if(wh>0.5){ctx.save();ctx.globalAlpha=waveAlpha;ctx.fillStyle=flashCol;ctx.fillRect(wx,2,5,Math.min(wh,FY-3));ctx.fillRect(wx,FY+FH+2,5,Math.min(wh,PH-FY-FH-4));ctx.restore();}
       }
       if(Math.random()<0.012+goalBurst*0.06){
-        const fx=Math.random()*PW,fy=Math.random()*FY;
+        const fx=FX+Math.random()*FW,fy=2+Math.random()*(FY-5);
         const fg=ctx.createRadialGradient(fx,fy,0,fx,fy,8);
         fg.addColorStop(0,"rgba(255,255,255,0.7)");fg.addColorStop(1,"rgba(255,255,255,0)");
         ctx.fillStyle=fg;ctx.fillRect(fx-8,fy-8,16,16);
@@ -5144,7 +5180,7 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
       // Goal burst crowd colour overlay
       if(goalBurst>0.05){
         ctx.save();ctx.globalAlpha=goalBurst*0.18;ctx.fillStyle=flashCol;
-        ctx.fillRect(0,0,PW,FY);ctx.fillRect(0,FY+FH,PW,PH-FY-FH);
+        ctx.fillRect(FX,2,FW,FY-3);ctx.fillRect(FX,FY+FH+2,FW,PH-FY-FH-4);
         ctx.restore();
       }
       // Night/dusk: floodlight glow on stands (clipped to stand areas only)
@@ -5669,17 +5705,23 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
         s.camY+=(targetCY-s.camY)*lerpS;
         s.camZoom+=(targetZoom-s.camZoom)*lerpS;
 
-        // Clamp camera so zoomed content always covers full canvas — no empty edges during highlights
-        const _halfW=PW/2/s.camZoom, _halfH=PH/2/s.camZoom;
-        s.camX=Math.max(_halfW,Math.min(PW-_halfW,s.camX));
-        s.camY=Math.max(_halfH,Math.min(PH-_halfH,s.camY));
+        // Clamp camera dentro i bounds del pitch — la clip garantisce che non esca dal frame
+        const _cxMin=(FX*(s.camZoom-1)+PW/2)/s.camZoom;
+        const _cxMax=((FX+FW)*(s.camZoom-1)+PW/2)/s.camZoom;
+        const _cyMin=(FY*(s.camZoom-1)+PH/2)/s.camZoom;
+        const _cyMax=((FY+FH)*(s.camZoom-1)+PH/2)/s.camZoom;
+        s.camX=Math.max(_cxMin,Math.min(_cxMax,s.camX));
+        s.camY=Math.max(_cyMin,Math.min(_cyMax,s.camY));
 
-        ctx.save();
-        ctx.translate(PW/2-s.camZoom*s.camX,PH/2-s.camZoom*s.camY);
-        ctx.scale(s.camZoom,s.camZoom);
-
+        // LAYER 1 — Stadio fisso (crowd, stand, sky, meteo): disegnato SENZA camera transform
         propsRef.current._t=t;
         drawStadium(ctx,t);
+
+        // LAYER 2 — Campo e giocatori: zoomano dentro il frame del pitch (clip = nessun overflow sulle curve)
+        ctx.save();
+        ctx.beginPath();ctx.rect(FX,FY,FW,FH);ctx.clip();
+        ctx.translate(PW/2-s.camZoom*s.camX,PH/2-s.camZoom*s.camY);
+        ctx.scale(s.camZoom,s.camZoom);
         drawPitch(ctx);
         // Sprint 80 — pitch quality overlay: low-prestige clubs have worn/muddy grass
         {const _pq80=propsRef.current.homeClub?.p||65;if(_pq80<55){ctx.save();ctx.globalAlpha=_pq80<42?0.11:0.055;ctx.fillStyle="rgba(130,100,50,1)";ctx.fillRect(FX,FY,FW,FH);ctx.restore();}}
