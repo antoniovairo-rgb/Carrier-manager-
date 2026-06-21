@@ -2441,7 +2441,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.5.34"; // Sprint 202: sole come disco, pilastri su tutta l'altezza canvas
+const GAME_VERSION="4.5.35"; // Sprint 203: pilastri solo distinti, faretti bordo superiore, fix riflettori bottom
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -5135,22 +5135,43 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
         }
         cctx.globalAlpha=1;
       }
-      // Strutture verticali bordi spalti — coprono tutta l'altezza del canvas (curva+distinti)
+      // Strutture verticali bordi spalti — solo fino a FY+FH (non nella curva ospiti)
       {
-        cctx.save();cctx.globalAlpha=0.88;
-        cctx.fillStyle="#252a30";
-        cctx.fillRect(0,0,5,PH);           // pilastro esterno sinistro (full height)
-        cctx.fillRect(PW-5,0,5,PH);        // pilastro esterno destro (full height)
+        cctx.save();cctx.fillStyle="#252a30";
+        // Pilastri esterni: sx e dx, dalla cima fino al fondo dei distinti
+        cctx.globalAlpha=0.88;
+        cctx.fillRect(0,0,5,FY+FH);          // pilastro esterno sinistro
+        cctx.fillRect(PW-5,0,5,FY+FH);       // pilastro esterno destro
+        // Bordo orizzontale in cima alla tribuna
+        cctx.fillRect(FX,0,FW,4);            // bordo superiore tribuna
+        // Separatori interni
         cctx.globalAlpha=0.50;
-        cctx.fillRect(FX-3,0,3,PH);        // separatore interno sin (full height)
-        cctx.fillRect(FX+FW,0,3,PH);       // separatore interno dx (full height)
+        cctx.fillRect(FX-3,0,3,FY+FH);       // separatore interno sin
+        cctx.fillRect(FX+FW,0,3,FY+FH);      // separatore interno dx
         cctx.globalAlpha=1;cctx.restore();
+      }
+      // Faretti sul bordo superiore di distinti e tribuna
+      {
+        cctx.save();cctx.fillStyle="rgba(255,250,215,0.92)";
+        // Tribuna — fila di faretti in cima (y≈2)
+        for(let _fx=FX+18;_fx<FX+FW-10;_fx+=28){
+          cctx.beginPath();cctx.arc(_fx,2,2,0,Math.PI*2);cctx.fill();
+        }
+        // Distinto sinistro — fila sul bordo superiore (y=FY)
+        for(let _lx=6;_lx<FX-4;_lx+=16){
+          cctx.beginPath();cctx.arc(_lx,FY,2,0,Math.PI*2);cctx.fill();
+        }
+        // Distinto destro — fila sul bordo superiore (y=FY)
+        for(let _rx=FX+FW+6;_rx<PW-4;_rx+=16){
+          cctx.beginPath();cctx.arc(_rx,FY,2,0,Math.PI*2);cctx.fill();
+        }
+        cctx.restore();
       }
       // Riflettori — struttura sempre visibile agli angoli del campo, glow solo notte/dusk
       {
         const floodR=_prest80>=80?90:_prest80>=60?64:46;
-        // posizionati vicino agli angoli del pitch, non ai bordi canvas
-        const towers=[[FX-12,FY-8,1],[FX+FW+12,FY-8,1],[FX-12,FY+FH+22,-1],[FX+FW+12,FY+FH+22,-1]];
+        // bottom towers: ty=FY+FH+28 → testa a y=592 (dentro l'angolo, non nel campo verde)
+        const towers=[[FX-12,FY-8,1],[FX+FW+12,FY-8,1],[FX-12,FY+FH+28,-1],[FX+FW+12,FY+FH+28,-1]];
         if(atmo[3]){
           const _fA=(_prest80>=80?0.72:_prest80>=60?0.56:0.38)*(_tod==="dusk"?0.55:1);
           const fC=_tod==="dusk"?"rgba(255,210,130,":"rgba(255,248,200,";
