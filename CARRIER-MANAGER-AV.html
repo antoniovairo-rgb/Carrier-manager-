@@ -2441,7 +2441,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.5.3"; // Sprint 173 v3: filterSitActions guarantees min 2 actions shown
+const GAME_VERSION="4.5.4"; // Sprint 174: U18 club competitionLabel shows Primavera 1/2, not parent league
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -7857,7 +7857,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                 heatPoints={heatPointsRef.current} showHeatMap={showHeatMap}
                 isDesktop={!isNarrow} heroJerseyNum={player.jerseyNum||10}
                 isDerbyMatch={!!drby} isBigGame={mw>=7}
-                competitionLabel={(context==="euro_group"||context==="euro_ko"||context==="euro")?(player.euro?.competition||"UEFA"):(context==="cup"?"COPPA NAZIONALE":(context==="national"||context==="nationsCup"||context==="euroMondiale"?"NAZIONALE":(player.club?.lg||"")))}
+                competitionLabel={(player.proStatus||"u18")==="u18"?(ALL_U18_CLUBS.find(c=>c.id===player.club?.id)?.lg||(CLUBS.find(c=>c.id===player.club?.id)?.lg==="Serie A"?"Primavera 1":"Primavera 2")):(context==="euro_group"||context==="euro_ko"||context==="euro")?(player.euro?.competition||"UEFA"):(context==="cup"?"COPPA NAZIONALE":(context==="national"||context==="nationsCup"||context==="euroMondiale"?"NAZIONALE":(player.club?.lg||"")))}
                 onWalkoutDone={()=>setPhase("playing")}/>
               {phase==="walkout"&&<WalkoutOverlay homeTeam={homeTeamObj} homeRoster={homeRoster} awayRoster={awayRoster} opponent={awayTeamObj} isHome={isMatchHome} matchWeek={player.week} onDone={()=>{if(benchStart)setOnBench(true);setPhase("playing");}} weather={weather} isDerbyMatch={!!drby} isBigGame={mw>=7} heroJerseyNum={player.jerseyNum||10} playerName={player.name} benchStart={benchStart} isEuroMatch={context==="euro_group"||context==="euro_ko"} euroCompetition={player.euro?.competition||null} euroRound={(context==="euro_group")?`Giornata ${(player.euro?.groupResults||[]).length+1}/6`:(context==="euro_ko")?({r16:"Ottavi di Finale",sf:"Semifinale",final:"Finale"}[player.euro?.phase]||"KO"):null}/>}
               {screenFlash&&<div style={{position:"absolute",inset:0,background:screenFlash.col,zIndex:20,pointerEvents:"none",animation:`fadeFlash ${screenFlash.dur}ms ease-out forwards`}}/>}
@@ -11369,6 +11369,11 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     if(!('totalGoals' in newP)){newP={...newP,totalGoals:0};changed=true;} // Sprint 152
     if(!('totalAssists' in newP)){newP={...newP,totalAssists:0};changed=true;} // Sprint 152
     if(!('totalMatches' in newP)){newP={...newP,totalMatches:0};changed=true;} // Sprint 152
+    // Sprint 174: refresh U18 club data if lg is wrong (old saves stored parent club's lg e.g. "Serie B")
+    if((newP.proStatus||"u18")==="u18"&&newP.club&&!["Primavera 1","Primavera 2"].includes(newP.club.lg)){
+      const _fc=ALL_U18_CLUBS.find(c=>c.id===newP.club.id);
+      if(_fc){newP={...newP,club:_fc};changed=true;}
+    }
     if(changed){setPlayer(newP);}
   },[]);// eslint-disable-line
   const[darkMode,setDarkMode]=useState(()=>localStorage.getItem("cpm-dark")==="1");
