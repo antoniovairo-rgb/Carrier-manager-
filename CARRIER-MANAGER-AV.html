@@ -1914,7 +1914,10 @@ function filterSitActions(actions,px){
     if(isHead&&px<72)return false;         // headers only in bordo/area (x>=72)
     return true;
   });
-  return f.length>0?f:[actions[actions.length-1]]; // fallback: keep last action
+  if(f.length>=2)return f;
+  // Fallback: filter left fewer than 2 — keep last 2 original actions (always show choice)
+  if(f.length===1){const extra=actions.find(a=>a!==f[0]);return extra?[f[0],extra]:f;}
+  return actions.slice(-2); // all filtered: last 2 of original array
 }
 
 const BG_MATCH=[
@@ -2438,7 +2441,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.5.2"; // Sprint 173 v2: corners correctly show sky, competition board on touchlines
+const GAME_VERSION="4.5.3"; // Sprint 173 v3: filterSitActions guarantees min 2 actions shown
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
