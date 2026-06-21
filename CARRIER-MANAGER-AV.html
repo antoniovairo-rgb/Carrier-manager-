@@ -2441,7 +2441,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.5.32"; // Sprint 200: riflettori solo 4 angoli
+const GAME_VERSION="4.5.33"; // Sprint 201: riflettori agli angoli campo, pilastri spalti, cielo neutro
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -5099,9 +5099,9 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
       // Angoli: sky statico + meteo + riflettori — ora il layer non segue la camera, zero artefatti
       {
         const _sc=(_tod==="night"||_tod==="dusk")?atmo[0]:
-          _wid==="sunny"||_wid==="heat"?"#e6ecf0":_wid==="partly"?"#e2e7eb":
-          _wid==="overcast"?"#d4d9dc":_wid==="rain"||_wid==="drizzle"?"#c8ced1":
-          _wid==="storm"||_wid==="thunder"?"#b4bcc0":_wid==="snow"?"#e8ecee":"#e6ecf0";
+          _wid==="sunny"||_wid==="heat"?"#dce0e3":_wid==="partly"?"#d8dde0":
+          _wid==="overcast"?"#c8ced1":_wid==="rain"||_wid==="drizzle"?"#bcc3c6":
+          _wid==="storm"||_wid==="thunder"?"#a8b0b4":_wid==="snow"?"#dde2e4":"#dce0e3";
         [[0,0,FX,FY],[FX+FW,0,PW-FX-FW,FY],[0,FY+FH,FX,PH-FY-FH],[FX+FW,FY+FH,PW-FX-FW,PH-FY-FH]]
           .forEach(([cx,cy,cw,ch])=>{cctx.fillStyle=_sc;cctx.fillRect(cx,cy,cw,ch);});
         // Sole (giorno soleggiato/parzialmente nuvoloso)
@@ -5132,24 +5132,36 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
         }
         cctx.globalAlpha=1;
       }
-      // Riflettori — struttura sempre visibile, glow solo notte/dusk
+      // Strutture verticali bordi spalti (pilastri a sx e dx)
+      {
+        cctx.save();cctx.globalAlpha=0.88;
+        cctx.fillStyle="#252a30";
+        cctx.fillRect(0,FY-2,5,FH+4);         // pilastro esterno sinistro
+        cctx.fillRect(PW-5,FY-2,5,FH+4);      // pilastro esterno destro
+        cctx.globalAlpha=0.55;
+        cctx.fillRect(FX-3,FY-2,3,FH+4);      // separatore interno sin (spalto→campo)
+        cctx.fillRect(FX+FW,FY-2,3,FH+4);     // separatore interno dx (campo→spalto)
+        cctx.globalAlpha=1;cctx.restore();
+      }
+      // Riflettori — struttura sempre visibile agli angoli del campo, glow solo notte/dusk
       {
         const floodR=_prest80>=80?90:_prest80>=60?64:46;
-        const towers=[[6,6,1],[PW-6,6,1],[6,PH-26,-1],[PW-6,PH-26,-1]];
+        // posizionati vicino agli angoli del pitch, non ai bordi canvas
+        const towers=[[FX-12,FY-8,1],[FX+FW+12,FY-8,1],[FX-12,FY+FH+22,-1],[FX+FW+12,FY+FH+22,-1]];
         if(atmo[3]){
           const _fA=(_prest80>=80?0.72:_prest80>=60?0.56:0.38)*(_tod==="dusk"?0.55:1);
           const fC=_tod==="dusk"?"rgba(255,210,130,":"rgba(255,248,200,";
-          towers.forEach(([tx,ty,pDir])=>{
+          towers.forEach(([tx,ty])=>{
             const fg=cctx.createRadialGradient(tx,ty,0,tx,ty,floodR);
             fg.addColorStop(0,fC+_fA+")");fg.addColorStop(0.5,fC+(_fA*0.28).toFixed(2)+")");fg.addColorStop(1,fC+"0)");
             cctx.fillStyle=fg;cctx.fillRect(tx-floodR,ty-floodR,floodR*2,floodR*2);
           });
         }
-        const _poleCol=atmo[3]?"#ccc":"#555";
-        const _headCol=atmo[3]?"rgba(255,252,210,1)":"rgba(170,168,150,0.95)";
+        const _poleCol=atmo[3]?"#ccc":"#444";
+        const _headCol=atmo[3]?"rgba(255,252,210,1)":"rgba(160,158,140,0.95)";
         towers.forEach(([tx,ty,pDir])=>{
-          cctx.fillStyle=_poleCol;cctx.fillRect(tx-1,pDir>0?ty:ty-16,2,16);
-          cctx.fillStyle=_headCol;cctx.fillRect(tx-4,pDir>0?ty-3:ty-18,8,3);
+          cctx.fillStyle=_poleCol;cctx.fillRect(tx-1,pDir>0?ty:ty-22,3,22);
+          cctx.fillStyle=_headCol;cctx.fillRect(tx-5,pDir>0?ty-4:ty-26,10,4);
         });
       }
     }
