@@ -2441,7 +2441,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.5.37"; // Sprint 205: pilastri laterali full-height, no bordi nel cielo, curva ospiti completa
+const GAME_VERSION="4.5.38"; // Sprint 206: faretti sul bordo superiore/esterno di ogni settore
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -5140,12 +5140,12 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
         const bW=4,_bc="#1e2530",_fC="rgba(255,250,215,0.90)",_fR=2;
         // [sx, sy, sw, sh, dT, dR, dB, dL, farettiSide]
         // I pilastri verticali (FX e FX+FW) sono gestiti separatamente sotto
-        // fSide = bordo LUNGO interno verso il campo su cui mettere i faretti
+        // fSide = bordo SUPERIORE/ESTERNO (lontano dal campo) di ogni settore
         const _sects=[
-          [FX,    0,        FW,        FY,         1,0,0,0,'B'], // curva casa: solo top; faretti bordo campo (bottom=long)
-          [FX,    FY+FH,    FW,        PH-FY-FH,   0,1,1,1,'T'], // curva ospiti: bottom+L+R; faretti bordo campo (top=long)
-          [0,     FY,       FX,        FH,          1,0,1,1,'R'], // distinto sin: top+bot+outer-L; faretti inner-R (long=vertical)
-          [FX+FW, FY,       PW-FX-FW, FH,           1,1,1,0,'L'], // distinto dx: top+bot+outer-R; faretti inner-L (long=vertical)
+          [FX,    0,        FW,        FY,         1,0,0,0,'T'], // curva casa: faretti bordo top (lontano dal campo)
+          [FX,    FY+FH,    FW,        PH-FY-FH,   0,1,1,1,'B'], // curva ospiti: faretti bordo bottom (lontano dal campo)
+          [0,     FY,       FX,        FH,          1,0,1,1,'T'], // distinto sin: faretti bordo top (lontano dal campo)
+          [FX+FW, FY,       PW-FX-FW, FH,           1,1,1,0,'T'], // distinto dx: faretti bordo top (lontano dal campo)
         ];
         _sects.forEach(([sx,sy,sw,sh,dT,dR,dB,dL,fSide])=>{
           cctx.save();cctx.fillStyle=_bc;cctx.globalAlpha=0.88;
