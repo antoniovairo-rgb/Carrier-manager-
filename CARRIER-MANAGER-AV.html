@@ -2441,7 +2441,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.5.8"; // Sprint 177: fix stadium corner floodlight bleeding; fix returnPenaltyWeeks not decrementing in onMatchEnd
+const GAME_VERSION="4.5.9"; // Sprint 178: transparent canvas corners — no more visible rectangles
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -4995,10 +4995,10 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
       cctx.fillStyle=lG;cctx.fillRect(0,FY,FX,FH);
       const rG=cctx.createLinearGradient(FX+FW,0,PW,0);rG.addColorStop(0,sL);rG.addColorStop(1,sD);
       cctx.fillStyle=rG;cctx.fillRect(FX+FW,FY,PW-FX-FW,FH);
-      // Sprint 173 — restore sky color in the 4 corner areas (no stands there)
-      cctx.fillStyle=atmo[0];cctx.globalAlpha=1;
-      cctx.fillRect(0,0,FX,FY);cctx.fillRect(FX+FW,0,PW-FX-FW,FY);
-      cctx.fillRect(0,FY+FH,FX,PH-FY-FH);cctx.fillRect(FX+FW,FY+FH,PW-FX-FW,PH-FY-FH);
+      // Sprint 178: clear corner areas to transparent — container bg (_tod_bg) shows through, no visible rectangles
+      cctx.globalAlpha=1;
+      cctx.clearRect(0,0,FX,FY);cctx.clearRect(FX+FW,0,PW-FX-FW,FY);
+      cctx.clearRect(0,FY+FH,FX,PH-FY-FH);cctx.clearRect(FX+FW,FY+FH,PW-FX-FW,PH-FY-FH);
       // Sprint 92 — home stand banner strip (top of home stand, club colour)
       if(FY>10){
         const bStrH=Math.max(3,Math.floor(FY*0.18));
