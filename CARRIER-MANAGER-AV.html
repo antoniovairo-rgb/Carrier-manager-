@@ -2426,7 +2426,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.4.6"; // Sprint 168: fix duplicate minute in Momenti Chiave when two goals scored at same clock tick
+const GAME_VERSION="4.4.7"; // Sprint 169: kickoff-based day/night, taller canvas (PC_PH 580→650), cronaca reserved height
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -4836,7 +4836,7 @@ function colorCharGLB(model,jerHex){
    PITCH CANVAS — Modern 2D portrait football renderer
    Goals at top/bottom (vertical Sensible Soccer style)
 ===================================================== */
-const PC_PW=460,PC_PH=580,PC_FX=80,PC_FY=40,PC_FW=300,PC_FH=480;
+const PC_PW=460,PC_PH=650,PC_FX=80,PC_FY=40,PC_FW=300,PC_FH=550;
 const PC_FCX=PC_FX+PC_FW/2,PC_FCY=PC_FY+PC_FH/2;
 function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,onWalkoutDone,avatarId,actionZoom,allPlayers,homeClub,ballX,ballY,waveEvent,driftTargets,timeOfDay,attendance,actionEffect,weather,heatPoints,showHeatMap,isDesktop=false,heroJerseyNum=10,isDerbyMatch=false,isBigGame=false,competitionLabel="",heroKitCol,heroKitCol2,walkoutHomeCol,walkoutAwayCol,stadiumHomeCol,stadiumAwayCol}){
   homeCol=homeCol||"#22c55e";oppCol=oppCol||"#ef4444";opponents=opponents||[];
@@ -6638,12 +6638,13 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     const hClub=isMatchHome?(player.club||opponent):opponent;
     return getStadiumName(hClub);
   });
-  // Sprint 82 — 4 time-of-day options seeded by week+season
+  // Sprint 169: kickoff hour determines atmosphere (< 19:00 = day, 19-20 = dusk, 21+ = night)
   const [timeOfDay]=useState(()=>{
     const wk=player.week||1,ss=player.season||1;
-    const h=Math.abs(hashStr("tod82_"+(wk*37+ss*7+wk)));
-    const opts=["day","day","day","night","night","night","dusk","dawn"];
-    return opts[h%opts.length];
+    const h=Math.abs(hashStr("koh_"+(wk*37+ss*7+wk)));
+    const hours=[12,14,15,15,15,17,18,20,20,21,21];
+    const hr=hours[h%hours.length];
+    return hr<19?"day":hr<21?"dusk":"night";
   });
   // Sprint 16+82 — weather seeded by week + club; time-specific conditions filtered
   const [weather]=useState(()=>{
@@ -8156,12 +8157,12 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
             </div>
           );})()}
           <div style={{fontSize:7,color:"rgba(255,255,255,0.28)",fontWeight:700,letterSpacing:1,textTransform:"uppercase",marginBottom:3}}>📻 CRONACA</div>
-          {coms.slice(0,4).map((c,i)=>(
-            <div key={i} style={{fontSize:9,color:i===0?c.color:"rgba(255,255,255,0.45)",lineHeight:1.35,
+          {Array.from({length:4},(_,i)=>coms[i]||null).map((c,i)=>(
+            <div key={i} style={{fontSize:9,color:c?(i===0?c.color:"rgba(255,255,255,0.45)"):"rgba(255,255,255,0.1)",lineHeight:1.35,
               padding:i<3?"0 0 2px":"0",
               borderBottom:i<3?"1px solid rgba(255,255,255,0.05)":"none",
-              overflow:"hidden",whiteSpace:"nowrap",textOverflow:"ellipsis"}}>
-              <span style={{color:"rgba(255,255,255,0.3)",marginRight:3,fontSize:8,fontWeight:700}}>{c.t}'</span>{c.text}
+              overflow:"hidden",whiteSpace:"nowrap",textOverflow:"ellipsis",minHeight:13}}>
+              {c&&<><span style={{color:"rgba(255,255,255,0.3)",marginRight:3,fontSize:8,fontWeight:700}}>{c.t}'</span>{c.text}</>}
             </div>
           ))}
         </div>
