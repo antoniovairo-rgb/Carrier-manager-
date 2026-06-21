@@ -2441,7 +2441,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.5.38"; // Sprint 206: faretti sul bordo superiore/esterno di ogni settore
+const GAME_VERSION="4.5.39"; // Sprint 207: faretti distinti sul lato lungo esterno (verticale)
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -5144,8 +5144,8 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
         const _sects=[
           [FX,    0,        FW,        FY,         1,0,0,0,'T'], // curva casa: faretti bordo top (lontano dal campo)
           [FX,    FY+FH,    FW,        PH-FY-FH,   0,1,1,1,'B'], // curva ospiti: faretti bordo bottom (lontano dal campo)
-          [0,     FY,       FX,        FH,          1,0,1,1,'T'], // distinto sin: faretti bordo top (lontano dal campo)
-          [FX+FW, FY,       PW-FX-FW, FH,           1,1,1,0,'T'], // distinto dx: faretti bordo top (lontano dal campo)
+          [0,     FY,       FX,        FH,          1,0,1,1,'L'], // distinto sin: faretti lato lungo esterno (x=5, vertical)
+          [FX+FW, FY,       PW-FX-FW, FH,           1,1,1,0,'R'], // distinto dx: faretti lato lungo esterno (x=455, vertical)
         ];
         _sects.forEach(([sx,sy,sw,sh,dT,dR,dB,dL,fSide])=>{
           cctx.save();cctx.fillStyle=_bc;cctx.globalAlpha=0.88;
