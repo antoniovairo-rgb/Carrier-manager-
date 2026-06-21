@@ -2441,7 +2441,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.5.39"; // Sprint 207: faretti distinti sul lato lungo esterno (verticale)
+const GAME_VERSION="4.5.40"; // Sprint 208: dettagli premium stadio — vomitori, copertura, steward, area tecnica
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -5169,6 +5169,48 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
         cctx.fillRect(FX,       0, bW, FY+FH); // pilastro sin: dal top a fine distinti
         cctx.fillRect(FX+FW-bW, 0, bW, FY+FH); // pilastro dx: dal top a fine distinti
         cctx.restore();
+      }
+      // === DETTAGLI PREMIUM STADIO (Sprint 208) — tutto baked, zero costo per-frame ===
+      {
+        const bW=4;
+        // 1) Vomitori / accessi settori — gap scuri che spezzano la folla in settori
+        cctx.save();cctx.fillStyle="#0a0d14";cctx.globalAlpha=0.45;
+        [FY+FH*0.34,FY+FH*0.67].forEach(_gy=>{
+          cctx.fillRect(bW+1,_gy-1.25,FX-bW-5,2.5);            // distinto sin
+          cctx.fillRect(FX+FW+4,_gy-1.25,PW-FX-FW-bW-5,2.5);  // distinto dx
+        });
+        [FX+FW*0.34,FX+FW*0.67].forEach(_gx=>{
+          cctx.fillRect(_gx-1.25,bW+1,2.5,FY-bW-3);           // curva casa
+          cctx.fillRect(_gx-1.25,FY+FH+4,2.5,PH-FY-FH-bW-5);  // curva ospiti
+        });
+        cctx.restore();
+        // 2) Cresta copertura — linea chiara appena dentro il bordo esterno (tetto in luce) = profondità
+        const _roofHi=_tod==="day"?"rgba(255,255,255,0.28)":"rgba(186,196,210,0.20)";
+        cctx.save();cctx.fillStyle=_roofHi;
+        cctx.fillRect(FX,bW+1,FW,1);          // curva casa
+        cctx.fillRect(FX,PH-bW-2,FW,1);       // curva ospiti
+        cctx.fillRect(bW+1,FY,1,FH);          // distinto sin
+        cctx.fillRect(PW-bW-2,FY,1,FH);       // distinto dx
+        cctx.restore();
+        // 3) Steward / addetti — punti hi-vis radi sui bordi campo dei distinti (no zona billboard)
+        cctx.save();cctx.fillStyle="rgba(214,232,74,0.90)";
+        for(let _sy=FY+20;_sy<FY+FH-12;_sy+=48){
+          if(Math.abs(_sy-FCY)<62)continue;   // salta la fascia del billboard competizione
+          cctx.beginPath();cctx.arc(FX-9,_sy,1.4,0,Math.PI*2);cctx.fill();
+          cctx.beginPath();cctx.arc(FX+FW+9,_sy,1.4,0,Math.PI*2);cctx.fill();
+        }
+        cctx.restore();
+        // 4) Area tecnica — due panchine (dugout) sul distinto sinistro, sfalsate dalla metà campo
+        {
+          const _dgW=14,_dgX=FX-_dgW-7;        // x[59,73], appena dietro i cartelloni
+          [[FCY-80,hCol],[FCY+66,oCol]].forEach(([_dy,_dcol])=>{
+            cctx.fillStyle="#13161c";cctx.globalAlpha=0.92;cctx.fillRect(_dgX,_dy,_dgW,14);
+            cctx.fillStyle="rgba(255,255,255,0.16)";cctx.globalAlpha=1;cctx.fillRect(_dgX,_dy,_dgW,1);
+            cctx.fillStyle=_dcol;cctx.globalAlpha=0.85;
+            for(let _st=0;_st<3;_st++){cctx.beginPath();cctx.arc(_dgX+4+_st*4,_dy+9,1.4,0,Math.PI*2);cctx.fill();}
+            cctx.globalAlpha=1;
+          });
+        }
       }
       // Riflettori — struttura sempre visibile agli angoli del campo, glow solo notte/dusk
       {
