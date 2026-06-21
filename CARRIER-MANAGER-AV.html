@@ -2438,7 +2438,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.5.1"; // Sprint 173: stadium corners show sky, corner flags use home color, competition board in distinti
+const GAME_VERSION="4.5.2"; // Sprint 173 v2: corners correctly show sky, competition board on touchlines
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -4992,6 +4992,10 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
       cctx.fillStyle=lG;cctx.fillRect(0,FY,FX,FH);
       const rG=cctx.createLinearGradient(FX+FW,0,PW,0);rG.addColorStop(0,sL);rG.addColorStop(1,sD);
       cctx.fillStyle=rG;cctx.fillRect(FX+FW,FY,PW-FX-FW,FH);
+      // Sprint 173 — restore sky color in the 4 corner areas (no stands there)
+      cctx.fillStyle=atmo[0];cctx.globalAlpha=1;
+      cctx.fillRect(0,0,FX,FY);cctx.fillRect(FX+FW,0,PW-FX-FW,FY);
+      cctx.fillRect(0,FY+FH,FX,PH-FY-FH);cctx.fillRect(FX+FW,FY+FH,PW-FX-FW,PH-FY-FH);
       // Sprint 92 — home stand banner strip (top of home stand, club colour)
       if(FY>10){
         const bStrH=Math.max(3,Math.floor(FY*0.18));
@@ -5118,15 +5122,6 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
         cctx.fillText(b.t,bx+bW/2,FY+FH+bH/2+bPad);
       });
       cctx.globalAlpha=1;
-      // Sprint 173 — Central competition board in left "distinti" stand
-      {const _cBH=14;const _cBW=FX-6;const _cBX=3;const _cBY=FCY-_cBH/2;
-      cctx.fillStyle="rgba(0,0,0,0.35)";cctx.globalAlpha=1;cctx.fillRect(_cBX+1,_cBY+1,_cBW,_cBH);
-      cctx.fillStyle=_compBoardCol;cctx.globalAlpha=0.96;cctx.fillRect(_cBX,_cBY,_cBW,_cBH);
-      cctx.strokeStyle="#fff";cctx.globalAlpha=0.75;cctx.lineWidth=1;cctx.strokeRect(_cBX+0.5,_cBY+0.5,_cBW-1,_cBH-1);
-      const _lfs2=Math.max(4,Math.floor(_cBH*0.55));
-      cctx.font=`bold ${_lfs2}px Arial,sans-serif`;cctx.textAlign="center";cctx.textBaseline="middle";
-      cctx.fillStyle="#ffffff";cctx.globalAlpha=1;cctx.fillText(_compShort.toUpperCase(),_cBX+_cBW/2,_cBY+_cBH/2);
-      cctx.globalAlpha=1;}
       // Sprint 92 — Stadium name label in top-left of home stand
       if(FY>12){
         const _stadName=(propsRef.current.homeClub&&typeof getStadiumName==="function")?getStadiumName(propsRef.current.homeClub):"";
@@ -5320,6 +5315,21 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
         ctx.fillRect(FX+FW+1,ay,4,adSlot-1); // right touchline
       }
       ctx.restore();
+      // Sprint 173 v2 — Competition billboard: 2 central boards on touchlines (distinti, not in stands)
+      {const _cLbl=propsRef.current.competitionLabel||propsRef.current.homeClub?.lg||"";
+      const _cShort=(_cLbl||"").length>9?(_cLbl||"").slice(0,9):(_cLbl||"CAMP");
+      const _cCol=_cLbl.includes("UCL")||_cLbl.includes("Champions")?"#003399":_cLbl.includes("UEL")||_cLbl.includes("Europa")?"#f97316":_cLbl.includes("UECL")||_cLbl.includes("Conference")?"#10b981":_cLbl.includes("COPPA")||_cLbl.includes("Cup")?"#7c3aed":"#1e3a8a";
+      const _cbH=adSlot*3-1,_cbW=7,_cbY=FCY-_cbH/2;
+      ctx.save();ctx.globalAlpha=0.93;
+      ctx.fillStyle=_cCol;ctx.fillRect(FX-_cbW-1,_cbY,_cbW,_cbH);ctx.fillRect(FX+FW+2,_cbY,_cbW,_cbH);
+      ctx.strokeStyle="#fff";ctx.globalAlpha=0.75;ctx.lineWidth=0.5;
+      ctx.strokeRect(FX-_cbW-1.5,_cbY-0.5,_cbW+1,_cbH+1);ctx.strokeRect(FX+FW+1.5,_cbY-0.5,_cbW+1,_cbH+1);
+      ctx.globalAlpha=1;ctx.fillStyle="#fff";
+      const _cTfs=Math.max(4,Math.floor(_cbW*0.72));
+      ctx.font=`bold ${_cTfs}px Arial,sans-serif`;ctx.textAlign="center";ctx.textBaseline="middle";
+      ctx.save();ctx.translate(FX-_cbW/2-1,FCY);ctx.rotate(-Math.PI/2);ctx.fillText(_cShort.toUpperCase(),0,0);ctx.restore();
+      ctx.save();ctx.translate(FX+FW+2+_cbW/2,FCY);ctx.rotate(Math.PI/2);ctx.fillText(_cShort.toUpperCase(),0,0);ctx.restore();
+      ctx.restore();}
       // Benches (panchine) — both on left touchline, either side of halfway
       ctx.save();
       ctx.fillStyle="rgba(100,130,200,0.30)";ctx.strokeStyle="rgba(255,255,255,0.35)";ctx.lineWidth=0.5;
