@@ -2441,7 +2441,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.5.21"; // Sprint 189: ripristinati cartelloni touchline e lavagna competizione
+const GAME_VERSION="4.5.22"; // Sprint 190: riflettori visibili, curva ospiti più vivida, distinti solo tifosi home
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -5033,8 +5033,8 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
       const homeDotPal=[hCol,hCol,hCol,hCol,hCol,hL,hL,"#ffffff","#eeeeee",hCol,hCol,hL];
       // Away fans: 80% away colour
       const awayDotPal=[oCol,oCol,oCol,oCol,oCol,oL,oL,"#ffffff","#eeeeee",oCol,oCol,oL];
-      // Side fans: mostly home with some away
-      const sideDotPal=[hCol,hCol,hCol,hL,hCol,hL,"#ffffff",oCol,hCol,hCol,hL,hCol];
+      // Side fans: quasi solo home — ospiti quasi nulli in distinti/tribuna
+      const sideDotPal=[hCol,hCol,hCol,hL,hCol,hL,"#ffffff",hCol,hCol,hL,hCol,hL];
       const dotW=_effectiveFill>0.6?3:_effectiveFill>0.3?4:5;
       // Top stand (home curva) + bottom (away end)
       [[FX,2,FW,FY-4,homeDotPal,0.62],[FX,FY+FH+4,FW,PH-FY-FH-6,awayDotPal,0.90]].forEach(([sx,sy,sw,sh,dpal,dotAlpha])=>{
@@ -5046,7 +5046,7 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
         }
       });
       // Away end stripe for visibility
-      {const _awSY=FY+FH+4,_awSH=PH-FY-FH-6;if(_awSH>6){cctx.fillStyle=oCol;cctx.globalAlpha=0.22;cctx.fillRect(FX,_awSY,FW,_awSH);cctx.globalAlpha=1;}}
+      {const _awSY=FY+FH+4,_awSH=PH-FY-FH-6;if(_awSH>6){cctx.fillStyle=oCol;cctx.globalAlpha=0.45;cctx.fillRect(FX,_awSY,FW,_awSH);cctx.globalAlpha=1;}}
       // Side stands — solo striscia centrale, angoli lasciati vuoti (clearRect dopo)
       [[2,FY,FX-4,FH],[FX+FW+4,FY,PW-FX-FW-6,FH]].forEach(([sx,sy,sw,sh])=>{
         if(sw<4)return;const cols=Math.floor(sw/dotW),rows=Math.floor(sh/dotW);
@@ -5097,25 +5097,25 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
           cctx.restore();
         }
       }
-      // Sprint 80+82: floodlight towers for night/dusk, prestige-scaled
-      if(atmo[3]){
-        const floodR=_prest80>=80?80:_prest80>=60?54:38;
-        const _fA=(_prest80>=80?0.58:_prest80>=60?0.42:0.24)*(_tod==="dusk"?0.55:1);
-        const fC=_tod==="dusk"?"rgba(255,210,130,":"rgba(255,248,200,";
-        const towers=_prest80>=80?[[6,6,1],[PW/2,4,1],[PW-6,6,1],[6,PH-26,-1],[PW/2,PH-24,-1],[PW-6,PH-26,-1]]:[[6,6,1],[PW-6,6,1],[6,PH-26,-1],[PW-6,PH-26,-1]];
-        towers.forEach(([tx,ty,pDir])=>{
-          const fg=cctx.createRadialGradient(tx,ty,0,tx,ty,floodR);
-          fg.addColorStop(0,fC+_fA+")");fg.addColorStop(0.5,fC+(_fA*0.24).toFixed(2)+")");fg.addColorStop(1,fC+"0)");
-          cctx.fillStyle=fg;cctx.fillRect(tx-floodR,ty-floodR,floodR*2,floodR*2);
-          cctx.fillStyle="#aaa";cctx.fillRect(tx-1,pDir>0?ty:ty-16,2,16);
-          cctx.fillStyle="rgba(255,248,200,0.9)";cctx.fillRect(tx-4,pDir>0?ty-3:ty-18,8,3);
-        });
-      }
-      // Angoli trasparenti definitivi — blend seamless con container (_tod_bg == atmo[0])
+      // Angoli: prima pulisci crowd, poi ridisegna riflettori sopra l'area pulita
       cctx.clearRect(0,0,FX,FY);
       cctx.clearRect(FX+FW,0,PW-FX-FW,FY);
       cctx.clearRect(0,FY+FH,FX,PH-FY-FH);
       cctx.clearRect(FX+FW,FY+FH,PW-FX-FW,PH-FY-FH);
+      // Riflettori (disegnati dopo clearRect — visibili negli angoli puliti)
+      if(atmo[3]){
+        const floodR=_prest80>=80?90:_prest80>=60?64:46;
+        const _fA=(_prest80>=80?0.72:_prest80>=60?0.56:0.38)*(_tod==="dusk"?0.55:1);
+        const fC=_tod==="dusk"?"rgba(255,210,130,":"rgba(255,248,200,";
+        const towers=_prest80>=80?[[6,6,1],[PW/2,4,1],[PW-6,6,1],[6,PH-26,-1],[PW/2,PH-24,-1],[PW-6,PH-26,-1]]:[[6,6,1],[PW-6,6,1],[6,PH-26,-1],[PW-6,PH-26,-1]];
+        towers.forEach(([tx,ty,pDir])=>{
+          const fg=cctx.createRadialGradient(tx,ty,0,tx,ty,floodR);
+          fg.addColorStop(0,fC+_fA+")");fg.addColorStop(0.5,fC+(_fA*0.28).toFixed(2)+")");fg.addColorStop(1,fC+"0)");
+          cctx.fillStyle=fg;cctx.fillRect(tx-floodR,ty-floodR,floodR*2,floodR*2);
+          cctx.fillStyle="#bbb";cctx.fillRect(tx-1,pDir>0?ty:ty-16,2,16);
+          cctx.fillStyle="rgba(255,252,210,1)";cctx.fillRect(tx-4,pDir>0?ty-3:ty-18,8,3);
+        });
+      }
     }
 
     function drawStadium(ctx,t){
@@ -5156,7 +5156,7 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
       // Night/dusk: floodlight glow on stands (clipped to stand areas only)
       const _stdTod=p.timeOfDay||"night";
       if(_stdTod==="night"||_stdTod==="dusk"){
-        const _gA=_stdTod==="dusk"?0.14:0.28;const _gC=_stdTod==="dusk"?"rgba(255,210,130,":"rgba(255,248,200,";
+        const _gA=_stdTod==="dusk"?0.20:0.42;const _gC=_stdTod==="dusk"?"rgba(255,210,130,":"rgba(255,248,200,";
         ctx.save();
         ctx.beginPath();
         ctx.rect(FX,0,FW,FY);ctx.rect(FX,FY+FH,FW,PH-FY-FH); // Sprint 177: exclude 4 corner areas
