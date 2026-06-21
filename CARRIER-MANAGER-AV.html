@@ -2441,7 +2441,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.5.33"; // Sprint 201: riflettori agli angoli campo, pilastri spalti, cielo neutro
+const GAME_VERSION="4.5.34"; // Sprint 202: sole come disco, pilastri su tutta l'altezza canvas
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -5104,11 +5104,14 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
           _wid==="storm"||_wid==="thunder"?"#a8b0b4":_wid==="snow"?"#dde2e4":"#dce0e3";
         [[0,0,FX,FY],[FX+FW,0,PW-FX-FW,FY],[0,FY+FH,FX,PH-FY-FH],[FX+FW,FY+FH,PW-FX-FW,PH-FY-FH]]
           .forEach(([cx,cy,cw,ch])=>{cctx.fillStyle=_sc;cctx.fillRect(cx,cy,cw,ch);});
-        // Sole (giorno soleggiato/parzialmente nuvoloso)
+        // Sole (giorno soleggiato/parzialmente nuvoloso) — disco + alone morbido
         if((_tod==="day"||_tod==="dawn")&&(_wid==="sunny"||_wid==="heat"||_wid==="partly")){
-          const sg=cctx.createRadialGradient(PW-FX*0.5,FY*0.45,0,PW-FX*0.5,FY*0.45,FX*0.75);
-          sg.addColorStop(0,"rgba(255,240,50,0.98)");sg.addColorStop(0.3,"rgba(255,215,0,0.55)");sg.addColorStop(1,"rgba(255,200,0,0)");
+          const _sx=PW-FX*0.55,_sy=FY*0.38;
+          const sg=cctx.createRadialGradient(_sx,_sy,2,_sx,_sy,FX*0.5);
+          sg.addColorStop(0,"rgba(255,250,200,0.55)");sg.addColorStop(0.5,"rgba(255,220,60,0.18)");sg.addColorStop(1,"rgba(255,200,0,0)");
           cctx.fillStyle=sg;cctx.fillRect(FX+FW,0,PW-FX-FW,FY);
+          cctx.fillStyle="rgba(255,252,210,0.97)";
+          cctx.beginPath();cctx.arc(_sx,_sy,4,0,Math.PI*2);cctx.fill();
         }
         // Nuvole (coperto/pioggia/parzialmente nuvoloso)
         if((_tod==="day"||_tod==="dawn")&&(_wid==="overcast"||_wid==="partly"||_wid==="rain"||_wid==="drizzle")){
@@ -5132,15 +5135,15 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
         }
         cctx.globalAlpha=1;
       }
-      // Strutture verticali bordi spalti (pilastri a sx e dx)
+      // Strutture verticali bordi spalti — coprono tutta l'altezza del canvas (curva+distinti)
       {
         cctx.save();cctx.globalAlpha=0.88;
         cctx.fillStyle="#252a30";
-        cctx.fillRect(0,FY-2,5,FH+4);         // pilastro esterno sinistro
-        cctx.fillRect(PW-5,FY-2,5,FH+4);      // pilastro esterno destro
-        cctx.globalAlpha=0.55;
-        cctx.fillRect(FX-3,FY-2,3,FH+4);      // separatore interno sin (spalto→campo)
-        cctx.fillRect(FX+FW,FY-2,3,FH+4);     // separatore interno dx (campo→spalto)
+        cctx.fillRect(0,0,5,PH);           // pilastro esterno sinistro (full height)
+        cctx.fillRect(PW-5,0,5,PH);        // pilastro esterno destro (full height)
+        cctx.globalAlpha=0.50;
+        cctx.fillRect(FX-3,0,3,PH);        // separatore interno sin (full height)
+        cctx.fillRect(FX+FW,0,3,PH);       // separatore interno dx (full height)
         cctx.globalAlpha=1;cctx.restore();
       }
       // Riflettori — struttura sempre visibile agli angoli del campo, glow solo notte/dusk
