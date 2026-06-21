@@ -2441,7 +2441,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.5.35"; // Sprint 203: pilastri solo distinti, faretti bordo superiore, fix riflettori bottom
+const GAME_VERSION="4.5.36"; // Sprint 204: struttura stadio centralizzata — tutti i settori con bordi, faretti, logica unica
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -5135,36 +5135,39 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
         }
         cctx.globalAlpha=1;
       }
-      // Strutture verticali bordi spalti — solo fino a FY+FH (non nella curva ospiti)
+      // === STRUTTURA STADIO — logica centralizzata per tutti i settori (Sprint 204) ===
       {
-        cctx.save();cctx.fillStyle="#252a30";
-        // Pilastri esterni: sx e dx, dalla cima fino al fondo dei distinti
-        cctx.globalAlpha=0.88;
-        cctx.fillRect(0,0,5,FY+FH);          // pilastro esterno sinistro
-        cctx.fillRect(PW-5,0,5,FY+FH);       // pilastro esterno destro
-        // Bordo orizzontale in cima alla tribuna
-        cctx.fillRect(FX,0,FW,4);            // bordo superiore tribuna
-        // Separatori interni
-        cctx.globalAlpha=0.50;
-        cctx.fillRect(FX-3,0,3,FY+FH);       // separatore interno sin
-        cctx.fillRect(FX+FW,0,3,FY+FH);      // separatore interno dx
-        cctx.globalAlpha=1;cctx.restore();
-      }
-      // Faretti sul bordo superiore di distinti e tribuna
-      {
-        cctx.save();cctx.fillStyle="rgba(255,250,215,0.92)";
-        // Tribuna — fila di faretti in cima (y≈2)
-        for(let _fx=FX+18;_fx<FX+FW-10;_fx+=28){
-          cctx.beginPath();cctx.arc(_fx,2,2,0,Math.PI*2);cctx.fill();
-        }
-        // Distinto sinistro — fila sul bordo superiore (y=FY)
-        for(let _lx=6;_lx<FX-4;_lx+=16){
-          cctx.beginPath();cctx.arc(_lx,FY,2,0,Math.PI*2);cctx.fill();
-        }
-        // Distinto destro — fila sul bordo superiore (y=FY)
-        for(let _rx=FX+FW+6;_rx<PW-4;_rx+=16){
-          cctx.beginPath();cctx.arc(_rx,FY,2,0,Math.PI*2);cctx.fill();
-        }
+        const bW=4,_bc="#1e2530",_fC="rgba(255,250,215,0.90)",_fR=2;
+        // [sx, sy, sw, sh, dT, dR, dB, dL, farettiSide]
+        // farettiSide: bordo INTERNO verso il campo (T=top,R=right,B=bottom,L=left)
+        const _sects=[
+          [FX,    0,         FW,        FY,       1,1,0,1,'B'], // curva casa  (no bottom = campo)
+          [FX,    FY+FH,     FW,        PH-FY-FH, 0,1,1,1,'T'], // curva ospiti (no top = campo)
+          [0,     FY,        FX,        FH,       1,0,1,1,'R'], // distinto sin (no right = campo)
+          [FX+FW, FY,        PW-FX-FW,  FH,       1,1,1,0,'L'], // distinto dx  (no left = campo)
+        ];
+        _sects.forEach(([sx,sy,sw,sh,dT,dR,dB,dL,fSide])=>{
+          // Bordi strutturali
+          cctx.save();cctx.fillStyle=_bc;cctx.globalAlpha=0.88;
+          if(dT) cctx.fillRect(sx,sy,sw,bW);
+          if(dR) cctx.fillRect(sx+sw-bW,sy,bW,sh);
+          if(dB) cctx.fillRect(sx,sy+sh-bW,sw,bW);
+          if(dL) cctx.fillRect(sx,sy,bW,sh);
+          cctx.restore();
+          // Faretti sul bordo interno (verso il campo)
+          const _isH=(fSide==='T'||fSide==='B'),_sp=_isH?28:20;
+          cctx.save();cctx.fillStyle=_fC;
+          if(fSide==='B') for(let _i=sx+_sp/2;_i<sx+sw-_sp/4;_i+=_sp){cctx.beginPath();cctx.arc(_i,sy+sh-bW-1,_fR,0,Math.PI*2);cctx.fill();}
+          if(fSide==='T') for(let _i=sx+_sp/2;_i<sx+sw-_sp/4;_i+=_sp){cctx.beginPath();cctx.arc(_i,sy+bW+1,_fR,0,Math.PI*2);cctx.fill();}
+          if(fSide==='R') for(let _i=sy+_sp/2;_i<sy+sh-_sp/4;_i+=_sp){cctx.beginPath();cctx.arc(sx+sw-bW-1,_i,_fR,0,Math.PI*2);cctx.fill();}
+          if(fSide==='L') for(let _i=sy+_sp/2;_i<sy+sh-_sp/4;_i+=_sp){cctx.beginPath();cctx.arc(sx+bW+1,_i,_fR,0,Math.PI*2);cctx.fill();}
+          cctx.restore();
+        });
+        // Cornice esterna: pilastri outer sx/dx + trave orizzontale top full-width
+        cctx.save();cctx.fillStyle=_bc;cctx.globalAlpha=0.88;
+        cctx.fillRect(0,0,bW,FY+FH);      // pilastro outer sinistro (y=0..FY+FH)
+        cctx.fillRect(PW-bW,0,bW,FY+FH); // pilastro outer destro
+        cctx.fillRect(0,0,PW,bW);         // trave orizzontale top full-width
         cctx.restore();
       }
       // Riflettori — struttura sempre visibile agli angoli del campo, glow solo notte/dusk
