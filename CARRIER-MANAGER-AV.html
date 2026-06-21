@@ -1904,6 +1904,18 @@ const ZONES={
   area:     {label:"Area avversaria",x:[84,100]},
 };
 const getZone=x=>{for(const[k,v]of Object.entries(ZONES))if(x>=v.x[0]&&x<v.x[1])return k;return"area";};
+// Sprint 171: filter situation actions by current player position for realism
+function filterSitActions(actions,px){
+  if(!actions||!actions.length)return actions;
+  const f=actions.filter(a=>{
+    if(a.rew!=="goal")return true;         // non-goal actions always available
+    if(px<55)return false;                 // no shots from centro or behind (x<55)
+    const isHead=a.label?.toLowerCase().includes("testa"); // colpo di testa
+    if(isHead&&px<72)return false;         // headers only in bordo/area (x>=72)
+    return true;
+  });
+  return f.length>0?f:[actions[actions.length-1]]; // fallback: keep last action
+}
 
 const BG_MATCH=[
   // Goals (very rare)
@@ -2426,7 +2438,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.4.8"; // Sprint 170: hide keyboard shortcuts on non-desktop devices
+const GAME_VERSION="4.4.9"; // Sprint 171: zone-coherent action filtering — no headers outside bordo/area, no shots from centrocampo
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -7965,7 +7977,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                       </div>
                     ):(
                       <div style={{flex:1,display:"flex",flexDirection:"column",gap:5}}>
-                        {(curSit.actions||[]).map((a,_oi)=>{
+                        {filterSitActions(curSit.actions||[],pPos.x).map((a,_oi)=>{
                           const _dp2=defDist<25?15:defDist<50?8:0;
                           const _rt2=Math.max(5,succRate(a,player.stats,pPos.x,oppPrestige,player.archetype?.id||player.archetype)-_dp2);
                           const _rc2=_rt2>70?"#4ade80":_rt2>50?"#f59e0b":"#f87171";
@@ -8067,7 +8079,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                           ))}
                         </div>
                       </div>
-                    ):(curSit.actions||[]).map((a,i)=>{
+                    ):filterSitActions(curSit.actions||[],pPos.x).map((a,i)=>{
                       // Defender proximity reduces success rate
                       const defPenalty=defDist<25?15:defDist<50?8:0;
                       const rate=Math.max(5,succRate(a,player.stats,pPos.x,oppPrestige,player.archetype?.id||player.archetype)-defPenalty);
