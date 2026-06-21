@@ -2441,7 +2441,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.5.19"; // Sprint 187: cleanup definitivo — rimossi sponsor/ads/billboard/panchine, gradient semi-trasparente
+const GAME_VERSION="4.5.20"; // Sprint 188: angoli trasparenti definitivi + rimosso bowlG (layer scuro sulle tribune)
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -4962,9 +4962,6 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
       cctx.clearRect(0,0,PW,PH);
       // Bowl background — Sprint 82: atmosphere-driven color
       cctx.fillStyle=atmo[0];cctx.fillRect(0,0,PW,PH);
-      const bowlG=cctx.createRadialGradient(FCX,FCY,40,FCX,FCY,260);
-      bowlG.addColorStop(0,"rgba(20,80,40,0.14)");bowlG.addColorStop(1,_tod==="day"?"rgba(0,20,60,0.22)":"rgba(0,0,0,0.6)");
-      cctx.fillStyle=bowlG;cctx.fillRect(0,0,PW,PH);
       // Seat rows per stand zone
       function bakeSD(x,y,w,h,homeRatio){
         if(w<3||h<3)return;
@@ -5050,8 +5047,8 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
       });
       // Away end stripe for visibility
       {const _awSY=FY+FH+4,_awSH=PH-FY-FH-6;if(_awSH>6){cctx.fillStyle=oCol;cctx.globalAlpha=0.22;cctx.fillRect(FX,_awSY,FW,_awSH);cctx.globalAlpha=1;}}
-      // Side stands full height — corner areas inclusi (y=0..PH elimina rettangoli grigi)
-      [[2,0,FX-4,PH],[FX+FW+4,0,PW-FX-FW-6,PH]].forEach(([sx,sy,sw,sh])=>{
+      // Side stands — solo striscia centrale, angoli lasciati vuoti (clearRect dopo)
+      [[2,FY,FX-4,FH],[FX+FW+4,FY,PW-FX-FW-6,FH]].forEach(([sx,sy,sw,sh])=>{
         if(sw<4)return;const cols=Math.floor(sw/dotW),rows=Math.floor(sh/dotW);
         for(let r=0;r<rows;r++)for(let c=0;c<cols;c++){
           if(((r*29+c*19)%100)/100>_effectiveFill)continue;
@@ -5114,6 +5111,11 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
           cctx.fillStyle="rgba(255,248,200,0.9)";cctx.fillRect(tx-4,pDir>0?ty-3:ty-18,8,3);
         });
       }
+      // Angoli trasparenti definitivi — blend seamless con container (_tod_bg == atmo[0])
+      cctx.clearRect(0,0,FX,FY);
+      cctx.clearRect(FX+FW,0,PW-FX-FW,FY);
+      cctx.clearRect(0,FY+FH,FX,PH-FY-FH);
+      cctx.clearRect(FX+FW,FY+FH,PW-FX-FW,PH-FY-FH);
     }
 
     function drawStadium(ctx,t){
