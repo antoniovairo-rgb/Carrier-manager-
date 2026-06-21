@@ -2441,7 +2441,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.5.12"; // Sprint 180b: fix _tod_bg ReferenceError — _atmo82 is inside useEffect scope
+const GAME_VERSION="4.5.13"; // Sprint 181: CSS clip-path polygon nasconde i 4 corner del canvas definitivamente
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -5923,8 +5923,8 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
       :{width:"100%",background:_tod_bg,borderRadius:"0 0 12px 12px",overflow:"hidden",display:"flex",justifyContent:"center"}}>
       <canvas ref={canvasRef}
         style={isDesktop
-          ?{display:"block",height:"100%",width:"auto",maxWidth:"100%"}
-          :{display:"block",maxWidth:"100%",width:"auto",height:"auto"}}/>
+          ?{display:"block",height:"100%",width:"auto",maxWidth:"100%",clipPath:"polygon(17.4% 0,82.6% 0,82.6% 6.15%,100% 6.15%,100% 90.77%,82.6% 90.77%,82.6% 100%,17.4% 100%,17.4% 90.77%,0 90.77%,0 6.15%,17.4% 6.15%)"}
+          :{display:"block",maxWidth:"100%",width:"auto",height:"auto",clipPath:"polygon(17.4% 0,82.6% 0,82.6% 6.15%,100% 6.15%,100% 90.77%,82.6% 90.77%,82.6% 100%,17.4% 100%,17.4% 90.77%,0 90.77%,0 6.15%,17.4% 6.15%)"}}/>
     </div>
   );
 }
