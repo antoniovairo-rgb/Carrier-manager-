@@ -2441,7 +2441,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.5.11"; // Sprint 180: corners filled with sky atmo[0], _tod_bg unified with _atmo82
+const GAME_VERSION="4.5.12"; // Sprint 180b: fix _tod_bg ReferenceError — _atmo82 is inside useEffect scope
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -5916,7 +5916,7 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
     }
   },[matchPhase]);
 
-  const _tod_bg=_atmo82(timeOfDay||"night",propsRef.current.weather?.id||"sunny")[0];
+  const _tod_bg=(()=>{const t=timeOfDay||"night";const w=propsRef.current.weather?.id||"sunny";if(t==="dusk"){if(w==="storm"||w==="thunder"||w==="rain")return"#100808";if(w==="fog"||w==="mist")return"#1a1215";if(w==="golden")return"#1c1006";return"#200e06";}if(t==="dawn"){if(w==="fog"||w==="mist")return"#141c2e";if(w==="rain"||w==="drizzle")return"#0a1020";return"#0d1530";}if(t==="day"){if(w==="storm"||w==="thunder")return"#2a3848";if(w==="rain"||w==="hail")return"#3c4a58";if(w==="drizzle")return"#4a5a6a";if(w==="fog"||w==="mist")return"#a8b4c0";if(w==="snow")return"#c8d8e8";if(w==="overcast")return"#6a7888";if(w==="sunset")return"#d04020";if(w==="rainbow")return"#3a8ac8";return"#5b9bd5";}if(w==="storm"||w==="thunder")return"#010204";if(w==="fog"||w==="mist")return"#040810";if(w==="snow")return"#060a18";if(w==="rain"||w==="drizzle")return"#010308";return"#010208";})();
   return(
     <div style={isDesktop
       ?{height:"100%",background:_tod_bg,borderRadius:"0 0 12px 12px",overflow:"hidden",display:"flex",justifyContent:"center",alignItems:"center"}
