@@ -2441,7 +2441,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.5.28"; // Sprint 196: highlight espande il campo — niente spazio bianco durante HL su mobile
+const GAME_VERSION="4.5.29"; // Sprint 197: cartelloni solo colore squadra ospitante
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -5201,15 +5201,14 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
       }
       // Cartelloni pubblicitari lungo le touchlines (fixed layer — Sprint 195)
       {
-        const hColAd=p.stadiumHomeCol||p.homeCol||"#22c55e";
         const oColAd=p.stadiumAwayCol||p.oppCol||"#ef4444";
-        const _adHex=hColAd.replace("#","");
-        const _adR=parseInt(_adHex.slice(0,2)||"22",16),_adG=parseInt(_adHex.slice(2,4)||"c5",16),_adB=parseInt(_adHex.slice(4,6)||"5e",16);
+        const _adHex=oColAd.replace("#","");
+        const _adR=parseInt(_adHex.slice(0,2)||"ef",16),_adG=parseInt(_adHex.slice(2,4)||"44",16),_adB=parseInt(_adHex.slice(4,6)||"44",16);
         const adTint=(f)=>`rgba(${Math.round(Math.min(255,Math.max(0,_adR+f)))},${Math.round(Math.min(255,Math.max(0,_adG+f)))},${Math.round(Math.min(255,Math.max(0,_adB+f)))},0.85)`;
         const adSlot=Math.round(FH/14);
         ctx.save();ctx.globalAlpha=0.80;
         for(let ai=0;ai<14;ai++){
-          ctx.fillStyle=ai%4===3?oColAd:ai%3===0?adTint(0):ai%3===1?adTint(40):adTint(-40);
+          ctx.fillStyle=ai%3===0?adTint(0):ai%3===1?adTint(40):adTint(-40);
           const ay=FY+ai*adSlot;
           ctx.fillRect(FX-5,ay,4,adSlot-1);
           ctx.fillRect(FX+FW+1,ay,4,adSlot-1);
