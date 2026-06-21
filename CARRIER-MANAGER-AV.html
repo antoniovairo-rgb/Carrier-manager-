@@ -2441,7 +2441,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.5.16"; // Sprint 184: background fill 1:1 prima dello zoom — no rettangoli vuoti durante highlight
+const GAME_VERSION="4.5.17"; // Sprint 185: camera clamping — no rettangoli vuoti durante highlight
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -5712,8 +5712,10 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
         s.camY+=(targetCY-s.camY)*lerpS;
         s.camZoom+=(targetZoom-s.camZoom)*lerpS;
 
-        // Sprint 184: disegna crowd a 1:1 prima dello zoom — riempie i bordi che la camera panned lascia vuoti
-        ctx.drawImage(crowdOff,0,0);
+        // Clamp camera so zoomed content always covers full canvas — no empty edges during highlights
+        const _halfW=PW/2/s.camZoom, _halfH=PH/2/s.camZoom;
+        s.camX=Math.max(_halfW,Math.min(PW-_halfW,s.camX));
+        s.camY=Math.max(_halfH,Math.min(PH-_halfH,s.camY));
 
         ctx.save();
         ctx.translate(PW/2-s.camZoom*s.camX,PH/2-s.camZoom*s.camY);
