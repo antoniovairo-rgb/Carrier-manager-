@@ -2426,7 +2426,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.4.5"; // Sprint 167: day/night atmosphere fix — sky blue colors, lighter stands for daytime
+const GAME_VERSION="4.4.6"; // Sprint 168: fix duplicate minute in Momenti Chiave when two goals scored at same clock tick
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -7470,7 +7470,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     const key=ok?action.rew:action.fail;
     const txt=pick(OUTCOME_TX[key]||["Azione completata."]);
     setEnergy(e=>clamp(e-action.nrg,0,100));
-    setMStats(s=>{let{goals,assists,rb}={...s};if(ok){if(key==="goal"){goals++;rb+=5;setScore(sc=>({...sc,home:sc.home+1}));setMatchEvents(prev=>[...prev,{min:clockRef.current,type:"player_goal",txt:"⚽ Tuo gol al "+clockRef.current+"'"}].slice(-12));}if(key==="assist"){assists++;rb+=3;setScore(sc=>({...sc,home:sc.home+1}));setMatchEvents(prev=>[...prev,{min:clockRef.current,type:"player_assist",txt:"🎯 Tuo assist al "+clockRef.current+"'"}].slice(-12));}if(!["goal","assist"].includes(key))rb+=1;}else{if(key==="goal_against"){rb-=3;setScore(sc=>({...sc,away:sc.away+1}));setMatchEvents(prev=>[...prev,{min:clockRef.current,type:"opp_goal",txt:"😨 Gol subito al "+clockRef.current+"'"}].slice(-12));}if(key==="miss_easy"){rb-=2;setMatchEvents(prev=>[...prev,{min:clockRef.current,type:"miss",txt:"😱 Gol clamorosamente sprecato al "+clockRef.current+"'"}].slice(-12));}}return{goals,assists,rb};});
+    setMStats(s=>{let{goals,assists,rb}={...s};if(ok){if(key==="goal"){goals++;rb+=5;setScore(sc=>({...sc,home:sc.home+1}));setMatchEvents(prev=>{const _em=prev.length>0&&prev[prev.length-1].min>=clockRef.current?prev[prev.length-1].min+1:clockRef.current;return[...prev,{min:_em,type:"player_goal",txt:"⚽ Tuo gol al "+_em+"'"}].slice(-12);});}if(key==="assist"){assists++;rb+=3;setScore(sc=>({...sc,home:sc.home+1}));setMatchEvents(prev=>{const _em=prev.length>0&&prev[prev.length-1].min>=clockRef.current?prev[prev.length-1].min+1:clockRef.current;return[...prev,{min:_em,type:"player_assist",txt:"🎯 Tuo assist al "+_em+"'"}].slice(-12);});}if(!["goal","assist"].includes(key))rb+=1;}else{if(key==="goal_against"){rb-=3;setScore(sc=>({...sc,away:sc.away+1}));setMatchEvents(prev=>{const _em=prev.length>0&&prev[prev.length-1].min>=clockRef.current?prev[prev.length-1].min+1:clockRef.current;return[...prev,{min:_em,type:"opp_goal",txt:"😨 Gol subito al "+_em+"'"}].slice(-12);});}if(key==="miss_easy"){rb-=2;setMatchEvents(prev=>{const _em=prev.length>0&&prev[prev.length-1].min>=clockRef.current?prev[prev.length-1].min+1:clockRef.current;return[...prev,{min:_em,type:"miss",txt:"😱 Gol clamorosamente sprecato al "+_em+"'"}].slice(-12);});}}return{goals,assists,rb};});
     addCom(txt,ok?"#16a34a":"#dc2626",clock);
     setAiCommentary(null);
     // Visual feedback
