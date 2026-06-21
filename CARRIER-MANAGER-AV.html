@@ -2441,7 +2441,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.5.36"; // Sprint 204: struttura stadio centralizzata — tutti i settori con bordi, faretti, logica unica
+const GAME_VERSION="4.5.37"; // Sprint 205: pilastri laterali full-height, no bordi nel cielo, curva ospiti completa
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -5135,26 +5135,25 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
         }
         cctx.globalAlpha=1;
       }
-      // === STRUTTURA STADIO — logica centralizzata per tutti i settori (Sprint 204) ===
+      // === STRUTTURA STADIO — logica centralizzata (Sprint 205) ===
       {
         const bW=4,_bc="#1e2530",_fC="rgba(255,250,215,0.90)",_fR=2;
         // [sx, sy, sw, sh, dT, dR, dB, dL, farettiSide]
-        // farettiSide: bordo INTERNO verso il campo (T=top,R=right,B=bottom,L=left)
+        // I pilastri verticali (FX e FX+FW) sono gestiti separatamente sotto
+        // fSide = bordo LUNGO interno verso il campo su cui mettere i faretti
         const _sects=[
-          [FX,    0,         FW,        FY,       1,1,0,1,'B'], // curva casa  (no bottom = campo)
-          [FX,    FY+FH,     FW,        PH-FY-FH, 0,1,1,1,'T'], // curva ospiti (no top = campo)
-          [0,     FY,        FX,        FH,       1,0,1,1,'R'], // distinto sin (no right = campo)
-          [FX+FW, FY,        PW-FX-FW,  FH,       1,1,1,0,'L'], // distinto dx  (no left = campo)
+          [FX,    0,        FW,        FY,         1,0,0,0,'B'], // curva casa: solo top; faretti bordo campo (bottom=long)
+          [FX,    FY+FH,    FW,        PH-FY-FH,   0,1,1,1,'T'], // curva ospiti: bottom+L+R; faretti bordo campo (top=long)
+          [0,     FY,       FX,        FH,          1,0,1,1,'R'], // distinto sin: top+bot+outer-L; faretti inner-R (long=vertical)
+          [FX+FW, FY,       PW-FX-FW, FH,           1,1,1,0,'L'], // distinto dx: top+bot+outer-R; faretti inner-L (long=vertical)
         ];
         _sects.forEach(([sx,sy,sw,sh,dT,dR,dB,dL,fSide])=>{
-          // Bordi strutturali
           cctx.save();cctx.fillStyle=_bc;cctx.globalAlpha=0.88;
           if(dT) cctx.fillRect(sx,sy,sw,bW);
           if(dR) cctx.fillRect(sx+sw-bW,sy,bW,sh);
           if(dB) cctx.fillRect(sx,sy+sh-bW,sw,bW);
           if(dL) cctx.fillRect(sx,sy,bW,sh);
           cctx.restore();
-          // Faretti sul bordo interno (verso il campo)
           const _isH=(fSide==='T'||fSide==='B'),_sp=_isH?28:20;
           cctx.save();cctx.fillStyle=_fC;
           if(fSide==='B') for(let _i=sx+_sp/2;_i<sx+sw-_sp/4;_i+=_sp){cctx.beginPath();cctx.arc(_i,sy+sh-bW-1,_fR,0,Math.PI*2);cctx.fill();}
@@ -5163,11 +5162,12 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
           if(fSide==='L') for(let _i=sy+_sp/2;_i<sy+sh-_sp/4;_i+=_sp){cctx.beginPath();cctx.arc(sx+bW+1,_i,_fR,0,Math.PI*2);cctx.fill();}
           cctx.restore();
         });
-        // Cornice esterna: pilastri outer sx/dx + trave orizzontale top full-width
+        // Pilastri verticali interni (bordi laterali): separano curva↔distinti per tutta l'altezza spalti
+        // Posizione: al bordo sinistro e destro del campo (x=FX e x=FX+FW-bW)
+        // NON entrano nelle aree cielo angoli (che sono a x<FX e x>=FX+FW)
         cctx.save();cctx.fillStyle=_bc;cctx.globalAlpha=0.88;
-        cctx.fillRect(0,0,bW,FY+FH);      // pilastro outer sinistro (y=0..FY+FH)
-        cctx.fillRect(PW-bW,0,bW,FY+FH); // pilastro outer destro
-        cctx.fillRect(0,0,PW,bW);         // trave orizzontale top full-width
+        cctx.fillRect(FX,       0, bW, FY+FH); // pilastro sin: dal top a fine distinti
+        cctx.fillRect(FX+FW-bW, 0, bW, FY+FH); // pilastro dx: dal top a fine distinti
         cctx.restore();
       }
       // Riflettori — struttura sempre visibile agli angoli del campo, glow solo notte/dusk
