@@ -2441,7 +2441,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.5.5"; // Sprint 174 v2: U18 club fix runs before getLeagueClubs; standings reset if player club missing
+const GAME_VERSION="4.5.6"; // Sprint 175: vignette skips corner sky areas; fixes gray corners in daytime matches
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -5871,10 +5871,13 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
         drawWalkout(ctx,t);
       }
 
-      // Vignette
+      // Vignette — Sprint 175: skip 4 corner sky areas (they have no stands)
       const vig=ctx.createRadialGradient(PW/2,PH/2,PH*0.25,PW/2,PH/2,PH*0.75);
       vig.addColorStop(0,"transparent");vig.addColorStop(1,"rgba(0,0,0,0.5)");
-      ctx.fillStyle=vig;ctx.fillRect(0,0,PW,PH);
+      ctx.fillStyle=vig;
+      ctx.fillRect(FX,0,FW,PH);              // centre strip: top curva + pitch + bottom curva
+      ctx.fillRect(0,FY,FX,FH);              // left stand only
+      ctx.fillRect(FX+FW,FY,PW-FX-FW,FH);   // right stand only
     }
 
     // Expose particle spawners so external useEffect can trigger them
