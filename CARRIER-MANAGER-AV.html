@@ -2441,7 +2441,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.5.22"; // Sprint 190: riflettori visibili, curva ospiti più vivida, distinti solo tifosi home
+const GAME_VERSION="4.5.23"; // Sprint 191: angoli opachi con cielo/meteo reale, elementi meteo, no clearRect
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -5097,12 +5097,44 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
           cctx.restore();
         }
       }
-      // Angoli: prima pulisci crowd, poi ridisegna riflettori sopra l'area pulita
-      cctx.clearRect(0,0,FX,FY);
-      cctx.clearRect(FX+FW,0,PW-FX-FW,FY);
-      cctx.clearRect(0,FY+FH,FX,PH-FY-FH);
-      cctx.clearRect(FX+FW,FY+FH,PW-FX-FW,PH-FY-FH);
-      // Riflettori (disegnati dopo clearRect — visibili negli angoli puliti)
+      // Angoli: cielo/meteo reale — fillRect opaco, mai clearRect → nessun rettangolo durante zoom
+      const _isSkyTod=_tod==="day"||_tod==="dawn";
+      const _skyC=!_isSkyTod?atmo[0]:
+        _wid==="sunny"||_wid==="heat"?"#87ceeb":_wid==="partly"||_wid==="rainbow"?"#8ecae6":
+        _wid==="overcast"?"#a8b8c4":_wid==="rain"||_wid==="drizzle"?"#7a8e9a":
+        _wid==="storm"||_wid==="thunder"?"#556270":_wid==="fog"||_wid==="mist"?"#c0ccd4":
+        _wid==="snow"?"#d4e4ec":"#87ceeb";
+      [[0,0,FX,FY],[FX+FW,0,PW-FX-FW,FY],[0,FY+FH,FX,PH-FY-FH],[FX+FW,FY+FH,PW-FX-FW,PH-FY-FH]]
+        .forEach(([cx,cy,cw,ch])=>{cctx.fillStyle=_skyC;cctx.fillRect(cx,cy,cw,ch);});
+      // Elementi meteo negli angoli superiori (solo giorno/alba)
+      if(_isSkyTod){
+        if(_wid==="sunny"||_wid==="heat"||_wid==="partly"){
+          const sg=cctx.createRadialGradient(PW-5,5,0,PW-5,5,38);
+          sg.addColorStop(0,"rgba(255,242,60,1)");sg.addColorStop(0.35,"rgba(255,220,0,0.65)");sg.addColorStop(1,"rgba(255,200,0,0)");
+          cctx.fillStyle=sg;cctx.fillRect(FX+FW,0,PW-FX-FW,FY);
+        }
+        if(_wid==="overcast"||_wid==="partly"||_wid==="rain"||_wid==="drizzle"){
+          cctx.globalAlpha=_wid==="overcast"?0.80:0.55;cctx.fillStyle="#f0f4f8";
+          [[16,18,22,10],[32,10,20,8],[FX-18,16,16,7]].forEach(([ex,ey,ew,eh])=>{
+            cctx.beginPath();cctx.ellipse(ex,ey,ew,eh,0,0,Math.PI*2);cctx.fill();
+          });
+          cctx.globalAlpha=1;
+        }
+        if(_wid==="rain"||_wid==="drizzle"||_wid==="storm"){
+          cctx.strokeStyle="rgba(130,165,210,0.70)";cctx.lineWidth=0.8;
+          for(let ri=0;ri<8;ri++){
+            const rx=3+(ri*11)%(FX-6),ry=3+(ri*7)%(FY-8);
+            cctx.beginPath();cctx.moveTo(rx,ry);cctx.lineTo(rx-3,ry+8);cctx.stroke();
+          }
+        }
+        if(_wid==="snow"){
+          cctx.fillStyle="rgba(225,242,255,0.95)";
+          for(let si=0;si<8;si++){
+            cctx.beginPath();cctx.arc(4+(si*13)%(FX-8),3+(si*9)%(FY-6),1.8,0,Math.PI*2);cctx.fill();
+          }
+        }
+      }
+      // Riflettori (solo notte/dusk, disegnati sugli angoli dopo il fill)
       if(atmo[3]){
         const floodR=_prest80>=80?90:_prest80>=60?64:46;
         const _fA=(_prest80>=80?0.72:_prest80>=60?0.56:0.38)*(_tod==="dusk"?0.55:1);
