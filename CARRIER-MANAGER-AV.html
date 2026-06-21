@@ -2426,7 +2426,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.4.7"; // Sprint 169: kickoff-based day/night, taller canvas (PC_PH 580→650), cronaca reserved height
+const GAME_VERSION="4.4.8"; // Sprint 170: hide keyboard shortcuts on non-desktop devices
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -7864,7 +7864,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                   {curSit.intro&&<div style={{fontSize:11,color:"rgba(255,255,255,0.75)",textAlign:"center",fontStyle:"italic",marginBottom:10,lineHeight:1.4}}>{curSit.intro}</div>}
                   <div style={{fontSize:9,color:"rgba(255,255,255,0.3)",letterSpacing:2,textTransform:"uppercase",marginBottom:10}}>{curSit.type==="def"?"🛡️ DIFESA":"⚔️ ATTACCO"}</div>
                   <div style={{width:90,height:2,background:"rgba(255,255,255,0.15)",borderRadius:2,overflow:"hidden"}}><div style={{height:"100%",background:"#f59e0b",animation:"shrinkBar 2.5s linear forwards"}}/></div>
-                  <div style={{fontSize:8,color:"rgba(255,255,255,0.2)",marginTop:6}}>Tocca / Enter per iniziare</div>
+                  <div style={{fontSize:8,color:"rgba(255,255,255,0.2)",marginTop:6}}>{isNarrow?"Tocca per iniziare":"Tocca / Enter per iniziare"}</div>
                 </div>
               )}
               {/* Sprint 118 — Bench experience: live watching → warmup → entry instructions */}
@@ -8003,7 +8003,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                   <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:5}}>
                     {!curSit.lockMovement&&<DPad onMove={handleDPad} dark size={isNarrow?52:42}/>}
                     <div style={{flex:1}}>
-                      <div style={{fontSize:8,color:"rgba(255,255,255,0.4)",marginBottom:3}}>📍 {ZONES[zone]?.label} · WASD</div>
+                      <div style={{fontSize:8,color:"rgba(255,255,255,0.4)",marginBottom:3}}>📍 {ZONES[zone]?.label}{!isNarrow?" · WASD":""}</div>
                       {curSit.maxMoves>0&&<div style={{fontSize:9,color:"#60a5fa",fontWeight:700,marginBottom:3}}>{"●".repeat(movesLeft)}{"○".repeat(Math.max(0,curSit.maxMoves-movesLeft))} {movesLeft} mov</div>}
                       {curSit.maxMoves>0&&(
                         <div style={{marginBottom:4}}>
@@ -8050,9 +8050,9 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                     <span style={{fontSize:8,color:defDist<25?"#f87171":defDist<50?"#f97316":"#4ade80",fontWeight:700}}>{defDist<25?"Difensore addosso!":defDist<50?"Pressione alta":"Spazio libero"}</span>
                     {defDist<50&&<span style={{fontSize:7,color:"rgba(255,255,255,0.3)",marginLeft:"auto"}}>–{Math.round((100-defDist)*0.15)}% azioni</span>}
                   </div>
-                  <div style={{fontSize:8,color:"rgba(255,255,255,0.3)",marginBottom:5,textAlign:"center"}}>
+                  {!isNarrow&&<div style={{fontSize:8,color:"rgba(255,255,255,0.3)",marginBottom:5,textAlign:"center"}}>
                     <strong style={{color:"#f59e0b"}}>1 · 2 · 3</strong> &nbsp;|&nbsp; ←→ Enter
-                  </div>
+                  </div>}
                   <div style={{display:"flex",flexDirection:"column",gap:5}}>
                     {curSit.text?.includes("RIGORE")?(
                       <div>
@@ -8093,7 +8093,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                   <div style={{fontSize:14,fontWeight:900,color:outcome.ok?"#4ade80":"#f87171",marginBottom:4}}>{outcome.ok?"✅":"❌"} {chosenAct?.label}</div>
                   <div style={{fontSize:11,color:"rgba(255,255,255,0.8)",lineHeight:1.4,marginBottom:4}}>{outcome.text}</div>
                   {aiCommentary&&<div style={{fontSize:10,color:"rgba(255,255,255,0.55)",fontStyle:"italic",marginBottom:4}}>{aiCommentary.reaction} {aiCommentary.commentary}</div>}
-                  <div style={{fontSize:9,color:"rgba(255,255,255,0.3)"}}>auto / Enter →</div>
+                  <div style={{fontSize:9,color:"rgba(255,255,255,0.3)"}}>{isNarrow?"auto →":"auto / Enter →"}</div>
                 </div>
               )}
 
@@ -8217,7 +8217,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
             </div>}
           </div>);})()}
           <Btn onClick={handleEnd} v={context==="trial"?"primary":"green"} fw style={{padding:"13px",fontSize:14}}>
-            {context==="trial"?"📋 Risultati provino":"🏟️ Torna alla carriera"} <span className="kbd" style={{opacity:0.7,fontSize:11}}>Enter</span>
+            {context==="trial"?"📋 Risultati provino":"🏟️ Torna alla carriera"} {!isNarrow&&<span className="kbd" style={{opacity:0.7,fontSize:11}}>Enter</span>}
           </Btn>
         </Card>
       )}
@@ -8229,6 +8229,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
    PRO TRANSITION SCREEN  (U18 → professionismo)
 ======================================== */
 function ProTransitionScreen({player,onChoose}){
+  const _dk=window.innerWidth>=640;
   const{offers,forced,perf}=generateProContracts(player);
   const u18S=player.u18Seasons||0;
   const[selIdx,setSelIdx]=useState(0);
@@ -8277,7 +8278,7 @@ function ProTransitionScreen({player,onChoose}){
       </div>
       {/* Offers */}
       <div style={{fontSize:11,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>Le tue opzioni</div>
-      <div style={{fontSize:10,color:TH.faint,textAlign:"center",marginBottom:8}}>↑↓ seleziona · Enter / 1·2·3 scegli</div>
+      {_dk&&<div style={{fontSize:10,color:TH.faint,textAlign:"center",marginBottom:8}}>↑↓ seleziona · Enter / 1·2·3 scegli</div>}
       <div className="cpm-proto">
         {offers.map((o,oi)=>{const isSel=oi===selIdx;return(
           <Card key={o.id} style={{marginBottom:8,padding:"12px 14px",outline:isSel?"2px solid "+TH.primary:"none",transition:"outline .1s"}}
@@ -9056,6 +9057,7 @@ function ClubPresentationScreen({club,contractType,playerName,onContinue}){
    HOME SCREEN — slot salvataggio
 ======================================== */
 function HomeScreen({onNew,onLoad,onDelete,onImport,slots}){
+  const _dk=window.innerWidth>=640;
   const[confirmDel,setConfirmDel]=useState(null);
   const fmtDate=ts=>ts?new Date(ts).toLocaleDateString("it-IT",{day:"2-digit",month:"2-digit",year:"2-digit",hour:"2-digit",minute:"2-digit"}):"–";
   useEffect(()=>{
@@ -9144,9 +9146,9 @@ function HomeScreen({onNew,onLoad,onDelete,onImport,slots}){
           </div>
         </Card>
       )}
-      <div style={{textAlign:"center",marginBottom:8,fontSize:10,color:TH.faint}}>
+      {_dk&&<div style={{textAlign:"center",marginBottom:8,fontSize:10,color:TH.faint}}>
         <span className="kbd">1</span><span className="kbd">2</span><span className="kbd">3</span> slot · <span className="kbd">Enter</span> continua/nuova
-      </div>
+      </div>}
       {/* Import JSON */}
       <div style={{textAlign:"center",marginTop:6}}>
         <label style={{cursor:"pointer",display:"inline-flex",alignItems:"center",gap:6,fontSize:12,color:TH.muted,padding:"8px 14px",border:"1px solid "+TH.cardBorder,borderRadius:9,background:TH.card}}>
@@ -9275,6 +9277,7 @@ function CreateScreen({onCreate,legacyBonus,onClearLegacy}){
    OFFERS SCREEN  (req #11 – clubs)
 ======================================== */
 function OffersScreen({player,trialStats,onChoose}){
+  const _dk=window.innerWidth>=640;
   const total=trialStats.reduce((a,m)=>a+m.goals,0),avg=Math.round(trialStats.reduce((a,m)=>a+m.rating,0)/Math.max(1,trialStats.length)*10)/10,perf=total*2+avg*5;
   const[offers]=useState(()=>[...ALL_U18_CLUBS].sort((a,b)=>{const sa=a.p+(Math.random()-.5)*30,sb=b.p+(Math.random()-.5)*30;return perf>50?sb-sa:sa-sb;}).slice(0,perf>50?3:2));
   const[selIdx,setSelIdx]=useState(0);
@@ -9295,7 +9298,7 @@ function OffersScreen({player,trialStats,onChoose}){
         <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>Riepilogo provini</div>
         <div style={{display:"flex",gap:6}}>{trialStats.map((t,i)=><div key={i} style={{flex:1,background:"#f8fafc",borderRadius:8,padding:"7px",textAlign:"center",border:"1px solid "+TH.cardBorder}}><div style={{fontSize:9,color:TH.faint,marginBottom:2}}>Provino {i+1}</div><div style={{fontSize:12,fontWeight:700,color:TH.text}}>⚽{t.goals} 🎯{t.assists}</div><div style={{fontSize:11,color:TH.warning,fontWeight:700}}>{t.rating}</div></div>)}</div>
       </Card>
-      <div style={{fontSize:10,color:TH.faint,textAlign:"center",marginBottom:8}}>↑↓ seleziona · Enter / 1·2·3 scegli</div>
+      {_dk&&<div style={{fontSize:10,color:TH.faint,textAlign:"center",marginBottom:8}}>↑↓ seleziona · Enter / 1·2·3 scegli</div>}
       <div className="cpm-offers" style={{marginBottom:12}}>
         {offers.map((club,i)=>{
           const isSel=i===selIdx;
@@ -9309,7 +9312,7 @@ function OffersScreen({player,trialStats,onChoose}){
                 <div style={{flexShrink:0,display:"flex",flexDirection:"column",alignItems:"flex-end",gap:3}}>
                   {i===0&&<div style={{fontSize:9,color:TH.primary,fontWeight:700}}>⭐ TOP</div>}
                   <div style={{display:"flex",alignItems:"center",gap:5}}>
-                    <span className="kbd">{i+1}</span>
+                    {_dk&&<span className="kbd">{i+1}</span>}
                     <Btn onClick={()=>onChoose(club)} v={isSel?"primary":i===0?"primary":"secondary"}>Scegli →</Btn>
                   </div>
                 </div>
