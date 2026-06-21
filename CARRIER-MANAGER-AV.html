@@ -2441,7 +2441,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.5.9"; // Sprint 178: transparent canvas corners — no more visible rectangles
+const GAME_VERSION="4.5.10"; // Sprint 179: corner areas get seat texture matching adjacent stands
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -4987,18 +4987,18 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
       bakeSD(0,FY,FX-1,FH,0.91);bakeSD(FX+FW+1,FY,PW-FX-FW-1,FH,0.91); // Sprint 123: side stands 91% home
       // Stand gradients — Sprint 82: color from atmosphere palette
       const sL=atmo[1],sD=atmo[2];
+      // Sprint 179: extend top/bottom gradients to full width (includes corner areas)
       const tG=cctx.createLinearGradient(0,0,0,FY);tG.addColorStop(0,sD);tG.addColorStop(1,sL);
-      cctx.fillStyle=tG;cctx.fillRect(FX,0,FW,FY);
+      cctx.fillStyle=tG;cctx.fillRect(0,0,PW,FY);
       const bG=cctx.createLinearGradient(0,FY+FH,0,PH);bG.addColorStop(0,sL);bG.addColorStop(1,sD);
-      cctx.fillStyle=bG;cctx.fillRect(FX,FY+FH,FW,PH-FY-FH);
+      cctx.fillStyle=bG;cctx.fillRect(0,FY+FH,PW,PH-FY-FH);
       const lG=cctx.createLinearGradient(0,0,FX,0);lG.addColorStop(0,sD);lG.addColorStop(1,sL);
       cctx.fillStyle=lG;cctx.fillRect(0,FY,FX,FH);
       const rG=cctx.createLinearGradient(FX+FW,0,PW,0);rG.addColorStop(0,sL);rG.addColorStop(1,sD);
       cctx.fillStyle=rG;cctx.fillRect(FX+FW,FY,PW-FX-FW,FH);
-      // Sprint 178: clear corner areas to transparent — container bg (_tod_bg) shows through, no visible rectangles
-      cctx.globalAlpha=1;
-      cctx.clearRect(0,0,FX,FY);cctx.clearRect(FX+FW,0,PW-FX-FW,FY);
-      cctx.clearRect(0,FY+FH,FX,PH-FY-FH);cctx.clearRect(FX+FW,FY+FH,PW-FX-FW,PH-FY-FH);
+      // Sprint 179: corner areas get seat texture — seamless with adjacent stands
+      bakeSD(0,2,FX-1,FY-3,0.7);bakeSD(FX+FW+1,2,PW-FX-FW-1,FY-3,0.7);
+      bakeSD(0,FY+FH+2,FX-1,PH-FY-FH-4,0.35);bakeSD(FX+FW+1,FY+FH+2,PW-FX-FW-1,PH-FY-FH-4,0.35);
       // Sprint 92 — home stand banner strip (top of home stand, club colour)
       if(FY>10){
         const bStrH=Math.max(3,Math.floor(FY*0.18));
