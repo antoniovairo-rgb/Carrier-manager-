@@ -2441,7 +2441,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.5.24"; // Sprint 192: curve a piena larghezza — nessun angolo speciale, zero rettangoli
+const GAME_VERSION="4.5.25"; // Sprint 193: tutti gli overlay (banner, meteo, wave, burst) estesi a piena larghezza
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -4995,23 +4995,22 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
       cctx.fillStyle=lG;cctx.fillRect(0,FY,FX,FH);
       cctx.fillStyle=rG;cctx.fillRect(FX+FW,FY,PW-FX-FW,FH);
       cctx.globalAlpha=1;
-      // Sprint 92 — home stand banner strip (top of home stand, club colour)
+      // Sprint 92 — home stand banner strip (full width, matched to new curve layout)
       if(FY>10){
         const bStrH=Math.max(3,Math.floor(FY*0.18));
-        cctx.fillStyle=hCol;cctx.globalAlpha=0.82;cctx.fillRect(FX,FY-bStrH-1,FW,bStrH);
-        // Alternating white stripe in banner
-        cctx.fillStyle="#ffffff";cctx.globalAlpha=0.35;cctx.fillRect(FX,FY-bStrH-1,FW,Math.max(1,Math.floor(bStrH*0.3)));
+        cctx.fillStyle=hCol;cctx.globalAlpha=0.82;cctx.fillRect(0,FY-bStrH-1,PW,bStrH);
+        cctx.fillStyle="#ffffff";cctx.globalAlpha=0.35;cctx.fillRect(0,FY-bStrH-1,PW,Math.max(1,Math.floor(bStrH*0.3)));
         cctx.globalAlpha=1;
       }
       // Sprint 82 — atmosphere-specific overlays
       if(_tod==="dusk"){
         const dG=cctx.createLinearGradient(0,0,0,FY);
         dG.addColorStop(0,"rgba(210,80,15,0.28)");dG.addColorStop(1,"rgba(100,30,8,0.06)");
-        cctx.fillStyle=dG;cctx.fillRect(FX,0,FW,FY);
+        cctx.fillStyle=dG;cctx.fillRect(0,0,PW,FY);
       }else if(_tod==="dawn"){
         const dG=cctx.createLinearGradient(0,0,0,FY);
         dG.addColorStop(0,"rgba(80,55,170,0.20)");dG.addColorStop(1,"rgba(30,20,80,0.04)");
-        cctx.fillStyle=dG;cctx.fillRect(FX,0,FW,FY);
+        cctx.fillStyle=dG;cctx.fillRect(0,0,PW,FY);
       }else if(_tod==="night"&&_wid==="starry"){
         cctx.fillStyle="rgba(255,255,255,0.75)";
         for(var _si=0;_si<70;_si++){
@@ -5022,7 +5021,7 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
       }else if(_tod==="day"&&(_wid==="sunny"||_wid==="partly"||_wid==="heat")){
         const dG=cctx.createLinearGradient(0,0,0,FY*0.65);
         dG.addColorStop(0,"rgba(30,80,180,0.18)");dG.addColorStop(1,"rgba(10,40,100,0)");
-        cctx.fillStyle=dG;cctx.fillRect(FX,0,FW,FY);
+        cctx.fillStyle=dG;cctx.fillRect(0,0,PW,FY);
       }
       // Sprint 92 — club-color crowd dots (replaces rainbow palette)
       // Build colour palettes from actual club hex
@@ -5046,7 +5045,7 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
         }
       });
       // Away end stripe for visibility
-      {const _awSY=FY+FH+4,_awSH=PH-FY-FH-6;if(_awSH>6){cctx.fillStyle=oCol;cctx.globalAlpha=0.45;cctx.fillRect(FX,_awSY,FW,_awSH);cctx.globalAlpha=1;}}
+      {const _awSY=FY+FH,_awSH=PH-FY-FH;if(_awSH>6){cctx.fillStyle=oCol;cctx.globalAlpha=0.45;cctx.fillRect(0,_awSY,PW,_awSH);cctx.globalAlpha=1;}}
       // Side stands — solo striscia centrale, angoli lasciati vuoti (clearRect dopo)
       [[2,FY,FX-4,FH],[FX+FW+4,FY,PW-FX-FW-6,FH]].forEach(([sx,sy,sw,sh])=>{
         if(sw<4)return;const cols=Math.floor(sw/dotW),rows=Math.floor(sh/dotW);
@@ -5073,7 +5072,7 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
       }
       // Derby / big match: extra colour burst on top stand
       if(_isDrby){
-        cctx.fillStyle=hCol;cctx.globalAlpha=0.22;cctx.fillRect(FX,2,FW,FY-3);cctx.globalAlpha=1;
+        cctx.fillStyle=hCol;cctx.globalAlpha=0.22;cctx.fillRect(0,0,PW,FY);cctx.globalAlpha=1;
         // "DERBY" text in top stand
         cctx.save();cctx.font=`bold ${Math.max(6,Math.floor(FY*0.32))}px Arial,sans-serif`;
         cctx.textAlign="center";cctx.textBaseline="middle";
@@ -5131,13 +5130,13 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
       const waveSpd=t*0.0012,waveAmp=(4.5+goalBurst*18)*_presScale,waveAlpha=0.22+goalBurst*0.35;
       const flashCol=wEvt&&goalBurst>0.05?(wEvt.home?p.homeCol:"#ef4444"):"#fff";
       // Multi-wave ripple: two overlapping sine waves for richer ola effect
-      for(let wi=0;wi<Math.ceil(FW/5);wi++){
-        const wx=FX+wi*5;
+      for(let wi=0;wi<Math.ceil(PW/5);wi++){
+        const wx=wi*5;
         const wh=Math.max(0,Math.sin(waveSpd*3+wi*0.22)*waveAmp*0.7+Math.sin(waveSpd*2+wi*0.14)*waveAmp*0.3);
         if(wh>0.5){ctx.save();ctx.globalAlpha=waveAlpha;ctx.fillStyle=flashCol;ctx.fillRect(wx,2,5,Math.min(wh,FY-3));ctx.fillRect(wx,FY+FH+2,5,Math.min(wh,PH-FY-FH-4));ctx.restore();}
       }
       if(Math.random()<0.012+goalBurst*0.06){
-        const fx=FX+Math.random()*FW,fy=2+Math.random()*(FY-5);
+        const fx=Math.random()*PW,fy=Math.random()*FY;
         const fg=ctx.createRadialGradient(fx,fy,0,fx,fy,8);
         fg.addColorStop(0,"rgba(255,255,255,0.7)");fg.addColorStop(1,"rgba(255,255,255,0)");
         ctx.fillStyle=fg;ctx.fillRect(fx-8,fy-8,16,16);
@@ -5145,7 +5144,7 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
       // Goal burst crowd colour overlay
       if(goalBurst>0.05){
         ctx.save();ctx.globalAlpha=goalBurst*0.18;ctx.fillStyle=flashCol;
-        ctx.fillRect(FX,2,FW,FY-3);ctx.fillRect(FX,FY+FH+2,FW,PH-FY-FH-4);
+        ctx.fillRect(0,0,PW,FY);ctx.fillRect(0,FY+FH,PW,PH-FY-FH);
         ctx.restore();
       }
       // Night/dusk: floodlight glow on stands (clipped to stand areas only)
@@ -5154,7 +5153,7 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
         const _gA=_stdTod==="dusk"?0.20:0.42;const _gC=_stdTod==="dusk"?"rgba(255,210,130,":"rgba(255,248,200,";
         ctx.save();
         ctx.beginPath();
-        ctx.rect(FX,0,FW,FY);ctx.rect(FX,FY+FH,FW,PH-FY-FH); // Sprint 177: exclude 4 corner areas
+        ctx.rect(0,0,PW,FY);ctx.rect(0,FY+FH,PW,PH-FY-FH);
         ctx.rect(0,FY,FX,FH);ctx.rect(FX+FW,FY,PW-FX-FW,FH);
         ctx.clip();
         [[6,6],[PW-6,6],[6,PH-26],[PW-6,PH-26]].forEach(([tx,ty])=>{
