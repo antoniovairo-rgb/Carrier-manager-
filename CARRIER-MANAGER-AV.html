@@ -2441,7 +2441,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.5.17"; // Sprint 185: camera clamping — no rettangoli vuoti durante highlight
+const GAME_VERSION="4.5.18"; // Sprint 186: crowd dots a piena altezza — angoli grigi eliminati
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -5048,8 +5048,8 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
       });
       // Away end stripe for visibility
       {const _awSY=FY+FH+4,_awSH=PH-FY-FH-6;if(_awSH>6){cctx.fillStyle=oCol;cctx.globalAlpha=0.22;cctx.fillRect(FX,_awSY,FW,_awSH);cctx.globalAlpha=1;}}
-      // Side stands (mixed home dominant)
-      [[2,FY,FX-4,FH],[FX+FW+4,FY,PW-FX-FW-6,FH]].forEach(([sx,sy,sw,sh])=>{
+      // Side stands full height — corner areas inclusi (y=0..PH elimina rettangoli grigi)
+      [[2,0,FX-4,PH],[FX+FW+4,0,PW-FX-FW-6,PH]].forEach(([sx,sy,sw,sh])=>{
         if(sw<4)return;const cols=Math.floor(sw/dotW),rows=Math.floor(sh/dotW);
         for(let r=0;r<rows;r++)for(let c=0;c<cols;c++){
           if(((r*29+c*19)%100)/100>_effectiveFill)continue;
