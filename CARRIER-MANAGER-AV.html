@@ -2441,7 +2441,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.5.13"; // Sprint 181: CSS clip-path polygon nasconde i 4 corner del canvas definitivamente
+const GAME_VERSION="4.5.14"; // Sprint 182: bakeSD+gradient top/bottom full-width — corners = tribune continue
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -4983,22 +4983,20 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
         }
         cctx.globalAlpha=1;
       }
-      bakeSD(FX,2,FW,FY-3,0.93);bakeSD(FX,FY+FH+2,FW,PH-FY-FH-4,0.22); // Sprint 123: home end 93%, away end 22%
-      bakeSD(0,FY,FX-1,FH,0.91);bakeSD(FX+FW+1,FY,PW-FX-FW-1,FH,0.91); // Sprint 123: side stands 91% home
+      // Sprint 182: bakeSD top/bottom a tutta larghezza — corners identici alle tribune adiacenti
+      bakeSD(0,2,PW,FY-3,0.93);bakeSD(0,FY+FH+2,PW,PH-FY-FH-4,0.22);
+      bakeSD(0,FY,FX-1,FH,0.91);bakeSD(FX+FW+1,FY,PW-FX-FW-1,FH,0.91); // side stands unchanged
       // Stand gradients — Sprint 82: color from atmosphere palette
       const sL=atmo[1],sD=atmo[2];
+      // Sprint 182: gradients top/bottom a tutta larghezza — corners coperti dal gradiente
       const tG=cctx.createLinearGradient(0,0,0,FY);tG.addColorStop(0,sD);tG.addColorStop(1,sL);
-      cctx.fillStyle=tG;cctx.fillRect(FX,0,FW,FY);
+      cctx.fillStyle=tG;cctx.fillRect(0,0,PW,FY);
       const bG=cctx.createLinearGradient(0,FY+FH,0,PH);bG.addColorStop(0,sL);bG.addColorStop(1,sD);
-      cctx.fillStyle=bG;cctx.fillRect(FX,FY+FH,FW,PH-FY-FH);
+      cctx.fillStyle=bG;cctx.fillRect(0,FY+FH,PW,PH-FY-FH);
       const lG=cctx.createLinearGradient(0,0,FX,0);lG.addColorStop(0,sD);lG.addColorStop(1,sL);
       cctx.fillStyle=lG;cctx.fillRect(0,FY,FX,FH);
       const rG=cctx.createLinearGradient(FX+FW,0,PW,0);rG.addColorStop(0,sL);rG.addColorStop(1,sD);
       cctx.fillStyle=rG;cctx.fillRect(FX+FW,FY,PW-FX-FW,FH);
-      // Sprint 180: fill corners with solid sky color — matches container background exactly
-      cctx.globalAlpha=1;cctx.fillStyle=atmo[0];
-      cctx.fillRect(0,0,FX,FY);cctx.fillRect(FX+FW,0,PW-FX-FW,FY);
-      cctx.fillRect(0,FY+FH,FX,PH-FY-FH);cctx.fillRect(FX+FW,FY+FH,PW-FX-FW,PH-FY-FH);
       // Sprint 92 — home stand banner strip (top of home stand, club colour)
       if(FY>10){
         const bStrH=Math.max(3,Math.floor(FY*0.18));
@@ -5923,8 +5921,8 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
       :{width:"100%",background:_tod_bg,borderRadius:"0 0 12px 12px",overflow:"hidden",display:"flex",justifyContent:"center"}}>
       <canvas ref={canvasRef}
         style={isDesktop
-          ?{display:"block",height:"100%",width:"auto",maxWidth:"100%",clipPath:"polygon(17.4% 0,82.6% 0,82.6% 6.15%,100% 6.15%,100% 90.77%,82.6% 90.77%,82.6% 100%,17.4% 100%,17.4% 90.77%,0 90.77%,0 6.15%,17.4% 6.15%)"}
-          :{display:"block",maxWidth:"100%",width:"auto",height:"auto",clipPath:"polygon(17.4% 0,82.6% 0,82.6% 6.15%,100% 6.15%,100% 90.77%,82.6% 90.77%,82.6% 100%,17.4% 100%,17.4% 90.77%,0 90.77%,0 6.15%,17.4% 6.15%)"}}/>
+          ?{display:"block",height:"100%",width:"auto",maxWidth:"100%"}
+          :{display:"block",maxWidth:"100%",width:"auto",height:"auto"}}/>
     </div>
   );
 }
