@@ -2441,7 +2441,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.5.20"; // Sprint 188: angoli trasparenti definitivi + rimosso bowlG (layer scuro sulle tribune)
+const GAME_VERSION="4.5.21"; // Sprint 189: ripristinati cartelloni touchline e lavagna competizione
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -5270,6 +5270,36 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
         ctx.fillStyle="rgba(255,255,255,0.6)";ctx.beginPath();ctx.arc(cx,cy,1.5,0,Math.PI*2);ctx.fill(); // base dot
       });
       ctx.restore();
+      // Cartelloni pubblicitari lungo le touchlines (colori club home + ospite)
+      const hColAd=propsRef.current.stadiumHomeCol||propsRef.current.homeCol||"#22c55e";
+      const oColAd=propsRef.current.stadiumAwayCol||propsRef.current.oppCol||"#ef4444";
+      const _adHex=hColAd.replace("#","");
+      const _adR=parseInt(_adHex.slice(0,2)||"22",16),_adG=parseInt(_adHex.slice(2,4)||"c5",16),_adB=parseInt(_adHex.slice(4,6)||"5e",16);
+      const adTint=(f)=>`rgba(${Math.round(Math.min(255,Math.max(0,_adR+f)))},${Math.round(Math.min(255,Math.max(0,_adG+f)))},${Math.round(Math.min(255,Math.max(0,_adB+f)))},0.85)`;
+      const adSlot=Math.round(FH/14);
+      ctx.save();ctx.globalAlpha=0.80;
+      for(let ai=0;ai<14;ai++){
+        ctx.fillStyle=ai%4===3?oColAd:ai%3===0?adTint(0):ai%3===1?adTint(40):adTint(-40);
+        const ay=FY+ai*adSlot;
+        ctx.fillRect(FX-5,ay,4,adSlot-1);
+        ctx.fillRect(FX+FW+1,ay,4,adSlot-1);
+      }
+      ctx.restore();
+      // Lavagna competizione al centro delle touchlines
+      {const _cLbl=propsRef.current.competitionLabel||propsRef.current.homeClub?.lg||"";
+      const _cShort=(_cLbl||"").length>9?(_cLbl||"").slice(0,9):(_cLbl||"CAMP");
+      const _cCol=_cLbl.includes("UCL")||_cLbl.includes("Champions")?"#003399":_cLbl.includes("UEL")||_cLbl.includes("Europa")?"#f97316":_cLbl.includes("UECL")||_cLbl.includes("Conference")?"#10b981":_cLbl.includes("COPPA")||_cLbl.includes("Cup")?"#7c3aed":"#1e3a8a";
+      const _cbH=adSlot*3-1,_cbW=7,_cbY=FCY-_cbH/2;
+      ctx.save();ctx.globalAlpha=0.93;
+      ctx.fillStyle=_cCol;ctx.fillRect(FX-_cbW-1,_cbY,_cbW,_cbH);ctx.fillRect(FX+FW+2,_cbY,_cbW,_cbH);
+      ctx.strokeStyle="#fff";ctx.globalAlpha=0.75;ctx.lineWidth=0.5;
+      ctx.strokeRect(FX-_cbW-1.5,_cbY-0.5,_cbW+1,_cbH+1);ctx.strokeRect(FX+FW+1.5,_cbY-0.5,_cbW+1,_cbH+1);
+      ctx.globalAlpha=1;ctx.fillStyle="#fff";
+      const _cTfs=Math.max(4,Math.floor(_cbW*0.72));
+      ctx.font=`bold ${_cTfs}px Arial,sans-serif`;ctx.textAlign="center";ctx.textBaseline="middle";
+      ctx.save();ctx.translate(FX-_cbW/2-1,FCY);ctx.rotate(-Math.PI/2);ctx.fillText(_cShort.toUpperCase(),0,0);ctx.restore();
+      ctx.save();ctx.translate(FX+FW+2+_cbW/2,FCY);ctx.rotate(Math.PI/2);ctx.fillText(_cShort.toUpperCase(),0,0);ctx.restore();
+      ctx.restore();}
       // Zone highlight — animated pulsing glow
       const z=propsRef.current.zone;
       const t2=propsRef.current._t||0;
