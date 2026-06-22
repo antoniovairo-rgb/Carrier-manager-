@@ -2520,7 +2520,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.5.76"; // Fix: phaseRef useEffect spostato dopo dichiarazione phase
+const GAME_VERSION="4.5.77"; // Layout: campo mobile occupa tutto lo spazio, no gap bianchi
 const SAVE_VERSION=6;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -6360,10 +6360,11 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
   return(
     <div style={isDesktop
       ?{height:"100%",background:_tod_bg,borderRadius:"0 0 12px 12px",overflow:"hidden",display:"flex",justifyContent:"center",alignItems:"center"}
-      :{width:"100%",background:_tod_bg,borderRadius:"0 0 12px 12px",overflow:"hidden",display:"flex",justifyContent:"center",...(_pcHL?{flex:1}:{})}}>
+      :{width:"100%",background:_tod_bg,borderRadius:"0 0 12px 12px",overflow:"hidden",display:"flex",justifyContent:"center",alignItems:"center",flex:1}}>
       <canvas ref={canvasRef}
         style={isDesktop
           ?{display:"block",height:"100%",width:"auto",maxWidth:"100%"}
+          :_pcHL?{display:"block",height:"100%",width:"auto",maxWidth:"100%"}
           :{display:"block",maxWidth:"100%",width:"auto",height:"auto"}}/>
     </div>
   );
@@ -8273,7 +8274,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   const mw=context==="trial"?1:calcMatchWeight(player,opponent?.id||opponent?.n,player.standings||[],player.week||1);
 
   return(
-    <div style={{width:"100%",maxWidth:isNarrow?undefined:1100,marginLeft:"auto",marginRight:"auto",...isNarrow?{height:"100%",display:"flex",flexDirection:"column"}:{}}}>
+    <div style={{width:"100%",maxWidth:isNarrow?undefined:1100,marginLeft:"auto",marginRight:"auto",...isNarrow?{height:"100%",display:"flex",flexDirection:"column",background:"#050810"}:{}}}>
       {phase==="matchday"&&!showScout&&(()=>{
         const mw=context==="trial"?1:calcMatchWeight(player,opponent?.id||opponent?.n,player.standings||[],player.week||1);
         const drby=isDerby(player.club?.id,opponent?.id);
@@ -8347,10 +8348,10 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
 
           {/* ── Field + Panel: responsive layout ── */}
           {(()=>{const _isHL=["hl_move","hl_choose","hl_result","hl_intro"].includes(phase);return(
-          <div style={isNarrow?{display:"flex",flexDirection:"column",...(_isHL?{flex:1,minHeight:0}:{})}:{display:"flex",flexDirection:"row",alignItems:"stretch",flex:1,minHeight:0,overflow:"hidden"}}>
+          <div style={isNarrow?{display:"flex",flexDirection:"column",flex:1,minHeight:0}:{display:"flex",flexDirection:"row",alignItems:"stretch",flex:1,minHeight:0,overflow:"hidden"}}>
 
             {/* FIELD — height-constrained on desktop, full width on narrow */}
-            <div style={isNarrow?{position:"relative",overflow:"hidden",cursor:"default",...(_isHL?{flex:1,minHeight:0}:{})}:{flex:"0 0 auto",position:"relative",overflow:"hidden",alignSelf:"stretch",cursor:"default"}}>
+            <div style={isNarrow?{position:"relative",overflow:"hidden",cursor:"default",flex:1,minHeight:0}:{flex:"0 0 auto",position:"relative",overflow:"hidden",alignSelf:"stretch",cursor:"default"}}>
               <PitchCanvas playerX={pPos.x} playerY={pPos.y} zone={zone}
                 homeCol={homeKitCol} oppCol={awayKitCol}
                 opponents={opponents.current} matchPhase={matchPhase3D} avatarId={player.avatarId||0}
