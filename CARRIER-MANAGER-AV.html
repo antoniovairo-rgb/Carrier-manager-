@@ -2520,7 +2520,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.5.79"; // Canvas mobile: ResizeObserver per sizing senza distorsioni
+const GAME_VERSION="4.5.80"; // Canvas mobile: height-constrained sempre, no gap verticale
 const SAVE_VERSION=6;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -6355,7 +6355,7 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
     }
   },[matchPhase]);
 
-  // Mobile canvas sizing: fill available wrapper height maintaining PC aspect ratio
+  // Mobile canvas sizing: fill wrapper height, overflow sides clipped by wrapper overflow:hidden
   useEffect(()=>{
     if(isDesktop) return;
     const canvas=canvasRef.current;if(!canvas) return;
@@ -6363,16 +6363,9 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
     const setSize=()=>{
       const ww=wrapper.clientWidth||0,wh=wrapper.clientHeight||0;
       if(!ww) return;
-      let cw,ch;
-      if(wh>0){
-        // Height-constrained: fill height, proportional width
-        ch=wh; cw=Math.round(wh*(PC_PW/PC_PH));
-        // If width exceeds container, fall back to width-constrained
-        if(cw>ww){cw=ww; ch=Math.round(ww*(PC_PH/PC_PW));}
-      } else {
-        // No height info yet: fill width
-        cw=ww; ch=Math.round(ww*(PC_PH/PC_PW));
-      }
+      // Always height-constrained: canvas fills height, may overflow width (sides clipped)
+      const ch=wh>0?wh:Math.round(ww*(PC_PH/PC_PW));
+      const cw=Math.round(ch*(PC_PW/PC_PH));
       canvas.style.width=cw+"px"; canvas.style.height=ch+"px";
     };
     const ro=new ResizeObserver(setSize);
