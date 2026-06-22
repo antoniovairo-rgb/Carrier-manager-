@@ -2441,7 +2441,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.5.41"; // Sprint 209: stadium visual refinement — no vomitori, cartelloni curve, bandiere, striscioni, cartello solo distinti
+const GAME_VERSION="4.5.42"; // Sprint 209b: fix regressione hero zoom — intera scena (stadio+campo) zoomma insieme
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -5875,15 +5875,15 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
         s.camX=Math.max(_cxMin,Math.min(_cxMax,s.camX));
         s.camY=Math.max(_cyMin,Math.min(_cyMax,s.camY));
 
-        // LAYER 1 — Stadio fisso (crowd, stand, sky, meteo): disegnato SENZA camera transform
+        // Intera scena (stadio + campo + giocatori) zoomano insieme — fix regressione hero zoom
         propsRef.current._t=t;
-        drawStadium(ctx,t);
-
-        // LAYER 2 — Campo e giocatori: zoomano dentro il frame del pitch (clip = nessun overflow sulle curve)
         ctx.save();
-        ctx.beginPath();ctx.rect(FX,FY,FW,FH);ctx.clip();
         ctx.translate(PW/2-s.camZoom*s.camX,PH/2-s.camZoom*s.camY);
         ctx.scale(s.camZoom,s.camZoom);
+        drawStadium(ctx,t);
+        // Campo e giocatori: clip interna per evitare overflow sulle curve
+        ctx.save();
+        ctx.beginPath();ctx.rect(FX,FY,FW,FH);ctx.clip();
         drawPitch(ctx);
         // Sprint 80 — pitch quality overlay: low-prestige clubs have worn/muddy grass
         {const _pq80=propsRef.current.homeClub?.p||65;if(_pq80<55){ctx.save();ctx.globalAlpha=_pq80<42?0.11:0.055;ctx.fillStyle="rgba(130,100,50,1)";ctx.fillRect(FX,FY,FW,FH);ctx.restore();}}
@@ -6027,7 +6027,8 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
           drawBall(ctx,gx(s.ballY),gy(s.ballX),t);
           drawParticles(ctx);
         }
-        ctx.restore();
+        ctx.restore(); // end pitch clip
+        ctx.restore(); // end full-scene zoom
       }
 
       if(p.matchPhase==="walkout"){
