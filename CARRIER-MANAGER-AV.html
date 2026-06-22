@@ -2308,7 +2308,7 @@ function _fmtWageY133(weeklyWage){
   return a>=1000000?`€${Math.round(a/100000)/10}M`:a>=1000?`€${Math.round(a/100)/10}k`:`€${Math.round(a)}`;
 }
 // generate transfer offer based on player OVR and prestige match
-function generateTransferOffer(player){
+function generateTransferOffer(player,pref){
   const pOvr=player.ovr||60;
   const seasons=player.season||1;
   const matches=player.totalMatches||0;
@@ -2340,6 +2340,17 @@ function generateTransferOffer(player){
     candidates=CLUBS.filter(c=>c.id!==player.club?.id&&c.p>=40&&c.p<=clamp(pOvr+10,50,78));
   }
   if(!candidates.length)return null;
+
+  // E-2: preference filter (backward-compat — pref=null/undefined → unchanged)
+  if(pref&&pref.mode&&pref.mode!=="any"){
+    if(pref.mode==="prestige"&&pref.prestigeTarget){
+      const prefC=candidates.filter(c=>Math.abs((c.p||60)-(pref.prestigeTarget||70))<=15);
+      if(prefC.length)candidates=prefC;
+    }else if(pref.mode==="club"&&pref.clubId){
+      const prefC=candidates.filter(c=>c.id===pref.clubId||c.n===pref.clubId);
+      if(prefC.length)candidates=prefC;
+    }
+  }
 
   const club=pick(candidates);
   const types=["prestito","prestito con riscatto","trasferimento definitivo"];
@@ -2465,7 +2476,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.5.68"; // Sprint E-1: promesse del mister — emissione, verifica, UI card, trust delta
+const GAME_VERSION="4.5.69"; // Sprint E-2: richiesta cessione con preferenze destinazione
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -11850,6 +11861,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
   const[weekLiveModal,setWeekLiveModal]=useState(null);   // {event, changes}
   const[showAdvanceConfirm,setShowAdvanceConfirm]=useState(false);
   const[showCessioneConfirm,setShowCessioneConfirm]=useState(false); // Sprint 106
+  const[transferPref,setTransferPref]=useState("any"); // E-2: transfer preference (any/ambizioso/top)
   const[showMatchPrompt,setShowMatchPrompt]=useState(null); // {md} — pending match prompt
   const showMatchPromptRef=useRef(null);
   useEffect(()=>{showMatchPromptRef.current=showMatchPrompt;},[showMatchPrompt]);
@@ -13044,10 +13056,10 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       const inWindow=p.transferListed||(isSummerWin||isWinterWin);
       const agentSearchBoost=(p.agentTask==="cerca_offerte"&&p.hasAgent)?0.15:0;
       const offerProb=inWindow?(p.transferListed?0.28:Math.min(0.35,0.12+agentSearchBoost)):(agentSearchBoost>0?agentSearchBoost*0.4:0);
-      if(Math.random()<offerProb&&p.matches>=0){const offer=generateTransferOffer(p);if(offer)setTransferOffer(offer);}
+      if(Math.random()<offerProb&&p.matches>=0){const offer=generateTransferOffer(p,p.transferRequest?.pref);if(offer)setTransferOffer(offer);}
       if(wk===1)setTimeout(()=>notify("🏷️ Mercato estivo aperto! Settimane 1-5.","#0ea5e9"),200);
       if(wk===6)setTimeout(()=>notify("🔒 Mercato estivo chiuso.","#64748b"),200);
-      if(wk===19){setTimeout(()=>notify("🏷️ Mercato invernale aperto! Settimane 19-23.","#0ea5e9"),200);if(p.transferListed&&!transferOffer){const _off19=generateTransferOffer(p);if(_off19)setTimeout(()=>setTransferOffer(_off19),600);}}
+      if(wk===19){setTimeout(()=>notify("🏷️ Mercato invernale aperto! Settimane 19-23.","#0ea5e9"),200);if(p.transferListed&&!transferOffer){const _off19=generateTransferOffer(p,p.transferRequest?.pref);if(_off19)setTimeout(()=>setTransferOffer(_off19),600);}}
       if(wk===24)setTimeout(()=>notify("🔒 Mercato invernale chiuso.","#64748b"),200);
       // S9.1: random life events now fire on every advance (no weekLived guard) — random life events must fire every advance, not just once
       if(!p.injured&&Math.random()<0.25){
@@ -17142,7 +17154,23 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                       ):(
                         <div>
                           <div style={{fontSize:10,color:TH.muted,marginBottom:8,lineHeight:1.5}}>Incarica il tuo agente di presentare una richiesta formale di cessione al club. La risposta arriverà entro 2 settimane.</div>
-                          <button onClick={function(){setPlayer(function(p){return{...p,transferRequest:{season:p.season||1,week:p.week||1,status:"pending"},coachTrust:clamp((p.coachTrust||60)-10,0,100)};});notify("🚪 Richiesta di cessione inviata. −10 fiducia mister.",TH.warning);}} style={{width:"100%",padding:"10px 12px",borderRadius:9,border:"1px solid #fca5a5",background:"#fff1f2",color:"#dc2626",fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>
+                          {/* E-2: preference chips */}
+                          <div style={{fontSize:10,color:TH.muted,marginBottom:6,fontWeight:600}}>Preferenza destinazione:</div>
+                          <div style={{display:"flex",gap:6,marginBottom:10}}>
+                            {[{id:"any",label:"Qualsiasi",desc:"Aperto a tutto"},{id:"ambizioso",label:"Ambiziosa",desc:"Club più forte (prestige +15)"},{id:"top",label:"Top club",desc:"Club élite (prestige 80+)"}].map(function(opt){
+                              var active=transferPref===opt.id;
+                              return(
+                                <button key={opt.id} onClick={function(){setTransferPref(opt.id);}} title={opt.desc} style={{flex:1,padding:"5px 4px",borderRadius:8,border:"1px solid "+(active?"#dc2626":"#e2e8f0"),background:active?"#fff1f2":"#f8fafc",color:active?"#dc2626":TH.muted,fontSize:10,fontWeight:active?700:500,cursor:"pointer",fontFamily:"inherit"}}>
+                                  {opt.label}
+                                </button>
+                              );
+                            })}
+                          </div>
+                          <button onClick={function(){
+                            var _pref=transferPref==="any"?null:transferPref==="ambizioso"?{mode:"prestige",prestigeTarget:Math.min(99,(player.club?.p||65)+15)}:{mode:"prestige",prestigeTarget:85};
+                            setPlayer(function(p){return{...p,transferRequest:{season:p.season||1,week:p.week||1,status:"pending",pref:_pref},coachTrust:clamp((p.coachTrust||60)-10,0,100)};});
+                            notify("🚪 Richiesta di cessione inviata. −10 fiducia mister.",TH.warning);
+                          }} style={{width:"100%",padding:"10px 12px",borderRadius:9,border:"1px solid #fca5a5",background:"#fff1f2",color:"#dc2626",fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>
                             🚪 Richiedi Cessione
                           </button>
                           <div style={{fontSize:10,color:TH.muted,marginTop:6,textAlign:"center"}}>Attenzione: riduce la fiducia del mister (−10)</div>
