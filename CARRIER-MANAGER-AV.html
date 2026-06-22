@@ -2441,7 +2441,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.5.51"; // Sprint 211: faretti notturni accesi — bulbs, glow allineato alle torri
+const GAME_VERSION="4.5.52"; // Sprint 211b: faretti tribune/curve accesi di notte con glow
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -5172,11 +5172,24 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
           if(dL) cctx.fillRect(sx,sy,bW,sh);
           cctx.restore();
           const _isH=(fSide==='T'||fSide==='B'),_sp=_isH?28:20;
-          cctx.save();cctx.fillStyle=_fC;
-          if(fSide==='B') for(let _i=sx+_sp/2;_i<sx+sw-_sp/4;_i+=_sp){cctx.beginPath();cctx.arc(_i,sy+sh-bW-1,_fR,0,Math.PI*2);cctx.fill();}
-          if(fSide==='T') for(let _i=sx+_sp/2;_i<sx+sw-_sp/4;_i+=_sp){cctx.beginPath();cctx.arc(_i,sy+bW+1,_fR,0,Math.PI*2);cctx.fill();}
-          if(fSide==='R') for(let _i=sy+_sp/2;_i<sy+sh-_sp/4;_i+=_sp){cctx.beginPath();cctx.arc(sx+sw-bW-1,_i,_fR,0,Math.PI*2);cctx.fill();}
-          if(fSide==='L') for(let _i=sy+_sp/2;_i<sy+sh-_sp/4;_i+=_sp){cctx.beginPath();cctx.arc(sx+bW+1,_i,_fR,0,Math.PI*2);cctx.fill();}
+          const _glowR=atmo[3]?(_tod==="dusk"?10:16):0;
+          const _dotR=atmo[3]?_fR+1:_fR;
+          const _fDraw=(_fx,_fy)=>{
+            if(_glowR>0){
+              const _gA=_tod==="dusk"?0.48:0.72;
+              const _fg=cctx.createRadialGradient(_fx,_fy,1,_fx,_fy,_glowR);
+              _fg.addColorStop(0,`rgba(255,252,200,${_gA})`);
+              _fg.addColorStop(0.45,`rgba(255,248,180,${(_gA*0.32).toFixed(2)})`);
+              _fg.addColorStop(1,"rgba(255,248,180,0)");
+              cctx.fillStyle=_fg;cctx.fillRect(_fx-_glowR,_fy-_glowR,_glowR*2,_glowR*2);
+            }
+            cctx.fillStyle=_fC;cctx.beginPath();cctx.arc(_fx,_fy,_dotR,0,Math.PI*2);cctx.fill();
+          };
+          cctx.save();
+          if(fSide==='B') for(let _i=sx+_sp/2;_i<sx+sw-_sp/4;_i+=_sp)_fDraw(_i,sy+sh-bW-1);
+          if(fSide==='T') for(let _i=sx+_sp/2;_i<sx+sw-_sp/4;_i+=_sp)_fDraw(_i,sy+bW+1);
+          if(fSide==='R') for(let _i=sy+_sp/2;_i<sy+sh-_sp/4;_i+=_sp)_fDraw(sx+sw-bW-1,_i);
+          if(fSide==='L') for(let _i=sy+_sp/2;_i<sy+sh-_sp/4;_i+=_sp)_fDraw(sx+bW+1,_i);
           cctx.restore();
         });
         // Pilastri verticali interni (bordi laterali): separano curva↔distinti per tutta l'altezza spalti
