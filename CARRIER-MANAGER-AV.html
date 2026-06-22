@@ -1828,7 +1828,7 @@ S("🌧️ Campo pesante — pioggia torrenziale!",["trequarti","bordo"],{x:[55,
 S("🏟️ Derby cittadino! Intensità massima.",["bordo","trequarti"],{x:[58,88],y:[22,78]},{x:[60,76],y:[28,72]},[
   A("🔥 Tiro potente — adrenalina pura","tiro",4,"goal","miss",16),A("🌀 Dribbling tecnico da campione","dribbling",3,"goal","miss",15),A("🎯 Assist preciso — vinci il derby","passaggio",5,"assist","intercept",10)],false,3,"🏟️ È il derby! Sessantamila tifosi. Solo tu e il pallone."),
 S("💔 Gol contro la tua ex squadra!",["bordo","area"],{x:[70,96],y:[22,78]},{x:[72,86],y:[28,72]},[
-  A("💥 Gol dell'ex — silenzio assoluto","tiro",6,"goal","miss",18),A("🎯 Assist gelido e decisivo","passaggio",5,"assist","intercept",12),A("⚡ Scatto senza rimpianti","velocità",4,"goal","intercept",16)],false,3,"💔 È la partita contro la tua ex squadra. Cosa fai?"),
+  A("💥 Gol dell'ex — silenzio assoluto","tiro",6,"goal","miss",18),A("🎯 Assist gelido e decisivo","passaggio",5,"assist","intercept",12),A("⚡ Scatto senza rimpianti","velocità",4,"goal","intercept",16)],false,3,"💔 È la partita contro la tua ex squadra. Cosa fai?","off","is_ex_club"),
 S("🌟 Stadio in delirio! Fai il gol dell'anno.",["bordo","area"],{x:[72,96],y:[22,78]},{x:[74,88],y:[28,72]},[
   A("🌟 Gol dell'anno — ci provo!","tiro",3,"goal","miss",20),A("🎯 Assist decisivo per la vittoria","passaggio",5,"assist","intercept",12),A("⚡ Gioco sul sicuro","velocità",4,"goal","intercept",14)],false,3,"🌟 Lo stadio è in delirio! Fai la cosa più difficile!"),
 S("😤 Siamo in dieci uomini! Difendi.",["difesa","centro"],{x:[18,55],y:[20,80]},{x:[22,42],y:[28,72]},[
@@ -2441,7 +2441,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.5.56"; // Sprint 214: atmosfera diurna sub-ore, coreografia pre-partita, ombre campo
+const GAME_VERSION="4.5.57"; // Sprint 214b: fix situazione ex-squadra — appare solo contro ex club reali
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -6768,7 +6768,15 @@ function selectContextualSituations(all,numHL,player,seed,opts){
   var fisico=stats.fisico||60;
   var passaggio=stats.passaggio||60;
   var velocita=stats["velocità"]||60;
-  var pool=all.map(function(sit){
+  var _oppId=opts&&opts.opponentId||null;
+  var pool=all.filter(function(sit){
+    // Ex-club situation: mostra solo se l'avversario è realmente un ex club
+    if(sit.ctx==="is_ex_club"){
+      if(!_oppId)return false;
+      return (player.history||[]).some(function(h){return h.clubId===_oppId||h.club===_oppId;});
+    }
+    return true;
+  }).map(function(sit){
     var t=sit.type||"off";
     var w=10;
     if(t==="def")w=fisico>=70?13:fisico>=55?9:6;
@@ -6930,7 +6938,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     return v;
   });
   // Sprint 159: include opponent+context in seed so consecutive national matches never share situations
-  const [situations,setSituations]=useState(()=>selectContextualSituations([...SITUATIONS],numHLRef.current,player,(player.season||1)*1000+(player.week||1)*13+hashStr((opponent?.n||opponent?.id||context||""))));
+  const [situations,setSituations]=useState(()=>selectContextualSituations([...SITUATIONS],numHLRef.current,player,(player.season||1)*1000+(player.week||1)*13+hashStr((opponent?.n||opponent?.id||context||"")),{opponentId:opponent?.id||opponent?.n||null}));
   const situationsRef=useRef(situations);
   useEffect(()=>{situationsRef.current=situations;},[situations]);
   useEffect(()=>{numHLRef.current=numHL;},[numHL]);
@@ -7498,7 +7506,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
         var nxtMn=reactiveHLQueueRef.current[0];
         if(ck>=nxtMn){
           reactiveHLQueueRef.current.shift();
-          var extras=selectContextualSituations([...SITUATIONS],1,player,Date.now()^(ck*31),{scoreCtx:_sctx76,clock:ck});
+          var extras=selectContextualSituations([...SITUATIONS],1,player,Date.now()^(ck*31),{scoreCtx:_sctx76,clock:ck,opponentId:opponent?.id||opponent?.n||null});
           if(extras.length>0){
             setSituations(function(prev){return[...prev,extras[0]];});
             var addT=ck+2;
@@ -7513,7 +7521,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
         var sc=scoreRef.current;
         if(sc.away-sc.home>=2){
           desperateFiredRef.current=true;
-          var dextra=selectContextualSituations([...SITUATIONS],1,player,Date.now()^997,{scoreCtx:"losing",clock:ck});
+          var dextra=selectContextualSituations([...SITUATIONS],1,player,Date.now()^997,{scoreCtx:"losing",clock:ck,opponentId:opponent?.id||opponent?.n||null});
           if(dextra.length>0){
             setSituations(function(prev){return[...prev,dextra[0]];});
             var dtime=76+rng(0,4);
