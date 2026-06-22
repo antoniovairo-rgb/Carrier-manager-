@@ -2441,7 +2441,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.5.48"; // Sprint 209h: rimozione vomitori tribune + tunnel grigio chiaro
+const GAME_VERSION="4.5.49"; // Sprint 210: cielo azzurro, atmosfera tribuna, eliminazione vomitori
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -5062,14 +5062,31 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
         const flagY=Math.floor(FY*0.45);
         for(let f=0;f<18;f++){
           const fx=FX+f*(FW/18);
-          // Alternate home/white/home pattern for banner effect
           cctx.fillStyle=f%3===1?"#ffffff":hCol;cctx.globalAlpha=0.80;
           cctx.fillRect(fx+1,flagY,flagW-2,flagH);
-          // Flag pole — tiny vertical line
           cctx.fillStyle="rgba(255,255,255,0.55)";cctx.fillRect(fx+1,flagY-3,1,flagH+3);
+        }
+        // Seconda fila bandierine home (più in alto)
+        const flagY2=Math.floor(FY*0.22);
+        for(let f=0;f<12;f++){
+          const fx=FX+14+f*(FW-28)/11;
+          cctx.fillStyle=f%2===0?hL:"#ffffff";cctx.globalAlpha=0.60;
+          cctx.fillRect(fx,flagY2,Math.floor(FW/14)-2,Math.max(2,flagH-1));
+          cctx.fillStyle="rgba(255,255,255,0.40)";cctx.fillRect(fx,flagY2-2,1,Math.max(2,flagH-1)+2);
         }
         cctx.globalAlpha=1;
       }
+      // Curva ospiti: fila bandierine away
+      {const _bCH=PH-FY-FH;if(_bCH>14){
+        const _bFH=Math.max(2,Math.floor(_bCH*0.12)),_bFY=FY+FH+Math.floor(_bCH*0.45);
+        for(let f=0;f<14;f++){
+          const fx=FX+8+f*(FW-16)/13;
+          cctx.fillStyle=f%3===1?"#ffffff":oCol;cctx.globalAlpha=0.80;
+          cctx.fillRect(fx,_bFY,Math.floor((FW-16)/13)-1,_bFH);
+          cctx.fillStyle="rgba(255,255,255,0.48)";cctx.fillRect(fx,_bFY-3,1,_bFH+3);
+        }
+        cctx.globalAlpha=1;
+      }}
       // Derby / big match: extra colour burst on top stand
       if(_isDrby){
         cctx.fillStyle=hCol;cctx.globalAlpha=0.22;cctx.fillRect(FX,2,FW,FY-3);cctx.globalAlpha=1;
@@ -5099,9 +5116,9 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
       // Angoli: sky statico + meteo + riflettori — ora il layer non segue la camera, zero artefatti
       {
         const _sc=(_tod==="night"||_tod==="dusk")?atmo[0]:
-          _wid==="sunny"||_wid==="heat"?"#dce0e3":_wid==="partly"?"#d8dde0":
-          _wid==="overcast"?"#c8ced1":_wid==="rain"||_wid==="drizzle"?"#bcc3c6":
-          _wid==="storm"||_wid==="thunder"?"#a8b0b4":_wid==="snow"?"#dde2e4":"#dce0e3";
+          _wid==="sunny"||_wid==="heat"?"#4eaadc":_wid==="partly"?"#6bbdd0":
+          _wid==="overcast"?"#8090a0":_wid==="rain"||_wid==="drizzle"?"#7082a0":
+          _wid==="storm"||_wid==="thunder"?"#506070":_wid==="snow"?"#b0cce8":"#4eaadc";
         [[0,0,FX,FY],[FX+FW,0,PW-FX-FW,FY],[0,FY+FH,FX,PH-FY-FH],[FX+FW,FY+FH,PW-FX-FW,PH-FY-FH]]
           .forEach(([cx,cy,cw,ch])=>{cctx.fillStyle=_sc;cctx.fillRect(cx,cy,cw,ch);});
         // Sole (giorno soleggiato/parzialmente nuvoloso) — disco + alone morbido
@@ -5144,8 +5161,8 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
         const _sects=[
           [FX,    0,        FW,        FY,         1,0,0,0,'T'], // curva casa: faretti bordo top (lontano dal campo)
           [FX,    FY+FH,    FW,        PH-FY-FH,   0,1,1,1,'B'], // curva ospiti: faretti bordo bottom (lontano dal campo)
-          [0,     FY,       FX,        FH,          1,0,1,1,'L'], // distinto sin: faretti lato lungo esterno (x=5, vertical)
-          [FX+FW, FY,       PW-FX-FW, FH,           1,1,1,0,'R'], // distinto dx: faretti lato lungo esterno (x=455, vertical)
+          [0,     FY,       FX,        FH,          0,0,0,1,'L'], // distinto sin: solo parete esterna
+          [FX+FW, FY,       PW-FX-FW, FH,           0,1,0,0,'R'], // distinto dx: solo parete esterna
         ];
         _sects.forEach(([sx,sy,sw,sh,dT,dR,dB,dL,fSide])=>{
           cctx.save();cctx.fillStyle=_bc;cctx.globalAlpha=0.88;
@@ -5223,17 +5240,30 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
               cctx.fillStyle="rgba(255,255,255,0.35)";cctx.fillRect(_bfx,_oFY-2,1,2);
             }
           }
-          // Distinti sin: bandierine sparse verticali
-          for(let _fi=0;_fi<6;_fi++){
-            const _dfy=FY+18+_fi*40;if(Math.abs(_dfy-FCY)<40)continue;
-            cctx.fillStyle=_fi%2===0?hCol:"#ffffff";cctx.globalAlpha=0.60;
-            cctx.fillRect(Math.floor(FX*0.38),_dfy,3,5);
+          // Distinti sin: bandierine dense su due colonne
+          const _dStep=Math.floor(FH/14);
+          for(let _fi=0;_fi<14;_fi++){
+            const _dfy=FY+6+_fi*_dStep;
+            cctx.fillStyle=_fi%3===0?"#ffffff":_fi%3===1?hCol:hL;cctx.globalAlpha=0.78;
+            cctx.fillRect(Math.floor(FX*0.32),_dfy,4,5);
+            cctx.fillStyle="rgba(255,255,255,0.45)";cctx.fillRect(Math.floor(FX*0.32),_dfy-3,1,3);
+            if(_fi%2===0){
+              cctx.fillStyle=_fi%4===0?hL:"#ffffff";cctx.globalAlpha=0.55;
+              cctx.fillRect(Math.floor(FX*0.62),_dfy+_dStep/2,3,4);
+            }
           }
-          // Distinti dx: bandierine sparse
-          for(let _fi=0;_fi<6;_fi++){
-            const _dfy=FY+18+_fi*40;if(Math.abs(_dfy-FCY)<40)continue;
-            cctx.fillStyle=_fi%2===0?hCol:"#ffffff";cctx.globalAlpha=0.60;
-            cctx.fillRect(FX+FW+Math.floor((PW-FX-FW)*0.52),_dfy,3,5);
+          // Distinti dx: bandierine dense su due colonne
+          const _dxBase=FX+FW+Math.floor((PW-FX-FW)*0.28);
+          const _dxBase2=FX+FW+Math.floor((PW-FX-FW)*0.60);
+          for(let _fi=0;_fi<14;_fi++){
+            const _dfy=FY+6+_fi*_dStep;
+            cctx.fillStyle=_fi%3===0?"#ffffff":_fi%3===1?hCol:hL;cctx.globalAlpha=0.78;
+            cctx.fillRect(_dxBase,_dfy,4,5);
+            cctx.fillStyle="rgba(255,255,255,0.45)";cctx.fillRect(_dxBase,_dfy-3,1,3);
+            if(_fi%2===0){
+              cctx.fillStyle=_fi%4===0?hL:"#ffffff";cctx.globalAlpha=0.55;
+              cctx.fillRect(_dxBase2,_dfy+_dStep/2,3,4);
+            }
           }
           cctx.globalAlpha=1;cctx.restore();
         }
@@ -5274,9 +5304,9 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
           cctx.fillStyle="#ffffff";cctx.globalAlpha=0.10;cctx.fillRect(FX+FW*0.55,0,FW*0.45,FY);
           // Curva ospiti: blocco away color
           cctx.fillStyle=oCol;cctx.globalAlpha=0.18;cctx.fillRect(FX,FY+FH,FW,PH-FY-FH);
-          // Distinti: sfumatura orizzontale leggera
+          // Distinti: sfumatura orizzontale leggera (full height)
           cctx.fillStyle=hCol;cctx.globalAlpha=0.08;
-          cctx.fillRect(0,FY,FX,FH*0.5);cctx.fillRect(FX+FW,FY,PW-FX-FW,FH*0.5);
+          cctx.fillRect(0,FY,FX,FH);cctx.fillRect(FX+FW,FY,PW-FX-FW,FH);
           cctx.globalAlpha=1;cctx.restore();
         }
         // 8) Area tecnica — disegnata per ultima (primo piano su tutto)
@@ -5394,18 +5424,6 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
           ctx.fillRect(FX+FW+1,ay,4,adSlot-1);
         }
         ctx.restore();
-        const _cLbl=p.competitionLabel||p.homeClub?.lg||"";
-        const _cShort=(_cLbl||"").length>9?(_cLbl||"").slice(0,9):(_cLbl||"CAMP");
-        const _cCol=_cLbl.includes("UCL")||_cLbl.includes("Champions")?"#003399":_cLbl.includes("UEL")||_cLbl.includes("Europa")?"#f97316":_cLbl.includes("UECL")||_cLbl.includes("Conference")?"#10b981":_cLbl.includes("COPPA")||_cLbl.includes("Cup")?"#7c3aed":"#1e3a8a";
-        const _cbH=adSlot*3-1,_cbW=7,_cbY=FCY-_cbH/2;
-        ctx.save();ctx.globalAlpha=0.93;
-        ctx.fillStyle=_cCol;ctx.fillRect(FX+FW+2,_cbY,_cbW,_cbH);
-        ctx.strokeStyle="#fff";ctx.globalAlpha=0.75;ctx.lineWidth=0.5;
-        ctx.strokeRect(FX+FW+1.5,_cbY-0.5,_cbW+1,_cbH+1);
-        ctx.globalAlpha=1;ctx.fillStyle="#fff";
-        const _cTfs=Math.max(4,Math.floor(_cbW*0.72));
-        ctx.font=`bold ${_cTfs}px Arial,sans-serif`;ctx.textAlign="center";ctx.textBaseline="middle";
-        ctx.save();ctx.translate(FX+FW+2+_cbW/2,FCY);ctx.rotate(Math.PI/2);ctx.fillText(_cShort.toUpperCase(),0,0);ctx.restore();
         ctx.restore();
       }
     }
