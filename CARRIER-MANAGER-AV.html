@@ -2441,7 +2441,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.5.60"; // Sprint 215: audit completo meteo/cielo — tutte le combinazioni corrette
+const GAME_VERSION="4.5.61"; // Sprint 216: Fase A stabilizzazione — save errors, history.clubId, load sentinel
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -3816,7 +3816,8 @@ const storage={
     try{
       let s;if(window.storage){const r=await window.storage.get(key);s=r?.value;}else s=localStorage.getItem(key);
       if(!s)return null;
-      const d=JSON.parse(s);
+      let d;
+      try{d=JSON.parse(s);}catch(parseErr){console.warn("[CPM] Slot",slot,"corrotto — JSON non valido:",parseErr.message);return{_corrupted:true};}
       // Integrity: require player with name
       if(!d?.player?.name)return null;
       return d;
@@ -3830,7 +3831,8 @@ const storage={
     const out=[];
     for(let i=0;i<SLOT_KEYS.length;i++){
       const d=await storage.load(i);
-      out.push(d?{slot:i,name:d.player.name,club:d.player.club?.name||d.player.club?.n||"–",season:d.player.season||1,week:d.player.week||1,ovr:d.player.ovr||60,avatarId:d.player.avatarId||0,savedAt:d.savedAt||0}:null);
+      if(d&&d._corrupted)out.push({slot:i,corrupted:true});
+      else out.push(d?{slot:i,name:d.player.name,club:d.player.club?.name||d.player.club?.n||"–",season:d.player.season||1,week:d.player.week||1,ovr:d.player.ovr||60,avatarId:d.player.avatarId||0,savedAt:d.savedAt||0}:null);
     }
     return out;
   },
@@ -9445,7 +9447,15 @@ function HomeScreen({onNew,onLoad,onDelete,onImport,slots}){
       </div>
       {/* Save slots */}
       <div className="cpm-slots" style={{marginBottom:14}}>
-        {slots.map((s,i)=>s?(
+        {slots.map((s,i)=>s&&s.corrupted?(
+          <div key={i} style={{border:`2px solid #fca5a5`,borderRadius:14,padding:"14px 18px",display:"flex",alignItems:"center",justifyContent:"space-between",background:"#fff1f2"}}>
+            <div>
+              <div style={{fontSize:12,fontWeight:700,color:TH.danger}}>⚠️ Slot {i+1} — dati corrotti</div>
+              <div style={{fontSize:11,color:TH.muted,marginTop:2}}>Il salvataggio non è leggibile. Elimina e ricomincia.</div>
+            </div>
+            <button onClick={()=>setConfirmDel(i)} style={{padding:"6px 12px",borderRadius:8,border:"1px solid #fca5a5",background:"#fee2e2",cursor:"pointer",color:TH.danger,fontSize:12,fontWeight:700}}>🗑️ Elimina</button>
+          </div>
+        ):s?(
           <Card key={i} border={TH.cardBorder} style={{padding:"12px 14px"}}>
             <div style={{display:"flex",alignItems:"center",gap:10}}>
               <AvatarSVG id={s.avatarId} size={46}/>
@@ -9481,7 +9491,7 @@ function HomeScreen({onNew,onLoad,onDelete,onImport,slots}){
             </div>
             <div style={{display:"flex",gap:6}}>
               {slots.map((s,i)=>(
-                <button key={i} onClick={()=>onNew(i)} title={s?`Sovrascrive: ${s.name}`:`Slot ${i+1} vuoto`}
+                <button key={i} onClick={()=>onNew(i)} title={s&&s.corrupted?`Sovrascrive S${i+1} (corrotto)`:s?`Sovrascrive: ${s.name}`:`Slot ${i+1} vuoto`}
                   style={{padding:"6px 10px",borderRadius:8,border:`1px solid ${s?"#fecaca":"#bfdbfe"}`,background:s?"#fee2e2":"#dbeafe",cursor:"pointer",fontSize:11,fontWeight:700,color:s?TH.danger:TH.primary}}>
                   {s?`⚠️S${i+1}`:`+S${i+1}`}
                 </button>
@@ -11700,6 +11710,16 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     if(!('totalGoals' in newP)){newP={...newP,totalGoals:0};changed=true;} // Sprint 152
     if(!('totalAssists' in newP)){newP={...newP,totalAssists:0};changed=true;} // Sprint 152
     if(!('totalMatches' in newP)){newP={...newP,totalMatches:0};changed=true;} // Sprint 152
+    // Sprint 216: normalize history entries — fill missing clubId by name-lookup in CLUBS/U18_CLUBS
+    if((newP.history||[]).some(h=>!h.clubId)){
+      const _allC=[...CLUBS,...U18_CLUBS];
+      newP={...newP,history:(newP.history||[]).map(h=>{
+        if(h.clubId)return h;
+        const _found=_allC.find(c=>c.n===h.club||c.name===h.club);
+        return{...h,clubId:_found?_found.id:(h.club||"unknown")};
+      })};
+      changed=true;
+    }
     if(changed){setPlayer(newP);}
   },[]);// eslint-disable-line
   const[darkMode,setDarkMode]=useState(()=>localStorage.getItem("cpm-dark")==="1");
@@ -11879,7 +11899,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
   useEffect(()=>{
     if(saveTimerRef.current)clearTimeout(saveTimerRef.current);
     saveTimerRef.current=setTimeout(()=>{
-      storage.save({phase:"career",player},currentSlot).then(ok=>{if(ok)setLastSaved(Date.now());});
+      storage.save({phase:"career",player},currentSlot).then(ok=>{if(ok)setLastSaved(Date.now());else notify("⚠️ Salvataggio fallito — spazio insufficiente sul dispositivo.",TH.danger);});
     },600);
     return()=>{if(saveTimerRef.current)clearTimeout(saveTimerRef.current);};
   },[player]);// eslint-disable-line
@@ -12643,7 +12663,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     // U18 season end → ProTransitionScreen
     if(isInU18&&weekVal>=38){
       const _lg105=player.club?.lg||"Primavera 1";
-      const hist={season:player.season||1,club:player.club?.name||player.club?.n,goals:player.goals||0,assists:player.assists||0,matches:player.matches||0,ovr:player.ovr||60,league:_lg105};
+      const hist={season:player.season||1,club:player.club?.name||player.club?.n,clubId:player.club?.id,goals:player.goals||0,assists:player.assists||0,matches:player.matches||0,ovr:player.ovr||60,league:_lg105};
       // Award detection: Capocannoniere (≥8 gol, ratio ≥0.55) e Campione Primavera
       const _srtd105=[...(player.standings||[])].sort((a,b)=>b.pts-a.pts||(b.gf-b.ga)-(a.gf-a.ga)||b.gf-a.gf);
       const _myPos105=_srtd105.findIndex(t=>t.id===player.club?.id||(t.n||t.name)===(player.club?.n||player.club?.name));
@@ -13110,7 +13130,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
   };
 
   const doRetire=()=>{
-    const hist={season:player.season,club:player.club?.n||player.club?.name,goals:player.goals,assists:player.assists,matches:player.matches,ovr:player.ovr};
+    const hist={season:player.season,club:player.club?.n||player.club?.name,clubId:player.club?.id,goals:player.goals,assists:player.assists,matches:player.matches,ovr:player.ovr};
     const updPlayer={...player,history:[...(player.history||[]),hist].slice(-50),trophies:player.trophies||[]};
     const score=calcLegacyScore(updPlayer);
     setRetirementData({player:updPlayer,legacyScore:score});
