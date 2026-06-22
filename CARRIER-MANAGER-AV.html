@@ -2542,7 +2542,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.6.0"; // Sprint BugFix: #1 transfer standings, #2 euro KO unblock, #3 BayArena, #5 MVP formula, #7 corner flags, #8/#9 hero kit, #10 penalty arrows
+const GAME_VERSION="4.6.1"; // Bug #4: Euro/Mondiale caps+goals ora aggiornati; Bug #6: anti-ripetizione interviste
 const SAVE_VERSION=6;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -3624,6 +3624,7 @@ const INTERVIEW_QS=[
 ]},
 ];
 // Sprint 15 — pick interview question based on player context
+const _recentInterviewQs=[];
 function pickInterviewByCtx(p,matchResult=null){
   const ctx=new Set(["weekly"]);
   if(matchResult){ctx.add(matchResult.won?"win":matchResult.drew?"draw":"loss");}
@@ -3643,7 +3644,10 @@ function pickInterviewByCtx(p,matchResult=null){
   if((p.popularity||20)>=75)ctx.add("high_popularity");
   if((p.goals||0)>=5)ctx.add("top_scorer");
   const pool=INTERVIEW_QS.filter(q=>q.ctx.some(c=>ctx.has(c)));
-  const chosen=(pool.length?pool:INTERVIEW_QS)[Math.floor(Math.random()*(pool.length||INTERVIEW_QS.length))];
+  const fresh=pool.filter(q=>!_recentInterviewQs.includes(q.q));
+  const chosen=(fresh.length?fresh:pool.length?pool:INTERVIEW_QS)[Math.floor(Math.random()*((fresh.length||pool.length)||INTERVIEW_QS.length))];
+  _recentInterviewQs.push(chosen.q);
+  if(_recentInterviewQs.length>10)_recentInterviewQs.shift();
   const paper=NEWSPAPERS[Math.floor(Math.random()*NEWSPAPERS.length)];
   return{q:chosen,paper};
 }
@@ -12510,9 +12514,9 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
             const qualified=_emGroupQualified;
             const koOppPool=_allNat.filter(n=>n!==(p.nation||"Italia")&&!(em.groupOpponents||[]).includes(n));
             const koOpp=pick(koOppPool)||_allNat[0];
-            return{...p,euroMondiale:{...em,phase:qualified?"semi":"done",groupMatchIdx:newIdx,groupPts:newPts,groupMatches:newGM,qualified,eliminated:!qualified,koOpponent:qualified?koOpp:null,koPhase:qualified?"semi":null,done:!qualified}};
+            return{...p,nationalCaps:(p.nationalCaps||0)+1,nationalGoals:(p.nationalGoals||0)+(result.goals||0),euroMondiale:{...em,phase:qualified?"semi":"done",groupMatchIdx:newIdx,groupPts:newPts,groupMatches:newGM,qualified,eliminated:!qualified,koOpponent:qualified?koOpp:null,koPhase:qualified?"semi":null,done:!qualified}};
           }
-          return{...p,euroMondiale:{...em,groupMatchIdx:newIdx,groupPts:newPts,groupMatches:newGM}};
+          return{...p,nationalCaps:(p.nationalCaps||0)+1,nationalGoals:(p.nationalGoals||0)+(result.goals||0),euroMondiale:{...em,groupMatchIdx:newIdx,groupPts:newPts,groupMatches:newGM}};
         }
         // KO phase
         const koPhase=em.koPhase||"semi";
@@ -12526,7 +12530,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
         const newTrophies=isChamp?[...(p.trophies||[]),{season:p.season||1,club:p.nation||"Italia",league:em.type||"Torneo",isNational:true,type:"int"}]:(p.trophies||[]);
         const _emDiary=isChamp?[{season:p.season||1,week:p.week||1,type:"euro_mondiale_trophy",e:"🌍",headline:`${em.type||"Torneo"} VINTO!`,body:`${p.nation||"Italia"} Campione ${em.type||"Torneo"} S.${p.season||1}!`,color:"#7c3aed"}]:[];
         const morD=isChamp?25:koWon?12:-8;const popD=isChamp?25:koWon?10:0;
-        return{...p,euroMondiale:{...em,koPhase:nextPhase,koOpponent:finalOpp,koResults:newKOR,champion:isChamp,eliminated:!koWon,done:!nextPhase,phase:nextPhase||"done"},worldMemory:newMem,trophies:newTrophies,diary:[...(p.diary||[]),..._emDiary].slice(-80),morale:clamp((p.morale||70)+morD,0,100),popularity:clamp((p.popularity||20)+popD,0,100)};
+        return{...p,nationalCaps:(p.nationalCaps||0)+1,nationalGoals:(p.nationalGoals||0)+(result.goals||0),euroMondiale:{...em,koPhase:nextPhase,koOpponent:finalOpp,koResults:newKOR,champion:isChamp,eliminated:!koWon,done:!nextPhase,phase:nextPhase||"done"},worldMemory:newMem,trophies:newTrophies,diary:[...(p.diary||[]),..._emDiary].slice(-80),morale:clamp((p.morale||70)+morD,0,100),popularity:clamp((p.popularity||20)+popD,0,100)};
       });
       if(isGrp){
         if(_emGroupOut)setTimeout(()=>notify(`😔 ${_emCurQ.type||"Torneo"}: eliminato dalla fase a gironi.`,TH.danger),400);
