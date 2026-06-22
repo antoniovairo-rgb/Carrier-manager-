@@ -2441,7 +2441,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.5.43"; // Sprint 209c: fix rettangoli opachi — vignette full-canvas quando camZoom>1
+const GAME_VERSION="4.5.44"; // Sprint 209d: ripristino dugout con seggiolini colorati squadre
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -5187,13 +5187,17 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
           cctx.beginPath();cctx.arc(FX+FW+9,_isy,1.4,0,Math.PI*2);cctx.fill();
         }
         cctx.restore();
-        // 3) Area tecnica — panchine minimaliste (home + away), discrete
-        [[FCY-72,hCol],[FCY+58,oCol]].forEach(([_by,_bc])=>{
-          cctx.save();
-          cctx.fillStyle="#0d1117";cctx.globalAlpha=0.78;cctx.fillRect(FX-12,_by,8,4);
-          cctx.fillStyle=_bc;cctx.globalAlpha=0.72;cctx.fillRect(FX-11,_by+1,6,2);
-          cctx.globalAlpha=1;cctx.restore();
-        });
+        // 3) Area tecnica — dugout con seggiolini colorati (home + away)
+        {
+          const _dgW=14,_dgX=FX-_dgW-7;
+          [[FCY-80,hCol],[FCY+66,oCol]].forEach(([_dy,_dcol])=>{
+            cctx.fillStyle="#13161c";cctx.globalAlpha=0.92;cctx.fillRect(_dgX,_dy,_dgW,14);
+            cctx.fillStyle="rgba(255,255,255,0.16)";cctx.globalAlpha=1;cctx.fillRect(_dgX,_dy,_dgW,1);
+            cctx.fillStyle=_dcol;cctx.globalAlpha=0.85;
+            for(let _st=0;_st<3;_st++){cctx.beginPath();cctx.arc(_dgX+4+_st*4,_dy+9,1.4,0,Math.PI*2);cctx.fill();}
+            cctx.globalAlpha=1;
+          });
+        }
         // 4) Cartelloni nelle curve — strisce orizzontali colori casa/ospiti
         {
           const _cSlot=Math.round(FW/9);
