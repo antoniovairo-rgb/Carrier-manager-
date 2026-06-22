@@ -2520,7 +2520,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.5.81"; // Revert sizing canvas, dark bg wrapper elimina gap senza zoom
+const GAME_VERSION="4.5.82"; // HL canvas height-driven: riempie spazio cronaca senza zoom
 const SAVE_VERSION=6;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -6364,7 +6364,10 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
       <canvas ref={canvasRef}
         style={isDesktop
           ?{display:"block",height:"100%",width:"auto",maxWidth:"100%"}
-          :{display:"block",maxWidth:"100%",width:"auto",height:"auto"}}/>
+          :{display:"block",...(_pcHL
+              ?{height:"100%",width:"auto"}
+              :{maxWidth:"100%",width:"auto",height:"auto"}
+            )}}/>
     </div>
   );
 }
