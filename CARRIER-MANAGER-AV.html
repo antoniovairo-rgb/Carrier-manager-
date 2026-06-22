@@ -2441,7 +2441,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.5.42"; // Sprint 209b: fix regressione hero zoom — intera scena (stadio+campo) zoomma insieme
+const GAME_VERSION="4.5.43"; // Sprint 209c: fix rettangoli opachi — vignette full-canvas quando camZoom>1
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -6035,13 +6035,18 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
         drawWalkout(ctx,t);
       }
 
-      // Vignette — Sprint 175: skip 4 corner sky areas (they have no stands)
+      // Vignette — quando zoomed usa full-canvas (evita rettangoli opachi ai bordi del pitch);
+      // a zoom=1 salta i 4 angoli cielo che non hanno spalti (Sprint 175)
       const vig=ctx.createRadialGradient(PW/2,PH/2,PH*0.25,PW/2,PH/2,PH*0.75);
       vig.addColorStop(0,"transparent");vig.addColorStop(1,"rgba(0,0,0,0.5)");
       ctx.fillStyle=vig;
-      ctx.fillRect(FX,0,FW,PH);              // centre strip: top curva + pitch + bottom curva
-      ctx.fillRect(0,FY,FX,FH);              // left stand only
-      ctx.fillRect(FX+FW,FY,PW-FX-FW,FH);   // right stand only
+      if(s.camZoom>1.001){
+        ctx.fillRect(0,0,PW,PH);               // zoom>1: full canvas — angoli cielo off-screen
+      } else {
+        ctx.fillRect(FX,0,FW,PH);              // centre strip: top curva + pitch + bottom curva
+        ctx.fillRect(0,FY,FX,FH);              // left stand only
+        ctx.fillRect(FX+FW,FY,PW-FX-FW,FH);   // right stand only
+      }
     }
 
     // Expose particle spawners so external useEffect can trigger them
