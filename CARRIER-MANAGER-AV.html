@@ -3,6 +3,37 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#2563eb">
+<meta name="description" content="Career Player Manager — gioco di carriera calcistica, single player browser game">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="CPM">
+<script>
+/* F-1: PWA — genera icone via Canvas, crea manifest blob, gestisce install prompt */
+(function(){
+  function mkIcon(sz){
+    var cv=document.createElement('canvas');cv.width=cv.height=sz;
+    var ctx=cv.getContext('2d'),r=sz/2,br=r*0.62,pr=br*0.38;
+    ctx.beginPath();ctx.arc(r,r,r,0,6.283);ctx.fillStyle='#2563eb';ctx.fill();
+    ctx.beginPath();ctx.arc(r,r,br,0,6.283);ctx.fillStyle='#fff';ctx.fill();
+    ctx.beginPath();
+    for(var i=0;i<5;i++){var a=i*1.2566-1.5708;if(i===0)ctx.moveTo(r+pr*Math.cos(a),r+pr*Math.sin(a));else ctx.lineTo(r+pr*Math.cos(a),r+pr*Math.sin(a));}
+    ctx.closePath();ctx.fillStyle='#0f172a';ctx.fill();
+    for(var j=0;j<5;j++){var b=j*1.2566-1.5708;ctx.beginPath();ctx.arc(r+br*0.76*Math.cos(b),r+br*0.76*Math.sin(b),br*0.17,0,6.283);ctx.fillStyle='#0f172a';ctx.fill();}
+    return cv.toDataURL('image/png');
+  }
+  var i192=mkIcon(192),i512=mkIcon(512);
+  var al=document.createElement('link');al.rel='apple-touch-icon';al.href=i192;document.head.appendChild(al);
+  var fl=document.createElement('link');fl.rel='icon';fl.type='image/png';fl.href=i192;document.head.appendChild(fl);
+  var mf={name:'Career Player Manager',short_name:'CPM',description:'Gioco di carriera calcistica — browser game',start_url:location.href.split('?')[0],scope:'./',display:'standalone',orientation:'portrait-primary',theme_color:'#2563eb',background_color:'#f0f7ff',icons:[{src:i192,sizes:'192x192',type:'image/png',purpose:'any maskable'},{src:i512,sizes:'512x512',type:'image/png',purpose:'any maskable'}]};
+  var mb=new Blob([JSON.stringify(mf)],{type:'application/manifest+json'});
+  var ml=document.createElement('link');ml.rel='manifest';ml.href=URL.createObjectURL(mb);document.head.appendChild(ml);
+  window._cpmDp=null;
+  window._cpmInstall=function(){if(!window._cpmDp)return;window._cpmDp.prompt();window._cpmDp.userChoice.then(function(){window._cpmDp=null;window.dispatchEvent(new Event('cpm_installed'));});};
+  window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();window._cpmDp=e;window.dispatchEvent(new Event('cpm_installready'));});
+  window.addEventListener('appinstalled',function(){window._cpmDp=null;window.dispatchEvent(new Event('cpm_installed'));});
+})();
+</script>
 <title>Career Player Manager</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
@@ -2481,7 +2512,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.5.70"; // Sprint E-3: prestiti reali (loan_with_option/obligation, player.loan, risoluzione fine stagione)
+const GAME_VERSION="4.5.71"; // Fase F: PWA manifest + install banner (Android/iOS)
 const SAVE_VERSION=6;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -9501,6 +9532,39 @@ function ClubPresentationScreen({club,contractType,playerName,onContinue}){
   );
 }
 
+/* F-2: PWA install banner — Android (beforeinstallprompt) + iOS Safari hint */
+function PwaInstallBanner(){
+  const[installable,setInstallable]=useState(!!window._cpmDp);
+  useEffect(()=>{
+    const onReady=()=>setInstallable(true);
+    const onDone=()=>setInstallable(false);
+    window.addEventListener('cpm_installready',onReady);
+    window.addEventListener('cpm_installed',onDone);
+    return()=>{window.removeEventListener('cpm_installready',onReady);window.removeEventListener('cpm_installed',onDone);};
+  },[]);
+  if(window.matchMedia('(display-mode: standalone)').matches)return null;
+  if(installable)return(
+    <div onClick={()=>window._cpmInstall?.()} style={{display:'flex',alignItems:'center',gap:10,background:'#eff6ff',border:'1px solid #bfdbfe',borderRadius:12,padding:'10px 14px',marginBottom:12,cursor:'pointer'}}>
+      <div style={{fontSize:20,lineHeight:1}}>📲</div>
+      <div style={{flex:1}}>
+        <div style={{fontSize:11,fontWeight:700,color:'#1d4ed8'}}>Installa CPM come app</div>
+        <div style={{fontSize:10,color:'#3b82f6',marginTop:1}}>Tocca per aggiungere alla schermata principale</div>
+      </div>
+      <div style={{fontSize:14,color:'#3b82f6',fontWeight:700}}>›</div>
+    </div>
+  );
+  if(/iphone|ipad|ipod/i.test(navigator.userAgent))return(
+    <div style={{display:'flex',alignItems:'center',gap:10,background:'#eff6ff',border:'1px solid #bfdbfe',borderRadius:12,padding:'10px 14px',marginBottom:12}}>
+      <div style={{fontSize:20,lineHeight:1}}>📲</div>
+      <div style={{flex:1}}>
+        <div style={{fontSize:11,fontWeight:700,color:'#1d4ed8'}}>Installa su iPhone / iPad</div>
+        <div style={{fontSize:10,color:'#3b82f6',marginTop:1}}>Safari → <b>Condividi ⬆️</b> → "Aggiungi a Home"</div>
+      </div>
+    </div>
+  );
+  return null;
+}
+
 /* ========================================
    HOME SCREEN — slot salvataggio
 ======================================== */
@@ -9547,6 +9611,7 @@ function HomeScreen({onNew,onLoad,onDelete,onImport,slots}){
         <h1 style={{fontSize:24,fontWeight:900,letterSpacing:-1,margin:"0 0 4px",color:TH.text}}>CAREER PLAYER MANAGER</h1>
         <p style={{color:TH.muted,fontSize:12,margin:0}}>Serie A Primavera · Carriera calciatore</p>
       </div>
+      <PwaInstallBanner/>
       {/* Save slots */}
       <div className="cpm-slots" style={{marginBottom:14}}>
         {slots.map((s,i)=>s&&s.corrupted?(
