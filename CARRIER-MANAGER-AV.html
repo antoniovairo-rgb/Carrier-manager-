@@ -7152,7 +7152,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   const [momentum,setMomentum]=useState(50); // 0=away dominance, 100=home dominance
   const momentumRef=useRef(50);
   useEffect(()=>{momentumRef.current=momentum;},[momentum]);
-  const phaseRef=useRef(phase);
+  const phaseRef=useRef(context==="trial"?"playing":"matchday");
   useEffect(()=>{phaseRef.current=phase;},[phase]);
   const heatPointsRef=useRef([]); // {x,y}[] — sampled every 4 playing ticks
   const [showHeatMap,setShowHeatMap]=useState(false);
