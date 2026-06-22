@@ -2441,7 +2441,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.5.61"; // Sprint 216: Fase A stabilizzazione — save errors, history.clubId, load sentinel
+const GAME_VERSION="4.5.62"; // Sprint 216b: Fase A font — fontSize:9→10 (239 istanze), upgrade selettivo testo chiave
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -6274,7 +6274,7 @@ function ScoutReportScreen({report,opponent,onClose,loading}){
         <div style={{display:"flex",alignItems:"center",gap:12,marginBottom:10}}>
           <TeamBadge team={opponent} size={40}/>
           <div style={{flex:1}}>
-            <div style={{fontSize:9,color:"rgba(255,255,255,0.4)",textTransform:"uppercase",letterSpacing:2}}>Analisi Prematch</div>
+            <div style={{fontSize:10,color:"rgba(255,255,255,0.4)",textTransform:"uppercase",letterSpacing:2}}>Analisi Prematch</div>
             <div style={{fontSize:16,fontWeight:900,color:"#f1f5f9"}}>{opponent?.n||"Avversario"}</div>
             <div style={{fontSize:10,color:"rgba(255,255,255,0.5)"}}>{opponent?.lg||""}{opponent?.nat?` ${opponent.nat}`:""}</div>
           </div>
@@ -6299,19 +6299,19 @@ function ScoutReportScreen({report,opponent,onClose,loading}){
       {/* H2H if available */}
       {report.h2h&&(
         <Card style={{padding:"10px 14px"}}>
-          <div style={{fontSize:9,color:TH.muted,fontWeight:700,letterSpacing:2,marginBottom:6}}>⚔️ PRECEDENTI</div>
+          <div style={{fontSize:10,color:TH.muted,fontWeight:700,letterSpacing:2,marginBottom:6}}>⚔️ PRECEDENTI</div>
           <div style={{display:"flex",gap:8,alignItems:"center"}}>
             <div style={{textAlign:"center",flex:1,background:"#f0fdf4",borderRadius:8,padding:"6px 0"}}>
               <div style={{fontSize:20,fontWeight:900,color:TH.success}}>{report.h2h.w}</div>
-              <div style={{fontSize:9,color:TH.muted}}>VINTE</div>
+              <div style={{fontSize:10,color:TH.muted}}>VINTE</div>
             </div>
             <div style={{textAlign:"center",flex:1,background:"#fefce8",borderRadius:8,padding:"6px 0"}}>
               <div style={{fontSize:20,fontWeight:900,color:TH.warning}}>{report.h2h.d}</div>
-              <div style={{fontSize:9,color:TH.muted}}>PAREGGIATE</div>
+              <div style={{fontSize:10,color:TH.muted}}>PAREGGIATE</div>
             </div>
             <div style={{textAlign:"center",flex:1,background:"#fff1f2",borderRadius:8,padding:"6px 0"}}>
               <div style={{fontSize:20,fontWeight:900,color:TH.danger}}>{report.h2h.l}</div>
-              <div style={{fontSize:9,color:TH.muted}}>PERSE</div>
+              <div style={{fontSize:10,color:TH.muted}}>PERSE</div>
             </div>
           </div>
         </Card>
@@ -6319,7 +6319,7 @@ function ScoutReportScreen({report,opponent,onClose,loading}){
       {/* Strengths & weaknesses */}
       <Card style={{padding:"12px 14px"}}>
         <div style={{marginBottom:10}}>
-          <div style={{fontSize:9,fontWeight:700,color:TH.danger,letterSpacing:1.5,marginBottom:5}}>⚠️ PUNTI DEBOLI — DA SFRUTTARE</div>
+          <div style={{fontSize:10,fontWeight:700,color:TH.danger,letterSpacing:1.5,marginBottom:5}}>⚠️ PUNTI DEBOLI — DA SFRUTTARE</div>
           {(report.weaknesses||[]).map((w,i)=>(
             <div key={i} style={{display:"flex",gap:8,alignItems:"flex-start",padding:"5px 0",borderBottom:i<(report.weaknesses.length-1)?"1px solid "+TH.cardBorder:"none"}}>
               <span style={{fontSize:12,marginTop:1,flexShrink:0}}>🎯</span>
@@ -6328,7 +6328,7 @@ function ScoutReportScreen({report,opponent,onClose,loading}){
           ))}
         </div>
         <div>
-          <div style={{fontSize:9,fontWeight:700,color:TH.success,letterSpacing:1.5,marginBottom:5}}>💪 PUNTI FORTI — DA NEUTRALIZZARE</div>
+          <div style={{fontSize:10,fontWeight:700,color:TH.success,letterSpacing:1.5,marginBottom:5}}>💪 PUNTI FORTI — DA NEUTRALIZZARE</div>
           {(report.strengths||[]).map((str,i)=>(
             <div key={i} style={{display:"flex",gap:8,alignItems:"flex-start",padding:"5px 0",borderBottom:i<(report.strengths.length-1)?"1px solid "+TH.cardBorder:"none"}}>
               <span style={{fontSize:12,marginTop:1,flexShrink:0}}>⚡</span>
@@ -6339,7 +6339,7 @@ function ScoutReportScreen({report,opponent,onClose,loading}){
       </Card>
       {/* Recommendation */}
       <Card style={{padding:"12px 14px",background:"linear-gradient(135deg,#eff6ff,#f0fdf4)",border:"1px solid #bfdbfe"}}>
-        <div style={{fontSize:9,fontWeight:700,color:TH.primary,letterSpacing:1.5,marginBottom:5}}>🎙️ CONSIGLIO DEL MISTER</div>
+        <div style={{fontSize:10,fontWeight:700,color:TH.primary,letterSpacing:1.5,marginBottom:5}}>🎙️ CONSIGLIO DEL MISTER</div>
         <div style={{fontSize:12,color:TH.text,lineHeight:1.65,fontStyle:"italic"}}>"{report.recommendation}"</div>
       </Card>
       {onClose&&<Btn onClick={onClose} v="primary" fw style={{padding:"12px",fontSize:13}}>⚡ Capito — Entriamo in campo!</Btn>}
@@ -6359,9 +6359,9 @@ function PressScreen({report,matchResult,onClose}){
       <Card style={{padding:"12px 16px"}}>
         <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
           <div>
-            <div style={{fontSize:9,color:TH.primary,fontWeight:700,letterSpacing:2}}>RASSEGNA STAMPA</div>
+            <div style={{fontSize:10,color:TH.primary,fontWeight:700,letterSpacing:2}}>RASSEGNA STAMPA</div>
             <div style={{fontSize:15,fontWeight:900,color:TH.text}}>Post-Partita</div>
-            {report.memoriaTag&&<div style={{fontSize:9,color:TH.accent,marginTop:2}}>{report.memoriaTag}</div>}
+            {report.memoriaTag&&<div style={{fontSize:10,color:TH.accent,marginTop:2}}>{report.memoriaTag}</div>}
           </div>
           <div style={{textAlign:"center"}}>
             <div style={{fontSize:28}}>{won?"🏆":drew?"🤝":"📉"}</div>
@@ -6374,7 +6374,7 @@ function PressScreen({report,matchResult,onClose}){
 
       {/* Newspaper headlines */}
       <Card style={{padding:"12px 16px"}}>
-        <div style={{fontSize:9,color:TH.muted,fontWeight:700,letterSpacing:2,marginBottom:8}}>PRIME PAGINE</div>
+        <div style={{fontSize:10,color:TH.muted,fontWeight:700,letterSpacing:2,marginBottom:8}}>PRIME PAGINE</div>
         {(report.headlines||[]).map((h,i)=>(
           <div key={i} style={{padding:"8px 10px",background:"#f8fafc",borderRadius:6,marginBottom:5,borderLeft:`3px solid ${paperColors[i]||TH.primary}`}}>
             <div style={{fontSize:8,color:paperColors[i]||TH.primary,fontWeight:700,letterSpacing:1,marginBottom:2}}>{papers[i]||"—"}</div>
@@ -6386,7 +6386,7 @@ function PressScreen({report,matchResult,onClose}){
       {/* Player rating card */}
       {pr&&(
         <Card style={{padding:"12px 16px"}}>
-          <div style={{fontSize:9,color:TH.muted,fontWeight:700,letterSpacing:2,marginBottom:8}}>PAGELLA</div>
+          <div style={{fontSize:10,color:TH.muted,fontWeight:700,letterSpacing:2,marginBottom:8}}>PAGELLA</div>
           <div style={{display:"flex",alignItems:"center",gap:14}}>
             <div style={{width:54,height:54,borderRadius:10,background:pr.color,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",flexShrink:0}}>
               <div style={{fontSize:22,fontWeight:900,color:"#fff",lineHeight:1}}>{pr.value}</div>
@@ -6455,7 +6455,7 @@ function AIDecisionOverlay({tactic,loading}){
   if(!tactic&&!loading)return null;
   return(
     <div style={{background:"rgba(239,68,68,0.07)",border:"1px solid rgba(239,68,68,0.2)",borderRadius:8,padding:"9px 12px",marginBottom:8}}>
-      <div style={{fontSize:9,fontWeight:700,color:TH.danger,marginBottom:3}}>🤖 TATTICA AVVERSARIA (AI)</div>
+      <div style={{fontSize:10,fontWeight:700,color:TH.danger,marginBottom:3}}>🤖 TATTICA AVVERSARIA (AI)</div>
       {loading?<div style={{fontSize:11,color:TH.muted}}>Analisi in corso…</div>:(
         <>
           <div style={{fontSize:14,fontWeight:900,color:TH.text,marginBottom:1}}>{tactic.formation}</div>
@@ -6508,7 +6508,7 @@ function MatchdayCard({homeTeam,awayTeam,stadium,attendance,league,onContinue,on
             <TeamBadge team={awayTeam} size={52}/>
             <div style={{fontSize:12,fontWeight:700,color:TH.text,marginTop:4}}>{awayTeam?.name||awayTeam?.n}</div>
             <div style={{fontSize:10,color:TH.muted}}>OSPITE</div>
-            {(()=>{const p=getClubPersona(awayTeam);return p?<div style={{fontSize:9,color:"#64748b",background:"#f1f5f9",borderRadius:6,padding:"2px 7px",marginTop:3,display:"inline-block"}}>{p.e} {p.name}</div>:null;})()}
+            {(()=>{const p=getClubPersona(awayTeam);return p?<div style={{fontSize:10,color:"#64748b",background:"#f1f5f9",borderRadius:6,padding:"2px 7px",marginTop:3,display:"inline-block"}}>{p.e} {p.name}</div>:null;})()}
           </div>
         </div>
       </div>
@@ -6516,7 +6516,7 @@ function MatchdayCard({homeTeam,awayTeam,stadium,attendance,league,onContinue,on
         <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}>
           {[{l:"Stadio",v:(stadium||"–").split(" ").slice(0,2).join(" ")},{l:"Spettatori",v:(attendance||0).toLocaleString("it-IT")},{l:"Meteo",v:weather},{l:"Orario",v:time}].map(s=>(
             <div key={s.l} style={{background:"#f8fafc",borderRadius:8,padding:"8px 10px",border:"1px solid "+TH.cardBorder}}>
-              <div style={{fontSize:9,color:TH.faint,marginBottom:2,textTransform:"uppercase",letterSpacing:1}}>{s.l}</div>
+              <div style={{fontSize:10,color:TH.faint,marginBottom:2,textTransform:"uppercase",letterSpacing:1}}>{s.l}</div>
               <div style={{fontSize:12,fontWeight:600,color:TH.text}}>{s.v}</div>
             </div>
           ))}
@@ -6651,7 +6651,7 @@ function FormationView({homeTeam,awayTeam,player,homeRoster,awayRoster,onContinu
         <div style={{textAlign:"center",marginBottom:10}}>
           <div style={{display:"inline-flex",alignItems:"center",gap:6,background:"rgba(30,64,175,0.25)",border:`1px solid ${_ecCol122}44`,borderRadius:20,padding:"3px 14px"}}>
             <span style={{fontSize:10,fontWeight:800,color:_ecCol122,letterSpacing:1}}>{_ecFull122}</span>
-            {euroRound&&<span style={{fontSize:9,color:"rgba(255,255,255,0.4)"}}>· {euroRound}</span>}
+            {euroRound&&<span style={{fontSize:10,color:"rgba(255,255,255,0.4)"}}>· {euroRound}</span>}
           </div>
         </div>
       ):(
@@ -6727,7 +6727,7 @@ function WalkoutOverlay({homeTeam,homeRoster,awayRoster,opponent,isHome=true,mat
       {isEuroMatch&&!isDerbyMatch&&<div style={{position:"absolute",top:6,left:0,right:0,textAlign:"center",fontSize:10,fontWeight:900,color:{UCL:"#93c5fd",UEL:"#fde68a",UECL:"#c4b5fd"}[euroCompetition]||"#93c5fd",letterSpacing:3,textTransform:"uppercase",textShadow:`0 0 18px ${{UCL:"#3b82f6",UEL:"#f59e0b",UECL:"#8b5cf6"}[euroCompetition]||"#3b82f6"}`}}>{_ecE122} {_ecFull122.toUpperCase()} {_ecE122}</div>}
       {/* Atmosfera */}
       <div style={{textAlign:"center",padding:"28px 8px 6px",width:"100%"}}>
-        <div style={{fontSize:9,color:"rgba(255,255,255,0.38)",letterSpacing:3,textTransform:"uppercase",marginBottom:2}}>{phaseText}</div>
+        <div style={{fontSize:10,color:"rgba(255,255,255,0.38)",letterSpacing:3,textTransform:"uppercase",marginBottom:2}}>{phaseText}</div>
         <div style={{fontSize:8,color:"rgba(255,255,255,0.22)"}}>🏟️ {stadiumName} · 👥 {crowdStr}{weather?` · ${weather.e} ${weather.name}`:""} · {isHome?"CASA":"TRASFERTA"}</div>
       </div>
       {/* Due formazioni affiancate */}
@@ -8098,7 +8098,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
             <div style={{display:"flex",alignItems:"center",gap:7,minWidth:0,flex:1}}>
               <TeamBadge team={homeTeamObj} size={28}/>
               <div style={{minWidth:0}}>
-                <div style={{fontSize:9,color:"rgba(255,255,255,0.55)",fontWeight:700,letterSpacing:.8,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",maxWidth:70}}>{homeTeamObj?.n||homeTeamObj?.name||"Squadra"}</div>
+                <div style={{fontSize:10,color:"rgba(255,255,255,0.55)",fontWeight:700,letterSpacing:.8,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",maxWidth:70}}>{homeTeamObj?.n||homeTeamObj?.name||"Squadra"}</div>
                 <div style={{fontSize:32,fontWeight:900,color:(isMatchHome?winning:losing)?"#4ade80":(isMatchHome?losing:winning)?"#f87171":"#f1f5f9",lineHeight:1}}>{isMatchHome?score.home:score.away}</div>
               </div>
             </div>
@@ -8144,7 +8144,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
             <div style={{display:"flex",alignItems:"center",gap:7,flexDirection:"row-reverse",minWidth:0,flex:1,justifyContent:"flex-start"}}>
               <TeamBadge team={awayTeamObj} size={28}/>
               <div style={{minWidth:0,textAlign:"right"}}>
-                <div style={{fontSize:9,color:"rgba(255,255,255,0.55)",fontWeight:700,letterSpacing:.8,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",maxWidth:70,marginLeft:"auto"}}>{awayTeamObj?.n||awayTeamObj?.name||"Avversario"}</div>
+                <div style={{fontSize:10,color:"rgba(255,255,255,0.55)",fontWeight:700,letterSpacing:.8,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",maxWidth:70,marginLeft:"auto"}}>{awayTeamObj?.n||awayTeamObj?.name||"Avversario"}</div>
                 <div style={{fontSize:32,fontWeight:900,color:(isMatchHome?losing:winning)?"#f87171":(isMatchHome?winning:losing)?"#4ade80":"#f1f5f9",lineHeight:1,textAlign:"right"}}>{isMatchHome?score.away:score.home}</div>
               </div>
             </div>
@@ -8208,7 +8208,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                   <div style={{fontSize:22,marginBottom:8}}>⚽</div>
                   <div style={{fontSize:15,fontWeight:900,color:"#f59e0b",textAlign:"center",marginBottom:8,textShadow:"0 0 20px #f59e0b"}}>{curSit.text}</div>
                   {curSit.intro&&<div style={{fontSize:11,color:"rgba(255,255,255,0.75)",textAlign:"center",fontStyle:"italic",marginBottom:10,lineHeight:1.4}}>{curSit.intro}</div>}
-                  <div style={{fontSize:9,color:"rgba(255,255,255,0.3)",letterSpacing:2,textTransform:"uppercase",marginBottom:10}}>{curSit.type==="def"?"🛡️ DIFESA":"⚔️ ATTACCO"}</div>
+                  <div style={{fontSize:10,color:"rgba(255,255,255,0.3)",letterSpacing:2,textTransform:"uppercase",marginBottom:10}}>{curSit.type==="def"?"🛡️ DIFESA":"⚔️ ATTACCO"}</div>
                   <div style={{width:90,height:2,background:"rgba(255,255,255,0.15)",borderRadius:2,overflow:"hidden"}}><div style={{height:"100%",background:"#f59e0b",animation:"shrinkBar 2.5s linear forwards"}}/></div>
                   <div style={{fontSize:8,color:"rgba(255,255,255,0.2)",marginTop:6}}>{isNarrow?"Tocca per iniziare":"Tocca / Enter per iniziare"}</div>
                 </div>
@@ -8235,7 +8235,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                     {/* Score + Clock strip */}
                     <div style={{background:"rgba(255,255,255,0.06)",border:"1px solid rgba(255,255,255,0.12)",borderRadius:12,padding:"10px 24px",marginBottom:14,display:"flex",alignItems:"center",gap:20}}>
                       <div style={{textAlign:"center"}}>
-                        <div style={{fontSize:9,color:"rgba(255,255,255,0.35)",textTransform:"uppercase",letterSpacing:1,marginBottom:2}}>{homeTeamName}</div>
+                        <div style={{fontSize:10,color:"rgba(255,255,255,0.35)",textTransform:"uppercase",letterSpacing:1,marginBottom:2}}>{homeTeamName}</div>
                         <div style={{fontSize:26,fontWeight:900,color:"#e2e8f0",lineHeight:1}}>{score.home}</div>
                       </div>
                       <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:3}}>
@@ -8244,7 +8244,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                         <div style={{fontSize:8,color:"rgba(255,255,255,0.3)",letterSpacing:1}}>LIVE</div>
                       </div>
                       <div style={{textAlign:"center"}}>
-                        <div style={{fontSize:9,color:"rgba(255,255,255,0.35)",textTransform:"uppercase",letterSpacing:1,marginBottom:2}}>{awayTeamName}</div>
+                        <div style={{fontSize:10,color:"rgba(255,255,255,0.35)",textTransform:"uppercase",letterSpacing:1,marginBottom:2}}>{awayTeamName}</div>
                         <div style={{fontSize:26,fontWeight:900,color:"#e2e8f0",lineHeight:1}}>{score.away}</div>
                       </div>
                     </div>
@@ -8297,7 +8297,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
               )}
               {isNarrow&&phase==="hl_choose"&&curSit&&(
                 <div style={{position:"absolute",bottom:0,left:0,right:0,zIndex:16,background:"rgba(5,8,20,0.28)",padding:"8px 10px 10px"}}>
-                  <div style={{fontSize:9,color:"rgba(255,255,255,0.75)",fontWeight:700,textShadow:"0 1px 3px rgba(0,0,0,0.9)",marginBottom:5}}>{clock}' — {curSit.text} &nbsp;·&nbsp; <span style={{color:defDist<25?"#f87171":defDist<50?"#f97316":"#4ade80"}}>{defDist<25?"⚠ Addosso":defDist<50?"Vicino":"Libero"}</span></div>
+                  <div style={{fontSize:10,color:"rgba(255,255,255,0.75)",fontWeight:700,textShadow:"0 1px 3px rgba(0,0,0,0.9)",marginBottom:5}}>{clock}' — {curSit.text} &nbsp;·&nbsp; <span style={{color:defDist<25?"#f87171":defDist<50?"#f97316":"#4ade80"}}>{defDist<25?"⚠ Addosso":defDist<50?"Vicino":"Libero"}</span></div>
                   <div style={{display:"flex",alignItems:"flex-start",gap:10}}>
                     {!curSit.lockMovement&&<div style={{opacity:movesLeft>0?1:0.3,flexShrink:0}}><DPad onMove={movesLeft>0?handleDPad:()=>{}} dark size={40}/></div>}
                     {curSit.text?.includes("RIGORE")?(
@@ -8319,7 +8319,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                           return(
                             <button key={_oi} onClick={()=>handleAction(a)}
                               style={{padding:"10px",background:_sel2?"rgba(37,99,235,0.65)":"rgba(0,0,0,0.55)",border:_sel2?`1.5px solid ${_rc2}88`:`1px solid ${_rc2}44`,borderRadius:8,color:"#fff",cursor:"pointer",fontFamily:"inherit",display:"flex",alignItems:"center",gap:8,transition:"all .1s",boxShadow:"0 2px 6px rgba(0,0,0,0.4)"}}>
-                              <div style={{width:18,height:18,borderRadius:"50%",background:_sel2?"#2563eb":"rgba(255,255,255,0.15)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:9,fontWeight:900,color:"#fff",flexShrink:0}}>{_oi+1}</div>
+                              <div style={{width:18,height:18,borderRadius:"50%",background:_sel2?"#2563eb":"rgba(255,255,255,0.15)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:10,fontWeight:900,color:"#fff",flexShrink:0}}>{_oi+1}</div>
                               <div style={{fontSize:11,fontWeight:700,color:"#fff",flex:1,textAlign:"left",textShadow:"0 1px 3px rgba(0,0,0,0.7)"}}>{a.label}</div>
                             </button>
                           );
@@ -8333,7 +8333,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                 <div style={{position:"absolute",bottom:0,left:0,right:0,zIndex:16,background:outcome.ok?"rgba(5,50,20,0.55)":"rgba(50,5,5,0.55)",padding:"10px 12px 12px"}}>
                   <div style={{fontSize:14,fontWeight:900,color:outcome.ok?"#4ade80":"#f87171",marginBottom:3,textShadow:"0 1px 4px rgba(0,0,0,0.8)"}}>{outcome.ok?"✅":"❌"} {chosenAct?.label}</div>
                   <div style={{fontSize:11,color:"#fff",lineHeight:1.4,marginBottom:4,textShadow:"0 1px 3px rgba(0,0,0,0.7)"}}>{outcome.text}</div>
-                  {aiCommentary&&<div style={{fontSize:9,color:"rgba(255,255,255,0.8)",fontStyle:"italic",textShadow:"0 1px 3px rgba(0,0,0,0.7)"}}>{aiCommentary.reaction} {aiCommentary.commentary}</div>}
+                  {aiCommentary&&<div style={{fontSize:10,color:"rgba(255,255,255,0.8)",fontStyle:"italic",textShadow:"0 1px 3px rgba(0,0,0,0.7)"}}>{aiCommentary.reaction} {aiCommentary.commentary}</div>}
                 </div>
               )}
 
@@ -8350,7 +8350,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                     {!curSit.lockMovement&&<DPad onMove={handleDPad} dark size={isNarrow?52:42}/>}
                     <div style={{flex:1}}>
                       <div style={{fontSize:8,color:"rgba(255,255,255,0.4)",marginBottom:3}}>📍 {ZONES[zone]?.label}{!isNarrow?" · WASD":""}</div>
-                      {curSit.maxMoves>0&&<div style={{fontSize:9,color:"#60a5fa",fontWeight:700,marginBottom:3}}>{"●".repeat(movesLeft)}{"○".repeat(Math.max(0,curSit.maxMoves-movesLeft))} {movesLeft} mov</div>}
+                      {curSit.maxMoves>0&&<div style={{fontSize:10,color:"#60a5fa",fontWeight:700,marginBottom:3}}>{"●".repeat(movesLeft)}{"○".repeat(Math.max(0,curSit.maxMoves-movesLeft))} {movesLeft} mov</div>}
                       {curSit.maxMoves>0&&(
                         <div style={{marginBottom:4}}>
                           <div style={{display:"flex",justifyContent:"space-between",fontSize:7,color:"rgba(255,255,255,0.3)",marginBottom:2}}><span>⏱ Pressione</span><span>{Math.round(pressureBar*100)}%</span></div>
@@ -8386,13 +8386,13 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                       <DPad onMove={handleDPad} dark size={isNarrow?52:42}/>
                       <div style={{flex:1}}>
                         <div style={{fontSize:8,color:"rgba(255,255,255,0.4)",marginBottom:2}}>📍 {ZONES[zone]?.label}</div>
-                        <div style={{fontSize:9,color:"#60a5fa",fontWeight:700}}>{"●".repeat(movesLeft)}{"○".repeat(Math.max(0,curSit.maxMoves-movesLeft))} {movesLeft} mov</div>
+                        <div style={{fontSize:10,color:"#60a5fa",fontWeight:700}}>{"●".repeat(movesLeft)}{"○".repeat(Math.max(0,curSit.maxMoves-movesLeft))} {movesLeft} mov</div>
                       </div>
                     </div>
                   )}
                   {/* Defender pressure badge */}
                   <div style={{display:"flex",alignItems:"center",gap:5,marginBottom:5,padding:"3px 6px",borderRadius:5,background:defDist<25?"rgba(239,68,68,0.2)":defDist<50?"rgba(249,115,22,0.15)":"rgba(74,222,128,0.1)",border:`1px solid ${defDist<25?"rgba(239,68,68,0.4)":defDist<50?"rgba(249,115,22,0.3)":"rgba(74,222,128,0.2)"}`}}>
-                    <span style={{fontSize:9}}>{defDist<25?"⚠️":"🏃"}</span>
+                    <span style={{fontSize:10}}>{defDist<25?"⚠️":"🏃"}</span>
                     <span style={{fontSize:8,color:defDist<25?"#f87171":defDist<50?"#f97316":"#4ade80",fontWeight:700}}>{defDist<25?"Difensore addosso!":defDist<50?"Pressione alta":"Spazio libero"}</span>
                     {defDist<50&&<span style={{fontSize:7,color:"rgba(255,255,255,0.3)",marginLeft:"auto"}}>–{Math.round((100-defDist)*0.15)}% azioni</span>}
                   </div>
@@ -8423,7 +8423,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                         <button key={i} onClick={()=>handleAction(a)}
                           style={{padding:isNarrow?"12px 10px":"8px 10px",background:isSel?"rgba(37,99,235,0.45)":"rgba(0,0,0,0.52)",border:isSel?`1.5px solid ${rc}66`:`1px solid ${rc}33`,borderRadius:8,color:"#fff",cursor:"pointer",fontFamily:"inherit",display:"flex",alignItems:"center",justifyContent:"space-between",transition:"all .1s",transform:isSel?"scale(1.02)":"scale(1)"}}>
                           <div style={{display:"flex",alignItems:"center",gap:6}}>
-                            <div style={{width:18,height:18,borderRadius:"50%",background:isSel?"#2563eb":"rgba(255,255,255,0.1)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:9,fontWeight:900,color:isSel?"#fff":"rgba(255,255,255,0.5)",flexShrink:0}}>{i+1}</div>
+                            <div style={{width:18,height:18,borderRadius:"50%",background:isSel?"#2563eb":"rgba(255,255,255,0.1)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:10,fontWeight:900,color:isSel?"#fff":"rgba(255,255,255,0.5)",flexShrink:0}}>{i+1}</div>
                             <div style={{fontSize:11,fontWeight:isSel?700:400,color:"#e2e8f0",textAlign:"left"}}>{a.label}</div>
                           </div>
                         </button>
@@ -8439,7 +8439,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                   <div style={{fontSize:14,fontWeight:900,color:outcome.ok?"#4ade80":"#f87171",marginBottom:4}}>{outcome.ok?"✅":"❌"} {chosenAct?.label}</div>
                   <div style={{fontSize:11,color:"rgba(255,255,255,0.8)",lineHeight:1.4,marginBottom:4}}>{outcome.text}</div>
                   {aiCommentary&&<div style={{fontSize:10,color:"rgba(255,255,255,0.55)",fontStyle:"italic",marginBottom:4}}>{aiCommentary.reaction} {aiCommentary.commentary}</div>}
-                  <div style={{fontSize:9,color:"rgba(255,255,255,0.3)"}}>{isNarrow?"auto →":"auto / Enter →"}</div>
+                  <div style={{fontSize:10,color:"rgba(255,255,255,0.3)"}}>{isNarrow?"auto →":"auto / Enter →"}</div>
                 </div>
               )}
 
@@ -8475,9 +8475,9 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
               <div style={{flex:1,padding:"6px 10px",overflowY:"auto",minHeight:0,display:isNarrow?"none":"block"}}>
                 <div style={{fontSize:7,color:"rgba(255,255,255,0.3)",fontWeight:700,letterSpacing:1,textTransform:"uppercase",marginBottom:4}}>📻 CRONACA</div>
                 {coms.length===0
-                  ?<div style={{fontSize:9,color:"rgba(255,255,255,0.2)",fontStyle:"italic"}}>In attesa…</div>
+                  ?<div style={{fontSize:10,color:"rgba(255,255,255,0.2)",fontStyle:"italic"}}>In attesa…</div>
                   :coms.slice(0,8).map((c,i)=>(
-                    <div key={i} style={{fontSize:9,color:c.color,padding:"2px 0",borderBottom:i<7?"1px solid rgba(255,255,255,0.05)":"none",lineHeight:1.35}}>
+                    <div key={i} style={{fontSize:10,color:c.color,padding:"2px 0",borderBottom:i<7?"1px solid rgba(255,255,255,0.05)":"none",lineHeight:1.35}}>
                       <span style={{color:"rgba(255,255,255,0.25)",marginRight:4,fontSize:8,fontWeight:700}}>{c.t}'</span>{c.text}
                     </div>
                   ))
@@ -8495,16 +8495,16 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           {/* Compact stats bar */}
           {(()=>{const _rb_cs=Math.min(mStats.rb,20);const _raw_cs=clamp(5.8+_rb_cs*0.115+(score.home>score.away?0.35:score.home<score.away?-0.30:0),4.0,10.0);const _r_cs=Math.round(_raw_cs*10)/10;const _rc_cs=_r_cs>=8?"#4ade80":_r_cs>=6.5?"#f59e0b":"#f87171";return(
             <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:5,paddingBottom:4,borderBottom:"1px solid rgba(255,255,255,0.07)"}}>
-              <span style={{fontSize:9,fontWeight:900,color:"#4ade80"}}>⚽ {mStats.goals}</span>
-              <span style={{fontSize:9,fontWeight:900,color:"#60a5fa"}}>🎯 {mStats.assists}</span>
-              <span style={{fontSize:9,fontWeight:700,color:energy>50?"#4ade80":energy>25?"#f59e0b":"#f87171"}}>⚡ {energy}%</span>
-              <span style={{fontSize:9,fontWeight:900,color:_rc_cs}}>⭐ {_r_cs}</span>
+              <span style={{fontSize:10,fontWeight:900,color:"#4ade80"}}>⚽ {mStats.goals}</span>
+              <span style={{fontSize:10,fontWeight:900,color:"#60a5fa"}}>🎯 {mStats.assists}</span>
+              <span style={{fontSize:10,fontWeight:700,color:energy>50?"#4ade80":energy>25?"#f59e0b":"#f87171"}}>⚡ {energy}%</span>
+              <span style={{fontSize:10,fontWeight:900,color:_rc_cs}}>⭐ {_r_cs}</span>
               <span style={{fontSize:8,color:"rgba(255,255,255,0.3)",marginLeft:"auto"}}>📍 {ZONES[zone]?.label||zone}</span>
             </div>
           );})()}
           <div style={{fontSize:7,color:"rgba(255,255,255,0.28)",fontWeight:700,letterSpacing:1,textTransform:"uppercase",marginBottom:3}}>📻 CRONACA</div>
           {Array.from({length:4},(_,i)=>coms[i]||null).map((c,i)=>(
-            <div key={i} style={{fontSize:9,color:c?(i===0?c.color:"rgba(255,255,255,0.45)"):"rgba(255,255,255,0.1)",lineHeight:1.35,
+            <div key={i} style={{fontSize:10,color:c?(i===0?c.color:"rgba(255,255,255,0.45)"):"rgba(255,255,255,0.1)",lineHeight:1.35,
               padding:i<3?"0 0 2px":"0",
               borderBottom:i<3?"1px solid rgba(255,255,255,0.05)":"none",
               overflow:"hidden",whiteSpace:"nowrap",textOverflow:"ellipsis",minHeight:13}}>
@@ -8527,7 +8527,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr 1fr",gap:6,marginBottom:12}}>
             {[{l:"Gol",v:mStats.goals,e:"⚽",c:TH.warning},{l:"Assist",v:mStats.assists,e:"🎯",c:TH.primary},{l:"Tiri",v:mxStats.shots,e:"💥",c:"#a78bfa"},{l:"Poss.",v:(Math.round(possession))+'%',e:"🔵",c:TH.success}].map(s=>(
               <Card key={s.l} style={{padding:"8px 4px",textAlign:"center"}}>
-                <div style={{fontSize:13,marginBottom:1}}>{s.e}</div><div style={{fontSize:20,fontWeight:900,color:s.c,lineHeight:1}}>{s.v}</div><div style={{fontSize:9,color:TH.muted}}>{s.l}</div>
+                <div style={{fontSize:13,marginBottom:1}}>{s.e}</div><div style={{fontSize:20,fontWeight:900,color:s.c,lineHeight:1}}>{s.v}</div><div style={{fontSize:10,color:TH.muted}}>{s.l}</div>
               </Card>
             ))}
           </div>
@@ -8535,7 +8535,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
             {[{l:"Falli avversari",v:mxStats.fouls,e:"🟡"},{l:"Calci d'angolo",v:mxStats.corners,e:"🏳️"},{l:"Tiri avversari",v:mxStats.oppShots,e:"🔴"},{l:"Tiro medio",v:mxStats.shots>0?`${mStats.goals}/${mxStats.shots}`:"0/0",e:"🎯"}].map(s=>(
               <div key={s.l} style={{display:"flex",alignItems:"center",gap:6,padding:"6px 8px",background:"rgba(0,0,0,0.03)",borderRadius:7,border:`1px solid ${TH.border}`}}>
                 <span style={{fontSize:13}}>{s.e}</span>
-                <div><div style={{fontSize:12,fontWeight:700,color:TH.text}}>{s.v}</div><div style={{fontSize:9,color:TH.muted}}>{s.l}</div></div>
+                <div><div style={{fontSize:12,fontWeight:700,color:TH.text}}>{s.v}</div><div style={{fontSize:10,color:TH.muted}}>{s.l}</div></div>
               </div>
             ))}
           </div>
@@ -8547,16 +8547,16 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
             {context!=="trial"&&<div style={{marginTop:12,padding:"10px 12px",background:"rgba(147,197,253,0.08)",border:"1px solid rgba(147,197,253,0.18)",borderRadius:10,textAlign:"left",display:"flex",gap:10,alignItems:"flex-start"}}>
               <NpcFaceCoach coachName={player.club?.n||"mister"} size={34}/>
               <div style={{flex:1}}>
-                <div style={{fontSize:9,fontWeight:700,color:"#93c5fd",letterSpacing:1,marginBottom:4}}>MISTER DOPO LA PARTITA</div>
+                <div style={{fontSize:10,fontWeight:700,color:"#93c5fd",letterSpacing:1,marginBottom:4}}>MISTER DOPO LA PARTITA</div>
                 <div style={{fontSize:11,color:TH.text,lineHeight:1.5}}>{coachPostMatch(winning,!winning&&!losing,mStats.goals,mStats.assists,rating,opponent?.p||opponent?.prestige||65)}</div>
               </div>
             </div>}
             {/* Sprint 113 — Key match events timeline */}
             {matchEvents.length>0&&<div style={{marginTop:10,textAlign:"left"}}>
-              <div style={{fontSize:9,color:TH.muted,fontWeight:700,letterSpacing:1,marginBottom:4}}>MOMENTI CHIAVE</div>
+              <div style={{fontSize:10,color:TH.muted,fontWeight:700,letterSpacing:1,marginBottom:4}}>MOMENTI CHIAVE</div>
               <div style={{display:"flex",flexDirection:"column",gap:3}}>
                 {matchEvents.map((ev,i)=><div key={i} style={{display:"flex",gap:6,alignItems:"center",fontSize:10,color:ev.type==="player_goal"||ev.type==="player_assist"?TH.success:ev.type==="opp_goal"?TH.danger:ev.type==="red"?"#f59e0b":TH.muted}}>
-                  <span style={{fontSize:9,fontWeight:700,minWidth:22,color:TH.faint}}>{ev.min}'</span>
+                  <span style={{fontSize:10,fontWeight:700,minWidth:22,color:TH.faint}}>{ev.min}'</span>
                   <span>{ev.txt}</span>
                 </div>)}
               </div>
@@ -8606,7 +8606,7 @@ function ProTransitionScreen({player,onChoose}){
           </div>
           <div style={{textAlign:"right",flexShrink:0}}>
             <div style={{fontSize:26,fontWeight:900,color:forced?TH.danger:TH.primary,lineHeight:1}}>{u18S+1}<span style={{fontSize:11,color:TH.faint,fontWeight:400}}>/2</span></div>
-            <div style={{fontSize:9,color:TH.faint}}>stagioni U18</div>
+            <div style={{fontSize:10,color:TH.faint}}>stagioni U18</div>
           </div>
         </div>
         {forced&&<div style={{marginTop:10,padding:"8px 10px",background:"#fee2e2",borderRadius:8,fontSize:11,color:TH.danger,fontWeight:600}}>⚠️ Limite massimo raggiunto: non puoi restare in Under 18. Scegli il prossimo passo.</div>}
@@ -8639,13 +8639,13 @@ function ProTransitionScreen({player,onChoose}){
                 {o.role} · {o.wage?_fmtWageY133(o.wage)+"/anno":"–"} · {o.duration} stagion{o.duration===1?"e":"i"}
               </div>
               <div style={{display:"flex",gap:5,marginTop:4,flexWrap:"wrap"}}>
-                <span style={{fontSize:9,padding:"2px 6px",borderRadius:10,background:o.moralBonus>=0?"#dcfce7":"#fee2e2",color:o.moralBonus>=0?TH.success:TH.danger}}>
+                <span style={{fontSize:10,padding:"2px 6px",borderRadius:10,background:o.moralBonus>=0?"#dcfce7":"#fee2e2",color:o.moralBonus>=0?TH.success:TH.danger}}>
                   😄{o.moralBonus>=0?"+":""}{o.moralBonus}
                 </span>
-                <span style={{fontSize:9,padding:"2px 6px",borderRadius:10,background:"#f3e8ff",color:TH.accent}}>📈+{o.growthBonus}</span>
-                {o.isLastChance&&<span style={{fontSize:9,padding:"2px 6px",borderRadius:10,background:"#fef9c3",color:TH.warning}}>⚠️ Ultima chance U18</span>}
-                {o.isMain&&<span style={{fontSize:9,padding:"2px 6px",borderRadius:10,background:"#eff6ff",color:TH.primary}}>⭐ Consigliato</span>}
-                {o.isNonConfirmed&&<span style={{fontSize:9,padding:"2px 6px",borderRadius:10,background:"#fee2e2",color:TH.danger}}>❌ Non confermato</span>}
+                <span style={{fontSize:10,padding:"2px 6px",borderRadius:10,background:"#f3e8ff",color:TH.accent}}>📈+{o.growthBonus}</span>
+                {o.isLastChance&&<span style={{fontSize:10,padding:"2px 6px",borderRadius:10,background:"#fef9c3",color:TH.warning}}>⚠️ Ultima chance U18</span>}
+                {o.isMain&&<span style={{fontSize:10,padding:"2px 6px",borderRadius:10,background:"#eff6ff",color:TH.primary}}>⭐ Consigliato</span>}
+                {o.isNonConfirmed&&<span style={{fontSize:10,padding:"2px 6px",borderRadius:10,background:"#fee2e2",color:TH.danger}}>❌ Non confermato</span>}
               </div>
             </div>
             <Btn onClick={()=>onChoose(o)} v={o.isMain?"primary":o.isStayU18?"secondary":"ghost"} style={{flexShrink:0,padding:"9px 12px",fontSize:12}}>
@@ -8879,13 +8879,13 @@ function SeasonAwardsScreen({awards,player,season,club,onContinue}){
             <div style={{textAlign:"center"}}>
               <div style={{fontSize:26,fontWeight:900,color:rival.playerWins?"#4ade80":"#f87171"}}>{rival.playerGoals}</div>
               <div style={{fontSize:10,color:"rgba(165,180,252,0.7)",marginTop:2}}>{player.name}</div>
-              <div style={{fontSize:9,color:"rgba(165,180,252,0.5)"}}>gol stagione</div>
+              <div style={{fontSize:10,color:"rgba(165,180,252,0.5)"}}>gol stagione</div>
             </div>
             <div style={{textAlign:"center",fontSize:18,color:"rgba(165,180,252,0.5)"}}>⚽</div>
             <div style={{textAlign:"center"}}>
               <div style={{fontSize:26,fontWeight:900,color:!rival.playerWins?"#4ade80":"#f87171"}}>{rival.goals}</div>
               <div style={{fontSize:10,color:"rgba(165,180,252,0.7)",marginTop:2}}>{rival.name}</div>
-              <div style={{fontSize:9,color:"rgba(165,180,252,0.5)"}}>gol stagione</div>
+              <div style={{fontSize:10,color:"rgba(165,180,252,0.5)"}}>gol stagione</div>
             </div>
           </div>
           <div style={{textAlign:"center",fontSize:12,fontWeight:700,color:rival.playerWins?"#4ade80":"#f87171",padding:"6px",background:"rgba(0,0,0,0.2)",borderRadius:8}}>
@@ -9067,7 +9067,7 @@ function SeasonEndScreen({data,player,onNewSeason,onRetire}){
             <div key={s.l}>
               <div style={{fontSize:20}}>{s.e}</div>
               <div style={{fontSize:22,fontWeight:900,color:TH.text}}>{s.v}</div>
-              <div style={{fontSize:9,color:TH.muted}}>{s.l}</div>
+              <div style={{fontSize:10,color:TH.muted}}>{s.l}</div>
             </div>
           ))}
         </div>
@@ -9108,7 +9108,7 @@ function SeasonEndScreen({data,player,onNewSeason,onRetire}){
                 <div style={{height:"100%",width:obj.pct+"%",background:obj.done?"#22c55e":"#f97316",borderRadius:3,transition:"width 0.6s ease"}}/>
               </div>
               {obj.done&&obj.bonus&&(
-                <div style={{fontSize:9,color:"#16a34a",marginTop:2}}>
+                <div style={{fontSize:10,color:"#16a34a",marginTop:2}}>
                   +{[obj.bonus.morale&&`${obj.bonus.morale} morale`,obj.bonus.coachTrust&&`${obj.bonus.coachTrust} fiducia`,obj.bonus.popularity&&`${obj.bonus.popularity} popolarità`].filter(Boolean).join(" · ")}
                 </div>
               )}
@@ -9164,8 +9164,8 @@ function SeasonEndScreen({data,player,onNewSeason,onRetire}){
             </div>
           )}
           {euroChamp&&<div style={{fontSize:11,fontWeight:700,color:"#713f12",background:"#fef08a",padding:"4px 8px",borderRadius:6,textAlign:"center"}}>🏆 Campione {euro.competition}!</div>}
-          {euroElim&&<div style={{fontSize:10,color:TH.muted,fontStyle:"italic"}}>Eliminati in fase {euroPhaseLabel.toLowerCase()}.</div>}
-          {euro.qualified&&!euroChamp&&!euroElim&&<div style={{fontSize:10,color:"#16a34a",fontWeight:700}}>✅ Qualificati alla fase successiva</div>}
+          {euroElim&&<div style={{fontSize:12,color:TH.muted,fontStyle:"italic"}}>Eliminati in fase {euroPhaseLabel.toLowerCase()}.</div>}
+          {euro.qualified&&!euroChamp&&!euroElim&&<div style={{fontSize:12,color:"#16a34a",fontWeight:700}}>✅ Qualificati alla fase successiva</div>}
         </Card>
       )}
 
@@ -9205,11 +9205,11 @@ function SeasonEndScreen({data,player,onNewSeason,onRetire}){
       {sorted.length>0&&(
         <Card style={{marginBottom:12,padding:"12px 14px"}}>
           <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>📊 Classifica finale</div>
-          <div style={{display:"flex",justifyContent:"flex-end",gap:12,fontSize:9,color:TH.faint,marginBottom:4,paddingRight:4}}>
+          <div style={{display:"flex",justifyContent:"flex-end",gap:12,fontSize:10,color:TH.faint,marginBottom:4,paddingRight:4}}>
             <span>PG GF-GA</span><span style={{minWidth:28,textAlign:"right"}}>PT</span>
           </div>
           {rows}
-          <div style={{display:"flex",gap:10,marginTop:8,fontSize:9,flexWrap:"wrap"}}>
+          <div style={{display:"flex",gap:10,marginTop:8,fontSize:10,flexWrap:"wrap"}}>
             {_isTopFlight132?(
               <>
                 <span style={{color:"#f59e0b"}}>🏆 Campione</span>
@@ -9242,7 +9242,7 @@ function SeasonEndScreen({data,player,onNewSeason,onRetire}){
                 </div>
               ))}
               <div style={{borderTop:"1px solid "+TH.cardBorder,paddingTop:8}}>
-                <div style={{fontSize:10,fontWeight:700,color:"#dc2626",marginBottom:3}}>⬇️ {_relegDestLg99?`Retrocesse in ${_relegDestLg99}`:"Retrocesse"}</div>
+                <div style={{fontSize:12,fontWeight:700,color:"#dc2626",marginBottom:3}}>⬇️ {_relegDestLg99?`Retrocesse in ${_relegDestLg99}`:"Retrocesse"}</div>
                 {relegTeams.map((t,i)=>(
                   <div key={i} style={{display:"flex",alignItems:"center",gap:6,padding:"2px 0",fontSize:11}}>
                     <span style={{color:"#dc2626",fontWeight:700,width:20,textAlign:"right"}}>{sorted.length-2+i}°</span>
@@ -9257,7 +9257,7 @@ function SeasonEndScreen({data,player,onNewSeason,onRetire}){
               <>
                 <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>🔀 Movimenti di lega</div>
                 <div style={{marginBottom:6}}>
-                  <div style={{fontSize:10,fontWeight:700,color:"#16a34a",marginBottom:4}}>⬆️ {_promoDestLg99?`Promosse in ${_promoDestLg99}`:"Promosse alla lega superiore"}</div>
+                  <div style={{fontSize:12,fontWeight:700,color:"#16a34a",marginBottom:4}}>⬆️ {_promoDestLg99?`Promosse in ${_promoDestLg99}`:"Promosse alla lega superiore"}</div>
                   {promoTeams.map((t,i)=>(
                     <div key={i} style={{display:"flex",alignItems:"center",gap:6,padding:"3px 0",fontSize:11}}>
                       <span style={{color:"#16a34a",fontWeight:700,width:16,textAlign:"right"}}>{i+1}°</span>
@@ -9267,7 +9267,7 @@ function SeasonEndScreen({data,player,onNewSeason,onRetire}){
                   ))}
                 </div>
                 <div style={{borderTop:"1px solid "+TH.cardBorder,paddingTop:8}}>
-                  <div style={{fontSize:10,fontWeight:700,color:"#dc2626",marginBottom:4}}>⬇️ {_relegDestLg99?`Retrocesse in ${_relegDestLg99}`:"Retrocesse alla lega inferiore"}</div>
+                  <div style={{fontSize:12,fontWeight:700,color:"#dc2626",marginBottom:4}}>⬇️ {_relegDestLg99?`Retrocesse in ${_relegDestLg99}`:"Retrocesse alla lega inferiore"}</div>
                   {relegTeams.map((t,i)=>(
                     <div key={i} style={{display:"flex",alignItems:"center",gap:6,padding:"3px 0",fontSize:11}}>
                       <span style={{color:"#dc2626",fontWeight:700,width:16,textAlign:"right"}}>{sorted.length-2+i}°</span>
@@ -9305,7 +9305,7 @@ function SeasonEndScreen({data,player,onNewSeason,onRetire}){
           <div style={{fontSize:11,fontWeight:700,color:contractExpiredNow?"#dc2626":contractYearsLeft===1?"#d97706":"#16a34a"}}>
             {contractExpiredNow?"Contratto scaduto — tratta il rinnovo o trova una squadra":contractYearsLeft===1?"Ultimo anno di contratto — occhio alle offerte":"Contratto attivo · "+contractYearsLeft+" ann"+(contractYearsLeft===1?"o":"i") + " rimanent"+(contractYearsLeft===1?"e":"i")}
           </div>
-          {(player.contract?.wage||0)>0&&<div style={{fontSize:9,color:TH.muted}}>{_fmtWageY133(player.contract.wage||0)} / anno</div>}
+          {(player.contract?.wage||0)>0&&<div style={{fontSize:10,color:TH.muted}}>{_fmtWageY133(player.contract.wage||0)} / anno</div>}
         </div>
       </div>
 
@@ -9357,7 +9357,7 @@ function ClubPresentationScreen({club,contractType,playerName,onContinue}){
     <div style={{width:"100%"}}>
       {/* Club hero banner */}
       <div style={{width:"100%",background:`linear-gradient(135deg,${col}28,${col}0a)`,border:`1px solid ${col}55`,borderRadius:16,padding:"18px 16px",textAlign:"center",marginBottom:12}}>
-        <div style={{fontSize:9,color:TH.muted,letterSpacing:3,textTransform:"uppercase",marginBottom:8}}>🎉 Ufficiale</div>
+        <div style={{fontSize:10,color:TH.muted,letterSpacing:3,textTransform:"uppercase",marginBottom:8}}>🎉 Ufficiale</div>
         <TeamBadge team={club} size={64}/>
         <h1 style={{fontSize:20,fontWeight:900,margin:"10px 0 2px",color:TH.text}}>{club?.n||club?.name}</h1>
         <div style={{fontSize:11,color:TH.muted,marginBottom:6}}>{club?.lg||club?.nat||"Professionismo"}</div>
@@ -9365,23 +9365,23 @@ function ClubPresentationScreen({club,contractType,playerName,onContinue}){
       </div>
       {/* Headline */}
       <Card bg="#f0fdf4" border="#bbf7d0" style={{marginBottom:10,padding:"10px 14px"}}>
-        <div style={{fontSize:9,color:TH.success,textTransform:"uppercase",letterSpacing:1.5,marginBottom:4}}>📰 Manchette</div>
+        <div style={{fontSize:10,color:TH.success,textTransform:"uppercase",letterSpacing:1.5,marginBottom:4}}>📰 Manchette</div>
         <div style={{fontSize:13,fontWeight:700,color:TH.text,lineHeight:1.4}}>{headline}</div>
       </Card>
       {/* Stadium + prestige */}
       <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8,marginBottom:10}}>
         <Card style={{padding:"10px 12px"}}>
-          <div style={{fontSize:9,color:TH.muted,marginBottom:3}}>🏟️ Stadio</div>
+          <div style={{fontSize:10,color:TH.muted,marginBottom:3}}>🏟️ Stadio</div>
           <div style={{fontSize:11,fontWeight:700,color:TH.text,lineHeight:1.3}}>{stadiumName}</div>
         </Card>
         <Card style={{padding:"10px 12px",textAlign:"center"}}>
-          <div style={{fontSize:9,color:TH.muted,marginBottom:3}}>Prestigio</div>
+          <div style={{fontSize:10,color:TH.muted,marginBottom:3}}>Prestigio</div>
           <div style={{fontSize:22,fontWeight:900,color:col,lineHeight:1}}>{club?.p||60}</div>
         </Card>
       </div>
       {/* Coach quote */}
       <Card style={{marginBottom:10,padding:"12px 14px"}}>
-        <div style={{fontSize:9,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:6}}>💬 Il mister dice</div>
+        <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:6}}>💬 Il mister dice</div>
         <div style={{fontSize:12,color:TH.text,lineHeight:1.6,fontStyle:"italic"}}>"{COACH_QUOTES[qIdx]}"</div>
       </Card>
       {/* Atmosphere */}
@@ -9583,7 +9583,7 @@ function CreateScreen({onCreate,legacyBonus,onClearLegacy}){
                   <button key={arc.id} onClick={()=>setArchetypeId(arc.id)} style={{padding:"8px 10px",borderRadius:10,border:`2px solid ${sel?TH.primary:TH.cardBorder}`,background:sel?"#eff6ff":"#f8fafc",cursor:"pointer",textAlign:"left",transition:"border .15s"}}>
                     <div style={{fontSize:16,marginBottom:2}}>{arc.e}</div>
                     <div style={{fontSize:11,fontWeight:700,color:sel?TH.primary:TH.text}}>{arc.name}</div>
-                    <div style={{fontSize:9,color:TH.faint,lineHeight:1.4}}>{arc.desc}</div>
+                    <div style={{fontSize:10,color:TH.faint,lineHeight:1.4}}>{arc.desc}</div>
                   </button>
                 );
               })}
@@ -9617,7 +9617,7 @@ function CreateScreen({onCreate,legacyBonus,onClearLegacy}){
           <details style={{marginBottom:6}}>
             <summary style={{fontSize:11,color:TH.muted,cursor:"pointer",userSelect:"none",padding:"4px 0"}}>⚡ Modalità Sfida <span style={{color:challengeId?TH.warning:"inherit"}}>{challengeId?`(attiva: ${CHALLENGES.find(c=>c.id===challengeId)?.name||""})`:""}</span></summary>
             <div style={{marginTop:8,display:"flex",flexDirection:"column",gap:6}}>
-              {CHALLENGES.map(ch=>{const sel=challengeId===ch.id;return(<button key={ch.id} onClick={()=>setChallengeId(sel?null:ch.id)} style={{textAlign:"left",padding:"8px 10px",borderRadius:10,border:`2px solid ${sel?"#f59e0b":TH.cardBorder}`,background:sel?"#fef9c3":"#f8fafc",cursor:"pointer"}}><div style={{fontSize:14,marginBottom:2}}>{ch.icon} <span style={{fontWeight:700,fontSize:11}}>{ch.name}</span></div><div style={{fontSize:10,color:TH.muted}}>{ch.desc}</div><div style={{fontSize:9,color:"#f59e0b",marginTop:2}}>{ch.reward}</div></button>);})}
+              {CHALLENGES.map(ch=>{const sel=challengeId===ch.id;return(<button key={ch.id} onClick={()=>setChallengeId(sel?null:ch.id)} style={{textAlign:"left",padding:"8px 10px",borderRadius:10,border:`2px solid ${sel?"#f59e0b":TH.cardBorder}`,background:sel?"#fef9c3":"#f8fafc",cursor:"pointer"}}><div style={{fontSize:14,marginBottom:2}}>{ch.icon} <span style={{fontWeight:700,fontSize:11}}>{ch.name}</span></div><div style={{fontSize:10,color:TH.muted}}>{ch.desc}</div><div style={{fontSize:10,color:"#f59e0b",marginTop:2}}>{ch.reward}</div></button>);})}
             </div>
           </details>
           <Btn onClick={go} disabled={!name.trim()} fw style={{padding:"14px",fontSize:15}}>⚡ INIZIA I PROVINI</Btn>
@@ -9650,7 +9650,7 @@ function OffersScreen({player,trialStats,onChoose}){
       <div style={{textAlign:"center",marginBottom:14}}><div style={{fontSize:32,marginBottom:6}}>📋</div><h1 style={{fontSize:18,fontWeight:900,margin:0,color:TH.text}}>Offerte ricevute</h1><p style={{color:TH.muted,fontSize:12,margin:"6px 0 0"}}>3 provini · {total} gol · Rating medio {avg}</p></div>
       <Card style={{marginBottom:12,padding:"12px 14px"}}>
         <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>Riepilogo provini</div>
-        <div style={{display:"flex",gap:6}}>{trialStats.map((t,i)=><div key={i} style={{flex:1,background:"#f8fafc",borderRadius:8,padding:"7px",textAlign:"center",border:"1px solid "+TH.cardBorder}}><div style={{fontSize:9,color:TH.faint,marginBottom:2}}>Provino {i+1}</div><div style={{fontSize:12,fontWeight:700,color:TH.text}}>⚽{t.goals} 🎯{t.assists}</div><div style={{fontSize:11,color:TH.warning,fontWeight:700}}>{t.rating}</div></div>)}</div>
+        <div style={{display:"flex",gap:6}}>{trialStats.map((t,i)=><div key={i} style={{flex:1,background:"#f8fafc",borderRadius:8,padding:"7px",textAlign:"center",border:"1px solid "+TH.cardBorder}}><div style={{fontSize:10,color:TH.faint,marginBottom:2}}>Provino {i+1}</div><div style={{fontSize:12,fontWeight:700,color:TH.text}}>⚽{t.goals} 🎯{t.assists}</div><div style={{fontSize:11,color:TH.warning,fontWeight:700}}>{t.rating}</div></div>)}</div>
       </Card>
       {_dk&&<div style={{fontSize:10,color:TH.faint,textAlign:"center",marginBottom:8}}>↑↓ seleziona · Enter / 1·2·3 scegli</div>}
       <div className="cpm-offers" style={{marginBottom:12}}>
@@ -9664,7 +9664,7 @@ function OffersScreen({player,trialStats,onChoose}){
                   <div><div style={{fontWeight:700,fontSize:14,color:TH.text}}>{club.name}</div><div style={{fontSize:11,color:TH.muted,marginTop:1}}>{club.nat} · Prestigio {club.p}</div></div>
                 </div>
                 <div style={{flexShrink:0,display:"flex",flexDirection:"column",alignItems:"flex-end",gap:3}}>
-                  {i===0&&<div style={{fontSize:9,color:TH.primary,fontWeight:700}}>⭐ TOP</div>}
+                  {i===0&&<div style={{fontSize:10,color:TH.primary,fontWeight:700}}>⭐ TOP</div>}
                   <div style={{display:"flex",alignItems:"center",gap:5}}>
                     {_dk&&<span className="kbd">{i+1}</span>}
                     <Btn onClick={()=>onChoose(club)} v={isSel?"primary":i===0?"primary":"secondary"}>Scegli →</Btn>
@@ -9964,7 +9964,7 @@ function FootballMatch({player,opponent,context="career",onMatchEnd}){
         </div>
         <div style={{textAlign:'center'}}>
           <div style={{fontSize:14,fontWeight:700}}>{ui.time}</div>
-          <div style={{fontSize:9,color:'#64748b',marginTop:1}}>WASD muovi · SPAZIO passa/tira</div>
+          <div style={{fontSize:10,color:'#64748b',marginTop:1}}>WASD muovi · SPAZIO passa/tira</div>
         </div>
         <div style={{display:'flex',alignItems:'center',gap:10}}>
           <span style={{fontSize:30,fontWeight:900,color:'#fca5a5'}}>{ui.scoreB}</span>
@@ -10737,7 +10737,7 @@ function AISettingsCard({player}){
       </div>
       {player&&player.aiData?.lastOpponentTactic&&(
         <div style={{marginTop:8,padding:"8px 10px",background:"#f8fafc",borderRadius:8,border:"1px solid "+TH.cardBorder}}>
-          <div style={{fontSize:9,color:TH.primary,fontWeight:700,marginBottom:2}}>ULTIMA TATTICA AVVERSARIA</div>
+          <div style={{fontSize:10,color:TH.primary,fontWeight:700,marginBottom:2}}>ULTIMA TATTICA AVVERSARIA</div>
           <div style={{fontSize:11,color:TH.text}}>{player.aiData.lastOpponentTactic.formation} · Pressing {player.aiData.lastOpponentTactic.pressure}%</div>
           <div style={{fontSize:10,color:TH.muted}}>{player.aiData.lastOpponentTactic.reasoning}</div>
         </div>
@@ -10804,7 +10804,7 @@ function NationalCallupScreen({data,onPlay}){
       </div>
       {/* Pre-match info */}
       <Card style={{width:"100%",maxWidth:360,padding:"14px 16px",marginBottom:20}}>
-        <div style={{fontSize:9,color:TH.muted,letterSpacing:2,textTransform:"uppercase",textAlign:"center",marginBottom:12}}>Prossima Partita</div>
+        <div style={{fontSize:10,color:TH.muted,letterSpacing:2,textTransform:"uppercase",textAlign:"center",marginBottom:12}}>Prossima Partita</div>
         <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:8}}>
           <div style={{textAlign:"center",flex:1}}>
             <div style={{fontSize:28,lineHeight:1,marginBottom:4}}>{flag}</div>
@@ -10821,13 +10821,13 @@ function NationalCallupScreen({data,onPlay}){
       </Card>
       {/* Boosts preview */}
       <Card style={{width:"100%",maxWidth:360,padding:"12px 16px",marginBottom:24}}>
-        <div style={{fontSize:9,color:TH.muted,letterSpacing:2,textTransform:"uppercase",marginBottom:10}}>Bonus dopo la partita</div>
+        <div style={{fontSize:10,color:TH.muted,letterSpacing:2,textTransform:"uppercase",marginBottom:10}}>Bonus dopo la partita</div>
         <div style={{display:"flex",justifyContent:"space-around"}}>
           {[{l:"Popolarità",v:"+8",e:"📈",c:TH.success},{l:"Valore",v:"+€0.15M",e:"💶",c:TH.warning},{l:"Morale",v:"+12",e:"😊",c:TH.accent}].map(b=>(
             <div key={b.l} style={{textAlign:"center"}}>
               <div style={{fontSize:16,marginBottom:2}}>{b.e}</div>
               <div style={{fontSize:15,fontWeight:800,color:b.c}}>{b.v}</div>
-              <div style={{fontSize:9,color:TH.muted}}>{b.l}</div>
+              <div style={{fontSize:10,color:TH.muted}}>{b.l}</div>
             </div>
           ))}
         </div>
@@ -10942,7 +10942,7 @@ function CareerEndScreen({retData,onNewGame,onNewGamePlus}){
             <div key={s.l} style={{background:TH.bg,borderRadius:8,padding:"8px 4px"}}>
               <div style={{fontSize:18}}>{s.e}</div>
               <div style={{fontSize:20,fontWeight:900,color:TH.text}}>{s.v}</div>
-              <div style={{fontSize:9,color:TH.muted}}>{s.l}</div>
+              <div style={{fontSize:10,color:TH.muted}}>{s.l}</div>
             </div>
           ))}
         </div>
@@ -11462,7 +11462,7 @@ const TrainPanel=({player,setPlayer,notify})=>{
       <div style={{display:"flex",alignItems:"flex-start",gap:10,marginBottom:10,padding:"8px 10px",background:"#f8fafc",borderRadius:8,border:"1px solid "+TH.cardBorder}}>
         <div style={{fontSize:22,flexShrink:0}}>🧑‍🏫</div>
         <div style={{flex:1}}>
-          <div style={{fontSize:9,color:TH.faint,textTransform:"uppercase",letterSpacing:1,marginBottom:2}}>Mister · Piano W.{week}</div>
+          <div style={{fontSize:10,color:TH.faint,textTransform:"uppercase",letterSpacing:1,marginBottom:2}}>Mister · Piano W.{week}</div>
           <div style={{fontSize:12,color:TH.text,fontStyle:"italic"}}>"{_coachMsg}"</div>
           {_fitMsg&&<div style={{fontSize:10,color:"#0284c7",marginTop:4}}>{_fitMsg}</div>}
         </div>
@@ -11474,7 +11474,7 @@ const TrainPanel=({player,setPlayer,notify})=>{
           const done=slog[i];
           return(<div key={i} style={{flex:1,padding:"8px 4px",borderRadius:8,border:`1.5px solid ${t?.col+(done?"88":"44")}`,background:t?.col+(done?"22":"0a"),textAlign:"center"}}>
             <div style={{fontSize:18}}>{done?"✅":t?.e||"?"}</div>
-            <div style={{fontSize:9,fontWeight:700,color:t?.col,marginTop:2}}>{t?.l||tid}</div>
+            <div style={{fontSize:10,fontWeight:700,color:t?.col,marginTop:2}}>{t?.l||tid}</div>
           </div>);
         })}
       </div>
@@ -13659,7 +13659,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
   if(screen==="postmatch"&&lastMatch){
     const r=lastMatch,rating=r.rating,rc=rating>=8?TH.success:rating>=6.5?TH.warning:TH.danger;
     const hasMatchStats=r.shots!=null;
-    return <div style={{width:"100%"}}><Card style={{textAlign:"center",padding:"24px",maxWidth:560,margin:"0 auto"}}><div style={{fontSize:10,color:TH.muted,letterSpacing:2,marginBottom:8}}>{L.postMatch}</div><div style={{fontSize:28,fontWeight:900,marginBottom:4,color:TH.text}}><span style={{color:TH.success}}>{r.homeScore}</span><span style={{color:TH.faint,margin:"0 10px"}}>–</span><span style={{color:TH.danger}}>{r.awayScore}</span></div><p style={{color:TH.muted,fontSize:12,margin:"0 0 14px"}}>vs {r.opponent}</p><div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:8,marginBottom:10}}>{[{l:L.goalLabel,v:r.goals,e:"⚽"},{l:L.assistLabel,v:r.assists,e:"🎯"},{l:L.ratingLabel,v:rating,e:"⭐",c:rc}].map(s=><Card key={s.l} style={{padding:"10px 6px",textAlign:"center"}}><div style={{fontSize:16,marginBottom:2}}>{s.e}</div><div style={{fontSize:20,fontWeight:900,color:s.c||TH.warning}}>{s.v}</div><div style={{fontSize:9,color:TH.muted}}>{s.l}</div></Card>)}</div>{hasMatchStats&&<div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:6,marginBottom:14,background:TH.bg,borderRadius:10,padding:"8px 6px"}}>{[{l:L.shots,v:`${r.shots}–${r.oppShots}`,e:"🎯"},{l:L.possession,v:`${r.possession}%`,e:"⚽"},{l:L.fouls,v:r.fouls,e:"🟡"},{l:L.corners,v:r.corners,e:"🏳️"}].map(s=><div key={s.l} style={{textAlign:"center"}}><div style={{fontSize:9,color:TH.faint,marginBottom:1}}>{s.e}</div><div style={{fontSize:12,fontWeight:700,color:TH.text}}>{s.v}</div><div style={{fontSize:8,color:TH.muted}}>{s.l}</div></div>)}</div>}<div style={{fontSize:50,fontWeight:900,color:rc,lineHeight:1,marginBottom:4}}>{rating}</div><div style={{fontSize:12,color:rc,marginBottom:14}}>{rating>=8?L.ratingExcellent:rating>=7?L.ratingGood:rating>=6?L.ratingSufficient:L.ratingPoor}</div>{lastPressReport&&<Btn onClick={()=>setScreen("press")} v="secondary" fw style={{padding:"10px",fontSize:13,marginBottom:8}}>{L.pressReview}</Btn>}<Btn onClick={()=>setScreen("dashboard")} v="green" fw style={{padding:"13px",fontSize:14}}>{L.backToDashboard} <span className="kbd" style={{opacity:0.7,fontSize:11}}>Enter</span></Btn></Card></div>;
+    return <div style={{width:"100%"}}><Card style={{textAlign:"center",padding:"24px",maxWidth:560,margin:"0 auto"}}><div style={{fontSize:10,color:TH.muted,letterSpacing:2,marginBottom:8}}>{L.postMatch}</div><div style={{fontSize:28,fontWeight:900,marginBottom:4,color:TH.text}}><span style={{color:TH.success}}>{r.homeScore}</span><span style={{color:TH.faint,margin:"0 10px"}}>–</span><span style={{color:TH.danger}}>{r.awayScore}</span></div><p style={{color:TH.muted,fontSize:12,margin:"0 0 14px"}}>vs {r.opponent}</p><div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:8,marginBottom:10}}>{[{l:L.goalLabel,v:r.goals,e:"⚽"},{l:L.assistLabel,v:r.assists,e:"🎯"},{l:L.ratingLabel,v:rating,e:"⭐",c:rc}].map(s=><Card key={s.l} style={{padding:"10px 6px",textAlign:"center"}}><div style={{fontSize:16,marginBottom:2}}>{s.e}</div><div style={{fontSize:20,fontWeight:900,color:s.c||TH.warning}}>{s.v}</div><div style={{fontSize:10,color:TH.muted}}>{s.l}</div></Card>)}</div>{hasMatchStats&&<div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:6,marginBottom:14,background:TH.bg,borderRadius:10,padding:"8px 6px"}}>{[{l:L.shots,v:`${r.shots}–${r.oppShots}`,e:"🎯"},{l:L.possession,v:`${r.possession}%`,e:"⚽"},{l:L.fouls,v:r.fouls,e:"🟡"},{l:L.corners,v:r.corners,e:"🏳️"}].map(s=><div key={s.l} style={{textAlign:"center"}}><div style={{fontSize:10,color:TH.faint,marginBottom:1}}>{s.e}</div><div style={{fontSize:12,fontWeight:700,color:TH.text}}>{s.v}</div><div style={{fontSize:8,color:TH.muted}}>{s.l}</div></div>)}</div>}<div style={{fontSize:50,fontWeight:900,color:rc,lineHeight:1,marginBottom:4}}>{rating}</div><div style={{fontSize:12,color:rc,marginBottom:14}}>{rating>=8?L.ratingExcellent:rating>=7?L.ratingGood:rating>=6?L.ratingSufficient:L.ratingPoor}</div>{lastPressReport&&<Btn onClick={()=>setScreen("press")} v="secondary" fw style={{padding:"10px",fontSize:13,marginBottom:8}}>{L.pressReview}</Btn>}<Btn onClick={()=>setScreen("dashboard")} v="green" fw style={{padding:"13px",fontSize:14}}>{L.backToDashboard} <span className="kbd" style={{opacity:0.7,fontSize:11}}>Enter</span></Btn></Card></div>;
   }
 
   if(screen==="nationalCallup"&&nationalCallupData)return(
@@ -13770,12 +13770,12 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                     <div style={{fontSize:13,color:TH.text,lineHeight:1.5}}>{ch.txt}</div>
                     {ch.ef&&Object.keys(ch.ef).length>0&&(
                       <div style={{display:"flex",gap:5,flexWrap:"wrap",marginTop:4}}>
-                        {ch.ef.morale!=null&&ch.ef.morale!==0&&<span style={{fontSize:9,color:ch.ef.morale>0?TH.success:TH.danger,fontWeight:700}}>😄{ch.ef.morale>0?"+":""}{ch.ef.morale}</span>}
-                        {ch.ef.form!=null&&ch.ef.form!==0&&<span style={{fontSize:9,color:ch.ef.form>0?TH.success:TH.danger,fontWeight:700}}>💪{ch.ef.form>0?"+":""}{ch.ef.form}</span>}
-                        {ch.ef.fatigue!=null&&ch.ef.fatigue!==0&&<span style={{fontSize:9,color:ch.ef.fatigue<0?TH.success:TH.warning,fontWeight:700}}>⚡{ch.ef.fatigue>0?"+":""}{ch.ef.fatigue}</span>}
-                        {ch.ef.coachTrust!=null&&ch.ef.coachTrust!==0&&<span style={{fontSize:9,color:ch.ef.coachTrust>0?TH.success:TH.danger,fontWeight:700}}>🤝{ch.ef.coachTrust>0?"+":""}{ch.ef.coachTrust}</span>}
-                        {ch.ef.popularity!=null&&ch.ef.popularity!==0&&<span style={{fontSize:9,color:ch.ef.popularity>0?TH.success:TH.danger,fontWeight:700}}>⭐{ch.ef.popularity>0?"+":""}{ch.ef.popularity}</span>}
-                        {ch.bond!=null&&ch.bond!==0&&<span style={{fontSize:9,color:ch.bond>0?"#7c3aed":"#64748b",fontWeight:700}}>💜 Legame{ch.bond>0?"+":""}{ch.bond}</span>}
+                        {ch.ef.morale!=null&&ch.ef.morale!==0&&<span style={{fontSize:10,color:ch.ef.morale>0?TH.success:TH.danger,fontWeight:700}}>😄{ch.ef.morale>0?"+":""}{ch.ef.morale}</span>}
+                        {ch.ef.form!=null&&ch.ef.form!==0&&<span style={{fontSize:10,color:ch.ef.form>0?TH.success:TH.danger,fontWeight:700}}>💪{ch.ef.form>0?"+":""}{ch.ef.form}</span>}
+                        {ch.ef.fatigue!=null&&ch.ef.fatigue!==0&&<span style={{fontSize:10,color:ch.ef.fatigue<0?TH.success:TH.warning,fontWeight:700}}>⚡{ch.ef.fatigue>0?"+":""}{ch.ef.fatigue}</span>}
+                        {ch.ef.coachTrust!=null&&ch.ef.coachTrust!==0&&<span style={{fontSize:10,color:ch.ef.coachTrust>0?TH.success:TH.danger,fontWeight:700}}>🤝{ch.ef.coachTrust>0?"+":""}{ch.ef.coachTrust}</span>}
+                        {ch.ef.popularity!=null&&ch.ef.popularity!==0&&<span style={{fontSize:10,color:ch.ef.popularity>0?TH.success:TH.danger,fontWeight:700}}>⭐{ch.ef.popularity>0?"+":""}{ch.ef.popularity}</span>}
+                        {ch.bond!=null&&ch.bond!==0&&<span style={{fontSize:10,color:ch.bond>0?"#7c3aed":"#64748b",fontWeight:700}}>💜 Legame{ch.bond>0?"+":""}{ch.bond}</span>}
                       </div>
                     )}
                   </button>
@@ -13795,7 +13795,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                   <div style={{background:"rgba(255,255,255,0.04)",border:"1px solid rgba(255,255,255,0.12)",borderRadius:8,padding:"9px 12px",marginBottom:10,display:"flex",gap:8,alignItems:"flex-start"}}>
                     <div style={{fontSize:16,flexShrink:0}}>🧑‍🏫</div>
                     <div>
-                      <div style={{fontSize:9,color:TH.faint,textTransform:"uppercase",letterSpacing:1,marginBottom:2}}>Mister</div>
+                      <div style={{fontSize:10,color:TH.faint,textTransform:"uppercase",letterSpacing:1,marginBottom:2}}>Mister</div>
                       <div style={{fontSize:11,color:TH.muted,fontStyle:"italic"}}>"{weekLiveModal.coachMsg}"</div>
                     </div>
                   </div>
@@ -13882,7 +13882,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
               </div>
               <div style={{marginLeft:"auto",display:"flex",flexDirection:"column",alignItems:"flex-end",gap:3}}>
                 {interviewModal.matchCtx&&<div style={{fontSize:10,padding:"3px 9px",borderRadius:20,background:interviewModal.matchCtx==="win"?"#dcfce7":interviewModal.matchCtx==="loss"?"#fee2e2":"#fef9c3",color:interviewModal.matchCtx==="win"?TH.success:interviewModal.matchCtx==="loss"?TH.danger:TH.warning,fontWeight:700}}>{interviewModal.matchCtx==="win"?"VITTORIA":interviewModal.matchCtx==="loss"?"SCONFITTA":interviewModal.matchCtx==="draw"?"PAREGGIO":"SETTIMANALE"}</div>}
-                {interviewModal.notable&&<div style={{fontSize:9,padding:"2px 7px",borderRadius:20,background:"#fef3c7",color:"#b45309",fontWeight:700}}>{interviewModal.notable==="hattrick"?"⚽ HAT-TRICK":interviewModal.notable==="bigwin"?"🏆 BIG WIN":"💢 BIG LOSS"}</div>}
+                {interviewModal.notable&&<div style={{fontSize:10,padding:"2px 7px",borderRadius:20,background:"#fef3c7",color:"#b45309",fontWeight:700}}>{interviewModal.notable==="hattrick"?"⚽ HAT-TRICK":interviewModal.notable==="bigwin"?"🏆 BIG WIN":"💢 BIG LOSS"}</div>}
               </div>
             </div>
             {/* Question */}
@@ -13905,7 +13905,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                     onMouseLeave={e=>{e.currentTarget.style.background="transparent";e.currentTarget.style.borderColor=`${toneColor}20`;}}>
                     <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:5}}>
                       <span style={{fontSize:10,fontWeight:800,color:toneColor,padding:"2px 8px",borderRadius:20,background:`${toneColor}15`}}>{toneLabel}</span>
-                      <span style={{fontSize:9,color:"rgba(99,102,241,0.7)",fontWeight:600}}>👥 {tcHint}</span>
+                      <span style={{fontSize:10,color:"rgba(99,102,241,0.7)",fontWeight:600}}>👥 {tcHint}</span>
                     </div>
                     <div style={{fontSize:12,color:TH.text,lineHeight:1.5}}>"{ans.txt}"</div>
                   </button>
@@ -14118,7 +14118,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                 <button onClick={()=>setTransferOffer(o=>({...o,wage:Math.round((o.wage||500)*1.20),duration:(o.duration||2)+1,_counter:true}))} style={{marginTop:6,padding:"5px 12px",borderRadius:8,border:"1px solid "+TH.primary,background:"#fff",color:TH.primary,fontSize:11,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>Proponi counter →</button>
               </div>
             )}
-            {transferOffer._counter&&<div style={{fontSize:10,color:TH.success,fontWeight:700,marginBottom:8,textAlign:"center"}}>✅ Counter accettato dal club! Stipendio e durata aggiornati.</div>}
+            {transferOffer._counter&&<div style={{fontSize:12,color:TH.success,fontWeight:700,marginBottom:8,textAlign:"center"}}>✅ Counter accettato dal club! Stipendio e durata aggiornati.</div>}
             <div style={{display:"flex",gap:10}}>
               <Btn onClick={()=>setTransferOffer(null)} v="secondary" fw>Rifiuta</Btn>
               <Btn onClick={acceptTransfer} v="primary" fw>Accetta →</Btn>
@@ -14296,7 +14296,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
           <h1 style={{margin:"1px 0 0",fontSize:17,fontWeight:900,letterSpacing:-.5,color:TH.text}}>{player.name}</h1>
           <div style={{display:"flex",flexWrap:"wrap",alignItems:"center",gap:4,marginTop:1}}>
             <span style={{fontSize:11,color:player.club?.col||player.club?.c||TH.primary,fontWeight:700}}>{player.club?.n||player.club?.name||"–"}</span>
-            {player.club?.transferType&&player.club.transferType.includes("prest")&&<span style={{fontSize:9,background:"#eff6ff",color:TH.primary,padding:"1px 7px",borderRadius:8,fontWeight:600,border:"1px solid #bfdbfe"}}>{player.club.transferType}</span>}
+            {player.club?.transferType&&player.club.transferType.includes("prest")&&<span style={{fontSize:10,background:"#eff6ff",color:TH.primary,padding:"1px 7px",borderRadius:8,fontWeight:600,border:"1px solid #bfdbfe"}}>{player.club.transferType}</span>}
             <span style={{fontSize:10,color:TH.muted}}>{player.club?.lg?`· ${player.club.lg}`:player.proStatus==="u18"?"· U18":""} · S.{season} W.{week}/38</span>
           </div>
         </div>
@@ -14313,10 +14313,10 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
         <Card style={{marginBottom:8,padding:"9px 14px"}}>
           <div style={{display:"flex",justifyContent:"space-around",textAlign:"center"}}>
             {[{e:"⚽",v:player.totalGoals||0,l:"Gol tot."},{e:"👕",v:player.totalMatches||0,l:"Pres. tot."},{e:"🏆",v:(player.trophies||[]).length,l:"Trofei"},{e:"📅",v:Math.max(0,(player.season||1)-1),l:"Stagioni"}].map(s=>(
-              <div key={s.l}><div style={{fontSize:9,color:TH.faint,marginBottom:1}}>{s.l}</div><div style={{fontSize:16,fontWeight:900,color:TH.text}}>{s.v}</div></div>
+              <div key={s.l}><div style={{fontSize:10,color:TH.faint,marginBottom:1}}>{s.l}</div><div style={{fontSize:16,fontWeight:900,color:TH.text}}>{s.v}</div></div>
             ))}
           </div>
-          {(()=>{var ph=getCareerPhase(player.age||17);return(<div style={{display:"flex",alignItems:"center",gap:6,marginTop:8,paddingTop:7,borderTop:"1px solid "+TH.cardBorder}}><span style={{fontSize:14}}>{ph.e}</span><span style={{fontSize:10,fontWeight:700,color:ph.col}}>{ph.label}</span><span style={{fontSize:9,color:TH.faint,marginLeft:"auto"}}>{player.age} anni · S.{player.season||1}</span></div>);})()}
+          {(()=>{var ph=getCareerPhase(player.age||17);return(<div style={{display:"flex",alignItems:"center",gap:6,marginTop:8,paddingTop:7,borderTop:"1px solid "+TH.cardBorder}}><span style={{fontSize:14}}>{ph.e}</span><span style={{fontSize:10,fontWeight:700,color:ph.col}}>{ph.label}</span><span style={{fontSize:10,color:TH.faint,marginLeft:"auto"}}>{player.age} anni · S.{player.season||1}</span></div>);})()}
         </Card>
       )}
       {/* Sprint 29 — MW2: Recent form strip */}
@@ -14325,14 +14325,14 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
         if(recent.length<1)return null;
         return(
           <div style={{display:"flex",alignItems:"center",gap:6,marginBottom:8,padding:"6px 2px"}}>
-            <span style={{fontSize:9,color:TH.muted,letterSpacing:1,textTransform:"uppercase",minWidth:36}}>Forma</span>
+            <span style={{fontSize:10,color:TH.muted,letterSpacing:1,textTransform:"uppercase",minWidth:36}}>Forma</span>
             {recent.map((m,i)=>{
               const c=m.won?"#16a34a":m.drew?"#64748b":"#dc2626";
               const bg=m.won?"#dcfce7":m.drew?"#f1f5f9":"#fee2e2";
               const lbl=m.won?"V":m.drew?"P":"S";
               return<div key={i} style={{width:28,height:28,borderRadius:"50%",background:bg,border:`2px solid ${c}`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:10,fontWeight:800,color:c,flexShrink:0}} title={`vs ${m.opponent||"?"} ${m.homeScore}-${m.awayScore}`}>{lbl}</div>;
             })}
-            <span style={{fontSize:9,color:TH.faint,marginLeft:2}}>ultime {recent.length}</span>
+            <span style={{fontSize:10,color:TH.faint,marginLeft:2}}>ultime {recent.length}</span>
           </div>
         );
       })()}
@@ -14472,7 +14472,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
           <Card style={{marginBottom:8,padding:"12px 14px",border:"1px solid #1d4ed8",background:"#eff6ff"}}>
             <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:6}}>
               <div style={{fontSize:10,color:"#1d4ed8",textTransform:"uppercase",letterSpacing:1.5,flex:1}}>🌍 Coppa delle Nazioni · S.{_ncq.season}</div>
-              <div style={{fontSize:9,background:"#1d4ed8",color:"#fff",borderRadius:8,padding:"2px 8px",fontWeight:700}}>PRIORITÀ</div>
+              <div style={{fontSize:10,background:"#1d4ed8",color:"#fff",borderRadius:8,padding:"2px 8px",fontWeight:700}}>PRIORITÀ</div>
             </div>
             <div style={{fontSize:12,color:TH.text,fontWeight:700,marginBottom:2}}>vs {_ncOpp} — Partita {_ncIdx+1}/3</div>
             <div style={{fontSize:10,color:TH.muted,marginBottom:_clubMd?8:0}}>Punti accumulati: {_ncq.pts||0}/9</div>
@@ -14514,7 +14514,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                       <span style={{color:TH.faint,width:18,textAlign:"center"}}>{r.home!==false?"🏠":"✈️"}</span>
                       <span style={{flex:1,fontWeight:600,color:TH.text}}>vs {oppN}</span>
                       <span style={{fontWeight:800,color:r.won?"#16a34a":r.drew?"#64748b":"#dc2626",minWidth:30,textAlign:"center"}}>{hs}–{as}</span>
-                      <span style={{fontSize:9,fontWeight:700,color:r.won?"#16a34a":r.drew?"#64748b":"#dc2626",minWidth:12}}>{r.won?"V":r.drew?"P":"S"}</span>
+                      <span style={{fontSize:10,fontWeight:700,color:r.won?"#16a34a":r.drew?"#64748b":"#dc2626",minWidth:12}}>{r.won?"V":r.drew?"P":"S"}</span>
                     </div>
                   );
                 })}
@@ -14528,9 +14528,9 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                 <span style={{fontSize:12}}>{nextEuroMd.isHome?"🏠":"✈️"}</span>
                 <div style={{flex:1}}>
                   <div style={{fontSize:11,fontWeight:700,color:TH.text}}>Prossima: vs {nextEuroMd.opponentName}</div>
-                  <div style={{fontSize:9,color:TH.muted}}>W.{nextEuroMd.week} · {nextEuroMd.competition}</div>
+                  <div style={{fontSize:10,color:TH.muted}}>W.{nextEuroMd.week} · {nextEuroMd.competition}</div>
                 </div>
-                {nextEuroMd.week===(player.week||1)&&<span style={{fontSize:9,background:competCol,color:"#fff",borderRadius:8,padding:"2px 8px",fontWeight:700,flexShrink:0}}>ORA!</span>}
+                {nextEuroMd.week===(player.week||1)&&<span style={{fontSize:10,background:competCol,color:"#fff",borderRadius:8,padding:"2px 8px",fontWeight:700,flexShrink:0}}>ORA!</span>}
               </div>
             )}
             {isKOPhase&&!nextEuroMd&&(
@@ -14550,7 +14550,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
           <Card style={{marginBottom:8,padding:"12px 14px",border:`1px solid ${emCol}`,background:`${emCol}10`}}>
             <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:6}}>
               <div style={{fontSize:10,color:emCol,textTransform:"uppercase",letterSpacing:1.5,flex:1}}>{em.type==="Mondiale"?"🌍 Coppa del Mondo":"🏆 Europeo"} · S.{em.season} · {phaseLabel}</div>
-              <div style={{fontSize:9,background:emCol,color:"#fff",borderRadius:8,padding:"2px 8px",fontWeight:700}}>PRIORITÀ</div>
+              <div style={{fontSize:10,background:emCol,color:"#fff",borderRadius:8,padding:"2px 8px",fontWeight:700}}>PRIORITÀ</div>
             </div>
             <div style={{fontSize:12,color:TH.text,fontWeight:700,marginBottom:2}}>vs {oppName||"?"}</div>
             {em.phase==="group"&&<div style={{fontSize:10,color:TH.muted,marginBottom:_clubMd?8:0}}>Punti gironi: {em.groupPts||0}/{((em.groupOpponents||[]).length||3)*3} · Serve min. 4pt per qualificarsi</div>}
@@ -14596,7 +14596,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
               <div style={{display:"flex",alignItems:"flex-start",gap:6,marginBottom:5}}>
                 <span style={{fontSize:12,flexShrink:0}}>⬆️</span>
                 <div style={{flex:1}}>
-                  <span style={{fontSize:9,color:TH.faint,textTransform:"uppercase",letterSpacing:1,marginRight:6}}>Promosse in {ls.upperLg}</span>
+                  <span style={{fontSize:10,color:TH.faint,textTransform:"uppercase",letterSpacing:1,marginRight:6}}>Promosse in {ls.upperLg}</span>
                   <span style={{fontSize:11,color:"#16a34a",fontWeight:600}}>{ls.promoted.join(" · ")}</span>
                 </div>
               </div>
@@ -14605,7 +14605,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
               <div style={{display:"flex",alignItems:"flex-start",gap:6}}>
                 <span style={{fontSize:12,flexShrink:0}}>⬇️</span>
                 <div style={{flex:1}}>
-                  <span style={{fontSize:9,color:TH.faint,textTransform:"uppercase",letterSpacing:1,marginRight:6}}>Retrocesse in {ls.lowerLg}</span>
+                  <span style={{fontSize:10,color:TH.faint,textTransform:"uppercase",letterSpacing:1,marginRight:6}}>Retrocesse in {ls.lowerLg}</span>
                   <span style={{fontSize:11,color:"#dc2626",fontWeight:600}}>{ls.relegated.join(" · ")}</span>
                 </div>
               </div>
@@ -14639,7 +14639,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
             <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>🌍 Risultati Internazionali — W.{player.week||1}</div>
             {_lgs.map((lg,li)=>(
               <div key={lg} style={{marginBottom:li<_lgs.length-1?10:0}}>
-                <div style={{fontSize:9,color:TH.faint,fontWeight:700,marginBottom:4,textTransform:"uppercase",letterSpacing:1}}>{lg}</div>
+                <div style={{fontSize:10,color:TH.faint,fontWeight:700,marginBottom:4,textTransform:"uppercase",letterSpacing:1}}>{lg}</div>
                 {_wr.filter(r=>r.lg===lg).map((r,ri)=>(
                   <div key={ri} style={{display:"flex",alignItems:"center",gap:4,padding:"3px 0",borderTop:ri>0?"1px solid "+TH.cardBorder:"none"}}>
                     <span style={{flex:1,fontSize:10,fontWeight:r.hg>r.ag?700:400,color:r.hg>r.ag?TH.text:TH.faint,textAlign:"right",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{r.h}</span>
@@ -14736,7 +14736,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                   <div style={{width:16,height:16,flexShrink:0}}><TeamBadge team={t} size={16}/></div>
                   <span style={{flex:1,fontSize:11,fontWeight:r.me?800:r.pos<=3?700:400,color:r.me?TH.primary:r.rel?"#b91c1c":TH.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{r.me?"★ ":""}{t.a||t.n}</span>
                   <span style={{fontSize:12,fontWeight:800,color:r.me?TH.primary:TH.text,minWidth:20,textAlign:"right"}}>{t.pts}</span>
-                  <span style={{fontSize:9,color:TH.faint,minWidth:22,textAlign:"right"}}>{t.played}gj</span>
+                  <span style={{fontSize:10,color:TH.faint,minWidth:22,textAlign:"right"}}>{t.played}gj</span>
                 </div>
               );
             })}
@@ -14756,7 +14756,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                   {[{l:L.matches,v:player.matches||0},{l:L.goals,v:player.goals||0},{l:L.assists,v:player.assists||0},...(avgRat?[{l:"Media",v:avgRat,c:"#7c3aed"}]:[])].map((s,i)=>(
                     <div key={i} style={{textAlign:"center",flex:1}}>
                       <div style={{fontSize:s.c?22:28,fontWeight:900,color:s.c||TH.success}}>{s.v}</div>
-                      <div style={{fontSize:9,color:TH.muted}}>{s.l}</div>
+                      <div style={{fontSize:10,color:TH.muted}}>{s.l}</div>
                     </div>
                   ))}
                 </div>
@@ -14767,11 +14767,11 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
               const gs=player.goalStreak||0;
               return(
                 <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:10}}>
-                  {last5.length>0?<div style={{display:"flex",alignItems:"center",gap:4}}><span style={{fontSize:9,color:TH.faint,marginRight:2}}>ULTIMI 5</span>{last5.map((m,i)=><div key={i} title={`vs ${m.opponent||""} ${m.homeScore}–${m.awayScore}`} style={{width:22,height:22,borderRadius:4,background:m.won?"#16a34a":m.drew?"#ca8a04":"#dc2626",display:"flex",alignItems:"center",justifyContent:"center",fontSize:9,fontWeight:800,color:"#fff"}}>{m.won?"V":m.drew?"P":"S"}</div>)}</div>:<div/>}
+                  {last5.length>0?<div style={{display:"flex",alignItems:"center",gap:4}}><span style={{fontSize:10,color:TH.faint,marginRight:2}}>ULTIMI 5</span>{last5.map((m,i)=><div key={i} title={`vs ${m.opponent||""} ${m.homeScore}–${m.awayScore}`} style={{width:22,height:22,borderRadius:4,background:m.won?"#16a34a":m.drew?"#ca8a04":"#dc2626",display:"flex",alignItems:"center",justifyContent:"center",fontSize:10,fontWeight:800,color:"#fff"}}>{m.won?"V":m.drew?"P":"S"}</div>)}</div>:<div/>}
                   <div style={{display:"flex",gap:4,alignItems:"center",flexShrink:0}}>
-                    {gs>=3&&<div style={{background:"#fff7ed",border:"1px solid #fed7aa",borderRadius:12,padding:"2px 8px",fontSize:9,color:"#c2410c",fontWeight:800}}>🔥 {gs} di fila</div>}
-                    {(()=>{const _ws=getWinStreak(player.matchHistory);return _ws.count>=3&&_ws.type!=='draw'?<div style={{background:_ws.type==='win'?"#f0fdf4":"#fff1f2",border:`1px solid ${_ws.type==='win'?"#bbf7d0":"#fecaca"}`,borderRadius:12,padding:"2px 8px",fontSize:9,color:_ws.type==='win'?"#166534":"#991b1b",fontWeight:800}}>{_ws.type==='win'?"🏆":"📉"} {_ws.count}{_ws.type==='win'?" V":" S"}</div>:null;})()}
-                    {(()=>{const _cm=player.teammates||[];if(!_cm.length)return null;const _tc=Math.round(_cm.reduce((s,t)=>s+(t.bond||40),0)/_cm.length);if(_tc>=70)return<div style={{background:"#f0fdf4",border:"1px solid #bbf7d0",borderRadius:12,padding:"2px 8px",fontSize:9,color:"#166534",fontWeight:800}}>🤝 {_tc}%</div>;if(_tc<38)return<div style={{background:"#fff1f2",border:"1px solid #fecaca",borderRadius:12,padding:"2px 8px",fontSize:9,color:"#991b1b",fontWeight:800}}>👥 {_tc}%</div>;return null;})()}
+                    {gs>=3&&<div style={{background:"#fff7ed",border:"1px solid #fed7aa",borderRadius:12,padding:"2px 8px",fontSize:10,color:"#c2410c",fontWeight:800}}>🔥 {gs} di fila</div>}
+                    {(()=>{const _ws=getWinStreak(player.matchHistory);return _ws.count>=3&&_ws.type!=='draw'?<div style={{background:_ws.type==='win'?"#f0fdf4":"#fff1f2",border:`1px solid ${_ws.type==='win'?"#bbf7d0":"#fecaca"}`,borderRadius:12,padding:"2px 8px",fontSize:10,color:_ws.type==='win'?"#166534":"#991b1b",fontWeight:800}}>{_ws.type==='win'?"🏆":"📉"} {_ws.count}{_ws.type==='win'?" V":" S"}</div>:null;})()}
+                    {(()=>{const _cm=player.teammates||[];if(!_cm.length)return null;const _tc=Math.round(_cm.reduce((s,t)=>s+(t.bond||40),0)/_cm.length);if(_tc>=70)return<div style={{background:"#f0fdf4",border:"1px solid #bbf7d0",borderRadius:12,padding:"2px 8px",fontSize:10,color:"#166534",fontWeight:800}}>🤝 {_tc}%</div>;if(_tc<38)return<div style={{background:"#fff1f2",border:"1px solid #fecaca",borderRadius:12,padding:"2px 8px",fontSize:10,color:"#991b1b",fontWeight:800}}>👥 {_tc}%</div>;return null;})()}
                   </div>
                 </div>
               );
@@ -14852,7 +14852,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
           {(player.log||[]).length>0&&<Card style={{padding:"12px 14px"}}><div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:6}}>Ultime notizie</div>{(player.log||[]).slice(0,5).map((e,i)=><div key={i} style={{fontSize:11,color:TH.text,padding:"3px 0",borderBottom:i<4?"1px solid "+TH.cardBorder:"none"}}>{e}</div>)}</Card>}
           <Card style={{padding:"10px 14px"}} shadow={false} bg={darkMode?"#0f172a":"#f8fafc"}>
             <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:_dk?6:0}}>
-              {_dk&&<div style={{fontSize:9,color:TH.faint,textTransform:"uppercase",letterSpacing:1.5}}>⌨️ Scorciatoie tastiera</div>}
+              {_dk&&<div style={{fontSize:10,color:TH.faint,textTransform:"uppercase",letterSpacing:1.5}}>⌨️ Scorciatoie tastiera</div>}
               <button onClick={()=>{const nd=!darkMode;setDarkMode(nd);localStorage.setItem("cpm-dark",nd?"1":"0");}} style={{fontSize:11,padding:"3px 10px",borderRadius:20,border:`1px solid ${TH.cardBorder}`,background:darkMode?"#334155":"#e2e8f0",color:TH.text,cursor:"pointer",fontFamily:"inherit",fontWeight:600}}>{darkMode?`☀️ ${L.toggleLight||"Chiaro"}`:`🌙 ${L.toggleDark||"Scuro"}`}</button>
             </div>
             {_dk&&<div style={{display:"flex",flexWrap:"wrap",gap:5}}>
@@ -14890,8 +14890,8 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                       <div style={{flex:1,minWidth:0}}>
                         <div style={{fontSize:12,fontWeight:isCur?700:500,color:_compColor,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>
                           {isCur&&"▶ "}{md.isHome?"🏟️":"✈️"} vs {md.opponentName}
-                          {md.type==="cup"&&<span style={{fontSize:9,marginLeft:5,background:"#fef3c7",color:"#92400e",border:"1px solid #fde68a",borderRadius:4,padding:"1px 5px",fontWeight:700}}>{md.cupRoundName||"Coppa"}</span>}
-                          {_isEuro&&<span style={{fontSize:9,marginLeft:5,background:"#ede9fe",color:"#7c3aed",border:"1px solid #ddd6fe",borderRadius:4,padding:"1px 5px",fontWeight:700}}>{_euroComp}</span>}
+                          {md.type==="cup"&&<span style={{fontSize:10,marginLeft:5,background:"#fef3c7",color:"#92400e",border:"1px solid #fde68a",borderRadius:4,padding:"1px 5px",fontWeight:700}}>{md.cupRoundName||"Coppa"}</span>}
+                          {_isEuro&&<span style={{fontSize:10,marginLeft:5,background:"#ede9fe",color:"#7c3aed",border:"1px solid #ddd6fe",borderRadius:4,padding:"1px 5px",fontWeight:700}}>{_euroComp}</span>}
                         </div>
                         <div style={{fontSize:10,color:TH.muted}}>{_compLabel} · W.{md.week}</div>
                       </div>
@@ -14911,17 +14911,17 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                   <div style={{display:"flex",alignItems:"center",gap:8}}>
                     <div style={{width:8,height:8,borderRadius:"50%",background:m.won?TH.success:m.drew?TH.warning:TH.danger,flexShrink:0}}/>
                     <div>
-                      <div style={{fontSize:12,fontWeight:600,color:TH.text}}>vs {m.opponent}{m.simulated&&<span style={{fontSize:9,color:TH.faint,marginLeft:4}}>(sim.)</span>}</div>
+                      <div style={{fontSize:12,fontWeight:600,color:TH.text}}>vs {m.opponent}{m.simulated&&<span style={{fontSize:10,color:TH.faint,marginLeft:4}}>(sim.)</span>}</div>
                       <div style={{fontSize:10,color:TH.muted}}>W.{m.week}</div>
                     </div>
                   </div>
                   <div style={{textAlign:"center"}}>
                     <div style={{fontSize:13,fontWeight:700,color:TH.text}}>{m.homeScore}–{m.awayScore}</div>
-                    <div style={{fontSize:9,color:TH.muted}}>⚽{m.goals} 🎯{m.assists}</div>
+                    <div style={{fontSize:10,color:TH.muted}}>⚽{m.goals} 🎯{m.assists}</div>
                   </div>
                   <div style={{textAlign:"right"}}>
                     <div style={{fontSize:18,fontWeight:900,color:m.rating>=8?TH.success:m.rating>=6.5?TH.warning:TH.danger}}>{m.rating}</div>
-                    <div style={{fontSize:9,color:TH.faint}}>voto</div>
+                    <div style={{fontSize:10,color:TH.faint}}>voto</div>
                   </div>
                 </div>
               ))}
@@ -14946,8 +14946,8 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                 <div style={{marginBottom:4}}>
                   {player.cup.results.map((r,i)=>(
                     <div key={i} style={{display:"flex",gap:8,alignItems:"center",padding:"5px 0",borderTop:"1px solid "+TH.cardBorder,fontSize:11}}>
-                      <span style={{minWidth:24,fontSize:9,background:r.won?"#f0fdf4":"#fff1f2",border:`1px solid ${r.won?TH.success:TH.danger}`,borderRadius:4,padding:"1px 4px",textAlign:"center",fontWeight:700,color:r.won?TH.success:TH.danger}}>{r.won?"V":"X"}</span>
-                      <span style={{fontSize:9,color:TH.faint,minWidth:60}}>{r.name}{r.penalties&&<span style={{color:"#f59e0b"}}> (rig.)</span>}</span>
+                      <span style={{minWidth:24,fontSize:10,background:r.won?"#f0fdf4":"#fff1f2",border:`1px solid ${r.won?TH.success:TH.danger}`,borderRadius:4,padding:"1px 4px",textAlign:"center",fontWeight:700,color:r.won?TH.success:TH.danger}}>{r.won?"V":"X"}</span>
+                      <span style={{fontSize:10,color:TH.faint,minWidth:60}}>{r.name}{r.penalties&&<span style={{color:"#f59e0b"}}> (rig.)</span>}</span>
                       <span style={{flex:1,color:TH.text,fontWeight:600}}>vs {r.opponent}</span>
                       <span style={{fontSize:12,fontWeight:700,color:TH.text}}>{r.homeScore}–{r.awayScore}</span>
                     </div>
@@ -14973,9 +14973,9 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                           const pIsHome=m.home===pId;const pIsAway=m.away===pId;
                           return(
                             <div key={mi} style={{display:"flex",alignItems:"center",gap:4,padding:"3px 0",borderTop:mi>0?"1px solid "+TH.cardBorder:"none",background:isP?"#fffbeb":"transparent",borderRadius:isP?4:0}}>
-                              <span style={{fontSize:9,fontWeight:hWon?700:400,color:isP&&pIsHome?TH.warning:(hWon?TH.text:TH.faint),flex:1,minWidth:0,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{isP&&pIsHome?"⭐ ":""}{getAbbr(m.home)}</span>
-                              <span style={{fontSize:9,fontWeight:600,color:isP?"#d97706":TH.faint,minWidth:32,textAlign:"center"}}>{m.homeScore}–{m.awayScore}</span>
-                              <span style={{fontSize:9,fontWeight:!hWon?700:400,color:isP&&pIsAway?TH.warning:(!hWon?TH.text:TH.faint),flex:1,textAlign:"right",minWidth:0,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{getAbbr(m.away)}{isP&&pIsAway?" ⭐":""}</span>
+                              <span style={{fontSize:10,fontWeight:hWon?700:400,color:isP&&pIsHome?TH.warning:(hWon?TH.text:TH.faint),flex:1,minWidth:0,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{isP&&pIsHome?"⭐ ":""}{getAbbr(m.home)}</span>
+                              <span style={{fontSize:10,fontWeight:600,color:isP?"#d97706":TH.faint,minWidth:32,textAlign:"center"}}>{m.homeScore}–{m.awayScore}</span>
+                              <span style={{fontSize:10,fontWeight:!hWon?700:400,color:isP&&pIsAway?TH.warning:(!hWon?TH.text:TH.faint),flex:1,textAlign:"right",minWidth:0,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{getAbbr(m.away)}{isP&&pIsAway?" ⭐":""}</span>
                             </div>
                           );
                         })}
@@ -15031,7 +15031,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                 <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:10}}>
                   <div>
                     <div style={{fontSize:10,color:_ecCol,textTransform:"uppercase",letterSpacing:1.5,fontWeight:700}}>{_ecE} {_ecFull}</div>
-                    <div style={{fontSize:9,color:TH.faint}}>S.{eu.season||season} · {player.club?.nat||"🏳️"} {player.club?.n||"–"}</div>
+                    <div style={{fontSize:10,color:TH.faint}}>S.{eu.season||season} · {player.club?.nat||"🏳️"} {player.club?.n||"–"}</div>
                   </div>
                   <div style={{fontSize:11,fontWeight:700,color:eu.champion?"#f59e0b":eu.eliminated?TH.danger:_ecBorder,textAlign:"right"}}>{phaseLabel}</div>
                 </div>
@@ -15050,7 +15050,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                           <div style={{fontSize:8,color:isQ?_ecBorder:TH.faint,fontWeight:700,textAlign:"center"}}>{ri+1}</div>
                           <div style={{fontSize:10,color:row.isPlayer?_ecBorder:TH.text,fontWeight:row.isPlayer?700:400,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{row.n}{row.isPlayer?" ⭐":""}</div>
                           {[row.w+row.d+row.l,row.w,row.d,row.l,row.gf,row.ga,row.pts].map((v,vi)=>(
-                            <div key={vi} style={{fontSize:9,textAlign:"center",fontWeight:vi===6?700:400,color:vi===6?(row.isPlayer?_ecBorder:TH.text):TH.muted}}>{v}</div>
+                            <div key={vi} style={{fontSize:10,textAlign:"center",fontWeight:vi===6?700:400,color:vi===6?(row.isPlayer?_ecBorder:TH.text):TH.muted}}>{v}</div>
                           ))}
                         </div>
                       );
@@ -15081,7 +15081,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                           <span style={{fontSize:8,fontWeight:700,color:_ecCol,minWidth:52}}>{phase.l}</span>
                           <span style={{flex:1,fontSize:10,color:TH.text,fontWeight:600}}>vs {r.opp}</span>
                           <span style={{fontSize:11,fontWeight:700,color:TH.text}}>{r.homeScore}–{r.awayScore}</span>
-                          <span style={{fontSize:9,fontWeight:700,color:r.won?"#16a34a":"#dc2626"}}>{r.won?"✅":"❌"}</span>
+                          <span style={{fontSize:10,fontWeight:700,color:r.won?"#16a34a":"#dc2626"}}>{r.won?"✅":"❌"}</span>
                         </div>
                       );
                     })}
@@ -15145,7 +15145,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
             </div>
             <div style={{overflowX:"auto"}}>
               <table style={{width:"100%",borderCollapse:"collapse",fontSize:11}}>
-                <thead><tr>{["","#","Club","G","V","P","S","Gf","Gs","Diff","Pts"].map(h=><th key={h} style={{textAlign:h==="Club"?"left":"center",padding:"4px 3px",fontSize:9,color:TH.faint,textTransform:"uppercase",letterSpacing:.5,borderBottom:"1px solid "+TH.cardBorder}}>{h}</th>)}</tr></thead>
+                <thead><tr>{["","#","Club","G","V","P","S","Gf","Gs","Diff","Pts"].map(h=><th key={h} style={{textAlign:h==="Club"?"left":"center",padding:"4px 3px",fontSize:10,color:TH.faint,textTransform:"uppercase",letterSpacing:.5,borderBottom:"1px solid "+TH.cardBorder}}>{h}</th>)}</tr></thead>
                 <tbody>
                   {rows.map((t,i)=>{
                     const my=selLg===myLeague&&(t.id===player.club?.id||t.n===player.club?.n);
@@ -15193,7 +15193,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                         <div style={{width:18,textAlign:"center",fontSize:11,flexShrink:0,color:i<3?["#f59e0b","#9ca3af","#b45309"][i]:TH.faint,fontWeight:700}}>{medal||i+1}</div>
                         <div style={{flex:1,minWidth:0}}>
                           <span style={{fontSize:11,fontWeight:isMe?800:400,color:isMe?TH.primary:TH.text}}>{s.name}</span>
-                          <span style={{fontSize:9,color:TH.faint,marginLeft:5}}>{s.club}</span>
+                          <span style={{fontSize:10,color:TH.faint,marginLeft:5}}>{s.club}</span>
                         </div>
                         <div style={{fontSize:13,fontWeight:900,color:isMe?TH.primary:TH.text,minWidth:22,textAlign:"right"}}>{s.goals}</div>
                       </div>
@@ -15230,10 +15230,10 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
               {leagueTitles===0&&cupTitles===0&&euroTitles===0&&<span style={{fontSize:10,color:TH.faint,fontStyle:"italic"}}>Nessun trofeo ancora</span>}
             </div>
             <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:6}}>
-              {recs.topSeasonGoals>0&&<div style={{background:"#fef3c7",borderRadius:8,padding:"6px 10px"}}><div style={{fontSize:9,color:"#a16207",textTransform:"uppercase",letterSpacing:1}}>⚽ Record gol/stag.</div><div style={{fontSize:15,fontWeight:900,color:"#92400e"}}>{recs.topSeasonGoals}</div></div>}
-              {recs.topSeasonAssists>0&&<div style={{background:"#eff6ff",borderRadius:8,padding:"6px 10px"}}><div style={{fontSize:9,color:"#1e40af",textTransform:"uppercase",letterSpacing:1}}>🎯 Record assist/stag.</div><div style={{fontSize:15,fontWeight:900,color:"#1d4ed8"}}>{recs.topSeasonAssists}</div></div>}
-              {recs.topOvr>60&&<div style={{background:"#f0fdf4",borderRadius:8,padding:"6px 10px"}}><div style={{fontSize:9,color:"#166534",textTransform:"uppercase",letterSpacing:1}}>📈 Miglior livello</div><div style={{fontSize:15,fontWeight:900,color:"#15803d"}}>{recs.topOvr}</div></div>}
-              {bestPos>0&&<div style={{background:bestPos===1?"#fef9c3":"#f8fafc",borderRadius:8,padding:"6px 10px"}}><div style={{fontSize:9,color:bestPos===1?"#a16207":TH.muted,textTransform:"uppercase",letterSpacing:1}}>🏅 Miglior piazz.</div><div style={{fontSize:15,fontWeight:900,color:bestPos===1?"#92400e":TH.text}}>{bestPos}°{bestPos===1?" 👑":""}</div></div>}
+              {recs.topSeasonGoals>0&&<div style={{background:"#fef3c7",borderRadius:8,padding:"6px 10px"}}><div style={{fontSize:10,color:"#a16207",textTransform:"uppercase",letterSpacing:1}}>⚽ Record gol/stag.</div><div style={{fontSize:15,fontWeight:900,color:"#92400e"}}>{recs.topSeasonGoals}</div></div>}
+              {recs.topSeasonAssists>0&&<div style={{background:"#eff6ff",borderRadius:8,padding:"6px 10px"}}><div style={{fontSize:10,color:"#1e40af",textTransform:"uppercase",letterSpacing:1}}>🎯 Record assist/stag.</div><div style={{fontSize:15,fontWeight:900,color:"#1d4ed8"}}>{recs.topSeasonAssists}</div></div>}
+              {recs.topOvr>60&&<div style={{background:"#f0fdf4",borderRadius:8,padding:"6px 10px"}}><div style={{fontSize:10,color:"#166534",textTransform:"uppercase",letterSpacing:1}}>📈 Miglior livello</div><div style={{fontSize:15,fontWeight:900,color:"#15803d"}}>{recs.topOvr}</div></div>}
+              {bestPos>0&&<div style={{background:bestPos===1?"#fef9c3":"#f8fafc",borderRadius:8,padding:"6px 10px"}}><div style={{fontSize:10,color:bestPos===1?"#a16207":TH.muted,textTransform:"uppercase",letterSpacing:1}}>🏅 Miglior piazz.</div><div style={{fontSize:15,fontWeight:900,color:bestPos===1?"#92400e":TH.text}}>{bestPos}°{bestPos===1?" 👑":""}</div></div>}
             </div>
             {top3Streak>=2&&<div style={{marginTop:8,fontSize:10,color:TH.muted,borderTop:"1px solid "+TH.cardBorder,paddingTop:6}}>⚡ {top3Streak} stagioni consecutive nei top 3</div>}
           </Card>
@@ -15278,7 +15278,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
               const entries=arch.filter(e=>e.league===lg);
               return(
                 <div key={lg} style={{marginBottom:leagues.length>1?14:0}}>
-                  {leagues.length>1&&<div style={{fontSize:9,color:TH.muted,textTransform:"uppercase",letterSpacing:2,marginBottom:6,borderBottom:"1px solid "+TH.cardBorder,paddingBottom:4}}>{lg}</div>}
+                  {leagues.length>1&&<div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:2,marginBottom:6,borderBottom:"1px solid "+TH.cardBorder,paddingBottom:4}}>{lg}</div>}
                   <div style={{maxHeight:260,overflowY:"auto"}}>
                     {entries.map((e,i)=>{
                       const isChamp=isPlayerChamp(e);
@@ -15291,15 +15291,15 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                               <span style={{fontSize:11,fontWeight:isChamp?800:600,color:isChamp?"#713f12":TH.text}}>
                                 {isChamp?"🏆":""} {e.champion}
                               </span>
-                              {e.isPlayerCupChamp&&<span style={{fontSize:9,padding:"1px 5px",borderRadius:8,background:"#fff7ed",color:"#c2410c",fontWeight:700,border:"1px solid #fed7aa"}}>🥇 Coppa</span>}
-                              {e.isPlayerEuroChamp&&<span style={{fontSize:9,padding:"1px 5px",borderRadius:8,background:"#eff6ff",color:"#1d4ed8",fontWeight:700,border:"1px solid #bfdbfe"}}>🌍 Euro</span>}
+                              {e.isPlayerCupChamp&&<span style={{fontSize:10,padding:"1px 5px",borderRadius:8,background:"#fff7ed",color:"#c2410c",fontWeight:700,border:"1px solid #fed7aa"}}>🥇 Coppa</span>}
+                              {e.isPlayerEuroChamp&&<span style={{fontSize:10,padding:"1px 5px",borderRadius:8,background:"#eff6ff",color:"#1d4ed8",fontWeight:700,border:"1px solid #bfdbfe"}}>🌍 Euro</span>}
                             </div>
                             <div style={{fontSize:10,color:isTop3?TH.primary:TH.muted,marginTop:1}}>
                               {isTop3?"⭐ ":""}{e.playerClub}{e.playerPos>0?` · ${e.playerPos}°`:""}
                               {(e.playerGoals||0)>0?` · ${e.playerGoals}⚽`:""}
                               {(e.playerAssists||0)>0?` · ${e.playerAssists}🎯`:""}
                             </div>
-                            {(e.relegated||[]).length>0&&<div style={{fontSize:9,color:TH.danger,marginTop:1}}>⬇ {e.relegated.slice(0,2).join(", ")}{e.relegated.length>2?` +${e.relegated.length-2}`:""}</div>}
+                            {(e.relegated||[]).length>0&&<div style={{fontSize:10,color:TH.danger,marginTop:1}}>⬇ {e.relegated.slice(0,2).join(", ")}{e.relegated.length>2?` +${e.relegated.length-2}`:""}</div>}
                           </div>
                         </div>
                       );
@@ -15389,7 +15389,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
             <div style={{fontSize:11,fontWeight:700,color:eu.champion?"#f59e0b":eu.eliminated?TH.danger:competCol,marginBottom:8}}>{statusLabel}</div>
             {gr.length>0&&(
               <div>
-                <div style={{fontSize:9,color:TH.faint,textTransform:"uppercase",letterSpacing:1,marginBottom:5}}>Fase a Gironi · {gr.length}/{totalGrMds} partite · {eu.pts||0}pt</div>
+                <div style={{fontSize:10,color:TH.faint,textTransform:"uppercase",letterSpacing:1,marginBottom:5}}>Fase a Gironi · {gr.length}/{totalGrMds} partite · {eu.pts||0}pt</div>
                 {gr.map((r,i)=>{
                   const oppN=r.opp||r.opponent||"?";
                   const hs=r.hs!==undefined?r.hs:r.homeScore;
@@ -15399,7 +15399,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                       <span style={{color:TH.faint,width:18,flexShrink:0}}>{r.home!==false?"🏠":"✈️"}</span>
                       <span style={{flex:1,color:TH.text}}>{oppN}</span>
                       <span style={{fontWeight:700,color:r.won?"#16a34a":r.drew?"#64748b":"#dc2626"}}>{hs}–{as}</span>
-                      <span style={{fontSize:9,color:r.won?"#16a34a":r.drew?"#64748b":"#dc2626",minWidth:10,textAlign:"right"}}>{r.won?"V":r.drew?"P":"S"}</span>
+                      <span style={{fontSize:10,color:r.won?"#16a34a":r.drew?"#64748b":"#dc2626",minWidth:10,textAlign:"right"}}>{r.won?"V":r.drew?"P":"S"}</span>
                     </div>
                   );
                 })}
@@ -15408,7 +15408,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
             {gr.length===0&&!eu.eliminated&&!eu.champion&&<div style={{fontSize:11,color:TH.muted}}>Gironi: partite alle settimane 5–15</div>}
             {(eu.koResults||[]).length>0&&(
               <div style={{marginTop:8}}>
-                <div style={{fontSize:9,color:TH.faint,textTransform:"uppercase",letterSpacing:1,marginBottom:5}}>Fase a Eliminazione Diretta</div>
+                <div style={{fontSize:10,color:TH.faint,textTransform:"uppercase",letterSpacing:1,marginBottom:5}}>Fase a Eliminazione Diretta</div>
                 {(eu.koResults||[]).map((r,i)=>(
                   <div key={i} style={{display:"flex",alignItems:"center",gap:6,padding:"4px 0",borderTop:"1px solid "+TH.cardBorder,fontSize:10}}>
                     <span style={{color:TH.faint,minWidth:60}}>{r.name||r.phase||"KO"}</span>
@@ -15437,19 +15437,19 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
             <div style={{fontSize:11,fontWeight:700,color:em.champion?"#f59e0b":em.eliminated?TH.danger:emCol,marginBottom:8}}>{statusLabel}</div>
             {gm.length>0&&(
               <div>
-                <div style={{fontSize:9,color:TH.faint,textTransform:"uppercase",letterSpacing:1,marginBottom:5}}>Gironi · {gm.length}/{totalGrMds} · {em.groupPts||0}pt</div>
+                <div style={{fontSize:10,color:TH.faint,textTransform:"uppercase",letterSpacing:1,marginBottom:5}}>Gironi · {gm.length}/{totalGrMds} · {em.groupPts||0}pt</div>
                 {gm.map((r,i)=>(
                   <div key={i} style={{display:"flex",alignItems:"center",gap:6,padding:"4px 0",borderTop:"1px solid "+TH.cardBorder,fontSize:10}}>
                     <span style={{flex:1,color:TH.text}}>vs {r.opp||"?"}</span>
                     <span style={{fontWeight:700,color:r.won?"#16a34a":r.drew?"#64748b":"#dc2626"}}>{r.homeScore||r.hs||0}–{r.awayScore||r.as||0}</span>
-                    <span style={{fontSize:9,color:r.won?"#16a34a":r.drew?"#64748b":"#dc2626",minWidth:10,textAlign:"right"}}>{r.won?"V":r.drew?"P":"S"}</span>
+                    <span style={{fontSize:10,color:r.won?"#16a34a":r.drew?"#64748b":"#dc2626",minWidth:10,textAlign:"right"}}>{r.won?"V":r.drew?"P":"S"}</span>
                   </div>
                 ))}
               </div>
             )}
             {koR.length>0&&(
               <div style={{marginTop:8}}>
-                <div style={{fontSize:9,color:TH.faint,textTransform:"uppercase",letterSpacing:1,marginBottom:5}}>Fase KO</div>
+                <div style={{fontSize:10,color:TH.faint,textTransform:"uppercase",letterSpacing:1,marginBottom:5}}>Fase KO</div>
                 {koR.map((r,i)=>(
                   <div key={i} style={{display:"flex",alignItems:"center",gap:6,padding:"4px 0",borderTop:"1px solid "+TH.cardBorder,fontSize:10}}>
                     <span style={{color:TH.faint,minWidth:55}}>{r.phase==="semi"?"Semifinale":r.phase==="final"?"Finale":r.phase||"KO"}</span>
@@ -15543,16 +15543,16 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
               <div style={{display:"flex",gap:8}}>
                 <div style={{flex:1,textAlign:"center",background:TH.cardBg,borderRadius:8,padding:"8px 4px"}}>
                   <div style={{fontSize:14,fontWeight:900,color:TH.success}}>{wage.toLocaleString()}€</div>
-                  <div style={{fontSize:9,color:TH.faint,textTransform:"uppercase",letterSpacing:1}}>/ settimana</div>
-                  <div style={{fontSize:9,color:TH.muted,marginTop:1}}>{_fmtWageY133(wage)}/anno</div>
+                  <div style={{fontSize:10,color:TH.faint,textTransform:"uppercase",letterSpacing:1}}>/ settimana</div>
+                  <div style={{fontSize:10,color:TH.muted,marginTop:1}}>{_fmtWageY133(wage)}/anno</div>
                 </div>
                 <div style={{flex:1,textAlign:"center",background:TH.cardBg,borderRadius:8,padding:"8px 4px"}}>
                   <div style={{fontSize:14,fontWeight:900,color:dur<=1?TH.danger:TH.warning}}>S.{exp}</div>
-                  <div style={{fontSize:9,color:TH.faint,textTransform:"uppercase",letterSpacing:1}}>Scadenza</div>
+                  <div style={{fontSize:10,color:TH.faint,textTransform:"uppercase",letterSpacing:1}}>Scadenza</div>
                 </div>
                 <div style={{flex:1,textAlign:"center",background:TH.cardBg,borderRadius:8,padding:"8px 4px"}}>
                   <div style={{fontSize:14,fontWeight:900,color:dur<=1?TH.danger:TH.primary}}>{dur}ann{dur===1?"o":"i"}</div>
-                  <div style={{fontSize:9,color:TH.faint,textTransform:"uppercase",letterSpacing:1}}>Durata</div>
+                  <div style={{fontSize:10,color:TH.faint,textTransform:"uppercase",letterSpacing:1}}>Durata</div>
                 </div>
               </div>
             </Card>
@@ -15629,20 +15629,20 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                     <div style={{fontSize:10,color:TH.faint,minWidth:18,textAlign:"right"}}>{pl.jerseyNum||i+1+offset}</div>
                     <div style={{fontSize:13,width:18,flexShrink:0}}>{roleIcons[pl.role]||"⚽"}</div>
                     <div style={{flex:1,fontSize:11,color:isMe?TH.primary:TH.text,fontWeight:isMe?700:400}}>{pl.name}</div>
-                    <div style={{fontSize:9,color:TH.faint,textAlign:"right"}}>{pl.role}</div>
+                    <div style={{fontSize:10,color:TH.faint,textAlign:"right"}}>{pl.role}</div>
                   </div>
                 );
               };
               return(
                 <Card style={{padding:"10px 14px"}}>
                   <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>👕 Rosa S.{player.season||1} <span style={{color:TH.faint,fontWeight:400}}>({roster.length} giocatori)</span></div>
-                  <div style={{fontSize:9,color:TH.primary,fontWeight:700,textTransform:"uppercase",letterSpacing:1,marginBottom:4,marginTop:2}}>Titolari</div>
+                  <div style={{fontSize:10,color:TH.primary,fontWeight:700,textTransform:"uppercase",letterSpacing:1,marginBottom:4,marginTop:2}}>Titolari</div>
                   <div style={{display:"flex",flexDirection:"column",gap:2,marginBottom:8}}>
                     {titolari.map((pl,i)=>renderRow(pl,i,0))}
                   </div>
                   {panchina.length>0&&<>
                     <div style={{height:1,background:TH.cardBorder,marginBottom:6}}/>
-                    <div style={{fontSize:9,color:TH.muted,fontWeight:700,textTransform:"uppercase",letterSpacing:1,marginBottom:4}}>Panchina</div>
+                    <div style={{fontSize:10,color:TH.muted,fontWeight:700,textTransform:"uppercase",letterSpacing:1,marginBottom:4}}>Panchina</div>
                     <div style={{display:"flex",flexDirection:"column",gap:2}}>
                       {panchina.map((pl,i)=>renderRow(pl,i,11))}
                     </div>
@@ -15704,7 +15704,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
             <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}}>
               <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5}}>Attributi</div>
               <div style={{display:"flex",alignItems:"center",gap:8}}>
-                <span style={{fontSize:9,color:"#16a34a",fontWeight:700}}>+1</span><span style={{fontSize:9,color:TH.faint}}>= guadagnato settimana</span>
+                <span style={{fontSize:10,color:"#16a34a",fontWeight:700}}>+1</span><span style={{fontSize:10,color:TH.faint}}>= guadagnato settimana</span>
               </div>
             </div>
             {(()=>{
@@ -15713,7 +15713,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
               return Object.entries(player.stats).map(([k,v])=>(
                 <div key={k} style={{display:"flex",alignItems:"center",gap:6,marginBottom:4}}>
                   <div style={{flex:1}}><StatBar label={k} value={v}/></div>
-                  {_wGained.has(k)&&<span style={{fontSize:9,fontWeight:800,color:"#16a34a",background:"#dcfce7",padding:"1px 5px",borderRadius:4,flexShrink:0}}>+1</span>}
+                  {_wGained.has(k)&&<span style={{fontSize:10,fontWeight:800,color:"#16a34a",background:"#dcfce7",padding:"1px 5px",borderRadius:4,flexShrink:0}}>+1</span>}
                 </div>
               ));
             })()}
@@ -15783,7 +15783,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                     <span style={{fontSize:13,width:18,flexShrink:0}}>{r.e}</span>
                     <span style={{flex:1,fontSize:11,color:TH.text}}>{r.l}</span>
                     <span style={{fontSize:13,fontWeight:800,color:TH.warning,minWidth:22,textAlign:"right"}}>{r.v}</span>
-                    <span style={{fontSize:9,color:TH.faint,minWidth:60,textAlign:"right",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{r.ctx}</span>
+                    <span style={{fontSize:10,color:TH.faint,minWidth:60,textAlign:"right",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{r.ctx}</span>
                   </div>
                 ))}
                 {_proj!==null&&(
@@ -15791,7 +15791,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                     <span style={{fontSize:13,width:18,flexShrink:0}}>📈</span>
                     <span style={{flex:1,fontSize:11,color:TH.muted}}>Proiezione (W.{_w}/38)</span>
                     <span style={{fontSize:13,fontWeight:800,color:TH.primary}}>~{_proj}</span>
-                    <span style={{fontSize:9,color:TH.faint,minWidth:60,textAlign:"right"}}>gol a fine stagione</span>
+                    <span style={{fontSize:10,color:TH.faint,minWidth:60,textAlign:"right"}}>gol a fine stagione</span>
                   </div>
                 )}
               </Card>
@@ -15814,7 +15814,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                 </div>
                 {_groups.map((g,gi)=>(
                   <div key={g.key} style={{marginBottom:gi<_groups.length-1?10:0}}>
-                    <div style={{fontSize:9,color:"rgba(253,230,138,0.55)",textTransform:"uppercase",letterSpacing:1.2,marginBottom:5}}>{g.e} {g.label} · {g.items.length}</div>
+                    <div style={{fontSize:10,color:"rgba(253,230,138,0.55)",textTransform:"uppercase",letterSpacing:1.2,marginBottom:5}}>{g.e} {g.label} · {g.items.length}</div>
                     <div style={{display:"flex",flexWrap:"wrap",gap:5}}>
                       {g.items.map((t,i)=>(
                         <div key={i} style={{background:"rgba(253,230,138,0.08)",border:"1px solid rgba(253,230,138,0.18)",borderRadius:7,padding:"5px 8px"}}>
@@ -15843,11 +15843,11 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                         <div style={{fontSize:18,width:24,textAlign:"center",flexShrink:0}}>🧑‍💼</div>
                         <div style={{flex:1,minWidth:0}}>
                           <div style={{fontSize:11,fontWeight:700,color:TH.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{ch.name}</div>
-                          <div style={{fontSize:9,color:TH.muted}}>{ch.style} · S.{ch.season}{ch.coachChanged?" · ↩ cambio":""}</div>
+                          <div style={{fontSize:10,color:TH.muted}}>{ch.style} · S.{ch.season}{ch.coachChanged?" · ↩ cambio":""}</div>
                         </div>
                         <div style={{textAlign:"right",flexShrink:0}}>
-                          <div style={{fontSize:11,fontWeight:700,color:TH.text}}>{ch.goals}<span style={{fontSize:9,color:TH.muted}}>⚽</span> {ch.assists}<span style={{fontSize:9,color:TH.muted}}>🎯</span></div>
-                          <div style={{fontSize:9,color:_cColor,fontWeight:600}}>CT {ch.coachTrust||60}</div>
+                          <div style={{fontSize:11,fontWeight:700,color:TH.text}}>{ch.goals}<span style={{fontSize:10,color:TH.muted}}>⚽</span> {ch.assists}<span style={{fontSize:10,color:TH.muted}}>🎯</span></div>
+                          <div style={{fontSize:10,color:_cColor,fontWeight:600}}>CT {ch.coachTrust||60}</div>
                         </div>
                       </div>
                     );
@@ -15886,13 +15886,13 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                 {/* Lifetime goals comparison */}
                 <div style={{display:"grid",gridTemplateColumns:"1fr auto 1fr",gap:6,marginBottom:10,alignItems:"center"}}>
                   <div style={{textAlign:"center",background:"rgba(0,0,0,0.3)",borderRadius:10,padding:"8px 4px"}}>
-                    <div style={{fontSize:9,color:"rgba(74,222,128,0.6)",marginBottom:2}}>TU</div>
+                    <div style={{fontSize:10,color:"rgba(74,222,128,0.6)",marginBottom:2}}>TU</div>
                     <div style={{fontSize:22,fontWeight:900,color:isAhead?"#4ade80":"#f87171"}}>{myGoals}</div>
                     <div style={{fontSize:7,color:"rgba(165,180,252,0.4)"}}>GOL CARRIERA</div>
                   </div>
                   <div style={{fontSize:11,color:"rgba(165,180,252,0.35)",textAlign:"center",fontWeight:700}}>VS</div>
                   <div style={{textAlign:"center",background:"rgba(0,0,0,0.3)",borderRadius:10,padding:"8px 4px"}}>
-                    <div style={{fontSize:9,color:"rgba(99,102,241,0.7)",marginBottom:2}}>{rFirstName.toUpperCase()}</div>
+                    <div style={{fontSize:10,color:"rgba(99,102,241,0.7)",marginBottom:2}}>{rFirstName.toUpperCase()}</div>
                     <div style={{fontSize:22,fontWeight:900,color:!isAhead?"#4ade80":"#f87171"}}>{rGoals}</div>
                     <div style={{fontSize:7,color:"rgba(165,180,252,0.4)"}}>GOL CARRIERA</div>
                   </div>
@@ -15900,8 +15900,8 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                 {/* Awards won by rival */}
                 {(rAwards.palloneOros.length>0||rAwards.scarpaOros.length>0)&&(
                   <div style={{display:"flex",gap:5,flexWrap:"wrap",marginBottom:10}}>
-                    {rAwards.palloneOros.map(s=><div key={"po"+s} style={{padding:"2px 8px",background:"rgba(245,158,11,0.15)",border:"1px solid rgba(245,158,11,0.35)",borderRadius:20,fontSize:9,color:"#fbbf24"}}>🏆 PdO S.{s}</div>)}
-                    {rAwards.scarpaOros.map(s=><div key={"so"+s} style={{padding:"2px 8px",background:"rgba(239,68,68,0.15)",border:"1px solid rgba(239,68,68,0.35)",borderRadius:20,fontSize:9,color:"#f87171"}}>👟 SdO S.{s}</div>)}
+                    {rAwards.palloneOros.map(s=><div key={"po"+s} style={{padding:"2px 8px",background:"rgba(245,158,11,0.15)",border:"1px solid rgba(245,158,11,0.35)",borderRadius:20,fontSize:10,color:"#fbbf24"}}>🏆 PdO S.{s}</div>)}
+                    {rAwards.scarpaOros.map(s=><div key={"so"+s} style={{padding:"2px 8px",background:"rgba(239,68,68,0.15)",border:"1px solid rgba(239,68,68,0.35)",borderRadius:20,fontSize:10,color:"#f87171"}}>👟 SdO S.{s}</div>)}
                   </div>
                 )}
                 {/* Season-by-season mini barchart */}
@@ -15976,8 +15976,8 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                         <div style={{textAlign:"right"}}>
                           <div style={{fontSize:11,fontWeight:700,color:bondColor}}>{bond}%</div>
                           <div style={{display:"flex",gap:3,justifyContent:"flex-end",marginTop:2}}>
-                            <span style={{fontSize:9,padding:"1px 4px",borderRadius:4,background:has50?"#1e40af":"rgba(255,255,255,0.06)",color:has50?"#93c5fd":"rgba(186,230,253,0.25)"}}>50%{has50?" ✓":""}</span>
-                            <span style={{fontSize:9,padding:"1px 4px",borderRadius:4,background:has75?"#5b21b6":"rgba(255,255,255,0.06)",color:has75?"#c4b5fd":"rgba(186,230,253,0.25)"}}>75%{has75?" ✓":""}</span>
+                            <span style={{fontSize:10,padding:"1px 4px",borderRadius:4,background:has50?"#1e40af":"rgba(255,255,255,0.06)",color:has50?"#93c5fd":"rgba(186,230,253,0.25)"}}>50%{has50?" ✓":""}</span>
+                            <span style={{fontSize:10,padding:"1px 4px",borderRadius:4,background:has75?"#5b21b6":"rgba(255,255,255,0.06)",color:has75?"#c4b5fd":"rgba(186,230,253,0.25)"}}>75%{has75?" ✓":""}</span>
                           </div>
                         </div>
                       </div>
@@ -16009,7 +16009,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                       </div>
                       <div style={{textAlign:"right"}}>
                         <div style={{fontSize:11,fontWeight:700,color:trustColor}}>{relLabel}</div>
-                        <div style={{fontSize:9,color:TH.faint}}>{j.trust||50}/100</div>
+                        <div style={{fontSize:10,color:TH.faint}}>{j.trust||50}/100</div>
                       </div>
                     </div>
                   );
@@ -16104,7 +16104,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                 </div>
                 <div style={{display:"flex",flexDirection:"column",gap:3,alignItems:"flex-end"}}>
                   {Object.entries(arc.bonus).filter(([,v])=>v>0).slice(0,3).map(([k,v])=>(
-                    <span key={k} style={{fontSize:9,fontWeight:700,color:"#4ade80",background:"rgba(34,197,94,0.15)",padding:"2px 7px",borderRadius:6}}>+{v} {k}</span>
+                    <span key={k} style={{fontSize:10,fontWeight:700,color:"#4ade80",background:"rgba(34,197,94,0.15)",padding:"2px 7px",borderRadius:6}}>+{v} {k}</span>
                   ))}
                 </div>
               </div>
@@ -16175,52 +16175,52 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
               <Card style={{padding:"12px 14px"}}>
                 <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>🎯 Corsa ai Premi — S.{player.season||1}</div>
                 {/* Premi di lega */}
-                <div style={{fontSize:9,color:TH.primary,fontWeight:700,marginBottom:6,textTransform:"uppercase",letterSpacing:1}}>🏅 DI LEGA</div>
+                <div style={{fontSize:10,color:TH.primary,fontWeight:700,marginBottom:6,textTransform:"uppercase",letterSpacing:1}}>🏅 DI LEGA</div>
                 <div style={{marginBottom:8}}>
                   <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:2}}>
                     <span style={{fontSize:11,fontWeight:700,color:"#15803d"}}>⚽ Capocannoniere</span>
-                    <span style={{fontSize:9,color:TH.muted}}>{_g} gol · soglia ~{_topEst}</span>
+                    <span style={{fontSize:10,color:TH.muted}}>{_g} gol · soglia ~{_topEst}</span>
                   </div>
                   {_bar(_capoPct,"#16a34a")}
-                  <div style={{fontSize:9,color:TH.muted}}>{_capoPct>=100?"✅ Sei il bomber della lega!":"Sii il top scorer del campionato"}</div>
+                  <div style={{fontSize:10,color:TH.muted}}>{_capoPct>=100?"✅ Sei il bomber della lega!":"Sii il top scorer del campionato"}</div>
                 </div>
                 <div style={{marginBottom:_isGB?8:0}}>
                   <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:2}}>
                     <span style={{fontSize:11,fontWeight:700,color:"#4338ca"}}>🏅 MVP Stagione</span>
-                    <span style={{fontSize:9,color:TH.muted}}>{_g}G {_a}A · OVR {_ovr}</span>
+                    <span style={{fontSize:10,color:TH.muted}}>{_g}G {_a}A · OVR {_ovr}</span>
                   </div>
                   {_bar(_mvpPct,"#6366f1")}
-                  <div style={{fontSize:9,color:TH.muted}}>{_ovr>=70?(_mvpGoalOk?"✅ In corsa per l'MVP!":"Serve: 8+ gol o 8+ assist"):"OVR 70+ richiesto"}</div>
+                  <div style={{fontSize:10,color:TH.muted}}>{_ovr>=70?(_mvpGoalOk?"✅ In corsa per l'MVP!":"Serve: 8+ gol o 8+ assist"):"OVR 70+ richiesto"}</div>
                 </div>
                 {_isGB&&(
                   <div style={{marginBottom:8}}>
                     <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:2}}>
                       <span style={{fontSize:11,fontWeight:700,color:"#5b21b6"}}>💎 Giovane dell'Anno</span>
-                      <span style={{fontSize:9,color:TH.muted}}>{_g}G {_a}A · età {_age}</span>
+                      <span style={{fontSize:10,color:TH.muted}}>{_g}G {_a}A · età {_age}</span>
                     </div>
                     {_bar(_gbPct,"#7c3aed")}
-                    <div style={{fontSize:9,color:TH.muted}}>U23 · target: 5+ gol e 10+ G+A</div>
+                    <div style={{fontSize:10,color:TH.muted}}>U23 · target: 5+ gol e 10+ G+A</div>
                   </div>
                 )}
                 {/* Premi europei — solo se in corsa realistica */}
                 {_ovr>=78&&(
                   <>
-                    <div style={{fontSize:9,color:"#f59e0b",fontWeight:700,marginBottom:6,marginTop:8,textTransform:"uppercase",letterSpacing:1,borderTop:"1px solid "+TH.cardBorder,paddingTop:8}}>🌍 EUROPEI (rare)</div>
+                    <div style={{fontSize:10,color:"#f59e0b",fontWeight:700,marginBottom:6,marginTop:8,textTransform:"uppercase",letterSpacing:1,borderTop:"1px solid "+TH.cardBorder,paddingTop:8}}>🌍 EUROPEI (rare)</div>
                     <div style={{marginBottom:8}}>
                       <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:2}}>
                         <span style={{fontSize:11,fontWeight:700,color:"#92400e"}}>🏆 Pallone d'Oro UEFA</span>
-                        <span style={{fontSize:9,color:TH.muted}}>{_g}G · OVR {_ovr}{_palOvrOk?" ✓":" (min.85)"}</span>
+                        <span style={{fontSize:10,color:TH.muted}}>{_g}G · OVR {_ovr}{_palOvrOk?" ✓":" (min.85)"}</span>
                       </div>
                       {_bar(_palPct,"#fbbf24")}
-                      <div style={{fontSize:9,color:TH.muted}}>{_palOvrOk?(_palGoalOk?"✅ In corsa — devi anche vincere il campionato":"Serve: 22+ gol oppure 18G+10A, E vincere il titolo"):"OVR 85+ e titolo richiesti"}</div>
+                      <div style={{fontSize:10,color:TH.muted}}>{_palOvrOk?(_palGoalOk?"✅ In corsa — devi anche vincere il campionato":"Serve: 22+ gol oppure 18G+10A, E vincere il titolo"):"OVR 85+ e titolo richiesti"}</div>
                     </div>
                     <div>
                       <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:2}}>
                         <span style={{fontSize:11,fontWeight:700,color:"#991b1b"}}>👟 Scarpa d'Oro UEFA</span>
-                        <span style={{fontSize:9,color:TH.muted}}>{_g}/28 gol in Europa</span>
+                        <span style={{fontSize:10,color:TH.muted}}>{_g}/28 gol in Europa</span>
                       </div>
                       {_bar(_scarpaEuPct,"#ef4444")}
-                      <div style={{fontSize:9,color:TH.muted}}>{_scarpaEuPct>=100?"✅ Sei tra i migliori marcatori d'Europa!":"Devi battere i bomber di tutti i campionati europei (≥28 gol)"}</div>
+                      <div style={{fontSize:10,color:TH.muted}}>{_scarpaEuPct>=100?"✅ Sei tra i migliori marcatori d'Europa!":"Devi battere i bomber di tutti i campionati europei (≥28 gol)"}</div>
                     </div>
                   </>
                 )}
@@ -16236,9 +16236,9 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                   <span style={{fontSize:18,flexShrink:0}}>⭐</span>
                   <div style={{flex:1}}>
                     <div style={{fontSize:11,fontWeight:700,color:TH.text}}>MVP {a.month}</div>
-                    <div style={{fontSize:9,color:TH.muted}}>S.{a.season} · W.{a.week} · {a.goals} gol · voto {a.rating||"–"}</div>
+                    <div style={{fontSize:10,color:TH.muted}}>S.{a.season} · W.{a.week} · {a.goals} gol · voto {a.rating||"–"}</div>
                   </div>
-                  <span style={{fontSize:9,background:"#fef3c7",color:"#92400e",padding:"2px 7px",borderRadius:10,fontWeight:700,flexShrink:0}}>AWARD</span>
+                  <span style={{fontSize:10,background:"#fef3c7",color:"#92400e",padding:"2px 7px",borderRadius:10,fontWeight:700,flexShrink:0}}>AWARD</span>
                 </div>
               ))}
             </Card>
@@ -16307,7 +16307,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                         <div style={{flex:1,paddingTop:2}}>
                           <div style={{fontSize:11,fontWeight:700,color:TH.text,lineHeight:1.3}}>{entry.headline}</div>
                           <div style={{fontSize:10,color:TH.muted,marginTop:2}}>{entry.body}</div>
-                          <div style={{fontSize:9,color:TH.faint,marginTop:3}}>Stagione {entry.season} · Settimana {entry.week}</div>
+                          <div style={{fontSize:10,color:TH.faint,marginTop:3}}>Stagione {entry.season} · Settimana {entry.week}</div>
                         </div>
                       </div>
                     );
@@ -16323,11 +16323,11 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
               <div style={{fontSize:10,color:TH.primary,textTransform:"uppercase",letterSpacing:1.5,fontWeight:700,marginBottom:8}}>🏫 Status Under 18</div>
               <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8,marginBottom:10}}>
                 <div style={{background:"#dbeafe",borderRadius:8,padding:"8px 10px"}}>
-                  <div style={{fontSize:9,color:TH.faint}}>STAGIONI U18</div>
+                  <div style={{fontSize:10,color:TH.faint}}>STAGIONI U18</div>
                   <div style={{fontSize:20,fontWeight:900,color:TH.primary}}>{player.u18Seasons||0}<span style={{fontSize:12,color:TH.faint}}>/2</span></div>
                 </div>
                 <div style={{background:(player.u18Seasons||0)>=1?"#fee2e2":"#dcfce7",borderRadius:8,padding:"8px 10px"}}>
-                  <div style={{fontSize:9,color:TH.faint}}>OBIETTIVO</div>
+                  <div style={{fontSize:10,color:TH.faint}}>OBIETTIVO</div>
                   <div style={{fontSize:11,fontWeight:700,color:(player.u18Seasons||0)>=1?TH.danger:TH.success}}>{(player.u18Seasons||0)>=1?"⚠️ Transizione obbligatoria":"🎯 Valutazione fine stagione"}</div>
                 </div>
               </div>
@@ -16351,7 +16351,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
           {player.contract&&<Card style={{padding:"12px 14px"}}>
             <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>📄 Contratto</div>
             <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:6}}>
-              {[{l:"Stipendio",v:player.contract.wage?`€${Math.round(player.contract.wage*52/1000*10)/10}k/anno`:"–"},{l:"Durata",v:`${player.contract.duration||"–"} stagion${player.contract.duration===1?"e":"i"}`},{l:"Scade stagione",v:`S.${player.contract.expiresAtSeason||"–"}`},{l:"Status",v:(player.proStatus||"u18")==="u18"?"Under 18":"Professionista"}].map(s=><div key={s.l} style={{background:"#f8fafc",borderRadius:8,padding:"7px",border:"1px solid "+TH.cardBorder}}><div style={{fontSize:9,color:TH.faint,marginBottom:2}}>{s.l}</div><div style={{fontSize:12,fontWeight:700,color:TH.text}}>{s.v}</div></div>)}
+              {[{l:"Stipendio",v:player.contract.wage?`€${Math.round(player.contract.wage*52/1000*10)/10}k/anno`:"–"},{l:"Durata",v:`${player.contract.duration||"–"} stagion${player.contract.duration===1?"e":"i"}`},{l:"Scade stagione",v:`S.${player.contract.expiresAtSeason||"–"}`},{l:"Status",v:(player.proStatus||"u18")==="u18"?"Under 18":"Professionista"}].map(s=><div key={s.l} style={{background:"#f8fafc",borderRadius:8,padding:"7px",border:"1px solid "+TH.cardBorder}}><div style={{fontSize:10,color:TH.faint,marginBottom:2}}>{s.l}</div><div style={{fontSize:12,fontWeight:700,color:TH.text}}>{s.v}</div></div>)}
             </div>
           </Card>}
           {/* Transfer listed management — profile only */}
@@ -16361,14 +16361,14 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                 <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:8}}>
                   <div>
                     <div style={{fontSize:11,fontWeight:700,color:"#713f12"}}>📢 Sei sul mercato</div>
-                    <div style={{fontSize:10,color:"#92400e",marginTop:2}}>Le offerte arriveranno più spesso. Morale e fiducia mister calati.</div>
+                    <div style={{fontSize:12,color:"#92400e",marginTop:2}}>Le offerte arriveranno più spesso. Morale e fiducia mister calati.</div>
                   </div>
                   <Btn onClick={()=>{setPlayer(p=>({...p,transferListed:false,morale:clamp((p.morale||70)+5,0,100),log:["📢 Richiesta di cessione ritirata.",...(p.log||[])].slice(0,60)}));notify("Richiesta di cessione ritirata.",TH.muted);}} v="ghost" style={{flexShrink:0,fontSize:11,padding:"6px 10px"}}>Annulla</Btn>
                 </div>
               </Card>
               :((player.contract?.duration||2)<=1&&week<=35&&!player.contractExpired&&<Card style={{padding:"10px 14px"}}>
                 <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:8}}>
-                  <div style={{fontSize:10,color:"#d97706"}}>⚠️ Ultimo anno · tratta ora per rinnovare.</div>
+                  <div style={{fontSize:12,color:"#d97706",fontWeight:600}}>⚠️ Ultimo anno · tratta ora per rinnovare.</div>
                   <Btn onClick={openNegoModal} v="primary" style={{flexShrink:0,fontSize:11,padding:"6px 12px"}}>📋 Rinnova</Btn>
                 </div>
               </Card>)
@@ -16408,7 +16408,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                 <div style={{fontSize:11,color:TH.muted,marginTop:2}}>{player.nation} · Attaccante · Età {player.age}</div>
                 <div style={{display:"flex",flexWrap:"wrap",alignItems:"center",gap:4,marginTop:2}}>
                   <span style={{fontSize:11,color:player.club?.col||player.club?.c||TH.primary,fontWeight:700}}>{player.club?.n||player.club?.name||"–"}</span>
-                  {player.club?.transferType&&<span style={{fontSize:9,background:"#eff6ff",color:TH.primary,padding:"1px 7px",borderRadius:8,border:"1px solid #bfdbfe"}}>{player.club.transferType}</span>}
+                  {player.club?.transferType&&<span style={{fontSize:10,background:"#eff6ff",color:TH.primary,padding:"1px 7px",borderRadius:8,border:"1px solid #bfdbfe"}}>{player.club.transferType}</span>}
                   {player.club?.lg&&<span style={{fontSize:10,color:TH.muted}}>· {player.club.lg}</span>}
                   {player.club?.nat&&<span style={{fontSize:10}}>{player.club.nat}</span>}
                 </div>
@@ -16416,7 +16416,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
               <OvrRing value={ovr} size={48}/>
             </div>
             <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:6}}>
-              {[{l:"Gol stag.",v:player.goals||0},{l:"Assist stag.",v:player.assists||0},{l:"Partite stag.",v:player.matches||0},{l:"Gol tot.",v:player.totalGoals||0},{l:"Assist tot.",v:player.totalAssists||0},{l:"Valore",v:`${parseFloat((player.value||0.8).toFixed(1))}M€`}].map(s=><div key={s.l} style={{background:"#f8fafc",borderRadius:8,padding:"7px",border:"1px solid "+TH.cardBorder}}><div style={{fontSize:9,color:TH.faint,marginBottom:2}}>{s.l}</div><div style={{fontSize:14,fontWeight:700,color:TH.text}}>{s.v}</div></div>)}
+              {[{l:"Gol stag.",v:player.goals||0},{l:"Assist stag.",v:player.assists||0},{l:"Partite stag.",v:player.matches||0},{l:"Gol tot.",v:player.totalGoals||0},{l:"Assist tot.",v:player.totalAssists||0},{l:"Valore",v:`${parseFloat((player.value||0.8).toFixed(1))}M€`}].map(s=><div key={s.l} style={{background:"#f8fafc",borderRadius:8,padding:"7px",border:"1px solid "+TH.cardBorder}}><div style={{fontSize:10,color:TH.faint,marginBottom:2}}>{s.l}</div><div style={{fontSize:14,fontWeight:700,color:TH.text}}>{s.v}</div></div>)}
             </div>
           </Card>
           {/* Sprint 129: Espansione Nazionale */}
@@ -16454,12 +16454,12 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                 <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:6,marginBottom:10}}>
                   {[{l:"Gol",v:_ngoals},{l:"Esordio",v:`S.${_debutSeason}`},{l:"Ultimo",v:`S.${player.lastNationalSeason||"–"}`}].map(s=>(
                     <div key={s.l} style={{background:"#f8fafc",borderRadius:8,padding:"7px",border:"1px solid "+TH.cardBorder,textAlign:"center"}}>
-                      <div style={{fontSize:9,color:TH.faint,marginBottom:2}}>{s.l}</div>
+                      <div style={{fontSize:10,color:TH.faint,marginBottom:2}}>{s.l}</div>
                       <div style={{fontSize:14,fontWeight:700,color:TH.text}}>{s.v}</div>
                     </div>
                   ))}
                 </div>
-                <div style={{fontSize:9,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:5}}>Ranking FIFA</div>
+                <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:5}}>Ranking FIFA</div>
                 {_ranked.slice(0,5).map((n,i)=>(
                   <div key={n.nat} style={{display:"flex",alignItems:"center",gap:6,padding:"3px 6px",borderRadius:6,background:n.nat===(player.nation||"Italia")?`${_nd.col}14`:"transparent",marginBottom:2}}>
                     <span style={{fontSize:10,color:TH.faint,minWidth:18,fontWeight:n.nat===(player.nation||"Italia")?900:400}}>#{i+1}</span>
@@ -16481,7 +16481,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                     <span style={{fontSize:16}}>🟢</span>
                     <div>
                       <div style={{fontSize:10,fontWeight:700,color:"#15803d"}}>{player.euroMondiale.type||"Torneo"} IN CORSO</div>
-                      <div style={{fontSize:9,color:"#16a34a"}}>Fase: {player.euroMondiale.phase==="group"?"Gironi":"KO"} · {player.euroMondiale.groupPts||0} punti</div>
+                      <div style={{fontSize:10,color:"#16a34a"}}>Fase: {player.euroMondiale.phase==="group"?"Gironi":"KO"} · {player.euroMondiale.groupPts||0} punti</div>
                     </div>
                   </div>
                 ):(
@@ -16489,17 +16489,17 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                     <span style={{fontSize:16}}>{_emType==="Europeo"?"🏆":"🌍"}</span>
                     <div>
                       <div style={{fontSize:10,fontWeight:700,color:"#0369a1"}}>Prossimo {_emType}</div>
-                      <div style={{fontSize:9,color:"#0284c7"}}>Stagione {_nextEM} · Settimana 24</div>
+                      <div style={{fontSize:10,color:"#0284c7"}}>Stagione {_nextEM} · Settimana 24</div>
                     </div>
                   </div>
                 )}
                 {_natDiary.length>0&&(
                   <div style={{marginTop:10}}>
-                    <div style={{fontSize:9,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:5}}>Momenti in Nazionale</div>
+                    <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:5}}>Momenti in Nazionale</div>
                     {_natDiary.map((d,i)=>(
                       <div key={i} style={{padding:"5px 8px",background:"#f8fafc",borderRadius:6,marginBottom:4,borderLeft:`3px solid ${d.color||_nd.col}`}}>
                         <div style={{fontSize:10,fontWeight:700,color:TH.text}}>{d.headline}</div>
-                        <div style={{fontSize:9,color:TH.muted}}>S.{d.season} W.{d.week}</div>
+                        <div style={{fontSize:10,color:TH.muted}}>S.{d.season} W.{d.week}</div>
                       </div>
                     ))}
                   </div>
@@ -16518,15 +16518,15 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
               <div style={{display:"flex",gap:12,marginBottom:10}}>
                 <div style={{flex:1,textAlign:"center",padding:"8px",background:"#fefce8",borderRadius:8,border:"1px solid #fde68a"}}>
                   <div style={{fontSize:22,fontWeight:900,color:"#ca8a04"}}>{player.seasonCards?.y||0}</div>
-                  <div style={{fontSize:9,color:"#a16207",textTransform:"uppercase",letterSpacing:1}}>Gialli</div>
+                  <div style={{fontSize:10,color:"#a16207",textTransform:"uppercase",letterSpacing:1}}>Gialli</div>
                 </div>
                 <div style={{flex:1,textAlign:"center",padding:"8px",background:"#fff1f2",borderRadius:8,border:"1px solid #fecaca"}}>
                   <div style={{fontSize:22,fontWeight:900,color:"#dc2626"}}>{player.seasonCards?.r||0}</div>
-                  <div style={{fontSize:9,color:"#b91c1c",textTransform:"uppercase",letterSpacing:1}}>Rossi</div>
+                  <div style={{fontSize:10,color:"#b91c1c",textTransform:"uppercase",letterSpacing:1}}>Rossi</div>
                 </div>
                 <div style={{flex:2,textAlign:"center",padding:"8px",background:TH.bg,borderRadius:8,border:`1px solid ${TH.cardBorder}`}}>
                   <div style={{fontSize:14,fontWeight:800,color:(player.yellAccum||0)>=2?"#dc2626":(player.yellAccum||0)===1?"#ca8a04":TH.muted}}>{player.yellAccum||0}/3</div>
-                  <div style={{fontSize:9,color:TH.faint,textTransform:"uppercase",letterSpacing:1}}>Accumulo</div>
+                  <div style={{fontSize:10,color:TH.faint,textTransform:"uppercase",letterSpacing:1}}>Accumulo</div>
                   <div style={{display:"flex",gap:2,justifyContent:"center",marginTop:4}}>
                     {[0,1,2].map(i=><div key={i} style={{width:10,height:10,borderRadius:2,background:i<(player.yellAccum||0)?"#ca8a04":"rgba(202,138,4,0.2)"}}/>)}
                   </div>
@@ -16618,13 +16618,13 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                 <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:12}}>🏅 Milestone</div>
                 {mileCats.map(cat=>(
                   <div key={cat.cat} style={{marginBottom:10}}>
-                    <div style={{fontSize:9,color:TH.faint,textTransform:"uppercase",letterSpacing:1,marginBottom:6}}>{cat.cat}</div>
+                    <div style={{fontSize:10,color:TH.faint,textTransform:"uppercase",letterSpacing:1,marginBottom:6}}>{cat.cat}</div>
                     <div style={{display:"flex",flexWrap:"wrap",gap:6}}>
                       {cat.items.map(b=>(
                         <div key={b.l} style={{display:"flex",alignItems:"center",gap:4,padding:"4px 10px",borderRadius:20,fontSize:10,fontWeight:600,background:b.done?"#16a34a22":"rgba(0,0,0,0.04)",border:`1px solid ${b.done?"#16a34a66":TH.cardBorder}`,color:b.done?"#16a34a":TH.faint,transition:"all .2s"}}>
                           <span style={{fontSize:12}}>{b.e}</span>
                           <span>{b.l}</span>
-                          {b.done&&<span style={{fontSize:9,marginLeft:2}}>✓</span>}
+                          {b.done&&<span style={{fontSize:10,marginLeft:2}}>✓</span>}
                         </div>
                       ))}
                     </div>
@@ -16645,7 +16645,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                   if(!unlocked.length)return null;
                   return(
                     <div key={cat} style={{marginBottom:8}}>
-                      <div style={{fontSize:9,color:TH.faint,textTransform:"uppercase",letterSpacing:1,marginBottom:4}}>{cat}</div>
+                      <div style={{fontSize:10,color:TH.faint,textTransform:"uppercase",letterSpacing:1,marginBottom:4}}>{cat}</div>
                       <div style={{display:"flex",flexWrap:"wrap",gap:5}}>
                         {unlocked.map(a=>(
                           <div key={a.id} title={a.desc} style={{display:"flex",alignItems:"center",gap:4,padding:"4px 10px",borderRadius:20,fontSize:10,fontWeight:600,background:"#7c3aed22",border:"1px solid #7c3aed66",color:"#7c3aed"}}>
@@ -16779,17 +16779,17 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                       <div style={{fontSize:10,color:"rgba(147,197,253,0.55)"}}>Agente FIFA · Dal S.{Math.max(1,(player.season||1)-1)}</div>
                     </div>
                     <div style={{background:"rgba(59,130,246,0.15)",borderRadius:8,padding:"6px 10px",textAlign:"center",flexShrink:0}}>
-                      <div style={{fontSize:9,color:"rgba(147,197,253,0.5)"}}>MERCATO</div>
+                      <div style={{fontSize:10,color:"rgba(147,197,253,0.5)"}}>MERCATO</div>
                       <div style={{fontSize:11,fontWeight:800,color:txOpen?"#86efac":"#94a3b8"}}>{txOpen?"🟢 APERTO":"🔴 CHIUSO"}</div>
                     </div>
                   </div>
                   <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}>
                     <div style={{background:"rgba(0,0,0,0.3)",borderRadius:8,padding:"8px 10px"}}>
-                      <div style={{fontSize:9,color:"rgba(147,197,253,0.5)",marginBottom:1}}>VALORE DI MERCATO</div>
+                      <div style={{fontSize:10,color:"rgba(147,197,253,0.5)",marginBottom:1}}>VALORE DI MERCATO</div>
                       <div style={{fontSize:15,fontWeight:900,color:"#93c5fd"}}>€{valStr}</div>
                     </div>
                     <div style={{background:"rgba(0,0,0,0.3)",borderRadius:8,padding:"8px 10px"}}>
-                      <div style={{fontSize:9,color:"rgba(147,197,253,0.5)",marginBottom:1}}>RAPPORTO MISTER</div>
+                      <div style={{fontSize:10,color:"rgba(147,197,253,0.5)",marginBottom:1}}>RAPPORTO MISTER</div>
                       <div style={{fontSize:13,fontWeight:800,color:trustColor}}>{trustLabel}</div>
                     </div>
                   </div>
@@ -16806,7 +16806,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                       <div style={{padding:"9px 11px",borderRadius:9,background:"#fee2e2",border:"1px solid #fca5a5",display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:8}}>
                         <div>
                           <div style={{fontSize:11,fontWeight:700,color:"#dc2626"}}>📋 Sei in lista transfer</div>
-                          <div style={{fontSize:9,color:"#7f1d1d",marginTop:1}}>Il mercato si muove — aspetta le offerte.</div>
+                          <div style={{fontSize:10,color:"#7f1d1d",marginTop:1}}>Il mercato si muove — aspetta le offerte.</div>
                         </div>
                         <button onClick={function(){setPlayer(function(p){return{...p,transferListed:false,coachTrust:clamp((p.coachTrust||60)+5,0,100)};});notify("✅ Rimosso dalla lista. +5 fiducia mister.",TH.success);}} style={{padding:"5px 11px",borderRadius:7,border:"1px solid #dc2626",background:"#fff",color:"#dc2626",fontSize:10,fontWeight:700,cursor:"pointer",fontFamily:"inherit",flexShrink:0}}>
                           Rimuoviti
@@ -16816,9 +16816,9 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                       <button onClick={function(){setPlayer(function(p){return{...p,transferListed:true,coachTrust:clamp((p.coachTrust||60)-8,0,100)};});notify("📋 In lista transfer. −8 fiducia mister.",TH.warning);}} style={{width:"100%",padding:"9px 12px",borderRadius:9,border:"1px solid #6ee7b7",background:"#f0fdf4",display:"flex",alignItems:"center",justifyContent:"space-between",cursor:"pointer",fontFamily:"inherit",marginBottom:8}}>
                         <div style={{textAlign:"left"}}>
                           <div style={{fontSize:11,fontWeight:700,color:"#065f46"}}>📋 Mettiti in lista transfer</div>
-                          <div style={{fontSize:9,color:"#6b7280",marginTop:1}}>Più visibilità — ma il mister lo saprà</div>
+                          <div style={{fontSize:10,color:"#6b7280",marginTop:1}}>Più visibilità — ma il mister lo saprà</div>
                         </div>
-                        <div style={{fontSize:9,color:"#dc2626",fontWeight:600,flexShrink:0}}>−8 trust</div>
+                        <div style={{fontSize:10,color:"#dc2626",fontWeight:600,flexShrink:0}}>−8 trust</div>
                       </button>
                     )}
                     {/* Genera offerta */}
@@ -16856,7 +16856,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                       if(!_rumors.length)return null;
                       return(
                         <div style={{marginTop:10,paddingTop:10,borderTop:"1px solid #a7f3d0"}}>
-                          <div style={{fontSize:9,color:"#065f46",fontWeight:700,textTransform:"uppercase",letterSpacing:1.2,marginBottom:6}}>📡 Voci di Mercato</div>
+                          <div style={{fontSize:10,color:"#065f46",fontWeight:700,textTransform:"uppercase",letterSpacing:1.2,marginBottom:6}}>📡 Voci di Mercato</div>
                           {_rumors.map(function(r,i){return(
                             <div key={i} style={{display:"flex",alignItems:"center",gap:8,padding:"4px 0",borderBottom:i<_rumors.length-1?"1px solid #d1fae5":"none"}}>
                               <div style={{width:20,height:20,flexShrink:0}}><TeamBadge team={r.club} size={20}/></div>
@@ -16864,7 +16864,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                               <span style={{fontSize:10,fontWeight:700,color:r.col,flexShrink:0}}>{r.int}</span>
                             </div>
                           );})}
-                          <div style={{fontSize:9,color:"#6b7280",marginTop:6,fontStyle:"italic"}}>Solo indiscrezioni — non è garantita un'offerta formale.</div>
+                          <div style={{fontSize:10,color:"#6b7280",marginTop:6,fontStyle:"italic"}}>Solo indiscrezioni — non è garantita un'offerta formale.</div>
                         </div>
                       );
                     })()}
@@ -16875,19 +16875,19 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                   <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>📋 Situazione Contratto</div>
                   <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:6,marginBottom:8}}>
                     <div style={{background:"#f8fafc",borderRadius:7,padding:"7px 9px"}}>
-                      <div style={{fontSize:9,color:TH.muted}}>STIPENDIO ATTUALE</div>
+                      <div style={{fontSize:10,color:TH.muted}}>STIPENDIO ATTUALE</div>
                       <div style={{fontSize:13,fontWeight:800,color:TH.text}}>{wageYear}/anno</div>
                     </div>
                     <div style={{background:"#f8fafc",borderRadius:7,padding:"7px 9px"}}>
-                      <div style={{fontSize:9,color:TH.muted}}>STIMA MERCATO</div>
+                      <div style={{fontSize:10,color:TH.muted}}>STIMA MERCATO</div>
                       <div style={{fontSize:13,fontWeight:800,color:isUnderpaid?TH.danger:TH.success}}>{marketWage}/anno</div>
                     </div>
                     <div style={{background:"#f8fafc",borderRadius:7,padding:"7px 9px"}}>
-                      <div style={{fontSize:9,color:TH.muted}}>SCADENZA</div>
+                      <div style={{fontSize:10,color:TH.muted}}>SCADENZA</div>
                       <div style={{fontSize:13,fontWeight:800,color:isExpiringSoon?TH.danger:TH.text}}>S.{expiresS}{isExpiringSoon?" ⚠️":""}</div>
                     </div>
                     <div style={{background:"#f8fafc",borderRadius:7,padding:"7px 9px"}}>
-                      <div style={{fontSize:9,color:TH.muted}}>STAGIONI RIMASTE</div>
+                      <div style={{fontSize:10,color:TH.muted}}>STAGIONI RIMASTE</div>
                       <div style={{fontSize:13,fontWeight:800,color:seasonLeft<=1?TH.danger:TH.text}}>{seasonLeft} stagion{seasonLeft===1?"e":"i"}</div>
                     </div>
                   </div>
@@ -16914,18 +16914,18 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                       {hasPending?(
                         <div style={{padding:"9px 11px",borderRadius:9,background:"#fffbeb",border:"1px solid #fde68a"}}>
                           <div style={{fontSize:11,fontWeight:700,color:"#92400e"}}>⏳ Richiesta in valutazione</div>
-                          <div style={{fontSize:9,color:"#78350f",marginTop:2}}>Il club sta valutando la tua richiesta. Risposta entro 2 settimane.</div>
+                          <div style={{fontSize:10,color:"#78350f",marginTop:2}}>Il club sta valutando la tua richiesta. Risposta entro 2 settimane.</div>
                         </div>
                       ):hasAccepted?(
                         <div style={{padding:"9px 11px",borderRadius:9,background:"#f0fdf4",border:"1px solid #86efac"}}>
                           <div style={{fontSize:11,fontWeight:700,color:"#166534"}}>✅ Richiesta accettata — sei in lista transfer</div>
-                          <div style={{fontSize:9,color:"#14532d",marginTop:2}}>Il club ti metterà sul mercato. Aspetta le offerte.</div>
+                          <div style={{fontSize:10,color:"#14532d",marginTop:2}}>Il club ti metterà sul mercato. Aspetta le offerte.</div>
                           <button onClick={function(){setPlayer(function(p){return{...p,transferRequest:null,transferListed:false,coachTrust:clamp((p.coachTrust||60)+5,0,100)};});notify("↩️ Richiesta ritirata. +5 fiducia mister.",TH.success);}} style={{marginTop:6,padding:"4px 10px",borderRadius:7,border:"1px solid #16a34a",background:"#fff",color:"#16a34a",fontSize:10,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>Ritira richiesta</button>
                         </div>
                       ):hasRejected?(
                         <div style={{padding:"9px 11px",borderRadius:9,background:"#fef2f2",border:"1px solid #fca5a5"}}>
                           <div style={{fontSize:11,fontWeight:700,color:"#991b1b"}}>❌ Richiesta respinta</div>
-                          <div style={{fontSize:9,color:"#7f1d1d",marginTop:2}}>Il club non intende cedere. Il rapporto col mister ne risente.</div>
+                          <div style={{fontSize:10,color:"#7f1d1d",marginTop:2}}>Il club non intende cedere. Il rapporto col mister ne risente.</div>
                           <button onClick={function(){setPlayer(function(p){return{...p,transferRequest:null};});}} style={{marginTop:6,padding:"4px 10px",borderRadius:7,border:"1px solid #dc2626",background:"#fff",color:"#dc2626",fontSize:10,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>Chiudi</button>
                         </div>
                       ):(
@@ -16934,7 +16934,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                           <button onClick={function(){setPlayer(function(p){return{...p,transferRequest:{season:p.season||1,week:p.week||1,status:"pending"},coachTrust:clamp((p.coachTrust||60)-10,0,100)};});notify("🚪 Richiesta di cessione inviata. −10 fiducia mister.",TH.warning);}} style={{width:"100%",padding:"10px 12px",borderRadius:9,border:"1px solid #fca5a5",background:"#fff1f2",color:"#dc2626",fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>
                             🚪 Richiedi Cessione
                           </button>
-                          <div style={{fontSize:9,color:TH.muted,marginTop:6,textAlign:"center"}}>Attenzione: riduce la fiducia del mister (−10)</div>
+                          <div style={{fontSize:10,color:TH.muted,marginTop:6,textAlign:"center"}}>Attenzione: riduce la fiducia del mister (−10)</div>
                         </div>
                       )}
                     </Card>
@@ -17000,7 +17000,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
         const natGoals=player.nationalGoals||0;
         const q=player.nationsCupQueue||null;
         const em=player.euroMondiale||null;
-        const _bar=(won,drew)=><span style={{fontSize:9,fontWeight:700,color:won?"#16a34a":drew?"#d97706":"#dc2626",background:won?"#dcfce7":drew?"#fffbeb":"#fee2e2",padding:"1px 6px",borderRadius:4,minWidth:18,textAlign:"center",display:"inline-block"}}>{won?"V":drew?"P":"S"}</span>;
+        const _bar=(won,drew)=><span style={{fontSize:10,fontWeight:700,color:won?"#16a34a":drew?"#d97706":"#dc2626",background:won?"#dcfce7":drew?"#fffbeb":"#fee2e2",padding:"1px 6px",borderRadius:4,minWidth:18,textAlign:"center",display:"inline-block"}}>{won?"V":drew?"P":"S"}</span>;
         return(
           <div style={{display:"flex",flexDirection:"column",gap:12}}>
             {/* Header nazionale */}
@@ -17016,14 +17016,14 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
               <div style={{display:"flex",gap:0,borderTop:`1px solid ${TH.cardBorder}`,paddingTop:12}}>
                 {[{v:caps,l:"Presenze",e:"🌍"},{v:natGoals,l:"Gol Naz.",e:"⚽"},{v:caps>0?Math.round((natGoals/caps)*10)/10:0,l:"Media Gol",e:"📊"}].map((s,i)=>(
                   <div key={i} style={{flex:1,textAlign:"center",borderLeft:i>0?"1px solid "+TH.cardBorder:"none",padding:"0 8px"}}>
-                    <div style={{fontSize:9,marginBottom:2}}>{s.e}</div>
+                    <div style={{fontSize:10,marginBottom:2}}>{s.e}</div>
                     <div style={{fontSize:20,fontWeight:900,color:i===0?natCol:i===1?"#16a34a":TH.muted,lineHeight:1}}>{s.v}</div>
-                    <div style={{fontSize:9,color:TH.muted,marginTop:2}}>{s.l}</div>
+                    <div style={{fontSize:10,color:TH.muted,marginTop:2}}>{s.l}</div>
                   </div>
                 ))}
                 <div style={{flex:1,textAlign:"center",borderLeft:"1px solid "+TH.cardBorder,padding:"0 8px",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center"}}>
                   <div style={{fontSize:12,marginBottom:2}}>{caps>=100?"🌟":caps>=50?"⭐":caps>=20?"🏅":caps>=1?"🎽":"—"}</div>
-                  <div style={{fontSize:9,color:natCol,fontWeight:700}}>{caps>=100?"Leggenda":caps>=50?"Senatore":caps>=20?"Titolare":caps>=1?"Convocato":"—"}</div>
+                  <div style={{fontSize:10,color:natCol,fontWeight:700}}>{caps>=100?"Leggenda":caps>=50?"Senatore":caps>=20?"Titolare":caps>=1?"Convocato":"—"}</div>
                 </div>
               </div>
             </Card>
@@ -17056,7 +17056,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                   </div>
                   <div style={{textAlign:"right"}}>
                     <div style={{fontSize:22,fontWeight:900,color:"#1d4ed8",lineHeight:1}}>{q.pts||0}<span style={{fontSize:11,color:TH.muted}}>/9</span></div>
-                    <div style={{fontSize:9,color:TH.muted}}>punti</div>
+                    <div style={{fontSize:10,color:TH.muted}}>punti</div>
                   </div>
                 </div>
                 {(q.matches||[]).length>0&&(
@@ -17104,12 +17104,12 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                 {/* Gironi */}
                 {em.phase==="group"&&(em.groupOpponents||[]).length>0&&(
                   <div style={{marginBottom:10}}>
-                    <div style={{fontSize:9,color:TH.muted,textTransform:"uppercase",letterSpacing:1,marginBottom:4}}>Girone</div>
+                    <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1,marginBottom:4}}>Girone</div>
                     {(em.groupMatches||[]).map((m,i)=>(
                       <div key={i} style={{display:"flex",alignItems:"center",gap:6,padding:"3px 0",borderTop:i>0?"1px solid "+TH.cardBorder:"none"}}>
                         {m.played
                           ?<>{_bar(m.won,m.drew)}<span style={{flex:1,fontSize:10,color:TH.text}}>{natName} vs {m.opp}</span><span style={{fontSize:11,fontWeight:700}}>{m.hs||0}–{m.as||0}</span></>
-                          :<><span style={{fontSize:10,color:TH.muted,flex:1}}>vs {m.opp}</span><span style={{fontSize:9,background:"#f1f5f9",color:TH.muted,padding:"1px 6px",borderRadius:4}}>da giocare</span></>
+                          :<><span style={{fontSize:10,color:TH.muted,flex:1}}>vs {m.opp}</span><span style={{fontSize:10,background:"#f1f5f9",color:TH.muted,padding:"1px 6px",borderRadius:4}}>da giocare</span></>
                         }
                       </div>
                     ))}
@@ -17119,11 +17119,11 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                 {/* Fase KO */}
                 {(em.koResults||[]).length>0&&(
                   <div style={{marginBottom:10}}>
-                    <div style={{fontSize:9,color:TH.muted,textTransform:"uppercase",letterSpacing:1,marginBottom:4}}>Fase KO</div>
+                    <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1,marginBottom:4}}>Fase KO</div>
                     {(em.koResults||[]).map((r,i)=>(
                       <div key={i} style={{display:"flex",alignItems:"center",gap:6,padding:"3px 0",borderTop:i>0?"1px solid "+TH.cardBorder:"none"}}>
                         {_bar(r.won,false)}
-                        <span style={{fontSize:9,color:TH.muted,minWidth:40,fontWeight:700}}>{r.phase?.toUpperCase()||"KO"}</span>
+                        <span style={{fontSize:10,color:TH.muted,minWidth:40,fontWeight:700}}>{r.phase?.toUpperCase()||"KO"}</span>
                         <span style={{flex:1,fontSize:10,color:TH.text}}>vs {r.opponent?.n||r.opponent||"?"}</span>
                         <span style={{fontSize:11,fontWeight:700}}>{r.homeScore}–{r.awayScore}</span>
                       </div>
@@ -17147,11 +17147,11 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                 <div style={{display:"flex",gap:12,justifyContent:"center",marginTop:14}}>
                   <div style={{textAlign:"center"}}>
                     <div style={{fontSize:16,fontWeight:800,color:(player.ovr||60)>=70?"#16a34a":"#f59e0b"}}>{player.ovr||60}</div>
-                    <div style={{fontSize:9,color:TH.muted}}>OVR (min. 70)</div>
+                    <div style={{fontSize:10,color:TH.muted}}>OVR (min. 70)</div>
                   </div>
                   <div style={{textAlign:"center"}}>
                     <div style={{fontSize:16,fontWeight:800,color:(player.popularity||0)>=55?"#16a34a":"#f59e0b"}}>{player.popularity||0}</div>
-                    <div style={{fontSize:9,color:TH.muted}}>Popolarità (min. 55)</div>
+                    <div style={{fontSize:10,color:TH.muted}}>Popolarità (min. 55)</div>
                   </div>
                 </div>
               </Card>
@@ -17179,7 +17179,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                       <span style={{fontSize:18}}>{d.e||"🌍"}</span>
                       <div>
                         <div style={{fontSize:11,fontWeight:600,color:TH.text}}>{d.headline||d.type}</div>
-                        {d.body&&<div style={{fontSize:9,color:TH.muted,marginTop:1}}>{d.body}</div>}
+                        {d.body&&<div style={{fontSize:10,color:TH.muted,marginTop:1}}>{d.body}</div>}
                         <div style={{fontSize:8,color:TH.faint}}>S.{d.season||"?"} · Sett.{d.week||"?"}</div>
                       </div>
                     </div>
@@ -17207,7 +17207,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
         const ROUNDS=["","R16","Quarti","Semi","Finale"];
         const getAbbr=id=>{const c=CLUBS.find(c=>c.id===id||c.n===id);return c?.a||String(id||"?").slice(0,3).toUpperCase();};
         const trophies=player.trophies||[];
-        const _bar=(won)=><span style={{fontSize:9,fontWeight:700,color:won?"#16a34a":"#dc2626",background:won?"#dcfce7":"#fee2e2",padding:"1px 5px",borderRadius:4,minWidth:16,textAlign:"center",display:"inline-block"}}>{won?"V":"X"}</span>;
+        const _bar=(won)=><span style={{fontSize:10,fontWeight:700,color:won?"#16a34a":"#dc2626",background:won?"#dcfce7":"#fee2e2",padding:"1px 5px",borderRadius:4,minWidth:16,textAlign:"center",display:"inline-block"}}>{won?"V":"X"}</span>;
         return(
           <div style={{display:"flex",flexDirection:"column",gap:12}}>
             {/* COPPA NAZIONALE */}
@@ -17221,11 +17221,11 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                 </div>
                 {(cup.results||[]).length>0&&(
                   <div style={{marginBottom:8}}>
-                    <div style={{fontSize:9,color:TH.muted,textTransform:"uppercase",letterSpacing:1,marginBottom:4}}>Le tue partite</div>
+                    <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1,marginBottom:4}}>Le tue partite</div>
                     {cup.results.map((r,i)=>(
                       <div key={i} style={{display:"flex",alignItems:"center",gap:6,padding:"4px 0",borderTop:i>0?"1px solid "+TH.cardBorder:"none"}}>
                         {_bar(r.won)}
-                        <span style={{fontSize:9,color:TH.muted,minWidth:50}}>{r.name||ROUNDS[i+1]}{r.penalties&&<span style={{color:"#f59e0b"}}> (rig.)</span>}</span>
+                        <span style={{fontSize:10,color:TH.muted,minWidth:50}}>{r.name||ROUNDS[i+1]}{r.penalties&&<span style={{color:"#f59e0b"}}> (rig.)</span>}</span>
                         <span style={{flex:1,fontSize:11,color:TH.text,fontWeight:600}}>vs {r.opponent}</span>
                         <span style={{fontSize:12,fontWeight:700}}>{r.homeScore}–{r.awayScore}</span>
                       </div>
@@ -17238,17 +17238,17 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                   if(!rounds.length)return<div style={{fontSize:10,color:TH.faint}}>Tabellone non ancora disputato.</div>;
                   return(
                     <div>
-                      <div style={{fontSize:9,color:TH.muted,textTransform:"uppercase",letterSpacing:1,marginBottom:4}}>Tabellone completo</div>
+                      <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1,marginBottom:4}}>Tabellone completo</div>
                       {rounds.map((r,ri)=>(
                         <div key={r.k} style={{marginBottom:ri<rounds.length-1?8:0}}>
-                          <div style={{fontSize:9,color:"#92400e",fontWeight:700,marginBottom:3}}>{r.l}</div>
+                          <div style={{fontSize:10,color:"#92400e",fontWeight:700,marginBottom:3}}>{r.l}</div>
                           {(bm[r.k]||[]).map((m,mi)=>{
                             const isP=m.isPlayer;const hWon=m.winner===m.home;
                             return(
                               <div key={mi} style={{display:"flex",alignItems:"center",gap:4,padding:"2px 4px",borderRadius:4,background:isP?"#fffbeb":"transparent",marginBottom:1}}>
-                                <span style={{flex:1,fontSize:9,fontWeight:hWon?700:400,color:hWon?TH.text:TH.faint,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{isP&&m.home===pId?"⭐ ":""}{getAbbr(m.home)}</span>
-                                <span style={{fontSize:9,fontWeight:600,color:isP?"#d97706":TH.faint,minWidth:28,textAlign:"center"}}>{m.homeScore}–{m.awayScore}</span>
-                                <span style={{flex:1,fontSize:9,fontWeight:!hWon?700:400,color:!hWon?TH.text:TH.faint,textAlign:"right",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{getAbbr(m.away)}{isP&&m.away===pId?" ⭐":""}</span>
+                                <span style={{flex:1,fontSize:10,fontWeight:hWon?700:400,color:hWon?TH.text:TH.faint,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{isP&&m.home===pId?"⭐ ":""}{getAbbr(m.home)}</span>
+                                <span style={{fontSize:10,fontWeight:600,color:isP?"#d97706":TH.faint,minWidth:28,textAlign:"center"}}>{m.homeScore}–{m.awayScore}</span>
+                                <span style={{flex:1,fontSize:10,fontWeight:!hWon?700:400,color:!hWon?TH.text:TH.faint,textAlign:"right",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{getAbbr(m.away)}{isP&&m.away===pId?" ⭐":""}</span>
                               </div>
                             );
                           })}
@@ -17282,7 +17282,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                   <div style={{background:_ecBg,padding:"10px 14px",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
                     <div>
                       <div style={{fontSize:11,fontWeight:900,color:"#fff",letterSpacing:1.5}}>{_ecE} {_ecFull}</div>
-                      <div style={{fontSize:9,color:"rgba(255,255,255,0.7)",marginTop:1}}>Stagione {player.season||1}</div>
+                      <div style={{fontSize:10,color:"rgba(255,255,255,0.7)",marginTop:1}}>Stagione {player.season||1}</div>
                     </div>
                     <div>
                       {eu.champion&&<span style={{fontSize:10,fontWeight:800,color:"#fff",background:"rgba(255,255,255,0.25)",padding:"3px 10px",borderRadius:20}}>🏆 CAMPIONE!</span>}
@@ -17295,15 +17295,15 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                     {/* Prossima partita */}
                     {nextEuroMatch&&(
                       <div style={{padding:"8px 12px",background:_ecBorder+"66",borderRadius:8,border:"1px solid "+_ecBorder}}>
-                        <div style={{fontSize:9,color:_ecCol,textTransform:"uppercase",letterSpacing:1,fontWeight:700,marginBottom:3}}>⏭ Prossima partita</div>
+                        <div style={{fontSize:10,color:_ecCol,textTransform:"uppercase",letterSpacing:1,fontWeight:700,marginBottom:3}}>⏭ Prossima partita</div>
                         <div style={{fontSize:11,fontWeight:700,color:TH.text}}>{nextEuroMatch.isHome?(player.club?.n||"Noi"):(nextEuroMatch.opponentName||"Avv.")} vs {nextEuroMatch.isHome?(nextEuroMatch.opponentName||"Avv."):(player.club?.n||"Noi")}</div>
-                        <div style={{fontSize:9,color:TH.muted,marginTop:2}}>{nextEuroMatch.type==="euro_group"?"Fase a Gironi":(nextEuroMatch.cupRoundName||"KO")} · Settimana {nextEuroMatch.week}</div>
+                        <div style={{fontSize:10,color:TH.muted,marginTop:2}}>{nextEuroMatch.type==="euro_group"?"Fase a Gironi":(nextEuroMatch.cupRoundName||"KO")} · Settimana {nextEuroMatch.week}</div>
                       </div>
                     )}
                     {/* Classifica girone completa */}
                     {groupOpps.length>0&&(
                       <div>
-                        <div style={{fontSize:9,color:TH.muted,textTransform:"uppercase",letterSpacing:1.2,fontWeight:700,marginBottom:6}}>📊 Classifica Girone</div>
+                        <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.2,fontWeight:700,marginBottom:6}}>📊 Classifica Girone</div>
                         <div style={{borderRadius:8,overflow:"hidden",border:"1px solid "+TH.cardBorder}}>
                           <div style={{display:"grid",gridTemplateColumns:"18px 1fr 26px 54px 28px",gap:"0 3px",padding:"4px 8px",background:TH.bg}}>
                             {["","Squadra","Pt","V N S","GD"].map((h,i)=><span key={i} style={{fontSize:8,color:TH.faint,fontWeight:700,textAlign:i>=2?"center":"left"}}>{h}</span>)}
@@ -17314,12 +17314,12 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                               <div key={ri} style={{display:"grid",gridTemplateColumns:"18px 1fr 26px 54px 28px",gap:"0 3px",padding:"5px 8px",background:row.isPlayer?(isQual?_ecBorder+"44":"#fff7ed"):isQual?"#f0fdf4":"transparent",borderTop:"1px solid "+TH.cardBorder}}>
                                 <span style={{fontSize:10,color:isQual?"#16a34a":"#94a3b8",fontWeight:700,textAlign:"center"}}>{ri+1}</span>
                                 <div style={{overflow:"hidden"}}>
-                                  <div style={{fontSize:9,fontWeight:row.isPlayer?800:500,color:row.isPlayer?_ecCol:TH.text,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{row.isPlayer?"⭐ ":""}{row.fullName}</div>
+                                  <div style={{fontSize:10,fontWeight:row.isPlayer?800:500,color:row.isPlayer?_ecCol:TH.text,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{row.isPlayer?"⭐ ":""}{row.fullName}</div>
                                   {row.nat&&<span style={{fontSize:8,color:TH.faint}}>{row.nat}</span>}
                                 </div>
                                 <span style={{fontSize:11,fontWeight:row.isPlayer?900:600,textAlign:"center",color:row.isPlayer?_ecCol:TH.text}}>{row.pts}</span>
                                 <span style={{fontSize:8,textAlign:"center",color:TH.muted}}>{row.w}V·{row.d}N·{row.l}S</span>
-                                <span style={{fontSize:9,textAlign:"center",fontWeight:600,color:(row.gf-row.ga)>0?"#16a34a":(row.gf-row.ga)<0?"#dc2626":TH.muted}}>{row.gf-row.ga>0?"+":""}{row.gf-row.ga}</span>
+                                <span style={{fontSize:10,textAlign:"center",fontWeight:600,color:(row.gf-row.ga)>0?"#16a34a":(row.gf-row.ga)<0?"#dc2626":TH.muted}}>{row.gf-row.ga>0?"+":""}{row.gf-row.ga}</span>
                               </div>
                             );
                           })}
@@ -17330,7 +17330,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                     {/* Calendario completo */}
                     {euroCal.length>0&&(
                       <div>
-                        <div style={{fontSize:9,color:TH.muted,textTransform:"uppercase",letterSpacing:1.2,fontWeight:700,marginBottom:6}}>📅 Calendario</div>
+                        <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.2,fontWeight:700,marginBottom:6}}>📅 Calendario</div>
                         <div style={{display:"flex",flexDirection:"column",gap:2}}>
                           {euroCal.map((m,i)=>{
                             const isKO=m.type==="euro";
@@ -17347,7 +17347,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                                 <span style={{flex:1,fontSize:10,fontWeight:500,color:TH.text,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{homeN} vs {awayN}</span>
                                 {m.played
                                   ?<span style={{fontSize:11,fontWeight:800,color:m.result?.won?"#16a34a":m.result?.drew?"#d97706":"#dc2626",flexShrink:0}}>{m.result?.homeScore}–{m.result?.awayScore}</span>
-                                  :!m.isHome&&<span style={{fontSize:9,color:TH.faint,flexShrink:0}}>✈️</span>
+                                  :!m.isHome&&<span style={{fontSize:10,color:TH.faint,flexShrink:0}}>✈️</span>
                                 }
                               </div>
                             );
@@ -17358,11 +17358,11 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                     {/* KO results (se non nel calendario) */}
                     {koR.length>0&&euroCal.filter(m=>m.type==="euro").length===0&&(
                       <div>
-                        <div style={{fontSize:9,color:TH.muted,textTransform:"uppercase",letterSpacing:1.2,fontWeight:700,marginBottom:6}}>⚔️ Fase KO</div>
+                        <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.2,fontWeight:700,marginBottom:6}}>⚔️ Fase KO</div>
                         {koR.map((r,i)=>(
                           <div key={i} style={{display:"flex",alignItems:"center",gap:6,padding:"5px 0",borderTop:i>0?"1px solid "+TH.cardBorder:"none"}}>
                             {_bar(r.won)}
-                            <span style={{fontSize:9,color:_ecCol,fontWeight:700,minWidth:52}}>{koPhases[r.phase]||r.phase?.toUpperCase()||"KO"}</span>
+                            <span style={{fontSize:10,color:_ecCol,fontWeight:700,minWidth:52}}>{koPhases[r.phase]||r.phase?.toUpperCase()||"KO"}</span>
                             <span style={{flex:1,fontSize:10,color:TH.text}}>vs {r.opponent?.n||r.opponent||"?"}</span>
                             <span style={{fontSize:11,fontWeight:700}}>{r.homeScore}–{r.awayScore}</span>
                           </div>
@@ -17372,12 +17372,12 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                     {/* Albo d'oro */}
                     {compWinners.length>0&&(
                       <div>
-                        <div style={{fontSize:9,color:TH.muted,textTransform:"uppercase",letterSpacing:1.2,fontWeight:700,marginBottom:6}}>🏆 Ultimi Vincitori</div>
+                        <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.2,fontWeight:700,marginBottom:6}}>🏆 Ultimi Vincitori</div>
                         {compWinners.map((w,i)=>(
                           <div key={i} style={{display:"flex",alignItems:"center",gap:8,padding:"4px 0",borderTop:i>0?"1px solid "+TH.cardBorder:"none"}}>
                             <span style={{fontSize:11}}>{w.nat}</span>
                             <span style={{flex:1,fontSize:10,fontWeight:i===0?700:400,color:i===0?TH.text:TH.muted}}>{w.club}{i===0?" 🏆":""}</span>
-                            <span style={{fontSize:9,color:TH.faint}}>{w.s}/{String(w.s+1).slice(-2)}</span>
+                            <span style={{fontSize:10,color:TH.faint}}>{w.s}/{String(w.s+1).slice(-2)}</span>
                           </div>
                         ))}
                       </div>
@@ -17409,7 +17409,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                       <span style={{fontSize:18}}>{t.e||"🏆"}</span>
                       <div>
                         <div style={{fontSize:11,fontWeight:700,color:TH.text}}>{t.name||t.type||"Trofeo"}</div>
-                        <div style={{fontSize:9,color:TH.muted}}>S.{t.season||"?"}{t.club?" · "+t.club:t.league?" · "+t.league:""}</div>
+                        <div style={{fontSize:10,color:TH.muted}}>S.{t.season||"?"}{t.club?" · "+t.club:t.league?" · "+t.league:""}</div>
                       </div>
                     </div>
                   ))}
@@ -17426,15 +17426,15 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       <div className="cpm-nav-bar" style={{zIndex:100}}>
       <div className="cpm-nav-hint" style={{borderTop:"1px solid "+TH.cardBorder}}>
         {[{k:"Enter",l:"Gioca"},{k:"0",l:"Avanza"},{k:"Esc",l:"Indietro"},{k:"Spc",l:"Conferma"}].map(h=>(
-          <span key={h.k} style={{fontSize:9,color:TH.muted,display:"flex",alignItems:"center",gap:3}}>
-            <span style={{background:"#e2e8f0",borderRadius:3,padding:"1px 5px",fontFamily:"monospace",fontSize:9,color:TH.text}}>{h.k}</span>
+          <span key={h.k} style={{fontSize:10,color:TH.muted,display:"flex",alignItems:"center",gap:3}}>
+            <span style={{background:"#e2e8f0",borderRadius:3,padding:"1px 5px",fontFamily:"monospace",fontSize:10,color:TH.text}}>{h.k}</span>
             {h.l}
           </span>
         ))}
-        {toggleLang&&<button onClick={toggleLang} style={{marginLeft:"auto",fontSize:9,background:"#e2e8f0",border:"none",borderRadius:4,padding:"2px 7px",cursor:"pointer",color:TH.text,fontWeight:700}}>🌐 {lang}</button>}
+        {toggleLang&&<button onClick={toggleLang} style={{marginLeft:"auto",fontSize:10,background:"#e2e8f0",border:"none",borderRadius:4,padding:"2px 7px",cursor:"pointer",color:TH.text,fontWeight:700}}>🌐 {lang}</button>}
       </div>
       <div className="cpm-nav-tabs" style={{background:TH.navBg,borderTop:"1px solid "+TH.cardBorder,overflowX:"auto",WebkitOverflowScrolling:"touch",scrollbarWidth:"none"}}>
-        {tabs.map(t=><button key={t.id} className={tab===t.id?"cpm-tab-act":""} onClick={()=>goTab(t.id)} title={`${t.l} [${t.k}]`} style={{flex:"0 0 auto",minWidth:52,padding:"10px 6px 6px",border:"none",background:"transparent",cursor:"pointer",fontFamily:"inherit",color:tab===t.id?TH.primary:TH.faint,borderTop:`2px solid ${tab===t.id?TH.primary:"transparent"}`,transition:"all .15s"}}><div style={{fontSize:17}}>{t.e}</div><div style={{fontSize:9,marginTop:1,letterSpacing:.3}}>{t.l}</div><div style={{fontSize:8,color:tab===t.id?TH.primary+"99":TH.faint+"88",marginTop:1,fontFamily:"monospace"}}>[{t.k}]</div></button>)}
+        {tabs.map(t=><button key={t.id} className={tab===t.id?"cpm-tab-act":""} onClick={()=>goTab(t.id)} title={`${t.l} [${t.k}]`} style={{flex:"0 0 auto",minWidth:52,padding:"10px 6px 6px",border:"none",background:"transparent",cursor:"pointer",fontFamily:"inherit",color:tab===t.id?TH.primary:TH.faint,borderTop:`2px solid ${tab===t.id?TH.primary:"transparent"}`,transition:"all .15s"}}><div style={{fontSize:17}}>{t.e}</div><div style={{fontSize:10,marginTop:1,letterSpacing:.3}}>{t.l}</div><div style={{fontSize:8,color:tab===t.id?TH.primary+"99":TH.faint+"88",marginTop:1,fontFamily:"monospace"}}>[{t.k}]</div></button>)}
         {toggleLang&&<button onClick={toggleLang} title="Cambia lingua / Change language" style={{padding:"6px 10px",border:"none",borderLeft:`1px solid ${TH.cardBorder}`,background:"transparent",cursor:"pointer",fontFamily:"inherit",color:TH.faint,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:1}}><div style={{fontSize:14}}>🌐</div><div style={{fontSize:8,marginTop:1,letterSpacing:.3,fontWeight:700}}>{lang}</div></button>}
       </div>
       </div>{/* end bottom nav wrapper */}
