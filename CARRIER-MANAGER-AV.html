@@ -2441,7 +2441,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.5.64"; // Sprint 218: Fase C — PitchCanvas DPR cap, font floor mobile
+const GAME_VERSION="4.5.65"; // Sprint D2: rapporti staff — assistantCoachRel, fitnessCoachRel, teamChemistry attivo
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -11473,7 +11473,10 @@ const TrainPanel=({player,setPlayer,notify})=>{
       if(isRec){const full=tid==="rec_completo";fatD-=(full?26:13);morD+=(full?10:5);formD+=(full?2:1);newLog.push({id:tid,e:full?"🛌":"🧘",l:full?"Riposo":"Recupero",col:"#0284c7"});}
       else{const s=_TT[tid];if(!s)return;const pA=Math.min(0.85,_dim(ns[s.a])*_mult);const pB=Math.min(0.55,_dim(ns[s.b])*0.5*_mult);const gA=Math.random()<pA?1:0;const gB=Math.random()<pB?1:0;if(gA){ns[s.a]=clamp((ns[s.a]||60)+1,1,99);gained[s.a]=(gained[s.a]||0)+1;}if(gB){ns[s.b]=clamp((ns[s.b]||60)+1,1,99);gained[s.b]=(gained[s.b]||0)+1;}fatD+=10;newLog.push({id:s.id,e:s.e,l:s.l,col:s.col,gainA:gA,gainB:gB,statA:s.a,statB:s.b});}
     });
-    setPlayer(p=>({...p,stats:ns,ovr:calcOvr(ns),fatigue:clamp((p.fatigue||0)+fatD,0,100),morale:clamp((p.morale||70)+morD,0,100),form:clamp((p.form||60)+formD,30,95),sessionsThisWeek:3,sessionLog:newLog,trainingStreak:(p.trainingStreak||0)+1,lastTrainingType:_plan[0],weeklyFocusType:_t0}));
+    setPlayer(p=>({...p,stats:ns,ovr:calcOvr(ns),fatigue:clamp((p.fatigue||0)+fatD,0,100),morale:clamp((p.morale||70)+morD,0,100),form:clamp((p.form||60)+formD,30,95),sessionsThisWeek:3,sessionLog:newLog,trainingStreak:(p.trainingStreak||0)+1,lastTrainingType:_plan[0],weeklyFocusType:_t0,
+      // Sprint D2: piccola crescita relazioni per settimana di allenamento
+      fitnessCoachRel:clamp((p.fitnessCoachRel||50)+(Math.random()<0.3?1:0),0,100),
+      teamChemistry:clamp((p.teamChemistry||60)+(Math.random()<0.25?1:0),0,100)}));
     const gkeys=Object.keys(gained);
     notify(`✅ W.${week}: ${gkeys.length?gkeys.map(k=>`+${gained[k]} ${k}`).join(" · "):"nessuna crescita questa settimana"}`,gkeys.length?TH.success:TH.muted);
   },[]);
@@ -11740,6 +11743,9 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       })};
       changed=true;
     }
+    // Sprint D2: rapporti staff
+    if(!('assistantCoachRel' in newP)){newP={...newP,assistantCoachRel:50};changed=true;}
+    if(!('fitnessCoachRel' in newP)){newP={...newP,fitnessCoachRel:50};changed=true;}
     if(changed){setPlayer(newP);}
   },[]);// eslint-disable-line
   const[darkMode,setDarkMode]=useState(()=>localStorage.getItem("cpm-dark")==="1");
@@ -13018,7 +13024,8 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
           return{...updP,week:(p.week||1)+1,weekLived:false,sessionsThisWeek:0,sessionLog:[],trainingStreak:0,lastTrainingType:null,weeklyFocusType:null,injuryWeeks:1,injured:true,justRecovered:false,fatigue:Math.max(0,baseFat-8),form:naturalForm};
         }
         const recovAdv=p.injuryWeeks-1<=0;
-        return{...updP,week:(p.week||1)+1,weekLived:false,sessionsThisWeek:0,sessionLog:[],trainingStreak:0,lastTrainingType:null,weeklyFocusType:null,injuryWeeks:p.injuryWeeks-1,injured:!recovAdv,...(recovAdv?{injuryType:null,injurySeverity:null,justRecovered:true,returnPenaltyWeeks:2}:{justRecovered:false}),fatigue:Math.max(0,baseFat-12),form:naturalForm};
+        const _fatRecInj=12+Math.round(((p.fitnessCoachRel||50)-50)/10); // Sprint D2: range 7-17, default 12
+        return{...updP,week:(p.week||1)+1,weekLived:false,sessionsThisWeek:0,sessionLog:[],trainingStreak:0,lastTrainingType:null,weeklyFocusType:null,injuryWeeks:p.injuryWeeks-1,injured:!recovAdv,...(recovAdv?{injuryType:null,injurySeverity:null,justRecovered:true,returnPenaltyWeeks:2}:{justRecovered:false}),fatigue:Math.max(0,baseFat-_fatRecInj),form:naturalForm};
       }
       // Sprint 161: auto-training when user didn't visit the Training tab
       let _autoFatD=0,_didAutoTrain=false;
@@ -13052,8 +13059,14 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       const retPen=p.returnPenaltyWeeks||0;
       const retFormPen=retPen>0?-6:0;
       const nextRetPen=Math.max(0,retPen-1);
-      const formWithReturn=clamp(naturalForm+retFormPen,30,95);
-      return{...updP,week:nextWk,weekLived:false,sessionsThisWeek:0,sessionLog:[],trainingStreak:nextStreak,weeklyFocusType:null,windowOfferUsed:winReset?false:(p.windowOfferUsed||false),fatigue:clamp(naturalFat+_autoFatD,0,100),form:formWithReturn,justRecovered:false,returnPenaltyWeeks:nextRetPen};
+      // Sprint D2: fitnessCoachRel modula recupero fatica (range 7-17, default 12 = nessun impatto)
+      const _fatRec=12+Math.round(((p.fitnessCoachRel||50)-50)/10);
+      const naturalFatStaff=Math.max(0,naturalFat-(_fatRec-12));
+      // Sprint D2: teamChemistry — piccolo effetto passivo su form/morale (-2..+2)
+      const _tcBonus=Math.round(((p.teamChemistry||60)-50)/25);
+      const formWithReturn=clamp(naturalForm+retFormPen+_tcBonus,30,95);
+      const moraleWithTc=clamp((updP.morale||p.morale||70)+_tcBonus,0,100);
+      return{...updP,week:nextWk,weekLived:false,sessionsThisWeek:0,sessionLog:[],trainingStreak:nextStreak,weeklyFocusType:null,windowOfferUsed:winReset?false:(p.windowOfferUsed||false),fatigue:clamp(naturalFatStaff+_autoFatD,0,100),form:formWithReturn,morale:moraleWithTc,justRecovered:false,returnPenaltyWeeks:nextRetPen};
     });
     notify("⏭️ Settimana avanzata");
     // Sprint 130 — MVP del Mese (triggered at end of weeks 6, 12, 18, 24)
@@ -14872,6 +14885,16 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
               </Card>
             ))}
           </div>
+          {/* Sprint D2: Staff & Spogliatoio */}
+          <Card style={{padding:"12px 14px"}}>
+            <div style={{fontSize:10,fontWeight:700,color:TH.faint,textTransform:"uppercase",letterSpacing:1,marginBottom:10}}>Staff & Spogliatoio</div>
+            {[{l:"Preparatore",v:player.fitnessCoachRel||50,c:"#0891b2"},{l:"Vice-Mister",v:player.assistantCoachRel||50,c:"#7c3aed"},{l:"Chimica Squadra",v:player.teamChemistry||60,c:"#16a34a"}].map(it=>(
+              <div key={it.l} style={{marginBottom:8}}>
+                <div style={{display:"flex",justifyContent:"space-between",fontSize:11,marginBottom:3}}><span style={{color:TH.muted,textTransform:"uppercase",letterSpacing:1}}>{it.l}</span><span style={{color:it.c,fontWeight:700}}>{it.v}</span></div>
+                <div style={{height:4,background:"#e2e8f0",borderRadius:3,overflow:"hidden"}}><div style={{height:"100%",width:`${it.v}%`,background:it.c,borderRadius:3,transition:"width .5s"}}/></div>
+              </div>
+            ))}
+          </Card>
           {(player.log||[]).length>0&&<Card style={{padding:"12px 14px"}}><div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:6}}>Ultime notizie</div>{(player.log||[]).slice(0,5).map((e,i)=><div key={i} style={{fontSize:11,color:TH.text,padding:"3px 0",borderBottom:i<4?"1px solid "+TH.cardBorder:"none"}}>{e}</div>)}</Card>}
           <Card style={{padding:"10px 14px"}} shadow={false} bg={darkMode?"#0f172a":"#f8fafc"}>
             <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:_dk?6:0}}>
