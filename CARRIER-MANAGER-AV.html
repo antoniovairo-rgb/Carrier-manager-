@@ -2441,7 +2441,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.5.63"; // Sprint 217: Fase B — MilestoneCelebrationModal + Tutorial passi 5-6
+const GAME_VERSION="4.5.64"; // Sprint 218: Fase C — PitchCanvas DPR cap, font floor mobile
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -4532,7 +4532,7 @@ const Btn=({children,onClick,v="primary",disabled=false,style={},fw=false})=>{
     ghost:{background:"transparent",color:TH.faint,border:"1px solid "+TH.cardBorder},
     gold:{background:"linear-gradient(135deg,#f59e0b,#d97706)",color:"#fff",fontWeight:800},
   };
-  return<button onClick={onClick} disabled={disabled} style={{padding:"10px 18px",borderRadius:10,border:"none",cursor:disabled?"not-allowed":"pointer",fontFamily:"inherit",fontSize:13,letterSpacing:.3,transition:"all .15s",opacity:disabled?.4:1,width:fw?"100%":"auto",...vs[v],...style}}>{children}</button>;
+  return<button onClick={onClick} disabled={disabled} style={{padding:"10px 18px",minHeight:40,borderRadius:10,border:"none",cursor:disabled?"not-allowed":"pointer",fontFamily:"inherit",fontSize:13,letterSpacing:.3,transition:"all .15s",opacity:disabled?.4:1,width:fw?"100%":"auto",...vs[v],...style}}>{children}</button>;
 };
 const StatBar=({label,value})=>{
   const c=value>=80?TH.success:value>=65?TH.warning:TH.danger;
@@ -4873,7 +4873,7 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
 
   useEffect(()=>{
     const canvas=canvasRef.current;if(!canvas)return;
-    const dpr=window.devicePixelRatio||1;
+    const dpr=Math.min(window.devicePixelRatio||1,2);
     canvas.width=PC_PW*dpr;canvas.height=PC_PH*dpr;
     const ctx=canvas.getContext("2d");
     ctx.scale(dpr,dpr);
@@ -17570,6 +17570,9 @@ function App(){
           .cpm-nav-tabs button div:nth-child(2){font-size:12px!important;font-weight:600;letter-spacing:0.2px;}
           .cpm-nav-tabs button div:nth-child(3){display:none;}
           .cpm-nav-lang{display:none;}
+        }
+        @media(max-width:380px){
+          .cpm-scroll{padding-left:6px!important;padding-right:6px!important;}
         }
       `}</style>
       <Notif msg={appMsg?.msg} color={appMsg?.color}/>
