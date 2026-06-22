@@ -2441,7 +2441,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.5.49"; // Sprint 210: cielo azzurro, atmosfera tribuna, eliminazione vomitori
+const GAME_VERSION="4.5.50"; // Sprint 210b: fix grafica, bordi spalti grigi, ripristino billboard
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -5154,15 +5154,15 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
       }
       // === STRUTTURA STADIO — logica centralizzata (Sprint 205) ===
       {
-        const bW=4,_bc="#1e2530",_fC="rgba(255,250,215,0.90)",_fR=2;
+        const bW=4,_bc="#4a5a6a",_fC="rgba(255,250,215,0.90)",_fR=2;
         // [sx, sy, sw, sh, dT, dR, dB, dL, farettiSide]
         // I pilastri verticali (FX e FX+FW) sono gestiti separatamente sotto
         // fSide = bordo SUPERIORE/ESTERNO (lontano dal campo) di ogni settore
         const _sects=[
           [FX,    0,        FW,        FY,         1,0,0,0,'T'], // curva casa: faretti bordo top (lontano dal campo)
           [FX,    FY+FH,    FW,        PH-FY-FH,   0,1,1,1,'B'], // curva ospiti: faretti bordo bottom (lontano dal campo)
-          [0,     FY,       FX,        FH,          0,0,0,1,'L'], // distinto sin: solo parete esterna
-          [FX+FW, FY,       PW-FX-FW, FH,           0,1,0,0,'R'], // distinto dx: solo parete esterna
+          [0,     FY,       FX,        FH,          1,0,1,1,'L'], // distinto sin
+          [FX+FW, FY,       PW-FX-FW, FH,           1,1,1,0,'R'], // distinto dx
         ];
         _sects.forEach(([sx,sy,sw,sh,dT,dR,dB,dL,fSide])=>{
           cctx.save();cctx.fillStyle=_bc;cctx.globalAlpha=0.88;
@@ -5240,30 +5240,19 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
               cctx.fillStyle="rgba(255,255,255,0.35)";cctx.fillRect(_bfx,_oFY-2,1,2);
             }
           }
-          // Distinti sin: bandierine dense su due colonne
-          const _dStep=Math.floor(FH/14);
-          for(let _fi=0;_fi<14;_fi++){
-            const _dfy=FY+6+_fi*_dStep;
-            cctx.fillStyle=_fi%3===0?"#ffffff":_fi%3===1?hCol:hL;cctx.globalAlpha=0.78;
-            cctx.fillRect(Math.floor(FX*0.32),_dfy,4,5);
-            cctx.fillStyle="rgba(255,255,255,0.45)";cctx.fillRect(Math.floor(FX*0.32),_dfy-3,1,3);
-            if(_fi%2===0){
-              cctx.fillStyle=_fi%4===0?hL:"#ffffff";cctx.globalAlpha=0.55;
-              cctx.fillRect(Math.floor(FX*0.62),_dfy+_dStep/2,3,4);
-            }
+          // Distinti sin: bandierine su tutta l'altezza senza lacune
+          for(let _fi=0;_fi<9;_fi++){
+            const _dfy=FY+12+_fi*Math.floor(FH/9);
+            cctx.fillStyle=_fi%2===0?hCol:"#ffffff";cctx.globalAlpha=0.62;
+            cctx.fillRect(Math.floor(FX*0.38),_dfy,3,5);
+            cctx.fillStyle="rgba(255,255,255,0.38)";cctx.fillRect(Math.floor(FX*0.38),_dfy-2,1,2);
           }
-          // Distinti dx: bandierine dense su due colonne
-          const _dxBase=FX+FW+Math.floor((PW-FX-FW)*0.28);
-          const _dxBase2=FX+FW+Math.floor((PW-FX-FW)*0.60);
-          for(let _fi=0;_fi<14;_fi++){
-            const _dfy=FY+6+_fi*_dStep;
-            cctx.fillStyle=_fi%3===0?"#ffffff":_fi%3===1?hCol:hL;cctx.globalAlpha=0.78;
-            cctx.fillRect(_dxBase,_dfy,4,5);
-            cctx.fillStyle="rgba(255,255,255,0.45)";cctx.fillRect(_dxBase,_dfy-3,1,3);
-            if(_fi%2===0){
-              cctx.fillStyle=_fi%4===0?hL:"#ffffff";cctx.globalAlpha=0.55;
-              cctx.fillRect(_dxBase2,_dfy+_dStep/2,3,4);
-            }
+          // Distinti dx: bandierine su tutta l'altezza senza lacune
+          for(let _fi=0;_fi<9;_fi++){
+            const _dfy=FY+12+_fi*Math.floor(FH/9);
+            cctx.fillStyle=_fi%2===0?hCol:"#ffffff";cctx.globalAlpha=0.62;
+            cctx.fillRect(FX+FW+Math.floor((PW-FX-FW)*0.52),_dfy,3,5);
+            cctx.fillStyle="rgba(255,255,255,0.38)";cctx.fillRect(FX+FW+Math.floor((PW-FX-FW)*0.52),_dfy-2,1,2);
           }
           cctx.globalAlpha=1;cctx.restore();
         }
@@ -5424,6 +5413,19 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
           ctx.fillRect(FX+FW+1,ay,4,adSlot-1);
         }
         ctx.restore();
+        // Cartellone competizione distinto dx — colore competizione, verticale
+        const _cLbl=p.competitionLabel||p.homeClub?.lg||"";
+        const _cShort=(_cLbl||"").length>9?(_cLbl||"").slice(0,9):(_cLbl||"CAMP");
+        const _cCol=_cLbl.includes("UCL")||_cLbl.includes("Champions")?"#003399":_cLbl.includes("UEL")||_cLbl.includes("Europa")?"#f97316":_cLbl.includes("UECL")||_cLbl.includes("Conference")?"#10b981":_cLbl.includes("COPPA")||_cLbl.includes("Cup")?"#7c3aed":"#1e3a8a";
+        const _cbH=adSlot*3-1,_cbW=7,_cbY=FCY-_cbH/2;
+        ctx.save();ctx.globalAlpha=0.93;
+        ctx.fillStyle=_cCol;ctx.fillRect(FX+FW+2,_cbY,_cbW,_cbH);
+        ctx.strokeStyle="#fff";ctx.globalAlpha=0.75;ctx.lineWidth=0.5;
+        ctx.strokeRect(FX+FW+1.5,_cbY-0.5,_cbW+1,_cbH+1);
+        ctx.globalAlpha=1;ctx.fillStyle="#fff";
+        const _cTfs=Math.max(4,Math.floor(_cbW*0.72));
+        ctx.font=`bold ${_cTfs}px Arial,sans-serif`;ctx.textAlign="center";ctx.textBaseline="middle";
+        ctx.save();ctx.translate(FX+FW+2+_cbW/2,FCY);ctx.rotate(Math.PI/2);ctx.fillText(_cShort.toUpperCase(),0,0);ctx.restore();
         ctx.restore();
       }
     }
