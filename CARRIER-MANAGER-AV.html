@@ -2441,7 +2441,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.5.47"; // Sprint 209g: panchine verticali colori club + tunnel in primo piano (layer finale)
+const GAME_VERSION="4.5.48"; // Sprint 209h: rimozione vomitori tribune + tunnel grigio chiaro
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -5182,7 +5182,6 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
         // 2) Steward hi-vis — punti radi sui bordi campo dei distinti
         cctx.save();cctx.fillStyle="rgba(214,232,74,0.90)";
         for(let _isy=FY+20;_isy<FY+FH-12;_isy+=48){
-          if(Math.abs(_isy-FCY)<62)continue;
           cctx.beginPath();cctx.arc(FX-9,_isy,1.4,0,Math.PI*2);cctx.fill();
           cctx.beginPath();cctx.arc(FX+FW+9,_isy,1.4,0,Math.PI*2);cctx.fill();
         }
@@ -5297,11 +5296,11 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
           });
           // Tunnel spogliatoi — in primo piano tra le due panchine
           const _tW=11,_tH=22,_tX=FX-_tW-2;
-          cctx.fillStyle="#020405";cctx.globalAlpha=0.97;
+          cctx.fillStyle="#b8c4cc";cctx.globalAlpha=0.92;
           cctx.fillRect(_tX,FCY-_tH/2,_tW,_tH);
-          cctx.fillStyle="rgba(255,255,255,0.32)";cctx.globalAlpha=1;
+          cctx.fillStyle="rgba(255,255,255,0.70)";cctx.globalAlpha=1;
           cctx.fillRect(_tX,FCY-_tH/2,_tW,1.5);       // architrave
-          cctx.strokeStyle="rgba(255,255,255,0.28)";cctx.lineWidth=0.7;
+          cctx.strokeStyle="rgba(80,100,120,0.55)";cctx.lineWidth=0.7;
           cctx.strokeRect(_tX+0.4,FCY-_tH/2+0.4,_tW-0.8,_tH-0.8);
           cctx.globalAlpha=1;
         }
