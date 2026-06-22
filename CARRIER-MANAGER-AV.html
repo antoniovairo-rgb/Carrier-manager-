@@ -1982,14 +1982,14 @@ const BG_MATCH=[
   {txt:"🏃 Scambio rapido tra {H} e {H2}. Palla conservata.",ef:null,w:3,poss:+1,bpos:{x:55,y:60},pd:"midfield"},
   {txt:"🔄 {H} cambia gioco sulla fascia opposta.",ef:null,w:3,poss:+1,bpos:{x:60,y:80},pd:"wide_right"},
   {txt:"😤 {A} recupera palla e riparte in contropiede.",ef:null,w:3,poss:-2,bpos:{x:35,y:50},pd:"retreat"},
-  {txt:"⚡ Contropiede di {A} sventato in extremis.",ef:null,w:2,poss:-1,bpos:{x:25,y:45},pd:"retreat"},
+  {txt:"⚡ Contropiede di {A} sventato in extremis.",ef:null,w:2,poss:-1,bpos:{x:25,y:45},pd:"retreat",momThreshold:[0,50]},
   // Attacks
   {txt:"💥 Tiro da fuori area di {H}, para il portiere.",ef:null,w:3,bpos:{x:78,y:50},ms:{shots:1},pd:"attack"},
   {txt:"🔥 {H} sfiora il vantaggio! Palo!",ef:null,w:2,bpos:{x:90,y:52},ms:{shots:1},pd:"attack_goal"},
   {txt:"🎯 Cross di {H} pericoloso, respinto dalla difesa.",ef:null,w:3,bpos:{x:82,y:85},ms:{shots:1},pd:"wide_right"},
   {txt:"⚡ Azione veloce sulla fascia. Corner guadagnato da {H}.",ef:null,w:2,bpos:{x:88,y:90},ms:{corners:1},pd:"wide_right"},
   {txt:"💪 Combinazione tra {H} e {H2} in area! Difesa salva.",ef:null,w:2,bpos:{x:85,y:55},ms:{shots:1},pd:"attack_goal"},
-  {txt:"🌀 Dribbling netto di {H}! Ottima posizione.",ef:null,w:2,bpos:{x:70,y:65},pd:"attack"},
+  {txt:"🌀 Dribbling netto di {H}! Ottima posizione.",ef:null,w:2,bpos:{x:70,y:65},pd:"attack",momThreshold:[60,100]},
   // Defense
   {txt:"🧤 Grande parata del portiere su {A}!",ef:null,w:2,bpos:{x:8,y:50},ms:{oppShots:1},pd:"defend_goal"},
   {txt:"🛡️ Tackle in scivolata! {H} recupera palla.",ef:null,w:3,poss:+2,bpos:{x:38,y:48},pd:"midfield"},
@@ -2002,12 +2002,12 @@ const BG_MATCH=[
   {txt:"🏳️ Corner avversario da {A}. Difesa attenta.",ef:null,w:2,bpos:{x:8,y:5},ms:{oppShots:1},pd:"defend_goal"},
   // Tactical
   {txt:"📢 Il mister urla istruzioni. {H} si sistema.",ef:null,w:2,bpos:{x:50,y:50},pd:"midfield"},
-  {txt:"🔥 {H} spinge forte! Intensità altissima.",ef:null,w:3,bpos:{x:65,y:55},pd:"attack"},
-  {txt:"😤 L'avversario alza il ritmo. {A} pressa alto.",ef:null,w:2,bpos:{x:40,y:48},pd:"retreat"},
+  {txt:"🔥 {H} spinge forte! Intensità altissima.",ef:null,w:3,bpos:{x:65,y:55},pd:"attack",momThreshold:[60,100]},
+  {txt:"😤 L'avversario alza il ritmo. {A} pressa alto.",ef:null,w:2,bpos:{x:40,y:48},pd:"retreat",momThreshold:[0,40]},
   {txt:"📊 Partita equilibrata. {H} cerca gli spazi.",ef:null,w:3,bpos:{x:50,y:50},pd:"midfield"},
   {txt:"🏃 {A} si chiude in difesa. Possesso sterile.",ef:null,w:2,bpos:{x:55,y:52},pd:"midfield"},
   {txt:"✨ Grande combinazione sulla fascia tra {H} e {H2}.",ef:null,w:2,bpos:{x:72,y:88},pd:"wide_right"},
-  {txt:"🔄 Cambio tattico avversario. {A} pressa di più.",ef:null,w:2,bpos:{x:42,y:50},pd:"retreat"},
+  {txt:"🔄 Cambio tattico avversario. {A} pressa di più.",ef:null,w:2,bpos:{x:42,y:50},pd:"retreat",momThreshold:[0,40]},
   // Late game
   {txt:"⏱️ Il tempo stringe. {H} deve sbloccarla!",ef:null,w:4,minClock:70,bpos:{x:65,y:50},pd:"attack"},
   {txt:"🔥 Pressione massima di {H}! Tifosi scatenati.",ef:null,w:3,minClock:75,bpos:{x:75,y:50},pd:"attack"},
@@ -2258,6 +2258,14 @@ function succRate(action,stats,playerX,oppPrestige=65,archetypeId=null){
   const arcBonus=archetypeId?(ARCHETYPE_STAT_BONUS[archetypeId]?.[action.stat]||0):0;
   // Cap raised to 0.84: elite players succeed reliably on good actions
   return Math.round(clamp(base-diffPenalty+arcBonus,0.05,0.84)*100);
+}
+// xG per chance quality: position × action difficulty × stat type
+function calcXG(action,playerX){
+  if(!["goal","assist"].includes(action.rew||""))return 0;
+  const posFactor=Math.pow(Math.max(playerX,30)/100,1.8);
+  const statBase=action.stat==="tiro"?0.28:0.16;
+  const diffFactor=clamp(1+(action.bon||0)*0.015,0.35,1.25);
+  return Math.round(clamp(statBase*posFactor*diffFactor,0.01,0.92)*100)/100;
 }
 // Adaptive difficulty: returns a 0-1 multiplier that makes opponent harder when player is performing well
 function adaptiveDifficulty(player){
@@ -2512,7 +2520,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.5.71"; // Fase F: PWA manifest + install banner (Android/iOS)
+const GAME_VERSION="4.5.74"; // Sprint G-3: simulateMatch rating, tactic-biased BG_MATCH, xG adj
 const SAVE_VERSION=6;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -4633,7 +4641,11 @@ function simulateMatch(playerClub,opponent,playerOvr,isHome=true){
   const lambdaA=clamp(1.00-diff*0.45-homeFactor-ovrBonus*0.5+personaMod,0.20,2.2);
   const hG=poissonGoals(lambdaH);
   const aG=poissonGoals(lambdaA);
-  return{homeScore:hG,awayScore:aG,won:hG>aG,drew:hG===aG,rating:hG>aG?6.5:hG===aG?6.0:5.5,opponent:opponent?.n||opponent?.name,oppAbbr:opponent?.a||opponent?.abbr,oppCol:opponent?.c||opponent?.col,simulated:true};
+  const _m=hG-aG;
+  const _baseRat=_m>0?(6.2+Math.min(_m*0.25,0.8)):(_m===0?5.8:(5.5-Math.min(-_m*0.18,0.5)));
+  const _ovrMod=_m>0?clamp(((playerOvr||65)-65)/200,-0.1,0.3):0;
+  const _simRating=Math.round(clamp(_baseRat+_ovrMod+(Math.random()-0.5)*0.4,4.0,9.5)*10)/10;
+  return{homeScore:hG,awayScore:aG,won:hG>aG,drew:hG===aG,rating:_simRating,opponent:opponent?.n||opponent?.name,oppAbbr:opponent?.a||opponent?.abbr,oppCol:opponent?.c||opponent?.col,simulated:true};
 }
 // Sprint 131: probabilistic player goals/assists for simulated matches
 function _pSimStats(sim,ovr,archId){
@@ -7104,6 +7116,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   // Dynamic HL — reactive queue (opp_goal) + desperate flag (losing 0-2 at 72')
   const reactiveHLQueueRef=useRef([]);
   const desperateFiredRef=useRef(false);
+  const earlyDespRef=useRef(false);
   // Sprint 81 — use correct club stadium for pro matches
   const [stadium]=useState(()=>{
     if(context==="trial"||(player.club?.isU18))return pick(STADIUMS);
@@ -7139,6 +7152,8 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   const [momentum,setMomentum]=useState(50); // 0=away dominance, 100=home dominance
   const momentumRef=useRef(50);
   useEffect(()=>{momentumRef.current=momentum;},[momentum]);
+  const phaseRef=useRef(phase);
+  useEffect(()=>{phaseRef.current=phase;},[phase]);
   const heatPointsRef=useRef([]); // {x,y}[] — sampled every 4 playing ticks
   const [showHeatMap,setShowHeatMap]=useState(false);
   const gkDiveRef=useRef(null); // GK dive direction for rigore
@@ -7217,7 +7232,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   const [pPos,setPPos]=useState(()=>getStartPos(situations[0])||{x:58,y:50});
   const pPosRef=useRef({x:58,y:50});
   useEffect(()=>{pPosRef.current=pPos;},[pPos]);
-  const [mStats,setMStats]=useState({goals:0,assists:0,rb:0});
+  const [mStats,setMStats]=useState({goals:0,assists:0,rb:0,xg:0});
   const [energy,setEnergy]=useState(100);
   const [coms,setComs]=useState([]);
   const [outcome,setOutcome]=useState(null);
@@ -7277,17 +7292,24 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   const addCom=useCallback((text,color,t)=>{setComs(p=>[{text,color,t:t??clockRef.current},...p].slice(0,16));},[]); // stable — clockRef via ref, non dipende da clock state
   // Component-scope chantFor — tracks timer IDs so they can be cleared on phase exit
   const chantFor=(type,dur=2800)=>{
+    // Auto-contextualize generic "home" calls based on score gap + momentum
+    let _type=type;
+    if(_type==="home"){
+      const _sc=scoreRef.current;const _gap=_sc.home-_sc.away;
+      if(_gap>0&&momentumRef.current>60)_type="winning";
+      else if(_gap<0&&momentumRef.current<40)_type="comeback";
+    }
     // Sprint 155: national team identity; Sprint 156: language-congruent chant pool
     const _isNat=context==="national"||context==="nationsCup"||context==="euroMondiale_group"||context==="euroMondiale_ko"||context==="euroMondiale";
     const _natD=_isNat?(NAT_CLUB_DATA[player.nation||"Italia"]||{a:"ITA",c:"#003399"}):null;
     const clubN=_isNat?(_natD?.a||player.nation||"Nazionale"):(player.club?.a||player.club?.n||player.club?.name||"la squadra");
     const lgPool=_isNat
-      ?(CROWD_CHANTS_NAT[player.nation||"Italia"]||{})[type]
-      :(CROWD_CHANTS_LG[player.club?.lg||""]||{})[type];
-    const pool=lgPool||CROWD_CHANTS[type]||CROWD_CHANTS.home;
+      ?(CROWD_CHANTS_NAT[player.nation||"Italia"]||{})[_type]
+      :(CROWD_CHANTS_LG[player.club?.lg||""]||{})[_type];
+    const pool=lgPool||CROWD_CHANTS[_type]||CROWD_CHANTS.home;
     const t=pick(pool);
     const clubCol=_isNat?(_natD?.c||"#003399"):(player.club?.c||"#4ade80");
-    setCrowdChant({text:t.replace(/\[CLUB\]/g,clubN),type,key:Date.now(),clubCol});
+    setCrowdChant({text:t.replace(/\[CLUB\]/g,clubN),type:_type,key:Date.now(),clubCol});
     const tid=setTimeout(()=>setCrowdChant(null),dur);
     chantTimersRef.current.push(tid);
   };
@@ -7661,6 +7683,21 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           }
         }
       }
+      // Dynamic HL — early reactive: losing by exactly 1 at 60', push extra chance
+      if(ck===60&&!earlyDespRef.current&&numHLRef.current<8){
+        var sc60=scoreRef.current;
+        if(sc60.away-sc60.home===1){
+          earlyDespRef.current=true;
+          var eextra=selectContextualSituations([...SITUATIONS],1,player,Date.now()^607,{scoreCtx:"losing",clock:ck,opponentId:opponent?.id||opponent?.n||null});
+          if(eextra.length>0){
+            setSituations(function(prev){return[...prev,eextra[0]];});
+            var etime=63+rng(0,4);
+            setHlTimes(function(prev){var v=[...prev,etime];hlTimesRef.current=v;return v;});
+            setNumHL(function(prev){var v=prev+1;numHLRef.current=v;return v;});
+            addCom("⚠️ Sotto di uno — è il momento di svegliarsi!","#f59e0b",ck);
+          }
+        }
+      }
       // Dynamic HL — desperate situation: losing by ≥2 at 72', add one last chance
       if(ck===72&&!desperateFiredRef.current&&numHLRef.current<8){
         var sc=scoreRef.current;
@@ -7701,12 +7738,18 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           const _pool94=_wCom94[_wfx94]||_wCom94.rain;
           addCom(pick(_pool94),"#64748b",nx);
         }
-        // Commentary ~30% chance per tick (1 every ~3 min average)
-        if(Math.random()<0.30){
+        // Commentary ~30% chance per tick (1 every ~3 min average) — suspended during HL phases
+        if(Math.random()<0.30&&!["hl_intro","hl_move","hl_choose","hl_result"].includes(phaseRef.current)){
           const _sc76=scoreRef.current;const _sd76=_sc76.home-_sc76.away;const _sctx76=_sd76>0?"winning":_sd76<0?"losing":"drawing";
           // Sprint 113: dedup — exclude last 3 BG events to avoid repetition
           const _lastBG=lastBGEvtRef.current;
-          const eligible=BG_MATCH.filter(e=>(!e.minClock||nx>=e.minClock)&&(!e.maxClock||nx<=e.maxClock)&&(!e.derbyOnly||!!drby)&&(!e.ctx||e.ctx===_sctx76)&&!_lastBG.includes(e.txt)&&(!onBenchRef.current||!e.txt.includes("{P}")));
+          // G-3: detect active coach tactic from driftTargetsRef to bias BG_MATCH weights
+          const _activeDriftKey=Object.keys(DRIFT_PRESETS).find(k=>DRIFT_PRESETS[k]===driftTargetsRef.current)||null;
+          const _atkPd=["attack","attack_goal","wide_right"];const _defPd=["retreat","defend_goal"];
+          const _isAtkTactic=_activeDriftKey&&(_atkPd.includes(_activeDriftKey)||_activeDriftKey==="attack_goal");
+          const _isDefTactic=_activeDriftKey&&(_defPd.includes(_activeDriftKey)||_activeDriftKey==="retreat");
+          const eligible=BG_MATCH.filter(e=>(!e.minClock||nx>=e.minClock)&&(!e.maxClock||nx<=e.maxClock)&&(!e.derbyOnly||!!drby)&&(!e.ctx||e.ctx===_sctx76)&&!_lastBG.includes(e.txt)&&(!onBenchRef.current||!e.txt.includes("{P}"))&&(!e.momThreshold||(momentumRef.current>=e.momThreshold[0]&&momentumRef.current<=e.momThreshold[1])))
+            .map(e=>{if(!_activeDriftKey||!e.pd)return e;if(_isAtkTactic&&_atkPd.includes(e.pd))return{...e,w:e.w*1.8};if(_isDefTactic&&_defPd.includes(e.pd))return{...e,w:e.w*1.8};return e;});
           const ev=wPick(eligible.length>0?eligible:BG_MATCH.filter(e=>(!e.minClock||nx>=e.minClock)&&(!e.maxClock||nx<=e.maxClock)&&(!onBenchRef.current||!e.txt.includes("{P}"))));
           // Sprint 113: record event in dedup buffer
           lastBGEvtRef.current=[ev.txt,..._lastBG].slice(0,3);
@@ -7948,7 +7991,8 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     const key=ok?action.rew:action.fail;
     const txt=pick(OUTCOME_TX[key]||["Azione completata."]);
     setEnergy(e=>clamp(e-action.nrg,0,100));
-    setMStats(s=>{let{goals,assists,rb}={...s};if(ok){if(key==="goal"){goals++;rb+=5;setScore(sc=>({...sc,home:sc.home+1}));setMatchEvents(prev=>{const _em=prev.length>0&&prev[prev.length-1].min>=clockRef.current?prev[prev.length-1].min+1:clockRef.current;return[...prev,{min:_em,type:"player_goal",txt:"⚽ Tuo gol al "+_em+"'"}].slice(-12);});}if(key==="assist"){assists++;rb+=3;setScore(sc=>({...sc,home:sc.home+1}));setMatchEvents(prev=>{const _em=prev.length>0&&prev[prev.length-1].min>=clockRef.current?prev[prev.length-1].min+1:clockRef.current;return[...prev,{min:_em,type:"player_assist",txt:"🎯 Tuo assist al "+_em+"'"}].slice(-12);});}if(!["goal","assist"].includes(key))rb+=1;}else{if(key==="goal_against"){rb-=3;setScore(sc=>({...sc,away:sc.away+1}));setMatchEvents(prev=>{const _em=prev.length>0&&prev[prev.length-1].min>=clockRef.current?prev[prev.length-1].min+1:clockRef.current;return[...prev,{min:_em,type:"opp_goal",txt:"😨 Gol subito al "+_em+"'"}].slice(-12);});}if(key==="miss_easy"){rb-=2;setMatchEvents(prev=>{const _em=prev.length>0&&prev[prev.length-1].min>=clockRef.current?prev[prev.length-1].min+1:clockRef.current;return[...prev,{min:_em,type:"miss",txt:"😱 Gol clamorosamente sprecato al "+_em+"'"}].slice(-12);});}}return{goals,assists,rb};});
+    setMStats(s=>{let{goals,assists,rb,xg}={...s};const _xgAdd=calcXG(action,pPos.x);xg=Math.round((xg+_xgAdd)*100)/100;if(ok){if(key==="goal"){goals++;rb+=5;setScore(sc=>({...sc,home:sc.home+1}));setMatchEvents(prev=>{const _em=prev.length>0&&prev[prev.length-1].min>=clockRef.current?prev[prev.length-1].min+1:clockRef.current;return[...prev,{min:_em,type:"player_goal",txt:"⚽ Tuo gol al "+_em+"'"}].slice(-12);});}if(key==="assist"){assists++;rb+=3;setScore(sc=>({...sc,home:sc.home+1}));setMatchEvents(prev=>{const _em=prev.length>0&&prev[prev.length-1].min>=clockRef.current?prev[prev.length-1].min+1:clockRef.current;return[...prev,{min:_em,type:"player_assist",txt:"🎯 Tuo assist al "+_em+"'"}].slice(-12);});}if(!["goal","assist"].includes(key))rb+=1;}else{if(key==="goal_against"){rb-=3;setScore(sc=>({...sc,away:sc.away+1}));setMatchEvents(prev=>{const _em=prev.length>0&&prev[prev.length-1].min>=clockRef.current?prev[prev.length-1].min+1:clockRef.current;return[...prev,{min:_em,type:"opp_goal",txt:"😨 Gol subito al "+_em+"'"}].slice(-12);});}if(key==="miss_easy"){rb-=2;setMatchEvents(prev=>{const _em=prev.length>0&&prev[prev.length-1].min>=clockRef.current?prev[prev.length-1].min+1:clockRef.current;return[...prev,{min:_em,type:"miss",txt:"😱 Gol clamorosamente sprecato al "+_em+"'"}].slice(-12);});}}return{goals,assists,rb,xg};});
+    if(ok&&(key==="recovery"||key==="intercept"))setPossession(p=>clamp(p+1,20,80));
     addCom(txt,ok?"#16a34a":"#dc2626",clock);
     setAiCommentary(null);
     // Visual feedback
@@ -8600,7 +8644,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                   </div>
                 </div>
                 <div style={{marginTop:5,fontSize:7,color:"rgba(255,255,255,0.25)"}}>
-                  📍 {ZONES[zone]?.label||zone} &nbsp;·&nbsp; 🟡 {mxStats.fouls} &nbsp;·&nbsp; 🏳️ {mxStats.corners}
+                  📍 {ZONES[zone]?.label||zone} &nbsp;·&nbsp; 🟡 {mxStats.fouls} &nbsp;·&nbsp; 🏳️ {mxStats.corners} &nbsp;·&nbsp; <span style={{color:"#f59e0b"}}>xG {(mStats.xg||0).toFixed(2)}</span>
                 </div>
               </div>}
 
@@ -12323,7 +12367,8 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
         return{...p,...injBase,standings:newSt,calendar:newCal,matchHistory:injHistory,morale:clamp((p.morale||70)+(sim.won?1:sim.drew?0:-1),0,100),week:_pendingEuro?(p.week||1):(p.week||1)+1,weekLived:_pendingEuro?true:false,...(!_pendingEuro?{sessionsThisWeek:0,sessionLog:[],weeklyFocusType:null}:{})};
       }
       const _sPS131=_pSimStats(sim,p.ovr||65,p.archetype?.id||p.archetype||"");
-      const newHistory=[...(p.matchHistory||[]),{week:p.week||1,opponent:opp.n,oppAbbr:opp.a,oppCol:opp.c,homeScore:sim.homeScore,awayScore:sim.awayScore,goals:_sPS131.goals,assists:_sPS131.assists,rating:sim.rating,won:sim.won,drew:sim.drew,simulated:true}].slice(-200);
+      const _adjRat131=Math.round(clamp(sim.rating+_sPS131.goals*0.4+_sPS131.assists*0.2,4.0,9.5)*10)/10;
+      const newHistory=[...(p.matchHistory||[]),{week:p.week||1,opponent:opp.n,oppAbbr:opp.a,oppCol:opp.c,homeScore:sim.homeScore,awayScore:sim.awayScore,goals:_sPS131.goals,assists:_sPS131.assists,rating:_adjRat131,won:sim.won,drew:sim.drew,simulated:true}].slice(-200);
       const moD=sim.won?3:sim.drew?1:-2;
       notify(`Simulazione: ${sim.homeScore}–${sim.awayScore} vs ${opp.n}`,sim.won?TH.success:sim.drew?TH.warning:TH.danger);
       return{...p,standings:newSt,calendar:newCal,matchHistory:newHistory,matches:(p.matches||0)+1,goals:(p.goals||0)+_sPS131.goals,totalGoals:(p.totalGoals||0)+_sPS131.goals,assists:(p.assists||0)+_sPS131.assists,totalAssists:(p.totalAssists||0)+_sPS131.assists,morale:clamp((p.morale||70)+moD,0,100),week:_pendingEuro?(p.week||1):(p.week||1)+1,weekLived:_pendingEuro?true:false,returnPenaltyWeeks:_pendingEuro?(p.returnPenaltyWeeks||0):Math.max(0,(p.returnPenaltyWeeks||0)-1),...(!_pendingEuro?{sessionsThisWeek:0,sessionLog:[],weeklyFocusType:null}:{})};
@@ -13116,7 +13161,8 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
               updP={...updP,standings:newSt,calendar:newCal,matchHistory:injHist,morale:clamp((p.morale||70)+(sim.won?1:sim.drew?0:-1),0,100)};
             }else{
               const _ps131=_pSimStats(sim,p.ovr||65,p.archetype?.id||p.archetype||"");
-              const newHistory=[...(p.matchHistory||[]),{week:p.week||1,opponent:opp.n,oppAbbr:opp.a,oppCol:opp.c,homeScore:sim.homeScore,awayScore:sim.awayScore,goals:_ps131.goals,assists:_ps131.assists,rating:sim.rating,won:sim.won,drew:sim.drew,simulated:true}].slice(-200);
+              const _adjRat=Math.round(clamp(sim.rating+_ps131.goals*0.4+_ps131.assists*0.2,4.0,9.5)*10)/10;
+              const newHistory=[...(p.matchHistory||[]),{week:p.week||1,opponent:opp.n,oppAbbr:opp.a,oppCol:opp.c,homeScore:sim.homeScore,awayScore:sim.awayScore,goals:_ps131.goals,assists:_ps131.assists,rating:_adjRat,won:sim.won,drew:sim.drew,simulated:true}].slice(-200);
               updP={...updP,standings:newSt,calendar:newCal,matchHistory:newHistory,matches:(p.matches||0)+1,goals:(p.goals||0)+_ps131.goals,totalGoals:(p.totalGoals||0)+_ps131.goals,assists:(p.assists||0)+_ps131.assists,totalAssists:(p.totalAssists||0)+_ps131.assists,morale:clamp((p.morale||70)+(sim.won?3:sim.drew?1:-2),0,100)};
             }
           }
