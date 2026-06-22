@@ -2441,7 +2441,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.5.50"; // Sprint 210b: fix grafica, bordi spalti grigi, ripristino billboard
+const GAME_VERSION="4.5.51"; // Sprint 211: faretti notturni accesi — bulbs, glow allineato alle torri
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -5326,23 +5326,32 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
       }
       // Riflettori — struttura sempre visibile agli angoli del campo, glow solo notte/dusk
       {
-        const floodR=_prest80>=80?90:_prest80>=60?64:46;
-        // bottom towers: ty=FY+FH+28 → testa a y=592 (dentro l'angolo, non nel campo verde)
+        const floodR=_prest80>=80?110:_prest80>=60?80:60;
         const towers=[[FX-12,FY-8,1],[FX+FW+12,FY-8,1],[FX-12,FY+FH+28,-1],[FX+FW+12,FY+FH+28,-1]];
         if(atmo[3]){
-          const _fA=(_prest80>=80?0.72:_prest80>=60?0.56:0.38)*(_tod==="dusk"?0.55:1);
+          const _fA=(_prest80>=80?0.88:_prest80>=60?0.72:0.55)*(_tod==="dusk"?0.60:1);
           const fC=_tod==="dusk"?"rgba(255,210,130,":"rgba(255,248,200,";
           towers.forEach(([tx,ty])=>{
-            const fg=cctx.createRadialGradient(tx,ty,0,tx,ty,floodR);
-            fg.addColorStop(0,fC+_fA+")");fg.addColorStop(0.5,fC+(_fA*0.28).toFixed(2)+")");fg.addColorStop(1,fC+"0)");
+            const fg=cctx.createRadialGradient(tx,ty,2,tx,ty,floodR);
+            fg.addColorStop(0,fC+_fA+")");fg.addColorStop(0.45,fC+(_fA*0.25).toFixed(2)+")");fg.addColorStop(1,fC+"0)");
             cctx.fillStyle=fg;cctx.fillRect(tx-floodR,ty-floodR,floodR*2,floodR*2);
           });
         }
-        const _poleCol=atmo[3]?"#ccc":"#444";
-        const _headCol=atmo[3]?"rgba(255,252,210,1)":"rgba(160,158,140,0.95)";
+        const _poleCol=atmo[3]?"#b0b8c0":"#444";
+        const _headCol=atmo[3]?"rgba(255,252,200,1)":"rgba(140,138,120,0.95)";
         towers.forEach(([tx,ty,pDir])=>{
+          const _hy=pDir>0?ty-4:ty-26;
           cctx.fillStyle=_poleCol;cctx.fillRect(tx-1,pDir>0?ty:ty-22,3,22);
-          cctx.fillStyle=_headCol;cctx.fillRect(tx-5,pDir>0?ty-4:ty-26,10,4);
+          cctx.fillStyle=_headCol;cctx.fillRect(tx-6,_hy,12,5);
+          if(atmo[3]){
+            // Bulbs accesi: tre punti bianchi nel proiettore
+            cctx.fillStyle="rgba(255,255,240,1)";
+            cctx.fillRect(tx-4,_hy+1,2,3);cctx.fillRect(tx-1,_hy+1,2,3);cctx.fillRect(tx+2,_hy+1,2,3);
+            // Alone luminoso stretto sulla testa del proiettore
+            const _hg=cctx.createRadialGradient(tx,_hy+2,1,tx,_hy+2,22);
+            _hg.addColorStop(0,"rgba(255,255,220,0.55)");_hg.addColorStop(1,"rgba(255,255,200,0)");
+            cctx.fillStyle=_hg;cctx.fillRect(tx-22,_hy-20,44,44);
+          }
         });
       }
     }
@@ -5382,18 +5391,19 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
         ctx.fillRect(FX,2,FW,FY-3);ctx.fillRect(FX,FY+FH+2,FW,PH-FY-FH-4);
         ctx.restore();
       }
-      // Night/dusk: floodlight glow on stands (clipped to stand areas only)
+      // Night/dusk: floodlight glow on stands — centrato sulle torri riflettori reali
       const _stdTod=p.timeOfDay||"night";
       if(_stdTod==="night"||_stdTod==="dusk"){
-        const _gA=_stdTod==="dusk"?0.20:0.42;const _gC=_stdTod==="dusk"?"rgba(255,210,130,":"rgba(255,248,200,";
+        const _gA=_stdTod==="dusk"?0.32:0.58;const _gC=_stdTod==="dusk"?"rgba(255,210,130,":"rgba(255,248,200,";
         ctx.save();
         ctx.beginPath();
         ctx.rect(0,0,PW,FY);ctx.rect(0,FY+FH,PW,PH-FY-FH);
         ctx.rect(0,FY,FX,FH);ctx.rect(FX+FW,FY,PW-FX-FW,FH);
         ctx.clip();
-        [[6,6],[PW-6,6],[6,PH-26],[PW-6,PH-26]].forEach(([tx,ty])=>{
-          const sg=ctx.createRadialGradient(tx,ty,8,tx,ty,PH*0.5);
-          sg.addColorStop(0,_gC+_gA+")");sg.addColorStop(0.4,_gC+(_gA*0.25)+")");sg.addColorStop(1,_gC+"0)");
+        // Posizioni allineate con le torri baked: (FX-12,FY-8) TL, (FX+FW+12,FY-8) TR, bottom pair
+        [[FX-12,FY-8],[FX+FW+12,FY-8],[FX-12,FY+FH+28],[FX+FW+12,FY+FH+28]].forEach(([tx,ty])=>{
+          const sg=ctx.createRadialGradient(tx,ty,4,tx,ty,PH*0.55);
+          sg.addColorStop(0,_gC+_gA+")");sg.addColorStop(0.35,_gC+(_gA*0.30).toFixed(2)+")");sg.addColorStop(1,_gC+"0)");
           ctx.fillStyle=sg;ctx.fillRect(0,0,PW,PH);
         });
         ctx.restore();
