@@ -2353,14 +2353,19 @@ function generateTransferOffer(player,pref){
   }
 
   const club=pick(candidates);
-  const types=["prestito","prestito con riscatto","trasferimento definitivo"];
-  const type=pOvr<65?"prestito":pOvr<73?pick(types.slice(0,2)):pick(types);
+  // E-3: 4 transfer types with realistic loan sub-types
+  const _types4=["prestito","prestito con opzione","prestito con obbligo","trasferimento definitivo"];
+  const type=pOvr<63?"prestito":pOvr<70?pick(_types4.slice(0,2)):pOvr<75?pick(_types4.slice(0,3)):pick(_types4);
   const isPrestito=type.includes("prest");
-  // Sprint 133: realistic wage from OVR + club prestige
+  const isLoanOpt=type==="prestito con opzione";
+  const isLoanObl=type==="prestito con obbligo";
+  // E-3: buyClause for loan-with-option/obligation
+  const _buyClause=(isLoanOpt||isLoanObl)?Math.round((pOvr*35000+club.p*20000)*(player.hasAgent?1.12:1.0)/100)*100:null;
+  const _minMatches=isLoanObl?10:null;
   const _baseWage=_ovrToWageWeekly133(pOvr,club.p);
   const wage=Math.round(_baseWage*(1+rng(-0.1,0.1))*(player.hasAgent?1.15:1.0));
   const duration=isPrestito?1:rng(2,4);
-  return{club,type,minutaggio:isPrestito?rng(30,70):rng(50,90),moralBonus:rng(5,20),growthBonus:rng(5,15),prestigeRatio:club.p/Math.max(1,currentP),wage,duration};
+  return{club,type,minutaggio:isPrestito?rng(30,70):rng(50,90),moralBonus:rng(5,20),growthBonus:rng(5,15),prestigeRatio:club.p/Math.max(1,currentP),wage,duration,...((isLoanOpt||isLoanObl)?{buyClause:_buyClause,minMatches:_minMatches}:{})};
 }
 // Generate pro contract offers at end of U18 career
 function generateProContracts(player){
@@ -2476,8 +2481,8 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.5.69"; // Sprint E-2: richiesta cessione con preferenze destinazione
-const SAVE_VERSION=5;
+const GAME_VERSION="4.5.70"; // Sprint E-3: prestiti reali (loan_with_option/obligation, player.loan, risoluzione fine stagione)
+const SAVE_VERSION=6;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
 // === POST VITTORIA ===
@@ -11847,6 +11852,8 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     if(!('squadRole' in newP)){newP={...newP,squadRole:calcSquadRole(newP)};changed=true;}
     // Sprint E-1: promessa del mister
     if(!('coachPromise' in newP)){newP={...newP,coachPromise:null};changed=true;}
+    // Sprint E-3: prestiti reali
+    if(!('loan' in newP)){newP={...newP,loan:null};changed=true;}
     if(changed){setPlayer(newP);}
   },[]);// eslint-disable-line
   const[darkMode,setDarkMode]=useState(()=>localStorage.getItem("cpm-dark")==="1");
@@ -13408,7 +13415,32 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
         const _pr=COACH_PROMISES.find(pr=>pr.type===p.coachPromise.type);
         if(_pr){_promiseTrustDelta=_pr.checkFn(p)?_pr.trustKept:_pr.trustBroken;}
       }
-      const nextClub84=_nextClubPre||p.club; // Sprint 84: club with updated lg after promotion/relegation
+      // E-3: resolve expiring loan before computing nextClub84
+      let _loanE3=p.loan||null;
+      let _loanReturnClub=null;
+      if(_loanE3&&newSeason>=(_loanE3.untilSeason||newSeason+1)){
+        const _lt3=_loanE3.type||"prestito";
+        if(_lt3==="prestito"){
+          _loanReturnClub=_loanE3.parentClub;
+          setTimeout(()=>notify(`↩️ Fine prestito — rientri al ${_loanE3.parentClub?.n||"club madre"}.`,"#6366f1"),400);
+        }else if(_lt3==="prestito con opzione"){
+          if((p.matches||0)>=8&&(p.coachTrust||60)>=50){
+            setTimeout(()=>notify(`💰 Opzione esercitata — rimani al ${p.club?.n||"club"}!`,"#16a34a"),400);
+          }else{
+            _loanReturnClub=_loanE3.parentClub;
+            setTimeout(()=>notify(`↩️ Opzione non esercitata — rientri al ${_loanE3.parentClub?.n||"club madre"}.`,"#6366f1"),400);
+          }
+        }else if(_lt3==="prestito con obbligo"){
+          if((p.matches||0)>=(_loanE3.minMatches||10)){
+            setTimeout(()=>notify(`💰 Obbligo scattato — rimani al ${p.club?.n||"club"}!`,"#16a34a"),400);
+          }else{
+            _loanReturnClub=_loanE3.parentClub;
+            setTimeout(()=>notify(`↩️ Obbligo non scattato — rientri al ${_loanE3.parentClub?.n||"club madre"}.`,"#6366f1"),400);
+          }
+        }
+        _loanE3=null;
+      }
+      const nextClub84=_loanReturnClub||_nextClubPre||p.club; // Sprint 84 + E-3: loan return overrides
       const lc=getLeagueClubs({...p,club:nextClub84,leagueOverrides:_newOvPre}); // Sprint 84: override-aware
       const newStandings=initStandings(lc);
       const seed=(newSeason*7919+newSeason*newSeason*31)%2147483647+hashStr(nextClub84?.id||nextClub84?.n||"u18")*17;
@@ -13575,7 +13607,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       // Sprint 70: record coach tenure stats before coach possibly changes
       const _ch70={name:p.coach?.name||"Il Mister",style:p.coach?.style||"Bilanciato",season:p.season||1,goals:p.goals||0,assists:p.assists||0,matches:p.matches||0,ovr:p.ovr||60,coachTrust:p.coachTrust||60,coachChanged};
       const newCoachHistory=[...(p.coachHistory||[]),_ch70].slice(-20);
-      return{...p,season:newSeason,age:newAge,week:1,weekLived:false,goals:0,assists:0,matches:0,fatigue:0,skillPoints:0,stats:agedStats,ovr:newOvr,contract:newContract,contractExpired,club:nextClub84||p.club,leagueOverrides:_newOvPre,morale:clamp((p.morale||70)+bonM+(playerClubRelegated?-10:playerClubPromoted?8:0)+(isGB?15:0),0,100),coachTrust:clamp((p.coachTrust||60)+bonCT+(playerClubRelegated?-8:playerClubPromoted?5:0)+(coachChanged?newCoach.trustMod:0)+_promiseTrustDelta,0,100),coachPromise:null,popularity:clamp((p.popularity||20)+bonPop+(isGB?25:0),0,100),value:Math.max(0.5,(p.value||0.8)+bonVal+(playerClubRelegated?-0.3:playerClubPromoted?0.15:0)+(isGB?0.8:0)),log:[agingLog,...objLogs,...[_growthLog102,gbLog,coachLog,phenomLog,relegLog].filter(Boolean),...(p.log||[])].slice(0,60),standings:newStandings,calendar:newCalendar,matchHistory:[],seasonObjectives:newObjectives,history:[...(p.history||[]),prevHist].slice(-50),clubPrestigeShifts:updatedShifts,cup:newCup,euro:newEuro,coach:newCoach,goldenBoys:gbSeasons,records:newRecords,teammates:newTeammates,journalists:newJournalists,fanLegend:updFanLegend,leagueArchive:newLeagueArchive,coachHistory:newCoachHistory,jerseyNumSeason:0,yellAccum:0,isSuspended:false,seasonCards:{y:0,r:0},lastLeagueShift:_lastShiftPre,...(captainReset?{isCaptain:false}:{})}; // Sprint 84: club+leagueOverrides updated
+      return{...p,season:newSeason,age:newAge,week:1,weekLived:false,goals:0,assists:0,matches:0,fatigue:0,skillPoints:0,stats:agedStats,ovr:newOvr,contract:newContract,contractExpired,club:nextClub84||p.club,loan:_loanE3,leagueOverrides:_newOvPre,morale:clamp((p.morale||70)+bonM+(playerClubRelegated?-10:playerClubPromoted?8:0)+(isGB?15:0),0,100),coachTrust:clamp((p.coachTrust||60)+bonCT+(playerClubRelegated?-8:playerClubPromoted?5:0)+(coachChanged?newCoach.trustMod:0)+_promiseTrustDelta,0,100),coachPromise:null,popularity:clamp((p.popularity||20)+bonPop+(isGB?25:0),0,100),value:Math.max(0.5,(p.value||0.8)+bonVal+(playerClubRelegated?-0.3:playerClubPromoted?0.15:0)+(isGB?0.8:0)),log:[agingLog,...objLogs,...[_growthLog102,gbLog,coachLog,phenomLog,relegLog].filter(Boolean),...(p.log||[])].slice(0,60),standings:newStandings,calendar:newCalendar,matchHistory:[],seasonObjectives:newObjectives,history:[...(p.history||[]),prevHist].slice(-50),clubPrestigeShifts:updatedShifts,cup:newCup,euro:newEuro,coach:newCoach,goldenBoys:gbSeasons,records:newRecords,teammates:newTeammates,journalists:newJournalists,fanLegend:updFanLegend,leagueArchive:newLeagueArchive,coachHistory:newCoachHistory,jerseyNumSeason:0,yellAccum:0,isSuspended:false,seasonCards:{y:0,r:0},lastLeagueShift:_lastShiftPre,...(captainReset?{isCaptain:false}:{})}; // Sprint 84 + E-3: club+loan updated
     });
     // S41: double achievement — won league + cup same season
     {const _sd=[...(player.standings||[])].sort((a,b)=>b.pts-a.pts||b.gd-a.gd||b.gf-a.gf);const _ch=_sd[0];const _pid=player.club?.id||player.club?.n;if(player.cup?.champion&&_ch&&(_ch.id===_pid||_ch.n===player.club?.n)&&!(player.achievements||[]).includes("double")){setTimeout(()=>{setPlayer(p=>({...p,achievements:[...(p.achievements||[]),"double"]}));notify("🏆🏆🏆 DOPPIO! Campionato + Coppa nella stessa stagione! Leggendario!","#f59e0b");},1200);}}
@@ -13709,6 +13741,9 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     }
     setPlayer(p=>{
       const newClub={...tc.club,transferType:tc.type,isU18:false};
+      // E-3: set loan record when offer type is a prestito
+      const _tcIsLoan=(tc.type||"").includes("prest");
+      const _newLoan=_tcIsLoan?{parentClubId:p.club?.id,parentClub:p.club,type:tc.type,untilSeason:(p.season||1)+1,buyClause:tc.buyClause||null,minMatches:tc.minMatches||null}:null;
       const lc=CLUBS.filter(c=>c.lg===tc.club.lg);
       const lc2=CLUBS.filter(c=>c.nat===tc.club.nat);
       const lcs=lc.length>=4?lc:lc2.length>=4?lc2:CLUBS.slice(0,16);
@@ -13741,7 +13776,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       return{...p,club:newClub,isU18:false,proStatus:"pro",contractExpired:false,transferListed:false,isCaptain:false,
         // Sprint 98: reset current-season stats on transfer (total career stats preserved)
         goals:0,assists:0,matches:0,
-        contract:_newContract98,coach:_newCoach98,coachTrust:50,
+        contract:_newContract98,coach:_newCoach98,coachTrust:50,loan:_newLoan,
         morale:clamp((p.morale||70)+(tc.moralBonus||10),0,100),offerHistory:[...(p.offerHistory||[]),{club:tc.club.n,type:tc.type,season:p.season,accepted:true}],log:[`🔄 ${tc.type}: ${tc.club.n} (${tc.club.lg||tc.club.nat})!`,...(p.log||[])].slice(0,60),standings:newStandings,calendar:newCalendar,worldMemory:oldClubMem,rival:newRival,fanLegend:updFL,teammates:newTeammates,justRecovered:false};
     });
     setTransferOffer(null);
@@ -16596,6 +16631,19 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                 </div>
               </Card>)
           )}
+          {/* E-3: badge prestito in corso */}
+          {(player.proStatus||"u18")==="pro"&&player.loan&&(
+            <Card bg="#f5f3ff" border="#c4b5fd" style={{padding:"11px 14px"}}>
+              <div style={{display:"flex",alignItems:"flex-start",gap:10}}>
+                <div style={{fontSize:22,lineHeight:1}}>🔄</div>
+                <div style={{flex:1}}>
+                  <div style={{fontSize:11,fontWeight:700,color:"#7c3aed"}}>In prestito</div>
+                  <div style={{fontSize:10,color:"#6d28d9",marginTop:2}}>{player.loan.type==="prestito con opzione"?"Con opzione di riscatto":player.loan.type==="prestito con obbligo"?"Con obbligo di riscatto":"Prestito semplice"} · Club madre: {player.loan.parentClub?.n||"–"} · Rientra S.{player.loan.untilSeason||"?"}</div>
+                  {player.loan.buyClause&&<div style={{fontSize:10,color:"#7c3aed",marginTop:1}}>Clausola: €{(player.loan.buyClause/1e6).toFixed(1)}M{player.loan.minMatches?` · Obbligo se ≥${player.loan.minMatches} presenze`:""}</div>}
+                </div>
+              </div>
+            </Card>
+          )}
           {/* Sprint 30 BF6: Ritiro anticipato */}
           {(player.proStatus||"u18")==="pro"&&(player.age||17)>=32&&(
             !showRetireConfirm?(
@@ -17176,6 +17224,38 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                           <div style={{fontSize:10,color:TH.muted,marginTop:6,textAlign:"center"}}>Attenzione: riduce la fiducia del mister (−10)</div>
                         </div>
                       )}
+                    </Card>
+                  );
+                })()}
+                {/* E-3: Stato Prestito card */}
+                {player.loan&&(()=>{
+                  var ln=player.loan;
+                  var lType=ln.type||"prestito";
+                  var turnsLeft=(ln.untilSeason||1)-(player.season||1);
+                  return(
+                    <Card style={{padding:"12px 14px",border:"1px solid #c4b5fd",background:"#f5f3ff"}}>
+                      <div style={{fontSize:10,color:"#7c3aed",textTransform:"uppercase",letterSpacing:1.5,marginBottom:8,fontWeight:700}}>🔄 Stato Prestito</div>
+                      <div style={{display:"flex",gap:8,marginBottom:8}}>
+                        <div style={{flex:1,background:"#ede9fe",borderRadius:8,padding:"7px 9px"}}>
+                          <div style={{fontSize:9,color:"#6d28d9",textTransform:"uppercase",letterSpacing:1}}>TIPO</div>
+                          <div style={{fontSize:11,fontWeight:700,color:"#4c1d95"}}>{lType==="prestito con opzione"?"Con opzione":lType==="prestito con obbligo"?"Con obbligo":"Semplice"}</div>
+                        </div>
+                        <div style={{flex:1,background:"#ede9fe",borderRadius:8,padding:"7px 9px"}}>
+                          <div style={{fontSize:9,color:"#6d28d9",textTransform:"uppercase",letterSpacing:1}}>CLUB MADRE</div>
+                          <div style={{fontSize:11,fontWeight:700,color:"#4c1d95"}}>{ln.parentClub?.n||"–"}</div>
+                        </div>
+                      </div>
+                      <div style={{display:"flex",gap:8}}>
+                        <div style={{flex:1,background:"#ede9fe",borderRadius:8,padding:"7px 9px"}}>
+                          <div style={{fontSize:9,color:"#6d28d9",textTransform:"uppercase",letterSpacing:1}}>SCADENZA</div>
+                          <div style={{fontSize:11,fontWeight:700,color:"#4c1d95"}}>S.{ln.untilSeason||"?"}{turnsLeft===0?" (questa stagione)":turnsLeft>0?` (${turnsLeft} stagion${turnsLeft===1?"e":"i"})`:""}</div>
+                        </div>
+                        {ln.buyClause?<div style={{flex:1,background:"#ede9fe",borderRadius:8,padding:"7px 9px"}}>
+                          <div style={{fontSize:9,color:"#6d28d9",textTransform:"uppercase",letterSpacing:1}}>CLAUSOLA</div>
+                          <div style={{fontSize:11,fontWeight:700,color:"#4c1d95"}}>€{(ln.buyClause/1e6).toFixed(1)}M</div>
+                        </div>:null}
+                      </div>
+                      {ln.minMatches?<div style={{marginTop:8,padding:"6px 10px",borderRadius:7,background:"#ede9fe",fontSize:10,color:"#7c3aed",fontWeight:600}}>⚽ Obbligo riscatto se ≥{ln.minMatches} presenze</div>:null}
                     </Card>
                   );
                 })()}
