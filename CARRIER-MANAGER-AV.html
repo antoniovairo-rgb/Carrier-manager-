@@ -2441,7 +2441,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.5.57"; // Sprint 214b: fix situazione ex-squadra — appare solo contro ex club reali
+const GAME_VERSION="4.5.58"; // Sprint 214c: border glow usa colore club di casa invece di verde hardcoded
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -5525,8 +5525,9 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
         ctx.fillStyle=_rSh;ctx.fillRect(FX+FW-72,FY,72,FH);
         ctx.restore();
       }
-      // Border glow — brighter at night (floodlit edge)
-      ctx.save();ctx.shadowColor=isNight?"#fffad0":"#00cc66";ctx.shadowBlur=isNight?14:10;
+      // Border glow — warm floodlight at night, club color glow by day
+      const _bGlow=isNight?"#fffad0":(propsRef.current.stadiumHomeCol||propsRef.current.homeCol||"#2563eb");
+      ctx.save();ctx.shadowColor=_bGlow;ctx.shadowBlur=isNight?14:10;
       ctx.strokeStyle="#fff";ctx.lineWidth=1.5;
       ctx.strokeRect(FX,FY,FW,FH);ctx.restore();
       // Centre line
