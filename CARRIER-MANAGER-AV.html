@@ -2212,7 +2212,7 @@ const CLUB_STADIUMS={
   "rma":"Estadio Santiago Bernabéu","bar":"Camp Nou","atm":"Estadio Wanda Metropolitano",
   "sev":"Estadio Ramón Sánchez-Pizjuán","bet":"Estadio Benito Villamarín","val":"Estadio de Mestalla",
   "vil":"Estadio de la Cerámica","ath":"San Mamés","rso":"Estadio de Anoeta","cel":"Estadio de Balaídos",
-  "bay":"Allianz Arena","bvb":"Signal Iduna Park","rb":"Red Bull Arena Leipzig","lev":"BayArena",
+  "bay":"Allianz Arena","bvb":"Signal Iduna Park","rb":"Red Bull Arena Leipzig","b04":"BayArena",
   "fra":"Deutsche Bank Park","dor":"Westfalenstadion","sch":"Veltins-Arena","hert":"Olympiastadion Berlin",
   "psg":"Parc des Princes","marse":"Stade Vélodrome","lyon":"Groupama Stadium","lil":"Stade Pierre-Mauroy",
   "mon69":"Stade Louis II","ren":"Roazhon Park","nice":"Allianz Riviera","len":"Stade Bollaert-Delelis",
@@ -2224,7 +2224,7 @@ const CLUB_STADIUMS={
 };
 // Sprint C — per-club stadium style: 0=standard 1=modern dark 2=compact bowl 3=traditional
 const CLUB_STADIUM_STYLE={
-  "juve":1,"tot":1,"mcy":1,"bay":1,"atm":1,"ars":1,"rb":1,"ben":1,"whu":1,"bha":1,
+  "juve":1,"tot":1,"mcy":1,"bay":1,"atm":1,"ars":1,"rb":1,"ben":1,"whu":1,"bha":1,"b04":1,
   "bol":2,"emp":2,"lec":2,"par":2,"bou":2,"brt":2,"azu":2,"sou":2,"lei":2,"cel2":2,
   "inter":3,"milan":3,"bar":3,"rma":3,"bvb":3,"mun":3,"liv":3,"por":3,"psg":3,"fey":3,
 };
@@ -2542,7 +2542,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.5.84"; // Sprint A: cori derby+boo multilingua; Sprint B: dialoghi contestuali cond+template; Sprint C: stadio differenziato per club
+const GAME_VERSION="4.6.0"; // Sprint BugFix: #1 transfer standings, #2 euro KO unblock, #3 BayArena, #5 MVP formula, #7 corner flags, #8/#9 hero kit, #10 penalty arrows
 const SAVE_VERSION=6;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -4455,19 +4455,19 @@ function generateSeasonAwards(player, finalStandings){
   const playerWinsLeagueTopScorer=playerLeagueScorerPos===0;
 
   // 2. MVP della Stagione (miglior calciatore del campionato)
-  const playerMvpScore=myOvr*0.40+myGoals*1.0+myAssists*0.80+(isChampion?15:0);
+  const playerMvpScore=myOvr*0.40+myGoals*1.0+myAssists*0.80+(isChampion?8:0);
   const simLeagueMvp=Array.from({length:3},(_,i)=>{
     const club=finalStandings?.[i%Math.max(1,finalStandings?.length||1)];
     const cOvr=clamp(leaguePrestige+Math.round((_h(i*13+7)%14)-3),68,96);
-    const cGoals=Math.max(7,Math.round(leaguePrestige*0.15+(_h(i*11+2)%12)));
+    const cGoals=Math.max(5,Math.round(leaguePrestige*0.15+(_h(i*11+2)%12)));
     const cAssists=Math.round(_h(i*7+4)%8)+2;
     const cChamp=i===0&&!isChampion;
     const name=(club?_clubFwd(club,`lgmvp_${i}_${season}`):null)||lgRec.topScorers?.[i+1]?.name||"Calciatore";
-    return{name,club:club?.n||"–",ovr:cOvr,goals:cGoals,assists:cAssists,score:cOvr*0.40+cGoals*1.0+cAssists*0.80+(cChamp?15:0)};
+    return{name,club:club?.n||"–",ovr:cOvr,goals:cGoals,assists:cAssists,score:cOvr*0.40+cGoals*1.0+cAssists*0.80+(cChamp?8:0)};
   });
   const allLeagueMvp=[...simLeagueMvp,{name:player.name,club:player.club?.n,ovr:myOvr,goals:myGoals,assists:myAssists,score:playerMvpScore,isPlayer:true}]
     .sort((a,b)=>b.score-a.score);
-  const playerWinsLeagueMvp=allLeagueMvp[0].isPlayer&&myOvr>=70&&(myGoals>=8||myAssists>=8);
+  const playerWinsLeagueMvp=allLeagueMvp[0].isPlayer&&myOvr>=65&&(myGoals>=7||myAssists>=7);
 
   // 3. Giovane dell'Anno della lega (U23)
   const isYoung=(player.age||17)<=23;
@@ -5810,7 +5810,7 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
       [[FX,FY,1,1],[FX+FW,FY,-1,1],[FX,FY+FH,1,-1],[FX+FW,FY+FH,-1,-1]].forEach(([cx,cy,dx,dy])=>{
         ctx.strokeStyle="#fff";ctx.lineWidth=1;
         ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(cx,cy+dy*14);ctx.stroke(); // pole
-        ctx.fillStyle=propsRef.current.homeCol||"#f59e0b";
+        ctx.fillStyle="#ffffff";
         ctx.beginPath();ctx.moveTo(cx,cy+dy*14);ctx.lineTo(cx+dx*9,cy+dy*9);ctx.lineTo(cx,cy+dy*5);ctx.closePath();ctx.fill(); // flag
         ctx.fillStyle="rgba(255,255,255,0.6)";ctx.beginPath();ctx.arc(cx,cy,1.5,0,Math.PI*2);ctx.fill(); // base dot
       });
@@ -5966,7 +5966,7 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
       ctx.lineTo(cx-jw/2,cy-jh/2+jr);ctx.arcTo(cx-jw/2,cy-jh/2,cx-jw/2+jr,cy-jh/2,jr);
       ctx.closePath();ctx.stroke();
       // number
-      const fs=isHero?R*0.88:R*0.80;
+      const fs=R*0.80;
       ctx.fillStyle=col2||"#fff";
       ctx.font=`900 ${fs}px Arial,sans-serif`;
       ctx.textAlign="center";ctx.textBaseline="middle";
@@ -6340,7 +6340,7 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
           // Check if hero already in allPlayers
           const heroInAll=(allP||[]).some(pl=>pl.isHero||pl.isPlayer);
           if(!heroInAll){
-            drawPlayer(ctx,heroCx,heroCy,p.heroKitCol||p.homeCol||"#22c55e",p.heroKitCol2||"#ffffff",true,_heroJNum,s.isMoving,true,t);
+            drawPlayer(ctx,heroCx,heroCy,p.heroKitCol||p.homeCol||"#22c55e","#fff",true,_heroJNum,s.isMoving,true,t);
           }
           // Ball — lerp toward BG_MATCH synced position
           var tBX=p.ballX!=null?p.ballX:p.playerX;
@@ -8171,6 +8171,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   };
   const handleContinue=()=>{
     _hlActionFiredRef.current=false; // reset for next HL
+    gkDiveRef.current=null; // Bug #10: clear GK dive so penalty arrows don't persist
     const nx=hlIdx+1;
     // Sprint 77 — Situation Chaining: inject chain before advancing
     if(pendingChainSitRef.current){
@@ -13120,8 +13121,8 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
         setTimeout(()=>setEuroGroupModal({competition:player.euro.competition,groupOpponents:player.euro.groupOpponents||[],groupResults:player.euro.groupResults||[],pts:player.euro.pts||0,qualified:_euroQ,season:player.season||1}),500);
       }
     }
-    // Sprint 124: safety net — if past week 21 and euro still "group" with all games done (modal not confirmed)
-    if(!isInU18&&weekVal>=21&&player.euro?.active&&player.euro?.phase==="group"&&!euroGroupModal){
+    // Sprint 124: safety net — if past week 17 and euro still "group" with all games done (modal not confirmed)
+    if(!isInU18&&weekVal>=17&&player.euro?.active&&player.euro?.phase==="group"&&!euroGroupModal){
       const _sgTotal=(player.euro.groupOpponents||[]).length*2;
       const _sgDone=(player.euro.groupResults||[]).length>=_sgTotal;
       if(_sgDone){
@@ -13934,9 +13935,24 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       const lc=CLUBS.filter(c=>c.lg===tc.club.lg);
       const lc2=CLUBS.filter(c=>c.nat===tc.club.nat);
       const lcs=lc.length>=4?lc:lc2.length>=4?lc2:CLUBS.slice(0,16);
-      const newStandings=initStandings(lcs);
       const _s=(p.season||1);const seed=(_s*7919+_s*_s*31)%2147483647+hashStr(tc.club.id||tc.club.n||"x")*17;
-      const newCalendar=generateSeasonCalendar(newClub,lcs,seed);
+      const newCalendarFull=generateSeasonCalendar(newClub,lcs,seed);
+      const currentWeek=p.week||1;
+      // Bug #1: preserve season progress — mark past matchdays as already played
+      const newCalendar=newCalendarFull.map(e=>e.week<currentWeek?{...e,played:true,result:{won:false,drew:true,homeScore:0,awayScore:0,simulated:true}}:e);
+      // Bug #1: simulate realistic standings for past weeks based on club prestige
+      let newStandings=initStandings(lcs);
+      if(currentWeek>3){
+        const _pastMds=newCalendarFull.filter(e=>!e.type&&e.week<currentWeek);
+        for(const _pmd of _pastMds){
+          const _pOpp=lcs.find(c=>c.id===_pmd.opponentId)||{p:65};
+          const _diff=(newClub.p||70)-(_pOpp.p||65);
+          const _wp=Math.max(0.05,Math.min(0.72,0.33+_diff*0.004));
+          const _hr=Math.abs(hashStr(String(seed)+"_"+_pmd.matchday))%100/100;
+          const _simR=_hr<_wp?{won:true,drew:false,homeScore:2,awayScore:0}:_hr<_wp+0.27?{won:false,drew:true,homeScore:1,awayScore:1}:{won:false,drew:false,homeScore:0,awayScore:1};
+          newStandings=updateStandings(newStandings,newClub.id,_simR,p.clubPrestigeShifts||{});
+        }
+      }
       // worldMemory: record old club as ex-club when transferring away
       const oldClubMem=p.club&&(p.proStatus==="pro")?[...(p.worldMemory||[]),{type:"ex_club",clubId:p.club.id,club:p.club.n,season:p.season,lg:p.club.lg}]:(p.worldMemory||[]);
       // Generate rival if becoming pro for first time
