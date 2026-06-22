@@ -2441,7 +2441,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.5.65"; // Sprint D2: rapporti staff — assistantCoachRel, fitnessCoachRel, teamChemistry attivo
+const GAME_VERSION="4.5.66"; // Sprint D3: conferenze stampa pre-partita su big match
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -3479,6 +3479,47 @@ const INTERVIEW_QS=[
   {tone:"diplomatico",txt:"Qualsiasi finale di coppa importante. Il calcio ai massimi livelli, con la squadra.",ef:{m:5,p:6,t:4}},
   {tone:"diretto",txt:"Una finale europea. Da protagonista assoluto. Con gol decisivo. È il mio sogno.",ef:{m:9,p:8,t:-3}},
   {tone:"umile",txt:"Non mi pongo limiti ma neanche aspettative eccessive. Il prossimo match è già il sogno.",ef:{m:4,p:5,t:6}},
+]},
+// === Sprint D3 — CONFERENZA STAMPA PRE-PARTITA (ctx:["prematch"]) ===
+{ctx:["prematch"],q:"Questa è la partita più importante della stagione. Come vi presentate all'appuntamento?",a:[
+  {tone:"diplomatico",txt:"Siamo pronti. Rispettiamo l'avversario ma crediamo nei nostri mezzi.",ef:{m:4,t:2,p:2}},
+  {tone:"diretto",txt:"Veniamo per vincere. Non ho altro da aggiungere, il resto si fa in campo.",ef:{m:6,t:-2,p:5,f:1}},
+  {tone:"umile",txt:"Sarà durissima, ma daremo tutto fino al fischio finale. Conta lo spirito.",ef:{m:3,t:3,p:1}},
+]},
+{ctx:["prematch"],q:"Il mister le ha chiesto qualcosa di particolare in vista di questa sfida?",a:[
+  {tone:"diplomatico",txt:"Mi ha chiesto equilibrio e concentrazione. Seguirò le sue indicazioni alla lettera.",ef:{m:3,t:4,p:1}},
+  {tone:"diretto",txt:"Mi ha dato carta bianca. Sa che nelle partite vere faccio la differenza.",ef:{m:5,t:-3,p:4}},
+  {tone:"umile",txt:"Mi ha solo ricordato di restare umile e lavorare per la squadra. Ha ragione.",ef:{m:2,t:5,p:1,f:1}},
+]},
+{ctx:["prematch"],q:"In che condizione di forma arriva a questo big match?",a:[
+  {tone:"diplomatico",txt:"Sto bene. Mi sento dentro la partita e pronto a dare il mio contributo.",ef:{m:3,t:2,f:2}},
+  {tone:"diretto",txt:"Mai stato così in forma. Oggi gli avversari faranno fatica a starmi dietro.",ef:{m:6,t:-2,p:5,f:2}},
+  {tone:"umile",txt:"Bene, ma la forma vera la dimostri in campo. Parlo dopo i novanta minuti.",ef:{m:2,t:3,f:1}},
+]},
+{ctx:["prematch"],q:"Avete studiato a fondo l'avversario? Cosa temete di più di loro?",a:[
+  {tone:"diplomatico",txt:"È una squadra forte e organizzata. Li rispettiamo e li abbiamo preparati bene.",ef:{m:3,t:3,p:2}},
+  {tone:"diretto",txt:"Non temiamo nessuno. Se giochiamo da squadra, non hanno scampo.",ef:{m:5,t:-2,p:4,f:1}},
+  {tone:"umile",txt:"Hanno qualità in ogni reparto. Servirà la partita perfetta per batterli.",ef:{m:2,t:4,p:1}},
+]},
+{ctx:["prematch"],q:"I tifosi si aspettano molto da questa gara. Sente la loro pressione?",a:[
+  {tone:"diplomatico",txt:"È un onore avere il loro sostegno. La pressione è uno stimolo, non un peso.",ef:{m:4,t:2,p:3}},
+  {tone:"diretto",txt:"La pressione mi carica. Più ci credono, più mi esalto in campo.",ef:{m:6,t:-1,p:5,f:1}},
+  {tone:"umile",txt:"I tifosi meritano rispetto e impegno. Cercheremo di renderli orgogliosi.",ef:{m:3,t:3,p:2}},
+]},
+{ctx:["prematch"],q:"Una vittoria oggi può cambiare la stagione. Quanto pesa nei vostri obiettivi?",a:[
+  {tone:"diplomatico",txt:"Pesa tanto, ma resta una partita. Pensiamo a questi tre punti, poi al resto.",ef:{m:3,t:3,p:1}},
+  {tone:"diretto",txt:"È uno snodo decisivo e lo vinceremo. I nostri obiettivi passano da qui.",ef:{m:6,t:-2,p:5,f:1}},
+  {tone:"umile",txt:"Un passo importante, niente di più. La stagione è lunga, restiamo coi piedi a terra.",ef:{m:2,t:4,p:1}},
+]},
+{ctx:["prematch"],q:"È una sfida sentitissima, quasi un derby. Che atmosfera vi aspettate?",a:[
+  {tone:"diplomatico",txt:"Atmosfera da grande calcio. La vivremo con passione e massimo rispetto.",ef:{m:4,t:2,p:3}},
+  {tone:"diretto",txt:"Sarà una bolgia e noi adoriamo queste serate. È qui che si diventa grandi.",ef:{m:7,t:-2,p:6,f:2}},
+  {tone:"umile",txt:"Sfide così non si spiegano, si giocano. Servirà testa fredda e cuore caldo.",ef:{m:3,t:3,p:2}},
+]},
+{ctx:["prematch"],q:"Che ruolo si aspetta di avere oggi nell'economia della partita?",a:[
+  {tone:"diplomatico",txt:"Quello che mi chiede il mister. Mi metto al servizio del gruppo, sempre.",ef:{m:3,t:4,p:1}},
+  {tone:"diretto",txt:"Da protagonista. In queste partite voglio la palla e voglio decidere io.",ef:{m:6,t:-3,p:5,f:1}},
+  {tone:"umile",txt:"Quello dell'umile lavoratore. Se serve correre per i compagni, lo farò.",ef:{m:2,t:5,p:1,f:1}},
 ]},
 ];
 // Sprint 15 — pick interview question based on player context
@@ -11783,6 +11824,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
   const[interviewFeedback,setInterviewFeedback]=useState(null); // {tone, label, ef} shown briefly
   const[coachModal,setCoachModal]=useState(null); // {dialogue, chosen} — Parla col Mister
   const[misterDiscorsoModal,setMisterDiscorsoModal]=useState(null); // {coachName, line, mw, isCaptainTalk?}
+  const pendingMisterDiscorsoRef=useRef(null); // Sprint D3: mister talk deferred until prematch press conf closes
   const matchBenchStartRef=useRef(false); // Sprint 33 C7
   const matchEntryMinuteRef=useRef(60); // Sprint 148: survives coachDecision reset
   const[coachDecision,setCoachDecision]=useState(null); // {status,reason,entryMinute} — Sprint 116
@@ -11840,9 +11882,16 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       };
     });
     setInterviewFeedback({tone:ans.tone,label:toneLabel,ef});
+    const wasPrematch=interviewModal?.matchCtx==="prematch";
     setInterviewModal(null);
     setTimeout(()=>setInterviewFeedback(null),2800);
     if(isPolemic)setTimeout(()=>notify(`🔥 POLEMICA! ${curJ?.name||"Il giornalista"} risponde duramente. Il caso esplode sui social.`,"#ef4444"),600);
+    // Sprint D3: after closing the pre-match press conference, fire the deferred mister talk
+    if(wasPrematch){
+      const _disc=pendingMisterDiscorsoRef.current;
+      pendingMisterDiscorsoRef.current=null;
+      if(_disc)setTimeout(()=>setMisterDiscorsoModal(_disc),350);
+    }
   };
 
   // global keyboard shortcuts
@@ -11983,6 +12032,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     else if(_cd116.status==="not_called"){notify("⛔ Non sei convocato questa settimana.",TH.danger);setCoachDecision(null);return;}
     // Sprint 24A + 25C: pre-match speech based on match weight + captain status
     const mw=calcMatchWeight(player,opp.id||md.opponentId,player.standings||[],player.week||1);
+    let _disc=null;
     if(mw>=7&&player.coach){
       const styleLines={
         Offensivo:["Attaccate. Senza paura. Voglio gol.","Premi su di loro dal primo minuto. Non dargli fiato."],
@@ -11993,10 +12043,24 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
         Contropiede:["Lasciateli venire. Poi colpite.","Difendiamo e aspettiamo il momento giusto."],
       };
       const lines=styleLines[player.coach.style]||styleLines.Bilanciato;
-      setMisterDiscorsoModal({coachName:player.coach.name,line:pick(lines),mw,oppName:opp.n,isCaptainTalk:false});
+      _disc={coachName:player.coach.name,line:pick(lines),mw,oppName:opp.n,isCaptainTalk:false};
     } else if(mw>=5&&player.isCaptain){
-      setMisterDiscorsoModal({coachName:player.name,line:pick(CAPTAIN_TEAM_TALKS),mw,oppName:opp.n,isCaptainTalk:true});
+      _disc={coachName:player.name,line:pick(CAPTAIN_TEAM_TALKS),mw,oppName:opp.n,isCaptainTalk:true};
     }
+    // Sprint D3: conferenza stampa pre-partita su big match (mw>=7, solo se tutorial completato)
+    let _pressShown=false;
+    if(mw>=7&&player.tutorialDone===true){
+      const _pool=INTERVIEW_QS.filter(q=>(q.ctx||[]).includes("prematch"));
+      if(_pool.length){
+        const _pq=_pool[Math.floor(Math.random()*_pool.length)];
+        const _paper=NEWSPAPERS[Math.floor(Math.random()*NEWSPAPERS.length)];
+        pendingMisterDiscorsoRef.current=_disc; // mister talk deferred until conference closes
+        setInterviewModal({q:_pq,paper:_paper,opponent:opp.n,matchCtx:"prematch"});
+        _pressShown=true;
+      }
+    }
+    // If no press conference, fire the mister talk immediately (legacy behaviour)
+    if(!_pressShown&&_disc)setMisterDiscorsoModal(_disc);
     setScreen("match");
   };
   const confirmMisterDiscorso=(responseKey)=>{
@@ -13913,11 +13977,11 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
             <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:14}}>
               <div style={{fontSize:22}}>{interviewModal.paper?.e||"🎙️"}</div>
               <div>
-                <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5}}>Intervista</div>
+                <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5}}>{interviewModal.matchCtx==="prematch"?"📰 Conferenza Stampa":"Intervista"}</div>
                 <div style={{fontSize:13,fontWeight:800,color:interviewModal.paper?.color||TH.primary}}>{interviewModal.paper?.name||"Giornalista"}</div>
               </div>
               <div style={{marginLeft:"auto",display:"flex",flexDirection:"column",alignItems:"flex-end",gap:3}}>
-                {interviewModal.matchCtx&&<div style={{fontSize:10,padding:"3px 9px",borderRadius:20,background:interviewModal.matchCtx==="win"?"#dcfce7":interviewModal.matchCtx==="loss"?"#fee2e2":"#fef9c3",color:interviewModal.matchCtx==="win"?TH.success:interviewModal.matchCtx==="loss"?TH.danger:TH.warning,fontWeight:700}}>{interviewModal.matchCtx==="win"?"VITTORIA":interviewModal.matchCtx==="loss"?"SCONFITTA":interviewModal.matchCtx==="draw"?"PAREGGIO":"SETTIMANALE"}</div>}
+                {interviewModal.matchCtx&&<div style={{fontSize:10,padding:"3px 9px",borderRadius:20,background:interviewModal.matchCtx==="win"?"#dcfce7":interviewModal.matchCtx==="loss"?"#fee2e2":interviewModal.matchCtx==="prematch"?"#dbeafe":"#fef9c3",color:interviewModal.matchCtx==="win"?TH.success:interviewModal.matchCtx==="loss"?TH.danger:interviewModal.matchCtx==="prematch"?"#2563eb":TH.warning,fontWeight:700}}>{interviewModal.matchCtx==="win"?"VITTORIA":interviewModal.matchCtx==="loss"?"SCONFITTA":interviewModal.matchCtx==="draw"?"PAREGGIO":interviewModal.matchCtx==="prematch"?"PRE-PARTITA":"SETTIMANALE"}</div>}
                 {interviewModal.notable&&<div style={{fontSize:10,padding:"2px 7px",borderRadius:20,background:"#fef3c7",color:"#b45309",fontWeight:700}}>{interviewModal.notable==="hattrick"?"⚽ HAT-TRICK":interviewModal.notable==="bigwin"?"🏆 BIG WIN":"💢 BIG LOSS"}</div>}
               </div>
             </div>
