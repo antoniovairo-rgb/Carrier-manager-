@@ -2441,7 +2441,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.5.52"; // Sprint 211b: faretti tribune/curve accesi di notte con glow
+const GAME_VERSION="4.5.53"; // Sprint 212: faretti/riflettori accesi anche nelle giornate grigie
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -4929,12 +4929,12 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
         return["#0d1530","#1c2248","#08102a",false];
       }
       if(tod==="day"){
-        if(wid==="storm"||wid==="thunder")return["#2a3848","#3a4858","#1c2a38",false];
-        if(wid==="rain"||wid==="hail")return["#3c4a58","#4c5a68","#2c3848",false];
-        if(wid==="drizzle")return["#4a5a6a","#5a6a7a","#3a4a5a",false];
-        if(wid==="fog"||wid==="mist")return["#a8b4c0","#b8c4d0","#98a4b0",false];
-        if(wid==="snow")return["#c8d8e8","#d8e8f8","#b8c8d8",false];
-        if(wid==="overcast")return["#6a7888","#7a8898","#5a6878",false];
+        if(wid==="storm"||wid==="thunder")return["#2a3848","#3a4858","#1c2a38",true];
+        if(wid==="rain"||wid==="hail")return["#3c4a58","#4c5a68","#2c3848",true];
+        if(wid==="drizzle")return["#4a5a6a","#5a6a7a","#3a4a5a",true];
+        if(wid==="fog"||wid==="mist")return["#a8b4c0","#b8c4d0","#98a4b0",true];
+        if(wid==="snow")return["#c8d8e8","#d8e8f8","#b8c8d8",true];
+        if(wid==="overcast")return["#6a7888","#7a8898","#5a6878",true];
         if(wid==="sunset")return["#d04020","#e05030","#b03010",false];
         if(wid==="rainbow")return["#3a8ac8","#5aa0d8","#2a7ab8",false];
         return["#5b9bd5","#7ab0d0","#3a7ab5",false];
@@ -5172,15 +5172,17 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
           if(dL) cctx.fillRect(sx,sy,bW,sh);
           cctx.restore();
           const _isH=(fSide==='T'||fSide==='B'),_sp=_isH?28:20;
-          const _glowR=atmo[3]?(_tod==="dusk"?10:16):0;
+          const _glowR=atmo[3]?(_tod==="day"?8:_tod==="dusk"?10:16):0;
           const _dotR=atmo[3]?_fR+1:_fR;
           const _fDraw=(_fx,_fy)=>{
             if(_glowR>0){
-              const _gA=_tod==="dusk"?0.48:0.72;
+              const _gA=_tod==="day"?0.30:_tod==="dusk"?0.48:0.72;
+              const _gc0=_tod==="day"?"rgba(210,228,255,":"rgba(255,252,200,";
+              const _gc1=_tod==="day"?"rgba(200,220,255,":"rgba(255,248,180,";
               const _fg=cctx.createRadialGradient(_fx,_fy,1,_fx,_fy,_glowR);
-              _fg.addColorStop(0,`rgba(255,252,200,${_gA})`);
-              _fg.addColorStop(0.45,`rgba(255,248,180,${(_gA*0.32).toFixed(2)})`);
-              _fg.addColorStop(1,"rgba(255,248,180,0)");
+              _fg.addColorStop(0,`${_gc0}${_gA})`);
+              _fg.addColorStop(0.45,`${_gc1}${(_gA*0.32).toFixed(2)})`);
+              _fg.addColorStop(1,`${_gc1}0)`);
               cctx.fillStyle=_fg;cctx.fillRect(_fx-_glowR,_fy-_glowR,_glowR*2,_glowR*2);
             }
             cctx.fillStyle=_fC;cctx.beginPath();cctx.arc(_fx,_fy,_dotR,0,Math.PI*2);cctx.fill();
@@ -5342,8 +5344,9 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
         const floodR=_prest80>=80?110:_prest80>=60?80:60;
         const towers=[[FX-12,FY-8,1],[FX+FW+12,FY-8,1],[FX-12,FY+FH+28,-1],[FX+FW+12,FY+FH+28,-1]];
         if(atmo[3]){
-          const _fA=(_prest80>=80?0.88:_prest80>=60?0.72:0.55)*(_tod==="dusk"?0.60:1);
-          const fC=_tod==="dusk"?"rgba(255,210,130,":"rgba(255,248,200,";
+          const _dayScale=_tod==="day"?0.42:_tod==="dusk"?0.60:1;
+          const _fA=(_prest80>=80?0.88:_prest80>=60?0.72:0.55)*_dayScale;
+          const fC=_tod==="dusk"?"rgba(255,210,130,":_tod==="day"?"rgba(215,230,255,":"rgba(255,248,200,";
           towers.forEach(([tx,ty])=>{
             const fg=cctx.createRadialGradient(tx,ty,2,tx,ty,floodR);
             fg.addColorStop(0,fC+_fA+")");fg.addColorStop(0.45,fC+(_fA*0.25).toFixed(2)+")");fg.addColorStop(1,fC+"0)");
@@ -5404,10 +5407,13 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
         ctx.fillRect(FX,2,FW,FY-3);ctx.fillRect(FX,FY+FH+2,FW,PH-FY-FH-4);
         ctx.restore();
       }
-      // Night/dusk: floodlight glow on stands — centrato sulle torri riflettori reali
+      // Night/dusk/giornate grigie: floodlight glow on stands — centrato sulle torri reali
       const _stdTod=p.timeOfDay||"night";
-      if(_stdTod==="night"||_stdTod==="dusk"){
-        const _gA=_stdTod==="dusk"?0.32:0.58;const _gC=_stdTod==="dusk"?"rgba(255,210,130,":"rgba(255,248,200,";
+      const _stdWid=p.weather?.id||"sunny";
+      const _grayDay=_stdTod==="day"&&["overcast","rain","hail","drizzle","fog","mist","storm","thunder","snow"].includes(_stdWid);
+      if(_stdTod==="night"||_stdTod==="dusk"||_grayDay){
+        const _gA=_stdTod==="dusk"?0.32:_grayDay?0.18:0.58;
+        const _gC=_stdTod==="dusk"?"rgba(255,210,130,":_grayDay?"rgba(215,230,255,":"rgba(255,248,200,";
         ctx.save();
         ctx.beginPath();
         ctx.rect(0,0,PW,FY);ctx.rect(0,FY+FH,PW,PH-FY-FH);
