@@ -2441,7 +2441,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.5.59"; // Sprint 214d: pressure border usa colore club di casa via CSS custom property
+const GAME_VERSION="4.5.60"; // Sprint 215: audit completo meteo/cielo — tutte le combinazioni corrette
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -4935,6 +4935,7 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
         if(wid==="fog"||wid==="mist")return["#a8b4c0","#b8c4d0","#98a4b0",true];
         if(wid==="snow")return["#c8d8e8","#d8e8f8","#b8c8d8",true];
         if(wid==="overcast")return["#6a7888","#7a8898","#5a6878",true];
+        if(wid==="cloudy")return["#4e6a80","#608090","#3c5870",false];
         if(wid==="sunset")return["#d04020","#e05030","#b03010",false];
         if(wid==="rainbow")return["#3a8ac8","#5aa0d8","#2a7ab8",false];
         return["#5b9bd5","#7ab0d0","#3a7ab5",false];
@@ -5127,11 +5128,18 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
       }
       // Angoli: sky statico + meteo + riflettori — ora il layer non segue la camera, zero artefatti
       {
-        const _sc=(_tod==="night"||_tod==="dusk")?atmo[0]:
+        const _sc=(_tod==="night"||_tod==="dusk"||_tod==="dawn")?atmo[0]:
           (_wid==="sunny"||_wid==="heat")?(_khr<=12?"#82bcd0":_khr>=17?"#c8a458":"#b8cdd8"):
-          _wid==="partly"?(_khr<=12?"#90c4d8":_khr>=17?"#c0a870":"#bdd0d8"):
-          _wid==="overcast"?"#8090a0":_wid==="rain"||_wid==="drizzle"?"#7082a0":
-          _wid==="storm"||_wid==="thunder"?"#506070":_wid==="snow"?"#b0cce8":"#b8cdd8";
+          (_wid==="partly"||_wid==="wind"||_wid==="cold")?(_khr<=12?"#90c4d8":_khr>=17?"#c0a870":"#bdd0d8"):
+          _wid==="cloudy"?"#9aa8b8":
+          _wid==="humid"?(_khr>=17?"#c8b890":"#b8c0a8"):
+          _wid==="overcast"?"#8090a0":
+          (_wid==="rain"||_wid==="drizzle"||_wid==="hail")?"#7082a0":
+          (_wid==="storm"||_wid==="thunder")?"#506070":
+          (_wid==="fog"||_wid==="mist")?"#a8b0b8":
+          _wid==="snow"?"#b0cce8":
+          _wid==="rainbow"?"#7ab8d8":
+          "#b8cdd8";
         [[0,0,FX,FY],[FX+FW,0,PW-FX-FW,FY],[0,FY+FH,FX,PH-FY-FH],[FX+FW,FY+FH,PW-FX-FW,PH-FY-FH]]
           .forEach(([cx,cy,cw,ch])=>{cctx.fillStyle=_sc;cctx.fillRect(cx,cy,cw,ch);});
         // Sole (giorno soleggiato/parzialmente nuvoloso) — disco + alone morbido
@@ -5143,16 +5151,17 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
           cctx.fillStyle="rgba(255,252,210,0.97)";
           cctx.beginPath();cctx.arc(_sx,_sy,4,0,Math.PI*2);cctx.fill();
         }
-        // Nuvole (coperto/pioggia/parzialmente nuvoloso)
-        if((_tod==="day"||_tod==="dawn")&&(_wid==="overcast"||_wid==="partly"||_wid==="rain"||_wid==="drizzle")){
-          cctx.fillStyle="#e8eff4";cctx.globalAlpha=_wid==="overcast"?0.85:0.60;
+        // Nuvole (coperto/pioggia/grandine/tuono/parzialmente nuvoloso)
+        if((_tod==="day"||_tod==="dawn")&&(_wid==="overcast"||_wid==="cloudy"||_wid==="partly"||_wid==="rain"||_wid==="drizzle"||_wid==="hail"||_wid==="thunder"||_wid==="storm")){
+          cctx.fillStyle=(_wid==="storm"||_wid==="thunder")?"#c0c8d0":"#e8eff4";
+          cctx.globalAlpha=_wid==="overcast"?0.85:_wid==="cloudy"?0.70:(_wid==="storm"||_wid==="thunder"||_wid==="hail")?0.90:0.60;
           [{x:8,y:FY*0.5,rx:FX*0.55,ry:FY*0.3},{x:FX*0.5,y:FY*0.28,rx:FX*0.42,ry:FY*0.22}].forEach(({x,y,rx,ry})=>{
             cctx.beginPath();cctx.ellipse(x,y,rx,ry,0,0,Math.PI*2);cctx.fill();
           });
           cctx.globalAlpha=1;
         }
-        // Pioggia (angoli top)
-        if((_tod==="day"||_tod==="dawn")&&(_wid==="rain"||_wid==="drizzle"||_wid==="storm")){
+        // Pioggia/grandine (angoli top)
+        if((_tod==="day"||_tod==="dawn")&&(_wid==="rain"||_wid==="drizzle"||_wid==="storm"||_wid==="hail"||_wid==="thunder")){
           cctx.strokeStyle="rgba(120,155,205,0.65)";cctx.lineWidth=0.9;
           for(let ri=0;ri<6;ri++){const rx=3+(ri*13)%(FX-6),ry=4+(ri*9)%(FY-8);
             cctx.beginPath();cctx.moveTo(rx,ry);cctx.lineTo(rx-3,ry+9);cctx.stroke();}
