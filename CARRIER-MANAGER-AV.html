@@ -2441,7 +2441,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.5.62"; // Sprint 216b: Fase A font — fontSize:9→10 (239 istanze), upgrade selettivo testo chiave
+const GAME_VERSION="4.5.63"; // Sprint 217: Fase B — MilestoneCelebrationModal + Tutorial passi 5-6
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -11235,14 +11235,14 @@ const _simCupOtherMatches=(cup,playerClubId,opponentId,playerWon,homeScore,awayS
 const CAREER_MILESTONES=[
   {id:"g10",check:p=>(p.totalGoals||0)>=10,txt:"⚽ 10 gol in carriera raggiunti!",color:"#16a34a"},
   {id:"g25",check:p=>(p.totalGoals||0)>=25,txt:"🔥 25 gol in carriera! Bomber in ascesa.",color:"#f59e0b"},
-  {id:"g50",check:p=>(p.totalGoals||0)>=50,txt:"💥 CINQUANTA GOL! Leggenda nascente.",color:"#ef4444"},
-  {id:"g100",check:p=>(p.totalGoals||0)>=100,txt:"👑 CENTO GOL! Sei nella storia del calcio.",color:"#7c3aed"},
+  {id:"g50",big:true,check:p=>(p.totalGoals||0)>=50,txt:"💥 CINQUANTA GOL! Leggenda nascente.",color:"#ef4444",sub:"Traguardo straordinario — sei entrato nella storia del club."},
+  {id:"g100",big:true,check:p=>(p.totalGoals||0)>=100,txt:"👑 CENTO GOL! Sei nella storia del calcio.",color:"#7c3aed",sub:"Pochi calciatori raggiungono questa vetta. Sei uno di loro."},
   {id:"m25",check:p=>(p.totalMatches||0)>=25,txt:"👟 25 presenze in carriera!",color:"#0891b2"},
   {id:"m50",check:p=>(p.totalMatches||0)>=50,txt:"⚡ 50 partite da professionista!",color:"#0891b2"},
-  {id:"m100",check:p=>(p.totalMatches||0)>=100,txt:"💎 100 PRESENZE! Una carriera vera.",color:"#7c3aed"},
+  {id:"m100",big:true,check:p=>(p.totalMatches||0)>=100,txt:"💎 100 PRESENZE! Una carriera vera.",color:"#7c3aed",sub:"Cento battaglie. Cento storie. Una carriera che merita rispetto."},
   {id:"ovr75",check:p=>(p.ovr||60)>=75,txt:"📈 Livello 75 — Giocatore solido e affidabile!",color:"#059669"},
   {id:"ovr80",check:p=>(p.ovr||60)>=80,txt:"🌟 Livello 80 — TOP PLAYER!",color:"#d97706"},
-  {id:"ovr90",check:p=>(p.ovr||60)>=90,txt:"✨ Livello 90 — FUORICLASSE assoluto!",color:"#7c3aed"},
+  {id:"ovr90",big:true,check:p=>(p.ovr||60)>=90,txt:"✨ Livello 90 — FUORICLASSE assoluto!",color:"#7c3aed",sub:"Hai raggiunto la vetta del calcio mondiale. Rispettato da tutti."},
 ];
 /* Sprint 59 — Classifica Marcatori Live (Sprint 81: fix week guard + name dedup) */
 const generateLeagueScorers=(player)=>{
@@ -11388,7 +11388,9 @@ const TUTORIAL_STEPS=[
   {icon:"🌟",title:"Benvenuto in CPM!",text:"Sei {name}, un giovane talento con il sogno di diventare campione. Ogni settimana conta — allenati, gioca le partite e scrivi la tua storia."},
   {icon:"📋",title:"La Dashboard",text:"Qui trovi le tue statistiche, gli obiettivi stagionali e l'agenda settimanale. I tab in basso ti portano su Calendar, Standings e Profile."},
   {icon:"⚽",title:"Gioca le Partite",text:"Quando si avvicina una partita appare il tasto GIOCA. Non saltarla! Ogni gol, ogni assist e ogni trofeo restano nel tuo diario di carriera."},
-  {icon:"💪",title:"Allenamento Automatico",text:"Ogni settimana il mister prepara il piano di allenamento. Avanza la settimana per ricevere il suo feedback e far crescere i tuoi attributi. Ora sei pronto — buona carriera!"},
+  {icon:"💪",title:"Allenamento Automatico",text:"Ogni settimana il mister prepara il piano di allenamento. Avanza la settimana per ricevere il suo feedback e far crescere i tuoi attributi."},
+  {icon:"⚡",title:"Fatica & Infortuni",text:"Tieni d'occhio la barra FATICA: oltre 80 rischi un infortunio e salti le partite. Il mister inserisce sessioni di recupero quando serve — fidati del suo piano."},
+  {icon:"💰",title:"Mercato & Offerte",text:"Ogni tanto arrivano offerte di trasferimento. Valuta minutaggio, crescita e prestigio del club prima di decidere. Puoi sempre rifiutare. Ora sei pronto — buona carriera!"},
 ];
 function TutorialOverlay({name,step,onNext,onSkip}){
   const s=TUTORIAL_STEPS[step]||TUTORIAL_STEPS[0];
@@ -11413,6 +11415,24 @@ function TutorialOverlay({name,step,onNext,onSkip}){
             {isLast?"Inizia la carriera! 🚀":"Avanti →"}
           </button>
         </div>
+      </div>
+    </div>
+  );
+}
+/* Sprint 217 — MilestoneCelebrationModal: overlay per milestone big (g50,g100,m100,ovr90) */
+function MilestoneCelebrationModal({milestone,onDismiss}){
+  React.useEffect(()=>{const t=setTimeout(onDismiss,4500);return()=>clearTimeout(t);},[]);
+  const icon=milestone.txt.split(" ")[0];
+  const title=milestone.txt.split(" ").slice(1).join(" ");
+  return(
+    <div onClick={onDismiss} style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.88)",zIndex:10000,display:"flex",alignItems:"center",justifyContent:"center",padding:20,cursor:"pointer"}}>
+      <div style={{textAlign:"center",maxWidth:320,width:"100%"}} onClick={e=>e.stopPropagation()}>
+        <div style={{fontSize:68,marginBottom:10,filter:`drop-shadow(0 0 18px ${milestone.color}aa)`}}>{icon}</div>
+        <div style={{fontSize:22,fontWeight:900,color:"#fff",marginBottom:8,lineHeight:1.25,textShadow:`0 2px 20px ${milestone.color}`}}>{title}</div>
+        {milestone.sub&&<div style={{fontSize:13,color:"rgba(255,255,255,0.72)",marginBottom:20,lineHeight:1.6,padding:"0 8px"}}>{milestone.sub}</div>}
+        <div style={{width:72,height:3,background:milestone.color,borderRadius:2,margin:"0 auto 20px",boxShadow:`0 0 14px ${milestone.color}`}}/>
+        <button onClick={onDismiss} style={{background:milestone.color,color:"#fff",border:"none",borderRadius:14,padding:"13px 32px",fontWeight:800,fontSize:15,cursor:"pointer",letterSpacing:"0.02em",fontFamily:"inherit"}}>🎉 Fantastico!</button>
+        <div style={{fontSize:10,color:"rgba(255,255,255,0.35)",marginTop:10}}>Tocca per chiudere</div>
       </div>
     </div>
   );
@@ -11729,6 +11749,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
   const[notif,setNotif]=useState(null);
   const[weekEvent,setWeekEvent]=useState(null);
   const[transferOffer,setTransferOffer]=useState(null);
+  const[milestoneModal,setMilestoneModal]=useState(null); // Sprint 217: big milestone celebration
   const[negoModal,setNegoModal]=useState(null); // Sprint 54: contract negotiation
   const[weekLiveModal,setWeekLiveModal]=useState(null);   // {event, changes}
   const[showAdvanceConfirm,setShowAdvanceConfirm]=useState(false);
@@ -11774,7 +11795,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     const ovrMs=CAREER_MILESTONES.filter(m=>m.id.startsWith("ovr")&&!player.milestones.includes(m.id)&&m.check(player));
     if(ovrMs.length===0)return;
     setPlayer(p=>({...p,milestones:[...(p.milestones||[]),...ovrMs.map(m=>m.id)]}));
-    ovrMs.forEach((m,i)=>setTimeout(()=>setNotif({msg:m.txt,color:m.color}),400+i*2200));
+    ovrMs.forEach((m,i)=>setTimeout(()=>{if(m.big)setMilestoneModal(m);else setNotif({msg:m.txt,color:m.color});},400+i*2200));
   },[player.ovr]);// eslint-disable-line
 
   // Sprint 15 — apply chosen interview answer to player state
@@ -12421,7 +12442,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     if(_redCard75)setTimeout(()=>notify("🔴 ESPULSIONE! Salta la prossima partita.","#dc2626"),1600);
     setScreen("postmatch");setTab("dashboard");
     if(newInjured){const iT=INJURY_TYPES_META[injuryType]||{label:"Infortunio",icon:"🩹"};notify(`${iT.icon} ${iT.label}! Stop: ${injuryWeeks} settiman${injuryWeeks===1?"a":"e"}.`,TH.danger);}
-    triggeredMilestones.forEach((m,i)=>setTimeout(()=>notify(m.txt,m.color),1200+i*2400));
+    triggeredMilestones.forEach((m,i)=>setTimeout(()=>{if(m.big)setMilestoneModal(m);else notify(m.txt,m.color);},1200+i*2400));
     // S41: cup match result notification (played interactively)
     if(cupCalEntry){
       const _cr=player.cup?.round||1;const _rn=["","R16","Quarti","Semifinale","FINALE"][_cr]||`R${_cr}`;
@@ -13673,6 +13694,8 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
   return(
     <div className="cpm-career">
       <Notif msg={notif?.msg} color={notif?.color}/>
+      {/* Sprint 217 — Milestone celebration modal */}
+      {milestoneModal&&<MilestoneCelebrationModal milestone={milestoneModal} onDismiss={()=>setMilestoneModal(null)}/>}
       {/* Sprint 56 — Tutorial onboarding (solo primo avvio) */}
       {!player.tutorialDone&&screen==="dashboard"&&(
         <TutorialOverlay
