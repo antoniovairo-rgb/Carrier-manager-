@@ -1344,6 +1344,28 @@ const COACH_DIALOGUES=[
   {q:"«Sei diventato uno dei punti fermi di questo spogliatoio. Sono fiero di te.»",tone_pos:"🌟 Grazie, mister. La sua fiducia vale tutto.",tone_neu:"🤝 Faccio solo il mio dovere.",tone_neg:"😅 Apprezzo, ma voglio ancora di più.",ef_pos:{coachTrust:10,morale:11,value:0.05},ef_neu:{coachTrust:5,morale:5},ef_neg:{coachTrust:-2,morale:4},proactive:true,trigger:"high_trust"},
 ];
 
+// Sprint E-1 — Promesse del Mister
+const COACH_PROMISES=[
+  {type:"starter",
+   announce:"«Se continui così, la prossima partita importante sei titolare indiscusso.»",
+   checkFn:(p)=>(p.matchStatus==="starter"||(p.squadRole==="titolare"||p.squadRole==="leader")),
+   keptMsg:"✅ Il mister ha mantenuto la promessa — sei titolare!",
+   brokenMsg:"💔 Il mister non ha mantenuto la promessa. La fiducia scricchiola.",
+   trustKept:8, trustBroken:-15},
+  {type:"renewal",
+   announce:"«Prima della fine della stagione, parleremo di rinnovo. Hai il mio impegno.»",
+   checkFn:(p)=>!!(p.contract&&(p.contract.renewedThisSeason||p.contract.duration>1)),
+   keptMsg:"✅ Il mister ha mantenuto la promessa — rinnovo confermato!",
+   brokenMsg:"💔 Nessun rinnovo come promesso. Il rapporto si incrina.",
+   trustKept:10, trustBroken:-18},
+  {type:"captain",
+   announce:"«Ti vedo come futuro capitano di questa squadra. Ci stiamo lavorando.»",
+   checkFn:(p)=>p.isCaptain===true,
+   keptMsg:"✅ Il mister ha mantenuto la promessa — sei il capitano!",
+   brokenMsg:"💔 La fascia non è arrivata come promesso.",
+   trustKept:12, trustBroken:-12},
+];
+
 // Sprint 100 — End-of-season coach dialogs (keyed by result + coachStyle)
 const SEASON_END_COACH=[
   // CHAMPION
@@ -2443,7 +2465,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.5.67"; // Sprint D1: gerarchia di squadra — squadRole, calcSquadRole, badge profilo
+const GAME_VERSION="4.5.68"; // Sprint E-1: promesse del mister — emissione, verifica, UI card, trust delta
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -11812,6 +11834,8 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     if(!('fitnessCoachRel' in newP)){newP={...newP,fitnessCoachRel:50};changed=true;}
     // Sprint D1: gerarchia di squadra
     if(!('squadRole' in newP)){newP={...newP,squadRole:calcSquadRole(newP)};changed=true;}
+    // Sprint E-1: promessa del mister
+    if(!('coachPromise' in newP)){newP={...newP,coachPromise:null};changed=true;}
     if(changed){setPlayer(newP);}
   },[]);// eslint-disable-line
   const[darkMode,setDarkMode]=useState(()=>localStorage.getItem("cpm-dark")==="1");
@@ -13230,6 +13254,20 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
         if(d)setTimeout(()=>{if(!showMatchPromptRef.current)setCoachModal({dialogue:d,chosen:null,proactive:true});},900);
       }
     }
+    // Sprint E-1: emissione promessa del mister
+    if(!player.coachPromise && (player.coachTrust||60)>=72 && (player.season||1)>=2 && !player.injured && Math.random()<0.12){
+      // Scegli un tipo compatibile con lo stato attuale
+      const _eligible=COACH_PROMISES.filter(pr=>{
+        if(pr.type==="captain"&&player.isCaptain)return false; // già capitano, promessa inutile
+        if(pr.type==="starter"&&player.squadRole==="leader")return false; // già al massimo
+        return true;
+      });
+      if(_eligible.length){
+        const _pr=_eligible[Math.floor(Math.random()*_eligible.length)];
+        setPlayer(p=>({...p,coachPromise:{type:_pr.type,season:p.season||1,week:p.week||1,kept:null}}));
+        setTimeout(()=>notify(`🤝 ${_pr.announce}`,TH.primary),400);
+      }
+    }
     // S11.2: club crisis alert (once at week 1 per season)
     if((player.week||1)===1){const cid=player.club?.id||player.club?.n;const cShift=(player.clubPrestigeShifts||{})[cid||""]||0;if(cid&&cShift<=-10)setTimeout(()=>notify(`⚠️ ${player.club?.n||"Il tuo club"} è in crisi! Presidenza instabile.`,"#ef4444"),1500);}
     // S41: cup auto-sim notifications are fired inside the auto-sim block (via setTimeout)
@@ -13341,9 +13379,23 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     const _willEuroPre=(player.proStatus||"u18")==="pro"&&!!player.club&&_eposPre>=0&&_eposPre<=(_pairPre?3:1)&&_nTPre>0
       &&(!_pairPre||_myLgPre===_pairPre[0])   // solo lega superiore (non Serie B etc.)
       &&_playerNextLgPre!==(_pairPre?.[1]??null); // non retrocessa
+    // Sprint E-1: verifica promessa del mister a fine stagione
+    if(player.coachPromise && player.coachPromise.kept===null){
+      const _pr=COACH_PROMISES.find(p=>p.type===player.coachPromise.type);
+      if(_pr){
+        const _kept=_pr.checkFn(player);
+        setTimeout(()=>notify(_kept?_pr.keptMsg:_pr.brokenMsg,_kept?TH.success:TH.danger),600);
+      }
+    }
     setPlayer(p=>{
       const newSeason=(p.season||1)+1;
       const newAge=(p.age||17)+1;
+      // Sprint E-1: applica esito promessa (trust delta) e resetta per la nuova stagione
+      let _promiseTrustDelta=0;
+      if(p.coachPromise && p.coachPromise.kept===null){
+        const _pr=COACH_PROMISES.find(pr=>pr.type===p.coachPromise.type);
+        if(_pr){_promiseTrustDelta=_pr.checkFn(p)?_pr.trustKept:_pr.trustBroken;}
+      }
       const nextClub84=_nextClubPre||p.club; // Sprint 84: club with updated lg after promotion/relegation
       const lc=getLeagueClubs({...p,club:nextClub84,leagueOverrides:_newOvPre}); // Sprint 84: override-aware
       const newStandings=initStandings(lc);
@@ -13511,7 +13563,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       // Sprint 70: record coach tenure stats before coach possibly changes
       const _ch70={name:p.coach?.name||"Il Mister",style:p.coach?.style||"Bilanciato",season:p.season||1,goals:p.goals||0,assists:p.assists||0,matches:p.matches||0,ovr:p.ovr||60,coachTrust:p.coachTrust||60,coachChanged};
       const newCoachHistory=[...(p.coachHistory||[]),_ch70].slice(-20);
-      return{...p,season:newSeason,age:newAge,week:1,weekLived:false,goals:0,assists:0,matches:0,fatigue:0,skillPoints:0,stats:agedStats,ovr:newOvr,contract:newContract,contractExpired,club:nextClub84||p.club,leagueOverrides:_newOvPre,morale:clamp((p.morale||70)+bonM+(playerClubRelegated?-10:playerClubPromoted?8:0)+(isGB?15:0),0,100),coachTrust:clamp((p.coachTrust||60)+bonCT+(playerClubRelegated?-8:playerClubPromoted?5:0)+(coachChanged?newCoach.trustMod:0),0,100),popularity:clamp((p.popularity||20)+bonPop+(isGB?25:0),0,100),value:Math.max(0.5,(p.value||0.8)+bonVal+(playerClubRelegated?-0.3:playerClubPromoted?0.15:0)+(isGB?0.8:0)),log:[agingLog,...objLogs,...[_growthLog102,gbLog,coachLog,phenomLog,relegLog].filter(Boolean),...(p.log||[])].slice(0,60),standings:newStandings,calendar:newCalendar,matchHistory:[],seasonObjectives:newObjectives,history:[...(p.history||[]),prevHist].slice(-50),clubPrestigeShifts:updatedShifts,cup:newCup,euro:newEuro,coach:newCoach,goldenBoys:gbSeasons,records:newRecords,teammates:newTeammates,journalists:newJournalists,fanLegend:updFanLegend,leagueArchive:newLeagueArchive,coachHistory:newCoachHistory,jerseyNumSeason:0,yellAccum:0,isSuspended:false,seasonCards:{y:0,r:0},lastLeagueShift:_lastShiftPre,...(captainReset?{isCaptain:false}:{})}; // Sprint 84: club+leagueOverrides updated
+      return{...p,season:newSeason,age:newAge,week:1,weekLived:false,goals:0,assists:0,matches:0,fatigue:0,skillPoints:0,stats:agedStats,ovr:newOvr,contract:newContract,contractExpired,club:nextClub84||p.club,leagueOverrides:_newOvPre,morale:clamp((p.morale||70)+bonM+(playerClubRelegated?-10:playerClubPromoted?8:0)+(isGB?15:0),0,100),coachTrust:clamp((p.coachTrust||60)+bonCT+(playerClubRelegated?-8:playerClubPromoted?5:0)+(coachChanged?newCoach.trustMod:0)+_promiseTrustDelta,0,100),coachPromise:null,popularity:clamp((p.popularity||20)+bonPop+(isGB?25:0),0,100),value:Math.max(0.5,(p.value||0.8)+bonVal+(playerClubRelegated?-0.3:playerClubPromoted?0.15:0)+(isGB?0.8:0)),log:[agingLog,...objLogs,...[_growthLog102,gbLog,coachLog,phenomLog,relegLog].filter(Boolean),...(p.log||[])].slice(0,60),standings:newStandings,calendar:newCalendar,matchHistory:[],seasonObjectives:newObjectives,history:[...(p.history||[]),prevHist].slice(-50),clubPrestigeShifts:updatedShifts,cup:newCup,euro:newEuro,coach:newCoach,goldenBoys:gbSeasons,records:newRecords,teammates:newTeammates,journalists:newJournalists,fanLegend:updFanLegend,leagueArchive:newLeagueArchive,coachHistory:newCoachHistory,jerseyNumSeason:0,yellAccum:0,isSuspended:false,seasonCards:{y:0,r:0},lastLeagueShift:_lastShiftPre,...(captainReset?{isCaptain:false}:{})}; // Sprint 84: club+leagueOverrides updated
     });
     // S41: double achievement — won league + cup same season
     {const _sd=[...(player.standings||[])].sort((a,b)=>b.pts-a.pts||b.gd-a.gd||b.gf-a.gf);const _ch=_sd[0];const _pid=player.club?.id||player.club?.n;if(player.cup?.champion&&_ch&&(_ch.id===_pid||_ch.n===player.club?.n)&&!(player.achievements||[]).includes("double")){setTimeout(()=>{setPlayer(p=>({...p,achievements:[...(p.achievements||[]),"double"]}));notify("🏆🏆🏆 DOPPIO! Campionato + Coppa nella stessa stagione! Leggendario!","#f59e0b");},1200);}}
@@ -14959,6 +15011,18 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                     <span style={{fontSize:10,color:TH.muted}}>W.{week}→{week+1}</span>
                   </span>
                 </button>
+                {/* Sprint E-1: promessa del mister */}
+                {player.coachPromise&&(()=>{
+                  const _cp=COACH_PROMISES.find(p=>p.type===player.coachPromise.type);
+                  const _kept=player.coachPromise.kept;
+                  const _col=_kept===null?TH.primary:_kept?TH.success:TH.danger;
+                  const _lbl=_kept===null?"In corso…":_kept?"Mantenuta ✅":"Non mantenuta 💔";
+                  return <div style={{padding:"9px 12px",background:_col+"11",border:`1px solid ${_col}33`,borderRadius:10,marginBottom:8}}>
+                    <div style={{fontSize:10,fontWeight:700,color:_col,textTransform:"uppercase",letterSpacing:1,marginBottom:3}}>Promessa del Mister · {_lbl}</div>
+                    <div style={{fontSize:11,color:TH.text,fontStyle:"italic",lineHeight:1.5}}>{_cp?.announce||"–"}</div>
+                    <div style={{fontSize:10,color:TH.muted,marginTop:3}}>S.{player.coachPromise.season} · W.{player.coachPromise.week}</div>
+                  </div>;
+                })()}
                 <button onClick={()=>{const d=COACH_DIALOGUES[Math.floor(Math.random()*COACH_DIALOGUES.length)];setCoachModal({dialogue:d,chosen:null});}} style={{width:"100%",padding:"9px 12px",borderRadius:10,border:`1px solid ${TH.accent}44`,background:`${TH.accent}11`,cursor:"pointer",fontFamily:"inherit",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
                   <span style={{fontSize:12,fontWeight:700,color:TH.accent}}>🤝 {L.talkCoach||"Parla col Mister"}</span>
                   <span style={{fontSize:10,color:TH.muted}}>dialogo</span>
