@@ -812,7 +812,7 @@ const WEEKLY_EVENTS=[
   // ── SOCIAL & MEDIA — POSITIVE ────────────────────────────────────────────
   {w:8,txt:"📺 Intervista sui media: ottima impressione.",ef:{popularity:9,morale:6,value:0.1}},
   {w:7,txt:"📈 Il tuo valore sale grazie alle prestazioni.",ef:{value:0.2,popularity:4,morale:5}},
-  {w:7,txt:"🌟 Un grande club ti osserva! La voce si diffonde.",ef:{popularity:10,morale:8,value:0.3}},
+  {w:7,txt:"🌟 Un grande club ti osserva! La voce si diffonde.",ef:{popularity:10,morale:8,value:0.3},cond:p=>p.ovr>=65&&p.proStatus==="pro"},
   {w:6,txt:"💬 Supporto caloroso dei tifosi dopo la gara.",ef:{morale:9,popularity:7}},
   {w:6,txt:"🔥 Sei in un momento di grazia. Tutto funziona.",ef:{form:12,morale:8,fatigue:-8}},
   {w:5,txt:"🤝 Grande sintonia con un compagno. Spirito di squadra alto.",ef:{morale:8,coachTrust:3}},
@@ -846,10 +846,10 @@ const WEEKLY_EVENTS=[
   {w:9,txt:"😤 Discussione in spogliatoio. Tensione alta.",ef:{morale:-11,coachTrust:-5}},
   {w:8,txt:"🗣️ Richiamo dell'allenatore. Non sei al massimo.",ef:{morale:-12,coachTrust:-7,form:-5}},
   {w:7,txt:"📰 Critica pesante dai media. Pressione psicologica.",ef:{morale:-9,fatigue:5}},
-  {w:5,txt:"⚠️ Escluso dai titolari. Situazione difficile.",ef:{morale:-16,coachTrust:-9}},
-  {w:5,txt:"🔄 Un nuovo acquisto minaccia il tuo posto.",ef:{morale:-11,coachTrust:-5,form:-4}},
+  {w:5,txt:"⚠️ Escluso dai titolari. Situazione difficile.",ef:{morale:-16,coachTrust:-9},cond:p=>p.coachTrust<50},
+  {w:5,txt:"🔄 Un nuovo acquisto minaccia il tuo posto.",ef:{morale:-11,coachTrust:-5,form:-4},cond:p=>p.coachTrust<65},
   {w:5,txt:"😡 Discussione con il vice-allenatore. Atmosfera tesa.",ef:{morale:-10,coachTrust:-6}},
-  {w:5,txt:"🔄 Cambio di modulo: perdi il ruolo ideale.",ef:{morale:-9,coachTrust:-4,form:-5}},
+  {w:5,txt:"🔄 Cambio di modulo: perdi il ruolo ideale.",ef:{morale:-9,coachTrust:-4,form:-5},cond:p=>p.coachTrust<65},
   {w:4,txt:"⚔️ Rivalità accesa con un compagno per il posto.",ef:{morale:-10,coachTrust:-4}},
   {w:4,txt:"🎙️ Dichiarazione fraintesa dalla stampa. Piccola polemica.",ef:{morale:-8,popularity:-5}},
   {w:4,txt:"⚠️ Richiamo per ritardo agli allenamenti. Situazione delicata.",ef:{morale:-10,coachTrust:-8}},
@@ -859,7 +859,7 @@ const WEEKLY_EVENTS=[
   {w:3,txt:"📵 Il club limita i social per una settimana. Frustrazione.",ef:{morale:-6,popularity:-3}},
   {w:3,txt:"🏗️ Lavori al centro sportivo. Allenamenti disturbati.",ef:{fatigue:12,morale:-5,form:-4}},
   {w:3,txt:"😤 Incomprensione tattica con il centrocampista titolare.",ef:{morale:-8,coachTrust:-3}},
-  {w:2,txt:"😶 Il club acquista un attaccante nel tuo ruolo. Paura.",ef:{morale:-14,coachTrust:-6,form:-5}},
+  {w:2,txt:"😶 Il club acquista un attaccante nel tuo ruolo. Paura.",ef:{morale:-14,coachTrust:-6,form:-5},cond:p=>p.coachTrust<55},
   // Sprint 40 — nuovi eventi settimanali
   {w:5,txt:"⚔️ Settimana pre-derby. Tensione altissima al centro sportivo.",ef:{morale:6,fatigue:8,form:4}},
   {w:4,txt:"📱 Un tuo gol è diventato virale sui social. I tifosi ti contattano in massa.",ef:{popularity:12,morale:8,value:0.04}},
@@ -872,11 +872,11 @@ const WEEKLY_EVENTS=[
   // ── MERCATO & TRASFERIMENTI ──────────────────────────────────────────────
   {w:6,txt:"💼 Il tuo agente annuncia pubblicamente che valuterà offerte a fine stagione.",ef:{popularity:8,morale:5,value:0.15}},
   {w:5,txt:"🔄 Notizia bomba: un grande club segue da settimane i tuoi allenamenti.",ef:{morale:9,popularity:10,value:0.2}},
-  {w:5,txt:"📋 Il direttore sportivo ti convoca: vuole rinnovarti prima della finestra invernale.",ef:{morale:7,coachTrust:6}},
-  {w:4,txt:"✈️ Osservatori stranieri in tribuna. Il club li vede e inizia a preoccuparsi.",ef:{value:0.25,popularity:9,morale:8}},
-  {w:4,txt:"💰 Rumors: una proposta da 15M€ respinta dalla dirigenza. Il tuo valore esplode.",ef:{value:0.3,popularity:12,morale:7}},
+  {w:5,txt:"📋 Il direttore sportivo ti convoca: vuole rinnovarti prima della finestra invernale.",ef:{morale:7,coachTrust:6},cond:p=>p.proStatus==="pro"&&p.coachTrust>=50},
+  {w:4,txt:"✈️ Osservatori stranieri in tribuna. Il club li vede e inizia a preoccuparsi.",ef:{value:0.25,popularity:9,morale:8},cond:p=>p.ovr>=68&&p.proStatus==="pro"},
+  {w:4,txt:"💰 Rumors: una proposta da 15M€ respinta dalla dirigenza. Il tuo valore esplode.",ef:{value:0.3,popularity:12,morale:7},cond:p=>p.ovr>=72&&(p.value||0)>=5&&p.proStatus==="pro"},
   {w:4,txt:"🤝 L'agente negozia con discrezione. Possibile addio a fine anno.",ef:{morale:6,popularity:7,value:0.2}},
-  {w:3,txt:"🚨 Flash di mercato: il tuo nome accostato a una big europea. Spogliatoio in subbuglio.",ef:{morale:4,coachTrust:-3,popularity:15,value:0.35}},
+  {w:3,txt:"🚨 Flash di mercato: il tuo nome accostato a una big europea. Spogliatoio in subbuglio.",ef:{morale:4,coachTrust:-3,popularity:15,value:0.35},cond:p=>p.ovr>=75&&p.proStatus==="pro"},
   {w:3,txt:"🔒 Il club blocca qualsiasi cessione. 'È incedibile' — dichiarano in conferenza.",ef:{morale:10,coachTrust:5,popularity:6}},
   // ── NOTIZIE DI CLUB ───────────────────────────────────────────────────────
   {w:6,txt:"📢 Il club annuncia un nuovo sponsor di maglia. Grande campagna pubblicitaria con te in primo piano.",ef:{popularity:10,value:0.1,morale:6}},
@@ -886,10 +886,10 @@ const WEEKLY_EVENTS=[
   {w:4,txt:"💸 Il club acquista un big internazionale: i tifosi esplodono di gioia, tu ti senti in competizione.",ef:{morale:-5,form:3,coachTrust:-2}},
   {w:3,txt:"🏆 Il presidente promette un mercato di gennaio ambizioso. Clima eccitante.",ef:{morale:10,form:5}},
   // ── NAZIONALE & PALCOSCENICO INTERNAZIONALE ───────────────────────────────
-  {w:6,txt:"🌍 Il ct della nazionale ti segue da vicino: sei nella lista dei pre-convocati.",ef:{morale:12,popularity:11,form:6}},
-  {w:5,txt:"📺 Il tuo nome appare per la prima volta in una lista ufficiale della nazionale.",ef:{popularity:14,morale:11,value:0.2}},
+  {w:6,txt:"🌍 Il ct della nazionale ti segue da vicino: sei nella lista dei pre-convocati.",ef:{morale:12,popularity:11,form:6},cond:p=>p.proStatus==="pro"&&p.ovr>=70},
+  {w:5,txt:"📺 Il tuo nome appare per la prima volta in una lista ufficiale della nazionale.",ef:{popularity:14,morale:11,value:0.2},cond:p=>p.proStatus==="pro"&&p.ovr>=68},
   {w:4,txt:"🌐 Feature su un portale europeo: 'Uno dei migliori under-23 del continente'.",ef:{popularity:15,value:0.25,morale:9}},
-  {w:4,txt:"🥇 Candidato al premio miglior giovane della lega. Vota il pubblico.",ef:{popularity:13,morale:10,value:0.15}},
+  {w:4,txt:"🥇 Candidato al premio miglior giovane della lega. Vota il pubblico.",ef:{popularity:13,morale:10,value:0.15},cond:p=>(p.season||1)<=4&&p.ovr>=65},
   {w:3,txt:"🏅 La federazione ti invita a un evento con le leggende del calcio nazionale.",ef:{morale:14,popularity:12,coachTrust:4}},
   // ── VITA DA CALCIATORE ────────────────────────────────────────────────────
   {w:5,txt:"🏠 Trovi casa vicino al centro sportivo. Meno stress, più sonno: forma in crescita.",ef:{fatigue:-15,form:7,morale:8}},
@@ -904,7 +904,19 @@ const WEEKLY_EVENTS=[
   {w:4,txt:"💭 Notte insonne prima di una partita importante. L'ansia è alta.",ef:{fatigue:12,form:-5,morale:-4}},
   {w:4,txt:"🌊 Momento di dubbio: stai vivendo la carriera che desideri?",ef:{morale:-7,form:-4,mentalità:1}},
   {w:3,txt:"⚡ Scintilla: un momento in allenamento ti ricorda perché ami questo sport.",ef:{morale:14,form:9,fatigue:-8}},
+  // Template events — {CLUB}/{OVR}/{GOALS}/{SEASON} resolved at runtime
+  {w:3,txt:"🏟️ Settimana speciale al {CLUB}: il mister convoca tutti per un discorso motivazionale.",ef:{morale:11,coachTrust:5,form:5}},
+  {w:2,txt:"🌟 Stagione {SEASON}: il tuo percorso al {CLUB} è sempre più convincente. OVR {OVR} — e in crescita.",ef:{morale:8,coachTrust:5,popularity:6},cond:p=>(p.season||1)>=2},
+  {w:2,txt:"⚽ Stai dominando questa stagione al {CLUB}: {GOALS} gol e un OVR di {OVR}. I media non parlano d'altro.",ef:{popularity:12,morale:9,value:0.15},cond:p=>(p.goals||0)>=5&&p.ovr>=65},
 ];
+// Sprint B — resolve template placeholders {CLUB}/{OVR}/{GOALS}/{SEASON} in event text
+function resolveEvText(txt,p){
+  return txt
+    .replace(/\{CLUB\}/g,p.club?.n||p.club?.name||"il club")
+    .replace(/\{OVR\}/g,String(p.ovr||60))
+    .replace(/\{GOALS\}/g,String(p.goals||0))
+    .replace(/\{SEASON\}/g,String(p.season||1));
+}
 
 /* ========================================
    WEEKLY RANDOM EVENTS — life events (10 pool)
@@ -2210,6 +2222,16 @@ const CLUB_STADIUMS={
   "bru":"Jan Breydel Stadion","and":"Lotto Park","gbk":"Ghelamco Arena",
   "cel2":"Celtic Park","ran":"Ibrox Stadium",
 };
+// Sprint C — per-club stadium style: 0=standard 1=modern dark 2=compact bowl 3=traditional
+const CLUB_STADIUM_STYLE={
+  "juve":1,"tot":1,"mcy":1,"bay":1,"atm":1,"ars":1,"rb":1,"ben":1,"whu":1,"bha":1,
+  "bol":2,"emp":2,"lec":2,"par":2,"bou":2,"brt":2,"azu":2,"sou":2,"lei":2,"cel2":2,
+  "inter":3,"milan":3,"bar":3,"rma":3,"bvb":3,"mun":3,"liv":3,"por":3,"psg":3,"fey":3,
+};
+function getStadiumStyle(club){
+  if(club?.isU18)return 0;
+  return CLUB_STADIUM_STYLE[club?.id]||0;
+}
 function getStadiumName(club){
   if(club?.isU18)return pick(STADIUMS);
   if(club?.id&&CLUB_STADIUMS[club.id])return CLUB_STADIUMS[club.id];
@@ -2520,7 +2542,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.5.83"; // Canvas object-fit:cover su chain flex definita: no gap bianco, no zoom overflow, matchday non più scuro
+const GAME_VERSION="4.5.84"; // Sprint A: cori derby+boo multilingua; Sprint B: dialoghi contestuali cond+template; Sprint C: stadio differenziato per club
 const SAVE_VERSION=6;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -3837,6 +3859,8 @@ const CROWD_CHANTS={
   losing:["NON CI ARRENDIAMO! 💙","TESTA ALTA! ✊","CI CREDO ANCORA! 🔥","FORZA RAGAZZI REAGITE! 💪","NON È ANCORA FINITA! ⚡"],
   away_goal:["Goool ospiti...","Gli avversari esultano.","Silenzio in curva.","...","La panchina avversaria si alza in piedi."],
   urgenza:["DAI! CI SIAMO! 🔥","ADESSO! ADESSO! 💥","MANCANO POCHI MINUTI! ⏱️","È ADESSO IL MOMENTO! ⚡","FORZA CHE CE LA FAI! 💪"],
+  derby:["DERBYYYYYYY! 🔥","CHE ATMOSFERA! 💥","QUESTA È LA PARTITA! ❤️","VINCI PER NOI! 🔥","QUESTA CITTÀ È NOSTRA! 🏆","UN'EMOZIONE UNICA! ⚡","CHE SPETTACOLO! 🌟","IL DERBY! IL DERBY! 🔥","TIENICI IL DERBY! ✊","OGNI TIFOSO CI CREDE! 💙","NON TRADIRCI! ❤️‍🔥","IL DERBY NON SI GIOCA — SI VINCE! 💯","FUOCO IN CURVA! 🔥"],
+  boo:["BOOOOO! 😤","FUORI! FUORI! 😡","CHE DELUSIONE! 😤","NON CI MERITATE! 💔","VERGOGNA! 😡","FISCHI IN CURVA! 😤","ANDATE VIA! 😡","NON SIETE DEGNI! 😤","USCITE DAL CAMPO! 😡","RIMBORSO! 💸","INDECENTI! 😤","QUANTO FA SCHIFO! 😤"],
 };
 // Sprint 91 — Localized chants per league
 const CROWD_CHANTS_LG={
@@ -3849,6 +3873,8 @@ const CROWD_CHANTS_LG={
     comeback:["COME ON! WE CAN DO IT! 🔥","NEVER GIVE UP! 💪","BELIEVE! ⚡","ONE MORE! ONE MORE! 🎯"],
     winning:["EASY! EASY! EASY! 🏆","WE'RE GONNA WIN THE LEAGUE! 🎉","CHAMPIONS! 🏆","CAMPEONES! OLÉ OLÉ! 🎊"],
     losing:["WE NEVER GIVE UP! 💙","COME ON YOU [CLUB]! 🔥","FIGHT FOR THE SHIRT! ✊"],
+    derby:["THE DERBY! THE DERBY! 🔥","THIS IS WHAT IT'S ABOUT! ⚡","COME ON — IT'S DERBY DAY! 🏆","WIN THIS ONE FOR US! ❤️","THE CITY IS OURS! 💙","NO MERCY TODAY! 🔥","DERBY DAY — OUR DAY! ✊","GIVE IT EVERYTHING! 💪","THIS IS OUR MOMENT! ⚡"],
+    boo:["BOOOOOO! 😤","GET OFF! GET OFF! 😡","ABSOLUTE DISGRACE! 😤","NOT GOOD ENOUGH! 💔","SHOCKING DISPLAY! 😡","SORT IT OUT! 😤","EMBARRASSING! 😡","YOU SHOULD BE ASHAMED! 😤"],
   },
   "EFL Championship":{
     goal:["YEEEES! 🎉","GET IN! ✊","GREAT GOAL! 🔥","BRILLIANT! ⭐"],
@@ -3865,6 +3891,8 @@ const CROWD_CHANTS_LG={
     comeback:["KÄMPFEN! 🔥","NIEMALS AUFGEBEN! 💪","WIR GLAUBEN DARAN! ⚡"],
     winning:["MEISTER! MEISTER! 🏆","WIR SIND DIE BESTEN! ⚡","CHAMPIONS! 🏆"],
     losing:["KOPF HOCH! 💙","NICHT AUFGEBEN! 🔥","WIR KOMMEN ZURÜCK! ⚡"],
+    derby:["DAS DERBY! 🔥","HEUTE IST UNSER TAG! ⚡","UNSERE STADT! 🏆","DERBY-SIEG FÜR UNS! ✊","KEINEN SCHRITT ZURÜCK! 💪","KÄMPF FÜR UNS! ❤️","DERBY-STIMMUNG! 💥","UNSER DERBY — UNSER SIEG! 🔥"],
+    boo:["BUUUUH! 😤","RAUS! RAUS! 😡","SCHÄMT EUCH! 😤","UNZUMUTBAR! 💔","SKANDAL! 😡","IHR SEID BLAMIERT! 😤","GEHT NACH HAUSE! 😡"],
   },
   "2. Bundesliga":{
     goal:["TOOOOOOR! 🎉","JA! JA! ✊","HAMMER! 💥"],
@@ -3880,6 +3908,8 @@ const CROWD_CHANTS_LG={
     comeback:["ON PEUT LE FAIRE! 🔥","JAMAIS SANS COMBATTRE! 💪","ON Y CROIT! ⚡"],
     winning:["CHAMPIONS! CHAMPIONS! 🏆","ON EST LES MEILLEURS! ⚡","TITRE! TITRE! 🎊"],
     losing:["JAMAIS LÂCHER! 💙","ON PEUT REVENIR! 🔥","ALLEZ! 💪"],
+    derby:["LE DERBY! 🔥","C'EST LE GRAND MATCH! ⚡","NOTRE VILLE, NOTRE DERBY! 🏆","BATTEZ-LES POUR NOUS! ❤️","ON GAGNE LE DERBY! ✊","DONNEZ TOUT! 💪","AUJOURD'HUI C'EST NOTRE JOUR! 🔥"],
+    boo:["HUUUUUUE! 😤","DEHORS! DEHORS! 😡","QUELLE HONTE! 😤","VOUS NE LE MÉRITEZ PAS! 💔","SCANDALE! 😡","RENTREZ CHEZ VOUS! 😤","INACCEPTABLE! 😡"],
   },
   "Ligue 2":{
     goal:["BUUUUT! 🎉","OUI! ✊","MAGNIFIQUE! 🔥"],
@@ -3895,6 +3925,8 @@ const CROWD_CHANTS_LG={
     comeback:["¡PODEMOS! 🔥","¡NUNCA SE RINDE! 💪","¡YO CREO! ⚡"],
     winning:["¡CAMPEONES! 🏆","¡SOMOS LOS MEJORES! ⚡","¡A POR ELLOS! 🎊"],
     losing:["¡NUNCA ABANDONAR! 💙","¡VAMOS, PODEMOS! 🔥","¡ARRIBA [CLUB]! ✊"],
+    derby:["¡EL DERBI! 🔥","¡ESTO ES PASIÓN PURA! ⚡","¡NUESTRA CIUDAD! 🏆","¡GANAD POR NOSOTROS! ❤️","¡EL DERBI ES NUESTRO! ✊","¡A MUERTE! 💥","¡HOY ES EL DÍA! 🔥","¡VAMOS A GANAR EL DERBI! 🎊"],
+    boo:["¡BUUUUU! 😤","¡FUERA! ¡FUERA! 😡","¡QUÉ VERGÜENZA! 😤","¡NO LO MERECÉIS! 💔","¡ESCÁNDALO! 😡","¡FUERA DE AQUÍ! 😤","¡INDIGNO! 😡"],
   },
   "Segunda División":{
     goal:["GOOOOOL! 🎉","SÍ! SÍ! ✊","¡QUÉ GOL! 🔥"],
@@ -5000,7 +5032,7 @@ function colorCharGLB(model,jerHex){
 ===================================================== */
 const PC_PW=460,PC_PH=650,PC_FX=80,PC_FY=40,PC_FW=300,PC_FH=550;
 const PC_FCX=PC_FX+PC_FW/2,PC_FCY=PC_FY+PC_FH/2;
-function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,onWalkoutDone,avatarId,actionZoom,allPlayers,homeClub,ballX,ballY,waveEvent,driftTargets,timeOfDay,attendance,actionEffect,weather,heatPoints,showHeatMap,isDesktop=false,heroJerseyNum=10,isDerbyMatch=false,isBigGame=false,competitionLabel="",heroKitCol,heroKitCol2,walkoutHomeCol,walkoutAwayCol,stadiumHomeCol,stadiumAwayCol,kickoffHour=15,matchClock=0}){
+function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,onWalkoutDone,avatarId,actionZoom,allPlayers,homeClub,ballX,ballY,waveEvent,driftTargets,timeOfDay,attendance,actionEffect,weather,heatPoints,showHeatMap,isDesktop=false,heroJerseyNum=10,isDerbyMatch=false,isBigGame=false,competitionLabel="",heroKitCol,heroKitCol2,walkoutHomeCol,walkoutAwayCol,stadiumHomeCol,stadiumAwayCol,kickoffHour=15,matchClock=0,stadiumStyle=0}){
   homeCol=homeCol||"#22c55e";oppCol=oppCol||"#ef4444";opponents=opponents||[];
   matchPhase=matchPhase||"match";actionZoom=actionZoom||false;allPlayers=allPlayers||[];
   const canvasRef=useRef(null);
@@ -5013,8 +5045,8 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
     livePos:[],fogPhase:0,photoFlashT:0,
     netBulgeTop:0,netBulgeBot:0
   });
-  const propsRef=useRef({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,onWalkoutDone,avatarId,actionZoom,allPlayers,homeClub,ballX:ballX||50,ballY:ballY||50,waveEvent,driftTargets,timeOfDay:timeOfDay||"night",attendance:attendance||500,weather,heatPoints,showHeatMap,heroJerseyNum:heroJerseyNum||10,isDerbyMatch,isBigGame,competitionLabel,heroKitCol:heroKitCol||homeCol||"#22c55e",heroKitCol2:heroKitCol2||"#ffffff",walkoutHomeCol:walkoutHomeCol||homeCol||"#22c55e",walkoutAwayCol:walkoutAwayCol||oppCol||"#ef4444",stadiumHomeCol:stadiumHomeCol||homeCol,stadiumAwayCol:stadiumAwayCol||oppCol,kickoffHour,matchClock});
-  useEffect(()=>{propsRef.current={playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,onWalkoutDone,avatarId,actionZoom,allPlayers,homeClub,ballX:ballX||50,ballY:ballY||50,waveEvent,driftTargets,timeOfDay:timeOfDay||"night",attendance:attendance||500,weather,heatPoints,showHeatMap,heroJerseyNum:heroJerseyNum||10,isDerbyMatch,isBigGame,competitionLabel,heroKitCol:heroKitCol||homeCol||"#22c55e",heroKitCol2:heroKitCol2||"#ffffff",walkoutHomeCol:walkoutHomeCol||homeCol||"#22c55e",walkoutAwayCol:walkoutAwayCol||oppCol||"#ef4444",stadiumHomeCol:stadiumHomeCol||homeCol,stadiumAwayCol:stadiumAwayCol||oppCol,kickoffHour,matchClock};},[playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,onWalkoutDone,avatarId,actionZoom,allPlayers,homeClub,ballX,ballY,waveEvent,driftTargets,timeOfDay,attendance,weather,heatPoints,showHeatMap,heroJerseyNum,isDerbyMatch,isBigGame,competitionLabel,heroKitCol,heroKitCol2,walkoutHomeCol,walkoutAwayCol,stadiumHomeCol,stadiumAwayCol,kickoffHour,matchClock]);
+  const propsRef=useRef({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,onWalkoutDone,avatarId,actionZoom,allPlayers,homeClub,ballX:ballX||50,ballY:ballY||50,waveEvent,driftTargets,timeOfDay:timeOfDay||"night",attendance:attendance||500,weather,heatPoints,showHeatMap,heroJerseyNum:heroJerseyNum||10,isDerbyMatch,isBigGame,competitionLabel,heroKitCol:heroKitCol||homeCol||"#22c55e",heroKitCol2:heroKitCol2||"#ffffff",walkoutHomeCol:walkoutHomeCol||homeCol||"#22c55e",walkoutAwayCol:walkoutAwayCol||oppCol||"#ef4444",stadiumHomeCol:stadiumHomeCol||homeCol,stadiumAwayCol:stadiumAwayCol||oppCol,kickoffHour,matchClock,stadiumStyle:stadiumStyle||0});
+  useEffect(()=>{propsRef.current={playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,onWalkoutDone,avatarId,actionZoom,allPlayers,homeClub,ballX:ballX||50,ballY:ballY||50,waveEvent,driftTargets,timeOfDay:timeOfDay||"night",attendance:attendance||500,weather,heatPoints,showHeatMap,heroJerseyNum:heroJerseyNum||10,isDerbyMatch,isBigGame,competitionLabel,heroKitCol:heroKitCol||homeCol||"#22c55e",heroKitCol2:heroKitCol2||"#ffffff",walkoutHomeCol:walkoutHomeCol||homeCol||"#22c55e",walkoutAwayCol:walkoutAwayCol||oppCol||"#ef4444",stadiumHomeCol:stadiumHomeCol||homeCol,stadiumAwayCol:stadiumAwayCol||oppCol,kickoffHour,matchClock,stadiumStyle:stadiumStyle||0};},[playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,onWalkoutDone,avatarId,actionZoom,allPlayers,homeClub,ballX,ballY,waveEvent,driftTargets,timeOfDay,attendance,weather,heatPoints,showHeatMap,heroJerseyNum,isDerbyMatch,isBigGame,competitionLabel,heroKitCol,heroKitCol2,walkoutHomeCol,walkoutAwayCol,stadiumHomeCol,stadiumAwayCol,kickoffHour,matchClock,stadiumStyle]);
 
   useEffect(()=>{
     const canvas=canvasRef.current;if(!canvas)return;
@@ -5101,11 +5133,12 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
       const _isDrby=propsRef.current.isDerbyMatch||false;
       const _isBig=propsRef.current.isBigGame||false;
       const _khr=propsRef.current.kickoffHour||15;
+      const _stadStyle=propsRef.current.stadiumStyle||0;
       const _compLabel=propsRef.current.competitionLabel||propsRef.current.homeClub?.lg||"";
       const atmo=_atmo82(_tod,_wid);
       // Derby/bigmatch boost fillRatio
       const _effectiveFill=Math.min(1,fillRatio*(_isDrby?1.30:_isBig?1.15:1));
-      const key=hCol+oCol+_effectiveFill.toFixed(2)+_tod+"_"+_wid+(_prest80>=80?"E":_prest80>=60?"M":"L")+(_isDrby?"D":_isBig?"B":"")+_khr;
+      const key=hCol+oCol+_effectiveFill.toFixed(2)+_tod+"_"+_wid+(_prest80>=80?"E":_prest80>=60?"M":"L")+(_isDrby?"D":_isBig?"B":"")+_khr+_stadStyle;
       if(key===_crowdKey)return;
       _crowdKey=key;
       cctx.clearRect(0,0,PW,PH);
@@ -5387,20 +5420,40 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
           cctx.beginPath();cctx.arc(FX+FW+9,_isy,1.4,0,Math.PI*2);cctx.fill();
         }
         cctx.restore();
-        // 4) Cartelloni nelle curve — strisce orizzontali colori casa/ospiti
+        // 4) Cartelloni nelle curve — per-club stadium style variation
         {
-          const _cSlot=Math.round(FW/9);
-          cctx.save();cctx.globalAlpha=0.80;
-          for(let _cai=0;_cai<9;_cai++){
+          const _cNum=_stadStyle===2?11:9; // style 2: denser boards
+          const _cSlot=Math.round(FW/_cNum);
+          const _cH=_stadStyle===1?5:3; // style 1=modern taller, others normal
+          cctx.save();
+          for(let _cai=0;_cai<_cNum;_cai++){
             const _cax=FX+_cai*_cSlot;
-            const _v=_cai%3===0?0:_cai%3===1?45:-35;
-            const _hn=parseInt((hCol||"#22c55e").replace('#',''),16);
-            cctx.fillStyle=`rgb(${Math.min(255,Math.max(0,((_hn>>16)&255)+_v))},${Math.min(255,Math.max(0,((_hn>>8)&255)+_v))},${Math.min(255,Math.max(0,(_hn&255)+_v))})`;
-            cctx.fillRect(_cax,FY-5,_cSlot-1,4);
-            const _vo=_cai%3===0?0:_cai%3===1?40:-30;
-            const _on=parseInt((oCol||"#ef4444").replace('#',''),16);
-            cctx.fillStyle=`rgb(${Math.min(255,Math.max(0,((_on>>16)&255)+_vo))},${Math.min(255,Math.max(0,((_on>>8)&255)+_vo))},${Math.min(255,Math.max(0,(_on&255)+_vo))})`;
-            cctx.fillRect(_cax,FY+FH+1,_cSlot-1,4);
+            if(_stadStyle===1){
+              // Modern dark: dark boards with accent color stripes
+              cctx.globalAlpha=_cai%2===0?0.88:0.70;
+              cctx.fillStyle=_cai%2===0?"#0a0a14":hCol;
+              cctx.fillRect(_cax,FY-_cH-1,_cSlot-1,_cH);
+              cctx.fillStyle=_cai%2===0?"#0a0a14":oCol;
+              cctx.fillRect(_cax,FY+FH+1,_cSlot-1,_cH);
+            }else if(_stadStyle===3){
+              // Traditional: mostly white with selective home/away color accents
+              cctx.globalAlpha=0.88;
+              cctx.fillStyle=_cai%4===0?hCol:_cai%4===2?oCol:"#e8eaec";
+              cctx.fillRect(_cax,FY-_cH-1,_cSlot-1,_cH);
+              cctx.fillStyle=_cai%4===0?oCol:_cai%4===2?hCol:"#e8eaec";
+              cctx.fillRect(_cax,FY+FH+1,_cSlot-1,_cH);
+            }else{
+              // Style 0/2: standard home/away color variation
+              cctx.globalAlpha=0.80;
+              const _v=_cai%3===0?0:_cai%3===1?45:-35;
+              const _hn=parseInt((hCol||"#22c55e").replace('#',''),16);
+              cctx.fillStyle=`rgb(${Math.min(255,Math.max(0,((_hn>>16)&255)+_v))},${Math.min(255,Math.max(0,((_hn>>8)&255)+_v))},${Math.min(255,Math.max(0,(_hn&255)+_v))})`;
+              cctx.fillRect(_cax,FY-_cH-1,_cSlot-1,_cH);
+              const _vo=_cai%3===0?0:_cai%3===1?40:-30;
+              const _on=parseInt((oCol||"#ef4444").replace('#',''),16);
+              cctx.fillStyle=`rgb(${Math.min(255,Math.max(0,((_on>>16)&255)+_vo))},${Math.min(255,Math.max(0,((_on>>8)&255)+_vo))},${Math.min(255,Math.max(0,(_on&255)+_vo))})`;
+              cctx.fillRect(_cax,FY+FH+1,_cSlot-1,_cH);
+            }
           }
           cctx.globalAlpha=1;cctx.restore();
         }
@@ -7314,9 +7367,12 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     let _type=type;
     if(_type==="home"){
       const _sc=scoreRef.current;const _gap=_sc.home-_sc.away;
-      if(_gap>0&&momentumRef.current>60)_type="winning";
+      if(drby&&Math.random()<0.38)_type="derby";
+      else if(_gap>0&&momentumRef.current>60)_type="winning";
       else if(_gap<0&&momentumRef.current<40)_type="comeback";
     }
+    // Escalate "losing" to "boo" when crowd is genuinely hostile (losing by 2+ with low momentum)
+    if(_type==="losing"){const _sc=scoreRef.current;if((_sc.away-_sc.home)>=2&&momentumRef.current<25)_type="boo";}
     // Sprint 155: national team identity; Sprint 156: language-congruent chant pool
     const _isNat=context==="national"||context==="nationsCup"||context==="euroMondiale_group"||context==="euroMondiale_ko"||context==="euroMondiale";
     const _natD=_isNat?(NAT_CLUB_DATA[player.nation||"Italia"]||{a:"ITA",c:"#003399"}):null;
@@ -8358,6 +8414,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                 heroKitCol={heroKitCol} heroKitCol2={heroKitCol2}
                 walkoutHomeCol={walkoutHomeCol} walkoutAwayCol={walkoutAwayCol}
                 stadiumHomeCol={scoreHomeCol} stadiumAwayCol={scoreAwayCol}
+                stadiumStyle={getStadiumStyle(homeTeamObj)}
                 ballX={ballPos.x} ballY={ballPos.y} waveEvent={waveEvent}
                 driftTargets={driftTargetsRef.current} timeOfDay={timeOfDay}
                 kickoffHour={kickoffHour} matchClock={clock}
@@ -12906,8 +12963,8 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       if(p.week>38)return p; // nothing to do if season ended
       // Sprint 81: exclude events matching last 5 log entries to reduce repetition
       const _recentLog=(p.log||[]).slice(0,5);
-      const _wevPool=WEEKLY_EVENTS.filter(e=>!_recentLog.some(l=>l===e.txt));
-      const _wevFinal=_wevPool.length>=6?_wevPool:WEEKLY_EVENTS;
+      const _wevPool=WEEKLY_EVENTS.filter(e=>!_recentLog.some(l=>l===resolveEvText(e.txt,p))&&(!e.cond||e.cond(p)));
+      const _wevFinal=_wevPool.length>=6?_wevPool:WEEKLY_EVENTS.filter(e=>!e.cond||e.cond(p));
       const ev=Math.random()<0.78?wPick(_wevFinal):null;
       let upd={weekLived:true};
       if(ev){
@@ -12929,9 +12986,10 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
         if(ef.posizionamento)newStats.posizionamento=clamp(p.stats.posizionamento+(ef.posizionamento),1,99);
         if(ef.mentalità)newStats.mentalità=clamp(p.stats.mentalità+(ef.mentalità),1,99);
         if(ef.dribbling)newStats.dribbling=clamp(p.stats.dribbling+(ef.dribbling),1,99);
-        upd={...upd,...extras,stats:newStats,ovr:calcOvr(newStats),log:[ev.txt,...(p.log||[])].slice(0,60)};
+        const _resolvedEvTxt=resolveEvText(ev.txt,{...p,...extras});
+        upd={...upd,...extras,stats:newStats,ovr:calcOvr(newStats),log:[_resolvedEvTxt,...(p.log||[])].slice(0,60)};
         if(doInterview){const iw=pickInterviewByCtx(p);const pJ=(p.journalists||[]).length>0&&Math.random()<0.55?pick(p.journalists):null;const pi=pJ?{...iw.paper,name:pJ.name,color:pJ.color,e:pJ.icon}:iw.paper;setTimeout(()=>setInterviewModal({q:iw.q,paper:pi,opponent:null,matchCtx:"weekly",journalistId:pJ?.id}),50);}
-        else setTimeout(()=>setWeekLiveModal({event:ev,changes:{morale:ef.morale||0,form:ef.form||0,fatigue:ef.fatigue||0},coachMsg:_liveCoachMsg}),50);
+        else setTimeout(()=>setWeekLiveModal({event:{...ev,txt:_resolvedEvTxt},changes:{morale:ef.morale||0,form:ef.form||0,fatigue:ef.fatigue||0},coachMsg:_liveCoachMsg}),50);
       }else{
         if(doInterview){const iw=pickInterviewByCtx(p);const pJ=(p.journalists||[]).length>0&&Math.random()<0.55?pick(p.journalists):null;const pi=pJ?{...iw.paper,name:pJ.name,color:pJ.color,e:pJ.icon}:iw.paper;setTimeout(()=>setInterviewModal({q:iw.q,paper:pi,opponent:null,matchCtx:"weekly",journalistId:pJ?.id}),50);}
         else setTimeout(()=>setWeekLiveModal({event:{txt:"⚽ Settimana di allenamento regolare. Nessun evento particolare."},changes:{},coachMsg:_liveCoachMsg}),50);
