@@ -2336,6 +2336,8 @@ function generateProContracts(player){
   const forced=u18S>=2; // max 2 seasons: MUST leave
   const perf=Math.min(10,(player.goals||0)*0.35+(player.matches||0)*0.12+(ovr-50)/6);
   const agentMult=player.hasAgent?1.15:1.0; // Sprint 26B: agent negotiation bonus
+  // Sprint D1: gerarchia → leva sull'ingaggio del contratto principale
+  const roleWageBonus=player.squadRole==='leader'?1.12:player.squadRole==='titolare'?1.06:1.0;
   const offers=[];
   // 1. Same club first pro contract — conditional on performance (Sprint 105)
   const parentName=((player.club?.n||player.club?.name||"?")+"").replace(/\s+(Primavera|U18)\s*$/i,"").trim();
@@ -2345,7 +2347,7 @@ function generateProContracts(player){
   // Sprint 105: First Team offer requires minimum performance threshold
   const _qualifiesFirstTeam105=ovr>=64&&perf>=3.5;
   if(_qualifiesFirstTeam105){
-    offers.push({id:"same_pro",club:parentClub,contractType:"Primo contratto professionistico",wage:Math.round(clamp(_wageWeek133*(1+rng(-0.10,0.10)),500,500000)*agentMult),duration:rng(1,3),role:ovr>=72?"Titolare giovane":ovr>=65?"Giovane promessa":"Aggregato alla rosa",moralBonus:14,growthBonus:perf>5?20:10,isMain:true});
+    offers.push({id:"same_pro",club:parentClub,contractType:"Primo contratto professionistico",wage:Math.round(clamp(_wageWeek133*(1+rng(-0.10,0.10)),500,500000)*agentMult*roleWageBonus),duration:rng(1,3),role:ovr>=72?"Titolare giovane":ovr>=65?"Giovane promessa":"Aggregato alla rosa",moralBonus:14,growthBonus:perf>5?20:10,isMain:true});
   }else{
     // Non confermato in prima squadra: proposta ridotta o solo prestito
     offers.push({id:"same_pro",club:parentClub,contractType:ovr>=60?"Aggregato alla rosa (prestito interno)":"Non confermato — svincolo",wage:Math.round(clamp(_wageWeek133*0.65*(1+rng(-0.08,0.08)),300,200000)*agentMult),duration:1,role:"Riserva giovane",moralBonus:-4,growthBonus:6,isMain:false,isNonConfirmed:true});
@@ -2441,7 +2443,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.5.66"; // Sprint D3: conferenze stampa pre-partita su big match
+const GAME_VERSION="4.5.67"; // Sprint D1: gerarchia di squadra — squadRole, calcSquadRole, badge profilo
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -3602,6 +3604,24 @@ function calcMatchWeight(player,opponentId,standings,week){
   return Math.min(10,w);
 }
 
+// Sprint D1 — Gerarchia di Squadra
+const SQUAD_ROLES=['primavera','riserva','rotazione','titolare','leader'];
+
+function calcSquadRole(player){
+  const ovr=player.ovr||60;
+  const trust=player.coachTrust||60;
+  const proStatus=player.proStatus||'u18';
+  const recent=(player.matchHistory||[]).slice(-5);
+  const avgRat=recent.length?recent.reduce((s,m)=>s+(m.rating||6),0)/recent.length:6.0;
+  const isCap=player.isCaptain||false;
+  if(proStatus==='u18')return'primavera';
+  if(isCap&&ovr>=80&&trust>=75)return'leader';
+  if(ovr>=78&&trust>=72&&avgRat>=6.8)return'titolare';
+  if(ovr>=68&&trust>=55&&avgRat>=6.2)return'rotazione';
+  if(ovr>=58&&trust>=40)return'riserva';
+  return'primavera';
+}
+
 /* ========================================
    COACH DECISION — titolare / panchina / non convocato
 ======================================== */
@@ -3618,6 +3638,9 @@ function calcCoachDecision(player,matchWeight=1){
   let score=trust*0.40+formNorm*0.25+(100-fatigue)*0.20+(avgRating-5)*7.5;
   // big match boost — coach puts his best player in crucial games
   if(matchWeight>=7)score+=10;
+  // Sprint D1: modulazione gerarchia (±8 — non altera la calibrazione, solo sfuma le soglie)
+  const roleBonus={'leader':8,'titolare':4,'rotazione':0,'riserva':-5,'primavera':-8};
+  score+=roleBonus[player.squadRole||'riserva']||0;
   score=clamp(score,0,100);
   let status,reason,entryMinute=60;
   if(trust<12||(score<25&&trust<30)){
@@ -11787,6 +11810,8 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     // Sprint D2: rapporti staff
     if(!('assistantCoachRel' in newP)){newP={...newP,assistantCoachRel:50};changed=true;}
     if(!('fitnessCoachRel' in newP)){newP={...newP,fitnessCoachRel:50};changed=true;}
+    // Sprint D1: gerarchia di squadra
+    if(!('squadRole' in newP)){newP={...newP,squadRole:calcSquadRole(newP)};changed=true;}
     if(changed){setPlayer(newP);}
   },[]);// eslint-disable-line
   const[darkMode,setDarkMode]=useState(()=>localStorage.getItem("cpm-dark")==="1");
@@ -13130,7 +13155,9 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       const _tcBonus=Math.round(((p.teamChemistry||60)-50)/25);
       const formWithReturn=clamp(naturalForm+retFormPen+_tcBonus,30,95);
       const moraleWithTc=clamp((updP.morale||p.morale||70)+_tcBonus,0,100);
-      return{...updP,week:nextWk,weekLived:false,sessionsThisWeek:0,sessionLog:[],trainingStreak:nextStreak,weeklyFocusType:null,windowOfferUsed:winReset?false:(p.windowOfferUsed||false),fatigue:clamp(naturalFatStaff+_autoFatD,0,100),form:formWithReturn,morale:moraleWithTc,justRecovered:false,returnPenaltyWeeks:nextRetPen};
+      // Sprint D1: ricalcola gerarchia di squadra a fine settimana
+      const _newSquadRole=calcSquadRole({...updP,ovr:updP.ovr||p.ovr||60,coachTrust:updP.coachTrust||p.coachTrust||60,matchHistory:updP.matchHistory||p.matchHistory||[],proStatus:updP.proStatus||p.proStatus||'u18',isCaptain:updP.isCaptain||p.isCaptain||false});
+      return{...updP,week:nextWk,weekLived:false,sessionsThisWeek:0,sessionLog:[],trainingStreak:nextStreak,weeklyFocusType:null,windowOfferUsed:winReset?false:(p.windowOfferUsed||false),fatigue:clamp(naturalFatStaff+_autoFatD,0,100),form:formWithReturn,morale:moraleWithTc,justRecovered:false,returnPenaltyWeeks:nextRetPen,squadRole:_newSquadRole};
     });
     notify("⏭️ Settimana avanzata");
     // Sprint 130 — MVP del Mese (triggered at end of weeks 6, 12, 18, 24)
@@ -15845,6 +15872,16 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                 <div style={{fontSize:12,color:"rgba(255,255,255,0.72)",lineHeight:1.75,fontStyle:"italic"}}>"{bio}"</div>
               </Card>
             );
+          })()}
+          {/* Sprint D1: badge gerarchia */}
+          {(()=>{
+            const roleColors={'primavera':'#94a3b8','riserva':'#f59e0b','rotazione':'#3b82f6','titolare':'#16a34a','leader':'#7c3aed'};
+            const roleLabels={'primavera':'Primavera','riserva':'Riserva','rotazione':'In Rotazione','titolare':'Titolare','leader':'Leader Spogliatoio'};
+            const role=player.squadRole||'riserva';
+            return <div style={{display:"inline-flex",alignItems:"center",gap:5,padding:"4px 10px",borderRadius:20,background:roleColors[role]+"22",border:`1px solid ${roleColors[role]}66`,marginTop:6}}>
+              <div style={{width:7,height:7,borderRadius:"50%",background:roleColors[role]}}/>
+              <span style={{fontSize:11,fontWeight:700,color:roleColors[role]}}>{roleLabels[role]}</span>
+            </div>;
           })()}
           {/* Sprint 33 C4 — Statistiche Carriera sparklines */}
           {(player.history||[]).length>=2&&(()=>{
