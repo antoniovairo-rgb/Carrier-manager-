@@ -2520,7 +2520,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.5.78"; // Canvas mobile height:100% elimina gap sotto il campo
+const GAME_VERSION="4.5.79"; // Canvas mobile: ResizeObserver per sizing senza distorsioni
 const SAVE_VERSION=6;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -6355,6 +6355,31 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
     }
   },[matchPhase]);
 
+  // Mobile canvas sizing: fill available wrapper height maintaining PC aspect ratio
+  useEffect(()=>{
+    if(isDesktop) return;
+    const canvas=canvasRef.current;if(!canvas) return;
+    const wrapper=canvas.parentElement;if(!wrapper) return;
+    const setSize=()=>{
+      const ww=wrapper.clientWidth||0,wh=wrapper.clientHeight||0;
+      if(!ww) return;
+      let cw,ch;
+      if(wh>0){
+        // Height-constrained: fill height, proportional width
+        ch=wh; cw=Math.round(wh*(PC_PW/PC_PH));
+        // If width exceeds container, fall back to width-constrained
+        if(cw>ww){cw=ww; ch=Math.round(ww*(PC_PH/PC_PW));}
+      } else {
+        // No height info yet: fill width
+        cw=ww; ch=Math.round(ww*(PC_PH/PC_PW));
+      }
+      canvas.style.width=cw+"px"; canvas.style.height=ch+"px";
+    };
+    const ro=new ResizeObserver(setSize);
+    ro.observe(wrapper); setSize();
+    return()=>ro.disconnect();
+  },[isDesktop]);
+
   const _tod_bg=(()=>{const t=timeOfDay||"night";const w=propsRef.current.weather?.id||"sunny";if(t==="dusk"){if(w==="storm"||w==="thunder"||w==="rain")return"#100808";if(w==="fog"||w==="mist")return"#1a1215";if(w==="golden")return"#1c1006";return"#200e06";}if(t==="dawn"){if(w==="fog"||w==="mist")return"#141c2e";if(w==="rain"||w==="drizzle")return"#0a1020";return"#0d1530";}if(t==="day"){if(w==="storm"||w==="thunder")return"#2a3848";if(w==="rain"||w==="hail")return"#3c4a58";if(w==="drizzle")return"#4a5a6a";if(w==="fog"||w==="mist")return"#a8b4c0";if(w==="snow")return"#c8d8e8";if(w==="overcast")return"#6a7888";if(w==="sunset")return"#d04020";if(w==="rainbow")return"#3a8ac8";return"#5b9bd5";}if(w==="storm"||w==="thunder")return"#010204";if(w==="fog"||w==="mist")return"#040810";if(w==="snow")return"#060a18";if(w==="rain"||w==="drizzle")return"#010308";return"#010208";})();
   return(
     <div style={isDesktop
@@ -6363,7 +6388,7 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
       <canvas ref={canvasRef}
         style={isDesktop
           ?{display:"block",height:"100%",width:"auto",maxWidth:"100%"}
-          :{display:"block",height:"100%",width:"auto"}}/>
+          :{display:"block"}}/>
     </div>
   );
 }
