@@ -2441,7 +2441,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.5.46"; // Sprint 209f: panchine orizzontali colori club + tunnel spogliatoi tra le due
+const GAME_VERSION="4.5.47"; // Sprint 209g: panchine verticali colori club + tunnel in primo piano (layer finale)
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -5187,33 +5187,6 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
           cctx.beginPath();cctx.arc(FX+FW+9,_isy,1.4,0,Math.PI*2);cctx.fill();
         }
         cctx.restore();
-        // 3) Area tecnica — panchine orizzontali + tunnel spogliatoi
-        {
-          // Panchine: rettangolo orizzontale (largo in X, stretto in Y)
-          // Posizionate sopra/sotto il tunnel al centro del campo
-          const _bW=22,_bH=8,_bX=FX-_bW-2; // x=56..78, largo 22px nel distinto sin
-          [[FCY-32,hCol],[FCY+24,oCol]].forEach(([_by,_bCol])=>{
-            cctx.fillStyle="#0d1117";cctx.globalAlpha=0.90;
-            cctx.fillRect(_bX-1,_by-1,_bW+2,_bH+2);  // telaio scuro
-            cctx.fillStyle=_bCol;cctx.globalAlpha=0.86;
-            cctx.fillRect(_bX,_by,_bW,_bH);           // seduta colorata club
-            // divisori verticali per 5 sedili
-            cctx.fillStyle="rgba(0,0,0,0.28)";cctx.globalAlpha=1;
-            for(let _s=1;_s<5;_s++)cctx.fillRect(_bX+Math.round(_s*_bW/5),_by+1,1,_bH-2);
-            // schienale: bordo superiore scuro
-            cctx.fillStyle="rgba(0,0,0,0.42)";
-            cctx.fillRect(_bX,_by,_bW,2);
-            cctx.globalAlpha=1;
-          });
-          // Tunnel spogliatoi — rettangolo scuro tra le due panchine
-          const _tW=10,_tH=18,_tX=FX-_tW-4;  // x=66..76, al centro in y
-          cctx.fillStyle="#05070b";cctx.globalAlpha=0.93;
-          cctx.fillRect(_tX,FCY-_tH/2,_tW,_tH);
-          cctx.fillStyle="rgba(255,255,255,0.18)";cctx.globalAlpha=1;
-          cctx.strokeStyle="rgba(255,255,255,0.22)";cctx.lineWidth=0.7;
-          cctx.strokeRect(_tX+0.5,FCY-_tH/2+0.5,_tW-1,_tH-1);
-          cctx.globalAlpha=1;
-        }
         // 4) Cartelloni nelle curve — strisce orizzontali colori casa/ospiti
         {
           const _cSlot=Math.round(FW/9);
@@ -5306,6 +5279,31 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
           cctx.fillStyle=hCol;cctx.globalAlpha=0.08;
           cctx.fillRect(0,FY,FX,FH*0.5);cctx.fillRect(FX+FW,FY,PW-FX-FW,FH*0.5);
           cctx.globalAlpha=1;cctx.restore();
+        }
+        // 8) Area tecnica — disegnata per ultima (primo piano su tutto)
+        // Panchine verticali: strette in X, lunghe in Y, parallele alla sideline
+        {
+          const _bW=8,_bH=28,_bX=FX-_bW-3; // x=69..77
+          [[FCY-44,hCol],[FCY+16,oCol]].forEach(([_by,_bCol])=>{
+            cctx.fillStyle="#0d1117";cctx.globalAlpha=0.94;
+            cctx.fillRect(_bX-1,_by-1,_bW+2,_bH+2);  // telaio
+            cctx.fillStyle=_bCol;cctx.globalAlpha=0.90;
+            cctx.fillRect(_bX,_by,_bW,_bH);           // seduta colorata club
+            cctx.fillStyle="rgba(0,0,0,0.30)";cctx.globalAlpha=1;
+            for(let _s=1;_s<5;_s++)cctx.fillRect(_bX+1,_by+Math.round(_s*_bH/5),_bW-2,1); // divisori orizzontali sedili
+            cctx.fillStyle="rgba(0,0,0,0.48)";
+            cctx.fillRect(_bX,_by,2,_bH);              // schienale (lato esterno)
+            cctx.globalAlpha=1;
+          });
+          // Tunnel spogliatoi — in primo piano tra le due panchine
+          const _tW=11,_tH=22,_tX=FX-_tW-2;
+          cctx.fillStyle="#020405";cctx.globalAlpha=0.97;
+          cctx.fillRect(_tX,FCY-_tH/2,_tW,_tH);
+          cctx.fillStyle="rgba(255,255,255,0.32)";cctx.globalAlpha=1;
+          cctx.fillRect(_tX,FCY-_tH/2,_tW,1.5);       // architrave
+          cctx.strokeStyle="rgba(255,255,255,0.28)";cctx.lineWidth=0.7;
+          cctx.strokeRect(_tX+0.4,FCY-_tH/2+0.4,_tW-0.8,_tH-0.8);
+          cctx.globalAlpha=1;
         }
       }
       // Riflettori — struttura sempre visibile agli angoli del campo, glow solo notte/dusk
