@@ -2520,7 +2520,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.5.75"; // MatchErrorBoundary: intercetta errori LiveMatch in UI
+const GAME_VERSION="4.5.76"; // Fix: phaseRef useEffect spostato dopo dichiarazione phase
 const SAVE_VERSION=6;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -7171,7 +7171,6 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   const momentumRef=useRef(50);
   useEffect(()=>{momentumRef.current=momentum;},[momentum]);
   const phaseRef=useRef(context==="trial"?"playing":"matchday");
-  useEffect(()=>{phaseRef.current=phase;},[phase]);
   const heatPointsRef=useRef([]); // {x,y}[] — sampled every 4 playing ticks
   const [showHeatMap,setShowHeatMap]=useState(false);
   const gkDiveRef=useRef(null); // GK dive direction for rigore
@@ -7245,6 +7244,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     return()=>clearTimeout(t);
   },[benchPhase,onBench]);
   const [phase,setPhase]=useState(context==="trial"?"playing":"matchday");
+  useEffect(()=>{phaseRef.current=phase;},[phase]);
   const [hlIdx,setHlIdx]=useState(0);
   // position resets to situation startZone on each new highlight
   const [pPos,setPPos]=useState(()=>getStartPos(situations[0])||{x:58,y:50});
