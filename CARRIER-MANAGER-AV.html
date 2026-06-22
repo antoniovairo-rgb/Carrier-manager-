@@ -2441,7 +2441,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.5.45"; // Sprint 209e: panchine rettangolari con seduta colorata club + schienale + gambe
+const GAME_VERSION="4.5.46"; // Sprint 209f: panchine orizzontali colori club + tunnel spogliatoi tra le due
 const SAVE_VERSION=5;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -5187,28 +5187,32 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
           cctx.beginPath();cctx.arc(FX+FW+9,_isy,1.4,0,Math.PI*2);cctx.fill();
         }
         cctx.restore();
-        // 3) Area tecnica — panchine rettangolari colori club (home + away)
+        // 3) Area tecnica — panchine orizzontali + tunnel spogliatoi
         {
-          const _bW=16,_bH=9,_bX=FX-_bW-3; // x=61..77, dentro il distinto sinistro
-          [[FCY-78,hCol],[FCY+64,oCol]].forEach(([_by,_bCol])=>{
-            // Struttura scura (telaio)
-            cctx.fillStyle="#0d1117";cctx.globalAlpha=0.92;
-            cctx.fillRect(_bX-1,_by-2,_bW+2,_bH+4);
-            // Seduta colorata col club
-            cctx.fillStyle=_bCol;cctx.globalAlpha=0.88;
-            cctx.fillRect(_bX,_by,_bW,_bH);
-            // Divisori sedili (4 seggiolini)
-            cctx.fillStyle="rgba(0,0,0,0.32)";cctx.globalAlpha=1;
-            for(let _s=1;_s<4;_s++)cctx.fillRect(_bX+Math.round(_s*_bW/4),_by+1,1,_bH-2);
-            // Schienale (striscia scura in cima)
-            cctx.fillStyle="rgba(0,0,0,0.45)";
+          // Panchine: rettangolo orizzontale (largo in X, stretto in Y)
+          // Posizionate sopra/sotto il tunnel al centro del campo
+          const _bW=22,_bH=8,_bX=FX-_bW-2; // x=56..78, largo 22px nel distinto sin
+          [[FCY-32,hCol],[FCY+24,oCol]].forEach(([_by,_bCol])=>{
+            cctx.fillStyle="#0d1117";cctx.globalAlpha=0.90;
+            cctx.fillRect(_bX-1,_by-1,_bW+2,_bH+2);  // telaio scuro
+            cctx.fillStyle=_bCol;cctx.globalAlpha=0.86;
+            cctx.fillRect(_bX,_by,_bW,_bH);           // seduta colorata club
+            // divisori verticali per 5 sedili
+            cctx.fillStyle="rgba(0,0,0,0.28)";cctx.globalAlpha=1;
+            for(let _s=1;_s<5;_s++)cctx.fillRect(_bX+Math.round(_s*_bW/5),_by+1,1,_bH-2);
+            // schienale: bordo superiore scuro
+            cctx.fillStyle="rgba(0,0,0,0.42)";
             cctx.fillRect(_bX,_by,_bW,2);
-            // Gambe
-            cctx.fillStyle="rgba(60,70,85,0.85)";
-            cctx.fillRect(_bX+1,_by+_bH,2,2);
-            cctx.fillRect(_bX+_bW-3,_by+_bH,2,2);
             cctx.globalAlpha=1;
           });
+          // Tunnel spogliatoi — rettangolo scuro tra le due panchine
+          const _tW=10,_tH=18,_tX=FX-_tW-4;  // x=66..76, al centro in y
+          cctx.fillStyle="#05070b";cctx.globalAlpha=0.93;
+          cctx.fillRect(_tX,FCY-_tH/2,_tW,_tH);
+          cctx.fillStyle="rgba(255,255,255,0.18)";cctx.globalAlpha=1;
+          cctx.strokeStyle="rgba(255,255,255,0.22)";cctx.lineWidth=0.7;
+          cctx.strokeRect(_tX+0.5,FCY-_tH/2+0.5,_tW-1,_tH-1);
+          cctx.globalAlpha=1;
         }
         // 4) Cartelloni nelle curve — strisce orizzontali colori casa/ospiti
         {
