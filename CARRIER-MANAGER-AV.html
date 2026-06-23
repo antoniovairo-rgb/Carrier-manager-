@@ -80,6 +80,7 @@ let TH = {
   bgGreen:"#f0fdf4", bdGreen:"#bbf7d0", txGreen:"#166534",
   bgRed:"#fff1f2", bdRed:"#fecaca", txRed:"#b91c1c",
   bgAmber:"#fef3c7", bdAmber:"#fcd34d", txAmber:"#92400e",
+  bgPurple:"#f5f3ff", bdPurple:"#c4b5fd", txPurple:"#7c3aed",
 };
 const TH_LIGHT_ORIG=Object.freeze({...TH}); // snapshot for restoring light theme
 const TH_LIGHT=TH; // alias used for dark-mode shadowing
@@ -88,7 +89,8 @@ const TH_DARK={...TH,bg:"#0f172a",bgGrad:"linear-gradient(160deg,#0f172a 0%,#0c1
   bgBlue:"#16233b", bdBlue:"#1e3a5f", txBlue:"#93c5fd",
   bgGreen:"#102b1d", bdGreen:"#1d4d33", txGreen:"#86efac",
   bgRed:"#2c1518", bdRed:"#5b2530", txRed:"#fca5a5",
-  bgAmber:"#2a1f0c", bdAmber:"#5a430f", txAmber:"#fcd34d"};
+  bgAmber:"#2a1f0c", bdAmber:"#5a430f", txAmber:"#fcd34d",
+  bgPurple:"#1d1733", bdPurple:"#3b2a63", txPurple:"#c4b5fd"};
 
 /* ========================================
    AVATAR PRESETS  (req #2 – 12 varianti)
@@ -2552,7 +2554,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.9.1"; // Sprint D: safe-area-inset iPhone (viewport-fit=cover + nav/scroll padding) + token semantici dark mode (bgBlue/Green/Red/Amber) su card dashboard
+const GAME_VERSION="4.9.2"; // Sprint D2: token dark mode estesi (+ bgPurple) a tutte le card pastello (infortunio, rientro, Coppa Nazioni, U18, pro, mercato, prestito, ritiro)
 const SAVE_VERSION=6;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -15033,30 +15035,30 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
         const orig=player.originalInjuryWeeks||Math.max(player.injuryWeeks||1,1);
         const recPct=Math.round(((orig-(player.injuryWeeks||0))/orig)*100);
         return(
-          <Card bg="#fff1f2" border="#fecaca" style={{marginBottom:8,padding:"12px 14px"}}>
+          <Card bg={TH.bgRed} border={TH.bdRed} style={{marginBottom:8,padding:"12px 14px"}}>
             <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:6}}>
-              <div style={{fontSize:11,fontWeight:700,color:"#b91c1c"}}>{iT.icon} {iT.label}</div>
+              <div style={{fontSize:11,fontWeight:700,color:TH.txRed}}>{iT.icon} {iT.label}</div>
               <div style={{fontSize:10,fontWeight:700,color:sevColor,background:`${sevColor}18`,padding:"2px 8px",borderRadius:20}}>{sevLabel}</div>
             </div>
-            <div style={{display:"flex",justifyContent:"space-between",fontSize:10,color:"#991b1b",marginBottom:6}}>
+            <div style={{display:"flex",justifyContent:"space-between",fontSize:10,color:TH.txRed,marginBottom:6}}>
               <span>⏳ {player.injuryWeeks||0} settiman{(player.injuryWeeks||0)===1?"a":"e"} rimanenti</span>
-              <span style={{fontWeight:700,color:recPct>=50?"#15803d":"#991b1b"}}>Recupero {recPct}%</span>
+              <span style={{fontWeight:700,color:recPct>=50?TH.success:TH.txRed}}>Recupero {recPct}%</span>
             </div>
-            <div style={{height:6,background:"#fee2e2",borderRadius:3,overflow:"hidden"}}>
+            <div style={{height:6,background:`${TH.txRed}22`,borderRadius:3,overflow:"hidden"}}>
               <div style={{height:"100%",width:`${recPct}%`,background:recPct>=80?"#16a34a":recPct>=40?"#f97316":"#ef4444",borderRadius:3,transition:"width .4s"}}/>
             </div>
             {(player.injuryWeeks||0)>=2&&(
-              <div style={{marginTop:10,paddingTop:10,borderTop:"1px solid #fecaca"}}>
+              <div style={{marginTop:10,paddingTop:10,borderTop:`1px solid ${TH.bdRed}`}}>
                 {!forceReturnConfirm?(
-                  <button onClick={()=>setForceReturnConfirm(true)} style={{width:"100%",padding:"7px 12px",borderRadius:8,border:"1px solid #fca5a5",background:"transparent",color:"#b91c1c",fontSize:11,fontWeight:700,cursor:"pointer",fontFamily:"inherit",display:"flex",alignItems:"center",justifyContent:"center",gap:6}}>
+                  <button onClick={()=>setForceReturnConfirm(true)} style={{width:"100%",padding:"7px 12px",borderRadius:8,border:`1px solid ${TH.bdRed}`,background:"transparent",color:TH.txRed,fontSize:11,fontWeight:700,cursor:"pointer",fontFamily:"inherit",display:"flex",alignItems:"center",justifyContent:"center",gap:6}}>
                     <span>⚠️</span><span>Forza il rientro (40% ricaduta)</span>
                   </button>
                 ):(
-                  <div style={{background:"#fef2f2",borderRadius:8,padding:"10px 12px"}}>
-                    <div style={{fontSize:11,color:"#991b1b",marginBottom:8,lineHeight:1.4,fontWeight:600}}>⚠️ Sei sicuro? Il medico sconsiglia il rientro anticipato. C'è il 40% di rischio ricaduta con stop prolungato.</div>
+                  <div style={{background:`${TH.txRed}14`,borderRadius:8,padding:"10px 12px"}}>
+                    <div style={{fontSize:11,color:TH.txRed,marginBottom:8,lineHeight:1.4,fontWeight:600}}>⚠️ Sei sicuro? Il medico sconsiglia il rientro anticipato. C'è il 40% di rischio ricaduta con stop prolungato.</div>
                     <div style={{display:"flex",gap:8}}>
                       <button onClick={handleForceReturn} style={{flex:1,padding:"7px 10px",borderRadius:8,border:"none",background:"#dc2626",color:"#fff",fontSize:11,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>Forza comunque</button>
-                      <button onClick={()=>setForceReturnConfirm(false)} style={{flex:1,padding:"7px 10px",borderRadius:8,border:"1px solid #fca5a5",background:"transparent",color:"#991b1b",fontSize:11,fontWeight:600,cursor:"pointer",fontFamily:"inherit"}}>No, aspetto</button>
+                      <button onClick={()=>setForceReturnConfirm(false)} style={{flex:1,padding:"7px 10px",borderRadius:8,border:`1px solid ${TH.bdRed}`,background:"transparent",color:TH.txRed,fontSize:11,fontWeight:600,cursor:"pointer",fontFamily:"inherit"}}>No, aspetto</button>
                     </div>
                   </div>
                 )}
@@ -15067,8 +15069,8 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       })()}
       {/* Sprint 119 — Return penalty banner (gradual return form penalty) */}
       {tab==="dashboard"&&!player.injured&&(player.returnPenaltyWeeks||0)>0&&(
-        <Card bg="#fffbeb" border="#fde68a" style={{marginBottom:8,padding:"10px 14px"}}>
-          <div style={{fontSize:11,color:"#92400e"}}><strong>🏃 Rientro graduale</strong> — ancora {player.returnPenaltyWeeks} settiman{player.returnPenaltyWeeks===1?"a":"e"} di adattamento. Form ridotta del 6%.</div>
+        <Card bg={TH.bgAmber} border={TH.bdAmber} style={{marginBottom:8,padding:"10px 14px"}}>
+          <div style={{fontSize:11,color:TH.txAmber}}><strong>🏃 Rientro graduale</strong> — ancora {player.returnPenaltyWeeks} settiman{player.returnPenaltyWeeks===1?"a":"e"} di adattamento. Form ridotta del 6%.</div>
         </Card>
       )}
       {/* Sprint 26A — Il Presidente ti convoca (weeks 1-3, once per season) */}
@@ -15128,14 +15130,14 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
         const _ncIdx=_ncq.matchIdx||0;
         const _clubMd=getThisWeekMatchday();
         return(
-          <Card style={{marginBottom:8,padding:"12px 14px",border:"1px solid #1d4ed8",background:"#eff6ff"}}>
+          <Card style={{marginBottom:8,padding:"12px 14px",border:`1px solid ${TH.bdBlue}`,background:TH.bgBlue}}>
             <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:6}}>
-              <div style={{fontSize:10,color:"#1d4ed8",textTransform:"uppercase",letterSpacing:1.5,flex:1}}>🌍 Coppa delle Nazioni · S.{_ncq.season}</div>
+              <div style={{fontSize:10,color:TH.txBlue,textTransform:"uppercase",letterSpacing:1.5,flex:1}}>🌍 Coppa delle Nazioni · S.{_ncq.season}</div>
               <div style={{fontSize:10,background:"#1d4ed8",color:"#fff",borderRadius:8,padding:"2px 8px",fontWeight:700}}>PRIORITÀ</div>
             </div>
             <div style={{fontSize:12,color:TH.text,fontWeight:700,marginBottom:2}}>vs {_ncOpp} — Partita {_ncIdx+1}/3</div>
             <div style={{fontSize:10,color:TH.muted,marginBottom:_clubMd?8:0}}>Punti accumulati: {_ncq.pts||0}/9</div>
-            {_clubMd&&<div style={{fontSize:10,color:"#64748b",background:"rgba(0,0,0,0.04)",borderRadius:6,padding:"4px 8px"}}>⏭️ Dopo: {_clubMd.opponentName} · {_clubMd.isHome?"Casa":"Trasferta"} · W.{_clubMd.week}</div>}
+            {_clubMd&&<div style={{fontSize:10,color:TH.muted,background:`${TH.txBlue}12`,borderRadius:6,padding:"4px 8px"}}>⏭️ Dopo: {_clubMd.opponentName} · {_clubMd.isHome?"Casa":"Trasferta"} · W.{_clubMd.week}</div>}
           </Card>
         );
       })()}
@@ -17010,8 +17012,8 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
 
           {/* U18 status banner */}
           {(player.proStatus||"u18")==="u18"&&(
-            <Card bg="#eff6ff" border="#bfdbfe" style={{padding:"12px 14px"}}>
-              <div style={{fontSize:10,color:TH.primary,textTransform:"uppercase",letterSpacing:1.5,fontWeight:700,marginBottom:8}}>🏫 Status Under 18</div>
+            <Card bg={TH.bgBlue} border={TH.bdBlue} style={{padding:"12px 14px"}}>
+              <div style={{fontSize:10,color:TH.txBlue,textTransform:"uppercase",letterSpacing:1.5,fontWeight:700,marginBottom:8}}>🏫 Status Under 18</div>
               <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8,marginBottom:10}}>
                 <div style={{background:"#dbeafe",borderRadius:8,padding:"8px 10px"}}>
                   <div style={{fontSize:10,color:TH.faint}}>STAGIONI U18</div>
@@ -17033,8 +17035,8 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
           )}
           {/* Pro status */}
           {(player.proStatus||"u18")!=="u18"&&(
-            <Card bg="#f0fdf4" border="#bbf7d0" style={{padding:"12px 14px"}}>
-              <div style={{fontSize:10,color:TH.success,textTransform:"uppercase",letterSpacing:1.5,fontWeight:700,marginBottom:4}}>✅ Calciatore professionista</div>
+            <Card bg={TH.bgGreen} border={TH.bdGreen} style={{padding:"12px 14px"}}>
+              <div style={{fontSize:10,color:TH.txGreen,textTransform:"uppercase",letterSpacing:1.5,fontWeight:700,marginBottom:4}}>✅ Calciatore professionista</div>
               <div style={{fontSize:11,color:TH.muted}}>Stagioni da pro: {Math.max(0,(player.season||1)-1-(player.u18Seasons||0))}</div>
             </Card>
           )}
@@ -17048,11 +17050,11 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
           {/* Transfer listed management — profile only */}
           {(player.proStatus||"u18")==="pro"&&(
             player.transferListed
-              ?<Card bg="#fef9c3" border="#fde68a" style={{padding:"11px 14px"}}>
+              ?<Card bg={TH.bgAmber} border={TH.bdAmber} style={{padding:"11px 14px"}}>
                 <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:8}}>
                   <div>
-                    <div style={{fontSize:11,fontWeight:700,color:"#713f12"}}>📢 Sei sul mercato</div>
-                    <div style={{fontSize:12,color:"#92400e",marginTop:2}}>Le offerte arriveranno più spesso. Morale e fiducia mister calati.</div>
+                    <div style={{fontSize:11,fontWeight:700,color:TH.txAmber}}>📢 Sei sul mercato</div>
+                    <div style={{fontSize:12,color:TH.txAmber,opacity:0.9,marginTop:2}}>Le offerte arriveranno più spesso. Morale e fiducia mister calati.</div>
                   </div>
                   <Btn onClick={()=>{setPlayer(p=>({...p,transferListed:false,morale:clamp((p.morale||70)+5,0,100),log:["📢 Richiesta di cessione ritirata.",...(p.log||[])].slice(0,60)}));notify("Richiesta di cessione ritirata.",TH.muted);}} v="ghost" style={{flexShrink:0,fontSize:11,padding:"6px 10px"}}>Annulla</Btn>
                 </div>
@@ -17066,13 +17068,13 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
           )}
           {/* E-3: badge prestito in corso */}
           {(player.proStatus||"u18")==="pro"&&player.loan&&(
-            <Card bg="#f5f3ff" border="#c4b5fd" style={{padding:"11px 14px"}}>
+            <Card bg={TH.bgPurple} border={TH.bdPurple} style={{padding:"11px 14px"}}>
               <div style={{display:"flex",alignItems:"flex-start",gap:10}}>
                 <div style={{fontSize:22,lineHeight:1}}>🔄</div>
                 <div style={{flex:1}}>
-                  <div style={{fontSize:11,fontWeight:700,color:"#7c3aed"}}>In prestito</div>
-                  <div style={{fontSize:10,color:"#6d28d9",marginTop:2}}>{player.loan.type==="prestito con opzione"?"Con opzione di riscatto":player.loan.type==="prestito con obbligo"?"Con obbligo di riscatto":"Prestito semplice"} · Club madre: {player.loan.parentClub?.n||"–"} · Rientra S.{player.loan.untilSeason||"?"}</div>
-                  {player.loan.buyClause&&<div style={{fontSize:10,color:"#7c3aed",marginTop:1}}>Clausola: €{(player.loan.buyClause/1e6).toFixed(1)}M{player.loan.minMatches?` · Obbligo se ≥${player.loan.minMatches} presenze`:""}</div>}
+                  <div style={{fontSize:11,fontWeight:700,color:TH.txPurple}}>In prestito</div>
+                  <div style={{fontSize:10,color:TH.txPurple,opacity:0.85,marginTop:2}}>{player.loan.type==="prestito con opzione"?"Con opzione di riscatto":player.loan.type==="prestito con obbligo"?"Con obbligo di riscatto":"Prestito semplice"} · Club madre: {player.loan.parentClub?.n||"–"} · Rientra S.{player.loan.untilSeason||"?"}</div>
+                  {player.loan.buyClause&&<div style={{fontSize:10,color:TH.txPurple,marginTop:1}}>Clausola: €{(player.loan.buyClause/1e6).toFixed(1)}M{player.loan.minMatches?` · Obbligo se ≥${player.loan.minMatches} presenze`:""}</div>}
                 </div>
               </div>
             </Card>
@@ -17080,19 +17082,19 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
           {/* Sprint 30 BF6: Ritiro anticipato */}
           {(player.proStatus||"u18")==="pro"&&(player.age||17)>=32&&(
             !showRetireConfirm?(
-              <Card style={{padding:"11px 14px",border:"1px solid #fecaca",background:"#fef2f2"}}>
+              <Card style={{padding:"11px 14px",border:`1px solid ${TH.bdRed}`,background:TH.bgRed}}>
                 <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:8}}>
                   <div>
-                    <div style={{fontSize:11,fontWeight:700,color:"#991b1b"}}>🏁 Fine carriera</div>
-                    <div style={{fontSize:10,color:"#b91c1c",marginTop:1}}>Puoi ritirarti in qualsiasi momento · Età {player.age||17}</div>
+                    <div style={{fontSize:11,fontWeight:700,color:TH.txRed}}>🏁 Fine carriera</div>
+                    <div style={{fontSize:10,color:TH.txRed,opacity:0.9,marginTop:1}}>Puoi ritirarti in qualsiasi momento · Età {player.age||17}</div>
                   </div>
-                  <Btn onClick={()=>setShowRetireConfirm(true)} v="ghost" style={{flexShrink:0,fontSize:11,padding:"6px 10px",color:"#991b1b",border:"1px solid #fca5a5"}}>Ritirati</Btn>
+                  <Btn onClick={()=>setShowRetireConfirm(true)} v="ghost" style={{flexShrink:0,fontSize:11,padding:"6px 10px",color:TH.txRed,border:`1px solid ${TH.bdRed}`}}>Ritirati</Btn>
                 </div>
               </Card>
             ):(
-              <Card style={{padding:"14px",border:"1px solid #ef4444",background:"#fef2f2"}}>
-                <div style={{fontSize:12,fontWeight:700,color:"#991b1b",marginBottom:8,textAlign:"center"}}>⚠️ Confermi il ritiro?</div>
-                <div style={{fontSize:11,color:"#b91c1c",textAlign:"center",marginBottom:12}}>La tua carriera terminerà ora. Non potrai tornare a giocare.</div>
+              <Card style={{padding:"14px",border:`1px solid ${TH.bdRed}`,background:TH.bgRed}}>
+                <div style={{fontSize:12,fontWeight:700,color:TH.txRed,marginBottom:8,textAlign:"center"}}>⚠️ Confermi il ritiro?</div>
+                <div style={{fontSize:11,color:TH.txRed,opacity:0.9,textAlign:"center",marginBottom:12}}>La tua carriera terminerà ora. Non potrai tornare a giocare.</div>
                 <div style={{display:"flex",gap:8}}>
                   <Btn onClick={()=>setShowRetireConfirm(false)} v="secondary" fw>Annulla</Btn>
                   <Btn onClick={doRetire} v="ghost" fw style={{color:"#dc2626",border:"1px solid #dc2626"}}>Sì, ritirati</Btn>
