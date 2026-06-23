@@ -2612,7 +2612,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.32.0"; // Sprint 3D-H2: torso/hip separation + role morphology (GK/DEF/MID/ATT distinct bodies)
+const GAME_VERSION="4.32.1"; // Hotfix: mkFig Object.assign→position.set() — fix "Cannot assign to read only property 'position'"
 const SAVE_VERSION=6;
 // Sprint ENV — ambiente rilevato automaticamente dal runtime (non gestito manualmente).
 // PRODUCTION = deploy GitHub Pages (*.github.io). Tutto il resto (staging githack, locale, localhost) = TEST.
@@ -6729,7 +6729,7 @@ function ThreeMatchView(props){
     const mkFig=(col,hy=1.6)=>{const g=new THREE.Group();
       const bM=new THREE.MeshLambertMaterial({color:col});
       const hM=new THREE.MeshLambertMaterial({color:0xd4956a});
-      g.add(Object.assign(new THREE.Mesh(new THREE.CylinderGeometry(0.18,0.20,hy,7),bM),{position:{x:0,y:hy/2,z:0}}));
+      const bd=new THREE.Mesh(new THREE.CylinderGeometry(0.18,0.20,hy,7),bM);bd.position.set(0,hy/2,0);g.add(bd);
       const hd=new THREE.Mesh(new THREE.SphereGeometry(0.21,8,6),hM);hd.position.set(0,hy+0.21,0);g.add(hd);
       return g;};
     // A) Arbitro principale — divisa nera, si muove con la palla
