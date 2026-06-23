@@ -2612,7 +2612,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.14.0"; // Sprint 3D-1: renderer 3D opt-in (ThreeMatchView) dentro il sistema HL — stadio+campo+22 giocatori+palla, camera portrait
+const GAME_VERSION="4.14.1"; // Sprint 3D-1: renderer 3D ora DEFAULT (ThreeMatchView); 2D Classic/Phaser via toggle
 const SAVE_VERSION=6;
 // Sprint ENV — ambiente rilevato automaticamente dal runtime (non gestito manualmente).
 // PRODUCTION = deploy GitHub Pages (*.github.io). Tutto il resto (staging githack, locale, localhost) = TEST.
@@ -7512,8 +7512,8 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     ];
   });
 
-  // Sprint 3D-1 — renderer 3D opt-in (resta dentro il sistema HL; PitchCanvas è il default/fallback)
-  const [render3D]=useState(()=>localStorage.getItem("cpm-renderer")==="3d");
+  // Sprint 3D-1 — renderer 3D (default; resta dentro il sistema HL). 2D Classic/Phaser selezionabili dal toggle.
+  const [render3D]=useState(()=>(localStorage.getItem("cpm-renderer")||"3d")==="3d");
 
   // AI states
   const [oppTactic,setOppTactic]=useState(null);
@@ -11293,7 +11293,7 @@ function TrialFlow({player:initPlayer,onComplete}){
 function AISettingsCard({player}){
   const[key,setKey]=useState(()=>localStorage.getItem("cpm-api-key")||"");
   const[mock,setMock]=useState(()=>localStorage.getItem("cpm-ai-mock")==="true");
-  const[renderer,setRenderer]=useState(()=>localStorage.getItem("cpm-renderer")||"classic");
+  const[renderer,setRenderer]=useState(()=>localStorage.getItem("cpm-renderer")||"3d");
   const[saved,setSaved]=useState(false);
   const toggleRenderer=()=>{const order=["classic","3d","phaser"];const next=order[(order.indexOf(renderer)+1)%order.length];localStorage.setItem("cpm-renderer",next);setRenderer(next);};
   const saveKey=()=>{
