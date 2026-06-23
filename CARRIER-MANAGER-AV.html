@@ -2612,7 +2612,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.21.0"; // Sprint 3D-7: hlType (sync motore) + animazioni esito protagonista + camera set-piece
+const GAME_VERSION="4.22.0"; // Sprint 3D-8a: slow-motion cinematografico sull'esito (bullet-time sul tiro, camera real-time)
 const SAVE_VERSION=6;
 // Sprint ENV — ambiente rilevato automaticamente dal runtime (non gestito manualmente).
 // PRODUCTION = deploy GitHub Pages (*.github.io). Tutto il resto (staging githack, locale, localhost) = TEST.
@@ -6544,6 +6544,9 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
    Sprint 3D-7: sync col motore (prop hlType derivato in sola lettura da
    situazione+azione) → animazioni one-shot del protagonista all'esito
    (tiro/colpo di testa/contrasto/dribbling) + camera dedicata su rigore/punizione.
+   Sprint 3D-8a: slow-motion cinematografico sull'esito — bullet-time sul tiro
+   (0.28x) con ritorno graduale a 1x; rallentano solo le animazioni e la palla
+   (aDt/ak), la camera resta in tempo reale per un movimento fluido.
 ===================================================== */
 function ThreeMatchView(props){
   const {playerX,playerY,homeCol,oppCol,allPlayers,homeClub,heroKitCol,
@@ -6694,6 +6697,8 @@ function ThreeMatchView(props){
     let camHL=0,bf=0;const camLook=new THREE.Vector3(10,1,0);
     // Sprint 3D-7: animazione one-shot del protagonista all'ingresso dell'esito (hl_result)
     let actT=0,actType=null,prevPhase="";
+    // Sprint 3D-8a: cronometro dell'esito per il rallenty cinematografico
+    let resultT=0;
     // Stato walkout 3D: i giocatori si schierano in fila, camera che scorre, poi calcio d'inizio
     let walkT=0,walkDone=false;const WALK_DUR=6.2;
     // Cammina verso lo slot di walkout, fronte alla camera (-x)
@@ -6738,9 +6743,14 @@ function ThreeMatchView(props){
       sr.current.raf=requestAnimationFrame(loop);
       const now=performance.now(),dt=Math.min((now-last)/1000,0.05);last=now;
       const P=propsRef.current,all=P.allPlayers||[],k=Math.min(1,dt*6.5);
+      // Sprint 3D-8a: slow-motion sull'esito — bullet-time sul tiro (0.28x) poi ritorno a 1x in ~1.6s.
+      // Solo le animazioni rallentano (aDt/ak); la camera resta in tempo reale → movimento fluido.
+      if(P.matchPhase==="hl_result")resultT+=dt;else resultT=0;
+      const slow=P.matchPhase==="hl_result"?(0.28+0.72*Math.min(resultT/1.6,1)):1;
+      const aDt=dt*slow,ak=Math.min(1,aDt*6.5);
       // palla per prima, così i giocatori fermi si orientano verso di essa
       const obx=ball.position.x,obz=ball.position.z;
-      ball.position.x+=(G2X(P.ballX||50)-ball.position.x)*k;ball.position.z+=(G2Z(P.ballY||50)-ball.position.z)*k;
+      ball.position.x+=(G2X(P.ballX||50)-ball.position.x)*ak;ball.position.z+=(G2Z(P.ballY||50)-ball.position.z)*ak;
       const moved=Math.hypot(ball.position.x-obx,ball.position.z-obz);
       ball.rotation.y+=0.04+moved*0.10;ball.rotation.x+=0.03+moved*0.06;
       const bx=ball.position.x,bz=ball.position.z;
@@ -6749,15 +6759,15 @@ function ThreeMatchView(props){
       if(P.matchPhase==="hl_result"&&prevPhase!=="hl_result"){const t=P.hlType;actType=(t==="header"||t==="tackle"||t==="dribble")?t:(!t||t==="build")?null:"shot";actT=0;}
       prevPhase=P.matchPhase;
       if(isWalk){
-        sr.current.players.forEach(pp=>animWalk(pp.mesh,dt,k));
-        animWalk(hero,dt,k);
+        sr.current.players.forEach(pp=>animWalk(pp.mesh,aDt,ak));
+        animWalk(hero,aDt,ak);
         walkT+=dt;
         if(walkT>=WALK_DUR&&!walkDone){walkDone=true;const cb=propsRef.current.onWalkoutDone;if(cb)cb();}
       } else {
-        sr.current.players.forEach((pp,i)=>{const src=all[i];if(!src)return;animOne(pp.mesh,G2X(src.x),G2Z(src.y),dt,k,bx,bz);});
-        animOne(hero,G2X(P.playerX||50),G2Z(P.playerY||50),dt,k,bx,bz);
+        sr.current.players.forEach((pp,i)=>{const src=all[i];if(!src)return;animOne(pp.mesh,G2X(src.x),G2Z(src.y),aDt,ak,bx,bz);});
+        animOne(hero,G2X(P.playerX||50),G2Z(P.playerY||50),aDt,ak,bx,bz);
         // Sprint 3D-7: override one-shot dell'esito sul protagonista (sovrascrive il run-cycle per la durata)
-        if(actType){actT+=dt;const _T=actType==="header"?0.6:(actType==="tackle"?0.5:0.45),u=Math.min(actT/_T,1),sw=Math.sin(u*Math.PI);
+        if(actType){actT+=aDt;const _T=actType==="header"?0.6:(actType==="tackle"?0.5:0.45),u=Math.min(actT/_T,1),sw=Math.sin(u*Math.PI);
           if(actType==="shot"){hero._lR.rotation.x=-1.5*sw;hero._lL.rotation.x=0.4*sw;hero._aL.rotation.x=0.6*sw;}
           else if(actType==="header"){hero.position.y=sw*1.0;hero._aL.rotation.x=-1.2*sw;hero._aR.rotation.x=-1.2*sw;}
           else if(actType==="tackle"){hero.rotation.z=0.55*sw;hero.position.y=-0.12*sw;hero._lR.rotation.x=1.2*sw;}
