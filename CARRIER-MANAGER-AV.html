@@ -2542,7 +2542,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.7.3"; // Fase 4 quality: branding leftover fix; Btn secondary + StatBar dark-mode tokens
+const GAME_VERSION="4.7.4"; // Sprint A: injury early return + 40% relapse risk
 const SAVE_VERSION=6;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -12074,6 +12074,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     setCoachDecision(cd);coachDecisionRef.current=cd; // ref lock: startMatch always reads same decision shown in UI
   },[showMatchPrompt]);// eslint-disable-line
   const[focusTrainingStat,setFocusTrainingStat]=useState(null); // Sprint 29: Focus training stat picker
+  const[forceReturnConfirm,setForceReturnConfirm]=useState(false); // Sprint A: early return confirm
   const[nationsCupModal,setNationsCupModal]=useState(null); // Sprint 30: Nations Cup event
   const[euroGroupModal,setEuroGroupModal]=useState(null); // Sprint 42: European group stage
   const[showRetireConfirm,setShowRetireConfirm]=useState(false); // Sprint 30: voluntary retirement
@@ -12263,6 +12264,19 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
   const _containerDefault={stagione:"calendar",carriera:"profile"};
   const _tabToContainer=t=>["calendar","standings","coppe"].includes(t)?"stagione":["profile","nazionale"].includes(t)?"carriera":t;
   const goTab=t=>{const r=_containerDefault[t]||t;setTab(r);setScreen(r);};
+  // Sprint A: early return from injury
+  const handleForceReturn=()=>{
+    const relapse=Math.random()<0.40;
+    if(relapse){
+      const nWk=Math.max(2,player.originalInjuryWeeks||player.injuryWeeks||2);
+      setPlayer(p=>({...p,injured:true,injuryWeeks:nWk,originalInjuryWeeks:nWk,injurySeverity:"medio",returnPenaltyWeeks:0,justRecovered:false}));
+      notify("😱 Ricaduta! Il muscolo non era pronto. Stop prolungato.",TH.danger);
+    }else{
+      setPlayer(p=>({...p,injured:false,injuryWeeks:0,justRecovered:true,returnPenaltyWeeks:Math.max(3,p.originalInjuryWeeks||2)}));
+      notify("✅ Rientro anticipato riuscito. Sei ancora fragile — attenzione.",TH.warning);
+    }
+    setForceReturnConfirm(false);
+  };
   // only allow playing if current week has a scheduled match
   const getThisWeekMatchday=()=>{
     const cal=player.calendar||[];
@@ -14937,6 +14951,23 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
             <div style={{height:6,background:"#fee2e2",borderRadius:3,overflow:"hidden"}}>
               <div style={{height:"100%",width:`${recPct}%`,background:recPct>=80?"#16a34a":recPct>=40?"#f97316":"#ef4444",borderRadius:3,transition:"width .4s"}}/>
             </div>
+            {(player.injuryWeeks||0)>=2&&(
+              <div style={{marginTop:10,paddingTop:10,borderTop:"1px solid #fecaca"}}>
+                {!forceReturnConfirm?(
+                  <button onClick={()=>setForceReturnConfirm(true)} style={{width:"100%",padding:"7px 12px",borderRadius:8,border:"1px solid #fca5a5",background:"transparent",color:"#b91c1c",fontSize:11,fontWeight:700,cursor:"pointer",fontFamily:"inherit",display:"flex",alignItems:"center",justifyContent:"center",gap:6}}>
+                    <span>⚠️</span><span>Forza il rientro (40% ricaduta)</span>
+                  </button>
+                ):(
+                  <div style={{background:"#fef2f2",borderRadius:8,padding:"10px 12px"}}>
+                    <div style={{fontSize:11,color:"#991b1b",marginBottom:8,lineHeight:1.4,fontWeight:600}}>⚠️ Sei sicuro? Il medico sconsiglia il rientro anticipato. C'è il 40% di rischio ricaduta con stop prolungato.</div>
+                    <div style={{display:"flex",gap:8}}>
+                      <button onClick={handleForceReturn} style={{flex:1,padding:"7px 10px",borderRadius:8,border:"none",background:"#dc2626",color:"#fff",fontSize:11,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>Forza comunque</button>
+                      <button onClick={()=>setForceReturnConfirm(false)} style={{flex:1,padding:"7px 10px",borderRadius:8,border:"1px solid #fca5a5",background:"transparent",color:"#991b1b",fontSize:11,fontWeight:600,cursor:"pointer",fontFamily:"inherit"}}>No, aspetto</button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
           </Card>
         );
       })()}
