@@ -2612,7 +2612,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.19.0"; // Sprint 3D-6 (Quick Wins): varietà giocatori (altezza/corporatura/carnagione) + idle reale + lean in corsa
+const GAME_VERSION="4.20.0"; // Sprint 3D-6b: scia palla + focus camera sull'esito + marcatore/rim-light eroe
 const SAVE_VERSION=6;
 // Sprint ENV — ambiente rilevato automaticamente dal runtime (non gestito manualmente).
 // PRODUCTION = deploy GitHub Pages (*.github.io). Tutto il resto (staging githack, locale, localhost) = TEST.
@@ -6538,6 +6538,9 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
    l'overlay 2D in modalità 3D).
    Sprint 3D-6 (Quick Wins): varietà giocatori (altezza/corporatura/carnagione
    deterministica per indice), idle reale a riposo, lean in avanti in corsa/sprint.
+   Sprint 3D-6b: leggibilità azione + eroe — scia palla in dissolvenza negli HL,
+   focus camera automatico sulla palla a fine azione (hl_result), marcatore
+   diamante sopra il protagonista + rim-light sulla maglia.
 ===================================================== */
 function ThreeMatchView(props){
   const {playerX,playerY,homeCol,oppCol,allPlayers,homeClub,heroKitCol,
@@ -6623,7 +6626,7 @@ function ThreeMatchView(props){
       const mkArm=(sx)=>{const ag=new THREE.Group();ag.position.set(sx*0.45,1.58,0);const u=new THREE.Mesh(new THREE.CylinderGeometry(0.07,0.06,0.44,7),jM);u.position.y=-0.22;ag.add(u);const f=new THREE.Mesh(new THREE.CylinderGeometry(0.055,0.05,0.36,6),skM);f.position.y=-0.56;ag.add(f);g.add(ag);return ag;};
       const mkLeg=(sx)=>{const lg=new THREE.Group();lg.position.set(sx*0.155,0.78,0);const th=new THREE.Mesh(new THREE.CylinderGeometry(0.10,0.086,0.44,8),skM);th.position.y=-0.22;lg.add(th);const sh=new THREE.Mesh(new THREE.CylinderGeometry(0.077,0.066,0.38,8),wh);sh.position.y=-0.57;lg.add(sh);const bk=new THREE.Mesh(new THREE.BoxGeometry(0.16,0.086,0.28),bt);bk.position.set(0,-0.78,0.04);lg.add(bk);g.add(lg);return lg;};
       const aL=mkArm(-1),aR=mkArm(1),lL=mkLeg(-1),lR=mkLeg(1);
-      if(isUser){const r=new THREE.Mesh(new THREE.TorusGeometry(0.55,0.055,7,24),new THREE.MeshBasicMaterial({color:0xffd700}));r.rotation.x=Math.PI/2;r.position.y=0.04;g.add(r);}
+      if(isUser){const r=new THREE.Mesh(new THREE.TorusGeometry(0.55,0.055,7,24),new THREE.MeshBasicMaterial({color:0xffd700}));r.rotation.x=Math.PI/2;r.position.y=0.04;g.add(r);jM.emissive=new THREE.Color(col);jM.emissiveIntensity=0.22;/* rim-light soffuso: l'eroe risalta senza effetto arcade */}
       g._aL=aL;g._aR=aR;g._lL=lL;g._lR=lR;g._ph=0;g._px=0;g._pz=0;g._sp=0;g._sd=sd*1.3;g._idle=_fr(sd+5)*6.28;
       // altezza/corporatura solo per i comprimari: il protagonista resta scala 1 (anello dorato leggibile)
       if(!isUser){g.scale.y=0.93+h1*0.16;g.scale.x=g.scale.z=0.94+h2*0.14;}
@@ -6649,6 +6652,9 @@ function ThreeMatchView(props){
     // Protagonista (ring dorato)
     const hero=mkP(heroKitCol||homeCol||'#22c55e',true,99);
     hero.position.set(G2X(playerX||50),0,G2Z(playerY||50));hero._px=hero.position.x;hero._pz=hero.position.z;scene.add(hero);
+    // Sprint 3D-6b: marcatore eroe — diamante soft sopra la testa (cono a 4 lati: simmetrico → billboard naturale)
+    const heroMark=new THREE.Mesh(new THREE.ConeGeometry(0.30,0.5,4),new THREE.MeshBasicMaterial({color:0xffe27a,transparent:true,opacity:0.8,depthWrite:false}));
+    heroMark.rotation.x=Math.PI;scene.add(heroMark);
 
     // Slot di walkout: due file (home+protagonista / away) lungo la larghezza, rivolte alla camera
     const _homeMeshes=[...players.filter(p=>p.team==="home").map(p=>p.mesh),hero];
@@ -6659,6 +6665,9 @@ function ThreeMatchView(props){
     // Palla
     const ball=new THREE.Mesh(new THREE.SphereGeometry(0.42,14,10),new THREE.MeshPhongMaterial({color:0xfafafa,shininess:85}));
     ball.castShadow=true;ball.position.set(G2X(ballX||50),0.42,G2Z(ballY||50));scene.add(ball);
+    // Sprint 3D-6b: scia palla — ghost-dots in dissolvenza, visibili SOLO negli highlight (elegante, non invasiva)
+    const TRAIL_N=10,trailDots=[],trailHist=[];
+    for(let i=0;i<TRAIL_N;i++){const d=new THREE.Mesh(new THREE.SphereGeometry(0.30,8,6),new THREE.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:0,depthWrite:false}));d.visible=false;scene.add(d);trailDots.push(d);}
 
     // Particelle meteo (pioggia / temporale / neve) + flash per il temporale
     let wParticles=null,flashLight=null;
@@ -6679,7 +6688,7 @@ function ThreeMatchView(props){
     // Loop: lerp verso le posizioni target dai prop (nessun re-render React)
     let last=performance.now();
     // Stato camera cinematica: blend HL (0=wide, 1=close) smussato + look target smussato
-    let camHL=0;const camLook=new THREE.Vector3(10,1,0);
+    let camHL=0,bf=0;const camLook=new THREE.Vector3(10,1,0);
     // Stato walkout 3D: i giocatori si schierano in fila, camera che scorre, poi calcio d'inizio
     let walkT=0,walkDone=false;const WALK_DUR=6.2;
     // Cammina verso lo slot di walkout, fronte alla camera (-x)
@@ -6743,8 +6752,12 @@ function ThreeMatchView(props){
 
       // ---- Camera: scorrimento sul walkout, broadcast in gioco, stacco ravvicinato negli highlight ----
       const hx=hero.position.x,hz=hero.position.z;
-      const ax=bx*0.6+hx*0.4,az=bz*0.6+hz*0.4; // centro azione (palla pesata + protagonista)
       const isHL=P.matchPhase==="hl_move"||P.matchPhase==="hl_choose"||P.matchPhase==="hl_result"||P.matchPhase==="hl_intro";
+      // Sprint 3D-6b: a fine azione (hl_result) la regia "va sulla palla" — focus automatico sull'esito
+      const isResult=P.matchPhase==="hl_result";
+      bf+=((isResult?1:0)-bf)*Math.min(dt*2.5,1);
+      const wBall=0.6+0.30*bf; // palla più pesante nel centro azione durante l'esito
+      const ax=bx*wBall+hx*(1-wBall),az=bz*wBall+hz*(1-wBall);
       camHL+=((isHL?1:0)-camHL)*Math.min(dt*2.2,1);
       let tPx,tPy,tPz,tLx,tLy,tLz,kp,kl;
       if(isWalk){
@@ -6756,9 +6769,10 @@ function ThreeMatchView(props){
         // WIDE — broadcast dietro la porta di casa, segue il centro azione con leggero parallasse
         const wPx=-88+clamp(ax,-50,50)*0.12,wPy=54,wPz=az*0.32;
         const wLx=clamp(ax*0.5+10,-12,42),wLy=1.5,wLz=az*0.6;
-        // CLOSE — inquadratura più bassa e vicina sul protagonista (dramma dell'highlight)
-        const cPx=clamp(hx-30,-96,-4),cPy=22,cPz=hz*0.6;
-        const cLx=hx+10,cLy=1.6,cLz=hz*0.85;
+        // CLOSE — stacco ravvicinato; il punto di fuoco scivola dall'eroe alla palla a fine azione
+        const fX=hx+(bx-hx)*bf,fZ=hz+(bz-hz)*bf;
+        const cPx=clamp(fX-30,-96,-4),cPy=22-bf*5,cPz=fZ*0.6;
+        const cLx=fX+10,cLy=1.6-bf*0.3,cLz=fZ*0.85;
         tPx=wPx+(cPx-wPx)*camHL;tPy=wPy+(cPy-wPy)*camHL;tPz=wPz+(cPz-wPz)*camHL;
         tLx=wLx+(cLx-wLx)*camHL;tLy=wLy+(cLy-wLy)*camHL;tLz=wLz+(cLz-wLz)*camHL;
         kp=Math.min(dt*1.8,1);kl=Math.min(dt*2.4,1);
@@ -6781,6 +6795,16 @@ function ThreeMatchView(props){
         if(flashLight.userData.t<=0&&Math.random()<0.004)flashLight.userData.t=0.2;
         if(flashLight.userData.t>0){flashLight.intensity=7;flashLight.userData.t-=dt;}else flashLight.intensity=0;
       }
+
+      // ---- Scia palla (solo HL) + marcatore eroe (Sprint 3D-6b) ----
+      trailHist.push(bx,bz);if(trailHist.length>TRAIL_N*2)trailHist.splice(0,trailHist.length-TRAIL_N*2);
+      for(let i=0;i<TRAIL_N;i++){const d=trailDots[i],j=i*2;
+        if(isHL&&j<trailHist.length){d.visible=true;d.position.set(trailHist[j],0.42,trailHist[j+1]);const age=(i+1)/TRAIL_N;d.material.opacity=0.05+age*0.32;d.scale.setScalar(0.42+age*0.7);}
+        else d.visible=false;}
+      heroMark.position.set(hero.position.x,3.0+Math.sin(now*0.004)*0.12,hero.position.z);
+      heroMark.rotation.y+=dt*1.1;
+      heroMark.material.opacity=isHL?0.85+Math.sin(now*0.012)*0.15:0.62;
+      heroMark.scale.setScalar(isHL?1.0+Math.sin(now*0.012)*0.08:0.9);
 
       renderer.render(scene,camera);
     };
