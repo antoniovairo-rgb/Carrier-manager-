@@ -57,7 +57,7 @@
 *{box-sizing:border-box;margin:0;padding:0;}html,body{height:100%;overflow:hidden;background:#f0f7ff;-webkit-tap-highlight-color:transparent;}#root{height:100%;display:flex;flex-direction:column;}#ld{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:#f0f7ff;flex-direction:column;gap:14px;z-index:9999;font-family:sans-serif;}.sp{width:36px;height:36px;border:3px solid #e2e8f0;border-top:3px solid #2563eb;border-radius:50%;animation:spin .8s linear infinite;}@keyframes spin{to{transform:rotate(360deg)}}</style>
 </head>
 <body>
-<div id="ld"><div class="sp"></div><div style="font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#2563eb;font-weight:700">CAREER PLAYER MANAGER</div></div>
+<div id="ld"><div class="sp"></div><div style="font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#2563eb;font-weight:700">ELEVORA</div></div>
 <div id="root"></div>
 <script>window._hide=function(){var e=document.getElementById('ld');if(e)e.style.display='none';};setTimeout(window._hide,15000);</script>
 <script type="text/babel" data-presets="react">
@@ -2542,7 +2542,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.7.2"; // Fase 3 branding: Elevora — Football Career Simulator · From prospect to legend
+const GAME_VERSION="4.7.3"; // Fase 4 quality: branding leftover fix; Btn secondary + StatBar dark-mode tokens
 const SAVE_VERSION=6;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -4707,7 +4707,7 @@ const Btn=({children,onClick,v="primary",disabled=false,style={},fw=false})=>{
   const vs={
     primary:{background:TH.primary,color:"#fff",fontWeight:700},
     green:{background:TH.success,color:"#fff",fontWeight:700},
-    secondary:{background:"#f1f5f9",color:TH.muted,border:"1px solid "+TH.cardBorder},
+    secondary:{background:TH.card,color:TH.muted,border:"1px solid "+TH.cardBorder},
     success:{background:"#dcfce7",color:TH.success,border:"1px solid #bbf7d0"},
     danger:{background:"#fee2e2",color:TH.danger,border:"1px solid #fecaca"},
     ghost:{background:"transparent",color:TH.faint,border:"1px solid "+TH.cardBorder},
@@ -4717,7 +4717,7 @@ const Btn=({children,onClick,v="primary",disabled=false,style={},fw=false})=>{
 };
 const StatBar=({label,value})=>{
   const c=value>=80?TH.success:value>=65?TH.warning:TH.danger;
-  return<div style={{marginBottom:8}}><div style={{display:"flex",justifyContent:"space-between",fontSize:11,marginBottom:3}}><span style={{color:TH.muted,textTransform:"uppercase",letterSpacing:1}}>{label}</span><span style={{color:c,fontWeight:700}}>{value}</span></div><div style={{height:4,background:"#e2e8f0",borderRadius:3,overflow:"hidden"}}><div style={{height:"100%",width:`${value}%`,background:c,borderRadius:3,transition:"width .5s"}}/></div></div>;
+  return<div style={{marginBottom:8}}><div style={{display:"flex",justifyContent:"space-between",fontSize:11,marginBottom:3}}><span style={{color:TH.muted,textTransform:"uppercase",letterSpacing:1}}>{label}</span><span style={{color:c,fontWeight:700}}>{value}</span></div><div style={{height:4,background:TH.cardBorder,borderRadius:3,overflow:"hidden"}}><div style={{height:"100%",width:`${value}%`,background:c,borderRadius:3,transition:"width .5s"}}/></div></div>;
 };
 const OvrRing=({value,size=60})=>{
   const c=value>=80?TH.success:value>=65?TH.warning:TH.danger;
@@ -11486,7 +11486,7 @@ const buildCareerCard=(p)=>{
   const seasons=Math.max(0,(p.season||1)-1);
   const clubs=[...new Set((p.history||[]).map(h=>h.club).filter(Boolean))];
   return[
-    `⚽ CAREER PLAYER MANAGER`,
+    `⚽ ELEVORA`,
     `${g.e} ${g.label}`,
     `${p.name} · ${p.nation} · ${p.age} anni`,
     `━━━━━━━━━━━━━━━━━━━━`,
