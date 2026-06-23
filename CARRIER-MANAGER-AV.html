@@ -755,7 +755,7 @@ const _LR_DEFAULT={
   ]
 };
 
-// Sprint 137: historical UEFA competition winners
+// Sprint 137: historical continental competition winners
 const EURO_COMP_WINNERS={
   UCL:[
     {s:2024,club:"CF Madrid",nat:"🇪🇸"},{s:2023,club:"FC Manchester",nat:"🏴󠁧󠁢󠁥󠁮󠁧󠁿"},
@@ -2333,7 +2333,13 @@ function getLeagueClubs(player){
   }
   const lg=player.club.lg||player.club.league;
   const ov=player.leagueOverrides||{}; // Sprint 84: respect dynamic promotion/relegation overrides
-  if(lg){const lc=CLUBS.filter(c=>ov[c.id]?ov[c.id]===lg:c.lg===lg);if(lc.length>=4)return lc;}
+  if(lg){let lc=CLUBS.filter(c=>ov[c.id]?ov[c.id]===lg:c.lg===lg);
+    if(lc.length>18){ // Sprint TC: cap difensivo — override corrotti (save vecchi) non gonfiano la lega oltre 18, club dell'eroe sempre incluso
+      const myId=player.club.id;
+      const mine=lc.filter(c=>c.id===myId),rest=lc.filter(c=>c.id!==myId).sort((a,b)=>(b.p||0)-(a.p||0));
+      lc=[...mine,...rest].slice(0,18);
+    }
+    if(lc.length>=4)return lc;}
   const nat=player.club.nat;
   if(nat){const nc=CLUBS.filter(c=>c.nat===nat);if(nc.length>=4)return nc;}
   return CLUBS.slice(0,16);
@@ -2554,7 +2560,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.9.2"; // Sprint D2: token dark mode estesi (+ bgPurple) a tutte le card pastello (infortunio, rientro, Coppa Nazioni, U18, pro, mercato, prestito, ritiro)
+const GAME_VERSION="4.10.0"; // Sprint CR+TC+B1: competizioni de-marchiate (Elevora Champions/Europa/Conference Cup · Trofeo d'Oro · Re dei Bomber), cap difensivo lega a 18 squadre, fix ruolo gerarchia post-ritiro
 const SAVE_VERSION=6;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -4526,7 +4532,7 @@ function generateSeasonAwards(player, finalStandings){
     return ec[Math.abs(_h(li*31+7))%Math.min(3,ec.length)]||ec[0]||null;
   }).filter(Boolean);
 
-  // Scarpa d'Oro UEFA: capocannoniere in Europa
+  // Re dei Bomber: capocannoniere in Europa
   const euScorerCands=_euClubs.map((club,i)=>{
     const name=_clubFwd(club,`eusc_${i}_${season}`)||club.n;
     const goals=Math.max(18,Math.round(club.p*0.30+(_h(i*19+5)%14)));
@@ -4538,7 +4544,7 @@ function generateSeasonAwards(player, finalStandings){
   const euScorerPos=allEuScorers.findIndex(s=>s.isPlayer);
   const playerWinsScarpaOro=euScorerPos===0&&myGoals>=28; // 28+ gol E primo in Europa
 
-  // Pallone d'Oro UEFA: miglior giocatore in Europa
+  // Trofeo d'Oro: miglior giocatore in Europa
   const euPalCands=_euClubs.map((club,i)=>{
     const name=_clubFwd(club,`eupal_${i}_${season}`)||club.n;
     const cOvr=clamp(84+Math.round((_h(i*23+11)%10)-2),82,97);
@@ -6712,7 +6718,7 @@ function MatchdayCard({homeTeam,awayTeam,stadium,attendance,league,onContinue,on
   const leagueName=league||(homeTeam?.isU18?(homeTeam?.lg||"Primavera"):(homeTeam?.lg||"Campionato"));
   // Sprint 99: competition identity
   const _compId99=leagueName==="UCL"?"UCL":leagueName==="UEL"?"UEL":leagueName==="UECL"?"UECL":leagueName==="Coppa Nazionale"?"CUP":leagueName==="Nazionale"?"NAT":"LEAGUE";
-  const _compStyle99={UCL:{bg:"linear-gradient(135deg,#1e3a8a,#2563eb)",e:"⭐",label:"UEFA Champions League",col:"#93c5fd"},UEL:{bg:"linear-gradient(135deg,#9a3412,#f97316)",e:"🌍",label:"UEFA Europa League",col:"#fed7aa"},UECL:{bg:"linear-gradient(135deg,#4c1d95,#7c3aed)",e:"🌍",label:"UEFA Conference League",col:"#ddd6fe"},CUP:{bg:"linear-gradient(135deg,#713f12,#f59e0b)",e:"🏆",label:"Coppa Nazionale",col:"#fef08a"},NAT:{bg:"linear-gradient(135deg,#064e3b,#059669)",e:"🌍",label:"Competizione Nazionale",col:"#6ee7b7"},LEAGUE:{bg:`linear-gradient(135deg,${homeTeam?.c||"#1e293b"},${homeTeam?.c2||"#334155"})`,e:"⚽",label:leagueName,col:"rgba(255,255,255,0.85)"}};
+  const _compStyle99={UCL:{bg:"linear-gradient(135deg,#1e3a8a,#2563eb)",e:"⭐",label:"Elevora Champions Cup",col:"#93c5fd"},UEL:{bg:"linear-gradient(135deg,#9a3412,#f97316)",e:"🌍",label:"Elevora Europa Cup",col:"#fed7aa"},UECL:{bg:"linear-gradient(135deg,#4c1d95,#7c3aed)",e:"🌍",label:"Elevora Conference Cup",col:"#ddd6fe"},CUP:{bg:"linear-gradient(135deg,#713f12,#f59e0b)",e:"🏆",label:"Coppa Nazionale",col:"#fef08a"},NAT:{bg:"linear-gradient(135deg,#064e3b,#059669)",e:"🌍",label:"Competizione Nazionale",col:"#6ee7b7"},LEAGUE:{bg:`linear-gradient(135deg,${homeTeam?.c||"#1e293b"},${homeTeam?.c2||"#334155"})`,e:"⚽",label:leagueName,col:"rgba(255,255,255,0.85)"}};
   const _cs99=_compStyle99[_compId99]||_compStyle99.LEAGUE;
   const isBigMatch=matchWeight>=6;
   const isEpic=matchWeight>=8;
@@ -6875,7 +6881,7 @@ function FormationView({homeTeam,awayTeam,player,homeRoster,awayRoster,onContinu
     return roster.map((p,i)=>{if(i===10)return{...p,num:HOME_NUMS[n]||11};n++;return{...p,num:HOME_NUMS[n-1]||i+1};});
   };
   const _isEuro=!!competition;
-  const _ecFull122={UCL:"⭐ UEFA Champions League",UEL:"🟡 UEFA Europa League",UECL:"🟣 UEFA Conference League"}[competition]||`🌍 ${competition||""}`;
+  const _ecFull122={UCL:"⭐ Elevora Champions Cup",UEL:"🟡 Elevora Europa Cup",UECL:"🟣 Elevora Conference Cup"}[competition]||`🌍 ${competition||""}`;
   const _ecCol122={UCL:"#93c5fd",UEL:"#fde68a",UECL:"#c4b5fd"}[competition]||"#93c5fd";
   return(
     <div style={{width:"100%",background:"linear-gradient(180deg,#0a0e1a 0%,#0d1528 100%)",borderRadius:10,padding:"12px 8px 10px",minHeight:320}}>
@@ -6924,7 +6930,7 @@ function WalkoutOverlay({homeTeam,homeRoster,awayRoster,opponent,isHome=true,mat
   const crowd=calcAttendance(venueTeam,"career");
   const crowdStr=crowd>=10000?`${(crowd/1000).toFixed(0)}k`:`${crowd}`;
   const _ecE122={UCL:"⭐",UEL:"🟡",UECL:"🟣"}[euroCompetition]||"🌍";
-  const _ecFull122={UCL:"UEFA Champions League",UEL:"UEFA Europa League",UECL:"UEFA Conference League"}[euroCompetition]||"Europa";
+  const _ecFull122={UCL:"Elevora Champions Cup",UEL:"Elevora Europa Cup",UECL:"Elevora Conference Cup"}[euroCompetition]||"Europa";
   const phaseText=isDerbyMatch
     ?(pct<30?"🔥 Derby — le squadre escono dalla tribuna...":pct<65?"⚔️ Entrambi i club sul prato — tensione palpabile":"🔥 INFERNO DA DERBY — stadio in fiamme")
     :isEuroMatch
@@ -8458,7 +8464,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                 heatPoints={heatPointsRef.current} showHeatMap={showHeatMap}
                 isDesktop={!isNarrow} heroJerseyNum={player.jerseyNum||10}
                 isDerbyMatch={!!drby} isBigGame={mw>=7}
-                competitionLabel={(player.proStatus||"u18")==="u18"?(ALL_U18_CLUBS.find(c=>c.id===player.club?.id)?.lg||(CLUBS.find(c=>c.id===player.club?.id)?.lg==="Lega A"?"Primavera 1":"Primavera 2")):(context==="euro_group"||context==="euro_ko"||context==="euro")?(player.euro?.competition||"UEFA"):(context==="cup"?"COPPA NAZIONALE":(context==="national"||context==="nationsCup"||context==="euroMondiale"?"NAZIONALE":(player.club?.lg||"")))}
+                competitionLabel={(player.proStatus||"u18")==="u18"?(ALL_U18_CLUBS.find(c=>c.id===player.club?.id)?.lg||(CLUBS.find(c=>c.id===player.club?.id)?.lg==="Lega A"?"Primavera 1":"Primavera 2")):(context==="euro_group"||context==="euro_ko"||context==="euro")?(player.euro?.competition||"Europa"):(context==="cup"?"COPPA NAZIONALE":(context==="national"||context==="nationsCup"||context==="euroMondiale"?"NAZIONALE":(player.club?.lg||"")))}
                 onWalkoutDone={()=>setPhase("playing")}/>
               {phase==="walkout"&&<WalkoutOverlay homeTeam={homeTeamObj} homeRoster={homeRoster} awayRoster={awayRoster} opponent={awayTeamObj} isHome={isMatchHome} matchWeek={player.week} onDone={()=>{if(benchStart)setOnBench(true);setPhase("playing");}} weather={weather} isDerbyMatch={!!drby} isBigGame={mw>=7} heroJerseyNum={player.jerseyNum||10} playerName={player.name} benchStart={benchStart} isEuroMatch={context==="euro_group"||context==="euro_ko"} euroCompetition={player.euro?.competition||null} euroRound={(context==="euro_group")?`Giornata ${(player.euro?.groupResults||[]).length+1}/6`:(context==="euro_ko")?({r16:"Ottavi di Finale",sf:"Semifinale",final:"Finale"}[player.euro?.phase]||"KO"):null}/>}
               {screenFlash&&<div style={{position:"absolute",inset:0,background:screenFlash.col,zIndex:20,pointerEvents:"none",animation:`fadeFlash ${screenFlash.dur}ms ease-out forwards`}}/>}
@@ -9097,24 +9103,24 @@ function SeasonAwardsScreen({awards,player,season,club,onContinue}){
 
       {/* PREMI EUROPEI */}
       <Card style={{marginBottom:10,padding:"14px 16px",background:palloneOro.playerWins?"#fefce8":TH.card,border:palloneOro.playerWins?"1.5px solid #fde68a":"1px solid "+TH.cardBorder}}>
-        <SectionLabel>🌍 PALLONE D'ORO UEFA {season}</SectionLabel>
+        <SectionLabel>🌍 TROFEO D'ORO {season}</SectionLabel>
         <div style={{fontSize:10,color:TH.muted,marginBottom:6}}>Migliori calciatori d'Europa</div>
         {palloneOro.top3.map((c,i)=>(
           <ScoreRow key={i} rank={i} name={c.name} val={c.goals} label="⚽" isPlayer={!!c.isPlayer} extra={c.league||c.club}/>
         ))}
         {palloneOro.playerWins&&(
           <div style={{marginTop:10,padding:"10px 12px",background:"linear-gradient(135deg,#fef08a,#fde047)",borderRadius:10,textAlign:"center"}}>
-            <div style={{fontSize:14,fontWeight:900,color:"#713f12"}}>🏆 Hai vinto il Pallone d'Oro UEFA!</div>
+            <div style={{fontSize:14,fontWeight:900,color:"#713f12"}}>🏆 Hai vinto il Trofeo d'Oro!</div>
             <div style={{fontSize:11,color:"#92400e",marginTop:2}}>Il riconoscimento più prestigioso del calcio europeo.</div>
           </div>
         )}
         {!palloneOro.playerWins&&rival&&palloneOro.winner.name===rival.name&&(
-          <div style={{marginTop:8,padding:"8px 12px",background:"#fff1f2",borderRadius:8,fontSize:11,color:"#991b1b",fontWeight:700}}>😤 {rival.name} ti ha battuto per il Pallone d'Oro UEFA. Risponderai il prossimo anno?</div>
+          <div style={{marginTop:8,padding:"8px 12px",background:"#fff1f2",borderRadius:8,fontSize:11,color:"#991b1b",fontWeight:700}}>😤 {rival.name} ti ha battuto per il Trofeo d'Oro. Risponderai il prossimo anno?</div>
         )}
       </Card>
 
       <Card style={{marginBottom:10,padding:"14px 16px",background:scarpaOro.playerWins?"#f0fdf4":TH.card,border:scarpaOro.playerWins?"1.5px solid #bbf7d0":"1px solid "+TH.cardBorder}}>
-        <SectionLabel>👟 SCARPA D'ORO UEFA {season}</SectionLabel>
+        <SectionLabel>👟 RE DEI BOMBER {season}</SectionLabel>
         <div style={{fontSize:10,color:TH.muted,marginBottom:6}}>Top scorer nei campionati europei</div>
         {scarpaOro.top3.map((c,i)=>(
           <ScoreRow key={i} rank={i} name={c.name} val={c.goals} label="gol" isPlayer={!!c.isPlayer} extra={c.league||c.club}/>
@@ -9122,7 +9128,7 @@ function SeasonAwardsScreen({awards,player,season,club,onContinue}){
         {!scarpaOro.playerWins&&scarpaOro.playerPos>2&&(
           <div style={{marginTop:6,fontSize:11,color:TH.muted,textAlign:"right"}}>La tua posizione europea: {scarpaOro.playerPos+1}ª · {player.goals||0} gol</div>
         )}
-        {scarpaOro.playerWins&&<div style={{marginTop:8,padding:"8px 12px",background:"#dcfce7",borderRadius:8,fontSize:12,fontWeight:800,color:"#166534",textAlign:"center"}}>🥇 Capocannoniere d'Europa! La Scarpa d'Oro UEFA è tua!</div>}
+        {scarpaOro.playerWins&&<div style={{marginTop:8,padding:"8px 12px",background:"#dcfce7",borderRadius:8,fontSize:12,fontWeight:800,color:"#166534",textAlign:"center"}}>🥇 Capocannoniere d'Europa! La Re dei Bomber è tua!</div>}
       </Card>
 
       {/* Record check */}
@@ -9291,8 +9297,8 @@ function SeasonEndScreen({data,player,onNewSeason,onRetire}){
 
   // Sprint 87: awards summary rows
   const awardRows=awards?[
-    awards.palloneOro?.playerWins&&{e:"🏆",label:"Pallone d'Oro",sub:`${playerStats.goals}⚽ ${playerStats.assists}🎯 · miglior giocatore della lega`},
-    awards.scarpaOro?.playerWins&&{e:"👟",label:"Scarpa d'Oro",sub:`Capocannoniere con ${playerStats.goals} gol`},
+    awards.palloneOro?.playerWins&&{e:"🏆",label:"Trofeo d'Oro",sub:`${playerStats.goals}⚽ ${playerStats.assists}🎯 · miglior giocatore della lega`},
+    awards.scarpaOro?.playerWins&&{e:"👟",label:"Re dei Bomber",sub:`Capocannoniere con ${playerStats.goals} gol`},
     awards.youngPlayer?.playerWins&&{e:"🌟",label:"Golden Boy",sub:`Miglior giovane U23 · ${playerStats.goals}⚽ ${playerStats.assists}🎯`},
     awards.seasonRecord?.beaten&&{e:"📈",label:"Record stagionale!",sub:`${playerStats.goals} gol — nuovo primato di lega`},
     isChampion&&{e:"🥇",label:"Campione di lega",sub:`${club?.lg||"lega"} — trofeo conquistato`},
@@ -9435,7 +9441,7 @@ function SeasonEndScreen({data,player,onNewSeason,onRetire}){
       {euroActive&&(
         <Card style={{marginBottom:12,padding:"12px 14px",background:euro.competition==="UCL"?"#eff6ff":euro.competition==="UEL"?"#fff7ed":"#f5f3ff",border:"1px solid "+(euro.competition==="UCL"?"#bfdbfe":euro.competition==="UEL"?"#fed7aa":"#ddd6fe")}}>
           <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>
-            {euro.competition==="UCL"?"⭐ UEFA Champions League":euro.competition==="UEL"?"🟡 UEFA Europa League":"🟣 UEFA Conference League"}
+            {euro.competition==="UCL"?"⭐ Elevora Champions Cup":euro.competition==="UEL"?"🟡 Elevora Europa Cup":"🟣 Elevora Conference Cup"}
           </div>
           <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:6}}>
             <span style={{fontSize:12,fontWeight:700,color:TH.text}}>{euroPhaseLabel}</span>
@@ -9517,7 +9523,7 @@ function SeasonEndScreen({data,player,onNewSeason,onRetire}){
           {_isTopFlight132?(
             <>
               <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>🌍 Qualificazioni Europee</div>
-              {[{label:`🏆/🌍 Champions League`,color:"#3b82f6",teams:sorted.slice(0,4)},{label:"🟠 Europa League",color:"#f97316",teams:sorted.slice(4,6)},{label:"🟢 Conference League",color:"#22c55e",teams:sorted.slice(6,7)}].map(({label,color,teams})=>(
+              {[{label:`🏆/🌍 Champions Cup`,color:"#3b82f6",teams:sorted.slice(0,4)},{label:"🟠 Europa Cup",color:"#f97316",teams:sorted.slice(4,6)},{label:"🟢 Conference Cup",color:"#22c55e",teams:sorted.slice(6,7)}].map(({label,color,teams})=>(
                 <div key={label} style={{marginBottom:8}}>
                   <div style={{fontSize:10,fontWeight:700,color,marginBottom:3}}>{label}</div>
                   {teams.map((t,i)=>(
@@ -11278,8 +11284,8 @@ function CareerEndScreen({retData,onNewGame,onNewGamePlus}){
           <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:10}}>🏅 Premi e Riconoscimenti</div>
           <div style={{display:"flex",flexDirection:"column",gap:6}}>
             {/* Premi Europei */}
-            {pAwards.palloneOros.map(s=><div key={"po"+s} style={{display:"flex",alignItems:"center",gap:10,padding:"6px 8px",background:"#fef9c3",borderRadius:8,border:"1px solid #fde68a"}}><span style={{fontSize:20}}>🏆</span><div><div style={{fontSize:12,fontWeight:800,color:"#92400e"}}>Pallone d'Oro UEFA</div><div style={{fontSize:10,color:"#78350f"}}>Stagione {s} — miglior calciatore d'Europa</div></div></div>)}
-            {pAwards.scarpaOros.map(s=><div key={"so"+s} style={{display:"flex",alignItems:"center",gap:10,padding:"6px 8px",background:"#fee2e2",borderRadius:8,border:"1px solid #fca5a5"}}><span style={{fontSize:20}}>👟</span><div><div style={{fontSize:12,fontWeight:800,color:"#991b1b"}}>Scarpa d'Oro UEFA</div><div style={{fontSize:10,color:"#7f1d1d"}}>Stagione {s} — capocannoniere d'Europa</div></div></div>)}
+            {pAwards.palloneOros.map(s=><div key={"po"+s} style={{display:"flex",alignItems:"center",gap:10,padding:"6px 8px",background:"#fef9c3",borderRadius:8,border:"1px solid #fde68a"}}><span style={{fontSize:20}}>🏆</span><div><div style={{fontSize:12,fontWeight:800,color:"#92400e"}}>Trofeo d'Oro</div><div style={{fontSize:10,color:"#78350f"}}>Stagione {s} — miglior calciatore d'Europa</div></div></div>)}
+            {pAwards.scarpaOros.map(s=><div key={"so"+s} style={{display:"flex",alignItems:"center",gap:10,padding:"6px 8px",background:"#fee2e2",borderRadius:8,border:"1px solid #fca5a5"}}><span style={{fontSize:20}}>👟</span><div><div style={{fontSize:12,fontWeight:800,color:"#991b1b"}}>Re dei Bomber</div><div style={{fontSize:10,color:"#7f1d1d"}}>Stagione {s} — capocannoniere d'Europa</div></div></div>)}
             {/* Premi di Lega (Sprint 134) */}
             {(pAwards.leagueMvpYears||[]).map(s=><div key={"lm"+s} style={{display:"flex",alignItems:"center",gap:10,padding:"6px 8px",background:"#eef2ff",borderRadius:8,border:"1px solid #c7d2fe"}}><span style={{fontSize:20}}>🏅</span><div><div style={{fontSize:12,fontWeight:800,color:"#4338ca"}}>MVP della Stagione</div><div style={{fontSize:10,color:"#3730a3"}}>Stagione {s} — miglior calciatore del campionato</div></div></div>)}
             {(pAwards.leagueTopScorerYears||[]).map(s=><div key={"lt"+s} style={{display:"flex",alignItems:"center",gap:10,padding:"6px 8px",background:"#f0fdf4",borderRadius:8,border:"1px solid #bbf7d0"}}><span style={{fontSize:20}}>⚽</span><div><div style={{fontSize:12,fontWeight:800,color:"#15803d"}}>Capocannoniere del Campionato</div><div style={{fontSize:10,color:"#166534"}}>Stagione {s} — bomber dell'anno</div></div></div>)}
@@ -13194,8 +13200,8 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
         };
         // Sprint 51/134: diary entries for season-end awards
         const _se51=[];
-        if(_aw.palloneOro.playerWins)_se51.push({season:p.season||1,week:38,type:"pallone_oro",e:"🏆",headline:"Pallone d'Oro UEFA!",body:`Miglior calciatore d'Europa S.${p.season||1} — ${p.goals||0}⚽ ${p.assists||0}🎯`,color:"#f59e0b"});
-        if(_aw.scarpaOro.playerWins)_se51.push({season:p.season||1,week:38,type:"scarpa_oro",e:"👟",headline:"Scarpa d'Oro UEFA!",body:`Capocannoniere d'Europa S.${p.season||1} con ${p.goals||0} gol`,color:"#ef4444"});
+        if(_aw.palloneOro.playerWins)_se51.push({season:p.season||1,week:38,type:"pallone_oro",e:"🏆",headline:"Trofeo d'Oro!",body:`Miglior calciatore d'Europa S.${p.season||1} — ${p.goals||0}⚽ ${p.assists||0}🎯`,color:"#f59e0b"});
+        if(_aw.scarpaOro.playerWins)_se51.push({season:p.season||1,week:38,type:"scarpa_oro",e:"👟",headline:"Re dei Bomber!",body:`Capocannoniere d'Europa S.${p.season||1} con ${p.goals||0} gol`,color:"#ef4444"});
         if(_aw.leagueTopScorer?.playerWins)_se51.push({season:p.season||1,week:38,type:"league_top_scorer",e:"⚽",headline:`Capocannoniere — ${p.club?.lg||"Lega"}!`,body:`${p.goals||0} gol in S.${p.season||1} · miglior marcatore del campionato`,color:"#16a34a"});
         if(_aw.leagueMvp?.playerWins)_se51.push({season:p.season||1,week:38,type:"league_mvp",e:"🏅",headline:`MVP della Stagione — ${p.club?.lg||"Lega"}!`,body:`Miglior calciatore del campionato S.${p.season||1}`,color:"#6366f1"});
         if(_aw.leagueTeamOfYear)_se51.push({season:p.season||1,week:38,type:"team_of_year",e:"📋",headline:"Squadra dell'Anno!",body:`Selezionato nell'XI ideale della ${p.club?.lg||"Lega"} S.${p.season||1}`,color:"#0ea5e9"});
@@ -14588,7 +14594,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
               <><div style={{fontSize:32,marginBottom:4}}>🏆</div><div style={{fontSize:11,fontWeight:700,color:"#d97706",background:"#fef3c7",border:"1px solid #fde68a",borderRadius:8,padding:"3px 12px",display:"inline-block",marginBottom:6}}>COPPA NAZIONALE · {showMatchPrompt.cupRoundName||"Round"}</div></>
             ):showMatchPrompt.type==="euro_group"||showMatchPrompt.type==="euro"?(()=>{
               const _ec=showMatchPrompt.competition||player.euro?.competition||"UCL";
-              const _ecFull={UCL:"⭐ UEFA Champions League",UEL:"🟡 UEFA Europa League",UECL:"🟣 UEFA Conference League"}[_ec]||`🌍 ${_ec}`;
+              const _ecFull={UCL:"⭐ Elevora Champions Cup",UEL:"🟡 Elevora Europa Cup",UECL:"🟣 Elevora Conference Cup"}[_ec]||`🌍 ${_ec}`;
               const _ecCol={UCL:"#1e40af",UEL:"#92400e",UECL:"#5b21b6"}[_ec]||"#1e40af";
               const _ecBg={UCL:"#dbeafe",UEL:"#fef3c7",UECL:"#ede9fe"}[_ec]||"#dbeafe";
               const _ecBorder={UCL:"#93c5fd",UEL:"#fde68a",UECL:"#c4b5fd"}[_ec]||"#93c5fd";
@@ -14936,22 +14942,22 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
           {id:"amichevole",e:"🤝",l:"Amichevole",d:"Partite di prova e spirito di gruppo",ef:{morale:12,form:6,coachTrust:6,fatigue:5},txt:"Amichevoli e gruppo unito: arrivi alla stagione con la testa giusta."},
         ];
         const doSession=(s)=>{
-          setPlayer(p=>{
-            const ns={...p.stats};
-            if(s.ef.fisico)ns.fisico=clamp((ns.fisico||60)+s.ef.fisico,1,99);
-            if(s.ef.tecnica)ns.tecnica=clamp((ns.tecnica||60)+s.ef.tecnica,1,99);
-            const np={...p,stats:ns,ovr:calcOvr(ns),
-              fatigue:clamp((p.fatigue||0)+(s.ef.fatigue||0),0,100),
-              coachTrust:clamp((p.coachTrust||60)+(s.ef.coachTrust||0),0,100),
-              morale:clamp((p.morale||70)+(s.ef.morale||0),0,100),
-              form:clamp((p.form||70)+(s.ef.form||0),30,95),
-              campDone:true,
-              log:[`🏕️ Ritiro: sessione ${s.l} completata (S.${p.season||1})`,...(p.log||[])].slice(0,60)};
-            return{...np,squadRole:calcSquadRole(np)};
-          });
+          // Sprint B1: costruisco lo stato post-ritiro una sola volta e lo riuso per setPlayer e per il notify gerarchia (prima usava lo snapshot vecchio)
+          const ns={...player.stats};
+          if(s.ef.fisico)ns.fisico=clamp((ns.fisico||60)+s.ef.fisico,1,99);
+          if(s.ef.tecnica)ns.tecnica=clamp((ns.tecnica||60)+s.ef.tecnica,1,99);
+          const np={...player,stats:ns,ovr:calcOvr(ns),
+            fatigue:clamp((player.fatigue||0)+(s.ef.fatigue||0),0,100),
+            coachTrust:clamp((player.coachTrust||60)+(s.ef.coachTrust||0),0,100),
+            morale:clamp((player.morale||70)+(s.ef.morale||0),0,100),
+            form:clamp((player.form||70)+(s.ef.form||0),30,95),
+            campDone:true,
+            log:[`🏕️ Ritiro: sessione ${s.l} completata (S.${player.season||1})`,...(player.log||[])].slice(0,60)};
+          const newRole=calcSquadRole(np);
+          setPlayer(p=>({...np,squadRole:newRole}));
           const _roleLbl={leader:"Leader spogliatoio",titolare:"Titolare",rotazione:"Rotazione",riserva:"Riserva",primavera:"Primavera"};
           setTimeout(()=>notify(s.txt,TH.success),200);
-          setTimeout(()=>notify(`📋 Gerarchia iniziale: ${_roleLbl[calcSquadRole({...player,stats:player.stats})]||"Riserva"} — definita dal ritiro.`,TH.primary),1600);
+          setTimeout(()=>notify(`📋 Gerarchia iniziale: ${_roleLbl[newRole]||"Riserva"} — definita dal ritiro.`,TH.primary),1600);
         };
         return(
           <Card bg={TH.bgBlue} border={TH.bdBlue} style={{marginBottom:8,padding:"14px 14px"}}>
@@ -15676,7 +15682,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
           {(player.proStatus||"u18")==="pro"&&player.euro?.active&&(()=>{
             const eu=player.euro;
             const _ec=eu.competition||"UCL";
-            const _ecFull={UCL:"UEFA Champions League",UEL:"UEFA Europa League",UECL:"UEFA Conference League"}[_ec]||_ec;
+            const _ecFull={UCL:"Elevora Champions Cup",UEL:"Elevora Europa Cup",UECL:"Elevora Conference Cup"}[_ec]||_ec;
             const _ecE={UCL:"⭐",UEL:"🟡",UECL:"🟣"}[_ec]||"🌍";
             const _ecCol={UCL:"#1e40af",UEL:"#92400e",UECL:"#5b21b6"}[_ec]||"#1e40af";
             const _ecBorder={UCL:"#3b82f6",UEL:"#f59e0b",UECL:"#8b5cf6"}[_ec]||"#3b82f6";
@@ -16811,14 +16817,14 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
               {(player.playerAwards?.palloneOros?.length>0)&&(
                 <div style={{display:"flex",flexWrap:"wrap",gap:5,marginBottom:6}}>
                   {(player.playerAwards.palloneOros||[]).map(s=>(
-                    <span key={s} style={{fontSize:11,background:"linear-gradient(135deg,#fef08a,#fde047)",color:"#713f12",padding:"3px 10px",borderRadius:8,fontWeight:800}}>🏆 Pallone d'Oro S.{s}</span>
+                    <span key={s} style={{fontSize:11,background:"linear-gradient(135deg,#fef08a,#fde047)",color:"#713f12",padding:"3px 10px",borderRadius:8,fontWeight:800}}>🏆 Trofeo d'Oro S.{s}</span>
                   ))}
                 </div>
               )}
               {(player.playerAwards?.scarpaOros?.length>0)&&(
                 <div style={{display:"flex",flexWrap:"wrap",gap:5,marginBottom:6}}>
                   {(player.playerAwards.scarpaOros||[]).map(s=>(
-                    <span key={s} style={{fontSize:11,background:"linear-gradient(135deg,#f97316,#ea580c)",color:"#fff",padding:"3px 10px",borderRadius:8,fontWeight:800}}>⚽ Scarpa d'Oro S.{s}</span>
+                    <span key={s} style={{fontSize:11,background:"linear-gradient(135deg,#f97316,#ea580c)",color:"#fff",padding:"3px 10px",borderRadius:8,fontWeight:800}}>⚽ Re dei Bomber S.{s}</span>
                   ))}
                 </div>
               )}
@@ -16901,7 +16907,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                     <div style={{fontSize:10,color:"#f59e0b",fontWeight:700,marginBottom:6,marginTop:8,textTransform:"uppercase",letterSpacing:1,borderTop:"1px solid "+TH.cardBorder,paddingTop:8}}>🌍 EUROPEI (rare)</div>
                     <div style={{marginBottom:8}}>
                       <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:2}}>
-                        <span style={{fontSize:11,fontWeight:700,color:"#92400e"}}>🏆 Pallone d'Oro UEFA</span>
+                        <span style={{fontSize:11,fontWeight:700,color:"#92400e"}}>🏆 Trofeo d'Oro</span>
                         <span style={{fontSize:10,color:TH.muted}}>{_g}G · OVR {_ovr}{_palOvrOk?" ✓":" (min.85)"}</span>
                       </div>
                       {_bar(_palPct,"#fbbf24")}
@@ -16909,7 +16915,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                     </div>
                     <div>
                       <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:2}}>
-                        <span style={{fontSize:11,fontWeight:700,color:"#991b1b"}}>👟 Scarpa d'Oro UEFA</span>
+                        <span style={{fontSize:11,fontWeight:700,color:"#991b1b"}}>👟 Re dei Bomber</span>
                         <span style={{fontSize:10,color:TH.muted}}>{_g}/28 gol in Europa</span>
                       </div>
                       {_bar(_scarpaEuPct,"#ef4444")}
@@ -18025,7 +18031,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
             {/* COPPA EUROPEA — Sprint 137: full standings, calendar, winners */}
             {_isPro&&eu?.active&&(()=>{
               const _ec=eu.competition||"UCL";
-              const _ecFull={UCL:"UEFA Champions League",UEL:"UEFA Europa League",UECL:"UEFA Conference League"}[_ec]||_ec;
+              const _ecFull={UCL:"Elevora Champions Cup",UEL:"Elevora Europa Cup",UECL:"Elevora Conference Cup"}[_ec]||_ec;
               const _ecE={UCL:"⭐",UEL:"🟡",UECL:"🟣"}[_ec]||"🌍";
               const _ecCol={UCL:"#1e40af",UEL:"#b45309",UECL:"#5b21b6"}[_ec]||"#1e40af";
               const _ecBg={UCL:"linear-gradient(135deg,#1e3a8a,#2563eb)",UEL:"linear-gradient(135deg,#9a3412,#f97316)",UECL:"linear-gradient(135deg,#4c1d95,#7c3aed)"}[_ec]||"linear-gradient(135deg,#1e3a8a,#2563eb)";
