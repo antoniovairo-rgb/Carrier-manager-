@@ -2612,7 +2612,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.36.0"; // Sprint ATE-2: Ball trajectory sync — arc destination 3D esatta + velocità calibrata sulla durata
+const GAME_VERSION="4.37.0"; // Sprint ATE-3: Commentary sync — label azione 3D + colori tipo + delay al picco arco
 const SAVE_VERSION=6;
 // Sprint ENV — ambiente rilevato automaticamente dal runtime (non gestito manualmente).
 // PRODUCTION = deploy GitHub Pages (*.github.io). Tutto il resto (staging githack, locale, localhost) = TEST.
@@ -6551,6 +6551,11 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
    mesh, riproduzione con run-cycle ricostruito dalla velocità inter-frame,
    camera replay alta laterale che segue la palla, letterbox "REPLAY".
 ===================================================== */
+// ATE-3: etichette azione, delay commentary (ms = metà arco), colori tipo-specifici
+const ATE3_LABEL={shot:"⚽ TIRO",cross:"↗ CROSS",save:"🧤 PARATA",tackle:"💥 CONTRASTO",pass:"→ PASSAGGIO"};
+const ATE3_TYPEMS={shot:520,cross:680,save:550,tackle:350,pass:480}; // durata arco in ms per tipo
+const ATE3_ARCMS={attack_goal:260,attack:260,wide_right:340,opp_goal:275,defend_goal:275,retreat:175,midfield:240}; // delay commentary = metà arco
+const ATE3_ARCCOL={shot:"#f97316",cross:"#22d3ee",tackle:"#fbbf24",save:"#60a5fa",pass:"#a3e635"};
 function ThreeMatchView(props){
   const {playerX,playerY,homeCol,oppCol,allPlayers,homeClub,heroKitCol,
     stadiumHomeCol,stadiumAwayCol,stadiumStyle=0,ballX,ballY,
@@ -6563,6 +6568,15 @@ function ThreeMatchView(props){
   useEffect(()=>{propsRef.current=props;});
   // Sprint 3D-8b: overlay letterbox "REPLAY" (toggle di stato; non rigenera il canvas)
   const [replayOn,setReplayOn]=useState(false);
+  // ATE-3: etichetta azione breve — appare all'inizio arco, sparisce al termine
+  const [actionLabel,setActionLabel]=useState(null);
+  useEffect(()=>{
+    if(!bgAction)return;
+    const lbl=ATE3_LABEL[bgAction.type];if(!lbl)return;
+    setActionLabel(lbl);
+    const t=setTimeout(()=>setActionLabel(null),(ATE3_TYPEMS[bgAction.type]||600)+120);
+    return()=>clearTimeout(t);
+  },[bgAction]);
 
   useEffect(()=>{
     const mount=mountRef.current;if(!mount)return;
@@ -7106,6 +7120,12 @@ function ThreeMatchView(props){
         <div style={{position:"absolute",bottom:0,left:0,right:0,height:"10%",background:"#000",pointerEvents:"none"}}/>
         <div style={{position:"absolute",top:"12%",left:"5%",color:"#fff",fontWeight:800,fontSize:"13px",letterSpacing:"1px",textShadow:"0 1px 4px #000",pointerEvents:"none",display:"flex",alignItems:"center",gap:"5px"}}><span style={{color:"#ff4444"}}>⏺</span> REPLAY</div>
       </React.Fragment>}
+      {/* ATE-3: etichetta azione — overlay breve sincronizzata con arco palla */}
+      {actionLabel&&<div style={{position:"absolute",bottom:"16%",left:"50%",transform:"translateX(-50%)",
+        background:"rgba(0,0,0,0.62)",color:ATE3_ARCCOL[bgAction?.type]||"#fff",
+        padding:"3px 13px",borderRadius:18,fontSize:10,fontWeight:800,letterSpacing:"1.8px",
+        pointerEvents:"none",border:"1px solid rgba(255,255,255,0.12)",whiteSpace:"nowrap",
+        textShadow:"0 1px 3px #000"}}>{actionLabel}</div>}
     </div>
   );
 }
@@ -8613,8 +8633,11 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           const aN=awayRoster[Math.floor(Math.random()*awayRoster.length)].name.split(" ").pop()+" ("+aAbbr+")";
           const _pN76=player.name.split(" ").pop();
           const evTxt=ev.txt.replace(/{H2}/g,hN2).replace(/{H}/g,hN).replace(/{A}/g,aN).replace(/{P}/g,_pN76).replace(/{DERBY}/g,drby?.name||"Derby");
-          const cColor=ev.ef==="team_goal"?"#16a34a":ev.ef==="opp_goal"?"#dc2626":ev.ef==="opp_red"?"#16a34a":ev.ef==="opp_injury"?"#f59e0b":TH.faint;
-          addCom(evTxt,cColor,nx);
+          // ATE-3: colore commentary tipo-specifico + delay al picco dell'arco
+          const _arcType=BG_ARC_MAP[ev.pd]||null;
+          const cColor=ev.ef==="team_goal"?"#16a34a":ev.ef==="opp_goal"?"#dc2626":ev.ef==="opp_red"?"#16a34a":ev.ef==="opp_injury"?"#f59e0b":ATE3_ARCCOL[_arcType]||TH.faint;
+          if(_arcType&&ATE3_ARCMS[ev.pd]){chantTimersRef.current.push(setTimeout(()=>addCom(evTxt,cColor,nx),ATE3_ARCMS[ev.pd]));}
+          else addCom(evTxt,cColor,nx);
         }
         // Possession drift + momentum drift every ~8 ticks
         if(nx%8===0){
