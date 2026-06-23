@@ -2612,7 +2612,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.38.0"; // Sprint ATE-4+5: zone ring HL + ball pre-pos + debug overlay Shift+D
+const GAME_VERSION="4.39.0"; // Sprint FOG-1: fix nebbia (fogNear 18→62, storm min 60, derby no fog mult)
 const SAVE_VERSION=6;
 // Sprint ENV — ambiente rilevato automaticamente dal runtime (non gestito manualmente).
 // PRODUCTION = deploy GitHub Pages (*.github.io). Tutto il resto (staging githack, locale, localhost) = TEST.
@@ -6595,9 +6595,9 @@ function ThreeMatchView(props){
     let skyCol=pal.skyTop,fogCol=pal.fog,ambInt=pal.ambInt,sunInt=0.78,sunColor=pal.flood,hemiInt=0.3,fogNear=95,fogFar=260;
     if(tod==="day"){skyCol=0x6fa8dc;fogCol=0xbcd0e0;ambInt=0.62;sunInt=0.84;sunColor=0xfff6e8;hemiInt=0.42;fogNear=150;fogFar=360;}/* Sprint 3D-G1: intensità ridotte → niente erba slavata (renderer senza tonemapping) */
     else if(tod==="dusk"){skyCol=0x2a1530;fogCol=0x2c1622;ambInt=0.52;sunInt=0.72;sunColor=0xffb070;hemiInt=0.34;fogNear=110;fogFar=290;}
-    if(wfx==="fog"){fogNear=18;fogFar=120;ambInt*=0.9;}
+    if(wfx==="fog"){fogNear=62;fogFar=190;ambInt*=0.9;}// FOG-1: era fogNear=18 → campo invisibile dalla cam larga (≥66u); ora 62→campo leggibile
     else if(wfx==="rain"){fogNear*=0.7;fogFar*=0.7;ambInt*=0.82;sunInt*=0.6;if(tod==="day")skyCol=0x5a6b78;}
-    else if(wfx==="storm"){fogNear*=0.55;fogFar*=0.6;ambInt*=0.65;sunInt*=0.45;if(tod==="day")skyCol=0x3c4756;}
+    else if(wfx==="storm"){fogNear=Math.max(fogNear*0.65,60);fogFar*=0.62;ambInt*=0.65;sunInt*=0.45;if(tod==="day")skyCol=0x3c4756;}// FOG-1: fogNear era *0.55 (→52) → campo invisibile; ora min 60
     else if(wfx==="snow"){fogNear*=0.7;fogFar*=0.8;ambInt*=1.05;if(tod==="day")skyCol=0xc8d8e8;}
     const scene=new THREE.Scene();
     scene.background=new THREE.Color(skyCol);
@@ -6621,7 +6621,7 @@ function ThreeMatchView(props){
     scene.add(new THREE.HemisphereLight(pal.skyHorizon,pal.grassA,hemiInt));
     // Sprint 3D-11C: luci importanza big match/derby — luce ambientale addizionale sottile, scoped ai big match
     let bigMatchAmb=null;
-    if(isDerby||isBigGame){bigMatchAmb=new THREE.AmbientLight(isDerby?0xff2200:0x2244ff,0.09);scene.add(bigMatchAmb);scene.fog.near*=0.84;scene.fog.far*=0.88;}
+    if(isDerby||isBigGame){bigMatchAmb=new THREE.AmbientLight(isDerby?0xff2200:0x2244ff,0.09);scene.add(bigMatchAmb);if(!wfx||wfx==="wind"){scene.fog.near*=0.84;scene.fog.far*=0.88;}}// FOG-1: moltiplicatore nebbia derby solo con meteo normale (non fog/storm/rain/snow)
     // Sprint 3D-11A: luce burst al gol — PointLight addizionale, intensità 0 a riposo
     const goalBurstLight=new THREE.PointLight(0xffaa44,0,140);goalBurstLight.position.set(0,28,0);scene.add(goalBurstLight);
 
