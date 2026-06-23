@@ -2608,7 +2608,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.13.1"; // Fix icona/splash riquadrati (no taglio pallone) · overlay intro highlights alleggerito (campo visibile)
+const GAME_VERSION="4.13.2"; // Provini: squadra eroe granata · avversari sempre diversi · spalti quasi vuoti (solo osservatori)
 const SAVE_VERSION=6;
 // Sprint ENV — ambiente rilevato automaticamente dal runtime (non gestito manualmente).
 // PRODUCTION = deploy GitHub Pages (*.github.io). Tutto il resto (staging githack, locale, localhost) = TEST.
@@ -5124,7 +5124,7 @@ function colorCharGLB(model,jerHex){
 ===================================================== */
 const PC_PW=460,PC_PH=650,PC_FX=80,PC_FY=40,PC_FW=300,PC_FH=550;
 const PC_FCX=PC_FX+PC_FW/2,PC_FCY=PC_FY+PC_FH/2;
-function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,onWalkoutDone,avatarId,actionZoom,allPlayers,homeClub,ballX,ballY,waveEvent,driftTargets,timeOfDay,attendance,actionEffect,weather,heatPoints,showHeatMap,isDesktop=false,heroJerseyNum=10,isDerbyMatch=false,isBigGame=false,competitionLabel="",heroKitCol,heroKitCol2,walkoutHomeCol,walkoutAwayCol,stadiumHomeCol,stadiumAwayCol,kickoffHour=15,matchClock=0,stadiumStyle=0}){
+function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,onWalkoutDone,avatarId,actionZoom,allPlayers,homeClub,ballX,ballY,waveEvent,driftTargets,timeOfDay,attendance,actionEffect,weather,heatPoints,showHeatMap,isDesktop=false,heroJerseyNum=10,isDerbyMatch=false,isBigGame=false,competitionLabel="",heroKitCol,heroKitCol2,walkoutHomeCol,walkoutAwayCol,stadiumHomeCol,stadiumAwayCol,kickoffHour=15,matchClock=0,stadiumStyle=0,trialMode=false}){
   homeCol=homeCol||"#22c55e";oppCol=oppCol||"#ef4444";opponents=opponents||[];
   matchPhase=matchPhase||"match";actionZoom=actionZoom||false;allPlayers=allPlayers||[];
   const canvasRef=useRef(null);
@@ -5137,8 +5137,8 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
     livePos:[],fogPhase:0,photoFlashT:0,
     netBulgeTop:0,netBulgeBot:0
   });
-  const propsRef=useRef({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,onWalkoutDone,avatarId,actionZoom,allPlayers,homeClub,ballX:ballX||50,ballY:ballY||50,waveEvent,driftTargets,timeOfDay:timeOfDay||"night",attendance:attendance||500,weather,heatPoints,showHeatMap,heroJerseyNum:heroJerseyNum||10,isDerbyMatch,isBigGame,competitionLabel,heroKitCol:heroKitCol||homeCol||"#22c55e",heroKitCol2:heroKitCol2||"#ffffff",walkoutHomeCol:walkoutHomeCol||homeCol||"#22c55e",walkoutAwayCol:walkoutAwayCol||oppCol||"#ef4444",stadiumHomeCol:stadiumHomeCol||homeCol,stadiumAwayCol:stadiumAwayCol||oppCol,kickoffHour,matchClock,stadiumStyle:stadiumStyle||0});
-  useEffect(()=>{propsRef.current={playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,onWalkoutDone,avatarId,actionZoom,allPlayers,homeClub,ballX:ballX||50,ballY:ballY||50,waveEvent,driftTargets,timeOfDay:timeOfDay||"night",attendance:attendance||500,weather,heatPoints,showHeatMap,heroJerseyNum:heroJerseyNum||10,isDerbyMatch,isBigGame,competitionLabel,heroKitCol:heroKitCol||homeCol||"#22c55e",heroKitCol2:heroKitCol2||"#ffffff",walkoutHomeCol:walkoutHomeCol||homeCol||"#22c55e",walkoutAwayCol:walkoutAwayCol||oppCol||"#ef4444",stadiumHomeCol:stadiumHomeCol||homeCol,stadiumAwayCol:stadiumAwayCol||oppCol,kickoffHour,matchClock,stadiumStyle:stadiumStyle||0};},[playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,onWalkoutDone,avatarId,actionZoom,allPlayers,homeClub,ballX,ballY,waveEvent,driftTargets,timeOfDay,attendance,weather,heatPoints,showHeatMap,heroJerseyNum,isDerbyMatch,isBigGame,competitionLabel,heroKitCol,heroKitCol2,walkoutHomeCol,walkoutAwayCol,stadiumHomeCol,stadiumAwayCol,kickoffHour,matchClock,stadiumStyle]);
+  const propsRef=useRef({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,onWalkoutDone,avatarId,actionZoom,allPlayers,homeClub,ballX:ballX||50,ballY:ballY||50,waveEvent,driftTargets,timeOfDay:timeOfDay||"night",attendance:attendance||500,weather,heatPoints,showHeatMap,heroJerseyNum:heroJerseyNum||10,isDerbyMatch,isBigGame,competitionLabel,heroKitCol:heroKitCol||homeCol||"#22c55e",heroKitCol2:heroKitCol2||"#ffffff",walkoutHomeCol:walkoutHomeCol||homeCol||"#22c55e",walkoutAwayCol:walkoutAwayCol||oppCol||"#ef4444",stadiumHomeCol:stadiumHomeCol||homeCol,stadiumAwayCol:stadiumAwayCol||oppCol,kickoffHour,matchClock,stadiumStyle:stadiumStyle||0,trialMode});
+  useEffect(()=>{propsRef.current={playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,onWalkoutDone,avatarId,actionZoom,allPlayers,homeClub,ballX:ballX||50,ballY:ballY||50,waveEvent,driftTargets,timeOfDay:timeOfDay||"night",attendance:attendance||500,weather,heatPoints,showHeatMap,heroJerseyNum:heroJerseyNum||10,isDerbyMatch,isBigGame,competitionLabel,heroKitCol:heroKitCol||homeCol||"#22c55e",heroKitCol2:heroKitCol2||"#ffffff",walkoutHomeCol:walkoutHomeCol||homeCol||"#22c55e",walkoutAwayCol:walkoutAwayCol||oppCol||"#ef4444",stadiumHomeCol:stadiumHomeCol||homeCol,stadiumAwayCol:stadiumAwayCol||oppCol,kickoffHour,matchClock,stadiumStyle:stadiumStyle||0,trialMode};},[playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,onWalkoutDone,avatarId,actionZoom,allPlayers,homeClub,ballX,ballY,waveEvent,driftTargets,timeOfDay,attendance,weather,heatPoints,showHeatMap,heroJerseyNum,isDerbyMatch,isBigGame,competitionLabel,heroKitCol,heroKitCol2,walkoutHomeCol,walkoutAwayCol,stadiumHomeCol,stadiumAwayCol,kickoffHour,matchClock,stadiumStyle,trialMode]);
 
   useEffect(()=>{
     const canvas=canvasRef.current;if(!canvas)return;
@@ -5227,10 +5227,11 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
       const _khr=propsRef.current.kickoffHour||15;
       const _stadStyle=propsRef.current.stadiumStyle||0;
       const _compLabel=propsRef.current.competitionLabel||propsRef.current.homeClub?.lg||"";
+      const _trial=propsRef.current.trialMode||false;
       const atmo=_atmo82(_tod,_wid);
-      // Derby/bigmatch boost fillRatio
-      const _effectiveFill=Math.min(1,fillRatio*(_isDrby?1.30:_isBig?1.15:1));
-      const key=hCol+oCol+_effectiveFill.toFixed(2)+_tod+"_"+_wid+(_prest80>=80?"E":_prest80>=60?"M":"L")+(_isDrby?"D":_isBig?"B":"")+_khr+_stadStyle;
+      // Derby/bigmatch boost fillRatio (mai ai provini)
+      const _effectiveFill=_trial?fillRatio:Math.min(1,fillRatio*(_isDrby?1.30:_isBig?1.15:1));
+      const key=hCol+oCol+_effectiveFill.toFixed(2)+_tod+"_"+_wid+(_prest80>=80?"E":_prest80>=60?"M":"L")+(_isDrby?"D":_isBig?"B":"")+_khr+_stadStyle+(_trial?"T":"");
       if(key===_crowdKey)return;
       _crowdKey=key;
       cctx.clearRect(0,0,PW,PH);
@@ -5270,8 +5271,8 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
       cctx.fillStyle=lG;cctx.fillRect(0,FY,FX,FH);
       cctx.fillStyle=rG;cctx.fillRect(FX+FW,FY,PW-FX-FW,FH);
       cctx.globalAlpha=1;
-      // Home stand banner strip — center only
-      if(FY>10){
+      // Home stand banner strip — center only (nessuno striscione ai provini)
+      if(FY>10&&!_trial){
         const bStrH=Math.max(3,Math.floor(FY*0.18));
         cctx.fillStyle=hCol;cctx.globalAlpha=0.82;cctx.fillRect(FX,FY-bStrH-1,FW,bStrH);
         cctx.fillStyle="#ffffff";cctx.globalAlpha=0.35;cctx.fillRect(FX,FY-bStrH-1,FW,Math.max(1,Math.floor(bStrH*0.3)));
@@ -5690,7 +5691,8 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
       const p=propsRef.current;
       const hCol=p.stadiumHomeCol||p.homeCol||"#2563eb",oCol=p.stadiumAwayCol||p.oppCol||"#dc2626";
       const att=p.attendance||500;
-      const fillRatio=Math.min(1,Math.max(0.15,(att-150)/75000*0.85+0.15));
+      // Sprint PROV — provini: spalti quasi vuoti (solo osservatori/parenti, nessuna curva)
+      const fillRatio=p.trialMode?0.05:Math.min(1,Math.max(0.15,(att-150)/75000*0.85+0.15));
       // Sprint 82: bakeCrowd reads timeOfDay+weather from propsRef directly
       bakeCrowd(hCol,oCol,fillRatio);
       ctx.drawImage(crowdOff,0,0);
@@ -8507,7 +8509,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                 heroKitCol={heroKitCol} heroKitCol2={heroKitCol2}
                 walkoutHomeCol={walkoutHomeCol} walkoutAwayCol={walkoutAwayCol}
                 stadiumHomeCol={scoreHomeCol} stadiumAwayCol={scoreAwayCol}
-                stadiumStyle={getStadiumStyle(homeTeamObj)}
+                stadiumStyle={getStadiumStyle(homeTeamObj)} trialMode={context==="trial"}
                 ballX={ballPos.x} ballY={ballPos.y} waveEvent={waveEvent}
                 driftTargets={driftTargetsRef.current} timeOfDay={timeOfDay}
                 kickoffHour={kickoffHour} matchClock={clock}
@@ -11088,9 +11090,23 @@ function FootballMatch2D({playerData,squadAColor,squadBColor,duration,testMode,o
 /* ========================================
    TRIAL FLOW
 ======================================== */
+// Sprint PROV — avversari dei provini sempre diversi (pool, nessuno granata per non confondersi con l'eroe)
+const TRIAL_OPPONENTS=[
+  {id:"t_reg",n:"Selezione Regionale",name:"Selezione Regionale",a:"REG",abbr:"REG",p:52,c:"#475569",col:"#475569",c2:"#fff",nat:"🇮🇹"},
+  {id:"t_acc",n:"Accademia Nord",name:"Accademia Nord",a:"ACN",abbr:"ACN",p:50,c:"#1d4ed8",col:"#1d4ed8",c2:"#fff",nat:"🇮🇹"},
+  {id:"t_rap",n:"Rappresentativa Provinciale",name:"Rappresentativa Provinciale",a:"RAP",abbr:"RAP",p:49,c:"#0d9488",col:"#0d9488",c2:"#fff",nat:"🇮🇹"},
+  {id:"t_pol",n:"Polisportiva Centro",name:"Polisportiva Centro",a:"POL",abbr:"POL",p:51,c:"#ea580c",col:"#ea580c",c2:"#fff",nat:"🇮🇹"},
+  {id:"t_giov",n:"Giovanili Élite",name:"Giovanili Élite",a:"GIO",abbr:"GIO",p:53,c:"#7c3aed",col:"#7c3aed",c2:"#fff",nat:"🇮🇹"},
+  {id:"t_sud",n:"Selezione Sud",name:"Selezione Sud",a:"SUD",abbr:"SUD",p:50,c:"#0891b2",col:"#0891b2",c2:"#fff",nat:"🇮🇹"},
+  {id:"t_cef",n:"Centro Federale",name:"Centro Federale",a:"CEF",abbr:"CEF",p:54,c:"#16a34a",col:"#16a34a",c2:"#fff",nat:"🇮🇹"},
+];
 function TrialFlow({player:initPlayer,onComplete}){
-  const[player,setPlayer]=useState(initPlayer),[trialNum,setTrialNum]=useState(0),[results,setResults]=useState([]),[phase,setPhase]=useState("pre");
-  const opp={id:"trial",n:"Selezione Regionale",name:"Selezione Regionale",a:"REG",abbr:"REG",p:52,c:"#64748b",col:"#64748b",c2:"#fff",nat:"🇮🇹"};
+  // Sprint PROV — la squadra dell'eroe ai provini è in GRANATA
+  const _granata={id:"trial-hero",n:"Selezione Granata",name:"Selezione Granata",a:"GRA",abbr:"GRA",p:50,c:"#7a1f2b",col:"#7a1f2b",c2:"#e8c98f",nat:"🇮🇹",lg:"Provini"};
+  const[player,setPlayer]=useState(()=>({...initPlayer,club:_granata}));
+  const[trialNum,setTrialNum]=useState(0),[results,setResults]=useState([]),[phase,setPhase]=useState("pre");
+  const[oppList]=useState(()=>shuffle(TRIAL_OPPONENTS).slice(0,3));
+  const opp=oppList[trialNum]||oppList[0];
   const onMatchEnd=r=>{const res={goals:r.goals,assists:r.assists,rating:r.rating};const nr=[...results,res];setResults(nr);setPlayer(p=>({...p,totalGoals:(p.totalGoals||0)+r.goals,totalAssists:(p.totalAssists||0)+r.assists,totalMatches:(p.totalMatches||0)+1}));setPhase("post");if(trialNum>=2)setTimeout(()=>onComplete(nr),300);};
   useEffect(()=>{
     if(phase==="match")return;
