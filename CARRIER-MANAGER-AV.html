@@ -2612,7 +2612,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.18.0"; // Sprint 3D-5: walkout cinematico 3D — squadre schierate + carrellata, sostituisce overlay 2D in modalità 3D
+const GAME_VERSION="4.19.0"; // Sprint 3D-6 (Quick Wins): varietà giocatori (altezza/corporatura/carnagione) + idle reale + lean in corsa
 const SAVE_VERSION=6;
 // Sprint ENV — ambiente rilevato automaticamente dal runtime (non gestito manualmente).
 // PRODUCTION = deploy GitHub Pages (*.github.io). Tutto il resto (staging githack, locale, localhost) = TEST.
@@ -6536,6 +6536,8 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
    Sprint 3D-5: walkout cinematico 3D — squadre schierate in fila,
    carrellata che scorre sui giocatori, poi calcio d'inizio (sostituisce
    l'overlay 2D in modalità 3D).
+   Sprint 3D-6 (Quick Wins): varietà giocatori (altezza/corporatura/carnagione
+   deterministica per indice), idle reale a riposo, lean in avanti in corsa/sprint.
 ===================================================== */
 function ThreeMatchView(props){
   const {playerX,playerY,homeCol,oppCol,allPlayers,homeClub,heroKitCol,
@@ -6599,11 +6601,16 @@ function ThreeMatchView(props){
     try{buildStadium(scene,sHome,sAway,{prestige:club.p||club.prestige||65,style:stadiumStyle,floodColor:pal.flood});}catch(e){}
 
     // Factory giocatore (derivata da FootballMatch, MeshPhong procedurale)
-    const mkP=(col,isUser)=>{
+    // Sprint 3D-6: varietà deterministica per indice — altezza/corporatura + carnagione,
+    // così i 22 giocatori non sono più cloni identici (nessun nuovo prop, seed = indice roster).
+    const _fr=(n)=>{const s=Math.sin(n*127.1+311.7)*43758.5453;return s-Math.floor(s);};
+    const SKN_TONES=[0xcfa07a,0x8d5524,0xf1c27d,0x6b3c2c,0xd4956a,0xa86b3c];
+    const mkP=(col,isUser,seed)=>{
+      const sd=seed||0,h1=_fr(sd*1.7+0.3),h2=_fr(sd*2.3+1.1),h3=_fr(sd*3.1+2.7);
       const g=new THREE.Group();
       const jM=new THREE.MeshPhongMaterial({color:new THREE.Color(col),shininess:55});
       const sM=new THREE.MeshPhongMaterial({color:0x0d1226});
-      const skM=new THREE.MeshPhongMaterial({color:0xcfa07a,shininess:18});
+      const skM=new THREE.MeshPhongMaterial({color:isUser?0xcfa07a:SKN_TONES[Math.floor(h3*SKN_TONES.length)],shininess:18});
       const wh=new THREE.MeshPhongMaterial({color:0xfafafa});
       const bt=new THREE.MeshPhongMaterial({color:0x0a0a0a});
       const add=(geo,mat,x,y,z)=>{const m=new THREE.Mesh(geo,mat);m.position.set(x,y,z);m.castShadow=true;m.receiveShadow=true;g.add(m);return m;};
@@ -6617,7 +6624,9 @@ function ThreeMatchView(props){
       const mkLeg=(sx)=>{const lg=new THREE.Group();lg.position.set(sx*0.155,0.78,0);const th=new THREE.Mesh(new THREE.CylinderGeometry(0.10,0.086,0.44,8),skM);th.position.y=-0.22;lg.add(th);const sh=new THREE.Mesh(new THREE.CylinderGeometry(0.077,0.066,0.38,8),wh);sh.position.y=-0.57;lg.add(sh);const bk=new THREE.Mesh(new THREE.BoxGeometry(0.16,0.086,0.28),bt);bk.position.set(0,-0.78,0.04);lg.add(bk);g.add(lg);return lg;};
       const aL=mkArm(-1),aR=mkArm(1),lL=mkLeg(-1),lR=mkLeg(1);
       if(isUser){const r=new THREE.Mesh(new THREE.TorusGeometry(0.55,0.055,7,24),new THREE.MeshBasicMaterial({color:0xffd700}));r.rotation.x=Math.PI/2;r.position.y=0.04;g.add(r);}
-      g._aL=aL;g._aR=aR;g._lL=lL;g._lR=lR;g._ph=0;g._px=0;g._pz=0;g._sp=0;
+      g._aL=aL;g._aR=aR;g._lL=lL;g._lR=lR;g._ph=0;g._px=0;g._pz=0;g._sp=0;g._sd=sd*1.3;g._idle=_fr(sd+5)*6.28;
+      // altezza/corporatura solo per i comprimari: il protagonista resta scala 1 (anello dorato leggibile)
+      if(!isUser){g.scale.y=0.93+h1*0.16;g.scale.x=g.scale.z=0.94+h2*0.14;}
       g.traverse(m=>{if(m.isMesh){m.castShadow=true;m.receiveShadow=true;}});
       return g;
     };
@@ -6630,15 +6639,15 @@ function ThreeMatchView(props){
 
     // 21 giocatori (home + away) dal prop allPlayers
     const players=[];
-    (allPlayers||[]).forEach(pl=>{
+    (allPlayers||[]).forEach((pl,i)=>{
       const isHome=pl.team==='home';
       const col=pl.gk?gkCol:(isHome?_hCol:_aCol);
-      const mesh=mkP(col,false);
+      const mesh=mkP(col,false,i+1);
       mesh.position.set(G2X(pl.x),0,G2Z(pl.y));mesh._px=mesh.position.x;mesh._pz=mesh.position.z;
       scene.add(mesh);players.push({mesh,team:pl.team});
     });
     // Protagonista (ring dorato)
-    const hero=mkP(heroKitCol||homeCol||'#22c55e',true);
+    const hero=mkP(heroKitCol||homeCol||'#22c55e',true,99);
     hero.position.set(G2X(playerX||50),0,G2Z(playerY||50));hero._px=hero.position.x;hero._pz=hero.position.z;scene.add(hero);
 
     // Slot di walkout: due file (home+protagonista / away) lungo la larghezza, rivolte alla camera
@@ -6682,7 +6691,7 @@ function ThreeMatchView(props){
       const ta=d>0.5?Math.atan2(dx,dz):-Math.PI/2; // verso movimento, altrimenti fronte camera
       const da=((ta-mesh.rotation.y+Math.PI*3)%(Math.PI*2))-Math.PI;mesh.rotation.y+=da*Math.min(8*dt,1);
       if(sp>0.4){mesh._ph+=sp*dt*2.6;const amp=Math.min(sp*0.11,0.72);mesh._lL.rotation.x=Math.sin(mesh._ph)*amp;mesh._lR.rotation.x=-Math.sin(mesh._ph)*amp;mesh._aL.rotation.x=-Math.sin(mesh._ph)*amp*0.5;mesh._aR.rotation.x=Math.sin(mesh._ph)*amp*0.5;mesh.position.y=Math.abs(Math.sin(mesh._ph))*Math.min(sp*0.018,0.12);}
-      else{mesh._lL.rotation.x*=0.82;mesh._lR.rotation.x*=0.82;mesh._aL.rotation.x*=0.82;mesh._aR.rotation.x*=0.82;mesh.position.y*=0.8;}
+      else{mesh._lL.rotation.x*=0.82;mesh._lR.rotation.x*=0.82;mesh._aL.rotation.x*=0.82;mesh._aR.rotation.x*=0.82;mesh.position.y*=0.8;mesh._idle=(mesh._idle||0)+dt*1.5;mesh.rotation.z=Math.sin(mesh._idle)*0.02;}
     };
     const animOne=(mesh,tx,tz,dt,k,bx,bz)=>{
       const dx=tx-mesh.position.x,dz=tz-mesh.position.z,d=Math.hypot(dx,dz);
@@ -6702,9 +6711,13 @@ function ThreeMatchView(props){
         mesh._lL.rotation.x=Math.sin(mesh._ph)*amp;mesh._lR.rotation.x=-Math.sin(mesh._ph)*amp;
         mesh._aL.rotation.x=-Math.sin(mesh._ph)*amp*0.5;mesh._aR.rotation.x=Math.sin(mesh._ph)*amp*0.5;
         mesh.position.y=Math.abs(Math.sin(mesh._ph))*Math.min(sp*0.018,0.12);
+        // QW-5: lean in avanti proporzionale alla corsa (più marcato in sprint)
+        const _lean=sp>3.0?0.13:0.045;mesh.rotation.x+=(_lean-mesh.rotation.x)*Math.min(dt*4,1);mesh.rotation.z*=0.85;
       } else {
         mesh._lL.rotation.x*=0.82;mesh._lR.rotation.x*=0.82;mesh._aL.rotation.x*=0.82;mesh._aR.rotation.x*=0.82;
         mesh.position.y*=0.8;
+        // QW-1: idle reale — leggera oscillazione del busto e ritorno verticale
+        mesh._idle=(mesh._idle||0)+dt*1.5;mesh.rotation.z=Math.sin(mesh._idle)*0.022;mesh.rotation.x+=(0-mesh.rotation.x)*Math.min(dt*4,1);
       }
     };
     const loop=()=>{
