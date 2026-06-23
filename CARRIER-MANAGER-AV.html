@@ -2612,7 +2612,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.20.0"; // Sprint 3D-6b: scia palla + focus camera sull'esito + marcatore/rim-light eroe
+const GAME_VERSION="4.21.0"; // Sprint 3D-7: hlType (sync motore) + animazioni esito protagonista + camera set-piece
 const SAVE_VERSION=6;
 // Sprint ENV — ambiente rilevato automaticamente dal runtime (non gestito manualmente).
 // PRODUCTION = deploy GitHub Pages (*.github.io). Tutto il resto (staging githack, locale, localhost) = TEST.
@@ -6541,6 +6541,9 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
    Sprint 3D-6b: leggibilità azione + eroe — scia palla in dissolvenza negli HL,
    focus camera automatico sulla palla a fine azione (hl_result), marcatore
    diamante sopra il protagonista + rim-light sulla maglia.
+   Sprint 3D-7: sync col motore (prop hlType derivato in sola lettura da
+   situazione+azione) → animazioni one-shot del protagonista all'esito
+   (tiro/colpo di testa/contrasto/dribbling) + camera dedicata su rigore/punizione.
 ===================================================== */
 function ThreeMatchView(props){
   const {playerX,playerY,homeCol,oppCol,allPlayers,homeClub,heroKitCol,
@@ -6689,6 +6692,8 @@ function ThreeMatchView(props){
     let last=performance.now();
     // Stato camera cinematica: blend HL (0=wide, 1=close) smussato + look target smussato
     let camHL=0,bf=0;const camLook=new THREE.Vector3(10,1,0);
+    // Sprint 3D-7: animazione one-shot del protagonista all'ingresso dell'esito (hl_result)
+    let actT=0,actType=null,prevPhase="";
     // Stato walkout 3D: i giocatori si schierano in fila, camera che scorre, poi calcio d'inizio
     let walkT=0,walkDone=false;const WALK_DUR=6.2;
     // Cammina verso lo slot di walkout, fronte alla camera (-x)
@@ -6740,6 +6745,9 @@ function ThreeMatchView(props){
       ball.rotation.y+=0.04+moved*0.10;ball.rotation.x+=0.03+moved*0.06;
       const bx=ball.position.x,bz=ball.position.z;
       const isWalk=P.matchPhase==="walkout";
+      // trigger one-shot all'ingresso in hl_result, mappando hlType → tipo animazione
+      if(P.matchPhase==="hl_result"&&prevPhase!=="hl_result"){const t=P.hlType;actType=(t==="header"||t==="tackle"||t==="dribble")?t:(!t||t==="build")?null:"shot";actT=0;}
+      prevPhase=P.matchPhase;
       if(isWalk){
         sr.current.players.forEach(pp=>animWalk(pp.mesh,dt,k));
         animWalk(hero,dt,k);
@@ -6748,6 +6756,14 @@ function ThreeMatchView(props){
       } else {
         sr.current.players.forEach((pp,i)=>{const src=all[i];if(!src)return;animOne(pp.mesh,G2X(src.x),G2Z(src.y),dt,k,bx,bz);});
         animOne(hero,G2X(P.playerX||50),G2Z(P.playerY||50),dt,k,bx,bz);
+        // Sprint 3D-7: override one-shot dell'esito sul protagonista (sovrascrive il run-cycle per la durata)
+        if(actType){actT+=dt;const _T=actType==="header"?0.6:(actType==="tackle"?0.5:0.45),u=Math.min(actT/_T,1),sw=Math.sin(u*Math.PI);
+          if(actType==="shot"){hero._lR.rotation.x=-1.5*sw;hero._lL.rotation.x=0.4*sw;hero._aL.rotation.x=0.6*sw;}
+          else if(actType==="header"){hero.position.y=sw*1.0;hero._aL.rotation.x=-1.2*sw;hero._aR.rotation.x=-1.2*sw;}
+          else if(actType==="tackle"){hero.rotation.z=0.55*sw;hero.position.y=-0.12*sw;hero._lR.rotation.x=1.2*sw;}
+          else if(actType==="dribble"){hero.rotation.z=Math.sin(u*Math.PI*3)*0.18;}
+          if(u>=1)actType=null;
+        }
       }
 
       // ---- Camera: scorrimento sul walkout, broadcast in gioco, stacco ravvicinato negli highlight ----
@@ -6771,8 +6787,12 @@ function ThreeMatchView(props){
         const wLx=clamp(ax*0.5+10,-12,42),wLy=1.5,wLz=az*0.6;
         // CLOSE — stacco ravvicinato; il punto di fuoco scivola dall'eroe alla palla a fine azione
         const fX=hx+(bx-hx)*bf,fZ=hz+(bz-hz)*bf;
-        const cPx=clamp(fX-30,-96,-4),cPy=22-bf*5,cPz=fZ*0.6;
-        const cLx=fX+10,cLy=1.6-bf*0.3,cLz=fZ*0.85;
+        let cPx=clamp(fX-30,-96,-4),cPy=22-bf*5,cPz=fZ*0.6;
+        let cLx=fX+10,cLy=1.6-bf*0.3,cLz=fZ*0.85;
+        // Sprint 3D-7: camera dedicata su rigore/punizione — bassa, dietro la palla verso la porta
+        if(isHL&&(P.hlType==="penalty"||P.hlType==="freekick")){
+          cPx=clamp(bx-18,-96,-4);cPy=6.5;cPz=bz*0.7;cLx=bx+24;cLy=1.4;cLz=bz*0.5;
+        }
         tPx=wPx+(cPx-wPx)*camHL;tPy=wPy+(cPy-wPy)*camHL;tPz=wPz+(cPz-wPz)*camHL;
         tLx=wLx+(cLx-wLx)*camHL;tLy=wLy+(cLy-wLy)*camHL;tLz=wLz+(cLz-wLz)*camHL;
         kp=Math.min(dt*1.8,1);kl=Math.min(dt*2.4,1);
@@ -8817,7 +8837,23 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           </div>
 
           {/* ── Field + Panel: responsive layout ── */}
-          {(()=>{const _isHL=["hl_move","hl_choose","hl_result","hl_intro"].includes(phase);return(
+          {(()=>{const _isHL=["hl_move","hl_choose","hl_result","hl_intro"].includes(phase);
+          // Sprint 3D-7: deriva il tipo di highlight (SOLA LETTURA: situazione + azione scelta) per la regia 3D
+          let _hlType=null;
+          if(_isHL){const _sit=situations[hlIdx],_txt=_sit?.text||"",_lbl=(chosenAct?.label||"").toLowerCase(),_st=chosenAct?.stat;
+            if(/RIGORE|igore/.test(_txt))_hlType="penalty";
+            else if(/unizione/.test(_txt))_hlType="freekick";
+            else if(chosenAct){
+              if(/testa|stacco|incornata|colpo di t/.test(_lbl))_hlType="header";
+              else if(/contrasto|tackle|scivolata|anticipo|intercett|pressing|recuper/.test(_lbl))_hlType="tackle";
+              else if(/cross|traversone/.test(_lbl))_hlType="cross";
+              else if(/dribbl|finta|elastico|tunnel|sombrero|salta l/.test(_lbl)||_st==="dribbling")_hlType="dribble";
+              else if(_st==="tiro"||/tiro|conclus|rovesciata|pallonetto|vol[eé]|destro|sinistro|bomba|piattone|stoccata/.test(_lbl))_hlType="shot";
+              else if(_st==="passaggio"||/passaggio|filtrante|imbucata|smarca|verticalizz/.test(_lbl))_hlType="pass";
+            }
+            if(!_hlType){if(_sit?.type==="def")_hlType="tackle";else{const _z=_sit?.zones?.[0];_hlType=(_z==="area"||_z==="bordo")?"shot":(_z==="fascia")?"cross":"build";}}
+          }
+          return(
           <div style={isNarrow?{display:"flex",flexDirection:"column",flex:1,minHeight:0}:{display:"flex",flexDirection:"row",alignItems:"stretch",flex:1,minHeight:0,overflow:"hidden"}}>
 
             {/* FIELD — height-constrained on desktop, full width on narrow */}
@@ -8830,7 +8866,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                 heroKitCol={heroKitCol} heroKitCol2={heroKitCol2}
                 stadiumHomeCol={scoreHomeCol} stadiumAwayCol={scoreAwayCol}
                 stadiumStyle={getStadiumStyle(homeTeamObj)}
-                ballX={ballPos.x} ballY={ballPos.y}
+                ballX={ballPos.x} ballY={ballPos.y} hlType={_hlType}
                 timeOfDay={timeOfDay} weather={weather} kickoffHour={kickoffHour} attendance={attendance}
                 isDesktop={!isNarrow} onWalkoutDone={()=>{if(benchStart)setOnBench(true);setPhase("playing");}}/>
               :<PitchCanvas playerX={pPos.x} playerY={pPos.y} zone={zone}
