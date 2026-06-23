@@ -2612,7 +2612,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.39.0"; // Sprint FOG-1: fix nebbia (fogNear 18→62, storm min 60, derby no fog mult)
+const GAME_VERSION="4.40.0"; // Sprint CIN-1: camera HL ravvicinata+bassa, palla 1.4×, animazioni 2×, tackle/header cam
 const SAVE_VERSION=6;
 // Sprint ENV — ambiente rilevato automaticamente dal runtime (non gestito manualmente).
 // PRODUCTION = deploy GitHub Pages (*.github.io). Tutto il resto (staging githack, locale, localhost) = TEST.
@@ -6924,7 +6924,7 @@ function ThreeMatchView(props){
         // LT-1: ring espande da 1× a 3.8× e svanisce in 0.20s
         ctFlash.position.x=ball.position.x;ctFlash.position.z=ball.position.z;ctFlash.scale.setScalar(1+(1-_cf)*2.8);ctFlash.material.opacity=_cf*0.60;
         if(contactFlashT>0.20)contactFlashT=-1;}
-      else{ball.scale.setScalar(1);ctFlash.material.opacity=0;}
+      else{ball.scale.setScalar(isHL?1.4:1.0);ctFlash.material.opacity=0;} // CIN-1: palla 40% più grande durante HL
       const bx=ball.position.x,bz=ball.position.z;
       const isWalk=P.matchPhase==="walkout";
       // transizioni di fase: trigger animazione esito + gestione buffer/replay
@@ -7010,11 +7010,12 @@ function ThreeMatchView(props){
         linRef2.rotation.y=Math.PI+Math.sin(now*0.0022+2.3)*0.055;linRef2.rotation.z=Math.sin(now*0.0018+1.9)*0.025;
         benchFigs.forEach((f,i)=>{f._ph+=dt*1.1;f.position.y=0.7+Math.sin(f._ph)*0.04+_goalExcite*Math.abs(Math.sin(f._ph*2+i))*0.32;});
         // Sprint 3D-7: override one-shot dell'esito sul protagonista (sovrascrive il run-cycle per la durata)
-        if(actType){actT+=aDt;const _T=actType==="header"?0.6:(actType==="tackle"?0.5:0.45),u=Math.min(actT/_T,1),sw=Math.sin(u*Math.PI);
-          if(actType==="shot"){hero._lR.rotation.x=-1.5*sw;hero._lL.rotation.x=0.4*sw;hero._aL.rotation.x=0.6*sw;}
-          else if(actType==="header"){hero.position.y=sw*1.0;hero._aL.rotation.x=-1.2*sw;hero._aR.rotation.x=-1.2*sw;}
-          else if(actType==="tackle"){hero.rotation.z=0.55*sw;hero.position.y=-0.12*sw;hero._lR.rotation.x=1.2*sw;}
-          else if(actType==="dribble"){hero.rotation.z=Math.sin(u*Math.PI*3)*0.18;}
+        if(actType){actT+=aDt;const _T=actType==="header"?0.75:(actType==="tackle"?0.6:0.55),u=Math.min(actT/_T,1),sw=Math.sin(u*Math.PI);
+          // CIN-1: ampiezze molto maggiori — visibili dalla camera ravvicinata
+          if(actType==="shot"){hero._lR.rotation.x=-2.8*sw;hero._lL.rotation.x=0.7*sw;hero._aL.rotation.x=1.1*sw;hero._aR.rotation.x=-0.5*sw;}
+          else if(actType==="header"){hero.position.y=sw*2.2;hero._aL.rotation.x=-2.0*sw;hero._aR.rotation.x=-2.0*sw;}
+          else if(actType==="tackle"){hero.rotation.z=1.1*sw;hero.position.y=-0.25*sw;hero._lR.rotation.x=2.0*sw;hero._lL.rotation.x=-0.6*sw;}
+          else if(actType==="dribble"){hero.rotation.z=Math.sin(u*Math.PI*3)*0.35;hero.rotation.y=Math.sin(u*Math.PI*2)*0.28;}
           if(u>=1)actType=null;
         }
         // QW-C: esultanza post-gol eroe (braccia alzate + salto, 2.4s, sovrascrive actType)
@@ -7036,7 +7037,7 @@ function ThreeMatchView(props){
       bf+=((isResult?1:0)-bf)*Math.min(dt*2.5,1);
       const wBall=0.6+0.30*bf; // palla più pesante nel centro azione durante l'esito
       const ax=bx*wBall+hx*(1-wBall),az=bz*wBall+hz*(1-wBall);
-      camHL+=((isHL?1:0)-camHL)*Math.min(dt*2.2,1);
+      camHL+=((isHL?1:0)-camHL)*Math.min(dt*3.2,1); // CIN-1: zoom entra 46% più veloce
       let tPx,tPy,tPz,tLx,tLy,tLz,kp,kl;
       if(isWalk){
         // Carrellata che scorre lungo la fila dei giocatori schierati
@@ -7052,12 +7053,13 @@ function ThreeMatchView(props){
         const wLx=clamp(ax*0.5+10,-12,42)+Math.sin(now*0.00031)*1.2,wLy=1.5,wLz=az*0.6;
         // CLOSE — stacco ravvicinato; il punto di fuoco scivola dall'eroe alla palla a fine azione
         const fX=hx+(bx-hx)*bf,fZ=hz+(bz-hz)*bf;
-        let cPx=clamp(fX-39,-96,-4),cPy=27-bf*4,cPz=fZ*0.55;/* Sprint 3D-G1: de-zoom HL — camera più arretrata e alta, azione più leggibile */
-        let cLx=fX+11,cLy=1.7-bf*0.3,cLz=fZ*0.82;
+        let cPx=clamp(fX-20,-80,16),cPy=8.5-bf*2.5,cPz=fZ*0.58;/* CIN-1: camera bassa (era y=27) e ravvicinata (era offset 39) */
+        let cLx=fX+12,cLy=2.2-bf*0.5,cLz=fZ*0.82;
         // Sprint 3D-7: camera dedicata su rigore/punizione — bassa, dietro la palla verso la porta
         if(isHL&&(P.hlType==="penalty"||P.hlType==="freekick")){
           cPx=clamp(bx-18,-96,-4);cPy=6.5;cPz=bz*0.7;cLx=bx+24;cLy=1.4;cLz=bz*0.5;
-        }
+        } else if(isHL&&P.hlType==="header"){cPy=Math.max(cPy,7);cLy=3.8;} // CIN-1: camera guarda su per il colpo di testa
+        else if(isHL&&P.hlType==="tackle"){cPx=clamp(fX-12,-80,18);cPy=4.0-bf;cLy=1.2;} // CIN-1: radente per il contrasto
         tPx=wPx+(cPx-wPx)*camHL;tPy=wPy+(cPy-wPy)*camHL;tPz=wPz+(cPz-wPz)*camHL;
         tLx=wLx+(cLx-wLx)*camHL;tLy=wLy+(cLy-wLy)*camHL;tLz=wLz+(cLz-wLz)*camHL;
         kp=Math.min(dt*1.8,1);kl=Math.min(dt*2.4,1);
