@@ -2612,7 +2612,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.35.0"; // Sprint ATE-1: Action Sync Engine — bgAction arc durante "playing" + hlType data-driven
+const GAME_VERSION="4.36.0"; // Sprint ATE-2: Ball trajectory sync — arc destination 3D esatta + velocità calibrata sulla durata
 const SAVE_VERSION=6;
 // Sprint ENV — ambiente rilevato automaticamente dal runtime (non gestito manualmente).
 // PRODUCTION = deploy GitHub Pages (*.github.io). Tutto il resto (staging githack, locale, localhost) = TEST.
@@ -6786,8 +6786,8 @@ function ThreeMatchView(props){
     let resultT=0;
     // Sprint 3D-BALL: arco parabolico della palla (shot/header/cross/freekick/penalty)
     let ballArcT=0,ballArcDur=0,ballArcH=0,ballArcActive=false;
-    // ATE-1: arco BG_MATCH per tipo azione durante "playing"
-    let prevBgT=0;
+    // ATE-1/2: arco BG_MATCH — tipo azione, destinazione 3D esatta, flag bg vs HL
+    let prevBgT=0,ballArcIsBG=false,ballArcTgtX=0,ballArcTgtZ=0;
     const BALL_ARC_BY_TYPE={shot:{h:2.8,dur:0.52},cross:{h:3.2,dur:0.68},save:{h:1.8,dur:0.55},tackle:{h:0.4,dur:0.35},pass:{h:0.9,dur:0.48}};
     // Sprint 3D-11A: reazione folla al gol — burst luce calda + camera shake
     let prevWaveT=0,goalBurstT=-1,goalBurstHome=false,shakePow=0,contactFlashT=-1,celebT=-1;
@@ -6881,7 +6881,11 @@ function ThreeMatchView(props){
       const aDt=dt*slow,ak=Math.min(1,aDt*6.5);
       // palla per prima, così i giocatori fermi si orientano verso di essa
       const obx=ball.position.x,oby=ball.position.y,obz=ball.position.z;
-      ball.position.x+=(G2X(P.ballX||50)-ball.position.x)*ak;ball.position.z+=(G2Z(P.ballY||50)-ball.position.z)*ak;
+      // ATE-2: durante arco BG usa destinazione 3D esatta + velocità sync con durata arco
+      {const _btX=ballArcActive&&ballArcIsBG?ballArcTgtX:G2X(P.ballX||50);
+       const _btZ=ballArcActive&&ballArcIsBG?ballArcTgtZ:G2Z(P.ballY||50);
+       const _bak=ballArcActive&&ballArcIsBG?Math.min(1,aDt*(3.5/Math.max(ballArcDur,0.2))):ak;
+       ball.position.x+=(_btX-ball.position.x)*_bak;ball.position.z+=(_btZ-ball.position.z)*_bak;}
       // Sprint 3D-BALL: parabola sull'esito — arco in base al tipo di azione
       if(ballArcActive){ballArcT+=aDt;const u=Math.min(ballArcT/ballArcDur,1);ball.position.y=0.42+Math.sin(u*Math.PI)*ballArcH;if(u>=1){ballArcActive=false;}}
       else{ball.position.y+=(0.42-ball.position.y)*Math.min(aDt*6,1);}
@@ -6908,6 +6912,7 @@ function ThreeMatchView(props){
           else if(t==="header"){ballArcH=3.2;ballArcDur=0.65;ballArcT=0;ballArcActive=true;}
           else if(t==="cross"||t==="freekick"){ballArcH=3.6;ballArcDur=0.82;ballArcT=0;ballArcActive=true;}
           else ballArcActive=false;
+          ballArcIsBG=false; // ATE-2: HL arc usa P.ballX/Y (target già settato dal sistema HL)
           if(ballArcActive)contactFlashT=0;} // QW-A: contact flash al kick/header
         if(_curPh==="hl_intro"||(_curPh==="hl_move"&&prevPhase==="playing")){repCount=0;repHead=0;replayDone=false;}
         if(_curPh!=="hl_result"&&replaying){replaying=false;setReplayOn(false);}
@@ -6926,11 +6931,13 @@ function ThreeMatchView(props){
       if(goalBurstT>=0){goalBurstT+=dt;const _u=Math.min(goalBurstT/1.8,1);
         goalBurstLight.intensity=(1-_u*_u)*6.0;goalBurstLight.position.x=goalBurstHome?-44:44;
         if(_u>=1){goalBurstLight.intensity=0;goalBurstT=-1;}}
-      // ATE-1: arco palla BG durante "playing" — si attiva solo quando bgAction.t cambia
+      // ATE-1/2: arco palla BG durante "playing" — cattura destinazione 3D esatta per sync orizzontale
       {const _ba=P.bgAction;
        if(_ba&&_ba.t&&_ba.t!==prevBgT&&_curPh==="playing"){prevBgT=_ba.t;
          const _arc=BALL_ARC_BY_TYPE[_ba.type];
-         if(_arc&&!ballArcActive){ballArcH=_arc.h;ballArcDur=_arc.dur;ballArcT=0;ballArcActive=true;contactFlashT=0;}}}
+         if(_arc&&!ballArcActive){ballArcH=_arc.h;ballArcDur=_arc.dur;ballArcT=0;ballArcActive=true;
+           ballArcIsBG=true;ballArcTgtX=G2X(_ba.ballEnd.x);ballArcTgtZ=G2Z(_ba.ballEnd.y); // ATE-2
+           contactFlashT=0;}}}
       // Sprint 3D-11C: pulse ambientale big match/derby
       if(bigMatchAmb){bigMatchAmb.intensity=0.08+Math.sin(now*0.0009)*0.04;}
       const _goalExcite=goalBurstT>=0?Math.max(0,1-goalBurstT/2.5):0;
