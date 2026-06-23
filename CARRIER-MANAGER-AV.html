@@ -4,10 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="theme-color" content="#2563eb">
-<meta name="description" content="Career Player Manager — gioco di carriera calcistica, single player browser game">
+<meta name="description" content="Elevora: Football Career Simulator — From prospect to legend">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="CPM">
+<meta name="apple-mobile-web-app-title" content="Elevora">
 <script>
 /* F-1: PWA — genera icone via Canvas, crea manifest blob, gestisce install prompt */
 (function(){
@@ -25,7 +25,7 @@
   var i192=mkIcon(192),i512=mkIcon(512);
   var al=document.createElement('link');al.rel='apple-touch-icon';al.href=i192;document.head.appendChild(al);
   var fl=document.createElement('link');fl.rel='icon';fl.type='image/png';fl.href=i192;document.head.appendChild(fl);
-  var mf={name:'Career Player Manager',short_name:'CPM',description:'Gioco di carriera calcistica — browser game',start_url:location.href.split('?')[0],scope:'./',display:'standalone',orientation:'portrait-primary',theme_color:'#2563eb',background_color:'#f0f7ff',icons:[{src:i192,sizes:'192x192',type:'image/png',purpose:'any maskable'},{src:i512,sizes:'512x512',type:'image/png',purpose:'any maskable'}]};
+  var mf={name:'Elevora: Football Career Simulator',short_name:'Elevora',description:'From prospect to legend — football career browser game',start_url:location.href.split('?')[0],scope:'./',display:'standalone',orientation:'portrait-primary',theme_color:'#2563eb',background_color:'#f0f7ff',icons:[{src:i192,sizes:'192x192',type:'image/png',purpose:'any maskable'},{src:i512,sizes:'512x512',type:'image/png',purpose:'any maskable'}]};
   var mb=new Blob([JSON.stringify(mf)],{type:'application/manifest+json'});
   var ml=document.createElement('link');ml.rel='manifest';ml.href=URL.createObjectURL(mb);document.head.appendChild(ml);
   window._cpmDp=null;
@@ -34,7 +34,7 @@
   window.addEventListener('appinstalled',function(){window._cpmDp=null;window.dispatchEvent(new Event('cpm_installed'));});
 })();
 </script>
-<title>Career Player Manager</title>
+<title>Elevora: Football Career Simulator</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -2542,7 +2542,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.7.1"; // Fase 2 nav: 8 tab → 5 container tab (Stagione, Carriera); sub-nav pills
+const GAME_VERSION="4.7.2"; // Fase 3 branding: Elevora — Football Career Simulator · From prospect to legend
 const SAVE_VERSION=6;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -9671,7 +9671,7 @@ function PwaInstallBanner(){
     <div onClick={()=>window._cpmInstall?.()} style={{display:'flex',alignItems:'center',gap:10,background:'#eff6ff',border:'1px solid #bfdbfe',borderRadius:12,padding:'10px 14px',marginBottom:12,cursor:'pointer'}}>
       <div style={{fontSize:20,lineHeight:1}}>📲</div>
       <div style={{flex:1}}>
-        <div style={{fontSize:11,fontWeight:700,color:'#1d4ed8'}}>Installa CPM come app</div>
+        <div style={{fontSize:11,fontWeight:700,color:'#1d4ed8'}}>Installa Elevora come app</div>
         <div style={{fontSize:10,color:'#3b82f6',marginTop:1}}>Tocca per aggiungere alla schermata principale</div>
       </div>
       <div style={{fontSize:14,color:'#3b82f6',fontWeight:700}}>›</div>
@@ -9732,8 +9732,9 @@ function HomeScreen({onNew,onLoad,onDelete,onImport,slots}){
       )}
       <div style={{textAlign:"center",marginBottom:20}}>
         <div style={{fontSize:60,marginBottom:6}}>⚽</div>
-        <h1 style={{fontSize:24,fontWeight:900,letterSpacing:-1,margin:"0 0 4px",color:TH.text}}>CAREER PLAYER MANAGER</h1>
-        <p style={{color:TH.muted,fontSize:12,margin:0}}>Lega A Primavera · Carriera calciatore</p>
+        <h1 style={{fontSize:30,fontWeight:900,letterSpacing:3,margin:"0 0 3px",color:TH.text,textTransform:"uppercase"}}>Elevora</h1>
+        <p style={{color:TH.primary,fontSize:11,margin:"0 0 3px",letterSpacing:1.2,textTransform:"uppercase",fontWeight:700}}>Football Career Simulator</p>
+        <p style={{color:TH.muted,fontSize:12,margin:0,fontStyle:"italic"}}>From prospect to legend</p>
       </div>
       <PwaInstallBanner/>
       {/* Save slots */}
@@ -11495,7 +11496,7 @@ const buildCareerCard=(p)=>{
     `Livello: ${p.ovr||60}  Carriera: ${sc}/1000`,
     `━━━━━━━━━━━━━━━━━━━━`,
     clubs.length>0?`Club: ${clubs.join(" → ")}`:"",
-    `#CPM #CareerPlayerManager`,
+    `#Elevora #FootballCareerSimulator`,
   ].filter(Boolean).join("\n");
 };
 
@@ -11676,7 +11677,7 @@ const generateBio=(p)=>{
 };
 /* === SPRINT 56 — TUTORIAL ONBOARDING === */
 const TUTORIAL_STEPS=[
-  {icon:"🌟",title:"Benvenuto in CPM!",text:"Sei {name}, un giovane talento con il sogno di diventare campione. Ogni settimana conta — allenati, gioca le partite e scrivi la tua storia."},
+  {icon:"🌟",title:"Benvenuto in Elevora!",text:"Sei {name}, un giovane talento con il sogno di diventare campione. Ogni settimana conta — allenati, gioca le partite e scrivi la tua storia."},
   {icon:"📋",title:"La Dashboard",text:"Qui trovi le tue statistiche, gli obiettivi stagionali e l'agenda settimanale. I tab in basso ti portano su Calendar, Standings e Profile."},
   {icon:"⚽",title:"Gioca le Partite",text:"Quando si avvicina una partita appare il tasto GIOCA. Non saltarla! Ogni gol, ogni assist e ogni trofeo restano nel tuo diario di carriera."},
   {icon:"💪",title:"Allenamento Automatico",text:"Ogni settimana il mister prepara il piano di allenamento. Avanza la settimana per ricevere il suo feedback e far crescere i tuoi attributi."},
@@ -18133,7 +18134,7 @@ function App(){
   };
   const wrap=ch=>(
     <div className="cpm-root" style={{background:TH.bgGrad,color:TH.text,fontFamily:"'Barlow','Segoe UI',sans-serif"}}>
-      <div style={{position:"fixed",bottom:6,right:8,zIndex:9999,fontSize:11,color:"#fff",pointerEvents:"none",letterSpacing:"0.05em",fontFamily:"monospace",background:"rgba(0,0,0,0.55)",padding:"2px 7px",borderRadius:6}}>CPM {GAME_VERSION}</div>
+      <div style={{position:"fixed",bottom:6,right:8,zIndex:9999,fontSize:11,color:"#fff",pointerEvents:"none",letterSpacing:"0.05em",fontFamily:"monospace",background:"rgba(0,0,0,0.55)",padding:"2px 7px",borderRadius:6}}>ELV {GAME_VERSION}</div>
       <style>{`
         *{box-sizing:border-box;}
         html,body,#root{height:100%;}
