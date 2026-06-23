@@ -2612,7 +2612,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.41.0"; // Sprint CIN-2: GK tuffo, difensore stumble/spin — reazione avversario a hl_result
+const GAME_VERSION="4.42.0"; // Sprint 3DV-1: palla r=0.65, scia bianca, no arancione, halo ridotto, ring proporzionale
 const SAVE_VERSION=6;
 // Sprint ENV — ambiente rilevato automaticamente dal runtime (non gestito manualmente).
 // PRODUCTION = deploy GitHub Pages (*.github.io). Tutto il resto (staging githack, locale, localhost) = TEST.
@@ -6717,12 +6717,12 @@ function ThreeMatchView(props){
     const _placeRow=(list,xRow)=>{const n=list.length;list.forEach((m,i)=>{m._wx=xRow;m._wz=n>1?(-28+56*i/(n-1)):0;});};
     _placeRow(_homeMeshes,-15);_placeRow(_awayMeshes,-7);
 
-    // Palla — MT-6: CanvasTexture con patch pentagonali nere (soccer ball pattern)
-    const _mkBallTex=()=>{const c=document.createElement('canvas');c.width=c.height=128;const ctx=c.getContext('2d');ctx.fillStyle='#f0f0f0';ctx.fillRect(0,0,128,128);ctx.fillStyle='#1a1a1a';[[64,64],[22,40],[106,40],[22,88],[106,88],[64,10],[64,118]].forEach(([u,v])=>{ctx.beginPath();for(let i=0;i<5;i++){const a=i/5*Math.PI*2-Math.PI/2;ctx.lineTo(u+Math.cos(a)*13,v+Math.sin(a)*13);}ctx.closePath();ctx.fill();});return new THREE.CanvasTexture(c);};
-    const ball=new THREE.Mesh(new THREE.SphereGeometry(0.42,14,10),new THREE.MeshPhongMaterial({map:_mkBallTex(),shininess:90}));
-    ball.castShadow=true;ball.position.set(G2X(ballX||50),0.42,G2Z(ballY||50));scene.add(ball);
-    // Sprint 3D-BALL: alone occlusione (depthTest:false) — palla visibile anche dietro i giocatori
-    const ballHalo=new THREE.Mesh(new THREE.SphereGeometry(0.70,10,7),new THREE.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:0.10,depthTest:false,depthWrite:false}));
+    // Palla — MT-6: CanvasTexture con patch pentagonali nere (soccer ball pattern) — 3DV-1: raggio 0.65 (era 0.42), texture 256px, sfondo off-white
+    const _mkBallTex=()=>{const c=document.createElement('canvas');c.width=c.height=256;const ctx=c.getContext('2d');ctx.fillStyle='#f2f2f2';ctx.fillRect(0,0,256,256);ctx.fillStyle='#1a1a1a';[[128,128],[44,82],[212,82],[44,174],[212,174],[128,22],[128,234],[22,128],[234,128]].forEach(([u,v])=>{ctx.beginPath();for(let i=0;i<5;i++){const a=i/5*Math.PI*2-Math.PI/2;ctx.lineTo(u+Math.cos(a)*22,v+Math.sin(a)*22);}ctx.closePath();ctx.fill();});return new THREE.CanvasTexture(c);};
+    const ball=new THREE.Mesh(new THREE.SphereGeometry(0.65,20,12),new THREE.MeshPhongMaterial({map:_mkBallTex(),shininess:80}));
+    ball.castShadow=true;ball.position.set(G2X(ballX||50),0.65,G2Z(ballY||50));scene.add(ball);
+    // Sprint 3D-BALL: alone occlusione (depthTest:false) — palla visibile anche dietro i giocatori — 3DV-1: raggio 0.95, opacità ridotta
+    const ballHalo=new THREE.Mesh(new THREE.SphereGeometry(0.95,10,7),new THREE.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:0.05,depthTest:false,depthWrite:false}));
     scene.add(ballHalo);
     // Sprint 3D-6b + BALL: scia palla 3D (x,y,z) — ghost-dots colorati per tipo azione, depthTest:false
     const TRAIL_N=14,trailDots=[],trailHist=[];
@@ -6790,7 +6790,7 @@ function ThreeMatchView(props){
     const confPts=new THREE.Points(confGeo,confMat);scene.add(confPts);
     let confActive=false;
     // LT-1: anello contact point — pre-allocato, attivato sul kick/header
-    const ctFlash=new THREE.Mesh(new THREE.RingGeometry(0.08,0.52,14),new THREE.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:0,side:THREE.DoubleSide,depthWrite:false}));
+    const ctFlash=new THREE.Mesh(new THREE.RingGeometry(0.18,1.0,16),new THREE.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:0,side:THREE.DoubleSide,depthWrite:false}));// 3DV-1: ring proporzionale a ball r=0.65
     ctFlash.rotation.x=-Math.PI/2;ctFlash.position.y=0.06;scene.add(ctFlash);
     // ATE-4: zona ring — anello sul campo che evidenzia la zona HL durante intro/move/choose
     const zoneRingMat=new THREE.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:0,side:THREE.DoubleSide,depthWrite:false});
@@ -6912,21 +6912,21 @@ function ThreeMatchView(props){
        const _bak=ballArcActive&&ballArcIsBG?Math.min(1,aDt*(3.5/Math.max(ballArcDur,0.2))):ak;
        ball.position.x+=(_btX-ball.position.x)*_bak;ball.position.z+=(_btZ-ball.position.z)*_bak;}
       // Sprint 3D-BALL: parabola sull'esito — arco in base al tipo di azione
-      if(ballArcActive){ballArcT+=aDt;const u=Math.min(ballArcT/ballArcDur,1);ball.position.y=0.42+Math.sin(u*Math.PI)*ballArcH;if(u>=1){ballArcActive=false;}}
-      else{ball.position.y+=(0.42-ball.position.y)*Math.min(aDt*6,1);}
+      if(ballArcActive){ballArcT+=aDt;const u=Math.min(ballArcT/ballArcDur,1);ball.position.y=0.65+Math.sin(u*Math.PI)*ballArcH;if(u>=1){ballArcActive=false;}}
+      else{ball.position.y+=(0.65-ball.position.y)*Math.min(aDt*6,1);}// 3DV-1: y rest 0.65 (era 0.42)
       ballHalo.position.copy(ball.position);
-      const _hTgt=isHL?0.18:0.08;ballHalo.material.opacity+=(_hTgt-ballHalo.material.opacity)*Math.min(dt*3,1);
+      const _hTgt=isHL?0.10:0.04;ballHalo.material.opacity+=(_hTgt-ballHalo.material.opacity)*Math.min(dt*3,1);// 3DV-1: opacità halo ridotta (era 0.18/0.08)
       const moved=Math.hypot(ball.position.x-obx,ball.position.y-oby,ball.position.z-obz);
       // QW-B: rotazione fisica — asse determinato dalla direzione di movimento
       const _bvx=ball.position.x-obx,_bvz=ball.position.z-obz;
       const _rotF=2.4+moved*0.8;ball.rotation.z-=_bvx*_rotF;ball.rotation.x+=_bvz*_rotF;ball.rotation.y+=0.015;
       // QW-A: contact flash — impulso di scala pallone al kick/header (0.18s)
       if(contactFlashT>=0){contactFlashT+=dt;const _cf=Math.max(0,1-contactFlashT/0.12);
-        ball.scale.setScalar(1+_cf*0.42);ballHalo.material.opacity=Math.max(ballHalo.material.opacity,_cf*0.55);
+        ball.scale.setScalar(1+_cf*0.22);ballHalo.material.opacity=Math.max(ballHalo.material.opacity,_cf*0.28);// 3DV-1: flash più sottile
         // LT-1: ring espande da 1× a 3.8× e svanisce in 0.20s
         ctFlash.position.x=ball.position.x;ctFlash.position.z=ball.position.z;ctFlash.scale.setScalar(1+(1-_cf)*2.8);ctFlash.material.opacity=_cf*0.60;
         if(contactFlashT>0.20)contactFlashT=-1;}
-      else{ball.scale.setScalar(isHL?1.4:1.0);ctFlash.material.opacity=0;} // CIN-1: palla 40% più grande durante HL
+      else{ball.scale.setScalar(1.0);ctFlash.material.opacity=0;} // 3DV-1: scala fissa 1.0 — base già r=0.65 (era 1.4× HL → sfera gigante)
       const bx=ball.position.x,bz=ball.position.z;
       const isWalk=P.matchPhase==="walkout";
       // transizioni di fase: trigger animazione esito + gestione buffer/replay
@@ -7112,13 +7112,13 @@ function ThreeMatchView(props){
       // ---- Scia palla 3D — Sprint 3D-BALL (HL intensa + mini-trail in gioco) ----
       trailHist.push(ball.position.x,ball.position.y,ball.position.z);
       if(trailHist.length>TRAIL_N*3)trailHist.splice(0,trailHist.length-TRAIL_N*3);
-      const _tCol=((P.hlType==="shot"||P.hlType==="penalty")?0xff8822:(P.hlType==="header")?0x44ccff:(P.hlType==="cross"||P.hlType==="freekick")?0xffcc33:0xffffff);
+      // 3DV-1: scia sempre bianca — rimossi arancione/giallo/cyan; scale e opacità ridotti (no palla di fuoco)
       const _showTrail=isHL||(P.matchPhase==="playing"&&moved>0.5);
       for(let i=0;i<TRAIL_N;i++){const d=trailDots[i],j=i*3;
-        if(_showTrail&&j<trailHist.length){d.visible=true;d.position.set(trailHist[j],trailHist[j+1],trailHist[j+2]);d.material.color.setHex(_tCol);
+        if(_showTrail&&j<trailHist.length){d.visible=true;d.position.set(trailHist[j],trailHist[j+1],trailHist[j+2]);d.material.color.setHex(0xffffff);
           const age=(i+1)/TRAIL_N;
-          if(isHL){d.material.opacity=0.12+age*0.58;d.scale.setScalar(0.46+age*0.90*(1+Number(ballArcActive)*0.4));}
-          else{d.material.opacity=0.06+age*0.20;d.scale.setScalar(0.32+age*0.52);}
+          if(isHL){d.material.opacity=0.06+age*0.24;d.scale.setScalar(0.20+age*0.36);}
+          else{d.material.opacity=0.03+age*0.10;d.scale.setScalar(0.12+age*0.20);}
         }else d.visible=false;}
       // Sprint 3D-G1: sweep cromatico cartelloni LED (onda lenta, tinte club, leggermente più viva negli HL)
       const _ledPhase=now*0.0011,_ledOff=Math.floor(_ledPhase);
