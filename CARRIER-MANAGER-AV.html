@@ -2291,6 +2291,19 @@ const FORMATION_AWAY=[[95,50],[78,15],[78,35],[78,65],[78,85],[62,25],[62,50],[6
 ======================================== */
 const rng=(a,b)=>Math.floor(Math.random()*(b-a+1))+a;
 const clamp=(v,lo,hi)=>Math.max(lo,Math.min(hi,v));
+// Sprint POP — crescita popolarità realistica: rendimenti decrescenti + freno inizio carriera.
+// I guadagni positivi vengono attenuati in base a popolarità attuale, partite in carriera e stagione.
+// Le penalità (valori <=0) restano piene, così le scelte sbagliate pesano sempre.
+function popGain(p,amt){
+  if(!amt||amt<=0)return amt||0;
+  const cur=p.popularity||20;
+  const tm=p.totalMatches||0,seas=p.season||1;
+  // freno inizio carriera: ~0.40 alla prima stagione, sale verso 1.0 con esperienza (~5 stagioni / 100+ match)
+  const career=Math.min(1,0.40+tm/130+(seas-1)*0.09);
+  // rendimenti decrescenti: superare 65/80/90 è progressivamente più difficile — i top sono pochi
+  const dim=cur<50?1:cur<65?0.68:cur<80?0.42:cur<90?0.24:0.12;
+  return Math.max(1,Math.round(amt*career*dim));
+}
 const pick=arr=>arr[Math.floor(Math.random()*arr.length)];
 const shuffle=arr=>{const a=[...arr];for(let i=a.length-1;i>0;i--){const j=rng(0,i);[a[i],a[j]]=[a[j],a[i]];}return a;};
 const wPick=evts=>{const tot=evts.reduce((s,e)=>s+(e.w||1),0);let r=Math.random()*tot;for(const e of evts){r-=(e.w||1);if(r<=0)return e;}return evts[0];};
@@ -2590,8 +2603,11 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.12.2"; // Club dei sogni con logo+nome esteso · logo app (LogoMark) su tutte le schermate di gioco/create/offerte
+const GAME_VERSION="4.13.0"; // Convocazioni nazionale meritocratiche · popolarità a crescita graduale · indicatore ambiente TEST/PROD
 const SAVE_VERSION=6;
+// Sprint ENV — ambiente rilevato automaticamente dal runtime (non gestito manualmente).
+// PRODUCTION = deploy GitHub Pages (*.github.io). Tutto il resto (staging githack, locale, localhost) = TEST.
+const APP_ENV=(()=>{try{const h=(location.hostname||"").toLowerCase();if(h.endsWith("github.io"))return"PRODUCTION";return"TEST";}catch(e){return"TEST";}})();
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
 // === POST VITTORIA ===
@@ -12249,7 +12265,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
         ...p,
         journalists:updJournalists,
         morale:clamp((p.morale||70)+(ef.m||0),0,100),
-        popularity:clamp((p.popularity||20)+(ef.p||0)+(isPolemic?-8:0),0,100),
+        popularity:clamp((p.popularity||20)+popGain(p,ef.p||0)+(isPolemic?-8:0),0,100),
         coachTrust:clamp((p.coachTrust||60)+(ef.t||0)+(isPolemic?-5:0),0,100),
         form:clamp((p.form||70)+(ef.f||0),30,95),
         value:Math.max(0.5,(p.value||0.8)+(ef.v||0)),
@@ -12476,7 +12492,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
         morale:clamp((p.morale||70)+(ef.morale||0),0,100),
         form:clamp((p.form||70)+(ef.form||0),30,95),
         coachTrust:clamp((p.coachTrust||60)+(ef.coachTrust||0),0,100),
-        popularity:clamp((p.popularity||20)+(ef.popularity||0),0,100),
+        popularity:clamp((p.popularity||20)+popGain(p,ef.popularity||0),0,100),
         value:Math.max(0.5,(p.value||0.8)+(ef.value||0)),
         transferListed:ef.transferListed===false?false:(p.transferListed||false),
         log:[`⚡ Momento: ${careerMomentModal?.name||"importante"}`,...(p.log||[])].slice(0,60),
@@ -13030,7 +13046,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
         morale:clamp((p.morale||70)+(ef.morale||0),0,100),
         fatigue:clamp((p.fatigue||0)+(ef.fatigue||0),0,100),
         form:clamp((p.form||70)+(ef.form||0),30,95),
-        popularity:clamp((p.popularity||20)+(ef.popularity||0),0,100),
+        popularity:clamp((p.popularity||20)+popGain(p,ef.popularity||0),0,100),
         coachTrust:clamp((p.coachTrust||60)+(ef.coachTrust||0),0,100),
         value:Math.max(0.5,(p.value||0.8)+(ef.value||0)),
       };
@@ -13132,7 +13148,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     const doInterview=Math.random()<0.20; // Sprint 15: 20% chance of interview instead of weekLiveModal
     // International call-up: 5% chance when OVR≥65 and proStatus==="pro"
     if((player.proStatus||"u18")==="pro"&&(player.ovr||60)>=65&&Math.random()<0.05){
-      setPlayer(p=>({...p,morale:clamp((p.morale||70)+15,0,100),popularity:clamp((p.popularity||20)+10,0,100),log:[`🌍 Convocazione in Nazionale! (S.${p.season||1} W.${p.week||1})`,...(p.log||[])].slice(0,60)}));
+      setPlayer(p=>({...p,morale:clamp((p.morale||70)+15,0,100),popularity:clamp((p.popularity||20)+popGain(p,10),0,100),log:[`🌍 Convocazione in Nazionale! (S.${p.season||1} W.${p.week||1})`,...(p.log||[])].slice(0,60)}));
       notify("🌍 Convocazione in Nazionale! Morale e popolarità aumentati.",TH.success);
     }
     setPlayer(p=>{
@@ -13149,7 +13165,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
           morale:clamp((p.morale||70)+(ef.morale||0),0,100),
           fatigue:clamp((p.fatigue||0)+(ef.fatigue||0),0,100),
           form:clamp((p.form||70)+(ef.form||0),30,95),
-          popularity:clamp((p.popularity||20)+(ef.popularity||0),0,100),
+          popularity:clamp((p.popularity||20)+popGain(p,ef.popularity||0),0,100),
           coachTrust:clamp((p.coachTrust||60)+(ef.coachTrust||0),0,100),
           value:Math.max(0.5,(p.value||0.8)+(ef.value||0)),
         };
@@ -13470,7 +13486,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       if(!p.injured&&Math.random()<0.25){
         const re=WEEKLY_RANDOM_EVENTS[Math.floor(Math.random()*WEEKLY_RANDOM_EVENTS.length)];
         const ef=re.ef||{};
-        const extras={morale:clamp((p.morale||70)+(ef.morale||0),0,100),fatigue:clamp((p.fatigue||0)+(ef.fatigue||0),0,100),form:clamp((p.form||70)+(ef.form||0),30,95),popularity:clamp((p.popularity||20)+(ef.popularity||0),0,100),coachTrust:clamp((p.coachTrust||60)+(ef.coachTrust||0),0,100),value:Math.max(0.5,(p.value||0.8)+(ef.value||0))};
+        const extras={morale:clamp((p.morale||70)+(ef.morale||0),0,100),fatigue:clamp((p.fatigue||0)+(ef.fatigue||0),0,100),form:clamp((p.form||70)+(ef.form||0),30,95),popularity:clamp((p.popularity||20)+popGain(p,ef.popularity||0),0,100),coachTrust:clamp((p.coachTrust||60)+(ef.coachTrust||0),0,100),value:Math.max(0.5,(p.value||0.8)+(ef.value||0))};
         setTimeout(()=>setWeekLiveModal({event:re,changes:{morale:ef.morale||0,form:ef.form||0,fatigue:ef.fatigue||0}}),100);
         updP={...updP,...extras};
       }
@@ -13690,21 +13706,38 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     // S41: cup auto-sim notifications are fired inside the auto-sim block (via setTimeout)
     // ── National team call-up check (BUG4 fix: skip busy weeks to avoid modal/screen conflicts) ──
     const _callupBusyWk=[9,10,19,20,28,35].includes(weekVal);
-    if(!isInU18&&!_callupBusyWk&&(player.popularity||0)>=55&&(player.ovr||0)>=70&&!player.injured){
+    if(!isInU18&&!_callupBusyWk&&!player.injured){
       const caps=player.nationalCaps||0;
       const lastNat=player.lastNationalSeason||0;
       const curSeas=player.season||1;
       const isFirst=caps===0;
       const seasonOpen=curSeas>lastNat;
-      if((isFirst||seasonOpen)&&Math.random()<(isFirst?0.22:0.13)){
-        // Sprint 43: match will be played interactively — pass only lobby data
-        const _allNat=["Italia","Spagna","Francia","Germania","Inghilterra","Portogallo","Brasile","Argentina","Olanda","Belgio"];
-        const _oppPool=_allNat.filter(n=>n!==(player.nation||"Italia"));
-        const _callupOpp=_oppPool[Math.floor(Math.random()*_oppPool.length)]||"Avversario";
-        setTimeout(()=>{
-          setNationalCallupData({nation:player.nation||"Italia",isFirst,newCaps:caps+1,opp:_callupOpp});
-          setScreen("nationalCallup");
-        },700);
+      // Sprint NAZ — convocazione meritocratica: livello nazionale, OVR, età, rendimento, continuità, reputazione.
+      // Forza della nazionale: le top sono molto più selettive; le minori più permissive ma sempre credibili.
+      const NAT_LEVEL={"Brasile":92,"Francia":91,"Argentina":90,"Spagna":89,"Inghilterra":89,"Germania":87,"Portogallo":87,"Italia":86,"Olanda":85,"Belgio":84};
+      const natLvl=NAT_LEVEL[player.nation]||72;  // nazioni minori: soglia più bassa
+      const ovrGate=natLvl-8;                      // es. Italia 86 → serve OVR≥78; minore 72 → ≥64
+      const ovr=player.ovr||60,age=player.age||18,frm=player.form||70,rep=player.popularity||20;
+      const sg=player.goals||0,sa=player.assists||0,sm=player.matches||0;
+      const contrib=sm>0?(sg+sa*0.5)/sm:0;         // gol+assist per partita giocata
+      const continuity=Math.min(1,sm/14);          // titolarità/continuità nella stagione
+      // Idoneità: di quanto il giocatore supera la soglia, pesando rendimento, continuità, forma e reputazione.
+      let elig=(ovr-ovrGate)+contrib*10+continuity*6+(rep-50)*0.10+(frm-70)*0.10;
+      if(isFirst&&age<20)elig-=(20-age)*4;         // niente convocazioni stabili solo per il potenziale
+      if(curSeas<=2)elig-=(3-curSeas)*5;           // freno alle primissime stagioni
+      if(ovr>=ovrGate&&elig>0&&(isFirst||seasonOpen)){
+        const baseP=isFirst?0.10:0.16;
+        const callP=clamp(baseP+elig*0.012,0.03,0.55);
+        if(Math.random()<callP){
+          // Sprint 43: match will be played interactively — pass only lobby data
+          const _allNat=["Italia","Spagna","Francia","Germania","Inghilterra","Portogallo","Brasile","Argentina","Olanda","Belgio"];
+          const _oppPool=_allNat.filter(n=>n!==(player.nation||"Italia"));
+          const _callupOpp=_oppPool[Math.floor(Math.random()*_oppPool.length)]||"Avversario";
+          setTimeout(()=>{
+            setNationalCallupData({nation:player.nation||"Italia",isFirst,newCaps:caps+1,opp:_callupOpp});
+            setScreen("nationalCallup");
+          },700);
+        }
       }
     }
   };
@@ -14042,7 +14075,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       if(offer.isStayU18){
         return{...base,log:[`🔄 Resto in Under 18 (S.${newSeason})`,...(p.log||[])].slice(0,60)};
       }
-      return{...base,club:offer.club,isU18:false,proStatus:"pro",value:Math.max(0.5,(p.value||0.8)+0.5),popularity:clamp((p.popularity||20)+15,0,100),log:[`🎓 PROFESSIONISTA! ${offer.contractType} con ${offer.club?.n||offer.club?.name}!`,...(p.log||[])].slice(0,60)};
+      return{...base,club:offer.club,isU18:false,proStatus:"pro",value:Math.max(0.5,(p.value||0.8)+0.5),popularity:clamp((p.popularity||20)+popGain(p,15),0,100),log:[`🎓 PROFESSIONISTA! ${offer.contractType} con ${offer.club?.n||offer.club?.name}!`,...(p.log||[])].slice(0,60)};
     });
     if(offer.isStayU18){setScreen("dashboard");setTab("dashboard");notify("🔄 Resti in Under 18!",TH.warning);return;}
     setPresentationData({club:offer.club,contractType:offer.contractType||"Primo contratto professionistico",playerName:player.name});
@@ -14198,7 +14231,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     setScreen("clubPresentation");
     // S11.7: record transfer bonus (OVR≥85 to prestige≥90 club)
     const isRecordTransfer=(player.ovr||65)>=85&&(tc.club?.p||0)>=90;
-    if(isRecordTransfer){setTimeout(()=>notify(`🌟 TRASFERIMENTO RECORD! Popolarità e valore alle stelle!`,"#f59e0b"),800);setPlayer(p=>({...p,popularity:clamp((p.popularity||20)+20,0,100),value:Math.min((p.value||1)*1.5,50)}));}
+    if(isRecordTransfer){setTimeout(()=>notify(`🌟 TRASFERIMENTO RECORD! Popolarità e valore alle stelle!`,"#f59e0b"),800);setPlayer(p=>({...p,popularity:clamp((p.popularity||20)+popGain(p,20),0,100),value:Math.min((p.value||1)*1.5,50)}));}
   };
 
   const ovr=player.ovr||calcOvr(player.stats),week=player.week||1,season=player.season||1;
@@ -14620,7 +14653,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                     morale:clamp((p.morale||70)+(ef.morale||0),0,100),
                     form:clamp((p.form||70)+(ef.form||0),30,95),
                     fatigue:clamp((p.fatigue||0)+(ef.fatigue||0),0,100),
-                    popularity:clamp((p.popularity||20)+(ef.popularity||0),0,100),
+                    popularity:clamp((p.popularity||20)+popGain(p,ef.popularity||0),0,100),
                     diary:[...(p.diary||[]),{season:p.season||1,week:p.week||1,type:"milestone",e:"🧑‍💼",headline:`Verifica trimestrale: ${monthlyReviewModal.perf==="excellent"?"ottima forma":"media forma"}`,body:`W.${p.week||1} — risposta: "${ch.txt}"`,color:monthlyReviewModal.perf==="excellent"?"#16a34a":monthlyReviewModal.perf==="bad"?"#dc2626":"#ca8a04"}].slice(-80),
                   }));
                   setMonthlyReviewModal(null);
@@ -18336,7 +18369,10 @@ function App(){
   };
   const wrap=ch=>(
     <div className="cpm-root" style={{background:TH.bgGrad,color:TH.text,fontFamily:"'Barlow','Segoe UI',sans-serif"}}>
-      <div style={{position:"fixed",bottom:6,right:8,zIndex:9999,fontSize:11,color:"#fff",pointerEvents:"none",letterSpacing:"0.05em",fontFamily:"monospace",background:"rgba(0,0,0,0.55)",padding:"2px 7px",borderRadius:6}}>ELV {GAME_VERSION}</div>
+      <div style={{position:"fixed",bottom:6,right:8,zIndex:9999,display:"flex",alignItems:"center",gap:6,pointerEvents:"none",fontFamily:"monospace",fontSize:11,letterSpacing:"0.05em"}}>
+        <span title="Ambiente di esecuzione" style={{color:"#fff",fontWeight:800,padding:"2px 7px",borderRadius:6,background:APP_ENV==="PRODUCTION"?"rgba(22,163,74,0.85)":"rgba(217,119,6,0.95)",boxShadow:APP_ENV==="PRODUCTION"?"none":"0 0 0 1px rgba(255,255,255,0.35)"}}>{APP_ENV==="PRODUCTION"?"PROD":"TEST"}</span>
+        <span style={{color:"#fff",background:"rgba(0,0,0,0.55)",padding:"2px 7px",borderRadius:6}}>ELV {GAME_VERSION}</span>
+      </div>
       <style>{`
         *{box-sizing:border-box;}
         html,body,#root{height:100%;}
