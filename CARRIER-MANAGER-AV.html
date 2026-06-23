@@ -2612,7 +2612,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.34.0"; // Sprint 3D-H4: feature facciali (MT-2) + texture pallone (MT-6) + contact ring (LT-1)
+const GAME_VERSION="4.35.0"; // Sprint ATE-1: Action Sync Engine — bgAction arc durante "playing" + hlType data-driven
 const SAVE_VERSION=6;
 // Sprint ENV — ambiente rilevato automaticamente dal runtime (non gestito manualmente).
 // PRODUCTION = deploy GitHub Pages (*.github.io). Tutto il resto (staging githack, locale, localhost) = TEST.
@@ -6556,7 +6556,7 @@ function ThreeMatchView(props){
     stadiumHomeCol,stadiumAwayCol,stadiumStyle=0,ballX,ballY,
     matchPhase,onWalkoutDone,isDesktop=false,
     timeOfDay,weather,kickoffHour,attendance,
-    isDerby=false,isBigGame=false}=props;
+    isDerby=false,isBigGame=false,bgAction=null}=props;
   const mountRef=useRef(null);
   const sr=useRef({players:[],ball:null,hero:null,raf:null,renderer:null,scene:null,camera:null});
   const propsRef=useRef(props);
@@ -6786,6 +6786,9 @@ function ThreeMatchView(props){
     let resultT=0;
     // Sprint 3D-BALL: arco parabolico della palla (shot/header/cross/freekick/penalty)
     let ballArcT=0,ballArcDur=0,ballArcH=0,ballArcActive=false;
+    // ATE-1: arco BG_MATCH per tipo azione durante "playing"
+    let prevBgT=0;
+    const BALL_ARC_BY_TYPE={shot:{h:2.8,dur:0.52},cross:{h:3.2,dur:0.68},save:{h:1.8,dur:0.55},tackle:{h:0.4,dur:0.35},pass:{h:0.9,dur:0.48}};
     // Sprint 3D-11A: reazione folla al gol — burst luce calda + camera shake
     let prevWaveT=0,goalBurstT=-1,goalBurstHome=false,shakePow=0,contactFlashT=-1,celebT=-1;
     // Sprint 3D-8b: replay con riavvolgimento — ring buffer posizioni (≈2.5s) + macchina a stati
@@ -6923,6 +6926,11 @@ function ThreeMatchView(props){
       if(goalBurstT>=0){goalBurstT+=dt;const _u=Math.min(goalBurstT/1.8,1);
         goalBurstLight.intensity=(1-_u*_u)*6.0;goalBurstLight.position.x=goalBurstHome?-44:44;
         if(_u>=1){goalBurstLight.intensity=0;goalBurstT=-1;}}
+      // ATE-1: arco palla BG durante "playing" — si attiva solo quando bgAction.t cambia
+      {const _ba=P.bgAction;
+       if(_ba&&_ba.t&&_ba.t!==prevBgT&&_curPh==="playing"){prevBgT=_ba.t;
+         const _arc=BALL_ARC_BY_TYPE[_ba.type];
+         if(_arc&&!ballArcActive){ballArcH=_arc.h;ballArcDur=_arc.dur;ballArcT=0;ballArcActive=true;contactFlashT=0;}}}
       // Sprint 3D-11C: pulse ambientale big match/derby
       if(bigMatchAmb){bigMatchAmb.intensity=0.08+Math.sin(now*0.0009)*0.04;}
       const _goalExcite=goalBurstT>=0?Math.max(0,1-goalBurstT/2.5):0;
@@ -8000,6 +8008,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   const [matchEvents,setMatchEvents]=useState([]); // Sprint 113: {min,type,txt} key events for ended screen
   const lastBGEvtRef=useRef([]); // Sprint 113: last 3 BG_MATCH txt values — dedup
   const [waveEvent,setWaveEvent]=useState(null);
+  const [bgAction,setBgAction]=useState(null); // ATE-1: tipo azione corrente per arco palla 3D
   const [actionEffect,setActionEffect]=useState(null);
   const [screenFlash,setScreenFlash]=useState(null);
   const [floatGoal,setFloatGoal]=useState(null);
@@ -8029,6 +8038,8 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     defend_goal:[{x:5,y:50},{x:8,y:20},{x:8,y:42},{x:8,y:58},{x:8,y:80},{x:16,y:30},{x:16,y:50},{x:16,y:70},{x:26,y:38},{x:26,y:62}],
     opp_goal:  [{x:5,y:50},{x:75,y:18},{x:75,y:38},{x:75,y:62},{x:75,y:82},{x:64,y:25},{x:64,y:75},{x:52,y:22},{x:52,y:50},{x:52,y:78}],
   };
+  // ATE-1: mappa preset drift → tipo arco palla per ThreeMatchView durante "playing"
+  const BG_ARC_MAP={attack_goal:"shot",attack:"shot",wide_right:"cross",opp_goal:"save",defend_goal:"save",retreat:"tackle",midfield:"pass"};
 
   const keysRef=useRef(new Set());
   const moveRef=useRef(null);
@@ -8558,6 +8569,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           }
           if(ev.ms)setMxStats(s=>({shots:s.shots+(ev.ms.shots||0),oppShots:s.oppShots+(ev.ms.oppShots||0),fouls:s.fouls+(ev.ms.fouls||0),corners:s.corners+(ev.ms.corners||0)}));
           if(ev.pd&&DRIFT_PRESETS[ev.pd])driftTargetsRef.current=DRIFT_PRESETS[ev.pd];
+          if(ev.pd&&BG_ARC_MAP[ev.pd])setBgAction({type:BG_ARC_MAP[ev.pd],t:Date.now(),ballEnd:ev.bpos||{x:50,y:50}}); // ATE-1
           if(ev.ef==="team_goal"||ev.ef==="opp_goal")setWaveEvent({t:Date.now(),home:ev.ef==="team_goal"});
           // Crowd chant triggers — tutti i setTimeout tracciati in chantTimersRef
           if(ev.ef==="team_goal"){
@@ -9080,20 +9092,24 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
 
           {/* ── Field + Panel: responsive layout ── */}
           {(()=>{const _isHL=["hl_move","hl_choose","hl_result","hl_intro"].includes(phase);
-          // Sprint 3D-7: deriva il tipo di highlight (SOLA LETTURA: situazione + azione scelta) per la regia 3D
+          // ATE-1: hlType data-driven — stat > sitType > keyword > zone fallback
           let _hlType=null;
-          if(_isHL){const _sit=situations[hlIdx],_txt=_sit?.text||"",_lbl=(chosenAct?.label||"").toLowerCase(),_st=chosenAct?.stat;
+          if(_isHL){const _sit=situations[hlIdx],_txt=_sit?.text||"",_lbl=(chosenAct?.label||"").toLowerCase(),_st=chosenAct?.stat,_sitType=_sit?.type;
             if(/RIGORE|igore/.test(_txt))_hlType="penalty";
             else if(/unizione/.test(_txt))_hlType="freekick";
+            else if(_st==="tiro")_hlType="shot";
+            else if(_st==="passaggio")_hlType="pass";
+            else if(_st==="dribbling")_hlType="dribble";
+            else if(_sitType==="def")_hlType="tackle";
             else if(chosenAct){
-              if(/testa|stacco|incornata|colpo di t/.test(_lbl))_hlType="header";
-              else if(/contrasto|tackle|scivolata|anticipo|intercett|pressing|recuper/.test(_lbl))_hlType="tackle";
+              if(/testa|incornata|stacco/.test(_lbl))_hlType="header";
+              else if(/contrasto|tackle|scivolata|intercett/.test(_lbl))_hlType="tackle";
               else if(/cross|traversone/.test(_lbl))_hlType="cross";
-              else if(/dribbl|finta|elastico|tunnel|sombrero|salta l/.test(_lbl)||_st==="dribbling")_hlType="dribble";
-              else if(_st==="tiro"||/tiro|conclus|rovesciata|pallonetto|vol[eé]|destro|sinistro|bomba|piattone|stoccata/.test(_lbl))_hlType="shot";
-              else if(_st==="passaggio"||/passaggio|filtrante|imbucata|smarca|verticalizz/.test(_lbl))_hlType="pass";
+              else if(/dribbl|finta|tunnel|sombrero/.test(_lbl))_hlType="dribble";
+              else if(/tiro|conclus|rovesciata|bomba|stoccata/.test(_lbl))_hlType="shot";
+              else if(/passaggio|filtrante|imbucata/.test(_lbl))_hlType="pass";
             }
-            if(!_hlType){if(_sit?.type==="def")_hlType="tackle";else{const _z=_sit?.zones?.[0];_hlType=(_z==="area"||_z==="bordo")?"shot":(_z==="fascia")?"cross":"build";}}
+            if(!_hlType){const _z=_sit?.zones?.[0];_hlType=(_z==="area"||_z==="bordo")?"shot":(_z==="fascia")?"cross":"build";}
           }
           return(
           <div style={isNarrow?{display:"flex",flexDirection:"column",flex:1,minHeight:0}:{display:"flex",flexDirection:"row",alignItems:"stretch",flex:1,minHeight:0,overflow:"hidden"}}>
@@ -9108,7 +9124,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                 heroKitCol={heroKitCol} heroKitCol2={heroKitCol2}
                 stadiumHomeCol={scoreHomeCol} stadiumAwayCol={scoreAwayCol}
                 stadiumStyle={getStadiumStyle(homeTeamObj)}
-                ballX={ballPos.x} ballY={ballPos.y} hlType={_hlType}
+                ballX={ballPos.x} ballY={ballPos.y} hlType={_hlType} bgAction={bgAction}
                 timeOfDay={timeOfDay} weather={weather} kickoffHour={kickoffHour} attendance={attendance}
                 waveEvent={waveEvent} isDerby={!!drby} isBigGame={mw>=7}
                 isDesktop={!isNarrow} onWalkoutDone={()=>{if(benchStart)setOnBench(true);setPhase("playing");}}/>
