@@ -38,9 +38,13 @@
   var i192=mkIcon(192),i512=mkIcon(512);
   var al=document.createElement('link');al.rel='apple-touch-icon';al.href=i192;document.head.appendChild(al);
   var fl=document.createElement('link');fl.rel='icon';fl.type='image/png';fl.href=i192;document.head.appendChild(fl);
-  var mf={name:'Elevora: Football Career Simulator',short_name:'Elevora',description:'From prospect to legend — football career browser game',start_url:location.href.split('?')[0],scope:'./',display:'standalone',orientation:'portrait-primary',theme_color:'#2563eb',background_color:'#f0f7ff',icons:[{src:i192,sizes:'192x192',type:'image/png',purpose:'any maskable'},{src:i512,sizes:'512x512',type:'image/png',purpose:'any maskable'}]};
+  // scope assoluto (evita risoluzione errata su blob: URL), purpose separati (compatibilità Chrome Android)
+  var _base=location.href.split('?')[0].replace(/[^/]+$/,'');
+  var mf={name:'Elevora: Football Career Simulator',short_name:'Elevora',description:'From prospect to legend — football career browser game',start_url:location.href.split('?')[0],scope:_base,display:'standalone',orientation:'portrait-primary',theme_color:'#2563eb',background_color:'#f0f7ff',icons:[{src:i192,sizes:'192x192',type:'image/png',purpose:'any'},{src:i192,sizes:'192x192',type:'image/png',purpose:'maskable'},{src:i512,sizes:'512x512',type:'image/png',purpose:'any'},{src:i512,sizes:'512x512',type:'image/png',purpose:'maskable'}]};
   var mb=new Blob([JSON.stringify(mf)],{type:'application/manifest+json'});
   var ml=document.createElement('link');ml.rel='manifest';ml.href=URL.createObjectURL(mb);document.head.appendChild(ml);
+  // Service Worker — richiesto da Chrome Android 73+ per completare l'installazione PWA
+  if('serviceWorker' in navigator){navigator.serviceWorker.register('./sw.js').catch(function(){});}
   window._cpmDp=null;
   window._cpmInstall=function(){if(!window._cpmDp)return;window._cpmDp.prompt();window._cpmDp.userChoice.then(function(){window._cpmDp=null;window.dispatchEvent(new Event('cpm_installed'));});};
   window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();window._cpmDp=e;window.dispatchEvent(new Event('cpm_installready'));});
@@ -2608,7 +2612,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.13.3"; // Fix layout mobile: campo si espande durante HL + cronaca non più tagliata
+const GAME_VERSION="4.13.4"; // Fix PWA Android: service worker + manifest scope assoluto + purpose separati
 const SAVE_VERSION=6;
 // Sprint ENV — ambiente rilevato automaticamente dal runtime (non gestito manualmente).
 // PRODUCTION = deploy GitHub Pages (*.github.io). Tutto il resto (staging githack, locale, localhost) = TEST.
