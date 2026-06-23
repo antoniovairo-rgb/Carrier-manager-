@@ -2612,7 +2612,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.16.0"; // Sprint 3D-3: camera cinematica 3D — broadcast-follow + stacco ravvicinato sul protagonista negli highlight
+const GAME_VERSION="4.17.0"; // Sprint 3D-4: atmosfera dinamica 3D — orario/meteo (pioggia/neve/temporale/nebbia) + portiere clash-aware sui club colors
 const SAVE_VERSION=6;
 // Sprint ENV — ambiente rilevato automaticamente dal runtime (non gestito manualmente).
 // PRODUCTION = deploy GitHub Pages (*.github.io). Tutto il resto (staging githack, locale, localhost) = TEST.
@@ -6530,11 +6530,15 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
    fermi orientati verso la palla, portieri distinti, sync fluido.
    Sprint 3D-3: camera cinematica — broadcast-follow in gioco,
    stacco ravvicinato sul protagonista negli highlight.
+   Sprint 3D-4: atmosfera dinamica — orario (day/dusk/night, notte
+   invariata), meteo (pioggia/neve/temporale+flash, nebbia), portiere
+   clash-aware sui club colors.
 ===================================================== */
 function ThreeMatchView(props){
   const {playerX,playerY,homeCol,oppCol,allPlayers,homeClub,heroKitCol,
     stadiumHomeCol,stadiumAwayCol,stadiumStyle=0,ballX,ballY,
-    matchPhase,onWalkoutDone,isDesktop=false}=props;
+    matchPhase,onWalkoutDone,isDesktop=false,
+    timeOfDay,weather,kickoffHour,attendance}=props;
   const mountRef=useRef(null);
   const sr=useRef({players:[],ball:null,hero:null,raf:null,renderer:null,scene:null,camera:null});
   const propsRef=useRef(props);
@@ -6547,25 +6551,35 @@ function ThreeMatchView(props){
     const W=mount.clientWidth||360,H=mount.clientHeight||520;
     const club=homeClub||{};
     let pal;try{pal=getStadiumPalette(club);}catch(e){pal={skyTop:0x050810,skyHorizon:0x0c2050,fog:0x061430,grassA:0x2c6a1d,grassB:0x357a24,ambient:0xd0e4ff,ambInt:0.5,flood:0xffffff};}
+    // Atmosfera dinamica: la NOTTE resta IDENTICA alla palette di lega (atmosfera da preservare);
+    // solo day/dusk e il meteo modulano cielo, nebbia e intensità luci.
+    const tod=timeOfDay||"night",wfx=weather&&weather.pitchFx; // wfx: null|wind|rain|fog|snow|storm
+    let skyCol=pal.skyTop,fogCol=pal.fog,ambInt=pal.ambInt,sunInt=0.78,sunColor=pal.flood,hemiInt=0.3,fogNear=95,fogFar=260;
+    if(tod==="day"){skyCol=0x6fa8dc;fogCol=0xbcd0e0;ambInt=0.80;sunInt=1.05;sunColor=0xfff6e8;hemiInt=0.55;fogNear=150;fogFar=360;}
+    else if(tod==="dusk"){skyCol=0x2a1530;fogCol=0x2c1622;ambInt=0.52;sunInt=0.72;sunColor=0xffb070;hemiInt=0.34;fogNear=110;fogFar=290;}
+    if(wfx==="fog"){fogNear=18;fogFar=120;ambInt*=0.9;}
+    else if(wfx==="rain"){fogNear*=0.7;fogFar*=0.7;ambInt*=0.82;sunInt*=0.6;if(tod==="day")skyCol=0x5a6b78;}
+    else if(wfx==="storm"){fogNear*=0.55;fogFar*=0.6;ambInt*=0.65;sunInt*=0.45;if(tod==="day")skyCol=0x3c4756;}
+    else if(wfx==="snow"){fogNear*=0.7;fogFar*=0.8;ambInt*=1.05;if(tod==="day")skyCol=0xc8d8e8;}
     const scene=new THREE.Scene();
-    scene.background=new THREE.Color(pal.skyTop);
-    scene.fog=new THREE.Fog(pal.fog,95,260);
+    scene.background=new THREE.Color(skyCol);
+    scene.fog=new THREE.Fog(fogCol,fogNear,fogFar);
     const camera=new THREE.PerspectiveCamera(56,W/H,0.1,420);
     // Camera portrait dietro la porta di casa (x basso), home attacca verso +x (verso l'alto)
     camera.position.set(-88,54,0);camera.lookAt(10,1,0);
     const renderer=new THREE.WebGLRenderer({antialias:true,powerPreference:'high-performance'});
     renderer.setSize(W,H);renderer.setPixelRatio(Math.min(devicePixelRatio,2));
     renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;
-    renderer.setClearColor(pal.skyTop);
+    renderer.setClearColor(skyCol);
     mount.appendChild(renderer.domElement);
 
-    // Luci dalla palette di lega (atmosfera notturna preservata)
-    scene.add(new THREE.AmbientLight(pal.ambient,pal.ambInt));
-    const sun=new THREE.DirectionalLight(pal.flood,0.78);sun.position.set(30,85,-24);sun.castShadow=true;
+    // Luci dalla palette di lega, intensità modulata da orario/meteo
+    scene.add(new THREE.AmbientLight(pal.ambient,ambInt));
+    const sun=new THREE.DirectionalLight(sunColor,sunInt);sun.position.set(30,85,-24);sun.castShadow=true;
     const sm=isDesktop?2048:1024;sun.shadow.mapSize.set(sm,sm);
     sun.shadow.camera.left=-72;sun.shadow.camera.right=72;sun.shadow.camera.top=72;sun.shadow.camera.bottom=-72;
     scene.add(sun);
-    scene.add(new THREE.HemisphereLight(pal.skyHorizon,pal.grassA,0.3));
+    scene.add(new THREE.HemisphereLight(pal.skyHorizon,pal.grassA,hemiInt));
 
     // Campo
     const grass=new THREE.Mesh(new THREE.PlaneGeometry(104,68),new THREE.MeshLambertMaterial({color:pal.grassA}));
@@ -6605,11 +6619,17 @@ function ThreeMatchView(props){
       return g;
     };
 
+    // Portiere: colore distinto da ENTRAMBI i kit (evita confusione con i club colors)
+    const _hCol=homeCol||'#2563eb',_aCol=oppCol||'#dc2626';
+    const GK_POOL=['#1d1d1f','#facc15','#16a34a','#db2777','#e5e7eb','#06b6d4','#f97316'];
+    let gkCol=GK_POOL[0],gkBest=-1;
+    try{GK_POOL.forEach(k=>{const m=Math.min(colorDist(_hCol,k),colorDist(_aCol,k));if(m>gkBest){gkBest=m;gkCol=k;}});}catch(e){gkCol='#facc15';}
+
     // 21 giocatori (home + away) dal prop allPlayers
     const players=[];
     (allPlayers||[]).forEach(pl=>{
       const isHome=pl.team==='home';
-      const col=pl.gk?'#fbbf24':(isHome?(homeCol||'#2563eb'):(oppCol||'#dc2626'));
+      const col=pl.gk?gkCol:(isHome?_hCol:_aCol);
       const mesh=mkP(col,false);
       mesh.position.set(G2X(pl.x),0,G2Z(pl.y));mesh._px=mesh.position.x;mesh._pz=mesh.position.z;
       scene.add(mesh);players.push({mesh});
@@ -6621,6 +6641,20 @@ function ThreeMatchView(props){
     // Palla
     const ball=new THREE.Mesh(new THREE.SphereGeometry(0.42,14,10),new THREE.MeshPhongMaterial({color:0xfafafa,shininess:85}));
     ball.castShadow=true;ball.position.set(G2X(ballX||50),0.42,G2Z(ballY||50));scene.add(ball);
+
+    // Particelle meteo (pioggia / temporale / neve) + flash per il temporale
+    let wParticles=null,flashLight=null;
+    if(wfx==="rain"||wfx==="storm"||wfx==="snow"){
+      const isSnow=wfx==="snow";
+      const N=isSnow?800:(wfx==="storm"?2200:1400);
+      const wpos=new Float32Array(N*3);
+      for(let i=0;i<N;i++){wpos[i*3]=(Math.random()-0.5)*132;wpos[i*3+1]=Math.random()*64;wpos[i*3+2]=(Math.random()-0.5)*92;}
+      const wgeo=new THREE.BufferGeometry();wgeo.setAttribute('position',new THREE.BufferAttribute(wpos,3));
+      const wmat=new THREE.PointsMaterial({color:isSnow?0xffffff:0xbcd8ee,size:isSnow?0.55:0.3,transparent:true,opacity:isSnow?0.9:0.5,depthWrite:false});
+      const wpts=new THREE.Points(wgeo,wmat);scene.add(wpts);
+      wParticles={pts:wpts,pos:wpos,N,vy:isSnow?6:(wfx==="storm"?72:50),snow:isSnow};
+    }
+    if(wfx==="storm"){flashLight=new THREE.PointLight(0xbfe4ff,0,420);flashLight.position.set(0,130,0);scene.add(flashLight);flashLight.userData.t=0;}
 
     Object.assign(sr.current,{scene,camera,renderer,players,hero,ball,G2X,G2Z});
 
@@ -6681,6 +6715,21 @@ function ThreeMatchView(props){
       camera.position.x+=(tPx-camera.position.x)*kp;camera.position.y+=(tPy-camera.position.y)*kp;camera.position.z+=(tPz-camera.position.z)*kp;
       camLook.x+=(tLx-camLook.x)*kl;camLook.y+=(tLy-camLook.y)*kl;camLook.z+=(tLz-camLook.z)*kl;
       camera.lookAt(camLook.x,camLook.y,camLook.z);
+
+      // ---- Meteo: caduta particelle + flash temporale ----
+      if(wParticles){
+        const wp=wParticles,arr=wp.pos;const fall=wp.vy*dt;
+        for(let i=0;i<wp.N;i++){
+          arr[i*3+1]-=fall;
+          if(wp.snow){arr[i*3]+=Math.sin(now*0.001+i)*0.03;arr[i*3+2]+=Math.cos(now*0.0012+i)*0.02;}
+          if(arr[i*3+1]<0){arr[i*3+1]=64;arr[i*3]=(Math.random()-0.5)*132;arr[i*3+2]=(Math.random()-0.5)*92;}
+        }
+        wp.pts.geometry.attributes.position.needsUpdate=true;
+      }
+      if(flashLight){
+        if(flashLight.userData.t<=0&&Math.random()<0.004)flashLight.userData.t=0.2;
+        if(flashLight.userData.t>0){flashLight.intensity=7;flashLight.userData.t-=dt;}else flashLight.intensity=0;
+      }
 
       renderer.render(scene,camera);
     };
@@ -8707,6 +8756,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                 stadiumHomeCol={scoreHomeCol} stadiumAwayCol={scoreAwayCol}
                 stadiumStyle={getStadiumStyle(homeTeamObj)}
                 ballX={ballPos.x} ballY={ballPos.y}
+                timeOfDay={timeOfDay} weather={weather} kickoffHour={kickoffHour} attendance={attendance}
                 isDesktop={!isNarrow} onWalkoutDone={()=>setPhase("playing")}/>
               :<PitchCanvas playerX={pPos.x} playerY={pPos.y} zone={zone}
                 homeCol={homeKitCol} oppCol={awayKitCol}
