@@ -2612,7 +2612,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.27.0"; // Sprint 3D-10: perf mobile — antialias/DPR/shadowMap/particelle ottimizzati
+const GAME_VERSION="4.28.0"; // Sprint 3D-11: atmosfera pro — burst gol, usura campo, luci importanza big match
 const SAVE_VERSION=6;
 // Sprint ENV — ambiente rilevato automaticamente dal runtime (non gestito manualmente).
 // PRODUCTION = deploy GitHub Pages (*.github.io). Tutto il resto (staging githack, locale, localhost) = TEST.
@@ -6555,7 +6555,8 @@ function ThreeMatchView(props){
   const {playerX,playerY,homeCol,oppCol,allPlayers,homeClub,heroKitCol,
     stadiumHomeCol,stadiumAwayCol,stadiumStyle=0,ballX,ballY,
     matchPhase,onWalkoutDone,isDesktop=false,
-    timeOfDay,weather,kickoffHour,attendance}=props;
+    timeOfDay,weather,kickoffHour,attendance,
+    isDerby=false,isBigGame=false}=props;
   const mountRef=useRef(null);
   const sr=useRef({players:[],ball:null,hero:null,raf:null,renderer:null,scene:null,camera:null});
   const propsRef=useRef(props);
@@ -6600,6 +6601,11 @@ function ThreeMatchView(props){
     sun.shadow.camera.left=-72;sun.shadow.camera.right=72;sun.shadow.camera.top=72;sun.shadow.camera.bottom=-72;
     scene.add(sun);
     scene.add(new THREE.HemisphereLight(pal.skyHorizon,pal.grassA,hemiInt));
+    // Sprint 3D-11C: luci importanza big match/derby — luce ambientale addizionale sottile, scoped ai big match
+    let bigMatchAmb=null;
+    if(isDerby||isBigGame){bigMatchAmb=new THREE.AmbientLight(isDerby?0xff2200:0x2244ff,0.09);scene.add(bigMatchAmb);scene.fog.near*=0.84;scene.fog.far*=0.88;}
+    // Sprint 3D-11A: luce burst al gol — PointLight addizionale, intensità 0 a riposo
+    const goalBurstLight=new THREE.PointLight(0xffaa44,0,140);goalBurstLight.position.set(0,28,0);scene.add(goalBurstLight);
 
     // Campo — Sprint 3D-G1: di giorno scurisco l'erba (0.82×) per compensare l'assenza di tonemapping; notte invariata
     const _gA=new THREE.Color(pal.grassA),_gB=new THREE.Color(pal.grassB);
@@ -6612,6 +6618,10 @@ function ThreeMatchView(props){
     ln([[-50,-34],[50,-34],[50,34],[-50,34],[-50,-34]]);ln([[0,-34],[0,34]]);
     const cc=[];for(let i=0;i<=48;i++){const a=i/48*Math.PI*2;cc.push([Math.cos(a)*9.15,Math.sin(a)*9.15]);}ln(cc);
     [-1,1].forEach(s=>{const gx=s*50,ix=gx-s*16.5,si=gx-s*5.5;ln([[gx,-20.16],[ix,-20.16],[ix,20.16],[gx,20.16]]);ln([[gx,-9.16],[si,-9.16],[si,9.16],[gx,9.16]]);});
+    // Sprint 3D-11B: usura campo — chiazze scure semi-trasparenti sulle zone più battute (statica, costruita una volta)
+    {const wM=new THREE.MeshBasicMaterial({color:0x000000,transparent:true,opacity:0.17,depthWrite:false});
+    const addW=(x,z,w,h)=>{const m=new THREE.Mesh(new THREE.PlaneGeometry(w,h),wM.clone());m.rotation.x=-Math.PI/2;m.position.set(x,0.026,z);scene.add(m);};
+    addW(-51,0,9,8);addW(51,0,9,8);addW(-42,0,8,7);addW(42,0,8,7);addW(0,0,12,9);addW(0,0,6,40);}
 
     // Stadio (riuso del builder AAA esistente)
     const sHome=stadiumHomeCol||homeCol||'#2563eb',sAway=stadiumAwayCol||oppCol||'#dc2626';
@@ -6720,6 +6730,8 @@ function ThreeMatchView(props){
     let resultT=0;
     // Sprint 3D-BALL: arco parabolico della palla (shot/header/cross/freekick/penalty)
     let ballArcT=0,ballArcDur=0,ballArcH=0,ballArcActive=false;
+    // Sprint 3D-11A: reazione folla al gol — burst luce calda + camera shake
+    let prevWaveT=0,goalBurstT=-1,goalBurstHome=false,shakePow=0;
     // Sprint 3D-8b: replay con riavvolgimento — ring buffer posizioni (≈2.5s) + macchina a stati
     const REP_CAP=150,snapSize=(players.length+1)*2+3;
     const repRing=new Float32Array(REP_CAP*snapSize);
@@ -6820,6 +6832,14 @@ function ThreeMatchView(props){
         if(_curPh!=="hl_result"&&replaying){replaying=false;setReplayOn(false);}
       }
       prevPhase=_curPh;
+      // Sprint 3D-11A: trigger burst al gol — rileva cambio di waveEvent.t
+      const _we=P.waveEvent;
+      if(_we&&_we.t&&_we.t!==prevWaveT){prevWaveT=_we.t;goalBurstT=0;goalBurstHome=!!_we.home;shakePow=0.55;}
+      if(goalBurstT>=0){goalBurstT+=dt;const _u=Math.min(goalBurstT/1.8,1);
+        goalBurstLight.intensity=(1-_u*_u)*6.0;goalBurstLight.position.x=goalBurstHome?-44:44;
+        if(_u>=1){goalBurstLight.intensity=0;goalBurstT=-1;}}
+      // Sprint 3D-11C: pulse ambientale big match/derby
+      if(bigMatchAmb){bigMatchAmb.intensity=0.08+Math.sin(now*0.0009)*0.04;}
       if(isWalk){
         sr.current.players.forEach(pp=>animWalk(pp.mesh,aDt,ak));
         animWalk(hero,aDt,ak);
@@ -6888,6 +6908,8 @@ function ThreeMatchView(props){
       if(replaying){const rbx=ball.position.x,rbz=ball.position.z;
         tPx=clamp(rbx-30,-96,-8);tPy=30;tPz=rbz*0.45+32;tLx=rbx+6;tLy=1.3;tLz=rbz*0.6;
         kp=Math.min(dt*2.2,1);kl=Math.min(dt*2.8,1);}
+      // Sprint 3D-11A: camera shake al gol — rumore sul target, decade in ~0.4s
+      if(shakePow>0.01){tPx+=Math.sin(now*24)*shakePow*0.7;tPz+=Math.cos(now*18)*shakePow*0.7;shakePow*=(1-dt*6);}else shakePow=0;
       camera.position.x+=(tPx-camera.position.x)*kp;camera.position.y+=(tPy-camera.position.y)*kp;camera.position.z+=(tPz-camera.position.z)*kp;
       camLook.x+=(tLx-camLook.x)*kl;camLook.y+=(tLy-camLook.y)*kl;camLook.z+=(tLz-camLook.z)*kl;
       camera.lookAt(camLook.x,camLook.y,camLook.z);
@@ -8974,6 +8996,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                 stadiumStyle={getStadiumStyle(homeTeamObj)}
                 ballX={ballPos.x} ballY={ballPos.y} hlType={_hlType}
                 timeOfDay={timeOfDay} weather={weather} kickoffHour={kickoffHour} attendance={attendance}
+                waveEvent={waveEvent} isDerby={!!drby} isBigGame={mw>=7}
                 isDesktop={!isNarrow} onWalkoutDone={()=>{if(benchStart)setOnBench(true);setPhase("playing");}}/>
               :<PitchCanvas playerX={pPos.x} playerY={pPos.y} zone={zone}
                 homeCol={homeKitCol} oppCol={awayKitCol}
