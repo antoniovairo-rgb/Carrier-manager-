@@ -2590,7 +2590,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.12.0"; // Sprint UX: redesign schermata "Crea calciatore" — Card centrata max-width, 2 colonne bilanciate (Identità | Stile & percorso), avatar accanto al 3D
+const GAME_VERSION="4.12.1"; // Bug-fix classifica: nomi squadre per esteso + lega Primavera dell'eroe sempre selezionabile come tab
 const SAVE_VERSION=6;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -15855,8 +15855,9 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
 
       {/* STANDINGS */}
       {tab==="standings"&&(()=>{
-        const allLeagues=[...new Set(CLUBS.map(c=>c.lg).filter(Boolean))];
         const myLeague=player.club?.lg||(player.proStatus==="u18"?"Primavera 1":"Lega A");
+        // Bug-fix classifica: la lega dell'eroe (anche Primavera 1/2) è SEMPRE presente e selezionabile come prima tab
+        const allLeagues=[...new Set([myLeague,...CLUBS.map(c=>c.lg).filter(Boolean)])];
         const selLg=standingsLg||myLeague;
         const getRows=(lg)=>{
           if(lg===myLeague)return player.standings||[];
@@ -15888,7 +15889,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                     return<tr key={t.id||t.n} style={{background:my?"#eff6ff":"transparent"}}>
                       <td style={{width:3,padding:0}}><div style={{width:3,height:28,background:zc||"transparent",borderRadius:1}}/></td>
                       <td style={{textAlign:"center",padding:"5px 3px",color:zone?zc:TH.muted,fontWeight:zone?700:400}}>{i+1}</td>
-                      <td style={{padding:"5px 3px",fontWeight:my?700:400,color:my?TH.primary:TH.text,whiteSpace:"nowrap"}}><span style={{display:"inline-block",width:9,height:9,borderRadius:"50%",background:t.col||t.c,marginRight:3,verticalAlign:"middle"}}/>{t.abbr||t.a}{my&&" ★"}</td>
+                      <td style={{padding:"5px 3px",fontWeight:my?700:400,color:my?TH.primary:TH.text,whiteSpace:"nowrap"}}><span style={{display:"inline-block",width:9,height:9,borderRadius:"50%",background:t.col||t.c,marginRight:5,verticalAlign:"middle"}}/>{t.n||t.name||t.abbr||t.a}{my&&" ★"}</td>
                       <td style={{textAlign:"center",padding:"5px 3px",color:TH.muted}}>{t.played}</td>
                       <td style={{textAlign:"center",padding:"5px 3px",color:TH.success}}>{t.wins}</td>
                       <td style={{textAlign:"center",padding:"5px 3px",color:TH.muted}}>{t.draws}</td>
