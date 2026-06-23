@@ -2612,7 +2612,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.45.0"; // Sprint 3DV-4: sequenze azione complete — cross/penalty/freekick/header-nod + barriera che salta
+const GAME_VERSION="4.46.0"; // Sprint 3DV-5: regia TV intelligente — attack zoom, blend per fase HL, GK tracking
 const SAVE_VERSION=6;
 // Sprint ENV — ambiente rilevato automaticamente dal runtime (non gestito manualmente).
 // PRODUCTION = deploy GitHub Pages (*.github.io). Tutto il resto (staging githack, locale, localhost) = TEST.
@@ -7067,7 +7067,9 @@ function ThreeMatchView(props){
       bf+=((isResult?1:0)-bf)*Math.min(dt*2.5,1);
       const wBall=0.6+0.30*bf; // palla più pesante nel centro azione durante l'esito
       const ax=bx*wBall+hx*(1-wBall),az=bz*wBall+hz*(1-wBall);
-      camHL+=((isHL?1:0)-camHL)*Math.min(dt*3.2,1); // CIN-1: zoom entra 46% più veloce
+      // 3DV-5: blend target per fase — intro 55%, move/choose 82%, result 100%
+      const _ph5=P.matchPhase;const _hlTgt=isResult?1.0:(_ph5==="hl_move"||_ph5==="hl_choose")?0.82:_ph5==="hl_intro"?0.55:0;
+      camHL+=(_hlTgt-camHL)*Math.min(dt*3.2,1);
       let tPx,tPy,tPz,tLx,tLy,tLz,kp,kl;
       if(isWalk){
         // Carrellata che scorre lungo la fila dei giocatori schierati
@@ -7076,11 +7078,12 @@ function ThreeMatchView(props){
         kp=Math.min(dt*2.2,1);kl=Math.min(dt*3,1);
       } else {
         // WIDE — broadcast dietro la porta di casa, segue il centro azione con leggero parallasse
-        // QW-F: micro-drift camera — lievissimo respiro cinematico in normal play
-        const wPx=-88+clamp(ax,-50,50)*0.12+Math.sin(now*0.00025)*2.5,
-              wPy=54+Math.sin(now*0.00018)*1.8,
+        // 3DV-5: attack zoom — camera avanza/scende quando palla in area avanzata (bx>0→bx>42)
+        const _bAttk=P.matchPhase==="playing"?clamp(bx/42,0,1):0;
+        const wPx=(-88+_bAttk*20)+clamp(ax,-50,50)*0.12+Math.sin(now*0.00025)*2.5,
+              wPy=(54-_bAttk*12)+Math.sin(now*0.00018)*1.8,
               wPz=az*0.32;
-        const wLx=clamp(ax*0.5+10,-12,42)+Math.sin(now*0.00031)*1.2,wLy=1.5,wLz=az*0.6;
+        const wLx=clamp(ax*0.5+bx*_bAttk*0.2+10,-12,46)+Math.sin(now*0.00031)*1.2,wLy=1.5,wLz=az*0.6;
         // CLOSE — stacco ravvicinato; il punto di fuoco scivola dall'eroe alla palla a fine azione
         const fX=hx+(bx-hx)*bf,fZ=hz+(bz-hz)*bf;
         let cPx=clamp(fX-20,-80,16),cPy=8.5-bf*2.5,cPz=fZ*0.58;/* CIN-1: camera bassa (era y=27) e ravvicinata (era offset 39) */
@@ -7091,6 +7094,8 @@ function ThreeMatchView(props){
         } else if(isHL&&P.hlType==="header"){cPy=Math.max(cPy,7);cLy=3.8;} // CIN-1: camera guarda su per il colpo di testa
         else if(isHL&&P.hlType==="tackle"){cPx=clamp(fX-12,-80,18);cPy=4.0-bf;cLy=1.2;} // CIN-1: radente per il contrasto
         else if(isHL&&P.hlType==="cross"){cPx=clamp(fX-10,-72,18);cPy=5.0;cPz=fZ*1.1+(fZ>=0?8:-8);cLx=fX+18;cLy=2.0;cLz=fZ*0.55;}// 3DV-4: cross — laterale bassa
+        // 3DV-5: GK tracking — lookat si sposta verso il portiere su tiro/rigore/testa
+        if(isHL&&awayGkMesh&&(P.hlType==="shot"||P.hlType==="penalty"||P.hlType==="header")){cLx=cLx*0.65+awayGkMesh.position.x*0.35;cLz=cLz*0.65+awayGkMesh.position.z*0.35;}
         tPx=wPx+(cPx-wPx)*camHL;tPy=wPy+(cPy-wPy)*camHL;tPz=wPz+(cPz-wPz)*camHL;
         tLx=wLx+(cLx-wLx)*camHL;tLy=wLy+(cLy-wLy)*camHL;tLz=wLz+(cLz-wLz)*camHL;
         kp=Math.min(dt*1.8,1);kl=Math.min(dt*2.4,1);
