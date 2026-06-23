@@ -2612,7 +2612,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.28.0"; // Sprint 3D-11: atmosfera pro — burst gol, usura campo, luci importanza big match
+const GAME_VERSION="4.29.0"; // Sprint 3D-G2: stadio vivo — arbitro + guardalinee + panchine con staff
 const SAVE_VERSION=6;
 // Sprint ENV — ambiente rilevato automaticamente dal runtime (non gestito manualmente).
 // PRODUCTION = deploy GitHub Pages (*.github.io). Tutto il resto (staging githack, locale, localhost) = TEST.
@@ -6718,6 +6718,28 @@ function ThreeMatchView(props){
     }
     if(wfx==="storm"){flashLight=new THREE.PointLight(0xbfe4ff,0,420);flashLight.position.set(0,130,0);scene.add(flashLight);flashLight.userData.t=0;}
 
+    // Sprint 3D-G2: Stadio vivo — arbitro, guardalinee, panchine
+    // Factory figurina leggera (primitivi: sfera testa + cilindro corpo) — non riusa mkP (troppo pesante per comparse)
+    const mkFig=(col,hy=1.6)=>{const g=new THREE.Group();
+      const bM=new THREE.MeshLambertMaterial({color:col});
+      const hM=new THREE.MeshLambertMaterial({color:0xd4956a});
+      g.add(Object.assign(new THREE.Mesh(new THREE.CylinderGeometry(0.18,0.20,hy,7),bM),{position:{x:0,y:hy/2,z:0}}));
+      const hd=new THREE.Mesh(new THREE.SphereGeometry(0.21,8,6),hM);hd.position.set(0,hy+0.21,0);g.add(hd);
+      return g;};
+    // A) Arbitro principale — divisa nera, si muove con la palla
+    const refMesh=mkFig(0x111111);scene.add(refMesh);
+    // C) Guardalinee — divisa giallo-verde, ai margini del campo
+    const linRef1=mkFig(0x9acd32);linRef1.position.set(0,0,-35.5);scene.add(linRef1);
+    const linRef2=mkFig(0x9acd32);linRef2.position.set(0,0,35.5);scene.add(linRef2);
+    // B) Panchine (lato tribuna z=+38) con figurine sedute
+    const benchMat=new THREE.MeshLambertMaterial({color:0x3a3a4a});
+    const seatMat=new THREE.MeshLambertMaterial({color:0x222230});
+    const _mkBench=(bx)=>{
+      const b=new THREE.Mesh(new THREE.BoxGeometry(12,0.6,1.4),benchMat);b.position.set(bx,0.4,38);scene.add(b);
+      for(let i=0;i<4;i++){const f=mkFig(0x333344,1.2);f.position.set(bx-4.5+i*3,0.7,37.8);scene.add(f);}
+    };
+    _mkBench(-16);_mkBench(16);
+
     Object.assign(sr.current,{scene,camera,renderer,players,hero,ball,G2X,G2Z});
 
     // Loop: lerp verso le posizioni target dai prop (nessun re-render React)
@@ -6862,6 +6884,11 @@ function ThreeMatchView(props){
           }
           animOne(pp.mesh,G2X(clamp(src.x+ox,2,98)),G2Z(clamp(src.y+oy,2,98)),aDt,ak,bx,bz);});
         animOne(hero,G2X(P.playerX||50),G2Z(P.playerY||50),aDt,ak,bx,bz);
+        // Sprint 3D-G2: arbitro segue la palla con offset laterale; guardalinee seguono x dell'azione
+        {const _rk=Math.min(aDt*1.8,1),_offZ=isHL?4.5:6;
+        refMesh.position.x+=(bx+_offZ-refMesh.position.x)*_rk;refMesh.position.z+=(bz*0.6-refMesh.position.z)*_rk;refMesh.rotation.y=Math.atan2(bx-refMesh.position.x,bz-refMesh.position.z);
+        linRef1.position.x+=(bx*0.5-linRef1.position.x)*Math.min(aDt*0.9,1);
+        linRef2.position.x+=(bx*0.5-linRef2.position.x)*Math.min(aDt*0.9,1);}
         // Sprint 3D-7: override one-shot dell'esito sul protagonista (sovrascrive il run-cycle per la durata)
         if(actType){actT+=aDt;const _T=actType==="header"?0.6:(actType==="tackle"?0.5:0.45),u=Math.min(actT/_T,1),sw=Math.sin(u*Math.PI);
           if(actType==="shot"){hero._lR.rotation.x=-1.5*sw;hero._lL.rotation.x=0.4*sw;hero._aL.rotation.x=0.6*sw;}
