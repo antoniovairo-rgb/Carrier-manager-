@@ -2612,7 +2612,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.13.4"; // Fix PWA Android: service worker + manifest scope assoluto + purpose separati
+const GAME_VERSION="4.14.0"; // Sprint 3D-1: renderer 3D opt-in (ThreeMatchView) dentro il sistema HL — stadio+campo+22 giocatori+palla, camera portrait
 const SAVE_VERSION=6;
 // Sprint ENV — ambiente rilevato automaticamente dal runtime (non gestito manualmente).
 // PRODUCTION = deploy GitHub Pages (*.github.io). Tutto il resto (staging githack, locale, localhost) = TEST.
@@ -6521,6 +6521,152 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
 }
 
 
+/* =====================================================
+   THREE MATCH VIEW — renderer 3D (drop-in di PitchCanvas)
+   Sprint 3D-1: stadio (buildStadium) + campo + 22 giocatori
+   + palla, camera portrait fissa. Consuma gli STESSI prop
+   di PitchCanvas; la logica HL non cambia (opt-in renderer="3d").
+===================================================== */
+function ThreeMatchView(props){
+  const {playerX,playerY,homeCol,oppCol,allPlayers,homeClub,heroKitCol,
+    stadiumHomeCol,stadiumAwayCol,stadiumStyle=0,ballX,ballY,
+    matchPhase,onWalkoutDone,isDesktop=false}=props;
+  const mountRef=useRef(null);
+  const sr=useRef({players:[],ball:null,hero:null,raf:null,renderer:null,scene:null,camera:null});
+  const propsRef=useRef(props);
+  useEffect(()=>{propsRef.current=props;});
+
+  useEffect(()=>{
+    const mount=mountRef.current;if(!mount)return;
+    // game coords (0-100) → mondo 3D: lunghezza su x (-50..50), larghezza su z (-34..34)
+    const G2X=gx=>(gx-50)*1.0, G2Z=gy=>(gy-50)*0.68;
+    const W=mount.clientWidth||360,H=mount.clientHeight||520;
+    const club=homeClub||{};
+    let pal;try{pal=getStadiumPalette(club);}catch(e){pal={skyTop:0x050810,skyHorizon:0x0c2050,fog:0x061430,grassA:0x2c6a1d,grassB:0x357a24,ambient:0xd0e4ff,ambInt:0.5,flood:0xffffff};}
+    const scene=new THREE.Scene();
+    scene.background=new THREE.Color(pal.skyTop);
+    scene.fog=new THREE.Fog(pal.fog,95,260);
+    const camera=new THREE.PerspectiveCamera(56,W/H,0.1,420);
+    // Camera portrait dietro la porta di casa (x basso), home attacca verso +x (verso l'alto)
+    camera.position.set(-88,54,0);camera.lookAt(10,1,0);
+    const renderer=new THREE.WebGLRenderer({antialias:true,powerPreference:'high-performance'});
+    renderer.setSize(W,H);renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+    renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+    renderer.setClearColor(pal.skyTop);
+    mount.appendChild(renderer.domElement);
+
+    // Luci dalla palette di lega (atmosfera notturna preservata)
+    scene.add(new THREE.AmbientLight(pal.ambient,pal.ambInt));
+    const sun=new THREE.DirectionalLight(pal.flood,0.78);sun.position.set(30,85,-24);sun.castShadow=true;
+    const sm=isDesktop?2048:1024;sun.shadow.mapSize.set(sm,sm);
+    sun.shadow.camera.left=-72;sun.shadow.camera.right=72;sun.shadow.camera.top=72;sun.shadow.camera.bottom=-72;
+    scene.add(sun);
+    scene.add(new THREE.HemisphereLight(pal.skyHorizon,pal.grassA,0.3));
+
+    // Campo
+    const grass=new THREE.Mesh(new THREE.PlaneGeometry(104,68),new THREE.MeshLambertMaterial({color:pal.grassA}));
+    grass.rotation.x=-Math.PI/2;grass.receiveShadow=true;scene.add(grass);
+    for(let i=0;i<8;i++){const m=new THREE.MeshLambertMaterial({color:i%2?pal.grassA:pal.grassB});const s=new THREE.Mesh(new THREE.PlaneGeometry(13,68),m);s.rotation.x=-Math.PI/2;s.position.set(-45.5+i*13,0.01,0);s.receiveShadow=true;scene.add(s);}
+    const lM=new THREE.LineBasicMaterial({color:0xffffff,opacity:0.8,transparent:true});
+    const ln=pts=>{const g=new THREE.BufferGeometry().setFromPoints(pts.map(([x,z])=>new THREE.Vector3(x,0.03,z)));scene.add(new THREE.Line(g,lM));};
+    ln([[-50,-34],[50,-34],[50,34],[-50,34],[-50,-34]]);ln([[0,-34],[0,34]]);
+    const cc=[];for(let i=0;i<=48;i++){const a=i/48*Math.PI*2;cc.push([Math.cos(a)*9.15,Math.sin(a)*9.15]);}ln(cc);
+    [-1,1].forEach(s=>{const gx=s*50,ix=gx-s*16.5,si=gx-s*5.5;ln([[gx,-20.16],[ix,-20.16],[ix,20.16],[gx,20.16]]);ln([[gx,-9.16],[si,-9.16],[si,9.16],[gx,9.16]]);});
+
+    // Stadio (riuso del builder AAA esistente)
+    const sHome=stadiumHomeCol||homeCol||'#2563eb',sAway=stadiumAwayCol||oppCol||'#dc2626';
+    try{buildStadium(scene,sHome,sAway,{prestige:club.p||club.prestige||65,style:stadiumStyle,floodColor:pal.flood});}catch(e){}
+
+    // Factory giocatore (derivata da FootballMatch, MeshPhong procedurale)
+    const mkP=(col,isUser)=>{
+      const g=new THREE.Group();
+      const jM=new THREE.MeshPhongMaterial({color:new THREE.Color(col),shininess:55});
+      const sM=new THREE.MeshPhongMaterial({color:0x0d1226});
+      const skM=new THREE.MeshPhongMaterial({color:0xcfa07a,shininess:18});
+      const wh=new THREE.MeshPhongMaterial({color:0xfafafa});
+      const bt=new THREE.MeshPhongMaterial({color:0x0a0a0a});
+      const add=(geo,mat,x,y,z)=>{const m=new THREE.Mesh(geo,mat);m.position.set(x,y,z);m.castShadow=true;m.receiveShadow=true;g.add(m);return m;};
+      add(new THREE.SphereGeometry(0.27,10,7),skM,0,1.93,0);
+      const hr=new THREE.Mesh(new THREE.SphereGeometry(0.30,10,6),new THREE.MeshPhongMaterial({color:0x2d1800}));hr.scale.y=0.62;hr.position.set(0,2.03,0);g.add(hr);
+      add(new THREE.CylinderGeometry(0.09,0.11,0.13,7),skM,0,1.68,0);
+      add(new THREE.CylinderGeometry(0.27,0.31,0.78,10),jM,0,1.22,0);
+      add(new THREE.BoxGeometry(0.78,0.14,0.30),jM,0,1.58,0);
+      add(new THREE.CylinderGeometry(0.28,0.24,0.28,9),sM,0,0.78,0);
+      const mkArm=(sx)=>{const ag=new THREE.Group();ag.position.set(sx*0.45,1.58,0);const u=new THREE.Mesh(new THREE.CylinderGeometry(0.07,0.06,0.44,7),jM);u.position.y=-0.22;ag.add(u);const f=new THREE.Mesh(new THREE.CylinderGeometry(0.055,0.05,0.36,6),skM);f.position.y=-0.56;ag.add(f);g.add(ag);return ag;};
+      const mkLeg=(sx)=>{const lg=new THREE.Group();lg.position.set(sx*0.155,0.78,0);const th=new THREE.Mesh(new THREE.CylinderGeometry(0.10,0.086,0.44,8),skM);th.position.y=-0.22;lg.add(th);const sh=new THREE.Mesh(new THREE.CylinderGeometry(0.077,0.066,0.38,8),wh);sh.position.y=-0.57;lg.add(sh);const bk=new THREE.Mesh(new THREE.BoxGeometry(0.16,0.086,0.28),bt);bk.position.set(0,-0.78,0.04);lg.add(bk);g.add(lg);return lg;};
+      const aL=mkArm(-1),aR=mkArm(1),lL=mkLeg(-1),lR=mkLeg(1);
+      if(isUser){const r=new THREE.Mesh(new THREE.TorusGeometry(0.55,0.055,7,24),new THREE.MeshBasicMaterial({color:0xffd700}));r.rotation.x=Math.PI/2;r.position.y=0.04;g.add(r);}
+      g._aL=aL;g._aR=aR;g._lL=lL;g._lR=lR;g._ph=0;g._px=0;g._pz=0;
+      g.traverse(m=>{if(m.isMesh){m.castShadow=true;m.receiveShadow=true;}});
+      return g;
+    };
+
+    // 21 giocatori (home + away) dal prop allPlayers
+    const players=[];
+    (allPlayers||[]).forEach(pl=>{
+      const isHome=pl.team==='home';
+      const col=isHome?(homeCol||'#2563eb'):(oppCol||'#dc2626');
+      const mesh=mkP(col,false);
+      mesh.position.set(G2X(pl.x),0,G2Z(pl.y));mesh._px=mesh.position.x;mesh._pz=mesh.position.z;
+      scene.add(mesh);players.push({mesh});
+    });
+    // Protagonista (ring dorato)
+    const hero=mkP(heroKitCol||homeCol||'#22c55e',true);
+    hero.position.set(G2X(playerX||50),0,G2Z(playerY||50));hero._px=hero.position.x;hero._pz=hero.position.z;scene.add(hero);
+
+    // Palla
+    const ball=new THREE.Mesh(new THREE.SphereGeometry(0.42,14,10),new THREE.MeshPhongMaterial({color:0xfafafa,shininess:85}));
+    ball.castShadow=true;ball.position.set(G2X(ballX||50),0.42,G2Z(ballY||50));scene.add(ball);
+
+    Object.assign(sr.current,{scene,camera,renderer,players,hero,ball,G2X,G2Z});
+
+    // Loop: lerp verso le posizioni target dai prop (nessun re-render React)
+    let last=performance.now();
+    const animOne=(mesh,tx,tz,dt,k)=>{
+      const dx=tx-mesh.position.x,dz=tz-mesh.position.z,d=Math.hypot(dx,dz);
+      mesh.position.x+=dx*k;mesh.position.z+=dz*k;
+      const sp=Math.hypot(mesh.position.x-mesh._px,mesh.position.z-mesh._pz)/Math.max(dt,0.001);
+      mesh._px=mesh.position.x;mesh._pz=mesh.position.z;
+      if(d>0.4){const ta=Math.atan2(dx,dz),da=((ta-mesh.rotation.y+Math.PI*3)%(Math.PI*2))-Math.PI;mesh.rotation.y+=da*Math.min(9*dt,1);}
+      if(sp>0.3){mesh._ph=(mesh._ph||0)+sp*dt*2.6;const amp=Math.min(sp*0.10,0.7);mesh._lL.rotation.x=Math.sin(mesh._ph)*amp;mesh._lR.rotation.x=-Math.sin(mesh._ph)*amp;mesh._aL.rotation.x=-Math.sin(mesh._ph)*amp*0.5;mesh._aR.rotation.x=Math.sin(mesh._ph)*amp*0.5;}
+      else{mesh._lL.rotation.x*=0.84;mesh._lR.rotation.x*=0.84;mesh._aL.rotation.x*=0.84;mesh._aR.rotation.x*=0.84;}
+    };
+    const loop=()=>{
+      sr.current.raf=requestAnimationFrame(loop);
+      const now=performance.now(),dt=Math.min((now-last)/1000,0.05);last=now;
+      const P=propsRef.current,all=P.allPlayers||[],k=Math.min(1,dt*6);
+      sr.current.players.forEach((pp,i)=>{const src=all[i];if(!src)return;animOne(pp.mesh,G2X(src.x),G2Z(src.y),dt,k);});
+      animOne(hero,G2X(P.playerX||50),G2Z(P.playerY||50),dt,k);
+      ball.position.x+=(G2X(P.ballX||50)-ball.position.x)*k;ball.position.z+=(G2Z(P.ballY||50)-ball.position.z)*k;
+      ball.rotation.y+=0.05;ball.rotation.x+=0.03;
+      renderer.render(scene,camera);
+    };
+    loop();
+
+    const onR=()=>{const w=mount.clientWidth||W,h=mount.clientHeight||H;if(w<2||h<2)return;renderer.setSize(w,h);camera.aspect=w/h;camera.updateProjectionMatrix();};
+    window.addEventListener('resize',onR);
+
+    return()=>{
+      window.removeEventListener('resize',onR);
+      cancelAnimationFrame(sr.current.raf);
+      try{renderer.dispose();}catch(e){}
+      if(mount.contains(renderer.domElement))mount.removeChild(renderer.domElement);
+    };
+  },[]);// eslint-disable-line
+
+  // Sprint 3D-1: il walkout cinematico resta gestito dall'overlay React WalkoutOverlay
+  // (nessuna chiamata onWalkoutDone qui per evitare doppia transizione di fase).
+
+  return(
+    <div style={isDesktop
+      ?{height:"100%",aspectRatio:"460 / 650",background:"#050810",borderRadius:"0 0 12px 12px",overflow:"hidden"}
+      :{position:"absolute",inset:0,background:"#050810",borderRadius:"0 0 12px 12px",overflow:"hidden"}}>
+      <div ref={mountRef} style={{width:"100%",height:"100%"}}/>
+    </div>
+  );
+}
+
+
 /* ========================================
    D-PAD  (W/↑ = avanti) — pulsanti grandi
 ======================================== */
@@ -7365,6 +7511,9 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
       {...j(48+aOff,50),team:"away"},{...j(48+aOff,80),team:"away"},
     ];
   });
+
+  // Sprint 3D-1 — renderer 3D opt-in (resta dentro il sistema HL; PitchCanvas è il default/fallback)
+  const [render3D]=useState(()=>localStorage.getItem("cpm-renderer")==="3d");
 
   // AI states
   const [oppTactic,setOppTactic]=useState(null);
@@ -8506,7 +8655,17 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
 
             {/* FIELD — height-constrained on desktop, full width on narrow */}
             <div style={isNarrow?{position:"relative",overflow:"hidden",cursor:"default",flex:1,minHeight:0,display:"flex",flexDirection:"column"}:{flex:"0 0 auto",position:"relative",overflow:"hidden",alignSelf:"stretch",cursor:"default"}}>
-              <PitchCanvas playerX={pPos.x} playerY={pPos.y} zone={zone}
+              {render3D
+              ?<ThreeMatchView playerX={pPos.x} playerY={pPos.y} zone={zone}
+                homeCol={homeKitCol} oppCol={awayKitCol}
+                opponents={opponents.current} matchPhase={matchPhase3D} avatarId={player.avatarId||0}
+                allPlayers={matchPlayers} homeClub={homeTeamObj}
+                heroKitCol={heroKitCol} heroKitCol2={heroKitCol2}
+                stadiumHomeCol={scoreHomeCol} stadiumAwayCol={scoreAwayCol}
+                stadiumStyle={getStadiumStyle(homeTeamObj)}
+                ballX={ballPos.x} ballY={ballPos.y}
+                isDesktop={!isNarrow} onWalkoutDone={()=>setPhase("playing")}/>
+              :<PitchCanvas playerX={pPos.x} playerY={pPos.y} zone={zone}
                 homeCol={homeKitCol} oppCol={awayKitCol}
                 opponents={opponents.current} matchPhase={matchPhase3D} avatarId={player.avatarId||0}
                 actionZoom={false} allPlayers={matchPlayers} homeClub={homeTeamObj}
@@ -8522,7 +8681,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                 isDesktop={!isNarrow} heroJerseyNum={player.jerseyNum||10}
                 isDerbyMatch={!!drby} isBigGame={mw>=7}
                 competitionLabel={(player.proStatus||"u18")==="u18"?(ALL_U18_CLUBS.find(c=>c.id===player.club?.id)?.lg||(CLUBS.find(c=>c.id===player.club?.id)?.lg==="Lega A"?"Primavera 1":"Primavera 2")):(context==="euro_group"||context==="euro_ko"||context==="euro")?(player.euro?.competition||"Europa"):(context==="cup"?"COPPA NAZIONALE":(context==="national"||context==="nationsCup"||context==="euroMondiale"?"NAZIONALE":(player.club?.lg||"")))}
-                onWalkoutDone={()=>setPhase("playing")}/>
+                onWalkoutDone={()=>setPhase("playing")}/>}
               {phase==="walkout"&&<WalkoutOverlay homeTeam={homeTeamObj} homeRoster={homeRoster} awayRoster={awayRoster} opponent={awayTeamObj} isHome={isMatchHome} matchWeek={player.week} onDone={()=>{if(benchStart)setOnBench(true);setPhase("playing");}} weather={weather} isDerbyMatch={!!drby} isBigGame={mw>=7} heroJerseyNum={player.jerseyNum||10} playerName={player.name} benchStart={benchStart} isEuroMatch={context==="euro_group"||context==="euro_ko"} euroCompetition={player.euro?.competition||null} euroRound={(context==="euro_group")?`Giornata ${(player.euro?.groupResults||[]).length+1}/6`:(context==="euro_ko")?({r16:"Ottavi di Finale",sf:"Semifinale",final:"Finale"}[player.euro?.phase]||"KO"):null}/>}
               {screenFlash&&<div style={{position:"absolute",inset:0,background:screenFlash.col,zIndex:20,pointerEvents:"none",animation:`fadeFlash ${screenFlash.dur}ms ease-out forwards`}}/>}
               {floatGoal&&<div key={floatGoal.key} style={{position:"absolute",top:"30%",left:0,right:0,textAlign:"center",fontSize:22,fontWeight:900,color:floatGoal.col,textShadow:"0 0 24px currentColor",animation:"floatUp 1.4s ease-out forwards",zIndex:21,pointerEvents:"none"}}>{floatGoal.text}</div>}
@@ -11136,7 +11295,7 @@ function AISettingsCard({player}){
   const[mock,setMock]=useState(()=>localStorage.getItem("cpm-ai-mock")==="true");
   const[renderer,setRenderer]=useState(()=>localStorage.getItem("cpm-renderer")||"classic");
   const[saved,setSaved]=useState(false);
-  const toggleRenderer=()=>{const next=renderer==="classic"?"phaser":"classic";localStorage.setItem("cpm-renderer",next);setRenderer(next);};
+  const toggleRenderer=()=>{const order=["classic","3d","phaser"];const next=order[(order.indexOf(renderer)+1)%order.length];localStorage.setItem("cpm-renderer",next);setRenderer(next);};
   const saveKey=()=>{
     localStorage.setItem("cpm-api-key",key.trim());
     setSaved(true);setTimeout(()=>setSaved(false),2000);
@@ -11167,9 +11326,9 @@ function AISettingsCard({player}){
       <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"8px 0",borderTop:"1px solid "+TH.cardBorder}}>
         <div>
           <div style={{fontSize:11,color:TH.text,fontWeight:600}}>Renderer Partita</div>
-          <div style={{fontSize:10,color:TH.faint}}>{renderer==="phaser"?"11v11 Phaser · simulazione arcade":"Canvas 2D · sistema highlight interattivo"}</div>
+          <div style={{fontSize:10,color:TH.faint}}>{renderer==="phaser"?"11v11 Phaser · simulazione arcade":renderer==="3d"?"3D · sistema highlight interattivo (beta)":"Canvas 2D · sistema highlight interattivo"}</div>
         </div>
-        <button onClick={toggleRenderer} style={{padding:"5px 14px",borderRadius:20,border:"none",background:renderer==="phaser"?"#dbeafe":TH.cardBorder,color:renderer==="phaser"?TH.primary:TH.muted,fontWeight:700,cursor:"pointer",fontSize:11,fontFamily:"inherit"}}>{renderer==="phaser"?"Phaser":"Classic"}</button>
+        <button onClick={toggleRenderer} style={{padding:"5px 14px",borderRadius:20,border:"none",background:renderer==="phaser"?"#dbeafe":renderer==="3d"?"#ede9fe":TH.cardBorder,color:renderer==="phaser"?TH.primary:renderer==="3d"?"#7c3aed":TH.muted,fontWeight:700,cursor:"pointer",fontSize:11,fontFamily:"inherit"}}>{renderer==="phaser"?"Phaser":renderer==="3d"?"3D":"Classic"}</button>
       </div>
       {player&&player.aiData?.lastOpponentTactic&&(
         <div style={{marginTop:8,padding:"8px 10px",background:"#f8fafc",borderRadius:8,border:"1px solid "+TH.cardBorder}}>
