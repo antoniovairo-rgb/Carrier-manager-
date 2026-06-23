@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<title>Elevora — caricamento…</title>
+<style>
+  html,body{margin:0;height:100%;background:#050810;color:#9fb4d8;
+    font-family:system-ui,-apple-system,'Segoe UI',sans-serif;
+    display:flex;align-items:center;justify-content:center;text-align:center}
+  .b{width:34px;height:34px;border:3px solid rgba(159,180,216,0.25);
+    border-top-color:#2563eb;border-radius:50%;animation:s 0.8s linear infinite;margin:0 auto 14px}
+  @keyframes s{to{transform:rotate(360deg)}}
+  .t{font-size:13px;letter-spacing:1px}
+</style>
+</head>
+<body>
+<div>
+  <div class="b"></div>
+  <div class="t">Carico l'ultima versione di Elevora…</div>
+</div>
+<script>
+  // Loader stabile: URL fissa, sempre l'ultima versione.
+  // Aggiunge un cache-buster runtime così CDN e browser non servono mai una copia vecchia.
+  location.replace('CARRIER-MANAGER-AV.html?v=' + Date.now());
+</script>
+</body>
+</html>
