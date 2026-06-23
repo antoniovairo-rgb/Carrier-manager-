@@ -2612,7 +2612,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.17.0"; // Sprint 3D-4: atmosfera dinamica 3D — orario/meteo (pioggia/neve/temporale/nebbia) + portiere clash-aware sui club colors
+const GAME_VERSION="4.18.0"; // Sprint 3D-5: walkout cinematico 3D — squadre schierate + carrellata, sostituisce overlay 2D in modalità 3D
 const SAVE_VERSION=6;
 // Sprint ENV — ambiente rilevato automaticamente dal runtime (non gestito manualmente).
 // PRODUCTION = deploy GitHub Pages (*.github.io). Tutto il resto (staging githack, locale, localhost) = TEST.
@@ -6533,6 +6533,9 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
    Sprint 3D-4: atmosfera dinamica — orario (day/dusk/night, notte
    invariata), meteo (pioggia/neve/temporale+flash, nebbia), portiere
    clash-aware sui club colors.
+   Sprint 3D-5: walkout cinematico 3D — squadre schierate in fila,
+   carrellata che scorre sui giocatori, poi calcio d'inizio (sostituisce
+   l'overlay 2D in modalità 3D).
 ===================================================== */
 function ThreeMatchView(props){
   const {playerX,playerY,homeCol,oppCol,allPlayers,homeClub,heroKitCol,
@@ -6632,11 +6635,17 @@ function ThreeMatchView(props){
       const col=pl.gk?gkCol:(isHome?_hCol:_aCol);
       const mesh=mkP(col,false);
       mesh.position.set(G2X(pl.x),0,G2Z(pl.y));mesh._px=mesh.position.x;mesh._pz=mesh.position.z;
-      scene.add(mesh);players.push({mesh});
+      scene.add(mesh);players.push({mesh,team:pl.team});
     });
     // Protagonista (ring dorato)
     const hero=mkP(heroKitCol||homeCol||'#22c55e',true);
     hero.position.set(G2X(playerX||50),0,G2Z(playerY||50));hero._px=hero.position.x;hero._pz=hero.position.z;scene.add(hero);
+
+    // Slot di walkout: due file (home+protagonista / away) lungo la larghezza, rivolte alla camera
+    const _homeMeshes=[...players.filter(p=>p.team==="home").map(p=>p.mesh),hero];
+    const _awayMeshes=players.filter(p=>p.team==="away").map(p=>p.mesh);
+    const _placeRow=(list,xRow)=>{const n=list.length;list.forEach((m,i)=>{m._wx=xRow;m._wz=n>1?(-28+56*i/(n-1)):0;});};
+    _placeRow(_homeMeshes,-15);_placeRow(_awayMeshes,-7);
 
     // Palla
     const ball=new THREE.Mesh(new THREE.SphereGeometry(0.42,14,10),new THREE.MeshPhongMaterial({color:0xfafafa,shininess:85}));
@@ -6662,6 +6671,19 @@ function ThreeMatchView(props){
     let last=performance.now();
     // Stato camera cinematica: blend HL (0=wide, 1=close) smussato + look target smussato
     let camHL=0;const camLook=new THREE.Vector3(10,1,0);
+    // Stato walkout 3D: i giocatori si schierano in fila, camera che scorre, poi calcio d'inizio
+    let walkT=0,walkDone=false;const WALK_DUR=6.2;
+    // Cammina verso lo slot di walkout, fronte alla camera (-x)
+    const animWalk=(mesh,dt,k)=>{
+      const dx=mesh._wx-mesh.position.x,dz=mesh._wz-mesh.position.z,d=Math.hypot(dx,dz);
+      mesh.position.x+=dx*k;mesh.position.z+=dz*k;
+      const rawSp=Math.hypot(mesh.position.x-mesh._px,mesh.position.z-mesh._pz)/Math.max(dt,0.001);
+      mesh._px=mesh.position.x;mesh._pz=mesh.position.z;mesh._sp+=(rawSp-mesh._sp)*Math.min(dt*8,1);const sp=mesh._sp;
+      const ta=d>0.5?Math.atan2(dx,dz):-Math.PI/2; // verso movimento, altrimenti fronte camera
+      const da=((ta-mesh.rotation.y+Math.PI*3)%(Math.PI*2))-Math.PI;mesh.rotation.y+=da*Math.min(8*dt,1);
+      if(sp>0.4){mesh._ph+=sp*dt*2.6;const amp=Math.min(sp*0.11,0.72);mesh._lL.rotation.x=Math.sin(mesh._ph)*amp;mesh._lR.rotation.x=-Math.sin(mesh._ph)*amp;mesh._aL.rotation.x=-Math.sin(mesh._ph)*amp*0.5;mesh._aR.rotation.x=Math.sin(mesh._ph)*amp*0.5;mesh.position.y=Math.abs(Math.sin(mesh._ph))*Math.min(sp*0.018,0.12);}
+      else{mesh._lL.rotation.x*=0.82;mesh._lR.rotation.x*=0.82;mesh._aL.rotation.x*=0.82;mesh._aR.rotation.x*=0.82;mesh.position.y*=0.8;}
+    };
     const animOne=(mesh,tx,tz,dt,k,bx,bz)=>{
       const dx=tx-mesh.position.x,dz=tz-mesh.position.z,d=Math.hypot(dx,dz);
       mesh.position.x+=dx*k;mesh.position.z+=dz*k;
@@ -6695,23 +6717,39 @@ function ThreeMatchView(props){
       const moved=Math.hypot(ball.position.x-obx,ball.position.z-obz);
       ball.rotation.y+=0.04+moved*0.10;ball.rotation.x+=0.03+moved*0.06;
       const bx=ball.position.x,bz=ball.position.z;
-      sr.current.players.forEach((pp,i)=>{const src=all[i];if(!src)return;animOne(pp.mesh,G2X(src.x),G2Z(src.y),dt,k,bx,bz);});
-      animOne(hero,G2X(P.playerX||50),G2Z(P.playerY||50),dt,k,bx,bz);
+      const isWalk=P.matchPhase==="walkout";
+      if(isWalk){
+        sr.current.players.forEach(pp=>animWalk(pp.mesh,dt,k));
+        animWalk(hero,dt,k);
+        walkT+=dt;
+        if(walkT>=WALK_DUR&&!walkDone){walkDone=true;const cb=propsRef.current.onWalkoutDone;if(cb)cb();}
+      } else {
+        sr.current.players.forEach((pp,i)=>{const src=all[i];if(!src)return;animOne(pp.mesh,G2X(src.x),G2Z(src.y),dt,k,bx,bz);});
+        animOne(hero,G2X(P.playerX||50),G2Z(P.playerY||50),dt,k,bx,bz);
+      }
 
-      // ---- Camera cinematica: broadcast-follow in gioco, stacco ravvicinato negli highlight ----
+      // ---- Camera: scorrimento sul walkout, broadcast in gioco, stacco ravvicinato negli highlight ----
       const hx=hero.position.x,hz=hero.position.z;
       const ax=bx*0.6+hx*0.4,az=bz*0.6+hz*0.4; // centro azione (palla pesata + protagonista)
       const isHL=P.matchPhase==="hl_move"||P.matchPhase==="hl_choose"||P.matchPhase==="hl_result"||P.matchPhase==="hl_intro";
       camHL+=((isHL?1:0)-camHL)*Math.min(dt*2.2,1);
-      // WIDE — broadcast dietro la porta di casa, segue il centro azione con leggero parallasse
-      const wPx=-88+clamp(ax,-50,50)*0.12,wPy=54,wPz=az*0.32;
-      const wLx=clamp(ax*0.5+10,-12,42),wLy=1.5,wLz=az*0.6;
-      // CLOSE — inquadratura più bassa e vicina sul protagonista (dramma dell'highlight)
-      const cPx=clamp(hx-30,-96,-4),cPy=22,cPz=hz*0.6;
-      const cLx=hx+10,cLy=1.6,cLz=hz*0.85;
-      const tPx=wPx+(cPx-wPx)*camHL,tPy=wPy+(cPy-wPy)*camHL,tPz=wPz+(cPz-wPz)*camHL;
-      const tLx=wLx+(cLx-wLx)*camHL,tLy=wLy+(cLy-wLy)*camHL,tLz=wLz+(cLz-wLz)*camHL;
-      const kp=Math.min(dt*1.8,1),kl=Math.min(dt*2.4,1);
+      let tPx,tPy,tPz,tLx,tLy,tLz,kp,kl;
+      if(isWalk){
+        // Carrellata che scorre lungo la fila dei giocatori schierati
+        const prog=Math.min(walkT/WALK_DUR,1),panZ=-36+72*prog;
+        tPx=-46;tPy=14;tPz=panZ;tLx=-11;tLy=2.2;tLz=panZ*0.55;
+        kp=Math.min(dt*2.2,1);kl=Math.min(dt*3,1);
+      } else {
+        // WIDE — broadcast dietro la porta di casa, segue il centro azione con leggero parallasse
+        const wPx=-88+clamp(ax,-50,50)*0.12,wPy=54,wPz=az*0.32;
+        const wLx=clamp(ax*0.5+10,-12,42),wLy=1.5,wLz=az*0.6;
+        // CLOSE — inquadratura più bassa e vicina sul protagonista (dramma dell'highlight)
+        const cPx=clamp(hx-30,-96,-4),cPy=22,cPz=hz*0.6;
+        const cLx=hx+10,cLy=1.6,cLz=hz*0.85;
+        tPx=wPx+(cPx-wPx)*camHL;tPy=wPy+(cPy-wPy)*camHL;tPz=wPz+(cPz-wPz)*camHL;
+        tLx=wLx+(cLx-wLx)*camHL;tLy=wLy+(cLy-wLy)*camHL;tLz=wLz+(cLz-wLz)*camHL;
+        kp=Math.min(dt*1.8,1);kl=Math.min(dt*2.4,1);
+      }
       camera.position.x+=(tPx-camera.position.x)*kp;camera.position.y+=(tPy-camera.position.y)*kp;camera.position.z+=(tPz-camera.position.z)*kp;
       camLook.x+=(tLx-camLook.x)*kl;camLook.y+=(tLy-camLook.y)*kl;camLook.z+=(tLz-camLook.z)*kl;
       camera.lookAt(camLook.x,camLook.y,camLook.z);
@@ -8757,7 +8795,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                 stadiumStyle={getStadiumStyle(homeTeamObj)}
                 ballX={ballPos.x} ballY={ballPos.y}
                 timeOfDay={timeOfDay} weather={weather} kickoffHour={kickoffHour} attendance={attendance}
-                isDesktop={!isNarrow} onWalkoutDone={()=>setPhase("playing")}/>
+                isDesktop={!isNarrow} onWalkoutDone={()=>{if(benchStart)setOnBench(true);setPhase("playing");}}/>
               :<PitchCanvas playerX={pPos.x} playerY={pPos.y} zone={zone}
                 homeCol={homeKitCol} oppCol={awayKitCol}
                 opponents={opponents.current} matchPhase={matchPhase3D} avatarId={player.avatarId||0}
@@ -8775,7 +8813,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                 isDerbyMatch={!!drby} isBigGame={mw>=7}
                 competitionLabel={(player.proStatus||"u18")==="u18"?(ALL_U18_CLUBS.find(c=>c.id===player.club?.id)?.lg||(CLUBS.find(c=>c.id===player.club?.id)?.lg==="Lega A"?"Primavera 1":"Primavera 2")):(context==="euro_group"||context==="euro_ko"||context==="euro")?(player.euro?.competition||"Europa"):(context==="cup"?"COPPA NAZIONALE":(context==="national"||context==="nationsCup"||context==="euroMondiale"?"NAZIONALE":(player.club?.lg||"")))}
                 onWalkoutDone={()=>setPhase("playing")}/>}
-              {phase==="walkout"&&<WalkoutOverlay homeTeam={homeTeamObj} homeRoster={homeRoster} awayRoster={awayRoster} opponent={awayTeamObj} isHome={isMatchHome} matchWeek={player.week} onDone={()=>{if(benchStart)setOnBench(true);setPhase("playing");}} weather={weather} isDerbyMatch={!!drby} isBigGame={mw>=7} heroJerseyNum={player.jerseyNum||10} playerName={player.name} benchStart={benchStart} isEuroMatch={context==="euro_group"||context==="euro_ko"} euroCompetition={player.euro?.competition||null} euroRound={(context==="euro_group")?`Giornata ${(player.euro?.groupResults||[]).length+1}/6`:(context==="euro_ko")?({r16:"Ottavi di Finale",sf:"Semifinale",final:"Finale"}[player.euro?.phase]||"KO"):null}/>}
+              {phase==="walkout"&&!render3D&&<WalkoutOverlay homeTeam={homeTeamObj} homeRoster={homeRoster} awayRoster={awayRoster} opponent={awayTeamObj} isHome={isMatchHome} matchWeek={player.week} onDone={()=>{if(benchStart)setOnBench(true);setPhase("playing");}} weather={weather} isDerbyMatch={!!drby} isBigGame={mw>=7} heroJerseyNum={player.jerseyNum||10} playerName={player.name} benchStart={benchStart} isEuroMatch={context==="euro_group"||context==="euro_ko"} euroCompetition={player.euro?.competition||null} euroRound={(context==="euro_group")?`Giornata ${(player.euro?.groupResults||[]).length+1}/6`:(context==="euro_ko")?({r16:"Ottavi di Finale",sf:"Semifinale",final:"Finale"}[player.euro?.phase]||"KO"):null}/>}
               {screenFlash&&<div style={{position:"absolute",inset:0,background:screenFlash.col,zIndex:20,pointerEvents:"none",animation:`fadeFlash ${screenFlash.dur}ms ease-out forwards`}}/>}
               {floatGoal&&<div key={floatGoal.key} style={{position:"absolute",top:"30%",left:0,right:0,textAlign:"center",fontSize:22,fontWeight:900,color:floatGoal.col,textShadow:"0 0 24px currentColor",animation:"floatUp 1.4s ease-out forwards",zIndex:21,pointerEvents:"none"}}>{floatGoal.text}</div>}
               {/* Sprint 97 — pressure border */}
