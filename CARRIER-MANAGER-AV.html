@@ -2612,7 +2612,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.37.0"; // Sprint ATE-3: Commentary sync — label azione 3D + colori tipo + delay al picco arco
+const GAME_VERSION="4.38.0"; // Sprint ATE-4+5: zone ring HL + ball pre-pos + debug overlay Shift+D
 const SAVE_VERSION=6;
 // Sprint ENV — ambiente rilevato automaticamente dal runtime (non gestito manualmente).
 // PRODUCTION = deploy GitHub Pages (*.github.io). Tutto il resto (staging githack, locale, localhost) = TEST.
@@ -6556,12 +6556,16 @@ const ATE3_LABEL={shot:"⚽ TIRO",cross:"↗ CROSS",save:"🧤 PARATA",tackle:"�
 const ATE3_TYPEMS={shot:520,cross:680,save:550,tackle:350,pass:480}; // durata arco in ms per tipo
 const ATE3_ARCMS={attack_goal:260,attack:260,wide_right:340,opp_goal:275,defend_goal:275,retreat:175,midfield:240}; // delay commentary = metà arco
 const ATE3_ARCCOL={shot:"#f97316",cross:"#22d3ee",tackle:"#fbbf24",save:"#60a5fa",pass:"#a3e635"};
+// ATE-4: zona ring — mappa zone SITUATIONS → posizione 3D (world coords) + posizione palla (game coords)
+const HL_ZONE_3D={area:{x:38,z:0},bordo:{x:26,z:0},trequarti:{x:12,z:0},centro:{x:0,z:0},difesa:{x:-20,z:0},propria:{x:-38,z:0},fascia:{x:28,z:16}};
+const HL_ZONE_BALL={area:{x:87,y:50},bordo:{x:77,y:50},trequarti:{x:63,y:50},centro:{x:47,y:50},difesa:{x:29,y:50},propria:{x:11,y:50},fascia:{x:80,y:72}};
+const HL_ZONE_COL={shot:0xf97316,penalty:0xf97316,cross:0x22d3ee,freekick:0x22d3ee,tackle:0xfbbf24,save:0x60a5fa,pass:0xa3e635,dribble:0xa3e635,header:0xf97316,build:0xffffff};
 function ThreeMatchView(props){
   const {playerX,playerY,homeCol,oppCol,allPlayers,homeClub,heroKitCol,
     stadiumHomeCol,stadiumAwayCol,stadiumStyle=0,ballX,ballY,
     matchPhase,onWalkoutDone,isDesktop=false,
     timeOfDay,weather,kickoffHour,attendance,
-    isDerby=false,isBigGame=false,bgAction=null}=props;
+    isDerby=false,isBigGame=false,bgAction=null,hlZone=null}=props;
   const mountRef=useRef(null);
   const sr=useRef({players:[],ball:null,hero:null,raf:null,renderer:null,scene:null,camera:null});
   const propsRef=useRef(props);
@@ -6787,6 +6791,11 @@ function ThreeMatchView(props){
     // LT-1: anello contact point — pre-allocato, attivato sul kick/header
     const ctFlash=new THREE.Mesh(new THREE.RingGeometry(0.08,0.52,14),new THREE.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:0,side:THREE.DoubleSide,depthWrite:false}));
     ctFlash.rotation.x=-Math.PI/2;ctFlash.position.y=0.06;scene.add(ctFlash);
+    // ATE-4: zona ring — anello sul campo che evidenzia la zona HL durante intro/move/choose
+    const zoneRingMat=new THREE.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:0,side:THREE.DoubleSide,depthWrite:false});
+    const zoneRing=new THREE.Mesh(new THREE.RingGeometry(2.2,4.8,28),zoneRingMat);
+    zoneRing.rotation.x=-Math.PI/2;zoneRing.position.y=0.09;scene.add(zoneRing);
+    let zoneRingT=-1;
 
     Object.assign(sr.current,{scene,camera,renderer,players,hero,ball,G2X,G2Z});
 
@@ -6930,8 +6939,21 @@ function ThreeMatchView(props){
           if(ballArcActive)contactFlashT=0;} // QW-A: contact flash al kick/header
         if(_curPh==="hl_intro"||(_curPh==="hl_move"&&prevPhase==="playing")){repCount=0;repHead=0;replayDone=false;}
         if(_curPh!=="hl_result"&&replaying){replaying=false;setReplayOn(false);}
+        // ATE-4: zone ring — accendi su hl_intro, colora per tipo; spegni su playing/ended
+        if(_curPh==="hl_intro"){zoneRingT=0;zoneRingMat.color.setHex(HL_ZONE_COL[P.hlType]||0xffffff);}
+        if(_curPh==="playing"||_curPh==="ended"||_curPh==="walkout"){zoneRingT=-1;zoneRingMat.opacity=0;}
       }
       prevPhase=_curPh;
+      // ATE-4: zone ring RAF — entry scale-in + pulse durante HL; invisibile fuori HL
+      {const _inHL=_curPh==="hl_intro"||_curPh==="hl_move"||_curPh==="hl_choose";
+       if(_inHL&&zoneRingT<0)zoneRingT=0;
+       if(zoneRingT>=0){zoneRingT+=dt;
+         const _zp=HL_ZONE_3D[P.hlZone]||{x:28,z:0};
+         zoneRing.position.x=_zp.x;zoneRing.position.z=_zp.z;
+         const _entry=Math.min(zoneRingT/0.45,1);
+         zoneRingMat.opacity=_entry*(0.28+Math.sin(now*0.003)*0.09);
+         zoneRing.scale.setScalar(1+(1-_entry)*2.0);}
+       else zoneRingMat.opacity=0;}
       // Sprint 3D-11A: trigger burst al gol — rileva cambio di waveEvent.t
       const _we=P.waveEvent;
       if(_we&&_we.t&&_we.t!==prevWaveT){prevWaveT=_we.t;goalBurstT=0;goalBurstHome=!!_we.home;shakePow=0.55;
@@ -8045,6 +8067,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   const [movesLeft,setMovesLeft]=useState(0);
   const [pressureBar,setPressureBar]=useState(1);
   const [paused,setPaused]=useState(false);
+  const [debugMode,setDebugMode]=useState(false); // ATE-5: Shift+D toggle
   const pressureRef=useRef(1);
   const [defDist,setDefDist]=useState(100); // 0=on you 100=far
   const defDistRef=useRef(100);
@@ -8218,6 +8241,9 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     if(phase==="hl_intro"){
       const tid=setTimeout(()=>chantFor("home",1500),200);
       chantTimersRef.current.push(tid);
+      // ATE-4: pre-posiziona palla verso zona HL — il ball lerp parte subito
+      const _zpos=HL_ZONE_BALL[situations[hlIdx]?.zones?.[0]]||null;
+      if(_zpos)ballTargetRef.current=_zpos;
     }
     if(phase==="hl_choose"){
       setSelectedActionIdx(0);
@@ -8230,6 +8256,12 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
       }
     }
   },[hlIdx,phase]);// eslint-disable-line
+
+  // ATE-5: debug mode toggle — Shift+D
+  useEffect(()=>{
+    const fn=(e)=>{if(e.shiftKey&&e.key==="D")setDebugMode(d=>!d);};
+    window.addEventListener("keydown",fn);return()=>window.removeEventListener("keydown",fn);
+  },[]);
 
   // hl_intro auto-advance → hl_move after 2.5s (tap/key to skip)
   useEffect(()=>{
@@ -9022,6 +9054,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   const pct=Math.round((clock/90)*100);
   const show3D=["playing","hl_move","hl_choose","hl_result","hl_intro"].includes(phase);
   const matchPhase3D=["walkout","hl_move","hl_choose","hl_result","hl_intro","playing"].includes(phase)?phase:"match";
+  const hlZone=situations[hlIdx]?.zones?.[0]||null; // ATE-4: zona corrente per zone ring
   // National context — derive home team from player's national team data
   const isNatCtx=context==="national"||context==="nationsCup"||context==="euroMondiale_group"||context==="euroMondiale_ko"||context==="euroMondiale";
   const _myNatData=isNatCtx?(NAT_CLUB_DATA[player.nation||"Italia"]||{id:"it-nt",a:"ITA",p:82,c:"#003399",c2:"#ffffff",nat:"🇮🇹"}):null;
@@ -9154,7 +9187,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                 heroKitCol={heroKitCol} heroKitCol2={heroKitCol2}
                 stadiumHomeCol={scoreHomeCol} stadiumAwayCol={scoreAwayCol}
                 stadiumStyle={getStadiumStyle(homeTeamObj)}
-                ballX={ballPos.x} ballY={ballPos.y} hlType={_hlType} bgAction={bgAction}
+                ballX={ballPos.x} ballY={ballPos.y} hlType={_hlType} bgAction={bgAction} hlZone={hlZone}
                 timeOfDay={timeOfDay} weather={weather} kickoffHour={kickoffHour} attendance={attendance}
                 waveEvent={waveEvent} isDerby={!!drby} isBigGame={mw>=7}
                 isDesktop={!isNarrow} onWalkoutDone={()=>{if(benchStart)setOnBench(true);setPhase("playing");}}/>
@@ -9570,6 +9603,18 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           </Btn>
         </Card>
       )}
+      {/* ATE-5: debug overlay — Shift+D */}
+      {debugMode&&<div style={{position:"fixed",bottom:8,left:8,background:"rgba(0,0,0,0.82)",
+        color:"#a3e635",fontFamily:"monospace",fontSize:9,padding:"7px 11px",borderRadius:7,
+        zIndex:9999,lineHeight:1.8,pointerEvents:"none",border:"1px solid rgba(163,230,53,0.25)"}}>
+        <div style={{color:"#f97316",fontWeight:700,marginBottom:2}}>◉ CPM DEBUG {GAME_VERSION}</div>
+        <div>phase: <b style={{color:"#fff"}}>{phase}</b></div>
+        <div>bg_action: <b style={{color:ATE3_ARCCOL[bgAction?.type]||"#fff"}}>{bgAction?.type||"—"}</b></div>
+        <div>ball: <b style={{color:"#fff"}}>{ballPos.x.toFixed(1)} / {ballPos.y.toFixed(1)}</b></div>
+        <div>momentum: <b style={{color:"#fff"}}>{momentum}</b> · poss: <b style={{color:"#fff"}}>{possession}%</b></div>
+        <div>clock: <b style={{color:"#fff"}}>{clock}'</b> · hl_zone: <b style={{color:"#22d3ee"}}>{hlZone||"—"}</b></div>
+        <div style={{color:"rgba(163,230,53,0.4)",marginTop:2,fontSize:8}}>Shift+D per chiudere</div>
+      </div>}
     </div>
   );
 }
