@@ -2612,7 +2612,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.46.0"; // Sprint 3DV-5: regia TV intelligente — attack zoom, blend per fase HL, GK tracking
+const GAME_VERSION="4.47.0"; // Sprint 3DV-6: crowd home/away — tribuna gold sul gol casa, blu sul gol ospiti
 const SAVE_VERSION=6;
 // Sprint ENV — ambiente rilevato automaticamente dal runtime (non gestito manualmente).
 // PRODUCTION = deploy GitHub Pages (*.github.io). Tutto il resto (staging githack, locale, localhost) = TEST.
@@ -5006,12 +5006,12 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
     const fence=new THREE.Mesh(new THREE.BoxGeometry(standW,0.9,0.3),new THREE.MeshLambertMaterial({color:0x2a6038}));
     fence.position.set(0,0.45,-(standD/2+0.15));g.add(fence);
     g.position.set(cx,0,cz);g.rotation.y=rotY;
-    scene.add(g);
+    scene.add(g);return wallMat;// 3DV-6: espone il materiale per il pulse al gol
   };
 
   // End stands (behind goals) — scaled by prestige
-  addStand(0,-endZ,0,       endW,endD,endH,hTex); // Home end
-  addStand(0, endZ,Math.PI, endW,endD,endH,aTex); // Away end
+  const homeMat=addStand(0,-endZ,0,       endW,endD,endH,hTex);// Home end
+  const awayMat=addStand(0, endZ,Math.PI, endW,endD,endH,aTex);// Away end
   // Side stands — scaled
   addStand(sideX, 0, Math.PI/2, sideW,sideD,sideH,mTex); // Right side
   addStand(-sideX,0,-Math.PI/2, sideW,sideD,sideH,mTex); // Left side
@@ -5093,6 +5093,7 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
   const tS=tN.clone();tS.position.z=33;scene.add(tS);
   const tE=new THREE.Mesh(new THREE.PlaneGeometry(4.5,62),trackMat);tE.rotation.x=-Math.PI/2;tE.position.set(53.5,0.02,0);scene.add(tE);
   const tW=tE.clone();tW.position.x=-53.5;scene.add(tW);
+  return {homeMat,awayMat};// 3DV-6: materiali tribuna home/away per goal pulse
 }
 
 /* ========================================
@@ -6643,7 +6644,7 @@ function ThreeMatchView(props){
 
     // Stadio (riuso del builder AAA esistente)
     const sHome=stadiumHomeCol||homeCol||'#2563eb',sAway=stadiumAwayCol||oppCol||'#dc2626';
-    try{buildStadium(scene,sHome,sAway,{prestige:club.p||club.prestige||65,style:stadiumStyle,floodColor:pal.flood});}catch(e){}
+    try{const _sc=buildStadium(scene,sHome,sAway,{prestige:club.p||club.prestige||65,style:stadiumStyle,floodColor:pal.flood});if(_sc)sr.current.crowdMats=_sc;}catch(e){}
 
     // Factory giocatore (derivata da FootballMatch, MeshPhong procedurale)
     // Sprint 3D-6: varietà deterministica per indice — altezza/corporatura + carnagione,
@@ -6995,6 +6996,11 @@ function ThreeMatchView(props){
       // Sprint 3D-11C: pulse ambientale big match/derby
       if(bigMatchAmb){bigMatchAmb.intensity=0.08+Math.sin(now*0.0009)*0.04;}
       const _goalExcite=goalBurstT>=0?Math.max(0,1-goalBurstT/2.5):0;
+      // 3DV-6: crowd pulse al gol — tribuna del team marcatore diventa calda (casa) o fredda (ospiti)
+      if(sr.current.crowdMats){const{homeMat,awayMat}=sr.current.crowdMats;
+        if(_goalExcite>0&&goalBurstHome){homeMat.color.setRGB(1,0.90+_goalExcite*0.10,0.55+_goalExcite*0.35);awayMat.color.setRGB(1,1,1);}
+        else if(_goalExcite>0){awayMat.color.setRGB(0.55+_goalExcite*0.25,0.72+_goalExcite*0.15,1);homeMat.color.setRGB(1,1,1);}
+        else{homeMat.color.setRGB(1,1,1);awayMat.color.setRGB(1,1,1);}}
       if(isWalk){
         sr.current.players.forEach(pp=>animWalk(pp.mesh,aDt,ak));
         animWalk(hero,aDt,ak);
