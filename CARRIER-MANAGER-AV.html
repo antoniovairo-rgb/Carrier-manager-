@@ -2612,7 +2612,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.25.0"; // Sprint 3D-G1: broadcast — anti-sovraesposizione DAY + de-zoom HL + cartelloni LED
+const GAME_VERSION="4.26.0"; // Sprint 3D-9: movimenti collettivi visivi (linea difensiva inferita + pressing)
 const SAVE_VERSION=6;
 // Sprint ENV — ambiente rilevato automaticamente dal runtime (non gestito manualmente).
 // PRODUCTION = deploy GitHub Pages (*.github.io). Tutto il resto (staging githack, locale, localhost) = TEST.
@@ -6827,7 +6827,18 @@ function ThreeMatchView(props){
         // Sprint 3D-8b: riproduzione dal ring buffer (tutti i mesh guidati dai frame registrati)
         driveReplay(dt);
       } else {
-        sr.current.players.forEach((pp,i)=>{const src=all[i];if(!src)return;animOne(pp.mesh,G2X(src.x),G2Z(src.y),aDt,ak,bx,bz);});
+        // Sprint 3D-9: movimenti collettivi (puramente visivi — offset sul target del lerp, stato di gioco intatto).
+        // Linea difensiva inferita: DIF scorrono come blocco con la palla; CEN a metà intensità. Pressing: i più vicini driftano verso la palla.
+        const _bGX=P.ballX||50,_bGY=P.ballY||50,_lineShift=clamp((_bGX-50)*0.18,-9,9);
+        sr.current.players.forEach((pp,i)=>{const src=all[i];if(!src)return;
+          let ox=0,oy=0;
+          if(!src.gk){
+            const _hm=i<10,_li=_hm?i:i-10; // indice nel team: 1-4=DIF, 5-7=CEN, 8-9=ATT (0=GK)
+            if(_li>=1&&_li<=4)ox+=_lineShift; else if(_li>=5&&_li<=7)ox+=_lineShift*0.5;
+            const dxb=_bGX-src.x,dyb=_bGY-src.y,db=Math.hypot(dxb,dyb);
+            if(db<24&&db>1.5){const press=clamp((24-db)/24,0,1)*4.0;ox+=dxb/db*press;oy+=dyb/db*press;}
+          }
+          animOne(pp.mesh,G2X(clamp(src.x+ox,2,98)),G2Z(clamp(src.y+oy,2,98)),aDt,ak,bx,bz);});
         animOne(hero,G2X(P.playerX||50),G2Z(P.playerY||50),aDt,ak,bx,bz);
         // Sprint 3D-7: override one-shot dell'esito sul protagonista (sovrascrive il run-cycle per la durata)
         if(actType){actT+=aDt;const _T=actType==="header"?0.6:(actType==="tackle"?0.5:0.45),u=Math.min(actT/_T,1),sw=Math.sin(u*Math.PI);
