@@ -2612,7 +2612,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.22.0"; // Sprint 3D-8a: slow-motion cinematografico sull'esito (bullet-time sul tiro, camera real-time)
+const GAME_VERSION="4.23.0"; // Sprint 3D-8b: replay con riavvolgimento (ring buffer + camera replay + letterbox)
 const SAVE_VERSION=6;
 // Sprint ENV — ambiente rilevato automaticamente dal runtime (non gestito manualmente).
 // PRODUCTION = deploy GitHub Pages (*.github.io). Tutto il resto (staging githack, locale, localhost) = TEST.
@@ -6547,6 +6547,9 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
    Sprint 3D-8a: slow-motion cinematografico sull'esito — bullet-time sul tiro
    (0.28x) con ritorno graduale a 1x; rallentano solo le animazioni e la palla
    (aDt/ak), la camera resta in tempo reale per un movimento fluido.
+   Sprint 3D-8b: replay con riavvolgimento — ring buffer (≈2.5s) di tutti i
+   mesh, riproduzione con run-cycle ricostruito dalla velocità inter-frame,
+   camera replay alta laterale che segue la palla, letterbox "REPLAY".
 ===================================================== */
 function ThreeMatchView(props){
   const {playerX,playerY,homeCol,oppCol,allPlayers,homeClub,heroKitCol,
@@ -6557,6 +6560,8 @@ function ThreeMatchView(props){
   const sr=useRef({players:[],ball:null,hero:null,raf:null,renderer:null,scene:null,camera:null});
   const propsRef=useRef(props);
   useEffect(()=>{propsRef.current=props;});
+  // Sprint 3D-8b: overlay letterbox "REPLAY" (toggle di stato; non rigenera il canvas)
+  const [replayOn,setReplayOn]=useState(false);
 
   useEffect(()=>{
     const mount=mountRef.current;if(!mount)return;
@@ -6699,6 +6704,31 @@ function ThreeMatchView(props){
     let actT=0,actType=null,prevPhase="";
     // Sprint 3D-8a: cronometro dell'esito per il rallenty cinematografico
     let resultT=0;
+    // Sprint 3D-8b: replay con riavvolgimento — ring buffer posizioni (≈2.5s) + macchina a stati
+    const REP_CAP=150,snapSize=(players.length+1)*2+2;
+    const repRing=new Float32Array(REP_CAP*snapSize);
+    let repHead=0,repCount=0,replaying=false,replayDone=false,repT=0,repStart=0,repFrames=0;const REPLAY_DUR=2.6;
+    const recordSnap=()=>{
+      let o=repHead*snapSize;
+      for(let i=0;i<players.length;i++){repRing[o++]=players[i].mesh.position.x;repRing[o++]=players[i].mesh.position.z;}
+      repRing[o++]=hero.position.x;repRing[o++]=hero.position.z;
+      repRing[o++]=ball.position.x;repRing[o++]=ball.position.z;
+      repHead=(repHead+1)%REP_CAP;repCount=Math.min(repCount+1,REP_CAP);
+    };
+    const _legFromSpeed=(mesh,sp,dt)=>{mesh._sp+=(sp-mesh._sp)*Math.min(dt*8,1);const s=mesh._sp;
+      if(s>0.4){mesh._ph+=s*dt*2.6;const amp=Math.min(s*0.11,0.72);mesh._lL.rotation.x=Math.sin(mesh._ph)*amp;mesh._lR.rotation.x=-Math.sin(mesh._ph)*amp;mesh._aL.rotation.x=-Math.sin(mesh._ph)*amp*0.5;mesh._aR.rotation.x=Math.sin(mesh._ph)*amp*0.5;mesh.position.y=Math.abs(Math.sin(mesh._ph))*Math.min(s*0.018,0.12);}
+      else{mesh._lL.rotation.x*=0.82;mesh._lR.rotation.x*=0.82;mesh.position.y*=0.8;}};
+    const _applyFrame=(mesh,x,z,px,pz,dt)=>{const sp=Math.hypot(x-px,z-pz)/Math.max(dt,0.001);mesh.position.x=x;mesh.position.z=z;_legFromSpeed(mesh,sp,dt);
+      const dx=x-px,dz=z-pz;if(Math.hypot(dx,dz)>0.04){const ta=Math.atan2(dx,dz),da=((ta-mesh.rotation.y+Math.PI*3)%(Math.PI*2))-Math.PI;mesh.rotation.y+=da*Math.min(10*dt,1);}};
+    const driveReplay=(dt)=>{
+      repT+=dt;const prog=Math.min(repT/REPLAY_DUR,1);
+      const fp=prog*(repFrames-1),fi=Math.floor(fp);
+      const idx=(repStart+fi)%REP_CAP,pid=(repStart+Math.max(fi-1,0))%REP_CAP,o=idx*snapSize,po=pid*snapSize;
+      for(let i=0;i<players.length;i++){_applyFrame(players[i].mesh,repRing[o+i*2],repRing[o+i*2+1],repRing[po+i*2],repRing[po+i*2+1],dt);}
+      const hO=players.length*2;_applyFrame(hero,repRing[o+hO],repRing[o+hO+1],repRing[po+hO],repRing[po+hO+1],dt);
+      const bO=hO+2;ball.position.x=repRing[o+bO];ball.position.z=repRing[o+bO+1];ball.rotation.y+=0.12;ball.rotation.x+=0.08;
+      if(prog>=1){replaying=false;replayDone=true;setReplayOn(false);}
+    };
     // Stato walkout 3D: i giocatori si schierano in fila, camera che scorre, poi calcio d'inizio
     let walkT=0,walkDone=false;const WALK_DUR=6.2;
     // Cammina verso lo slot di walkout, fronte alla camera (-x)
@@ -6745,8 +6775,10 @@ function ThreeMatchView(props){
       const P=propsRef.current,all=P.allPlayers||[],k=Math.min(1,dt*6.5);
       // Sprint 3D-8a: slow-motion sull'esito — bullet-time sul tiro (0.28x) poi ritorno a 1x in ~1.6s.
       // Solo le animazioni rallentano (aDt/ak); la camera resta in tempo reale → movimento fluido.
-      if(P.matchPhase==="hl_result")resultT+=dt;else resultT=0;
-      const slow=P.matchPhase==="hl_result"?(0.28+0.72*Math.min(resultT/1.6,1)):1;
+      const isResult=P.matchPhase==="hl_result";
+      const isHL=isResult||P.matchPhase==="hl_move"||P.matchPhase==="hl_choose"||P.matchPhase==="hl_intro";
+      if(isResult)resultT+=dt;else resultT=0;
+      const slow=isResult?(0.28+0.72*Math.min(resultT/1.6,1)):1;
       const aDt=dt*slow,ak=Math.min(1,aDt*6.5);
       // palla per prima, così i giocatori fermi si orientano verso di essa
       const obx=ball.position.x,obz=ball.position.z;
@@ -6755,14 +6787,22 @@ function ThreeMatchView(props){
       ball.rotation.y+=0.04+moved*0.10;ball.rotation.x+=0.03+moved*0.06;
       const bx=ball.position.x,bz=ball.position.z;
       const isWalk=P.matchPhase==="walkout";
-      // trigger one-shot all'ingresso in hl_result, mappando hlType → tipo animazione
-      if(P.matchPhase==="hl_result"&&prevPhase!=="hl_result"){const t=P.hlType;actType=(t==="header"||t==="tackle"||t==="dribble")?t:(!t||t==="build")?null:"shot";actT=0;}
-      prevPhase=P.matchPhase;
+      // transizioni di fase: trigger animazione esito + gestione buffer/replay
+      const _curPh=P.matchPhase;
+      if(_curPh!==prevPhase){
+        if(_curPh==="hl_result"){const t=P.hlType;actType=(t==="header"||t==="tackle"||t==="dribble")?t:(!t||t==="build")?null:"shot";actT=0;}
+        if(_curPh==="hl_intro"||(_curPh==="hl_move"&&prevPhase==="playing")){repCount=0;repHead=0;replayDone=false;}
+        if(_curPh!=="hl_result"&&replaying){replaying=false;setReplayOn(false);}
+      }
+      prevPhase=_curPh;
       if(isWalk){
         sr.current.players.forEach(pp=>animWalk(pp.mesh,aDt,ak));
         animWalk(hero,aDt,ak);
         walkT+=dt;
         if(walkT>=WALK_DUR&&!walkDone){walkDone=true;const cb=propsRef.current.onWalkoutDone;if(cb)cb();}
+      } else if(replaying){
+        // Sprint 3D-8b: riproduzione dal ring buffer (tutti i mesh guidati dai frame registrati)
+        driveReplay(dt);
       } else {
         sr.current.players.forEach((pp,i)=>{const src=all[i];if(!src)return;animOne(pp.mesh,G2X(src.x),G2Z(src.y),aDt,ak,bx,bz);});
         animOne(hero,G2X(P.playerX||50),G2Z(P.playerY||50),aDt,ak,bx,bz);
@@ -6774,13 +6814,14 @@ function ThreeMatchView(props){
           else if(actType==="dribble"){hero.rotation.z=Math.sin(u*Math.PI*3)*0.18;}
           if(u>=1)actType=null;
         }
+        // registra lo snapshot durante gli HL; a esito quasi concluso riavvolgi e mostra il replay
+        if(isHL)recordSnap();
+        if(isResult&&!replaying&&!replayDone&&resultT>=1.7&&repCount>=25){replaying=true;replayDone=true;repT=0;repFrames=repCount;repStart=(repHead-repCount+REP_CAP*2)%REP_CAP;setReplayOn(true);}
       }
 
       // ---- Camera: scorrimento sul walkout, broadcast in gioco, stacco ravvicinato negli highlight ----
       const hx=hero.position.x,hz=hero.position.z;
-      const isHL=P.matchPhase==="hl_move"||P.matchPhase==="hl_choose"||P.matchPhase==="hl_result"||P.matchPhase==="hl_intro";
       // Sprint 3D-6b: a fine azione (hl_result) la regia "va sulla palla" — focus automatico sull'esito
-      const isResult=P.matchPhase==="hl_result";
       bf+=((isResult?1:0)-bf)*Math.min(dt*2.5,1);
       const wBall=0.6+0.30*bf; // palla più pesante nel centro azione durante l'esito
       const ax=bx*wBall+hx*(1-wBall),az=bz*wBall+hz*(1-wBall);
@@ -6807,6 +6848,10 @@ function ThreeMatchView(props){
         tLx=wLx+(cLx-wLx)*camHL;tLy=wLy+(cLy-wLy)*camHL;tLz=wLz+(cLz-wLz)*camHL;
         kp=Math.min(dt*1.8,1);kl=Math.min(dt*2.4,1);
       }
+      // Sprint 3D-8b: durante il replay la regia passa a una camera alta laterale che segue la palla
+      if(replaying){const rbx=ball.position.x,rbz=ball.position.z;
+        tPx=clamp(rbx-30,-96,-8);tPy=30;tPz=rbz*0.45+32;tLx=rbx+6;tLy=1.3;tLz=rbz*0.6;
+        kp=Math.min(dt*2.2,1);kl=Math.min(dt*2.8,1);}
       camera.position.x+=(tPx-camera.position.x)*kp;camera.position.y+=(tPy-camera.position.y)*kp;camera.position.z+=(tPz-camera.position.z)*kp;
       camLook.x+=(tLx-camLook.x)*kl;camLook.y+=(tLy-camLook.y)*kl;camLook.z+=(tLz-camLook.z)*kl;
       camera.lookAt(camLook.x,camLook.y,camLook.z);
@@ -6827,7 +6872,7 @@ function ThreeMatchView(props){
       }
 
       // ---- Scia palla (solo HL) + marcatore eroe (Sprint 3D-6b) ----
-      trailHist.push(bx,bz);if(trailHist.length>TRAIL_N*2)trailHist.splice(0,trailHist.length-TRAIL_N*2);
+      trailHist.push(ball.position.x,ball.position.z);if(trailHist.length>TRAIL_N*2)trailHist.splice(0,trailHist.length-TRAIL_N*2);
       for(let i=0;i<TRAIL_N;i++){const d=trailDots[i],j=i*2;
         if(isHL&&j<trailHist.length){d.visible=true;d.position.set(trailHist[j],0.42,trailHist[j+1]);const age=(i+1)/TRAIL_N;d.material.opacity=0.05+age*0.32;d.scale.setScalar(0.42+age*0.7);}
         else d.visible=false;}
@@ -6856,9 +6901,14 @@ function ThreeMatchView(props){
 
   return(
     <div style={isDesktop
-      ?{height:"100%",aspectRatio:"460 / 650",background:"#050810",borderRadius:"0 0 12px 12px",overflow:"hidden"}
+      ?{position:"relative",height:"100%",aspectRatio:"460 / 650",background:"#050810",borderRadius:"0 0 12px 12px",overflow:"hidden"}
       :{position:"absolute",inset:0,background:"#050810",borderRadius:"0 0 12px 12px",overflow:"hidden"}}>
       <div ref={mountRef} style={{width:"100%",height:"100%"}}/>
+      {replayOn&&<React.Fragment>
+        <div style={{position:"absolute",top:0,left:0,right:0,height:"10%",background:"#000",pointerEvents:"none"}}/>
+        <div style={{position:"absolute",bottom:0,left:0,right:0,height:"10%",background:"#000",pointerEvents:"none"}}/>
+        <div style={{position:"absolute",top:"12%",left:"5%",color:"#fff",fontWeight:800,fontSize:"13px",letterSpacing:"1px",textShadow:"0 1px 4px #000",pointerEvents:"none",display:"flex",alignItems:"center",gap:"5px"}}><span style={{color:"#ff4444"}}>⏺</span> REPLAY</div>
+      </React.Fragment>}
     </div>
   );
 }
