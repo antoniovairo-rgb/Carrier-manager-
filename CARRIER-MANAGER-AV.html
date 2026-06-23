@@ -16,6 +16,8 @@
     var ctx=cv.getContext('2d'),u=sz/100;
     var g=ctx.createLinearGradient(0,0,sz,sz);g.addColorStop(0,'#3b82f6');g.addColorStop(1,'#06b6d4');
     ctx.fillStyle=g;ctx.fillRect(0,0,sz,sz); // full-bleed per maskable
+    // contenuto entro la zona di sicurezza maskable: scala 0.8 ricentrata (evita il taglio del pallone)
+    ctx.save();ctx.translate(50*u,52*u);ctx.scale(0.8,0.8);ctx.translate(-51.75*u,-38.5*u);
     ctx.fillStyle='#fff';
     var base=72*u;
     function bar(x,top){var w=15*u,rad=7*u,y=top,h=base-top;
@@ -30,6 +32,7 @@
     ctx.lineWidth=R*0.11;
     for(p=0;p<5;p++){ctx.beginPath();ctx.moveTo(pent[p][0],pent[p][1]);ctx.lineTo(edge[p][0],edge[p][1]);ctx.stroke();}
     ctx.beginPath();for(p=0;p<5;p++){if(p===0)ctx.moveTo(pent[p][0],pent[p][1]);else ctx.lineTo(pent[p][0],pent[p][1]);}ctx.closePath();ctx.fillStyle=dk;ctx.fill();
+    ctx.restore();
     return cv.toDataURL('image/png');
   }
   var i192=mkIcon(192),i512=mkIcon(512);
@@ -79,10 +82,12 @@
 <svg width="74" height="74" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="filter:drop-shadow(0 8px 20px rgba(37,99,235,.28))">
 <defs><linearGradient id="ldg" x1="0" y1="0" x2="100" y2="100" gradientUnits="userSpaceOnUse"><stop stop-color="#3b82f6"/><stop offset="1" stop-color="#06b6d4"/></linearGradient></defs>
 <rect x="2" y="2" width="96" height="96" rx="27" fill="url(#ldg)"/>
+<g transform="translate(50 52) scale(0.8) translate(-51.75 -38.5)">
 <rect class="lb lb1" x="24" y="46" width="15" height="26" rx="7" fill="#fff"/>
 <rect class="lb lb2" x="43" y="36" width="15" height="36" rx="7" fill="#fff"/>
 <rect class="lb lb3" x="62" y="24" width="15" height="48" rx="7" fill="#fff"/>
 <g class="lball"><circle cx="69.5" cy="15" r="10" fill="#fff" stroke="#1e293b" stroke-width="1.3"/><line x1="69.5" y1="10.8" x2="69.5" y2="5.6" stroke="#1e293b" stroke-width="1.1" stroke-linecap="round"/><line x1="73.49" y1="13.7" x2="78.44" y2="12.1" stroke="#1e293b" stroke-width="1.1" stroke-linecap="round"/><line x1="71.97" y1="18.4" x2="75.03" y2="22.6" stroke="#1e293b" stroke-width="1.1" stroke-linecap="round"/><line x1="67.03" y1="18.4" x2="63.97" y2="22.6" stroke="#1e293b" stroke-width="1.1" stroke-linecap="round"/><line x1="65.51" y1="13.7" x2="60.56" y2="12.1" stroke="#1e293b" stroke-width="1.1" stroke-linecap="round"/><polygon points="69.5,10.8 73.49,13.7 71.97,18.4 67.03,18.4 65.51,13.7" fill="#1e293b"/></g>
+</g>
 </svg>
 <div style="text-align:left;line-height:1">
 <div style="font-size:30px;font-weight:900;letter-spacing:.5px;color:#0f172a">Elevora</div>
@@ -2603,7 +2608,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.13.0"; // Convocazioni nazionale meritocratiche · popolarità a crescita graduale · indicatore ambiente TEST/PROD
+const GAME_VERSION="4.13.1"; // Fix icona/splash riquadrati (no taglio pallone) · overlay intro highlights alleggerito (campo visibile)
 const SAVE_VERSION=6;
 // Sprint ENV — ambiente rilevato automaticamente dal runtime (non gestito manualmente).
 // PRODUCTION = deploy GitHub Pages (*.github.io). Tutto il resto (staging githack, locale, localhost) = TEST.
@@ -8544,7 +8549,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
               )}
               {/* HL intro stays on field as cinematic overlay */}
               {phase==="hl_intro"&&curSit&&(
-                <div style={{position:"absolute",inset:0,background:"rgba(5,8,20,0.88)",backdropFilter:"blur(6px)",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",zIndex:8,padding:"0 14px",cursor:"pointer"}} onClick={()=>{const mm=situations[hlIdx]?.maxMoves??1;movesLeftRef.current=mm;setMovesLeft(mm);moveCoolRef.current=0;pressureRef.current=1;setPressureBar(1);setPhase("hl_move");}}>
+                <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse at center, rgba(5,8,20,0.42) 0%, rgba(5,8,20,0.74) 100%)",backdropFilter:"blur(2px)",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",zIndex:8,padding:"0 14px",cursor:"pointer"}} onClick={()=>{const mm=situations[hlIdx]?.maxMoves??1;movesLeftRef.current=mm;setMovesLeft(mm);moveCoolRef.current=0;pressureRef.current=1;setPressureBar(1);setPhase("hl_move");}}>
                   <div style={{fontSize:22,marginBottom:8}}>⚽</div>
                   <div style={{fontSize:15,fontWeight:900,color:"#f59e0b",textAlign:"center",marginBottom:8,textShadow:"0 0 20px #f59e0b"}}>{curSit.text}</div>
                   {curSit.intro&&<div style={{fontSize:11,color:"rgba(255,255,255,0.75)",textAlign:"center",fontStyle:"italic",marginBottom:10,lineHeight:1.4}}>{curSit.intro}</div>}
@@ -9908,10 +9913,13 @@ function LogoMark({size=32,shadow=true}){
     <svg width={size} height={size} viewBox="0 0 100 100" style={{flexShrink:0,...(shadow?{filter:"drop-shadow(0 4px 12px rgba(37,99,235,0.26))"}:{})}}>
       <defs><linearGradient id={gid} x1="0" y1="0" x2="100" y2="100" gradientUnits="userSpaceOnUse"><stop stopColor="#3b82f6"/><stop offset="1" stopColor="#06b6d4"/></linearGradient></defs>
       <rect x="2" y="2" width="96" height="96" rx="27" fill={`url(#${gid})`}/>
+      {/* contenuto entro la zona di sicurezza maskable (scala 0.8, ricentrato) */}
+      <g transform="translate(50 52) scale(0.8) translate(-51.75 -38.5)">
       <rect x="24" y="46" width="15" height="26" rx="7" fill="#fff"/>
       <rect x="43" y="36" width="15" height="36" rx="7" fill="#fff"/>
       <rect x="62" y="24" width="15" height="48" rx="7" fill="#fff"/>
       <g><circle cx="69.5" cy="15" r="10" fill="#fff" stroke="#1e293b" strokeWidth="1.3"/><line x1="69.5" y1="10.8" x2="69.5" y2="5.6" stroke="#1e293b" strokeWidth="1.1" strokeLinecap="round"/><line x1="73.49" y1="13.7" x2="78.44" y2="12.1" stroke="#1e293b" strokeWidth="1.1" strokeLinecap="round"/><line x1="71.97" y1="18.4" x2="75.03" y2="22.6" stroke="#1e293b" strokeWidth="1.1" strokeLinecap="round"/><line x1="67.03" y1="18.4" x2="63.97" y2="22.6" stroke="#1e293b" strokeWidth="1.1" strokeLinecap="round"/><line x1="65.51" y1="13.7" x2="60.56" y2="12.1" stroke="#1e293b" strokeWidth="1.1" strokeLinecap="round"/><polygon points="69.5,10.8 73.49,13.7 71.97,18.4 67.03,18.4 65.51,13.7" fill="#1e293b"/></g>
+      </g>
     </svg>
   );
 }
