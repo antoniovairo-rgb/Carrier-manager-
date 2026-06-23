@@ -2542,7 +2542,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.6.1"; // Bug #4: Euro/Mondiale caps+goals ora aggiornati; Bug #6: anti-ripetizione interviste
+const GAME_VERSION="4.6.2"; // Item 4: NationsCup trigger via onMatchEnd W20; Item 6: qualificazioni Euro/Mondiale W20→W24
 const SAVE_VERSION=6;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -12476,6 +12476,11 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     const _em=player.euroMondiale;
     if(_em?.active&&!_em?.done){
       const _emType=_em.type||"Torneo";
+      if(_em.phase==="qualificazioni"&&!_em.qualDone){
+        const _emQOpp=(_em.qualOpponents||[])[_em.qualMatchIdx||0]||"?";
+        const _clubMd=getThisWeekMatchday();
+        return{label:`🌍 Qualif. ${_emType} — vs ${_emQOpp}`,sub:`Qualificazione ${(_em.qualMatchIdx||0)+1}/${(_em.qualOpponents||[]).length||2} · ${_em.qualPts||0}pt${_clubMd?` · poi: ${_clubMd.opponentName} W.${_clubMd.week}`:""}`,color:"#0369a1",disabled:false,action:"euroMondiale"};
+      }
       const _emOpp=_em.phase==="group"?(_em.groupOpponents||[])[_em.groupMatchIdx||0]:_em.koOpponent;
       const _emCol=_emType==="Mondiale"?"#4f46e5":"#0369a1";
       const _clubMd=getThisWeekMatchday();
@@ -12490,6 +12495,25 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
   const onMatchEnd=result=>{
     setLastMatch(result);
     setMisterDiscorsoModal(null); // safety net: clear any stale pre-match coach speech
+    // Item 6: Qualificazioni Euro/Mondiale — early return
+    if(result.context==="euroMondiale_qualif"){
+      setMatchContext("career");
+      const _emQ=player.euroMondiale||{};
+      const _qIdx=(_emQ.qualMatchIdx||0)+1;
+      const _qPts=(_emQ.qualPts||0)+(result.won?3:result.drew?1:0);
+      const _qAllDone=_qIdx>=(_emQ.qualOpponents||[]).length;
+      const _qQualified=_qAllDone&&_qPts>=3;
+      setPlayer(p=>{
+        const em=p.euroMondiale||{};
+        return{...p,nationalCaps:(p.nationalCaps||0)+1,nationalGoals:(p.nationalGoals||0)+(result.goals||0),
+          euroMondiale:{...em,qualMatchIdx:_qIdx,qualPts:_qPts,qualDone:_qAllDone,qualQualified:_qQualified}};
+      });
+      if(!_qAllDone)setTimeout(()=>notify(`🌍 Qualif. ${_emQ.type||"Euro"}: ${result.won?"✅ Vittoria":"risultato"} · ${_qPts}pt · prossima gara qualif.`,result.won?TH.success:TH.warning),400);
+      else if(_qQualified)setTimeout(()=>notify(`🌍 QUALIFICATI! ${_emQ.type||"Euro"} — il torneo inizia alla settimana 24.`,TH.success),400);
+      else setTimeout(()=>notify(`😔 Qualificazioni ${_emQ.type||"Euro"}: non qualificati. Prossima volta!`,TH.danger),400);
+      setScreen("postmatch");setTab("dashboard");
+      return;
+    }
     // Sprint 53: Europeo/Mondiale match — early return
     if(result.context==="euroMondiale_group"||result.context==="euroMondiale_ko"){
       setMatchContext("career");
@@ -12820,6 +12844,19 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     if(newAch.length>0){setPlayer(p=>({...p,achievements:[...(p.achievements||[]),...newAch]}));newAch.forEach((id,i)=>{const def=ACHIEVEMENTS.find(a=>a.id===id);if(def)setTimeout(()=>notify(`${def.icon} Achievement: ${def.name}!`,"#7c3aed"),2000+i*2500);});}
     // S21: rivalry tracking
     if(result.opponent){setPlayer(p=>{const rv=p.rivalries||[];const existing=rv.find(r=>r.opponent===result.opponent);if(existing){const upd=rv.map(r=>r.opponent===result.opponent?{...r,matches:r.matches+1,wins:r.wins+(result.won?1:0),goals:r.goals+result.goals,lastSeason:p.season||1}:r);return{...p,rivalries:upd};}else if(rv.length<10){return{...p,rivalries:[...rv,{opponent:result.opponent,oppAbbr:result.oppAbbr||"???",oppCol:result.oppCol||"#888",matches:1,wins:result.won?1:0,goals:result.goals,lastSeason:p.season||1}]};}return p;});}
+    // Item 4: Nations Cup trigger via onMatchEnd — covers the case where playing a W20 career match
+    // advances the week via onMatchEnd (bypassing doAdvanceWeek's check at weekVal===20)
+    {const _nc4Wk=player.week||1;const _nc4IsInU18=(player.proStatus||"u18")==="u18";
+    const _nc4PendingEuro=(player.calendar||[]).some(m=>m.week===_nc4Wk&&!m.played&&(m.type==="euro_group"||m.type==="euro"));
+    if(!_nc4IsInU18&&_nc4Wk===20&&!_nc4PendingEuro&&(player.season||1)%2===0&&(player.season||1)%4!==0&&(player.nationalCaps||0)>=2&&!(player.worldMemory||[]).some(m=>m.type==="nations_cup"&&m.season===(player.season||1))&&!player.nationsCupQueue?.active){
+      const _nc4Nat=["Italia","Spagna","Francia","Germania","Inghilterra","Portogallo","Brasile","Argentina","Olanda","Belgio"];
+      const _nc4Pool=_nc4Nat.filter(n=>n!==(player.nation||"Italia"));
+      const _nc4Seed=hashStr((player.nation||"Italia")+(player.season||1));
+      let _nc4Sr=_nc4Seed;const _nc4Rng=()=>{_nc4Sr=((_nc4Sr*1664525+1013904223)&0xffffffff)>>>0;return _nc4Sr/0xffffffff;};
+      const _nc4Opps=[..._nc4Pool].sort(()=>_nc4Rng()-.5).slice(0,3);
+      setPlayer(p=>({...p,nationsCupQueue:{active:true,opponents:_nc4Opps,matchIdx:0,pts:0,matches:[],done:false,season:p.season||1}}));
+      setTimeout(()=>notify("🌍 Sei convocato per la Coppa delle Nazioni! Gioca le 3 partite dal tuo profilo.",TH.accent),700);
+    }}
   };
 
   // Sprint 24 — apply impulse/spogliatoio choice effects (called from weekLiveModal choice buttons)
@@ -13151,17 +13188,52 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       setPlayer(p=>({...p,nationsCupQueue:{active:true,opponents:_opps,matchIdx:0,pts:0,matches:[],done:false,season:p.season||1}}));
       setTimeout(()=>notify("🌍 Sei convocato per la Coppa delle Nazioni! Gioca le 3 partite dal tuo profilo.",TH.accent),500);
     }
-    // Sprint 53: Europeo/Mondiale — ogni 4 stagioni pro a settimana 24
-    if(!isInU18&&weekVal===24&&(player.season||1)%4===0&&(player.nationalCaps||0)>=3&&!player.euroMondiale?.active&&!(player.worldMemory||[]).some(m=>m.type==="euro_mondiale"&&m.season===(player.season||1))){
+    // Item 6: Europeo/Mondiale — qualificazioni a W20, torneo a W24 (ogni 4 stagioni pro)
+    // W20: avvia fase qualificazioni (2 partite, servono ≥3pt per qualificarsi)
+    if(!isInU18&&weekVal===20&&(player.season||1)%4===0&&(player.nationalCaps||0)>=3&&!player.euroMondiale?.active&&!(player.worldMemory||[]).some(m=>m.type==="euro_mondiale"&&m.season===(player.season||1))){
       const _emType=(player.season||1)%8===0?"Mondiale":"Europeo";
       const _allNat=["Italia","Spagna","Francia","Germania","Inghilterra","Portogallo","Brasile","Argentina","Olanda","Belgio"];
       const _oppPool=_allNat.filter(n=>n!==(player.nation||"Italia"));
       const _seed=hashStr((player.nation||"Italia")+_emType+(player.season||1));
       let _sr=_seed;const _srng=()=>{_sr=((_sr*1664525+1013904223)&0xffffffff)>>>0;return _sr/0xffffffff;};
       const _shuffled=[..._oppPool].sort(()=>_srng()-.5);
-      const _groupOpps=_shuffled.slice(0,3);
-      setPlayer(p=>({...p,euroMondiale:{active:true,type:_emType,season:p.season||1,phase:"group",groupOpponents:_groupOpps,groupMatchIdx:0,groupPts:0,groupMatches:[],koPhase:null,koOpponent:null,koResults:[],qualified:false,champion:false,eliminated:false,done:false}}));
-      setTimeout(()=>notify(`🌍 ${_emType} — Convocato con ${player.nation||"Italia"}! Gioca dal pannello Nazione.`,TH.accent),500);
+      const _qualOpps=_shuffled.slice(0,2);   // 2 avversari qualificazioni
+      const _groupOpps=_shuffled.slice(2,5); // pre-generati per il torneo
+      setPlayer(p=>({...p,euroMondiale:{active:true,type:_emType,season:p.season||1,
+        phase:"qualificazioni",qualOpponents:_qualOpps,qualMatchIdx:0,qualPts:0,qualDone:false,qualQualified:false,
+        groupOpponents:_groupOpps,groupMatchIdx:0,groupPts:0,groupMatches:[],
+        koPhase:null,koOpponent:null,koResults:[],qualified:false,champion:false,eliminated:false,done:false}}));
+      setTimeout(()=>notify(`🌍 ${_emType} — Qualificazioni! 2 partite per staccare il pass. Gioca dal pannello Nazione.`,TH.accent),500);
+    }
+    // W24: se qualificazioni completate → transizione a fase gironi (o eliminazione)
+    if(!isInU18&&weekVal===24&&player.euroMondiale?.active&&player.euroMondiale?.phase==="qualificazioni"){
+      if(player.euroMondiale.qualDone){
+        if(player.euroMondiale.qualQualified){
+          setPlayer(p=>({...p,euroMondiale:{...p.euroMondiale,phase:"group"}}));
+          setTimeout(()=>notify(`🌍 ${player.euroMondiale.type||"Euro"} — Qualificati! Il torneo comincia. Gioca i gironi dal pannello Nazione.`,TH.success),500);
+        }else{
+          setPlayer(p=>({...p,euroMondiale:{...p.euroMondiale,phase:"done",done:true,eliminated:true}}));
+          setTimeout(()=>notify(`😔 ${player.euroMondiale.type||"Euro"} — Non qualificati. Riprova tra 4 stagioni.`,TH.danger),500);
+        }
+      }
+    }
+    // Safety net W27: forza chiusura qualificazioni se non giocate (evita blocco)
+    if(!isInU18&&weekVal===27&&player.euroMondiale?.active&&player.euroMondiale?.phase==="qualificazioni"){
+      const _qDone=player.euroMondiale.qualDone;
+      const _qQ=player.euroMondiale.qualQualified;
+      if(!_qDone){
+        // Auto-qualifica con criterio prestige: nazione top6 si qualifica, altrimenti no
+        const _topNat=["Italia","Spagna","Francia","Germania","Inghilterra","Portogallo"];
+        const _autoQ=_topNat.includes(player.nation||"Italia");
+        setPlayer(p=>({...p,euroMondiale:{...p.euroMondiale,qualDone:true,qualQualified:_autoQ,phase:_autoQ?"group":"done",done:!_autoQ,eliminated:!_autoQ}}));
+        setTimeout(()=>notify(_autoQ?`🌍 ${player.euroMondiale.type} — Qualificati (pass automatico)! Fase gironi in corso.`:`😔 ${player.euroMondiale.type} — Qualificazioni scadute. Non qualificati.`,_autoQ?TH.success:TH.danger),400);
+      }else if(!_qQ){
+        setPlayer(p=>({...p,euroMondiale:{...p.euroMondiale,phase:"done",done:true,eliminated:true}}));
+      }else{
+        // Qualificati ma fase group non ancora partita
+        setPlayer(p=>({...p,euroMondiale:{...p.euroMondiale,phase:"group"}}));
+        setTimeout(()=>notify(`🌍 ${player.euroMondiale.type} — Il torneo inizia ora!`,TH.accent),400);
+      }
     }
 
     // Normal week advance
@@ -13873,14 +13945,15 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     const em=player.euroMondiale;
     if(!em||!em.active||em.done)return;
     let oppName;
-    if(em.phase==="group")oppName=(em.groupOpponents||[])[em.groupMatchIdx||0]||"Spagna";
+    if(em.phase==="qualificazioni")oppName=(em.qualOpponents||[])[em.qualMatchIdx||0]||"Portogallo";
+    else if(em.phase==="group")oppName=(em.groupOpponents||[])[em.groupMatchIdx||0]||"Spagna";
     else oppName=em.koOpponent||"Germania";
-    const nd=NAT_CLUB_DATA[oppName]||{id:"xx-nt",a:"INT",p:85,c:"#1a1a1a",c2:"#fff",nat:"🏳️"};
+    const nd=NAT_CLUB_DATA[oppName]||{id:"xx-nt",a:"INT",p:82,c:"#1a1a1a",c2:"#fff",nat:"🏳️"};
     matchBenchStartRef.current=false;
     matchTypeRef.current="euroMondiale"; // Sprint 88
     setMatchOpp({id:nd.id,n:oppName,a:nd.a,p:nd.p,c:nd.c,c2:nd.c2,nat:nd.nat});
-    setMatchIsHome((em.groupMatchIdx||0)%2===0);
-    setMatchContext(em.phase==="group"?"euroMondiale_group":"euroMondiale_ko");
+    setMatchIsHome((em.phase==="qualificazioni"?(em.qualMatchIdx||0):(em.groupMatchIdx||0))%2===0);
+    setMatchContext(em.phase==="qualificazioni"?"euroMondiale_qualif":em.phase==="group"?"euroMondiale_group":"euroMondiale_ko");
     setScreen("match");
   };
 
@@ -17624,9 +17697,18 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                     {em.champion&&<span style={{fontSize:11,fontWeight:800,color:"#0e7490",background:"#cffafe",padding:"3px 10px",borderRadius:20}}>🏆 CAMPIONI!</span>}
                     {em.eliminated&&<span style={{fontSize:11,color:TH.danger,background:"#fee2e2",padding:"3px 10px",borderRadius:20,fontWeight:700}}>❌ Eliminati</span>}
                     {!em.champion&&!em.eliminated&&em.qualified&&<span style={{fontSize:11,color:"#16a34a",background:"#dcfce7",padding:"3px 10px",borderRadius:20,fontWeight:700}}>✅ {em.koPhase==="semi"?"Semifinale":"Fase KO"}</span>}
-                    {!em.champion&&!em.eliminated&&!em.qualified&&<span style={{fontSize:11,color:"#0891b2",background:"#e0f2fe",padding:"3px 10px",borderRadius:20,fontWeight:700}}>Fase Gironi {em.groupMatchIdx||0}/3</span>}
+                    {!em.champion&&!em.eliminated&&!em.qualified&&em.phase==="qualificazioni"&&!em.qualDone&&<span style={{fontSize:11,color:"#0891b2",background:"#e0f2fe",padding:"3px 10px",borderRadius:20,fontWeight:700}}>Qualif. {em.qualMatchIdx||0}/{(em.qualOpponents||[]).length||2} · {em.qualPts||0}pt</span>}
+                    {!em.champion&&!em.eliminated&&!em.qualified&&em.phase!=="qualificazioni"&&<span style={{fontSize:11,color:"#0891b2",background:"#e0f2fe",padding:"3px 10px",borderRadius:20,fontWeight:700}}>Fase Gironi {em.groupMatchIdx||0}/3</span>}
                   </div>
                 </div>
+                {/* Qualificazioni */}
+                {em.phase==="qualificazioni"&&(em.qualOpponents||[]).length>0&&(
+                  <div style={{marginBottom:10}}>
+                    <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1,marginBottom:4}}>Qualificazioni</div>
+                    {(em.qualOpponents||[]).map((opp,i)=>{const played=i<(em.qualMatchIdx||0);const isNext=i===(em.qualMatchIdx||0)&&!em.qualDone;return(<div key={i} style={{display:"flex",alignItems:"center",gap:6,padding:"3px 0",borderTop:i>0?"1px solid "+TH.cardBorder:"none"}}>{played?<><span style={{fontSize:10,color:"#16a34a",width:12}}>●</span><span style={{flex:1,fontSize:10,color:TH.text}}>vs {opp}</span><span style={{fontSize:10,color:"#16a34a",fontWeight:700}}>Giocata</span></>:isNext?<><span style={{fontSize:10,color:"#f59e0b",width:12}}>▶</span><span style={{flex:1,fontSize:10,color:TH.text,fontWeight:700}}>vs {opp}</span><span style={{fontSize:10,background:"#fef3c7",color:"#92400e",padding:"1px 6px",borderRadius:4,fontWeight:700}}>prossima</span></>:<><span style={{fontSize:10,color:TH.muted,width:12}}>○</span><span style={{flex:1,fontSize:10,color:TH.muted}}>vs {opp}</span><span style={{fontSize:10,background:"#f1f5f9",color:TH.muted,padding:"1px 6px",borderRadius:4}}>da giocare</span></>}</div>);})}
+                    <div style={{marginTop:6,fontSize:10,color:"#0891b2"}}>Punti qualif.: <strong>{em.qualPts||0}/6</strong>{em.qualDone?(em.qualQualified?" — ✅ Qualificati!":" — ❌ Non qualificati"):" — in corso"}</div>
+                  </div>
+                )}
                 {/* Gironi */}
                 {em.phase==="group"&&(em.groupOpponents||[]).length>0&&(
                   <div style={{marginBottom:10}}>
@@ -17658,7 +17740,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                 )}
                 {!em.champion&&!em.eliminated&&!em.done&&(
                   <Btn v="primary" fw onClick={startEuroMondialeMatch}>
-                    ⚽ Gioca {em.phase==="group"?`Giornata ${(em.groupMatchIdx||0)+1}/3`:"Fase KO"}
+                    ⚽ Gioca {em.phase==="qualificazioni"?`Qualificazione ${(em.qualMatchIdx||0)+1}/${(em.qualOpponents||[]).length||2}`:em.phase==="group"?`Giornata ${(em.groupMatchIdx||0)+1}/3`:"Fase KO"}
                   </Btn>
                 )}
               </Card>
