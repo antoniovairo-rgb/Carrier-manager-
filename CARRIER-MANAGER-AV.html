@@ -2612,7 +2612,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.48.0"; // Sprint 3DV-7: LED banner competizione scorrevole + panchine in colori club + coach standing
+const GAME_VERSION="4.49.0"; // Sprint 3DV-8: bandiere bicolore + striscioni curva + coriandoli club color + onda accelerata al gol
 const SAVE_VERSION=6;
 // Sprint ENV — ambiente rilevato automaticamente dal runtime (non gestito manualmente).
 // PRODUCTION = deploy GitHub Pages (*.github.io). Tutto il resto (staging githack, locale, localhost) = TEST.
@@ -6788,17 +6788,22 @@ function ThreeMatchView(props){
     };
     _mkBench(-16,_hColInt);_mkBench(16,_aColInt);
 
-    // Sprint 3D-G3A: bandiere animate sulle curve (home + away end)
+    // Sprint 3D-G3A / 3DV-8: bandiere bicolore animate + striscioni sulle curve
     const _fez=(club.p||65)>88?62:(club.p||65)>72?54:(club.p||65)>55?48:42;// approx curva Z
     const flagGroups=[];
-    const _mkFlag=(x,z,col)=>{const fg=new THREE.Group();
+    // 3DV-8: canvas texture bicolore (c1/c2 del club) per ogni bandiera
+    const _mkFlagTex=(c1Hex,c2Hex)=>{const fc=document.createElement("canvas");fc.width=64;fc.height=32;const fx=fc.getContext("2d");fx.fillStyle=c1Hex;fx.fillRect(0,0,64,16);fx.fillStyle=c2Hex;fx.fillRect(0,16,64,16);fx.fillStyle="rgba(255,255,255,0.18)";fx.fillRect(0,15,64,2);return new THREE.CanvasTexture(fc);};
+    const _hc2=homeClub?.c2||"#ffffff",_ac2=oppCol||"#ffffff";
+    const _fhTex=_mkFlagTex(_hCol,_hc2),_faTex=_mkFlagTex(_aCol,_ac2);
+    const _mkFlag=(x,z,tex)=>{const fg=new THREE.Group();
       const pm=new THREE.MeshLambertMaterial({color:0xd0d0d0});
       const pole=new THREE.Mesh(new THREE.CylinderGeometry(0.07,0.07,3.8,6),pm);pole.position.y=1.9;fg.add(pole);
-      const fl=new THREE.Mesh(new THREE.PlaneGeometry(2.0,1.2),new THREE.MeshBasicMaterial({color:col,side:THREE.DoubleSide,transparent:true,opacity:0.9}));
+      const fl=new THREE.Mesh(new THREE.PlaneGeometry(2.0,1.2),new THREE.MeshBasicMaterial({map:tex,side:THREE.DoubleSide,transparent:true,opacity:0.9}));
       fl.position.set(1.0,3.5,0);fg.add(fl);fg._fl=fl;fg.position.set(x,0,z);scene.add(fg);flagGroups.push(fg);};
-    const _fhHex=new THREE.Color(_hCol).getHexString(),_faHex=new THREE.Color(_aCol).getHexString();
-    const _fhInt=parseInt(_fhHex,16),_faInt=parseInt(_faHex,16);
-    [-14,-5,5,14].forEach(ox=>{_mkFlag(ox,-(_fez-3),_fhInt);_mkFlag(ox,_fez-3,_faInt);});
+    [-20,-12,-4,4,12,20].forEach(ox=>{_mkFlag(ox,-(_fez-3),_fhTex);_mkFlag(ox,_fez-3,_faTex);});// 3DV-8: 6 bandiere per curva (erano 4)
+    // 3DV-8: striscione orizzontale (tifo) — 2 colori club, posizionato sulle curve
+    const _mkStriscione=(cx,z,rotY,c1Hex,c2Hex)=>{const sc=document.createElement("canvas");sc.width=512;sc.height=48;const sx=sc.getContext("2d");sx.fillStyle=c1Hex;sx.fillRect(0,0,512,24);sx.fillStyle=c2Hex;sx.fillRect(0,24,512,24);sx.fillStyle="rgba(255,255,255,0.22)";sx.fillRect(0,22,512,4);const stex=new THREE.CanvasTexture(sc);const sm=new THREE.Mesh(new THREE.PlaneGeometry(18,2.6),new THREE.MeshBasicMaterial({map:stex,side:THREE.DoubleSide,transparent:true,opacity:0.88,depthWrite:false}));sm.position.set(cx,4.8,z);sm.rotation.y=rotY;scene.add(sm);};
+    _mkStriscione(0,-(_fez-1),0,_hCol,_hc2);_mkStriscione(0,_fez-1,Math.PI,_aCol,_ac2);
     // Sprint 3D-G3C: particelle coriandoli al gol (pre-allocate, attivate sul goal burst)
     const CONF_N=64,confPos=new Float32Array(CONF_N*3),confVel=new Float32Array(CONF_N*3);
     const confGeo=new THREE.BufferGeometry();confGeo.setAttribute('position',new THREE.BufferAttribute(confPos,3));
@@ -6995,7 +7000,9 @@ function ThreeMatchView(props){
         const _cx=goalBurstHome?-46:46;
         for(let i=0;i<CONF_N;i++){confPos[i*3]=_cx+(Math.random()-0.5)*14;confPos[i*3+1]=1+Math.random()*4;confPos[i*3+2]=(Math.random()-0.5)*20;
           confVel[i*3]=(Math.random()-0.5)*10;confVel[i*3+1]=6+Math.random()*12;confVel[i*3+2]=(Math.random()-0.5)*10;}
-        confGeo.attributes.position.needsUpdate=true;confMat.opacity=0.92;confActive=true;}
+        confGeo.attributes.position.needsUpdate=true;confMat.opacity=0.92;confActive=true;
+        // 3DV-8: coriandoli in colore club — team che segna determina la palette
+        confMat.color.set(goalBurstHome?_hColInt:_aColInt);}
       if(goalBurstT>=0){goalBurstT+=dt;const _u=Math.min(goalBurstT/1.8,1);
         goalBurstLight.intensity=(1-_u*_u)*2.8;// 3DV-2: burst gol 6.0→2.8 (meno abbagliante)goalBurstLight.position.x=goalBurstHome?-44:44;
         if(_u>=1){goalBurstLight.intensity=0;goalBurstT=-1;}}
@@ -7167,7 +7174,8 @@ function ThreeMatchView(props){
       heroMark.material.opacity=isHL?0.85+Math.sin(now*0.012)*0.15:0.62;
       heroMark.scale.setScalar(isHL?1.0+Math.sin(now*0.012)*0.08:0.9);
       // Sprint 3D-H3 MT-5: bandiere — ampiezza 2.5× al gol, ritorno graduale in 2.5s
-      {const _fAmp=0.55+_goalExcite*1.40;flagGroups.forEach((fg,fi)=>{fg._fl.rotation.y=Math.sin(now*0.003+fi*0.8)*_fAmp;fg._fl.rotation.x=Math.sin(now*0.002+fi*0.5)*(0.08+_goalExcite*0.20);});}
+      // 3DV-8: bandiere — onde sequenziali più veloci al gol, ampiezza 2.5×
+      {const _fAmp=0.55+_goalExcite*1.40,_fSpd=0.003+_goalExcite*0.005;flagGroups.forEach((fg,fi)=>{fg._fl.rotation.y=Math.sin(now*_fSpd+fi*0.72)*_fAmp;fg._fl.rotation.x=Math.sin(now*_fSpd*0.65+fi*0.55)*(0.08+_goalExcite*0.22);});}
       // Sprint 3D-G3: coriandoli — fisica gravità + fade
       if(confActive){for(let i=0;i<CONF_N;i++){confPos[i*3]+=confVel[i*3]*dt;confPos[i*3+1]+=confVel[i*3+1]*dt;confVel[i*3+1]-=12*dt;confPos[i*3+2]+=confVel[i*3+2]*dt;}
         confMat.opacity*=(1-dt*1.4);confGeo.attributes.position.needsUpdate=true;
