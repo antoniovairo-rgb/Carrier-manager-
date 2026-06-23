@@ -2612,7 +2612,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.47.0"; // Sprint 3DV-6: crowd home/away — tribuna gold sul gol casa, blu sul gol ospiti
+const GAME_VERSION="4.48.0"; // Sprint 3DV-7: LED banner competizione scorrevole + panchine in colori club + coach standing
 const SAVE_VERSION=6;
 // Sprint ENV — ambiente rilevato automaticamente dal runtime (non gestito manualmente).
 // PRODUCTION = deploy GitHub Pages (*.github.io). Tutto il resto (staging githack, locale, localhost) = TEST.
@@ -6737,6 +6737,17 @@ function ThreeMatchView(props){
     const _segW=100/LED_SEG;
     const _mkLed=(z)=>{for(let i=0;i<LED_SEG;i++){const m=new THREE.Mesh(new THREE.BoxGeometry(_segW*0.9,0.7,0.12),new THREE.MeshBasicMaterial({color:0xffffff}));m.position.set(-50+_segW*0.5+i*_segW,0.42,z);scene.add(m);ledStrips.push(m);}};
     _mkLed(-34.4);_mkLed(34.4);
+    // 3DV-7: banner competizione LED — testo scorrevole sulla striscia esterna (canvas 1024×24)
+    const _compLbl=(props.competitionLabel||homeClub?.lg||"CAMPIONATO").toUpperCase();
+    const _mkCompBanner=(z)=>{
+      const c=document.createElement("canvas");c.width=1024;c.height=24;
+      const cx=c.getContext("2d");cx.fillStyle="#030610";cx.fillRect(0,0,1024,24);
+      cx.font="bold 13px monospace";cx.fillStyle="rgba(255,255,255,0.82)";
+      const seg="  "+_compLbl+"  ·  ";for(let k=0;k<12;k++)cx.fillText(seg,k*Math.ceil(seg.length*7.8),18);
+      const tex=new THREE.CanvasTexture(c);tex.wrapS=THREE.RepeatWrapping;tex.repeat.set(1,1);
+      const bm=new THREE.Mesh(new THREE.PlaneGeometry(100,0.55),new THREE.MeshBasicMaterial({map:tex,transparent:true,opacity:0.80,side:THREE.DoubleSide,depthWrite:false}));
+      bm.rotation.x=-Math.PI/2;bm.position.set(0,0.48,z);scene.add(bm);return bm;};
+    const compBanner1=_mkCompBanner(-34.9);const compBanner2=_mkCompBanner(34.9);
 
     // Particelle meteo (pioggia / temporale / neve) + flash per il temporale
     let wParticles=null,flashLight=null;
@@ -6765,15 +6776,17 @@ function ThreeMatchView(props){
     // C) Guardalinee — divisa giallo-verde, ai margini del campo
     const linRef1=mkFig(0x9acd32);linRef1.position.set(0,0,-35.5);scene.add(linRef1);
     const linRef2=mkFig(0x9acd32);linRef2.position.set(0,0,35.5);scene.add(linRef2);
-    // B) Panchine (lato tribuna z=+38) con figurine sedute
+    // B) Panchine (lato tribuna z=+38) con figurine sedute — 3DV-7: colori club + coach standing
     const benchMat=new THREE.MeshLambertMaterial({color:0x3a3a4a});
-    const seatMat=new THREE.MeshLambertMaterial({color:0x222230});
     const benchFigs=[];
-    const _mkBench=(bx)=>{
+    const _hColInt=new THREE.Color(_hCol).getHex(),_aColInt=new THREE.Color(_aCol).getHex();
+    const _mkBench=(bx,kitCol)=>{
       const b=new THREE.Mesh(new THREE.BoxGeometry(12,0.6,1.4),benchMat);b.position.set(bx,0.4,38);scene.add(b);
-      for(let i=0;i<4;i++){const f=mkFig(0x333344,1.2);f.position.set(bx-4.5+i*3,0.7,37.8);scene.add(f);benchFigs.push(f);}
+      for(let i=0;i<4;i++){const f=mkFig(kitCol,1.2);f.position.set(bx-4.5+i*3,0.7,37.8);scene.add(f);benchFigs.push(f);}
+      // Coach standing figure (more visible — track-suit, slightly taller)
+      const coach=mkFig(kitCol,1.55);coach.position.set(bx+7.5,0,38.2);scene.add(coach);benchFigs.push(coach);
     };
-    _mkBench(-16);_mkBench(16);
+    _mkBench(-16,_hColInt);_mkBench(16,_aColInt);
 
     // Sprint 3D-G3A: bandiere animate sulle curve (home + away end)
     const _fez=(club.p||65)>88?62:(club.p||65)>72?54:(club.p||65)>55?48:42;// approx curva Z
@@ -7147,6 +7160,8 @@ function ThreeMatchView(props){
       const _ledBoost=(isHL?0.18:0)+(goalBurstT>0?Math.max(0,1-goalBurstT/1.8)*0.55:0);// Sprint 3D-G3B: LED boost sul gol
       for(let i=0;i<LED_SEG;i++){const c=_ledCols[(i+_ledOff)%3],kbr=Math.min(0.42+_ledBoost+0.28*Math.sin(_ledPhase*3+i*0.5),0.82);// 3DV-2: cap 0.82, ridotti (era max 1.63 → saturazione)
         ledStrips[i].material.color.copy(c).multiplyScalar(kbr);ledStrips[i+LED_SEG].material.color.copy(c).multiplyScalar(kbr);}
+      // 3DV-7: scorrimento banner competizione LED (UV offset su RepeatWrapping)
+      {const _bs=now*0.000032;compBanner1.material.map.offset.x=_bs;compBanner2.material.map.offset.x=-_bs;}
       heroMark.position.set(hero.position.x,3.0+Math.sin(now*0.004)*0.12,hero.position.z);
       heroMark.rotation.y+=dt*1.1;
       heroMark.material.opacity=isHL?0.85+Math.sin(now*0.012)*0.15:0.62;
