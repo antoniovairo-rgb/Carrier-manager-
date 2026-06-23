@@ -2612,7 +2612,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.15.0"; // Sprint 3D-2: animazioni giocatori (run-cycle+bob, velocità smussata, orientamento verso palla, portieri) + sync fluido
+const GAME_VERSION="4.16.0"; // Sprint 3D-3: camera cinematica 3D — broadcast-follow + stacco ravvicinato sul protagonista negli highlight
 const SAVE_VERSION=6;
 // Sprint ENV — ambiente rilevato automaticamente dal runtime (non gestito manualmente).
 // PRODUCTION = deploy GitHub Pages (*.github.io). Tutto il resto (staging githack, locale, localhost) = TEST.
@@ -6528,6 +6528,8 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
    di PitchCanvas; la logica HL non cambia.
    Sprint 3D-2: run-cycle + bob, velocità smussata, giocatori
    fermi orientati verso la palla, portieri distinti, sync fluido.
+   Sprint 3D-3: camera cinematica — broadcast-follow in gioco,
+   stacco ravvicinato sul protagonista negli highlight.
 ===================================================== */
 function ThreeMatchView(props){
   const {playerX,playerY,homeCol,oppCol,allPlayers,homeClub,heroKitCol,
@@ -6624,6 +6626,8 @@ function ThreeMatchView(props){
 
     // Loop: lerp verso le posizioni target dai prop (nessun re-render React)
     let last=performance.now();
+    // Stato camera cinematica: blend HL (0=wide, 1=close) smussato + look target smussato
+    let camHL=0;const camLook=new THREE.Vector3(10,1,0);
     const animOne=(mesh,tx,tz,dt,k,bx,bz)=>{
       const dx=tx-mesh.position.x,dz=tz-mesh.position.z,d=Math.hypot(dx,dz);
       mesh.position.x+=dx*k;mesh.position.z+=dz*k;
@@ -6659,6 +6663,25 @@ function ThreeMatchView(props){
       const bx=ball.position.x,bz=ball.position.z;
       sr.current.players.forEach((pp,i)=>{const src=all[i];if(!src)return;animOne(pp.mesh,G2X(src.x),G2Z(src.y),dt,k,bx,bz);});
       animOne(hero,G2X(P.playerX||50),G2Z(P.playerY||50),dt,k,bx,bz);
+
+      // ---- Camera cinematica: broadcast-follow in gioco, stacco ravvicinato negli highlight ----
+      const hx=hero.position.x,hz=hero.position.z;
+      const ax=bx*0.6+hx*0.4,az=bz*0.6+hz*0.4; // centro azione (palla pesata + protagonista)
+      const isHL=P.matchPhase==="hl_move"||P.matchPhase==="hl_choose"||P.matchPhase==="hl_result"||P.matchPhase==="hl_intro";
+      camHL+=((isHL?1:0)-camHL)*Math.min(dt*2.2,1);
+      // WIDE — broadcast dietro la porta di casa, segue il centro azione con leggero parallasse
+      const wPx=-88+clamp(ax,-50,50)*0.12,wPy=54,wPz=az*0.32;
+      const wLx=clamp(ax*0.5+10,-12,42),wLy=1.5,wLz=az*0.6;
+      // CLOSE — inquadratura più bassa e vicina sul protagonista (dramma dell'highlight)
+      const cPx=clamp(hx-30,-96,-4),cPy=22,cPz=hz*0.6;
+      const cLx=hx+10,cLy=1.6,cLz=hz*0.85;
+      const tPx=wPx+(cPx-wPx)*camHL,tPy=wPy+(cPy-wPy)*camHL,tPz=wPz+(cPz-wPz)*camHL;
+      const tLx=wLx+(cLx-wLx)*camHL,tLy=wLy+(cLy-wLy)*camHL,tLz=wLz+(cLz-wLz)*camHL;
+      const kp=Math.min(dt*1.8,1),kl=Math.min(dt*2.4,1);
+      camera.position.x+=(tPx-camera.position.x)*kp;camera.position.y+=(tPy-camera.position.y)*kp;camera.position.z+=(tPz-camera.position.z)*kp;
+      camLook.x+=(tLx-camLook.x)*kl;camLook.y+=(tLy-camLook.y)*kl;camLook.z+=(tLz-camLook.z)*kl;
+      camera.lookAt(camLook.x,camLook.y,camLook.z);
+
       renderer.render(scene,camera);
     };
     loop();
