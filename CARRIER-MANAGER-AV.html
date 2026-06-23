@@ -13,13 +13,16 @@
 (function(){
   function mkIcon(sz){
     var cv=document.createElement('canvas');cv.width=cv.height=sz;
-    var ctx=cv.getContext('2d'),r=sz/2,br=r*0.62,pr=br*0.38;
-    ctx.beginPath();ctx.arc(r,r,r,0,6.283);ctx.fillStyle='#2563eb';ctx.fill();
-    ctx.beginPath();ctx.arc(r,r,br,0,6.283);ctx.fillStyle='#fff';ctx.fill();
-    ctx.beginPath();
-    for(var i=0;i<5;i++){var a=i*1.2566-1.5708;if(i===0)ctx.moveTo(r+pr*Math.cos(a),r+pr*Math.sin(a));else ctx.lineTo(r+pr*Math.cos(a),r+pr*Math.sin(a));}
-    ctx.closePath();ctx.fillStyle='#0f172a';ctx.fill();
-    for(var j=0;j<5;j++){var b=j*1.2566-1.5708;ctx.beginPath();ctx.arc(r+br*0.76*Math.cos(b),r+br*0.76*Math.sin(b),br*0.17,0,6.283);ctx.fillStyle='#0f172a';ctx.fill();}
+    var ctx=cv.getContext('2d'),u=sz/100;
+    var g=ctx.createLinearGradient(0,0,sz,sz);g.addColorStop(0,'#3b82f6');g.addColorStop(1,'#06b6d4');
+    ctx.fillStyle=g;ctx.fillRect(0,0,sz,sz); // full-bleed per maskable
+    ctx.fillStyle='#fff';
+    var base=72*u;
+    function bar(x,top){var w=15*u,rad=7*u,y=top,h=base-top;
+      if(ctx.roundRect){ctx.beginPath();ctx.roundRect(x,y,w,h,rad);ctx.fill();}
+      else ctx.fillRect(x,y,w,h);}
+    bar(24*u,46*u);bar(43*u,36*u);bar(62*u,24*u);
+    ctx.beginPath();ctx.arc(69.5*u,16*u,9*u,0,6.283);ctx.fill(); // ball al picco
     return cv.toDataURL('image/png');
   }
   var i192=mkIcon(192),i512=mkIcon(512);
@@ -54,10 +57,30 @@
 @keyframes pressureDrop{0%{opacity:0;transform:translateY(-40px) scale(0.7)}20%{opacity:1;transform:translateY(4px) scale(1.06)}40%{transform:translateY(-2px) scale(0.98)}55%{transform:translateY(0) scale(1)}75%{opacity:1}100%{opacity:0;transform:translateY(-15px) scale(1.04)}}
 @keyframes pressureBorderRed{0%,100%{box-shadow:inset 0 0 0px #ef4444}50%{box-shadow:inset 0 0 18px 4px rgba(239,68,68,0.55)}}
 @keyframes pressureBorderHome{0%,100%{box-shadow:inset 0 0 0px transparent}50%{box-shadow:inset 0 0 18px 4px var(--ph-col)}}
-*{box-sizing:border-box;margin:0;padding:0;}html,body{height:100%;overflow:hidden;background:#f0f7ff;-webkit-tap-highlight-color:transparent;}#root{height:100%;display:flex;flex-direction:column;}#ld{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:#f0f7ff;flex-direction:column;gap:14px;z-index:9999;font-family:sans-serif;}.sp{width:36px;height:36px;border:3px solid #e2e8f0;border-top:3px solid #2563eb;border-radius:50%;animation:spin .8s linear infinite;}@keyframes spin{to{transform:rotate(360deg)}}</style>
+*{box-sizing:border-box;margin:0;padding:0;}html,body{height:100%;overflow:hidden;background:#f0f7ff;-webkit-tap-highlight-color:transparent;}#root{height:100%;display:flex;flex-direction:column;}#ld{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:#f0f7ff;flex-direction:column;gap:14px;z-index:9999;font-family:sans-serif;}.sp{width:36px;height:36px;border:3px solid #e2e8f0;border-top:3px solid #2563eb;border-radius:50%;animation:spin .8s linear infinite;}@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes barPulse{0%,100%{transform:scaleY(.5)}50%{transform:scaleY(1)}}
+@keyframes ballBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+@keyframes logoIn{0%{opacity:0;transform:translateY(10px) scale(.95)}100%{opacity:1;transform:translateY(0) scale(1)}}
+.lrise{animation:logoIn .55s cubic-bezier(.2,.8,.2,1) both;}
+.lrise .lb{transform-box:fill-box;transform-origin:50% 100%;animation:barPulse 1.5s ease-in-out infinite;}
+.lrise .lb2{animation-delay:.16s;}.lrise .lb3{animation-delay:.32s;}
+.lrise .lball{transform-box:fill-box;transform-origin:center;animation:ballBob 1.5s ease-in-out infinite .32s;}
+@media(prefers-reduced-motion:reduce){.lrise .lb,.lrise .lball{animation:none;}}</style>
 </head>
 <body>
-<div id="ld"><div class="sp"></div><div style="font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#2563eb;font-weight:700">ELEVORA</div></div>
+<div id="ld"><div class="lrise" style="display:flex;align-items:center;gap:13px">
+<svg width="74" height="74" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="filter:drop-shadow(0 8px 20px rgba(37,99,235,.28))">
+<defs><linearGradient id="ldg" x1="0" y1="0" x2="100" y2="100" gradientUnits="userSpaceOnUse"><stop stop-color="#3b82f6"/><stop offset="1" stop-color="#06b6d4"/></linearGradient></defs>
+<rect x="2" y="2" width="96" height="96" rx="27" fill="url(#ldg)"/>
+<rect class="lb lb1" x="24" y="46" width="15" height="26" rx="7" fill="#fff"/>
+<rect class="lb lb2" x="43" y="36" width="15" height="36" rx="7" fill="#fff"/>
+<rect class="lb lb3" x="62" y="24" width="15" height="48" rx="7" fill="#fff"/>
+<circle class="lball" cx="69.5" cy="16" r="9" fill="#fff"/>
+</svg>
+<div style="text-align:left;line-height:1">
+<div style="font-size:30px;font-weight:900;letter-spacing:.5px;color:#0f172a">Elevora</div>
+<div style="font-size:9px;letter-spacing:4px;color:#2563eb;font-weight:800;margin-top:4px">FOOTBALL CAREER</div>
+</div></div></div>
 <div id="root"></div>
 <script>window._hide=function(){var e=document.getElementById('ld');if(e)e.style.display='none';};setTimeout(window._hide,15000);</script>
 <script type="text/babel" data-presets="react">
@@ -2560,7 +2583,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.10.0"; // Sprint CR+TC+B1: competizioni de-marchiate (Elevora Champions/Europa/Conference Cup · Trofeo d'Oro · Re dei Bomber), cap difensivo lega a 18 squadre, fix ruolo gerarchia post-ritiro
+const GAME_VERSION="4.11.0"; // Sprint LOGO: nuovo marchio "Rise" (barre ascendenti + pallone, gradiente blu→ciano) animato su splash, home e icone PWA
 const SAVE_VERSION=6;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -9768,7 +9791,16 @@ function HomeScreen({onNew,onLoad,onDelete,onImport,slots}){
         </div>
       )}
       <div style={{textAlign:"center",marginBottom:20}}>
-        <div style={{fontSize:60,marginBottom:6}}>⚽</div>
+        <div className="lrise" style={{display:"inline-block",marginBottom:8,lineHeight:0}}>
+          <svg width="78" height="78" viewBox="0 0 100 100" style={{filter:"drop-shadow(0 8px 22px rgba(37,99,235,0.30))"}}>
+            <defs><linearGradient id="homeLdg" x1="0" y1="0" x2="100" y2="100" gradientUnits="userSpaceOnUse"><stop stopColor="#3b82f6"/><stop offset="1" stopColor="#06b6d4"/></linearGradient></defs>
+            <rect x="2" y="2" width="96" height="96" rx="27" fill="url(#homeLdg)"/>
+            <rect className="lb lb1" x="24" y="46" width="15" height="26" rx="7" fill="#fff"/>
+            <rect className="lb lb2" x="43" y="36" width="15" height="36" rx="7" fill="#fff"/>
+            <rect className="lb lb3" x="62" y="24" width="15" height="48" rx="7" fill="#fff"/>
+            <circle className="lball" cx="69.5" cy="16" r="9" fill="#fff"/>
+          </svg>
+        </div>
         <h1 style={{fontSize:30,fontWeight:900,letterSpacing:3,margin:"0 0 3px",color:TH.text,textTransform:"uppercase"}}>Elevora</h1>
         <p style={{color:TH.primary,fontSize:11,margin:"0 0 3px",letterSpacing:1.2,textTransform:"uppercase",fontWeight:700}}>Football Career Simulator</p>
         <p style={{color:TH.muted,fontSize:12,margin:0,fontStyle:"italic"}}>From prospect to legend</p>
