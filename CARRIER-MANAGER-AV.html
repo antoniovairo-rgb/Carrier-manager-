@@ -2612,7 +2612,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.43.0"; // Sprint 3DV-2: palette credibile — maglia desaturata, emissive 0.04, LED cap 0.82, burst 2.8
+const GAME_VERSION="4.44.0"; // Sprint 3DV-3: player model v2 — proporzioni umane, bob 0.024, lean graduato
 const SAVE_VERSION=6;
 // Sprint ENV — ambiente rilevato automaticamente dal runtime (non gestito manualmente).
 // PRODUCTION = deploy GitHub Pages (*.github.io). Tutto il resto (staging githack, locale, localhost) = TEST.
@@ -6667,16 +6667,16 @@ function ThreeMatchView(props){
       const bt=new THREE.MeshPhongMaterial({color:0x0a0a0a});
       const addT=(geo,mat,x,y,z)=>{const m=new THREE.Mesh(geo,mat);m.position.set(x,y,z);torso.add(m);return m;};
       const addH=(geo,mat,x,y,z)=>{const m=new THREE.Mesh(geo,mat);m.position.set(x,y,z);hip.add(m);return m;};
-      const hdMesh=addT(new THREE.SphereGeometry(0.27,10,7),skM,0,1.93,0);
-      const hr=new THREE.Mesh(new THREE.SphereGeometry(0.30,10,6),new THREE.MeshPhongMaterial({color:0x2d1800}));hr.scale.y=0.62;hr.position.set(0,2.03,0);torso.add(hr);
-      // MT-2: occhi — sphere leggere sul fronte testa (z+0.24 = superficie sfera r=0.27)
-      addT(eyGeo,eyM,-0.115,1.93,0.24);addT(eyGeo,eyM,0.115,1.93,0.24);
-      addT(new THREE.CylinderGeometry(0.09,0.11,0.13,7),skM,0,1.68,0);
-      addT(new THREE.CylinderGeometry(0.27,0.31,0.78,10),jM,0,1.22,0);
-      addT(new THREE.BoxGeometry(0.78,0.14,0.30),jM,0,1.58,0);
+      // 3DV-3: proporzioni umane — testa r=0.22 (era 0.27, ratio 1/4→1/5), collo visibile, torso atletico, gambe distanziate
+      const hdMesh=addT(new THREE.SphereGeometry(0.22,10,7),skM,0,2.00,0);
+      const hr=new THREE.Mesh(new THREE.SphereGeometry(0.25,10,6),new THREE.MeshPhongMaterial({color:0x2d1800}));hr.scale.y=0.62;hr.position.set(0,2.08,0);torso.add(hr);
+      addT(eyGeo,eyM,-0.095,2.00,0.21);addT(eyGeo,eyM,0.095,2.00,0.21);// z=r*0.95 superficie sfera
+      addT(new THREE.CylinderGeometry(0.10,0.12,0.22,7),skM,0,1.67,0);// collo più alto (era 0.13)
+      addT(new THREE.CylinderGeometry(0.30,0.34,0.82,10),jM,0,1.20,0);// torso più largo e alto
+      addT(new THREE.BoxGeometry(0.90,0.16,0.34),jM,0,1.58,0);// spalle più larghe (era 0.78)
       addH(new THREE.CylinderGeometry(0.28,0.24,0.28,9),sM,0,0.78,0);
-      const mkArm=(sx)=>{const ag=new THREE.Group();ag.position.set(sx*0.45,1.58,0);const u=new THREE.Mesh(new THREE.CylinderGeometry(0.07,0.06,0.44,7),jM);u.position.y=-0.22;ag.add(u);const f=new THREE.Mesh(new THREE.CylinderGeometry(0.055,0.05,0.36,6),skM);f.position.y=-0.56;ag.add(f);torso.add(ag);return ag;};
-      const mkLeg=(sx)=>{const lg=new THREE.Group();lg.position.set(sx*0.155,0.78,0);const th=new THREE.Mesh(new THREE.CylinderGeometry(0.10,0.086,0.44,8),skM);th.position.y=-0.22;lg.add(th);const sh=new THREE.Mesh(new THREE.CylinderGeometry(0.077,0.066,0.38,8),wh);sh.position.y=-0.57;lg.add(sh);const bk=new THREE.Mesh(new THREE.BoxGeometry(0.16,0.086,0.28),bt);bk.position.set(0,-0.78,0.04);lg.add(bk);hip.add(lg);return lg;};
+      const mkArm=(sx)=>{const ag=new THREE.Group();ag.position.set(sx*0.48,1.58,0);const u=new THREE.Mesh(new THREE.CylinderGeometry(0.085,0.07,0.44,7),jM);u.position.y=-0.22;ag.add(u);const f=new THREE.Mesh(new THREE.CylinderGeometry(0.065,0.055,0.36,6),skM);f.position.y=-0.56;ag.add(f);torso.add(ag);return ag;};// braccia più spesse
+      const mkLeg=(sx)=>{const lg=new THREE.Group();lg.position.set(sx*0.185,0.78,0);const th=new THREE.Mesh(new THREE.CylinderGeometry(0.115,0.095,0.45,8),skM);th.position.y=-0.22;lg.add(th);const sh=new THREE.Mesh(new THREE.CylinderGeometry(0.085,0.072,0.38,8),wh);sh.position.y=-0.57;lg.add(sh);const bk=new THREE.Mesh(new THREE.BoxGeometry(0.18,0.09,0.30),bt);bk.position.set(0,-0.78,0.05);lg.add(bk);hip.add(lg);return lg;};// gambe sx*0.185 (era 0.155), cosce più spesse
       const aL=mkArm(-1),aR=mkArm(1),lL=mkLeg(-1),lR=mkLeg(1);
       if(isUser){const r=new THREE.Mesh(new THREE.TorusGeometry(0.55,0.055,7,24),new THREE.MeshBasicMaterial({color:0xffd700}));r.rotation.x=Math.PI/2;r.position.y=0.04;g.add(r);jM.emissive=new THREE.Color(col);jM.emissiveIntensity=0.04;}// 3DV-2: emissive 0.22→0.04 (era fluorescente)
       g._aL=aL;g._aR=aR;g._lL=lL;g._lR=lR;g._hd=hdMesh;g._torso=torso;g._tRot=0;g._ph=0;g._px=0;g._pz=0;g._sp=0;g._sd=sd*1.3;g._idle=_fr(sd+5)*6.28;
@@ -6880,9 +6880,10 @@ function ThreeMatchView(props){
         const armAmp=Math.min(sp*0.13,0.85);
         mesh._aL.rotation.x=-Math.sin(mesh._ph)*armAmp;mesh._aR.rotation.x=Math.sin(mesh._ph)*armAmp;
         mesh._aL.rotation.z=-0.12+Math.sin(mesh._ph)*0.06;mesh._aR.rotation.z=0.12-Math.sin(mesh._ph)*0.06;
-        mesh.position.y=Math.abs(Math.sin(mesh._ph))*Math.min(sp*0.018,0.12);
+        mesh.position.y=Math.abs(Math.sin(mesh._ph))*Math.min(sp*0.024,0.18);// 3DV-3: bob più pronunciato
         // QW-5: lean in avanti proporzionale alla corsa (più marcato in sprint)
-        const _lean=sp>3.0?0.13:0.045;mesh.rotation.x+=(_lean-mesh.rotation.x)*Math.min(dt*4,1);mesh.rotation.z*=0.85;
+        const _lean=sp>3.5?0.15:sp>1.5?0.06:0.02;// 3DV-3: lean graduato
+        mesh.rotation.x+=(_lean-mesh.rotation.x)*Math.min(dt*4,1);mesh.rotation.z*=0.85;
       } else {
         mesh._lL.rotation.x*=0.82;mesh._lR.rotation.x*=0.82;mesh._aL.rotation.x*=0.82;mesh._aR.rotation.x*=0.82;
         mesh._aL.rotation.z*=0.85;mesh._aR.rotation.z*=0.85;
