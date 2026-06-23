@@ -177,7 +177,8 @@ Prima di ogni modifica: leggere le righe coinvolte, dichiarare le dipendenze not
 - **Nessuna modifica senza audit**: leggere prima il codice, poi dichiarare rischi.
 - **Aggiornare `CLAUDE.md`** ad ogni sprint: range di linee, nuovi sistemi, campi `player` aggiunti.
 - **Bump `GAME_VERSION`** ad ogni push, anche fix minori.
-- **Push sempre su entrambi i branch**: dopo ogni sprint, pushare su `claude/local-development-g2x70x` E su `main` (GitHub Pages deploya da `main`). Merge con `git checkout main && git merge claude/local-development-g2x70x --no-edit && git push origin main`, poi ritornare sul branch di sviluppo.
+- **Branch workflow**: dopo ogni sprint pushare su dev (`claude/continue-work-y3mh4y`) E su `staging` (ambiente di test). Comando: `git push origin claude/continue-work-y3mh4y && git checkout staging && git merge claude/continue-work-y3mh4y --no-edit && git push origin staging && git checkout claude/continue-work-y3mh4y`.
+- **`main` (produzione) solo su autorizzazione esplicita del proprietario** — mai in automatico, mai dopo un singolo sprint senza via esplicito. Quando autorizzato: `git checkout main && git merge claude/continue-work-y3mh4y --no-edit && git push origin main && git checkout claude/continue-work-y3mh4y`.
 - **Annunciare sempre** "Pushato su GitHub — CPM x.y.z." dopo ogni `git push`.
 - **Zero regressions**: il QA Engineer valida ogni sprint prima del push.
 - **Minimalismo**: nessuna astrazione o feature non richiesta esplicitamente.
