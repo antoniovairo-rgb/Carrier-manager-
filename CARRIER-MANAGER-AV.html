@@ -22,7 +22,14 @@
       if(ctx.roundRect){ctx.beginPath();ctx.roundRect(x,y,w,h,rad);ctx.fill();}
       else ctx.fillRect(x,y,w,h);}
     bar(24*u,46*u);bar(43*u,36*u);bar(62*u,24*u);
-    ctx.beginPath();ctx.arc(69.5*u,16*u,9*u,0,6.283);ctx.fill(); // ball al picco
+    // pallone da calcio al picco (pentagono + cuciture)
+    var bx=69.5*u,by=15*u,R=10*u,dk='#1e293b',pent=[],edge=[],p,ang;
+    ctx.beginPath();ctx.arc(bx,by,R,0,6.283);ctx.fillStyle='#fff';ctx.fill();
+    ctx.lineWidth=R*0.13;ctx.strokeStyle=dk;ctx.lineCap='round';ctx.stroke();
+    for(p=0;p<5;p++){ang=(-90+p*72)*Math.PI/180;pent.push([bx+R*0.42*Math.cos(ang),by+R*0.42*Math.sin(ang)]);edge.push([bx+R*0.94*Math.cos(ang),by+R*0.94*Math.sin(ang)]);}
+    ctx.lineWidth=R*0.11;
+    for(p=0;p<5;p++){ctx.beginPath();ctx.moveTo(pent[p][0],pent[p][1]);ctx.lineTo(edge[p][0],edge[p][1]);ctx.stroke();}
+    ctx.beginPath();for(p=0;p<5;p++){if(p===0)ctx.moveTo(pent[p][0],pent[p][1]);else ctx.lineTo(pent[p][0],pent[p][1]);}ctx.closePath();ctx.fillStyle=dk;ctx.fill();
     return cv.toDataURL('image/png');
   }
   var i192=mkIcon(192),i512=mkIcon(512);
@@ -75,7 +82,7 @@
 <rect class="lb lb1" x="24" y="46" width="15" height="26" rx="7" fill="#fff"/>
 <rect class="lb lb2" x="43" y="36" width="15" height="36" rx="7" fill="#fff"/>
 <rect class="lb lb3" x="62" y="24" width="15" height="48" rx="7" fill="#fff"/>
-<circle class="lball" cx="69.5" cy="16" r="9" fill="#fff"/>
+<g class="lball"><circle cx="69.5" cy="15" r="10" fill="#fff" stroke="#1e293b" stroke-width="1.3"/><line x1="69.5" y1="10.8" x2="69.5" y2="5.6" stroke="#1e293b" stroke-width="1.1" stroke-linecap="round"/><line x1="73.49" y1="13.7" x2="78.44" y2="12.1" stroke="#1e293b" stroke-width="1.1" stroke-linecap="round"/><line x1="71.97" y1="18.4" x2="75.03" y2="22.6" stroke="#1e293b" stroke-width="1.1" stroke-linecap="round"/><line x1="67.03" y1="18.4" x2="63.97" y2="22.6" stroke="#1e293b" stroke-width="1.1" stroke-linecap="round"/><line x1="65.51" y1="13.7" x2="60.56" y2="12.1" stroke="#1e293b" stroke-width="1.1" stroke-linecap="round"/><polygon points="69.5,10.8 73.49,13.7 71.97,18.4 67.03,18.4 65.51,13.7" fill="#1e293b"/></g>
 </svg>
 <div style="text-align:left;line-height:1">
 <div style="font-size:30px;font-weight:900;letter-spacing:.5px;color:#0f172a">Elevora</div>
@@ -2583,7 +2590,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.11.0"; // Sprint LOGO: nuovo marchio "Rise" (barre ascendenti + pallone, gradiente blu→ciano) animato su splash, home e icone PWA
+const GAME_VERSION="4.11.1"; // Sprint LOGO: marchio "Rise" — pallone al picco ora pallone da calcio (pentagono + cuciture) su splash, home e icone PWA
 const SAVE_VERSION=6;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -9798,7 +9805,7 @@ function HomeScreen({onNew,onLoad,onDelete,onImport,slots}){
             <rect className="lb lb1" x="24" y="46" width="15" height="26" rx="7" fill="#fff"/>
             <rect className="lb lb2" x="43" y="36" width="15" height="36" rx="7" fill="#fff"/>
             <rect className="lb lb3" x="62" y="24" width="15" height="48" rx="7" fill="#fff"/>
-            <circle className="lball" cx="69.5" cy="16" r="9" fill="#fff"/>
+            <g className="lball"><circle cx="69.5" cy="15" r="10" fill="#fff" stroke="#1e293b" strokeWidth="1.3"/><line key="s0" x1="69.5" y1="10.8" x2="69.5" y2="5.6" stroke="#1e293b" strokeWidth="1.1" strokeLinecap="round"/><line key="s1" x1="73.49" y1="13.7" x2="78.44" y2="12.1" stroke="#1e293b" strokeWidth="1.1" strokeLinecap="round"/><line key="s2" x1="71.97" y1="18.4" x2="75.03" y2="22.6" stroke="#1e293b" strokeWidth="1.1" strokeLinecap="round"/><line key="s3" x1="67.03" y1="18.4" x2="63.97" y2="22.6" stroke="#1e293b" strokeWidth="1.1" strokeLinecap="round"/><line key="s4" x1="65.51" y1="13.7" x2="60.56" y2="12.1" stroke="#1e293b" strokeWidth="1.1" strokeLinecap="round"/><polygon points="69.5,10.8 73.49,13.7 71.97,18.4 67.03,18.4 65.51,13.7" fill="#1e293b"/></g>
           </svg>
         </div>
         <h1 style={{fontSize:30,fontWeight:900,letterSpacing:3,margin:"0 0 3px",color:TH.text,textTransform:"uppercase"}}>Elevora</h1>
