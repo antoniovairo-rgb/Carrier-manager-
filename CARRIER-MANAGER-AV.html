@@ -2612,7 +2612,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.40.0"; // Sprint CIN-1: camera HL ravvicinata+bassa, palla 1.4×, animazioni 2×, tackle/header cam
+const GAME_VERSION="4.41.0"; // Sprint CIN-2: GK tuffo, difensore stumble/spin — reazione avversario a hl_result
 const SAVE_VERSION=6;
 // Sprint ENV — ambiente rilevato automaticamente dal runtime (non gestito manualmente).
 // PRODUCTION = deploy GitHub Pages (*.github.io). Tutto il resto (staging githack, locale, localhost) = TEST.
@@ -6694,7 +6694,7 @@ function ThreeMatchView(props){
     try{GK_POOL.forEach(k=>{const m=Math.min(colorDist(_hCol,k),colorDist(_aCol,k));if(m>gkBest){gkBest=m;gkCol=k;}});}catch(e){gkCol='#facc15';}
 
     // 21 giocatori (home + away) dal prop allPlayers
-    const players=[];
+    const players=[];let awayGkMesh=null; // CIN-2: ref portiere avversario per animazione tuffo
     (allPlayers||[]).forEach((pl,i)=>{
       const isHome=pl.team==='home';
       const col=pl.gk?gkCol:(isHome?_hCol:_aCol);
@@ -6702,6 +6702,7 @@ function ThreeMatchView(props){
       const mesh=mkP(col,false,i+1,_ri);
       mesh.position.set(G2X(pl.x),0,G2Z(pl.y));mesh._px=mesh.position.x;mesh._pz=mesh.position.z;
       scene.add(mesh);players.push({mesh,team:pl.team});
+      if(pl.gk&&pl.team==='away')awayGkMesh=mesh; // CIN-2
     });
     // Protagonista (ring dorato)
     const hero=mkP(heroKitCol||homeCol||'#22c55e',true,99);
@@ -6805,6 +6806,7 @@ function ThreeMatchView(props){
     let camHL=0,bf=0;const camLook=new THREE.Vector3(10,1,0);
     // Sprint 3D-7: animazione one-shot del protagonista all'ingresso dell'esito (hl_result)
     let actT=0,actType=null,prevPhase="";
+    let oppActType=null,oppActT=0,oppMesh=null,oppDiveDir=1; // CIN-2: animazione reazione avversario
     // Sprint 3D-8a: cronometro dell'esito per il rallenty cinematografico
     let resultT=0;
     // Sprint 3D-BALL: arco parabolico della palla (shot/header/cross/freekick/penalty)
@@ -6936,7 +6938,17 @@ function ThreeMatchView(props){
           else if(t==="cross"||t==="freekick"){ballArcH=3.6;ballArcDur=0.82;ballArcT=0;ballArcActive=true;}
           else ballArcActive=false;
           ballArcIsBG=false; // ATE-2: HL arc usa P.ballX/Y (target già settato dal sistema HL)
-          if(ballArcActive)contactFlashT=0;} // QW-A: contact flash al kick/header
+          if(ballArcActive)contactFlashT=0;
+          // CIN-2: trigger reazione avversario — portiere tuffo su tiro/testa/cross, difensore stumble/spin su contrasto/dribbling
+          if((t==="shot"||t==="penalty"||t==="header"||t==="cross")&&awayGkMesh){
+            oppActType="gk_dive";oppActT=0;oppMesh=awayGkMesh;
+            oppDiveDir=Math.random()>0.5?1:-1; // tuffo casuale L/R (realistico)
+            oppMesh._divePz=oppMesh.position.z; // salva z di partenza per reset
+          } else if(t==="tackle"||t==="dribble"){
+            let nearD=99,nearM=null;
+            sr.current.players.forEach((pp,ii)=>{const src=(P.allPlayers||[])[ii];if(src&&src.team==='away'&&!src.gk){const d=Math.hypot(pp.mesh.position.x-hero.position.x,pp.mesh.position.z-hero.position.z);if(d<nearD){nearD=d;nearM=pp.mesh;}}});
+            if(nearM){oppActType=t==="tackle"?"opp_stumble":"opp_spin";oppActT=0;oppMesh=nearM;oppMesh._divePz=nearM.position.z;}
+          }} // QW-A: contact flash al kick/header
         if(_curPh==="hl_intro"||(_curPh==="hl_move"&&prevPhase==="playing")){repCount=0;repHead=0;replayDone=false;}
         if(_curPh!=="hl_result"&&replaying){replaying=false;setReplayOn(false);}
         // ATE-4: zone ring — accendi su hl_intro, colora per tipo; spegni su playing/ended
@@ -6999,6 +7011,14 @@ function ThreeMatchView(props){
           }
           animOne(pp.mesh,G2X(clamp(src.x+ox,2,98)),G2Z(clamp(src.y+oy,2,98)),aDt,ak,bx,bz);});
         animOne(hero,G2X(P.playerX||50),G2Z(P.playerY||50),aDt,ak,bx,bz);
+        // CIN-2: reazione avversario — gk_dive (portiere), opp_stumble/opp_spin (difensore); si applica DOPO animOne per sovrascriverlo
+        if(oppActType&&oppMesh){
+          oppActT+=aDt;const _OT=oppActType==="gk_dive"?0.75:0.55,u=Math.min(oppActT/_OT,1),sw=Math.sin(u*Math.PI);
+          if(oppActType==="gk_dive"){oppMesh.position.z=(oppMesh._divePz||0)+oppDiveDir*sw*3.5;oppMesh.position.y=sw*0.8;oppMesh.rotation.z=oppDiveDir*sw*1.2;oppMesh._aL.rotation.x=-sw*1.8;oppMesh._aR.rotation.x=-sw*1.8;}
+          else if(oppActType==="opp_stumble"){oppMesh.rotation.z=sw*1.0;oppMesh.position.y=-sw*0.15;oppMesh._lR.rotation.x=sw*1.8;oppMesh._lL.rotation.x=-sw*0.7;}
+          else if(oppActType==="opp_spin"){oppMesh.rotation.y+=aDt*(u<0.5?9:3);}
+          if(u>=1){oppActType=null;if(oppMesh){oppMesh.position.y=0;oppMesh=null;}}
+        }
         // Sprint 3D-G2: arbitro segue la palla con offset laterale; guardalinee seguono x dell'azione
         {const _rk=Math.min(aDt*1.8,1),_offZ=isHL?4.5:6;
         refMesh.position.x+=(bx+_offZ-refMesh.position.x)*_rk;refMesh.position.z+=(bz*0.6-refMesh.position.z)*_rk;refMesh.rotation.y=Math.atan2(bx-refMesh.position.x,bz-refMesh.position.z);
