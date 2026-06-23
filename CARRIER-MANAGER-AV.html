@@ -2612,7 +2612,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.33.0"; // Sprint 3D-H3: staff vivaci (MT-4) + bandiere reattive al gol (MT-5)
+const GAME_VERSION="4.34.0"; // Sprint 3D-H4: feature facciali (MT-2) + texture pallone (MT-6) + contact ring (LT-1)
 const SAVE_VERSION=6;
 // Sprint ENV — ambiente rilevato automaticamente dal runtime (non gestito manualmente).
 // PRODUCTION = deploy GitHub Pages (*.github.io). Tutto il resto (staging githack, locale, localhost) = TEST.
@@ -6632,6 +6632,9 @@ function ThreeMatchView(props){
     // così i 22 giocatori non sono più cloni identici (nessun nuovo prop, seed = indice roster).
     const _fr=(n)=>{const s=Math.sin(n*127.1+311.7)*43758.5453;return s-Math.floor(s);};
     const SKN_TONES=[0xcfa07a,0x8d5524,0xf1c27d,0x6b3c2c,0xd4956a,0xa86b3c];
+    // MT-2: occhi condivisi — una sola geo + mat per tutti i 22 player mesh
+    const eyGeo=new THREE.SphereGeometry(0.038,6,5);
+    const eyM=new THREE.MeshPhongMaterial({color:0x110800,shininess:40});
     const mkP=(col,isUser,seed,roleIdx=5)=>{
       const sd=seed||0,h1=_fr(sd*1.7+0.3),h2=_fr(sd*2.3+1.1),h3=_fr(sd*3.1+2.7);
       const g=new THREE.Group();
@@ -6646,6 +6649,8 @@ function ThreeMatchView(props){
       const addH=(geo,mat,x,y,z)=>{const m=new THREE.Mesh(geo,mat);m.position.set(x,y,z);hip.add(m);return m;};
       const hdMesh=addT(new THREE.SphereGeometry(0.27,10,7),skM,0,1.93,0);
       const hr=new THREE.Mesh(new THREE.SphereGeometry(0.30,10,6),new THREE.MeshPhongMaterial({color:0x2d1800}));hr.scale.y=0.62;hr.position.set(0,2.03,0);torso.add(hr);
+      // MT-2: occhi — sphere leggere sul fronte testa (z+0.24 = superficie sfera r=0.27)
+      addT(eyGeo,eyM,-0.115,1.93,0.24);addT(eyGeo,eyM,0.115,1.93,0.24);
       addT(new THREE.CylinderGeometry(0.09,0.11,0.13,7),skM,0,1.68,0);
       addT(new THREE.CylinderGeometry(0.27,0.31,0.78,10),jM,0,1.22,0);
       addT(new THREE.BoxGeometry(0.78,0.14,0.30),jM,0,1.58,0);
@@ -6693,8 +6698,9 @@ function ThreeMatchView(props){
     const _placeRow=(list,xRow)=>{const n=list.length;list.forEach((m,i)=>{m._wx=xRow;m._wz=n>1?(-28+56*i/(n-1)):0;});};
     _placeRow(_homeMeshes,-15);_placeRow(_awayMeshes,-7);
 
-    // Palla
-    const ball=new THREE.Mesh(new THREE.SphereGeometry(0.42,14,10),new THREE.MeshPhongMaterial({color:0xfafafa,shininess:85}));
+    // Palla — MT-6: CanvasTexture con patch pentagonali nere (soccer ball pattern)
+    const _mkBallTex=()=>{const c=document.createElement('canvas');c.width=c.height=128;const ctx=c.getContext('2d');ctx.fillStyle='#f0f0f0';ctx.fillRect(0,0,128,128);ctx.fillStyle='#1a1a1a';[[64,64],[22,40],[106,40],[22,88],[106,88],[64,10],[64,118]].forEach(([u,v])=>{ctx.beginPath();for(let i=0;i<5;i++){const a=i/5*Math.PI*2-Math.PI/2;ctx.lineTo(u+Math.cos(a)*13,v+Math.sin(a)*13);}ctx.closePath();ctx.fill();});return new THREE.CanvasTexture(c);};
+    const ball=new THREE.Mesh(new THREE.SphereGeometry(0.42,14,10),new THREE.MeshPhongMaterial({map:_mkBallTex(),shininess:90}));
     ball.castShadow=true;ball.position.set(G2X(ballX||50),0.42,G2Z(ballY||50));scene.add(ball);
     // Sprint 3D-BALL: alone occlusione (depthTest:false) — palla visibile anche dietro i giocatori
     const ballHalo=new THREE.Mesh(new THREE.SphereGeometry(0.70,10,7),new THREE.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:0.10,depthTest:false,depthWrite:false}));
@@ -6764,6 +6770,9 @@ function ThreeMatchView(props){
     const confMat=new THREE.PointsMaterial({color:0xffd700,size:0.7,transparent:true,opacity:0,depthWrite:false});
     const confPts=new THREE.Points(confGeo,confMat);scene.add(confPts);
     let confActive=false;
+    // LT-1: anello contact point — pre-allocato, attivato sul kick/header
+    const ctFlash=new THREE.Mesh(new THREE.RingGeometry(0.08,0.52,14),new THREE.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:0,side:THREE.DoubleSide,depthWrite:false}));
+    ctFlash.rotation.x=-Math.PI/2;ctFlash.position.y=0.06;scene.add(ctFlash);
 
     Object.assign(sr.current,{scene,camera,renderer,players,hero,ball,G2X,G2Z});
 
@@ -6882,8 +6891,10 @@ function ThreeMatchView(props){
       // QW-A: contact flash — impulso di scala pallone al kick/header (0.18s)
       if(contactFlashT>=0){contactFlashT+=dt;const _cf=Math.max(0,1-contactFlashT/0.12);
         ball.scale.setScalar(1+_cf*0.42);ballHalo.material.opacity=Math.max(ballHalo.material.opacity,_cf*0.55);
+        // LT-1: ring espande da 1× a 3.8× e svanisce in 0.20s
+        ctFlash.position.x=ball.position.x;ctFlash.position.z=ball.position.z;ctFlash.scale.setScalar(1+(1-_cf)*2.8);ctFlash.material.opacity=_cf*0.60;
         if(contactFlashT>0.20)contactFlashT=-1;}
-      else ball.scale.setScalar(1);
+      else{ball.scale.setScalar(1);ctFlash.material.opacity=0;}
       const bx=ball.position.x,bz=ball.position.z;
       const isWalk=P.matchPhase==="walkout";
       // transizioni di fase: trigger animazione esito + gestione buffer/replay
