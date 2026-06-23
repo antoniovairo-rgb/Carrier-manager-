@@ -360,105 +360,105 @@ function Player3DViewer({avatarData,clubColor="#2563eb",width="100%",height="280
 ======================================== */
 const mkT=(id,n,a,p,c,c2,nat,lg)=>({id,n,a,p,c,c2,nat,lg});
 const CLUBS=[
-  // -- ITALIA Serie A --
-  mkT("juve","Juventus","JUV",95,"#f5f5f5","#1a1a2e","🇮🇹","Serie A"),
-  mkT("inter","Inter","INT",92,"#1d4ed8","#0f0f0f","🇮🇹","Serie A"),
-  mkT("milan","Milan","MIL",90,"#dc2626","#0f0f0f","🇮🇹","Serie A"),
-  mkT("napoli","Napoli","NAP",88,"#38bdf8","#ffffff","🇮🇹","Serie A"),
-  mkT("roma","Roma","ROM",84,"#b91c1c","#f59e0b","🇮🇹","Serie A"),
-  mkT("lazio","Lazio","LAZ",80,"#93c5fd","#1a1a2e","🇮🇹","Serie A"),
-  mkT("ata","Atalanta","ATA",82,"#1d4ed8","#0f0f0f","🇮🇹","Serie A"),
-  mkT("fio","Fiorentina","FIO",77,"#7c3aed","#f5f5f5","🇮🇹","Serie A"),
-  mkT("tor","Torino","TOR",70,"#92400e","#fef3c7","🇮🇹","Serie A"),
-  mkT("bol","Bologna","BOL",72,"#dc2626","#1d4ed8","🇮🇹","Serie A"),
-  mkT("udi","Udinese","UDI",65,"#1e293b","#f1f5f9","🇮🇹","Serie A"),
-  mkT("sas","Sassuolo","SAS",68,"#15803d","#0f0f0f","🇮🇹","Serie A"),
-  mkT("cag","Cagliari","CAG",65,"#dc2626","#1d4ed8","🇮🇹","Serie A"),
-  mkT("sam","Sampdoria","SAM",67,"#1d4ed8","#dc2626","🇮🇹","Serie A"),
-  mkT("gen","Genoa","GEN",66,"#dc2626","#1d4ed8","🇮🇹","Serie A"),
-  mkT("ver","Verona","VER",67,"#f59e0b","#1d4ed8","🇮🇹","Serie A"),
-  mkT("mon2","Monza","MON",64,"#dc2626","#f5f5f5","🇮🇹","Serie A"),
-  mkT("lec","Lecce","LEC",62,"#f5c518","#dc2626","🇮🇹","Serie A"),
-  // -- ENGLAND Premier League --
-  mkT("mcy","Manchester City","MCY",98,"#93c5fd","#1a1a2e","🏴󠁧󠁢󠁥󠁮󠁧󠁿","Premier League"),
-  mkT("liv","Liverpool","LIV",96,"#dc2626","#f59e0b","🏴󠁧󠁢󠁥󠁮󠁧󠁿","Premier League"),
-  mkT("ars","Arsenal","ARS",91,"#dc2626","#ffffff","🏴󠁧󠁢󠁥󠁮󠁧󠁿","Premier League"),
-  mkT("che","Chelsea","CHE",90,"#1d4ed8","#ffffff","🏴󠁧󠁢󠁥󠁮󠁧󠁿","Premier League"),
-  mkT("mun","Manchester Utd","MUN",88,"#dc2626","#f59e0b","🏴󠁧󠁢󠁥󠁮󠁧󠁿","Premier League"),
-  mkT("tot","Tottenham","TOT",85,"#0f0f0f","#ffffff","🏴󠁧󠁢󠁥󠁮󠁧󠁿","Premier League"),
-  mkT("new","Newcastle","NEW",84,"#0f0f0f","#ffffff","🏴󠁧󠁢󠁥󠁮󠁧󠁿","Premier League"),
-  mkT("avl","Aston Villa","AVL",82,"#92400e","#93c5fd","🏴󠁧󠁢󠁥󠁮󠁧󠁿","Premier League"),
-  mkT("whu","West Ham","WHU",78,"#92400e","#1d4ed8","🏴󠁧󠁢󠁥󠁮󠁧󠁿","Premier League"),
-  mkT("bha","Brighton","BHA",77,"#1d4ed8","#ffffff","🏴󠁧󠁢󠁥󠁮󠁧󠁿","Premier League"),
-  mkT("eve","Everton","EVE",74,"#1d4ed8","#ffffff","🏴󠁧󠁢󠁥󠁮󠁧󠁿","Premier League"),
-  mkT("lei","Leicester","LEI",73,"#1d4ed8","#f59e0b","🏴󠁧󠁢󠁥󠁮󠁧󠁿","Premier League"),
-  mkT("wol","Wolves","WOL",72,"#f59e0b","#0f0f0f","🏴󠁧󠁢󠁥󠁮󠁧󠁿","Premier League"),
-  mkT("cry","Crystal Palace","CRY",71,"#1d4ed8","#dc2626","🏴󠁧󠁢󠁥󠁮󠁧󠁿","Premier League"),
-  mkT("ful","Fulham","FUL",70,"#0f0f0f","#ffffff","🏴󠁧󠁢󠁥󠁮󠁧󠁿","Premier League"),
-  mkT("bre","Brentford","BRE",69,"#dc2626","#f5f5f5","🏴󠁧󠁢󠁥󠁮󠁧󠁿","Premier League"),
-  mkT("nfo","Nottm Forest","NFO",68,"#dc2626","#f5f5f5","🏴󠁧󠁢󠁥󠁮󠁧󠁿","Premier League"),
-  mkT("bou","Bournemouth","BOU",67,"#dc2626","#0f0f0f","🏴󠁧󠁢󠁥󠁮󠁧󠁿","Premier League"),
-  // -- SPAIN La Liga --
-  mkT("rma","Real Madrid","RMA",99,"#f5f5f5","#f59e0b","🇪🇸","La Liga"),
-  mkT("bar","Barcelona","BAR",97,"#1d4ed8","#dc2626","🇪🇸","La Liga"),
-  mkT("atm","Atlético Madrid","ATM",92,"#dc2626","#1d4ed8","🇪🇸","La Liga"),
-  mkT("sev","Sevilla","SEV",84,"#dc2626","#f5f5f5","🇪🇸","La Liga"),
-  mkT("vill","Villarreal","VIL",80,"#f59e0b","#0f0f0f","🇪🇸","La Liga"),
-  mkT("rsoc","Real Sociedad","RSO",78,"#1d4ed8","#f5f5f5","🇪🇸","La Liga"),
-  mkT("bet","Real Betis","BET",76,"#15803d","#f5f5f5","🇪🇸","La Liga"),
-  mkT("val","Valencia","VAL",75,"#f59e0b","#0f0f0f","🇪🇸","La Liga"),
-  mkT("osa","Osasuna","OSA",68,"#dc2626","#1d4ed8","🇪🇸","La Liga"),
-  mkT("cel","Celta Vigo","CEL",70,"#93c5fd","#ffffff","🇪🇸","La Liga"),
-  mkT("ath","Athletic Bilbao","ATH",74,"#dc2626","#f5f5f5","🇪🇸","La Liga"),
-  mkT("ray","Rayo Vallecano","RAY",66,"#dc2626","#f5f5f5","🇪🇸","La Liga"),
-  mkT("gir","Girona","GIR",72,"#dc2626","#f5f5f5","🇪🇸","La Liga"),
-  mkT("mall","Mallorca","MAL",65,"#dc2626","#0f0f0f","🇪🇸","La Liga"),
-  mkT("get","Getafe","GET",64,"#1d4ed8","#f5f5f5","🇪🇸","La Liga"),
-  mkT("las","Las Palmas","LPA",62,"#f59e0b","#1d4ed8","🇪🇸","La Liga"),
-  mkT("alm","Almería","ALM",60,"#dc2626","#f5f5f5","🇪🇸","La Liga"),
-  mkT("esp","Espanyol","ESP",63,"#1d4ed8","#f5f5f5","🇪🇸","La Liga"),
-  // -- GERMANY Bundesliga --
-  mkT("bay","Bayern Monaco","BAY",99,"#dc2626","#f59e0b","🇩🇪","Bundesliga"),
-  mkT("bvb","Borussia Dortmund","BVB",93,"#f59e0b","#0f0f0f","🇩🇪","Bundesliga"),
-  mkT("rbl","RB Leipzig","RBL",88,"#dc2626","#1d4ed8","🇩🇪","Bundesliga"),
-  mkT("b04","Bayer Leverkusen","B04",89,"#dc2626","#0f0f0f","🇩🇪","Bundesliga"),
-  mkT("bsc","Union Berlin","BSC",80,"#dc2626","#f5f5f5","🇩🇪","Bundesliga"),
-  mkT("fra","Eintracht Frankfurt","FRA",79,"#0f0f0f","#dc2626","🇩🇪","Bundesliga"),
-  mkT("fre","Friburgo","FRE",76,"#dc2626","#0f0f0f","🇩🇪","Bundesliga"),
-  mkT("wob","Wolfsburg","WOB",75,"#15803d","#f5f5f5","🇩🇪","Bundesliga"),
-  mkT("mgb","B. Mönchengladbach","BMG",74,"#0f0f0f","#f5f5f5","🇩🇪","Bundesliga"),
-  mkT("stu","VfB Stuttgart","VFB",76,"#dc2626","#f5f5f5","🇩🇪","Bundesliga"),
-  mkT("aug","FC Augsburg","AUG",66,"#15803d","#dc2626","🇩🇪","Bundesliga"),
-  mkT("mai","FSV Mainz","MAI",68,"#dc2626","#f5f5f5","🇩🇪","Bundesliga"),
-  mkT("hof","Hoffenheim","TSG",70,"#1d4ed8","#f5f5f5","🇩🇪","Bundesliga"),
-  mkT("kol","FC Köln","KOL",65,"#dc2626","#f5f5f5","🇩🇪","Bundesliga"),
-  mkT("wer","Werder Bremen","WER",72,"#15803d","#f5f5f5","🇩🇪","Bundesliga"),
-  mkT("dsc","Darmstadt","DSC",58,"#1d4ed8","#f5f5f5","🇩🇪","Bundesliga"),
-  mkT("boc","Bochum","BOC",60,"#1d4ed8","#f5f5f5","🇩🇪","Bundesliga"),
-  mkT("ber","Hertha BSC","BSC2",62,"#1d4ed8","#f5f5f5","🇩🇪","Bundesliga"),
-  // -- FRANCE Ligue 1 --
-  mkT("psg","Paris SG","PSG",97,"#1d4ed8","#dc2626","🇫🇷","Ligue 1"),
-  mkT("marse","Marsiglia","MAR",85,"#1d4ed8","#ffffff","🇫🇷","Ligue 1"),
-  mkT("mon","Monaco","MON",82,"#dc2626","#f5f5f5","🇫🇷","Ligue 1"),
-  mkT("lyon","Lione","OL",80,"#1d4ed8","#dc2626","🇫🇷","Ligue 1"),
-  mkT("nice","Nizza","NIC",76,"#dc2626","#0f0f0f","🇫🇷","Ligue 1"),
-  mkT("lille","Lille","LIL",78,"#dc2626","#f5f5f5","🇫🇷","Ligue 1"),
-  mkT("ren","Rennes","REN",74,"#0f0f0f","#dc2626","🇫🇷","Ligue 1"),
-  mkT("len","Lens","RCL",72,"#f59e0b","#dc2626","🇫🇷","Ligue 1"),
-  mkT("str","Strasbourg","STR",68,"#1d4ed8","#f5f5f5","🇫🇷","Ligue 1"),
-  mkT("nan","Nantes","NAN",70,"#f59e0b","#15803d","🇫🇷","Ligue 1"),
-  mkT("mtp","Montpellier","MTP",67,"#f59e0b","#1d4ed8","🇫🇷","Ligue 1"),
-  mkT("rei","Reims","REI",66,"#dc2626","#f5f5f5","🇫🇷","Ligue 1"),
-  mkT("tou","Tolosa","TFC",65,"#7c3aed","#f5f5f5","🇫🇷","Ligue 1"),
-  mkT("lor","Lorient","FCL",63,"#f59e0b","#0f0f0f","🇫🇷","Ligue 1"),
-  mkT("bre2","Brest","SB29",62,"#dc2626","#f5f5f5","🇫🇷","Ligue 1"),
-  mkT("cle","Clermont","CFC",60,"#dc2626","#1d4ed8","🇫🇷","Ligue 1"),
-  mkT("hac","Le Havre","HAC",58,"#93c5fd","#f5f5f5","🇫🇷","Ligue 1"),
-  mkT("metz","Metz","FCM",57,"#dc2626","#0f0f0f","🇫🇷","Ligue 1"),
+  // -- ITALIA Lega A --
+  mkT("juve","Torino Athletic","TAT",95,"#f5f5f5","#1a1a2e","🇮🇹","Lega A"),
+  mkT("inter","FC Nerazzurri","NRZ",92,"#1d4ed8","#0f0f0f","🇮🇹","Lega A"),
+  mkT("milan","AC Rossoneri","ACR",90,"#dc2626","#0f0f0f","🇮🇹","Lega A"),
+  mkT("napoli","Napoli","NAP",88,"#38bdf8","#ffffff","🇮🇹","Lega A"),
+  mkT("roma","Roma","ROM",84,"#b91c1c","#f59e0b","🇮🇹","Lega A"),
+  mkT("lazio","Lazio","LAZ",80,"#93c5fd","#1a1a2e","🇮🇹","Lega A"),
+  mkT("ata","FC Bergamo","BRG",82,"#1d4ed8","#0f0f0f","🇮🇹","Lega A"),
+  mkT("fio","Fiorentina","FIO",77,"#7c3aed","#f5f5f5","🇮🇹","Lega A"),
+  mkT("tor","Torino","TOR",70,"#92400e","#fef3c7","🇮🇹","Lega A"),
+  mkT("bol","Bologna","BOL",72,"#dc2626","#1d4ed8","🇮🇹","Lega A"),
+  mkT("udi","Udinese","UDI",65,"#1e293b","#f1f5f9","🇮🇹","Lega A"),
+  mkT("sas","Sassuolo","SAS",68,"#15803d","#0f0f0f","🇮🇹","Lega A"),
+  mkT("cag","Cagliari","CAG",65,"#dc2626","#1d4ed8","🇮🇹","Lega A"),
+  mkT("sam","FC Blucerchiati","BLU",67,"#1d4ed8","#dc2626","🇮🇹","Lega A"),
+  mkT("gen","Genoa","GEN",66,"#dc2626","#1d4ed8","🇮🇹","Lega A"),
+  mkT("ver","Verona","VER",67,"#f59e0b","#1d4ed8","🇮🇹","Lega A"),
+  mkT("mon2","Monza","MON",64,"#dc2626","#f5f5f5","🇮🇹","Lega A"),
+  mkT("lec","Lecce","LEC",62,"#f5c518","#dc2626","🇮🇹","Lega A"),
+  // -- ENGLAND Premier Division --
+  mkT("mcy","FC Manchester","MCH",98,"#93c5fd","#1a1a2e","🏴󠁧󠁢󠁥󠁮󠁧󠁿","Premier Division"),
+  mkT("liv","Liverpool","LIV",96,"#dc2626","#f59e0b","🏴󠁧󠁢󠁥󠁮󠁧󠁿","Premier Division"),
+  mkT("ars","Arsenal","ARS",91,"#dc2626","#ffffff","🏴󠁧󠁢󠁥󠁮󠁧󠁿","Premier Division"),
+  mkT("che","Chelsea","CHE",90,"#1d4ed8","#ffffff","🏴󠁧󠁢󠁥󠁮󠁧󠁿","Premier Division"),
+  mkT("mun","Manchester Rovers","MCR",88,"#dc2626","#f59e0b","🏴󠁧󠁢󠁥󠁮󠁧󠁿","Premier Division"),
+  mkT("tot","Tottenham","TOT",85,"#0f0f0f","#ffffff","🏴󠁧󠁢󠁥󠁮󠁧󠁿","Premier Division"),
+  mkT("new","Newcastle","NEW",84,"#0f0f0f","#ffffff","🏴󠁧󠁢󠁥󠁮󠁧󠁿","Premier Division"),
+  mkT("avl","FC Aston","AST",82,"#92400e","#93c5fd","🏴󠁧󠁢󠁥󠁮󠁧󠁿","Premier Division"),
+  mkT("whu","West Ham","WHU",78,"#92400e","#1d4ed8","🏴󠁧󠁢󠁥󠁮󠁧󠁿","Premier Division"),
+  mkT("bha","Brighton","BHA",77,"#1d4ed8","#ffffff","🏴󠁧󠁢󠁥󠁮󠁧󠁿","Premier Division"),
+  mkT("eve","Everton","EVE",74,"#1d4ed8","#ffffff","🏴󠁧󠁢󠁥󠁮󠁧󠁿","Premier Division"),
+  mkT("lei","Leicester","LEI",73,"#1d4ed8","#f59e0b","🏴󠁧󠁢󠁥󠁮󠁧󠁿","Premier Division"),
+  mkT("wol","FC Wolverhampton","WLV",72,"#f59e0b","#0f0f0f","🏴󠁧󠁢󠁥󠁮󠁧󠁿","Premier Division"),
+  mkT("cry","Crystal Palace","CRY",71,"#1d4ed8","#dc2626","🏴󠁧󠁢󠁥󠁮󠁧󠁿","Premier Division"),
+  mkT("ful","Fulham","FUL",70,"#0f0f0f","#ffffff","🏴󠁧󠁢󠁥󠁮󠁧󠁿","Premier Division"),
+  mkT("bre","Brentford","BRE",69,"#dc2626","#f5f5f5","🏴󠁧󠁢󠁥󠁮󠁧󠁿","Premier Division"),
+  mkT("nfo","FC Nottingham","NFO",68,"#dc2626","#f5f5f5","🏴󠁧󠁢󠁥󠁮󠁧󠁿","Premier Division"),
+  mkT("bou","Bournemouth","BOU",67,"#dc2626","#0f0f0f","🏴󠁧󠁢󠁥󠁮󠁧󠁿","Premier Division"),
+  // -- SPAIN Primera División --
+  mkT("rma","CF Madrid","CFM",99,"#f5f5f5","#f59e0b","🇪🇸","Primera División"),
+  mkT("bar","FC Catalunya","CAT",97,"#1d4ed8","#dc2626","🇪🇸","Primera División"),
+  mkT("atm","AT Madrid","ATM",92,"#dc2626","#1d4ed8","🇪🇸","Primera División"),
+  mkT("sev","Sevilla","SEV",84,"#dc2626","#f5f5f5","🇪🇸","Primera División"),
+  mkT("vill","Villarreal","VIL",80,"#f59e0b","#0f0f0f","🇪🇸","Primera División"),
+  mkT("rsoc","FC Sociedad","RSO",78,"#1d4ed8","#f5f5f5","🇪🇸","Primera División"),
+  mkT("bet","FC Betis","BET",76,"#15803d","#f5f5f5","🇪🇸","Primera División"),
+  mkT("val","Valencia","VAL",75,"#f59e0b","#0f0f0f","🇪🇸","Primera División"),
+  mkT("osa","Osasuna","OSA",68,"#dc2626","#1d4ed8","🇪🇸","Primera División"),
+  mkT("cel","Celta Vigo","CEL",70,"#93c5fd","#ffffff","🇪🇸","Primera División"),
+  mkT("ath","FC Bilbao","BIL",74,"#dc2626","#f5f5f5","🇪🇸","Primera División"),
+  mkT("ray","Rayo Vallecano","RAY",66,"#dc2626","#f5f5f5","🇪🇸","Primera División"),
+  mkT("gir","Girona","GIR",72,"#dc2626","#f5f5f5","🇪🇸","Primera División"),
+  mkT("mall","Mallorca","MAL",65,"#dc2626","#0f0f0f","🇪🇸","Primera División"),
+  mkT("get","Getafe","GET",64,"#1d4ed8","#f5f5f5","🇪🇸","Primera División"),
+  mkT("las","Las Palmas","LPA",62,"#f59e0b","#1d4ed8","🇪🇸","Primera División"),
+  mkT("alm","Almería","ALM",60,"#dc2626","#f5f5f5","🇪🇸","Primera División"),
+  mkT("esp","Espanyol","ESP",63,"#1d4ed8","#f5f5f5","🇪🇸","Primera División"),
+  // -- GERMANY 1. Liga --
+  mkT("bay","FC München","FCM",99,"#dc2626","#f59e0b","🇩🇪","1. Liga"),
+  mkT("bvb","FC Dortmund","FDT",93,"#f59e0b","#0f0f0f","🇩🇪","1. Liga"),
+  mkT("rbl","FC Leipzig","FLZ",88,"#dc2626","#1d4ed8","🇩🇪","1. Liga"),
+  mkT("b04","FC Leverkusen","FLK",89,"#dc2626","#0f0f0f","🇩🇪","1. Liga"),
+  mkT("bsc","FC Berlin","FBL",80,"#dc2626","#f5f5f5","🇩🇪","1. Liga"),
+  mkT("fra","FC Frankfurt","FFT",79,"#0f0f0f","#dc2626","🇩🇪","1. Liga"),
+  mkT("fre","Friburgo","FRE",76,"#dc2626","#0f0f0f","🇩🇪","1. Liga"),
+  mkT("wob","Wolfsburg","WOB",75,"#15803d","#f5f5f5","🇩🇪","1. Liga"),
+  mkT("mgb","FC Gladbach","GLA",74,"#0f0f0f","#f5f5f5","🇩🇪","1. Liga"),
+  mkT("stu","FC Stuttgart","STG",76,"#dc2626","#f5f5f5","🇩🇪","1. Liga"),
+  mkT("aug","FC Augsburg","AUG",66,"#15803d","#dc2626","🇩🇪","1. Liga"),
+  mkT("mai","FC Mainz","MAI",68,"#dc2626","#f5f5f5","🇩🇪","1. Liga"),
+  mkT("hof","Hoffenheim","TSG",70,"#1d4ed8","#f5f5f5","🇩🇪","1. Liga"),
+  mkT("kol","FC Köln","KOL",65,"#dc2626","#f5f5f5","🇩🇪","1. Liga"),
+  mkT("wer","Werder Bremen","WER",72,"#15803d","#f5f5f5","🇩🇪","1. Liga"),
+  mkT("dsc","Darmstadt","DSC",58,"#1d4ed8","#f5f5f5","🇩🇪","1. Liga"),
+  mkT("boc","Bochum","BOC",60,"#1d4ed8","#f5f5f5","🇩🇪","1. Liga"),
+  mkT("ber","FC Berlin Nord","BNO",62,"#1d4ed8","#f5f5f5","🇩🇪","1. Liga"),
+  // -- FRANCE Ligue Nationale --
+  mkT("psg","FC Paris","PCF",97,"#1d4ed8","#dc2626","🇫🇷","Ligue Nationale"),
+  mkT("marse","FC Marseille","MSL",85,"#1d4ed8","#ffffff","🇫🇷","Ligue Nationale"),
+  mkT("mon","FC Monaco","MCO",82,"#dc2626","#f5f5f5","🇫🇷","Ligue Nationale"),
+  mkT("lyon","FC Lyon","OLY",80,"#1d4ed8","#dc2626","🇫🇷","Ligue Nationale"),
+  mkT("nice","Nizza","NIC",76,"#dc2626","#0f0f0f","🇫🇷","Ligue Nationale"),
+  mkT("lille","Lille","LIL",78,"#dc2626","#f5f5f5","🇫🇷","Ligue Nationale"),
+  mkT("ren","Rennes","REN",74,"#0f0f0f","#dc2626","🇫🇷","Ligue Nationale"),
+  mkT("len","Lens","RCL",72,"#f59e0b","#dc2626","🇫🇷","Ligue Nationale"),
+  mkT("str","Strasbourg","STR",68,"#1d4ed8","#f5f5f5","🇫🇷","Ligue Nationale"),
+  mkT("nan","Nantes","NAN",70,"#f59e0b","#15803d","🇫🇷","Ligue Nationale"),
+  mkT("mtp","Montpellier","MTP",67,"#f59e0b","#1d4ed8","🇫🇷","Ligue Nationale"),
+  mkT("rei","Reims","REI",66,"#dc2626","#f5f5f5","🇫🇷","Ligue Nationale"),
+  mkT("tou","Tolosa","TFC",65,"#7c3aed","#f5f5f5","🇫🇷","Ligue Nationale"),
+  mkT("lor","Lorient","FCL",63,"#f59e0b","#0f0f0f","🇫🇷","Ligue Nationale"),
+  mkT("bre2","Brest","SB29",62,"#dc2626","#f5f5f5","🇫🇷","Ligue Nationale"),
+  mkT("cle","Clermont","CFC",60,"#dc2626","#1d4ed8","🇫🇷","Ligue Nationale"),
+  mkT("hac","Le Havre","HAC",58,"#93c5fd","#f5f5f5","🇫🇷","Ligue Nationale"),
+  mkT("metz","Metz","FCM",57,"#dc2626","#0f0f0f","🇫🇷","Ligue Nationale"),
   // -- PORTUGAL Primeira Liga --
-  mkT("ben","Benfica","BEN",88,"#dc2626","#f5f5f5","🇵🇹","Primeira Liga"),
-  mkT("por","Porto","POR",87,"#1d4ed8","#f5f5f5","🇵🇹","Primeira Liga"),
-  mkT("spo","Sporting CP","SPO",85,"#15803d","#f5f5f5","🇵🇹","Primeira Liga"),
+  mkT("ben","FC Lisboa","FLS",88,"#dc2626","#f5f5f5","🇵🇹","Primeira Liga"),
+  mkT("por","FC Porto","POR",87,"#1d4ed8","#f5f5f5","🇵🇹","Primeira Liga"),
+  mkT("spo","Sporting Lisboa","SPL",85,"#15803d","#f5f5f5","🇵🇹","Primeira Liga"),
   mkT("bra","Braga","BRA",74,"#dc2626","#ffffff","🇵🇹","Primeira Liga"),
   mkT("vsc","Vitória SC","VSC",68,"#f5f5f5","#0f0f0f","🇵🇹","Primeira Liga"),
   mkT("rioave","Rio Ave","RIO",65,"#15803d","#f5f5f5","🇵🇹","Primeira Liga"),
@@ -475,9 +475,9 @@ const CLUBS=[
   mkT("aves","Desp. Aves","AVS",54,"#f5f5f5","#0f0f0f","🇵🇹","Primeira Liga"),
   mkT("farense","Farense","FAR",53,"#f59e0b","#dc2626","🇵🇹","Primeira Liga"),
   // -- NETHERLANDS Eredivisie --
-  mkT("ajax","Ajax","AJX",88,"#dc2626","#f5f5f5","🇳🇱","Eredivisie"),
-  mkT("psv","PSV","PSV",86,"#dc2626","#f5f5f5","🇳🇱","Eredivisie"),
-  mkT("feye","Feyenoord","FEY",82,"#dc2626","#f5f5f5","🇳🇱","Eredivisie"),
+  mkT("ajax","FC Amsterdam","AMS",88,"#dc2626","#f5f5f5","🇳🇱","Eredivisie"),
+  mkT("psv","FC Eindhoven","FEI",86,"#dc2626","#f5f5f5","🇳🇱","Eredivisie"),
+  mkT("feye","FC Rotterdam","RTD",82,"#dc2626","#f5f5f5","🇳🇱","Eredivisie"),
   mkT("az","AZ Alkmaar","AZ",78,"#dc2626","#f5f5f5","🇳🇱","Eredivisie"),
   mkT("utr","FC Utrecht","UTR",72,"#dc2626","#f5f5f5","🇳🇱","Eredivisie"),
   mkT("twe","FC Twente","TWE",74,"#dc2626","#f5f5f5","🇳🇱","Eredivisie"),
@@ -494,8 +494,8 @@ const CLUBS=[
   mkT("volen","FC Volendam","VOL",55,"#f59e0b","#dc2626","🇳🇱","Eredivisie"),
   mkT("emm","FC Emmen","EMM",54,"#dc2626","#f5f5f5","🇳🇱","Eredivisie"),
   // -- BELGIO Pro League --
-  mkT("club","Club Bruges","CLU",80,"#1d4ed8","#0f0f0f","🇧🇪","Pro League"),
-  mkT("and","Anderlecht","AND",78,"#7c3aed","#f5f5f5","🇧🇪","Pro League"),
+  mkT("club","FC Bruges","CLB",80,"#1d4ed8","#0f0f0f","🇧🇪","Pro League"),
+  mkT("and","FC Anderlecht","AND",78,"#7c3aed","#f5f5f5","🇧🇪","Pro League"),
   mkT("genk","Genk","GNK",74,"#1d4ed8","#f5f5f5","🇧🇪","Pro League"),
   mkT("gent","Gent","GNT",72,"#1d4ed8","#f5f5f5","🇧🇪","Pro League"),
   mkT("std","Standard Liège","STD",70,"#dc2626","#f5f5f5","🇧🇪","Pro League"),
@@ -513,8 +513,8 @@ const CLUBS=[
   mkT("bch","Beerschot","BSH",56,"#7c3aed","#f5f5f5","🇧🇪","Pro League"),
   mkT("eup","Eupen","EUP",54,"#f59e0b","#0f0f0f","🇧🇪","Pro League"),
   // -- TURCHIA Süper Lig --
-  mkT("gal","Galatasaray","GAL",82,"#f59e0b","#dc2626","🇹🇷","Süper Lig"),
-  mkT("fenk","Fenerbahçe","FEN",80,"#f59e0b","#1d4ed8","🇹🇷","Süper Lig"),
+  mkT("gal","FC Istanbul","FST",82,"#f59e0b","#dc2626","🇹🇷","Süper Lig"),
+  mkT("fenk","FC Kadıköy","FKD",80,"#f59e0b","#1d4ed8","🇹🇷","Süper Lig"),
   mkT("bes","Beşiktaş","BES",78,"#0f0f0f","#f5f5f5","🇹🇷","Süper Lig"),
   mkT("tra","Trabzonspor","TRA",72,"#92400e","#1d4ed8","🇹🇷","Süper Lig"),
   mkT("bas","Başakşehir","BSK",70,"#f59e0b","#1d4ed8","🇹🇷","Süper Lig"),
@@ -531,82 +531,82 @@ const CLUBS=[
   mkT("kag","Fatih Karagümrük","FKG",61,"#dc2626","#f5f5f5","🇹🇷","Süper Lig"),
   mkT("pen","Pendikspor","PEN",56,"#1d4ed8","#f5f5f5","🇹🇷","Süper Lig"),
   mkT("sam2","Samsunspor","SAM2",57,"#dc2626","#f5f5f5","🇹🇷","Süper Lig"),
-  // -- ITALIA Serie B (18 squadre) --
-  mkT("par","Parma","PAR",52,"#f59e0b","#1d4ed8","🇮🇹","Serie B"),
-  mkT("cre","Cremonese","CRE",48,"#dc2626","#f59e0b","🇮🇹","Serie B"),
-  mkT("mod","Modena","MOD",47,"#f59e0b","#1d4ed8","🇮🇹","Serie B"),
-  mkT("pal","Palermo","PAL",50,"#dc2626","#f5f5f5","🇮🇹","Serie B"),
-  mkT("cat","Catanzaro","CTZ",44,"#dc2626","#f5f5f5","🇮🇹","Serie B"),
-  mkT("spe","Spezia","SPE",49,"#0f0f0f","#1d4ed8","🇮🇹","Serie B"),
-  mkT("bar2","Bari","BAR",49,"#dc2626","#f5f5f5","🇮🇹","Serie B"),
-  mkT("ven","Venezia","VEN",51,"#0f0f0f","#f97316","🇮🇹","Serie B"),
-  mkT("pis","Pisa","PIS",45,"#1d4ed8","#f5f5f5","🇮🇹","Serie B"),
-  mkT("fro","Frosinone","FRO",47,"#f59e0b","#1d4ed8","🇮🇹","Serie B"),
-  mkT("ces","Cesena","CES",43,"#0f0f0f","#f5f5f5","🇮🇹","Serie B"),
-  mkT("samp","Sampdoria","SAM",53,"#1d4ed8","#dc2626","🇮🇹","Serie B"),
-  mkT("sal","Salernitana","SAL",45,"#7c2d12","#f5f5f5","🇮🇹","Serie B"),
-  mkT("cit","Cittadella","CIT",42,"#7c2d12","#f5f5f5","🇮🇹","Serie B"),
-  mkT("sdt","Südtirol","SDT",40,"#dc2626","#f5f5f5","🇮🇹","Serie B"),
-  mkT("cos","Cosenza","COS",38,"#dc2626","#1d4ed8","🇮🇹","Serie B"),
-  mkT("bre","Brescia","BRE",50,"#1d4ed8","#f5f5f5","🇮🇹","Serie B"),
-  mkT("lec2","Lecco","LCC",38,"#1d4ed8","#dc2626","🇮🇹","Serie B"),
-  // -- ENGLAND EFL Championship (18 squadre) --
-  mkT("lut","Luton Town","LUT",51,"#f59e0b","#0f0f0f","🏴󠁧󠁢󠁥󠁮󠁧󠁿","EFL Championship"),
-  mkT("mid","Middlesbrough","MID",49,"#dc2626","#f5f5f5","🏴󠁧󠁢󠁥󠁮󠁧󠁿","EFL Championship"),
-  mkT("cov","Coventry City","COV",50,"#93c5fd","#f5f5f5","🏴󠁧󠁢󠁥󠁮󠁧󠁿","EFL Championship"),
-  mkT("swn","Swansea City","SWN",48,"#f5f5f5","#0f0f0f","🏴󠁧󠁢󠁥󠁮󠁧󠁿","EFL Championship"),
-  mkT("shu","Sheffield Utd","SHU",53,"#dc2626","#f5f5f5","🏴󠁧󠁢󠁥󠁮󠁧󠁿","EFL Championship"),
-  mkT("ips","Ipswich Town","IPS",52,"#1d4ed8","#f5f5f5","🏴󠁧󠁢󠁥󠁮󠁧󠁿","EFL Championship"),
-  mkT("lee","Leeds United","LEE",56,"#f5f5f5","#f59e0b","🏴󠁧󠁢󠁥󠁮󠁧󠁿","EFL Championship"),
-  mkT("bur","Burnley","BUR",54,"#7c2d12","#93c5fd","🏴󠁧󠁢󠁥󠁮󠁧󠁿","EFL Championship"),
-  mkT("nor","Norwich City","NOR",52,"#f59e0b","#15803d","🏴󠁧󠁢󠁥󠁮󠁧󠁿","EFL Championship"),
-  mkT("wba","West Brom","WBA",53,"#1d4ed8","#f5f5f5","🏴󠁧󠁢󠁥󠁮󠁧󠁿","EFL Championship"),
-  mkT("bri","Bristol City","BRS",48,"#dc2626","#f5f5f5","🏴󠁧󠁢󠁥󠁮󠁧󠁿","EFL Championship"),
-  mkT("milw","Millwall","MIL",47,"#1d4ed8","#f5f5f5","🏴󠁧󠁢󠁥󠁮󠁧󠁿","EFL Championship"),
-  mkT("bla","Blackburn Rovers","BBR",50,"#1d4ed8","#f5f5f5","🏴󠁧󠁢󠁥󠁮󠁧󠁿","EFL Championship"),
-  mkT("pre","Preston NE","PNE",46,"#f5f5f5","#1d4ed8","🏴󠁧󠁢󠁥󠁮󠁧󠁿","EFL Championship"),
-  mkT("car","Cardiff City","CDF",49,"#1d4ed8","#dc2626","🏴󠁧󠁢󠁥󠁮󠁧󠁿","EFL Championship"),
-  mkT("wat","Watford","WAT",51,"#f59e0b","#0f0f0f","🏴󠁧󠁢󠁥󠁮󠁧󠁿","EFL Championship"),
-  mkT("sto","Stoke City","STK",50,"#dc2626","#f5f5f5","🏴󠁧󠁢󠁥󠁮󠁧󠁿","EFL Championship"),
-  mkT("qpr","Queens Park R.","QPR",47,"#93c5fd","#f5f5f5","🏴󠁧󠁢󠁥󠁮󠁧󠁿","EFL Championship"),
-  // -- GERMANY 2. Bundesliga (18 squadre) --
-  mkT("hbu","Hamburger SV","HSV",54,"#dc2626","#f5f5f5","🇩🇪","2. Bundesliga"),
-  mkT("han","Hannover 96","H96",50,"#15803d","#f5f5f5","🇩🇪","2. Bundesliga"),
-  mkT("nub","1. FC Nürnberg","FCN",48,"#dc2626","#f5f5f5","🇩🇪","2. Bundesliga"),
-  mkT("kar","Karlsruher SC","KSC",44,"#1d4ed8","#f5f5f5","🇩🇪","2. Bundesliga"),
-  mkT("kil","Holstein Kiel","KIE",46,"#dc2626","#f5f5f5","🇩🇪","2. Bundesliga"),
-  mkT("kaa","FC Kaiserslautern","FCK",47,"#dc2626","#f5f5f5","🇩🇪","2. Bundesliga"),
-  mkT("duf","Fortuna Düsseldorf","FDF",51,"#dc2626","#f5f5f5","🇩🇪","2. Bundesliga"),
-  mkT("fur","Greuther Fürth","SGF",46,"#15803d","#f5f5f5","🇩🇪","2. Bundesliga"),
-  mkT("s04","FC Schalke 04","S04",55,"#1d4ed8","#f5f5f5","🇩🇪","2. Bundesliga"),
-  mkT("mag","1. FC Magdeburg","FCM",44,"#1d4ed8","#f59e0b","🇩🇪","2. Bundesliga"),
-  mkT("pad","SC Paderborn","SCP",42,"#1d4ed8","#f5f5f5","🇩🇪","2. Bundesliga"),
-  mkT("ros","FC Hansa Rostock","HRO",43,"#1d4ed8","#f59e0b","🇩🇪","2. Bundesliga"),
-  mkT("brn","E. Braunschweig","EBS",39,"#f59e0b","#1d4ed8","🇩🇪","2. Bundesliga"),
-  mkT("sar","FC Saarbrücken","FCS",41,"#1d4ed8","#0f0f0f","🇩🇪","2. Bundesliga"),
-  mkT("dre","Dynamo Dresden","DDR",44,"#f59e0b","#0f0f0f","🇩🇪","2. Bundesliga"),
-  mkT("stp","FC St. Pauli","STP",52,"#7c2d12","#f5f5f5","🇩🇪","2. Bundesliga"),
-  mkT("osn","VfL Osnabrück","VOS",38,"#15803d","#f5f5f5","🇩🇪","2. Bundesliga"),
-  mkT("arm","Arminia Bielefeld","DSC",49,"#1d4ed8","#f5f5f5","🇩🇪","2. Bundesliga"),
-  // -- FRANCE Ligue 2 (18 squadre) --
-  mkT("gre","Grenoble","GRE",40,"#1d4ed8","#f5f5f5","🇫🇷","Ligue 2"),
-  mkT("nic2","Niort","NIO",38,"#f5f5f5","#0f0f0f","🇫🇷","Ligue 2"),
-  mkT("val2","Valenciennes","VAL",42,"#dc2626","#f5f5f5","🇫🇷","Ligue 2"),
-  mkT("pau","Pau FC","PAU",37,"#1d4ed8","#f59e0b","🇫🇷","Ligue 2"),
-  mkT("cae","SM Caen","SMC",51,"#dc2626","#1d4ed8","🇫🇷","Ligue 2"),
-  mkT("lav","Laval","LAV",42,"#f59e0b","#dc2626","🇫🇷","Ligue 2"),
-  mkT("ann","FC Annecy","ANN",43,"#dc2626","#f59e0b","🇫🇷","Ligue 2"),
-  mkT("tro","ES Troyes","EST",48,"#1d4ed8","#f5f5f5","🇫🇷","Ligue 2"),
-  mkT("ami","Amiens SC","ASC",47,"#f5f5f5","#0f0f0f","🇫🇷","Ligue 2"),
-  mkT("dun","USL Dunkerque","ULD",38,"#15803d","#f5f5f5","🇫🇷","Ligue 2"),
-  mkT("gui","EA Guingamp","EAG",49,"#dc2626","#0f0f0f","🇫🇷","Ligue 2"),
-  mkT("rod","Rodez AF","RAF",40,"#dc2626","#f59e0b","🇫🇷","Ligue 2"),
-  mkT("aja2","AC Ajaccio","AJA",44,"#dc2626","#f5f5f5","🇫🇷","Ligue 2"),
-  mkT("bas2","SC Bastia","SCB",45,"#1d4ed8","#f5f5f5","🇫🇷","Ligue 2"),
-  mkT("soch","FC Sochaux","FCO",46,"#f59e0b","#1d4ed8","🇫🇷","Ligue 2"),
-  mkT("aux","AJ Auxerre","AJX",51,"#1d4ed8","#f5f5f5","🇫🇷","Ligue 2"),
-  mkT("que","Quevilly Rouen","QRM",35,"#dc2626","#f5f5f5","🇫🇷","Ligue 2"),
-  mkT("con2","FC Concarneau","CCF",37,"#f5f5f5","#1d4ed8","🇫🇷","Ligue 2"),
+  // -- ITALIA Lega B (18 squadre) --
+  mkT("par","Parma","PAR",52,"#f59e0b","#1d4ed8","🇮🇹","Lega B"),
+  mkT("cre","Cremonese","CRE",48,"#dc2626","#f59e0b","🇮🇹","Lega B"),
+  mkT("mod","Modena","MOD",47,"#f59e0b","#1d4ed8","🇮🇹","Lega B"),
+  mkT("pal","Palermo","PAL",50,"#dc2626","#f5f5f5","🇮🇹","Lega B"),
+  mkT("cat","Catanzaro","CTZ",44,"#dc2626","#f5f5f5","🇮🇹","Lega B"),
+  mkT("spe","Spezia","SPE",49,"#0f0f0f","#1d4ed8","🇮🇹","Lega B"),
+  mkT("bar2","Bari","BAR",49,"#dc2626","#f5f5f5","🇮🇹","Lega B"),
+  mkT("ven","Venezia","VEN",51,"#0f0f0f","#f97316","🇮🇹","Lega B"),
+  mkT("pis","Pisa","PIS",45,"#1d4ed8","#f5f5f5","🇮🇹","Lega B"),
+  mkT("fro","Frosinone","FRO",47,"#f59e0b","#1d4ed8","🇮🇹","Lega B"),
+  mkT("ces","Cesena","CES",43,"#0f0f0f","#f5f5f5","🇮🇹","Lega B"),
+  mkT("samp","FC Blucerchiati","BLU",53,"#1d4ed8","#dc2626","🇮🇹","Lega B"),
+  mkT("sal","Salernitana","SAL",45,"#7c2d12","#f5f5f5","🇮🇹","Lega B"),
+  mkT("cit","Cittadella","CIT",42,"#7c2d12","#f5f5f5","🇮🇹","Lega B"),
+  mkT("sdt","Südtirol","SDT",40,"#dc2626","#f5f5f5","🇮🇹","Lega B"),
+  mkT("cos","Cosenza","COS",38,"#dc2626","#1d4ed8","🇮🇹","Lega B"),
+  mkT("bre","Brescia","BRE",50,"#1d4ed8","#f5f5f5","🇮🇹","Lega B"),
+  mkT("lec2","Lecco","LCC",38,"#1d4ed8","#dc2626","🇮🇹","Lega B"),
+  // -- ENGLAND Championship (18 squadre) --
+  mkT("lut","Luton Town","LUT",51,"#f59e0b","#0f0f0f","🏴󠁧󠁢󠁥󠁮󠁧󠁿","Championship"),
+  mkT("mid","Middlesbrough","MID",49,"#dc2626","#f5f5f5","🏴󠁧󠁢󠁥󠁮󠁧󠁿","Championship"),
+  mkT("cov","Coventry City","COV",50,"#93c5fd","#f5f5f5","🏴󠁧󠁢󠁥󠁮󠁧󠁿","Championship"),
+  mkT("swn","Swansea City","SWN",48,"#f5f5f5","#0f0f0f","🏴󠁧󠁢󠁥󠁮󠁧󠁿","Championship"),
+  mkT("shu","Sheffield Utd","SHU",53,"#dc2626","#f5f5f5","🏴󠁧󠁢󠁥󠁮󠁧󠁿","Championship"),
+  mkT("ips","Ipswich Town","IPS",52,"#1d4ed8","#f5f5f5","🏴󠁧󠁢󠁥󠁮󠁧󠁿","Championship"),
+  mkT("lee","Leeds United","LEE",56,"#f5f5f5","#f59e0b","🏴󠁧󠁢󠁥󠁮󠁧󠁿","Championship"),
+  mkT("bur","Burnley","BUR",54,"#7c2d12","#93c5fd","🏴󠁧󠁢󠁥󠁮󠁧󠁿","Championship"),
+  mkT("nor","Norwich City","NOR",52,"#f59e0b","#15803d","🏴󠁧󠁢󠁥󠁮󠁧󠁿","Championship"),
+  mkT("wba","West Brom","WBA",53,"#1d4ed8","#f5f5f5","🏴󠁧󠁢󠁥󠁮󠁧󠁿","Championship"),
+  mkT("bri","Bristol City","BRS",48,"#dc2626","#f5f5f5","🏴󠁧󠁢󠁥󠁮󠁧󠁿","Championship"),
+  mkT("milw","Millwall","MIL",47,"#1d4ed8","#f5f5f5","🏴󠁧󠁢󠁥󠁮󠁧󠁿","Championship"),
+  mkT("bla","Blackburn Rovers","BBR",50,"#1d4ed8","#f5f5f5","🏴󠁧󠁢󠁥󠁮󠁧󠁿","Championship"),
+  mkT("pre","Preston NE","PNE",46,"#f5f5f5","#1d4ed8","🏴󠁧󠁢󠁥󠁮󠁧󠁿","Championship"),
+  mkT("car","Cardiff City","CDF",49,"#1d4ed8","#dc2626","🏴󠁧󠁢󠁥󠁮󠁧󠁿","Championship"),
+  mkT("wat","Watford","WAT",51,"#f59e0b","#0f0f0f","🏴󠁧󠁢󠁥󠁮󠁧󠁿","Championship"),
+  mkT("sto","Stoke City","STK",50,"#dc2626","#f5f5f5","🏴󠁧󠁢󠁥󠁮󠁧󠁿","Championship"),
+  mkT("qpr","Queens Park R.","QPR",47,"#93c5fd","#f5f5f5","🏴󠁧󠁢󠁥󠁮󠁧󠁿","Championship"),
+  // -- GERMANY 2. Liga (18 squadre) --
+  mkT("hbu","FC Hamburg","FHH",54,"#dc2626","#f5f5f5","🇩🇪","2. Liga"),
+  mkT("han","Hannover 96","H96",50,"#15803d","#f5f5f5","🇩🇪","2. Liga"),
+  mkT("nub","1. FC Nürnberg","FCN",48,"#dc2626","#f5f5f5","🇩🇪","2. Liga"),
+  mkT("kar","Karlsruher SC","KSC",44,"#1d4ed8","#f5f5f5","🇩🇪","2. Liga"),
+  mkT("kil","Holstein Kiel","KIE",46,"#dc2626","#f5f5f5","🇩🇪","2. Liga"),
+  mkT("kaa","FC Kaiserslautern","FCK",47,"#dc2626","#f5f5f5","🇩🇪","2. Liga"),
+  mkT("duf","Fortuna Düsseldorf","FDF",51,"#dc2626","#f5f5f5","🇩🇪","2. Liga"),
+  mkT("fur","Greuther Fürth","SGF",46,"#15803d","#f5f5f5","🇩🇪","2. Liga"),
+  mkT("s04","FC Gelsenkirchen","FGK",55,"#1d4ed8","#f5f5f5","🇩🇪","2. Liga"),
+  mkT("mag","1. FC Magdeburg","FCM",44,"#1d4ed8","#f59e0b","🇩🇪","2. Liga"),
+  mkT("pad","SC Paderborn","SCP",42,"#1d4ed8","#f5f5f5","🇩🇪","2. Liga"),
+  mkT("ros","FC Hansa Rostock","HRO",43,"#1d4ed8","#f59e0b","🇩🇪","2. Liga"),
+  mkT("brn","E. Braunschweig","EBS",39,"#f59e0b","#1d4ed8","🇩🇪","2. Liga"),
+  mkT("sar","FC Saarbrücken","FCS",41,"#1d4ed8","#0f0f0f","🇩🇪","2. Liga"),
+  mkT("dre","Dynamo Dresden","DDR",44,"#f59e0b","#0f0f0f","🇩🇪","2. Liga"),
+  mkT("stp","FC St. Pauli","STP",52,"#7c2d12","#f5f5f5","🇩🇪","2. Liga"),
+  mkT("osn","VfL Osnabrück","VOS",38,"#15803d","#f5f5f5","🇩🇪","2. Liga"),
+  mkT("arm","Arminia Bielefeld","DSC",49,"#1d4ed8","#f5f5f5","🇩🇪","2. Liga"),
+  // -- FRANCE Ligue Nationale 2 (18 squadre) --
+  mkT("gre","Grenoble","GRE",40,"#1d4ed8","#f5f5f5","🇫🇷","Ligue Nationale 2"),
+  mkT("nic2","Niort","NIO",38,"#f5f5f5","#0f0f0f","🇫🇷","Ligue Nationale 2"),
+  mkT("val2","Valenciennes","VAL",42,"#dc2626","#f5f5f5","🇫🇷","Ligue Nationale 2"),
+  mkT("pau","Pau FC","PAU",37,"#1d4ed8","#f59e0b","🇫🇷","Ligue Nationale 2"),
+  mkT("cae","SM Caen","SMC",51,"#dc2626","#1d4ed8","🇫🇷","Ligue Nationale 2"),
+  mkT("lav","Laval","LAV",42,"#f59e0b","#dc2626","🇫🇷","Ligue Nationale 2"),
+  mkT("ann","FC Annecy","ANN",43,"#dc2626","#f59e0b","🇫🇷","Ligue Nationale 2"),
+  mkT("tro","ES Troyes","EST",48,"#1d4ed8","#f5f5f5","🇫🇷","Ligue Nationale 2"),
+  mkT("ami","Amiens SC","ASC",47,"#f5f5f5","#0f0f0f","🇫🇷","Ligue Nationale 2"),
+  mkT("dun","USL Dunkerque","ULD",38,"#15803d","#f5f5f5","🇫🇷","Ligue Nationale 2"),
+  mkT("gui","EA Guingamp","EAG",49,"#dc2626","#0f0f0f","🇫🇷","Ligue Nationale 2"),
+  mkT("rod","Rodez AF","RAF",40,"#dc2626","#f59e0b","🇫🇷","Ligue Nationale 2"),
+  mkT("aja2","AC Ajaccio","AJA",44,"#dc2626","#f5f5f5","🇫🇷","Ligue Nationale 2"),
+  mkT("bas2","SC Bastia","SCB",45,"#1d4ed8","#f5f5f5","🇫🇷","Ligue Nationale 2"),
+  mkT("soch","FC Sochaux","FCO",46,"#f59e0b","#1d4ed8","🇫🇷","Ligue Nationale 2"),
+  mkT("aux","AJ Auxerre","AJX",51,"#1d4ed8","#f5f5f5","🇫🇷","Ligue Nationale 2"),
+  mkT("que","Quevilly Rouen","QRM",35,"#dc2626","#f5f5f5","🇫🇷","Ligue Nationale 2"),
+  mkT("con2","FC Concarneau","CCF",37,"#f5f5f5","#1d4ed8","🇫🇷","Ligue Nationale 2"),
   // -- SPAIN Segunda División (18 squadre) --
   mkT("dep","Deportivo","DEP",48,"#1d4ed8","#f5f5f5","🇪🇸","Segunda División"),
   mkT("real2","Racing Santander","RCN",46,"#15803d","#dc2626","🇪🇸","Segunda División"),
@@ -629,23 +629,23 @@ const CLUBS=[
 ];
 // (b04 prestige set inline above)
 
-// Primavera 1 — tutte le 18 squadre di Serie A
-const U18_CLUBS = CLUBS.filter(c=>c.lg==="Serie A").sort((a,b)=>b.p-a.p).map(c=>({
+// Primavera 1 — tutte le 18 squadre di Lega A
+const U18_CLUBS = CLUBS.filter(c=>c.lg==="Lega A").sort((a,b)=>b.p-a.p).map(c=>({
   ...c, n:`${c.n} Primavera`, isU18:true, p:Math.max(30,Math.min(80,c.p-12)), lg:"Primavera 1",
 }));
-// Primavera 2 — tutte le 18 squadre di Serie B
-const U18_CLUBS_P2 = CLUBS.filter(c=>c.lg==="Serie B").sort((a,b)=>b.p-a.p).map(c=>({
+// Primavera 2 — tutte le 18 squadre di Lega B
+const U18_CLUBS_P2 = CLUBS.filter(c=>c.lg==="Lega B").sort((a,b)=>b.p-a.p).map(c=>({
   ...c, n:`${c.n} Primavera`, isU18:true, p:Math.max(20,Math.min(65,c.p-15)), lg:"Primavera 2",
 }));
 // Pool completo U18 per la schermata offerte
 const ALL_U18_CLUBS = [...U18_CLUBS, ...U18_CLUBS_P2];
 
 // Sprint 84: Paired leagues for promotion/relegation [upper, lower]
-const LEAGUE_PAIRS=[["Serie A","Serie B"],["Premier League","EFL Championship"],["Bundesliga","2. Bundesliga"],["Ligue 1","Ligue 2"],["La Liga","Segunda División"]];
+const LEAGUE_PAIRS=[["Lega A","Lega B"],["Premier Division","Championship"],["1. Liga","2. Liga"],["Ligue Nationale","Ligue Nationale 2"],["Primera División","Segunda División"]];
 
 // ===== LEAGUE_RECORDS — Sprint 49: fictional all-time data per league =====
 const LEAGUE_RECORDS={
-  "Serie A":{
+  "Lega A":{
     allTimeScorer:{name:"Silvio Calabretti",goals:325,club:"AC Roma",era:"1974–1994"},
     seasonRecord:{name:"Roberto Macina",goals:38,club:"Napoli",season:"1987-88"},
     topScorers:[
@@ -653,31 +653,31 @@ const LEAGUE_RECORDS={
       {name:"Dario Ferrucci",goals:248},{name:"Lorenzo Bianchi",goals:204},{name:"Marco Sabetti",goals:179},
     ]
   },
-  "Premier League":{
-    allTimeScorer:{name:"Alan Fothergill",goals:292,club:"Manchester City",era:"1992–2014"},
+  "Premier Division":{
+    allTimeScorer:{name:"Alan Fothergill",goals:292,club:"FC Manchester",era:"1992–2014"},
     seasonRecord:{name:"Jamie Perkins",goals:41,club:"Chelsea",season:"2011-12"},
     topScorers:[
       {name:"Alan Fothergill",goals:292},{name:"Wayne Dobbins",goals:254},
       {name:"Frank Mclaren",goals:219},{name:"Terry Blackwood",goals:187},{name:"Steve Hodgson",goals:162},
     ]
   },
-  "La Liga":{
-    allTimeScorer:{name:"Raúl Bengoechea",goals:351,club:"Real Madrid",era:"1994–2015"},
+  "Primera División":{
+    allTimeScorer:{name:"Raúl Bengoechea",goals:351,club:"CF Madrid",era:"1994–2015"},
     seasonRecord:{name:"Carlos Villanueva",goals:43,club:"Valencia",season:"2011-12"},
     topScorers:[
       {name:"Raúl Bengoechea",goals:351},{name:"Carlos Villanueva",goals:302},
       {name:"Xavi Ballesteros",goals:247},{name:"Pedro Álvarez",goals:208},{name:"Diego Montiel",goals:174},
     ]
   },
-  "Bundesliga":{
-    allTimeScorer:{name:"Klaus Schreiber",goals:307,club:"Bayern Monaco",era:"1975–1995"},
-    seasonRecord:{name:"Dieter Krüger",goals:40,club:"Borussia Dortmund",season:"1999-00"},
+  "1. Liga":{
+    allTimeScorer:{name:"Klaus Schreiber",goals:307,club:"FC München",era:"1975–1995"},
+    seasonRecord:{name:"Dieter Krüger",goals:40,club:"FC Dortmund",season:"1999-00"},
     topScorers:[
       {name:"Klaus Schreiber",goals:307},{name:"Dieter Krüger",goals:268},
       {name:"Hans Mühlbauer",goals:231},{name:"Otto Bernhard",goals:195},{name:"Rudi Fassbender",goals:163},
     ]
   },
-  "Ligue 1":{
+  "Ligue Nationale":{
     allTimeScorer:{name:"Pierre Delacroix",goals:274,club:"Paris FC",era:"1980–2002"},
     seasonRecord:{name:"Alain Mercier",goals:37,club:"Marseille",season:"1972-73"},
     topScorers:[
@@ -686,7 +686,7 @@ const LEAGUE_RECORDS={
     ]
   },
   "Primeira Liga":{
-    allTimeScorer:{name:"Rui Vilarinho",goals:289,club:"Benfica",era:"1982–2003"},
+    allTimeScorer:{name:"Rui Vilarinho",goals:289,club:"FC Lisboa",era:"1982–2003"},
     seasonRecord:{name:"João Figueiredo",goals:37,club:"Porto",season:"1985-86"},
     topScorers:[
       {name:"Rui Vilarinho",goals:289},{name:"Pedro Carvalho",goals:251},
@@ -694,30 +694,30 @@ const LEAGUE_RECORDS={
     ]
   },
   "Eredivisie":{
-    allTimeScorer:{name:"Johan Bakker",goals:271,club:"Ajax",era:"1966–1985"},
-    seasonRecord:{name:"Pieter de Groot",goals:35,club:"PSV",season:"1983-84"},
+    allTimeScorer:{name:"Johan Bakker",goals:271,club:"FC Amsterdam",era:"1966–1985"},
+    seasonRecord:{name:"Pieter de Groot",goals:35,club:"FC Eindhoven",season:"1983-84"},
     topScorers:[
       {name:"Johan Bakker",goals:271},{name:"Pieter de Groot",goals:243},
       {name:"Frans Hoekstra",goals:204},{name:"Kees Westerhof",goals:176},{name:"Nico Vermeulen",goals:141},
     ]
   },
   "Pro League":{
-    allTimeScorer:{name:"Marc Vandenberghe",goals:241,club:"Anderlecht",era:"1985–2005"},
-    seasonRecord:{name:"Luc Desmet",goals:32,club:"Club Brugge",season:"1990-91"},
+    allTimeScorer:{name:"Marc Vandenberghe",goals:241,club:"FC Anderlecht",era:"1985–2005"},
+    seasonRecord:{name:"Luc Desmet",goals:32,club:"FC Bruges",season:"1990-91"},
     topScorers:[
       {name:"Marc Vandenberghe",goals:241},{name:"Luc Desmet",goals:208},
       {name:"Koen Martens",goals:174},{name:"Didier Lemaire",goals:146},{name:"Pascal Dewaele",goals:121},
     ]
   },
   "Süper Lig":{
-    allTimeScorer:{name:"Serkan Yılmaz",goals:258,club:"Galatasaray",era:"1994–2014"},
-    seasonRecord:{name:"Murat Demir",goals:34,club:"Fenerbahçe",season:"2006-07"},
+    allTimeScorer:{name:"Serkan Yılmaz",goals:258,club:"FC Istanbul",era:"1994–2014"},
+    seasonRecord:{name:"Murat Demir",goals:34,club:"FC Kadıköy",season:"2006-07"},
     topScorers:[
       {name:"Serkan Yılmaz",goals:258},{name:"Murat Demir",goals:223},
       {name:"Hakan Çelik",goals:191},{name:"Ali Kaya",goals:162},{name:"Emre Şahin",goals:134},
     ]
   },
-  "Serie B":{
+  "Lega B":{
     allTimeScorer:{name:"Adriano Valli",goals:178,club:"Parma",era:"1984–2002"},
     seasonRecord:{name:"Marco Trevisan",goals:29,club:"Venezia",season:"2005-06"},
     topScorers:[
@@ -725,7 +725,7 @@ const LEAGUE_RECORDS={
       {name:"Franco Gargiulo",goals:121},{name:"Luca Meneghetti",goals:95},{name:"Dario Osti",goals:78},
     ]
   },
-  "EFL Championship":{
+  "Championship":{
     allTimeScorer:{name:"Dean Whitfield",goals:163,club:"Norwich City",era:"1988–2006"},
     seasonRecord:{name:"Billy Horton",goals:34,club:"Leicester City",season:"2013-14"},
     topScorers:[
@@ -746,16 +746,16 @@ const _LR_DEFAULT={
 // Sprint 137: historical UEFA competition winners
 const EURO_COMP_WINNERS={
   UCL:[
-    {s:2024,club:"Real Madrid",nat:"🇪🇸"},{s:2023,club:"Manchester City",nat:"🏴󠁧󠁢󠁥󠁮󠁧󠁿"},
-    {s:2022,club:"Real Madrid",nat:"🇪🇸"},{s:2021,club:"Chelsea",nat:"🏴󠁧󠁢󠁥󠁮󠁧󠁿"},
-    {s:2020,club:"Bayern Monaco",nat:"🇩🇪"},{s:2019,club:"Liverpool",nat:"🏴󠁧󠁢󠁥󠁮󠁧󠁿"},
-    {s:2018,club:"Real Madrid",nat:"🇪🇸"},
+    {s:2024,club:"CF Madrid",nat:"🇪🇸"},{s:2023,club:"FC Manchester",nat:"🏴󠁧󠁢󠁥󠁮󠁧󠁿"},
+    {s:2022,club:"CF Madrid",nat:"🇪🇸"},{s:2021,club:"Chelsea",nat:"🏴󠁧󠁢󠁥󠁮󠁧󠁿"},
+    {s:2020,club:"FC München",nat:"🇩🇪"},{s:2019,club:"Liverpool",nat:"🏴󠁧󠁢󠁥󠁮󠁧󠁿"},
+    {s:2018,club:"CF Madrid",nat:"🇪🇸"},
   ],
   UEL:[
-    {s:2024,club:"Atalanta",nat:"🇮🇹"},{s:2023,club:"Siviglia",nat:"🇪🇸"},
-    {s:2022,club:"Eintracht Frankfurt",nat:"🇩🇪"},{s:2021,club:"Villarreal",nat:"🇪🇸"},
+    {s:2024,club:"FC Bergamo",nat:"🇮🇹"},{s:2023,club:"Siviglia",nat:"🇪🇸"},
+    {s:2022,club:"FC Frankfurt",nat:"🇩🇪"},{s:2021,club:"Villarreal",nat:"🇪🇸"},
     {s:2020,club:"Siviglia",nat:"🇪🇸"},{s:2019,club:"Chelsea",nat:"🏴󠁧󠁢󠁥󠁮󠁧󠁿"},
-    {s:2018,club:"Atletico Madrid",nat:"🇪🇸"},
+    {s:2018,club:"AT Madrid",nat:"🇪🇸"},
   ],
   UECL:[
     {s:2024,club:"Chelsea",nat:"🏴󠁧󠁢󠁥󠁮󠁧󠁿"},{s:2023,club:"West Ham",nat:"🏴󠁧󠁢󠁥󠁮󠁧󠁿"},
@@ -2542,7 +2542,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.6.2"; // Item 4: NationsCup trigger via onMatchEnd W20; Item 6: qualificazioni Euro/Mondiale W20→W24
+const GAME_VERSION="4.7.0"; // Fase 1 copyright: league/club names → fictional equivalents; save migration for old saves
 const SAVE_VERSION=6;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -2862,7 +2862,7 @@ const INTERVIEW_QS=[
 ]},
 {ctx:["weekly"],q:"Quale campionato considera il più difficile in Europa?",a:[
   {tone:"diplomatico",txt:"Ogni campionato ha la sua specificità. Quello in cui gioco è sempre il più difficile.",ef:{m:3,p:3,t:4}},
-  {tone:"diretto",txt:"La Premier League fisicamente, la Serie A tatticamente. Ma io posso giocare ovunque.",ef:{m:5,p:4,t:-2}},
+  {tone:"diretto",txt:"La Premier Division fisicamente, la Lega A tatticamente. Ma io posso giocare ovunque.",ef:{m:5,p:4,t:-2}},
   {tone:"umile",txt:"Tutti sono difficili ad alto livello. Non mi permetto di fare classifiche.",ef:{m:2,p:3,t:5}},
 ]},
 {ctx:["weekly"],q:"Come descrive il suo stile di gioco ai tifosi che non la conoscono?",a:[
@@ -3868,7 +3868,7 @@ const CROWD_CHANTS={
 };
 // Sprint 91 — Localized chants per league
 const CROWD_CHANTS_LG={
-  "Premier League":{
+  "Premier Division":{
     goal:["YEEEES! 🎉","WHAT A GOAL! ⭐","BRILLIANT! 🔥","GET IN! ✊","MAGNIFICEEENT!","UNBELIEVABLE! ⚡","WORLDIE! 🌟","PURE CLASS! 💎"],
     home:["[CLUB]! [CLUB]! [CLUB]!","Come on [CLUB]! 💪","WE ARE [CLUB]! ⚡","[CLUB] TILL I DIE! ❤️","GLORY GLORY [CLUB]! 🏆","OH WHEN THE REDS GO MARCHING IN! 🎺"],
     danger:["HOLD IT! 🛡️","DEFEND! DEFEND! 🛡️","CLEAR IT! 😱","COME ON BOYS! 💪","KEEPER! KEEPER! 🧤"],
@@ -3880,13 +3880,13 @@ const CROWD_CHANTS_LG={
     derby:["THE DERBY! THE DERBY! 🔥","THIS IS WHAT IT'S ABOUT! ⚡","COME ON — IT'S DERBY DAY! 🏆","WIN THIS ONE FOR US! ❤️","THE CITY IS OURS! 💙","NO MERCY TODAY! 🔥","DERBY DAY — OUR DAY! ✊","GIVE IT EVERYTHING! 💪","THIS IS OUR MOMENT! ⚡"],
     boo:["BOOOOOO! 😤","GET OFF! GET OFF! 😡","ABSOLUTE DISGRACE! 😤","NOT GOOD ENOUGH! 💔","SHOCKING DISPLAY! 😡","SORT IT OUT! 😤","EMBARRASSING! 😡","YOU SHOULD BE ASHAMED! 😤"],
   },
-  "EFL Championship":{
+  "Championship":{
     goal:["YEEEES! 🎉","GET IN! ✊","GREAT GOAL! 🔥","BRILLIANT! ⭐"],
     home:["[CLUB]! [CLUB]!","Come on [CLUB]! 💪","WE ARE [CLUB]! ⚡"],
     danger:["CLEAR IT! 😱","DEFEND! 🛡️"],foul:["REF! 😡","PENALTY! 🚩"],
     near_miss:["OHHHH! 😱","SO CLOSE! 😩"],comeback:["NEVER GIVE UP! 💪"],winning:["CHAMPIONS! 🏆"],losing:["FIGHT! 💙"],
   },
-  "Bundesliga":{
+  "1. Liga":{
     goal:["TOOOOOOR! 🎉","WAHNSINN! ⭐","UNGLAUBLICH! 🔥","JA! JA! JA! ✊","TRAUMTOR! ⚡","HAMMER! 💥","WELTKLASSE! 🌟","WAS FÜR EIN TOR! 😱"],
     home:["HEY HO, [CLUB]! ⚡","[CLUB]! [CLUB]! [CLUB]! 🏆","AUF [CLUB]! 💪","WIR LIEBEN [CLUB]! ❤️","EIN [CLUB], EIN HERZ! ❤️"],
     danger:["ABWEHR! ABWEHR! 🛡️","HALT! HALT! 😱","MANNSCHAFT! 💪","HALTEN! 🛡️"],
@@ -3898,12 +3898,12 @@ const CROWD_CHANTS_LG={
     derby:["DAS DERBY! 🔥","HEUTE IST UNSER TAG! ⚡","UNSERE STADT! 🏆","DERBY-SIEG FÜR UNS! ✊","KEINEN SCHRITT ZURÜCK! 💪","KÄMPF FÜR UNS! ❤️","DERBY-STIMMUNG! 💥","UNSER DERBY — UNSER SIEG! 🔥"],
     boo:["BUUUUH! 😤","RAUS! RAUS! 😡","SCHÄMT EUCH! 😤","UNZUMUTBAR! 💔","SKANDAL! 😡","IHR SEID BLAMIERT! 😤","GEHT NACH HAUSE! 😡"],
   },
-  "2. Bundesliga":{
+  "2. Liga":{
     goal:["TOOOOOOR! 🎉","JA! JA! ✊","HAMMER! 💥"],
     home:["[CLUB]! [CLUB]! 🏆","AUF [CLUB]! 💪"],
     danger:["ABWEHR! 🛡️"],foul:["SCHIRI! 😡"],near_miss:["OHHHH! 😱"],comeback:["KÄMPFEN! 🔥"],winning:["MEISTER! 🏆"],losing:["KOPF HOCH! 💙"],
   },
-  "Ligue 1":{
+  "Ligue Nationale":{
     goal:["BUUUUUT! 🎉","MAGNIFIQUE! ⭐","INCROYABLE! 🔥","OUI! OUI! OUI! ✊","FANTASTIQUE! ⚡","SUBLIME! 🌟","QUEL BUT! 😍"],
     home:["ALLEZ [CLUB]! ALLEZ! 💪","[CLUB]! [CLUB]! 🏆","ON EST LÀ! ⚡","OHH [CLUB]! 🔥","[CLUB] ON T'AIME! ❤️"],
     danger:["DÉGAGEZ! 🛡️","DÉFENSE! DÉFENSE! 🛡️","ATTENTION! 😱","DEHORS! 😤"],
@@ -3915,12 +3915,12 @@ const CROWD_CHANTS_LG={
     derby:["LE DERBY! 🔥","C'EST LE GRAND MATCH! ⚡","NOTRE VILLE, NOTRE DERBY! 🏆","BATTEZ-LES POUR NOUS! ❤️","ON GAGNE LE DERBY! ✊","DONNEZ TOUT! 💪","AUJOURD'HUI C'EST NOTRE JOUR! 🔥"],
     boo:["HUUUUUUE! 😤","DEHORS! DEHORS! 😡","QUELLE HONTE! 😤","VOUS NE LE MÉRITEZ PAS! 💔","SCANDALE! 😡","RENTREZ CHEZ VOUS! 😤","INACCEPTABLE! 😡"],
   },
-  "Ligue 2":{
+  "Ligue Nationale 2":{
     goal:["BUUUUT! 🎉","OUI! ✊","MAGNIFIQUE! 🔥"],
     home:["ALLEZ [CLUB]! 💪","[CLUB]! [CLUB]! 🏆"],
     danger:["DÉFENSE! 🛡️"],foul:["ARBITRE! 😡"],near_miss:["OHHHH! 😱"],comeback:["ON Y CROIT! 🔥"],winning:["CHAMPIONS! 🏆"],losing:["JAMAIS LÂCHER! 💙"],
   },
-  "La Liga":{
+  "Primera División":{
     goal:["GOOOOOL! 🎉","QUÉ GOLAZO! ⭐","INCREÍBLE! 🔥","SÍ! SÍ! SÍ! ✊","MAGISTRAL! ⚡","ESPECTACULAR! 🌟","¡QUÉ BONITO! 😍"],
     home:["¡VAMOS [CLUB]! 💪","[CLUB]! [CLUB]! 🏆","¡CAMPEONES! ⚡","¡FUERZA [CLUB]! 🔥","¡OLÉ OLÉ OLÉ! 🎊"],
     danger:["¡FUERA! 🛡️","¡DEFENSA! DEFENSA! 🛡️","¡ATENTOS! 😱","¡DESPEJAR! 😤"],
@@ -3960,12 +3960,12 @@ const CROWD_CHANTS_LG={
 // Reuses existing CROWD_CHANTS_LG pools where the language matches; new pool for Brasil only.
 // "Italia" is intentionally omitted → falls through to base CROWD_CHANTS (already Italian).
 const CROWD_CHANTS_NAT={
-  "Inghilterra":CROWD_CHANTS_LG["Premier League"],
-  "Germania":CROWD_CHANTS_LG["Bundesliga"],
-  "Francia":CROWD_CHANTS_LG["Ligue 1"],
-  "Belgio":CROWD_CHANTS_LG["Ligue 1"],
-  "Spagna":CROWD_CHANTS_LG["La Liga"],
-  "Argentina":CROWD_CHANTS_LG["La Liga"],
+  "Inghilterra":CROWD_CHANTS_LG["Premier Division"],
+  "Germania":CROWD_CHANTS_LG["1. Liga"],
+  "Francia":CROWD_CHANTS_LG["Ligue Nationale"],
+  "Belgio":CROWD_CHANTS_LG["Ligue Nationale"],
+  "Spagna":CROWD_CHANTS_LG["Primera División"],
+  "Argentina":CROWD_CHANTS_LG["Primera División"],
   "Portogallo":CROWD_CHANTS_LG["Primeira Liga"],
   "Olanda":CROWD_CHANTS_LG["Eredivisie"],
   "Brasile":{
@@ -4019,7 +4019,7 @@ const toThree=(gx,gy)=>({x:gx-50,z:(gy/100)*60-30});
 /* ========================================
    DEBUG TOOLS  (console only)
 ======================================== */
-window.cpmDebugSimulate=function(nSeasons=10,leagueName="Serie A"){
+window.cpmDebugSimulate=function(nSeasons=10,leagueName="Lega A"){
   const lc=CLUBS.filter(c=>c.lg===leagueName);
   if(!lc.length){console.warn("[CPM-DEBUG] Lega non trovata:",leagueName);return;}
   const playerClub=lc[0];
@@ -4045,7 +4045,7 @@ window.cpmDebugSimulate=function(nSeasons=10,leagueName="Serie A"){
   return log;
 };
 window.cpmDebugLeagues=function(){
-  const leghe=["Serie A","Premier League","La Liga","Bundesliga","Ligue 1","Primeira Liga","Eredivisie","Pro League","Süper Lig"];
+  const leghe=["Lega A","Premier Division","Primera División","1. Liga","Ligue Nationale","Primeira Liga","Eredivisie","Pro League","Süper Lig"];
   leghe.forEach(lg=>{const n=CLUBS.filter(c=>c.lg===lg).length;console.log(`${lg}: ${n} club`);});
 };
 
@@ -4419,7 +4419,7 @@ function generateSeasonCalendar(playerClub,leagueClubs,seed){
 }
 // ===== Sprint 49/134: Season Awards Generator =====
 function generateSeasonAwards(player, finalStandings){
-  const lg=player.club?.lg||"Serie A";
+  const lg=player.club?.lg||"Lega A";
   const lgRec=LEAGUE_RECORDS[lg]||_LR_DEFAULT;
   const myGoals=player.goals||0;
   const myAssists=player.assists||0;
@@ -4489,7 +4489,7 @@ function generateSeasonAwards(player, finalStandings){
   // === PREMI EUROPEI (cross-league, molto più rari) ===
 
   // Candidati europei da altri campionati (nomi da roster reali)
-  const _euLeagues=["Serie A","Premier League","Bundesliga","Ligue 1","La Liga"].filter(l=>l!==lg);
+  const _euLeagues=["Lega A","Premier Division","1. Liga","Ligue Nationale","Primera División"].filter(l=>l!==lg);
   const _euClubs=_euLeagues.map((euLg,li)=>{
     const ec=CLUBS.filter(c=>c.lg===euLg).sort((a,b)=>b.p-a.p);
     return ec[Math.abs(_h(li*31+7))%Math.min(3,ec.length)]||ec[0]||null;
@@ -4796,27 +4796,27 @@ function getStadiumPalette(club){
   const toHex=(r,g,b)=>((Math.round(Math.max(0,Math.min(1,r))*255)<<16)|(Math.round(Math.max(0,Math.min(1,g))*255)<<8)|Math.round(Math.max(0,Math.min(1,b))*255));
   const lerp=(a,b,t)=>a+(b-a)*t;
 
-  const lg=club?.lg||"Serie A";
+  const lg=club?.lg||"Lega A";
   const pres=club?.p||65;
   const clubHex=club?.c||'#3a7bd5';
   const idHash=club?.id?club.id.split('').reduce((a,c)=>a+c.charCodeAt(0),0):42;
 
   // League base palettes — more dramatic, clearly different hues
   const bases={
-    // Serie A: deep midnight blue
-    "Serie A":      {skyT:0x030818,skyH:0x0c2050,fog:0x061430,gA:0x1e4a0a,gB:0x184008,gC:0x224e0c,aCol:0xd0e4ff,aInt:0.50,flood:0xd8eeff},
-    "Serie B":      {skyT:0x050a18,skyH:0x0e2240,fog:0x081628,gA:0x1c4808,gB:0x163c06,gC:0x204c0a,aCol:0xc8dcff,aInt:0.44,flood:0xcce4ff},
-    // Premier League: cold slate grey — like a rainy Manchester night
-    "Premier League":{skyT:0x080c10,skyH:0x1a2830,fog:0x101c22,gA:0x205818,gB:0x1a4c14,gC:0x24601c,aCol:0xb8d4ee,aInt:0.56,flood:0xc0d8ee},
-    "EFL Championship":{skyT:0x090d12,skyH:0x182230,fog:0x0e1a24,gA:0x1e5616,gB:0x184a12,gC:0x225e1a,aCol:0xb4d0e8,aInt:0.48,flood:0xb8d4e8},
-    // Bundesliga: crisp cold white — Dortmund/Bayern broadcast look
-    "Bundesliga":   {skyT:0x04060e,skyH:0x0c1828,fog:0x081020,gA:0x245a12,gB:0x1e500e,gC:0x285e16,aCol:0xfff5e8,aInt:0.62,flood:0xfff8ee},
-    "2. Bundesliga":{skyT:0x06080e,skyH:0x0e1a28,fog:0x0a1220,gA:0x225810,gB:0x1c4e0c,gC:0x265c14,aCol:0xfff0e0,aInt:0.52,flood:0xfff0e0},
-    // Ligue 1: deep purple-violet — Parc des Princes nocturne
-    "Ligue 1":      {skyT:0x0a0416,skyH:0x280a48,fog:0x14062c,gA:0x1c5210,gB:0x16480c,gC:0x205614,aCol:0xe0ccff,aInt:0.48,flood:0xe4d0ff},
-    "Ligue 2":      {skyT:0x08031a,skyH:0x1e0838,fog:0x100424,gA:0x1a500e,gB:0x14460a,gC:0x1e5412,aCol:0xd8c8ff,aInt:0.44,flood:0xd8c8ff},
-    // La Liga: warm orange desert dusk — Camp Nou / Bernabeu summer nights
-    "La Liga":      {skyT:0x1c0800,skyH:0x481800,fog:0x2c1000,gA:0x385810,gB:0x2e4c0a,gC:0x3e6014,aCol:0xffe8c0,aInt:0.60,flood:0xffe8b0},
+    // Lega A: deep midnight blue
+    "Lega A":      {skyT:0x030818,skyH:0x0c2050,fog:0x061430,gA:0x1e4a0a,gB:0x184008,gC:0x224e0c,aCol:0xd0e4ff,aInt:0.50,flood:0xd8eeff},
+    "Lega B":      {skyT:0x050a18,skyH:0x0e2240,fog:0x081628,gA:0x1c4808,gB:0x163c06,gC:0x204c0a,aCol:0xc8dcff,aInt:0.44,flood:0xcce4ff},
+    // Premier Division: cold slate grey — like a rainy Manchester night
+    "Premier Division":{skyT:0x080c10,skyH:0x1a2830,fog:0x101c22,gA:0x205818,gB:0x1a4c14,gC:0x24601c,aCol:0xb8d4ee,aInt:0.56,flood:0xc0d8ee},
+    "Championship":{skyT:0x090d12,skyH:0x182230,fog:0x0e1a24,gA:0x1e5616,gB:0x184a12,gC:0x225e1a,aCol:0xb4d0e8,aInt:0.48,flood:0xb8d4e8},
+    // 1. Liga: crisp cold white — Dortmund/Bayern broadcast look
+    "1. Liga":   {skyT:0x04060e,skyH:0x0c1828,fog:0x081020,gA:0x245a12,gB:0x1e500e,gC:0x285e16,aCol:0xfff5e8,aInt:0.62,flood:0xfff8ee},
+    "2. Liga":{skyT:0x06080e,skyH:0x0e1a28,fog:0x0a1220,gA:0x225810,gB:0x1c4e0c,gC:0x265c14,aCol:0xfff0e0,aInt:0.52,flood:0xfff0e0},
+    // Ligue Nationale: deep purple-violet — Parc des Princes nocturne
+    "Ligue Nationale":      {skyT:0x0a0416,skyH:0x280a48,fog:0x14062c,gA:0x1c5210,gB:0x16480c,gC:0x205614,aCol:0xe0ccff,aInt:0.48,flood:0xe4d0ff},
+    "Ligue Nationale 2":      {skyT:0x08031a,skyH:0x1e0838,fog:0x100424,gA:0x1a500e,gB:0x14460a,gC:0x1e5412,aCol:0xd8c8ff,aInt:0.44,flood:0xd8c8ff},
+    // Primera División: warm orange desert dusk — Camp Nou / Bernabeu summer nights
+    "Primera División":      {skyT:0x1c0800,skyH:0x481800,fog:0x2c1000,gA:0x385810,gB:0x2e4c0a,gC:0x3e6014,aCol:0xffe8c0,aInt:0.60,flood:0xffe8b0},
     "Segunda División":{skyT:0x180600,skyHorizon:0x3c1400,fog:0x240e00,gA:0x345608,gB:0x2a4a05,gC:0x395e0c,aCol:0xffe0b0,aInt:0.52,flood:0xffdca8},
     // Primeira Liga: teal Atlantic coast — rainy nights in Lisbon/Porto
     "Primeira Liga":{skyT:0x020c0e,skyH:0x082030,fog:0x051620,gA:0x205a14,gB:0x1a4e10,gC:0x245e18,aCol:0xc0eeff,aInt:0.54,flood:0xb8f0ff},
@@ -4827,7 +4827,7 @@ function getStadiumPalette(club){
     // Süper Lig: warm brick red — Istanbul summer nights
     "Süper Lig":    {skyT:0x140400,skyH:0x380c00,fog:0x240800,gA:0x305c0e,gB:0x28500a,gC:0x366412,aCol:0xffe0c8,aInt:0.56,flood:0xffd8b0},
   };
-  const b=bases[lg]||bases["Serie A"];
+  const b=bases[lg]||bases["Lega A"];
 
   // Per-club: blend club primary colour into sky horizon (30% weight, max capped)
   const cr=toRGB(clubHex);
@@ -8427,7 +8427,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                 heatPoints={heatPointsRef.current} showHeatMap={showHeatMap}
                 isDesktop={!isNarrow} heroJerseyNum={player.jerseyNum||10}
                 isDerbyMatch={!!drby} isBigGame={mw>=7}
-                competitionLabel={(player.proStatus||"u18")==="u18"?(ALL_U18_CLUBS.find(c=>c.id===player.club?.id)?.lg||(CLUBS.find(c=>c.id===player.club?.id)?.lg==="Serie A"?"Primavera 1":"Primavera 2")):(context==="euro_group"||context==="euro_ko"||context==="euro")?(player.euro?.competition||"UEFA"):(context==="cup"?"COPPA NAZIONALE":(context==="national"||context==="nationsCup"||context==="euroMondiale"?"NAZIONALE":(player.club?.lg||"")))}
+                competitionLabel={(player.proStatus||"u18")==="u18"?(ALL_U18_CLUBS.find(c=>c.id===player.club?.id)?.lg||(CLUBS.find(c=>c.id===player.club?.id)?.lg==="Lega A"?"Primavera 1":"Primavera 2")):(context==="euro_group"||context==="euro_ko"||context==="euro")?(player.euro?.competition||"UEFA"):(context==="cup"?"COPPA NAZIONALE":(context==="national"||context==="nationsCup"||context==="euroMondiale"?"NAZIONALE":(player.club?.lg||"")))}
                 onWalkoutDone={()=>setPhase("playing")}/>
               {phase==="walkout"&&<WalkoutOverlay homeTeam={homeTeamObj} homeRoster={homeRoster} awayRoster={awayRoster} opponent={awayTeamObj} isHome={isMatchHome} matchWeek={player.week} onDone={()=>{if(benchStart)setOnBench(true);setPhase("playing");}} weather={weather} isDerbyMatch={!!drby} isBigGame={mw>=7} heroJerseyNum={player.jerseyNum||10} playerName={player.name} benchStart={benchStart} isEuroMatch={context==="euro_group"||context==="euro_ko"} euroCompetition={player.euro?.competition||null} euroRound={(context==="euro_group")?`Giornata ${(player.euro?.groupResults||[]).length+1}/6`:(context==="euro_ko")?({r16:"Ottavi di Finale",sf:"Semifinale",final:"Finale"}[player.euro?.phase]||"KO"):null}/>}
               {screenFlash&&<div style={{position:"absolute",inset:0,background:screenFlash.col,zIndex:20,pointerEvents:"none",animation:`fadeFlash ${screenFlash.dur}ms ease-out forwards`}}/>}
@@ -9733,7 +9733,7 @@ function HomeScreen({onNew,onLoad,onDelete,onImport,slots}){
       <div style={{textAlign:"center",marginBottom:20}}>
         <div style={{fontSize:60,marginBottom:6}}>⚽</div>
         <h1 style={{fontSize:24,fontWeight:900,letterSpacing:-1,margin:"0 0 4px",color:TH.text}}>CAREER PLAYER MANAGER</h1>
-        <p style={{color:TH.muted,fontSize:12,margin:0}}>Serie A Primavera · Carriera calciatore</p>
+        <p style={{color:TH.muted,fontSize:12,margin:0}}>Lega A Primavera · Carriera calciatore</p>
       </div>
       <PwaInstallBanner/>
       {/* Save slots */}
@@ -9862,7 +9862,7 @@ function CreateScreen({onCreate,legacyBonus,onClearLegacy}){
           <div><label style={lbl}>Nazionalità</label><select style={inp} value={nation} onChange={e=>setNation(e.target.value)}>{NATIONS.map(n=><option key={n}>{n}</option>)}</select></div>
           <Card style={{padding:"12px 14px",background:"#eff6ff",border:"1px solid #bfdbfe"}} shadow={false}>
             <div style={{fontSize:12,color:TH.primary,fontWeight:700,marginBottom:3}}>📋 Percorso carriera</div>
-            <div style={{fontSize:11,color:TH.muted,lineHeight:1.6}}>3 provini → offerte U18 → Serie A Primavera → campionati europei</div>
+            <div style={{fontSize:11,color:TH.muted,lineHeight:1.6}}>3 provini → offerte U18 → Lega A Primavera → campionati europei</div>
           </Card>
           {/* S12.2: Archetype selection */}
           <div>
@@ -11581,8 +11581,8 @@ const generateLeagueNews=(player)=>{
 };
 /* Sprint 128 — Risultati Internazionali (altri campionati, seeded) */
 const generateWorldResults=(player)=>{
-  const playerLg=player.club?.lg||"Serie A";
-  const TOP_LGS=["Premier League","La Liga","Bundesliga","Ligue 1","Serie A","Eredivisie"].filter(lg=>lg!==playerLg).slice(0,3);
+  const playerLg=player.club?.lg||"Lega A";
+  const TOP_LGS=["Premier Division","Primera División","1. Liga","Ligue Nationale","Lega A","Eredivisie"].filter(lg=>lg!==playerLg).slice(0,3);
   const wk=player.week||1;const ss=player.season||1;
   const out=[];
   TOP_LGS.forEach(lg=>{
@@ -12043,6 +12043,10 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     if(!('coachPromise' in newP)){newP={...newP,coachPromise:null};changed=true;}
     // Sprint E-3: prestiti reali
     if(!('loan' in newP)){newP={...newP,loan:null};changed=true;}
+    // Fase 1 copyright: league rename migration
+    const _lgMap={"Serie A":"Lega A","Serie B":"Lega B","Premier League":"Premier Division","EFL Championship":"Championship","La Liga":"Primera División","Bundesliga":"1. Liga","2. Bundesliga":"2. Liga","Ligue 1":"Ligue Nationale","Ligue 2":"Ligue Nationale 2"};
+    if(newP.club?.lg&&_lgMap[newP.club.lg]){newP={...newP,club:{...newP.club,lg:_lgMap[newP.club.lg]}};changed=true;}
+    if((newP.proStatus||"u18")==="pro"&&newP.club?.id){const _fc=CLUBS.find(c=>c.id===newP.club.id);if(_fc&&(_fc.n!==newP.club.n||_fc.a!==newP.club.a||_fc.lg!==newP.club.lg)){newP={...newP,club:{...newP.club,n:_fc.n,a:_fc.a,lg:_fc.lg}};changed=true;}}
     if(changed){setPlayer(newP);}
   },[]);// eslint-disable-line
   const[darkMode,setDarkMode]=useState(()=>localStorage.getItem("cpm-dark")==="1");
@@ -12424,8 +12428,8 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
           // Schedule next round
           const _usedIds=[...(p.euro?.groupOpponents||[]).map(o=>o.id),...newKR.map(r=>r.oppId)].filter(Boolean);
           const _minPr=md2.competition==="UCL"?82:md2.competition==="UEL"?65:52;
-          const _koPool=CLUBS.filter(c=>c.lg!==(p.club?.lg||"Serie A")&&!c.isU18&&c.p>=_minPr&&!_usedIds.includes(c.id));
-          const _nOpp=_koPool.length?pick(_koPool):CLUBS.find(c=>c.lg!==(p.club?.lg||"Serie A"))||CLUBS[0];
+          const _koPool=CLUBS.filter(c=>c.lg!==(p.club?.lg||"Lega A")&&!c.isU18&&c.p>=_minPr&&!_usedIds.includes(c.id));
+          const _nOpp=_koPool.length?pick(_koPool):CLUBS.find(c=>c.lg!==(p.club?.lg||"Lega A"))||CLUBS[0];
           const nPhase=_KNX[phase];
           // Sprint 124: dynamic week — never in the past, always at least 3 weeks ahead
           const _nWBase=nPhase==="sf"?27:nPhase==="final"?34:null;
@@ -12651,8 +12655,8 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
         if(result.won&&!isChamp){
           const _usedIds=[...(p.euro?.groupOpponents||[]).map(o=>o.id),...newKR.map(r=>r.oppId)].filter(Boolean);
           const _minPr=p.euro?.competition==="UCL"?82:p.euro?.competition==="UEL"?65:52;
-          const _koPool=CLUBS.filter(c=>c.lg!==(p.club?.lg||"Serie A")&&!c.isU18&&c.p>=_minPr&&!_usedIds.includes(c.id));
-          const _nOpp=_koPool.length?pick(_koPool):CLUBS.find(c=>c.lg!==(p.club?.lg||"Serie A"))||CLUBS[0];
+          const _koPool=CLUBS.filter(c=>c.lg!==(p.club?.lg||"Lega A")&&!c.isU18&&c.p>=_minPr&&!_usedIds.includes(c.id));
+          const _nOpp=_koPool.length?pick(_koPool):CLUBS.find(c=>c.lg!==(p.club?.lg||"Lega A"))||CLUBS[0];
           const nPhase=_KNX[phase];
           // Sprint 124: dynamic week — never in the past
           const _nWBase124=nPhase==="sf"?27:nPhase==="final"?34:null;
@@ -13171,8 +13175,8 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
         if(_sgQ){
           const _sgUsed=(player.euro.groupOpponents||[]).map(o=>o.id);
           const _sgMin=player.euro.competition==="UCL"?82:player.euro.competition==="UEL"?65:52;
-          const _sgPool=CLUBS.filter(c=>c.lg!==(player.club?.lg||"Serie A")&&!c.isU18&&c.p>=_sgMin&&!_sgUsed.includes(c.id));
-          const _sgOpp=_sgPool.length?pick(_sgPool):CLUBS.find(c=>c.lg!==(player.club?.lg||"Serie A"))||CLUBS[0];
+          const _sgPool=CLUBS.filter(c=>c.lg!==(player.club?.lg||"Lega A")&&!c.isU18&&c.p>=_sgMin&&!_sgUsed.includes(c.id));
+          const _sgOpp=_sgPool.length?pick(_sgPool):CLUBS.find(c=>c.lg!==(player.club?.lg||"Lega A"))||CLUBS[0];
           if(_sgOpp){setPlayer(p=>({...p,calendar:[...(p.calendar||[]),{matchday:995,week:Math.max(23,(p.week||1)+2),opponentId:_sgOpp.id,opponentName:_sgOpp.n,isHome:Math.random()<0.5,played:false,result:null,type:"euro",competition:p.euro?.competition,euroPhase:"r16",cupRoundName:"Ottavi di Finale",opponentData:_sgOpp}],euro:{...p.euro,phase:"r16",qualified:true,eliminated:false}}));setTimeout(()=>notify(`⭐ ${player.euro?.competition}: Ottavi di Finale programmati!`,TH.accent),400);}
         }else{setPlayer(p=>({...p,euro:{...p.euro,phase:"eliminated",eliminated:true,qualified:false}}));setTimeout(()=>notify(`❌ ${player.euro?.competition}: eliminato dalla fase a gironi.`,TH.danger),400);}
       }
@@ -13272,7 +13276,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
             if(koWon&&!euroWon){
               const nextPhase=_nxtPhaseMap[koPhase]||"sf";
               const _phaseWks={r16:20,sf:26,final:32};const nextWk=_phaseWks[nextPhase]||28;
-              const _koPool2=CLUBS.filter(c=>c.lg!==(p.club?.lg||"Serie A")&&!c.isU18&&c.p>=(md.competition==="UCL"?80:62));
+              const _koPool2=CLUBS.filter(c=>c.lg!==(p.club?.lg||"Lega A")&&!c.isU18&&c.p>=(md.competition==="UCL"?80:62));
               const _nxtOpp2=_koPool2.length?pick(_koPool2):CLUBS[0];
               if(_nxtOpp2)newCal3=[...newCal3,{matchday:996+koRound,week:nextWk,opponentId:_nxtOpp2.id,opponentName:_nxtOpp2.n,isHome:Math.random()<0.5,played:false,result:null,type:"euro",competition:md.competition,euroPhase:nextPhase,cupRoundName:nextPhase==="final"?"Finale":"Semifinale",opponentData:_nxtOpp2}];
             }
@@ -13345,7 +13349,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
         const r=p.rival;
         const rn=r.name||"Il tuo rivale";const rc=r.club?.n||"la sua squadra";
         const rivalEvs=[
-          {txt:`📰 ${rn} eletto miglior giocatore della settimana in ${r.club?.lg||"Serie A"}.`,ef:{morale:-3}},
+          {txt:`📰 ${rn} eletto miglior giocatore della settimana in ${r.club?.lg||"Lega A"}.`,ef:{morale:-3}},
           {txt:`⚽ ${rn} ha segnato una doppietta con ${rc}. La sua stagione è impressionante.`,ef:{morale:-4}},
           {txt:`🤝 Si parla di ${rn}: un top club europeo starebbe valutando un'offerta.`,ef:{morale:-2}},
           {txt:`🤕 Stop per infortunio! ${rn} sarà fuori 3 settimane. Momento tuo.`,ef:{morale:6}},
@@ -13485,7 +13489,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
         setTimeout(()=>{
           setPlayer(p=>{
             const _award={season:p.season||1,week:weekVal,month:_mName,goals:_recentGoals,rating:Math.round(_avgRating*10)/10};
-            const _dEntry={season:p.season||1,week:weekVal,type:"mvp_mese",e:"⭐",headline:`MVP ${_mName} — ${p.club?.lg||"Serie A"}`,body:`${_recentGoals} gol e media voto ${Math.round(_avgRating*10)/10} nelle ultime settimane. Riconoscimento mensile.`,color:"#f59e0b"};
+            const _dEntry={season:p.season||1,week:weekVal,type:"mvp_mese",e:"⭐",headline:`MVP ${_mName} — ${p.club?.lg||"Lega A"}`,body:`${_recentGoals} gol e media voto ${Math.round(_avgRating*10)/10} nelle ultime settimane. Riconoscimento mensile.`,color:"#f59e0b"};
             return{...p,mvpMonthAwards:[...(p.mvpMonthAwards||[]),_award],morale:clamp((p.morale||70)+8,0,100),popularity:clamp((p.popularity||20)+5,0,100),diary:[...(p.diary||[]),_dEntry].slice(-80)};
           });
           notify(`⭐ MVP del Mese — ${_mName}! ${_recentGoals} gol recenti.`,"#f59e0b");
@@ -13660,7 +13664,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     const _nextClubPre=_playerNextLgPre?{...player.club,lg:_playerNextLgPre}:(player.club||null);
     // Sprint 85: _willEuroPre after pair/relegation — guards: must be upper-tier league, not relegated
     const _willEuroPre=(player.proStatus||"u18")==="pro"&&!!player.club&&_eposPre>=0&&_eposPre<=(_pairPre?3:1)&&_nTPre>0
-      &&(!_pairPre||_myLgPre===_pairPre[0])   // solo lega superiore (non Serie B etc.)
+      &&(!_pairPre||_myLgPre===_pairPre[0])   // solo lega superiore (non Lega B etc.)
       &&_playerNextLgPre!==(_pairPre?.[1]??null); // non retrocessa
     // Sprint E-1: verifica promessa del mister a fine stagione
     if(player.coachPromise && player.coachPromise.kept===null){
@@ -13797,9 +13801,9 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
         if(r16Opp)newCalendar=[...newCalendar,{matchday:990,week:CUP_ROUND_WEEKS[1],opponentId:r16Opp.id,opponentName:r16Opp.n||r16Opp.name,isHome:true,played:false,result:null,type:"cup",competition:"Coppa Nazionale",cupRound:1,cupRoundName:CUP_ROUND_NAMES[1]}];
       }
       // S42: European qualification based on final standings (1st→UCL, 2nd-3rd→UEL, 4th→UECL)
-      // Sprint 85: tier guard — solo leghe superiori (non Serie B etc.); club retrocessi esclusi
+      // Sprint 85: tier guard — solo leghe superiori (non Lega B etc.); club retrocessi esclusi
       let newEuro=null;
-      const _euroTierOk85=!_pairPre||(_pairPre[0]===(p.club?.lg||"Serie A")&&!playerClubRelegated);
+      const _euroTierOk85=!_pairPre||(_pairPre[0]===(p.club?.lg||"Lega A")&&!playerClubRelegated);
       if((p.proStatus||"u18")==="pro"&&p.club&&nT>0&&_euroTierOk85){
         const _epos=sortedForShifts.findIndex(t=>(t.id&&t.id===(p.club?.id||p.club?.n))||(t.n&&t.n===(p.club?.n||p.club?.id)));
         // Sprint 86: leghe minori (senza coppia, es. Primeira Liga) top 2; leghe maggiori top 4
@@ -13807,7 +13811,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
           const _ec=_epos===0?"UCL":_epos<=2?"UEL":"UECL";
           const _minP=_ec==="UCL"?78:_ec==="UEL"?62:50;
           const _maxP=_ec==="UCL"?99:_ec==="UEL"?88:74;
-          const _epool=CLUBS.filter(c=>c.lg!==(nextClub84?.lg||p.club?.lg||"Serie A")&&!c.isU18&&c.p>=_minP&&c.p<=_maxP); // Sprint 85: usa nextClub84.lg
+          const _epool=CLUBS.filter(c=>c.lg!==(nextClub84?.lg||p.club?.lg||"Lega A")&&!c.isU18&&c.p>=_minP&&c.p<=_maxP); // Sprint 85: usa nextClub84.lg
           let _eseed=hashStr((p.club?.id||"x")+"euro"+(newSeason||2));let _er=_eseed;
           const _erd=()=>{_er=((_er*1664525+1013904223)&0xffffffff)>>>0;return _er/0xffffffff;};
           const _eshuf=[..._epool].sort(()=>_erd()-0.5);
@@ -13829,7 +13833,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
         if(!newEuro){
           // Nessuna qualificazione europea via campionato → assegna UEL
           const _ec99="UEL";const _minP99=62,_maxP99=88;
-          const _epool99=CLUBS.filter(c=>c.lg!==(nextClub84?.lg||p.club?.lg||"Serie A")&&!c.isU18&&c.p>=_minP99&&c.p<=_maxP99);
+          const _epool99=CLUBS.filter(c=>c.lg!==(nextClub84?.lg||p.club?.lg||"Lega A")&&!c.isU18&&c.p>=_minP99&&c.p<=_maxP99);
           let _er99=hashStr((p.club?.id||"x")+"coppaUEL"+(newSeason||2));
           const _erd99=()=>{_er99=((_er99*1664525+1013904223)&0xffffffff)>>>0;return _er99/0xffffffff;};
           const _gopp99=[..._epool99].sort(()=>_erd99()-0.5).slice(0,3);
@@ -14751,8 +14755,8 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                   const _r16Wk=Math.max(20,(p.week||1)+2);
                   const _usedIds=(p.euro?.groupOpponents||[]).map(o=>o.id);
                   const _minPr=eg.competition==="UCL"?82:eg.competition==="UEL"?65:52;
-                  const _koPool=CLUBS.filter(c=>c.lg!==(p.club?.lg||"Serie A")&&!c.isU18&&c.p>=_minPr&&!_usedIds.includes(c.id));
-                  const _r16Opp=_koPool.length?pick(_koPool):CLUBS.find(c=>c.lg!==(p.club?.lg||"Serie A"))||CLUBS[0];
+                  const _koPool=CLUBS.filter(c=>c.lg!==(p.club?.lg||"Lega A")&&!c.isU18&&c.p>=_minPr&&!_usedIds.includes(c.id));
+                  const _r16Opp=_koPool.length?pick(_koPool):CLUBS.find(c=>c.lg!==(p.club?.lg||"Lega A"))||CLUBS[0];
                   if(_r16Opp)newCal=[...newCal,{matchday:995,week:_r16Wk,opponentId:_r16Opp.id,opponentName:_r16Opp.n,isHome:Math.random()<0.5,played:false,result:null,type:"euro",competition:eg.competition,euroPhase:"r16",cupRoundName:"Ottavi di Finale",opponentData:_r16Opp}];
                 }
                 return{...p,calendar:newCal,morale:clamp((p.morale||70)+(eg.qualified?8:0),0,100),popularity:clamp((p.popularity||20)+(eg.qualified?5:0),0,100),euro:{...p.euro,phase:eg.qualified?"r16":"eliminated",groupResults:eg.groupResults,pts:eg.pts,qualified:eg.qualified,eliminated:!eg.qualified}};
@@ -15650,7 +15654,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       {/* STANDINGS */}
       {tab==="standings"&&(()=>{
         const allLeagues=[...new Set(CLUBS.map(c=>c.lg).filter(Boolean))];
-        const myLeague=player.club?.lg||(player.proStatus==="u18"?"Primavera 1":"Serie A");
+        const myLeague=player.club?.lg||(player.proStatus==="u18"?"Primavera 1":"Lega A");
         const selLg=standingsLg||myLeague;
         const getRows=(lg)=>{
           if(lg===myLeague)return player.standings||[];
@@ -18175,8 +18179,8 @@ function App(){
 
 // S10.4 — Dev 50-season headless simulation (run in browser console: runCPMTest50())
 window.runCPMTest50=function(verbose=false){
-  let p={name:"TestPlayer",age:17,season:1,week:1,weekLived:false,proStatus:"pro",ovr:70,goals:0,assists:0,matches:0,totalGoals:0,totalAssists:0,totalMatches:0,morale:70,fatigue:0,form:70,popularity:30,coachTrust:60,value:1.2,skillPoints:2,trophies:[],nationalCaps:0,lastNationalSeason:0,clubPrestigeShifts:{},cup:null,contract:{duration:2,wage:800,expiresAtSeason:3},stats:{velocità:72,tecnica:70,fisico:68,mentalità:68,tiro:74,passaggio:65,dribbling:70,posizionamento:70},club:{id:"juve",n:"Juventus",a:"JUV",p:95,c:"#000",c2:"#fff",nat:"🇮🇹",lg:"Serie A"},history:[],matchHistory:[],log:[],seasonObjectives:[],aiData:{pressReports:{},scoutReports:{},lastOpponentTactic:null}};
-  const lc=CLUBS.filter(c=>c.lg==="Serie A");
+  let p={name:"TestPlayer",age:17,season:1,week:1,weekLived:false,proStatus:"pro",ovr:70,goals:0,assists:0,matches:0,totalGoals:0,totalAssists:0,totalMatches:0,morale:70,fatigue:0,form:70,popularity:30,coachTrust:60,value:1.2,skillPoints:2,trophies:[],nationalCaps:0,lastNationalSeason:0,clubPrestigeShifts:{},cup:null,contract:{duration:2,wage:800,expiresAtSeason:3},stats:{velocità:72,tecnica:70,fisico:68,mentalità:68,tiro:74,passaggio:65,dribbling:70,posizionamento:70},club:{id:"juve",n:"Torino Athletic",a:"TAT",p:95,c:"#000",c2:"#fff",nat:"🇮🇹",lg:"Lega A"},history:[],matchHistory:[],log:[],seasonObjectives:[],aiData:{pressReports:{},scoutReports:{},lastOpponentTactic:null}};
+  const lc=CLUBS.filter(c=>c.lg==="Lega A");
   p.standings=initStandings(lc);p.calendar=generateSeasonCalendar(p.club,lc,p.season*7919);p.seasonObjectives=generateSeasonObjectives(p);
   const anomalies=[];const log=[];
   for(let s=1;s<=50;s++){
