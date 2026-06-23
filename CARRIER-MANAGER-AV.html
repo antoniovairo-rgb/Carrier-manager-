@@ -2612,7 +2612,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.14.1"; // Sprint 3D-1: renderer 3D ora DEFAULT (ThreeMatchView); 2D Classic/Phaser via toggle
+const GAME_VERSION="4.15.0"; // Sprint 3D-2: animazioni giocatori (run-cycle+bob, velocità smussata, orientamento verso palla, portieri) + sync fluido
 const SAVE_VERSION=6;
 // Sprint ENV — ambiente rilevato automaticamente dal runtime (non gestito manualmente).
 // PRODUCTION = deploy GitHub Pages (*.github.io). Tutto il resto (staging githack, locale, localhost) = TEST.
@@ -6525,7 +6525,9 @@ function PitchCanvas({playerX,playerY,zone,homeCol,oppCol,opponents,matchPhase,o
    THREE MATCH VIEW — renderer 3D (drop-in di PitchCanvas)
    Sprint 3D-1: stadio (buildStadium) + campo + 22 giocatori
    + palla, camera portrait fissa. Consuma gli STESSI prop
-   di PitchCanvas; la logica HL non cambia (opt-in renderer="3d").
+   di PitchCanvas; la logica HL non cambia.
+   Sprint 3D-2: run-cycle + bob, velocità smussata, giocatori
+   fermi orientati verso la palla, portieri distinti, sync fluido.
 ===================================================== */
 function ThreeMatchView(props){
   const {playerX,playerY,homeCol,oppCol,allPlayers,homeClub,heroKitCol,
@@ -6596,7 +6598,7 @@ function ThreeMatchView(props){
       const mkLeg=(sx)=>{const lg=new THREE.Group();lg.position.set(sx*0.155,0.78,0);const th=new THREE.Mesh(new THREE.CylinderGeometry(0.10,0.086,0.44,8),skM);th.position.y=-0.22;lg.add(th);const sh=new THREE.Mesh(new THREE.CylinderGeometry(0.077,0.066,0.38,8),wh);sh.position.y=-0.57;lg.add(sh);const bk=new THREE.Mesh(new THREE.BoxGeometry(0.16,0.086,0.28),bt);bk.position.set(0,-0.78,0.04);lg.add(bk);g.add(lg);return lg;};
       const aL=mkArm(-1),aR=mkArm(1),lL=mkLeg(-1),lR=mkLeg(1);
       if(isUser){const r=new THREE.Mesh(new THREE.TorusGeometry(0.55,0.055,7,24),new THREE.MeshBasicMaterial({color:0xffd700}));r.rotation.x=Math.PI/2;r.position.y=0.04;g.add(r);}
-      g._aL=aL;g._aR=aR;g._lL=lL;g._lR=lR;g._ph=0;g._px=0;g._pz=0;
+      g._aL=aL;g._aR=aR;g._lL=lL;g._lR=lR;g._ph=0;g._px=0;g._pz=0;g._sp=0;
       g.traverse(m=>{if(m.isMesh){m.castShadow=true;m.receiveShadow=true;}});
       return g;
     };
@@ -6605,7 +6607,7 @@ function ThreeMatchView(props){
     const players=[];
     (allPlayers||[]).forEach(pl=>{
       const isHome=pl.team==='home';
-      const col=isHome?(homeCol||'#2563eb'):(oppCol||'#dc2626');
+      const col=pl.gk?'#fbbf24':(isHome?(homeCol||'#2563eb'):(oppCol||'#dc2626'));
       const mesh=mkP(col,false);
       mesh.position.set(G2X(pl.x),0,G2Z(pl.y));mesh._px=mesh.position.x;mesh._pz=mesh.position.z;
       scene.add(mesh);players.push({mesh});
@@ -6622,23 +6624,41 @@ function ThreeMatchView(props){
 
     // Loop: lerp verso le posizioni target dai prop (nessun re-render React)
     let last=performance.now();
-    const animOne=(mesh,tx,tz,dt,k)=>{
+    const animOne=(mesh,tx,tz,dt,k,bx,bz)=>{
       const dx=tx-mesh.position.x,dz=tz-mesh.position.z,d=Math.hypot(dx,dz);
       mesh.position.x+=dx*k;mesh.position.z+=dz*k;
-      const sp=Math.hypot(mesh.position.x-mesh._px,mesh.position.z-mesh._pz)/Math.max(dt,0.001);
+      // velocità reale smussata (evita jitter di cadenza frame-to-frame)
+      const rawSp=Math.hypot(mesh.position.x-mesh._px,mesh.position.z-mesh._pz)/Math.max(dt,0.001);
       mesh._px=mesh.position.x;mesh._pz=mesh.position.z;
-      if(d>0.4){const ta=Math.atan2(dx,dz),da=((ta-mesh.rotation.y+Math.PI*3)%(Math.PI*2))-Math.PI;mesh.rotation.y+=da*Math.min(9*dt,1);}
-      if(sp>0.3){mesh._ph=(mesh._ph||0)+sp*dt*2.6;const amp=Math.min(sp*0.10,0.7);mesh._lL.rotation.x=Math.sin(mesh._ph)*amp;mesh._lR.rotation.x=-Math.sin(mesh._ph)*amp;mesh._aL.rotation.x=-Math.sin(mesh._ph)*amp*0.5;mesh._aR.rotation.x=Math.sin(mesh._ph)*amp*0.5;}
-      else{mesh._lL.rotation.x*=0.84;mesh._lR.rotation.x*=0.84;mesh._aL.rotation.x*=0.84;mesh._aR.rotation.x*=0.84;}
+      mesh._sp+=(rawSp-mesh._sp)*Math.min(dt*8,1);const sp=mesh._sp;
+      // facing: verso il movimento se in corsa, altrimenti verso la palla
+      let ta;
+      if(d>0.5)ta=Math.atan2(dx,dz);
+      else if(bx!==undefined){const fx=bx-mesh.position.x,fz=bz-mesh.position.z;if(Math.hypot(fx,fz)>0.6)ta=Math.atan2(fx,fz);}
+      if(ta!==undefined){const da=((ta-mesh.rotation.y+Math.PI*3)%(Math.PI*2))-Math.PI;mesh.rotation.y+=da*Math.min((d>0.5?9:3.5)*dt,1);}
+      // run cycle + bob verticale
+      if(sp>0.4){
+        mesh._ph+=sp*dt*2.6;const amp=Math.min(sp*0.11,0.72);
+        mesh._lL.rotation.x=Math.sin(mesh._ph)*amp;mesh._lR.rotation.x=-Math.sin(mesh._ph)*amp;
+        mesh._aL.rotation.x=-Math.sin(mesh._ph)*amp*0.5;mesh._aR.rotation.x=Math.sin(mesh._ph)*amp*0.5;
+        mesh.position.y=Math.abs(Math.sin(mesh._ph))*Math.min(sp*0.018,0.12);
+      } else {
+        mesh._lL.rotation.x*=0.82;mesh._lR.rotation.x*=0.82;mesh._aL.rotation.x*=0.82;mesh._aR.rotation.x*=0.82;
+        mesh.position.y*=0.8;
+      }
     };
     const loop=()=>{
       sr.current.raf=requestAnimationFrame(loop);
       const now=performance.now(),dt=Math.min((now-last)/1000,0.05);last=now;
-      const P=propsRef.current,all=P.allPlayers||[],k=Math.min(1,dt*6);
-      sr.current.players.forEach((pp,i)=>{const src=all[i];if(!src)return;animOne(pp.mesh,G2X(src.x),G2Z(src.y),dt,k);});
-      animOne(hero,G2X(P.playerX||50),G2Z(P.playerY||50),dt,k);
+      const P=propsRef.current,all=P.allPlayers||[],k=Math.min(1,dt*6.5);
+      // palla per prima, così i giocatori fermi si orientano verso di essa
+      const obx=ball.position.x,obz=ball.position.z;
       ball.position.x+=(G2X(P.ballX||50)-ball.position.x)*k;ball.position.z+=(G2Z(P.ballY||50)-ball.position.z)*k;
-      ball.rotation.y+=0.05;ball.rotation.x+=0.03;
+      const moved=Math.hypot(ball.position.x-obx,ball.position.z-obz);
+      ball.rotation.y+=0.04+moved*0.10;ball.rotation.x+=0.03+moved*0.06;
+      const bx=ball.position.x,bz=ball.position.z;
+      sr.current.players.forEach((pp,i)=>{const src=all[i];if(!src)return;animOne(pp.mesh,G2X(src.x),G2Z(src.y),dt,k,bx,bz);});
+      animOne(hero,G2X(P.playerX||50),G2Z(P.playerY||50),dt,k,bx,bz);
       renderer.render(scene,camera);
     };
     loop();
