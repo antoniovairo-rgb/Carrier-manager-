@@ -2,7 +2,7 @@
 <html lang="it">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="theme-color" content="#2563eb">
 <meta name="description" content="Elevora: Football Career Simulator — From prospect to legend">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -75,10 +75,20 @@ let TH = {
   success:"#16a34a", danger:"#dc2626", warning:"#d97706",
   gold:"#b45309", accent:"#7c3aed",
   navBg:"rgba(255,255,255,0.96)",
+  // Sprint D: token semantici per card (light = valori attuali → zero regressione di giorno)
+  bgBlue:"#eff6ff", bdBlue:"#bfdbfe", txBlue:"#1e40af",
+  bgGreen:"#f0fdf4", bdGreen:"#bbf7d0", txGreen:"#166534",
+  bgRed:"#fff1f2", bdRed:"#fecaca", txRed:"#b91c1c",
+  bgAmber:"#fef3c7", bdAmber:"#fcd34d", txAmber:"#92400e",
 };
 const TH_LIGHT_ORIG=Object.freeze({...TH}); // snapshot for restoring light theme
 const TH_LIGHT=TH; // alias used for dark-mode shadowing
-const TH_DARK={...TH,bg:"#0f172a",bgGrad:"linear-gradient(160deg,#0f172a 0%,#0c1428 100%)",card:"#1e293b",cardBorder:"#334155",shadow:"0 2px 12px rgba(0,0,0,0.4)",text:"#f1f5f9",muted:"#94a3b8",faint:"#64748b",navBg:"rgba(15,23,42,0.97)"};
+const TH_DARK={...TH,bg:"#0f172a",bgGrad:"linear-gradient(160deg,#0f172a 0%,#0c1428 100%)",card:"#1e293b",cardBorder:"#334155",shadow:"0 2px 12px rgba(0,0,0,0.4)",text:"#f1f5f9",muted:"#94a3b8",faint:"#64748b",navBg:"rgba(15,23,42,0.97)",
+  // Sprint D: varianti scure dei token semantici (bg scuro + testo chiaro leggibile)
+  bgBlue:"#16233b", bdBlue:"#1e3a5f", txBlue:"#93c5fd",
+  bgGreen:"#102b1d", bdGreen:"#1d4d33", txGreen:"#86efac",
+  bgRed:"#2c1518", bdRed:"#5b2530", txRed:"#fca5a5",
+  bgAmber:"#2a1f0c", bdAmber:"#5a430f", txAmber:"#fcd34d"};
 
 /* ========================================
    AVATAR PRESETS  (req #2 – 12 varianti)
@@ -2542,7 +2552,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.9.0"; // Sprint C: Ritiro Pre-Campionato (3 sessioni: atletico/tecnico/amichevole) a inizio stagione pro, definisce gerarchia iniziale
+const GAME_VERSION="4.9.1"; // Sprint D: safe-area-inset iPhone (viewport-fit=cover + nav/scroll padding) + token semantici dark mode (bgBlue/Green/Red/Amber) su card dashboard
 const SAVE_VERSION=6;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -14942,26 +14952,26 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
           setTimeout(()=>notify(`📋 Gerarchia iniziale: ${_roleLbl[calcSquadRole({...player,stats:player.stats})]||"Riserva"} — definita dal ritiro.`,TH.primary),1600);
         };
         return(
-          <Card bg="#eff6ff" border="#bfdbfe" style={{marginBottom:8,padding:"14px 14px"}}>
+          <Card bg={TH.bgBlue} border={TH.bdBlue} style={{marginBottom:8,padding:"14px 14px"}}>
             <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:4}}>
               <span style={{fontSize:20}}>🏕️</span>
               <div>
-                <div style={{fontSize:13,fontWeight:900,color:"#1e40af"}}>Ritiro Pre-Campionato</div>
-                <div style={{fontSize:10,color:"#3b82f6"}}>Stagione {player.season||1} · scegli come prepararti</div>
+                <div style={{fontSize:13,fontWeight:900,color:TH.txBlue}}>Ritiro Pre-Campionato</div>
+                <div style={{fontSize:10,color:TH.txBlue,opacity:0.75}}>Stagione {player.season||1} · scegli come prepararti</div>
               </div>
             </div>
-            <div style={{fontSize:11,color:"#475569",marginBottom:10,lineHeight:1.4}}>Una sola sessione: definirà la tua condizione e la gerarchia iniziale in rosa.</div>
+            <div style={{fontSize:11,color:TH.muted,marginBottom:10,lineHeight:1.4}}>Una sola sessione: definirà la tua condizione e la gerarchia iniziale in rosa.</div>
             <div style={{display:"flex",flexDirection:"column",gap:7}}>
               {SESSIONS.map(s=>(
-                <button key={s.id} onClick={()=>doSession(s)} style={{width:"100%",textAlign:"left",padding:"10px 12px",borderRadius:10,border:"1px solid #bfdbfe",background:"#fff",cursor:"pointer",fontFamily:"inherit",display:"flex",alignItems:"center",gap:10,transition:"all .12s"}}
-                  onMouseEnter={e=>{e.currentTarget.style.background="#dbeafe";e.currentTarget.style.borderColor="#60a5fa";}}
-                  onMouseLeave={e=>{e.currentTarget.style.background="#fff";e.currentTarget.style.borderColor="#bfdbfe";}}>
+                <button key={s.id} onClick={()=>doSession(s)} style={{width:"100%",textAlign:"left",padding:"10px 12px",borderRadius:10,border:`1px solid ${TH.bdBlue}`,background:TH.card,cursor:"pointer",fontFamily:"inherit",display:"flex",alignItems:"center",gap:10,transition:"all .12s"}}
+                  onMouseEnter={e=>{e.currentTarget.style.background=TH.bgBlue;e.currentTarget.style.borderColor=TH.txBlue;}}
+                  onMouseLeave={e=>{e.currentTarget.style.background=TH.card;e.currentTarget.style.borderColor=TH.bdBlue;}}>
                   <span style={{fontSize:20,flexShrink:0}}>{s.e}</span>
                   <div style={{flex:1}}>
-                    <div style={{fontSize:12,fontWeight:800,color:"#1e3a8a"}}>{s.l}</div>
+                    <div style={{fontSize:12,fontWeight:800,color:TH.txBlue}}>{s.l}</div>
                     <div style={{fontSize:10,color:TH.muted,marginTop:1}}>{s.d}</div>
                   </div>
-                  <span style={{fontSize:16,color:"#93c5fd"}}>›</span>
+                  <span style={{fontSize:16,color:TH.bdBlue}}>›</span>
                 </button>
               ))}
             </div>
@@ -14970,9 +14980,9 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       })()}
       {/* DASHBOARD */}
       {tab==="dashboard"&&player.contractExpired&&(
-        <Card bg="#fef3c7" border="#f59e0b" style={{marginBottom:8,padding:"12px 14px"}}>
-          <div style={{fontSize:11,fontWeight:700,color:"#92400e",marginBottom:4}}>📋 Contratto scaduto — sei svincolato</div>
-          <div style={{fontSize:11,color:"#78350f",marginBottom:8}}>Rinnova con il tuo club o aspetta un'offerta dal mercato.</div>
+        <Card bg={TH.bgAmber} border={TH.bdAmber} style={{marginBottom:8,padding:"12px 14px"}}>
+          <div style={{fontSize:11,fontWeight:700,color:TH.txAmber,marginBottom:4}}>📋 Contratto scaduto — sei svincolato</div>
+          <div style={{fontSize:11,color:TH.txAmber,opacity:0.85,marginBottom:8}}>Rinnova con il tuo club o aspetta un'offerta dal mercato.</div>
           <Btn onClick={openNegoModal} v="primary" fw>📋 Negozia rinnovo</Btn>
         </Card>
       )}
@@ -14988,25 +14998,25 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
         const _winEnd=_isSumWin?5:23;
         const _weeksLeft=Math.max(0,_winEnd-_wk+1);
         return(
-          <Card bg={_listed?"#fef9c3":"#f0f9ff"} border={_listed?"#fde68a":"#bae6fd"} style={{marginBottom:8,padding:"12px 14px"}}>
+          <Card bg={_listed?TH.bgAmber:TH.bgBlue} border={_listed?TH.bdAmber:TH.bdBlue} style={{marginBottom:8,padding:"12px 14px"}}>
             <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:_listed?8:0}}>
               <div>
-                <div style={{fontSize:11,fontWeight:800,color:_listed?"#92400e":"#0369a1"}}>
+                <div style={{fontSize:11,fontWeight:800,color:_listed?TH.txAmber:TH.txBlue}}>
                   {_listed?"📢 Sei in lista cessioni":`🏷️ ${_winLabel} aperto`}
                 </div>
-                <div style={{fontSize:10,color:_listed?"#a16207":"#0284c7",marginTop:2}}>
+                <div style={{fontSize:10,color:_listed?TH.txAmber:TH.txBlue,opacity:0.8,marginTop:2}}>
                   {_inWin?`${_weeksLeft} settiman${_weeksLeft===1?"a":"e"} rimanent${_weeksLeft===1?"e":"i"}`:""}{_listed&&!_inWin?" · Finestra chiusa — attendi la prossima apertura":""}
                 </div>
               </div>
               {_listed&&(
-                <Btn v="ghost" style={{fontSize:10,padding:"5px 10px",flexShrink:0,border:"1px solid #d97706",color:"#92400e"}}
+                <Btn v="ghost" style={{fontSize:10,padding:"5px 10px",flexShrink:0,border:`1px solid ${TH.bdAmber}`,color:TH.txAmber}}
                   onClick={()=>{setPlayer(p=>({...p,transferListed:false,morale:clamp((p.morale||70)+5,0,100),log:["📢 Richiesta di cessione ritirata.",...(p.log||[])].slice(0,60)}));notify("Richiesta ritirata.",TH.muted);}}>
                   Ritira ✕
                 </Btn>
               )}
             </div>
             {transferOffer&&!transferOffer.isRenewal&&(
-              <div style={{marginTop:6,paddingTop:6,borderTop:`1px solid ${_listed?"#fde68a":"#bae6fd"}`,display:"flex",alignItems:"center",justifyContent:"space-between"}}>
+              <div style={{marginTop:6,paddingTop:6,borderTop:`1px solid ${_listed?TH.bdAmber:TH.bdBlue}`,display:"flex",alignItems:"center",justifyContent:"space-between"}}>
                 <div style={{fontSize:10,color:TH.text}}>📩 <strong>{transferOffer.club?.n}</strong> ha fatto un'offerta</div>
                 <Btn v="primary" style={{fontSize:10,padding:"4px 10px",flexShrink:0}} onClick={()=>setTab("dashboard")}>Vedi →</Btn>
               </div>
@@ -18254,8 +18264,8 @@ function App(){
         *{box-sizing:border-box;}
         html,body,#root{height:100%;}
         .cpm-root{height:100vh;height:100dvh;display:flex;flex-direction:column;overflow:hidden;}
-        .cpm-scroll{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;padding:12px 8px 80px;}
-        @media(min-width:560px){.cpm-scroll{padding:14px 14px 80px;}}
+        .cpm-scroll{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;padding:12px 8px calc(80px + env(safe-area-inset-bottom,0px));}
+        @media(min-width:560px){.cpm-scroll{padding:14px 14px calc(80px + env(safe-area-inset-bottom,0px));}}
         @media(min-width:900px){.cpm-scroll{padding:16px 24px 20px 244px;}}
         @media(min-width:1280px){.cpm-scroll{padding:18px 48px 20px 268px;}}
         .cpm-page{width:100%;}
@@ -18287,7 +18297,7 @@ function App(){
         .cpm-nav-bar{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:600px;z-index:100;}
         .cpm-nav-hint{display:none;}
         .cpm-nav-tabs button div:nth-child(3){display:none;}
-        .cpm-nav-tabs{display:flex;align-items:stretch;backdrop-filter:blur(12px);border-top:1px solid #e2e8f0;}
+        .cpm-nav-tabs{display:flex;align-items:stretch;backdrop-filter:blur(12px);border-top:1px solid #e2e8f0;padding-bottom:env(safe-area-inset-bottom,0px);}
         @media(min-width:900px){
           .cpm-nav-bar{position:fixed;top:0;left:0;bottom:0;right:auto;width:220px;transform:none;max-width:none;display:flex;flex-direction:column;border-right:1px solid rgba(100,116,139,0.18);border-bottom:none;}
           .cpm-nav-hint{display:none;}
