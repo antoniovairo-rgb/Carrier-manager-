@@ -2612,7 +2612,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.23.0"; // Sprint 3D-8b: replay con riavvolgimento (ring buffer + camera replay + letterbox)
+const GAME_VERSION="4.24.0"; // Sprint 3D-BALL: arco 3D palla + scia Y colorata + alone occlusione + mini-trail
 const SAVE_VERSION=6;
 // Sprint ENV — ambiente rilevato automaticamente dal runtime (non gestito manualmente).
 // PRODUCTION = deploy GitHub Pages (*.github.io). Tutto il resto (staging githack, locale, localhost) = TEST.
@@ -6676,9 +6676,12 @@ function ThreeMatchView(props){
     // Palla
     const ball=new THREE.Mesh(new THREE.SphereGeometry(0.42,14,10),new THREE.MeshPhongMaterial({color:0xfafafa,shininess:85}));
     ball.castShadow=true;ball.position.set(G2X(ballX||50),0.42,G2Z(ballY||50));scene.add(ball);
-    // Sprint 3D-6b: scia palla — ghost-dots in dissolvenza, visibili SOLO negli highlight (elegante, non invasiva)
-    const TRAIL_N=10,trailDots=[],trailHist=[];
-    for(let i=0;i<TRAIL_N;i++){const d=new THREE.Mesh(new THREE.SphereGeometry(0.30,8,6),new THREE.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:0,depthWrite:false}));d.visible=false;scene.add(d);trailDots.push(d);}
+    // Sprint 3D-BALL: alone occlusione (depthTest:false) — palla visibile anche dietro i giocatori
+    const ballHalo=new THREE.Mesh(new THREE.SphereGeometry(0.70,10,7),new THREE.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:0.10,depthTest:false,depthWrite:false}));
+    scene.add(ballHalo);
+    // Sprint 3D-6b + BALL: scia palla 3D (x,y,z) — ghost-dots colorati per tipo azione, depthTest:false
+    const TRAIL_N=14,trailDots=[],trailHist=[];
+    for(let i=0;i<TRAIL_N;i++){const d=new THREE.Mesh(new THREE.SphereGeometry(0.28,8,6),new THREE.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:0,depthTest:false,depthWrite:false}));d.visible=false;scene.add(d);trailDots.push(d);}
 
     // Particelle meteo (pioggia / temporale / neve) + flash per il temporale
     let wParticles=null,flashLight=null;
@@ -6704,15 +6707,17 @@ function ThreeMatchView(props){
     let actT=0,actType=null,prevPhase="";
     // Sprint 3D-8a: cronometro dell'esito per il rallenty cinematografico
     let resultT=0;
+    // Sprint 3D-BALL: arco parabolico della palla (shot/header/cross/freekick/penalty)
+    let ballArcT=0,ballArcDur=0,ballArcH=0,ballArcActive=false;
     // Sprint 3D-8b: replay con riavvolgimento — ring buffer posizioni (≈2.5s) + macchina a stati
-    const REP_CAP=150,snapSize=(players.length+1)*2+2;
+    const REP_CAP=150,snapSize=(players.length+1)*2+3;
     const repRing=new Float32Array(REP_CAP*snapSize);
     let repHead=0,repCount=0,replaying=false,replayDone=false,repT=0,repStart=0,repFrames=0;const REPLAY_DUR=2.6;
     const recordSnap=()=>{
       let o=repHead*snapSize;
       for(let i=0;i<players.length;i++){repRing[o++]=players[i].mesh.position.x;repRing[o++]=players[i].mesh.position.z;}
       repRing[o++]=hero.position.x;repRing[o++]=hero.position.z;
-      repRing[o++]=ball.position.x;repRing[o++]=ball.position.z;
+      repRing[o++]=ball.position.x;repRing[o++]=ball.position.y;repRing[o++]=ball.position.z;
       repHead=(repHead+1)%REP_CAP;repCount=Math.min(repCount+1,REP_CAP);
     };
     const _legFromSpeed=(mesh,sp,dt)=>{mesh._sp+=(sp-mesh._sp)*Math.min(dt*8,1);const s=mesh._sp;
@@ -6726,7 +6731,7 @@ function ThreeMatchView(props){
       const idx=(repStart+fi)%REP_CAP,pid=(repStart+Math.max(fi-1,0))%REP_CAP,o=idx*snapSize,po=pid*snapSize;
       for(let i=0;i<players.length;i++){_applyFrame(players[i].mesh,repRing[o+i*2],repRing[o+i*2+1],repRing[po+i*2],repRing[po+i*2+1],dt);}
       const hO=players.length*2;_applyFrame(hero,repRing[o+hO],repRing[o+hO+1],repRing[po+hO],repRing[po+hO+1],dt);
-      const bO=hO+2;ball.position.x=repRing[o+bO];ball.position.z=repRing[o+bO+1];ball.rotation.y+=0.12;ball.rotation.x+=0.08;
+      const bO=hO+2;ball.position.x=repRing[o+bO];ball.position.y=repRing[o+bO+1];ball.position.z=repRing[o+bO+2];ball.rotation.y+=0.12;ball.rotation.x+=0.08;
       if(prog>=1){replaying=false;replayDone=true;setReplayOn(false);}
     };
     // Stato walkout 3D: i giocatori si schierano in fila, camera che scorre, poi calcio d'inizio
@@ -6781,16 +6786,25 @@ function ThreeMatchView(props){
       const slow=isResult?(0.28+0.72*Math.min(resultT/1.6,1)):1;
       const aDt=dt*slow,ak=Math.min(1,aDt*6.5);
       // palla per prima, così i giocatori fermi si orientano verso di essa
-      const obx=ball.position.x,obz=ball.position.z;
+      const obx=ball.position.x,oby=ball.position.y,obz=ball.position.z;
       ball.position.x+=(G2X(P.ballX||50)-ball.position.x)*ak;ball.position.z+=(G2Z(P.ballY||50)-ball.position.z)*ak;
-      const moved=Math.hypot(ball.position.x-obx,ball.position.z-obz);
-      ball.rotation.y+=0.04+moved*0.10;ball.rotation.x+=0.03+moved*0.06;
+      // Sprint 3D-BALL: parabola sull'esito — arco in base al tipo di azione
+      if(ballArcActive){ballArcT+=aDt;const u=Math.min(ballArcT/ballArcDur,1);ball.position.y=0.42+Math.sin(u*Math.PI)*ballArcH;if(u>=1){ballArcActive=false;}}
+      else{ball.position.y+=(0.42-ball.position.y)*Math.min(aDt*6,1);}
+      ballHalo.position.copy(ball.position);
+      const _hTgt=isHL?0.18:0.08;ballHalo.material.opacity+=(_hTgt-ballHalo.material.opacity)*Math.min(dt*3,1);
+      const moved=Math.hypot(ball.position.x-obx,ball.position.y-oby,ball.position.z-obz);
+      ball.rotation.y+=0.04+moved*0.12;ball.rotation.x+=0.03+moved*0.08;
       const bx=ball.position.x,bz=ball.position.z;
       const isWalk=P.matchPhase==="walkout";
       // transizioni di fase: trigger animazione esito + gestione buffer/replay
       const _curPh=P.matchPhase;
       if(_curPh!==prevPhase){
-        if(_curPh==="hl_result"){const t=P.hlType;actType=(t==="header"||t==="tackle"||t==="dribble")?t:(!t||t==="build")?null:"shot";actT=0;}
+        if(_curPh==="hl_result"){const t=P.hlType;actType=(t==="header"||t==="tackle"||t==="dribble")?t:(!t||t==="build")?null:"shot";actT=0;
+          if(t==="shot"||t==="penalty"){ballArcH=4.8;ballArcDur=0.72;ballArcT=0;ballArcActive=true;}
+          else if(t==="header"){ballArcH=3.2;ballArcDur=0.65;ballArcT=0;ballArcActive=true;}
+          else if(t==="cross"||t==="freekick"){ballArcH=3.6;ballArcDur=0.82;ballArcT=0;ballArcActive=true;}
+          else ballArcActive=false;}
         if(_curPh==="hl_intro"||(_curPh==="hl_move"&&prevPhase==="playing")){repCount=0;repHead=0;replayDone=false;}
         if(_curPh!=="hl_result"&&replaying){replaying=false;setReplayOn(false);}
       }
@@ -6871,11 +6885,17 @@ function ThreeMatchView(props){
         if(flashLight.userData.t>0){flashLight.intensity=7;flashLight.userData.t-=dt;}else flashLight.intensity=0;
       }
 
-      // ---- Scia palla (solo HL) + marcatore eroe (Sprint 3D-6b) ----
-      trailHist.push(ball.position.x,ball.position.z);if(trailHist.length>TRAIL_N*2)trailHist.splice(0,trailHist.length-TRAIL_N*2);
-      for(let i=0;i<TRAIL_N;i++){const d=trailDots[i],j=i*2;
-        if(isHL&&j<trailHist.length){d.visible=true;d.position.set(trailHist[j],0.42,trailHist[j+1]);const age=(i+1)/TRAIL_N;d.material.opacity=0.05+age*0.32;d.scale.setScalar(0.42+age*0.7);}
-        else d.visible=false;}
+      // ---- Scia palla 3D — Sprint 3D-BALL (HL intensa + mini-trail in gioco) ----
+      trailHist.push(ball.position.x,ball.position.y,ball.position.z);
+      if(trailHist.length>TRAIL_N*3)trailHist.splice(0,trailHist.length-TRAIL_N*3);
+      const _tCol=((P.hlType==="shot"||P.hlType==="penalty")?0xff8822:(P.hlType==="header")?0x44ccff:(P.hlType==="cross"||P.hlType==="freekick")?0xffcc33:0xffffff);
+      const _showTrail=isHL||(P.matchPhase==="playing"&&moved>0.5);
+      for(let i=0;i<TRAIL_N;i++){const d=trailDots[i],j=i*3;
+        if(_showTrail&&j<trailHist.length){d.visible=true;d.position.set(trailHist[j],trailHist[j+1],trailHist[j+2]);d.material.color.setHex(_tCol);
+          const age=(i+1)/TRAIL_N;
+          if(isHL){d.material.opacity=0.12+age*0.58;d.scale.setScalar(0.46+age*0.90*(1+Number(ballArcActive)*0.4));}
+          else{d.material.opacity=0.06+age*0.20;d.scale.setScalar(0.32+age*0.52);}
+        }else d.visible=false;}
       heroMark.position.set(hero.position.x,3.0+Math.sin(now*0.004)*0.12,hero.position.z);
       heroMark.rotation.y+=dt*1.1;
       heroMark.material.opacity=isHL?0.85+Math.sin(now*0.012)*0.15:0.62;
