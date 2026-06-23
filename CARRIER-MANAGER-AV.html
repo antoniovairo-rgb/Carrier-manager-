@@ -2542,7 +2542,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.7.0"; // Fase 1 copyright: league/club names → fictional equivalents; save migration for old saves
+const GAME_VERSION="4.7.1"; // Fase 2 nav: 8 tab → 5 container tab (Stagione, Carriera); sub-nav pills
 const SAVE_VERSION=6;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -12219,12 +12219,12 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       // Arrow keys for tab switching
       else if(e.key==="ArrowLeft"&&!inModal){
         e.preventDefault();
-        const tabs=["dashboard","calendar","standings","club","profile","agente","coppe","nazionale"];
-        const cur=tabs.indexOf(tab);if(cur>0)goTab(tabs[cur-1]);
+        const tabs=["dashboard","stagione","club","carriera","agente"];
+        const cur=tabs.indexOf(_tabToContainer(tab));if(cur>0)goTab(tabs[cur-1]);
       }else if(e.key==="ArrowRight"&&!inModal){
         e.preventDefault();
-        const tabs=["dashboard","calendar","standings","club","profile","agente","coppe","nazionale"];
-        const cur=tabs.indexOf(tab);if(cur<tabs.length-1)goTab(tabs[cur+1]);
+        const tabs=["dashboard","stagione","club","carriera","agente"];
+        const cur=tabs.indexOf(_tabToContainer(tab));if(cur<tabs.length-1)goTab(tabs[cur+1]);
       }
     };
     window.addEventListener("keydown",onKey);
@@ -12259,7 +12259,9 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     notify("📁 File esportato!",TH.success);
   };
 
-  const goTab=t=>{setTab(t);setScreen(t);};
+  const _containerDefault={stagione:"calendar",carriera:"profile"};
+  const _tabToContainer=t=>["calendar","standings","coppe"].includes(t)?"stagione":["profile","nazionale"].includes(t)?"carriera":t;
+  const goTab=t=>{const r=_containerDefault[t]||t;setTab(r);setScreen(r);};
   // only allow playing if current week has a scheduled match
   const getThisWeekMatchday=()=>{
     const cal=player.calendar||[];
@@ -14176,7 +14178,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     </div>
   );
 
-  const tabs=[{id:"dashboard",e:"🏠",l:L.tabs.dashboard,k:"M"},{id:"calendar",e:"📅",l:L.tabs.calendar,k:"C"},{id:"standings",e:"📊",l:L.tabs.standings,k:"F"},{id:"club",e:"🏟️",l:"Club",k:"S"},{id:"profile",e:"👤",l:L.tabs.profile,k:"R"},{id:"agente",e:"🤵",l:L.agent,k:"G"},{id:"coppe",e:"🏆",l:"Coppe",k:"K"},{id:"nazionale",e:"🌍",l:"Naz.",k:"N"}];
+  const tabs=[{id:"dashboard",e:"🏠",l:"Home",k:"M"},{id:"stagione",e:"📅",l:"Stagione",k:"C"},{id:"club",e:"🏟️",l:"Club",k:"S"},{id:"carriera",e:"👤",l:"Carriera",k:"R"},{id:"agente",e:"🤵",l:L.agent,k:"G"}];
 
   return(
     <div className="cpm-career">
@@ -14817,6 +14819,27 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
           </button>
         </div>
       </div>
+
+      {/* Sub-nav pills — Stagione container */}
+      {(tab==="calendar"||tab==="standings"||tab==="coppe")&&(
+        <div style={{display:"flex",gap:6,marginBottom:12,paddingBottom:10,borderBottom:"1px solid "+TH.cardBorder}}>
+          {[{id:"calendar",e:"📅",l:"Calendario"},{id:"standings",e:"📊",l:"Classifica"},{id:"coppe",e:"🏆",l:"Coppe"}].map(s=>(
+            <button key={s.id} onClick={()=>goTab(s.id)} style={{flex:1,padding:"7px 6px",borderRadius:10,border:"1px solid "+(tab===s.id?TH.primary:TH.cardBorder),background:tab===s.id?TH.primary+"22":"transparent",color:tab===s.id?TH.primary:TH.muted,fontSize:11,fontWeight:700,cursor:"pointer",fontFamily:"inherit",display:"flex",alignItems:"center",justifyContent:"center",gap:4,transition:"all .15s"}}>
+              <span>{s.e}</span><span>{s.l}</span>
+            </button>
+          ))}
+        </div>
+      )}
+      {/* Sub-nav pills — Carriera container */}
+      {(tab==="profile"||tab==="nazionale")&&(
+        <div style={{display:"flex",gap:6,marginBottom:12,paddingBottom:10,borderBottom:"1px solid "+TH.cardBorder}}>
+          {[{id:"profile",e:"👤",l:"Profilo"},{id:"nazionale",e:"🌍",l:"Nazionale"}].map(s=>(
+            <button key={s.id} onClick={()=>goTab(s.id)} style={{flex:1,padding:"7px 6px",borderRadius:10,border:"1px solid "+(tab===s.id?TH.primary:TH.cardBorder),background:tab===s.id?TH.primary+"22":"transparent",color:tab===s.id?TH.primary:TH.muted,fontSize:11,fontWeight:700,cursor:"pointer",fontFamily:"inherit",display:"flex",alignItems:"center",justifyContent:"center",gap:4,transition:"all .15s"}}>
+              <span>{s.e}</span><span>{s.l}</span>
+            </button>
+          ))}
+        </div>
+      )}
 
       {/* Sprint 19 — Career stats mini widget */}
       {tab==="dashboard"&&(player.totalMatches||0)>0&&(
@@ -18046,7 +18069,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
         {toggleLang&&<button onClick={toggleLang} style={{marginLeft:"auto",fontSize:10,background:"#e2e8f0",border:"none",borderRadius:4,padding:"2px 7px",cursor:"pointer",color:TH.text,fontWeight:700}}>🌐 {lang}</button>}
       </div>
       <div className="cpm-nav-tabs" style={{background:TH.navBg,borderTop:"1px solid "+TH.cardBorder,overflowX:"auto",WebkitOverflowScrolling:"touch",scrollbarWidth:"none"}}>
-        {tabs.map(t=><button key={t.id} className={tab===t.id?"cpm-tab-act":""} onClick={()=>goTab(t.id)} title={`${t.l} [${t.k}]`} style={{flex:"0 0 auto",minWidth:52,padding:"10px 6px 6px",border:"none",background:"transparent",cursor:"pointer",fontFamily:"inherit",color:tab===t.id?TH.primary:TH.faint,borderTop:`2px solid ${tab===t.id?TH.primary:"transparent"}`,transition:"all .15s"}}><div style={{fontSize:17}}>{t.e}</div><div style={{fontSize:10,marginTop:1,letterSpacing:.3}}>{t.l}</div><div style={{fontSize:8,color:tab===t.id?TH.primary+"99":TH.faint+"88",marginTop:1,fontFamily:"monospace"}}>[{t.k}]</div></button>)}
+        {tabs.map(t=>{const _act=_tabToContainer(tab)===t.id;return(<button key={t.id} className={_act?"cpm-tab-act":""} onClick={()=>goTab(t.id)} title={`${t.l} [${t.k}]`} style={{flex:"1 1 0",minWidth:52,padding:"10px 6px 6px",border:"none",background:"transparent",cursor:"pointer",fontFamily:"inherit",color:_act?TH.primary:TH.faint,borderTop:`2px solid ${_act?TH.primary:"transparent"}`,transition:"all .15s"}}><div style={{fontSize:17}}>{t.e}</div><div style={{fontSize:10,marginTop:1,letterSpacing:.3}}>{t.l}</div><div style={{fontSize:8,color:_act?TH.primary+"99":TH.faint+"88",marginTop:1,fontFamily:"monospace"}}>[{t.k}]</div></button>);})}
         {toggleLang&&<button onClick={toggleLang} title="Cambia lingua / Change language" style={{padding:"6px 10px",border:"none",borderLeft:`1px solid ${TH.cardBorder}`,background:"transparent",cursor:"pointer",fontFamily:"inherit",color:TH.faint,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:1}}><div style={{fontSize:14}}>🌐</div><div style={{fontSize:8,marginTop:1,letterSpacing:.3,fontWeight:700}}>{lang}</div></button>}
       </div>
       </div>{/* end bottom nav wrapper */}
