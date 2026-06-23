@@ -2612,7 +2612,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.24.0"; // Sprint 3D-BALL: arco 3D palla + scia Y colorata + alone occlusione + mini-trail
+const GAME_VERSION="4.25.0"; // Sprint 3D-G1: broadcast — anti-sovraesposizione DAY + de-zoom HL + cartelloni LED
 const SAVE_VERSION=6;
 // Sprint ENV — ambiente rilevato automaticamente dal runtime (non gestito manualmente).
 // PRODUCTION = deploy GitHub Pages (*.github.io). Tutto il resto (staging githack, locale, localhost) = TEST.
@@ -6574,7 +6574,7 @@ function ThreeMatchView(props){
     // solo day/dusk e il meteo modulano cielo, nebbia e intensità luci.
     const tod=timeOfDay||"night",wfx=weather&&weather.pitchFx; // wfx: null|wind|rain|fog|snow|storm
     let skyCol=pal.skyTop,fogCol=pal.fog,ambInt=pal.ambInt,sunInt=0.78,sunColor=pal.flood,hemiInt=0.3,fogNear=95,fogFar=260;
-    if(tod==="day"){skyCol=0x6fa8dc;fogCol=0xbcd0e0;ambInt=0.80;sunInt=1.05;sunColor=0xfff6e8;hemiInt=0.55;fogNear=150;fogFar=360;}
+    if(tod==="day"){skyCol=0x6fa8dc;fogCol=0xbcd0e0;ambInt=0.62;sunInt=0.84;sunColor=0xfff6e8;hemiInt=0.42;fogNear=150;fogFar=360;}/* Sprint 3D-G1: intensità ridotte → niente erba slavata (renderer senza tonemapping) */
     else if(tod==="dusk"){skyCol=0x2a1530;fogCol=0x2c1622;ambInt=0.52;sunInt=0.72;sunColor=0xffb070;hemiInt=0.34;fogNear=110;fogFar=290;}
     if(wfx==="fog"){fogNear=18;fogFar=120;ambInt*=0.9;}
     else if(wfx==="rain"){fogNear*=0.7;fogFar*=0.7;ambInt*=0.82;sunInt*=0.6;if(tod==="day")skyCol=0x5a6b78;}
@@ -6600,10 +6600,12 @@ function ThreeMatchView(props){
     scene.add(sun);
     scene.add(new THREE.HemisphereLight(pal.skyHorizon,pal.grassA,hemiInt));
 
-    // Campo
-    const grass=new THREE.Mesh(new THREE.PlaneGeometry(104,68),new THREE.MeshLambertMaterial({color:pal.grassA}));
+    // Campo — Sprint 3D-G1: di giorno scurisco l'erba (0.82×) per compensare l'assenza di tonemapping; notte invariata
+    const _gA=new THREE.Color(pal.grassA),_gB=new THREE.Color(pal.grassB);
+    if(tod==="day"){_gA.multiplyScalar(0.82);_gB.multiplyScalar(0.82);}
+    const grass=new THREE.Mesh(new THREE.PlaneGeometry(104,68),new THREE.MeshLambertMaterial({color:_gA}));
     grass.rotation.x=-Math.PI/2;grass.receiveShadow=true;scene.add(grass);
-    for(let i=0;i<8;i++){const m=new THREE.MeshLambertMaterial({color:i%2?pal.grassA:pal.grassB});const s=new THREE.Mesh(new THREE.PlaneGeometry(13,68),m);s.rotation.x=-Math.PI/2;s.position.set(-45.5+i*13,0.01,0);s.receiveShadow=true;scene.add(s);}
+    for(let i=0;i<8;i++){const m=new THREE.MeshLambertMaterial({color:i%2?_gA:_gB});const s=new THREE.Mesh(new THREE.PlaneGeometry(13,68),m);s.rotation.x=-Math.PI/2;s.position.set(-45.5+i*13,0.01,0);s.receiveShadow=true;scene.add(s);}
     const lM=new THREE.LineBasicMaterial({color:0xffffff,opacity:0.8,transparent:true});
     const ln=pts=>{const g=new THREE.BufferGeometry().setFromPoints(pts.map(([x,z])=>new THREE.Vector3(x,0.03,z)));scene.add(new THREE.Line(g,lM));};
     ln([[-50,-34],[50,-34],[50,34],[-50,34],[-50,-34]]);ln([[0,-34],[0,34]]);
@@ -6682,6 +6684,13 @@ function ThreeMatchView(props){
     // Sprint 3D-6b + BALL: scia palla 3D (x,y,z) — ghost-dots colorati per tipo azione, depthTest:false
     const TRAIL_N=14,trailDots=[],trailHist=[];
     for(let i=0;i<TRAIL_N;i++){const d=new THREE.Mesh(new THREE.SphereGeometry(0.28,8,6),new THREE.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:0,depthTest:false,depthWrite:false}));d.visible=false;scene.add(d);trailDots.push(d);}
+
+    // Sprint 3D-G1: cartelloni LED broadcast — strisce emissive lungo le due touchline (additive, sul track esterno).
+    // buildStadium resta invariato; queste sono la prima fila luminosa che incornicia il campo in TV.
+    const LED_SEG=22,ledStrips=[],_ledCols=[new THREE.Color(_hCol),new THREE.Color(0xffffff),new THREE.Color(_aCol)];
+    const _segW=100/LED_SEG;
+    const _mkLed=(z)=>{for(let i=0;i<LED_SEG;i++){const m=new THREE.Mesh(new THREE.BoxGeometry(_segW*0.9,0.7,0.12),new THREE.MeshBasicMaterial({color:0xffffff}));m.position.set(-50+_segW*0.5+i*_segW,0.42,z);scene.add(m);ledStrips.push(m);}};
+    _mkLed(-34.4);_mkLed(34.4);
 
     // Particelle meteo (pioggia / temporale / neve) + flash per il temporale
     let wParticles=null,flashLight=null;
@@ -6852,8 +6861,8 @@ function ThreeMatchView(props){
         const wLx=clamp(ax*0.5+10,-12,42),wLy=1.5,wLz=az*0.6;
         // CLOSE — stacco ravvicinato; il punto di fuoco scivola dall'eroe alla palla a fine azione
         const fX=hx+(bx-hx)*bf,fZ=hz+(bz-hz)*bf;
-        let cPx=clamp(fX-30,-96,-4),cPy=22-bf*5,cPz=fZ*0.6;
-        let cLx=fX+10,cLy=1.6-bf*0.3,cLz=fZ*0.85;
+        let cPx=clamp(fX-39,-96,-4),cPy=27-bf*4,cPz=fZ*0.55;/* Sprint 3D-G1: de-zoom HL — camera più arretrata e alta, azione più leggibile */
+        let cLx=fX+11,cLy=1.7-bf*0.3,cLz=fZ*0.82;
         // Sprint 3D-7: camera dedicata su rigore/punizione — bassa, dietro la palla verso la porta
         if(isHL&&(P.hlType==="penalty"||P.hlType==="freekick")){
           cPx=clamp(bx-18,-96,-4);cPy=6.5;cPz=bz*0.7;cLx=bx+24;cLy=1.4;cLz=bz*0.5;
@@ -6896,6 +6905,10 @@ function ThreeMatchView(props){
           if(isHL){d.material.opacity=0.12+age*0.58;d.scale.setScalar(0.46+age*0.90*(1+Number(ballArcActive)*0.4));}
           else{d.material.opacity=0.06+age*0.20;d.scale.setScalar(0.32+age*0.52);}
         }else d.visible=false;}
+      // Sprint 3D-G1: sweep cromatico cartelloni LED (onda lenta, tinte club, leggermente più viva negli HL)
+      const _ledPhase=now*0.0011,_ledOff=Math.floor(_ledPhase),_ledBoost=isHL?0.18:0;
+      for(let i=0;i<LED_SEG;i++){const c=_ledCols[(i+_ledOff)%3],kbr=0.5+_ledBoost+0.4*Math.sin(_ledPhase*3+i*0.5);
+        ledStrips[i].material.color.copy(c).multiplyScalar(kbr);ledStrips[i+LED_SEG].material.color.copy(c).multiplyScalar(kbr);}
       heroMark.position.set(hero.position.x,3.0+Math.sin(now*0.004)*0.12,hero.position.z);
       heroMark.rotation.y+=dt*1.1;
       heroMark.material.opacity=isHL?0.85+Math.sin(now*0.012)*0.15:0.62;
