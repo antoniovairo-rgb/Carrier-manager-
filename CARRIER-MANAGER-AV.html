@@ -2542,7 +2542,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.8.1"; // Fix: dup id bre (Brentford/Brescia), dup abbr (FCM/DSC/BLU), 11 residual real FR/DE names; safer club-refresh migration guard
+const GAME_VERSION="4.9.0"; // Sprint C: Ritiro Pre-Campionato (3 sessioni: atletico/tecnico/amichevole) a inizio stagione pro, definisce gerarchia iniziale
 const SAVE_VERSION=6;
 // Sprint 15 — Interview system with consequences (200+ questions)
 const INTERVIEW_QS=[
@@ -12061,6 +12061,8 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     if(!('squadRole' in newP)){newP={...newP,squadRole:calcSquadRole(newP)};changed=true;}
     // Sprint E-1: promessa del mister
     if(!('coachPromise' in newP)){newP={...newP,coachPromise:null};changed=true;}
+    // Sprint C: ritiro pre-campionato — save in corso a metà stagione non lo rivede
+    if(!('campDone' in newP)){newP={...newP,campDone:(newP.week||1)>1};changed=true;}
     // Sprint E-3: prestiti reali
     if(!('loan' in newP)){newP={...newP,loan:null};changed=true;}
     // Fase 1 copyright: league rename migration (real names + 4.x intermediate fictional names → current)
@@ -13922,7 +13924,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       // Sprint 70: record coach tenure stats before coach possibly changes
       const _ch70={name:p.coach?.name||"Il Mister",style:p.coach?.style||"Bilanciato",season:p.season||1,goals:p.goals||0,assists:p.assists||0,matches:p.matches||0,ovr:p.ovr||60,coachTrust:p.coachTrust||60,coachChanged};
       const newCoachHistory=[...(p.coachHistory||[]),_ch70].slice(-20);
-      return{...p,season:newSeason,age:newAge,week:1,weekLived:false,goals:0,assists:0,matches:0,fatigue:0,skillPoints:0,stats:agedStats,ovr:newOvr,contract:newContract,contractExpired,club:nextClub84||p.club,loan:_loanE3,leagueOverrides:_newOvPre,morale:clamp((p.morale||70)+bonM+(playerClubRelegated?-10:playerClubPromoted?8:0)+(isGB?15:0),0,100),coachTrust:clamp((p.coachTrust||60)+bonCT+(playerClubRelegated?-8:playerClubPromoted?5:0)+(coachChanged?newCoach.trustMod:0)+_promiseTrustDelta,0,100),coachPromise:null,popularity:clamp((p.popularity||20)+bonPop+(isGB?25:0),0,100),value:Math.max(0.5,(p.value||0.8)+bonVal+(playerClubRelegated?-0.3:playerClubPromoted?0.15:0)+(isGB?0.8:0)),log:[agingLog,...objLogs,...[_growthLog102,gbLog,coachLog,phenomLog,relegLog].filter(Boolean),...(p.log||[])].slice(0,60),standings:newStandings,calendar:newCalendar,matchHistory:[],seasonObjectives:newObjectives,history:[...(p.history||[]),prevHist].slice(-50),clubPrestigeShifts:updatedShifts,cup:newCup,euro:newEuro,coach:newCoach,goldenBoys:gbSeasons,records:newRecords,teammates:newTeammates,journalists:newJournalists,fanLegend:updFanLegend,leagueArchive:newLeagueArchive,coachHistory:newCoachHistory,jerseyNumSeason:0,yellAccum:0,isSuspended:false,seasonCards:{y:0,r:0},lastLeagueShift:_lastShiftPre,...(captainReset?{isCaptain:false}:{})}; // Sprint 84 + E-3: club+loan updated
+      return{...p,season:newSeason,age:newAge,week:1,weekLived:false,goals:0,assists:0,matches:0,fatigue:0,skillPoints:0,stats:agedStats,ovr:newOvr,contract:newContract,contractExpired,club:nextClub84||p.club,loan:_loanE3,leagueOverrides:_newOvPre,morale:clamp((p.morale||70)+bonM+(playerClubRelegated?-10:playerClubPromoted?8:0)+(isGB?15:0),0,100),coachTrust:clamp((p.coachTrust||60)+bonCT+(playerClubRelegated?-8:playerClubPromoted?5:0)+(coachChanged?newCoach.trustMod:0)+_promiseTrustDelta,0,100),coachPromise:null,popularity:clamp((p.popularity||20)+bonPop+(isGB?25:0),0,100),value:Math.max(0.5,(p.value||0.8)+bonVal+(playerClubRelegated?-0.3:playerClubPromoted?0.15:0)+(isGB?0.8:0)),log:[agingLog,...objLogs,...[_growthLog102,gbLog,coachLog,phenomLog,relegLog].filter(Boolean),...(p.log||[])].slice(0,60),standings:newStandings,calendar:newCalendar,matchHistory:[],seasonObjectives:newObjectives,history:[...(p.history||[]),prevHist].slice(-50),clubPrestigeShifts:updatedShifts,cup:newCup,euro:newEuro,coach:newCoach,goldenBoys:gbSeasons,records:newRecords,teammates:newTeammates,journalists:newJournalists,fanLegend:updFanLegend,leagueArchive:newLeagueArchive,coachHistory:newCoachHistory,jerseyNumSeason:0,yellAccum:0,isSuspended:false,seasonCards:{y:0,r:0},lastLeagueShift:_lastShiftPre,campDone:false,...(captainReset?{isCaptain:false}:{})}; // Sprint 84 + E-3: club+loan updated · Sprint C: reset ritiro
     });
     // S41: double achievement — won league + cup same season
     {const _sd=[...(player.standings||[])].sort((a,b)=>b.pts-a.pts||b.gd-a.gd||b.gf-a.gf);const _ch=_sd[0];const _pid=player.club?.id||player.club?.n;if(player.cup?.champion&&_ch&&(_ch.id===_pid||_ch.n===player.club?.n)&&!(player.achievements||[]).includes("double")){setTimeout(()=>{setPlayer(p=>({...p,achievements:[...(p.achievements||[]),"double"]}));notify("🏆🏆🏆 DOPPIO! Campionato + Coppa nella stessa stagione! Leggendario!","#f59e0b");},1200);}}
@@ -13955,7 +13957,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       const newStandings=initStandings(lc.length?lc:getLeagueClubs(p));
       const seed=(newSeason*7919+newSeason*newSeason*31)%2147483647+hashStr(targetClub?.id||targetClub?.n||"u18")*17;
       const newCalendar=generateSeasonCalendar(targetClub||{id:"u18",n:"U18"},lc.length?lc:getLeagueClubs(p),seed);
-      const base={...p,week:1,weekLived:false,season:newSeason,age:newAge,goals:0,assists:0,matches:0,matchHistory:[],fatigue:clamp((p.fatigue||0)-30,0,100),morale:clamp((p.morale||70)+(offer.moralBonus||0),0,100),contract:{duration:offer.duration||1,wage:offer.wage||500,expiresAtSeason:newSeason+(offer.duration||1)},standings:newStandings,calendar:newCalendar,seasonObjectives:generateSeasonObjectives({...p,club:targetClub}),jerseyNumSeason:0,yellAccum:0,isSuspended:false,seasonCards:{y:0,r:0}}; // Sprint 74-75: reset jersey+cards
+      const base={...p,week:1,weekLived:false,season:newSeason,age:newAge,goals:0,assists:0,matches:0,matchHistory:[],fatigue:clamp((p.fatigue||0)-30,0,100),morale:clamp((p.morale||70)+(offer.moralBonus||0),0,100),contract:{duration:offer.duration||1,wage:offer.wage||500,expiresAtSeason:newSeason+(offer.duration||1)},standings:newStandings,calendar:newCalendar,seasonObjectives:generateSeasonObjectives({...p,club:targetClub}),jerseyNumSeason:0,yellAccum:0,isSuspended:false,seasonCards:{y:0,r:0},campDone:false}; // Sprint 74-75: reset jersey+cards · Sprint C: ritiro
       if(offer.isStayU18){
         return{...base,log:[`🔄 Resto in Under 18 (S.${newSeason})`,...(p.log||[])].slice(0,60)};
       }
@@ -14912,6 +14914,58 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
             })}
             <span style={{fontSize:10,color:TH.faint,marginLeft:2}}>ultime {recent.length}</span>
           </div>
+        );
+      })()}
+      {/* Sprint C — Ritiro Pre-Campionato (inizio stagione, solo pro) */}
+      {tab==="dashboard"&&(player.proStatus||"u18")==="pro"&&(player.season||1)>=2&&(player.week||1)===1&&!player.campDone&&!player.injured&&(()=>{
+        const SESSIONS=[
+          {id:"atletico",e:"🏃",l:"Atletico",d:"Lavoro fisico intenso col preparatore",ef:{fisico:1,fatigue:15,coachTrust:3,morale:5},txt:"Hai spinto al massimo sulla preparazione atletica. Le gambe rispondono."},
+          {id:"tecnico",e:"⚽",l:"Tecnico",d:"Sessioni col pallone e schemi di gioco",ef:{tecnica:1,fatigue:10,coachTrust:3,morale:6},txt:"Allenamento tecnico curato nei dettagli. Il mister ha apprezzato la qualità."},
+          {id:"amichevole",e:"🤝",l:"Amichevole",d:"Partite di prova e spirito di gruppo",ef:{morale:12,form:6,coachTrust:6,fatigue:5},txt:"Amichevoli e gruppo unito: arrivi alla stagione con la testa giusta."},
+        ];
+        const doSession=(s)=>{
+          setPlayer(p=>{
+            const ns={...p.stats};
+            if(s.ef.fisico)ns.fisico=clamp((ns.fisico||60)+s.ef.fisico,1,99);
+            if(s.ef.tecnica)ns.tecnica=clamp((ns.tecnica||60)+s.ef.tecnica,1,99);
+            const np={...p,stats:ns,ovr:calcOvr(ns),
+              fatigue:clamp((p.fatigue||0)+(s.ef.fatigue||0),0,100),
+              coachTrust:clamp((p.coachTrust||60)+(s.ef.coachTrust||0),0,100),
+              morale:clamp((p.morale||70)+(s.ef.morale||0),0,100),
+              form:clamp((p.form||70)+(s.ef.form||0),30,95),
+              campDone:true,
+              log:[`🏕️ Ritiro: sessione ${s.l} completata (S.${p.season||1})`,...(p.log||[])].slice(0,60)};
+            return{...np,squadRole:calcSquadRole(np)};
+          });
+          const _roleLbl={leader:"Leader spogliatoio",titolare:"Titolare",rotazione:"Rotazione",riserva:"Riserva",primavera:"Primavera"};
+          setTimeout(()=>notify(s.txt,TH.success),200);
+          setTimeout(()=>notify(`📋 Gerarchia iniziale: ${_roleLbl[calcSquadRole({...player,stats:player.stats})]||"Riserva"} — definita dal ritiro.`,TH.primary),1600);
+        };
+        return(
+          <Card bg="#eff6ff" border="#bfdbfe" style={{marginBottom:8,padding:"14px 14px"}}>
+            <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:4}}>
+              <span style={{fontSize:20}}>🏕️</span>
+              <div>
+                <div style={{fontSize:13,fontWeight:900,color:"#1e40af"}}>Ritiro Pre-Campionato</div>
+                <div style={{fontSize:10,color:"#3b82f6"}}>Stagione {player.season||1} · scegli come prepararti</div>
+              </div>
+            </div>
+            <div style={{fontSize:11,color:"#475569",marginBottom:10,lineHeight:1.4}}>Una sola sessione: definirà la tua condizione e la gerarchia iniziale in rosa.</div>
+            <div style={{display:"flex",flexDirection:"column",gap:7}}>
+              {SESSIONS.map(s=>(
+                <button key={s.id} onClick={()=>doSession(s)} style={{width:"100%",textAlign:"left",padding:"10px 12px",borderRadius:10,border:"1px solid #bfdbfe",background:"#fff",cursor:"pointer",fontFamily:"inherit",display:"flex",alignItems:"center",gap:10,transition:"all .12s"}}
+                  onMouseEnter={e=>{e.currentTarget.style.background="#dbeafe";e.currentTarget.style.borderColor="#60a5fa";}}
+                  onMouseLeave={e=>{e.currentTarget.style.background="#fff";e.currentTarget.style.borderColor="#bfdbfe";}}>
+                  <span style={{fontSize:20,flexShrink:0}}>{s.e}</span>
+                  <div style={{flex:1}}>
+                    <div style={{fontSize:12,fontWeight:800,color:"#1e3a8a"}}>{s.l}</div>
+                    <div style={{fontSize:10,color:TH.muted,marginTop:1}}>{s.d}</div>
+                  </div>
+                  <span style={{fontSize:16,color:"#93c5fd"}}>›</span>
+                </button>
+              ))}
+            </div>
+          </Card>
         );
       })()}
       {/* DASHBOARD */}
