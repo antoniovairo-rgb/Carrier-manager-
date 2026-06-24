@@ -2612,7 +2612,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.62.0"; // CINE-6: post-action obbligatoria — rete che si gonfia al gol + delusione portiere su gol subìto
+const GAME_VERSION="4.63.0"; // CINE-7: matrice compatibilità (528 combo, 0 gap) — attivata regia FAR_POST (cross+testa) da label "secondo palo/palo lontano"
 const SAVE_VERSION=6;
 // Sprint ENV — ambiente rilevato automaticamente dal runtime (non gestito manualmente).
 // PRODUCTION = deploy GitHub Pages (*.github.io). Tutto il resto (staging githack, locale, localhost) = TEST.
@@ -6591,13 +6591,14 @@ function deriveHL(sit,act){
   // ── VARIANT (nuovo livello cinematografico) ──
   let variant=null;
   if(type==="cross"){
+    // CINE-7: "secondo palo / palo lontano" va riconosciuto anche dalla label (non solo dal testo) → attiva regia FAR_POST
     if(/rientr|a rientrare/.test(lbl))variant="cross_cutback";
-    else if(/secondo palo|profond|arretrat/.test(tl))variant="cross_far_post";
+    else if(/secondo palo|palo lontano|profond|arretrat/.test(lbl)||/secondo palo|palo lontano|profond|arretrat/.test(tl))variant="cross_far_post";
     else if(/basso|teso|raso/.test(lbl))variant="cross_low_driven";
     else variant="cross_near_post";
   } else if(type==="header"){
-    if(/tuffo|piombo/.test(lbl))variant="header_diving";
-    else if(/secondo palo/.test(tl))variant="header_far_post";
+    if(/tuffo|piombo|in corsa/.test(lbl))variant="header_diving";
+    else if(/secondo palo|palo lontano|profond/.test(lbl)||/secondo palo|palo lontano|profond/.test(tl))variant="header_far_post";
     else variant="header_near_post";
   } else if(type==="shot"){
     if(/solo davanti|davanti al portiere|portiere in uscita/.test(tl))variant="shot_one_on_one";
