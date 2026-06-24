@@ -1606,11 +1606,11 @@ S("⚡ Solo davanti al portiere!",["area"],{x:[80,98],y:[25,75]},{x:[82,92],y:[3
 S("🤸 Rovesciata spettacolare!",["area"],{x:[76,94],y:[22,78]},{x:[78,88],y:[28,72]},[
   A("🤸 Rovesciata!","tecnica",-6,"goal","miss",22),A("✈️ Stacco di testa","fisico",3,"goal","miss",15),A("🦵 Tiro di prima","tiro",2,"goal","miss",12)]),
 S("⚡ Tap-in! Porta quasi vuota.",["area"],{x:[84,98],y:[28,72]},{x:[86,94],y:[33,67]},[
-  A("🦵 Spingila dentro!","tiro",18,"goal","miss_easy",8),A("🎯 Precisione","tecnica",12,"goal","miss",8),A("✈️ Di testa","fisico",8,"goal","miss",10)]),
+  A("🦵 Spingila dentro!","tiro",18,"goal","miss_easy",8),A("🎯 Precisione","tecnica",12,"goal","miss",8),A("🦶 Deviazione di prima","fisico",8,"goal","miss",10)]),
 S("🌀 Dribbling completato in area!",["area"],{x:[80,97],y:[20,80]},{x:[82,90],y:[26,74]},[
   A("🦵 Tiro a giro","tiro",8,"goal","miss",14),A("🌀 Dribbling portiere","tecnica",3,"goal","miss_easy",18),A("🎯 Assist retropassaggio","passaggio",5,"assist","intercept",10)]),
 S("🎯 Deviazione ravvicinata!",["area"],{x:[78,96],y:[25,75]},{x:[80,90],y:[30,70]},[
-  A("🦵 Deviazione istintiva","tecnica",5,"goal","miss",12),A("✈️ Di testa","fisico",3,"goal","miss",12),A("🌀 Prima intenzione","tiro",0,"goal","miss",14)]),
+  A("🦵 Deviazione istintiva","tecnica",5,"goal","miss",12),A("🦶 Deviazione di piede","fisico",3,"goal","miss",12),A("🌀 Prima intenzione","tiro",0,"goal","miss",14)]),
 S("🔴 RIGORE! Sul dischetto.",["area"],{x:[88,89],y:[48,52]},{x:[88,89],y:[49,51]},[
   A("💥 Angolato rasoterra","tiro",10,"goal","miss",10),A("🎯 Cucchiaio","tecnica",-4,"goal","miss_easy",8),A("⚡ Centro-alto","tiro",5,"goal","miss",10)],true,0,"🤫 Il silenzio dello stadio è assordante. Tutto fermo. Solo tu e il portiere.",`off`),
 
@@ -1694,7 +1694,7 @@ S("💪 Duello aereo su corner avversario!",["propria","difesa"],{x:[5,22],y:[25
 S("📐 Schema! Inserimento da centrocampo in area.",["trequarti","bordo"],{x:[38,88],y:[28,72]},{x:[40,52],y:[38,62]},[
   A("⚡ Taglio in profondità","velocità",8,"goal","intercept",22),A("🎯 Taglio sul secondo palo","tecnica",6,"goal","miss",18),A("↩️ Dai e vai corto","passaggio",5,"assist","intercept",10)],false,4,"📐 Schema di movimento! Parti da centrocampo e taglia verso l'area in diagonale."),
 S("🔄 Dai e vai! Schema rapido in trequarti.",["trequarti","bordo"],{x:[55,85],y:[22,78]},{x:[58,68],y:[32,68]},[
-  A("↩️ Dai e vai preciso","passaggio",8,"assist","intercept",12),A("⚡ Accelera in profondità","velocità",6,"goal","intercept",18),A("🎯 Tiro al volo","tiro",-2,"goal","miss",14)],false,3,"🔄 Dai e vai! Scarica e rilanciati immediatamente nello spazio."),
+  A("↩️ Dai e vai preciso","passaggio",8,"assist","intercept",12),A("⚡ Accelera in profondità","velocità",6,"goal","intercept",18),A("🎯 Tiro di prima","tiro",-2,"goal","miss",14)],false,3,"🔄 Dai e vai! Scarica e rilanciati immediatamente nello spazio."),
 S("⚡ Corsa di inserimento sul cross!",["trequarti","bordo"],{x:[55,90],y:[18,82]},{x:[58,68],y:[25,40]},[
   A("✈️ Colpo di testa","fisico",7,"goal","miss",16),A("🦵 Tiro di prima","tiro",4,"goal","miss",14),A("🌀 Controllo e tiro","tecnica",3,"goal","miss",12)],false,4,"🏃 Il cross sta per arrivare! Inserisciti con i tempi giusti per attaccare il pallone."),
 S("🌀 TUNNEL! Prova la finta di corpo e passa in mezzo.",["bordo","area"],{x:[72,95],y:[20,80]},{x:[75,88],y:[30,70]},[
@@ -1742,7 +1742,7 @@ S("💥 PALO! Rimbalza in area. Arriva!",["area"],{x:[83,98],y:[28,72]},{x:[85,9
 S("🏃 Pressing alto! Rubi palla in trequarti avversaria.",["trequarti"],{x:[55,72],y:[20,80]},{x:[58,68],y:[28,72]},[
   A("🏃 Pressing aggressivo","velocità",8,"goal","through",20),A("✋ Intercetta il retropassaggio","tecnica",5,"goal","through",14),A("📣 Copri le linee di passaggio","mentalità",4,"recovery","through",10)],false,2,"😤 Il portiere avversario ha palla! Pressa immediatamente!","def"),
 /* Colpo di testa su punizione laterale */
-S("📐 Punizione dalla fascia! Attacca il palo lontano.",["area"],{x:[76,96],y:[18,28]},{x:[78,88],y:[22,26]},[
+S("✈️ Cross teso dalla fascia — attacca il palo lontano!",["area"],{x:[76,96],y:[18,28]},{x:[78,88],y:[22,26]},[
   A("✈️ Stacco sul palo lontano","fisico",7,"goal","miss",16),A("🦵 Mezza rovesciata","tecnica",-4,"goal","miss",20),A("🤝 Sponda indietro","passaggio",4,"assist","intercept",8)]),
 /* Lancio lungo per lo scatto */
 S("🎯 Lancio lungo millimetrico! Scatta in profondità.",["trequarti","centro"],{x:[40,72],y:[25,75]},{x:[42,58],y:[30,70]},[
@@ -1790,7 +1790,7 @@ S("💥 Tiro di potenza sul palo corto!",["bordo","area"],{x:[73,94],y:[18,42]},
 S("🤸 Rovesciata in corsa!",["area"],{x:[80,97],y:[25,75]},{x:[82,92],y:[30,70]},[
   A("🤸 Acrobazia istintiva in porta","tecnica",-8,"goal","miss",22),A("🦵 Tiro di collo d'istinto","tiro",2,"goal","miss",14),A("🎯 Controllo e conclude","tecnica",5,"goal","miss",13)]),
 S("⚽ Porta spalancata — spingila!",["area"],{x:[84,98],y:[28,72]},{x:[86,96],y:[33,67]},[
-  A("⚽ Prima intenzione — dentro!","tiro",20,"goal","miss_easy",8),A("🎯 Piazzata angolata","tecnica",14,"goal","miss",10),A("✈️ Di testa per sicurezza","fisico",10,"goal","miss",12)]),
+  A("⚽ Prima intenzione — dentro!","tiro",20,"goal","miss_easy",8),A("🎯 Piazzata angolata","tecnica",14,"goal","miss",10),A("🦶 Spinta di sicurezza","fisico",10,"goal","miss",12)]),
 S("😱 Errore del portiere! Palla libera.",["area"],{x:[84,98],y:[28,72]},{x:[86,96],y:[33,67]},[
   A("🦵 Prima intenzione subito!","tiro",16,"goal","miss_easy",8),A("🎯 Tocco preciso per il gol","tecnica",12,"goal","miss",10),A("🌀 Dribbla il portiere e segna","dribbling",8,"goal","miss",14)]),
 
@@ -1904,7 +1904,7 @@ S("🎯 Lanci lunghi — alzati e controlla!",["difesa","centro"],{x:[15,45],y:[
 S("⚡ Break verticale — lancia la transizione!",["centro","trequarti"],{x:[40,68],y:[22,78]},{x:[42,58],y:[28,72]},[
   A("⚡ Lancio in profondità immediato","passaggio",7,"assist","intercept",11),A("🏃 Avanza col pallone di corsa","velocità",5,"goal","intercept",16),A("🔄 Smista sul lato libero","passaggio",5,"assist","intercept",8)]),
 S("🧠 Gioco aereo a centrocampo!",["centro","trequarti"],{x:[38,68],y:[22,78]},{x:[40,58],y:[28,72]},[
-  A("✈️ Stacco e indirizza il compagno","fisico",6,"assist","intercept",10),A("💪 Contrasto fisico in aria","fisico",4,"recovery","through",12),A("🌀 Finta e lascia passare","tecnica",2,"assist","nothing",8)]),
+  A("✈️ Stacco e indirizza il compagno","fisico",6,"assist","intercept",10),A("💪 Stacco difensivo deciso","fisico",4,"recovery","through",12),A("🤝 Sponda per il compagno","passaggio",2,"assist","nothing",8)]),
 S("💪 Recupero in pressing aggressivo!",["centro","trequarti"],{x:[38,70],y:[20,80]},{x:[42,60],y:[28,72]},[
   A("💪 Contrasto duro sull'avversario","fisico",5,"recovery","foul",16),A("✋ Intercetta la traiettoria","tecnica",4,"recovery","through",12),A("🏃 Sprint di copertura","velocità",6,"recovery","through",14)],false,2,"💪 L'avversario parte in transizione! Bloccalo subito!","def"),
 
@@ -1973,7 +1973,7 @@ S("🤸 Salvataggio acrobatico impossibile!",["propria","difesa"],{x:[5,25],y:[2
   A("🤸 Salvataggio acrobatico","fisico",8,"save","goal_against",20),A("✋ Devia di piede sul palo","tecnica",6,"save","goal_against",14),A("📣 Chiamo il portiere","tecnica",3,"save","goal_against",8)],false,0,"🤸 Gol sicuro! Fai l'impossibile per salvare!","def"),
 S("🔙 Costruzione dal basso!",["propria","difesa"],{x:[5,30],y:[25,75]},{x:[8,22],y:[30,70]},[
   A("🔙 Smarcati per ricevere","posizionamento",5,"assist","intercept",8),A("⚡ Scatto per dargli una soluzione","velocità",4,"assist","intercept",10),A("💪 Offri il fisico per la palla lunga","fisico",3,"assist","intercept",6)]),
-S("⚽ Taglio sul palo lontano — tempismo!",["area","bordo"],{x:[76,96],y:[30,50]},{x:[78,88],y:[33,48]},[
+S("⚽ Taglio sul cross al palo lontano — tempismo!",["area","bordo"],{x:[76,96],y:[30,50]},{x:[78,88],y:[33,48]},[
   A("⚽ Taglio preciso sul palo lontano","velocità",7,"goal","miss",18),A("✈️ Testa in profondità","fisico",5,"goal","miss",15),A("↩️ Serve il compagno al centro","passaggio",4,"assist","intercept",8)]),
 S("🌀 Portiere in uscita — scartalo!",["area","bordo"],{x:[75,96],y:[28,72]},{x:[77,88],y:[32,68]},[
   A("⚡ Tiro immediato prima che esca","tiro",4,"goal","miss",14),A("🌀 Scarta il portiere in uscita","dribbling",5,"goal","miss_easy",20),A("↗️ Passa al compagno a porta vuota","passaggio",7,"assist","intercept",10)]),
@@ -2612,7 +2612,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.69.0"; // 3DV-TIFO: tifo sulle curve dietro le porte — bandiere alte, striscioni e onda di sciarpe (con boost al gol)
+const GAME_VERSION="4.70.0"; // CINE-COH: validazione coerenza highlight↔azione — hlBallState (palla aerea/terra/piede) governa testa/volée in deriveHL; suite test con dimensione "coerenza" come gate
 const SAVE_VERSION=6;
 // Sprint ENV — ambiente rilevato automaticamente dal runtime (non gestito manualmente).
 // PRODUCTION = deploy GitHub Pages (*.github.io). Tutto il resto (staging githack, locale, localhost) = TEST.
@@ -6566,17 +6566,29 @@ const ATE3_ARCCOL={shot:"#f97316",cross:"#22d3ee",tackle:"#fbbf24",save:"#60a5fa
 const HL_ZONE_3D={area:{x:38,z:0},bordo:{x:26,z:0},trequarti:{x:12,z:0},centro:{x:0,z:0},difesa:{x:-20,z:0},propria:{x:-38,z:0},fascia:{x:28,z:16}};
 const HL_ZONE_BALL={area:{x:87,y:50},bordo:{x:77,y:50},trequarti:{x:63,y:50},centro:{x:47,y:50},difesa:{x:29,y:50},propria:{x:11,y:50},fascia:{x:80,y:72}};
 const HL_ZONE_COL={shot:0xf97316,penalty:0xf97316,cross:0x22d3ee,freekick:0x22d3ee,tackle:0xfbbf24,save:0x60a5fa,pass:0xa3e635,dribble:0xa3e635,header:0xf97316,build:0xffffff};
+// CINE-COH: stato reale del pallone all'avvio della situation — SORGENTE UNICA per la coerenza HL↔azione.
+//  'set_ground' = palla ferma (rigore/punizione)
+//  'aerial'     = palla che arriva/è in volo (cross, corner, lancio alto, rimbalzo, rovesciata, stacco, colpo di testa)
+//  'feet'       = palla controllata al piede (default)
+// L'hlType viene poi derivato in coerenza con questo stato (niente colpi di testa / volée con palla al piede).
+function hlBallState(sit){
+  const t=(sit&&sit.text)||"";
+  // palla ferma a terra SOLO se il set-piece è battuto dall'eroe (lockMovement); una punizione/cross che l'eroe ATTACCA è palla aerea
+  if(/rigore|unizione/i.test(t)&&sit&&sit.lockMovement)return"set_ground";
+  if(/cross|corner|angolo|traversone|lancio lungo|lanci lungh|rimbalz|rovesciat|sforbiciat|vol[eé]e|al volo|aere[oa]|stacco|colpo di testa|incornat|di testa|testa[ !]|alzat|acrobat|controbalz|di petto/i.test(t))return"aerial";
+  return"feet";
+}
 // CINE-1: motore cinematografico — deriva {type, pattern, variant} da situation+azione.
 // `type` resta byte-identico al cascade legacy (zero regressioni); pattern/variant sono il nuovo backbone.
 function deriveHL(sit,act){
   const txt=sit?.text||"", tl=txt.toLowerCase(), lbl=(act?.label||"").toLowerCase();
-  const st=act?.stat, sitType=sit?.type, z=sit?.zones?.[0];
+  const st=act?.stat, sitType=sit?.type, z=sit?.zones?.[0], ballState=hlBallState(sit);
   // ── TYPE — cross e testa riconosciuti PRIMA della classificazione per stat (label ha priorità) ──
   let type=null;
   if(/RIGORE|igore/.test(txt))type="penalty";
   else if(/unizione/.test(txt))type="freekick";
   else if(act&&/cross|traversone/.test(lbl))type="cross";// CINE-2: cross label prima di stat=passaggio
-  else if(act&&/testa|incornata|stacco/.test(lbl))type="header";// header label prima di stat
+  else if(act&&/testa|incornata|stacco/.test(lbl))type=(ballState==="aerial")?"header":"shot";// CINE-COH: colpo di testa SOLO su palla aerea; altrimenti conclusione a terra
   else if(st==="tiro")type="shot";
   else if(st==="passaggio")type="pass";
   else if(st==="dribbling")type="dribble";
@@ -6603,9 +6615,10 @@ function deriveHL(sit,act){
   } else if(type==="shot"){
     if(/pallonett|cucchiaio|scavin/.test(lbl))variant="shot_chip";// label-chip ha priorità su pattern situazione (es. pallonetto in 1v1)
     else if(/solo davanti|davanti al portiere|portiere in uscita/.test(tl))variant="shot_one_on_one";
-    else if(/volo|volée|volee|rovesciata|prima/.test(lbl))variant="shot_volley";
+    else if(/rovesciat|sforbiciat/.test(lbl))variant="shot_volley";// CINE-COH: gesti acrobatici alzano sempre la palla → volée
+    else if(ballState==="aerial"&&/al volo|vol[eé]e|volo/.test(lbl))variant="shot_volley";// CINE-COH: volée SOLO con palla aerea (cross/rimbalzo)
     else if(/giro|piazzat|angolat/.test(lbl))variant="shot_curled";
-    else if(/tap-in|deviazion|istintiv/.test(tl)||/deviazion|istintiv/.test(lbl))variant="shot_first_time";
+    else if(/prima|deviazion|istintiv|tap-in|controbalz/.test(lbl)||/tap-in|deviazion|istintiv/.test(tl))variant="shot_first_time";// CINE-COH: "di prima"/prima intenzione = colpo di prima a terra, non volée aerea
     else variant="shot_power";
   } else if(type==="penalty"){
     if(/cucchiaio|pallonett/.test(lbl))variant="penalty_panenka";// Panenka → arco alto

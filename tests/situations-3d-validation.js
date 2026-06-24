@@ -32,19 +32,23 @@ const sIdx=findLine(/^const S=\(text,zones,mz,sz,actions/);
 const aIdx=findLine(/^const A=\(label,stat,bon,rew,fail,nrg\)/);
 const sitStart=findLine(/^const SITUATIONS=\[/);
 let sitEnd=-1;for(let i=sitStart;i<L.length;i++){if(/^\];/.test(L[i])){sitEnd=i;break;}}
+const bsStart=findLine(/^function hlBallState\(sit\)\{/);
+let bsEnd=-1;for(let i=bsStart+1;i<bsStart+40;i++){if(L[i].trim()==='}'){bsEnd=i;break;}}
 const dhStart=findLine(/^function deriveHL\(sit,act\)\{/);
 let dhEnd=-1;for(let i=dhStart;i<dhStart+120;i++){if(L[i].trim()==='return{type,pattern,variant};'){dhEnd=i+1;break;}}
 
-let SITUATIONS,deriveHL;
+let SITUATIONS,deriveHL,hlBallState;
 try{
   const combo=
     L.slice(sIdx,aIdx+1).join('\n').replace(/const /g,'var ')+'\n'+
     L.slice(sitStart,sitEnd+1).join('\n').replace('const SITUATIONS','var SITUATIONS')+'\n'+
+    L.slice(bsStart,bsEnd+1).join('\n')+'\n'+
     L.slice(dhStart,dhEnd+1).join('\n')+'\n'+
-    'globalThis.__S=SITUATIONS;globalThis.__D=deriveHL;';
+    'globalThis.__S=SITUATIONS;globalThis.__D=deriveHL;globalThis.__B=hlBallState;';
   (0,eval)(combo);
-  SITUATIONS=globalThis.__S;deriveHL=globalThis.__D;
+  SITUATIONS=globalThis.__S;deriveHL=globalThis.__D;hlBallState=globalThis.__B;
 }catch(e){console.error('FATAL extract S/A/SIT/deriveHL:',e.message);process.exit(1);}
+if(typeof hlBallState!=='function'){console.error('FATAL: hlBallState non estratto dal sorgente');process.exit(1);}
 
 // ---------- 2. estrai blocco REALE di lancio-arco (eval, zero paraphrasi) ----------
 // dal blocco "const _rz=(Math.random()-.5);" fino alla chiusura del ramo cross.
@@ -117,6 +121,14 @@ const OUTCOME_PHASES={ // passaggi visivi attesi → usati per lo score di sincr
 const G2X=gx=>(gx-50), G2Z=gy=>(gy-50)*0.68;
 const FIELD={xMin:-50,xMax:50,zMin:-34,zMax:34}; const AWAY_GOAL_X=46;
 const zoneCenter=z=>z?{x:(z.x[0]+z.x[1])/2,y:(z.y[0]+z.y[1])/2}:{x:50,y:50};
+// origine laterale del pallone? (per validare la coerenza dei cross)
+function isWide(sit){
+  const z=sit.zones||[];
+  if(z.includes('fascia'))return true;
+  const sz=sit.startZone;
+  if(sz&&sz.y){const my=(sz.y[0]+sz.y[1])/2;if(my<30||my>70)return true;}
+  return /fascia|fondo|rimessa laterale|sovrapposizione/i.test(sit.text||'');
+}
 
 // ---------- 6. simulazione traiettoria + validatori ----------
 const ARC_TYPES=new Set(['shot','cross','header','penalty','freekick']);
@@ -189,6 +201,24 @@ function simulate(sit,act){
     add('sync','warn','pallonetto con arco basso ('+arc.ballArcH+'m) — poco riconoscibile');
   if(/rigore/.test(txt)&&cls.type!=='penalty')add('sync','fail','testo "rigore" ma type non penalty ('+cls.type+')');
 
+  // --- COERENZA HL ↔ AZIONE ↔ STATO PALLA (CINE-COH) ---
+  // Flusso validato: stato reale palla → azione compatibile → hlType coerente → render/cronaca/outcome coerenti.
+  const bs=hlBallState(sit), wide=isWide(sit);
+  // "header label" = l'EROE colpisce di testa; escludi le consegne (palla in area PER il colpo di testa di un compagno)
+  const isHeaderLbl=/testa|incornata|stacco/.test(lbl)&&!/per il|palla in area|in area per|cross|in mezzo|smista/.test(lbl);
+  const isVolleyLbl=/al volo|vol[eé]e|\bvolo\b/.test(lbl)&&!/rovesciat|sforbiciat|cross/.test(lbl);
+  // colpo di testa / volée richiedono palla aerea (mai con palla al piede)
+  if(isHeaderLbl&&bs!=='aerial')add('coerenza','fail','azione di testa con palla NON aerea ('+bs+')');
+  if(cls.type==='header'&&bs!=='aerial')add('coerenza','fail','hlType=header ma stato palla '+bs);
+  if(isVolleyLbl&&bs!=='aerial')add('coerenza','warn','volée su palla non aerea ('+bs+')');
+  if(cls.variant==='shot_volley'&&bs!=='aerial')add('coerenza','warn','variant shot_volley ma palla '+bs);
+  // cross dovrebbe partire da posizione laterale
+  if(cls.type==='cross'&&!wide)add('coerenza','warn','cross da posizione centrale (non laterale)');
+  // tackle solo in situazioni difensive (avversario da contrastare)
+  if(cls.type==='tackle'&&sit.type!=='def')add('coerenza','warn','tackle ma situazione non difensiva ('+(sit.type||'?')+')');
+  // dribbling impossibile con palla che arriva in volo
+  if(cls.type==='dribble'&&bs==='aerial')add('coerenza','warn','dribbling con palla aerea');
+
   // --- OUTCOME + POST-HIGHLIGHT (entrambi i rami: successo=rew, fallimento=fail) ---
   const rew=act.rew, fail=act.fail;
   const successOut=outcomePostHL(true,cls.type,cls.variant,0.5,act.rew);
@@ -226,8 +256,9 @@ function simulate(sit,act){
     sincronizzazione:clamp(100-pen('sync'),0,100),
     regia:clamp(100-pen('camera'),0,100),
     post_hl:clamp(100-pen('posthl'),0,100),
+    coerenza:clamp(100-pen('coerenza'),0,100),
   };
-  sub.realismo=Math.round((sub.animazione*0.15+sub.fisica_palla*0.30+sub.sincronizzazione*0.25+sub.regia*0.12+sub.post_hl*0.18));
+  sub.realismo=Math.round((sub.animazione*0.12+sub.fisica_palla*0.24+sub.sincronizzazione*0.20+sub.regia*0.10+sub.post_hl*0.14+sub.coerenza*0.20));
   return {cls,arc,cam,issues,sub};
 }
 
@@ -276,10 +307,10 @@ md+=`| 🟡 Solo warning | ${warns.length} (${pct(warns.length)}) |\n`;
 md+=`| 🔴 Con FAIL | ${fails.length} (${pct(fails.length)}) |\n\n`;
 md+=`### Realism Score medio (0-100)\n`;
 md+=`| Sottosistema | Score |\n|---|---|\n`;
-['animazione','fisica_palla','sincronizzazione','regia','post_hl','realismo'].forEach(k=>md+=`| ${k} | ${avg(k)} |\n`);
+['animazione','fisica_palla','sincronizzazione','regia','post_hl','coerenza','realismo'].forEach(k=>md+=`| ${k} | ${avg(k)} |\n`);
 md+=`\n## Anomalie per categoria\n`;
 md+=`| Categoria | fail | warn |\n|---|---|---|\n`;
-['ball','sync','camera','posthl','hero'].forEach(c=>{const ii=byCat(c);md+=`| ${c} | ${ii.filter(i=>i.sev==='fail').length} | ${ii.filter(i=>i.sev==='warn').length} |\n`;});
+['ball','sync','camera','posthl','hero','coerenza'].forEach(c=>{const ii=byCat(c);md+=`| ${c} | ${ii.filter(i=>i.sev==='fail').length} | ${ii.filter(i=>i.sev==='warn').length} |\n`;});
 
 // guardie
 md+=`\n## Guardie di consistenza modello↔sorgente\n`;
@@ -320,10 +351,13 @@ fs.writeFileSync('/home/user/Carrier-manager-/docs/SITUATIONS_VALIDATION_REPORT.
 fs.writeFileSync('/home/user/Carrier-manager-/docs/situations_validation.json',JSON.stringify({totalCombos,clean:clean.length,warns:warns.length,fails:fails.length,scores:{animazione:avg('animazione'),fisica_palla:avg('fisica_palla'),sincronizzazione:avg('sincronizzazione'),regia:avg('regia'),post_hl:avg('post_hl'),realismo:avg('realismo')},guards,worst:worst.map(r=>({si:r.si,ai:r.ai,realismo:r.sub.realismo,sit:r.sit,act:r.act,cls:r.cls,issues:r.issues}))},null,2));
 
 // console summary
+const cohFails=byCat('coerenza').filter(i=>i.sev==='fail');
+const cohWarns=byCat('coerenza').filter(i=>i.sev==='warn');
 console.log('=== CPM SITUATIONS VALIDATION ===');
 console.log('situations:',SITUATIONS.length,' combos:',totalCombos);
 console.log('clean:',clean.length,' warn-only:',warns.length,' FAIL:',fails.length);
-console.log('scores:',{anim:avg('animazione'),ball:avg('fisica_palla'),sync:avg('sincronizzazione'),cam:avg('regia'),post:avg('post_hl'),REAL:avg('realismo')});
+console.log('scores:',{anim:avg('animazione'),ball:avg('fisica_palla'),sync:avg('sincronizzazione'),cam:avg('regia'),post:avg('post_hl'),coh:avg('coerenza'),REAL:avg('realismo')});
+console.log('coerenza HL↔azione: FAIL',cohFails.length,' WARN',cohWarns.length);
 console.log('guards:',guards.every(g=>g.ok)?'ALL OK':'FAILED: '+guards.filter(g=>!g.ok).map(g=>g.name).join(', '));
 console.log('report → docs/SITUATIONS_VALIDATION_REPORT.md');
-if(guards.some(g=>!g.ok))process.exit(2);
+if(guards.some(g=>!g.ok)||cohFails.length>0)process.exit(2);

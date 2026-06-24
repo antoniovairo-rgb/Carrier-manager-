@@ -1,7 +1,7 @@
 {
   "totalCombos": 528,
-  "clean": 528,
-  "warns": 0,
+  "clean": 517,
+  "warns": 11,
   "fails": 0,
   "scores": {
     "animazione": 100,
@@ -79,6 +79,215 @@
   ],
   "worst": [
     {
+      "si": 63,
+      "ai": 2,
+      "realismo": 97,
+      "sit": "🎯 Tiro ad incrociare sul palo lontano!",
+      "act": "↗️ Cross basso sul secondo palo",
+      "cls": {
+        "type": "cross",
+        "pattern": "FAR_POST_CROSS",
+        "variant": "cross_far_post"
+      },
+      "issues": [
+        {
+          "cat": "coerenza",
+          "sev": "warn",
+          "msg": "cross da posizione centrale (non laterale)"
+        }
+      ]
+    },
+    {
+      "si": 67,
+      "ai": 2,
+      "realismo": 97,
+      "sit": "🦶 Tiro col mancino a sorpresa!",
+      "act": "↗️ Cross col mancino",
+      "cls": {
+        "type": "cross",
+        "pattern": "NEAR_POST_CROSS",
+        "variant": "cross_near_post"
+      },
+      "issues": [
+        {
+          "cat": "coerenza",
+          "sev": "warn",
+          "msg": "cross da posizione centrale (non laterale)"
+        }
+      ]
+    },
+    {
+      "si": 87,
+      "ai": 0,
+      "realismo": 97,
+      "sit": "⚡ Cross di prima senza guardare!",
+      "act": "⚡ Cross cieco di prima",
+      "cls": {
+        "type": "cross",
+        "pattern": "NEAR_POST_CROSS",
+        "variant": "cross_near_post"
+      },
+      "issues": [
+        {
+          "cat": "coerenza",
+          "sev": "warn",
+          "msg": "cross da posizione centrale (non laterale)"
+        }
+      ]
+    },
+    {
+      "si": 87,
+      "ai": 1,
+      "realismo": 97,
+      "sit": "⚡ Cross di prima senza guardare!",
+      "act": "🎯 Cross a rientrare guardato",
+      "cls": {
+        "type": "cross",
+        "pattern": "CUTBACK",
+        "variant": "cross_cutback"
+      },
+      "issues": [
+        {
+          "cat": "coerenza",
+          "sev": "warn",
+          "msg": "cross da posizione centrale (non laterale)"
+        }
+      ]
+    },
+    {
+      "si": 93,
+      "ai": 2,
+      "realismo": 97,
+      "sit": "🌀 Elastico in area!",
+      "act": "↗️ Cross dopo dribbling",
+      "cls": {
+        "type": "cross",
+        "pattern": "NEAR_POST_CROSS",
+        "variant": "cross_near_post"
+      },
+      "issues": [
+        {
+          "cat": "coerenza",
+          "sev": "warn",
+          "msg": "cross da posizione centrale (non laterale)"
+        }
+      ]
+    },
+    {
+      "si": 94,
+      "ai": 1,
+      "realismo": 97,
+      "sit": "🦵 Step-over e via!",
+      "act": "🌀 Step-over e cross",
+      "cls": {
+        "type": "cross",
+        "pattern": "NEAR_POST_CROSS",
+        "variant": "cross_near_post"
+      },
+      "issues": [
+        {
+          "cat": "coerenza",
+          "sev": "warn",
+          "msg": "cross da posizione centrale (non laterale)"
+        }
+      ]
+    },
+    {
+      "si": 95,
+      "ai": 1,
+      "realismo": 97,
+      "sit": "💨 Finta di corpo e scatto!",
+      "act": "🌀 Finta di corpo e cross",
+      "cls": {
+        "type": "cross",
+        "pattern": "NEAR_POST_CROSS",
+        "variant": "cross_near_post"
+      },
+      "issues": [
+        {
+          "cat": "coerenza",
+          "sev": "warn",
+          "msg": "cross da posizione centrale (non laterale)"
+        }
+      ]
+    },
+    {
+      "si": 99,
+      "ai": 2,
+      "realismo": 97,
+      "sit": "⚡ Scatto puro — nessuno ti segue!",
+      "act": "↗️ Cross al volo in corsa",
+      "cls": {
+        "type": "cross",
+        "pattern": "NEAR_POST_CROSS",
+        "variant": "cross_near_post"
+      },
+      "issues": [
+        {
+          "cat": "coerenza",
+          "sev": "warn",
+          "msg": "cross da posizione centrale (non laterale)"
+        }
+      ]
+    },
+    {
+      "si": 101,
+      "ai": 1,
+      "realismo": 97,
+      "sit": "🌀 Cambio di direzione a 180°!",
+      "act": "🎯 Giro e cross",
+      "cls": {
+        "type": "cross",
+        "pattern": "NEAR_POST_CROSS",
+        "variant": "cross_near_post"
+      },
+      "issues": [
+        {
+          "cat": "coerenza",
+          "sev": "warn",
+          "msg": "cross da posizione centrale (non laterale)"
+        }
+      ]
+    },
+    {
+      "si": 136,
+      "ai": 0,
+      "realismo": 97,
+      "sit": "🛑 Uscita difensiva su cross basso!",
+      "act": "🛑 Blocco deciso il cross",
+      "cls": {
+        "type": "cross",
+        "pattern": "NEAR_POST_CROSS",
+        "variant": "cross_near_post"
+      },
+      "issues": [
+        {
+          "cat": "coerenza",
+          "sev": "warn",
+          "msg": "cross da posizione centrale (non laterale)"
+        }
+      ]
+    },
+    {
+      "si": 173,
+      "ai": 2,
+      "realismo": 97,
+      "sit": "🎯 Cucchiaio a giro sul palo lontano!",
+      "act": "↗️ Cross sul secondo palo",
+      "cls": {
+        "type": "cross",
+        "pattern": "FAR_POST_CROSS",
+        "variant": "cross_far_post"
+      },
+      "issues": [
+        {
+          "cat": "coerenza",
+          "sev": "warn",
+          "msg": "cross da posizione centrale (non laterale)"
+        }
+      ]
+    },
+    {
       "si": 0,
       "ai": 0,
       "realismo": 100,
@@ -152,7 +361,7 @@
       "cls": {
         "type": "shot",
         "pattern": "EDGE_SHOT",
-        "variant": "shot_volley"
+        "variant": "shot_first_time"
       },
       "issues": []
     },
@@ -187,11 +396,11 @@
       "ai": 2,
       "realismo": 100,
       "sit": "⚡ Tap-in! Porta quasi vuota.",
-      "act": "✈️ Di testa",
+      "act": "🦶 Deviazione di prima",
       "cls": {
-        "type": "header",
-        "pattern": "HEADER_ATTACK",
-        "variant": "header_near_post"
+        "type": "shot",
+        "pattern": "EDGE_SHOT",
+        "variant": "shot_first_time"
       },
       "issues": []
     },
@@ -252,11 +461,11 @@
       "ai": 1,
       "realismo": 100,
       "sit": "🎯 Deviazione ravvicinata!",
-      "act": "✈️ Di testa",
+      "act": "🦶 Deviazione di piede",
       "cls": {
-        "type": "header",
-        "pattern": "HEADER_ATTACK",
-        "variant": "header_near_post"
+        "type": "shot",
+        "pattern": "EDGE_SHOT",
+        "variant": "shot_first_time"
       },
       "issues": []
     },
@@ -269,7 +478,7 @@
       "cls": {
         "type": "shot",
         "pattern": "EDGE_SHOT",
-        "variant": "shot_volley"
+        "variant": "shot_first_time"
       },
       "issues": []
     },
@@ -373,7 +582,7 @@
       "cls": {
         "type": "shot",
         "pattern": "EDGE_SHOT",
-        "variant": "shot_volley"
+        "variant": "shot_first_time"
       },
       "issues": []
     },
@@ -582,149 +791,6 @@
         "type": "shot",
         "pattern": "EDGE_SHOT",
         "variant": "shot_power"
-      },
-      "issues": []
-    },
-    {
-      "si": 13,
-      "ai": 0,
-      "realismo": 100,
-      "sit": "📐 Punizione dal limite — tiro diretto!",
-      "act": "🎯 Punizione a giro",
-      "cls": {
-        "type": "freekick",
-        "pattern": "SET_PIECE",
-        "variant": null
-      },
-      "issues": []
-    },
-    {
-      "si": 13,
-      "ai": 1,
-      "realismo": 100,
-      "sit": "📐 Punizione dal limite — tiro diretto!",
-      "act": "💥 Tiro rasoterra",
-      "cls": {
-        "type": "freekick",
-        "pattern": "SET_PIECE",
-        "variant": null
-      },
-      "issues": []
-    },
-    {
-      "si": 13,
-      "ai": 2,
-      "realismo": 100,
-      "sit": "📐 Punizione dal limite — tiro diretto!",
-      "act": "↗️ Palla in area",
-      "cls": {
-        "type": "freekick",
-        "pattern": "SET_PIECE",
-        "variant": null
-      },
-      "issues": []
-    },
-    {
-      "si": 14,
-      "ai": 0,
-      "realismo": 100,
-      "sit": "📐 Punizione dalla fascia sinistra!",
-      "act": "↗️ Cross basso teso",
-      "cls": {
-        "type": "freekick",
-        "pattern": "SET_PIECE",
-        "variant": null
-      },
-      "issues": []
-    },
-    {
-      "si": 14,
-      "ai": 1,
-      "realismo": 100,
-      "sit": "📐 Punizione dalla fascia sinistra!",
-      "act": "↗️ Cross alto",
-      "cls": {
-        "type": "freekick",
-        "pattern": "SET_PIECE",
-        "variant": null
-      },
-      "issues": []
-    },
-    {
-      "si": 14,
-      "ai": 2,
-      "realismo": 100,
-      "sit": "📐 Punizione dalla fascia sinistra!",
-      "act": "🌀 Giocata corta",
-      "cls": {
-        "type": "freekick",
-        "pattern": "SET_PIECE",
-        "variant": null
-      },
-      "issues": []
-    },
-    {
-      "si": 15,
-      "ai": 0,
-      "realismo": 100,
-      "sit": "📐 Punizione dalla fascia destra!",
-      "act": "↗️ Cross basso teso",
-      "cls": {
-        "type": "freekick",
-        "pattern": "SET_PIECE",
-        "variant": null
-      },
-      "issues": []
-    },
-    {
-      "si": 15,
-      "ai": 1,
-      "realismo": 100,
-      "sit": "📐 Punizione dalla fascia destra!",
-      "act": "↗️ Cross alto",
-      "cls": {
-        "type": "freekick",
-        "pattern": "SET_PIECE",
-        "variant": null
-      },
-      "issues": []
-    },
-    {
-      "si": 15,
-      "ai": 2,
-      "realismo": 100,
-      "sit": "📐 Punizione dalla fascia destra!",
-      "act": "🌀 Giocata corta",
-      "cls": {
-        "type": "freekick",
-        "pattern": "SET_PIECE",
-        "variant": null
-      },
-      "issues": []
-    },
-    {
-      "si": 16,
-      "ai": 0,
-      "realismo": 100,
-      "sit": "⚡ Cross dalla fascia sinistra!",
-      "act": "↗️ Cross teso",
-      "cls": {
-        "type": "cross",
-        "pattern": "NEAR_POST_CROSS",
-        "variant": "cross_low_driven"
-      },
-      "issues": []
-    },
-    {
-      "si": 16,
-      "ai": 1,
-      "realismo": 100,
-      "sit": "⚡ Cross dalla fascia sinistra!",
-      "act": "↗️ Cross a rientrare",
-      "cls": {
-        "type": "cross",
-        "pattern": "CUTBACK",
-        "variant": "cross_cutback"
       },
       "issues": []
     }

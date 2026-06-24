@@ -106,6 +106,7 @@ Phases within a match: `matchday → formations → walkout → playing → hl_m
 - Match can be entered only if `player.calendar` has an unplayed entry for the current week (`getThisWeekMatchday`)
 - `matchContext` prop distinguishes career / cup / national / euroMondiale_group / euroMondiale_ko — used in `onMatchEnd` to route post-match state updates correctly
 - **RULE**: ogni competizione è completamente giocabile dall'utente tramite LiveMatch — zero simulazioni forzate
+- **Coerenza HL↔azione (CINE-COH, 4.70.0)**: `hlBallState(sit)` deriva lo stato reale del pallone (`set_ground` = set-piece battuto dall'eroe / `aerial` = cross·corner·rimbalzo·rovesciata·stacco·di petto / `feet` = palla al piede). `deriveHL` lo usa: il colpo di testa è emesso SOLO con palla aerea, la volée (`shot_volley`) solo su palla aerea (altrimenti `shot_first_time` per i "di prima" a terra). Invariante: nessun highlight mostra una testa/volée con la palla al piede. Validato da `tests/situations-3d-validation.js` (dimensione **coerenza**: header⇒aerea è un FAIL che blocca la suite con `exit 2`)
 
 ### Calendar & Standings Invariants
 
