@@ -2612,7 +2612,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.59.0"; // CINE-3: outcome evoluti — palo (hit_post+post_rebound), gol alto chip/volley (in_net_high), split save/palo/wide
+const GAME_VERSION="4.60.0"; // CINE-4: pre-action drift per-pattern (costruzione visiva) — compagni si lanciano, avversari stringono
 const SAVE_VERSION=6;
 // Sprint ENV — ambiente rilevato automaticamente dal runtime (non gestito manualmente).
 // PRODUCTION = deploy GitHub Pages (*.github.io). Tutto il resto (staging githack, locale, localhost) = TEST.
@@ -6913,6 +6913,7 @@ function ThreeMatchView(props){
     let gkSaveCelebT=-1,gkSaveMesh=null; // 3DV-13: portiere si rialza dopo parata
     let hlInNetFlashed=false,hlPostVY=0; // 3DV-14: flash ingresso rete + fisica rimbalzo deflect
     let hlOutcomeVariant=null; // CINE-3: sotto-tipo outcome (save/post/wide/blocked)
+    let preActionT=-1; // CINE-4: pre-action drift timer (hl_intro→hl_result)
     let passTargetMesh=null; // 3DV-14b: mesh compagno che riceve il passaggio (triangolo)
     // Sprint 3D-8a: cronometro dell'esito per il rallenty cinematografico
     let resultT=0;
@@ -7166,8 +7167,9 @@ function ThreeMatchView(props){
         if(_curPh==="hl_intro"||(_curPh==="hl_move"&&prevPhase==="playing")){repCount=0;repHead=0;replayDone=false;}
         if(_curPh!=="hl_result"&&replaying){replaying=false;setReplayOn(false);}
         if(_curPh!=="hl_result"){hlPostArcT=-1;hlPostArcType=null;heroPostT=-1;heroPostType=null;gkSaveCelebT=-1;gkSaveMesh=null;hlInNetFlashed=false;hlPostVY=0;passTargetMesh=null;hlOutcomeVariant=null;}// reset post-arc
+        if(_curPh==="playing"||_curPh==="ended"||_curPh==="walkout")preActionT=-1;
         // ATE-4: zone ring — accendi su hl_intro, colora per tipo; spegni su playing/ended
-        if(_curPh==="hl_intro"){zoneRingT=0;zoneRingMat.color.setHex(HL_ZONE_COL[P.hlType]||0xffffff);}
+        if(_curPh==="hl_intro"){zoneRingT=0;zoneRingMat.color.setHex(HL_ZONE_COL[P.hlType]||0xffffff);preActionT=0;}
         if(_curPh==="playing"||_curPh==="ended"||_curPh==="walkout"){zoneRingT=-1;zoneRingMat.opacity=0;}
       }
       prevPhase=_curPh;
@@ -7230,9 +7232,20 @@ function ThreeMatchView(props){
             if(_li>=1&&_li<=4)ox+=_lineShift; else if(_li>=5&&_li<=7)ox+=_lineShift*0.5;
             const dxb=_bGX-src.x,dyb=_bGY-src.y,db=Math.hypot(dxb,dyb);
             if(db<24&&db>1.5){const press=clamp((24-db)/24,0,1)*1.5;ox+=dxb/db*press;oy+=dyb/db*press;}// 3DV-12: 4.0→1.5 movimenti fluidi
+            // CINE-4: pre-action drift per-pattern — compagni si lanciano verso porta, avversari stringono su eroe
+            if(isHL&&preActionT>=0){
+              const _pt=clamp(preActionT/1.5,0,1),_pat=P.hlPattern||"";
+              const _isAtt=_li>=8,_isMid=_li>=5&&_li<=7;
+              if(_hm){if(/CROSS|HEADER|CUTBACK/.test(_pat)){if(_isAtt)ox+=_pt*9;else if(_isMid)ox+=_pt*3.5;}
+                else if(/SHOT|ONE_ON_ONE/.test(_pat)){if(_isAtt){oy+=(_li===8?-1:1)*_pt*7;ox+=_pt*2;}else if(_isMid)ox+=_pt*2.5;}
+                else if(/COMBINATION|THROUGH/.test(_pat)){if(_isMid)ox+=_pt*5;if(_isAtt)ox+=_pt*2.5;}
+              }else{const _dxh=(P.playerX||50)-src.x,_dyh=(P.playerY||50)-src.y,_dh=Math.hypot(_dxh,_dyh);
+                if(_dh<30&&_dh>2){const _p=clamp((30-_dh)/30,0,1)*_pt*3.5;ox+=_dxh/_dh*_p;oy+=_dyh/_dh*_p;}}
+            }
           }
           animOne(pp.mesh,G2X(clamp(src.x+ox,2,98)),G2Z(clamp(src.y+oy,2,98)),aDt,ak,bx,bz);});
         animOne(hero,G2X(P.playerX||50),G2Z(P.playerY||50),aDt,ak,bx,bz);
+        if(isHL&&preActionT>=0)preActionT+=dt; // CINE-4: avanza timer pre-action
         // CIN-2: reazione avversario — gk_dive (portiere), opp_stumble/opp_spin (difensore); si applica DOPO animOne per sovrascriverlo
         if(oppActType&&oppMesh){
           oppActT+=aDt;const _OT=oppActType==="gk_dive"?0.75:0.55,u=Math.min(oppActT/_OT,1),sw=Math.sin(u*Math.PI);
