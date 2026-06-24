@@ -2612,7 +2612,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.61.0"; // CINE-5: regia dedicata per-pattern — cross side-tracking (far/near/cutback), filtrante arretrata, dribbling stretta
+const GAME_VERSION="4.62.0"; // CINE-6: post-action obbligatoria — rete che si gonfia al gol + delusione portiere su gol subìto
 const SAVE_VERSION=6;
 // Sprint ENV — ambiente rilevato automaticamente dal runtime (non gestito manualmente).
 // PRODUCTION = deploy GitHub Pages (*.github.io). Tutto il resto (staging githack, locale, localhost) = TEST.
@@ -5047,10 +5047,12 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
 
   // Goal nets (wireframe-style transparent planes)
   const netM=new THREE.MeshBasicMaterial({color:0xfafafa,transparent:true,opacity:0.14,side:THREE.DoubleSide,wireframe:false});
+  let awayGoalNet=null; // CINE-6: rete porta avversaria (+x) esposta per il pulse al gol
   [[-51,1],[ 51,-1]].forEach(([gx,sign])=>{
-    // Back net
-    const back=new THREE.Mesh(new THREE.PlaneGeometry(7.32,2.44),netM);
+    // Back net — la porta avversaria (gx>0) usa un materiale dedicato per gonfiarsi al gol
+    const back=new THREE.Mesh(new THREE.PlaneGeometry(7.32,2.44),gx>0?netM.clone():netM);
     back.rotation.y=Math.PI/2;back.position.set(gx+sign*1.6,1.22,0);scene.add(back);
+    if(gx>0){awayGoalNet=back;back._restX=back.position.x;}
     // Side nets
     [-3.66,3.66].forEach(gz=>{
       const side=new THREE.Mesh(new THREE.PlaneGeometry(2,2.44),netM);
@@ -5096,7 +5098,7 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
   const tS=tN.clone();tS.position.z=33;scene.add(tS);
   const tE=new THREE.Mesh(new THREE.PlaneGeometry(4.5,62),trackMat);tE.rotation.x=-Math.PI/2;tE.position.set(53.5,0.02,0);scene.add(tE);
   const tW=tE.clone();tW.position.x=-53.5;scene.add(tW);
-  return {homeMat,awayMat};// 3DV-6: materiali tribuna home/away per goal pulse
+  return {homeMat,awayMat,goalNet:awayGoalNet};// 3DV-6: materiali tribuna home/away per goal pulse; CINE-6: rete porta avversaria
 }
 
 /* ========================================
@@ -6708,7 +6710,7 @@ function ThreeMatchView(props){
 
     // Stadio (riuso del builder AAA esistente)
     const sHome=stadiumHomeCol||homeCol||'#2563eb',sAway=stadiumAwayCol||oppCol||'#dc2626';
-    try{const _sc=buildStadium(scene,sHome,sAway,{prestige:club.p||club.prestige||65,style:stadiumStyle,floodColor:pal.flood});if(_sc)sr.current.crowdMats=_sc;}catch(e){}
+    try{const _sc=buildStadium(scene,sHome,sAway,{prestige:club.p||club.prestige||65,style:stadiumStyle,floodColor:pal.flood});if(_sc){sr.current.crowdMats=_sc;sr.current.goalNet=_sc.goalNet;}}catch(e){}
 
     // Factory giocatore (derivata da FootballMatch, MeshPhong procedurale)
     // Sprint 3D-6: varietà deterministica per indice — altezza/corporatura + carnagione,
@@ -6914,6 +6916,7 @@ function ThreeMatchView(props){
     let hlInNetFlashed=false,hlPostVY=0; // 3DV-14: flash ingresso rete + fisica rimbalzo deflect
     let hlOutcomeVariant=null; // CINE-3: sotto-tipo outcome (save/post/wide/blocked)
     let preActionT=-1; // CINE-4: pre-action drift timer (hl_intro→hl_result)
+    let netBulgeT=-1,prevInNet=false,concededT=-1; // CINE-6: gonfiamento rete + delusione portiere al gol subìto
     let passTargetMesh=null; // 3DV-14b: mesh compagno che riceve il passaggio (triangolo)
     // Sprint 3D-8a: cronometro dell'esito per il rallenty cinematografico
     let resultT=0;
@@ -7167,7 +7170,11 @@ function ThreeMatchView(props){
         if(_curPh==="hl_intro"||(_curPh==="hl_move"&&prevPhase==="playing")){repCount=0;repHead=0;replayDone=false;}
         if(_curPh!=="hl_result"&&replaying){replaying=false;setReplayOn(false);}
         if(_curPh!=="hl_result"){hlPostArcT=-1;hlPostArcType=null;heroPostT=-1;heroPostType=null;gkSaveCelebT=-1;gkSaveMesh=null;hlInNetFlashed=false;hlPostVY=0;passTargetMesh=null;hlOutcomeVariant=null;}// reset post-arc
-        if(_curPh==="playing"||_curPh==="ended"||_curPh==="walkout")preActionT=-1;
+        if(_curPh==="playing"||_curPh==="ended"||_curPh==="walkout"){preActionT=-1;
+          // CINE-6: ripristina rete e portiere se si esce dall'esito
+          if(sr.current.goalNet){const _gn=sr.current.goalNet;if(_gn._restX!==undefined)_gn.position.x=_gn._restX;_gn.material.opacity=0.14;}
+          netBulgeT=-1;prevInNet=false;
+          if(concededT>=0&&awayGkMesh){if(awayGkMesh._hd)awayGkMesh._hd.rotation.x=0;awayGkMesh._aL.rotation.z=0;awayGkMesh._aR.rotation.z=0;}concededT=-1;}
         // ATE-4: zone ring — accendi su hl_intro, colora per tipo; spegni su playing/ended
         if(_curPh==="hl_intro"){zoneRingT=0;zoneRingMat.color.setHex(HL_ZONE_COL[P.hlType]||0xffffff);preActionT=0;}
         if(_curPh==="playing"||_curPh==="ended"||_curPh==="walkout"){zoneRingT=-1;zoneRingMat.opacity=0;}
@@ -7187,7 +7194,7 @@ function ThreeMatchView(props){
       const _we=P.waveEvent;
       if(_we&&_we.t&&_we.t!==prevWaveT){prevWaveT=_we.t;goalBurstT=0;goalBurstHome=!!_we.home;shakePow=0.55;
         // QW-C: esultanza eroe sul gol di casa
-        if(goalBurstHome)celebT=0;
+        if(goalBurstHome){celebT=0;concededT=0;}// CINE-6: gol di casa → il portiere avversario si dispera
         // coriandoli dalla porta in cui è entrato il gol (AWAY_GOAL_X se casa, HOME_GOAL_X se ospiti)
         const _cx=goalBurstHome?AWAY_GOAL_X:HOME_GOAL_X;
         for(let i=0;i<CONF_N;i++){confPos[i*3]=_cx+(Math.random()-0.5)*14;confPos[i*3+1]=1+Math.random()*4;confPos[i*3+2]=(Math.random()-0.5)*20;
@@ -7297,6 +7304,18 @@ function ThreeMatchView(props){
           if(heroPostType==="miss"){if(hero._hd)hero._hd.rotation.x=-_hsw*0.9;hero._aL.rotation.z=_hsw*1.3;hero._aR.rotation.z=-_hsw*1.3;hero.position.y=0;}
           else if(heroPostType==="fist"){const _fu=Math.min(_hpu*2,1),_fd=Math.max(0,_hpu*2-1);hero._aR.rotation.x=-_fu*(1-_fd)*2.2;hero._aR.rotation.z=_fu*(1-_fd)*0.6;hero.position.y=_fu*(1-_fd)*0.3;}// 3DV-14: braccio destro su, poi giù
           if(_hpu>=1){heroPostT=-1;heroPostType=null;if(hero._hd)hero._hd.rotation.x=0;hero._aL.rotation.z=0;hero._aR.rotation.z=0;hero._aR.rotation.x=0;hero.position.y=0;}}
+        // CINE-6: gonfiamento rete al gol — rilevamento fronte di salita su hlInNetFlashed (vale per ogni handler in_net)
+        if(hlInNetFlashed&&!prevInNet)netBulgeT=0;prevInNet=hlInNetFlashed;
+        if(netBulgeT>=0&&sr.current.goalNet){netBulgeT+=aDt;const _nu=Math.min(netBulgeT/0.8,1);
+          const _bulge=Math.sin(Math.min(_nu,0.5)*Math.PI)*Math.exp(-_nu*2.0);// spinge in fuori poi si calma
+          const _gn=sr.current.goalNet,_rx=_gn._restX!==undefined?_gn._restX:_gn.position.x;
+          _gn.position.x=_rx+_bulge*1.5;_gn.material.opacity=0.14+_bulge*0.55;
+          if(_nu>=1){_gn.position.x=_rx;_gn.material.opacity=0.14;netBulgeT=-1;}}
+        // CINE-6: delusione portiere avversario al gol subìto — testa bassa + braccia sconsolate
+        if(concededT>=0&&awayGkMesh){concededT+=aDt;const _cu=Math.min(concededT/2.0,1),_csw=Math.sin(_cu*Math.PI);
+          if(awayGkMesh._hd)awayGkMesh._hd.rotation.x=_csw*1.0;
+          awayGkMesh._aL.rotation.z=_csw*0.6;awayGkMesh._aR.rotation.z=-_csw*0.6;
+          if(_cu>=1){concededT=-1;if(awayGkMesh._hd)awayGkMesh._hd.rotation.x=0;awayGkMesh._aL.rotation.z=0;awayGkMesh._aR.rotation.z=0;}}
         // 3DV-13: portiere si rialza e alza le braccia dopo la parata
         if(gkSaveCelebT>=-0.12){gkSaveCelebT+=aDt;if(gkSaveCelebT>=0&&gkSaveMesh){const _gcu=Math.min(gkSaveCelebT/1.1,1),_gcsw=Math.sin(_gcu*Math.PI);
           gkSaveMesh.position.y=_gcsw*0.65;const _arm=_gcsw*1.5;gkSaveMesh._aL.rotation.z=-_arm;gkSaveMesh._aR.rotation.z=_arm;gkSaveMesh._aL.rotation.x=-_gcsw*0.7;gkSaveMesh._aR.rotation.x=-_gcsw*0.7;
