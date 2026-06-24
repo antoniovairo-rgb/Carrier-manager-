@@ -1,10 +1,15 @@
-// Elevora PWA — minimal service worker (network-first)
-const CACHE = 'elevora-v1';
+// Elevora PWA — minimal service worker (network-first + cache-busting)
+const CACHE = 'elevora-v2';
 
 self.addEventListener('install', () => self.skipWaiting());
 
 self.addEventListener('activate', e =>
-  e.waitUntil(self.clients.claim())
+  e.waitUntil(
+    // cache-busting: rimuove ogni cache non corrente, poi prende il controllo
+    caches.keys()
+      .then(keys => Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k))))
+      .then(() => self.clients.claim())
+  )
 );
 
 self.addEventListener('fetch', e => {

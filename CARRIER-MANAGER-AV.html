@@ -2617,7 +2617,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.71.2"; // REBRAND-LOGO v3: anche il pallone in cima all'icona "Rise" ora è il pallone classico bianco/nero (pentagono centrale + 5 al bordo, clip nel cerchio) — coerente col wordmark, su tutti i 5 mark (canvas PWA, loading, home, LogoMark)
+const GAME_VERSION="4.71.3"; // FIX BUG-1: card "Nuova Carriera" (sovrascrittura) solo con tutti gli slot pieni (allFull) invece di qualsiasi save (hasAny). FIX sw.js: cache-busting — pulizia cache vecchie su activate + bump CACHE elevora-v2
 const SAVE_VERSION=6;
 // Sprint ENV — ambiente rilevato automaticamente dal runtime (non gestito manualmente).
 // PRODUCTION = deploy GitHub Pages (*.github.io). Tutto il resto (staging githack, locale, localhost) = TEST.
@@ -10921,6 +10921,7 @@ function HomeScreen({onNew,onLoad,onDelete,onImport,slots}){
     return()=>window.removeEventListener("keydown",onKey);
   },[slots,confirmDel,onLoad,onNew]);// eslint-disable-line
   const hasAny=slots.some(Boolean);
+  const allFull=slots.every(Boolean);// card di sovrascrittura solo quando non c'è alcuno slot vuoto
   return(
     <div style={{width:"100%"}}>
       {confirmDel!==null&&(
@@ -10988,13 +10989,13 @@ function HomeScreen({onNew,onLoad,onDelete,onImport,slots}){
       {!hasAny&&<Card style={{marginBottom:12,padding:"14px 16px"}}>
         <p style={{fontSize:12,color:TH.muted,margin:"0 0 12px",lineHeight:1.7}}>Crea il tuo calciatore, supera i provini e costruisci la tua carriera calcistica nei principali campionati europei.</p>
       </Card>}
-      {/* BUG 1: "Nuova carriera" always visible even when slots are occupied */}
-      {hasAny&&(
+      {/* Card di sovrascrittura: solo quando TUTTI gli slot sono pieni (nessuno slot vuoto disponibile) */}
+      {allFull&&(
         <Card style={{marginBottom:10,padding:"12px 14px",background:"#eff6ff",border:"1px solid #bfdbfe"}}>
           <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
             <div>
               <div style={{fontSize:12,fontWeight:700,color:TH.primary}}>⚡ Nuova Carriera</div>
-              <div style={{fontSize:10,color:TH.muted,marginTop:2}}>Scegli uno slot vuoto o sovrascrivine uno</div>
+              <div style={{fontSize:10,color:TH.muted,marginTop:2}}>Tutti gli slot sono pieni — sovrascrivine uno per iniziare</div>
             </div>
             <div style={{display:"flex",gap:6}}>
               {slots.map((s,i)=>(
