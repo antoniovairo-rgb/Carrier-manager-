@@ -294,7 +294,68 @@ const clean=results.filter(r=>r.issues.length===0);
 const avg=k=>Math.round(results.reduce((s,r)=>s+r.sub[k],0)/results.length);
 const worst=[...results].sort((a,b)=>a.sub.realismo-b.sub.realismo).slice(0,50);
 
-// ---------- 8. report ----------
+// ---------- 8. controlli catalogo (Phase 12 — MISSIONE 4.75.0+) ----------
+// Passata separata su SITUATIONS (non per-combo): coerenza strutturale del catalogo.
+const catIssues=[];  // {si,sit,sev,cat,msg}
+const catAdd=(si,sit,sev,cat,msg)=>catIssues.push({si,sit:(sit.text||'').slice(0,60),sev,cat,msg});
+
+// 8a. OUTCOME_IN_TEXT — titolo rivela outcome/azione prima della scelta
+const OUT_SPOIL=/\b(Gol|GOL|GOAL|PARATO!|PALO!|TUNNEL!|ROVESCIATA!|RABONA!)\b/;
+SITUATIONS.forEach((sit,si)=>{
+  if(OUT_SPOIL.test(sit.text||''))
+    catAdd(si,sit,'warn','catalogo','OUTCOME_IN_TEXT: titolo rivela outcome — "'+((sit.text||'').slice(0,40))+'"');
+});
+
+// 8b. ROLE_INCOHERENCE — azione GK-specifica in situazione non portiere
+// NB: "\buscita\b" escluso — "portiere in uscita" descrive il GK che esce, non l'azione del giocatore
+const GK_WORDS=/\bsalvataggio\b|\besci e blocca\b/i;
+SITUATIONS.forEach((sit,si)=>{
+  (sit.actions||[]).forEach(act=>{
+    if(GK_WORDS.test(act.label||'')&&sit.type!=='gk')
+      catAdd(si,sit,'warn','catalogo','ROLE_INCOHERENCE: label GK in sit non-GK — "'+act.label+'"');
+  });
+});
+
+// 8c. DUPLICATE TEXT — coppie con testo molto simile (Jaccard su parole ≥ 0.72)
+function jaccard(a,b){
+  const wa=new Set(a.toLowerCase().replace(/[^\w\s]/g,' ').split(/\s+/).filter(Boolean));
+  const wb=new Set(b.toLowerCase().replace(/[^\w\s]/g,' ').split(/\s+/).filter(Boolean));
+  const inter=[...wa].filter(w=>wb.has(w)).length;
+  const union=new Set([...wa,...wb]).size;
+  return union?inter/union:0;
+}
+const reported=new Set();
+for(let i=0;i<SITUATIONS.length;i++){
+  for(let j=i+1;j<SITUATIONS.length;j++){
+    const key=`${i}-${j}`;
+    if(reported.has(key))continue;
+    const sim=jaccard(SITUATIONS[i].text||'',SITUATIONS[j].text||'');
+    if(sim>=0.72){
+      reported.add(key);
+      catAdd(i,SITUATIONS[i],'warn','catalogo',
+        `DUPLICATE (sim=${sim.toFixed(2)}) con sit[${j}] "${(SITUATIONS[j].text||'').slice(0,40)}"`);
+    }
+  }
+}
+
+// 8d. TACT-POS validity — sit.tactic.pressure deve essere uno dei 4 valori validi
+const VALID_PRESSURE=new Set(['none','low','medium','high']);
+SITUATIONS.forEach((sit,si)=>{
+  if(sit.tactic?.pressure&&!VALID_PRESSURE.has(sit.tactic.pressure))
+    catAdd(si,sit,'fail','catalogo','TACT-INVALID: sit.tactic.pressure="'+sit.tactic.pressure+'" non valido');
+  if(sit.tactic?.nearby_def!==undefined&&(sit.tactic.nearby_def<0||sit.tactic.nearby_def>5))
+    catAdd(si,sit,'fail','catalogo','TACT-INVALID: sit.tactic.nearby_def='+sit.tactic.nearby_def+' fuori range [0-5]');
+});
+
+// 8e. COVERAGE — distribuzione per type e zone (solo per il report, non emette issue)
+const typeCount={},zoneCount={};
+SITUATIONS.forEach(sit=>{
+  const t=sit.type||'off';typeCount[t]=(typeCount[t]||0)+1;
+  (sit.zones||[]).forEach(z=>{zoneCount[z]=(zoneCount[z]||0)+1;});
+});
+const tacticCount=SITUATIONS.filter(s=>s.tactic).length;
+
+// ---------- 9. report ----------
 const pct=(n)=>((n/totalCombos)*100).toFixed(1)+'%';
 let md=`# CPM — Report Validazione Automatica Situations (motore 3D)\n\n`;
 md+=`_GAME_VERSION ${(src.match(/GAME_VERSION="([\d.]+)"/)||[])[1]||'?'}_\n\n`;
@@ -342,13 +403,34 @@ worst.forEach((r,i)=>{
   md+=`| ${i+1} | ${r.sub.realismo} | ${r.sit.slice(0,30).replace(/\|/g,'/')} | ${r.act.slice(0,26).replace(/\|/g,'/')} | ${r.cls.type}/${r.cls.variant||'-'} | ${probs.slice(0,140)} |\n`;
 });
 
+// controlli catalogo (Phase 12)
+const catFails=catIssues.filter(i=>i.sev==='fail');
+const catWarns=catIssues.filter(i=>i.sev==='warn');
+md+=`\n## Analisi Catalogo (Phase 12)\n`;
+md+=`| Check | Fail | Warn |\n|---|---|---|\n`;
+const catCats=['catalogo'];
+catCats.forEach(c=>{md+=`| ${c} | ${catIssues.filter(i=>i.cat===c&&i.sev==='fail').length} | ${catIssues.filter(i=>i.cat===c&&i.sev==='warn').length} |\n`;});
+if(catIssues.length){
+  md+=`\n### Dettaglio issues catalogo\n`;
+  catIssues.slice(0,30).forEach(i=>md+=`- [${i.sev}] sit[${i.si}] ${i.sit.slice(0,40)} — ${i.msg.slice(0,80)}\n`);
+  if(catIssues.length>30)md+=`- …e altri ${catIssues.length-30} (truncated)\n`;
+}else{md+=`✅ Nessuna issue catalogo.\n`;}
+
+// coverage
+md+=`\n## Coverage Catalogo\n`;
+md+=`| Tipo | Count |\n|---|---|\n`;
+Object.entries(typeCount).sort((a,b)=>b[1]-a[1]).forEach(([t,n])=>md+=`| ${t} | ${n} |\n`);
+md+=`\n| Zona | Sits |\n|---|---|\n`;
+Object.entries(zoneCount).sort((a,b)=>b[1]-a[1]).forEach(([z,n])=>md+=`| ${z} | ${n} |\n`);
+md+=`\n_Situations con campo \`tactic\`: **${tacticCount}** / ${SITUATIONS.length}_\n`;
+
 // browser-only
 md+=`\n## Non coperto qui (richiede harness browser+WebGL)\n`;
 md+=`- Screenshot/replay reali dei frame\n- Raycast camera-dentro-mesh a livello di pixel\n- Clipping pallone↔giocatori per-frame (qui validato solo a livello di traiettoria/bounds)\n- "Ice skating" reale (velocità piedi vs traslazione) — qui approssimato da velocità di traslazione\n`;
 md+=`\n_Per abilitarli: aggiungere puppeteer + esecuzione headless con SwiftShader e hook su \`sr.current\`/THREE meshes._\n`;
 
 fs.writeFileSync('/home/user/Carrier-manager-/docs/SITUATIONS_VALIDATION_REPORT.md',md);
-fs.writeFileSync('/home/user/Carrier-manager-/docs/situations_validation.json',JSON.stringify({totalCombos,clean:clean.length,warns:warns.length,fails:fails.length,scores:{animazione:avg('animazione'),fisica_palla:avg('fisica_palla'),sincronizzazione:avg('sincronizzazione'),regia:avg('regia'),post_hl:avg('post_hl'),realismo:avg('realismo')},guards,worst:worst.map(r=>({si:r.si,ai:r.ai,realismo:r.sub.realismo,sit:r.sit,act:r.act,cls:r.cls,issues:r.issues}))},null,2));
+fs.writeFileSync('/home/user/Carrier-manager-/docs/situations_validation.json',JSON.stringify({totalCombos,clean:clean.length,warns:warns.length,fails:fails.length,catFails:catFails.length,catWarns:catWarns.length,scores:{animazione:avg('animazione'),fisica_palla:avg('fisica_palla'),sincronizzazione:avg('sincronizzazione'),regia:avg('regia'),post_hl:avg('post_hl'),realismo:avg('realismo')},guards,worst:worst.map(r=>({si:r.si,ai:r.ai,realismo:r.sub.realismo,sit:r.sit,act:r.act,cls:r.cls,issues:r.issues}))},null,2));
 
 // console summary
 const cohFails=byCat('coerenza').filter(i=>i.sev==='fail');
@@ -358,6 +440,8 @@ console.log('situations:',SITUATIONS.length,' combos:',totalCombos);
 console.log('clean:',clean.length,' warn-only:',warns.length,' FAIL:',fails.length);
 console.log('scores:',{anim:avg('animazione'),ball:avg('fisica_palla'),sync:avg('sincronizzazione'),cam:avg('regia'),post:avg('post_hl'),coh:avg('coerenza'),REAL:avg('realismo')});
 console.log('coerenza HL↔azione: FAIL',cohFails.length,' WARN',cohWarns.length);
+console.log('catalogo (Ph12): FAIL',catFails.length,' WARN',catWarns.length,'[OUTCOME_IN_TEXT,ROLE_INCOHERENCE,DUPLICATE,TACT-VALID]');
 console.log('guards:',guards.every(g=>g.ok)?'ALL OK':'FAILED: '+guards.filter(g=>!g.ok).map(g=>g.name).join(', '));
+console.log('coverage: type='+JSON.stringify(typeCount)+' tactic='+tacticCount+'/'+SITUATIONS.length);
 console.log('report → docs/SITUATIONS_VALIDATION_REPORT.md');
-if(guards.some(g=>!g.ok)||cohFails.length>0)process.exit(2);
+if(guards.some(g=>!g.ok)||cohFails.length>0||catFails.length>0)process.exit(2);

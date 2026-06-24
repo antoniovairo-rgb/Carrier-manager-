@@ -3,6 +3,8 @@
   "clean": 526,
   "warns": 11,
   "fails": 0,
+  "catFails": 0,
+  "catWarns": 1,
   "scores": {
     "animazione": 100,
     "fisica_palla": 100,
@@ -253,8 +255,8 @@
       "si": 136,
       "ai": 0,
       "realismo": 97,
-      "sit": "🛑 Uscita difensiva su cross basso!",
-      "act": "🛑 Blocco deciso il cross",
+      "sit": "🛑 Cross basso in area — intercetta!",
+      "act": "🛑 Blocca il cross con il corpo",
       "cls": {
         "type": "cross",
         "pattern": "NEAR_POST_CROSS",

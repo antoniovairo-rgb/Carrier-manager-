@@ -1,6 +1,6 @@
 # CPM — Report Validazione Automatica Situations (motore 3D)
 
-_GAME_VERSION 4.74.0_
+_GAME_VERSION 4.75.0_
 
 ## Sommario
 | Metrica | Valore |
@@ -53,7 +53,7 @@ _GAME_VERSION 4.74.0_
 | 7 | 97 | 💨 Finta di corpo e scatto! | 🌀 Finta di corpo e cross | cross/cross_near_post | 🟡cross da posizione centrale (non laterale) |
 | 8 | 97 | ⚡ Scatto puro — nessuno ti seg | ↗️ Cross al volo in corsa | cross/cross_near_post | 🟡cross da posizione centrale (non laterale) |
 | 9 | 97 | 🌀 Cambio di direzione a 180°! | 🎯 Giro e cross | cross/cross_near_post | 🟡cross da posizione centrale (non laterale) |
-| 10 | 97 | 🛑 Uscita difensiva su cross b | 🛑 Blocco deciso il cross | cross/cross_near_post | 🟡cross da posizione centrale (non laterale) |
+| 10 | 97 | 🛑 Cross basso in area — inter | 🛑 Blocca il cross con il  | cross/cross_near_post | 🟡cross da posizione centrale (non laterale) |
 | 11 | 97 | 🎯 Cucchiaio a giro sul palo l | ↗️ Cross sul secondo palo | cross/cross_far_post | 🟡cross da posizione centrale (non laterale) |
 | 12 | 100 | ⚡ Solo davanti al portiere! | 🦵 Tiro angolato | shot/shot_one_on_one | — |
 | 13 | 100 | ⚡ Solo davanti al portiere! | 🎯 Piazzato basso | shot/shot_one_on_one | — |
@@ -94,6 +94,33 @@ _GAME_VERSION 4.74.0_
 | 48 | 100 | 🦵 Tiro con l'esterno del pied | 🦵 Esterno a giro | shot/shot_curled | — |
 | 49 | 100 | 🦵 Tiro con l'esterno del pied | 🎯 Rientra e tira | shot/shot_power | — |
 | 50 | 100 | 🦵 Tiro con l'esterno del pied | 🤸 Colpo d'esterno | shot/shot_power | — |
+
+## Analisi Catalogo (Phase 12)
+| Check | Fail | Warn |
+|---|---|---|
+| catalogo | 0 | 1 |
+
+### Dettaglio issues catalogo
+- [warn] sit[164] ⚡ Taglio dal lato destro verso il centro — DUPLICATE (sim=0.75) con sit[165] "⚡ Taglio dal lato sinistro verso il cent"
+
+## Coverage Catalogo
+| Tipo | Count |
+|---|---|
+| off | 149 |
+| def | 25 |
+| special | 5 |
+
+| Zona | Sits |
+|---|---|
+| bordo | 85 |
+| trequarti | 80 |
+| area | 69 |
+| centro | 32 |
+| difesa | 25 |
+| propria | 14 |
+| fascia | 3 |
+
+_Situations con campo `tactic`: **1** / 179_
 
 ## Non coperto qui (richiede harness browser+WebGL)
 - Screenshot/replay reali dei frame
