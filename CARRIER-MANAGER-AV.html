@@ -2612,7 +2612,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.67.0"; // 3DV-MOV: movimenti HL non più schizofrenici — target deterministici per idx + smoothing velocità
+const GAME_VERSION="4.67.1"; // 3DV-MOV2: fix posizioni sballate nei calci piazzati — il loop HL non clobbera più il muro/area con una fila a centrocampo
 const SAVE_VERSION=6;
 // Sprint ENV — ambiente rilevato automaticamente dal runtime (non gestito manualmente).
 // PRODUCTION = deploy GitHub Pages (*.github.io). Tutto il resto (staging githack, locale, localhost) = TEST.
@@ -8647,22 +8647,16 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     const iv=setInterval(()=>{
       // Rigore / punizione: area libera, avversari in fila fuori dal box
       if(sit?.lockMovement){
+        // 3DV-MOV2 (fix posizioni sballate): set piece (rigore/punizione) — i giocatori TENGONO
+        // le posizioni corrette già impostate dal reset effect (muro/barriera/area in base al tipo
+        // di punizione). Prima un override generico li riallineava a centrocampo ogni 550ms
+        // (x:52-70 incolonnati) ignorando il tipo di calcio piazzato → posizioni completamente sballate.
+        // Ora il loop NON sovrascrive più: solo i portieri fanno un micro-assestamento verso il centro porta.
         setMatchPlayers(prev=>prev.map((pl,idx)=>{
           if(pl.team==="ref")return pl;
-          if(pl.team==="away"){
-            const ai=idx-10; // 0..10
-            // Away GK stays in goal during set pieces (penalty/free kick)
-            if(ai===0)return{...pl,x:clamp(pl.x+(95-pl.x)*0.15,88,98),y:clamp(pl.y+(50-pl.y)*0.12,35,65)};
-            return{...pl,
-              x:clamp(pl.x+(58+Math.random()*8-pl.x)*0.32,52,68),
-              y:pl.y+((8+ai*8)-pl.y)*0.28};
-          }else{
-            // Home GK stays in goal during set pieces
-            if(idx===0)return{...pl,x:clamp(pl.x+(3-pl.x)*0.15,2,8),y:clamp(pl.y+(50-pl.y)*0.12,35,65)};
-            return{...pl,
-              x:clamp(pl.x+((60+Math.random()*10)-pl.x)*0.25,52,70),
-              y:pl.y+((10+idx*7)-pl.y)*0.20};
-          }
+          if(pl.team==="away"&&idx-10===0)return{...pl,y:clamp(pl.y+(50-pl.y)*0.06,38,62)};// away GK micro-tracking
+          if(pl.team==="home"&&idx===0)return{...pl,y:clamp(pl.y+(50-pl.y)*0.06,38,62)};// home GK micro-tracking
+          return pl;// giocatori di movimento: mantieni le posizioni del set piece (muro/area)
         }));
         return;
       }
