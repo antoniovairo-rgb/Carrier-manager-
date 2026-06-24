@@ -5,10 +5,10 @@ _GAME_VERSION 4.73.0_
 ## Sommario
 | Metrica | Valore |
 |---|---|
-| Situations nel database | 176 |
-| Combinazioni situation×azione testate | 528 |
-| ✅ Pulite (0 problemi) | 517 (97.9%) |
-| 🟡 Solo warning | 11 (2.1%) |
+| Situations nel database | 179 |
+| Combinazioni situation×azione testate | 537 |
+| ✅ Pulite (0 problemi) | 526 (98.0%) |
+| 🟡 Solo warning | 11 (2.0%) |
 | 🔴 Con FAIL | 0 (0.0%) |
 
 ### Realism Score medio (0-100)
