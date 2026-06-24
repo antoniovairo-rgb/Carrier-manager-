@@ -2612,7 +2612,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.53.0"; // 3DV-12: post-HL visibile (replay delay 3.2s), crowd 4 zone, pallone 0.68, pressing 1.5
+const GAME_VERSION="4.53.1"; // 3DV-12b: curva casa 100% home, curva ospiti 100% away
 const SAVE_VERSION=6;
 // Sprint ENV — ambiente rilevato automaticamente dal runtime (non gestito manualmente).
 // PRODUCTION = deploy GitHub Pages (*.github.io). Tutto il resto (staging githack, locale, localhost) = TEST.
@@ -4983,8 +4983,8 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
   // 3DV-12: 4 settori tifosi — curva casa 96%, curva ospiti 4%, tribuna 82%, distinti 68%
   const tribTex=makeCrowdTex(0.82,homeHex,awayHex,p);
   const distintiTex=makeCrowdTex(0.68,homeHex,awayHex,p);
-  const homeCurvaTex=makeCrowdTex(0.96,homeHex,awayHex,p);
-  const awayCurvaTex=makeCrowdTex(0.04,homeHex,awayHex,p);
+  const homeCurvaTex=makeCrowdTex(1.0,homeHex,awayHex,p);
+  const awayCurvaTex=makeCrowdTex(0.0,homeHex,awayHex,p);
 
   // Helper: create a tiered stand section
   const addStand=(cx,cz,rotY,standW,standD,standH,crowdTex)=>{
