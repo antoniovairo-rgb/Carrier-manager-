@@ -2612,7 +2612,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.66.0"; // 3DV-FIX-2: 18 warning → 0: shot_chip priorità, far-post _side, cross byline, header cap, tackle-gol in_net, Panenka
+const GAME_VERSION="4.66.1"; // UI-FIX: campo 3D desktop riempie il 62% (rimosso aspectRatio portrait che lasciava spazio bianco)
 const SAVE_VERSION=6;
 // Sprint ENV — ambiente rilevato automaticamente dal runtime (non gestito manualmente).
 // PRODUCTION = deploy GitHub Pages (*.github.io). Tutto il resto (staging githack, locale, localhost) = TEST.
@@ -7476,7 +7476,7 @@ function ThreeMatchView(props){
 
   return(
     <div style={isDesktop
-      ?{position:"relative",height:"100%",aspectRatio:"460 / 650",background:"#050810",borderRadius:"0 0 12px 12px",overflow:"hidden"}
+      ?{position:"relative",width:"100%",height:"100%",background:"#050810",borderRadius:"0 0 12px 12px",overflow:"hidden"}
       :{position:"absolute",inset:0,background:"#050810",borderRadius:"0 0 12px 12px",overflow:"hidden"}}>
       <div ref={mountRef} style={{width:"100%",height:"100%"}}/>
       {replayOn&&<React.Fragment>
