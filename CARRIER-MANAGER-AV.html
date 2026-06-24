@@ -2617,7 +2617,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.71.5"; // FIX A: calendario desincronizzato dalla lega (avversario di un altro campionato) auto-riparato via Fix-Cal (rimappa matchday non giocati sul pool-lega corrente). FIX B: notizie lega con contesto di fine stagione (soglia w) non escono più nelle prime settimane; rimosso "8 gare da giocare" falso
+const GAME_VERSION="4.71.6"; // §9.6: relapse_risk del rientro anticipato ora graduato (gravità + settimane rimanenti / originali) invece del 40% fisso; rischio % dinamico mostrato nel banner infortunio. Audit: §9.1 ritiro e §9.6 infortuni già implementati (recoveryPct già a schermo)
 const SAVE_VERSION=6;
 // Sprint ENV — ambiente rilevato automaticamente dal runtime (non gestito manualmente).
 // PRODUCTION = deploy GitHub Pages (*.github.io). Tutto il resto (staging githack, locale, localhost) = TEST.
@@ -13558,8 +13558,15 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
   const _tabToContainer=t=>["calendar","standings","coppe"].includes(t)?"stagione":["profile","nazionale"].includes(t)?"carriera":t;
   const goTab=t=>{const r=_containerDefault[t]||t;setTab(r);setScreen(r);};
   // Sprint A: early return from injury
+  // §9.6: relapse_risk graduato — più settimane mancano e più la gravità è alta, più rischi la ricaduta
+  const injuryRelapseRisk=(p)=>{
+    const wkRem=Math.max(0,p.injuryWeeks||0);
+    const orig=Math.max(1,p.originalInjuryWeeks||p.injuryWeeks||1);
+    const sevW={lieve:0.10,medio:0.18,grave:0.28}[p.injurySeverity||"medio"]||0.18;
+    return clamp(sevW+0.45*(wkRem/orig),0.08,0.85);
+  };
   const handleForceReturn=()=>{
-    const relapse=Math.random()<0.40;
+    const relapse=Math.random()<injuryRelapseRisk(player);
     if(relapse){
       const nWk=Math.max(2,player.originalInjuryWeeks||player.injuryWeeks||2);
       setPlayer(p=>({...p,injured:true,injuryWeeks:nWk,originalInjuryWeeks:nWk,injurySeverity:"medio",returnPenaltyWeeks:0,justRecovered:false}));
@@ -16330,11 +16337,11 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
               <div style={{marginTop:10,paddingTop:10,borderTop:`1px solid ${TH.bdRed}`}}>
                 {!forceReturnConfirm?(
                   <button onClick={()=>setForceReturnConfirm(true)} style={{width:"100%",padding:"7px 12px",borderRadius:8,border:`1px solid ${TH.bdRed}`,background:"transparent",color:TH.txRed,fontSize:11,fontWeight:700,cursor:"pointer",fontFamily:"inherit",display:"flex",alignItems:"center",justifyContent:"center",gap:6}}>
-                    <span>⚠️</span><span>Forza il rientro (40% ricaduta)</span>
+                    <span>⚠️</span><span>Forza il rientro ({Math.round(injuryRelapseRisk(player)*100)}% ricaduta)</span>
                   </button>
                 ):(
                   <div style={{background:`${TH.txRed}14`,borderRadius:8,padding:"10px 12px"}}>
-                    <div style={{fontSize:11,color:TH.txRed,marginBottom:8,lineHeight:1.4,fontWeight:600}}>⚠️ Sei sicuro? Il medico sconsiglia il rientro anticipato. C'è il 40% di rischio ricaduta con stop prolungato.</div>
+                    <div style={{fontSize:11,color:TH.txRed,marginBottom:8,lineHeight:1.4,fontWeight:600}}>⚠️ Sei sicuro? Il medico sconsiglia il rientro anticipato. C'è il {Math.round(injuryRelapseRisk(player)*100)}% di rischio ricaduta con stop prolungato (più alto se rientri con molte settimane ancora da recuperare).</div>
                     <div style={{display:"flex",gap:8}}>
                       <button onClick={handleForceReturn} style={{flex:1,padding:"7px 10px",borderRadius:8,border:"none",background:"#dc2626",color:"#fff",fontSize:11,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>Forza comunque</button>
                       <button onClick={()=>setForceReturnConfirm(false)} style={{flex:1,padding:"7px 10px",borderRadius:8,border:`1px solid ${TH.bdRed}`,background:"transparent",color:TH.txRed,fontSize:11,fontWeight:600,cursor:"pointer",fontFamily:"inherit"}}>No, aspetto</button>
