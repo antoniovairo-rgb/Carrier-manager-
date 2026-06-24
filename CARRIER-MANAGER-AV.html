@@ -1267,20 +1267,20 @@ const LEAGUE_NEWS_TEMPLATES=[
   {e:"💪",t:"$C recupera il capitano in extremis: torna titolare sabato"},
   {e:"📢",t:"Mercato in fermento: $C vicino a chiudere un colpo a sorpresa"},
   {e:"🔄",t:"$C cede un titolare all'estero: affare da 8 milioni"},
-  {e:"🔥",t:"$C in striscia positiva: tre vittorie consecutive, nessuno li ferma"},
-  {e:"📉",t:"Crisi profonda a $C: solo 2 punti nelle ultime cinque giornate"},
+  {e:"🔥",t:"$C in striscia positiva: tre vittorie consecutive, nessuno li ferma",w:5},
+  {e:"📉",t:"Crisi profonda a $C: solo 2 punti nelle ultime cinque giornate",w:7},
   {e:"⚽",t:"Goleada storica: $C travolge l'avversario per 5-0"},
   {e:"🟥",t:"Squalifica pesante per il difensore di $C: salterà tre gare"},
-  {e:"🏟️",t:"Record di abbonati: $C registra il sold-out per l'intero girone di ritorno"},
+  {e:"🏟️",t:"Record di abbonati: $C registra il sold-out per l'intero girone di ritorno",w:18},
   {e:"📣",t:"I tifosi di $C protestano davanti alla sede: tensioni con la dirigenza"},
   {e:"👔",t:"$C cambia modulo: il tecnico sperimenta la difesa a tre"},
   {e:"🌟",t:"Il giovane talento di $C convocato per la prima volta in nazionale"},
-  {e:"🏆",t:"Lotta al titolo: $C a soli due punti dalla vetta dopo la vittoria di ieri"},
-  {e:"⚠️",t:"$C scivolato in zona retrocessione: -3 dalla salvezza con 8 gare da giocare"},
-  {e:"🎯",t:"Il bomber di $C raggiunge quota 10 reti: già superato il totale dello scorso anno"},
+  {e:"🏆",t:"Lotta al titolo: $C a soli due punti dalla vetta dopo la vittoria di ieri",w:8},
+  {e:"⚠️",t:"$C scivolato in zona retrocessione: la dirigenza chiede una reazione immediata"},
+  {e:"🎯",t:"Il bomber di $C raggiunge quota 10 reti: già superato il totale dello scorso anno",w:16},
   {e:"📰",t:"La stampa esalta $C: «Miglior collettivo della giornata di campionato»"},
   {e:"🔁",t:"Trattativa sorprendente: $C e $C2 valutano uno scambio di prestiti"},
-  {e:"📊",t:"$C è la difesa meno battuta del campionato con soli 8 gol subiti"},
+  {e:"📊",t:"$C è la difesa meno battuta del campionato con soli 8 gol subiti",w:10},
   {e:"🧤",t:"$C rinnova il portiere fino al 2028: «È il pilastro del nostro futuro»"},
   {e:"😤",t:"Polemiche arbitrali dopo $C: il tecnico espulso, 2 turni di stop"},
   {e:"🌧️",t:"Rinviata la partita di $C per maltempo: recupero in infrasettimanale"},
@@ -2617,7 +2617,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.71.4"; // §9.5 FIX: prestito convertito in acquisto (opzione/obbligo) ora normalizza club.transferType a "trasferimento definitivo" — niente più badge "in prestito" su giocatore riscattato
+const GAME_VERSION="4.71.5"; // FIX A: calendario desincronizzato dalla lega (avversario di un altro campionato) auto-riparato via Fix-Cal (rimappa matchday non giocati sul pool-lega corrente). FIX B: notizie lega con contesto di fine stagione (soglia w) non escono più nelle prime settimane; rimosso "8 gare da giocare" falso
 const SAVE_VERSION=6;
 // Sprint ENV — ambiente rilevato automaticamente dal runtime (non gestito manualmente).
 // PRODUCTION = deploy GitHub Pages (*.github.io). Tutto il resto (staging githack, locale, localhost) = TEST.
@@ -12823,13 +12823,16 @@ const generateLeagueNews=(player)=>{
   const clubs=CLUBS.filter(c=>c.lg===league&&c.id!==player.club?.id);
   if(clubs.length<2)return[];
   if((player.week||1)<=2)return[]; // Sprint 161: no match-based news in pre-season weeks
-  const N=LEAGUE_NEWS_TEMPLATES.length;
+  const wk=player.week||1;
+  // §B-fix: escludi i template con contesto di fine stagione finché non è la settimana giusta
+  const pool=LEAGUE_NEWS_TEMPLATES.filter(t=>!t.w||wk>=t.w);
+  const N=pool.length;
   let s=hashStr(`${player.season||1}_${player.week||1}_ln62`);
   const idx=[...Array(N).keys()];
   for(let i=N-1;i>0;i--){s=(s*1664525+1013904223)&0x7fffffff;const j=s%(i+1);[idx[i],idx[j]]=[idx[j],idx[i]];}
   const out=[];
   for(let i=0;i<3;i++){
-    const tpl=LEAGUE_NEWS_TEMPLATES[idx[i]];
+    const tpl=pool[idx[i]];
     s=(s*1664525+1013904223)&0x7fffffff;const ci=s%clubs.length;
     s=(s*1664525+1013904223)&0x7fffffff;const ci2=(ci+1+s%Math.max(1,clubs.length-1))%clubs.length;
     const cN=clubs[ci].n||clubs[ci].a||"–";
@@ -13319,6 +13322,25 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     }
     // Fix-D: refresh stale opponent/standings club names after club rename (cosmetic, keeps ids)
     if(Array.isArray(newP.standings)&&newP.standings.length){const _ns=newP.standings.map(t=>{const _c=CLUBS.find(c=>c.id===t.id);return _c&&_c.n!==t.n?{...t,n:_c.n,a:_c.a}:t;});if(_ns.some((t,i)=>t!==newP.standings[i])){newP={...newP,standings:_ns};changed=true;}}
+    // Fix-Cal: ripara calendario desincronizzato dalla lega corrente (avversari di un altro campionato — es. squadra di Lega A nel calendario di Lega B)
+    if((newP.proStatus||"u18")==="pro"&&Array.isArray(newP.calendar)&&newP.calendar.length){
+      const _lcCal=getLeagueClubs(newP);
+      const _lcIds=new Set(_lcCal.map(c=>c.id));
+      const _lcNames=new Set(_lcCal.map(c=>c.n));
+      const _pool=_lcCal.filter(c=>c.id!==newP.club?.id&&c.n!==newP.club?.n);
+      if(_pool.length){
+        let _calChanged=false;
+        const _ncal=newP.calendar.map(md=>{
+          if(md.type||md.played)return md;                        // coppe/euro e gare già giocate intatte
+          if((md.opponentId&&_lcIds.has(md.opponentId))||(md.opponentName&&_lcNames.has(md.opponentName)))return md;  // avversario già valido (per id o per nome)
+          const _oi=Math.abs(hashStr((newP.season||1)+"_"+(md.matchday||md.week||0)+"_fixcal"))%_pool.length;
+          const _opp=_pool[_oi];
+          _calChanged=true;
+          return{...md,opponentId:_opp.id,opponentName:_opp.n};
+        });
+        if(_calChanged){newP={...newP,calendar:_ncal};changed=true;}
+      }
+    }
     if(changed){setPlayer(newP);}
   },[]);// eslint-disable-line
   const[darkMode,setDarkMode]=useState(()=>localStorage.getItem("cpm-dark")==="1");
