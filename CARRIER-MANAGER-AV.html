@@ -2612,7 +2612,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.66.1"; // UI-FIX: campo 3D desktop riempie il 62% (rimosso aspectRatio portrait che lasciava spazio bianco)
+const GAME_VERSION="4.67.0"; // 3DV-MOV: movimenti HL non più schizofrenici — target deterministici per idx + smoothing velocità
 const SAVE_VERSION=6;
 // Sprint ENV — ambiente rilevato automaticamente dal runtime (non gestito manualmente).
 // PRODUCTION = deploy GitHub Pages (*.github.io). Tutto il resto (staging githack, locale, localhost) = TEST.
@@ -8420,6 +8420,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   const chantTimersRef=useRef([]);
   const pendingChainSitRef=useRef(null); // Sprint 77
   const velRef=useRef({});
+  const hlTickRef=useRef(0); // 3DV-MOV: contatore tick per oscillazione lenta deterministica nei movimenti HL
   const DRIFT_PRESETS={
     // index 0 = home GK (always fixed in goal centre), indices 1-9 = home outfield
     attack:    [{x:5,y:50},{x:22,y:18},{x:22,y:38},{x:22,y:62},{x:22,y:82},{x:44,y:25},{x:44,y:75},{x:64,y:22},{x:64,y:50},{x:64,y:78}],
@@ -8665,30 +8666,43 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
         }));
         return;
       }
+      // 3DV-MOV: target DETERMINISTICI per giocatore (angolo/spread seeded da idx, NON ri-randomizzati ogni tick)
+      // + smoothing su velocità (velRef) → niente scatti/teletrasporti schizofrenici. Oscillazione lenta via sin/cos.
+      hlTickRef.current++;const _T=hlTickRef.current*0.5;
       setMatchPlayers(prev=>prev.map((pl,idx)=>{
         if(pl.team==="ref")return pl;
-        const r=(Math.random()-0.5)*3.5;
+        let tx,ty;
         if(pl.team==="away"){
           const ai=idx-10;
           // Away GK: stays in goal, tracks ball laterally
           if(ai===0){const tyStep=clamp((pPos.y-pl.y)*0.08,-2,2);return{...pl,x:clamp(pl.x,88,98),y:clamp(pl.y+tyStep,28,72)};}
           const dpx=pPos.x-pl.x,dpy=pPos.y-pl.y;
-          const dist=Math.sqrt(dpx*dpx+dpy*dpy);
+          const dist=Math.sqrt(dpx*dpx+dpy*dpy)||1;
           if(dist>28){
+            // avvicinamento all'azione — direzione stabile verso l'eroe
             const step=Math.min(7,dist*0.2);
-            return{...pl,x:clamp(pl.x+dpx/dist*step+r,isDef?5:40,97),y:clamp(pl.y+dpy/dist*step*0.6+r,3,97)};
+            tx=clamp(pl.x+dpx/dist*step,isDef?5:40,97);
+            ty=clamp(pl.y+dpy/dist*step*0.6,3,97);
           }else{
-            const angle=(idx*1.57+Math.random()*0.8);
-            const spread=10+Math.random()*10;
-            return{...pl,x:clamp(pPos.x+Math.cos(angle)*spread+r,isDef?5:40,97),y:clamp(pPos.y+Math.sin(angle)*spread+r,3,97)};
+            // marcatura — posizione FISSA attorno all'eroe (angolo/raggio deterministici per idx), micro-oscillazione lenta
+            const angle=ai*1.4,spread=9+(ai%3)*3.5;
+            tx=clamp(pPos.x+Math.cos(angle)*spread+Math.sin(_T+ai)*1.6,isDef?5:40,97);
+            ty=clamp(pPos.y+Math.sin(angle)*spread+Math.cos(_T+ai*1.3)*1.6,3,97);
           }
         }else{
           // Home GK: stays in goal, tracks ball laterally
           if(idx===0){const tyStep=clamp((pPos.y-pl.y)*0.06,-1.5,1.5);return{...pl,x:clamp(pl.x,2,8),y:clamp(pl.y+tyStep,30,70)};}
-          const supportX=clamp(pPos.x-(5+Math.random()*15)+r,3,85);
-          const supportY=clamp(pPos.y+(Math.random()-0.5)*30+r,3,97);
-          return{...pl,x:pl.x+(supportX-pl.x)*0.12,y:pl.y+(supportY-pl.y)*0.08};
+          // supporto — posizione stabile dietro/lato eroe (offset deterministico per idx), micro-oscillazione lenta
+          const _angS=idx*0.9+1.2,_sprS=11+(idx%4)*4;
+          tx=clamp(pPos.x-Math.abs(Math.cos(_angS))*_sprS+Math.sin(_T*0.8+idx)*1.6,3,85);
+          ty=clamp(pPos.y+Math.sin(_angS)*_sprS+Math.cos(_T*0.7+idx)*1.6,3,97);
         }
+        // smoothing su velocità — inerzia, convergenza dolce verso il target stabile
+        const v=velRef.current[idx]||{vx:0,vy:0};
+        const nvx=clamp(v.vx*0.72+(tx-pl.x)*0.12,-5,5);
+        const nvy=clamp(v.vy*0.72+(ty-pl.y)*0.10,-5,5);
+        velRef.current[idx]={vx:nvx,vy:nvy};
+        return{...pl,x:clamp(pl.x+nvx,2,98),y:clamp(pl.y+nvy,3,97)};
       }));
     },pressingMs);
     return()=>clearInterval(iv);
