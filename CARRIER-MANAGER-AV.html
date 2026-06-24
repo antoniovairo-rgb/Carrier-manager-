@@ -2040,6 +2040,19 @@ function filterSitActions(actions,px){
   if(f.length===1){const extra=actions.find(a=>a!==f[0]);return extra?[f[0],extra]:f;}
   return actions.slice(-2); // all filtered: last 2 of original array
 }
+// Sprint CINE-TAC: per-situation movement cap based on action type.
+// Headers/aerials → 0 moves (player already jumps), tap-ins/rebounds → 1, else use sit.maxMoves.
+function cappedMM(sit){
+  if(!sit||sit.lockMovement)return 0;
+  const t=sit.text||"";
+  // Aerial situations — no horizontal approach before the action
+  if(/Cross in area|Attacca il pallone|Corner.*attacca|secondo palo|✈️/i.test(t))return 0;
+  // Rebound / tap-in — one step to reach the ball
+  if(/tap-in|RIGORE PARATO|ribattuta/i.test(t))return 1;
+  // Immediate shot (already in front of goal)
+  if(/Solo davanti|davanti al portiere|Porta quasi vuota/i.test(t))return 1;
+  return sit.maxMoves??2;
+}
 
 const BG_MATCH=[
   // Goals (very rare)
@@ -2617,7 +2630,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.71.6"; // §9.6: relapse_risk del rientro anticipato ora graduato (gravità + settimane rimanenti / originali) invece del 40% fisso; rischio % dinamico mostrato nel banner infortunio. Audit: §9.1 ritiro e §9.6 infortuni già implementati (recoveryPct già a schermo)
+const GAME_VERSION="4.72.0"; // CINE-TAC: cappedMM() limita movimenti per tipo highlight (header→0, tap-in/ribattuta→1, area immediata→1); hl_intro salta hl_move per azioni aeree non-lockMovement; DPad nascosto quando movesLeft=0; griglia rigore visibile solo per lockMovement (fix "RIGORE PARATO" che mostrava erroneamente cursore rigore)
 const SAVE_VERSION=6;
 // Sprint ENV — ambiente rilevato automaticamente dal runtime (non gestito manualmente).
 // PRODUCTION = deploy GitHub Pages (*.github.io). Tutto il resto (staging githack, locale, localhost) = TEST.
@@ -8651,8 +8664,10 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   // hl_intro auto-advance → hl_move after 2.5s (tap/key to skip)
   useEffect(()=>{
     if(phase!=="hl_intro"||paused)return;
-    const mm=situations[hlIdx]?.maxMoves??1;
-    const go=()=>{movesLeftRef.current=mm;setMovesLeft(mm);moveCoolRef.current=0;pressureRef.current=1;setPressureBar(1);defDistRef.current=80+Math.random()*20;setDefDist(defDistRef.current);setPhase("hl_move");};
+    const mm=cappedMM(situations[hlIdx]);
+    const go=()=>{movesLeftRef.current=mm;setMovesLeft(mm);moveCoolRef.current=0;pressureRef.current=1;setPressureBar(1);defDistRef.current=80+Math.random()*20;setDefDist(defDistRef.current);
+      // CINE-TAC: aerial/immediate situations skip hl_move and go straight to action choice
+      if(mm===0&&!situations[hlIdx]?.lockMovement){setPhase("hl_choose");}else{setPhase("hl_move");}};
     const t=setTimeout(go,2500);
     const onKey=e=>{if(e.key===" "||e.key==="Enter"){clearTimeout(t);go();}};
     document.addEventListener("keydown",onKey);
@@ -9704,7 +9719,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                 <div style={{position:"absolute",bottom:0,left:0,right:0,zIndex:16,background:"rgba(5,8,20,0.28)",padding:"8px 10px 10px"}}>
                   <div style={{color:"#f59e0b",fontSize:10,fontWeight:800,textShadow:"0 1px 4px rgba(0,0,0,0.9)",marginBottom:5}}>{clock}' — {curSit.text}</div>
                   <div style={{display:"flex",alignItems:"center",gap:10}}>
-                    {!curSit.lockMovement&&<DPad onMove={handleDPad} dark size={40}/>}
+                    {!curSit.lockMovement&&movesLeft>0&&<DPad onMove={handleDPad} dark size={40}/>}
                     <div style={{flex:1}}>
                       {curSit.maxMoves>0&&<div style={{display:"flex",justifyContent:"space-between",fontSize:8,color:"rgba(255,255,255,0.7)",textShadow:"0 1px 3px rgba(0,0,0,0.8)",marginBottom:3}}><span>{"●".repeat(movesLeft)}{"○".repeat(Math.max(0,curSit.maxMoves-movesLeft))} {movesLeft} mov</span><span>⏱ {Math.round(pressureBar*100)}%</span></div>}
                       {curSit.maxMoves>0&&<div style={{height:3,background:"rgba(255,255,255,0.2)",borderRadius:2}}><div style={{height:"100%",width:(pressureBar*100)+"%",background:pressureBar>0.4?"#f59e0b":pressureBar>0.2?"#f97316":"#ef4444",borderRadius:2,transition:"width 0.1s"}}/></div>}
@@ -9719,7 +9734,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                   <div style={{fontSize:10,color:"rgba(255,255,255,0.75)",fontWeight:700,textShadow:"0 1px 3px rgba(0,0,0,0.9)",marginBottom:5}}>{clock}' — {curSit.text} &nbsp;·&nbsp; <span style={{color:defDist<25?"#f87171":defDist<50?"#f97316":"#4ade80"}}>{defDist<25?"⚠ Addosso":defDist<50?"Vicino":"Libero"}</span></div>
                   <div style={{display:"flex",alignItems:"flex-start",gap:10}}>
                     {!curSit.lockMovement&&<div style={{opacity:movesLeft>0?1:0.3,flexShrink:0}}><DPad onMove={movesLeft>0?handleDPad:()=>{}} dark size={40}/></div>}
-                    {curSit.text?.includes("RIGORE")?(
+                    {curSit.lockMovement?(
                       <div style={{flex:1,display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:5}}>
                         {["tl","tc","tr","bl","bc","br"].map(dir=>(
                           <button key={dir} onClick={()=>handleRigore(dir)} style={{padding:"9px 4px",background:"rgba(0,0,0,0.55)",border:"1px solid rgba(255,255,255,0.25)",borderRadius:8,color:"#fff",cursor:"pointer",fontFamily:"inherit",display:"flex",flexDirection:"column",alignItems:"center",gap:3}}>
@@ -9767,7 +9782,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                 <div style={{padding:"8px 10px",borderBottom:"1px solid rgba(255,255,255,0.08)"}}>
                   <div style={{color:"#f59e0b",fontSize:10,fontWeight:700,marginBottom:5}}>{clock}' — {curSit.text}</div>
                   <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:5}}>
-                    {!curSit.lockMovement&&<DPad onMove={handleDPad} dark size={isNarrow?52:42}/>}
+                    {!curSit.lockMovement&&movesLeft>0&&<DPad onMove={handleDPad} dark size={isNarrow?52:42}/>}
                     <div style={{flex:1}}>
                       <div style={{fontSize:8,color:"rgba(255,255,255,0.4)",marginBottom:3}}>📍 {ZONES[zone]?.label}{!isNarrow?" · WASD":""}</div>
                       {curSit.maxMoves>0&&<div style={{fontSize:10,color:"#60a5fa",fontWeight:700,marginBottom:3}}>{"●".repeat(movesLeft)}{"○".repeat(Math.max(0,curSit.maxMoves-movesLeft))} {movesLeft} mov</div>}
@@ -9820,7 +9835,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                     <strong style={{color:"#f59e0b"}}>1 · 2 · 3</strong> &nbsp;|&nbsp; ←→ Enter
                   </div>}
                   <div style={{display:"flex",flexDirection:"column",gap:5}}>
-                    {curSit.text?.includes("RIGORE")?(
+                    {curSit.lockMovement?(
                       <div>
                         <div style={{fontSize:10,color:"rgba(255,255,255,0.45)",textAlign:"center",marginBottom:8,fontStyle:"italic"}}>🤫 Silenzio. Solo tu e il portiere.</div>
                         <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:5}}>
