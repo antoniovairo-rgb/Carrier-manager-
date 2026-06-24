@@ -2617,7 +2617,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.71.3"; // FIX BUG-1: card "Nuova Carriera" (sovrascrittura) solo con tutti gli slot pieni (allFull) invece di qualsiasi save (hasAny). FIX sw.js: cache-busting — pulizia cache vecchie su activate + bump CACHE elevora-v2
+const GAME_VERSION="4.71.4"; // §9.5 FIX: prestito convertito in acquisto (opzione/obbligo) ora normalizza club.transferType a "trasferimento definitivo" — niente più badge "in prestito" su giocatore riscattato
 const SAVE_VERSION=6;
 // Sprint ENV — ambiente rilevato automaticamente dal runtime (non gestito manualmente).
 // PRODUCTION = deploy GitHub Pages (*.github.io). Tutto il resto (staging githack, locale, localhost) = TEST.
@@ -14996,6 +14996,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       // E-3: resolve expiring loan before computing nextClub84
       let _loanE3=p.loan||null;
       let _loanReturnClub=null;
+      let _loanStayClub=null;// §9.5: prestito convertito in acquisto definitivo → normalizza transferType
       if(_loanE3&&newSeason>=(_loanE3.untilSeason||newSeason+1)){
         const _lt3=_loanE3.type||"prestito";
         if(_lt3==="prestito"){
@@ -15003,14 +15004,16 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
           setTimeout(()=>notify(`↩️ Fine prestito — rientri al ${_loanE3.parentClub?.n||"club madre"}.`,"#6366f1"),400);
         }else if(_lt3==="prestito con opzione"){
           if((p.matches||0)>=8&&(p.coachTrust||60)>=50){
-            setTimeout(()=>notify(`💰 Opzione esercitata — rimani al ${p.club?.n||"club"}!`,"#16a34a"),400);
+            _loanStayClub={...(p.club||{}),transferType:"trasferimento definitivo"};
+            setTimeout(()=>notify(`💰 Opzione esercitata — rimani al ${p.club?.n||"club"} a titolo definitivo!`,"#16a34a"),400);
           }else{
             _loanReturnClub=_loanE3.parentClub;
             setTimeout(()=>notify(`↩️ Opzione non esercitata — rientri al ${_loanE3.parentClub?.n||"club madre"}.`,"#6366f1"),400);
           }
         }else if(_lt3==="prestito con obbligo"){
           if((p.matches||0)>=(_loanE3.minMatches||10)){
-            setTimeout(()=>notify(`💰 Obbligo scattato — rimani al ${p.club?.n||"club"}!`,"#16a34a"),400);
+            _loanStayClub={...(p.club||{}),transferType:"trasferimento definitivo"};
+            setTimeout(()=>notify(`💰 Obbligo scattato — rimani al ${p.club?.n||"club"} a titolo definitivo!`,"#16a34a"),400);
           }else{
             _loanReturnClub=_loanE3.parentClub;
             setTimeout(()=>notify(`↩️ Obbligo non scattato — rientri al ${_loanE3.parentClub?.n||"club madre"}.`,"#6366f1"),400);
@@ -15018,7 +15021,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
         }
         _loanE3=null;
       }
-      const nextClub84=_loanReturnClub||_nextClubPre||p.club; // Sprint 84 + E-3: loan return overrides
+      const nextClub84=_loanReturnClub||_loanStayClub||_nextClubPre||p.club; // Sprint 84 + E-3 + §9.5: loan return / conversione definitiva overrides
       const lc=getLeagueClubs({...p,club:nextClub84,leagueOverrides:_newOvPre}); // Sprint 84: override-aware
       const newStandings=initStandings(lc);
       const seed=(newSeason*7919+newSeason*newSeason*31)%2147483647+hashStr(nextClub84?.id||nextClub84?.n||"u18")*17;
