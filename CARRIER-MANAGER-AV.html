@@ -2612,7 +2612,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.53.1"; // 3DV-12b: curva casa 100% home, curva ospiti 100% away
+const GAME_VERSION="4.54.0"; // 3DV-13: gap animazioni HL — miss reaction, assist_shot arc, gk save celebrate, opp_intercept, foul card
 const SAVE_VERSION=6;
 // Sprint ENV — ambiente rilevato automaticamente dal runtime (non gestito manualmente).
 // PRODUCTION = deploy GitHub Pages (*.github.io). Tutto il resto (staging githack, locale, localhost) = TEST.
@@ -6849,6 +6849,8 @@ function ThreeMatchView(props){
     let actT=0,actType=null,prevPhase="";
     let oppActType=null,oppActT=0,oppMesh=null,oppDiveDir=1; // CIN-2: animazione reazione avversario
     let hlPostArcT=-1,hlPostArcType=null,hlPostVZ=0; // 3DV-9: animazione post-arco (in_net/deflect/cross_goal)
+    let heroPostT=-1,heroPostType=null; // 3DV-13: reazione eroe post-azione fallita
+    let gkSaveCelebT=-1,gkSaveMesh=null; // 3DV-13: portiere si rialza dopo parata
     // Sprint 3D-8a: cronometro dell'esito per il rallenty cinematografico
     let resultT=0;
     // Sprint 3D-BALL: arco parabolico della palla (shot/header/cross/freekick/penalty)
@@ -6961,7 +6963,12 @@ function ThreeMatchView(props){
           if(isResult){const _hs=P.hlSuccess,_ht=P.hlType;
             if(_hs===true&&(_ht==="shot"||_ht==="penalty"||_ht==="freekick"||_ht==="header")){hlPostArcT=0;hlPostArcType="in_net";}
             else if(_hs===true&&_ht==="cross"){hlPostArcT=0;hlPostArcType="cross_goal";}
-            else if(_hs===false){hlPostArcT=0;hlPostArcType="deflect";hlPostVZ=(Math.random()>0.5?1:-1)*14;}
+            else if(_hs===true&&_ht==="pass"){hlPostArcT=0;hlPostArcType="assist_shot";}// 3DV-13: assist → secondo arco verso porta
+            else if(_hs===false){hlPostArcT=0;hlPostArcType="deflect";hlPostVZ=(Math.random()>0.5?1:-1)*14;
+              heroPostT=0;heroPostType="miss";// 3DV-13: eroe abbassa la testa
+              if((_ht==="shot"||_ht==="penalty"||_ht==="freekick"||_ht==="header")&&awayGkMesh){gkSaveCelebT=-0.10;gkSaveMesh=awayGkMesh;}// 3DV-13: portiere esulta ~0.10s dopo il tuffo
+              else if(_ht==="pass"||_ht==="build"){let _nd=99,_nm=null;sr.current.players.forEach((pp,ii)=>{const src=(P.allPlayers||[])[ii];if(src&&src.team==='away'&&!src.gk){const d=Math.hypot(pp.mesh.position.x-hero.position.x,pp.mesh.position.z-hero.position.z);if(d<_nd){_nd=d;_nm=pp.mesh;}}});if(_nm){oppActType="opp_intercept";oppActT=0;oppMesh=_nm;oppMesh._divePz=_nm.position.z;}}// 3DV-13: avversario intercetta il passaggio
+            }
           }}}
       else if(hlPostArcT>=0){hlPostArcT+=aDt;// 3DV-9: eseguire solo se il normale lerp non sovrascrive
         if(hlPostArcType==="in_net"){// 3DV-11: palla nella rete avversaria (+x) — lerp + rimbalzo smorzato
@@ -6974,6 +6981,11 @@ function ThreeMatchView(props){
           ball.position.y=0.65+Math.sin(_u2*Math.PI)*2.8;// traiettoria header
           ball.position.x+=(47-ball.position.x)*aDt*3.5;ball.position.z+=(0-ball.position.z)*aDt*1.5;// +47 = porta avversaria
           if(_u2>=1){hlPostArcType="in_net";hlPostArcT=0;}}// catena → in_net
+        else if(hlPostArcType==="assist_shot"){// 3DV-13: assist → compagno tocca → tiro in porta
+          const _u3=Math.min(hlPostArcT/0.80,1);
+          ball.position.y=0.65+Math.sin(_u3*Math.PI)*3.2;
+          ball.position.x+=(44-ball.position.x)*aDt*3.2;ball.position.z*=(1-aDt*1.6);
+          if(_u3>=1){hlPostArcType="in_net";hlPostArcT=0;}}
         else if(hlPostArcType==="deflect"){// parata/palo: palla laterale + a terra
           ball.position.y=Math.max(0.65,ball.position.y-aDt*5);
           ball.position.z+=hlPostVZ*aDt;hlPostVZ*=(1-aDt*3.5);
@@ -7005,6 +7017,7 @@ function ThreeMatchView(props){
           else if(t==="header"){ballArcH=3.2;ballArcDur=0.65;ballArcT=0;ballArcActive=true;ballArcTgtX=41+Math.random()*6;ballArcTgtZ=_rz*10;}
           else if(t==="cross"){ballArcH=3.8;ballArcDur=0.85;ballArcT=0;ballArcActive=true;ballArcTgtX=24+Math.random()*16;ballArcTgtZ=_rz*18;}
           else if(t==="freekick"){ballArcH=3.2;ballArcDur=0.80;ballArcT=0;ballArcActive=true;ballArcTgtX=43+Math.random()*4;ballArcTgtZ=_rz*7;}
+          else if(t==="pass"){const _fwd=P.hlSuccess===true;ballArcH=_fwd?2.2:1.5;ballArcDur=0.62;ballArcT=0;ballArcActive=true;ballArcTgtX=_fwd?18+Math.random()*20:-(8+Math.random()*14);ballArcTgtZ=_rz*18;}// 3DV-13: pass → avanti se assist, indietro se intercetto
           else ballArcActive=false;
           ballArcIsBG=ballArcActive; // 3DV-11: usa TGT esplicito anche per archi HL (come BG arc)
           if(ballArcActive)contactFlashT=0;
@@ -7023,7 +7036,7 @@ function ThreeMatchView(props){
           }} // QW-A: contact flash al kick/header
         if(_curPh==="hl_intro"||(_curPh==="hl_move"&&prevPhase==="playing")){repCount=0;repHead=0;replayDone=false;}
         if(_curPh!=="hl_result"&&replaying){replaying=false;setReplayOn(false);}
-        if(_curPh!=="hl_result"){hlPostArcT=-1;hlPostArcType=null;}// 3DV-9: reset post-arc su uscita da hl_result
+        if(_curPh!=="hl_result"){hlPostArcT=-1;hlPostArcType=null;heroPostT=-1;heroPostType=null;gkSaveCelebT=-1;gkSaveMesh=null;}// 3DV-9/13: reset post-arc su uscita da hl_result
         // ATE-4: zone ring — accendi su hl_intro, colora per tipo; spegni su playing/ended
         if(_curPh==="hl_intro"){zoneRingT=0;zoneRingMat.color.setHex(HL_ZONE_COL[P.hlType]||0xffffff);}
         if(_curPh==="playing"||_curPh==="ended"||_curPh==="walkout"){zoneRingT=-1;zoneRingMat.opacity=0;}
@@ -7097,6 +7110,7 @@ function ThreeMatchView(props){
           if(oppActType==="gk_dive"){oppMesh.position.z=(oppMesh._divePz||0)+oppDiveDir*sw*3.5;oppMesh.position.y=sw*0.8;oppMesh.rotation.z=oppDiveDir*sw*1.2;oppMesh._aL.rotation.x=-sw*1.8;oppMesh._aR.rotation.x=-sw*1.8;}
           else if(oppActType==="opp_stumble"){oppMesh.rotation.z=sw*1.0;oppMesh.position.y=-sw*0.15;oppMesh._lR.rotation.x=sw*1.8;oppMesh._lL.rotation.x=-sw*0.7;}
           else if(oppActType==="opp_spin"){oppMesh.rotation.y+=aDt*(u<0.5?9:3);}
+          else if(oppActType==="opp_intercept"){oppMesh.position.y=sw*0.45;oppMesh._aL.rotation.x=sw*1.5;oppMesh._aR.rotation.x=sw*1.5;oppMesh.rotation.z=sw*0.28;}// 3DV-13: si china + tende le braccia
           if(u>=1){oppActType=null;if(oppMesh){oppMesh.position.y=0;oppMesh=null;}}
         }
         // Sprint 3D-G2: arbitro segue la palla con offset laterale; guardalinee seguono x dell'azione
@@ -7133,6 +7147,14 @@ function ThreeMatchView(props){
           hero._aL.rotation.z=-0.5+Math.sin(celebT*4)*0.4;hero._aR.rotation.z=0.5-Math.sin(celebT*4)*0.4;
           if(_cu>=1){celebT=-1;hero.position.y=0;}
           actType=null;}
+        // 3DV-13: reazione eroe su azione fallita — testa bassa, braccia aperte
+        if(heroPostT>=0){heroPostT+=aDt;const _hpu=Math.min(heroPostT/1.6,1),_hsw=Math.sin(_hpu*Math.PI);
+          if(heroPostType==="miss"){if(hero._hd)hero._hd.rotation.x=-_hsw*0.9;hero._aL.rotation.z=_hsw*1.3;hero._aR.rotation.z=-_hsw*1.3;hero.position.y=0;}
+          if(_hpu>=1){heroPostT=-1;heroPostType=null;if(hero._hd)hero._hd.rotation.x=0;hero._aL.rotation.z=0;hero._aR.rotation.z=0;}}
+        // 3DV-13: portiere si rialza e alza le braccia dopo la parata
+        if(gkSaveCelebT>=-0.12){gkSaveCelebT+=aDt;if(gkSaveCelebT>=0&&gkSaveMesh){const _gcu=Math.min(gkSaveCelebT/1.1,1),_gcsw=Math.sin(_gcu*Math.PI);
+          gkSaveMesh.position.y=_gcsw*0.65;const _arm=_gcsw*1.5;gkSaveMesh._aL.rotation.z=-_arm;gkSaveMesh._aR.rotation.z=_arm;gkSaveMesh._aL.rotation.x=-_gcsw*0.7;gkSaveMesh._aR.rotation.x=-_gcsw*0.7;
+          if(_gcu>=1){gkSaveCelebT=-1;gkSaveMesh.position.y=0;gkSaveMesh._aL.rotation.z=0;gkSaveMesh._aR.rotation.z=0;gkSaveMesh=null;}}}
         // registra lo snapshot durante gli HL; a esito quasi concluso riavvolgi e mostra il replay
         if(isHL)recordSnap();
         if(isResult&&!replaying&&!replayDone&&resultT>=3.2&&repCount>=25){replaying=true;replayDone=true;repT=0;repFrames=repCount;repStart=(repHead-repCount+REP_CAP*2)%REP_CAP;setReplayOn(true);}// 3DV-12: 1.7→3.2s — lascia vedere arco+in_net prima del replay
@@ -8964,7 +8986,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     else if(isShot&&ok)setActionEffect({type:"spark",col:homeKitCol,key:Date.now()});
     else if(isShot&&!ok)setActionEffect({type:"spark",col:"#ef4444",key:Date.now()});
     else if(isTackle)setActionEffect({type:"dust",key:Date.now()});
-    setOutcome({text:txt,ok,actionLabel:action.label});setChosenAct(action);
+    setOutcome({text:txt,ok,actionLabel:action.label,outKey:key});setChosenAct(action);
     // Sprint 97 — streak bonus: consecutive successes amplify momentum
     if(ok){streakRef.current=Math.min(streakRef.current+1,5);}
     else{streakRef.current=0;}
@@ -9485,8 +9507,9 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                 </div>
               )}
               {isNarrow&&phase==="hl_result"&&outcome&&(
-                <div style={{position:"absolute",bottom:0,left:0,right:0,zIndex:16,background:outcome.ok?"rgba(5,50,20,0.55)":"rgba(50,5,5,0.55)",padding:"10px 12px 12px"}}>
-                  <div style={{fontSize:14,fontWeight:900,color:outcome.ok?"#4ade80":"#f87171",marginBottom:3,textShadow:"0 1px 4px rgba(0,0,0,0.8)"}}>{outcome.ok?"✅":"❌"} {chosenAct?.label}</div>
+                <div style={{position:"absolute",bottom:0,left:0,right:0,zIndex:16,background:outcome.outKey==="foul"?"rgba(40,20,0,0.72)":outcome.ok?"rgba(5,50,20,0.55)":"rgba(50,5,5,0.55)",padding:"10px 12px 12px"}}>
+                  {outcome.outKey==="foul"&&<div style={{display:"flex",alignItems:"center",gap:5,marginBottom:5}}><div style={{width:10,height:14,background:"#fb923c",borderRadius:2,boxShadow:"0 0 8px rgba(251,146,60,0.9)",animation:"goalDrop 0.3s ease-out"}}/><span style={{fontSize:11,fontWeight:900,color:"#fb923c",letterSpacing:1,textTransform:"uppercase"}}>FALLO</span></div>}
+                  <div style={{fontSize:14,fontWeight:900,color:outcome.outKey==="foul"?"#fb923c":outcome.ok?"#4ade80":"#f87171",marginBottom:3,textShadow:"0 1px 4px rgba(0,0,0,0.8)"}}>{outcome.ok?"✅":"❌"} {chosenAct?.label}</div>
                   <div style={{fontSize:11,color:"#fff",lineHeight:1.4,marginBottom:4,textShadow:"0 1px 3px rgba(0,0,0,0.7)"}}>{outcome.text}</div>
                   {aiCommentary&&<div style={{fontSize:10,color:"rgba(255,255,255,0.8)",fontStyle:"italic",textShadow:"0 1px 3px rgba(0,0,0,0.7)"}}>{aiCommentary.reaction} {aiCommentary.commentary}</div>}
                 </div>
