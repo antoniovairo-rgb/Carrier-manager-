@@ -1,15 +1,15 @@
 {
   "totalCombos": 528,
-  "clean": 432,
-  "warns": 96,
+  "clean": 510,
+  "warns": 18,
   "fails": 0,
   "scores": {
     "animazione": 100,
     "fisica_palla": 100,
     "sincronizzazione": 100,
     "regia": 100,
-    "post_hl": 98,
-    "realismo": 99
+    "post_hl": 100,
+    "realismo": 100
   },
   "guards": [
     {
@@ -50,6 +50,14 @@
     },
     {
       "name": "arc cross_far_post tgtZ=-_side*(11..)",
+      "ok": true
+    },
+    {
+      "name": "fix: dribble/build-gol → in_net (non solo pugno)",
+      "ok": true
+    },
+    {
+      "name": "fix: hlReward passato come prop",
       "ok": true
     }
   ],
@@ -331,386 +339,6 @@
       ]
     },
     {
-      "si": 3,
-      "ai": 1,
-      "realismo": 97,
-      "sit": "🌀 Dribbling completato in area!",
-      "act": "🌀 Dribbling portiere",
-      "cls": {
-        "type": "dribble",
-        "pattern": "DRIBBLE_SHOT",
-        "variant": "dribble_feint"
-      },
-      "issues": [
-        {
-          "cat": "posthl",
-          "sev": "warn",
-          "msg": "azione \"goal\" ma post-HL successo non è una rete (hero_fist)"
-        }
-      ]
-    },
-    {
-      "si": 10,
-      "ai": 2,
-      "realismo": 97,
-      "sit": "🎯 Pallonetto su portiere in uscita!",
-      "act": "🌀 Dribbling portiere",
-      "cls": {
-        "type": "dribble",
-        "pattern": "DRIBBLE_SHOT",
-        "variant": "dribble_feint"
-      },
-      "issues": [
-        {
-          "cat": "posthl",
-          "sev": "warn",
-          "msg": "azione \"goal\" ma post-HL successo non è una rete (hero_fist)"
-        }
-      ]
-    },
-    {
-      "si": 11,
-      "ai": 2,
-      "realismo": 97,
-      "sit": "💥 Conclusione di collo pieno!",
-      "act": "🌀 Finta e tiro",
-      "cls": {
-        "type": "dribble",
-        "pattern": "DRIBBLE_SHOT",
-        "variant": "dribble_feint"
-      },
-      "issues": [
-        {
-          "cat": "posthl",
-          "sev": "warn",
-          "msg": "azione \"goal\" ma post-HL successo non è una rete (hero_fist)"
-        }
-      ]
-    },
-    {
-      "si": 20,
-      "ai": 0,
-      "realismo": 97,
-      "sit": "🤼 Duello fisico! Liberati.",
-      "act": "🌀 Dribbling netto",
-      "cls": {
-        "type": "dribble",
-        "pattern": "DRIBBLE_SHOT",
-        "variant": "dribble_feint"
-      },
-      "issues": [
-        {
-          "cat": "posthl",
-          "sev": "warn",
-          "msg": "azione \"goal\" ma post-HL successo non è una rete (hero_fist)"
-        }
-      ]
-    },
-    {
-      "si": 22,
-      "ai": 2,
-      "realismo": 97,
-      "sit": "🏃 Contropiede! Campo aperto.",
-      "act": "🌀 Dribbling GK",
-      "cls": {
-        "type": "dribble",
-        "pattern": "DRIBBLE_SHOT",
-        "variant": "dribble_feint"
-      },
-      "issues": [
-        {
-          "cat": "posthl",
-          "sev": "warn",
-          "msg": "azione \"goal\" ma post-HL successo non è una rete (hero_fist)"
-        }
-      ]
-    },
-    {
-      "si": 23,
-      "ai": 2,
-      "realismo": 97,
-      "sit": "⚡ Scatto in profondità!",
-      "act": "🌀 Dribbling difensore",
-      "cls": {
-        "type": "dribble",
-        "pattern": "DRIBBLE_SHOT",
-        "variant": "dribble_feint"
-      },
-      "issues": [
-        {
-          "cat": "posthl",
-          "sev": "warn",
-          "msg": "azione \"goal\" ma post-HL successo non è una rete (hero_fist)"
-        }
-      ]
-    },
-    {
-      "si": 24,
-      "ai": 1,
-      "realismo": 97,
-      "sit": "🧠 Ricezione tra le linee!",
-      "act": "⚡ Accelera verso porta",
-      "cls": {
-        "type": "build",
-        "pattern": "BUILDUP",
-        "variant": null
-      },
-      "issues": [
-        {
-          "cat": "posthl",
-          "sev": "warn",
-          "msg": "azione \"goal\" ma post-HL successo non è una rete (hero_fist)"
-        }
-      ]
-    },
-    {
-      "si": 28,
-      "ai": 2,
-      "realismo": 97,
-      "sit": "🎮 Palla a centrocampo. Costruisci.",
-      "act": "🏃 Avanza palla al piede",
-      "cls": {
-        "type": "build",
-        "pattern": "BUILDUP",
-        "variant": null
-      },
-      "issues": [
-        {
-          "cat": "posthl",
-          "sev": "warn",
-          "msg": "azione \"goal\" ma post-HL successo non è una rete (hero_fist)"
-        }
-      ]
-    },
-    {
-      "si": 29,
-      "ai": 0,
-      "realismo": 97,
-      "sit": "⚡ Recupero palla! Riparte.",
-      "act": "🏃 Lancia il contropiede",
-      "cls": {
-        "type": "build",
-        "pattern": "BUILDUP",
-        "variant": null
-      },
-      "issues": [
-        {
-          "cat": "posthl",
-          "sev": "warn",
-          "msg": "azione \"goal\" ma post-HL successo non è una rete (hero_fist)"
-        }
-      ]
-    },
-    {
-      "si": 29,
-      "ai": 2,
-      "realismo": 97,
-      "sit": "⚡ Recupero palla! Riparte.",
-      "act": "🌀 Avanza palla al piede",
-      "cls": {
-        "type": "build",
-        "pattern": "BUILDUP",
-        "variant": null
-      },
-      "issues": [
-        {
-          "cat": "posthl",
-          "sev": "warn",
-          "msg": "azione \"goal\" ma post-HL successo non è una rete (hero_fist)"
-        }
-      ]
-    },
-    {
-      "si": 30,
-      "ai": 0,
-      "realismo": 97,
-      "sit": "🌀 Sfida 1v1 a centrocampo!",
-      "act": "🌀 Dribbling centrale",
-      "cls": {
-        "type": "dribble",
-        "pattern": "DRIBBLE_SHOT",
-        "variant": "dribble_feint"
-      },
-      "issues": [
-        {
-          "cat": "posthl",
-          "sev": "warn",
-          "msg": "azione \"goal\" ma post-HL successo non è una rete (hero_fist)"
-        }
-      ]
-    },
-    {
-      "si": 30,
-      "ai": 1,
-      "realismo": 97,
-      "sit": "🌀 Sfida 1v1 a centrocampo!",
-      "act": "⚡ Scatto in velocità",
-      "cls": {
-        "type": "build",
-        "pattern": "BUILDUP",
-        "variant": null
-      },
-      "issues": [
-        {
-          "cat": "posthl",
-          "sev": "warn",
-          "msg": "azione \"goal\" ma post-HL successo non è una rete (hero_fist)"
-        }
-      ]
-    },
-    {
-      "si": 37,
-      "ai": 0,
-      "realismo": 97,
-      "sit": "📐 Schema! Inserimento da centrocampo in area.",
-      "act": "⚡ Taglio in profondità",
-      "cls": {
-        "type": "build",
-        "pattern": "BUILDUP",
-        "variant": null
-      },
-      "issues": [
-        {
-          "cat": "posthl",
-          "sev": "warn",
-          "msg": "azione \"goal\" ma post-HL successo non è una rete (hero_fist)"
-        }
-      ]
-    },
-    {
-      "si": 37,
-      "ai": 1,
-      "realismo": 97,
-      "sit": "📐 Schema! Inserimento da centrocampo in area.",
-      "act": "🎯 Taglio sul secondo palo",
-      "cls": {
-        "type": "build",
-        "pattern": "BUILDUP",
-        "variant": null
-      },
-      "issues": [
-        {
-          "cat": "posthl",
-          "sev": "warn",
-          "msg": "azione \"goal\" ma post-HL successo non è una rete (hero_fist)"
-        }
-      ]
-    },
-    {
-      "si": 38,
-      "ai": 1,
-      "realismo": 97,
-      "sit": "🔄 Dai e vai! Schema rapido in trequarti.",
-      "act": "⚡ Accelera in profondità",
-      "cls": {
-        "type": "build",
-        "pattern": "BUILDUP",
-        "variant": null
-      },
-      "issues": [
-        {
-          "cat": "posthl",
-          "sev": "warn",
-          "msg": "azione \"goal\" ma post-HL successo non è una rete (hero_fist)"
-        }
-      ]
-    },
-    {
-      "si": 40,
-      "ai": 0,
-      "realismo": 97,
-      "sit": "🌀 TUNNEL! Prova la finta di corpo e passa in mezzo.",
-      "act": "🌀 Tunnel perfetto",
-      "cls": {
-        "type": "dribble",
-        "pattern": "DRIBBLE_SHOT",
-        "variant": "dribble_feint"
-      },
-      "issues": [
-        {
-          "cat": "posthl",
-          "sev": "warn",
-          "msg": "azione \"goal\" ma post-HL successo non è una rete (hero_fist)"
-        }
-      ]
-    },
-    {
-      "si": 40,
-      "ai": 1,
-      "realismo": 97,
-      "sit": "🌀 TUNNEL! Prova la finta di corpo e passa in mezzo.",
-      "act": "⚡ Finta e scatto",
-      "cls": {
-        "type": "dribble",
-        "pattern": "DRIBBLE_SHOT",
-        "variant": "dribble_feint"
-      },
-      "issues": [
-        {
-          "cat": "posthl",
-          "sev": "warn",
-          "msg": "azione \"goal\" ma post-HL successo non è una rete (hero_fist)"
-        }
-      ]
-    },
-    {
-      "si": 46,
-      "ai": 1,
-      "realismo": 97,
-      "sit": "⚡ Sovrapposizione! Il terzino è lanciato in fascia.",
-      "act": "⚡ Taglio verso l'area",
-      "cls": {
-        "type": "build",
-        "pattern": "BUILDUP",
-        "variant": null
-      },
-      "issues": [
-        {
-          "cat": "posthl",
-          "sev": "warn",
-          "msg": "azione \"goal\" ma post-HL successo non è una rete (hero_fist)"
-        }
-      ]
-    },
-    {
-      "si": 47,
-      "ai": 1,
-      "realismo": 97,
-      "sit": "🚀 Contropiede 2 contro 1! Supera il difensore!",
-      "act": "⚡ Scatta e tira",
-      "cls": {
-        "type": "build",
-        "pattern": "BUILDUP",
-        "variant": null
-      },
-      "issues": [
-        {
-          "cat": "posthl",
-          "sev": "warn",
-          "msg": "azione \"goal\" ma post-HL successo non è una rete (hero_fist)"
-        }
-      ]
-    },
-    {
-      "si": 47,
-      "ai": 2,
-      "realismo": 97,
-      "sit": "🚀 Contropiede 2 contro 1! Supera il difensore!",
-      "act": "🌀 Finta e tiro",
-      "cls": {
-        "type": "dribble",
-        "pattern": "DRIBBLE_SHOT",
-        "variant": "dribble_feint"
-      },
-      "issues": [
-        {
-          "cat": "posthl",
-          "sev": "warn",
-          "msg": "azione \"goal\" ma post-HL successo non è una rete (hero_fist)"
-        }
-      ]
-    },
-    {
       "si": 54,
       "ai": 0,
       "realismo": 97,
@@ -749,44 +377,6 @@
       ]
     },
     {
-      "si": 56,
-      "ai": 0,
-      "realismo": 97,
-      "sit": "🎯 Lancio lungo millimetrico! Scatta in profondità.",
-      "act": "⚡ Scatto perfetto",
-      "cls": {
-        "type": "build",
-        "pattern": "BUILDUP",
-        "variant": null
-      },
-      "issues": [
-        {
-          "cat": "posthl",
-          "sev": "warn",
-          "msg": "azione \"goal\" ma post-HL successo non è una rete (hero_fist)"
-        }
-      ]
-    },
-    {
-      "si": 56,
-      "ai": 1,
-      "realismo": 97,
-      "sit": "🎯 Lancio lungo millimetrico! Scatta in profondità.",
-      "act": "🎯 Controlla e tira",
-      "cls": {
-        "type": "build",
-        "pattern": "BUILDUP",
-        "variant": null
-      },
-      "issues": [
-        {
-          "cat": "posthl",
-          "sev": "warn",
-          "msg": "azione \"goal\" ma post-HL successo non è una rete (hero_fist)"
-        }
-      ]
-    },
-    {
       "si": 57,
       "ai": 2,
       "realismo": 97,
@@ -806,213 +396,439 @@
       ]
     },
     {
-      "si": 59,
+      "si": 152,
       "ai": 0,
       "realismo": 97,
-      "sit": "🔙 Siamo sotto 0-2. Segnare adesso cambia tutto.",
-      "act": "🔥 Prendo in mano la squadra",
+      "sit": "📋 Schema doppio dai e vai!",
+      "act": "📋 Schema a tre — dai, ricevi, tira",
       "cls": {
-        "type": "build",
-        "pattern": "BUILDUP",
+        "type": "pass",
+        "pattern": "COMBINATION",
         "variant": null
       },
       "issues": [
         {
           "cat": "posthl",
           "sev": "warn",
-          "msg": "azione \"goal\" ma post-HL successo non è una rete (hero_fist)"
+          "msg": "azione \"goal\" ma post-HL successo non è una rete (assist_shot)"
         }
       ]
     },
     {
-      "si": 59,
+      "si": 0,
+      "ai": 0,
+      "realismo": 100,
+      "sit": "⚡ Solo davanti al portiere!",
+      "act": "🦵 Tiro angolato",
+      "cls": {
+        "type": "shot",
+        "pattern": "ONE_ON_ONE",
+        "variant": "shot_one_on_one"
+      },
+      "issues": []
+    },
+    {
+      "si": 0,
       "ai": 1,
-      "realismo": 97,
-      "sit": "🔙 Siamo sotto 0-2. Segnare adesso cambia tutto.",
-      "act": "⚡ Scatto in verticale",
+      "realismo": 100,
+      "sit": "⚡ Solo davanti al portiere!",
+      "act": "🎯 Piazzato basso",
       "cls": {
-        "type": "build",
-        "pattern": "BUILDUP",
-        "variant": null
+        "type": "shot",
+        "pattern": "ONE_ON_ONE",
+        "variant": "shot_one_on_one"
       },
-      "issues": [
-        {
-          "cat": "posthl",
-          "sev": "warn",
-          "msg": "azione \"goal\" ma post-HL successo non è una rete (hero_fist)"
-        }
-      ]
+      "issues": []
     },
     {
-      "si": 60,
+      "si": 1,
       "ai": 0,
-      "realismo": 97,
-      "sit": "👥 Doppia marcatura! Due difensori ti raddoppiano.",
-      "act": "🌀 Dribbling stretto — li elimino entrambi",
+      "realismo": 100,
+      "sit": "🤸 Rovesciata spettacolare!",
+      "act": "🤸 Rovesciata!",
       "cls": {
-        "type": "dribble",
-        "pattern": "DRIBBLE_SHOT",
-        "variant": "dribble_feint"
+        "type": "shot",
+        "pattern": "EDGE_SHOT",
+        "variant": "shot_volley"
       },
-      "issues": [
-        {
-          "cat": "posthl",
-          "sev": "warn",
-          "msg": "azione \"goal\" ma post-HL successo non è una rete (hero_fist)"
-        }
-      ]
+      "issues": []
     },
     {
-      "si": 60,
+      "si": 1,
+      "ai": 1,
+      "realismo": 100,
+      "sit": "🤸 Rovesciata spettacolare!",
+      "act": "✈️ Stacco di testa",
+      "cls": {
+        "type": "header",
+        "pattern": "HEADER_ATTACK",
+        "variant": "header_near_post"
+      },
+      "issues": []
+    },
+    {
+      "si": 1,
       "ai": 2,
-      "realismo": 97,
-      "sit": "👥 Doppia marcatura! Due difensori ti raddoppiano.",
-      "act": "⚡ Scatto diagonale istantaneo",
+      "realismo": 100,
+      "sit": "🤸 Rovesciata spettacolare!",
+      "act": "🦵 Tiro di prima",
       "cls": {
-        "type": "build",
-        "pattern": "BUILDUP",
-        "variant": null
+        "type": "shot",
+        "pattern": "EDGE_SHOT",
+        "variant": "shot_volley"
       },
-      "issues": [
-        {
-          "cat": "posthl",
-          "sev": "warn",
-          "msg": "azione \"goal\" ma post-HL successo non è una rete (hero_fist)"
-        }
-      ]
+      "issues": []
     },
     {
-      "si": 63,
-      "ai": 1,
-      "realismo": 97,
-      "sit": "🎯 Tiro ad incrociare sul palo lontano!",
-      "act": "🌀 Finta e interno piede",
-      "cls": {
-        "type": "dribble",
-        "pattern": "DRIBBLE_SHOT",
-        "variant": "dribble_inside"
-      },
-      "issues": [
-        {
-          "cat": "posthl",
-          "sev": "warn",
-          "msg": "azione \"goal\" ma post-HL successo non è una rete (hero_fist)"
-        }
-      ]
-    },
-    {
-      "si": 67,
-      "ai": 1,
-      "realismo": 97,
-      "sit": "🦶 Tiro col mancino a sorpresa!",
-      "act": "🌀 Finta e mancino",
-      "cls": {
-        "type": "dribble",
-        "pattern": "DRIBBLE_SHOT",
-        "variant": "dribble_feint"
-      },
-      "issues": [
-        {
-          "cat": "posthl",
-          "sev": "warn",
-          "msg": "azione \"goal\" ma post-HL successo non è una rete (hero_fist)"
-        }
-      ]
-    },
-    {
-      "si": 71,
+      "si": 2,
       "ai": 0,
-      "realismo": 97,
-      "sit": "🌀 Finta di esterno e tiro interno!",
-      "act": "🌀 Finta e interno",
+      "realismo": 100,
+      "sit": "⚡ Tap-in! Porta quasi vuota.",
+      "act": "🦵 Spingila dentro!",
       "cls": {
-        "type": "dribble",
-        "pattern": "DRIBBLE_SHOT",
-        "variant": "dribble_inside"
+        "type": "shot",
+        "pattern": "EDGE_SHOT",
+        "variant": "shot_first_time"
       },
-      "issues": [
-        {
-          "cat": "posthl",
-          "sev": "warn",
-          "msg": "azione \"goal\" ma post-HL successo non è una rete (hero_fist)"
-        }
-      ]
+      "issues": []
     },
     {
-      "si": 75,
+      "si": 2,
+      "ai": 1,
+      "realismo": 100,
+      "sit": "⚡ Tap-in! Porta quasi vuota.",
+      "act": "🎯 Precisione",
+      "cls": {
+        "type": "shot",
+        "pattern": "EDGE_SHOT",
+        "variant": "shot_first_time"
+      },
+      "issues": []
+    },
+    {
+      "si": 2,
       "ai": 2,
-      "realismo": 97,
-      "sit": "😱 Errore del portiere! Palla libera.",
-      "act": "🌀 Dribbla il portiere e segna",
+      "realismo": 100,
+      "sit": "⚡ Tap-in! Porta quasi vuota.",
+      "act": "✈️ Di testa",
+      "cls": {
+        "type": "header",
+        "pattern": "HEADER_ATTACK",
+        "variant": "header_near_post"
+      },
+      "issues": []
+    },
+    {
+      "si": 3,
+      "ai": 0,
+      "realismo": 100,
+      "sit": "🌀 Dribbling completato in area!",
+      "act": "🦵 Tiro a giro",
+      "cls": {
+        "type": "shot",
+        "pattern": "EDGE_SHOT",
+        "variant": "shot_curled"
+      },
+      "issues": []
+    },
+    {
+      "si": 3,
+      "ai": 1,
+      "realismo": 100,
+      "sit": "🌀 Dribbling completato in area!",
+      "act": "🌀 Dribbling portiere",
       "cls": {
         "type": "dribble",
         "pattern": "DRIBBLE_SHOT",
         "variant": "dribble_feint"
       },
-      "issues": [
-        {
-          "cat": "posthl",
-          "sev": "warn",
-          "msg": "azione \"goal\" ma post-HL successo non è una rete (hero_fist)"
-        }
-      ]
+      "issues": []
     },
     {
-      "si": 79,
+      "si": 3,
+      "ai": 2,
+      "realismo": 100,
+      "sit": "🌀 Dribbling completato in area!",
+      "act": "🎯 Assist retropassaggio",
+      "cls": {
+        "type": "pass",
+        "pattern": "COMBINATION",
+        "variant": null
+      },
+      "issues": []
+    },
+    {
+      "si": 4,
       "ai": 0,
-      "realismo": 97,
-      "sit": "⚡ Rimessa rapida dal portiere!",
-      "act": "⚡ Scatto in profondità subito",
+      "realismo": 100,
+      "sit": "🎯 Deviazione ravvicinata!",
+      "act": "🦵 Deviazione istintiva",
       "cls": {
-        "type": "build",
-        "pattern": "BUILDUP",
-        "variant": null
+        "type": "shot",
+        "pattern": "EDGE_SHOT",
+        "variant": "shot_first_time"
       },
-      "issues": [
-        {
-          "cat": "posthl",
-          "sev": "warn",
-          "msg": "azione \"goal\" ma post-HL successo non è una rete (hero_fist)"
-        }
-      ]
+      "issues": []
     },
     {
-      "si": 79,
+      "si": 4,
       "ai": 1,
-      "realismo": 97,
-      "sit": "⚡ Rimessa rapida dal portiere!",
-      "act": "🎯 Posizionamento smarcato",
+      "realismo": 100,
+      "sit": "🎯 Deviazione ravvicinata!",
+      "act": "✈️ Di testa",
       "cls": {
-        "type": "build",
-        "pattern": "BUILDUP",
-        "variant": null
+        "type": "header",
+        "pattern": "HEADER_ATTACK",
+        "variant": "header_near_post"
       },
-      "issues": [
-        {
-          "cat": "posthl",
-          "sev": "warn",
-          "msg": "azione \"goal\" ma post-HL successo non è una rete (hero_fist)"
-        }
-      ]
+      "issues": []
     },
     {
-      "si": 83,
-      "ai": 1,
-      "realismo": 97,
-      "sit": "↗️ Schema da rimessa laterale!",
-      "act": "⚡ Scatto sul secondo palo",
+      "si": 4,
+      "ai": 2,
+      "realismo": 100,
+      "sit": "🎯 Deviazione ravvicinata!",
+      "act": "🌀 Prima intenzione",
       "cls": {
-        "type": "build",
-        "pattern": "BUILDUP",
+        "type": "shot",
+        "pattern": "EDGE_SHOT",
+        "variant": "shot_volley"
+      },
+      "issues": []
+    },
+    {
+      "si": 5,
+      "ai": 0,
+      "realismo": 100,
+      "sit": "🔴 RIGORE! Sul dischetto.",
+      "act": "💥 Angolato rasoterra",
+      "cls": {
+        "type": "penalty",
+        "pattern": "PENALTY",
         "variant": null
       },
-      "issues": [
-        {
-          "cat": "posthl",
-          "sev": "warn",
-          "msg": "azione \"goal\" ma post-HL successo non è una rete (hero_fist)"
-        }
-      ]
+      "issues": []
+    },
+    {
+      "si": 5,
+      "ai": 2,
+      "realismo": 100,
+      "sit": "🔴 RIGORE! Sul dischetto.",
+      "act": "⚡ Centro-alto",
+      "cls": {
+        "type": "penalty",
+        "pattern": "PENALTY",
+        "variant": null
+      },
+      "issues": []
+    },
+    {
+      "si": 6,
+      "ai": 0,
+      "realismo": 100,
+      "sit": "🏳️ Corner! Attacca il secondo palo.",
+      "act": "✈️ Stacco di testa",
+      "cls": {
+        "type": "header",
+        "pattern": "HEADER_ATTACK",
+        "variant": "header_far_post"
+      },
+      "issues": []
+    },
+    {
+      "si": 6,
+      "ai": 1,
+      "realismo": 100,
+      "sit": "🏳️ Corner! Attacca il secondo palo.",
+      "act": "🦵 Tiro al volo",
+      "cls": {
+        "type": "shot",
+        "pattern": "EDGE_SHOT",
+        "variant": "shot_volley"
+      },
+      "issues": []
+    },
+    {
+      "si": 6,
+      "ai": 2,
+      "realismo": 100,
+      "sit": "🏳️ Corner! Attacca il secondo palo.",
+      "act": "🤝 Sponda per compagno",
+      "cls": {
+        "type": "pass",
+        "pattern": "COMBINATION",
+        "variant": null
+      },
+      "issues": []
+    },
+    {
+      "si": 7,
+      "ai": 0,
+      "realismo": 100,
+      "sit": "✈️ Cross in area! Attacca il pallone.",
+      "act": "✈️ Colpo di testa",
+      "cls": {
+        "type": "header",
+        "pattern": "HEADER_ATTACK",
+        "variant": "header_near_post"
+      },
+      "issues": []
+    },
+    {
+      "si": 7,
+      "ai": 1,
+      "realismo": 100,
+      "sit": "✈️ Cross in area! Attacca il pallone.",
+      "act": "🦵 Tiro di prima",
+      "cls": {
+        "type": "shot",
+        "pattern": "EDGE_SHOT",
+        "variant": "shot_volley"
+      },
+      "issues": []
+    },
+    {
+      "si": 7,
+      "ai": 2,
+      "realismo": 100,
+      "sit": "✈️ Cross in area! Attacca il pallone.",
+      "act": "🤸 Tacco",
+      "cls": {
+        "type": "shot",
+        "pattern": "EDGE_SHOT",
+        "variant": "shot_power"
+      },
+      "issues": []
+    },
+    {
+      "si": 8,
+      "ai": 0,
+      "realismo": 100,
+      "sit": "💥 Tiro dal limite!",
+      "act": "💥 Tiro di potenza",
+      "cls": {
+        "type": "shot",
+        "pattern": "EDGE_SHOT",
+        "variant": "shot_power"
+      },
+      "issues": []
+    },
+    {
+      "si": 8,
+      "ai": 1,
+      "realismo": 100,
+      "sit": "💥 Tiro dal limite!",
+      "act": "🎯 Piazzato angolato",
+      "cls": {
+        "type": "shot",
+        "pattern": "EDGE_SHOT",
+        "variant": "shot_curled"
+      },
+      "issues": []
+    },
+    {
+      "si": 8,
+      "ai": 2,
+      "realismo": 100,
+      "sit": "💥 Tiro dal limite!",
+      "act": "🏃 Avanza in area",
+      "cls": {
+        "type": "shot",
+        "pattern": "EDGE_SHOT",
+        "variant": "shot_power"
+      },
+      "issues": []
+    },
+    {
+      "si": 9,
+      "ai": 0,
+      "realismo": 100,
+      "sit": "⚽ Tiro al volo dal limite!",
+      "act": "⚽ Volée potente",
+      "cls": {
+        "type": "shot",
+        "pattern": "EDGE_SHOT",
+        "variant": "shot_volley"
+      },
+      "issues": []
+    },
+    {
+      "si": 9,
+      "ai": 1,
+      "realismo": 100,
+      "sit": "⚽ Tiro al volo dal limite!",
+      "act": "🎯 Mezza volée",
+      "cls": {
+        "type": "shot",
+        "pattern": "EDGE_SHOT",
+        "variant": "shot_volley"
+      },
+      "issues": []
+    },
+    {
+      "si": 9,
+      "ai": 2,
+      "realismo": 100,
+      "sit": "⚽ Tiro al volo dal limite!",
+      "act": "🦵 Controllo e tiro",
+      "cls": {
+        "type": "shot",
+        "pattern": "EDGE_SHOT",
+        "variant": "shot_power"
+      },
+      "issues": []
+    },
+    {
+      "si": 10,
+      "ai": 1,
+      "realismo": 100,
+      "sit": "🎯 Pallonetto su portiere in uscita!",
+      "act": "💥 Tiro di potenza",
+      "cls": {
+        "type": "shot",
+        "pattern": "ONE_ON_ONE",
+        "variant": "shot_one_on_one"
+      },
+      "issues": []
+    },
+    {
+      "si": 10,
+      "ai": 2,
+      "realismo": 100,
+      "sit": "🎯 Pallonetto su portiere in uscita!",
+      "act": "🌀 Dribbling portiere",
+      "cls": {
+        "type": "dribble",
+        "pattern": "DRIBBLE_SHOT",
+        "variant": "dribble_feint"
+      },
+      "issues": []
+    },
+    {
+      "si": 11,
+      "ai": 0,
+      "realismo": 100,
+      "sit": "💥 Conclusione di collo pieno!",
+      "act": "💥 Collo pieno!",
+      "cls": {
+        "type": "shot",
+        "pattern": "EDGE_SHOT",
+        "variant": "shot_power"
+      },
+      "issues": []
+    },
+    {
+      "si": 11,
+      "ai": 1,
+      "realismo": 100,
+      "sit": "💥 Conclusione di collo pieno!",
+      "act": "🎯 Interno precisione",
+      "cls": {
+        "type": "shot",
+        "pattern": "EDGE_SHOT",
+        "variant": "shot_power"
+      },
+      "issues": []
     }
   ]
 }

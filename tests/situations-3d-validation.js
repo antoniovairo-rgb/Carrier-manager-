@@ -79,14 +79,18 @@ guard('outcome fail: palo 20% (hit_post)', /_roll<0\.20\)\{[\s\S]*?hlPostArcType
 guard('outcome fail: save/wide split 0.85', /_roll<0\.85\?"save":"wide"/.test(src));
 guard('camera FAR_POST_CROSS side-tracking', /_pat==="FAR_POST_CROSS"\)\{cPx=clamp\(fX-6/.test(src));
 guard('arc cross_far_post tgtZ=-_side*(11..)', /cross_far_post"\)\{ballArcH=4\.2;ballArcDur=0\.90;ballArcTgtX=AWAY_GOAL_X-9/.test(src));
+guard('fix: dribble/build-gol → in_net (non solo pugno)', /\(_ht==="dribble"\|\|_ht==="build"\)&&P\.hlReward==="goal"\)\{hlPostArcT=0;hlOutcomeVariant="goal";hlPostArcType="in_net"/.test(src));
+guard('fix: hlReward passato come prop', /hlReward=\{chosenAct\?\.rew\|\|null\}/.test(src));
 
 // ---------- 4. modello outcome (puro: dipende solo da success,type,variant,roll) ----------
-function outcomePostHL(success,type,variant,roll){
+function outcomePostHL(success,type,variant,roll,reward){
   const isShot=type==='shot'||type==='penalty'||type==='freekick'||type==='header';
   if(success){
     if(isShot)return{post:(variant==='shot_chip'||variant==='shot_volley')?'in_net_high':'in_net',outcome:'goal'};
     if(type==='cross')return{post:'cross_goal',outcome:'goal'};
     if(type==='pass')return{post:'assist_shot',outcome:'assist'};
+    // dribbling/costruzione che valgono un gol → palla in rete (fix engine); altrimenti pugno
+    if((type==='dribble'||type==='build')&&reward==='goal')return{post:'in_net',outcome:'goal'};
     return{post:'hero_fist',outcome:'win_duel'};
   }
   if(isShot&&roll<0.20)return{post:'hit_post',outcome:'post'};
@@ -181,7 +185,7 @@ function simulate(sit,act){
 
   // --- OUTCOME + POST-HIGHLIGHT (entrambi i rami: successo=rew, fallimento=fail) ---
   const rew=act.rew, fail=act.fail;
-  const successOut=outcomePostHL(true,cls.type,cls.variant,0.5);
+  const successOut=outcomePostHL(true,cls.type,cls.variant,0.5,act.rew);
   const failOut=outcomePostHL(false,cls.type,cls.variant,0.10); // ramo palo
   const failOut2=outcomePostHL(false,cls.type,cls.variant,0.50);// ramo save/blocked
   [successOut,failOut,failOut2].forEach(o=>{

@@ -2612,7 +2612,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.64.0"; // INJ-1: bande di recupero §9.6 — infortuni gravi 6-12 sett. (frattura) ora possibili, attiva l'evento "Tre Mesi Fuori"
+const GAME_VERSION="4.65.0"; // 3DV-FIX: dribbling/costruzione-gol → la palla entra in rete (prima solo esultanza col pugno) — via hlReward prop
 const SAVE_VERSION=6;
 // Sprint ENV — ambiente rilevato automaticamente dal runtime (non gestito manualmente).
 // PRODUCTION = deploy GitHub Pages (*.github.io). Tutto il resto (staging githack, locale, localhost) = TEST.
@@ -7035,7 +7035,10 @@ function ThreeMatchView(props){
               hlPostArcType=(_hv==="shot_chip"||_hv==="shot_volley")?"in_net_high":"in_net";}
             else if(_hs===true&&_ht==="cross"){hlPostArcT=0;hlPostArcType="cross_goal";}
             else if(_hs===true&&_ht==="pass"){hlPostArcT=0;hlPostArcType="assist_shot";if(passTargetMesh){passTargetMesh._rcvT=0;passTargetMesh=null;}}
-            else if(_hs===true&&(_ht==="tackle"||_ht==="dribble"||_ht==="build"||!_ht)){heroPostT=0;heroPostType="fist";}
+            else if(_hs===true&&(_ht==="tackle"||_ht==="dribble"||_ht==="build"||!_ht)){
+              // dribbling/costruzione che valgono un GOL → la palla deve entrare in rete (non solo il pugno)
+              if((_ht==="dribble"||_ht==="build")&&P.hlReward==="goal"){hlPostArcT=0;hlOutcomeVariant="goal";hlPostArcType="in_net";}
+              else{heroPostT=0;heroPostType="fist";}}
             else if(_hs===false){hlInNetFlashed=false;heroPostT=0;heroPostType="miss";
               // CINE-3: tiro mancato → palo (20%) / parata (65%) / fuori (15%)
               const _isShotHL=_ht==="shot"||_ht==="penalty"||_ht==="freekick"||_ht==="header";
@@ -7150,8 +7153,12 @@ function ThreeMatchView(props){
             if(_fwd){let _nd=99;sr.current.players.forEach((pp,ii)=>{const src=(P.allPlayers||[])[ii];if(src&&src.team==='home'&&!src.gk&&pp.mesh.position.x>-10){const d=Math.hypot(pp.mesh.position.x-_ptX,pp.mesh.position.z-_ptZ);if(d<_nd){_nd=d;_ptX=pp.mesh.position.x;_ptZ=pp.mesh.position.z;passTargetMesh=pp.mesh;}}});}
             ballArcTgtX=_ptX;ballArcTgtZ=_ptZ;}
           else if(t==="tackle"){ballArcH=1.2;ballArcDur=0.40;ballArcT=0;ballArcActive=true;ballArcTgtX=G2X(P.playerX||50)+(P.hlSuccess===true?12:-8);ballArcTgtZ=G2Z(P.playerY||50)+_rz*14;}// 3DV-14: contrasto → palla vola avanti/indietro
-          else if(t==="dribble"){ballArcH=0.7;ballArcDur=0.32;ballArcT=0;ballArcActive=true;ballArcTgtX=G2X(P.playerX||50)+(P.hlSuccess===true?8:-5);ballArcTgtZ=G2Z(P.playerY||50)+_rz*10;}// 3DV-14: dribbling → palla laterale
-          else if(!t||t==="build"){ballArcH=0.9;ballArcDur=0.38;ballArcT=0;ballArcActive=true;ballArcTgtX=G2X(P.playerX||50)+(P.hlSuccess===true?6:-4);ballArcTgtZ=G2Z(P.playerY||50)+_rz*12;}// 3DV-14: build-up → corto ma visibile
+          else if(t==="dribble"){ballArcT=0;ballArcActive=true;
+            if(P.hlSuccess===true&&P.hlReward==="goal"){ballArcH=1.3;ballArcDur=0.52;ballArcTgtX=AWAY_GOAL_X-3+Math.random()*3;ballArcTgtZ=_rz*6;}// dribbling-gol → la palla punta la porta
+            else{ballArcH=0.7;ballArcDur=0.32;ballArcTgtX=G2X(P.playerX||50)+(P.hlSuccess===true?8:-5);ballArcTgtZ=G2Z(P.playerY||50)+_rz*10;}}// 3DV-14: dribbling → palla laterale
+          else if(!t||t==="build"){ballArcT=0;ballArcActive=true;
+            if(P.hlSuccess===true&&P.hlReward==="goal"){ballArcH=1.5;ballArcDur=0.56;ballArcTgtX=AWAY_GOAL_X-3+Math.random()*3;ballArcTgtZ=_rz*6;}// costruzione-gol → la palla punta la porta
+            else{ballArcH=0.9;ballArcDur=0.38;ballArcTgtX=G2X(P.playerX||50)+(P.hlSuccess===true?6:-4);ballArcTgtZ=G2Z(P.playerY||50)+_rz*12;}}// 3DV-14: build-up → corto ma visibile
           else ballArcActive=false;
           ballArcIsBG=ballArcActive; // 3DV-11: usa TGT esplicito anche per archi HL (come BG arc)
           if(ballArcActive)contactFlashT=0;
@@ -9501,7 +9508,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                 ballX={ballPos.x} ballY={ballPos.y} hlType={_hlType} hlVariant={_hlVariant} hlPattern={_hlPattern} bgAction={bgAction} hlZone={hlZone}
                 timeOfDay={timeOfDay} weather={weather} kickoffHour={kickoffHour} attendance={attendance}
                 waveEvent={waveEvent} isDerby={!!drby} isBigGame={mw>=7}
-                hlSuccess={outcome?.ok??null}
+                hlSuccess={outcome?.ok??null} hlReward={chosenAct?.rew||null}
                 isDesktop={!isNarrow} onWalkoutDone={()=>{if(benchStart)setOnBench(true);setPhase("playing");}}/>
               :<PitchCanvas playerX={pPos.x} playerY={pPos.y} zone={zone}
                 homeCol={homeKitCol} oppCol={awayKitCol}
