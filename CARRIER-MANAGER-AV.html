@@ -2612,7 +2612,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.68.0"; // 3DV-FIX3: sponda→compagno reale, gol entra in rete + esultanza eroe/compagni, palla all'avversario in difesa, cronaca più calma
+const GAME_VERSION="4.69.0"; // 3DV-TIFO: tifo sulle curve dietro le porte — bandiere alte, striscioni e onda di sciarpe (con boost al gol)
 const SAVE_VERSION=6;
 // Sprint ENV — ambiente rilevato automaticamente dal runtime (non gestito manualmente).
 // PRODUCTION = deploy GitHub Pages (*.github.io). Tutto il resto (staging githack, locale, localhost) = TEST.
@@ -6889,6 +6889,23 @@ function ThreeMatchView(props){
     // 3DV-11: 2 striscioni per curva (sinistra/destra) — colori invertiti per varietà visiva
     _mkStriscione(-12,-(_fez-3),0,_hCol,_hc2);_mkStriscione(12,-(_fez-3),0,_hc2,_hCol);
     _mkStriscione(-12,_fez-3,Math.PI,_aCol,_ac2);_mkStriscione(12,_fez-3,Math.PI,_ac2,_aCol);
+    // 3DV-TIFO: tifo sulle CURVE dietro le porte (gli spalti più in vista nella camera) — bandiere alte, striscioni, sciarpe
+    const _sideX=_p>88?78:_p>72?70:_p>55?64:58;// x della curva, allineato a buildStadium (Curva Sud=+x casa, Curva Ospiti=-x)
+    const _mkBigFlag=(x,z,tex)=>{const fg=new THREE.Group();
+      const pole=new THREE.Mesh(new THREE.CylinderGeometry(0.09,0.09,6.5,6),new THREE.MeshLambertMaterial({color:0xc8c8c8}));pole.position.y=3.25;fg.add(pole);
+      const fl=new THREE.Mesh(new THREE.PlaneGeometry(3.4,2.0),new THREE.MeshBasicMaterial({map:tex,side:THREE.DoubleSide,transparent:true,opacity:0.96}));
+      fl.position.set(1.7,5.4,0);fg.add(fl);fg._fl=fl;fg.position.set(x,0,z);scene.add(fg);flagGroups.push(fg);};
+    // file di bandiere alte sventolanti su entrambe le curve (z da -21 a 21)
+    [-21,-14,-7,0,7,14,21].forEach(z=>{_mkBigFlag(_sideX-4,z,_fhTex);_mkBigFlag(-_sideX+4,z,_faTex);});
+    // striscioni grandi attraverso le curve (rivolti verso il campo)
+    _mkStriscione(_sideX-3,0,Math.PI/2,_hCol,_hc2);_mkStriscione(-_sideX+3,0,-Math.PI/2,_aCol,_ac2);
+    // onda di SCIARPE alzate — strip con texture a sciarpe affiancate, oscillazione lenta + boost al gol
+    const scarfMs=[];
+    const _mkScarf=(x,z,rotY,c1Hex,c2Hex)=>{const sc=document.createElement("canvas");sc.width=256;sc.height=32;const sx=sc.getContext("2d");
+      for(let i=0;i<16;i++){sx.fillStyle=i%2?c1Hex:c2Hex;sx.fillRect(i*16,0,16,32);}sx.fillStyle="rgba(255,255,255,0.22)";sx.fillRect(0,13,256,5);
+      const tex=new THREE.CanvasTexture(sc);const m=new THREE.Mesh(new THREE.PlaneGeometry(26,1.7),new THREE.MeshBasicMaterial({map:tex,side:THREE.DoubleSide,transparent:true,opacity:0.9,depthWrite:false}));
+      m.position.set(x,3.0,z);m.rotation.y=rotY;scene.add(m);scarfMs.push(m);};
+    _mkScarf(_sideX-3.5,0,Math.PI/2,_hCol,_hc2);_mkScarf(-_sideX+3.5,0,-Math.PI/2,_aCol,_ac2);
     // Sprint 3D-G3C: particelle coriandoli al gol (pre-allocate, attivate sul goal burst)
     const CONF_N=64,confPos=new Float32Array(CONF_N*3),confVel=new Float32Array(CONF_N*3);
     const confGeo=new THREE.BufferGeometry();confGeo.setAttribute('position',new THREE.BufferAttribute(confPos,3));
@@ -7456,6 +7473,8 @@ function ThreeMatchView(props){
       // Sprint 3D-H3 MT-5: bandiere — ampiezza 2.5× al gol, ritorno graduale in 2.5s
       // 3DV-8: bandiere — onde sequenziali più veloci al gol, ampiezza 2.5×
       {const _fAmp=0.55+_goalExcite*1.40,_fSpd=0.003+_goalExcite*0.005;flagGroups.forEach((fg,fi)=>{fg._fl.rotation.y=Math.sin(now*_fSpd+fi*0.72)*_fAmp;fg._fl.rotation.x=Math.sin(now*_fSpd*0.65+fi*0.55)*(0.08+_goalExcite*0.22);});}
+      // 3DV-TIFO: onda sciarpe sulle curve — saliscendi lento, ampiezza maggiore al gol
+      {const _scA=0.28+_goalExcite*0.7;scarfMs.forEach((m,si)=>{m.position.y=3.0+Math.sin(now*0.0022+si*2.1)*_scA;m.rotation.z=Math.sin(now*0.0017+si)*0.05;});}
       // Sprint 3D-G3: coriandoli — fisica gravità + fade
       if(confActive){for(let i=0;i<CONF_N;i++){confPos[i*3]+=confVel[i*3]*dt;confPos[i*3+1]+=confVel[i*3+1]*dt;confVel[i*3+1]-=12*dt;confPos[i*3+2]+=confVel[i*3+2]*dt;}
         confMat.opacity*=(1-dt*1.4);confGeo.attributes.position.needsUpdate=true;
