@@ -18,11 +18,14 @@
     ctx.fillStyle=g;ctx.fillRect(0,0,sz,sz); // full-bleed per maskable
     // contenuto entro la zona di sicurezza maskable: scala 0.8 ricentrata (evita il taglio del pallone)
     ctx.save();ctx.translate(50*u,52*u);ctx.scale(0.8,0.8);ctx.translate(-51.75*u,-38.5*u);
-    // swoosh ascendente (elevazione)
-    ctx.strokeStyle='#fff';ctx.lineWidth=6.5*u;ctx.lineCap='round';ctx.globalAlpha=0.9;
-    ctx.beginPath();ctx.moveTo(23*u,73*u);ctx.bezierCurveTo(32*u,60*u,49*u,51*u,62*u,38*u);ctx.stroke();ctx.globalAlpha=1;
-    // pallone da calcio: elemento eroe al picco del swoosh (pentagono + cuciture)
-    var bx=67*u,by=30*u,R=16.5*u,dk='#1e293b',pent=[],edge=[],p,ang;
+    ctx.fillStyle='#fff';
+    var base=72*u;
+    function bar(x,top){var w=15*u,rad=7*u,y=top,h=base-top;
+      if(ctx.roundRect){ctx.beginPath();ctx.roundRect(x,y,w,h,rad);ctx.fill();}
+      else ctx.fillRect(x,y,w,h);}
+    bar(24*u,46*u);bar(43*u,36*u);bar(62*u,24*u);
+    // pallone da calcio al picco (pentagono + cuciture)
+    var bx=69.5*u,by=15*u,R=10*u,dk='#1e293b',pent=[],edge=[],p,ang;
     ctx.beginPath();ctx.arc(bx,by,R,0,6.283);ctx.fillStyle='#fff';ctx.fill();
     ctx.lineWidth=R*0.13;ctx.strokeStyle=dk;ctx.lineCap='round';ctx.stroke();
     for(p=0;p<5;p++){ang=(-90+p*72)*Math.PI/180;pent.push([bx+R*0.42*Math.cos(ang),by+R*0.42*Math.sin(ang)]);edge.push([bx+R*0.94*Math.cos(ang),by+R*0.94*Math.sin(ang)]);}
@@ -83,11 +86,15 @@
 <svg width="74" height="74" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="filter:drop-shadow(0 8px 20px rgba(37,99,235,.28))">
 <defs><linearGradient id="ldg" x1="0" y1="0" x2="100" y2="100" gradientUnits="userSpaceOnUse"><stop stop-color="#3b82f6"/><stop offset="1" stop-color="#06b6d4"/></linearGradient></defs>
 <rect x="2" y="2" width="96" height="96" rx="27" fill="url(#ldg)"/>
-<path d="M23 73 C32 60,49 51,62 38" fill="none" stroke="#fff" stroke-width="6.5" stroke-linecap="round" opacity="0.9"/>
-<g class="lball"><circle cx="67" cy="30" r="16.5" fill="#fff" stroke="#1e293b" stroke-width="2.1"/><polygon points="67,23.07 73.59,27.86 71.07,35.61 62.93,35.61 60.41,27.86" fill="#1e293b"/><line x1="67" y1="23.07" x2="67" y2="14.5" stroke="#1e293b" stroke-width="1.8" stroke-linecap="round"/><line x1="73.59" y1="27.86" x2="81.74" y2="25.21" stroke="#1e293b" stroke-width="1.8" stroke-linecap="round"/><line x1="71.07" y1="35.61" x2="76.11" y2="42.54" stroke="#1e293b" stroke-width="1.8" stroke-linecap="round"/><line x1="62.93" y1="35.61" x2="57.89" y2="42.54" stroke="#1e293b" stroke-width="1.8" stroke-linecap="round"/><line x1="60.41" y1="27.86" x2="52.26" y2="25.21" stroke="#1e293b" stroke-width="1.8" stroke-linecap="round"/></g>
+<g transform="translate(50 52) scale(0.8) translate(-51.75 -38.5)">
+<rect class="lb lb1" x="24" y="46" width="15" height="26" rx="7" fill="#fff"/>
+<rect class="lb lb2" x="43" y="36" width="15" height="36" rx="7" fill="#fff"/>
+<rect class="lb lb3" x="62" y="24" width="15" height="48" rx="7" fill="#fff"/>
+<g class="lball"><circle cx="69.5" cy="15" r="10" fill="#fff" stroke="#1e293b" stroke-width="1.3"/><line x1="69.5" y1="10.8" x2="69.5" y2="5.6" stroke="#1e293b" stroke-width="1.1" stroke-linecap="round"/><line x1="73.49" y1="13.7" x2="78.44" y2="12.1" stroke="#1e293b" stroke-width="1.1" stroke-linecap="round"/><line x1="71.97" y1="18.4" x2="75.03" y2="22.6" stroke="#1e293b" stroke-width="1.1" stroke-linecap="round"/><line x1="67.03" y1="18.4" x2="63.97" y2="22.6" stroke="#1e293b" stroke-width="1.1" stroke-linecap="round"/><line x1="65.51" y1="13.7" x2="60.56" y2="12.1" stroke="#1e293b" stroke-width="1.1" stroke-linecap="round"/><polygon points="69.5,10.8 73.49,13.7 71.97,18.4 67.03,18.4 65.51,13.7" fill="#1e293b"/></g>
+</g>
 </svg>
 <div style="text-align:left;line-height:1">
-<div style="display:flex;align-items:baseline;line-height:1"><span style="font-family:'Segoe Script','Brush Script MT','Snell Roundhand',cursive;font-style:italic;font-weight:600;font-size:30px;color:#0f172a">elev</span><span style="font-weight:900;font-size:35px;letter-spacing:.5px;color:#0f172a"><svg viewBox="0 0 24 24" style="width:.8em;height:.8em;vertical-align:-.1em"><circle cx="12" cy="12" r="10.3" fill="none" stroke="#0f172a" stroke-width="2.4"/><polygon points="12,7.6 16.18,10.64 14.59,15.56 9.41,15.56 7.82,10.64" fill="#0f172a"/><g stroke="#0f172a" stroke-width="1.3" stroke-linecap="round"><line x1="12" y1="7.6" x2="12" y2="3"/><line x1="16.18" y1="10.64" x2="20.56" y2="9.22"/><line x1="14.59" y1="15.56" x2="17.29" y2="19.28"/><line x1="9.41" y1="15.56" x2="6.71" y2="19.28"/><line x1="7.82" y1="10.64" x2="3.44" y2="9.22"/></g></svg>RA</span></div>
+<div style="display:flex;align-items:baseline;line-height:1"><span style="font-family:'Segoe Script','Brush Script MT','Snell Roundhand',cursive;font-style:italic;font-weight:600;font-size:30px;color:#0f172a">elev</span><span style="font-weight:900;font-size:35px;letter-spacing:.5px;color:#0f172a"><svg viewBox="0 0 24 24" style="width:.82em;height:.82em;vertical-align:-.11em"><defs><clipPath id="boL"><circle cx="12" cy="12" r="10.3"/></clipPath></defs><circle cx="12" cy="12" r="10.3" fill="#fff" stroke="#1e293b" stroke-width="1.2"/><g clip-path="url(#boL)" fill="#1e293b"><polygon points="12,8.5 15.33,10.92 14.06,14.83 9.94,14.83 8.67,10.92"/><polygon points="16.06,6.42 14.82,2.62 18.05,0.27 21.29,2.62 20.05,6.42"/><polygon points="18.56,14.13 21.8,11.78 25.03,14.13 23.79,17.93 19.8,17.93"/><polygon points="12,18.9 15.23,21.25 14,25.05 10,25.05 8.77,21.25"/><polygon points="5.44,14.13 4.2,17.93 0.21,17.93 -1.03,14.13 2.2,11.78"/><polygon points="7.94,6.42 3.95,6.42 2.71,2.62 5.95,0.27 9.18,2.62"/></g></svg>RA</span></div>
 <div style="font-size:9px;letter-spacing:4px;color:#2563eb;font-weight:800;margin-top:4px">FOOTBALL CAREER</div>
 </div></div></div>
 <div id="root"></div>
@@ -2605,7 +2612,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.71.0"; // REBRAND-LOGO: wordmark "elevORA" (elev corsivo + ORA con O-pallone via BallO/Wordmark); icona evoluta "pallone eroe + swoosh ascendente" su tutti i mark (canvas PWA, loading, home, LogoMark)
+const GAME_VERSION="4.71.1"; // REBRAND-LOGO v2: icona ripristinata all'originale "Rise" (barre+pallone) su tutti i mark; O-pallone del wordmark ridisegnata come pallone classico bianco/nero (pentagono centrale + 5 al bordo, clip nel cerchio) anziché a raggi
 const SAVE_VERSION=6;
 // Sprint ENV — ambiente rilevato automaticamente dal runtime (non gestito manualmente).
 // PRODUCTION = deploy GitHub Pages (*.github.io). Tutto il resto (staging githack, locale, localhost) = TEST.
@@ -10856,17 +10863,20 @@ function PwaInstallBanner(){
 /* ========================================
    WORDMARK — "elevORA" (elev corsivo + ORA con O-pallone)
 ======================================== */
-function BallO({color="currentColor"}){
+function BallO(){
+  // pallone classico bianco/nero (stile Holly e Benji): pentagono centrale + 5 pentagoni al bordo ritagliati nel cerchio
+  const cid=React.useMemo(()=>"bo"+Math.floor(Math.random()*1e6),[]);
   return(
-    <svg viewBox="0 0 24 24" aria-hidden="true" style={{width:"0.8em",height:"0.8em",verticalAlign:"-0.1em"}}>
-      <circle cx="12" cy="12" r="10.3" fill="none" stroke={color} strokeWidth="2.4"/>
-      <polygon points="12,7.6 16.18,10.64 14.59,15.56 9.41,15.56 7.82,10.64" fill={color}/>
-      <g stroke={color} strokeWidth="1.3" strokeLinecap="round">
-        <line x1="12" y1="7.6" x2="12" y2="3"/>
-        <line x1="16.18" y1="10.64" x2="20.56" y2="9.22"/>
-        <line x1="14.59" y1="15.56" x2="17.29" y2="19.28"/>
-        <line x1="9.41" y1="15.56" x2="6.71" y2="19.28"/>
-        <line x1="7.82" y1="10.64" x2="3.44" y2="9.22"/>
+    <svg viewBox="0 0 24 24" aria-hidden="true" style={{width:"0.82em",height:"0.82em",verticalAlign:"-0.11em"}}>
+      <defs><clipPath id={cid}><circle cx="12" cy="12" r="10.3"/></clipPath></defs>
+      <circle cx="12" cy="12" r="10.3" fill="#fff" stroke="#1e293b" strokeWidth="1.2"/>
+      <g clipPath={`url(#${cid})`} fill="#1e293b">
+        <polygon points="12,8.5 15.33,10.92 14.06,14.83 9.94,14.83 8.67,10.92"/>
+        <polygon points="16.06,6.42 14.82,2.62 18.05,0.27 21.29,2.62 20.05,6.42"/>
+        <polygon points="18.56,14.13 21.8,11.78 25.03,14.13 23.79,17.93 19.8,17.93"/>
+        <polygon points="12,18.9 15.23,21.25 14,25.05 10,25.05 8.77,21.25"/>
+        <polygon points="5.44,14.13 4.2,17.93 0.21,17.93 -1.03,14.13 2.2,11.78"/>
+        <polygon points="7.94,6.42 3.95,6.42 2.71,2.62 5.95,0.27 9.18,2.62"/>
       </g>
     </svg>
   );
@@ -10876,7 +10886,7 @@ function Wordmark({size=30,color}){
   return(
     <span style={{display:"inline-flex",alignItems:"baseline",lineHeight:1,whiteSpace:"nowrap"}}>
       <span style={{fontFamily:"'Segoe Script','Brush Script MT','Snell Roundhand','Apple Chancery',cursive",fontStyle:"italic",fontWeight:600,fontSize:size,color:col,lineHeight:1}}>elev</span>
-      <span style={{fontWeight:900,fontSize:Math.round(size*1.17),letterSpacing:0.5,color:col,lineHeight:1}}><BallO color={col}/>RA</span>
+      <span style={{fontWeight:900,fontSize:Math.round(size*1.17),letterSpacing:0.5,color:col,lineHeight:1}}><BallO/>RA</span>
     </span>
   );
 }
@@ -10926,8 +10936,10 @@ function HomeScreen({onNew,onLoad,onDelete,onImport,slots}){
           <svg width="78" height="78" viewBox="0 0 100 100" style={{filter:"drop-shadow(0 8px 22px rgba(37,99,235,0.30))"}}>
             <defs><linearGradient id="homeLdg" x1="0" y1="0" x2="100" y2="100" gradientUnits="userSpaceOnUse"><stop stopColor="#3b82f6"/><stop offset="1" stopColor="#06b6d4"/></linearGradient></defs>
             <rect x="2" y="2" width="96" height="96" rx="27" fill="url(#homeLdg)"/>
-            <path d="M23 73 C32 60,49 51,62 38" fill="none" stroke="#fff" strokeWidth="6.5" strokeLinecap="round" opacity="0.9"/>
-            <g className="lball"><circle cx="67" cy="30" r="16.5" fill="#fff" stroke="#1e293b" strokeWidth="2.1"/><polygon points="67,23.07 73.59,27.86 71.07,35.61 62.93,35.61 60.41,27.86" fill="#1e293b"/><line key="s0" x1="67" y1="23.07" x2="67" y2="14.5" stroke="#1e293b" strokeWidth="1.8" strokeLinecap="round"/><line key="s1" x1="73.59" y1="27.86" x2="81.74" y2="25.21" stroke="#1e293b" strokeWidth="1.8" strokeLinecap="round"/><line key="s2" x1="71.07" y1="35.61" x2="76.11" y2="42.54" stroke="#1e293b" strokeWidth="1.8" strokeLinecap="round"/><line key="s3" x1="62.93" y1="35.61" x2="57.89" y2="42.54" stroke="#1e293b" strokeWidth="1.8" strokeLinecap="round"/><line key="s4" x1="60.41" y1="27.86" x2="52.26" y2="25.21" stroke="#1e293b" strokeWidth="1.8" strokeLinecap="round"/></g>
+            <rect className="lb lb1" x="24" y="46" width="15" height="26" rx="7" fill="#fff"/>
+            <rect className="lb lb2" x="43" y="36" width="15" height="36" rx="7" fill="#fff"/>
+            <rect className="lb lb3" x="62" y="24" width="15" height="48" rx="7" fill="#fff"/>
+            <g className="lball"><circle cx="69.5" cy="15" r="10" fill="#fff" stroke="#1e293b" strokeWidth="1.3"/><line key="s0" x1="69.5" y1="10.8" x2="69.5" y2="5.6" stroke="#1e293b" strokeWidth="1.1" strokeLinecap="round"/><line key="s1" x1="73.49" y1="13.7" x2="78.44" y2="12.1" stroke="#1e293b" strokeWidth="1.1" strokeLinecap="round"/><line key="s2" x1="71.97" y1="18.4" x2="75.03" y2="22.6" stroke="#1e293b" strokeWidth="1.1" strokeLinecap="round"/><line key="s3" x1="67.03" y1="18.4" x2="63.97" y2="22.6" stroke="#1e293b" strokeWidth="1.1" strokeLinecap="round"/><line key="s4" x1="65.51" y1="13.7" x2="60.56" y2="12.1" stroke="#1e293b" strokeWidth="1.1" strokeLinecap="round"/><polygon points="69.5,10.8 73.49,13.7 71.97,18.4 67.03,18.4 65.51,13.7" fill="#1e293b"/></g>
           </svg>
         </div>
         <h1 style={{margin:"0 0 3px",display:"flex",justifyContent:"center",lineHeight:1}}><Wordmark size={30}/></h1>
@@ -11016,8 +11028,10 @@ function LogoMark({size=32,shadow=true}){
       <rect x="2" y="2" width="96" height="96" rx="27" fill={`url(#${gid})`}/>
       {/* contenuto entro la zona di sicurezza maskable (scala 0.8, ricentrato) */}
       <g transform="translate(50 52) scale(0.8) translate(-51.75 -38.5)">
-      <path d="M23 73 C32 60,49 51,62 38" fill="none" stroke="#fff" strokeWidth="6.5" strokeLinecap="round" opacity="0.9"/>
-      <g><circle cx="67" cy="30" r="16.5" fill="#fff" stroke="#1e293b" strokeWidth="2.1"/><polygon points="67,23.07 73.59,27.86 71.07,35.61 62.93,35.61 60.41,27.86" fill="#1e293b"/><line x1="67" y1="23.07" x2="67" y2="14.5" stroke="#1e293b" strokeWidth="1.8" strokeLinecap="round"/><line x1="73.59" y1="27.86" x2="81.74" y2="25.21" stroke="#1e293b" strokeWidth="1.8" strokeLinecap="round"/><line x1="71.07" y1="35.61" x2="76.11" y2="42.54" stroke="#1e293b" strokeWidth="1.8" strokeLinecap="round"/><line x1="62.93" y1="35.61" x2="57.89" y2="42.54" stroke="#1e293b" strokeWidth="1.8" strokeLinecap="round"/><line x1="60.41" y1="27.86" x2="52.26" y2="25.21" stroke="#1e293b" strokeWidth="1.8" strokeLinecap="round"/></g>
+      <rect x="24" y="46" width="15" height="26" rx="7" fill="#fff"/>
+      <rect x="43" y="36" width="15" height="36" rx="7" fill="#fff"/>
+      <rect x="62" y="24" width="15" height="48" rx="7" fill="#fff"/>
+      <g><circle cx="69.5" cy="15" r="10" fill="#fff" stroke="#1e293b" strokeWidth="1.3"/><line x1="69.5" y1="10.8" x2="69.5" y2="5.6" stroke="#1e293b" strokeWidth="1.1" strokeLinecap="round"/><line x1="73.49" y1="13.7" x2="78.44" y2="12.1" stroke="#1e293b" strokeWidth="1.1" strokeLinecap="round"/><line x1="71.97" y1="18.4" x2="75.03" y2="22.6" stroke="#1e293b" strokeWidth="1.1" strokeLinecap="round"/><line x1="67.03" y1="18.4" x2="63.97" y2="22.6" stroke="#1e293b" strokeWidth="1.1" strokeLinecap="round"/><line x1="65.51" y1="13.7" x2="60.56" y2="12.1" stroke="#1e293b" strokeWidth="1.1" strokeLinecap="round"/><polygon points="69.5,10.8 73.49,13.7 71.97,18.4 67.03,18.4 65.51,13.7" fill="#1e293b"/></g>
       </g>
     </svg>
   );
