@@ -1,6 +1,6 @@
 # CPM — Report Validazione Automatica Situations (motore 3D)
 
-_GAME_VERSION 4.76.0_
+_GAME_VERSION 4.77.0_
 
 ## Sommario
 | Metrica | Valore |
@@ -120,7 +120,7 @@ _GAME_VERSION 4.76.0_
 | propria | 14 |
 | fascia | 3 |
 
-_Situations con campo `tactic`: **28** / 179_
+_Situations con campo `tactic`: **63** / 179_
 
 ## Non coperto qui (richiede harness browser+WebGL)
 - Screenshot/replay reali dei frame
