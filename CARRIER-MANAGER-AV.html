@@ -2612,7 +2612,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.55.1"; // desktop: campo 62% larghezza invece di auto
+const GAME_VERSION="4.55.2"; // triangolo: pass arc mira compagno reale + animazione tiro al volo
 const SAVE_VERSION=6;
 // Sprint ENV — ambiente rilevato automaticamente dal runtime (non gestito manualmente).
 // PRODUCTION = deploy GitHub Pages (*.github.io). Tutto il resto (staging githack, locale, localhost) = TEST.
@@ -6852,6 +6852,7 @@ function ThreeMatchView(props){
     let heroPostT=-1,heroPostType=null; // 3DV-13: reazione eroe post-azione fallita
     let gkSaveCelebT=-1,gkSaveMesh=null; // 3DV-13: portiere si rialza dopo parata
     let hlInNetFlashed=false,hlPostVY=0; // 3DV-14: flash ingresso rete + fisica rimbalzo deflect
+    let passTargetMesh=null; // 3DV-14b: mesh compagno che riceve il passaggio (triangolo)
     // Sprint 3D-8a: cronometro dell'esito per il rallenty cinematografico
     let resultT=0;
     // Sprint 3D-BALL: arco parabolico della palla (shot/header/cross/freekick/penalty)
@@ -6964,7 +6965,7 @@ function ThreeMatchView(props){
           if(isResult){const _hs=P.hlSuccess,_ht=P.hlType;
             if(_hs===true&&(_ht==="shot"||_ht==="penalty"||_ht==="freekick"||_ht==="header")){hlPostArcT=0;hlPostArcType="in_net";}
             else if(_hs===true&&_ht==="cross"){hlPostArcT=0;hlPostArcType="cross_goal";}
-            else if(_hs===true&&_ht==="pass"){hlPostArcT=0;hlPostArcType="assist_shot";}// 3DV-13: assist → secondo arco verso porta
+            else if(_hs===true&&_ht==="pass"){hlPostArcT=0;hlPostArcType="assist_shot";if(passTargetMesh){passTargetMesh._rcvT=0;passTargetMesh=null;}}// 3DV-14b: triangolo — compagno calcia al volo
             else if(_hs===true&&(_ht==="tackle"||_ht==="dribble"||_ht==="build"||!_ht)){heroPostT=0;heroPostType="fist";}// 3DV-14: pugno vittoria su contrasto/dribbling
             else if(_hs===false){hlPostArcT=0;hlPostArcType="deflect";hlInNetFlashed=false;
               // 3DV-14: fisica deflect — velocità iniziale e direzione realistica
@@ -7025,7 +7026,11 @@ function ThreeMatchView(props){
           else if(t==="header"){ballArcH=3.2;ballArcDur=0.65;ballArcT=0;ballArcActive=true;ballArcTgtX=41+Math.random()*6;ballArcTgtZ=_rz*10;}
           else if(t==="cross"){ballArcH=3.8;ballArcDur=0.85;ballArcT=0;ballArcActive=true;ballArcTgtX=24+Math.random()*16;ballArcTgtZ=_rz*18;}
           else if(t==="freekick"){ballArcH=3.2;ballArcDur=0.80;ballArcT=0;ballArcActive=true;ballArcTgtX=43+Math.random()*4;ballArcTgtZ=_rz*7;}
-          else if(t==="pass"){const _fwd=P.hlSuccess===true;ballArcH=_fwd?2.2:1.5;ballArcDur=0.62;ballArcT=0;ballArcActive=true;ballArcTgtX=_fwd?18+Math.random()*20:-(8+Math.random()*14);ballArcTgtZ=_rz*18;}// 3DV-13: pass → avanti se assist, indietro se intercetto
+          else if(t==="pass"){const _fwd=P.hlSuccess===true;ballArcH=_fwd?2.2:1.5;ballArcDur=0.62;ballArcT=0;ballArcActive=true;
+            // 3DV-14b: triangolo — mira il passaggio verso il compagno più vicino (non portiere)
+            let _ptX=_fwd?18+Math.random()*20:-(8+Math.random()*14),_ptZ=_rz*18;passTargetMesh=null;
+            if(_fwd){let _nd=99;sr.current.players.forEach((pp,ii)=>{const src=(P.allPlayers||[])[ii];if(src&&src.team==='home'&&!src.gk&&pp.mesh.position.x>-10){const d=Math.hypot(pp.mesh.position.x-_ptX,pp.mesh.position.z-_ptZ);if(d<_nd){_nd=d;_ptX=pp.mesh.position.x;_ptZ=pp.mesh.position.z;passTargetMesh=pp.mesh;}}});}
+            ballArcTgtX=_ptX;ballArcTgtZ=_ptZ;}
           else if(t==="tackle"){ballArcH=1.2;ballArcDur=0.40;ballArcT=0;ballArcActive=true;ballArcTgtX=G2X(P.playerX||50)+(P.hlSuccess===true?12:-8);ballArcTgtZ=G2Z(P.playerY||50)+_rz*14;}// 3DV-14: contrasto → palla vola avanti/indietro
           else if(t==="dribble"){ballArcH=0.7;ballArcDur=0.32;ballArcT=0;ballArcActive=true;ballArcTgtX=G2X(P.playerX||50)+(P.hlSuccess===true?8:-5);ballArcTgtZ=G2Z(P.playerY||50)+_rz*10;}// 3DV-14: dribbling → palla laterale
           else if(!t||t==="build"){ballArcH=0.9;ballArcDur=0.38;ballArcT=0;ballArcActive=true;ballArcTgtX=G2X(P.playerX||50)+(P.hlSuccess===true?6:-4);ballArcTgtZ=G2Z(P.playerY||50)+_rz*12;}// 3DV-14: build-up → corto ma visibile
@@ -7047,7 +7052,7 @@ function ThreeMatchView(props){
           }} // QW-A: contact flash al kick/header
         if(_curPh==="hl_intro"||(_curPh==="hl_move"&&prevPhase==="playing")){repCount=0;repHead=0;replayDone=false;}
         if(_curPh!=="hl_result"&&replaying){replaying=false;setReplayOn(false);}
-        if(_curPh!=="hl_result"){hlPostArcT=-1;hlPostArcType=null;heroPostT=-1;heroPostType=null;gkSaveCelebT=-1;gkSaveMesh=null;hlInNetFlashed=false;hlPostVY=0;}// 3DV-9/13/14: reset post-arc su uscita da hl_result
+        if(_curPh!=="hl_result"){hlPostArcT=-1;hlPostArcType=null;heroPostT=-1;heroPostType=null;gkSaveCelebT=-1;gkSaveMesh=null;hlInNetFlashed=false;hlPostVY=0;passTargetMesh=null;}// 3DV-9/13/14: reset post-arc su uscita da hl_result
         // ATE-4: zone ring — accendi su hl_intro, colora per tipo; spegni su playing/ended
         if(_curPh==="hl_intro"){zoneRingT=0;zoneRingMat.color.setHex(HL_ZONE_COL[P.hlType]||0xffffff);}
         if(_curPh==="playing"||_curPh==="ended"||_curPh==="walkout"){zoneRingT=-1;zoneRingMat.opacity=0;}
@@ -7151,6 +7156,8 @@ function ThreeMatchView(props){
         }
         // 3DV-4: barriera freekick — i 3 giocatori più vicini saltano
         sr.current.players.forEach(pp=>{if(pp.mesh&&pp.mesh._wallJumpT!=null&&pp.mesh._wallJumpT>=0){pp.mesh._wallJumpT+=aDt;const wu=Math.min(pp.mesh._wallJumpT/0.55,1),wsw=Math.sin(wu*Math.PI);pp.mesh.position.y=wsw*1.5;pp.mesh._aL.rotation.x=-wsw*1.6;pp.mesh._aR.rotation.x=-wsw*1.6;if(wu>=1){pp.mesh.position.y=0;pp.mesh._wallJumpT=null;}}});
+        // 3DV-14b: animazione "riceve e tira" del compagno nel triangolo (passaggio → assist_shot)
+        sr.current.players.forEach(pp=>{if(pp.mesh&&pp.mesh._rcvT!=null&&pp.mesh._rcvT>=0){pp.mesh._rcvT+=aDt;const ru=Math.min(pp.mesh._rcvT/0.52,1),rsw=Math.sin(ru*Math.PI);pp.mesh._lR.rotation.x=-rsw*2.6;pp.mesh._lL.rotation.x=rsw*0.7;pp.mesh._aL.rotation.x=rsw*1.2;pp.mesh._aR.rotation.x=-rsw*0.4;pp.mesh.position.y=rsw*0.35;if(ru>=1){pp.mesh.position.y=0;pp.mesh._lR.rotation.x=0;pp.mesh._lL.rotation.x=0;pp.mesh._rcvT=null;}}});
         // QW-C: esultanza post-gol eroe (braccia alzate + salto, 2.4s, sovrascrive actType)
         if(celebT>=0){celebT+=aDt;const _cu=Math.min(celebT/2.4,1);
           const _cp1=Math.min(celebT/0.5,1),_cp3=Math.min(Math.max(celebT-1.8,0)/0.6,1);
