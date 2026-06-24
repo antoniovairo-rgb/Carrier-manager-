@@ -2612,7 +2612,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.55.2"; // triangolo: pass arc mira compagno reale + animazione tiro al volo
+const GAME_VERSION="4.56.0"; // orientamento campo centralizzato: AWAY_GOAL_X/HOME_GOAL_X constants, fix confetti e luce gol
 const SAVE_VERSION=6;
 // Sprint ENV — ambiente rilevato automaticamente dal runtime (non gestito manualmente).
 // PRODUCTION = deploy GitHub Pages (*.github.io). Tutto il resto (staging githack, locale, localhost) = TEST.
@@ -5015,14 +5015,14 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
   // 3DV-12: settori corretti — tribuna/distinti sui lati, curve dietro le porte
   const homeMat=addStand(0,-endZ,0,       endW,endD,endH,tribTex);// Tribuna (z=-endZ) — 82% casa
   const awayMat=addStand(0, endZ,Math.PI, endW,endD,endH,distintiTex);// Distinti (z=+endZ) — 68% casa
-  addStand(sideX, 0, Math.PI/2, sideW,sideD,sideH,awayCurvaTex); // Curva Ospiti (x=+sideX) — 4% casa
-  addStand(-sideX,0,-Math.PI/2, sideW,sideD,sideH,homeCurvaTex); // Curva Casa (x=-sideX) — 96% casa
+  addStand(sideX, 0, Math.PI/2, sideW,sideD,sideH,homeCurvaTex); // Curva Sud — casa (x=+sideX, dietro porta avversaria; home attacca QUI)
+  addStand(-sideX,0,-Math.PI/2, sideW,sideD,sideH,awayCurvaTex); // Curva Ospiti (x=-sideX, dietro porta di casa)
   // Corner sections — filled or open based on style
   const hasCorners=style!==3; // style 3 = traditional, open corners
   if(hasCorners)[[-sideX,-endZ,Math.PI/4],[sideX,-endZ,-Math.PI/4],[-sideX,endZ,3*Math.PI/4],[sideX,endZ,-3*Math.PI/4]].forEach(([x,z,ry])=>{
     const cH=Math.round((endH+sideH)/2)*0.8;
-    // 3DV-12: angoli vicino curva ospiti (+x) usano awayCurvaTex, vicino curva casa (-x) usano homeCurvaTex
-    const cm=new THREE.Mesh(new THREE.BoxGeometry(24,cH,24),new THREE.MeshLambertMaterial({color:0xffffff,map:x>0?awayCurvaTex:homeCurvaTex}));
+    // angoli vicino Curva Sud (+x, casa) usano homeCurvaTex; vicino Curva Ospiti (-x) usano awayCurvaTex
+    const cm=new THREE.Mesh(new THREE.BoxGeometry(24,cH,24),new THREE.MeshLambertMaterial({color:0xffffff,map:x>0?homeCurvaTex:awayCurvaTex}));
     cm.position.set(x,cH/2,z);cm.rotation.y=ry;scene.add(cm);
     const cb=new THREE.Mesh(new THREE.BoxGeometry(24,2,24),cM);cb.position.set(x,1,z);scene.add(cb);
   });
@@ -6590,6 +6590,9 @@ function ThreeMatchView(props){
     const mount=mountRef.current;if(!mount)return;
     // game coords (0-100) → mondo 3D: lunghezza su x (-50..50), larghezza su z (-34..34)
     const G2X=gx=>(gx-50)*1.0, G2Z=gy=>(gy-50)*0.68;
+    // ORIENTAMENTO CAMPO — sorgente unica di verità: home attacca verso +x (porta avversaria a destra)
+    // Curva Sud (tifosi casa) sta a x=+sideX (dietro porta avversaria — in direzione attacco casa)
+    const AWAY_GOAL_X=46, HOME_GOAL_X=-46; // x Three.js delle porte (nette interne)
     const W=mount.clientWidth||360,H=mount.clientHeight||520;
     const club=homeClub||{};
     let pal;try{pal=getStadiumPalette(club);}catch(e){pal={skyTop:0x050810,skyHorizon:0x0c2050,fog:0x061430,grassA:0x2c6a1d,grassB:0x357a24,ambient:0xd0e4ff,ambInt:0.5,flood:0xffffff};}
@@ -6977,21 +6980,21 @@ function ThreeMatchView(props){
             }
           }}}
       else if(hlPostArcT>=0){hlPostArcT+=aDt;// 3DV-9: eseguire solo se il normale lerp non sovrascrive
-        if(hlPostArcType==="in_net"){// 3DV-11/14: palla nella rete avversaria (+x) — lerp + rimbalzo smorzato
-          ball.position.x+=(46-ball.position.x)*Math.min(aDt*5.5,1);// convergi su porta +x
-          ball.position.z*=(1-Math.min(aDt*2,1)*0.12);// centra z leggermente
+        if(hlPostArcType==="in_net"){// palla nella rete avversaria — lerp verso AWAY_GOAL_X
+          ball.position.x+=(AWAY_GOAL_X-ball.position.x)*Math.min(aDt*5.5,1);
+          ball.position.z*=(1-Math.min(aDt*2,1)*0.12);
           ball.position.y=0.65+Math.max(0,Math.abs(Math.sin(hlPostArcT*4.5))*1.1*Math.exp(-hlPostArcT*2.0));
-          if(!hlInNetFlashed&&ball.position.x>43){hlInNetFlashed=true;contactFlashT=0;shakePow=0.20;}// 3DV-14: flash + shake ingresso rete
+          if(!hlInNetFlashed&&ball.position.x>AWAY_GOAL_X-3){hlInNetFlashed=true;contactFlashT=0;shakePow=0.20;}
           if(hlPostArcT>2.4){hlPostArcT=-1;hlPostArcType=null;hlInNetFlashed=false;}}
-        else if(hlPostArcType==="cross_goal"){// 3DV-11/14: cross → testa → porta +x
+        else if(hlPostArcType==="cross_goal"){// cross → testa → porta avversaria (AWAY_GOAL_X)
           const _u2=Math.min(hlPostArcT/0.65,1);
-          ball.position.y=0.65+Math.sin(_u2*Math.PI)*3.0;// traiettoria header più alta
-          ball.position.x+=(47-ball.position.x)*aDt*3.8;ball.position.z+=(0-ball.position.z)*aDt*1.4;
+          ball.position.y=0.65+Math.sin(_u2*Math.PI)*3.0;
+          ball.position.x+=(AWAY_GOAL_X+1-ball.position.x)*aDt*3.8;ball.position.z+=(0-ball.position.z)*aDt*1.4;
           if(_u2>=1){hlPostArcType="in_net";hlPostArcT=0;hlInNetFlashed=false;contactFlashT=0;}}// 3DV-14: flash al secondo tocco
-        else if(hlPostArcType==="assist_shot"){// 3DV-13/14: assist → compagno tocca → tiro in porta
+        else if(hlPostArcType==="assist_shot"){// assist → compagno tocca → tiro verso AWAY_GOAL_X
           const _u3=Math.min(hlPostArcT/0.80,1);
           ball.position.y=0.65+Math.sin(_u3*Math.PI)*3.2;
-          ball.position.x+=(44-ball.position.x)*aDt*3.2;ball.position.z*=(1-aDt*1.6);
+          ball.position.x+=(AWAY_GOAL_X-2-ball.position.x)*aDt*3.2;ball.position.z*=(1-aDt*1.6);
           if(_u3>=1){hlPostArcType="in_net";hlPostArcT=0;hlInNetFlashed=false;contactFlashT=0;}}// 3DV-14: flash al secondo tocco
         else if(hlPostArcType==="deflect"){// 3DV-14: deflect con fisica rimbalzo (gravity + restituzione)
           hlPostVY-=aDt*22;// gravità
@@ -7022,10 +7025,10 @@ function ThreeMatchView(props){
         if(_curPh==="hl_result"){const t=P.hlType;actType=(t==="header"||t==="tackle"||t==="dribble"||t==="cross"||t==="penalty"||t==="freekick"||t==="pass")?t:(!t||t==="build")?null:"shot";actT=0;// 3DV-14: pass aggiunto alla lista tipi espliciti// 3DV-4: tipi azione distinti
           // 3DV-11: archi HL con destinazione esplicita verso porta avversaria (+x), non posizione eroe
           const _rz=(Math.random()-.5);
-          if(t==="shot"||t==="penalty"){ballArcH=4.8;ballArcDur=0.72;ballArcT=0;ballArcActive=true;ballArcTgtX=43+Math.random()*4;ballArcTgtZ=_rz*8;}
-          else if(t==="header"){ballArcH=3.2;ballArcDur=0.65;ballArcT=0;ballArcActive=true;ballArcTgtX=41+Math.random()*6;ballArcTgtZ=_rz*10;}
+          if(t==="shot"||t==="penalty"){ballArcH=4.8;ballArcDur=0.72;ballArcT=0;ballArcActive=true;ballArcTgtX=AWAY_GOAL_X-3+Math.random()*4;ballArcTgtZ=_rz*8;}
+          else if(t==="header"){ballArcH=3.2;ballArcDur=0.65;ballArcT=0;ballArcActive=true;ballArcTgtX=AWAY_GOAL_X-5+Math.random()*6;ballArcTgtZ=_rz*10;}
           else if(t==="cross"){ballArcH=3.8;ballArcDur=0.85;ballArcT=0;ballArcActive=true;ballArcTgtX=24+Math.random()*16;ballArcTgtZ=_rz*18;}
-          else if(t==="freekick"){ballArcH=3.2;ballArcDur=0.80;ballArcT=0;ballArcActive=true;ballArcTgtX=43+Math.random()*4;ballArcTgtZ=_rz*7;}
+          else if(t==="freekick"){ballArcH=3.2;ballArcDur=0.80;ballArcT=0;ballArcActive=true;ballArcTgtX=AWAY_GOAL_X-3+Math.random()*4;ballArcTgtZ=_rz*7;}
           else if(t==="pass"){const _fwd=P.hlSuccess===true;ballArcH=_fwd?2.2:1.5;ballArcDur=0.62;ballArcT=0;ballArcActive=true;
             // 3DV-14b: triangolo — mira il passaggio verso il compagno più vicino (non portiere)
             let _ptX=_fwd?18+Math.random()*20:-(8+Math.random()*14),_ptZ=_rz*18;passTargetMesh=null;
@@ -7073,15 +7076,15 @@ function ThreeMatchView(props){
       if(_we&&_we.t&&_we.t!==prevWaveT){prevWaveT=_we.t;goalBurstT=0;goalBurstHome=!!_we.home;shakePow=0.55;
         // QW-C: esultanza eroe sul gol di casa
         if(goalBurstHome)celebT=0;
-        // Sprint 3D-G3C: inizializza burst coriandoli dalla porta del gol
-        const _cx=goalBurstHome?-46:46;
+        // coriandoli dalla porta in cui è entrato il gol (AWAY_GOAL_X se casa, HOME_GOAL_X se ospiti)
+        const _cx=goalBurstHome?AWAY_GOAL_X:HOME_GOAL_X;
         for(let i=0;i<CONF_N;i++){confPos[i*3]=_cx+(Math.random()-0.5)*14;confPos[i*3+1]=1+Math.random()*4;confPos[i*3+2]=(Math.random()-0.5)*20;
           confVel[i*3]=(Math.random()-0.5)*10;confVel[i*3+1]=6+Math.random()*12;confVel[i*3+2]=(Math.random()-0.5)*10;}
         confGeo.attributes.position.needsUpdate=true;confMat.opacity=0.92;confActive=true;
         // 3DV-8: coriandoli in colore club — team che segna determina la palette
         confMat.color.set(goalBurstHome?_hColInt:_aColInt);}
       if(goalBurstT>=0){goalBurstT+=dt;const _u=Math.min(goalBurstT/1.8,1);
-        goalBurstLight.intensity=(1-_u*_u)*2.8;// 3DV-2: burst gol 6.0→2.8 (meno abbagliante)goalBurstLight.position.x=goalBurstHome?-44:44;
+        goalBurstLight.intensity=(1-_u*_u)*2.8;goalBurstLight.position.x=goalBurstHome?AWAY_GOAL_X:HOME_GOAL_X;
         if(_u>=1){goalBurstLight.intensity=0;goalBurstT=-1;}}
       // ATE-1/2: arco palla BG durante "playing" — cattura destinazione 3D esatta per sync orizzontale
       {const _ba=P.bgAction;
