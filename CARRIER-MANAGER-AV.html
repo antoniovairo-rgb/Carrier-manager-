@@ -2612,7 +2612,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.51.0"; // 3DV-10: fix post-arco x/z lerp, arbitro fuori camera HL, luci -50% meno fluorescenti
+const GAME_VERSION="4.52.0"; // 3DV-11: archi HL verso porta +x, in_net/cross_goal fix, flag+striscioni visibili, panchine tribuna
 const SAVE_VERSION=6;
 // Sprint ENV — ambiente rilevato automaticamente dal runtime (non gestito manualmente).
 // PRODUCTION = deploy GitHub Pages (*.github.io). Tutto il resto (staging githack, locale, localhost) = TEST.
@@ -6777,20 +6777,33 @@ function ThreeMatchView(props){
     // C) Guardalinee — divisa giallo-verde, ai margini del campo
     const linRef1=mkFig(0x9acd32);linRef1.position.set(0,0,-35.5);scene.add(linRef1);
     const linRef2=mkFig(0x9acd32);linRef2.position.set(0,0,35.5);scene.add(linRef2);
-    // B) Panchine (lato tribuna z=+38) con figurine sedute — 3DV-7: colori club + coach standing
-    const benchMat=new THREE.MeshLambertMaterial({color:0x3a3a4a});
-    const benchFigs=[];
+    // B) Panchine — 3DV-11: lato TRIBUNA (z=-38, nord) — struttura dugout realistica
     const _hColInt=new THREE.Color(_hCol).getHex(),_aColInt=new THREE.Color(_aCol).getHex();
+    const benchFigs=[];
     const _mkBench=(bx,kitCol)=>{
-      const b=new THREE.Mesh(new THREE.BoxGeometry(12,0.6,1.4),benchMat);b.position.set(bx,0.4,38);scene.add(b);
-      for(let i=0;i<4;i++){const f=mkFig(kitCol,1.2);f.position.set(bx-4.5+i*3,0.7,37.8);scene.add(f);benchFigs.push(f);}
-      // Coach standing figure (more visible — track-suit, slightly taller)
-      const coach=mkFig(kitCol,1.55);coach.position.set(bx+7.5,0,38.2);scene.add(coach);benchFigs.push(coach);
+      const dZ=-38.5;// tribuna (nord, z negativo)
+      // Pavimento dugout (leggermente sotto livello campo)
+      const flM=new THREE.MeshLambertMaterial({color:0x1e1e28});
+      const dFloor=new THREE.Mesh(new THREE.BoxGeometry(13,0.28,2.6),flM);dFloor.position.set(bx,-0.14,dZ);scene.add(dFloor);
+      // Parete posteriore
+      const dBack=new THREE.Mesh(new THREE.BoxGeometry(13,3.0,0.28),flM);dBack.position.set(bx,1.5,dZ-1.2);scene.add(dBack);
+      // Tetto/pensilina (trasparente fumé)
+      const rfM=new THREE.MeshLambertMaterial({color:0x667788,transparent:true,opacity:0.55});
+      const dRoof=new THREE.Mesh(new THREE.BoxGeometry(13.5,0.22,2.9),rfM);dRoof.position.set(bx,3.0,dZ);scene.add(dRoof);
+      // Seduta panchina
+      const bSeat=new THREE.Mesh(new THREE.BoxGeometry(11.5,0.18,0.5),new THREE.MeshLambertMaterial({color:0x2a3a4a}));bSeat.position.set(bx,0.68,dZ+0.5);scene.add(bSeat);
+      // 6 giocatori seduti
+      for(let i=0;i<6;i++){const f=mkFig(kitCol,1.2);f.position.set(bx-7.5+i*2.8,0.72,dZ+0.4);scene.add(f);benchFigs.push(f);}
+      // Coach in piedi sul bordo campo
+      const coach=mkFig(kitCol,1.55);coach.position.set(bx+(bx<0?5:-5),0,-36.0);scene.add(coach);benchFigs.push(coach);
+      // Vice-allenatore
+      const staff=mkFig(kitCol,1.4);staff.position.set(bx+(bx<0?7.5:-7.5),0,-36.2);scene.add(staff);benchFigs.push(staff);
     };
-    _mkBench(-16,_hColInt);_mkBench(16,_aColInt);
+    _mkBench(-14,_hColInt);_mkBench(14,_aColInt);
 
-    // Sprint 3D-G3A / 3DV-8: bandiere bicolore animate + striscioni sulle curve
-    const _fez=(club.p||65)>88?62:(club.p||65)>72?54:(club.p||65)>55?48:42;// approx curva Z
+    // Sprint 3D-G3A / 3DV-8 / 3DV-11: bandiere bicolore animate + striscioni sulle curve
+    // 3DV-11: _fez = faccia frontale della tribuna (endZ - endD/2) — era calcolato dentro la geometria!
+    const _p=club?.p||65;const _fez=_p>88?50:_p>72?46:_p>55?42:38;
     const flagGroups=[];
     // 3DV-8: canvas texture bicolore (c1/c2 del club) per ogni bandiera
     const _mkFlagTex=(c1Hex,c2Hex)=>{const fc=document.createElement("canvas");fc.width=64;fc.height=32;const fx=fc.getContext("2d");fx.fillStyle=c1Hex;fx.fillRect(0,0,64,16);fx.fillStyle=c2Hex;fx.fillRect(0,16,64,16);fx.fillStyle="rgba(255,255,255,0.18)";fx.fillRect(0,15,64,2);return new THREE.CanvasTexture(fc);};
@@ -6798,13 +6811,16 @@ function ThreeMatchView(props){
     const _fhTex=_mkFlagTex(_hCol,_hc2),_faTex=_mkFlagTex(_aCol,_ac2);
     const _mkFlag=(x,z,tex)=>{const fg=new THREE.Group();
       const pm=new THREE.MeshLambertMaterial({color:0xd0d0d0});
-      const pole=new THREE.Mesh(new THREE.CylinderGeometry(0.07,0.07,3.8,6),pm);pole.position.y=1.9;fg.add(pole);
-      const fl=new THREE.Mesh(new THREE.PlaneGeometry(2.0,1.2),new THREE.MeshBasicMaterial({map:tex,side:THREE.DoubleSide,transparent:true,opacity:0.9}));
-      fl.position.set(1.0,3.5,0);fg.add(fl);fg._fl=fl;fg.position.set(x,0,z);scene.add(fg);flagGroups.push(fg);};
-    [-20,-12,-4,4,12,20].forEach(ox=>{_mkFlag(ox,-(_fez-3),_fhTex);_mkFlag(ox,_fez-3,_faTex);});// 3DV-8: 6 bandiere per curva (erano 4)
-    // 3DV-8: striscione orizzontale (tifo) — 2 colori club, posizionato sulle curve
-    const _mkStriscione=(cx,z,rotY,c1Hex,c2Hex)=>{const sc=document.createElement("canvas");sc.width=512;sc.height=48;const sx=sc.getContext("2d");sx.fillStyle=c1Hex;sx.fillRect(0,0,512,24);sx.fillStyle=c2Hex;sx.fillRect(0,24,512,24);sx.fillStyle="rgba(255,255,255,0.22)";sx.fillRect(0,22,512,4);const stex=new THREE.CanvasTexture(sc);const sm=new THREE.Mesh(new THREE.PlaneGeometry(18,2.6),new THREE.MeshBasicMaterial({map:stex,side:THREE.DoubleSide,transparent:true,opacity:0.88,depthWrite:false}));sm.position.set(cx,4.8,z);sm.rotation.y=rotY;scene.add(sm);};
-    _mkStriscione(0,-(_fez-1),0,_hCol,_hc2);_mkStriscione(0,_fez-1,Math.PI,_aCol,_ac2);
+      const pole=new THREE.Mesh(new THREE.CylinderGeometry(0.07,0.07,4.2,6),pm);pole.position.y=2.1;fg.add(pole);
+      const fl=new THREE.Mesh(new THREE.PlaneGeometry(2.4,1.4),new THREE.MeshBasicMaterial({map:tex,side:THREE.DoubleSide,transparent:true,opacity:0.95}));
+      fl.position.set(1.2,4.0,0);fg.add(fl);fg._fl=fl;fg.position.set(x,0,z);scene.add(fg);flagGroups.push(fg);};
+    // 3DV-11: flags a 2u davanti alla faccia frontale della tribuna (visibili, non sepolti nella geometria)
+    [-24,-16,-8,0,8,16,24].forEach(ox=>{_mkFlag(ox,-(_fez-2),_fhTex);_mkFlag(ox,_fez-2,_faTex);});
+    // 3DV-11: striscioni grandi — davanti faccia tribuna, testo curva leggibile
+    const _mkStriscione=(cx,z,rotY,c1Hex,c2Hex)=>{const sc=document.createElement("canvas");sc.width=512;sc.height=64;const sx=sc.getContext("2d");sx.fillStyle=c1Hex;sx.fillRect(0,0,512,32);sx.fillStyle=c2Hex;sx.fillRect(0,32,512,32);sx.fillStyle="rgba(255,255,255,0.28)";sx.fillRect(0,30,512,4);const stex=new THREE.CanvasTexture(sc);const sm=new THREE.Mesh(new THREE.PlaneGeometry(30,3.8),new THREE.MeshBasicMaterial({map:stex,side:THREE.DoubleSide,transparent:true,opacity:0.92,depthWrite:false}));sm.position.set(cx,5.5,z);sm.rotation.y=rotY;scene.add(sm);};
+    // 3DV-11: 2 striscioni per curva (sinistra/destra) — colori invertiti per varietà visiva
+    _mkStriscione(-12,-(_fez-3),0,_hCol,_hc2);_mkStriscione(12,-(_fez-3),0,_hc2,_hCol);
+    _mkStriscione(-12,_fez-3,Math.PI,_aCol,_ac2);_mkStriscione(12,_fez-3,Math.PI,_ac2,_aCol);
     // Sprint 3D-G3C: particelle coriandoli al gol (pre-allocate, attivate sul goal burst)
     const CONF_N=64,confPos=new Float32Array(CONF_N*3),confVel=new Float32Array(CONF_N*3);
     const confGeo=new THREE.BufferGeometry();confGeo.setAttribute('position',new THREE.BufferAttribute(confPos,3));
@@ -6945,14 +6961,15 @@ function ThreeMatchView(props){
             else if(_hs===false){hlPostArcT=0;hlPostArcType="deflect";hlPostVZ=(Math.random()>0.5?1:-1)*14;}
           }}}
       else if(hlPostArcT>=0){hlPostArcT+=aDt;// 3DV-9: eseguire solo se il normale lerp non sovrascrive
-        if(hlPostArcType==="in_net"){// palla rimbalza decrescendo all'interno della rete
+        if(hlPostArcType==="in_net"){// 3DV-11: palla nella rete avversaria (+x) — lerp + rimbalzo smorzato
+          ball.position.x+=(46-ball.position.x)*Math.min(aDt*5,1);// convergi su porta +x
+          ball.position.z*=(1-Math.min(aDt*2,1)*0.15);// centra z leggermente
           ball.position.y=0.65+Math.max(0,Math.abs(Math.sin(hlPostArcT*4.5))*0.9*Math.exp(-hlPostArcT*2.2));
-          ball.position.x=Math.min(ball.position.x,48);// non uscire oltre la linea di fondo
           if(hlPostArcT>2.2){hlPostArcT=-1;hlPostArcType=null;}}
-        else if(hlPostArcType==="cross_goal"){// secondo arco: cross → testa → gol
+        else if(hlPostArcType==="cross_goal"){// 3DV-11: fix direzione — cross → testa → porta +x
           const _u2=Math.min(hlPostArcT/0.70,1);
           ball.position.y=0.65+Math.sin(_u2*Math.PI)*2.8;// traiettoria header
-          ball.position.x+=(-47-ball.position.x)*aDt*3.5;ball.position.z+=(0-ball.position.z)*aDt*1.5;
+          ball.position.x+=(47-ball.position.x)*aDt*3.5;ball.position.z+=(0-ball.position.z)*aDt*1.5;// +47 = porta avversaria
           if(_u2>=1){hlPostArcType="in_net";hlPostArcT=0;}}// catena → in_net
         else if(hlPostArcType==="deflect"){// parata/palo: palla laterale + a terra
           ball.position.y=Math.max(0.65,ball.position.y-aDt*5);
@@ -6979,11 +6996,14 @@ function ThreeMatchView(props){
       const _curPh=P.matchPhase;
       if(_curPh!==prevPhase){
         if(_curPh==="hl_result"){const t=P.hlType;actType=(t==="header"||t==="tackle"||t==="dribble"||t==="cross"||t==="penalty"||t==="freekick")?t:(!t||t==="build")?null:"shot";actT=0;// 3DV-4: tipi azione distinti
-          if(t==="shot"||t==="penalty"){ballArcH=4.8;ballArcDur=0.72;ballArcT=0;ballArcActive=true;}
-          else if(t==="header"){ballArcH=3.2;ballArcDur=0.65;ballArcT=0;ballArcActive=true;}
-          else if(t==="cross"||t==="freekick"){ballArcH=3.6;ballArcDur=0.82;ballArcT=0;ballArcActive=true;}
+          // 3DV-11: archi HL con destinazione esplicita verso porta avversaria (+x), non posizione eroe
+          const _rz=(Math.random()-.5);
+          if(t==="shot"||t==="penalty"){ballArcH=4.8;ballArcDur=0.72;ballArcT=0;ballArcActive=true;ballArcTgtX=43+Math.random()*4;ballArcTgtZ=_rz*8;}
+          else if(t==="header"){ballArcH=3.2;ballArcDur=0.65;ballArcT=0;ballArcActive=true;ballArcTgtX=41+Math.random()*6;ballArcTgtZ=_rz*10;}
+          else if(t==="cross"){ballArcH=3.8;ballArcDur=0.85;ballArcT=0;ballArcActive=true;ballArcTgtX=24+Math.random()*16;ballArcTgtZ=_rz*18;}
+          else if(t==="freekick"){ballArcH=3.2;ballArcDur=0.80;ballArcT=0;ballArcActive=true;ballArcTgtX=43+Math.random()*4;ballArcTgtZ=_rz*7;}
           else ballArcActive=false;
-          ballArcIsBG=false; // ATE-2: HL arc usa P.ballX/Y (target già settato dal sistema HL)
+          ballArcIsBG=ballArcActive; // 3DV-11: usa TGT esplicito anche per archi HL (come BG arc)
           if(ballArcActive)contactFlashT=0;
           // CIN-2: trigger reazione avversario — portiere tuffo su tiro/testa/cross, difensore stumble/spin su contrasto/dribbling
           if((t==="shot"||t==="penalty"||t==="header"||t==="cross")&&awayGkMesh){
@@ -7088,7 +7108,7 @@ function ThreeMatchView(props){
         refMesh.rotation.z=Math.sin(now*0.0040)*0.032;refMesh.position.y=Math.abs(Math.sin(now*0.0032))*0.07;
         linRef1.rotation.y=Math.sin(now*0.0022+0.8)*0.055;linRef1.rotation.z=Math.sin(now*0.0018+0.5)*0.025;
         linRef2.rotation.y=Math.PI+Math.sin(now*0.0022+2.3)*0.055;linRef2.rotation.z=Math.sin(now*0.0018+1.9)*0.025;
-        benchFigs.forEach((f,i)=>{f._ph+=dt*1.1;f.position.y=0.7+Math.sin(f._ph)*0.04+_goalExcite*Math.abs(Math.sin(f._ph*2+i))*0.32;});
+        benchFigs.forEach((f,i)=>{f._ph+=dt*1.1;const _bBase=f._isCoach?0:0.72;f.position.y=_bBase+Math.sin(f._ph)*0.03+_goalExcite*Math.abs(Math.sin(f._ph*2+i))*0.30;});
         // Sprint 3D-7 / 3DV-4: override one-shot dell'esito sul protagonista, sequenza per ogni tipo azione
         if(actType){actT+=aDt;const _T=actType==="header"?0.75:actType==="penalty"?0.70:actType==="tackle"?0.6:actType==="cross"?0.65:0.55,u=Math.min(actT/_T,1),sw=Math.sin(u*Math.PI);
           if(actType==="shot"){hero._lR.rotation.x=-2.8*sw;hero._lL.rotation.x=0.7*sw;hero._aL.rotation.x=1.1*sw;hero._aR.rotation.x=-0.5*sw;if(hero._torso)hero._torso.rotation.y=sw*0.25;}
