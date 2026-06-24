@@ -2612,7 +2612,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.57.0"; // CINE-1: motore cinematografico — deriveHL() {type,pattern,variant}; cross primo/secondo palo/cutback differenziati
+const GAME_VERSION="4.58.0"; // CINE-2: variant shot/header archi distinti; fix cross label-first; camera dedicata per chip/volley/tuffo
 const SAVE_VERSION=6;
 // Sprint ENV — ambiente rilevato automaticamente dal runtime (non gestito manualmente).
 // PRODUCTION = deploy GitHub Pages (*.github.io). Tutto il resto (staging githack, locale, localhost) = TEST.
@@ -6569,18 +6569,18 @@ const HL_ZONE_COL={shot:0xf97316,penalty:0xf97316,cross:0x22d3ee,freekick:0x22d3
 function deriveHL(sit,act){
   const txt=sit?.text||"", tl=txt.toLowerCase(), lbl=(act?.label||"").toLowerCase();
   const st=act?.stat, sitType=sit?.type, z=sit?.zones?.[0];
-  // ── TYPE (cascade legacy IDENTICO) ──
+  // ── TYPE — cross e testa riconosciuti PRIMA della classificazione per stat (label ha priorità) ──
   let type=null;
   if(/RIGORE|igore/.test(txt))type="penalty";
   else if(/unizione/.test(txt))type="freekick";
+  else if(act&&/cross|traversone/.test(lbl))type="cross";// CINE-2: cross label prima di stat=passaggio
+  else if(act&&/testa|incornata|stacco/.test(lbl))type="header";// header label prima di stat
   else if(st==="tiro")type="shot";
   else if(st==="passaggio")type="pass";
   else if(st==="dribbling")type="dribble";
   else if(sitType==="def")type="tackle";
   else if(act){
-    if(/testa|incornata|stacco/.test(lbl))type="header";
-    else if(/contrasto|tackle|scivolata|intercett/.test(lbl))type="tackle";
-    else if(/cross|traversone/.test(lbl))type="cross";
+    if(/contrasto|tackle|scivolata|intercett/.test(lbl))type="tackle";
     else if(/dribbl|finta|tunnel|sombrero/.test(lbl))type="dribble";
     else if(/tiro|conclus|rovesciata|bomba|stoccata/.test(lbl))type="shot";
     else if(/passaggio|filtrante|imbucata/.test(lbl))type="pass";
@@ -7082,8 +7082,22 @@ function ThreeMatchView(props){
         if(_curPh==="hl_result"){const t=P.hlType;actType=(t==="header"||t==="tackle"||t==="dribble"||t==="cross"||t==="penalty"||t==="freekick"||t==="pass")?t:(!t||t==="build")?null:"shot";actT=0;// 3DV-14: pass aggiunto alla lista tipi espliciti// 3DV-4: tipi azione distinti
           // 3DV-11: archi HL con destinazione esplicita verso porta avversaria (+x), non posizione eroe
           const _rz=(Math.random()-.5);
-          if(t==="shot"||t==="penalty"){ballArcH=4.8;ballArcDur=0.72;ballArcT=0;ballArcActive=true;ballArcTgtX=AWAY_GOAL_X-3+Math.random()*4;ballArcTgtZ=_rz*8;}
-          else if(t==="header"){ballArcH=3.2;ballArcDur=0.65;ballArcT=0;ballArcActive=true;ballArcTgtX=AWAY_GOAL_X-5+Math.random()*6;ballArcTgtZ=_rz*10;}
+          if(t==="penalty"){ballArcH=4.2;ballArcDur=0.72;ballArcT=0;ballArcActive=true;ballArcTgtX=AWAY_GOAL_X-3+Math.random()*3;ballArcTgtZ=_rz*7;}
+          else if(t==="shot"){ballArcT=0;ballArcActive=true;
+            // CINE-2: variant shot — traiettorie distinte per ogni tipo di conclusione
+            const _vs=P.hlVariant;
+            if(_vs==="shot_chip"){ballArcH=8.5;ballArcDur=1.10;ballArcTgtX=AWAY_GOAL_X-1+Math.random()*2;ballArcTgtZ=_rz*5;}
+            else if(_vs==="shot_volley"){ballArcH=5.2;ballArcDur=0.66;ballArcTgtX=AWAY_GOAL_X-4+Math.random()*5;ballArcTgtZ=_rz*9;}
+            else if(_vs==="shot_curled"){ballArcH=4.4;ballArcDur=0.78;ballArcTgtX=AWAY_GOAL_X-2+Math.random()*3;ballArcTgtZ=(_rz>=0?1:-1)*(6+Math.random()*5);}/* curva al palo lontano */
+            else if(_vs==="shot_first_time"){ballArcH=3.2;ballArcDur=0.50;ballArcTgtX=AWAY_GOAL_X-3+Math.random()*4;ballArcTgtZ=_rz*6;}
+            else if(_vs==="shot_one_on_one"){ballArcH=2.6;ballArcDur=0.55;ballArcTgtX=AWAY_GOAL_X-1+Math.random()*2;ballArcTgtZ=(Math.random()>0.5?1:-1)*(4+Math.random()*5);}/* angolo di porta rasoterra */
+            else{ballArcH=4.8;ballArcDur=0.72;ballArcTgtX=AWAY_GOAL_X-3+Math.random()*4;ballArcTgtZ=_rz*8;}/* shot_power default */}
+          else if(t==="header"){ballArcT=0;ballArcActive=true;
+            // CINE-2: variant header — tuffo rasoterra / primo palo / secondo palo
+            const _vh=P.hlVariant;
+            if(_vh==="header_diving"){ballArcH=1.8;ballArcDur=0.58;ballArcTgtX=AWAY_GOAL_X-3+Math.random()*4;ballArcTgtZ=_rz*7;}/* tuffo — arco piatto e basso */
+            else if(_vh==="header_far_post"){ballArcH=3.6;ballArcDur=0.72;ballArcTgtX=AWAY_GOAL_X-4+Math.random()*5;ballArcTgtZ=(_rz>=0?-1:1)*(8+Math.random()*5);}/* secondo palo — z opposto al giocatore */
+            else{ballArcH=3.2;ballArcDur=0.65;ballArcTgtX=AWAY_GOAL_X-5+Math.random()*6;ballArcTgtZ=_rz*6;}/* near_post default */}
           else if(t==="cross"){ballArcT=0;ballArcActive=true;
             // CINE-1: variant cross — primo palo (stesso lato fascia), secondo palo (lato opposto), cutback (dal fondo)
             const _v=P.hlVariant,_side=(P.playerY||50)<50?-1:1;// lato di provenienza in z (sx fascia=z-)
@@ -7276,9 +7290,18 @@ function ThreeMatchView(props){
         // Sprint 3D-7: camera dedicata su rigore/punizione — bassa, dietro la palla verso la porta
         if(isHL&&(P.hlType==="penalty"||P.hlType==="freekick")){
           cPx=clamp(bx-18,-96,-4);cPy=6.5;cPz=bz*0.7;cLx=bx+24;cLy=1.4;cLz=bz*0.5;
-        } else if(isHL&&P.hlType==="header"){cPy=Math.max(cPy,7);cLy=3.8;} // CIN-1: camera guarda su per il colpo di testa
-        else if(isHL&&P.hlType==="tackle"){cPx=clamp(fX-12,-80,18);cPy=4.0-bf;cLy=1.2;} // CIN-1: radente per il contrasto
-        else if(isHL&&P.hlType==="cross"){cPx=clamp(fX-10,-72,18);cPy=5.0;cPz=fZ*1.1+(fZ>=0?8:-8);cLx=fX+18;cLy=2.0;cLz=fZ*0.55;}// 3DV-4: cross — laterale bassa
+        } else if(isHL&&P.hlType==="header"){
+          // CINE-2: camera dedicata per variante testa
+          if(P.hlVariant==="header_diving"){cPx=clamp(fX-16,-80,16);cPy=3.2;cLy=0.8;}/* rasoterra — accompagna il tuffo */
+          else{cPy=Math.max(cPy,7);cLy=3.8;}/* near/far post — guarda su */
+        } else if(isHL&&P.hlType==="tackle"){cPx=clamp(fX-12,-80,18);cPy=4.0-bf;cLy=1.2;}
+        else if(isHL&&P.hlType==="cross"){cPx=clamp(fX-10,-72,18);cPy=5.0;cPz=fZ*1.1+(fZ>=0?8:-8);cLx=fX+18;cLy=2.0;cLz=fZ*0.55;}
+        else if(isHL&&P.hlType==="shot"){
+          // CINE-2: camera dedicata per variante tiro
+          if(P.hlVariant==="shot_chip"){cPy=Math.max(cPy,12);cLy=Math.max(cLy,4.5);}/* alta — segue la traiettoria alta */
+          else if(P.hlVariant==="shot_one_on_one"){cPx=clamp(fX-14,-80,16);cPy=Math.min(cPy,5.5);cLy=1.8;}/* bassa ravvicinata — porta in visuale */
+          else if(P.hlVariant==="shot_volley"){cPy=Math.max(cPy,8.5);cLy=2.8;}/* leggermente alta — valorizza il gesto atletico */
+        }
         // 3DV-5: GK tracking — lookat si sposta verso il portiere su tiro/rigore/testa
         if(isHL&&awayGkMesh&&(P.hlType==="shot"||P.hlType==="penalty"||P.hlType==="header")){cLx=cLx*0.65+awayGkMesh.position.x*0.35;cLz=cLz*0.65+awayGkMesh.position.z*0.35;}
         tPx=wPx+(cPx-wPx)*camHL;tPy=wPy+(cPy-wPy)*camHL;tPz=wPz+(cPz-wPz)*camHL;
