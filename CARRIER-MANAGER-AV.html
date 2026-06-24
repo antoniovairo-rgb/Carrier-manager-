@@ -1597,22 +1597,25 @@ const ACHIEVEMENTS=[
 /* ========================================
    SITUATIONS  (con moveZone e startZone)
 ======================================== */
-const S=(text,zones,mz,sz,actions,lock=false,mm=-1,intro="",type="off",ctx=null)=>{
-  // Infer maxMoves from first zone when not explicitly passed (mm=-1)
+// tactic = {pressure:"none"|"low"|"medium"|"high", support:0-4, nearby_def:0-5, lanes:[...], box:{att,def,near,far}}
+// Il campo tactic è opzionale (default null) — backward-compatible con tutte le S() esistenti.
+// Quando presente, cappedMM e filterSitActions lo consumano al posto dell'euristica testuale.
+const S=(text,zones,mz,sz,actions,lock=false,mm=-1,intro="",type="off",ctx=null,tactic=null)=>{
   const z0=zones[0];
   const inferredMM=mm>=0?mm:z0==="area"?2:z0==="bordo"?2:3;
-  return{text,zones,moveZone:mz,startZone:sz,actions,lockMovement:lock,maxMoves:lock?0:inferredMM,intro,type,ctx};
+  return{text,zones,moveZone:mz,startZone:sz,actions,lockMovement:lock,maxMoves:lock?0:inferredMM,intro,type,ctx,tactic};
 };
 const A=(label,stat,bon,rew,fail,nrg)=>({label,stat,bon,rew,fail,nrg});
 const SITUATIONS=[
 /* === AREA — CONCLUSIONI === */
 S("⚡ Solo davanti al portiere!",["area"],{x:[80,98],y:[25,75]},{x:[82,92],y:[30,70]},[
-  A("🦵 Tiro angolato","tiro",10,"goal","miss_easy",16),A("🎯 Piazzato basso","tecnica",4,"goal","miss",12),A("🤸 Pallonetto","tecnica",-8,"goal","miss_easy",10)]),
+  A("🦵 Tiro angolato","tiro",10,"goal","miss_easy",16),A("🎯 Piazzato basso","tecnica",4,"goal","miss",12),A("🤸 Pallonetto","tecnica",-8,"goal","miss_easy",10)],false,1,"⚡ Sei solo! Decidi in frazione di secondo.","off",null,
+  {pressure:"high",support:0,nearby_def:1,lanes:["central_run"],box:{att:1,def:1,near:false,far:false}}),
 S("🤸 Rovesciata spettacolare!",["area"],{x:[76,94],y:[22,78]},{x:[78,88],y:[28,72]},[
   A("🤸 Rovesciata!","tecnica",-6,"goal","miss",22),A("✈️ Stacco di testa","fisico",3,"goal","miss",15),A("🦵 Tiro di prima","tiro",2,"goal","miss",12)]),
 S("⚡ Tap-in! Porta quasi vuota.",["area"],{x:[84,98],y:[28,72]},{x:[86,94],y:[33,67]},[
   A("🦵 Spingila dentro!","tiro",18,"goal","miss_easy",8),A("🎯 Precisione","tecnica",12,"goal","miss",8),A("🦶 Deviazione di prima","fisico",8,"goal","miss",10)]),
-S("🌀 Dribbling completato in area!",["area"],{x:[80,97],y:[20,80]},{x:[82,90],y:[26,74]},[
+S("🌀 Con palla in area — un difensore tra te e la porta!",["area"],{x:[80,97],y:[20,80]},{x:[82,90],y:[26,74]},[
   A("🦵 Tiro a giro","tiro",8,"goal","miss",14),A("🌀 Dribbling portiere","tecnica",3,"goal","miss_easy",18),A("🎯 Assist retropassaggio","passaggio",5,"assist","intercept",10)]),
 S("🎯 Deviazione ravvicinata!",["area"],{x:[78,96],y:[25,75]},{x:[80,90],y:[30,70]},[
   A("🦵 Deviazione istintiva","tecnica",5,"goal","miss",12),A("🦶 Deviazione di piede","fisico",3,"goal","miss",12),A("🌀 Prima intenzione","tiro",0,"goal","miss",14)]),
@@ -1678,12 +1681,12 @@ S("🎯 Triangolazione perfetta!",["trequarti","bordo"],{x:[55,84],y:[20,80]},{x
 /* === CENTROCAMPO === */
 S("🎮 Palla a centrocampo. Costruisci.",["centro","trequarti"],{x:[35,65],y:[20,80]},{x:[38,58],y:[28,72]},[
   A("⚡ Verticale","passaggio",3,"assist","intercept",8),A("🔄 Cambia campo","passaggio",5,"assist","intercept",6),A("🏃 Avanza palla al piede","velocità",2,"goal","intercept",15)]),
-S("⚡ Recupero palla! Riparte.",["difesa","centro"],{x:[18,60],y:[20,80]},{x:[22,42],y:[28,72]},[
+S("⚡ Palla contesa a centrocampo — pressa e riconquista!",["difesa","centro"],{x:[18,60],y:[20,80]},{x:[22,42],y:[28,72]},[
   A("🏃 Lancia il contropiede","velocità",6,"goal","intercept",20),A("🎯 Lancio lungo","passaggio",4,"assist","intercept",10),A("🌀 Avanza palla al piede","tecnica",2,"goal","intercept",16)]),
 S("🌀 Sfida 1v1 a centrocampo!",["centro","trequarti"],{x:[35,68],y:[22,78]},{x:[38,58],y:[28,72]},[
   A("🌀 Dribbling centrale","tecnica",5,"goal","intercept",14),A("⚡ Scatto in velocità","velocità",4,"goal","intercept",16),A("↩️ Triangolo","passaggio",5,"assist","intercept",10)]),
 /* === DIFESA — INTERCETTI E TACKLE === */
-S("🛡️ Tackle in scivolata! Recupera palla.",["difesa","centro"],{x:[20,55],y:[15,85]},{x:[25,45],y:[30,70]},[
+S("🛡️ Avversario porta palla — sfida in scivolata!",["difesa","centro"],{x:[20,55],y:[15,85]},{x:[25,45],y:[30,70]},[
   A("🛡️ Scivolata netta","fisico",6,"recovery","foul",16),A("✋ Intercetta di piede","tecnica",4,"recovery","through",12),A("📣 Copri la linea","velocità",2,"recovery","through",8)],false,2,"⚠️ L'avversario punta la porta! Sei l'ultimo ostacolo prima della difesa.","def"),
 S("✋ Anticipa il passaggio filtrante!",["centro","difesa"],{x:[25,58],y:[20,80]},{x:[30,50],y:[32,68]},[
   A("✋ Anticipo di posizione","tecnica",7,"recovery","through",10),A("🏃 Sprint di copertura","velocità",5,"recovery","through",14),A("💪 Contrasto fisico","fisico",3,"recovery","foul",12)],false,2,"👁️ Vedi il passaggio prima che parta. Anticipalo!","def"),
@@ -1717,7 +1720,7 @@ S("💥 Tiro da 30 metri! Nessuno si aspetta questa scelta.",["trequarti","centr
 S("✈️ Cross avversario in area! Allontana!",["propria","difesa"],{x:[8,24],y:[20,80]},{x:[10,20],y:[30,70]},[
   A("✈️ Stacco di testa deciso","fisico",8,"save","goal_against",16),A("🛡️ Chiudi di spalla","fisico",4,"save","goal_against",12),A("📣 Chiama il portiere","tecnica",2,"save","goal_against",6)],false,1,"✈️ Cross pericoloso in area! Allontana con la testa!","def"),
 /* Salvataggio sulla linea */
-S("🧱 SALVATAGGIO SULLA LINEA! Il portiere è battuto.",["propria"],{x:[2,10],y:[30,70]},{x:[3,8],y:[38,62]},[
+S("🧱 Tiro avversario in arrivo sulla linea! Intervieni.",["propria"],{x:[2,10],y:[30,70]},{x:[3,8],y:[38,62]},[
   A("🧱 Corpo sulla traiettoria","fisico",12,"save","goal_against",20),A("✋ Devia col piede","tecnica",8,"save","goal_against",16),A("😱 Tentativo disperato","fisico",3,"save","goal_against",12)],false,0,"🚨 Il pallone sta per entrare! Sei l'ultimo uomo!","def"),
 /* Inserimento del terzino in sovrapposizione */
 S("⚡ Sovrapposizione! Il terzino è lanciato in fascia.",["trequarti","bordo"],{x:[58,88],y:[5,20]},{x:[62,78],y:[5,15]},[
@@ -1744,7 +1747,7 @@ S("✈️ Lancio lungo! Il portiere esce. Attacca la palla!",["area","bordo"],{x
 S("💥 PALO! Rimbalza in area. Arriva!",["area"],{x:[83,98],y:[28,72]},{x:[85,95],y:[33,67]},[
   A("🦵 Prima intenzione!","tiro",16,"goal","miss_easy",10),A("✈️ Di testa al volo","fisico",10,"goal","miss",12),A("🤝 Sponda per compagno","passaggio",6,"assist","intercept",8)]),
 /* Pressing alto — recupero in trequarti avversaria */
-S("🏃 Pressing alto! Rubi palla in trequarti avversaria.",["trequarti"],{x:[55,72],y:[20,80]},{x:[58,68],y:[28,72]},[
+S("🏃 Pressing alto in trequarti — portatore avversario sotto pressione!",["trequarti"],{x:[55,72],y:[20,80]},{x:[58,68],y:[28,72]},[
   A("🏃 Pressing aggressivo","velocità",8,"goal","through",20),A("✋ Intercetta il retropassaggio","tecnica",5,"goal","through",14),A("📣 Copri le linee di passaggio","mentalità",4,"recovery","through",10)],false,2,"😤 Il portiere avversario ha palla! Pressa immediatamente!","def"),
 /* Colpo di testa su punizione laterale */
 S("✈️ Cross teso dalla fascia — attacca il palo lontano!",["area"],{x:[76,96],y:[18,28]},{x:[78,88],y:[22,26]},[
@@ -1759,7 +1762,7 @@ S("⚡ Sprint sulla fascia! 1 contro 1 col terzino.",["bordo","trequarti"],{x:[6
 S("🔴 RIGORE! Sul dischetto a 5' dalla fine. Respira. Tira.",["area"],{x:[84,90],y:[44,56]},{x:[86,89],y:[47,53]},[
   A("💥 Angolo basso — potenza","tiro",12,"goal","miss_easy",10),A("🌀 Cucchiaio — glaciale","tecnica",2,"goal","miss_easy",20),A("⚡ Incrociato rasoterra","velocità",6,"goal","miss",14)],true,0,"⏱ Cinque minuti alla fine. Il rigore che vale tutto. Respira.","off"),
 /* Rimonta — sotto di due gol */
-S("🔙 Siamo sotto 0-2. Segnare adesso cambia tutto.",["trequarti","bordo"],{x:[55,80],y:[25,75]},{x:[58,72],y:[30,70]},[
+S("🔙 Sotto 0-2. L'attacco cerca il gol della speranza.",["trequarti","bordo"],{x:[55,80],y:[25,75]},{x:[58,72],y:[30,70]},[
   A("🔥 Prendo in mano la squadra","mentalità",8,"goal","through",18),A("⚡ Scatto in verticale","velocità",6,"goal","intercept",16),A("🎯 Lancio smarcante","passaggio",5,"assist","intercept",12)],false,-1,"","off","losing"),
 /* Doppia marcatura */
 S("👥 Doppia marcatura! Due difensori ti raddoppiano.",["trequarti"],{x:[55,70],y:[20,80]},{x:[58,68],y:[28,72]},[
@@ -1794,7 +1797,7 @@ S("💥 Tiro di potenza sul palo corto!",["bordo","area"],{x:[73,94],y:[18,42]},
   A("💥 Potenza sul palo corto","tiro",5,"goal","miss",16),A("🎯 Piazzato sul palo lontano","tecnica",4,"goal","miss",13),A("↗️ Cross sul secondo palo","passaggio",5,"assist","intercept",8)]),
 S("🤸 Rovesciata in corsa!",["area"],{x:[80,97],y:[25,75]},{x:[82,92],y:[30,70]},[
   A("🤸 Acrobazia istintiva in porta","tecnica",-8,"goal","miss",22),A("🦵 Tiro di collo d'istinto","tiro",2,"goal","miss",14),A("🎯 Controllo e conclude","tecnica",5,"goal","miss",13)]),
-S("⚽ Porta spalancata — spingila!",["area"],{x:[84,98],y:[28,72]},{x:[86,96],y:[33,67]},[
+S("⚽ Portiere fuori posizione! L'area piccola è scoperta.",["area"],{x:[84,98],y:[28,72]},{x:[86,96],y:[33,67]},[
   A("⚽ Prima intenzione — dentro!","tiro",20,"goal","miss_easy",8),A("🎯 Piazzata angolata","tecnica",14,"goal","miss",10),A("🦶 Spinta di sicurezza","fisico",10,"goal","miss",12)]),
 S("😱 Errore del portiere! Palla libera.",["area"],{x:[84,98],y:[28,72]},{x:[86,96],y:[33,67]},[
   A("🦵 Prima intenzione subito!","tiro",16,"goal","miss_easy",8),A("🎯 Tocco preciso per il gol","tecnica",12,"goal","miss",10),A("🌀 Dribbla il portiere e segna","dribbling",8,"goal","miss",14)]),
@@ -1856,7 +1859,7 @@ S("🔄 Hocus pocus sulla fascia!",["bordo","trequarti"],{x:[60,88],y:[5,30]},{x
   A("🔄 Hocus pocus e cross","dribbling",5,"assist","intercept",22),A("⚡ Finta e scatto sulla fascia","velocità",4,"assist","intercept",16),A("💥 Tiro a giro sul portiere","tiro",3,"goal","miss",13)]),
 S("🌀 Cambio di direzione a 180°!",["bordo","trequarti"],{x:[58,88],y:[20,80]},{x:[60,74],y:[28,72]},[
   A("🌀 Virata istantanea e scatto","velocità",6,"goal","intercept",18),A("🎯 Giro e cross","dribbling",4,"assist","intercept",14),A("💥 Tiro dopo la virata","tiro",2,"goal","miss",13)]),
-S("🦵 Dribbla il terzino e crossa!",["bordo","trequarti"],{x:[60,88],y:[68,97]},{x:[62,78],y:[72,95]},[
+S("🦵 Uno contro uno col terzino in fascia — spazio per il cross!",["bordo","trequarti"],{x:[60,88],y:[68,97]},{x:[62,78],y:[72,95]},[
   A("🌀 Dribbling netto e cross","dribbling",5,"assist","intercept",18),A("⚡ Scatto in velocità","velocità",4,"assist","intercept",16),A("↗️ Cross immediato senza dribblare","passaggio",6,"assist","intercept",8)]),
 S("🤸 Controllo acrobatico e tiro!",["area","bordo"],{x:[74,96],y:[22,78]},{x:[76,88],y:[28,72]},[
   A("🤸 Controllo acrobatico e tira","tecnica",3,"goal","miss",18),A("✈️ Testa al volo","fisico",4,"goal","miss",14),A("🦵 Tiro di prima","tiro",2,"goal","miss",13)]),
@@ -1910,7 +1913,7 @@ S("⚡ Break verticale — lancia la transizione!",["centro","trequarti"],{x:[40
   A("⚡ Lancio in profondità immediato","passaggio",7,"assist","intercept",11),A("🏃 Avanza col pallone di corsa","velocità",5,"goal","intercept",16),A("🔄 Smista sul lato libero","passaggio",5,"assist","intercept",8)]),
 S("🧠 Gioco aereo a centrocampo!",["centro","trequarti"],{x:[38,68],y:[22,78]},{x:[40,58],y:[28,72]},[
   A("✈️ Stacco e indirizza il compagno","fisico",6,"assist","intercept",10),A("💪 Stacco difensivo deciso","fisico",4,"recovery","through",12),A("🤝 Sponda per il compagno","passaggio",2,"assist","nothing",8)]),
-S("💪 Recupero in pressing aggressivo!",["centro","trequarti"],{x:[38,70],y:[20,80]},{x:[42,60],y:[28,72]},[
+S("💪 Pressing aggressivo a centrocampo — sfida sul portatore!",["centro","trequarti"],{x:[38,70],y:[20,80]},{x:[42,60],y:[28,72]},[
   A("💪 Contrasto duro sull'avversario","fisico",5,"recovery","foul",16),A("✋ Intercetta la traiettoria","tecnica",4,"recovery","through",12),A("🏃 Sprint di copertura","velocità",6,"recovery","through",14)],false,2,"💪 L'avversario parte in transizione! Bloccalo subito!","def"),
 
 /* DIFESA — AVANZATA */
@@ -2006,7 +2009,7 @@ S("🔥 CI CREDIAMO! La rimonta è iniziata.",["bordo","area"],{x:[72,96],y:[22,
   A("🔥 Tiro di rabbia — per i tifosi","tiro",6,"goal","miss",16),A("💥 Potenza esplosiva dal limite","tiro",2,"goal","miss",14),A("🌟 Assist da campione","passaggio",7,"assist","intercept",12)],false,3,"🔥 La rimonta è viva. Un gol adesso e tutto è possibile!","special","losing"),
 S("🏃 Corsa in area — stacca di testa in corsa!",["area"],{x:[78,96],y:[22,78]},{x:[80,92],y:[28,72]},[
   A("✈️ Stacco in corsa potente","fisico",6,"goal","miss",16),A("🎯 Colpo di testa angolato","fisico",4,"goal","miss",14),A("🦵 Lascia passare e tira di piede","tecnica",3,"goal","miss",12)]),
-S("⚡ Difensore saltato! La porta è aperta.",["area"],{x:[80,97],y:[22,78]},{x:[82,93],y:[28,72]},[
+S("⚡ Ultima linea difensiva da superare — sei in area con spazio!",["area"],{x:[80,97],y:[22,78]},{x:[82,93],y:[28,72]},[
   A("🦵 Tiro sul palo più lontano","tiro",8,"goal","miss",12),A("🎯 Piazzato nell'angolo basso","tecnica",6,"goal","miss",12),A("⚡ Tiro di prima — istinto","velocità",4,"goal","miss",15)]),
 S("🎯 Cucchiaio a giro sul palo lontano!",["bordo","area"],{x:[72,92],y:[20,42]},{x:[74,86],y:[23,38]},[
   A("🎯 Cucchiaio a giro angolato","tecnica",5,"goal","miss",14),A("💥 Tiro di collo pieno invece","tiro",3,"goal","miss",13),A("↗️ Cross sul secondo palo","passaggio",5,"assist","intercept",8)]),
@@ -2032,31 +2035,52 @@ const ZONES={
 };
 const getZone=x=>{for(const[k,v]of Object.entries(ZONES))if(x>=v.x[0]&&x<v.x[1])return k;return"area";};
 // Sprint 171: filter situation actions by current player position for realism
-function filterSitActions(actions,px){
+// TACT-FILTER (4.74.0): filtro azioni con prerequisiti tattici strutturati.
+// sit.tactic.lanes: array di corsie disponibili — se assente, usa euristica posizionale.
+// sit.tactic.nearby_def: numero difensori vicini — se 0, il dribbling non ha avversario da superare.
+function filterSitActions(actions,px,sit){
   if(!actions||!actions.length)return actions;
+  const tactic=sit?.tactic||null;
   const f=actions.filter(a=>{
+    const lbl=(a.label||"").toLowerCase();
     if(a.rew!=="goal")return true;         // non-goal actions always available
     if(px<55)return false;                 // no shots from centro or behind (x<55)
-    const isHead=a.label?.toLowerCase().includes("testa"); // colpo di testa
+    const isHead=lbl.includes("testa");
     if(isHead&&px<72)return false;         // headers only in bordo/area (x>=72)
+    // TACT-4: prerequisito cross — richiede corsia laterale o posizione wide
+    if(/cross|traversone/.test(lbl)){
+      if(tactic?.lanes&&!tactic.lanes.includes("overlap_left")&&!tactic.lanes.includes("overlap_right"))return false;
+    }
+    // TACT-4: prerequisito filtrante — richiede corsia di profondità
+    if(/filtrante|imbucata|verticale/.test(lbl)&&a.stat==="passaggio"){
+      if(tactic?.lanes&&!tactic.lanes.includes("through_ball_lane"))return false;
+    }
+    // TACT-4: prerequisito dribbling — richiede avversario da superare
+    if(/dribbl|sfida|supera/.test(lbl)&&a.stat==="dribbling"){
+      if(tactic?.nearby_def===0)return false;
+    }
     return true;
   });
   if(f.length>=2)return f;
-  // Fallback: filter left fewer than 2 — keep last 2 original actions (always show choice)
   if(f.length===1){const extra=actions.find(a=>a!==f[0]);return extra?[f[0],extra]:f;}
-  return actions.slice(-2); // all filtered: last 2 of original array
+  return actions.slice(-2);
 }
-// Sprint CINE-TAC: per-situation movement cap based on action type.
-// Headers/aerials → 0 moves (player already jumps), tap-ins/rebounds → 1, else use sit.maxMoves.
+// TACT-MM (4.74.0): movement cap data-driven quando sit.tactic.pressure è definito.
+// Fallback: euristica testuale (backward-compat con le situazioni senza tactic).
 function cappedMM(sit){
   if(!sit||sit.lockMovement)return 0;
+  // Data-driven path: usa sit.tactic.pressure quando disponibile
+  if(sit.tactic?.pressure){
+    if(sit.tactic.pressure==="high")return 0;
+    if(sit.tactic.pressure==="medium")return 1;
+    if(sit.tactic.pressure==="low")return 2;
+    return sit.maxMoves??2; // "none"
+  }
+  // Fallback euristica testuale (Sprint CINE-TAC — backward-compat)
   const t=sit.text||"";
-  // Aerial situations — no horizontal approach before the action
   if(/Cross in area|Attacca il pallone|Corner.*attacca|secondo palo|✈️/i.test(t))return 0;
-  // Rebound / tap-in — one step to reach the ball
   if(/tap-in|RIGORE PARATO|ribattuta/i.test(t))return 1;
-  // Immediate shot (already in front of goal)
-  if(/Solo davanti|davanti al portiere|Porta quasi vuota/i.test(t))return 1;
+  if(/Solo davanti|davanti al portiere|area piccola è scoperta|Portiere fuori posizione/i.test(t))return 1;
   return sit.maxMoves??2;
 }
 
@@ -2636,7 +2660,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.73.0"; // CINE-VAR: animazioni eroe variant-aware (shot×6, cross×3, penalty×2, header×3, tackle×2, dribble×3, build nuovo); HL_ZONE_COL palette distinta per tipo; hlBallState fix "ribattuta"+"botta al volo" → aerial; actType null→"build" fallback
+const GAME_VERSION="4.74.0"; // MISSIONE Ph2-5: 10 sit text fix (OUTCOME_IN_TEXT), TACT-POS 129 sits positional coherence, S() tactic param, filterSitActions prerequisites data-driven, cappedMM tactic.pressure-driven
 const SAVE_VERSION=6;
 // Sprint ENV — ambiente rilevato automaticamente dal runtime (non gestito manualmente).
 // PRODUCTION = deploy GitHub Pages (*.github.io). Tutto il resto (staging githack, locale, localhost) = TEST.
@@ -8696,6 +8720,61 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
             return{...pl,x:clamp(hx[idx-1]||szX,82,97),y:clamp(hy[idx-1]??szY,4,96)};
           }
         }));
+      // TACT-POS (4.74.0): posizionamento tattico per zone non-area (trequarti/bordo/fascia/centro/difesa/propria)
+      // Prima di questo fix le 129 situazioni non-lockMovement fuori area ereditavano posizioni casuali da BG_MATCH.
+      }else{
+        const sit=situations[hlIdx];
+        if(sit){
+          const z0=sit.zones?.[0]||"trequarti";
+          const szX=(sit.startZone?.x[0]+sit.startZone?.x[1])/2||65;
+          const szY=(sit.startZone?.y[0]+sit.startZone?.y[1])/2||50;
+          const isDef=sit.type==="def";
+          const isWide=z0==="fascia"||(sit.startZone?.y&&((sit.startZone.y[0]+sit.startZone.y[1])/2<28||(sit.startZone.y[0]+sit.startZone.y[1])/2>72));
+          setMatchPlayers(prev=>prev.map((pl,idx)=>{
+            if(pl.team==="ref")return pl;
+            if(pl.team==="away"){
+              const ai=idx-10;
+              if(ai===0)return{...pl,x:clamp(97,88,99),y:clamp(pl.y+(50-pl.y)*0.2,30,70)};// GK portiere
+              if(isDef){
+                // azione difensiva: avversario porta palla attorno a szX/szY, difensori supportano
+                const ox=[szX,szX+4,szX-3,szX+2,szX+6,szX-5,szX+8,szX-6,szX+3,szX+10];
+                const oy=[szY,szY+7,szY-7,szY+14,szY-14,szY+20,szY-20,szY+4,szY-4,szY+10];
+                return{...pl,x:clamp(ox[ai-1]??szX,15,95),y:clamp(oy[ai-1]??szY,4,96)};
+              }
+              // zona offensiva: difensori avversari formano linea difensiva tra eroe e porta
+              const depthOff=z0==="centro"?62:z0==="trequarti"?72:z0==="bordo"?78:70;
+              if(isWide){
+                // wide: terzino vicino all'eroe + blocco difensivo in area
+                const wx=[szX+3,depthOff,depthOff+4,depthOff-3,depthOff+7,depthOff-5,depthOff+10,depthOff-7,depthOff+2];
+                const wy=[szY+(szY<50?6:-6),40,60,50,30,70,45,55,35];
+                return{...pl,x:clamp(wx[ai-1]??depthOff,40,95),y:clamp(wy[ai-1]??szY,4,96)};
+              }
+              // centrale: difensori compatti in blocco tra eroe e porta
+              const cx=[szX+4,depthOff,depthOff+5,depthOff-4,depthOff+3,depthOff-3,depthOff+8,depthOff-6,depthOff+1];
+              const cy=[szY,szY+8,szY-8,szY+16,szY-16,szY+4,szY-4,szY+20,szY-20];
+              return{...pl,x:clamp(cx[ai-1]??depthOff,40,95),y:clamp(cy[ai-1]??szY,4,96)};
+            }else{
+              if(idx===0)return{...pl,x:clamp(4,2,10),y:clamp(pl.y+(50-pl.y)*0.15,30,70)};// GK di casa
+              if(isDef){
+                // azione difensiva: compagni formano blocco difensivo attorno all'eroe
+                const dx=[szX-2,szX-5,szX-8,szX-3,szX-10,szX-6,szX-12,szX-4,szX-9];
+                const dy=[szY,szY+7,szY-7,szY+14,szY-14,szY+3,szY-3,szY+20,szY-20];
+                return{...pl,x:clamp(dx[idx-1]??szX,5,85),y:clamp(dy[idx-1]??szY,4,96)};
+              }
+              // zona offensiva: compagni in posizioni di supporto (dietro/lato eroe, 1 runner avanzato)
+              if(isWide){
+                // wide: 1 giocatore in area (destinatario cross potenziale), resto in supporto
+                const wx2=[szX+10,szX-5,szX-8,szX-3,szX+4,szX-12,szX-6,szX-10,szX-15];
+                const wy2=[szY>50?40:60,szY+(szY<50?8:-8),szY,szY+(szY<50?16:-16),50,szY,szY+(szY<50?24:-24),szY-5,szY+5];
+                return{...pl,x:clamp(wx2[idx-1]??szX,5,95),y:clamp(wy2[idx-1]??szY,4,96)};
+              }
+              // centrale: 1 runner avanzato, supporto laterale, copertura dietro
+              const cx2=[szX+8,szX-6,szX-3,szX+2,szX-10,szX+5,szX-14,szX-8,szX-5];
+              const cy2=[szY,szY+10,szY-10,szY+18,szY-18,szY+5,szY-5,szY+25,szY-25];
+              return{...pl,x:clamp(cx2[idx-1]??szX,5,92),y:clamp(cy2[idx-1]??szY,4,96)};
+            }
+          }));
+        }
       }
     }
     // Coro folla all'ingresso del momento clou
@@ -9808,7 +9887,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                       </div>
                     ):(
                       <div style={{flex:1,display:"flex",flexDirection:"column",gap:5}}>
-                        {filterSitActions(curSit.actions||[],pPos.x).map((a,_oi)=>{
+                        {filterSitActions(curSit.actions||[],pPos.x,curSit).map((a,_oi)=>{
                           const _dp2=defDist<25?15:defDist<50?8:0;
                           const _rt2=Math.max(5,succRate(a,player.stats,pPos.x,oppPrestige,player.archetype?.id||player.archetype)-_dp2);
                           const _rc2=_rt2>70?"#4ade80":_rt2>50?"#f59e0b":"#f87171";
@@ -9911,7 +9990,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                           ))}
                         </div>
                       </div>
-                    ):filterSitActions(curSit.actions||[],pPos.x).map((a,i)=>{
+                    ):filterSitActions(curSit.actions||[],pPos.x,curSit).map((a,i)=>{
                       // Defender proximity reduces success rate
                       const defPenalty=defDist<25?15:defDist<50?8:0;
                       const rate=Math.max(5,succRate(a,player.stats,pPos.x,oppPrestige,player.archetype?.id||player.archetype)-defPenalty);

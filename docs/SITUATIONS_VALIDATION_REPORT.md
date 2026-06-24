@@ -1,6 +1,6 @@
 # CPM — Report Validazione Automatica Situations (motore 3D)
 
-_GAME_VERSION 4.73.0_
+_GAME_VERSION 4.74.0_
 
 ## Sommario
 | Metrica | Valore |
@@ -64,9 +64,9 @@ _GAME_VERSION 4.73.0_
 | 18 | 100 | ⚡ Tap-in! Porta quasi vuota. | 🦵 Spingila dentro! | shot/shot_first_time | — |
 | 19 | 100 | ⚡ Tap-in! Porta quasi vuota. | 🎯 Precisione | shot/shot_first_time | — |
 | 20 | 100 | ⚡ Tap-in! Porta quasi vuota. | 🦶 Deviazione di prima | shot/shot_first_time | — |
-| 21 | 100 | 🌀 Dribbling completato in are | 🦵 Tiro a giro | shot/shot_curled | — |
-| 22 | 100 | 🌀 Dribbling completato in are | 🌀 Dribbling portiere | dribble/dribble_feint | — |
-| 23 | 100 | 🌀 Dribbling completato in are | 🎯 Assist retropassaggio | pass/- | — |
+| 21 | 100 | 🌀 Con palla in area — un dife | 🦵 Tiro a giro | shot/shot_curled | — |
+| 22 | 100 | 🌀 Con palla in area — un dife | 🌀 Dribbling portiere | dribble/dribble_feint | — |
+| 23 | 100 | 🌀 Con palla in area — un dife | 🎯 Assist retropassaggio | pass/- | — |
 | 24 | 100 | 🎯 Deviazione ravvicinata! | 🦵 Deviazione istintiva | shot/shot_first_time | — |
 | 25 | 100 | 🎯 Deviazione ravvicinata! | 🦶 Deviazione di piede | shot/shot_first_time | — |
 | 26 | 100 | 🎯 Deviazione ravvicinata! | 🌀 Prima intenzione | shot/shot_first_time | — |

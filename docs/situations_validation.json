@@ -408,7 +408,7 @@
       "si": 3,
       "ai": 0,
       "realismo": 100,
-      "sit": "🌀 Dribbling completato in area!",
+      "sit": "🌀 Con palla in area — un difensore tra te e la porta!",
       "act": "🦵 Tiro a giro",
       "cls": {
         "type": "shot",
@@ -421,7 +421,7 @@
       "si": 3,
       "ai": 1,
       "realismo": 100,
-      "sit": "🌀 Dribbling completato in area!",
+      "sit": "🌀 Con palla in area — un difensore tra te e la porta!",
       "act": "🌀 Dribbling portiere",
       "cls": {
         "type": "dribble",
@@ -434,7 +434,7 @@
       "si": 3,
       "ai": 2,
       "realismo": 100,
-      "sit": "🌀 Dribbling completato in area!",
+      "sit": "🌀 Con palla in area — un difensore tra te e la porta!",
       "act": "🎯 Assist retropassaggio",
       "cls": {
         "type": "pass",
