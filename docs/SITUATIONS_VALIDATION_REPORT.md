@@ -1,6 +1,6 @@
 # CPM — Report Validazione Automatica Situations (motore 3D)
 
-_GAME_VERSION 4.72.0_
+_GAME_VERSION 4.73.0_
 
 ## Sommario
 | Metrica | Valore |
