@@ -24,14 +24,19 @@
       if(ctx.roundRect){ctx.beginPath();ctx.roundRect(x,y,w,h,rad);ctx.fill();}
       else ctx.fillRect(x,y,w,h);}
     bar(24*u,46*u);bar(43*u,36*u);bar(62*u,24*u);
-    // pallone da calcio al picco (pentagono + cuciture)
-    var bx=69.5*u,by=15*u,R=10*u,dk='#1e293b',pent=[],edge=[],p,ang;
+    // pallone classico bianco/nero (pentagono centrale + 5 al bordo, clip nel cerchio)
+    var bx=69.5*u,by=15*u,R=10*u,dk='#1e293b';
     ctx.beginPath();ctx.arc(bx,by,R,0,6.283);ctx.fillStyle='#fff';ctx.fill();
     ctx.lineWidth=R*0.13;ctx.strokeStyle=dk;ctx.lineCap='round';ctx.stroke();
-    for(p=0;p<5;p++){ang=(-90+p*72)*Math.PI/180;pent.push([bx+R*0.42*Math.cos(ang),by+R*0.42*Math.sin(ang)]);edge.push([bx+R*0.94*Math.cos(ang),by+R*0.94*Math.sin(ang)]);}
-    ctx.lineWidth=R*0.11;
-    for(p=0;p<5;p++){ctx.beginPath();ctx.moveTo(pent[p][0],pent[p][1]);ctx.lineTo(edge[p][0],edge[p][1]);ctx.stroke();}
-    ctx.beginPath();for(p=0;p<5;p++){if(p===0)ctx.moveTo(pent[p][0],pent[p][1]);else ctx.lineTo(pent[p][0],pent[p][1]);}ctx.closePath();ctx.fillStyle=dk;ctx.fill();
+    ctx.save();ctx.beginPath();ctx.arc(bx,by,R,0,6.283);ctx.clip();ctx.fillStyle=dk;
+    function pent(pts){ctx.beginPath();for(var i=0;i<pts.length;i++){var x=pts[i][0]*u,y=pts[i][1]*u;if(i)ctx.lineTo(x,y);else ctx.moveTo(x,y);}ctx.closePath();ctx.fill();}
+    pent([[69.5,11.6],[72.73,13.95],[71.5,17.75],[67.5,17.75],[66.27,13.95]]);
+    pent([[73.44,9.58],[72.24,5.89],[75.38,3.61],[78.52,5.89],[77.32,9.58]]);
+    pent([[75.87,17.07],[79.01,14.79],[82.15,17.07],[80.95,20.76],[77.07,20.76]]);
+    pent([[69.5,21.7],[72.64,23.98],[71.44,27.67],[67.56,27.67],[66.36,23.98]]);
+    pent([[63.13,17.07],[61.93,20.76],[58.05,20.76],[56.85,17.07],[59.99,14.79]]);
+    pent([[65.56,9.58],[61.68,9.58],[60.48,5.89],[63.62,3.61],[66.76,5.89]]);
+    ctx.restore();
     ctx.restore();
     return cv.toDataURL('image/png');
   }
@@ -90,7 +95,7 @@
 <rect class="lb lb1" x="24" y="46" width="15" height="26" rx="7" fill="#fff"/>
 <rect class="lb lb2" x="43" y="36" width="15" height="36" rx="7" fill="#fff"/>
 <rect class="lb lb3" x="62" y="24" width="15" height="48" rx="7" fill="#fff"/>
-<g class="lball"><circle cx="69.5" cy="15" r="10" fill="#fff" stroke="#1e293b" stroke-width="1.3"/><line x1="69.5" y1="10.8" x2="69.5" y2="5.6" stroke="#1e293b" stroke-width="1.1" stroke-linecap="round"/><line x1="73.49" y1="13.7" x2="78.44" y2="12.1" stroke="#1e293b" stroke-width="1.1" stroke-linecap="round"/><line x1="71.97" y1="18.4" x2="75.03" y2="22.6" stroke="#1e293b" stroke-width="1.1" stroke-linecap="round"/><line x1="67.03" y1="18.4" x2="63.97" y2="22.6" stroke="#1e293b" stroke-width="1.1" stroke-linecap="round"/><line x1="65.51" y1="13.7" x2="60.56" y2="12.1" stroke="#1e293b" stroke-width="1.1" stroke-linecap="round"/><polygon points="69.5,10.8 73.49,13.7 71.97,18.4 67.03,18.4 65.51,13.7" fill="#1e293b"/></g>
+<g class="lball"><circle cx="69.5" cy="15" r="10" fill="#fff" stroke="#1e293b" stroke-width="1.3"/><clipPath id="ldBall"><circle cx="69.5" cy="15" r="10"/></clipPath><g clip-path="url(#ldBall)" fill="#1e293b"><polygon points="69.5,11.6 72.73,13.95 71.5,17.75 67.5,17.75 66.27,13.95"/><polygon points="73.44,9.58 72.24,5.89 75.38,3.61 78.52,5.89 77.32,9.58"/><polygon points="75.87,17.07 79.01,14.79 82.15,17.07 80.95,20.76 77.07,20.76"/><polygon points="69.5,21.7 72.64,23.98 71.44,27.67 67.56,27.67 66.36,23.98"/><polygon points="63.13,17.07 61.93,20.76 58.05,20.76 56.85,17.07 59.99,14.79"/><polygon points="65.56,9.58 61.68,9.58 60.48,5.89 63.62,3.61 66.76,5.89"/></g></g>
 </g>
 </svg>
 <div style="text-align:left;line-height:1">
@@ -2612,7 +2617,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.71.1"; // REBRAND-LOGO v2: icona ripristinata all'originale "Rise" (barre+pallone) su tutti i mark; O-pallone del wordmark ridisegnata come pallone classico bianco/nero (pentagono centrale + 5 al bordo, clip nel cerchio) anziché a raggi
+const GAME_VERSION="4.71.2"; // REBRAND-LOGO v3: anche il pallone in cima all'icona "Rise" ora è il pallone classico bianco/nero (pentagono centrale + 5 al bordo, clip nel cerchio) — coerente col wordmark, su tutti i 5 mark (canvas PWA, loading, home, LogoMark)
 const SAVE_VERSION=6;
 // Sprint ENV — ambiente rilevato automaticamente dal runtime (non gestito manualmente).
 // PRODUCTION = deploy GitHub Pages (*.github.io). Tutto il resto (staging githack, locale, localhost) = TEST.
@@ -10939,7 +10944,7 @@ function HomeScreen({onNew,onLoad,onDelete,onImport,slots}){
             <rect className="lb lb1" x="24" y="46" width="15" height="26" rx="7" fill="#fff"/>
             <rect className="lb lb2" x="43" y="36" width="15" height="36" rx="7" fill="#fff"/>
             <rect className="lb lb3" x="62" y="24" width="15" height="48" rx="7" fill="#fff"/>
-            <g className="lball"><circle cx="69.5" cy="15" r="10" fill="#fff" stroke="#1e293b" strokeWidth="1.3"/><line key="s0" x1="69.5" y1="10.8" x2="69.5" y2="5.6" stroke="#1e293b" strokeWidth="1.1" strokeLinecap="round"/><line key="s1" x1="73.49" y1="13.7" x2="78.44" y2="12.1" stroke="#1e293b" strokeWidth="1.1" strokeLinecap="round"/><line key="s2" x1="71.97" y1="18.4" x2="75.03" y2="22.6" stroke="#1e293b" strokeWidth="1.1" strokeLinecap="round"/><line key="s3" x1="67.03" y1="18.4" x2="63.97" y2="22.6" stroke="#1e293b" strokeWidth="1.1" strokeLinecap="round"/><line key="s4" x1="65.51" y1="13.7" x2="60.56" y2="12.1" stroke="#1e293b" strokeWidth="1.1" strokeLinecap="round"/><polygon points="69.5,10.8 73.49,13.7 71.97,18.4 67.03,18.4 65.51,13.7" fill="#1e293b"/></g>
+            <g className="lball"><circle cx="69.5" cy="15" r="10" fill="#fff" stroke="#1e293b" strokeWidth="1.3"/><clipPath id="homeBall"><circle cx="69.5" cy="15" r="10"/></clipPath><g clipPath="url(#homeBall)" fill="#1e293b"><polygon points="69.5,11.6 72.73,13.95 71.5,17.75 67.5,17.75 66.27,13.95"/><polygon points="73.44,9.58 72.24,5.89 75.38,3.61 78.52,5.89 77.32,9.58"/><polygon points="75.87,17.07 79.01,14.79 82.15,17.07 80.95,20.76 77.07,20.76"/><polygon points="69.5,21.7 72.64,23.98 71.44,27.67 67.56,27.67 66.36,23.98"/><polygon points="63.13,17.07 61.93,20.76 58.05,20.76 56.85,17.07 59.99,14.79"/><polygon points="65.56,9.58 61.68,9.58 60.48,5.89 63.62,3.61 66.76,5.89"/></g></g>
           </svg>
         </div>
         <h1 style={{margin:"0 0 3px",display:"flex",justifyContent:"center",lineHeight:1}}><Wordmark size={30}/></h1>
@@ -11031,7 +11036,7 @@ function LogoMark({size=32,shadow=true}){
       <rect x="24" y="46" width="15" height="26" rx="7" fill="#fff"/>
       <rect x="43" y="36" width="15" height="36" rx="7" fill="#fff"/>
       <rect x="62" y="24" width="15" height="48" rx="7" fill="#fff"/>
-      <g><circle cx="69.5" cy="15" r="10" fill="#fff" stroke="#1e293b" strokeWidth="1.3"/><line x1="69.5" y1="10.8" x2="69.5" y2="5.6" stroke="#1e293b" strokeWidth="1.1" strokeLinecap="round"/><line x1="73.49" y1="13.7" x2="78.44" y2="12.1" stroke="#1e293b" strokeWidth="1.1" strokeLinecap="round"/><line x1="71.97" y1="18.4" x2="75.03" y2="22.6" stroke="#1e293b" strokeWidth="1.1" strokeLinecap="round"/><line x1="67.03" y1="18.4" x2="63.97" y2="22.6" stroke="#1e293b" strokeWidth="1.1" strokeLinecap="round"/><line x1="65.51" y1="13.7" x2="60.56" y2="12.1" stroke="#1e293b" strokeWidth="1.1" strokeLinecap="round"/><polygon points="69.5,10.8 73.49,13.7 71.97,18.4 67.03,18.4 65.51,13.7" fill="#1e293b"/></g>
+      <g><circle cx="69.5" cy="15" r="10" fill="#fff" stroke="#1e293b" strokeWidth="1.3"/><clipPath id={gid+"b"}><circle cx="69.5" cy="15" r="10"/></clipPath><g clipPath={`url(#${gid}b)`} fill="#1e293b"><polygon points="69.5,11.6 72.73,13.95 71.5,17.75 67.5,17.75 66.27,13.95"/><polygon points="73.44,9.58 72.24,5.89 75.38,3.61 78.52,5.89 77.32,9.58"/><polygon points="75.87,17.07 79.01,14.79 82.15,17.07 80.95,20.76 77.07,20.76"/><polygon points="69.5,21.7 72.64,23.98 71.44,27.67 67.56,27.67 66.36,23.98"/><polygon points="63.13,17.07 61.93,20.76 58.05,20.76 56.85,17.07 59.99,14.79"/><polygon points="65.56,9.58 61.68,9.58 60.48,5.89 63.62,3.61 66.76,5.89"/></g></g>
       </g>
     </svg>
   );
