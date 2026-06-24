@@ -2612,7 +2612,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.60.0"; // CINE-4: pre-action drift per-pattern (costruzione visiva) — compagni si lanciano, avversari stringono
+const GAME_VERSION="4.61.0"; // CINE-5: regia dedicata per-pattern — cross side-tracking (far/near/cutback), filtrante arretrata, dribbling stretta
 const SAVE_VERSION=6;
 // Sprint ENV — ambiente rilevato automaticamente dal runtime (non gestito manualmente).
 // PRODUCTION = deploy GitHub Pages (*.github.io). Tutto il resto (staging githack, locale, localhost) = TEST.
@@ -7341,13 +7341,25 @@ function ThreeMatchView(props){
           if(P.hlVariant==="header_diving"){cPx=clamp(fX-16,-80,16);cPy=3.2;cLy=0.8;}/* rasoterra — accompagna il tuffo */
           else{cPy=Math.max(cPy,7);cLy=3.8;}/* near/far post — guarda su */
         } else if(isHL&&P.hlType==="tackle"){cPx=clamp(fX-12,-80,18);cPy=4.0-bf;cLy=1.2;}
-        else if(isHL&&P.hlType==="cross"){cPx=clamp(fX-10,-72,18);cPy=5.0;cPz=fZ*1.1+(fZ>=0?8:-8);cLx=fX+18;cLy=2.0;cLz=fZ*0.55;}
+        else if(isHL&&P.hlType==="cross"){
+          // CINE-5: regia per-pattern del cross — side tracking che segue il volo verso l'area
+          const _pat=P.hlPattern;
+          if(_pat==="FAR_POST_CROSS"){cPx=clamp(fX-6,-66,22);cPy=7.5;cPz=fZ*1.25+(fZ>=0?14:-14);cLx=AWAY_GOAL_X-8;cLy=2.4;cLz=-fZ*0.4;}/* laterale alta — abbraccia l'area fino al secondo palo */
+          else if(_pat==="CUTBACK"){cPx=clamp(fX-14,-74,14);cPy=4.2;cPz=fZ*0.9+(fZ>=0?6:-6);cLx=30;cLy=1.4;cLz=fZ*0.3;}/* bassa dietro — guarda il rimorchio sul dischetto */
+          else{cPx=clamp(fX-10,-72,18);cPy=5.0;cPz=fZ*1.1+(fZ>=0?8:-8);cLx=fX+18;cLy=2.0;cLz=fZ*0.55;}/* NEAR_POST — ravvicinata sul primo palo */
+        }
         else if(isHL&&P.hlType==="shot"){
           // CINE-2: camera dedicata per variante tiro
           if(P.hlVariant==="shot_chip"){cPy=Math.max(cPy,12);cLy=Math.max(cLy,4.5);}/* alta — segue la traiettoria alta */
           else if(P.hlVariant==="shot_one_on_one"){cPx=clamp(fX-14,-80,16);cPy=Math.min(cPy,5.5);cLy=1.8;}/* bassa ravvicinata — porta in visuale */
           else if(P.hlVariant==="shot_volley"){cPy=Math.max(cPy,8.5);cLy=2.8;}/* leggermente alta — valorizza il gesto atletico */
         }
+        else if(isHL&&P.hlType==="pass"){
+          // CINE-5: filtrante/combinazione — camera più larga che accompagna la corsa verso la porta
+          if(P.hlPattern==="THROUGH_BALL"){cPx=clamp(fX-24,-86,8);cPy=Math.max(cPy,9);cLx=fX+22;cLy=1.6;}/* arretrata e alta — segue l'imbucata e lo scatto */
+          else{cPx=clamp(fX-18,-82,12);cPy=Math.max(cPy,8);cLx=fX+16;cLy=1.8;}/* COMBINATION — segue il triangolo */
+        }
+        else if(isHL&&P.hlType==="dribble"){cPx=clamp(fX-12,-76,16);cPy=4.6;cLx=fX+14;cLy=1.4;}/* CINE-5: dribbling — camera bassa e stretta che insegue l'eroe */
         // 3DV-5: GK tracking — lookat si sposta verso il portiere su tiro/rigore/testa
         if(isHL&&awayGkMesh&&(P.hlType==="shot"||P.hlType==="penalty"||P.hlType==="header")){cLx=cLx*0.65+awayGkMesh.position.x*0.35;cLz=cLz*0.65+awayGkMesh.position.z*0.35;}
         tPx=wPx+(cPx-wPx)*camHL;tPy=wPy+(cPy-wPy)*camHL;tPz=wPz+(cPz-wPz)*camHL;
