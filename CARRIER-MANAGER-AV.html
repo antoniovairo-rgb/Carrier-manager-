@@ -2630,7 +2630,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.72.0"; // CINE-TAC: cappedMM() limita movimenti per tipo highlight (header→0, tap-in/ribattuta→1, area immediata→1); hl_intro salta hl_move per azioni aeree non-lockMovement; DPad nascosto quando movesLeft=0; griglia rigore visibile solo per lockMovement (fix "RIGORE PARATO" che mostrava erroneamente cursore rigore)
+const GAME_VERSION="4.73.0"; // CINE-VAR: animazioni eroe variant-aware (shot×6, cross×3, penalty×2, header×3, tackle×2, dribble×3, build nuovo); HL_ZONE_COL palette distinta per tipo; hlBallState fix "ribattuta"+"botta al volo" → aerial; actType null→"build" fallback
 const SAVE_VERSION=6;
 // Sprint ENV — ambiente rilevato automaticamente dal runtime (non gestito manualmente).
 // PRODUCTION = deploy GitHub Pages (*.github.io). Tutto il resto (staging githack, locale, localhost) = TEST.
@@ -6583,7 +6583,8 @@ const ATE3_ARCCOL={shot:"#f97316",cross:"#22d3ee",tackle:"#fbbf24",save:"#60a5fa
 // ATE-4: zona ring — mappa zone SITUATIONS → posizione 3D (world coords) + posizione palla (game coords)
 const HL_ZONE_3D={area:{x:38,z:0},bordo:{x:26,z:0},trequarti:{x:12,z:0},centro:{x:0,z:0},difesa:{x:-20,z:0},propria:{x:-38,z:0},fascia:{x:28,z:16}};
 const HL_ZONE_BALL={area:{x:87,y:50},bordo:{x:77,y:50},trequarti:{x:63,y:50},centro:{x:47,y:50},difesa:{x:29,y:50},propria:{x:11,y:50},fascia:{x:80,y:72}};
-const HL_ZONE_COL={shot:0xf97316,penalty:0xf97316,cross:0x22d3ee,freekick:0x22d3ee,tackle:0xfbbf24,save:0x60a5fa,pass:0xa3e635,dribble:0xa3e635,header:0xf97316,build:0xffffff};
+// CINE-VAR: palette zone-ring per hlType — colori distinti per ogni tipo di azione
+const HL_ZONE_COL={shot:0xf97316,penalty:0xef4444,cross:0x22d3ee,freekick:0x22d3ee,tackle:0xfbbf24,save:0x60a5fa,pass:0xa3e635,dribble:0x8b5cf6,header:0xfbbf24,build:0x64748b};
 // CINE-COH: stato reale del pallone all'avvio della situation — SORGENTE UNICA per la coerenza HL↔azione.
 //  'set_ground' = palla ferma (rigore/punizione)
 //  'aerial'     = palla che arriva/è in volo (cross, corner, lancio alto, rimbalzo, rovesciata, stacco, colpo di testa)
@@ -6593,7 +6594,8 @@ function hlBallState(sit){
   const t=(sit&&sit.text)||"";
   // palla ferma a terra SOLO se il set-piece è battuto dall'eroe (lockMovement); una punizione/cross che l'eroe ATTACCA è palla aerea
   if(/rigore|unizione/i.test(t)&&sit&&sit.lockMovement)return"set_ground";
-  if(/cross|corner|angolo|traversone|lancio lungo|lanci lungh|rimbalz|rovesciat|sforbiciat|vol[eé]e|al volo|aere[oa]|stacco|colpo di testa|incornat|di testa|testa[ !]|alzat|acrobat|controbalz|di petto/i.test(t))return"aerial";
+  // CINE-VAR: "ribattuta" (rigore parato → rimbalzo) è aerea; aggiunti "salto|volo|botta al volo"
+  if(/cross|corner|angolo|traversone|lancio lungo|lanci lungh|rimbalz|ribattut|rovesciat|sforbiciat|vol[eé]e|al volo|botta al volo|aere[oa]|stacco|colpo di testa|incornat|di testa|testa[ !]|alzat|acrobat|controbalz|di petto/i.test(t))return"aerial";
   return"feet";
 }
 // CINE-1: motore cinematografico — deriva {type, pattern, variant} da situation+azione.
@@ -7170,7 +7172,7 @@ function ThreeMatchView(props){
       // transizioni di fase: trigger animazione esito + gestione buffer/replay
       const _curPh=P.matchPhase;
       if(_curPh!==prevPhase){
-        if(_curPh==="hl_result"){const t=P.hlType;actType=(t==="header"||t==="tackle"||t==="dribble"||t==="cross"||t==="penalty"||t==="freekick"||t==="pass")?t:(!t||t==="build")?null:"shot";actT=0;// 3DV-14: pass aggiunto alla lista tipi espliciti// 3DV-4: tipi azione distinti
+        if(_curPh==="hl_result"){const t=P.hlType;actType=(t==="header"||t==="tackle"||t==="dribble"||t==="cross"||t==="penalty"||t==="freekick"||t==="pass"||t==="build")?t:(!t)?"build":"shot";actT=0;// CINE-VAR: build ora ha animazione propria; null type → "build" (gesto neutro)
           // 3DV-11: archi HL con destinazione esplicita verso porta avversaria (+x), non posizione eroe
           const _rz=(Math.random()-.5),_side=(P.playerY||50)<50?-1:1;// _side: lato attaccante — usato da cross, shot_curled, header_far_post
           if(t==="penalty"){// Panenka/cucchiaio → arco molto alto; rigore normale → arco standard
@@ -7341,17 +7343,72 @@ function ThreeMatchView(props){
         linRef1.rotation.y=Math.sin(now*0.0022+0.8)*0.055;linRef1.rotation.z=Math.sin(now*0.0018+0.5)*0.025;
         linRef2.rotation.y=Math.PI+Math.sin(now*0.0022+2.3)*0.055;linRef2.rotation.z=Math.sin(now*0.0018+1.9)*0.025;
         benchFigs.forEach((f,i)=>{f._ph+=dt*1.1;const _bBase=f._isCoach?0:0.72;f.position.y=_bBase+Math.sin(f._ph)*0.03+_goalExcite*Math.abs(Math.sin(f._ph*2+i))*0.30;});
-        // Sprint 3D-7 / 3DV-4: override one-shot dell'esito sul protagonista, sequenza per ogni tipo azione
+        // CINE-VAR: animazione eroe per tipo + variante cinematografica (Sprint 4.73.0)
+        // Ogni variant ha gesti fisicamente distinti: sw=sin(u*π) → auto-reset a 0 al termine
         if(actType){actT+=aDt;const _T=actType==="header"?0.75:actType==="penalty"?0.70:actType==="tackle"?0.6:actType==="cross"?0.65:0.55,u=Math.min(actT/_T,1),sw=Math.sin(u*Math.PI);
-          if(actType==="shot"){hero._lR.rotation.x=-2.8*sw;hero._lL.rotation.x=0.7*sw;hero._aL.rotation.x=1.1*sw;hero._aR.rotation.x=-0.5*sw;if(hero._torso)hero._torso.rotation.y=sw*0.25;}
-          else if(actType==="cross"){hero._lR.rotation.x=-2.2*sw;hero.rotation.y=Math.sin(u*Math.PI)*0.55;hero._aL.rotation.x=0.8*sw;hero._aR.rotation.x=-0.3*sw;hero._lL.rotation.x=0.4*sw;}// 3DV-4: gamba swing orizzontale + rotazione corpo
-          else if(actType==="penalty"){const _ku=u<0.35?u/0.35:1;hero._lR.rotation.x=-3.2*Math.sin(_ku*Math.PI);hero._lL.rotation.x=0.8*sw;hero._aL.rotation.x=1.3*sw;hero.position.y=sw*0.2;if(hero._torso)hero._torso.rotation.y=sw*0.3;}// 3DV-4: rincorsa + kick potente
-          else if(actType==="freekick"){hero._lR.rotation.x=-2.5*sw;hero._lL.rotation.x=0.6*sw;hero._aL.rotation.x=1.4*sw;hero._aR.rotation.x=-0.7*sw;hero.position.y=sw*0.15;}// 3DV-4: wind-up braccia
-          else if(actType==="header"){hero.position.y=sw*2.2;if(hero._hd)hero._hd.rotation.x=sw*0.7;hero._aL.rotation.x=-2.0*sw;hero._aR.rotation.x=-2.0*sw;}// 3DV-4: nod testa
-          else if(actType==="tackle"){hero.rotation.z=1.1*sw;hero.position.y=-0.25*sw;hero._lR.rotation.x=2.0*sw;hero._lL.rotation.x=-0.6*sw;}
-          else if(actType==="dribble"){hero.rotation.z=Math.sin(u*Math.PI*3)*0.35;hero.rotation.y=Math.sin(u*Math.PI*2)*0.28;}
-          else if(actType==="pass"){hero._aL.rotation.x=-1.8*sw;hero._aL.rotation.z=-0.5*sw;hero._aR.rotation.x=0.6*sw;hero.rotation.y=Math.sin(u*Math.PI)*0.32;hero._lR.rotation.x=0.5*sw;}// 3DV-14: braccio sinistro disteso in avanti, rotazione bacino
-          if(u>=1){actType=null;if(hero._hd)hero._hd.rotation.x*=0.7;}
+          if(actType==="shot"){
+            if(P.hlVariant==="shot_chip"){// pallonetto: corpo indietro, tocco leggero di punta, salto all'indietro
+              hero._lR.rotation.x=-1.6*sw;hero._lL.rotation.x=0.5*sw;hero._aL.rotation.x=1.5*sw;hero._aR.rotation.x=-0.8*sw;hero.position.y=sw*0.38;if(hero._torso){hero._torso.rotation.x=-sw*0.35;hero._torso.rotation.y=sw*0.15;}
+            }else if(P.hlVariant==="shot_volley"){// volée/sforbiciata: forbice acrobatica, salto alto, entrambe le gambe
+              hero._lR.rotation.x=-3.2*sw;hero._lL.rotation.x=-1.6*sw;hero._aL.rotation.x=1.8*sw;hero._aR.rotation.x=-1.2*sw;hero.position.y=sw*1.5;if(hero._torso)hero._torso.rotation.y=sw*0.5;
+            }else if(P.hlVariant==="shot_curled"){// tiro a giro: rotazione anca pronunciata, interno collo-piede
+              hero._lR.rotation.x=-2.6*sw;hero._lL.rotation.x=0.6*sw;hero._aL.rotation.x=1.2*sw;hero._aR.rotation.x=-0.4*sw;hero.rotation.y=Math.sin(u*Math.PI)*0.45;if(hero._torso)hero._torso.rotation.y=sw*0.4;
+            }else if(P.hlVariant==="shot_first_time"){// colpo di prima/tap-in: kick breve e immediato, nessun caricamento
+              hero._lR.rotation.x=-2.0*sw;hero._lL.rotation.x=0.4*sw;hero._aL.rotation.x=0.6*sw;hero._aR.rotation.x=-0.3*sw;if(hero._torso)hero._torso.rotation.y=sw*0.12;
+            }else if(P.hlVariant==="shot_one_on_one"){// 1v1: tiro piazzato controllato, leggero avanzamento verso portiere
+              hero._lR.rotation.x=-2.4*sw;hero._lL.rotation.x=0.6*sw;hero._aL.rotation.x=1.0*sw;hero._aR.rotation.x=-0.4*sw;hero.position.y=sw*0.1;if(hero._torso)hero._torso.rotation.y=sw*0.2;
+            }else{// shot_power default: kick potente, pieno follow-through
+              hero._lR.rotation.x=-2.8*sw;hero._lL.rotation.x=0.7*sw;hero._aL.rotation.x=1.1*sw;hero._aR.rotation.x=-0.5*sw;if(hero._torso)hero._torso.rotation.y=sw*0.25;
+            }
+          }
+          else if(actType==="cross"){
+            if(P.hlVariant==="cross_cutback"){// rimorchio dal fondo: corpo girato, passaggio all'indietro
+              hero._lR.rotation.x=-1.5*sw;hero.rotation.y=Math.sin(u*Math.PI)*(-0.85);hero._aL.rotation.x=0.6*sw;hero._aR.rotation.x=0.3*sw;hero._lL.rotation.x=0.5*sw;
+            }else if(P.hlVariant==="cross_low_driven"){// cross basso/teso: swing orizzontale, nessun follow-through alto
+              hero._lR.rotation.x=-2.4*sw;hero.rotation.y=Math.sin(u*Math.PI)*0.35;hero._aL.rotation.x=0.7*sw;hero._aR.rotation.x=-0.4*sw;hero._lL.rotation.x=0.3*sw;
+            }else{// near_post/far_post: swing pieno + rotazione corpo (default)
+              hero._lR.rotation.x=-2.2*sw;hero.rotation.y=Math.sin(u*Math.PI)*0.55;hero._aL.rotation.x=0.8*sw;hero._aR.rotation.x=-0.3*sw;hero._lL.rotation.x=0.4*sw;
+            }
+          }
+          else if(actType==="penalty"){
+            const _ku=u<0.35?u/0.35:1;
+            if(P.hlVariant==="penalty_panenka"){// cucchiaio/Panenka: tocco delicatissimo, nessuna potenza, salto minimo
+              hero._lR.rotation.x=-1.6*Math.sin(_ku*Math.PI);hero._lL.rotation.x=0.5*sw;hero._aL.rotation.x=0.8*sw;hero._aR.rotation.x=-0.3*sw;hero.position.y=sw*0.1;if(hero._torso)hero._torso.rotation.y=sw*0.12;
+            }else{// rigore normale: rincorsa caricata + kick potente
+              hero._lR.rotation.x=-3.2*Math.sin(_ku*Math.PI);hero._lL.rotation.x=0.8*sw;hero._aL.rotation.x=1.3*sw;hero.position.y=sw*0.2;if(hero._torso)hero._torso.rotation.y=sw*0.3;
+            }
+          }
+          else if(actType==="freekick"){hero._lR.rotation.x=-2.5*sw;hero._lL.rotation.x=0.6*sw;hero._aL.rotation.x=1.4*sw;hero._aR.rotation.x=-0.7*sw;hero.position.y=sw*0.15;}
+          else if(actType==="header"){
+            if(P.hlVariant==="header_diving"){// tuffo rasoterra: salto basso, braccia tese in avanti, torso inclinato
+              hero.position.y=sw*0.85;if(hero._hd)hero._hd.rotation.x=sw*1.2;hero._aL.rotation.x=-2.8*sw;hero._aR.rotation.x=-2.8*sw;if(hero._torso)hero._torso.rotation.x=sw*0.45;
+            }else if(P.hlVariant==="header_far_post"){// secondo palo: salto più alto, corpo ruota verso il palo lontano
+              hero.position.y=sw*2.5;if(hero._hd)hero._hd.rotation.x=sw*0.8;hero._aL.rotation.x=-2.2*sw;hero._aR.rotation.x=-2.2*sw;hero.rotation.y=Math.sin(u*Math.PI)*0.4;
+            }else{// near_post default: salto standard + nod testa
+              hero.position.y=sw*2.2;if(hero._hd)hero._hd.rotation.x=sw*0.7;hero._aL.rotation.x=-2.0*sw;hero._aR.rotation.x=-2.0*sw;
+            }
+          }
+          else if(actType==="tackle"){
+            if(P.hlSuccess===true){// contrasto vincente: scivolata decisa e ampia
+              hero.rotation.z=1.4*sw;hero.position.y=-0.35*sw;hero._lR.rotation.x=2.4*sw;hero._lL.rotation.x=-0.8*sw;
+            }else{// contrasto fallito/perso: perdita equilibrio, vacillamento laterale
+              hero.rotation.z=0.8*sw;hero.position.y=-0.12*sw;hero._lR.rotation.x=1.5*sw;hero._lL.rotation.x=-0.3*sw;hero.rotation.y=Math.sin(u*Math.PI*2)*0.28;
+            }
+          }
+          else if(actType==="dribble"){
+            if(P.hlVariant==="dribble_inside"){// rientro interno: anca che entra, corpo si inclina verso l'interno
+              hero.rotation.z=Math.sin(u*Math.PI*3)*0.5;hero.rotation.y=Math.sin(u*Math.PI*2)*0.45;hero._lR.rotation.x=Math.sin(u*Math.PI*2)*0.8;
+            }else if(P.hlVariant==="dribble_outside"){// sterzata esterna: corpo si apre verso l'esterno, piede fuori
+              hero.rotation.z=Math.sin(u*Math.PI*3)*(-0.42);hero.rotation.y=Math.sin(u*Math.PI*2)*(-0.38);hero._lL.rotation.x=Math.sin(u*Math.PI*2)*0.7;
+            }else{// feint default: oscillazione doppia (finta-contro-finta)
+              hero.rotation.z=Math.sin(u*Math.PI*3)*0.35;hero.rotation.y=Math.sin(u*Math.PI*2)*0.28;
+            }
+          }
+          else if(actType==="pass"){hero._aL.rotation.x=-1.8*sw;hero._aL.rotation.z=-0.5*sw;hero._aR.rotation.x=0.6*sw;hero.rotation.y=Math.sin(u*Math.PI)*0.32;hero._lR.rotation.x=0.5*sw;}
+          else if(actType==="build"){// costruzione/neutro: breve gesto di passaggio corto, nessuna potenza
+            hero._aL.rotation.x=-0.9*sw;hero._aR.rotation.x=0.3*sw;hero.rotation.y=Math.sin(u*Math.PI)*0.2;hero._lR.rotation.x=0.3*sw;
+          }
+          if(u>=1){actType=null;if(hero._hd)hero._hd.rotation.x*=0.7;if(hero._torso){hero._torso.rotation.x=0;}}
         }
         // 3DV-4: barriera freekick — i 3 giocatori più vicini saltano
         sr.current.players.forEach(pp=>{if(pp.mesh&&pp.mesh._wallJumpT!=null&&pp.mesh._wallJumpT>=0){pp.mesh._wallJumpT+=aDt;const wu=Math.min(pp.mesh._wallJumpT/0.55,1),wsw=Math.sin(wu*Math.PI);pp.mesh.position.y=wsw*1.5;pp.mesh._aL.rotation.x=-wsw*1.6;pp.mesh._aR.rotation.x=-wsw*1.6;if(wu>=1){pp.mesh.position.y=0;pp.mesh._wallJumpT=null;}}});

@@ -107,6 +107,16 @@ Phases within a match: `matchday → formations → walkout → playing → hl_m
 - `matchContext` prop distinguishes career / cup / national / euroMondiale_group / euroMondiale_ko — used in `onMatchEnd` to route post-match state updates correctly
 - **RULE**: ogni competizione è completamente giocabile dall'utente tramite LiveMatch — zero simulazioni forzate
 - **Coerenza HL↔azione (CINE-COH, 4.70.0)**: `hlBallState(sit)` deriva lo stato reale del pallone (`set_ground` = set-piece battuto dall'eroe / `aerial` = cross·corner·rimbalzo·rovesciata·stacco·di petto / `feet` = palla al piede). `deriveHL` lo usa: il colpo di testa è emesso SOLO con palla aerea, la volée (`shot_volley`) solo su palla aerea (altrimenti `shot_first_time` per i "di prima" a terra). Invariante: nessun highlight mostra una testa/volée con la palla al piede. Validato da `tests/situations-3d-validation.js` (dimensione **coerenza**: header⇒aerea è un FAIL che blocca la suite con `exit 2`)
+- **Animazioni variant-aware (CINE-VAR, 4.73.0)**: ogni `hlVariant` ha un'animazione eroe fisicamente distinta in `ThreeMatchView`. Invariante `sw=sin(u·π)`: tutti i valori scaled-by-sw si azzerano automaticamente a u=1; solo assegnamenti assoluti richiedono cleanup esplicito (`hero._torso.rotation.x=0` a u≥1). Varianti implementate:
+  - **shot**: `shot_chip` (pallonetto, corpo indietro, salto lieve), `shot_volley` (sforbiciata acrobatica, salto alto), `shot_curled` (tiro a giro, rotazione anca), `shot_first_time` (colpo di prima, kick breve), `shot_one_on_one` (tiro piazzato 1v1), `shot_power` (default, tiro di potenza)
+  - **cross**: `cross_cutback` (taglio all'indietro, rotazione opposta), `cross_low_driven` (traversone teso basso), default (traversone alto)
+  - **penalty**: `penalty_panenka` (tocco leggero, gamba morbida, salto ridotto), default (penalty normale, swing completo)
+  - **header**: `header_diving` (tuffo in avanti, torso in avanti), `header_far_post` (stacco alto sul secondo palo), default/`header_near_post` (stacco verticale sul primo palo)
+  - **tackle**: `hlSuccess===true` (scivolata riuscita, caduta controllata), `false` (tentativo fallito, rotazione incerta)
+  - **dribble**: `dribble_inside` (rientro sul sinistro, pendolo rapido), `dribble_outside` (corsa esterna, pendolo inverso), default/`dribble_feint` (finta neutra)
+  - **build**: nuovo tipo (prima: nessuna animazione → corpo statico). Ora: gesto di protezione palla / smistamento
+- **`HL_ZONE_COL`** — palette zone-ring per hlType: `shot`=arancio `0xf97316`, `penalty`=rosso `0xef4444`, `cross`=ciano `0x22d3ee`, `freekick`=ciano, `tackle`=oro `0xfbbf24`, `header`=oro, `pass`=verde-lime `0xa3e635`, `dribble`=viola `0x8b5cf6`, `build`=ardesia `0x64748b`
+- **`hlBallState()` fix (4.73.0)**: aggiunto `ribattut` (rimbalzo su rigore parato) e `botta al volo` alla regex `aerial`; prima restituiva `"feet"` per "RIGORE PARATO! Arriva sulla ribattuta!"
 
 ### Calendar & Standings Invariants
 
