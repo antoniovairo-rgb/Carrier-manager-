@@ -2612,7 +2612,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.58.0"; // CINE-2: variant shot/header archi distinti; fix cross label-first; camera dedicata per chip/volley/tuffo
+const GAME_VERSION="4.59.0"; // CINE-3: outcome evoluti — palo (hit_post+post_rebound), gol alto chip/volley (in_net_high), split save/palo/wide
 const SAVE_VERSION=6;
 // Sprint ENV — ambiente rilevato automaticamente dal runtime (non gestito manualmente).
 // PRODUCTION = deploy GitHub Pages (*.github.io). Tutto il resto (staging githack, locale, localhost) = TEST.
@@ -6908,10 +6908,11 @@ function ThreeMatchView(props){
     // Sprint 3D-7: animazione one-shot del protagonista all'ingresso dell'esito (hl_result)
     let actT=0,actType=null,prevPhase="";
     let oppActType=null,oppActT=0,oppMesh=null,oppDiveDir=1; // CIN-2: animazione reazione avversario
-    let hlPostArcT=-1,hlPostArcType=null,hlPostVZ=0; // 3DV-9: animazione post-arco (in_net/deflect/cross_goal)
+    let hlPostArcT=-1,hlPostArcType=null,hlPostVZ=0; // 3DV-9: animazione post-arco
     let heroPostT=-1,heroPostType=null; // 3DV-13: reazione eroe post-azione fallita
     let gkSaveCelebT=-1,gkSaveMesh=null; // 3DV-13: portiere si rialza dopo parata
     let hlInNetFlashed=false,hlPostVY=0; // 3DV-14: flash ingresso rete + fisica rimbalzo deflect
+    let hlOutcomeVariant=null; // CINE-3: sotto-tipo outcome (save/post/wide/blocked)
     let passTargetMesh=null; // 3DV-14b: mesh compagno che riceve il passaggio (triangolo)
     // Sprint 3D-8a: cronometro dell'esito per il rallenty cinematografico
     let resultT=0;
@@ -7022,27 +7023,59 @@ function ThreeMatchView(props){
       // Sprint 3D-BALL: parabola sull'esito — arco in base al tipo di azione
       if(ballArcActive){ballArcT+=aDt;const u=Math.min(ballArcT/ballArcDur,1);ball.position.y=0.65+Math.sin(u*Math.PI)*ballArcH;
         if(u>=1){ballArcActive=false;// 3DV-9: trigger animazione fine azione in base all'esito
-          if(isResult){const _hs=P.hlSuccess,_ht=P.hlType;
-            if(_hs===true&&(_ht==="shot"||_ht==="penalty"||_ht==="freekick"||_ht==="header")){hlPostArcT=0;hlPostArcType="in_net";}
+          if(isResult){const _hs=P.hlSuccess,_ht=P.hlType,_hv=P.hlVariant;
+            if(_hs===true&&(_ht==="shot"||_ht==="penalty"||_ht==="freekick"||_ht==="header")){
+              hlPostArcT=0;hlOutcomeVariant="goal";
+              // CINE-3: chip/volley entrano alti in rete
+              hlPostArcType=(_hv==="shot_chip"||_hv==="shot_volley")?"in_net_high":"in_net";}
             else if(_hs===true&&_ht==="cross"){hlPostArcT=0;hlPostArcType="cross_goal";}
-            else if(_hs===true&&_ht==="pass"){hlPostArcT=0;hlPostArcType="assist_shot";if(passTargetMesh){passTargetMesh._rcvT=0;passTargetMesh=null;}}// 3DV-14b: triangolo — compagno calcia al volo
-            else if(_hs===true&&(_ht==="tackle"||_ht==="dribble"||_ht==="build"||!_ht)){heroPostT=0;heroPostType="fist";}// 3DV-14: pugno vittoria su contrasto/dribbling
-            else if(_hs===false){hlPostArcT=0;hlPostArcType="deflect";hlInNetFlashed=false;
-              // 3DV-14: fisica deflect — velocità iniziale e direzione realistica
-              if(_ht==="shot"||_ht==="penalty"||_ht==="freekick"||_ht==="header"){hlPostVZ=-oppDiveDir*(8+Math.random()*7);hlPostVY=5+Math.random()*3;}// deflect nella dir opposta al tuffo
-              else{hlPostVZ=(Math.random()>0.5?1:-1)*(8+Math.random()*6);hlPostVY=2.5+Math.random()*2;}
-              heroPostT=0;heroPostType="miss";// 3DV-13: eroe abbassa la testa
-              if((_ht==="shot"||_ht==="penalty"||_ht==="freekick"||_ht==="header")&&awayGkMesh){gkSaveCelebT=-0.10;gkSaveMesh=awayGkMesh;}// 3DV-13: portiere esulta ~0.10s dopo il tuffo
-              else if(_ht==="pass"||_ht==="build"){let _nd=99,_nm=null;sr.current.players.forEach((pp,ii)=>{const src=(P.allPlayers||[])[ii];if(src&&src.team==='away'&&!src.gk){const d=Math.hypot(pp.mesh.position.x-hero.position.x,pp.mesh.position.z-hero.position.z);if(d<_nd){_nd=d;_nm=pp.mesh;}}});if(_nm){oppActType="opp_intercept";oppActT=0;oppMesh=_nm;oppMesh._divePz=_nm.position.z;}}// 3DV-13: avversario intercetta il passaggio
+            else if(_hs===true&&_ht==="pass"){hlPostArcT=0;hlPostArcType="assist_shot";if(passTargetMesh){passTargetMesh._rcvT=0;passTargetMesh=null;}}
+            else if(_hs===true&&(_ht==="tackle"||_ht==="dribble"||_ht==="build"||!_ht)){heroPostT=0;heroPostType="fist";}
+            else if(_hs===false){hlInNetFlashed=false;heroPostT=0;heroPostType="miss";
+              // CINE-3: tiro mancato → palo (20%) / parata (65%) / fuori (15%)
+              const _isShotHL=_ht==="shot"||_ht==="penalty"||_ht==="freekick"||_ht==="header";
+              const _roll=Math.random();
+              if(_isShotHL&&_roll<0.20){// PALO
+                hlOutcomeVariant="post";hlPostArcT=0;hlPostArcType="hit_post";
+                hlPostVY=4.5+Math.random()*2.5;hlPostVZ=(Math.random()>0.5?1:-1)*(7+Math.random()*5);
+              } else {// PARATA o FUORI (deflect)
+                hlOutcomeVariant=_isShotHL?(_roll<0.85?"save":"wide"):"blocked";
+                hlPostArcT=0;hlPostArcType="deflect";
+                if(_isShotHL){hlPostVZ=-oppDiveDir*(8+Math.random()*7);hlPostVY=5+Math.random()*3;}
+                else{hlPostVZ=(Math.random()>0.5?1:-1)*(8+Math.random()*6);hlPostVY=2.5+Math.random()*2;}
+                if(hlOutcomeVariant==="save"&&awayGkMesh){gkSaveCelebT=-0.10;gkSaveMesh=awayGkMesh;}
+                else if(_ht==="pass"||_ht==="build"){let _nd=99,_nm=null;sr.current.players.forEach((pp,ii)=>{const src=(P.allPlayers||[])[ii];if(src&&src.team==='away'&&!src.gk){const d=Math.hypot(pp.mesh.position.x-hero.position.x,pp.mesh.position.z-hero.position.z);if(d<_nd){_nd=d;_nm=pp.mesh;}}});if(_nm){oppActType="opp_intercept";oppActT=0;oppMesh=_nm;oppMesh._divePz=_nm.position.z;}}
+              }
             }
           }}}
-      else if(hlPostArcT>=0){hlPostArcT+=aDt;// 3DV-9: eseguire solo se il normale lerp non sovrascrive
-        if(hlPostArcType==="in_net"){// palla nella rete avversaria — lerp verso AWAY_GOAL_X
+      else if(hlPostArcT>=0){hlPostArcT+=aDt;
+        if(hlPostArcType==="in_net"){// palla nella rete — lerp verso AWAY_GOAL_X
           ball.position.x+=(AWAY_GOAL_X-ball.position.x)*Math.min(aDt*5.5,1);
           ball.position.z*=(1-Math.min(aDt*2,1)*0.12);
           ball.position.y=0.65+Math.max(0,Math.abs(Math.sin(hlPostArcT*4.5))*1.1*Math.exp(-hlPostArcT*2.0));
           if(!hlInNetFlashed&&ball.position.x>AWAY_GOAL_X-3){hlInNetFlashed=true;contactFlashT=0;shakePow=0.20;}
           if(hlPostArcT>2.4){hlPostArcT=-1;hlPostArcType=null;hlInNetFlashed=false;}}
+        else if(hlPostArcType==="in_net_high"){// CINE-3: chip/volley — palla entra alta nella rete
+          ball.position.x+=(AWAY_GOAL_X-ball.position.x)*Math.min(aDt*5.0,1);
+          ball.position.z*=(1-Math.min(aDt*2,1)*0.10);
+          const _tgtY=ball.position.x>AWAY_GOAL_X-6?2.4:ball.position.y;// mantiene altezza fino all'ingresso
+          ball.position.y+=(_tgtY-ball.position.y)*Math.min(aDt*3,1);
+          if(!hlInNetFlashed&&ball.position.x>AWAY_GOAL_X-3){hlInNetFlashed=true;contactFlashT=0;shakePow=0.15;}
+          if(hlPostArcT>2.2){hlPostArcT=-1;hlPostArcType=null;hlInNetFlashed=false;}}
+        else if(hlPostArcType==="hit_post"){// CINE-3: palla va verso il palo, vibrazione, rimbalzo
+          ball.position.x+=(AWAY_GOAL_X+0.6-ball.position.x)*Math.min(aDt*6.5,1);
+          ball.position.z*=(1-aDt*0.8);
+          ball.position.y=0.65+Math.max(0,Math.sin(hlPostArcT*5.5)*1.4*Math.exp(-hlPostArcT*2.5));
+          if(!hlInNetFlashed&&ball.position.x>AWAY_GOAL_X-2){
+            hlInNetFlashed=true;contactFlashT=0;shakePow=0.38;// vibrazione palo più forte
+            hlPostArcType="post_rebound";hlPostArcT=0;}
+          else if(hlPostArcT>0.9){hlPostArcType="post_rebound";hlPostArcT=0;}}// fallback
+        else if(hlPostArcType==="post_rebound"){// CINE-3: palla rimbalza via dal palo
+          hlPostVY-=aDt*20;ball.position.y+=hlPostVY*aDt;
+          if(ball.position.y<=0.65&&hlPostVY<0){ball.position.y=0.65;hlPostVY*=-0.22;contactFlashT=0;}
+          ball.position.x+=(34-ball.position.x)*aDt*1.8;// torna indietro dal palo
+          ball.position.z+=hlPostVZ*aDt;hlPostVZ*=(1-aDt*2.2);
+          if(hlPostArcT>2.5){hlPostArcT=-1;hlPostArcType=null;hlPostVY=0;}}
         else if(hlPostArcType==="cross_goal"){// cross → testa → porta avversaria (AWAY_GOAL_X)
           const _u2=Math.min(hlPostArcT/0.65,1);
           ball.position.y=0.65+Math.sin(_u2*Math.PI)*3.0;
@@ -7132,7 +7165,7 @@ function ThreeMatchView(props){
           }} // QW-A: contact flash al kick/header
         if(_curPh==="hl_intro"||(_curPh==="hl_move"&&prevPhase==="playing")){repCount=0;repHead=0;replayDone=false;}
         if(_curPh!=="hl_result"&&replaying){replaying=false;setReplayOn(false);}
-        if(_curPh!=="hl_result"){hlPostArcT=-1;hlPostArcType=null;heroPostT=-1;heroPostType=null;gkSaveCelebT=-1;gkSaveMesh=null;hlInNetFlashed=false;hlPostVY=0;passTargetMesh=null;}// 3DV-9/13/14: reset post-arc su uscita da hl_result
+        if(_curPh!=="hl_result"){hlPostArcT=-1;hlPostArcType=null;heroPostT=-1;heroPostType=null;gkSaveCelebT=-1;gkSaveMesh=null;hlInNetFlashed=false;hlPostVY=0;passTargetMesh=null;hlOutcomeVariant=null;}// reset post-arc
         // ATE-4: zone ring — accendi su hl_intro, colora per tipo; spegni su playing/ended
         if(_curPh==="hl_intro"){zoneRingT=0;zoneRingMat.color.setHex(HL_ZONE_COL[P.hlType]||0xffffff);}
         if(_curPh==="playing"||_curPh==="ended"||_curPh==="walkout"){zoneRingT=-1;zoneRingMat.opacity=0;}
