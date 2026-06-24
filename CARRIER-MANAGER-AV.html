@@ -2612,7 +2612,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.54.0"; // 3DV-13: gap animazioni HL — miss reaction, assist_shot arc, gk save celebrate, opp_intercept, foul card
+const GAME_VERSION="4.55.0"; // 3DV-14: migliora post-HL — arc tackle/dribble/build, pass actType, in_net flash, deflect physics, fist-pump
 const SAVE_VERSION=6;
 // Sprint ENV — ambiente rilevato automaticamente dal runtime (non gestito manualmente).
 // PRODUCTION = deploy GitHub Pages (*.github.io). Tutto il resto (staging githack, locale, localhost) = TEST.
@@ -6851,6 +6851,7 @@ function ThreeMatchView(props){
     let hlPostArcT=-1,hlPostArcType=null,hlPostVZ=0; // 3DV-9: animazione post-arco (in_net/deflect/cross_goal)
     let heroPostT=-1,heroPostType=null; // 3DV-13: reazione eroe post-azione fallita
     let gkSaveCelebT=-1,gkSaveMesh=null; // 3DV-13: portiere si rialza dopo parata
+    let hlInNetFlashed=false,hlPostVY=0; // 3DV-14: flash ingresso rete + fisica rimbalzo deflect
     // Sprint 3D-8a: cronometro dell'esito per il rallenty cinematografico
     let resultT=0;
     // Sprint 3D-BALL: arco parabolico della palla (shot/header/cross/freekick/penalty)
@@ -6964,33 +6965,40 @@ function ThreeMatchView(props){
             if(_hs===true&&(_ht==="shot"||_ht==="penalty"||_ht==="freekick"||_ht==="header")){hlPostArcT=0;hlPostArcType="in_net";}
             else if(_hs===true&&_ht==="cross"){hlPostArcT=0;hlPostArcType="cross_goal";}
             else if(_hs===true&&_ht==="pass"){hlPostArcT=0;hlPostArcType="assist_shot";}// 3DV-13: assist → secondo arco verso porta
-            else if(_hs===false){hlPostArcT=0;hlPostArcType="deflect";hlPostVZ=(Math.random()>0.5?1:-1)*14;
+            else if(_hs===true&&(_ht==="tackle"||_ht==="dribble"||_ht==="build"||!_ht)){heroPostT=0;heroPostType="fist";}// 3DV-14: pugno vittoria su contrasto/dribbling
+            else if(_hs===false){hlPostArcT=0;hlPostArcType="deflect";hlInNetFlashed=false;
+              // 3DV-14: fisica deflect — velocità iniziale e direzione realistica
+              if(_ht==="shot"||_ht==="penalty"||_ht==="freekick"||_ht==="header"){hlPostVZ=-oppDiveDir*(8+Math.random()*7);hlPostVY=5+Math.random()*3;}// deflect nella dir opposta al tuffo
+              else{hlPostVZ=(Math.random()>0.5?1:-1)*(8+Math.random()*6);hlPostVY=2.5+Math.random()*2;}
               heroPostT=0;heroPostType="miss";// 3DV-13: eroe abbassa la testa
               if((_ht==="shot"||_ht==="penalty"||_ht==="freekick"||_ht==="header")&&awayGkMesh){gkSaveCelebT=-0.10;gkSaveMesh=awayGkMesh;}// 3DV-13: portiere esulta ~0.10s dopo il tuffo
               else if(_ht==="pass"||_ht==="build"){let _nd=99,_nm=null;sr.current.players.forEach((pp,ii)=>{const src=(P.allPlayers||[])[ii];if(src&&src.team==='away'&&!src.gk){const d=Math.hypot(pp.mesh.position.x-hero.position.x,pp.mesh.position.z-hero.position.z);if(d<_nd){_nd=d;_nm=pp.mesh;}}});if(_nm){oppActType="opp_intercept";oppActT=0;oppMesh=_nm;oppMesh._divePz=_nm.position.z;}}// 3DV-13: avversario intercetta il passaggio
             }
           }}}
       else if(hlPostArcT>=0){hlPostArcT+=aDt;// 3DV-9: eseguire solo se il normale lerp non sovrascrive
-        if(hlPostArcType==="in_net"){// 3DV-11: palla nella rete avversaria (+x) — lerp + rimbalzo smorzato
-          ball.position.x+=(46-ball.position.x)*Math.min(aDt*5,1);// convergi su porta +x
-          ball.position.z*=(1-Math.min(aDt*2,1)*0.15);// centra z leggermente
-          ball.position.y=0.65+Math.max(0,Math.abs(Math.sin(hlPostArcT*4.5))*0.9*Math.exp(-hlPostArcT*2.2));
-          if(hlPostArcT>2.2){hlPostArcT=-1;hlPostArcType=null;}}
-        else if(hlPostArcType==="cross_goal"){// 3DV-11: fix direzione — cross → testa → porta +x
-          const _u2=Math.min(hlPostArcT/0.70,1);
-          ball.position.y=0.65+Math.sin(_u2*Math.PI)*2.8;// traiettoria header
-          ball.position.x+=(47-ball.position.x)*aDt*3.5;ball.position.z+=(0-ball.position.z)*aDt*1.5;// +47 = porta avversaria
-          if(_u2>=1){hlPostArcType="in_net";hlPostArcT=0;}}// catena → in_net
-        else if(hlPostArcType==="assist_shot"){// 3DV-13: assist → compagno tocca → tiro in porta
+        if(hlPostArcType==="in_net"){// 3DV-11/14: palla nella rete avversaria (+x) — lerp + rimbalzo smorzato
+          ball.position.x+=(46-ball.position.x)*Math.min(aDt*5.5,1);// convergi su porta +x
+          ball.position.z*=(1-Math.min(aDt*2,1)*0.12);// centra z leggermente
+          ball.position.y=0.65+Math.max(0,Math.abs(Math.sin(hlPostArcT*4.5))*1.1*Math.exp(-hlPostArcT*2.0));
+          if(!hlInNetFlashed&&ball.position.x>43){hlInNetFlashed=true;contactFlashT=0;shakePow=0.20;}// 3DV-14: flash + shake ingresso rete
+          if(hlPostArcT>2.4){hlPostArcT=-1;hlPostArcType=null;hlInNetFlashed=false;}}
+        else if(hlPostArcType==="cross_goal"){// 3DV-11/14: cross → testa → porta +x
+          const _u2=Math.min(hlPostArcT/0.65,1);
+          ball.position.y=0.65+Math.sin(_u2*Math.PI)*3.0;// traiettoria header più alta
+          ball.position.x+=(47-ball.position.x)*aDt*3.8;ball.position.z+=(0-ball.position.z)*aDt*1.4;
+          if(_u2>=1){hlPostArcType="in_net";hlPostArcT=0;hlInNetFlashed=false;contactFlashT=0;}}// 3DV-14: flash al secondo tocco
+        else if(hlPostArcType==="assist_shot"){// 3DV-13/14: assist → compagno tocca → tiro in porta
           const _u3=Math.min(hlPostArcT/0.80,1);
           ball.position.y=0.65+Math.sin(_u3*Math.PI)*3.2;
           ball.position.x+=(44-ball.position.x)*aDt*3.2;ball.position.z*=(1-aDt*1.6);
-          if(_u3>=1){hlPostArcType="in_net";hlPostArcT=0;}}
-        else if(hlPostArcType==="deflect"){// parata/palo: palla laterale + a terra
-          ball.position.y=Math.max(0.65,ball.position.y-aDt*5);
-          ball.position.z+=hlPostVZ*aDt;hlPostVZ*=(1-aDt*3.5);
-          ball.position.x+=(ball.position.x>0?-1:1)*aDt*9;// torna verso centro
-          if(hlPostArcT>2.2){hlPostArcT=-1;hlPostArcType=null;}}}
+          if(_u3>=1){hlPostArcType="in_net";hlPostArcT=0;hlInNetFlashed=false;contactFlashT=0;}}// 3DV-14: flash al secondo tocco
+        else if(hlPostArcType==="deflect"){// 3DV-14: deflect con fisica rimbalzo (gravity + restituzione)
+          hlPostVY-=aDt*22;// gravità
+          ball.position.y+=hlPostVY*aDt;
+          if(ball.position.y<=0.65&&hlPostVY<0){ball.position.y=0.65;hlPostVY*=-0.30;contactFlashT=0;}// rimbalzo + flash
+          ball.position.z+=hlPostVZ*aDt;hlPostVZ*=(1-aDt*3.2);
+          ball.position.x+=(ball.position.x>0?-1:1)*aDt*8;// torna verso centro
+          if(hlPostArcT>2.5){hlPostArcT=-1;hlPostArcType=null;hlPostVY=0;}}}
       else{ball.position.y+=(0.65-ball.position.y)*Math.min(aDt*6,1);}// y rest 0.65
       ballHalo.position.copy(ball.position);
       const _hTgt=isHL?0.10:0.04;ballHalo.material.opacity+=(_hTgt-ballHalo.material.opacity)*Math.min(dt*3,1);// 3DV-1: opacità halo ridotta (era 0.18/0.08)
@@ -7010,7 +7018,7 @@ function ThreeMatchView(props){
       // transizioni di fase: trigger animazione esito + gestione buffer/replay
       const _curPh=P.matchPhase;
       if(_curPh!==prevPhase){
-        if(_curPh==="hl_result"){const t=P.hlType;actType=(t==="header"||t==="tackle"||t==="dribble"||t==="cross"||t==="penalty"||t==="freekick")?t:(!t||t==="build")?null:"shot";actT=0;// 3DV-4: tipi azione distinti
+        if(_curPh==="hl_result"){const t=P.hlType;actType=(t==="header"||t==="tackle"||t==="dribble"||t==="cross"||t==="penalty"||t==="freekick"||t==="pass")?t:(!t||t==="build")?null:"shot";actT=0;// 3DV-14: pass aggiunto alla lista tipi espliciti// 3DV-4: tipi azione distinti
           // 3DV-11: archi HL con destinazione esplicita verso porta avversaria (+x), non posizione eroe
           const _rz=(Math.random()-.5);
           if(t==="shot"||t==="penalty"){ballArcH=4.8;ballArcDur=0.72;ballArcT=0;ballArcActive=true;ballArcTgtX=43+Math.random()*4;ballArcTgtZ=_rz*8;}
@@ -7018,6 +7026,9 @@ function ThreeMatchView(props){
           else if(t==="cross"){ballArcH=3.8;ballArcDur=0.85;ballArcT=0;ballArcActive=true;ballArcTgtX=24+Math.random()*16;ballArcTgtZ=_rz*18;}
           else if(t==="freekick"){ballArcH=3.2;ballArcDur=0.80;ballArcT=0;ballArcActive=true;ballArcTgtX=43+Math.random()*4;ballArcTgtZ=_rz*7;}
           else if(t==="pass"){const _fwd=P.hlSuccess===true;ballArcH=_fwd?2.2:1.5;ballArcDur=0.62;ballArcT=0;ballArcActive=true;ballArcTgtX=_fwd?18+Math.random()*20:-(8+Math.random()*14);ballArcTgtZ=_rz*18;}// 3DV-13: pass → avanti se assist, indietro se intercetto
+          else if(t==="tackle"){ballArcH=1.2;ballArcDur=0.40;ballArcT=0;ballArcActive=true;ballArcTgtX=G2X(P.playerX||50)+(P.hlSuccess===true?12:-8);ballArcTgtZ=G2Z(P.playerY||50)+_rz*14;}// 3DV-14: contrasto → palla vola avanti/indietro
+          else if(t==="dribble"){ballArcH=0.7;ballArcDur=0.32;ballArcT=0;ballArcActive=true;ballArcTgtX=G2X(P.playerX||50)+(P.hlSuccess===true?8:-5);ballArcTgtZ=G2Z(P.playerY||50)+_rz*10;}// 3DV-14: dribbling → palla laterale
+          else if(!t||t==="build"){ballArcH=0.9;ballArcDur=0.38;ballArcT=0;ballArcActive=true;ballArcTgtX=G2X(P.playerX||50)+(P.hlSuccess===true?6:-4);ballArcTgtZ=G2Z(P.playerY||50)+_rz*12;}// 3DV-14: build-up → corto ma visibile
           else ballArcActive=false;
           ballArcIsBG=ballArcActive; // 3DV-11: usa TGT esplicito anche per archi HL (come BG arc)
           if(ballArcActive)contactFlashT=0;
@@ -7036,7 +7047,7 @@ function ThreeMatchView(props){
           }} // QW-A: contact flash al kick/header
         if(_curPh==="hl_intro"||(_curPh==="hl_move"&&prevPhase==="playing")){repCount=0;repHead=0;replayDone=false;}
         if(_curPh!=="hl_result"&&replaying){replaying=false;setReplayOn(false);}
-        if(_curPh!=="hl_result"){hlPostArcT=-1;hlPostArcType=null;heroPostT=-1;heroPostType=null;gkSaveCelebT=-1;gkSaveMesh=null;}// 3DV-9/13: reset post-arc su uscita da hl_result
+        if(_curPh!=="hl_result"){hlPostArcT=-1;hlPostArcType=null;heroPostT=-1;heroPostType=null;gkSaveCelebT=-1;gkSaveMesh=null;hlInNetFlashed=false;hlPostVY=0;}// 3DV-9/13/14: reset post-arc su uscita da hl_result
         // ATE-4: zone ring — accendi su hl_intro, colora per tipo; spegni su playing/ended
         if(_curPh==="hl_intro"){zoneRingT=0;zoneRingMat.color.setHex(HL_ZONE_COL[P.hlType]||0xffffff);}
         if(_curPh==="playing"||_curPh==="ended"||_curPh==="walkout"){zoneRingT=-1;zoneRingMat.opacity=0;}
@@ -7135,6 +7146,7 @@ function ThreeMatchView(props){
           else if(actType==="header"){hero.position.y=sw*2.2;if(hero._hd)hero._hd.rotation.x=sw*0.7;hero._aL.rotation.x=-2.0*sw;hero._aR.rotation.x=-2.0*sw;}// 3DV-4: nod testa
           else if(actType==="tackle"){hero.rotation.z=1.1*sw;hero.position.y=-0.25*sw;hero._lR.rotation.x=2.0*sw;hero._lL.rotation.x=-0.6*sw;}
           else if(actType==="dribble"){hero.rotation.z=Math.sin(u*Math.PI*3)*0.35;hero.rotation.y=Math.sin(u*Math.PI*2)*0.28;}
+          else if(actType==="pass"){hero._aL.rotation.x=-1.8*sw;hero._aL.rotation.z=-0.5*sw;hero._aR.rotation.x=0.6*sw;hero.rotation.y=Math.sin(u*Math.PI)*0.32;hero._lR.rotation.x=0.5*sw;}// 3DV-14: braccio sinistro disteso in avanti, rotazione bacino
           if(u>=1){actType=null;if(hero._hd)hero._hd.rotation.x*=0.7;}
         }
         // 3DV-4: barriera freekick — i 3 giocatori più vicini saltano
@@ -7147,14 +7159,15 @@ function ThreeMatchView(props){
           hero._aL.rotation.z=-0.5+Math.sin(celebT*4)*0.4;hero._aR.rotation.z=0.5-Math.sin(celebT*4)*0.4;
           if(_cu>=1){celebT=-1;hero.position.y=0;}
           actType=null;}
-        // 3DV-13: reazione eroe su azione fallita — testa bassa, braccia aperte
+        // 3DV-13/14: reazione eroe post-azione — miss (testa bassa) o fist (pugno vittoria)
         if(heroPostT>=0){heroPostT+=aDt;const _hpu=Math.min(heroPostT/1.6,1),_hsw=Math.sin(_hpu*Math.PI);
           if(heroPostType==="miss"){if(hero._hd)hero._hd.rotation.x=-_hsw*0.9;hero._aL.rotation.z=_hsw*1.3;hero._aR.rotation.z=-_hsw*1.3;hero.position.y=0;}
-          if(_hpu>=1){heroPostT=-1;heroPostType=null;if(hero._hd)hero._hd.rotation.x=0;hero._aL.rotation.z=0;hero._aR.rotation.z=0;}}
+          else if(heroPostType==="fist"){const _fu=Math.min(_hpu*2,1),_fd=Math.max(0,_hpu*2-1);hero._aR.rotation.x=-_fu*(1-_fd)*2.2;hero._aR.rotation.z=_fu*(1-_fd)*0.6;hero.position.y=_fu*(1-_fd)*0.3;}// 3DV-14: braccio destro su, poi giù
+          if(_hpu>=1){heroPostT=-1;heroPostType=null;if(hero._hd)hero._hd.rotation.x=0;hero._aL.rotation.z=0;hero._aR.rotation.z=0;hero._aR.rotation.x=0;hero.position.y=0;}}
         // 3DV-13: portiere si rialza e alza le braccia dopo la parata
         if(gkSaveCelebT>=-0.12){gkSaveCelebT+=aDt;if(gkSaveCelebT>=0&&gkSaveMesh){const _gcu=Math.min(gkSaveCelebT/1.1,1),_gcsw=Math.sin(_gcu*Math.PI);
           gkSaveMesh.position.y=_gcsw*0.65;const _arm=_gcsw*1.5;gkSaveMesh._aL.rotation.z=-_arm;gkSaveMesh._aR.rotation.z=_arm;gkSaveMesh._aL.rotation.x=-_gcsw*0.7;gkSaveMesh._aR.rotation.x=-_gcsw*0.7;
-          if(_gcu>=1){gkSaveCelebT=-1;gkSaveMesh.position.y=0;gkSaveMesh._aL.rotation.z=0;gkSaveMesh._aR.rotation.z=0;gkSaveMesh=null;}}}
+          if(_gcu>=1){gkSaveCelebT=-1;gkSaveMesh.position.y=0;gkSaveMesh.position.z=gkSaveMesh._divePz||0;gkSaveMesh.rotation.z=0;gkSaveMesh._aL.rotation.z=0;gkSaveMesh._aR.rotation.z=0;gkSaveMesh._aL.rotation.x=0;gkSaveMesh._aR.rotation.x=0;gkSaveMesh=null;}}}
         // registra lo snapshot durante gli HL; a esito quasi concluso riavvolgi e mostra il replay
         if(isHL)recordSnap();
         if(isResult&&!replaying&&!replayDone&&resultT>=3.2&&repCount>=25){replaying=true;replayDone=true;repT=0;repFrames=repCount;repStart=(repHead-repCount+REP_CAP*2)%REP_CAP;setReplayOn(true);}// 3DV-12: 1.7→3.2s — lascia vedere arco+in_net prima del replay
