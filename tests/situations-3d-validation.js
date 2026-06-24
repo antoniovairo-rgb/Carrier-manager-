@@ -266,7 +266,7 @@ const worst=[...results].sort((a,b)=>a.sub.realismo-b.sub.realismo).slice(0,50);
 // ---------- 8. report ----------
 const pct=(n)=>((n/totalCombos)*100).toFixed(1)+'%';
 let md=`# CPM — Report Validazione Automatica Situations (motore 3D)\n\n`;
-md+=`_Generato: ${new Date().toISOString()} · GAME_VERSION ${(src.match(/GAME_VERSION="([\d.]+)"/)||[])[1]||'?'}_\n\n`;
+md+=`_GAME_VERSION ${(src.match(/GAME_VERSION="([\d.]+)"/)||[])[1]||'?'}_\n\n`;
 md+=`## Sommario\n`;
 md+=`| Metrica | Valore |\n|---|---|\n`;
 md+=`| Situations nel database | ${SITUATIONS.length} |\n`;
