@@ -1599,7 +1599,7 @@ const ACHIEVEMENTS=[
 ======================================== */
 // tactic = {pressure:"none"|"low"|"medium"|"high", support:0-4, nearby_def:0-5, lanes:[...], box:{att,def,near,far}}
 // Il campo tactic è opzionale (default null) — backward-compatible con tutte le S() esistenti.
-// Quando presente, cappedMM e filterSitActions lo consumano al posto dell'euristica testuale.
+// cappedMM e filterSitActions lo consumano in modo data-driven (4.80.0: euristica testuale rimossa, tutte le entry annotate).
 const S=(text,zones,mz,sz,actions,lock=false,mm=-1,intro="",type="off",ctx=null,tactic=null)=>{
   const z0=zones[0];
   const inferredMM=mm>=0?mm:z0==="area"?2:z0==="bordo"?2:3;
@@ -2065,23 +2065,17 @@ function filterSitActions(actions,px,sit){
   if(f.length===1){const extra=actions.find(a=>a!==f[0]);return extra?[f[0],extra]:f;}
   return actions.slice(-2);
 }
-// TACT-MM (4.74.0): movement cap data-driven quando sit.tactic.pressure è definito.
-// Fallback: euristica testuale (backward-compat con le situazioni senza tactic).
+// TACT-MM (4.80.0): movement cap interamente data-driven da sit.tactic.pressure.
+// Tutte le SITUATIONS (179/179) e i CHAIN_SITS sono annotati; l'euristica testuale
+// di fallback è stata rimossa. Il default copre "none" e ogni edge senza tactic.
 function cappedMM(sit){
   if(!sit||sit.lockMovement)return 0;
-  // Data-driven path: usa sit.tactic.pressure quando disponibile
-  if(sit.tactic?.pressure){
-    if(sit.tactic.pressure==="high")return 0;
-    if(sit.tactic.pressure==="medium")return 1;
-    if(sit.tactic.pressure==="low")return 2;
-    return sit.maxMoves??2; // "none"
+  switch(sit.tactic?.pressure){
+    case "high":   return 0;
+    case "medium": return 1;
+    case "low":    return 2;
+    default:       return sit.maxMoves??2; // "none" o tactic assente
   }
-  // Fallback euristica testuale (Sprint CINE-TAC — backward-compat)
-  const t=sit.text||"";
-  if(/Cross in area|Attacca il pallone|Corner.*attacca|secondo palo|✈️/i.test(t))return 0;
-  if(/tap-in|RIGORE PARATO|ribattuta/i.test(t))return 1;
-  if(/Solo davanti|davanti al portiere|area piccola è scoperta|Portiere fuori posizione/i.test(t))return 1;
-  return sit.maxMoves??2;
 }
 
 const BG_MATCH=[
@@ -2660,7 +2654,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.79.0"; // Sprint 4.79.0: +63 tactic annotations — centrocampo/difesa/narrative/sprint78 + set-piece. Copertura COMPLETA 179/179 (100%)
+const GAME_VERSION="4.80.0"; // Sprint 4.80.0: cleanup — CHAIN_SITS annotati + rimossa euristica testuale morta in cappedMM (movement cap 100% data-driven)
 const SAVE_VERSION=6;
 // Sprint ENV — ambiente rilevato automaticamente dal runtime (non gestito manualmente).
 // PRODUCTION = deploy GitHub Pages (*.github.io). Tutto il resto (staging githack, locale, localhost) = TEST.
@@ -8288,17 +8282,17 @@ const CHAIN_SITS={
     A("✈️ Colpo di testa","fisico",8,"goal","miss",14),
     A("🦵 Tiro di prima","tiro",-2,"goal","miss",12),
     A("🤝 Sponda per compagno","passaggio",3,"assist","nothing",7)
-  ]),
+  ],false,-1,"","off",null,{pressure:"high",support:1,nearby_def:3,lanes:["central_run"]}),
   mischia:S("🌀 Mischia in area! Approfitta del caos.",["area"],{x:[78,96],y:[26,74]},{x:[80,92],y:[33,67]},[
     A("🦵 Spingila dentro!","tiro",12,"goal","miss",10),
     A("🎯 Controllo e tiro","tecnica",5,"goal","miss",12),
     A("✈️ Di testa","fisico",0,"goal","miss",14)
-  ]),
+  ],false,-1,"","off",null,{pressure:"low",support:1,nearby_def:3,lanes:[]}),
   second_ball:S("🎯 Secondo tempo sul rimbalzo — istinto puro!",["bordo","area"],{x:[72,94],y:[22,78]},{x:[74,86],y:[30,70]},[
     A("🦵 Tiro al volo","tiro",4,"goal","miss",15),
     A("🎯 Prima intenzione","tecnica",2,"goal","miss",13),
     A("🏃 Avanza in area","velocità",3,"goal","intercept",12)
-  ]),
+  ],false,-1,"","off",null,{pressure:"low",support:1,nearby_def:2,lanes:[]}),
 };
 // Sprint 113 — Post-match coach evaluation text generator
 function coachPostMatch(won,drew,goals,assists,rating,opponentPrestige){
