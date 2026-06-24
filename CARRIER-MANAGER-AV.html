@@ -2612,7 +2612,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.65.0"; // 3DV-FIX: dribbling/costruzione-gol → la palla entra in rete (prima solo esultanza col pugno) — via hlReward prop
+const GAME_VERSION="4.66.0"; // 3DV-FIX-2: 18 warning → 0: shot_chip priorità, far-post _side, cross byline, header cap, tackle-gol in_net, Panenka
 const SAVE_VERSION=6;
 // Sprint ENV — ambiente rilevato automaticamente dal runtime (non gestito manualmente).
 // PRODUCTION = deploy GitHub Pages (*.github.io). Tutto il resto (staging githack, locale, localhost) = TEST.
@@ -6601,12 +6601,14 @@ function deriveHL(sit,act){
     else if(/secondo palo|palo lontano|profond/.test(lbl)||/secondo palo|palo lontano|profond/.test(tl))variant="header_far_post";
     else variant="header_near_post";
   } else if(type==="shot"){
-    if(/solo davanti|davanti al portiere|portiere in uscita/.test(tl))variant="shot_one_on_one";
+    if(/pallonett|cucchiaio|scavin/.test(lbl))variant="shot_chip";// label-chip ha priorità su pattern situazione (es. pallonetto in 1v1)
+    else if(/solo davanti|davanti al portiere|portiere in uscita/.test(tl))variant="shot_one_on_one";
     else if(/volo|volée|volee|rovesciata|prima/.test(lbl))variant="shot_volley";
-    else if(/pallonett|cucchiaio|scavin/.test(lbl))variant="shot_chip";
     else if(/giro|piazzat|angolat/.test(lbl))variant="shot_curled";
     else if(/tap-in|deviazion|istintiv/.test(tl)||/deviazion|istintiv/.test(lbl))variant="shot_first_time";
     else variant="shot_power";
+  } else if(type==="penalty"){
+    if(/cucchiaio|pallonett/.test(lbl))variant="penalty_panenka";// Panenka → arco alto
   } else if(type==="dribble"){
     if(/rientr|interno/.test(lbl))variant="dribble_inside";
     else if(/sterzat|esterno/.test(lbl))variant="dribble_outside";
@@ -6618,7 +6620,7 @@ function deriveHL(sit,act){
   else if(type==="freekick")pattern="SET_PIECE";
   else if(type==="cross")pattern=variant==="cross_far_post"?"FAR_POST_CROSS":variant==="cross_cutback"?"CUTBACK":"NEAR_POST_CROSS";
   else if(type==="header")pattern="HEADER_ATTACK";
-  else if(type==="shot")pattern=variant==="shot_one_on_one"?"ONE_ON_ONE":"EDGE_SHOT";
+  else if(type==="shot")pattern=/solo davanti|davanti al portiere|portiere in uscita/.test(tl)?"ONE_ON_ONE":"EDGE_SHOT";// pattern da testo sit, non da variant (es. pallonetto in 1v1 → ONE_ON_ONE)
   else if(type==="dribble")pattern="DRIBBLE_SHOT";
   else if(type==="tackle")pattern="TACKLE";
   else if(type==="pass")pattern=/filtrante|imbucata|profond/.test(lbl)?"THROUGH_BALL":"COMBINATION";
@@ -7037,7 +7039,7 @@ function ThreeMatchView(props){
             else if(_hs===true&&_ht==="pass"){hlPostArcT=0;hlPostArcType="assist_shot";if(passTargetMesh){passTargetMesh._rcvT=0;passTargetMesh=null;}}
             else if(_hs===true&&(_ht==="tackle"||_ht==="dribble"||_ht==="build"||!_ht)){
               // dribbling/costruzione che valgono un GOL → la palla deve entrare in rete (non solo il pugno)
-              if((_ht==="dribble"||_ht==="build")&&P.hlReward==="goal"){hlPostArcT=0;hlOutcomeVariant="goal";hlPostArcType="in_net";}
+              if((_ht==="dribble"||_ht==="build"||_ht==="tackle")&&P.hlReward==="goal"){hlPostArcT=0;hlOutcomeVariant="goal";hlPostArcType="in_net";}// pressing/dribbling-gol → palla in rete
               else{heroPostT=0;heroPostType="fist";}}
             else if(_hs===false){hlInNetFlashed=false;heroPostT=0;heroPostType="miss";
               // CINE-3: tiro mancato → palo (20%) / parata (65%) / fuori (15%)
@@ -7122,37 +7124,43 @@ function ThreeMatchView(props){
       if(_curPh!==prevPhase){
         if(_curPh==="hl_result"){const t=P.hlType;actType=(t==="header"||t==="tackle"||t==="dribble"||t==="cross"||t==="penalty"||t==="freekick"||t==="pass")?t:(!t||t==="build")?null:"shot";actT=0;// 3DV-14: pass aggiunto alla lista tipi espliciti// 3DV-4: tipi azione distinti
           // 3DV-11: archi HL con destinazione esplicita verso porta avversaria (+x), non posizione eroe
-          const _rz=(Math.random()-.5);
-          if(t==="penalty"){ballArcH=4.2;ballArcDur=0.72;ballArcT=0;ballArcActive=true;ballArcTgtX=AWAY_GOAL_X-3+Math.random()*3;ballArcTgtZ=_rz*7;}
+          const _rz=(Math.random()-.5),_side=(P.playerY||50)<50?-1:1;// _side: lato attaccante — usato da cross, shot_curled, header_far_post
+          if(t==="penalty"){// Panenka/cucchiaio → arco molto alto; rigore normale → arco standard
+            if(P.hlVariant==="penalty_panenka"){ballArcH=9.0;ballArcDur=1.20;}else{ballArcH=4.2;ballArcDur=0.72;}
+            ballArcT=0;ballArcActive=true;ballArcTgtX=AWAY_GOAL_X-3+Math.random()*3;ballArcTgtZ=_rz*7;}
           else if(t==="shot"){ballArcT=0;ballArcActive=true;
             // CINE-2: variant shot — traiettorie distinte per ogni tipo di conclusione
             const _vs=P.hlVariant;
             if(_vs==="shot_chip"){ballArcH=8.5;ballArcDur=1.10;ballArcTgtX=AWAY_GOAL_X-1+Math.random()*2;ballArcTgtZ=_rz*5;}
             else if(_vs==="shot_volley"){ballArcH=5.2;ballArcDur=0.66;ballArcTgtX=AWAY_GOAL_X-4+Math.random()*5;ballArcTgtZ=_rz*9;}
-            else if(_vs==="shot_curled"){ballArcH=4.4;ballArcDur=0.78;ballArcTgtX=AWAY_GOAL_X-2+Math.random()*3;ballArcTgtZ=(_rz>=0?1:-1)*(6+Math.random()*5);}/* curva al palo lontano */
+            else if(_vs==="shot_curled"){ballArcH=4.4;ballArcDur=0.78;ballArcTgtX=AWAY_GOAL_X-2+Math.random()*3;ballArcTgtZ=-_side*(6+Math.random()*5);}/* curva al palo lontano — lato opposto al tiratore */
             else if(_vs==="shot_first_time"){ballArcH=3.2;ballArcDur=0.50;ballArcTgtX=AWAY_GOAL_X-3+Math.random()*4;ballArcTgtZ=_rz*6;}
             else if(_vs==="shot_one_on_one"){ballArcH=2.6;ballArcDur=0.55;ballArcTgtX=AWAY_GOAL_X-1+Math.random()*2;ballArcTgtZ=(Math.random()>0.5?1:-1)*(4+Math.random()*5);}/* angolo di porta rasoterra */
-            else{ballArcH=4.8;ballArcDur=0.72;ballArcTgtX=AWAY_GOAL_X-3+Math.random()*4;ballArcTgtZ=_rz*8;}/* shot_power default */}
+            else{ballArcH=4.8;ballArcDur=0.85;ballArcTgtX=AWAY_GOAL_X-3+Math.random()*4;ballArcTgtZ=_rz*8;}/* shot_power default — dur 0.85 riduce velocità di picco */}
           else if(t==="header"){ballArcT=0;ballArcActive=true;
             // CINE-2: variant header — tuffo rasoterra / primo palo / secondo palo
             const _vh=P.hlVariant;
             if(_vh==="header_diving"){ballArcH=1.8;ballArcDur=0.58;ballArcTgtX=AWAY_GOAL_X-3+Math.random()*4;ballArcTgtZ=_rz*7;}/* tuffo — arco piatto e basso */
-            else if(_vh==="header_far_post"){ballArcH=3.6;ballArcDur=0.72;ballArcTgtX=AWAY_GOAL_X-4+Math.random()*5;ballArcTgtZ=(_rz>=0?-1:1)*(8+Math.random()*5);}/* secondo palo — z opposto al giocatore */
-            else{ballArcH=3.2;ballArcDur=0.65;ballArcTgtX=AWAY_GOAL_X-5+Math.random()*6;ballArcTgtZ=_rz*6;}/* near_post default */}
+            else if(_vh==="header_far_post"){ballArcH=3.6;ballArcDur=0.72;ballArcTgtX=AWAY_GOAL_X-4+Math.random()*5;ballArcTgtZ=-_side*(8+Math.random()*5);}/* secondo palo — z opposto al tiratore via _side */
+            else{ballArcH=3.2;ballArcDur=0.65;const _hb=AWAY_GOAL_X-5+Math.random()*6,_hc=(P.playerX||50)-50+45;ballArcTgtX=Math.min(_hb,_hc);ballArcTgtZ=_rz*6;}/* near_post: cap 45u avanti per ridurre velocità da posizioni difensive */}
           else if(t==="cross"){ballArcT=0;ballArcActive=true;
             // CINE-1: variant cross — primo palo (stesso lato fascia), secondo palo (lato opposto), cutback (dal fondo)
-            const _v=P.hlVariant,_side=(P.playerY||50)<50?-1:1;// lato di provenienza in z (sx fascia=z-)
+            const _v=P.hlVariant;// _side definito sopra (globale all'arc block)
             if(_v==="cross_far_post"){ballArcH=4.2;ballArcDur=0.90;ballArcTgtX=AWAY_GOAL_X-9+Math.random()*5;ballArcTgtZ=-_side*(11+Math.random()*7);}
             else if(_v==="cross_cutback"){ballArcH=2.0;ballArcDur=0.70;ballArcTgtX=30+Math.random()*7;ballArcTgtZ=_side*(3+Math.random()*4);}
             else if(_v==="cross_low_driven"){ballArcH=2.2;ballArcDur=0.78;ballArcTgtX=AWAY_GOAL_X-13+Math.random()*6;ballArcTgtZ=_side*(5+Math.random()*6);}
-            else{ballArcH=3.8;ballArcDur=0.85;ballArcTgtX=AWAY_GOAL_X-14+Math.random()*5;ballArcTgtZ=_side*(8+Math.random()*6);}/* near post */}
+            else{ballArcH=3.8;ballArcDur=0.85;// near_post: clamp TgtX tra [playerX+5, playerX+45] per evitare cross all'indietro (byline) o troppo veloci
+              const _cp=(P.playerX||50)-50;ballArcTgtX=Math.max(_cp+5,Math.min(AWAY_GOAL_X-14+Math.random()*5,_cp+45));
+              ballArcTgtZ=_side*(8+Math.random()*6);}/* near post */}
           else if(t==="freekick"){ballArcH=3.2;ballArcDur=0.80;ballArcT=0;ballArcActive=true;ballArcTgtX=AWAY_GOAL_X-3+Math.random()*4;ballArcTgtZ=_rz*7;}
           else if(t==="pass"){const _fwd=P.hlSuccess===true;ballArcH=_fwd?2.2:1.5;ballArcDur=0.62;ballArcT=0;ballArcActive=true;
             // 3DV-14b: triangolo — mira il passaggio verso il compagno più vicino (non portiere)
             let _ptX=_fwd?18+Math.random()*20:-(8+Math.random()*14),_ptZ=_rz*18;passTargetMesh=null;
             if(_fwd){let _nd=99;sr.current.players.forEach((pp,ii)=>{const src=(P.allPlayers||[])[ii];if(src&&src.team==='home'&&!src.gk&&pp.mesh.position.x>-10){const d=Math.hypot(pp.mesh.position.x-_ptX,pp.mesh.position.z-_ptZ);if(d<_nd){_nd=d;_ptX=pp.mesh.position.x;_ptZ=pp.mesh.position.z;passTargetMesh=pp.mesh;}}});}
             ballArcTgtX=_ptX;ballArcTgtZ=_ptZ;}
-          else if(t==="tackle"){ballArcH=1.2;ballArcDur=0.40;ballArcT=0;ballArcActive=true;ballArcTgtX=G2X(P.playerX||50)+(P.hlSuccess===true?12:-8);ballArcTgtZ=G2Z(P.playerY||50)+_rz*14;}// 3DV-14: contrasto → palla vola avanti/indietro
+          else if(t==="tackle"){ballArcT=0;ballArcActive=true;
+            if(P.hlSuccess===true&&P.hlReward==="goal"){ballArcH=1.5;ballArcDur=0.48;ballArcTgtX=AWAY_GOAL_X-3+Math.random()*3;ballArcTgtZ=_rz*6;}// pressing-gol → palla punta la porta
+            else{ballArcH=1.2;ballArcDur=0.40;ballArcTgtX=G2X(P.playerX||50)+(P.hlSuccess===true?12:-8);ballArcTgtZ=G2Z(P.playerY||50)+_rz*14;}}// contrasto normale → palla avanti/indietro
           else if(t==="dribble"){ballArcT=0;ballArcActive=true;
             if(P.hlSuccess===true&&P.hlReward==="goal"){ballArcH=1.3;ballArcDur=0.52;ballArcTgtX=AWAY_GOAL_X-3+Math.random()*3;ballArcTgtZ=_rz*6;}// dribbling-gol → la palla punta la porta
             else{ballArcH=0.7;ballArcDur=0.32;ballArcTgtX=G2X(P.playerX||50)+(P.hlSuccess===true?8:-5);ballArcTgtZ=G2Z(P.playerY||50)+_rz*10;}}// 3DV-14: dribbling → palla laterale

@@ -48,12 +48,12 @@ try{
 
 // ---------- 2. estrai blocco REALE di lancio-arco (eval, zero paraphrasi) ----------
 // dal blocco "const _rz=(Math.random()-.5);" fino alla chiusura del ramo cross.
-const rzIdx=findLine(/const _rz=\(Math\.random\(\)-\.5\);/);
+const rzIdx=findLine(/const _rz=\(Math\.random\(\)-\.5\)/);
 // includi tutti i rami: penalty, shot, header, cross E freekick (l'ultimo del blocco)
 let arcEnd=-1;for(let i=rzIdx;i<rzIdx+50;i++){if(/else if\(t==="freekick"\)\{ballArcH/.test(L[i])){arcEnd=i;break;}}
 if(arcEnd<0){console.error('FATAL: ramo freekick dell\'arco non trovato — il blocco potrebbe essere cambiato');process.exit(1);}
 const arcBlock=L.slice(rzIdx,arcEnd+1).join('\n');
-function computeArc(t,variant,playerY,rnd){
+function computeArc(t,variant,playerY,rnd,playerX=50){
   // arcBlock usa Math.random(): lo shadowiamo passandolo come parametro a una IIFE
   // (niente "var Math" nello scope esterno → evita il trap di hoisting che lo rende undefined).
   const fn=`(function(t,P,AWAY_GOAL_X,RND){
@@ -63,7 +63,7 @@ function computeArc(t,variant,playerY,rnd){
     })(Object.assign(Object.create(globalThis.Math),{random:RND}));
     return {ballArcH,ballArcDur,ballArcTgtX,ballArcTgtZ};
   })`;
-  return (0,eval)(fn)(t,{hlVariant:variant,playerY},46,rnd);
+  return (0,eval)(fn)(t,{hlVariant:variant,playerY,playerX},46,rnd);
 }
 
 // ---------- 3. guardie di consistenza (il modello non può divergere in silenzio) ----------
@@ -79,18 +79,22 @@ guard('outcome fail: palo 20% (hit_post)', /_roll<0\.20\)\{[\s\S]*?hlPostArcType
 guard('outcome fail: save/wide split 0.85', /_roll<0\.85\?"save":"wide"/.test(src));
 guard('camera FAR_POST_CROSS side-tracking', /_pat==="FAR_POST_CROSS"\)\{cPx=clamp\(fX-6/.test(src));
 guard('arc cross_far_post tgtZ=-_side*(11..)', /cross_far_post"\)\{ballArcH=4\.2;ballArcDur=0\.90;ballArcTgtX=AWAY_GOAL_X-9/.test(src));
-guard('fix: dribble/build-gol → in_net (non solo pugno)', /\(_ht==="dribble"\|\|_ht==="build"\)&&P\.hlReward==="goal"\)\{hlPostArcT=0;hlOutcomeVariant="goal";hlPostArcType="in_net"/.test(src));
+guard('fix: dribble/build/tackle-gol → in_net', /\(_ht==="dribble"\|\|_ht==="build"\|\|_ht==="tackle"\)&&P\.hlReward==="goal"\)\{hlPostArcT=0;hlOutcomeVariant="goal";hlPostArcType="in_net"/.test(src));
 guard('fix: hlReward passato come prop', /hlReward=\{chosenAct\?\.rew\|\|null\}/.test(src));
+guard('fix: shot_curled palo lontano usa -_side', /shot_curled.*ballArcTgtZ=-_side\*/.test(src));
+guard('fix: header_far_post usa -_side', /header_far_post.*ballArcTgtZ=-_side\*/.test(src));
+guard('fix: near_post_cross clamp TgtX byline+speed', /_cp\+45/.test(src));
+guard('fix: penalty_panenka arco alto', /penalty_panenka.*ballArcH=9\.0/.test(src));
 
 // ---------- 4. modello outcome (puro: dipende solo da success,type,variant,roll) ----------
 function outcomePostHL(success,type,variant,roll,reward){
   const isShot=type==='shot'||type==='penalty'||type==='freekick'||type==='header';
   if(success){
-    if(isShot)return{post:(variant==='shot_chip'||variant==='shot_volley')?'in_net_high':'in_net',outcome:'goal'};
+    if(isShot)return{post:(variant==='shot_chip'||variant==='shot_volley'||variant==='penalty_panenka')?'in_net_high':'in_net',outcome:'goal'};
     if(type==='cross')return{post:'cross_goal',outcome:'goal'};
     if(type==='pass')return{post:'assist_shot',outcome:'assist'};
-    // dribbling/costruzione che valgono un gol → palla in rete (fix engine); altrimenti pugno
-    if((type==='dribble'||type==='build')&&reward==='goal')return{post:'in_net',outcome:'goal'};
+    // dribbling/costruzione/pressing che valgono un gol → palla in rete; altrimenti pugno
+    if((type==='dribble'||type==='build'||type==='tackle')&&reward==='goal')return{post:'in_net',outcome:'goal'};
     return{post:'hero_fist',outcome:'win_duel'};
   }
   if(isShot&&roll<0.20)return{post:'hit_post',outcome:'post'};
@@ -131,7 +135,7 @@ function simulate(sit,act){
   // --- ARCO + FISICA PALLONE ---
   let arc=null,samples=[];
   if(ARC_TYPES.has(cls.type)){
-    try{arc=computeArc(cls.type,cls.variant,start.y,()=>0.5);}catch(e){add('ball','fail','computeArc ha lanciato: '+e.message);}
+    try{arc=computeArc(cls.type,cls.variant,start.y,()=>0.5,start.x);}catch(e){add('ball','fail','computeArc ha lanciato: '+e.message);}
     if(arc){
       const{ballArcH,ballArcDur,ballArcTgtX,ballArcTgtZ}=arc;
       const T={x:ballArcTgtX,z:ballArcTgtZ};
@@ -179,6 +183,8 @@ function simulate(sit,act){
     add('sync','warn','"a rientrare" ma variante non cutback ('+cls.variant+')');
   if(/pallonett|cucchiaio|scavin/.test(lbl)&&cls.type==='shot'&&cls.variant!=='shot_chip')
     add('sync','warn','"pallonetto/cucchiaio" ma variante non chip ('+cls.variant+')');
+  if(/pallonett|cucchiaio/.test(lbl)&&cls.type==='penalty'&&cls.variant!=='penalty_panenka')
+    add('sync','warn','rigore con cucchiaio/pallonetto ma variant non penalty_panenka');
   if(/pallonett|cucchiaio/.test(lbl)&&arc&&arc.ballArcH<6)
     add('sync','warn','pallonetto con arco basso ('+arc.ballArcH+'m) — poco riconoscibile');
   if(/rigore/.test(txt)&&cls.type!=='penalty')add('sync','fail','testo "rigore" ma type non penalty ('+cls.type+')');
@@ -192,7 +198,9 @@ function simulate(sit,act){
     if(!POSTHL_HANDLED[o.post])add('posthl','fail','post-HL "'+o.post+'" privo di handler animazione');
   });
   // coerenza outcome dichiarato (rew) vs catena post-HL
-  if(rew==='goal'&&!/in_net/.test(successOut.post))add('posthl','warn','azione "goal" ma post-HL successo non è una rete ('+successOut.post+')');
+  // cross_goal e assist_shot sono percorsi di gol validi (cross diretto in rete / combinazione → tiro → gol)
+  const _GOAL_POSTS=new Set(['in_net','in_net_high','cross_goal','assist_shot']);
+  if(rew==='goal'&&!_GOAL_POSTS.has(successOut.post))add('posthl','warn','azione "goal" ma post-HL successo non è una rete ('+successOut.post+')');
   if(rew==='assist'&&successOut.post!=='assist_shot'&&cls.type==='pass')add('posthl','warn','azione "assist" ma post-HL non assist_shot');
 
   // --- REGIA (modello camera CINE-5, fase risultato bf→1: fuoco ≈ target palla) ---

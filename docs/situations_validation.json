@@ -1,7 +1,7 @@
 {
   "totalCombos": 528,
-  "clean": 510,
-  "warns": 18,
+  "clean": 528,
+  "warns": 0,
   "fails": 0,
   "scores": {
     "animazione": 100,
@@ -53,367 +53,31 @@
       "ok": true
     },
     {
-      "name": "fix: dribble/build-gol → in_net (non solo pugno)",
+      "name": "fix: dribble/build/tackle-gol → in_net",
       "ok": true
     },
     {
       "name": "fix: hlReward passato come prop",
       "ok": true
+    },
+    {
+      "name": "fix: shot_curled palo lontano usa -_side",
+      "ok": true
+    },
+    {
+      "name": "fix: header_far_post usa -_side",
+      "ok": true
+    },
+    {
+      "name": "fix: near_post_cross clamp TgtX byline+speed",
+      "ok": true
+    },
+    {
+      "name": "fix: penalty_panenka arco alto",
+      "ok": true
     }
   ],
   "worst": [
-    {
-      "si": 0,
-      "ai": 2,
-      "realismo": 93,
-      "sit": "⚡ Solo davanti al portiere!",
-      "act": "🤸 Pallonetto",
-      "cls": {
-        "type": "shot",
-        "pattern": "ONE_ON_ONE",
-        "variant": "shot_one_on_one"
-      },
-      "issues": [
-        {
-          "cat": "sync",
-          "sev": "warn",
-          "msg": "\"pallonetto/cucchiaio\" ma variante non chip (shot_one_on_one)"
-        },
-        {
-          "cat": "sync",
-          "sev": "warn",
-          "msg": "pallonetto con arco basso (2.6m) — poco riconoscibile"
-        }
-      ]
-    },
-    {
-      "si": 10,
-      "ai": 0,
-      "realismo": 93,
-      "sit": "🎯 Pallonetto su portiere in uscita!",
-      "act": "🎯 Pallonetto preciso",
-      "cls": {
-        "type": "shot",
-        "pattern": "ONE_ON_ONE",
-        "variant": "shot_one_on_one"
-      },
-      "issues": [
-        {
-          "cat": "sync",
-          "sev": "warn",
-          "msg": "\"pallonetto/cucchiaio\" ma variante non chip (shot_one_on_one)"
-        },
-        {
-          "cat": "sync",
-          "sev": "warn",
-          "msg": "pallonetto con arco basso (2.6m) — poco riconoscibile"
-        }
-      ]
-    },
-    {
-      "si": 5,
-      "ai": 1,
-      "realismo": 96,
-      "sit": "🔴 RIGORE! Sul dischetto.",
-      "act": "🎯 Cucchiaio",
-      "cls": {
-        "type": "penalty",
-        "pattern": "PENALTY",
-        "variant": null
-      },
-      "issues": [
-        {
-          "cat": "sync",
-          "sev": "warn",
-          "msg": "pallonetto con arco basso (4.2m) — poco riconoscibile"
-        }
-      ]
-    },
-    {
-      "si": 36,
-      "ai": 0,
-      "realismo": 96,
-      "sit": "💪 Duello aereo su corner avversario!",
-      "act": "✈️ Stacco di testa",
-      "cls": {
-        "type": "header",
-        "pattern": "HEADER_ATTACK",
-        "variant": "header_near_post"
-      },
-      "issues": [
-        {
-          "cat": "ball",
-          "sev": "warn",
-          "msg": "velocità di picco non plausibile (126 u/s)"
-        }
-      ]
-    },
-    {
-      "si": 44,
-      "ai": 0,
-      "realismo": 96,
-      "sit": "✈️ Cross avversario in area! Allontana!",
-      "act": "✈️ Stacco di testa deciso",
-      "cls": {
-        "type": "header",
-        "pattern": "HEADER_ATTACK",
-        "variant": "header_near_post"
-      },
-      "issues": [
-        {
-          "cat": "ball",
-          "sev": "warn",
-          "msg": "velocità di picco non plausibile (123 u/s)"
-        }
-      ]
-    },
-    {
-      "si": 58,
-      "ai": 1,
-      "realismo": 96,
-      "sit": "🔴 RIGORE! Sul dischetto a 5' dalla fine. Respira. Tira.",
-      "act": "🌀 Cucchiaio — glaciale",
-      "cls": {
-        "type": "penalty",
-        "pattern": "PENALTY",
-        "variant": null
-      },
-      "issues": [
-        {
-          "cat": "sync",
-          "sev": "warn",
-          "msg": "pallonetto con arco basso (4.2m) — poco riconoscibile"
-        }
-      ]
-    },
-    {
-      "si": 82,
-      "ai": 1,
-      "realismo": 96,
-      "sit": "🏳️ Angolo corto — triangola!",
-      "act": "💥 Tiro a giro verso il palo lontano",
-      "cls": {
-        "type": "shot",
-        "pattern": "EDGE_SHOT",
-        "variant": "shot_curled"
-      },
-      "issues": [
-        {
-          "cat": "sync",
-          "sev": "warn",
-          "msg": "far post dichiarato ma target Z sullo stesso lato di partenza"
-        }
-      ]
-    },
-    {
-      "si": 91,
-      "ai": 0,
-      "realismo": 96,
-      "sit": "⚡ Cross dal fondo — angolo stretto!",
-      "act": "↗️ Cross sul primo palo",
-      "cls": {
-        "type": "cross",
-        "pattern": "NEAR_POST_CROSS",
-        "variant": "cross_near_post"
-      },
-      "issues": [
-        {
-          "cat": "ball",
-          "sev": "warn",
-          "msg": "la palla non avanza verso la porta avversaria (tgtX<=startX)"
-        }
-      ]
-    },
-    {
-      "si": 96,
-      "ai": 0,
-      "realismo": 96,
-      "sit": "🏃 Dribbling sulla linea di fondo!",
-      "act": "↗️ Cross al centro da fondo",
-      "cls": {
-        "type": "cross",
-        "pattern": "NEAR_POST_CROSS",
-        "variant": "cross_near_post"
-      },
-      "issues": [
-        {
-          "cat": "ball",
-          "sev": "warn",
-          "msg": "la palla non avanza verso la porta avversaria (tgtX<=startX)"
-        }
-      ]
-    },
-    {
-      "si": 124,
-      "ai": 0,
-      "realismo": 96,
-      "sit": "🎯 Lanci lunghi — alzati e controlla!",
-      "act": "✈️ Colpo di testa e smista",
-      "cls": {
-        "type": "header",
-        "pattern": "HEADER_ATTACK",
-        "variant": "header_near_post"
-      },
-      "issues": [
-        {
-          "cat": "ball",
-          "sev": "warn",
-          "msg": "velocità di picco non plausibile (103 u/s)"
-        }
-      ]
-    },
-    {
-      "si": 134,
-      "ai": 0,
-      "realismo": 96,
-      "sit": "✈️ Sfida aerea su lancio lungo!",
-      "act": "✈️ Stacco dominante",
-      "cls": {
-        "type": "header",
-        "pattern": "HEADER_ATTACK",
-        "variant": "header_near_post"
-      },
-      "issues": [
-        {
-          "cat": "ball",
-          "sev": "warn",
-          "msg": "velocità di picco non plausibile (119 u/s)"
-        }
-      ]
-    },
-    {
-      "si": 136,
-      "ai": 0,
-      "realismo": 96,
-      "sit": "🛑 Uscita difensiva su cross basso!",
-      "act": "🛑 Blocco deciso il cross",
-      "cls": {
-        "type": "cross",
-        "pattern": "NEAR_POST_CROSS",
-        "variant": "cross_near_post"
-      },
-      "issues": [
-        {
-          "cat": "ball",
-          "sev": "warn",
-          "msg": "velocità di picco non plausibile (83 u/s)"
-        }
-      ]
-    },
-    {
-      "si": 156,
-      "ai": 2,
-      "realismo": 96,
-      "sit": "🎯 Lancio millimetrico in profondità!",
-      "act": "💥 Tiro lungo dal centrocampo",
-      "cls": {
-        "type": "shot",
-        "pattern": "EDGE_SHOT",
-        "variant": "shot_power"
-      },
-      "issues": [
-        {
-          "cat": "ball",
-          "sev": "warn",
-          "msg": "velocità di picco non plausibile (79 u/s)"
-        }
-      ]
-    },
-    {
-      "si": 159,
-      "ai": 1,
-      "realismo": 96,
-      "sit": "⚽ Taglio sul palo lontano — tempismo!",
-      "act": "✈️ Testa in profondità",
-      "cls": {
-        "type": "header",
-        "pattern": "HEADER_ATTACK",
-        "variant": "header_far_post"
-      },
-      "issues": [
-        {
-          "cat": "sync",
-          "sev": "warn",
-          "msg": "far post dichiarato ma target Z sullo stesso lato di partenza"
-        }
-      ]
-    },
-    {
-      "si": 54,
-      "ai": 0,
-      "realismo": 97,
-      "sit": "🏃 Pressing alto! Rubi palla in trequarti avversaria.",
-      "act": "🏃 Pressing aggressivo",
-      "cls": {
-        "type": "tackle",
-        "pattern": "TACKLE",
-        "variant": null
-      },
-      "issues": [
-        {
-          "cat": "posthl",
-          "sev": "warn",
-          "msg": "azione \"goal\" ma post-HL successo non è una rete (hero_fist)"
-        }
-      ]
-    },
-    {
-      "si": 54,
-      "ai": 1,
-      "realismo": 97,
-      "sit": "🏃 Pressing alto! Rubi palla in trequarti avversaria.",
-      "act": "✋ Intercetta il retropassaggio",
-      "cls": {
-        "type": "tackle",
-        "pattern": "TACKLE",
-        "variant": null
-      },
-      "issues": [
-        {
-          "cat": "posthl",
-          "sev": "warn",
-          "msg": "azione \"goal\" ma post-HL successo non è una rete (hero_fist)"
-        }
-      ]
-    },
-    {
-      "si": 57,
-      "ai": 2,
-      "realismo": 97,
-      "sit": "⚡ Sprint sulla fascia! 1 contro 1 col terzino.",
-      "act": "💥 Tiro cross teso",
-      "cls": {
-        "type": "cross",
-        "pattern": "NEAR_POST_CROSS",
-        "variant": "cross_low_driven"
-      },
-      "issues": [
-        {
-          "cat": "posthl",
-          "sev": "warn",
-          "msg": "azione \"goal\" ma post-HL successo non è una rete (cross_goal)"
-        }
-      ]
-    },
-    {
-      "si": 152,
-      "ai": 0,
-      "realismo": 97,
-      "sit": "📋 Schema doppio dai e vai!",
-      "act": "📋 Schema a tre — dai, ricevi, tira",
-      "cls": {
-        "type": "pass",
-        "pattern": "COMBINATION",
-        "variant": null
-      },
-      "issues": [
-        {
-          "cat": "posthl",
-          "sev": "warn",
-          "msg": "azione \"goal\" ma post-HL successo non è una rete (assist_shot)"
-        }
-      ]
-    },
     {
       "si": 0,
       "ai": 0,
@@ -437,6 +101,19 @@
         "type": "shot",
         "pattern": "ONE_ON_ONE",
         "variant": "shot_one_on_one"
+      },
+      "issues": []
+    },
+    {
+      "si": 0,
+      "ai": 2,
+      "realismo": 100,
+      "sit": "⚡ Solo davanti al portiere!",
+      "act": "🤸 Pallonetto",
+      "cls": {
+        "type": "shot",
+        "pattern": "ONE_ON_ONE",
+        "variant": "shot_chip"
       },
       "issues": []
     },
@@ -611,6 +288,19 @@
     },
     {
       "si": 5,
+      "ai": 1,
+      "realismo": 100,
+      "sit": "🔴 RIGORE! Sul dischetto.",
+      "act": "🎯 Cucchiaio",
+      "cls": {
+        "type": "penalty",
+        "pattern": "PENALTY",
+        "variant": "penalty_panenka"
+      },
+      "issues": []
+    },
+    {
+      "si": 5,
       "ai": 2,
       "realismo": 100,
       "sit": "🔴 RIGORE! Sul dischetto.",
@@ -780,6 +470,19 @@
     },
     {
       "si": 10,
+      "ai": 0,
+      "realismo": 100,
+      "sit": "🎯 Pallonetto su portiere in uscita!",
+      "act": "🎯 Pallonetto preciso",
+      "cls": {
+        "type": "shot",
+        "pattern": "ONE_ON_ONE",
+        "variant": "shot_chip"
+      },
+      "issues": []
+    },
+    {
+      "si": 10,
       "ai": 1,
       "realismo": 100,
       "sit": "🎯 Pallonetto su portiere in uscita!",
@@ -827,6 +530,201 @@
         "type": "shot",
         "pattern": "EDGE_SHOT",
         "variant": "shot_power"
+      },
+      "issues": []
+    },
+    {
+      "si": 11,
+      "ai": 2,
+      "realismo": 100,
+      "sit": "💥 Conclusione di collo pieno!",
+      "act": "🌀 Finta e tiro",
+      "cls": {
+        "type": "dribble",
+        "pattern": "DRIBBLE_SHOT",
+        "variant": "dribble_feint"
+      },
+      "issues": []
+    },
+    {
+      "si": 12,
+      "ai": 0,
+      "realismo": 100,
+      "sit": "🦵 Tiro con l'esterno del piede!",
+      "act": "🦵 Esterno a giro",
+      "cls": {
+        "type": "shot",
+        "pattern": "EDGE_SHOT",
+        "variant": "shot_curled"
+      },
+      "issues": []
+    },
+    {
+      "si": 12,
+      "ai": 1,
+      "realismo": 100,
+      "sit": "🦵 Tiro con l'esterno del piede!",
+      "act": "🎯 Rientra e tira",
+      "cls": {
+        "type": "shot",
+        "pattern": "EDGE_SHOT",
+        "variant": "shot_power"
+      },
+      "issues": []
+    },
+    {
+      "si": 12,
+      "ai": 2,
+      "realismo": 100,
+      "sit": "🦵 Tiro con l'esterno del piede!",
+      "act": "🤸 Colpo d'esterno",
+      "cls": {
+        "type": "shot",
+        "pattern": "EDGE_SHOT",
+        "variant": "shot_power"
+      },
+      "issues": []
+    },
+    {
+      "si": 13,
+      "ai": 0,
+      "realismo": 100,
+      "sit": "📐 Punizione dal limite — tiro diretto!",
+      "act": "🎯 Punizione a giro",
+      "cls": {
+        "type": "freekick",
+        "pattern": "SET_PIECE",
+        "variant": null
+      },
+      "issues": []
+    },
+    {
+      "si": 13,
+      "ai": 1,
+      "realismo": 100,
+      "sit": "📐 Punizione dal limite — tiro diretto!",
+      "act": "💥 Tiro rasoterra",
+      "cls": {
+        "type": "freekick",
+        "pattern": "SET_PIECE",
+        "variant": null
+      },
+      "issues": []
+    },
+    {
+      "si": 13,
+      "ai": 2,
+      "realismo": 100,
+      "sit": "📐 Punizione dal limite — tiro diretto!",
+      "act": "↗️ Palla in area",
+      "cls": {
+        "type": "freekick",
+        "pattern": "SET_PIECE",
+        "variant": null
+      },
+      "issues": []
+    },
+    {
+      "si": 14,
+      "ai": 0,
+      "realismo": 100,
+      "sit": "📐 Punizione dalla fascia sinistra!",
+      "act": "↗️ Cross basso teso",
+      "cls": {
+        "type": "freekick",
+        "pattern": "SET_PIECE",
+        "variant": null
+      },
+      "issues": []
+    },
+    {
+      "si": 14,
+      "ai": 1,
+      "realismo": 100,
+      "sit": "📐 Punizione dalla fascia sinistra!",
+      "act": "↗️ Cross alto",
+      "cls": {
+        "type": "freekick",
+        "pattern": "SET_PIECE",
+        "variant": null
+      },
+      "issues": []
+    },
+    {
+      "si": 14,
+      "ai": 2,
+      "realismo": 100,
+      "sit": "📐 Punizione dalla fascia sinistra!",
+      "act": "🌀 Giocata corta",
+      "cls": {
+        "type": "freekick",
+        "pattern": "SET_PIECE",
+        "variant": null
+      },
+      "issues": []
+    },
+    {
+      "si": 15,
+      "ai": 0,
+      "realismo": 100,
+      "sit": "📐 Punizione dalla fascia destra!",
+      "act": "↗️ Cross basso teso",
+      "cls": {
+        "type": "freekick",
+        "pattern": "SET_PIECE",
+        "variant": null
+      },
+      "issues": []
+    },
+    {
+      "si": 15,
+      "ai": 1,
+      "realismo": 100,
+      "sit": "📐 Punizione dalla fascia destra!",
+      "act": "↗️ Cross alto",
+      "cls": {
+        "type": "freekick",
+        "pattern": "SET_PIECE",
+        "variant": null
+      },
+      "issues": []
+    },
+    {
+      "si": 15,
+      "ai": 2,
+      "realismo": 100,
+      "sit": "📐 Punizione dalla fascia destra!",
+      "act": "🌀 Giocata corta",
+      "cls": {
+        "type": "freekick",
+        "pattern": "SET_PIECE",
+        "variant": null
+      },
+      "issues": []
+    },
+    {
+      "si": 16,
+      "ai": 0,
+      "realismo": 100,
+      "sit": "⚡ Cross dalla fascia sinistra!",
+      "act": "↗️ Cross teso",
+      "cls": {
+        "type": "cross",
+        "pattern": "NEAR_POST_CROSS",
+        "variant": "cross_low_driven"
+      },
+      "issues": []
+    },
+    {
+      "si": 16,
+      "ai": 1,
+      "realismo": 100,
+      "sit": "⚡ Cross dalla fascia sinistra!",
+      "act": "↗️ Cross a rientrare",
+      "cls": {
+        "type": "cross",
+        "pattern": "CUTBACK",
+        "variant": "cross_cutback"
       },
       "issues": []
     }
