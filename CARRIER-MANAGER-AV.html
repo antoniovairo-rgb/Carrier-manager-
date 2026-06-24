@@ -2654,7 +2654,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.81.0"; // Sprint 4.81.0: scaffold validazione 3D browser — hook regia window.__CPM_PROBE/__CPM3D gated da ?cpmtest=1 (zero impatto in produzione) + harness Playwright in tests/visual
+const GAME_VERSION="4.82.0"; // Sprint 4.82.0: validazione 3D Phase 2 — hook __CPM_FORCE_SIT/__CPM_LOAD_ALL (gated ?cpmtest=1) per forzare tutte le 179 SITUATIONS; harness force-all verifica camera-sopra-il-prato + zero errori runtime su ogni situation
 const SAVE_VERSION=6;
 // Sprint ENV — ambiente rilevato automaticamente dal runtime (non gestito manualmente).
 // PRODUCTION = deploy GitHub Pages (*.github.io). Tutto il resto (staging githack, locale, localhost) = TEST.
@@ -8557,6 +8557,23 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   const [movesLeft,setMovesLeft]=useState(0);
   const [pressureBar,setPressureBar]=useState(1);
   const [paused,setPaused]=useState(false);
+  // VISUAL-TEST (4.82.0): force-situation per validare TUTTE le SITUATIONS in 3D.
+  // Attivo SOLO con ?cpmtest=1 → in produzione non viene mai registrato. Phase 2 dell'harness.
+  useEffect(()=>{
+    if(typeof window==='undefined'||!/[?&]cpmtest=1\b/.test(window.location.search||""))return;
+    window.__CPM_SIT_COUNT=SITUATIONS.length;
+    // sostituisce le situazioni del match con l'intero DB (indice = indice globale) e congela il clock
+    // entrando in un highlight (phase!=="playing" → il clock non avanza). NON usa paused: l'overlay
+    // PAUSA blurra la scena e congela il lerp camera, falsando la regia.
+    window.__CPM_LOAD_ALL=()=>{ setSituations(SITUATIONS.slice()); setHlIdx(0); setPhase("hl_choose"); return SITUATIONS.length; };
+    // forza la situation gi: posiziona l'eroe alla startZone e va DIRETTO al framing interattivo
+    // (salta hl_intro, cinematico). Replica la transizione reale: mm===0 (e non lock) → hl_choose, altrimenti hl_move.
+    window.__CPM_FORCE_SIT=(gi)=>{ const sit=SITUATIONS[gi]; if(!sit)return false;
+      setOutcome(null); setChosenAct(null);
+      setHlIdx(gi); setPPos(getStartPos(sit)||{x:58,y:50});
+      const mm=cappedMM(sit); setPhase(mm===0&&!sit.lockMovement?"hl_choose":"hl_move"); return true; };
+    return()=>{ try{delete window.__CPM_FORCE_SIT;delete window.__CPM_LOAD_ALL;delete window.__CPM_SIT_COUNT;}catch(e){} };
+  },[]);// eslint-disable-line
   const [debugMode,setDebugMode]=useState(false); // ATE-5: Shift+D toggle
   const pressureRef=useRef(1);
   const [defDist,setDefDist]=useState(100); // 0=on you 100=far
