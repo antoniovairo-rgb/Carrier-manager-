@@ -2612,7 +2612,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.67.1"; // 3DV-MOV2: fix posizioni sballate nei calci piazzati — il loop HL non clobbera più il muro/area con una fila a centrocampo
+const GAME_VERSION="4.67.2"; // 3DV-MOV2b: rimosso il cerchio zona HL (clutter visivo). Include il fix posizioni calci piazzati di 4.67.1.
 const SAVE_VERSION=6;
 // Sprint ENV — ambiente rilevato automaticamente dal runtime (non gestito manualmente).
 // PRODUCTION = deploy GitHub Pages (*.github.io). Tutto il resto (staging githack, locale, localhost) = TEST.
@@ -6901,7 +6901,7 @@ function ThreeMatchView(props){
     // ATE-4: zona ring — anello sul campo che evidenzia la zona HL durante intro/move/choose
     const zoneRingMat=new THREE.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:0,side:THREE.DoubleSide,depthWrite:false});
     const zoneRing=new THREE.Mesh(new THREE.RingGeometry(2.2,4.8,28),zoneRingMat);
-    zoneRing.rotation.x=-Math.PI/2;zoneRing.position.y=0.09;scene.add(zoneRing);
+    zoneRing.rotation.x=-Math.PI/2;zoneRing.position.y=0.09;/* 3DV-MOV2b: cerchio zona HL rimosso dalla scena (clutter visivo). Mesh conservata per non rompere i riferimenti del RAF. */
     let zoneRingT=-1;
 
     Object.assign(sr.current,{scene,camera,renderer,players,hero,ball,G2X,G2Z});
