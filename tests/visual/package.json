@@ -1,0 +1,14 @@
+{
+  "name": "cpm-visual-3d-validation",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Browser/WebGL validation harness for CPM — verifica regia (camera sopra il prato, eroe/palla on-screen) su match reali via Playwright + hook ?cpmtest=1.",
+  "type": "module",
+  "scripts": {
+    "test": "node run-3d-validation.mjs",
+    "setup": "npm install && npx playwright install chromium"
+  },
+  "dependencies": {
+    "playwright": "^1.48.0"
+  }
+}

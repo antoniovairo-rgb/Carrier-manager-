@@ -2654,7 +2654,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.80.0"; // Sprint 4.80.0: cleanup — CHAIN_SITS annotati + rimossa euristica testuale morta in cappedMM (movement cap 100% data-driven)
+const GAME_VERSION="4.81.0"; // Sprint 4.81.0: scaffold validazione 3D browser — hook regia window.__CPM_PROBE/__CPM3D gated da ?cpmtest=1 (zero impatto in produzione) + harness Playwright in tests/visual
 const SAVE_VERSION=6;
 // Sprint ENV — ambiente rilevato automaticamente dal runtime (non gestito manualmente).
 // PRODUCTION = deploy GitHub Pages (*.github.io). Tutto il resto (staging githack, locale, localhost) = TEST.
@@ -6979,6 +6979,18 @@ function ThreeMatchView(props){
     let zoneRingT=-1;
 
     Object.assign(sr.current,{scene,camera,renderer,players,hero,ball,G2X,G2Z});
+
+    // VISUAL-TEST (4.81.0): hook di validazione regia/3D, attivi SOLO con ?cpmtest=1.
+    // In produzione (GitHub Pages, senza il param) questo blocco non viene mai eseguito → zero impatto.
+    if(typeof window!=='undefined' && /[?&]cpmtest=1\b/.test(window.location.search||"")){
+      window.__CPM3D={scene,camera,renderer,hero,ball,players};
+      window.__CPM_PROBE=function(){
+        const proj=(obj)=>{ if(!obj||!obj.position)return null; const p=obj.position.clone().project(camera);
+          return {onScreen:Math.abs(p.x)<=1.05&&Math.abs(p.y)<=1.05&&p.z<1, ndc:{x:+p.x.toFixed(3),y:+p.y.toFixed(3),z:+p.z.toFixed(3)}, world:{x:+obj.position.x.toFixed(2),y:+obj.position.y.toFixed(2),z:+obj.position.z.toFixed(2)}}; };
+        const c=camera.position;
+        return { ok:true, camera:{x:+c.x.toFixed(2),y:+c.y.toFixed(2),z:+c.z.toFixed(2),abovePitch:c.y>0.5}, hero:proj(hero), ball:proj(ball), phase:(propsRef.current&&propsRef.current.matchPhase)||null, clock:(propsRef.current&&propsRef.current.matchClock)||null };
+      };
+    }
 
     // Loop: lerp verso le posizioni target dai prop (nessun re-render React)
     let last=performance.now();
