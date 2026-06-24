@@ -2612,7 +2612,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.49.0"; // Sprint 3DV-8: bandiere bicolore + striscioni curva + coriandoli club color + onda accelerata al gol
+const GAME_VERSION="4.50.0"; // 3DV-9: pallone scala con camHL (0.56 close), post-arco in_net/deflect/cross_goal
 const SAVE_VERSION=6;
 // Sprint ENV — ambiente rilevato automaticamente dal runtime (non gestito manualmente).
 // PRODUCTION = deploy GitHub Pages (*.github.io). Tutto il resto (staging githack, locale, localhost) = TEST.
@@ -6828,6 +6828,7 @@ function ThreeMatchView(props){
     // Sprint 3D-7: animazione one-shot del protagonista all'ingresso dell'esito (hl_result)
     let actT=0,actType=null,prevPhase="";
     let oppActType=null,oppActT=0,oppMesh=null,oppDiveDir=1; // CIN-2: animazione reazione avversario
+    let hlPostArcT=-1,hlPostArcType=null,hlPostVZ=0; // 3DV-9: animazione post-arco (in_net/deflect/cross_goal)
     // Sprint 3D-8a: cronometro dell'esito per il rallenty cinematografico
     let resultT=0;
     // Sprint 3D-BALL: arco parabolico della palla (shot/header/cross/freekick/penalty)
@@ -6934,8 +6935,29 @@ function ThreeMatchView(props){
        const _bak=ballArcActive&&ballArcIsBG?Math.min(1,aDt*(3.5/Math.max(ballArcDur,0.2))):ak;
        ball.position.x+=(_btX-ball.position.x)*_bak;ball.position.z+=(_btZ-ball.position.z)*_bak;}
       // Sprint 3D-BALL: parabola sull'esito — arco in base al tipo di azione
-      if(ballArcActive){ballArcT+=aDt;const u=Math.min(ballArcT/ballArcDur,1);ball.position.y=0.65+Math.sin(u*Math.PI)*ballArcH;if(u>=1){ballArcActive=false;}}
-      else{ball.position.y+=(0.65-ball.position.y)*Math.min(aDt*6,1);}// 3DV-1: y rest 0.65 (era 0.42)
+      if(ballArcActive){ballArcT+=aDt;const u=Math.min(ballArcT/ballArcDur,1);ball.position.y=0.65+Math.sin(u*Math.PI)*ballArcH;
+        if(u>=1){ballArcActive=false;// 3DV-9: trigger animazione fine azione in base all'esito
+          if(isResult){const _hs=P.hlSuccess,_ht=P.hlType;
+            if(_hs===true&&(_ht==="shot"||_ht==="penalty"||_ht==="freekick"||_ht==="header")){hlPostArcT=0;hlPostArcType="in_net";}
+            else if(_hs===true&&_ht==="cross"){hlPostArcT=0;hlPostArcType="cross_goal";}
+            else if(_hs===false){hlPostArcT=0;hlPostArcType="deflect";hlPostVZ=(Math.random()>0.5?1:-1)*14;}
+          }}}
+      else if(hlPostArcT>=0){hlPostArcT+=aDt;// 3DV-9: eseguire solo se il normale lerp non sovrascrive
+        if(hlPostArcType==="in_net"){// palla rimbalza decrescendo all'interno della rete
+          ball.position.y=0.65+Math.max(0,Math.abs(Math.sin(hlPostArcT*4.5))*0.9*Math.exp(-hlPostArcT*2.2));
+          ball.position.x=Math.min(ball.position.x,48);// non uscire oltre la linea di fondo
+          if(hlPostArcT>2.2){hlPostArcT=-1;hlPostArcType=null;}}
+        else if(hlPostArcType==="cross_goal"){// secondo arco: cross → testa → gol
+          const _u2=Math.min(hlPostArcT/0.70,1);
+          ball.position.y=0.65+Math.sin(_u2*Math.PI)*2.8;// traiettoria header
+          ball.position.x+=(-47-ball.position.x)*aDt*3.5;ball.position.z+=(0-ball.position.z)*aDt*1.5;
+          if(_u2>=1){hlPostArcType="in_net";hlPostArcT=0;}}// catena → in_net
+        else if(hlPostArcType==="deflect"){// parata/palo: palla laterale + a terra
+          ball.position.y=Math.max(0.65,ball.position.y-aDt*5);
+          ball.position.z+=hlPostVZ*aDt;hlPostVZ*=(1-aDt*3.5);
+          ball.position.x+=(ball.position.x>0?-1:1)*aDt*9;// torna verso centro
+          if(hlPostArcT>2.2){hlPostArcT=-1;hlPostArcType=null;}}}
+      else{ball.position.y+=(0.65-ball.position.y)*Math.min(aDt*6,1);}// y rest 0.65
       ballHalo.position.copy(ball.position);
       const _hTgt=isHL?0.10:0.04;ballHalo.material.opacity+=(_hTgt-ballHalo.material.opacity)*Math.min(dt*3,1);// 3DV-1: opacità halo ridotta (era 0.18/0.08)
       const moved=Math.hypot(ball.position.x-obx,ball.position.y-oby,ball.position.z-obz);
@@ -6948,7 +6970,7 @@ function ThreeMatchView(props){
         // LT-1: ring espande da 1× a 3.8× e svanisce in 0.20s
         ctFlash.position.x=ball.position.x;ctFlash.position.z=ball.position.z;ctFlash.scale.setScalar(1+(1-_cf)*2.8);ctFlash.material.opacity=_cf*0.60;
         if(contactFlashT>0.20)contactFlashT=-1;}
-      else{ball.scale.setScalar(1.0);ctFlash.material.opacity=0;} // 3DV-1: scala fissa 1.0 — base già r=0.65 (era 1.4× HL → sfera gigante)
+      else{ball.scale.setScalar(1.0-camHL*0.44);ctFlash.material.opacity=0;}// 3DV-9: scala inversamente proporzionale a camHL (1.0 wide → 0.56 close)
       const bx=ball.position.x,bz=ball.position.z;
       const isWalk=P.matchPhase==="walkout";
       // transizioni di fase: trigger animazione esito + gestione buffer/replay
@@ -6976,6 +6998,7 @@ function ThreeMatchView(props){
           }} // QW-A: contact flash al kick/header
         if(_curPh==="hl_intro"||(_curPh==="hl_move"&&prevPhase==="playing")){repCount=0;repHead=0;replayDone=false;}
         if(_curPh!=="hl_result"&&replaying){replaying=false;setReplayOn(false);}
+        if(_curPh!=="hl_result"){hlPostArcT=-1;hlPostArcType=null;}// 3DV-9: reset post-arc su uscita da hl_result
         // ATE-4: zone ring — accendi su hl_intro, colora per tipo; spegni su playing/ended
         if(_curPh==="hl_intro"){zoneRingT=0;zoneRingMat.color.setHex(HL_ZONE_COL[P.hlType]||0xffffff);}
         if(_curPh==="playing"||_curPh==="ended"||_curPh==="walkout"){zoneRingT=-1;zoneRingMat.opacity=0;}
@@ -9257,6 +9280,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                 ballX={ballPos.x} ballY={ballPos.y} hlType={_hlType} bgAction={bgAction} hlZone={hlZone}
                 timeOfDay={timeOfDay} weather={weather} kickoffHour={kickoffHour} attendance={attendance}
                 waveEvent={waveEvent} isDerby={!!drby} isBigGame={mw>=7}
+                hlSuccess={outcome?.ok??null}
                 isDesktop={!isNarrow} onWalkoutDone={()=>{if(benchStart)setOnBench(true);setPhase("playing");}}/>
               :<PitchCanvas playerX={pPos.x} playerY={pPos.y} zone={zone}
                 homeCol={homeKitCol} oppCol={awayKitCol}
