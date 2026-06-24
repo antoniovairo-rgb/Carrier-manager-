@@ -2612,7 +2612,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.67.2"; // 3DV-MOV2b: rimosso il cerchio zona HL (clutter visivo). Include il fix posizioni calci piazzati di 4.67.1.
+const GAME_VERSION="4.68.0"; // 3DV-FIX3: sponda→compagno reale, gol entra in rete + esultanza eroe/compagni, palla all'avversario in difesa, cronaca più calma
 const SAVE_VERSION=6;
 // Sprint ENV — ambiente rilevato automaticamente dal runtime (non gestito manualmente).
 // PRODUCTION = deploy GitHub Pages (*.github.io). Tutto il resto (staging githack, locale, localhost) = TEST.
@@ -7059,18 +7059,18 @@ function ThreeMatchView(props){
             }
           }}}
       else if(hlPostArcT>=0){hlPostArcT+=aDt;
-        if(hlPostArcType==="in_net"){// palla nella rete — lerp verso AWAY_GOAL_X
-          ball.position.x+=(AWAY_GOAL_X-ball.position.x)*Math.min(aDt*5.5,1);
+        if(hlPostArcType==="in_net"){// 3DV-FIX3: la palla entra DENTRO la porta (oltre la linea, fino alla rete ~49.4), non si ferma sulla linea
+          ball.position.x+=((AWAY_GOAL_X+2.4)-ball.position.x)*Math.min(aDt*5.5,1);
           ball.position.z*=(1-Math.min(aDt*2,1)*0.12);
           ball.position.y=0.65+Math.max(0,Math.abs(Math.sin(hlPostArcT*4.5))*1.1*Math.exp(-hlPostArcT*2.0));
-          if(!hlInNetFlashed&&ball.position.x>AWAY_GOAL_X-3){hlInNetFlashed=true;contactFlashT=0;shakePow=0.20;}
+          if(!hlInNetFlashed&&ball.position.x>AWAY_GOAL_X){hlInNetFlashed=true;contactFlashT=0;shakePow=0.20;}// flash quando la palla supera la linea
           if(hlPostArcT>2.4){hlPostArcT=-1;hlPostArcType=null;hlInNetFlashed=false;}}
-        else if(hlPostArcType==="in_net_high"){// CINE-3: chip/volley — palla entra alta nella rete
-          ball.position.x+=(AWAY_GOAL_X-ball.position.x)*Math.min(aDt*5.0,1);
+        else if(hlPostArcType==="in_net_high"){// CINE-3: chip/volley — palla entra alta DENTRO la rete
+          ball.position.x+=((AWAY_GOAL_X+2.2)-ball.position.x)*Math.min(aDt*5.0,1);
           ball.position.z*=(1-Math.min(aDt*2,1)*0.10);
           const _tgtY=ball.position.x>AWAY_GOAL_X-6?2.4:ball.position.y;// mantiene altezza fino all'ingresso
           ball.position.y+=(_tgtY-ball.position.y)*Math.min(aDt*3,1);
-          if(!hlInNetFlashed&&ball.position.x>AWAY_GOAL_X-3){hlInNetFlashed=true;contactFlashT=0;shakePow=0.15;}
+          if(!hlInNetFlashed&&ball.position.x>AWAY_GOAL_X){hlInNetFlashed=true;contactFlashT=0;shakePow=0.15;}
           if(hlPostArcT>2.2){hlPostArcT=-1;hlPostArcType=null;hlInNetFlashed=false;}}
         else if(hlPostArcType==="hit_post"){// CINE-3: palla va verso il palo, vibrazione, rimbalzo
           ball.position.x+=(AWAY_GOAL_X+0.6-ball.position.x)*Math.min(aDt*6.5,1);
@@ -7153,11 +7153,13 @@ function ThreeMatchView(props){
               const _cp=(P.playerX||50)-50;ballArcTgtX=Math.max(_cp+5,Math.min(AWAY_GOAL_X-14+Math.random()*5,_cp+45));
               ballArcTgtZ=_side*(8+Math.random()*6);}/* near post */}
           else if(t==="freekick"){ballArcH=3.2;ballArcDur=0.80;ballArcT=0;ballArcActive=true;ballArcTgtX=AWAY_GOAL_X-3+Math.random()*4;ballArcTgtZ=_rz*7;}
-          else if(t==="pass"){const _fwd=P.hlSuccess===true;ballArcH=_fwd?2.2:1.5;ballArcDur=0.62;ballArcT=0;ballArcActive=true;
-            // 3DV-14b: triangolo — mira il passaggio verso il compagno più vicino (non portiere)
-            let _ptX=_fwd?18+Math.random()*20:-(8+Math.random()*14),_ptZ=_rz*18;passTargetMesh=null;
-            if(_fwd){let _nd=99;sr.current.players.forEach((pp,ii)=>{const src=(P.allPlayers||[])[ii];if(src&&src.team==='home'&&!src.gk&&pp.mesh.position.x>-10){const d=Math.hypot(pp.mesh.position.x-_ptX,pp.mesh.position.z-_ptZ);if(d<_nd){_nd=d;_ptX=pp.mesh.position.x;_ptZ=pp.mesh.position.z;passTargetMesh=pp.mesh;}}});}
-            ballArcTgtX=_ptX;ballArcTgtZ=_ptZ;}
+          else if(t==="pass"){const _fwd=P.hlSuccess===true;ballArcH=_fwd?1.8:1.4;ballArcDur=0.55;ballArcT=0;ballArcActive=true;
+            // 3DV-FIX3: passaggio/sponda → cerca un compagno REALE vicino, MAI più arretrato dell'eroe.
+            // Prima poteva mirare un compagno dietro (verso la propria porta) → sembrava un tiro all'indietro assurdo.
+            const _phx=G2X(P.playerX||50),_phz=G2Z(P.playerY||50);
+            let _ptX=_phx+(_fwd?9:-3),_ptZ=_phz+_rz*9;passTargetMesh=null;
+            if(_fwd){let _nd=20;sr.current.players.forEach((pp,ii)=>{const src=(P.allPlayers||[])[ii];if(src&&src.team==='home'&&!src.gk&&pp.mesh.position.x>_phx-5){const d=Math.hypot(pp.mesh.position.x-_phx,pp.mesh.position.z-_phz);if(d<_nd){_nd=d;_ptX=pp.mesh.position.x;_ptZ=pp.mesh.position.z;passTargetMesh=pp.mesh;}}});}
+            ballArcTgtX=Math.max(_ptX,_phx-2);ballArcTgtZ=_ptZ;}// clamp: mai dietro l'eroe → niente "tiro verso la propria porta"
           else if(t==="tackle"){ballArcT=0;ballArcActive=true;
             if(P.hlSuccess===true&&P.hlReward==="goal"){ballArcH=1.5;ballArcDur=0.48;ballArcTgtX=AWAY_GOAL_X-3+Math.random()*3;ballArcTgtZ=_rz*6;}// pressing-gol → palla punta la porta
             else{ballArcH=1.2;ballArcDur=0.40;ballArcTgtX=G2X(P.playerX||50)+(P.hlSuccess===true?12:-8);ballArcTgtZ=G2Z(P.playerY||50)+_rz*14;}}// contrasto normale → palla avanti/indietro
@@ -7320,6 +7322,9 @@ function ThreeMatchView(props){
           if(heroPostType==="miss"){if(hero._hd)hero._hd.rotation.x=-_hsw*0.9;hero._aL.rotation.z=_hsw*1.3;hero._aR.rotation.z=-_hsw*1.3;hero.position.y=0;}
           else if(heroPostType==="fist"){const _fu=Math.min(_hpu*2,1),_fd=Math.max(0,_hpu*2-1);hero._aR.rotation.x=-_fu*(1-_fd)*2.2;hero._aR.rotation.z=_fu*(1-_fd)*0.6;hero.position.y=_fu*(1-_fd)*0.3;}// 3DV-14: braccio destro su, poi giù
           if(_hpu>=1){heroPostT=-1;heroPostType=null;if(hero._hd)hero._hd.rotation.x=0;hero._aL.rotation.z=0;hero._aR.rotation.z=0;hero._aR.rotation.x=0;hero.position.y=0;}}
+        // 3DV-FIX3: esultanza compagni sul gol di casa — braccia alzate + saltello (home outfield = indici 1-9)
+        if(goalBurstHome&&goalBurstT>=0){const _ta=Math.min(goalBurstT/0.5,1)*Math.max(0,1-goalBurstT/1.8);
+          sr.current.players.forEach((pp,ii)=>{if(ii>0&&ii<10&&pp.mesh){pp.mesh._aL.rotation.x=-2.0*_ta;pp.mesh._aR.rotation.x=-2.0*_ta;pp.mesh._aL.rotation.z=-0.4*_ta;pp.mesh._aR.rotation.z=0.4*_ta;pp.mesh.position.y=Math.abs(Math.sin(goalBurstT*6+ii*1.3))*0.38*_ta;}});}
         // CINE-6: gonfiamento rete al gol — rilevamento fronte di salita su hlInNetFlashed (vale per ogni handler in_net)
         if(hlInNetFlashed&&!prevInNet)netBulgeT=0;prevInNet=hlInNetFlashed;
         if(netBulgeT>=0&&sr.current.goalNet){netBulgeT+=aDt;const _nu=Math.min(netBulgeT/0.8,1);
@@ -8663,6 +8668,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
       // 3DV-MOV: target DETERMINISTICI per giocatore (angolo/spread seeded da idx, NON ri-randomizzati ogni tick)
       // + smoothing su velocità (velRef) → niente scatti/teletrasporti schizofrenici. Oscillazione lenta via sin/cos.
       hlTickRef.current++;const _T=hlTickRef.current*0.5;
+      let _defBd=1e9,_defBx=pPos.x,_defBy=pPos.y;// 3DV-FIX3: traccia l'avversario più vicino all'eroe → porta-palla in azione difensiva
       setMatchPlayers(prev=>prev.map((pl,idx)=>{
         if(pl.team==="ref")return pl;
         let tx,ty;
@@ -8696,8 +8702,11 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
         const nvx=clamp(v.vx*0.72+(tx-pl.x)*0.12,-5,5);
         const nvy=clamp(v.vy*0.72+(ty-pl.y)*0.10,-5,5);
         velRef.current[idx]={vx:nvx,vy:nvy};
-        return{...pl,x:clamp(pl.x+nvx,2,98),y:clamp(pl.y+nvy,3,97)};
+        const _np={...pl,x:clamp(pl.x+nvx,2,98),y:clamp(pl.y+nvy,3,97)};
+        if(isDef&&pl.team==="away"){const _d=Math.hypot(_np.x-pPos.x,_np.y-pPos.y);if(_d<_defBd){_defBd=_d;_defBx=_np.x;_defBy=_np.y;}}
+        return _np;
       }));
+      if(isDef)setBallPos({x:_defBx,y:_defBy});// 3DV-FIX3: azione difensiva → la palla è sull'avversario portatore, non sull'eroe
     },pressingMs);
     return()=>clearInterval(iv);
   },[phase,hlIdx,situations,pPos.x,pPos.y,paused]);// eslint-disable-line
@@ -8908,8 +8917,8 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           const _pool94=_wCom94[_wfx94]||_wCom94.rain;
           addCom(pick(_pool94),"#64748b",nx);
         }
-        // Commentary ~30% chance per tick (1 every ~3 min average) — suspended during HL phases
-        if(Math.random()<0.30&&!["hl_intro","hl_move","hl_choose","hl_result"].includes(phaseRef.current)){
+        // 3DV-FIX3: cronaca meno fitta — 18%/tick (era 30%, troppo frenetica) — sospesa durante gli HL
+        if(Math.random()<0.18&&!["hl_intro","hl_move","hl_choose","hl_result"].includes(phaseRef.current)){
           const _sc76=scoreRef.current;const _sd76=_sc76.home-_sc76.away;const _sctx76=_sd76>0?"winning":_sd76<0?"losing":"drawing";
           // Sprint 113: dedup — exclude last 3 BG events to avoid repetition
           const _lastBG=lastBGEvtRef.current;
@@ -9058,11 +9067,12 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   },[phase,hlIdx,oppPrestige,player.ovr,paused]); // addCom rimosso: ora stabile (clockRef)
 
   // Ball attachment — sync ballPos to pPos during highlight phases so ball stays on player
+  // 3DV-FIX3: NON per le azioni difensive — lì la palla è sull'avversario portatore (gestita nel loop di pressing HL)
   useEffect(()=>{
-    if(["hl_intro","hl_move","hl_choose","hl_result"].includes(phase)){
+    if(["hl_intro","hl_move","hl_choose","hl_result"].includes(phase)&&situations[hlIdx]?.type!=="def"){
       setBallPos({x:pPos.x,y:pPos.y});
     }
-  },[pPos.x,pPos.y,phase]);
+  },[pPos.x,pPos.y,phase,hlIdx]);
 
   // Idle drift — player keeps moving during "playing" phase, formation-aware
   useEffect(()=>{
@@ -9175,6 +9185,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
       const _gk=Date.now();
       setFloatGoal({text:"⚽ GOL!",col:"#f59e0b",key:_gk});
       setGoalCinema({text:"GOOOOL!",col:player.club?.c||"#f59e0b",key:_gk,shakeKey:_gk});
+      setWaveEvent({t:_gk,home:true});// 3DV-FIX3: innesca esultanza eroe (braccia alzate+salto) + compagni + coriandoli + boato + disperazione portiere
       setTimeout(()=>setGoalCinema(null),2600);
     } else if(ok&&key==="assist"){
       setScreenFlash({col:"rgba(34,197,94,0.3)",dur:350});
