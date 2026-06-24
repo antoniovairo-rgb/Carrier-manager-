@@ -2612,7 +2612,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.50.0"; // 3DV-9: pallone scala con camHL (0.56 close), post-arco in_net/deflect/cross_goal
+const GAME_VERSION="4.51.0"; // 3DV-10: fix post-arco x/z lerp, arbitro fuori camera HL, luci -50% meno fluorescenti
 const SAVE_VERSION=6;
 // Sprint ENV — ambiente rilevato automaticamente dal runtime (non gestito manualmente).
 // PRODUCTION = deploy GitHub Pages (*.github.io). Tutto il resto (staging githack, locale, localhost) = TEST.
@@ -5035,11 +5035,11 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
     const head=new THREE.Mesh(new THREE.BoxGeometry(5,0.8,2.5),new THREE.MeshBasicMaterial({color:0xfffff0,emissive:0xfffff0}));
     head.position.set(x+(x>0?-4:4),floodH+2.5,z);scene.add(head);
     // SpotLight pointing down at pitch — focused beam, realistic TV look
-    const spot=new THREE.SpotLight(lightColor,2.8,180,Math.PI/5,0.3,1.2);
+    const spot=new THREE.SpotLight(lightColor,1.4,180,Math.PI/5,0.3,1.2);// 3DV-10: 2.8→1.4 meno fluorescente
     spot.position.set(x+(x>0?-5:5),floodH+5,z);
     spot.target.position.set(0,0,0);scene.add(spot);scene.add(spot.target);
     // Soft fill PointLight at lower intensity
-    const fl=new THREE.PointLight(lightColor,1.0,280);fl.position.set(x+(x>0?-5:5),floodH+4,z);scene.add(fl);
+    const fl=new THREE.PointLight(lightColor,0.50,280);fl.position.set(x+(x>0?-5:5),floodH+4,z);scene.add(fl);// 3DV-10: 1.0→0.50
   });
 
   // Goal nets (wireframe-style transparent planes)
@@ -6628,7 +6628,8 @@ function ThreeMatchView(props){
 
     // Campo — Sprint 3D-G1: di giorno scurisco l'erba (0.82×) per compensare l'assenza di tonemapping; notte invariata
     const _gA=new THREE.Color(pal.grassA),_gB=new THREE.Color(pal.grassB);
-    if(tod==="day"){_gA.multiplyScalar(0.82);_gB.multiplyScalar(0.82);}
+    // 3DV-10: dim globale erba su tutti i TOD (notte 0.88×, giorno 0.72×) — riduce fluorescenza
+    _gA.multiplyScalar(tod==="day"?0.72:0.88);_gB.multiplyScalar(tod==="day"?0.72:0.88);
     const grass=new THREE.Mesh(new THREE.PlaneGeometry(104,68),new THREE.MeshLambertMaterial({color:_gA}));
     grass.rotation.x=-Math.PI/2;grass.receiveShadow=true;scene.add(grass);
     for(let i=0;i<8;i++){const m=new THREE.MeshLambertMaterial({color:i%2?_gA:_gB});const s=new THREE.Mesh(new THREE.PlaneGeometry(13,68),m);s.rotation.x=-Math.PI/2;s.position.set(-45.5+i*13,0.01,0);s.receiveShadow=true;scene.add(s);}
@@ -6930,7 +6931,8 @@ function ThreeMatchView(props){
       // palla per prima, così i giocatori fermi si orientano verso di essa
       const obx=ball.position.x,oby=ball.position.y,obz=ball.position.z;
       // ATE-2: durante arco BG usa destinazione 3D esatta + velocità sync con durata arco
-      {const _btX=ballArcActive&&ballArcIsBG?ballArcTgtX:G2X(P.ballX||50);
+      // 3DV-10: skip lerp x/z durante post-arco (deflect/cross_goal/in_net gestiscono x/z propri)
+      if(!hlPostArcType){const _btX=ballArcActive&&ballArcIsBG?ballArcTgtX:G2X(P.ballX||50);
        const _btZ=ballArcActive&&ballArcIsBG?ballArcTgtZ:G2Z(P.ballY||50);
        const _bak=ballArcActive&&ballArcIsBG?Math.min(1,aDt*(3.5/Math.max(ballArcDur,0.2))):ak;
        ball.position.x+=(_btX-ball.position.x)*_bak;ball.position.z+=(_btZ-ball.position.z)*_bak;}
@@ -7075,8 +7077,11 @@ function ThreeMatchView(props){
           if(u>=1){oppActType=null;if(oppMesh){oppMesh.position.y=0;oppMesh=null;}}
         }
         // Sprint 3D-G2: arbitro segue la palla con offset laterale; guardalinee seguono x dell'azione
-        {const _rk=Math.min(aDt*1.8,1),_offZ=isHL?4.5:6;
-        refMesh.position.x+=(bx+_offZ-refMesh.position.x)*_rk;refMesh.position.z+=(bz*0.6-refMesh.position.z)*_rk;refMesh.rotation.y=Math.atan2(bx-refMesh.position.x,bz-refMesh.position.z);
+        // 3DV-10: durante isHL l'arbitro esce dal campo (fuori camera) per non bloccare l'azione
+        {const _rk=Math.min(aDt*1.8,1);
+        if(isHL){refMesh.position.x+=(-90-refMesh.position.x)*Math.min(aDt*10,1);}
+        else{refMesh.position.x+=(bx+6-refMesh.position.x)*_rk;refMesh.position.z+=(bz*0.6-refMesh.position.z)*_rk;}
+        refMesh.rotation.y=Math.atan2(bx-refMesh.position.x,bz-refMesh.position.z);
         linRef1.position.x+=(bx*0.5-linRef1.position.x)*Math.min(aDt*0.9,1);
         linRef2.position.x+=(bx*0.5-linRef2.position.x)*Math.min(aDt*0.9,1);}
         // Sprint 3D-H3 MT-4: staff vivaci — idle sway arbitro, facing guardalinee, panchine reagiscono al gol
