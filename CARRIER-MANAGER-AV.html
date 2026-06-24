@@ -2612,7 +2612,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.63.0"; // CINE-7: matrice compatibilità (528 combo, 0 gap) — attivata regia FAR_POST (cross+testa) da label "secondo palo/palo lontano"
+const GAME_VERSION="4.64.0"; // INJ-1: bande di recupero §9.6 — infortuni gravi 6-12 sett. (frattura) ora possibili, attiva l'evento "Tre Mesi Fuori"
 const SAVE_VERSION=6;
 // Sprint ENV — ambiente rilevato automaticamente dal runtime (non gestito manualmente).
 // PRODUCTION = deploy GitHub Pages (*.github.io). Tutto il resto (staging githack, locale, localhost) = TEST.
@@ -13862,9 +13862,14 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     const postFatigue=clamp((player.fatigue||0)+rng(12,22),0,100);
     const injRoll=Math.random();
     const newInjured=!player.injured&&((postFatigue>82&&injRoll<0.07)||(postFatigue>68&&injRoll<0.03));
-    const injuryWeeks=newInjured?(postFatigue>82?rng(2,4):1):0;
-    const injuryType=newInjured?(injuryWeeks===1?"contusione":injuryWeeks===2?"stiramento":injuryWeeks===3?"distorsione":"osseo"):null;
-    const injurySeverity=newInjured?(injuryWeeks<=1?"lieve":injuryWeeks<=3?"medio":"grave"):null; // Sprint 119
+    // §9.6: bande di recupero realistiche — lieve 1-2 sett. (comune), medio 3-5, grave 6-12 (frattura/trauma osseo, raro e solo con fatica alta)
+    let injuryWeeks=0,injuryType=null,injurySeverity=null;
+    if(newInjured){
+      const sevRoll=Math.random();
+      if(postFatigue>82&&sevRoll<0.07){injurySeverity="grave";injuryWeeks=rng(6,12);injuryType=sevRoll<0.035?"osseo":"distorsione";}
+      else if(sevRoll<0.40){injurySeverity="medio";injuryWeeks=rng(3,5);injuryType="stiramento";}
+      else{injurySeverity="lieve";injuryWeeks=rng(1,2);injuryType="contusione";}
+    }
     // Sprint 19 — milestone check (pre-compute before setState so we know which ones just triggered)
     const prevMilestones=player.milestones||[];
     const _nextState={...player,totalGoals:(player.totalGoals||0)+result.goals,totalMatches:(player.totalMatches||0)+1};
