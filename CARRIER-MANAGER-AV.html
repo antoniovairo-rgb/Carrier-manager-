@@ -2677,7 +2677,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.87.0"; // Sprint 4.87.0: post-highlight Fase 3 — estensione suite test (check 'post-highlight': durata dinamica, fluidità camera, coerenza animazioni) + hook __CPM_RESULT_DUR; quality gate ora 9 categorie
+const GAME_VERSION="4.88.0"; // Sprint A (NEXT-GEN aliveness): motore posizionamento off-ball nel render-loop 3D — shape-flow + pressing + marcatura difensiva + repulsione/spaziatura (anti-ammucchiate). Puramente visivo (offset sul target del lerp), zero save-risk, deterministico.
 const SAVE_VERSION=6;
 // Sprint ENV — ambiente rilevato automaticamente dal runtime (non gestito manualmente).
 // PRODUCTION = deploy GitHub Pages (*.github.io). Tutto il resto (staging githack, locale, localhost) = TEST.
@@ -7380,27 +7380,59 @@ function ThreeMatchView(props){
       } else {
         // Sprint 3D-9: movimenti collettivi (puramente visivi — offset sul target del lerp, stato di gioco intatto).
         // Linea difensiva inferita: DIF scorrono come blocco con la palla; CEN a metà intensità. Pressing: i più vicini driftano verso la palla.
+        // Sprint A (NEXT-GEN aliveness) — motore posizionamento off-ball: shape-flow + pressing + marcatura + repulsione.
+        // Tutto puramente visivo (offset sul target del lerp): lo stato di gioco (matchPlayers) resta intatto → zero save-risk.
+        // Deterministico (nessun RNG/now): la repulsione è calcolata sui target correnti → niente "ammucchiate", niente oscillazioni.
         const _bGX=P.ballX||50,_bGY=P.ballY||50,_lineShift=clamp((_bGX-50)*0.18,-9,9);
-        sr.current.players.forEach((pp,i)=>{const src=all[i];if(!src)return;
-          let ox=0,oy=0;
-          if(!src.gk){
-            const _hm=i<10,_li=_hm?i:i-10; // indice nel team: 1-4=DIF, 5-7=CEN, 8-9=ATT (0=GK)
-            if(_li>=1&&_li<=4)ox+=_lineShift; else if(_li>=5&&_li<=7)ox+=_lineShift*0.5;
-            const dxb=_bGX-src.x,dyb=_bGY-src.y,db=Math.hypot(dxb,dyb);
-            if(db<24&&db>1.5){const press=clamp((24-db)/24,0,1)*1.5;ox+=dxb/db*press;oy+=dyb/db*press;}// 3DV-12: 4.0→1.5 movimenti fluidi
-            // CINE-4: pre-action drift per-pattern — compagni si lanciano verso porta, avversari stringono su eroe
-            if(isHL&&preActionT>=0){
-              const _pt=clamp(preActionT/1.5,0,1),_pat=P.hlPattern||"";
-              const _isAtt=_li>=8,_isMid=_li>=5&&_li<=7;
-              if(_hm){if(/CROSS|HEADER|CUTBACK/.test(_pat)){if(_isAtt)ox+=_pt*9;else if(_isMid)ox+=_pt*3.5;}
-                else if(/SHOT|ONE_ON_ONE/.test(_pat)){if(_isAtt){oy+=(_li===8?-1:1)*_pt*7;ox+=_pt*2;}else if(_isMid)ox+=_pt*2.5;}
-                else if(/COMBINATION|THROUGH/.test(_pat)){if(_isMid)ox+=_pt*5;if(_isAtt)ox+=_pt*2.5;}
-              }else{const _dxh=(P.playerX||50)-src.x,_dyh=(P.playerY||50)-src.y,_dh=Math.hypot(_dxh,_dyh);
-                if(_dh<30&&_dh>2){const _p=clamp((30-_dh)/30,0,1)*_pt*3.5;ox+=_dxh/_dh*_p;oy+=_dyh/_dh*_p;}}
-            }
+        const _hxg=P.playerX||50,_hyg=P.playerY||50,_pat=P.hlPattern||"";
+        const _players=sr.current.players,_tg=[];
+        // PASS 1 — target pre-repulsione per ogni giocatore (coordinate di gioco 0..100)
+        for(let i=0;i<_players.length;i++){
+          const src=all[i];
+          if(!src){_tg.push(null);continue;}
+          if(src.gk){_tg.push({x:src.x,y:src.y,gk:true});continue;}
+          const _hm=i<10,_li=_hm?i:i-10; // 1-4=DIF, 5-7=CEN, 8+=ATT (0=GK)
+          let tx=src.x,ty=src.y;
+          // shape-flow: il blocco squadra scorre su/giù col pallone (DIF pieno, CEN ridotto, ATT minimo)
+          if(_li>=1&&_li<=4)tx+=_lineShift; else if(_li>=5&&_li<=7)tx+=_lineShift*0.6; else tx+=_lineShift*0.3;
+          // pressing: i più vicini chiudono sulla palla
+          const dxb=_bGX-src.x,dyb=_bGY-src.y,db=Math.hypot(dxb,dyb);
+          if(db<24&&db>1.5){const press=clamp((24-db)/24,0,1)*1.5;tx+=dxb/db*press;ty+=dyb/db*press;}
+          // CINE-4: smarcamenti pre-action — compagni verso porta, avversari stringono sull'eroe
+          if(isHL&&preActionT>=0){
+            const _pt=clamp(preActionT/1.5,0,1),_isAtt=_li>=8,_isMid=_li>=5&&_li<=7;
+            if(_hm){if(/CROSS|HEADER|CUTBACK/.test(_pat)){if(_isAtt)tx+=_pt*9;else if(_isMid)tx+=_pt*3.5;}
+              else if(/SHOT|ONE_ON_ONE/.test(_pat)){if(_isAtt){ty+=(_li===8?-1:1)*_pt*7;tx+=_pt*2;}else if(_isMid)tx+=_pt*2.5;}
+              else if(/COMBINATION|THROUGH/.test(_pat)){if(_isMid)tx+=_pt*5;if(_isAtt)tx+=_pt*2.5;}
+            }else{const _dxh=_hxg-src.x,_dyh=_hyg-src.y,_dh=Math.hypot(_dxh,_dyh);
+              if(_dh<30&&_dh>2){const _p=clamp((30-_dh)/30,0,1)*_pt*3.5;tx+=_dxh/_dh*_p;ty+=_dyh/_dh*_p;}}
           }
-          animOne(pp.mesh,G2X(clamp(src.x+ox,2,98)),G2Z(clamp(src.y+oy,2,98)),aDt,ak,bx,bz);});
-        animOne(hero,G2X(P.playerX||50),G2Z(P.playerY||50),aDt,ak,bx,bz);
+          _tg.push({x:tx,y:ty,gk:false,hm:_hm,li:_li,att:_li>=8,def:_li>=1&&_li<=4});
+        }
+        // PASS 1b — marcatura: i difensori inseguono lateralmente il centrocampista/attaccante avversario più vicino, restando goal-side
+        for(let i=0;i<_tg.length;i++){const t=_tg[i];if(!t||t.gk||!t.def)continue;
+          let nd=20,nmx=null,nmy=null;
+          for(let j=0;j<_tg.length;j++){const o=_tg[j];if(!o||o.gk||o.hm===t.hm||o.li<5)continue;
+            const dd=Math.hypot(o.x-t.x,o.y-t.y);if(dd<nd){nd=dd;nmx=o.x;nmy=o.y;}}
+          if(nmx!==null){const m=clamp((20-nd)/20,0,1);const gx=t.hm?6:94;
+            t.y+=(nmy-t.y)*0.3*m;t.x+=((nmx+(gx-nmx)*0.35)-t.x)*0.12*m;}
+        }
+        // PASS 2 — repulsione/spaziatura (bolla personale ~6.5u): elimina le "ammucchiate"
+        const _RB=6.5;
+        for(let i=0;i<_tg.length;i++){const a=_tg[i];if(!a||a.gk)continue;
+          let px=0,py=0;
+          for(let j=0;j<_tg.length;j++){if(j===i)continue;const b=_tg[j];if(!b||b.gk)continue;
+            const ex=a.x-b.x,ey=a.y-b.y,dd=Math.hypot(ex,ey);
+            if(dd>0.01&&dd<_RB){const f=(_RB-dd)/_RB;px+=ex/dd*f;py+=ey/dd*f;}
+            else if(dd<=0.01){px+=(i<j?0.4:-0.4);}}
+          // l'eroe respinge i compagni (one-way): nessuna sovrapposizione col protagonista
+          {const ex=a.x-_hxg,ey=a.y-_hyg,dd=Math.hypot(ex,ey);if(dd>0.01&&dd<_RB){const f=(_RB-dd)/_RB;px+=ex/dd*f*1.2;py+=ey/dd*f*1.2;}}
+          a.rx=clamp(px*1.4,-4,4);a.ry=clamp(py*1.4,-4,4);
+        }
+        // APPLY — animOne sul target finale (target+repulsione), clamp dentro il campo
+        for(let i=0;i<_players.length;i++){const t=_tg[i],pp=_players[i];if(!t||!pp)continue;
+          animOne(pp.mesh,G2X(clamp(t.x+(t.rx||0),2,98)),G2Z(clamp(t.y+(t.ry||0),2,98)),aDt,ak,bx,bz);}
+        animOne(hero,G2X(_hxg),G2Z(_hyg),aDt,ak,bx,bz);
         if(isHL&&preActionT>=0)preActionT+=dt; // CINE-4: avanza timer pre-action
         // CIN-2: reazione avversario — gk_dive (portiere), opp_stumble/opp_spin (difensore); si applica DOPO animOne per sovrascriverlo
         if(oppActType&&oppMesh){
