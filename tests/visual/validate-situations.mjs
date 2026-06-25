@@ -16,7 +16,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { startServer, launchBrowser, openMatch, forceSituation, freeze, unfreeze, canvasShot, stateSig, sigStr, sleep, ROOT } from './lib/harness.mjs';
+import { startServer, launchBrowser, openMatch, forceSituation, freeze, unfreeze, canvasShot, samplePostHighlight, stateSig, sigStr, sleep, ROOT } from './lib/harness.mjs';
 import { loadSituations } from './lib/situations.mjs';
 import { writeReports } from './report.mjs';
 import initialState from './checks/initial-state.mjs';
@@ -25,12 +25,13 @@ import visual from './checks/visual.mjs';
 import movements from './checks/movements.mjs';
 import golden from './checks/golden.mjs';
 import finalState from './checks/final-state.mjs';
+import postHighlight from './checks/post-highlight.mjs';
 import determinism from './checks/determinism.mjs';
 import dataCoherence from './checks/data-coherence.mjs';
 
 const SIT_CHECKS = [initialState, orientation, visual, movements, golden]; // pre-risoluzione
 const FINAL_CHECKS = [finalState];                                          // post-risoluzione azione
-const GLOBAL_CHECKS = [determinism, dataCoherence];                         // global
+const GLOBAL_CHECKS = [determinism, postHighlight, dataCoherence];          // global
 const SEED = '0x9e3779b9 (mulberry32) + __CPM_RESEED(gi)';
 const UPDATE_GOLDEN = process.argv.includes('--update-golden');
 const SHOTS_ALL = process.argv.includes('--shots');
@@ -111,6 +112,28 @@ const GOLDEN = path.join(HERE, 'golden-sigs.json');
     }
     agg['final-state'].info = { sampled: fsSample.length };
     console.log(`final-state: campione ${fsSample.length} Situations risolte`);
+
+    // POST-HIGHLIGHT — campiona la traiettoria (camera/palla/giocatori) su un set vario di Situations
+    const phIdx = [0, 2, 30, 60, 79, 120].filter(gi => gi < situations.length);
+    const D = (a, b) => Math.hypot(a.x - b.x, (a.z != null ? a.z : a.y) - (b.z != null ? b.z : b.y));
+    const phSamples = [];
+    for (const gi of phIdx) {
+      const s = await samplePostHighlight(page, gi, { windowMs: 1100, pollMs: 110 });
+      let maxCam = 0, maxBall = 0, movers = 0;
+      for (let i = 1; i < s.frames.length; i++) {
+        const f0 = s.frames[i - 1], f1 = s.frames[i];
+        if (f0.cam && f1.cam) maxCam = Math.max(maxCam, Math.hypot(f1.cam.x - f0.cam.x, f1.cam.y - f0.cam.y, f1.cam.z - f0.cam.z));
+        if (f0.ball && f1.ball) maxBall = Math.max(maxBall, D(f0.ball, f1.ball));
+        if (f0.players && f1.players) { let mv = 0; for (let p = 0; p < f0.players.length; p++) if (f1.players[p] && Math.hypot(f1.players[p].x - f0.players[p].x, f1.players[p].y - f0.players[p].y) > 0.8) mv++; movers = Math.max(movers, mv); }
+      }
+      phSamples.push({ gi, durMs: s.durMs, maxCam, maxBall, movers });
+      await sleep(300);
+    }
+    const phRes = postHighlight.run({ samples: phSamples });
+    agg['post-highlight'].issues.push(...phRes.issues.map(msg => ({ gi: null, msg })));
+    agg['post-highlight'].warnings.push(...phRes.warnings.map(msg => ({ gi: null, msg })));
+    agg['post-highlight'].info = phRes.info;
+    console.log(`post-highlight: campione ${phSamples.length} Situations`);
 
     if (consoleErrors.length) agg.visual.issues.push(...consoleErrors.slice(0, 10).map(msg => ({ gi: null, msg: 'console error: ' + msg })));
   } catch (e) {

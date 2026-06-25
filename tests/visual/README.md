@@ -35,6 +35,8 @@ npm run validate-situations:update-golden   # rigenera la baseline (dopo modific
 lib/harness.mjs     server + browser + flusso→match + force/freeze + firma di stato
 lib/situations.mjs  estrae l'array SITUATIONS dal sorgente (S/A reali, no re-impl.)
 checks/*.mjs        un modulo per categoria: { id, title, scope, run(ctx)→{pass,issues,warnings} }
+                    (determinism, initial-state, orientation, visual, movements, golden,
+                     final-state, post-highlight, data-coherence)
 report.mjs          HTML + JSON
 validate-situations.mjs   orchestratore (un solo browser) → report → exit code
 ```
@@ -66,6 +68,16 @@ continua. Perciò:
 - la **validazione movimenti continui** (cat. 4) e lo **stato finale post-risoluzione**
   (cat. 6) sono **estensioni**: richiedono un hook che risolva l'azione e registri una
   timeline. Punti d'aggancio già predisposti (`__CPM_FORCE_SIT` + risoluzione azione).
+
+### Qualità del post-highlight (gameplay) — 4.85→4.87
+Refactor del ciclo highlight→post-highlight→Situation successiva, validato dal check `post-highlight`:
+- **Durata dinamica** (`postHighlightDuration`): 2000–3000ms per azione/esito, sempre ≥ arco+slow-mo
+  (sostituisce il fisso 1s che tagliava la palla). Test: dinamica + entro [1800,4000]ms.
+- **Camera morbida**: zoom-out asimmetrico, nessun cambio brusco. Test: salto camera frame-to-frame ≤30.
+- **Coerenza animazioni**: la palla non "teletrasporta". Test: salto palla frame-to-frame ≤42.
+- **Continuità**: la nuova Situation nasce dalla posizione finale (clamp in startZone), niente teletrasporto.
+- **Movimento**: rimosso il twitch casuale; difensori tengono la linea (FORMATION_AWAY). Movers = warning informativo
+  (le esultanze gol muovono legittimamente molti giocatori).
 
 ### CI/CD (GitHub Actions)
 Il workflow `.github/workflows/validate-situations.yml` esegue il gate ad ogni push

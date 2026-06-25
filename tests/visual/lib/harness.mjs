@@ -73,6 +73,32 @@ export async function forceSituation(page, gi, { settle = 650, freeze = false, c
 export async function freeze(page) { await page.evaluate(() => { window.__CPM_FROZEN = true; }); await sleep(120); }
 export async function unfreeze(page) { await page.evaluate(() => { window.__CPM_FROZEN = false; }); }
 
+/* Campiona la traiettoria del POST-HIGHLIGHT: forza gi (choose), risolve l'azione k e
+   poll camera/palla/giocatori a intervalli per la finestra data. Ritorna { gi, durMs, frames }.
+   Usato dai check Fase 3 (durata dinamica, fluidità camera, coerenza animazioni, movimento tattico). */
+export async function samplePostHighlight(page, gi, { settle = 600, k = 0, pollMs = 110, windowMs = 1100 } = {}) {
+  await page.evaluate(([i, c]) => window.__CPM_FORCE_SIT(i, c), [gi, true]);
+  await sleep(settle);
+  await page.evaluate(kk => window.__CPM_RESOLVE(kk), k);
+  const frames = []; const end = Date.now() + windowMs; let durMs = null;
+  while (Date.now() < end) {
+    const d = await page.evaluate(() => ({
+      dur: window.__CPM_RESULT_DUR || null,
+      probe: typeof window.__CPM_PROBE === 'function' ? window.__CPM_PROBE() : null,
+      st: typeof window.__CPM_STATE === 'function' ? window.__CPM_STATE() : null,
+    }));
+    if (d.dur) durMs = d.dur;
+    if (d.probe && d.probe.ok) frames.push({
+      cam: d.probe.camera,
+      ball: d.probe.ball ? d.probe.ball.world : null,
+      players: (d.st && d.st.players) ? d.st.players.map(p => ({ x: p.x, y: p.y })) : null,
+      phase: d.st ? d.st.phase : null,
+    });
+    await sleep(pollMs);
+  }
+  return { gi, durMs, frames };
+}
+
 /* Risolve l'azione k della Situation corrente, attende l'esito, ritorna {outcome, finalState}. */
 export async function resolveAction(page, k = 0, { wait = 850 } = {}) {
   await page.evaluate(kk => window.__CPM_RESOLVE(kk), k);
