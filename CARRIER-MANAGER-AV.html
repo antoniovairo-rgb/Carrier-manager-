@@ -2677,7 +2677,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="5.00.0"; // ENGINE-REFACTOR Fase 0 (Intent→Decision→Simulation→Animation): aggiunto il DECISION ENGINE (decideExecution) — keystone che, data un'INTENZIONE + contesto (attributi/pressione/posizione/meteo/morale/...) + casualità controllata, decide ESECUZIONE ed ESITO. Validato su migliaia di contesti (esiti vari e coerenti, 0 impossibili). Inerte (non ancora ricablato), come il motore timeline. + CINE-TL Fase 2 (executor): in gioco reale le conclusioni di TIRO sono precedute dalla COSTRUZIONE dell'azione (build-up) — palla e attori seguono la timeline beat-per-beat, poi parte la conclusione collaudata. Bypass in gate-mode (?cpmtest=1 → conclusione immediata → 9 check identici). "Il tiro non compare più dal nulla". + Fase 1: motore di TIMELINE — buildHLTimeline genera per ogni pattern una sequenza di micro-eventi calcistici (chi ha la palla, chi riceve/corre, difensori, n° reali passaggi, traiettoria) + validateHLTimeline che impone le invarianti (possesso continuo, no teletrasporti, no cambi possesso ingiustificati, testa⇐cross). Validato logicamente su 650 casi. NON ancora collegato al renderer (Fase 2). + CINE-APPROACH.
+const GAME_VERSION="5.01.0"; // ENGINE-REFACTOR Fase 1 (Intent→Decision COLLEGATO): l'esecuzione (variante) di tiri-da-terra e cross è ora DECISA dal Decision Engine dagli attributi/pressione/contesto (seed stabile → deterministico, niente flicker), non più dalle label delle situation. Invarianti aeree (testa/volée) intatte. Primo taglio dell'accoppiamento Situation→animazione. Fase 0: aggiunto il DECISION ENGINE (decideExecution) — keystone che, data un'INTENZIONE + contesto (attributi/pressione/posizione/meteo/morale/...) + casualità controllata, decide ESECUZIONE ed ESITO. Validato su migliaia di contesti (esiti vari e coerenti, 0 impossibili). Inerte (non ancora ricablato), come il motore timeline. + CINE-TL Fase 2 (executor): in gioco reale le conclusioni di TIRO sono precedute dalla COSTRUZIONE dell'azione (build-up) — palla e attori seguono la timeline beat-per-beat, poi parte la conclusione collaudata. Bypass in gate-mode (?cpmtest=1 → conclusione immediata → 9 check identici). "Il tiro non compare più dal nulla". + Fase 1: motore di TIMELINE — buildHLTimeline genera per ogni pattern una sequenza di micro-eventi calcistici (chi ha la palla, chi riceve/corre, difensori, n° reali passaggi, traiettoria) + validateHLTimeline che impone le invarianti (possesso continuo, no teletrasporti, no cambi possesso ingiustificati, testa⇐cross). Validato logicamente su 650 casi. NON ancora collegato al renderer (Fase 2). + CINE-APPROACH.
 const SAVE_VERSION=6;
 // Sprint ENV — ambiente rilevato automaticamente dal runtime (non gestito manualmente).
 // PRODUCTION = deploy GitHub Pages (*.github.io). Tutto il resto (staging githack, locale, localhost) = TEST.
@@ -10096,7 +10096,19 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           {(()=>{const _isHL=["hl_move","hl_choose","hl_result","hl_intro"].includes(phase);
           // CINE-1: contesto cinematografico centralizzato — type (legacy) + pattern + variant
           let _hlType=null,_hlPattern=null,_hlVariant=null;
-          if(_isHL){const _d=deriveHL(situations[hlIdx],chosenAct);_hlType=_d.type;_hlPattern=_d.pattern;_hlVariant=_d.variant;}
+          if(_isHL){const _sit=situations[hlIdx];const _d=deriveHL(_sit,chosenAct);_hlType=_d.type;_hlPattern=_d.pattern;_hlVariant=_d.variant;
+            // ENGINE Fase 1 (Intent→Decision): l'ESECUZIONE (variante) è decisa dinamicamente dal Decision Engine
+            //   in base ad attributi/pressione/contesto + casualità controllata (seed stabile → niente flicker,
+            //   gate deterministico), NON più fissata dalla label. Applicato a tiri DA TERRA e cross: le invarianti
+            //   cinematiche aeree (testa/volée) restano gestite da deriveHL (data-coherence intatto).
+            if(typeof decideExecution==="function"&&_sit&&chosenAct){
+              const _tac=_sit.tactic||{},_pm={none:0,low:1,medium:2,high:3};
+              const _ctx={attrs:player.stats||{},pressure:_tac.nearby_def!=null?_tac.nearby_def:(_pm[_tac.pressure]||1),support:_tac.support||0,fatigue:player.fatigue||0,morale:player.morale||60,x:pPos.x,
+                seed:hashStr((_sit.text||"")+"|"+((chosenAct.label)||"")+"|"+hlIdx+"|"+Math.round(player.fatigue||0)+"|"+Math.round(player.form||0))};
+              if(_hlType==="shot"&&hlBallState(_sit)!=="aerial"){const _e=decideExecution("shot",_ctx).execution;const _m={shot_power:"shot_power",shot_curled:"shot_curled",shot_first_time:"shot_first_time",shot_chip:"shot_chip",shot_placed:"shot_one_on_one"};_hlVariant=_m[_e]||_hlVariant;}
+              else if(_hlType==="cross"){const _e=decideExecution("cross",_ctx).execution;const _m={cross_far_post:"cross_far_post",cross_near_post:"cross_near_post",cross_low_driven:"cross_low_driven",cross_cutback:"cross_cutback",cross_deep:"cross_far_post"};_hlVariant=_m[_e]||_hlVariant;}
+            }
+          }
           return(
           <div style={isNarrow?{display:"flex",flexDirection:"column",flex:1,minHeight:0}:{display:"flex",flexDirection:"row",alignItems:"stretch",flex:1,minHeight:0,overflow:"hidden"}}>
 
