@@ -2677,7 +2677,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.89.0"; // Sprint B (NEXT-GEN locomozione): crossfade continuo corsa↔idle in animOne (_runB easing) — via il "T-pose glide" e lo snap, con settle-into-idle morbido; wind-up eroe (caricamento all'indietro della gamba calciante) su tiri/cross/punizioni. + Sprint A: motore posizionamento off-ball (shape-flow + marcatura + anti-ammucchiate).
+const GAME_VERSION="4.90.0"; // Sprint C (NEXT-GEN ripresa, Fase 5): dopo il gol si riparte dal centro — palla a centrocampo + squadre richiamate nelle proprie metà (preset midfield) prima che il gioco riprenda, riusando drift+lerp palla (zero nuove fasi nello state-machine). Fase 4 (completamento azioni) già presente via rcvT/assist_shot/cross_goal/gk_dive. + Sprint A/B.
 const SAVE_VERSION=6;
 // Sprint ENV — ambiente rilevato automaticamente dal runtime (non gestito manualmente).
 // PRODUCTION = deploy GitHub Pages (*.github.io). Tutto il resto (staging githack, locale, localhost) = TEST.
@@ -9615,8 +9615,17 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     if(nx>=numHLRef.current){setPhase("ended");}
     else{
       var didSucceed=outcome&&outcome.ok;
+      var wasGoal=outcome&&outcome.outKey==="goal";
       setHlIdx(nx);setOutcome(null);setChosenAct(null);
-      if(didSucceed&&Math.random()<0.25){
+      if(wasGoal){
+        // Fase 5 (NEXT-GEN ripresa): dopo il gol si riparte dal centro — palla a centrocampo,
+        //   squadre richiamate nelle proprie metà (preset midfield), poi il gioco riprende naturale.
+        //   Riusa drift+lerp palla (sistemi già testati) anziché una nuova fase → zero rischio state-machine.
+        ballTargetRef.current={x:50,y:50};setBallPos({x:50,y:50});
+        driftTargetsRef.current=DRIFT_PRESETS.midfield;
+        setFloatGoal({text:"⚽ Si riparte dal centro",col:"#ffffff",key:Date.now()});
+        setPhase("playing");
+      }else if(didSucceed&&Math.random()<0.25){
         setFloatGoal({text:"⚡ CATENA!",col:"#f59e0b",key:Date.now()});
         setPhase("hl_intro");
       }else{setPhase("playing");}
