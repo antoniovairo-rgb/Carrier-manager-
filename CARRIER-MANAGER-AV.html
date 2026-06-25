@@ -2453,6 +2453,19 @@ function getStartPos(sit){
   const sz=sit?.startZone||{x:[55,72],y:[30,70]};
   return{x:rng(sz.x[0],sz.x[1]),y:rng(sz.y[0],sz.y[1])};
 }
+// Durata DINAMICA del post-highlight (ms) — funzione pura di esito+azione (deterministica, testabile).
+// Garantisce che la palla atterri (archi ≤1.2s) e lo slow-mo (1.6s) si concluda, + tempo di lettura.
+// Esposta a window.__CPM_RESULT_DUR in test mode per la validazione della durata.
+function postHighlightDuration(outcome,action){
+  const k=outcome&&outcome.outKey, lbl=((action&&action.label)||"").toLowerCase();
+  let d=2000; // base: copre arco breve + slow-mo + lettura
+  if(k==="goal")d=3000;                                          // celebrazione gol
+  else if(/cucchiaio|pallonetto|chip|panenka|rovesciat|sforbiciat/.test(lbl))d=2700; // conclusioni lente/acrobatiche
+  else if(k==="miss_easy"||k==="goal_against")d=2400;            // errore/gol subito: lascia leggere
+  else if(k==="assist"||k==="miss")d=2300;
+  else if(k==="recovery"||k==="save"||k==="intercept"||k==="through")d=2000;
+  return d;
+}
 // Transfer credibility score: prevents absurd offers (U18 → elite clubs)
 function transferCredibility(playerOvr,playerSeasons,playerMatches,clubPrestige,currentPrestige){
   // Gap between club prestige and player level
@@ -2664,7 +2677,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.84.0"; // Sprint 4.84.0: validazione cat.4 (movimenti) + cat.6 (stato finale) — hook __CPM_RESOLVE/__CPM_OUTCOME/__CPM_MOVES (gated ?cpmtest=1) + reset chaining; + workflow CI GitHub Actions
+const GAME_VERSION="4.85.0"; // Sprint 4.85.0: post-highlight Fase 1 — durata DINAMICA (postHighlightDuration, no piu 1s fisso) + overlay esito non occludente + movimento giocatori senza twitch casuale (difensori tengono la linea)
 const SAVE_VERSION=6;
 // Sprint ENV — ambiente rilevato automaticamente dal runtime (non gestito manualmente).
 // PRODUCTION = deploy GitHub Pages (*.github.io). Tutto il resto (staging githack, locale, localhost) = TEST.
@@ -9300,10 +9313,13 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
             if(pl.team==="ref")return pl;
             if(pl.team==="home"){
               const s=dt[Math.min(idx,dt.length-1)];
-              return{...pl,x:clamp(pl.x+(s.x-pl.x)*0.04+(Math.random()-0.5)*0.6,2,98),y:clamp(pl.y+(s.y-pl.y)*0.04+(Math.random()-0.5)*0.6,2,98)};
+              // 4.85.0: micro-jitter ridotto (era 0.6) → movimento verso lo slot, niente twitch casuale
+              return{...pl,x:clamp(pl.x+(s.x-pl.x)*0.04+(Math.random()-0.5)*0.2,2,98),y:clamp(pl.y+(s.y-pl.y)*0.04+(Math.random()-0.5)*0.2,2,98)};
             }
-            // Away: jitter leggero senza slot fisso
-            return{...pl,x:clamp(pl.x+(Math.random()-0.5)*0.7,2,98),y:clamp(pl.y+(Math.random()-0.5)*0.7,2,98)};
+            // Away (difensori): mantengono la LINEA verso lo slot di formazione, jitter minimo (era 0.7, puro random)
+            const as=FORMATION_AWAY[Math.min(Math.max(idx-11,0),FORMATION_AWAY.length-1)]||{};
+            const asx=as[0]!=null?as[0]:pl.x, asy=as[1]!=null?as[1]:pl.y;
+            return{...pl,x:clamp(pl.x+(asx-pl.x)*0.03+(Math.random()-0.5)*0.2,2,98),y:clamp(pl.y+(asy-pl.y)*0.03+(Math.random()-0.5)*0.2,2,98)};
           }));
         }
         // Heat map: sample player position every 4 ticks
@@ -9638,10 +9654,13 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     handleAction(a);
   },[phase,handleAction]);// eslint-disable-line
 
-  // Auto-continue 1s after action result
+  // Post-highlight: durata DINAMICA in base ad azione/esito (4.85.0) — sostituisce il fisso 1s che
+  // tagliava palla in volo e slow-mo. Sempre ≥ durata arco/slow-mo + tempo di lettura dell'esito.
   useEffect(()=>{
     if(phase!=="hl_result"||paused)return;
-    const t=setTimeout(handleContinue,1000);
+    const dur=postHighlightDuration(outcome,chosenAct);
+    if(typeof window!=='undefined'&&/[?&]cpmtest=1\b/.test(window.location.search||""))window.__CPM_RESULT_DUR=dur;// VISUAL-TEST
+    const t=setTimeout(handleContinue,dur);
     return()=>clearTimeout(t);
   },[phase,hlIdx,paused]);// eslint-disable-line
 
@@ -9815,7 +9834,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                 onWalkoutDone={()=>setPhase("playing")}/>}
               {phase==="walkout"&&!render3D&&<WalkoutOverlay homeTeam={homeTeamObj} homeRoster={homeRoster} awayRoster={awayRoster} opponent={awayTeamObj} isHome={isMatchHome} matchWeek={player.week} onDone={()=>{if(benchStart)setOnBench(true);setPhase("playing");}} weather={weather} isDerbyMatch={!!drby} isBigGame={mw>=7} heroJerseyNum={player.jerseyNum||10} playerName={player.name} benchStart={benchStart} isEuroMatch={context==="euro_group"||context==="euro_ko"} euroCompetition={player.euro?.competition||null} euroRound={(context==="euro_group")?`Giornata ${(player.euro?.groupResults||[]).length+1}/6`:(context==="euro_ko")?({r16:"Ottavi di Finale",sf:"Semifinale",final:"Finale"}[player.euro?.phase]||"KO"):null}/>}
               {screenFlash&&<div style={{position:"absolute",inset:0,background:screenFlash.col,zIndex:20,pointerEvents:"none",animation:`fadeFlash ${screenFlash.dur}ms ease-out forwards`}}/>}
-              {floatGoal&&<div key={floatGoal.key} style={{position:"absolute",top:"30%",left:0,right:0,textAlign:"center",fontSize:22,fontWeight:900,color:floatGoal.col,textShadow:"0 0 24px currentColor",animation:"floatUp 1.4s ease-out forwards",zIndex:21,pointerEvents:"none"}}>{floatGoal.text}</div>}
+              {floatGoal&&<div key={floatGoal.key} style={{position:"absolute",top:"8%",left:0,right:0,textAlign:"center",fontSize:22,fontWeight:900,color:floatGoal.col,textShadow:"0 0 24px currentColor",animation:"floatUp 1.4s ease-out forwards",zIndex:21,pointerEvents:"none"}}>{floatGoal.text}</div>}
               {/* Sprint 97 — pressure border */}
               {momentum<=25&&show3D&&<div style={{position:"absolute",inset:0,zIndex:2,pointerEvents:"none",borderRadius:4,animation:"pressureBorderRed 1.2s ease-in-out infinite"}}/>}
               {momentum>=75&&show3D&&<div style={{position:"absolute",inset:0,zIndex:2,pointerEvents:"none",borderRadius:4,animation:"pressureBorderHome 1.4s ease-in-out infinite","--ph-col":scoreHomeCol||homeKitCol||"#2563eb"}}/>}
