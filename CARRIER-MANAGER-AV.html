@@ -2677,7 +2677,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.93.0"; // Fase 2 Sprint 2 (Relazioni staff 9.3): assistantCoachRel ora ha effetto reale (±~12% efficacia training) ed è dinamico (cresce col lavoro + rating); teamChemistry reagisce ai risultati (vittoria +2/sconfitta -2); didascalie effetto nel profilo. fitnessCoachRel/teamChemistry avevano già effetti (fatica/forma). + Sprint 1.
+const GAME_VERSION="4.94.0"; // Fase 2 Sprint 3 (Infortuni 9.6): il preparatore (fitnessCoachRel) ora conta durante l'infortunio — riduce il rischio ricaduta (fino a -12.5%) e può accelerare la riabilitazione di una settimana; mostrato nella card infortunio. Il resto di §9.6 (gravità/tempi/recoveryPct/rientro graduale/relapse) era già presente. + Sprint 1/2.
 const SAVE_VERSION=6;
 // Sprint ENV — ambiente rilevato automaticamente dal runtime (non gestito manualmente).
 // PRODUCTION = deploy GitHub Pages (*.github.io). Tutto il resto (staging githack, locale, localhost) = TEST.
@@ -13894,7 +13894,9 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     const wkRem=Math.max(0,p.injuryWeeks||0);
     const orig=Math.max(1,p.originalInjuryWeeks||p.injuryWeeks||1);
     const sevW={lieve:0.10,medio:0.18,grave:0.28}[p.injurySeverity||"medio"]||0.18;
-    return clamp(sevW+0.45*(wkRem/orig),0.08,0.85);
+    // §9.6 × 9.3: un buon preparatore (fitnessCoachRel) gestisce la riabilitazione → riduce il rischio ricaduta (fino a -0.125)
+    const fitProt=clamp(((p.fitnessCoachRel||50)-50)/400,0,0.125);
+    return clamp(sevW+0.45*(wkRem/orig)-fitProt,0.05,0.85);
   };
   const handleForceReturn=()=>{
     const relapse=Math.random()<injuryRelapseRisk(player);
@@ -15079,9 +15081,13 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
           setTimeout(()=>notify("😰 Ricaduta! Torna in stop per un'altra settimana.",TH.danger),300);
           return{...updP,week:(p.week||1)+1,weekLived:false,sessionsThisWeek:0,sessionLog:[],trainingStreak:0,lastTrainingType:null,weeklyFocusType:null,injuryWeeks:1,injured:true,justRecovered:false,fatigue:Math.max(0,baseFat-8),form:naturalForm};
         }
-        const recovAdv=p.injuryWeeks-1<=0;
         const _fatRecInj=12+Math.round(((p.fitnessCoachRel||50)-50)/10); // Sprint D2: range 7-17, default 12
-        return{...updP,week:(p.week||1)+1,weekLived:false,sessionsThisWeek:0,sessionLog:[],trainingStreak:0,lastTrainingType:null,weeklyFocusType:null,injuryWeeks:p.injuryWeeks-1,injured:!recovAdv,...(recovAdv?{injuryType:null,injurySeverity:null,justRecovered:true,returnPenaltyWeeks:2}:{justRecovered:false}),fatigue:Math.max(0,baseFat-_fatRecInj),form:naturalForm};
+        // §9.6 × 9.3: un preparatore di alto livello può accelerare la riabilitazione di una settimana
+        const _rehabBoost=(p.injuryWeeks||0)>=2&&Math.random()<clamp(((p.fitnessCoachRel||50)-55)/250,0,0.18);
+        if(_rehabBoost)setTimeout(()=>notify("💪 Il preparatore accelera la riabilitazione: −1 settimana!",TH.success),350);
+        const _newIW=Math.max(0,(p.injuryWeeks||0)-(_rehabBoost?2:1));
+        const recovAdv=_newIW<=0;
+        return{...updP,week:(p.week||1)+1,weekLived:false,sessionsThisWeek:0,sessionLog:[],trainingStreak:0,lastTrainingType:null,weeklyFocusType:null,injuryWeeks:_newIW,injured:!recovAdv,...(recovAdv?{injuryType:null,injurySeverity:null,justRecovered:true,returnPenaltyWeeks:2}:{justRecovered:false}),fatigue:Math.max(0,baseFat-_fatRecInj),form:naturalForm};
       }
       // Sprint 161: auto-training when user didn't visit the Training tab
       let _autoFatD=0,_didAutoTrain=false;
@@ -16667,6 +16673,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
             <div style={{height:6,background:`${TH.txRed}22`,borderRadius:3,overflow:"hidden"}}>
               <div style={{height:"100%",width:`${recPct}%`,background:recPct>=80?"#16a34a":recPct>=40?"#f97316":"#ef4444",borderRadius:3,transition:"width .4s"}}/>
             </div>
+            {(player.fitnessCoachRel||50)>=65&&<div style={{fontSize:9,color:"#16a34a",marginTop:5}}>💪 Preparatore ({player.fitnessCoachRel}) — riabilitazione seguita: rischio ricaduta ridotto, possibile recupero anticipato.</div>}
             {(player.injuryWeeks||0)>=2&&(
               <div style={{marginTop:10,paddingTop:10,borderTop:`1px solid ${TH.bdRed}`}}>
                 {!forceReturnConfirm?(
