@@ -2677,7 +2677,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="5.02.0"; // ENGINE-REFACTOR Fase 2 (AI tattica continua): i giocatori off-ball hanno un obiettivo per RUOLO che legge la palla ogni frame — attaccanti con corse differenziate (primo/secondo palo/profondità) che intensificano con l'avanzare della palla, centrocampisti che offrono linee di passaggio attorno al portatore. Meno "zombie", più motivazione calcistica. Puramente visivo. + Fase 1 (Intent→Decision COLLEGATO): l'esecuzione (variante) di tiri-da-terra e cross è ora DECISA dal Decision Engine dagli attributi/pressione/contesto (seed stabile → deterministico, niente flicker), non più dalle label delle situation. Invarianti aeree (testa/volée) intatte. Primo taglio dell'accoppiamento Situation→animazione. Fase 0: aggiunto il DECISION ENGINE (decideExecution) — keystone che, data un'INTENZIONE + contesto (attributi/pressione/posizione/meteo/morale/...) + casualità controllata, decide ESECUZIONE ed ESITO. Validato su migliaia di contesti (esiti vari e coerenti, 0 impossibili). Inerte (non ancora ricablato), come il motore timeline. + CINE-TL Fase 2 (executor): in gioco reale le conclusioni di TIRO sono precedute dalla COSTRUZIONE dell'azione (build-up) — palla e attori seguono la timeline beat-per-beat, poi parte la conclusione collaudata. Bypass in gate-mode (?cpmtest=1 → conclusione immediata → 9 check identici). "Il tiro non compare più dal nulla". + Fase 1: motore di TIMELINE — buildHLTimeline genera per ogni pattern una sequenza di micro-eventi calcistici (chi ha la palla, chi riceve/corre, difensori, n° reali passaggi, traiettoria) + validateHLTimeline che impone le invarianti (possesso continuo, no teletrasporti, no cambi possesso ingiustificati, testa⇐cross). Validato logicamente su 650 casi. NON ancora collegato al renderer (Fase 2). + CINE-APPROACH.
+const GAME_VERSION="5.03.0"; // FIX match-engine: (1) RIGORE/PUNIZIONE — niente pressing/corse/smarcamenti, i giocatori restano schierati fuori area (basta ammucchiate sul dischetto); (2) BOOMERANG — a fine azione la palla resta dove l'azione l'ha lasciata (rete/fuori/compagno), non viene più richiamata verso l'eroe. + Fase 2 (AI tattica continua): i giocatori off-ball hanno un obiettivo per RUOLO che legge la palla ogni frame — attaccanti con corse differenziate (primo/secondo palo/profondità) che intensificano con l'avanzare della palla, centrocampisti che offrono linee di passaggio attorno al portatore. Meno "zombie", più motivazione calcistica. Puramente visivo. + Fase 1 (Intent→Decision COLLEGATO): l'esecuzione (variante) di tiri-da-terra e cross è ora DECISA dal Decision Engine dagli attributi/pressione/contesto (seed stabile → deterministico, niente flicker), non più dalle label delle situation. Invarianti aeree (testa/volée) intatte. Primo taglio dell'accoppiamento Situation→animazione. Fase 0: aggiunto il DECISION ENGINE (decideExecution) — keystone che, data un'INTENZIONE + contesto (attributi/pressione/posizione/meteo/morale/...) + casualità controllata, decide ESECUZIONE ed ESITO. Validato su migliaia di contesti (esiti vari e coerenti, 0 impossibili). Inerte (non ancora ricablato), come il motore timeline. + CINE-TL Fase 2 (executor): in gioco reale le conclusioni di TIRO sono precedute dalla COSTRUZIONE dell'azione (build-up) — palla e attori seguono la timeline beat-per-beat, poi parte la conclusione collaudata. Bypass in gate-mode (?cpmtest=1 → conclusione immediata → 9 check identici). "Il tiro non compare più dal nulla". + Fase 1: motore di TIMELINE — buildHLTimeline genera per ogni pattern una sequenza di micro-eventi calcistici (chi ha la palla, chi riceve/corre, difensori, n° reali passaggi, traiettoria) + validateHLTimeline che impone le invarianti (possesso continuo, no teletrasporti, no cambi possesso ingiustificati, testa⇐cross). Validato logicamente su 650 casi. NON ancora collegato al renderer (Fase 2). + CINE-APPROACH.
 const SAVE_VERSION=6;
 // Sprint ENV — ambiente rilevato automaticamente dal runtime (non gestito manualmente).
 // PRODUCTION = deploy GitHub Pages (*.github.io). Tutto il resto (staging githack, locale, localhost) = TEST.
@@ -7359,7 +7359,9 @@ function ThreeMatchView(props){
       const obx=ball.position.x,oby=ball.position.y,obz=ball.position.z;
       // ATE-2: durante arco BG usa destinazione 3D esatta + velocità sync con durata arco
       // 3DV-10: skip lerp x/z durante post-arco (deflect/cross_goal/in_net gestiscono x/z propri)
-      if(!hlPostArcType){const _btX=ballArcActive&&ballArcIsBG?ballArcTgtX:G2X(P.ballX||50);
+      // FIX boomerang: durante l'esito, una volta esaurito l'arco/post-arco la palla NON deve essere
+      //   richiamata verso ballPos (agganciato all'eroe) → resta dove l'azione l'ha lasciata (in rete, fuori, dal compagno).
+      if(!hlPostArcType&&!(isResult&&!ballArcActive)){const _btX=ballArcActive&&ballArcIsBG?ballArcTgtX:G2X(P.ballX||50);
        const _btZ=ballArcActive&&ballArcIsBG?ballArcTgtZ:G2Z(P.ballY||50);
        const _bak=ballArcActive&&ballArcIsBG?Math.min(1,aDt*(3.5/Math.max(ballArcDur,0.2))):ak;
        ball.position.x+=(_btX-ball.position.x)*_bak;ball.position.z+=(_btZ-ball.position.z)*_bak;}
@@ -7601,6 +7603,8 @@ function ThreeMatchView(props){
         // Tutto puramente visivo (offset sul target del lerp): lo stato di gioco (matchPlayers) resta intatto → zero save-risk.
         // Deterministico (nessun RNG/now): la repulsione è calcolata sui target correnti → niente "ammucchiate", niente oscillazioni.
         const _bGX=P.ballX||50,_bGY=P.ballY||50,_lineShift=clamp((_bGX-50)*0.18,-9,9);
+        // FIX rigore/punizione: su un set-piece i giocatori NON pressano/corrono — restano schierati fuori area.
+        const _setPiece=isHL&&(P.hlType==="penalty"||P.hlType==="freekick");
         let _hxg=P.playerX||50,_hyg=P.playerY||50;const _pat=P.hlPattern||"";
         // CINE-APPROACH (4.96.0): durante l'esito l'eroe "entra" nell'azione — un breve passo verso palla/porta
         //   invece di colpire da fermo. Sincronizzato al gesto (actT → rallenta col bullet-time), additivo,
@@ -7624,15 +7628,17 @@ function ThreeMatchView(props){
           if(_li>=1&&_li<=4)tx+=_lineShift; else if(_li>=5&&_li<=7)tx+=_lineShift*0.6; else tx+=_lineShift*0.3;
           // pressing: i più vicini chiudono sulla palla
           const dxb=_bGX-src.x,dyb=_bGY-src.y,db=Math.hypot(dxb,dyb);
-          if(db<24&&db>1.5){const press=clamp((24-db)/24,0,1)*1.5;tx+=dxb/db*press;ty+=dyb/db*press;}
+          if(!_setPiece&&db<24&&db>1.5){const press=clamp((24-db)/24,0,1)*1.5;tx+=dxb/db*press;ty+=dyb/db*press;}
           // ENGINE Fase 2 (AI tattica continua): obiettivo per RUOLO che legge la palla ogni frame.
           //   ATT → attaccano lo spazio con corse differenziate (primo palo/secondo palo/profondità) man mano
           //   che la palla avanza; CEN → offrono una linea di passaggio attorno al portatore. Deterministico.
-          const _adv=clamp((_bGX-45)/45,0,1);// quanto la palla è avanzata in zona offensiva home
-          if(_hm&&_li>=8){const _postY=_li===8?40:_li===9?60:50;tx+=clamp((_bGX+16)-src.x,-4,14)*0.35*(_adv+0.3);ty+=(_postY-src.y)*0.10*_adv;}
-          else if(_hm&&_li>=5&&_li<=7){const _supX=_bGX+(_li===5?-9:_li===7?5:-2),_supY=_bGY+(_li===5?-9:_li===7?9:0);tx+=(_supX-src.x)*0.07;ty+=(_supY-src.y)*0.05;}
+          //   Sospeso sui set-piece (rigore/punizione): i giocatori restano schierati, niente corse in area.
+          if(!_setPiece){const _adv=clamp((_bGX-45)/45,0,1);// quanto la palla è avanzata in zona offensiva home
+            if(_hm&&_li>=8){const _postY=_li===8?40:_li===9?60:50;tx+=clamp((_bGX+16)-src.x,-4,14)*0.35*(_adv+0.3);ty+=(_postY-src.y)*0.10*_adv;}
+            else if(_hm&&_li>=5&&_li<=7){const _supX=_bGX+(_li===5?-9:_li===7?5:-2),_supY=_bGY+(_li===5?-9:_li===7?9:0);tx+=(_supX-src.x)*0.07;ty+=(_supY-src.y)*0.05;}
+          } else if(tx>80){tx=72-(_li>=8?0:4);}// set-piece: sgombera l'area (solo battitore + portiere restano dentro)
           // CINE-4: smarcamenti pre-action — compagni verso porta, avversari stringono sull'eroe
-          if(isHL&&preActionT>=0){
+          if(!_setPiece&&isHL&&preActionT>=0){
             const _pt=clamp(preActionT/1.5,0,1),_isAtt=_li>=8,_isMid=_li>=5&&_li<=7;
             if(_hm){if(/CROSS|HEADER|CUTBACK/.test(_pat)){if(_isAtt)tx+=_pt*9;else if(_isMid)tx+=_pt*3.5;}
               else if(/SHOT|ONE_ON_ONE/.test(_pat)){if(_isAtt){ty+=(_li===8?-1:1)*_pt*7;tx+=_pt*2;}else if(_isMid)tx+=_pt*2.5;}
