@@ -2677,7 +2677,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.97.0"; // CINE-TL Fase 1 (cambio paradigma highlight): motore di TIMELINE — buildHLTimeline genera per ogni pattern una sequenza di micro-eventi calcistici (chi ha la palla, chi riceve/corre, difensori, n° reali passaggi, traiettoria) + validateHLTimeline che impone le invarianti (possesso continuo, no teletrasporti, no cambi possesso ingiustificati, testa⇐cross). Validato logicamente su 650 casi. NON ancora collegato al renderer (Fase 2). + CINE-APPROACH.
+const GAME_VERSION="4.98.0"; // CINE-TL Fase 2 (executor): in gioco reale le conclusioni di TIRO sono precedute dalla COSTRUZIONE dell'azione (build-up) — palla e attori seguono la timeline beat-per-beat, poi parte la conclusione collaudata. Bypass in gate-mode (?cpmtest=1 → conclusione immediata → 9 check identici). "Il tiro non compare più dal nulla". + Fase 1: motore di TIMELINE — buildHLTimeline genera per ogni pattern una sequenza di micro-eventi calcistici (chi ha la palla, chi riceve/corre, difensori, n° reali passaggi, traiettoria) + validateHLTimeline che impone le invarianti (possesso continuo, no teletrasporti, no cambi possesso ingiustificati, testa⇐cross). Validato logicamente su 650 casi. NON ancora collegato al renderer (Fase 2). + CINE-APPROACH.
 const SAVE_VERSION=6;
 // Sprint ENV — ambiente rilevato automaticamente dal runtime (non gestito manualmente).
 // PRODUCTION = deploy GitHub Pages (*.github.io). Tutto il resto (staging githack, locale, localhost) = TEST.
@@ -6833,7 +6833,22 @@ function validateHLTimeline(tl,hl){
   const req=need[hl&&hl.pattern]; if(req&&passes<req)v.push(`pattern ${hl.pattern}: ${passes} passaggi < ${req} richiesti`);
   return v;
 }
-if(typeof window!=='undefined'){window.buildHLTimeline=buildHLTimeline;window.validateHLTimeline=validateHLTimeline;}
+// Risolve la timeline in posizioni concrete per beat (coord di gioco 0..100) — consumato dall'executor render-loop.
+function resolveTimeline(tl){
+  const pos={}; Object.keys(tl.actors||{}).forEach(k=>pos[k]=tl.actors[k].slice());
+  const res=(ref)=>ref&&ref.pt?ref.pt.slice():(pos[ref]?pos[ref].slice():null);
+  const out=[];
+  (tl.beats||[]).forEach(b=>{
+    const from=res(b.ball.from);
+    const before={}; Object.keys(pos).forEach(k=>before[k]=pos[k].slice());
+    (b.moves||[]).forEach(m=>{pos[m.who]=m.to.slice();});
+    const after={}; Object.keys(pos).forEach(k=>after[k]=pos[k].slice());
+    const to=res(b.ball.to);
+    out.push({tag:b.tag,dur:b.dur,kind:b.ball.kind,from,to,before,after});
+  });
+  return out;
+}
+if(typeof window!=='undefined'){window.buildHLTimeline=buildHLTimeline;window.validateHLTimeline=validateHLTimeline;window.resolveTimeline=resolveTimeline;}
 function ThreeMatchView(props){
   const {playerX,playerY,homeCol,oppCol,allPlayers,homeClub,heroKitCol,
     stadiumHomeCol,stadiumAwayCol,stadiumStyle=0,ballX,ballY,
@@ -7171,6 +7186,19 @@ function ThreeMatchView(props){
     let camHL=0,bf=0;const camLook=new THREE.Vector3(10,1,0);
     // Sprint 3D-7: animazione one-shot del protagonista all'ingresso dell'esito (hl_result)
     let actT=0,actType=null,prevPhase="";
+    // CINE-TL Fase 2: executor della timeline (build-up dell'azione prima della conclusione).
+    let tlOn=false,tlT=0,tlSeg=null,tlMap=null,tlBuildN=0,fireConclusion=null;
+    const _cineTest=(typeof window!=='undefined'&&/[?&]cpmtest=1\b/.test((window.location&&window.location.search)||""));
+    // mappa attori astratti (HERO/MATE*/DEF*/GK/OPP) → mesh reali più vicini all'eroe
+    const mapCineActors=(tl)=>{
+      const Pp=propsRef.current,all=Pp.allPlayers||[],pls=sr.current.players;
+      const hx=hero.position.x,hz=hero.position.z,home=[],away=[];
+      pls.forEach((pp,i)=>{const s=all[i]||{};if(s.gk)return;const d=Math.hypot(pp.mesh.position.x-hx,pp.mesh.position.z-hz);(s.team==='away'?away:home).push({m:pp.mesh,d});});
+      home.sort((a,b)=>a.d-b.d);away.sort((a,b)=>a.d-b.d);
+      const map={HERO:hero,GK:awayGkMesh||null};let hi=0,ai=0;
+      Object.keys(tl.actors||{}).forEach(id=>{if(id==='HERO'||id==='GK')return;if(id[0]==='M')map[id]=(home[hi++]||{}).m||null;else map[id]=(away[ai++]||{}).m||null;});
+      return map;
+    };
     let oppActType=null,oppActT=0,oppMesh=null,oppDiveDir=1; // CIN-2: animazione reazione avversario
     let hlPostArcT=-1,hlPostArcType=null,hlPostVZ=0; // 3DV-9: animazione post-arco
     let heroPostT=-1,heroPostType=null; // 3DV-13: reazione eroe post-azione fallita
@@ -7378,7 +7406,7 @@ function ThreeMatchView(props){
       // transizioni di fase: trigger animazione esito + gestione buffer/replay
       const _curPh=P.matchPhase;
       if(_curPh!==prevPhase){
-        if(_curPh==="hl_result"){const t=P.hlType;actType=(t==="header"||t==="tackle"||t==="dribble"||t==="cross"||t==="penalty"||t==="freekick"||t==="pass"||t==="build")?t:(!t)?"build":"shot";actT=0;// CINE-VAR: build ora ha animazione propria; null type → "build" (gesto neutro)
+        if(_curPh==="hl_result"){fireConclusion=()=>{const P=propsRef.current;const t=P.hlType;actType=(t==="header"||t==="tackle"||t==="dribble"||t==="cross"||t==="penalty"||t==="freekick"||t==="pass"||t==="build")?t:(!t)?"build":"shot";actT=0;// CINE-VAR: build ora ha animazione propria; null type → "build" (gesto neutro)
           // 3DV-11: archi HL con destinazione esplicita verso porta avversaria (+x), non posizione eroe
           const _rz=(Math.random()-.5),_side=(P.playerY||50)<50?-1:1;// _side: lato attaccante — usato da cross, shot_curled, header_far_post
           if(t==="penalty"){// Panenka/cucchiaio → arco molto alto; rigore normale → arco standard
@@ -7440,10 +7468,22 @@ function ThreeMatchView(props){
           } else if(t==="freekick"){// 3DV-4: barriera — i 3 avversari più vicini saltano
             const wallMs=[];sr.current.players.forEach((pp,ii)=>{const src=(P.allPlayers||[])[ii];if(src&&src.team==='away'&&!src.gk){wallMs.push({m:pp.mesh,d:Math.hypot(pp.mesh.position.x-hero.position.x,pp.mesh.position.z-hero.position.z)});}});
             wallMs.sort((a,b)=>a.d-b.d);wallMs.slice(0,3).forEach(w=>{w.m._wallJumpT=0;});
-          }} // QW-A: contact flash al kick/header
+          }}; // QW-A: contact flash — fine arrow fireConclusion (CINE-TL: conclusione ora richiamabile)
+          // CINE-TL Fase 2: in GIOCO REALE anteponi la COSTRUZIONE (build-up) dell'azione, poi la conclusione.
+          //   Abilitato per le conclusioni di TIRO (il tiro non deve "comparire dal nulla"). In test (?cpmtest=1)
+          //   salta il build-up → la conclusione parte subito → i check del gate restano identici.
+          let _tlc=null;
+          if(!_cineTest&&P.hlType==="shot"&&typeof buildHLTimeline==="function"){
+            try{_tlc=buildHLTimeline({type:P.hlType,pattern:P.hlPattern,variant:P.hlVariant},{x:P.playerX,y:P.playerY,reward:P.hlReward,support:P.support,nearby_def:P.nearby_def});}catch(e){_tlc=null;}
+          }
+          if(_tlc&&_tlc.beats.length>1&&typeof resolveTimeline==="function"){
+            tlSeg=resolveTimeline(_tlc);tlBuildN=tlSeg.length-1;tlMap=mapCineActors(_tlc);tlOn=tlBuildN>0;tlT=0;
+            if(!tlOn)fireConclusion();
+          } else { fireConclusion(); }
+        }
         if(_curPh==="hl_intro"||(_curPh==="hl_move"&&prevPhase==="playing")){repCount=0;repHead=0;replayDone=false;}
         if(_curPh!=="hl_result"&&replaying){replaying=false;setReplayOn(false);}
-        if(_curPh!=="hl_result"){hlPostArcT=-1;hlPostArcType=null;heroPostT=-1;heroPostType=null;gkSaveCelebT=-1;gkSaveMesh=null;hlInNetFlashed=false;hlPostVY=0;passTargetMesh=null;hlOutcomeVariant=null;}// reset post-arc
+        if(_curPh!=="hl_result"){hlPostArcT=-1;hlPostArcType=null;heroPostT=-1;heroPostType=null;gkSaveCelebT=-1;gkSaveMesh=null;hlInNetFlashed=false;hlPostVY=0;passTargetMesh=null;hlOutcomeVariant=null;tlOn=false;}// reset post-arco + executor timeline
         if(_curPh==="playing"||_curPh==="ended"||_curPh==="walkout"){preActionT=-1;
           // CINE-6: ripristina rete e portiere se si esce dall'esito
           if(sr.current.goalNet){const _gn=sr.current.goalNet;if(_gn._restX!==undefined)_gn.position.x=_gn._restX;_gn.material.opacity=0.14;}
@@ -7568,6 +7608,21 @@ function ThreeMatchView(props){
         for(let i=0;i<_players.length;i++){const t=_tg[i],pp=_players[i];if(!t||!pp)continue;
           animOne(pp.mesh,G2X(clamp(t.x+(t.rx||0),2,98)),G2Z(clamp(t.y+(t.ry||0),2,98)),aDt,ak,bx,bz);}
         animOne(hero,G2X(_hxg),G2Z(_hyg),aDt,ak,bx,bz);
+        // CINE-TL Fase 2: EXECUTOR — durante il build-up, palla e attori seguono fedelmente la timeline.
+        //   Guardato da dt>0 (frame congelati del gate intatti) + isResult. A build-up finito → fireConclusion().
+        if(tlOn&&dt>0&&isResult&&tlSeg){
+          tlT+=aDt;
+          let acc=0,bi=0; for(;bi<tlBuildN;bi++){if(tlT<acc+tlSeg[bi].dur)break;acc+=tlSeg[bi].dur;}
+          if(bi>=tlBuildN){const last=tlSeg[tlBuildN-1];ball.position.x=G2X(last.to[0]);ball.position.z=G2Z(last.to[1]);ball.position.y=0.65;tlOn=false;if(fireConclusion)fireConclusion();}
+          else{
+            const sg=tlSeg[bi],p=clamp((tlT-acc)/Math.max(sg.dur,0.01),0,1);
+            const _bxg=sg.from[0]+(sg.to[0]-sg.from[0])*p,_byg=sg.from[1]+(sg.to[1]-sg.from[1])*p;
+            ball.position.x=G2X(_bxg);ball.position.z=G2Z(_byg);
+            const _arcH=sg.kind==="cross"?4.2:sg.kind==="through"?0.35:(sg.kind==="pass"||sg.kind==="give")?1.0:0.0;
+            ball.position.y=0.65+Math.sin(p*Math.PI)*_arcH;
+            if(tlMap)Object.keys(sg.before).forEach(id=>{const m=tlMap[id];if(!m)return;const a=sg.before[id],b2=sg.after[id];animOne(m,G2X(a[0]+(b2[0]-a[0])*p),G2Z(a[1]+(b2[1]-a[1])*p),aDt,ak,ball.position.x,ball.position.z);});
+          }
+        }
         if(isHL&&preActionT>=0)preActionT+=dt; // CINE-4: avanza timer pre-action
         // CIN-2: reazione avversario — gk_dive (portiere), opp_stumble/opp_spin (difensore); si applica DOPO animOne per sovrascriverlo
         if(oppActType&&oppMesh){
