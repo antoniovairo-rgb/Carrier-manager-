@@ -2677,7 +2677,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.92.0"; // Fase 2 Sprint 1 (Vita dinamica 9.9): card "Voci di Mercato" settimanali in dashboard (generateMarketNews, seeded → stabile per settimana) con voce personale quando il giocatore è ambito. Additivo, nessun campo save. Risultati internazionali/record/derby erano già presenti. + NEXT-GEN A/B/C/D.
+const GAME_VERSION="4.93.0"; // Fase 2 Sprint 2 (Relazioni staff 9.3): assistantCoachRel ora ha effetto reale (±~12% efficacia training) ed è dinamico (cresce col lavoro + rating); teamChemistry reagisce ai risultati (vittoria +2/sconfitta -2); didascalie effetto nel profilo. fitnessCoachRel/teamChemistry avevano già effetti (fatica/forma). + Sprint 1.
 const SAVE_VERSION=6;
 // Sprint ENV — ambiente rilevato automaticamente dal runtime (non gestito manualmente).
 // PRODUCTION = deploy GitHub Pages (*.github.io). Tutto il resto (staging githack, locale, localhost) = TEST.
@@ -13340,7 +13340,9 @@ const TrainPanel=({player,setPlayer,notify})=>{
   const _plan=veryTired?["rec_completo","rec_attivo","rec_completo"]:highFat?[_t0,"rec_attivo","rec_completo"]:[_t0,_t1,_t0];
   const _recent=(player.matchHistory||[]).slice(-3);
   const _avgRating=_recent.length?_recent.reduce((s,m)=>s+(parseFloat(m.rating)||6.5),0)/_recent.length:6.5;
-  const _mult=(_avgRating>=7.5?1.20:_avgRating>=6.5?1.0:_avgRating>=5.5?0.88:0.75)*((player.form||60)>=75?1.10:(player.form||60)<=35?0.90:1.0)*((player.coachTrust||60)>=80?1.12:(player.coachTrust||60)>=65?1.0:0.92);
+  // Sprint 2 (9.3): il vice-mister (assistantCoachRel) affina il lavoro → modula l'efficacia del training (±~12%)
+  const _acR=player.assistantCoachRel||50;const _acMult=_acR>=75?1.12:_acR>=60?1.04:_acR<=35?0.90:1.0;
+  const _mult=(_avgRating>=7.5?1.20:_avgRating>=6.5?1.0:_avgRating>=5.5?0.88:0.75)*((player.form||60)>=75?1.10:(player.form||60)<=35?0.90:1.0)*((player.coachTrust||60)>=80?1.12:(player.coachTrust||60)>=65?1.0:0.92)*_acMult;
   const _dim=(sv)=>{const v=sv||60;return v>=92?0.04:v>=88?0.08:v>=84?0.14:v>=80?0.20:v>=75?0.28:v>=70?0.35:v>=65?0.45:0.55;};
   const _t0name=_TT[_t0]?.l||_t0;const _t1name=_TT[_t1]?.l||_t1;
   const _coachMsg=veryTired?"Sei a pezzi. Riposo assoluto — non si allena in queste condizioni.":highFat?`Stai spingendo troppo. Lavoro leggero su ${_t0name}, poi recupero totale.`:_avgRating>=7.5?`Stai giocando bene — intensifico su ${_t0name} e ${_t1name} per sfruttare questo momento.`:_avgRating<=5.5?`Dobbiamo migliorare. Doppio lavoro su ${_t0name} e poi ${_t1name}.`:`Questa settimana puntiamo su ${_t0name} e ${_t1name}. Segui il piano.`;
@@ -13355,8 +13357,9 @@ const TrainPanel=({player,setPlayer,notify})=>{
       else{const s=_TT[tid];if(!s)return;const pA=Math.min(0.85,_dim(ns[s.a])*_mult);const pB=Math.min(0.55,_dim(ns[s.b])*0.5*_mult);const gA=Math.random()<pA?1:0;const gB=Math.random()<pB?1:0;if(gA){ns[s.a]=clamp((ns[s.a]||60)+1,1,99);gained[s.a]=(gained[s.a]||0)+1;}if(gB){ns[s.b]=clamp((ns[s.b]||60)+1,1,99);gained[s.b]=(gained[s.b]||0)+1;}fatD+=10;newLog.push({id:s.id,e:s.e,l:s.l,col:s.col,gainA:gA,gainB:gB,statA:s.a,statB:s.b});}
     });
     setPlayer(p=>({...p,stats:ns,ovr:calcOvr(ns),fatigue:clamp((p.fatigue||0)+fatD,0,100),morale:clamp((p.morale||70)+morD,0,100),form:clamp((p.form||60)+formD,30,95),sessionsThisWeek:3,sessionLog:newLog,trainingStreak:(p.trainingStreak||0)+1,lastTrainingType:_plan[0],weeklyFocusType:_t0,
-      // Sprint D2: piccola crescita relazioni per settimana di allenamento
+      // Sprint D2 + Sprint 2 (9.3): piccola crescita relazioni per settimana di allenamento (ora include il vice-mister)
       fitnessCoachRel:clamp((p.fitnessCoachRel||50)+(Math.random()<0.3?1:0),0,100),
+      assistantCoachRel:clamp((p.assistantCoachRel||50)+(Math.random()<0.28?1:0),0,100),
       teamChemistry:clamp((p.teamChemistry||60)+(Math.random()<0.25?1:0),0,100)}));
     const gkeys=Object.keys(gained);
     notify(`✅ W.${week}: ${gkeys.length?gkeys.map(k=>`+${gained[k]} ${k}`).join(" · "):"nessuna crescita questa settimana"}`,gkeys.length?TH.success:TH.muted);
@@ -14438,7 +14441,10 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       const newDiary51=[...(p.diary||[]),..._md51].slice(-80);
       // Sprint 88: don't advance week if there are still unplayed euro/cup matches at the same week
       const _pendingOther=newCal.some(m=>m.week===(p.week||1)&&!m.played&&(m.type==="euro_group"||m.type==="euro"||(m.type==="cup"&&!_isCup)));
-      return{...p,stats:ns,ovr:newOvr,goals:(p.goals||0)+result.goals,assists:(p.assists||0)+result.assists,matches:(p.matches||0)+1,totalGoals:(p.totalGoals||0)+result.goals,totalAssists:(p.totalAssists||0)+result.assists,totalMatches:(p.totalMatches||0)+1,morale:clamp((p.morale||70)+moD,0,100),form:clamp((p.form||70)+formD,30,95),fatigue:postFatigue,...(newInjured?{injured:true,injuryWeeks,injuryType,injurySeverity,originalInjuryWeeks:injuryWeeks,returnPenaltyWeeks:0}:{}),week:_pendingOther?(p.week||1):(p.week||1)+1,weekLived:_pendingOther?true:false,returnPenaltyWeeks:newInjured?0:_pendingOther?(p.returnPenaltyWeeks||0):Math.max(0,(p.returnPenaltyWeeks||0)-1),log:[logE,...(p.log||[])].slice(0,60),matchHistory:newHistory,standings:newStandings,calendar:newCal,aiData:newAiData,...(newMilestoneIds.length>0?{milestones:[...(p.milestones||[]),...newMilestoneIds]}:{}),...cupUpdate2,diary:newDiary51,goalStreak:newGoalStreak,bestGoalStreak:newBestStreak,yellAccum:_finalYellAccum75,isSuspended:_susp75||false,seasonCards:_newSeasonCards75};
+      return{...p,stats:ns,ovr:newOvr,goals:(p.goals||0)+result.goals,assists:(p.assists||0)+result.assists,matches:(p.matches||0)+1,totalGoals:(p.totalGoals||0)+result.goals,totalAssists:(p.totalAssists||0)+result.assists,totalMatches:(p.totalMatches||0)+1,morale:clamp((p.morale||70)+moD,0,100),form:clamp((p.form||70)+formD,30,95),fatigue:postFatigue,...(newInjured?{injured:true,injuryWeeks,injuryType,injurySeverity,originalInjuryWeeks:injuryWeeks,returnPenaltyWeeks:0}:{}),week:_pendingOther?(p.week||1):(p.week||1)+1,weekLived:_pendingOther?true:false,returnPenaltyWeeks:newInjured?0:_pendingOther?(p.returnPenaltyWeeks||0):Math.max(0,(p.returnPenaltyWeeks||0)-1),log:[logE,...(p.log||[])].slice(0,60),matchHistory:newHistory,standings:newStandings,calendar:newCal,aiData:newAiData,...(newMilestoneIds.length>0?{milestones:[...(p.milestones||[]),...newMilestoneIds]}:{}),...cupUpdate2,diary:newDiary51,goalStreak:newGoalStreak,bestGoalStreak:newBestStreak,yellAccum:_finalYellAccum75,isSuspended:_susp75||false,seasonCards:_newSeasonCards75,
+        // Sprint 2 (9.3): le relazioni reagiscono al risultato — la chimica cresce con le vittorie e cala con le sconfitte; il vice-mister apprezza le buone prestazioni
+        teamChemistry:clamp((p.teamChemistry||60)+(result.won?2:result.drew?0:-2),0,100),
+        assistantCoachRel:clamp((p.assistantCoachRel||50)+((result.rating||6)>=7.5?1:(result.rating||6)<=5?-1:0),0,100)};
     });
     // Sprint 73: notify objective completions
     if(_objCompleted73.length)_objCompleted73.forEach((o,i)=>setTimeout(()=>notify(`🎯 ${o.label}!`,TH.success),700+i*1800));
@@ -17155,10 +17161,11 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
           {/* Sprint D2: Staff & Spogliatoio */}
           <Card style={{padding:"12px 14px"}}>
             <div style={{fontSize:10,fontWeight:700,color:TH.faint,textTransform:"uppercase",letterSpacing:1,marginBottom:10}}>Staff & Spogliatoio</div>
-            {[{l:"Preparatore",v:player.fitnessCoachRel||50,c:"#0891b2"},{l:"Vice-Mister",v:player.assistantCoachRel||50,c:"#7c3aed"},{l:"Chimica Squadra",v:player.teamChemistry||60,c:"#16a34a"}].map(it=>(
+            {[{l:"Preparatore",v:player.fitnessCoachRel||50,c:"#0891b2",fx:"💨 +recupero fatica"},{l:"Vice-Mister",v:player.assistantCoachRel||50,c:"#7c3aed",fx:"📈 +efficacia allenamento"},{l:"Chimica Squadra",v:player.teamChemistry||60,c:"#16a34a",fx:"✨ +forma & morale"}].map(it=>(
               <div key={it.l} style={{marginBottom:8}}>
                 <div style={{display:"flex",justifyContent:"space-between",fontSize:11,marginBottom:3}}><span style={{color:TH.muted,textTransform:"uppercase",letterSpacing:1}}>{it.l}</span><span style={{color:it.c,fontWeight:700}}>{it.v}</span></div>
                 <div style={{height:4,background:"#e2e8f0",borderRadius:3,overflow:"hidden"}}><div style={{height:"100%",width:`${it.v}%`,background:it.c,borderRadius:3,transition:"width .5s"}}/></div>
+                <div style={{fontSize:9,color:TH.faint,marginTop:2}}>{it.fx}</div>
               </div>
             ))}
           </Card>
