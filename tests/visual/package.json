@@ -5,10 +5,15 @@
   "description": "Browser/WebGL validation harness for CPM — verifica regia (camera sopra il prato, eroe/palla on-screen) su match reali via Playwright + hook ?cpmtest=1.",
   "type": "module",
   "scripts": {
+    "validate-situations": "node validate-situations.mjs",
+    "validate-situations:update-golden": "node validate-situations.mjs --update-golden",
     "test": "node run-3d-validation.mjs",
+    "force-all": "node run-force-all.mjs",
+    "selftest": "node run-golden.mjs --selftest",
     "setup": "npm install && npx playwright install chromium"
   },
   "dependencies": {
-    "playwright": "^1.48.0"
+    "playwright": "^1.48.0",
+    "pngjs": "^7.0.0"
   }
 }

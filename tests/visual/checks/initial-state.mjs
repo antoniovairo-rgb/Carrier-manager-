@@ -1,0 +1,47 @@
+/* CHECK 2 — VALIDAZIONE STATO INIZIALE (per-situation, su __CPM_STATE)
+   - giocatori dentro il campo · nessuna sovrapposizione · conteggi corretti
+   - possessore palla corretto · disposizione tattica coerente con la Situation */
+export default {
+  id: 'initial-state',
+  title: 'Stato iniziale',
+  scope: 'situation',
+  run({ sit, state }) {
+    const issues = [], warnings = [];
+    if (!state || !state.ok) return { pass: false, issues: ['__CPM_STATE non disponibile'], warnings };
+    const everyone = state.players.concat([state.hero]);
+
+    // a) [HARD] tutti dentro il campo (margine piccolo per arrotondamenti)
+    const M = -2, X = 102;
+    for (const p of everyone) if (p.x < M || p.x > X || p.y < M || p.y > X)
+      issues.push(`giocatore fuori campo (${p.team}/${p.role || '?'}) @ (${p.x},${p.y})`);
+    if (state.ball.x < M || state.ball.x > X || state.ball.y < M || state.ball.y > X)
+      issues.push(`palla fuori campo @ (${state.ball.x},${state.ball.y})`);
+
+    // b) [SOFT] sovrapposizioni: in un'azione viva i giocatori convergono (duelli, linea, mischia);
+    //    è un segnale cosmetico/transitorio e dipende dal drift → warning, non gate. Soglia stretta = stacking reale.
+    let stacks = 0;
+    for (let i = 0; i < everyone.length; i++) for (let j = i + 1; j < everyone.length; j++)
+      if (Math.hypot(everyone[i].x - everyone[j].x, everyone[i].y - everyone[j].y) < 0.4) stacks++;
+    if (stacks > 0) warnings.push(`${stacks} coppie di giocatori molto ravvicinate (<0.4u)`);
+
+    // c) [HARD] conteggi: 11 casa (10 in players + 1 hero) vs 11 avversari
+    const homeTot = state.counts.home + 1; // + hero
+    if (homeTot !== 11) issues.push(`giocatori casa = ${homeTot} (atteso 11)`);
+    if (state.counts.away !== 11) issues.push(`avversari = ${state.counts.away} (atteso 11)`);
+
+    // d) [HARD] possessore corretto via aggancio palla↔eroe (deterministico, indipendente dal drift):
+    //    offensiva → palla ai piedi dell'eroe; difensiva → palla NON sull'eroe (è sull'avversario)
+    const isDef = sit.type === 'def';
+    const dBallHero = Math.hypot(state.ball.x - state.hero.x, state.ball.y - state.hero.y);
+    if (!isDef && dBallHero > 8) issues.push(`Situation offensiva ma palla lontana dall'eroe (${dBallHero.toFixed(1)}u) — possesso non agganciato`);
+    if (isDef && dBallHero < 3) issues.push(`Situation difensiva ma palla sull'eroe (${dBallHero.toFixed(1)}u) — possesso avversario atteso`);
+
+    // e) [HARD] coerenza tattica iniziale: portieri nelle rispettive metà
+    const hgk = state.players.find(p => p.team === 'home' && p.gk);
+    if (hgk && hgk.x > 25) issues.push(`portiere casa fuori posizione difensiva @x=${hgk.x}`);
+    const agk = state.players.find(p => p.team === 'away' && p.gk);
+    if (agk && agk.x < 75) issues.push(`portiere avversario fuori posizione @x=${agk.x}`);
+
+    return { pass: issues.length === 0, issues, warnings };
+  }
+};

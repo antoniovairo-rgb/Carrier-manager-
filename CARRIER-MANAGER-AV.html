@@ -108,6 +108,16 @@
 const React=window.React;const ReactDOM=window.ReactDOM;const THREE=window.THREE;
 const{useState,useEffect,useRef,useCallback}=React;
 
+// VISUAL-TEST DETERMINISM (4.83.0): con ?cpmtest=1 sostituisce Math.random con un PRNG seedato
+// (mulberry32) → crowd texture / roster / animazioni riproducibili run-to-run. Prerequisito per la
+// golden visual regression. Eseguito PRIMA di ogni codice di gioco. Zero impatto in produzione.
+if(typeof window!=='undefined'&&/[?&]cpmtest=1\b/.test(window.location.search||"")){
+  (function(){var s=0x9e3779b9>>>0;Math.random=function(){s=(s+0x6D2B79F5)|0;var t=Math.imul(s^(s>>>15),1|s);t=(t+Math.imul(t^(t>>>7),61|t))^t;return((t^(t>>>14))>>>0)/4294967296;};
+    // reseed deterministico per indice: rende getStartPos (rng) e ogni random per-situation riproducibile a prescindere dalla storia del match
+    window.__CPM_RESEED=function(n){s=(0x9e3779b9^Math.imul((n>>>0)+1,0x6D2B79F5))>>>0;};})();
+  window.__CPM_FROZEN=false; // il render loop del match usa dt=0 quando true → frame statico deterministico
+}
+
 /* ========================================
    LIGHT THEME  (req #1)
 ======================================== */
@@ -2654,7 +2664,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.82.0"; // Sprint 4.82.0: validazione 3D Phase 2 — hook __CPM_FORCE_SIT/__CPM_LOAD_ALL (gated ?cpmtest=1) per forzare tutte le 179 SITUATIONS; harness force-all verifica camera-sopra-il-prato + zero errori runtime su ogni situation
+const GAME_VERSION="4.83.0"; // Sprint 4.83.0: framework di validazione automatica Situations — determinismo (seeded RNG + __CPM_RESEED + dt=0 freeze) + hook __CPM_STATE; quality gate modulare in tests/visual (npm run validate-situations)
 const SAVE_VERSION=6;
 // Sprint ENV — ambiente rilevato automaticamente dal runtime (non gestito manualmente).
 // PRODUCTION = deploy GitHub Pages (*.github.io). Tutto il resto (staging githack, locale, localhost) = TEST.
@@ -6990,6 +7000,28 @@ function ThreeMatchView(props){
         const c=camera.position;
         return { ok:true, camera:{x:+c.x.toFixed(2),y:+c.y.toFixed(2),z:+c.z.toFixed(2),abovePitch:c.y>0.5}, hero:proj(hero), ball:proj(ball), phase:(propsRef.current&&propsRef.current.matchPhase)||null, clock:(propsRef.current&&propsRef.current.matchClock)||null };
       };
+      // STATE probe (4.83.0): stato completo della scena per la validazione logica/tattica.
+      // I check lato harness combinano questo con i dati della Situation (che già conoscono).
+      window.__CPM_STATE=function(){
+        const ap=(propsRef.current&&propsRef.current.allPlayers)||[];
+        const projN=(pos)=>{const p=pos.clone().project(camera);return {x:+p.x.toFixed(3),y:+p.y.toFixed(3),z:+p.z.toFixed(3),onScreen:Math.abs(p.x)<=1.05&&Math.abs(p.y)<=1.05&&p.z<1};};
+        const w2g=(wx,wz)=>({x:+(wx+50).toFixed(1),y:+(wz/0.68+50).toFixed(1)}); // inverso di G2X/G2Z (G2X=(gx-50), G2Z=(gy-50)*0.68)
+        const mk=(mesh,team,role,gk)=>{const g=w2g(mesh.position.x,mesh.position.z);const n=projN(mesh.position);return {team,role:role||null,gk:!!gk,x:g.x,y:g.y,worldY:+mesh.position.y.toFixed(2),visible:mesh.visible!==false,onScreen:n.onScreen,ndc:{x:n.x,y:n.y}};};
+        const plist=players.map((pp,i)=>{const src=ap[i]||{};return mk(pp.mesh||pp,src.team||null,src.role,src.gk);});
+        const heroState=mk(hero,"home","hero",false);
+        const bg=w2g(ball.position.x,ball.position.z),bn=projN(ball.position);
+        let held=null,bd=1e9; plist.concat([heroState]).forEach(p=>{const d=Math.hypot(p.x-bg.x,p.y-bg.y);if(d<bd){bd=d;held=p;}});
+        const c2=camera.position; const pr0=propsRef.current||{};
+        return { ok:true, phase:pr0.matchPhase||null, clock:pr0.matchClock||null,
+          camera:{x:+c2.x.toFixed(2),y:+c2.y.toFixed(2),z:+c2.z.toFixed(2),abovePitch:c2.y>0.5},
+          // target LOGICI (deterministici con reseed) — distinti dalla posa mesh che lerpa
+          heroTarget:{x:pr0.playerX==null?null:+(+pr0.playerX).toFixed(1),y:pr0.playerY==null?null:+(+pr0.playerY).toFixed(1)},
+          ballTarget:{x:pr0.ballX==null?null:+(+pr0.ballX).toFixed(1),y:pr0.ballY==null?null:+(+pr0.ballY).toFixed(1)},
+          attackDir:1, goalHome:{gx:0}, goalAway:{gx:100}, // home attacca verso gx=100 (porta away)
+          players:plist, hero:heroState,
+          ball:{x:bg.x,y:bg.y,worldY:+ball.position.y.toFixed(2),onScreen:bn.onScreen,ndc:{x:bn.x,y:bn.y},heldBy:{team:held&&held.team,role:held&&held.role,dist:+bd.toFixed(1)}},
+          counts:{home:plist.filter(p=>p.team==="home").length,away:plist.filter(p=>p.team==="away").length,ref:plist.filter(p=>p.team==="ref").length,total:plist.length} };
+      };
     }
 
     // Loop: lerp verso le posizioni target dai prop (nessun re-render React)
@@ -7096,7 +7128,7 @@ function ThreeMatchView(props){
     };
     const loop=()=>{
       sr.current.raf=requestAnimationFrame(loop);
-      const now=performance.now(),dt=Math.min((now-last)/1000,0.05);last=now;
+      const now=performance.now();const _rdt=Math.min((now-last)/1000,0.05);last=now;const dt=(typeof window!=='undefined'&&window.__CPM_FROZEN)?0:_rdt;// VISUAL-TEST: dt=0 → anim/lerp congelati per screenshot golden deterministico
       const P=propsRef.current,all=P.allPlayers||[],k=Math.min(1,dt*6.5);
       // Sprint 3D-8a: slow-motion sull'esito — bullet-time sul tiro (0.28x) poi ritorno a 1x in ~1.6s.
       // Solo le animazioni rallentano (aDt/ak); la camera resta in tempo reale → movimento fluido.
@@ -8569,6 +8601,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     // forza la situation gi: posiziona l'eroe alla startZone e va DIRETTO al framing interattivo
     // (salta hl_intro, cinematico). Replica la transizione reale: mm===0 (e non lock) → hl_choose, altrimenti hl_move.
     window.__CPM_FORCE_SIT=(gi)=>{ const sit=SITUATIONS[gi]; if(!sit)return false;
+      if(window.__CPM_RESEED)window.__CPM_RESEED(gi); // start position deterministica per indice
       setOutcome(null); setChosenAct(null);
       setHlIdx(gi); setPPos(getStartPos(sit)||{x:58,y:50});
       const mm=cappedMM(sit); setPhase(mm===0&&!sit.lockMovement?"hl_choose":"hl_move"); return true; };
