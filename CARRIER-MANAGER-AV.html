@@ -2677,7 +2677,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.96.0"; // CINE-APPROACH: durante l'esito HL l'eroe "entra" nell'azione con un breve passo verso palla/porta (sincronizzato al gesto, additivo, auto-azzerante) invece di colpire da fermo — riduce il look statico/rigido delle conclusioni. Escluso sui set-piece. Puramente visivo (render-loop). + Fase 2 Sprint 1-4.
+const GAME_VERSION="4.97.0"; // CINE-TL Fase 1 (cambio paradigma highlight): motore di TIMELINE — buildHLTimeline genera per ogni pattern una sequenza di micro-eventi calcistici (chi ha la palla, chi riceve/corre, difensori, n° reali passaggi, traiettoria) + validateHLTimeline che impone le invarianti (possesso continuo, no teletrasporti, no cambi possesso ingiustificati, testa⇐cross). Validato logicamente su 650 casi. NON ancora collegato al renderer (Fase 2). + CINE-APPROACH.
 const SAVE_VERSION=6;
 // Sprint ENV — ambiente rilevato automaticamente dal runtime (non gestito manualmente).
 // PRODUCTION = deploy GitHub Pages (*.github.io). Tutto il resto (staging githack, locale, localhost) = TEST.
@@ -6713,6 +6713,127 @@ function deriveHL(sit,act){
   else if(type==="pass")pattern=/filtrante|imbucata|profond/.test(lbl)?"THROUGH_BALL":"COMBINATION";
   return{type,pattern,variant};
 }
+// ============================================================================
+// CINE-TL (4.97.0) — Motore di TIMELINE per gli highlight. FASE 1: logica + validazione.
+//   Un highlight NON è un'animazione unica: è una SEQUENZA di micro-eventi calcistici
+//   (chi ha la palla, chi riceve, chi corre, quali difensori intervengono, traiettoria,
+//   n° reali di passaggi/tocchi). Il pallone è sempre il protagonista: catena di possesso
+//   continua, niente teletrasporti, niente cambi di possesso ingiustificati.
+//   Coordinate di gioco 0..100; l'eroe attacca verso x=100. side∈{-1,+1} = lato di sviluppo.
+//   La FASE 2 collegherà il render-loop affinché palla/attori seguano fedelmente i beat.
+//   Beat = { tag, dur(s), ball:{from,to,kind}, moves:[{who,to:[x,y],run}] }
+//     from/to = id attore ('HERO','MATE1','DEF1','GK','OPP'...) oppure {pt:[x,y]}
+//     kind ∈ pass|give|carry|through|cross|shot|header|loose|dribble
+// ============================================================================
+function buildHLTimeline(hl,o){
+  o=o||{};
+  const sx=clamp(o.x!=null?o.x:38,6,94), sy=clamp(o.y!=null?o.y:50,8,92);
+  const side=o.side||(sy>=50?-1:1);
+  const reward=o.reward||null;
+  const type=hl.type, pat=hl.pattern, variant=hl.variant;
+  const GX=98, GY=50;
+  const A={}, beats=[];
+  const set=(id,x,y)=>{A[id]=[clamp(x,2,98),clamp(y,2,98)];};
+  const mv=(id,x,y,run)=>({who:id,to:[clamp(x,2,98),clamp(y,2,98)],run:!!run});
+  const B=(tag,dur,ball,moves)=>beats.push({tag,dur,ball,moves:moves||[]});
+  const GT=(dy)=>({pt:[GX,clamp(GY+dy,18,82)]});
+  const concl=(id,kind)=>B(kind==='header'?'header':'shot',kind==='header'?0.5:0.55,{from:id,to:GT(-side*7),kind:kind||'shot'},[]);
+  set('HERO',sx,sy); set('GK',GX+1,GY);
+  const headerFinish=(type==='header');
+  if(pat==='COMBINATION'){// DAI-E-VAI: 2 passaggi reali (passaggio + restituzione nello spazio)
+    set('MATE1',sx+9,clamp(sy+side*9,6,94)); set('DEF1',sx+14,sy);
+    B('pass',0.45,{from:'HERO',to:'MATE1',kind:'pass'},[mv('HERO',sx+15,sy,true),mv('DEF1',sx+12,clamp(sy+side*5,6,94))]);
+    B('control',0.25,{from:'MATE1',to:'MATE1',kind:'carry'},[mv('DEF1',sx+13,clamp(sy+side*7,6,94))]);
+    B('give',0.40,{from:'MATE1',to:'HERO',kind:'give'},[]);
+    B('control',0.20,{from:'HERO',to:'HERO',kind:'carry'},[mv('HERO',sx+19,sy,true)]);
+    concl('HERO','shot');
+  } else if(pat==='THROUGH_BALL'){// FILTRANTE: scatto compagno, linea che sale, palla che attraversa, arrivo
+    set('MATE1',sx+3,clamp(sy+side*6,6,94)); set('DEF1',sx+12,clamp(sy+side*3,6,94)); set('DEF2',sx+12,clamp(sy-side*3,6,94));
+    B('hold',0.40,{from:'HERO',to:'HERO',kind:'carry'},[mv('MATE1',sx+10,clamp(sy+side*8,6,94),true),mv('DEF1',sx+15,clamp(sy+side*4,6,94)),mv('DEF2',sx+15,clamp(sy-side*2,6,94))]);
+    B('through',0.50,{from:'HERO',to:{pt:[sx+26,clamp(sy+side*5,6,94)]},kind:'through'},[mv('MATE1',sx+26,clamp(sy+side*5,6,94),true)]);
+    B('control',0.25,{from:{pt:[sx+26,clamp(sy+side*5,6,94)]},to:'MATE1',kind:'carry'},[]);
+    concl('MATE1','shot');
+  } else if(pat==='DRIBBLE_SHOT'){// DRIBBLING: rallentamento, finta, difensore sbilanciato, accelerazione, tiro
+    set('DEF1',sx+8,sy);
+    B('slow',0.35,{from:'HERO',to:'HERO',kind:'carry'},[mv('HERO',sx+5,sy,true),mv('DEF1',sx+7,sy)]);
+    B('feint',0.30,{from:'HERO',to:'HERO',kind:'dribble'},[mv('HERO',sx+6,clamp(sy+side*3,6,94),true),mv('DEF1',sx+8,clamp(sy+side*5,6,94))]);
+    B('burst',0.40,{from:'HERO',to:'HERO',kind:'dribble'},[mv('HERO',sx+16,clamp(sy-side*2,6,94),true),mv('DEF1',sx+7,clamp(sy+side*6,6,94))]);
+    concl('HERO','shot');
+  } else if(pat==='NEAR_POST_CROSS'||pat==='FAR_POST_CROSS'||pat==='CUTBACK'){// CROSS: conduzione, 1v1, cross, inserimenti, marcature, conclusione
+    set('MATE1',sx+6,clamp(sy+side*4,6,94)); set('MATE2',sx+10,clamp(sy-side*8,6,94));
+    set('DEF1',sx+12,clamp(sy-side*2,6,94)); set('DEF2',sx+14,clamp(sy-side*6,6,94)); set('DEF3',sx+6,clamp(sy+side*9,6,94));
+    B('carry',0.40,{from:'HERO',to:'HERO',kind:'carry'},[mv('HERO',sx+10,clamp(sy+side*11,6,94),true),mv('DEF3',sx+11,clamp(sy+side*10,6,94))]);
+    B('beat',0.30,{from:'HERO',to:'HERO',kind:'dribble'},[mv('HERO',sx+15,clamp(sy+side*12,6,94),true),mv('DEF3',sx+13,clamp(sy+side*9,6,94))]);
+    const tgt=pat==='FAR_POST_CROSS'?[GX-9,clamp(GY-side*12,18,82)]:pat==='CUTBACK'?[GX-16,clamp(GY+side*3,18,82)]:[GX-6,clamp(GY+side*6,18,82)];
+    const fin=pat==='FAR_POST_CROSS'?'MATE2':'MATE1';
+    B('cross',0.55,{from:'HERO',to:{pt:tgt},kind:'cross'},[mv(fin,tgt[0],tgt[1],true),mv('DEF1',tgt[0]+1,tgt[1]+side*2),mv('DEF2',tgt[0]+1,tgt[1]-side*2)]);
+    B('control',0.18,{from:{pt:tgt},to:fin,kind:'carry'},[]);
+    concl(fin,headerFinish?'header':'shot');
+  } else if(pat==='HEADER_ATTACK'){// COLPO DI TESTA: la palla DEVE arrivare da un cross aereo (mai già sulla testa)
+    set('MATE1',sx-4,clamp(sy+side*16,6,94)); set('DEF1',sx+2,clamp(sy-side*2,6,94));
+    const tgt=[clamp(sx+8,8,96),sy];
+    B('run',0.40,{from:'MATE1',to:'MATE1',kind:'carry'},[mv('HERO',sx+6,sy,true),mv('DEF1',sx+5,clamp(sy-side*1,6,94))]);
+    B('cross',0.55,{from:'MATE1',to:{pt:tgt},kind:'cross'},[mv('HERO',tgt[0],tgt[1],true)]);
+    B('control',0.15,{from:{pt:tgt},to:'HERO',kind:'carry'},[]);
+    concl('HERO','header');
+  } else if(pat==='ONE_ON_ONE'){// 1v1: lancio che libera, uscita del portiere, conclusione
+    set('MATE1',sx-6,clamp(sy+side*5,6,94));
+    B('through',0.45,{from:'MATE1',to:{pt:[sx+8,sy]},kind:'through'},[mv('HERO',sx+8,sy,true)]);
+    B('control',0.20,{from:{pt:[sx+8,sy]},to:'HERO',kind:'carry'},[mv('GK',GX-6,GY)]);
+    B('carry',0.35,{from:'HERO',to:'HERO',kind:'carry'},[mv('HERO',GX-10,clamp(sy+side*2,6,94),true),mv('GK',GX-8,clamp(GY+side*1,20,80))]);
+    concl('HERO','shot');
+  } else if(pat==='TACKLE'){// CONTRASTO: avversario conduce, hero chiude, palla liberata, recupero
+    set('OPP',sx+4,sy); set('MATE1',sx-6,clamp(sy+side*6,6,94));
+    B('approach',0.35,{from:'OPP',to:'OPP',kind:'carry'},[mv('OPP',sx+1,sy,true),mv('HERO',sx+2,sy,true)]);
+    B('tackle',0.30,{from:'OPP',to:{pt:[sx+1,clamp(sy+side*2,6,94)]},kind:'loose'},[]);
+    B('win',0.25,{from:{pt:[sx+1,clamp(sy+side*2,6,94)]},to:'HERO',kind:'carry'},[]);
+    if(reward==='goal')concl('HERO','shot'); else B('layoff',0.35,{from:'HERO',to:'MATE1',kind:'pass'},[]);
+  } else if(pat==='PENALTY'||pat==='SET_PIECE'){// palla ferma battuta dall'eroe (regia dedicata, build-up minimo)
+    concl('HERO','shot');
+  } else if(pat==='EDGE_SHOT'){// TIRO DAL LIMITE: ricezione, tocco di preparazione, tiro (mai dal nulla)
+    set('MATE1',sx-8,clamp(sy+side*6,6,94)); set('DEF1',sx+5,sy);
+    B('pass',0.40,{from:'MATE1',to:'HERO',kind:'pass'},[mv('DEF1',sx+4,clamp(sy+side*2,6,94))]);
+    B('control',0.30,{from:'HERO',to:'HERO',kind:'carry'},[mv('HERO',sx+3,sy,true),mv('DEF1',sx+4,sy)]);
+    concl('HERO',headerFinish?'header':'shot');
+  } else {// BUILDUP / fallback: scambio breve poi conclusione
+    set('MATE1',sx-6,clamp(sy+side*7,6,94));
+    B('pass',0.40,{from:'HERO',to:'MATE1',kind:'pass'},[mv('HERO',sx+8,sy,true)]);
+    B('return',0.40,{from:'MATE1',to:'HERO',kind:'pass'},[]);
+    concl('HERO',headerFinish?'header':'shot');
+  }
+  return{actors:A,beats,meta:{pattern:pat,type,variant}};
+}
+// Validatore delle INVARIANTI calcistiche (le "regole obbligatorie" come check logici).
+// Ritorna un array di violazioni (vuoto = timeline coerente).
+function validateHLTimeline(tl,hl){
+  const v=[]; if(!tl||!tl.beats||!tl.beats.length){v.push('timeline vuota');return v;}
+  const pos={}; Object.keys(tl.actors||{}).forEach(k=>pos[k]=tl.actors[k].slice());
+  const team=(id)=>(id==='OPP'||id==='GK')?'away':'home';
+  const resolve=(ref)=>ref&&ref.pt?ref.pt.slice():(pos[ref]?pos[ref].slice():null);
+  let ballAt=null,passes=0,lastCrossIdx=-99;
+  tl.beats.forEach((b,i)=>{
+    const from=resolve(b.ball.from);
+    (b.moves||[]).forEach(m=>{pos[m.who]=m.to.slice();});
+    const to=resolve(b.ball.to);
+    if(!from)v.push(`beat${i}(${b.tag}): ball.from non risolvibile`);
+    if(!to)v.push(`beat${i}(${b.tag}): ball.to non risolvibile`);
+    if(ballAt&&from&&Math.hypot(from[0]-ballAt[0],from[1]-ballAt[1])>3.5)v.push(`beat${i}(${b.tag}): TELETRASPORTO palla`);
+    if(i>0){
+      const fromId=typeof b.ball.from==='string'?b.ball.from:null;
+      const prevToId=typeof tl.beats[i-1].ball.to==='string'?tl.beats[i-1].ball.to:null;
+      if(fromId&&prevToId&&team(fromId)!==team(prevToId)&&b.tag!=='tackle'&&b.ball.kind!=='loose')
+        v.push(`beat${i}(${b.tag}): cambio di possesso ingiustificato (${prevToId}→${fromId})`);
+    }
+    if(['pass','give','through','cross'].includes(b.ball.kind))passes++;
+    if(b.ball.kind==='cross')lastCrossIdx=i;
+    if(b.ball.kind==='header'&&!(lastCrossIdx>=0&&lastCrossIdx<i))v.push(`beat${i}: COLPO DI TESTA senza cross/aereo precedente`);
+    ballAt=to;
+  });
+  const need={COMBINATION:2,THROUGH_BALL:1,NEAR_POST_CROSS:1,FAR_POST_CROSS:1,CUTBACK:1,HEADER_ATTACK:1};
+  const req=need[hl&&hl.pattern]; if(req&&passes<req)v.push(`pattern ${hl.pattern}: ${passes} passaggi < ${req} richiesti`);
+  return v;
+}
+if(typeof window!=='undefined'){window.buildHLTimeline=buildHLTimeline;window.validateHLTimeline=validateHLTimeline;}
 function ThreeMatchView(props){
   const {playerX,playerY,homeCol,oppCol,allPlayers,homeClub,heroKitCol,
     stadiumHomeCol,stadiumAwayCol,stadiumStyle=0,ballX,ballY,
