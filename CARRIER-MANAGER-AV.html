@@ -2677,7 +2677,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.85.0"; // Sprint 4.85.0: post-highlight Fase 1 — durata DINAMICA (postHighlightDuration, no piu 1s fisso) + overlay esito non occludente + movimento giocatori senza twitch casuale (difensori tengono la linea)
+const GAME_VERSION="4.86.0"; // Sprint 4.86.0: post-highlight Fase 2 — continuità posizionale (nuova Situation nasce dalla posizione finale, clamp in startZone, no teletrasporto) + camera morbida (zoom-out asimmetrico, niente cambi bruschi)
 const SAVE_VERSION=6;
 // Sprint ENV — ambiente rilevato automaticamente dal runtime (non gestito manualmente).
 // PRODUCTION = deploy GitHub Pages (*.github.io). Tutto il resto (staging githack, locale, localhost) = TEST.
@@ -7540,7 +7540,7 @@ function ThreeMatchView(props){
       const ax=bx*wBall+hx*(1-wBall),az=bz*wBall+hz*(1-wBall);
       // 3DV-5: blend target per fase — intro 55%, move/choose 82%, result 100%
       const _ph5=P.matchPhase;const _hlTgt=isResult?1.0:(_ph5==="hl_move"||_ph5==="hl_choose")?0.82:_ph5==="hl_intro"?0.55:0;
-      camHL+=(_hlTgt-camHL)*Math.min(dt*3.2,1);
+      camHL+=(_hlTgt-camHL)*Math.min(dt*(_hlTgt>=camHL?3.2:1.7),1);// 4.86.0: zoom-IN reattivo, zoom-OUT più morbido → niente cambi bruschi tra highlight
       let tPx,tPy,tPz,tLx,tLy,tLz,kp,kl;
       if(isWalk){
         // Carrellata che scorre lungo la fila dei giocatori schierati
@@ -8720,7 +8720,14 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   // reset position + selectedActionIdx when highlight changes
   useEffect(()=>{
     if(phase==="hl_move"||phase==="hl_intro"){
-      const sp=getStartPos(situations[hlIdx]);
+      // CONTINUITÀ (4.86.0): la nuova Situation nasce dalla posizione FINALE dell'azione precedente,
+      // agganciata (clamp) alla sua startZone → niente teletrasporto, l'eroe scivola di poco e la
+      // camera (che segue la mesh) resta fluida. I set-piece (lockMovement) mantengono lo spot fisso.
+      const _curSit=situations[hlIdx];
+      let sp;
+      if(_curSit?.lockMovement){ sp=getStartPos(_curSit); }
+      else { const _sz=_curSit?.startZone||{x:[55,72],y:[30,70]}; const _pv=ballPosRef.current||{x:58,y:50};
+             sp={x:clamp(_pv.x,_sz.x[0],_sz.x[1]),y:clamp(_pv.y,_sz.y[0],_sz.y[1])}; }
       setPPos(sp);
       // Sprint 117b/124: realistic positioning for lockMovement (rigore/punizione)
       if(situations[hlIdx]?.lockMovement){
