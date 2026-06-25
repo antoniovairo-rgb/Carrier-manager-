@@ -2677,7 +2677,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.94.0"; // Fase 2 Sprint 3 (Infortuni 9.6): il preparatore (fitnessCoachRel) ora conta durante l'infortunio — riduce il rischio ricaduta (fino a -12.5%) e può accelerare la riabilitazione di una settimana; mostrato nella card infortunio. Il resto di §9.6 (gravità/tempi/recoveryPct/rientro graduale/relapse) era già presente. + Sprint 1/2.
+const GAME_VERSION="4.95.0"; // Fase 2 Sprint 4 (Convocazioni intelligenti, Sez. 8): calcCoachDecision ora pesa l'OVR del giocatore vs il livello della rosa (talento sopra la media → titolare, sotto livello → più panchina) con motivazione dedicata; player.matchStatus persistito (+ migration). Le fondamenta (decisione starter/bench/not_called, esperienza panchina, minuto d'ingresso) erano già presenti. + Sprint 1/2/3.
 const SAVE_VERSION=6;
 // Sprint ENV — ambiente rilevato automaticamente dal runtime (non gestito manualmente).
 // PRODUCTION = deploy GitHub Pages (*.github.io). Tutto il resto (staging githack, locale, localhost) = TEST.
@@ -3882,6 +3882,11 @@ function calcCoachDecision(player,matchWeight=1){
   // Sprint D1: modulazione gerarchia (±8 — non altera la calibrazione, solo sfuma le soglie)
   const roleBonus={'leader':8,'titolare':4,'rotazione':0,'riserva':-5,'primavera':-8};
   score+=roleBonus[player.squadRole||'riserva']||0;
+  // Sezione 8: OVR del giocatore vs livello della rosa (prestige club ≈ media dei compagni) — un talento
+  //   sopra la media si prende il posto, chi è sotto livello resta più spesso in panchina (realismo "2-3 stagioni da riserva")
+  const _clubLvl=player.club?.prestige||player.club?.p||65;
+  const _ovrEdge=(player.ovr||60)-_clubLvl;
+  score+=clamp(_ovrEdge*0.7,-12,14);
   score=clamp(score,0,100);
   let status,reason,entryMinute=60;
   if(trust<12||(score<25&&trust<30)){
@@ -3903,7 +3908,9 @@ function calcCoachDecision(player,matchWeight=1){
       :`Scelta tattica: oggi panchina. Preparati ad entrare verso il ${entryMinute}'.`;
   } else {
     status="starter";
-    reason=trust>=80
+    reason=_ovrEdge>=8
+      ?"Sei tra i migliori della rosa — il mister non può lasciarti fuori. Titolare."
+      :trust>=80
       ?"Sei il suo uomo di fiducia. Titolare inamovibile."
       :matchWeight>=7
       ?"Partita cruciale — il mister conta su di te dal primo minuto."
@@ -13629,6 +13636,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     }
     // Sprint D2: rapporti staff
     if(!('assistantCoachRel' in newP)){newP={...newP,assistantCoachRel:50};changed=true;}
+    if(!('matchStatus' in newP)){newP={...newP,matchStatus:null};changed=true;}
     if(!('fitnessCoachRel' in newP)){newP={...newP,fitnessCoachRel:50};changed=true;}
     // Sprint D1: gerarchia di squadra
     if(!('squadRole' in newP)){newP={...newP,squadRole:calcSquadRole(newP)};changed=true;}
@@ -13939,6 +13947,8 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     const _cd116=coachDecisionRef.current||coachDecision||calcCoachDecision(player,mwForDecision);
     matchBenchStartRef.current=_cd116.status==="bench";
     matchEntryMinuteRef.current=_cd116.entryMinute||60;
+    // Sezione 8: persiste lo stato di convocazione sul player (letto dalle milestone e dai sistemi futuri)
+    setPlayer(p=>({...p,matchStatus:_cd116.status}));
     if(_cd116.status==="bench")notify("🪑 "+_cd116.reason,TH.warning);
     else if(_cd116.status==="not_called"){notify("⛔ Non sei convocato questa settimana.",TH.danger);setCoachDecision(null);return;}
     // Sprint 24A + 25C: pre-match speech based on match weight + captain status
