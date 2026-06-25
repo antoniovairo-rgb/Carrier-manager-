@@ -2677,7 +2677,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.88.0"; // Sprint A (NEXT-GEN aliveness): motore posizionamento off-ball nel render-loop 3D — shape-flow + pressing + marcatura difensiva + repulsione/spaziatura (anti-ammucchiate). Puramente visivo (offset sul target del lerp), zero save-risk, deterministico.
+const GAME_VERSION="4.89.0"; // Sprint B (NEXT-GEN locomozione): crossfade continuo corsa↔idle in animOne (_runB easing) — via il "T-pose glide" e lo snap, con settle-into-idle morbido; wind-up eroe (caricamento all'indietro della gamba calciante) su tiri/cross/punizioni. + Sprint A: motore posizionamento off-ball (shape-flow + marcatura + anti-ammucchiate).
 const SAVE_VERSION=6;
 // Sprint ENV — ambiente rilevato automaticamente dal runtime (non gestito manualmente).
 // PRODUCTION = deploy GitHub Pages (*.github.io). Tutto il resto (staging githack, locale, localhost) = TEST.
@@ -7115,29 +7115,26 @@ function ThreeMatchView(props){
       if(ta!==undefined){const da=((ta-mesh.rotation.y+Math.PI*3)%(Math.PI*2))-Math.PI;_rotApplied=da*Math.min((d>0.5?9:3.5)*dt,1);mesh.rotation.y+=_rotApplied;}
       // 3D-H2: torso lag — busto segue direzione con ritardo, inerzia corporea
       if(mesh._torso){mesh._tRot=(mesh._tRot||0)*(1-Math.min(dt*4.5,0.95))-_rotApplied*0.5;mesh._torso.rotation.y=clamp(mesh._tRot,-0.45,0.45);}
-      // run cycle + bob verticale
-      if(sp>0.4){
-        mesh._ph+=sp*dt*2.6;const amp=Math.min(sp*0.11,0.72);
-        mesh._lL.rotation.x=Math.sin(mesh._ph)*amp;mesh._lR.rotation.x=-Math.sin(mesh._ph)*amp;
-        // QW-D: braccia naturali — ampiezza indipendente, sway laterale
-        const armAmp=Math.min(sp*0.13,0.85);
-        mesh._aL.rotation.x=-Math.sin(mesh._ph)*armAmp;mesh._aR.rotation.x=Math.sin(mesh._ph)*armAmp;
-        mesh._aL.rotation.z=-0.12+Math.sin(mesh._ph)*0.06;mesh._aR.rotation.z=0.12-Math.sin(mesh._ph)*0.06;
-        mesh.position.y=Math.abs(Math.sin(mesh._ph))*Math.min(sp*0.024,0.18);// 3DV-3: bob più pronunciato
-        // QW-5: lean in avanti proporzionale alla corsa (più marcato in sprint)
-        const _lean=sp>3.5?0.15:sp>1.5?0.06:0.02;// 3DV-3: lean graduato
-        mesh.rotation.x+=(_lean-mesh.rotation.x)*Math.min(dt*4,1);mesh.rotation.z*=0.85;
-      } else {
-        mesh._lL.rotation.x*=0.82;mesh._lR.rotation.x*=0.82;mesh._aL.rotation.x*=0.82;mesh._aR.rotation.x*=0.82;
-        mesh._aL.rotation.z*=0.85;mesh._aR.rotation.z*=0.85;
-        mesh.position.y*=0.8;
-        // QW-E: idle più leggibile — busto visibile + micro-bob + head nod
-        mesh._idle=(mesh._idle||0)+dt*1.5;
-        mesh.rotation.z=Math.sin(mesh._idle)*0.048;
-        mesh.rotation.x+=(0-mesh.rotation.x)*Math.min(dt*4,1);
-        mesh.position.y+=Math.sin(mesh._idle*0.8)*0.018+0.008;
-        if(mesh._hd)mesh._hd.rotation.x=Math.sin(mesh._idle*1.2)*0.04;
-      }
+      // 3D-LOCO (Sprint B): crossfade continuo corsa↔idle — niente soglia dura (via "T-pose glide"
+      //   sotto 0.4u né snap sopra). _runB fa easing accel/decel → partenza/arrivo morbidi (settle-into-idle).
+      const _runTgt=clamp((sp-0.12)/0.7,0,1);// 0=fermo, 1=corsa piena
+      mesh._runB=(mesh._runB==null?_runTgt:mesh._runB+(_runTgt-mesh._runB)*Math.min(dt*7,1));
+      const rb=mesh._runB;
+      mesh._ph+=Math.max(sp,0)*dt*2.6;// la fase avanza con la velocità reale
+      mesh._idle=(mesh._idle||0)+dt*1.5;
+      const s=Math.sin(mesh._ph);
+      const amp=Math.min(sp*0.11,0.72)*rb,armAmp=Math.min(sp*0.13,0.85)*rb;// QW-D: braccia indipendenti
+      mesh._lL.rotation.x=s*amp;mesh._lR.rotation.x=-s*amp;
+      mesh._aL.rotation.x=-s*armAmp;mesh._aR.rotation.x=s*armAmp;
+      mesh._aL.rotation.z=(-0.12+s*0.06)*rb;mesh._aR.rotation.z=(0.12-s*0.06)*rb;
+      // bob verticale: corsa (|sin|·vel) ⟷ micro-bob idle, mixati su rb
+      const _bobRun=Math.abs(s)*Math.min(sp*0.024,0.18),_bobIdle=Math.sin(mesh._idle*0.8)*0.018+0.008;
+      mesh.position.y=_bobRun*rb+_bobIdle*(1-rb);
+      // lean in avanti proporzionale alla corsa (svanisce da fermo); sway idle quando rb→0
+      const _lean=(sp>3.5?0.15:sp>1.5?0.06:0.02)*rb;// QW-5/3DV-3: lean graduato
+      mesh.rotation.x+=(_lean-mesh.rotation.x)*Math.min(dt*4,1);
+      mesh.rotation.z=Math.sin(mesh._idle)*0.048*(1-rb);// QW-E: idle sway → 0 in corsa
+      if(mesh._hd)mesh._hd.rotation.x=Math.sin(mesh._idle*1.2)*0.04*(1-rb);
     };
     const loop=()=>{
       sr.current.raf=requestAnimationFrame(loop);
@@ -7520,6 +7517,11 @@ function ThreeMatchView(props){
           else if(actType==="pass"){hero._aL.rotation.x=-1.8*sw;hero._aL.rotation.z=-0.5*sw;hero._aR.rotation.x=0.6*sw;hero.rotation.y=Math.sin(u*Math.PI)*0.32;hero._lR.rotation.x=0.5*sw;}
           else if(actType==="build"){// costruzione/neutro: breve gesto di passaggio corto, nessuna potenza
             hero._aL.rotation.x=-0.9*sw;hero._aR.rotation.x=0.3*sw;hero.rotation.y=Math.sin(u*Math.PI)*0.2;hero._lR.rotation.x=0.3*sw;
+          }
+          // 3D-LOCO (Sprint B): wind-up — breve caricamento all'indietro della gamba calciante prima dello
+          //   swing (i tiri/cross/punizioni guadagnano anticipo fisico). Additivo, svanisce entro u=0.22 → 0 a fine azione, nessun cleanup.
+          if(u<0.22&&(actType==="shot"||actType==="cross"||actType==="penalty"||actType==="freekick")){
+            hero._lR.rotation.x+=(0.22-u)/0.22*0.7;
           }
           if(u>=1){actType=null;if(hero._hd)hero._hd.rotation.x*=0.7;if(hero._torso){hero._torso.rotation.x=0;}}
         }
