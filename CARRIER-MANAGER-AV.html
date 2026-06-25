@@ -2677,7 +2677,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.95.0"; // Fase 2 Sprint 4 (Convocazioni intelligenti, Sez. 8): calcCoachDecision ora pesa l'OVR del giocatore vs il livello della rosa (talento sopra la media → titolare, sotto livello → più panchina) con motivazione dedicata; player.matchStatus persistito (+ migration). Le fondamenta (decisione starter/bench/not_called, esperienza panchina, minuto d'ingresso) erano già presenti. + Sprint 1/2/3.
+const GAME_VERSION="4.96.0"; // CINE-APPROACH: durante l'esito HL l'eroe "entra" nell'azione con un breve passo verso palla/porta (sincronizzato al gesto, additivo, auto-azzerante) invece di colpire da fermo — riduce il look statico/rigido delle conclusioni. Escluso sui set-piece. Puramente visivo (render-loop). + Fase 2 Sprint 1-4.
 const SAVE_VERSION=6;
 // Sprint ENV — ambiente rilevato automaticamente dal runtime (non gestito manualmente).
 // PRODUCTION = deploy GitHub Pages (*.github.io). Tutto il resto (staging githack, locale, localhost) = TEST.
@@ -7388,7 +7388,17 @@ function ThreeMatchView(props){
         // Tutto puramente visivo (offset sul target del lerp): lo stato di gioco (matchPlayers) resta intatto → zero save-risk.
         // Deterministico (nessun RNG/now): la repulsione è calcolata sui target correnti → niente "ammucchiate", niente oscillazioni.
         const _bGX=P.ballX||50,_bGY=P.ballY||50,_lineShift=clamp((_bGX-50)*0.18,-9,9);
-        const _hxg=P.playerX||50,_hyg=P.playerY||50,_pat=P.hlPattern||"";
+        let _hxg=P.playerX||50,_hyg=P.playerY||50;const _pat=P.hlPattern||"";
+        // CINE-APPROACH (4.96.0): durante l'esito l'eroe "entra" nell'azione — un breve passo verso palla/porta
+        //   invece di colpire da fermo. Sincronizzato al gesto (actT → rallenta col bullet-time), additivo,
+        //   auto-azzerante a fine azione. Escluso sui set-piece (rigore/punizione battuti da fermo, regia dedicata).
+        if(isResult&&actType&&actType!=="penalty"&&actType!=="freekick"){
+          const _T2=actType==="header"?0.75:actType==="tackle"?0.6:actType==="cross"?0.65:0.55;
+          const _ap=Math.min((actT/_T2)/0.5,1);// avvicinamento completo entro il contatto (~metà gesto), poi tiene
+          const _amp=(actType==="shot"||actType==="header")?5:actType==="tackle"?6:actType==="dribble"?4:actType==="cross"?3:2.5;
+          _hxg=clamp(_hxg+_ap*_amp,2,96);// home attacca verso x crescente
+          _hyg=clamp(_hyg+((P.ballY||_hyg)-_hyg)*_ap*0.4,2,98);// converge leggermente sulla y della palla
+        }
         const _players=sr.current.players,_tg=[];
         // PASS 1 — target pre-repulsione per ogni giocatore (coordinate di gioco 0..100)
         for(let i=0;i<_players.length;i++){
