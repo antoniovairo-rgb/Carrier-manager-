@@ -2677,7 +2677,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.90.0"; // Sprint C (NEXT-GEN ripresa, Fase 5): dopo il gol si riparte dal centro — palla a centrocampo + squadre richiamate nelle proprie metà (preset midfield) prima che il gioco riprenda, riusando drift+lerp palla (zero nuove fasi nello state-machine). Fase 4 (completamento azioni) già presente via rcvT/assist_shot/cross_goal/gk_dive. + Sprint A/B.
+const GAME_VERSION="4.91.0"; // Sprint D (NEXT-GEN ritmo, Fase 6): densità cronaca BG scala col momentum (18%→~30% nei picchi, ritmo non più piatto) + chaining robusto (regex ampia case-insensitive + guardia profondità). Completa la macro NEXT-GEN LIVE MATCH (A: off-ball positioning · B: locomozione+wind-up · C: ripresa dal centro · D: ritmo+chaining).
 const SAVE_VERSION=6;
 // Sprint ENV — ambiente rilevato automaticamente dal runtime (non gestito manualmente).
 // PRODUCTION = deploy GitHub Pages (*.github.io). Tutto il resto (staging githack, locale, localhost) = TEST.
@@ -9229,8 +9229,11 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           const _pool94=_wCom94[_wfx94]||_wCom94.rain;
           addCom(pick(_pool94),"#64748b",nx);
         }
-        // 3DV-FIX3: cronaca meno fitta — 18%/tick (era 30%, troppo frenetica) — sospesa durante gli HL
-        if(Math.random()<0.18&&!["hl_intro","hl_move","hl_choose","hl_result"].includes(phaseRef.current)){
+        // 3DV-FIX3: cronaca meno fitta — base 18%/tick — sospesa durante gli HL.
+        // Fase 6 (NEXT-GEN ritmo): la densità scala con l'estremità del momentum → 18% in equilibrio,
+        //   fino a ~30% nei picchi (dominio/assedio) → il flusso non è più piatto, accelera nei momenti caldi.
+        const _momX=Math.abs(momentumRef.current-50)/50,_bgProb=0.18+_momX*0.12;
+        if(Math.random()<_bgProb&&!["hl_intro","hl_move","hl_choose","hl_result"].includes(phaseRef.current)){
           const _sc76=scoreRef.current;const _sd76=_sc76.home-_sc76.away;const _sctx76=_sd76>0?"winning":_sd76<0?"losing":"drawing";
           // Sprint 113: dedup — exclude last 3 BG events to avoid repetition
           const _lastBG=lastBGEvtRef.current;
@@ -9534,10 +9537,12 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
       else if(nm<=15&&m>15){const _k97=Date.now();setPressureCinema({text:"🔴 PRESSIONE!",col:"#ef4444",key:_k97});setTimeout(()=>setPressureCinema(null),1800);}
       return nm;
     });
-    // Sprint 77 — Situation Chaining: cross/corner/punizione assist → header or scramble
-    if(ok&&action.rew==="assist"){
+    // Sprint 77 + Fase 6 (NEXT-GEN chaining robusto): un assist da palla messa in area innesca un
+    //   secondo tempo (testa/mischia/rimbalzo). Rilevamento via regex case-insensitive ampia (non più
+    //   catena fragile di .includes) + guardia di profondità (niente stacking di catene).
+    if(ok&&action.rew==="assist"&&!pendingChainSitRef.current){
       const _st77=situations[hlIdx]?.text||"";
-      if(_st77.includes("Cross")||_st77.includes("cross")||_st77.includes("Corner")||_st77.includes("corner")||_st77.includes("Punizione"))
+      if(/cross|traversone|corner|angolo|punizione|rimessa|cross in area|dal fondo|in mezzo/i.test(_st77))
         pendingChainSitRef.current=pick([CHAIN_SITS.header,CHAIN_SITS.mischia,CHAIN_SITS.second_ball]);
     }
     // Sprint 79 — ball moves toward outcome position for visual coherence
