@@ -4,166 +4,193 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-**Career Player Manager (CPM)** is a single-file browser game. The entire codebase lives in one HTML file.
+**Career Player Manager (CPM)** is a single-file browser game — a football *player*-career simulator (you control one footballer from the U18s to a pro career). The entire game lives in one HTML file; the only other code is the visual test harness under `tests/`.
 
-### Struttura cartelle
+### Struttura repo (Git)
 
 ```
-C:\Users\a.vairo\CMP\
-├── CARRIER-MANAGER-AV.html ← FILE DI LAVORO ATTIVO
+Carrier-manager-/
+├── CARRIER-MANAGER-AV.html   ← FILE DI LAVORO ATTIVO (~19 960 righe, tutto qui dentro)
 ├── CLAUDE.md
 ├── CHANGELOG.md
-├── versions\              ← archivio storico di tutte le versioni
-│   ├── cpm-game.html
-│   ├── cpm-game_1.html
-│   ├── cpm-game_2.html
-│   ├── cpm-game_3.html
-│   ├── cpm-game_4.html
-│   └── cpm-game_5.html
-└── .claude\
-    ├── settings.local.json
-    └── commands\          ← slash commands: /bump /audit /diff /open /evolve /changelog
+└── tests/
+    ├── situations-3d-validation.js   ← regole di validazione SITUATIONS (coerenza HL↔3D)
+    └── visual/                        ← QUALITY GATE Playwright (vedi sezione dedicata)
+        ├── validate-situations.mjs    ← runner principale del gate (9 categorie)
+        ├── golden-sigs.json           ← firme golden screenshot
+        ├── checks/  lib/  report.mjs  out/
+        └── package.json               ← script npm del gate
 ```
 
-- **File attivo:** `C:\Users\a.vairo\CMP\CARRIER-MANAGER-AV.html` — modificare sempre questo
-- **Archivio:** `C:\Users\a.vairo\CMP\versions\` — storico read-only di riferimento
-- Ogni nuova versione: copiare il file attivo in `versions\` prima di modificare
+- **File attivo:** `CARRIER-MANAGER-AV.html` — modificare SEMPRE questo, mai creare file JS separati.
+- **Remote:** `antoniovairo-rgb/Carrier-manager-` (GitHub). GitHub Pages serve da `main`.
+- Il vecchio archivio `versions\` su disco Windows non è in questo repo; il versioning storico vive nei commit Git e in `CHANGELOG.md`.
 
 ## Running the Game
 
-Open the HTML file directly in a browser — no build step, no server, no dependencies to install. All libraries are loaded from CDN:
+Open `CARRIER-MANAGER-AV.html` directly in a browser — no build step, no server, no install. Tutte le librerie sono da CDN:
 - React 18.2.0 (UMD)
 - Three.js r128
-- Babel standalone 7.23.6 (transpiles JSX in-browser at load time)
+- Babel standalone (transpila il JSX in-browser al load)
 
-Babel transpilation runs client-side on page load, so there is a ~1–2 second startup delay. The spinner overlay (`#ld`) hides automatically via `requestAnimationFrame(window._hide)` after the first render.
+Babel gira client-side al caricamento → ~1–2 s di avvio. Lo spinner (`#ld`) si nasconde via `requestAnimationFrame(window._hide)` dopo il primo render.
+
+> ⚠️ In ambienti con CDN bloccati (es. sessioni cloud con network policy restrittiva) la pagina non carica direttamente: il gate Playwright intercetta le route e serve i bundle dei `node_modules` locali (vedi sezione Quality Gate).
 
 ## Architecture
 
-The file is structured as a single `<script type="text/babel">` block. There is no module system — everything is in global scope, declared in dependency order.
+Tutto è in un singolo `<script type="text/babel">`. Nessun module system — global scope, dichiarazioni in ordine di dipendenza.
 
-### Layers (top to bottom in the file) — aggiornato a CPM 3.35.0 (~13 100 righe)
+### Layers (top → bottom) — CPM 4.91.0 (~19 960 righe)
 
-| Lines | Content |
-|-------|---------|
-| 1–16 | HTML shell, CDN imports, loading spinner |
-| 17–48 | Theme constants (`TH`, `TH_DARK`) |
-| 49–324 | `AVATARS` data + `AvatarSVG` component |
-| 325–606 | `CLUBS` database (65+ clubs, 9 leagues), `U18_CLUBS` derived set, `TeamBadge` |
-| 607–709 | `LEAGUE_RECORDS` — all-time scorer data per league (Sprint 51) |
-| 710–1219 | `WEEKLY_EVENTS` — weekly narrative events |
-| 1220–1605 | `SITUATIONS` — **164 interactive match situations** (Sprint 55) |
-| 1606–1615 | `ZONES` — pitch zone definitions |
-| 1616–1753 | `BG_MATCH`, `OUTCOME_TX`, `STADIUMS`, formation arrays |
-| 1754–1934 | Core helpers: `rng`, `clamp`, `pick`, `baseStats`, `calcOvr`, `succRate`, `generateTransferOffer`, `generateProContracts`, `storage` |
-| 1910–1936 | `ARCHETYPES`, `GAME_VERSION` (3.35.0), `SAVE_VERSION` (5) |
-| 1937–3729 | Name pool `NAME_BY_NAT`, calendar/roster helpers: `hashStr`, `generateTeamRoster`, `generateSeasonCalendar`, `initStandings`, `updateStandings`, `calcAttendance`, `simulateMatch` |
-| 3731–3775 | UI primitives: `Card`, `Btn`, `StatBar`, `OvrRing`, `Notif` |
-| 3776–4804 | Three.js utilities: `makeCrowdTex`, `buildStadium` |
-| 4805–5180 | `ThreeField` — Three.js React component (full 3D pitch + stadium + players) |
-| 5181–5421 | `DPad` — touch/mouse directional pad |
-| 5422–6995 | `MatchdayCard`, `FormationView`, `WalkoutOverlay`, `LiveMatch` — match flow |
-| 6996–7493 | `ProTransitionScreen` — end-of-U18 career screen |
-| 7494–8746 | `HomeScreen`, `CreateScreen`, `OffersScreen`, `TrialFlow` |
-| 8836–9142 | `NAT_CLUB_DATA` — 10 national teams for Coppa/Euro/Mondiale (Sprint 52-53) |
-| 9143–9205 | `_simCupOtherMatches()` — bracket simulator helper (Sprint 52); `CAREER_MILESTONES` |
-| 9206–12953 | `CareerApp` — main career state machine (tabs: dashboard, calendar, standings, training, profile) |
-| 12954–13108 | `App` — root router; manages `phase` state |
-| 13109 | `ReactDOM.createRoot` mount |
+| Linea | Contenuto |
+|-------|-----------|
+| 1–151 | HTML shell, CDN imports, loading spinner, theme constants (`TH`, `TH_DARK`) |
+| 152–427 | `AVATARS` + `AvatarSVG` |
+| 428–698 | `CLUBS` database (9 leghe), `TeamBadge` |
+| 699–712 | `U18_CLUBS` / `U18_CLUBS_P2` (set derivati Lega A / Lega B) |
+| 713–851 | `LEAGUE_RECORDS` — record marcatori all-time per lega |
+| 852–1618 | `WEEKLY_EVENTS` — eventi narrativi settimanali |
+| 1619–2037 | `SITUATIONS` — situazioni di match interattive (**179** validate dal gate) |
+| 2038–2090 | `ZONES` — zone del campo |
+| 2091–2352 | `BG_MATCH` — cronaca di background (con `momThreshold`, `ctx`, `pd`, pesi `w`) |
+| 2353–2638 | Helpers core: `rng`, `clamp`, `pick`, `baseStats`, `calcOvr` (2377), `succRate` (2389), `generateTransferOffer` (2507), `generateProContracts` (2567), `storage` |
+| 2639–2681 | `ARCHETYPES`, `GAME_VERSION` (**4.91.0**), `SAVE_VERSION` (**6**) |
+| 2682–4531 | `NAME_BY_NAT` (4502) + calendario/roster: `hashStr` (4532), `generateTeamRoster` (4533), `generateSeasonCalendar` (4554), `initStandings` (4715), `updateStandings` (4719), `simulateMatch` (4824) |
+| 4860–4904 | UI primitives: `Card`, `Btn`, `StatBar`, `OvrRing`, `Notif` |
+| 4905–6708 | Three.js: `makeCrowdTex` (4905), `buildStadium` (5027) |
+| 6640–6708 | `hlBallState` (6640), `deriveHL` (6650) — derivazione cinematica HL (vedi CINE) |
+| 6709–7727 | **`ThreeMatchView`** — componente React Three.js del match (campo 3D + stadio + 22 giocatori + animazioni). È qui che vivono il render-loop, `animOne`, le animazioni eroe variant-aware, l'off-ball positioning |
+| 7728–7968 | `DPad` — pad direzionale touch/mouse |
+| 7969–8370 | `MatchdayCard` (7969), `FormationView` (8108), `WalkoutOverlay` (8175) |
+| 8371–8441 | `CHAIN_SITS` — situazioni di "secondo tempo" per il chaining |
+| 8442–10305 | **`LiveMatch`** — flusso partita completo (state machine, `handleAction`, `handleContinue`, render-loop driver, tick BG) |
+| 10306–11196 | `ProTransitionScreen` — schermata fine carriera U18 |
+| 11197–12609 | `HomeScreen` (11197), `CreateScreen` (11341), `OffersScreen` (11464), `TrialFlow` (12517) |
+| 12610–13080 | `NAT_CLUB_DATA` — nazionali per Coppa/Euro/Mondiale |
+| 13081–13372 | `CAREER_MILESTONES` (13081), `TutorialOverlay` (13244) |
+| 13373–19793 | **`CareerApp`** — state machine principale della carriera (tabs: dashboard, calendar, standings, training, profile) |
+| 19794–19956 | `App` — root router (`phase` state) + `ReactDOM.createRoot` mount |
+
+> I range sono indicativi: il file è grande e in evoluzione. Verifica sempre con `grep -n` prima di editare attorno a un confine.
 
 ### State Architecture
 
-All mutable game state lives in a single `player` object managed by `useState` in `CareerApp`. It is **autosaved** to `localStorage` on every change via a `useEffect`. Three save slots use keys `cpm-v3`, `cpm-v3-s2`, `cpm-v3-s3`.
+Tutto lo stato di gioco vive in un singolo oggetto `player` gestito da `useState` in `CareerApp`. **Autosave** su `localStorage` ad ogni change via `useEffect`. Tre slot: chiavi `cpm-v3`, `cpm-v3-s2`, `cpm-v3-s3`.
 
-The `player` object contains:
-- Identity: `name`, `nation`, `avatarId`, `age`, `position`
-- Career: `season`, `week`, `weekLived`, `proStatus` (`"u18"` | `"pro"`), `club`, `contract`
-- Stats: `stats` (8 attributes: `velocità`, `tecnica`, `fisico`, `mentalità`, `tiro`, `passaggio`, `dribbling`, `posizionamento`), `ovr`, `form`, `morale`, `fatigue`, `coachTrust`, `popularity`, `value`
-- Season tracking: `goals`, `assists`, `matches`, `matchHistory[]`
-- **Persistent calendar**: `player.calendar[]` — array of `{matchday, week, opponentId, opponentName, isHome, played, result}` generated once per season via `generateSeasonCalendar`
-- **Persistent standings**: `player.standings[]` — zero-initialised each season via `initStandings`, updated after each matchday via `updateStandings`
-- Lifetime: `totalGoals`, `totalAssists`, `totalMatches`, `history[]`, `log[]`
-- **Diario** (Sprint 51): `player.diary[]` — auto-journal `{season, week, type, e, headline, body, color}`; max 80 entries. Types: `first_goal`, `hattrick`, `milestone`, `pallone_oro`, `scarpa_oro`, `record`, `first_national`, `first_national_goal`, `cup_trophy`, `euro_mondiale_trophy`, `contract_renewal`
-- **Coppa Nazionale** (Sprint 52): `player.cup{round, bracket[], cupSurvivors[], cupBracketMatches{r16,quarters,semi,final}, active, done}` — full bracket simulation via `_simCupOtherMatches()`
-- **Europeo/Mondiale** (Sprint 53): `player.euroMondiale{active, type, season, phase, groupOpponents[], groupMatchIdx, groupPts, groupMatches[], koPhase, koOpponent, koResults[], qualified, champion, eliminated, done}` — triggered week 24 every 4 seasons; `type` alternates Europeo/Mondiale every 8 seasons
-- **Contratto** (Sprint 54): contract negotiation via `negoModal` React state + helpers `openNegoModal`, `_evalNego`, `_acceptNegoWage`; 3-step modal (choose/club_counter/rejected)
-- **Tutorial** (Sprint 56): `player.tutorialDone` boolean — `false` per nuovi save, `true` per save esistenti (migrazione: `totalMatches>0 || season>1`). Overlay `TutorialOverlay` a 4 step mostrato solo su screen="dashboard" finché non completato o saltato
+Campi principali di `player`:
+- **Identità:** `name`, `nation`, `avatarId`, `age`, `position`
+- **Carriera:** `season`, `week`, `weekLived`, `proStatus` (`"u18"`|`"pro"`), `club`, `contract`
+- **Stats:** `stats` (8 attributi: `velocità`, `tecnica`, `fisico`, `mentalità`, `tiro`, `passaggio`, `dribbling`, `posizionamento`), `ovr`, `form`, `morale`, `fatigue`, `coachTrust`, `popularity`, `value`
+- **Stagione:** `goals`, `assists`, `matches`, `matchHistory[]`
+- **Calendario persistente:** `player.calendar[]` — `{matchday,week,opponentId,opponentName,isHome,played,result}`, generato una volta per stagione da `generateSeasonCalendar`
+- **Classifica persistente:** `player.standings[]` — azzerata ogni stagione da `initStandings`, aggiornata da `updateStandings`
+- **Lifetime:** `totalGoals`, `totalAssists`, `totalMatches`, `history[]`, `log[]`
+- **Diario:** `player.diary[]` (max 80) — auto-journal degli eventi salienti
+- **Coppa Nazionale:** `player.cup{...}` — bracket completo simulabile
+- **Europeo/Mondiale:** `player.euroMondiale{...}` — triggered week 24 ogni 4 stagioni; `type` alterna Europeo/Mondiale ogni 8
+- **Obiettivi:** `player.seasonObjectives` — obiettivi club della stagione
+- **Infortuni:** `player.injury` (`null` | `{type,severity,weeksRemaining,...}`) — sistema infortuni/recupero
+- **Relazioni staff:** `assistantCoachRel`, `fitnessCoachRel`, `teamChemistry` (parziali — vedi nota implementazione)
+- **Tutorial:** `player.tutorialDone` — overlay 4-step su dashboard finché non completato/saltato
 
-The local `standings` React state in `CareerApp` must always mirror `player.standings`. They are kept in sync by calling `setStandings(newStandings)` alongside every `setPlayer(p => ({...p, standings: newStandings}))`.
+> **Nota implementazione vs Design Spec:** la sezione "Specifica di Design — Fase 2" più sotto è la *roadmap/direttiva* del proprietario, non lo stato attuale. Implementati e solidi: carriera, partite (live+sim), mercato/contratti, classifiche, Coppa, Euro/Mondiale, training, diario, obiettivi club, tutorial, infortuni (parziale), relazioni staff (parziale). NON ancora implementati (restano roadmap): `matchStatus`/`minutesPlayed` (panchina/convocazioni intelligenti), ritiro precampionato, gerarchie di squadra, obiettivi personali/procuratore, conferenze stampa. Non documentare come "fatto" ciò che non lo è.
 
-### App Phase Router (`App` component)
+`standings` (React state locale in `CareerApp`) deve sempre rispecchiare `player.standings`: chiama `setStandings(newStandings)` accanto ad ogni `setPlayer(p=>({...p, standings:newStandings}))`.
 
-`phase` drives which screen is shown: `loading → home → create → trial → offers → career`. The `career` phase mounts `CareerApp` with the loaded `player`. Phase is **not persisted** — on reload, the app always starts at `home` and loads player data from `localStorage`.
+### App Phase Router (`App`)
+
+`phase` guida lo screen: `loading → home → create → trial → offers → career`. Il `career` monta `CareerApp` col player caricato. `phase` **non è persistito** — al reload si riparte da `home` e si carica il player da `localStorage`.
 
 ### Match Flow (`LiveMatch`)
 
-Phases within a match: `matchday → formations → walkout → playing → hl_move → hl_choose → hl_result → ended`.
+Fasi interne: `matchday → formations → walkout → playing → hl_intro → hl_move → hl_choose → hl_result → ended`.
 
-- `hl_*` phases are **highlights** — scripted interactive moments drawn from `SITUATIONS` (164 entries as of Sprint 55)
-- Between highlights the clock ticks via `setInterval` at 300ms/tick, firing `BG_MATCH` commentary events
-- Player position is `{x, y}` in a 0–100 coordinate space; `getZone(x)` maps to zone names; `toThree(gx,gy)` converts to Three.js world coordinates
-- Action success probability: `succRate(action, stats, playerX, oppPrestige)` — scales with the relevant stat, player's field position, and opponent prestige
-- Match can be entered only if `player.calendar` has an unplayed entry for the current week (`getThisWeekMatchday`)
-- `matchContext` prop distinguishes career / cup / national / euroMondiale_group / euroMondiale_ko — used in `onMatchEnd` to route post-match state updates correctly
-- **RULE**: ogni competizione è completamente giocabile dall'utente tramite LiveMatch — zero simulazioni forzate
-- **Coerenza HL↔azione (CINE-COH, 4.70.0)**: `hlBallState(sit)` deriva lo stato reale del pallone (`set_ground` = set-piece battuto dall'eroe / `aerial` = cross·corner·rimbalzo·rovesciata·stacco·di petto / `feet` = palla al piede). `deriveHL` lo usa: il colpo di testa è emesso SOLO con palla aerea, la volée (`shot_volley`) solo su palla aerea (altrimenti `shot_first_time` per i "di prima" a terra). Invariante: nessun highlight mostra una testa/volée con la palla al piede. Validato da `tests/situations-3d-validation.js` (dimensione **coerenza**: header⇒aerea è un FAIL che blocca la suite con `exit 2`)
-- **Animazioni variant-aware (CINE-VAR, 4.73.0)**: ogni `hlVariant` ha un'animazione eroe fisicamente distinta in `ThreeMatchView`. Invariante `sw=sin(u·π)`: tutti i valori scaled-by-sw si azzerano automaticamente a u=1; solo assegnamenti assoluti richiedono cleanup esplicito (`hero._torso.rotation.x=0` a u≥1). Varianti implementate:
-  - **shot**: `shot_chip` (pallonetto, corpo indietro, salto lieve), `shot_volley` (sforbiciata acrobatica, salto alto), `shot_curled` (tiro a giro, rotazione anca), `shot_first_time` (colpo di prima, kick breve), `shot_one_on_one` (tiro piazzato 1v1), `shot_power` (default, tiro di potenza)
-  - **cross**: `cross_cutback` (taglio all'indietro, rotazione opposta), `cross_low_driven` (traversone teso basso), default (traversone alto)
-  - **penalty**: `penalty_panenka` (tocco leggero, gamba morbida, salto ridotto), default (penalty normale, swing completo)
-  - **header**: `header_diving` (tuffo in avanti, torso in avanti), `header_far_post` (stacco alto sul secondo palo), default/`header_near_post` (stacco verticale sul primo palo)
-  - **tackle**: `hlSuccess===true` (scivolata riuscita, caduta controllata), `false` (tentativo fallito, rotazione incerta)
-  - **dribble**: `dribble_inside` (rientro sul sinistro, pendolo rapido), `dribble_outside` (corsa esterna, pendolo inverso), default/`dribble_feint` (finta neutra)
-  - **build**: nuovo tipo (prima: nessuna animazione → corpo statico). Ora: gesto di protezione palla / smistamento
-- **`HL_ZONE_COL`** — palette zone-ring per hlType: `shot`=arancio `0xf97316`, `penalty`=rosso `0xef4444`, `cross`=ciano `0x22d3ee`, `freekick`=ciano, `tackle`=oro `0xfbbf24`, `header`=oro, `pass`=verde-lime `0xa3e635`, `dribble`=viola `0x8b5cf6`, `build`=ardesia `0x64748b`
-- **`hlBallState()` fix (4.73.0)**: aggiunto `ribattut` (rimbalzo su rigore parato) e `botta al volo` alla regex `aerial`; prima restituiva `"feet"` per "RIGORE PARATO! Arriva sulla ribattuta!"
+- Le fasi `hl_*` sono **highlights** — momenti interattivi scriptati pescati da `SITUATIONS`.
+- Tra un HL e l'altro il clock avanza via `setInterval` (300ms/tick) emettendo cronaca `BG_MATCH`.
+- Posizione giocatore `{x,y}` in spazio 0–100; `getZone(x)` mappa le zone; `toThree(gx,gy)` converte in coordinate Three.js.
+- Probabilità azione: `succRate(action, stats, playerX, oppPrestige, archetypeId)`.
+- `matchContext` distingue career / cup / national / euroMondiale_group / euroMondiale_ko — usato in `onMatchEnd` per il routing post-partita.
+- **REGOLA:** ogni competizione è giocabile dall'utente via `LiveMatch` — zero simulazioni forzate.
+- `handleAction` risolve la scelta (setta `outcome={text,ok,actionLabel,outKey}`); `handleContinue` avanza all'HL successivo o al background.
+
+### NEXT-GEN LIVE MATCH (4.88.0 → 4.91.0)
+
+Macro fase di rifinitura del match 3D in 4 sprint. Tutti gli interventi sono **visivi/render-loop**, fuori dal path che modifica lo stato salvato.
+
+- **Sprint A — off-ball positioning (4.88.0):** i 22 giocatori si muovono come blocchi reattivi nel render-loop di `ThreeMatchView` — shape-flow dei reparti col pallone, pressing, marcatura goal-side, e **repulsione anti-ammucchiate** (offset sul target del lerp, deterministico). Puramente visivo.
+- **Sprint B — locomozione (4.89.0):** `animOne` usa un **crossfade continuo corsa↔idle** via `mesh._runB` (easing accel/decel) al posto della vecchia soglia dura `sp>0.4` che causava "T-pose glide" e snap. Ampiezze gambe/braccia, bob e lean scalano su `rb` (0=fermo→1=corsa); idle-sway svanisce in corsa. Posa a riposo invariata (golden stabili). + **wind-up eroe**: caricamento all'indietro della gamba calciante prima dello swing (shot/cross/penalty/freekick), additivo e auto-azzerante.
+- **Sprint C — ripresa (4.90.0):** dopo un gol dell'eroe `handleContinue` instrada a una **ripartenza dal centro** (palla a centrocampo + preset drift `midfield`), riusando i sistemi già testati invece di introdurre una nuova fase nello state-machine (che il gate non coprirebbe).
+- **Sprint D — ritmo (4.91.0):** la **densità della cronaca BG scala col momentum** (`_bgProb=0.18+|mom-50|/50*0.12` → 18% in equilibrio, ~30% nei picchi) + **chaining robusto** (regex case-insensitive ampia su palle messe in area + guardia di profondità).
+
+### Coerenza cinematica HL↔azione (CINE)
+
+- **`hlBallState(sit)`** deriva lo stato reale del pallone: `set_ground` (set-piece battuto dall'eroe) / `aerial` (cross·corner·rimbalzo·rovesciata·stacco·di petto) / `feet` (palla al piede). `deriveHL` lo usa: testa SOLO con palla aerea, volée (`shot_volley`) solo su palla aerea. Invariante: nessun HL mostra testa/volée con palla al piede. Validato dal gate (dimensione **data-coherence**, FAIL bloccante).
+- **Animazioni variant-aware (CINE-VAR):** ogni `hlVariant` ha un'animazione eroe fisicamente distinta in `ThreeMatchView`. Invariante `sw=sin(u·π)`: i valori scaled-by-sw si azzerano da soli a u=1; solo gli assegnamenti assoluti richiedono cleanup esplicito a u≥1. Varianti per shot/cross/penalty/header/tackle/dribble/pass/build.
+- **`HL_ZONE_COL`** — palette zone-ring per hlType (shot=arancio, penalty=rosso, cross/freekick=ciano, tackle/header=oro, pass=verde-lime, dribble=viola, build=ardesia).
+- **Completamento azioni:** `passTargetMesh` + `_rcvT` (compagno che riceve e tira), post-arc `assist_shot`/`cross_goal`/`in_net`/`deflect`/`hit_post`, `gkSaveMesh`/`gk_dive`, intercetti.
 
 ### Calendar & Standings Invariants
 
-- `generateSeasonCalendar(playerClub, leagueClubs, seed)` — deterministic, seeded by `season*777 + hashStr(club.id)`; produces ~26–28 matchdays spread across 38 weeks with 1–2 rest weeks between groups of 3
-- `initStandings(clubs)` — called at season start; all `played/wins/draws/losses/gf/ga/pts = 0`
-- `updateStandings(standings, playerClubId, result)` — called after each played/simulated matchday; simulates the other N-1 team pairs using prestige-weighted random goals
-- When advancing past a week that had a scheduled match without playing it, `simulateMatch` auto-resolves it and `updateStandings` is called anyway (preserving standings consistency)
+- `generateSeasonCalendar(playerClub, leagueClubs, seed)` — deterministico, seed `season*777 + hashStr(club.id)`; ~26–28 giornate su 38 settimane con pause.
+- `initStandings(clubs)` — a inizio stagione, tutto a 0.
+- `updateStandings(standings, playerClubId, result, prestigeShifts)` — dopo ogni giornata, simula le altre coppie con gol pesati per prestige.
+- Avanzando oltre una settimana con match non giocato, `simulateMatch` lo auto-risolve e `updateStandings` è comunque chiamata (consistenza).
 
 ### Club Data Shape
 
 ```js
-// CLUBS entry (via mkT helper)
+// CLUBS entry (via helper mkT)
 { id, n, a, p, c, c2, nat, lg }
-// id: slug  n: full name  a: 3-letter abbr  p: prestige (0-99)
-// c: primary colour hex  c2: secondary colour  nat: flag emoji  lg: league name
-
-// U18_CLUBS inherits all fields + adds: isU18:true, name:`${n} U18`, prestige:p-10
+// id slug · n nome · a abbr 3 lettere · p prestige 0-99 · c/c2 colori · nat flag · lg lega
+// U18_CLUBS eredita tutto + isU18:true, name:`${n} U18`, prestige:p-10
 ```
 
-`getLeagueClubs(player)` returns the correct club pool: `U18_CLUBS` when `proStatus==="u18"`, otherwise clubs matching `player.club.lg`, falling back to nationality, then first 16.
+`getLeagueClubs(player)` ritorna il pool corretto: `U18_CLUBS` se `proStatus==="u18"`, altrimenti i club della lega di `player.club.lg`, con fallback su nazionalità e poi primi 16.
 
-### Name Generation
+### Three.js (`ThreeMatchView`)
 
-`generateTeamRoster(club, season)` returns 11 `{name, role}` objects. Names are seeded by `hashStr(club.id + "_" + season)` so they are stable within a season and change each new season. Nationality-matched name pools are in `NAME_BY_NAT` keyed by flag emoji.
+Monta una volta (deps `[]`). Posizione giocatori, zone-highlight e camera-target sono aggiornati via ref (`sr.current`), niente re-render. Lo stadio è costruito una volta da `buildStadium`; le texture folla sono `THREE.CanvasTexture` procedurali da `makeCrowdTex`. `setClearColor(0x050810)` per evitare il flash grigio pre-primo-frame. Il render-loop ospita `animOne` (locomozione di tutti i mesh), le animazioni eroe variant-aware e l'off-ball positioning.
 
-### Three.js (`ThreeField`)
+## Quality Gate (tests/visual) — OBBLIGATORIO prima di ogni push
 
-The component mounts once (empty `[]` deps). Player position, zone highlight, and camera target are updated via separate `useEffect` hooks that write directly to `sr.current` refs (no re-render). The stadium is built once via `buildStadium`; crowd textures are `THREE.CanvasTexture` generated procedurally by `makeCrowdTex`. The renderer uses `setClearColor(0x050810)` to prevent a gray flash before the first frame.
+Suite Playwright headless che carica il gioco, forza ogni `SITUATION`, risolve le azioni e valida rendering 3D + stato. **Va eseguita e deve passare 9/9 prima di ogni push.**
+
+```bash
+cd tests/visual
+# setup una tantum: npm install (Chromium è pre-installato in /opt/pw-browsers nelle sessioni cloud)
+CPM_CHROME=/opt/pw-browsers/chromium-1194/chrome-linux/chrome \
+PLAYWRIGHT_BROWSERS_PATH=/opt/pw-browsers \
+npm run validate-situations
+```
+
+Le **9 categorie**: `initial-state · orientation · visual · movements · golden · final-state · determinism · post-highlight · data-coherence`. Output atteso: `✅ PASS` con tutte verdi (i `warn` non bloccano).
+
+- **`golden`** confronta firme screenshot (`golden-sigs.json`); se cambi intenzionalmente l'estetica, rigenera con `npm run validate-situations:update-golden` e committa il nuovo file.
+- **`determinism`** verifica che il setup di ogni situation sia riproducibile — evita di far dipendere il *setup/rendering* da `Math.random()` non seedato.
+- **`data-coherence`** applica le regole di `tests/situations-3d-validation.js` (l'invariante CINE header⇒aerea è un FAIL con `exit 2`).
+- Il gate **forza le situation direttamente** (bypassa `handleContinue`/selezione HL): modifiche a ripresa, chaining-trigger, densità BG e selezione HL **non sono coperte** → trattale come a rischio e testale dal vivo.
+- **Rete bloccata (cloud):** il runner intercetta le route CDN e serve React/Three/Babel dai `node_modules` locali, così il gate gira anche senza accesso ai CDN.
 
 ## Key Patterns
 
-- **No build tool**: edits go directly into the `.html` file. JSX is valid inside `<script type="text/babel">`.
-- **Coordinate system**: game logic uses `{x:0–100, y:0–100}`; Three.js world is `{x:-50..+50, z:-30..+30}`.
-- **Seeded randomness**: use `hashStr` + arithmetic for anything that must be reproducible across saves. Use `rng()` / `pick()` only for one-off random events.
-- **Save compatibility**: increment `SAVE_VERSION` when adding required new fields; add backward-compat migration in the `useEffect(()=>{...},[])` inside `CareerApp` that detects and fills missing `calendar`/`standings`.
-- **Versioning**: when making significant changes, copy to `cpm-game_N+1.html` rather than overwriting in place.
+- **No build tool:** edit diretti nel `.html`. JSX valido dentro `<script type="text/babel">`.
+- **Coordinate:** logica `{x:0–100,y:0–100}`; mondo Three.js `{x:-50..+50, z:-30..+30}`.
+- **Random seedato:** usa `hashStr` + aritmetica per tutto ciò che deve essere riproducibile tra save. `rng()`/`pick()` solo per eventi one-off. ⚠️ Mai far dipendere setup/render dal random non seedato (rompe `determinism`/`golden`).
+- **Save compat:** incrementa `SAVE_VERSION` aggiungendo campi obbligatori; aggiungi migration backward-compat nel `useEffect(()=>{...},[])` di `CareerApp` che rileva/riempie i campi mancanti (`calendar`/`standings`/nuovi campi).
+- **Versioning:** bump `GAME_VERSION` ad ogni push (anche fix minori), con commento sintetico di cosa cambia.
+- **File unico:** mai creare file JS separati per il gioco.
 
 ## Studio Framework — AAA Game Dev Team
 
-Ogni sessione di lavoro sul codice CPM segue questo framework multi-disciplinare. Il team è composto da 10 specialisti con ruoli fissi. Il workflow è sempre: **Audit → Implement → QA** — nessuna modifica al codice senza prima un audit esplicito.
+Ogni sessione di lavoro segue questo framework multi-disciplinare. Workflow sempre: **Audit → Implement → QA** — nessuna modifica senza prima un audit esplicito.
 
 ### Workflow obbligatorio
 
 ```
-1. AUDIT   — leggi il codice interessato, identifica dipendenze e rischi
+1. AUDIT     — leggi il codice interessato, identifica dipendenze e rischi
 2. IMPLEMENT — applica le modifiche minime necessarie, nessuna feature extra
-3. QA      — verifica mentale: regressioni? salvataggio? mobile? performance?
+3. QA        — gate 9/9 verde + verifica mentale: regressioni? salvataggio? mobile? performance?
 ```
 
 Prima di ogni modifica: leggere le righe coinvolte, dichiarare le dipendenze note, elencare i rischi. Solo dopo procedere.
@@ -174,203 +201,84 @@ Prima di ogni modifica: leggere le righe coinvolte, dichiarare le dipendenze not
 |---|-------|---------------|
 | 1 | **Game Director** | Visione, priorità sprint, decisioni di design finali |
 | 2 | **Lead Engineer** | Architettura React/JS, state machine, save system |
-| 3 | **Match Engine Dev** | LiveMatch, PitchCanvas, HL system, BG_MATCH |
-| 4 | **3D/Graphics Dev** | ThreeField, buildStadium, makeCrowdTex, DPR scaling |
+| 3 | **Match Engine Dev** | `LiveMatch`, HL system, `BG_MATCH`, chaining |
+| 4 | **3D/Graphics Dev** | `ThreeMatchView`, `buildStadium`, `makeCrowdTex`, `animOne`, CINE |
 | 5 | **UI/UX Designer** | Layout mobile-first, theme (`TH`), componenti (`Card`, `Btn`) |
-| 6 | **Data Designer** | CLUBS, SITUATIONS, WEEKLY_EVENTS, BG_MATCH, bilanciamento |
-| 7 | **AI Systems Dev** | oppTactic, scoutReport, AIDecisionOverlay, call-up logic |
-| 8 | **QA Engineer** | Regressioni, compatibilità save, edge case, test mobile |
-| 9 | **DevOps** | Git, versioning (`GAME_VERSION`), GitHub Pages deploy |
-| 10 | **Product Manager** | Sprint planning, changelog, prioritizzazione backlog utente |
+| 6 | **Data Designer** | `CLUBS`, `SITUATIONS`, `WEEKLY_EVENTS`, `BG_MATCH`, bilanciamento |
+| 7 | **AI Systems Dev** | oppTactic, scoutReport, momentum, call-up logic |
+| 8 | **QA Engineer** | Gate visivo, regressioni, compat save, edge case, mobile |
+| 9 | **DevOps** | Git, versioning (`GAME_VERSION`), deploy GitHub Pages |
+| 10 | **Product Manager** | Sprint planning, changelog, backlog utente |
 
 ### Regole del team
 
-- **Nessuna modifica senza audit**: leggere prima il codice, poi dichiarare rischi.
-- **Aggiornare `CLAUDE.md`** ad ogni sprint: range di linee, nuovi sistemi, campi `player` aggiunti.
-- **Bump `GAME_VERSION`** ad ogni push, anche fix minori.
-- **Branch workflow**: dopo ogni sprint pushare su dev (`claude/continue-work-y3mh4y`) E su `staging` (ambiente di test). Comando: `git push origin claude/continue-work-y3mh4y && git checkout staging && git merge claude/continue-work-y3mh4y --no-edit && git push origin staging && git checkout claude/continue-work-y3mh4y`.
-- **`main` (produzione) solo su autorizzazione esplicita del proprietario** — mai in automatico, mai dopo un singolo sprint senza via esplicito. Quando autorizzato: `git checkout main && git merge claude/continue-work-y3mh4y --no-edit && git push origin main && git checkout claude/continue-work-y3mh4y`.
+- **Nessuna modifica senza audit.**
+- **Aggiornare `CLAUDE.md`** ad ogni sprint significativo (range linee, nuovi sistemi, campi `player`).
+- **Bump `GAME_VERSION`** ad ogni push.
+- **Gate 9/9 verde** prima di ogni push — il QA Engineer valida ogni sprint.
+- **Branch workflow:** sviluppo sul branch designato (attuale: `claude/cpm-resume-work-71ntrj`), poi merge/push su `staging` (test) e, su autorizzazione, su `main` (produzione/Pages). Esiste anche il branch storico `claude/continue-work-y3mh4y`.
+  - **`main` solo su autorizzazione esplicita del proprietario** — mai in automatico dopo un singolo sprint senza via libero.
 - **Annunciare sempre** "Pushato su GitHub — CPM x.y.z." dopo ogni `git push`.
-- **Zero regressions**: il QA Engineer valida ogni sprint prima del push.
-- **Minimalismo**: nessuna astrazione o feature non richiesta esplicitamente.
-- **File unico**: tutto in `CARRIER-MANAGER-AV.html` — mai creare file JS separati.
+- **Zero regressions · Minimalismo · File unico.**
 
 ### Sprint format
 
-Ogni sprint ha: obiettivo, lista task numerata, agent assegnato per task, criteri QA.
-Esempio: "Sprint N — [titolo]: 1. Fix X (Match Engine Dev) 2. Add Y (Data Designer) QA: verifica Z."
+Ogni sprint ha: obiettivo, lista task numerata, agent assegnato per task, criteri QA (gate compreso).
 
 ---
 
-## Specifica di Design — Fase 2 "Feature Complete"
+## Specifica di Design — Fase 2 "Feature Complete" (ROADMAP / direttiva)
 
-Questa sezione definisce i requisiti di design per portare CPM a una prima versione feature-complete, stabile e credibile. Ogni punto è vincolante per i prossimi sprint.
-
----
+> Questa sezione è la **roadmap** vincolante per i prossimi sprint, NON lo stato attuale. Vedi la nota in *State Architecture* per cosa è già implementato.
 
 ### 8. Gestione Intelligente delle Convocazioni e delle Sostituzioni
 
-Il giocatore **non deve essere automaticamente titolare** in ogni partita. L'allenatore prende decisioni realistiche basate su:
+Il giocatore **non deve essere automaticamente titolare**. L'allenatore decide su: OVR vs compagni di ruolo, `form`, `fatigue`, `coachTrust`, prestazioni recenti (`matchHistory`), importanza partita, infortuni rosa, ruoli d'emergenza.
 
-**Criteri di selezione:**
-- OVR del giocatore vs OVR dei compagni nello stesso ruolo
-- Momento di forma (`player.form`)
-- Condizione fisica / stanchezza accumulata (`player.fatigue`)
-- Fiducia dell'allenatore (`player.coachTrust`)
-- Prestazioni recenti (ultimi 3-5 match da `matchHistory`)
-- Importanza della partita (campionato vs coppa, derby, big game)
-- Stato degli infortuni della rosa
-- Presenza di ruoli di emergenza (giocatore schierato fuori ruolo)
+Esiti: `"starter"` | `"bench"` | `"not_called"`. Esperienza panchina (visione + riscaldamento + istruzioni + ingresso a 46'/60'/70'/80'). Sostituzioni in-match (tattica/stanchezza/rendimento/infortunio/gestione risultato). Comunicazione allenatore sempre motivata, mai percepita casuale.
 
-**Esiti possibili per il giocatore:**
-- `"starter"` — parte titolare
-- `"bench"` — parte dalla panchina (può entrare)
-- `"not_called"` — non convocato
-
-**Esperienza in panchina:**
-- Visione della partita con animazione/progress bar
-- Riscaldamento (animazione + dialogo del mister)
-- Istruzioni specifiche prima dell'ingresso
-- Ingresso in momenti diversi: 46', 60', 70', 80' (influenza minuti giocati e impatto stat)
-
-**Sostituzioni durante la partita:**
-- Cambio tattico (cambio modulo/ruolo)
-- Cambio per stanchezza (fatigue alta)
-- Cambio per scarso rendimento (form bassa nell'HL)
-- Cambio per infortunio (evento casuale)
-- Gestione del risultato (difendere vantaggio / cercare pareggio)
-
-**Comunicazione allenatore:**
-- Le scelte devono essere spiegate tramite dialogo testuale inline
-- Nessuna decisione percepita come casuale — motivazione sempre visibile
-- Esempi: "Sei in panchina oggi — voglio farti riposare per il derby di giovedì" / "Entri al 60' — tienici in partita"
-
-**Nuovi campi `player` richiesti:**
+Nuovi campi richiesti:
 ```js
-player.matchStatus    // "starter"|"bench"|"not_called" — calcolato prima di ogni partita
+player.matchStatus    // "starter"|"bench"|"not_called"
 player.minutesPlayed  // minuti giocati nella partita corrente
 ```
 
----
+### 9. Vita da Calciatore e Carriera Evoluta
 
-### 9. Vita da Calciatore e Modalità Carriera Evoluta
-
-**9.1 Ritiro Precampionato** (settimane -2 / -1 prima dell'inizio stagione):
-- Durata variabile (3-7 giorni)
-- Sessioni: allenamento atletico · allenamento tecnico · amichevoli
-- Guadagno fiducia allenatore durante il ritiro
-- Valutazione finale → gerarchie iniziali della stagione
-
-**9.2 Gerarchie di Squadra:**
-```
-U18 → Primavera → Riserve → Titolari → Leader spogliatoio
-```
-- Il giocatore sale/scende in base alle prestazioni
-- La gerarchia influenza: minutaggio, convocazioni, crescita, rinnovi
-
-**9.3 Rapporti con Staff e Compagni:**
-- `coachTrust` (già presente) — fiducia allenatore
-- `assistantCoachRel` — rapporto vice-allenatore
-- `fitnessCoachRel` — rapporto preparatore atletico
-- `teamChemistry` — rapporto compagni (0-100)
-- Le relazioni influenzano: minutaggio, crescita in allenamento, offerte di rinnovo
-
-**9.4 Conferenze e Interviste:**
-- Interviste post-partita (dopo prestazioni notevoli o sconfitte)
-- Conferenze stampa pre-partita importanti
-- Scelte di dialogo con opzioni (diplomatico / ambizioso / critico)
-- Impatto su: `popularity`, `coachTrust`, `teamChemistry`, rapporti con stampa
-
-**9.5 Mercato e Trasferimenti:**
-- `"loan"` — prestito (temporaneo, poi ritorno)
-- `"loan_with_option"` — prestito con diritto di riscatto
-- `"loan_with_obligation"` — prestito con obbligo
-- `"sale"` — cessione definitiva
-- Richiesta di trasferimento da parte del giocatore
-- Promesse dell'allenatore (tipo: "sarai titolare dal mese prossimo")
-
-**9.6 Infortuni e Recupero:**
-- Infortuni con tipologie diverse: muscolare · articolare · frattura · botta
-- Tempi recupero: 1-2 settimane (lieve) / 3-5 settimane (medio) / 6-12 settimane (grave)
-- Riabilitazione: sessioni specifiche durante il recupero
-- Rischio ricaduta (se rientra troppo presto)
-- Rientro graduale (riduzione performance per 2-3 settimane post-infortunio)
-
+- **9.1 Ritiro precampionato** (settimane -2/-1): allenamenti, amichevoli, guadagno fiducia, gerarchie iniziali.
+- **9.2 Gerarchie:** `U18 → Primavera → Riserve → Titolari → Leader spogliatoio` — influenza minutaggio, convocazioni, crescita, rinnovi.
+- **9.3 Rapporti staff/compagni:** `coachTrust` (presente), `assistantCoachRel`, `fitnessCoachRel`, `teamChemistry` (0-100).
+- **9.4 Conferenze/interviste:** scelte di dialogo (diplomatico/ambizioso/critico) → impatto su `popularity`, `coachTrust`, `teamChemistry`, stampa.
+- **9.5 Mercato:** `loan` / `loan_with_option` / `loan_with_obligation` / `sale`, richieste di trasferimento, promesse allenatore.
+- **9.6 Infortuni e recupero:**
 ```js
 player.injury = null | {
-  type: "muscolare"|"articolare"|"frattura"|"botta",
-  severity: "lieve"|"medio"|"grave",
-  weeksRemaining: number,
-  recoveryPct: 0-100,
-  relapse_risk: 0-1
+  type:"muscolare"|"articolare"|"frattura"|"botta",
+  severity:"lieve"|"medio"|"grave",
+  weeksRemaining:number, recoveryPct:0-100, relapse_risk:0-1
 }
 ```
-
-**9.7 Obiettivi Stagionali:**
-- Obiettivi club (già parzialmente presenti come `seasonObjectives`)
-- Obiettivi personali: `{type:"goals_personal",target:N}` / `{type:"top_ovr",target:N}`
-- Obiettivi allenatore: dichiarati a inizio stagione
-- Obiettivi procuratore: suggeriti periodicamente
-
-**9.8 Premi e Riconoscimenti** (da aggiungere al sistema trofei):
-- Miglior Giovane della Stagione (età ≤ 23, top OVR crescita)
-- Capocannoniere (già presente)
-- Squadra dell'Anno (selezionato se top-3 per ruolo in lega)
-- Pallone d'Oro (già presente)
-- MVP Campionato / MVP Mese
-
-**9.9 Vita Calcistica Dinamica:**
-- Notizie di mercato settimanali (altri trasferimenti simulati)
-- Risultati altri campionati (già simulati, ma da mostrare in dashboard)
-- Record storici aggiornati in real-time
-- Rivalità e derby con bonus atmosfera
-- Eventi speciali: Clasico, Derby della Madonnina, Derby del Nord
-
----
+Tempi 1-2 / 3-5 / 6-12 settimane, riabilitazione, rischio ricaduta, rientro graduale.
+- **9.7 Obiettivi stagionali:** club (`seasonObjectives`, presente), personali (`{type:"goals_personal",target:N}`), allenatore, procuratore.
+- **9.8 Premi:** Miglior Giovane, Capocannoniere (presente), Squadra dell'Anno, Pallone d'Oro (presente), MVP.
+- **9.9 Vita dinamica:** notizie mercato settimanali, risultati altri campionati in dashboard, record real-time, rivalità/derby (Clasico, Derby della Madonnina, ecc.).
 
 ### 10. Test di Realismo della Carriera
 
-**Simulazioni richieste per validazione:**
-- Almeno 10 stagioni complete
-- Profili: campione / promessa / giocatore medio / riserva
-- Percorsi con trasferimenti, infortuni, crescita lenta, crescita rapida
-
-**Criteri di validazione:**
-- Il giocatore NON diventa titolare troppo facilmente (almeno 2-3 stagioni da riserva)
-- La crescita OVR è credibile (da 50 a 85 in 8-10 stagioni, non in 2)
-- Le convocazioni sono coerenti con `coachTrust` e form
-- Le sostituzioni rispettano il momento della partita
-- Le scelte allenatore sono sempre motivate da dati reali
-
----
+Simulare ≥10 stagioni complete su profili campione/promessa/medio/riserva. Criteri: niente titolare troppo facile (2-3 stagioni da riserva), crescita OVR credibile (50→85 in 8-10 stagioni), convocazioni coerenti con `coachTrust`/form, sostituzioni coerenti col momento, scelte allenatore sempre motivate.
 
 ### 11. Stabilità, Qualità e Assenza di Regressioni
 
-**Principio cardine:** ogni nuova feature aumenta profondità senza introdurre bug.
+**Principio cardine: stabilità > nuove feature.** Ogni feature aumenta la profondità senza introdurre bug.
 
-**Sistemi da proteggere (invarianti):**
-- Sistema carriera (state machine `CareerApp`)
-- Partite giocate e simulate (`LiveMatch`, `simulateMatch`)
-- Mercato e contratti (`generateTransferOffer`, `generateProContracts`)
-- Statistiche (`goals`, `assists`, `matchHistory`)
-- Classifiche (`standings`, `updateStandings`)
-- Coppe nazionali (`player.cup`)
-- Competizioni europee (`player.euro`, `player.euroMondiale`)
-- Sistema allenamenti (`_dim`, training loop)
-- Progressione giocatore (`calcOvr`, stat growth)
-- Salvataggi esistenti (backward-compat migration in `useEffect`)
-- Generazione news, cronaca, highlights, IA squadre
+**Invarianti da proteggere:** state machine `CareerApp`, partite (`LiveMatch`/`simulateMatch`), mercato/contratti, statistiche, classifiche, Coppa, Euro/Mondiale, training, progressione (`calcOvr`), save backward-compat, generazione news/cronaca/highlights/IA.
 
-**Suite test di non regressione (obbligatoria prima di ogni push):**
-1. Babel transpile check (già presente in ogni sprint)
-2. Creazione nuova carriera — genera calendario e standings
-3. Caricamento save esistente — migrazione campi mancanti
+**Suite di non-regressione (oltre al gate visivo):**
+1. Babel transpile check (implicito: se il gate carica il gioco, transpila)
+2. Nuova carriera → genera calendario + standings
+3. Caricamento save esistente → migrazione campi mancanti
 4. Avanzamento 5+ settimane senza crash
-5. Partita completa giocata (LiveMatch fino a `ended`)
-6. Inizio nuova stagione — promozioni/retrocessioni + euro spots
+5. Partita completa giocata (`LiveMatch` fino a `ended`)
+6. Inizio nuova stagione → promozioni/retrocessioni + spot europei
 
-**Approccio di sviluppo richiesto:**
-- Step piccoli e verificabili — mai più di 300 righe per sprint
-- Validare ogni modifica prima di procedere
-- Correggere immediatamente le regressioni
-- Priorità assoluta: stabilità > nuove feature
+**Approccio:** step piccoli e verificabili (≤300 righe/sprint), validare ogni modifica col gate, correggere subito le regressioni. Priorità assoluta: **stabilità > feature**.
