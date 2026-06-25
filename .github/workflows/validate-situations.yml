@@ -1,0 +1,53 @@
+name: Validate Situations (quality gate)
+
+# Quality gate del motore Situations: gira l'intera suite di validazione
+# (determinismo, stato iniziale/finale, movimenti, orientamento, visivo, golden,
+# coerenza dati) su ogni push e PR. Fallisce il workflow se un solo check hard fallisce.
+on:
+  push:
+    branches: ['main', 'staging', 'claude/**']
+    paths:
+      - 'CARRIER-MANAGER-AV.html'
+      - 'tests/**'
+      - '.github/workflows/validate-situations.yml'
+  pull_request:
+    paths:
+      - 'CARRIER-MANAGER-AV.html'
+      - 'tests/**'
+  workflow_dispatch: {}
+
+# annulla run obsolete sullo stesso ref
+concurrency:
+  group: validate-situations-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    defaults:
+      run:
+        working-directory: tests/visual
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies + Chromium
+        run: |
+          npm install
+          npx playwright install --with-deps chromium
+
+      - name: Run quality gate (179 Situations)
+        run: npm run validate-situations
+
+      - name: Upload report (HTML + screenshot)
+        if: always()  # carica il report anche quando il gate fallisce
+        uses: actions/upload-artifact@v4
+        with:
+          name: situations-validation-report
+          path: tests/visual/out/validate
+          retention-days: 14
+          if-no-files-found: ignore
