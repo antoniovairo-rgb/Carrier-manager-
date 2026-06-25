@@ -2677,7 +2677,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.98.0"; // CINE-TL Fase 2 (executor): in gioco reale le conclusioni di TIRO sono precedute dalla COSTRUZIONE dell'azione (build-up) — palla e attori seguono la timeline beat-per-beat, poi parte la conclusione collaudata. Bypass in gate-mode (?cpmtest=1 → conclusione immediata → 9 check identici). "Il tiro non compare più dal nulla". + Fase 1: motore di TIMELINE — buildHLTimeline genera per ogni pattern una sequenza di micro-eventi calcistici (chi ha la palla, chi riceve/corre, difensori, n° reali passaggi, traiettoria) + validateHLTimeline che impone le invarianti (possesso continuo, no teletrasporti, no cambi possesso ingiustificati, testa⇐cross). Validato logicamente su 650 casi. NON ancora collegato al renderer (Fase 2). + CINE-APPROACH.
+const GAME_VERSION="5.00.0"; // ENGINE-REFACTOR Fase 0 (Intent→Decision→Simulation→Animation): aggiunto il DECISION ENGINE (decideExecution) — keystone che, data un'INTENZIONE + contesto (attributi/pressione/posizione/meteo/morale/...) + casualità controllata, decide ESECUZIONE ed ESITO. Validato su migliaia di contesti (esiti vari e coerenti, 0 impossibili). Inerte (non ancora ricablato), come il motore timeline. + CINE-TL Fase 2 (executor): in gioco reale le conclusioni di TIRO sono precedute dalla COSTRUZIONE dell'azione (build-up) — palla e attori seguono la timeline beat-per-beat, poi parte la conclusione collaudata. Bypass in gate-mode (?cpmtest=1 → conclusione immediata → 9 check identici). "Il tiro non compare più dal nulla". + Fase 1: motore di TIMELINE — buildHLTimeline genera per ogni pattern una sequenza di micro-eventi calcistici (chi ha la palla, chi riceve/corre, difensori, n° reali passaggi, traiettoria) + validateHLTimeline che impone le invarianti (possesso continuo, no teletrasporti, no cambi possesso ingiustificati, testa⇐cross). Validato logicamente su 650 casi. NON ancora collegato al renderer (Fase 2). + CINE-APPROACH.
 const SAVE_VERSION=6;
 // Sprint ENV — ambiente rilevato automaticamente dal runtime (non gestito manualmente).
 // PRODUCTION = deploy GitHub Pages (*.github.io). Tutto il resto (staging githack, locale, localhost) = TEST.
@@ -6848,7 +6848,59 @@ function resolveTimeline(tl){
   });
   return out;
 }
-if(typeof window!=='undefined'){window.buildHLTimeline=buildHLTimeline;window.validateHLTimeline=validateHLTimeline;window.resolveTimeline=resolveTimeline;}
+// ============================================================================
+// DECISION ENGINE (5.00.0) — keystone dell'architettura "Intent → Decision → Simulation → Animation".
+//   Data una INTENZIONE (es. 'cross') e il CONTESTO (attributi, ruolo, piede, posizione, pressione,
+//   compagni, modulo, tattica, stanchezza, morale, meteo, contesto partita) + casualità CONTROLLATA
+//   (seed), decide COME l'azione viene realmente eseguita (esecuzione) e con quale ESITO.
+//   Sostituisce la selezione della variante guidata dalle LABEL delle situation (l'accoppiamento
+//   Situation→animazione). Puro e deterministico (seed) → la stessa intent in contesti diversi
+//   produce esiti VARI, coerenti e realistici (validato su decine di contesti).
+// ============================================================================
+function decideExecution(intent, ctx){
+  ctx=ctx||{}; const a=ctx.attrs||{};
+  const sk=(k,d)=>clamp(a[k]!=null?a[k]:(d==null?60:d),1,99);
+  const pressure=clamp(ctx.pressure!=null?ctx.pressure:1,0,5);
+  const fatigue=clamp(ctx.fatigue||0,0,100), morale=clamp(ctx.morale||60,0,100);
+  const weather=ctx.weather||'clear', x=clamp(ctx.x!=null?ctx.x:50,0,100);
+  let s=(Math.abs(ctx.seed!=null?ctx.seed:123456789)>>>0)||1;
+  const rnd=()=>{s=(s*1664525+1013904223)>>>0;return s/4294967296;};
+  const wpick=(opts)=>{const f=opts.filter(o=>o.w>0);const tot=f.reduce((y,o)=>y+o.w,0)||1;let r=rnd()*tot;for(const o of f){r-=o.w;if(r<=0)return o.k;}return f.length?f[f.length-1].k:null;};
+  const qOf=(skillVal)=>clamp((skillVal-pressure*9-fatigue*0.16+(morale-60)*0.12)/100+(rnd()-0.5)*0.28,0.02,0.99);
+  const wet=weather==='rain'||weather==='snow', windy=weather==='wind'||weather==='storm';
+  let exec,outcome,q;
+  if(intent==='cross'){
+    const cr=sk('passaggio')*0.55+sk('tecnica')*0.45; q=qOf(cr);
+    exec=wpick([{k:'cross_far_post',w:3+cr*0.03},{k:'cross_near_post',w:3+cr*0.025},{k:'cross_low_driven',w:2+sk('tecnica')*0.03+(wet?-0.6:0)},{k:'cross_cutback',w:1+(x>78?2.5:0)},{k:'cross_deep',w:1.5}]);
+    outcome=wpick([{k:'assist',w:q*4.2},{k:'goal',w:q*1.1},{k:'corner',w:1+pressure*0.6},{k:'blocked',w:pressure*1.5},{k:'intercepted',w:pressure*1.1+(1-q)*1.6},{k:'out',w:(1-q)*2+(windy?1.2:0)+fatigue*0.012}]);
+  } else if(intent==='shot'){
+    const sh=sk('tiro')*0.7+sk('tecnica')*0.3; q=qOf(sh);
+    exec=wpick([{k:'shot_power',w:2.5+sk('tiro')*0.03},{k:'shot_curled',w:1.5+sk('tecnica')*0.035},{k:'shot_first_time',w:1.5+(pressure>=2?1.2:0)},{k:'shot_chip',w:0.6+(ctx.gkOut?2:0)},{k:'shot_placed',w:1.5+sk('mentalità')*0.02}]);
+    outcome=wpick([{k:'goal',w:q*3.4},{k:'saved',w:1.4+(1-q)*1.6},{k:'blocked',w:pressure*1.3},{k:'post',w:0.5+(q>0.6?0.4:0)},{k:'wide',w:(1-q)*2.2+(windy?0.8:0)}]);
+  } else if(intent==='dribble'){
+    const dr=sk('dribbling')*0.6+sk('velocità')*0.25+sk('tecnica')*0.15; q=qOf(dr);
+    exec=wpick([{k:'dribble_feint',w:2+sk('dribbling')*0.03},{k:'dribble_inside',w:1.5+sk('tecnica')*0.03},{k:'dribble_outside',w:1.5+sk('velocità')*0.03},{k:'dribble_knock',w:1+sk('velocità')*0.04}]);
+    outcome=wpick([{k:'beat_man',w:q*3.6},{k:'fouled',w:pressure*1.1+0.5},{k:'dispossessed',w:pressure*1.4+(1-q)*1.8},{k:'shielded_out',w:0.6+(1-q)}]);
+  } else if(intent==='through'||intent==='onetwo'){
+    const ps=sk('passaggio')*0.7+sk('mentalità')*0.3; q=qOf(ps);
+    exec=intent==='onetwo'?wpick([{k:'give_and_go',w:3},{k:'wall_pass',w:2}]):wpick([{k:'through_split',w:2+sk('passaggio')*0.03},{k:'through_lofted',w:1.5},{k:'through_disguised',w:1+sk('tecnica')*0.03}]);
+    outcome=wpick([{k:'assist',w:q*3.4},{k:'chance',w:q*2.2},{k:'intercepted',w:pressure*1.4+(1-q)*1.8},{k:'offside',w:0.8+(intent==='through'?0.8:0)},{k:'overhit',w:(1-q)*1.6}]);
+  } else if(intent==='progression'||intent==='run'){
+    const pr=sk('velocità')*0.5+sk('fisico')*0.25+sk('dribbling')*0.25; q=qOf(pr);
+    exec=wpick([{k:'carry_drive',w:2+sk('velocità')*0.03},{k:'burst',w:1.5+sk('fisico')*0.03},{k:'cut_inside',w:1.5+sk('tecnica')*0.03}]);
+    outcome=wpick([{k:'advance',w:q*3.4},{k:'win_freekick',w:pressure*0.9},{k:'stopped',w:pressure*1.3+(1-q)*1.6},{k:'lost',w:(1-q)*1.4}]);
+  } else if(intent==='intercept'||intent==='recover'||intent==='anticipate'){
+    const df=sk('posizionamento')*0.55+sk('mentalità')*0.25+sk('velocità')*0.2; q=qOf(df);
+    exec=wpick([{k:'step_in',w:2+sk('posizionamento')*0.03},{k:'slide',w:1.2+sk('fisico')*0.03},{k:'shield_recover',w:1.2}]);
+    outcome=wpick([{k:'ball_won',w:q*3.6},{k:'foul',w:(1-q)*1.4+0.4},{k:'missed',w:(1-q)*1.8},{k:'deflected_out',w:0.8}]);
+  } else {
+    const g=sk('tecnica')*0.5+sk('mentalità')*0.5; q=qOf(g);
+    exec=wpick([{k:'simple',w:3},{k:'safe',w:2}]);
+    outcome=wpick([{k:'retain',w:q*3},{k:'lost',w:(1-q)*2},{k:'progress',w:q*1.5}]);
+  }
+  return {intent,execution:exec,outcome,quality:+q.toFixed(2)};
+}
+if(typeof window!=='undefined'){window.buildHLTimeline=buildHLTimeline;window.validateHLTimeline=validateHLTimeline;window.resolveTimeline=resolveTimeline;window.decideExecution=decideExecution;}
 function ThreeMatchView(props){
   const {playerX,playerY,homeCol,oppCol,allPlayers,homeClub,heroKitCol,
     stadiumHomeCol,stadiumAwayCol,stadiumStyle=0,ballX,ballY,
