@@ -16,7 +16,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { startServer, launchBrowser, openMatch, forceSituation, freeze, unfreeze, canvasShot, samplePostHighlight, stateSig, sigStr, sleep, ROOT } from './lib/harness.mjs';
+import { startServer, launchBrowser, openMatch, forceSituation, freeze, unfreeze, canvasShot, samplePostHighlight, stateSig, sigStr, sleep, ROOT, installCdnRoutes } from './lib/harness.mjs';
 import { loadSituations } from './lib/situations.mjs';
 import { writeReports } from './report.mjs';
 import initialState from './checks/initial-state.mjs';
@@ -50,6 +50,7 @@ const GOLDEN = path.join(HERE, 'golden-sigs.json');
   const srv = await startServer(); const port = srv.address().port;
   const browser = await launchBrowser();
   const page = await browser.newPage({ viewport: { width: 900, height: 900 } });
+  await installCdnRoutes(page);
   const consoleErrors = [];
   page.on('console', m => { if (m.type() === 'error' && !/BABEL|in-browser Babel/.test(m.text())) consoleErrors.push(m.text()); });
   page.on('pageerror', e => consoleErrors.push('PAGEERROR: ' + e.message));

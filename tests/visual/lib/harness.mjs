@@ -30,7 +30,33 @@ export function startServer(root = ROOT) {
 }
 
 export async function launchBrowser() {
-  return chromium.launch({ headless: true, args: ['--use-gl=angle', '--use-angle=swiftshader', '--ignore-gpu-blocklist', '--no-sandbox'] });
+  const _opts = { headless: true, args: ['--use-gl=angle', '--use-angle=swiftshader', '--ignore-gpu-blocklist', '--no-sandbox'] };
+  if (process.env.CPM_CHROME) _opts.executablePath = process.env.CPM_CHROME;
+  return chromium.launch(_opts);
+}
+
+/* Route-interception: serve le UMD CDN (React/Three/Babel/Phaser) da node_modules locali.
+   Necessario negli ambienti dove la policy di rete blocca i CDN (es. Claude Code web): l'HTML
+   spedito resta invariato (usa i CDN). No-op se le lib locali non sono presenti. */
+const _NM = path.join(__dirname, '..', 'node_modules');
+const _CDN_MAP = [
+  [/react-dom\.production\.min\.js/, path.join(_NM, 'react-dom/umd/react-dom.production.min.js')],
+  [/react\.production\.min\.js/,     path.join(_NM, 'react/umd/react.production.min.js')],
+  [/three\.min\.js/,                 path.join(_NM, 'three/build/three.min.js')],
+  [/GLTFLoader\.js/,                 path.join(_NM, 'three/examples/js/loaders/GLTFLoader.js')],
+  [/SkeletonUtils\.js/,              path.join(_NM, 'three/examples/js/utils/SkeletonUtils.js')],
+  [/babel(\.min)?\.js/,              path.join(_NM, '@babel/standalone/babel.min.js')],
+  [/phaser(\.min)?\.js/,             path.join(_NM, 'phaser/dist/phaser.min.js')],
+];
+export async function installCdnRoutes(page) {
+  await page.route(/^https?:\/\/(cdnjs\.cloudflare\.com|cdn\.jsdelivr\.net)\//, route => {
+    const url = route.request().url();
+    const hit = _CDN_MAP.find(([rx]) => rx.test(url));
+    if (hit && fs.existsSync(hit[1])) {
+      return route.fulfill({ status: 200, contentType: 'text/javascript', body: fs.readFileSync(hit[1]) });
+    }
+    return route.continue();
+  });
 }
 
 async function clickByText(page, src, timeout = 9000) {
