@@ -2677,7 +2677,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.91.0"; // Sprint D (NEXT-GEN ritmo, Fase 6): densità cronaca BG scala col momentum (18%→~30% nei picchi, ritmo non più piatto) + chaining robusto (regex ampia case-insensitive + guardia profondità). Completa la macro NEXT-GEN LIVE MATCH (A: off-ball positioning · B: locomozione+wind-up · C: ripresa dal centro · D: ritmo+chaining).
+const GAME_VERSION="4.92.0"; // Fase 2 Sprint 1 (Vita dinamica 9.9): card "Voci di Mercato" settimanali in dashboard (generateMarketNews, seeded → stabile per settimana) con voce personale quando il giocatore è ambito. Additivo, nessun campo save. Risultati internazionali/record/derby erano già presenti. + NEXT-GEN A/B/C/D.
 const SAVE_VERSION=6;
 // Sprint ENV — ambiente rilevato automaticamente dal runtime (non gestito manualmente).
 // PRODUCTION = deploy GitHub Pages (*.github.io). Tutto il resto (staging githack, locale, localhost) = TEST.
@@ -13161,6 +13161,38 @@ const generateWorldResults=(player)=>{
   });
   return out;
 };
+/* Sprint 129 (Vita dinamica 9.9) — Voci di Mercato settimanali, seeded (stabili per settimana, niente flicker su re-render) */
+const MARKET_NEWS_TPL=[
+  "💰 {A} prepara un'offerta importante per un big del {B}.",
+  "🔄 Si scalda l'asse di mercato {A}–{B}: contatti in corso.",
+  "✍️ {A} lavora al rinnovo del proprio capitano.",
+  "🎯 {A} cerca un rinforzo per puntare in alto in {LG}.",
+  "🔥 Colpo a sorpresa? {A} sogna il fuoriclasse del {B}.",
+  "🔭 Gli osservatori del {A} seguono un giovane talento emergente.",
+  "📈 {A} valuta una cessione pesante per finanziare il mercato.",
+  "🤝 Summit di mercato tra {A} e l'entourage di un obiettivo dichiarato.",
+  "⏳ {A} ha fretta di chiudere prima della sfida col {B}.",
+];
+const generateMarketNews=(player)=>{
+  const ss=player.season||1,wk=player.week||1;
+  const pool=CLUBS.filter(c=>!c.isU18).sort((a,b)=>(b.p||0)-(a.p||0)).slice(0,28);
+  if(pool.length<4)return[];
+  let s=Math.abs(hashStr(`mn129_${ss}_${wk}`));
+  const nx=()=>{s=(s*1664525+1013904223)&0x7fffffff;return s;};
+  const out=[],usedT=new Set();
+  for(let i=0;i<3;i++){
+    let ti;do{ti=nx()%MARKET_NEWS_TPL.length;}while(usedT.has(ti)&&usedT.size<MARKET_NEWS_TPL.length);usedT.add(ti);
+    const A=pool[nx()%pool.length];let B=pool[nx()%pool.length];if(B===A)B=pool[(pool.indexOf(A)+1)%pool.length];
+    out.push({txt:MARKET_NEWS_TPL[ti].replace(/\{A\}/g,A.n).replace(/\{B\}/g,B.n).replace(/\{LG\}/g,A.lg||"campionato"),col:A.c||"#64748b"});
+  }
+  // Voce personale: se il giocatore è ambito (popolarità/forma alte), un grande club lo osserva
+  if((player.popularity||0)>=55||(player.form||0)>=72){
+    const bigs=pool.filter(c=>c.id!==player.club?.id).slice(0,10);
+    if(bigs.length){const big=bigs[Math.abs(hashStr(`mnp129_${ss}_${wk}`))%bigs.length];
+      out.unshift({txt:`🔭 ${big.n} avrebbe messo gli occhi su di te — voci dal mercato!`,col:big.c||"#f59e0b",personal:true});}
+  }
+  return out.slice(0,4);
+};
 /* Sprint 66 — Striscia Vittorie helper */
 const getWinStreak=(history)=>{
   const recent=[...(history||[])].filter(m=>!m.simulated).reverse();
@@ -16890,6 +16922,22 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                     <span style={{flex:1,fontSize:10,fontWeight:r.ag>r.hg?700:400,color:r.ag>r.hg?TH.text:TH.faint,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{r.a}</span>
                   </div>
                 ))}
+              </div>
+            ))}
+          </Card>
+        );
+      })()}
+      {/* Sprint 129 (Vita dinamica) — Voci di Mercato settimanali */}
+      {tab==="dashboard"&&(player.proStatus||"u18")==="pro"&&(()=>{
+        const _mn=generateMarketNews(player);
+        if(!_mn.length)return null;
+        return(
+          <Card style={{marginBottom:8,padding:"10px 14px"}}>
+            <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>📰 Voci di Mercato — W.{player.week||1}</div>
+            {_mn.map((n,ni)=>(
+              <div key={ni} style={{display:"flex",alignItems:"flex-start",gap:8,padding:"5px 0",borderTop:ni>0?"1px solid "+TH.cardBorder:"none"}}>
+                <span style={{width:3,alignSelf:"stretch",borderRadius:2,background:n.col,flexShrink:0}}/>
+                <span style={{fontSize:11,lineHeight:1.35,color:n.personal?TH.text:TH.muted,fontWeight:n.personal?700:400}}>{n.txt}</span>
               </div>
             ))}
           </Card>
