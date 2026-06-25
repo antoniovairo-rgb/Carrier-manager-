@@ -20,3 +20,13 @@ export function loadSituations() {
   // eslint-disable-next-line no-new-func
   return Function(code)();
 }
+
+/* Replica node-side di cappedMM (movement cap data-driven) — stessa logica del gioco. */
+export function cappedMM(sit) {
+  if (!sit || sit.lockMovement) return 0;
+  const p = sit.tactic && sit.tactic.pressure;
+  if (p === 'high') return 0;
+  if (p === 'medium') return 1;
+  if (p === 'low') return 2;
+  return sit.maxMoves == null ? 2 : sit.maxMoves; // "none" o tactic assente
+}

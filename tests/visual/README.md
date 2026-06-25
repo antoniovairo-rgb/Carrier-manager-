@@ -50,9 +50,9 @@ importalo nell'array dell'orchestratore. `scope:'situation'` riceve `{sit,state,
 | 1 | **Determinismo** | `checks/determinism.mjs` + firma di stato | 2 run → firma identica; HARD |
 | 2 | **Stato iniziale** | `checks/initial-state.mjs` | in-campo, conteggi, possesso (aggancio palla↔eroe), GK; overlap = warning |
 | 3 | **Azione (dati)** | `checks/data-coherence.mjs` | riusa la suite analitica (537 combo: tiri→porta, cross/filtranti coerenti, far/near post, esiti) |
-| 4 | **Movimenti** | parziale | engine a highlight scriptati: niente sim continua multi-agente (estensione documentata) |
+| 4 | **Movimenti** | `checks/movements.mjs` | cap movimenti post-highlight coerente con `tactic.pressure`/lock (deterministico) + moveZone valida; cap live = warning |
 | 5 | **Orientamento** | `checks/orientation.mjs` | home→gx100, GK coerenti, niente conclusione verso la propria porta, senso tattico azioni-goal |
-| 6 | **Stato finale** | estensione | richiede risoluzione azione+timeline (vedi sotto) |
+| 6 | **Stato finale** | `checks/final-state.mjs` | risolve l'azione (`__CPM_RESOLVE`), valida evento conclusivo + coerenza palla↔esito + assenza stati impossibili (campione isolato) |
 | 7 | **Visivo** | `checks/visual.mjs` | camera sopra il prato, giocatori renderizzati, palla a quota valida; inquadratura eroe = warning |
 | 8 | **Report** | `report.mjs` | id, firma, screenshot, issue/warning per categoria, motivazioni |
 | 9 | **Regression test** | `validate-situations.mjs` | comando unico + golden + exit code CI |
@@ -66,6 +66,20 @@ continua. Perciò:
 - la **validazione movimenti continui** (cat. 4) e lo **stato finale post-risoluzione**
   (cat. 6) sono **estensioni**: richiedono un hook che risolva l'azione e registri una
   timeline. Punti d'aggancio già predisposti (`__CPM_FORCE_SIT` + risoluzione azione).
+
+### CI/CD (GitHub Actions)
+Il workflow `.github/workflows/validate-situations.yml` esegue il gate ad ogni push
+(`main`/`staging`/`claude/**`) e PR che toccano il gioco o `tests/`: installa Playwright+Chromium,
+lancia `npm run validate-situations`, fallisce la build su qualunque issue hard e carica il report
+HTML come artifact (anche in caso di fallimento). `workflow_dispatch` per esecuzione manuale.
+
+### Note su cat. 4 e 6 (engine a highlight scriptati)
+- **Cat. 4**: il segnale deterministico è il **cap movimenti** (`cappedMM` ↔ `tactic.pressure`). La
+  validazione AI continua del movimento (compagni che supportano, linea difensiva frame-by-frame) non
+  è applicabile a un motore a highlight; il cap-live è un warning informativo.
+- **Cat. 6**: gira su un **campione** (~23 Situations, una ogni 8) e isolata dalla passata principale,
+  perché la risoluzione genera timer asincroni (auto-advance/chaining) che altrimenti inquinerebbero
+  il setup deterministico delle altre Situations.
 
 ### Hard vs Warning
 - **HARD** (fanno fallire il gate): determinismo, conteggi, in-campo, possesso, orientamento,

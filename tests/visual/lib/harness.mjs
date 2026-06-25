@@ -62,15 +62,25 @@ export async function openMatch(page, port) {
 
 /* Forza la situation gi, lascia assestare la camera, opzionalmente congela il frame (dt=0).
    Ritorna lo stato completo (__CPM_STATE) dopo l'assestamento. */
-export async function forceSituation(page, gi, { settle = 650, freeze = false } = {}) {
-  await page.evaluate(i => window.__CPM_FORCE_SIT(i), gi);
+export async function forceSituation(page, gi, { settle = 650, freeze = false, choose = false } = {}) {
+  await page.evaluate(([i, c]) => window.__CPM_FORCE_SIT(i, c), [gi, choose]);
   await sleep(settle);
   if (freeze) { await page.evaluate(() => { window.__CPM_FROZEN = true; }); await sleep(120); }
   const state = await page.evaluate(() => window.__CPM_STATE());
   return state;
 }
 
+export async function freeze(page) { await page.evaluate(() => { window.__CPM_FROZEN = true; }); await sleep(120); }
 export async function unfreeze(page) { await page.evaluate(() => { window.__CPM_FROZEN = false; }); }
+
+/* Risolve l'azione k della Situation corrente, attende l'esito, ritorna {outcome, finalState}. */
+export async function resolveAction(page, k = 0, { wait = 850 } = {}) {
+  await page.evaluate(kk => window.__CPM_RESOLVE(kk), k);
+  await sleep(wait);
+  const outcome = await page.evaluate(() => window.__CPM_OUTCOME);
+  const finalState = await page.evaluate(() => window.__CPM_STATE());
+  return { outcome, finalState };
+}
 
 /* Screenshot del SOLO canvas 3D (ignora la sidebar testuale che cambia per situation). */
 export async function canvasShot(page) {

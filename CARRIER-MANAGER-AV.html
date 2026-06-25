@@ -2664,7 +2664,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="4.83.0"; // Sprint 4.83.0: framework di validazione automatica Situations — determinismo (seeded RNG + __CPM_RESEED + dt=0 freeze) + hook __CPM_STATE; quality gate modulare in tests/visual (npm run validate-situations)
+const GAME_VERSION="4.84.0"; // Sprint 4.84.0: validazione cat.4 (movimenti) + cat.6 (stato finale) — hook __CPM_RESOLVE/__CPM_OUTCOME/__CPM_MOVES (gated ?cpmtest=1) + reset chaining; + workflow CI GitHub Actions
 const SAVE_VERSION=6;
 // Sprint ENV — ambiente rilevato automaticamente dal runtime (non gestito manualmente).
 // PRODUCTION = deploy GitHub Pages (*.github.io). Tutto il resto (staging githack, locale, localhost) = TEST.
@@ -8554,6 +8554,8 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   const [phase,setPhase]=useState(context==="trial"?"playing":"matchday");
   useEffect(()=>{phaseRef.current=phase;},[phase]);
   const [hlIdx,setHlIdx]=useState(0);
+  const hlIdxRef=useRef(0);useEffect(()=>{hlIdxRef.current=hlIdx;},[hlIdx]);// VISUAL-TEST: indice HL corrente per gli hook
+  const handleActionRef=useRef(null);// VISUAL-TEST: riferimento sempre aggiornato a handleAction (evita closure stale)
   // position resets to situation startZone on each new highlight
   const [pPos,setPPos]=useState(()=>getStartPos(situations[0])||{x:58,y:50});
   const pPosRef=useRef({x:58,y:50});
@@ -8587,6 +8589,8 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   const [pressureCinema,setPressureCinema]=useState(null); // Sprint 97: {text,col,key}
   const streakRef=useRef(0); // Sprint 97: consecutive HL successes
   const [movesLeft,setMovesLeft]=useState(0);
+  // VISUAL-TEST: mirror esito/mosse su window (solo ?cpmtest=1) per validare stato finale e cap movimenti
+  useEffect(()=>{ if(typeof window!=='undefined'&&/[?&]cpmtest=1\b/.test(window.location.search||"")){window.__CPM_OUTCOME=outcome;window.__CPM_MOVES=movesLeft;} },[outcome,movesLeft]);// eslint-disable-line
   const [pressureBar,setPressureBar]=useState(1);
   const [paused,setPaused]=useState(false);
   // VISUAL-TEST (4.82.0): force-situation per validare TUTTE le SITUATIONS in 3D.
@@ -8600,11 +8604,15 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     window.__CPM_LOAD_ALL=()=>{ setSituations(SITUATIONS.slice()); setHlIdx(0); setPhase("hl_choose"); return SITUATIONS.length; };
     // forza la situation gi: posiziona l'eroe alla startZone e va DIRETTO al framing interattivo
     // (salta hl_intro, cinematico). Replica la transizione reale: mm===0 (e non lock) → hl_choose, altrimenti hl_move.
-    window.__CPM_FORCE_SIT=(gi)=>{ const sit=SITUATIONS[gi]; if(!sit)return false;
+    window.__CPM_FORCE_SIT=(gi,choose)=>{ const sit=SITUATIONS[gi]; if(!sit)return false;
       if(window.__CPM_RESEED)window.__CPM_RESEED(gi); // start position deterministica per indice
-      setOutcome(null); setChosenAct(null);
+      _hlActionFiredRef.current=false; setOutcome(null); setChosenAct(null); pendingChainSitRef.current=null; // reset (consenti nuova risoluzione, niente chaining residuo che sposterebbe gli indici)
       setHlIdx(gi); setPPos(getStartPos(sit)||{x:58,y:50});
-      const mm=cappedMM(sit); setPhase(mm===0&&!sit.lockMovement?"hl_choose":"hl_move"); return true; };
+      const mm=cappedMM(sit); setPhase(choose?"hl_choose":(mm===0&&!sit.lockMovement?"hl_choose":"hl_move")); return true; };
+    // risolve l'azione k della Situation corrente in modo deterministico → hl_result (validazione stato finale)
+    window.__CPM_RESOLVE=(k)=>{ const sit=situationsRef.current[hlIdxRef.current]; if(!sit||!sit.actions||!sit.actions[k])return false;
+      if(window.__CPM_RESEED)window.__CPM_RESEED(hlIdxRef.current*131+((k|0)+50000));
+      if(handleActionRef.current)handleActionRef.current(sit.actions[k]); return true; };
     return()=>{ try{delete window.__CPM_FORCE_SIT;delete window.__CPM_LOAD_ALL;delete window.__CPM_SIT_COUNT;}catch(e){} };
   },[]);// eslint-disable-line
   const [debugMode,setDebugMode]=useState(false); // ATE-5: Shift+D toggle
@@ -9489,6 +9497,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
       if(c?.commentary)setAiCommentary(c);
     });
   },[phase,player.stats,pPos.x,clock,addCom,oppPrestige]);
+  handleActionRef.current=handleAction;// VISUAL-TEST: riferimento aggiornato per __CPM_RESOLVE
 
   const RIGORE_DIRS={tl:"alto sinistra",tc:"alto centro",tr:"alto destra",bl:"basso sinistra",bc:"basso centro",br:"basso destra"};
   const RIGORE_ARROWS={tl:"↖",tc:"⬆",tr:"↗",bl:"↙",bc:"⬇",br:"↘"};
