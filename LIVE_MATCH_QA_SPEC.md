@@ -176,13 +176,128 @@ Il successo della piattaforma non sarà misurato dal numero di test eseguiti, ma
 
 ---
 
+## Capitolo 3.2 — QA Core
+
+### Scopo
+
+Il **QA Core** è il componente centrale di LMQP, responsabile dell'**orchestrazione** dell'intero processo di validazione del Live Match Engine.
+
+Il QA Core **NON** contiene logica calcistica, **NON** contiene logica di rendering. Coordina esclusivamente: esecuzione dei test, gestione del ciclo di vita, orchestrazione dei moduli, gestione delle risorse, raccolta dei risultati.
+
+### Responsabilità
+
+- inizializzare l'ambiente di test;
+- avviare Chromium tramite Playwright;
+- caricare il Live Match Engine;
+- configurare la modalità QA;
+- caricare il Seed;
+- coordinare Replay / Validator / Timeline / Failure Collector / Dashboard / Performance Monitor;
+- avviare il cleanup finale.
+
+Non deve conoscere il comportamento interno di nessun modulo.
+
+### Obiettivi
+
+Il QA Core deve essere: **deterministico**, **stateless** tra due test consecutivi, **resiliente** agli errori, **estendibile**, **indipendente dal gameplay**.
+
+### Modalità di funzionamento
+
+| Modalità | Descrizione |
+|---|---|
+| **Single Test** | un solo highlight (debugging) |
+| **Batch Mode** | una lista di highlight → report finale |
+| **Stress Mode** | migliaia di highlight consecutivi, monitorando memoria/FPS/CPU/processi/leak |
+| **Regression Mode** | solo gli highlight associati a regressioni note (pre-PR) |
+| **Nightly Mode** | intera suite QA in automatico → report completi |
+
+### Ciclo di Vita
+
+```
+Initialize → Environment Check → Health Check → Load Configuration →
+Launch Browser → Launch Game → Enable QA Mode → Load Seed →
+Initialize Modules → Execute Highlight → Collect Events → Validate →
+Generate Report → Cleanup → Health Check → Next Test
+```
+
+Ogni stato deve essere tracciabile.
+
+### State Machine
+
+```
+IDLE → INITIALIZING → READY → RUNNING → VALIDATING → REPORTING → CLEANUP → COMPLETED
+                                                                              └→ ERROR
+```
+
+Ogni transizione deve essere registrata nei log.
+
+### Gestione Configurazione
+
+Configurabile tramite **file esterni** (nessun parametro hardcoded): numero worker, timeout, browser, modalità headless, numero massimo highlight, registrazione video, screenshot, log level, AI Review, dashboard, replay.
+
+### Scheduler
+
+Responsabile di: ordinare i test, distribuire i worker, limitare il carico, evitare saturazione CPU/RAM. **Privilegia la stabilità del sistema rispetto alla velocità assoluta.**
+
+### Resource Manager
+
+Monitora di continuo: RAM, CPU, browser, Node, Playwright, Vite, processi figli. Al superamento di soglie configurabili: sospende i test, riduce il parallelismo, esegue cleanup, registra un warning. **Mai compromettere la stabilità del PC.**
+
+### Health Manager
+
+- **Prima** di ogni test: browser esistenti, processi Node, porte occupate, server QA, spazio disco, memoria.
+- **Dopo** ogni test: browser residui, processi zombie, leak, memoria, CPU.
+- Ogni anomalia va riportata.
+
+### Gestione Errori
+
+Il QA Core non deve terminare l'intera esecuzione per un singolo errore recuperabile. Classificazione: `INFO` · `WARNING` · `ERROR` · `CRITICAL` · `FATAL`. **Solo i FATAL** possono interrompere l'intera suite.
+
+### Recovery
+
+Quando possibile, recupero automatico (ogni recovery registrata):
+
+| Evento | Azione |
+|---|---|
+| Browser crash | riavvia browser |
+| Timeout | riavvia test |
+| Dev Server KO | riavvia server |
+| Validator crash | isola il validator, continua gli altri test |
+
+### Logging
+
+Log strutturati per ogni operazione importante. Ogni log: `timestamp`, `modulo`, `livello`, `seed`, `Situation`, `Action`, `Outcome`, `durata`. Facilmente filtrabili.
+
+### Performance
+
+Obiettivi: avvio rapido, basso consumo RAM/CPU, nessun processo duplicato, nessun browser orfano, nessun worker inutile. Preferire il **riutilizzo** delle risorse.
+
+### Thread Safety
+
+Ogni modulo indipendente. Nessuno stato mutabile condiviso. Ogni worker termina senza influenzare gli altri.
+
+### API Pubbliche
+
+Esposte e documentate: `avvio test`, `stop test`, `pausa`, `resume`, `caricamento seed`, `caricamento suite`, `stato corrente`, `statistiche`, `progressione`, `report`.
+
+### Integrazione con gli altri moduli
+
+Comunica **esclusivamente tramite interfacce pubbliche**. Mai accedere allo stato interno dei moduli. Ogni componente sostituibile senza modificare il QA Core.
+
+### Definition of Done
+
+Il QA Core è completo quando: coordina correttamente tutti i moduli; esegue suite complete; non lascia processi aperti; produce report affidabili; gestisce recovery automatico; resta stabile in test prolungati; è estendibile senza modifiche invasive.
+
+> Qualsiasi scelta implementativa privilegia **affidabilità, osservabilità, modularità e manutenibilità** rispetto alla sola velocità di sviluppo.
+
+---
+
 ## Stato di implementazione (mappatura sul codice attuale)
 
 > Sezione di raccordo tra spec e realtà del repo, da aggiornare ad ogni incremento LMQP. Onestà documentale (charter): distinguere ciò che esiste da ciò che è da costruire.
 
 | Modulo LMQP | Stato nel repo | Note |
 |---|---|---|
-| **QA Core** | 🟡 parziale | `tests/visual/validate-situations.mjs` orchestra il gate (9 categorie) |
+| **QA Core** | 🟡 parziale | `tests/visual/validate-situations.mjs` orchestra il gate (≈ Batch Mode + un solo worker, healthcheck/cleanup basilari). Mancano: modalità Single/Stress/Regression/Nightly, state machine esplicita, config esterna, scheduler/resource-manager, recovery automatico |
 | **Validator Engine** | 🟡 parziale | `tests/visual/checks/*.mjs` + `tests/situations-3d-validation.js` (suite analitica) |
 | **Observable System** | 🟡 parziale | probe `__CPM_FORCE_SIT` / `__CPM_STATE` / `__CPM_PROBE` / `__CPM_FOOTBALL_STATE` |
 | **Deterministic Execution** | ✅ | seed `__CPM_RESEED`, gate `determinism`, golden firma stato |
