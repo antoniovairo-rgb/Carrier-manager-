@@ -660,6 +660,69 @@ Reazione alla perdita immediata e riconoscibile; pressione credibile e coordinat
 
 ---
 
+## Validator 010 — Tentativo di Progressione
+
+| Campo | Valore |
+|---|---|
+| **Identificativo** | `LMV-010` |
+| **Categoria** | Costruzione dell'Azione |
+| **Priorità** | Alta |
+
+### Scopo
+
+Verifica che una Situation **"Tentativo di Progressione"** sia rappresentata in modo realistico, leggibile e coerente. Non conta che il giocatore raggiunga una **zona** specifica: conta che tenti realmente di **avanzare con il pallone** per creare un vantaggio tattico, superare linee di pressione o migliorare la posizione offensiva. Esito positivo o negativo.
+
+### Definizione
+
+Qualsiasi azione in cui il giocatore in possesso conduce **intenzionalmente** il pallone verso una zona più favorevole. La progressione deve avere uno **scopo tattico evidente** e mai apparire come una corsa casuale.
+
+### Situazioni compatibili / non compatibili
+
+- **Compatibili:** conduzione palla · avanzamento centrale · avanzamento sulla fascia · progressione in contropiede · dopo recupero palla · con cambio di direzione · in superiorità numerica.
+- **NON compatibili:** dribbling · passaggio · cross · tiro · semplice mantenimento del possesso senza avanzamento.
+
+### Timeline attesa
+
+| Fase | Evento |
+|---|---|
+| 1 | **Possesso** — controlla il pallone |
+| 2 | **Valutazione** — osserva compagni / avversari / spazio; intenzione di avanzare percepibile |
+| 3 | **Progressione** — conduce il pallone (accelera / rallenta / cambia direzione / protegge); conduzione **continua** |
+| 4 | **Reazione** — gli avversari chiudono gli spazi, i compagni accompagnano |
+| 5 | **Esito** — uno degli outcome previsti |
+| 6 | **Post-Highlight** — prosecuzione dell'azione chiaramente mostrata |
+
+### Outcome
+
+- **Ammessi:** avanzamento riuscito · passaggio/tiro/cross/dribbling successivo · perdita del possesso · fallo subito · recupero difensivo.
+- **Non ammessi:** corsa senza direzione plausibile · cambi improvvisi di direzione senza motivo · pallone troppo distante dal protagonista · avversari completamente passivi · replay interrotto prima dell'esito.
+
+### Controlli per validator
+
+- **Ball:** pallone sotto controllo, distanza giocatore-palla coerente, velocità di conduzione naturale, no teletrasporti/rimbalzi anomali.
+- **Player:** il **protagonista** guida il pallone / osserva il gioco / modifica il ritmo / protegge il possesso; i **compagni** offrono linee / accompagnano / occupano spazi; gli **avversari** accorciano / rallentano l'azione / si riposizionano.
+- **Camera:** protagonista e pallone sempre visibili, direzione della progressione mostrata, spazi disponibili evidenziati, esito mostrato.
+- **Motion:** corsa fluida, sincronia corsa↔conduzione, cambi di ritmo naturali, continuità, no movimenti innaturali.
+- **Semantic:** *"Un osservatore capirebbe immediatamente che il protagonista sta cercando di far avanzare l'azione con il pallone?"* — se no → **FAIL**.
+- **Football Intelligence:** progressione in situazione plausibile, spazi sfruttati, compagni che sostengono, avversari che chiudono, ritmo coerente col contesto.
+- **Narrative:** `Possesso → Lettura → Progressione → Reazione → Esito → Post-Highlight`; leggibile anche senza cronaca.
+
+### Errori critici (FAIL)
+
+Il protagonista corre senza scopo apparente · il pallone si separa senza motivo · gli avversari non reagiscono · replay che termina prima dell'esito · cronaca che dice "progressione" ma il video mostra altro.
+
+### Suggerimenti automatici
+
+Migliorare la conduzione · aumentare la pressione degli avversari · rendere più evidente la direzione · prolungare il post-highlight · sincronizzare cronaca e animazione.
+
+### Definition of Done
+
+Intenzione di avanzare immediatamente riconoscibile; conduzione naturale e controllata; compagni e avversari che reagiscono credibilmente; conseguenza chiaramente visibile; post-highlight che conclude la sequenza; cronaca + timeline + animazione che rappresentano la stessa intenzione.
+
+> Una conduzione **priva di obiettivo tattico**, senza reazioni dei giocatori circostanti o interrotta prima delle conseguenze, è **incompleta** e non conforme.
+
+---
+
 ## Stato di implementazione (mappatura sul codice attuale)
 
 > Onestà documentale (charter): cosa dello standard esiste già nel gate vs cosa manca.
@@ -676,6 +739,10 @@ Reazione alla perdita immediata e riconoscibile; pressione credibile e coordinat
 | Sistema di gravità INFO..FATAL | 🟡 | il gate distingue issue (FAIL) vs warn; manca la scala completa MINOR/MAJOR/CRITICAL |
 
 **Prerequisito comune** (come per `LIVE_MATCH_QA_SPEC.md`): Semantic Validator, eventi obbligatori/vietati e Timeline dipendono tutti dal **layer Event + Timeline** osservabile nel motore.
+
+### LMV-010 (Tentativo di Progressione) — copertura attuale
+
+Coperto a livello di **intento**: `progression`/`run` in `deriveIntent` + esecuzione decisa (`carry_drive`/`burst`/`cut_inside`) con esito `advance`/`stopped`/`lost`. Rendering: shape-flow del reparto col pallone (F3), compagni che offrono linee e avversari che accorciano (F2/F3), regia per pattern `THROUGH_BALL`/dribble (CINE-5). **Punto debole noto:** lo *scopo tattico evidente* (LMV-010 vieta la "corsa casuale") e la conduzione continua leggibile dipendono dal render-loop non collaudato; il distacco progressione↔dribbling (LMV-010 vs LMV-002) è nei dati ma non validato visivamente. **Non validati:** timeline, Semantic, Narrative, post-highlight, "scopo tattico".
 
 ### LMV-009 (Tentativo di Recupero del Pallone) — copertura attuale
 
