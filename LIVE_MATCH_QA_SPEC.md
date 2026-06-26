@@ -291,6 +291,90 @@ Il QA Core è completo quando: coordina correttamente tutti i moduli; esegue sui
 
 ---
 
+## Capitolo 3.3 — Highlight Generator & Scenario Generator
+
+### Obiettivo
+
+L'**Highlight Generator** genera automaticamente gli scenari di test del Live Match Engine. Non crea nuove meccaniche di gioco: costruisce migliaia di **situazioni riproducibili** per verificare sistematicamente il comportamento del motore. È il principale **sostituto del testing manuale**.
+
+### Principi
+
+Deterministico · configurabile · estendibile · riproducibile · indipendente dal gameplay. Ogni highlight generato deve poter essere ricostruito tramite **Seed**.
+
+### Obiettivi
+
+Generare highlight casuali e mirati; riprodurre bug; coprire tutte le Situation, tutte le Action, tutti gli Outcome.
+
+### Tipologie di generazione
+
+| Tipo | Descrizione |
+|---|---|
+| **Random** | completamente casuale (stress test) |
+| **Guided** | guidata da regole (es. `Cross → solo ali → fascia destra → pressione alta → pioggia`) |
+| **Exhaustive** | sistematica: `Situation × Action × Outcome × Meteo × Zona × Difficoltà × Tattica` |
+| **Regression** | rigenera solo scenari che in passato hanno prodotto FAIL |
+| **Targeted** | solo una categoria (solo cross / solo rigori / solo parate / solo dribbling) |
+
+### Seed Engine
+
+Ogni highlight ha un identificatore univoco. Il Seed determina: posizione giocatori, meteo, minuto, pressione, animazioni, IA, telecamera, ordine eventi. Lo stesso Seed → sempre lo stesso highlight.
+
+### Scenario Builder
+
+Ogni scenario (= intero caso di test) è composto da:
+
+```
+Situation → Context → Participants → Action → Expected Outcome → Validators → Replay → Report
+```
+
+### Parametri configurabili
+
+competizione · squadra · modulo · tattica · livello IA · intensità · meteo · illuminazione · stadio · minuto · punteggio · stamina · morale · forma.
+
+### Copertura
+
+Il framework misura automaticamente la copertura. Es.: `Cross — previsti 250 · eseguiti 250 · PASS 248 · FAIL 2 · coverage 100%`.
+
+### Eliminazione duplicati
+
+Due scenari sono duplicati se verificano **esattamente lo stesso comportamento**. Il sistema massimizza la varietà, evitando scenari equivalenti.
+
+### Priorità
+
+- **Alta:** nuove funzionalità · bug recenti · regressioni.
+- **Media:** funzionalità esistenti.
+- **Bassa:** stress casuale.
+
+### Catalogo delle Situation
+
+Catalogo centrale; ogni nuova Situation registrata automaticamente con: nome, categoria, validator, animazioni, outcome validi, outcome non validi, seed consigliati.
+
+### Generazione combinatoria
+
+Genera automaticamente tutte le combinazioni compatibili (es. `Cross × Cross alto × Goal × Rain × Hard × seed 54382911 → Generate Test`).
+
+### Vincoli
+
+Mai produrre scenari **impossibili** — le regole calcistiche vanno rispettate (es. `Rigore → centrocampo` NO; `Corner → centrocampo` NO; `Rimessa laterale → centro area` NO).
+
+### Scenario Score
+
+Ogni scenario riceve un punteggio (rarità, complessità, rischio regressione, criticità, storico bug). Gli scenari più importanti vengono eseguiti per primi.
+
+### Evoluzione automatica
+
+Ogni bug corretto → il relativo scenario viene aggiunto automaticamente alla **Regression Suite**. Il framework migliora di continuo.
+
+### Scenario Library
+
+Tutti gli scenari salvati in una libreria consultabile: cercabili, filtrabili, rieseguibili, confrontabili, esportabili.
+
+### Obiettivo finale
+
+Passare da un approccio manuale (esecuzione casuale di partite) a un sistema automatizzato che costruisce e valida migliaia di scenari riproducibili. L'obiettivo **non** è il numero di test, ma **massimizzare la probabilità di individuare regressioni minimizzando il tempo dello sviluppatore**. Ogni nuova funzionalità del motore deve poter diventare automaticamente uno scenario di test permanente.
+
+---
+
 ## Stato di implementazione (mappatura sul codice attuale)
 
 > Sezione di raccordo tra spec e realtà del repo, da aggiornare ad ogni incremento LMQP. Onestà documentale (charter): distinguere ciò che esiste da ciò che è da costruire.
@@ -298,6 +382,7 @@ Il QA Core è completo quando: coordina correttamente tutti i moduli; esegue sui
 | Modulo LMQP | Stato nel repo | Note |
 |---|---|---|
 | **QA Core** | 🟡 parziale | `tests/visual/validate-situations.mjs` orchestra il gate (≈ Batch Mode + un solo worker, healthcheck/cleanup basilari). Mancano: modalità Single/Stress/Regression/Nightly, state machine esplicita, config esterna, scheduler/resource-manager, recovery automatico |
+| **Highlight/Scenario Generator** | 🟡 parziale | la suite analitica genera già **537 combo** (Situation × Action) deterministiche e il gate forza le 179 situations; mancano: generazione exhaustive multi-asse (meteo/zona/difficoltà/tattica), seed-engine completo, scenario score/priorità, dedup, Scenario Library |
 | **Validator Engine** | 🟡 parziale | `tests/visual/checks/*.mjs` + `tests/situations-3d-validation.js` (suite analitica) |
 | **Observable System** | 🟡 parziale | probe `__CPM_FORCE_SIT` / `__CPM_STATE` / `__CPM_PROBE` / `__CPM_FOOTBALL_STATE` |
 | **Deterministic Execution** | ✅ | seed `__CPM_RESEED`, gate `determinism`, golden firma stato |
