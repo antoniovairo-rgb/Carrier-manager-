@@ -61,7 +61,7 @@ if(typeof hlBallState!=='function'){console.error('FATAL: hlBallState non estrat
 // dal blocco "const _rz=(Math.random()-.5);" fino alla chiusura del ramo cross.
 const rzIdx=findLine(/const _rz=\(Math\.random\(\)-\.5\)/);
 // includi tutti i rami: penalty, shot, header, cross E freekick (l'ultimo del blocco)
-let arcEnd=-1;for(let i=rzIdx;i<rzIdx+50;i++){if(/else if\(t==="freekick"\)\{ballArcH/.test(L[i])){arcEnd=i;break;}}
+let arcEnd=-1;for(let i=rzIdx;i<rzIdx+80;i++){if(/else if\(t==="freekick"\)\{ballArcH/.test(L[i])){arcEnd=i;break;}}// finestra 80: il blocco-arco cresce con F4/F5/F6 (traiettorie derivate dalla decisione)
 if(arcEnd<0){console.error('FATAL: ramo freekick dell\'arco non trovato — il blocco potrebbe essere cambiato');process.exit(1);}
 const arcBlock=L.slice(rzIdx,arcEnd+1).join('\n');
 function computeArc(t,variant,playerY,rnd,playerX=50){
