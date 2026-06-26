@@ -552,6 +552,73 @@ Confronta ogni esecuzione con una baseline; individua regressioni tecniche/logic
 
 ---
 
+## Capitolo 3.7 — Failure Collector
+
+### Scopo
+
+Il **Failure Collector** raccoglie automaticamente tutto il necessario per analizzare un problema rilevato. Non si limita a registrare un errore: crea un **pacchetto completo** che permette di capire subito *cosa* è successo, *quando*, *perché* e *come riprodurlo* — senza ripetere manualmente l'highlight.
+
+### Filosofia
+
+Un bug non deve mai andare perso. Ogni errore produce automaticamente tutta la documentazione per la sua analisi; lo sviluppatore non ricostruisce il contesto a mano.
+
+### Attivazione
+
+Validator FAIL · errore `CRITICAL`/`FATAL` · anomalia rilevata dal Replay Engine · interruzione test dal QA Core · soglie superate dal Performance Monitor.
+
+### Failure Package (contenuto)
+
+- **Identificazione:** ID univoco, timestamp, versione motore, configurazione, modalità QA.
+- **Seed:** Seed completo, configurazione iniziale, Scenario, Situation, Action, Outcome → riproduzione esatta.
+- **Replay:** replay completo + logico, timeline, snapshot iniziale e finale.
+- **Video:** completo + clip focalizzata sull'errore.
+- **Screenshot:** inizio, frame dell'errore, frame finale (+ intermedi se serve).
+- **Timeline:** completa (timestamp, evento, durata, stato validator).
+- **Log:** QA Core, Replay, Validator, Performance Monitor, Live Match Engine.
+- **Stato camera/palla/giocatori/validator/performance** (FPS, RAM, CPU, memoria browser, n. processi, durata).
+
+### Classificazione & Priorità
+
+Categorie: tecnico · logico · visivo · calcistico · prestazionale · sconosciuto.
+
+| Priorità | Significato |
+|---|---|
+| **P0** | blocca completamente il motore |
+| **P1** | regressione critica |
+| **P2** | problema importante |
+| **P3** | difetto minore |
+| **P4** | problema cosmetico |
+
+### Struttura cartella (standardizzata)
+
+```
+Failure_2026_07_01_153020/
+├── metadata.json
+├── seed.json
+├── replay.lmr
+├── timeline.json
+├── validators.json
+├── performance.json
+├── logs/
+├── screenshots/
+├── video/
+└── report.html
+```
+
+### Report HTML
+
+Generato automaticamente: riepilogo, replay, screenshot, validator, timeline, log, score, performance → comprendere il problema senza aprire decine di file.
+
+### Integrazione · Compressione · Retention · Estendibilità
+
+Si integra con QA Core / Replay / Validator / Regression Engine / Dashboard / Performance Monitor; **non dipende direttamente dal Live Match Engine**. Compressione automatica dei pacchetti meno recenti (senza perdere riproducibilità). Retention configurabile (es. mantieni sempre i FAIL CRITICAL, elimina i WARNING vecchi, comprimi gli inutilizzati). Nuove info diagnostiche aggiungibili senza modificare la struttura.
+
+### Definition of Done
+
+Ogni FAIL genera un Failure Package; contiene tutto il necessario alla riproduzione; replay+Seed+timeline ricostruiscono l'highlight; il report HTML rende il problema immediatamente comprensibile; riduce drasticamente il tempo di debugging; il pacchetto è archiviabile, condivisibile e rieseguibile.
+
+---
+
 ## Stato di implementazione (mappatura sul codice attuale)
 
 > Sezione di raccordo tra spec e realtà del repo, da aggiornare ad ogni incremento LMQP. Onestà documentale (charter): distinguere ciò che esiste da ciò che è da costruire.
@@ -566,7 +633,7 @@ Confronta ogni esecuzione con una baseline; individua regressioni tecniche/logic
 | **Timeline Engine** | 🔴 da costruire | nessuna registrazione cronologica eventi (vedi LMQP-1 "Story Trace") |
 | **Event Driven** | 🔴 da costruire | il motore non emette eventi (`BallReceived`/`ShotStarted`/…) |
 | **Replay Engine** | 🔴 da costruire | esiste solo lo screenshot del canvas in `out/`; nessuna registrazione stato/eventi per-frame, nessun debugger frame-by-frame, snapshot o confronto. Dipende dal layer Event+Timeline |
-| **Failure Collector** | 🔴 da costruire | il gate salva screenshot in `out/`, ma non un bundle riproducibile per-fail |
+| **Failure Collector** | 🔴 da costruire | il gate salva screenshot + `report.json`/`index.html` aggregati in `out/`, ma non un Failure Package per-fail (seed+replay+timeline+video+log+snapshot), né classificazione/priorità/retention. Dipende da Replay+Timeline |
 | **Regression Engine** | 🟡 embrionale | esiste solo la `golden` regression (firma stato `{htx,hty,cam,ch,ca}` vs `golden-sigs.json`): confronto baseline binario PASS/FAIL su un sottoinsieme dello stato. Mancano: baseline ricca (replay/score/metriche), 5 categorie di regressione, severità, gallery, visual/score comparison, storico |
 | **Performance Monitor** | 🔴 da costruire | — |
 | **Dashboard** | 🟡 minimale | `tests/visual/report.mjs` → `out/validate/index.html` |
