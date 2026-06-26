@@ -723,6 +723,18 @@ Intenzione di avanzare immediatamente riconoscibile; conduzione naturale e contr
 
 ---
 
+## Validator 011 — Tentativo di Progressione
+
+| Campo | Valore |
+|---|---|
+| **Identificativo** | `LMV-011` |
+| **Categoria** | Costruzione dell'Azione |
+| **Priorità** | Alta |
+
+> ⚠️ **Entry-alias.** LMV-011 ha **spec identica a LMV-010** (stesso titolo "Tentativo di Progressione", stesso scopo/definizione/timeline/outcome/controlli/DoD). Per evitare duplicazione del testo (charter cap. 3.3, "massimizzare la varietà"), il contenuto non è ricopiato: **vale integralmente la specifica di [LMV-010](#validator-010--tentativo-di-progressione)**. Se in futuro LMV-011 dovrà coprire una Situation distinta (es. *Cambio di gioco* / `switch`), questa entry andrà differenziata. — *Aggiunto su richiesta esplicita dopo re-invio.*
+
+---
+
 ## Stato di implementazione (mappatura sul codice attuale)
 
 > Onestà documentale (charter): cosa dello standard esiste già nel gate vs cosa manca.
