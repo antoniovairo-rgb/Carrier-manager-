@@ -213,6 +213,71 @@ Tentativo di superare l'avversario immediatamente riconoscibile; gesto tecnico l
 
 ---
 
+## Validator 003 — Tentativo di Passaggio
+
+| Campo | Valore |
+|---|---|
+| **Identificativo** | `LMV-003` |
+| **Categoria** | Costruzione del gioco |
+| **Priorità** | Massima |
+
+### Scopo
+
+Verifica che una Situation **"Tentativo di Passaggio"** sia rappresentata in modo credibile, leggibile e coerente. Non conta che il passaggio **riesca**: conta che il protagonista tenti realmente di **servire un compagno**. Esito positivo o negativo.
+
+### Definizione
+
+Qualsiasi azione in cui il giocatore in possesso cerca **intenzionalmente** di trasferire il pallone a un compagno. Comprende tutte le tipologie di passaggio.
+
+### Situazioni compatibili / non compatibili
+
+- **Compatibili:** passaggio corto · lungo · rasoterra · alto · filtrante · cambio gioco · appoggio · scarico · triangolazione · assist.
+- **NON compatibili:** cross · tiro · rinvio · rilancio del portiere · rimessa laterale · calcio d'angolo · punizione.
+
+### Timeline attesa
+
+| Fase | Evento |
+|---|---|
+| 1 | **Possesso** — il protagonista controlla il pallone |
+| 2 | **Lettura del gioco** — osserva i compagni; intenzione di passare evidente |
+| 3 | **Preparazione** — corpo orientato verso la direzione; destinatario identificabile |
+| 4 | **Impatto** — colpisce il pallone; gesto coerente col tipo di passaggio |
+| 5 | **Traiettoria** — percorso plausibile |
+| 6 | **Reazione** — destinatario attacca la palla; difensori intercettano/marcano |
+| 7 | **Esito** — uno degli outcome previsti |
+| 8 | **Post-Highlight** — conseguenza del passaggio chiaramente mostrata |
+
+### Outcome
+
+- **Ammessi:** passaggio riuscito · intercetto · pallone fuori · deviazione · assist · errore tecnico · recupero avversario · prosecuzione dell'azione.
+- **Non ammessi:** pallone che cambia direzione senza contatto · effetto **boomerang** · pallone che torna automaticamente al protagonista · destinatario che ignora il passaggio · passaggio che termina senza mostrare ricevente o intercetto · replay che termina subito dopo il calcio.
+
+### Controlli per validator
+
+- **Ball:** traiettoria coerente, velocità compatibile, rotazione plausibile, destinazione coerente, no teletrasporti, **no inversioni improvvise della traiettoria**.
+- **Player:** il **protagonista** orienta il corpo / guarda il destinatario / completa il gesto; il **destinatario** riconosce il passaggio / si muove verso la palla / prepara il controllo; gli **avversari** intercettano / chiudono le linee / reagiscono.
+- **Camera:** mostra protagonista + destinatario, segue la traiettoria, mostra l'esito; il destinatario **non** esce dall'inquadratura nel momento decisivo.
+- **Motion:** continuità, sincronia gesto↔pallone, corsa naturale del destinatario, no movimenti innaturali.
+- **Semantic:** *"Un osservatore capirebbe immediatamente che il protagonista sta cercando di servire un compagno?"* — se no → **FAIL**.
+- **Football Intelligence:** passaggio verso un compagno realmente disponibile, scelta del destinatario plausibile, destinatario che si smarca, avversari che chiudono gli spazi, ritmo coerente. Penalizza passaggi privi di logica tattica.
+- **Narrative:** `Possesso → Lettura → Preparazione → Passaggio → Traiettoria → Ricezione/Intercetto → Post-Highlight`; azione completa e comprensibile.
+
+### Errori critici (FAIL)
+
+Destinatario non identificabile · pallone che cambia direzione senza motivo · effetto **boomerang** · replay che termina prima dell'esito · camera che perde il destinatario · cronaca che dice "passaggio" ma il video mostra altro.
+
+### Suggerimenti automatici
+
+Rendere più evidente il destinatario · migliorare lo smarcamento · sincronizzare gesto↔pallone · prolungare il post-highlight · aumentare la reazione dei difensori.
+
+### Definition of Done
+
+Destinatario chiaramente identificabile; gesto coerente col tipo di passaggio; traiettoria naturale e continua; compagni e avversari che reagiscono credibilmente; risultato completamente visibile; post-highlight senza tagli bruschi; cronaca + timeline + animazione che rappresentano la stessa intenzione.
+
+> Un passaggio che non mostra chiaramente il **destinatario** o il suo **esito**, anche se tecnicamente corretto, è **incompleto** e non conforme.
+
+---
+
 ## Stato di implementazione (mappatura sul codice attuale)
 
 > Onestà documentale (charter): cosa dello standard esiste già nel gate vs cosa manca.
@@ -229,6 +294,10 @@ Tentativo di superare l'avversario immediatamente riconoscibile; gesto tecnico l
 | Sistema di gravità INFO..FATAL | 🟡 | il gate distingue issue (FAIL) vs warn; manca la scala completa MINOR/MAJOR/CRITICAL |
 
 **Prerequisito comune** (come per `LIVE_MATCH_QA_SPEC.md`): Semantic Validator, eventi obbligatori/vietati e Timeline dipendono tutti dal **layer Event + Timeline** osservabile nel motore.
+
+### LMV-003 (Tentativo di Passaggio) — copertura attuale
+
+È il validator meglio coperto dal rendering: qualità del passaggio decisa dal motore (F9 → profondità scatto + pace), beat di **ricezione** visibile (`assist_recv`), il compagno **scatta** e la palla è giocata sulla corsa, e soprattutto l'**effetto boomerang è già risolto** alla radice (fix 5.14/5.22) — un outcome esplicitamente vietato da LMV-003. Post-arco `assist_recv→assist_shot`. **Non validati automaticamente:** timeline a 8 fasi, Semantic ("sta servendo un compagno?"), identificabilità garantita del destinatario, Narrative, presenza post-highlight. Il "no boomerang" andrebbe trasformato in **caso di regressione permanente** (Regression Suite) — è il candidato ideale per il primo validator automatico una volta presente il layer Event+Timeline.
 
 ### LMV-002 (Tentativo di Dribbling) — copertura attuale
 
