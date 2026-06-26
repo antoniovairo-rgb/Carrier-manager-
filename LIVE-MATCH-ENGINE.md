@@ -141,7 +141,7 @@ Validazione (migliaia di contesti): campione forte+libero ~76% positivi vs debol
 | 2 | Esecuzione decisa dal motore | ✅ tiro/cross/dribbling/set-piece/testa/**passaggio** decisi dal motore (variante e/o qualità→traiettoria) + esito per tutti + **piede preferito** (F8 5.29). Resta solo l'insertion in area come slice futura |
 | 3 | Eliminare l'"animazione predefinita" | 🔴 il render resta in parte animation-driven (archi pre-autorati) |
 | 4 | 22 giocatori sempre attivi | 🟡 obiettivi per ruolo + shape/pressing/marcatura; non lettura individuale completa |
-| 5 | Leggere l'azione ogni frame | 🟡 leggono la palla; non valutazione deliberativa (spazi/pericoli/marcature) |
+| 5 | Leggere l'azione ogni frame | 🟡 leggono la palla + **prima valutazione deliberativa** (F10 5.31: un difensore legge il ricevente più pericoloso e chiude la linea di passaggio). Restano: valutazione individuale completa per-frame (più coperture, raddoppi, scelte del portatore) |
 | 6 | Animazione conseguenza della simulazione | 🟡 sui tiri (variante+qualità+esito decisi → poi anima); altri tipi parziali |
 | 7 | Highlight racconta una storia | 🟡 costruzione + ricezione; non prep→sviluppo→evento→conseguenza per tutti |
 | 8 | Sensazione di vera partita | 🔴 ibrido: simulazione-informato a tratti, animation-driven al cuore |
