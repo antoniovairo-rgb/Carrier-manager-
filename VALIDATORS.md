@@ -278,6 +278,70 @@ Destinatario chiaramente identificabile; gesto coerente col tipo di passaggio; t
 
 ---
 
+## Validator 004 — Tentativo di Tiro
+
+| Campo | Valore |
+|---|---|
+| **Identificativo** | `LMV-004` |
+| **Categoria** | Finalizzazione |
+| **Priorità** | Massima |
+
+### Scopo
+
+Verifica che una Situation **"Tentativo di Tiro"** sia rappresentata in modo realistico, leggibile e coerente. Non conta che il tiro sia **gol**: conta che il giocatore tenti realmente una **conclusione verso la porta**. Esito positivo o negativo.
+
+### Definizione
+
+Qualsiasi azione in cui il giocatore cerca **intenzionalmente** di concludere verso la porta. Comprende tutte le tipologie di conclusione.
+
+### Situazioni compatibili / non compatibili
+
+- **Compatibili:** rasoterra · potente · piazzato · a giro · al volo · mezza rovesciata · rovesciata · colpo di punta · da fuori area · conclusione ravvicinata.
+- **NON compatibili:** passaggi · cross · rinvii · rilanci del portiere · rimesse laterali · calci d'angolo · **punizioni dirette** (validator dedicato).
+
+### Timeline attesa
+
+| Fase | Evento |
+|---|---|
+| 1 | **Possesso** — controlla il pallone |
+| 2 | **Preparazione** — individua lo spazio (avanza / sposta la palla / protegge / prepara il piede) |
+| 3 | **Gesto tecnico** — conclude verso la porta, gesto chiaramente leggibile |
+| 4 | **Traiettoria** — coerente col tipo di tiro |
+| 5 | **Reazione** — il portiere reagisce, i difensori deviano, gli attaccanti seguono |
+| 6 | **Esito** — uno degli outcome previsti |
+| 7 | **Post-Highlight** — conclusione dell'azione chiaramente mostrata |
+
+### Outcome
+
+- **Ammessi:** gol · parata · palo · traversa · deviazione · tiro fuori · muro difensivo · respinta del portiere · ribattuta con prosecuzione.
+- **Non ammessi:** pallone che cambia direzione senza contatto · portiere che non reagisce · replay che termina prima dell'esito · tiro che diventa visivamente un passaggio · pallone che scompare o attraversa la porta · animazione interrotta prima dell'impatto.
+
+### Controlli per validator
+
+- **Ball:** traiettoria coerente, velocità compatibile col tipo di tiro, rotazione plausibile, impatto corretto, no teletrasporti, no movimenti innaturali.
+- **Player:** il **protagonista** orienta il corpo verso la porta / prepara il gesto / completa la conclusione; il **portiere** segue il pallone / reagisce credibilmente / tenta la parata; i **difensori** chiudono il tiro / cercano la deviazione / seguono la ribattuta.
+- **Camera:** protagonista in evidenza, segue il pallone, mostra porta + portiere + esito; **il momento del tiro non va mai nascosto**.
+- **Motion:** rincorsa fluida, sincronia gesto↔pallone, animazioni naturali, continuità, no interruzioni improvvise.
+- **Semantic:** *"Un osservatore capirebbe immediatamente che il protagonista sta tentando una conclusione verso la porta?"* — se no → **FAIL**.
+- **Football Intelligence:** tiro da posizione plausibile, momento scelto correttamente, portiere che reagisce, difensori che ostacolano, attaccanti che seguono la ribattuta → azione credibile.
+- **Narrative:** `Possesso → Preparazione → Conclusione → Traiettoria → Reazione → Esito → Post-Highlight`; ogni fase riconoscibile.
+
+### Errori critici (FAIL)
+
+Tiro non riconoscibile · portiere completamente immobile · camera che perde il pallone · replay che termina prima dell'esito · pallone che attraversa giocatori/rete senza collisioni coerenti · cronaca e highlight che mostrano azioni differenti.
+
+### Suggerimenti automatici
+
+Aumentare la durata del post-highlight · anticipare la reazione del portiere · migliorare la traiettoria · sincronizzare cronaca e animazione · rendere più evidente il gesto tecnico.
+
+### Definition of Done
+
+Tentativo di conclusione immediatamente riconoscibile; gesto coerente col tipo di tiro; traiettoria naturale; portiere e difensori che reagiscono credibilmente; risultato finale completamente visibile; post-highlight che conclude la scena; cronaca + timeline + animazione che rappresentano la stessa intenzione.
+
+> Un highlight che si interrompe **subito dopo il tiro**, senza mostrare parata/gol/deviazione/uscita, è **incompleto** anche se il gesto tecnico è corretto.
+
+---
+
 ## Stato di implementazione (mappatura sul codice attuale)
 
 > Onestà documentale (charter): cosa dello standard esiste già nel gate vs cosa manca.
@@ -294,6 +358,10 @@ Destinatario chiaramente identificabile; gesto coerente col tipo di passaggio; t
 | Sistema di gravità INFO..FATAL | 🟡 | il gate distingue issue (FAIL) vs warn; manca la scala completa MINOR/MAJOR/CRITICAL |
 
 **Prerequisito comune** (come per `LIVE_MATCH_QA_SPEC.md`): Semantic Validator, eventi obbligatori/vietati e Timeline dipendono tutti dal **layer Event + Timeline** osservabile nel motore.
+
+### LMV-004 (Tentativo di Tiro) — copertura attuale
+
+Rendering ben coperto: variant tiro decise dal motore (F4: power/curled/first_time/chip/one_on_one) + traiettoria = conseguenza della qualità (F4: pace/precisione/altezza), volée aerea (F12), regia dedicata per variant (CINE-2), reazione portiere (`gkSaveMesh`/`gk_dive`) e uscita sull'angolo (F13), post-arco `in_net`/`hit_post`/`deflect` con esito deciso dal motore (`hlOutcomeKind`, mai "in rete" su fallimento). Outcome vietati "boomerang"/"in rete su miss" già prevenuti. **Non validati automaticamente:** timeline a 7 fasi, Semantic ("è una conclusione verso la porta?"), reazione portiere garantita, Narrative, presenza post-highlight, sincronia cronaca↔animazione.
 
 ### LMV-003 (Tentativo di Passaggio) — copertura attuale
 
