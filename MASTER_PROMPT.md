@@ -233,3 +233,219 @@ Ogni nuovo bug scoperto dovrà trasformarsi in:
 - miglioramento permanente del framework.
 
 In questo modo la piattaforma crescerà insieme al gioco e ridurrà progressivamente il numero di problemi intercettati manualmente.
+
+---
+
+# PARTE 2 — Workflow Operativo, Regole di Sviluppo e Autorizzazioni
+
+## Workflow di sviluppo obbligatorio
+
+Ogni attività dovrà seguire rigorosamente il seguente flusso.
+
+### STEP 1 — Analisi
+
+Prima di modificare qualsiasi file:
+
+- comprendere il problema;
+- analizzare il codice esistente;
+- identificare la causa principale;
+- individuare eventuali dipendenze;
+- valutare il rischio di regressioni.
+
+È vietato iniziare direttamente a modificare il codice.
+
+### STEP 2 — Progettazione
+
+Prima di implementare una soluzione:
+
+- proporre l'approccio architetturale;
+- motivare le scelte;
+- evidenziare eventuali rischi;
+- indicare l'impatto sul framework QA.
+
+### STEP 3 — Implementazione
+
+L'implementazione deve essere:
+
+- modulare;
+- facilmente estendibile;
+- facilmente testabile;
+- facilmente leggibile.
+
+Evitare codice duplicato.
+
+Preferire componenti riutilizzabili.
+
+### STEP 4 — Auto QA
+
+Prima di considerare completata una modifica:
+
+- eseguire il framework QA;
+- verificare eventuali regressioni;
+- verificare i log;
+- verificare le performance.
+
+### STEP 5 — Report
+
+Al termine di ogni attività produrre un riepilogo contenente:
+
+- modifiche effettuate;
+- file coinvolti;
+- eventuali refactoring;
+- eventuali rischi residui;
+- test eseguiti;
+- eventuali limitazioni.
+
+---
+
+## Politica delle modifiche
+
+Prima di modificare codice esistente chiedersi sempre:
+
+- posso estendere invece di modificare?
+- posso rendere questa parte più modulare?
+- sto aumentando il debito tecnico?
+- sto migliorando la testabilità?
+
+### No Blind Fix Policy
+
+È vietato correggere problemi tramite tentativi casuali.
+
+Ogni bug deve essere affrontato nel seguente modo:
+
+1. Riproduzione.
+2. Analisi.
+3. Identificazione della causa.
+4. Piano di intervento.
+5. Aggiornamento dei validator.
+6. Implementazione.
+7. QA.
+8. Verifica finale.
+
+### Refactoring Policy
+
+Ogni volta che viene individuata una parte del codice:
+
+- difficile da comprendere;
+- difficile da testare;
+- fortemente accoppiata;
+- poco estendibile;
+
+proporre un refactoring.
+
+Non eseguire refactoring massivi senza motivazione.
+
+Preferire piccoli miglioramenti incrementali.
+
+---
+
+## Autorizzazioni operative
+
+Per questo progetto sono preventivamente autorizzate tutte le operazioni necessarie allo sviluppo locale.
+
+È possibile utilizzare autonomamente:
+
+- **Terminale:** PowerShell · Bash · CMD
+- **Node:** node · npm · npx · pnpm (se introdotto)
+- **Build:** build · dev server · lint · type-check · formatter · benchmark · profiling
+- **Browser:** Playwright · Chromium · browser headless · browser con interfaccia grafica quando necessario al debugging
+- **Testing:** test automatici · stress test · screenshot · registrazione video · report · log
+
+### File temporanei
+
+È consentita la creazione automatica di: cartelle temporanee, screenshot, video, report, log, cache di test.
+
+I file temporanei dovranno essere eliminati automaticamente al termine delle operazioni quando non più necessari.
+
+---
+
+## Politica Git
+
+**Consentito senza autorizzazione:**
+
+- `git status`
+- `git diff`
+- `git log`
+- `git branch`
+- `git fetch`
+- commit locali descrittivi, se utili al lavoro in corso
+
+**Non consentito senza approvazione esplicita:**
+
+- `git push`
+- `git merge`
+- `git rebase`
+- `git reset --hard`
+- `git clean`
+- eliminazione di branch
+- modifiche irreversibili alla cronologia
+
+---
+
+## Gestione dei processi
+
+Questo punto è **obbligatorio**.
+
+Il framework non deve mai lasciare processi aperti inutilmente.
+
+Prima di avviare nuovi processi verificare sempre se esistono già istanze riutilizzabili.
+
+- **Browser:** non aprire più istanze di Chromium del necessario; riutilizzare le istanze quando possibile; chiudere sempre il browser al termine.
+- **Playwright:** evitare runner duplicati; terminare correttamente ogni sessione.
+- **Dev Server:** una sola istanza; nessun server multiplo sulla stessa porta; verificare l'arresto corretto.
+- **Worker:** numero limitato e configurabile; non saturare la CPU.
+
+### Cleanup obbligatorio
+
+Ogni operazione deve prevedere un cleanup finale, eseguito **anche in caso di errore** (costrutti equivalenti a `try/finally`).
+
+Comprende: browser, processi figli, worker, server, file temporanei, screenshot/video temporanei, cache.
+
+### Health Check
+
+- **Prima** di ogni esecuzione: processi attivi, porte occupate, memoria disponibile.
+- **Dopo** ogni esecuzione: processi residui, RAM, CPU, eventuali leak.
+- Produrre un riepilogo finale.
+
+### Utilizzo delle risorse
+
+Privilegiare la stabilità del PC: consumo CPU/RAM controllato, nessun processo zombie, nessun browser dimenticato aperto, nessun server duplicato.
+
+---
+
+## Performance First
+
+Durante qualsiasi implementazione valutare sempre: numero di allocazioni, complessità algoritmica, consumo memoria, consumo CPU, tempi di esecuzione.
+
+Preferire sempre soluzioni efficienti ma facilmente manutenibili.
+
+---
+
+## Logging
+
+Ogni componente importante dovrà produrre log leggibili: sintetici, strutturati, facilmente filtrabili, privi di informazioni ridondanti.
+
+Ogni errore dovrà indicare chiaramente: componente, causa, stack trace, seed (se applicabile), validator coinvolto.
+
+---
+
+## Comunicazione durante lo sviluppo
+
+Quando possibile lavorare in autonomia. Interrompere il flusso solo se:
+
+- è necessaria una decisione architetturale;
+- esistono più soluzioni equivalenti con impatti differenti;
+- è richiesta una modifica distruttiva;
+- il rischio di regressione è elevato.
+
+Per tutte le altre attività procedere autonomamente, documentando le scelte effettuate.
+
+---
+
+## Obiettivo operativo
+
+L'utente non deve perdere tempo con attività ripetitive.
+
+Il framework deve automatizzare il maggior numero possibile di operazioni mantenendo il progetto stabile, ordinato, efficiente e facilmente evolvibile.
+
+Ogni nuova automazione deve ridurre il lavoro manuale, non aumentarlo.
