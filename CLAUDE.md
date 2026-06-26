@@ -14,6 +14,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 Carrier-manager-/
 ├── CARRIER-MANAGER-AV.html   ← FILE DI LAVORO ATTIVO (~20 600 righe, tutto qui dentro)
 ├── MASTER_PROMPT.md         ← ⭐ CHARTER DI GOVERNO: Live Match Quality Platform (LMQP) — vincolante
+├── LIVE_MATCH_QA_SPEC.md    ← spec tecnica LMQP (cap. 3.1 architettura + mappatura sul codice)
 ├── CLAUDE.md
 ├── CHANGELOG.md
 ├── LIVE-MATCH-ENGINE.md      ← architettura del motore di partita (pipeline Intent→Decision→Simulation→Animation)
