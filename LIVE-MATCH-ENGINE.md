@@ -33,10 +33,11 @@ L'idea chiave che rende il refactoring **fattibile** senza riscrivere 179 timeli
 | `deriveIntent(sit,act)` | 1618 | Classifica la situation in un **intento** dalla struttura/contesto, MAI dalle parole d'esecuzione | ✅ |
 | `S(...)` costruttore | 1643 | Ogni situation nasce con `obj.intent = deriveIntent(...)` | ✅ |
 | `SITUATIONS` | 1651 | DB delle **179** situation (validate dal gate) | ✅ |
-| `deriveBallState(sit)` | 6685 | **CINE-DECOUPLE (5.15.0):** deriva lo stato palla dal testo UNA VOLTA; chiamata in `S()` → congela `sit.ballState` | ✅ |
-| `deriveSitCine(sit)` | 6697 | **CINE-DECOUPLE (5.15.0):** deriva i segnali cinematici (penalty/freekick/1v1/secondo-palo/di-prima) dal testo UNA VOLTA → congela `sit.cine` | ✅ |
-| `hlBallState(sit)` | 6709 | **Lettore puro** di `sit.ballState` (fallback: `deriveBallState`) — guardia coerenza aerea. NON legge più il testo a runtime | ✅ |
-| `deriveHL(sit,act)` | 6714 | Deriva `type`/`pattern`/`variant` leggendo `sit.cine` + `act.label`/`act.stat`. NON legge più `sit.text` | ✅ runtime · 🟡 dato ancora text-derived alla costruzione |
+| `deriveBallState(sit)` | ~6685 | **CINE-DECOUPLE B2 (5.18.0):** stato palla da **intent** (strutturale) + override `tactic.bs` — **NIENTE testo** | ✅ |
+| `deriveSitCine(sit)` | ~6697 | **CINE-DECOUPLE B2 (5.18.0):** segnali cinematici da **intent** + override `tactic.cn` (baked sulle 52+3 divergenti) — **NIENTE testo** | ✅ |
+| `hlBallState(sit)` | ~6709 | **Lettore puro** di `sit.ballState` (fallback: `deriveBallState`) — guardia coerenza aerea | ✅ |
+| `deriveHL(sit,act)` | ~6714 | Deriva `type`/`pattern`/`variant` da `sit.cine` + `act.label`/`act.stat`. **NON legge `sit.text`** | ✅ (act.label ancora letto) |
+| `updateFootballState` / `__CPM_FOOTBALL_STATE` | ~7460 | **F1 (5.17.0):** Football State osservatore (palla/possessore/forma squadra) nel render-loop, **inerte** (throttle 1/6, try/catch, consumato da nessuno) + probe `?cpmtest=1` | ✅ inerte |
 | `buildHLTimeline(hl,o)` | 6760 | Genera la **timeline** di micro-eventi calcistici per pattern | ✅ motore · 🟡 wiring |
 | `validateHLTimeline(tl)` | 6840 | Invarianti calcistiche (possesso continuo, no teleport, n° passaggi, testa⇐cross) | ✅ |
 | `resolveTimeline(tl)` | 6869 | Risolve la timeline in posizioni concrete per l'executor | ✅ |
@@ -155,7 +156,7 @@ Validazione (migliaia di contesti): campione forte+libero ~76% positivi vs debol
 | **Barriera punizioni** — muro a ~9u tra palla e porta | render/positioning | 🟡 barriera fatta; **visibilità portiere** da verificare dal vivo |
 | **Testi situation esecutivi/incoerenti** — 35 titoli esecutivi + 3 con punteggio assunto; **risolti a DISPLAY** (`intentTitle`/`stateIncoherent`), ma il **dato** resta tale | dati | 🟡 display ok, dato da migrare |
 | **Step 3 completo** — ritiro degli archi pre-autorati verso traiettorie derivate dalla decisione | render | 🔴 avviato (slice qualità→precisione), il grosso resta |
-| ~~**`deriveHL`/`hlBallState` accoppiati al testo a runtime**~~ | logica | ✅ **risolto 5.15.0** (CINE-DECOUPLE): runtime legge `sit.ballState`/`sit.cine`. Resta da fare lo **Step B**: rendere quei campi dato esplicito autoriale (oggi ancora derivati dal testo alla costruzione) per liberare davvero la riscrittura dei TESTI |
+| ~~**`deriveHL`/`hlBallState` accoppiati al testo**~~ | logica | ✅ **risolto 5.15.0→5.18.0** (CINE-DECOUPLE B1+B2): la derivazione è ora **text-free** (intent strutturale + override `tactic.bs`/`tactic.cn` baked sulle 52+3 divergenti). I TESTI delle situations sono **liberi** di essere riscritti a pura intenzione. (Resta letto `act.label` — scope separato.) |
 | **Decision Engine — fattori mancanti** — piede preferito, modulo, alcune tattiche | logica | 🟡 estensione |
 | **AI individuale completa** — i 22 leggono la palla ma non valutano spazi/marcature/pericoli per-frame | render | 🔴 lavoro grosso |
 
