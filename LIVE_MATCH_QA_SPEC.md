@@ -808,6 +808,54 @@ Monitora di continuo le risorse; rileva leak e processi orfani; impedisce la sat
 
 ---
 
+## Capitolo 3.13 — Configuration, Plugin System & Extensibility
+
+> Nota: il **Capitolo 3.12 non è ancora stato fornito**; verrà inserito qui sopra quando disponibile.
+
+### Scopo
+
+La piattaforma deve essere **estendibile**: introdurre nuove Situation, validator, moduli o strumenti non deve richiedere modifiche invasive. Evoluzione continua mantenendo stabilità, modularità e semplicità di manutenzione.
+
+### Principi
+
+Ogni componente: indipendente · configurabile · sostituibile · estendibile · documentato. L'architettura privilegia la **composizione** rispetto all'accoppiamento diretto.
+
+### Configuration First
+
+Tutti i comportamenti configurabili vanno definiti **tramite configurazione**, mai hardcoded quando esprimibili come config: timeout, n. worker, browser, modalità QA, soglie prestazionali, livelli di logging, validator abilitati, replay, dashboard, AI Review.
+
+### Plugin System
+
+Ogni modulo registrabile come **plugin** (Validator Plugin, Replay Plugin, Dashboard Widget, Performance Collector, AI Vision Provider, Report Generator), caricato automaticamente all'avvio.
+
+### Registries (registrazione automatica)
+
+| Registry | Ogni voce definisce |
+|---|---|
+| **Validator** | id univoco, nome, categoria, Situation supportate, priorità, dipendenze, versione — il QA Core **non** conosce i validator staticamente |
+| **Situation** | id, descrizione, categoria, validator associati, eventi attesi, timeline prevista, varianti |
+| **Event** | nome, origine, payload, momento di emissione, eventi correlati — i validator lavorano senza dipendere dal codice del motore |
+
+### Abstraction Layers
+
+- **AI Provider Abstraction:** interfaccia astratta → provider sostituibile senza toccare il resto, implementazione configurabile.
+- **Report Provider:** generazione indipendente dal formato (HTML/JSON/PDF/CSV/futuri), nuovi formati via plugin.
+- **Dashboard Widgets:** widget indipendenti aggiungibili/rimovibili/sostituibili/configurabili; layout non vincolato al codice.
+
+### Configuration Validation & Versionamento
+
+All'avvio: rileva configurazioni mancanti, valori non validi, dipendenze non soddisfatte, plugin incompatibili → errori segnalati chiaramente. Ogni configurazione riporta versione, data, autore, compatibilità; il framework rileva configurazioni obsolete.
+
+### Compatibilità & Estendibilità
+
+Nuove funzionalità non rompono le configurazioni esistenti (quando inevitabile → procedure di migrazione documentate). Aggiungere una Situation richiede **solo**: registrare la Situation, registrare i validator, definire i Seed, aggiornare la Knowledge Base. **Nessuna modifica al QA Core.**
+
+### Logging & Definition of Done
+
+Ogni plugin logga: inizializzazione, stato, errori, tempi, versione (logging uniforme). **DoD:** ogni componente configurabile senza toccare il codice; nuovi plugin senza impatti architetturali; validator/Situation/provider registrati automaticamente; config verificata all'avvio; la piattaforma evolve mantenendo compatibilità e modularità.
+
+---
+
 ## Stato di implementazione (mappatura sul codice attuale)
 
 > Sezione di raccordo tra spec e realtà del repo, da aggiornare ad ogni incremento LMQP. Onestà documentale (charter): distinguere ciò che esiste da ciò che è da costruire.
@@ -827,6 +875,7 @@ Monitora di continuo le risorse; rileva leak e processi orfani; impedisce la sat
 | **Performance Monitor / Resource Manager** | 🔴 da costruire | il gate gira mono-worker e Playwright chiude il browser a fine run (cleanup implicito); health-check processi eseguito oggi **manualmente** (`ps`). Mancano: metriche FPS/CPU/RAM raccolte, leak/zombie detection automatica, soglie configurabili, stress test, report prestazionale, grafici |
 | **Dashboard (Visual QA / LMDP)** | 🟡 minimale | `tests/visual/report.mjs` → `out/validate/index.html` (report statico per-run con issue/warn/screenshot). Mancano: Home live, Test Explorer/Highlight Detail, Replay/Timeline Viewer, Visual Comparison, Regression/Failure Center, Performance Monitor, AI Review, search/filtri, Quality Score globale, notifiche |
 | **AI Vision Review Engine** | 🔴 opzionale | il gate cattura già screenshot del canvas (input pronto), ma nessuna analisi via Vision Provider, nessun Readability/Cinematic/Motion score percettivo, nessuna identificazione autonoma della Situation. Provider-agnostic by design |
+| **Configuration & Plugin System** | 🔴 da costruire | i check del gate sono modulari (`checks/*.mjs`) ma importati staticamente in `validate-situations.mjs`; le Situation sono un array, non un registry con metadati/validator associati; config via env var (`CPM_CHROME`/`PLAYWRIGHT_BROWSERS_PATH`), non file con validazione/versionamento. Mancano: plugin auto-load, Validator/Situation/Event registry, abstraction provider |
 | **Football Intelligence KB** | 🟡 implicita | la logica calcistica oggi vive **nel codice** (`deriveIntent` 13 intenti, `decideExecution`, regole in `tests/situations-3d-validation.js`, invariante CINE) e nei testi/tactic delle 179 Situation — non in una KB dichiarativa separata e versionata. Manca: estrazione regole↔codice, comportamento atteso per ruolo/fase, varianti/eccezioni documentate |
 
 **Limite strutturale noto:** il gate cattura **frame congelati** → valida stato/coerenza (Livelli 1-3 parziali) ma **non il movimento né la leggibilità temporale** (Livello 4). Il Timeline/Event layer (LMQP-1) è il prerequisito per colmarlo.
