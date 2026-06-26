@@ -138,7 +138,7 @@ Validazione (migliaia di contesti): campione forte+libero ~76% positivi vs debol
 | # | Punto della direttiva | Stato |
 |---|---|---|
 | 1 | Situations = solo intenzione | 🟡 `intent` è la sorgente unica; alcuni **testi** ancora esecutivi (riscritti a display) |
-| 2 | Esecuzione decisa dal motore | 🟡 fatto per tiri/cross/dribbling + esito per tutti; pass/insertion parziali; manca piede |
+| 2 | Esecuzione decisa dal motore | ✅ tiro/cross/dribbling/set-piece/testa/**passaggio** decisi dal motore (variante e/o qualità→traiettoria) + esito per tutti + **piede preferito** (F8 5.29). Resta solo l'insertion in area come slice futura |
 | 3 | Eliminare l'"animazione predefinita" | 🔴 il render resta in parte animation-driven (archi pre-autorati) |
 | 4 | 22 giocatori sempre attivi | 🟡 obiettivi per ruolo + shape/pressing/marcatura; non lettura individuale completa |
 | 5 | Leggere l'azione ogni frame | 🟡 leggono la palla; non valutazione deliberativa (spazi/pericoli/marcature) |
