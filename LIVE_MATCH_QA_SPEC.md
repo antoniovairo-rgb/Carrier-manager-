@@ -619,6 +619,58 @@ Ogni FAIL genera un Failure Package; contiene tutto il necessario alla riproduzi
 
 ---
 
+## Capitolo 3.8 — Visual QA Dashboard
+
+> Nota terminologica: questo capitolo introduce il termine **LMDP — Live Match Development Platform** come evoluzione/superset di LMQP (la Dashboard è il punto d'accesso unico). Riportato fedelmente dalla spec.
+
+### Scopo
+
+La **Visual QA Dashboard** è il punto d'accesso principale della piattaforma: non un semplice report dei test, ma una **console di controllo** per monitorare, analizzare, confrontare e debuggare il Live Match Engine da un'unica interfaccia. Elimina la consultazione manuale di log, cartelle, replay e report separati.
+
+### Obiettivi & Principi
+
+Monitorare in tempo reale; vedere lo stato del framework; analizzare i Failure Package; confrontare versioni dello stesso highlight; individuare regressioni; consultare statistiche storiche; rieseguire qualsiasi test con un clic. Deve essere **veloce, intuitiva, modulare, reattiva**, consultabile anche durante l'esecuzione.
+
+### Sezioni
+
+| Sezione | Contenuto |
+|---|---|
+| **Home** | stato QA Core, test in esecuzione/completati, PASS/WARNING/FAIL, regressioni, CPU/RAM, browser/worker attivi — auto-aggiornate |
+| **Test Explorer** | tutti gli highlight (ID, Seed, Situation, Action, Outcome, durata, risultato, score) con ricerca/ordinamento/filtri/raggruppamenti |
+| **Highlight Detail** | pagina per highlight: replay, video, timeline, validator, screenshot, log, metriche, score |
+| **Timeline Viewer** | eventi cronologici (timestamp, nome, durata, validator) con zoom, ricerca, salto al replay, confronto |
+| **Replay Viewer** | Replay Engine integrato: play/pausa/frame-by-frame/salto eventi/velocità/overlay, sincronizzato con Timeline e Validator |
+| **Visual Comparison** | due replay affiancati sincronizzati via Seed → differenze camera/movimenti/animazioni/palla/timeline |
+| **Validator Explorer** | tutti i validator (stato, score, warning, durata, motivazione) filtrabili per validator/gravità/Situation |
+| **Regression Center** | regressioni (categoria, gravità, Situation, versione prec./corr., replay comparativo, validator, Failure Package) |
+| **Failure Center** | Failure Package (ID, priorità, categoria, Seed, replay, video, screenshot, log, stato) + riesecuzione immediata |
+| **Performance Monitor** | FPS/CPU/RAM/GPU, browser/worker, memoria browser, tempo medio test + grafici storici |
+| **AI Review** | risultati AI Vision (Motion/Cinematic/Football Intelligence Score, commenti, criticità) accanto ai validator |
+
+### Funzioni trasversali
+
+- **Search Engine** globale e istantaneo (Seed, Situation, Action, Outcome, validator, errore, Failure Package, replay, regressione).
+- **Filtri** multipli combinabili (es. `Situation=Cross AND Outcome=Goal AND Validator=FAIL AND Versione=Ultima Build`).
+- **Statistiche** aggregate (totali, tempo medio, Situation più problematica, validator più in FAIL, regressioni per versione, andamento nel tempo).
+- **Quality Score** globale del motore = stabilità + correttezza + realismo + leggibilità + Football Intelligence + qualità cinematografica + performance, confrontabile tra build.
+- **Esportazione** PDF/HTML/CSV/JSON/screenshot/replay/statistiche.
+- **Notifiche** automatiche (regressione, fine suite, FAIL CRITICAL, soglie CPU/RAM, fine Stress Test).
+- **Personalizzazione** (layout, widget, temi, dashboard salvate).
+
+### Sicurezza
+
+Strumento **di sola consultazione**: non modifica lo stato del Live Match Engine. Operazioni consentite: riesecuzione test, apertura replay, esportazione report, consultazione risultati.
+
+### Performance
+
+Reattiva anche con 100.000+ highlight, migliaia di Failure Package/replay, milioni di eventi → caricamento progressivo, paginazione, caching, indicizzazione, lazy loading.
+
+### Definition of Done
+
+Punto d'accesso unico; qualsiasi highlight consultabile in pochi secondi; integra Replay/Validator/Regression/Failure Collector/AI Review; confronto facile tra build; regressioni e criticità immediatamente individuabili; elimina la consultazione manuale di cartelle/log/file.
+
+---
+
 ## Stato di implementazione (mappatura sul codice attuale)
 
 > Sezione di raccordo tra spec e realtà del repo, da aggiornare ad ogni incremento LMQP. Onestà documentale (charter): distinguere ciò che esiste da ciò che è da costruire.
@@ -636,7 +688,7 @@ Ogni FAIL genera un Failure Package; contiene tutto il necessario alla riproduzi
 | **Failure Collector** | 🔴 da costruire | il gate salva screenshot + `report.json`/`index.html` aggregati in `out/`, ma non un Failure Package per-fail (seed+replay+timeline+video+log+snapshot), né classificazione/priorità/retention. Dipende da Replay+Timeline |
 | **Regression Engine** | 🟡 embrionale | esiste solo la `golden` regression (firma stato `{htx,hty,cam,ch,ca}` vs `golden-sigs.json`): confronto baseline binario PASS/FAIL su un sottoinsieme dello stato. Mancano: baseline ricca (replay/score/metriche), 5 categorie di regressione, severità, gallery, visual/score comparison, storico |
 | **Performance Monitor** | 🔴 da costruire | — |
-| **Dashboard** | 🟡 minimale | `tests/visual/report.mjs` → `out/validate/index.html` |
+| **Dashboard (Visual QA / LMDP)** | 🟡 minimale | `tests/visual/report.mjs` → `out/validate/index.html` (report statico per-run con issue/warn/screenshot). Mancano: Home live, Test Explorer/Highlight Detail, Replay/Timeline Viewer, Visual Comparison, Regression/Failure Center, Performance Monitor, AI Review, search/filtri, Quality Score globale, notifiche |
 | **AI Vision Layer** | 🔴 opzionale | — |
 
 **Limite strutturale noto:** il gate cattura **frame congelati** → valida stato/coerenza (Livelli 1-3 parziali) ma **non il movimento né la leggibilità temporale** (Livello 4). Il Timeline/Event layer (LMQP-1) è il prerequisito per colmarlo.
