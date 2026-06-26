@@ -735,6 +735,69 @@ Intenzione di avanzare immediatamente riconoscibile; conduzione naturale e contr
 
 ---
 
+## Validator 012 — Tentativo di Contropiede
+
+| Campo | Valore |
+|---|---|
+| **Identificativo** | `LMV-012` |
+| **Categoria** | Transizione Offensiva |
+| **Priorità** | Massima |
+
+### Scopo
+
+Verifica che una Situation **"Tentativo di Contropiede"** sia rappresentata in modo realistico, leggibile e coerente. Non conta che termini con un **gol**: conta che la squadra tenti realmente una **rapida transizione offensiva** dopo il recupero del possesso. Esito positivo o negativo.
+
+### Definizione
+
+Qualsiasi azione in cui una squadra, dopo il recupero del pallone, cerca **intenzionalmente** di avanzare rapidamente sfruttando gli spazi lasciati dagli avversari. Il contropiede deve essere **immediatamente riconoscibile**.
+
+### Situazioni compatibili / non compatibili
+
+- **Compatibili:** contropiede centrale · sulla fascia · in superiorità numerica · ripartenza dopo parata · dopo intercetto · dopo recupero del possesso.
+- **NON compatibili:** costruzione lenta · possesso prolungato · semplice progressione · calcio piazzato.
+
+### Timeline attesa
+
+| Fase | Evento |
+|---|---|
+| 1 | **Recupero del possesso** — l'azione nasce da un recupero chiaramente visibile |
+| 2 | **Transizione** — cambio immediato di atteggiamento, gli offensivi attaccano gli spazi |
+| 3 | **Progressione** — il portatore accelera; compagni e avversari cambiano rapidamente comportamento |
+| 4 | **Sviluppo** — passaggi / progressioni / dribbling / cambi di gioco verso la porta, rapidamente |
+| 5 | **Esito** — uno degli outcome previsti |
+| 6 | **Post-Highlight** — conclusione della ripartenza chiaramente mostrata |
+
+### Outcome
+
+- **Ammessi:** tiro · gol · cross · perdita del possesso · fallo subito · recupero difensivo · calcio d'angolo · prosecuzione.
+- **Non ammessi:** squadra che rallenta senza motivo · compagni immobili · avversari che non rientrano · replay interrotto prima della conclusione · transizione offensiva non riconoscibile.
+
+### Controlli per validator
+
+- **Ball:** circolazione rapida, traiettorie coerenti, no comportamenti innaturali, continuità dell'azione.
+- **Player:** il **portatore** accelera / cerca la verticalità / sceglie coerentemente; i **compagni** attaccano gli spazi / accompagnano / offrono linee; gli **avversari** rientrano rapidamente / rallentano il contropiede / proteggono la porta.
+- **Camera:** enfatizza la velocità, mantiene visibili portatore e spazi davanti, segue lo sviluppo senza perdere il pallone, mostra la conclusione.
+- **Motion:** accelerazioni credibili, sincronia dei movimenti, corse naturali, continuità.
+- **Semantic:** *"Un osservatore capirebbe immediatamente che la squadra sta tentando una rapida ripartenza?"* — se no → **FAIL**.
+- **Football Intelligence:** il recupero genera transizione immediata, spazi occupati razionalmente, avversari che rientrano in copertura, scelte offensive coerenti col contropiede, ritmo elevato fino all'esito.
+- **Narrative:** `Recupero → Transizione → Accelerazione → Sviluppo → Esito → Post-Highlight`; chiaramente leggibile.
+
+### Errori critici (FAIL)
+
+Il contropiede non nasce da un recupero · la squadra rallenta senza motivo · gli attaccanti non accompagnano · avversari completamente passivi · replay che termina prima dell'esito · cronaca e highlight con intenzioni differenti.
+
+### Suggerimenti automatici
+
+Aumentare la velocità della transizione · migliorare gli inserimenti dei compagni · aumentare il rientro difensivo · prolungare il post-highlight · sincronizzare cronaca e animazione.
+
+### Definition of Done
+
+Ripartenza immediatamente riconoscibile; recupero del possesso chiaramente visibile; ritmo elevato e coerente; compagni e avversari che reagiscono credibilmente; risultato finale completamente mostrato; post-highlight che conclude naturalmente; cronaca + timeline + animazione che rappresentano la stessa intenzione.
+
+> Un "contropiede" che **non trasmette velocità, transizione offensiva e sfruttamento degli spazi** è **incompleto** e non conforme.
+
+---
+
 ## Stato di implementazione (mappatura sul codice attuale)
 
 > Onestà documentale (charter): cosa dello standard esiste già nel gate vs cosa manca.
@@ -751,6 +814,10 @@ Intenzione di avanzare immediatamente riconoscibile; conduzione naturale e contr
 | Sistema di gravità INFO..FATAL | 🟡 | il gate distingue issue (FAIL) vs warn; manca la scala completa MINOR/MAJOR/CRITICAL |
 
 **Prerequisito comune** (come per `LIVE_MATCH_QA_SPEC.md`): Semantic Validator, eventi obbligatori/vietati e Timeline dipendono tutti dal **layer Event + Timeline** osservabile nel motore.
+
+### LMV-012 (Tentativo di Contropiede) — copertura attuale
+
+A livello di dati le situations di contropiede/ripartenza esistono ("Contropiede! Campo aperto", "Contropiede avversario", "Rimessa dal portiere — verticale") e l'AI off-ball ha una **transizione attacco↔difesa** (F2/F3) col baricentro che scorre col possesso. **Limite strutturale forte:** un highlight è una singola Situation interattiva — la **velocità/transizione multi-fase** richiesta da LMV-012 (recupero → accelerazione → sviluppo verso porta) non è realmente rappresentata come sequenza continua; il chaining HL→HL è il meccanismo più vicino ma il gate non lo copre. È il validator che più mette in luce il bisogno del **layer Timeline + chaining osservabile**. **Non validati:** ritmo elevato, rientro difensivo, timeline, Semantic, Narrative, post-highlight.
 
 ### LMV-010 (Tentativo di Progressione) — copertura attuale
 
