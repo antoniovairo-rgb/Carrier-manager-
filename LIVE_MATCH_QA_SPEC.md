@@ -435,6 +435,71 @@ Completo quando: ogni Situation ha ≥1 Semantic Validator dedicato; tutti i val
 
 ---
 
+## Capitolo 3.5 — Replay Engine & Replay Debugger
+
+### Scopo
+
+Il **Replay Engine** registra integralmente l'esecuzione di ogni highlight. L'obiettivo **non** è produrre un video, ma consentire la **ricostruzione completa** dell'highlight: ogni test deve poter essere analizzato, riprodotto e ispezionato **frame per frame**.
+
+### Obiettivi
+
+Riprodurre qualsiasi highlight; analizzare qualsiasi bug; confrontare due versioni dello stesso highlight; ricostruire la timeline completa; osservare l'evoluzione dello stato del motore.
+
+### Principi
+
+Deterministico · leggero · indipendente dal rendering · esportabile · sincronizzato col Seed Engine.
+
+### Modalità di registrazione (3 livelli)
+
+| Livello | Tipo | Uso |
+|---|---|---|
+| **1** | Replay video (MP4/WebM) | revisione visiva |
+| **2** | Replay logico (sequenza eventi) | es. `ReceiveBall→Run→Cross→Header→Goal→Celebrate` |
+| **3** | Replay Debugger (stato completo del motore) | solo debugging |
+
+### Stato registrato (per ogni frame)
+
+- **Tempo:** timestamp, frame, deltaTime
+- **Hero:** posizione, rotazione, velocità, animazione, stamina, stato
+- **Pallone:** posizione, velocità, accelerazione, rotazione, possessore
+- **Giocatori coinvolti:** posizione, orientamento, animazione, stato, velocità
+- **Camera:** posizione, target, zoom, modalità, rotazione
+- **Eventi:** tutti (es. `AnimationStarted→CrossStarted→BallKicked→Goal→Celebrate`)
+
+### Timeline
+
+Costruita automaticamente (es. `0.00 ReceiveBall · 0.45 ControlBall · 1.20 Run · 2.10 Cross · 3.35 Header · 4.20 Goal · 5.00 Celebrate`), consultabile dalla Dashboard.
+
+### Replay Debugger
+
+Strumento principale di analisi: avanzare frame per frame, tornare indietro, saltare a un evento, fermare, ispezionare lo stato del motore.
+
+### Overlay Debug (abilitabile/disabilitabile)
+
+Hero · animazione · velocità · ball · possessore · camera · validator · evento corrente.
+
+### Sincronizzazione
+
+Replay video, replay logico, timeline, log e validator **perfettamente sincronizzati**: cliccando un evento nella timeline ci si posiziona sul frame corrispondente.
+
+### Snapshot & Confronto
+
+Snapshot = stato completo (motore, camera, validator, palla, giocatori). Usati per **confrontare due versioni** dello stesso highlight (camera/traiettoria/animazione/durata diverse) → primo livello del sistema di **Regression Detection**.
+
+### Failure Replay
+
+Ad ogni FAIL il Replay Engine salva automaticamente: replay, video, timeline, log, snapshot iniziale e finale → bug immediatamente riproducibile.
+
+### Esportazione & Performance
+
+Export: replay proprietario, JSON (stato logico), video, screenshot. La registrazione **non deve compromettere il frame rate** ed è configurabile (completa / solo eventi / solo video / solo FAIL).
+
+### Estendibilità & Definition of Done
+
+Nuovi dati diagnostici aggiungibili senza modificare il formato dei replay esistenti. **DoD:** ogni highlight riproducibile; ogni FAIL genera un replay; timeline navigabile; replay sincronizzato con log/validator; confronto che evidenzia le differenze; individuazione rapida della causa di una regressione.
+
+---
+
 ## Stato di implementazione (mappatura sul codice attuale)
 
 > Sezione di raccordo tra spec e realtà del repo, da aggiornare ad ogni incremento LMQP. Onestà documentale (charter): distinguere ciò che esiste da ciò che è da costruire.
@@ -448,7 +513,7 @@ Completo quando: ogni Situation ha ≥1 Semantic Validator dedicato; tutti i val
 | **Deterministic Execution** | ✅ | seed `__CPM_RESEED`, gate `determinism`, golden firma stato |
 | **Timeline Engine** | 🔴 da costruire | nessuna registrazione cronologica eventi (vedi LMQP-1 "Story Trace") |
 | **Event Driven** | 🔴 da costruire | il motore non emette eventi (`BallReceived`/`ShotStarted`/…) |
-| **Replay Engine** | 🔴 da costruire | — |
+| **Replay Engine** | 🔴 da costruire | esiste solo lo screenshot del canvas in `out/`; nessuna registrazione stato/eventi per-frame, nessun debugger frame-by-frame, snapshot o confronto. Dipende dal layer Event+Timeline |
 | **Failure Collector** | 🔴 da costruire | il gate salva screenshot in `out/`, ma non un bundle riproducibile per-fail |
 | **Performance Monitor** | 🔴 da costruire | — |
 | **Dashboard** | 🟡 minimale | `tests/visual/report.mjs` → `out/validate/index.html` |
