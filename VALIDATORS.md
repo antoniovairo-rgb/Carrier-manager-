@@ -471,6 +471,69 @@ Intenzione difensiva immediatamente riconoscibile; gesto preparato ed eseguito c
 
 ---
 
+## Validator 007 — Tentativo di Intercetto
+
+| Campo | Valore |
+|---|---|
+| **Identificativo** | `LMV-007` |
+| **Categoria** | Fase Difensiva |
+| **Priorità** | Alta |
+
+### Scopo
+
+Verifica che una Situation **"Tentativo di Intercetto"** sia rappresentata in modo credibile, leggibile e coerente. Non conta che il difensore **recuperi**: conta che tenti realmente di **leggere e interrompere una traiettoria** di passaggio o cross. Esito positivo o negativo.
+
+### Definizione
+
+Qualsiasi azione in cui un giocatore cerca **intenzionalmente** di anticipare la traiettoria del pallone **senza affrontare direttamente il portatore**. Protagonista: il difensore. Bersaglio: il pallone. (Distinto da LMV-006 contrasto, che affronta il portatore.)
+
+### Situazioni compatibili / non compatibili
+
+- **Compatibili:** intercetto di passaggio · di filtrante · di cross · di lancio · deviazione preventiva · chiusura della linea di passaggio.
+- **NON compatibili:** contrasto · tackle · marcatura · duello aereo · uscita del portiere.
+
+### Timeline attesa
+
+| Fase | Evento |
+|---|---|
+| 1 | **Lettura** — osserva portatore e possibile linea di passaggio |
+| 2 | **Anticipo** — modifica il movimento per raggiungere la traiettoria |
+| 3 | **Tentativo** — il pallone viene giocato, il difensore prova ad anticiparlo |
+| 4 | **Contatto** — recupero pulito / deviazione / tocco parziale / mancato contatto |
+| 5 | **Esito** — uno degli outcome previsti |
+| 6 | **Post-Highlight** — prosecuzione dell'azione chiaramente mostrata |
+
+### Outcome
+
+- **Ammessi:** recupero del pallone · deviazione · pallone fuori · rimessa laterale · calcio d'angolo · passaggio riuscito nonostante il tentativo · rimpallo.
+- **Non ammessi:** difensore fermo · cambio di posizione senza movimento · pallone che cambia traiettoria senza contatto · replay che termina prima dell'esito.
+
+### Controlli per validator
+
+- **Ball:** traiettoria coerente, deviazione **solo dopo contatto**, velocità naturale, no teletrasporti.
+- **Player:** il **difensore** legge la giocata / anticipa / cerca la linea / completa il gesto; il **portatore** completa il passaggio e reagisce all'intercetto; il **destinatario** tenta comunque di raggiungere la palla e adatta il movimento.
+- **Camera:** mostra portatore + difensore + pallone, segue la traiettoria fino all'esito.
+- **Motion:** corsa continua, anticipo naturale, sincronia con la traiettoria, no movimenti innaturali.
+- **Semantic:** *"Un osservatore capirebbe immediatamente che il difensore sta tentando di intercettare un passaggio?"* — se no → **FAIL**.
+- **Football Intelligence:** tempo dell'anticipo corretto, linea di passaggio realmente chiusa, movimento coerente con la tattica, altri difensori che si riposizionano, attaccanti che reagiscono.
+- **Narrative:** `Lettura → Anticipo → Tentativo → Contatto/mancato contatto → Esito → Post-Highlight`; leggibile anche senza cronaca.
+
+### Errori critici (FAIL)
+
+Il difensore non modifica il movimento · pallone che cambia direzione senza contatto · replay che termina prima dell'esito · cronaca e highlight che mostrano azioni differenti · destinatario che ignora completamente la deviazione.
+
+### Suggerimenti automatici
+
+Anticipare il movimento del difensore · rendere più evidente la lettura della giocata · migliorare la sincronia deviazione↔traiettoria · aumentare la reazione del destinatario · prolungare il post-highlight.
+
+### Definition of Done
+
+Intenzione di chiudere la linea immediatamente riconoscibile; anticipo credibile; comportamento del pallone coerente con l'eventuale contatto; attaccanti e difensori che reagiscono naturalmente; risultato completamente visibile; post-highlight senza tagli bruschi; cronaca + timeline + animazione che rappresentano la stessa intenzione.
+
+> Un intercetto in cui il possesso cambia improvvisamente senza mostrare la **lettura**, il **movimento** del difensore e l'**effettiva deviazione** è **incompleto** e non conforme.
+
+---
+
 ## Stato di implementazione (mappatura sul codice attuale)
 
 > Onestà documentale (charter): cosa dello standard esiste già nel gate vs cosa manca.
@@ -487,6 +550,10 @@ Intenzione difensiva immediatamente riconoscibile; gesto preparato ed eseguito c
 | Sistema di gravità INFO..FATAL | 🟡 | il gate distingue issue (FAIL) vs warn; manca la scala completa MINOR/MAJOR/CRITICAL |
 
 **Prerequisito comune** (come per `LIVE_MATCH_QA_SPEC.md`): Semantic Validator, eventi obbligatori/vietati e Timeline dipendono tutti dal **layer Event + Timeline** osservabile nel motore.
+
+### LMV-007 (Tentativo di Intercetto) — copertura attuale
+
+Concettualmente coperto a livello di **intento**: `deriveIntent` distingue `intercept`/`anticipate`/`recover`, e l'AI deliberativa **F10** chiude la *linea di passaggio più pericolosa* (proprio la "chiusura della linea" di LMV-007). Su passaggio fallito l'esito mira l'avversario che intercetta (fix 5.14) + post-arco `opp_intercept`. **Punto debole:** la *lettura/anticipo* (fasi 1-2) come gesto leggibile del difensore non è scriptata; il distacco netto contrasto↔intercetto (LMV-006 vs LMV-007) esiste nei dati ma non è validato a livello visivo. **Non validati:** timeline, Semantic, Narrative, "deviazione solo dopo contatto", post-highlight.
 
 ### LMV-006 (Tentativo di Contrasto) — copertura attuale
 
