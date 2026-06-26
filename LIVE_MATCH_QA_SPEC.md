@@ -761,6 +761,53 @@ Descrive tutte le Situation supportate; definisce il comportamento atteso dei ru
 
 ---
 
+## Capitolo 3.11 — Performance Monitor & Resource Manager
+
+### Scopo
+
+Il **Performance Monitor** misura, registra e analizza il comportamento prestazionale della piattaforma e del Live Match Engine. Non solo FPS: deve garantire che il framework esegua **migliaia di test consecutivi** mantenendo stabile il sistema e prevenendo degradazioni.
+
+### Obiettivi & Principi
+
+Monitoraggio **continuo, automatico, non invasivo, configurabile**, consultabile dalla Dashboard. Individuare memory leak e processi orfani; misurare tempi/CPU/RAM; produrre report storici; impedire che il framework degradi la stabilità del PC. Ogni metrica confrontabile tra build.
+
+### Metriche monitorate
+
+| Ambito | Metriche |
+|---|---|
+| **Sistema** | CPU, RAM, disco disponibile/usato dai report, temperatura CPU (se disponibile), n. processi |
+| **Browser (Chromium)** | memoria, tempo di vita, n. tab, crash, riavvii |
+| **Playwright** | n. browser aperti, test eseguiti, timeout, errori, riavvii |
+| **Live Match Engine** | FPS medi/minimi, tempo medio rendering, durata media highlight, durata animazioni, eventi elaborati |
+| **QA Framework** | validator eseguiti, tempo medio validator, n. replay, Failure Package creati, regressioni |
+
+### Resource Manager
+
+Impedisce la saturazione. **Prima** di ogni test verifica: memoria/CPU disponibili, browser aperti, processi Node/Playwright/Chromium. Al superamento di soglie configurabili: sospende i test, riduce i worker, esegue cleanup, notifica.
+
+### Memory Leak & Zombie Process Detection
+
+- **Leak:** monitora memoria iniziale / corrente / dopo ogni highlight / dopo ogni batch → segnala incrementi anomali persistenti.
+- **Zombie:** a fine suite verifica browser/Node/Playwright/Dev Server/worker residui → registrati, chiusi in modo controllato, riportati nel report.
+
+### Cleanup Manager
+
+Eseguito a fine highlight, a fine batch, **in caso di errore**, in caso di interruzione manuale. Operazioni: chiusura browser e processi figli, eliminazione file/screenshot/video temporanei (configurabile), rilascio memoria.
+
+### Stress Test & Soglie
+
+Supporta test di lunga durata (1.000 / 5.000 / 10.000 highlight, esecuzione continua per ore) con registrazione di tutte le metriche. Soglie configurabili (RAM/CPU max, tempo max test, n. max browser/worker, dimensione max Failure Package) → al superamento: avviso o interruzione, secondo configurazione.
+
+### Report, Dashboard, Integrazione
+
+Report a fine suite: tempo totale, highlight eseguiti, FPS medi, RAM iniziale/finale, CPU media, browser creati/riutilizzati, processi chiusi, leak/anomalie. Dashboard: grafici CPU/RAM/FPS, uso browser, stato worker, memoria framework, confronto tra build. Si integra con QA Core/Replay/Failure Collector/Regression/Dashboard; le **anomalie prestazionali possono generare Failure Package dedicati**.
+
+### Definition of Done
+
+Monitora di continuo le risorse; rileva leak e processi orfani; impedisce la saturazione del PC in test prolungati; produce report dettagliati; si integra con Dashboard e Failure Collector; consente il confronto prestazionale oggettivo tra versioni.
+
+---
+
 ## Stato di implementazione (mappatura sul codice attuale)
 
 > Sezione di raccordo tra spec e realtà del repo, da aggiornare ad ogni incremento LMQP. Onestà documentale (charter): distinguere ciò che esiste da ciò che è da costruire.
@@ -777,7 +824,7 @@ Descrive tutte le Situation supportate; definisce il comportamento atteso dei ru
 | **Replay Engine** | 🔴 da costruire | esiste solo lo screenshot del canvas in `out/`; nessuna registrazione stato/eventi per-frame, nessun debugger frame-by-frame, snapshot o confronto. Dipende dal layer Event+Timeline |
 | **Failure Collector** | 🔴 da costruire | il gate salva screenshot + `report.json`/`index.html` aggregati in `out/`, ma non un Failure Package per-fail (seed+replay+timeline+video+log+snapshot), né classificazione/priorità/retention. Dipende da Replay+Timeline |
 | **Regression Engine** | 🟡 embrionale | esiste solo la `golden` regression (firma stato `{htx,hty,cam,ch,ca}` vs `golden-sigs.json`): confronto baseline binario PASS/FAIL su un sottoinsieme dello stato. Mancano: baseline ricca (replay/score/metriche), 5 categorie di regressione, severità, gallery, visual/score comparison, storico |
-| **Performance Monitor** | 🔴 da costruire | — |
+| **Performance Monitor / Resource Manager** | 🔴 da costruire | il gate gira mono-worker e Playwright chiude il browser a fine run (cleanup implicito); health-check processi eseguito oggi **manualmente** (`ps`). Mancano: metriche FPS/CPU/RAM raccolte, leak/zombie detection automatica, soglie configurabili, stress test, report prestazionale, grafici |
 | **Dashboard (Visual QA / LMDP)** | 🟡 minimale | `tests/visual/report.mjs` → `out/validate/index.html` (report statico per-run con issue/warn/screenshot). Mancano: Home live, Test Explorer/Highlight Detail, Replay/Timeline Viewer, Visual Comparison, Regression/Failure Center, Performance Monitor, AI Review, search/filtri, Quality Score globale, notifiche |
 | **AI Vision Review Engine** | 🔴 opzionale | il gate cattura già screenshot del canvas (input pronto), ma nessuna analisi via Vision Provider, nessun Readability/Cinematic/Motion score percettivo, nessuna identificazione autonoma della Situation. Provider-agnostic by design |
 | **Football Intelligence KB** | 🟡 implicita | la logica calcistica oggi vive **nel codice** (`deriveIntent` 13 intenti, `decideExecution`, regole in `tests/situations-3d-validation.js`, invariante CINE) e nei testi/tactic delle 179 Situation — non in una KB dichiarativa separata e versionata. Manca: estrazione regole↔codice, comportamento atteso per ruolo/fase, varianti/eccezioni documentate |
