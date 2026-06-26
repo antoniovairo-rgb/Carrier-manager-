@@ -342,6 +342,71 @@ Tentativo di conclusione immediatamente riconoscibile; gesto coerente col tipo d
 
 ---
 
+## Validator 005 — Tentativo di Colpo di Testa
+
+| Campo | Valore |
+|---|---|
+| **Identificativo** | `LMV-005` |
+| **Categoria** | Finalizzazione |
+| **Priorità** | Alta |
+
+### Scopo
+
+Verifica che una Situation **"Tentativo di Colpo di Testa"** sia rappresentata in modo credibile, leggibile e coerente. Non conta che sia **gol**: conta che il protagonista tenti realmente di **colpire il pallone di testa**. Esito positivo o negativo.
+
+### Definizione
+
+Qualsiasi azione in cui un giocatore cerca **intenzionalmente** di colpire un **pallone aereo** con la testa. Comprende situazioni offensive **e** difensive.
+
+### Situazioni compatibili / non compatibili
+
+- **Compatibili:** colpo di testa su cross · su calcio d'angolo · su punizione · spizzata · sponda aerea · difensivo · ravvicinato · in tuffo.
+- **NON compatibili:** controllo di petto · stop di coscia · tiro al volo · passaggi rasoterra · colpi di piede.
+
+### Timeline attesa
+
+| Fase | Evento |
+|---|---|
+| 1 | **Preparazione** — pallone in traiettoria aerea, protagonista individua il punto d'impatto |
+| 2 | **Attacco del pallone** — si muove sulla traiettoria (anticipo / primo palo / secondo palo / arretra / taglio) |
+| 3 | **Confronto** — il difensore contrasta (marca / salta / ostacola / anticipa), mai passivo |
+| 4 | **Elevazione** — salta, tempo di elevazione credibile |
+| 5 | **Impatto** — colpisce con la testa, momento chiaramente visibile |
+| 6 | **Traiettoria** — nuova traiettoria coerente |
+| 7 | **Esito** — uno degli outcome previsti |
+| 8 | **Post-Highlight** — conseguenze chiaramente mostrate |
+
+### Outcome
+
+- **Ammessi:** gol · parata · deviazione · respinta difensiva · pallone fuori · traversa · palo · sponda · prosecuzione.
+- **Non ammessi:** salto assente · impatto non visibile · pallone che cambia direzione **prima** del contatto · difensore immobile · replay interrotto prima dell'esito · protagonista che colpisce senza guardare il pallone.
+
+### Controlli per validator
+
+- **Ball:** traiettoria aerea coerente, impatto corretto, nuova traiettoria compatibile, velocità plausibile, no teletrasporti.
+- **Player:** il **protagonista** segue la palla con lo sguardo / attacca la traiettoria / salta correttamente / completa il gesto; il **difensore** contrasta in aria / marca / segue; il **portiere** valuta la traiettoria / reagisce quando coinvolto.
+- **Camera:** mostra il pallone in tutta la traiettoria, il salto, il contatto, l'esito.
+- **Motion:** sincronia salto↔traiettoria, elevazione naturale, continuità, atterraggio di qualità, no movimenti innaturali.
+- **Semantic:** *"Un osservatore capirebbe immediatamente che il protagonista sta tentando un colpo di testa?"* — se no → **FAIL**.
+- **Football Intelligence:** attacca correttamente la zona del pallone, difensore che contrasta davvero, portiere che reagisce, tempo di salto plausibile, comportamento degli altri coerente.
+- **Narrative:** `Traiettoria → Attacco del pallone → Contrasto → Salto → Colpo di testa → Esito → Post-Highlight`; comprensibile anche senza cronaca.
+
+### Errori critici (FAIL)
+
+Il protagonista non salta · pallone che cambia traiettoria senza contatto · difensore che non reagisce · replay che termina prima dell'esito · camera che nasconde l'impatto · cronaca e highlight che mostrano azioni differenti.
+
+### Suggerimenti automatici
+
+Migliorare il tempo di salto · aumentare il contrasto del difensore · migliorare la sincronia col pallone · prolungare il post-highlight · rendere più evidente il punto d'impatto.
+
+### Definition of Done
+
+Tentativo immediatamente riconoscibile; attacco credibile della traiettoria; salto e contatto naturali; difensore e portiere che reagiscono coerentemente; risultato completamente visibile; post-highlight che conclude la scena; cronaca + timeline + animazione che rappresentano la stessa intenzione.
+
+> Un highlight che mostra **solo il contatto** senza preparazione, contrasto aereo e conseguenze è **incompleto** e non conforme.
+
+---
+
 ## Stato di implementazione (mappatura sul codice attuale)
 
 > Onestà documentale (charter): cosa dello standard esiste già nel gate vs cosa manca.
@@ -358,6 +423,10 @@ Tentativo di conclusione immediatamente riconoscibile; gesto coerente col tipo d
 | Sistema di gravità INFO..FATAL | 🟡 | il gate distingue issue (FAIL) vs warn; manca la scala completa MINOR/MAJOR/CRITICAL |
 
 **Prerequisito comune** (come per `LIVE_MATCH_QA_SPEC.md`): Semantic Validator, eventi obbligatori/vietati e Timeline dipendono tutti dal **layer Event + Timeline** osservabile nel motore.
+
+### LMV-005 (Tentativo di Colpo di Testa) — copertura attuale
+
+Rendering: variant testa (`header_diving`/`near_post`/`far_post`) con traiettoria = qualità decisa dal motore (F7), regia dedicata per variant (CINE-2), e soprattutto l'**invariante CINE testa⇒palla aerea** (validato dal gate, `data-coherence`, FAIL bloccante) che garantisce il requisito chiave di LMV-005 (testa solo su pallone aereo). Stato-palla `aerial` derivato da `hlBallState`. **Non validati automaticamente:** elevazione/salto credibile, contrasto aereo garantito del difensore, timeline a 8 fasi, Semantic, Narrative, post-highlight. La fase 4 (elevazione) e il contrasto aereo sono i punti più a rischio da collaudare dal vivo.
 
 ### LMV-004 (Tentativo di Tiro) — copertura attuale
 
