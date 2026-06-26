@@ -27,7 +27,13 @@ const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 function findLine(re,from=0){for(let i=from;i<L.length;i++)if(re.test(L[i]))return i;return -1;}
 function sliceFn(startRe,endRe){const a=findLine(startRe);if(a<0)return null;for(let i=a;i<L.length;i++)if(endRe.test(L[i]))return L.slice(a,i+1).join('\n');return null;}
 
-// ---------- 1. estrai codice REALE: S, A, SITUATIONS, deriveHL ----------
+// ---------- 1. estrai codice REALE: deriveIntent/deriveBallState/deriveSitCine, S, A, SITUATIONS, hlBallState, deriveHL ----------
+// CINE-DECOUPLE: S() congela sit.ballState/sit.cine via deriveBallState/deriveSitCine, e sit.intent via
+//   deriveIntent. Vanno estratte tutte e tre o i campi sarebbero null e hlBallState/deriveHL (lettori
+//   puri) divergerebbero dal browser. Sono function-decl (hoisted) → l'ordine nel combo è indifferente.
+const diSrc=sliceFn(/^function deriveIntent\(/,/^}/)||'';
+const dbsSrc=sliceFn(/^function deriveBallState\(/,/^}/)||'';
+const dscSrc=sliceFn(/^function deriveSitCine\(/,/^}/)||'';
 const sIdx=findLine(/^const S=\(text,zones,mz,sz,actions/);
 const aIdx=findLine(/^const A=\(label,stat,bon,rew,fail,nrg\)/);
 const sitStart=findLine(/^const SITUATIONS=\[/);
@@ -40,6 +46,7 @@ let dhEnd=-1;for(let i=dhStart;i<dhStart+120;i++){if(L[i].trim()==='return{type,
 let SITUATIONS,deriveHL,hlBallState;
 try{
   const combo=
+    diSrc+'\n'+dbsSrc+'\n'+dscSrc+'\n'+
     L.slice(sIdx,aIdx+1).join('\n').replace(/const /g,'var ')+'\n'+
     L.slice(sitStart,sitEnd+1).join('\n').replace('const SITUATIONS','var SITUATIONS')+'\n'+
     L.slice(bsStart,bsEnd+1).join('\n')+'\n'+

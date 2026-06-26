@@ -1645,6 +1645,8 @@ const S=(text,zones,mz,sz,actions,lock=false,mm=-1,intro="",type="off",ctx=null,
   const inferredMM=mm>=0?mm:z0==="area"?2:z0==="bordo"?2:3;
   const obj={text,zones,moveZone:mz,startZone:sz,actions,lockMovement:lock,maxMoves:lock?0:inferredMM,intro,type,ctx,tactic};
   obj.intent=(typeof deriveIntent==="function")?deriveIntent(obj,null):null; // ENGINE Step 1: ogni situation nasce con la sua INTENZIONE (sorgente unica)
+  obj.ballState=(typeof deriveBallState==="function")?deriveBallState(obj):null; // CINE-DECOUPLE: congela lo stato palla (no parsing testo a runtime)
+  obj.cine=(typeof deriveSitCine==="function")?deriveSitCine(obj):null; // CINE-DECOUPLE: congela i segnali cinematici
   return obj;
 };
 const A=(label,stat,bon,rew,fail,nrg)=>({label,stat,bon,rew,fail,nrg});
@@ -2709,7 +2711,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="5.14.0"; // FIX coerenza narrativa: i titoli/intro che ASSUMONO uno stato partita (es. "Sotto 0-2", "Siamo in vantaggio — gestisci", "CI CREDIAMO! la rimonta") ora, se INCOERENTI col punteggio reale, mostrano l'INTENTO invece della bugia (stateIncoherent + intentIntro, solo display). + FIX i 3 residui. (1) BARRIERA punizioni — 3 difensori avversari tra palla e porta durante le punizioni (prima nessun muro). (2) POSIZIONI IMPOSSIBILI — la continuità ora porta l'eroe allo spot CORRETTO della startZone quando la posizione precedente è fuori zona (basta scavetto/dribbling-portiere da centrocampo); gate-safe (usa getStartPos). (3) TESTI esecutivi — tutti i 35 titoli ora mostrano l'INTENTO a display. + audit 179. intentTitle estesa per catturare i 12 titoli esecutivi che ancora sfuggivano (Lancio millimetrico, Hocus pocus, Chip pass, Sforbiciata, tacco, giratone, di prima, filtrante, corner teso...) → ora l'intro mostra l'INTENTO anche per quelli. + FIX segnalazioni (boomerang/passaggio/duplicate). (1) BOOMERANG tiro mancato RISOLTO alla radice — il deflect (parata/fuori) tornava verso x=0 (porta dell'eroe); ora resta nel terzo offensivo. (2) PASSAGGIO fallito: andava indietro verso la porta propria; ora SEMPRE in avanti, mira l'avversario che INTERCETTA. (3) AZIONI DUPLICATE (mia regressione): dedup delle etichette intento — niente più due "Conclusione di prima" identiche. + Step 3 slice 1. la PRECISIONE del tiro deriva dalla QUALITÀ decisa dal motore (qualità alta → conclusione angolata/pulita verso il palo; bassa → più centrale e parabile), non da spread casuale. Limitata dal target base → gate-safe. + Step 2 (decisione guidata dall'intent, estesa): contesto del Decision Engine arricchito (pressione situation + tattica avversaria, METEO reale); override dell'esecuzione esteso al DRIBBLING (oltre tiri/cross); esito-deciso ora per TUTTI i tipi (tiro/cross/dribbling/passaggio/filtrante/contrasto), non solo tiri/cross. + Step 1 (migrazione a INTENZIONE): ogni situation nasce con un campo intent (deriveIntent) che dice COSA il giocatore tenta — penalty/freekick/cross/through/dribble/onetwo/insertion/shot/progression/switch/recover/anticipate/intercept — dalla STRUTTURA, non dalle parole d'esecuzione. Sorgente unica dell'intenzione (l'esecuzione la decide il motore). Intro highlight ora derivata dall'intent. Validato (cross↔inserimento distinti). + FIX passaggi: la RICEZIONE ora è leggibile — il compagno destinatario resta fermo ad accogliere la palla, la palla si POSA sui suoi piedi (nuovo beat assist_recv ~0.42s, la palla segue il ricevente) e SOLO DOPO parte la conclusione. Basta "non si vede la ricezione / la palla vola subito in porta". + (1) INTRO highlight ora dice l'INTENZIONE ("Tentativo di tiro/cross/dribbling/filtrante...") invece dell'esecuzione ("Stop e tiro", "Girata e tiro") — intentTitle, solo display, sit.text intatto; (2) BOOMERANG alla radice — rimosso il sync ballPos→eroe durante hl_result: la palla resta all'esito (rete/compagno/fuori), non torna più indietro (passaggi/dribbling inclusi). + ENGINE Fase 3 (FUSIONE pipeline): l'esito visivo di un'azione fallita (parata/palo/fuori/murato) deriva ora dal Decision Engine (hlOutcomeKind, dagli attributi/pressione/contesto) invece di un dado nel render-loop → l'animazione è conseguenza della simulazione, coerente e varia. Seedato (deterministico), mai "in rete" su fallimento. + Intent nelle scelte: le conclusioni non fanno più SCEGLIERE l'esecuzione (testa/piede/tecnica) — il bottone mostra un INTENTO/stile (Attacca il pallone · Conclusione potente/precisa · Cerca l'angolo · di prima · acrobatica · scavetto), l'esecuzione la decide il motore. Transformer display-only (act.label reale intatta per deriveHL/gate). Chiude il punto "rasoterra vs testa come alternative". + FIX match-engine: (1) RIGORE/PUNIZIONE — niente pressing/corse/smarcamenti, i giocatori restano schierati fuori area (basta ammucchiate sul dischetto); (2) BOOMERANG — a fine azione la palla resta dove l'azione l'ha lasciata (rete/fuori/compagno), non viene più richiamata verso l'eroe. + Fase 2 (AI tattica continua): i giocatori off-ball hanno un obiettivo per RUOLO che legge la palla ogni frame — attaccanti con corse differenziate (primo/secondo palo/profondità) che intensificano con l'avanzare della palla, centrocampisti che offrono linee di passaggio attorno al portatore. Meno "zombie", più motivazione calcistica. Puramente visivo. + Fase 1 (Intent→Decision COLLEGATO): l'esecuzione (variante) di tiri-da-terra e cross è ora DECISA dal Decision Engine dagli attributi/pressione/contesto (seed stabile → deterministico, niente flicker), non più dalle label delle situation. Invarianti aeree (testa/volée) intatte. Primo taglio dell'accoppiamento Situation→animazione. Fase 0: aggiunto il DECISION ENGINE (decideExecution) — keystone che, data un'INTENZIONE + contesto (attributi/pressione/posizione/meteo/morale/...) + casualità controllata, decide ESECUZIONE ed ESITO. Validato su migliaia di contesti (esiti vari e coerenti, 0 impossibili). Inerte (non ancora ricablato), come il motore timeline. + CINE-TL Fase 2 (executor): in gioco reale le conclusioni di TIRO sono precedute dalla COSTRUZIONE dell'azione (build-up) — palla e attori seguono la timeline beat-per-beat, poi parte la conclusione collaudata. Bypass in gate-mode (?cpmtest=1 → conclusione immediata → 9 check identici). "Il tiro non compare più dal nulla". + Fase 1: motore di TIMELINE — buildHLTimeline genera per ogni pattern una sequenza di micro-eventi calcistici (chi ha la palla, chi riceve/corre, difensori, n° reali passaggi, traiettoria) + validateHLTimeline che impone le invarianti (possesso continuo, no teletrasporti, no cambi possesso ingiustificati, testa⇐cross). Validato logicamente su 650 casi. NON ancora collegato al renderer (Fase 2). + CINE-APPROACH.
+const GAME_VERSION="5.15.0"; // CINE-DECOUPLE: deriveHL/hlBallState NON leggono più sit.text a runtime — il parsing del testo è isolato in deriveBallState/deriveSitCine, chiamate UNA VOLTA in S() che congelano sit.ballState/sit.cine. hlBallState/deriveHL leggono i campi. Logica invariata (stesse regex/input) → diff node ZERO, golden invariato. Primo taglio per migrare i TESTI a pura intenzione. (gate harness situations-3d-validation.js aggiornato per estrarre deriveIntent/deriveBallState/deriveSitCine.) // [5.14.0] FIX coerenza narrativa: i titoli/intro che ASSUMONO uno stato partita (es. "Sotto 0-2", "Siamo in vantaggio — gestisci", "CI CREDIAMO! la rimonta") ora, se INCOERENTI col punteggio reale, mostrano l'INTENTO invece della bugia (stateIncoherent + intentIntro, solo display). + FIX i 3 residui. (1) BARRIERA punizioni — 3 difensori avversari tra palla e porta durante le punizioni (prima nessun muro). (2) POSIZIONI IMPOSSIBILI — la continuità ora porta l'eroe allo spot CORRETTO della startZone quando la posizione precedente è fuori zona (basta scavetto/dribbling-portiere da centrocampo); gate-safe (usa getStartPos). (3) TESTI esecutivi — tutti i 35 titoli ora mostrano l'INTENTO a display. + audit 179. intentTitle estesa per catturare i 12 titoli esecutivi che ancora sfuggivano (Lancio millimetrico, Hocus pocus, Chip pass, Sforbiciata, tacco, giratone, di prima, filtrante, corner teso...) → ora l'intro mostra l'INTENTO anche per quelli. + FIX segnalazioni (boomerang/passaggio/duplicate). (1) BOOMERANG tiro mancato RISOLTO alla radice — il deflect (parata/fuori) tornava verso x=0 (porta dell'eroe); ora resta nel terzo offensivo. (2) PASSAGGIO fallito: andava indietro verso la porta propria; ora SEMPRE in avanti, mira l'avversario che INTERCETTA. (3) AZIONI DUPLICATE (mia regressione): dedup delle etichette intento — niente più due "Conclusione di prima" identiche. + Step 3 slice 1. la PRECISIONE del tiro deriva dalla QUALITÀ decisa dal motore (qualità alta → conclusione angolata/pulita verso il palo; bassa → più centrale e parabile), non da spread casuale. Limitata dal target base → gate-safe. + Step 2 (decisione guidata dall'intent, estesa): contesto del Decision Engine arricchito (pressione situation + tattica avversaria, METEO reale); override dell'esecuzione esteso al DRIBBLING (oltre tiri/cross); esito-deciso ora per TUTTI i tipi (tiro/cross/dribbling/passaggio/filtrante/contrasto), non solo tiri/cross. + Step 1 (migrazione a INTENZIONE): ogni situation nasce con un campo intent (deriveIntent) che dice COSA il giocatore tenta — penalty/freekick/cross/through/dribble/onetwo/insertion/shot/progression/switch/recover/anticipate/intercept — dalla STRUTTURA, non dalle parole d'esecuzione. Sorgente unica dell'intenzione (l'esecuzione la decide il motore). Intro highlight ora derivata dall'intent. Validato (cross↔inserimento distinti). + FIX passaggi: la RICEZIONE ora è leggibile — il compagno destinatario resta fermo ad accogliere la palla, la palla si POSA sui suoi piedi (nuovo beat assist_recv ~0.42s, la palla segue il ricevente) e SOLO DOPO parte la conclusione. Basta "non si vede la ricezione / la palla vola subito in porta". + (1) INTRO highlight ora dice l'INTENZIONE ("Tentativo di tiro/cross/dribbling/filtrante...") invece dell'esecuzione ("Stop e tiro", "Girata e tiro") — intentTitle, solo display, sit.text intatto; (2) BOOMERANG alla radice — rimosso il sync ballPos→eroe durante hl_result: la palla resta all'esito (rete/compagno/fuori), non torna più indietro (passaggi/dribbling inclusi). + ENGINE Fase 3 (FUSIONE pipeline): l'esito visivo di un'azione fallita (parata/palo/fuori/murato) deriva ora dal Decision Engine (hlOutcomeKind, dagli attributi/pressione/contesto) invece di un dado nel render-loop → l'animazione è conseguenza della simulazione, coerente e varia. Seedato (deterministico), mai "in rete" su fallimento. + Intent nelle scelte: le conclusioni non fanno più SCEGLIERE l'esecuzione (testa/piede/tecnica) — il bottone mostra un INTENTO/stile (Attacca il pallone · Conclusione potente/precisa · Cerca l'angolo · di prima · acrobatica · scavetto), l'esecuzione la decide il motore. Transformer display-only (act.label reale intatta per deriveHL/gate). Chiude il punto "rasoterra vs testa come alternative". + FIX match-engine: (1) RIGORE/PUNIZIONE — niente pressing/corse/smarcamenti, i giocatori restano schierati fuori area (basta ammucchiate sul dischetto); (2) BOOMERANG — a fine azione la palla resta dove l'azione l'ha lasciata (rete/fuori/compagno), non viene più richiamata verso l'eroe. + Fase 2 (AI tattica continua): i giocatori off-ball hanno un obiettivo per RUOLO che legge la palla ogni frame — attaccanti con corse differenziate (primo/secondo palo/profondità) che intensificano con l'avanzare della palla, centrocampisti che offrono linee di passaggio attorno al portatore. Meno "zombie", più motivazione calcistica. Puramente visivo. + Fase 1 (Intent→Decision COLLEGATO): l'esecuzione (variante) di tiri-da-terra e cross è ora DECISA dal Decision Engine dagli attributi/pressione/contesto (seed stabile → deterministico, niente flicker), non più dalle label delle situation. Invarianti aeree (testa/volée) intatte. Primo taglio dell'accoppiamento Situation→animazione. Fase 0: aggiunto il DECISION ENGINE (decideExecution) — keystone che, data un'INTENZIONE + contesto (attributi/pressione/posizione/meteo/morale/...) + casualità controllata, decide ESECUZIONE ed ESITO. Validato su migliaia di contesti (esiti vari e coerenti, 0 impossibili). Inerte (non ancora ricablato), come il motore timeline. + CINE-TL Fase 2 (executor): in gioco reale le conclusioni di TIRO sono precedute dalla COSTRUZIONE dell'azione (build-up) — palla e attori seguono la timeline beat-per-beat, poi parte la conclusione collaudata. Bypass in gate-mode (?cpmtest=1 → conclusione immediata → 9 check identici). "Il tiro non compare più dal nulla". + Fase 1: motore di TIMELINE — buildHLTimeline genera per ogni pattern una sequenza di micro-eventi calcistici (chi ha la palla, chi riceve/corre, difensori, n° reali passaggi, traiettoria) + validateHLTimeline che impone le invarianti (possesso continuo, no teletrasporti, no cambi possesso ingiustificati, testa⇐cross). Validato logicamente su 650 casi. NON ancora collegato al renderer (Fase 2). + CINE-APPROACH.
 const SAVE_VERSION=6;
 // Sprint ENV — ambiente rilevato automaticamente dal runtime (non gestito manualmente).
 // PRODUCTION = deploy GitHub Pages (*.github.io). Tutto il resto (staging githack, locale, localhost) = TEST.
@@ -6676,23 +6678,47 @@ const HL_ZONE_COL={shot:0xf97316,penalty:0xef4444,cross:0x22d3ee,freekick:0x22d3
 //  'aerial'     = palla che arriva/è in volo (cross, corner, lancio alto, rimbalzo, rovesciata, stacco, colpo di testa)
 //  'feet'       = palla controllata al piede (default)
 // L'hlType viene poi derivato in coerenza con questo stato (niente colpi di testa / volée con palla al piede).
-function hlBallState(sit){
+// CINE-DECOUPLE (5.15.0): la classificazione palla/cine NON legge più sit.text a RUNTIME.
+//   deriveBallState/deriveSitCine derivano i segnali UNA VOLTA (chiamate in S()) e li CONGELANO
+//   come campi (sit.ballState/sit.cine). hlBallState/deriveHL leggono i campi. Logica invariata
+//   (stesse regex, stessi input) → zero diff / golden invariato. Il parsing del testo è ora
+//   isolato in 2 sole funzioni-sorgente: primo taglio per migrare i TESTI a pura intenzione.
+function deriveBallState(sit){
   const t=(sit&&sit.text)||"";
-  // palla ferma a terra SOLO se il set-piece è battuto dall'eroe (lockMovement); una punizione/cross che l'eroe ATTACCA è palla aerea
+  // palla ferma a terra SOLO se il set-piece è battuto dall'eroe (lockMovement)
   if(/rigore|unizione/i.test(t)&&sit&&sit.lockMovement)return"set_ground";
-  // CINE-VAR: "ribattuta" (rigore parato → rimbalzo) è aerea; aggiunti "salto|volo|botta al volo"
+  // "ribattuta"/"al volo"/acrobazie/cross/lanci = palla aerea
   if(/cross|corner|angolo|traversone|lancio lungo|lanci lungh|rimbalz|ribattut|rovesciat|sforbiciat|vol[eé]e|al volo|botta al volo|aere[oa]|stacco|colpo di testa|incornat|di testa|testa[ !]|alzat|acrobat|controbalz|di petto/i.test(t))return"aerial";
   return"feet";
+}
+// Segnali cinematici derivati dal testo (penalty/freekick/1v1/secondo palo/di-prima) — stesse regex
+// che deriveHL leggeva inline da txt/tl. Congelati in sit.cine, così deriveHL non legge più il testo.
+function deriveSitCine(sit){
+  const txt=(sit&&sit.text)||"", tl=txt.toLowerCase();
+  return {
+    penalty:/RIGORE|igore/.test(txt),
+    freekick:/unizione/.test(txt),
+    oneOnOne:/solo davanti|davanti al portiere|portiere in uscita/.test(tl),
+    fpCross:/secondo palo|palo lontano|profond|arretrat/.test(tl),
+    fpHeader:/secondo palo|palo lontano|profond/.test(tl),
+    tapIn:/tap-in|deviazion|istintiv/.test(tl)
+  };
+}
+// hlBallState ora è un LETTORE puro del campo precalcolato (fallback: deriva al volo per sit sintetiche/chained).
+function hlBallState(sit){
+  if(sit&&sit.ballState!=null)return sit.ballState;
+  return (typeof deriveBallState==="function")?deriveBallState(sit):"feet";
 }
 // CINE-1: motore cinematografico — deriva {type, pattern, variant} da situation+azione.
 // `type` resta byte-identico al cascade legacy (zero regressioni); pattern/variant sono il nuovo backbone.
 function deriveHL(sit,act){
-  const txt=sit?.text||"", tl=txt.toLowerCase(), lbl=(act?.label||"").toLowerCase();
+  const lbl=(act?.label||"").toLowerCase();
+  const cn=(sit&&sit.cine)||(typeof deriveSitCine==="function"?deriveSitCine(sit):{});// CINE-DECOUPLE: segnali da campo, non da sit.text
   const st=act?.stat, sitType=sit?.type, z=sit?.zones?.[0], ballState=hlBallState(sit);
   // ── TYPE — cross e testa riconosciuti PRIMA della classificazione per stat (label ha priorità) ──
   let type=null;
-  if(/RIGORE|igore/.test(txt))type="penalty";
-  else if(/unizione/.test(txt))type="freekick";
+  if(cn.penalty)type="penalty";
+  else if(cn.freekick)type="freekick";
   else if(act&&/cross|traversone/.test(lbl))type="cross";// CINE-2: cross label prima di stat=passaggio
   else if(act&&/testa|incornata|stacco/.test(lbl))type=(ballState==="aerial")?"header":"shot";// CINE-COH: colpo di testa SOLO su palla aerea; altrimenti conclusione a terra
   else if(st==="tiro")type="shot";
@@ -6711,20 +6737,20 @@ function deriveHL(sit,act){
   if(type==="cross"){
     // CINE-7: "secondo palo / palo lontano" va riconosciuto anche dalla label (non solo dal testo) → attiva regia FAR_POST
     if(/rientr|a rientrare/.test(lbl))variant="cross_cutback";
-    else if(/secondo palo|palo lontano|profond|arretrat/.test(lbl)||/secondo palo|palo lontano|profond|arretrat/.test(tl))variant="cross_far_post";
+    else if(/secondo palo|palo lontano|profond|arretrat/.test(lbl)||cn.fpCross)variant="cross_far_post";
     else if(/basso|teso|raso/.test(lbl))variant="cross_low_driven";
     else variant="cross_near_post";
   } else if(type==="header"){
     if(/tuffo|piombo|in corsa/.test(lbl))variant="header_diving";
-    else if(/secondo palo|palo lontano|profond/.test(lbl)||/secondo palo|palo lontano|profond/.test(tl))variant="header_far_post";
+    else if(/secondo palo|palo lontano|profond/.test(lbl)||cn.fpHeader)variant="header_far_post";
     else variant="header_near_post";
   } else if(type==="shot"){
     if(/pallonett|cucchiaio|scavin/.test(lbl))variant="shot_chip";// label-chip ha priorità su pattern situazione (es. pallonetto in 1v1)
-    else if(/solo davanti|davanti al portiere|portiere in uscita/.test(tl))variant="shot_one_on_one";
+    else if(cn.oneOnOne)variant="shot_one_on_one";
     else if(/rovesciat|sforbiciat/.test(lbl))variant="shot_volley";// CINE-COH: gesti acrobatici alzano sempre la palla → volée
     else if(ballState==="aerial"&&/al volo|vol[eé]e|volo/.test(lbl))variant="shot_volley";// CINE-COH: volée SOLO con palla aerea (cross/rimbalzo)
     else if(/giro|piazzat|angolat/.test(lbl))variant="shot_curled";
-    else if(/prima|deviazion|istintiv|tap-in|controbalz/.test(lbl)||/tap-in|deviazion|istintiv/.test(tl))variant="shot_first_time";// CINE-COH: "di prima"/prima intenzione = colpo di prima a terra, non volée aerea
+    else if(/prima|deviazion|istintiv|tap-in|controbalz/.test(lbl)||cn.tapIn)variant="shot_first_time";// CINE-COH: "di prima"/prima intenzione = colpo di prima a terra, non volée aerea
     else variant="shot_power";
   } else if(type==="penalty"){
     if(/cucchiaio|pallonett/.test(lbl))variant="penalty_panenka";// Panenka → arco alto
@@ -6739,7 +6765,7 @@ function deriveHL(sit,act){
   else if(type==="freekick")pattern="SET_PIECE";
   else if(type==="cross")pattern=variant==="cross_far_post"?"FAR_POST_CROSS":variant==="cross_cutback"?"CUTBACK":"NEAR_POST_CROSS";
   else if(type==="header")pattern="HEADER_ATTACK";
-  else if(type==="shot")pattern=/solo davanti|davanti al portiere|portiere in uscita/.test(tl)?"ONE_ON_ONE":"EDGE_SHOT";// pattern da testo sit, non da variant (es. pallonetto in 1v1 → ONE_ON_ONE)
+  else if(type==="shot")pattern=cn.oneOnOne?"ONE_ON_ONE":"EDGE_SHOT";// pattern da campo cine (1v1), non da variant (es. pallonetto in 1v1 → ONE_ON_ONE)
   else if(type==="dribble")pattern="DRIBBLE_SHOT";
   else if(type==="tackle")pattern="TACKLE";
   else if(type==="pass")pattern=/filtrante|imbucata|profond/.test(lbl)?"THROUGH_BALL":"COMBINATION";
