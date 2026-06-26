@@ -671,6 +671,53 @@ Punto d'accesso unico; qualsiasi highlight consultabile in pochi secondi; integr
 
 ---
 
+## Capitolo 3.9 — AI Vision Review Engine
+
+### Scopo
+
+L'**AI Vision Review Engine** è un modulo **opzionale** che analizza automaticamente screenshot e replay degli highlight tramite modelli di visione artificiale. Non sostituisce i validator tradizionali: **simula il giudizio qualitativo di un QA Tester umano**, valutando ciò che una persona percepisce guardando il replay.
+
+### Obiettivi & Principi
+
+Valutare qualità visiva e leggibilità; individuare comportamenti innaturali e anomalie difficili da cogliere coi validator semplici; fornire suggerimenti qualitativi. **Il Validator Engine decide il PASS/FAIL tecnico; l'AI Vision produce una valutazione aggiuntiva di supporto, mai una prova definitiva.**
+
+### Compatibilità (provider-agnostic)
+
+Architettura indipendente dal fornitore: interfaccia generica **"Vision Provider"** per integrare modelli presenti o futuri. L'implementazione iniziale può usare Claude o altro modello disponibile, ma il framework **non deve dipendere** da uno specifico provider.
+
+### Input / Output
+
+- **Input:** replay completi, clip brevi, screenshot, sequenze di frame, metadata dell'highlight, risultato dei validator.
+- **Output:** valutazione generale, punti di forza, criticità, punteggi qualitativi, osservazioni, suggerimenti.
+
+### Analisi prodotte
+
+| Analisi | Valuta | Output |
+|---|---|---|
+| **Leggibilità** | "un osservatore capisce subito quale azione è?" (no → WARNING) | Readability Score |
+| **Regia** | inquadratura, tempi/cambi camera, momento decisivo, visibilità palla/protagonista | Camera Score |
+| **Fluidità** | continuità, naturalezza, scatti, animazioni, transizioni | Motion Score |
+| **Calcistica** | credibilità movimenti, reazioni compagni/difensori/portiere, sviluppo azione | Football Intelligence Score |
+| **Narrativa** | inizio / sviluppo / finale / post-highlight (manca uno → WARNING) | Cinematic Score |
+
+### Identificazione della Situation
+
+Il sistema tenta di identificare la Situation **osservando solo il replay** ("quale azione calcistica è?") e la confronta con quella prevista: una discrepanza significativa segnala un problema di **rappresentazione** (≈ Semantic Validator dal punto di vista percettivo).
+
+### Commenti automatici & Punteggi
+
+Riepilogo sintetico, concreto, azionabile (es. *"L'azione è comprensibile, il cross è ben reso, ma il difensore resta troppo statico e la camera arriva in ritardo sul colpo di testa"*). Punteggi minimi: Overall Quality · Camera · Motion · Football Intelligence · Cinematic · Readability — **confrontabili tra build**.
+
+### Integrazione & Limitazioni
+
+Si integra con Replay/Validator/Regression Engine, Dashboard, Failure Collector; le valutazioni AI sono consultabili accanto ai validator tradizionali. **Limitazioni:** dipendono dalla qualità del modello → non sostituiscono i validator tecnici, **non bloccano la CI/CD**, vanno interpretate come supporto qualitativo.
+
+### Estendibilità & Definition of Done
+
+Nuove categorie d'analisi aggiungibili senza modificare l'architettura; integrazione di futuri modelli multimodali con la stessa interfaccia. **DoD:** analizza replay/screenshot, produce valutazioni coerenti, evidenzia criticità difficili da cogliere, identifica problemi di leggibilità/regia, si integra con Dashboard e Failure Collector, aiuta a migliorare la qualità percepita senza sostituire la validazione tecnica.
+
+---
+
 ## Stato di implementazione (mappatura sul codice attuale)
 
 > Sezione di raccordo tra spec e realtà del repo, da aggiornare ad ogni incremento LMQP. Onestà documentale (charter): distinguere ciò che esiste da ciò che è da costruire.
@@ -689,6 +736,6 @@ Punto d'accesso unico; qualsiasi highlight consultabile in pochi secondi; integr
 | **Regression Engine** | 🟡 embrionale | esiste solo la `golden` regression (firma stato `{htx,hty,cam,ch,ca}` vs `golden-sigs.json`): confronto baseline binario PASS/FAIL su un sottoinsieme dello stato. Mancano: baseline ricca (replay/score/metriche), 5 categorie di regressione, severità, gallery, visual/score comparison, storico |
 | **Performance Monitor** | 🔴 da costruire | — |
 | **Dashboard (Visual QA / LMDP)** | 🟡 minimale | `tests/visual/report.mjs` → `out/validate/index.html` (report statico per-run con issue/warn/screenshot). Mancano: Home live, Test Explorer/Highlight Detail, Replay/Timeline Viewer, Visual Comparison, Regression/Failure Center, Performance Monitor, AI Review, search/filtri, Quality Score globale, notifiche |
-| **AI Vision Layer** | 🔴 opzionale | — |
+| **AI Vision Review Engine** | 🔴 opzionale | il gate cattura già screenshot del canvas (input pronto), ma nessuna analisi via Vision Provider, nessun Readability/Cinematic/Motion score percettivo, nessuna identificazione autonoma della Situation. Provider-agnostic by design |
 
 **Limite strutturale noto:** il gate cattura **frame congelati** → valida stato/coerenza (Livelli 1-3 parziali) ma **non il movimento né la leggibilità temporale** (Livello 4). Il Timeline/Event layer (LMQP-1) è il prerequisito per colmarlo.
