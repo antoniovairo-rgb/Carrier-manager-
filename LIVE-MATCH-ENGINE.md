@@ -155,7 +155,7 @@ Validazione (migliaia di contesti): campione forte+libero ~76% positivi vs debol
 |---|---|---|
 | **Barriera punizioni** — muro a ~9u tra palla e porta | render/positioning | 🟡 barriera fatta; **visibilità portiere** da verificare dal vivo |
 | **Testi situation esecutivi/incoerenti** — 35 titoli esecutivi + 3 con punteggio assunto; **risolti a DISPLAY** (`intentTitle`/`stateIncoherent`), ma il **dato** resta tale | dati | 🟡 display ok, dato da migrare |
-| **Step 3 completo** — ritiro degli archi pre-autorati verso traiettorie derivate dalla decisione | render | 🔴 avviato (slice qualità→precisione), il grosso resta |
+| **Step 3 completo** — ritiro degli archi pre-autorati verso traiettorie derivate dalla decisione | render | ✅ **completo su tutte le famiglie di conclusione** (F4 tiro 5.24 · F5 cross 5.26 · F6 set-piece 5.27 · F7 testa 5.28): la qualità decisa dal motore plasma pace/precisione/altezza dell'arco. Bounded, seedato, gate-safe. La testa modula SOLO l'arco (variant/aerialità intatte → invariante CINE preservato) |
 | ~~**`deriveHL`/`hlBallState` accoppiati al testo**~~ | logica | ✅ **risolto 5.15.0→5.18.0** (CINE-DECOUPLE B1+B2): la derivazione è ora **text-free** (intent strutturale + override `tactic.bs`/`tactic.cn` baked sulle 52+3 divergenti). I TESTI delle situations sono **liberi** di essere riscritti a pura intenzione. (Resta letto `act.label` — scope separato.) |
 | **Decision Engine — fattori mancanti** — piede preferito, modulo, alcune tattiche | logica | 🟡 estensione |
 | **AI individuale completa** — i 22 leggono la palla ma non valutano spazi/marcature/pericoli per-frame | render | 🔴 lavoro grosso |
