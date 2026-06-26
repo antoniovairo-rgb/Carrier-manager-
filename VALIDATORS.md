@@ -149,6 +149,70 @@ Tentativo di cross immediatamente riconoscibile; gesto tecnico preparato corrett
 
 ---
 
+## Validator 002 — Tentativo di Dribbling
+
+| Campo | Valore |
+|---|---|
+| **Identificativo** | `LMV-002` |
+| **Categoria** | Costruzione offensiva |
+| **Priorità** | Massima |
+
+### Scopo
+
+Verifica che una Situation **"Tentativo di Dribbling"** sia rappresentata in modo credibile, leggibile e coerente con l'intenzione del protagonista. Non conta il **successo** del dribbling: conta che il giocatore tenti realmente di superare uno o più avversari **mantenendo il controllo del pallone**. Esito positivo o negativo.
+
+### Definizione
+
+Qualsiasi azione in cui il giocatore in possesso cerca **intenzionalmente** di superare un avversario tramite abilità tecnica, cambi di direzione, finte o protezione del pallone.
+
+### Situazioni compatibili / non compatibili
+
+- **Compatibili:** cambio di direzione · finta di corpo · doppio passo · tunnel · sombrero · sterzata · protezione del pallone · dribbling in velocità.
+- **NON compatibili:** passaggi · cross · tiri · contrasti · lanci lunghi · semplici conduzioni **senza opposizione**.
+
+### Timeline attesa
+
+| Fase | Evento |
+|---|---|
+| 1 | **Possesso** — il protagonista controlla il pallone |
+| 2 | **Confronto** — almeno un difensore in pressione, presenza evidente |
+| 3 | **Preparazione** — rallenta/accelera/cambia direzione, intenzione leggibile |
+| 4 | **Gesto tecnico** — esegue il dribbling, finta chiaramente visibile |
+| 5 | **Reazione** — il difensore tenta intercetto/contrasto/recupero (mai passivo) |
+| 6 | **Esito** — uno degli outcome previsti |
+| 7 | **Post-Highlight** — conseguenze immediate dell'azione |
+
+### Outcome
+
+- **Ammessi** (rappresentati visivamente): dribbling riuscito · perdita del possesso · fallo subito · contrasto vinto dal difensore · recupero difensivo · prosecuzione dell'azione · passaggio/tiro/cross successivo.
+- **Non ammessi:** difensore completamente immobile · protagonista che attraversa il difensore · cambio di possesso senza contatto · pallone che si separa senza motivo · animazioni incompatibili col gesto.
+
+### Controlli per validator
+
+- **Ball:** pallone sotto controllo durante il gesto, distanza giocatore-palla plausibile, no teletrasporti, no rimbalzi innaturali, traiettoria coerente col movimento.
+- **Player:** il **protagonista** protegge la palla / orienta il corpo verso l'avversario / cambia realmente direzione o ritmo / completa il gesto; l'**avversario** legge il movimento / tenta il recupero / reagisce credibilmente; gli **altri** si smarcano / coprono spazi / seguono l'azione.
+- **Camera:** protagonista e difensore visibili, momento del dribbling evidenziato, eventuale superamento seguito, esito mostrato.
+- **Motion:** gesto fluido, continuità, cambi di direzione naturali, no movimenti bruschi, no compenetrazioni.
+- **Semantic:** *"Un osservatore capirebbe immediatamente che il protagonista sta tentando di superare un avversario?"* — se no → **FAIL**.
+- **Football Intelligence:** dribbling in situazione plausibile, difensore che reagisce correttamente, momento credibile, compagni che offrono linee, prosecuzione coerente con l'esito.
+- **Narrative:** `Possesso → Confronto → Tentativo → Reazione → Esito → Post-Highlight`; l'azione non si interrompe subito dopo il gesto tecnico.
+
+### Errori critici (FAIL)
+
+Il difensore non reagisce · il protagonista attraversa l'avversario · pallone innaturale · la camera perde il momento decisivo · il replay termina prima dell'esito · la cronaca dice "dribbling" ma il video mostra altro.
+
+### Suggerimenti automatici
+
+Aumentare la reazione del difensore · migliorare la sincronia gesto↔pallone · prolungare il post-highlight · rendere più evidente il cambio di direzione · sincronizzare cronaca e animazione.
+
+### Definition of Done
+
+Tentativo di superare l'avversario immediatamente riconoscibile; gesto tecnico leggibile e coerente; difensore che reagisce credibilmente; pallone sotto controllo durante il dribbling; esito chiaramente mostrato; post-highlight che conclude la sequenza; cronaca + timeline + animazione che rappresentano la stessa intenzione.
+
+> Un highlight in cui il giocatore esegue un movimento casuale **senza una reale sfida con l'avversario** non va classificato come "Tentativo di Dribbling", anche se l'animazione è tecnicamente corretta.
+
+---
+
 ## Stato di implementazione (mappatura sul codice attuale)
 
 > Onestà documentale (charter): cosa dello standard esiste già nel gate vs cosa manca.
@@ -165,6 +229,10 @@ Tentativo di cross immediatamente riconoscibile; gesto tecnico preparato corrett
 | Sistema di gravità INFO..FATAL | 🟡 | il gate distingue issue (FAIL) vs warn; manca la scala completa MINOR/MAJOR/CRITICAL |
 
 **Prerequisito comune** (come per `LIVE_MATCH_QA_SPEC.md`): Semantic Validator, eventi obbligatori/vietati e Timeline dipendono tutti dal **layer Event + Timeline** osservabile nel motore.
+
+### LMV-002 (Tentativo di Dribbling) — copertura attuale
+
+Rendering: varianti dribbling decise dal motore (`dribble_feint`/`inside`/`outside`, F-engine), regia ravvicinata dedicata (CINE-5), palla laterale a fine azione, post-arco dribbling-gol → rete. Punto debole noto e rilevante per LMV-002: il **confronto col difensore** (Fase 2/5) è affidato all'AI off-ball generica (pressing/marcatura F3 + deliberativa F10/F11), non a un duello 1v1 scriptato e leggibile → da collaudare dal vivo. **Non validati:** timeline, Semantic ("è un tentativo di superare l'uomo?"), reazione difensore garantita, Narrative, post-highlight.
 
 ### LMV-001 (Tentativo di Cross) — copertura attuale
 
