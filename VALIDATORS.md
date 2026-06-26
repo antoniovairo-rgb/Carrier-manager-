@@ -597,6 +597,69 @@ Tentativo del portiere immediatamente riconoscibile; lettura della traiettoria e
 
 ---
 
+## Validator 009 — Tentativo di Recupero del Pallone
+
+| Campo | Valore |
+|---|---|
+| **Identificativo** | `LMV-009` |
+| **Categoria** | Transizione Difensiva |
+| **Priorità** | Alta |
+
+### Scopo
+
+Verifica che una Situation **"Tentativo di Recupero del Pallone"** sia rappresentata in modo realistico, leggibile e coerente. Non conta che il pallone venga **recuperato**: conta che uno o più giocatori tentino realmente di **riconquistare il possesso** tramite pressione, rincorsa e chiusura degli spazi. Esito positivo o negativo.
+
+### Definizione
+
+Qualsiasi azione in cui un giocatore o un **gruppo** prova **intenzionalmente** a riconquistare il possesso **senza** un contrasto diretto o un intercetto specifico. Focus sul **comportamento collettivo** e sulla pressione esercitata. (Distinto da LMV-006/007, individuali.)
+
+### Situazioni compatibili / non compatibili
+
+- **Compatibili:** pressing individuale · pressing collettivo · rincorsa difensiva · recupero dopo perdita del possesso · chiusura degli spazi · contro-pressing · ripiegamento difensivo.
+- **NON compatibili:** tackle · intercetto · duello aereo · uscita del portiere · semplice marcatura statica.
+
+### Timeline attesa
+
+| Fase | Evento |
+|---|---|
+| 1 | **Perdita del possesso** — la squadra perde il pallone |
+| 2 | **Reazione** — i più vicini iniziano subito il recupero, mai fermi |
+| 3 | **Pressione** — i difensori riducono gli spazi, limitano le opzioni avversarie |
+| 4 | **Tentativo** — recupero / errore dell'avversario / mantenimento del possesso offensivo |
+| 5 | **Esito** — uno degli outcome previsti |
+| 6 | **Post-Highlight** — come prosegue l'azione, chiaramente mostrato |
+
+### Outcome
+
+- **Ammessi:** recupero del possesso · fallo · pallone fuori · prosecuzione dell'azione offensiva · passaggio riuscito dell'avversario · errore tecnico dell'avversario.
+- **Non ammessi:** giocatori completamente immobili · nessuna pressione sul portatore · recupero senza alcuna azione visibile · replay interrotto prima dell'esito.
+
+### Controlli per validator
+
+- **Ball:** pallone coerente con l'azione, cambi di possesso solo da eventi visibili, no cambi improvvisi di traiettoria.
+- **Player:** i **difendenti** accelerano verso il portatore / chiudono gli spazi / collaborano / si riposizionano; gli **attaccanti** mantengono il possesso / offrono linee / reagiscono alla pressione.
+- **Camera:** portatore sempre visibile, pressione difensiva mostrata, eventuale recupero evidenziato.
+- **Motion:** intensità della rincorsa, cambi di direzione fluidi, movimenti naturali, sincronia tra i giocatori coinvolti.
+- **Semantic:** *"Un osservatore capirebbe immediatamente che la squadra sta cercando di recuperare il possesso?"* — se no → **FAIL**.
+- **Football Intelligence:** il più vicino reagisce per primo, compagni che coprono gli spazi, pressione coordinata, attaccanti con soluzioni credibili, comportamento collettivo tatticamente plausibile.
+- **Narrative:** `Perdita → Reazione → Pressione → Tentativo → Esito → Post-Highlight`; chiara anche senza cronaca.
+
+### Errori critici (FAIL)
+
+Nessun giocatore reagisce alla perdita · recupero senza azione visibile · camera che perde il portatore · replay che termina prima dell'esito · cronaca e highlight con intenzioni differenti.
+
+### Suggerimenti automatici
+
+Aumentare la velocità di reazione · migliorare il coordinamento del pressing · rendere più evidente la chiusura degli spazi · prolungare il post-highlight · sincronizzare cronaca e animazione.
+
+### Definition of Done
+
+Reazione alla perdita immediata e riconoscibile; pressione credibile e coordinata; comportamento coerente col contesto tattico; esito completamente visibile; post-highlight che conclude la sequenza; cronaca + timeline + animazione che rappresentano la stessa intenzione.
+
+> Un highlight in cui il possesso cambia **senza** mostrare pressione, rincorsa e tentativo di recupero è **incompleto** e non conforme.
+
+---
+
 ## Stato di implementazione (mappatura sul codice attuale)
 
 > Onestà documentale (charter): cosa dello standard esiste già nel gate vs cosa manca.
@@ -613,6 +676,10 @@ Tentativo del portiere immediatamente riconoscibile; lettura della traiettoria e
 | Sistema di gravità INFO..FATAL | 🟡 | il gate distingue issue (FAIL) vs warn; manca la scala completa MINOR/MAJOR/CRITICAL |
 
 **Prerequisito comune** (come per `LIVE_MATCH_QA_SPEC.md`): Semantic Validator, eventi obbligatori/vietati e Timeline dipendono tutti dal **layer Event + Timeline** osservabile nel motore.
+
+### LMV-009 (Tentativo di Recupero del Pallone) — copertura attuale
+
+È il validator più legato alle slice AI off-ball recenti: pressing (F3), transizione attacco↔difesa con la squadra che si compatta e arretra senza possesso (F2/F3), press+cover (F11) e chiusura della linea di passaggio (F10) — proprio il "comportamento collettivo coordinato" di LMV-009. Intento `recover` in `deriveIntent`. **Forte avvertenza:** è esattamente l'area **non validata dal gate** (movimento off-ball) e **non collaudata dal vivo** — il rischio di pressing incoerente/ammucchiato è reale. È il candidato n.1 per il collaudo visivo. **Non validati automaticamente:** coordinamento del pressing, "il più vicino reagisce per primo", timeline, Semantic, Narrative, post-highlight.
 
 ### LMV-008 (Tentativo di Parata) — copertura attuale
 
