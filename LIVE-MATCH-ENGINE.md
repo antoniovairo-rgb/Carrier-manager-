@@ -1,4 +1,4 @@
-# Live Match Engine — CPM 5.14.0
+# Live Match Engine — CPM 5.15.0
 
 Documento di architettura del motore di partita di **Career Player Manager**. Riflette il refactoring **Intent → Decision → Simulation → Animation** e lo stato reale del codice (`CARRIER-MANAGER-AV.html`, ~20 410 righe). I numeri di riga sono indicativi (file in evoluzione: verifica con `grep -n`).
 
@@ -33,8 +33,10 @@ L'idea chiave che rende il refactoring **fattibile** senza riscrivere 179 timeli
 | `deriveIntent(sit,act)` | 1618 | Classifica la situation in un **intento** dalla struttura/contesto, MAI dalle parole d'esecuzione | ✅ |
 | `S(...)` costruttore | 1643 | Ogni situation nasce con `obj.intent = deriveIntent(...)` | ✅ |
 | `SITUATIONS` | 1651 | DB delle **179** situation (validate dal gate) | ✅ |
-| `hlBallState(sit)` | 6679 | Stato reale palla (`set_ground`/`aerial`/`feet`) — guardia coerenza aerea | ✅ |
-| `deriveHL(sit,act)` | 6689 | Deriva `type`/`pattern`/`variant` (classificatore cinematico) | 🟡 legge ancora il testo |
+| `deriveBallState(sit)` | 6685 | **CINE-DECOUPLE (5.15.0):** deriva lo stato palla dal testo UNA VOLTA; chiamata in `S()` → congela `sit.ballState` | ✅ |
+| `deriveSitCine(sit)` | 6697 | **CINE-DECOUPLE (5.15.0):** deriva i segnali cinematici (penalty/freekick/1v1/secondo-palo/di-prima) dal testo UNA VOLTA → congela `sit.cine` | ✅ |
+| `hlBallState(sit)` | 6709 | **Lettore puro** di `sit.ballState` (fallback: `deriveBallState`) — guardia coerenza aerea. NON legge più il testo a runtime | ✅ |
+| `deriveHL(sit,act)` | 6714 | Deriva `type`/`pattern`/`variant` leggendo `sit.cine` + `act.label`/`act.stat`. NON legge più `sit.text` | ✅ runtime · 🟡 dato ancora text-derived alla costruzione |
 | `buildHLTimeline(hl,o)` | 6760 | Genera la **timeline** di micro-eventi calcistici per pattern | ✅ motore · 🟡 wiring |
 | `validateHLTimeline(tl)` | 6840 | Invarianti calcistiche (possesso continuo, no teleport, n° passaggi, testa⇐cross) | ✅ |
 | `resolveTimeline(tl)` | 6869 | Risolve la timeline in posizioni concrete per l'executor | ✅ |
@@ -59,7 +61,9 @@ L'idea chiave che rende il refactoring **fattibile** senza riscrivere 179 timeli
   actions,     // [ A(label, stat, bon, rew, fail, nrg) ] — la SCELTA tattica del giocatore
   lockMovement,// set-piece (rigore/punizione): spot fisso
   tactic,      // {pressure, support, nearby_def, lanes, box} — contesto per il Decision Engine
-  intent       // ← NUOVO: l'INTENZIONE (sorgente unica) calcolata da deriveIntent
+  intent,      // l'INTENZIONE (sorgente unica) calcolata da deriveIntent
+  ballState,   // ← 5.15.0: stato palla congelato (deriveBallState) — letto da hlBallState
+  cine         // ← 5.15.0: segnali cinematici congelati (deriveSitCine) — letti da deriveHL
 }
 ```
 
@@ -151,7 +155,7 @@ Validazione (migliaia di contesti): campione forte+libero ~76% positivi vs debol
 | **Barriera punizioni** — muro a ~9u tra palla e porta | render/positioning | 🟡 barriera fatta; **visibilità portiere** da verificare dal vivo |
 | **Testi situation esecutivi/incoerenti** — 35 titoli esecutivi + 3 con punteggio assunto; **risolti a DISPLAY** (`intentTitle`/`stateIncoherent`), ma il **dato** resta tale | dati | 🟡 display ok, dato da migrare |
 | **Step 3 completo** — ritiro degli archi pre-autorati verso traiettorie derivate dalla decisione | render | 🔴 avviato (slice qualità→precisione), il grosso resta |
-| **`deriveHL`/`hlBallState` accoppiati al testo** — leggono ancora le parole del titolo per `type`/aerial; finché è così, i **testi-dato** non si possono migrare senza rischio | logica | 🟡 da disaccoppiare (legge `intent`) |
+| ~~**`deriveHL`/`hlBallState` accoppiati al testo a runtime**~~ | logica | ✅ **risolto 5.15.0** (CINE-DECOUPLE): runtime legge `sit.ballState`/`sit.cine`. Resta da fare lo **Step B**: rendere quei campi dato esplicito autoriale (oggi ancora derivati dal testo alla costruzione) per liberare davvero la riscrittura dei TESTI |
 | **Decision Engine — fattori mancanti** — piede preferito, modulo, alcune tattiche | logica | 🟡 estensione |
 | **AI individuale completa** — i 22 leggono la palla ma non valutano spazi/marcature/pericoli per-frame | render | 🔴 lavoro grosso |
 
