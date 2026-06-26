@@ -2677,7 +2677,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="5.04.0"; // ENGINE Fase 3 (Intent nelle scelte): le conclusioni non fanno più SCEGLIERE l'esecuzione (testa/piede/tecnica) — il bottone mostra un INTENTO/stile (Attacca il pallone · Conclusione potente/precisa · Cerca l'angolo · di prima · acrobatica · scavetto), l'esecuzione la decide il motore. Transformer display-only (act.label reale intatta per deriveHL/gate). Chiude il punto "rasoterra vs testa come alternative". + FIX match-engine: (1) RIGORE/PUNIZIONE — niente pressing/corse/smarcamenti, i giocatori restano schierati fuori area (basta ammucchiate sul dischetto); (2) BOOMERANG — a fine azione la palla resta dove l'azione l'ha lasciata (rete/fuori/compagno), non viene più richiamata verso l'eroe. + Fase 2 (AI tattica continua): i giocatori off-ball hanno un obiettivo per RUOLO che legge la palla ogni frame — attaccanti con corse differenziate (primo/secondo palo/profondità) che intensificano con l'avanzare della palla, centrocampisti che offrono linee di passaggio attorno al portatore. Meno "zombie", più motivazione calcistica. Puramente visivo. + Fase 1 (Intent→Decision COLLEGATO): l'esecuzione (variante) di tiri-da-terra e cross è ora DECISA dal Decision Engine dagli attributi/pressione/contesto (seed stabile → deterministico, niente flicker), non più dalle label delle situation. Invarianti aeree (testa/volée) intatte. Primo taglio dell'accoppiamento Situation→animazione. Fase 0: aggiunto il DECISION ENGINE (decideExecution) — keystone che, data un'INTENZIONE + contesto (attributi/pressione/posizione/meteo/morale/...) + casualità controllata, decide ESECUZIONE ed ESITO. Validato su migliaia di contesti (esiti vari e coerenti, 0 impossibili). Inerte (non ancora ricablato), come il motore timeline. + CINE-TL Fase 2 (executor): in gioco reale le conclusioni di TIRO sono precedute dalla COSTRUZIONE dell'azione (build-up) — palla e attori seguono la timeline beat-per-beat, poi parte la conclusione collaudata. Bypass in gate-mode (?cpmtest=1 → conclusione immediata → 9 check identici). "Il tiro non compare più dal nulla". + Fase 1: motore di TIMELINE — buildHLTimeline genera per ogni pattern una sequenza di micro-eventi calcistici (chi ha la palla, chi riceve/corre, difensori, n° reali passaggi, traiettoria) + validateHLTimeline che impone le invarianti (possesso continuo, no teletrasporti, no cambi possesso ingiustificati, testa⇐cross). Validato logicamente su 650 casi. NON ancora collegato al renderer (Fase 2). + CINE-APPROACH.
+const GAME_VERSION="5.05.0"; // ENGINE Fase 3 (FUSIONE pipeline): l'esito visivo di un'azione fallita (parata/palo/fuori/murato) deriva ora dal Decision Engine (hlOutcomeKind, dagli attributi/pressione/contesto) invece di un dado nel render-loop → l'animazione è conseguenza della simulazione, coerente e varia. Seedato (deterministico), mai "in rete" su fallimento. + Intent nelle scelte: le conclusioni non fanno più SCEGLIERE l'esecuzione (testa/piede/tecnica) — il bottone mostra un INTENTO/stile (Attacca il pallone · Conclusione potente/precisa · Cerca l'angolo · di prima · acrobatica · scavetto), l'esecuzione la decide il motore. Transformer display-only (act.label reale intatta per deriveHL/gate). Chiude il punto "rasoterra vs testa come alternative". + FIX match-engine: (1) RIGORE/PUNIZIONE — niente pressing/corse/smarcamenti, i giocatori restano schierati fuori area (basta ammucchiate sul dischetto); (2) BOOMERANG — a fine azione la palla resta dove l'azione l'ha lasciata (rete/fuori/compagno), non viene più richiamata verso l'eroe. + Fase 2 (AI tattica continua): i giocatori off-ball hanno un obiettivo per RUOLO che legge la palla ogni frame — attaccanti con corse differenziate (primo/secondo palo/profondità) che intensificano con l'avanzare della palla, centrocampisti che offrono linee di passaggio attorno al portatore. Meno "zombie", più motivazione calcistica. Puramente visivo. + Fase 1 (Intent→Decision COLLEGATO): l'esecuzione (variante) di tiri-da-terra e cross è ora DECISA dal Decision Engine dagli attributi/pressione/contesto (seed stabile → deterministico, niente flicker), non più dalle label delle situation. Invarianti aeree (testa/volée) intatte. Primo taglio dell'accoppiamento Situation→animazione. Fase 0: aggiunto il DECISION ENGINE (decideExecution) — keystone che, data un'INTENZIONE + contesto (attributi/pressione/posizione/meteo/morale/...) + casualità controllata, decide ESECUZIONE ed ESITO. Validato su migliaia di contesti (esiti vari e coerenti, 0 impossibili). Inerte (non ancora ricablato), come il motore timeline. + CINE-TL Fase 2 (executor): in gioco reale le conclusioni di TIRO sono precedute dalla COSTRUZIONE dell'azione (build-up) — palla e attori seguono la timeline beat-per-beat, poi parte la conclusione collaudata. Bypass in gate-mode (?cpmtest=1 → conclusione immediata → 9 check identici). "Il tiro non compare più dal nulla". + Fase 1: motore di TIMELINE — buildHLTimeline genera per ogni pattern una sequenza di micro-eventi calcistici (chi ha la palla, chi riceve/corre, difensori, n° reali passaggi, traiettoria) + validateHLTimeline che impone le invarianti (possesso continuo, no teletrasporti, no cambi possesso ingiustificati, testa⇐cross). Validato logicamente su 650 casi. NON ancora collegato al renderer (Fase 2). + CINE-APPROACH.
 const SAVE_VERSION=6;
 // Sprint ENV — ambiente rilevato automaticamente dal runtime (non gestito manualmente).
 // PRODUCTION = deploy GitHub Pages (*.github.io). Tutto il resto (staging githack, locale, localhost) = TEST.
@@ -7395,14 +7395,17 @@ function ThreeMatchView(props){
               if((_ht==="dribble"||_ht==="build"||_ht==="tackle")&&P.hlReward==="goal"){hlPostArcT=0;hlOutcomeVariant="goal";hlPostArcType="in_net";}// pressing/dribbling-gol → palla in rete
               else{heroPostT=0;heroPostType="fist";}}
             else if(_hs===false){hlInNetFlashed=false;heroPostT=0;heroPostType="miss";
-              // CINE-3: tiro mancato → palo (20%) / parata (65%) / fuori (15%)
+              // ENGINE Fase 3 (fusione): il TIPO di esito mancato deriva dal Decision Engine (P.hlOutcomeKind),
+              //   non più da un dado → parata/palo/fuori/murato coerenti con attributi/contesto. Fallback al dado se assente.
               const _isShotHL=_ht==="shot"||_ht==="penalty"||_ht==="freekick"||_ht==="header";
-              const _roll=Math.random();
-              if(_isShotHL&&_roll<0.20){// PALO
+              const _ek=P.hlOutcomeKind,_roll=Math.random();
+              const _isPost=_ek?(_ek==="post"):(_isShotHL&&_roll<0.20);
+              if(_isPost){// PALO
                 hlOutcomeVariant="post";hlPostArcT=0;hlPostArcType="hit_post";
                 hlPostVY=4.5+Math.random()*2.5;hlPostVZ=(Math.random()>0.5?1:-1)*(7+Math.random()*5);
               } else {// PARATA o FUORI (deflect)
-                hlOutcomeVariant=_isShotHL?(_roll<0.85?"save":"wide"):"blocked";
+                const _isSave=_ek?(_ek==="saved"||_ek==="save"):(_isShotHL&&_roll<0.85);
+                hlOutcomeVariant=(_ek==="blocked"||_ek==="intercepted")?"blocked":(_isShotHL?(_isSave?"save":"wide"):"blocked");
                 hlPostArcT=0;hlPostArcType="deflect";
                 if(_isShotHL){hlPostVZ=-oppDiveDir*(8+Math.random()*7);hlPostVY=5+Math.random()*3;}
                 else{hlPostVZ=(Math.random()>0.5?1:-1)*(8+Math.random()*6);hlPostVY=2.5+Math.random()*2;}
@@ -10122,7 +10125,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           {/* ── Field + Panel: responsive layout ── */}
           {(()=>{const _isHL=["hl_move","hl_choose","hl_result","hl_intro"].includes(phase);
           // CINE-1: contesto cinematografico centralizzato — type (legacy) + pattern + variant
-          let _hlType=null,_hlPattern=null,_hlVariant=null;
+          let _hlType=null,_hlPattern=null,_hlVariant=null,_hlOutcomeKind=null;
           if(_isHL){const _sit=situations[hlIdx];const _d=deriveHL(_sit,chosenAct);_hlType=_d.type;_hlPattern=_d.pattern;_hlVariant=_d.variant;
             // ENGINE Fase 1 (Intent→Decision): l'ESECUZIONE (variante) è decisa dinamicamente dal Decision Engine
             //   in base ad attributi/pressione/contesto + casualità controllata (seed stabile → niente flicker,
@@ -10134,6 +10137,10 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                 seed:hashStr((_sit.text||"")+"|"+((chosenAct.label)||"")+"|"+hlIdx+"|"+Math.round(player.fatigue||0)+"|"+Math.round(player.form||0))};
               if(_hlType==="shot"&&hlBallState(_sit)!=="aerial"){const _e=decideExecution("shot",_ctx).execution;const _m={shot_power:"shot_power",shot_curled:"shot_curled",shot_first_time:"shot_first_time",shot_chip:"shot_chip",shot_placed:"shot_one_on_one"};_hlVariant=_m[_e]||_hlVariant;}
               else if(_hlType==="cross"){const _e=decideExecution("cross",_ctx).execution;const _m={cross_far_post:"cross_far_post",cross_near_post:"cross_near_post",cross_low_driven:"cross_low_driven",cross_cutback:"cross_cutback",cross_deep:"cross_far_post"};_hlVariant=_m[_e]||_hlVariant;}
+              // ENGINE Fase 3 (fusione): su un'azione FALLITA il TIPO di esito (parata/palo/fuori/murato) lo decide
+              //   il motore dagli attributi/pressione → coerente e vario, non un tiro di dado nel render-loop.
+              if(outcome&&outcome.ok===false){const _intent=_hlType==="cross"?"cross":"shot";const _neg=["saved","blocked","wide","post","intercepted","out","corner"];
+                const _dd=decideExecution(_intent,{...(_ctx),seed:(_ctx.seed^0x5f3759df)>>>0}).outcome;_hlOutcomeKind=_neg.indexOf(_dd)>=0?_dd:"saved";}
             }
           }
           return(
@@ -10149,7 +10156,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                 heroKitCol={heroKitCol} heroKitCol2={heroKitCol2}
                 stadiumHomeCol={scoreHomeCol} stadiumAwayCol={scoreAwayCol}
                 stadiumStyle={getStadiumStyle(homeTeamObj)}
-                ballX={ballPos.x} ballY={ballPos.y} hlType={_hlType} hlVariant={_hlVariant} hlPattern={_hlPattern} bgAction={bgAction} hlZone={hlZone}
+                ballX={ballPos.x} ballY={ballPos.y} hlType={_hlType} hlVariant={_hlVariant} hlPattern={_hlPattern} hlOutcomeKind={_hlOutcomeKind} bgAction={bgAction} hlZone={hlZone}
                 timeOfDay={timeOfDay} weather={weather} kickoffHour={kickoffHour} attendance={attendance}
                 waveEvent={waveEvent} isDerby={!!drby} isBigGame={mw>=7}
                 hlSuccess={outcome?.ok??null} hlReward={chosenAct?.rew||null}
