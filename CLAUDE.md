@@ -10,16 +10,18 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ```
 Carrier-manager-/
-├── CARRIER-MANAGER-AV.html   ← FILE DI LAVORO ATTIVO (~19 960 righe, tutto qui dentro)
+├── CARRIER-MANAGER-AV.html   ← FILE DI LAVORO ATTIVO (~20 600 righe, tutto qui dentro)
 ├── CLAUDE.md
 ├── CHANGELOG.md
+├── LIVE-MATCH-ENGINE.md      ← architettura del motore di partita (pipeline Intent→Decision→Simulation→Animation)
+├── docs/                      ← report/roadmap storici del live match
 └── tests/
-    ├── situations-3d-validation.js   ← regole di validazione SITUATIONS (coerenza HL↔3D)
+    ├── situations-3d-validation.js   ← regole di validazione SITUATIONS (coerenza HL↔3D) + suite analitica (537 combo)
     └── visual/                        ← QUALITY GATE Playwright (vedi sezione dedicata)
         ├── validate-situations.mjs    ← runner principale del gate (9 categorie)
         ├── golden-sigs.json           ← firme golden screenshot
         ├── checks/  lib/  report.mjs  out/
-        └── package.json               ← script npm del gate
+        └── package.json               ← script npm del gate + devDependencies dei bundle CDN locali
 ```
 
 - **File attivo:** `CARRIER-MANAGER-AV.html` — modificare SEMPRE questo, mai creare file JS separati.
@@ -41,7 +43,7 @@ Babel gira client-side al caricamento → ~1–2 s di avvio. Lo spinner (`#ld`) 
 
 Tutto è in un singolo `<script type="text/babel">`. Nessun module system — global scope, dichiarazioni in ordine di dipendenza.
 
-### Layers (top → bottom) — CPM 4.91.0 (~19 960 righe)
+### Layers (top → bottom) — CPM 5.34.0 (~20 600 righe)
 
 | Linea | Contenuto |
 |-------|-----------|
@@ -55,7 +57,7 @@ Tutto è in un singolo `<script type="text/babel">`. Nessun module system — gl
 | 2038–2090 | `ZONES` — zone del campo |
 | 2091–2352 | `BG_MATCH` — cronaca di background (con `momThreshold`, `ctx`, `pd`, pesi `w`) |
 | 2353–2638 | Helpers core: `rng`, `clamp`, `pick`, `baseStats`, `calcOvr` (2377), `succRate` (2389), `generateTransferOffer` (2507), `generateProContracts` (2567), `storage` |
-| 2639–2681 | `ARCHETYPES`, `GAME_VERSION` (**4.91.0**), `SAVE_VERSION` (**6**) |
+| 2639–2681 | `ARCHETYPES`, `GAME_VERSION` (**5.34.0**), `SAVE_VERSION` (**7**) |
 | 2682–4531 | `NAME_BY_NAT` (4502) + calendario/roster: `hashStr` (4532), `generateTeamRoster` (4533), `generateSeasonCalendar` (4554), `initStandings` (4715), `updateStandings` (4719), `simulateMatch` (4824) |
 | 4860–4904 | UI primitives: `Card`, `Btn`, `StatBar`, `OvrRing`, `Notif` |
 | 4905–6708 | Three.js: `makeCrowdTex` (4905), `buildStadium` (5027) |
@@ -79,7 +81,7 @@ Tutto è in un singolo `<script type="text/babel">`. Nessun module system — gl
 Tutto lo stato di gioco vive in un singolo oggetto `player` gestito da `useState` in `CareerApp`. **Autosave** su `localStorage` ad ogni change via `useEffect`. Tre slot: chiavi `cpm-v3`, `cpm-v3-s2`, `cpm-v3-s3`.
 
 Campi principali di `player`:
-- **Identità:** `name`, `nation`, `avatarId`, `age`, `position`
+- **Identità:** `name`, `nation`, `avatarId`, `age`, `position`, `foot` (`"R"`|`"L"` — piede preferito, ~22% mancini, deterministico da nome+nazione; usato dal Decision Engine, vedi F8)
 - **Carriera:** `season`, `week`, `weekLived`, `proStatus` (`"u18"`|`"pro"`), `club`, `contract`
 - **Stats:** `stats` (8 attributi: `velocità`, `tecnica`, `fisico`, `mentalità`, `tiro`, `passaggio`, `dribbling`, `posizionamento`), `ovr`, `form`, `morale`, `fatigue`, `coachTrust`, `popularity`, `value`
 - **Stagione:** `goals`, `assists`, `matches`, `matchHistory[]`
@@ -123,6 +125,25 @@ Macro fase di rifinitura del match 3D in 4 sprint. Tutti gli interventi sono **v
 - **Sprint C — ripresa (4.90.0):** dopo un gol dell'eroe `handleContinue` instrada a una **ripartenza dal centro** (palla a centrocampo + preset drift `midfield`), riusando i sistemi già testati invece di introdurre una nuova fase nello state-machine (che il gate non coprirebbe).
 - **Sprint D — ritmo (4.91.0):** la **densità della cronaca BG scala col momentum** (`_bgProb=0.18+|mom-50|/50*0.12` → 18% in equilibrio, ~30% nei picchi) + **chaining robusto** (regex case-insensitive ampia su palle messe in area + guardia di profondità).
 
+### SIMULATION-FIRST (5.14.0 → 5.34.0) — pipeline `Intent → Decision → Simulation → Animation`
+
+Macro-direttiva: smontare l'accoppiamento *Situation → animazione pre-autorata* perché la cinematica sia **conseguenza della simulazione**, non scriptata. Dettaglio architetturale completo in **`LIVE-MATCH-ENGINE.md`** (tabella componenti + scorecard). I tre pilastri logici (tutti node-testabili, puri):
+- **`deriveIntent(sit,act)`** (~1619) — classifica la situation in un **intento** (13 tipi). ⚠️ legge ancora `sit.text` → l'intento NON è ancora text-free (vedi sotto).
+- **`decideExecution(intent,ctx)`** (~6918) — **Decision Engine**: da intento + contesto (`attrs/pressure/fatigue/morale/x/weather/foot/side/seed`) decide **esecuzione + esito + qualità** `q∈[0,1]`, seedato/deterministico.
+- **`updateFootballState()`** (~7465) — **Football State**: stato continuo (palla/possessore/forma squadra) derivato dalle posizioni reali nel render-loop; sorgente di verità per AI off-ball.
+
+**CINE-DECOUPLE (5.14→5.18):** `deriveHL`/`hlBallState` non leggono più `sit.text` a runtime — la derivazione cinematica è **text-free** (intent strutturale + override `tactic.bs`/`tactic.cn` bakati). I testi delle situations sono liberi *rispetto alla cinematica*, **ma non rispetto all'intento** (deriveIntent li legge ancora — migrazione testi bloccata: servirebbero ~56 override su `deriveIntent`).
+
+**Football State F0–F3 (5.16→5.20):** F1 osservatore inerte → F2 l'AI off-ball legge il **possesso** → F3 target per-giocatore su **possesso+spazio** (smarcamenti, marcatura goal-side, micro-variazione).
+
+**Traiettoria = conseguenza della DECISIONE (F4–F7, F12):** la qualità decisa dal motore (`P.hlQuality`, seedata) plasma pace/precisione/altezza dell'**arco** in `ThreeMatchView`, ritirando gli archi pre-autorati. Coperti: **tiro** (F4), **cross** (F5), **rigore+punizione** (F6), **testa** (F7), **volée aerea/insertion** (F12). Per testa/volée si legge **SOLO la qualità** (variant e stato-palla aereo intatti → invariante CINE preservato).
+
+**Decision Engine — esecuzione completa (F8, F9):** **piede preferito** (F8: `player.foot`, cross/tiro di piede debole sulla fascia opposta → qualità ridotta + bias al taglio interno) e **passaggio** (F9: through/onetwo → profondità scatto + pace, convergenza palla↔ricevente intatta). Esecuzione decisa dal motore ora **completa** su tutte le famiglie offensive.
+
+**AI DELIBERATIVA (F10, F11, F13) — §5, in corso:** nuovi pass nell'off-ball AI di `ThreeMatchView`: **F10** un difensore chiude la *linea di passaggio più pericolosa*; **F11** *press + cover* (raddoppio goal-side) sul portatore nell'ultimo terzo; **F13** il *portiere stringe l'angolo* uscendo verso la palla (CAP entro i bound GK asseriti dal gate). Tutti deterministici, bounded, sospesi sui set-piece.
+
+> ⚠️ **Il gate NON valida il movimento né le traiettorie dal vivo** (cattura frame congelati: stato/coerenza/golden). Le slice F4→F13 sono validate solo per non-regressione + logicamente in node; la resa va **collaudata dal vivo** (specie le AI off-ball F10/F11/F13, che interagiscono). Le posizioni off-ball **non** sono nella firma golden → cambiarle è gate-safe ma cieco.
+
 ### Coerenza cinematica HL↔azione (CINE)
 
 - **`hlBallState(sit)`** deriva lo stato reale del pallone: `set_ground` (set-piece battuto dall'eroe) / `aerial` (cross·corner·rimbalzo·rovesciata·stacco·di petto) / `feet` (palla al piede). `deriveHL` lo usa: testa SOLO con palla aerea, volée (`shot_volley`) solo su palla aerea. Invariante: nessun HL mostra testa/volée con palla al piede. Validato dal gate (dimensione **data-coherence**, FAIL bloccante).
@@ -164,9 +185,12 @@ PLAYWRIGHT_BROWSERS_PATH=/opt/pw-browsers \
 npm run validate-situations
 ```
 
+> **Setup bundle (sessioni cloud con CDN bloccati):** l'harness intercetta le route CDN e serve React/Three/Babel/Phaser dai `node_modules` locali. Le versioni **esatte** che l'HTML fissa sono ora in `devDependencies` (`react`/`react-dom` 18.2.0, `three` 0.128.0, `@babel/standalone` **7.23.6**, `phaser` 3.80.1) → `npm install` configura tutto. ⚠️ Babel **deve** essere 7.x: la 8.x non transpila l'`import` e la pagina non monta.
+
 Le **9 categorie**: `initial-state · orientation · visual · movements · golden · final-state · determinism · post-highlight · data-coherence`. Output atteso: `✅ PASS` con tutte verdi (i `warn` non bloccano).
 
-- **`golden`** confronta firme screenshot (`golden-sigs.json`); se cambi intenzionalmente l'estetica, rigenera con `npm run validate-situations:update-golden` e committa il nuovo file.
+- **`golden`** confronta una **firma di stato** `{htx,hty,cam,ch,ca}` (target logico eroe + camera + conteggi) — **NON** le posizioni off-ball (escluse di proposito). Quindi cambiare il posizionamento off-ball è gate-safe (golden invariato); se cambi l'estetica/setup che tocca la firma, rigenera con `npm run validate-situations:update-golden` e committa.
+- **`initial-state`/`orientation`** asseriscono la **posizione dei portieri** (home GK x≤25, away GK x≥75, home<away): muovendo i GK resta entro questi bound (vedi F13, CAP 80/20).
 - **`determinism`** verifica che il setup di ogni situation sia riproducibile — evita di far dipendere il *setup/rendering* da `Math.random()` non seedato.
 - **`data-coherence`** applica le regole di `tests/situations-3d-validation.js` (l'invariante CINE header⇒aerea è un FAIL con `exit 2`).
 - Il gate **forza le situation direttamente** (bypassa `handleContinue`/selezione HL): modifiche a ripresa, chaining-trigger, densità BG e selezione HL **non sono coperte** → trattale come a rischio e testale dal vivo.
@@ -177,7 +201,7 @@ Le **9 categorie**: `initial-state · orientation · visual · movements · gold
 - **No build tool:** edit diretti nel `.html`. JSX valido dentro `<script type="text/babel">`.
 - **Coordinate:** logica `{x:0–100,y:0–100}`; mondo Three.js `{x:-50..+50, z:-30..+30}`.
 - **Random seedato:** usa `hashStr` + aritmetica per tutto ciò che deve essere riproducibile tra save. `rng()`/`pick()` solo per eventi one-off. ⚠️ Mai far dipendere setup/render dal random non seedato (rompe `determinism`/`golden`).
-- **Save compat:** incrementa `SAVE_VERSION` aggiungendo campi obbligatori; aggiungi migration backward-compat nel `useEffect(()=>{...},[])` di `CareerApp` che rileva/riempie i campi mancanti (`calendar`/`standings`/nuovi campi).
+- **Save compat:** incrementa `SAVE_VERSION` aggiungendo campi obbligatori; aggiungi migration backward-compat nel `useEffect(()=>{...},[])` di `CareerApp` che rileva/riempie i campi mancanti (`calendar`/`standings`/nuovi campi). Ultimo bump: **v7** (campo `foot`, F8 5.29) — pattern: `if(!('foot' in newP)){newP={...newP,foot:...};changed=true;}`.
 - **Versioning:** bump `GAME_VERSION` ad ogni push (anche fix minori), con commento sintetico di cosa cambia.
 - **File unico:** mai creare file JS separati per il gioco.
 
@@ -216,7 +240,7 @@ Prima di ogni modifica: leggere le righe coinvolte, dichiarare le dipendenze not
 - **Aggiornare `CLAUDE.md`** ad ogni sprint significativo (range linee, nuovi sistemi, campi `player`).
 - **Bump `GAME_VERSION`** ad ogni push.
 - **Gate 9/9 verde** prima di ogni push — il QA Engineer valida ogni sprint.
-- **Branch workflow:** sviluppo sul branch designato (attuale: `claude/cpm-resume-work-71ntrj`), poi merge/push su `staging` (test) e, su autorizzazione, su `main` (produzione/Pages). Esiste anche il branch storico `claude/continue-work-y3mh4y`.
+- **Branch workflow:** sviluppo sul branch designato (attuale: `claude/remote-control-6w43ie`), poi merge/push su `staging` (test) e, su autorizzazione, su `main` (produzione/Pages → GitHub Pages via GitHub Actions). Branch storici: `claude/cpm-resume-work-71ntrj`, `claude/continue-work-y3mh4y`.
   - **`main` solo su autorizzazione esplicita del proprietario** — mai in automatico dopo un singolo sprint senza via libero.
 - **Annunciare sempre** "Pushato su GitHub — CPM x.y.z." dopo ogni `git push`.
 - **Zero regressions · Minimalismo · File unico.**
