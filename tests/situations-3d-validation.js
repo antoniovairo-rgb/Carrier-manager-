@@ -69,6 +69,7 @@ function computeArc(t,variant,playerY,rnd,playerX=50){
   // (niente "var Math" nello scope esterno → evita il trap di hoisting che lo rende undefined).
   const fn=`(function(t,P,AWAY_GOAL_X,RND){
     var ballArcH=0,ballArcDur=0,ballArcTgtX=0,ballArcTgtZ=0,ballArcT=0,ballArcActive=false;
+    var clamp=function(v,a,b){return Math.max(a,Math.min(b,v));};/* F4/F5: l'arco reale usa clamp (traiettoria=conseguenza della DECISIONE) → va fornito nello scope eval */
     (function(Math){
       ${arcBlock}
     })(Object.assign(Object.create(globalThis.Math),{random:RND}));
