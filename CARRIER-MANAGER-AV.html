@@ -1610,10 +1610,42 @@ const ACHIEVEMENTS=[
 // tactic = {pressure:"none"|"low"|"medium"|"high", support:0-4, nearby_def:0-5, lanes:[...], box:{att,def,near,far}}
 // Il campo tactic è opzionale (default null) — backward-compatible con tutte le S() esistenti.
 // cappedMM e filterSitActions lo consumano in modo data-driven (4.80.0: euristica testuale rimossa, tutte le entry annotate).
+// ENGINE Step 1 (migrazione a INTENZIONE) — deriveIntent classifica la situation in ciò che il giocatore
+//   STA TENTANDO (intento), dalla STRUTTURA e dal CONTESTO (zone, type, tactic, parole-contesto come
+//   "cross"/"corner"/"filtrante"), MAI dalle parole d'esecuzione ("teso"/"a giro"/"rovesciata").
+//   Taxonomy: penalty·freekick·recover·anticipate·intercept·cross·through·dribble·onetwo·insertion·shot·
+//   progression·switch. È la SORGENTE UNICA dell'intenzione; l'esecuzione la decide poi il Decision Engine.
+function deriveIntent(sit, act){
+  const txt=((sit&&sit.text)||"").toLowerCase();
+  const z=sit&&sit.zones&&sit.zones[0];
+  const tac=(sit&&sit.tactic)||{}, lanes=tac.lanes||[];
+  const stats=((sit&&sit.actions)||[]).map(a=>a&&a.stat);
+  const has=(s)=>stats.indexOf(s)>=0;
+  if(/rigore/.test(txt))return "penalty";
+  if(/unizione/.test(txt))return "freekick";
+  if(sit&&sit.type==="def"){ if(/anticip/.test(txt))return "anticipate"; if(/intercett/.test(txt))return "intercept"; return "recover"; }
+  if(/cambio (di )?gioco|allarga|apri il gioco|ribalta/.test(txt))return "switch";
+  // intenti DISTINTIVI prima (validi in qualsiasi zona)
+  if(/filtrant|imbucat|verticale|in profondità|profondo|taglio|lancio/.test(txt))return "through";
+  if(/uno-?due|dai e vai|triangol|combinazion|scarico/.test(txt))return "onetwo";
+  if((has("dribbling")&&!has("tiro"))||/dribbl|salta l'uomo|punta l'uomo|finta|sombrero|tunnel/.test(txt))return "dribble";
+  // CROSS = batti il cross (dalla FASCIA), non in area; "cross in area" è un inserimento, gestito sotto
+  if(z==="fascia"||lanes.some(l=>/overlap|wide|fascia/.test(l))||(/cross|traversone|crossa|dal fondo|sulla fascia/.test(txt)&&z!=="area"))return "cross";
+  // AREA = inserimento se arriva un pallone aereo (cross/corner/mischia/stacco), altrimenti conclusione a terra
+  if(z==="area"){ if(/cross|corner|calcio d'angolo|mischia|rimbalzo|spizz|secondo palo|primo palo|\bstacco\b|colpo di testa/.test(txt)||tac.box)return "insertion"; return "shot"; }
+  if(z==="bordo")return "shot";
+  if(z==="centrocampo"||z==="trequarti"||/progress|avanza|conduzione|riparti|contropiede/.test(txt))return "progression";
+  if(has("tiro"))return "shot";
+  if(has("passaggio"))return "onetwo";
+  if(has("dribbling"))return "dribble";
+  return "shot";
+}
 const S=(text,zones,mz,sz,actions,lock=false,mm=-1,intro="",type="off",ctx=null,tactic=null)=>{
   const z0=zones[0];
   const inferredMM=mm>=0?mm:z0==="area"?2:z0==="bordo"?2:3;
-  return{text,zones,moveZone:mz,startZone:sz,actions,lockMovement:lock,maxMoves:lock?0:inferredMM,intro,type,ctx,tactic};
+  const obj={text,zones,moveZone:mz,startZone:sz,actions,lockMovement:lock,maxMoves:lock?0:inferredMM,intro,type,ctx,tactic};
+  obj.intent=(typeof deriveIntent==="function")?deriveIntent(obj,null):null; // ENGINE Step 1: ogni situation nasce con la sua INTENZIONE (sorgente unica)
+  return obj;
 };
 const A=(label,stat,bon,rew,fail,nrg)=>({label,stat,bon,rew,fail,nrg});
 const SITUATIONS=[
@@ -2677,7 +2709,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="5.07.0"; // FIX passaggi: la RICEZIONE ora è leggibile — il compagno destinatario resta fermo ad accogliere la palla, la palla si POSA sui suoi piedi (nuovo beat assist_recv ~0.42s, la palla segue il ricevente) e SOLO DOPO parte la conclusione. Basta "non si vede la ricezione / la palla vola subito in porta". + (1) INTRO highlight ora dice l'INTENZIONE ("Tentativo di tiro/cross/dribbling/filtrante...") invece dell'esecuzione ("Stop e tiro", "Girata e tiro") — intentTitle, solo display, sit.text intatto; (2) BOOMERANG alla radice — rimosso il sync ballPos→eroe durante hl_result: la palla resta all'esito (rete/compagno/fuori), non torna più indietro (passaggi/dribbling inclusi). + ENGINE Fase 3 (FUSIONE pipeline): l'esito visivo di un'azione fallita (parata/palo/fuori/murato) deriva ora dal Decision Engine (hlOutcomeKind, dagli attributi/pressione/contesto) invece di un dado nel render-loop → l'animazione è conseguenza della simulazione, coerente e varia. Seedato (deterministico), mai "in rete" su fallimento. + Intent nelle scelte: le conclusioni non fanno più SCEGLIERE l'esecuzione (testa/piede/tecnica) — il bottone mostra un INTENTO/stile (Attacca il pallone · Conclusione potente/precisa · Cerca l'angolo · di prima · acrobatica · scavetto), l'esecuzione la decide il motore. Transformer display-only (act.label reale intatta per deriveHL/gate). Chiude il punto "rasoterra vs testa come alternative". + FIX match-engine: (1) RIGORE/PUNIZIONE — niente pressing/corse/smarcamenti, i giocatori restano schierati fuori area (basta ammucchiate sul dischetto); (2) BOOMERANG — a fine azione la palla resta dove l'azione l'ha lasciata (rete/fuori/compagno), non viene più richiamata verso l'eroe. + Fase 2 (AI tattica continua): i giocatori off-ball hanno un obiettivo per RUOLO che legge la palla ogni frame — attaccanti con corse differenziate (primo/secondo palo/profondità) che intensificano con l'avanzare della palla, centrocampisti che offrono linee di passaggio attorno al portatore. Meno "zombie", più motivazione calcistica. Puramente visivo. + Fase 1 (Intent→Decision COLLEGATO): l'esecuzione (variante) di tiri-da-terra e cross è ora DECISA dal Decision Engine dagli attributi/pressione/contesto (seed stabile → deterministico, niente flicker), non più dalle label delle situation. Invarianti aeree (testa/volée) intatte. Primo taglio dell'accoppiamento Situation→animazione. Fase 0: aggiunto il DECISION ENGINE (decideExecution) — keystone che, data un'INTENZIONE + contesto (attributi/pressione/posizione/meteo/morale/...) + casualità controllata, decide ESECUZIONE ed ESITO. Validato su migliaia di contesti (esiti vari e coerenti, 0 impossibili). Inerte (non ancora ricablato), come il motore timeline. + CINE-TL Fase 2 (executor): in gioco reale le conclusioni di TIRO sono precedute dalla COSTRUZIONE dell'azione (build-up) — palla e attori seguono la timeline beat-per-beat, poi parte la conclusione collaudata. Bypass in gate-mode (?cpmtest=1 → conclusione immediata → 9 check identici). "Il tiro non compare più dal nulla". + Fase 1: motore di TIMELINE — buildHLTimeline genera per ogni pattern una sequenza di micro-eventi calcistici (chi ha la palla, chi riceve/corre, difensori, n° reali passaggi, traiettoria) + validateHLTimeline che impone le invarianti (possesso continuo, no teletrasporti, no cambi possesso ingiustificati, testa⇐cross). Validato logicamente su 650 casi. NON ancora collegato al renderer (Fase 2). + CINE-APPROACH.
+const GAME_VERSION="5.08.0"; // ENGINE Step 1 (migrazione a INTENZIONE): ogni situation nasce con un campo intent (deriveIntent) che dice COSA il giocatore tenta — penalty/freekick/cross/through/dribble/onetwo/insertion/shot/progression/switch/recover/anticipate/intercept — dalla STRUTTURA, non dalle parole d'esecuzione. Sorgente unica dell'intenzione (l'esecuzione la decide il motore). Intro highlight ora derivata dall'intent. Validato (cross↔inserimento distinti). + FIX passaggi: la RICEZIONE ora è leggibile — il compagno destinatario resta fermo ad accogliere la palla, la palla si POSA sui suoi piedi (nuovo beat assist_recv ~0.42s, la palla segue il ricevente) e SOLO DOPO parte la conclusione. Basta "non si vede la ricezione / la palla vola subito in porta". + (1) INTRO highlight ora dice l'INTENZIONE ("Tentativo di tiro/cross/dribbling/filtrante...") invece dell'esecuzione ("Stop e tiro", "Girata e tiro") — intentTitle, solo display, sit.text intatto; (2) BOOMERANG alla radice — rimosso il sync ballPos→eroe durante hl_result: la palla resta all'esito (rete/compagno/fuori), non torna più indietro (passaggi/dribbling inclusi). + ENGINE Fase 3 (FUSIONE pipeline): l'esito visivo di un'azione fallita (parata/palo/fuori/murato) deriva ora dal Decision Engine (hlOutcomeKind, dagli attributi/pressione/contesto) invece di un dado nel render-loop → l'animazione è conseguenza della simulazione, coerente e varia. Seedato (deterministico), mai "in rete" su fallimento. + Intent nelle scelte: le conclusioni non fanno più SCEGLIERE l'esecuzione (testa/piede/tecnica) — il bottone mostra un INTENTO/stile (Attacca il pallone · Conclusione potente/precisa · Cerca l'angolo · di prima · acrobatica · scavetto), l'esecuzione la decide il motore. Transformer display-only (act.label reale intatta per deriveHL/gate). Chiude il punto "rasoterra vs testa come alternative". + FIX match-engine: (1) RIGORE/PUNIZIONE — niente pressing/corse/smarcamenti, i giocatori restano schierati fuori area (basta ammucchiate sul dischetto); (2) BOOMERANG — a fine azione la palla resta dove l'azione l'ha lasciata (rete/fuori/compagno), non viene più richiamata verso l'eroe. + Fase 2 (AI tattica continua): i giocatori off-ball hanno un obiettivo per RUOLO che legge la palla ogni frame — attaccanti con corse differenziate (primo/secondo palo/profondità) che intensificano con l'avanzare della palla, centrocampisti che offrono linee di passaggio attorno al portatore. Meno "zombie", più motivazione calcistica. Puramente visivo. + Fase 1 (Intent→Decision COLLEGATO): l'esecuzione (variante) di tiri-da-terra e cross è ora DECISA dal Decision Engine dagli attributi/pressione/contesto (seed stabile → deterministico, niente flicker), non più dalle label delle situation. Invarianti aeree (testa/volée) intatte. Primo taglio dell'accoppiamento Situation→animazione. Fase 0: aggiunto il DECISION ENGINE (decideExecution) — keystone che, data un'INTENZIONE + contesto (attributi/pressione/posizione/meteo/morale/...) + casualità controllata, decide ESECUZIONE ed ESITO. Validato su migliaia di contesti (esiti vari e coerenti, 0 impossibili). Inerte (non ancora ricablato), come il motore timeline. + CINE-TL Fase 2 (executor): in gioco reale le conclusioni di TIRO sono precedute dalla COSTRUZIONE dell'azione (build-up) — palla e attori seguono la timeline beat-per-beat, poi parte la conclusione collaudata. Bypass in gate-mode (?cpmtest=1 → conclusione immediata → 9 check identici). "Il tiro non compare più dal nulla". + Fase 1: motore di TIMELINE — buildHLTimeline genera per ogni pattern una sequenza di micro-eventi calcistici (chi ha la palla, chi riceve/corre, difensori, n° reali passaggi, traiettoria) + validateHLTimeline che impone le invarianti (possesso continuo, no teletrasporti, no cambi possesso ingiustificati, testa⇐cross). Validato logicamente su 650 casi. NON ancora collegato al renderer (Fase 2). + CINE-APPROACH.
 const SAVE_VERSION=6;
 // Sprint ENV — ambiente rilevato automaticamente dal runtime (non gestito manualmente).
 // PRODUCTION = deploy GitHub Pages (*.github.io). Tutto il resto (staging githack, locale, localhost) = TEST.
@@ -6918,20 +6950,15 @@ function intentLabel(lbl){
 // ENGINE Fase 3 (Intent nel titolo): l'intro dell'highlight deve dire l'INTENZIONE ("Tentativo di tiro"),
 //   non l'esecuzione ("Stop e tiro", "Girata e tiro"). Riscrive SOLO il titolo mostrato quando descrive
 //   un'esecuzione; i titoli di scena ("Solo davanti al portiere", "Contropiede") restano. sit.text intatto.
-function intentTitle(text,type,pattern){
+const INTENT_TITLE={penalty:"🎯 Tentativo dal dischetto",freekick:"🎯 Tentativo su punizione",recover:"🛡️ Tentativo di recupero palla",anticipate:"🛡️ Tentativo di anticipo",intercept:"🛡️ Tentativo di intercetto",cross:"↗️ Tentativo di cross",through:"🎯 Tentativo di filtrante",dribble:"🌀 Tentativo di dribbling",onetwo:"🤝 Tentativo di uno-due",insertion:"✈️ Tentativo di inserimento in area",shot:"⚡ Tentativo di tiro",progression:"🏃 Tentativo di progressione",switch:"🔀 Tentativo di cambio gioco"};
+function intentTitle(text,intent){
   const t=(text||"").toLowerCase();
+  // titoli di SCENA (descrivono la situazione, non l'esecuzione) restano; quelli con parole d'ESECUZIONE diventano intento
   const execy=/tiro|girata|stop e|colpo di testa|rovesciat|incornata|\bcross\b|pallonett|cucchiaio|vol[eé]e|stacco|conclusione|\bdestro\b|\bsinistro\b|esterno|piazzat|rasoterra|a giro|bomba|stoccat|deviazion/.test(t);
   if(!execy)return text;
-  if(type==="penalty")return "🎯 Tentativo dal dischetto";
-  if(type==="freekick")return "🎯 Tentativo su punizione";
-  if(type==="cross")return "↗️ Tentativo di cross";
-  if(type==="header")return "✈️ Tentativo aereo in area";
-  if(type==="dribble")return "🌀 Tentativo di dribbling";
-  if(type==="pass")return pattern==="THROUGH_BALL"?"🎯 Tentativo di filtrante":"🤝 Tentativo di combinazione";
-  if(type==="tackle")return "🛡️ Tentativo di recupero palla";
-  return "⚡ Tentativo di conclusione";
+  return (intent&&INTENT_TITLE[intent])||"⚡ Tentativo di conclusione";
 }
-if(typeof window!=='undefined'){window.buildHLTimeline=buildHLTimeline;window.validateHLTimeline=validateHLTimeline;window.resolveTimeline=resolveTimeline;window.decideExecution=decideExecution;window.intentLabel=intentLabel;}
+if(typeof window!=='undefined'){window.buildHLTimeline=buildHLTimeline;window.validateHLTimeline=validateHLTimeline;window.resolveTimeline=resolveTimeline;window.decideExecution=decideExecution;window.intentLabel=intentLabel;window.deriveIntent=deriveIntent;window.__CPM_SITS=SITUATIONS;}
 function ThreeMatchView(props){
   const {playerX,playerY,homeCol,oppCol,allPlayers,homeClub,heroKitCol,
     stadiumHomeCol,stadiumAwayCol,stadiumStyle=0,ballX,ballY,
@@ -10236,7 +10263,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
               {phase==="hl_intro"&&curSit&&(
                 <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse at center, rgba(5,8,20,0.42) 0%, rgba(5,8,20,0.74) 100%)",backdropFilter:"blur(2px)",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",zIndex:8,padding:"0 14px",cursor:"pointer"}} onClick={()=>{const mm=situations[hlIdx]?.maxMoves??1;movesLeftRef.current=mm;setMovesLeft(mm);moveCoolRef.current=0;pressureRef.current=1;setPressureBar(1);setPhase("hl_move");}}>
                   <div style={{fontSize:22,marginBottom:8}}>⚽</div>
-                  <div style={{fontSize:15,fontWeight:900,color:"#f59e0b",textAlign:"center",marginBottom:8,textShadow:"0 0 20px #f59e0b"}}>{intentTitle(curSit.text,_hlType,_hlPattern)}</div>
+                  <div style={{fontSize:15,fontWeight:900,color:"#f59e0b",textAlign:"center",marginBottom:8,textShadow:"0 0 20px #f59e0b"}}>{intentTitle(curSit.text,curSit.intent)}</div>
                   {curSit.intro&&<div style={{fontSize:11,color:"rgba(255,255,255,0.75)",textAlign:"center",fontStyle:"italic",marginBottom:10,lineHeight:1.4}}>{curSit.intro}</div>}
                   <div style={{fontSize:10,color:"rgba(255,255,255,0.3)",letterSpacing:2,textTransform:"uppercase",marginBottom:10}}>{curSit.type==="def"?"🛡️ DIFESA":"⚔️ ATTACCO"}</div>
                   <div style={{width:90,height:2,background:"rgba(255,255,255,0.15)",borderRadius:2,overflow:"hidden"}}><div style={{height:"100%",background:"#f59e0b",animation:"shrinkBar 2.5s linear forwards"}}/></div>
@@ -10313,7 +10340,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
               {/* Mobile HL overlay — DPad + actions on canvas, narrow only */}
               {isNarrow&&phase==="hl_move"&&curSit&&(
                 <div style={{position:"absolute",bottom:0,left:0,right:0,zIndex:16,background:"rgba(5,8,20,0.28)",padding:"8px 10px 10px"}}>
-                  <div style={{color:"#f59e0b",fontSize:10,fontWeight:800,textShadow:"0 1px 4px rgba(0,0,0,0.9)",marginBottom:5}}>{clock}' — {intentTitle(curSit.text,_hlType,_hlPattern)}</div>
+                  <div style={{color:"#f59e0b",fontSize:10,fontWeight:800,textShadow:"0 1px 4px rgba(0,0,0,0.9)",marginBottom:5}}>{clock}' — {intentTitle(curSit.text,curSit.intent)}</div>
                   <div style={{display:"flex",alignItems:"center",gap:10}}>
                     {!curSit.lockMovement&&movesLeft>0&&<DPad onMove={handleDPad} dark size={40}/>}
                     <div style={{flex:1}}>
@@ -10327,7 +10354,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
               )}
               {isNarrow&&phase==="hl_choose"&&curSit&&(
                 <div style={{position:"absolute",bottom:0,left:0,right:0,zIndex:16,background:"rgba(5,8,20,0.28)",padding:"8px 10px 10px"}}>
-                  <div style={{fontSize:10,color:"rgba(255,255,255,0.75)",fontWeight:700,textShadow:"0 1px 3px rgba(0,0,0,0.9)",marginBottom:5}}>{clock}' — {intentTitle(curSit.text,_hlType,_hlPattern)} &nbsp;·&nbsp; <span style={{color:defDist<25?"#f87171":defDist<50?"#f97316":"#4ade80"}}>{defDist<25?"⚠ Addosso":defDist<50?"Vicino":"Libero"}</span></div>
+                  <div style={{fontSize:10,color:"rgba(255,255,255,0.75)",fontWeight:700,textShadow:"0 1px 3px rgba(0,0,0,0.9)",marginBottom:5}}>{clock}' — {intentTitle(curSit.text,curSit.intent)} &nbsp;·&nbsp; <span style={{color:defDist<25?"#f87171":defDist<50?"#f97316":"#4ade80"}}>{defDist<25?"⚠ Addosso":defDist<50?"Vicino":"Libero"}</span></div>
                   <div style={{display:"flex",alignItems:"flex-start",gap:10}}>
                     {!curSit.lockMovement&&<div style={{opacity:movesLeft>0?1:0.3,flexShrink:0}}><DPad onMove={movesLeft>0?handleDPad:()=>{}} dark size={40}/></div>}
                     {curSit.lockMovement?(
@@ -10376,7 +10403,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
               {/* Action zone — desktop only (mobile has overlay on canvas) */}
               {!isNarrow&&phase==="hl_move"&&curSit&&(
                 <div style={{padding:"8px 10px",borderBottom:"1px solid rgba(255,255,255,0.08)"}}>
-                  <div style={{color:"#f59e0b",fontSize:10,fontWeight:700,marginBottom:5}}>{clock}' — {intentTitle(curSit.text,_hlType,_hlPattern)}</div>
+                  <div style={{color:"#f59e0b",fontSize:10,fontWeight:700,marginBottom:5}}>{clock}' — {intentTitle(curSit.text,curSit.intent)}</div>
                   <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:5}}>
                     {!curSit.lockMovement&&movesLeft>0&&<DPad onMove={handleDPad} dark size={isNarrow?52:42}/>}
                     <div style={{flex:1}}>
@@ -10410,7 +10437,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
               {/* hl_choose — desktop only (mobile has overlay on canvas) */}
               {!isNarrow&&phase==="hl_choose"&&curSit&&(
                 <div style={{padding:"8px 8px",borderBottom:"1px solid rgba(255,255,255,0.08)"}}>
-                  <div style={{fontSize:8,color:"rgba(255,255,255,0.45)",marginBottom:4}}>{clock}' — {intentTitle(curSit.text,_hlType,_hlPattern)}</div>
+                  <div style={{fontSize:8,color:"rgba(255,255,255,0.45)",marginBottom:4}}>{clock}' — {intentTitle(curSit.text,curSit.intent)}</div>
                   {/* DPad still visible in hl_choose when moves remain */}
                   {movesLeft>0&&(
                     <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:5}}>
