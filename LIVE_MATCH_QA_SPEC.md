@@ -375,6 +375,66 @@ Passare da un approccio manuale (esecuzione casuale di partite) a un sistema aut
 
 ---
 
+## Capitolo 3.4 — Validator Engine
+
+### Scopo
+
+Il **Validator Engine** determina se un highlight è corretto sul piano **tecnico, logico, narrativo, calcistico e visivo**. Non basta che il codice giri senza errori: l'obiettivo è stabilire se l'highlight **rappresenta realmente la Situation prevista**. Un highlight tecnicamente corretto è comunque **FAIL** se non comunica chiaramente l'azione calcistica (coerente con la filosofia «Every Highlight Must Tell a Story»).
+
+### Obiettivi
+
+Validare automaticamente ogni highlight; individuare regressioni; classificare i problemi per gravità; produrre **score oggettivi**; fornire evidenze per il debugging; ridurre drasticamente le verifiche manuali.
+
+### Principi
+
+Modulare · estendibile · indipendente dal gameplay · deterministico · configurabile. Ogni validator si aggiunge **senza modificare** quelli esistenti.
+
+### Architettura — pipeline di validator indipendenti
+
+Ogni validator analizza **un solo aspetto**.
+
+```
+Highlight → Technical → Event → Timeline → Ball → Player → Camera →
+Semantic → Football Intelligence → Cinematic → Motion → Score Aggregator → PASS/WARNING/FAIL
+```
+
+Ogni validator produce: score, warning, errori, suggerimenti, dati diagnostici. Il risultato finale combina tutti i validator.
+
+| Validator | Responsabilità (sintesi) |
+|---|---|
+| **Technical** | assenza errori tecnici: eccezioni JS, Three.js/WebGL, timeout, freeze, perdita rendering, mesh invalide, coord NaN, asset mancanti, animazioni corrotte. `CRITICAL`/`FATAL` → fail immediato |
+| **Event** | tutti gli eventi obbligatori emessi (es. `ReceiveBall→…→CrossStart→BallKick→CrossCompleted→Header→Goal→Celebrate`). Eventi mancanti → FAIL; inattesi → WARNING/FAIL |
+| **Timeline** | sequenza temporale: ordine corretto, durate plausibili, niente salti, niente eventi impossibili (es. `Goal→Cross`, `Header→Cross` vietati) |
+| **Ball** | esistenza, visibilità, traiettoria, velocità/accel/decel, collisioni, permanenza in campo, destinazione finale, coerenza con l'azione; la palla raggiunge realmente destinatario/porta/portiere |
+| **Player** | orientamento, posizione, velocità, animazione attiva, continuità, piedi a terra, niente teletrasporti/compenetrazioni; protagonista guarda l'azione, compagni/avversari/portiere reagiscono |
+| **Camera** | protagonista e palla sempre visibili, momento decisivo inquadrato, no clipping / camera sotto-campo / inquadrature vuote / tagli immotivati |
+| **Semantic** ⭐ | **il più importante**: l'highlight racconta davvero la Situation (beat: ricezione→controllo→avanzamento→preparazione→impatto→traiettoria→arrivo in area→reazioni→conclusione→post-highlight). Se manca un passaggio fondamentale → FAIL. **Ogni Situation avrà un Semantic Validator dedicato** |
+| **Football Intelligence** | credibilità calcistica (non grafica): il centravanti attacca l'area? i difensori marcano in modo plausibile? il portiere legge la traiettoria? movimenti/tattica coerenti? → *Football Intelligence Score* |
+| **Cinematic** | qualità narrativa: azione comprensibile? protagonista evidente? momento decisivo ben mostrato? finale chiaro? post-highlight conclude? → *Cinematic Score* |
+| **Motion** | qualità del movimento: fluidità, continuità, naturalezza, ritmo, transizioni, niente scatti → *Motion Score* |
+
+### Score Aggregator
+
+Ogni validator restituisce uno tra: `PASS` · `INFO` · `WARNING` · `MINOR` · `MAJOR` · `CRITICAL` · `FATAL`. Lo Score Aggregator combina tutto. Il **PASS finale NON dipende solo dall'assenza di errori tecnici**: serve la compresenza di correttezza tecnica + logica + coerenza narrativa + credibilità calcistica + qualità visiva.
+
+### Sistema di punteggio
+
+Ogni highlight produce: Technical · Event · Timeline · Ball · Player · Camera · Semantic · Football Intelligence · Cinematic · Motion Score. Il report mostra **sia il dettaglio sia uno score complessivo**.
+
+### Failure Package
+
+Ad ogni FAIL il framework raccoglie automaticamente: Seed, Situation, Action, Outcome, validator coinvolto, motivazione, timeline completa, screenshot, video, log, stato camera/palla/giocatori. Obiettivo: **ogni problema immediatamente riproducibile**.
+
+### Estendibilità
+
+Ogni nuova Situation registra automaticamente: il proprio validator, gli eventi attesi, la timeline, i controlli specifici. Nessuna modifica strutturale per supportare nuove Situation.
+
+### Definition of Done
+
+Completo quando: ogni Situation ha ≥1 Semantic Validator dedicato; tutti i validator sono indipendenti; ogni FAIL ha evidenze sufficienti; gli score sono oggettivi e confrontabili nel tempo; aggiungere Situation richiede solo registrare nuovi validator.
+
+---
+
 ## Stato di implementazione (mappatura sul codice attuale)
 
 > Sezione di raccordo tra spec e realtà del repo, da aggiornare ad ogni incremento LMQP. Onestà documentale (charter): distinguere ciò che esiste da ciò che è da costruire.
@@ -383,7 +443,7 @@ Passare da un approccio manuale (esecuzione casuale di partite) a un sistema aut
 |---|---|---|
 | **QA Core** | 🟡 parziale | `tests/visual/validate-situations.mjs` orchestra il gate (≈ Batch Mode + un solo worker, healthcheck/cleanup basilari). Mancano: modalità Single/Stress/Regression/Nightly, state machine esplicita, config esterna, scheduler/resource-manager, recovery automatico |
 | **Highlight/Scenario Generator** | 🟡 parziale | la suite analitica genera già **537 combo** (Situation × Action) deterministiche e il gate forza le 179 situations; mancano: generazione exhaustive multi-asse (meteo/zona/difficoltà/tattica), seed-engine completo, scenario score/priorità, dedup, Scenario Library |
-| **Validator Engine** | 🟡 parziale | `tests/visual/checks/*.mjs` + `tests/situations-3d-validation.js` (suite analitica) |
+| **Validator Engine** | 🟡 parziale | esistenti (in forma frame-congelato/analitica): Technical (gate cattura errori/FATAL), Ball (`computeArc` fisica palla), Camera (regia per-pattern), Player (movements cap), + Score Aggregator analitico (animazione/fisica_palla/sincronizzazione/regia/post_hl/realismo). **Mancano i pilastri della charter:** Event, Timeline, **Semantic** (per-Situation, ⭐), Football Intelligence, Cinematic, Motion |
 | **Observable System** | 🟡 parziale | probe `__CPM_FORCE_SIT` / `__CPM_STATE` / `__CPM_PROBE` / `__CPM_FOOTBALL_STATE` |
 | **Deterministic Execution** | ✅ | seed `__CPM_RESEED`, gate `determinism`, golden firma stato |
 | **Timeline Engine** | 🔴 da costruire | nessuna registrazione cronologica eventi (vedi LMQP-1 "Story Trace") |
