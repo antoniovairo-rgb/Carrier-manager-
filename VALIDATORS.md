@@ -407,6 +407,70 @@ Tentativo immediatamente riconoscibile; attacco credibile della traiettoria; sal
 
 ---
 
+## Validator 006 — Tentativo di Contrasto
+
+| Campo | Valore |
+|---|---|
+| **Identificativo** | `LMV-006` |
+| **Categoria** | Fase Difensiva |
+| **Priorità** | Massima |
+
+### Scopo
+
+Verifica che una Situation **"Tentativo di Contrasto"** sia rappresentata in modo credibile, leggibile e coerente. Non conta che il difensore **recuperi** il pallone: conta che tenti realmente di **interrompere o rallentare** l'azione offensiva. Esito positivo o negativo.
+
+### Definizione
+
+Qualsiasi azione in cui un difensore cerca **intenzionalmente** di recuperare il possesso o impedire la progressione dell'avversario. Comprende contrasti in piedi e in scivolata, purché coerenti con la Situation.
+
+### Situazioni compatibili / non compatibili
+
+- **Compatibili:** contrasto in piedi · scivolata · chiusura della linea di corsa · anticipo · tackle laterale · tackle frontale · recupero in corsa.
+- **NON compatibili:** intercetto di un passaggio · duello aereo · semplice marcatura · pressing senza tentativo di recupero · uscita del portiere.
+
+### Timeline attesa
+
+| Fase | Evento |
+|---|---|
+| 1 | **Lettura dell'azione** — il difensore individua il portatore |
+| 2 | **Avvicinamento** — riduce la distanza, adatta velocità e direzione |
+| 3 | **Preparazione** — sceglie il momento, non si lancia casualmente |
+| 4 | **Tentativo** — esegue il gesto difensivo, chiaramente intenzionale |
+| 5 | **Contatto** — con il pallone / con l'avversario / nessun contatto (tutte valide se coerenti) |
+| 6 | **Esito** — uno degli outcome previsti |
+| 7 | **Post-Highlight** — conseguenze chiaramente mostrate |
+
+### Outcome
+
+- **Ammessi:** recupero del pallone · pallone deviato · fallo · contrasto perso · prosecuzione dell'azione offensiva · rimessa laterale · calcio d'angolo · rimpallo.
+- **Non ammessi:** difensore che attraversa l'avversario · contrasto senza movimento preparatorio · portatore che ignora completamente il contrasto · cambio di possesso senza motivo · replay che termina subito dopo il tackle.
+
+### Controlli per validator
+
+- **Ball:** deviazione coerente, perdita del possesso solo dopo un contatto plausibile, traiettoria naturale, no teletrasporti.
+- **Player:** il **difensore** osserva il portatore / riduce la distanza / sincronizza il contrasto / completa il gesto; l'**attaccante** reagisce / protegge il pallone / tenta di evitare il contrasto; gli **altri** seguono e si riposizionano.
+- **Camera:** difensore e portatore visibili, momento del contrasto chiaro, esito seguito.
+- **Motion:** intervento fluido, continuità, scivolata/tackle naturale, recupero dell'equilibrio corretto.
+- **Semantic:** *"Un osservatore capirebbe immediatamente che il difensore sta tentando di recuperare il pallone?"* — se no → **FAIL**.
+- **Football Intelligence:** momento scelto correttamente, contrasto coerente con la posizione, rischio plausibile, compagni che coprono gli spazi, attaccante coerente.
+- **Narrative:** `Pressione → Avvicinamento → Preparazione → Contrasto → Esito → Post-Highlight`; sequenza leggibile.
+
+### Errori critici (FAIL)
+
+Il difensore rimane passivo · il contrasto non è visibile · il pallone cambia possesso senza contatto plausibile · il replay termina prima dell'esito · cronaca e highlight mostrano azioni differenti.
+
+### Suggerimenti automatici
+
+Migliorare il tempo dell'intervento · aumentare la reazione dell'attaccante · sincronizzare il contatto col pallone · prolungare il post-highlight · rendere più evidente il recupero o il mancato recupero.
+
+### Definition of Done
+
+Intenzione difensiva immediatamente riconoscibile; gesto preparato ed eseguito credibilmente; attaccante che reagisce coerentemente; comportamento del pallone naturale; esito completamente visibile; post-highlight che conclude la scena; cronaca + timeline + animazione che rappresentano la stessa intenzione.
+
+> Un contrasto che si limita a **cambiare improvvisamente il possesso** senza preparazione, gesto tecnico e conseguenze è **incompleto** e non conforme.
+
+---
+
 ## Stato di implementazione (mappatura sul codice attuale)
 
 > Onestà documentale (charter): cosa dello standard esiste già nel gate vs cosa manca.
@@ -423,6 +487,10 @@ Tentativo immediatamente riconoscibile; attacco credibile della traiettoria; sal
 | Sistema di gravità INFO..FATAL | 🟡 | il gate distingue issue (FAIL) vs warn; manca la scala completa MINOR/MAJOR/CRITICAL |
 
 **Prerequisito comune** (come per `LIVE_MATCH_QA_SPEC.md`): Semantic Validator, eventi obbligatori/vietati e Timeline dipendono tutti dal **layer Event + Timeline** osservabile nel motore.
+
+### LMV-006 (Tentativo di Contrasto) — copertura attuale
+
+Rendering: hlType `tackle` con animazione dedicata (CINE-VAR), e soprattutto il **fix coerenza tackle 5.23** che in un HL difensivo aggancia la palla all'**avversario portatore** (non all'eroe) — coerente col requisito LMV-006 "il difensore tenta di recuperare". Post-arco esito tackle (recupero/fallo). **Punto debole noto:** le fasi 2-3 (avvicinamento + scelta del momento) e la reazione dell'attaccante dipendono dall'AI off-ball generica, non da un duello difensivo scriptato → da collaudare dal vivo. **Non validati:** timeline, Semantic, Narrative, post-highlight, "no attraversamento avversario".
 
 ### LMV-005 (Tentativo di Colpo di Testa) — copertura attuale
 
