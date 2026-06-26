@@ -500,6 +500,58 @@ Nuovi dati diagnostici aggiungibili senza modificare il formato dei replay esist
 
 ---
 
+## Capitolo 3.6 — Regression Engine & Regression Gallery
+
+### Scopo
+
+Il **Regression Engine** individua automaticamente le regressioni del Live Match Engine. Una regressione è qualsiasi modifica che **peggiora** il comportamento rispetto a una versione precedente. L'obiettivo non è solo che un test continui a passare, ma determinare se il comportamento è **migliorato, peggiorato o invariato**.
+
+### Filosofia
+
+Ogni modifica va confrontata con una **baseline**, in modo **automatico, riproducibile, oggettivo**. L'utente non deve guardare manualmente centinaia di replay.
+
+### Baseline
+
+Per ogni versione stabile si salva automaticamente: replay, timeline, validator, score, video, screenshot, metriche, log. Ogni nuova esecuzione viene confrontata con essa.
+
+### Tipologie di regressione
+
+| Categoria | Esempi |
+|---|---|
+| **Tecnica** | nuovi errori JS, crash, timeout, freeze |
+| **Logica** | eventi mancanti, ordine sbagliato, timeline incoerente |
+| **Visiva** | camera peggiorata, traiettoria diversa, animazioni meno fluide, finale non visibile |
+| **Calcistica** | difensori meno reattivi, portiere meno credibile, cross meno realistico, movimenti incoerenti |
+| **Prestazionale** | FPS inferiori, RAM/CPU aumentate, caricamenti più lenti |
+
+### Processo di confronto
+
+Per ogni Seed: (1) eseguire baseline → (2) eseguire nuova versione → (3) confrontare → (4) classificare le differenze. Completamente automatico.
+
+Oggetti confrontati: timeline, eventi, traiettoria palla, movimenti giocatori, animazioni, camera, validator, score, durata, performance.
+
+### Livelli di severità
+
+`INFO` · `WARNING` · `MINOR` · `MAJOR` · `CRITICAL` · `FATAL`. **CRITICAL/FATAL** possono bloccare automaticamente la pipeline CI/CD.
+
+### Regression Gallery
+
+Galleria consultabile dalla Dashboard; per ogni regressione: versione precedente → corrente → differenze → motivazione → score → validator coinvolti → replay → video → timeline. Obiettivo: capire **immediatamente cosa è cambiato**.
+
+### Visual & Score Comparison
+
+Confronto sincronizzato di due replay (riproduzione affiancata, sync via Seed, frame-by-frame, confronto timeline/camera/traiettorie). Per gli score: confronto automatico con variazione percentuale (es. `Motion Score 8.4 → 9.1 = +8.3%`).
+
+### Regressioni storiche & integrazione
+
+Storico con: data, commit, Seed, Situation, Action, Outcome, causa, stato (`aperta`/`risolta`/`riaperta`) — evita di correggere più volte lo stesso problema. Ogni regressione è collegata al relativo **Failure Package** (salto diretto a replay/log/screenshot). Dashboard: totali, aperte/risolte, per categoria, per Situation, andamento nel tempo.
+
+### Definition of Done
+
+Confronta ogni esecuzione con una baseline; individua regressioni tecniche/logiche/visive/calcistiche/prestazionali; produce una Regression Gallery navigabile; evidenzia le differenze tra due versioni; consente di individuare rapidamente l'origine; si integra con Replay/Validator/Failure Collector/Dashboard.
+
+---
+
 ## Stato di implementazione (mappatura sul codice attuale)
 
 > Sezione di raccordo tra spec e realtà del repo, da aggiornare ad ogni incremento LMQP. Onestà documentale (charter): distinguere ciò che esiste da ciò che è da costruire.
@@ -515,6 +567,7 @@ Nuovi dati diagnostici aggiungibili senza modificare il formato dei replay esist
 | **Event Driven** | 🔴 da costruire | il motore non emette eventi (`BallReceived`/`ShotStarted`/…) |
 | **Replay Engine** | 🔴 da costruire | esiste solo lo screenshot del canvas in `out/`; nessuna registrazione stato/eventi per-frame, nessun debugger frame-by-frame, snapshot o confronto. Dipende dal layer Event+Timeline |
 | **Failure Collector** | 🔴 da costruire | il gate salva screenshot in `out/`, ma non un bundle riproducibile per-fail |
+| **Regression Engine** | 🟡 embrionale | esiste solo la `golden` regression (firma stato `{htx,hty,cam,ch,ca}` vs `golden-sigs.json`): confronto baseline binario PASS/FAIL su un sottoinsieme dello stato. Mancano: baseline ricca (replay/score/metriche), 5 categorie di regressione, severità, gallery, visual/score comparison, storico |
 | **Performance Monitor** | 🔴 da costruire | — |
 | **Dashboard** | 🟡 minimale | `tests/visual/report.mjs` → `out/validate/index.html` |
 | **AI Vision Layer** | 🔴 opzionale | — |
