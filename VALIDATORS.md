@@ -534,6 +534,69 @@ Intenzione di chiudere la linea immediatamente riconoscibile; anticipo credibile
 
 ---
 
+## Validator 008 — Tentativo di Parata
+
+| Campo | Valore |
+|---|---|
+| **Identificativo** | `LMV-008` |
+| **Categoria** | Fase Difensiva |
+| **Priorità** | Massima |
+
+### Scopo
+
+Verifica che una Situation **"Tentativo di Parata"** sia rappresentata in modo realistico, leggibile e coerente. Non conta che il portiere **fermi** il pallone: conta che tenti realmente di **intervenire sulla conclusione** avversaria. Esito positivo o negativo.
+
+### Definizione
+
+Qualsiasi azione in cui il portiere cerca **intenzionalmente** di impedire che il pallone entri in porta. Comprende ogni tipologia di intervento del portiere.
+
+### Situazioni compatibili / non compatibili
+
+- **Compatibili:** parata in presa · deviazione · tuffo · respinta · uscita bassa · uscita alta · intervento ravvicinato · su colpo di testa · su tiro da fuori area.
+- **NON compatibili:** rinvio del portiere · rilancio · semplice raccolta senza pressione · uscita fuori area come difensore.
+
+### Timeline attesa
+
+| Fase | Evento |
+|---|---|
+| 1 | **Lettura** — individua la conclusione, segue il pallone con lo sguardo |
+| 2 | **Preparazione** — postura d'attesa (avanza / arretra / si sposta / prepara il tuffo) |
+| 3 | **Tentativo** — esegue il gesto, intervento chiaramente intenzionale |
+| 4 | **Contatto** — presa / deviazione / respinta / nessun contatto |
+| 5 | **Esito** — uno degli outcome previsti |
+| 6 | **Post-Highlight** — conseguenze dell'intervento chiaramente mostrate |
+
+### Outcome
+
+- **Ammessi:** parata · respinta · deviazione · gol subito · palo · traversa · pallone fuori · ribattuta con prosecuzione.
+- **Non ammessi:** portiere completamente immobile · **tuffo nella direzione opposta** · contatto senza sincronizzazione · pallone che attraversa il portiere · replay interrotto prima dell'esito.
+
+### Controlli per validator
+
+- **Ball:** traiettoria coerente, deviazione realistica, variazione di velocità **dopo** il contatto, no teletrasporti, collisioni corrette.
+- **Player:** il **portiere** segue il pallone / legge la traiettoria / sceglie il tempo / completa il gesto; gli **attaccanti** seguono l'eventuale respinta; i **difensori** proteggono la porta e reagiscono alla ribattuta.
+- **Camera:** pallone e portiere visibili, momento della parata chiaro, esito mostrato.
+- **Motion:** tuffo fluido, intervento naturale, sincronia con la traiettoria, recupero dell'equilibrio, no movimenti innaturali.
+- **Semantic:** *"Un osservatore capirebbe immediatamente che il portiere sta tentando di impedire il gol?"* — se no → **FAIL**.
+- **Football Intelligence:** tempo di uscita/tuffo corretto, posizione iniziale plausibile, difensori che seguono, attaccanti sull'eventuale respinta, decisione coerente col tipo di conclusione.
+- **Narrative:** `Lettura → Preparazione → Tentativo → Contatto/mancato contatto → Esito → Post-Highlight`; sequenza leggibile.
+
+### Errori critici (FAIL)
+
+Il portiere non reagisce · il pallone attraversa il corpo del portiere · replay che termina prima dell'esito · camera che perde il momento della parata · cronaca e highlight che mostrano azioni differenti.
+
+### Suggerimenti automatici
+
+Anticipare il tempo di reazione · migliorare la sincronia tuffo↔pallone · aumentare il realismo della respinta · prolungare il post-highlight · migliorare il posizionamento iniziale.
+
+### Definition of Done
+
+Tentativo del portiere immediatamente riconoscibile; lettura della traiettoria e gesto credibili; comportamento del pallone coerente con l'eventuale contatto; difensori e attaccanti che reagiscono alla ribattuta o al gol; risultato finale completamente visibile; post-highlight che conclude la sequenza; cronaca + timeline + animazione che rappresentano la stessa intenzione.
+
+> Un highlight in cui il portiere resta passivo, interviene fuori tempo, o il replay si interrompe prima dell'esito, è **incompleto** e non conforme.
+
+---
+
 ## Stato di implementazione (mappatura sul codice attuale)
 
 > Onestà documentale (charter): cosa dello standard esiste già nel gate vs cosa manca.
@@ -550,6 +613,10 @@ Intenzione di chiudere la linea immediatamente riconoscibile; anticipo credibile
 | Sistema di gravità INFO..FATAL | 🟡 | il gate distingue issue (FAIL) vs warn; manca la scala completa MINOR/MAJOR/CRITICAL |
 
 **Prerequisito comune** (come per `LIVE_MATCH_QA_SPEC.md`): Semantic Validator, eventi obbligatori/vietati e Timeline dipendono tutti dal **layer Event + Timeline** osservabile nel motore.
+
+### LMV-008 (Tentativo di Parata) — copertura attuale
+
+Rendering: parata con `gkSaveMesh` + `gk_dive` (tuffo del portiere), direzione tuffo `oppDiveDir`, celebrazione parata, e — importante per LMV-008 — l'esito "save" deciso dal motore (`hlOutcomeKind`), con il portiere che esce a stringere l'angolo (F13) e reagisce su tiro/rigore/testa. La direzione del tuffo segue l'esito → riduce il rischio "tuffo nella direzione opposta" (outcome vietato). **Non validati automaticamente:** tempo di reazione/sincronia tuffo↔pallone, posizione iniziale plausibile, timeline, Semantic, Narrative, "pallone non attraversa il portiere", post-highlight. Lato HL la parata è una *reazione* a una conclusione dell'eroe; come Situation autonoma (parata come highlight protagonista) non è prevista dal flusso attuale.
 
 ### LMV-007 (Tentativo di Intercetto) — copertura attuale
 
