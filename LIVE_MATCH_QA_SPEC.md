@@ -718,6 +718,49 @@ Nuove categorie d'analisi aggiungibili senza modificare l'architettura; integraz
 
 ---
 
+## Capitolo 3.10 — Football Intelligence Knowledge Base
+
+### Scopo
+
+La **Football Intelligence Knowledge Base (KB)** è la base di conoscenza calcistica della piattaforma: descrive il **comportamento atteso** di giocatori, pallone e dinamiche di gioco. **Non contiene codice né algoritmi**, solo regole calcistiche consumate da Validator Engine, AI Vision Review, Highlight Generator, Regression Engine, Dashboard. È la **fonte ufficiale** della logica calcistica del framework.
+
+### Obiettivi & Principi
+
+Definire il comportamento atteso delle Situation; descrivere le responsabilità tattiche dei ruoli; fornire regole ai validator; rendere coerente l'intero framework. Ogni regola: **chiara, verificabile, estendibile, indipendente dal codice** (descrive il comportamento atteso, non l'implementazione).
+
+### Struttura
+
+Situation · Ruoli · Fasi dell'azione · Regole tattiche · Regole comportamentali · Eccezioni.
+
+- **Situation** — per ognuna: obiettivo, contesto, comportamento atteso, eventi obbligatori, varianti accettabili, condizioni di fallimento.
+- **Ruoli** — Portiere · Difensore centrale · Terzino · Mediano · Centrocampista · Trequartista · Ala · Seconda punta · Centravanti; per ciascuno: responsabilità, priorità, comportamento per Situation.
+
+**Esempio — Tentativo di cross:** l'ala protegge palla / cerca spazio / prepara il cross; il centravanti attacca l'area (primo o secondo palo) e conclude; i difensori marcano / intercettano / proteggono; il portiere legge la traiettoria / valuta l'uscita / prepara la parata.
+
+### Fasi dell'azione
+
+Ogni Situation è suddivisa in fasi (es. Cross: `Ricezione → Controllo → Progressione → Preparazione → Cross → Traiettoria → Reazione → Conclusione → Post-Highlight`), ciascuna con regole specifiche.
+
+### Regole comportamentali / tattiche / di credibilità
+
+- **Comportamentali:** chi ha la palla guarda la direzione di gioco; gli avversari reagiscono alla perdita di possesso; i compagni cercano linee di passaggio; il portiere segue la palla; il pallone non cambia direzione senza motivo.
+- **Tattiche (minimo atteso):** Difesa (copertura/marcatura/scalata/pressione) · Attacco (smarcamento/profondità/sostegno/inserimento) · Transizione (recupero/pressing/ripartenza).
+- **Credibilità:** un cross senza attaccanti in area, un portiere immobile su un tiro, un difensore passivo → riducono la credibilità.
+
+### Varianti & Eccezioni
+
+Più rappresentazioni valide per la stessa Situation (cross alto/teso/rasoterra/arretrato) purché rispettino le regole fondamentali. Le **eccezioni** vanno documentate esplicitamente (rimpalli, deviazioni, errori tecnici, condizioni atmosferiche) e **non** interpretate automaticamente come regressioni.
+
+### Utilizzo, Aggiornamento, Versionamento
+
+I validator **consultano la KB**: le regole non vanno duplicate nel codice; ogni modifica alla logica calcistica avviene nella KB. Ogni nuova Situation del motore deve aggiornare contestualmente la KB (vietato introdurre Situation prive di documentazione calcistica). La KB è **versionata**: ogni modifica riporta autore, data, motivazione, impatto sui validator.
+
+### Definition of Done
+
+Descrive tutte le Situation supportate; definisce il comportamento atteso dei ruoli; è la fonte ufficiale della logica calcistica; è usata da Validator/AI Vision/Highlight Generator; consente di valutare la credibilità delle azioni in modo coerente e verificabile.
+
+---
+
 ## Stato di implementazione (mappatura sul codice attuale)
 
 > Sezione di raccordo tra spec e realtà del repo, da aggiornare ad ogni incremento LMQP. Onestà documentale (charter): distinguere ciò che esiste da ciò che è da costruire.
@@ -737,5 +780,6 @@ Nuove categorie d'analisi aggiungibili senza modificare l'architettura; integraz
 | **Performance Monitor** | 🔴 da costruire | — |
 | **Dashboard (Visual QA / LMDP)** | 🟡 minimale | `tests/visual/report.mjs` → `out/validate/index.html` (report statico per-run con issue/warn/screenshot). Mancano: Home live, Test Explorer/Highlight Detail, Replay/Timeline Viewer, Visual Comparison, Regression/Failure Center, Performance Monitor, AI Review, search/filtri, Quality Score globale, notifiche |
 | **AI Vision Review Engine** | 🔴 opzionale | il gate cattura già screenshot del canvas (input pronto), ma nessuna analisi via Vision Provider, nessun Readability/Cinematic/Motion score percettivo, nessuna identificazione autonoma della Situation. Provider-agnostic by design |
+| **Football Intelligence KB** | 🟡 implicita | la logica calcistica oggi vive **nel codice** (`deriveIntent` 13 intenti, `decideExecution`, regole in `tests/situations-3d-validation.js`, invariante CINE) e nei testi/tactic delle 179 Situation — non in una KB dichiarativa separata e versionata. Manca: estrazione regole↔codice, comportamento atteso per ruolo/fase, varianti/eccezioni documentate |
 
 **Limite strutturale noto:** il gate cattura **frame congelati** → valida stato/coerenza (Livelli 1-3 parziali) ma **non il movimento né la leggibilità temporale** (Livello 4). Il Timeline/Event layer (LMQP-1) è il prerequisito per colmarlo.
