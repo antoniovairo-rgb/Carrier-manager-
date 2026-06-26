@@ -1,6 +1,6 @@
-# Live Match Engine — CPM 5.12.0
+# Live Match Engine — CPM 5.14.0
 
-Documento di architettura del motore di partita di **Career Player Manager**. Riflette il refactoring **Intent → Decision → Simulation → Animation** e lo stato reale del codice (`CARRIER-MANAGER-AV.html`, ~20 380 righe). I numeri di riga sono indicativi (file in evoluzione: verifica con `grep -n`).
+Documento di architettura del motore di partita di **Career Player Manager**. Riflette il refactoring **Intent → Decision → Simulation → Animation** e lo stato reale del codice (`CARRIER-MANAGER-AV.html`, ~20 410 righe). I numeri di riga sono indicativi (file in evoluzione: verifica con `grep -n`).
 
 > **Nota di onestà.** Questo documento distingue ciò che è **fatto** da ciò che è **parziale** o **da fare**. Il refactoring è avviato e solido nelle fondamenta (Intent/Decision), ma il cuore del render resta in parte animation-driven. Le voci sono marcate ✅ / 🟡 / 🔴.
 
@@ -39,8 +39,9 @@ L'idea chiave che rende il refactoring **fattibile** senza riscrivere 179 timeli
 | `validateHLTimeline(tl)` | 6840 | Invarianti calcistiche (possesso continuo, no teleport, n° passaggi, testa⇐cross) | ✅ |
 | `resolveTimeline(tl)` | 6869 | Risolve la timeline in posizioni concrete per l'executor | ✅ |
 | `decideExecution(intent,ctx)` | 6892 | **Decision Engine**: esecuzione + esito + qualità da attributi/pressione/meteo/contesto + casualità seedata | ✅ |
-| `intentLabel` / `intentLabelDedup` | 6939 / 6963 | Display: i bottoni mostrano l'**intento/stile**, non l'esecuzione (con dedup anti-duplicati) | ✅ |
-| `intentTitle(text,intent)` | 6954 | Display: l'intro mostra "Tentativo di…" sui titoli esecutivi | ✅ |
+| `intentLabel` / `intentLabelDedup` | 6939 / 6979 | Display: i bottoni mostrano l'**intento/stile**, non l'esecuzione (con dedup anti-duplicati) | ✅ |
+| `intentTitle(text,intent,scoreDiff)` | 6955 | Display: l'intro mostra "Tentativo di…" sui titoli esecutivi **o incoerenti col punteggio** | ✅ |
+| `stateIncoherent` / `intentIntro` | 6966 / 6972 | Display: rileva titoli/intro che **assumono un punteggio** contrario alla realtà e li neutralizza | ✅ |
 | `ThreeMatchView` | 6969 | Render-loop 3D: off-ball AI, executor timeline, `fireConclusion`, post-archi | 🟡 ibrido |
 | `LiveMatch` | 8780 | State-machine partita + call-site della decisione | — |
 
@@ -102,7 +103,8 @@ Validazione (migliaia di contesti): campione forte+libero ~76% positivi vs debol
 
 ## 5. Il render-loop (`ThreeMatchView`)
 
-- **Off-ball AI** (motore posizionamento): shape-flow col pallone, pressing, marcatura goal-side, repulsione anti-ammucchiate, + **obiettivi per ruolo** (attaccanti: corse primo/secondo palo/profondità; centrocampisti: linee di passaggio). Sospeso sui set-piece (i giocatori restano schierati). 🟡 euristica, non lettura individuale completa.
+- **Off-ball AI** (motore posizionamento): shape-flow col pallone, pressing, marcatura goal-side, repulsione anti-ammucchiate, + **obiettivi per ruolo** (attaccanti: corse primo/secondo palo/profondità; centrocampisti: linee di passaggio). Sui set-piece pressing/corse sono sospesi: sulle **punizioni** si forma una **barriera** (3 difensori tra palla e porta), sui **rigori** l'area è sgomberata (solo battitore + portiere). 🟡 euristica, non lettura individuale completa.
+- **Posizionamento di partenza** (`LiveMatch`): la *continuità* fa scivolare l'eroe dalla posizione precedente **solo se è dentro la startZone**; se è fuori (es. azione in area dopo gioco a centrocampo) parte dallo **spot corretto** (`getStartPos`) → niente azioni "da posizione impossibile". ✅
 - **Timeline executor**: sui tiri antepone la **costruzione** dell'azione (ricezione/tocco) prima della conclusione. 🟡 abilitato per i tiri.
 - **`fireConclusion`** (refattorizzata in closure richiamabile): esegue la conclusione (swing eroe + arco palla + reazione portiere/difensori). Gli archi sono ancora **pre-autorati per variante** 🟡 (la qualità modula la precisione — Step 3 slice 1).
 - **Post-archi**: `in_net` / `hit_post` / `deflect` / `assist_recv → assist_shot` / `cross_goal` / `opp_intercept` / `gk_dive`.
@@ -114,6 +116,7 @@ Validazione (migliaia di contesti): campione forte+libero ~76% positivi vs debol
 
 - **`intentTitle`** — l'intro dell'highlight mostra "Tentativo di tiro/cross/dribbling/filtrante/…" sui titoli che descrivono un'esecuzione; i titoli di scena ("Solo davanti al portiere") restano. `sit.text` reale **intatto** (deriveHL/gate non toccati).
 - **`intentLabel` + `intentLabelDedup`** — i bottoni mostrano un **intento/stile di rischio** ("Attacca il pallone", "Conclusione potente/precisa", "Cerca l'angolo", "di prima", "acrobatica", "scavetto") con **dedup** anti-duplicati. `act.label` reale intatto.
+- **`stateIncoherent` + `intentIntro`** — titoli/intro che **assumono un punteggio** ("Sotto 0-2", "Siamo in vantaggio — gestisci", "la rimonta") vengono mostrati come **intento** (o nascosti) quando contraddicono il risultato reale → la narrazione non mente più sul punteggio.
 
 ---
 
@@ -145,17 +148,20 @@ Validazione (migliaia di contesti): campione forte+libero ~76% positivi vs debol
 
 | Problema | Natura | Stato |
 |---|---|---|
-| **Posizionamento set-piece** — punizioni senza barriera/portiere visibili | render/positioning | 🔴 da fare (formazione muro a ~9m + portiere) |
-| **Azioni "impossibili" dalla posizione** — es. scavetto/dribbling-portiere con eroe a centrocampo. I **dati sono corretti** (startZone in area, #3/#10/#66 x≈79-91); la **continuità** (`LiveMatch` ~riga 9100) clampa la posizione-palla precedente nella startZone invece di portare l'eroe in area | render/positioning | 🔴 diagnosticato, da correggere (con validazione visiva) |
-| **Testi situation esecutivi** — 36 titoli; **riscritti a display** da `intentTitle`, ma il **dato** resta esecutivo | dati | 🟡 display ok, dato da migrare |
+| **Barriera punizioni** — muro a ~9u tra palla e porta | render/positioning | 🟡 barriera fatta; **visibilità portiere** da verificare dal vivo |
+| **Testi situation esecutivi/incoerenti** — 35 titoli esecutivi + 3 con punteggio assunto; **risolti a DISPLAY** (`intentTitle`/`stateIncoherent`), ma il **dato** resta tale | dati | 🟡 display ok, dato da migrare |
 | **Step 3 completo** — ritiro degli archi pre-autorati verso traiettorie derivate dalla decisione | render | 🔴 avviato (slice qualità→precisione), il grosso resta |
+| **`deriveHL`/`hlBallState` accoppiati al testo** — leggono ancora le parole del titolo per `type`/aerial; finché è così, i **testi-dato** non si possono migrare senza rischio | logica | 🟡 da disaccoppiare (legge `intent`) |
 | **Decision Engine — fattori mancanti** — piede preferito, modulo, alcune tattiche | logica | 🟡 estensione |
+| **AI individuale completa** — i 22 leggono la palla ma non valutano spazi/marcature/pericoli per-frame | render | 🔴 lavoro grosso |
 
 ### Bug risolti di recente
 - **Boomerang** sul tiro mancato (il post-arco `deflect` rimandava la palla verso x=0 = porta dell'eroe) — corretto: resta nel terzo offensivo.
-- **Passaggio verso la propria porta** — ora sempre in avanti, mira l'avversario che intercetta.
+- **Passaggio verso la propria porta** — ora sempre in avanti, mira l'avversario che intercetta; + beat di **ricezione** visibile.
 - **Azioni duplicate** — dedup delle etichette intento.
-- **Rigore ammucchiato** — pressing/corse sospesi sui set-piece.
+- **Rigore ammucchiato** + **barriera assente** — pressing/corse sospesi sui set-piece e muro sulle punizioni.
+- **Azioni da posizione impossibile** — l'eroe parte ora dallo spot corretto della startZone (no scavetto/dribbling-portiere da centrocampo).
+- **Titoli che mentono sul punteggio** — neutralizzati quando incoerenti col risultato reale.
 
 ---
 
