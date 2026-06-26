@@ -83,6 +83,72 @@ Una Situation è completata solo quando:
 
 ---
 
+## Validator 001 — Tentativo di Cross
+
+| Campo | Valore |
+|---|---|
+| **Identificativo** | `LMV-001` |
+| **Categoria** | Costruzione offensiva |
+| **Priorità** | Massima |
+
+### Scopo
+
+Verifica che una Situation classificata come **"Tentativo di Cross"** sia rappresentata in modo corretto, leggibile e credibile. Non solo l'esecuzione dell'animazione: l'intero highlight deve **raccontare chiaramente un tentativo di cross**.
+
+### Definizione
+
+Qualsiasi azione in cui il giocatore in possesso cerca **intenzionalmente** di inviare il pallone nell'area avversaria con un cross. Il risultato può essere positivo o negativo, ma il **tentativo deve risultare evidente**.
+
+### Situazioni compatibili / non compatibili
+
+- **Compatibili:** cross alto · teso · rasoterra · arretrato · a rientrare · primo palo · secondo palo (stessa struttura narrativa).
+- **NON compatibili:** passaggi filtranti · cambi di gioco · tiri · lanci lunghi · rinvii · calci piazzati.
+
+### Timeline attesa
+
+| Fase | Evento |
+|---|---|
+| 1 | **Ricezione** — il protagonista entra in possesso |
+| 2 | **Controllo** — controlla il pallone |
+| 3 | **Preparazione** — crea spazio (avanza / rallenta / protegge / finta) |
+| 4 | **Preparazione tecnica** — orienta il corpo, postura coerente con un cross |
+| 5 | **Impatto** — il piede colpisce il pallone, momento chiaramente visibile |
+| 6 | **Traiettoria** — percorso coerente e leggibile |
+| 7 | **Reazione** — attaccanti attaccano l'area, difensori reagiscono, portiere valuta |
+| 8 | **Conclusione** — uno degli outcome previsti |
+| 9 | **Post-Highlight** — mostra il risultato finale; **non** interrompere subito dopo il cross |
+
+### Outcome
+
+- **Ammessi** (ognuno rappresentato visivamente): colpo di testa · tiro · deviazione · respinta difensore · presa portiere · uscita del pallone · intercetto · gol · nessun destinatario.
+- **Non ammessi:** cross seguito da animazione di passaggio corto · cross senza traiettoria · pallone che cambia direzione senza motivo · destinatario che ignora il pallone · difensori completamente immobili · portiere immobile quando coinvolto.
+
+### Controlli per validator
+
+- **Ball:** traiettoria coerente, velocità plausibile, rotazione coerente, destinazione raggiungibile, no teletrasporti, no effetto boomerang.
+- **Player:** il **protagonista** guarda verso l'area / postura coerente / completa il gesto; gli **attaccanti** cercano il cross e attaccano lo spazio; i **difensori** marcano / intercettano / reagiscono; il **portiere** segue il pallone / valuta l'uscita / tenta presa o deviazione.
+- **Camera:** segue il protagonista in preparazione e il pallone nel cross, mostra area + destinatario + esito; **il momento dell'impatto non va nascosto**.
+- **Motion:** preparazione fluida, transizione naturale, continuità, no movimenti bruschi, no compenetrazioni.
+- **Semantic:** *"Un osservatore capirebbe immediatamente che il protagonista sta tentando un cross?"* — se no → **FAIL**.
+- **Football Intelligence:** cross da zona plausibile, spazio realmente cercato, attaccanti in area, difensori a protezione, portiere che reagisce → azione credibile.
+- **Narrative:** storia completa `Inizio → Preparazione → Cross → Traiettoria → Reazione → Conclusione → Post-Highlight`; la mancanza di una fase fondamentale riduce il Narrative Score.
+
+### Errori critici (FAIL)
+
+Il cross non viene mostrato · il pallone cambia direzione senza causa · il replay termina prima dell'esito · il protagonista esegue un'animazione incompatibile · eventi fuori ordine · la camera non mostra il momento decisivo.
+
+### Suggerimenti automatici
+
+Aumentare la durata del post-highlight · anticipare il cambio camera · migliorare il movimento degli attaccanti · correggere la traiettoria · sincronizzare meglio cronaca e animazione.
+
+### Definition of Done
+
+Tentativo di cross immediatamente riconoscibile; gesto tecnico preparato correttamente; traiettoria coerente; compagni/difensori/portiere reagiscono in modo credibile; risultato finale chiaramente visibile; post-highlight che conclude senza tagli bruschi; cronaca + timeline + animazione sincronizzate.
+
+> Un highlight che termina **subito dopo il calcio del pallone**, senza mostrare le conseguenze, è da considerare **incompleto** anche se tecnicamente corretto.
+
+---
+
 ## Stato di implementazione (mappatura sul codice attuale)
 
 > Onestà documentale (charter): cosa dello standard esiste già nel gate vs cosa manca.
@@ -99,3 +165,7 @@ Una Situation è completata solo quando:
 | Sistema di gravità INFO..FATAL | 🟡 | il gate distingue issue (FAIL) vs warn; manca la scala completa MINOR/MAJOR/CRITICAL |
 
 **Prerequisito comune** (come per `LIVE_MATCH_QA_SPEC.md`): Semantic Validator, eventi obbligatori/vietati e Timeline dipendono tutti dal **layer Event + Timeline** osservabile nel motore.
+
+### LMV-001 (Tentativo di Cross) — copertura attuale
+
+Il motore copre già diversi requisiti *a livello di rendering* (non validati dal gate dal vivo): varianti cross decise dal motore (F5/F8), traiettoria = conseguenza della decisione (F5), regia per-pattern del cross (CINE-5: FAR_POST/CUTBACK/NEAR), reazioni difensive deliberative (F10/F11), uscita portiere (F13), post-arco `cross_goal`. **Non ancora validati automaticamente:** timeline a 9 fasi, eventi obbligatori/vietati, Semantic ("è riconoscibile come cross?"), Narrative (storia completa), presenza del post-highlight, sincronia cronaca↔animazione. → richiede il layer Event+Timeline + un Semantic Validator per-Situation.
