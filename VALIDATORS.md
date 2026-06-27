@@ -4,7 +4,7 @@ Standard e catalogo dei **validator** della Live Match Development Platform.
 
 > Documento vivo, organizzato per capitoli. Si conforma a `MASTER_PROMPT.md` (charter LMQP) e a `LIVE_MATCH_QA_SPEC.md` (architettura, cap. 3.4 Validator Engine).
 >
-> Validator **specificati** qui: LMV-001…LMV-019. Validator **pianificati** (residui): vedi `VALIDATORS_REMAINING.md`.
+> Validator **specificati** qui: LMV-001…LMV-023. Validator **pianificati** (residui): vedi `VALIDATORS_REMAINING.md`.
 
 ---
 
@@ -1079,6 +1079,110 @@ Intenzione di creare un'occasione immediatamente riconoscibile; destinatario chi
 
 ---
 
+## Validator 020 — Tentativo di Attacco della Profondità
+
+| Campo | Valore |
+|---|---|
+| **Identificativo** | `LMV-020` |
+| **Categoria** | Movimento Offensivo |
+| **Priorità** | Massima |
+
+**Scopo** — verificare che il protagonista tenti realmente di **attaccare lo spazio alle spalle della linea difensiva** (si verifica l'intenzione, non la ricezione).
+
+**Definizione** — movimento **senza palla** per sfruttare lo spazio dietro la linea difensiva; intenzione immediatamente riconoscibile.
+
+- **Compatibili:** taglio centrale · diagonale · attacco sul filo del fuorigioco · inserimento dietro il terzino · corsa in contropiede.
+- **NON compatibili:** semplice smarcamento laterale (LMV-018) · progressione con il pallone · movimento di copertura.
+
+**Timeline** — `Lettura → Osservazione della linea difensiva → Scatto → Attacco dello spazio → Tentativo di ricezione → Esito → Post-Highlight`.
+
+**Outcome ammessi** — ricezione · assist · tiro · gol · fuorigioco · intercetto · mancato passaggio. **Non ammessi:** corsa senza direzione · difensori immobili · replay interrotto.
+
+**Controlli** — *Ball:* sincronia movimento↔passaggio. *Player:* scelta del tempo, traiettoria della corsa, reazione dei difensori, sincronia col portatore. *Camera:* protagonista + linea difensiva + spazio attaccato visibili. *Motion:* corsa naturale e cambi di ritmo. *Semantic:* "È riconoscibile un attacco della profondità?" → no = FAIL. *Football Intelligence:* timing corretto, spazio libero attaccato, reazione della linea.
+
+**Errori critici (FAIL)** — corsa senza scopo · difensore che non reagisce · cronaca/highlight incoerenti.
+
+**Definition of Done** — attacco della profondità immediatamente riconoscibile, sincronizzato col gioco, con conseguenza visibile.
+
+---
+
+## Validator 021 — Tentativo di Ricezione del Pallone
+
+| Campo | Valore |
+|---|---|
+| **Identificativo** | `LMV-021` |
+| **Categoria** | Controllo |
+| **Priorità** | Alta |
+
+**Scopo** — verificare che il protagonista tenti di **ricevere un passaggio mantenendo il controllo**; la ricezione è l'inizio dell'azione offensiva successiva.
+
+- **Compatibili:** ricezione rasoterra · aerea · in corsa · spalle alla porta · sulla fascia.
+- **NON compatibili:** controllo orientato (LMV-022) · colpo di testa · deviazione.
+
+**Timeline** — `Movimento → Preparazione → Ricezione → Controllo → Esito → Post-Highlight`.
+
+**Outcome ammessi** — controllo riuscito · controllo imperfetto · pallone perso · deviazione · contrasto.
+
+**Controlli** — *Ball:* punto di impatto e controllo. *Player:* postura, orientamento del corpo, preparazione. *Camera:* ricezione chiaramente visibile. *Motion:* fluidità del controllo. *Semantic:* "È riconoscibile il tentativo di ricevere?" *Football Intelligence:* scelta della posizione + sincronia col passatore.
+
+**Errori critici (FAIL)** — il pallone arriva senza preparazione · controllo innaturale · replay interrotto.
+
+**Definition of Done** — ricezione immediatamente riconoscibile che prepara naturalmente la giocata successiva.
+
+---
+
+## Validator 022 — Tentativo di Controllo Orientato
+
+| Campo | Valore |
+|---|---|
+| **Identificativo** | `LMV-022` |
+| **Categoria** | Tecnica Individuale |
+| **Priorità** | Alta |
+
+**Scopo** — verificare che il protagonista tenti di **orientare il primo controllo** verso la giocata successiva (passaggio, tiro, progressione o dribbling).
+
+- **Compatibili:** controllo verso la porta · verso la fascia · in progressione · dopo lancio · dopo cross.
+- **NON compatibili:** semplice stop (LMV-021) · deviazione · colpo di testa.
+
+**Timeline** — `Ricezione → Primo controllo → Orientamento del corpo → Preparazione della giocata → Esito → Post-Highlight`.
+
+**Outcome ammessi** — progressione · tiro · assist · dribbling · perdita del possesso.
+
+**Controlli** — *Ball:* primo tocco e nuova direzione. *Player:* orientamento del corpo, scelta tecnica. *Camera:* primo controllo leggibile. *Motion:* fluidità del gesto. *Semantic:* "Il controllo prepara chiaramente la giocata successiva?" → no = FAIL. *Football Intelligence:* controllo coerente con la situazione tattica.
+
+**Errori critici (FAIL)** — il controllo non modifica realmente la situazione di gioco.
+
+**Definition of Done** — controllo orientato immediatamente riconoscibile che genera un vantaggio tecnico.
+
+---
+
+## Validator 023 — Tentativo di Seconda Palla
+
+| Campo | Valore |
+|---|---|
+| **Identificativo** | `LMV-023` |
+| **Categoria** | Opportunismo Offensivo |
+| **Priorità** | Alta |
+
+**Scopo** — verificare che il protagonista tenti di **conquistare un pallone vagante** generato da respinta, deviazione o rimpallo.
+
+**Definizione** — "seconda palla" = qualsiasi pallone non più controllato da alcun giocatore dopo una giocata precedente.
+
+- **Compatibili:** respinta del portiere · palo · traversa · rimpallo · deviazione.
+- **NON compatibili:** ricezione diretta · passaggio intenzionale.
+
+**Timeline** — `Respinta → Lettura → Attacco della seconda palla → Tentativo di controllo → Esito → Post-Highlight`.
+
+**Outcome ammessi** — recupero · tiro · assist · perdita del possesso · fallo.
+
+**Controlli** — *Ball:* traiettoria imprevedibile ma realistica. *Player:* tempo di reazione, aggressività. *Camera:* seconda palla sempre visibile. *Motion:* esplosività del movimento. *Semantic:* "È riconoscibile il tentativo di conquistare una seconda palla?" → no = FAIL. *Football Intelligence:* priorità d'intervento, reattività, lettura del rimbalzo.
+
+**Errori critici (FAIL)** — il protagonista ignora il pallone vagante · replay che termina prima della conclusione.
+
+**Definition of Done** — chiaro tentativo di conquistare una seconda palla, con comportamento realistico di protagonista, avversari e pallone.
+
+---
+
 ## Stato di implementazione (mappatura sul codice attuale)
 
 > Onestà documentale (charter): cosa dello standard esiste già nel gate vs cosa manca.
@@ -1095,6 +1199,14 @@ Intenzione di creare un'occasione immediatamente riconoscibile; destinatario chi
 | Sistema di gravità INFO..FATAL | 🟡 | il gate distingue issue (FAIL) vs warn; manca la scala completa MINOR/MAJOR/CRITICAL |
 
 **Prerequisito comune** (come per `LIVE_MATCH_QA_SPEC.md`): Semantic Validator, eventi obbligatori/vietati e Timeline dipendono tutti dal **layer Event + Timeline** osservabile nel motore.
+
+### LMV-020/021/022/023 — copertura attuale (sintesi)
+
+- **LMV-020 Attacco della Profondità:** intento `through`/`insertion` + corse in profondità nel canale libero (F3) + outcome `offside` nel Decision Engine; il timing "sul filo del fuorigioco" e la reazione della linea difensiva non sono validati.
+- **LMV-021 Ricezione / LMV-022 Controllo Orientato:** parzialmente nel beat `assist_recv` (il ricevente controlla prima di concludere), ma **non come Situation autonome col protagonista che riceve/orienta** — oggi la ricezione è un beat intermedio, non un highlight a sé.
+- **LMV-023 Seconda Palla:** i post-arco `hit_post`/`deflect`/respinta generano palloni vaganti, ma **non c'è una fase di conquista della seconda palla** giocabile/scriptata → nuova meccanica da progettare.
+
+Comune: questi 4 spingono verso **highlight a protagonista non-conclusore** (ricezione, controllo, palla vagante) che il flusso attuale (HL centrato sulla conclusione dell'eroe) non rappresenta come Situation autonome. **Non validati:** timeline/Semantic/Narrative/post-highlight.
 
 ### LMV-017/018/019 — copertura attuale (sintesi)
 
