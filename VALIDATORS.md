@@ -4,7 +4,7 @@ Standard e catalogo dei **validator** della Live Match Development Platform.
 
 > Documento vivo, organizzato per capitoli. Si conforma a `MASTER_PROMPT.md` (charter LMQP) e a `LIVE_MATCH_QA_SPEC.md` (architettura, cap. 3.4 Validator Engine).
 >
-> Validator **specificati** qui: LMV-001…LMV-012. Validator **pianificati** (LMV-013…LMV-030): vedi `VALIDATORS_REMAINING.md`.
+> Validator **specificati** qui: LMV-001…LMV-013. Validator **pianificati** (LMV-014…LMV-030): vedi `VALIDATORS_REMAINING.md`.
 
 ---
 
@@ -851,6 +851,70 @@ Ripartenza immediatamente riconoscibile; recupero del possesso chiaramente visib
 
 ---
 
+## Validator 013 — Tentativo di Assist
+
+| Campo | Valore |
+|---|---|
+| **Identificativo** | `LMV-013` |
+| **Categoria** | Creazione di Occasione |
+| **Priorità** | Massima |
+
+### Scopo
+
+Verifica che una Situation **"Tentativo di Assist"** sia rappresentata in modo realistico, leggibile e coerente. Non conta che l'assist sia **vincente**: conta che il protagonista tenti realmente di **creare un'occasione da gol per un compagno**. Esito positivo o negativo.
+
+### Definizione
+
+Qualsiasi azione in cui il giocatore cerca **intenzionalmente** di mettere un compagno nelle condizioni di **concludere verso la porta**. Il passaggio deve avere una **chiara finalità offensiva** (distinto da LMV-003, passaggio generico).
+
+### Situazioni compatibili / non compatibili
+
+- **Compatibili:** filtrante decisivo · passaggio in profondità · cross assist · passaggio arretrato · sponda offensiva · passaggio nello spazio · assist dopo dribbling · dopo progressione · su contropiede.
+- **NON compatibili:** semplice passaggio di costruzione · cambio di gioco · scarico difensivo · rilancio del portiere · passaggio senza finalità offensiva.
+
+### Timeline attesa
+
+| Fase | Evento |
+|---|---|
+| 1 | **Possesso** — controlla il pallone |
+| 2 | **Lettura del gioco** — osserva movimento del compagno / difensori / spazi; intenzione di creare un'occasione evidente |
+| 3 | **Preparazione** — orienta il corpo / prepara il gesto / sceglie il tempo; destinatario identificabile |
+| 4 | **Tentativo di assist** — passaggio eseguito, traiettoria coerente col movimento del destinatario |
+| 5 | **Reazione** — il destinatario attacca lo spazio e conclude; difensori intercettano/chiudono; portiere legge il pericolo |
+| 6 | **Esito** — uno degli outcome previsti |
+| 7 | **Post-Highlight** — conclusione dell'occasione mostrata; **il replay non si interrompe subito dopo il passaggio** |
+
+### Outcome
+
+- **Ammessi:** assist riuscito · tiro · gol · parata · intercetto · deviazione · pallone fuori · errore tecnico del destinatario · perdita del possesso.
+- **Non ammessi:** destinatario non identificabile · passaggio senza finalità offensiva · nessuna reazione dei difensori · replay interrotto prima della conclusione · occasione da gol non mostrata · effetto **boomerang** · cambio di traiettoria senza contatto.
+
+### Controlli per validator
+
+- **Ball:** traiettoria coerente, velocità compatibile, rotazione plausibile, sincronia col movimento del destinatario, no teletrasporti, **no inversioni innaturali**.
+- **Player:** il **protagonista** legge il movimento / orienta il corpo / completa il gesto; il **destinatario** attacca lo spazio / prepara la conclusione / reagisce; i **difensori** chiudono la giocata / marcano il destinatario / reagiscono subito; il **portiere** segue l'evoluzione e si prepara.
+- **Camera:** mostra contemporaneamente protagonista e destinatario, segue il pallone, mantiene la porta in inquadratura nella fase finale, mostra l'esito; il cambio camera non rompe la leggibilità.
+- **Motion:** gesto fluido, sincronia passaggio↔movimenti, corse naturali, continuità, no movimenti innaturali.
+- **Semantic:** *"Un osservatore capirebbe immediatamente che il protagonista sta cercando di creare una chiara occasione da gol per un compagno?"* — se no → **FAIL**.
+- **Football Intelligence:** destinatario che attacca correttamente lo spazio, passaggio nel momento giusto, difensori che provano davvero a impedire l'occasione, portiere che reagisce al pericolo, scelta tatticamente plausibile.
+- **Narrative:** `Possesso → Lettura → Preparazione → Assist → Movimento del destinatario → Conclusione → Esito → Post-Highlight`; azione completa e comprensibile.
+
+### Errori critici (FAIL)
+
+Destinatario non identificabile · passaggio che non genera una reale occasione · replay che termina prima della conclusione · camera che perde il momento decisivo · cronaca e highlight che mostrano azioni differenti · destinatario passivo che non tenta la giocata.
+
+### Suggerimenti automatici
+
+Migliorare il movimento del destinatario · anticipare il passaggio · aumentare la pressione dei difensori · prolungare il post-highlight · sincronizzare cronaca e animazione · migliorare l'inquadratura della conclusione.
+
+### Definition of Done
+
+Intenzione di creare un'occasione immediatamente riconoscibile; destinatario chiaramente identificabile; passaggio e movimenti coerenti; comportamento di difensori e portiere credibile; risultato finale completamente mostrato; post-highlight che conclude naturalmente; cronaca + timeline + animazione che rappresentano la stessa intenzione.
+
+> Un "tentativo di assist" che **non mostra la creazione dell'occasione** o interrompe il replay prima della conclusione è **incompleto** e non conforme.
+
+---
+
 ## Stato di implementazione (mappatura sul codice attuale)
 
 > Onestà documentale (charter): cosa dello standard esiste già nel gate vs cosa manca.
@@ -867,6 +931,10 @@ Ripartenza immediatamente riconoscibile; recupero del possesso chiaramente visib
 | Sistema di gravità INFO..FATAL | 🟡 | il gate distingue issue (FAIL) vs warn; manca la scala completa MINOR/MAJOR/CRITICAL |
 
 **Prerequisito comune** (come per `LIVE_MATCH_QA_SPEC.md`): Semantic Validator, eventi obbligatori/vietati e Timeline dipendono tutti dal **layer Event + Timeline** osservabile nel motore.
+
+### LMV-013 (Tentativo di Assist) — copertura attuale
+
+Ben coperto sul lato esecuzione: è il caso d'uso centrale del passaggio offensivo — qualità decisa dal motore (F9: profondità scatto + pace), beat di **ricezione** (`assist_recv`) → conclusione (`assist_shot`), il compagno **scatta nello spazio** e la palla è giocata sulla corsa, **boomerang risolto** (5.14/5.22, outcome vietato da LMV-013). Regia `THROUGH_BALL`/`COMBINATION` (CINE-5). Distinzione da LMV-003: l'assist ha **finalità offensiva** (porta in inquadratura nella fase finale) — nel codice si riflette nel post-arco verso la conclusione, non in un flag esplicito. **Non validati automaticamente:** timeline a 7 fasi, Semantic ("crea un'occasione da gol?"), reazione difensori/portiere garantita, Narrative, presenza post-highlight con conclusione.
 
 ### LMV-012 (Tentativo di Contropiede) — copertura attuale
 

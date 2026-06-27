@@ -2,15 +2,14 @@
 
 Validator **pianificati** del catalogo LMQP (complemento di `VALIDATORS.md`, che contiene quelli già specificati). Per ciascuno si userà la **stessa struttura** dei validator `LMV-001..LMV-013`.
 
-> ⚠️ **Gap noto:** in `VALIDATORS.md` sono specificati **LMV-001…LMV-012**; **LMV-013 non è ancora stato fornito** (referenziato qui sotto ma assente dal catalogo).
+> ℹ️ In `VALIDATORS.md` sono ora specificati **LMV-001…LMV-013** (catalogo completo fino al 013).
 >
-> ℹ️ **LMV-018 (Protezione del Pallone)** è già coperto da **LMV-011** (stessa Situation, ora specificato in `VALIDATORS.md` come *Tentativo di Protezione del Pallone*) → da considerare **assorbito/ridondante** in questa lista.
+> ℹ️ **LMV-018 (Protezione del Pallone)** è già coperto da **LMV-011** (stessa Situation, *Tentativo di Protezione del Pallone*) → da considerare **assorbito/ridondante** in questa lista.
 
 ## Planned Validators
 
 | ID | Nome | Categoria (presunta) |
 |---|---|---|
-| **LMV-013** | *(non ancora fornito)* | — |
 | **LMV-014** | Tentativo di Lancio Lungo | Costruzione del gioco |
 | **LMV-015** | Tentativo di Cambio di Gioco | Costruzione del gioco |
 | **LMV-016** | Tentativo di Triangolazione | Costruzione offensiva |
