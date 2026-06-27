@@ -29,7 +29,7 @@ C+D attivi  ── prerequisito ──►  F2 (split monolite sicuro)
 | Sprint | Task | Deliverable | Effort | Rischio |
 |---|---|---|---|---|
 | **B1 — Timeline fine** ✅ | #1a backbone narrativo per-beat: evento `HighlightTimeline` (buildHLTimeline+validateHLTimeline) validato dal gate (htCount 23, 19 beat-tag, 0 violazioni). Eventi render-loop fini (BallTouched/CameraChanged) → step successivo | bus eventi beat | L | Medio · **fatto 5.38.0** |
-| **B2 — Cattura video** | #1b cattura sequenza/video · #9 attese state-based vs `sleep` fissi | gate vede il movimento | L | Medio |
+| **B2 — Mesh probe + cattura** | **PREREQUISITO scoperto (test autonomo):** `samplePostHighlight` legge `__CPM_STATE().players` = posizioni **LOGICHE**, ma l'off-ball AI ("No Dead Players") muove le **mesh** in modo **puramente visivo** (`matchPlayers` intatto) → il movimento off-ball è invisibile al gate. Serve un **probe posizioni-mesh** (`__CPM_MESHES`/estendere `__CPM_PROBE`) prima di poter validare Motion/NPC. Poi #1b cattura sequenza · #9 attese state-based | gate vede il movimento VISIVO | L | Medio |
 
 ## Fase C — Validator del Movimento + Realismo (High) — dipende da B
 | Sprint | Task | Copre AC | Effort |
