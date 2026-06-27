@@ -1,0 +1,9 @@
+{
+  "model": "gemma3:27b",
+  "avgQuality": 55.6,
+  "verdicts": {
+    "WARNING": 4
+  },
+  "count": 4,
+  "generatedAt": "2026-06-27T20:53:47.693Z"
+}

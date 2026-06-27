@@ -14,6 +14,8 @@
     "test:logic": "node --test test/logic/*.test.mjs",
     "save-compat": "node run-save-compat.mjs",
     "stress": "node run-stress.mjs",
+    "cross-validate": "node cross-validate.mjs",
+    "vision-compare": "node vision-compare.mjs",
     "test": "node run-3d-validation.mjs",
     "force-all": "node run-force-all.mjs",
     "selftest": "node run-golden.mjs --selftest",
