@@ -269,10 +269,13 @@ L'AI Vision Review è completo quando sa: comprendere la Situation · analizzare
 
 ## Stato attuale (mappatura onesta sul repo)
 
-🟡 **Scaffold presente — si attiva con una API key.** Oggi:
-- `tests/visual/lib/ai-vision.mjs` implementa la pipeline **opt-in**: analizza un campione di screenshot con un modello vision e produce recognition + score (Readability/Cinematic/Motion/Football-IQ) + verdict (PASS/WARNING/FAIL/BLOCKED) → `out/validate/ai-vision.json` + sezione Dashboard. **Non blocca MAI la CI** (secondo livello).
-- **Provider-agnostic**, default Anthropic (Claude vision); attivazione via env: `CPM_VISION_API_KEY` (+ `CPM_VISION_MODEL`/`CPM_VISION_PROVIDER`). Senza chiave → **skip pulito** (gate invariato), proxy-aware (`HTTPS_PROXY`).
-- Mancano ancora: cattura **video/sequenza** (oggi frame congelati), Situation Recognition come ponte formale al Semantic, confronto tra build, scoring storico.
+🟢 **Framework implementato (provider-based, Open/Closed).** Oggi:
+- **Architettura** in `tests/visual/lib/vision/`: `VisionProvider` (interfaccia) → `VisionReviewEngine` (Core, parla SOLO con l'interfaccia) → `ProviderRegistry` → provider concreti. Aggiungere un provider = nuova classe + registrazione, **zero modifiche al Core**.
+- **Provider:** `OllamaVisionProvider` (1°, locale e **cloud** via `OLLAMA_API_KEY` Bearer), `AnthropicVisionProvider`, + `OpenAI`/`Gemini` predisposti (registrati, `analyze()` da implementare).
+- **Pipeline** (runner `ai-vision-review.mjs`): cattura Playwright **multi-fase** (inizio·preparazione·evento·esito·post) → engine (cache+dedup+incrementale, timeout, retry/backoff, fallback, Failure Package) → scoring (Quality 0-100 + Confidence + Severity + Priority + verdict) → **report HTML** + `ai-vision.json`.
+- **Config 100% via `.env`** (nessun hardcode nel Core): `VISION_PROVIDER`, `OLLAMA_*`, `ANTHROPIC_*`, timeout/retry/cache/log. **Non blocca MAI la CI** (secondo livello): provider giù → skip pulito.
+- **Test** (`npm run test:vision`, 28 test): registry, config, scoring, cache, **engine via mock provider** (successo/cache/retry/BLOCKED/skip), provider offline. Il gate riusa lo stesso engine via `lib/ai-vision.mjs` (adattatore, niente logica duplicata).
+- Mancano ancora: cattura **video/sequenza** continua (oggi frame multipli), Situation Recognition come ponte formale al Semantic, confronto tra build, scoring storico, implementazione `analyze()` per OpenAI/Gemini.
 - La **Situation Recognition** (cap. 4) è il ponte naturale verso il **Semantic Validator**: entrambi richiedono che l'highlight sia osservabile come sequenza → prerequisito **layer Event + Timeline** + cattura video (oggi il gate è a frame congelati).
 
 > L'AI Vision è esplicitamente un **secondo livello** (non blocca la CI): utile per la qualità percepita, non per il PASS/FAIL tecnico (charter + cap. 3.9).

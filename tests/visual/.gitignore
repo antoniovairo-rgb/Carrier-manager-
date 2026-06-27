@@ -1,5 +1,7 @@
 node_modules/
 out/
 package-lock.json
+.env
+.env.local
 # il .gitignore di root ignora package.json globalmente: qui lo re-includiamo (serve per l'harness)
 !package.json
