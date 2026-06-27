@@ -15,6 +15,7 @@
     "test:logic:update-baseline": "CPM_UPDATE_BASELINE=1 node --test test/logic/*.test.mjs",
     "save-compat": "node run-save-compat.mjs",
     "stress": "node run-stress.mjs",
+    "replay": "node run-replay.mjs",
     "cross-validate": "node cross-validate.mjs",
     "vision-compare": "node vision-compare.mjs",
     "test": "node run-3d-validation.mjs",

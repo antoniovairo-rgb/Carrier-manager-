@@ -45,7 +45,7 @@ C+D attivi  ── prerequisito ──►  F2 (split monolite sicuro)
 ## Fase D — Replay & Regression Engine (Critical/High)
 | Sprint | Task | Deliverable | Effort |
 |---|---|---|---|
-| **D1 — Replay Engine** | 🟡 parziale: `replay-trace.mjs` (LMQP-10/11) traccia per-frame del post-highlight (campione) + Replay Viewer 2D nel report. #6 registrazione completa di OGNI HL + snapshot/diff → sprint grande | AC-051…060 | L |
+| **D1 — Replay Engine** | **slice DATI ✅**: `lib/replay.mjs` + `run-replay.mjs` (npm `replay`, in CI) registra l'**arco COMPLETO** dell'highlight (choose→resolve, 16 frame, stato+eventi) → `out/validate/replay/full_NNN.json` e **valida completezza/coerenza** (AC-051…055: non troncato, palla presente, esito registrato) — auto-verificato. Restano (sprint): Replay Debugger UI, video, eventi per-frame del render, snapshot/diff tra build | AC-051…055 ✅ (dati) | L · **slice fatto** |
 | **D2 — Regression ricca** | **#7 baseline backbone narrativo ✅** (`backbone-regression` node: firma `type/pattern:nBeats:lastBeat` per situation, complementa golden(stato)+decision(decisione); `backbone-baseline.json`, 179). #39 Failure Package ricco (video/snapshot) · #70 visual comparison → sprint grandi | Regression (cap. 3.6) | L · **#7 fatto** |
 
 ## Fase E — Engine Realism (High)

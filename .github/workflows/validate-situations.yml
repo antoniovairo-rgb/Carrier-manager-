@@ -54,6 +54,10 @@ jobs:
       - name: Save-compat test (migration)
         run: npm run save-compat
 
+      # D1 Replay Engine: registra + valida la completezza dei replay (AC-051..055)
+      - name: Replay completeness (D1)
+        run: npm run replay
+
       - name: Upload report (HTML + screenshot)
         if: always()  # carica il report anche quando il gate fallisce
         uses: actions/upload-artifact@v4
