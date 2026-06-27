@@ -18,7 +18,7 @@ Carrier-manager-/
 ├── VALIDATORS.md            ← standard universale + catalogo validator LMV-001..030 (cap. 1, COMPLETO)
 ├── ROADMAP.md               ← roadmap LMQP a 8 fasi + stato attuale
 ├── DEVELOPMENT_RULES.md     ← regole di sviluppo (v1.0, cap. 1–20) + mappatura sul repo
-├── ACCEPTANCE_CRITERIA.md   ← checklist di accettazione (stub, target 600–1000 controlli)
+├── ACCEPTANCE_CRITERIA.md   ← checklist di accettazione (v1.0, AC-001..050; target 600–1000 controlli)
 ├── CLAUDE.md
 ├── CHANGELOG.md
 ├── LIVE-MATCH-ENGINE.md      ← architettura del motore di partita (pipeline Intent→Decision→Simulation→Animation)
