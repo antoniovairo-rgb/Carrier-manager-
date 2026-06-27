@@ -190,6 +190,83 @@ Soddisfatti quando l'AI Vision classifica automaticamente gli errori, ne stima s
 
 ---
 
+## 17. Build Comparison
+
+Confronto automatico di ogni nuova build con quella di riferimento: non solo errori assoluti, ma **miglioramento vs regressione**.
+
+**Workflow:** `Build N-1 → acquisizione highlight → Build N → acquisizione highlight → analisi comparativa → differenze → Quality Delta → decisione`.
+
+**Scope:** Football Intelligence · Situation Recognition · Animazioni · Pallone · Camera · Replay · Cronaca · Sincronizzazione · Fluidità · Performance visiva.
+
+**Delta Analysis** — per ogni componente: miglioramento / peggioramento / nessuna variazione (espresso **numericamente e testualmente**). Ogni peggioramento significativo → **regressione**, associata ai validator coinvolti.
+
+---
+
+## 18. Trend Analysis
+
+L'AI monitora l'evoluzione qualitativa nel tempo; ogni build alimenta lo storico.
+
+**Historical Metrics:** Quality Score · n. FAIL/WARNING/PASS · severità media · tempo medio di revisione · tempo medio validator · copertura test.
+
+**Trend Indicators:** miglioramenti continui · peggioramenti continui · instabilità · regressioni ricorrenti · componenti più problematici. Il Dashboard mostra l'andamento qualitativo attraverso le build.
+
+---
+
+## 19. Human Review Workflow
+
+L'AI Vision è il **primo livello**; la revisione umana è il livello **finale**.
+
+**Escalation** (intervento umano richiesto quando): Confidence sotto soglia · errori critici non classificabili · risultati contrastanti validator↔AI · nuove Situation non riconosciute · anomalie mai osservate.
+
+**Human Feedback** (registrato): valutazione finale · motivazione · correzioni · conferma/modifica della classificazione AI.
+
+**Review Traceability** — ogni revisione ricostruibile: versione analizzata · dataset · validator eseguiti · report AI · decisione finale.
+
+---
+
+## 20. Dashboard & Reporting
+
+Ogni revisione genera un report strutturato su tre livelli:
+
+- **Report Summary:** id build · data/ora · Situation · validator eseguiti · Quality Score · Confidence Score · PASS/WARNING/FAIL · regressioni.
+- **Technical Report:** componenti coinvolti · root cause · suggerimenti automatici · severity · priorità · tempo totale di revisione.
+- **Executive Report** (per il Product Owner): qualità complessiva · principali criticità · stato della build · raccomandazione finale.
+
+---
+
+## 21. Continuous Learning
+
+L'AI Vision migliora nel tempo. La **Knowledge Base** conserva: errori ricorrenti · pattern riconosciuti · correzioni applicate · falsi positivi · falsi negativi.
+
+**Continuous Improvement:** aumentare la precisione, ridurre falsi positivi/negativi, migliorare classificazione e raccomandazioni.
+
+**Learning Constraints** — l'apprendimento **non** modifica autonomamente: validator · Acceptance Criteria · Development Rules · logica del QA Engine. L'AI apprende **solo** come migliorare la propria capacità di revisione.
+
+---
+
+## 22. Final Review Decision
+
+Stato finale della build (uno solo):
+
+| Stato | Significato |
+|---|---|
+| **PASS** | qualità soddisfa tutti i criteri → può proseguire verso il rilascio |
+| **PASS WITH WARNING** | anomalie minori → prosegue previa valutazione del team |
+| **FAIL** | problemi che impediscono il rilascio → correggere e rivalutare |
+| **BLOCKED** | informazioni insufficienti → revisione manuale |
+
+**Final Recommendation:** Ready for Release · Ready for QA · Requires Improvements · Major Rework Required · Manual Review Required.
+
+---
+
+## 23. Definition of Done (globale)
+
+L'AI Vision Review è completo quando sa: comprendere la Situation · analizzare il comportamento calcistico · verificare animazioni/pallone/camera/replay/cronaca · individuare anomalie tecniche e calcistiche · classificare errori/severità/priorità · identificare la causa principale · proporre suggerimenti concreti · confrontare build · monitorare l'evoluzione qualitativa · produrre report per sviluppatori e Product Owner · supportare la revisione umana **senza sostituirla** · contribuire al miglioramento continuo.
+
+> L'AI Vision è il **revisore automatico ufficiale** della piattaforma — un elemento fondamentale del QA del Live Match Engine, ma sempre **secondo livello** (non blocca da solo la CI; charter + cap. 3.9).
+
+---
+
 ## Stato attuale (mappatura onesta sul repo)
 
 🔴 **Modulo non implementato.** Oggi:
