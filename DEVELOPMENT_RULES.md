@@ -93,6 +93,80 @@ Soddisfatti quando qualsiasi sviluppatore o agente AI comprende che ogni modific
 
 ---
 
+## 7. Autonomous Development Rules
+
+Claude Code opera come **Senior Software Engineer autonomo**: completa le attività **senza conferme intermedie**, salvo operazioni potenzialmente **distruttive o irreversibili**. Obiettivo: minimizzare l'interazione durante il ciclo di sviluppo.
+
+**Autonomia operativa** — analizzare il problema → individuare la root cause → implementare → compilare → eseguire tutti i test → verificare regressioni → produrre un report finale. La richiesta continua di autorizzazioni interrompe il flusso e va evitata quando possibile.
+
+**Decision making** — con più soluzioni plausibili, scegliere quella che minimizza il rischio di regressioni, migliora qualità e manutenibilità, mantiene la coerenza architetturale.
+
+---
+
+## 8. Preventive Authorizations
+
+Per tutta la sessione si considerano **preventivamente autorizzate** tutte le operazioni **non distruttive** per implementazione/compilazione/testing/validazione.
+
+Autorizzati: PowerShell · Bash · CMD · **Git** · Node.js · npm · pnpm · yarn · vite · webpack · TypeScript · eslint · prettier · Playwright · Chromium · Chrome Headless · Claude Preview · build · test · log · screenshot · registrazione video · profiling · benchmark. Nessuna conferma per singolo comando.
+
+**Richiedono conferma esclusivamente:** cancellazione definitiva di dati · modifiche irreversibili · reset repository · **force push** · eliminazione database · operazioni esterne al progetto.
+
+> ⚠️ **Conflitto noto con `MASTER_PROMPT.md` (Parte 2):** la charter elenca `git push`/`git merge`/`git rebase` tra le operazioni che richiedono **approvazione esplicita**; questo cap. 8 autorizza "Git" preventivamente e richiede conferma solo per *force push*/reset. **In attesa di riconciliazione dal proprietario** (vedi nota in fondo). Fino ad allora: per prudenza i push restano subordinati al via libera.
+
+---
+
+## 9. Automatic Build Policy
+
+Dopo qualsiasi modifica al **codice** è obbligatorio eseguire automaticamente:
+
+```
+Build → Lint → Type Check → Compilation → Smoke Test → Regression Test → Visual Test → Performance Test → Report Finale
+```
+
+Vietato considerare conclusa una modifica senza l'intera pipeline. **Build failure** → interruzione immediata del ciclo; nessun test su build non valide.
+
+---
+
+## 10. Mandatory Visual Testing
+
+Ogni modifica al Live Match Engine va verificata **visivamente** (non basta il successo dei test logici). Da validare: movimenti · animazioni · telecamera · pallone · replay · post-highlight · sincronizzazione.
+
+- **Browser standard:** Chromium; se disponibile, **Claude Preview** come verifica grafica aggiuntiva.
+- **Visual Evidence:** ogni sessione produce e archivia automaticamente screenshot · video · replay · log.
+
+---
+
+## 11. Playwright Rules
+
+Framework ufficiale e2e. Usato per: avviare il gioco · simulare input · navigare la UI · lanciare partite · eseguire highlight · raccogliere screenshot · esportare video.
+
+- **Best practices:** test deterministici, ripetibili, indipendenti, paralleli quando possibile. **Vietati i timeout arbitrari** → attese basate sullo **stato** dell'applicazione.
+- **Browser lifecycle:** ogni browser aperto va chiuso automaticamente; vietato lasciare istanze Chromium in esecuzione.
+
+---
+
+## 12. Claude Preview Rules
+
+Quando disponibile, **Claude Preview** è il **secondo livello** di verifica: qualità grafica/cinematografica, anomalie visive, confronto fra highlight. Integra Playwright, **non lo sostituisce**.
+
+**AI Visual Review** — valuta fluidità · leggibilità · coerenza · sincronizzazione · realismo · qualità delle animazioni; i risultati vanno nel report finale.
+
+### Definition of Done (cap. 7–12)
+
+Soddisfatti quando Claude Code sviluppa una modifica in completa autonomia, usa automaticamente gli strumenti di build/testing autorizzati, valida il comportamento tramite Playwright e Claude Preview e produce evidenze oggettive della qualità senza interventi manuali dell'utente.
+
+---
+
+## Nota — riconciliazione policy Git (da decidere dal proprietario)
+
+`MASTER_PROMPT.md` (Parte 2) e questo documento (cap. 8) **divergono** sull'autorizzazione a `git push`/`merge`/`rebase`:
+- **Charter (MASTER_PROMPT Parte 2):** richiedono approvazione esplicita.
+- **DEVELOPMENT_RULES cap. 8:** "Git" preventivamente autorizzato; conferma solo per *force push*/reset/irreversibili.
+
+**Default prudenziale attuale:** i push restano subordinati al via libera del proprietario finché la divergenza non è risolta. Per autorizzare i push in autonomia (mantenendo la conferma solo su force-push/reset), aggiornare la Politica Git di `MASTER_PROMPT.md`.
+
+---
+
 ## Stato attuale (mappatura onesta sul repo)
 
 | Regola | Stato |
