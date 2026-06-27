@@ -1,0 +1,2407 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Career Player Manager</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.6/babel.min.js"></script>
+<style>*{box-sizing:border-box;margin:0;padding:0;}html,body{overflow-x:hidden;background:#f0f7ff;-webkit-tap-highlight-color:transparent;}#root{min-height:100vh;}#ld{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:#f0f7ff;flex-direction:column;gap:14px;z-index:9999;font-family:sans-serif;}.sp{width:36px;height:36px;border:3px solid #e2e8f0;border-top:3px solid #2563eb;border-radius:50%;animation:spin .8s linear infinite;}@keyframes spin{to{transform:rotate(360deg)}}</style>
+</head>
+<body>
+<div id="ld"><div class="sp"></div><div style="font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#2563eb;font-weight:700">CAREER PLAYER MANAGER</div></div>
+<div id="root"></div>
+<script>window._hide=function(){var e=document.getElementById('ld');if(e)e.style.display='none';};setTimeout(window._hide,15000);</script>
+<script type="text/babel" data-presets="react">
+const React=window.React;const ReactDOM=window.ReactDOM;const THREE=window.THREE;
+const{useState,useEffect,useRef,useCallback}=React;
+
+/* ========================================
+   LIGHT THEME  (req #1)
+======================================== */
+const TH = {
+  bg:"#f0f7ff", bgGrad:"linear-gradient(160deg,#e8f4fd 0%,#f0faf4 100%)",
+  card:"#ffffff", cardBorder:"#dde6f0", shadow:"0 2px 12px rgba(0,0,0,0.07)",
+  text:"#1e293b", muted:"#64748b", faint:"#94a3b8",
+  primary:"#2563eb", primaryDk:"#1d4ed8",
+  success:"#16a34a", danger:"#dc2626", warning:"#d97706",
+  gold:"#b45309", accent:"#7c3aed",
+  navBg:"rgba(255,255,255,0.96)",
+};
+
+/* ========================================
+   AVATAR PRESETS  (req #2 – 12 varianti)
+======================================== */
+const AVATARS = [
+  {id:0,label:"Europeo, capelli corti scuri", skin:"#f5c5a3",hair:"#2d1800",eye:"#5a3e2b",style:"short",beard:false},
+  {id:1,label:"Europeo, capelli biondi lunghi",skin:"#f5c5a3",hair:"#d4a820",eye:"#5b8dd9",style:"long",beard:false},
+  {id:2,label:"Europeo castano, barba",        skin:"#e8b898",hair:"#4a2800",eye:"#4a3728",style:"medium",beard:true},
+  {id:3,label:"Europeo, capelli rossi ricci",  skin:"#f0c8a0",hair:"#c44b00",eye:"#5b8dd9",style:"curly",beard:false},
+  {id:4,label:"Africano, pelle scura",          skin:"#7c4a1e",hair:"#0f0500",eye:"#2d1800",style:"short",beard:false},
+  {id:5,label:"Africano rasato, barba",         skin:"#5a3010",hair:"#1a0800",eye:"#1a0800",style:"bald",beard:true},
+  {id:6,label:"Latino, capelli neri",           skin:"#c8956a",hair:"#1a0800",eye:"#3d2800",style:"slick",beard:true},
+  {id:7,label:"Asiatico, capelli dritti",       skin:"#e8c8a0",hair:"#1a0800",eye:"#2d1800",style:"straight",beard:false},
+  {id:8,label:"Nordeuropeo, capelli chiari",    skin:"#fad5c0",hair:"#e8d840",eye:"#5b8dd9",style:"long",beard:false},
+  {id:9,label:"Mediorientale, barba folta",     skin:"#c8956a",hair:"#1a0800",eye:"#2d1800",style:"medium",beard:true},
+  {id:10,label:"Americano, ricci naturali",      skin:"#b87c4a",hair:"#1a0800",eye:"#2d1800",style:"curly",beard:false},
+  {id:11,label:"Europeo maturo, grigio",         skin:"#f0c090",hair:"#909090",eye:"#4a6b8a",style:"short",beard:true},
+];
+function AvatarSVG({id=0, size=60, border=false}) {
+  const p = AVATARS[id%AVATARS.length];
+  const Hair = () => {
+    const f = p.hair;
+    switch(p.style){
+      case "bald": return null;
+      case "short": return <ellipse cx="50" cy="24" rx="28" ry="16" fill={f}/>;
+      case "long": return <><ellipse cx="50" cy="24" rx="28" ry="16" fill={f}/><path d="M23 32 Q17 62 24 80" stroke={f} strokeWidth="10" fill="none" strokeLinecap="round"/><path d="M77 32 Q83 62 76 80" stroke={f} strokeWidth="10" fill="none" strokeLinecap="round"/></>;
+      case "afro": return <circle cx="50" cy="20" r="32" fill={f}/>;
+      case "curly": return <><ellipse cx="50" cy="22" rx="30" ry="18" fill={f}/><circle cx="28" cy="34" r="10" fill={f}/><circle cx="72" cy="34" r="10" fill={f}/></>;
+      case "slick": return <path d="M22 18 Q50 8 78 18 Q80 38 76 34 Q50 22 24 34 Z" fill={f}/>;
+      case "medium": return <><ellipse cx="50" cy="24" rx="29" ry="16" fill={f}/><path d="M22 32 Q20 54 26 66" stroke={f} strokeWidth="8" fill="none" strokeLinecap="round"/><path d="M78 32 Q80 54 74 66" stroke={f} strokeWidth="8" fill="none" strokeLinecap="round"/></>;
+      case "straight": default: return <ellipse cx="50" cy="24" rx="28" ry="14" fill={f}/>;
+    }
+  };
+  return (
+    <svg viewBox="0 0 100 100" width={size} height={size} style={{borderRadius:"50%",display:"block",overflow:"hidden",border:border?"2px solid "+TH.primary:"none"}}>
+      <circle cx="50" cy="50" r="50" fill="#dbeafe"/>
+      <path d="M10 100 Q10 72 32 68 Q50 78 68 68 Q90 72 90 100Z" fill="#3b82f6"/>
+      <rect x="44" y="65" width="12" height="12" rx="3" fill={p.skin}/>
+      <ellipse cx="50" cy="50" rx="27" ry="30" fill={p.skin}/>
+      <Hair/>
+      <ellipse cx="23" cy="50" rx="4" ry="7" fill={p.skin}/>
+      <ellipse cx="77" cy="50" rx="4" ry="7" fill={p.skin}/>
+      <path d="M33 38 Q40 35 45 38" stroke={p.hair} strokeWidth="2.5" fill="none" strokeLinecap="round"/>
+      <path d="M55 38 Q60 35 67 38" stroke={p.hair} strokeWidth="2.5" fill="none" strokeLinecap="round"/>
+      <ellipse cx="39" cy="46" rx="5.5" ry="5" fill="white"/>
+      <circle cx="39" cy="46" r="3.2" fill={p.eye}/>
+      <circle cx="40" cy="45" r="1.2" fill="black"/>
+      <ellipse cx="61" cy="46" rx="5.5" ry="5" fill="white"/>
+      <circle cx="61" cy="46" r="3.2" fill={p.eye}/>
+      <circle cx="62" cy="45" r="1.2" fill="black"/>
+      <ellipse cx="50" cy="56" rx="2.5" ry="2" fill={p.skin==="fad5c0"?"#c09080":"#7c4030"} opacity="0.5"/>
+      <path d="M41 64 Q50 71 59 64" stroke={p.skin==="%f5c5a3"?"#c08070":"#8b4040"} strokeWidth="2.2" fill="none" strokeLinecap="round"/>
+      {p.beard && <ellipse cx="50" cy="68" rx="22" ry="10" fill={p.hair} opacity="0.42"/>}
+    </svg>
+  );
+}
+
+/* ========================================
+   EUROPEAN CLUBS DATABASE  (req #11,#12)
+======================================== */
+const mkT=(id,n,a,p,c,c2,nat,lg)=>({id,n,a,p,c,c2,nat,lg});
+const CLUBS=[
+  // -- ITALIA Serie A --
+  mkT("juve","Juventus","JUV",95,"#f5f5f5","#1a1a2e","🇮🇹","Serie A"),
+  mkT("inter","Inter","INT",92,"#1d4ed8","#0f0f0f","🇮🇹","Serie A"),
+  mkT("milan","Milan","MIL",90,"#dc2626","#0f0f0f","🇮🇹","Serie A"),
+  mkT("napoli","Napoli","NAP",88,"#38bdf8","#ffffff","🇮🇹","Serie A"),
+  mkT("roma","Roma","ROM",84,"#b91c1c","#f59e0b","🇮🇹","Serie A"),
+  mkT("lazio","Lazio","LAZ",80,"#93c5fd","#1a1a2e","🇮🇹","Serie A"),
+  mkT("ata","Atalanta","ATA",82,"#1d4ed8","#0f0f0f","🇮🇹","Serie A"),
+  mkT("fio","Fiorentina","FIO",77,"#7c3aed","#f5f5f5","🇮🇹","Serie A"),
+  mkT("tor","Torino","TOR",70,"#92400e","#fef3c7","🇮🇹","Serie A"),
+  mkT("bol","Bologna","BOL",72,"#dc2626","#1d4ed8","🇮🇹","Serie A"),
+  mkT("udi","Udinese","UDI",65,"#1e293b","#f1f5f9","🇮🇹","Serie A"),
+  mkT("sas","Sassuolo","SAS",68,"#15803d","#0f0f0f","🇮🇹","Serie A"),
+  mkT("cag","Cagliari","CAG",65,"#dc2626","#1d4ed8","🇮🇹","Serie A"),
+  mkT("sam","Sampdoria","SAM",67,"#1d4ed8","#dc2626","🇮🇹","Serie A"),
+  mkT("gen","Genoa","GEN",66,"#dc2626","#1d4ed8","🇮🇹","Serie A"),
+  mkT("emp","Empoli","EMP",63,"#2563eb","#ffffff","🇮🇹","Serie A"),
+  mkT("ver","Verona","VER",67,"#f59e0b","#1d4ed8","🇮🇹","Serie A"),
+  mkT("spe","Spezia","SPE",60,"#e5e7eb","#0f0f0f","🇮🇹","Serie A"),
+  // -- ENGLAND Premier League --
+  mkT("mcy","Manchester City","MCY",98,"#93c5fd","#1a1a2e","🏴󠁧󠁢󠁥󠁮󠁧󠁿","Premier League"),
+  mkT("liv","Liverpool","LIV",96,"#dc2626","#f59e0b","🏴󠁧󠁢󠁥󠁮󠁧󠁿","Premier League"),
+  mkT("ars","Arsenal","ARS",91,"#dc2626","#ffffff","🏴󠁧󠁢󠁥󠁮󠁧󠁿","Premier League"),
+  mkT("che","Chelsea","CHE",90,"#1d4ed8","#ffffff","🏴󠁧󠁢󠁥󠁮󠁧󠁿","Premier League"),
+  mkT("mun","Manchester Utd","MUN",88,"#dc2626","#f59e0b","🏴󠁧󠁢󠁥󠁮󠁧󠁿","Premier League"),
+  mkT("tot","Tottenham","TOT",85,"#0f0f0f","#ffffff","🏴󠁧󠁢󠁥󠁮󠁧󠁿","Premier League"),
+  mkT("new","Newcastle","NEW",84,"#0f0f0f","#ffffff","🏴󠁧󠁢󠁥󠁮󠁧󠁿","Premier League"),
+  mkT("avl","Aston Villa","AVL",82,"#92400e","#93c5fd","🏴󠁧󠁢󠁥󠁮󠁧󠁿","Premier League"),
+  mkT("whu","West Ham","WHU",78,"#92400e","#1d4ed8","🏴󠁧󠁢󠁥󠁮󠁧󠁿","Premier League"),
+  mkT("bha","Brighton","BHA",77,"#1d4ed8","#ffffff","🏴󠁧󠁢󠁥󠁮󠁧󠁿","Premier League"),
+  mkT("eve","Everton","EVE",74,"#1d4ed8","#ffffff","🏴󠁧󠁢󠁥󠁮󠁧󠁿","Premier League"),
+  mkT("lei","Leicester","LEI",73,"#1d4ed8","#f59e0b","🏴󠁧󠁢󠁥󠁮󠁧󠁿","Premier League"),
+  // -- SPAIN La Liga --
+  mkT("rma","Real Madrid","RMA",99,"#f5f5f5","#f59e0b","🇪🇸","La Liga"),
+  mkT("bar","Barcelona","BAR",97,"#1d4ed8","#dc2626","🇪🇸","La Liga"),
+  mkT("atm","Atlético Madrid","ATM",92,"#dc2626","#1d4ed8","🇪🇸","La Liga"),
+  mkT("sev","Sevilla","SEV",84,"#dc2626","#f5f5f5","🇪🇸","La Liga"),
+  mkT("vill","Villarreal","VIL",80,"#f59e0b","#0f0f0f","🇪🇸","La Liga"),
+  mkT("rsoc","Real Sociedad","RSO",78,"#1d4ed8","#f5f5f5","🇪🇸","La Liga"),
+  mkT("bet","Real Betis","BET",76,"#15803d","#f5f5f5","🇪🇸","La Liga"),
+  mkT("val","Valencia","VAL",75,"#f59e0b","#0f0f0f","🇪🇸","La Liga"),
+  mkT("osa","Osasuna","OSA",68,"#dc2626","#1d4ed8","🇪🇸","La Liga"),
+  mkT("cel","Celta Vigo","CEL",70,"#93c5fd","#ffffff","🇪🇸","La Liga"),
+  // -- GERMANY Bundesliga --
+  mkT("bay","Bayern Monaco","BAY",99,"#dc2626","#f59e0b","🇩🇪","Bundesliga"),
+  mkT("bvb","Borussia Dortmund","BVB",93,"#f59e0b","#0f0f0f","🇩🇪","Bundesliga"),
+  mkT("rbl","RB Leipzig","RBL",88,"#dc2626","#1d4ed8","🇩🇪","Bundesliga"),
+  mkT("b04","Bayer Leverkusen","B04",89,"#dc2626","#0f0f0f","🇩🇪","Bundesliga"),
+  mkT("bsc","Union Berlin","BSC",80,"#dc2626","#f5f5f5","🇩🇪","Bundesliga"),
+  mkT("fra","Eintracht Frankfurt","FRA",79,"#0f0f0f","#dc2626","🇩🇪","Bundesliga"),
+  mkT("fre","Friburgo","FRE",76,"#dc2626","#0f0f0f","🇩🇪","Bundesliga"),
+  mkT("wob","Wolfsburg","WOB",75,"#15803d","#f5f5f5","🇩🇪","Bundesliga"),
+  // -- FRANCE Ligue 1 --
+  mkT("psg","Paris SG","PSG",97,"#1d4ed8","#dc2626","🇫🇷","Ligue 1"),
+  mkT("marse","Marsiglia","MAR",85,"#1d4ed8","#ffffff","🇫🇷","Ligue 1"),
+  mkT("mon","Monaco","MON",82,"#dc2626","#f5f5f5","🇫🇷","Ligue 1"),
+  mkT("lyon","Lione","OL",80,"#1d4ed8","#dc2626","🇫🇷","Ligue 1"),
+  mkT("nice","Nizza","NIC",76,"#dc2626","#0f0f0f","🇫🇷","Ligue 1"),
+  mkT("lille","Lille","LIL",78,"#dc2626","#f5f5f5","🇫🇷","Ligue 1"),
+  // -- PORTUGAL --
+  mkT("ben","Benfica","BEN",88,"#dc2626","#f5f5f5","🇵🇹","Primeira Liga"),
+  mkT("por","Porto","POR",87,"#1d4ed8","#f5f5f5","🇵🇹","Primeira Liga"),
+  mkT("spo","Sporting CP","SPO",85,"#15803d","#f5f5f5","🇵🇹","Primeira Liga"),
+  mkT("bra","Braga","BRA",74,"#dc2626","#ffffff","🇵🇹","Primeira Liga"),
+  // -- NETHERLANDS --
+  mkT("ajax","Ajax","AJX",88,"#dc2626","#f5f5f5","🇳🇱","Eredivisie"),
+  mkT("psv","PSV","PSV",86,"#dc2626","#f5f5f5","🇳🇱","Eredivisie"),
+  mkT("feye","Feyenoord","FEY",82,"#dc2626","#f5f5f5","🇳🇱","Eredivisie"),
+  // -- BELGIO --
+  mkT("club","Club Bruges","CLU",80,"#1d4ed8","#0f0f0f","🇧🇪","Pro League"),
+  mkT("and","Anderlecht","AND",78,"#7c3aed","#f5f5f5","🇧🇪","Pro League"),
+  // -- TURCHIA --
+  mkT("gal","Galatasaray","GAL",82,"#f59e0b","#dc2626","🇹🇷","Süper Lig"),
+  mkT("fenk","Fenerbahçe","FEN",80,"#f59e0b","#1d4ed8","🇹🇷","Süper Lig"),
+  mkT("bes","Beşiktaş","BES",78,"#0f0f0f","#f5f5f5","🇹🇷","Süper Lig"),
+];
+// (b04 prestige set inline above)
+
+// U18 clubs = Italian clubs with U18 suffix (for starting career)
+const U18_CLUBS = CLUBS.filter(c=>c.nat==="🇮🇹").map(c=>({
+  ...c, n:`${c.n} U18`, isU18:true, p:c.p-10,
+}));
+
+function TeamBadge({team,size=40}) {
+  const c=team?.col||team?.c||"#2563eb", c2=team?.col2||team?.c2||"#fff";
+  const ab=(team?.abbr||team?.a||"??").substring(0,3);
+  return (
+    <svg viewBox="0 0 100 110" width={size} height={size*1.1}>
+      <path d="M50 4 L92 18 L92 58 Q92 88 50 106 Q8 88 8 58 L8 18 Z" fill={c} stroke={c2} strokeWidth="5"/>
+      <path d="M50 4 L50 106" stroke={c2} strokeWidth="3" opacity="0.2"/>
+      <path d="M8 38 L92 38" stroke={c2} strokeWidth="2" opacity="0.2"/>
+      <text x="50" y="68" textAnchor="middle" dominantBaseline="central"
+        fontSize={ab.length>2?"19":"23"} fontWeight="900" fill={c2}
+        fontFamily="'Barlow','Arial Narrow',sans-serif" letterSpacing="0.5">
+        {ab}
+      </text>
+    </svg>
+  );
+}
+
+/* ========================================
+   WEEKLY EVENTS  (req #9)
+======================================== */
+const WEEKLY_EVENTS=[
+  {w:12,txt:"💪 Allenamento eccellente! Il mister ti nota.", ef:{morale:10,form:6,coachTrust:8,fatigue:-6}},
+  {w:10,txt:"👏 Elogio pubblico del mister in conferenza.", ef:{morale:13,popularity:6,coachTrust:7}},
+  {w:8,txt:"📺 Intervista sui media: ottima impressione.", ef:{popularity:9,morale:6,value:0.1}},
+  {w:7,txt:"🎯 Sessione tecnica perfetta. Tecnica+Velocità migliorano.", ef:{tecnica:1,velocità:1,morale:5}},
+  {w:7,txt:"💊 Recupero fisico sorprendente. Energia al top.", ef:{fatigue:-22,morale:7,form:9}},
+  {w:6,txt:"🤝 Grande sintonia con un compagno. Spirito di squadra alto.", ef:{morale:8,coachTrust:3}},
+  {w:6,txt:"⭐ Partitella straordinaria. Tutti ti guardano.", ef:{morale:10,coachTrust:7,form:7}},
+  {w:5,txt:"📈 Il tuo valore sale grazie alle prestazioni.", ef:{value:0.2,popularity:4,morale:5}},
+  {w:6,txt:"🔥 Sei in un momento di grazia. Tutto funziona.", ef:{form:12,morale:8,fatigue:-8}},
+  {w:5,txt:"🌟 Un grande club ti osserva! La voce si diffonde.", ef:{popularity:10,morale:8,value:0.3}},
+  {w:7,txt:"💬 Supporto caloroso dei tifosi dopo la gara.", ef:{morale:9,popularity:7}},
+  {w:5,txt:"🧠 Sessione tattica intensa. Posizionamento migliorato.", ef:{posizionamento:1,mentalità:1}},
+  {w:5,txt:"🏃 Lavoro specifico sulla velocità col preparatore.", ef:{velocità:1,fatigue:8}},
+  {w:5,txt:"⚽ Extra tiri in porta. Conclusioni migliorate.", ef:{tiro:1,fatigue:5}},
+  {w:4,txt:"🎯 Lavoro sui passaggi. Visione di gioco in crescita.", ef:{passaggio:1,morale:4}},
+  {w:4,txt:"💪 Palestra intensiva. Fisico più forte.", ef:{fisico:1,fatigue:14}},
+  // Negative
+  {w:11,txt:"😓 Piccolo affaticamento muscolare. Serve riposo.", ef:{fatigue:16,form:-5,morale:-4}},
+  {w:9,txt:"😤 Discussione in spogliatoio. Tensione alta.", ef:{morale:-11,coachTrust:-5}},
+  {w:8,txt:"🗣️ Richiamo dell'allenatore. Non sei al massimo.", ef:{morale:-12,coachTrust:-7,form:-5}},
+  {w:7,txt:"📰 Critica pesante dai media. Pressione psicologica.", ef:{morale:-9,fatigue:5}},
+  {w:7,txt:"🩹 Fastidio muscolare. Devi ridurre i carichi.", ef:{fatigue:22,form:-8,morale:-6}},
+  {w:6,txt:"😔 Momento di black-out. Tutto sembra più difficile.", ef:{form:-10,morale:-10,fatigue:8}},
+  {w:5,txt:"⚠️ Escluso dai titolari. Situazione difficile.", ef:{morale:-16,coachTrust:-9}},
+  {w:5,txt:"🔄 Un nuovo acquisto minaccia il tuo posto.", ef:{morale:-11,coachTrust:-5,form:-4}},
+  {w:4,txt:"🌧️ Settimana di carichi pesanti. Corpo al limite.", ef:{fatigue:26,form:-6,morale:-5}},
+  {w:3,txt:"🤒 Piccolo problema di salute. Recupero necessario.", ef:{fatigue:32,form:-13,morale:-8}},
+];
+
+/* ========================================
+   SITUATIONS  (con moveZone e startZone)
+======================================== */
+const S=(text,zones,mz,sz,actions)=>({text,zones,moveZone:mz,startZone:sz,actions});
+const A=(label,stat,bon,rew,fail,nrg)=>({label,stat,bon,rew,fail,nrg});
+const SITUATIONS=[
+/* === AREA — CONCLUSIONI === */
+S("⚡ Solo davanti al portiere!",["area"],{x:[80,98],y:[25,75]},{x:[82,92],y:[30,70]},[
+  A("🦵 Tiro angolato","tiro",10,"goal","miss_easy",16),A("🎯 Piazzato basso","tecnica",4,"goal","miss",12),A("🤸 Pallonetto","tecnica",-8,"goal","miss_easy",10)]),
+S("🤸 Rovesciata spettacolare!",["area"],{x:[76,94],y:[22,78]},{x:[78,88],y:[28,72]},[
+  A("🤸 Rovesciata!","tecnica",-6,"goal","miss",22),A("✈️ Stacco di testa","fisico",3,"goal","miss",15),A("🦵 Tiro di prima","tiro",2,"goal","miss",12)]),
+S("⚡ Tap-in! Porta quasi vuota.",["area"],{x:[84,98],y:[28,72]},{x:[86,94],y:[33,67]},[
+  A("🦵 Spingila dentro!","tiro",18,"goal","miss_easy",8),A("🎯 Precisione","tecnica",12,"goal","miss",8),A("✈️ Di testa","fisico",8,"goal","miss",10)]),
+S("🌀 Dribbling completato in area!",["area"],{x:[80,97],y:[20,80]},{x:[82,90],y:[26,74]},[
+  A("🦵 Tiro a giro","tiro",8,"goal","miss",14),A("🌀 Dribbling portiere","tecnica",3,"goal","miss_easy",18),A("🎯 Assist retropassaggio","passaggio",5,"assist","intercept",10)]),
+S("🎯 Deviazione ravvicinata!",["area"],{x:[78,96],y:[25,75]},{x:[80,90],y:[30,70]},[
+  A("🦵 Deviazione istintiva","tecnica",5,"goal","miss",12),A("✈️ Di testa","fisico",3,"goal","miss",12),A("🌀 Prima intenzione","tiro",0,"goal","miss",14)]),
+S("🔴 RIGORE! Sul dischetto.",["area"],{x:[86,90],y:[43,57]},{x:[87,89],y:[46,54]},[
+  A("💥 Angolato rasoterra","tiro",10,"goal","miss",10),A("🎯 Cucchiaio","tecnica",-4,"goal","miss_easy",8),A("⚡ Centro-alto","tiro",5,"goal","miss",10)]),
+
+/* === AREA — SET PIECES === */
+S("🏳️ Corner! Attacca il secondo palo.",["area"],{x:[76,96],y:[20,80]},{x:[78,88],y:[30,70]},[
+  A("✈️ Stacco di testa","fisico",5,"goal","miss",16),A("🦵 Tiro al volo","tiro",-4,"goal","miss",14),A("🤝 Sponda per compagno","passaggio",5,"assist","nothing",7)]),
+S("✈️ Cross in area! Attacca il pallone.",["area"],{x:[74,96],y:[18,82]},{x:[76,86],y:[28,72]},[
+  A("✈️ Colpo di testa","fisico",5,"goal","miss",15),A("🦵 Tiro di prima","tiro",-2,"goal","miss",13),A("🤸 Tacco","tecnica",-8,"goal","miss",10)]),
+
+/* === BORDO AREA — TIRI === */
+S("💥 Tiro dal limite!",["bordo","area"],{x:[70,88],y:[22,78]},{x:[72,82],y:[28,72]},[
+  A("💥 Tiro di potenza","tiro",-5,"goal","miss",14),A("🎯 Piazzato angolato","tecnica",3,"goal","miss",12),A("🏃 Avanza in area","velocità",3,"goal","intercept",16)]),
+S("⚽ Tiro al volo dal limite!",["bordo"],{x:[68,86],y:[22,78]},{x:[70,82],y:[28,72]},[
+  A("⚽ Volée potente","tiro",-6,"goal","miss",16),A("🎯 Mezza volée","tecnica",-2,"goal","miss",14),A("🦵 Controllo e tiro","tecnica",4,"goal","miss",12)]),
+S("🎯 Pallonetto su portiere in uscita!",["bordo","area"],{x:[72,90],y:[25,75]},{x:[74,84],y:[30,70]},[
+  A("🎯 Pallonetto preciso","tecnica",3,"goal","miss",10),A("💥 Tiro di potenza","tiro",-2,"goal","miss",14),A("🌀 Dribbling portiere","tecnica",-3,"goal","miss_easy",18)]),
+S("💥 Conclusione di collo pieno!",["bordo","area"],{x:[68,88],y:[22,78]},{x:[70,82],y:[28,72]},[
+  A("💥 Collo pieno!","tiro",5,"goal","miss",15),A("🎯 Interno precisione","tecnica",2,"goal","miss",13),A("🌀 Finta e tiro","tecnica",0,"goal","miss",16)]),
+S("🦵 Tiro con l'esterno del piede!",["bordo","area"],{x:[70,90],y:[20,80]},{x:[72,84],y:[26,74]},[
+  A("🦵 Esterno a giro","tiro",3,"goal","miss",13),A("🎯 Rientra e tira","tecnica",5,"goal","miss",14),A("🤸 Colpo d'esterno","tiro",-3,"goal","miss",12)]),
+
+/* === SET PIECES CENTRALI === */
+S("📐 Punizione dal limite — tiro diretto!",["trequarti","bordo"],{x:[60,78],y:[28,72]},{x:[62,72],y:[32,68]},[
+  A("🎯 Punizione a giro","tiro",8,"goal","miss",10),A("💥 Tiro rasoterra","tiro",4,"goal","miss",10),A("↗️ Palla in area","passaggio",5,"assist","miss",8)]),
+S("📐 Punizione dalla fascia sinistra!",["trequarti"],{x:[55,78],y:[3,25]},{x:[58,72],y:[5,20]},[
+  A("↗️ Cross basso teso","passaggio",6,"assist","intercept",8),A("↗️ Cross alto","passaggio",4,"assist","miss",8),A("🌀 Giocata corta","tecnica",3,"assist","nothing",6)]),
+S("📐 Punizione dalla fascia destra!",["trequarti"],{x:[55,78],y:[75,97]},{x:[58,72],y:[80,94]},[
+  A("↗️ Cross basso teso","passaggio",6,"assist","intercept",8),A("↗️ Cross alto","passaggio",4,"assist","miss",8),A("🌀 Giocata corta","tecnica",3,"assist","nothing",6)]),
+
+/* === CROSS E FASCE === */
+S("⚡ Cross dalla fascia sinistra!",["bordo","trequarti"],{x:[62,88],y:[3,28]},{x:[64,80],y:[5,22]},[
+  A("↗️ Cross teso","passaggio",6,"assist","intercept",10),A("↗️ Cross a rientrare","tecnica",4,"assist","miss",10),A("🦵 Tiro a giro","tiro",3,"goal","miss",13)]),
+S("⚡ Cross dalla fascia destra!",["bordo","trequarti"],{x:[62,88],y:[72,97]},{x:[64,80],y:[78,93]},[
+  A("↗️ Cross teso","passaggio",6,"assist","intercept",10),A("↗️ Cross a rientrare","tecnica",4,"assist","miss",10),A("🦵 Tiro a giro","tiro",3,"goal","miss",13)]),
+
+/* === DRIBBLING E 1v1 === */
+S("🌀 Dribbling! Terzino sul lato sinistro.",["trequarti","bordo"],{x:[55,86],y:[3,32]},{x:[58,76],y:[5,26]},[
+  A("🌀 Dribbling netto","tecnica",5,"assist","nothing",16),A("⚡ Sterzata fulminea","velocità",3,"assist","nothing",14),A("💥 Tiro a giro","tiro",3,"goal","miss",13)]),
+S("🌀 Dribbling! Terzino sul lato destro.",["trequarti","bordo"],{x:[55,86],y:[68,97]},{x:[58,76],y:[74,92]},[
+  A("🌀 Dribbling netto","tecnica",5,"assist","nothing",16),A("⚡ Sterzata fulminea","velocità",3,"assist","nothing",14),A("💥 Tiro a giro","tiro",3,"goal","miss",13)]),
+S("🤼 Duello fisico! Liberati.",["bordo","area"],{x:[65,92],y:[20,80]},{x:[68,84],y:[28,72]},[
+  A("🌀 Dribbling netto","tecnica",5,"goal","nothing",16),A("⚡ Scatto puro","velocità",4,"goal","nothing",14),A("↩️ Dai e vai","passaggio",3,"assist","intercept",10)]),
+S("⚡ Doppio dribbling in velocità!",["bordo","area"],{x:[68,92],y:[20,80]},{x:[70,84],y:[26,74]},[
+  A("⚡ Doppio passo esplosivo","velocità",7,"goal","intercept",22),A("🌀 Elastico e tiro","tecnica",3,"goal","miss",18),A("🎯 Assist a sorpresa","passaggio",4,"assist","intercept",10)]),
+
+/* === TREQUARTI — GIOCATE OFFENSIVE === */
+S("🏃 Contropiede! Campo aperto.",["trequarti","bordo"],{x:[50,92],y:[20,80]},{x:[52,65],y:[30,70]},[
+  A("⚡ Sprint e tiro","velocità",4,"goal","miss",22),A("🎯 Assist filtrante","passaggio",5,"assist","intercept",10),A("🌀 Dribbling GK","tecnica",-3,"goal","miss",16)]),
+S("⚡ Scatto in profondità!",["trequarti"],{x:[52,84],y:[20,80]},{x:[54,68],y:[28,72]},[
+  A("⚡ Scatto e tiro","velocità",5,"goal","intercept",20),A("🎯 Filtrante per compagno","passaggio",6,"assist","intercept",10),A("🌀 Dribbling difensore","tecnica",3,"goal","intercept",16)]),
+S("🧠 Ricezione tra le linee!",["trequarti","bordo"],{x:[55,82],y:[20,80]},{x:[58,74],y:[28,72]},[
+  A("🎯 Assist filtrante","passaggio",8,"assist","intercept",10),A("⚡ Accelera verso porta","velocità",3,"goal","intercept",18),A("💥 Tiro dal limite","tiro",-8,"goal","miss",14)]),
+S("🎯 Filtrante per il centravanti!",["trequarti","bordo"],{x:[55,82],y:[20,80]},{x:[58,74],y:[28,72]},[
+  A("🎯 Filtrante millimetrico","passaggio",10,"assist","intercept",10),A("↩️ Dai e vai","tecnica",5,"assist","intercept",12),A("💥 Tiro dal limite","tiro",-6,"goal","miss",14)]),
+S("💫 Assist di tacco! Giocata geniale.",["area","bordo"],{x:[72,92],y:[25,75]},{x:[74,84],y:[30,70]},[
+  A("💫 Tacco preciso","tecnica",-3,"assist","intercept",10),A("🦵 Tiro di prima","tiro",2,"goal","miss",12),A("🔄 Doppio passo e tiro","tecnica",4,"goal","nothing",16)]),
+S("🎯 Triangolazione perfetta!",["trequarti","bordo"],{x:[55,84],y:[20,80]},{x:[58,74],y:[28,72]},[
+  A("🎯 Triangolo e tiro","tecnica",6,"goal","intercept",14),A("↩️ Dai e vai","passaggio",7,"assist","intercept",10),A("💥 Tiro di prima","tiro",2,"goal","miss",13)]),
+
+/* === CENTROCAMPO === */
+S("🎮 Palla a centrocampo. Costruisci.",["centro","trequarti"],{x:[35,65],y:[20,80]},{x:[38,58],y:[28,72]},[
+  A("⚡ Verticale","passaggio",3,"assist","intercept",8),A("🔄 Cambia campo","passaggio",5,"assist","intercept",6),A("🏃 Avanza palla al piede","velocità",2,"goal","intercept",15)]),
+S("⚡ Recupero palla! Riparte.",["difesa","centro"],{x:[18,60],y:[20,80]},{x:[22,42],y:[28,72]},[
+  A("🏃 Lancia il contropiede","velocità",6,"goal","intercept",20),A("🎯 Lancio lungo","passaggio",4,"assist","intercept",10),A("🌀 Avanza palla al piede","tecnica",2,"goal","intercept",16)]),
+S("🌀 Sfida 1v1 a centrocampo!",["centro","trequarti"],{x:[35,68],y:[22,78]},{x:[38,58],y:[28,72]},[
+  A("🌀 Dribbling centrale","tecnica",5,"goal","intercept",14),A("⚡ Scatto in velocità","velocità",4,"goal","intercept",16),A("↩️ Triangolo","passaggio",5,"assist","intercept",10)]),
+];
+
+const ZONES={
+  propria:  {label:"Difesa propria",x:[0,20]},
+  difesa:   {label:"Centrocampo basso",x:[20,38]},
+  centro:   {label:"Centrocampo",x:[38,55]},
+  trequarti:{label:"Trequarti",x:[55,72]},
+  bordo:    {label:"Bordo area",x:[72,84]},
+  area:     {label:"Area avversaria",x:[84,100]},
+};
+const getZone=x=>{for(const[k,v]of Object.entries(ZONES))if(x>=v.x[0]&&x<v.x[1])return k;return"area";};
+
+const BG_MATCH=[
+  // Goals (rare, weighted low)
+  {txt:"⚽ Gol del compagno! Squadra avanti.",ef:"team_goal",w:1},
+  {txt:"😨 Rete avversaria. Situazione complicata.",ef:"opp_goal",w:1},
+  // Possession
+  {txt:"🔵 La squadra controlla bene il possesso.",ef:null,w:4,poss:+2},
+  {txt:"🏃 Scambio rapido in centrocampo. Palla conservata.",ef:null,w:3,poss:+1},
+  {txt:"🔄 Cambio di gioco sulla fascia opposta.",ef:null,w:3,poss:+1},
+  {txt:"😤 L'avversario recupera palla e riparte.",ef:null,w:3,poss:-2},
+  {txt:"⚡ Contropiede avversario sventato in extremis.",ef:null,w:2,poss:-1},
+  // Attacks
+  {txt:"💥 Tiro da fuori area, para il portiere.",ef:null,w:3},
+  {txt:"🔥 Il compagno sfiora il vantaggio! Palo!",ef:null,w:2},
+  {txt:"🎯 Cross pericoloso, respinto dalla difesa.",ef:null,w:3},
+  {txt:"⚡ Azione veloce sulla fascia. Corner guadagnato.",ef:null,w:2},
+  {txt:"💪 Combinazione riuscita in area! Difesa salva.",ef:null,w:2},
+  {txt:"🌀 Dribbling netto! Ottima posizione.",ef:null,w:2},
+  // Defense
+  {txt:"🧤 Grande parata del portiere!",ef:null,w:2},
+  {txt:"🛡️ Tackle in scivolata! Palla recuperata.",ef:null,w:3,poss:+2},
+  {txt:"⚠️ Pericolo! L'avversario entra in area.",ef:null,w:2},
+  {txt:"🚧 Fuorigioco! Liberazione della difesa.",ef:null,w:3},
+  // Set pieces
+  {txt:"🟡 Fallo pericoloso. Punizione guadagnata.",ef:null,w:2},
+  {txt:"🟡 Ammonito un avversario.",ef:null,w:2},
+  {txt:"🏳️ Calcio d'angolo per noi.",ef:null,w:2},
+  {txt:"🏳️ Corner avversario. Difesa attenta.",ef:null,w:2},
+  // Tactical / atmosphere
+  {txt:"📢 Il mister urla istruzioni dalla panchina.",ef:null,w:2},
+  {txt:"🔥 La squadra spinge forte! Intensità alta.",ef:null,w:3},
+  {txt:"😤 L'avversario alza il ritmo. Attenzione.",ef:null,w:2},
+  {txt:"📊 Partita equilibrata. Entrambe le squadre ci credono.",ef:null,w:3},
+  {txt:"🏃 La squadra avversaria si chiude in difesa.",ef:null,w:2},
+  {txt:"✨ Grande combinazione sulla fascia.",ef:null,w:2},
+  {txt:"🔄 Cambio tattico avversario. Più pressing.",ef:null,w:2},
+  // Late game events
+  {txt:"⏱️ Il tempo stringe. Occorre sbloccarla!",ef:null,w:4,minClock:70},
+  {txt:"🔥 Pressione massima! Tifosi scatenati.",ef:null,w:3,minClock:75},
+  {txt:"💊 Sostituzione avversaria. Cambio fresco.",ef:null,w:2,minClock:60},
+  {txt:"😓 Le gambe pesano. Bisogna reggere.",ef:null,w:2,minClock:80},
+];
+const OUTCOME_TX={
+  goal:["💥 GOOOOOL! Folla in delirio!","⚽ Rete spettacolare!","🔥 Imparabile!","🌟 Fenomenale!"],
+  assist:["🎯 Assist perfetto!","🤝 Passaggio da manuale!","🎯 Visione assoluta!"],
+  miss_easy:["😱 Porta aperta, fuori!","💔 Errore imperdonabile..."],
+  miss:["😬 Tiro fuori!","😔 Para il portiere.","❌ Tiro debole."],
+  intercept:["❌ Intercettato.","😔 Passaggio impreciso."],
+  nothing:["😐 Situazione non sfruttata."],
+  goal_against:["😨 Gol avversario.","💔 Supera e segna."],
+};
+const STADIUMS=["Stadio Olimpico Giovanile","Arena Primavera","Centro Sportivo Coverciano","Stadio Braglia Academy","Arena Caduti di Brema U18","Campo Sportivo Vismara"];
+const NATIONS=["Italia","Spagna","Francia","Germania","Inghilterra","Portogallo","Brasile","Argentina","Olanda","Belgio"];
+const SAVE_KEY="cpm-v3";
+const FORMATION_HOME=[[5,50],[22,15],[22,35],[22,65],[22,85],[40,25],[40,50],[40,75],[60,20],[65,50],[60,80]];
+const FORMATION_AWAY=[[95,50],[78,15],[78,35],[78,65],[78,85],[62,25],[62,50],[62,75],[45,20],[40,50],[45,80]];
+
+/* ========================================
+   HELPERS
+======================================== */
+const rng=(a,b)=>Math.floor(Math.random()*(b-a+1))+a;
+const clamp=(v,lo,hi)=>Math.max(lo,Math.min(hi,v));
+const pick=arr=>arr[Math.floor(Math.random()*arr.length)];
+const shuffle=arr=>{const a=[...arr];for(let i=a.length-1;i>0;i--){const j=rng(0,i);[a[i],a[j]]=[a[j],a[i]];}return a;};
+const wPick=evts=>{const tot=evts.reduce((s,e)=>s+(e.w||1),0);let r=Math.random()*tot;for(const e of evts){r-=(e.w||1);if(r<=0)return e;}return evts[0];};
+function baseStats(){return{velocità:clamp(rng(55,72),1,99),tecnica:clamp(rng(54,70),1,99),fisico:clamp(rng(50,68),1,99),mentalità:clamp(rng(50,68),1,99),tiro:clamp(rng(60,74),1,99),passaggio:clamp(rng(48,65),1,99),dribbling:clamp(rng(55,72),1,99),posizionamento:clamp(rng(55,70),1,99)};}
+function calcOvr(s){return Math.round((s.tiro*2.5+s.tecnica*2+s.velocità*1.5+s.dribbling*1.5+s.posizionamento*1.5+s.mentalità+s.fisico+s.passaggio)/11.5);}
+function succRate(action,stats,playerX,oppPrestige=65){
+  const sv=stats[action.stat]||60;
+  const base=(sv/99)*0.65+0.20+(action.bon||0)/100+(playerX-50)/100*0.06;
+  const diffPenalty=Math.max(0,(oppPrestige-65)/300);
+  return Math.round(clamp(base-diffPenalty,0.10,0.92)*100);
+}
+// opponent strength affects goal probability in background events
+function oppGoalProb(oppPrestige,playerOvr){
+  return clamp(0.02+(oppPrestige-60)/800,0.01,0.06);
+}
+// Returns clubs from player's current league (for standings + opponents)
+function getLeagueClubs(player){
+  const isU18=(player?.proStatus||"u18")==="u18"||(player?.club?.isU18&&!player?.club?.transferType);
+  if(isU18||!player?.club)return U18_CLUBS;
+  const lg=player.club.lg||player.club.league;
+  if(lg){const lc=CLUBS.filter(c=>c.lg===lg);if(lc.length>=4)return lc;}
+  const nat=player.club.nat;
+  if(nat){const nc=CLUBS.filter(c=>c.nat===nat);if(nc.length>=4)return nc;}
+  return CLUBS.slice(0,16);
+}
+// contextual start position: player spawns inside the situation zone
+function getStartPos(sit){
+  const sz=sit?.startZone||{x:[55,72],y:[30,70]};
+  return{x:rng(sz.x[0],sz.x[1]),y:rng(sz.y[0],sz.y[1])};
+}
+// generate transfer offer based on player OVR and prestige match
+function generateTransferOffer(player){
+  const clubPool=CLUBS.filter(c=>c.id!==player.club?.id&&c.n!==player.club?.n);
+  const pOvr=player.ovr||60;
+  const targetPrestige=clamp(pOvr*1.2+rng(-15,15),45,99);
+  const candidates=clubPool.filter(c=>Math.abs(c.p-targetPrestige)<25);
+  if(!candidates.length)return null;
+  const club=pick(candidates);
+  const types=["prestito","prestito con riscatto","trasferimento definitivo"];
+  const type=pOvr<65?"prestito":pOvr<75?pick(types.slice(0,2)):pick(types);
+  return{club,type,minutaggio:type.includes("prest")?rng(30,70):rng(50,90),moralBonus:rng(5,20),growthBonus:rng(5,15),prestigeRatio:club.p/Math.max(1,(player.club?.p||65))};
+}
+// Generate pro contract offers at end of U18 career
+function generateProContracts(player){
+  const ovr=player.ovr||60;
+  const u18S=player.u18Seasons||0;
+  const forced=u18S>=2; // max 2 seasons: MUST leave
+  const perf=Math.min(10,(player.goals||0)*0.35+(player.matches||0)*0.12+(ovr-50)/6);
+  const offers=[];
+  // 1. Same club first pro contract (always available)
+  const parentName=((player.club?.n||player.club?.name||"?")+"").replace(/\s+U18\s*$/i,"").trim();
+  const parentClub={...(player.club||{}),n:parentName,name:parentName,isU18:false,p:(player.club?.p||55)+12};
+  offers.push({id:"same_pro",club:parentClub,contractType:"Primo contratto professionistico",wage:rng(600,Math.max(700,ovr*22)),duration:rng(1,3),role:ovr>=72?"Titolare giovane":ovr>=65?"Giovane promessa":"Riserva/Giovane",moralBonus:14,growthBonus:perf>5?20:10,isMain:true});
+  // 2. External club (if performance decent or forced)
+  if(perf>2||forced){
+    const extPool=CLUBS.filter(c=>ovr>=68?c.p>=65&&c.p<=90:c.p>=50&&c.p<=72);
+    const ext=pick(extPool.length?extPool:CLUBS);
+    offers.push({id:"external",club:ext,contractType:ovr>=65?"Trasferimento definitivo":"Prestito annuale",wage:rng(400,ovr*16),duration:ovr>=65?rng(1,3):1,role:ovr>=70?"Titolare":"Titolare garantito",moralBonus:8,growthBonus:15});
+  }
+  // 3. Loan to smaller club (always as fallback)
+  const loanPool=CLUBS.filter(c=>c.p<68);
+  const loanClub=pick(loanPool.length?loanPool:CLUBS);
+  offers.push({id:"loan_small",club:loanClub,contractType:"Prestito",wage:rng(300,900),duration:1,role:"Minutaggio garantito",moralBonus:4,growthBonus:10});
+  // 4. Stay another year in U18 (ONLY if under limit)
+  if(!forced){
+    const isLast=u18S>=1;
+    offers.push({id:"stay_u18",club:player.club,contractType:`Resta in Under 18 (${u18S+1}/2)`,wage:player.contract?.wage||200,duration:1,role:"Protagonista U18",moralBonus:-6,growthBonus:4,isStayU18:true,isLastChance:isLast});
+  }
+  return{offers,forced,perf:Math.round(perf*10)/10};
+}
+const SAVE_VERSION=4;
+const SLOT_KEYS=["cpm-v3","cpm-v3-s2","cpm-v3-s3"]; // slot 0 backward-compatible
+const storage={
+  save:async(d,slot=0)=>{
+    const key=SLOT_KEYS[slot]||SLOT_KEYS[0];
+    const payload={...d,savedAt:Date.now(),saveVersion:SAVE_VERSION};
+    try{const s=JSON.stringify(payload);if(window.storage)await window.storage.set(key,s);else localStorage.setItem(key,s);return true;}catch{return false;}
+  },
+  load:async(slot=0)=>{
+    const key=SLOT_KEYS[slot]||SLOT_KEYS[0];
+    try{
+      let s;if(window.storage){const r=await window.storage.get(key);s=r?.value;}else s=localStorage.getItem(key);
+      if(!s)return null;
+      const d=JSON.parse(s);
+      // Integrity: require player with name
+      if(!d?.player?.name)return null;
+      return d;
+    }catch{return null;}
+  },
+  del:async(slot=0)=>{
+    const key=SLOT_KEYS[slot]||SLOT_KEYS[0];
+    try{if(window.storage)await window.storage.delete(key);else localStorage.removeItem(key);}catch{}
+  },
+  listSlots:async()=>{
+    const out=[];
+    for(let i=0;i<SLOT_KEYS.length;i++){
+      const d=await storage.load(i);
+      out.push(d?{slot:i,name:d.player.name,club:d.player.club?.name||d.player.club?.n||"–",season:d.player.season||1,week:d.player.week||1,ovr:d.player.ovr||60,avatarId:d.player.avatarId||0,savedAt:d.savedAt||0}:null);
+    }
+    return out;
+  },
+};
+const toThree=(gx,gy)=>({x:gx-50,z:(gy/100)*60-30});
+
+/* ========================================
+   NAME POOLS + ROSTER HELPERS  (BUG 3,8)
+======================================== */
+const FIRSTNAMES_IT=["Marco","Luca","Andrea","Francesco","Giovanni","Matteo","Davide","Roberto","Michele","Antonio","Paolo","Riccardo","Stefano","Alberto","Nicola","Giorgio","Filippo","Lorenzo","Emanuele","Federico","Simone","Christian","Daniele","Alessandro","Giacomo"];
+const SURNAMES_IT=["Rossi","Ferrari","Bianchi","Romano","Conti","Bruno","Ricci","Russo","Gallo","De Luca","Esposito","Ferrara","Leone","Fontana","Caruso","Costa","Amato","Marini","Greco","Colombo","Marchetti","Barbieri","Longo","Poli","Mancini","Gentile","De Rosa","Ferraro","Vitale","Pellegrini"];
+const FIRSTNAMES_EN=["James","John","Michael","David","Steven","Daniel","Thomas","Jack","Harry","Oliver","George","Callum","Luke","Ryan","Adam","Peter","Matthew","Nathan","Sam","Lee","Chris","Rob","Wayne","Gary","Dean"];
+const SURNAMES_EN=["Smith","Jones","Williams","Brown","Davis","Wilson","Taylor","Johnson","Clarke","Evans","Thomas","Roberts","Walker","White","Hall","Martin","King","Lewis","Harris","Wright","Scott","Young","Turner","Hill","Baker"];
+const FIRSTNAMES_ES=["Carlos","Miguel","José","Luis","Alejandro","Pedro","Jorge","Sergio","Manuel","Adrián","Javier","David","Pablo","Víctor","Diego","Álvaro","Fernando","Rubén","Raúl","Antonio"];
+const SURNAMES_ES=["García","Martínez","López","Sánchez","González","Rodríguez","Hernández","Pérez","Ruiz","Torres","Jiménez","Díaz","Moreno","Álvarez","Romero","Serrano","Molina","Blanco","Castro","Ortiz"];
+const FIRSTNAMES_DE=["Thomas","Michael","Stefan","Andreas","Markus","Klaus","Lukas","Florian","Tobias","Felix","Jan","Kevin","Marco","Niklas","Leon","Jonas","Julian","Simon","Christian","Patrick"];
+const SURNAMES_DE=["Müller","Schmidt","Schneider","Fischer","Weber","Meyer","Wagner","Becker","Hoffmann","Kraus","Koch","Richter","Klein","Wolf","Schröder","Neumann","Schwarz","Zimmermann","Braun","Krüger"];
+const FIRSTNAMES_FR=["Thomas","Nicolas","Antoine","Maxime","Clément","Romain","Hugo","Lucas","Pierre","Mathieu","Alexandre","Guillaume","Julien","Adrien","Baptiste","Kevin","Jonathan","Alexis","Florian","Valentin"];
+const SURNAMES_FR=["Martin","Bernard","Dubois","Thomas","Robert","Richard","Petit","Durand","Leroy","Moreau","Simon","Laurent","Lefebvre","Michel","Garcia","David","Bertrand","Roux","Vincent","Fournier"];
+const FIRSTNAMES_PT=["João","Pedro","Rui","Bruno","André","Miguel","Diogo","Tiago","Ricardo","Nuno","Filipe","Luís","Rafael","José","Sérgio","Gonçalo","Carlos","Manuel","Paulo","Fernando"];
+const SURNAMES_PT=["Silva","Santos","Ferreira","Pereira","Oliveira","Costa","Rodrigues","Martins","Jesus","Sousa","Carvalho","Lopes","Gomes","Marques","Pinto","Correia","Neves","Pires","Ribeiro","Alves"];
+const NAME_BY_NAT={
+  "🇮🇹":{first:FIRSTNAMES_IT,last:SURNAMES_IT},
+  "🏴󠁧󠁢󠁥󠁮󠁧󠁿":{first:FIRSTNAMES_EN,last:SURNAMES_EN},
+  "🇪🇸":{first:FIRSTNAMES_ES,last:SURNAMES_ES},
+  "🇩🇪":{first:FIRSTNAMES_DE,last:SURNAMES_DE},
+  "🇫🇷":{first:FIRSTNAMES_FR,last:SURNAMES_FR},
+  "🇵🇹":{first:FIRSTNAMES_PT,last:SURNAMES_PT},
+  "🇳🇱":{first:FIRSTNAMES_EN,last:["de Jong","Janssen","de Vries","van den Berg","Bakker","Visser","Smit","Meijer","Mulder","Kuiper","van Dijk","Vermeer","Post","Hoek","Boer"]},
+  "🇧🇪":{first:FIRSTNAMES_FR,last:["Martens","Claes","Wouters","Peeters","Janssens","Maes","Jacobs","Leclercq","Fontaine","Dubois","Simon","Herman","Willems","Lemmens","Raes"]},
+  "🇹🇷":{first:["Can","Burak","Serdar","Arda","Emre","Ozan","Hakan","Cengiz","Orkun","Salih","Baris","Kerem","Haluk","Ferdi","Umut"],last:["Yilmaz","Tosun","Arslan","Turan","Demir","Kabak","Cigerci","Akbas","Ince","Karaman","Sahin","Aydin","Kaya","Kurt","Celik"]},
+};
+function hashStr(s){let h=5381;for(let i=0;i<s.length;i++){h=((h<<5)+h)^s.charCodeAt(i);h=h>>>0;}return h;}
+function generateTeamRoster(club,season){
+  const nat=club?.nat||"🇮🇹";
+  const names=NAME_BY_NAT[nat]||NAME_BY_NAT["🇮🇹"];
+  const roles=["Portiere","Difensore","Difensore","Terzino","Terzino","Mediano","Centrocampista","Trequartista","Ala","Ala","Centravanti"];
+  const base=hashStr((club?.id||club?.n||"x")+"_"+(season||1));
+  return roles.map((role,i)=>{const s=(base+(i*7919))>>>0;const first=names.first[s%names.first.length];const last=names.last[(s>>4)%names.last.length];return{name:`${first} ${last}`,role};});
+}
+function seededShuffle(arr,seed){
+  const a=[...arr];let s=(seed*1664525+1013904223)>>>0;
+  for(let i=a.length-1;i>0;i--){s=(s*1664525+1013904223)>>>0;const j=s%(i+1);[a[i],a[j]]=[a[j],a[i]];}
+  return a;
+}
+// calendar-driven match scheduling
+function generateSeasonCalendar(playerClub,leagueClubs,seed){
+  if(!playerClub||!leagueClubs?.length)return[];
+  const opps=leagueClubs.filter(c=>c.id!==playerClub.id&&c.n!==playerClub.n);
+  if(!opps.length)return[];
+  const s=seed||1;
+  const h1=seededShuffle([...opps],s);
+  const h2=seededShuffle([...opps],s+999);
+  const all=[...h1,...h2];
+  const cal=[];let week=1;
+  for(let i=0;i<all.length&&week<=38;i++){
+    cal.push({matchday:i+1,week,opponentId:all[i].id,opponentName:all[i].n||all[i].name,isHome:i<h1.length,played:false,result:null});
+    week+=1+(i%3===2?1:0);
+  }
+  return cal;
+}
+// standings start at zero each season, updated incrementally via updateStandings
+function initStandings(clubs){
+  return[...clubs].map(c=>({...c,played:0,wins:0,draws:0,losses:0,gf:0,ga:0,gd:0,pts:0}));
+}
+// simulate all other matches when player matchday ends
+function updateStandings(standings,playerClubId,playerResult){
+  if(!standings?.length)return[];
+  const s=standings.map(t=>({...t}));
+  if(playerResult){
+    const pt=s.find(t=>t.id===playerClubId||t.n===playerClubId);
+    if(pt){
+      pt.played++;pt.gf+=playerResult.homeScore;pt.ga+=playerResult.awayScore;
+      if(playerResult.won){pt.wins++;pt.pts+=3;}else if(playerResult.drew){pt.draws++;pt.pts+=1;}else{pt.losses++;}
+      pt.gd=pt.gf-pt.ga;
+    }
+  }
+  const myId=playerClubId;
+  const others=s.filter(t=>t.id!==myId&&t.n!==myId);
+  for(let i=0;i+1<others.length;i+=2){
+    const h=others[i],a=others[i+1];
+    const diff=((h.p||65)-(a.p||65))/30;
+    const hG=Math.max(0,Math.round(1.2+diff+(Math.random()*2.6-1.3)));
+    const aG=Math.max(0,Math.round(0.9-diff*0.5+(Math.random()*2.6-1.3)));
+    h.played++;a.played++;h.gf+=hG;h.ga+=aG;h.gd=h.gf-h.ga;
+    a.gf+=aG;a.ga+=hG;a.gd=a.gf-a.ga;
+    if(hG>aG){h.wins++;h.pts+=3;a.losses++;}else if(hG<aG){a.wins++;a.pts+=3;h.losses++;}
+    else{h.draws++;h.pts++;a.draws++;a.pts++;}
+  }
+  return s.sort((a,b)=>b.pts-a.pts||b.gd-a.gd||b.gf-a.gf);
+}
+// context-aware realistic attendance
+function calcAttendance(homeClub,context){
+  const ctx=context||"career";
+  if(ctx==="trial")return rng(80,320);
+  const p=homeClub?.p||homeClub?.prestige||60;
+  const isU18=homeClub?.isU18;
+  if(isU18)return rng(150,900);
+  if(p>=93)return rng(40000,76000);
+  if(p>=80)return rng(16000,42000);
+  if(p>=68)return rng(7000,20000);
+  if(p>=55)return rng(2500,8000);
+  return rng(600,3000);
+}
+// Quick simulation for skipped/missed match weeks
+function simulateMatch(playerClub,opponent,playerOvr,isHome=true){
+  const homeFactor=isHome?5:-5;
+  const diff=(playerOvr||65)-(opponent?.p||65)+homeFactor;
+  const hG=Math.max(0,Math.round(1.2+diff/30+(Math.random()*3-1.5)));
+  const aG=Math.max(0,Math.round(1.0-diff/40+(Math.random()*3-1.5)));
+  return{homeScore:hG,awayScore:aG,won:hG>aG,drew:hG===aG,goals:0,assists:0,rating:hG>aG?6.5:hG===aG?6.0:5.5,opponent:opponent?.n||opponent?.name,oppAbbr:opponent?.a||opponent?.abbr,oppCol:opponent?.c||opponent?.col,simulated:true};
+}
+
+/* ========================================
+   UI COMPONENTS  (light theme – req #1)
+======================================== */
+const Card=({children,style={},border,bg,shadow=true})=>(
+  <div style={{background:bg||TH.card,border:`1px solid ${border||TH.cardBorder}`,borderRadius:14,padding:"16px 18px",boxShadow:shadow?TH.shadow:"none",...style}}>{children}</div>
+);
+const Btn=({children,onClick,v="primary",disabled=false,style={},fw=false})=>{
+  const vs={
+    primary:{background:TH.primary,color:"#fff",fontWeight:700},
+    green:{background:TH.success,color:"#fff",fontWeight:700},
+    secondary:{background:"#f1f5f9",color:TH.muted,border:"1px solid "+TH.cardBorder},
+    success:{background:"#dcfce7",color:TH.success,border:"1px solid #bbf7d0"},
+    danger:{background:"#fee2e2",color:TH.danger,border:"1px solid #fecaca"},
+    ghost:{background:"transparent",color:TH.faint,border:"1px solid "+TH.cardBorder},
+    gold:{background:"linear-gradient(135deg,#f59e0b,#d97706)",color:"#fff",fontWeight:800},
+  };
+  return<button onClick={onClick} disabled={disabled} style={{padding:"10px 18px",borderRadius:10,border:"none",cursor:disabled?"not-allowed":"pointer",fontFamily:"inherit",fontSize:13,letterSpacing:.3,transition:"all .15s",opacity:disabled?.4:1,width:fw?"100%":"auto",...vs[v],...style}}>{children}</button>;
+};
+const StatBar=({label,value})=>{
+  const c=value>=80?TH.success:value>=65?TH.warning:TH.danger;
+  return<div style={{marginBottom:8}}><div style={{display:"flex",justifyContent:"space-between",fontSize:11,marginBottom:3}}><span style={{color:TH.muted,textTransform:"uppercase",letterSpacing:1}}>{label}</span><span style={{color:c,fontWeight:700}}>{value}</span></div><div style={{height:4,background:"#e2e8f0",borderRadius:3,overflow:"hidden"}}><div style={{height:"100%",width:`${value}%`,background:c,borderRadius:3,transition:"width .5s"}}/></div></div>;
+};
+const OvrRing=({value,size=60})=>{
+  const c=value>=80?TH.success:value>=65?TH.warning:TH.danger;
+  return<div style={{width:size,height:size,borderRadius:"50%",flexShrink:0,background:`conic-gradient(${c} ${value}%,#e2e8f0 0)`,display:"flex",alignItems:"center",justifyContent:"center"}}><div style={{width:size-10,height:size-10,borderRadius:"50%",background:TH.card,display:"flex",alignItems:"center",justifyContent:"center",flexDirection:"column"}}><div style={{fontSize:size*.27,fontWeight:900,color:c,lineHeight:1}}>{value}</div><div style={{fontSize:8,color:TH.faint}}>OVR</div></div></div>;
+};
+const Notif=({msg,color})=>msg?<div style={{position:"fixed",top:20,left:"50%",transform:"translateX(-50%)",background:TH.card,border:`2px solid ${color}`,color,padding:"10px 24px",borderRadius:40,fontSize:13,fontWeight:700,zIndex:9999,letterSpacing:.4,pointerEvents:"none",boxShadow:`0 4px 24px ${color}33`}}>{msg}</div>:null;
+
+/* ========================================
+   CROWD + STADIUM (Three.js)
+======================================== */
+function makeCrowdTex(homeBias,homeHex,awayHex,prestige=70){
+  const W=512,H=320,c=document.createElement("canvas");c.width=W;c.height=H;
+  const ctx=c.getContext("2d");
+  // Gradient background — depth effect: darker at top
+  const gr=ctx.createLinearGradient(0,0,0,H);
+  gr.addColorStop(0,"#0e0e1c");gr.addColorStop(1,"#1a1a2e");
+  ctx.fillStyle=gr;ctx.fillRect(0,0,W,H);
+  // Concrete step lines between rows
+  const rows=Math.ceil(10+prestige/18),cols=Math.ceil(20+prestige/10);
+  const rH=H/rows,cW=W/cols;
+  for(let r=0;r<rows;r++){
+    ctx.fillStyle="rgba(100,100,130,0.25)";ctx.fillRect(0,r*rH,W,1.5);
+  }
+  const SKINS=["#f5c5a3","#e8a870","#c8956a","#8B5030","#7c4a1e"];
+  for(let r=0;r<rows;r++){
+    for(let cl=0;cl<cols;cl++){
+      const bx=cl*cW,by=r*rH;
+      const x=bx+cW/2+(Math.random()-.5)*cW*0.22;
+      const y=by+rH*0.7;
+      const isH=Math.random()<homeBias;
+      // Empty seat occasionally
+      if(Math.random()<0.05){ctx.fillStyle="#303040";ctx.fillRect(bx+1,by+rH*0.72,cW-2,rH*0.28);continue;}
+      // Seat
+      ctx.fillStyle="#3a3a50";ctx.fillRect(bx+1,by+rH*0.72,cW-2,rH*0.28);
+      // Body (jersey)
+      ctx.fillStyle=isH?homeHex:awayHex;
+      ctx.fillRect(x-cW*0.3,y-rH*0.08,cW*0.6,rH*0.42);
+      // Head
+      ctx.fillStyle=SKINS[Math.floor(Math.random()*SKINS.length)];
+      ctx.beginPath();ctx.arc(x,y-rH*0.22,cW*0.23,0,Math.PI*2);ctx.fill();
+      // Hair
+      ctx.fillStyle=["#1a0800","#3d2000","#c0c0c0","#d4a820","#8B4513"][Math.floor(Math.random()*5)];
+      ctx.beginPath();ctx.arc(x,y-rH*0.32,cW*0.23,Math.PI,Math.PI*2);ctx.fill();
+      // Flag (rare)
+      if(Math.random()<0.04){
+        ctx.fillStyle="#aaaacc";ctx.fillRect(x+cW*0.1,y-rH*0.85,1.8,rH*0.65);
+        ctx.fillStyle=isH?homeHex:awayHex;ctx.fillRect(x+cW*0.1,y-rH*0.85,cW*0.42,rH*0.2);
+      }
+      // Scarf
+      if(Math.random()<0.07){ctx.fillStyle=isH?homeHex:awayHex;ctx.fillRect(x-cW*0.3,y+rH*0.05,cW*0.6,rH*0.1);}
+    }
+  }
+  return new THREE.CanvasTexture(c);
+}
+
+function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
+  // Scale by prestige: XL(>88) / LG(>72) / MD(>55) / SM(<55)
+  const p=typeof stadCfg==="number"?stadCfg:stadCfg.prestige||65;
+  const style=typeof stadCfg==="object"?stadCfg.style||0:0;
+  const xl=p>88,lg=p>72,md=p>55;
+  const endZ=xl?64:lg?56:md?50:44;
+  const sideX=xl?78:lg?70:md?64:58;
+  const endH=xl?22:lg?16:md?13:10;
+  const sideH=xl?20:lg?14:md?11:8;
+  const endD=xl?28:lg?20:md?16:13;
+  const sideD=xl?26:lg?20:md?16:13;
+  const endW=xl?126:lg?118:md?110:100;
+  const sideW=xl?84:lg?76:md?68:60;
+  const crowdBias=xl?0.91:lg?0.80:md?0.65:0.50;
+  // Style variation: 0=standard, 1=modern dark, 2=compact bowl, 3=traditional
+  const roofOpacity=style===1?0.90:style===2?0.70:0.80;
+  const roofColor=style===1?0x333344:style===3?0x888877:0x555566;
+  const floodH=xl?32:lg?28:md?24:20; // floodlight pole height
+  const cM=new THREE.MeshLambertMaterial({color:0x32323e});
+  const stM=new THREE.MeshLambertMaterial({color:0x808088});
+  const roofM=new THREE.MeshLambertMaterial({color:roofColor,transparent:true,opacity:roofOpacity});
+  const hTex=makeCrowdTex(0.88,homeHex,awayHex,p);
+  const aTex=makeCrowdTex(0.12,homeHex,awayHex,p);
+  const mTex=makeCrowdTex(crowdBias,homeHex,awayHex,p);
+
+  // Helper: create a tiered stand section
+  const addStand=(cx,cz,rotY,standW,standD,standH,crowdTex)=>{
+    const g=new THREE.Group();
+    // Main crowd wall (slightly angled for perspective)
+    const wallMat=new THREE.MeshLambertMaterial({color:0xffffff,map:crowdTex});
+    const wall=new THREE.Mesh(new THREE.BoxGeometry(standW,standH,standD),wallMat);
+    wall.position.set(0,standH/2,0);wall.receiveShadow=true;g.add(wall);
+    // Concrete base strip
+    const base=new THREE.Mesh(new THREE.BoxGeometry(standW+2,3,standD+3),cM);
+    base.position.set(0,1.5,0);g.add(base);
+    // Roof overhang
+    const roof=new THREE.Mesh(new THREE.BoxGeometry(standW+8,0.8,standD*0.4),roofM);
+    roof.position.set(0,standH+1.4,-(standD*0.3));g.add(roof);
+    // Roof supports (pillars at edges)
+    [-standW/2+4,standW/2-4].forEach(px=>{
+      const pl=new THREE.Mesh(new THREE.CylinderGeometry(0.25,0.3,standH+2,8),stM);
+      pl.position.set(px,standH/2+1,-(standD*0.28));g.add(pl);
+    });
+    // Fence rail at pitch-side bottom
+    const fence=new THREE.Mesh(new THREE.BoxGeometry(standW,0.9,0.3),new THREE.MeshLambertMaterial({color:0x2a6038}));
+    fence.position.set(0,0.45,-(standD/2+0.15));g.add(fence);
+    g.position.set(cx,0,cz);g.rotation.y=rotY;
+    scene.add(g);
+  };
+
+  // End stands (behind goals) — scaled by prestige
+  addStand(0,-endZ,0,       endW,endD,endH,hTex); // Home end
+  addStand(0, endZ,Math.PI, endW,endD,endH,aTex); // Away end
+  // Side stands — scaled
+  addStand(sideX, 0, Math.PI/2, sideW,sideD,sideH,mTex); // Right side
+  addStand(-sideX,0,-Math.PI/2, sideW,sideD,sideH,mTex); // Left side
+  // Corner sections — filled or open based on style
+  const hasCorners=style!==3; // style 3 = traditional, open corners
+  if(hasCorners)[[-sideX,-endZ,Math.PI/4],[sideX,-endZ,-Math.PI/4],[-sideX,endZ,3*Math.PI/4],[sideX,endZ,-3*Math.PI/4]].forEach(([x,z,ry])=>{
+    const cH=Math.round((endH+sideH)/2)*0.8;
+    const cm=new THREE.Mesh(new THREE.BoxGeometry(24,cH,24),new THREE.MeshLambertMaterial({color:0xffffff,map:mTex}));
+    cm.position.set(x,cH/2,z);cm.rotation.y=ry;scene.add(cm);
+    const cb=new THREE.Mesh(new THREE.BoxGeometry(24,2,24),cM);cb.position.set(x,1,z);scene.add(cb);
+  });
+
+  // Floodlights — height scales with stadium size
+  const lightColor=style===1?0xffe0cc:style===2?0xfff0e0:0xfff8e8;
+  [[-sideX+8,-endZ+8],[sideX-8,-endZ+8],[-sideX+8,endZ-8],[sideX-8,endZ-8]].forEach(([x,z])=>{
+    const pole=new THREE.Mesh(new THREE.CylinderGeometry(0.3,0.4,floodH,8),stM);
+    pole.position.set(x,floodH/2,z);pole.castShadow=true;scene.add(pole);
+    const arm=new THREE.Mesh(new THREE.BoxGeometry(0.4,0.4,8),stM);
+    arm.position.set(x+(x>0?-4:4),floodH+2,z);scene.add(arm);
+    const head=new THREE.Mesh(new THREE.BoxGeometry(5,0.6,2),new THREE.MeshBasicMaterial({color:0xfff5aa}));
+    head.position.set(x+(x>0?-4:4),floodH+2.5,z);scene.add(head);
+    const fl=new THREE.PointLight(lightColor,1.1,280);fl.position.set(x+(x>0?-5:5),floodH+4,z);scene.add(fl);
+  });
+
+  // Goal nets (wireframe-style transparent planes)
+  const netM=new THREE.MeshBasicMaterial({color:0xfafafa,transparent:true,opacity:0.14,side:THREE.DoubleSide,wireframe:false});
+  [[-51,1],[ 51,-1]].forEach(([gx,sign])=>{
+    // Back net
+    const back=new THREE.Mesh(new THREE.PlaneGeometry(7.32,2.44),netM);
+    back.rotation.y=Math.PI/2;back.position.set(gx+sign*1.6,1.22,0);scene.add(back);
+    // Side nets
+    [-3.66,3.66].forEach(gz=>{
+      const side=new THREE.Mesh(new THREE.PlaneGeometry(2,2.44),netM);
+      side.position.set(gx+sign*0.85,1.22,gz);scene.add(side);
+    });
+    // Top net
+    const top=new THREE.Mesh(new THREE.PlaneGeometry(7.32,2),netM);
+    top.rotation.x=Math.PI/2;top.position.set(gx+sign*0.85,2.44,-sign*0.5);scene.add(top);
+  });
+
+  // Advertising boards — alternate home/away colors, more realistic
+  const hColor=new THREE.Color(homeHex),aColor=new THREE.Color(awayHex);
+  const wColor=new THREE.Color(0xfafafa);
+  const addAd=(ax,az,aw,ah,rotY,idx)=>{
+    const col=idx%3===0?hColor:idx%3===1?aColor:wColor;
+    const m=new THREE.Mesh(new THREE.BoxGeometry(aw,ah,0.22),new THREE.MeshLambertMaterial({color:col}));
+    m.position.set(ax,ah/2,az);m.rotation.y=rotY;scene.add(m);
+    // Small text-like stripe on top
+    const stripe=new THREE.Mesh(new THREE.BoxGeometry(aw,0.15,0.24),new THREE.MeshLambertMaterial({color:0x111111}));
+    stripe.position.set(ax,ah+0.075,az);stripe.rotation.y=rotY;scene.add(stripe);
+  };
+  let idx=0;
+  for(let i=-44;i<=44;i+=11){addAd(i,-33.2,9,1.3,0,idx++);addAd(i,33.2,9,1.3,Math.PI,idx++);}
+  for(let i=-28;i<=28;i+=12){addAd(53.2,i,9,1.3,Math.PI/2,idx++);addAd(-53.2,i,9,1.3,-Math.PI/2,idx++);}
+
+  // Corner flags (thicker, more visible)
+  const flagMat=new THREE.MeshLambertMaterial({color:new THREE.Color(homeHex)});
+  const poleMat=new THREE.MeshLambertMaterial({color:0xffffff});
+  [[-50,-30],[-50,30],[50,-30],[50,30]].forEach(([fx,fz])=>{
+    const fp=new THREE.Mesh(new THREE.CylinderGeometry(0.09,0.09,1.6,8),poleMat);fp.position.set(fx,0.8,fz);scene.add(fp);
+    const flag=new THREE.Mesh(new THREE.PlaneGeometry(1.1,0.65),flagMat);
+    flag.position.set(fx+(fx>0?-0.55:0.55),1.75,fz);flag.rotation.y=Math.PI/4;flag.castShadow=true;scene.add(flag);
+  });
+
+  // Player tunnel
+  const tun=new THREE.Mesh(new THREE.BoxGeometry(6,4.5,3.5),new THREE.MeshLambertMaterial({color:0x181824}));
+  tun.position.set(-71.5,2.25,-2);scene.add(tun);
+
+  // Pitch perimeter track (orange)
+  const trackMat=new THREE.MeshLambertMaterial({color:0xbb4c0a});
+  const tN=new THREE.Mesh(new THREE.PlaneGeometry(106,5),trackMat);tN.rotation.x=-Math.PI/2;tN.position.set(0,0.02,-33);scene.add(tN);
+  const tS=tN.clone();tS.position.z=33;scene.add(tS);
+  const tE=new THREE.Mesh(new THREE.PlaneGeometry(4.5,62),trackMat);tE.rotation.x=-Math.PI/2;tE.position.set(53.5,0.02,0);scene.add(tE);
+  const tW=tE.clone();tW.position.x=-53.5;scene.add(tW);
+}
+
+/* ========================================
+   THREE FIELD  (full-screen, camera zoom, 22 players)
+======================================== */
+function ThreeField({playerX,playerY,zone,homeCol="#22c55e",oppCol="#ef4444",opponents=[],matchPhase="match",onWalkoutDone,avatarId=0,actionZoom=false,allPlayers=[],homeClub=null}){
+  const mountRef=useRef(null);
+  const sr=useRef({});
+  const wRef=useRef({active:false,angle:-Math.PI*0.6,progress:0});
+  const cbRef=useRef(onWalkoutDone);
+  const homeClubRef=useRef(homeClub); // stable ref for init effect
+  useEffect(()=>{cbRef.current=onWalkoutDone;},[onWalkoutDone]);
+
+  useEffect(()=>{
+    const mount=mountRef.current;if(!mount)return;
+    // Full-screen sizing: 65% viewport height, max 540px
+    const W=mount.parentElement?.clientWidth||window.innerWidth;
+    const getH=()=>Math.max(Math.round(Math.min(window.innerHeight*0.65,540)),260);
+    const H=getH();
+    const scene=new THREE.Scene();scene.background=new THREE.Color(0x050810);scene.fog=new THREE.Fog(0x050810,160,280);
+    const camera=new THREE.PerspectiveCamera(54,W/H,0.1,380);
+    // Elevated sideline camera — starts high and behind home end, looks OVER the stands
+    camera.position.set(-12,40,-70);camera.lookAt(8,2,2);
+    const renderer=new THREE.WebGLRenderer({antialias:true,powerPreference:"high-performance"});
+    renderer.setSize(W,H);renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
+    renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+    // set clear color immediately to avoid gray flash before first frame
+    renderer.setClearColor(0x050810,1);
+    mount.appendChild(renderer.domElement);
+    // Render one frame immediately so canvas is visible before animate() loop starts
+    renderer.render(new THREE.Scene(),camera);
+    // Responsive resize
+    const ro=new ResizeObserver(()=>{
+      const nW=mount.parentElement?.clientWidth||window.innerWidth;
+      const nH=getH();
+      renderer.setSize(nW,nH);camera.aspect=nW/nH;camera.updateProjectionMatrix();
+    });
+    ro.observe(mount);
+
+    scene.add(new THREE.AmbientLight(0xffffff,0.50));
+    const sun=new THREE.DirectionalLight(0xfff4d6,0.85);sun.position.set(10,45,15);sun.castShadow=true;sun.shadow.mapSize.set(1024,1024);sun.shadow.camera.left=-70;sun.shadow.camera.right=70;sun.shadow.camera.top=50;sun.shadow.camera.bottom=-50;scene.add(sun);
+    scene.add(new THREE.HemisphereLight(0x8899cc,0x2a3a20,0.35));
+
+    // Pitch
+    const grassMat=new THREE.MeshLambertMaterial({color:0x1a5c0d});
+    const grass=new THREE.Mesh(new THREE.PlaneGeometry(100,60),grassMat);grass.rotation.x=-Math.PI/2;grass.receiveShadow=true;scene.add(grass);
+    for(let i=0;i<10;i++){const sm=new THREE.MeshLambertMaterial({color:i%2?0x1e6611:0x174e0c});const s=new THREE.Mesh(new THREE.PlaneGeometry(10,60),sm);s.rotation.x=-Math.PI/2;s.position.set(-45+i*10,0.01,0);scene.add(s);}
+
+    const lm=new THREE.LineBasicMaterial({color:0xffffff,opacity:0.85,transparent:true});
+    const addL=pts=>{const g=new THREE.BufferGeometry().setFromPoints(pts.map(([x,y,z])=>new THREE.Vector3(x,y,z)));scene.add(new THREE.Line(g,lm));};
+    const addR=(cx,cz,w,d,y=0.02)=>addL([[cx-w/2,y,cz-d/2],[cx+w/2,y,cz-d/2],[cx+w/2,y,cz+d/2],[cx-w/2,y,cz+d/2],[cx-w/2,y,cz-d/2]]);
+    addR(0,0,100,60);addL([[0,0.02,-30],[0,0.02,30]]);
+    const cc=[];for(let i=0;i<=64;i++){const a=(i/64)*Math.PI*2;cc.push([Math.cos(a)*9.15,0.02,Math.sin(a)*9.15]);}addL(cc);
+    addR(-33.5,0,33,40);addR(-45.5,0,11,18);addR(33.5,0,33,40);addR(45.5,0,11,18);
+    const spm=new THREE.MeshBasicMaterial({color:0xffffff});
+    [0,-38,38].forEach(x=>{const sp=new THREE.Mesh(new THREE.CircleGeometry(0.28,12),spm);sp.rotation.x=-Math.PI/2;sp.position.set(x,0.02,0);scene.add(sp);});
+
+    const pm=new THREE.MeshLambertMaterial({color:0xeeeeee});
+    const mkGoal=side=>{const g=new THREE.Group();const pg=new THREE.CylinderGeometry(0.1,0.1,2.44,8);[-3.66,3.66].forEach(z=>{const p=new THREE.Mesh(pg,pm);p.position.set(0,1.22,z);p.castShadow=true;g.add(p);});const cb=new THREE.Mesh(new THREE.CylinderGeometry(0.08,0.08,7.32,8),pm);cb.rotation.z=Math.PI/2;cb.rotation.x=Math.PI/2;cb.position.set(0,2.44,0);g.add(cb);const net=new THREE.Mesh(new THREE.PlaneGeometry(1.8,2.44),new THREE.MeshBasicMaterial({color:0xffffff,opacity:.08,transparent:true,side:THREE.DoubleSide}));net.rotation.y=Math.PI/2;net.position.set(side<0?-0.9:0.9,1.22,0);g.add(net);g.position.set(side,0,0);scene.add(g);};
+    mkGoal(-51);mkGoal(51);
+    const pres=homeClubRef.current?.p||homeClubRef.current?.prestige||65;
+    const sid=(homeClubRef.current?.id||"x").split("").reduce((a,c)=>a+c.charCodeAt(0),0)%4;
+    buildStadium(scene,homeCol,oppCol,{prestige:pres,style:sid});
+
+    const zh=new THREE.Mesh(new THREE.PlaneGeometry(1,60),new THREE.MeshBasicMaterial({color:0xe8c547,opacity:0,transparent:true,side:THREE.DoubleSide,depthWrite:false}));
+    zh.rotation.x=-Math.PI/2;zh.position.y=0.04;scene.add(zh);
+
+    const mkChar=(colHex,isUser=false)=>{
+      const g=new THREE.Group();const col=new THREE.Color(colHex);
+      const jM=new THREE.MeshLambertMaterial({color:col}),sM=new THREE.MeshLambertMaterial({color:0x111111}),skM=new THREE.MeshLambertMaterial({color:0xdba88a}),hM=new THREE.MeshLambertMaterial({color:0x2e1800});
+      [-0.18,0.18].forEach(xo=>{const bt=new THREE.Mesh(new THREE.BoxGeometry(0.22,0.14,0.34),new THREE.MeshLambertMaterial({color:0x111111}));bt.position.set(xo,0.07,0.06);g.add(bt);});
+      [-0.18,0.18].forEach(xo=>{const lg=new THREE.Mesh(new THREE.CylinderGeometry(0.11,0.10,0.52,8),skM);lg.position.set(xo,0.36,0);g.add(lg);});
+      const sh=new THREE.Mesh(new THREE.CylinderGeometry(0.36,0.28,0.38,8),sM);sh.position.y=0.63;g.add(sh);
+      const bd=new THREE.Mesh(new THREE.CylinderGeometry(0.34,0.36,1.02,8),jM);bd.position.y=1.13;bd.castShadow=true;g.add(bd);
+      [-0.44,0.44].forEach(xo=>{const arm=new THREE.Mesh(new THREE.CylinderGeometry(0.09,0.08,0.62,6),jM);arm.rotation.z=xo>0?Math.PI/6:-Math.PI/6;arm.position.set(xo,1.1,0);g.add(arm);});
+      const nk=new THREE.Mesh(new THREE.CylinderGeometry(0.10,0.12,0.18,8),skM);nk.position.y=1.70;g.add(nk);
+      const hd=new THREE.Mesh(new THREE.SphereGeometry(0.30,12,10),skM);hd.position.y=1.90;hd.castShadow=true;g.add(hd);
+      const hr=new THREE.Mesh(new THREE.SphereGeometry(0.23,10,8),hM);hr.position.set(0,2.08,-0.02);g.add(hr);
+      if(isUser){const rg=new THREE.Mesh(new THREE.TorusGeometry(0.62,0.07,6,28),new THREE.MeshBasicMaterial({color:0xe8c547}));rg.rotation.x=Math.PI/2;rg.position.y=0.1;g.add(rg);}
+      g.castShadow=true;return g;
+    };
+
+    const pMesh=mkChar(homeCol,true);pMesh.visible=false;scene.add(pMesh);
+    const bMesh=new THREE.Mesh(new THREE.SphereGeometry(0.22,14,10),new THREE.MeshLambertMaterial({color:0xffffff}));bMesh.castShadow=true;bMesh.visible=false;scene.add(bMesh);
+    const patchMat=new THREE.MeshLambertMaterial({color:0x222222});
+    [[0,0.22,0],[0.16,0.15,0],[0,0.12,0.18],[-0.16,0.15,0]].forEach(([x,y,z])=>{const p=new THREE.Mesh(new THREE.SphereGeometry(0.075,6,5),patchMat);p.position.set(x,y,z);bMesh.add(p);});
+    const oMeshes=(opponents||[]).map(opp=>{const m=mkChar(oppCol);const p=toThree(opp.x,opp.y);m.position.set(p.x,0,p.z);m.rotation.y=Math.PI;m.visible=false;scene.add(m);return m;});
+    // Background players — simplified char (body + head), all 22 + referee
+    const mkBgChar=(colHex,isRef=false)=>{const g=new THREE.Group();const jM=new THREE.MeshLambertMaterial({color:isRef?0x1a1a1a:new THREE.Color(colHex)});const skM=new THREE.MeshLambertMaterial({color:0xdba88a});const bd=new THREE.Mesh(new THREE.CylinderGeometry(0.27,0.27,0.95,7),jM);bd.position.y=0.48;g.add(bd);const hd=new THREE.Mesh(new THREE.SphereGeometry(0.22,7,5),skM);hd.position.y=1.18;g.add(hd);if(isRef){const fl=new THREE.Mesh(new THREE.BoxGeometry(0.12,0.08,0.22),new THREE.MeshLambertMaterial({color:0xffd700}));fl.position.set(0.28,0.65,0);g.add(fl);}g.castShadow=true;return g;};
+    const bgMeshes=(allPlayers||[]).map(p=>{const isRef=p.team==="ref";const col=p.team==="home"?homeCol:p.team==="away"?oppCol:"#000";const m=mkBgChar(col,isRef);const pos=toThree(p.x,p.y);m.position.set(pos.x,0,pos.z);m.rotation.y=p.team==="away"?Math.PI:0;m.visible=false;scene.add(m);return m;});
+
+    sr.current={scene,camera,renderer,pMesh,bMesh,oMeshes,bgMeshes,zh,camTarget:new THREE.Vector3(-12,40,-70),lookAt:new THREE.Vector3(8,2,2)};
+
+    let animId,t=0;
+    const animate=()=>{
+      animId=requestAnimationFrame(animate);t+=0.016;
+      const r=sr.current;const w=wRef.current;
+      if(w.active){
+        // Cinematic walkout orbit — wider radius, higher altitude
+        w.angle+=0.005;w.progress+=0.0035;
+        camera.position.set(Math.cos(w.angle)*80,35+Math.sin(w.angle*0.6)*5,Math.sin(w.angle)*80);
+        camera.lookAt(0,4,0);
+        if(w.progress>=1){w.active=false;cbRef.current?.();}
+      }else{
+        // Smooth follow
+        camera.position.lerp(r.camTarget,r.actionZoom?0.12:0.045);camera.lookAt(r.lookAt);
+      }
+      if(r.bMesh&&r.bMesh.visible){r.bMesh.position.y=0.22+Math.abs(Math.sin(t*2.8))*0.26;r.bMesh.rotation.y+=0.06;}
+      r.oMeshes?.forEach((m,i)=>{if(m.visible)m.position.y=Math.sin(t*1.2+i)*0.02;});
+      r.bgMeshes?.forEach((m,i)=>{if(m.visible){m.position.y=Math.sin(t*0.7+i*1.9)*0.012;}});
+      renderer.render(scene,camera);
+    };
+    animate();sr.current.stopAnim=()=>cancelAnimationFrame(animId);
+    return()=>{
+      ro.disconnect();
+      sr.current.stopAnim?.();
+      sr.current.scene?.traverse(obj=>{
+        if(obj.geometry)obj.geometry.dispose();
+        const mats=obj.material?Array.isArray(obj.material)?obj.material:[obj.material]:[];
+        mats.forEach(m=>{if(m.map)m.map.dispose();m.dispose();});
+      });
+      renderer.dispose();
+      if(mount.contains(renderer.domElement))mount.removeChild(renderer.domElement);
+    };
+  },[]);// eslint-disable-line
+
+  useEffect(()=>{
+    const r=sr.current;if(!r.pMesh)return;
+    const isMatch=matchPhase!=="walkout";
+    r.pMesh.visible=isMatch;r.bMesh.visible=isMatch;r.oMeshes?.forEach(m=>m.visible=isMatch);r.bgMeshes?.forEach(m=>m.visible=isMatch);
+    if(matchPhase==="walkout"){wRef.current.active=true;wRef.current.angle=-Math.PI*0.6;wRef.current.progress=0;}
+  },[matchPhase]);
+
+  useEffect(()=>{
+    const r=sr.current;if(!r.pMesh||!r.bMesh)return;
+    const{x,z}=toThree(playerX,playerY);
+    r.pMesh.position.x=x;r.pMesh.position.z=z;r.pMesh.rotation.y=Math.PI/2;
+    r.bMesh.position.x=x+1.1;r.bMesh.position.z=z-0.35;
+    r.actionZoom=actionZoom; // used for lerp speed in animate loop
+    if(actionZoom){
+      // Spalla — camera bassa, vicina, quasi di spalle al giocatore
+      r.camTarget.set(x-11,4.5,z+2.5);
+      r.lookAt.set(x+20,1.2,z);
+    }else{
+      const camX=x*0.55-12;
+      r.camTarget.set(camX,38,-70);
+      r.lookAt.set(camX+14,2,2);
+    }
+  },[playerX,playerY,actionZoom]);
+
+  useEffect(()=>{
+    const r=sr.current;if(!r.zh)return;
+    const zd=ZONES[zone];if(!zd){r.zh.material.opacity=0;return;}
+    const x1=zd.x[0]-50,x2=zd.x[1]-50;
+    r.zh.scale.x=x2-x1;r.zh.position.x=(x1+x2)/2;
+    const zc={propria:0x6366f1,difesa:0x3b82f6,centro:0x10b981,trequarti:0xf59e0b,bordo:0xef4444,area:0xdc2626};
+    r.zh.material.color.setHex(zc[zone]||0xe8c547);r.zh.material.opacity=0.20;
+  },[zone]);
+
+  return<div ref={mountRef} style={{width:"100%",height:"clamp(260px, 65vh, 540px)",borderRadius:"0 0 12px 12px",overflow:"hidden",background:"#050810"}}/>;
+}
+
+/* ========================================
+   D-PAD  (W/↑ = avanti) — pulsanti grandi
+======================================== */
+function DPad({onMove,dark=false}){
+  const SZ=42;
+  const btn=(lbl,dx,dy)=>(
+    <button onPointerDown={e=>{e.preventDefault();onMove(dx,dy);}}
+      style={{width:SZ,height:SZ,borderRadius:9,
+        background:dark?"rgba(255,255,255,0.14)":"rgba(30,42,60,0.08)",
+        border:dark?"1px solid rgba(255,255,255,0.22)":"1px solid "+TH.cardBorder,
+        color:dark?"#fff":TH.text,fontSize:16,cursor:"pointer",
+        display:"flex",alignItems:"center",justifyContent:"center",
+        userSelect:"none",WebkitUserSelect:"none",touchAction:"none",
+        fontWeight:600,
+        boxShadow:dark?"none":TH.shadow}}>
+      {lbl}
+    </button>
+  );
+  return(
+    <div style={{display:"grid",gridTemplateColumns:`${SZ}px ${SZ}px ${SZ}px`,gridTemplateRows:`${SZ}px ${SZ}px ${SZ}px`,gap:4,userSelect:"none",flexShrink:0}}>
+      <div/>{btn("▲",+2.5,0)}<div/>
+      {btn("◀",0,-2.5)}<div style={{display:"flex",alignItems:"center",justifyContent:"center"}}><div style={{width:7,height:7,borderRadius:"50%",background:dark?"rgba(255,255,255,0.3)":"rgba(0,0,0,0.1)"}}/></div>{btn("▶",0,+2.5)}
+      <div/>{btn("▼",-2.5,0)}<div/>
+    </div>
+  );
+}
+
+/* ========================================
+   MATCHDAY CARD  (req #10 – calendario)
+======================================== */
+function MatchdayCard({homeTeam,awayTeam,stadium,attendance,league,onContinue,onSkip}){
+  const weather=pick(["☀️ Sereno","🌥️ Nuvoloso","🌧️ Pioggia leggera","⛅ Parzialmente nuvoloso"]);
+  const time=pick(["15:00","17:30","18:00","20:45","19:00"]);
+  const leagueName=league||(homeTeam?.isU18?"Primavera U18":(homeTeam?.lg||"Campionato"));
+  return(
+    <div style={{width:"100%"}}>
+      <div style={{textAlign:"center",marginBottom:20}}>
+        <div style={{fontSize:10,color:TH.muted,letterSpacing:3,textTransform:"uppercase",marginBottom:8}}>{leagueName}</div>
+        <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:20}}>
+          <div style={{textAlign:"center"}}>
+            <TeamBadge team={homeTeam} size={52}/>
+            <div style={{fontSize:12,fontWeight:700,color:TH.text,marginTop:4}}>{homeTeam?.name||homeTeam?.n}</div>
+            <div style={{fontSize:10,color:TH.muted}}>CASA</div>
+          </div>
+          <div style={{fontSize:28,color:TH.faint,fontWeight:900}}>VS</div>
+          <div style={{textAlign:"center"}}>
+            <TeamBadge team={awayTeam} size={52}/>
+            <div style={{fontSize:12,fontWeight:700,color:TH.text,marginTop:4}}>{awayTeam?.name||awayTeam?.n}</div>
+            <div style={{fontSize:10,color:TH.muted}}>OSPITE</div>
+          </div>
+        </div>
+      </div>
+      <Card style={{padding:"12px 16px",marginBottom:12}}>
+        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}>
+          {[{l:"Stadio",v:(stadium||"–").split(" ").slice(0,2).join(" ")},{l:"Spettatori",v:(attendance||0).toLocaleString("it-IT")},{l:"Meteo",v:weather},{l:"Orario",v:time}].map(s=>(
+            <div key={s.l} style={{background:"#f8fafc",borderRadius:8,padding:"8px 10px",border:"1px solid "+TH.cardBorder}}>
+              <div style={{fontSize:9,color:TH.faint,marginBottom:2,textTransform:"uppercase",letterSpacing:1}}>{s.l}</div>
+              <div style={{fontSize:12,fontWeight:600,color:TH.text}}>{s.v}</div>
+            </div>
+          ))}
+        </div>
+      </Card>
+      <div style={{display:"flex",gap:10}}>
+        <Btn onClick={onSkip} v="ghost" style={{flex:0,padding:"10px 14px",fontSize:12}}>Salta →</Btn>
+        <Btn onClick={onContinue} fw style={{padding:"13px",fontSize:14}}>📋 Formazioni →</Btn>
+      </div>
+    </div>
+  );
+}
+
+/* FORMATION VIEW  (BUG 3 – both teams with real names/roles) */
+function FormationView({homeTeam,awayTeam,player,homeRoster,awayRoster,onContinue,onSkip}){
+  // homeRoster: [{name,role}×11], last entry is the player himself
+  const hRoster=homeRoster||generateTeamRoster(homeTeam,player?.season||1).map((r,i)=>i===10?{name:player?.name||"Tu",role:"Centravanti"}:r);
+  const aRoster=awayRoster||generateTeamRoster(awayTeam,player?.season||1);
+  return(
+    <div style={{width:"100%"}}>
+      <div style={{textAlign:"center",marginBottom:12}}>
+        <div style={{fontSize:11,color:TH.muted,letterSpacing:3,textTransform:"uppercase",marginBottom:4}}>Formazioni</div>
+        <div style={{fontSize:18,fontWeight:900,color:TH.text}}>{homeTeam?.name||homeTeam?.n} vs {awayTeam?.name||awayTeam?.n}</div>
+      </div>
+      <div style={{position:"relative",marginBottom:12}}>
+        <svg viewBox="0 0 220 140" style={{width:"100%",display:"block",borderRadius:10}}>
+          <rect width={220} height={140} fill="#1a5c0d" rx={8}/>
+          {[0,1,2,3,4].map(i=><rect key={i} x={i*44} width={22} height={140} fill={i%2?"#1e6611":"#174e0c"} rx={0}/>)}
+          <rect x={6} y={5} width={208} height={130} fill="none" stroke="rgba(255,255,255,0.55)" strokeWidth={1}/>
+          <line x1={110} y1={5} x2={110} y2={135} stroke="rgba(255,255,255,0.55)" strokeWidth={1}/>
+          <circle cx={110} cy={70} r={20} fill="none" stroke="rgba(255,255,255,0.45)" strokeWidth={1}/>
+          <rect x={6} y={45} width={38} height={50} fill="none" stroke="rgba(255,255,255,0.4)" strokeWidth={1}/>
+          <rect x={176} y={45} width={38} height={50} fill="none" stroke="rgba(255,255,255,0.4)" strokeWidth={1}/>
+          {FORMATION_HOME.map((pos,i)=>{const px=(pos[0]/100)*208+6,py=(pos[1]/100)*130+5;const isU=i===10;return<g key={`h${i}`}><circle cx={px} cy={py} r={isU?6:5} fill={isU?"#f59e0b":(homeTeam?.col||homeTeam?.c||"#3b82f6")} stroke="white" strokeWidth={isU?1.5:0.8}/>{isU&&<text x={px} y={py+0.5} textAnchor="middle" dominantBaseline="central" fontSize={5} fill="#fff" fontWeight="bold">★</text>}</g>;})}
+          {FORMATION_AWAY.map((pos,i)=>{const px=((100-pos[0])/100)*208+6,py=(pos[1]/100)*130+5;return<circle key={`a${i}`} cx={px} cy={py} r={4.5} fill={awayTeam?.col||awayTeam?.c||"#ef4444"} stroke="white" strokeWidth={0.8}/>;})}</svg>
+      </div>
+      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginBottom:12}}>
+        {[{team:homeTeam,roster:hRoster,isHome:true},{team:awayTeam,roster:aRoster,isHome:false}].map(({team,roster,isHome})=>(
+          <Card key={isHome?"h":"a"} style={{padding:"10px 12px"}}>
+            <div style={{fontSize:10,color:team?.col||TH.primary,textTransform:"uppercase",letterSpacing:1,fontWeight:700,marginBottom:8}}>{team?.abbr||team?.a} · {isHome?"Casa":"Ospite"}</div>
+            {roster.map((pl,i)=><div key={i} style={{fontSize:10,padding:"2px 0",borderBottom:i<10?"1px solid "+TH.cardBorder:"none",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+              <span style={{color:i===10&&isHome?"#d97706":TH.text,fontWeight:i===10&&isHome?700:400}}>{i===10&&isHome?"⭐ ":""}{pl.name}</span>
+              <span style={{fontSize:9,color:TH.faint,marginLeft:4,flexShrink:0}}>{pl.role}</span>
+            </div>)}
+          </Card>
+        ))}
+      </div>
+      <div style={{display:"flex",gap:10}}>
+        <Btn onClick={onSkip} v="ghost" style={{flex:0,padding:"10px 14px",fontSize:12}}>Salta →</Btn>
+        <Btn onClick={onContinue} fw style={{padding:"13px",fontSize:14}}>⚽ Ingresso in campo →</Btn>
+      </div>
+    </div>
+  );
+}
+
+/* WALKOUT OVERLAY */
+function WalkoutOverlay({homeTeam,onDone}){
+  const [tick,setTick]=useState(0);
+  useEffect(()=>{if(tick>=100)return;const t=setTimeout(()=>setTick(n=>n+1),40);return()=>clearTimeout(t);},[tick]);
+  useEffect(()=>{if(tick>=100)onDone();},[tick,onDone]);
+  const nameList=["Portiere","Difensore","Difensore","Terzino","Terzino","Mediano","Centrocampista","Trequartista","Ala Sinistra","Ala Destra","Centravanti"];
+  const visible=Math.floor(tick/9);
+  return(
+    <div style={{position:"absolute",inset:0,background:"rgba(0,0,0,0.55)",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",zIndex:10,borderRadius:"0 0 12px 12px",backdropFilter:"blur(2px)"}}>
+      <div style={{fontSize:10,color:"rgba(255,255,255,0.7)",letterSpacing:4,textTransform:"uppercase",marginBottom:8}}>Ingresso in campo</div>
+      <div style={{fontSize:20,fontWeight:900,color:"#fff",marginBottom:16}}>{homeTeam?.name||homeTeam?.n}</div>
+      <div style={{display:"flex",flexDirection:"column",gap:4,minHeight:130}}>
+        {nameList.slice(0,visible).map((role,i)=>(
+          <div key={i} style={{display:"flex",alignItems:"center",gap:8,animation:"slideIn 0.3s ease"}}>
+            <div style={{width:6,height:6,borderRadius:"50%",background:homeTeam?.col||"#22c55e",flexShrink:0}}/>
+            <div style={{fontSize:11,color:"rgba(255,255,255,0.85)"}}>{role}</div>
+          </div>
+        ))}
+      </div>
+      <div style={{width:200,height:3,background:"rgba(255,255,255,0.1)",borderRadius:2,marginTop:14}}>
+        <div style={{height:"100%",width:`${tick}%`,background:`linear-gradient(90deg,${homeTeam?.col||"#22c55e"},#f59e0b)`,borderRadius:2,transition:"width .04s"}}/>
+      </div>
+    </div>
+  );
+}
+
+/* ========================================
+   LIVE MATCH  (req #3,#4,#5,#6,#8)
+======================================== */
+function LiveMatch({player,opponent,context="career",onMatchEnd}){
+  const [numHL]=useState(()=>context==="trial"?rng(2,4):rng(2,6));
+  const [hlTimes]=useState(()=>{const step=Math.floor(82/numHL)||12;return Array.from({length:numHL},(_,i)=>8+step*i+rng(0,Math.max(1,step-4)));});
+  const [situations]=useState(()=>shuffle(SITUATIONS).slice(0,numHL));
+  const [stadium]=useState(()=>pick(STADIUMS));
+  // context-aware realistic attendance
+  const [attendance]=useState(()=>calcAttendance(context==="trial"?null:(player.club||opponent),context));
+  // persistent seeded rosters for both teams
+  const [homeRoster]=useState(()=>{const r=generateTeamRoster(player.club||opponent,player.season||1);r[10]={name:player.name,role:"Centravanti"};return r;});
+  const [awayRoster]=useState(()=>generateTeamRoster(opponent,player.season||1));
+  // 22 players + referee — generated once per match
+  const [matchPlayers]=useState(()=>{
+    const j=(x,y,d=4)=>({x:clamp(x+rng(-d,d),3,97),y:clamp(y+rng(-d,d),3,97)});
+    return[
+      // Home team (10 outfield + GK, protagonist is separate)
+      {...j(5,50),team:"home"},{...j(18,12),team:"home"},{...j(18,38),team:"home"},
+      {...j(18,62),team:"home"},{...j(18,88),team:"home"},{...j(38,25),team:"home"},
+      {...j(38,50),team:"home"},{...j(38,75),team:"home"},{...j(55,22),team:"home"},{...j(55,78),team:"home"},
+      // Away team (11)
+      {...j(95,50),team:"away"},{...j(82,12),team:"away"},{...j(82,38),team:"away"},
+      {...j(82,62),team:"away"},{...j(82,88),team:"away"},{...j(62,25),team:"away"},
+      {...j(62,50),team:"away"},{...j(62,75),team:"away"},{...j(48,20),team:"away"},
+      {...j(48,50),team:"away"},{...j(48,80),team:"away"},
+      // Referee
+      {...j(50,52,8),team:"ref"},
+    ];
+  });
+
+  const [clock,setClock]=useState(0);
+  const [score,setScore]=useState({home:0,away:0});
+  const [phase,setPhase]=useState(context==="trial"?"playing":"matchday");
+  const [hlIdx,setHlIdx]=useState(0);
+  // position resets to situation startZone on each new highlight
+  const [pPos,setPPos]=useState(()=>getStartPos(situations[0])||{x:58,y:50});
+  const [mStats,setMStats]=useState({goals:0,assists:0,rb:0});
+  const [energy,setEnergy]=useState(100);
+  const [coms,setComs]=useState([]);
+  const [outcome,setOutcome]=useState(null);
+  const [chosenAct,setChosenAct]=useState(null);
+  // Possession: based on player OVR vs opponent prestige (read directly from prop, not from oppPrestige var)
+  const [possession,setPossession]=useState(()=>{
+    const opp=opponent?.p||opponent?.prestige||65;
+    const diff=(player.ovr||65)-opp;
+    return clamp(Math.round(50+diff*0.28+rng(-5,5)),22,78);
+  });
+
+  const keysRef=useRef(new Set());
+  const moveRef=useRef(null);
+  const zone=getZone(pPos.x);
+  const oppPrestige=opponent?.p||opponent?.prestige||65;
+  const opponents=useRef([{x:76,y:35},{x:82,y:50},{x:79,y:65}]);
+
+  const addCom=useCallback((text,color,t)=>{setComs(p=>[{text,color,t:t??clock},...p].slice(0,16));},[clock]);
+
+  // reset position when highlight changes
+  useEffect(()=>{
+    if(phase==="hl_move"){
+      const sp=getStartPos(situations[hlIdx]);
+      setPPos(sp);
+    }
+  },[hlIdx,phase]);// eslint-disable-line
+
+  // Clock — more commentary, possession updates
+  useEffect(()=>{
+    if(phase!=="playing")return;
+    const iv=setInterval(()=>{
+      setClock(c=>{
+        const nx=c+1;
+        if(nx>=90){setPhase("ended");return 90;}
+        if(hlIdx<hlTimes.length&&nx>=hlTimes[hlIdx]){setPhase("hl_move");return nx;}
+        // Commentary ~30% chance per tick (1 every ~3 min average)
+        if(Math.random()<0.30){
+          const eligible=BG_MATCH.filter(e=>!e.minClock||nx>=e.minClock);
+          const ev=wPick(eligible);
+          if(ev.ef==="team_goal")setScore(s=>({...s,home:s.home+1}));
+          if(ev.ef==="opp_goal"){setScore(s=>({...s,away:s.away+1}));setPossession(p=>clamp(p-4,20,80));}
+          if(ev.poss)setPossession(p=>clamp(p+(ev.poss||0),20,80));
+          const cColor=ev.ef==="team_goal"?"#16a34a":ev.ef==="opp_goal"?"#dc2626":TH.faint;
+          addCom(ev.txt,cColor,nx);
+        }
+        // Possession drift every ~8 ticks
+        if(nx%8===0)setPossession(p=>clamp(p+rng(-2,2),20,80));
+        return nx;
+      });
+    },300);
+    return()=>clearInterval(iv);
+  },[phase,hlIdx,addCom,oppPrestige,player.ovr]);
+
+  // Keyboard — W/↑=forward, req #4: key 0 manual action start
+  useEffect(()=>{
+    const onD=e=>{
+      keysRef.current.add(e.key);
+      if((phase==="hl_move"||phase==="hl_choose")&&["ArrowUp","ArrowDown","ArrowLeft","ArrowRight","w","a","s","d"].includes(e.key))e.preventDefault();
+      if(phase==="hl_choose"&&["1","2","3"].includes(e.key)){e.preventDefault();const idx=parseInt(e.key)-1;const sit=situations[hlIdx];if(sit?.actions[idx])handleAction(sit.actions[idx]);}
+      // key 0 to advance action
+      if(e.key==="0"||e.key==="Numpad0"){
+        e.preventDefault();
+        if(phase==="hl_move")setPhase("hl_choose");
+        else if(phase==="hl_result")handleContinue();
+        else if(phase==="playing"&&hlIdx<hlTimes.length){setClock(hlTimes[hlIdx]);setPhase("hl_move");}
+      }
+    };
+    const onU=e=>keysRef.current.delete(e.key);
+    document.addEventListener("keydown",onD);document.addEventListener("keyup",onU);
+    return()=>{document.removeEventListener("keydown",onD);document.removeEventListener("keyup",onU);};
+  },[phase,hlIdx,situations]);// eslint-disable-line
+
+  // Movement RAF — req #3: movement limited by situation moveZone
+  useEffect(()=>{
+    if(phase!=="hl_move"&&phase!=="hl_choose"){if(moveRef.current)cancelAnimationFrame(moveRef.current);return;}
+    const sit=situations[hlIdx];
+    const mz=sit?.moveZone||{x:[0,100],y:[0,100]};
+    const loop=()=>{
+      const k=keysRef.current;let dx=0,dy=0;
+      if(k.has("ArrowUp")   ||k.has("w"))dx=+1.8;
+      if(k.has("ArrowDown") ||k.has("s"))dx=-1.8;
+      if(k.has("ArrowRight")||k.has("d"))dy=+1.8;
+      if(k.has("ArrowLeft") ||k.has("a"))dy=-1.8;
+      // clamp movement to situation moveZone
+      if(dx||dy)setPPos(p=>({x:clamp(p.x+dx,mz.x[0],mz.x[1]),y:clamp(p.y+dy,mz.y[0],mz.y[1])}));
+      moveRef.current=requestAnimationFrame(loop);
+    };
+    moveRef.current=requestAnimationFrame(loop);
+    return()=>{if(moveRef.current)cancelAnimationFrame(moveRef.current);};
+  },[phase,hlIdx,situations]);
+
+  const handleDPad=(dx,dy)=>{
+    if(phase!=="hl_move"&&phase!=="hl_choose")return;
+    const sit=situations[hlIdx];const mz=sit?.moveZone||{x:[0,100],y:[0,100]};
+    setPPos(p=>({x:clamp(p.x+dx,mz.x[0],mz.x[1]),y:clamp(p.y+dy,mz.y[0],mz.y[1])}));
+  };
+
+  const handleAction=useCallback((action)=>{
+    if(phase!=="hl_choose")return;
+    // pass opponent prestige for difficulty scaling
+    const rate=succRate(action,player.stats,pPos.x,oppPrestige)/100;
+    const ok=Math.random()<clamp(rate+(Math.random()-.5)*.18,0.08,0.93);
+    const key=ok?action.rew:action.fail;
+    const txt=pick(OUTCOME_TX[key]||["Azione completata."]);
+    setEnergy(e=>clamp(e-action.nrg,0,100));
+    setMStats(s=>{let{goals,assists,rb}={...s};if(ok){if(key==="goal"){goals++;rb+=5;setScore(sc=>({...sc,home:sc.home+1}));}if(key==="assist"){assists++;rb+=3;setScore(sc=>({...sc,home:sc.home+1}));}if(!["goal","assist"].includes(key))rb+=1;}else{if(key==="goal_against"){rb-=3;setScore(sc=>({...sc,away:sc.away+1}));}if(key==="miss_easy")rb-=2;}return{goals,assists,rb};});
+    addCom(txt,ok?"#16a34a":"#dc2626",clock);
+    setOutcome({text:txt,ok,actionLabel:action.label});setChosenAct(action);setPhase("hl_result");
+  },[phase,player.stats,pPos.x,clock,addCom,oppPrestige]);
+
+  const handleContinue=()=>{const nx=hlIdx+1;if(nx>=numHL){setPhase("ended");}else{setHlIdx(nx);setOutcome(null);setChosenAct(null);setPhase("playing");}};
+  const handleEnd=()=>{const raw=clamp(6.0+mStats.rb*.12+(score.home>score.away?.3:score.home===score.away?0:-.2),4.0,10.0);onMatchEnd({goals:mStats.goals,assists:mStats.assists,homeScore:score.home,awayScore:score.away,won:score.home>score.away,drew:score.home===score.away,opponent:opponent?.name||opponent?.n,oppAbbr:opponent?.abbr||opponent?.a,oppCol:opponent?.col||opponent?.c,rating:Math.round(raw*10)/10,context});};
+
+  // Auto-continue 2 s after action result — no need to press 0
+  useEffect(()=>{
+    if(phase!=="hl_result")return;
+    const t=setTimeout(handleContinue,2000);
+    return()=>clearTimeout(t);
+  },[phase,hlIdx]);// eslint-disable-line
+
+  const curSit=situations[hlIdx];
+  const winning=score.home>score.away,losing=score.home<score.away;
+  const pct=Math.round((clock/90)*100);
+  const show3D=["playing","hl_move","hl_choose","hl_result"].includes(phase);
+  const matchPhase3D=phase==="walkout"?"walkout":"match";
+
+  return(
+    <div style={{width:"100%"}}>
+      {phase==="matchday"&&<MatchdayCard homeTeam={player.club||opponent} awayTeam={opponent} stadium={stadium} attendance={attendance} league={player.club?.lg||(player.club?.isU18||context==="trial"?"Primavera U18":null)} onContinue={()=>setPhase("formations")} onSkip={()=>setPhase("playing")}/>}
+      {phase==="formations"&&<FormationView homeTeam={player.club||opponent} awayTeam={opponent} player={player} homeRoster={homeRoster} awayRoster={awayRoster} onContinue={()=>setPhase("walkout")} onSkip={()=>setPhase("playing")}/>}
+
+      {(show3D||phase==="walkout")&&(
+        <Card style={{padding:0,overflow:"hidden",marginBottom:10}} shadow>
+          {/* Scoreboard */}
+          <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"10px 18px",borderBottom:"1px solid "+TH.cardBorder,background:"#f8fafc"}}>
+            <div style={{textAlign:"left",display:"flex",alignItems:"center",gap:8}}>
+              <TeamBadge team={player.club||opponent} size={28}/>
+              <div><div style={{fontSize:9,color:TH.muted,fontWeight:700}}>{player.club?.abbr||player.club?.a||"TUA"}</div><div style={{fontSize:34,fontWeight:900,color:TH.success,lineHeight:1}}>{score.home}</div></div>
+            </div>
+            <div style={{textAlign:"center",flex:1}}>
+              <div style={{display:"inline-block",padding:"3px 12px",borderRadius:20,fontSize:13,fontWeight:800,background:winning?"#dcfce7":losing?"#fee2e2":"#f1f5f9",color:winning?TH.success:losing?TH.danger:TH.muted,border:`1px solid ${winning?"#bbf7d0":losing?"#fecaca":TH.cardBorder}`}}>{phase==="walkout"?"🏃":phase==="ended"?"90'":phase==="matchday"||phase==="formations"?"–":`${clock}'`}</div>
+              <div style={{fontSize:8,color:TH.faint,marginTop:2}}>{phase==="walkout"?"Ingresso":phase==="ended"?"Fine":`Azione ${hlIdx+1}/${numHL}`}</div>
+              {show3D&&<div style={{marginTop:4,padding:"0 6px"}}>
+                <div style={{display:"flex",justifyContent:"space-between",fontSize:9,marginBottom:2}}>
+                  <span style={{color:TH.success,fontWeight:700}}>{possession}%</span>
+                  <span style={{color:TH.faint,fontSize:8}}>poss.</span>
+                  <span style={{color:TH.danger,fontWeight:700}}>{100-possession}%</span>
+                </div>
+                <div style={{height:3,background:"#e2e8f0",borderRadius:2,overflow:"hidden"}}>
+                  <div style={{height:"100%",width:`${possession}%`,background:`linear-gradient(90deg,${TH.success},${TH.primary})`,borderRadius:2,transition:"width .8s"}}/>
+                </div>
+              </div>}
+            </div>
+            <div style={{textAlign:"right",display:"flex",alignItems:"center",gap:8,flexDirection:"row-reverse"}}>
+              <TeamBadge team={opponent} size={28}/>
+              <div><div style={{fontSize:9,color:TH.muted,fontWeight:700}}>{opponent?.abbr||opponent?.a}</div><div style={{fontSize:34,fontWeight:900,color:TH.danger,lineHeight:1}}>{score.away}</div></div>
+            </div>
+          </div>
+
+          {/* 3D Field + Action Overlay — controls visible without scrolling */}
+          <div style={{position:"relative"}}>
+            <ThreeField playerX={pPos.x} playerY={pPos.y} zone={zone}
+              homeCol={player.club?.col||player.club?.c||"#22c55e"} oppCol={opponent?.col||opponent?.c||"#ef4444"}
+              opponents={opponents.current} matchPhase={matchPhase3D} avatarId={player.avatarId||0}
+              actionZoom={phase==="hl_move"||phase==="hl_choose"||phase==="hl_result"}
+              allPlayers={matchPlayers}
+              homeClub={player.club||opponent}
+              onWalkoutDone={()=>setPhase("playing")}/>
+            {phase==="walkout"&&<WalkoutOverlay homeTeam={player.club||opponent} onDone={()=>setPhase("playing")}/>}
+
+            {/* HL_MOVE overlay */}
+            {phase==="hl_move"&&curSit&&(
+              <div style={{position:"absolute",bottom:0,left:0,right:0,background:"rgba(5,8,16,0.82)",backdropFilter:"blur(4px)",borderTop:"1px solid rgba(255,255,255,0.1)",padding:"6px 10px",zIndex:5}}>
+                <div style={{color:"#f59e0b",fontSize:11,fontWeight:700,marginBottom:4}}>{clock}' — {curSit.text}</div>
+                <div style={{display:"flex",alignItems:"center",gap:8}}>
+                  <DPad onMove={handleDPad} dark/>
+                  <div style={{flex:1}}>
+                    <div style={{fontSize:9,color:"rgba(255,255,255,0.45)",marginBottom:5}}>📍 {ZONES[zone]?.label} · W/S/A/D</div>
+                    <button onClick={()=>setPhase("hl_choose")} style={{width:"100%",padding:"9px",borderRadius:8,border:"none",background:"#2563eb",color:"#fff",fontWeight:800,fontSize:13,cursor:"pointer",fontFamily:"inherit"}}>✅ Pronto · [0]</button>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* HL_RESULT — auto-continues after 2s */}
+            {phase==="hl_result"&&outcome&&(
+              <div style={{position:"absolute",bottom:0,left:0,right:0,background:outcome.ok?"rgba(5,50,20,0.88)":"rgba(50,5,5,0.88)",backdropFilter:"blur(4px)",borderTop:`1px solid ${outcome.ok?"rgba(34,197,94,0.4)":"rgba(239,68,68,0.4)"}`,padding:"10px 14px",zIndex:5,textAlign:"center"}}>
+                <div style={{fontSize:16,fontWeight:900,color:outcome.ok?"#4ade80":"#f87171",marginBottom:3}}>{outcome.ok?"✅":"❌"} {chosenAct?.label}</div>
+                <div style={{fontSize:12,color:"rgba(255,255,255,0.85)",marginBottom:6}}>{outcome.text}</div>
+                <div style={{fontSize:10,color:"rgba(255,255,255,0.4)"}}>Continua automaticamente…</div>
+              </div>
+            )}
+            {phase==="hl_choose"&&curSit&&(
+              <div style={{position:"absolute",bottom:0,left:0,right:0,background:"rgba(5,8,16,0.86)",backdropFilter:"blur(4px)",borderTop:"1px solid rgba(255,255,255,0.1)",padding:"6px 8px",zIndex:5}}>
+                <div style={{fontSize:9,color:"rgba(255,255,255,0.5)",marginBottom:5}}>{clock}' — {curSit.text} · <strong style={{color:"#f59e0b"}}>1·2·3</strong></div>
+                <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:5}}>
+                  {curSit.actions.map((a,i)=>{
+                    const rate=succRate(a,player.stats,pPos.x,oppPrestige);
+                    const rc=rate>70?"#22c55e":rate>50?"#f59e0b":"#ef4444";
+                    return(
+                      <button key={i} onClick={()=>handleAction(a)} style={{padding:"6px 4px",background:"rgba(255,255,255,0.09)",border:"1px solid rgba(255,255,255,0.16)",borderRadius:9,color:"#fff",cursor:"pointer",fontFamily:"inherit",textAlign:"center"}}>
+                        <div style={{fontSize:8,color:"rgba(255,255,255,0.35)"}}>Tasto {i+1}</div>
+                        <div style={{fontSize:10,fontWeight:600,margin:"2px 0",color:"#e2e8f0"}}>{a.label}</div>
+                        <div style={{fontSize:17,fontWeight:900,color:rc,lineHeight:1}}>{rate}%</div>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Progress bar */}
+          {show3D&&<div style={{height:3,background:TH.cardBorder}}><div style={{height:"100%",width:`${pct}%`,background:"linear-gradient(90deg,"+TH.success+","+TH.warning+")",transition:"width .3s"}}/></div>}
+        </Card>
+      )}
+
+      {/* Match stats strip */}
+      {show3D&&(
+        <div style={{display:"flex",gap:6,marginBottom:8}}>
+          {[{l:"⚽ Gol",v:mStats.goals},{l:"🎯 Assist",v:mStats.assists}].map(s=>(
+            <Card key={s.l} style={{flex:1,padding:"7px",textAlign:"center"}}>
+              <div style={{fontSize:18,fontWeight:900,color:TH.text}}>{s.v}</div>
+              <div style={{fontSize:10,color:TH.muted}}>{s.l}</div>
+            </Card>
+          ))}
+          <Card style={{flex:1,padding:"7px",textAlign:"center"}}>
+            <div style={{fontSize:12,fontWeight:700,color:energy>50?TH.success:energy>25?TH.warning:TH.danger}}>{energy}%</div>
+            <div style={{fontSize:10,color:TH.muted}}>⚡ Energ.</div>
+          </Card>
+          <Card style={{flex:2,padding:"7px",textAlign:"center"}}>
+            <div style={{fontSize:10,color:TH.primary,fontWeight:700}}>{ZONES[zone]?.label||zone}</div>
+            <div style={{fontSize:9,color:TH.faint}}>zona</div>
+          </Card>
+        </div>
+      )}
+
+      {/* Commentary */}
+      {coms.length>0&&show3D&&(
+        <Card style={{padding:"8px 12px",marginBottom:8}} shadow={false} bg="#f8fafc">
+          {coms.map((c,i)=>(
+            <div key={i} style={{fontSize:11,color:c.color,padding:"2px 0",borderBottom:i<coms.length-1?"1px solid "+TH.cardBorder:"none"}}>
+              <span style={{color:TH.faint,marginRight:7,fontSize:9}}>{c.t}'</span>{c.text}
+            </div>
+          ))}
+        </Card>
+      )}
+
+      {/* HL RESULT */}
+      {phase==="hl_result"&&outcome&&(
+        <Card border={outcome.ok?"#bbf7d0":"#fecaca"} bg={outcome.ok?"#f0fdf4":"#fff1f2"} style={{padding:"14px",display:"flex",alignItems:"center",gap:14}}>
+          <div style={{fontSize:32}}>{outcome.ok?"✅":"❌"}</div>
+          <div style={{flex:1}}>
+            <div style={{fontSize:13,fontWeight:700,color:outcome.ok?TH.success:TH.danger}}>{chosenAct?.label}</div>
+            <div style={{fontSize:12,color:TH.text,marginTop:2}}>{outcome.text}</div>
+          </div>
+          <div style={{fontSize:10,color:TH.faint,textAlign:"right"}}>
+            <div style={{fontSize:18,fontWeight:900,color:TH.faint}}>2s</div>
+            <div>auto</div>
+          </div>
+        </Card>
+      )}
+
+      {/* ENDED */}
+      {phase==="ended"&&(
+        <Card style={{textAlign:"center",padding:"22px"}}>
+          <div style={{fontSize:10,color:TH.muted,letterSpacing:2,marginBottom:8}}>FISCHIO FINALE</div>
+          <div style={{display:"flex",alignItems:"baseline",justifyContent:"center",gap:14,marginBottom:6}}>
+            <span style={{fontSize:50,fontWeight:900,color:TH.success}}>{score.home}</span>
+            <span style={{fontSize:20,color:TH.faint}}>–</span>
+            <span style={{fontSize:50,fontWeight:900,color:TH.danger}}>{score.away}</span>
+          </div>
+          <p style={{color:TH.muted,fontSize:12,margin:"0 0 16px"}}>{player.club?.name||player.club?.n||"La tua squadra"} vs {opponent?.name||opponent?.n}</p>
+          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8,marginBottom:16}}>
+            {[{l:"Gol",v:mStats.goals,e:"⚽"},{l:"Assist",v:mStats.assists,e:"🎯"}].map(s=>(
+              <Card key={s.l} style={{padding:"10px 6px",textAlign:"center"}}>
+                <div style={{fontSize:17,marginBottom:2}}>{s.e}</div><div style={{fontSize:24,fontWeight:900,color:TH.warning}}>{s.v}</div><div style={{fontSize:10,color:TH.muted}}>{s.l}</div>
+              </Card>
+            ))}
+          </div>
+          {(()=>{const raw=clamp(6.0+mStats.rb*.12+(winning?.3:losing?-.2:0),4.0,10.0),rating=Math.round(raw*10)/10,rc=rating>=8?TH.success:rating>=6.5?TH.warning:TH.danger;return<div style={{marginBottom:18}}><div style={{fontSize:10,color:TH.muted,marginBottom:4}}>VALUTAZIONE</div><div style={{fontSize:52,fontWeight:900,color:rc,lineHeight:1}}>{rating}</div><div style={{fontSize:12,color:rc,marginTop:4}}>{rating>=8?"Eccellente!":rating>=7?"Buona partita":rating>=6?"Sufficiente":"Da migliorare"}</div></div>;})()}
+          <Btn onClick={handleEnd} v={context==="trial"?"primary":"green"} fw style={{padding:"13px",fontSize:14}}>
+            {context==="trial"?"📋 Risultati provino":"🏟️ Torna alla carriera"}
+          </Btn>
+        </Card>
+      )}
+    </div>
+  );
+}
+
+/* ========================================
+   PRO TRANSITION SCREEN  (U18 → professionismo)
+======================================== */
+function ProTransitionScreen({player,onChoose}){
+  const{offers,forced,perf}=generateProContracts(player);
+  const u18S=player.u18Seasons||0;
+  return(
+    <div style={{width:"100%"}}>
+      <div style={{textAlign:"center",marginBottom:14,paddingTop:6}}>
+        <div style={{fontSize:44,marginBottom:6}}>🎓</div>
+        <h1 style={{fontSize:19,fontWeight:900,margin:"0 0 4px",color:TH.text}}>Fine stagione Under 18</h1>
+        <p style={{color:TH.muted,fontSize:12,margin:0}}>Stagione {u18S+1} in Under 18 completata</p>
+      </div>
+      {/* Player status card */}
+      <Card style={{marginBottom:12,padding:"12px 14px"}} bg={forced?"#fff1f2":"#eff6ff"} border={forced?"#fecaca":"#bfdbfe"}>
+        <div style={{display:"flex",gap:10,alignItems:"center"}}>
+          <AvatarSVG id={player.avatarId||0} size={46}/>
+          <div style={{flex:1}}>
+            <div style={{fontWeight:800,fontSize:14,color:TH.text}}>{player.name} · OVR {player.ovr}</div>
+            <div style={{fontSize:11,color:TH.muted}}>Under 18 · Età {player.age} · {player.nation}</div>
+            <div style={{fontSize:11,color:TH.warning,marginTop:2}}>⚽ {player.goals} gol · 🎯 {player.assists} assist · {player.matches} gare</div>
+          </div>
+          <div style={{textAlign:"right",flexShrink:0}}>
+            <div style={{fontSize:26,fontWeight:900,color:forced?TH.danger:TH.primary,lineHeight:1}}>{u18S+1}<span style={{fontSize:11,color:TH.faint,fontWeight:400}}>/2</span></div>
+            <div style={{fontSize:9,color:TH.faint}}>stagioni U18</div>
+          </div>
+        </div>
+        {forced&&<div style={{marginTop:10,padding:"8px 10px",background:"#fee2e2",borderRadius:8,fontSize:11,color:TH.danger,fontWeight:600}}>⚠️ Limite massimo raggiunto: non puoi restare in Under 18. Scegli il prossimo passo.</div>}
+        {!forced&&u18S>=1&&<div style={{marginTop:8,fontSize:11,color:TH.warning,background:"#fef9c3",padding:"6px 10px",borderRadius:7}}>⏳ Questa è la tua ultima stagione U18 disponibile.</div>}
+      </Card>
+      {/* Progress bar U18 */}
+      <div style={{marginBottom:14}}>
+        <div style={{display:"flex",justifyContent:"space-between",fontSize:10,color:TH.muted,marginBottom:3}}>
+          <span>Stagioni Under 18: {u18S+1}/2</span>
+          <span style={{color:forced?TH.danger:TH.primary}}>{forced?"Limite raggiunto":"Ancora disponibile"}</span>
+        </div>
+        <div style={{height:6,background:"#e2e8f0",borderRadius:3,overflow:"hidden"}}>
+          <div style={{height:"100%",width:`${(u18S+1)*50}%`,background:forced?"#ef4444":TH.warning,borderRadius:3,transition:"width .5s"}}/>
+        </div>
+      </div>
+      {/* Offers */}
+      <div style={{fontSize:11,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>Le tue opzioni</div>
+      <div className="cpm-proto">
+        {offers.map((o)=>(
+          <Card key={o.id} style={{marginBottom:8,padding:"12px 14px"}}
+          border={o.isMain?"#bfdbfe":o.isStayU18?"#fef9c3":TH.cardBorder}
+          bg={o.isMain?"#eff6ff":o.isStayU18?"#fefce8":TH.card}>
+          <div style={{display:"flex",gap:10,alignItems:"center"}}>
+            <TeamBadge team={o.club||{col:"#888",col2:"#fff",n:"?"}} size={46}/>
+            <div style={{flex:1,minWidth:0}}>
+              <div style={{fontWeight:700,fontSize:13,color:TH.text}}>{o.club?.n||o.club?.name}</div>
+              <div style={{fontSize:11,color:o.isMain?TH.primary:o.isStayU18?TH.warning:TH.muted,fontWeight:600}}>{o.contractType}</div>
+              <div style={{fontSize:10,color:TH.muted,marginTop:1}}>
+                {o.role} · €{o.wage}/sett. · {o.duration} stagion{o.duration===1?"e":"i"}
+              </div>
+              <div style={{display:"flex",gap:5,marginTop:4,flexWrap:"wrap"}}>
+                <span style={{fontSize:9,padding:"2px 6px",borderRadius:10,background:o.moralBonus>=0?"#dcfce7":"#fee2e2",color:o.moralBonus>=0?TH.success:TH.danger}}>
+                  😄{o.moralBonus>=0?"+":""}{o.moralBonus}
+                </span>
+                <span style={{fontSize:9,padding:"2px 6px",borderRadius:10,background:"#f3e8ff",color:TH.accent}}>📈+{o.growthBonus}</span>
+                {o.isLastChance&&<span style={{fontSize:9,padding:"2px 6px",borderRadius:10,background:"#fef9c3",color:TH.warning}}>⚠️ Ultima chance U18</span>}
+                {o.isMain&&<span style={{fontSize:9,padding:"2px 6px",borderRadius:10,background:"#eff6ff",color:TH.primary}}>⭐ Consigliato</span>}
+              </div>
+            </div>
+            <Btn onClick={()=>onChoose(o)} v={o.isMain?"primary":o.isStayU18?"secondary":"ghost"} style={{flexShrink:0,padding:"9px 12px",fontSize:12}}>
+              {o.isStayU18?"Resta →":"Accetta →"}
+            </Btn>
+          </div>
+        </Card>
+      ))}
+      <div style={{fontSize:10,color:TH.faint,textAlign:"center",marginTop:10}}>Scegli con cura — questa decisione definirà la tua carriera professionale.</div>
+      </div>{/* end cpm-proto */}
+    </div>
+  );
+}
+
+/* ========================================
+   HOME SCREEN — slot salvataggio
+======================================== */
+function HomeScreen({onNew,onLoad,onDelete,onImport,slots}){
+  const[confirmDel,setConfirmDel]=useState(null);
+  const fmtDate=ts=>ts?new Date(ts).toLocaleDateString("it-IT",{day:"2-digit",month:"2-digit",year:"2-digit",hour:"2-digit",minute:"2-digit"}):"–";
+  const hasAny=slots.some(Boolean);
+  return(
+    <div style={{width:"100%"}}>
+      {confirmDel!==null&&(
+        <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.45)",zIndex:9999,display:"flex",alignItems:"center",justifyContent:"center",padding:20}}>
+          <Card style={{maxWidth:340,width:"100%",padding:"22px",textAlign:"center"}}>
+            <div style={{fontSize:28,marginBottom:10}}>🗑️</div>
+            <div style={{fontSize:14,fontWeight:700,marginBottom:6,color:TH.text}}>Eliminare il salvataggio?</div>
+            <div style={{fontSize:12,color:TH.muted,marginBottom:18}}>I progressi della carriera nello slot {confirmDel+1} saranno persi per sempre.</div>
+            <div style={{display:"flex",gap:10}}>
+              <Btn onClick={()=>setConfirmDel(null)} v="secondary" fw>Annulla</Btn>
+              <Btn onClick={()=>{onDelete(confirmDel);setConfirmDel(null);}} v="danger" fw>Elimina</Btn>
+            </div>
+          </Card>
+        </div>
+      )}
+      <div style={{textAlign:"center",marginBottom:20}}>
+        <div style={{fontSize:60,marginBottom:6}}>⚽</div>
+        <h1 style={{fontSize:24,fontWeight:900,letterSpacing:-1,margin:"0 0 4px",color:TH.text}}>CAREER PLAYER MANAGER</h1>
+        <p style={{color:TH.muted,fontSize:12,margin:0}}>Serie A Primavera · Carriera calciatore</p>
+      </div>
+      {/* Save slots */}
+      <div className="cpm-slots" style={{marginBottom:14}}>
+        {slots.map((s,i)=>s?(
+          <Card key={i} border={TH.cardBorder} style={{padding:"12px 14px"}}>
+            <div style={{display:"flex",alignItems:"center",gap:10}}>
+              <AvatarSVG id={s.avatarId} size={46}/>
+              <div style={{flex:1,minWidth:0}}>
+                <div style={{fontWeight:800,fontSize:14,color:TH.text,marginBottom:1}}>{s.name}</div>
+                <div style={{fontSize:11,color:TH.muted}}>{s.club} · S.{s.season} W.{s.week}/38</div>
+                <div style={{fontSize:10,color:TH.faint,marginTop:1}}>💾 {fmtDate(s.savedAt)}</div>
+              </div>
+              <OvrRing value={s.ovr} size={40}/>
+              <div style={{display:"flex",flexDirection:"column",gap:5,flexShrink:0}}>
+                <Btn onClick={()=>onLoad(i)} v="primary" style={{padding:"8px 14px",fontSize:13}}>Continua →</Btn>
+                <button onClick={()=>setConfirmDel(i)} style={{padding:"5px",borderRadius:7,border:"1px solid "+TH.cardBorder,background:"transparent",cursor:"pointer",color:TH.faint,fontSize:11}}>🗑️ Elimina</button>
+              </div>
+            </div>
+          </Card>
+        ):(
+          <div key={i} style={{border:`2px dashed ${TH.cardBorder}`,borderRadius:14,padding:"14px 18px",display:"flex",alignItems:"center",justifyContent:"space-between",background:"rgba(255,255,255,0.4)"}}>
+            <div style={{fontSize:12,color:TH.faint}}>Slot {i+1} — vuoto</div>
+            <Btn onClick={()=>onNew(i)} v="secondary" style={{padding:"8px 14px",fontSize:13}}>⚡ Nuova carriera</Btn>
+          </div>
+        ))}
+      </div>
+      {!hasAny&&<Card style={{marginBottom:12,padding:"14px 16px"}}>
+        <p style={{fontSize:12,color:TH.muted,margin:"0 0 12px",lineHeight:1.7}}>Crea il tuo calciatore, supera i provini e costruisci la tua carriera calcistica nei principali campionati europei.</p>
+      </Card>}
+      {/* BUG 1: "Nuova carriera" always visible even when slots are occupied */}
+      {hasAny&&(
+        <Card style={{marginBottom:10,padding:"12px 14px",background:"#eff6ff",border:"1px solid #bfdbfe"}}>
+          <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+            <div>
+              <div style={{fontSize:12,fontWeight:700,color:TH.primary}}>⚡ Nuova Carriera</div>
+              <div style={{fontSize:10,color:TH.muted,marginTop:2}}>Scegli uno slot vuoto o sovrascrivine uno</div>
+            </div>
+            <div style={{display:"flex",gap:6}}>
+              {slots.map((s,i)=>(
+                <button key={i} onClick={()=>onNew(i)} title={s?`Sovrascrive: ${s.name}`:`Slot ${i+1} vuoto`}
+                  style={{padding:"6px 10px",borderRadius:8,border:`1px solid ${s?"#fecaca":"#bfdbfe"}`,background:s?"#fee2e2":"#dbeafe",cursor:"pointer",fontSize:11,fontWeight:700,color:s?TH.danger:TH.primary}}>
+                  {s?`⚠️S${i+1}`:`+S${i+1}`}
+                </button>
+              ))}
+            </div>
+          </div>
+        </Card>
+      )}
+      {/* Import JSON */}
+      <div style={{textAlign:"center",marginTop:6}}>
+        <label style={{cursor:"pointer",display:"inline-flex",alignItems:"center",gap:6,fontSize:12,color:TH.muted,padding:"8px 14px",border:"1px solid "+TH.cardBorder,borderRadius:9,background:TH.card}}>
+          📂 Importa salvataggio (.json)
+          <input type="file" accept=".json" style={{display:"none"}} onChange={e=>{if(e.target.files[0])onImport(e.target.files[0]);e.target.value="";}}/>
+        </label>
+      </div>
+    </div>
+  );
+}
+
+/* ========================================
+   CREATE SCREEN  (req #2 – avatar)
+======================================== */
+function CreateScreen({onCreate}){
+  const[name,setName]=useState(""),[nation,setNation]=useState("Italia"),[avatarId,setAvatarId]=useState(0),[page,setPage]=useState(0);
+  const inp={background:"#f8fafc",border:"1px solid "+TH.cardBorder,borderRadius:10,color:TH.text,padding:"10px 14px",fontFamily:"inherit",fontSize:14,width:"100%",boxSizing:"border-box"};
+  const lbl={display:"block",fontSize:11,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:6};
+  const go=()=>{if(!name.trim())return;const stats=baseStats();const age=17;onCreate({name:name.trim(),nation,avatarId,position:"Attaccante",age,stats,ovr:calcOvr(stats),club:null,trialsDone:0,trialStats:[],season:1,week:1,weekLived:false,u18Seasons:0,isU18:true,proStatus:"u18",goals:0,assists:0,matches:0,totalGoals:0,totalAssists:0,totalMatches:0,morale:70,fatigue:0,popularity:20,skillPoints:2,log:[],history:[],matchHistory:[],value:0.8,coachTrust:60,form:70,transferOffers:[],offerHistory:[],contract:{duration:1,wage:rng(200,500),expiresAtSeason:2},saveVersion:SAVE_VERSION});};
+  const perPage=6;const totalPages=Math.ceil(AVATARS.length/perPage);const pageAvatars=AVATARS.slice(page*perPage,(page+1)*perPage);
+  return(
+    <div style={{width:"100%"}}>
+      <div style={{textAlign:"center",marginBottom:20}}>
+        <div style={{fontSize:40,marginBottom:6}}>🌟</div>
+        <h1 style={{fontSize:20,fontWeight:900,margin:0,color:TH.text}}>Crea il tuo calciatore</h1>
+        <p style={{color:TH.muted,fontSize:12,margin:"6px 0 0"}}>Ruolo fisso: <strong style={{color:TH.primary}}>Attaccante</strong></p>
+      </div>
+      <div className="cpm-create">
+        {/* req #2: avatar selection */}
+        <div>
+          <label style={lbl}>Aspetto calciatore</label>
+          <div style={{display:"flex",justifyContent:"center",marginBottom:10}}>
+            <AvatarSVG id={avatarId} size={80} border/>
+          </div>
+          <div style={{display:"grid",gridTemplateColumns:"repeat(6,1fr)",gap:6}}>
+            {pageAvatars.map(av=>(
+              <button key={av.id} onClick={()=>setAvatarId(av.id)} title={av.label} style={{padding:4,borderRadius:10,border:`2px solid ${avatarId===av.id?TH.primary:"transparent"}`,background:avatarId===av.id?"#eff6ff":"transparent",cursor:"pointer",display:"flex",justifyContent:"center"}}>
+                <AvatarSVG id={av.id} size={44}/>
+              </button>
+            ))}
+          </div>
+          <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginTop:8}}>
+            <button onClick={()=>setPage(p=>Math.max(0,p-1))} disabled={page===0} style={{background:"none",border:"1px solid "+TH.cardBorder,borderRadius:8,padding:"4px 12px",cursor:"pointer",color:TH.muted,fontSize:12}}>←</button>
+            <span style={{fontSize:11,color:TH.faint}}>{page+1}/{totalPages}</span>
+            <button onClick={()=>setPage(p=>Math.min(totalPages-1,p+1))} disabled={page>=totalPages-1} style={{background:"none",border:"1px solid "+TH.cardBorder,borderRadius:8,padding:"4px 12px",cursor:"pointer",color:TH.muted,fontSize:12}}>→</button>
+          </div>
+          <div style={{textAlign:"center",marginTop:4,fontSize:11,color:TH.muted}}>{AVATARS[avatarId]?.label}</div>
+        </div>
+        <div><label style={lbl}>Nome</label><input style={inp} value={name} onChange={e=>setName(e.target.value)} placeholder="Es. Luca Conti" maxLength={22} onKeyDown={e=>e.key==="Enter"&&go()}/></div>
+        <div><label style={lbl}>Nazionalità</label><select style={inp} value={nation} onChange={e=>setNation(e.target.value)}>{NATIONS.map(n=><option key={n}>{n}</option>)}</select></div>
+        <Card style={{padding:"12px 14px",background:"#eff6ff",border:"1px solid #bfdbfe"}} shadow={false}>
+          <div style={{fontSize:12,color:TH.primary,fontWeight:700,marginBottom:3}}>📋 Percorso carriera</div>
+          <div style={{fontSize:11,color:TH.muted,lineHeight:1.6}}>3 provini → offerte U18 → Serie A Primavera → campionati europei</div>
+        </Card>
+        <Btn onClick={go} disabled={!name.trim()} fw style={{padding:"14px",fontSize:15}}>⚡ INIZIA I PROVINI</Btn>
+      </div>{/* end cpm-create */}
+    </div>
+  );
+}
+
+/* ========================================
+   OFFERS SCREEN  (req #11 – clubs)
+======================================== */
+function OffersScreen({player,trialStats,onChoose}){
+  const total=trialStats.reduce((a,m)=>a+m.goals,0),avg=Math.round(trialStats.reduce((a,m)=>a+m.rating,0)/trialStats.length*10)/10,perf=total*2+avg*5;
+  const[offers]=useState(()=>[...U18_CLUBS].sort((a,b)=>{const sa=a.p+(Math.random()-.5)*30,sb=b.p+(Math.random()-.5)*30;return perf>50?sb-sa:sa-sb;}).slice(0,perf>50?3:2));
+  return(
+    <div style={{width:"100%"}}>
+      <div style={{textAlign:"center",marginBottom:14}}><div style={{fontSize:32,marginBottom:6}}>📋</div><h1 style={{fontSize:18,fontWeight:900,margin:0,color:TH.text}}>Offerte ricevute</h1><p style={{color:TH.muted,fontSize:12,margin:"6px 0 0"}}>3 provini · {total} gol · Rating medio {avg}</p></div>
+      <Card style={{marginBottom:12,padding:"12px 14px"}}>
+        <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>Riepilogo provini</div>
+        <div style={{display:"flex",gap:6}}>{trialStats.map((t,i)=><div key={i} style={{flex:1,background:"#f8fafc",borderRadius:8,padding:"7px",textAlign:"center",border:"1px solid "+TH.cardBorder}}><div style={{fontSize:9,color:TH.faint,marginBottom:2}}>Provino {i+1}</div><div style={{fontSize:12,fontWeight:700,color:TH.text}}>⚽{t.goals} 🎯{t.assists}</div><div style={{fontSize:11,color:TH.warning,fontWeight:700}}>{t.rating}</div></div>)}</div>
+      </Card>
+      <div className="cpm-offers" style={{marginBottom:12}}>
+        {offers.map((club,i)=>(
+          <Card key={club.id} border={i===0?"#bfdbfe":undefined} bg={i===0?"#eff6ff":undefined}>
+            <div style={{display:"flex",alignItems:"center",justifyContent:"space-between"}}>
+              <div style={{display:"flex",alignItems:"center",gap:10}}>
+                <TeamBadge team={club} size={44}/>
+                <div><div style={{fontWeight:700,fontSize:14,color:TH.text}}>{club.name}</div><div style={{fontSize:11,color:TH.muted,marginTop:1}}>{club.nat} · Prestigio {club.p}</div></div>
+              </div>
+              <div style={{flexShrink:0}}>{i===0&&<div style={{fontSize:9,color:TH.primary,fontWeight:700,marginBottom:2,textAlign:"right"}}>⭐ TOP</div>}<Btn onClick={()=>onChoose(club)} v={i===0?"primary":"secondary"}>Scegli →</Btn></div>
+            </div>
+          </Card>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/* ========================================
+   TRIAL FLOW
+======================================== */
+function TrialFlow({player:initPlayer,onComplete}){
+  const[player,setPlayer]=useState(initPlayer),[trialNum,setTrialNum]=useState(0),[results,setResults]=useState([]),[phase,setPhase]=useState("pre");
+  const opp={id:"trial",n:"Selezione Regionale",name:"Selezione Regionale",a:"REG",abbr:"REG",p:52,c:"#64748b",col:"#64748b",c2:"#fff",nat:"🇮🇹"};
+  const onMatchEnd=r=>{const res={goals:r.goals,assists:r.assists,rating:r.rating};const nr=[...results,res];setResults(nr);setPlayer(p=>({...p,totalGoals:(p.totalGoals||0)+r.goals,totalAssists:(p.totalAssists||0)+r.assists,totalMatches:(p.totalMatches||0)+1}));setPhase("post");if(trialNum>=2)setTimeout(()=>onComplete(nr),300);};
+  if(phase==="match")return<div style={{width:"100%"}}><div style={{textAlign:"center",marginBottom:8}}><div style={{display:"inline-block",padding:"4px 16px",borderRadius:20,background:"#eff6ff",border:"1px solid #bfdbfe",fontSize:11,color:TH.primary,fontWeight:700}}>🎯 PROVINO {trialNum+1}/3</div></div><LiveMatch player={player} opponent={opp} context="trial" onMatchEnd={onMatchEnd}/></div>;
+  if(phase==="post"){const last=results[results.length-1],done=trialNum>=2;return <div style={{width:"100%"}}><Card style={{textAlign:"center",padding:"22px",maxWidth:520,margin:"0 auto"}}><div style={{fontSize:10,color:TH.warning,letterSpacing:2,marginBottom:8}}>PROVINO {trialNum+1} COMPLETATO</div><div style={{display:"flex",justifyContent:"center",gap:18,marginBottom:14,fontSize:16}}><span>⚽<strong>{last.goals}</strong></span><span>🎯<strong>{last.assists}</strong></span><span>⭐<strong style={{color:TH.warning}}>{last.rating}</strong></span></div>{done?<div style={{color:TH.success,fontSize:12,marginBottom:14}}>✅ Provini completati!</div>:<div style={{color:TH.muted,fontSize:12,marginBottom:14}}>Provino {trialNum+2}/3 in arrivo.</div>}<Btn onClick={done?()=>{}:()=>{setTrialNum(n=>n+1);setPhase("pre");}} v={done?"success":"primary"} fw style={{padding:"12px"}}>{done?"⏳ Calcolo offerte...":` Provino ${trialNum+2} →`}</Btn></Card></div>;}
+  return <div style={{width:"100%",textAlign:"center"}}><div style={{marginBottom:22}}><div style={{fontSize:10,color:TH.warning,letterSpacing:2,marginBottom:8}}>PROVINO {trialNum+1} DI 3</div><div style={{display:"flex",justifyContent:"center",gap:8,marginBottom:14}}>{[0,1,2].map(i=><div key={i} style={{width:30,height:30,borderRadius:"50%",background:i<trialNum?TH.success:i===trialNum?TH.warning:"#e2e8f0",border:`2px solid ${i<trialNum?TH.success:i===trialNum?TH.warning:"transparent"}`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:11,fontWeight:700,color:i<=trialNum?"#fff":TH.faint}}>{i<trialNum?"✓":i+1}</div>)}</div><h2 style={{fontSize:18,fontWeight:900,margin:"0 0 6px",color:TH.text}}>Provino vs {opp.n}</h2><p style={{color:TH.muted,fontSize:12}}>{trialNum>0?`Hai già segnato ${results.reduce((a,r)=>a+r.goals,0)} gol.`:"Mostra le tue qualità."}</p></div><Btn onClick={()=>setPhase("match")} fw style={{padding:"14px",fontSize:15}}>⚡ Inizia il provino</Btn></div>;
+}
+
+/* ========================================
+   CAREER APP  (req #9,#10,#12,#13,#14)
+======================================== */
+function CareerApp({player:init,currentSlot=0,onRefreshSlots}){
+  const[player,setPlayer]=useState(init);
+  const[tab,setTab]=useState("dashboard");
+  const[screen,setScreen]=useState("dashboard");
+  const[matchOpp,setMatchOpp]=useState(null);
+  const[lastMatch,setLastMatch]=useState(null);
+  // Backward compat: auto-generate missing calendar/standings for old saves
+  useEffect(()=>{
+    let changed=false;
+    let newP={...player};
+    if(!newP.standings||newP.standings.length===0){
+      newP={...newP,standings:initStandings(getLeagueClubs(newP))};
+      changed=true;
+    }
+    if(!newP.calendar||newP.calendar.length===0){
+      const lc=getLeagueClubs(newP);
+      const seed=(newP.season||1)*777+hashStr(newP.club?.id||newP.club?.n||"u18");
+      newP={...newP,calendar:generateSeasonCalendar(newP.club||{id:"u18",n:"U18"},lc,seed)};
+      changed=true;
+    }
+    if(changed){setPlayer(newP);}
+  },[]);// eslint-disable-line
+  const[notif,setNotif]=useState(null);
+  const[weekEvent,setWeekEvent]=useState(null);
+  const[transferOffer,setTransferOffer]=useState(null);
+  const[weekLiveModal,setWeekLiveModal]=useState(null);   // {event, changes}
+  const[showAdvanceConfirm,setShowAdvanceConfirm]=useState(false);
+  const[lastSaved,setLastSaved]=useState(null);           // timestamp
+
+  const notify=(msg,color=TH.primary)=>{setNotif({msg,color});setTimeout(()=>setNotif(null),2800);};
+
+  // global keyboard shortcuts: Space=confirm, Enter=play, Esc=back, 0=advance week
+  useEffect(()=>{
+    const onKey=e=>{
+      // Don't capture when typing in inputs
+      if(e.target.tagName==="INPUT"||e.target.tagName==="SELECT"||e.target.tagName==="TEXTAREA")return;
+      if(e.key==="Escape"){
+        e.preventDefault();
+        if(screen==="match"){setScreen("dashboard");setTab("dashboard");}
+        else if(screen==="postmatch"){setScreen("dashboard");setTab("dashboard");}
+        else if(weekLiveModal){setWeekLiveModal(null);}
+        else if(showAdvanceConfirm){setShowAdvanceConfirm(false);}
+        else if(transferOffer){setTransferOffer(null);}
+      }
+      if((e.key===" "||e.code==="Space")){
+        e.preventDefault();
+        if(weekLiveModal){setWeekLiveModal(null);}
+        else if(showAdvanceConfirm){doAdvanceWeek();}
+        else if(screen==="postmatch"){setScreen("dashboard");setTab("dashboard");}
+      }
+      if(e.key==="Enter"&&screen==="dashboard"&&!weekLiveModal&&!showAdvanceConfirm&&!transferOffer){
+        e.preventDefault();
+        if(getThisWeekMatchday())startMatch();
+      }
+      if((e.key==="0"||e.code==="Numpad0")&&screen==="dashboard"&&!weekLiveModal&&!showAdvanceConfirm){
+        e.preventDefault();
+        setShowAdvanceConfirm(true);
+      }
+    };
+    window.addEventListener("keydown",onKey);
+    return()=>window.removeEventListener("keydown",onKey);
+  },[screen,weekLiveModal,showAdvanceConfirm,transferOffer]);// eslint-disable-line
+
+  // Autosave — debounced 600ms to avoid redundant writes during rapid state updates
+  const saveTimerRef=useRef(null);
+  useEffect(()=>{
+    if(saveTimerRef.current)clearTimeout(saveTimerRef.current);
+    saveTimerRef.current=setTimeout(()=>{
+      storage.save({phase:"career",player},currentSlot).then(ok=>{if(ok)setLastSaved(Date.now());});
+    },600);
+    return()=>{if(saveTimerRef.current)clearTimeout(saveTimerRef.current);};
+  },[player]);// eslint-disable-line
+
+  // Manual save
+  const doSave=useCallback(async()=>{
+    const ok=await storage.save({phase:"career",player},currentSlot);
+    if(ok){setLastSaved(Date.now());notify("💾 Carriera salvata!",TH.success);if(onRefreshSlots)onRefreshSlots();}
+    else notify("⚠️ Errore nel salvataggio.",TH.danger);
+  },[player,currentSlot,onRefreshSlots]);// eslint-disable-line
+
+  // Export to JSON
+  const exportSave=()=>{
+    const data={phase:"career",player,savedAt:Date.now(),saveVersion:SAVE_VERSION};
+    const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement("a");a.href=url;
+    a.download=`cpm-${player.name.replace(/\s/g,"-")}-S${player.season||1}.json`;
+    a.click();URL.revokeObjectURL(url);
+    notify("📁 File esportato!",TH.success);
+  };
+
+  const goTab=t=>{setTab(t);setScreen(t);};
+  // only allow playing if current week has a scheduled match
+  const getThisWeekMatchday=()=>{
+    const cal=player.calendar||[];
+    return cal.find(md=>md.week===(player.week||1)&&!md.played)||null;
+  };
+  const startMatch=()=>{
+    if(player.injured){notify("Sei infortunato!",TH.danger);return;}
+    const md=getThisWeekMatchday();
+    if(!md){notify("Nessuna partita programmata questa settimana.",TH.warning);return;}
+    const lc=getLeagueClubs(player);
+    const opp=lc.find(c=>c.id===md.opponentId)||lc.find(c=>c.n===md.opponentName)||pick(lc.filter(c=>c.id!==player.club?.id&&c.n!==player.club?.n));
+    if(!opp){notify("Nessun avversario disponibile.",TH.danger);return;}
+    setMatchOpp(opp);setScreen("match");
+  };
+
+  const onMatchEnd=result=>{
+    setLastMatch(result);
+    setPlayer(p=>{
+      let ns={...p.stats};
+      if(Math.random()<.3&&p.age<22){const k=pick(Object.keys(p.stats));ns={...ns,[k]:clamp(p.stats[k]+1,1,99)};}
+      if(result.goals>1&&Math.random()<.5)ns={...ns,tiro:clamp(ns.tiro+1,1,99)};
+      if(result.assists>0&&Math.random()<.4)ns={...ns,passaggio:clamp(ns.passaggio+1,1,99)};
+      const newOvr=calcOvr(ns);
+      const moD=result.won?6:result.drew?2:-4;
+      const logE=`⚽ vs ${result.opponent} (${result.homeScore}-${result.awayScore}) | ${result.goals}⚽ ${result.assists}🎯 | ${result.rating}★`;
+      const newHistory=[...(p.matchHistory||[]),{week:p.week||1,opponent:result.opponent,oppAbbr:result.oppAbbr,oppCol:result.oppCol,homeScore:result.homeScore,awayScore:result.awayScore,goals:result.goals,assists:result.assists,rating:result.rating,won:result.won,drew:result.drew}].slice(-200);
+      // update standings with player result + simulate other matches
+      const clubId=p.club?.id||p.club?.n;
+      const newStandings=updateStandings(p.standings||initStandings(getLeagueClubs(p)),clubId,result);
+      // mark calendar entry as played
+      const newCal=(p.calendar||[]).map(md=>md.week===(p.week||1)&&!md.played?{...md,played:true,result:{homeScore:result.homeScore,awayScore:result.awayScore,won:result.won,drew:result.drew}}:md);
+      return{...p,stats:ns,ovr:newOvr,goals:p.goals+result.goals,assists:p.assists+result.assists,matches:p.matches+1,totalGoals:p.totalGoals+result.goals,totalAssists:p.totalAssists+result.assists,totalMatches:p.totalMatches+1,morale:clamp(p.morale+moD,0,100),fatigue:clamp(p.fatigue+rng(12,22),0,100),week:(p.week||1)+1,weekLived:false,log:[logE,...(p.log||[])].slice(0,60),matchHistory:newHistory,standings:newStandings,calendar:newCal};
+    });
+    setScreen("postmatch");setTab("dashboard");
+  };
+
+  // "Vivi la settimana" — applies events/form changes, does NOT advance week counter
+  const liveCurrentWeek=()=>{
+    if(player.weekLived){notify("Hai già vissuto questa settimana. Avanza per passare alla prossima.",TH.warning);return;}
+    setPlayer(p=>{
+      if(p.week>38)return p; // nothing to do if season ended
+      const ev=Math.random()<0.78?wPick(WEEKLY_EVENTS):null;
+      let upd={weekLived:true};
+      if(ev){
+        const ef=ev.ef||{};
+        const extras={
+          morale:clamp((p.morale||70)+(ef.morale||0),0,100),
+          fatigue:clamp((p.fatigue||0)+(ef.fatigue||0),0,100),
+          form:clamp((p.form||70)+(ef.form||0),0,100),
+          popularity:clamp((p.popularity||20)+(ef.popularity||0),0,100),
+          coachTrust:clamp((p.coachTrust||60)+(ef.coachTrust||0),0,100),
+          value:Math.max(0.5,(p.value||0.8)+(ef.value||0)),
+        };
+        const newStats={...p.stats};
+        if(ef.tecnica)newStats.tecnica=clamp(p.stats.tecnica+(ef.tecnica),1,99);
+        if(ef.velocità)newStats.velocità=clamp(p.stats.velocità+(ef.velocità),1,99);
+        if(ef.tiro)newStats.tiro=clamp(p.stats.tiro+(ef.tiro),1,99);
+        if(ef.passaggio)newStats.passaggio=clamp(p.stats.passaggio+(ef.passaggio),1,99);
+        if(ef.fisico)newStats.fisico=clamp(p.stats.fisico+(ef.fisico),1,99);
+        if(ef.posizionamento)newStats.posizionamento=clamp(p.stats.posizionamento+(ef.posizionamento),1,99);
+        if(ef.mentalità)newStats.mentalità=clamp(p.stats.mentalità+(ef.mentalità),1,99);
+        upd={...upd,...extras,stats:newStats,ovr:calcOvr(newStats),log:[ev.txt,...(p.log||[])].slice(0,60)};
+        setTimeout(()=>setWeekLiveModal({event:ev,changes:{morale:ef.morale||0,form:ef.form||0,fatigue:ef.fatigue||0}}),50);
+      }else{
+        setTimeout(()=>setWeekLiveModal({event:{txt:"⚽ Settimana di allenamento regolare. Nessun evento particolare."},changes:{}}),50);
+      }
+      return{...p,...upd};
+    });
+  };
+
+  // advance week: calendar-driven, simulates missed matches, resets season at week>38
+  const doAdvanceWeek=()=>{
+    setShowAdvanceConfirm(false);
+    const isInU18=(player.proStatus||"u18")==="u18";
+    const weekVal=player.week||1;
+    if(isInU18&&weekVal>=38){
+      const hist={season:player.season||1,club:player.club?.name||player.club?.n,goals:player.goals||0,assists:player.assists||0,matches:player.matches||0,ovr:player.ovr||60};
+      setPlayer(p=>({...p,u18Seasons:(p.u18Seasons||0)+1,history:[...(p.history||[]),hist],log:[`🏁 Fine U18 S.${p.season||1}: ${p.goals||0}⚽ ${p.assists||0}🎯`,...(p.log||[])].slice(0,60)}));
+      setScreen("proTransition");
+      return;
+    }
+    setPlayer(p=>{
+      if(p.week>38){
+        // new season: reset stats, standings, calendar
+        const hist={season:p.season,club:p.club?.name||p.club?.n,goals:p.goals,assists:p.assists,matches:p.matches,ovr:p.ovr};
+        const newSeason=(p.season||1)+1;
+        const lc=getLeagueClubs(p);
+        const newStandings=initStandings(lc);
+        const seed=newSeason*777+hashStr(p.club?.id||p.club?.n||"u18");
+        const newCalendar=generateSeasonCalendar(p.club||{id:"u18",n:"U18"},lc,seed);
+        const newContract={...p.contract,duration:(p.contract?.duration||1)-1,expiresAtSeason:p.contract?.expiresAtSeason||newSeason+1};
+        return{...p,season:newSeason,age:p.age+1,week:1,weekLived:false,goals:0,assists:0,matches:0,fatigue:0,skillPoints:(p.skillPoints||0)+2,contract:newContract,history:[...(p.history||[]),hist],log:[`🏁 Fine S.${p.season}: ${p.goals}⚽ ${p.assists}🎯`,...(p.log||[])].slice(0,60),standings:newStandings,calendar:newCalendar,matchHistory:[]};
+      }
+      // if this week had a scheduled unplayed match, auto-simulate it
+      const md=(p.calendar||[]).find(m=>m.week===(p.week||1)&&!m.played);
+      let updP={...p};
+      if(md){
+        const lc=getLeagueClubs(p);
+        const opp=lc.find(c=>c.id===md.opponentId)||lc.find(c=>c.n===md.opponentName);
+        if(opp){
+          const sim=simulateMatch(p.club,opp,p.ovr||65,md.isHome);
+          const clubId=p.club?.id||p.club?.n;
+          const newSt=updateStandings(p.standings||initStandings(getLeagueClubs(p)),clubId,sim);
+          const newCal=(p.calendar||[]).map(m=>m.week===(p.week||1)&&!m.played?{...m,played:true,result:{homeScore:sim.homeScore,awayScore:sim.awayScore,won:sim.won,drew:sim.drew},simulated:true}:m);
+          const newHistory=[...(p.matchHistory||[]),{week:p.week||1,opponent:opp.n,oppAbbr:opp.a,oppCol:opp.c,homeScore:sim.homeScore,awayScore:sim.awayScore,goals:0,assists:0,rating:sim.rating,won:sim.won,drew:sim.drew,simulated:true}].slice(-200);
+          updP={...updP,standings:newSt,calendar:newCal,matchHistory:newHistory,matches:(p.matches||0)+1,goals:p.goals,assists:p.assists,morale:clamp(p.morale+(sim.won?3:sim.drew?1:-2),0,100)};
+        }
+      }
+      if(Math.random()<0.08&&p.matches>3){const offer=generateTransferOffer(p);if(offer)setTransferOffer(offer);}
+      if(p.injured&&(p.injuryWeeks||0)>0){return{...updP,week:(p.week||1)+1,weekLived:false,injuryWeeks:p.injuryWeeks-1,injured:p.injuryWeeks-1>0,fatigue:Math.max(0,(p.fatigue||0)-8)};}
+      return{...updP,week:(p.week||1)+1,weekLived:false};
+    });
+    notify("⏭️ Settimana avanzata");
+  };
+
+  // pro transition: generate fresh calendar + standings for new club/league
+  const onProChoose=useCallback((offer)=>{
+    setPlayer(p=>{
+      const newAge=(p.age||17)+1;
+      const newSeason=(p.season||1)+1;
+      const targetClub=offer.isStayU18?p.club:offer.club;
+      const _lc0=offer.isStayU18?[]:CLUBS.filter(c=>c.lg===offer.club?.lg);
+      const lc=offer.isStayU18?getLeagueClubs(p):(_lc0.length>=4?_lc0:getLeagueClubs({...p,club:offer.club,proStatus:"pro"}));
+      const newStandings=initStandings(lc.length?lc:getLeagueClubs(p));
+      const seed=newSeason*777+hashStr(targetClub?.id||targetClub?.n||"u18");
+      const newCalendar=generateSeasonCalendar(targetClub||{id:"u18",n:"U18"},lc.length?lc:getLeagueClubs(p),seed);
+      const base={...p,week:1,weekLived:false,season:newSeason,age:newAge,goals:0,assists:0,matches:0,matchHistory:[],fatigue:clamp((p.fatigue||0)-30,0,100),skillPoints:(p.skillPoints||0)+2,morale:clamp((p.morale||70)+(offer.moralBonus||0),0,100),contract:{duration:offer.duration||1,wage:offer.wage||500,expiresAtSeason:newSeason+(offer.duration||1)},standings:newStandings,calendar:newCalendar};
+      if(offer.isStayU18){
+        return{...base,log:[`🔄 Resto in Under 18 (S.${newSeason})`,...(p.log||[])].slice(0,60)};
+      }
+      return{...base,club:offer.club,isU18:false,proStatus:"pro",value:Math.max(0.5,(p.value||0.8)+0.5),popularity:clamp((p.popularity||20)+15,0,100),log:[`🎓 PROFESSIONISTA! ${offer.contractType} con ${offer.club?.n||offer.club?.name}!`,...(p.log||[])].slice(0,60)};
+    });
+    setScreen("dashboard");setTab("dashboard");
+    notify("🎓 Nuova stagione iniziata!",TH.success);
+  },[]);// eslint-disable-line
+
+  const upgradeSkill=k=>{if(!player.skillPoints)return;setPlayer(p=>{const ns={...p.stats,[k]:clamp(p.stats[k]+rng(1,3),1,99)};return{...p,stats:ns,ovr:calcOvr(ns),skillPoints:p.skillPoints-1};});notify(`${k} migliorato!`,TH.accent);};
+
+  // accept transfer: update club, league, calendar, standings
+  const acceptTransfer=()=>{
+    if(!transferOffer)return;
+    const tc=transferOffer;
+    setPlayer(p=>{
+      const newClub={...tc.club,transferType:tc.type,isU18:false};
+      const lc=CLUBS.filter(c=>c.lg===tc.club.lg);
+      const lc2=CLUBS.filter(c=>c.nat===tc.club.nat);
+      const lcs=lc.length>=4?lc:lc2.length>=4?lc2:CLUBS.slice(0,16);
+      const newStandings=initStandings(lcs);
+      const seed=(p.season||1)*777+hashStr(tc.club.id||tc.club.n||"x");
+      const newCalendar=generateSeasonCalendar(newClub,lcs,seed);
+      return{...p,
+        club:newClub,isU18:false,proStatus:"pro",
+        morale:clamp(p.morale+(tc.moralBonus||10),0,100),
+        offerHistory:[...(p.offerHistory||[]),{club:tc.club.n,type:tc.type,season:p.season,accepted:true}],
+        log:[`🔄 ${tc.type}: ${tc.club.n} (${tc.club.lg||tc.club.nat})!`,...(p.log||[])].slice(0,60),
+        standings:newStandings,calendar:newCalendar,
+      };
+    });
+    setTransferOffer(null);
+    notify(`✅ Benvenuto a ${tc.club.n}!`,TH.success);
+  };
+
+  const ovr=player.ovr||calcOvr(player.stats),week=player.week||1,season=player.season||1;
+
+  if(screen==="proTransition")return(
+    <div style={{width:"100%"}}>
+      <ProTransitionScreen player={player} onChoose={onProChoose}/>
+    </div>
+  );
+
+  if(screen==="match"&&matchOpp)return(
+    <div style={{width:"100%"}}>
+      <button onClick={()=>{setScreen("dashboard");setTab("dashboard");}} style={{background:"none",border:"none",color:TH.muted,cursor:"pointer",fontSize:13,marginBottom:8,display:"flex",alignItems:"center",gap:6}}>← Carriera</button>
+      <LiveMatch player={player} opponent={matchOpp} context="career" onMatchEnd={onMatchEnd}/>
+    </div>
+  );
+
+  if(screen==="postmatch"&&lastMatch){
+    const r=lastMatch,rating=r.rating,rc=rating>=8?TH.success:rating>=6.5?TH.warning:TH.danger;
+    return <div style={{width:"100%"}}><Card style={{textAlign:"center",padding:"24px",maxWidth:560,margin:"0 auto"}}><div style={{fontSize:10,color:TH.muted,letterSpacing:2,marginBottom:8}}>POST MATCH</div><div style={{fontSize:28,fontWeight:900,marginBottom:4,color:TH.text}}><span style={{color:TH.success}}>{r.homeScore}</span><span style={{color:TH.faint,margin:"0 10px"}}>–</span><span style={{color:TH.danger}}>{r.awayScore}</span></div><p style={{color:TH.muted,fontSize:12,margin:"0 0 14px"}}>vs {r.opponent}</p><div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:8,marginBottom:14}}>{[{l:"Gol",v:r.goals,e:"⚽"},{l:"Assist",v:r.assists,e:"🎯"},{l:"Voto",v:rating,e:"⭐",c:rc}].map(s=><Card key={s.l} style={{padding:"10px 6px",textAlign:"center"}}><div style={{fontSize:16,marginBottom:2}}>{s.e}</div><div style={{fontSize:20,fontWeight:900,color:s.c||TH.warning}}>{s.v}</div><div style={{fontSize:9,color:TH.muted}}>{s.l}</div></Card>)}</div><div style={{fontSize:50,fontWeight:900,color:rc,lineHeight:1,marginBottom:4}}>{rating}</div><div style={{fontSize:12,color:rc,marginBottom:18}}>{rating>=8?"Eccellente!":rating>=7?"Buona partita":rating>=6?"Sufficiente":"Da migliorare"}</div><Btn onClick={()=>setScreen("dashboard")} v="green" fw style={{padding:"13px",fontSize:14}}>🏟️ Torna alla Dashboard</Btn></Card></div>;
+  }
+
+  const tabs=[{id:"dashboard",e:"🏠",l:"Home"},{id:"calendar",e:"📅",l:"Calendario"},{id:"standings",e:"📊",l:"Classifica"},{id:"training",e:"💪",l:"Allena"},{id:"profile",e:"👤",l:"Profilo"}];
+
+  return(
+    <div className="cpm-career">
+      <Notif msg={notif?.msg} color={notif?.color}/>
+      {/* Week event toast */}
+      {weekEvent&&<div style={{position:"fixed",top:70,left:"50%",transform:"translateX(-50%)",background:TH.card,border:"1px solid "+TH.cardBorder,color:TH.text,padding:"12px 20px",borderRadius:12,fontSize:12,fontWeight:600,zIndex:9998,boxShadow:TH.shadow,maxWidth:340,textAlign:"center"}}>{weekEvent.txt}</div>}
+
+      {/* == WeekLife modal == */}
+      {weekLiveModal&&(
+        <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.45)",zIndex:9997,display:"flex",alignItems:"center",justifyContent:"center",padding:20}}>
+          <Card style={{maxWidth:380,width:"100%",padding:"22px"}}>
+            <div style={{fontSize:11,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:6}}>Settimana {player.week} — {player.club?.name||player.club?.n}</div>
+            <div style={{fontSize:18,marginBottom:14}}>📋 Questa settimana</div>
+            <Card bg="#f0fdf4" border="#bbf7d0" shadow={false} style={{padding:"12px 14px",marginBottom:12}}>
+              <div style={{fontSize:13,color:TH.text,lineHeight:1.7}}>{weekLiveModal.event.txt}</div>
+            </Card>
+            {Object.keys(weekLiveModal.changes||{}).length>0&&(
+              <div style={{display:"flex",gap:8,marginBottom:12,flexWrap:"wrap"}}>
+                {weekLiveModal.changes.morale!==undefined&&weekLiveModal.changes.morale!==0&&<div style={{padding:"4px 10px",borderRadius:20,background:weekLiveModal.changes.morale>0?"#dcfce7":"#fee2e2",color:weekLiveModal.changes.morale>0?TH.success:TH.danger,fontSize:11,fontWeight:700}}>😄 Morale {weekLiveModal.changes.morale>0?"+":""}{weekLiveModal.changes.morale}</div>}
+                {weekLiveModal.changes.form!==undefined&&weekLiveModal.changes.form!==0&&<div style={{padding:"4px 10px",borderRadius:20,background:weekLiveModal.changes.form>0?"#dcfce7":"#fee2e2",color:weekLiveModal.changes.form>0?TH.success:TH.danger,fontSize:11,fontWeight:700}}>💪 Forma {weekLiveModal.changes.form>0?"+":""}{weekLiveModal.changes.form}</div>}
+                {weekLiveModal.changes.fatigue!==undefined&&weekLiveModal.changes.fatigue!==0&&<div style={{padding:"4px 10px",borderRadius:20,background:weekLiveModal.changes.fatigue<0?"#dcfce7":"#fef9c3",color:weekLiveModal.changes.fatigue<0?TH.success:TH.warning,fontSize:11,fontWeight:700}}>⚡ Fatica {weekLiveModal.changes.fatigue>0?"+":""}{weekLiveModal.changes.fatigue}</div>}
+              </div>
+            )}
+            <div style={{fontSize:11,color:TH.faint,marginBottom:14}}>La settimana è stata vissuta. Clicca "Avanza" per passare alla prossima o gioca la partita prima.</div>
+            <Btn onClick={()=>setWeekLiveModal(null)} v="primary" fw style={{padding:"11px"}}>✅ Capito</Btn>
+          </Card>
+        </div>
+      )}
+
+      {/* == Advance week confirm == */}
+      {showAdvanceConfirm&&(
+        <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.45)",zIndex:9996,display:"flex",alignItems:"center",justifyContent:"center",padding:20}}>
+          <Card style={{maxWidth:360,width:"100%",padding:"22px",textAlign:"center"}}>
+            <div style={{fontSize:28,marginBottom:10}}>⏭️</div>
+            <div style={{fontSize:16,fontWeight:800,marginBottom:6,color:TH.text}}>Avanzare alla W.{(player.week||1)+1}?</div>
+            <div style={{fontSize:12,color:TH.muted,marginBottom:18,lineHeight:1.7}}>Proseguendo verranno consolidati gli eventi della settimana, il calendario verrà avanzato e le prossime statistiche aggiornate.</div>
+            <div style={{display:"flex",gap:10}}>
+              <Btn onClick={()=>setShowAdvanceConfirm(false)} v="secondary" fw>Annulla</Btn>
+              <Btn onClick={doAdvanceWeek} v="primary" fw>⏭️ Conferma avanzamento</Btn>
+            </div>
+          </Card>
+        </div>
+      )}
+
+      {/* req #13: transfer offer modal */}
+      {transferOffer&&(
+        <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.4)",zIndex:9997,display:"flex",alignItems:"center",justifyContent:"center",padding:20}}>
+          <Card style={{maxWidth:380,width:"100%",padding:"24px"}}>
+            <div style={{textAlign:"center",marginBottom:16}}>
+              <TeamBadge team={transferOffer.club} size={56}/>
+              <div style={{fontSize:18,fontWeight:900,color:TH.text,marginTop:8}}>{transferOffer.club.n}</div>
+              <div style={{fontSize:12,color:TH.muted}}>{transferOffer.club.nat} · {transferOffer.club.lg}</div>
+            </div>
+            <Card style={{padding:"12px",marginBottom:14}} bg="#eff6ff" border="#bfdbfe" shadow={false}>
+              <div style={{fontSize:13,fontWeight:700,color:TH.primary,marginBottom:4}}>📩 Offerta: {transferOffer.type}</div>
+              <div style={{fontSize:12,color:TH.muted,lineHeight:1.7}}>
+                Minutaggio stimato: <strong>{transferOffer.minutaggio}%</strong><br/>
+                Morale: <strong style={{color:TH.success}}>+{transferOffer.moralBonus}</strong><br/>
+                Crescita: <strong style={{color:TH.accent}}>+{transferOffer.growthBonus}</strong><br/>
+                Prestigio club: <strong>{transferOffer.club.p}</strong>
+              </div>
+            </Card>
+            <div style={{display:"flex",gap:10}}>
+              <Btn onClick={()=>setTransferOffer(null)} v="secondary" fw>Rifiuta</Btn>
+              <Btn onClick={acceptTransfer} v="primary" fw>Accetta →</Btn>
+            </div>
+          </Card>
+        </div>
+      )}
+
+      {/* HEADER */}
+      <div style={{display:"flex",alignItems:"center",gap:12,marginBottom:14}}>
+        <AvatarSVG id={player.avatarId||0} size={52}/>
+        <div style={{flex:1}}>
+          <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:2}}>{player.nation} · Attaccante</div>
+          <h1 style={{margin:"1px 0 0",fontSize:17,fontWeight:900,letterSpacing:-.5,color:TH.text}}>{player.name}</h1>
+          <div style={{display:"flex",flexWrap:"wrap",alignItems:"center",gap:4,marginTop:1}}>
+            <span style={{fontSize:11,color:player.club?.col||player.club?.c||TH.primary,fontWeight:700}}>{player.club?.n||player.club?.name||"–"}</span>
+            {player.club?.transferType&&<span style={{fontSize:9,background:"#eff6ff",color:TH.primary,padding:"1px 7px",borderRadius:8,fontWeight:600,border:"1px solid #bfdbfe"}}>{player.club.transferType}</span>}
+            <span style={{fontSize:10,color:TH.muted}}>{player.club?.lg?`· ${player.club.lg}`:player.proStatus==="u18"?"· U18":""} · S.{season} W.{week}/38</span>
+          </div>
+        </div>
+        <div style={{display:"flex",flexDirection:"column",gap:4,alignItems:"flex-end"}}>
+          <OvrRing value={ovr}/>
+          <button onClick={doSave} title="Salva carriera" style={{fontSize:10,color:TH.muted,background:"none",border:"1px solid "+TH.cardBorder,borderRadius:7,padding:"2px 8px",cursor:"pointer",display:"flex",alignItems:"center",gap:4}}>
+            💾 Salva{lastSaved?<span style={{color:TH.faint}}> · {new Date(lastSaved).toLocaleTimeString("it-IT",{hour:"2-digit",minute:"2-digit"})}</span>:null}
+          </button>
+        </div>
+      </div>
+
+      {/* DASHBOARD */}
+      {tab==="dashboard"&&(
+        <div className="cpm-dash-grid">
+          <Card border="#bbf7d0" bg="#f0fdf4">
+            <div style={{fontSize:10,color:TH.success,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>Stagione {season} · W.{week}/38</div>
+            <div style={{display:"flex",justifyContent:"space-around",marginBottom:14}}>{[{l:"Partite",v:player.matches||0},{l:"Gol",v:player.goals||0},{l:"Assist",v:player.assists||0}].map(s=><div key={s.l} style={{textAlign:"center"}}><div style={{fontSize:28,fontWeight:900,color:TH.success}}>{s.v}</div><div style={{fontSize:10,color:TH.muted}}>{s.l}</div></div>)}</div>
+            {(()=>{
+              const md=getThisWeekMatchday();
+              const hasMatch=!!md&&!player.injured;
+              const alreadyPlayed=!!(player.calendar||[]).find(m=>m.week===(player.week||1)&&m.played);
+              if(player.injured)return<div style={{padding:"10px 14px",background:"#fee2e2",borderRadius:9,color:TH.danger,fontSize:13,marginBottom:10}}>🩹 Infortunato — {player.injuryWeeks||0} sett. di recupero</div>;
+              if(alreadyPlayed){const mh=(player.matchHistory||[]).find(m=>m.week===(player.week||1));return<div style={{padding:"10px 14px",background:mh?.won?"#f0fdf4":mh?.drew?"#fefce8":"#fff1f2",borderRadius:9,border:`1px solid ${mh?.won?"#bbf7d0":mh?.drew?"#fde68a":"#fecaca"}`,color:mh?.won?TH.success:mh?.drew?TH.warning:TH.danger,fontSize:12,marginBottom:10,fontWeight:700}}>✅ Partita giocata W.{player.week||1} — {mh?`${mh.homeScore}–${mh.awayScore} vs ${mh.opponent||""}`:""}{mh?.simulated?" (simulata)":""}</div>;}
+              if(hasMatch)return<Btn onClick={startMatch} v="green" fw style={{padding:"14px",fontSize:15,marginBottom:10}}>⚽ GIOCA vs {md.opponentName} {md.isHome?"🏟️":"✈️"} · W.{md.week} [Enter]</Btn>;
+              return<div style={{padding:"10px 14px",background:"#f8fafc",borderRadius:9,border:"1px solid "+TH.cardBorder,color:TH.faint,fontSize:12,marginBottom:10,textAlign:"center"}}>⏳ Nessuna partita questa settimana — avanza con ⏭️</div>;
+            })()}
+            {/* "Vivi la settimana" — events/form but NO week advance */}
+            <div style={{background:player.weekLived?"linear-gradient(135deg,#334155,#374151)":"linear-gradient(135deg,#1e3a5f,#1e4d3a)",borderRadius:12,padding:"12px 14px",cursor:player.weekLived?"default":"pointer",opacity:player.weekLived?0.7:1,marginBottom:8}}
+              onClick={!player.weekLived?liveCurrentWeek:undefined}>
+              <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:4}}>
+                <div style={{fontSize:13,fontWeight:800,color:"#fff"}}>{player.weekLived?"✅ Settimana già vissuta":"⚡ Vivi la Settimana"}</div>
+                <div style={{fontSize:10,color:"rgba(255,255,255,0.55)"}}>W.{week}</div>
+              </div>
+              <div style={{fontSize:11,color:"rgba(255,255,255,0.5)"}}>
+                {player.weekLived?"Hai già vissuto questa settimana. Avanza per passare alla prossima.":"Allenamento, eventi, crescita e imprevisti — senza avanzare il tempo."}
+              </div>
+            </div>
+            {/* "Avanza settimana" — always with confirmation */}
+            <button onClick={()=>setShowAdvanceConfirm(true)} style={{width:"100%",padding:"10px 14px",borderRadius:12,border:`1px solid ${TH.cardBorder}`,background:TH.card,cursor:"pointer",fontFamily:"inherit",display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8}}>
+              <span style={{fontSize:13,fontWeight:700,color:TH.text}}>⏭️ Avanza Settimana</span>
+              <span style={{display:"flex",alignItems:"center",gap:6}}>
+                <span style={{fontSize:9,background:"#e2e8f0",borderRadius:4,padding:"1px 5px",color:TH.muted,fontFamily:"monospace"}}>0</span>
+                <span style={{fontSize:11,color:TH.muted}}>W.{week}→{week+1}</span>
+              </span>
+            </button>
+            {/* Export */}
+            <button onClick={exportSave} style={{width:"100%",padding:"7px",borderRadius:9,border:`1px solid ${TH.cardBorder}`,background:"transparent",cursor:"pointer",fontFamily:"inherit",fontSize:11,color:TH.faint,marginBottom:0}}>📁 Esporta salvataggio JSON</button>
+            <div style={{height:3,background:"#e2e8f0",borderRadius:2,marginTop:10}}><div style={{height:"100%",width:`${(week/38)*100}%`,background:TH.success,borderRadius:2,transition:"width .4s"}}/></div>
+          </Card>
+          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
+            {[{l:"Morale",v:player.morale||70,e:"😄",c:((player.morale||70)>60)?TH.success:((player.morale||70)>30)?TH.warning:TH.danger},{l:"Forma",v:100-(player.fatigue||0),e:"💪",c:((player.fatigue||0)<40)?TH.success:((player.fatigue||0)<70)?TH.warning:TH.danger},{l:"Fiducia mister",v:player.coachTrust||60,e:"🤝",c:TH.primary},{l:"Popolarità",v:player.popularity||20,e:"⭐",c:TH.accent}].map(it=>(
+              <Card key={it.l} style={{padding:"12px 14px"}}>
+                <div style={{fontSize:18,marginBottom:3}}>{it.e}</div><div style={{fontSize:10,color:TH.muted,marginBottom:2}}>{it.l}</div>
+                <div style={{fontSize:18,fontWeight:800,color:it.c}}>{it.v}</div>
+                <div style={{height:3,background:"#e2e8f0",borderRadius:2,marginTop:5}}><div style={{height:"100%",width:`${it.v}%`,background:it.c,borderRadius:2}}/></div>
+              </Card>
+            ))}
+          </div>
+          {(player.log||[]).length>0&&<Card style={{padding:"12px 14px"}}><div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:6}}>Ultime notizie</div>{(player.log||[]).slice(0,5).map((e,i)=><div key={i} style={{fontSize:11,color:TH.text,padding:"3px 0",borderBottom:i<4?"1px solid "+TH.cardBorder:"none"}}>{e}</div>)}</Card>}
+        </div>
+      )}
+
+      {/* CALENDAR  (BUG 4 — shows real scheduled matches) */}
+      {tab==="calendar"&&(
+        <div style={{display:"flex",flexDirection:"column",gap:12}}>
+          {/* Upcoming matches from calendar */}
+          {(player.calendar||[]).length>0&&(()=>{
+            const upcoming=(player.calendar||[]).filter(md=>md.week>=(week)&&!md.played).slice(0,5);
+            const lc=getLeagueClubs(player);
+            if(!upcoming.length)return null;
+            return(
+              <Card>
+                <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:10}}>Prossime partite</div>
+                {upcoming.map((md,i)=>{
+                  const opp=lc.find(c=>c.id===md.opponentId)||lc.find(c=>c.n===md.opponentName)||{n:md.opponentName,a:"???",c:"#888",c2:"#fff"};
+                  const isCur=md.week===week;
+                  return(
+                    <div key={i} style={{display:"flex",alignItems:"center",gap:10,padding:"7px 0",borderBottom:i<upcoming.length-1?"1px solid "+TH.cardBorder:"none",background:isCur?"#eff6ff":"transparent",borderRadius:isCur?6:0,paddingLeft:isCur?8:0}}>
+                      <div style={{width:28,height:28,flexShrink:0}}><TeamBadge team={opp} size={28}/></div>
+                      <div style={{flex:1,minWidth:0}}>
+                        <div style={{fontSize:12,fontWeight:isCur?700:500,color:isCur?TH.primary:TH.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>
+                          {isCur&&"▶ "}{md.isHome?"🏟️":"✈️"} vs {md.opponentName}
+                        </div>
+                        <div style={{fontSize:10,color:TH.muted}}>Giornata {md.matchday} · W.{md.week}</div>
+                      </div>
+                      {isCur&&<Btn onClick={startMatch} v="green" style={{padding:"6px 12px",fontSize:11}}>Gioca →</Btn>}
+                    </div>
+                  );
+                })}
+              </Card>
+            );
+          })()}
+          {/* Match history */}
+          {(player.matchHistory||[]).length>0&&(
+            <Card>
+              <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:10}}>Partite giocate — S.{season}</div>
+              {[...(player.matchHistory||[])].reverse().slice(0,10).map((m,i)=>(
+                <div key={i} style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"7px 0",borderBottom:i<9?"1px solid "+TH.cardBorder:"none"}}>
+                  <div style={{display:"flex",alignItems:"center",gap:8}}>
+                    <div style={{width:8,height:8,borderRadius:"50%",background:m.won?TH.success:m.drew?TH.warning:TH.danger,flexShrink:0}}/>
+                    <div>
+                      <div style={{fontSize:12,fontWeight:600,color:TH.text}}>vs {m.opponent}{m.simulated&&<span style={{fontSize:9,color:TH.faint,marginLeft:4}}>(sim.)</span>}</div>
+                      <div style={{fontSize:10,color:TH.muted}}>W.{m.week}</div>
+                    </div>
+                  </div>
+                  <div style={{textAlign:"center"}}>
+                    <div style={{fontSize:13,fontWeight:700,color:TH.text}}>{m.homeScore}–{m.awayScore}</div>
+                    <div style={{fontSize:9,color:TH.muted}}>⚽{m.goals} 🎯{m.assists}</div>
+                  </div>
+                  <div style={{textAlign:"right"}}>
+                    <div style={{fontSize:18,fontWeight:900,color:m.rating>=8?TH.success:m.rating>=6.5?TH.warning:TH.danger}}>{m.rating}</div>
+                    <div style={{fontSize:9,color:TH.faint}}>voto</div>
+                  </div>
+                </div>
+              ))}
+            </Card>
+          )}
+          {/* Week grid — shows ⚽ on match weeks even if not yet played */}
+          <Card>
+            <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:10}}>Stagione {season} — calendario</div>
+            <div style={{display:"grid",gridTemplateColumns:"repeat(6,1fr)",gap:3}}>
+              {Array.from({length:38},(_,i)=>{
+                const w=i+1,past=w<week,cur=w===week;
+                const mh=(player.matchHistory||[]).find(m=>m.week===w);
+                const calEntry=(player.calendar||[]).find(m=>m.week===w);
+                const hasScheduled=!!calEntry;
+                return<div key={w}
+                  title={mh?`vs ${mh.opponent}: ${mh.homeScore}-${mh.awayScore}`:(calEntry?`vs ${calEntry.opponentName}${calEntry.isHome?" 🏟️":" ✈️"}`:"–")}
+                  style={{borderRadius:6,padding:"5px 3px",textAlign:"center",fontSize:10,
+                    background:cur?"#eff6ff":mh?mh.won?"#f0fdf4":mh.drew?"#fefce8":"#fff1f2":past?"#f8fafc":"transparent",
+                    border:`1px solid ${cur?TH.primary:mh?mh.won?TH.success:mh.drew?TH.warning:TH.danger:past?TH.cardBorder:TH.cardBorder}`,
+                    color:cur?TH.primary:mh?mh.won?TH.success:mh.drew?TH.warning:TH.danger:past?TH.faint:TH.faint,
+                    fontWeight:cur||mh?700:400}}>
+                  {w}
+                  {mh?<div style={{fontSize:8,marginTop:1}}>{mh.won?"W":mh.drew?"D":"L"}</div>:hasScheduled?<div style={{fontSize:7,color:cur?TH.primary:TH.faint,marginTop:1}}>⚽</div>:null}
+                </div>;
+              })}
+            </div>
+          </Card>
+        </div>
+      )}
+
+      {/* STANDINGS */}
+      {tab==="standings"&&(
+        <Card>
+          <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:10}}>
+            Classifica {player.club?.lg||(player.proStatus==="u18"?"U18 Primavera":"–")} — S.{season}
+          </div>
+          <div style={{overflowX:"auto"}}>
+            <table style={{width:"100%",borderCollapse:"collapse",fontSize:11}}>
+              <thead><tr>{["#","Club","G","V","P","S","Gf","Gs","Diff","Pts"].map(h=><th key={h} style={{textAlign:h==="Club"?"left":"center",padding:"4px 4px",fontSize:9,color:TH.faint,textTransform:"uppercase",letterSpacing:.5,borderBottom:"1px solid "+TH.cardBorder}}>{h}</th>)}</tr></thead>
+              <tbody>
+                {(player.standings||[]).map((t,i)=>{const my=t.id===player.club?.id||t.n===player.club?.n;return<tr key={t.id||t.n} style={{background:my?"#eff6ff":"transparent"}}><td style={{textAlign:"center",padding:"5px 4px",color:i<3?TH.warning:TH.muted,fontWeight:i<3?700:400}}>{i+1}</td><td style={{padding:"5px 4px",fontWeight:my?700:400,color:my?TH.primary:TH.text,whiteSpace:"nowrap"}}><span style={{display:"inline-block",width:10,height:10,borderRadius:"50%",background:t.col||t.c,marginRight:4,verticalAlign:"middle"}}/>{t.abbr||t.a}{my&&" ★"}</td><td style={{textAlign:"center",padding:"5px 4px",color:TH.muted}}>{t.played}</td><td style={{textAlign:"center",padding:"5px 4px",color:TH.success}}>{t.wins}</td><td style={{textAlign:"center",padding:"5px 4px",color:TH.muted}}>{t.draws}</td><td style={{textAlign:"center",padding:"5px 4px",color:TH.danger}}>{t.losses}</td><td style={{textAlign:"center",padding:"5px 4px",color:TH.muted}}>{t.gf}</td><td style={{textAlign:"center",padding:"5px 4px",color:TH.muted}}>{t.ga}</td><td style={{textAlign:"center",padding:"5px 4px",color:t.gd>0?TH.success:t.gd<0?TH.danger:TH.muted}}>{t.gd>0?"+":""}{t.gd}</td><td style={{textAlign:"center",padding:"5px 4px",fontWeight:700,color:TH.warning}}>{t.pts}</td></tr>;})}
+              </tbody>
+            </table>
+          </div>
+        </Card>
+      )}
+
+      {/* TRAINING */}
+      {tab==="training"&&(
+        <div style={{display:"flex",flexDirection:"column",gap:12}}>
+          <Card>
+            <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}}><div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5}}>Attributi</div>{(player.skillPoints||0)>0&&<div style={{background:"#f3e8ff",color:TH.accent,padding:"3px 12px",borderRadius:20,fontSize:11,fontWeight:700}}>💡 {player.skillPoints} punti</div>}</div>
+            {Object.entries(player.stats).map(([k,v])=>(
+              <div key={k} style={{display:"flex",alignItems:"center",gap:8,marginBottom:4}}>
+                <div style={{flex:1}}><StatBar label={k} value={v}/></div>
+                {(player.skillPoints||0)>0&&<button onClick={()=>upgradeSkill(k)} style={{width:24,height:24,borderRadius:"50%",border:"1px solid "+TH.accent,background:"#f3e8ff",color:TH.accent,cursor:"pointer",fontSize:13,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>+</button>}
+              </div>
+            ))}
+          </Card>
+          <Card>
+            <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:6}}>Allenamento libero</div>
+            <p style={{fontSize:12,color:TH.muted,margin:"0 0 10px"}}>Migliora un attributo casuale (+fatica).</p>
+            <Btn onClick={()=>{if((player.fatigue||0)>80){notify("Sei troppo stanco!",TH.danger);return;}const k=pick(Object.keys(player.stats));setPlayer(p=>{const ns={...p.stats,[k]:clamp(p.stats[k]+rng(1,2),1,99)};return{...p,stats:ns,ovr:calcOvr(ns),fatigue:clamp((p.fatigue||0)+10,0,100)};});notify(`Allenamento: ${k} +1!`,TH.success);}} fw>💪 Allenati (Fatica +10)</Btn>
+          </Card>
+        </div>
+      )}
+
+      {/* PROFILE  (req #12 – avatar/colori) */}
+      {tab==="profile"&&(
+        <div style={{display:"flex",flexDirection:"column",gap:12}}>
+          {/* U18 status banner */}
+          {(player.proStatus||"u18")==="u18"&&(
+            <Card bg="#eff6ff" border="#bfdbfe" style={{padding:"12px 14px"}}>
+              <div style={{fontSize:10,color:TH.primary,textTransform:"uppercase",letterSpacing:1.5,fontWeight:700,marginBottom:8}}>🏫 Status Under 18</div>
+              <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8,marginBottom:10}}>
+                <div style={{background:"#dbeafe",borderRadius:8,padding:"8px 10px"}}>
+                  <div style={{fontSize:9,color:TH.faint}}>STAGIONI U18</div>
+                  <div style={{fontSize:20,fontWeight:900,color:TH.primary}}>{player.u18Seasons||0}<span style={{fontSize:12,color:TH.faint}}>/2</span></div>
+                </div>
+                <div style={{background:(player.u18Seasons||0)>=1?"#fee2e2":"#dcfce7",borderRadius:8,padding:"8px 10px"}}>
+                  <div style={{fontSize:9,color:TH.faint}}>OBIETTIVO</div>
+                  <div style={{fontSize:11,fontWeight:700,color:(player.u18Seasons||0)>=1?TH.danger:TH.success}}>{(player.u18Seasons||0)>=1?"⚠️ Transizione obbligatoria":"🎯 Valutazione fine stagione"}</div>
+                </div>
+              </div>
+              <div style={{height:5,background:"#e2e8f0",borderRadius:3,overflow:"hidden",marginBottom:4}}>
+                <div style={{height:"100%",width:`${(player.u18Seasons||0)*50}%`,background:(player.u18Seasons||0)>=1?"#ef4444":TH.warning,borderRadius:3}}/>
+              </div>
+              <div style={{fontSize:10,color:TH.muted}}>
+                {(player.u18Seasons||0)===0&&"Prima stagione in Under 18. Ottieni risultati per attrarre offerte pro."}
+                {(player.u18Seasons||0)===1&&"⚠️ Ultima stagione possibile in U18. Al termine DEVI passare al professionismo."}
+              </div>
+            </Card>
+          )}
+          {/* Pro status */}
+          {(player.proStatus||"u18")!=="u18"&&(
+            <Card bg="#f0fdf4" border="#bbf7d0" style={{padding:"12px 14px"}}>
+              <div style={{fontSize:10,color:TH.success,textTransform:"uppercase",letterSpacing:1.5,fontWeight:700,marginBottom:4}}>✅ Calciatore professionista</div>
+              <div style={{fontSize:11,color:TH.muted}}>Stagioni da pro: {Math.max(0,(player.season||1)-1-(player.u18Seasons||0))}</div>
+            </Card>
+          )}
+          {/* Contract card */}
+          {player.contract&&<Card style={{padding:"12px 14px"}}>
+            <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>📄 Contratto</div>
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:6}}>
+              {[{l:"Stipendio",v:`€${player.contract.wage||"–"}/sett.`},{l:"Durata",v:`${player.contract.duration||"–"} stagion${player.contract.duration===1?"e":"i"}`},{l:"Scade stagione",v:`S.${player.contract.expiresAtSeason||"–"}`},{l:"Status",v:(player.proStatus||"u18")==="u18"?"Under 18":"Professionista"}].map(s=><div key={s.l} style={{background:"#f8fafc",borderRadius:8,padding:"7px",border:"1px solid "+TH.cardBorder}}><div style={{fontSize:9,color:TH.faint,marginBottom:2}}>{s.l}</div><div style={{fontSize:12,fontWeight:700,color:TH.text}}>{s.v}</div></div>)}
+            </div>
+          </Card>}
+          <Card>
+            <div style={{display:"flex",gap:14,alignItems:"center",marginBottom:14}}>
+              <AvatarSVG id={player.avatarId||0} size={64}/>
+              <div style={{flex:1}}>
+                <h2 style={{margin:0,fontSize:17,fontWeight:900,color:TH.text}}>{player.name}</h2>
+                <div style={{fontSize:11,color:TH.muted,marginTop:2}}>{player.nation} · Attaccante · Età {player.age}</div>
+                <div style={{display:"flex",flexWrap:"wrap",alignItems:"center",gap:4,marginTop:2}}>
+                  <span style={{fontSize:11,color:player.club?.col||player.club?.c||TH.primary,fontWeight:700}}>{player.club?.n||player.club?.name||"–"}</span>
+                  {player.club?.transferType&&<span style={{fontSize:9,background:"#eff6ff",color:TH.primary,padding:"1px 7px",borderRadius:8,border:"1px solid #bfdbfe"}}>{player.club.transferType}</span>}
+                  {player.club?.lg&&<span style={{fontSize:10,color:TH.muted}}>· {player.club.lg}</span>}
+                  {player.club?.nat&&<span style={{fontSize:10}}>{player.club.nat}</span>}
+                </div>
+              </div>
+              <OvrRing value={ovr} size={48}/>
+            </div>
+            <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:6}}>
+              {[{l:"Gol stag.",v:player.goals||0},{l:"Assist stag.",v:player.assists||0},{l:"Partite stag.",v:player.matches||0},{l:"Gol tot.",v:player.totalGoals||0},{l:"Assist tot.",v:player.totalAssists||0},{l:"Valore",v:`${player.value||0.8}M€`}].map(s=><div key={s.l} style={{background:"#f8fafc",borderRadius:8,padding:"7px",border:"1px solid "+TH.cardBorder}}><div style={{fontSize:9,color:TH.faint,marginBottom:2}}>{s.l}</div><div style={{fontSize:14,fontWeight:700,color:TH.text}}>{s.v}</div></div>)}
+            </div>
+          </Card>
+          <Card>
+            <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>Attributi</div>
+            {Object.entries(player.stats).map(([k,v])=><StatBar key={k} label={k} value={v}/>)}
+          </Card>
+          {(player.history||[]).length>0&&<Card><div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>Stagioni precedenti</div>{(player.history||[]).map((h,i)=><div key={i} style={{display:"flex",justifyContent:"space-between",padding:"6px 0",borderBottom:i<(player.history||[]).length-1?"1px solid "+TH.cardBorder:"none"}}><div><div style={{fontWeight:700,fontSize:12,color:TH.text}}>S.{h.season}</div><div style={{fontSize:10,color:TH.muted}}>{h.club}</div></div><div style={{display:"flex",gap:10,fontSize:11}}><span>⚽{h.goals}</span><span>🎯{h.assists}</span><span style={{color:TH.warning,fontWeight:700}}>{h.ovr}ovr</span></div></div>)}</Card>}
+          <Card><div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>Obiettivi</div>{[{l:"Prima partita",done:(player.totalMatches||0)>=1,e:"🎮"},{l:"10 gol",done:(player.totalGoals||0)>=10,e:"⚽"},{l:"50 gol",done:(player.totalGoals||0)>=50,e:"🔥"},{l:"OVR 80+",done:ovr>=80,e:"⭐"},{l:"OVR 90+",done:ovr>=90,e:"🌟"},{l:"5 stagioni",done:(player.season||1)>5,e:"📅"}].map(o=><div key={o.l} style={{display:"flex",alignItems:"center",gap:8,padding:"6px 0",borderBottom:"1px solid "+TH.cardBorder}}><span style={{fontSize:14}}>{o.e}</span><span style={{flex:1,fontSize:11,color:o.done?TH.text:TH.faint}}>{o.l}</span><span>{o.done?"✅":"⬜"}</span></div>)}</Card>
+        </div>
+      )}
+
+      {/* BOTTOM NAV */}
+      <div style={{position:"fixed",bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:600,zIndex:100}}>
+      <div style={{background:"rgba(240,247,255,0.97)",borderTop:"1px solid "+TH.cardBorder,padding:"2px 8px",display:"flex",gap:10,justifyContent:"center",flexWrap:"wrap"}}>
+        {[{k:"Enter",l:"Gioca"},{k:"0",l:"Avanza"},{k:"Esc",l:"Indietro"},{k:"Spc",l:"Conferma"}].map(h=>(
+          <span key={h.k} style={{fontSize:9,color:TH.muted,display:"flex",alignItems:"center",gap:3}}>
+            <span style={{background:"#e2e8f0",borderRadius:3,padding:"1px 5px",fontFamily:"monospace",fontSize:9,color:TH.text}}>{h.k}</span>
+            {h.l}
+          </span>
+        ))}
+      </div>
+      <div style={{background:TH.navBg,backdropFilter:"blur(12px)",borderTop:"1px solid "+TH.cardBorder,display:"flex"}}>
+        {tabs.map(t=><button key={t.id} onClick={()=>goTab(t.id)} style={{flex:1,padding:"10px 4px 8px",border:"none",background:"transparent",cursor:"pointer",fontFamily:"inherit",color:tab===t.id?TH.primary:TH.faint,borderTop:`2px solid ${tab===t.id?TH.primary:"transparent"}`,transition:"all .15s"}}><div style={{fontSize:17}}>{t.e}</div><div style={{fontSize:9,marginTop:2,letterSpacing:.3}}>{t.l}</div></button>)}
+      </div>
+      </div>{/* end bottom nav wrapper */}
+    </div>
+  );
+}
+
+/* ========================================
+   APP ROOT
+======================================== */
+function App(){
+  const[phase,setPhase]=useState("loading");
+  const[player,setPlayer]=useState(null);
+  const[trials,setTrials]=useState([]);
+  const[slots,setSlots]=useState([null,null,null]);
+  const[currentSlot,setCurrentSlot]=useState(0);
+  const[appMsg,setAppMsg]=useState(null);
+
+  const appNotify=(msg,color=TH.danger)=>{setAppMsg({msg,color});setTimeout(()=>setAppMsg(null),3500);};
+
+  const refreshSlots=()=>storage.listSlots().then(s=>setSlots(s));
+  useEffect(()=>{refreshSlots().then(()=>setPhase("home"));},[]);// eslint-disable-line
+
+  const loadSave=async(slot=0)=>{
+    const d=await storage.load(slot);
+    if(d?.player){setPlayer(d.player);setCurrentSlot(slot);setPhase("career");}
+    else appNotify("Salvataggio non valido o corrotto.");
+  };
+  const startNew=(slot=0)=>{setCurrentSlot(slot);setPhase("create");};
+  const deleteSlot=async(slot)=>{await storage.del(slot);await refreshSlots();};
+  const importSave=(file)=>{
+    const r=new FileReader();
+    r.onload=async e=>{
+      try{
+        const d=JSON.parse(e.target.result);
+        if(!d?.player?.name)throw new Error();
+        const emptySlot=slots.findIndex(s=>!s);
+        const slot=emptySlot>=0?emptySlot:0;
+        await storage.save({phase:"career",player:d.player},slot);
+        await refreshSlots();
+        appNotify(`✅ Importato in Slot ${slot+1}`,TH.success);
+      }catch{appNotify("File di salvataggio non valido o corrotto.");}
+    };
+    r.readAsText(file);
+  };
+  const onCreate=p=>{setPlayer(p);setPhase("trial");};
+  const onTrials=r=>{setTrials(r);setPhase("offers");};
+  const onChoose=club=>{
+    // generate initial calendar + standings when first choosing a club
+    const lc=U18_CLUBS;
+    const seed=1*777+hashStr(club?.id||club?.n||"u18");
+    const calendar=generateSeasonCalendar(club,lc,seed);
+    const standings=initStandings(lc);
+    const p={...player,club,calendar,standings,log:[`🏟️ Hai scelto ${club.name||club.n}!`]};
+    setPlayer(p);setPhase("career");
+    storage.save({phase:"career",player:p},currentSlot);
+    refreshSlots();
+  };
+  const wrap=ch=>(
+    <div className="cpm-root" style={{minHeight:"100vh",background:TH.bgGrad,color:TH.text,fontFamily:"'Barlow','Segoe UI',sans-serif"}}>
+      <style>{`
+        *{box-sizing:border-box;}
+        .cpm-root{padding:12px 8px 100px;}
+        @media(min-width:560px){.cpm-root{padding:14px 14px 100px;}}
+        @media(min-width:900px){.cpm-root{padding:16px 28px 100px;}}
+        @media(min-width:1280px){.cpm-root{padding:18px 48px 100px;}}
+        /* Responsive page containers — replaces all fixed maxWidth */
+        .cpm-page{width:100%;}
+        @media(min-width:900px){.cpm-page{max-width:960px;margin:0 auto;}}
+        @media(min-width:1280px){.cpm-page{max-width:1140px;}}
+        /* Career main area */
+        .cpm-career{width:100%;position:relative;padding-bottom:72px;}
+        @media(min-width:900px){.cpm-career{max-width:1140px;margin:0 auto;}}
+        /* Dashboard 2-column grid on desktop */
+        .cpm-dash-grid{display:flex;flex-direction:column;gap:12px;}
+        @media(min-width:900px){.cpm-dash-grid{display:grid;grid-template-columns:1fr 1fr;align-items:start;}}
+        /* Offer cards grid */
+        .cpm-offers{display:flex;flex-direction:column;gap:10px;}
+        @media(min-width:900px){.cpm-offers{display:grid;grid-template-columns:1fr 1fr;}}
+        /* ProTransition offers */
+        .cpm-proto{display:flex;flex-direction:column;gap:8px;}
+        @media(min-width:900px){.cpm-proto{display:grid;grid-template-columns:1fr 1fr;}}
+        /* HomeScreen slots */
+        .cpm-slots{display:flex;flex-direction:column;gap:8px;}
+        @media(min-width:900px){.cpm-slots{display:grid;grid-template-columns:1fr 1fr 1fr;}}
+        /* Create screen 2-col on desktop */
+        .cpm-create{display:flex;flex-direction:column;gap:16px;}
+        @media(min-width:900px){.cpm-create{display:grid;grid-template-columns:1fr 1fr;align-items:start;gap:20px;}}
+        select option{background:#fff;}
+        ::-webkit-scrollbar{width:4px;}::-webkit-scrollbar-track{background:transparent;}
+        ::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:2px;}
+        button:hover:not(:disabled){filter:brightness(0.96);}
+        button:active:not(:disabled){transform:scale(.97);}
+        input,select{outline:none;}
+        input:focus,select:focus{border-color:${TH.primary}!important;}
+        @keyframes slideIn{from{opacity:0;transform:translateX(-10px);}to{opacity:1;transform:translateX(0);}}
+      `}</style>
+      <Notif msg={appMsg?.msg} color={appMsg?.color}/>
+      {ch}
+    </div>
+  );
+  if(phase==="loading")return wrap(<div style={{textAlign:"center",paddingTop:80,color:TH.faint}}>Caricamento…</div>);
+  if(phase==="home")return wrap(<HomeScreen slots={slots} onNew={startNew} onLoad={loadSave} onDelete={deleteSlot} onImport={importSave}/>);
+  if(phase==="create")return wrap(<CreateScreen onCreate={onCreate}/>);
+  if(phase==="trial"&&player)return wrap(<TrialFlow player={player} onComplete={onTrials}/>);
+  if(phase==="offers"&&player)return wrap(<OffersScreen player={player} trialStats={trials} onChoose={onChoose}/>);
+  if(phase==="career"&&player)return wrap(<CareerApp player={player} currentSlot={currentSlot} onRefreshSlots={refreshSlots}/>);
+  return wrap(<div style={{textAlign:"center",color:TH.faint}}>Stato non riconosciuto.</div>);
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(React.createElement(App));
+requestAnimationFrame(window._hide);
+</script>
+</body>
+</html>
