@@ -10,6 +10,9 @@
 - **Per ogni sprint**: ≤300 righe nette · gate **10/10** · `test:vision` 28/28 · bump `GAME_VERSION` se tocca il gioco · commit atomici · `main` solo su OK del proprietario.
 - **Rischio crescente**: prima LMQP-side (zero save-risk), poi il refactoring del monolite quando esiste la rete per intercettare le regressioni.
 
+## Lezioni dai test autonomi (boundary geometrico ↔ perceptual)
+> Pattern emerso validando Fase B/C. **Cosa si valida bene con soglie geometriche** (su misure reali, margini ampi, zero falsi positivi): *esistenza* di movimento/stato/fisica-di-direzione — liveness off-ball (`motion`), reattività difensiva (`motion`, scoping su palla in metà offensiva), progressione/no-boomerang delle conclusioni (`ball-motion`), backbone narrativo per-beat (`timeline`). **Cosa NON si valida con soglie geometriche istantanee** (falsi positivi su comportamento legittimo): *leggibilità/regia* (camera: hero/ball off-screen ma azione leggibile) e *qualità spaziale fine* istantanea (compenetrazione: transitori durante l'assestamento). → Le prime restano nel **gate**; le seconde vanno all'**AI Vision** (perceptual, cap. 3.9) o richiedono metriche **sostenute** (N frame), non istantanee. Ogni soglia del gate è giustificata da una misura reale.
+
 ## Dipendenze critiche
 ```
 A (safety)  ── indipendente ──►  promuovibile subito
@@ -35,7 +38,7 @@ C+D attivi  ── prerequisito ──►  F2 (split monolite sicuro)
 | Sprint | Task | Copre AC | Effort |
 |---|---|---|---|
 | **C1 — Semantic/Motion** | #16 Semantic per-Situation · #17 Motion | AC-031…040, 071…080 | L |
-| **C2 — Camera/Ball/Physics** | **#18 Camera → ESITO TEST: perceptual, NON gate geometrico.** Misurato+ispezionato a video: hero/ball spesso off-screen ma azione **leggibile** (cross inquadra l'area, difensiva inquadra la palla, camera-drift post-azione) → soglie on-screen = falsi positivi. Routato all'**AI Vision** (cap. 3.9, già implementato, scorea `cameraQuality`). **#41 ball-progression/no-boomerang ✅** = 12ª categoria `ball-motion` (conclusioni: no salto indietro, no net negativo; guardia del fix 5.14). **#42 collisioni** → prossimo geometrico | AC-041…048 via AI Vision; **029/030 ✅ (ball-motion)**; 091…100 geometrici | L · **ball-motion fatto** |
+| **C2 — Camera/Ball/Physics** | **#18 Camera → ESITO TEST: perceptual, NON gate geometrico.** Misurato+ispezionato a video: hero/ball spesso off-screen ma azione **leggibile** (cross inquadra l'area, difensiva inquadra la palla, camera-drift post-azione) → soglie on-screen = falsi positivi. Routato all'**AI Vision** (cap. 3.9, già implementato, scorea `cameraQuality`). **#41 ball-progression/no-boomerang ✅** = 12ª categoria `ball-motion` (conclusioni: no salto indietro, no net negativo; guardia del fix 5.14). **#42 no-compenetrazione → ESITO TEST: min-distanza istantanea TROPPO RUMOROSA** (cattura transitori durante l'assestamento della repulsione: minSep 0.5–0.95 in un singolo frame vs 2.3–4.4 a regime) → scartato. Serve metrica di **overlap SOSTENUTO** (N frame consecutivi) o AI Vision | AC-041…048 via AI Vision; **029/030 ✅ (ball-motion)**; 091…100 (metrica sostenuta) | L · **ball-motion fatto, #42 da rifare con metrica sostenuta** |
 | **C3 — FI/NPC** | **#24 reattività difensiva ✅** (in `motion`: ≥1 difensore impegna il portatore con palla in metà offensiva; scoping che esclude le rimesse GK). #19 FI Score · #25 arbitro/panchine/GK · #30 piede → prossimi | AC-061…070, **081…090 (motion ✅)** | L · **#24 fatto** |
 | **C4 — AI Vision ponte** | #35 Situation Recognition↔Semantic · #36 video AI Vision · #34 cross-validation · #37 build comparison | AC-161…170 | M |
 
