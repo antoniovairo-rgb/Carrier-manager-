@@ -13,6 +13,18 @@ const INTENTS = new Set([
   'penalty', 'freekick', 'cross', 'through', 'dribble', 'onetwo', 'insertion',
   'shot', 'progression', 'switch', 'recover', 'anticipate', 'intercept', 'header',
 ]);
+const HL_TYPES = new Set(['shot', 'cross', 'header', 'penalty', 'freekick', 'tackle', 'dribble', 'pass', 'build']);
+const BALL_STATES = new Set(['aerial', 'feet', 'set_ground']);
+
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+const __dir = path.dirname(fileURLToPath(import.meta.url));
+// LMQP-5: baseline di REGRESSIONE della DECISIONE — firma strutturale {intent|hlType|ballState} per situation.
+//   Stabile (deriva da deriveIntent/deriveHL/hlBallState, deterministici), insensibile al tuning dei pesi
+//   di decideExecution (che muove solo variant/outcome). Drift = regressione strutturale = FAIL.
+//   Rigenera con: CPM_UPDATE_BASELINE=1 npm run validate-situations  (o lo script :update-baseline).
+const BASELINE = path.join(__dir, '..', 'decision-baseline.json');
 
 export default {
   id: 'timeline',
@@ -25,6 +37,8 @@ export default {
     }
     const forced = {};           // gi -> intent dell'ultimo HighlightForced
     let resolved = 0, paired = 0;
+    const seenIntent = new Set(), seenType = new Set(), seenBall = new Set(); // coverage (AC: copertura)
+    const sig = {};              // gi -> "intent|hlType|ballState" (firma decisione per regressione)
     for (const e of timeline) {
       if (e.type === 'HighlightForced') {
         forced[e.gi] = e.intent;
@@ -41,6 +55,10 @@ export default {
         // ── LMQP-3: invarianti CINE verificati sulla DECISIONE LIVE (hlType/variant/ballState emessi a runtime) ──
         //   Mirror dal vivo di data-coherence: la coerenza non è solo nel dato statico, ma nella decisione reale.
         const hlType = e.hlType || null, hlVariant = e.hlVariant || null, ballState = e.ballState || null;
+        seenIntent.add(e.intent); if (hlType) seenType.add(hlType); if (ballState) seenBall.add(ballState);
+        sig[e.gi] = `${e.intent}|${hlType || ''}|${ballState || ''}`;
+        if (hlType && !HL_TYPES.has(hlType)) issues.push(`hlType fuori dominio gi=${e.gi}: ${hlType}`);
+        if (ballState && !BALL_STATES.has(ballState)) issues.push(`ballState fuori dominio gi=${e.gi}: ${ballState}`);
         if (hlType) {
           // testa SOLO su palla aerea (invariante CINE, FAIL bloccante anche nella suite statica)
           if (hlType === 'header' && ballState !== 'aerial')
@@ -63,6 +81,26 @@ export default {
       }
     }
     if (resolved === 0) warnings.push('nessun ActionResolved nella timeline (passata final-state non ha risolto?)');
-    return { pass: issues.length === 0, issues, warnings, info: { events: timeline.length, forced: Object.keys(forced).length, resolved, paired } };
+
+    // ── LMQP-5: regressione della DECISIONE vs baseline committata ──
+    let baseline = { mode: 'skip' };
+    try {
+      const update = process.env.CPM_UPDATE_BASELINE === '1';
+      if (update || !fs.existsSync(BASELINE)) {
+        fs.writeFileSync(BASELINE, JSON.stringify(sig, null, 1) + '\n');
+        baseline = { mode: update ? 'updated' : 'created', keys: Object.keys(sig).length };
+      } else {
+        const base = JSON.parse(fs.readFileSync(BASELINE, 'utf8'));
+        let drift = 0, added = 0;
+        for (const gi in sig) {
+          if (base[gi] === undefined) { added++; warnings.push(`decision baseline: nuova situation gi=${gi} (${sig[gi]}) — rigenera baseline`); }
+          else if (base[gi] !== sig[gi]) { drift++; issues.push(`DECISION REGRESSION gi=${gi}: baseline="${base[gi]}" → ora="${sig[gi]}"`); }
+        }
+        baseline = { mode: 'compared', keys: Object.keys(base).length, checked: Object.keys(sig).length, drift, added };
+      }
+    } catch (err) { warnings.push('decision baseline err: ' + err.message); }
+
+    return { pass: issues.length === 0, issues, warnings, info: { events: timeline.length, forced: Object.keys(forced).length, resolved, paired,
+      coverage: { intents: [...seenIntent].sort(), hlTypes: [...seenType].sort(), ballStates: [...seenBall].sort() }, baseline } };
   },
 };

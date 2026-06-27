@@ -7,6 +7,7 @@
   "scripts": {
     "validate-situations": "node validate-situations.mjs",
     "validate-situations:update-golden": "node validate-situations.mjs --update-golden",
+    "validate-situations:update-baseline": "CPM_UPDATE_BASELINE=1 node validate-situations.mjs",
     "test": "node run-3d-validation.mjs",
     "force-all": "node run-force-all.mjs",
     "selftest": "node run-golden.mjs --selftest",

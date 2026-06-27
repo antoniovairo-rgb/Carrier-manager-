@@ -123,7 +123,8 @@ const GOLDEN = path.join(HERE, 'golden-sigs.json');
       agg['timeline'].issues.push(...tlRes.issues.map(msg => ({ gi: null, msg })));
       agg['timeline'].warnings.push(...tlRes.warnings.map(msg => ({ gi: null, msg })));
       agg['timeline'].info = tlRes.info;
-      console.log(`timeline: ${tlRes.info.events} eventi · ${tlRes.info.resolved} risolti · ${tlRes.info.paired} coerenti`);
+      const _b = tlRes.info.baseline || {}; const _cov = tlRes.info.coverage || {};
+      console.log(`timeline: ${tlRes.info.events} eventi · ${tlRes.info.resolved} risolti · ${tlRes.info.paired} coerenti · baseline ${_b.mode}${_b.drift ? ' DRIFT=' + _b.drift : ''} · intents ${(_cov.intents || []).length} types ${(_cov.hlTypes || []).length}`);
     } catch (e) { agg['timeline'].issues.push({ gi: null, msg: 'errore timeline check: ' + (e && e.message || e) }); }
 
     // POST-HIGHLIGHT — campiona la traiettoria (camera/palla/giocatori) su un set vario di Situations
