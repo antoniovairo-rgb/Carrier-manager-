@@ -58,9 +58,9 @@ C+D attivi  ── prerequisito ──►  F2 (split monolite sicuro)
 ## Fase F — Architettura & Manutenibilità (Medium) — dopo la rete C/D
 | Sprint | Task | Effort | Rischio |
 |---|---|---|---|
-| **F1 — Estrazione motori** | #46 motori puri in modulo · #51 magic numbers · #52 regex centralizzate | M | Medio |
-| **F2 — Split componenti** | #47 `ThreeMatchView` · #48 `LiveMatch` · #49 `CareerApp` | L | Medio-Alto |
-| **F3 — Plugin/Registry** | #59 Situation registry · #60 Event registry · #61 Validator plugin · #62 config-first · #63/#64/#65 QA Core | L | Medio |
+| **F1 — Estrazione motori** | **#46 motori puri estratti/testabili ✅ (tooling)**: `lib/{situations,decision,cine}.mjs` + `test:logic` 9/9 — l'obiettivo di testabilità è raggiunto senza toccare il file di gioco. #51 magic numbers/#52 regex → contestuali allo split (gate-blind in isolamento) | M | Medio |
+| **F2 — Split componenti** 🔴 | #47 `ThreeMatchView`/#48 `LiveMatch`/#49 `CareerApp`: **gate-blind, NON eseguibile alla cieca** → mappa e strategia in [`ARCHITECTURE_REFACTOR_MAP.md`](ARCHITECTURE_REFACTOR_MAP.md); richiede collaudo dal vivo (sessione a coppie) | L | Medio-Alto |
+| **F3 — Plugin/Registry** | #59–#65: cambio architetturale grande (gioco single-file global-scope); lato QA i check sono già modulari. Vedi mappa | L | Medio |
 
 ## Fase G — Polish & Futuro (Low)
 #86 Audio · #87 nuove camere · #88 replay cinematici · #89 post-processing · #91 analytics · #96 Release Candidate · #100 i18n.
