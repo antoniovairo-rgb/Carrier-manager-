@@ -65,4 +65,4 @@ export function getConfig(env = process.env) {
   });
 }
 
-export const PROMPT_VERSION = 'v1';
+export const PROMPT_VERSION = 'v2';
