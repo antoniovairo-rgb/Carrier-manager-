@@ -167,6 +167,80 @@ Soddisfatti quando Claude Code sviluppa una modifica in completa autonomia, usa 
 
 ---
 
+## 13. Resource Management
+
+Uso **responsabile** delle risorse; evitare ogni degrado progressivo della workstation in sessioni prolungate.
+
+- **CPU:** monitorare utilizzo CPU, n. processi, thread, tempo di esecuzione → analisi automatica oltre soglie anomale.
+- **Memory:** monitorare RAM usata/allocata/liberata e la **crescita progressiva** → incremento continuo non giustificato = possibile memory leak.
+- **GPU:** usata solo quando necessario; nei test headless disabilitare le elaborazioni grafiche non indispensabili.
+- **Temporary Files:** eliminati automaticamente a fine sessione (screenshot intermedi, cache, log/replay/profiling temporanei); si conservano solo gli artefatti finali del Failure Package / Report.
+
+---
+
+## 14. Automatic Cleanup
+
+Ogni processo avviato va **chiuso automaticamente**; vietato lasciare processi attivi a fine sessione.
+
+- **Process Cleanup** (anche in caso di errore): Chromium · Chrome · Playwright Browser · Node.js · Vite/Webpack Dev Server · PowerShell/Bash aperte dal framework · benchmark · profiling · replay · registrazione video.
+- **Graceful Shutdown:** tentare sempre una chiusura controllata; la terminazione forzata è l'ultima opzione.
+- **Cleanup Verification:** verificare l'assenza di browser residui, processi Node inutilizzati, PowerShell/Bash aperte, processi Playwright attivi.
+
+---
+
+## 15. Failure Package
+
+Ogni errore significativo genera automaticamente un **Failure Package** che consente la riproduzione **completa** del problema senza ulteriori informazioni.
+
+**Contenuto minimo:** id univoco · timestamp · commit · branch · Situation · validator falliti · replay · screenshot · video · cronaca · log · stack trace · configurazione della partita · seed · browser · sistema operativo · versione del framework. *(Spec architetturale: `LIVE_MATCH_QA_SPEC.md` cap. 3.7.)*
+
+---
+
+## 16. Reporting
+
+Ogni sessione produce automaticamente un **report finale**, comprensibile anche senza consultare i log.
+
+- **Contenuto:** attività svolte · file modificati · validator eseguiti · test eseguiti/superati/falliti · regressioni · benchmark · tempo totale · RAM max · CPU media · warning.
+- **Quality Score** complessivo per ogni modifica: qualità del codice · qualità grafica · football intelligence · performance · regressioni · copertura test · stabilità.
+
+---
+
+## 17. Git Workflow
+
+Ogni modifica **atomica**: un commit = una singola modifica logica; vietati commit con correzioni eterogenee.
+
+- **Commit Quality:** ogni commit compilabile, testato, documentato, privo di regressioni.
+- **Pull Request Rules:** ogni PR include descrizione · motivazione · file modificati · validator interessati · test eseguiti · evidenze visive · benchmark · limitazioni.
+
+---
+
+## 18. Continuous Improvement
+
+Il framework migliora di continuo. Ogni bug corretto produce: nuovi test · nuovi validator (se necessario) · aggiornamento documentazione · miglioramento copertura QA. **Lo stesso errore non deve ripresentarsi.**
+
+- **Knowledge Base:** ogni soluzione significativa contribuisce alla documentazione tecnica; il sistema **accumula conoscenza**.
+- **Refactoring Policy:** consentito solo se aumenta leggibilità, riduce complessità, migliora modularità e **non introduce regressioni**.
+
+---
+
+## 19. Final Development Checklist
+
+Prima di dichiarare completata un'attività, verificare automaticamente:
+
+✓ il codice compila · ✓ tutti i test PASS · ✓ nessuna regressione · ✓ tutti i validator PASS · ✓ highlight coerenti · ✓ Football Intelligence corretta · ✓ replay completi · ✓ cronaca sincronizzata · ✓ camera corretta · ✓ nessun processo residuo · ✓ cleanup completato · ✓ browser chiusi · ✓ Failure Package generato se necessario · ✓ Report Finale prodotto · ✓ documentazione aggiornata.
+
+Solo se **tutti** i controlli sono positivi la modifica può dirsi completata.
+
+---
+
+## 20. Definition of Done (globale)
+
+Una modifica al Live Match Engine è completata **esclusivamente** quando: risolve il problema **alla radice** · migliora la qualità complessiva · mantiene la coerenza con l'architettura LMQP · non introduce regressioni · supera tutti i validator · supera tutti i test automatici · supera la revisione visiva · produce un report finale completo · **libera tutte le risorse** della sessione · lascia il sistema nello **stesso stato operativo** in cui è stato trovato.
+
+> Qualsiasi attività che non soddisfi **integralmente** questi requisiti è da considerare **incompleta**, anche se il bug iniziale sembra risolto.
+
+---
+
 ## Stato attuale (mappatura onesta sul repo)
 
 | Regola | Stato |

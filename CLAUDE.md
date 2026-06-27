@@ -17,7 +17,7 @@ Carrier-manager-/
 ├── LIVE_MATCH_QA_SPEC.md    ← spec tecnica LMQP (architettura 3.1–3.13 + mappatura sul codice)
 ├── VALIDATORS.md            ← standard universale + catalogo validator LMV-001..030 (cap. 1, COMPLETO)
 ├── ROADMAP.md               ← roadmap LMQP a 8 fasi + stato attuale
-├── DEVELOPMENT_RULES.md     ← regole di sviluppo (v1.0, cap. 1–6) + mappatura sul repo
+├── DEVELOPMENT_RULES.md     ← regole di sviluppo (v1.0, cap. 1–20) + mappatura sul repo
 ├── ACCEPTANCE_CRITERIA.md   ← checklist di accettazione (stub, target 600–1000 controlli)
 ├── CLAUDE.md
 ├── CHANGELOG.md
