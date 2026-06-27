@@ -4,7 +4,7 @@ Standard e catalogo dei **validator** della Live Match Development Platform.
 
 > Documento vivo, organizzato per capitoli. Si conforma a `MASTER_PROMPT.md` (charter LMQP) e a `LIVE_MATCH_QA_SPEC.md` (architettura, cap. 3.4 Validator Engine).
 >
-> Validator **specificati** qui: LMV-001…LMV-027. Validator **pianificati** (residui): vedi `VALIDATORS_REMAINING.md`.
+> **Catalogo COMPLETO: LMV-001…LMV-030.** Backlog originale residuo e note di copertura/numerazione: vedi `VALIDATORS_REMAINING.md`.
 
 ---
 
@@ -1283,6 +1283,87 @@ Intenzione di creare un'occasione immediatamente riconoscibile; destinatario chi
 
 ---
 
+## Validator 028 — Tentativo di Deviazione Offensiva
+
+| Campo | Valore |
+|---|---|
+| **Identificativo** | `LMV-028` |
+| **Categoria** | Finalizzazione |
+| **Priorità** | Alta |
+
+**Scopo** — verificare che il protagonista tenti **intenzionalmente di modificare la traiettoria del pallone** per indirizzarlo in zona favorevole o verso la porta (non il solo gol).
+
+**Definizione** — tocco **intenzionale** per modificare la traiettoria durante un'azione offensiva, con piede/testa/petto o qualsiasi parte consentita.
+
+- **Compatibili:** deviazione su cross · su tiro · tocco sotto porta · ravvicinata · volante.
+- **NON compatibili:** controllo del pallone · tiro preparato · colpo di testa in elevazione · semplice stop.
+
+**Timeline** — `Traiettoria → Lettura → Attacco del punto d'impatto → Tentativo di deviazione → Nuova traiettoria → Esito → Post-Highlight`.
+
+**Outcome ammessi** — gol · tiro · assist · deviazione fuori · parata · respinta · perdita del possesso.
+
+**Controlli** — *Ball:* punto di contatto, modifica traiettoria, velocità coerente, **no cambi senza contatto**. *Player:* attacco del pallone, sincronia del gesto, equilibrio, reazione dopo il contatto. *Camera:* contatto giocatore↔pallone perfettamente visibile. *Motion:* gesto naturale, sincronia, continuità. *Semantic:* "È riconoscibile il tentativo di modificare la traiettoria?" → no = FAIL. *Football Intelligence:* scelta del tempo, posizione, comportamento di portiere/difensori.
+
+**Errori critici (FAIL)** — il pallone cambia traiettoria **senza contatto** · replay che termina prima dell'esito · cronaca/video incoerenti.
+
+**Definition of Done** — deviazione chiaramente riconoscibile, modifica realistica della traiettoria, esito mostrato integralmente.
+
+---
+
+## Validator 029 — Tentativo di Sponda Offensiva
+
+| Campo | Valore |
+|---|---|
+| **Identificativo** | `LMV-029` |
+| **Categoria** | Gioco di Squadra |
+| **Priorità** | Media |
+
+**Scopo** — verificare che il protagonista tenti di **servire un compagno con una sponda offensiva**.
+
+**Definizione** — giocata in cui il protagonista (spesso **spalle alla porta**) usa un **unico tocco** per indirizzare il pallone verso un compagno (piede/testa/petto).
+
+- **Compatibili:** sponda di testa · di petto · di prima · su lancio · in area.
+- **NON compatibili:** controllo orientato (LMV-022) · passaggio preparato · assist diretto (LMV-013).
+
+**Timeline** — `Ricezione → Protezione → Tentativo di sponda → Movimento del destinatario → Esito → Post-Highlight`.
+
+**Outcome ammessi** — assist · progressione · tiro · perdita del possesso · intercetto.
+
+**Controlli** — *Ball:* direzione e velocità della sponda. *Player:* postura, orientamento, sincronia col destinatario. *Camera:* protagonista + destinatario. *Motion:* gesto naturale. *Semantic:* "È riconoscibile una sponda offensiva?" → no = FAIL. *Football Intelligence:* scelta del destinatario, pressione difensiva, coordinazione.
+
+**Errori critici (FAIL)** — destinatario non identificabile · pallone che cambia direzione senza contatto · replay che termina prima della conclusione.
+
+**Definition of Done** — sponda immediatamente riconoscibile, destinatario identificabile, evoluzione mostrata integralmente.
+
+---
+
+## Validator 030 — Tentativo di Pressione Offensiva
+
+| Campo | Valore |
+|---|---|
+| **Identificativo** | `LMV-030` |
+| **Categoria** | Transizione Offensiva |
+| **Priorità** | Media |
+
+**Scopo** — verificare che il protagonista tenti di esercitare **pressione immediata** sul portatore/primo costruttore avversario per favorire una rapida riconquista in zona offensiva.
+
+**Definizione** — movimento coordinato dell'attaccante per **limitare tempo e spazio** dell'avversario; non cerca necessariamente il contrasto ma **forza una decisione rapida**.
+
+- **Compatibili:** pressione sul portiere · sul difensore centrale · dopo perdita del possesso · laterale.
+- **NON compatibili:** tackle (LMV-006) · intercetto (LMV-007) · marcatura prolungata.
+
+**Timeline** — `Perdita del possesso → Reazione → Pressione → Errore o giocata dell'avversario → Esito → Post-Highlight`.
+
+**Outcome ammessi** — errore dell'avversario · recupero del possesso · lancio lungo forzato · uscita dalla pressione.
+
+**Controlli** — *Ball:* coerenza della giocata forzata. *Player:* intensità della pressione, traiettoria della corsa, comportamento dell'avversario. *Camera:* attaccante + portatore visibili. *Motion:* accelerazione, frenata, cambi di direzione. *Semantic:* "È riconoscibile il tentativo di mettere pressione?" → no = FAIL. *Football Intelligence:* angolo di pressione corretto, chiusura della linea di passaggio, avversario coerente.
+
+**Errori critici (FAIL)** — l'attaccante corre senza logica · l'avversario ignora la pressione · cronaca che dice "pressing" ma il video mostra altro.
+
+**Definition of Done** — pressione offensiva immediatamente riconoscibile, che modifica il comportamento dell'avversario e produce una conseguenza tatticamente credibile, **indipendentemente dall'esito**.
+
+---
+
 ## Stato di implementazione (mappatura sul codice attuale)
 
 > Onestà documentale (charter): cosa dello standard esiste già nel gate vs cosa manca.
@@ -1299,6 +1380,14 @@ Intenzione di creare un'occasione immediatamente riconoscibile; destinatario chi
 | Sistema di gravità INFO..FATAL | 🟡 | il gate distingue issue (FAIL) vs warn; manca la scala completa MINOR/MAJOR/CRITICAL |
 
 **Prerequisito comune** (come per `LIVE_MATCH_QA_SPEC.md`): Semantic Validator, eventi obbligatori/vietati e Timeline dipendono tutti dal **layer Event + Timeline** osservabile nel motore.
+
+### LMV-028/029/030 — copertura attuale (sintesi)
+
+- **LMV-028 Deviazione Offensiva:** affine ai beat di prima/tap-in (`shot_first_time`, `cn.tapIn`) e ai post-arco di deviazione; il requisito chiave "**no cambio traiettoria senza contatto**" è già un invariante difeso dal codice (boomerang/fisica palla). Da costruire: il tocco-deviazione come gesto dedicato.
+- **LMV-029 Sponda Offensiva:** non rappresentata come giocata a sé (spalle alla porta, tocco unico verso un compagno); vicina a `onetwo`/sponda aerea ma da progettare.
+- **LMV-030 Pressione Offensiva:** coperta dall'AI off-ball (pressing F3, press+cover F11, chiusura linea F10) sul lato giusto; manca la **pressione del protagonista** come highlight giocabile (oggi l'eroe pressa solo negli HL difensivi `tackle`/`recover`).
+
+Comune: **non validati** timeline/Semantic/Narrative/post-highlight.
 
 ### LMV-024/025/026/027 — copertura attuale (sintesi)
 

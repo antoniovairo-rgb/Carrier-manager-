@@ -1,34 +1,39 @@
 # VALIDATORS.md — Remaining Validators
 
-Validator **pianificati** del catalogo LMQP (complemento di `VALIDATORS.md`, che contiene quelli già specificati). Per ciascuno si userà la **stessa struttura** dei validator `LMV-001..LMV-013`.
+Complemento di `VALIDATORS.md`. **Stato: catalogo COMPLETO — LMV-001…LMV-030 specificati.**
 
-> ℹ️ In `VALIDATORS.md` sono ora specificati **LMV-001…LMV-027** (inclusi Ricezione/Controllo Orientato/Seconda Palla, fuori dal backlog originale; + i set-piece Punizione/Rigore/Angolo/Rimessa Laterale).
->
-> ℹ️ **Numerazione:** la "Protezione del Pallone" del backlog originale è stata assorbita in **LMV-011**; gli ID successivi sono quindi **scalati** (es. Smarcamento→LMV-018, Inserimento→LMV-019). Per evitare disallineamenti, il backlog qui sotto è **per nome**: l'ID definitivo viene assegnato dal proprietario alla fornitura del validator.
+> Questo file resta come **storico della pianificazione** e per tracciare i pochi item del backlog originale non trasformati in validator dedicati.
 
-## Planned Validators (backlog per nome — ID assegnato alla fornitura)
+## Riconciliazione del backlog originale (LMV-014…030)
 
-Residui ancora da specificare (5):
+Durante la stesura la numerazione e i titoli sono evoluti rispetto al piano iniziale. Mappatura finale:
 
-- Tentativo di Finalizzazione Ravvicinata *(finalizzazione)*
-- Tentativo di Conclusione dalla Distanza *(finalizzazione)*
-- Tentativo di Pressing Alto *(transizione difensiva)*
-- Tentativo di Lancio del Portiere — NPC *(palla inattiva / NPC)*
-- Tentativo di Salvataggio Difensivo — NPC *(fase difensiva / NPC)*
+| Backlog originale | Esito |
+|---|---|
+| Lancio Lungo | → **LMV-014** |
+| Cambio di Gioco | → **LMV-015** |
+| Triangolazione | → **LMV-016** |
+| Uno-Due | → **LMV-017** |
+| Protezione del Pallone | → **LMV-011** (assorbito) |
+| Smarcamento | → **LMV-018** |
+| Inserimento | → **LMV-019** |
+| Attacco della Profondità | → **LMV-020** |
+| Finalizzazione Ravvicinata | **assorbita** — situazione compatibile di **LMV-004** (conclusione ravvicinata) e **LMV-028** (tocco sotto porta) |
+| Conclusione dalla Distanza | **assorbita** — situazione compatibile di **LMV-004** (tiro da fuori area) |
+| Pressing Alto | → **LMV-030** (Pressione Offensiva) |
+| Calcio di Punizione | → **LMV-024** |
+| Calcio di Rigore | → **LMV-025** |
+| Calcio d'Angolo | → **LMV-026** |
+| Rimessa Laterale | → **LMV-027** |
+| Lancio del Portiere (NPC) | **differito** — vedi sotto |
+| Salvataggio Difensivo (NPC) | **differito** — vedi sotto |
 
-Già assorbiti/specificati dal backlog originale: Lancio Lungo → **LMV-014** · Cambio di Gioco → **LMV-015** · Triangolazione → **LMV-016** · Uno-Due → **LMV-017** · Protezione del Pallone → **LMV-011** · Smarcamento → **LMV-018** · Inserimento → **LMV-019** · Attacco della Profondità → **LMV-020**.
+Specificati **fuori** dal backlog originale (nuovi): Ricezione → **LMV-021** · Controllo Orientato → **LMV-022** · Seconda Palla → **LMV-023** · Deviazione Offensiva → **LMV-028** · Sponda Offensiva → **LMV-029**.
 
-+ set-piece: Calcio di Punizione → **LMV-024** · Calcio di Rigore → **LMV-025** · Calcio d'Angolo → **LMV-026** · Rimessa Laterale → **LMV-027**.
+## Differiti / opzionali (non nel catalogo 001–030)
 
-Specificati **fuori** dal backlog originale (nuovi): Ricezione → **LMV-021** · Controllo Orientato → **LMV-022** · Seconda Palla → **LMV-023**.
+- **Lancio del Portiere (NPC)** e **Salvataggio Difensivo (NPC)** — richiedono highlight con **protagonista NPC**, non previsti dal flusso attuale (l'highlight è incentrato sull'eroe). Restano come **estensione futura** del motore prima di poter essere validati. Se/quando introdotti, useranno la stessa struttura standard (`VALIDATORS.md`, cap. 1).
 
-Per ciascun validator utilizzare la stessa struttura dei validator `LMV-001..LMV-019` (Identificativo · Categoria · Priorità · Scopo · Definizione · Situazioni compatibili/non · Timeline · Outcome · controlli per validator · Errori critici · Suggerimenti automatici · Definition of Done).
+## Nuovi validator
 
----
-
-## Note di copertura (intenti già nel motore)
-
-Diversi validator pianificati hanno già un **intento** corrispondente in `deriveIntent` (sorgente unica dell'intenzione) o un'esecuzione nel Decision Engine — utile come punto di partenza:
-
-- LMV-014 Lancio Lungo → intento `through`/`switch` (lancio) · LMV-015 Cambio di Gioco → `switch` · LMV-016/017 Triangolazione/Uno-Due → `onetwo` (give_and_go/wall_pass) · LMV-020/021 Inserimento/Profondità → `insertion`/`through` · LMV-024 Pressing Alto → `recover` + AI off-ball (F2/F3/F11) · LMV-025/026 Punizione/Rigore → `freekick`/`penalty` (F6) · LMV-027 Corner → insertion aerea.
-- Senza mappatura diretta (da progettare): LMV-018 Protezione · LMV-019 Smarcamento · LMV-028 Rimessa laterale · LMV-029/030 NPC (lancio portiere / salvataggio difensivo) — questi ultimi richiedono highlight con **protagonista NPC**, oggi non previsti dal flusso (l'highlight è incentrato sull'eroe).
+Per ogni nuovo validator oltre il 030: assegnare il prossimo ID libero (`LMV-031`, …) e usare la struttura standard del cap. 1 di `VALIDATORS.md`.

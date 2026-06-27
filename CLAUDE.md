@@ -15,8 +15,8 @@ Carrier-manager-/
 ├── CARRIER-MANAGER-AV.html   ← FILE DI LAVORO ATTIVO (~20 600 righe, tutto qui dentro)
 ├── MASTER_PROMPT.md         ← ⭐ CHARTER DI GOVERNO: Live Match Quality Platform (LMQP) — vincolante
 ├── LIVE_MATCH_QA_SPEC.md    ← spec tecnica LMQP (architettura 3.1–3.13 + mappatura sul codice)
-├── VALIDATORS.md            ← standard universale + catalogo validator LMV-001..027 (cap. 1)
-├── VALIDATORS_REMAINING.md  ← validator pianificati residui (5, backlog per nome)
+├── VALIDATORS.md            ← standard universale + catalogo validator LMV-001..030 (cap. 1, COMPLETO)
+├── VALIDATORS_REMAINING.md  ← storico pianificazione + 2 validator NPC differiti
 ├── ROADMAP.md               ← roadmap LMQP a 8 fasi + stato attuale
 ├── DEVELOPMENT_RULES.md     ← regole di sviluppo (sintesi di MASTER_PROMPT Parte 2)
 ├── ACCEPTANCE_CRITERIA.md   ← checklist di accettazione (stub, target 600–1000 controlli)
