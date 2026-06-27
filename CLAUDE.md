@@ -28,7 +28,7 @@ Carrier-manager-/
     ├── situations-3d-validation.js   ← regole di validazione SITUATIONS (coerenza HL↔3D) + suite analitica (537 combo)
     └── visual/                        ← QUALITY GATE Playwright (vedi sezione dedicata)
         ├── validate-situations.mjs    ← runner principale del gate (10 categorie)
-        ├── golden-sigs.json           ← firme golden screenshot
+        ├── golden-sigs.json           ← firme golden (stato) · decision-baseline.json (regressione decisione, LMQP-5)
         ├── checks/  lib/  report.mjs  out/
         └── package.json               ← script npm del gate + devDependencies dei bundle CDN locali
 ```
