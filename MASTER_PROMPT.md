@@ -361,19 +361,18 @@ I file temporanei dovranno essere eliminati automaticamente al termine delle ope
 
 ## Politica Git
 
-**Consentito senza autorizzazione:**
+> **Aggiornata** (decisione del proprietario, coerente con `DEVELOPMENT_RULES.md` cap. 8): il **push sul branch di lavoro è autorizzato in autonomia**. Restano subordinate ad approvazione esplicita solo le operazioni distruttive/irreversibili e quelle su `main`.
 
-- `git status`
-- `git diff`
-- `git log`
-- `git branch`
-- `git fetch`
-- commit locali descrittivi, se utili al lavoro in corso
+**Consentito in autonomia:**
+
+- `git status` · `git diff` · `git log` · `git branch` · `git fetch`
+- commit locali descrittivi
+- **`git push` sul branch di lavoro designato** (attuale: `claude/remote-control-6w43ie`) con `-u origin <branch>`
 
 **Non consentito senza approvazione esplicita:**
 
-- `git push`
-- `git merge`
+- `git push --force` / force-push in qualsiasi forma
+- `git merge` / `git push` su `main` (produzione/Pages)
 - `git rebase`
 - `git reset --hard`
 - `git clean`

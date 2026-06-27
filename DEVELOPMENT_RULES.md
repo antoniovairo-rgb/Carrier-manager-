@@ -111,7 +111,7 @@ Autorizzati: PowerShell · Bash · CMD · **Git** · Node.js · npm · pnpm · y
 
 **Richiedono conferma esclusivamente:** cancellazione definitiva di dati · modifiche irreversibili · reset repository · **force push** · eliminazione database · operazioni esterne al progetto.
 
-> ⚠️ **Conflitto noto con `MASTER_PROMPT.md` (Parte 2):** la charter elenca `git push`/`git merge`/`git rebase` tra le operazioni che richiedono **approvazione esplicita**; questo cap. 8 autorizza "Git" preventivamente e richiede conferma solo per *force push*/reset. **In attesa di riconciliazione dal proprietario** (vedi nota in fondo). Fino ad allora: per prudenza i push restano subordinati al via libera.
+> ✅ **Conflitto RISOLTO** (decisione del proprietario): il **push sul branch di lavoro è autorizzato in autonomia**, in linea con questo cap. 8. La `Politica Git` di `MASTER_PROMPT.md` è stata aggiornata di conseguenza. Restano subordinati ad approvazione esplicita: *force-push*, `reset --hard`, `clean`, eliminazione branch, e `merge`/`push` su `main`.
 
 ---
 
@@ -157,13 +157,11 @@ Soddisfatti quando Claude Code sviluppa una modifica in completa autonomia, usa 
 
 ---
 
-## Nota — riconciliazione policy Git (da decidere dal proprietario)
+## Nota — policy Git (RISOLTA)
 
-`MASTER_PROMPT.md` (Parte 2) e questo documento (cap. 8) **divergono** sull'autorizzazione a `git push`/`merge`/`rebase`:
-- **Charter (MASTER_PROMPT Parte 2):** richiedono approvazione esplicita.
-- **DEVELOPMENT_RULES cap. 8:** "Git" preventivamente autorizzato; conferma solo per *force push*/reset/irreversibili.
+✅ Il proprietario ha autorizzato il **push in autonomia sul branch di lavoro**. La `Politica Git` di `MASTER_PROMPT.md` è stata aggiornata di conseguenza ed è ora coerente con questo cap. 8.
 
-**Default prudenziale attuale:** i push restano subordinati al via libera del proprietario finché la divergenza non è risolta. Per autorizzare i push in autonomia (mantenendo la conferma solo su force-push/reset), aggiornare la Politica Git di `MASTER_PROMPT.md`.
+Sintesi vigente: **push sul branch di lavoro = autonomo**; richiedono approvazione esplicita solo *force-push*, `reset --hard`, `clean`, eliminazione branch e `merge`/`push` su `main`.
 
 ---
 
