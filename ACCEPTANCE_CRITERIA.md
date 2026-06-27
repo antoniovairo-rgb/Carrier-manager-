@@ -314,6 +314,84 @@ Soddisfatti quando il Live Match Engine mantiene elevate prestazioni, completa s
 
 ---
 
+## 21. AI Vision Acceptance
+
+Secondo livello di validazione: individuare anomalie difficili da cogliere coi test tradizionali.
+
+| ID | Criterio |
+|---|---|
+| **AC-161** | l'AI Vision riconosce correttamente la Situation |
+| **AC-162** | conferma la coerenza cronaca↔highlight |
+| **AC-163** | verifica la sincronizzazione del pallone |
+| **AC-164** | individua eventuali teleport dei giocatori |
+| **AC-165** | rileva animazioni interrotte |
+| **AC-166** | verifica la qualità delle transizioni |
+| **AC-167** | valuta la leggibilità dell'highlight |
+| **AC-168** | conferma che il protagonista sia sempre identificabile |
+| **AC-169** | verifica che il replay racconti un'azione completa |
+| **AC-170** | produce un punteggio complessivo di qualità |
+
+## 22. Regression Acceptance
+
+Ogni modifica confrontata con la build precedente.
+
+| ID | Criterio |
+|---|---|
+| **AC-171** | nessuna funzionalità esistente degrada |
+| **AC-172** | nessun validator PASS diventa FAIL |
+| **AC-173** | il numero totale di errori non aumenta |
+| **AC-174** | la qualità visiva non diminuisce |
+| **AC-175** | le prestazioni non peggiorano |
+| **AC-176** | la Football Intelligence non perde coerenza |
+| **AC-177** | la sincronizzazione non degrada |
+| **AC-178** | il Replay Engine mantiene il livello qualitativo |
+| **AC-179** | la copertura dei test non diminuisce |
+| **AC-180** | ogni regressione è **bloccante** fino alla risoluzione |
+
+## 23. Continuous Integration Acceptance
+
+| ID | Criterio |
+|---|---|
+| **AC-181** | la pipeline CI si completa con esito positivo |
+| **AC-182** | tutti gli Unit Test PASS |
+| **AC-183** | tutti gli Integration Test PASS |
+| **AC-184** | tutti i Validator PASS |
+| **AC-185** | tutti i test Playwright PASS |
+| **AC-186** | build riproducibile |
+| **AC-187** | report finale generato automaticamente |
+| **AC-188** | log, screenshot e video archiviati |
+| **AC-189** | Failure Package allegati automaticamente |
+| **AC-190** | pipeline che termina senza interventi manuali |
+
+## 24. Release Acceptance
+
+Una build è candidabile al rilascio **solo** se soddisfa contemporaneamente tutti i criteri precedenti.
+
+| ID | Criterio |
+|---|---|
+| **AC-191** | tutti i validator PASS |
+| **AC-192** | nessuna regressione aperta di severità critica |
+| **AC-193** | Quality Score complessivo sopra la soglia minima |
+| **AC-194** | tutti gli highlight di riferimento coerenti |
+| **AC-195** | stabilità confermata dagli stress test |
+| **AC-196** | documentazione aggiornata |
+| **AC-197** | codice conforme alle Development Rules |
+| **AC-198** | pacchetto di rilascio completo |
+| **AC-199** | il Product Owner verifica facilmente il risultato via Report Finale + evidenze |
+| **AC-200** | build contrassegnabile **Release Candidate** solo dopo il superamento di tutti gli AC applicabili |
+
+## 25. Final Acceptance Checklist
+
+Prima di dichiarare completata un'attività, verifica automatica:
+
+✓ compila senza errori · ✓ Unit/Integration/Validator/Playwright PASS · ✓ highlight coerenti · ✓ Replay Engine OK · ✓ Football Intelligence coerente · ✓ nessun teleport · ✓ nessuna animazione interrotta · ✓ nessuna regressione · ✓ nessun crash · ✓ nessun memory leak · ✓ nessun processo residuo · ✓ nessun browser aperto · ✓ nessuna PowerShell/Bash del framework ancora attiva · ✓ tutte le risorse liberate · ✓ Report Finale generato · ✓ Failure Package su errore · ✓ documentazione aggiornata · ✓ build pronta per il rilascio.
+
+### Definition of Done (globale, AC-001…200)
+
+Una modifica è completata **esclusivamente** quando soddisfa **integralmente tutti** gli Acceptance Criteria applicabili, supera ogni fase della pipeline di validazione, non introduce regressioni, mantiene o migliora il livello qualitativo e produce tutte le evidenze necessarie. Il superamento degli AC è **l'unica condizione** per promuovere una build a **Release Candidate** e poi al rilascio.
+
+---
+
 ## Stato attuale (mappatura onesta sul gate) — target 600–1000 controlli
 
 > Quali AC sono oggi verificabili automaticamente dal quality gate (`tests/visual`) e quali no.
@@ -337,5 +415,9 @@ Soddisfatti quando il Live Match Engine mantiene elevate prestazioni, completa s
 | **Save Compatibility (AC-131…140)** | 🟢🟡 SAVE_VERSION + migration backward-compat (ultimo: v7/foot) è il meccanismo per AC-131…140, ma **non c'è un test automatico** che carichi save storici nel gate |
 | **UI (AC-141…150)** | 🔴 la UI del match non è validata dal gate (HUD/timer/punteggio); fuori dallo scope screenshot-canvas |
 | **Audio (AC-151…160)** | 🔴 **il gioco non ha un comparto audio** allo stato attuale → questi AC sono aspirazionali (audio da implementare prima di poter essere validato) |
+| **AI Vision (AC-161…170)** | 🔴 modulo AI Vision non implementato (cap. 3.9); screenshot già disponibili come input |
+| **Regression (AC-171…180)** | 🟡 solo golden regression (firma stato); AC-172 "nessun validator PASS→FAIL" è il principio del gate, ma manca il confronto baseline ricco (cap. 3.6) |
+| **CI (AC-181…190)** | 🟡 deploy Pages via GitHub Actions esiste; manca una pipeline CI che esegua il gate + archivi evidenze/Failure Package automaticamente |
+| **Release (AC-191…200)** | 🔴 nessun processo Release Candidate formale (Quality Score, soglie, pacchetto di rilascio) |
 
 **Conclusione:** la maggior parte degli AC su movimento/animazione/camera/commentary richiede il **layer Event + Timeline** + i validator Semantic/Motion/Narrative (vedi `LIVE_MATCH_QA_SPEC.md` cap. 3.4–3.7) per diventare automaticamente verificabile. Lo stub "600–1000 controlli" si raggiunge espandendo ogni AC in controlli per-Situation (30 validator × ~20-30 check ciascuno).
