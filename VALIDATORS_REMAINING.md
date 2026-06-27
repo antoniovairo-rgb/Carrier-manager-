@@ -2,7 +2,9 @@
 
 Validator **pianificati** del catalogo LMQP (complemento di `VALIDATORS.md`, che contiene quelli già specificati). Per ciascuno si userà la **stessa struttura** dei validator `LMV-001..LMV-013`.
 
-> ⚠️ **Gap noto:** in `VALIDATORS.md` sono specificati **LMV-001…LMV-012**; **LMV-013 non è ancora stato fornito** (referenziato qui sotto ma assente dal catalogo). LMV-011 è attualmente un *entry-alias* di LMV-010 (vedi `VALIDATORS.md`).
+> ⚠️ **Gap noto:** in `VALIDATORS.md` sono specificati **LMV-001…LMV-012**; **LMV-013 non è ancora stato fornito** (referenziato qui sotto ma assente dal catalogo).
+>
+> ℹ️ **LMV-018 (Protezione del Pallone)** è già coperto da **LMV-011** (stessa Situation, ora specificato in `VALIDATORS.md` come *Tentativo di Protezione del Pallone*) → da considerare **assorbito/ridondante** in questa lista.
 
 ## Planned Validators
 
@@ -13,7 +15,7 @@ Validator **pianificati** del catalogo LMQP (complemento di `VALIDATORS.md`, che
 | **LMV-015** | Tentativo di Cambio di Gioco | Costruzione del gioco |
 | **LMV-016** | Tentativo di Triangolazione | Costruzione offensiva |
 | **LMV-017** | Tentativo di Uno-Due | Costruzione offensiva |
-| **LMV-018** | Tentativo di Protezione del Pallone | Possesso |
+| **LMV-018** | ~~Tentativo di Protezione del Pallone~~ → assorbito da **LMV-011** | Possesso |
 | **LMV-019** | Tentativo di Smarcamento | Movimento offensivo |
 | **LMV-020** | Tentativo di Inserimento | Movimento offensivo |
 | **LMV-021** | Tentativo di Attacco della Profondità | Movimento offensivo |

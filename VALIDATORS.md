@@ -4,7 +4,7 @@ Standard e catalogo dei **validator** della Live Match Development Platform.
 
 > Documento vivo, organizzato per capitoli. Si conforma a `MASTER_PROMPT.md` (charter LMQP) e a `LIVE_MATCH_QA_SPEC.md` (architettura, cap. 3.4 Validator Engine).
 >
-> Validator **specificati** qui: LMV-001…LMV-012 (LMV-011 è un *entry-alias* di LMV-010). Validator **pianificati** (LMV-013…LMV-030): vedi `VALIDATORS_REMAINING.md`.
+> Validator **specificati** qui: LMV-001…LMV-012. Validator **pianificati** (LMV-013…LMV-030): vedi `VALIDATORS_REMAINING.md`.
 
 ---
 
@@ -725,15 +725,66 @@ Intenzione di avanzare immediatamente riconoscibile; conduzione naturale e contr
 
 ---
 
-## Validator 011 — Tentativo di Progressione
+## Validator 011 — Tentativo di Protezione del Pallone
 
 | Campo | Valore |
 |---|---|
 | **Identificativo** | `LMV-011` |
-| **Categoria** | Costruzione dell'Azione |
+| **Categoria** | Gestione del Possesso |
 | **Priorità** | Alta |
 
-> ⚠️ **Entry-alias.** LMV-011 ha **spec identica a LMV-010** (stesso titolo "Tentativo di Progressione", stesso scopo/definizione/timeline/outcome/controlli/DoD). Per evitare duplicazione del testo (charter cap. 3.3, "massimizzare la varietà"), il contenuto non è ricopiato: **vale integralmente la specifica di [LMV-010](#validator-010--tentativo-di-progressione)**. Se in futuro LMV-011 dovrà coprire una Situation distinta (es. *Cambio di gioco* / `switch`), questa entry andrà differenziata. — *Aggiunto su richiesta esplicita dopo re-invio.*
+### Scopo
+
+Verifica che una Situation **"Tentativo di Protezione del Pallone"** sia rappresentata in modo realistico, leggibile e coerente. Non conta che il protagonista **mantenga** il possesso: conta che tenti realmente di **proteggere il pallone dalla pressione avversaria** per mantenere il controllo dell'azione o attendere il supporto dei compagni. Esito positivo o negativo.
+
+### Definizione
+
+Qualsiasi azione in cui il giocatore usa **corpo, postura e controllo tecnico** per impedire agli avversari di recuperare il possesso. La protezione deve essere **intenzionale e chiaramente riconoscibile**.
+
+### Situazioni compatibili / non compatibili
+
+- **Compatibili:** protezione spalle alla porta · sulla fascia · in attesa del supporto · mantenimento del possesso sotto pressione · schermatura del pallone · gestione del possesso vicino alla linea laterale.
+- **NON compatibili:** dribbling · passaggio · tiro · cross · semplice conduzione senza pressione.
+
+### Timeline attesa
+
+| Fase | Evento |
+|---|---|
+| 1 | **Possesso** — controlla il pallone |
+| 2 | **Pressione** — uno o più avversari si avvicinano, pressione chiaramente visibile |
+| 3 | **Protezione** — usa il corpo / orienta le spalle / tiene il pallone sul lato opposto al difensore / protegge il possesso |
+| 4 | **Reazione** — gli avversari tentano contrasto/anticipo/chiusura; i compagni si smarcano |
+| 5 | **Esito** — uno degli outcome previsti |
+| 6 | **Post-Highlight** — conseguenza della protezione chiaramente mostrata |
+
+### Outcome
+
+- **Ammessi:** mantenimento del possesso · passaggio successivo · fallo subito · perdita del possesso · dribbling/tiro/cross successivo.
+- **Non ammessi:** avversari completamente passivi · pallone troppo distante dal protagonista · perdita improvvisa del possesso senza evento visibile · replay interrotto prima dell'esito.
+
+### Controlli per validator
+
+- **Ball:** pallone sotto controllo, distanza coerente, no teletrasporti, no movimenti innaturali.
+- **Player:** il **protagonista** protegge col corpo / mantiene l'equilibrio / postura e orientamento coerenti / osserva i compagni; gli **avversari** pressano / cercano il recupero / si adattano al movimento del protagonista; i **compagni** si smarcano / offrono linee / accompagnano.
+- **Camera:** protagonista + pallone + difensore più vicino sempre visibili, duello fisico evidenziato, esito mostrato.
+- **Motion:** movimenti fluidi, postura naturale, sincronia corpo↔pallone, continuità, no compenetrazioni.
+- **Semantic:** *"Un osservatore capirebbe immediatamente che il protagonista sta cercando di mantenere il possesso proteggendo il pallone?"* — se no → **FAIL**.
+- **Football Intelligence:** sceglie correttamente quando proteggere, avversari che aumentano la pressione, compagni che offrono uno scarico, scelta tatticamente plausibile.
+- **Narrative:** `Possesso → Pressione → Protezione → Reazione → Esito → Post-Highlight`; sequenza leggibile.
+
+### Errori critici (FAIL)
+
+Il protagonista non usa il corpo per proteggere · avversari che non pressano · pallone che si separa senza motivo · replay che termina prima dell'esito · cronaca e highlight che mostrano azioni differenti.
+
+### Suggerimenti automatici
+
+Aumentare la pressione difensiva · migliorare la postura · sincronizzare il controllo del pallone · prolungare il post-highlight · sincronizzare cronaca e animazione.
+
+### Definition of Done
+
+Intenzione di mantenere il possesso immediatamente riconoscibile; uso credibile di corpo e controllo tecnico; pressione avversaria realistica; compagni che offrono soluzioni coerenti; esito completamente visibile; post-highlight che conclude naturalmente; cronaca + timeline + animazione che rappresentano la stessa intenzione.
+
+> Un highlight in cui il protagonista mantiene il pallone **senza alcuna pressione**, o perde il possesso **senza una causa visibile**, è **incompleto** e non conforme.
 
 ---
 
@@ -820,6 +871,10 @@ Ripartenza immediatamente riconoscibile; recupero del possesso chiaramente visib
 ### LMV-012 (Tentativo di Contropiede) — copertura attuale
 
 A livello di dati le situations di contropiede/ripartenza esistono ("Contropiede! Campo aperto", "Contropiede avversario", "Rimessa dal portiere — verticale") e l'AI off-ball ha una **transizione attacco↔difesa** (F2/F3) col baricentro che scorre col possesso. **Limite strutturale forte:** un highlight è una singola Situation interattiva — la **velocità/transizione multi-fase** richiesta da LMV-012 (recupero → accelerazione → sviluppo verso porta) non è realmente rappresentata come sequenza continua; il chaining HL→HL è il meccanismo più vicino ma il gate non lo copre. È il validator che più mette in luce il bisogno del **layer Timeline + chaining osservabile**. **Non validati:** ritmo elevato, rientro difensivo, timeline, Semantic, Narrative, post-highlight.
+
+### LMV-011 (Tentativo di Protezione del Pallone) — copertura attuale
+
+Copertura debole: non esiste un hlType dedicato alla protezione. Tracce: il Decision Engine prevede esiti `shielded_out` (dribbling) e i beat `hold`/`slow` in `buildHLTimeline`; l'AI off-ball produce pressione (F3) e raddoppio (F11) attorno al portatore, che è il presupposto della protezione. **Manca tutto il cuore di LMV-011:** il gesto di *schermatura col corpo* (spalle al difensore, pallone sul lato opposto), il duello fisico leggibile, l'attesa-supporto. È un buon candidato per una **nuova Situation/variant dedicata** (protezione) una volta presente il layer Event+Timeline. **Non validati:** timeline, Semantic, Narrative, post-highlight, pressione garantita.
 
 ### LMV-010 (Tentativo di Progressione) — copertura attuale
 
