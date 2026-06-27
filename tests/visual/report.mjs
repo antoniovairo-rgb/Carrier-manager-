@@ -75,6 +75,45 @@ export function writeReports(outDir, data) {
 </div>`;
   }
 
+  // ── LMQP-11: REPLAY VIEWER — rigioca 2D top-down le tracce per-frame (LMQP-10) inline nel report ──
+  let replayViewer = '';
+  if (runSummary && runSummary.replay && runSummary.replay.length) {
+    const traces = {};
+    for (const t of runSummary.replay) {
+      try { traces[t.gi] = JSON.parse(fs.readFileSync(path.join(outDir, t.file), 'utf8')); } catch (_e) { /* trace mancante: skip */ }
+    }
+    const opts = runSummary.replay.map(t => `<option value="${esc(t.gi)}">#${esc(t.gi)} · ${esc(t.frames)}f</option>`).join('');
+    replayViewer = `<h2>Replay Viewer <span class="muted">(LMQP-11 · 2D top-down, palla=giallo)</span></h2>
+<div class="dash">
+  <select id="rvSel">${opts}</select>
+  <button id="rvPlay">▶ Play</button>
+  <input id="rvScrub" type="range" min="0" max="0" value="0" style="width:240px;vertical-align:middle">
+  <span id="rvInfo" class="muted"></span>
+  <div><canvas id="rvCanvas" width="540" height="360" style="background:#0a2415;border:1px solid #1f2937;border-radius:8px;margin-top:8px;max-width:100%"></canvas></div>
+</div>
+<script>
+const RV=${JSON.stringify(traces)};
+(function(){
+  const sel=document.getElementById('rvSel'),cv=document.getElementById('rvCanvas'),ctx=cv.getContext('2d');
+  const scrub=document.getElementById('rvScrub'),playBtn=document.getElementById('rvPlay'),info=document.getElementById('rvInfo');
+  if(!sel||!cv)return; const W=cv.width,H=cv.height,M=24;
+  const PX=gx=>M+(gx/100)*(W-2*M), PY=gy=>M+(gy/100)*(H-2*M);
+  let cur=null,fi=0,playing=false;
+  function load(gi){cur=RV[gi]||null;fi=0;scrub.max=cur&&cur.frames.length?cur.frames.length-1:0;scrub.value=0;draw();}
+  function pitch(){ctx.fillStyle='#0a2415';ctx.fillRect(0,0,W,H);ctx.strokeStyle='#1f5132';ctx.lineWidth=1.5;ctx.strokeRect(M,M,W-2*M,H-2*M);ctx.beginPath();ctx.moveTo(W/2,M);ctx.lineTo(W/2,H-M);ctx.stroke();ctx.beginPath();ctx.arc(W/2,H/2,28,0,7);ctx.stroke();}
+  function draw(){pitch();if(!cur||!cur.frames.length){info.textContent='nessuna traccia';return;}const f=cur.frames[Math.min(fi,cur.frames.length-1)];
+    if(f.players)for(const p of f.players){if(p[0]==null)continue;ctx.fillStyle='#cbd5e1';ctx.beginPath();ctx.arc(PX(p[0]),PY(p[1]),4,0,7);ctx.fill();}
+    if(f.ball){const bx=f.ball.x+50,by=f.ball.z/0.68+50;ctx.fillStyle='#f59e0b';ctx.beginPath();ctx.arc(PX(bx),PY(by),5,0,7);ctx.fill();}
+    info.textContent='frame '+(fi+1)+'/'+cur.frames.length+(f.phase?(' · '+f.phase):'');}
+  function tick(){if(!playing||!cur)return;fi=(fi+1)%cur.frames.length;scrub.value=fi;draw();setTimeout(()=>requestAnimationFrame(tick),140);}
+  sel.onchange=()=>load(sel.value);
+  scrub.oninput=()=>{playing=false;playBtn.textContent='▶ Play';fi=+scrub.value;draw();};
+  playBtn.onclick=()=>{playing=!playing;playBtn.textContent=playing?'⏸ Pausa':'▶ Play';if(playing)tick();};
+  load(sel.value);
+})();
+</script>`;
+  }
+
   const html = `<!doctype html><html lang="it"><head><meta charset="utf-8"><title>CPM — Validazione Situations</title>
 <style>
 :root{color-scheme:light dark}body{font:14px/1.5 system-ui,sans-serif;margin:0;padding:24px;background:#0b1020;color:#e6ebf5}
@@ -111,6 +150,7 @@ ul{margin:0;padding-left:16px}li{color:#fda4af}ul.warn li{color:#fcd34d}
   <span class="kpi">Determinismo<br><b>${meta.maxJitterBits === 0 ? 'OK' : esc(meta.maxJitterBits ?? '—')}</b></span>
 </div>
 ${dashHtml}
+${replayViewer}
 <h2>Riepilogo categorie (quality gate)</h2>
 <table><thead><tr><th>id</th><th>controllo</th><th>esito</th><th>scope</th><th>info</th><th>#issue</th><th>#warn</th></tr></thead><tbody>${catRows}</tbody></table>
 <h2>Dettaglio per Situation</h2>
