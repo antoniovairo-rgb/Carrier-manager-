@@ -69,6 +69,7 @@ export function collectFailures(outDir, data) {
     coverage,
     baseline,
     performance: meta.performance || null,
+    replay: meta.replay || null,
     failures,
   };
 

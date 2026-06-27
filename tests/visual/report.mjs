@@ -63,6 +63,7 @@ export function writeReports(outDir, data) {
   <div>${perfHtml}</div>
   <h3>Decision baseline (regressione)</h3>
   <div>${blHtml}</div>
+  ${(rs.replay && rs.replay.length) ? `<h3>Replay traces <span class="muted">(LMQP-10, frame-by-frame)</span></h3><div>${rs.replay.map(t => `<span class="chip">#${esc(t.gi)} · ${esc(t.frames)}f${t.durMs != null ? ' · ' + esc(t.durMs) + 'ms' : ''}</span>`).join('')}</div>` : ''}
   <h3>Coverage</h3>
   <div class="covgrid">
     <div><b>intents</b><br>${chips(cov.intents)}</div>

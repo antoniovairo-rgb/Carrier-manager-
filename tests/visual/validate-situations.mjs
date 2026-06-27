@@ -21,6 +21,7 @@ import { loadSituations } from './lib/situations.mjs';
 import { writeReports } from './report.mjs';
 import { collectFailures } from './lib/failure-collector.mjs';
 import { measurePerf } from './lib/perf-monitor.mjs';
+import { writeReplayTrace } from './lib/replay-trace.mjs';
 import initialState from './checks/initial-state.mjs';
 import orientation from './checks/orientation.mjs';
 import visual from './checks/visual.mjs';
@@ -58,7 +59,7 @@ const GOLDEN = path.join(HERE, 'golden-sigs.json');
   page.on('console', m => { if (m.type() === 'error' && !/BABEL|in-browser Babel/.test(m.text())) consoleErrors.push(m.text()); });
   page.on('pageerror', e => consoleErrors.push('PAGEERROR: ' + e.message));
 
-  const sitResults = []; const sigs = {}; let perf = null;
+  const sitResults = []; const sigs = {}; let perf = null; const replayRefs = [];
   const agg = {}; for (const c of [...SIT_CHECKS, ...FINAL_CHECKS, ...GLOBAL_CHECKS]) agg[c.id] = { id: c.id, title: c.title, scope: c.scope, issues: [], warnings: [], info: {} };
 
   try {
@@ -143,6 +144,7 @@ const GOLDEN = path.join(HERE, 'golden-sigs.json');
         if (f0.players && f1.players) { let mv = 0; for (let p = 0; p < f0.players.length; p++) if (f1.players[p] && Math.hypot(f1.players[p].x - f0.players[p].x, f1.players[p].y - f0.players[p].y) > 0.8) mv++; movers = Math.max(movers, mv); }
       }
       phSamples.push({ gi, durMs: s.durMs, maxCam, maxBall, movers });
+      try { replayRefs.push(writeReplayTrace(OUT, s)); } catch (_e) { /* trace best-effort, non blocca il gate */ }
       await sleep(300);
     }
     const phRes = postHighlight.run({ samples: phSamples });
@@ -184,7 +186,7 @@ const GOLDEN = path.join(HERE, 'golden-sigs.json');
     return { id: c.id, title: c.title, scope: c.scope, pass: a.issues.length === 0, issues: a.issues.map(fmt), warnings: a.warnings.map(fmt), info: a.info };
   });
 
-  const meta = { generatedAt: new Date().toISOString(), gameVersion, seed: SEED, total: sitResults.length, maxJitterBits: agg.determinism.info.diverged === 0 ? 0 : `${agg.determinism.info.diverged} divergenze`, goldenNote, performance: perf };
+  const meta = { generatedAt: new Date().toISOString(), gameVersion, seed: SEED, total: sitResults.length, maxJitterBits: agg.determinism.info.diverged === 0 ? 0 : `${agg.determinism.info.diverged} divergenze`, goldenNote, performance: perf, replay: replayRefs };
   // LMQP-7: pacchetto di fallimento compatto/machine-readable (CI + Dashboard + regression history)
   const runSummary = collectFailures(OUT, { meta, categories, situations: sitResults });
   // LMQP-9: il report HTML riceve il summary normalizzato per la Dashboard
