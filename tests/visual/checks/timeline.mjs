@@ -7,6 +7,8 @@
    LMQP-3: verifica anche gli INVARIANTI CINE sulla DECISIONE LIVE (hlType/variant/
    ballState emessi a runtime): testa⟹aerea, volée⟹aerea, set-piece⟹palla ferma,
    intento↔tipo per i set-piece — mirror dal vivo di data-coherence.
+   LMQP-6: valida la SEMANTICA dell'ESITO — ogni highlight risolto deve chiudere la
+   sua storia con un outcome key NOTO e COERENTE con l'esito (ok ⟺ key di successo).
    È il primo gradino del Semantic/Narrative Validator (LIVE_MATCH_QA_SPEC cap. 3.4). */
 
 const INTENTS = new Set([
@@ -15,6 +17,11 @@ const INTENTS = new Set([
 ]);
 const HL_TYPES = new Set(['shot', 'cross', 'header', 'penalty', 'freekick', 'tackle', 'dribble', 'pass', 'build']);
 const BALL_STATES = new Set(['aerial', 'feet', 'set_ground']);
+// LMQP-6: TAXONOMY degli OUTCOME KEY (da action.rew/action.fail in SITUATIONS; emessi come key=ok?rew:fail).
+//   SUCCESS = il tentativo riesce per l'eroe; FAIL = fallisce. I due insiemi NON si sovrappongono
+//   → l'invariante ok ⟺ key∈SUCCESS è strutturale; una sua violazione è una REGRESSIONE (handleAction desync).
+const OUTCOME_OK = new Set(['goal', 'assist', 'save', 'recovery']);
+const OUTCOME_FAIL = new Set(['miss', 'miss_easy', 'intercept', 'goal_against', 'nothing', 'through', 'foul', 'loose']);
 
 import fs from 'node:fs';
 import path from 'node:path';
@@ -37,7 +44,7 @@ export default {
     }
     const forced = {};           // gi -> intent dell'ultimo HighlightForced
     let resolved = 0, paired = 0;
-    const seenIntent = new Set(), seenType = new Set(), seenBall = new Set(); // coverage (AC: copertura)
+    const seenIntent = new Set(), seenType = new Set(), seenBall = new Set(), seenKey = new Set(); // coverage (AC: copertura)
     const sig = {};              // gi -> "intent|hlType|ballState" (firma decisione per regressione)
     for (const e of timeline) {
       if (e.type === 'HighlightForced') {
@@ -51,6 +58,18 @@ export default {
         if (forced[e.gi] !== e.intent) issues.push(`incoerenza intent gi=${e.gi}: forced=${forced[e.gi]} vs resolved=${e.intent}`);
         if (!e.key) issues.push(`ActionResolved gi=${e.gi} senza outcome key`);
         if (typeof e.ok !== 'boolean') issues.push(`ActionResolved gi=${e.gi} senza esito (ok) booleano`);
+
+        // ── LMQP-6: SEMANTICA dell'ESITO — la storia dell'highlight deve chiudersi con un outcome NOTO e COERENTE ──
+        if (e.key) {
+          seenKey.add(e.key);
+          const known = OUTCOME_OK.has(e.key) || OUTCOME_FAIL.has(e.key);
+          if (!known) warnings.push(`outcome key fuori taxonomy gi=${e.gi}: "${e.key}" (nuovo esito non ancora validato)`);
+          else if (typeof e.ok === 'boolean') {
+            // ok ⟺ key di successo: un esito riuscito non può avere una key di fallimento (e viceversa)
+            if (e.ok && !OUTCOME_OK.has(e.key)) issues.push(`SEMANTICA gi=${e.gi}: ok=true ma key="${e.key}" è un esito di FALLIMENTO`);
+            if (!e.ok && !OUTCOME_FAIL.has(e.key)) issues.push(`SEMANTICA gi=${e.gi}: ok=false ma key="${e.key}" è un esito di SUCCESSO`);
+          }
+        }
 
         // ── LMQP-3: invarianti CINE verificati sulla DECISIONE LIVE (hlType/variant/ballState emessi a runtime) ──
         //   Mirror dal vivo di data-coherence: la coerenza non è solo nel dato statico, ma nella decisione reale.
@@ -101,6 +120,6 @@ export default {
     } catch (err) { warnings.push('decision baseline err: ' + err.message); }
 
     return { pass: issues.length === 0, issues, warnings, info: { events: timeline.length, forced: Object.keys(forced).length, resolved, paired,
-      coverage: { intents: [...seenIntent].sort(), hlTypes: [...seenType].sort(), ballStates: [...seenBall].sort() }, baseline } };
+      coverage: { intents: [...seenIntent].sort(), hlTypes: [...seenType].sort(), ballStates: [...seenBall].sort(), outcomeKeys: [...seenKey].sort() }, baseline } };
   },
 };
