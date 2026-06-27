@@ -40,8 +40,19 @@ jobs:
           npm install
           npx playwright install --with-deps chromium
 
-      - name: Run quality gate (179 Situations)
+      # Test node-side (veloci, no browser): falliscono PRIMA del gate costoso (fail-fast)
+      - name: Unit tests — AI Vision engine (test:vision, 28)
+        run: npm run test:vision
+
+      - name: Logic tests — Decision Engine + cine backbone + backbone regression (test:logic, 9)
+        run: npm run test:logic
+
+      - name: Run quality gate (179 Situations, 12 categorie)
         run: npm run validate-situations
+
+      # Save path GATE-BLIND: esercita la migration reale su save storici sintetici (AC-131..140)
+      - name: Save-compat test (migration)
+        run: npm run save-compat
 
       - name: Upload report (HTML + screenshot)
         if: always()  # carica il report anche quando il gate fallisce
