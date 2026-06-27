@@ -11,6 +11,7 @@
     "ai-vision": "node ai-vision-review.mjs",
     "ai-vision:strict": "node ai-vision-review.mjs --strict",
     "test:vision": "node --test test/vision/*.test.mjs",
+    "test:logic": "node --test test/logic/*.test.mjs",
     "save-compat": "node run-save-compat.mjs",
     "stress": "node run-stress.mjs",
     "test": "node run-3d-validation.mjs",
