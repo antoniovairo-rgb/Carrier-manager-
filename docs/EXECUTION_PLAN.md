@@ -65,6 +65,12 @@ C+D attivi  ── prerequisito ──►  F2 (split monolite sicuro)
 ## Fase G — Polish & Futuro (Low)
 #86 Audio · #87 nuove camere · #88 replay cinematici · #89 post-processing · #91 analytics · #96 Release Candidate · #100 i18n.
 
+## Pre-fine-tuning — rete di sicurezza dati (situations + cronaca) ✅
+> Prima del fine-tuning di **tutte le situations e della cronaca** (fase collaborativa successiva), ho costruito la validazione automatica dei dati, così ogni errore introdotto nel tuning è intercettato:
+> - **`data-audit`** (`test:logic`): tutte le 179 situations — azioni ben formate, stat ∈ 8 attributi, rew ∈ esiti di successo, fail ∈ esiti di fallimento, intent ∈ 13, startZone valida.
+> - **`cronaca-audit`** (`test:logic`): tutte le 149 righe BG_MATCH — txt/peso/bpos/momThreshold/minClock coerenti, segnaposto `{H/H2/A/P/DERBY}` bilanciati e noti, tassonomie pd/ef/ms.
+> Entrambi in CI. Il fine-tuning può procedere col paracadute automatico (tu cambi i dati, il test dice subito se rompi qualcosa).
+
 ## Rischi del piano
 - **Refactoring monolite (F2)**: punto più rischioso → solo con C/D attivi; step ≤300 righe; golden+decision-baseline come rete.
 - **Save path GATE-BLIND**: il gate non carica save → A1 crea la prima rete di test su quel path (testare node-side).
