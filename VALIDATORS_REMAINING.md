@@ -2,30 +2,28 @@
 
 Validator **pianificati** del catalogo LMQP (complemento di `VALIDATORS.md`, che contiene quelli già specificati). Per ciascuno si userà la **stessa struttura** dei validator `LMV-001..LMV-013`.
 
-> ℹ️ In `VALIDATORS.md` sono ora specificati **LMV-001…LMV-016** (catalogo completo fino al 016).
+> ℹ️ In `VALIDATORS.md` sono ora specificati **LMV-001…LMV-019**.
 >
-> ℹ️ **LMV-018 (Protezione del Pallone)** è già coperto da **LMV-011** (stessa Situation, *Tentativo di Protezione del Pallone*) → da considerare **assorbito/ridondante** in questa lista.
+> ℹ️ **Numerazione:** la "Protezione del Pallone" del backlog originale è stata assorbita in **LMV-011**; gli ID successivi sono quindi **scalati** (es. Smarcamento→LMV-018, Inserimento→LMV-019). Per evitare disallineamenti, il backlog qui sotto è **per nome**: l'ID definitivo viene assegnato dal proprietario alla fornitura del validator.
 
-## Planned Validators
+## Planned Validators (backlog per nome — ID assegnato alla fornitura)
 
-| ID | Nome | Categoria (presunta) |
-|---|---|---|
-| **LMV-017** | Tentativo di Uno-Due | Costruzione offensiva |
-| **LMV-018** | ~~Tentativo di Protezione del Pallone~~ → assorbito da **LMV-011** | Possesso |
-| **LMV-019** | Tentativo di Smarcamento | Movimento offensivo |
-| **LMV-020** | Tentativo di Inserimento | Movimento offensivo |
-| **LMV-021** | Tentativo di Attacco della Profondità | Movimento offensivo |
-| **LMV-022** | Tentativo di Finalizzazione Ravvicinata | Finalizzazione |
-| **LMV-023** | Tentativo di Conclusione dalla Distanza | Finalizzazione |
-| **LMV-024** | Tentativo di Pressing Alto | Transizione difensiva |
-| **LMV-025** | Tentativo di Calcio di Punizione | Palla inattiva |
-| **LMV-026** | Tentativo di Calcio di Rigore | Palla inattiva |
-| **LMV-027** | Tentativo di Calcio d'Angolo | Palla inattiva |
-| **LMV-028** | Tentativo di Rimessa Laterale | Palla inattiva |
-| **LMV-029** | Tentativo di Lancio del Portiere (NPC) | Palla inattiva / NPC |
-| **LMV-030** | Tentativo di Salvataggio Difensivo (NPC) | Fase difensiva / NPC |
+Residui ancora da specificare (10):
 
-Per ciascun validator utilizzare la stessa struttura dei validator `LMV-001..LMV-013` (Identificativo · Categoria · Priorità · Scopo · Definizione · Situazioni compatibili/non · Timeline · Outcome · Ball/Player/Camera/Motion/Semantic/Football-Intelligence/Narrative Validator · Errori critici · Suggerimenti automatici · Definition of Done).
+- Tentativo di Attacco della Profondità *(movimento offensivo)*
+- Tentativo di Finalizzazione Ravvicinata *(finalizzazione)*
+- Tentativo di Conclusione dalla Distanza *(finalizzazione)*
+- Tentativo di Pressing Alto *(transizione difensiva)*
+- Tentativo di Calcio di Punizione *(palla inattiva)*
+- Tentativo di Calcio di Rigore *(palla inattiva)*
+- Tentativo di Calcio d'Angolo *(palla inattiva)*
+- Tentativo di Rimessa Laterale *(palla inattiva)*
+- Tentativo di Lancio del Portiere — NPC *(palla inattiva / NPC)*
+- Tentativo di Salvataggio Difensivo — NPC *(fase difensiva / NPC)*
+
+Già assorbiti/specificati dal backlog originale: Uno-Due → **LMV-017** · Protezione del Pallone → **LMV-011** · Smarcamento → **LMV-018** · Inserimento → **LMV-019** · Lancio Lungo → **LMV-014** · Cambio di Gioco → **LMV-015** · Triangolazione → **LMV-016**.
+
+Per ciascun validator utilizzare la stessa struttura dei validator `LMV-001..LMV-019` (Identificativo · Categoria · Priorità · Scopo · Definizione · Situazioni compatibili/non · Timeline · Outcome · controlli per validator · Errori critici · Suggerimenti automatici · Definition of Done).
 
 ---
 

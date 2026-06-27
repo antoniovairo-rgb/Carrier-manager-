@@ -4,7 +4,7 @@ Standard e catalogo dei **validator** della Live Match Development Platform.
 
 > Documento vivo, organizzato per capitoli. Si conforma a `MASTER_PROMPT.md` (charter LMQP) e a `LIVE_MATCH_QA_SPEC.md` (architettura, cap. 3.4 Validator Engine).
 >
-> Validator **specificati** qui: LMV-001…LMV-016. Validator **pianificati** (LMV-017…LMV-030): vedi `VALIDATORS_REMAINING.md`.
+> Validator **specificati** qui: LMV-001…LMV-019. Validator **pianificati** (residui): vedi `VALIDATORS_REMAINING.md`.
 
 ---
 
@@ -996,6 +996,89 @@ Intenzione di creare un'occasione immediatamente riconoscibile; destinatario chi
 
 ---
 
+## Validator 017 — Tentativo di Uno-Due
+
+| Campo | Valore |
+|---|---|
+| **Identificativo** | `LMV-017` |
+| **Categoria** | Combinazione Offensiva |
+| **Priorità** | Alta |
+
+**Scopo** — verificare che il protagonista tenti una **combinazione rapida** con un compagno per superare uno o più avversari (intenzione di creare un vantaggio con uno scambio immediato).
+
+**Definizione** — il protagonista passa il pallone a un compagno e **si inserisce immediatamente nello spazio** per riceverlo nuovamente; azione continua e fluida.
+
+- **Compatibili:** uno-due centrale · sulla fascia · al limite dell'area · in contropiede.
+- **NON compatibili:** triangolazione a tre (LMV-016) · semplice sequenza di passaggi · assist diretto.
+
+**Timeline** — `Passaggio → Inserimento → Restituzione → Ricezione → Progressione → Esito → Post-Highlight`.
+
+**Outcome ammessi** — progressione · tiro · assist · fallo · intercetto · perdita del possesso.
+
+**Controlli specifici** — il protagonista parte **subito** dopo il passaggio; il compagno restituisce **intenzionalmente**; tempi realistici; i difensori reagiscono; viene creato un vantaggio offensivo.
+
+**Errori critici (FAIL)** — il protagonista resta fermo; il secondo passaggio non è intenzionale; cronaca che dice "uno-due" ma il video mostra due passaggi scollegati.
+
+**Definition of Done** — scambio immediatamente riconoscibile, tempi realistici, chiara progressione offensiva.
+
+---
+
+## Validator 018 — Tentativo di Smarcamento
+
+| Campo | Valore |
+|---|---|
+| **Identificativo** | `LMV-018` |
+| **Categoria** | Movimento Senza Palla |
+| **Priorità** | Massima |
+
+> Nota: l'ID LMV-018 nel backlog originale era "Protezione del Pallone", ora **assorbita in LMV-011** → LMV-018 è riassegnato a **Smarcamento**.
+
+**Scopo** — verificare che il protagonista tenti di **liberarsi dalla marcatura** per offrire una soluzione di gioco; l'intenzione deve essere evidente **anche se il pallone non viene ricevuto**.
+
+**Definizione** — qualsiasi movimento **senza palla** finalizzato a creare una linea di passaggio favorevole.
+
+- **Compatibili:** smarcamento in ampiezza · in profondità · contromovimento · taglio verso il centro · taglio sul secondo palo.
+- **NON compatibili:** semplice corsa casuale · inserimento dopo passaggio (LMV-019) · pressione difensiva.
+
+**Timeline** — `Lettura → Contromovimento → Attacco dello spazio → Creazione della linea di passaggio → Esito → Post-Highlight`.
+
+**Outcome ammessi** — ricezione · mancata ricezione · intercetto · cambio di soluzione del portatore.
+
+**Controlli specifici** — il movimento ha una logica tattica; il protagonista osserva il portatore; il difensore reagisce; viene **realmente** creato spazio; cronaca e movimento coerenti.
+
+**Errori critici (FAIL)** — corsa senza scopo; il difensore ignora completamente il movimento; lo smarcamento termina senza alcuna conseguenza visibile.
+
+**Definition of Done** — smarcamento chiaramente riconoscibile, che crea una reale opzione di passaggio e modifica il comportamento di compagni e avversari.
+
+---
+
+## Validator 019 — Tentativo di Inserimento
+
+| Campo | Valore |
+|---|---|
+| **Identificativo** | `LMV-019` |
+| **Categoria** | Movimento Senza Palla |
+| **Priorità** | Alta |
+
+**Scopo** — verificare che il protagonista tenti un **inserimento offensivo** per attaccare uno spazio libero creato dall'azione della squadra.
+
+**Definizione** — movimento **senza palla** verso una zona offensiva per ricevere il pallone in posizione favorevole; **sincronizzato** con lo sviluppo dell'azione.
+
+- **Compatibili:** inserimento centrale · sul primo palo · sul secondo palo · tra i centrali · da seconda linea.
+- **NON compatibili:** semplice smarcamento (LMV-018) · progressione con il pallone · contropiede individuale.
+
+**Timeline** — `Lettura → Attacco dello spazio → Sincronizzazione con il portatore → Tentativo di ricezione → Esito → Post-Highlight`.
+
+**Outcome ammessi** — ricezione · assist · tiro · colpo di testa · intercetto · fuorigioco · mancata ricezione.
+
+**Controlli specifici** — l'inserimento parte nel **momento corretto**; attacca uno spazio realmente libero; il portatore può vedere il movimento; i difensori tentano di seguirlo; sincronizzazione credibile.
+
+**Errori critici (FAIL)** — inserimento troppo presto/tardi; corsa verso una zona senza senso tattico; difensori che non reagiscono; replay che termina prima dell'esito.
+
+**Definition of Done** — inserimento immediatamente riconoscibile, sincronizzato con l'azione offensiva, con conseguenza chiaramente visibile **anche se il pallone non viene ricevuto**.
+
+---
+
 ## Stato di implementazione (mappatura sul codice attuale)
 
 > Onestà documentale (charter): cosa dello standard esiste già nel gate vs cosa manca.
@@ -1012,6 +1095,14 @@ Intenzione di creare un'occasione immediatamente riconoscibile; destinatario chi
 | Sistema di gravità INFO..FATAL | 🟡 | il gate distingue issue (FAIL) vs warn; manca la scala completa MINOR/MAJOR/CRITICAL |
 
 **Prerequisito comune** (come per `LIVE_MATCH_QA_SPEC.md`): Semantic Validator, eventi obbligatori/vietati e Timeline dipendono tutti dal **layer Event + Timeline** osservabile nel motore.
+
+### LMV-017/018/019 — copertura attuale (sintesi)
+
+- **LMV-017 Uno-Due:** intento `onetwo` (give_and_go/wall_pass) presente; ma il pattern richiede che **l'eroe passi e riceva di nuovo** inserendosi — il flusso HL attuale modella l'eroe che passa a un compagno che conclude, **non** il ritorno sull'eroe → da costruire (Timeline + chaining).
+- **LMV-018 Smarcamento:** l'off-ball AI F3 ha già attaccanti che corrono nel **canale più libero** (smarcamenti reali) + smarcamenti pre-action (CINE-4); manca la garanzia "intenzione evidente anche senza ricezione" + reazione del marcatore validate.
+- **LMV-019 Inserimento:** ben allineato — intento `insertion`, inserimenti aerei (F12), attacco primo/secondo palo (F3); manca la validazione di **sincronizzazione** col portatore e del timing (no fuorigioco involontario).
+
+Comune: **non validati** timeline/Semantic/Narrative/post-highlight (dipendono dal layer Event+Timeline; LMV-017 anche dal chaining).
 
 ### LMV-014/015/016 — copertura attuale (sintesi)
 
