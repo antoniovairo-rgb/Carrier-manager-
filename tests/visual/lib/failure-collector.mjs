@@ -70,6 +70,7 @@ export function collectFailures(outDir, data) {
     baseline,
     performance: meta.performance || null,
     replay: meta.replay || null,
+    aiVision: meta.aiVision || null,
     failures,
   };
 

@@ -22,6 +22,7 @@ import { writeReports } from './report.mjs';
 import { collectFailures } from './lib/failure-collector.mjs';
 import { measurePerf } from './lib/perf-monitor.mjs';
 import { writeReplayTrace } from './lib/replay-trace.mjs';
+import { runAiVision, visionEnabled } from './lib/ai-vision.mjs';
 import initialState from './checks/initial-state.mjs';
 import orientation from './checks/orientation.mjs';
 import visual from './checks/visual.mjs';
@@ -59,7 +60,7 @@ const GOLDEN = path.join(HERE, 'golden-sigs.json');
   page.on('console', m => { if (m.type() === 'error' && !/BABEL|in-browser Babel/.test(m.text())) consoleErrors.push(m.text()); });
   page.on('pageerror', e => consoleErrors.push('PAGEERROR: ' + e.message));
 
-  const sitResults = []; const sigs = {}; let perf = null; const replayRefs = [];
+  const sitResults = []; const sigs = {}; let perf = null; const replayRefs = []; let aiVision = null;
   const agg = {}; for (const c of [...SIT_CHECKS, ...FINAL_CHECKS, ...GLOBAL_CHECKS]) agg[c.id] = { id: c.id, title: c.title, scope: c.scope, issues: [], warnings: [], info: {} };
 
   try {
@@ -180,13 +181,21 @@ const GOLDEN = path.join(HERE, 'golden-sigs.json');
     for (const s of sitResults) s.issues = s.issues.filter(i => i.check !== 'golden');
   }
 
+  // AI VISION REVIEW (secondo livello, NON blocca la CI) — attivo solo con CPM_VISION_API_KEY
+  try {
+    const aiSamples = sitResults.filter(s => s.shotInitial).slice(0, 6).map(s => ({ gi: s.gi, shot: s.shotInitial, text: s.text, intent: s.intent }));
+    aiVision = await runAiVision(OUT, aiSamples, { max: 6 });
+    if (aiVision.skipped) console.log(`ai-vision: skip (${aiVision.reason})`);
+    else console.log(`ai-vision: ${aiVision.count} frame · verdicts ${JSON.stringify(aiVision.verdicts)} · readability ${aiVision.avg.readability}`);
+  } catch (e) { aiVision = { skipped: true, reason: 'errore: ' + (e && e.message || e) }; console.log('ai-vision: ' + aiVision.reason); }
+
   const categories = [...SIT_CHECKS, ...FINAL_CHECKS, ...GLOBAL_CHECKS].map(c => {
     const a = agg[c.id];
     const fmt = i => (i.gi != null ? `#${i.gi} ` : '') + i.msg;
     return { id: c.id, title: c.title, scope: c.scope, pass: a.issues.length === 0, issues: a.issues.map(fmt), warnings: a.warnings.map(fmt), info: a.info };
   });
 
-  const meta = { generatedAt: new Date().toISOString(), gameVersion, seed: SEED, total: sitResults.length, maxJitterBits: agg.determinism.info.diverged === 0 ? 0 : `${agg.determinism.info.diverged} divergenze`, goldenNote, performance: perf, replay: replayRefs };
+  const meta = { generatedAt: new Date().toISOString(), gameVersion, seed: SEED, total: sitResults.length, maxJitterBits: agg.determinism.info.diverged === 0 ? 0 : `${agg.determinism.info.diverged} divergenze`, goldenNote, performance: perf, replay: replayRefs, aiVision };
   // LMQP-7: pacchetto di fallimento compatto/machine-readable (CI + Dashboard + regression history)
   const runSummary = collectFailures(OUT, { meta, categories, situations: sitResults });
   // LMQP-9: il report HTML riceve il summary normalizzato per la Dashboard

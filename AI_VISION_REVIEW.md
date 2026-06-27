@@ -269,9 +269,10 @@ L'AI Vision Review è completo quando sa: comprendere la Situation · analizzare
 
 ## Stato attuale (mappatura onesta sul repo)
 
-🔴 **Modulo non implementato.** Oggi:
-- Il quality gate cattura **screenshot del canvas** (`tests/visual/out/`) → l'**input** per l'AI Vision è già disponibile, ma non c'è alcuna pipeline di analisi.
-- Manca l'interfaccia **Vision Provider** (provider-agnostic, cap. 3.9 + 3.12) e ogni scoring percettivo (Readability/Cinematic/Motion/Football-IQ).
+🟡 **Scaffold presente — si attiva con una API key.** Oggi:
+- `tests/visual/lib/ai-vision.mjs` implementa la pipeline **opt-in**: analizza un campione di screenshot con un modello vision e produce recognition + score (Readability/Cinematic/Motion/Football-IQ) + verdict (PASS/WARNING/FAIL/BLOCKED) → `out/validate/ai-vision.json` + sezione Dashboard. **Non blocca MAI la CI** (secondo livello).
+- **Provider-agnostic**, default Anthropic (Claude vision); attivazione via env: `CPM_VISION_API_KEY` (+ `CPM_VISION_MODEL`/`CPM_VISION_PROVIDER`). Senza chiave → **skip pulito** (gate invariato), proxy-aware (`HTTPS_PROXY`).
+- Mancano ancora: cattura **video/sequenza** (oggi frame congelati), Situation Recognition come ponte formale al Semantic, confronto tra build, scoring storico.
 - La **Situation Recognition** (cap. 4) è il ponte naturale verso il **Semantic Validator**: entrambi richiedono che l'highlight sia osservabile come sequenza → prerequisito **layer Event + Timeline** + cattura video (oggi il gate è a frame congelati).
 
 > L'AI Vision è esplicitamente un **secondo livello** (non blocca la CI): utile per la qualità percepita, non per il PASS/FAIL tecnico (charter + cap. 3.9).

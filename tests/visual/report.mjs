@@ -64,6 +64,9 @@ export function writeReports(outDir, data) {
   <h3>Decision baseline (regressione)</h3>
   <div>${blHtml}</div>
   ${(rs.replay && rs.replay.length) ? `<h3>Replay traces <span class="muted">(LMQP-10, frame-by-frame)</span></h3><div>${rs.replay.map(t => `<span class="chip">#${esc(t.gi)} · ${esc(t.frames)}f${t.durMs != null ? ' · ' + esc(t.durMs) + 'ms' : ''}</span>`).join('')}</div>` : ''}
+  ${rs.aiVision ? `<h3>AI Vision Review <span class="muted">(secondo livello, non blocca la CI)</span></h3><div>${rs.aiVision.skipped
+      ? `<span class="muted">skip — ${esc(rs.aiVision.reason || 'non attiva')}</span>`
+      : `<span class="kpi">Provider<br><b>${esc(rs.aiVision.provider)}/${esc(rs.aiVision.model)}</b></span><span class="kpi">Frame<br><b>${esc(rs.aiVision.count)}</b></span><span class="kpi">Readability<br><b>${esc(rs.aiVision.avg.readability)}</b></span><span class="kpi">Cinematic<br><b>${esc(rs.aiVision.avg.cinematic)}</b></span><span class="kpi">Motion<br><b>${esc(rs.aiVision.avg.motion)}</b></span><span class="kpi">Football-IQ<br><b>${esc(rs.aiVision.avg.footballIQ)}</b></span><span class="kpi">Verdicts<br><b>${esc(JSON.stringify(rs.aiVision.verdicts))}</b></span>`}</div>` : ''}
   <h3>Coverage</h3>
   <div class="covgrid">
     <div><b>intents</b><br>${chips(cov.intents)}</div>
