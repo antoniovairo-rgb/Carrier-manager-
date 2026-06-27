@@ -125,6 +125,30 @@ export async function samplePostHighlight(page, gi, { settle = 600, k = 0, pollM
   return { gi, durMs, frames };
 }
 
+/* MOTION sampler (B2): forza gi al framing interattivo (choose), SBLOCCA il render (dt>0) e campiona le
+   posizioni MESH reali (__CPM_STATE().players, derivate da mesh.position) durante la fase ATTIVA off-ball,
+   SENZA risolvere l'azione. Ritorna metriche di vivacità: quanti giocatori si muovono davvero + salto max.
+   Usato dal check `motion` (No Dead Players / liveness off-ball). */
+export async function sampleMotion(page, gi, { settle = 500, pollMs = 100, windowMs = 1000 } = {}) {
+  await page.evaluate(([i, c]) => window.__CPM_FORCE_SIT(i, c), [gi, true]);
+  await sleep(settle);
+  await page.evaluate(() => { window.__CPM_FROZEN = false; }); // off-ball AI gira solo con dt>0
+  const snaps = []; const end = Date.now() + windowMs;
+  while (Date.now() < end) {
+    const st = await page.evaluate(() => (typeof window.__CPM_STATE === 'function' ? window.__CPM_STATE() : null));
+    snaps.push(((st && st.players) || []).map(p => ({ x: p.x, y: p.y })));
+    await sleep(pollMs);
+  }
+  const n = snaps.length ? snaps[0].length : 0;
+  const disp = new Array(n).fill(0); let maxD = 0;
+  for (let f = 1; f < snaps.length; f++) for (let p = 0; p < n; p++) {
+    const a = snaps[f - 1][p], c = snaps[f][p]; if (!a || !c) continue;
+    const d = Math.hypot(c.x - a.x, c.y - a.y); disp[p] += d; if (d > maxD) maxD = d;
+  }
+  let alive = 0; for (let p = 0; p < n; p++) if (disp[p] > 1.0) alive++;
+  return { gi, players: n, alive, maxFrameDelta: +maxD.toFixed(1), avgDisp: +(disp.reduce((a, b) => a + b, 0) / (n || 1)).toFixed(1) };
+}
+
 /* Risolve l'azione k della Situation corrente, attende l'esito, ritorna {outcome, finalState}. */
 export async function resolveAction(page, k = 0, { wait = 850 } = {}) {
   await page.evaluate(kk => window.__CPM_RESOLVE(kk), k);

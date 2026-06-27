@@ -29,7 +29,7 @@ C+D attivi  ── prerequisito ──►  F2 (split monolite sicuro)
 | Sprint | Task | Deliverable | Effort | Rischio |
 |---|---|---|---|---|
 | **B1 — Timeline fine** ✅ | #1a backbone narrativo per-beat: evento `HighlightTimeline` (buildHLTimeline+validateHLTimeline) validato dal gate (htCount 23, 19 beat-tag, 0 violazioni). Eventi render-loop fini (BallTouched/CameraChanged) → step successivo | bus eventi beat | L | Medio · **fatto 5.38.0** |
-| **B2 — Mesh probe + cattura** | **PREREQUISITO scoperto (test autonomo):** `samplePostHighlight` legge `__CPM_STATE().players` = posizioni **LOGICHE**, ma l'off-ball AI ("No Dead Players") muove le **mesh** in modo **puramente visivo** (`matchPlayers` intatto) → il movimento off-ball è invisibile al gate. Serve un **probe posizioni-mesh** (`__CPM_MESHES`/estendere `__CPM_PROBE`) prima di poter validare Motion/NPC. Poi #1b cattura sequenza · #9 attese state-based | gate vede il movimento VISIVO | L | Medio |
+| **B2 — Motion validator** ✅ | **Risolto:** `__CPM_STATE().players` espone GIÀ le posizioni **mesh (visive)** (derivate da `mesh.position`) → nessun probe nuovo. Nuovo `sampleMotion` (campiona le mesh in fase attiva *choose*) + check **`motion`** = 11ª categoria del gate: valida liveness off-ball (alive ≥15/21, no teletrasporto). Misurato: 19–21/21 vivi, salto 1.5–3.3. **LMQP-side, zero modifiche al gioco.** Copre #17/AC-081…090 "No Dead Players". #1b cattura video / #9 attese state-based → step successivo | 11ª categoria gate | L | Medio · **fatto** |
 
 ## Fase C — Validator del Movimento + Realismo (High) — dipende da B
 | Sprint | Task | Copre AC | Effort |

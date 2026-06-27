@@ -16,7 +16,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { startServer, launchBrowser, openMatch, forceSituation, freeze, unfreeze, canvasShot, samplePostHighlight, stateSig, sigStr, sleep, ROOT, installCdnRoutes } from './lib/harness.mjs';
+import { startServer, launchBrowser, openMatch, forceSituation, freeze, unfreeze, canvasShot, samplePostHighlight, sampleMotion, stateSig, sigStr, sleep, ROOT, installCdnRoutes } from './lib/harness.mjs';
 import { loadSituations } from './lib/situations.mjs';
 import { writeReports } from './report.mjs';
 import { collectFailures } from './lib/failure-collector.mjs';
@@ -33,10 +33,11 @@ import postHighlight from './checks/post-highlight.mjs';
 import determinism from './checks/determinism.mjs';
 import dataCoherence from './checks/data-coherence.mjs';
 import timelineCheck from './checks/timeline.mjs';
+import motion from './checks/motion.mjs';
 
 const SIT_CHECKS = [initialState, orientation, visual, movements, golden]; // pre-risoluzione
 const FINAL_CHECKS = [finalState];                                          // post-risoluzione azione
-const GLOBAL_CHECKS = [determinism, postHighlight, dataCoherence, timelineCheck]; // global
+const GLOBAL_CHECKS = [determinism, postHighlight, dataCoherence, timelineCheck, motion]; // global
 const SEED = '0x9e3779b9 (mulberry32) + __CPM_RESEED(gi)';
 const UPDATE_GOLDEN = process.argv.includes('--update-golden');
 const SHOTS_ALL = process.argv.includes('--shots');
@@ -153,6 +154,17 @@ const GOLDEN = path.join(HERE, 'golden-sigs.json');
     agg['post-highlight'].warnings.push(...phRes.warnings.map(msg => ({ gi: null, msg })));
     agg['post-highlight'].info = phRes.info;
     console.log(`post-highlight: campione ${phSamples.length} Situations`);
+
+    // MOTION (B2) — off-ball liveness (No Dead Players, AC-081-090): campiona le posizioni MESH durante
+    // la fase ATTIVA (hl_choose, off-ball AI in moto) su un set vario di Situations.
+    const motIdx = [0, 2, 30, 60, 79, 120].filter(gi => gi < situations.length);
+    const motSamples = [];
+    for (const gi of motIdx) { motSamples.push(await sampleMotion(page, gi, { settle: 500, pollMs: 100, windowMs: 1000 })); await sleep(150); }
+    const motRes = motion.run({ samples: motSamples });
+    agg['motion'].issues.push(...motRes.issues.map(msg => ({ gi: null, msg })));
+    agg['motion'].warnings.push(...motRes.warnings.map(msg => ({ gi: null, msg })));
+    agg['motion'].info = motRes.info;
+    console.log(`motion: campione ${motSamples.length} · alive ${motSamples.map(s => s.alive + '/' + s.players).join(' ')}`);
 
     // LMQP-8: PERFORMANCE MONITOR (warn-only) — render-loop attivo su una situation animata
     try {
