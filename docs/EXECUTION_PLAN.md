@@ -35,7 +35,7 @@ C+D attivi  ── prerequisito ──►  F2 (split monolite sicuro)
 | Sprint | Task | Copre AC | Effort |
 |---|---|---|---|
 | **C1 — Semantic/Motion** | #16 Semantic per-Situation · #17 Motion | AC-031…040, 071…080 | L |
-| **C2 — Camera/Ball/Physics** | #18 Camera · #41 no-boomerang/teleport live · #42 collisioni/inerzia | AC-041…048, 029/030, 091…100 | L |
+| **C2 — Camera/Ball/Physics** | **#18 Camera → ESITO TEST: perceptual, NON gate geometrico.** Misurato+ispezionato a video: hero/ball spesso off-screen ma azione **leggibile** (cross inquadra l'area, difensiva inquadra la palla, camera-drift post-azione) → soglie on-screen = falsi positivi. Routato all'**AI Vision** (cap. 3.9, già implementato, scorea `cameraQuality`). **#41 ball-progression/no-boomerang ✅** = 12ª categoria `ball-motion` (conclusioni: no salto indietro, no net negativo; guardia del fix 5.14). **#42 collisioni** → prossimo geometrico | AC-041…048 via AI Vision; **029/030 ✅ (ball-motion)**; 091…100 geometrici | L · **ball-motion fatto** |
 | **C3 — FI/NPC** | #19 FI Score live · #24 NPC liveness · #25 arbitro/panchine/GK · #30 piede | AC-061…070, 081…090 | L |
 | **C4 — AI Vision ponte** | #35 Situation Recognition↔Semantic · #36 video AI Vision · #34 cross-validation · #37 build comparison | AC-161…170 | M |
 

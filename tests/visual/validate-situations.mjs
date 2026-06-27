@@ -16,7 +16,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { startServer, launchBrowser, openMatch, forceSituation, freeze, unfreeze, canvasShot, samplePostHighlight, sampleMotion, stateSig, sigStr, sleep, ROOT, installCdnRoutes } from './lib/harness.mjs';
+import { startServer, launchBrowser, openMatch, forceSituation, freeze, unfreeze, canvasShot, samplePostHighlight, sampleMotion, sampleBallPath, stateSig, sigStr, sleep, ROOT, installCdnRoutes } from './lib/harness.mjs';
 import { loadSituations } from './lib/situations.mjs';
 import { writeReports } from './report.mjs';
 import { collectFailures } from './lib/failure-collector.mjs';
@@ -34,10 +34,11 @@ import determinism from './checks/determinism.mjs';
 import dataCoherence from './checks/data-coherence.mjs';
 import timelineCheck from './checks/timeline.mjs';
 import motion from './checks/motion.mjs';
+import ballMotion from './checks/ball-motion.mjs';
 
 const SIT_CHECKS = [initialState, orientation, visual, movements, golden]; // pre-risoluzione
 const FINAL_CHECKS = [finalState];                                          // post-risoluzione azione
-const GLOBAL_CHECKS = [determinism, postHighlight, dataCoherence, timelineCheck, motion]; // global
+const GLOBAL_CHECKS = [determinism, postHighlight, dataCoherence, timelineCheck, motion, ballMotion]; // global
 const SEED = '0x9e3779b9 (mulberry32) + __CPM_RESEED(gi)';
 const UPDATE_GOLDEN = process.argv.includes('--update-golden');
 const SHOTS_ALL = process.argv.includes('--shots');
@@ -165,6 +166,16 @@ const GOLDEN = path.join(HERE, 'golden-sigs.json');
     agg['motion'].warnings.push(...motRes.warnings.map(msg => ({ gi: null, msg })));
     agg['motion'].info = motRes.info;
     console.log(`motion: campione ${motSamples.length} · alive ${motSamples.map(s => s.alive + '/' + s.players).join(' ')}`);
+
+    // BALL-MOTION (#41) — progressione/no-boomerang sulle azioni offensive: campiona la x della palla.
+    const ballIdx = [0, 8, 17, 30, 43, 60, 63, 72, 88, 120, 132, 153, 163].filter(gi => gi < situations.length);
+    const ballSamples = [];
+    for (const gi of ballIdx) { ballSamples.push(await sampleBallPath(page, gi, { settle: 450, pollMs: 90, windowMs: 1100 })); await sleep(150); }
+    const bmRes = ballMotion.run({ samples: ballSamples });
+    agg['ball-motion'].issues.push(...bmRes.issues.map(msg => ({ gi: null, msg })));
+    agg['ball-motion'].warnings.push(...bmRes.warnings.map(msg => ({ gi: null, msg })));
+    agg['ball-motion'].info = bmRes.info;
+    console.log(`ball-motion: ${bmRes.info.checked} azioni offensive · minBackStep ${Math.min(...ballSamples.map(s => s.maxBackStep))}`);
 
     // LMQP-8: PERFORMANCE MONITOR (warn-only) — render-loop attivo su una situation animata
     try {

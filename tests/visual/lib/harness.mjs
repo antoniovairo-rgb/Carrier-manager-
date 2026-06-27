@@ -149,6 +149,25 @@ export async function sampleMotion(page, gi, { settle = 500, pollMs = 100, windo
   return { gi, players: n, alive, maxFrameDelta: +maxD.toFixed(1), avgDisp: +(disp.reduce((a, b) => a + b, 0) / (n || 1)).toFixed(1) };
 }
 
+/* BALL-PATH sampler (#41): forza gi (choose), risolve l'azione e campiona la x della palla (coord gioco
+   0..100, x=100 = porta attaccata) durante la conclusione. Ritorna {intent, startX, net, maxBackStep, minX}.
+   Usato dal check `ball-motion` (no-boomerang / progressione coerente sulle azioni offensive). */
+export async function sampleBallPath(page, gi, { settle = 450, pollMs = 90, windowMs = 1100 } = {}) {
+  await page.evaluate(([i, c]) => window.__CPM_FORCE_SIT(i, c), [gi, true]);
+  await sleep(settle);
+  await page.evaluate(() => { window.__CPM_FROZEN = false; });
+  const intent = await page.evaluate(g => (window.__CPM_SITS && window.__CPM_SITS[g] && window.__CPM_SITS[g].intent) || null, gi);
+  const bx = () => page.evaluate(() => { const s = (typeof window.__CPM_STATE === 'function') && window.__CPM_STATE(); return s && s.ball ? s.ball.x : null; });
+  const start = await bx();
+  await page.evaluate(() => window.__CPM_RESOLVE && window.__CPM_RESOLVE(0));
+  const xs = []; if (start != null) xs.push(start);
+  const end = Date.now() + windowMs;
+  while (Date.now() < end) { const x = await bx(); if (x != null) xs.push(x); await sleep(pollMs); }
+  let maxBack = 0; for (let i = 1; i < xs.length; i++) { const d = xs[i] - xs[i - 1]; if (d < maxBack) maxBack = d; }
+  return { gi, intent, startX: xs.length ? +xs[0].toFixed(1) : null, net: xs.length ? +(xs[xs.length - 1] - xs[0]).toFixed(1) : null,
+    maxBackStep: +maxBack.toFixed(1), minX: xs.length ? +Math.min(...xs).toFixed(1) : null, n: xs.length };
+}
+
 /* Risolve l'azione k della Situation corrente, attende l'esito, ritorna {outcome, finalState}. */
 export async function resolveAction(page, k = 0, { wait = 850 } = {}) {
   await page.evaluate(kk => window.__CPM_RESOLVE(kk), k);

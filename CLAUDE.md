@@ -27,9 +27,9 @@ Carrier-manager-/
 └── tests/
     ├── situations-3d-validation.js   ← regole di validazione SITUATIONS (coerenza HL↔3D) + suite analitica (537 combo)
     └── visual/                        ← QUALITY GATE Playwright (vedi sezione dedicata)
-        ├── validate-situations.mjs    ← runner principale del gate (11 categorie)
+        ├── validate-situations.mjs    ← runner principale del gate (12 categorie)
         ├── golden-sigs.json           ← firme golden (stato) · decision-baseline.json (regressione decisione, LMQP-5)
-        ├── checks/                     ← 11 check (… timeline.mjs = LMQP-2/3/5/6)
+        ├── checks/                     ← 12 check (… timeline.mjs = LMQP-2/3/5/6)
         ├── lib/                        ← harness + failure-collector.mjs (LMQP-7) + perf-monitor.mjs (LMQP-8)
         ├── report.mjs                  ← report HTML + run-summary.json + LMQP Dashboard (LMQP-9)
         ├── out/                        ← artefatti generati (report.json · run-summary.json · index.html · shots/)
@@ -187,7 +187,7 @@ Monta una volta (deps `[]`). Posizione giocatori, zone-highlight e camera-target
 
 ## Quality Gate (tests/visual) — OBBLIGATORIO prima di ogni push
 
-Suite Playwright headless che carica il gioco, forza ogni `SITUATION`, risolve le azioni e valida rendering 3D + stato. **Va eseguita e deve passare 11/11 prima di ogni push.**
+Suite Playwright headless che carica il gioco, forza ogni `SITUATION`, risolve le azioni e valida rendering 3D + stato. **Va eseguita e deve passare 12/12 prima di ogni push.**
 
 ```bash
 cd tests/visual
@@ -199,7 +199,7 @@ npm run validate-situations
 
 > **Setup bundle (sessioni cloud con CDN bloccati):** l'harness intercetta le route CDN e serve React/Three/Babel/Phaser dai `node_modules` locali. Le versioni **esatte** che l'HTML fissa sono ora in `devDependencies` (`react`/`react-dom` 18.2.0, `three` 0.128.0, `@babel/standalone` **7.23.6**, `phaser` 3.80.1) → `npm install` configura tutto. ⚠️ Babel **deve** essere 7.x: la 8.x non transpila l'`import` e la pagina non monta.
 
-Le **11 categorie**: `initial-state · orientation · visual · movements · golden · final-state · determinism · post-highlight · data-coherence · timeline · motion`. Output atteso: `✅ PASS` con tutte verdi (i `warn` non bloccano).
+Le **12 categorie**: `initial-state · orientation · visual · movements · golden · final-state · determinism · post-highlight · data-coherence · timeline · motion · ball-motion`. Output atteso: `✅ PASS` con tutte verdi (i `warn` non bloccano).
 
 - **`golden`** confronta una **firma di stato** `{htx,hty,cam,ch,ca}` (target logico eroe + camera + conteggi) — **NON** le posizioni off-ball (escluse di proposito). Quindi cambiare il posizionamento off-ball è gate-safe (golden invariato); se cambi l'estetica/setup che tocca la firma, rigenera con `npm run validate-situations:update-golden` e committa.
 - **`initial-state`/`orientation`** asseriscono la **posizione dei portieri** (home GK x≤25, away GK x≥75, home<away): muovendo i GK resta entro questi bound (vedi F13, CAP 80/20).
@@ -211,7 +211,7 @@ Le **11 categorie**: `initial-state · orientation · visual · movements · gol
 
 **AI Vision Review (framework provider-based, `tests/visual/lib/vision/`):** revisore percettivo di **secondo livello** (non blocca MAI la CI). Architettura Open/Closed `VisionProvider`→`VisionReviewEngine`→`ProviderRegistry`; provider **Ollama** (1°, locale + cloud via `OLLAMA_API_KEY`), Anthropic, OpenAI/Gemini predisposti. Runner standalone `npm run ai-vision` (cattura Playwright multi-fase → engine con cache/dedup/retry/fallback/Failure-Package → scoring Quality/Confidence/Severity/Priority/verdict → report HTML+`ai-vision.json`). Config via `tests/visual/.env` (vedi `.env.example`; `.env` è gitignored). Test: `npm run test:vision` (28). Il gate riusa lo stesso engine via `lib/ai-vision.mjs` (adattatore) e fa **skip pulito** se il provider è giù. ⚠️ Ollama Cloud (`ollama.com`) può essere bloccato dalla network policy dell'ambiente cloud (403 al proxy) → eseguire in locale o allowlistare l'host.
 
-**Artefatti del gate (LMQP-7/8/9, in `out/validate/`):** oltre a `index.html`/`report.json`, ogni run produce **`run-summary.json`** (LMQP-7, *Failure Collector* — `lib/failure-collector.mjs`): pacchetto compatto machine-readable con esito globale, per-check pass/issue/warn, `failures[]` normalizzate `{check,gi,msg,situation,intent,shot}`, `coverage`, `baseline` drift, `performance` e un **fingerprint deterministico** (dedup/trend). Il **Performance Monitor** (LMQP-8, `lib/perf-monitor.mjs`) misura load-time/JS-heap/frame-timing col render-loop attivo — **warn-only/informativo** (FPS headless = software-rendered, no GPU → soglie su floor headless-realistici, mai FAIL). Il report HTML include la **LMQP Dashboard** (LMQP-9): griglia degli 11 check, coverage a chip, perf, baseline e tabella failure. Tutti additivi (solo harness → gate-safe). Il CI carica l'intera `out/validate/` come artifact.
+**Artefatti del gate (LMQP-7/8/9, in `out/validate/`):** oltre a `index.html`/`report.json`, ogni run produce **`run-summary.json`** (LMQP-7, *Failure Collector* — `lib/failure-collector.mjs`): pacchetto compatto machine-readable con esito globale, per-check pass/issue/warn, `failures[]` normalizzate `{check,gi,msg,situation,intent,shot}`, `coverage`, `baseline` drift, `performance` e un **fingerprint deterministico** (dedup/trend). Il **Performance Monitor** (LMQP-8, `lib/perf-monitor.mjs`) misura load-time/JS-heap/frame-timing col render-loop attivo — **warn-only/informativo** (FPS headless = software-rendered, no GPU → soglie su floor headless-realistici, mai FAIL). Il report HTML include la **LMQP Dashboard** (LMQP-9): griglia degli 12 check, coverage a chip, perf, baseline e tabella failure. Tutti additivi (solo harness → gate-safe). Il CI carica l'intera `out/validate/` come artifact.
 
 > **LMQP-1 — Event + Timeline layer (5.35.0):** primo mattone implementativo della piattaforma LMQP. Bus eventi osservabile nel gioco (`cpmEmit` → ring buffer `MATCH_TL`, probe `window.__CPM_TIMELINE()`/`__CPM_TIMELINE_RESET()`): registra `MatchStart · HighlightForced(intent,zone) · ActionResolved(intent,label,ok,key) · HighlightAdvance`. Opt-in/sicuro (solo push + try/catch → nessun impatto su stato/render, gate-safe). È la sorgente per il check `timeline` (LMQP-2) e per i futuri Replay/Semantic/Narrative validator (`LIVE_MATCH_QA_SPEC.md` 3.4/3.5).
 
@@ -233,7 +233,7 @@ Ogni sessione di lavoro segue questo framework multi-disciplinare. Workflow semp
 ```
 1. AUDIT     — leggi il codice interessato, identifica dipendenze e rischi
 2. IMPLEMENT — applica le modifiche minime necessarie, nessuna feature extra
-3. QA        — gate 11/11 verde + verifica mentale: regressioni? salvataggio? mobile? performance?
+3. QA        — gate 12/12 verde + verifica mentale: regressioni? salvataggio? mobile? performance?
 ```
 
 Prima di ogni modifica: leggere le righe coinvolte, dichiarare le dipendenze note, elencare i rischi. Solo dopo procedere.
@@ -258,7 +258,7 @@ Prima di ogni modifica: leggere le righe coinvolte, dichiarare le dipendenze not
 - **Nessuna modifica senza audit.**
 - **Aggiornare `CLAUDE.md`** ad ogni sprint significativo (range linee, nuovi sistemi, campi `player`).
 - **Bump `GAME_VERSION`** ad ogni push.
-- **Gate 11/11 verde** prima di ogni push — il QA Engineer valida ogni sprint.
+- **Gate 12/12 verde** prima di ogni push — il QA Engineer valida ogni sprint.
 - **Branch workflow:** sviluppo sul branch di lavoro corrente (attuale: `claude/ai-vision-first-run`), poi merge/push su `staging` (test) e, su autorizzazione, su `main` (produzione/Pages → GitHub Pages via GitHub Actions). Branch storici: `claude/cpm-resume-work-71ntrj`, `claude/continue-work-y3mh4y`.
   - **`main` solo su autorizzazione esplicita del proprietario** — mai in automatico dopo un singolo sprint senza via libero.
 - **Annunciare sempre** "Pushato su GitHub — CPM x.y.z." dopo ogni `git push`.
