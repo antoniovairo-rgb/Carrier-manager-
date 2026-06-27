@@ -22,8 +22,8 @@ C+D attivi  ── prerequisito ──►  F2 (split monolite sicuro)
 | Sprint | Task (Top 100) | Deliverable | Effort | Rischio | Stato |
 |---|---|---|---|---|---|
 | **A1 — Save safety** | #50 estrai migration in funzione pura ✅ · #2 test save-compat (12/12) ✅ · #3 `SAVE_VERSION` stamp ⏭️ deferito | `migratePlayer()` pura + `run-save-compat.mjs` | M | Basso-Medio | ✅ **fatto** (5.37.2) |
-| **A2 — Resource hygiene** | #4 audit/cleanup `setTimeout` · #5 `dispose()` Three · #11 leak/zombie detect · #13 health-check processi | no leak | M | Basso-Medio | ⏳ |
-| **A3 — Stress & housekeeping** | #10 stress 1.000 HL · #55 gitignore spazzatura · #58 TODO tracciabili · #81 doc hook `__CPM_*` · #82 single-source `cappedMM` · #83 spezza riga 17.8k | stabilità + repo pulito | S-M | Basso | ⏳ |
+| **A2 — Resource hygiene** | #11 leak-watch (heap monitor in `run-stress`) ✅ · #4 cleanup `setTimeout` ⏭️ · #5 `dispose()` Three ⏭️ · #13 health-check ⏭️ | `run-stress.mjs` | M | Basso-Medio | 🟡 parziale |
+| **A3 — Stress & housekeeping** | #10 stress 220 HL no-crash ✅ (`run-stress.mjs`) · #55 gitignore (nessuna spazzatura presente) ✅ · #58/#81/#82/#83 ⏭️ minori | stabilità verificata | S-M | Basso | 🟡 parziale |
 
 ## Fase B — Sblocco: Osservabilità del Movimento (Critical)
 | Sprint | Task | Deliverable | Effort | Rischio |
