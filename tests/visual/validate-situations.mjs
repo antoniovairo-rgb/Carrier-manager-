@@ -19,6 +19,7 @@ import { fileURLToPath } from 'node:url';
 import { startServer, launchBrowser, openMatch, forceSituation, freeze, unfreeze, canvasShot, samplePostHighlight, stateSig, sigStr, sleep, ROOT, installCdnRoutes } from './lib/harness.mjs';
 import { loadSituations } from './lib/situations.mjs';
 import { writeReports } from './report.mjs';
+import { collectFailures } from './lib/failure-collector.mjs';
 import initialState from './checks/initial-state.mjs';
 import orientation from './checks/orientation.mjs';
 import visual from './checks/visual.mjs';
@@ -84,7 +85,7 @@ const GOLDEN = path.join(HERE, 'golden-sigs.json');
 
       let shotInitial = null;
       if (SHOTS_ALL || issues.length || warnings.length || gi < 10) { const fn = `sit_${String(gi).padStart(3, '0')}.png`; fs.writeFileSync(path.join(SHOT_DIR, fn), buf); shotInitial = 'shots/' + fn; }
-      sitResults.push({ gi, text: sit.text, type: sit.type || 'off', hashInitial: sigStr(sig), shotInitial, shotFinal: null, issues, warnings });
+      sitResults.push({ gi, text: sit.text, type: sit.type || 'off', intent: sit.intent || null, hashInitial: sigStr(sig), shotInitial, shotFinal: null, issues, warnings });
       if ((gi + 1) % 40 === 0) console.log(`  …${gi + 1}/${total}`);
     }
 
@@ -177,12 +178,15 @@ const GOLDEN = path.join(HERE, 'golden-sigs.json');
 
   const meta = { generatedAt: new Date().toISOString(), gameVersion, seed: SEED, total: sitResults.length, maxJitterBits: agg.determinism.info.diverged === 0 ? 0 : `${agg.determinism.info.diverged} divergenze`, goldenNote };
   const { ok, htmlPath, failCats } = writeReports(OUT, { meta, categories, situations: sitResults });
+  // LMQP-7: pacchetto di fallimento compatto/machine-readable (CI + Dashboard + regression history)
+  const runSummary = collectFailures(OUT, { meta, categories, situations: sitResults });
 
   console.log('\n=== QUALITY GATE — VALIDAZIONE SITUATIONS ===');
   console.log(`gameVersion ${gameVersion} · ${sitResults.length} Situations`);
   for (const c of categories) console.log(`  ${c.pass ? '✅' : '❌'} ${c.id.padEnd(16)} ${c.pass ? 'OK' : c.issues.length + ' issue'}${c.warnings.length ? ' · ' + c.warnings.length + ' warn' : ''}`);
   if (goldenNote) console.log(`  📸 ${goldenNote}`);
   console.log(`report HTML → ${path.relative(ROOT, htmlPath)}`);
+  console.log(`run-summary → ${path.relative(ROOT, path.join(OUT, 'run-summary.json'))} · fingerprint ${runSummary.fingerprint} · ${runSummary.counts.failures} failure`);
   console.log(ok ? '\n✅ PASS' : `\n❌ FAIL — ${failCats.map(c => c.id).join(', ')}`);
   process.exit(ok ? 0 : 1);
 })();
