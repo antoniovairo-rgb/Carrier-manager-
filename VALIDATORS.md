@@ -4,7 +4,7 @@ Standard e catalogo dei **validator** della Live Match Development Platform.
 
 > Documento vivo, organizzato per capitoli. Si conforma a `MASTER_PROMPT.md` (charter LMQP) e a `LIVE_MATCH_QA_SPEC.md` (architettura, cap. 3.4 Validator Engine).
 >
-> Validator **specificati** qui: LMV-001…LMV-023. Validator **pianificati** (residui): vedi `VALIDATORS_REMAINING.md`.
+> Validator **specificati** qui: LMV-001…LMV-027. Validator **pianificati** (residui): vedi `VALIDATORS_REMAINING.md`.
 
 ---
 
@@ -1183,6 +1183,106 @@ Intenzione di creare un'occasione immediatamente riconoscibile; destinatario chi
 
 ---
 
+## Validator 024 — Tentativo di Calcio di Punizione
+
+| Campo | Valore |
+|---|---|
+| **Identificativo** | `LMV-024` |
+| **Categoria** | Calci Piazzati |
+| **Priorità** | Massima |
+
+**Scopo** — verificare che il protagonista tenti realmente una **giocata offensiva da calcio di punizione** (non solo il gol). Soluzione diretta o indiretta.
+
+- **Compatibili:** tiro diretto · cross in area · schema corto · filtrante · cambio gioco su punizione.
+- **NON compatibili:** calcio d'angolo · rigore · rimessa laterale · tiro in azione.
+
+**Timeline** — `Posizionamento → Preparazione → Lettura → Battuta → Traiettoria → Reazione compagni/avversari → Esito → Post-Highlight`.
+
+**Outcome ammessi** — gol · assist · tiro · parata · respinta · deviazione · pallone fuori.
+
+**Controlli** — *Ball:* posizione iniziale, traiettoria, rotazione, velocità. *Player:* il battitore prepara/osserva porta e compagni/esegue; compagni seguono lo schema; difensori marcano/seguono inserimenti; portiere organizza la **barriera** e reagisce. *Camera:* battitore + barriera + porta insieme. *Motion:* rincorsa fluida, battuta sincronizzata. *Semantic:* "È riconoscibile una punizione offensiva?" → no = FAIL. *Football Intelligence:* barriera/inserimenti/portiere ben posizionati.
+
+**Errori critici (FAIL)** — punizione non riconoscibile · barriera immobile · replay interrotto · cronaca incoerente.
+
+**Definition of Done** — punizione immediatamente riconoscibile, tutti reagiscono correttamente, replay che mostra integralmente lo sviluppo.
+
+---
+
+## Validator 025 — Tentativo di Calcio di Rigore
+
+| Campo | Valore |
+|---|---|
+| **Identificativo** | `LMV-025` |
+| **Categoria** | Calci Piazzati |
+| **Priorità** | Massima |
+
+**Scopo** — verificare che il protagonista tenti la **trasformazione di un rigore** con gesto tecnico credibile e coerente.
+
+- **Compatibili:** tiro potente · angolato · centrale · cucchiaio · rasoterra.
+- **NON compatibili:** punizione · tiro in movimento · tap-in.
+
+**Timeline** — `Posizionamento → Preparazione → Rincorsa → Conclusione → Intervento del portiere → Esito → Post-Highlight`.
+
+**Outcome ammessi** — gol · parata · palo · traversa · fuori.
+
+**Controlli** — *Ball:* punto d'impatto, traiettoria, velocità. *Player:* rincorsa, postura, gesto, reazione del portiere. *Camera:* enfatizza il **duello tiratore↔portiere**. *Motion:* rincorsa/tiro/tuffo naturali. *Semantic:* "È riconoscibile un rigore?" → no = FAIL. *Football Intelligence:* realismo della scelta tecnica e del comportamento del portiere.
+
+**Errori critici (FAIL)** — portiere immobile · pallone che attraversa il portiere · replay che termina prematuramente.
+
+**Definition of Done** — rigore chiaramente riconoscibile, duello col portiere realistico, replay che mostra integralmente l'esito.
+
+---
+
+## Validator 026 — Tentativo di Calcio d'Angolo
+
+| Campo | Valore |
+|---|---|
+| **Identificativo** | `LMV-026` |
+| **Categoria** | Calci Piazzati |
+| **Priorità** | Alta |
+
+**Scopo** — verificare che il protagonista tenti di creare una situazione offensiva con la **battuta di un corner**.
+
+- **Compatibili:** corner teso · a rientrare · primo palo · secondo palo · corto.
+- **NON compatibili:** cross in azione · punizione laterale.
+
+**Timeline** — `Posizionamento → Preparazione → Battuta → Traiettoria → Movimenti in area → Esito → Post-Highlight`.
+
+**Outcome ammessi** — colpo di testa · deviazione · tiro · gol · respinta · pallone fuori.
+
+**Controlli** — *Ball:* traiettoria, effetto, punto di caduta. *Player:* battitore, inserimenti offensivi, marcature difensive, uscita del portiere. *Camera:* battitore + area di rigore insieme. *Motion:* sincronia battuta↔inserimenti. *Semantic:* "È riconoscibile un calcio d'angolo?" → no = FAIL. *Football Intelligence:* occupazione dell'area, marcature, tempi degli inserimenti.
+
+**Errori critici (FAIL)** — nessuno attacca il pallone · portiere che non reagisce · replay che termina prima della conclusione.
+
+**Definition of Done** — corner immediatamente riconoscibile, battuta credibile, tutti reagiscono, replay che mostra l'intera evoluzione.
+
+---
+
+## Validator 027 — Tentativo di Rimessa Laterale
+
+| Campo | Valore |
+|---|---|
+| **Identificativo** | `LMV-027` |
+| **Categoria** | Ripresa del Gioco |
+| **Priorità** | Media |
+
+**Scopo** — verificare che il protagonista tenti di **riavviare l'azione** dalla linea laterale scegliendo la soluzione offensiva più efficace (non il solo gesto della rimessa).
+
+- **Compatibili:** rimessa corta · lunga · verso i piedi · nello spazio · in area avversaria.
+- **NON compatibili:** calcio di punizione · corner · passaggio in gioco attivo.
+
+**Timeline** — `Posizionamento → Ricerca del destinatario → Rimessa → Ricezione → Sviluppo dell'azione → Post-Highlight`.
+
+**Outcome ammessi** — ricezione · intercetto · progressione · perdita del possesso.
+
+**Controlli** — *Ball:* traiettoria e punto di atterraggio. *Player:* scelta del destinatario, smarcamenti, pressione difensiva. *Camera:* battitore + destinatario visibili. *Motion:* gesto tecnico naturale. *Semantic:* "È riconoscibile una rimessa laterale?" → no = FAIL. *Football Intelligence:* qualità dello smarcamento e della scelta del destinatario.
+
+**Errori critici (FAIL)** — rimessa non riconoscibile · destinatario non identificabile · replay che termina prematuramente.
+
+**Definition of Done** — rimessa laterale immediatamente riconoscibile, scelta del destinatario coerente col contesto, sviluppo dell'azione completamente visibile.
+
+---
+
 ## Stato di implementazione (mappatura sul codice attuale)
 
 > Onestà documentale (charter): cosa dello standard esiste già nel gate vs cosa manca.
@@ -1199,6 +1299,15 @@ Intenzione di creare un'occasione immediatamente riconoscibile; destinatario chi
 | Sistema di gravità INFO..FATAL | 🟡 | il gate distingue issue (FAIL) vs warn; manca la scala completa MINOR/MAJOR/CRITICAL |
 
 **Prerequisito comune** (come per `LIVE_MATCH_QA_SPEC.md`): Semantic Validator, eventi obbligatori/vietati e Timeline dipendono tutti dal **layer Event + Timeline** osservabile nel motore.
+
+### LMV-024/025/026/027 — copertura attuale (sintesi)
+
+- **LMV-024 Punizione:** ben coperto — intento/hlType `freekick`, traiettoria = decisione (F6), **barriera** di 3 difensori tra palla e porta, set-piece con pressing/corse sospesi. Manca validazione di schema corto/inserimenti.
+- **LMV-025 Rigore:** ben coperto — hlType `penalty`, variant `penalty_panenka` (cucchiaio), traiettoria = decisione (F6), reazione portiere (`gkSaveMesh`/`gk_dive`) + uscita angolo (F13), area sgomberata sul set-piece. Il duello tiratore↔portiere c'è; da validare il realismo del tuffo.
+- **LMV-026 Angolo:** parziale — l'inserimento aereo in area esiste (insertion/header, F7/F12), ma il **corner come battuta dedicata** (battitore alla bandierina + occupazione area) non è una Situation a sé robusta.
+- **LMV-027 Rimessa Laterale:** non coperto — nessuna meccanica di rimessa laterale nel flusso HL; nuova Situation da progettare.
+
+Comune: **non validati** timeline/Semantic/Narrative/post-highlight. Punizione e rigore sono i set-piece meglio supportati grazie a F6/F13.
 
 ### LMV-020/021/022/023 — copertura attuale (sintesi)
 
