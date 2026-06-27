@@ -13,7 +13,12 @@ export function loadSituations() {
   const sitStart = find(/^const SITUATIONS=\[/);
   let sitEnd = -1; for (let i = sitStart; i < lines.length; i++) { if (/^\];/.test(lines[i])) { sitEnd = i; break; } }
   if (sIdx < 0 || aIdx < 0 || sitStart < 0 || sitEnd < 0) throw new Error('estrazione SITUATIONS fallita (sorgente cambiato?)');
+  // Includiamo i derivatori puri (deriveIntent/deriveBallState/deriveSitCine) così S() popola
+  // intent/ballState/cine come nel gioco (loader FEDELE) — prima erano null fuori dal browser.
+  const grab = (re) => { const s = lines.findIndex(l => re.test(l)); if (s < 0) return ''; let e = -1; for (let i = s + 1; i < lines.length; i++) { if (/^\}/.test(lines[i])) { e = i; break; } } return lines.slice(s, e + 1).join('\n'); };
+  const helpers = [grab(/^function deriveIntent\(sit, act\)\{/), grab(/^function deriveBallState\(sit\)\{/), grab(/^function deriveSitCine\(sit\)\{/)].join('\n');
   const code =
+    helpers + '\n' +
     lines.slice(sIdx, aIdx + 1).join('\n').replace(/const /g, 'var ') + '\n' +
     lines.slice(sitStart, sitEnd + 1).join('\n').replace('const SITUATIONS', 'var SITUATIONS') + '\n' +
     'return SITUATIONS;';
