@@ -11,6 +11,7 @@
     "ai-vision": "node ai-vision-review.mjs",
     "ai-vision:strict": "node ai-vision-review.mjs --strict",
     "test:vision": "node --test test/vision/*.test.mjs",
+    "save-compat": "node run-save-compat.mjs",
     "test": "node run-3d-validation.mjs",
     "force-all": "node run-force-all.mjs",
     "selftest": "node run-golden.mjs --selftest",
