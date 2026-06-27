@@ -20,6 +20,7 @@ import { startServer, launchBrowser, openMatch, forceSituation, freeze, unfreeze
 import { loadSituations } from './lib/situations.mjs';
 import { writeReports } from './report.mjs';
 import { collectFailures } from './lib/failure-collector.mjs';
+import { measurePerf } from './lib/perf-monitor.mjs';
 import initialState from './checks/initial-state.mjs';
 import orientation from './checks/orientation.mjs';
 import visual from './checks/visual.mjs';
@@ -57,7 +58,7 @@ const GOLDEN = path.join(HERE, 'golden-sigs.json');
   page.on('console', m => { if (m.type() === 'error' && !/BABEL|in-browser Babel/.test(m.text())) consoleErrors.push(m.text()); });
   page.on('pageerror', e => consoleErrors.push('PAGEERROR: ' + e.message));
 
-  const sitResults = []; const sigs = {};
+  const sitResults = []; const sigs = {}; let perf = null;
   const agg = {}; for (const c of [...SIT_CHECKS, ...FINAL_CHECKS, ...GLOBAL_CHECKS]) agg[c.id] = { id: c.id, title: c.title, scope: c.scope, issues: [], warnings: [], info: {} };
 
   try {
@@ -150,6 +151,13 @@ const GOLDEN = path.join(HERE, 'golden-sigs.json');
     agg['post-highlight'].info = phRes.info;
     console.log(`post-highlight: campione ${phSamples.length} Situations`);
 
+    // LMQP-8: PERFORMANCE MONITOR (warn-only) — render-loop attivo su una situation animata
+    try {
+      await forceSituation(page, 0, { settle: 500, choose: true });
+      perf = await measurePerf(page, { frameWindowMs: 1000 });
+      console.log(`perf: ${perf.frames.fps}fps (avg ${perf.frames.avgMs}ms · p95 ${perf.frames.p95Ms}ms)` + (perf.heap ? ` · heap ${perf.heap.usedMB}MB` : '') + (perf.nav && perf.nav.loadMs != null ? ` · load ${perf.nav.loadMs}ms` : ''));
+    } catch (e) { perf = { error: String(e && e.message || e), warnings: [] }; console.log('perf: misura non disponibile (' + perf.error + ')'); }
+
     if (consoleErrors.length) agg.visual.issues.push(...consoleErrors.slice(0, 10).map(msg => ({ gi: null, msg: 'console error: ' + msg })));
   } catch (e) {
     agg.visual.issues.push({ gi: null, msg: 'FATAL: ' + (e && e.stack || e) });
@@ -176,7 +184,7 @@ const GOLDEN = path.join(HERE, 'golden-sigs.json');
     return { id: c.id, title: c.title, scope: c.scope, pass: a.issues.length === 0, issues: a.issues.map(fmt), warnings: a.warnings.map(fmt), info: a.info };
   });
 
-  const meta = { generatedAt: new Date().toISOString(), gameVersion, seed: SEED, total: sitResults.length, maxJitterBits: agg.determinism.info.diverged === 0 ? 0 : `${agg.determinism.info.diverged} divergenze`, goldenNote };
+  const meta = { generatedAt: new Date().toISOString(), gameVersion, seed: SEED, total: sitResults.length, maxJitterBits: agg.determinism.info.diverged === 0 ? 0 : `${agg.determinism.info.diverged} divergenze`, goldenNote, performance: perf };
   const { ok, htmlPath, failCats } = writeReports(OUT, { meta, categories, situations: sitResults });
   // LMQP-7: pacchetto di fallimento compatto/machine-readable (CI + Dashboard + regression history)
   const runSummary = collectFailures(OUT, { meta, categories, situations: sitResults });

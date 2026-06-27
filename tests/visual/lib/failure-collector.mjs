@@ -68,6 +68,7 @@ export function collectFailures(outDir, data) {
     checks,
     coverage,
     baseline,
+    performance: meta.performance || null,
     failures,
   };
 
