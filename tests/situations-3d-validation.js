@@ -86,9 +86,9 @@ guard('G2X=(gx-50)', /G2X=gx=>\(gx-50\)/.test(src));
 guard('parabola y=0.65+sin(u*PI)*ballArcH', /ball\.position\.y=0\.65\+Math\.sin\(u\*Math\.PI\)\*ballArcH/.test(src));
 guard('outcome: goal→in_net/in_net_high', /hlPostArcType=\(_hv==="shot_chip"\|\|_hv==="shot_volley"\)\?"in_net_high":"in_net"/.test(src));
 guard('outcome: cross→cross_goal', /_ht==="cross"\)\{hlPostArcT=0;hlPostArcType="cross_goal"/.test(src));
-guard('outcome: pass→assist_shot', /_ht==="pass"\)\{hlPostArcT=0;hlPostArcType="assist_shot"/.test(src));
-guard('outcome fail: palo 20% (hit_post)', /_roll<0\.20\)\{[\s\S]*?hlPostArcType="hit_post"/.test(src));
-guard('outcome fail: save/wide split 0.85', /_roll<0\.85\?"save":"wide"/.test(src));
+guard('outcome success: pass→assist_recv→assist_shot', /_hs===true&&_ht==="pass"\)\{hlPostArcT=0;hlPostArcType="assist_recv"/.test(src) && /hlPostArcType="assist_shot"/.test(src));
+guard('outcome fail: palo decision-driven (_ek|| roll<0.20)→hit_post', /_isPost=_ek\?\(_ek==="post"\):\(_isShotHL&&_roll<0\.20\)/.test(src) && /if\(_isPost\)\{[\s\S]*?hlPostArcType="hit_post"/.test(src));
+guard('outcome fail: parata decision-driven (_ek|| roll<0.85), split save/wide', /_isSave=_ek\?\(_ek==="saved"\|\|_ek==="save"\):\(_isShotHL&&_roll<0\.85\)/.test(src) && /_isSave\?"save":"wide"/.test(src));
 guard('camera FAR_POST_CROSS side-tracking', /_pat==="FAR_POST_CROSS"\)\{cPx=clamp\(fX-6/.test(src));
 guard('arc cross_far_post tgtZ=-_side*(11..)', /cross_far_post"\)\{ballArcH=4\.2;ballArcDur=0\.90;ballArcTgtX=AWAY_GOAL_X-9/.test(src));
 guard('fix: dribble/build/tackle-gol → in_net', /\(_ht==="dribble"\|\|_ht==="build"\|\|_ht==="tackle"\)&&P\.hlReward==="goal"\)\{hlPostArcT=0;hlOutcomeVariant="goal";hlPostArcType="in_net"/.test(src));
@@ -99,6 +99,8 @@ guard('fix: near_post_cross clamp TgtX byline+speed', /_cp\+45/.test(src));
 guard('fix: penalty_panenka arco alto', /penalty_panenka.*ballArcH=9\.0/.test(src));
 
 // ---------- 4. modello outcome (puro: dipende solo da success,type,variant,roll) ----------
+//   NB: dal Decision Engine (serie F) l'esito reale deriva da P.hlOutcomeKind; questo modello a
+//   `roll` rispecchia il ramo FALLBACK (quando hlOutcomeKind è assente) — soglie identiche al sorgente.
 function outcomePostHL(success,type,variant,roll,reward){
   const isShot=type==='shot'||type==='penalty'||type==='freekick'||type==='header';
   if(success){
