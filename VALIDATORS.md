@@ -3,6 +3,8 @@
 Standard e catalogo dei **validator** della Live Match Development Platform.
 
 > Documento vivo, organizzato per capitoli. Si conforma a `MASTER_PROMPT.md` (charter LMQP) e a `LIVE_MATCH_QA_SPEC.md` (architettura, cap. 3.4 Validator Engine).
+>
+> Validator **specificati** qui: LMV-001…LMV-012 (LMV-011 è un *entry-alias* di LMV-010). Validator **pianificati** (LMV-013…LMV-030): vedi `VALIDATORS_REMAINING.md`.
 
 ---
 
