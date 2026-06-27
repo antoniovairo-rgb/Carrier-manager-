@@ -367,7 +367,7 @@ I file temporanei dovranno essere eliminati automaticamente al termine delle ope
 
 - `git status` · `git diff` · `git log` · `git branch` · `git fetch`
 - commit locali descrittivi
-- **`git push` sul branch di lavoro designato** (attuale: `claude/remote-control-6w43ie`) con `-u origin <branch>`
+- **`git push` sul branch di lavoro designato** (attuale: `claude/ai-vision-first-run`) con `-u origin <branch>`
 
 **Non consentito senza approvazione esplicita:**
 

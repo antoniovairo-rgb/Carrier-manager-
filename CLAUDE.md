@@ -259,7 +259,7 @@ Prima di ogni modifica: leggere le righe coinvolte, dichiarare le dipendenze not
 - **Aggiornare `CLAUDE.md`** ad ogni sprint significativo (range linee, nuovi sistemi, campi `player`).
 - **Bump `GAME_VERSION`** ad ogni push.
 - **Gate 10/10 verde** prima di ogni push — il QA Engineer valida ogni sprint.
-- **Branch workflow:** sviluppo sul branch designato (attuale: `claude/remote-control-6w43ie`), poi merge/push su `staging` (test) e, su autorizzazione, su `main` (produzione/Pages → GitHub Pages via GitHub Actions). Branch storici: `claude/cpm-resume-work-71ntrj`, `claude/continue-work-y3mh4y`.
+- **Branch workflow:** sviluppo sul branch di lavoro corrente (attuale: `claude/ai-vision-first-run`), poi merge/push su `staging` (test) e, su autorizzazione, su `main` (produzione/Pages → GitHub Pages via GitHub Actions). Branch storici: `claude/cpm-resume-work-71ntrj`, `claude/continue-work-y3mh4y`.
   - **`main` solo su autorizzazione esplicita del proprietario** — mai in automatico dopo un singolo sprint senza via libero.
 - **Annunciare sempre** "Pushato su GitHub — CPM x.y.z." dopo ogni `git push`.
 - **Zero regressions · Minimalismo · File unico.**
