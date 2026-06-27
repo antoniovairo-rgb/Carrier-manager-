@@ -19,7 +19,7 @@ Carrier-manager-/
 ├── ROADMAP.md               ← roadmap LMQP a 8 fasi + stato attuale
 ├── DEVELOPMENT_RULES.md     ← regole di sviluppo (v1.0, cap. 1–20) + mappatura sul repo
 ├── ACCEPTANCE_CRITERIA.md   ← checklist di accettazione (v1.0, AC-001..200; target 600–1000 controlli)
-├── AI_VISION_REVIEW.md      ← spec AI Vision Review (v1.0, cap. 1–10; dettaglio del cap. 3.9 della spec)
+├── AI_VISION_REVIEW.md      ← spec AI Vision Review (v1.0, cap. 1–16; dettaglio del cap. 3.9 della spec)
 ├── CLAUDE.md
 ├── CHANGELOG.md
 ├── LIVE-MATCH-ENGINE.md      ← architettura del motore di partita (pipeline Intent→Decision→Simulation→Animation)

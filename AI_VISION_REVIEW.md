@@ -99,6 +99,97 @@ Soddisfatti quando l'AI Vision osserva un highlight, ne identifica automaticamen
 
 ---
 
+## 11. Error Classification
+
+L'AI Vision classifica automaticamente ogni anomalia: non solo individuarla, ma comprenderne **gravità e impatto**.
+
+**Categorie** (un errore può appartenere a più): Football Intelligence · Gameplay · Animazione · Camera · Replay · Pallone · Cronaca · Sincronizzazione · Rendering · Physics · Performance · UI · Audio.
+
+**Severity:**
+
+| Livello | Significato / esempi |
+|---|---|
+| **Critical** | highlight non approvabile: teleport · replay incompleto · cronaca completamente errata · pallone invisibile · crash |
+| **High** | azione comprensibile ma qualità gravemente compromessa: portiere immobile · animazione errata · giocatore senza reazione · collisione evidente |
+| **Medium** | errore visibile ma non determinante: camera in ritardo · movimento poco naturale · traiettoria migliorabile |
+| **Low** | errore marginale, non compromette la qualità generale |
+| **Info** | osservazione / suggerimento / possibile miglioramento |
+
+**Priority ≠ Severity:** un errore raro ma critico può avere priorità inferiore a un errore medio presente in migliaia di highlight. L'AI calcola **entrambe**.
+
+---
+
+## 12. Confidence Model
+
+Ogni valutazione è accompagnata da un **Confidence Score** (0–100):
+
+| Range | Interpretazione |
+|---|---|
+| **95–100** | quasi certezza |
+| **85–94** | molto probabile |
+| **70–84** | probabile |
+| **50–69** | bassa affidabilità → revisione automatica aggiuntiva |
+| **< 50** | informazioni insufficienti → risultato "**Uncertain**" |
+
+**Sorgenti:** qualità del video · visibilità pallone · visibilità protagonista · durata highlight · coerenza della Situation · numero di elementi osservabili.
+
+**Multi-Pass Review** (quando la confidence è insufficiente): `Pass 1 globale → Pass 2 Football → Pass 3 Ball Tracking → Pass 4 Camera → Pass 5 confronto finale`.
+
+---
+
+## 13. Quality Score
+
+Punteggio complessivo (0–100) dalla combinazione pesata:
+
+| Componente | Peso |
+|---|---|
+| Football Intelligence | 20% |
+| Animazioni | 15% |
+| Pallone | 15% |
+| Replay | 10% |
+| Telecamera | 10% |
+| Cronaca | 10% |
+| Fluidità | 10% |
+| Fisica | 5% |
+| NPC Behaviour | 5% |
+| Qualità Visiva | 10% |
+
+**Quality Rating:** 95–100 **Elite** · 90–94 **Excellent** · 80–89 **Good** · 70–79 **Acceptable** · 60–69 **Needs Improvement** · < 60 **Rejected**.
+
+---
+
+## 14. Root Cause Detection
+
+Non solo segnalare l'errore: cercarne la **causa principale**. Per ogni errore l'AI tenta di rispondere: *perché è accaduto? quale componente è coinvolto? quale validator avrebbe dovuto intercettarlo? esistono anomalie correlate? quale modifica potrebbe risolverlo?*
+
+**Dependency Analysis** — ogni errore collegato ai componenti coinvolti (es. `Replay → Camera → Animation → Situation → Football Intelligence`) per evitare correzioni del solo sintomo.
+
+---
+
+## 15. Automatic Suggestions
+
+Per ogni errore, suggerimenti tecnici **concreti, verificabili, implementabili, specifici**.
+
+> *Esempio* — Errore: "il replay termina prima della conclusione". Suggerimento: "prolungare automaticamente la durata del replay fino al completamento del post-highlight".
+
+Suggerimenti **ordinati** per: impatto · rischio · frequenza · costo stimato.
+
+---
+
+## 16. Cross Validation
+
+Ogni highlight confrontato con più fonti: `Validator × AI Vision × Replay × Cronaca × Log → Decisione Finale`. Una singola fonte non basta.
+
+**Conflict Resolution** — se due sistemi divergono, l'AI: identifica il conflitto · ne descrive il motivo · propone la revisione più affidabile.
+
+---
+
+## Definition of Done (cap. 11–16)
+
+Soddisfatti quando l'AI Vision classifica automaticamente gli errori, ne stima severità e priorità, calcola l'affidabilità delle proprie analisi, assegna un Quality Score, individua la causa principale e propone suggerimenti concreti, integrando validator/replay/cronaca/log in un'unica valutazione coerente.
+
+---
+
 ## Stato attuale (mappatura onesta sul repo)
 
 🔴 **Modulo non implementato.** Oggi:
