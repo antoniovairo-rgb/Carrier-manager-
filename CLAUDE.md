@@ -52,7 +52,7 @@ Babel gira client-side al caricamento → ~1–2 s di avvio. Lo spinner (`#ld`) 
 
 Tutto è in un singolo `<script type="text/babel">`. Nessun module system — global scope, dichiarazioni in ordine di dipendenza.
 
-### Layers (top → bottom) — CPM 5.34.0 (~20 600 righe)
+### Layers (top → bottom) — CPM 5.37.0 (~20 600 righe)
 
 | Linea | Contenuto |
 |-------|-----------|
@@ -66,7 +66,7 @@ Tutto è in un singolo `<script type="text/babel">`. Nessun module system — gl
 | 2038–2090 | `ZONES` — zone del campo |
 | 2091–2352 | `BG_MATCH` — cronaca di background (con `momThreshold`, `ctx`, `pd`, pesi `w`) |
 | 2353–2638 | Helpers core: `rng`, `clamp`, `pick`, `baseStats`, `calcOvr` (2377), `succRate` (2389), `generateTransferOffer` (2507), `generateProContracts` (2567), `storage` |
-| 2639–2681 | `ARCHETYPES`, `GAME_VERSION` (**5.34.0**), `SAVE_VERSION` (**7**) |
+| 2639–2681 | `ARCHETYPES`, `GAME_VERSION` (**5.37.0**), `SAVE_VERSION` (**7**) |
 | 2682–4531 | `NAME_BY_NAT` (4502) + calendario/roster: `hashStr` (4532), `generateTeamRoster` (4533), `generateSeasonCalendar` (4554), `initStandings` (4715), `updateStandings` (4719), `simulateMatch` (4824) |
 | 4860–4904 | UI primitives: `Card`, `Btn`, `StatBar`, `OvrRing`, `Notif` |
 | 4905–6708 | Three.js: `makeCrowdTex` (4905), `buildStadium` (5027) |
@@ -134,7 +134,7 @@ Macro fase di rifinitura del match 3D in 4 sprint. Tutti gli interventi sono **v
 - **Sprint C — ripresa (4.90.0):** dopo un gol dell'eroe `handleContinue` instrada a una **ripartenza dal centro** (palla a centrocampo + preset drift `midfield`), riusando i sistemi già testati invece di introdurre una nuova fase nello state-machine (che il gate non coprirebbe).
 - **Sprint D — ritmo (4.91.0):** la **densità della cronaca BG scala col momentum** (`_bgProb=0.18+|mom-50|/50*0.12` → 18% in equilibrio, ~30% nei picchi) + **chaining robusto** (regex case-insensitive ampia su palle messe in area + guardia di profondità).
 
-### SIMULATION-FIRST (5.14.0 → 5.34.0) — pipeline `Intent → Decision → Simulation → Animation`
+### SIMULATION-FIRST (5.14.0 → 5.37.0) — pipeline `Intent → Decision → Simulation → Animation`
 
 Macro-direttiva: smontare l'accoppiamento *Situation → animazione pre-autorata* perché la cinematica sia **conseguenza della simulazione**, non scriptata. Dettaglio architetturale completo in **`LIVE-MATCH-ENGINE.md`** (tabella componenti + scorecard). I tre pilastri logici (tutti node-testabili, puri):
 - **`deriveIntent(sit,act)`** (~1619) — classifica la situation in un **intento** (13 tipi). ⚠️ legge ancora `sit.text` → l'intento NON è ancora text-free (vedi sotto).
