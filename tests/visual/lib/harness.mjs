@@ -133,20 +133,32 @@ export async function sampleMotion(page, gi, { settle = 500, pollMs = 100, windo
   await page.evaluate(([i, c]) => window.__CPM_FORCE_SIT(i, c), [gi, true]);
   await sleep(settle);
   await page.evaluate(() => { window.__CPM_FROZEN = false; }); // off-ball AI gira solo con dt>0
-  const snaps = []; const end = Date.now() + windowMs;
+  const frames = []; const end = Date.now() + windowMs;
   while (Date.now() < end) {
     const st = await page.evaluate(() => (typeof window.__CPM_STATE === 'function' ? window.__CPM_STATE() : null));
-    snaps.push(((st && st.players) || []).map(p => ({ x: p.x, y: p.y })));
+    const players = ((st && st.players) || []).map(p => ({ x: p.x, y: p.y, team: p.team, gk: p.gk }));
+    const ball = (st && st.ball) ? { x: st.ball.x, y: st.ball.y } : null;
+    frames.push({ players, ball });
     await sleep(pollMs);
   }
-  const n = snaps.length ? snaps[0].length : 0;
+  const n = frames.length ? frames[0].players.length : 0;
   const disp = new Array(n).fill(0); let maxD = 0;
-  for (let f = 1; f < snaps.length; f++) for (let p = 0; p < n; p++) {
-    const a = snaps[f - 1][p], c = snaps[f][p]; if (!a || !c) continue;
+  for (let f = 1; f < frames.length; f++) for (let p = 0; p < n; p++) {
+    const a = frames[f - 1].players[p], c = frames[f].players[p]; if (!a || !c) continue;
     const d = Math.hypot(c.x - a.x, c.y - a.y); disp[p] += d; if (d > maxD) maxD = d;
   }
   let alive = 0; for (let p = 0; p < n; p++) if (disp[p] > 1.0) alive++;
-  return { gi, players: n, alive, maxFrameDelta: +maxD.toFixed(1), avgDisp: +(disp.reduce((a, b) => a + b, 0) / (n || 1)).toFixed(1) };
+  // REACTIVITY (#24, Every Player Reacts): il portatore è home → gli away PRESSANO. Distanza minima
+  // away(non-gk)→palla sull'intera finestra + n. difensori entro 15u (impegno sul portatore).
+  let defMinEver = 99, defNear = 0, bxSum = 0, bxN = 0;
+  for (const fr of frames) {
+    if (!fr.ball) continue;
+    bxSum += fr.ball.x; bxN++;
+    let near = 0;
+    for (const p of fr.players) { if (p.team !== 'away' || p.gk) continue; const d = Math.hypot(p.x - fr.ball.x, p.y - fr.ball.y); if (d < defMinEver) defMinEver = d; if (d < 15) near++; }
+    if (near > defNear) defNear = near;
+  }
+  return { gi, players: n, alive, maxFrameDelta: +maxD.toFixed(1), avgDisp: +(disp.reduce((a, b) => a + b, 0) / (n || 1)).toFixed(1), defMinEver: +defMinEver.toFixed(1), defNear, ballX: bxN ? +(bxSum / bxN).toFixed(1) : null };
 }
 
 /* BALL-PATH sampler (#41): forza gi (choose), risolve l'azione e campiona la x della palla (coord gioco
