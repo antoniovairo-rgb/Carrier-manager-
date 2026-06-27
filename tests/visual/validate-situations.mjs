@@ -185,9 +185,10 @@ const GOLDEN = path.join(HERE, 'golden-sigs.json');
   });
 
   const meta = { generatedAt: new Date().toISOString(), gameVersion, seed: SEED, total: sitResults.length, maxJitterBits: agg.determinism.info.diverged === 0 ? 0 : `${agg.determinism.info.diverged} divergenze`, goldenNote, performance: perf };
-  const { ok, htmlPath, failCats } = writeReports(OUT, { meta, categories, situations: sitResults });
   // LMQP-7: pacchetto di fallimento compatto/machine-readable (CI + Dashboard + regression history)
   const runSummary = collectFailures(OUT, { meta, categories, situations: sitResults });
+  // LMQP-9: il report HTML riceve il summary normalizzato per la Dashboard
+  const { ok, htmlPath, failCats } = writeReports(OUT, { meta, categories, situations: sitResults, runSummary });
 
   console.log('\n=== QUALITY GATE — VALIDAZIONE SITUATIONS ===');
   console.log(`gameVersion ${gameVersion} · ${sitResults.length} Situations`);

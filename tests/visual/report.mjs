@@ -10,7 +10,7 @@ export function writeReports(outDir, data) {
   fs.mkdirSync(outDir, { recursive: true });
   fs.writeFileSync(path.join(outDir, 'report.json'), JSON.stringify(data, null, 2));
 
-  const { meta, categories, situations } = data;
+  const { meta, categories, situations, runSummary } = data;
   const failCats = categories.filter(c => !c.pass);
   const failSits = situations.filter(s => s.issues.length);
   const ok = failCats.length === 0;
@@ -28,6 +28,52 @@ export function writeReports(outDir, data) {
     return `<tr class="${cls}"><td>${s.gi}</td><td>${esc(s.text)}</td><td>${esc(s.type)}</td><td><code>${esc(s.hashInitial || '')}</code></td><td>${shots}</td><td>${cell}</td></tr>`;
   }).join('');
 
+  // ── LMQP-9: DASHBOARD — sintesi normalizzata dal run-summary (check, coverage, perf, baseline, failure) ──
+  const chips = (arr) => (arr && arr.length ? arr.map(x => `<span class="chip">${esc(x)}</span>`).join('') : '<span class="muted">—</span>');
+  let dashHtml = '';
+  if (runSummary) {
+    const rs = runSummary;
+    const checkPills = (rs.checks || []).map(c => `<span class="pill ${c.pass ? 'pok' : 'pbad'}" title="${esc(c.id)}: ${c.issues} issue / ${c.warnings} warn">${c.pass ? '✅' : '❌'} ${esc(c.id)}</span>`).join('');
+    const cov = rs.coverage || {};
+    const perf = rs.performance && rs.performance.frames ? rs.performance : null;
+    const bl = rs.baseline || {};
+    const perfHtml = perf
+      ? `<span class="kpi">FPS (headless)<br><b>${esc(perf.frames.fps)}</b></span>
+         <span class="kpi">Frame p95<br><b>${esc(perf.frames.p95Ms)}ms</b></span>
+         <span class="kpi">JS heap<br><b>${perf.heap ? esc(perf.heap.usedMB) + 'MB' : '—'}</b></span>
+         <span class="kpi">Load<br><b>${perf.nav && perf.nav.loadMs != null ? esc(perf.nav.loadMs) + 'ms' : '—'}</b></span>`
+      : '<span class="muted">perf non disponibile</span>';
+    const blHtml = `modalità <b>${esc(bl.mode || '—')}</b>${bl.drift != null ? ` · drift <b class="${bl.drift ? 'bad' : 'good'}">${esc(bl.drift)}</b>` : ''}${bl.added != null ? ` · nuove <b>${esc(bl.added)}</b>` : ''}${bl.keys != null ? ` · firme <b>${esc(bl.keys)}</b>` : ''}`;
+    const failRows = (rs.failures || []).slice(0, 60).map(f => `<tr class="bad"><td>${esc(f.check)}</td><td>${f.gi != null ? '#' + esc(f.gi) : '—'}</td><td>${esc(f.intent || '')}</td><td>${esc(f.situation || '')}</td><td>${esc(f.msg)}</td></tr>`).join('');
+    const failTable = (rs.failures && rs.failures.length)
+      ? `<h3>Failure (${rs.failures.length}${rs.failures.length > 60 ? ' · prime 60' : ''})</h3>
+         <table><thead><tr><th>check</th><th>#</th><th>intent</th><th>situation</th><th>messaggio</th></tr></thead><tbody>${failRows}</tbody></table>`
+      : '<p class="good">Nessun failure — tutti i check verdi.</p>';
+    dashHtml = `<h2>LMQP Dashboard</h2>
+<div class="dash">
+  <div class="pills">${checkPills}</div>
+  <div style="margin:10px 0">
+    <span class="kpi">Esito<br><b class="${rs.ok ? 'good' : 'bad'}">${rs.ok ? 'PASS' : 'FAIL'}</b></span>
+    <span class="kpi">Check falliti<br><b>${esc(rs.counts.checksFailed)}/${esc(rs.counts.checks)}</b></span>
+    <span class="kpi">Failure<br><b>${esc(rs.counts.failures)}</b></span>
+    <span class="kpi">Warning<br><b>${esc(rs.counts.warnings)}</b></span>
+    <span class="kpi">Fingerprint<br><b><code>${esc(rs.fingerprint)}</code></b></span>
+  </div>
+  <h3>Performance <span class="muted">(slice headless, warn-only)</span></h3>
+  <div>${perfHtml}</div>
+  <h3>Decision baseline (regressione)</h3>
+  <div>${blHtml}</div>
+  <h3>Coverage</h3>
+  <div class="covgrid">
+    <div><b>intents</b><br>${chips(cov.intents)}</div>
+    <div><b>hlTypes</b><br>${chips(cov.hlTypes)}</div>
+    <div><b>ballStates</b><br>${chips(cov.ballStates)}</div>
+    <div><b>outcomeKeys</b><br>${chips(cov.outcomeKeys)}</div>
+  </div>
+  ${failTable}
+</div>`;
+  }
+
   const html = `<!doctype html><html lang="it"><head><meta charset="utf-8"><title>CPM — Validazione Situations</title>
 <style>
 :root{color-scheme:light dark}body{font:14px/1.5 system-ui,sans-serif;margin:0;padding:24px;background:#0b1020;color:#e6ebf5}
@@ -43,6 +89,15 @@ code{font-size:11px;color:#fbbf24}.muted{color:#64748b}
 ul{margin:0;padding-left:16px}li{color:#fda4af}ul.warn li{color:#fcd34d}
 .kpi{display:inline-block;background:#111827;border:1px solid #1f2937;border-radius:8px;padding:8px 14px;margin:0 8px 8px 0}
 .kpi b{font-size:18px}
+.dash{background:#0f1629;border:1px solid #1f2937;border-radius:12px;padding:16px 18px;margin:8px 0 28px}
+.dash h3{margin:16px 0 6px;font-size:14px;color:#cbd5e1}
+.pills{display:flex;flex-wrap:wrap;gap:6px}
+.pill{font-size:12px;font-weight:700;padding:4px 9px;border-radius:999px;border:1px solid #334155}
+.pok{background:#06291e;color:#6ee7b7}.pbad{background:#3a0d16;color:#fda4af}
+.chip{display:inline-block;font-size:11px;background:#1e293b;color:#cbd5e1;border-radius:6px;padding:2px 7px;margin:2px 3px 0 0}
+.covgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px}
+.covgrid>div{background:#111827;border:1px solid #1f2937;border-radius:8px;padding:8px 10px}
+.good{color:#6ee7b7}.bad{color:#fda4af}
 </style></head><body>
 <h1>CPM — Validazione automatica Situations</h1>
 <div class="sub">${esc(meta.generatedAt)} · versione gioco <b>${esc(meta.gameVersion)}</b> · seed PRNG <code>${esc(meta.seed)}</code> · ${meta.total} Situations</div>
@@ -54,6 +109,7 @@ ul{margin:0;padding-left:16px}li{color:#fda4af}ul.warn li{color:#fcd34d}
   <span class="kpi">Warning (soft)<br><b>${totWarn}</b></span>
   <span class="kpi">Determinismo<br><b>${meta.maxJitterBits === 0 ? 'OK' : esc(meta.maxJitterBits ?? '—')}</b></span>
 </div>
+${dashHtml}
 <h2>Riepilogo categorie (quality gate)</h2>
 <table><thead><tr><th>id</th><th>controllo</th><th>esito</th><th>scope</th><th>info</th><th>#issue</th><th>#warn</th></tr></thead><tbody>${catRows}</tbody></table>
 <h2>Dettaglio per Situation</h2>
