@@ -29,7 +29,10 @@ Carrier-manager-/
     └── visual/                        ← QUALITY GATE Playwright (vedi sezione dedicata)
         ├── validate-situations.mjs    ← runner principale del gate (10 categorie)
         ├── golden-sigs.json           ← firme golden (stato) · decision-baseline.json (regressione decisione, LMQP-5)
-        ├── checks/  lib/  report.mjs  out/
+        ├── checks/                     ← 10 check (… timeline.mjs = LMQP-2/3/5/6)
+        ├── lib/                        ← harness + failure-collector.mjs (LMQP-7) + perf-monitor.mjs (LMQP-8)
+        ├── report.mjs                  ← report HTML + run-summary.json + LMQP Dashboard (LMQP-9)
+        ├── out/                        ← artefatti generati (report.json · run-summary.json · index.html · shots/)
         └── package.json               ← script npm del gate + devDependencies dei bundle CDN locali
 ```
 
@@ -205,6 +208,8 @@ Le **10 categorie**: `initial-state · orientation · visual · movements · gol
 - **`timeline`** (LMQP-2/3/5/6) consuma il bus eventi osservabile **`window.__CPM_TIMELINE`** (LMQP-1, vedi sotto) raccolto nella passata force+resolve: verifica il backbone narrativo per-highlight (`HighlightForced → ActionResolved` con intent valido/coerente + outcome key), gli **invarianti CINE sulla decisione live** (LMQP-3: testa/volée⟹aerea, set-piece⟹palla ferma), la **regressione della decisione** vs `decision-baseline.json` (LMQP-5) e la **semantica dell'esito** (LMQP-6: outcome key noto + `ok ⟺ key di successo`, taxonomy goal/assist/save/recovery vs miss/intercept/goal_against/…). Primo gradino del Semantic/Narrative Validator (LMQP-SPEC 3.4).
 - Il gate **forza le situation direttamente** (bypassa `handleContinue`/selezione HL): modifiche a ripresa, chaining-trigger, densità BG e selezione HL **non sono coperte** → trattale come a rischio e testale dal vivo.
 - **Rete bloccata (cloud):** il runner intercetta le route CDN e serve React/Three/Babel dai `node_modules` locali, così il gate gira anche senza accesso ai CDN.
+
+**Artefatti del gate (LMQP-7/8/9, in `out/validate/`):** oltre a `index.html`/`report.json`, ogni run produce **`run-summary.json`** (LMQP-7, *Failure Collector* — `lib/failure-collector.mjs`): pacchetto compatto machine-readable con esito globale, per-check pass/issue/warn, `failures[]` normalizzate `{check,gi,msg,situation,intent,shot}`, `coverage`, `baseline` drift, `performance` e un **fingerprint deterministico** (dedup/trend). Il **Performance Monitor** (LMQP-8, `lib/perf-monitor.mjs`) misura load-time/JS-heap/frame-timing col render-loop attivo — **warn-only/informativo** (FPS headless = software-rendered, no GPU → soglie su floor headless-realistici, mai FAIL). Il report HTML include la **LMQP Dashboard** (LMQP-9): griglia dei 10 check, coverage a chip, perf, baseline e tabella failure. Tutti additivi (solo harness → gate-safe). Il CI carica l'intera `out/validate/` come artifact.
 
 > **LMQP-1 — Event + Timeline layer (5.35.0):** primo mattone implementativo della piattaforma LMQP. Bus eventi osservabile nel gioco (`cpmEmit` → ring buffer `MATCH_TL`, probe `window.__CPM_TIMELINE()`/`__CPM_TIMELINE_RESET()`): registra `MatchStart · HighlightForced(intent,zone) · ActionResolved(intent,label,ok,key) · HighlightAdvance`. Opt-in/sicuro (solo push + try/catch → nessun impatto su stato/render, gate-safe). È la sorgente per il check `timeline` (LMQP-2) e per i futuri Replay/Semantic/Narrative validator (`LIVE_MATCH_QA_SPEC.md` 3.4/3.5).
 

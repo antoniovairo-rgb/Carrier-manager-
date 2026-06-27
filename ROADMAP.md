@@ -78,7 +78,7 @@ Fasi incrementali; ogni fase produce un miglioramento **misurabile**; una fase i
 | Fase | Tema | Stato | Deliverable / Obiettivi |
 |---|---|---|---|
 | **Phase 1** | **Foundation** | ✅ **Completata** | LIVE_MATCH_QA_SPEC · VALIDATORS · DEVELOPMENT_RULES · ACCEPTANCE_CRITERIA · AI_VISION_REVIEW → fondamenta architetturali definite |
-| **Phase 2** | **Engine Stabilization** | 🟡 **in corso** | **avviata (5.35→5.36):** Event+Timeline layer (LMQP-1), Semantic/CINE validator dal vivo come 10ª categoria del gate (LMQP-2/3), domain+coverage checks (LMQP-4), decision-regression baseline (LMQP-5). Restano: validator semantici per-Situation completi, Replay/Failure/Performance/Dashboard/AI-Vision |
+| **Phase 2** | **Engine Stabilization** | 🟡 **in corso** | **avviata (5.35→5.37):** Event+Timeline layer (LMQP-1), Semantic/CINE validator dal vivo come 10ª categoria del gate (LMQP-2/3), domain+coverage checks (LMQP-4), decision-regression baseline (LMQP-5), **coerenza dell'esito** (LMQP-6), **Failure Collector** `run-summary.json` (LMQP-7), **Performance Monitor** headless warn-only (LMQP-8), **Dashboard** nel report (LMQP-9). Restano: validator semantici per-Situation completi (beat fini), Replay Engine, Failure Package ricco (video/snapshot), AI-Vision |
 | **Phase 3** | **Football Realism** | ⏳ | Football Intelligence · nuovi comportamenti offensivi · varietà azioni · NPC migliori · meno animazioni ripetitive |
 | **Phase 4** | **Visual Excellence** | ⏳ | nuove telecamere · replay cinematografici · animazioni avanzate · post-processing · illuminazione dinamica |
 | **Phase 5** | **AI Driven Development** | ⏳ | integrazione AI Vision · suggerimenti automatici · revisione automatica build · dashboard intelligente · benchmark evolutivi |
