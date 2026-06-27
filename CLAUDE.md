@@ -27,7 +27,7 @@ Carrier-manager-/
 └── tests/
     ├── situations-3d-validation.js   ← regole di validazione SITUATIONS (coerenza HL↔3D) + suite analitica (537 combo)
     └── visual/                        ← QUALITY GATE Playwright (vedi sezione dedicata)
-        ├── validate-situations.mjs    ← runner principale del gate (9 categorie)
+        ├── validate-situations.mjs    ← runner principale del gate (10 categorie)
         ├── golden-sigs.json           ← firme golden screenshot
         ├── checks/  lib/  report.mjs  out/
         └── package.json               ← script npm del gate + devDependencies dei bundle CDN locali
@@ -184,7 +184,7 @@ Monta una volta (deps `[]`). Posizione giocatori, zone-highlight e camera-target
 
 ## Quality Gate (tests/visual) — OBBLIGATORIO prima di ogni push
 
-Suite Playwright headless che carica il gioco, forza ogni `SITUATION`, risolve le azioni e valida rendering 3D + stato. **Va eseguita e deve passare 9/9 prima di ogni push.**
+Suite Playwright headless che carica il gioco, forza ogni `SITUATION`, risolve le azioni e valida rendering 3D + stato. **Va eseguita e deve passare 10/10 prima di ogni push.**
 
 ```bash
 cd tests/visual
@@ -196,14 +196,17 @@ npm run validate-situations
 
 > **Setup bundle (sessioni cloud con CDN bloccati):** l'harness intercetta le route CDN e serve React/Three/Babel/Phaser dai `node_modules` locali. Le versioni **esatte** che l'HTML fissa sono ora in `devDependencies` (`react`/`react-dom` 18.2.0, `three` 0.128.0, `@babel/standalone` **7.23.6**, `phaser` 3.80.1) → `npm install` configura tutto. ⚠️ Babel **deve** essere 7.x: la 8.x non transpila l'`import` e la pagina non monta.
 
-Le **9 categorie**: `initial-state · orientation · visual · movements · golden · final-state · determinism · post-highlight · data-coherence`. Output atteso: `✅ PASS` con tutte verdi (i `warn` non bloccano).
+Le **10 categorie**: `initial-state · orientation · visual · movements · golden · final-state · determinism · post-highlight · data-coherence · timeline`. Output atteso: `✅ PASS` con tutte verdi (i `warn` non bloccano).
 
 - **`golden`** confronta una **firma di stato** `{htx,hty,cam,ch,ca}` (target logico eroe + camera + conteggi) — **NON** le posizioni off-ball (escluse di proposito). Quindi cambiare il posizionamento off-ball è gate-safe (golden invariato); se cambi l'estetica/setup che tocca la firma, rigenera con `npm run validate-situations:update-golden` e committa.
 - **`initial-state`/`orientation`** asseriscono la **posizione dei portieri** (home GK x≤25, away GK x≥75, home<away): muovendo i GK resta entro questi bound (vedi F13, CAP 80/20).
 - **`determinism`** verifica che il setup di ogni situation sia riproducibile — evita di far dipendere il *setup/rendering* da `Math.random()` non seedato.
 - **`data-coherence`** applica le regole di `tests/situations-3d-validation.js` (l'invariante CINE header⇒aerea è un FAIL con `exit 2`).
+- **`timeline`** (LMQP-2) consuma il bus eventi osservabile **`window.__CPM_TIMELINE`** (LMQP-1, vedi sotto) raccolto nella passata force+resolve: verifica il backbone narrativo per-highlight (`HighlightForced → ActionResolved` con intent valido/coerente + outcome key). Primo gradino del Semantic/Narrative Validator (LMQP-SPEC 3.4).
 - Il gate **forza le situation direttamente** (bypassa `handleContinue`/selezione HL): modifiche a ripresa, chaining-trigger, densità BG e selezione HL **non sono coperte** → trattale come a rischio e testale dal vivo.
 - **Rete bloccata (cloud):** il runner intercetta le route CDN e serve React/Three/Babel dai `node_modules` locali, così il gate gira anche senza accesso ai CDN.
+
+> **LMQP-1 — Event + Timeline layer (5.35.0):** primo mattone implementativo della piattaforma LMQP. Bus eventi osservabile nel gioco (`cpmEmit` → ring buffer `MATCH_TL`, probe `window.__CPM_TIMELINE()`/`__CPM_TIMELINE_RESET()`): registra `MatchStart · HighlightForced(intent,zone) · ActionResolved(intent,label,ok,key) · HighlightAdvance`. Opt-in/sicuro (solo push + try/catch → nessun impatto su stato/render, gate-safe). È la sorgente per il check `timeline` (LMQP-2) e per i futuri Replay/Semantic/Narrative validator (`LIVE_MATCH_QA_SPEC.md` 3.4/3.5).
 
 ## Key Patterns
 
@@ -223,7 +226,7 @@ Ogni sessione di lavoro segue questo framework multi-disciplinare. Workflow semp
 ```
 1. AUDIT     — leggi il codice interessato, identifica dipendenze e rischi
 2. IMPLEMENT — applica le modifiche minime necessarie, nessuna feature extra
-3. QA        — gate 9/9 verde + verifica mentale: regressioni? salvataggio? mobile? performance?
+3. QA        — gate 10/10 verde + verifica mentale: regressioni? salvataggio? mobile? performance?
 ```
 
 Prima di ogni modifica: leggere le righe coinvolte, dichiarare le dipendenze note, elencare i rischi. Solo dopo procedere.
@@ -248,7 +251,7 @@ Prima di ogni modifica: leggere le righe coinvolte, dichiarare le dipendenze not
 - **Nessuna modifica senza audit.**
 - **Aggiornare `CLAUDE.md`** ad ogni sprint significativo (range linee, nuovi sistemi, campi `player`).
 - **Bump `GAME_VERSION`** ad ogni push.
-- **Gate 9/9 verde** prima di ogni push — il QA Engineer valida ogni sprint.
+- **Gate 10/10 verde** prima di ogni push — il QA Engineer valida ogni sprint.
 - **Branch workflow:** sviluppo sul branch designato (attuale: `claude/remote-control-6w43ie`), poi merge/push su `staging` (test) e, su autorizzazione, su `main` (produzione/Pages → GitHub Pages via GitHub Actions). Branch storici: `claude/cpm-resume-work-71ntrj`, `claude/continue-work-y3mh4y`.
   - **`main` solo su autorizzazione esplicita del proprietario** — mai in automatico dopo un singolo sprint senza via libero.
 - **Annunciare sempre** "Pushato su GitHub — CPM x.y.z." dopo ogni `git push`.

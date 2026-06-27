@@ -28,10 +28,11 @@ import finalState from './checks/final-state.mjs';
 import postHighlight from './checks/post-highlight.mjs';
 import determinism from './checks/determinism.mjs';
 import dataCoherence from './checks/data-coherence.mjs';
+import timelineCheck from './checks/timeline.mjs';
 
 const SIT_CHECKS = [initialState, orientation, visual, movements, golden]; // pre-risoluzione
 const FINAL_CHECKS = [finalState];                                          // post-risoluzione azione
-const GLOBAL_CHECKS = [determinism, postHighlight, dataCoherence];          // global
+const GLOBAL_CHECKS = [determinism, postHighlight, dataCoherence, timelineCheck]; // global
 const SEED = '0x9e3779b9 (mulberry32) + __CPM_RESEED(gi)';
 const UPDATE_GOLDEN = process.argv.includes('--update-golden');
 const SHOTS_ALL = process.argv.includes('--shots');
@@ -97,6 +98,7 @@ const GOLDEN = path.join(HERE, 'golden-sigs.json');
     // cattura l'esito presto (prima dell'auto-advance) e la palla a regime, con buffer tra le iterazioni
     // per evitare il bleed dei timer di risoluzione. FORCE_SIT azzera il chaining → indici stabili.
     const fsSample = []; for (let gi = 0; gi < situations.length; gi += 8) fsSample.push(gi); // ~23 Situations
+    await page.evaluate(() => window.__CPM_TIMELINE_RESET && window.__CPM_TIMELINE_RESET()); // LMQP-2: timeline pulita per la passata force+resolve
     for (const gi of fsSample) {
       const sit = situations[gi] || { text: '?', type: 'off', actions: [] };
       await forceSituation(page, gi, { settle: 550, choose: true });
@@ -113,6 +115,16 @@ const GOLDEN = path.join(HERE, 'golden-sigs.json');
     }
     agg['final-state'].info = { sampled: fsSample.length };
     console.log(`final-state: campione ${fsSample.length} Situations risolte`);
+
+    // TIMELINE (LMQP-2) — legge il bus eventi raccolto nella passata force+resolve e valida il backbone narrativo
+    try {
+      const timeline = await page.evaluate(() => (window.__CPM_TIMELINE ? window.__CPM_TIMELINE() : []));
+      const tlRes = timelineCheck.run({ timeline, situations });
+      agg['timeline'].issues.push(...tlRes.issues.map(msg => ({ gi: null, msg })));
+      agg['timeline'].warnings.push(...tlRes.warnings.map(msg => ({ gi: null, msg })));
+      agg['timeline'].info = tlRes.info;
+      console.log(`timeline: ${tlRes.info.events} eventi · ${tlRes.info.resolved} risolti · ${tlRes.info.paired} coerenti`);
+    } catch (e) { agg['timeline'].issues.push({ gi: null, msg: 'errore timeline check: ' + (e && e.message || e) }); }
 
     // POST-HIGHLIGHT — campiona la traiettoria (camera/palla/giocatori) su un set vario di Situations
     const phIdx = [0, 2, 30, 60, 79, 120].filter(gi => gi < situations.length);
