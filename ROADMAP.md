@@ -85,9 +85,85 @@ Fasi incrementali; ogni fase produce un miglioramento **misurabile**; una fase i
 
 ---
 
-## Definition of Done (sez. 1–5)
+## 6. Milestones
 
-Soddisfatta quando la roadmap descrive chiaramente visione, stato attuale, pilastri strategici, obiettivi di lungo periodo e fasi evolutive del Live Match Engine, fornendo una direzione univoca per le attività future.
+Milestone progressive, in ordine cronologico; ogni milestone = incremento misurabile di qualità.
+
+| Milestone | Tema | Stato | Obiettivi |
+|---|---|---|---|
+| **M1** | Foundation | ✅ Completata | architettura · documentazione standard · QA Framework · Validator · Development Rules · Acceptance Criteria · AI Vision Review |
+| **M2** | Engine Stabilization | 🟡 In sviluppo | eliminazione regressioni · sincronizzazione completa · qualità highlight · stabilizzazione animazioni · ottimizzazione replay |
+| **M3** | Football Realism | ⏳ Pianificata | realismo azioni · NPC migliori · decisioni credibili · varietà Situation · post-highlight |
+| **M4** | Visual Excellence | ⏳ Pianificata | nuove animazioni · nuove telecamere · replay cinematografici · illuminazione · immersione |
+| **M5** | AI Driven Development | ⏳ Pianificata | AI Vision integrata · QA automatizzato · benchmark evolutivi · suggerimenti automatici · analisi comparative |
+
+---
+
+## 7. Prioritization Model
+
+| Priorità | Descrizione / esempi |
+|---|---|
+| **Critical** | blocca la qualità → immediata: crash · regressioni · perdita dati · replay non funzionanti |
+| **High** | impatta direttamente il giocatore: animazioni · Football Intelligence · sincronizzazione · highlight |
+| **Medium** | migliora la qualità generale: nuove telecamere · effetti grafici · UI |
+| **Low** | miglioramenti incrementali · pianificabili dopo |
+
+---
+
+## 8. Key Performance Indicators
+
+- **KPI Tecnici:** Build Success Rate · Regression Rate · Validator Pass Rate · Test Coverage · Crash Rate · Memory Stability · Average Build Time.
+- **KPI Gameplay:** Highlight Quality Score · Football Intelligence Score · Camera Quality Score · Replay Quality Score · Animation Quality Score · Situation Recognition Accuracy.
+- **KPI AI:** AI Vision Accuracy · Confidence Score medio · False Positive Rate · False Negative Rate · Tempo medio di revisione.
+- **KPI Prodotto:** regressioni per release · tempo medio correzione bug · qualità media delle release · stabilità complessiva.
+
+---
+
+## 9. Project Risks
+
+- **Tecnici:** regressioni · perdita di sincronizzazione · aumento complessità · duplicazione logica · degrado performance.
+- **Architetturali:** dipendenze eccessive · componenti accoppiati · perdita modularità · difficoltà di manutenzione.
+- **Qualità:** diminuzione realismo · incoerenza narrativa · peggioramento highlight · animazioni ripetitive.
+- **Mitigazione:** validator · test automatici · AI Vision Review · benchmark · regression testing.
+
+---
+
+## 10. Future Extensions
+
+La piattaforma evolve **senza modificare il Core Engine**; le estensioni saranno documenti indipendenti, compatibili con la documentazione esistente: Football Intelligence · NPC Intelligence · Camera Guidelines · Animation Guidelines · Commentary Guidelines · Performance Handbook · Dataset Specification · Plugin SDK · AI Training Handbook · Benchmark Library.
+
+---
+
+## 11. Release Strategy
+
+```
+Sviluppo → Build → Testing → Validator → AI Vision Review → Acceptance Criteria →
+Regression Suite → Release Candidate → Release
+```
+
+Nessuna fase può essere saltata.
+
+**Release Gates** (tutti contemporaneamente): Build PASS · Validator PASS · AI Review PASS · Acceptance PASS · nessuna regressione critica · documentazione aggiornata.
+
+---
+
+## 12. Success Criteria
+
+Il progetto ha successo quando: gli highlight sono calcisticamente credibili · il comportamento dei giocatori è naturale · la qualità visiva è costante · il QA è completamente automatizzato · le regressioni sono intercettate prima del rilascio · Claude Code sviluppa e valida seguendo la documentazione senza interventi manuali continui · ogni versione mantiene o migliora la qualità della precedente.
+
+---
+
+## 13. Long-Term Vision
+
+La piattaforma evolverà in un **ecosistema completo** per lo sviluppo di motori calcistici, capace di: generare automaticamente highlight realistici · validare autonomamente la qualità · assistere gli sviluppatori lungo tutto il ciclo · confrontare versioni · produrre report tecnici e gestionali · supportare il miglioramento continuo con strumenti AI.
+
+> L'obiettivo finale non è solo un Live Match Engine di elevata qualità, ma una **piattaforma di sviluppo, validazione e miglioramento continuo** che preservi qualità, stabilità e manutenibilità nel tempo.
+
+---
+
+## Definition of Done (Roadmap)
+
+Completa quando definisce visione strategica condivisa, milestone evolutive, priorità e criteri di successo, rischi e KPI, e una direzione chiara per le future attività. **Ogni decisione tecnica e funzionale deve poter essere ricondotta agli obiettivi di questo documento** (coerenza tra architettura, implementazione, qualità e visione di lungo periodo).
 
 ---
 
