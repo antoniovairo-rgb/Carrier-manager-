@@ -4,7 +4,9 @@ Standard e catalogo dei **validator** della Live Match Development Platform.
 
 > Documento vivo, organizzato per capitoli. Si conforma a `MASTER_PROMPT.md` (charter LMQP) e a `LIVE_MATCH_QA_SPEC.md` (architettura, cap. 3.4 Validator Engine).
 >
-> **Catalogo COMPLETO: LMV-001…LMV-030.** Backlog originale residuo e note di copertura/numerazione: vedi `VALIDATORS_REMAINING.md`.
+> **Catalogo COMPLETO: LMV-001…LMV-030.**
+>
+> **Differiti (non nel catalogo):** *Lancio del Portiere (NPC)* e *Salvataggio Difensivo (NPC)* — richiedono highlight a **protagonista NPC**, non previsti dal flusso attuale (l'highlight è incentrato sull'eroe). Estensione futura; useranno la struttura standard del cap. 1. Nuovi validator oltre il 030 → prossimo ID libero (`LMV-031`, …).
 
 ---
 
