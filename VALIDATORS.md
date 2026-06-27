@@ -4,7 +4,7 @@ Standard e catalogo dei **validator** della Live Match Development Platform.
 
 > Documento vivo, organizzato per capitoli. Si conforma a `MASTER_PROMPT.md` (charter LMQP) e a `LIVE_MATCH_QA_SPEC.md` (architettura, cap. 3.4 Validator Engine).
 >
-> Validator **specificati** qui: LMV-001…LMV-013. Validator **pianificati** (LMV-014…LMV-030): vedi `VALIDATORS_REMAINING.md`.
+> Validator **specificati** qui: LMV-001…LMV-016. Validator **pianificati** (LMV-017…LMV-030): vedi `VALIDATORS_REMAINING.md`.
 
 ---
 
@@ -915,6 +915,87 @@ Intenzione di creare un'occasione immediatamente riconoscibile; destinatario chi
 
 ---
 
+## Validator 014 — Tentativo di Lancio Lungo
+
+| Campo | Valore |
+|---|---|
+| **Identificativo** | `LMV-014` |
+| **Categoria** | Costruzione del Gioco |
+| **Priorità** | Media |
+
+**Scopo** — verificare che il protagonista tenti **intenzionalmente** un lancio lungo verso un compagno distante per superare una o più linee di pressione (si verifica l'intenzione, non il successo).
+
+**Definizione** — passaggio di lunga distanza, prevalentemente **aereo**, con finalità di avanzamento dell'azione o cambio della zona di gioco.
+
+- **Compatibili:** lancio lungo centrale · laterale · apertura sulla fascia · in profondità · dopo recupero palla · in contropiede.
+- **NON compatibili:** cambio di gioco orizzontale · cross · rilancio del portiere · rinvio difensivo.
+
+**Timeline** — `Possesso → Lettura → Preparazione del corpo → Lancio → Traiettoria → Movimento del destinatario → Esito → Post-Highlight`.
+
+**Outcome ammessi** — ricezione · intercetto · pallone fuori · deviazione · prosecuzione.
+
+**Controlli specifici** — il protagonista ha tempo per eseguire il lancio; destinatario identificabile; traiettoria coerente con la distanza; il pallone non cambia direzione senza contatto; gli avversari tentano di leggere il lancio.
+
+**Errori critici (FAIL)** — il lancio sembra un passaggio corto; destinatario non identificabile; replay che termina prima della ricezione; cronaca che dice "lancio" ma il video mostra altro.
+
+**Definition of Done** — lancio lungo immediatamente riconoscibile, traiettoria credibile, destinatario che reagisce correttamente, post-highlight che mostra la prosecuzione.
+
+---
+
+## Validator 015 — Tentativo di Cambio di Gioco
+
+| Campo | Valore |
+|---|---|
+| **Identificativo** | `LMV-015` |
+| **Categoria** | Costruzione del Gioco |
+| **Priorità** | Media |
+
+**Scopo** — verificare che il protagonista tenti di **spostare rapidamente il gioco** da un lato all'altro del campo per creare superiorità spaziale.
+
+**Definizione** — passaggio lungo o medio che **trasferisce l'azione su una zona opposta** rispetto a quella di partenza; intenzione evidente.
+
+- **Compatibili:** cambio fascia destra→sinistra · sinistra→destra · dopo pressing · dopo consolidamento del possesso.
+- **NON compatibili:** lancio verticale · cross · filtrante · semplice passaggio laterale.
+
+**Timeline** — `Possesso → Lettura degli spazi → Preparazione → Cambio di gioco → Traiettoria → Ricezione → Sviluppo della nuova azione → Post-Highlight`.
+
+**Outcome ammessi** — ricezione pulita · intercetto · controllo imperfetto · uscita del pallone · prosecuzione offensiva.
+
+**Controlli specifici** — il pallone attraversa **realmente** il campo; il cambio ha uno scopo tattico; il destinatario occupa uno spazio libero; la squadra si ridispone; i difensori scivolano verso il nuovo lato.
+
+**Errori critici (FAIL)** — il cambio copre pochi metri; il pallone non attraversa il campo; il destinatario è marcato senza vantaggio; replay che termina prima dello sviluppo.
+
+**Definition of Done** — cambio di gioco chiaramente riconoscibile, che modifica realmente il lato dell'azione e produce una nuova situazione offensiva leggibile.
+
+---
+
+## Validator 016 — Tentativo di Triangolazione
+
+| Campo | Valore |
+|---|---|
+| **Identificativo** | `LMV-016` |
+| **Categoria** | Combinazione Offensiva |
+| **Priorità** | Alta |
+
+**Scopo** — verificare che due o tre giocatori tentino una **combinazione rapida di passaggi** per superare una linea difensiva (qualità della collaborazione tra compagni).
+
+**Definizione** — sequenza coordinata di passaggi rapidi in cui il protagonista restituisce o riceve nuovamente il pallone per creare un vantaggio.
+
+- **Compatibili:** triangolazione centrale · sulla fascia · al limite dell'area · in contropiede.
+- **NON compatibili:** semplice uno-due (validator dedicato, LMV-017) · passaggi indipendenti · possesso palla.
+
+**Timeline** — `Primo passaggio → Movimento del protagonista → Secondo passaggio → Attacco dello spazio → Terzo passaggio (se previsto) → Superamento della linea → Esito → Post-Highlight`.
+
+**Outcome ammessi** — progressione · assist · tiro · intercetto · errore tecnico · prosecuzione.
+
+**Controlli specifici** — tutti i passaggi intenzionali; il protagonista si muove **senza palla**; tempi dei passaggi realistici; i difensori reagiscono alla combinazione; la triangolazione produce un vantaggio tattico.
+
+**Errori critici (FAIL)** — giocatori fermi dopo il passaggio; il protagonista non si smarca; passaggi che sembrano casuali; cronaca che dice "triangolazione" ma il video mostra semplici passaggi consecutivi.
+
+**Definition of Done** — triangolazione immediatamente riconoscibile, movimenti sincronizzati, vantaggio offensivo creato, post-highlight che mostra l'evoluzione.
+
+---
+
 ## Stato di implementazione (mappatura sul codice attuale)
 
 > Onestà documentale (charter): cosa dello standard esiste già nel gate vs cosa manca.
@@ -931,6 +1012,14 @@ Intenzione di creare un'occasione immediatamente riconoscibile; destinatario chi
 | Sistema di gravità INFO..FATAL | 🟡 | il gate distingue issue (FAIL) vs warn; manca la scala completa MINOR/MAJOR/CRITICAL |
 
 **Prerequisito comune** (come per `LIVE_MATCH_QA_SPEC.md`): Semantic Validator, eventi obbligatori/vietati e Timeline dipendono tutti dal **layer Event + Timeline** osservabile nel motore.
+
+### LMV-014/015/016 — copertura attuale (sintesi)
+
+- **LMV-014 Lancio Lungo:** esiste a livello di intento (`through`/lancio) e nei testi delle situations ("Lancio lungo", "Lancio millimetrico"); manca un'esecuzione **aerea a lunga gittata** distinta dal passaggio corto (il rischio "sembra un passaggio corto" — errore critico di LMV-014 — è reale e da collaudare).
+- **LMV-015 Cambio di Gioco:** intento `switch` presente in `deriveIntent` + situations dedicate ("Cambio gioco rapido 50 metri"); il requisito "il pallone attraversa **realmente** il campo" e lo scivolamento difensivo verso il nuovo lato non sono validati.
+- **LMV-016 Triangolazione:** vicino a `onetwo` (give_and_go/wall_pass) ma LMV-016 richiede **2-3 passaggi multi-attore** con movimento senza palla — il flusso HL a singola Situation non rappresenta una vera sequenza multi-passaggio (serve Timeline + chaining).
+
+Comune a tutti e tre: **non validati** timeline/Semantic/Narrative/post-highlight; tutti dipendono dal layer Event+Timeline (e LMV-016 anche dal chaining multi-attore).
 
 ### LMV-013 (Tentativo di Assist) — copertura attuale
 
