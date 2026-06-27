@@ -28,7 +28,7 @@ C+D attivi  ── prerequisito ──►  F2 (split monolite sicuro)
 ## Fase B — Sblocco: Osservabilità del Movimento (Critical)
 | Sprint | Task | Deliverable | Effort | Rischio |
 |---|---|---|---|---|
-| **B1 — Timeline fine** | #1a Event+Timeline per-beat (BallTouched/CameraChanged/ricezione/tocco/arco) | bus eventi fine | L | Medio |
+| **B1 — Timeline fine** ✅ | #1a backbone narrativo per-beat: evento `HighlightTimeline` (buildHLTimeline+validateHLTimeline) validato dal gate (htCount 23, 19 beat-tag, 0 violazioni). Eventi render-loop fini (BallTouched/CameraChanged) → step successivo | bus eventi beat | L | Medio · **fatto 5.38.0** |
 | **B2 — Cattura video** | #1b cattura sequenza/video · #9 attese state-based vs `sleep` fissi | gate vede il movimento | L | Medio |
 
 ## Fase C — Validator del Movimento + Realismo (High) — dipende da B

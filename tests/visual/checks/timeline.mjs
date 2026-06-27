@@ -44,6 +44,8 @@ export default {
     }
     const forced = {};           // gi -> intent dell'ultimo HighlightForced
     let resolved = 0, paired = 0;
+    // LMQP B1: backbone narrativo per-beat (HighlightTimeline) — Semantic/Narrative Validator (#16)
+    let htCount = 0; const htBeatTags = new Set(); const CONCL = new Set(['shot', 'header', 'layoff']);
     const seenIntent = new Set(), seenType = new Set(), seenBall = new Set(), seenKey = new Set(); // coverage (AC: copertura)
     const sig = {};              // gi -> "intent|hlType|ballState" (firma decisione per regressione)
     for (const e of timeline) {
@@ -97,9 +99,22 @@ export default {
           warnings.push(`ActionResolved gi=${e.gi} senza fatti cinematici (hlType) — derivazione non disponibile`);
         }
         paired++;
+      } else if (e.type === 'HighlightTimeline') {
+        // ── LMQP B1: ogni highlight risolto deve avere un BACKBONE narrativo coerente (beat) ──
+        htCount++;
+        const beats = e.beats || [];
+        // violazioni di invariante (da validateHLTimeline: possesso continuo, no teleport, testa⇐cross, n° passaggi)
+        (e.violations || []).forEach(v => issues.push(`BEAT gi=${e.gi} (${e.pattern}): ${v}`));
+        if (!beats.length) warnings.push(`HighlightTimeline gi=${e.gi} senza beat (storia vuota)`);
+        else {
+          beats.forEach(b => htBeatTags.add(b.tag));
+          // la storia deve CHIUDERSI con una conclusione (shot/header) o uno scarico difensivo (layoff)
+          if (!CONCL.has(e.last)) warnings.push(`HighlightTimeline gi=${e.gi}: ultimo beat "${e.last}" non chiude l'azione (atteso shot/header/layoff)`);
+        }
       }
     }
     if (resolved === 0) warnings.push('nessun ActionResolved nella timeline (passata final-state non ha risolto?)');
+    if (htCount === 0 && resolved > 0) warnings.push('nessun HighlightTimeline emesso (backbone B1 non disponibile?)');
 
     // ── LMQP-5: regressione della DECISIONE vs baseline committata ──
     let baseline = { mode: 'skip' };
@@ -120,6 +135,7 @@ export default {
     } catch (err) { warnings.push('decision baseline err: ' + err.message); }
 
     return { pass: issues.length === 0, issues, warnings, info: { events: timeline.length, forced: Object.keys(forced).length, resolved, paired,
+      htCount, htBeatTags: [...htBeatTags].sort(),
       coverage: { intents: [...seenIntent].sort(), hlTypes: [...seenType].sort(), ballStates: [...seenBall].sort(), outcomeKeys: [...seenKey].sort() }, baseline } };
   },
 };
