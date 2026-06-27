@@ -808,9 +808,71 @@ Monitora di continuo le risorse; rileva leak e processi orfani; impedisce la sat
 
 ---
 
-## Capitolo 3.13 — Configuration, Plugin System & Extensibility
+## Capitolo 3.12 — Plugin & Extension Architecture
 
-> Nota: il **Capitolo 3.12 non è ancora stato fornito**; verrà inserito qui sopra quando disponibile.
+### Obiettivo
+
+La piattaforma deve essere **estendibile**: ogni nuova funzionalità si aggiunge **senza modificare il Core Engine**. Il QA Engine è **aperto all'estensione, chiuso alla modifica** del proprio nucleo (open/closed).
+
+### Principio fondamentale
+
+Il Core Engine **non conosce** i singoli plugin: conosce solo l'**interfaccia comune**, il **ciclo di vita** del plugin e il **risultato prodotto**. Tutta la logica specifica è delegata ai plugin.
+
+### Obiettivi
+
+Aggiungere moduli **senza** modificare il Core, ricompilare il framework, introdurre regressioni o toccare i validator esistenti. Ogni plugin è **indipendente** dagli altri.
+
+### Categorie di plugin supportate
+
+| Categoria | Esempi |
+|---|---|
+| **Validator Plugin** | nuovi LMV, validator per competizione, sperimentali, personalizzati |
+| **AI Review Plugin** | Claude Vision, GPT Vision, Gemini, modelli locali, CV dedicata (cambio provider senza toccare la pipeline) |
+| **Camera Plugin** | Broadcast, TV, Tactical, Behind Player, Goal Camera, Drone, Cinematic Replay |
+| **Replay Plugin** | rallentato, multi-camera, automatico, cinematico |
+| **Competition Plugin** | Serie A, Premier, Champions, Mondiale, tornei custom (regole senza modificare il Core) |
+| **Physics Plugin** | fisica palla, vento, pioggia, campi pesanti, condizioni climatiche |
+| **Animation Plugin** | nuovi dribbling/tiri/controlli/festeggiamenti (usati automaticamente, senza toccare il codice) |
+| **Commentary Plugin** | cronaca IT/EN/AI, testuale, telecronaca vocale |
+| **Analytics Plugin** | Heatmap, Expected Goals, Player Rating, Possession, Tactical Report, Motion Quality Report |
+
+### Ciclo di vita del plugin
+
+```
+Discovery → Registration → Initialization → Validation → Execution → Result Collection → Cleanup → Unload
+```
+
+Ogni fase tracciata nei log.
+
+### Isolamento & Failure Handling
+
+Ogni plugin **completamente isolato**: un suo errore non blocca il QA Engine, non interrompe gli altri plugin, non compromette i test (**degrado controllato**). Su errore: il Core continua, il plugin viene isolato, si genera un **Failure Package**, l'errore appare in Dashboard.
+
+### Versioning & Dependency Management
+
+Ogni plugin dichiara: nome, versione, autore, compatibilità, dipendenze, data di rilascio → il QA Engine verifica la compatibilità **prima** del caricamento. I plugin **non dipendono direttamente tra loro**: comunicano solo via **API pubbliche del Core**; **vietate** le dipendenze circolari.
+
+### Security Model
+
+Esecuzione in ambiente controllato (**minimo privilegio**): un plugin non può modificare il Core, alterare altri plugin, toccare direttamente il database o accedere a componenti non autorizzati.
+
+### Performance & Logging
+
+Ogni plugin dichiara tempo medio di init, consumo memoria, tempo medio di esecuzione → monitorati automaticamente. Log strutturati: plugin, versione, operazione, timestamp, durata, esito.
+
+### Plugin Marketplace (futuro)
+
+Architettura predisposta per un repository centralizzato (validator, replay, AI provider, analytics, moduli grafici, test suite) installabili **senza modifiche strutturali** al Core.
+
+### Extensibility Principle & Definition of Done
+
+Ogni nuova funzionalità va implementata **preferibilmente come plugin**; modificare il Core è **l'ultima risorsa** → più stabilità, meno regressioni, migliore manutenibilità. **DoD:** qualsiasi nuova funzionalità aggiungibile come modulo indipendente, senza modificare il Core, mantenendo compatibilità con validator/QA Engine/AI Review/Replay/Dashboard.
+
+> **Relazione con il cap. 3.13:** il 3.12 definisce l'**architettura a plugin** (categorie, ciclo di vita, isolamento, security); il 3.13 ne è il **complemento operativo** (Configuration First, registries, abstraction layer, configuration validation). Vanno letti insieme.
+
+---
+
+## Capitolo 3.13 — Configuration, Plugin System & Extensibility
 
 ### Scopo
 
@@ -875,7 +937,8 @@ Ogni plugin logga: inizializzazione, stato, errori, tempi, versione (logging uni
 | **Performance Monitor / Resource Manager** | 🔴 da costruire | il gate gira mono-worker e Playwright chiude il browser a fine run (cleanup implicito); health-check processi eseguito oggi **manualmente** (`ps`). Mancano: metriche FPS/CPU/RAM raccolte, leak/zombie detection automatica, soglie configurabili, stress test, report prestazionale, grafici |
 | **Dashboard (Visual QA / LMDP)** | 🟡 minimale | `tests/visual/report.mjs` → `out/validate/index.html` (report statico per-run con issue/warn/screenshot). Mancano: Home live, Test Explorer/Highlight Detail, Replay/Timeline Viewer, Visual Comparison, Regression/Failure Center, Performance Monitor, AI Review, search/filtri, Quality Score globale, notifiche |
 | **AI Vision Review Engine** | 🔴 opzionale | il gate cattura già screenshot del canvas (input pronto), ma nessuna analisi via Vision Provider, nessun Readability/Cinematic/Motion score percettivo, nessuna identificazione autonoma della Situation. Provider-agnostic by design |
-| **Configuration & Plugin System** | 🔴 da costruire | i check del gate sono modulari (`checks/*.mjs`) ma importati staticamente in `validate-situations.mjs`; le Situation sono un array, non un registry con metadati/validator associati; config via env var (`CPM_CHROME`/`PLAYWRIGHT_BROWSERS_PATH`), non file con validazione/versionamento. Mancano: plugin auto-load, Validator/Situation/Event registry, abstraction provider |
+| **Plugin & Extension Architecture** (3.12) | 🔴 da costruire | nessuna architettura a plugin (ciclo di vita Discovery→Unload, isolamento, security/min-privilegio, versioning, marketplace). I check del gate sono modulari (`checks/*.mjs`) ma **importati staticamente**; il gioco è un **singolo file globale** senza plugin runtime |
+| **Configuration & Plugin System** (3.13) | 🔴 da costruire | Situation = array, non registry con metadati/validator associati; config via env var (`CPM_CHROME`/`PLAYWRIGHT_BROWSERS_PATH`), non file con validazione/versionamento. Mancano: plugin auto-load, Validator/Situation/Event registry, abstraction provider |
 | **Football Intelligence KB** | 🟡 implicita | la logica calcistica oggi vive **nel codice** (`deriveIntent` 13 intenti, `decideExecution`, regole in `tests/situations-3d-validation.js`, invariante CINE) e nei testi/tactic delle 179 Situation — non in una KB dichiarativa separata e versionata. Manca: estrazione regole↔codice, comportamento atteso per ruolo/fase, varianti/eccezioni documentate |
 
 **Limite strutturale noto:** il gate cattura **frame congelati** → valida stato/coerenza (Livelli 1-3 parziali) ma **non il movimento né la leggibilità temporale** (Livello 4). Il Timeline/Event layer (LMQP-1) è il prerequisito per colmarlo.
