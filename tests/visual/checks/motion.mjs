@@ -12,7 +12,7 @@ export default {
   scope: 'global',
   run({ samples }) {
     const issues = [], warnings = [];
-    const ALIVE_MIN = 15;     // su ~21 giocatori (osservati 19–21 attivi in fase choose)
+    const ALIVE_MIN = 13;     // su ~21 giocatori; da 5.43.15 i 2 PORTIERI restano in posizione di pronto (fermi, realistico) → non più contati come "in movimento" (prima jitteravano = liveness falsa). Soglia abbassata di 2 di conseguenza.
     const TP_MAX = 12;        // salto mesh tra due campioni (osservati 2.7–4.2 → ampio margine)
     const DEF_ENGAGE = 24;    // #24: un difensore deve impegnare il portatore (osservato minDist <= 8 in azione)
     const PRESS_HALF = 50;    // applica la reattività SOLO con palla nella metà offensiva (no rimesse/GK restart)
