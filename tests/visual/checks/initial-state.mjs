@@ -40,7 +40,12 @@ export default {
     const _ball = _useTargets ? _bt : state.ball;
     const dBallHero = Math.hypot(_ball.x - _hero.x, _ball.y - _hero.y);
     // Offensiva: l'effetto di attach garantisce palla=eroe → invariante HARD e deterministico.
-    if (!isDef && dBallHero > 8) issues.push(`Situation offensiva ma palla lontana dall'eroe (${dBallHero.toFixed(1)}u) — possesso non agganciato`);
+    //   MA solo quando la palla è DAVVERO ai piedi (ballState 'feet'). Per i palloni AEREI/SET-PIECE
+    //   (corner/cross/punizione: ballState 'aerial'/'set_ground') la palla è lontana dall'eroe PER DESIGN
+    //   (bandierina, cross in arrivo) → non è un difetto, ed evita il falso positivo ambientale su rendering
+    //   software lento (la palla aerea non si assesta in tempo). Precisione, non riduzione della severità.
+    const _atFeet = (sit.ballState == null || sit.ballState === 'feet');
+    if (!isDef && _atFeet && dBallHero > 8) issues.push(`Situation offensiva ma palla lontana dall'eroe (${dBallHero.toFixed(1)}u) — possesso non agganciato`);
     // Difensiva: per design la palla NON è posizionata sull'avversario al frame di setup (è gestita nel
     //   loop live di pressing); ballPos resta quella ereditata dalla situation precedente → non è un
     //   invariante deterministico a setup-time. Resta SOFT (warning informativo), non blocca il gate.

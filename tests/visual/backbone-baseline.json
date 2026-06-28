@@ -27,7 +27,7 @@
  "25": "pass/THROUGH_BALL:4:shot|build/BUILDUP:3:shot|shot/EDGE_SHOT:3:shot",
  "26": "shot/EDGE_SHOT:3:shot|shot/EDGE_SHOT:3:shot|shot/DRIBBLE_SHOT:4:shot",
  "27": "shot/EDGE_SHOT:3:shot|pass/COMBINATION:5:shot|shot/EDGE_SHOT:3:shot",
- "28": "pass/COMBINATION:5:shot|pass/COMBINATION:5:shot|shot/BALL_CARRY:4:shot",
+ "28": "pass/COMBINATION:5:shot|pass/SWITCH:3:shot|shot/BALL_CARRY:4:shot",
  "29": "build/BUILDUP:3:shot|pass/COMBINATION:5:shot|shot/BALL_CARRY:4:shot",
  "30": "dribble/DRIBBLE_SHOT:4:shot|build/BUILDUP:3:shot|pass/COMBINATION:5:shot",
  "31": "tackle/TACKLE:4:layoff|tackle/TACKLE:4:layoff|tackle/TACKLE:4:layoff",
