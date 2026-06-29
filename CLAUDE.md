@@ -59,6 +59,8 @@ Per il rilascio store serve un artefatto **offline** (niente CDN, niente Babel-i
 
 Il **sorgente `CARRIER-MANAGER-AV.html` resta INVARIATO** (dev workflow e gate immutati): la build lo legge soltanto. Validazione: `node tools/validate-dist.mjs` serve la dist **bloccando ogni richiesta esterna** e verifica mount React + home + zero CDN + zero errori (prova che è davvero offline). `dist/` è gitignored (riproducibile). Prossimo passo roadmap: **1.3 Capacitor → AAB**.
 
+**Gate de-branding/copyright (roadmap 1.5, BLOCCANTE prima del rilascio store):** `node tools/audit-copyright.mjs` carica il gioco ed esegue `window._auditCopyright()` (scan club/leghe/competizioni/record/nomi contro le blocklist `_CR_BRANDS`/`_CR_PLAYERS`); esce ≠0 se trova riferimenti al mondo reale. Va eseguito e deve dare **0 hit** prima di pubblicare.
+
 ## Architecture
 
 Tutto è in un singolo `<script type="text/babel">`. Nessun module system — global scope, dichiarazioni in ordine di dipendenza.
