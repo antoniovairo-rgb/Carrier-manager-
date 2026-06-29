@@ -59,6 +59,8 @@ const inlined = [
 // ---- assembla la dist (sostituzioni dalla FINE verso l'INIZIO per non invalidare gli indici) ----
 html = html.slice(0, bStart) + '<script>\n' + compiled + '\n</script>' + html.slice(bClose + '</script>'.length);
 html = html.slice(0, cdnStart) + inlined + html.slice(cdnEnd);
+// 1.6 — flag BUILD STORE: disattiva la feature AI (zero chiamate esterne, Data Safety "nessun dato").
+html = html.replace('<head>', '<head>\n<script>window.__CPM_STORE_BUILD=true;/* build store offline: feature AI disattivata (roadmap 1.6) */</script>');
 
 // ---- scrivi dist + copia assets/ e sw.js ----
 fs.rmSync(DIST, { recursive: true, force: true });

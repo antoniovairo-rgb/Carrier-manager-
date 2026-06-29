@@ -345,12 +345,12 @@ Legenda costo/tempo: **S** ≤½ gg · **M** 1–2 gg · **L** sprint. Priorità
 | 1.3 | **Packaging Capacitor** → AAB (progetto, splash, `INTERNET` se serve) | M | Basso-medio | **P0** |
 | 1.4 | ✅ **FATTO** — **Storage nativo** via wrapper `storage` (`window.storage` anti-eviction, già presente) + **export/import** save (`exportSave`/`importSave`, già nella UI) | M | Basso | **P0** |
 | 1.5 | ✅ **FATTO (tecnico)** — **Chiusura de-branding**: rinominati gli ultimi 2 club reali (Dortmund/Leverkusen→Goldwald/Werkstadt); `_auditCopyrightSafety` → **gate CI bloccante** (`tools/audit-copyright.mjs`, 0 hit). *Resta:* disclaimer testuale nel listing (asset, 1.9) | M | Medio | **P0** |
-| 1.6 | **Disattivare la feature AI nella build store** (flag off) → Data Safety "nessun dato" | S | Basso | **P0** |
+| 1.6 | ✅ **FATTO** — **Feature AI disattivata nella build store** (`window.__CPM_STORE_BUILD` impostato da `build-dist.mjs` → `callClaudeAPI` esce subito; zero chiamate esterne) → Data Safety "nessun dato". Validato in `validate-dist.mjs` | S | Basso | **P0** |
 | 1.6b | **Bottone donazione esterna** (link a Ko-fi/PayPal/BMC, **nessun reward in-app**) | S | Basso | **P1** |
 | 1.7 | **Privacy policy** ospitata + **Data Safety** + **content rating IARC** | S | Basso | **P0** |
 | 1.8 | **Account Play (25$)** + keystore upload + Play App Signing + **target API level** corrente | S | Basso | **P0** |
 | 1.9 | **Asset listing minimi**: icona 512, feature graphic, ≥2 screenshot, titolo/descrizioni + disclaimer | M | Basso | **P1** |
-| 1.10 | **Error boundary + crash screen** (protegge save e recensioni) | S | Basso | **P1** |
+| 1.10 | ✅ **FATTO** — **Error boundary GLOBALE + crash screen** (`RootErrorBoundary` attorno ad `App`): niente schermata bianca, recupero che rassicura sul save + ricarica + backup | S | Basso | **P1** |
 | 1.11 | **Test su device entry-level reale** (avvio, fps match, heap su 5–10 partite) | M | Medio | **P1** |
 
 > **Monetizzazione v1 = donazione esterna pura** (1.6b): nessun ads, nessun Play Billing, Data Safety "nessun dato" → primo invio il più leggero possibile.

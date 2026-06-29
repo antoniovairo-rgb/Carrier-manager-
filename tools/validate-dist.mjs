@@ -33,13 +33,15 @@ await page.goto(`http://localhost:${port}/index.html`, { waitUntil: 'load', time
 const mounted = await page.waitForFunction(() => { const r = document.getElementById('root'); return r && r.children.length > 0; }, { timeout: 40000 }).then(() => true).catch(() => false);
 await new Promise(r => setTimeout(r, 1500));
 const home = await page.evaluate(() => { const b = [...document.querySelectorAll('button')].map(x => (x.textContent || '').trim()); return { btns: b.length, hasNuova: b.some(t => /nuova carriera|continua|carica/i.test(t)) }; });
+const storeFlag = await page.evaluate(() => window.__CPM_STORE_BUILD === true); // 1.6: feature AI disattivata nella build store
 
 console.log('=== VALIDAZIONE DIST (offline) ===');
 console.log(`React montato (root popolato): ${mounted ? '✅' : '❌'}`);
 console.log(`home raggiunta (bottoni: ${home.btns}, "Nuova carriera": ${home.hasNuova ? 'sì' : 'no'}): ${home.btns > 0 && home.hasNuova ? '✅' : '❌'}`);
 console.log(`richieste esterne (CDN) tentate: ${externalHits.length ? '❌ ' + externalHits.slice(0, 5).join(' ') : '✅ NESSUNA → davvero offline'}`);
 console.log(`errori console: ${errs.length ? '❌ ' + errs.slice(0, 4).join(' | ') : '✅ nessuno'}`);
-const ok = mounted && home.btns > 0 && home.hasNuova && externalHits.length === 0 && errs.length === 0;
+console.log(`flag build store (feature AI off, 1.6): ${storeFlag ? '✅ attivo' : '❌ assente'}`);
+const ok = mounted && home.btns > 0 && home.hasNuova && externalHits.length === 0 && errs.length === 0 && storeFlag;
 console.log(ok ? '\n✅ DIST OFFLINE FUNZIONANTE' : '\n❌ DIST da rivedere');
 await browser.close(); srv.close();
 process.exit(ok ? 0 : 1);
