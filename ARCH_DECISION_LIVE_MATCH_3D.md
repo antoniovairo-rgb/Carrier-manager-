@@ -134,3 +134,18 @@ Scelgo **C** perché è l'unica coerente con l'obiettivo dichiarato ("non funzio
 4. Ogni step ≤300 righe, EVAL + gate ad ogni checkpoint.
 
 > **In una riga:** fondamenta nuove dove servono (personaggi skinnati stilizzati), regia per prima perché rende subito, audio e replay per chiudere l'emozione — senza riscrivere il motore intero e senza inseguire il fotorealismo.
+
+---
+
+## 8. Addendum — Decisione su deadline (qualità > scadenza)
+
+**Contesto:** il Product Owner ha posto un obiettivo di "app pronta per l'approvazione Play Store entro 15 giorni". Il TD ha evidenziato che il refactor a target EVAL v2.0 (GLB skinnato, anim 4,4 / camera 4,5 / AI Vision 85) **non è compatibile** con 15 giorni (è un lavoro asset-dipendente da ~2-3 mesi), e che l'approvazione store **non richiede** qualità 3D AAA.
+
+**Decisione del PO (informata):** **la qualità vince sulla scadenza.** Si mantiene il **refactor come P0 #1** e si accetta che i 15 giorni **non** saranno rispettati. Lo store arriva **a refactor maturo**.
+
+**Conseguenze vincolanti:**
+1. **Nessun disaccoppiamento**: non si pubblica col motore attuale. Si pubblica quando il Live Match 3D supera la soglia EVAL v2.0 (verdetto PO dal vivo).
+2. **Timeline store realistica:** ~2-3 mesi (guidata dalla qualità percepita, non da una checklist), non 15 giorni.
+3. **Account Play:** creazione **rinviata** a ~2 settimane prima del lancio previsto, così il test chiuso obbligatorio (12 tester / 14 giorni, account nuovo/personale) gira **in parallelo** alla rifinitura finale e non si somma in coda. *(Account: non ancora esistente.)*
+4. **Sequenza invariata:** 1.0a Camera/Regia → 1.0b Personaggi+Palla (GLB) → 1.0c Audio+Replay. La pressione di tempo non comprime più 1.0b (la fase irreversibile e rischiosa), il che protegge la qualità della scelta.
+5. **PLAY_STORE_READINESS.md:** la Fase 1 store resta valida ma **subordinata** al completamento del refactor; le sue voci di packaging/conformità si eseguono nella finestra finale (~ultime 2-3 settimane).
