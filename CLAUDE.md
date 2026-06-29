@@ -204,6 +204,17 @@ Dal 5.46 i 22 calciatori sono modelli **GLB reali** (Mixamo CH38) di **DEFAULT**
 - **Cross tattico (5.47.7, 1° cut):** corse coordinate in area pattern-aware nel pre-azione (ATT li=8→primo palo, li=10→secondo palo, li=9→dischetto; CEN→rimorchio) + il cross MIRA al miglior ricevente in area (blend 60/40, fallback se vuota). ⚠️ Il blocco-ricevente sta **FUORI dall'`arcBlock`** che la suite `data-coherence` estrae (deve restare matematica pura di traiettoria) — come il ramo `pass`; metterlo dentro rompe `computeArc` (G2X/sr non disponibili nell'eval analitico).
 - **Atmosfera (5.47.8):** pubblico reattivo a palo/parata (`crowdOhT`, pulse neutrale ~1.6s) + tensione crescente ≥80' (`_atmoExc`). Procedurale, nessun asset. *Scelta condivisa: niente import di asset 3D pesanti (peso mobile/Play Store) → stadio procedurale rifinito proceduralmente.*
 
+### Movimento, transizioni & avvio highlight (5.47.9–5.47.13)
+
+- **Movimenti più lenti (5.47.9):** ritarati i parametri di `animOne` (cap 20→15 u/s, accel/decel più progressive, eroe ×0.8) + stride GLB più calmo. **Gate:** soglia `alive` del check `motion` ricalibrata 1.0→0.7u + finestra 1000→1300ms (gioco più lento ⇒ misura su finestra più ampia; un giocatore >0.7u/finestra è chiaramente vivo).
+- **Bug highlight difensivo (5.47.10):** la sit. "Pressing alto in trequarti" (1803, `type:def`) aveva `rew:"goal"` → palla in porta avversaria. Corretto `rew→recovery` (era l'unica difensiva con `goal`).
+- **Parate (5.47.10):** portata del tuffo GK dipende dall'esito (parata → ±9 si distende; gol/fuori → ±6, parata mancata convincente).
+- **Transizioni/montaggio = fix "boomerang" (5.47.11):** a fine HL non-gol `handleContinue` non resettava il target palla → scivolava indietro verso l'eroe. Ora: punto di ripresa coerente con l'esito + SNAP palla+formazione + stacco `setCutFx` → regia TV.
+- **Avvio highlight = freeze di lettura (5.47.12):** in `hl_choose` i 21 off-ball fermi ~0.9s (`_chooseT`), poi si muovono; eroe libero. **Disattivato sotto `?cpmtest=1`** (`_CPM_TEST`): è presentazione, il gate valida l'AI off-ball che il freeze solo ritarda.
+- **Uniformità CH38 — arbitro (5.47.13):** l'arbitro usa lo stesso GLB CH38 (`_mkA` su `refMesh`). Panchina/pubblico restano procedurali per **vincolo performance mobile**.
+
+> ⚠️ Transizioni (`handleContinue`), freeze d'avvio e arbitro GLB **non coperti dal gate** (forza le situation / gira GLB OFF) → collaudo dal vivo; il gate garantisce transpile + non-regressione.
+
 ## Quality Gate (tests/visual) — OBBLIGATORIO prima di ogni push
 
 Suite Playwright headless che carica il gioco, forza ogni `SITUATION`, risolve le azioni e valida rendering 3D + stato. **Va eseguita e deve passare 12/12 prima di ogni push.**
