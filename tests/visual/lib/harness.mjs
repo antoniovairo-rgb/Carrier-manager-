@@ -180,12 +180,24 @@ export async function sampleBallPath(page, gi, { settle = 450, pollMs = 90, wind
     maxBackStep: +maxBack.toFixed(1), minX: xs.length ? +Math.min(...xs).toFixed(1) : null, n: xs.length };
 }
 
-/* Risolve l'azione k della Situation corrente, attende l'esito, ritorna {outcome, finalState}. */
-export async function resolveAction(page, k = 0, { wait = 850 } = {}) {
+/* Risolve l'azione k della Situation corrente, attende l'esito, ritorna {outcome, finalState}.
+   Lo stato finale è catturato quando la PALLA SI FERMA (l'arco di conclusione — es. gol dopo
+   dribbling/build-up — può durare oltre `wait` su HW lento → cattura prematura = falso positivo
+   final-state, il flake storico gi=40). Polling fino a settle, cap a settleMax. */
+export async function resolveAction(page, k = 0, { wait = 850, settleMax = 2800 } = {}) {
   await page.evaluate(kk => window.__CPM_RESOLVE(kk), k);
   await sleep(wait);
   const outcome = await page.evaluate(() => window.__CPM_OUTCOME);
-  const finalState = await page.evaluate(() => window.__CPM_STATE());
+  let finalState = await page.evaluate(() => window.__CPM_STATE());
+  const t0 = Date.now();
+  while (Date.now() - t0 < settleMax) {
+    await sleep(120);
+    const s = await page.evaluate(() => window.__CPM_STATE());
+    if (!s || !s.ok || !s.ball || !finalState || !finalState.ball) { if (s) finalState = s; continue; }
+    const moved = Math.hypot((s.ball.x || 0) - (finalState.ball.x || 0), (s.ball.y || 0) - (finalState.ball.y || 0));
+    finalState = s;
+    if (moved < 0.4) break; // palla ferma → stato finale stabile
+  }
   return { outcome, finalState };
 }
 
