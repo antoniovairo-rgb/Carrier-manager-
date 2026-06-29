@@ -11,8 +11,11 @@
 
 Elevora è un gioco-carriera calcistico **single-file** (HTML + React 18 UMD + Three.js r128 + Babel-standalone che transpila il JSX **in-browser** al load; zero build, dipendenze da CDN). L'audit mostra che **è più vicino allo store di quanto sembri**: è già una **PWA installabile** (manifest, service worker, icone maskable, rebranding "Elevora") e il **de-branding** dei nomi è già avviato con tanto di scanner anti-regressione.
 
-I **veri blocchi** verso lo store non sono "creare l'app", ma **tre cantieri di produzionizzazione**:
+**Decisione del Product Owner:** la **qualità visiva del live match 3D (animazioni + regia/camera) così com'è NON è accettabile per il rilascio** → il suo refactor è il **blocco P0 #1 della Fase 1**: parte per primo, il resto segue.
 
+I blocchi verso lo store sono quindi **un cantiere di qualità + tre cantieri di produzionizzazione**:
+
+0. **🔴 Refactor qualità live match 3D (P0 #1)** — innalzare **animazioni** (oggi rigide/basilari, AI Vision ~40-55) e **regia/camera** (oggi ~50-65) a un livello "accettabile" deciso dal Product Owner. *Perceptual e gate-blind* → validazione via AI Vision + collaudo dal vivo, non dal gate. È l'item a **tempo aperto** e il principale rischio di schedule.
 1. **Rimuovere Babel-in-browser** (precompilare il JSX) — oggi l'intero gioco è un unico `<script type="text/babel">` transpilato al volo. È lento all'avvio, fragile e non offline.
 2. **Bundlare le dipendenze in locale** (React/Three/Babel non più da CDN) — un'app installata **deve** funzionare offline; oggi non lo fa.
 3. **Conformità store** — privacy policy, Data Safety form, content rating, e gestione della **feature AI** (chiamata a `api.anthropic.com` con API key utente). *Senza ads e senza SDK di terzi la conformità è molto più leggera.*
@@ -21,6 +24,7 @@ I **veri blocchi** verso lo store non sono "creare l'app", ma **tre cantieri di 
 
 | Area | Stato | Nota sintetica |
 |---|---|---|
+| **Qualità live match 3D (anim. + regia)** | 🔴 **P0 #1** | **Non accettabile per il rilascio** (decisione PO); perceptual/gate-blind → AI Vision + occhio |
 | Packaging / installabilità | 🟢 Avanzato | PWA completa già presente (manifest+SW+icone) |
 | Precompilazione JSX (no Babel runtime) | 🔴 Da fare | Tutto il gioco è transpilato in-browser |
 | Bundle locale offline (no CDN) | 🔴 Da fare | Tutto remoto; fallback solo CDN→CDN |
@@ -32,7 +36,7 @@ I **veri blocchi** verso lo store non sono "creare l'app", ma **tre cantieri di 
 | Save robustezza in WebView | 🟡 Da irrobustire | Rischio eviction localStorage |
 | Asset di listing | 🔴 Da preparare | Icona ok (canvas), mancano screenshot/feature graphic/testi |
 
-> **Conclusione operativa:** la strada più breve e robusta è **TWA/Bubblewrap** che avvolge la PWA **dopo** aver risolto i cantieri 1–2 (precompilazione + bundle locale). Senza quei due, qualsiasi packaging produrrebbe un'app lenta e non-offline.
+> **Conclusione operativa:** il **refactor qualità del live match 3D (anim. + regia) è il P0 #1 e parte per primo** (decisione PO). In parallelo/subito dopo, il packaging consigliato è **Capacitor** (offline reale + storage nativo), **dopo** aver risolto precompilazione JSX + bundle locale. *Nota TD:* il refactor 3D è perceptual/gate-blind → non ha un "verde automatico"; il suo completamento dipende dal collaudo dal vivo del Product Owner, ed è l'unico item a tempo aperto del piano (rischio di schedule principale).
 
 ---
 
@@ -335,6 +339,7 @@ Legenda costo/tempo: **S** ≤½ gg · **M** 1–2 gg · **L** sprint. Priorità
 
 | # | Voce | Costo | Rischio | Prio |
 |---|---|---|---|---|
+| **1.0** | **🔴 REFACTOR QUALITÀ LIVE MATCH 3D — animazioni + regia/camera** (parte per primo; vedi §10.bis) | **L+** (multi-sprint, a tempo aperto) | **Alto** (perceptual/gate-blind) | **P0 #1** |
 | 1.1 | **Precompilare il JSX** (B1): build di packaging che elimina Babel-in-browser; sorgente HTML invariato | M | Basso | **P0** |
 | 1.2 | **Bundle locale** di React/ReactDOM/Three(+loaders)/Phaser; rimozione dipendenze CDN nell'artefatto app | M | Basso | **P0** |
 | 1.3 | **Packaging Capacitor** → AAB (progetto, splash, `INTERNET` se serve) | M | Basso-medio | **P0** |
@@ -350,6 +355,29 @@ Legenda costo/tempo: **S** ≤½ gg · **M** 1–2 gg · **L** sprint. Priorità
 
 > **Monetizzazione v1 = donazione esterna pura** (1.6b): nessun ads, nessun Play Billing, Data Safety "nessun dato" → primo invio il più leggero possibile.
 > **Nota sul vincolo "nuovo account personale":** se l'account Play è nuovo e personale, pianificare il **test chiuso con ≥12 tester / 14 giorni** prima della produzione (incide sui tempi, non sul lavoro tecnico).
+
+#### §10.bis — Dettaglio del blocco 1.0 (refactor qualità live match 3D)
+
+**Decisione PO:** il live match 3D così com'è **non è accettabile per il rilascio**. Ambito del refactor: **(a) qualità delle animazioni** e **(b) regia/camera**. *Fuori ambito per ora:* lo split architetturale del monolite (manutenibilità) e l'upgrade di Three — restano sul binario interno/post-lancio, salvo emergano come prerequisiti tecnici durante il lavoro.
+
+**Stato di partenza (loro metriche):** AI Vision `animationQuality ~40-55` ("rigide/basilari"), `cameraQuality ~50-65`. `ThreeMatchView` è un render-loop monolitico (~1.960 righe) che ospita `animOne`, le animazioni eroe variant-aware e l'off-ball AI.
+
+**Perché è "L+ a tempo aperto" e non un task chiuso:**
+- È **perceptual e gate-blind**: il quality gate cattura frame congelati (stato/coerenza/golden) e **non valida né il movimento né la resa**. Quindi non c'è un "12/12 verde" che certifichi "ora è bello".
+- La validazione passa da **AI Vision (2° livello, non bloccante)** + **collaudo dal vivo del Product Owner**. Il criterio di "accettabile" lo fissa il PO.
+- Le micro-modifiche al render non sono certificabili come miglioramento in autonomia (provato empiricamente nei loro doc) → serve un **loop iterativo** implementa→guarda→aggiusta.
+
+**Metodo proposto (coerente col charter LMQP e Studio Framework):**
+1. **Definire il target di "accettabile"** con il PO: riferimenti video, lista di difetti percepiti (es. transizioni a scatto, T-pose residue, camera che perde palla/eroe), soglia AI Vision minima desiderata. *Senza questo, il blocco non ha condizione di uscita.*
+2. **Animazioni:** lavorare a step ≤300 righe (locomozione/blending, wind-up, transizioni, posa) con **golden di stato invariato** come rete anti-regressione + collaudo dal vivo per la resa.
+3. **Regia/camera:** framing/tracking/zoom per-pattern, leggibilità azione (hero+palla in campo), validati con AI Vision `cameraQuality` + occhio.
+4. **Gate 12/12 + 3 baseline** verdi ad ogni step (lo stato non deve regredire anche se la resa cambia).
+5. **Checkpoint di accettazione del PO** a fine di ogni sotto-blocco: è il PO a dichiarare "accettabile".
+
+**Rischio/dipendenze:**
+- **Rischio schedule #1 di tutto il piano** (durata guidata dalla qualità percepita, non da una checklist chiudibile).
+- **Indipendente dal packaging:** tecnicamente 1.1–1.11 non dipendono da 1.0. Per scelta PO 1.0 ha priorità e parte per primo; se in futuro si volesse comprimere i tempi, il packaging potrebbe avanzare in parallelo senza conflitti.
+- **Se durante il lavoro emerge che le animazioni/camera non sono migliorabili senza toccare la struttura del render-loop**, lo split architetturale (Master Plan Fase 3) rientrerebbe come prerequisito → da rivalutare con il PO a quel punto.
 
 ### FASE 2 — Monetizzazione & rifinitura
 
@@ -373,7 +401,8 @@ Legenda costo/tempo: **S** ≤½ gg · **M** 1–2 gg · **L** sprint. Priorità
 
 ## 11. Rischi trasversali & raccomandazione finale
 
-- **Render gate-blind:** il quality gate **non valida la resa visiva** → ogni intervento su packaging/performance/Three va **collaudato dal vivo su device reale**, non solo col gate.
+- **Refactor 3D = rischio di schedule #1 (P0 #1):** è l'unico blocco a **tempo aperto**, perché la sua condizione di uscita è la qualità percepita (decisa dal PO), non una checklist chiudibile. Va inquadrato con un **target esplicito di "accettabile"** all'inizio, altrimenti rischia di non chiudersi mai.
+- **Render gate-blind:** il quality gate **non valida la resa visiva** → ogni intervento su animazioni/camera/packaging/performance/Three va **collaudato dal vivo su device reale**, non solo col gate.
 - **IP è l'unico rischio "legale" vero:** il de-branding va **chiuso e reso bloccante in CI** prima di pubblicare — è l'unico che può causare una **rimozione** dell'app.
 - **Offline + save** sono i due rischi di **recensione negativa** più probabili → la scelta Capacitor li indirizza entrambi.
 - **Donazioni = resa bassa ma adempimenti minimi:** la scelta no-ads/donazioni elimina SDK, consenso GDPR e `AD_ID`, e porta il Data Safety a "nessun dato" → primo invio leggerissimo. Il prezzo è un guadagno modesto, accettato consapevolmente.
