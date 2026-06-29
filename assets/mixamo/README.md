@@ -6,7 +6,12 @@ personaggi del Live Match 3D. Licenza Mixamo: uso commerciale nei giochi
 consentito (asset **incorporato** nel gioco, non redistribuito come asset a sé).
 
 ## Prima tornata (minima — fa correre l'eroe "vero")
-- `character.fbx`  → personaggio **"Y Bot"** · Download FBX Binary · Pose **T-pose**
+- `character.fbx`  → personaggio **umano atletico in tenuta semplice** (t-shirt/sporty;
+  es. **"Brian"**, **"Leonard"**, **"Liam"** — evita armature/abiti/tute pesanti) ·
+  Download FBX Binary · Pose **T-pose**
+  - Nota: per un umano texturizzato la **maglia** si tinta solo sul busto (mesh
+    separate) → rifinitura colori-squadra DOPO il primo test; il primo look tiene
+    la texture originale.
 - `idle.fbx`       → animazione **"Idle"** · FBX Binary · **Without Skin** · **In Place**
 - `run.fbx`        → animazione **"Running"** (o "Fast Run") · FBX Binary · **Without Skin** · **In Place**
 
