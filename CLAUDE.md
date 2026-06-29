@@ -185,6 +185,18 @@ Macro-direttiva: smontare l'accoppiamento *Situation → animazione pre-autorata
 
 Monta una volta (deps `[]`). Posizione giocatori, zone-highlight e camera-target sono aggiornati via ref (`sr.current`), niente re-render. Lo stadio è costruito una volta da `buildStadium`; le texture folla sono `THREE.CanvasTexture` procedurali da `makeCrowdTex`. `setClearColor(0x050810)` per evitare il flash grigio pre-primo-frame. Il render-loop ospita `animOne` (locomozione di tutti i mesh), le animazioni eroe variant-aware e l'off-ball positioning.
 
+### Calciatori GLB (CH38) — visual & movimento (5.46–5.47)
+
+Dal 5.46 i 22 calciatori sono modelli **GLB reali** (Mixamo CH38) di **DEFAULT** (`window.__CPM_GLB`, `?glb=0`/`localStorage 'cpm-glb'` per spegnere; fallback automatico al procedurale se il GLB non carica). Asset in `assets/` (`footballer.glb` + clip `anim-*.glb` di locomozione, gesti eroe e parate GK). Il modello procedurale (`mkP`) resta come **rete di sicurezza** (nascosto quando il GLB è attivo, ma guida ancora logica/posizione → `_glbDriven`).
+
+- **Gesti (`_mkGestures`):** mappa di clip one-shot (`LoopOnce`+`clampWhenFinished`, peso 0 a riposo) su eroe (kick/penalty/header/tackle/volley da `actType`) e portiere avversario (dive/catch/block da `oppActType`), in crossfade con la locomozione. La traslazione del tuffo GK resta procedurale; il GLB sovrappone gli arti.
+- **Step A — Kit (`buildKit`/`resolveKitConflict`):** le mesh CH38 sono **separate** (`Ch38_Shirt/Shorts/Socks/Body/Shoes/Hair`) ma condividono un materiale → ora tinte **per-mesh** (maglia/pantaloncini/calzettoni/scarpe a tinta unita, floor emissivo ~14%). Contrasto garantito tra squadre (maglia away alternativa) + portieri distinti. Pelle/capelli mantengono la texture.
+- **Step B — Varietà/identità (`appearanceFromSeed`/`_mix32`):** aspetto deterministico per giocatore (altezza/corporatura/pelle/capelli/calvizie). NPC da `hashStr(club+slot)` → persistente per costruzione (zero save extra); protagonista da `AVATARS[avatarId]` (mai casuale). Limite CH38: volto/occhi/barba non variabili (bakati). Mixer ad avalanche per evitare bucket collassati su seed adiacenti.
+- **Step D — Animazione:** blend GLB idle↔corsa da velocità **smussata** (EMA) + crossfade; `run.timeScale` scala con la velocità (anti foot-slide).
+- **Step C — Movimento (`animOne`):** off-ball con **bersaglio commesso smussato** (EMA τ≈0.22s) + **modello a velocità con inerzia** (accel/decel, momentum, cap 20 u/s) invece del lerp posizionale verso un target ricalcolato ad ogni frame → niente più zig-zag/micro-correzioni. **Eroe CRISP** (`mesh._isHero`, lerp diretto). Deterministico → firma golden/`determinism` invariata (usa il target *logico* eroe, non le posizioni off-ball). *Il feel dell'inerzia + momentum fisico completo restano da rifinire dal vivo col PO.*
+
+> ⚠️ Tutto il lavoro GLB (kit/varietà/animazione/movimento) vive nel render-loop: il gate gira **GLB OFF** (valida la logica deterministica; `animOne` è comunque esercitato per il movimento) → la **resa** dei kit/varietà/gesti si valida coi frame flag-on (`__CPM_GLB=true`, vedi `tests/visual/glb-*.mjs`) + collaudo dal vivo.
+
 ## Quality Gate (tests/visual) — OBBLIGATORIO prima di ogni push
 
 Suite Playwright headless che carica il gioco, forza ogni `SITUATION`, risolve le azioni e valida rendering 3D + stato. **Va eseguita e deve passare 12/12 prima di ogni push.**
