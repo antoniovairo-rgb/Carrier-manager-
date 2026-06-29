@@ -197,6 +197,13 @@ Dal 5.46 i 22 calciatori sono modelli **GLB reali** (Mixamo CH38) di **DEFAULT**
 
 > ⚠️ Tutto il lavoro GLB (kit/varietà/animazione/movimento) vive nel render-loop: il gate gira **GLB OFF** (valida la logica deterministica; `animOne` è comunque esercitato per il movimento) → la **resa** dei kit/varietà/gesti si valida coi frame flag-on (`__CPM_GLB=true`, vedi `tests/visual/glb-*.mjs`) + collaudo dal vivo.
 
+### Motore partita — coerenza / mister / cross / atmosfera (5.47.5–5.47.8)
+
+- **Coerenza cronaca↔highlight (5.47.5):** entrando in `hl_intro` si azzera `bgAction` (React) e si annulla l'arco BG ancora in volo (render-loop) → l'highlight parte sempre dal SUO stato-palla pulito (niente "palla a terra" residua sopra un colpo di testa). ⚠️ Gate-cieco: il gate forza le situation e salta la transizione `playing→hl_intro`.
+- **Comunicazioni mister (5.47.6):** `COACH_SHOUTS` + `pickCoachShout` — grida BREVI da bordo campo categorizzate (difensiva/offensiva/possesso/finale) selezionate da minuto+punteggio+tattica(drift)+possesso+momentum, anti-ripetizione, mai durante un HL, bias per stile allenatore. Affiancano gli ordini strategici `COACH_ORDERS` (28/63/75/85').
+- **Cross tattico (5.47.7, 1° cut):** corse coordinate in area pattern-aware nel pre-azione (ATT li=8→primo palo, li=10→secondo palo, li=9→dischetto; CEN→rimorchio) + il cross MIRA al miglior ricevente in area (blend 60/40, fallback se vuota). ⚠️ Il blocco-ricevente sta **FUORI dall'`arcBlock`** che la suite `data-coherence` estrae (deve restare matematica pura di traiettoria) — come il ramo `pass`; metterlo dentro rompe `computeArc` (G2X/sr non disponibili nell'eval analitico).
+- **Atmosfera (5.47.8):** pubblico reattivo a palo/parata (`crowdOhT`, pulse neutrale ~1.6s) + tensione crescente ≥80' (`_atmoExc`). Procedurale, nessun asset. *Scelta condivisa: niente import di asset 3D pesanti (peso mobile/Play Store) → stadio procedurale rifinito proceduralmente.*
+
 ## Quality Gate (tests/visual) — OBBLIGATORIO prima di ogni push
 
 Suite Playwright headless che carica il gioco, forza ogni `SITUATION`, risolve le azioni e valida rendering 3D + stato. **Va eseguita e deve passare 12/12 prima di ogni push.**
