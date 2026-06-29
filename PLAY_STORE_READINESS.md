@@ -2,7 +2,7 @@
 
 > **Fase:** SOLO RICERCA/ANALISI. Nessuna modifica al codice è stata fatta o è proposta come "già decisa".
 > **Oggetto:** *Elevora — Football Career Simulator* (`CARRIER-MANAGER-AV.html`, v5.45.2 / SAVE_VERSION 7).
-> **Scenario di monetizzazione assunto come base:** **gratuito con pubblicità leggera** (gli obblighi relativi sono trattati di conseguenza).
+> **Scenario di monetizzazione assunto come base:** **gratuito, senza pubblicità, con donazioni volontarie** (gli obblighi relativi sono trattati di conseguenza).
 > **Metodo:** AUDIT sul file reale → opzioni motivate (pro/contro · costo · tempo · rischio · priorità) → roadmap a fasi.
 
 ---
@@ -15,7 +15,7 @@ I **veri blocchi** verso lo store non sono "creare l'app", ma **tre cantieri di 
 
 1. **Rimuovere Babel-in-browser** (precompilare il JSX) — oggi l'intero gioco è un unico `<script type="text/babel">` transpilato al volo. È lento all'avvio, fragile e non offline.
 2. **Bundlare le dipendenze in locale** (React/Three/Babel non più da CDN) — un'app installata **deve** funzionare offline; oggi non lo fa.
-3. **Conformità store** — privacy policy, Data Safety form, content rating, e gestione della **feature AI** (chiamata a `api.anthropic.com` con API key utente) e degli **SDK pubblicitari**.
+3. **Conformità store** — privacy policy, Data Safety form, content rating, e gestione della **feature AI** (chiamata a `api.anthropic.com` con API key utente). *Senza ads e senza SDK di terzi la conformità è molto più leggera.*
 
 ### Semaforo di prontezza
 
@@ -25,7 +25,8 @@ I **veri blocchi** verso lo store non sono "creare l'app", ma **tre cantieri di 
 | Precompilazione JSX (no Babel runtime) | 🔴 Da fare | Tutto il gioco è transpilato in-browser |
 | Bundle locale offline (no CDN) | 🔴 Da fare | Tutto remoto; fallback solo CDN→CDN |
 | Performance Android entry-level | 🟡 Da misurare | Three r128 + alloc per-frame note |
-| Privacy policy + Data Safety | 🔴 Da fare | Obbligatori; impattati da AI + ads |
+| Privacy policy + Data Safety | 🔴 Da fare | Obbligatori; leggeri (no ads/SDK); solo la feature AI va gestita |
+| Monetizzazione (donazioni) | 🟡 Da impostare | Link donazione esterno; **nessuna ricompensa in-app** (regola Play) |
 | Content rating (IARC) | 🟡 Banale ma obbligatorio | Questionario in Console |
 | IP / de-branding | 🟡 Avviato | Scanner presente; restano residui (es. "Rossoneri") |
 | Save robustezza in WebView | 🟡 Da irrobustire | Rischio eviction localStorage |
@@ -92,7 +93,7 @@ Un'Activity Android minimale con una `WebView` che carica l'HTML (da asset local
 Non si pubblica affatto su Play: l'utente "installa" dal banner Chrome (Add to Home Screen). La PWA attuale **già lo permette**.
 
 - **Pro:** **zero costi/zero burocrazia** (niente account 25$, niente review, niente AAB); aggiornamento istantaneo; nessuna policy store.
-- **Contro:** **niente presenza sullo Store** (scoperta, credibilità, recensioni, ranking quasi nulli); install via banner ha attrito alto e basso tasso; niente monetizzazione tramite Play Billing; non soddisfa l'obiettivo del brief ("esiste sullo store").
+- **Contro:** **niente presenza sullo Store** (scoperta, credibilità, recensioni, ranking quasi nulli); install via banner ha attrito alto e basso tasso; non soddisfa l'obiettivo del brief ("esiste sullo store"). *(La donazione esterna funzionerebbe comunque, ma senza visibilità Store.)*
 - **Costo/tempo:** **Nullo**.
 - **Rischio:** **Nullo** tecnico, ma **non raggiunge l'obiettivo**.
 - **Verdetto parziale:** ottimo come **canale parallelo gratuito** (e va tenuto attivo), ma **non sostituisce** la pubblicazione su Play.
@@ -202,31 +203,32 @@ Google richiede una **URL pubblica** di privacy policy per **ogni** app (anche s
 Deve dichiarare, per il nostro caso:
 - I **salvataggi** restano **sul dispositivo** (localStorage/storage nativo); nessun account, nessun server proprietario.
 - La **feature AI opzionale** invia il testo della richiesta a **Anthropic** (`api.anthropic.com`) **solo se** l'utente inserisce una propria API key → terza parte + finalità.
-- Gli **SDK pubblicitari** (scenario base "poca ads") raccolgono identificatori/dati per servire annunci → terza parte (es. Google AdMob) con link alla loro policy.
+- **Nessuno SDK pubblicitario** e nessun tracking di terzi (scenario senza ads) → la policy è breve.
+- Le **donazioni** avvengono **fuori dall'app** (link a Ko-fi/PayPal/Buy Me a Coffee nel browser): nessun dato di pagamento è gestito dall'app.
 
 ### 5.2 — Data Safety form (OBBLIGATORIO, in Console)
 
-Form auto-dichiarativo su *quali dati raccogli/condividi*. Con lo scenario **gratuito-con-poca-ads** la risposta **non è "nessun dato"**, perché:
-- gli **SDK ads** tipicamente raccolgono **Device/other IDs**, **approximate location** o dati d'uso e **li condividono** → va dichiarato (data shared, finalità "Advertising").
-- la **feature AI** (se mantenuta) invia testo a terzi → dichiarare o, più pulito, **disabilitarla nella build store** per semplificare il form (vedi §5.6).
+Form auto-dichiarativo su *quali dati raccogli/condividi*. Con lo scenario **senza ads**, la risposta tende a **"nessun dato raccolto/condiviso"** (i salvataggi restano sul dispositivo), con **un'unica eccezione**:
+- la **feature AI** (se mantenuta) invia testo a terzi → dichiarare o, più pulito, **disabilitarla nella build store** (vedi §5.6) così il form diventa **"nessun dato"**.
+- le **donazioni esterne** non sono dati gestiti dall'app → niente da dichiarare lato Data Safety.
 
 ### 5.3 — Content rating (IARC, OBBLIGATORIO)
 
-Questionario in Console → genera i rating per regione (PEGI/ESRB/…). Per un gestionale calcistico senza violenza/sesso/gambling reale il rating sarà **basso (PEGI 3 / Everyone)**. ⚠️ Attenzione: se introduciamo **loot box / IAP** o **simulazioni di scommesse**, il questionario lo chiede e il rating sale. La "poca pubblicità" va dichiarata (presenza di ads è una domanda del form).
+Questionario in Console → genera i rating per regione (PEGI/ESRB/…). Per un gestionale calcistico senza violenza/sesso/gambling reale il rating sarà **basso (PEGI 3 / Everyone)**. Senza ads, alla domanda "l'app contiene pubblicità?" si risponde **no** (rating ancora più pulito). ⚠️ Attenzione: evitare **loot box** o **simulazioni di scommesse**, che alzerebbero il rating.
 
 ### 5.4 — Permessi
 
 Minimizzare è un vantaggio competitivo (meno attriti, meno scrutinio):
-- **`INTERNET`**: necessario **solo** per ads e/o feature AI. Se togliessimo entrambi, l'app potrebbe persino essere **totalmente offline senza permessi sensibili**.
+- **`INTERNET`**: necessario **solo** per la feature AI (e per aprire il link di donazione, ma quello usa il browser di sistema). Se disattiviamo la feature AI nella build store, l'app può essere **totalmente offline senza permessi sensibili**.
 - **Nessun** permesso di posizione/contatti/storage esterno/camera è necessario.
-- Evitare `AD_ID` non dichiarato: dal 2022 se usi l'Advertising ID **devi** dichiararlo (permesso `com.google.android.gms.permission.AD_ID`) e gestirne il reset.
+- **Niente `AD_ID`**: senza SDK ads non usiamo l'Advertising ID → un blocco di adempimenti in meno.
 
-### 5.5 — GDPR / consenso (rilevante per gli ads)
+### 5.5 — GDPR / consenso
 
-Con pubblicità e utenti UE:
-- serve un **Consent Management Platform** (es. Google **UMP SDK**) che mostri il banner di consenso (annunci personalizzati vs non personalizzati) → requisito **AdMob** per il traffico UE/UK/Svizzera.
-- Se vogliamo **zero burocrazia GDPR**, l'alternativa è **annunci non personalizzati** di default (meno resa, ma form di consenso più leggero) — scelta da valutare nello scenario "poca ads".
-- Dichiarazione **Families/COPPA**: se l'app è marcata per bambini cambia il set di SDK ads ammessi. Un gestionale calcistico PEGI 3 può attrarre minori → decidere se entrare nel **Designed for Families** (vincola gli ads a reti certificate).
+**Senza ads e senza tracking, l'onere GDPR è minimo:**
+- **niente Consent Management Platform / banner di consenso** (servirebbe solo con SDK pubblicitari) → un intero apparato eliminato.
+- Resta solo da menzionare nella privacy policy la **feature AI** (se attiva) e che i **salvataggi restano sul dispositivo**.
+- **Designed for Families:** un gestionale PEGI 3 può attrarre minori; senza ads l'ingresso nel programma è più semplice (nessuna rete pubblicitaria da certificare) → opzione da valutare per ampliare il pubblico.
 
 ### 5.6 — La feature AI: decisione consigliata
 
@@ -271,21 +273,39 @@ Con pubblicità e utenti UE:
 
 ---
 
-## 8. Monetizzazione — scenario base "gratuito con poca pubblicità"
+## 8. Monetizzazione — scenario scelto: "gratuito, no ads, donazioni"
 
-| Modello | Come | Impatto privacy/policy | Note per noi |
-|---|---|---|---|
-| **Ads leggere (scelto)** | Banner discreto e/o **rewarded** opzionale (es. "guarda un annuncio per X"). SDK: **Google AdMob**. | **Più alto:** Data Safety (Device IDs/uso, "data shared"), consenso GDPR (UMP), dichiarazione `AD_ID`, content-rating "contiene ads". | Tenere **densità bassa** e formati non intrusivi protegge le recensioni. **Rewarded** è il formato che monetizza senza infastidire. |
-| **IAP / premium** | "Rimuovi pubblicità" una tantum via **Google Play Billing**. | Medio: Play Billing è first-party (no SDK ads di terzi se *solo* IAP). | Ottimo abbinato agli ads: il "remove ads" è il classico upgrade di un free-with-ads. |
-| **Premium puro (a pagamento)** | App a pagamento, zero ads. | **Minimo:** niente SDK ads → Data Safety quasi vuoto. | Scartato come base (l'utente ha scelto free-with-ads), ma resta l'opzione più "pulita". |
+L'app è **gratuita e senza pubblicità**; il guadagno arriva da **donazioni volontarie**. È il modello più pulito per privacy/UX, ma anche **quello a resa più bassa** — va detto con onestà.
 
-**Raccomandazione coerente con la scelta:** **free + AdMob leggero (preferendo rewarded/banner non intrusivi) + IAP "remove ads"**. Implicazioni operative:
-- aggiunge **SDK AdMob** (→ §5.2/5.5: Data Safety + UMP + `AD_ID`);
-- richiede **`INTERNET`**;
-- **content rating** dichiara la presenza di ads;
-- **non mettere ads durante il match 3D** (performance + UX) → solo tra le schermate.
+### 8.1 — La regola Google che decide tutto: ricompensa sì / ricompensa no
 
-⚠️ **Trade-off da decidere a parte:** la "poca ads" obbliga comunque all'**intero apparato di consenso GDPR**. Se l'obiettivo primario fosse "il minimo per esistere sullo store", una **v1 senza ads** (poi ads in v1.1) ridurrebbe drasticamente la burocrazia del primo invio. Lo segnalo come opzione nella roadmap.
+> **Punto critico.** Google Play distingue nettamente:
+> - **Donazione PURA (nessuna ricompensa in-app):** è ammesso **raccoglierla fuori dall'app** con un **link esterno** (Ko-fi, PayPal, Buy Me a Coffee, Stripe). **Non** serve Google Play Billing.
+> - **"Donazione" che dà QUALCOSA in cambio** (sblocco contenuti, badge, modalità, rimozione di qualcosa): per Google è un **acquisto di bene digitale** → **obbligatorio Google Play Billing** + commissione 15/30%.
+
+Quindi la forma di "donazione" cambia completamente gli adempimenti.
+
+### 8.2 — Le due vie
+
+| Via | Come | Resa | Adempimenti | Note |
+|---|---|---|---|---|
+| **A — Donazione esterna pura** (consigliata per iniziare) | Bottone "Sostieni lo sviluppo" che **apre il browser** su Ko-fi/PayPal/BMC. Nessuna ricompensa in-app. | Bassa, ma **0% commissione Google** (tieni quasi tutto, meno la fee del provider ~3%) | **Minimi:** nessun SDK, nessun Billing, Data Safety "nessun dato". Serve solo `INTERNET` per aprire il link. | Più semplice e veloce da pubblicare. Rischio policy basso **se** non dai nulla in cambio. |
+| **B — "Supporter pack" via Play Billing** | IAP una tantum (es. 2,99 €) che dà un **ringraziamento simbolico** (badge "Supporter", tema cosmetico) | Bassa-media (converte meglio di una donazione pura, perché l'utente "riceve") | **Medi:** integrare **Google Play Billing** (first-party, niente SDK ads/tracking → Data Safety resta leggero) + commissione 15% (sotto 1M$/anno) | Tecnicamente è un IAP "travestito" da supporto. Più resa, un po' più di lavoro. |
+
+### 8.3 — Raccomandazione
+
+**Fase 1 (lancio): Via A — donazione esterna pura.** Motivi: zero SDK, zero Billing, Data Safety "nessun dato", primo invio rapidissimo, e nessun rischio di violare la regola sulle ricompense (perché non si dà nulla in cambio). È coerente con un primo rilascio "minimo per esistere sullo store".
+
+**Più avanti (opzionale): Via B — "Supporter pack" via Play Billing**, se i numeri giustificano il lavoro di integrazione Billing. Convive con la donazione esterna.
+
+⚠️ **Aspettativa realistica:** le donazioni rendono **molto poco** (tipicamente una frazione di percento degli utenti dona). Vanno viste come "caffè offerto da chi ama il gioco", non come reddito. Se in futuro servisse monetizzare sul serio, le leve più efficaci restano un **IAP "unlock premium"** o gli **ads** — entrambi tenuti fuori dalla v1 per scelta.
+
+### 8.4 — Implementazione (puramente indicativa, non in questa fase)
+
+- Un **bottone discreto** nel menu/impostazioni o nella schermata fine-carriera ("☕ Sostieni Elevora").
+- Apre un **URL esterno** (in Capacitor: `@capacitor/browser` o intent di sistema) → **nessuna logica di pagamento nell'app**.
+- **Nessun reward** collegato (per restare nella donazione pura).
+- Testo onesto e non insistente (un solo punto d'ingresso, niente pop-up ripetuti).
 
 ---
 
@@ -320,26 +340,25 @@ Legenda costo/tempo: **S** ≤½ gg · **M** 1–2 gg · **L** sprint. Priorità
 | 1.3 | **Packaging Capacitor** → AAB (progetto, splash, `INTERNET` se serve) | M | Basso-medio | **P0** |
 | 1.4 | **Storage nativo** via wrapper `storage` (anti-eviction) + **export/import** save | M | Basso | **P0** |
 | 1.5 | **Chiusura de-branding**: rinomina soprannomi-club + competizioni; `_auditCopyrightSafety` → **gate CI bloccante**; disclaimer | M | Medio | **P0** |
-| 1.6 | **Disattivare la feature AI nella build store** (flag off) per semplificare privacy/Data Safety | S | Basso | **P0** |
+| 1.6 | **Disattivare la feature AI nella build store** (flag off) → Data Safety "nessun dato" | S | Basso | **P0** |
+| 1.6b | **Bottone donazione esterna** (link a Ko-fi/PayPal/BMC, **nessun reward in-app**) | S | Basso | **P1** |
 | 1.7 | **Privacy policy** ospitata + **Data Safety** + **content rating IARC** | S | Basso | **P0** |
 | 1.8 | **Account Play (25$)** + keystore upload + Play App Signing + **target API level** corrente | S | Basso | **P0** |
 | 1.9 | **Asset listing minimi**: icona 512, feature graphic, ≥2 screenshot, titolo/descrizioni + disclaimer | M | Basso | **P1** |
 | 1.10 | **Error boundary + crash screen** (protegge save e recensioni) | S | Basso | **P1** |
 | 1.11 | **Test su device entry-level reale** (avvio, fps match, heap su 5–10 partite) | M | Medio | **P1** |
-| 1.12 | **(Decisione)** v1 **senza ads** per ridurre la burocrazia del primo invio, ads in v1.1 | — | — | **P1** |
 
+> **Monetizzazione v1 = donazione esterna pura** (1.6b): nessun ads, nessun Play Billing, Data Safety "nessun dato" → primo invio il più leggero possibile.
 > **Nota sul vincolo "nuovo account personale":** se l'account Play è nuovo e personale, pianificare il **test chiuso con ≥12 tester / 14 giorni** prima della produzione (incide sui tempi, non sul lavoro tecnico).
 
 ### FASE 2 — Monetizzazione & rifinitura
 
 | # | Voce | Costo | Rischio | Prio |
 |---|---|---|---|---|
-| 2.1 | **AdMob leggero** (rewarded/banner non intrusivo, mai durante il match) | M | Medio | P1 |
-| 2.2 | **UMP / consenso GDPR** + dichiarazione `AD_ID` + aggiornamento Data Safety | M | Medio | P1 |
-| 2.3 | **IAP "remove ads"** via Play Billing | M | Basso | P2 |
-| 2.4 | **Ottimizzazione performance**: ridurre alloc per-frame off-ball, caccia leak (debito D1/D2) | L | Medio | P1 |
-| 2.5 | **TWA in parallelo** (se si vuole update-senza-ripubblicare) + SW precache completo | M | Basso | P2 |
-| 2.6 | **Screenshot tablet + video promo + ASO** (titolo/keyword) | M | Basso | P2 |
+| 2.1 | **(Opzionale) "Supporter pack" via Play Billing** (IAP simbolico) se le donazioni esterne non bastano | M | Basso | P2 |
+| 2.2 | **Ottimizzazione performance**: ridurre alloc per-frame off-ball, caccia leak (debito D1/D2) | L | Medio | P1 |
+| 2.3 | **TWA in parallelo** (se si vuole update-senza-ripubblicare) + SW precache completo | M | Basso | P2 |
+| 2.4 | **Screenshot tablet + video promo + ASO** (titolo/keyword) | M | Basso | P2 |
 
 ### FASE 3 — Post-lancio (progetti a sé)
 
@@ -347,7 +366,8 @@ Legenda costo/tempo: **S** ≤½ gg · **M** 1–2 gg · **L** sprint. Priorità
 |---|---|---|---|---|
 | 3.1 | **Upgrade Three.js** (con collaudo dal vivo, render gate-blind) | L | Alto | P2 |
 | 3.2 | **Riattivazione feature AI** server-side proxata (senza key utente in chiaro) se ha valore | L | Medio | P2 |
-| 3.3 | **Designed for Families** (se si punta al pubblico minori, con ads certificati) | M | Medio | P2 |
+| 3.3 | **Designed for Families** (se si punta al pubblico minori — più semplice senza ads) | M | Medio | P2 |
+| 3.4 | **(Se serve reddito reale) IAP "unlock premium" o ads** — leva tenuta fuori dalla v1 per scelta | M | Medio | P2 |
 
 ---
 
@@ -356,6 +376,7 @@ Legenda costo/tempo: **S** ≤½ gg · **M** 1–2 gg · **L** sprint. Priorità
 - **Render gate-blind:** il quality gate **non valida la resa visiva** → ogni intervento su packaging/performance/Three va **collaudato dal vivo su device reale**, non solo col gate.
 - **IP è l'unico rischio "legale" vero:** il de-branding va **chiuso e reso bloccante in CI** prima di pubblicare — è l'unico che può causare una **rimozione** dell'app.
 - **Offline + save** sono i due rischi di **recensione negativa** più probabili → la scelta Capacitor li indirizza entrambi.
-- **"Poca ads" ≠ poca burocrazia:** anche un solo banner attiva l'intero apparato consenso/Data Safety → valutare seriamente **v1 senza ads** per accelerare il primo invio (1.12).
+- **Donazioni = resa bassa ma adempimenti minimi:** la scelta no-ads/donazioni elimina SDK, consenso GDPR e `AD_ID`, e porta il Data Safety a "nessun dato" → primo invio leggerissimo. Il prezzo è un guadagno modesto, accettato consapevolmente.
+- **Regola d'oro donazioni:** **niente ricompensa in-app** in cambio della donazione, altrimenti Google obbliga a Play Billing. Donazione = link esterno puro.
 
-**In una riga:** la v1 store è raggiungibile con **Fase 1** (precompila JSX → bundle locale → Capacitor → storage nativo → chiusura de-branding → conformità), tenendo la pubblicità per la **Fase 2**; nessuno di questi passi richiede di riscrivere il gioco, e il vincolo "file unico" resta intatto perché la build è solo un passo di *packaging*.
+**In una riga:** la v1 store è raggiungibile con **Fase 1** (precompila JSX → bundle locale → Capacitor → storage nativo → chiusura de-branding → conformità → bottone donazione esterna), senza ads e senza riscrivere il gioco; il vincolo "file unico" resta intatto perché la build è solo un passo di *packaging*.
