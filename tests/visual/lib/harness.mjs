@@ -147,7 +147,9 @@ export async function sampleMotion(page, gi, { settle = 500, pollMs = 100, windo
     const a = frames[f - 1].players[p], c = frames[f].players[p]; if (!a || !c) continue;
     const d = Math.hypot(c.x - a.x, c.y - a.y); disp[p] += d; if (d > maxD) maxD = d;
   }
-  let alive = 0; for (let p = 0; p < n; p++) if (disp[p] > 1.0) alive++;
+  // soglia "alive" ricalibrata 1.0→0.7u dopo il rallentamento dei movimenti (5.47.9): col gioco più lento un giocatore che si
+  // sposta >0.7u nella finestra è chiaramente VIVO (morto = ~0); evita falsi "dead players" sulle situation quasi-statiche in software-GL.
+  let alive = 0; for (let p = 0; p < n; p++) if (disp[p] > 0.7) alive++;
   // REACTIVITY (#24, Every Player Reacts): il portatore è home → gli away PRESSANO. Distanza minima
   // away(non-gk)→palla sull'intera finestra + n. difensori entro 15u (impegno sul portatore).
   let defMinEver = 99, defNear = 0, bxSum = 0, bxN = 0;
