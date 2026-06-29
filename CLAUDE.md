@@ -51,6 +51,14 @@ Babel gira client-side al caricamento → ~1–2 s di avvio. Lo spinner (`#ld`) 
 
 > ⚠️ In ambienti con CDN bloccati (es. sessioni cloud con network policy restrittiva) la pagina non carica direttamente: il gate Playwright intercetta le route e serve i bundle dei `node_modules` locali (vedi sezione Quality Gate).
 
+### Build di packaging (Play Store, roadmap 1.1+1.2)
+
+Per il rilascio store serve un artefatto **offline** (niente CDN, niente Babel-in-browser). `node tools/build-dist.mjs` produce `dist/index.html` self-contained:
+- **1.1** precompila il JSX offline (`@babel/standalone`, preset react) → niente Babel a runtime;
+- **1.2** inlina React/ReactDOM/Three/GLTFLoader/SkeletonUtils dai `node_modules` locali → niente CDN; copia `assets/` + `sw.js`.
+
+Il **sorgente `CARRIER-MANAGER-AV.html` resta INVARIATO** (dev workflow e gate immutati): la build lo legge soltanto. Validazione: `node tools/validate-dist.mjs` serve la dist **bloccando ogni richiesta esterna** e verifica mount React + home + zero CDN + zero errori (prova che è davvero offline). `dist/` è gitignored (riproducibile). Prossimo passo roadmap: **1.3 Capacitor → AAB**.
+
 ## Architecture
 
 Tutto è in un singolo `<script type="text/babel">`. Nessun module system — global scope, dichiarazioni in ordine di dipendenza.

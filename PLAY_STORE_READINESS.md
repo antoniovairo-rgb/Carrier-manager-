@@ -340,8 +340,8 @@ Legenda costo/tempo: **S** ≤½ gg · **M** 1–2 gg · **L** sprint. Priorità
 | # | Voce | Costo | Rischio | Prio |
 |---|---|---|---|---|
 | **1.0** | **🔴 REFACTOR QUALITÀ LIVE MATCH 3D — animazioni + regia/camera** (parte per primo; vedi §10.bis) | **L+** (multi-sprint, a tempo aperto) | **Alto** (perceptual/gate-blind) | **P0 #1** |
-| 1.1 | **Precompilare il JSX** (B1): build di packaging che elimina Babel-in-browser; sorgente HTML invariato | M | Basso | **P0** |
-| 1.2 | **Bundle locale** di React/ReactDOM/Three(+loaders)/Phaser; rimozione dipendenze CDN nell'artefatto app | M | Basso | **P0** |
+| 1.1 | ✅ **FATTO** — **Precompilare il JSX** (`tools/build-dist.mjs`): build di packaging che elimina Babel-in-browser; sorgente HTML invariato | M | Basso | **P0** |
+| 1.2 | ✅ **FATTO** — **Bundle locale** di React/ReactDOM/Three(+loaders) inline nella dist; zero CDN nell'artefatto. Validato offline (`tools/validate-dist.mjs`) | M | Basso | **P0** |
 | 1.3 | **Packaging Capacitor** → AAB (progetto, splash, `INTERNET` se serve) | M | Basso-medio | **P0** |
 | 1.4 | **Storage nativo** via wrapper `storage` (anti-eviction) + **export/import** save | M | Basso | **P0** |
 | 1.5 | **Chiusura de-branding**: rinomina soprannomi-club + competizioni; `_auditCopyrightSafety` → **gate CI bloccante**; disclaimer | M | Medio | **P0** |
