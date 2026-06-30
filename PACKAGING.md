@@ -46,6 +46,10 @@ npm run android:open
 
 > Da qui in poi, dopo ogni modifica al gioco: `npm run package` (rifà `dist/` + `cap sync`) e poi `npm run android:aab`.
 
+## Salvataggi: storage nativo anti-eviction
+
+Il wrapper `storage` del gioco usa già `window.storage` se presente, con fallback a `localStorage`. La build (`tools/build-dist.mjs`) inietta — **solo in app Capacitor nativa** — un `window.storage` basato su **`@capacitor/preferences`** (storage nativo, **non** soggetto a eviction come il `localStorage` della WebView). Nel browser/gate è un no-op (Capacitor assente → resta `localStorage`). Niente da fare a mano: è automatico nel pacchetto. *(Plugin già in `dependencies`; registrato via `cap sync`.)*
+
 ## Firma (Play App Signing)
 
 Google firma l'app per te; tu carichi un **upload key**. Crea il keystore **una volta** e conservalo (se lo perdi, il recupero è macchinoso):

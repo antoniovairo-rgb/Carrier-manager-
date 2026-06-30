@@ -60,7 +60,13 @@ const inlined = [
 html = html.slice(0, bStart) + '<script>\n' + compiled + '\n</script>' + html.slice(bClose + '</script>'.length);
 html = html.slice(0, cdnStart) + inlined + html.slice(cdnEnd);
 // 1.6 — flag BUILD STORE: disattiva la feature AI (zero chiamate esterne, Data Safety "nessun dato").
-html = html.replace('<head>', '<head>\n<script>window.__CPM_STORE_BUILD=true;/* build store offline: feature AI disattivata (roadmap 1.6) */</script>');
+// 6 — STORAGE NATIVO anti-eviction: SOLO in app Capacitor nativa fornisce window.storage backed by
+//     @capacitor/preferences (il wrapper `storage` del gioco lo usa già al posto di localStorage, che
+//     su WebView può essere soggetto a eviction). No-op nel browser/gate (window.Capacitor assente).
+const _headInject = '<head>\n'
+  + '<script>window.__CPM_STORE_BUILD=true;/* build store offline: feature AI disattivata (roadmap 1.6) */</script>\n'
+  + '<script>(function(){try{var C=window.Capacitor;if(C&&C.isNativePlatform&&C.isNativePlatform()&&typeof C.registerPlugin==="function"){var P=C.registerPlugin("Preferences");window.storage={set:function(k,v){return P.set({key:k,value:v});},get:function(k){return P.get({key:k});},delete:function(k){return P.remove({key:k});}};}}catch(e){}})();/* storage nativo anti-eviction (roadmap 6) */</script>';
+html = html.replace('<head>', _headInject);
 
 // ---- scrivi dist + copia assets/ e sw.js ----
 fs.rmSync(DIST, { recursive: true, force: true });
