@@ -68,17 +68,31 @@ In `android/app/build.gradle` aggiungi una `signingConfigs.release` che legge il
 
 Il manifest generato include solo **`INTERNET`** (default Capacitor). Il gioco gira **offline** e la build store disabilita la feature AI: se non servono né AI né link esterni in-app puoi **rimuovere** `INTERNET` da `android/app/src/main/AndroidManifest.xml` per un profilo permessi a zero (meglio per la review privacy). Il link donazione apre il **browser di sistema** (intent), che non richiede il permesso in-app.
 
-## Icona e splash
+## Icona e splash (granata Elevora)
 
-L'icona attuale è quella di default di Capacitor. Per l'icona granata di Elevora:
+Le immagini **sorgente** sono versionate in **`resources/`** (generate dal marchio reale del gioco — barre + pallone, gradiente granata `#a3263a→#5e0f1d`):
+
+| File | Uso |
+|---|---|
+| `resources/icon-only.png` (1024²) | icona legacy / fallback |
+| `resources/icon-foreground.png` (1024², trasparente) | primo piano adaptive icon (marchio nel 64% safe-zone) |
+| `resources/icon-background.png` (1024²) | sfondo adaptive icon (gradiente granata) |
+| `resources/splash.png` (2732²) | splash chiaro (`#f0f7ff`) |
+| `resources/splash-dark.png` (2732²) | splash scuro (`#0f172a`) |
+
+Rigenerare le sorgenti (se cambia il marchio):
 
 ```bash
-npm i -D @capacitor/assets
-# metti un'icona sorgente in assets/icon.png (1024×1024) e uno splash in assets/splash.png
-npx capacitor-assets generate --android
+CPM_CHROME=<chrome> node tools/gen-assets.mjs       # oppure: npm run assets:gen
 ```
 
-Lo splash background (`#f0f7ff`) è già impostato in `capacitor.config.json`.
+Espandere le sorgenti nelle risorse Android (mipmap + drawable, tutte le densità):
+
+```bash
+npm run assets:android       # = npx capacitor-assets generate --assetPath resources --android
+```
+
+> `@capacitor/assets` usa **sharp** (binario nativo): gira sul PC ma **non** in questo ambiente cloud (binario bloccato dal proxy). Le sorgenti `resources/*.png` sono comunque già pronte. Lo splash background (`#f0f7ff`) è anche in `capacitor.config.json`. Esegui `assets:android` **dopo** `npx cap add android`.
 
 ## Alternativa: TWA/Bubblewrap
 

@@ -7,11 +7,14 @@
     "build:web": "node tools/build-dist.mjs",
     "validate:web": "node tools/validate-dist.mjs",
     "package": "npm run build:web && npx cap sync android",
+    "assets:gen": "node tools/gen-assets.mjs",
+    "assets:android": "npx capacitor-assets generate --assetPath resources --android",
     "android:open": "npx cap open android",
     "android:aab": "cd android && ./gradlew bundleRelease",
     "android:apk": "cd android && ./gradlew assembleDebug"
   },
   "devDependencies": {
+    "@capacitor/assets": "^3.0.5",
     "@capacitor/cli": "^6.2.0"
   },
   "dependencies": {
