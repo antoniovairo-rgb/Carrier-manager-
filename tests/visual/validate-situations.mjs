@@ -176,7 +176,7 @@ const GOLDEN = path.join(HERE, 'golden-sigs.json');
     // la fase ATTIVA (hl_choose, off-ball AI in moto) su un set vario di Situations.
     const motIdx = [0, 2, 30, 60, 79, 120].filter(gi => gi < situations.length);
     const motSamples = [];
-    for (const gi of motIdx) { motSamples.push(await sampleMotion(page, gi, { settle: 500, pollMs: 100, windowMs: 1300 })); await sleep(150); }// finestra 1000→1300: col gioco più lento (5.47.9) servono più frame (software-GL ~5fps) per misurare la liveness in modo stabile
+    for (const gi of motIdx) { motSamples.push(await sampleMotion(page, gi, { settle: 500, pollMs: 100, windowMs: 1900 })); await sleep(150); }// finestra 1000→1900: il movimento è stato rallentato ~45% (5.47.9→5.47.16, cap 20→11 u/s) → serve una finestra di osservazione più ampia per misurare la liveness in modo stabile su software-GL (~5fps), specie sulle situation quasi-statiche
     const motRes = motion.run({ samples: motSamples });
     agg['motion'].issues.push(...motRes.issues.map(msg => ({ gi: null, msg })));
     agg['motion'].warnings.push(...motRes.warnings.map(msg => ({ gi: null, msg })));
