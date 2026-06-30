@@ -1,0 +1,85 @@
+# PACKAGING — Elevora → Google Play (AAB via Capacitor)
+
+Pipeline per trasformare il gioco (singolo file `CARRIER-MANAGER-AV.html`) in un **Android App Bundle (.aab)** pubblicabile. Il **sorgente di lavoro non cambia mai**: il packaging produce solo artefatti derivati.
+
+> Stato roadmap: **1.1 precompila JSX** ✅ · **1.2 bundle locale/offline** ✅ · **1.6 build store (AI off)** ✅ · **1.3 Capacitor** ✅ scaffold. Manca solo la build dell'AAB su una macchina con Android SDK (qui in cloud `dl.google.com` è bloccato).
+
+## Cosa c'è nel repo
+
+| File | Ruolo |
+|---|---|
+| `tools/build-dist.mjs` | Build di produzione → `dist/` **offline**: precompila il JSX (niente Babel-in-browser) e inlina React/Three/Phaser dai `node_modules` del gate. |
+| `tools/validate-dist.mjs` | Verifica che `dist/` monti e giri **senza rete** (blocca ogni CDN). |
+| `package.json` | Dipendenze Capacitor + script npm. |
+| `capacitor.config.json` | `appId=com.elevora.football`, `appName=Elevora`, `webDir=dist`, splash. |
+
+`dist/` e `android/` **non sono versionati** (build-output riproducibile).
+
+## Prerequisiti (sulla TUA macchina)
+
+- **Node 18+** e **npm**.
+- **JDK 17+** (`java -version`). *(In questo ambiente cloud è già presente JDK 21.)*
+- **Android SDK** — il modo più semplice è installare **Android Studio** (include SDK, build-tools, platform-tools e un device/emulatore). In alternativa solo le *command-line tools* + `sdkmanager "platform-tools" "platforms;android-34" "build-tools;34.0.0"`.
+- Variabile `ANDROID_HOME` (o `ANDROID_SDK_ROOT`) che punta all'SDK, oppure `android/local.properties` con `sdk.dir=/percorso/Android/Sdk`.
+
+## Build dell'AAB — passo per passo
+
+```bash
+# 1. dipendenze di packaging
+npm install
+
+# 2. build web di produzione (offline) + verifica
+npm run build:web
+npm run validate:web          # atteso: "✅ DIST OFFLINE FUNZIONANTE"
+
+# 3. genera il progetto nativo Android (solo la PRIMA volta)
+npx cap add android
+
+# 4. sincronizza dist/ dentro il progetto Android (ad ogni nuova build web)
+npx cap sync android          # = npm run package fa build:web + questo
+
+# 5a. build dell'AAB di release
+npm run android:aab           # → android/app/build/outputs/bundle/release/app-release.aab
+# 5b. oppure apri in Android Studio e usa Build > Generate Signed Bundle
+npm run android:open
+```
+
+> Da qui in poi, dopo ogni modifica al gioco: `npm run package` (rifà `dist/` + `cap sync`) e poi `npm run android:aab`.
+
+## Firma (Play App Signing)
+
+Google firma l'app per te; tu carichi un **upload key**. Crea il keystore **una volta** e conservalo (se lo perdi, il recupero è macchinoso):
+
+```bash
+keytool -genkey -v -keystore elevora-upload.jks -keyalg RSA -keysize 2048 \
+        -validity 10000 -alias elevora
+```
+
+In `android/app/build.gradle` aggiungi una `signingConfigs.release` che legge il keystore (idealmente da variabili d'ambiente / `keystore.properties` **non** versionato), e collegala a `buildTypes.release`. In Android Studio puoi farlo da *Generate Signed Bundle* senza editare il gradle.
+
+## Requisiti Play Console (una tantum)
+
+- **Account Play Developer**: 25 $ una tantum. I nuovi account *personali* richiedono un **test chiuso con ≥12 tester per 14 giorni** prima della produzione → da pianificare.
+- **Formato**: **AAB obbligatorio** (l'APK non è accettato per i nuovi upload).
+- **Target API level**: i nuovi upload devono targettizzare un'API recente (al 2025 ≈ **API 35 / Android 15**). È una *moving target* annuale — verifica in Console al momento del rilascio e allinea `targetSdkVersion` in `android/variables.gradle`.
+- **Versioning**: ad ogni upload incrementa `versionCode` (intero) in `android/app/build.gradle`; `versionName` è la stringa mostrata.
+
+## Permessi
+
+Il manifest generato include solo **`INTERNET`** (default Capacitor). Il gioco gira **offline** e la build store disabilita la feature AI: se non servono né AI né link esterni in-app puoi **rimuovere** `INTERNET` da `android/app/src/main/AndroidManifest.xml` per un profilo permessi a zero (meglio per la review privacy). Il link donazione apre il **browser di sistema** (intent), che non richiede il permesso in-app.
+
+## Icona e splash
+
+L'icona attuale è quella di default di Capacitor. Per l'icona granata di Elevora:
+
+```bash
+npm i -D @capacitor/assets
+# metti un'icona sorgente in assets/icon.png (1024×1024) e uno splash in assets/splash.png
+npx capacitor-assets generate --android
+```
+
+Lo splash background (`#f0f7ff`) è già impostato in `capacitor.config.json`.
+
+## Alternativa: TWA/Bubblewrap
+
+Resta documentata come piano B in `PLAY_STORE_READINESS.md` §2.A (AAB più leggero, update senza ripubblicare, ma richiede hosting + Digital Asset Links e offline via service worker).
