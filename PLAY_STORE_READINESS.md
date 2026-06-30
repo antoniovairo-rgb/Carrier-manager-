@@ -346,10 +346,10 @@ Legenda costo/tempo: **S** ≤½ gg · **M** 1–2 gg · **L** sprint. Priorità
 | 1.4 | ✅ **FATTO** — **Storage nativo** via wrapper `storage` (`window.storage` anti-eviction, già presente) + **export/import** save (`exportSave`/`importSave`, già nella UI) | M | Basso | **P0** |
 | 1.5 | ✅ **FATTO (tecnico)** — **Chiusura de-branding**: rinominati gli ultimi 2 club reali (Dortmund/Leverkusen→Goldwald/Werkstadt); `_auditCopyrightSafety` → **gate CI bloccante** (`tools/audit-copyright.mjs`, 0 hit). *Resta:* disclaimer testuale nel listing (asset, 1.9) | M | Medio | **P0** |
 | 1.6 | ✅ **FATTO** — **Feature AI disattivata nella build store** (`window.__CPM_STORE_BUILD` impostato da `build-dist.mjs` → `callClaudeAPI` esce subito; zero chiamate esterne) → Data Safety "nessun dato". Validato in `validate-dist.mjs` | S | Basso | **P0** |
-| 1.6b | **Bottone donazione esterna** (link a Ko-fi/PayPal/BMC, **nessun reward in-app**) | S | Basso | **P1** |
-| 1.7 | **Privacy policy** ospitata + **Data Safety** + **content rating IARC** | S | Basso | **P0** |
+| 1.6b | ✅ **FATTO (codice)** — **Bottone donazione esterna** nel profilo ("☕ Sostieni lo sviluppo di Elevora", apre `DONATION_URL` nel browser, **nessun reward in-app**, nascosto se URL vuoto). *Resta:* il proprietario imposta `DONATION_URL` col proprio link Ko-fi/PayPal/BMC | S | Basso | **P1** |
+| 1.7 | 🟡 **BOZZA PRONTA** — **Privacy policy** redatta (`PRIVACY_POLICY.md`, "nessun dato"). *Resta (Console/owner):* ospitarla su Pages, compilare **Data Safety** ("nessun dato") + **content rating IARC** | S | Basso | **P0** |
 | 1.8 | **Account Play (25$)** + keystore upload + Play App Signing + **target API level** corrente | S | Basso | **P0** |
-| 1.9 | **Asset listing minimi**: icona 512, feature graphic, ≥2 screenshot, titolo/descrizioni + disclaimer | M | Basso | **P1** |
+| 1.9 | 🟡 **TESTI PRONTI** — **Asset listing**: titolo/descrizioni + disclaimer nomi di fantasia redatti (`STORE_LISTING.md`). *Resta:* icona 512, feature graphic, ≥2 screenshot (grafica) | M | Basso | **P1** |
 | 1.10 | ✅ **FATTO** — **Error boundary GLOBALE + crash screen** (`RootErrorBoundary` attorno ad `App`): niente schermata bianca, recupero che rassicura sul save + ricarica + backup | S | Basso | **P1** |
 | 1.11 | **Test su device entry-level reale** (avvio, fps match, heap su 5–10 partite) | M | Medio | **P1** |
 
