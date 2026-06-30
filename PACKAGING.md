@@ -98,6 +98,21 @@ npm run assets:android       # = npx capacitor-assets generate --assetPath resou
 
 > `@capacitor/assets` usa **sharp** (binario nativo): gira sul PC ma **non** in questo ambiente cloud (binario bloccato dal proxy). Le sorgenti `resources/*.png` sono comunque già pronte. Lo splash background (`#f0f7ff`) è anche in `capacitor.config.json`. Esegui `assets:android` **dopo** `npx cap add android`.
 
+## Build in CI (GitHub Actions)
+
+`.github/workflows/android-build.yml` compila l'AAB sui runner GitHub (dove l'Android SDK c'è), così non serve la toolchain locale. Si avvia **manualmente** (tab *Actions* → *Android AAB* → *Run workflow*) o su **tag** `v*` (es. `git tag v1.0.0 && git push --tags`). Fa: install → `build:web` → `cap add android` + `sync` → `gradlew bundleRelease` → carica l'`.aab` come **artifact**.
+
+Per ottenere un AAB **firmato** col tuo upload key, aggiungi i secret (Settings → Secrets and variables → Actions):
+
+| Secret | Valore |
+|---|---|
+| `ANDROID_KEYSTORE_BASE64` | `base64 -w0 elevora-upload.jks` |
+| `ANDROID_KEYSTORE_PASSWORD` | password dello store |
+| `ANDROID_KEY_ALIAS` | alias (es. `elevora`) |
+| `ANDROID_KEY_PASSWORD` | password della chiave |
+
+Senza secret il workflow produce comunque l'AAB **unsigned** (utile come smoke-test della toolchain; firmabile dopo).
+
 ## Alternativa: TWA/Bubblewrap
 
 Resta documentata come piano B in `PLAY_STORE_READINESS.md` §2.A (AAB più leggero, update senza ripubblicare, ma richiede hosting + Digital Asset Links e offline via service worker).
