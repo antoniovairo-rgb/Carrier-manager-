@@ -91,7 +91,7 @@ guard('outcome fail: palo decision-driven (_ek|| roll<0.20)→hit_post', /_isPos
 guard('outcome fail: parata decision-driven (_ek|| roll<0.85), split save/wide', /_isSave=_ek\?\(_ek==="saved"\|\|_ek==="save"\):\(_isShotHL&&_roll<0\.85\)/.test(src) && /_isSave\?"save":"wide"/.test(src));
 guard('camera FAR_POST_CROSS side-tracking', /_pat==="FAR_POST_CROSS"\)\{cPx=clamp\(fX-6/.test(src));
 guard('arc cross_far_post tgtZ=-_side*(11..)', /cross_far_post"\)\{ballArcH=4\.2;ballArcDur=0\.90;ballArcTgtX=AWAY_GOAL_X-9/.test(src));
-guard('fix: dribble/build/tackle-gol → in_net', /\(_ht==="dribble"\|\|_ht==="build"\|\|_ht==="tackle"\)&&P\.hlReward==="goal"\)\{hlPostArcT=0;hlOutcomeVariant="goal";hlPostArcType="in_net"/.test(src));
+guard('fix: dribble/build/tackle(non-def)-gol → in_net', /\(_ht==="dribble"\|\|_ht==="build"\|\|\(_ht==="tackle"&&!P\.hlDef\)\)&&P\.hlReward==="goal"\)\{hlPostArcT=0;hlOutcomeVariant="goal";hlPostArcType="in_net"/.test(src));
 guard('fix: hlReward passato come prop', /hlReward=\{chosenAct\?\.rew\|\|null\}/.test(src));
 guard('fix: shot_curled palo lontano usa -_side', /shot_curled.*ballArcTgtZ=-_side\*/.test(src));
 guard('fix: header_far_post usa -_side', /header_far_post.*ballArcTgtZ=-_side\*/.test(src));
