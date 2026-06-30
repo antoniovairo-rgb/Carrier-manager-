@@ -98,6 +98,18 @@ npm run assets:android       # = npx capacitor-assets generate --assetPath resou
 
 > `@capacitor/assets` usa **sharp** (binario nativo): gira sul PC ma **non** in questo ambiente cloud (binario bloccato dal proxy). Le sorgenti `resources/*.png` sono comunque già pronte. Lo splash background (`#f0f7ff`) è anche in `capacitor.config.json`. Esegui `assets:android` **dopo** `npx cap add android`.
 
+## Grafica del listing (Play Console)
+
+In **`store-assets/`** (granata Elevora):
+
+| File | Uso |
+|---|---|
+| `play-icon-512.png` (512²) | icona alta risoluzione del listing |
+| `feature-graphic.png` (1024×500) | feature graphic obbligatoria |
+| `screenshots/01-home.png · 02-create.png · 03-match.png` (1080×1920) | screenshot (grezzi) |
+
+Rigenerare: `node tools/gen-store-graphics.mjs` (icona+feature) e `node tools/gen-screenshots.mjs` (screenshot, richiede `npm run build:web`). Gli screenshot sono catture headless: per il rilascio conviene **rifinirli o ricatturarli su un device reale**.
+
 ## Build in CI (GitHub Actions)
 
 `.github/workflows/android-build.yml` compila l'AAB sui runner GitHub (dove l'Android SDK c'è), così non serve la toolchain locale. Si avvia **manualmente** (tab *Actions* → *Android AAB* → *Run workflow*) o su **tag** `v*` (es. `git tag v1.0.0 && git push --tags`). Fa: install → `build:web` → `cap add android` + `sync` → `gradlew bundleRelease` → carica l'`.aab` come **artifact**.
