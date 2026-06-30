@@ -125,6 +125,8 @@ Per ottenere un AAB **firmato** col tuo upload key, aggiungi i secret (Settings 
 
 Senza secret il workflow produce comunque l'AAB **unsigned** (utile come smoke-test della toolchain; firmabile dopo).
 
+**Release automatica sui tag:** se avvii il workflow con un **tag** `v*` (`git tag v1.0.0 && git push origin v1.0.0`), oltre all'artifact viene creata una **GitHub Release** "Elevora v1.0.0" con l'AAB allegato (`elevora-v1.0.0.aab`) — firmato se i secret sono presenti, altrimenti segnalato come unsigned nel corpo della release.
+
 ## Alternativa: TWA/Bubblewrap
 
 Resta documentata come piano B in `PLAY_STORE_READINESS.md` §2.A (AAB più leggero, update senza ripubblicare, ma richiede hosting + Digital Asset Links e offline via service worker).

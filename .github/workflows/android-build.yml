@@ -9,7 +9,7 @@ on:
     tags: ['v*']                 # oppure su tag versione (es. v1.0.0)
 
 permissions:
-  contents: read
+  contents: write   # serve per pubblicare la GitHub Release sui tag
 
 jobs:
   build-aab:
@@ -78,3 +78,24 @@ jobs:
           path: android/app/build/outputs/bundle/release/*.aab
           if-no-files-found: error
           retention-days: 14
+
+      # ── su TAG v* : pubblica una GitHub Release con l'AAB allegato (rinominato con la versione) ──
+      - name: Prepare release asset
+        if: startsWith(github.ref, 'refs/tags/v')
+        run: |
+          mkdir -p release
+          cp android/app/build/outputs/bundle/release/app-release.aab "release/elevora-${GITHUB_REF_NAME}.aab"
+
+      - name: Publish GitHub Release
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          name: Elevora ${{ github.ref_name }}
+          files: release/elevora-*.aab
+          fail_on_unmatched_files: true
+          body: |
+            **Elevora ${{ github.ref_name }}** — Android App Bundle (.aab)
+
+            Firma: ${{ env.HAS_KEYSTORE == 'true' && 'firmato con upload key ✅' || '⚠️ UNSIGNED — firmare prima del caricamento su Play Console (vedi PACKAGING.md)' }}
+
+            Build automatica via GitHub Actions (PWA → Capacitor).
