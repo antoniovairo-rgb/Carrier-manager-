@@ -1,6 +1,21 @@
 # LIVE MATCH — IMPLEMENTATION PLAN
 
-> **Documento di pianificazione. Nessun codice scritto: attende approvazione del proprietario.**
+> ## ✅ STATO DI AVANZAMENTO (aggiornato)
+> Roadmap **approvata e avviata**. Milestone P0/P1 **completate e in produzione** (`main`):
+>
+> | Milestone | Versione | Stato | Note |
+> |-----------|----------|-------|------|
+> | **M1 · Unified Outcome Model** | 5.52.0 | ✅ **PROD** | Esito granulare unico (outKind) → overlay+cronaca+3D coerenti. Gate 12/12, fingerprint 00001505. |
+> | **M3 · Coherence Assertion Layer** | 5.53.0 | ✅ **PROD** | `CoherenceCheck` nel gate (overlay-family ⟺ arc-family). Negative test superato (rottura M1 → timeline FAIL). |
+> | **M2 · Match Memory** | 5.54.0 | ✅ **PROD** | Continuità narrativa (riscatto/doppietta/2° assist/portiere in serata). Effimera, no save bump. |
+> | Polish P1 · chip/GK · P2 · ball-carry | — | ⏳ backlog | Gate-ciechi, da collaudare dal vivo. |
+>
+> M2-`cpmadapt` (IA off-ball adattiva) resta **OFF** (flag), da collaudare dal vivo prima di attivarlo.
+> Il dettaglio operativo sotto resta la specifica di riferimento delle milestone.
+
+---
+
+> **Documento di pianificazione.** Le milestone P0/P1 sono state implementate (vedi stato sopra).
 > Roadmap operativa derivata da `LIVE_MATCH_ARCHITECTURE_REVIEW.md`. Ogni milestone è
 > **completabile e validabile indipendentemente**, con obiettivo, file/simboli coinvolti,
 > dipendenze, rischio, rollback, feature flag, test di regressione e criteri di completamento.
