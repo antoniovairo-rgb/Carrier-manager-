@@ -44,6 +44,7 @@ export default {
     }
     const forced = {};           // gi -> intent dell'ultimo HighlightForced
     let resolved = 0, paired = 0;
+    let cohTotal = 0, cohFail = 0; // M3: asserzioni di coerenza overlay↔3D (CoherenceCheck)
     // LMQP B1: backbone narrativo per-beat (HighlightTimeline) — Semantic/Narrative Validator (#16)
     let htCount = 0; const htBeatTags = new Set(); const CONCL = new Set(['shot', 'header', 'layoff']);
     const seenIntent = new Set(), seenType = new Set(), seenBall = new Set(), seenKey = new Set(); // coverage (AC: copertura)
@@ -111,6 +112,12 @@ export default {
           // la storia deve CHIUDERSI con una conclusione (shot/header) o uno scarico difensivo (layoff)
           if (!CONCL.has(e.last)) warnings.push(`HighlightTimeline gi=${e.gi}: ultimo beat "${e.last}" non chiude l'azione (atteso shot/header/layoff)`);
         }
+      } else if (e.type === 'CoherenceCheck') {
+        // ── M3: COHERENCE ASSERTION LAYER — overlay-family ⟺ arc-family (Unified Outcome Model, M1) ──
+        //   Emesso a runtime in handleAction: se l'overlay racconta un esito (palo/parata/murato/fuori)
+        //   diverso da quello che rende il 3D, è un'incoerenza percettibile → FAIL bloccante (Cap.6.8/GR-048/065).
+        cohTotal++;
+        if (e.ok === false) { cohFail++; issues.push(`COERENZA gi=${e.gi} (${e.kind || 'overlay_arc'}): ${e.detail || 'overlay↔3D divergenti'}`); }
       }
     }
     if (resolved === 0) warnings.push('nessun ActionResolved nella timeline (passata final-state non ha risolto?)');
@@ -135,6 +142,7 @@ export default {
     } catch (err) { warnings.push('decision baseline err: ' + err.message); }
 
     return { pass: issues.length === 0, issues, warnings, info: { events: timeline.length, forced: Object.keys(forced).length, resolved, paired,
+      coherence: { total: cohTotal, fail: cohFail },
       htCount, htBeatTags: [...htBeatTags].sort(),
       coverage: { intents: [...seenIntent].sort(), hlTypes: [...seenType].sort(), ballStates: [...seenBall].sort(), outcomeKeys: [...seenKey].sort() }, baseline } };
   },
