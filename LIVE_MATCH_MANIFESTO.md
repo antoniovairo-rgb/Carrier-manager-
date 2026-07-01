@@ -6,6 +6,21 @@
 > conformarvisi. In caso di conflitto tra realismo e coinvolgimento dell'Eroe, vince
 > sempre l'Eroe (§1.15).
 
+## Indice
+
+1. Visione e Filosofia del Live Match
+2. Gameplay e Hero Experience
+3. Motore di Lettura Calcistica
+4. Intelligenza Artificiale Contestuale
+5. Motore Cinematografico, Cronaca e Immersione
+6. Sistema di Coerenza Assoluta
+7. Motore delle Animazioni 3D
+8. Tactical Engine (Motore Tattico)
+9. Event Engine (Motore degli Highlights)
+10. Hero Engine (Il Motore dell'Eroe)
+11. Quality Assurance Engine (Motore di Validazione del Live Match)
+12. Golden Rules del Live Match (GR-001…090 + Regola Finale)
+
 ---
 
 # CAPITOLO 1 — VISIONE E FILOSOFIA DEL LIVE MATCH
@@ -971,7 +986,260 @@ Il mondo reagisce.
 
 ---
 
-> **Nota redazionale:** il Capitolo 4 verrà inserito qui quando fornito.
+# CAPITOLO 4 — INTELLIGENZA ARTIFICIALE CONTESTUALE
+
+## 4.1 Visione
+
+L'Intelligenza Artificiale del Live Match NON deve cercare di simulare ventidue giocatori contemporaneamente.
+
+Deve simulare esclusivamente i giocatori realmente coinvolti nell'highlight.
+
+L'obiettivo non è aumentare la complessità.
+
+L'obiettivo è aumentare la credibilità.
+
+Ogni giocatore deve comportarsi come farebbe un vero calciatore nella stessa situazione.
+
+L'IA non deve mai rubare la scena all'Eroe.
+
+Deve valorizzarlo.
+
+--------------------------------------------------
+
+## 4.2 Principio Fondamentale
+
+L'Eroe è l'unico protagonista.
+
+L'IA rappresenta il mondo che reagisce alle sue decisioni.
+
+Ogni comportamento dell'IA deve avere un solo obiettivo:
+
+rendere più credibile l'azione scelta dal giocatore.
+
+--------------------------------------------------
+
+## 4.3 IA Locale
+
+Ogni highlight deve coinvolgere solamente i giocatori realmente necessari.
+
+Generalmente:
+
+- Eroe
+- Portiere
+- 2-4 difensori
+- 2-3 centrocampisti
+- 1-2 attaccanti
+
+Tutti gli altri giocatori devono limitarsi a mantenere una posizione tatticamente coerente.
+
+Non è necessario simulare continuamente l'intero campo.
+
+--------------------------------------------------
+
+## 4.4 Analisi del Contesto
+
+Ogni giocatore deve valutare automaticamente:
+
+- posizione del pallone;
+- posizione dell'Eroe;
+- posizione dei compagni;
+- posizione degli avversari;
+- distanza;
+- velocità;
+- orientamento;
+- ruolo;
+- modulo;
+- situazione tattica.
+
+Ogni decisione deve derivare da questa analisi.
+
+--------------------------------------------------
+
+## 4.5 Comportamento dei Difensori
+
+I difensori devono:
+
+- chiudere le linee di passaggio;
+- proteggere la porta;
+- accompagnare l'Eroe;
+- temporeggiare quando opportuno;
+- uscire in pressione quando necessario;
+- coprire il compagno;
+- effettuare raddoppi;
+- marcare preventivamente.
+
+Mai correre senza motivo.
+
+Mai lasciare spazi irrealistici.
+
+--------------------------------------------------
+
+## 4.6 Comportamento dei Centrocampisti
+
+I centrocampisti devono:
+
+- offrire linee di passaggio;
+- coprire gli inserimenti;
+- accompagnare l'azione;
+- recuperare posizione;
+- supportare difesa e attacco.
+
+Devono essere il collegamento naturale tra i reparti.
+
+--------------------------------------------------
+
+## 4.7 Comportamento degli Attaccanti
+
+Gli attaccanti controllati dall'IA devono:
+
+- attaccare la profondità;
+- smarcarsi;
+- occupare gli spazi;
+- liberare corridoi;
+- creare superiorità;
+- aprire la difesa.
+
+Devono facilitare il gioco dell'Eroe.
+
+Mai oscurarlo.
+
+--------------------------------------------------
+
+## 4.8 Comportamento del Portiere
+
+Il portiere deve prendere decisioni realistiche.
+
+Valutare:
+
+- distanza dell'attaccante;
+- angolo;
+- traiettoria del pallone;
+- possibilità di uscita;
+- copertura della porta.
+
+Può:
+
+- restare in porta;
+- uscire;
+- tuffarsi;
+- bloccare;
+- respingere;
+- deviare.
+
+Ogni scelta deve essere coerente.
+
+--------------------------------------------------
+
+## 4.9 Reazioni Dinamiche
+
+L'IA deve reagire esclusivamente dopo la scelta dell'Eroe.
+
+Mai prima.
+
+Durante il Freeze nessun giocatore può modificare la propria posizione.
+
+Alla ripartenza tutti reagiscono contemporaneamente.
+
+--------------------------------------------------
+
+## 4.10 Personalità dei Giocatori
+
+Ogni giocatore deve possedere caratteristiche comportamentali.
+
+Ad esempio:
+
+- aggressività;
+- concentrazione;
+- coraggio;
+- altruismo;
+- freddezza;
+- leadership;
+- fantasia;
+- disciplina tattica.
+
+Due giocatori con lo stesso Overall non devono necessariamente comportarsi nello stesso modo.
+
+--------------------------------------------------
+
+## 4.11 Memoria dell'IA
+
+L'IA deve ricordare quanto accaduto durante la partita.
+
+Ad esempio:
+
+- l'Eroe ha già segnato;
+- l'Eroe sta sbagliando molto;
+- il terzino è ammonito;
+- una fascia è particolarmente pericolosa;
+- una squadra sta dominando.
+
+Queste informazioni devono modificare leggermente il comportamento.
+
+Mai in maniera estrema.
+
+--------------------------------------------------
+
+## 4.12 Adattamento
+
+L'IA deve adattarsi progressivamente.
+
+Se il giocatore utilizza sempre lo stesso schema:
+
+- i difensori iniziano ad aspettarlo;
+- aumentano le marcature;
+- cambiano gli spazi.
+
+L'obiettivo è evitare partite ripetitive.
+
+--------------------------------------------------
+
+## 4.13 Coerenza Assoluta
+
+Ogni decisione dell'IA deve essere coerente con:
+
+- cronaca;
+- overlay;
+- animazioni;
+- telecamere;
+- HUD;
+- punteggio;
+- minuto;
+- risultato.
+
+Mai creare discrepanze.
+
+--------------------------------------------------
+
+## 4.14 Prestazioni
+
+L'IA deve essere estremamente efficiente.
+
+Preferire:
+
+- decisioni locali;
+- sistemi modulari;
+- cache;
+- valutazioni leggere.
+
+Evitare algoritmi inutilmente complessi.
+
+La fluidità del Live Match ha priorità.
+
+--------------------------------------------------
+
+## 4.15 Obiettivo Finale
+
+Il giocatore non deve mai pensare:
+
+"L'IA sta seguendo uno script."
+
+Deve pensare:
+
+"Questi giocatori stanno realmente reagendo alla mia scelta."
+
+L'IA deve essere invisibile.
+
+Il giocatore deve percepire solamente un mondo calcistico vivo, credibile e coerente, costruito interamente per valorizzare ogni decisione dell'Eroe.
 
 ---
 
