@@ -2272,7 +2272,305 @@ Il mondo reagisce.
 
 ---
 
-> **Nota redazionale:** il Capitolo 9 verrà inserito qui quando fornito.
+# CAPITOLO 9 — EVENT ENGINE (MOTORE DEGLI HIGHLIGHTS)
+
+## 9.1 Visione
+
+L'Event Engine rappresenta il regista invisibile del Live Match.
+
+Il suo compito NON è generare eventi casuali.
+
+Il suo compito è selezionare i momenti realmente significativi della partita.
+
+Ogni highlight deve avere una motivazione calcistica.
+
+Ogni highlight deve avere una motivazione narrativa.
+
+Ogni highlight deve avere una motivazione tattica.
+
+L'obiettivo è far vivere all'Eroe solamente i momenti che possono cambiare la sua carriera.
+
+--------------------------------------------------
+
+## 9.2 Principio Fondamentale
+
+Gli highlights non devono essere eventi isolati.
+
+Devono essere le conseguenze naturali dell'evoluzione della partita.
+
+Il giocatore deve percepire che ogni occasione nasce spontaneamente.
+
+Mai la sensazione che il motore abbia semplicemente estratto un evento casuale.
+
+--------------------------------------------------
+
+## 9.3 Generazione delle Situazioni
+
+Il motore deve valutare continuamente:
+
+- andamento della partita;
+- possesso;
+- fase tattica;
+- posizione dell'Eroe;
+- stato psicologico;
+- importanza della gara;
+- momento della stagione.
+
+Da queste informazioni deve generare solamente gli highlights coerenti.
+
+--------------------------------------------------
+
+## 9.4 Priorità degli Highlights
+
+Ogni highlight deve ricevere un livello di priorità.
+
+CRITICO
+
+- rigore;
+- occasione da gol;
+- contropiede;
+- uno contro uno col portiere;
+- assist decisivo.
+
+ALTO
+
+- cross pericoloso;
+- inserimento;
+- tiro dal limite;
+- recupero offensivo.
+
+MEDIO
+
+- costruzione;
+- sponda;
+- apertura;
+- possesso offensivo.
+
+BASSO
+
+- semplice appoggio;
+- consolidamento del possesso.
+
+Il motore deve privilegiare sempre gli eventi più significativi.
+
+--------------------------------------------------
+
+## 9.5 Distribuzione Temporale
+
+Gli highlights devono essere distribuiti naturalmente.
+
+Mai:
+
+- cinque highlights consecutivi;
+- lunghi periodi completamente vuoti;
+- ritmo irrealistico.
+
+La frequenza deve dipendere da:
+
+- intensità della partita;
+- qualità delle squadre;
+- tattica;
+- momento della gara.
+
+--------------------------------------------------
+
+## 9.6 Varietà
+
+L'Event Engine deve evitare ripetizioni.
+
+Se nelle ultime azioni sono comparsi:
+
+- tre cross;
+
+ridurre temporaneamente la probabilità di un nuovo cross.
+
+Se il giocatore riceve sempre lo stesso highlight:
+
+aumentare automaticamente la varietà.
+
+Ogni partita deve sembrare differente.
+
+--------------------------------------------------
+
+## 9.7 Memoria Narrativa
+
+Il motore deve ricordare continuamente:
+
+- ultimo highlight;
+- ultimi cinque highlights;
+- ultimi gol;
+- ultimi assist;
+- ultime occasioni;
+- ultimi errori.
+
+Le nuove situazioni devono tenerne conto.
+
+--------------------------------------------------
+
+## 9.8 Evoluzione della Partita
+
+La partita deve cambiare.
+
+Primo tempo.
+
+↓
+
+Studio.
+
+↓
+
+Secondo tempo.
+
+↓
+
+Più spazi.
+
+↓
+
+Finale.
+
+↓
+
+Maggiore pressione.
+
+↓
+
+Recupero.
+
+↓
+
+Massima tensione.
+
+L'Event Engine deve seguire questa evoluzione.
+
+--------------------------------------------------
+
+## 9.9 Importanza del Contesto
+
+La stessa occasione può avere un valore completamente diverso.
+
+Minuto 12.
+
+0-0.
+
+↓
+
+Occasione normale.
+
+Minuto 94.
+
+Finale di Champions.
+
+1-1.
+
+↓
+
+Occasione storica.
+
+L'Event Engine deve comprendere il contesto.
+
+--------------------------------------------------
+
+## 9.10 Eventi Speciali
+
+Il motore deve riconoscere automaticamente situazioni eccezionali.
+
+Ad esempio:
+
+- derby;
+- finale;
+- promozione;
+- retrocessione;
+- record personale;
+- tripletta;
+- doppietta;
+- esordio;
+- ultima partita;
+- compleanno del calciatore;
+- ritorno dopo infortunio.
+
+Questi eventi devono modificare leggermente il comportamento del motore.
+
+--------------------------------------------------
+
+## 9.11 Momento Psicologico
+
+L'Event Engine deve valutare:
+
+- fiducia dell'Eroe;
+- fiducia della squadra;
+- fiducia degli avversari;
+- entusiasmo del pubblico;
+- pressione.
+
+L'andamento della partita deve influenzare gli highlights.
+
+--------------------------------------------------
+
+## 9.12 Peso delle Decisioni
+
+Ogni scelta del giocatore deve modificare la partita.
+
+Un assist può aumentare la fiducia.
+
+Un errore può aumentare la pressione.
+
+Un gol può cambiare completamente l'atteggiamento tattico.
+
+Le decisioni devono avere conseguenze.
+
+--------------------------------------------------
+
+## 9.13 Rarità
+
+Alcune situazioni devono essere estremamente rare.
+
+Ad esempio:
+
+- rovesciata perfetta;
+- gol da centrocampo;
+- doppio palo;
+- salvataggio sulla linea;
+- autorete spettacolare;
+- gol al 99° minuto.
+
+La rarità aumenta il valore emotivo.
+
+--------------------------------------------------
+
+## 9.14 Collegamento tra Highlights
+
+Ogni highlight deve lasciare un'eredità.
+
+Il successivo deve tenere conto di ciò che è appena successo.
+
+La partita deve raccontare una storia continua.
+
+Mai dare la sensazione di scene indipendenti.
+
+--------------------------------------------------
+
+## 9.15 Obiettivo Finale
+
+Il giocatore non deve mai chiedersi:
+
+"Perché è comparso proprio questo highlight?"
+
+Deve pensare:
+
+"Era naturale che la partita arrivasse proprio a questo momento."
+
+L'Event Engine deve essere invisibile.
+
+Il giocatore deve percepire solamente una partita credibile, varia e ricca di momenti memorabili.
+
+Ogni highlight deve sembrare inevitabile.
+
+Ogni scelta deve sembrare importante.
+
+Ogni partita deve costruire una storia diversa.
+
+L'Event Engine rappresenta il narratore invisibile dell'intera carriera dell'Eroe.
 
 ---
 
