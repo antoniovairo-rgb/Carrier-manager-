@@ -161,6 +161,29 @@
 
 ---
 
+## DL-012 · CROWD 2.0 — pubblico parametrico, canvas-first (no folla mesh per-persona)
+- **Problema:** pubblico sfocato/a mosaico (texture 512×320 stirata su 60-126u), sempre pieno al ~95%
+  (anche nei provini), distribuzione tifoserie non governata (ospiti sulle tribune), muro piatto senza
+  profondità, redraw fisso ~30fps anche a spalti fermi. Charter proprietario §1-§11.
+- **Alternative:** (A) folla interamente 3D (migliaia di mesh/impostor animati) — costo GPU/memoria mobile
+  e asset pesanti (vincolo Play Store, cfr. scelta 5.47.8 «stadio procedurale»); (B) restare canvas-first
+  ma ridisegnare il sistema: texture ad alta densità per settore + 2 anelli inclinati + SOLO prime file
+  instanziate in 3D + contesto folla parametrico e seedato; (C) ritocco incrementale della texture esistente
+  (già tentato in 5.73.0 — non risolve stiramento, affluenza, distribuzione).
+- **Scelta:** **B** (CROWD 2.0, 5.74.0).
+- **Motivazione:** il difetto strutturale era lo STIRAMENTO (colonne texture non proporzionali alla larghezza
+  del settore) e l'assenza di un CONTESTO folla: `computeCrowdContext` (puro, seedato, node-testabile) diventa
+  l'unica sorgente per card spettatori + spalti 3D + scenografia tifo — coerenza by-construction (spirito M1).
+  L'instancing limitato alle prime file (≤64 busti/settore, 8 draw call) dà il «3D vicino alla camera» del
+  charter senza il costo di (A). Tutto parametrico in `CROWD_CFG` (§11). Deterministico → gate-safe.
+- **Impatto:** 2 FIX storici emersi: rotazioni tribune di fondo invertite (fronte verso l'esterno, mascherato
+  dai box-folla a 6 facce) e tetto a sbalzo che copriva l'anello basso dalla camera broadcast. Scenografia
+  3DV-TIFO ora gated dal contesto (niente coreografie a stadio vuoto; tribune SOLO colori casa, §5). Provini
+  §8 forzati in `LiveMatch` (giorno+sereno). Redraw adattivo → costo a riposo INFERIORE a prima. Rendering
+  gate-cieco → 3 test dedicati (context/visual/tex-dump).
+
+---
+
 ## Indice decisioni
 
 | ID | Decisione | Tipo |
@@ -176,6 +199,7 @@
 | DL-009 | Modularità dentro il file, no file JS separati | Vincolo |
 | DL-010 | Deferral motivati | Backlog |
 | DL-011 | Esito difensivo vario (fine «ping-pong») | Architettura |
+| DL-012 | CROWD 2.0 — pubblico parametrico canvas-first | Architettura |
 
 > Ogni riapertura di una decisione REJECT/Defer richiede una nuova voce DL con motivazione che
 > superi la Regola Zero e i vincoli di identità/complessità.
