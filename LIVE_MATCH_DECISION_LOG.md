@@ -90,12 +90,21 @@
 - **Problema:** il manifesto vuole difensori che «iniziano ad aspettarsi» lo schema ripetuto.
 - **Alternative:** (A) apprendimento in-match completo; (B) micro-bias deterministico da Match
   Memory dietro flag; (C) niente.
-- **Scelta:** **B**, con flag `cpmadapt` **default-OFF**.
+- **Scelta:** **B**, forma leggera con flag `cpmadapt` (`?cpmadapt=0` per spegnere).
 - **Motivazione:** l'off-ball è gate-cieco (R-01) e un'adattività mal calibrata degrada la
-  leggibilità e fa «rubare la scena» all'IA (contro Cap. 1.8). Una forma leggera, bounded e
-  deterministica è accettabile solo **dietro flag** e con collaudo dal vivo prima di qualunque
-  default-ON. Se non convince, resta OFF senza costi.
-- **Impatto:** parte opzionale di M2; nessun impatto sul gate (OFF durante i test).
+  leggibilità e fa «rubare la scena» all'IA (contro Cap. 1.8). Implementata come forma leggera,
+  bounded e deterministica.
+- **Stato (5.58.0):** **implementato e ATTIVATO su richiesta del proprietario.** `matchMem.byFlank`
+  traccia la fascia più attaccata dall'Eroe (da `pPosRef.current.y`); il render calcola
+  `_adaptShift` (deterministico, **bounded ±4u**, parte dopo ≥3 azioni, cresce con la dominanza
+  della fascia); l'off-ball sposta la y dei difensori della squadra che difende (mai GK, sospeso
+  sui set-piece). Verificato **direzionale** (la difesa reagisce diversamente a pattern
+  destra/sinistra) e **gate 13/13 verde**. La marcatura reale degli attaccanti **modera** lo shift
+  opposto → effetto realistico e sottile (Cap. 4.12 «mai in maniera estrema»), non un teletrasporto.
+- **Caveat onesto:** la magnitudine/feel non è calibrabile in modo affidabile in headless (la
+  misura mesh è rumorosa ±4u in scena dinamica); il **giudizio definitivo sul feel spetta al
+  proprietario dal vivo**. Reversibile con `?cpmadapt=0`.
+- **Impatto:** additivo, deterministico, nessun bump `SAVE_VERSION`, gate invariato.
 
 ## DL-008 · Match Memory effimera, non salvata (no `SAVE_VERSION` bump)
 - **Problema:** la continuità narrativa richiede memoria degli eventi di partita.
