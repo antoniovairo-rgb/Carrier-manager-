@@ -2883,3 +2883,287 @@ Il giocatore deve avere la sensazione che il Live Match sia sempre coerente, sta
 La qualità finale del gioco dipenderà più da questo sistema che dal numero di animazioni o di funzionalità presenti.
 
 Questo motore rappresenta il garante della qualità dell'intero Live Match.
+
+---
+
+# CAPITOLO 12 — GOLDEN RULES DEL LIVE MATCH
+
+## 12.1 Visione
+
+Le Golden Rules rappresentano la Costituzione del Live Match.
+
+Ogni futura modifica del motore dovrà rispettare queste regole.
+
+Se una nuova funzionalità viola anche una sola Golden Rule, dovrà essere riprogettata.
+
+Le Golden Rules hanno priorità su qualsiasi scelta implementativa.
+
+L'obiettivo è preservare l'identità del progetto per tutta la sua evoluzione.
+
+--------------------------------------------------
+
+## IDENTITÀ DEL GIOCO
+
+**GR-001** — L'Eroe è sempre il protagonista assoluto.
+
+**GR-002** — Il Live Match racconta la carriera dell'Eroe, non la partita.
+
+**GR-003** — Il giocatore deve sentirsi un attaccante.
+
+**GR-004** — Ogni highlight deve valorizzare l'Eroe.
+
+**GR-005** — Nessuna meccanica deve togliere centralità all'Eroe.
+
+--------------------------------------------------
+
+## GAMEPLAY
+
+**GR-006** — Il gameplay deve premiare l'intelligenza calcistica.
+
+**GR-007** — Il gameplay non deve premiare i riflessi.
+
+**GR-008** — Il giocatore deve avere sempre il tempo di leggere la situazione.
+
+**GR-009** — Il Freeze è intoccabile.
+
+**GR-010** — Il Freeze rappresenta una scelta di Game Design.
+
+**GR-011** — Durante il Freeze nessun giocatore può cambiare posizione.
+
+**GR-012** — Durante il Freeze il pallone deve rimanere fermo.
+
+**GR-013** — Durante il Freeze sono consentite esclusivamente micro animazioni estetiche.
+
+--------------------------------------------------
+
+## LIBERTÀ DEL GIOCATORE
+
+**GR-014** — Il giocatore deve poter scegliere qualsiasi azione disponibile.
+
+**GR-015** — Il motore non deve mai scegliere al posto del giocatore.
+
+**GR-016** — Una scelta sbagliata deve essere possibile.
+
+**GR-017** — Il motore deve modificare solamente la probabilità di successo.
+
+**GR-018** — La responsabilità finale appartiene sempre al giocatore.
+
+--------------------------------------------------
+
+## MOTORE DI LETTURA CALCISTICA
+
+**GR-019** — Ogni situazione deve essere analizzata completamente.
+
+**GR-020** — Ogni azione deve essere valutata.
+
+**GR-021** — La valutazione non deve essere mostrata.
+
+**GR-022** — La valutazione serve esclusivamente al motore.
+
+**GR-023** — Il giocatore non deve ricevere suggerimenti.
+
+--------------------------------------------------
+
+## IA
+
+**GR-024** — L'IA non deve rubare la scena.
+
+**GR-025** — L'IA deve reagire all'Eroe.
+
+**GR-026** — Ogni movimento deve avere una motivazione.
+
+**GR-027** — Mai movimenti casuali.
+
+**GR-028** — Mai corse prive di logica.
+
+**GR-029** — Mai giocatori immobili senza motivo.
+
+--------------------------------------------------
+
+## TATTICA
+
+**GR-030** — Ogni giocatore deve rispettare il proprio ruolo.
+
+**GR-031** — Ogni squadra deve mantenere equilibrio tattico.
+
+**GR-032** — Gli spazi devono aprirsi naturalmente.
+
+**GR-033** — Le linee di passaggio devono essere credibili.
+
+**GR-034** — Gli inserimenti devono avere una motivazione.
+
+--------------------------------------------------
+
+## ANIMAZIONI
+
+**GR-035** — Ogni animazione deve essere fisicamente possibile.
+
+**GR-036** — Ogni animazione deve essere calcisticamente credibile.
+
+**GR-037** — Ogni animazione deve essere coerente con la scelta del giocatore.
+
+**GR-038** — Mai utilizzare animazioni incompatibili.
+
+**GR-039** — Mai utilizzare animazioni solamente perché spettacolari.
+
+--------------------------------------------------
+
+## PALLONE
+
+**GR-040** — Il pallone rappresenta il riferimento assoluto del motore.
+
+**GR-041** — Ogni sistema deve utilizzare la stessa posizione del pallone.
+
+**GR-042** — Mai desincronizzare il pallone.
+
+--------------------------------------------------
+
+## CRONACA
+
+**GR-043** — La cronaca racconta solamente ciò che accade.
+
+**GR-044** — Mai anticipare.
+
+**GR-045** — Mai contraddirsi.
+
+**GR-046** — Mai descrivere un'altra azione.
+
+**GR-047** — La cronaca deve seguire il ritmo della partita.
+
+--------------------------------------------------
+
+## OVERLAY
+
+**GR-048** — Ogni testo deve essere coerente.
+
+**GR-049** — Gol dell'Eroe solo se segna realmente.
+
+**GR-050** — Assist solo se realmente effettuato.
+
+**GR-051** — Grande parata solo se realmente avvenuta.
+
+**GR-052** — Mai utilizzare feedback casuali.
+
+--------------------------------------------------
+
+## TELECAMERE
+
+**GR-053** — La telecamera deve raccontare l'azione.
+
+**GR-054** — Il pallone deve essere sempre leggibile.
+
+**GR-055** — L'Eroe deve essere sempre chiaramente visibile.
+
+**GR-056** — Mai sacrificare il gameplay per la spettacolarità.
+
+--------------------------------------------------
+
+## CONTINUITÀ
+
+**GR-057** — Ogni highlight deve nascere dal precedente.
+
+**GR-058** — La partita deve sembrare continua.
+
+**GR-059** — Mai dare la sensazione di scene scollegate.
+
+**GR-060** — Ogni highlight deve lasciare conseguenze.
+
+--------------------------------------------------
+
+## MEMORIA DELLA PARTITA
+
+**GR-061** — Il motore deve ricordare ciò che è accaduto.
+
+**GR-062** — Il contesto deve influenzare gli highlights.
+
+**GR-063** — L'IA deve adattarsi progressivamente.
+
+--------------------------------------------------
+
+## COERENZA
+
+**GR-064** — Gameplay, IA, animazioni, cronaca, HUD, overlay, telecamere e audio devono raccontare la stessa identica azione.
+
+**GR-065** — Mai mostrare elementi incoerenti.
+
+**GR-066** — Ogni highlight deve essere validato.
+
+--------------------------------------------------
+
+## VARIETÀ
+
+**GR-067** — Ridurre la ripetitività.
+
+**GR-068** — Aumentare la varietà.
+
+**GR-069** — Mai riproporre continuamente le stesse situazioni.
+
+**GR-070** — Ogni partita deve essere diversa.
+
+--------------------------------------------------
+
+## IMMERSIONE
+
+**GR-071** — Il giocatore deve dimenticare di stare giocando.
+
+**GR-072** — Ogni highlight deve sembrare reale.
+
+**GR-073** — Il Live Match deve emozionare.
+
+**GR-074** — Ogni scelta deve avere peso.
+
+--------------------------------------------------
+
+## PERFORMANCE
+
+**GR-075** — Mai sacrificare la fluidità.
+
+**GR-076** — Preferire sistemi modulari.
+
+**GR-077** — Preferire codice riutilizzabile.
+
+**GR-078** — Evitare duplicazioni.
+
+--------------------------------------------------
+
+## QUALITÀ
+
+**GR-079** — Ogni modifica deve essere testata.
+
+**GR-080** — Mai introdurre regressioni.
+
+**GR-081** — Ogni nuova funzionalità deve migliorare il Live Match.
+
+**GR-082** — La qualità ha priorità sulla quantità.
+
+--------------------------------------------------
+
+## REGOLA SUPREMA
+
+**GR-083** — Se una modifica rende il Live Match più realistico ma meno divertente, deve essere riprogettata.
+
+**GR-084** — Se una modifica rende il Live Match più complesso ma non migliora l'esperienza dell'Eroe, deve essere eliminata.
+
+**GR-085** — Ogni sistema esiste esclusivamente per valorizzare le decisioni del giocatore.
+
+**GR-086** — Ogni highlight deve essere memorabile.
+
+**GR-087** — Ogni partita deve raccontare una storia.
+
+**GR-088** — Ogni carriera deve essere unica.
+
+**GR-089** — L'identità del Live Match ha sempre la priorità su qualsiasi scelta tecnica.
+
+**GR-090** — La qualità percepita dal giocatore è il principale indicatore del successo del progetto.
+
+--------------------------------------------------
+
+## REGOLA FINALE
+
+Prima di implementare qualsiasi modifica chiedersi sempre:
+
+"Questa modifica rende l'esperienza dell'Eroe più credibile, più coinvolgente e più memorabile?"
+
+Se la risposta è NO, la modifica non deve essere implementata.
+
+Questa rappresenta la regola fondamentale dell'intero Live Match Design Manifesto.
