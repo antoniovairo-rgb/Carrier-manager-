@@ -968,3 +968,323 @@ L'Eroe prende la decisione.
 Il Motore comprende il calcio.
 
 Il mondo reagisce.
+
+---
+
+> **Nota redazionale:** il Capitolo 4 verrà inserito qui quando fornito.
+
+---
+
+# CAPITOLO 5 — MOTORE CINEMATOGRAFICO, CRONACA E IMMERSIONE
+
+## 5.1 Visione
+
+Il Live Match non deve limitarsi a simulare il calcio.
+
+Deve raccontarlo.
+
+Ogni highlight deve sembrare una sequenza tratta da una vera trasmissione televisiva.
+
+Il giocatore non deve avere la sensazione di assistere ad una semplice animazione.
+
+Deve vivere una storia.
+
+Ogni elemento audiovisivo deve contribuire ad aumentare immersione, tensione ed emozione.
+
+Il motore cinematografico rappresenta il regista invisibile dell'intera esperienza.
+
+--------------------------------------------------
+
+## 5.2 La Regia
+
+La telecamera non deve semplicemente seguire il pallone.
+
+Deve raccontare l'azione.
+
+Ogni inquadratura deve essere scelta in funzione di:
+
+- importanza dell'azione;
+- posizione del pallone;
+- posizione dell'Eroe;
+- situazione tattica;
+- spettacolarità;
+- leggibilità dell'azione.
+
+L'obiettivo è far vivere il calcio dal punto di vista dell'Eroe mantenendo una visione tattica sufficiente per prendere la decisione migliore.
+
+--------------------------------------------------
+
+## 5.3 La Telecamera deve essere Intelligente
+
+La telecamera deve adattarsi dinamicamente.
+
+Ad esempio:
+
+- contropiede;
+- uno contro uno;
+- cross;
+- tiro;
+- colpo di testa;
+- assist;
+- rigore;
+- punizione;
+- uscita del portiere;
+- gol.
+
+Ogni situazione richiede una regia differente.
+
+Mai utilizzare sempre la stessa inquadratura.
+
+--------------------------------------------------
+
+## 5.4 Il Ritmo Visivo
+
+Il ritmo delle telecamere deve seguire quello della partita.
+
+Azioni semplici:
+
+camera stabile.
+
+Azioni veloci:
+
+camera dinamica.
+
+Gol decisivo:
+
+camera più spettacolare.
+
+Occasioni importanti:
+
+maggiore enfasi.
+
+Il ritmo della regia deve accompagnare il ritmo emotivo della partita.
+
+--------------------------------------------------
+
+## 5.5 La Cronaca
+
+La cronaca rappresenta il narratore della partita.
+
+Deve raccontare esclusivamente ciò che sta realmente accadendo.
+
+Mai anticipare.
+
+Mai contraddirsi.
+
+Mai ripetersi.
+
+Ogni frase deve essere perfettamente sincronizzata con:
+
+- gameplay;
+- animazioni;
+- esito dell'azione;
+- overlay;
+- statistiche.
+
+La cronaca deve essere contestuale.
+
+--------------------------------------------------
+
+## 5.6 Continuità Narrativa
+
+La cronaca deve ricordare ciò che è successo.
+
+Esempi:
+
+"L'Eroe ci riprova dopo il tiro respinto pochi minuti fa."
+
+"Secondo assist della partita."
+
+"Difesa in grande difficoltà."
+
+"Il portiere sta vivendo una serata straordinaria."
+
+La cronaca deve contribuire a costruire una vera narrazione.
+
+--------------------------------------------------
+
+## 5.7 I Testi in Sovraimpressione
+
+Ogni overlay deve essere generato esclusivamente sulla base di quanto realmente accaduto.
+
+Mai utilizzare messaggi casuali.
+
+Mai mostrare feedback incoerenti.
+
+Esempi:
+
+"GOL DELL'EROE"
+
+solo se segna realmente.
+
+"ASSIST"
+
+solo se l'Eroe serve realmente il compagno.
+
+"OCCASIONE MANCATA"
+
+solo dopo un'occasione importante fallita.
+
+"GRANDE PARATA"
+
+solo dopo una vera parata.
+
+"RECUPERO DIFENSIVO"
+
+solo se realmente avvenuto.
+
+Ogni testo deve rappresentare esattamente l'azione mostrata.
+
+--------------------------------------------------
+
+## 5.8 Il Pubblico
+
+Il pubblico deve reagire in funzione della partita.
+
+Deve considerare:
+
+- importanza dell'azione;
+- squadra di casa;
+- punteggio;
+- minuto;
+- rivalità;
+- spettacolarità.
+
+Le reazioni devono risultare naturali.
+
+Mai casuali.
+
+--------------------------------------------------
+
+## 5.9 L'Audio
+
+Ogni suono deve avere una motivazione.
+
+Applausi.
+
+Fischi.
+
+Esultanze.
+
+Rumore del pallone.
+
+Contatti.
+
+Pali.
+
+Traverse.
+
+Reti.
+
+Tutto deve essere sincronizzato perfettamente.
+
+--------------------------------------------------
+
+## 5.10 Le Esultanze
+
+Le esultanze devono dipendere dal contesto.
+
+Non tutti i gol devono essere festeggiati allo stesso modo.
+
+Il motore deve considerare:
+
+- importanza del gol;
+- minuto;
+- risultato;
+- competizione;
+- emozione;
+- carriera dell'Eroe.
+
+Un gol al 92° deve trasmettere emozioni differenti rispetto ad un gol sul 4-0.
+
+--------------------------------------------------
+
+## 5.11 Replay Cinematografici
+
+I replay devono essere mostrati esclusivamente quando aggiungono valore.
+
+Mai interrompere inutilmente il ritmo.
+
+Devono valorizzare:
+
+- grandi gol;
+- assist spettacolari;
+- parate eccezionali;
+- errori clamorosi;
+- giocate tecniche.
+
+--------------------------------------------------
+
+## 5.12 Continuità tra Cronaca e Highlight
+
+La transizione tra cronaca testuale e highlight deve essere invisibile.
+
+Il giocatore non deve percepire uno stacco.
+
+La cronaca deve introdurre naturalmente l'azione.
+
+Alla conclusione dell'highlight la cronaca deve riprendere in maniera coerente.
+
+La partita deve sembrare un flusso continuo.
+
+--------------------------------------------------
+
+## 5.13 Coerenza Totale
+
+Il motore cinematografico deve verificare continuamente la coerenza tra:
+
+- telecamera;
+- animazioni;
+- cronaca;
+- overlay;
+- HUD;
+- replay;
+- audio;
+- IA.
+
+Ogni elemento deve raccontare esattamente la stessa azione.
+
+Mai creare incoerenze percettibili.
+
+--------------------------------------------------
+
+## 5.14 Obiettivo Emotivo
+
+Ogni highlight deve trasmettere emozioni.
+
+Il giocatore deve percepire:
+
+- tensione;
+- entusiasmo;
+- pressione;
+- soddisfazione;
+- delusione;
+- adrenalina.
+
+Il Live Match non deve limitarsi a mostrare il calcio.
+
+Deve farlo vivere.
+
+--------------------------------------------------
+
+## 5.15 Regola Fondamentale
+
+Il giocatore non deve mai avere la sensazione di guardare una sequenza di animazioni.
+
+Deve avere la sensazione di assistere ad una vera partita televisiva nella quale il protagonista assoluto è il proprio Eroe.
+
+Ogni telecamera.
+
+Ogni suono.
+
+Ogni animazione.
+
+Ogni frase della cronaca.
+
+Ogni overlay.
+
+Ogni replay.
+
+Ogni reazione del pubblico.
+
+Devono contribuire a costruire un'esperienza cinematografica continua, credibile e perfettamente coerente con il gameplay.
