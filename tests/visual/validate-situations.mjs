@@ -35,10 +35,11 @@ import dataCoherence from './checks/data-coherence.mjs';
 import timelineCheck from './checks/timeline.mjs';
 import motion from './checks/motion.mjs';
 import ballMotion from './checks/ball-motion.mjs';
+import bgCoherence from './checks/bg-coherence.mjs';
 
 const SIT_CHECKS = [initialState, orientation, visual, movements, golden]; // pre-risoluzione
 const FINAL_CHECKS = [finalState];                                          // post-risoluzione azione
-const GLOBAL_CHECKS = [determinism, postHighlight, dataCoherence, timelineCheck, motion, ballMotion]; // global
+const GLOBAL_CHECKS = [determinism, postHighlight, dataCoherence, timelineCheck, motion, ballMotion, bgCoherence]; // global
 const SEED = '0x9e3779b9 (mulberry32) + __CPM_RESEED(gi)';
 const UPDATE_GOLDEN = process.argv.includes('--update-golden');
 const SHOTS_ALL = process.argv.includes('--shots');
@@ -148,6 +149,17 @@ const GOLDEN = path.join(HERE, 'golden-sigs.json');
       const _b = tlRes.info.baseline || {}; const _cov = tlRes.info.coverage || {};
       console.log(`timeline: ${tlRes.info.events} eventi · ${tlRes.info.resolved} risolti · ${tlRes.info.paired} coerenti · baseline ${_b.mode}${_b.drift ? ' DRIFT=' + _b.drift : ''} · intents ${(_cov.intents || []).length} types ${(_cov.hlTypes || []).length}`);
     } catch (e) { agg['timeline'].issues.push({ gi: null, msg: 'errore timeline check: ' + (e && e.message || e) }); }
+
+    // BG-COHERENCE (B) — lint statico della cronaca di sfondo: la scritta a schermo deve combaciare con l'azione del testo
+    try {
+      const bg = await page.evaluate(() => (window.__CPM_BG || []));
+      const bgRes = bgCoherence.run({ bg });
+      agg['bg-coherence'].issues.push(...bgRes.issues.map(msg => ({ gi: null, msg })));
+      agg['bg-coherence'].warnings.push(...bgRes.warnings.map(msg => ({ gi: null, msg })));
+      agg['bg-coherence'].info = bgRes.info;
+      const _ba = bgRes.info.byArc || {};
+      console.log(`bg-coherence: ${bgRes.info.entries} voci · ${bgRes.info.withAt} con at · archi ${JSON.stringify(_ba)} · ${bgRes.issues.length} issue`);
+    } catch (e) { agg['bg-coherence'].issues.push({ gi: null, msg: 'errore bg-coherence check: ' + (e && e.message || e) }); }
 
     // POST-HIGHLIGHT — campiona la traiettoria (camera/palla/giocatori) su un set vario di Situations
     const phIdx = [0, 2, 30, 60, 79, 120].filter(gi => gi < situations.length);
