@@ -21,7 +21,20 @@ await sleep(500);
 console.log('INIZIA I PROVINI: ' + await clickText(/inizia i provini/));
 await sleep(900);
 console.log('Inizia il provino: ' + await clickText(/inizia il provino/));
-await sleep(3000); // lascia montare la LiveMatch del provino
+await sleep(6000); // lascia montare la LiveMatch del provino + caricare il GLB
+// MISURA LUMINOSITÀ del canvas 3D: uno "schermo nero" = canvas quasi tutto scuro
+const bright = await page.evaluate(() => {
+  const c = document.querySelector('canvas'); if (!c) return { noCanvas: true };
+  const w = c.width, h = c.height;
+  // rileggi via un canvas 2D di copia
+  const cp = document.createElement('canvas'); cp.width = Math.min(w, 200); cp.height = Math.min(h, 200);
+  const ctx = cp.getContext('2d'); ctx.drawImage(c, 0, 0, cp.width, cp.height);
+  let sum = 0, n = 0, lit = 0; const d = ctx.getImageData(0, 0, cp.width, cp.height).data;
+  for (let i = 0; i < d.length; i += 4) { const lum = (d[i] + d[i + 1] + d[i + 2]) / 3; sum += lum; n++; if (lum > 30) lit++; }
+  return { w, h, avg: +(sum / n).toFixed(1), litPct: +(lit / n * 100).toFixed(1) };
+});
+console.log('canvas: ' + bright.w + 'x' + bright.h + ' · luminosità media=' + bright.avg + '/255 · pixel illuminati=' + bright.litPct + '%');
+if (!bright.noCanvas && bright.avg < 8) console.log('  ⚠️ CANVAS QUASI NERO → schermo nero riprodotto!');
 // GIOCA: per ~70s clicca qualunque bottone azione/continua dell'highlight, catturando crash a runtime
 let clicks = 0;
 for (let t = 0; t < 70; t++) {
