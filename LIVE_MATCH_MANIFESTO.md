@@ -1288,3 +1288,984 @@ Ogni replay.
 Ogni reazione del pubblico.
 
 Devono contribuire a costruire un'esperienza cinematografica continua, credibile e perfettamente coerente con il gameplay.
+
+---
+
+# CAPITOLO 6 — SISTEMA DI COERENZA ASSOLUTA
+
+## 6.1 Visione
+
+La coerenza rappresenta il principio più importante dell'intero Live Match.
+
+Il giocatore non deve MAI percepire che i diversi sistemi del motore lavorano indipendentemente.
+
+Gameplay, IA, animazioni, cronaca, telecamere, HUD, overlay, audio e statistiche devono raccontare sempre la stessa identica storia.
+
+Ogni highlight deve risultare naturale, credibile e privo di qualsiasi incongruenza.
+
+La qualità percepita del Live Match dipenderà principalmente dalla sua coerenza.
+
+--------------------------------------------------
+
+## 6.2 Il Principio Fondamentale
+
+Prima di essere spettacolare, ogni highlight deve essere credibile.
+
+Una semplice azione coerente vale più di una spettacolare ma illogica.
+
+Ogni elemento mostrato al giocatore deve avere una motivazione calcistica.
+
+Mai inserire animazioni, movimenti o testi esclusivamente per creare spettacolo.
+
+--------------------------------------------------
+
+## 6.3 Validazione Preventiva
+
+Prima che ogni highlight venga mostrato, il motore deve eseguire automaticamente una validazione completa.
+
+L'obiettivo è intercettare eventuali incoerenze prima che il giocatore possa vederle.
+
+Il controllo deve verificare:
+
+- situazione tattica;
+- posizione dei giocatori;
+- posizione del pallone;
+- cronaca;
+- overlay;
+- HUD;
+- animazioni;
+- telecamere;
+- audio;
+- statistiche.
+
+Se viene rilevata un'incompatibilità il motore deve correggerla automaticamente.
+
+--------------------------------------------------
+
+## 6.4 Coerenza Tattica
+
+Ogni giocatore deve occupare una posizione compatibile con:
+
+- modulo;
+- fase di gioco;
+- zona del campo;
+- ruolo;
+- situazione offensiva;
+- situazione difensiva.
+
+Mai osservare:
+
+- terzini immobili al centro;
+- centrali offensivi senza motivo;
+- attaccanti in copertura difensiva irrealistica;
+- linee spezzate senza giustificazione.
+
+--------------------------------------------------
+
+## 6.5 Coerenza Fisica
+
+Ogni animazione deve rispettare la fisica.
+
+Verificare automaticamente:
+
+- distanza dal pallone;
+- altezza della palla;
+- velocità;
+- inerzia;
+- equilibrio;
+- direzione;
+- peso del corpo;
+- contatto.
+
+Mai permettere:
+
+- colpi di testa con palla rasoterra;
+- rovesciate senza spazio;
+- stop impossibili;
+- tiri senza equilibrio;
+- contrasti irrealistici.
+
+--------------------------------------------------
+
+## 6.6 Coerenza delle Animazioni
+
+Ogni animazione deve essere compatibile con:
+
+- postura;
+- orientamento;
+- situazione;
+- pallone;
+- velocità;
+- ruolo;
+- contesto.
+
+Se un'animazione non è compatibile deve essere sostituita automaticamente.
+
+Mai forzare un'animazione.
+
+--------------------------------------------------
+
+## 6.7 Coerenza della Cronaca
+
+La cronaca deve descrivere esclusivamente ciò che accade realmente.
+
+Mai:
+
+- anticipare;
+- inventare;
+- contraddirsi;
+- descrivere un'altra azione.
+
+Ogni frase deve essere sincronizzata con:
+
+- animazione;
+- replay;
+- overlay;
+- esito;
+- statistica.
+
+--------------------------------------------------
+
+## 6.8 Coerenza degli Overlay
+
+Ogni testo mostrato deve essere generato dall'azione realmente avvenuta.
+
+Esempi.
+
+"GOL DELL'EROE"
+
+solo se segna realmente.
+
+"ASSIST"
+
+solo se l'Eroe effettua realmente un assist.
+
+"GRANDE PARATA"
+
+solo se il portiere effettua realmente una grande parata.
+
+"OCCASIONE MANCATA"
+
+solo se viene realmente sprecata una chiara occasione.
+
+Mai utilizzare messaggi generici.
+
+--------------------------------------------------
+
+## 6.9 Coerenza dell'HUD
+
+L'HUD deve rappresentare sempre lo stato reale della partita.
+
+Verificare continuamente:
+
+- punteggio;
+- cronometro;
+- cartellini;
+- sostituzioni;
+- statistiche;
+- stamina;
+- morale;
+- valutazione.
+
+Mai mostrare dati incoerenti.
+
+--------------------------------------------------
+
+## 6.10 Coerenza delle Telecamere
+
+La regia deve essere coerente con:
+
+- posizione del pallone;
+- direzione dell'azione;
+- velocità;
+- importanza.
+
+Mai utilizzare inquadrature che:
+
+- nascondano il pallone;
+- nascondano l'Eroe;
+- rendano difficile la lettura tattica.
+
+--------------------------------------------------
+
+## 6.11 Coerenza del Pallone
+
+Il pallone rappresenta il riferimento assoluto del motore.
+
+Ogni sistema deve utilizzare la stessa posizione del pallone.
+
+Animazioni.
+
+IA.
+
+Cronaca.
+
+Telecamere.
+
+Replay.
+
+HUD.
+
+Overlay.
+
+Tutti devono riferirsi allo stesso identico stato.
+
+--------------------------------------------------
+
+## 6.12 Coerenza Temporale
+
+Tutti gli eventi devono rispettare la stessa linea temporale.
+
+Mai osservare:
+
+- replay prima dell'evento;
+- cronaca in ritardo;
+- overlay anticipati;
+- statistiche aggiornate prima dell'azione.
+
+Ogni sistema deve essere sincronizzato.
+
+--------------------------------------------------
+
+## 6.13 Coerenza Narrativa
+
+Ogni highlight deve essere coerente con la storia della partita.
+
+Il motore deve ricordare:
+
+- risultato;
+- minuto;
+- ultimo highlight;
+- ultimo gol;
+- ultimi tiri;
+- ultimi assist;
+- cambi;
+- espulsioni;
+- ammonizioni;
+- stato emotivo.
+
+La partita deve sembrare continua.
+
+--------------------------------------------------
+
+## 6.14 Sistema di Fallback
+
+Quando viene rilevata un'incompatibilità il motore NON deve generare bug.
+
+Deve cercare automaticamente:
+
+- un'animazione alternativa;
+- una telecamera alternativa;
+- un overlay alternativo;
+- una frase alternativa della cronaca;
+- un movimento alternativo.
+
+L'obiettivo è evitare qualsiasi situazione visivamente incoerente.
+
+--------------------------------------------------
+
+## 6.15 Priorità di Coerenza
+
+Quando due sistemi entrano in conflitto, il motore deve rispettare questo ordine di priorità:
+
+1. Gameplay.
+2. Decisione dell'Eroe.
+3. Posizione del pallone.
+4. Coerenza calcistica.
+5. IA.
+6. Animazioni.
+7. Cronaca.
+8. Overlay.
+9. HUD.
+10. Regia.
+
+Nessun elemento estetico deve mai compromettere il gameplay.
+
+--------------------------------------------------
+
+## 6.16 Obiettivo Finale
+
+Il giocatore non deve mai percepire che il Live Match è composto da sistemi separati.
+
+Deve avere la sensazione che tutto faccia parte dello stesso mondo.
+
+Ogni giocatore.
+
+Ogni animazione.
+
+Ogni telecamera.
+
+Ogni frase.
+
+Ogni overlay.
+
+Ogni suono.
+
+Ogni statistica.
+
+Devono raccontare la stessa identica azione.
+
+La coerenza assoluta rappresenta il principale indicatore di qualità del Live Match.
+
+Qualsiasi nuova funzionalità dovrà essere implementata solo se rispetta integralmente questo capitolo.
+
+---
+
+# CAPITOLO 7 — MOTORE DELLE ANIMAZIONI 3D
+
+## 7.1 Visione
+
+Le animazioni rappresentano il linguaggio del Live Match.
+
+Non devono limitarsi a mostrare un movimento.
+
+Devono raccontare un'intenzione.
+
+Ogni animazione deve trasmettere ciò che il giocatore sta cercando di fare.
+
+L'obiettivo NON è avere il maggior numero possibile di animazioni.
+
+L'obiettivo è avere sempre l'animazione più credibile.
+
+--------------------------------------------------
+
+## 7.2 Principio Fondamentale
+
+Ogni animazione deve essere compatibile con la situazione di gioco.
+
+Mai scegliere un'animazione solamente perché disponibile.
+
+L'animazione deve essere una conseguenza naturale della situazione calcistica.
+
+--------------------------------------------------
+
+## 7.3 Compatibilità Totale
+
+Prima di riprodurre un'animazione verificare automaticamente:
+
+- posizione del pallone;
+- altezza del pallone;
+- velocità del pallone;
+- direzione del pallone;
+- velocità del giocatore;
+- orientamento del corpo;
+- equilibrio;
+- spazio disponibile;
+- pressione avversaria;
+- ruolo;
+- situazione tattica.
+
+Solo dopo questa verifica l'animazione può essere selezionata.
+
+--------------------------------------------------
+
+## 7.4 Classificazione delle Animazioni
+
+Ogni animazione deve appartenere ad una categoria ben definita.
+
+Ad esempio:
+
+CONTROLLO
+
+- stop
+- controllo orientato
+- stop di petto
+- stop di coscia
+- controllo a seguire
+
+PASSAGGI
+
+- corto
+- medio
+- lungo
+- filtrante
+- esterno
+- tacco
+
+TIRI
+
+- piazzato
+- potente
+- di prima
+- al volo
+- mezza volée
+- pallonetto
+
+GIOCO AEREO
+
+- colpo di testa
+- sponda
+- deviazione
+- torsione
+
+DRIBBLING
+
+- finta
+- cambio direzione
+- protezione
+- sterzata
+
+DIFESA
+
+- contrasto
+- intercetto
+- scivolata
+- anticipo
+
+PORTIERE
+
+- blocco
+- tuffo
+- respinta
+- uscita
+
+--------------------------------------------------
+
+## 7.5 Palla a Terra e Gioco Aereo
+
+Il motore deve distinguere sempre:
+
+PALLA A TERRA
+
+PALLA ALTA
+
+PALLA RIMBALZANTE
+
+PALLA A MEZZA ALTEZZA
+
+Ogni categoria deve utilizzare esclusivamente animazioni compatibili.
+
+Mai utilizzare:
+
+- colpi di testa con palla rasoterra;
+- tiri rasoterra su palloni alti;
+- stop impossibili;
+- controlli incompatibili.
+
+--------------------------------------------------
+
+## 7.6 Root Motion
+
+Le animazioni devono utilizzare il Root Motion solo quando realmente necessario.
+
+Il movimento deve risultare naturale.
+
+Mai osservare:
+
+- scivolamenti;
+- teletrasporti;
+- accelerazioni improvvise;
+- arresti irrealistici.
+
+--------------------------------------------------
+
+## 7.7 Blend delle Animazioni
+
+Il passaggio tra due animazioni deve essere invisibile.
+
+Ogni transizione deve rispettare:
+
+- velocità;
+- postura;
+- direzione;
+- equilibrio;
+- inerzia.
+
+Il giocatore non deve percepire cambi improvvisi.
+
+--------------------------------------------------
+
+## 7.8 Sistema di Priorità
+
+Quando più animazioni risultano compatibili, scegliere quella con il punteggio di coerenza più elevato.
+
+La priorità deve considerare:
+
+- situazione;
+- contesto;
+- qualità tecnica;
+- spettacolarità;
+- naturalezza.
+
+Mai scegliere un'animazione solo perché più spettacolare.
+
+--------------------------------------------------
+
+## 7.9 Animazioni Contestuali
+
+La stessa azione può essere eseguita in modi differenti.
+
+Ad esempio un tiro può variare in funzione di:
+
+- piede;
+- velocità;
+- pressione;
+- equilibrio;
+- distanza;
+- angolo;
+- stanchezza;
+- fiducia.
+
+L'animazione deve adattarsi automaticamente.
+
+--------------------------------------------------
+
+## 7.10 Reazioni
+
+Ogni animazione deve essere seguita da una reazione.
+
+Ad esempio:
+
+dopo un tiro:
+
+- recupero equilibrio;
+- osservazione della traiettoria;
+- eventuale esultanza;
+- delusione.
+
+Dopo un passaggio:
+
+- smarcamento;
+- richiesta del pallone;
+- accompagnamento.
+
+Dopo un contrasto:
+
+- recupero;
+- perdita equilibrio;
+- rincorsa.
+
+Mai terminare un'animazione senza continuità.
+
+--------------------------------------------------
+
+## 7.11 Collisioni
+
+Le collisioni devono risultare credibili.
+
+Ogni contatto deve essere compatibile con:
+
+- peso;
+- velocità;
+- direzione;
+- postura;
+- intensità.
+
+Mai attraversare altri giocatori.
+
+Mai attraversare il pallone.
+
+--------------------------------------------------
+
+## 7.12 Espressività
+
+Ogni animazione deve comunicare emozioni.
+
+Linguaggio del corpo.
+
+Espressioni.
+
+Gestualità.
+
+Respirazione.
+
+Esultanze.
+
+Frustrazione.
+
+Leadership.
+
+L'Eroe deve sembrare vivo.
+
+--------------------------------------------------
+
+## 7.13 Animazioni dell'Eroe
+
+L'Eroe deve possedere il catalogo di animazioni più ricco dell'intero gioco.
+
+Le sue animazioni devono risultare:
+
+- più varie;
+- più fluide;
+- più riconoscibili;
+- più spettacolari;
+- più personalizzabili.
+
+Il giocatore deve percepire una crescita visiva durante la carriera.
+
+--------------------------------------------------
+
+## 7.14 Ottimizzazione
+
+Il sistema deve evitare animazioni duplicate.
+
+Preferire:
+
+- animazioni modulari;
+- riutilizzo;
+- blending;
+- parametri dinamici.
+
+L'obiettivo è aumentare la varietà riducendo il numero di asset.
+
+--------------------------------------------------
+
+## 7.15 Regola Fondamentale
+
+Ogni animazione deve rispondere a tre domande:
+
+È fisicamente possibile?
+
+È calcisticamente credibile?
+
+È coerente con ciò che il giocatore ha scelto?
+
+Se anche una sola risposta è negativa, l'animazione non deve essere utilizzata.
+
+L'animazione perfetta non è la più spettacolare.
+
+È quella che il giocatore si aspetta naturalmente di vedere in quella precisa situazione.
+
+---
+
+# CAPITOLO 8 — TACTICAL ENGINE (MOTORE TATTICO)
+
+## 8.1 Visione
+
+Il Tactical Engine rappresenta il cervello tattico dell'intero Live Match.
+
+Il suo obiettivo NON è simulare una partita completa.
+
+Il suo obiettivo è garantire che ogni highlight rappresenti una situazione calcistica credibile.
+
+Ogni posizione.
+
+Ogni movimento.
+
+Ogni inserimento.
+
+Ogni copertura.
+
+Ogni smarcamento.
+
+Devono avere una motivazione tattica.
+
+Il Tactical Engine è responsabile della credibilità del calcio giocato.
+
+--------------------------------------------------
+
+## 8.2 Principio Fondamentale
+
+Ogni giocatore deve sapere:
+
+- dove si trova;
+- dove dovrebbe trovarsi;
+- cosa sta cercando di fare;
+- perché sta compiendo quel movimento.
+
+Mai movimenti casuali.
+
+Mai movimenti privi di logica.
+
+--------------------------------------------------
+
+## 8.3 Occupazione degli Spazi
+
+Ogni squadra deve occupare il campo in maniera razionale.
+
+Il motore deve mantenere:
+
+- ampiezza;
+- profondità;
+- equilibrio;
+- compattezza.
+
+Gli spazi devono aprirsi e chiudersi naturalmente.
+
+Mai osservare zone completamente vuote senza una motivazione tattica.
+
+--------------------------------------------------
+
+## 8.4 Modulo Dinamico
+
+Il modulo rappresenta solamente il punto di partenza.
+
+Durante la partita deve trasformarsi continuamente.
+
+Esempio.
+
+4-3-3
+
+↓
+
+fase offensiva
+
+↓
+
+2-3-5
+
+↓
+
+transizione
+
+↓
+
+3-2-5
+
+↓
+
+fase difensiva
+
+↓
+
+4-5-1
+
+Il Tactical Engine deve adattare automaticamente il posizionamento.
+
+--------------------------------------------------
+
+## 8.5 Fasi di Gioco
+
+Ogni highlight deve appartenere ad una fase tattica.
+
+Ad esempio:
+
+- costruzione bassa;
+- costruzione alta;
+- sviluppo;
+- rifinitura;
+- finalizzazione;
+- transizione offensiva;
+- transizione difensiva;
+- difesa posizionale;
+- pressing;
+- recupero.
+
+La fase influenza il comportamento di tutti i giocatori.
+
+--------------------------------------------------
+
+## 8.6 Linee di Passaggio
+
+Il motore deve calcolare continuamente:
+
+- linee aperte;
+- linee chiuse;
+- linee rischiose;
+- linee sicure.
+
+Le decisioni dell'IA devono dipendere da queste valutazioni.
+
+--------------------------------------------------
+
+## 8.7 Occupazione dell'Area
+
+Quando il pallone arriva negli ultimi trenta metri il Tactical Engine deve organizzare automaticamente:
+
+Attacco
+
+- primo palo;
+- secondo palo;
+- rimorchio;
+- limite area;
+- lato debole.
+
+Difesa
+
+- marcatura;
+- copertura;
+- raddoppio;
+- copertura del secondo palo;
+- protezione del portiere.
+
+Mai area occupata casualmente.
+
+--------------------------------------------------
+
+## 8.8 Smarcamenti
+
+Gli smarcamenti devono avere una motivazione.
+
+Un giocatore può:
+
+- attaccare la profondità;
+- venire incontro;
+- allargarsi;
+- tagliare;
+- liberare spazio;
+- trascinare il marcatore.
+
+Mai correre semplicemente perché inizia un highlight.
+
+--------------------------------------------------
+
+## 8.9 Inserimenti
+
+Gli inserimenti devono dipendere da:
+
+- spazio disponibile;
+- posizione dell'Eroe;
+- possesso;
+- modulo;
+- momento della partita.
+
+L'inserimento deve migliorare la situazione offensiva.
+
+Mai creare confusione.
+
+--------------------------------------------------
+
+## 8.10 Pressione
+
+La pressione deve essere dinamica.
+
+Considerare:
+
+- minuto;
+- punteggio;
+- stanchezza;
+- importanza della gara;
+- qualità dell'avversario.
+
+Una squadra che perde al novantesimo deve pressare in modo diverso rispetto a una squadra che sta vincendo.
+
+--------------------------------------------------
+
+## 8.11 Coperture Difensive
+
+La difesa deve proteggere:
+
+- porta;
+- spazio;
+- uomo;
+- linee di passaggio.
+
+Ogni difensore deve sapere quale priorità seguire.
+
+Mai lasciare la porta scoperta senza motivo.
+
+--------------------------------------------------
+
+## 8.12 Superiorità Numerica
+
+Il Tactical Engine deve riconoscere automaticamente:
+
+- 1 contro 1;
+- 2 contro 1;
+- 3 contro 2;
+- 4 contro 3;
+- inferiorità numerica;
+- superiorità numerica.
+
+Ogni situazione deve modificare automaticamente i movimenti.
+
+--------------------------------------------------
+
+## 8.13 Adattamento Contestuale
+
+Il Tactical Engine deve adattarsi continuamente.
+
+Considerare:
+
+- punteggio;
+- modulo;
+- sostituzioni;
+- stanchezza;
+- cartellini;
+- morale;
+- eventi precedenti.
+
+La stessa azione può produrre comportamenti differenti.
+
+--------------------------------------------------
+
+## 8.14 Tactical Memory
+
+Il motore deve ricordare:
+
+- fascia più utilizzata;
+- lato più pericoloso;
+- giocatore più cercato;
+- zona maggiormente attaccata;
+- difensore in difficoltà;
+- portiere in difficoltà.
+
+La memoria deve modificare gradualmente la tattica.
+
+--------------------------------------------------
+
+## 8.15 Ruolo dell'Eroe
+
+Il Tactical Engine deve costruire la situazione attorno all'Eroe.
+
+L'Eroe deve sempre essere nella condizione di:
+
+- ricevere palla;
+- creare superiorità;
+- finalizzare;
+- servire un assist;
+- effettuare un movimento intelligente.
+
+Il sistema deve valorizzare il protagonista senza renderlo onnipotente.
+
+--------------------------------------------------
+
+## 8.16 Varietà
+
+Il Tactical Engine deve evitare la ripetitività.
+
+La stessa situazione non deve mai produrre sempre gli stessi movimenti.
+
+Ogni highlight deve sembrare unico.
+
+La varietà deve nascere dalla tattica.
+
+Non dalla casualità.
+
+--------------------------------------------------
+
+## 8.17 Sincronizzazione
+
+Il Tactical Engine deve dialogare continuamente con:
+
+- Motore di Lettura Calcistica;
+- IA Contestuale;
+- Sistema Animazioni;
+- Cronaca;
+- Overlay;
+- Telecamere;
+- Sistema di Coerenza.
+
+Tutti i sistemi devono condividere la stessa interpretazione della situazione.
+
+--------------------------------------------------
+
+## 8.18 Obiettivo Finale
+
+Il giocatore non deve pensare:
+
+"I compagni stanno seguendo uno script."
+
+Deve pensare:
+
+"I miei compagni stanno leggendo il calcio insieme a me."
+
+Ogni movimento.
+
+Ogni inserimento.
+
+Ogni copertura.
+
+Ogni smarcamento.
+
+Ogni pressione.
+
+Deve sembrare la naturale conseguenza della situazione tattica.
+
+Il Tactical Engine rappresenta il cervello collettivo della squadra.
+
+L'Eroe prende la decisione.
+
+La squadra la interpreta.
+
+Il mondo reagisce.
