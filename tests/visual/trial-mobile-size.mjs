@@ -25,9 +25,10 @@ await browser.close(); srv.close();
 console.log('viewport MOBILE 390x844 — provino:');
 console.log('  canvas buffer: ' + (m.noCanvas ? 'ASSENTE' : m.cw + 'x' + m.ch));
 console.log('  canvas su schermo (rect): ' + (m.noCanvas ? '-' : m.rectW + 'x' + m.rectH) + ' · altezza mount: ' + m.mountH);
-// il SEGNALE REALE è l'altezza del MOUNT (contenitore del canvas): se ~0, il canvas viene ritagliato → campo invisibile
-const okMount = !m.noCanvas && m.mountH > 100;
+// il campo si vede E riempie lo spazio: il canvas deve avere altezza ~= al contenitore (niente fascia nera)
+const gap = m.noCanvas ? 999 : Math.abs(m.mountH - m.rectH);
+const okMount = !m.noCanvas && m.mountH > 100 && gap <= 12;
 console.log(m.noCanvas ? '❌ nessun canvas' : (okMount
-  ? '✅ CAMPO OK — contenitore (mount) alto ' + m.mountH + 'px → il campo si vede'
-  : '❌ CAMPO COLLASSATO — mount alto ' + m.mountH + 'px (il canvas viene ritagliato) → campo invisibile'));
+  ? '✅ CAMPO PIENO — canvas ' + m.rectH + 'px riempie il contenitore ' + m.mountH + 'px (gap ' + gap + 'px) → niente fascia nera'
+  : (m.mountH <= 100 ? '❌ CAMPO COLLASSATO — mount ' + m.mountH + 'px' : '⚠️ FASCIA NERA — canvas ' + m.rectH + 'px < contenitore ' + m.mountH + 'px (gap ' + gap + 'px)')));
 process.exit(okMount ? 0 : 1);
