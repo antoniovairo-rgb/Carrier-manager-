@@ -2569,3 +2569,317 @@ L'Hero Engine deve trasformare una semplice successione di partite nella storia 
 Questa rappresenta l'essenza dell'intero progetto.
 
 Tutto il resto del Live Match esiste per valorizzare questa esperienza.
+
+---
+
+# CAPITOLO 11 — QUALITY ASSURANCE ENGINE (MOTORE DI VALIDAZIONE DEL LIVE MATCH)
+
+## 11.1 Visione
+
+Il Quality Assurance Engine rappresenta il controllore invisibile dell'intero Live Match.
+
+Il suo compito NON è generare gameplay.
+
+Il suo compito è verificare che ogni highlight sia perfettamente coerente prima di essere mostrato al giocatore.
+
+L'obiettivo è eliminare qualsiasi bug percettivo.
+
+Il giocatore non deve mai vedere un'azione illogica.
+
+--------------------------------------------------
+
+## 11.2 Principio Fondamentale
+
+Ogni highlight deve superare una validazione completa.
+
+Se anche un solo elemento risulta incoerente, l'highlight NON deve essere eseguito finché il problema non viene corretto automaticamente.
+
+La qualità percepita ha sempre la priorità.
+
+--------------------------------------------------
+
+## 11.3 Validazione della Situazione
+
+Prima dell'avvio dell'highlight verificare:
+
+- posizione dell'Eroe;
+- posizione dei compagni;
+- posizione degli avversari;
+- posizione del pallone;
+- zona del campo;
+- fase tattica;
+- punteggio;
+- minuto;
+- stato della partita.
+
+Tutti gli elementi devono essere compatibili.
+
+--------------------------------------------------
+
+## 11.4 Validazione delle Azioni
+
+Verificare che l'azione scelta sia realmente eseguibile.
+
+Controllare:
+
+- distanza dal pallone;
+- orientamento;
+- equilibrio;
+- piede utilizzato;
+- velocità;
+- spazio disponibile;
+- pressione avversaria;
+- tipo di pallone.
+
+Se l'azione non è compatibile:
+
+scegliere automaticamente una variante compatibile.
+
+Mai generare azioni impossibili.
+
+--------------------------------------------------
+
+## 11.5 Validazione delle Animazioni
+
+Ogni animazione deve essere verificata.
+
+Controllare:
+
+- gioco aereo;
+- palla a terra;
+- altezza della palla;
+- collisioni;
+- spazio;
+- direzione;
+- root motion;
+- blending.
+
+Mai permettere:
+
+- animazioni interrotte;
+- animazioni incompatibili;
+- scivolamenti;
+- teletrasporti;
+- compenetrazioni.
+
+--------------------------------------------------
+
+## 11.6 Validazione dell'IA
+
+Verificare che ogni giocatore abbia una motivazione.
+
+Ogni movimento deve essere giustificato.
+
+Mai osservare:
+
+- corse casuali;
+- marcature errate;
+- inserimenti illogici;
+- difensori immobili;
+- attaccanti senza funzione.
+
+--------------------------------------------------
+
+## 11.7 Validazione della Cronaca
+
+La cronaca deve essere verificata automaticamente.
+
+Ogni frase deve corrispondere all'azione.
+
+Mai:
+
+- anticipare;
+- ritardare;
+- descrivere un'altra azione;
+- utilizzare nomi errati;
+- attribuire gol o assist al giocatore sbagliato.
+
+--------------------------------------------------
+
+## 11.8 Validazione degli Overlay
+
+Ogni messaggio in sovraimpressione deve essere controllato.
+
+Ad esempio:
+
+"GOL DELL'EROE"
+
+solo se segna realmente.
+
+"ASSIST"
+
+solo se esiste realmente.
+
+"GRANDE PARATA"
+
+solo se è realmente avvenuta.
+
+Mai utilizzare messaggi incoerenti.
+
+--------------------------------------------------
+
+## 11.9 Validazione delle Telecamere
+
+Verificare continuamente:
+
+- leggibilità;
+- visibilità dell'Eroe;
+- visibilità del pallone;
+- fluidità;
+- assenza di clipping.
+
+Mai utilizzare una telecamera che renda difficile leggere l'azione.
+
+--------------------------------------------------
+
+## 11.10 Validazione della Continuità
+
+Ogni highlight deve essere coerente con:
+
+- highlight precedente;
+- cronaca precedente;
+- statistiche;
+- risultato;
+- stato della partita.
+
+La partita deve sembrare continua.
+
+Mai una successione di clip indipendenti.
+
+--------------------------------------------------
+
+## 11.11 Validazione della Coerenza Narrativa
+
+Ogni sistema deve raccontare la stessa storia.
+
+Gameplay.
+
+IA.
+
+Animazioni.
+
+Cronaca.
+
+HUD.
+
+Overlay.
+
+Replay.
+
+Audio.
+
+Pubblico.
+
+Statistiche.
+
+Devono risultare perfettamente sincronizzati.
+
+--------------------------------------------------
+
+## 11.12 Sistema di Correzione Automatica
+
+Quando viene individuata un'incongruenza il motore deve tentare automaticamente di correggerla.
+
+Ordine di priorità:
+
+1. sostituire l'animazione;
+
+2. modificare leggermente il movimento;
+
+3. modificare la cronaca;
+
+4. modificare l'overlay;
+
+5. modificare la telecamera;
+
+6. rigenerare l'highlight.
+
+L'utente non deve mai accorgersi della correzione.
+
+--------------------------------------------------
+
+## 11.13 Controlli Anti-Regressione
+
+Ogni modifica futura al motore deve essere verificata automaticamente.
+
+Controllare:
+
+- gameplay;
+- IA;
+- animazioni;
+- cronaca;
+- HUD;
+- overlay;
+- telecamere;
+- salvataggi;
+- performance.
+
+Ogni regressione deve essere intercettata prima del rilascio.
+
+--------------------------------------------------
+
+## 11.14 Test Automatici
+
+Il motore deve poter simulare migliaia di highlights.
+
+Ogni simulazione deve verificare:
+
+- varietà;
+- coerenza;
+- stabilità;
+- performance;
+- assenza di bug logici;
+- distribuzione degli eventi;
+- correttezza delle animazioni.
+
+L'obiettivo è individuare problemi prima che arrivino al giocatore.
+
+--------------------------------------------------
+
+## 11.15 Report di Diagnostica
+
+Durante lo sviluppo il motore deve poter generare automaticamente un report contenente:
+
+- errori rilevati;
+- incoerenze;
+- animazioni incompatibili;
+- eventi rigenerati;
+- fallback utilizzati;
+- criticità;
+- possibili ottimizzazioni.
+
+Questo report non deve essere visibile al giocatore finale.
+
+--------------------------------------------------
+
+## 11.16 Modalità Debug
+
+Prevedere una modalità sviluppatore che consenta di visualizzare in tempo reale:
+
+- stato del Tactical Engine;
+- decisioni dell'IA;
+- punteggi del Motore di Lettura Calcistica;
+- trigger dell'Event Engine;
+- animazione selezionata;
+- fallback utilizzati;
+- controlli di validazione.
+
+Questa modalità deve essere completamente disattivata nella versione di produzione.
+
+--------------------------------------------------
+
+## 11.17 Obiettivo Finale
+
+Il Quality Assurance Engine deve diventare l'ultimo filtro del Live Match.
+
+Nessun highlight deve raggiungere il giocatore senza essere stato validato.
+
+L'obiettivo non è eliminare ogni bug.
+
+L'obiettivo è eliminare ogni bug percepibile.
+
+Il giocatore deve avere la sensazione che il Live Match sia sempre coerente, stabile, credibile e rifinito.
+
+La qualità finale del gioco dipenderà più da questo sistema che dal numero di animazioni o di funzionalità presenti.
+
+Questo motore rappresenta il garante della qualità dell'intero Live Match.
