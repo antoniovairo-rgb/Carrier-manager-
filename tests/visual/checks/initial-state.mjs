@@ -45,7 +45,9 @@ export default {
     //   (bandierina, cross in arrivo) → non è un difetto, ed evita il falso positivo ambientale su rendering
     //   software lento (la palla aerea non si assesta in tempo). Precisione, non riduzione della severità.
     const _atFeet = (sit.ballState == null || sit.ballState === 'feet');
-    if (!isDef && _atFeet && dBallHero > 8) issues.push(`Situation offensiva ma palla lontana dall'eroe (${dBallHero.toFixed(1)}u) — possesso non agganciato`);
+    // 5.72.0: le situazioni OFF-BALL (eroe che si smarca per ricevere) hanno la palla su un COMPAGNO PER DESIGN
+    //   → esenti dall'invariante "palla ai piedi dell'eroe" (il campo sit.offBall è la sorgente unica, come ballState).
+    if (!isDef && !sit.offBall && _atFeet && dBallHero > 8) issues.push(`Situation offensiva ma palla lontana dall'eroe (${dBallHero.toFixed(1)}u) — possesso non agganciato`);
     // Difensiva: per design la palla NON è posizionata sull'avversario al frame di setup (è gestita nel
     //   loop live di pressing); ballPos resta quella ereditata dalla situation precedente → non è un
     //   invariante deterministico a setup-time. Resta SOFT (warning informativo), non blocca il gate.
