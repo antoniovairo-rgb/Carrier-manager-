@@ -2269,3 +2269,303 @@ L'Eroe prende la decisione.
 La squadra la interpreta.
 
 Il mondo reagisce.
+
+---
+
+> **Nota redazionale:** il Capitolo 9 verrà inserito qui quando fornito.
+
+---
+
+# CAPITOLO 10 — HERO ENGINE (IL MOTORE DELL'EROE)
+
+## 10.1 Visione
+
+L'Hero Engine rappresenta il cuore dell'intero progetto.
+
+Tutti gli altri sistemi esistono per valorizzare l'Eroe.
+
+Il Live Match non racconta una partita.
+
+Racconta la carriera di un calciatore.
+
+Ogni scelta.
+
+Ogni movimento.
+
+Ogni errore.
+
+Ogni assist.
+
+Ogni gol.
+
+Devono contribuire alla crescita del protagonista.
+
+L'Eroe non è un semplice giocatore controllato dall'utente.
+
+È il centro dell'universo del Live Match.
+
+--------------------------------------------------
+
+## 10.2 Principio Fondamentale
+
+L'Eroe deve essere sempre coinvolto.
+
+Mai osservare highlight nei quali l'Eroe sia spettatore passivo.
+
+Se un highlight non valorizza direttamente o indirettamente il protagonista, non dovrebbe esistere.
+
+Ogni situazione deve mettere l'Eroe nelle condizioni di influenzare l'azione.
+
+--------------------------------------------------
+
+## 10.3 Evoluzione dell'Eroe
+
+L'Eroe deve evolversi durante tutta la carriera.
+
+Non soltanto attraverso l'Overall.
+
+Ma attraverso:
+
+- personalità;
+- fiducia;
+- leadership;
+- esperienza;
+- maturità tattica;
+- freddezza;
+- reputazione;
+- intesa con i compagni.
+
+La crescita deve essere percepibile sul campo.
+
+--------------------------------------------------
+
+## 10.4 Stato Mentale
+
+L'Eroe deve possedere uno stato mentale dinamico.
+
+Ad esempio:
+
+- fiducia;
+- pressione;
+- concentrazione;
+- entusiasmo;
+- frustrazione;
+- serenità;
+- determinazione.
+
+Questi elementi devono modificare leggermente il comportamento dell'Eroe.
+
+Mai in modo estremo.
+
+--------------------------------------------------
+
+## 10.5 Forma Fisica
+
+L'Eroe deve essere influenzato da:
+
+- stamina;
+- affaticamento;
+- recupero;
+- continuità di gioco;
+- calendario;
+- infortuni.
+
+La forma deve riflettersi:
+
+- nei movimenti;
+- nelle animazioni;
+- nella precisione;
+- nella lucidità.
+
+--------------------------------------------------
+
+## 10.6 Personalità Calcistica
+
+Ogni carriera deve sviluppare una personalità.
+
+Ad esempio.
+
+Finalizzatore.
+
+Creatore di gioco.
+
+Attaccante opportunista.
+
+Bomber d'area.
+
+Giocatore spettacolare.
+
+Leader.
+
+Assist-man.
+
+La personalità deve emergere naturalmente.
+
+Mai essere imposta.
+
+--------------------------------------------------
+
+## 10.7 Rapporto con i Compagni
+
+L'Eroe deve costruire relazioni.
+
+Con alcuni compagni nascerà maggiore intesa.
+
+Con altri meno.
+
+Il motore può considerare:
+
+- assist reciproci;
+- triangolazioni;
+- passaggi frequenti;
+- fiducia;
+- affinità tattica.
+
+L'intesa deve migliorare naturalmente.
+
+--------------------------------------------------
+
+## 10.8 Rapporto con gli Avversari
+
+Anche gli avversari devono ricordare l'Eroe.
+
+Ad esempio:
+
+- marcatura più stretta;
+- raddoppi;
+- falli tattici;
+- maggiore attenzione.
+
+Un Eroe dominante deve essere trattato come un vero fuoriclasse.
+
+--------------------------------------------------
+
+## 10.9 Linguaggio del Corpo
+
+Il linguaggio del corpo deve raccontare lo stato dell'Eroe.
+
+Ad esempio:
+
+dopo un errore:
+
+- delusione;
+- mani nei capelli;
+- sguardo basso.
+
+Dopo un assist:
+
+- soddisfazione;
+- incoraggiamento.
+
+Dopo un gol:
+
+- esultanza coerente;
+- ricerca dei compagni;
+- coinvolgimento del pubblico.
+
+Mai utilizzare reazioni casuali.
+
+--------------------------------------------------
+
+## 10.10 Decisioni dell'Eroe
+
+Ogni decisione deve avere un peso.
+
+Un dribbling riuscito.
+
+↓
+
+Aumenta fiducia.
+
+Un assist.
+
+↓
+
+Aumenta reputazione.
+
+Un tiro egoista.
+
+↓
+
+Può ridurre leggermente l'intesa.
+
+Le conseguenze devono essere graduali.
+
+Mai punitive.
+
+--------------------------------------------------
+
+## 10.11 Identità della Carriera
+
+Con il passare delle stagioni il giocatore deve costruire inconsapevolmente il proprio stile.
+
+Due carriere non devono mai essere identiche.
+
+Ogni Eroe deve sviluppare una propria identità.
+
+--------------------------------------------------
+
+## 10.12 Momenti Speciali
+
+Il motore deve riconoscere automaticamente eventi importanti.
+
+Ad esempio:
+
+- primo gol;
+- prima doppietta;
+- tripletta;
+- esordio;
+- finale;
+- promozione;
+- retrocessione;
+- record;
+- Pallone d'Oro;
+- convocazione in Nazionale.
+
+Questi momenti devono ricevere un trattamento speciale.
+
+--------------------------------------------------
+
+## 10.13 Continuità della Carriera
+
+L'Eroe deve ricordare tutta la propria storia.
+
+Ogni stagione deve influenzare quella successiva.
+
+Ogni partita deve lasciare qualcosa.
+
+Il giocatore deve percepire di stare costruendo una vera carriera.
+
+--------------------------------------------------
+
+## 10.14 Immersione
+
+Il giocatore non deve controllare semplicemente un avatar.
+
+Deve identificarsi con il proprio calciatore.
+
+Ogni decisione deve sembrare personale.
+
+Ogni vittoria deve emozionare.
+
+Ogni errore deve pesare.
+
+Ogni gol deve essere memorabile.
+
+--------------------------------------------------
+
+## 10.15 Obiettivo Finale
+
+Il giocatore non deve ricordare soltanto i risultati.
+
+Deve ricordare la propria carriera.
+
+Deve poter dire:
+
+"Quello è il MIO calciatore."
+
+L'Hero Engine deve trasformare una semplice successione di partite nella storia personale dell'Eroe.
+
+Questa rappresenta l'essenza dell'intero progetto.
+
+Tutto il resto del Live Match esiste per valorizzare questa esperienza.
