@@ -8,9 +8,11 @@
 > | **M1 · Unified Outcome Model** | 5.52.0 | ✅ **PROD** | Esito granulare unico (outKind) → overlay+cronaca+3D coerenti. Gate 12/12, fingerprint 00001505. |
 > | **M3 · Coherence Assertion Layer** | 5.53.0 | ✅ **PROD** | `CoherenceCheck` nel gate (overlay-family ⟺ arc-family). Negative test superato (rottura M1 → timeline FAIL). |
 > | **M2 · Match Memory** | 5.54.0 | ✅ **PROD** | Continuità narrativa (riscatto/doppietta/2° assist/portiere in serata). Effimera, no save bump. |
-> | Polish P1 · chip/GK · P2 · ball-carry | — | ⏳ backlog | Gate-ciechi, da collaudare dal vivo. |
+> | **Polish P1 · chip/GK** | 5.55.0 | ✅ **PROD** | Niente scavetto su GK fermo (rimappa fuori dal 1v1). Flag ?cpmchip=0. |
+> | **Polish P2 · anti foot-slide** | 5.55.0 | ✅ **PROD** | Cadenza passo GLB sale con la velocità reale. GLB-only, flag ?cpmcarry=0. Feel da apprezzare dal vivo. |
 >
 > M2-`cpmadapt` (IA off-ball adattiva) resta **OFF** (flag), da collaudare dal vivo prima di attivarlo.
+> P2 è gate-cieco per natura (artefatto temporale): validato in browser reale (GLB-ON smoke, 0 errori); il *feel* va confermato in gioco dal proprietario.
 > Il dettaglio operativo sotto resta la specifica di riferimento delle milestone.
 
 ---
