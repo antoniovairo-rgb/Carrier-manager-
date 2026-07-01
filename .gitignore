@@ -1,4 +1,6 @@
-.claude/
+.claude/*
+!.claude/settings.json
+!.claude/PLUGINS.md
 node_modules/
 package-lock.json
 dist/
