@@ -140,6 +140,25 @@
     («audio» = feedback testuale/visivo).
 - **Impatto:** backlog tracciato; nessuna di queste blocca M1/M2/M3.
 
+## DL-011 · Esito difensivo VARIO e realistico (fine effetto «ping-pong»)
+- **Problema:** quasi ogni intervento difensivo produceva come default un rinvio lungo di 70-80m verso la
+  porta avversaria (spazzata larga+alta), esito unico e irrealistico che rompeva la credibilità degli HL.
+- **Alternative:** (A) simulazione fisica del rinvio (peso/orientamento/contatto) — respinta da DL-002;
+  (B) motore d'esito difensivo pesato e deterministico che sceglie tra molti esiti realistici, ognuno con
+  un descrittore di traiettoria mappato su posizioni vive; (C) semplice riduzione della distanza del rinvio
+  esistente (una sola traiettoria, più corta).
+- **Scelta:** **B** (`resolveDefensiveOutcome`, 5.65.0).
+- **Motivazione:** (C) non dà varietà (il difetto vero è la MONOTONIA, non solo la distanza); (A) viola
+  «niente motore fisico» e l'identità decisionale. (B) è l'analogo difensivo del Decision Engine (DL-005):
+  **un solo esito** deciso a monte (M1: seed stabile → coerenza 3D/overlay/cronaca), consumato dal render.
+  Funzione **pura/deterministica/node-testabile** → basso rischio, gate-safe. La spazzata lunga resta ma
+  **eccezionale** (gated su pressione/compostezza, sempre larga sulla fascia, capata a x≤68) — mai verso la
+  porta avversaria. Rispetta la Regola Zero senza «motore più grande»: additiva, un solo file, nessun bump
+  `SAVE_VERSION`.
+- **Impatto:** invariante di fatto «HL difensivo ⟹ palla MAI in rete avversaria / MAI parata sulla propria
+  porta» (post-arco difensivo isolato); `hlDef` esteso a ogni intervento difensivo, non solo `type:"def"`.
+  Traiettoria gate-cieca → validata da 2 test dedicati (distribuzione + dal vivo). Fingerprint gate invariato.
+
 ---
 
 ## Indice decisioni
@@ -156,6 +175,7 @@
 | DL-008 | Match Memory effimera, no save bump | Architettura |
 | DL-009 | Modularità dentro il file, no file JS separati | Vincolo |
 | DL-010 | Deferral motivati | Backlog |
+| DL-011 | Esito difensivo vario (fine «ping-pong») | Architettura |
 
 > Ogni riapertura di una decisione REJECT/Defer richiede una nuova voce DL con motivazione che
 > superi la Regola Zero e i vincoli di identità/complessità.
