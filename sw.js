@@ -1,11 +1,13 @@
-// Elevora PWA — minimal service worker (network-first + cache-busting)
-const CACHE = 'elevora-v2';
+// Elevora PWA — service worker (network-first, no-cache per il documento principale)
+// 5.69.0: il DOCUMENTO principale viene sempre scaricato con cache:'reload' → bypassa la cache HTTP del
+//   browser/CDN, così dopo un deploy si vede SUBITO l'ultima versione online (la cache resta solo per l'OFFLINE).
+const CACHE = 'elevora-v3';
 
 self.addEventListener('install', () => self.skipWaiting());
 
 self.addEventListener('activate', e =>
   e.waitUntil(
-    // cache-busting: rimuove ogni cache non corrente, poi prende il controllo
+    // cache-busting: rimuove ogni cache non corrente, poi prende il controllo di tutte le tab aperte
     caches.keys()
       .then(keys => Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k))))
       .then(() => self.clients.claim())
@@ -13,20 +15,21 @@ self.addEventListener('activate', e =>
 );
 
 self.addEventListener('fetch', e => {
-  // Network-first: try network, fall back to cache
+  const req = e.request;
+  const url = req.url;
+  // documento principale (navigazione o HTML) → forza il fetch fresco, mai dalla cache HTTP
+  const isDoc = req.mode === 'navigate' || url.includes('CARRIER-MANAGER-AV.html') || url.endsWith('/');
+  const fetchReq = isDoc ? new Request(url, { cache: 'reload' }) : req;
   e.respondWith(
-    fetch(e.request)
+    fetch(fetchReq)
       .then(r => {
-        // Cache a copy of successful GET responses for the main HTML
-        if (e.request.method === 'GET' && r.ok) {
-          const url = e.request.url;
-          if (url.includes('CARRIER-MANAGER-AV.html') || url.endsWith('/')) {
-            const clone = r.clone();
-            caches.open(CACHE).then(c => c.put(e.request, clone));
-          }
+        // conserva una copia SOLO del documento principale, per il fallback offline
+        if (req.method === 'GET' && r.ok && isDoc) {
+          const clone = r.clone();
+          caches.open(CACHE).then(c => c.put(req, clone));
         }
         return r;
       })
-      .catch(() => caches.match(e.request))
+      .catch(() => caches.match(req))
   );
 });
