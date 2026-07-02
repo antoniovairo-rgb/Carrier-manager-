@@ -2719,9 +2719,8 @@ function adaptiveDifficulty(player){
   return clamp(factor,0.85,1.35);
 }
 // opponent strength affects goal probability in background events
-function oppGoalProb(oppPrestige,playerOvr){
-  return clamp(0.02+(oppPrestige-60)/800,0.01,0.06);
-}
+// [5.77.0 MOT-1] oppGoalProb RIMOSSA: era dead code (mai chiamata) — la sua missione (gol avversari legati
+//   alla forza delle squadre) è ora svolta davvero da bgMicroTick (~6311), seedato e attuato nel tick di playing.
 // Returns clubs from player's current league (for standings + opponents)
 function getLeagueClubs(player){
   const isU18=(player?.proStatus||"u18")==="u18"||(player?.club?.isU18&&!player?.club?.transferType);
@@ -2972,7 +2971,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="5.76.0"; // [5.76.0] FASE 1 «FONDAMENTA ONESTE» (audit 2026-07, priorità 6+13): BUG-6 DETERMINISMO CLASSIFICHE — updateStandings/simulateMatch/_pSimStats accettano seed (seededRng/seededPoissonGoals, stessa infrastruttura di calcWorldStandings) e TUTTI i call-site passano standingsSeed(club,stagione,settimana) → ricaricare un save e riavanzare produce la STESSA classifica/G+A (prima la lega del giocatore era l'unica non riproducibile del gioco); MOT-3 RISULTATO SPECULARE — l'avversario reale della giornata riceve il risultato speculare (W/D/L+gol invertiti) ed è ESCLUSO dal pairing casuale (prima "rigiocava" un'altra partita → somma gf≠ga di lega, sconfitta mai registrata); bracket Coppa seedato (esiti+tie-break riproducibili); ARC-1a LIVE-SMOKE — 14° check BLOCCANTE del gate: partita REALE non forzata su pagina pulita (clock vero, cronaca BG, coda HL reattivi armata via hook __CPM_QUEUE_REACTIVE/__CPM_NUMHL) → il tick di `playing`, dove viveva il soft-lock BLK-1 e che la passata force-sit bypassa, ora è ESEGUITO dal gate. ARC-1c (posizioni off-ball nella firma golden) RINVIATA con motivazione: i target off-ball avanzano su wall-clock (interval React), non su step seedati → in firma sarebbero flaky; va rifatta insieme ad ARC-1b (RNG iniettato). Gate 14/14 verde.
+const GAME_VERSION="5.77.0"; // [5.77.0] FASE 2.1 «LA PARTITA DIVENTA VERA» — MICRO-SIMULATORE DI SFONDO (MOT-1): la partita attorno all'eroe è SIMULATA, non un roll fisso. Nuovo motore puro/seedato bgMicroTick (~6311, esposto per i test): per ogni minuto di clock ogni squadra ha una probabilità di GOL derivata da prestigio (±55%), momentum (±35%), possesso (±20%) e OVR dell'eroe; seed stabile per (avversario, stagione, settimana) → stessa partita = stessi eventi. La voce di cronaca della famiglia giusta (team_goal/opp_goal) è FORZATA dal pool BG_MATCH (testo ← esito, mai il contrario); il roll ambientale NON può più muovere il punteggio (prima: 2 voci a peso 0.4 su ~328 = 1 gol BG ogni ~20 partite, oppGoalProb dead-code RIMOSSA). Baseline statistica (tests/visual/bg-microsim-test.mjs, N=800): pari 0.83/0.91 gol BG · 85v60 1.20/0.51 · 60v85 0.49/1.30 · mom90 1.05/0.67 · deterministico. Effetti di gioco: l'avversario forte segna davvero, i compagni esistono, la panchina non è più 0-0 congelato, il win-rate non è più 85-95% a prescindere. MOT-2 ATTUATORI: momentum ±10% sul rate d'azione (era ±5%) + momentum/possesso muovono le λ del sim. MOT-4 INTERVALLO REALE: riassunto+coro+reset momentum garantiti al 45' (prima solo se un evento BG usciva ESATTAMENTE a quel tick, ~25% delle partite; fix anche del testo "0-0" che mentiva sull'1-1). ⚠️ Gate-cieco sul feel del punteggio → collaudo dal vivo; il tick è coperto da live-smoke.
 const SAVE_VERSION=7;// v7: aggiunto player.foot (piede preferito) — migration retro-compatibile
 // 5.67.0 — TABELLONE realistico del torneo per NAZIONALI (Europeo/Mondiale): dopo il girone la fase a
 //   eliminazione segue Ottavi → Quarti → Semifinale → Finale (prima saltava dritta alla semifinale).
@@ -6308,7 +6307,26 @@ function intentLabelDedup(lbl,idx,arr){
   if(arr)for(let j=0;j<idx;j++){if(arr[j]&&intentLabel(arr[j].label)===l)return lbl;}
   return l;
 }
-if(typeof window!=='undefined'){window.buildHLTimeline=buildHLTimeline;window.validateHLTimeline=validateHLTimeline;window.resolveTimeline=resolveTimeline;window.decideExecution=decideExecution;window.resolveDefensiveOutcome=resolveDefensiveOutcome;window.intentLabel=intentLabel;window.deriveIntent=deriveIntent;window.__CPM_SITS=SITUATIONS;window.hlBallState=hlBallState;window.filterSitActions=filterSitActions;window.__CPM_BG=BG_MATCH;/* B: cronaca BG per il check bg-coherence del gate */}
+// ── [5.77.0 MOT-1] MICRO-SIMULATORE DI SFONDO ────────────────────────────────────
+//   La partita ATTORNO all'eroe è simulata, non un roll fisso: per ogni minuto di clock ogni squadra ha
+//   una probabilità di GOL derivata da prestigio, OVR dell'eroe, momentum e possesso (finalmente ATTUATORI
+//   del gioco, non widget — MOT-2). PURO e SEEDATO per (partita, minuto): stessa partita → stessi eventi.
+//   Sostituisce le due voci-gol a peso fisso della cronaca (~0,02 gol/partita: 1 gol BG ogni ~20 match)
+//   e il dead-code oppGoalProb. Tarature: ~0,85 gol compagni + ~0,95 gol avversari a prestigio pari su 90'
+//   (il resto lo fa l'eroe negli highlight); forte scala col divario di prestigio (±55%) e col momentum (±35%).
+function bgMicroTick(ctx){
+  const r=seededRng((((ctx.seed>>>0)||1)+ctx.min*2654435761)>>>0);
+  const diff=clamp(((ctx.homePrestige||65)-(ctx.oppPrestige||65))/30,-1,1);
+  const momF=((ctx.momentum||50)-50)/50, posF=((ctx.possession||50)-50)/50;
+  const ovrF=clamp(((ctx.heroOvr||65)-65)/120,-0.15,0.30);
+  const gH=clamp(0.0095*(1+diff*0.55+momF*0.35+posF*0.20+ovrF*0.5),0.002,0.030);
+  const gA=clamp(0.0105*(1-diff*0.55-momF*0.35-posF*0.20-ovrF*0.3),0.002,0.030);
+  const roll=r();
+  if(roll<gH)return{side:"home"};
+  if(roll<gH+gA)return{side:"away"};
+  return null;
+}
+if(typeof window!=='undefined'){window.buildHLTimeline=buildHLTimeline;window.validateHLTimeline=validateHLTimeline;window.resolveTimeline=resolveTimeline;window.decideExecution=decideExecution;window.resolveDefensiveOutcome=resolveDefensiveOutcome;window.bgMicroTick=bgMicroTick;window.intentLabel=intentLabel;window.deriveIntent=deriveIntent;window.__CPM_SITS=SITUATIONS;window.hlBallState=hlBallState;window.filterSitActions=filterSitActions;window.__CPM_BG=BG_MATCH;/* B: cronaca BG per il check bg-coherence del gate */}
 // ── LMQP-1 (Phase 2 / M2 — EVENT + TIMELINE LAYER) ──────────────────────────────
 //   Bus eventi OSSERVABILE del Live Match: registra la SEQUENZA reale dei beat di un highlight
 //   (HighlightForced · ActionResolved · HighlightAdvance · MatchStart …) in un ring buffer leggibile
@@ -8881,6 +8899,8 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   const reactiveHLQueueRef=useRef([]);
   const desperateFiredRef=useRef(false);
   const earlyDespRef=useRef(false);
+  const halfFiredRef=useRef(false);// [5.77.0 MOT-4] l'intervallo scatta UNA volta garantita al 45'
+  const bgSimSeedRef=useRef(hashStr(String(opponent?.id||opponent?.n||"opp")+"|"+(player?.season||1)+"|"+(player?.week||1)+"|"+(player?.name||""))>>>0);// [5.77.0 MOT-1] seed del micro-sim: stabile per partita
   // Sprint 81 — use correct club stadium for pro matches
   const [stadium]=useState(()=>{
     if(context==="trial"||(player.club?.isU18))return pick(STADIUMS);
@@ -9723,7 +9743,26 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
         // Fase 6 (NEXT-GEN ritmo): la densità scala con l'estremità del momentum → 18% in equilibrio,
         //   fino a ~30% nei picchi (dominio/assedio) → il flusso non è più piatto, accelera nei momenti caldi.
         const _momX=Math.abs(momentumRef.current-50)/50,_bgProb=0.18+_momX*0.12;
-        if(Math.random()<_bgProb&&!["hl_intro","hl_move","hl_choose","hl_result"].includes(phaseRef.current)){
+        const _inHL77=["hl_intro","hl_move","hl_choose","hl_result"].includes(phaseRef.current);
+        // [5.77.0 MOT-4] INTERVALLO REALE: prima riassunto/coro/reset scattavano SOLO se un evento BG usciva
+        //   esattamente al tick 45 (~25% delle partite). Ora il 45' è un momento garantito, una volta sola.
+        if(nx===45&&!halfFiredRef.current){
+          halfFiredRef.current=true;
+          const _htD77=scoreRef.current.home-scoreRef.current.away;
+          addCom(_htD77>0?"⏸️ Fine primo tempo. Siamo in vantaggio — testa dritta nel secondo!":_htD77<0?"⏸️ Intervallo difficile. Reagiamo nel secondo tempo — ci crediamo!":"⏸️ Primo tempo in equilibrio. Tutto ancora aperto — il gol cambia tutto.","#93c5fd",45);
+          if(!_inHL77)chantFor("half",2000);
+          setMomentum(m=>clamp(Math.round(m+(50-m)*0.5+_htD77*5),0,100));
+          streakRef.current=0;
+        }
+        // [5.77.0 MOT-1] MICRO-SIM DI SFONDO: i GOL di compagni/avversari li decide il simulatore (bgMicroTick:
+        //   prestigio/OVR/momentum/possesso, seedato per partita+minuto) — la voce di cronaca della famiglia giusta
+        //   viene FORZATA (testo ← esito, mai il contrario). Il roll ambientale sotto NON può più muovere il punteggio.
+        let _simEv77=null;
+        if(!_inHL77){
+          const _sg77=bgMicroTick({min:nx,homePrestige:player.club?.p,oppPrestige:oppPrestige,heroOvr:player.ovr,momentum:momentumRef.current,possession:possessionRef.current,seed:bgSimSeedRef.current});
+          if(_sg77)_simEv77=BG_MATCH.find(e=>e.ef===(_sg77.side==="home"?"team_goal":"opp_goal"))||null;
+        }
+        if(_simEv77||(Math.random()<_bgProb&&!_inHL77)){
           const _sc76=scoreRef.current;const _sd76=_sc76.home-_sc76.away;const _sctx76=_sd76>0?"winning":_sd76<0?"losing":"drawing";
           // Sprint 113: dedup — exclude last 3 BG events to avoid repetition
           const _lastBG=lastBGEvtRef.current;
@@ -9732,9 +9771,10 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           const _atkPd=["attack","attack_goal","wide_right"];const _defPd=["retreat","defend_goal"];
           const _isAtkTactic=_activeDriftKey&&(_atkPd.includes(_activeDriftKey)||_activeDriftKey==="attack_goal");
           const _isDefTactic=_activeDriftKey&&(_defPd.includes(_activeDriftKey)||_activeDriftKey==="retreat");
-          const eligible=BG_MATCH.filter(e=>(!e.minClock||nx>=e.minClock)&&(!e.maxClock||nx<=e.maxClock)&&(!e.derbyOnly||!!drby)&&(!e.ctx||e.ctx===_sctx76)&&!_lastBG.includes(e.txt)&&(!onBenchRef.current||!e.txt.includes("{P}"))&&(!e.momThreshold||(momentumRef.current>=e.momThreshold[0]&&momentumRef.current<=e.momThreshold[1])))
+          const _noGoal77=e=>e.ef!=="team_goal"&&e.ef!=="opp_goal";// [5.77.0 MOT-1] i gol li decide SOLO il micro-sim
+          const eligible=BG_MATCH.filter(e=>_noGoal77(e)&&(!e.minClock||nx>=e.minClock)&&(!e.maxClock||nx<=e.maxClock)&&(!e.derbyOnly||!!drby)&&(!e.ctx||e.ctx===_sctx76)&&!_lastBG.includes(e.txt)&&(!onBenchRef.current||!e.txt.includes("{P}"))&&(!e.momThreshold||(momentumRef.current>=e.momThreshold[0]&&momentumRef.current<=e.momThreshold[1])))
             .map(e=>{if(!_activeDriftKey||!e.pd)return e;if(_isAtkTactic&&_atkPd.includes(e.pd))return{...e,w:e.w*1.8};if(_isDefTactic&&_defPd.includes(e.pd))return{...e,w:e.w*1.8};return e;});
-          const ev=wPick(eligible.length>0?eligible:BG_MATCH.filter(e=>(!e.minClock||nx>=e.minClock)&&(!e.maxClock||nx<=e.maxClock)&&(!onBenchRef.current||!e.txt.includes("{P}"))));
+          const ev=_simEv77||wPick(eligible.length>0?eligible:BG_MATCH.filter(e=>_noGoal77(e)&&(!e.minClock||nx>=e.minClock)&&(!e.maxClock||nx<=e.maxClock)&&(!onBenchRef.current||!e.txt.includes("{P}"))));
           // Sprint 113: record event in dedup buffer
           lastBGEvtRef.current=[ev.txt,..._lastBG].slice(0,3);
           if(ev.ef==="team_goal"){setScore(s=>({...s,home:s.home+1}));setMatchEvents(prev=>[...prev,{min:nx,type:"goal",txt:"⚽ Gol di "+( homeRoster[Math.floor(Math.random()*10)].name.split(" ").pop())}].slice(-12));}
@@ -9809,13 +9849,8 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           else if(nx>75&&score.home>score.away&&Math.random()<0.12)chantFor("winning",2500);
           else if(nx>75&&score.home<score.away&&Math.random()<0.10)chantFor("comeback",2600);
           else if(Math.random()<0.04)chantFor("home",2500);
-          else if(nx===45){chantFor("half",2000);}
-          // Sprint 79 — halftime commentary summary
-          if(nx===45){const _htDiff79=scoreRef.current.home-scoreRef.current.away;addCom(_htDiff79>0?"⏸️ Fine primo tempo. Siamo in vantaggio — testa dritta nel secondo!":_htDiff79<0?"⏸️ Intervallo difficile. Reagiamo nel secondo tempo — ci crediamo!":"⏸️ Primo tempo: 0-0. Tutto ancora aperto — il gol cambia tutto.","#93c5fd",45);
-            // Sprint 97 — halftime momentum reset toward 50
-            setMomentum(m=>clamp(Math.round(m+(50-m)*0.5+(scoreRef.current.home-scoreRef.current.away)*5),-0,100));
-            streakRef.current=0;
-          }
+          // [5.77.0 MOT-4] i blocchi intervallo (Sprint 79/97) sono stati spostati FUORI dal roll BG:
+          //   vivevano qui dentro e scattavano solo se un evento usciva esattamente al tick 45 (~25% delle partite).
           // Sprint 97 — extreme momentum commentary
           if(momentumRef.current>=80&&Math.random()<0.12){addCom(pick(["🔥 Stiamo dominando — teniamo alta l'intensità!","💪 La squadra è in fiamme, il pubblico è in piedi!","⚡ Momento magico — ogni pallone è nostro!"]),"#22c55e",nx);}
           else if(momentumRef.current<=20&&Math.random()<0.12){addCom(pick(["😤 Reggiamo! Difendiamo compatti e aspettiamo il momento.","🛡️ Sotto pressione — serve carattere adesso.","⚠️ Stanno spingendo forte, ma noi teniamo duro!"]),"#f87171",nx);}
@@ -9987,7 +10022,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     const weatherPenalty=(action.stat==="passaggio"&&wef.pass?(-wef.pass/100):0)+
                          (action.stat==="tiro"&&wef.tiro?(-wef.tiro/100):0)+
                          (action.stat==="velocità"&&wef.spd?(-wef.spd/100):0);
-    const momentumBonus=(momentumRef.current-50)/1000; // ±5% at extremes
+    const momentumBonus=(momentumRef.current-50)/500; // [5.77.0 MOT-2] ±10% agli estremi (era ±5%: leva impercettibile — il momentum ora è un attuatore, non un widget)
     const fatiguePenalty=Math.max(0,(player.fatigue||0)-65)/350; // up to -10% at 100 fatigue
     const tacticMod=tacticBonusRef.current||0;
     // 5.43.17: penalità PUNIZIONI — le punizioni dirette nel calcio reale sono a bassissima conversione; con bonus +8 e cap 0.84 i tiratori bravi segnavano "quasi sempre". Tiered: tiro diretto fortemente penalizzato, cross su punizione meno. Si applica a TUTTE le situations "punizione" (globale).
