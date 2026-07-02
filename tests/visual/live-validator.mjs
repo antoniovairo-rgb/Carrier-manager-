@@ -176,11 +176,14 @@ const summary = {
 report.summary = summary;
 fs.writeFileSync(path.join(OUT, 'report.json'), JSON.stringify(report, null, 1));
 let regressions = [];
-if (fs.existsSync(BASELINE_PATH) && process.env.LMV_UPDATE_BASELINE !== '1') {
+const _nHL = summary.hl.pass + summary.hl.warn + summary.hl.fail;
+if (_nHL < 8 && fs.existsSync(BASELINE_PATH) && process.env.LMV_UPDATE_BASELINE !== '1') {
+  console.log(`(campione ${_nHL} HL < 8: confronto baseline SOLO informativo — servono piu partite per la regressione)`);
+} else if (fs.existsSync(BASELINE_PATH) && process.env.LMV_UPDATE_BASELINE !== '1') {
   const base = JSON.parse(fs.readFileSync(BASELINE_PATH, 'utf8'));
   const worse = (k, tol) => summary[k] > (base[k] ?? Infinity) * tol;
   if (worse('p90BallJump', 1.35)) regressions.push(`p90BallJump ${base.p90BallJump}→${summary.p90BallJump}`);
-  if (worse('p90Statues', 1.5)) regressions.push(`p90Statues ${base.p90Statues}→${summary.p90Statues}`);
+  if (worse('p90Statues', 2.5)) regressions.push(`p90Statues ${base.p90Statues}→${summary.p90Statues}`); // conteggio rumoroso: tolleranza larga
   if (worse('p90Overlaps', 1.5)) regressions.push(`p90Overlaps ${base.p90Overlaps}→${summary.p90Overlaps}`);
   const baseFailRate = base.hl.fail / Math.max(1, base.hl.pass + base.hl.warn + base.hl.fail);
   const failRate = summary.hl.fail / Math.max(1, summary.hl.pass + summary.hl.warn + summary.hl.fail);

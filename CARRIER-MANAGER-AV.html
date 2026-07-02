@@ -1842,6 +1842,7 @@ const S=(text,zones,mz,sz,actions,lock=false,mm=-1,intro="",type="off",ctx=null,
   obj.intent=(typeof deriveIntent==="function")?deriveIntent(obj,null):null; // ENGINE Step 1: ogni situation nasce con la sua INTENZIONE (sorgente unica)
   obj.ballState=(typeof deriveBallState==="function")?deriveBallState(obj):null; // CINE-DECOUPLE: congela lo stato palla (no parsing testo a runtime)
   obj.cine=(typeof deriveSitCine==="function")?deriveSitCine(obj):null; // CINE-DECOUPLE: congela i segnali cinematici
+  obj.chainOn=/cross|traversone|corner|angolo|punizione|rimessa|cross in area|dal fondo|in mezzo/i.test(text||"")?"aerial":null; // [6.3.2 R1a] catena su assist CONGELATA come campo (la regex vive solo qui, mai piu a runtime)
   // 5.72.0 — OFF-BALL: situazione offensiva in cui l'EROE è SENZA palla (si smarca/taglia/inserisce per RICEVERE).
   //   Rilevata dalle azioni (movimento-a-ricevere prevalente sulle azioni con palla) e SOLO con palla a terra.
   //   Congelata come campo (sorgente unica per gioco + gate): serve a piazzare la palla su un COMPAGNO invece che
@@ -2345,7 +2346,7 @@ function cappedMM(sit){
 }
 // 5.49.0 — item 3: il CURSORE DIREZIONALE (DPad di movimento) non deve comparire negli highlight DENTRO l'area di rigore,
 //   tranne sui RIGORI (dove l'aim resta). Un highlight in area = conclusione: si sceglie subito, niente passo di movimento.
-function isPenaltySit(sit){return !!(sit&&(sit.intent==="penalty"||/rigore|dischetto|\bpenalty\b/i.test(sit.text||"")));}
+function isPenaltySit(sit){return !!(sit&&(sit.intent!=null?sit.intent==="penalty":/rigore|dischetto|\bpenalty\b/i.test(sit.text||"")));}/* [6.3.2 R1a] intent = sorgente primaria (equivalenza verificata 0 divergenze su 179); regex solo per oggetti senza intent */
 function inBoxHL(sit){if(!sit)return false;const z=sit.zones&&sit.zones[0];const sz=sit.startZone;const sx=(sz&&sz.x)?(sz.x[0]+sz.x[1])/2:null;return z==="area"||(sx!=null&&sx>=80);}
 function hideDirCursor(sit){return inBoxHL(sit)&&!isPenaltySit(sit);}
 
@@ -3079,7 +3080,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="6.3.1"; // [6.3.1] R0 slice 2: AUTOPLAY salta anche matchday/formations/walkout (path del bottone Salta) → il Live Match Validator gioca PARTITE DI CAMPIONATO (LMV_CTX=career: save precaricato, loop __CPM_CAREER.step → liveCurrentWeek → LiveMatch reale, piu highlight per partita del provino) + replay JSON salvato per ogni HL FAIL (out/live-validator/fail_*.json).
+const GAME_VERSION="6.3.2"; // [6.3.2] R1a (MATCH_ENGINE_REDESIGN W1, 1a slice): il TESTO smette di essere API in 4 punti — chainOn bakato in S() con la regex runtime esatta (handleAction legge il campo), isPenaltySit intent-first, setup posizionale e GK-dive del rigore leggono isPenaltySit invece di text.includes("RIGORE"). Equivalenza verificata offline: 0 divergenze su 179 (regex vs intent) e 42/179 chainOn identici alla regex runtime.
 const SAVE_VERSION=8;// v8 [5.81.0 BIL-3b]: bankBalance (stipendio accumulato, €) + perkTrainer/perkNutrition (staff personale) — migration retro-compatibile. v7: player.foot
 // 5.67.0 — TABELLONE realistico del torneo per NAZIONALI (Europeo/Mondiale): dopo il girone la fase a
 //   eliminazione segue Ottavi → Quarti → Semifinale → Finale (prima saltava dritta alla semifinale).
@@ -9698,7 +9699,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
         const szX=(sit.startZone.x[0]+sit.startZone.x[1])/2;
         const szY=(sit.startZone.y[0]+sit.startZone.y[1])/2;
         // Sprint 159: text-based detection so rovesciata (lockMovement+area) isn't misclassified as penalty
-        const isPenalty=sit.text?.includes("RIGORE");
+        const isPenalty=isPenaltySit(sit);/* [6.3.2 R1a] intent, non testo (equivalenza verificata) */
         const isFlankFK=!isPenalty&&(szY<22||szY>78);
         const isAreaPlay=!isPenalty&&!isFlankFK&&sit.zones?.[0]==="area";
         setMatchPlayers(prev=>prev.map((pl,idx)=>{
@@ -9835,7 +9836,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     if(phase==="hl_choose"){
       setSelectedActionIdx(0);
       // Sprint 17: if rigore, pre-compute GK dive direction
-      if(situations[hlIdx]?.text?.includes("RIGORE")){
+      if(isPenaltySit(situations[hlIdx])){/* [6.3.2 R1a] intent, non testo */
         const dirs=["tl","tc","tr","bl","bc","br"];
         const w=[18,8,18,22,12,22];let r=Math.random()*100;
         for(let i=0;i<dirs.length;i++){r-=w[i];if(r<=0){gkDiveRef.current=dirs[i];break;}}
@@ -10673,10 +10674,9 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     //   secondo tempo (testa/mischia/rimbalzo). Rilevamento via regex case-insensitive ampia (non più
     //   catena fragile di .includes) + guardia di profondità (niente stacking di catene).
     if(ok&&(action.rew==="assist"||_chanceDrb)&&!pendingChainSitRef.current&&!(situations[hlIdx]&&situations[hlIdx]._chainDepth)){// [5.78.0 BUG-14] guardia di profondità REALE: una catena non può incatenarne un'altra
-      const _st77=situations[hlIdx]?.text||"";
       if(_chanceDrb)pendingChainSitRef.current={...CHAIN_SITS.dopo_dribbling,_chainDepth:1};// [5.90.0 BLK-2] uomo saltato → conclusione da giocare
       else if(_chance78)pendingChainSitRef.current={...pick([CHAIN_SITS.mischia,CHAIN_SITS.second_ball]),_chainDepth:1};// [5.78.0 SIT-4] la chance APRE SEMPRE il secondo tempo: la conclusione va giocata
-      else if(/cross|traversone|corner|angolo|punizione|rimessa|cross in area|dal fondo|in mezzo/i.test(_st77))
+      else if(situations[hlIdx]?.chainOn==="aerial")/* [6.3.2 R1a] campo dichiarativo bakato in S(), non piu regex sul testo */
         pendingChainSitRef.current={...pick([CHAIN_SITS.header,CHAIN_SITS.mischia,CHAIN_SITS.second_ball]),_chainDepth:1};
     }
     // Sprint 79 — ball moves toward outcome position for visual coherence
