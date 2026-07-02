@@ -2987,7 +2987,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="5.81.0"; // [5.81.0] FASE 3.2 «I SOLDI ESISTONO» (audit BIL-3b/BIL-8a, SAVE_VERSION 8): ECONOMIA REALE — player.bankBalance accumula lo stipendio settimanale (solo pro; prima il wage era una vanity metric mai accumulata, con negoziazioni che ottimizzavano un numero inutile); l'AGENTE ora COSTA il 10% dello stipendio (prima gratis con +15% sui contratti per sempre = no-brainer assoluto); STAFF PERSONALE con costi/effetti veri: personal trainer (5% del wage, min 2k€/sett → training ×1.10) e nutrizionista (4%, min 1.5k€ → recupero fatica settimanale 6→8) — fondi finiti = servizi sospesi automaticamente con notifica; pannello Patrimonio nel tab agente (saldo + stipendio + toggle servizi); BIL-8a la RETROCESSIONE ha un costo: contratto rinegoziato al ribasso (−25% wage) al cambio stagione. Migrazione v7→v8 (bankBalance/perkTrainer/perkNutrition) col pattern consolidato — save-compat 12/12. ⚠️ Economia gate-cieca → collaudo su carriera.
+const GAME_VERSION="5.82.0"; // [5.82.0] FASE 3.3 «AGENCY E CONSEGUENZE» (audit BIL-4/BIL-8 — chiude la Fase 3): BIL-4 TRAINING CON AGENCY — il giocatore SCEGLIE il focus settimanale nel TrainPanel (4 opzioni: piano del mister CONSIGLIATO sui punti deboli · focus offensivo tecnica/tiro/dribbling · focus atletico fisico/velocità · settimana di scarico); l'override medico a fatica alta resta automatico e l'auto-training all'avanzamento resta il fallback se non apri il tab — prima il piano si auto-eseguiva al mount: ZERO scelte sulla propria crescita (build-crafting ora possibile); BIL-8 IL RINNOVO NON È PIÙ UN DIRITTO — con coachTrust<40 (o ruolo riserva e trust<52) il club RIFIUTA di trattare (openNegoModal → step "refused" con messaggio della dirigenza): lo svincolo è un rischio reale, il tasto GIOCA resta bloccato finché non firmi altrove (flusso offerte esistente). Con la parabola d'età (5.80.0), l'economia (5.81.0) e le sconfitte vere, la carriera ora ha PESO: si può sbagliare. ⚠️ Flussi carriera gate-ciechi → collaudo dal vivo.
 const SAVE_VERSION=8;// v8 [5.81.0 BIL-3b]: bankBalance (stipendio accumulato, €) + perkTrainer/perkNutrition (staff personale) — migration retro-compatibile. v7: player.foot
 // 5.67.0 — TABELLONE realistico del torneo per NAZIONALI (Europeo/Mondiale): dopo il girone la fase a
 //   eliminazione segue Ottavi → Quarti → Semifinale → Finale (prima saltava dritta alla semifinale).
@@ -13510,23 +13510,31 @@ const TrainPanel=({player,setPlayer,notify})=>{
   const _t0name=_TT[_t0]?.l||_t0;const _t1name=_TT[_t1]?.l||_t1;
   const _coachMsg=veryTired?"Sei a pezzi. Riposo assoluto — non si allena in queste condizioni.":highFat?`Stai spingendo troppo. Lavoro leggero su ${_t0name}, poi recupero totale.`:_avgRating>=7.5?`Stai giocando bene — intensifico su ${_t0name} e ${_t1name} per sfruttare questo momento.`:_avgRating<=5.5?`Dobbiamo migliorare. Doppio lavoro su ${_t0name} e poi ${_t1name}.`:`Questa settimana puntiamo su ${_t0name} e ${_t1name}. Segui il piano.`;
   const _fitMsg=veryTired?"⚠️ Il preparatore ti ferma: rischio infortuni.":highFat?"💧 Il preparatore inserisce sessioni di recupero.":streak>=3?"🔥 Stai mantenendo continuità — il preparatore è soddisfatto.":"";
+  // [5.82.0 BIL-4] TRAINING CON AGENCY: il giocatore SCEGLIE il focus settimanale (il piano del mister
+  //   resta il suggerimento di default; l'override medico a fatica alta resta automatico; se non apri il
+  //   tab, l'auto-training all'avanzamento resta il fallback). Prima si auto-eseguiva tutto al mount: zero scelte.
+  const[focusPick,setFocusPick]=React.useState(null);
+  const _medical=veryTired||highFat;
+  const _PLANS82={mister:_plan,attacco:["tecnico","tecnico","mentale"],atletico:["fisico","fisico","tattico"],recupero:["rec_attivo","rec_completo","rec_attivo"]};
+  const _planEff=_medical?_plan:(focusPick?_PLANS82[focusPick]:_plan);
   React.useEffect(()=>{
     if(allDone)return;
+    if(!_medical&&!focusPick)return;// attende la scelta del giocatore (solo l'emergenza fisica scavalca)
     let ns={...player.stats};let fatD=0;let morD=0;let formD=0;
     const newLog=[...(player.sessionLog||[])];const gained={};
-    _plan.forEach(tid=>{
+    _planEff.forEach(tid=>{
       const isRec=tid==="rec_attivo"||tid==="rec_completo";
       if(isRec){const full=tid==="rec_completo";fatD-=(full?26:13);morD+=(full?10:5);formD+=(full?2:1);newLog.push({id:tid,e:full?"🛌":"🧘",l:full?"Riposo":"Recupero",col:"#0284c7"});}
       else{const s=_TT[tid];if(!s)return;const pA=Math.min(0.85,_dim(ns[s.a])*_mult);const pB=Math.min(0.55,_dim(ns[s.b])*0.5*_mult);const gA=Math.random()<pA?1:0;const gB=Math.random()<pB?1:0;if(gA){ns[s.a]=clamp((ns[s.a]||60)+1,1,99);gained[s.a]=(gained[s.a]||0)+1;}if(gB){ns[s.b]=clamp((ns[s.b]||60)+1,1,99);gained[s.b]=(gained[s.b]||0)+1;}fatD+=10;newLog.push({id:s.id,e:s.e,l:s.l,col:s.col,gainA:gA,gainB:gB,statA:s.a,statB:s.b});}
     });
-    setPlayer(p=>({...p,stats:ns,ovr:calcOvr(ns),fatigue:clamp((p.fatigue||0)+fatD,0,100),morale:clamp((p.morale||70)+morD,0,100),form:clamp((p.form||60)+formD,30,95),sessionsThisWeek:3,sessionLog:newLog,trainingStreak:(p.trainingStreak||0)+1,lastTrainingType:_plan[0],weeklyFocusType:_t0,
+    setPlayer(p=>({...p,stats:ns,ovr:calcOvr(ns),fatigue:clamp((p.fatigue||0)+fatD,0,100),morale:clamp((p.morale||70)+morD,0,100),form:clamp((p.form||60)+formD,30,95),sessionsThisWeek:3,sessionLog:newLog,trainingStreak:(p.trainingStreak||0)+1,lastTrainingType:_planEff[0],weeklyFocusType:_t0,
       // Sprint D2 + Sprint 2 (9.3): piccola crescita relazioni per settimana di allenamento (ora include il vice-mister)
       fitnessCoachRel:clamp((p.fitnessCoachRel||50)+(Math.random()<0.3?1:0),0,100),
       assistantCoachRel:clamp((p.assistantCoachRel||50)+(Math.random()<0.28?1:0),0,100),
       teamChemistry:clamp((p.teamChemistry||60)+(Math.random()<0.25?1:0),0,100)}));
     const gkeys=Object.keys(gained);
     notify(`✅ W.${week}: ${gkeys.length?gkeys.map(k=>`+${gained[k]} ${k}`).join(" · "):"nessuna crescita questa settimana"}`,gkeys.length?TH.success:TH.muted);
-  },[]);
+  },[focusPick]);// eslint-disable-line
   return(
     <Card>
       <div style={{display:"flex",alignItems:"flex-start",gap:10,marginBottom:10,padding:"8px 10px",background:"#f8fafc",borderRadius:8,border:"1px solid "+TH.cardBorder}}>
@@ -13537,8 +13545,26 @@ const TrainPanel=({player,setPlayer,notify})=>{
           {_fitMsg&&<div style={{fontSize:10,color:"#0284c7",marginTop:4}}>{_fitMsg}</div>}
         </div>
       </div>
+      {/* [5.82.0 BIL-4] scelta del focus settimanale (nascosta se override medico o già allenato) */}
+      {!allDone&&!_medical&&!focusPick&&(
+        <div style={{display:"flex",flexDirection:"column",gap:6,marginBottom:10}}>
+          <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.2}}>Scegli il focus della settimana</div>
+          {[{k:"mister",e:"📋",l:"Piano del mister",d:`Lavoro mirato su ${_t0name} e ${_t1name} (punti deboli)`},
+            {k:"attacco",e:"⚔️",l:"Focus offensivo",d:"Tecnica, tiro e dribbling — più rifinitura"},
+            {k:"atletico",e:"🏃",l:"Focus atletico",d:"Fisico e velocità — più intensità, più fatica"},
+            {k:"recupero",e:"🧘",l:"Settimana di scarico",d:"Recuperi fatica e morale, niente crescita"}].map(o=>(
+            <button key={o.k} onClick={()=>setFocusPick(o.k)} style={{display:"flex",alignItems:"center",gap:8,padding:"9px 10px",borderRadius:9,border:"1.5px solid "+(o.k==="mister"?TH.primary+"66":TH.cardBorder),background:o.k==="mister"?"#eff6ff":"#f8fafc",cursor:"pointer",fontFamily:"inherit",textAlign:"left"}}>
+              <span style={{fontSize:17}}>{o.e}</span>
+              <span style={{flex:1}}>
+                <span style={{display:"block",fontSize:11,fontWeight:800,color:TH.text}}>{o.l}{o.k==="mister"&&<span style={{fontSize:8,color:TH.primary,marginLeft:5}}>CONSIGLIATO</span>}</span>
+                <span style={{display:"block",fontSize:9,color:TH.muted,marginTop:1}}>{o.d}</span>
+              </span>
+            </button>
+          ))}
+        </div>
+      )}
       <div style={{display:"flex",gap:6,marginBottom:10}}>
-        {_plan.map((tid,i)=>{
+        {_planEff.map((tid,i)=>{
           const isRec=tid==="rec_attivo"||tid==="rec_completo";
           const t=isRec?{e:tid==="rec_completo"?"🛌":"🧘",l:tid==="rec_completo"?"Riposo":"Recupero",col:"#0284c7"}:_TT[tid];
           const done=slog[i];
@@ -15883,6 +15909,14 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
 
   // Sprint 54: Contract negotiation helpers
   const openNegoModal=()=>{
+    // [5.82.0 BIL-8] il rinnovo NON è più un diritto: con fiducia bassa (o ruolo marginale + fiducia tiepida)
+    //   il club RIFIUTA di trattare → lo svincolo è un rischio reale: il tasto GIOCA resta bloccato finché
+    //   non firmi altrove (il flusso «trova squadra» / offerte esiste già). Prima il club non rifiutava MAI.
+    const _role82=(typeof calcSquadRole==="function")?calcSquadRole(player):null;
+    if((player.coachTrust||60)<40||(_role82==="riserva"&&(player.coachTrust||60)<52)){
+      setNegoModal({step:"refused",baseWage:player.contract?.wage||0,baseDuration:0,playerAsk:null,clubFinalWage:null,clubFinalDuration:null});
+      return;
+    }
     const growthMult=(player.goals||0)>12?1.18:(player.goals||0)>6?1.08:0.97;
     const rawWage=Math.round((player.contract?.wage||577)*growthMult);
     const ovrCap=_ovrToWageWeekly133(player.ovr||65,player.club?.p||60)*1.25; // Sprint 133
@@ -16659,6 +16693,16 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                     <Btn onClick={()=>{_acceptNegoWage(baseWage,baseDuration);}} v="primary" fw>Accetta offerta base</Btn>
                     <Btn onClick={()=>setNegoModal(null)} v="secondary" fw>Chiudi</Btn>
                   </div>
+                </div>
+              )}
+              {step==="refused"&&(/* [5.82.0 BIL-8] il club NON intende rinnovare: svincolo reale */
+                <div>
+                  <div style={{background:"#fff1f2",borderRadius:10,padding:"14px",marginBottom:14,border:"1px solid #fecaca",textAlign:"center"}}>
+                    <div style={{fontSize:18,marginBottom:4}}>🚪</div>
+                    <div style={{fontSize:12,fontWeight:800,color:"#b91c1c",marginBottom:4}}>Il club non intende rinnovare</div>
+                    <div style={{fontSize:10,color:"#9f1239",lineHeight:1.6}}>«Abbiamo deciso di puntare su altri profili.» La fiducia dell'allenatore è troppo bassa: guadagnatela sul campo, o trova una nuova squadra prima dell'inizio della prossima stagione (tab Agente → richieste e offerte di mercato).</div>
+                  </div>
+                  <Btn onClick={()=>setNegoModal(null)} v="secondary" fw>Ho capito</Btn>
                 </div>
               )}
             </Card>
