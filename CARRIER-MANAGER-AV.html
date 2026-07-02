@@ -2987,7 +2987,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="5.88.0"; // [5.88.0] STADI DINAMICI — S2 ASSEMBLATORE VISIVO: buildStadium consuma il config di stadiumConfigFor e i 10 template diventano stadi VISIBILMENTE diversi, riusando gli stessi componenti (zero asset nuovi, stesso budget draw-call): ANELLI variabili 1-3 (1=anello unico ripido provincia/comunale · 3=terzo anello spagnolo/sudamericano, mobile cap 2), curva-MURO tedesca (Sud gigante a 1 anello ×1.5), ASIMMETRIA sudamericana (Est bassa), TETTO per settore (none/west/partial/full), ANGOLI aperti/chiusi da template, TORRI FARO in 4 stili (traliccio/perimetrali 6 pali/angolari alte/bank sul tetto senza pali), RECINZIONI (metal/plexi trasparente/alta sudamericana/nessuna inglese), LED bordocampo emissivi sui moderni, INSEGNA col nome dello stadio (canvas wordmark sopra la Ovest — identità immediata), 2° maxischermo decorativo sui top club (il TABELLONE resta a Sud: charter Curva Sud intoccato), PANCHINE+dugout per tutti, e VIA il perimetro arancio stile pista d'atletica (bandita dal PO: asfalto scuro sui moderni, verde spento su storici). Fallback legacy ESATTO senza template. Hook di collaudo __CPM_STADIUM_TPL_FORCE (spento nella build store). Test: stadium-visual-test.mjs — 10/10 template montano, screenshot in out/stadiums/. Gate-cieco sulla resa → collaudo dal vivo PO.
+const GAME_VERSION="5.89.0"; // [5.89.0] STADI DINAMICI — S3 ATMOSFERA/EVOLUZIONE (chiude il sistema stadi S1+S2+S3): TRASFERTA INVERTITA verificata end-to-end — era già garantita dall'architettura (homeTeamObj/hClub = padrone di casa REALE: in trasferta lo stadio, il nome, la capienza, i settori e i colori sono dell'AVVERSARIO; la tua tifoseria è la Curva Nord piccola) — la S3 la completa con: ATMOSFERA PER CLUB (campo atmo 0.75–1.22 nel config: hash + template caldi tedesco/sudamericano +0.10 + top club) che scala l'intensità del tifo (cori, burst, ola, coreografie) → ogni stadio ha la sua personalità; EVOLUZIONE AUTOMATICA VIVA — il config è calcolato in LiveMatch col prestigeShift accumulato del club (clubPrestigeShifts, persistito) → risultati pluriennali muovono capienza/modernità senza save nuovi, e alla PROMOZIONE il diario racconta l'ampliamento («Il club amplia lo stadio: nuova capienza ~Xk posti»); il config viaggia in crowdCtx.stadiumTpl → ThreeMatchView lo consuma (fallback al resolver). Sistema stadi COMPLETO: 10 architetture × identità club × capienze reali × atmosfera × evoluzione, tutto derivato/seedato, zero save, zero asset. Collaudo dal vivo PO su trasferte e atmosfera.
 const SAVE_VERSION=8;// v8 [5.81.0 BIL-3b]: bankBalance (stipendio accumulato, €) + perkTrainer/perkNutrition (staff personale) — migration retro-compatibile. v7: player.foot
 // 5.67.0 — TABELLONE realistico del torneo per NAZIONALI (Europeo/Mondiale): dopo il girone la fase a
 //   eliminazione segue Ottavi → Quarti → Semifinale → Finale (prima saltava dritta alla semifinale).
@@ -5279,7 +5279,9 @@ function stadiumConfigFor(club,evo){
   if(evo.promoted)capacity=Math.round(capacity*1.2/500)*500;   // promozione → ampliamento
   if(evo.relegated)capacity=Math.round(capacity*0.95/500)*500; // retrocessione → settori chiusi
   const modernity=clamp((tpl.mod||0.4)+(p-60)/160+(((h>>>7)%20)-10)/100+((evo.trophiesRecent||0)>0?0.08:0),0.05,1);
-  const cfg={template:tplId,name:isU18?STADIUMS[h%STADIUMS.length]:((typeof getStadiumName==="function")?getStadiumName(club):"Stadio"),
+  // [5.89.0 S3] ATMOSFERA per club: fattore di intensità del tifo (0.8–1.2) da hash + template "caldi"
+  const atmo=clamp(0.85+((h>>>11)%28)/100+((tplId==="tedesco"||tplId==="sudamericano")?0.10:0)+(p>84?0.04:0),0.75,1.22);
+  const cfg={template:tplId,name:isU18?STADIUMS[h%STADIUMS.length]:((typeof getStadiumName==="function")?getStadiumName(club):"Stadio"),atmo,
     capacity,prestige:p,modernity,rings:tpl.rings,corner:tpl.corner,roof:tpl.roof,tower:tpl.tower,
     fence:tpl.fence,standH:tpl.standH,dist:tpl.dist,megaCurva:!!tpl.megaCurva,asym:!!tpl.asym,
     screens:p>82?2:1,ledBoards:modernity>0.55,seatCol:(club&&club.c)||"#8a8a92",seatCol2:(club&&club.c2)||"#3a3a44",
@@ -6594,7 +6596,7 @@ function ThreeMatchView(props){
     const sHome=stadiumHomeCol||homeCol||'#2563eb',sAway=stadiumAwayCol||oppCol||'#dc2626';
     // CROWD 2.0: il contesto folla arriva da computeCrowdContext (LiveMatch); __CPM_CROWD_OVERRIDE = hook di collaudo (solo test)
     const _crowdCtx=(typeof window!=='undefined'&&window.__CPM_CROWD_OVERRIDE)||crowd||null;
-    try{const _sc=buildStadium(scene,sHome,sAway,{prestige:club.p||club.prestige||65,style:stadiumStyle,floodColor:pal.flood,crowd:_crowdCtx,isDesktop,tpl:(function(){let _c=(typeof stadiumConfigFor==="function")?stadiumConfigFor(club):null;
+    try{const _sc=buildStadium(scene,sHome,sAway,{prestige:club.p||club.prestige||65,style:stadiumStyle,floodColor:pal.flood,crowd:_crowdCtx,isDesktop,tpl:(function(){let _c=(_crowdCtx&&_crowdCtx.stadiumTpl)||((typeof stadiumConfigFor==="function")?stadiumConfigFor(club):null);// [5.89.0 S3] config con evoluzione/atmo dal LiveMatch
       // [5.88.0 S2] hook di COLLAUDO template (test-only, spento nella build store): window.__CPM_STADIUM_TPL_FORCE
       if(_c&&typeof window!=="undefined"&&!window.__CPM_STORE_BUILD&&window.__CPM_STADIUM_TPL_FORCE&&STADIUM_TEMPLATES[window.__CPM_STADIUM_TPL_FORCE]){
         const _ft=STADIUM_TEMPLATES[window.__CPM_STADIUM_TPL_FORCE];
@@ -9151,9 +9153,14 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
       const _isFinal=(context==="cup"&&(player.cup?.round||1)>=4)
         ||(context==="euro_ko"&&player.euro?.phase==="final")
         ||(context==="euroMondiale_ko"&&player.euroMondiale?.koPhase==="final");
-      return computeCrowdContext({context,homeClub:hClub,matchWeight:_mw,derby:!!_drby,isFinal:_isFinal,
+      // [5.89.0 S3] config stadio del PADRONE DI CASA REALE (trasferta = stadio dell'avversario, già
+      //   garantito da hClub/homeTeamObj) con EVOLUZIONE automatica dal prestigio accumulato del club
+      //   (clubPrestigeShifts, persistito) e ATMOSFERA per club che scala l'intensità del tifo.
+      const _stCfg89=(typeof stadiumConfigFor==="function")?stadiumConfigFor(hClub,{prestigeShift:(player.clubPrestigeShifts||{})[hClub?.id||hClub?.n]||0}):null;
+      const _cc89=computeCrowdContext({context,homeClub:hClub,matchWeight:_mw,derby:!!_drby,isFinal:_isFinal,
         weather,week:player.week||1,season:player.season||1,
-        capacity:(typeof stadiumConfigFor==="function"?stadiumConfigFor(hClub).capacity:null)});// [5.87.0 STADI S1]
+        capacity:_stCfg89?_stCfg89.capacity:null});// [5.87.0 STADI S1]
+      return _stCfg89?{..._cc89,intensity:clamp(_cc89.intensity*(_stCfg89.atmo||1),0,1),stadiumTpl:_stCfg89}:_cc89;
     }catch(e){return {tier:"league",fill:0.7,awayFill:0.35,intensity:0.55,capacity:20000,attendance:14000,seed:1};}
   });
   // Sprint 81 — attendance uses the HOME club (not always player.club) · ora derivato dal crowdCtx (coerenza card↔spalti)
@@ -15954,6 +15961,8 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       const coachLog=coachChanged?`🧑‍💼 Nuovo allenatore: ${newCoach.name} (${newCoach.style})`:null;
       const phenomLog=isPhenomSeason?`⚡ Fenomeno generazionale annunciato!`:null;
       const relegLog=playerClubRelegated?`⬇️ ${p.club?.n||"Club"} RETROCESSA in ${_playerNextLgPre}!`:playerClubPromoted?`🆙 ${p.club?.n||"Club"} PROMOSSA in ${_playerNextLgPre}!`:null; // Sprint 84
+      // [5.89.0 STADI S3] EVOLUZIONE VISIBILE: la promozione amplia lo stadio (config derivato) → il diario lo racconta
+      const stadiumEvoLog=(playerClubPromoted&&typeof stadiumConfigFor==="function")?(function(){try{const _c=stadiumConfigFor(p.club,{promoted:true});return `🏟️ Il club amplia lo stadio: nuova capienza ~${Math.round(_c.capacity/1000)}.000 posti!`;}catch(_e){return null;}})():null;
       const gbLog=isGB?`🏆 Miglior Giovane d'Europa Stagione ${p.season||1}! Riconoscimento continentale.`:null;
       const newTeammates=generateTeammates({...p,season:newSeason});
       const newJournalists=generateJournalists();
@@ -15975,7 +15984,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       // Sprint 70: record coach tenure stats before coach possibly changes
       const _ch70={name:p.coach?.name||"Il Mister",style:p.coach?.style||"Bilanciato",season:p.season||1,goals:p.goals||0,assists:p.assists||0,matches:p.matches||0,ovr:p.ovr||60,coachTrust:p.coachTrust||60,coachChanged};
       const newCoachHistory=[...(p.coachHistory||[]),_ch70].slice(-20);
-      return{...p,season:newSeason,age:newAge,week:1,weekLived:false,goals:0,assists:0,matches:0,fatigue:0,skillPoints:0,stats:agedStats,ovr:newOvr,contract:newContract,contractExpired,club:nextClub84||p.club,loan:_loanE3,leagueOverrides:_newOvPre,morale:clamp((p.morale||70)+bonM+(playerClubRelegated?-10:playerClubPromoted?8:0)+(isGB?15:0),0,100),coachTrust:clamp((p.coachTrust||60)+bonCT+(playerClubRelegated?-8:playerClubPromoted?5:0)+(coachChanged?newCoach.trustMod:0)+_promiseTrustDelta,0,100),coachPromise:null,popularity:clamp((p.popularity||20)+bonPop+(isGB?25:0),0,100),value:Math.max(0.5,(p.value||0.8)+bonVal+(playerClubRelegated?-0.3:playerClubPromoted?0.15:0)+(isGB?0.8:0)),log:[agingLog,...objLogs,...[_growthLog102,gbLog,coachLog,phenomLog,relegLog].filter(Boolean),...(p.log||[])].slice(0,60),standings:newStandings,calendar:newCalendar,matchHistory:[],seasonObjectives:newObjectives,history:[...(p.history||[]),prevHist].slice(-50),clubPrestigeShifts:updatedShifts,cup:newCup,euro:newEuro,coach:newCoach,goldenBoys:gbSeasons,records:newRecords,teammates:newTeammates,journalists:newJournalists,fanLegend:updFanLegend,leagueArchive:newLeagueArchive,coachHistory:newCoachHistory,jerseyNumSeason:0,yellAccum:0,isSuspended:false,seasonCards:{y:0,r:0},lastLeagueShift:_lastShiftPre,campDone:false,...(captainReset?{isCaptain:false}:{})}; // Sprint 84 + E-3: club+loan updated · Sprint C: reset ritiro
+      return{...p,season:newSeason,age:newAge,week:1,weekLived:false,goals:0,assists:0,matches:0,fatigue:0,skillPoints:0,stats:agedStats,ovr:newOvr,contract:newContract,contractExpired,club:nextClub84||p.club,loan:_loanE3,leagueOverrides:_newOvPre,morale:clamp((p.morale||70)+bonM+(playerClubRelegated?-10:playerClubPromoted?8:0)+(isGB?15:0),0,100),coachTrust:clamp((p.coachTrust||60)+bonCT+(playerClubRelegated?-8:playerClubPromoted?5:0)+(coachChanged?newCoach.trustMod:0)+_promiseTrustDelta,0,100),coachPromise:null,popularity:clamp((p.popularity||20)+bonPop+(isGB?25:0),0,100),value:Math.max(0.5,(p.value||0.8)+bonVal+(playerClubRelegated?-0.3:playerClubPromoted?0.15:0)+(isGB?0.8:0)),log:[agingLog,...objLogs,...[_growthLog102,gbLog,coachLog,phenomLog,relegLog,stadiumEvoLog].filter(Boolean),...(p.log||[])].slice(0,60),standings:newStandings,calendar:newCalendar,matchHistory:[],seasonObjectives:newObjectives,history:[...(p.history||[]),prevHist].slice(-50),clubPrestigeShifts:updatedShifts,cup:newCup,euro:newEuro,coach:newCoach,goldenBoys:gbSeasons,records:newRecords,teammates:newTeammates,journalists:newJournalists,fanLegend:updFanLegend,leagueArchive:newLeagueArchive,coachHistory:newCoachHistory,jerseyNumSeason:0,yellAccum:0,isSuspended:false,seasonCards:{y:0,r:0},lastLeagueShift:_lastShiftPre,campDone:false,...(captainReset?{isCaptain:false}:{})}; // Sprint 84 + E-3: club+loan updated · Sprint C: reset ritiro
     });
     // S41: double achievement — won league + cup same season
     {const _sd=[...(player.standings||[])].sort((a,b)=>b.pts-a.pts||b.gd-a.gd||b.gf-a.gf);const _ch=_sd[0];const _pid=player.club?.id||player.club?.n;if(player.cup?.champion&&_ch&&(_ch.id===_pid||_ch.n===player.club?.n)&&!(player.achievements||[]).includes("double")){setTimeout(()=>{setPlayer(p=>({...p,achievements:[...(p.achievements||[]),"double"]}));notify("🏆🏆🏆 DOPPIO! Campionato + Coppa nella stessa stagione! Leggendario!","#f59e0b");},1200);}}
