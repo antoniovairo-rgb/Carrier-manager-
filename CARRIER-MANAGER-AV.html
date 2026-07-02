@@ -2987,7 +2987,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="5.83.0"; // [5.83.0] FASE 4.1 «ESITI 3D ONESTI» (audit IA-1/2/3): IA-1 FIX REVERSE-BOOMERANG — nel post-arco deflect il pull verso il terzo offensivo vale SOLO per le conclusioni (e i cross): un passaggio/dribbling perso a centrocampo ora si assesta sul punto d'INTERCETTO invece di planare da solo fino all'area avversaria (l'opposto di «possesso all'avversario»); IA-2a I TIRI FUORI ESCONO DAVVERO — su outKind wide/out la palla supera la linea di fondo (AWAY_GOAL_X+2.5, dentro i bound del gate) invece del rimbalzo-fantasma in campo, e il portiere NON si tuffa più sui tiri chiaramente fuori (guarda la palla uscire); IA-3 REPARTO PORTIERI COMPLETO — (a) niente tuffo sul LANCIO del cross: sul cross parato il GK ESCE IN PRESA (nuovo gesto procedurale gk_catch + clip GLB anim-gk-catch finora MAI usata, mappata in _gkWant), il tuffo sul cross arriva al 2° TOCCO (l'incornata, dentro cross_goal); (b) il portiere di CASA finalmente si tuffa sul gol subito (toOwnGoal → gk_dive sul mesh home GK — prima era perennemente inerte, gli asset esistevano). Tutto nel render-loop (gate-cieco sulla resa) → collaudo dal vivo; bound GK del gate rispettati (tuffo = solo z).
+const GAME_VERSION="5.84.0"; // [5.84.0] FASE 4.2 «IL LOOP SI LEGGE» (audit UX-2/3 — chiude la Fase 4): UX-2a PROBABILITÀ VISIBILI — pallini ●●●○ (4 fasce) su ogni bottone azione, mobile e desktop (prima la probabilità era codificata SOLO nell'alpha 0x33 del bordo: illeggibile — il cuore del gameplay era al buio); UX-2b FEEDBACK CAUSALE — il fattore dominante dell'esito arriva a schermo nell'hl_result («Difensore addosso −15%», «Stanchezza», «Momento d'oro»): il motore lo sapeva già, ora il fallimento INSEGNA; UX-3 RESULT SKIPPABILE su mobile — tap per continuare con guardia 800ms anti-tap-accidentale (prima ~25s di attese forzate a partita; desktop aveva già Enter) + chip energia ⚡ visibile in hl_choose (spariva proprio quando serviva per pesare un'azione fisica); UX-2c MICRO-ONBOARDING — hint one-shot nei primi 5 highlight del device (contatore safeLS cpm-hl-tips): pallini=probabilità, muoviti per cambiare le opzioni (il tutorial copriva solo la shell, il match era prova-ed-errore). RAFFINAMENTO IA-1: l'assestamento sull'intercetto vale SOLO per gli outKind di perdita di possesso conclamata (le famiglie ambigue con fail "miss" tengono il pull storico — il check final-state pretende gx≥45 sui miss). UI-only → collaudo dal vivo.
 const SAVE_VERSION=8;// v8 [5.81.0 BIL-3b]: bankBalance (stipendio accumulato, €) + perkTrainer/perkNutrition (staff personale) — migration retro-compatibile. v7: player.foot
 // 5.67.0 — TABELLONE realistico del torneo per NAZIONALI (Europeo/Mondiale): dopo il girone la fase a
 //   eliminazione segue Ottavi → Quarti → Semifinale → Finale (prima saltava dritta alla semifinale).
@@ -7215,7 +7215,8 @@ function ThreeMatchView(props){
           //   E un tiro FUORI supera la linea di fondo (palla oltre la porta, non rimbalzo-fantasma in campo).
           {const _sf83=(P.hlType==="shot"||P.hlType==="penalty"||P.hlType==="freekick"||P.hlType==="header");
            const _wide83=_sf83&&(P.hlOutcomeKind==="wide"||P.hlOutcomeKind==="out");
-           const _tx83=_wide83?(AWAY_GOAL_X+2.5):(_sf83||P.hlType==="cross")?(AWAY_GOAL_X-7):(ballArcTgtX!=null?ballArcTgtX:ball.position.x);
+           const _lossK83=!_sf83&&P.hlType!=="cross"&&["intercepted","dispossessed","lost","stopped","shielded_out","overhit","offside"].indexOf(P.hlOutcomeKind)>=0;// SOLO perdite di possesso conclamate (le famiglie ambigue tengono il pull storico: il check final-state pretende gx≥45 sui "miss")
+           const _tx83=_wide83?(AWAY_GOAL_X+2.5):_lossK83?(ballArcTgtX!=null?ballArcTgtX:ball.position.x):(AWAY_GOAL_X-7);
            ball.position.x+=(_tx83-ball.position.x)*Math.min(aDt*1.6,1);}
           if(hlPostArcT>2.5){hlPostArcT=-1;hlPostArcType=null;hlPostVY=0;}}}
       else{ball.position.y+=(0.65-ball.position.y)*Math.min(aDt*6,1);}// y rest 0.65
@@ -9197,6 +9198,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   // [5.75.0 BUG-3] fxTimersRef+fxTimeout: timer effimeri (cinema gol/pressione, float label, celebrazioni)
   //   tracciati e cancellati su unmount → niente setState su componente smontato / lavoro fantasma.
   const fxTimersRef=useRef([]);
+  const resultShownRef=useRef(0);// [5.84.0 UX-3] guardia anti-tap-accidentale sul result
   const fxTimeout=(fn,ms)=>{const id=setTimeout(fn,ms);fxTimersRef.current.push(id);return id;};
   const pendingChainSitRef=useRef(null); // Sprint 77
   const velRef=useRef({});
@@ -10102,6 +10104,11 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     const formMod=clamp(((player.form||60)-62)/33,-1,1)*0.04;
     const moraleMod=clamp(((player.morale||70)-60)/40,-1,1)*0.025;
     const rate=Math.max(0.05,succRate(action,player.stats,pPos.x,oppPrestige,player.archetype?.id||player.archetype)/100-defPenalty-weatherPenalty+momentumBonus+formMod+moraleMod-fatiguePenalty+tacticMod-fkPenalty);
+    try{const _tc84=+(safeLS.get("cpm-hl-tips")||0);if(_tc84<5)safeLS.set("cpm-hl-tips",String(_tc84+1));}catch(_e){}// [5.84.0 UX-2c] contatore onboarding
+    // [5.84.0 UX-2b] FEEDBACK CAUSALE: il fattore dominante dell'esito arriva a schermo — il motore lo
+    //   sapeva già (pressione/fatica/forma/meteo/momentum), il giocatore no. Ora il fallimento INSEGNA.
+    const _negC84=[[defPenalty,"🏃 Difensore addosso −"+Math.round(defPenalty*100)+"%"],[fkPenalty,"🧱 Conclusione su punizione: difficilissima"],[fatiguePenalty,"💧 Stanchezza −"+Math.round(fatiguePenalty*100)+"%"],[weatherPenalty,"🌧️ Meteo avverso"],[-formMod,"📉 Fuori forma"],[-momentumBonus,"⚠️ Momento difficile"],[-moraleMod,"😔 Morale a terra"]].filter(c=>c[0]>0.03).sort((a,b)=>b[0]-a[0]);
+    const _posC84=[[momentumBonus,"🔥 Momento d'oro +"+Math.round(momentumBonus*100)+"%"],[formMod,"⭐ In grande forma"],[tacticMod,"📢 Spinta tattica del mister"]].filter(c=>c[0]>0.03).sort((a,b)=>b[0]-a[0]);
     const adapt=adaptiveDifficulty(player);
     // [5.78.0 F10] ROLL D'ESITO SEEDATO: era l'unico Math.random() nudo del momento centrale di gameplay
     //   (esito non riproducibile → replay/telemetria impossibili). STESSA curva di probabilità di prima,
@@ -10222,7 +10229,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     else if(isShot&&ok)setActionEffect({type:"spark",col:homeKitCol,key:Date.now()});
     else if(isShot&&!ok)setActionEffect({type:"spark",col:"#ef4444",key:Date.now()});
     else if(isTackle)setActionEffect({type:"dust",key:Date.now()});
-    setOutcome({text:txt,ok,actionLabel:action.label,outKey:key,overlay:_ovl.text,overlayTone:_ovl.tone,outKind:_outKind,defTraj:_defTraj});setChosenAct(action);
+    setOutcome({text:txt,ok,actionLabel:action.label,outKey:key,overlay:_ovl.text,overlayTone:_ovl.tone,outKind:_outKind,defTraj:_defTraj,cause:(ok?(_posC84[0]&&_posC84[0][1]):(_negC84[0]&&_negC84[0][1]))||null});setChosenAct(action);// [5.84.0 UX-2b]
     // LMQP-1/3: registra l'esito risolto + i fatti cinematici DECISI A RUNTIME (deriveHL/hlBallState),
     //   così il check timeline valida gli invarianti CINE sulla decisione LIVE (testa⟹aerea, volée⟹aerea, set-piece⟹palla ferma).
     let _cine={};try{const _s=situationsRef.current[hlIdxRef.current];if(_s){const _h=(typeof deriveHL==="function"&&deriveHL(_s,action))||{};_cine={type:_h.type||null,variant:_h.variant||null,pattern:_h.pattern||null,ballState:(typeof hlBallState==="function"?hlBallState(_s):null)};}}catch(_e){}
@@ -10462,6 +10469,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   // tagliava palla in volo e slow-mo. Sempre ≥ durata arco/slow-mo + tempo di lettura dell'esito.
   useEffect(()=>{
     if(phase!=="hl_result"||paused)return;
+    resultShownRef.current=Date.now();// [5.84.0 UX-3]
     const dur=postHighlightDuration(outcome,chosenAct);
     if(typeof window!=='undefined'&&/[?&]cpmtest=1\b/.test(window.location.search||""))window.__CPM_RESULT_DUR=dur;// VISUAL-TEST
     const t=setTimeout(handleContinue,dur);
@@ -10876,7 +10884,8 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
               )}
               {isNarrow&&phase==="hl_choose"&&curSit&&(
                 <div style={{position:"absolute",bottom:0,left:0,right:0,zIndex:16,background:"rgba(5,8,20,0.28)",padding:"8px 10px 10px"}}>
-                  <div style={{fontSize:10,color:"rgba(255,255,255,0.75)",fontWeight:700,textShadow:"0 1px 3px rgba(0,0,0,0.9)",marginBottom:5}}>{clock}' — {intentTitle(curSit.text,curSit.intent,_scoreDiff)} &nbsp;·&nbsp; <span style={{color:defDist<25?"#f87171":defDist<50?"#f97316":"#4ade80"}}>{defDist<25?"⚠ Addosso":defDist<50?"Vicino":"Libero"}</span></div>
+                  <div style={{fontSize:10,color:"rgba(255,255,255,0.75)",fontWeight:700,textShadow:"0 1px 3px rgba(0,0,0,0.9)",marginBottom:5}}>{clock}' — {intentTitle(curSit.text,curSit.intent,_scoreDiff)} &nbsp;·&nbsp; <span style={{color:defDist<25?"#f87171":defDist<50?"#f97316":"#4ade80"}}>{defDist<25?"⚠ Addosso":defDist<50?"Vicino":"Libero"}</span>&nbsp;·&nbsp;<span style={{color:energy>50?"#4ade80":energy>25?"#f59e0b":"#f87171"}}>⚡{energy}</span></div>
+                  {(+(safeLS.get("cpm-hl-tips")||0))<5&&<div style={{fontSize:9,color:"rgba(255,255,255,0.75)",background:"rgba(37,99,235,0.35)",borderRadius:6,padding:"5px 8px",marginBottom:6}}>💡 I pallini ●●●○ indicano la probabilità di riuscita. Muoviti col pad per cambiare le opzioni.</div>}{/* [5.84.0 UX-2c] micro-onboarding one-shot (primi 5 HL del device) */}
                   <div style={{display:"flex",alignItems:"flex-start",gap:10}}>
                     {showDPad(curSit)&&<div style={{flexShrink:0}}><DPad onMove={handleDPad} dark size={40}/></div>}
                     {curSit.lockMovement?(
@@ -10900,6 +10909,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                               style={{padding:"10px",background:_sel2?"rgba(37,99,235,0.65)":"rgba(0,0,0,0.55)",border:_sel2?`1.5px solid ${_rc2}88`:`1px solid ${_rc2}44`,borderRadius:8,color:"#fff",cursor:"pointer",fontFamily:"inherit",display:"flex",alignItems:"center",gap:8,transition:"all .1s",boxShadow:"0 2px 6px rgba(0,0,0,0.4)"}}>
                               <div style={{width:18,height:18,borderRadius:"50%",background:_sel2?"#2563eb":"rgba(255,255,255,0.15)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:10,fontWeight:900,color:"#fff",flexShrink:0}}>{_oi+1}</div>
                               <div style={{fontSize:11,fontWeight:700,color:"#fff",flex:1,textAlign:"left",textShadow:"0 1px 3px rgba(0,0,0,0.7)"}}>{intentLabelDedup(a.label,_oi,_arr)}</div>
+                              <span style={{fontSize:9,letterSpacing:1,color:_rc2,flexShrink:0,textShadow:"0 1px 3px rgba(0,0,0,0.8)"}}>{"●".repeat(_rt2>68?4:_rt2>54?3:_rt2>40?2:1)}{"○".repeat(4-(_rt2>68?4:_rt2>54?3:_rt2>40?2:1))}</span>{/* [5.84.0 UX-2a] probabilità VISIBILE (prima solo alpha 0x33 sul bordo: illeggibile) */}
                             </button>
                           );
                         })}
@@ -10909,11 +10919,12 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                 </div>
               )}
               {isNarrow&&phase==="hl_result"&&outcome&&(
-                <div style={{position:"absolute",bottom:0,left:0,right:0,zIndex:16,background:outcome.outKey==="foul"?"rgba(40,20,0,0.72)":outcome.ok?"rgba(5,50,20,0.55)":"rgba(50,5,5,0.55)",padding:"10px 12px 12px"}}>
+                <div onClick={()=>{if(Date.now()-(resultShownRef.current||0)>800)handleContinue();}} style={{position:"absolute",bottom:0,left:0,right:0,zIndex:16,background:outcome.outKey==="foul"?"rgba(40,20,0,0.72)":outcome.ok?"rgba(5,50,20,0.55)":"rgba(50,5,5,0.55)",padding:"10px 12px 12px",cursor:"pointer"}}>{/* [5.84.0 UX-3] tap per continuare (prima solo attesa forzata 2-3.4s ×8 HL) */}
                   {outcome.outKey==="foul"&&<div style={{display:"flex",alignItems:"center",gap:5,marginBottom:5}}><div style={{width:10,height:14,background:"#fb923c",borderRadius:2,boxShadow:"0 0 8px rgba(251,146,60,0.9)",animation:"goalDrop 0.3s ease-out"}}/><span style={{fontSize:11,fontWeight:900,color:"#fb923c",letterSpacing:1,textTransform:"uppercase"}}>FALLO</span></div>}
                   {outcome.overlay&&<div style={{fontSize:16,fontWeight:900,letterSpacing:0.3,color:outcome.outKey==="foul"?"#fb923c":outcome.ok?"#4ade80":outcome.overlayTone==="neutral"?"#cbd5e1":"#fca5a5",marginBottom:2,textShadow:"0 1px 5px rgba(0,0,0,0.85)"}}>{outcome.overlay}</div>}
                   <div style={{fontSize:12,fontWeight:700,color:outcome.outKey==="foul"?"#fb923c":outcome.ok?"#4ade80":"#f87171",marginBottom:3,opacity:0.92,textShadow:"0 1px 4px rgba(0,0,0,0.8)"}}>{outcome.ok?"✅":"❌"} {chosenAct?.label}</div>
                   <div style={{fontSize:11,color:"#fff",lineHeight:1.4,marginBottom:4,textShadow:"0 1px 3px rgba(0,0,0,0.7)"}}>{outcome.text}</div>
+                  {outcome.cause&&<div style={{fontSize:10,fontWeight:700,color:outcome.ok?"#86efac":"#fdba74",marginBottom:3,textShadow:"0 1px 3px rgba(0,0,0,0.8)"}}>{outcome.cause}</div>}{/* [5.84.0 UX-2b] */}
                   {aiCommentary&&<div style={{fontSize:10,color:"rgba(255,255,255,0.8)",fontStyle:"italic",textShadow:"0 1px 3px rgba(0,0,0,0.7)"}}>{aiCommentary.reaction} {aiCommentary.commentary}</div>}
                 </div>
               )}
@@ -10980,6 +10991,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                   {!isNarrow&&<div style={{fontSize:8,color:"rgba(255,255,255,0.3)",marginBottom:5,textAlign:"center"}}>
                     <strong style={{color:"#f59e0b"}}>1 · 2 · 3</strong> &nbsp;|&nbsp; ←→ Enter
                   </div>}
+                  {(+(safeLS.get("cpm-hl-tips")||0))<5&&<div style={{fontSize:9,color:"rgba(255,255,255,0.7)",background:"rgba(37,99,235,0.25)",borderRadius:6,padding:"5px 8px",marginBottom:6}}>💡 I pallini ●●●○ indicano la probabilità. Muoviti (WASD) per cambiare le opzioni.</div>}{/* [5.84.0 UX-2c] */}
                   <div style={{display:"flex",flexDirection:"column",gap:5}}>
                     {curSit.lockMovement?(
                       <div>
@@ -11007,6 +11019,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                             <div style={{width:18,height:18,borderRadius:"50%",background:isSel?"#2563eb":"rgba(255,255,255,0.1)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:10,fontWeight:900,color:isSel?"#fff":"rgba(255,255,255,0.5)",flexShrink:0}}>{i+1}</div>
                             <div style={{fontSize:11,fontWeight:isSel?700:400,color:"#e2e8f0",textAlign:"left"}}>{intentLabelDedup(a.label,i,_arr)}</div>
                           </div>
+                          <span style={{fontSize:9,letterSpacing:1,color:rc,flexShrink:0}}>{"●".repeat(rate>68?4:rate>54?3:rate>40?2:1)}{"○".repeat(4-(rate>68?4:rate>54?3:rate>40?2:1))}</span>{/* [5.84.0 UX-2a] */}
                         </button>
                       );
                     })}
@@ -11019,6 +11032,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                 <div style={{padding:"10px",background:outcome.ok?"rgba(5,50,20,0.7)":"rgba(50,5,5,0.7)",borderBottom:"1px solid rgba(255,255,255,0.08)"}}>
                   <div style={{fontSize:14,fontWeight:900,color:outcome.ok?"#4ade80":"#f87171",marginBottom:4}}>{outcome.ok?"✅":"❌"} {chosenAct?.label}</div>
                   <div style={{fontSize:11,color:"rgba(255,255,255,0.8)",lineHeight:1.4,marginBottom:4}}>{outcome.text}</div>
+                  {outcome.cause&&<div style={{fontSize:10,fontWeight:700,color:outcome.ok?"#86efac":"#fdba74",marginBottom:4}}>{outcome.cause}</div>}{/* [5.84.0 UX-2b] */}
                   {aiCommentary&&<div style={{fontSize:10,color:"rgba(255,255,255,0.55)",fontStyle:"italic",marginBottom:4}}>{aiCommentary.reaction} {aiCommentary.commentary}</div>}
                   <div style={{fontSize:10,color:"rgba(255,255,255,0.3)"}}>{isNarrow?"auto →":"auto / Enter →"}</div>
                 </div>
