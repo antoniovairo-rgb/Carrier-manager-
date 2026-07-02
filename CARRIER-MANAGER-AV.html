@@ -2987,8 +2987,8 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="5.80.0"; // [5.80.0] FASE 3.1 «LE CURVE CONTANO» (audit BIL-1/2/3a/10, MIN-8/11, BUG-11): BIL-1 LA PARABOLA DELLA CARRIERA ESISTE — trainAgeMult (×1.0 ≤26 → ×0.06 a 34+) + damper globale TRAIN_BASE_EFF=0.40 su ENTRAMBI i blocchi training (TrainPanel + auto-training, erano duplicati) + declino fisiologico SETTIMANALE dai 31 (velocità/fisico per primi): prima +9/10 OVR/stagione senza limiti d'età → OVR 90 sistematico a 22 anni e MAI in discesa; ora (validato con simulazione a 60 run) 62→~76 a 21, ~84 a 25, picco ~90-92 a 29-31, declino dolce dopo — il criterio §10 della spec e la gavetta (panchina nei club forti, gerarchie già implementate) tornano veri; BIL-2 adaptive SOLO anti-farm su gpg — rimossi i malus su OVR alto e morale alto che AZZERAVANO la crescita percepita (un 90 prolifico = un 65 mediocre: 43.3% vs 43.2%) e punivano lo stare bene; BIL-3a form (±4%) e morale (±2.5%) FINALMENTE nel roll d'azione — il loop «gioco bene→sto meglio→gioco meglio» esiste in campo, metà del dashboard non è più scenografia; MIN-11 drift del morale verso 60 (5%/settimana); MIN-8 Enfant Prodige crescita ×1.35 REALE fino ai 22 (la promessa alla creazione era falsa); BIL-10/BUG-11 valore di mercato=f(OVR,età,forma,popolarità) ricalcolato ogni settimana (smoothing 70/30 con gli eventi) + fix display ×10 del tab agente (0.8M€ mostrato come €8.0M) + filtro rumors su OVR. ⚠️ Bilanciamento carriera gate-cieco → collaudo su carriera lunga.
-const SAVE_VERSION=7;// v7: aggiunto player.foot (piede preferito) — migration retro-compatibile
+const GAME_VERSION="5.81.0"; // [5.81.0] FASE 3.2 «I SOLDI ESISTONO» (audit BIL-3b/BIL-8a, SAVE_VERSION 8): ECONOMIA REALE — player.bankBalance accumula lo stipendio settimanale (solo pro; prima il wage era una vanity metric mai accumulata, con negoziazioni che ottimizzavano un numero inutile); l'AGENTE ora COSTA il 10% dello stipendio (prima gratis con +15% sui contratti per sempre = no-brainer assoluto); STAFF PERSONALE con costi/effetti veri: personal trainer (5% del wage, min 2k€/sett → training ×1.10) e nutrizionista (4%, min 1.5k€ → recupero fatica settimanale 6→8) — fondi finiti = servizi sospesi automaticamente con notifica; pannello Patrimonio nel tab agente (saldo + stipendio + toggle servizi); BIL-8a la RETROCESSIONE ha un costo: contratto rinegoziato al ribasso (−25% wage) al cambio stagione. Migrazione v7→v8 (bankBalance/perkTrainer/perkNutrition) col pattern consolidato — save-compat 12/12. ⚠️ Economia gate-cieca → collaudo su carriera.
+const SAVE_VERSION=8;// v8 [5.81.0 BIL-3b]: bankBalance (stipendio accumulato, €) + perkTrainer/perkNutrition (staff personale) — migration retro-compatibile. v7: player.foot
 // 5.67.0 — TABELLONE realistico del torneo per NAZIONALI (Europeo/Mondiale): dopo il girone la fase a
 //   eliminazione segue Ottavi → Quarti → Semifinale → Finale (prima saltava dritta alla semifinale).
 //   Ordine + etichette condivisi tra il gestore d'esito e la UI così round/label restano coerenti.
@@ -13505,7 +13505,7 @@ const TrainPanel=({player,setPlayer,notify})=>{
   const _avgRating=_recent.length?_recent.reduce((s,m)=>s+(parseFloat(m.rating)||6.5),0)/_recent.length:6.5;
   // Sprint 2 (9.3): il vice-mister (assistantCoachRel) affina il lavoro → modula l'efficacia del training (±~12%)
   const _acR=player.assistantCoachRel||50;const _acMult=_acR>=75?1.12:_acR>=60?1.04:_acR<=35?0.90:1.0;
-  const _mult=(_avgRating>=7.5?1.20:_avgRating>=6.5?1.0:_avgRating>=5.5?0.88:0.75)*((player.form||60)>=75?1.10:(player.form||60)<=35?0.90:1.0)*((player.coachTrust||60)>=80?1.12:(player.coachTrust||60)>=65?1.0:0.92)*_acMult*TRAIN_BASE_EFF*trainAgeMult(player.age)*archGrowthMult(player)/*[5.80.0 BIL-1/MIN-8]*/;
+  const _mult=(_avgRating>=7.5?1.20:_avgRating>=6.5?1.0:_avgRating>=5.5?0.88:0.75)*((player.form||60)>=75?1.10:(player.form||60)<=35?0.90:1.0)*((player.coachTrust||60)>=80?1.12:(player.coachTrust||60)>=65?1.0:0.92)*_acMult*TRAIN_BASE_EFF*trainAgeMult(player.age)*archGrowthMult(player)*(player.perkTrainer?1.10:1)/*[5.80.0 BIL-1/MIN-8 · 5.81.0 perk]*/;
   const _dim=(sv)=>{const v=sv||60;return v>=92?0.04:v>=88?0.08:v>=84?0.14:v>=80?0.20:v>=75?0.28:v>=70?0.35:v>=65?0.45:0.55;};
   const _t0name=_TT[_t0]?.l||_t0;const _t1name=_TT[_t1]?.l||_t1;
   const _coachMsg=veryTired?"Sei a pezzi. Riposo assoluto — non si allena in queste condizioni.":highFat?`Stai spingendo troppo. Lavoro leggero su ${_t0name}, poi recupero totale.`:_avgRating>=7.5?`Stai giocando bene — intensifico su ${_t0name} e ${_t1name} per sfruttare questo momento.`:_avgRating<=5.5?`Dobbiamo migliorare. Doppio lavoro su ${_t0name} e poi ${_t1name}.`:`Questa settimana puntiamo su ${_t0name} e ${_t1name}. Segui il piano.`;
@@ -13708,6 +13708,9 @@ function migratePlayer(player){
     if(!('fanLegend' in newP)){newP={...newP,fanLegend:[]};changed=true;}
     // Sprint 26 migrations
     if(!('hasAgent' in newP)){newP={...newP,hasAgent:false};changed=true;}
+    if(!('bankBalance' in newP)){newP={...newP,bankBalance:0};changed=true;}// v8 [5.81.0] economia
+    if(!('perkTrainer' in newP)){newP={...newP,perkTrainer:false};changed=true;}
+    if(!('perkNutrition' in newP)){newP={...newP,perkNutrition:false};changed=true;}
     if(!('nationalGoals' in newP)){newP={...newP,nationalGoals:0};changed=true;}
     if(!('presidentModalSeason' in newP)){newP={...newP,presidentModalSeason:0};changed=true;}
     if(!('justRecovered' in newP)){newP={...newP,justRecovered:false};changed=true;}
@@ -15280,7 +15283,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       const baseForm=updP.form||p.form||70;
       const naturalForm=clamp(Math.round(baseForm*0.92+65*0.08),30,95);
       const baseFat=updP.fatigue!=null?updP.fatigue:(p.fatigue||0);
-      const naturalFat=Math.max(0,baseFat-6);
+      const naturalFat=Math.max(0,baseFat-(p.perkNutrition?8:6));// [5.81.0] il nutrizionista accelera il recupero settimanale
       if(p.injured&&(p.injuryWeeks||0)>0){
         // Sprint 119: relapse risk — if fatigue high while still recovering
         const relapseRoll=Math.random();
@@ -15309,7 +15312,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
         const _plan3=_vt3?["rec","rec","rec"]:_hf3?[_t03,"rec","rec"]:[_t03,_t13,_t03];
         const _rec3=(updP.matchHistory||p.matchHistory||[]).slice(-3);
         const _avg3=_rec3.length?_rec3.reduce((s,m)=>s+(m.rating||6.5),0)/_rec3.length:6.5;
-        const _mult3=(_avg3>=7.5?1.2:_avg3>=6.5?1:_avg3>=5.5?0.88:0.75)*((updP.form||p.form||60)>=75?1.1:(updP.form||p.form||60)<=35?0.9:1)*((p.coachTrust||60)>=80?1.12:(p.coachTrust||60)>=65?1:0.92)*TRAIN_BASE_EFF*trainAgeMult(p.age)*archGrowthMult(p);/*[5.80.0 BIL-1/MIN-8]*/
+        const _mult3=(_avg3>=7.5?1.2:_avg3>=6.5?1:_avg3>=5.5?0.88:0.75)*((updP.form||p.form||60)>=75?1.1:(updP.form||p.form||60)<=35?0.9:1)*((p.coachTrust||60)>=80?1.12:(p.coachTrust||60)>=65?1:0.92)*TRAIN_BASE_EFF*trainAgeMult(p.age)*archGrowthMult(p)*(p.perkTrainer?1.10:1);/*[5.80.0 BIL-1/MIN-8 · 5.81.0 perk]*/
         const _dim3=(sv)=>{const v=sv||60;return v>=92?0.04:v>=88?0.08:v>=84?0.14:v>=80?0.20:v>=75?0.28:v>=70?0.35:v>=65?0.45:0.55;};
         let _ns3={...updP.stats||p.stats};let _md3=0;
         _plan3.forEach(tid=>{
@@ -15336,6 +15339,17 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       {const _m80=(updP.morale!=null?updP.morale:(p.morale||70));updP={...updP,morale:clamp(Math.round(_m80+(60-_m80)*0.05),0,100)};}
       // [5.80.0 BIL-10] valore di mercato ancorato ai fondamentali (OVR/età/forma/popolarità), smoothing 70/30
       {const _pv80={...p,...updP};updP={...updP,value:Math.round(((p.value||0.8)*0.7+calcMarketValue(_pv80)*0.3)*100)/100};}
+      // [5.81.0 BIL-3b] ECONOMIA REALE: lo stipendio si ACCUMULA (bankBalance, €). L'agente COSTA il 10%
+      //   (prima era gratis con +15% sui contratti per sempre: no-brainer); i servizi dello staff personale
+      //   hanno costi settimanali ed effetti veri. Fondi finiti → servizi sospesi automaticamente.
+      if((p.proStatus||"u18")!=="u18"){
+        const _wg81=(p.contract?.wage||0);
+        const _cost81=(p.hasAgent?Math.round(_wg81*0.10):0)+(p.perkTrainer?Math.max(2000,Math.round(_wg81*0.05)):0)+(p.perkNutrition?Math.max(1500,Math.round(_wg81*0.04)):0);
+        let _bb81=(p.bankBalance||0)+_wg81-_cost81;
+        let _pt81=p.perkTrainer,_pn81=p.perkNutrition;
+        if(_bb81<0){_pt81=false;_pn81=false;_bb81=Math.max(0,(p.bankBalance||0)+_wg81-(p.hasAgent?Math.round(_wg81*0.10):0));setTimeout(()=>notify("💸 Fondi insufficienti: servizi dello staff personale sospesi.",TH.warning),700);}
+        updP={...updP,bankBalance:Math.round(_bb81),perkTrainer:_pt81,perkNutrition:_pn81};
+      }
       const nextStreak=(p.sessionsThisWeek||0)>0||_didAutoTrain?(p.trainingStreak||0)+(_didAutoTrain?1:0):0;
       const nextWk=(p.week||1)+1;
       const winReset=nextWk===19; // finestra invernale apre → reset ricerca mercato
@@ -15672,6 +15686,8 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       });
       // S10.2: detect relegation/promotion using Sprint 84 pre-computed values
       const playerClubRelegated=!!_playerNextLgPre&&!!_pairPre&&_playerNextLgPre===_pairPre[1];
+      // [5.81.0 BIL-8a] la retrocessione ha un COSTO: il contratto viene rinegoziato al ribasso (−25%)
+      if(playerClubRelegated&&newContract&&newContract.wage)newContract.wage=Math.round(newContract.wage*0.75);
       const playerClubPromoted=!!_playerNextLgPre&&!!_pairPre&&_playerNextLgPre===_pairPre[0]; // Sprint 84
       // S11.1: coach change (20% per season)
       let newCoach=p.coach||{name:"Mister "+pick(COACH_NAMES),style:"Bilanciato",trustMod:0};
@@ -19381,11 +19397,36 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
         var taskDef=currentTask?TASKS.find(function(t){return t.k===currentTask;}):null;
         return(
           <div style={{display:"flex",flexDirection:"column",gap:12,paddingBottom:8}}>
+            {/* [5.81.0 BIL-3b] ECONOMIA — saldo accumulato + staff personale con costi/effetti reali */}
+            {(player.proStatus||"u18")!=="u18"&&(
+              <Card style={{padding:"12px 14px"}}>
+                <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:6}}>
+                  <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5}}>💰 Patrimonio</div>
+                  <div style={{fontSize:16,fontWeight:900,color:TH.text}}>{(function(){var b=player.bankBalance||0;return b>=1000000?(b/1000000).toFixed(2)+"M€":Math.round(b/1000)+"k€";})()}</div>
+                </div>
+                <div style={{fontSize:10,color:TH.muted,marginBottom:8}}>Stipendio {Math.round((player.contract?.wage||0)/1000)}k€/sett.{player.hasAgent?" · agente −10%":""}</div>
+                {[{k:"perkTrainer",e:"🏋️",l:"Personal trainer",d:"+10% efficacia allenamenti",c:Math.max(2000,Math.round((player.contract?.wage||0)*0.05))},
+                  {k:"perkNutrition",e:"🥗",l:"Nutrizionista",d:"Recupero fatica accelerato",c:Math.max(1500,Math.round((player.contract?.wage||0)*0.04))}].map(function(pk){
+                  var on=!!player[pk.k];
+                  return(
+                    <div key={pk.k} style={{display:"flex",alignItems:"center",gap:8,padding:"7px 0",borderTop:"1px solid "+TH.cardBorder}}>
+                      <span style={{fontSize:16}}>{pk.e}</span>
+                      <div style={{flex:1}}>
+                        <div style={{fontSize:11,fontWeight:700,color:TH.text}}>{pk.l}</div>
+                        <div style={{fontSize:9,color:TH.muted}}>{pk.d} · {Math.round(pk.c/1000)}k€/sett.</div>
+                      </div>
+                      <button onClick={function(){var nv=!on;setPlayer(function(p){return{...p,[pk.k]:!p[pk.k]};});notify(nv?"✅ "+pk.l+" ingaggiato!":"Servizio sospeso.",nv?TH.success:TH.muted);}}
+                        style={{padding:"6px 12px",borderRadius:8,border:"1px solid "+TH.cardBorder,background:on?TH.success:"transparent",color:on?"#fff":TH.text,fontSize:10,fontWeight:800,cursor:"pointer",fontFamily:"inherit"}}>{on?"ATTIVO":"ATTIVA"}</button>
+                    </div>
+                  );
+                })}
+              </Card>
+            )}
             {!player.hasAgent?(
               <Card style={{padding:"20px",textAlign:"center",background:"linear-gradient(135deg,#0f172a,#1e293b)",border:"1px solid rgba(255,255,255,0.08)"}}>
                 <div style={{fontSize:38,marginBottom:8}}>🤵</div>
                 <div style={{fontSize:14,fontWeight:900,color:"#f1f5f9",marginBottom:6}}>Nessun agente</div>
-                <div style={{fontSize:12,color:"#94a3b8",marginBottom:16,lineHeight:1.7}}>Un procuratore può aprire porte, negoziare contratti migliori e gestire la tua immagine.</div>
+                <div style={{fontSize:12,color:"#94a3b8",marginBottom:16,lineHeight:1.7}}>Un procuratore apre porte, negozia contratti migliori (+15%) e gestisce la tua immagine. <b>Costa il 10% del tuo stipendio settimanale.</b></div>
                 <Btn onClick={function(){setPlayer(function(p){return{...p,hasAgent:true};});notify("🤵 Agente ingaggiato!",TH.success);}} v="primary" fw style={{padding:"13px"}}>🤵 Ingaggia un procuratore</Btn>
               </Card>
             ):(
