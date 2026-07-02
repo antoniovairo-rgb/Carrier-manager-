@@ -3037,7 +3037,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="5.91.0"; // [5.91.0] BIL-9 «EVENTI A BIVI» (audit priorità 14, ultimo tassello): la carriera smette di essere fatta di eventi-notifica. (a) gli IMPULSI INTERATTIVI (WEEKLY_IMPULSES, scelte con trade-off) escono anche nelle SETTIMANE DI PARTITA (~25%, prima del match — dove fatica/forma pesano davvero); prima vivevano solo nelle rare settimane libere: per questo il 90% degli eventi sembrava rumore automatico. (b) le scelte possono muovere i SOLDI VERI (nuova chiave ef.bank → bankBalance dell'economia 3.2) e la CHIMICA (ef.chem → teamChemistry). (c) +12 nuovi dilemmi con conseguenze reali: spot personale (cachet vs fiducia mister), cena di squadra (chimica vs fatica), investimento, beneficenza, agente che forza sui giornali (valore vs trust), aiutare il ragazzo della Primavera, intervista scomoda, chef personale, visita dei genitori, video virale, paciere tra compagni, l'orologio della squadra. Pool interattivo: 36→48.
+const GAME_VERSION="5.92.0"; // [5.92.0] TRIPLO FIX da collaudo PO: (1) TIFOSI IN PROPORZIONE — makeCrowdTex accetta rowsMul e buildStadium calcola le file per settore dall'ALTEZZA REALE della tribuna (curva mono-anello tedesca/sudamericana: ~1.6x file → figure più piccole e fitte, niente più giganti); (2) SUSPENSE SULL'ESITO — l'esito dell'azione non appare più istantaneo: prima la simulazione 3D (850-1250ms a seconda dell'azione: gol/assist/chance 1250, conclusioni 1100, resto 850), poi overlay+cronaca+flash insieme (resultReveal + outcome.revealMs; strip "⏳ azione…" durante l'attesa; vale anche per il rigore: gol/parata/errore a 1000ms); (3) STADI TEDESCHI TUTTI UGUALI — varietà DETERMINISTICA per club nello stesso template (altezza ±10%, distanza ±8%, tono tetto ×3, cemento caldo/freddo, angoli chiusi→curva per 1/3 dei club) + pool Deutsche Liga allargato (tedesco/moderno_it/comunale): 10 club tedeschi = 10 firme visive uniche (verificato). // [5.91.0] BIL-9 «EVENTI A BIVI» (audit priorità 14, ultimo tassello): la carriera smette di essere fatta di eventi-notifica. (a) gli IMPULSI INTERATTIVI (WEEKLY_IMPULSES, scelte con trade-off) escono anche nelle SETTIMANE DI PARTITA (~25%, prima del match — dove fatica/forma pesano davvero); prima vivevano solo nelle rare settimane libere: per questo il 90% degli eventi sembrava rumore automatico. (b) le scelte possono muovere i SOLDI VERI (nuova chiave ef.bank → bankBalance dell'economia 3.2) e la CHIMICA (ef.chem → teamChemistry). (c) +12 nuovi dilemmi con conseguenze reali: spot personale (cachet vs fiducia mister), cena di squadra (chimica vs fatica), investimento, beneficenza, agente che forza sui giornali (valore vs trust), aiutare il ragazzo della Primavera, intervista scomoda, chef personale, visita dei genitori, video virale, paciere tra compagni, l'orologio della squadra. Pool interattivo: 36→48.
 const SAVE_VERSION=8;// v8 [5.81.0 BIL-3b]: bankBalance (stipendio accumulato, €) + perkTrainer/perkNutrition (staff personale) — migration retro-compatibile. v7: player.foot
 // 5.67.0 — TABELLONE realistico del torneo per NAZIONALI (Europeo/Mondiale): dopo il girone la fase a
 //   eliminazione segue Ottavi → Quarti → Semifinale → Finale (prima saltava dritta alla semifinale).
@@ -5305,7 +5305,7 @@ const STADIUM_LG_TPL={
   "Lega A":["storico_it","moderno_it","storico_it"],"Lega B":["comunale","storico_it"],
   "Premier Division":["inglese"],"Championship":["inglese","provincia"],
   "Liga Ibérica":["spagnolo","spagnolo","moderno_it"],"Liga Ibérica 2":["spagnolo","comunale"],
-  "Deutsche Liga":["tedesco","tedesco","moderno_it"],"Deutsche Liga 2":["tedesco","comunale"],
+  "Deutsche Liga":["tedesco","tedesco","moderno_it","comunale"],"Deutsche Liga 2":["tedesco","comunale"],
   "Ligue Nationale":["francese","francese","moderno_it"],"Ligue Nationale 2":["comunale","francese"],
   "Liga Oranje":["olandese"],"Liga Lusitana":["spagnolo","sudamericano"],
   "Liga Belga":["olandese","comunale"],"Liga Anatolica":["sudamericano","moderno_it"],
@@ -5331,9 +5331,14 @@ function stadiumConfigFor(club,evo){
   const modernity=clamp((tpl.mod||0.4)+(p-60)/160+(((h>>>7)%20)-10)/100+((evo.trophiesRecent||0)>0?0.08:0),0.05,1);
   // [5.89.0 S3] ATMOSFERA per club: fattore di intensità del tifo (0.8–1.2) da hash + template "caldi"
   const atmo=clamp(0.85+((h>>>11)%28)/100+((tplId==="tedesco"||tplId==="sudamericano")?0.10:0)+(p>84?0.04:0),0.75,1.22);
+  // [5.92.0 FIX PO «sembrano tutti uguali»] varietà DETERMINISTICA per club dentro lo stesso template:
+  //   altezza ±10%, distanza ±8%, tono tetto/cemento, angoli talvolta a curva — due tedeschi non sono più cloni.
+  const _jH=0.92+(((h>>>11)%17))/100, _jD=0.94+(((h>>>13)%13))/100;
+  const _roofTone=((h>>>15)%3), _wallTone=((h>>>17)%2);
+  const _cornerJ=(tpl.corner==="closed"&&((h>>>19)%3)===0)?"curve":tpl.corner;
   const cfg={template:tplId,name:isU18?STADIUMS[h%STADIUMS.length]:((typeof getStadiumName==="function")?getStadiumName(club):"Stadio"),atmo,
-    capacity,prestige:p,modernity,rings:tpl.rings,corner:tpl.corner,roof:tpl.roof,tower:tpl.tower,
-    fence:tpl.fence,standH:tpl.standH,dist:tpl.dist,megaCurva:!!tpl.megaCurva,asym:!!tpl.asym,
+    capacity,prestige:p,modernity,rings:tpl.rings,corner:_cornerJ,roof:tpl.roof,tower:tpl.tower,
+    fence:tpl.fence,standH:tpl.standH*_jH,dist:tpl.dist*_jD,roofTone:_roofTone,wallTone:_wallTone,megaCurva:!!tpl.megaCurva,asym:!!tpl.asym,
     screens:p>82?2:1,ledBoards:modernity>0.55,seatCol:(club&&club.c)||"#8a8a92",seatCol2:(club&&club.c2)||"#3a3a44",
     style:(typeof getStadiumStyle==="function")?getStadiumStyle(club):0};
   return (club&&club.stadium)?{...cfg,...club.stadium}:cfg;
@@ -5487,7 +5492,8 @@ function makeCrowdTex(spec){
   const splitY=Math.round(H*(1-q.tierSplit));
   const colsLow=Math.max(26,Math.round((spec.width||100)*q.colsPerUnit));
   const colsUp=Math.round(colsLow*1.3);
-  const rowsUp=q.rowsUp,rowsLow=q.rowsLow;
+  const _rm92=Math.max(1,spec.rowsMul||1);// [5.92.0 FIX PO] settori più ALTI (anello unico, curva-muro) = PIÙ file, non tifosi giganti
+  const rowsUp=Math.round(q.rowsUp*_rm92),rowsLow=Math.round(q.rowsLow*_rm92);
   const uH=splitY/rowsUp,cWU=W/colsUp,cWL=W/colsLow;
   const lw=[1,1.1,1.22,1.35,1.5,1.66],lwSum=lw.reduce((a,b)=>a+b,0);
   // sedile vuoto: plastica nei colori del CLUB DI CASA (lo stadio è suo), desaturata
@@ -5751,9 +5757,10 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
   const roofOpacity=style===1?0.90:style===2?0.70:0.80;
   const roofColor=style===1?0x333344:style===3?0x888877:0x555566;
   const floodH=xl?32:lg?28:md?24:20; // floodlight pole height
-  const cM=new THREE.MeshLambertMaterial({color:0x32323e});
+  const cM=new THREE.MeshLambertMaterial({color:(stadCfg.tpl&&stadCfg.tpl.wallTone===1)?0x3d3833:0x32323e});// [5.92.0] cemento caldo/freddo per club
   const stM=new THREE.MeshLambertMaterial({color:0x808088});
-  const roofM=new THREE.MeshLambertMaterial({color:roofColor,transparent:true,opacity:roofOpacity});
+  const roofColor92=(stadCfg.tpl&&stadCfg.tpl.roofTone!=null)?[roofColor,0x3a3a46,0x6a6a75][stadCfg.tpl.roofTone]||roofColor:roofColor;// [5.92.0] tono tetto per club
+  const roofM=new THREE.MeshLambertMaterial({color:roofColor92,transparent:true,opacity:roofOpacity});
   // ── CROWD 2.0 §5 — distribuzione settori dal contesto (computeCrowdContext) + CROWD_CFG.sectors ──
   // Curva Sud (x=+sideX, LATO TABELLONE) SOLO casa/ultras · Curva Nord (x=-sideX) SOLO ospiti (riempita
   // da awayFill: derby=piena, provino=vuota) · Tribuna Est (z=+endZ) casa+famiglie+spicchio ospiti ·
@@ -5761,12 +5768,19 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
   const crowd=stadCfg.crowd||{fill:0.9,awayFill:0.5,intensity:0.6,tier:"league",seed:1};
   const isMob=!stadCfg.isDesktop;
   const SEC=CROWD_CFG.sectors;
-  const mkSpec=(key,sec,isAway,width,fillOv)=>({key,homeHex,awayHex,width,isMobile:isMob,seedKey:key+"_"+(crowd.seed||0),
-    fill:fillOv!=null?fillOv:crowd.fill,intensity:crowd.intensity,isAway,sector:sec,wedgeFill:crowd.awayFill});
-  const _sud=makeCrowdTex(mkSpec("curvaSud",SEC.curvaSud,false,sideW));
-  const _nord=makeCrowdTex(mkSpec("curvaNord",SEC.curvaNord,true,sideW,crowd.awayFill));
-  const _est=makeCrowdTex(mkSpec("tribunaEst",SEC.tribunaEst,false,endW));
-  const _ovest=makeCrowdTex(mkSpec("tribunaOvest",SEC.tribunaOvest,false,endW));
+  const mkSpec=(key,sec,isAway,width,fillOv,rowsMul)=>({key,homeHex,awayHex,width,isMobile:isMob,seedKey:key+"_"+(crowd.seed||0),
+    fill:fillOv!=null?fillOv:crowd.fill,intensity:crowd.intensity,isAway,sector:sec,wedgeFill:crowd.awayFill,rowsMul:rowsMul||1});
+  // [5.92.0 FIX PO «tifosi troppo grandi»] file ∝ altezza REALE del settore: l'anello unico copre l'intera
+  //   parete (~1/0.62 del tier legacy) e la curva-muro tedesca è ×1.5 → senza più file i tifosi si stiravano.
+  const _rowsFor92=(oneTier,hMul)=>(oneTier?1.6:1)*Math.max(1,hMul||1);
+  const _legacySideH92=(xl?20:lg?14:md?11:8);
+  const _sudRM=_rowsFor92(!!(T&&T.megaCurva)||_tiers===1,_sudH/_legacySideH92);
+  const _endRM=_rowsFor92(!!(T&&T.asym)||_tiers===1,_hK);
+  const _nrdRM=_rowsFor92(_tiers===1,_hK);
+  const _sud=makeCrowdTex(mkSpec("curvaSud",SEC.curvaSud,false,sideW,null,_sudRM));
+  const _nord=makeCrowdTex(mkSpec("curvaNord",SEC.curvaNord,true,sideW,crowd.awayFill,_nrdRM));
+  const _est=makeCrowdTex(mkSpec("tribunaEst",SEC.tribunaEst,false,endW,null,_endRM));
+  const _ovest=makeCrowdTex(mkSpec("tribunaOvest",SEC.tribunaOvest,false,endW,null,_nrdRM));
   const crowdAnims=[_ovest.redraw,_est.redraw,_sud.redraw,_nord.redraw];
 
   // Helper: gradinata a DUE ANELLI inclinati verso il campo (§1 profondità reale, via muro piatto)
@@ -9316,6 +9330,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   const [energy,setEnergy]=useState(100);
   const [coms,setComs]=useState([]);
   const [outcome,setOutcome]=useState(null);
+  const [resultReveal,setResultReveal]=useState(true);// [5.92.0 FIX PO «niente suspense»] l'esito si LEGGE solo dopo che il 3D l'ha mostrato
   const [chosenAct,setChosenAct]=useState(null);
   const [selectedActionIdx,setSelectedActionIdx]=useState(0);
   // Possession: based on player OVR vs opponent prestige (read directly from prop, not from oppPrestige var)
@@ -10390,14 +10405,19 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     setEnergy(e=>clamp(e-action.nrg,0,100));
     setMStats(s=>{let{goals,assists,rb,xg}={...s};const _xgAdd=calcXG(action,pPos.x);xg=Math.round((xg+_xgAdd)*100)/100;if(ok){if(key==="goal"){goals++;rb+=5;setScore(sc=>({...sc,home:sc.home+1}));setMatchEvents(prev=>{const _em=prev.length>0&&prev[prev.length-1].min>=clockRef.current?prev[prev.length-1].min+1:clockRef.current;return[...prev,{min:_em,type:"player_goal",txt:"⚽ Tuo gol al "+_em+"'"}].slice(-12);});}if(key==="assist"){assists++;rb+=3;setScore(sc=>({...sc,home:sc.home+1}));setMatchEvents(prev=>{const _em=prev.length>0&&prev[prev.length-1].min>=clockRef.current?prev[prev.length-1].min+1:clockRef.current;return[...prev,{min:_em,type:"player_assist",txt:"🎯 Tuo assist al "+_em+"'"}].slice(-12);});}if(!["goal","assist"].includes(key))rb+=1;}else{if(key==="goal_against"){rb-=3;setScore(sc=>({...sc,away:sc.away+1}));setMatchEvents(prev=>{const _em=prev.length>0&&prev[prev.length-1].min>=clockRef.current?prev[prev.length-1].min+1:clockRef.current;return[...prev,{min:_em,type:"opp_goal",txt:"😨 Gol subito al "+_em+"'"}].slice(-12);});}if(key==="miss_easy"){rb-=2;setMatchEvents(prev=>{const _em=prev.length>0&&prev[prev.length-1].min>=clockRef.current?prev[prev.length-1].min+1:clockRef.current;return[...prev,{min:_em,type:"miss",txt:"😱 Gol clamorosamente sprecato al "+_em+"'"}].slice(-12);});}}return{goals,assists,rb,xg};});
     if(ok&&(key==="recovery"||key==="intercept"))setPossession(p=>clamp(p+1,20,80));
-    addCom(txt,ok?"#16a34a":"#dc2626",clock);
+    // [5.92.0 FIX PO] SUSPENSE: prima la simulazione 3D, POI la scritta — cronaca dell'esito, riga
+    //   difensiva e flash rosso si rivelano quando l'arco è arrivato (gol/assist ~1.25s, conclusioni 1.1s, resto 0.85s).
+    const _rd92=(key==="goal"||key==="assist"||key==="chance")?1250:(/tir|conclus|rovesciat|vol[eé]|testa|punizion|rigor|bordata|missile/i.test(action.label||"")?1100:850);
+    setResultReveal(false);
+    fxTimeout(()=>setResultReveal(true),_rd92);
+    fxTimeout(()=>addCom(txt,ok?"#16a34a":"#dc2626",clock),_rd92);
     // 5.65.0 — COERENZA CRONACA↔TRAIETTORIA per gli esiti difensivi che finiscono FUORI o avviano il gioco:
     //   la scritta deve combaciare con ciò che la palla fa in 3D (rimessa/angolo/ripartenza/rilancio pulito).
     if(_defTraj){const _dk=_defTraj.kind,_dtx={
         throw_in:"↔️ Deviata in rimessa laterale.",corner_conceded:"🚩 Deviata in calcio d'angolo.",
         counter:"⚡ Recupera e lancia la ripartenza!",pass_start:"🎯 Recupera e riparte dal basso.",
         safe_clear:"🛡️ Spazzata lunga per allontanare il pericolo."}[_dk];
-      if(_dtx)addCom(_dtx,_dk==="corner_conceded"?"#f59e0b":"#60a5fa",clock);}
+      if(_dtx)fxTimeout(()=>addCom(_dtx,_dk==="corner_conceded"?"#f59e0b":"#60a5fa",clock),_rd92+220);}// [5.92.0] segue il reveal
     // M2 · MATCH MEMORY → CONTINUITÀ NARRATIVA (Cap.5.6): aggiorna la memoria e, se una condizione VERA lo
     //   giustifica, aggiunge UNA riga di cronaca che collega l'azione al passato della partita. Solo eventi
     //   realmente accaduti (mai riferimenti falsi). Deterministica (nessun random). Additiva, effimera.
@@ -10432,7 +10452,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
       fxTimeout(()=>setFloatGoal({text:_ovl.text,col:"#a78bfa",key:Date.now()}),1300);
     } else if(!ok){
       fxTimeout(()=>setFloatGoal({text:_ovl.text,col:_ovl.tone==="neutral"?"#cbd5e1":"#f87171",key:Date.now()}),1300);
-      if(key==="miss_easy"||key==="goal_against")setScreenFlash({col:"rgba(239,68,68,0.35)",dur:400});
+      if(key==="miss_easy"||key==="goal_against")fxTimeout(()=>setScreenFlash({col:"rgba(239,68,68,0.35)",dur:400}),_rd92);// [5.92.0] il flash arriva col reveal
     }
     // Particle effect based on action outcome
     const shotActions=["tiro","shot","cross","punizione","rigore","volée","colpo di testa","tiro a giro","tocco sotto"];
@@ -10443,7 +10463,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     else if(isShot&&ok)setActionEffect({type:"spark",col:homeKitCol,key:Date.now()});
     else if(isShot&&!ok)setActionEffect({type:"spark",col:"#ef4444",key:Date.now()});
     else if(isTackle)setActionEffect({type:"dust",key:Date.now()});
-    setOutcome({text:txt,ok,actionLabel:action.label,outKey:key,overlay:_ovl.text,overlayTone:_ovl.tone,outKind:_outKind,defTraj:_defTraj,cause:(ok?(_posC84[0]&&_posC84[0][1]):(_negC84[0]&&_negC84[0][1]))||null});setChosenAct(action);// [5.84.0 UX-2b]
+    setOutcome({text:txt,ok,actionLabel:action.label,outKey:key,overlay:_ovl.text,overlayTone:_ovl.tone,outKind:_outKind,revealMs:_rd92,defTraj:_defTraj,cause:(ok?(_posC84[0]&&_posC84[0][1]):(_negC84[0]&&_negC84[0][1]))||null});setChosenAct(action);// [5.84.0 UX-2b]
     // LMQP-1/3: registra l'esito risolto + i fatti cinematici DECISI A RUNTIME (deriveHL/hlBallState),
     //   così il check timeline valida gli invarianti CINE sulla decisione LIVE (testa⟹aerea, volée⟹aerea, set-piece⟹palla ferma).
     let _cine={};try{const _s=situationsRef.current[hlIdxRef.current];if(_s){const _h=(typeof deriveHL==="function"&&deriveHL(_s,action))||{};_cine={type:_h.type||null,variant:_h.variant||null,pattern:_h.pattern||null,ballState:(typeof hlBallState==="function"?hlBallState(_s):null)};}}catch(_e){}
@@ -10520,9 +10540,9 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     setEnergy(e=>clamp(e-8,0,100));
     if(saved){
       const txt=`🧤 PARATA! Il portiere intuisce — vola ${gkLabel}!`;
-      addCom(txt,"#f87171",clock);
-      setScreenFlash({col:"rgba(239,68,68,0.4)",dur:500});
-      setOutcome({text:txt,ok:false,actionLabel:shotLabel});setChosenAct({label:shotLabel,stat:"tiro",nrg:8});
+      setResultReveal(false);fxTimeout(()=>setResultReveal(true),1000);// [5.92.0] suspense anche sul rigore
+      fxTimeout(()=>{addCom(txt,"#f87171",clock);setScreenFlash({col:"rgba(239,68,68,0.4)",dur:500});},1000);
+      setOutcome({text:txt,ok:false,actionLabel:shotLabel,revealMs:1000});setChosenAct({label:shotLabel,stat:"tiro",nrg:8});
       try{cpmEmit("ActionResolved",{gi:hlIdxRef.current,intent:"penalty",label:shotLabel,stat:"tiro",ok:false,key:"miss"});}catch(_e){}// [5.78.0 F3] anche il rigore parato entra nella timeline
       setMomentum(m=>clamp(m-15,0,100));
     }else{
@@ -10537,21 +10557,19 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
       try{cpmEmit("ActionResolved",{gi:hlIdxRef.current,intent:"penalty",label:shotLabel,stat:"tiro",ok:!!ok,key:ok?"goal":"miss"});}catch(_e){}
       if(ok){
         const txt=`⚽ GOOOAL! Angolo perfetto — portiere va ${gkLabel}.`;
-        addCom(txt,"#16a34a",clock);
-        setScreenFlash({col:"rgba(255,255,255,0.5)",dur:500});
-        setCutFx({key:Date.now(),dur:560});// stacco nero di transizione sul gol (rigore)
-        setFloatGoal({text:"⚽ GOL!",col:"#f59e0b",key:Date.now()});
+        setResultReveal(false);fxTimeout(()=>setResultReveal(true),1000);// [5.92.0] suspense: prima il 3D, poi l'esito
+        fxTimeout(()=>{addCom(txt,"#16a34a",clock);setScreenFlash({col:"rgba(255,255,255,0.5)",dur:500});setCutFx({key:Date.now(),dur:560});setFloatGoal({text:"⚽ GOL!",col:"#f59e0b",key:Date.now()});},1000);
         setScore(s=>({...s,home:s.home+1}));
         setMatchEvents(prev=>{const _em=prev.length>0&&prev[prev.length-1].min>=clockRef.current?prev[prev.length-1].min+1:clockRef.current;return[...prev,{min:_em,type:"player_goal",txt:"⚽ Tuo rigore al "+_em+"'"}].slice(-12);});// [5.78.0 F3] il gol su rigore ora compare negli eventi partita
         setMStats(s=>({...s,goals:s.goals+1,rb:s.rb+5}));
         setActionEffect({type:"goal",key:Date.now()});
-        setOutcome({text:txt,ok:true,actionLabel:shotLabel});
+        setOutcome({text:txt,ok:true,actionLabel:shotLabel,revealMs:1000});
         setMomentum(m=>clamp(m+20,0,100));
       }else{
         const txt=`❌ ${pick(["Palo! Che peccato!","Tiro alto — sprecato!","Fuori di poco."])} Portiere andava ${gkLabel}.`;
-        addCom(txt,"#f87171",clock);
-        setScreenFlash({col:"rgba(239,68,68,0.3)",dur:400});
-        setOutcome({text:txt,ok:false,actionLabel:shotLabel});
+        setResultReveal(false);fxTimeout(()=>setResultReveal(true),1000);// [5.92.0] suspense anche sul rigore sbagliato
+        fxTimeout(()=>{addCom(txt,"#f87171",clock);setScreenFlash({col:"rgba(239,68,68,0.3)",dur:400});},1000);
+        setOutcome({text:txt,ok:false,actionLabel:shotLabel,revealMs:1000});
         setMomentum(m=>clamp(m-10,0,100));
       }
       setChosenAct({label:shotLabel,stat:"tiro",nrg:8});
@@ -10684,8 +10702,8 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   // tagliava palla in volo e slow-mo. Sempre ≥ durata arco/slow-mo + tempo di lettura dell'esito.
   useEffect(()=>{
     if(phase!=="hl_result"||paused)return;
-    resultShownRef.current=Date.now();// [5.84.0 UX-3]
-    const dur=postHighlightDuration(outcome,chosenAct);
+    resultShownRef.current=Date.now()+((outcome&&outcome.revealMs)||0);// [5.84.0 UX-3 · 5.92.0] la guardia anti-tap parte dal REVEAL
+    const dur=postHighlightDuration(outcome,chosenAct)+((outcome&&outcome.revealMs)||0);// [5.92.0] il tempo di lettura parte DOPO il reveal
     if(typeof window!=='undefined'&&/[?&]cpmtest=1\b/.test(window.location.search||""))window.__CPM_RESULT_DUR=dur;// VISUAL-TEST
     const t=setTimeout(handleContinue,dur);
     return()=>clearTimeout(t);
@@ -11133,7 +11151,12 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                   </div>
                 </div>
               )}
-              {isNarrow&&phase==="hl_result"&&outcome&&(
+              {isNarrow&&phase==="hl_result"&&outcome&&!resultReveal&&(
+                <div style={{position:"absolute",bottom:0,left:0,right:0,zIndex:16,background:"rgba(5,8,20,0.45)",padding:"12px 12px 14px"}}>
+                  <div style={{fontSize:12,fontWeight:800,color:"rgba(255,255,255,0.85)",textShadow:"0 1px 4px rgba(0,0,0,0.8)"}}>⏳ {chosenAct?.label}<span style={{opacity:0.5}}>…</span></div>
+                </div>
+              )}{/* [5.92.0 FIX PO] SUSPENSE: prima si guarda il 3D, l'esito appare al reveal */}
+              {isNarrow&&phase==="hl_result"&&outcome&&resultReveal&&(
                 <div onClick={()=>{if(Date.now()-(resultShownRef.current||0)>800)handleContinue();}} style={{position:"absolute",bottom:0,left:0,right:0,zIndex:16,background:outcome.outKey==="foul"?"rgba(40,20,0,0.72)":outcome.ok?"rgba(5,50,20,0.55)":"rgba(50,5,5,0.55)",padding:"10px 12px 12px",cursor:"pointer"}}>{/* [5.84.0 UX-3] tap per continuare (prima solo attesa forzata 2-3.4s ×8 HL) */}
                   {outcome.outKey==="foul"&&<div style={{display:"flex",alignItems:"center",gap:5,marginBottom:5}}><div style={{width:10,height:14,background:"#fb923c",borderRadius:2,boxShadow:"0 0 8px rgba(251,146,60,0.9)",animation:"goalDrop 0.3s ease-out"}}/><span style={{fontSize:11,fontWeight:900,color:"#fb923c",letterSpacing:1,textTransform:"uppercase"}}>FALLO</span></div>}
                   {outcome.overlay&&<div style={{fontSize:16,fontWeight:900,letterSpacing:0.3,color:outcome.outKey==="foul"?"#fb923c":outcome.ok?"#4ade80":outcome.overlayTone==="neutral"?"#cbd5e1":"#fca5a5",marginBottom:2,textShadow:"0 1px 5px rgba(0,0,0,0.85)"}}>{outcome.overlay}</div>}
@@ -11243,7 +11266,10 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
               )}
 
               {/* hl_result — desktop only (mobile has overlay on canvas) */}
-              {!isNarrow&&phase==="hl_result"&&outcome&&(
+              {!isNarrow&&phase==="hl_result"&&outcome&&!resultReveal&&(
+                <div style={{padding:"12px 10px"}}><div style={{fontSize:12,fontWeight:800,color:TH.text,opacity:0.8}}>⏳ {chosenAct?.label}<span style={{opacity:0.5}}>…</span></div></div>
+              )}
+              {!isNarrow&&phase==="hl_result"&&outcome&&resultReveal&&(
                 <div style={{padding:"10px",background:outcome.ok?"rgba(5,50,20,0.7)":"rgba(50,5,5,0.7)",borderBottom:"1px solid rgba(255,255,255,0.08)"}}>
                   <div style={{fontSize:14,fontWeight:900,color:outcome.ok?"#4ade80":"#f87171",marginBottom:4}}>{outcome.ok?"✅":"❌"} {chosenAct?.label}</div>
                   <div style={{fontSize:11,color:"rgba(255,255,255,0.8)",lineHeight:1.4,marginBottom:4}}>{outcome.text}</div>
