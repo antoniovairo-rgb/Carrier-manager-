@@ -2987,7 +2987,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="5.82.0"; // [5.82.0] FASE 3.3 «AGENCY E CONSEGUENZE» (audit BIL-4/BIL-8 — chiude la Fase 3): BIL-4 TRAINING CON AGENCY — il giocatore SCEGLIE il focus settimanale nel TrainPanel (4 opzioni: piano del mister CONSIGLIATO sui punti deboli · focus offensivo tecnica/tiro/dribbling · focus atletico fisico/velocità · settimana di scarico); l'override medico a fatica alta resta automatico e l'auto-training all'avanzamento resta il fallback se non apri il tab — prima il piano si auto-eseguiva al mount: ZERO scelte sulla propria crescita (build-crafting ora possibile); BIL-8 IL RINNOVO NON È PIÙ UN DIRITTO — con coachTrust<40 (o ruolo riserva e trust<52) il club RIFIUTA di trattare (openNegoModal → step "refused" con messaggio della dirigenza): lo svincolo è un rischio reale, il tasto GIOCA resta bloccato finché non firmi altrove (flusso offerte esistente). Con la parabola d'età (5.80.0), l'economia (5.81.0) e le sconfitte vere, la carriera ora ha PESO: si può sbagliare. ⚠️ Flussi carriera gate-ciechi → collaudo dal vivo.
+const GAME_VERSION="5.83.0"; // [5.83.0] FASE 4.1 «ESITI 3D ONESTI» (audit IA-1/2/3): IA-1 FIX REVERSE-BOOMERANG — nel post-arco deflect il pull verso il terzo offensivo vale SOLO per le conclusioni (e i cross): un passaggio/dribbling perso a centrocampo ora si assesta sul punto d'INTERCETTO invece di planare da solo fino all'area avversaria (l'opposto di «possesso all'avversario»); IA-2a I TIRI FUORI ESCONO DAVVERO — su outKind wide/out la palla supera la linea di fondo (AWAY_GOAL_X+2.5, dentro i bound del gate) invece del rimbalzo-fantasma in campo, e il portiere NON si tuffa più sui tiri chiaramente fuori (guarda la palla uscire); IA-3 REPARTO PORTIERI COMPLETO — (a) niente tuffo sul LANCIO del cross: sul cross parato il GK ESCE IN PRESA (nuovo gesto procedurale gk_catch + clip GLB anim-gk-catch finora MAI usata, mappata in _gkWant), il tuffo sul cross arriva al 2° TOCCO (l'incornata, dentro cross_goal); (b) il portiere di CASA finalmente si tuffa sul gol subito (toOwnGoal → gk_dive sul mesh home GK — prima era perennemente inerte, gli asset esistevano). Tutto nel render-loop (gate-cieco sulla resa) → collaudo dal vivo; bound GK del gate rispettati (tuffo = solo z).
 const SAVE_VERSION=8;// v8 [5.81.0 BIL-3b]: bankBalance (stipendio accumulato, €) + perkTrainer/perkNutrition (staff personale) — migration retro-compatibile. v7: player.foot
 // 5.67.0 — TABELLONE realistico del torneo per NAZIONALI (Europeo/Mondiale): dopo il girone la fase a
 //   eliminazione segue Ottavi → Quarti → Semifinale → Finale (prima saltava dritta alla semifinale).
@@ -7186,7 +7186,10 @@ function ThreeMatchView(props){
           const _u2=Math.min(hlPostArcT/0.65,1);
           ball.position.y=0.65+Math.sin(_u2*Math.PI)*3.0;
           ball.position.x+=(AWAY_GOAL_X+1-ball.position.x)*aDt*3.8;ball.position.z+=(0-ball.position.z)*aDt*1.4;
-          if(_u2>=1){hlPostArcType="in_net";hlPostArcT=0;hlInNetFlashed=false;contactFlashT=0;}}// 3DV-14: flash al secondo tocco
+          if(_u2>=1){
+            // [5.83.0 IA-3] il tuffo sul CROSS arriva al 2° TOCCO (l'incornata), non al lancio del traversone
+            if(awayGkMesh&&!P.hlDef&&!oppActType){oppActType="gk_dive";oppActT=0;oppMesh=awayGkMesh;oppDiveDir=ball.position.z>=oppMesh.position.z?1:-1;oppMesh._divePz=oppMesh.position.z;oppMesh._diveYaw=oppMesh.rotation.y;oppMesh._diveToZ=clamp(ball.position.z,oppMesh.position.z-6,oppMesh.position.z+6);}
+            hlPostArcType="in_net";hlPostArcT=0;hlInNetFlashed=false;contactFlashT=0;}}// 3DV-14: flash al secondo tocco
         else if(hlPostArcType==="assist_recv"){// il compagno SCATTA sulla palla giocata in profondità — la palla RESTA avanti, NON torna indietro
           let _rm=null;sr.current.players.forEach(pp=>{if(pp.mesh&&pp.mesh._rcvT!=null&&pp.mesh._rcvT>=0)_rm=pp.mesh;});
           if(_rm){const _tx=_rm._runToX!=null?_rm._runToX:ball.position.x;
@@ -7206,9 +7209,14 @@ function ThreeMatchView(props){
           ball.position.y+=hlPostVY*aDt;
           if(ball.position.y<=0.65&&hlPostVY<0){ball.position.y=0.65;hlPostVY*=-0.30;contactFlashT=0;}// rimbalzo + flash
           ball.position.z+=hlPostVZ*aDt;hlPostVZ*=(1-aDt*3.2);
-          // FIX boomerang: una conclusione parata/fuori RESTA nel terzo offensivo (vicino alla porta avversaria),
-          //   non torna indietro verso la porta dell'eroe. Si assesta poco fuori area.
-          ball.position.x+=((AWAY_GOAL_X-7)-ball.position.x)*Math.min(aDt*1.6,1);
+          // [5.83.0 IA-1/IA-2a] FIX reverse-boomerang: il pull verso il terzo offensivo vale SOLO per le
+          //   CONCLUSIONI (la palla è già lì); un passaggio/dribbling perso a centrocampo si assesta sul punto
+          //   d'intercetto (prima planava da sola fino all'area avversaria: possesso «all'avversario» in porta!).
+          //   E un tiro FUORI supera la linea di fondo (palla oltre la porta, non rimbalzo-fantasma in campo).
+          {const _sf83=(P.hlType==="shot"||P.hlType==="penalty"||P.hlType==="freekick"||P.hlType==="header");
+           const _wide83=_sf83&&(P.hlOutcomeKind==="wide"||P.hlOutcomeKind==="out");
+           const _tx83=_wide83?(AWAY_GOAL_X+2.5):(_sf83||P.hlType==="cross")?(AWAY_GOAL_X-7):(ballArcTgtX!=null?ballArcTgtX:ball.position.x);
+           ball.position.x+=(_tx83-ball.position.x)*Math.min(aDt*1.6,1);}
           if(hlPostArcT>2.5){hlPostArcT=-1;hlPostArcType=null;hlPostVY=0;}}}
       else{ball.position.y+=(0.65-ball.position.y)*Math.min(aDt*6,1);}// y rest 0.65
       ballHalo.position.copy(ball.position);
@@ -7355,7 +7363,11 @@ function ThreeMatchView(props){
             ballArcH=_dt.arcH!=null?_dt.arcH:1.4;ballArcDur=_dt.arcDur!=null?_dt.arcDur:0.5;
             let _gx=clamp(_px+(_dt.dx||0),6,68),_gy;// cap x=68 → MAI il rinvio-bomba fino alla porta avversaria
             const _touchY=_sideD<0?4:96;
-            if(_dt.toOwnGoal){_gx=1.5;_gy=50+(_sideD<0?-3:3);}                              // [5.75.0 IA-2c] gol subito → palla nella PROPRIA porta (gx≈0)
+            if(_dt.toOwnGoal){_gx=1.5;_gy=50+(_sideD<0?-3:3);
+              // [5.83.0 IA-3] il portiere di CASA finalmente si tuffa sul gol subito (prima era perennemente inerte)
+              let _hgk83=null;sr.current.players.forEach((pp,ii)=>{const src=(P.allPlayers||[])[ii];if(src&&src.team==='home'&&src.gk)_hgk83=pp.mesh;});
+              if(_hgk83&&!oppActType){oppActType="gk_dive";oppActT=0;oppMesh=_hgk83;const _gz83=G2Z(_gy);oppDiveDir=_gz83>=_hgk83.position.z?1:-1;_hgk83._divePz=_hgk83.position.z;_hgk83._diveYaw=_hgk83.rotation.y;_hgk83._diveToZ=clamp(_gz83,_hgk83.position.z-6,_hgk83.position.z+6);}
+            }                              // [5.75.0 IA-2c] gol subito → palla nella PROPRIA porta (gx≈0)
             else if(_dt.toTouch){_gx=clamp(_px+(_dt.dx||0),6,72);_gy=_touchY;}                  // rimessa laterale
             else if(_dt.toGoalLine){_gx=clamp(_px+(_dt.dx!=null?_dt.dx:-2),2,20);_gy=_sideD<0?12:88;}// angolo concesso (verso la propria bandierina)
             else{_gy=clamp(_py+(_touchY-_py)*(_dt.wide||0),4,96);}                          // avanti + spinta verso la fascia
@@ -7373,8 +7385,14 @@ function ThreeMatchView(props){
           if(t==="cross"&&ballArcActive&&!P.hlDef){let _bd=1e9,_brx=null,_brz=null;const _bx72=G2X(72);// 5.49.13: NON ri-targettizzare verso l'area avversaria se l'highlight è DIFENSIVO (era la causa della palla respinta fino alla porta avversaria)
             sr.current.players.forEach((pp,ii)=>{const s=(P.allPlayers||[])[ii];if(!s||s.team!=='home'||s.gk)return;const _rl=ii<10?ii:ii-10;if(_rl<6||pp.mesh.position.x<_bx72)return;const d=Math.hypot(pp.mesh.position.x-ballArcTgtX,pp.mesh.position.z-ballArcTgtZ);if(d<_bd){_bd=d;_brx=pp.mesh.position.x;_brz=pp.mesh.position.z;}});
             if(_brx!=null&&_bd<24){ballArcTgtX=ballArcTgtX*0.4+_brx*0.6;ballArcTgtZ=ballArcTgtZ*0.4+_brz*0.6;}}
-          // CIN-2: trigger reazione avversario — portiere tuffo su tiro/testa/cross, difensore stumble/spin su contrasto/dribbling
-          if((t==="shot"||t==="penalty"||t==="header"||t==="cross")&&awayGkMesh&&!P.hlDef){// 5.49.11: niente tuffo del portiere avversario su un'azione DIFENSIVA (la palla non va verso la sua porta)
+          // CIN-2: trigger reazione avversario — portiere tuffo su tiro/testa, difensore stumble/spin su contrasto/dribbling
+          // [5.83.0 IA-2a/IA-3] niente tuffo sui tiri chiaramente FUORI (il GK guarda la palla uscire) e
+          //   niente tuffo sul LANCIO del cross (un portiere non si tuffa su un traversone: sul cross parato
+          //   ESCE con una presa — clip gk_catch finora mai usata; il tuffo sul cross arriva al 2° tocco).
+          if(t==="cross"&&awayGkMesh&&!P.hlDef&&(P.hlOutcomeKind==="saved"||P.hlOutcomeKind==="save")){
+            oppActType="gk_catch";oppActT=0;oppMesh=awayGkMesh;
+            oppMesh._divePz=oppMesh.position.z;oppMesh._diveYaw=oppMesh.rotation.y;oppMesh._diveToZ=clamp(ballArcTgtZ,oppMesh.position.z-4,oppMesh.position.z+4);oppDiveDir=ballArcTgtZ>=oppMesh.position.z?1:-1;
+          } else if((t==="shot"||t==="penalty"||t==="header")&&awayGkMesh&&!P.hlDef&&!(P.hlOutcomeKind==="wide"||P.hlOutcomeKind==="out")){// 5.49.11: niente tuffo su azione difensiva
             oppActType="gk_dive";oppActT=0;oppMesh=awayGkMesh;
             oppDiveDir=ballArcTgtZ>=oppMesh.position.z?1:-1; // tuffo VERSO il lato del tiro
             oppMesh._divePz=oppMesh.position.z;oppMesh._diveYaw=oppMesh.rotation.y;
@@ -7790,6 +7808,12 @@ function ThreeMatchView(props){
             oppMesh.rotation.z=oppDiveDir*_ext*1.7;// corpo ORIZZONTALE verso il lato del tuffo (estensione piena)
             oppMesh._aL.rotation.x=-_ext*2.7;oppMesh._aR.rotation.x=-_ext*2.7;oppMesh._aL.rotation.z=-oppDiveDir*_ext*1.15;oppMesh._aR.rotation.z=-oppDiveDir*_ext*1.15;// braccia TESE + MANI verso la palla
             if(oppMesh._lR)oppMesh._lR.rotation.x=-_ext*0.7;if(oppMesh._lL)oppMesh._lL.rotation.x=-_ext*0.7;}// gambe DISTESE (estensione completa del corpo)
+          else if(oppActType==="gk_catch"){// [5.83.0 IA-3] USCITA IN PRESA sul cross (clip GLB finora morta): passo verso la palla, braccia in alto, raccolta al petto
+            if(oppMesh._diveYaw!=null)oppMesh.rotation.y=oppMesh._diveYaw;
+            const _cpz=(oppMesh._divePz||0),_ctz=(oppMesh._diveToZ!=null?oppMesh._diveToZ:_cpz);
+            oppMesh.position.z=_cpz+(_ctz-_cpz)*Math.min(u/0.5,1);
+            oppMesh.position.y=Math.sin(Math.min(u/0.6,1)*Math.PI)*0.55;// piccolo stacco per la presa alta
+            oppMesh._aL.rotation.x=-Math.sin(u*Math.PI)*2.6;oppMesh._aR.rotation.x=-Math.sin(u*Math.PI)*2.6;}// braccia sopra la testa → al petto
           else if(oppActType==="opp_stumble"){oppMesh.rotation.z=sw*1.0;oppMesh.position.y=-sw*0.15;oppMesh._lR.rotation.x=sw*1.8;oppMesh._lL.rotation.x=-sw*0.7;}
           else if(oppActType==="opp_spin"){oppMesh.rotation.y+=aDt*(u<0.5?9:3);}
           else if(oppActType==="opp_intercept"){oppMesh.position.y=sw*0.45;oppMesh._aL.rotation.x=sw*1.5;oppMesh._aR.rotation.x=sw*1.5;oppMesh.rotation.z=sw*0.28;}// 3DV-13: si china + tende le braccia
@@ -8087,7 +8111,7 @@ function ThreeMatchView(props){
         else if(actType==='tackle')_gName='tackle';
         // PORTIERE avversario: la parata è segnalata da oppActType==='gk_dive' (oppMesh=awayGkMesh). La traslazione laterale/verticale
         // resta guidata dalla reazione procedurale; il GLB ci sovrappone la CLIP di tuffo per gli arti.
-        const _gkWant=(oppActType==='gk_dive')?'dive':null;
+        const _gkWant=(oppActType==='gk_dive')?'dive':(oppActType==='gk_catch')?'catch':null;// [5.83.0 IA-3] clip catch GLB finalmente usata
         for(let _ai=0;_ai<glbAvatars.length;_ai++){const _a=glbAvatars[_ai],_p=_a.proc,_gdx=_p.position.x-_a.lx,_gdz=_p.position.z-_a.lz,_gsp=Math.hypot(_gdx,_gdz);
           _a.root.position.set(_p.position.x,_p.position.y,_p.position.z);
           // facing GRADUALE verso la direzione di movimento (turn-rate cap) — NIENTE snap per-frame (era la causa principale del "twitch schizofrenico"
