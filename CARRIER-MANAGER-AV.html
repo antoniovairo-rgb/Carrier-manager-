@@ -3079,7 +3079,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="6.2.1"; // [6.2.1] UX-BANNER (collaudo PO): le strisce fisse Sostieni/Idee & Feedback si nascondono quando lo scroll di .cpm-scroll arriva a fine pagina (coprivano l ultima card) e ricompaiono risalendo — solo mobile (<900px) e solo su pagine realmente scrollabili; listener passivo con rAF, ricalcolo su cambio tab/screen e resize. // [6.2.0] KIT-1 (direttiva PO): guardaroba divise per club — Home/Away/Third deterministiche dai colori sociali (clubKits: Away=c2 o neutro velato del colore sociale, Third da palette hash mai in conflitto) + selezione automatica pre-partita a contrasto garantito (selectMatchKits: ospite veste Home→Away→Third, fallback max contrasto) → FINE dell azzurro-default (ALT_KITS resta solo safety-net in ThreeMatchView); eroe in trasferta veste la divisa Away/Third del SUO club; scoreboard/walkout/formazioni = maglie INDOSSATE; tifo/stadio = colori SOCIALI. Test: tests/visual/kit-diversity-test.mjs (252 club, selezioni massive). + CROWD-SCALE (collaudo PO «tifosi giganti»): la scala prospettica lw era un array FISSO da 6 file (file extra del fix 5.92 = NaN invisibili → anello basso inchiodato a 6 file giganti) → lw parametrica su rowsLow; file derivate dall altezza REALE coperta con tifoso-target ~0.9u (_rmFor, clamp 0.55-3.4); anello unico (curva-muro tedesca/provincia) texturizzato con la canvas INTERA (texFull: grandi davanti, piccoli/fitti in alto) invece della sola banda bassa stirata; Ovest con la SUA altezza; busti LOD1 prima fila -15%.
+const GAME_VERSION="6.3.0"; // [6.3.0] R0/LMQP-10 — LIVE MATCH VALIDATOR, 1° gradino (MATCH_ENGINE_REDESIGN.md §7, direttiva PO priorità assoluta): recorder per-frame nel render-loop (__CPM_REC/__CPM_REC_DRAIN, test-only) + AUTOPLAY (__CPM_AUTOPLAY: gioca la partita VERA — selezione contestuale, catene, clock, rigori via handleRigoreRef — policy seedata, niente force-sit) + runner tests/visual/live-validator.mjs (N partite live, metriche cinematiche per highlight: teleport palla/giocatori, velocità per tratto, statue, compenetrazioni, coerenza esito⟺traiettoria; report PASS/WARN/FAIL + live-baseline.json percentile con regressione automatica). Prima mappa di lavoro: ~50% HL con teleport palla 14-17u in hl_intro (snap di setup → target R3).
 const SAVE_VERSION=8;// v8 [5.81.0 BIL-3b]: bankBalance (stipendio accumulato, €) + perkTrainer/perkNutrition (staff personale) — migration retro-compatibile. v7: player.foot
 // 5.67.0 — TABELLONE realistico del torneo per NAZIONALI (Europeo/Mondiale): dopo il girone la fase a
 //   eliminazione segue Ottavi → Quarti → Semifinale → Finale (prima saltava dritta alla semifinale).
@@ -7214,6 +7214,8 @@ function ThreeMatchView(props){
       };
       // F1: probe del FOOTBALL STATE osservatore (lo aggiorna on-demand e lo ritorna) — per le metriche F0.
       window.__CPM_FOOTBALL_STATE=function(){try{updateFootballState();}catch(e){} return (sr.current&&sr.current.football)||null;};
+      // [6.3.0 R0/LMQP-10] drain del recorder live: ritorna il buffer e lo svuota (il runner lo scarica a intervalli)
+      window.__CPM_REC_DRAIN=function(){const b=window.__CPM_REC_BUF||[];window.__CPM_REC_BUF=[];return b;};
     }
 
     // Loop: lerp verso le posizioni target dai prop (nessun re-render React)
@@ -7381,6 +7383,17 @@ function ThreeMatchView(props){
       sr.current.raf=requestAnimationFrame(loop);
       const now=performance.now();const _rdt=Math.min((now-last)/1000,0.05);last=now;const dt=(typeof window!=='undefined'&&window.__CPM_FROZEN)?0:_rdt;// VISUAL-TEST: dt=0 → anim/lerp congelati per screenshot golden deterministico
       updateFootballState();// F2: aggiornato OGNI frame → i consumatori (off-ball AI) leggono uno stato deterministico e fresco
+      /* [6.3.0 R0/LMQP-10] RECORDER per-frame del Live Match Validator (test-only, spento nella build store):
+         con window.__CPM_REC attivo cattura {t,fase,clock,palla,eroe,22} in un ring-buffer → metriche cinematiche live. */
+      if(typeof window!=='undefined'&&window.__CPM_REC&&!window.__CPM_STORE_BUILD){try{
+        const _rb=window.__CPM_REC_BUF||(window.__CPM_REC_BUF=[]);
+        const _p0=propsRef.current||{};
+        _rb.push({t:Math.round(now),ph:_p0.matchPhase||null,ck:_p0.matchClock==null?null:_p0.matchClock,
+          b:[+ball.position.x.toFixed(2),+ball.position.z.toFixed(2),+ball.position.y.toFixed(2)],
+          h:[+hero.position.x.toFixed(2),+hero.position.z.toFixed(2)],
+          p:players.map(pp=>{const m=pp.mesh||pp;return [+m.position.x.toFixed(1),+m.position.z.toFixed(1)];})});
+        if(_rb.length>2600)_rb.splice(0,_rb.length-2600);
+      }catch(_e){}}
       const P=propsRef.current,all=P.allPlayers||[],k=Math.min(1,dt*6.5);
       // Sprint 3D-8a: slow-motion sull'esito — bullet-time sul tiro (0.28x) poi ritorno a 1x in ~1.6s.
       // Solo le animazioni rallentano (aDt/ak); la camera resta in tempo reale → movimento fluido.
@@ -9447,6 +9460,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   const [hlIdx,setHlIdx]=useState(0);
   const hlIdxRef=useRef(0);useEffect(()=>{hlIdxRef.current=hlIdx;},[hlIdx]);// VISUAL-TEST: indice HL corrente per gli hook
   const handleActionRef=useRef(null);// VISUAL-TEST: riferimento sempre aggiornato a handleAction (evita closure stale)
+  const handleRigoreRef=useRef(null);// [6.3.0 R0] idem per il rigore (l AUTOPLAY del validator risolve anche i penalty)
   // position resets to situation startZone on each new highlight
   const [pPos,setPPos]=useState(()=>getStartPos(situations[0])||{x:58,y:50});
   const pPosRef=useRef({x:58,y:50});
@@ -9531,7 +9545,33 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     //   `playing` dove viveva il soft-lock BLK-1, che nessun check eseguiva) + sonda numHL. Test-only.
     window.__CPM_QUEUE_REACTIVE=(m)=>{try{reactiveHLQueueRef.current.push(m!=null?m:((clockRef.current||0)+1));return true;}catch(e){return false;}};
     window.__CPM_NUMHL=()=>{try{return numHLRef.current;}catch(e){return null;}};
-    return()=>{ try{delete window.__CPM_FORCE_SIT;delete window.__CPM_LOAD_ALL;delete window.__CPM_SIT_COUNT;delete window.__CPM_QUEUE_REACTIVE;delete window.__CPM_NUMHL;}catch(e){} };
+    /* [6.3.0 R0/LMQP-10] AUTOPLAY del Live Match Validator: gioca la partita VERA (selezione contestuale,
+       catene, clock, tick playing) scegliendo le azioni con policy SEEDATA — niente force-sit, esercita
+       esattamente il path del giocatore. Test-only (il blocco intero vive sotto ?cpmtest=1). */
+    let _apT=null;
+    window.__CPM_AUTOPLAY=(on,opts)=>{try{
+      if(_apT){clearInterval(_apT);_apT=null;}
+      if(!on)return true;
+      const o=opts||{};let _as=((o.seed|0)||1)>>>0;const _ar=()=>{_as=(_as*1664525+1013904223)>>>0;return _as/4294967296;};
+      let lastKey="";
+      _apT=setInterval(()=>{try{
+        const ph=phaseRef.current;
+        const key=ph+"#"+(hlIdxRef.current||0)+"#"+(numHLRef.current||0);
+        if(ph==="hl_move"){if(key!==lastKey){lastKey=key;setPhase("hl_choose");}}
+        else if(ph==="hl_choose"){
+          if(key===lastKey||_hlActionFiredRef.current)return;
+          lastKey=key;
+          const sit=situationsRef.current[hlIdxRef.current];if(!sit)return;
+          if(sit.intent==="penalty"&&handleRigoreRef.current){const _dd=["tl","tc","tr","bl","bc","br"];handleRigoreRef.current(_dd[Math.floor(_ar()*6)%6]);return;}
+          if(!sit.actions||!sit.actions.length)return;
+          const pol=o.policy||"seeded",n=sit.actions.length;
+          const k=pol==="first"?0:pol==="last"?(n-1):Math.floor(_ar()*n)%n;
+          if(handleActionRef.current)handleActionRef.current(sit.actions[Math.max(0,Math.min(n-1,k))]);
+        }
+      }catch(_e){}},(o.tickMs|0)||350);
+      return true;
+    }catch(e){return false;}};
+    return()=>{ try{if(_apT)clearInterval(_apT);delete window.__CPM_AUTOPLAY;delete window.__CPM_FORCE_SIT;delete window.__CPM_LOAD_ALL;delete window.__CPM_SIT_COUNT;delete window.__CPM_QUEUE_REACTIVE;delete window.__CPM_NUMHL;}catch(e){} };
   },[]);// eslint-disable-line
   const [debugMode,setDebugMode]=useState(false); // ATE-5: Shift+D toggle
   const pressureRef=useRef(1);
@@ -10704,6 +10744,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     }
     setPhase("hl_result");
   };
+  handleRigoreRef.current=handleRigore;// [6.3.0 R0] per l AUTOPLAY del Live Match Validator (assegnato DOPO la definizione: niente TDZ)
   const handleContinue=()=>{
     _hlActionFiredRef.current=false; // reset for next HL
     gkDiveRef.current=null; // Bug #10: clear GK dive so penalty arrows don't persist
