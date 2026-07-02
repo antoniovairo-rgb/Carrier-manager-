@@ -19,9 +19,10 @@ const __dir = path.dirname(fileURLToPath(import.meta.url));
 const OUT = path.join(__dir, 'out', 'live-validator');
 fs.mkdirSync(OUT, { recursive: true });
 const N_MATCHES = parseInt(process.env.LMV_MATCHES || '2', 10);
+const CTX = process.env.LMV_CTX || 'trial'; // 'trial' (provino via openMatch) | 'career' (campionato via save precaricato + __CPM_CAREER)
 const SEED0 = parseInt(process.env.LMV_SEED || '11', 10);
 const STRICT = process.env.LMV_STRICT === '1';
-const BASELINE_PATH = path.join(__dir, 'live-baseline.json');
+const BASELINE_PATH = path.join(__dir, `live-baseline.${process.env.LMV_CTX || 'trial'}.json`); // baseline PER CONTESTO (trial vs career: distribuzioni diverse)
 
 const dist = (a, b) => Math.hypot(a[0] - b[0], a[1] - b[1]);
 const pct = (arr, q) => { if (!arr.length) return 0; const s = [...arr].sort((x, y) => x - y); return s[Math.min(s.length - 1, Math.floor(q * s.length))]; };
@@ -95,7 +96,30 @@ for (let mi = 0; mi < N_MATCHES; mi++) {
   await installCdnRoutes(page);
   const errors = []; page.on('pageerror', e => errors.push(String(e.message).slice(0, 140)));
   await page.addInitScript(() => { window.__CPM_GLB = false; });
-  await openMatch(page, port, { skipLoadAll: true });
+  if (CTX === 'career') {
+    // partita di CAMPIONATO: save pro precaricato, si arriva al match con gli handler VERI (liveCurrentWeek)
+    await page.addInitScript((wk) => {
+      const save = { phase: 'career', player: { name: 'Validator', nation: 'Italia', avatarId: 0, proStatus: 'pro', season: 2, week: wk, age: 21, ovr: 74, tutorialDone: true,
+        club: { id: 'b04', n: 'FC Werkstadt', a: 'WRK', p: 74, c: '#dc2626', c2: '#111111', nat: '🇩🇪', lg: 'Deutsche Liga' },
+        stats: { 'velocità': 74, tecnica: 73, fisico: 72, 'mentalità': 74, tiro: 76, passaggio: 73, dribbling: 75, posizionamento: 74 },
+        form: 72, morale: 74, fatigue: 8, contract: { duration: 3, wage: 7000, expiresAtSeason: 5 } } };
+      localStorage.setItem('cpm-v3', JSON.stringify(save));
+    }, 1 + (mi % 3));
+    await page.goto(`http://localhost:${port}/CARRIER-MANAGER-AV.html?cpmtest=1`, { waitUntil: 'load', timeout: 30000 });
+    await page.waitForFunction(() => { const r = document.getElementById('root'); return r && r.children.length > 0; }, { timeout: 40000 });
+    await sleep(1500);
+    try { await page.getByText('CONTINUA', { exact: false }).first().click({ timeout: 6000 }); } catch (e) {}
+    await page.waitForFunction(() => !!window.__CPM_CAREER, { timeout: 20000 });
+    // entra nella partita LIVE della settimana (playMatch → startMatch VERO); se non c'è match, avanza
+    for (let a = 0; a < 14 && !(await page.evaluate(() => typeof window.__CPM_AUTOPLAY === 'function')); a++) {
+      await page.evaluate(() => { const C = window.__CPM_CAREER; C.dismiss(); const pm = C.playMatch ? C.playMatch() : 'nomatch';
+        if (pm !== true) { const r = C.step(); if (String(r).startsWith('blocked')) C.clearTournaments(); } });
+      await sleep(900);
+    }
+    if (!(await page.evaluate(() => typeof window.__CPM_AUTOPLAY === 'function'))) { console.log(`── match ${mi + 1}: impossibile raggiungere il live di campionato — skip`); await page.close(); continue; }
+  } else {
+    await openMatch(page, port, { skipLoadAll: true });
+  }
   await page.evaluate((s) => { window.__CPM_REC = true; window.__CPM_TIMELINE_RESET && window.__CPM_TIMELINE_RESET(); window.__CPM_AUTOPLAY(true, { seed: s, policy: 'seeded' }); }, seed);
 
   const frames = [];
@@ -107,7 +131,8 @@ for (let mi = 0; mi < N_MATCHES; mi++) {
     frames.push(...chunk.buf);
     const ck = chunk.probe?.clock ?? -1, ph = chunk.probe?.phase;
     if (ck !== lastClock || (ph && ph.startsWith('hl'))) { lastClock = ck; stuckSince = Date.now(); }
-    if (chunk.over || ck >= 90 || ph === 'ended' || ph == null) { ended = true; break; } // la probe non conosce 'ended' (3D smontato): il fischio finale si legge dal DOM
+    const apGone = CTX === 'career' && !(await page.evaluate(() => typeof window.__CPM_AUTOPLAY === 'function')); // in carriera LiveMatch smonta a fine partita (cleanup cancella l hook)
+    if (chunk.over || apGone || ck >= 90 || ph === 'ended' || ph == null) { ended = true; break; } // la probe non conosce 'ended' (3D smontato): il fischio finale si legge dal DOM
     if (Date.now() - stuckSince > 25000) { break; } // stallo: lo riportiamo come FAIL del match
   }
   const timeline = await page.evaluate(() => (window.__CPM_TIMELINE ? window.__CPM_TIMELINE() : []));
@@ -127,6 +152,7 @@ for (let mi = 0; mi < N_MATCHES; mi++) {
     const coh = checkOutcomeCoherence(sg.frames, ev && { ok: ev.ok, key: ev.key });
     if (coh) issues.push(coh);
     const verdict = issues.length ? 'FAIL' : warns.length ? 'WARN' : 'PASS';
+    if (verdict === 'FAIL') { try { fs.writeFileSync(path.join(OUT, `fail_m${mi}_hl${i}.json`), JSON.stringify({ seed, intent: ev?.intent, key: ev?.key, issues, frames: sg.frames }, null, 0)); } catch (e) {} } // replay JSON del FAIL
     allDist.ballJump.push(metrics.worstBallJump); allDist.statues.push(metrics.statues); allDist.overlaps.push(metrics.overlaps);
     allDist[verdict === 'FAIL' ? 'hlFail' : verdict === 'WARN' ? 'hlWarn' : 'hlPass']++;
     return { i, intent: ev?.intent || null, key: ev?.key || null, ok: ev?.ok ?? null, clock: sg.frames[0]?.ck ?? null, verdict, metrics, issues, warns };

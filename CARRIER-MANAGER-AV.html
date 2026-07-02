@@ -3079,7 +3079,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="6.3.0"; // [6.3.0] R0/LMQP-10 — LIVE MATCH VALIDATOR, 1° gradino (MATCH_ENGINE_REDESIGN.md §7, direttiva PO priorità assoluta): recorder per-frame nel render-loop (__CPM_REC/__CPM_REC_DRAIN, test-only) + AUTOPLAY (__CPM_AUTOPLAY: gioca la partita VERA — selezione contestuale, catene, clock, rigori via handleRigoreRef — policy seedata, niente force-sit) + runner tests/visual/live-validator.mjs (N partite live, metriche cinematiche per highlight: teleport palla/giocatori, velocità per tratto, statue, compenetrazioni, coerenza esito⟺traiettoria; report PASS/WARN/FAIL + live-baseline.json percentile con regressione automatica). Prima mappa di lavoro: ~50% HL con teleport palla 14-17u in hl_intro (snap di setup → target R3).
+const GAME_VERSION="6.3.1"; // [6.3.1] R0 slice 2: AUTOPLAY salta anche matchday/formations/walkout (path del bottone Salta) → il Live Match Validator gioca PARTITE DI CAMPIONATO (LMV_CTX=career: save precaricato, loop __CPM_CAREER.step → liveCurrentWeek → LiveMatch reale, piu highlight per partita del provino) + replay JSON salvato per ogni HL FAIL (out/live-validator/fail_*.json).
 const SAVE_VERSION=8;// v8 [5.81.0 BIL-3b]: bankBalance (stipendio accumulato, €) + perkTrainer/perkNutrition (staff personale) — migration retro-compatibile. v7: player.foot
 // 5.67.0 — TABELLONE realistico del torneo per NAZIONALI (Europeo/Mondiale): dopo il girone la fase a
 //   eliminazione segue Ottavi → Quarti → Semifinale → Finale (prima saltava dritta alla semifinale).
@@ -9557,7 +9557,8 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
       _apT=setInterval(()=>{try{
         const ph=phaseRef.current;
         const key=ph+"#"+(hlIdxRef.current||0)+"#"+(numHLRef.current||0);
-        if(ph==="hl_move"){if(key!==lastKey){lastKey=key;setPhase("hl_choose");}}
+        if(ph==="matchday"||ph==="formations"||ph==="walkout"){if(key!==lastKey){lastKey=key;setPhase("playing");}}// stesso path del bottone Salta
+        else if(ph==="hl_move"){if(key!==lastKey){lastKey=key;setPhase("hl_choose");}}
         else if(ph==="hl_choose"){
           if(key===lastKey||_hlActionFiredRef.current)return;
           lastKey=key;
@@ -14764,6 +14765,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       dismiss:()=>{try{setWeekLiveModal(null);setShowMatchPrompt(null);setTransferOffer(null);setNegoModal(null);setNationalCallupData(null);}catch(_e){}},
       clearTournaments:()=>setPlayer(p=>({...p,nationsCupQueue:p.nationsCupQueue?{...p.nationsCupQueue,done:true,active:false}:p.nationsCupQueue,euroMondiale:p.euroMondiale?{...p.euroMondiale,done:true,active:false,phase:"done"}:p.euroMondiale})),
       startNewSeason:()=>{try{doStartNewSeason();return true;}catch(e){return "error:"+(e&&e.message);}},
+      playMatch:()=>{try{if(!getThisWeekMatchday())return "nomatch";startMatch();return true;}catch(e){return "error:"+(e&&e.message);}},/* [6.3.1 R0] Live Match Validator: entra nella partita LIVE della settimana con gli handler VERI */
       step:()=>{try{
         if(screen==="seasonEnd"||screen==="seasonAwards")return "seasonEnd";
         if(player.euroMondiale?.active&&!player.euroMondiale?.done)return "blocked:euroMondiale";
