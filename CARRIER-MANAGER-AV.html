@@ -2987,7 +2987,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="5.86.0"; // [5.86.0] DIRETTIVA PO — TRAINING AUTOMATICO by design: l'eroe è un calciatore, non l'allenatore. La scelta manuale del focus settimanale (5.82.0 BIL-4) è RIMOSSA su feedback del proprietario («funzionalità noiosa»): il piano lo decidono mister e preparatori (2 stat più deboli, recupero automatico a fatica alta) e si esegue da solo all'apertura del tab Allenamento, con l'auto-training all'avanzamento se il tab non viene aperto (com'era pre-5.82). INVARIATI tutti i sistemi di crescita della Fase 3: curve d'età trainAgeMult (BIL-1), damper TRAIN_BASE_EFF, perk personal trainer (×1.10), moltiplicatori forma/voti/fiducia, declino settimanale dai 31. Il rinnovo rifiutabile/svincolo (BIL-8, altra metà della 5.82.0) resta attivo. DECISION LOG: l'agency sul training era una raccomandazione dell'audit (BIL-4) — il PO ha deciso diversamente dopo averla provata: il gioco È la partita e la carriera, non il micro-management settimanale.
+const GAME_VERSION="5.87.0"; // [5.87.0] STADI DINAMICI — S1 FONDAMENTA (design approvato: docs/STADIUM_SYSTEM_DESIGN.md · decisioni PO: 3 slice ✓ · NIENTE pista d'atletica ✓ · trasferta invertita in S3 ✓ · evoluzione AUTOMATICA ✓): nuovo STRATO DATI del sistema stadi — STADIUM_TEMPLATES (10 preset architettonici: provincia/comunale/storico_it/moderno_it/inglese/tedesco/spagnolo/francese/olandese/sudamericano, tutti SENZA pista) + STADIUM_LG_TPL (mappa delle 14 leghe → pool template con variazione hash per club) + stadiumConfigFor(club,evo) PURO e SEEDATO (esposto per i test): capienza REALISTICA e STABILE per club dalle bande della direttiva (3-8k → 40-80k+ per prestigio; prima cambiava a OGNI partita — seed con week/season), nome stabile anche per U18 (era pick() casuale), evoluzione automatica derivata (promozione +20% capienza, retrocessione −5%, trofei → modernità), override DATA-DRIVEN via campo opzionale stadium:{...} sull'entry CLUBS (solo dati, zero codice). computeCrowdContext accetta la capienza dal config → affluenza card+spalti coerente con lo stadio del club. NESSUN cambiamento visivo 3D in questa slice (assemblatore modulare in S2, trasferta invertita+atmosfera in S3). Baseline: tests/visual/stadium-config-test.mjs (determinismo, bande, 10/10 template, override, no-track). Fix: >>> unsigned negli hash-shift (jitter negativo con hash >2^31).
 const SAVE_VERSION=8;// v8 [5.81.0 BIL-3b]: bankBalance (stipendio accumulato, €) + perkTrainer/perkNutrition (staff personale) — migration retro-compatibile. v7: player.foot
 // 5.67.0 — TABELLONE realistico del torneo per NAZIONALI (Europeo/Mondiale): dopo il girone la fase a
 //   eliminazione segue Ottavi → Quarti → Semifinale → Finale (prima saltava dritta alla semifinale).
@@ -5209,6 +5209,7 @@ function computeCrowdContext(a){
   // capienza dal prestigio (provino: campo di allenamento piccolo)
   let cap=1800;
   if(ctx==="trial")cap=2200;
+  else if(a.capacity){cap=a.homeClub?.isU18?Math.min(a.capacity,3000):a.capacity;}// [5.87.0 STADI S1] capienza STABILE per club dal config stadio (prima cambiava a ogni partita)
   else{for(const[minP,lo,hi]of CROWD_CFG.capacity){if(p>=minP){cap=Math.round(lo+R("cap")*(hi-lo));break;}}
     if(a.homeClub?.isU18)cap=Math.min(cap,3000);}
   // tier di contesto (§6): finale > derby > big > ko > gironi/coppa > campionato > amichevole > provino
@@ -5230,6 +5231,62 @@ function computeCrowdContext(a){
     capacity:cap,attendance,derby:!!a.derby,isFinal:!!a.isFinal,seed};
 }
 if(typeof window!=='undefined')window.__CPM_crowdCtx=computeCrowdContext;// esposto per i test analitici
+
+/* ══════════ STADI DINAMICI — S1 FONDAMENTA (5.87.0) ══════════
+   Design approvato dal PO in docs/STADIUM_SYSTEM_DESIGN.md: 3 slice · NIENTE pista d'atletica (mai) ·
+   trasferta invertita (S3) · evoluzione AUTOMATICA derivata (zero save). S1 = SOLO strato dati:
+   template architettonici + resolver puro/seedato + capienza REALISTICA e STABILE per club che alimenta
+   computeCrowdContext e la MatchdayCard (prima la capienza cambiava a OGNI partita: seed con week/season).
+   Nessun cambiamento visivo allo stadio 3D in questa slice (assemblatore modulare in S2). */
+const STADIUM_TEMPLATES={
+  provincia:   {rings:1,standH:0.70,dist:1.15,corner:"open",  roof:"none",   tower:"traliccio",    fence:"metal",mod:0.15},
+  comunale:    {rings:1,standH:0.85,dist:1.25,corner:"open",  roof:"west",   tower:"perimetrali",  fence:"metal",mod:0.30},
+  storico_it:  {rings:2,standH:1.00,dist:1.20,corner:"curve", roof:"partial",tower:"angolari_alte",fence:"plexi",mod:0.45},
+  moderno_it:  {rings:2,standH:1.00,dist:0.95,corner:"closed",roof:"full",   tower:"tetto",        fence:"plexi",mod:0.85},
+  inglese:     {rings:2,standH:1.15,dist:0.85,corner:"open",  roof:"full",   tower:"tetto",        fence:"none", mod:0.75},
+  tedesco:     {rings:2,standH:1.25,dist:0.95,corner:"closed",roof:"full",   tower:"tetto",        fence:"plexi",mod:0.85,megaCurva:true},
+  spagnolo:    {rings:3,standH:1.30,dist:1.00,corner:"closed",roof:"partial",tower:"perimetrali",  fence:"plexi",mod:0.55},
+  francese:    {rings:2,standH:1.00,dist:1.05,corner:"open",  roof:"full",   tower:"tetto",        fence:"plexi",mod:0.90},
+  olandese:    {rings:2,standH:1.05,dist:0.95,corner:"closed",roof:"full",   tower:"tetto",        fence:"plexi",mod:0.80},
+  sudamericano:{rings:3,standH:1.35,dist:1.05,corner:"curve", roof:"none",   tower:"angolari_alte",fence:"high", mod:0.35,asym:true},
+};
+// mappa lega → pool di template (variazione per club via hash): l'identità architettonica nazionale
+const STADIUM_LG_TPL={
+  "Lega A":["storico_it","moderno_it","storico_it"],"Lega B":["comunale","storico_it"],
+  "Premier Division":["inglese"],"Championship":["inglese","provincia"],
+  "Liga Ibérica":["spagnolo","spagnolo","moderno_it"],"Liga Ibérica 2":["spagnolo","comunale"],
+  "Deutsche Liga":["tedesco","tedesco","moderno_it"],"Deutsche Liga 2":["tedesco","comunale"],
+  "Ligue Nationale":["francese","francese","moderno_it"],"Ligue Nationale 2":["comunale","francese"],
+  "Liga Oranje":["olandese"],"Liga Lusitana":["spagnolo","sudamericano"],
+  "Liga Belga":["olandese","comunale"],"Liga Anatolica":["sudamericano","moderno_it"],
+};
+// Resolver PURO e SEEDATO (hash del club → sempre lo stesso stadio, run-to-run e save-to-save).
+// evo={prestigeShift,promoted,relegated,trophiesRecent} → EVOLUZIONE AUTOMATICA derivata (decisione PO #4).
+// Override DATA-DRIVEN: un campo opzionale stadium:{...} sull'entry CLUBS personalizza senza toccare codice.
+function stadiumConfigFor(club,evo){
+  evo=evo||{};
+  const isU18=!!(club&&club.isU18)||!!(club&&club.lg&&/Primavera|Provini/.test(club.lg));
+  const h=Math.abs(hashStr(String((club&&(club.id||club.n))||"club")+"|stadio"));
+  const p=clamp(((club&&(club.p||club.prestige))||60)+(evo.prestigeShift||0),30,99);
+  const lg=(club&&club.lg)||"";
+  let tplId=isU18?"provincia":(lg==="Nazionale"?"moderno_it":(STADIUM_LG_TPL[lg]||["comunale","storico_it"])[h%((STADIUM_LG_TPL[lg]||["comunale","storico_it"]).length)]);
+  const tpl=STADIUM_TEMPLATES[tplId]||STADIUM_TEMPLATES.comunale;
+  // capienza: bande REALISTICHE della direttiva (3-8k → 40-80k+) dal prestigio, jitter per club, mai due uguali
+  const band=p>82?[40000,82000]:p>72?[20000,45000]:p>62?[10000,30000]:p>50?[5000,15000]:[3000,8000];
+  let capacity=Math.round((band[0]+((h>>>3)%1000)/1000*(band[1]-band[0]))/500)*500;// >>> (unsigned): con hash >2^31 lo shift con segno dava jitter NEGATIVO → capienze fuori banda
+  if(isU18)capacity=Math.min(capacity,3000);
+  if(lg==="Nazionale")capacity=Math.max(capacity,62000);
+  if(evo.promoted)capacity=Math.round(capacity*1.2/500)*500;   // promozione → ampliamento
+  if(evo.relegated)capacity=Math.round(capacity*0.95/500)*500; // retrocessione → settori chiusi
+  const modernity=clamp((tpl.mod||0.4)+(p-60)/160+(((h>>>7)%20)-10)/100+((evo.trophiesRecent||0)>0?0.08:0),0.05,1);
+  const cfg={template:tplId,name:isU18?STADIUMS[h%STADIUMS.length]:((typeof getStadiumName==="function")?getStadiumName(club):"Stadio"),
+    capacity,prestige:p,modernity,rings:tpl.rings,corner:tpl.corner,roof:tpl.roof,tower:tpl.tower,
+    fence:tpl.fence,standH:tpl.standH,dist:tpl.dist,megaCurva:!!tpl.megaCurva,asym:!!tpl.asym,
+    screens:p>82?2:1,ledBoards:modernity>0.55,seatCol:(club&&club.c)||"#8a8a92",seatCol2:(club&&club.c2)||"#3a3a44",
+    style:(typeof getStadiumStyle==="function")?getStadiumStyle(club):0};
+  return (club&&club.stadium)?{...cfg,...club.stadium}:cfg;
+}
+if(typeof window!=='undefined')window.stadiumConfigFor=stadiumConfigFor;// esposto per i test analitici
 
 // context-aware realistic attendance
 function calcAttendance(homeClub,context,weather){
@@ -9018,7 +9075,8 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
         ||(context==="euro_ko"&&player.euro?.phase==="final")
         ||(context==="euroMondiale_ko"&&player.euroMondiale?.koPhase==="final");
       return computeCrowdContext({context,homeClub:hClub,matchWeight:_mw,derby:!!_drby,isFinal:_isFinal,
-        weather,week:player.week||1,season:player.season||1});
+        weather,week:player.week||1,season:player.season||1,
+        capacity:(typeof stadiumConfigFor==="function"?stadiumConfigFor(hClub).capacity:null)});// [5.87.0 STADI S1]
     }catch(e){return {tier:"league",fill:0.7,awayFill:0.35,intensity:0.55,capacity:20000,attendance:14000,seed:1};}
   });
   // Sprint 81 — attendance uses the HOME club (not always player.club) · ora derivato dal crowdCtx (coerenza card↔spalti)
