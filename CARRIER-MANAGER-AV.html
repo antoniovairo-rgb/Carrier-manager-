@@ -3037,7 +3037,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="5.92.1"; // [5.92.0] TRIPLO FIX da collaudo PO: (1) TIFOSI IN PROPORZIONE — makeCrowdTex accetta rowsMul e buildStadium calcola le file per settore dall'ALTEZZA REALE della tribuna (curva mono-anello tedesca/sudamericana: ~1.6x file → figure più piccole e fitte, niente più giganti); (2) SUSPENSE SULL'ESITO — l'esito dell'azione non appare più istantaneo: prima la simulazione 3D (850-1250ms a seconda dell'azione: gol/assist/chance 1250, conclusioni 1100, resto 850), poi overlay+cronaca+flash insieme (resultReveal + outcome.revealMs; strip "⏳ azione…" durante l'attesa; vale anche per il rigore: gol/parata/errore a 1000ms); (3) STADI TEDESCHI TUTTI UGUALI — varietà DETERMINISTICA per club nello stesso template (altezza ±10%, distanza ±8%, tono tetto ×3, cemento caldo/freddo, angoli chiusi→curva per 1/3 dei club) + pool Deutsche Liga allargato (tedesco/moderno_it/comunale): 10 club tedeschi = 10 firme visive uniche (verificato). // [5.91.0] BIL-9 «EVENTI A BIVI» (audit priorità 14, ultimo tassello): la carriera smette di essere fatta di eventi-notifica. (a) gli IMPULSI INTERATTIVI (WEEKLY_IMPULSES, scelte con trade-off) escono anche nelle SETTIMANE DI PARTITA (~25%, prima del match — dove fatica/forma pesano davvero); prima vivevano solo nelle rare settimane libere: per questo il 90% degli eventi sembrava rumore automatico. (b) le scelte possono muovere i SOLDI VERI (nuova chiave ef.bank → bankBalance dell'economia 3.2) e la CHIMICA (ef.chem → teamChemistry). (c) +12 nuovi dilemmi con conseguenze reali: spot personale (cachet vs fiducia mister), cena di squadra (chimica vs fatica), investimento, beneficenza, agente che forza sui giornali (valore vs trust), aiutare il ragazzo della Primavera, intervista scomoda, chef personale, visita dei genitori, video virale, paciere tra compagni, l'orologio della squadra. Pool interattivo: 36→48.
+const GAME_VERSION="5.93.0"; // [5.93.0] QUINTETTO da collaudo PO: (1) pallini probabilità RIMOSSI dai bottoni azione (condizionavano il player); (2) BIL-7 coppe post-trasferimento: gare cup/euro non giocate riportate nel nuovo calendario (euro con avversari embedded, coppa ri-localizzata nella nuova lega, bracket/survivors rigenerati), rischedulate in avanti se la week è passata, chiusura onesta se non c'è spazio; repair in migrazione per i save già rotti (girone 0/6, R16 zombie) + clamp del turno successivo (mai nel passato, ≤W37); (3) MVP: candidati = veri capocannonieri (niente più MVP con 15 gol contro un 35-gol mai candidato); (4) dominanza post-trasferimento moderata: bgMicroTick — ovrF non svuota più la difesa avversaria (0.3→0.10), momentum difensivo 0.35→0.25, floor gA 0.0045; (5) cerimonia trofeo 3D: premiazione TARDIVA alla prima gara dopo il clinch matematico (prima alreadyClinched la sopprimeva per sempre), flag titleCeremonyShown per stagione. // [5.92.0] TRIPLO FIX da collaudo PO: (1) TIFOSI IN PROPORZIONE — makeCrowdTex accetta rowsMul e buildStadium calcola le file per settore dall'ALTEZZA REALE della tribuna (curva mono-anello tedesca/sudamericana: ~1.6x file → figure più piccole e fitte, niente più giganti); (2) SUSPENSE SULL'ESITO — l'esito dell'azione non appare più istantaneo: prima la simulazione 3D (850-1250ms a seconda dell'azione: gol/assist/chance 1250, conclusioni 1100, resto 850), poi overlay+cronaca+flash insieme (resultReveal + outcome.revealMs; strip "⏳ azione…" durante l'attesa; vale anche per il rigore: gol/parata/errore a 1000ms); (3) STADI TEDESCHI TUTTI UGUALI — varietà DETERMINISTICA per club nello stesso template (altezza ±10%, distanza ±8%, tono tetto ×3, cemento caldo/freddo, angoli chiusi→curva per 1/3 dei club) + pool Deutsche Liga allargato (tedesco/moderno_it/comunale): 10 club tedeschi = 10 firme visive uniche (verificato). // [5.91.0] BIL-9 «EVENTI A BIVI» (audit priorità 14, ultimo tassello): la carriera smette di essere fatta di eventi-notifica. (a) gli IMPULSI INTERATTIVI (WEEKLY_IMPULSES, scelte con trade-off) escono anche nelle SETTIMANE DI PARTITA (~25%, prima del match — dove fatica/forma pesano davvero); prima vivevano solo nelle rare settimane libere: per questo il 90% degli eventi sembrava rumore automatico. (b) le scelte possono muovere i SOLDI VERI (nuova chiave ef.bank → bankBalance dell'economia 3.2) e la CHIMICA (ef.chem → teamChemistry). (c) +12 nuovi dilemmi con conseguenze reali: spot personale (cachet vs fiducia mister), cena di squadra (chimica vs fatica), investimento, beneficenza, agente che forza sui giornali (valore vs trust), aiutare il ragazzo della Primavera, intervista scomoda, chef personale, visita dei genitori, video virale, paciere tra compagni, l'orologio della squadra. Pool interattivo: 36→48.
 const SAVE_VERSION=8;// v8 [5.81.0 BIL-3b]: bankBalance (stipendio accumulato, €) + perkTrainer/perkNutrition (staff personale) — migration retro-compatibile. v7: player.foot
 // 5.67.0 — TABELLONE realistico del torneo per NAZIONALI (Europeo/Mondiale): dopo il girone la fase a
 //   eliminazione segue Ottavi → Quarti → Semifinale → Finale (prima saltava dritta alla semifinale).
@@ -5029,14 +5029,14 @@ function generateSeasonAwards(player, finalStandings){
 
   // 2. MVP della Stagione (miglior calciatore del campionato)
   const playerMvpScore=myOvr*0.40+myGoals*1.0+myAssists*0.80+(isChampion?8:0);
-  const simLeagueMvp=Array.from({length:3},(_,i)=>{
-    const club=finalStandings?.[i%Math.max(1,finalStandings?.length||1)];
+  // [5.93.0 FIX PO «premio non meritato»] i candidati MVP sono i VERI capocannonieri del campionato
+  //   (stessi nomi/gol del pannello capocannoniere): prima erano un pool separato coi gol sgonfi
+  //   (leaguePrestige*0.15+%12) → si vinceva l'MVP con 15 gol mentre il 35-gol non era nemmeno candidato.
+  const simLeagueMvp=allLeagueScorers.filter(sc=>!sc.isPlayer).slice(0,3).map((sc,i)=>{
     const cOvr=clamp(leaguePrestige+Math.round((_h(i*13+7)%14)-3),68,96);
-    const cGoals=Math.max(5,Math.round(leaguePrestige*0.15+(_h(i*11+2)%12)));
     const cAssists=Math.round(_h(i*7+4)%8)+2;
     const cChamp=i===0&&!isChampion;
-    const name=(club?_clubFwd(club,`lgmvp_${i}_${season}`):null)||lgRec.topScorers?.[i+1]?.name||"Calciatore";
-    return{name,club:club?.n||"–",ovr:cOvr,goals:cGoals,assists:cAssists,score:cOvr*0.40+cGoals*1.0+cAssists*0.80+(cChamp?8:0)};
+    return{name:sc.name,club:sc.club,ovr:cOvr,goals:sc.goals,assists:cAssists,score:cOvr*0.40+sc.goals*1.0+cAssists*0.80+(cChamp?8:0)};
   });
   const allLeagueMvp=[...simLeagueMvp,{name:player.name,club:player.club?.n,ovr:myOvr,goals:myGoals,assists:myAssists,score:playerMvpScore,isPlayer:true}]
     .sort((a,b)=>b.score-a.score);
@@ -6529,8 +6529,12 @@ function bgMicroTick(ctx){
   const diff=clamp(((ctx.homePrestige||65)-(ctx.oppPrestige||65))/30,-1,1);
   const momF=((ctx.momentum||50)-50)/50, posF=((ctx.possession||50)-50)/50;
   const ovrF=clamp(((ctx.heroOvr||65)-65)/120,-0.15,0.30);
-  const gH=clamp(0.0095*(1+diff*0.55+momF*0.35+posF*0.20+ovrF*0.5),0.002,0.030);
-  const gA=clamp(0.0105*(1-diff*0.55-momF*0.35-posF*0.20-ovrF*0.3),0.002,0.030);
+  // [5.93.0 FIX PO «dominanza assoluta»] l'OVR dell'eroe non domina più ENTRAMBE le λ: un bomber
+  //   alza i gol dei compagni (0.5→0.35, segna già lui) e soprattutto NON svuota la difesa avversaria
+  //   (0.3→0.10); momentum sul lato difensivo 0.35→0.25 e floor gA 0.002→0.0045 (≥~0.4 gol subiti/match
+  //   anche nel dominio totale) → niente più stagioni 61-11 con +26 sulla seconda.
+  const gH=clamp(0.0095*(1+diff*0.55+momF*0.35+posF*0.20+ovrF*0.35),0.002,0.030);
+  const gA=clamp(0.0105*(1-diff*0.55-momF*0.25-posF*0.20-ovrF*0.10),0.0045,0.030);
   const roll=r();
   if(roll<gH)return{side:"home"};
   if(roll<gH+gA)return{side:"away"};
@@ -9315,7 +9319,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   //   al fischio finale parte una premiazione SUL CAMPO (alzata trofeo eroe + coriandoli + fuochi). Solo visivo.
   const [ceremony,setCeremony]=useState(null);
   useEffect(()=>{
-    if(phase==="ended"&&titleStakes&&score.home>score.away&&!ceremony){
+    if(phase==="ended"&&titleStakes&&(score.home>score.away||titleStakes.late)&&!ceremony){// [5.93.0] late = titolo già matematico → si festeggia comunque
       setCeremony({name:titleStakes.name||"TITOLO",kind:titleStakes.kind||"cup"});
     }
   },[phase]);
@@ -11118,7 +11122,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
               {isNarrow&&phase==="hl_choose"&&curSit&&(
                 <div style={{position:"absolute",bottom:0,left:0,right:0,zIndex:16,background:"rgba(5,8,20,0.28)",padding:"8px 10px 10px"}}>
                   <div style={{fontSize:10,color:"rgba(255,255,255,0.75)",fontWeight:700,textShadow:"0 1px 3px rgba(0,0,0,0.9)",marginBottom:5}}>{clock}' — {intentTitle(curSit.text,curSit.intent,_scoreDiff)} &nbsp;·&nbsp; <span style={{color:defDist<25?"#f87171":defDist<50?"#f97316":"#4ade80"}}>{defDist<25?"⚠ Addosso":defDist<50?"Vicino":"Libero"}</span>&nbsp;·&nbsp;<span style={{color:energy>50?"#4ade80":energy>25?"#f59e0b":"#f87171"}}>⚡{energy}</span></div>
-                  {(+(safeLS.get("cpm-hl-tips")||0))<5&&<div style={{fontSize:9,color:"rgba(255,255,255,0.75)",background:"rgba(37,99,235,0.35)",borderRadius:6,padding:"5px 8px",marginBottom:6}}>💡 I pallini ●●●○ indicano la probabilità di riuscita. Muoviti col pad per cambiare le opzioni.</div>}{/* [5.84.0 UX-2c] micro-onboarding one-shot (primi 5 HL del device) */}
+                  {(+(safeLS.get("cpm-hl-tips")||0))<5&&<div style={{fontSize:9,color:"rgba(255,255,255,0.75)",background:"rgba(37,99,235,0.35)",borderRadius:6,padding:"5px 8px",marginBottom:6}}>💡 Muoviti col pad per cambiare le opzioni d'azione.</div>}{/* [5.84.0 UX-2c] micro-onboarding one-shot (primi 5 HL del device) */}
                   <div style={{display:"flex",alignItems:"flex-start",gap:10}}>
                     {!curSit.lockMovement&&!hideDirCursor(curSit)&&<div style={{flexShrink:0,opacity:movesLeft>0?1:0.35,filter:movesLeft>0?"none":"grayscale(1)"}}><DPad onMove={movesLeft>0?handleDPad:()=>{}} dark size={40}/></div>}{/* [5.90.0 FIX PO] a mosse esaurite il pad resta come SCUDO disabilitato: smontarlo faceva slittare i bottoni azione sotto il dito → l'azione partiva "da sola" */}
                     {curSit.lockMovement?(
@@ -11142,7 +11146,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                               style={{padding:"10px",background:_sel2?"rgba(37,99,235,0.65)":"rgba(0,0,0,0.55)",border:_sel2?`1.5px solid ${_rc2}88`:`1px solid ${_rc2}44`,borderRadius:8,color:"#fff",cursor:"pointer",fontFamily:"inherit",display:"flex",alignItems:"center",gap:8,transition:"all .1s",boxShadow:"0 2px 6px rgba(0,0,0,0.4)"}}>
                               <div style={{width:18,height:18,borderRadius:"50%",background:_sel2?"#2563eb":"rgba(255,255,255,0.15)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:10,fontWeight:900,color:"#fff",flexShrink:0}}>{_oi+1}</div>
                               <div style={{fontSize:11,fontWeight:700,color:"#fff",flex:1,textAlign:"left",textShadow:"0 1px 3px rgba(0,0,0,0.7)"}}>{intentLabelDedup(a.label,_oi,_arr)}</div>
-                              <span style={{fontSize:9,letterSpacing:1,color:_rc2,flexShrink:0,textShadow:"0 1px 3px rgba(0,0,0,0.8)"}}>{"●".repeat(_rt2>68?4:_rt2>54?3:_rt2>40?2:1)}{"○".repeat(4-(_rt2>68?4:_rt2>54?3:_rt2>40?2:1))}</span>{/* [5.84.0 UX-2a] probabilità VISIBILE (prima solo alpha 0x33 sul bordo: illeggibile) */}
+                              {/* [5.93.0] pallini probabilita RIMOSSI su direttiva PO: condizionavano il player */}
                             </button>
                           );
                         })}
@@ -11229,7 +11233,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                   {!isNarrow&&<div style={{fontSize:8,color:"rgba(255,255,255,0.3)",marginBottom:5,textAlign:"center"}}>
                     <strong style={{color:"#f59e0b"}}>1 · 2 · 3</strong> &nbsp;|&nbsp; ←→ Enter
                   </div>}
-                  {(+(safeLS.get("cpm-hl-tips")||0))<5&&<div style={{fontSize:9,color:"rgba(255,255,255,0.7)",background:"rgba(37,99,235,0.25)",borderRadius:6,padding:"5px 8px",marginBottom:6}}>💡 I pallini ●●●○ indicano la probabilità. Muoviti (WASD) per cambiare le opzioni.</div>}{/* [5.84.0 UX-2c] */}
+                  {(+(safeLS.get("cpm-hl-tips")||0))<5&&<div style={{fontSize:9,color:"rgba(255,255,255,0.7)",background:"rgba(37,99,235,0.25)",borderRadius:6,padding:"5px 8px",marginBottom:6}}>💡 Muoviti (WASD) per cambiare le opzioni d'azione.</div>}{/* [5.84.0 UX-2c] */}
                   <div style={{display:"flex",flexDirection:"column",gap:5}}>
                     {curSit.lockMovement?(
                       <div>
@@ -11257,7 +11261,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                             <div style={{width:18,height:18,borderRadius:"50%",background:isSel?"#2563eb":"rgba(255,255,255,0.1)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:10,fontWeight:900,color:isSel?"#fff":"rgba(255,255,255,0.5)",flexShrink:0}}>{i+1}</div>
                             <div style={{fontSize:11,fontWeight:isSel?700:400,color:"#e2e8f0",textAlign:"left"}}>{intentLabelDedup(a.label,i,_arr)}</div>
                           </div>
-                          <span style={{fontSize:9,letterSpacing:1,color:rc,flexShrink:0}}>{"●".repeat(rate>68?4:rate>54?3:rate>40?2:1)}{"○".repeat(4-(rate>68?4:rate>54?3:rate>40?2:1))}</span>{/* [5.84.0 UX-2a] */}
+                          {/* [5.93.0] pallini probabilita RIMOSSI su direttiva PO */}
                         </button>
                       );
                     })}
@@ -13925,14 +13929,43 @@ function migratePlayer(player){
     // S41: migrate old saves — add current cup round to calendar if missing
     if((newP.proStatus||"u18")==="pro"&&newP.cup?.active&&!newP.cup?.eliminated&&!newP.cup?.champion&&!(newP.calendar||[]).some(md=>md.type==="cup"&&!md.played)){
       const _m41RW=[0,9,19,28,35];const _m41RN=["","R16","Quarti","Semifinale","FINALE"];
-      const _m41cr=newP.cup.round||1;const _m41wk=_m41RW[_m41cr];
-      if(_m41wk&&_m41wk>=(newP.week||1)){
+      const _m41cr=Math.min(newP.cup.round||1,4);const _m41wk=_m41RW[_m41cr];
+      // [5.93.0 BIL-7] la week standard del turno può essere GIÀ PASSATA (save post-trasferimento pre-5.93):
+      //   fallback sulla prima week libera ≤37; niente spazio → la coppa si chiude onestamente.
+      const _m41wkEff=(function(){const u=new Set((newP.calendar||[]).filter(m=>!m.played).map(m=>m.week));let w=Math.max(_m41wk||9,(newP.week||1)+1)-1;do{w++;}while(w<=37&&u.has(w));return w<=37?w:null;})();
+      if(_m41wkEff){
         const _m41lc=getLeagueClubs(newP);
         const _m41bc=(newP.cup.bracket||[]).map(id=>_m41lc.find(c=>c.id===id||c.n===id)).filter(Boolean);
         const _m41used=(newP.cup.results||[]).map(r=>r.opponent);
-        const _m41opp=pick(_m41bc.filter(c=>c.id!==newP.club?.id&&c.n!==newP.club?.n&&!_m41used.includes(c.n)))||pick(_m41bc.filter(c=>c.id!==newP.club?.id));
-        if(_m41opp){newP={...newP,calendar:[...(newP.calendar||[]),{matchday:990,week:_m41wk,opponentId:_m41opp.id,opponentName:_m41opp.n||_m41opp.name,isHome:true,played:false,result:null,type:"cup",competition:"Coppa Nazionale",cupRound:_m41cr,cupRoundName:_m41RN[_m41cr]}]};changed=true;}
-      }
+        const _m41opp=pick(_m41bc.filter(c=>c.id!==newP.club?.id&&c.n!==newP.club?.n&&!_m41used.includes(c.n)))||pick(_m41bc.filter(c=>c.id!==newP.club?.id))||pick(_m41lc.filter(c=>c.id!==newP.club?.id&&c.n!==newP.club?.n));// [5.93.0 BIL-7] bracket di un'altra lega → ri-pesca nel pool corrente
+        if(_m41opp){newP={...newP,calendar:[...(newP.calendar||[]),{matchday:990,week:_m41wkEff,opponentId:_m41opp.id,opponentName:_m41opp.n||_m41opp.name,isHome:true,played:false,result:null,type:"cup",competition:"Coppa Nazionale",cupRound:_m41cr,cupRoundName:_m41RN[_m41cr]}]};changed=true;}
+      }else{newP={...newP,cup:{...newP.cup,active:false,eliminated:true}};changed=true;}
+    }
+    // [5.93.0 BIL-7] repair EURO: stato attivo ma NESSUNA gara in calendario (save post-trasferimento pre-5.93,
+    //   es. girone 0/6 a W33) → si ri-aggiungono le gare mancanti a week libere; senza spazio → chiusura onesta.
+    if((newP.proStatus||"u18")==="pro"&&newP.euro?.active&&!newP.euro?.eliminated&&!newP.euro?.champion&&!(newP.calendar||[]).some(md=>(md.type==="euro_group"||md.type==="euro")&&!md.played)){
+      const _e93used=new Set((newP.calendar||[]).filter(m=>!m.played).map(m=>m.week));
+      let _e93w=(newP.week||1);const _e93free=()=>{do{_e93w++;}while(_e93w<=37&&_e93used.has(_e93w));if(_e93w<=37){_e93used.add(_e93w);return _e93w;}return null;};
+      const _e93=newP.euro;let _e93cal=[...(newP.calendar||[])];let _e93ok=true;
+      if(_e93.phase==="group"){
+        const _e93pl=(_e93.groupResults||[]).length;
+        for(let i=_e93pl;i<6;i++){
+          const opp=(_e93.groupOpponents||[])[Math.floor(i/2)];const w=opp?_e93free():null;
+          if(!opp||w==null){_e93ok=false;break;}
+          _e93cal.push({matchday:900+i,week:w,opponentId:opp.id,opponentName:opp.n,isHome:i%2===0,played:false,result:null,type:"euro_group",competition:_e93.competition,opponentData:opp});
+        }
+      }else if(_e93.phase==="r16"||_e93.phase==="sf"||_e93.phase==="final"){
+        const w=_e93free();
+        const _e93minP=_e93.competition==="UCL"?82:_e93.competition==="UEL"?65:52;
+        const _e93pool=CLUBS.filter(c=>c.lg!==(newP.club?.lg)&&!c.isU18&&c.p>=_e93minP);
+        const opp=_e93pool.length?_e93pool[Math.abs(hashStr((newP.club?.id||"x")+"eufix"+(newP.season||1)))%_e93pool.length]:null;
+        const _e93phN={r16:"Ottavi di Finale",sf:"Semifinale",final:"Finale"}[_e93.phase];
+        if(w!=null&&opp)_e93cal.push({matchday:995,week:w,opponentId:opp.id,opponentName:opp.n,isHome:true,played:false,result:null,type:"euro",competition:_e93.competition,euroPhase:_e93.phase,cupRoundName:_e93phN,opponentData:opp});
+        else _e93ok=false;
+      }else _e93ok=false;
+      if(_e93ok)newP={...newP,calendar:_e93cal};
+      else newP={...newP,euro:{..._e93,active:false,eliminated:true,phase:"eliminated"}};
+      changed=true;
     }
     if(!('seasonObjectives' in newP)){
       newP={...newP,seasonObjectives:generateSeasonObjectives(newP)};
@@ -14187,6 +14220,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
   const[coachDecision,setCoachDecision]=useState(null); // {status,reason,entryMinute} — Sprint 116
   const coachDecisionRef=useRef(null); // Sprint 123: lock decision at modal-open time
   const matchTypeRef=useRef("league"); // Sprint 88: track current match type ("league"|"cup"|"euro_group"|"euro"|"national"|"nationsCup"|"euroMondiale")
+  const titleStakesRef=useRef(null); // [5.93.0] titleStakes dell\'ultima partita montata (per il flag cerimonia)
   const[careerMomentModal,setCareerMomentModal]=useState(null);    // Sprint 25A — unique career moment
   const[monthlyReviewModal,setMonthlyReviewModal]=useState(null);  // Sprint 60: quarterly coach review
   const[jerseyPickModal,setJerseyPickModal]=useState(false); // Sprint 74: jersey number picker
@@ -14637,6 +14671,8 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
   const onMatchEnd=result=>{
     setLastMatch(result);
     setMisterDiscorsoModal(null); // safety net: clear any stale pre-match coach speech
+    // [5.93.0] cerimonia consegnata → non ripeterla nelle gare successive della stagione
+    try{const _ts93=titleStakesRef.current;if(_ts93&&(result.won||_ts93.late)){setPlayer(p=>({...p,titleCeremonyShown:p.season||1}));}titleStakesRef.current=null;}catch(_e){}
     // Item 6: Qualificazioni Euro/Mondiale — early return
     if(result.context==="euroMondiale_qualif"){
       setMatchContext("career");
@@ -14897,7 +14933,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
         const newBracketMatches={...(p.cup.cupBracketMatches||{}),[_cm52.roundKey]:_cm52.bracketMatches};
         cupUpdate2={cup:{...p.cup,round:cupRound+1,nextWeek:isCupWon&&cupRound<4?_CRW[cupRound+1]:null,eliminated:!isCupWon,champion:isCupWon&&cupRound===4,results:newCupResults,cupBracketMatches:newBracketMatches,cupSurvivors:_cm52.nextSurvivors},trophies:newTrophies};
         if(isCupWon&&cupRound<4){
-          const nextRound=cupRound+1;const nextWeek=_CRW[nextRound];
+          const nextRound=cupRound+1;const nextWeek=(function(){const w=Math.max(_CRW[nextRound],(p.week||1)+1);return w<=37?w:null;})();// [5.93.0 BIL-7] coppa rischedulata post-trasferimento: mai nel passato, mai oltre W37
           // Sprint 52: pick next opp from survivors (not from full bracket)
           const _surv52=_cm52.nextSurvivors.filter(id=>id!==_pId);
           const nxtOppId=pick(_surv52)||null;
@@ -15454,7 +15490,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
             const newBM52={...(p.cup.cupBracketMatches||{}),[_cm52s.roundKey]:_cm52s.bracketMatches};
             let newCal=(p.calendar||[]).map(m=>m.week===(p.week||1)&&m.type==="cup"&&!m.played?{...m,played:true,result:{homeScore:sim.homeScore,awayScore:sim.awayScore,won:cupWon,drew:sim.drew},simulated:true}:m);
             if(cupWon&&cupRound<4){
-              const nextRound=cupRound+1;const nextWeek=_CRW[nextRound];
+              const nextRound=cupRound+1;const nextWeek=(function(){const w=Math.max(_CRW[nextRound],(p.week||1)+1);return w<=37?w:null;})();// [5.93.0 BIL-7] coppa rischedulata post-trasferimento: mai nel passato, mai oltre W37
               const _surv52s=_cm52s.nextSurvivors.filter(id=>id!==_pId52);
               const nxtOppId=pick(_surv52s)||null;
               const nxtOpp=nxtOppId?(CLUBS.find(c=>c.id===nxtOppId||c.n===nxtOppId)||{id:nxtOppId,n:nxtOppId}):null;
@@ -16254,6 +16290,45 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
           newStandings=updateStandings(newStandings,newClub.id,_simR,p.clubPrestigeShifts||{},{opponentId:_pmd.opponentId,seed:hashStr(String(seed)+"_"+_pmd.matchday)>>>0});
         }
       }
+      // [5.93.0 BIL-7] LE COPPE SOPRAVVIVONO AL TRASFERIMENTO (regola: ogni competizione è giocabile).
+      //   Prima la rigenerazione del calendario CANCELLAVA tutte le gare cup/euro non giocate mentre
+      //   p.cup/p.euro restavano attivi → competizioni zombie ("R16 non ancora disputato", girone 0/6).
+      //   Ora: le gare europee (avversari embedded) si riportano nel nuovo calendario, rischedulate in
+      //   avanti se la week è passata; la Coppa continua nella NUOVA lega (avversario ri-pescato, bracket
+      //   ri-localizzato). Se non c'è più spazio (>W37) la competizione si chiude ONESTAMENTE.
+      let _updCup7=p.cup,_updEuro7=p.euro,_keptComp7=[];const _compLog7=[];
+      {
+        const _usedWk7=new Set(newCalendar.filter(m=>!m.played).map(m=>m.week));
+        let _scan7=currentWeek;
+        const _freeWk7=()=>{do{_scan7++;}while(_scan7<=37&&_usedWk7.has(_scan7));if(_scan7<=37){_usedWk7.add(_scan7);return _scan7;}return null;};
+        const _place7=(m)=>{if(m.week>currentWeek&&!_usedWk7.has(m.week)){_usedWk7.add(m.week);_keptComp7.push(m);return true;}const w=_freeWk7();if(w!=null){_keptComp7.push({...m,week:w});return true;}return false;};
+        if(_updEuro7&&_updEuro7.active&&!_updEuro7.eliminated&&!_updEuro7.champion){
+          const _eu7=(p.calendar||[]).filter(m=>!m.played&&(m.type==="euro_group"||m.type==="euro")).sort((x,y)=>(x.week||0)-(y.week||0));
+          let _fit7=_eu7.length>0;
+          for(const m of _eu7){if(!_place7(m)){_fit7=false;break;}}
+          if(!_fit7){
+            _keptComp7=_keptComp7.filter(m=>m.type!=="euro_group"&&m.type!=="euro");
+            _updEuro7={..._updEuro7,active:false,eliminated:true,phase:"eliminated"};
+            _compLog7.push(`🌍 ${_updEuro7.competition||"Europa"}: avventura europea chiusa dal trasferimento`);
+          }else _compLog7.push(`🌍 ${_updEuro7.competition||"Europa"}: le gare restanti seguono il tuo nuovo club`);
+        }
+        if(_updCup7&&_updCup7.active&&!_updCup7.eliminated&&!_updCup7.champion){
+          const _cu7=(p.calendar||[]).filter(m=>!m.played&&m.type==="cup").sort((x,y)=>(x.week||0)-(y.week||0)).slice(0,1);
+          const _CRW7=[0,9,19,28,35],_CRN7=["","R16","Quarti","Semifinale","FINALE"];
+          const _rd7=Math.min(_updCup7.round||1,4);
+          const _base7=_cu7[0]||{matchday:990+_rd7,isHome:true,played:false,result:null,type:"cup",competition:"Coppa Nazionale",cupRound:_rd7,cupRoundName:_CRN7[_rd7],week:_CRW7[_rd7]||9};
+          const _poolC7=lcs.filter(c=>c.id!==newClub.id&&c.n!==newClub.n);
+          const _opp7=_poolC7.length?_poolC7[Math.abs(hashStr(String(newClub.id||newClub.n)+"cup7"+(p.season||1)+_rd7))%_poolC7.length]:null;
+          if(_opp7&&_place7({..._base7,opponentId:_opp7.id,opponentName:_opp7.n})){
+            const _nbr7=[newClub.id,..._poolC7.slice(0,15).map(c=>c.id)];
+            _updCup7={..._updCup7,bracket:_nbr7,cupSurvivors:_nbr7.slice(0,Math.max(2,16>>(_rd7-1))),nextWeek:_keptComp7[_keptComp7.length-1].week};
+            _compLog7.push(`🏆 Coppa Nazionale: il cammino continua col nuovo club (${_CRN7[_rd7]})`);
+          }else{
+            _updCup7={..._updCup7,active:false,eliminated:true};
+            _compLog7.push("🏆 Coppa Nazionale: fuori dopo il trasferimento");
+          }
+        }
+      }
       // worldMemory: record old club as ex-club when transferring away
       const oldClubMem=p.club&&(p.proStatus==="pro")?[...(p.worldMemory||[]),{type:"ex_club",clubId:p.club.id,club:p.club.n,season:p.season,lg:p.club.lg}]:(p.worldMemory||[]);
       // Generate rival if becoming pro for first time
@@ -16281,7 +16356,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
         // Sprint 98: reset current-season stats on transfer (total career stats preserved)
         goals:0,assists:0,matches:0,
         contract:_newContract98,coach:_newCoach98,coachTrust:50,loan:_newLoan,
-        morale:clamp((p.morale||70)+(tc.moralBonus||10),0,100),offerHistory:[...(p.offerHistory||[]),{club:tc.club.n,type:tc.type,season:p.season,accepted:true}],log:[`🔄 ${tc.type}: ${tc.club.n} (${tc.club.lg||tc.club.nat})!`,...(p.log||[])].slice(0,60),standings:newStandings,calendar:newCalendar,worldMemory:oldClubMem,rival:newRival,fanLegend:updFL,teammates:newTeammates,justRecovered:false};
+        morale:clamp((p.morale||70)+(tc.moralBonus||10),0,100),offerHistory:[...(p.offerHistory||[]),{club:tc.club.n,type:tc.type,season:p.season,accepted:true}],log:[..._compLog7,`🔄 ${tc.type}: ${tc.club.n} (${tc.club.lg||tc.club.nat})!`,...(p.log||[])].slice(0,60),standings:newStandings,calendar:[...newCalendar,..._keptComp7].sort((x,y)=>(x.week||0)-(y.week||0)),cup:_updCup7,euro:_updEuro7,worldMemory:oldClubMem,rival:newRival,fanLegend:updFL,teammates:newTeammates,justRecovered:false};
     });
     setTransferOffer(null);
     setPresentationData({club:tc.club,contractType:tc.type,playerName:player.name});
@@ -16355,6 +16430,11 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
             const worstOther=others.reduce((m,o)=>Math.max(m,o.pts||0),0);
             const alreadyClinched=others.every(o=>myPts>(o.pts||0)+3*rem);
             const clinchOnWin=others.every(o=>myPts+3>(o.pts||0)+3*rem);// avversari vincono tutto il resto (worst case)
+            // [5.93.0 FIX PO «cerimonia non compare»] se la matematica è arrivata SENZA una vittoria clinch
+            //   (rivale che perde punti, o clinch maturato in una gara persa/pareggiata) la cerimonia partiva
+            //   MAI: alreadyClinched la sopprimeva per sempre. Ora: premiazione TARDIVA alla prima partita
+            //   dopo il titolo (flag titleCeremonyShown per stagione, festa anche senza vittoria).
+            if(alreadyClinched&&(player.titleCeremonyShown!==(player.season||1)))return{kind:"league",name:(player.club?.lg||"Campionato"),late:true};
             if(clinchOnWin&&!alreadyClinched&&worstOther>=0)return{kind:"league",name:(player.club?.lg||"Campionato")};
           }
         }
@@ -16365,7 +16445,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       <div style={{width:"100%",height:"100%",display:"flex",flexDirection:"column"}}>
         <button onClick={()=>{setScreen("dashboard");setTab("dashboard");}} style={{background:"none",border:"none",color:TH.muted,cursor:"pointer",fontSize:13,marginBottom:8,display:"flex",alignItems:"center",gap:6,flexShrink:0}}>{L.backToCareer}</button>
         <div style={{flex:1,overflow:"hidden",display:"flex",flexDirection:"column"}}>
-          <MatchErrorBoundary><LiveMatch player={player} opponent={matchOpp} context={matchContext||"career"} onMatchEnd={onMatchEnd} isMatchHome={matchIsHome} benchStart={matchBenchStartRef.current} benchReason={matchBenchStartRef.current?(coachDecision?.reason||""):""} entryMinute={matchEntryMinuteRef.current} titleStakes={_titleStakes}/></MatchErrorBoundary>
+          <MatchErrorBoundary><LiveMatch player={player} opponent={matchOpp} context={matchContext||"career"} onMatchEnd={onMatchEnd} isMatchHome={matchIsHome} benchStart={matchBenchStartRef.current} benchReason={matchBenchStartRef.current?(coachDecision?.reason||""):""} entryMinute={matchEntryMinuteRef.current} titleStakes={(titleStakesRef.current=_titleStakes)}/></MatchErrorBoundary>
         </div>
         {misterDiscorsoModal&&(
           <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.75)",zIndex:9999,display:"flex",alignItems:"center",justifyContent:"center",padding:20}}>
