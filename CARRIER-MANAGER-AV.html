@@ -2987,7 +2987,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="5.87.0"; // [5.87.0] STADI DINAMICI — S1 FONDAMENTA (design approvato: docs/STADIUM_SYSTEM_DESIGN.md · decisioni PO: 3 slice ✓ · NIENTE pista d'atletica ✓ · trasferta invertita in S3 ✓ · evoluzione AUTOMATICA ✓): nuovo STRATO DATI del sistema stadi — STADIUM_TEMPLATES (10 preset architettonici: provincia/comunale/storico_it/moderno_it/inglese/tedesco/spagnolo/francese/olandese/sudamericano, tutti SENZA pista) + STADIUM_LG_TPL (mappa delle 14 leghe → pool template con variazione hash per club) + stadiumConfigFor(club,evo) PURO e SEEDATO (esposto per i test): capienza REALISTICA e STABILE per club dalle bande della direttiva (3-8k → 40-80k+ per prestigio; prima cambiava a OGNI partita — seed con week/season), nome stabile anche per U18 (era pick() casuale), evoluzione automatica derivata (promozione +20% capienza, retrocessione −5%, trofei → modernità), override DATA-DRIVEN via campo opzionale stadium:{...} sull'entry CLUBS (solo dati, zero codice). computeCrowdContext accetta la capienza dal config → affluenza card+spalti coerente con lo stadio del club. NESSUN cambiamento visivo 3D in questa slice (assemblatore modulare in S2, trasferta invertita+atmosfera in S3). Baseline: tests/visual/stadium-config-test.mjs (determinismo, bande, 10/10 template, override, no-track). Fix: >>> unsigned negli hash-shift (jitter negativo con hash >2^31).
+const GAME_VERSION="5.88.0"; // [5.88.0] STADI DINAMICI — S2 ASSEMBLATORE VISIVO: buildStadium consuma il config di stadiumConfigFor e i 10 template diventano stadi VISIBILMENTE diversi, riusando gli stessi componenti (zero asset nuovi, stesso budget draw-call): ANELLI variabili 1-3 (1=anello unico ripido provincia/comunale · 3=terzo anello spagnolo/sudamericano, mobile cap 2), curva-MURO tedesca (Sud gigante a 1 anello ×1.5), ASIMMETRIA sudamericana (Est bassa), TETTO per settore (none/west/partial/full), ANGOLI aperti/chiusi da template, TORRI FARO in 4 stili (traliccio/perimetrali 6 pali/angolari alte/bank sul tetto senza pali), RECINZIONI (metal/plexi trasparente/alta sudamericana/nessuna inglese), LED bordocampo emissivi sui moderni, INSEGNA col nome dello stadio (canvas wordmark sopra la Ovest — identità immediata), 2° maxischermo decorativo sui top club (il TABELLONE resta a Sud: charter Curva Sud intoccato), PANCHINE+dugout per tutti, e VIA il perimetro arancio stile pista d'atletica (bandita dal PO: asfalto scuro sui moderni, verde spento su storici). Fallback legacy ESATTO senza template. Hook di collaudo __CPM_STADIUM_TPL_FORCE (spento nella build store). Test: stadium-visual-test.mjs — 10/10 template montano, screenshot in out/stadiums/. Gate-cieco sulla resa → collaudo dal vivo PO.
 const SAVE_VERSION=8;// v8 [5.81.0 BIL-3b]: bankBalance (stipendio accumulato, €) + perkTrainer/perkNutrition (staff personale) — migration retro-compatibile. v7: player.foot
 // 5.67.0 — TABELLONE realistico del torneo per NAZIONALI (Europeo/Mondiale): dopo il girone la fase a
 //   eliminazione segue Ottavi → Quarti → Semifinale → Finale (prima saltava dritta alla semifinale).
@@ -5677,10 +5677,19 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
   const p=typeof stadCfg==="number"?stadCfg:stadCfg.prestige||65;
   const style=typeof stadCfg==="object"?stadCfg.style||0:0;
   const xl=p>88,lg=p>72,md=p>55;
-  const endZ=xl?64:lg?56:md?50:44;
-  const sideX=xl?78:lg?70:md?64:58;
-  const endH=xl?22:lg?16:md?13:10;
-  const sideH=xl?20:lg?14:md?11:8;
+  // [5.88.0 STADI S2] ASSEMBLATORE: i parametri architettonici arrivano dal template (stadiumConfigFor);
+  //   senza template (tpl assente) ogni valore ricade sul comportamento legacy ESATTO → zero regressioni.
+  const T=stadCfg.tpl||null;
+  const _dK=T?T.dist:1, _hK=T?T.standH:1;
+  const endZ=(xl?64:lg?56:md?50:44)*_dK;
+  const sideX=(xl?78:lg?70:md?64:58)*_dK;
+  const endH=(xl?22:lg?16:md?13:10)*_hK*((T&&T.asym)?0.55:1);// sudamericano: una tribuna bassa (asimmetria reale)
+  const sideH=(xl?20:lg?14:md?11:8)*_hK;
+  const _sudH=sideH*((T&&T.megaCurva)?1.5:1);// tedesco: il "muro" — curva di casa gigante a un anello
+  const _tiers=T?(!stadCfg.isDesktop?Math.min(T.rings,2):T.rings):2;// mobile cap: max 2 anelli
+  const _roofT=T?T.roof:"legacy";// none | west | partial | full | legacy
+  const _fenceT=T?T.fence:"legacy";
+  const _towerT=T?T.tower:"legacy";
   const endD=xl?28:lg?20:md?16:13;
   const sideD=xl?26:lg?20:md?16:13;
   const endW=xl?126:lg?118:md?110:100;
@@ -5711,7 +5720,8 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
   // Helper: gradinata a DUE ANELLI inclinati verso il campo (§1 profondità reale, via muro piatto)
   // + LOD1 (§2): prime file di BUSTI 3D instanziati (2 draw call per settore, bob solo nei burst)
   const frontRows=[];
-  const addStand=(cx,cz,rotY,standW,standD,standH,crowdObj,frontFill,isHome,isAway)=>{
+  const addStand=(cx,cz,rotY,standW,standD,standH,crowdObj,frontFill,isHome,isAway,opts)=>{
+    opts=opts||{};const _nt=opts.tiers||2,_roofOn=opts.roofOn!==false;// anelli variabili + tetto per-settore (S2)
     const g=new THREE.Group();
     // struttura posteriore in cemento (chiude la sagoma dello stadio dietro l'anello alto)
     const back=new THREE.Mesh(new THREE.BoxGeometry(standW,standH,standD*0.26),cM);
@@ -5724,26 +5734,42 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
       g.add(t);return m;
     };
     // pendenze da vero stadio (~33°/42°): più piatte, dalla camera broadcast alta si vedrebbero di taglio
-    const mLow=mkTier(-standD/2+0.6,3.0,-standD*0.10,standH*0.62,crowdObj.texLow);
-    const mUp=mkTier(-standD*0.02,standH*0.68,standD*0.32,standH+1.4,crowdObj.texUp);
-    // ballatoio tra gli anelli
-    const walk=new THREE.Mesh(new THREE.BoxGeometry(standW,0.5,standD*0.10),cM);
-    walk.position.set(0,standH*0.645,-standD*0.06);g.add(walk);
+    let mLow,mUp;
+    if(_nt===1){// anello UNICO ripido (provincia/comunale · curva-muro tedesca)
+      mLow=mkTier(-standD/2+0.6,3.0,standD*0.30,standH+1.0,crowdObj.texLow);
+      mUp=mkTier(standD*0.30,standH+1.0,standD*0.34,standH+1.2,crowdObj.texUp);// fascia sommitale minima (tiene vivo texUp)
+    }else{
+      mLow=mkTier(-standD/2+0.6,3.0,-standD*0.10,standH*0.62,crowdObj.texLow);
+      mUp=mkTier(-standD*0.02,standH*0.68,standD*0.32,standH+1.4,crowdObj.texUp);
+      const walk=new THREE.Mesh(new THREE.BoxGeometry(standW,0.5,standD*0.10),cM);
+      walk.position.set(0,standH*0.645,-standD*0.06);g.add(walk);
+      if(_nt>=3){// terzo anello (spagnolo/sudamericano): riusa texUp, arretrato e più alto
+        mkTier(standD*0.34,standH+1.6,standD*0.52,standH*1.34+2.2,crowdObj.texUp);
+        const walk2=new THREE.Mesh(new THREE.BoxGeometry(standW,0.5,standD*0.08),cM);
+        walk2.position.set(0,standH+1.5,standD*0.33);g.add(walk2);
+      }
+    }
     // Concrete base strip
     const base=new THREE.Mesh(new THREE.BoxGeometry(standW+2,3,standD+3),cM);
     base.position.set(0,1.5,0);g.add(base);
     // Roof: PENSILINA arretrata sopra il fondo dell'anello alto — il vecchio sbalzo in avanti, visto
     // dalla camera broadcast alta, COPRIVA l'anello inferiore (banda opaca al posto dei tifosi)
-    const roof=new THREE.Mesh(new THREE.BoxGeometry(standW+8,0.8,standD*0.20),roofM);
-    roof.position.set(0,standH+1.8,standD*0.34);roof.rotation.x=0.10;g.add(roof);
-    // Roof supports (pillars at edges)
-    [-standW/2+4,standW/2-4].forEach(px=>{
-      const pl=new THREE.Mesh(new THREE.CylinderGeometry(0.25,0.3,standH+2,8),stM);
-      pl.position.set(px,standH/2+1,standD*0.30);g.add(pl);
-    });
+    if(_roofOn){
+      const _rTop=(_nt>=3)?standH*1.34+2.4:standH+1.8;
+      const roof=new THREE.Mesh(new THREE.BoxGeometry(standW+8,0.8,standD*0.20),roofM);
+      roof.position.set(0,_rTop,standD*((_nt>=3)?0.52:0.34));roof.rotation.x=0.10;g.add(roof);
+      [-standW/2+4,standW/2-4].forEach(px=>{
+        const pl=new THREE.Mesh(new THREE.CylinderGeometry(0.25,0.3,_rTop+0.2,8),stM);
+        pl.position.set(px,_rTop/2,standD*((_nt>=3)?0.48:0.30));g.add(pl);
+      });
+    }
     // Fence rail at pitch-side bottom
-    const fence=new THREE.Mesh(new THREE.BoxGeometry(standW,0.9,0.3),new THREE.MeshLambertMaterial({color:0x2a6038}));
-    fence.position.set(0,0.45,-(standD/2+0.15));g.add(fence);
+    if(_fenceT!=="none"){// inglese: niente recinzione, tribune a filo campo
+      const _fH=_fenceT==="high"?2.6:_fenceT==="plexi"?1.1:0.9;// sudamericano alta · moderna plexi · legacy/metal
+      const _fM=_fenceT==="plexi"?new THREE.MeshLambertMaterial({color:0xbfd8e8,transparent:true,opacity:0.35}):new THREE.MeshLambertMaterial({color:_fenceT==="high"?0x3a3f46:0x2a6038});
+      const fence=new THREE.Mesh(new THREE.BoxGeometry(standW,_fH,0.3),_fM);
+      fence.position.set(0,_fH/2,-(standD/2+0.15));g.add(fence);
+    }
     // LOD1 — prime file 3D: busti instanziati appena dietro la balaustra (seedati, deterministici)
     let front=null;
     const nFront=Math.round(CROWD_CFG.anim.frontRowPerStand*Math.min(1,(frontFill||0)*1.4));
@@ -5780,14 +5806,16 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
   // Settori — Ovest/Est dietro le porte visive (z±), curve sui lati corti (x±)
   // FIX rotazioni tribune di fondo: con rotY 0/π invertite il fronte (recinzione+anelli) guardava FUORI
   // dallo stadio — invisibile coi vecchi box-folla a 6 facce, evidente con le gradinate inclinate.
-  const _ovStand=addStand(0,-endZ,Math.PI, endW,endD,endH,_ovest,crowd.fill,true,false);   // Tribuna Ovest — casa/famiglie/VIP
-  const _esStand=addStand(0, endZ,0,       endW,endD,endH,_est,crowd.fill,true,false);     // Tribuna Est — casa + spicchio ospiti (lato Curva Nord)
-  const _sudStand=addStand(sideX, 0, Math.PI/2, sideW,sideD,sideH,_sud,crowd.fill,true,false);   // Curva Sud (tabellone) — SOLO casa
-  const _nordStand=addStand(-sideX,0,-Math.PI/2, sideW,sideD,sideH,_nord,crowd.awayFill,false,true);// Curva Nord — SOLO ospiti
+  // [5.88.0 S2] tetto per settore: none=nessuno · west=solo Ovest · partial=Est+Ovest · full/legacy=tutti
+  const _roofFor=k=>_roofT==="legacy"||_roofT==="full"?true:_roofT==="none"?false:_roofT==="west"?k==="ovest":(_roofT==="partial"?(k==="ovest"||k==="est"):true);
+  const _ovStand=addStand(0,-endZ,Math.PI, endW,endD,endH,_ovest,crowd.fill,true,false,{tiers:_tiers,roofOn:_roofFor("ovest")});   // Tribuna Ovest — casa/famiglie/VIP
+  const _esStand=addStand(0, endZ,0,       endW,endD,endH,_est,crowd.fill,true,false,{tiers:(T&&T.asym)?1:_tiers,roofOn:_roofFor("est")});     // Tribuna Est — casa + spicchio ospiti (asym: bassa a 1 anello)
+  const _sudStand=addStand(sideX, 0, Math.PI/2, sideW,sideD,_sudH>sideH?sideD*1.15:sideD,_sudH,_sud,crowd.fill,true,false,{tiers:(T&&T.megaCurva)?1:_tiers,roofOn:_roofFor("sud")});   // Curva Sud (tabellone) — SOLO casa · tedesco: MURO a 1 anello
+  const _nordStand=addStand(-sideX,0,-Math.PI/2, sideW,sideD,sideH,_nord,crowd.awayFill,false,true,{tiers:_tiers,roofOn:_roofFor("nord")});// Curva Nord — SOLO ospiti
   const homeMats=[..._sudStand.mats,..._ovStand.mats,..._esStand.mats];
   const awayMats=[..._nordStand.mats];
   // Corner sections — filled or open based on style
-  const hasCorners=style!==3; // style 3 = traditional, open corners
+  const hasCorners=T?(T.corner!=="open"):(style!==3); // [5.88.0 S2] template: open=angoli liberi · closed/curve=pieni · legacy: style 3 aperti
   if(hasCorners)[[-sideX,-endZ,Math.PI/4],[sideX,-endZ,-Math.PI/4],[-sideX,endZ,3*Math.PI/4],[sideX,endZ,-3*Math.PI/4]].forEach(([x,z,ry])=>{
     const cH=Math.round((endH+sideH)/2)*0.8;
     // angoli vicino Curva Sud (+x, casa) → texture casa; vicino Curva Nord (-x) → texture ospiti
@@ -5798,20 +5826,35 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
 
   // Floodlights — colour from league palette
   const lightColor=stadCfg.floodColor||0xf4f8ff;
-  [[-sideX+8,-endZ+8],[sideX-8,-endZ+8],[-sideX+8,endZ-8],[sideX-8,endZ-8]].forEach(([x,z])=>{
-    const pole=new THREE.Mesh(new THREE.CylinderGeometry(0.3,0.4,floodH,8),stM);
-    pole.position.set(x,floodH/2,z);pole.castShadow=true;scene.add(pole);
+  // [5.88.0 S2] stile torri: traliccio (provincia, esili) · perimetrali (6 pali bassi) · angolari_alte (iconiche ×1.3) · tetto (bank sul tetto, niente pali) · legacy
+  const _fH2=_towerT==="angolari_alte"?floodH*1.3:_towerT==="perimetrali"?floodH*0.7:floodH;
+  const _towPos=_towerT==="perimetrali"
+    ?[[-sideX+8,-endZ+8],[sideX-8,-endZ+8],[-sideX+8,endZ-8],[sideX-8,endZ-8],[0,-endZ+6],[0,endZ-6]]
+    :[[-sideX+8,-endZ+8],[sideX-8,-endZ+8],[-sideX+8,endZ-8],[sideX-8,endZ-8]];
+  const _onRoof=_towerT==="tetto"&&_roofT!=="none";// senza tetto non esistono bank a tetto → fallback pali
+  const floodH2=_fH2;
+  (_onRoof?[[-sideX*0.7,-endZ+3],[sideX*0.7,-endZ+3],[-sideX*0.7,endZ-3],[sideX*0.7,endZ-3]]:_towPos).forEach(([x,z])=>{
+    if(_onRoof){// bank luminosi montati sul bordo del tetto (stadi moderni): niente pali
+      const head=new THREE.Mesh(new THREE.BoxGeometry(7,0.9,2.2),new THREE.MeshBasicMaterial({color:0xfffff0}));
+      head.position.set(x,endH+4.2,z);scene.add(head);
+      const spot=new THREE.SpotLight(lightColor,1.4,180,Math.PI/5,0.3,1.2);
+      spot.position.set(x,endH+5,z);spot.target.position.set(0,0,0);scene.add(spot);scene.add(spot.target);
+      const fl=new THREE.PointLight(lightColor,0.50,280);fl.position.set(x,endH+4,z);scene.add(fl);
+      return;
+    }
+    const pole=new THREE.Mesh(new THREE.CylinderGeometry(_towerT==="traliccio"?0.18:0.3,_towerT==="traliccio"?0.26:0.4,floodH2,_towerT==="traliccio"?6:8),stM);
+    pole.position.set(x,floodH2/2,z);pole.castShadow=true;scene.add(pole);
     const arm=new THREE.Mesh(new THREE.BoxGeometry(0.4,0.4,8),stM);
-    arm.position.set(x+(x>0?-4:4),floodH+2,z);scene.add(arm);
+    arm.position.set(x+(x>0?-4:4),floodH2+2,z);scene.add(arm);
     // Floodlight head bank — bright white
     const head=new THREE.Mesh(new THREE.BoxGeometry(5,0.8,2.5),new THREE.MeshBasicMaterial({color:0xfffff0,emissive:0xfffff0}));
-    head.position.set(x+(x>0?-4:4),floodH+2.5,z);scene.add(head);
+    head.position.set(x+(x>0?-4:4),floodH2+2.5,z);scene.add(head);
     // SpotLight pointing down at pitch — focused beam, realistic TV look
     const spot=new THREE.SpotLight(lightColor,1.4,180,Math.PI/5,0.3,1.2);// 3DV-10: 2.8→1.4 meno fluorescente
-    spot.position.set(x+(x>0?-5:5),floodH+5,z);
+    spot.position.set(x+(x>0?-5:5),floodH2+5,z);
     spot.target.position.set(0,0,0);scene.add(spot);scene.add(spot.target);
     // Soft fill PointLight at lower intensity
-    const fl=new THREE.PointLight(lightColor,0.50,280);fl.position.set(x+(x>0?-5:5),floodH+4,z);scene.add(fl);// 3DV-10: 1.0→0.50
+    const fl=new THREE.PointLight(lightColor,0.50,280);fl.position.set(x+(x>0?-5:5),floodH2+4,z);scene.add(fl);// 3DV-10: 1.0→0.50
   });
 
   // Goal nets (wireframe-style transparent planes)
@@ -5844,9 +5887,10 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
   const _hC=new THREE.Color(homeHex);
   const hLight=new THREE.Color(homeHex).lerp(new THREE.Color(0xffffff),0.4);
   const hDark=new THREE.Color(homeHex).lerp(new THREE.Color(0x000000),0.35);
+  const _led=!!(T&&stadCfg.tpl&&stadCfg.tpl.ledBoards);// [5.88.0 S2] stadi moderni: pannelli LED emissivi
   const addAd=(ax,az,aw,ah,rotY,idx)=>{
     const col=idx%3===0?_hC:idx%3===1?hLight:hDark;
-    const m=new THREE.Mesh(new THREE.BoxGeometry(aw,ah,0.22),new THREE.MeshLambertMaterial({color:col}));
+    const m=new THREE.Mesh(new THREE.BoxGeometry(aw,ah,0.22),_led?new THREE.MeshBasicMaterial({color:col}):new THREE.MeshLambertMaterial({color:col}));
     m.position.set(ax,ah/2,az);m.rotation.y=rotY;scene.add(m);
     // Small text-like stripe on top
     const stripe=new THREE.Mesh(new THREE.BoxGeometry(aw,0.15,0.24),new THREE.MeshLambertMaterial({color:0x111111}));
@@ -5868,9 +5912,36 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
   // Player tunnel
   const tun=new THREE.Mesh(new THREE.BoxGeometry(6,4.5,3.5),new THREE.MeshLambertMaterial({color:0x181824}));
   tun.position.set(-71.5,2.25,-2);scene.add(tun);
+  // [5.88.0 S2] PANCHINE + AREA TECNICA (tutti i template): due dugout ai lati del tunnel, lato Ovest
+  {const _dgM=new THREE.MeshLambertMaterial({color:0x1c2430});
+   const _dgGl=new THREE.MeshLambertMaterial({color:0x9fc2dd,transparent:true,opacity:0.4});
+   [[-14,-1],[14,1]].forEach(([dx])=>{
+     const b1=new THREE.Mesh(new THREE.BoxGeometry(9,1.1,1.6),_dgM);b1.position.set(dx,0.55,-34.6);scene.add(b1);
+     const r1=new THREE.Mesh(new THREE.BoxGeometry(9.6,0.15,2.2),_dgGl);r1.position.set(dx,2.1,-34.8);r1.rotation.x=0.18;scene.add(r1);
+   });}
+  // [5.88.0 S2] INSEGNA col nome dello stadio (canvas wordmark) sopra la Tribuna Ovest — identità immediata
+  if(T&&stadCfg.tpl&&stadCfg.tpl.name){
+    try{const _sc2=document.createElement('canvas');_sc2.width=1024;_sc2.height=128;
+      const _g2=_sc2.getContext('2d');_g2.fillStyle="#0e1420";_g2.fillRect(0,0,1024,128);
+      _g2.fillStyle=homeHex;_g2.fillRect(0,116,1024,12);
+      _g2.font="700 64px system-ui,Arial";_g2.fillStyle="#f2f5fa";_g2.textAlign="center";_g2.textBaseline="middle";
+      _g2.fillText(String(stadCfg.tpl.name).toUpperCase().slice(0,26),512,58);
+      const _st2=new THREE.CanvasTexture(_sc2);
+      const _sign=new THREE.Mesh(new THREE.PlaneGeometry(Math.min(endW*0.7,66),Math.min(endW*0.7,66)/8),new THREE.MeshBasicMaterial({map:_st2,transparent:true}));
+      _sign.position.set(0,endH+((_tiers>=3)?endH*0.4:0)+4.6,-endZ+endD*0.30);scene.add(_sign);
+    }catch(_e){}
+  }
+  // [5.88.0 S2] 2° MAXISCHERMO decorativo (top club, screens≥2) sulla Curva Nord — il TABELLONE resta a Sud (charter)
+  if(T&&stadCfg.tpl&&(stadCfg.tpl.screens||1)>=2&&stadCfg.isDesktop){
+    const _scr2=new THREE.Mesh(new THREE.BoxGeometry(14,7,0.8),new THREE.MeshLambertMaterial({color:0x0a0e16}));
+    _scr2.position.set(-sideX-2,sideH+7,0);_scr2.rotation.y=Math.PI/2;scene.add(_scr2);
+    const _scrF=new THREE.Mesh(new THREE.PlaneGeometry(12.6,5.8),new THREE.MeshBasicMaterial({color:0x18324a}));
+    _scrF.position.set(-sideX-1.55,sideH+7,0);_scrF.rotation.y=Math.PI/2;scene.add(_scrF);
+  }
 
-  // Pitch perimeter track (orange)
-  const trackMat=new THREE.MeshLambertMaterial({color:0xbb4c0a});
+  // [5.88.0 S2] perimetro campo: NIENTE più look "pista d'atletica" arancio (bandita dal PO) —
+  //   moderni: asfalto scuro · storici/provincia: verde spento
+  const trackMat=new THREE.MeshLambertMaterial({color:(T?(stadCfg.tpl.modernity>0.55?0x2e3238:0x2d4a2f):0xbb4c0a)});
   const tN=new THREE.Mesh(new THREE.PlaneGeometry(106,5),trackMat);tN.rotation.x=-Math.PI/2;tN.position.set(0,0.02,-33);scene.add(tN);
   const tS=tN.clone();tS.position.z=33;scene.add(tS);
   const tE=new THREE.Mesh(new THREE.PlaneGeometry(4.5,62),trackMat);tE.rotation.x=-Math.PI/2;tE.position.set(53.5,0.02,0);scene.add(tE);
@@ -6523,7 +6594,13 @@ function ThreeMatchView(props){
     const sHome=stadiumHomeCol||homeCol||'#2563eb',sAway=stadiumAwayCol||oppCol||'#dc2626';
     // CROWD 2.0: il contesto folla arriva da computeCrowdContext (LiveMatch); __CPM_CROWD_OVERRIDE = hook di collaudo (solo test)
     const _crowdCtx=(typeof window!=='undefined'&&window.__CPM_CROWD_OVERRIDE)||crowd||null;
-    try{const _sc=buildStadium(scene,sHome,sAway,{prestige:club.p||club.prestige||65,style:stadiumStyle,floodColor:pal.flood,crowd:_crowdCtx,isDesktop});if(_sc){sr.current.crowdMats=_sc;sr.current.goalNet=_sc.goalNet;}}catch(e){}
+    try{const _sc=buildStadium(scene,sHome,sAway,{prestige:club.p||club.prestige||65,style:stadiumStyle,floodColor:pal.flood,crowd:_crowdCtx,isDesktop,tpl:(function(){let _c=(typeof stadiumConfigFor==="function")?stadiumConfigFor(club):null;
+      // [5.88.0 S2] hook di COLLAUDO template (test-only, spento nella build store): window.__CPM_STADIUM_TPL_FORCE
+      if(_c&&typeof window!=="undefined"&&!window.__CPM_STORE_BUILD&&window.__CPM_STADIUM_TPL_FORCE&&STADIUM_TEMPLATES[window.__CPM_STADIUM_TPL_FORCE]){
+        const _ft=STADIUM_TEMPLATES[window.__CPM_STADIUM_TPL_FORCE];
+        _c={..._c,template:window.__CPM_STADIUM_TPL_FORCE,rings:_ft.rings,corner:_ft.corner,roof:_ft.roof,tower:_ft.tower,fence:_ft.fence,standH:_ft.standH,dist:_ft.dist,megaCurva:!!_ft.megaCurva,asym:!!_ft.asym,modernity:_ft.mod,ledBoards:_ft.mod>0.55,screens:2};
+      }
+      return _c;})()});if(_sc){sr.current.crowdMats=_sc;sr.current.goalNet=_sc.goalNet;}}catch(e){}
 
     // Factory giocatore (derivata da FootballMatch, MeshPhong procedurale)
     // Sprint 3D-6: varietà deterministica per indice — altezza/corporatura + carnagione,
