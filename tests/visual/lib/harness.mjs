@@ -70,7 +70,7 @@ async function clickByText(page, src, timeout = 9000) {
 
 /* Apre il gioco con ?cpmtest=1, raggiunge un match (provino), carica tutte le SITUATIONS.
    Ritorna { total, consoleErrors } e lascia la pagina pronta per forceSituation(). */
-export async function openMatch(page, port) {
+export async function openMatch(page, port, opts) {
   const url = `http://localhost:${port}/CARRIER-MANAGER-AV.html?cpmtest=1`;
   await page.goto(url, { waitUntil: 'load', timeout: 30000 });
   await page.waitForFunction(() => { const r = document.getElementById('root'); return r && r.children.length > 0; }, { timeout: 40000 });
@@ -81,6 +81,8 @@ export async function openMatch(page, port) {
   await sleep(400);
   if (!await clickByText(page, 'Inizia il provino')) throw new Error('flusso: "Inizia il provino" non trovato');
   await page.waitForFunction(() => typeof window.__CPM_FORCE_SIT === 'function' && typeof window.__CPM_STATE === 'function' && typeof window.__CPM_PROBE === 'function', { timeout: 20000 });
+  // [5.76.0 ARC-1a] skipLoadAll: lascia la partita REALE in `playing` (clock vero, niente force) — per il live-smoke
+  if (opts && opts.skipLoadAll) { await sleep(300); return { total: 0 }; }
   const total = await page.evaluate(() => window.__CPM_LOAD_ALL());
   await sleep(500);
   return { total };

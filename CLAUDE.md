@@ -27,9 +27,9 @@ Carrier-manager-/
 └── tests/
     ├── situations-3d-validation.js   ← regole di validazione SITUATIONS (coerenza HL↔3D) + suite analitica (537 combo)
     └── visual/                        ← QUALITY GATE Playwright (vedi sezione dedicata)
-        ├── validate-situations.mjs    ← runner principale del gate (13 categorie)
+        ├── validate-situations.mjs    ← runner principale del gate (14 categorie)
         ├── golden-sigs.json           ← firme golden (stato) · decision-baseline.json (regressione decisione, LMQP-5)
-        ├── checks/                     ← 12 check (… timeline.mjs = LMQP-2/3/5/6)
+        ├── checks/                     ← 13 check (… timeline.mjs = LMQP-2/3/5/6 · live-smoke.mjs = ARC-1a)
         ├── lib/                        ← harness + failure-collector.mjs (LMQP-7) + perf-monitor.mjs (LMQP-8)
         ├── report.mjs                  ← report HTML + run-summary.json + LMQP Dashboard (LMQP-9)
         ├── out/                        ← artefatti generati (report.json · run-summary.json · index.html · shots/)
@@ -227,7 +227,7 @@ Dal 5.46 i 22 calciatori sono modelli **GLB reali** (Mixamo CH38) di **DEFAULT**
 
 ## Quality Gate (tests/visual) — OBBLIGATORIO prima di ogni push
 
-Suite Playwright headless che carica il gioco, forza ogni `SITUATION`, risolve le azioni e valida rendering 3D + stato. **Va eseguita e deve passare 13/13 prima di ogni push.**
+Suite Playwright headless che carica il gioco, forza ogni `SITUATION`, risolve le azioni e valida rendering 3D + stato. **Va eseguita e deve passare 14/14 prima di ogni push.**
 
 ```bash
 cd tests/visual
@@ -239,7 +239,9 @@ npm run validate-situations
 
 > **Setup bundle (sessioni cloud con CDN bloccati):** l'harness intercetta le route CDN e serve React/Three/Babel/Phaser dai `node_modules` locali. Le versioni **esatte** che l'HTML fissa sono ora in `devDependencies` (`react`/`react-dom` 18.2.0, `three` 0.128.0, `@babel/standalone` **7.23.6**, `phaser` 3.80.1) → `npm install` configura tutto. ⚠️ Babel **deve** essere 7.x: la 8.x non transpila l'`import` e la pagina non monta.
 
-Le **13 categorie**: `initial-state · orientation · visual · movements · golden · final-state · determinism · post-highlight · data-coherence · timeline · motion · ball-motion · bg-coherence`. Output atteso: `✅ PASS` con tutte verdi (i `warn` non bloccano).
+Le **14 categorie**: `initial-state · orientation · visual · movements · golden · final-state · determinism · post-highlight · data-coherence · timeline · motion · ball-motion · bg-coherence · live-smoke`. Output atteso: `✅ PASS` con tutte verdi (i `warn` non bloccano).
+
+> **`live-smoke` (5.76.0, ARC-1a):** 14° check BLOCCANTE — partita REALE non forzata su pagina pulita (provino → `playing` col clock vero): verifica che il clock avanzi, che la coda degli HL reattivi venga processata (hook `__CPM_QUEUE_REACTIVE`/`__CPM_NUMHL`) e che non ci siano pageerror. È il primo check che ESEGUE il tick di `playing` (dove viveva il soft-lock BLK-1) invece di bypassarlo col force-sit.
 
 ### COERENZA & NARRAZIONE (M1–M3, 5.52→5.57) — dal Live Match Manifesto
 
@@ -261,7 +263,7 @@ Sprint di coerenza guidati da `LIVE_MATCH_MANIFESTO.md` + review in `LIVE_MATCH_
 
 **Test dal vivo:** `tests/visual/live-match-test.mjs` (non-gate, GLB-ON) verifica la coerenza M1 overlay⟺esito su un campione di tiri falliti + screenshot full-page; `tests/visual/glb-gesture-smoke.mjs` per i gesti GLB. Le parti gate-cieche (movimento, camera, cronaca BG live, cerimonia) si collaudano così.
 
-> **Quick-gate (`npm run quick-gate`, ~1.5 min):** gate **leggero** per iterare veloce in sviluppo (`tests/visual/quick-gate.mjs`). Campiona ~26 Situations sui check di stato (`initial-state/orientation/visual/movements/golden`) + `determinism/final-state/timeline/data-coherence`; **salta** i sampler lenti (`motion/ball-motion/post-highlight/perf/ai-vision`). Riusa harness + gli stessi `checks/*.mjs` → zero duplicazione. ⚠️ **NON sostituisce** il gate completo: `validate-situations` (13/13) resta **obbligatorio prima di ogni push**. Usa il quick-gate per il loop di sviluppo, il gate completo come gate di rilascio.
+> **Quick-gate (`npm run quick-gate`, ~1.5 min):** gate **leggero** per iterare veloce in sviluppo (`tests/visual/quick-gate.mjs`). Campiona ~26 Situations sui check di stato (`initial-state/orientation/visual/movements/golden`) + `determinism/final-state/timeline/data-coherence`; **salta** i sampler lenti (`motion/ball-motion/post-highlight/perf/ai-vision`). Riusa harness + gli stessi `checks/*.mjs` → zero duplicazione. ⚠️ **NON sostituisce** il gate completo: `validate-situations` (14/14) resta **obbligatorio prima di ogni push**. Usa il quick-gate per il loop di sviluppo, il gate completo come gate di rilascio.
 
 - **`golden`** confronta una **firma di stato** `{htx,hty,cam,ch,ca}` (target logico eroe + camera + conteggi) — **NON** le posizioni off-ball (escluse di proposito). Quindi cambiare il posizionamento off-ball è gate-safe (golden invariato); se cambi l'estetica/setup che tocca la firma, rigenera con `npm run validate-situations:update-golden` e committa.
 - **`initial-state`/`orientation`** asseriscono la **posizione dei portieri** (home GK x≤25, away GK x≥75, home<away): muovendo i GK resta entro questi bound (vedi F13, CAP 80/20).
@@ -295,7 +297,7 @@ Ogni sessione di lavoro segue questo framework multi-disciplinare. Workflow semp
 ```
 1. AUDIT     — leggi il codice interessato, identifica dipendenze e rischi
 2. IMPLEMENT — applica le modifiche minime necessarie, nessuna feature extra
-3. QA        — gate 13/13 verde + verifica mentale: regressioni? salvataggio? mobile? performance?
+3. QA        — gate 14/14 verde + verifica mentale: regressioni? salvataggio? mobile? performance?
 ```
 
 Prima di ogni modifica: leggere le righe coinvolte, dichiarare le dipendenze note, elencare i rischi. Solo dopo procedere.
@@ -320,8 +322,8 @@ Prima di ogni modifica: leggere le righe coinvolte, dichiarare le dipendenze not
 - **Nessuna modifica senza audit.**
 - **Aggiornare `CLAUDE.md`** ad ogni sprint significativo (range linee, nuovi sistemi, campi `player`).
 - **Bump `GAME_VERSION`** ad ogni push.
-- **Gate 13/13 verde** prima di ogni push — il QA Engineer valida ogni sprint.
-- **Branch workflow:** sviluppo sul branch di lavoro corrente (attuale: `claude/play-store-readiness-audit-vjn2xz`), poi promozione su `main` (produzione/Pages → GitHub Pages) SOLO dopo gate 13/13 verde: `git fetch origin main && git checkout -B main origin/main && git merge --ff-only <branch> && git push origin main && git checkout <branch>`. Branch storici: `claude/play-store-readiness-audit-waq8cb`, `claude/ai-vision-first-run`, `claude/cpm-resume-work-71ntrj`, `claude/continue-work-y3mh4y`.
+- **Gate 14/14 verde** prima di ogni push — il QA Engineer valida ogni sprint.
+- **Branch workflow:** sviluppo sul branch di lavoro corrente (attuale: `claude/play-store-readiness-audit-vjn2xz`), poi promozione su `main` (produzione/Pages → GitHub Pages) SOLO dopo gate 14/14 verde: `git fetch origin main && git checkout -B main origin/main && git merge --ff-only <branch> && git push origin main && git checkout <branch>`. Branch storici: `claude/play-store-readiness-audit-waq8cb`, `claude/ai-vision-first-run`, `claude/cpm-resume-work-71ntrj`, `claude/continue-work-y3mh4y`.
   - **`main` solo su autorizzazione esplicita del proprietario** — mai in automatico dopo un singolo sprint senza via libero.
 - **Annunciare sempre** "Pushato su GitHub — CPM x.y.z." dopo ogni `git push`.
 - **Zero regressions · Minimalismo · File unico.**

@@ -36,10 +36,11 @@ import timelineCheck from './checks/timeline.mjs';
 import motion from './checks/motion.mjs';
 import ballMotion from './checks/ball-motion.mjs';
 import bgCoherence from './checks/bg-coherence.mjs';
+import liveSmoke from './checks/live-smoke.mjs';
 
 const SIT_CHECKS = [initialState, orientation, visual, movements, golden]; // pre-risoluzione
 const FINAL_CHECKS = [finalState];                                          // post-risoluzione azione
-const GLOBAL_CHECKS = [determinism, postHighlight, dataCoherence, timelineCheck, motion, ballMotion, bgCoherence]; // global
+const GLOBAL_CHECKS = [determinism, postHighlight, dataCoherence, timelineCheck, motion, ballMotion, bgCoherence, liveSmoke]; // global
 const SEED = '0x9e3779b9 (mulberry32) + __CPM_RESEED(gi)';
 const UPDATE_GOLDEN = process.argv.includes('--update-golden');
 const SHOTS_ALL = process.argv.includes('--shots');
@@ -211,6 +212,27 @@ const GOLDEN = path.join(HERE, 'golden-sigs.json');
       perf = await measurePerf(page, { frameWindowMs: 1000 });
       console.log(`perf: ${perf.frames.fps}fps (avg ${perf.frames.avgMs}ms · p95 ${perf.frames.p95Ms}ms)` + (perf.heap ? ` · heap ${perf.heap.usedMB}MB` : '') + (perf.nav && perf.nav.loadMs != null ? ` · load ${perf.nav.loadMs}ms` : ''));
     } catch (e) { perf = { error: String(e && e.message || e), warnings: [] }; console.log('perf: misura non disponibile (' + perf.error + ')'); }
+
+    // LIVE-SMOKE (F1 · ARC-1a, 5.76.0) — partita REALE su pagina pulita: nessuna situation forzata,
+    // clock vero, coda reattiva armata via hook → esercita il path del tick `playing` (dove viveva BLK-1).
+    try {
+      const sPage = await browser.newPage({ viewport: { width: 900, height: 900 } });
+      await installCdnRoutes(sPage);
+      const sErrs = []; sPage.on('pageerror', e => sErrs.push(e.message));
+      await sPage.addInitScript(() => { window.__CPM_GLB = false; });
+      await openMatch(sPage, port, { skipLoadAll: true }); // provino → phase "playing" col clock reale
+      const grab = () => sPage.evaluate(() => ({ p: window.__CPM_PROBE ? window.__CPM_PROBE() : null, n: window.__CPM_NUMHL ? window.__CPM_NUMHL() : null }));
+      const g0 = await grab();
+      await sPage.evaluate(() => { window.__CPM_QUEUE_REACTIVE && window.__CPM_QUEUE_REACTIVE(); });
+      await sleep(6000);
+      const g1 = await grab();
+      const lsRes = liveSmoke.run({ p0: g0.p, p1: g1.p, numHL0: g0.n, numHL1: g1.n, errors: sErrs });
+      agg['live-smoke'].issues.push(...lsRes.issues.map(msg => ({ gi: null, msg })));
+      agg['live-smoke'].warnings.push(...lsRes.warnings.map(msg => ({ gi: null, msg })));
+      agg['live-smoke'].info = lsRes.info;
+      console.log(`live-smoke: clock ${lsRes.info.clockFrom}'→${lsRes.info.clockTo}' · numHL ${lsRes.info.numHL0}→${lsRes.info.numHL1} · fase ${lsRes.info.phase} · ${lsRes.info.errors} pageerror`);
+      await sPage.close();
+    } catch (e) { agg['live-smoke'].issues.push({ gi: null, msg: 'errore live-smoke: ' + (e && e.message || e) }); }
 
     if (consoleErrors.length) agg.visual.issues.push(...consoleErrors.slice(0, 10).map(msg => ({ gi: null, msg: 'console error: ' + msg })));
   } catch (e) {
