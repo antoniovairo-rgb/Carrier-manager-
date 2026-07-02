@@ -20,7 +20,7 @@ const BALL_STATES = new Set(['aerial', 'feet', 'set_ground']);
 // LMQP-6: TAXONOMY degli OUTCOME KEY (da action.rew/action.fail in SITUATIONS; emessi come key=ok?rew:fail).
 //   SUCCESS = il tentativo riesce per l'eroe; FAIL = fallisce. I due insiemi NON si sovrappongono
 //   → l'invariante ok ⟺ key∈SUCCESS è strutturale; una sua violazione è una REGRESSIONE (handleAction desync).
-const OUTCOME_OK = new Set(['goal', 'assist', 'save', 'recovery']);
+const OUTCOME_OK = new Set(['goal', 'assist', 'chance', 'save', 'recovery']); // [5.78.0 SIT-4] 'chance' = passaggio chiave completato ma occasione da finalizzare (chain)
 const OUTCOME_FAIL = new Set(['miss', 'miss_easy', 'intercept', 'goal_against', 'nothing', 'through', 'foul', 'loose']);
 
 import fs from 'node:fs';

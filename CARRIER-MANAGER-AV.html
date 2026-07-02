@@ -2488,6 +2488,7 @@ const BG_MATCH=[
   {txt:"🤝 Sponda di {H2} per {H} che arriva lanciato. Che intesa!",ef:null,w:2,bpos:{x:80,y:55},ms:{shots:1},pd:"attack_goal"},
 ];
 const OUTCOME_TX={
+  chance:["🎯 Palla d'oro! Il compagno non riesce a concludere — palla che balla in area!","⚡ Filtrante perfetto! La conclusione è respinta — c'è ancora da giocare!","👁️ Che apertura! Il primo tentativo è murato — palla viva!","🔥 Imbucata splendida — il portiere respinge! Occasione ancora aperta!"],
   goal:["💥 GOOOOOL! Folla in delirio!","⚽ Rete spettacolare!","🔥 Imparabile!","🌟 Fenomenale!","🎯 Destro perfetto — nessuna speranza!","⚡ Un lampo! In gol!","💫 Che capolavoro — gol dell'anno!","🏆 Senza storia — gol splendido!"],
   assist:["🎯 Assist perfetto!","🤝 Passaggio da manuale!","🎯 Visione assoluta!","⚡ Lancio millimetrico — compagno solo!","🌀 Giocata di classe pura!","👁️ Ha visto il taglio prima di tutti."],
   miss_easy:["😱 Porta aperta, fuori!","💔 Errore imperdonabile...","🤦 Gol clamorosamente sprecato!","😬 Incredibile — porta spalancata!"],
@@ -2503,6 +2504,7 @@ const OUTCOME_TX={
 // 5.51.0 — SOVRAIMPRESSIONI HIGHLIGHT: messaggio breve "televisivo" SEMPRE coerente con l'azione e l'esito.
 //   Categoria derivata da outKey + tipo azione; >50 messaggi totali, scelti via seed → varietà, niente ripetizioni.
 const HL_OVERLAY_POOLS={
+  chance:["OCCASIONE CREATA!","Palla d'oro!","Che imbucata!","La difesa trema!","Occasione viva!","Palla velenosa in area!"],
   goal:["GOL — {nome}!","RETE!","Finalizzazione perfetta!","Che gol, {nome}!","Imparabile!","Eurogol!","Glaciale sotto porta!","Non perdona!","Freddezza assoluta!","Capolavoro di {nome}!","La mette dentro!","Esecuzione da bomber!"],
   assist:["Assist!","Assist decisivo!","Passaggio vincente!","Grande visione di gioco!","Servito su un piatto!","L'ultimo tocco è suo!","Regia perfetta!","Illuminazione di {nome}!","Che assist!"],
   pass:["Ottimo passaggio","Precisione assoluta","Scambio perfetto","Costruzione dell'azione","Palla filtrante","Verticalizzazione di qualità","Suggerimento illuminante","Gioco pulito"],
@@ -2556,6 +2558,7 @@ function _hlOvlCat(outKey,ok,actionLabel){
   const reDef=/tackle|contrast|scivolat|anticip|intercett|recuper|pressing|chiusur|spazz|copertur/;
   if(outKey==="goal")return"goal";
   if(outKey==="assist")return"assist";
+  if(outKey==="chance")return"chance";// [5.78.0 SIT-4] occasione creata (palla buona, conclusione da giocare)
   if(outKey==="save")return"save_hero";
   if(outKey==="foul")return"foul";
   if(outKey==="goal_against")return"conceded";
@@ -2579,7 +2582,7 @@ function hlOverlay(outKey,ok,actionLabel,heroFirst,seed,outKind){
   const _nk=(cat==="miss")?_missKindNorm(outKind):null;
   const pool=(_nk&&_MISS_OVL[_nk])||HL_OVERLAY_POOLS[cat]||HL_OVERLAY_POOLS.nothing;
   const i=(((seed|0)%pool.length)+pool.length)%pool.length;
-  const good=["goal","assist","pass","cross","dribble","recovery","tackle","save_hero"];
+  const good=["goal","assist","chance","pass","cross","dribble","recovery","tackle","save_hero"];
   return {text:pool[i].replace(/\{nome\}/g,heroFirst||"").replace(/\s+!/g,"!").trim(),
           tone:good.indexOf(cat)>=0?"good":(cat==="nothing"?"neutral":"bad"), cat, fam:_nk||null};
 }
@@ -2755,7 +2758,7 @@ function postHighlightDuration(outcome,action){
   if(k==="goal")d=3000;                                          // celebrazione gol
   else if(/cucchiaio|pallonetto|chip|panenka|rovesciat|sforbiciat/.test(lbl))d=2700; // conclusioni lente/acrobatiche
   else if(k==="miss_easy"||k==="goal_against")d=2400;            // errore/gol subito: lascia leggere
-  else if(k==="assist"||k==="miss")d=2300;
+  else if(k==="assist"||k==="chance"||k==="miss")d=2300;
   else if(k==="recovery"||k==="save"||k==="intercept"||k==="through")d=2000;
   return d;
 }
@@ -2971,7 +2974,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="5.77.0"; // [5.77.0] FASE 2.1 «LA PARTITA DIVENTA VERA» — MICRO-SIMULATORE DI SFONDO (MOT-1): la partita attorno all'eroe è SIMULATA, non un roll fisso. Nuovo motore puro/seedato bgMicroTick (~6311, esposto per i test): per ogni minuto di clock ogni squadra ha una probabilità di GOL derivata da prestigio (±55%), momentum (±35%), possesso (±20%) e OVR dell'eroe; seed stabile per (avversario, stagione, settimana) → stessa partita = stessi eventi. La voce di cronaca della famiglia giusta (team_goal/opp_goal) è FORZATA dal pool BG_MATCH (testo ← esito, mai il contrario); il roll ambientale NON può più muovere il punteggio (prima: 2 voci a peso 0.4 su ~328 = 1 gol BG ogni ~20 partite, oppGoalProb dead-code RIMOSSA). Baseline statistica (tests/visual/bg-microsim-test.mjs, N=800): pari 0.83/0.91 gol BG · 85v60 1.20/0.51 · 60v85 0.49/1.30 · mom90 1.05/0.67 · deterministico. Effetti di gioco: l'avversario forte segna davvero, i compagni esistono, la panchina non è più 0-0 congelato, il win-rate non è più 85-95% a prescindere. MOT-2 ATTUATORI: momentum ±10% sul rate d'azione (era ±5%) + momentum/possesso muovono le λ del sim. MOT-4 INTERVALLO REALE: riassunto+coro+reset momentum garantiti al 45' (prima solo se un evento BG usciva ESATTAMENTE a quel tick, ~25% delle partite; fix anche del testo "0-0" che mentiva sull'1-1). ⚠️ Gate-cieco sul feel del punteggio → collaudo dal vivo; il tick è coperto da live-smoke.
+const GAME_VERSION="5.78.0"; // [5.78.0] FASE 2.2 «MOTORE D'ESITO UNIFICATO» (audit BLK-2/F10/SIT-4/F3, primo scaglione): (1) ROLL D'ESITO SEEDATO — l'esito dell'azione era l'unico Math.random() nudo del momento centrale di gameplay: ora rng seedato (ricetta DE: sit+azione+indice+punteggio+minuto), STESSA curva di probabilità, esito riproducibile (prerequisito replay/telemetria LMQP); (2) SIT-4 L'ASSIST NON È PIÙ GOL GARANTITO — sui passaggi chiave (through/onetwo) decideExecution decide tra assist (gol del compagno) e CHANCE (esito finora inutilizzato): la palla è buona ma la conclusione va giocata — nuovo outcome key `chance` (overlay OCCASIONE CREATA!, cronaca dedicata, taxonomy timeline aggiornata), il chaining inietta SEMPRE il secondo tempo (mischia/second_ball) e in 3D il tocco del ricevente RIMBALZA (deflect) invece di gonfiare la rete (coerenza M1 preservata via hlOutcomeKind); (3) F3 IL RIGORE LEGGE LE STAT — handleRigore ora passa da decideExecution('penalty') (tiro/mentalità/fatica/morale/meteo → qualità) con l'angolo scelto come minigame; media conversione invariata ma le stat contano; il rigore emette ActionResolved (timeline) e il gol compare negli eventi partita; (4) BUG-14 guardia di profondità REALE sul chaining (_chainDepth: una catena non può incatenarne un'altra — prima la header-chain poteva auto-rigenerarsi). Gate 14/14 verde.
 const SAVE_VERSION=7;// v7: aggiunto player.foot (piede preferito) — migration retro-compatibile
 // 5.67.0 — TABELLONE realistico del torneo per NAZIONALI (Europeo/Mondiale): dopo il girone la fase a
 //   eliminazione segue Ottavi → Quarti → Semifinale → Finale (prima saltava dritta alla semifinale).
@@ -7165,6 +7168,7 @@ function ThreeMatchView(props){
           ball.position.x+=(34-ball.position.x)*aDt*1.8;// torna indietro dal palo
           ball.position.z+=hlPostVZ*aDt;hlPostVZ*=(1-aDt*2.2);
           if(hlPostArcT>2.5){hlPostArcT=-1;hlPostArcType=null;hlPostVY=0;}}
+        else if(hlPostArcType==="cross_goal"&&P.hlOutcomeKind==="chance"){hlPostArcType="deflect";hlPostVY=6;hlPostVZ=(Math.random()-0.5)*8;hlPostArcT=0;}// [5.78.0 SIT-4] chance: niente rete — rimbalzo per il secondo tempo
         else if(hlPostArcType==="cross_goal"){// cross → testa → porta avversaria (AWAY_GOAL_X)
           const _u2=Math.min(hlPostArcT/0.65,1);
           ball.position.y=0.65+Math.sin(_u2*Math.PI)*3.0;
@@ -7183,7 +7187,7 @@ function ThreeMatchView(props){
           const _u3=Math.min(hlPostArcT/0.80,1);
           ball.position.y=0.65+Math.sin(_u3*Math.PI)*3.2;
           ball.position.x+=(AWAY_GOAL_X-2-ball.position.x)*aDt*3.2;ball.position.z*=(1-aDt*1.6);
-          if(_u3>=1){hlPostArcType="in_net";hlPostArcT=0;hlInNetFlashed=false;contactFlashT=0;}}// 3DV-14: flash al secondo tocco
+          if(_u3>=1){if(P.hlOutcomeKind==="chance"){hlPostArcType="deflect";hlPostVY=6;hlPostVZ=(Math.random()-0.5)*8;hlPostArcT=0;contactFlashT=0;}else{hlPostArcType="in_net";hlPostArcT=0;hlInNetFlashed=false;contactFlashT=0;}}}// [5.78.0 SIT-4] chance: il tocco del ricevente RIMBALZA (respinta/salvataggio) — la rete non si gonfia, il secondo tempo arriva dalla chain// 3DV-14: flash al secondo tocco
         else if(hlPostArcType==="deflect"){// 3DV-14: deflect con fisica rimbalzo (gravity + restituzione)
           hlPostVY-=aDt*22;// gravità
           ball.position.y+=hlPostVY*aDt;
@@ -10030,9 +10034,13 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     const fkPenalty=(_fkSit&&/punizion/i.test(_fkSit.text||""))?(action.rew==="goal"?0.45:action.rew==="assist"?0.18:0):0;
     const rate=Math.max(0.05,succRate(action,player.stats,pPos.x,oppPrestige,player.archetype?.id||player.archetype)/100-defPenalty-weatherPenalty+momentumBonus-fatiguePenalty+tacticMod-fkPenalty);
     const adapt=adaptiveDifficulty(player);
-    let ok=Math.random()<clamp((rate/adapt)+(Math.random()-.5)*.06,0.05,0.84);
+    // [5.78.0 F10] ROLL D'ESITO SEEDATO: era l'unico Math.random() nudo del momento centrale di gameplay
+    //   (esito non riproducibile → replay/telemetria impossibili). STESSA curva di probabilità di prima,
+    //   rng seedato con la ricetta del Decision Engine (sit+azione+indice+punteggio+minuto).
+    const _okR78=seededRng((Math.abs(hashStr(((situationsRef.current[hlIdxRef.current]||{}).text||"")+"|"+(action.label||"")+"|"+hlIdxRef.current+"|"+score.home+"-"+score.away+"|"+clockRef.current))>>>0)||1);
+    let ok=_okR78()<clamp((rate/adapt)+(_okR78()-.5)*.06,0.05,0.84);
     if(_SIT_TEST&&typeof window!=='undefined'){ if(window.__CPM_FORCE_OUTCOME){ok=(window.__CPM_FORCE_OUTCOME==='success');window.__CPM_FORCE_OUTCOME=null;} try{window.__CPM_LAST_K=(situationsRef.current[hlIdxRef.current].actions||[]).indexOf(action);}catch(e){} }// 5.43.8: Situation Test Mode — Ripeti SUCCESS/FAIL forza l'esito; memorizza l'ultima azione scelta
-    const key=ok?action.rew:action.fail;
+    let key=ok?action.rew:action.fail;
     // M1 · UNIFIED OUTCOME MODEL: su un'azione FALLITA il TIPO di esito (palo/parata/murato/fuori) lo decide
     //   UNA sola volta il motore (decideExecution) con lo STESSO ctx/seed del render 3D → identico valore →
     //   3D byte-identico (golden stabile) MA ora overlay + cronaca leggono lo stesso esito. Fine divergenza.
@@ -10050,6 +10058,20 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
       const _dd=decideExecution(_di,{..._ctx,seed:(_ctx.seed^0x5f3759df)>>>0}).outcome;
       _outKind=_neg.indexOf(_dd)>=0?_dd:"saved";
     }catch(_e){_outKind=null;}}
+    // [5.78.0 SIT-4] L'ASSIST NON È PIÙ UN GOL GARANTITO: sui passaggi chiave (through/onetwo) il Decision
+    //   Engine decide se il filtrante diventa GOL del compagno (assist) o OCCASIONE da finalizzare (esito
+    //   `chance`, finora inutilizzato): la palla è buona ma la conclusione va giocata — il chaining inietta
+    //   il "secondo tempo" e in 3D il tocco del ricevente produce un RIMBALZO (deflect), non la rete.
+    let _chance78=false;
+    if(ok&&key==="assist"){try{
+      const _cnA=(typeof deriveHL==="function"&&deriveHL(_fkSit,action))||{};
+      if(_cnA.type==="pass"){// solo la famiglia passaggio (i cross tengono il loro flusso header-chain)
+        const _diA=(_cnA.pattern==="THROUGH_BALL")?"through":"onetwo";
+        const _tacA=(_fkSit&&_fkSit.tactic)||{},_pmA={none:0,low:1,medium:2,high:3};
+        const _dA=decideExecution(_diA,{attrs:player.stats||{},pressure:clamp((_tacA.nearby_def!=null?_tacA.nearby_def:(_pmA[_tacA.pressure]||1)),0,5),fatigue:player.fatigue||0,morale:player.morale||60,x:pPos.x,weather:(weather&&weather.id)||"clear",foot:player.foot||"R",side:(pPos.y<50?"L":"R"),seed:(Math.abs(hashStr("cha|"+((_fkSit&&_fkSit.text)||"")+"|"+(action.label||"")+"|"+hlIdx))>>>0)});
+        if(_dA&&_dA.outcome==="chance"){_chance78=true;key="chance";_outKind="chance";}
+      }
+    }catch(_e){}}
     // DEFENSIVE OUTCOME (5.65.0): per un highlight DIFENSIVO decidi UNA sola volta (stesso seed → coerenza
     //   3D/overlay/cronaca) l'esito realistico della respinta/recupero. Elimina il rinvio lungo automatico
     //   verso la porta avversaria: la traiettoria diventa varia (tieni possesso / passa / riparti / respinta
@@ -10172,16 +10194,17 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     // Sprint 77 + Fase 6 (NEXT-GEN chaining robusto): un assist da palla messa in area innesca un
     //   secondo tempo (testa/mischia/rimbalzo). Rilevamento via regex case-insensitive ampia (non più
     //   catena fragile di .includes) + guardia di profondità (niente stacking di catene).
-    if(ok&&action.rew==="assist"&&!pendingChainSitRef.current){
+    if(ok&&action.rew==="assist"&&!pendingChainSitRef.current&&!(situations[hlIdx]&&situations[hlIdx]._chainDepth)){// [5.78.0 BUG-14] guardia di profondità REALE: una catena non può incatenarne un'altra
       const _st77=situations[hlIdx]?.text||"";
-      if(/cross|traversone|corner|angolo|punizione|rimessa|cross in area|dal fondo|in mezzo/i.test(_st77))
-        pendingChainSitRef.current=pick([CHAIN_SITS.header,CHAIN_SITS.mischia,CHAIN_SITS.second_ball]);
+      if(_chance78)pendingChainSitRef.current={...pick([CHAIN_SITS.mischia,CHAIN_SITS.second_ball]),_chainDepth:1};// [5.78.0 SIT-4] la chance APRE SEMPRE il secondo tempo: la conclusione va giocata
+      else if(/cross|traversone|corner|angolo|punizione|rimessa|cross in area|dal fondo|in mezzo/i.test(_st77))
+        pendingChainSitRef.current={...pick([CHAIN_SITS.header,CHAIN_SITS.mischia,CHAIN_SITS.second_ball]),_chainDepth:1};
     }
     // Sprint 79 — ball moves toward outcome position for visual coherence
     const _by79=pPosRef.current.y;
     if(key==="goal")ballTargetRef.current={x:97,y:clamp(_by79+rng(-12,12),22,78)};
     else if(key==="miss"||key==="miss_easy")ballTargetRef.current={x:rng(89,98),y:ok?clamp(_by79+rng(-10,10),22,78):rng(5,95)};
-    else if(key==="assist")ballTargetRef.current={x:rng(86,95),y:clamp(_by79+rng(-18,18),12,88)};
+    else if(key==="assist"||key==="chance")ballTargetRef.current={x:rng(86,95),y:clamp(_by79+rng(-18,18),12,88)};
     else if(key==="intercept"||key==="through")ballTargetRef.current={x:rng(45,72),y:clamp(_by79+rng(-20,20),8,92)};
     else if(key==="recovery"||key==="save")ballTargetRef.current={x:rng(18,45),y:clamp(_by79+rng(-15,15),10,90)};
     else if(key==="goal_against")ballTargetRef.current={x:rng(2,12),y:clamp(_by79+rng(-15,15),20,80)};
@@ -10209,9 +10232,18 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
       addCom(txt,"#f87171",clock);
       setScreenFlash({col:"rgba(239,68,68,0.4)",dur:500});
       setOutcome({text:txt,ok:false,actionLabel:shotLabel});setChosenAct({label:shotLabel,stat:"tiro",nrg:8});
+      try{cpmEmit("ActionResolved",{gi:hlIdxRef.current,intent:"penalty",label:shotLabel,stat:"tiro",ok:false,key:"miss"});}catch(_e){}// [5.78.0 F3] anche il rigore parato entra nella timeline
       setMomentum(m=>clamp(m-15,0,100));
     }else{
-      const ok=Math.random()<(isCorner?0.88:0.55);
+      // [5.78.0 F3] IL RIGORE LEGGE FINALMENTE LE STAT: decideExecution('penalty') col contesto reale
+      //   (tiro/mentalità, fatica, morale, meteo) decide la QUALITÀ; l'angolo scelto resta il minigame
+      //   (angolo migliore = più sicuro). Prima era Math.random()<(0.88|0.55) hardcoded — le stat non contavano.
+      const _pSeed=(Math.abs(hashStr("rig|"+dir+"|"+clockRef.current+"|"+score.home+"-"+score.away+"|"+(player.name||"")))>>>0)||1;
+      let _pQ=0.5;
+      try{const _pd=decideExecution("penalty",{attrs:player.stats||{},pressure:2,fatigue:100-(energy||70),morale:player.morale||60,x:88,weather:(weather&&weather.id)||"clear",foot:player.foot||"R",side:0,seed:_pSeed});if(_pd&&_pd.quality!=null)_pQ=_pd.quality;}catch(_e){}
+      const _pGoal=clamp((isCorner?0.68:0.42)+_pQ*0.26,0.30,0.93);// media invariata (~0.88/0.55 a qualità alta) ma ora la qualità la decide il motore
+      const ok=seededRng(_pSeed^0x9e3779b9)()<_pGoal;
+      try{cpmEmit("ActionResolved",{gi:hlIdxRef.current,intent:"penalty",label:shotLabel,stat:"tiro",ok:!!ok,key:ok?"goal":"miss"});}catch(_e){}
       if(ok){
         const txt=`⚽ GOOOAL! Angolo perfetto — portiere va ${gkLabel}.`;
         addCom(txt,"#16a34a",clock);
@@ -10219,6 +10251,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
         setCutFx({key:Date.now(),dur:560});// stacco nero di transizione sul gol (rigore)
         setFloatGoal({text:"⚽ GOL!",col:"#f59e0b",key:Date.now()});
         setScore(s=>({...s,home:s.home+1}));
+        setMatchEvents(prev=>{const _em=prev.length>0&&prev[prev.length-1].min>=clockRef.current?prev[prev.length-1].min+1:clockRef.current;return[...prev,{min:_em,type:"player_goal",txt:"⚽ Tuo rigore al "+_em+"'"}].slice(-12);});// [5.78.0 F3] il gol su rigore ora compare negli eventi partita
         setMStats(s=>({...s,goals:s.goals+1,rb:s.rb+5}));
         setActionEffect({type:"goal",key:Date.now()});
         setOutcome({text:txt,ok:true,actionLabel:shotLabel});
