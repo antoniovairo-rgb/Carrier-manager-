@@ -3079,7 +3079,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="6.1.0"; // [6.1.0] (a) SUITE CARRIERA (ARC-19/§11): hook test-only __CPM_CAREER in CareerApp (step = vivi→simula→avanza con gli handler VERI, startNewSeason, clearTournaments) + tests/visual/career-sim-test.mjs — il test «N stagioni» che l'audit dichiarava impossibile; AL PRIMO GIRO ha scovato un bug di produzione: le variabili del riepilogo di fine stagione (coachChanged, objLogs, record, promo/retro, qualificazione europea) vivevano DENTRO l'updater ma il blocco notifiche era FUORI → ReferenceError asincrono a OGNI rollover: tutte le notifiche post-«Nuova stagione» morivano in silenzio da sempre. Fix: hoisting nel pacchetto _fx61. (b) VERIFICA MASSIVA STADI (segnalazione PO «stadi piccoli»): 57 incoerenze misurate su 252 club → 0. Taglia dalla CAPIENZA (45k/26k/12k) e non dal solo prestigio (un 61k non è più geometria LG); via le distanze da pista dai template ex-track (provincia/comunale/storico 1.15-1.25→1.02-1.06) + clamp _dK per classe (gap fronte-curva max misurato: da 36u a ≤12u); template capacity-aware (35k+ mai comunale/provincia, <12k mai muro tedesco/3 anelli); gradazione d'altezza DENTRO la classe (43k ≠ 27k). Spearman capienza↔altezza 0.646→0.861. Nuovo test permanente tests/visual/stadium-coherence-test.mjs. // [6.0.0] SPRINT 4 «ROBUSTEZZA & RIFINITURA» — chiude la roadmap dell'audit QA v2 (bug Top50 #29-32, #43-46 + UI): (a) migratePlayer GUARDATA al mount (save malformato → modalità compatibilità con avviso, non crash); (b) errore transitorio di storage ≠ slot vuoto ({_error:true} + warn — prima si rischiava la sovrascrittura del save); (c) worldMemory cappata a 40 sui 4 siti senza slice; (d) eventi partita MAI oltre il 90' (clamp sui 5 siti min+1); (e) cori winning/comeback col punteggio VIVO (scoreRef, via la closure stantia); (f) penalità punizione derivata dall'INTENT freekick (il testo della situation non è più API); (g) espulsione avversaria REALE: mai due rossi fantasma (oppRedRef) e l'uomo in meno pesa sulle λ del micro-sim (gA×0.72, gH×1.10); (h) updateStandings logga l'opponentId non trovato (via il fallback silenzioso); (i) pausa match con hitbox 40px (era 15×17), valute in it-IT. // [5.99.0] FIX PO «stadio fluttuante»: il prato era un piano 104×68 (solo campo+apron) ma le tribune LG/XL della carriera arrivano OLTRE il bordo (sideX fino a ~83 + profondità curva ~15) → tra prato e curva si vedeva il CIELO sotto lo stadio — invisibile nel provino (stadio SM contiguo) ed eclatante con la NEVE (cielo pallido uniforme). Nuovo piano di suolo 280×200 sotto tutto lo stadio con tonalità per meteo/ora (neve = manto chiaro distinto dal cielo · giorno = piazzale verde-grigio · notte = asfalto scuro). + hook di collaudo meteo ?cpmwx=<id> (test-only, spento nella store build) usato per riprodurre il bug. // [5.98.0] SPRINT 3 «CONTRATTI E MERCATO ONESTI» (audit EC-1/4/5/7/8/10, A4, B3, D1/D2): (a) lo SVINCOLATO non percepisce più lo stipendio e non viene schierato nelle partite auto-simulate (G/A a zero — prima il contratto scaduto era di cartone); (b) il contratto col club MADRE viene ricordato nel prestito (parentContract) e RIPRISTINATO al rientro (≥1 anno); il riscatto (opzione/obbligo) genera un biennale a wage +10% — prima OGNI prestito finiva in svincolo automatico; (c) niente rinnovo col club di prestito (openNegoModal + bottone) e niente offerte di mercato mentre sei in prestito; (d) finestre di mercato REALI: essere in lista non apre più il mercato tutto l'anno (BIL-6 chiuso; fuori finestra solo un rivolo 7%/4%); (e) il counter dell'agente sulle offerte può essere RIFIUTATO (62% seedato; rifiuto = termini originali); (f) l'investimento immobiliare PAGA la rendita promessa (+55k a fine stagione, flag investmentPending); (g) l'agente è LICENZIABILE (Rescindi nel pannello procuratore); (h) anti-ripetizione consecutiva su TUTTI e 3 i pool eventi + cond contestuali (ritiro/training camp solo W≤3, mercato gennaio W15-22 pro, bonus 10 gol solo se <10, mercato estivo W≤6) e il picker dei WEEKLY_RANDOM ora rispetta le cond. // [5.97.0] SPRINT 2 «IL CALCIO TORNA CALCIO» (audit SL-1/2/4, CP-1/4/5/6, MP-1): (a) λ del motore risultati CALIBRATE con sweep da 300 stagioni — updateStandings/calcWorldStandings 1.40+diff·1.00 / 1.22−diff·0.85, simulateMatch 1.40+diff·1.10 / 1.22−diff·0.95, cap Poisson unificato a 8 (era 5 vs 8): gol/match 2.16→2.63, 0-0 11.5%→7.2%, pareggi 29%→23.5%, campione 63.6→74.4pt, titoli ai top-prestigio 58%→87% (dinastie realistiche); (b) i QUARTI DI FINALE europei ESISTONO: r16→quarti→sf→final in tutte e 3 le macchine di fase (sim/played/rollover) + label/weeks/migration + clamp ≤W37 sui KO tardivi + notifica di avanzamento corretta; (c) spareggi KO stat-based e SEEDATI (koShootoutWin: base 50% ±OVR/morale, cap 35-72%) al posto del Math.random()<0.55 fisso pro-giocatore nei 4 siti coppa/euro; (d) la CATENA (25%) passa dalla selezione lazy: situation ri-pescata col contesto VIVO + exclude + clock allo slot (chiuso il bypass MP-1) e roll seedato; (e) la PRIMA stagione pro ha la Coppa Nazionale (Europa esclusa by design: non qualificato). // [5.96.0] SPRINT 1 STORE-READY (audit CR-1/CR-2/DB-1/DB-2/DB-3 — il CRITICO): (a) gate copyright ESTESO a stadi (pool+CLUB_STADIUMS+U18), allenatori e ROSTER GENERATI vs blocklist full-name _CR_FULLNAMES (55 coppie reali) — prima era cieco («Stade Vélodrome B» era assegnato in-game col termine IN blocklist); guardia in generateTeamRoster: la coppia bloccata slitta di cognome; (b) bonifica stadi: ~50 impianti reali/sponsorizzati sostituiti con nomi di fantasia coerenti per lingua; (c) CLUB_STADIUMS: 19 chiavi morte rimappate sugli id attuali + collisione mon/mon2 risolta (FC Monaco→Stade Princier, FC Brianzolo→Brianza Stadium) + CLUB_STADIUM_STYLE riallineata; (d) COACH_NAMES: via gli 11 allenatori reali; (e) cognomi distintivi di giocatori reali rimossi dai pool NL/TR; (f) 17 club rinominati (solo name, id stabili → save-safe): QPR→Queensway, AT Madrid→AT Manzanares, Betis→Verdiblanco, Standard→Vallonia, St. Pauli→Sankt Hafen, Gladbach→Niederrhein…; (g) LEAGUE_RECORDS: club fantasma corretti (AC Roma→FC Capitale, Paris FC→FC Paris) + record propri per Deutsche Liga 2/Ligue Nationale 2/Liga Ibérica 2 (via il fallback coi nomi italiani); (h) pool nomi 🇧🇷/🇦🇷 (Brasile/Argentina non pescano più nomi italiani). // [5.95.0] QUICK WINS dell'AUDIT QA v2 (8 fix, bug Top50 #2-#9+#22-23+#48+#50): (a) tornei nazionali RICORRENTI — euroMondiale/nationsCupQueue settano active:false al completamento (prima restava true per sempre → UN solo Europeo/Mondiale e UNA sola Coppa delle Nazioni per carriera) + repair in migration per i save bloccati; (b) il task agente «Prepara rinnovo» ora APPLICA il bonus accumulato in _acceptNegoWage (prima veniva azzerato senza pagare: ramo consumer dead); (c) rinnovi con cooldown stagionale (renewalSeason) + morale +8 solo al primo + durata proposta deterministica (niente reroll); (d) CTA «Gioca →» di nuovo VERDE (lo spread background:undefined uccideva la variante), label modulo avversario leggibile, badge versione con auto-fade 9s (su mobile copriva tab-bar e bottoni azione); (e) i tiri dell'eroe (e i rigori) contano in mxStats.shots (MOT-6: «3 gol, 1 tiro» addio); (f) ordini mister 28/63/75/85 e intervallo a soglia >= (lo skip non li brucia più); (g) spese-evento disabilitate a fondi insufficienti (niente benefici gratis a saldo 0); (h) windowOfferUsed reset a inizio stagione, id impulso duplicato rinominato, 8 duplicati nei pool nomi NL/BE/IT/PT sostituiti. // [5.94.0] ARC-1b+1c (audit priorità 13, gate potenziato): (1b) rimosso il monkey-patch globale di Math.random sotto ?cpmtest=1 — i core helper rng/pick/wPick usano uno stream interno seedabile (stessa formula/seed → valori identici a parità di __CPM_RESEED) e il check determinism misura finalmente una proprietà del codice di gioco (un Math.random() nudo nel setup path ora FA FALLIRE il gate, prima era mascherato); (1c) firma golden estesa coi campi PURI della situation (intent/ballState/movesCap via probe sitSig) — oracolo più ricco, posizioni off-ball sempre escluse (flaky). Golden rigenerata deliberatamente (solo campi aggiunti, htx/hty invariati). // [5.93.0] QUINTETTO da collaudo PO: (1) pallini probabilità RIMOSSI dai bottoni azione (condizionavano il player); (2) BIL-7 coppe post-trasferimento: gare cup/euro non giocate riportate nel nuovo calendario (euro con avversari embedded, coppa ri-localizzata nella nuova lega, bracket/survivors rigenerati), rischedulate in avanti se la week è passata, chiusura onesta se non c'è spazio; repair in migrazione per i save già rotti (girone 0/6, R16 zombie) + clamp del turno successivo (mai nel passato, ≤W37); (3) MVP: candidati = veri capocannonieri (niente più MVP con 15 gol contro un 35-gol mai candidato); (4) dominanza post-trasferimento moderata: bgMicroTick — ovrF non svuota più la difesa avversaria (0.3→0.10), momentum difensivo 0.35→0.25, floor gA 0.0045; (5) cerimonia trofeo 3D: premiazione TARDIVA alla prima gara dopo il clinch matematico (prima alreadyClinched la sopprimeva per sempre), flag titleCeremonyShown per stagione. // [5.92.0] TRIPLO FIX da collaudo PO: (1) TIFOSI IN PROPORZIONE — makeCrowdTex accetta rowsMul e buildStadium calcola le file per settore dall'ALTEZZA REALE della tribuna (curva mono-anello tedesca/sudamericana: ~1.6x file → figure più piccole e fitte, niente più giganti); (2) SUSPENSE SULL'ESITO — l'esito dell'azione non appare più istantaneo: prima la simulazione 3D (850-1250ms a seconda dell'azione: gol/assist/chance 1250, conclusioni 1100, resto 850), poi overlay+cronaca+flash insieme (resultReveal + outcome.revealMs; strip "⏳ azione…" durante l'attesa; vale anche per il rigore: gol/parata/errore a 1000ms); (3) STADI TEDESCHI TUTTI UGUALI — varietà DETERMINISTICA per club nello stesso template (altezza ±10%, distanza ±8%, tono tetto ×3, cemento caldo/freddo, angoli chiusi→curva per 1/3 dei club) + pool Deutsche Liga allargato (tedesco/moderno_it/comunale): 10 club tedeschi = 10 firme visive uniche (verificato). // [5.91.0] BIL-9 «EVENTI A BIVI» (audit priorità 14, ultimo tassello): la carriera smette di essere fatta di eventi-notifica. (a) gli IMPULSI INTERATTIVI (WEEKLY_IMPULSES, scelte con trade-off) escono anche nelle SETTIMANE DI PARTITA (~25%, prima del match — dove fatica/forma pesano davvero); prima vivevano solo nelle rare settimane libere: per questo il 90% degli eventi sembrava rumore automatico. (b) le scelte possono muovere i SOLDI VERI (nuova chiave ef.bank → bankBalance dell'economia 3.2) e la CHIMICA (ef.chem → teamChemistry). (c) +12 nuovi dilemmi con conseguenze reali: spot personale (cachet vs fiducia mister), cena di squadra (chimica vs fatica), investimento, beneficenza, agente che forza sui giornali (valore vs trust), aiutare il ragazzo della Primavera, intervista scomoda, chef personale, visita dei genitori, video virale, paciere tra compagni, l'orologio della squadra. Pool interattivo: 36→48.
+const GAME_VERSION="6.2.0"; // [6.2.0] KIT-1 (direttiva PO): guardaroba divise per club — Home/Away/Third deterministiche dai colori sociali (clubKits: Away=c2 o neutro velato del colore sociale, Third da palette hash mai in conflitto) + selezione automatica pre-partita a contrasto garantito (selectMatchKits: ospite veste Home→Away→Third, fallback max contrasto) → FINE dell azzurro-default (ALT_KITS resta solo safety-net in ThreeMatchView); eroe in trasferta veste la divisa Away/Third del SUO club; scoreboard/walkout/formazioni = maglie INDOSSATE; tifo/stadio = colori SOCIALI. Test: tests/visual/kit-diversity-test.mjs (252 club, selezioni massive). + CROWD-SCALE (collaudo PO «tifosi giganti»): la scala prospettica lw era un array FISSO da 6 file (file extra del fix 5.92 = NaN invisibili → anello basso inchiodato a 6 file giganti) → lw parametrica su rowsLow; file derivate dall altezza REALE coperta con tifoso-target ~0.9u (_rmFor, clamp 0.55-3.4); anello unico (curva-muro tedesca/provincia) texturizzato con la canvas INTERA (texFull: grandi davanti, piccoli/fitti in alto) invece della sola banda bassa stirata; Ovest con la SUA altezza; busti LOD1 prima fila -15%.
 const SAVE_VERSION=8;// v8 [5.81.0 BIL-3b]: bankBalance (stipendio accumulato, €) + perkTrainer/perkNutrition (staff personale) — migration retro-compatibile. v7: player.foot
 // 5.67.0 — TABELLONE realistico del torneo per NAZIONALI (Europeo/Mondiale): dopo il girone la fase a
 //   eliminazione segue Ottavi → Quarti → Semifinale → Finale (prima saltava dritta alla semifinale).
@@ -5561,10 +5561,13 @@ function makeCrowdTex(spec){
   const splitY=Math.round(H*(1-q.tierSplit));
   const colsLow=Math.max(26,Math.round((spec.width||100)*q.colsPerUnit));
   const colsUp=Math.round(colsLow*1.3);
-  const _rm92=Math.max(1,spec.rowsMul||1);// [5.92.0 FIX PO] settori più ALTI (anello unico, curva-muro) = PIÙ file, non tifosi giganti
+  const _rm92=Math.max(0.5,spec.rowsMul||1);// [5.92→6.2 CROWD-SCALE] file ∝ altezza reale del settore (anche <1 sugli impianti piccoli: tifoso-target costante)
   const rowsUp=Math.round(q.rowsUp*_rm92),rowsLow=Math.round(q.rowsLow*_rm92);
   const uH=splitY/rowsUp,cWU=W/colsUp,cWL=W/colsLow;
-  const lw=[1,1.1,1.22,1.35,1.5,1.66],lwSum=lw.reduce((a,b)=>a+b,0);
+  /* [6.2.0 CROWD-SCALE] scala prospettica PARAMETRICA su rowsLow: l array fisso da 6 file rendeva
+     lw[r]=undefined per r>=6 → rH=NaN → le file extra del fix 5.92 erano INVISIBILI (anello basso
+     inchiodato a 6 file giganti qualunque fosse rowsMul) */
+  const lw=Array.from({length:rowsLow},(_,r)=>1+(rowsLow<=1?0:r/(rowsLow-1))*0.66),lwSum=lw.reduce((a,b)=>a+b,0);
   // sedile vuoto: plastica nei colori del CLUB DI CASA (lo stadio è suo), desaturata
   const seatBase=_mix(homeHex,"#5a6272",0.45);
   // VIP box (Tribuna Ovest): campata centrale della fila alta dell'anello inferiore
@@ -5844,17 +5847,19 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
   const SEC=CROWD_CFG.sectors;
   const mkSpec=(key,sec,isAway,width,fillOv,rowsMul)=>({key,homeHex,awayHex,width,isMobile:isMob,seedKey:key+"_"+(crowd.seed||0),
     fill:fillOv!=null?fillOv:crowd.fill,intensity:crowd.intensity,isAway,sector:sec,wedgeFill:crowd.awayFill,rowsMul:rowsMul||1});
-  // [5.92.0 FIX PO «tifosi troppo grandi»] file ∝ altezza REALE del settore: l'anello unico copre l'intera
-  //   parete (~1/0.62 del tier legacy) e la curva-muro tedesca è ×1.5 → senza più file i tifosi si stiravano.
-  const _rowsFor92=(oneTier,hMul)=>(oneTier?1.6:1)*Math.max(1,hMul||1);
-  const _legacySideH92=(xl?20:lg?14:md?11:8);
-  const _sudRM=_rowsFor92(!!(T&&T.megaCurva)||_tiers===1,_sudH/_legacySideH92);
-  const _endRM=_rowsFor92(!!(T&&T.asym)||_tiers===1,_hK);
-  const _nrdRM=_rowsFor92(_tiers===1,_hK);
+  /* [6.2.0 CROWD-SCALE, collaudo PO «tifosi giganti»] file derivate dall ALTEZZA REALE coperta dalla
+     texture con TIFOSO-TARGET ~0.9u (giocatori ~1.9u): anello unico = muro intero con texFull (fronte
+     grande + fondo fitto = LOD naturale), 2-3 anelli = banda bassa (52%) sull anello inferiore.
+     Il moltiplicatore 5.92 era inefficace sull anello basso (lw fissa a 6 file → extra NaN). */
+  const _q92=CROWD_CFG.quality;
+  const _rmFor=(sH,oneTier)=>{const covered=oneTier?Math.max(4,sH-2):Math.max(3,sH*0.62-3);
+    return Math.max(0.55,Math.min(3.4,(covered/0.9)/(oneTier?(_q92.rowsLow+_q92.rowsUp):_q92.rowsLow)));};
+  const _sud1T=!!(T&&T.megaCurva)||_tiers===1,_est1T=!!(T&&T.asym)||_tiers===1;
+  const _sudRM=_rmFor(_sudH,_sud1T),_endRM=_rmFor(endH,_est1T),_ovRM=_rmFor(endH,_tiers===1),_nrdRM=_rmFor(sideH,_tiers===1);
   const _sud=makeCrowdTex(mkSpec("curvaSud",SEC.curvaSud,false,sideW,null,_sudRM));
   const _nord=makeCrowdTex(mkSpec("curvaNord",SEC.curvaNord,true,sideW,crowd.awayFill,_nrdRM));
   const _est=makeCrowdTex(mkSpec("tribunaEst",SEC.tribunaEst,false,endW,null,_endRM));
-  const _ovest=makeCrowdTex(mkSpec("tribunaOvest",SEC.tribunaOvest,false,endW,null,_nrdRM));
+  const _ovest=makeCrowdTex(mkSpec("tribunaOvest",SEC.tribunaOvest,false,endW,null,_ovRM));
   const crowdAnims=[_ovest.redraw,_est.redraw,_sud.redraw,_nord.redraw];
 
   // Helper: gradinata a DUE ANELLI inclinati verso il campo (§1 profondità reale, via muro piatto)
@@ -5876,7 +5881,7 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
     // pendenze da vero stadio (~33°/42°): più piatte, dalla camera broadcast alta si vedrebbero di taglio
     let mLow,mUp;
     if(_nt===1){// anello UNICO ripido (provincia/comunale · curva-muro tedesca)
-      mLow=mkTier(-standD/2+0.6,3.0,standD*0.30,standH+1.0,crowdObj.texLow);
+      mLow=mkTier(-standD/2+0.6,3.0,standD*0.30,standH+1.0,crowdObj.texFull);/* [6.2.0 CROWD-SCALE] muro intero = canvas INTERA (grandi in basso, piccoli/fitti in alto), non piu la sola banda bassa stirata */
       mUp=mkTier(standD*0.30,standH+1.0,standD*0.34,standH+1.2,crowdObj.texUp);// fascia sommitale minima (tiene vivo texUp)
     }else{
       mLow=mkTier(-standD/2+0.6,3.0,-standD*0.10,standH*0.62,crowdObj.texLow);
@@ -5926,7 +5931,7 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
       const _m=new THREE.Matrix4(),_col=new THREE.Color();
       for(let i=0;i<nFront;i++){
         const x=-standW*0.46+(i+0.5)/nFront*standW*0.92+(fr()-0.5)*1.2;
-        const z=-standD/2+0.95+fr()*0.5, s=0.85+fr()*0.28, sy=fr()<0.30?s*0.78:s;// alcuni seduti
+        const z=-standD/2+0.95+fr()*0.5, s=0.72+fr()*0.24, sy=fr()<0.30?s*0.78:s;// alcuni seduti · [6.2.0 CROWD-SCALE] ridotti ~15% (collaudo PO)
         const y=3.0+0.48*sy;
         const bm=new THREE.Matrix4().makeScale(s,sy,s);bm.setPosition(x,y,z);bases.push(bm);
         const hm=new THREE.Matrix4().makeScale(s,s,s);hm.setPosition(x,y+0.62*sy,z);headBases.push(hm);
@@ -8986,6 +8991,35 @@ const resolveKitConflict=(homeCol,awayCol)=>{
 const hexLum=h=>{const c=hexToRgb(h);return(0.2126*c.r+0.7152*c.g+0.0722*c.b)/255;};
 // kit a tinta unita per ogni parte: pantaloncini bianchi se la maglia è scura, scuri se chiara; calzettoni in tinta maglia.
 const buildKit=shirt=>{const L=hexLum(shirt);return{shirt,shorts:L<0.5?'#f1f1f3':'#181826',socks:shirt,shoes:'#141418'};};
+/* [6.2.0 KIT-1] GUARDAROBA DIVISE PER CLUB (direttiva PO: identita cromatica per club, mai azzurro di default).
+   Tre divise deterministiche dai colori sociali (zero campi save): Home = colori sociali; Away = seconda maglia
+   di IDENTITA (c2 se leggibile contro la Home, altrimenti neutro chiaro/scuro VELATO del colore sociale, sfumatura
+   unica per club); Third = tinta di carattere dalla palette, stabile per club (hash su id), mai in conflitto con Home/Away. */
+const KIT_PALETTE=['#f6c90e','#ff7a1a','#7c3aed','#84cc16','#e91e63','#16a34a','#7f1d1d','#0b2e6b','#f5efe0','#243b2f','#c2410c','#94a3b8','#4a044e'];
+const _mixHex=(a,b,t)=>{const A=hexToRgb(a),B=hexToRgb(b),c=v=>Math.round(Math.max(0,Math.min(255,v))).toString(16).padStart(2,'0');return '#'+c(A.r+(B.r-A.r)*t)+c(A.g+(B.g-A.g)*t)+c(A.b+(B.b-A.b)*t);};
+const clubKits=(club)=>{
+  const c=(club&&club.c)||'#2563eb',c2=(club&&club.c2)||'#ffffff',key=String((club&&(club.id||club.n))||c);
+  const _neu=hexLum(c)<0.5?'#f2f1ec':'#15151c';
+  const _awT=0.08+(hashStr(key+':aw')%5)*0.02; /* velatura hash-variata: club con gli stessi colori sociali → sfumature diverse */
+  let awayShirt=(c2&&!kitsClash(c,c2)&&colorDist(c,c2)>=120)?((_satOf(c2)<0.2&&!kitsClash(c,_mixHex(c2,c,_awT)))?_mixHex(c2,c,_awT):c2):_mixHex(_neu,c,_awT+0.06);
+  if(kitsClash(c,awayShirt))awayShirt=_mixHex(_neu,c2,0.14);
+  if(kitsClash(c,awayShirt))awayShirt=_neu;
+  const h0=hashStr(key+':third')%KIT_PALETTE.length;let third=KIT_PALETTE[h0];
+  for(let i=0;i<KIT_PALETTE.length;i++){const k=KIT_PALETTE[(h0+i)%KIT_PALETTE.length];if(!kitsClash(c,k)&&!kitsClash(awayShirt,k)){third=k;break;}}
+  const _thV=_mixHex(third,c,0.10+(hashStr(key+':veil')%4)*0.025);
+  if(!kitsClash(c,_thV)&&!kitsClash(awayShirt,_thV))third=_thV;
+  return {home:{shirt:c,accent:c2,name:'Home'},away:{shirt:awayShirt,accent:c,name:'Away'},third:{shirt:third,accent:c2,name:'Third'}};
+};
+/* Selezione automatica pre-partita: la squadra di casa veste la Home; l ospite la PRIMA divisa del SUO guardaroba
+   che non confligge (Home poi Away poi Third: se puo, gioca coi propri colori) — fallback: massimo contrasto. */
+const selectMatchKits=(homeClub,awayClub)=>{
+  const hk=clubKits(homeClub),ak=clubKits(awayClub),homeShirt=hk.home.shirt;
+  const cands=[ak.home,ak.away,ak.third,{shirt:hexLum(homeShirt)<0.5?'#f2f1ec':'#15151c',accent:ak.home.shirt,name:'Third'}];
+  let pick=cands.find(k=>!kitsClash(homeShirt,k.shirt));
+  if(!pick)pick=cands.reduce((b,k)=>colorDist(homeShirt,k.shirt)>colorDist(homeShirt,b.shirt)?k:b,cands[0]);
+  return {homeShirt,homeAccent:hk.home.accent,awayShirt:pick.shirt,awayAccent:pick.accent,awayKitName:pick.name};
+};
+if(typeof window!=='undefined'&&!window.__CPM_STORE_BUILD){window.__CPM_clubKits=clubKits;window.__CPM_kitSel=selectMatchKits;}
 // 3D-VARIETY (Step B): aspetto deterministico per giocatore (CH38 consente altezza/corporatura/pelle/capelli/calvizie).
 // I toni pelle/capelli MOLTIPLICANO la texture reale del modello → restano plausibili.
 // toni MOLTIPLICATIVI vicini al bianco (la texture CH38 ha già un incarnato): variazione sottile, non scurire troppo (evita "tutti neri").
@@ -10848,24 +10882,29 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   // National context — derive home team from player's national team data
   const isNatCtx=context==="national"||context==="nationsCup"||context==="euroMondiale_group"||context==="euroMondiale_ko"||context==="euroMondiale"||context==="euroMondiale_qualif";
   const _myNatData=isNatCtx?(NAT_CLUB_DATA[player.nation||"Italia"]||{id:"it-nt",a:"ITA",p:82,c:"#003399",c2:"#ffffff",nat:"🇮🇹"}):null;
-  // heroKitCol: always the player's own kit color (club or national) — used for hero jersey drawing
-  const heroKitCol=isNatCtx?(_myNatData?.c||"#003399"):(player.club?.c||"#22c55e");
-  const heroKitCol2=isNatCtx?(_myNatData?.c2||"#ffffff"):(player.club?.c2||"#ffffff");
-  // PitchCanvas kit colors: homeCol=player's team, oppCol=opponent (pitch layout: player always attacks from "home" side)
-  // Sprint 155: use national kit color when in national context
-  const homeKitCol=isNatCtx?(_myNatData?.c||"#003399"):(player.club?.c||"#22c55e");
-  const awayKitCol=resolveKitConflict(homeKitCol,opponent?.c||"#ef4444");
-  // Scoreboard display colors: left=TRUE home team, right=TRUE away team
-  const scoreHomeCol=isNatCtx?heroKitCol:isMatchHome?(player.club?.c||"#22c55e"):(opponent?.c||"#ef4444");
-  const scoreAwayCol=isNatCtx?resolveKitConflict(heroKitCol,opponent?.c||"#ef4444"):isMatchHome?resolveKitConflict(player.club?.c||"#22c55e",opponent?.c||"#ef4444"):resolveKitConflict(opponent?.c||"#ef4444",player.club?.c||"#22c55e");
+  // [6.2.0 KIT-1] Guardaroba per club + selezione automatica pre-partita: la VERA squadra di casa veste
+  // la Home; l ospite la prima divisa del suo guardaroba che garantisce contrasto (Home poi Away poi Third).
+  const _kitTrueHome=isNatCtx?{id:_myNatData?.id||"nt",n:player.nation||"Italia",c:_myNatData?.c||"#003399",c2:_myNatData?.c2||"#ffffff"}:isMatchHome?(player.club||opponent||{}):(opponent||{});
+  const _kitTrueAway=isNatCtx?(opponent||{}):isMatchHome?(opponent||{}):(player.club||opponent||{});
+  const _mkits=selectMatchKits(_kitTrueHome,_kitTrueAway);
+  const _plIsKitHome=isNatCtx||isMatchHome;
+  // heroKitCol: la divisa INDOSSATA dalla squadra dell eroe in QUESTA partita (in trasferta puo essere Away/Third)
+  const heroKitCol=_plIsKitHome?_mkits.homeShirt:_mkits.awayShirt;
+  const heroKitCol2=_plIsKitHome?_mkits.homeAccent:_mkits.awayAccent;
+  // Pitch kit colors: homeCol=squadra dell eroe (attacca sempre dal lato "home"), oppCol=avversario
+  const homeKitCol=heroKitCol;
+  const awayKitCol=_plIsKitHome?_mkits.awayShirt:_mkits.homeShirt;
+  // Scoreboard display colors: left=TRUE home team, right=TRUE away team → SEMPRE le maglie indossate in campo
+  const scoreHomeCol=_mkits.homeShirt;
+  const scoreAwayCol=_mkits.awayShirt;
   // homeTeamObj/awayTeamObj: teams displayed in MatchdayCard/FormationView
   // isMatchHome=true  → home=playerClub, away=opponent
   // isMatchHome=false → home=opponent,    away=playerClub
   const homeTeamObj=isNatCtx?{id:_myNatData.id,n:player.nation||"Italia",a:_myNatData.a,p:_myNatData.p,c:_myNatData.c,c2:_myNatData.c2,nat:_myNatData.nat,lg:"Nazionale"}:isMatchHome?(player.club||opponent):opponent;
   const awayTeamObj=isNatCtx?opponent:isMatchHome?opponent:(player.club||opponent);
   // walkout canvas colors: actual home team color for the tunnel walk (not from player's perspective)
-  const walkoutHomeCol=isNatCtx?heroKitCol:isMatchHome?(player.club?.c||"#22c55e"):(opponent?.c||"#ef4444");
-  const walkoutAwayCol=isNatCtx?resolveKitConflict(heroKitCol,opponent?.c||"#ef4444"):isMatchHome?resolveKitConflict(player.club?.c||"#22c55e",opponent?.c||"#ef4444"):resolveKitConflict(opponent?.c||"#ef4444",player.club?.c||"#22c55e");
+  const walkoutHomeCol=_mkits.homeShirt; /* [6.2.0 KIT-1] tunnel con le maglie realmente indossate */
+  const walkoutAwayCol=_mkits.awayShirt;
   // Derby + big-game detection (used by WalkoutOverlay and MatchdayCard)
   const drby=isDerby(player.club?.id,opponent?.id);
   const mw=context==="trial"?1:calcMatchWeight(player,opponent?.id||opponent?.n,player.standings||[],player.week||1);
@@ -11036,7 +11075,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                 allPlayers={matchPlayers} homeClub={homeTeamObj} competitionLabel={_compLabel} heroNum={player.jerseyNum||10} subEntry={subEntryKey}
                 scoreHome={isMatchHome?score.home:score.away} scoreAway={isMatchHome?score.away:score.home} homeAbbr={(homeTeamObj?.a||homeTeamObj?.n||"HOM").slice(0,3).toUpperCase()} awayAbbr={(awayTeamObj?.a||awayTeamObj?.n||"AWA").slice(0,3).toUpperCase()}
                 heroKitCol={heroKitCol} heroKitCol2={heroKitCol2}
-                stadiumHomeCol={scoreHomeCol} stadiumAwayCol={scoreAwayCol}
+                stadiumHomeCol={homeTeamObj?.c||scoreHomeCol} stadiumAwayCol={awayTeamObj?.c||scoreAwayCol} /* [6.2.0 KIT-1] tifo coi colori SOCIALI, non con la divisa indossata */
                 stadiumStyle={getStadiumStyle(homeTeamObj)}
                 ballX={ballPos.x} ballY={ballPos.y} hlType={_hlType} hlVariant={_hlVariant} hlPattern={_hlPattern} hlOutcomeKind={_hlOutcomeKind} hlQuality={_hlQuality} adaptShift={_adaptShift} adaptHotY={_adaptHotY} adaptStr={_adaptStr} bgAction={bgAction} hlZone={hlZone}
                 timeOfDay={timeOfDay} weather={weather} kickoffHour={kickoffHour} attendance={attendance} crowd={crowdCtx}
