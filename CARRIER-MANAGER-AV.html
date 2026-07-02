@@ -142,13 +142,14 @@ const _CPM_STAGE=!((typeof window!=='undefined')&&/[?&]cpmstage=0\b/.test((windo
 //   (il micro-jitter del target non fa più entrare la corsa "marcia sul posto"). ?cpmidle=0 spegne.
 const _CPM_IDLE=!((typeof window!=='undefined')&&/[?&]cpmidle=0\b/.test((window.location&&window.location.search)||""));
 
-// VISUAL-TEST DETERMINISM (4.83.0): con ?cpmtest=1 sostituisce Math.random con un PRNG seedato
-// (mulberry32) → crowd texture / roster / animazioni riproducibili run-to-run. Prerequisito per la
-// golden visual regression. Eseguito PRIMA di ogni codice di gioco. Zero impatto in produzione.
+// [5.94.0 ARC-1b] VISUAL-TEST DETERMINISM senza monkey-patch: Math.random NON viene più sostituito.
+//   Il determinismo del setup è ora una proprietà del CODICE DI GIOCO — i core helper rng/pick/wPick
+//   usano uno stream interno seedabile (definito accanto a loro, stessa formula mulberry32) pilotato da
+//   __CPM_RESEED. Se una regressione introduce Math.random() nudo nel setup path, il check `determinism`
+//   del gate ora FALLISCE (prima il patch globale lo mascherava → check tautologico, audit ARC-1).
+//   Qui solo un buffer pre-boot per chi chiama __CPM_RESEED prima del game code.
 if(typeof window!=='undefined'&&!window.__CPM_STORE_BUILD&&/[?&]cpmtest=1\b/.test(window.location.search||"")){
-  (function(){var s=0x9e3779b9>>>0;Math.random=function(){s=(s+0x6D2B79F5)|0;var t=Math.imul(s^(s>>>15),1|s);t=(t+Math.imul(t^(t>>>7),61|t))^t;return((t^(t>>>14))>>>0)/4294967296;};
-    // reseed deterministico per indice: rende getStartPos (rng) e ogni random per-situation riproducibile a prescindere dalla storia del match
-    window.__CPM_RESEED=function(n){s=(0x9e3779b9^Math.imul((n>>>0)+1,0x6D2B79F5))>>>0;};})();
+  window.__CPM_RESEED=function(n){window.__CPM_RESEED_PENDING=n;};
   window.__CPM_FROZEN=false; // il render loop del match usa dt=0 quando true → frame statico deterministico
 }
 
@@ -2697,7 +2698,19 @@ const FORMATION_AWAY=[[95,50],[78,15],[78,35],[78,65],[78,85],[62,25],[62,50],[6
 /* ========================================
    HELPERS
 ======================================== */
-const rng=(a,b)=>Math.floor(Math.random()*(b-a+1))+a;
+// [5.94.0 ARC-1b] stream RNG interno SEEDABILE (attivo SOLO sotto ?cpmtest=1, mai nella store build):
+//   stessa formula mulberry32 e stessa derivazione del seed del vecchio patch globale → a parità di
+//   __CPM_RESEED(n) i valori di rng/pick sono IDENTICI (golden invariata sui campi storici).
+//   In produzione _cpmTestRand resta null → puro Math.random.
+let _cpmTestRand=null;
+const _cpmRnd=()=>_cpmTestRand?_cpmTestRand():Math.random();
+if(typeof window!=='undefined'&&!window.__CPM_STORE_BUILD&&/[?&]cpmtest=1\b/.test((window.location&&window.location.search)||"")){
+  const _mkTR=(seed)=>{let s0=seed>>>0;return function(){s0=(s0+0x6D2B79F5)|0;var t=Math.imul(s0^(s0>>>15),1|s0);t=(t+Math.imul(t^(t>>>7),61|t))^t;return((t^(t>>>14))>>>0)/4294967296;};};
+  _cpmTestRand=_mkTR(0x9e3779b9);
+  window.__CPM_RESEED=function(n){_cpmTestRand=_mkTR((0x9e3779b9^Math.imul((n>>>0)+1,0x6D2B79F5))>>>0);};
+  if(window.__CPM_RESEED_PENDING!=null){window.__CPM_RESEED(window.__CPM_RESEED_PENDING);try{delete window.__CPM_RESEED_PENDING;}catch(_e){}}
+}
+const rng=(a,b)=>Math.floor(_cpmRnd()*(b-a+1))+a;
 const clamp=(v,lo,hi)=>Math.max(lo,Math.min(hi,v));
 // Sprint POP — crescita popolarità realistica: rendimenti decrescenti + freno inizio carriera.
 // I guadagni positivi vengono attenuati in base a popolarità attuale, partite in carriera e stagione.
@@ -2712,9 +2725,9 @@ function popGain(p,amt){
   const dim=cur<50?1:cur<65?0.68:cur<80?0.42:cur<90?0.24:0.12;
   return Math.max(1,Math.round(amt*career*dim));
 }
-const pick=arr=>arr[Math.floor(Math.random()*arr.length)];
+const pick=arr=>arr[Math.floor(_cpmRnd()*arr.length)];
 const shuffle=arr=>{const a=[...arr];for(let i=a.length-1;i>0;i--){const j=rng(0,i);[a[i],a[j]]=[a[j],a[i]];}return a;};
-const wPick=evts=>{const tot=evts.reduce((s,e)=>s+(e.w||1),0);let r=Math.random()*tot;for(const e of evts){r-=(e.w||1);if(r<=0)return e;}return evts[0];};
+const wPick=evts=>{const tot=evts.reduce((s,e)=>s+(e.w||1),0);let r=_cpmRnd()*tot;for(const e of evts){r-=(e.w||1);if(r<=0)return e;}return evts[0];};
 function baseStats(archetype){
   const b={velocità:rng(55,72),tecnica:rng(54,70),fisico:rng(50,68),mentalità:rng(50,68),tiro:rng(60,74),passaggio:rng(48,65),dribbling:rng(55,72),posizionamento:rng(55,70)};
   const arc=ARCHETYPES.find(a=>a.id===(archetype?.id||archetype));
@@ -3037,7 +3050,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="5.93.0"; // [5.93.0] QUINTETTO da collaudo PO: (1) pallini probabilità RIMOSSI dai bottoni azione (condizionavano il player); (2) BIL-7 coppe post-trasferimento: gare cup/euro non giocate riportate nel nuovo calendario (euro con avversari embedded, coppa ri-localizzata nella nuova lega, bracket/survivors rigenerati), rischedulate in avanti se la week è passata, chiusura onesta se non c'è spazio; repair in migrazione per i save già rotti (girone 0/6, R16 zombie) + clamp del turno successivo (mai nel passato, ≤W37); (3) MVP: candidati = veri capocannonieri (niente più MVP con 15 gol contro un 35-gol mai candidato); (4) dominanza post-trasferimento moderata: bgMicroTick — ovrF non svuota più la difesa avversaria (0.3→0.10), momentum difensivo 0.35→0.25, floor gA 0.0045; (5) cerimonia trofeo 3D: premiazione TARDIVA alla prima gara dopo il clinch matematico (prima alreadyClinched la sopprimeva per sempre), flag titleCeremonyShown per stagione. // [5.92.0] TRIPLO FIX da collaudo PO: (1) TIFOSI IN PROPORZIONE — makeCrowdTex accetta rowsMul e buildStadium calcola le file per settore dall'ALTEZZA REALE della tribuna (curva mono-anello tedesca/sudamericana: ~1.6x file → figure più piccole e fitte, niente più giganti); (2) SUSPENSE SULL'ESITO — l'esito dell'azione non appare più istantaneo: prima la simulazione 3D (850-1250ms a seconda dell'azione: gol/assist/chance 1250, conclusioni 1100, resto 850), poi overlay+cronaca+flash insieme (resultReveal + outcome.revealMs; strip "⏳ azione…" durante l'attesa; vale anche per il rigore: gol/parata/errore a 1000ms); (3) STADI TEDESCHI TUTTI UGUALI — varietà DETERMINISTICA per club nello stesso template (altezza ±10%, distanza ±8%, tono tetto ×3, cemento caldo/freddo, angoli chiusi→curva per 1/3 dei club) + pool Deutsche Liga allargato (tedesco/moderno_it/comunale): 10 club tedeschi = 10 firme visive uniche (verificato). // [5.91.0] BIL-9 «EVENTI A BIVI» (audit priorità 14, ultimo tassello): la carriera smette di essere fatta di eventi-notifica. (a) gli IMPULSI INTERATTIVI (WEEKLY_IMPULSES, scelte con trade-off) escono anche nelle SETTIMANE DI PARTITA (~25%, prima del match — dove fatica/forma pesano davvero); prima vivevano solo nelle rare settimane libere: per questo il 90% degli eventi sembrava rumore automatico. (b) le scelte possono muovere i SOLDI VERI (nuova chiave ef.bank → bankBalance dell'economia 3.2) e la CHIMICA (ef.chem → teamChemistry). (c) +12 nuovi dilemmi con conseguenze reali: spot personale (cachet vs fiducia mister), cena di squadra (chimica vs fatica), investimento, beneficenza, agente che forza sui giornali (valore vs trust), aiutare il ragazzo della Primavera, intervista scomoda, chef personale, visita dei genitori, video virale, paciere tra compagni, l'orologio della squadra. Pool interattivo: 36→48.
+const GAME_VERSION="5.94.0"; // [5.94.0] ARC-1b+1c (audit priorità 13, gate potenziato): (1b) rimosso il monkey-patch globale di Math.random sotto ?cpmtest=1 — i core helper rng/pick/wPick usano uno stream interno seedabile (stessa formula/seed → valori identici a parità di __CPM_RESEED) e il check determinism misura finalmente una proprietà del codice di gioco (un Math.random() nudo nel setup path ora FA FALLIRE il gate, prima era mascherato); (1c) firma golden estesa coi campi PURI della situation (intent/ballState/movesCap via probe sitSig) — oracolo più ricco, posizioni off-ball sempre escluse (flaky). Golden rigenerata deliberatamente (solo campi aggiunti, htx/hty invariati). // [5.93.0] QUINTETTO da collaudo PO: (1) pallini probabilità RIMOSSI dai bottoni azione (condizionavano il player); (2) BIL-7 coppe post-trasferimento: gare cup/euro non giocate riportate nel nuovo calendario (euro con avversari embedded, coppa ri-localizzata nella nuova lega, bracket/survivors rigenerati), rischedulate in avanti se la week è passata, chiusura onesta se non c'è spazio; repair in migrazione per i save già rotti (girone 0/6, R16 zombie) + clamp del turno successivo (mai nel passato, ≤W37); (3) MVP: candidati = veri capocannonieri (niente più MVP con 15 gol contro un 35-gol mai candidato); (4) dominanza post-trasferimento moderata: bgMicroTick — ovrF non svuota più la difesa avversaria (0.3→0.10), momentum difensivo 0.35→0.25, floor gA 0.0045; (5) cerimonia trofeo 3D: premiazione TARDIVA alla prima gara dopo il clinch matematico (prima alreadyClinched la sopprimeva per sempre), flag titleCeremonyShown per stagione. // [5.92.0] TRIPLO FIX da collaudo PO: (1) TIFOSI IN PROPORZIONE — makeCrowdTex accetta rowsMul e buildStadium calcola le file per settore dall'ALTEZZA REALE della tribuna (curva mono-anello tedesca/sudamericana: ~1.6x file → figure più piccole e fitte, niente più giganti); (2) SUSPENSE SULL'ESITO — l'esito dell'azione non appare più istantaneo: prima la simulazione 3D (850-1250ms a seconda dell'azione: gol/assist/chance 1250, conclusioni 1100, resto 850), poi overlay+cronaca+flash insieme (resultReveal + outcome.revealMs; strip "⏳ azione…" durante l'attesa; vale anche per il rigore: gol/parata/errore a 1000ms); (3) STADI TEDESCHI TUTTI UGUALI — varietà DETERMINISTICA per club nello stesso template (altezza ±10%, distanza ±8%, tono tetto ×3, cemento caldo/freddo, angoli chiusi→curva per 1/3 dei club) + pool Deutsche Liga allargato (tedesco/moderno_it/comunale): 10 club tedeschi = 10 firme visive uniche (verificato). // [5.91.0] BIL-9 «EVENTI A BIVI» (audit priorità 14, ultimo tassello): la carriera smette di essere fatta di eventi-notifica. (a) gli IMPULSI INTERATTIVI (WEEKLY_IMPULSES, scelte con trade-off) escono anche nelle SETTIMANE DI PARTITA (~25%, prima del match — dove fatica/forma pesano davvero); prima vivevano solo nelle rare settimane libere: per questo il 90% degli eventi sembrava rumore automatico. (b) le scelte possono muovere i SOLDI VERI (nuova chiave ef.bank → bankBalance dell'economia 3.2) e la CHIMICA (ef.chem → teamChemistry). (c) +12 nuovi dilemmi con conseguenze reali: spot personale (cachet vs fiducia mister), cena di squadra (chimica vs fatica), investimento, beneficenza, agente che forza sui giornali (valore vs trust), aiutare il ragazzo della Primavera, intervista scomoda, chef personale, visita dei genitori, video virale, paciere tra compagni, l'orologio della squadra. Pool interattivo: 36→48.
 const SAVE_VERSION=8;// v8 [5.81.0 BIL-3b]: bankBalance (stipendio accumulato, €) + perkTrainer/perkNutrition (staff personale) — migration retro-compatibile. v7: player.foot
 // 5.67.0 — TABELLONE realistico del torneo per NAZIONALI (Europeo/Mondiale): dopo il girone la fase a
 //   eliminazione segue Ottavi → Quarti → Semifinale → Finale (prima saltava dritta alla semifinale).
@@ -7119,7 +7132,10 @@ function ThreeMatchView(props){
           attackDir:1, goalHome:{gx:0}, goalAway:{gx:100}, // home attacca verso gx=100 (porta away)
           players:plist, hero:heroState,
           ball:{x:bg.x,y:bg.y,worldY:+ball.position.y.toFixed(2),onScreen:bn.onScreen,ndc:{x:bn.x,y:bn.y},heldBy:{team:held&&held.team,role:held&&held.role,dist:+bd.toFixed(1)}},
-          counts:{home:plist.filter(p=>p.team==="home").length,away:plist.filter(p=>p.team==="away").length,ref:plist.filter(p=>p.team==="ref").length,total:plist.length} };
+          counts:{home:plist.filter(p=>p.team==="home").length,away:plist.filter(p=>p.team==="away").length,ref:plist.filter(p=>p.team==="ref").length,total:plist.length},
+          // [5.94.0 ARC-1c] campi PURI e stabili della situation forzata (intent/ballState/movesCap):
+          //   funzioni pure di SITUATIONS[gi] → ampliano l'oracolo golden senza le posizioni off-ball (flaky)
+          sitSig:(function(){try{const gi=window.__CPM_LAST_FORCED_GI;if(gi==null)return null;const st=(typeof SITUATIONS!=='undefined')?SITUATIONS[gi]:null;if(!st)return null;return{it:(typeof deriveIntent==="function"?deriveIntent(st):null)||null,bs:(typeof hlBallState==="function"?hlBallState(st):null)||null,mm:(typeof cappedMM==="function"?cappedMM(st):null)};}catch(_e){return null;}})() };
       };
       // F1: probe del FOOTBALL STATE osservatore (lo aggiorna on-demand e lo ritorna) — per le metriche F0.
       window.__CPM_FOOTBALL_STATE=function(){try{updateFootballState();}catch(e){} return (sr.current&&sr.current.football)||null;};
@@ -9395,6 +9411,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     // forza la situation gi: posiziona l'eroe alla startZone e va DIRETTO al framing interattivo
     // (salta hl_intro, cinematico). Replica la transizione reale: mm===0 (e non lock) → hl_choose, altrimenti hl_move.
     window.__CPM_FORCE_SIT=(gi,choose,ppos)=>{ const sit=SITUATIONS[gi]; if(!sit)return false;
+      window.__CPM_LAST_FORCED_GI=gi;// [5.94.0 ARC-1c] la probe __CPM_STATE deriva i campi puri della sit corrente
       if(window.__CPM_RESEED)window.__CPM_RESEED(gi); // start position deterministica per indice
       _hlActionFiredRef.current=false; setOutcome(null); setChosenAct(null); pendingChainSitRef.current=null; pendingActionRef.current=null;
       setSituations(SITUATIONS.slice());// [5.90.0] le CHAIN (assist-chance/dribbling) splice-ano l'array tra un force e l'altro → gli indici slittavano e la timeline confrontava sit diverse: riparti sempre dalla base statica // reset (consenti nuova risoluzione, niente azione "pending" residua che si auto-risolverebbe entrando in hl_choose)

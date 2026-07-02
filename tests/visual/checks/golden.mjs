@@ -1,5 +1,5 @@
 /* CHECK — GOLDEN REGRESSION (per-situation, su firma di stato deterministica)
-   Confronta la firma {htx,hty,poss,cam,ch,ca} con la baseline committata (golden-sigs.json).
+   Confronta la firma {htx,hty,cam,ch,ca,it,bs,mm} con la baseline committata (golden-sigs.json). [5.94.0 ARC-1c: +intent/ballState/movesCap]
    "stesso seed → stesso hash finale": qualunque differenza = regressione logica/posizionale. */
 import { sigStr, sigEq } from '../lib/harness.mjs';
 export default {

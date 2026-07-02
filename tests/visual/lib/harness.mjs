@@ -238,7 +238,11 @@ export function stateSig(s) {
   // solo campi PIENAMENTE deterministici (reseed): target logico eroe + camera + conteggi.
   // NB: il possessore (geometria sul nearest player in drift) NON è deterministico → escluso dalla firma,
   // la sua correttezza è verificata dal check initial-state (palla agganciata all'eroe).
-  return { htx: ht.x ?? null, hty: ht.y ?? null, cam: !!(s.camera && s.camera.abovePitch), ch: cn.home ?? null, ca: cn.away ?? null };
+  const base = { htx: ht.x ?? null, hty: ht.y ?? null, cam: !!(s.camera && s.camera.abovePitch), ch: cn.home ?? null, ca: cn.away ?? null };
+  // [5.94.0 ARC-1c] campi PURI della Situation (intent/ballState/movesCap dalla probe sitSig):
+  // ampliano l'oracolo golden; le posizioni off-ball restano ESCLUSE di proposito (drift wall-clock → flaky).
+  if (s.sitSig) { base.it = s.sitSig.it ?? null; base.bs = s.sitSig.bs ?? null; base.mm = s.sitSig.mm ?? null; }
+  return base;
 }
 export const sigStr = sig => (sig ? JSON.stringify(sig) : 'null');
 export const sigEq = (a, b) => sigStr(a) === sigStr(b);

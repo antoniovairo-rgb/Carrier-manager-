@@ -1,7 +1,7 @@
 /* CHECK 1 — DETERMINISMO (global)
    Stessa seed → stesso risultato. Confronta la FIRMA DI STATO di un campione di Situations
    tra la passata principale (pass1) e una ri-cattura indipendente. Con __CPM_RESEED(gi) la
-   firma {htx,hty,poss,cam,ch,ca} è esattamente riproducibile: qualunque divergenza = bug. */
+   firma {htx,hty,cam,ch,ca,it,bs,mm} è esattamente riproducibile: qualunque divergenza = bug. [5.94.0 ARC-1b: il gate NON patcha più Math.random — il determinismo misurato è una proprietà del codice di gioco] */
 import { sigStr, sigEq } from '../lib/harness.mjs';
 export default {
   id: 'determinism',
