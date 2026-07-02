@@ -3079,7 +3079,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="6.2.0"; // [6.2.0] KIT-1 (direttiva PO): guardaroba divise per club — Home/Away/Third deterministiche dai colori sociali (clubKits: Away=c2 o neutro velato del colore sociale, Third da palette hash mai in conflitto) + selezione automatica pre-partita a contrasto garantito (selectMatchKits: ospite veste Home→Away→Third, fallback max contrasto) → FINE dell azzurro-default (ALT_KITS resta solo safety-net in ThreeMatchView); eroe in trasferta veste la divisa Away/Third del SUO club; scoreboard/walkout/formazioni = maglie INDOSSATE; tifo/stadio = colori SOCIALI. Test: tests/visual/kit-diversity-test.mjs (252 club, selezioni massive). + CROWD-SCALE (collaudo PO «tifosi giganti»): la scala prospettica lw era un array FISSO da 6 file (file extra del fix 5.92 = NaN invisibili → anello basso inchiodato a 6 file giganti) → lw parametrica su rowsLow; file derivate dall altezza REALE coperta con tifoso-target ~0.9u (_rmFor, clamp 0.55-3.4); anello unico (curva-muro tedesca/provincia) texturizzato con la canvas INTERA (texFull: grandi davanti, piccoli/fitti in alto) invece della sola banda bassa stirata; Ovest con la SUA altezza; busti LOD1 prima fila -15%.
+const GAME_VERSION="6.2.1"; // [6.2.1] UX-BANNER (collaudo PO): le strisce fisse Sostieni/Idee & Feedback si nascondono quando lo scroll di .cpm-scroll arriva a fine pagina (coprivano l ultima card) e ricompaiono risalendo — solo mobile (<900px) e solo su pagine realmente scrollabili; listener passivo con rAF, ricalcolo su cambio tab/screen e resize. // [6.2.0] KIT-1 (direttiva PO): guardaroba divise per club — Home/Away/Third deterministiche dai colori sociali (clubKits: Away=c2 o neutro velato del colore sociale, Third da palette hash mai in conflitto) + selezione automatica pre-partita a contrasto garantito (selectMatchKits: ospite veste Home→Away→Third, fallback max contrasto) → FINE dell azzurro-default (ALT_KITS resta solo safety-net in ThreeMatchView); eroe in trasferta veste la divisa Away/Third del SUO club; scoreboard/walkout/formazioni = maglie INDOSSATE; tifo/stadio = colori SOCIALI. Test: tests/visual/kit-diversity-test.mjs (252 club, selezioni massive). + CROWD-SCALE (collaudo PO «tifosi giganti»): la scala prospettica lw era un array FISSO da 6 file (file extra del fix 5.92 = NaN invisibili → anello basso inchiodato a 6 file giganti) → lw parametrica su rowsLow; file derivate dall altezza REALE coperta con tifoso-target ~0.9u (_rmFor, clamp 0.55-3.4); anello unico (curva-muro tedesca/provincia) texturizzato con la canvas INTERA (texFull: grandi davanti, piccoli/fitti in alto) invece della sola banda bassa stirata; Ovest con la SUA altezza; busti LOD1 prima fila -15%.
 const SAVE_VERSION=8;// v8 [5.81.0 BIL-3b]: bankBalance (stipendio accumulato, €) + perkTrainer/perkNutrition (staff personale) — migration retro-compatibile. v7: player.foot
 // 5.67.0 — TABELLONE realistico del torneo per NAZIONALI (Europeo/Mondiale): dopo il girone la fase a
 //   eliminazione segue Ottavi → Quarti → Semifinale → Finale (prima saltava dritta alla semifinale).
@@ -14294,6 +14294,22 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
   const[tab,setTab]=useState("dashboard");
   const[screen,setScreen]=useState("dashboard");
   const[tutStep,setTutStep]=useState(0); // Sprint 56: tutorial step (0-3)
+  /* [6.2.1 UX-BANNER, collaudo PO] le strisce Sostieni/Idee si NASCONDONO quando lo scroll arriva a fine
+     pagina (coprivano l ultima card) e ricompaiono risalendo. Solo mobile (desktop = sidebar, non copre)
+     e solo su pagine realmente scrollabili (una pagina corta non le nasconde mai). */
+  const [hideStrips,setHideStrips]=useState(false);
+  useEffect(()=>{
+    const el=document.querySelector('.cpm-scroll');if(!el)return;
+    let raf=0;
+    const chk=()=>{raf=0;const mob=window.innerWidth<900;
+      const scrollable=el.scrollHeight>el.clientHeight+120;
+      const atEnd=el.scrollTop+el.clientHeight>=el.scrollHeight-64;
+      const h=mob&&scrollable&&atEnd;setHideStrips(p=>p===h?p:h);};
+    const onS=()=>{if(!raf)raf=requestAnimationFrame(chk);};
+    el.addEventListener('scroll',onS,{passive:true});window.addEventListener('resize',onS);
+    const t0=setTimeout(chk,80);/* ricalcolo al cambio tab (altezza contenuto diversa) */
+    return()=>{el.removeEventListener('scroll',onS);window.removeEventListener('resize',onS);if(raf)cancelAnimationFrame(raf);clearTimeout(t0);};
+  },[tab,screen]);
   // Sprint 45j: rimuovi padding cpm-scroll durante il match su mobile per eliminare spazio bianco
   useEffect(()=>{
     const el=document.querySelector('.cpm-scroll');
@@ -20742,9 +20758,9 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
         {toggleLang&&<button onClick={toggleLang} style={{marginLeft:"auto",fontSize:10,background:"#e2e8f0",border:"none",borderRadius:4,padding:"2px 7px",cursor:"pointer",color:TH.text,fontWeight:700}}>🌐 {lang}</button>}
       </div>
       {/* 5.50.8: DONAZIONE su TUTTI i tab — striscia persistente sopra la barra di navigazione (link esterno, nessuna ricompensa in-app) */}
-      {DONATION_URL&&<button onClick={openDonation} title="Sostieni lo sviluppo di Elevora" style={{width:"100%",padding:"8px 10px",border:"none",borderTop:"1px solid "+TH.cardBorder,background:TH.primary,color:"#fff",cursor:"pointer",fontFamily:"inherit",fontSize:12,fontWeight:800,letterSpacing:.2,display:"flex",alignItems:"center",justifyContent:"center",gap:5}}>☕ Sostieni lo sviluppo di <Wordmark size={13} color="#fff"/></button>}
+      {!hideStrips&&DONATION_URL&&<button onClick={openDonation} title="Sostieni lo sviluppo di Elevora" style={{width:"100%",padding:"8px 10px",border:"none",borderTop:"1px solid "+TH.cardBorder,background:TH.primary,color:"#fff",cursor:"pointer",fontFamily:"inherit",fontSize:12,fontWeight:800,letterSpacing:.2,display:"flex",alignItems:"center",justifyContent:"center",gap:5}}>☕ Sostieni lo sviluppo di <Wordmark size={13} color="#fff"/></button>}
       {/* #6: IDEE & FEEDBACK — apre il client mail verso l'indirizzo del proprietario (offuscato, non in chiaro) */}
-      <button onClick={openFeedback} title="Invia idee e feedback allo sviluppatore" style={{width:"100%",padding:"7px 10px",border:"none",borderTop:"1px solid "+TH.cardBorder,background:TH.card,color:TH.text,cursor:"pointer",fontFamily:"inherit",fontSize:11,fontWeight:700,letterSpacing:.2,display:"flex",alignItems:"center",justifyContent:"center",gap:5}}>💡 Idee & Feedback — scrivici la tua</button>
+      {!hideStrips&&<button onClick={openFeedback} title="Invia idee e feedback allo sviluppatore" style={{width:"100%",padding:"7px 10px",border:"none",borderTop:"1px solid "+TH.cardBorder,background:TH.card,color:TH.text,cursor:"pointer",fontFamily:"inherit",fontSize:11,fontWeight:700,letterSpacing:.2,display:"flex",alignItems:"center",justifyContent:"center",gap:5}}>💡 Idee & Feedback — scrivici la tua</button>}
       <div className="cpm-nav-tabs" style={{background:TH.navBg,borderTop:"1px solid "+TH.cardBorder,overflowX:"auto",WebkitOverflowScrolling:"touch",scrollbarWidth:"none"}}>
         {tabs.map(t=>{const _act=_tabToContainer(tab)===t.id;return(<button key={t.id} className={_act?"cpm-tab-act":""} onClick={()=>goTab(t.id)} title={`${t.l} [${t.k}]`} style={{flex:"1 1 0",minWidth:52,padding:"10px 6px 6px",border:"none",background:"transparent",cursor:"pointer",fontFamily:"inherit",color:_act?TH.primary:TH.faint,borderTop:`2px solid ${_act?TH.primary:"transparent"}`,transition:"all .15s"}}><div style={{fontSize:17}}>{t.e}</div><div style={{fontSize:10,marginTop:1,letterSpacing:.3}}>{t.l}</div><div style={{fontSize:8,color:_act?TH.primary+"99":TH.faint+"88",marginTop:1,fontFamily:"monospace"}}>[{t.k}]</div></button>);})}
         {toggleLang&&<button onClick={toggleLang} title="Cambia lingua / Change language" style={{padding:"6px 10px",border:"none",borderLeft:`1px solid ${TH.cardBorder}`,background:"transparent",cursor:"pointer",fontFamily:"inherit",color:TH.faint,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:1}}><div style={{fontSize:14}}>🌐</div><div style={{fontSize:8,marginTop:1,letterSpacing:.3,fontWeight:700}}>{lang}</div></button>}
