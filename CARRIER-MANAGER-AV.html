@@ -1218,6 +1218,55 @@ const SPOGLIATOIO_MOMENTS=[
    SPRINT 24 — B: OGNI SETTIMANA CONTA (IMPULSI)
 ======================================== */
 const WEEKLY_IMPULSES=[
+  // [5.91.0 BIL-9] dilemmi con trade-off REALI: toccano bankBalance (economia 3.2), coachTrust, chimica, fatica.
+  {id:"wi_sponsor_pers",cat:"opportunità",txt:"Un brand sportivo ti offre uno spot personale. Cachet importante, ma il mister storce il naso: «Pensa al campo».",choices:[
+    {txt:"💰 Firmo — è il mio momento",ef:{bank:35000,popularity:8,coachTrust:-6}},
+    {txt:"🙏 Rifiuto con eleganza",ef:{coachTrust:6,morale:-2}},
+  ]},
+  {id:"wi_cena_squadra",cat:"scelta",txt:"I senatori organizzano una cena di squadra infrasettimanale. Sarà lunga.",choices:[
+    {txt:"🍝 Ci vado — il gruppo conta",ef:{chem:8,morale:6,fatigue:8}},
+    {txt:"🛌 Salto — devo recuperare",ef:{fatigue:-6,chem:-4}},
+  ]},
+  {id:"wi_investimento",cat:"conseguenza",txt:"Il tuo consulente propone un investimento immobiliare «sicuro». Serve liquidità subito.",choices:[
+    {txt:"📈 Investo metà del conto",ef:{bank:-40000,morale:3},note:"rendita a fine stagione"},
+    {txt:"🏦 Tengo i soldi fermi",ef:{morale:1}},
+  ]},
+  {id:"wi_beneficenza",cat:"scelta",txt:"La fondazione del club ti chiede di finanziare un campetto di quartiere, a nome tuo.",choices:[
+    {txt:"❤️ Lo pago io",ef:{bank:-25000,popularity:12,morale:8}},
+    {txt:"🤝 Partecipo solo all'evento",ef:{popularity:4}},
+  ]},
+  {id:"wi_procuratore_push",cat:"tensione",txt:"Il tuo agente vuole forzare: «Faccio uscire il tuo nome sui giornali, il club capirà che vali di più».",choices:[
+    {txt:"📰 Dagli il via libera",ef:{value:0.25,popularity:6,coachTrust:-8}},
+    {txt:"✋ Fermalo — non è il momento",ef:{coachTrust:4}},
+  ]},
+  {id:"wi_giovane_aiuto",cat:"scelta",txt:"Un ragazzo della Primavera ti chiede di fermarti dopo l'allenamento per aiutarlo coi movimenti.",choices:[
+    {txt:"🎓 Resto un'ora con lui",ef:{chem:6,coachTrust:5,fatigue:6}},
+    {txt:"⏱ Non oggi",ef:{fatigue:-2,chem:-2}},
+  ]},
+  {id:"wi_intervista_scomoda",cat:"tensione",txt:"Un giornalista ti stuzzica: «Il mister ti sta usando male, non trovi?» La risposta finirà in prima pagina.",choices:[
+    {txt:"🔥 Dico quello che penso",ef:{popularity:9,coachTrust:-10,morale:4}},
+    {txt:"🧊 Glissa con diplomazia",ef:{coachTrust:5,popularity:-2}},
+  ]},
+  {id:"wi_personal_chef",cat:"opportunità",txt:"Uno chef specializzato in nutrizione sportiva si propone per un mese di prova. Costa.",choices:[
+    {txt:"🥗 Lo assumo",ef:{bank:-15000,fatigue:-10,form:3}},
+    {txt:"🍕 Sto bene così",ef:{}},
+  ]},
+  {id:"wi_famiglia_visita",cat:"scelta",txt:"I tuoi genitori vogliono venire a trovarti proprio nella settimana più piena.",choices:[
+    {txt:"👨‍👩‍👦 Li ospito — le radici contano",ef:{morale:12,fatigue:6}},
+    {txt:"📅 Rimandiamo di un mese",ef:{morale:-4,fatigue:-3}},
+  ]},
+  {id:"wi_scommessa_social",cat:"conseguenza",txt:"Un tuo vecchio video da ragazzino è diventato virale. Un brand ti offre di ricreare la scena, autoironia totale.",choices:[
+    {txt:"😂 Ci sto — ridiamoci su",ef:{bank:18000,popularity:10,coachTrust:-3}},
+    {txt:"🚫 Preferisco il basso profilo",ef:{coachTrust:2}},
+  ]},
+  {id:"wi_compagno_lite",cat:"tensione",txt:"Due compagni hanno litigato pesantemente nello spogliatoio. Sei l'unico che parla con entrambi.",choices:[
+    {txt:"🕊 Faccio da paciere stasera",ef:{chem:10,coachTrust:6,fatigue:5}},
+    {txt:"🙈 Non mi immischio",ef:{chem:-5}},
+  ]},
+  {id:"wi_orologio",cat:"conseguenza",txt:"Il capitano ti prende in giro: sei l'unico senza «l'orologio della squadra». Costa quanto uno stipendio.",choices:[
+    {txt:"⌚ Lo compro — rito di passaggio",ef:{bank:-30000,chem:7,morale:4}},
+    {txt:"💸 Follia — passo",ef:{chem:-3,morale:1}},
+  ]},
   {id:"wi_amichevole",cat:"opportunità",txt:"Il tuo agente segnala un'amichevole internazionale extra. Alzerei la visibilità, ma è un viaggio impegnativo.",choices:[
     {txt:"✅ Ci vado — voglio farmi vedere",ef:{popularity:12,fatigue:14,form:3}},
     {txt:"❌ Rimango a riposare",ef:{fatigue:-10,morale:5}},
@@ -2988,7 +3037,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="5.90.0"; // [5.90.0] TRIPLO FIX DA COLLAUDO PO + DUELLO DRIBBLING. (1) HOTFIX CURVA BIANCA (screenshot PO): un argomento in PIÙ nella chiamata addStand della Curva Sud (S2) scalava tutti i parametri → crowdObj era un NUMERO → texture assente = curva bianca senza tifosi in ogni partita; screenshot per template rigenerati e verificati A OCCHIO. (2) FIX «palla non entra correttamente in porta»: nel post-arco in_net/in_net_high la z convergeva troppo piano → da angoli larghi (cross, tiri dalla fascia) la palla superava la linea FUORI dallo specchio e scivolava dentro di lato; ora converge TRA I PALI (|z|≤2.9, stretta forte sotto porta) prima della linea. (3) FIX «azione parte da sola dopo i movimenti»: regressione della Fase 0 — rimuovendo il "pad fantasma", a mosse esaurite il DPad SMONTAVA e i bottoni azione slittavano sotto il dito → il tap successivo innescava un'azione; ora il pad resta come SCUDO disabilitato (spento/grigio, handler no-op). (4) DUELLO DRIBBLING COMPLETO (BLK-2 2ª metà): dribbling "da gol" riuscito = UOMO SALTATO (chance: palla al piede, cronaca dedicata, niente rete in 3D) + conclusione dalla nuova chain dopo_dribbling; guardia _chainDepth attiva. (5) Harness: __CPM_FORCE_SIT riazzera l'array situations alla base statica (le chain splice-avano gli indici tra un force e l'altro → falsi mismatch di intent nel check timeline).
+const GAME_VERSION="5.91.0"; // [5.91.0] BIL-9 «EVENTI A BIVI» (audit priorità 14, ultimo tassello): la carriera smette di essere fatta di eventi-notifica. (a) gli IMPULSI INTERATTIVI (WEEKLY_IMPULSES, scelte con trade-off) escono anche nelle SETTIMANE DI PARTITA (~25%, prima del match — dove fatica/forma pesano davvero); prima vivevano solo nelle rare settimane libere: per questo il 90% degli eventi sembrava rumore automatico. (b) le scelte possono muovere i SOLDI VERI (nuova chiave ef.bank → bankBalance dell'economia 3.2) e la CHIMICA (ef.chem → teamChemistry). (c) +12 nuovi dilemmi con conseguenze reali: spot personale (cachet vs fiducia mister), cena di squadra (chimica vs fatica), investimento, beneficenza, agente che forza sui giornali (valore vs trust), aiutare il ragazzo della Primavera, intervista scomoda, chef personale, visita dei genitori, video virale, paciere tra compagni, l'orologio della squadra. Pool interattivo: 36→48.
 const SAVE_VERSION=8;// v8 [5.81.0 BIL-3b]: bankBalance (stipendio accumulato, €) + perkTrainer/perkNutrition (staff personale) — migration retro-compatibile. v7: player.foot
 // 5.67.0 — TABELLONE realistico del torneo per NAZIONALI (Europeo/Mondiale): dopo il girone la fase a
 //   eliminazione segue Ottavi → Quarti → Semifinale → Finale (prima saltava dritta alla semifinale).
@@ -14979,6 +15028,8 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
         popularity:clamp((p.popularity||20)+popGain(p,ef.popularity||0),0,100),
         coachTrust:clamp((p.coachTrust||60)+(ef.coachTrust||0),0,100),
         value:Math.max(0.5,(p.value||0.8)+(ef.value||0)),
+        ...(ef.bank!=null?{bankBalance:Math.max(0,Math.round((p.bankBalance||0)+ef.bank))}:{}),// [5.91.0 BIL-9] i bivi muovono i SOLDI veri (economia 3.2)
+        ...(ef.chem!=null?{teamChemistry:clamp((p.teamChemistry||60)+ef.chem,0,100)}:{}),
       };
       // Sprint 69: apply archetype bond_bonus on milestone
       if(bondMilestone){
@@ -15067,8 +15118,10 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       setTimeout(()=>setWeekLiveModal({event:{txt,e:mate.icon},changes:{},choices:moment.choices,isSpogliatoio:true,teammate:{name:mate.name,icon:mate.icon,archetype:mate.archetype},coachMsg:_liveCoachMsg}),50);
       return;
     }
-    // Sprint 24B: 40% chance weekly impulse on non-match weeks
-    if(!hasMdThisWeek&&Math.random()<0.40){
+    // Sprint 24B + [5.91.0 BIL-9] gli impulsi con SCELTA escono anche nelle settimane di partita (~25%,
+    //   prima del match: i trade-off fatica/forma pesano davvero) — prima vivevano solo nelle rare settimane
+    //   libere, per questo la carriera sembrava fatta di eventi senza decisioni.
+    if((!hasMdThisWeek&&Math.random()<0.40)||(hasMdThisWeek&&Math.random()<0.25)){
       const impulse=pick(WEEKLY_IMPULSES);
       setPlayer(p=>({...p,weekLived:true}));
       const catIcon={opportunità:"🌟",scelta:"⚡",tensione:"🔥",conseguenza:"🎲"}[impulse.cat]||"💡";
