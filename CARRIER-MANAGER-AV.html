@@ -2703,23 +2703,36 @@ function calcXG(action,playerX){
   return Math.round(clamp(statBase*posFactor*diffFactor,0.01,0.92)*100)/100;
 }
 // Adaptive difficulty: returns a 0-1 multiplier that makes opponent harder when player is performing well
+// [5.80.0 BIL-2] adaptive SOLO anti-farm (gpg): i malus su OVR alto e MORALE alto sono RIMOSSI —
+//   cancellavano la crescita (un 90 prolifico e un 65 mediocre avevano la stessa % di successo: 43.3 vs 43.2)
+//   e punivano il giocatore per stare bene. Il vantaggio delle stat ora resta netto.
 function adaptiveDifficulty(player){
-  const ovr=player.ovr||60;
-  const goals=player.goals||0;
-  const matches=player.matches||1;
-  const gpg=goals/Math.max(matches,1);
-  // Base: slightly harder than even odds
+  const gpg=(player.goals||0)/Math.max(player.matches||1,1);
   let factor=1.0;
-  // Many goals per game → tighten defence
   if(gpg>1.2)factor+=0.18;
   else if(gpg>0.8)factor+=0.10;
-  // High OVR → face stronger pressing
-  if(ovr>80)factor+=0.12;
-  else if(ovr>72)factor+=0.06;
-  // High morale → opponents motivated too
-  const morale=player.morale||70;
-  if(morale>85)factor+=0.05;
-  return clamp(factor,0.85,1.35);
+  return clamp(factor,0.85,1.18);
+}
+// [5.80.0 BIL-1] moltiplicatore d'ETÀ sull'efficacia del training: un 38enne non si allena come un 17enne.
+//   È il pezzo che crea la PARABOLA della carriera — prima il training (+~12 stat/anno anche a 88+) sovrastava
+//   un decay di fine stagione ≤1.3 e l'OVR non scendeva MAI.
+// [5.80.0 BIL-1] damper globale dell'efficacia training (0.40): il piano auto-ottimale sulle 2 stat più
+//   deboli restava sempre sul gradino alto della curva _dim → +9/10 OVR a stagione e OVR 90 sistematico alla
+//   S5 (22 anni). Validato con simulazione a 60 run: ora 62→~76 a 21, ~84 a 25, picco ~90-92 a 29-31, poi
+//   declino dolce — il criterio §10 della spec («crescita credibile, 2-3 stagioni di gavetta») torna vero.
+const TRAIN_BASE_EFF=0.40;
+function trainAgeMult(age){const a=age||18;return a<=26?1.0:a<=28?0.75:a<=30?0.55:a<=33?0.25:0.06;}
+// [5.80.0 MIN-8] Enfant Prodige: la «crescita x2» promessa alla creazione ora è VERA (×1.35 fino ai 22)
+function archGrowthMult(p){const id=p&&(p.archetype?.id||p.archetype);return(id==="enfant"&&((p&&p.age)||18)<23)?1.35:1;}
+// [5.80.0 BIL-10] valore di mercato = f(OVR, età, forma, popolarità), ricalcolato ogni settimana con
+//   smoothing 70/30 (gli eventi continuano a dare colore, i fondamentali tirano). Scala legacy (~0.3–5 "M€").
+function calcMarketValue(p){
+  const ovr=(p&&p.ovr)||60,age=(p&&p.age)||18;
+  const base=0.3+Math.pow(Math.max(0,ovr-52)/40,1.8)*4.2;
+  const ageM=age<=21?1.25:age<=24?1.15:age<=27?1.0:age<=30?0.75:age<=33?0.45:0.25;
+  const formM=0.92+(((p&&p.form)||60)-60)/250;
+  const popM=0.92+((p&&p.popularity)||30)/400;
+  return Math.max(0.1,Math.round(base*ageM*formM*popM*100)/100);
 }
 // opponent strength affects goal probability in background events
 // [5.77.0 MOT-1] oppGoalProb RIMOSSA: era dead code (mai chiamata) — la sua missione (gol avversari legati
@@ -2974,7 +2987,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="5.79.0"; // [5.79.0] FASE 2.3 «SELEZIONE LAZY CONTESTUALE» (audit SIT-1/SIT-5, priorità 9): la situation di ogni highlight si sceglie AL TRIGGER col contesto VIVO — punteggio reale, minuto, momentum e possesso (nuovi pesi: mom≥65 off ×1.25/def ×0.65 · mom≤35 def ×1.6 · possesso analogo) — non più tutta al calcio d'inizio con ctx neutro ('drawing'/clock 0): fine del «Contropiede! Campo aperto» col 75% di possesso. FILTRI DURI in selectContextualSituations: ctx losing/winning coerente col punteggio, finestre temporali tactic.minClock/maxClock (nuovo campo opzionale — il «RIGORE a 5' dalla fine» ora esce SOLO dall'80'), niente ripetizioni della stessa sit nella partita (exclude). Il vecchio skip su ctx-mismatch al trigger (che BRUCIAVA l'highlight, riducendo i momenti promessi da numHL) è RIMOSSO: il mismatch è impossibile a monte. Le sit incatenate (_chainDepth) si giocano come sono; gli extra reattivi/60'/72' passano a seed deterministici (via bgSimSeedRef) + contesto vivo. Il force-sit del gate bypassa la selezione (gate-safe); il trigger lazy è ESERCITATO dal check live-smoke. ⚠️ Distribuzione delle situations percepita in partita = gate-cieca → collaudo dal vivo.
+const GAME_VERSION="5.80.0"; // [5.80.0] FASE 3.1 «LE CURVE CONTANO» (audit BIL-1/2/3a/10, MIN-8/11, BUG-11): BIL-1 LA PARABOLA DELLA CARRIERA ESISTE — trainAgeMult (×1.0 ≤26 → ×0.06 a 34+) + damper globale TRAIN_BASE_EFF=0.40 su ENTRAMBI i blocchi training (TrainPanel + auto-training, erano duplicati) + declino fisiologico SETTIMANALE dai 31 (velocità/fisico per primi): prima +9/10 OVR/stagione senza limiti d'età → OVR 90 sistematico a 22 anni e MAI in discesa; ora (validato con simulazione a 60 run) 62→~76 a 21, ~84 a 25, picco ~90-92 a 29-31, declino dolce dopo — il criterio §10 della spec e la gavetta (panchina nei club forti, gerarchie già implementate) tornano veri; BIL-2 adaptive SOLO anti-farm su gpg — rimossi i malus su OVR alto e morale alto che AZZERAVANO la crescita percepita (un 90 prolifico = un 65 mediocre: 43.3% vs 43.2%) e punivano lo stare bene; BIL-3a form (±4%) e morale (±2.5%) FINALMENTE nel roll d'azione — il loop «gioco bene→sto meglio→gioco meglio» esiste in campo, metà del dashboard non è più scenografia; MIN-11 drift del morale verso 60 (5%/settimana); MIN-8 Enfant Prodige crescita ×1.35 REALE fino ai 22 (la promessa alla creazione era falsa); BIL-10/BUG-11 valore di mercato=f(OVR,età,forma,popolarità) ricalcolato ogni settimana (smoothing 70/30 con gli eventi) + fix display ×10 del tab agente (0.8M€ mostrato come €8.0M) + filtro rumors su OVR. ⚠️ Bilanciamento carriera gate-cieco → collaudo su carriera lunga.
 const SAVE_VERSION=7;// v7: aggiunto player.foot (piede preferito) — migration retro-compatibile
 // 5.67.0 — TABELLONE realistico del torneo per NAZIONALI (Europeo/Mondiale): dopo il girone la fase a
 //   eliminazione segue Ottavi → Quarti → Semifinale → Finale (prima saltava dritta alla semifinale).
@@ -10060,7 +10073,11 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     // 5.43.17: penalità PUNIZIONI — le punizioni dirette nel calcio reale sono a bassissima conversione; con bonus +8 e cap 0.84 i tiratori bravi segnavano "quasi sempre". Tiered: tiro diretto fortemente penalizzato, cross su punizione meno. Si applica a TUTTE le situations "punizione" (globale).
     const _fkSit=situations[hlIdx];
     const fkPenalty=(_fkSit&&/punizion/i.test(_fkSit.text||""))?(action.rew==="goal"?0.45:action.rew==="assist"?0.18:0):0;
-    const rate=Math.max(0.05,succRate(action,player.stats,pPos.x,oppPrestige,player.archetype?.id||player.archetype)/100-defPenalty-weatherPenalty+momentumBonus-fatiguePenalty+tacticMod-fkPenalty);
+    // [5.80.0 BIL-3a] form e morale entrano FINALMENTE nel roll d'azione (±4% / ±2.5%): metà del dashboard
+    //   non era più scenografia — il loop «gioco bene → sto meglio → gioco meglio» ora esiste in campo.
+    const formMod=clamp(((player.form||60)-62)/33,-1,1)*0.04;
+    const moraleMod=clamp(((player.morale||70)-60)/40,-1,1)*0.025;
+    const rate=Math.max(0.05,succRate(action,player.stats,pPos.x,oppPrestige,player.archetype?.id||player.archetype)/100-defPenalty-weatherPenalty+momentumBonus+formMod+moraleMod-fatiguePenalty+tacticMod-fkPenalty);
     const adapt=adaptiveDifficulty(player);
     // [5.78.0 F10] ROLL D'ESITO SEEDATO: era l'unico Math.random() nudo del momento centrale di gameplay
     //   (esito non riproducibile → replay/telemetria impossibili). STESSA curva di probabilità di prima,
@@ -13488,7 +13505,7 @@ const TrainPanel=({player,setPlayer,notify})=>{
   const _avgRating=_recent.length?_recent.reduce((s,m)=>s+(parseFloat(m.rating)||6.5),0)/_recent.length:6.5;
   // Sprint 2 (9.3): il vice-mister (assistantCoachRel) affina il lavoro → modula l'efficacia del training (±~12%)
   const _acR=player.assistantCoachRel||50;const _acMult=_acR>=75?1.12:_acR>=60?1.04:_acR<=35?0.90:1.0;
-  const _mult=(_avgRating>=7.5?1.20:_avgRating>=6.5?1.0:_avgRating>=5.5?0.88:0.75)*((player.form||60)>=75?1.10:(player.form||60)<=35?0.90:1.0)*((player.coachTrust||60)>=80?1.12:(player.coachTrust||60)>=65?1.0:0.92)*_acMult;
+  const _mult=(_avgRating>=7.5?1.20:_avgRating>=6.5?1.0:_avgRating>=5.5?0.88:0.75)*((player.form||60)>=75?1.10:(player.form||60)<=35?0.90:1.0)*((player.coachTrust||60)>=80?1.12:(player.coachTrust||60)>=65?1.0:0.92)*_acMult*TRAIN_BASE_EFF*trainAgeMult(player.age)*archGrowthMult(player)/*[5.80.0 BIL-1/MIN-8]*/;
   const _dim=(sv)=>{const v=sv||60;return v>=92?0.04:v>=88?0.08:v>=84?0.14:v>=80?0.20:v>=75?0.28:v>=70?0.35:v>=65?0.45:0.55;};
   const _t0name=_TT[_t0]?.l||_t0;const _t1name=_TT[_t1]?.l||_t1;
   const _coachMsg=veryTired?"Sei a pezzi. Riposo assoluto — non si allena in queste condizioni.":highFat?`Stai spingendo troppo. Lavoro leggero su ${_t0name}, poi recupero totale.`:_avgRating>=7.5?`Stai giocando bene — intensifico su ${_t0name} e ${_t1name} per sfruttare questo momento.`:_avgRating<=5.5?`Dobbiamo migliorare. Doppio lavoro su ${_t0name} e poi ${_t1name}.`:`Questa settimana puntiamo su ${_t0name} e ${_t1name}. Segui il piano.`;
@@ -15292,7 +15309,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
         const _plan3=_vt3?["rec","rec","rec"]:_hf3?[_t03,"rec","rec"]:[_t03,_t13,_t03];
         const _rec3=(updP.matchHistory||p.matchHistory||[]).slice(-3);
         const _avg3=_rec3.length?_rec3.reduce((s,m)=>s+(m.rating||6.5),0)/_rec3.length:6.5;
-        const _mult3=(_avg3>=7.5?1.2:_avg3>=6.5?1:_avg3>=5.5?0.88:0.75)*((updP.form||p.form||60)>=75?1.1:(updP.form||p.form||60)<=35?0.9:1)*((p.coachTrust||60)>=80?1.12:(p.coachTrust||60)>=65?1:0.92);
+        const _mult3=(_avg3>=7.5?1.2:_avg3>=6.5?1:_avg3>=5.5?0.88:0.75)*((updP.form||p.form||60)>=75?1.1:(updP.form||p.form||60)<=35?0.9:1)*((p.coachTrust||60)>=80?1.12:(p.coachTrust||60)>=65?1:0.92)*TRAIN_BASE_EFF*trainAgeMult(p.age)*archGrowthMult(p);/*[5.80.0 BIL-1/MIN-8]*/
         const _dim3=(sv)=>{const v=sv||60;return v>=92?0.04:v>=88?0.08:v>=84?0.14:v>=80?0.20:v>=75?0.28:v>=70?0.35:v>=65?0.45:0.55;};
         let _ns3={...updP.stats||p.stats};let _md3=0;
         _plan3.forEach(tid=>{
@@ -15304,6 +15321,21 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
         });
         updP={...updP,stats:_ns3,ovr:calcOvr(_ns3),morale:clamp((updP.morale||p.morale||70)+_md3,0,100)};
       }
+      // [5.80.0 BIL-1] declino fisiologico SETTIMANALE dai 31 (velocità/fisico per primi): insieme al
+      //   moltiplicatore d'età sul training, crea la parabola discendente che prima non esisteva.
+      if((p.age||18)>=31){
+        const _dp80=(p.age||18)>=35?0.20:(p.age||18)>=33?0.14:0.08;
+        if(Math.random()<_dp80){
+          const _ds80={...(updP.stats||p.stats)};
+          const _dk80=Math.random()<0.7?pick(['velocità','fisico']):pick(['tiro','tecnica','dribbling','posizionamento']);
+          _ds80[_dk80]=clamp((_ds80[_dk80]||60)-1,1,99);
+          updP={...updP,stats:_ds80,ovr:calcOvr(_ds80)};
+        }
+      }
+      // [5.80.0 MIN-11] drift del morale verso 60 (5%/settimana): una crisi non ti segna per mesi, l'euforia si normalizza
+      {const _m80=(updP.morale!=null?updP.morale:(p.morale||70));updP={...updP,morale:clamp(Math.round(_m80+(60-_m80)*0.05),0,100)};}
+      // [5.80.0 BIL-10] valore di mercato ancorato ai fondamentali (OVR/età/forma/popolarità), smoothing 70/30
+      {const _pv80={...p,...updP};updP={...updP,value:Math.round(((p.value||0.8)*0.7+calcMarketValue(_pv80)*0.3)*100)/100};}
       const nextStreak=(p.sessionsThisWeek||0)>0||_didAutoTrain?(p.trainingStreak||0)+(_didAutoTrain?1:0):0;
       const nextWk=(p.week||1)+1;
       const winReset=nextWk===19; // finestra invernale apre → reset ricerca mercato
@@ -19323,7 +19355,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
         var trustLabel=trust>=70?"Eccellente":trust>=50?"Buono":trust>=30?"Nella media":"In difficoltà";
         var trustColor=trust>=70?TH.success:trust>=50?TH.primary:trust>=30?TH.warning:TH.danger;
         var valRaw=player.value||0.5;
-        var valK=Math.round(valRaw*10000);
+        var valK=Math.round(valRaw*1000);// [5.80.0 BUG-11] era ×10000: il tab agente mostrava un valore 10× diverso dal profilo (0.8M€ vs "€8.0M")
         var valStr=valK>=1000?(valK/1000).toFixed(1)+"M":valK+"k";
         var week=player.week||1;
         var txOpen=(week>=1&&week<=5)||(week>=19&&week<=23);
@@ -19433,7 +19465,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                     {/* Sprint 68 — Rumor di Mercato */}
                     {(()=>{
                       var _s68=hashStr(`rum68_${player.name}_${player.season||1}_${week>=19?'W':'S'}`);
-                      var _pool=CLUBS.filter(function(c){return c.p>=(valRaw*60-5)&&c.p<=(player.ovr||65)+22&&c.id!==player.club?.id&&c.lg!==player.club?.lg;}).slice(0,40);
+                      var _pool=CLUBS.filter(function(c){return c.p>=((player.ovr||65)-10)&&c.p<=(player.ovr||65)+22&&c.id!==player.club?.id&&c.lg!==player.club?.lg;}).slice(0,40);// [5.80.0 BUG-11] filtro su OVR (il vecchio valRaw*60 svuotava il pool coi valori alti)
                       if(_pool.length<2)return null;
                       var _usedIdx=new Set();var _ls=_s68;
                       while(_usedIdx.size<3&&_usedIdx.size<_pool.length){_ls=(_ls*1664525+1013904223)&0x7fffffff;_usedIdx.add(_ls%_pool.length);}
