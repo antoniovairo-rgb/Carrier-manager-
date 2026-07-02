@@ -2987,7 +2987,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="5.85.0"; // [5.85.0] FASE 5.1 «STORE HARDENING» (audit ARC-5/F-04 + verifica filiera BLK-3): TUTTI i punti d'ingresso del test-mode sono SPENTI nella build store via !window.__CPM_STORE_BUILD (flag iniettato nell'<head> della dist, quindi PRIMA del gioco): _SIT_TEST (?sit=N Situation Test Mode), _CPM_TEST (?cpmtest=1), il monkey-patch seedato di Math.random (righe ~148), il blocco probe/hook di ThreeMatchView (__CPM_STATE/__CPM_PROBE/__CPM3D), e runCPMTest50/cpmDebugSimulate diventano no-op — prima erano raggiungibili in una WebView con deeplink manipolati (superficie cheat/manipolazione, audit F-04); nel gioco web e nel gate NULLA cambia (il flag non esiste lì). FILIERA STORE VERIFICATA in sessione: build-dist 2.7MB zero-CDN + JSX precompilato ✅ · validate-dist offline (React monta, home ok, zero richieste esterne, zero errori, flag store attivo) ✅ · audit-copyright 0 hit ✅. BLK-3 (Capacitor→AAB): deps @capacitor/* 6.x già dichiarate e config sana (appId com.elevora.football, webDir dist) ma l'ambiente cloud NON ha l'Android SDK → la compilazione AAB va eseguita in locale (npx cap add android && npx cap sync && gradle bundleRelease), passi in PACKAGING.md.
+const GAME_VERSION="5.86.0"; // [5.86.0] DIRETTIVA PO — TRAINING AUTOMATICO by design: l'eroe è un calciatore, non l'allenatore. La scelta manuale del focus settimanale (5.82.0 BIL-4) è RIMOSSA su feedback del proprietario («funzionalità noiosa»): il piano lo decidono mister e preparatori (2 stat più deboli, recupero automatico a fatica alta) e si esegue da solo all'apertura del tab Allenamento, con l'auto-training all'avanzamento se il tab non viene aperto (com'era pre-5.82). INVARIATI tutti i sistemi di crescita della Fase 3: curve d'età trainAgeMult (BIL-1), damper TRAIN_BASE_EFF, perk personal trainer (×1.10), moltiplicatori forma/voti/fiducia, declino settimanale dai 31. Il rinnovo rifiutabile/svincolo (BIL-8, altra metà della 5.82.0) resta attivo. DECISION LOG: l'agency sul training era una raccomandazione dell'audit (BIL-4) — il PO ha deciso diversamente dopo averla provata: il gioco È la partita e la carriera, non il micro-management settimanale.
 const SAVE_VERSION=8;// v8 [5.81.0 BIL-3b]: bankBalance (stipendio accumulato, €) + perkTrainer/perkNutrition (staff personale) — migration retro-compatibile. v7: player.foot
 // 5.67.0 — TABELLONE realistico del torneo per NAZIONALI (Europeo/Mondiale): dopo il girone la fase a
 //   eliminazione segue Ottavi → Quarti → Semifinale → Finale (prima saltava dritta alla semifinale).
@@ -13548,16 +13548,15 @@ const TrainPanel=({player,setPlayer,notify})=>{
   const _t0name=_TT[_t0]?.l||_t0;const _t1name=_TT[_t1]?.l||_t1;
   const _coachMsg=veryTired?"Sei a pezzi. Riposo assoluto — non si allena in queste condizioni.":highFat?`Stai spingendo troppo. Lavoro leggero su ${_t0name}, poi recupero totale.`:_avgRating>=7.5?`Stai giocando bene — intensifico su ${_t0name} e ${_t1name} per sfruttare questo momento.`:_avgRating<=5.5?`Dobbiamo migliorare. Doppio lavoro su ${_t0name} e poi ${_t1name}.`:`Questa settimana puntiamo su ${_t0name} e ${_t1name}. Segui il piano.`;
   const _fitMsg=veryTired?"⚠️ Il preparatore ti ferma: rischio infortuni.":highFat?"💧 Il preparatore inserisce sessioni di recupero.":streak>=3?"🔥 Stai mantenendo continuità — il preparatore è soddisfatto.":"";
-  // [5.82.0 BIL-4] TRAINING CON AGENCY: il giocatore SCEGLIE il focus settimanale (il piano del mister
-  //   resta il suggerimento di default; l'override medico a fatica alta resta automatico; se non apri il
-  //   tab, l'auto-training all'avanzamento resta il fallback). Prima si auto-eseguiva tutto al mount: zero scelte.
-  const[focusPick,setFocusPick]=React.useState(null);
-  const _medical=veryTired||highFat;
-  const _PLANS82={mister:_plan,attacco:["tecnico","tecnico","mentale"],atletico:["fisico","fisico","tattico"],recupero:["rec_attivo","rec_completo","rec_attivo"]};
-  const _planEff=_medical?_plan:(focusPick?_PLANS82[focusPick]:_plan);
+  // [5.86.0 · DIRETTIVA PO] TRAINING AUTOMATICO by design: l'eroe è un CALCIATORE, non l'allenatore —
+  //   il piano settimanale lo decidono mister e preparatori (le 2 stat più deboli; recupero automatico a
+  //   fatica alta) e si esegue da solo all'apertura del tab. La scelta manuale del focus (5.82.0 BIL-4)
+  //   è stata RIMOSSA su feedback del proprietario: frizione noiosa, non una decisione interessante.
+  //   Restano: curve d'età (BIL-1), perk personal trainer, moltiplicatori forma/voti/fiducia, auto-training
+  //   all'avanzamento se il tab non viene aperto.
+  const _planEff=_plan;
   React.useEffect(()=>{
     if(allDone)return;
-    if(!_medical&&!focusPick)return;// attende la scelta del giocatore (solo l'emergenza fisica scavalca)
     let ns={...player.stats};let fatD=0;let morD=0;let formD=0;
     const newLog=[...(player.sessionLog||[])];const gained={};
     _planEff.forEach(tid=>{
@@ -13572,7 +13571,7 @@ const TrainPanel=({player,setPlayer,notify})=>{
       teamChemistry:clamp((p.teamChemistry||60)+(Math.random()<0.25?1:0),0,100)}));
     const gkeys=Object.keys(gained);
     notify(`✅ W.${week}: ${gkeys.length?gkeys.map(k=>`+${gained[k]} ${k}`).join(" · "):"nessuna crescita questa settimana"}`,gkeys.length?TH.success:TH.muted);
-  },[focusPick]);// eslint-disable-line
+  },[]);// eslint-disable-line — auto-esecuzione al mount (direttiva PO 5.86.0)
   return(
     <Card>
       <div style={{display:"flex",alignItems:"flex-start",gap:10,marginBottom:10,padding:"8px 10px",background:"#f8fafc",borderRadius:8,border:"1px solid "+TH.cardBorder}}>
@@ -13583,24 +13582,6 @@ const TrainPanel=({player,setPlayer,notify})=>{
           {_fitMsg&&<div style={{fontSize:10,color:"#0284c7",marginTop:4}}>{_fitMsg}</div>}
         </div>
       </div>
-      {/* [5.82.0 BIL-4] scelta del focus settimanale (nascosta se override medico o già allenato) */}
-      {!allDone&&!_medical&&!focusPick&&(
-        <div style={{display:"flex",flexDirection:"column",gap:6,marginBottom:10}}>
-          <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.2}}>Scegli il focus della settimana</div>
-          {[{k:"mister",e:"📋",l:"Piano del mister",d:`Lavoro mirato su ${_t0name} e ${_t1name} (punti deboli)`},
-            {k:"attacco",e:"⚔️",l:"Focus offensivo",d:"Tecnica, tiro e dribbling — più rifinitura"},
-            {k:"atletico",e:"🏃",l:"Focus atletico",d:"Fisico e velocità — più intensità, più fatica"},
-            {k:"recupero",e:"🧘",l:"Settimana di scarico",d:"Recuperi fatica e morale, niente crescita"}].map(o=>(
-            <button key={o.k} onClick={()=>setFocusPick(o.k)} style={{display:"flex",alignItems:"center",gap:8,padding:"9px 10px",borderRadius:9,border:"1.5px solid "+(o.k==="mister"?TH.primary+"66":TH.cardBorder),background:o.k==="mister"?"#eff6ff":"#f8fafc",cursor:"pointer",fontFamily:"inherit",textAlign:"left"}}>
-              <span style={{fontSize:17}}>{o.e}</span>
-              <span style={{flex:1}}>
-                <span style={{display:"block",fontSize:11,fontWeight:800,color:TH.text}}>{o.l}{o.k==="mister"&&<span style={{fontSize:8,color:TH.primary,marginLeft:5}}>CONSIGLIATO</span>}</span>
-                <span style={{display:"block",fontSize:9,color:TH.muted,marginTop:1}}>{o.d}</span>
-              </span>
-            </button>
-          ))}
-        </div>
-      )}
       <div style={{display:"flex",gap:6,marginBottom:10}}>
         {_planEff.map((tid,i)=>{
           const isRec=tid==="rec_attivo"||tid==="rec_completo";
