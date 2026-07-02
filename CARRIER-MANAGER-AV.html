@@ -2488,6 +2488,7 @@ const BG_MATCH=[
   {txt:"🤝 Sponda di {H2} per {H} che arriva lanciato. Che intesa!",ef:null,w:2,bpos:{x:80,y:55},ms:{shots:1},pd:"attack_goal"},
 ];
 const OUTCOME_TX={
+  chance_dribble:["🌀 L'avversario è SALTATO! Campo aperto davanti a te!","⚡ Numero splendido — il difensore è a terra, palla al piede!","🔥 Superato con la finta! La difesa è aperta!","💨 Bruciato in velocità — ora la porta ti guarda!"],
   chance:["🎯 Palla d'oro! Il compagno non riesce a concludere — palla che balla in area!","⚡ Filtrante perfetto! La conclusione è respinta — c'è ancora da giocare!","👁️ Che apertura! Il primo tentativo è murato — palla viva!","🔥 Imbucata splendida — il portiere respinge! Occasione ancora aperta!"],
   goal:["💥 GOOOOOL! Folla in delirio!","⚽ Rete spettacolare!","🔥 Imparabile!","🌟 Fenomenale!","🎯 Destro perfetto — nessuna speranza!","⚡ Un lampo! In gol!","💫 Che capolavoro — gol dell'anno!","🏆 Senza storia — gol splendido!"],
   assist:["🎯 Assist perfetto!","🤝 Passaggio da manuale!","🎯 Visione assoluta!","⚡ Lancio millimetrico — compagno solo!","🌀 Giocata di classe pura!","👁️ Ha visto il taglio prima di tutti."],
@@ -2987,7 +2988,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="5.89.0"; // [5.89.0] STADI DINAMICI — S3 ATMOSFERA/EVOLUZIONE (chiude il sistema stadi S1+S2+S3): TRASFERTA INVERTITA verificata end-to-end — era già garantita dall'architettura (homeTeamObj/hClub = padrone di casa REALE: in trasferta lo stadio, il nome, la capienza, i settori e i colori sono dell'AVVERSARIO; la tua tifoseria è la Curva Nord piccola) — la S3 la completa con: ATMOSFERA PER CLUB (campo atmo 0.75–1.22 nel config: hash + template caldi tedesco/sudamericano +0.10 + top club) che scala l'intensità del tifo (cori, burst, ola, coreografie) → ogni stadio ha la sua personalità; EVOLUZIONE AUTOMATICA VIVA — il config è calcolato in LiveMatch col prestigeShift accumulato del club (clubPrestigeShifts, persistito) → risultati pluriennali muovono capienza/modernità senza save nuovi, e alla PROMOZIONE il diario racconta l'ampliamento («Il club amplia lo stadio: nuova capienza ~Xk posti»); il config viaggia in crowdCtx.stadiumTpl → ThreeMatchView lo consuma (fallback al resolver). Sistema stadi COMPLETO: 10 architetture × identità club × capienze reali × atmosfera × evoluzione, tutto derivato/seedato, zero save, zero asset. Collaudo dal vivo PO su trasferte e atmosfera.
+const GAME_VERSION="5.90.0"; // [5.90.0] HOTFIX CURVA BIANCA (segnalazione PO con screenshot, prod 5.88-5.89): nella chiamata addStand della Curva Sud un argomento in PIÙ (sideD duplicato accanto al ternario megaCurva) scalava tutti i parametri di una posizione → crowdObj arrivava come NUMERO → materiale senza texture = curva Sud BIANCA senza tifosi/bandiere/striscioni in OGNI partita. Fix: rimosso l'argomento spurio; screenshot per template rigenerati e VERIFICATI a occhio. + DUELLO DRIBBLING COMPLETO (BLK-2 2ª metà, audit F5): «saltare l'uomo» e «concludere» non sono più collassati in un solo roll — un dribbling "da gol" riuscito diventa UOMO SALTATO (esito chance: palla al piede, cronaca dedicata, in 3D nessuna rete) e la conclusione arriva dalla nuova chain dopo_dribbling (tiro in corsa / punta il portiere / scarico), con la guardia _chainDepth che impedisce catene di catene. Il duello ha due momenti di gioco, come in campo.
 const SAVE_VERSION=8;// v8 [5.81.0 BIL-3b]: bankBalance (stipendio accumulato, €) + perkTrainer/perkNutrition (staff personale) — migration retro-compatibile. v7: player.foot
 // 5.67.0 — TABELLONE realistico del torneo per NAZIONALI (Europeo/Mondiale): dopo il girone la fase a
 //   eliminazione segue Ottavi → Quarti → Semifinale → Finale (prima saltava dritta alla semifinale).
@@ -5812,7 +5813,7 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
   const _roofFor=k=>_roofT==="legacy"||_roofT==="full"?true:_roofT==="none"?false:_roofT==="west"?k==="ovest":(_roofT==="partial"?(k==="ovest"||k==="est"):true);
   const _ovStand=addStand(0,-endZ,Math.PI, endW,endD,endH,_ovest,crowd.fill,true,false,{tiers:_tiers,roofOn:_roofFor("ovest")});   // Tribuna Ovest — casa/famiglie/VIP
   const _esStand=addStand(0, endZ,0,       endW,endD,endH,_est,crowd.fill,true,false,{tiers:(T&&T.asym)?1:_tiers,roofOn:_roofFor("est")});     // Tribuna Est — casa + spicchio ospiti (asym: bassa a 1 anello)
-  const _sudStand=addStand(sideX, 0, Math.PI/2, sideW,sideD,_sudH>sideH?sideD*1.15:sideD,_sudH,_sud,crowd.fill,true,false,{tiers:(T&&T.megaCurva)?1:_tiers,roofOn:_roofFor("sud")});   // Curva Sud (tabellone) — SOLO casa · tedesco: MURO a 1 anello
+  const _sudStand=addStand(sideX, 0, Math.PI/2, sideW,(_sudH>sideH?sideD*1.15:sideD),_sudH,_sud,crowd.fill,true,false,{tiers:(T&&T.megaCurva)?1:_tiers,roofOn:_roofFor("sud")});// [5.89.1 HOTFIX] un argomento in PIÙ (sideD duplicato) scalava tutti i parametri → crowdObj arrivava come NUMERO → curva Sud BIANCA senza tifosi/bandiere in ogni partita (segnalazione PO con screenshot)   // Curva Sud (tabellone) — SOLO casa · tedesco: MURO a 1 anello
   const _nordStand=addStand(-sideX,0,-Math.PI/2, sideW,sideD,sideH,_nord,crowd.awayFill,false,true,{tiers:_tiers,roofOn:_roofFor("nord")});// Curva Nord — SOLO ospiti
   const homeMats=[..._sudStand.mats,..._ovStand.mats,..._esStand.mats];
   const awayMats=[..._nordStand.mats];
@@ -7261,7 +7262,9 @@ function ThreeMatchView(props){
             else if(_hs===true&&_ht==="pass"){hlPostArcT=0;hlPostArcType="assist_recv";if(passTargetMesh){passTargetMesh._rcvT=0;passTargetMesh=null;}}
             else if(_hs===true&&(_ht==="tackle"||_ht==="dribble"||_ht==="build"||!_ht)){
               // dribbling/costruzione che valgono un GOL → la palla deve entrare in rete (non solo il pugno)
-              if((_ht==="dribble"||_ht==="build"||(_ht==="tackle"&&!P.hlDef))&&P.hlReward==="goal"){hlPostArcT=0;hlOutcomeVariant="goal";hlPostArcType="in_net";}// pressing/dribbling-gol → palla in rete (MAI in un highlight difensivo: P.hlDef)
+              if((_ht==="dribble"||_ht==="build"||(_ht==="tackle"&&!P.hlDef))&&P.hlReward==="goal"){
+                if(P.hlOutcomeKind==="chance"){heroPostT=0;heroPostType="fist";}// [5.90.0 BLK-2] uomo saltato: palla al piede, la conclusione arriva dalla chain (niente rete qui)
+                else{hlPostArcT=0;hlOutcomeVariant="goal";hlPostArcType="in_net";}}// pressing/dribbling-gol → palla in rete (MAI in un highlight difensivo: P.hlDef)
               else{heroPostT=0;heroPostType="fist";}}
             else if(_hs===false){hlInNetFlashed=false;heroPostT=0;heroPostType="miss";
               // ENGINE Fase 3 (fusione): il TIPO di esito mancato deriva dal Decision Engine (P.hlOutcomeKind),
@@ -8986,6 +8989,11 @@ const CHAIN_SITS={
     A("🎯 Controllo e tiro","tecnica",5,"goal","miss",12),
     A("✈️ Di testa","fisico",0,"goal","miss",14)
   ],false,-1,"","off",null,{pressure:"low",support:1,nearby_def:3,lanes:[],bs:"feet"}),
+  dopo_dribbling:S("⚡ L'uomo è saltato — campo aperto davanti a te!",["bordo","area"],{x:[74,94],y:[25,75]},{x:[76,86],y:[32,68]},[
+    A("💥 Conclusione in corsa","tiro",6,"goal","miss",13),
+    A("🌀 Punta il portiere e piazzala","tecnica",2,"goal","miss",15),
+    A("↩️ Scarico al compagno libero","passaggio",4,"assist","intercept",8)
+  ],false,-1,"","off",null,{pressure:"low",support:1,nearby_def:1,lanes:["central_run"],bs:"feet"}),// [5.90.0 BLK-2] il secondo momento del duello
   second_ball:S("🎯 Secondo tempo sul rimbalzo — istinto puro!",["bordo","area"],{x:[72,94],y:[22,78]},{x:[74,86],y:[30,70]},[
     A("🦵 Tiro al volo","tiro",4,"goal","miss",15),
     A("🎯 Prima intenzione","tecnica",2,"goal","miss",13),
@@ -10290,6 +10298,14 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
         if(_dA&&_dA.outcome==="chance"){_chance78=true;key="chance";_outKind="chance";}
       }
     }catch(_e){}}
+    // [5.90.0 BLK-2 · DUELLO DRIBBLING] «saltare l'uomo e concludere» non sono più UN solo roll:
+    //   un dribbling "da gol" riuscito diventa UOMO SALTATO (palla al piede, esito chance) e la
+    //   conclusione arriva dalla chain dedicata (dopo_dribbling) — due momenti di gioco, come in campo.
+    let _chanceDrb=false;
+    if(ok&&key==="goal"&&!(situations[hlIdx]&&situations[hlIdx]._chainDepth)){try{
+      const _cnD=(typeof deriveHL==="function"&&deriveHL(_fkSit,action))||{};
+      if(_cnD.type==="dribble"){_chanceDrb=true;_chance78=true;key="chance";_outKind="chance";}
+    }catch(_e){}}
     // DEFENSIVE OUTCOME (5.65.0): per un highlight DIFENSIVO decidi UNA sola volta (stesso seed → coerenza
     //   3D/overlay/cronaca) l'esito realistico della respinta/recupero. Elimina il rinvio lungo automatico
     //   verso la porta avversaria: la traiettoria diventa varia (tieni possesso / passa / riparti / respinta
@@ -10313,7 +10329,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     if(!ok&&key==="goal_against")_defTraj={kind:"goal_against",poss:"opp",toOwnGoal:true,arcH:0.8,arcDur:0.55};
     const _seedOvl=Math.abs(hashStr((action.label||"")+key+hlIdx+score.home+score.away));
     const _nkTx=(key==="miss")?_missKindNorm(_outKind):null;
-    const txt=(_nkTx&&_MISS_TX[_nkTx])?_MISS_TX[_nkTx][_seedOvl%_MISS_TX[_nkTx].length]:pick(OUTCOME_TX[key]||["Azione completata."]);
+    const txt=(_nkTx&&_MISS_TX[_nkTx])?_MISS_TX[_nkTx][_seedOvl%_MISS_TX[_nkTx].length]:(_chanceDrb?OUTCOME_TX.chance_dribble[_seedOvl%OUTCOME_TX.chance_dribble.length]:pick(OUTCOME_TX[key]||["Azione completata."]));// [5.90.0] cronaca dedicata all'uomo saltato
     const _ovl=hlOverlay(key,ok,action.label,(player.name||"").split(" ")[0],_seedOvl,_outKind);
     setEnergy(e=>clamp(e-action.nrg,0,100));
     setMStats(s=>{let{goals,assists,rb,xg}={...s};const _xgAdd=calcXG(action,pPos.x);xg=Math.round((xg+_xgAdd)*100)/100;if(ok){if(key==="goal"){goals++;rb+=5;setScore(sc=>({...sc,home:sc.home+1}));setMatchEvents(prev=>{const _em=prev.length>0&&prev[prev.length-1].min>=clockRef.current?prev[prev.length-1].min+1:clockRef.current;return[...prev,{min:_em,type:"player_goal",txt:"⚽ Tuo gol al "+_em+"'"}].slice(-12);});}if(key==="assist"){assists++;rb+=3;setScore(sc=>({...sc,home:sc.home+1}));setMatchEvents(prev=>{const _em=prev.length>0&&prev[prev.length-1].min>=clockRef.current?prev[prev.length-1].min+1:clockRef.current;return[...prev,{min:_em,type:"player_assist",txt:"🎯 Tuo assist al "+_em+"'"}].slice(-12);});}if(!["goal","assist"].includes(key))rb+=1;}else{if(key==="goal_against"){rb-=3;setScore(sc=>({...sc,away:sc.away+1}));setMatchEvents(prev=>{const _em=prev.length>0&&prev[prev.length-1].min>=clockRef.current?prev[prev.length-1].min+1:clockRef.current;return[...prev,{min:_em,type:"opp_goal",txt:"😨 Gol subito al "+_em+"'"}].slice(-12);});}if(key==="miss_easy"){rb-=2;setMatchEvents(prev=>{const _em=prev.length>0&&prev[prev.length-1].min>=clockRef.current?prev[prev.length-1].min+1:clockRef.current;return[...prev,{min:_em,type:"miss",txt:"😱 Gol clamorosamente sprecato al "+_em+"'"}].slice(-12);});}}return{goals,assists,rb,xg};});
@@ -10412,9 +10428,10 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     // Sprint 77 + Fase 6 (NEXT-GEN chaining robusto): un assist da palla messa in area innesca un
     //   secondo tempo (testa/mischia/rimbalzo). Rilevamento via regex case-insensitive ampia (non più
     //   catena fragile di .includes) + guardia di profondità (niente stacking di catene).
-    if(ok&&action.rew==="assist"&&!pendingChainSitRef.current&&!(situations[hlIdx]&&situations[hlIdx]._chainDepth)){// [5.78.0 BUG-14] guardia di profondità REALE: una catena non può incatenarne un'altra
+    if(ok&&(action.rew==="assist"||_chanceDrb)&&!pendingChainSitRef.current&&!(situations[hlIdx]&&situations[hlIdx]._chainDepth)){// [5.78.0 BUG-14] guardia di profondità REALE: una catena non può incatenarne un'altra
       const _st77=situations[hlIdx]?.text||"";
-      if(_chance78)pendingChainSitRef.current={...pick([CHAIN_SITS.mischia,CHAIN_SITS.second_ball]),_chainDepth:1};// [5.78.0 SIT-4] la chance APRE SEMPRE il secondo tempo: la conclusione va giocata
+      if(_chanceDrb)pendingChainSitRef.current={...CHAIN_SITS.dopo_dribbling,_chainDepth:1};// [5.90.0 BLK-2] uomo saltato → conclusione da giocare
+      else if(_chance78)pendingChainSitRef.current={...pick([CHAIN_SITS.mischia,CHAIN_SITS.second_ball]),_chainDepth:1};// [5.78.0 SIT-4] la chance APRE SEMPRE il secondo tempo: la conclusione va giocata
       else if(/cross|traversone|corner|angolo|punizione|rimessa|cross in area|dal fondo|in mezzo/i.test(_st77))
         pendingChainSitRef.current={...pick([CHAIN_SITS.header,CHAIN_SITS.mischia,CHAIN_SITS.second_ball]),_chainDepth:1};
     }
