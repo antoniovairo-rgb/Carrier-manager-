@@ -2988,7 +2988,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="5.90.0"; // [5.90.0] HOTFIX CURVA BIANCA (segnalazione PO con screenshot, prod 5.88-5.89): nella chiamata addStand della Curva Sud un argomento in PIÙ (sideD duplicato accanto al ternario megaCurva) scalava tutti i parametri di una posizione → crowdObj arrivava come NUMERO → materiale senza texture = curva Sud BIANCA senza tifosi/bandiere/striscioni in OGNI partita. Fix: rimosso l'argomento spurio; screenshot per template rigenerati e VERIFICATI a occhio. + DUELLO DRIBBLING COMPLETO (BLK-2 2ª metà, audit F5): «saltare l'uomo» e «concludere» non sono più collassati in un solo roll — un dribbling "da gol" riuscito diventa UOMO SALTATO (esito chance: palla al piede, cronaca dedicata, in 3D nessuna rete) e la conclusione arriva dalla nuova chain dopo_dribbling (tiro in corsa / punta il portiere / scarico), con la guardia _chainDepth che impedisce catene di catene. Il duello ha due momenti di gioco, come in campo.
+const GAME_VERSION="5.90.0"; // [5.90.0] TRIPLO FIX DA COLLAUDO PO + DUELLO DRIBBLING. (1) HOTFIX CURVA BIANCA (screenshot PO): un argomento in PIÙ nella chiamata addStand della Curva Sud (S2) scalava tutti i parametri → crowdObj era un NUMERO → texture assente = curva bianca senza tifosi in ogni partita; screenshot per template rigenerati e verificati A OCCHIO. (2) FIX «palla non entra correttamente in porta»: nel post-arco in_net/in_net_high la z convergeva troppo piano → da angoli larghi (cross, tiri dalla fascia) la palla superava la linea FUORI dallo specchio e scivolava dentro di lato; ora converge TRA I PALI (|z|≤2.9, stretta forte sotto porta) prima della linea. (3) FIX «azione parte da sola dopo i movimenti»: regressione della Fase 0 — rimuovendo il "pad fantasma", a mosse esaurite il DPad SMONTAVA e i bottoni azione slittavano sotto il dito → il tap successivo innescava un'azione; ora il pad resta come SCUDO disabilitato (spento/grigio, handler no-op). (4) DUELLO DRIBBLING COMPLETO (BLK-2 2ª metà): dribbling "da gol" riuscito = UOMO SALTATO (chance: palla al piede, cronaca dedicata, niente rete in 3D) + conclusione dalla nuova chain dopo_dribbling; guardia _chainDepth attiva. (5) Harness: __CPM_FORCE_SIT riazzera l'array situations alla base statica (le chain splice-avano gli indici tra un force e l'altro → falsi mismatch di intent nel check timeline).
 const SAVE_VERSION=8;// v8 [5.81.0 BIL-3b]: bankBalance (stipendio accumulato, €) + perkTrainer/perkNutrition (staff personale) — migration retro-compatibile. v7: player.foot
 // 5.67.0 — TABELLONE realistico del torneo per NAZIONALI (Europeo/Mondiale): dopo il girone la fase a
 //   eliminazione segue Ottavi → Quarti → Semifinale → Finale (prima saltava dritta alla semifinale).
@@ -7295,12 +7295,18 @@ function ThreeMatchView(props){
       else if(hlPostArcT>=0&&!tlOn){hlPostArcT+=aDt;/* 5.43.9: l'arco di conclusione (in_net/deflect/...) NON avanza finché il build-up è in corso (tlOn) → su conduzioni/build-up lunghi (BALL_CARRY) la palla entra DAVVERO in rete dopo la conduzione, senza che l'arco scada/confligga col ball-pin */
         if(hlPostArcType==="in_net"){// 3DV-FIX3: la palla entra DENTRO la porta (oltre la linea, fino alla rete ~49.4), non si ferma sulla linea
           ball.position.x+=((AWAY_GOAL_X+2.4)-ball.position.x)*Math.min(aDt*5.5,1);
+          // [5.90.0 FIX PO] la palla deve entrare TRA I PALI (porta z=±3.66): da angoli larghi la z calava
+          //   troppo piano e la palla superava la linea FUORI dallo specchio, poi scivolava dentro di lato.
+          {const _zi90=clamp(ball.position.z,-2.9,2.9);const _zk90=ball.position.x>AWAY_GOAL_X-6?8:2.4;
+           ball.position.z+=(_zi90-ball.position.z)*Math.min(aDt*_zk90,1);}
           ball.position.z*=(1-Math.min(aDt*2,1)*0.12);
           ball.position.y=0.65+Math.max(0,Math.abs(Math.sin(hlPostArcT*4.5))*1.1*Math.exp(-hlPostArcT*2.0));
           if(!hlInNetFlashed&&ball.position.x>AWAY_GOAL_X){hlInNetFlashed=true;contactFlashT=0;shakePow=0.20;}// flash quando la palla supera la linea
           if(hlPostArcT>2.4){hlPostArcT=-1;hlPostArcType=null;hlInNetFlashed=false;}}
         else if(hlPostArcType==="in_net_high"){// CINE-3: chip/volley — palla entra alta DENTRO la rete
           ball.position.x+=((AWAY_GOAL_X+2.2)-ball.position.x)*Math.min(aDt*5.0,1);
+          {const _zi91=clamp(ball.position.z,-2.9,2.9);const _zk91=ball.position.x>AWAY_GOAL_X-6?8:2.4;
+           ball.position.z+=(_zi91-ball.position.z)*Math.min(aDt*_zk91,1);}// [5.90.0 FIX PO] dentro lo specchio anche sui pallonetti
           ball.position.z*=(1-Math.min(aDt*2,1)*0.10);
           const _tgtY=ball.position.x>AWAY_GOAL_X-6?2.4:ball.position.y;// mantiene altezza fino all'ingresso
           ball.position.y+=(_tgtY-ball.position.y)*Math.min(aDt*3,1);
@@ -9322,7 +9328,8 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     // (salta hl_intro, cinematico). Replica la transizione reale: mm===0 (e non lock) → hl_choose, altrimenti hl_move.
     window.__CPM_FORCE_SIT=(gi,choose,ppos)=>{ const sit=SITUATIONS[gi]; if(!sit)return false;
       if(window.__CPM_RESEED)window.__CPM_RESEED(gi); // start position deterministica per indice
-      _hlActionFiredRef.current=false; setOutcome(null); setChosenAct(null); pendingChainSitRef.current=null; pendingActionRef.current=null; // reset (consenti nuova risoluzione, niente azione "pending" residua che si auto-risolverebbe entrando in hl_choose)
+      _hlActionFiredRef.current=false; setOutcome(null); setChosenAct(null); pendingChainSitRef.current=null; pendingActionRef.current=null;
+      setSituations(SITUATIONS.slice());// [5.90.0] le CHAIN (assist-chance/dribbling) splice-ano l'array tra un force e l'altro → gli indici slittavano e la timeline confrontava sit diverse: riparti sempre dalla base statica // reset (consenti nuova risoluzione, niente azione "pending" residua che si auto-risolverebbe entrando in hl_choose)
       setHlIdx(gi); setPPos(ppos||getStartPos(sit)||{x:58,y:50});// 5.43.1: ppos opzionale (Situation Test Mode → avanza l'eroe per rivelare le azioni rew=goal filtrate da px<55). Gate usa 2 arg → retro-compatibile.
       cpmEmit("HighlightForced",{gi:gi,intent:sit.intent||null,zone:(sit.zones&&sit.zones[0])||null});// LMQP-1
       const mm=cappedMM(sit); setPhase(choose?"hl_choose":(mm===0&&!sit.lockMovement?"hl_choose":"hl_move")); return true; };
@@ -11046,7 +11053,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                   <div style={{fontSize:10,color:"rgba(255,255,255,0.75)",fontWeight:700,textShadow:"0 1px 3px rgba(0,0,0,0.9)",marginBottom:5}}>{clock}' — {intentTitle(curSit.text,curSit.intent,_scoreDiff)} &nbsp;·&nbsp; <span style={{color:defDist<25?"#f87171":defDist<50?"#f97316":"#4ade80"}}>{defDist<25?"⚠ Addosso":defDist<50?"Vicino":"Libero"}</span>&nbsp;·&nbsp;<span style={{color:energy>50?"#4ade80":energy>25?"#f59e0b":"#f87171"}}>⚡{energy}</span></div>
                   {(+(safeLS.get("cpm-hl-tips")||0))<5&&<div style={{fontSize:9,color:"rgba(255,255,255,0.75)",background:"rgba(37,99,235,0.35)",borderRadius:6,padding:"5px 8px",marginBottom:6}}>💡 I pallini ●●●○ indicano la probabilità di riuscita. Muoviti col pad per cambiare le opzioni.</div>}{/* [5.84.0 UX-2c] micro-onboarding one-shot (primi 5 HL del device) */}
                   <div style={{display:"flex",alignItems:"flex-start",gap:10}}>
-                    {showDPad(curSit)&&<div style={{flexShrink:0}}><DPad onMove={handleDPad} dark size={40}/></div>}
+                    {!curSit.lockMovement&&!hideDirCursor(curSit)&&<div style={{flexShrink:0,opacity:movesLeft>0?1:0.35,filter:movesLeft>0?"none":"grayscale(1)"}}><DPad onMove={movesLeft>0?handleDPad:()=>{}} dark size={40}/></div>}{/* [5.90.0 FIX PO] a mosse esaurite il pad resta come SCUDO disabilitato: smontarlo faceva slittare i bottoni azione sotto il dito → l'azione partiva "da sola" */}
                     {curSit.lockMovement?(
                       <div style={{flex:1,display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:5}}>
                         {["tl","tc","tr","bl","bc","br"].map(dir=>(
