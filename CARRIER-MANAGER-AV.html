@@ -1934,7 +1934,7 @@ S("⚡ Velocità contro posizione — 1 vs 1 sulla fascia!",["bordo","trequarti"
   A("⚡ Spunto esplosivo","velocità",8,"assist","intercept",20),A("🌀 Dribbling di tecnica","tecnica",5,"assist","nothing",16),A("💥 Tiro cross teso","tiro",3,"goal","miss",13)],false,-1,"","off",null,{pressure:"medium",support:1,nearby_def:1,lanes:["overlap_left"],bs:"feet"}),
 /* Rigore nel finale */
 S("🔴 RIGORE! Sul dischetto a 5' dalla fine. Respira. Tira.",["area"],{x:[84,90],y:[44,56]},{x:[86,89],y:[47,53]},[
-  A("💥 Angolo basso — potenza","tiro",12,"goal","miss_easy",10),A("🌀 Cucchiaio — glaciale","tecnica",2,"goal","miss_easy",20),A("⚡ Incrociato rasoterra","velocità",6,"goal","miss",14)],true,0,"⏱ Cinque minuti alla fine. Il rigore che vale tutto. Respira.","off",null,{pressure:"none",support:0,nearby_def:0,lanes:[]}),
+  A("💥 Angolo basso — potenza","tiro",12,"goal","miss_easy",10),A("🌀 Cucchiaio — glaciale","tecnica",2,"goal","miss_easy",20),A("⚡ Incrociato rasoterra","velocità",6,"goal","miss",14)],true,0,"⏱ Cinque minuti alla fine. Il rigore che vale tutto. Respira.","off",null,{pressure:"none",support:0,nearby_def:0,lanes:[],minClock:80}),// [5.79.0 SIT-5] «a 5' dalla fine» può uscire SOLO nel finale
 /* Rimonta — sotto di due gol */
 S("🔙 Sotto nel punteggio. L'attacco cerca il gol della speranza.",["trequarti","bordo"],{x:[55,80],y:[25,75]},{x:[58,72],y:[30,70]},[
   A("🔥 Prendo in mano la squadra","mentalità",8,"goal","through",18),A("⚡ Scatto in verticale","velocità",6,"goal","intercept",16),A("🎯 Lancio smarcante","passaggio",5,"assist","intercept",12)],false,-1,"","off","losing",{pressure:"low",support:2,nearby_def:1,lanes:[]}),
@@ -2974,7 +2974,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="5.78.0"; // [5.78.0] FASE 2.2 «MOTORE D'ESITO UNIFICATO» (audit BLK-2/F10/SIT-4/F3, primo scaglione): (1) ROLL D'ESITO SEEDATO — l'esito dell'azione era l'unico Math.random() nudo del momento centrale di gameplay: ora rng seedato (ricetta DE: sit+azione+indice+punteggio+minuto), STESSA curva di probabilità, esito riproducibile (prerequisito replay/telemetria LMQP); (2) SIT-4 L'ASSIST NON È PIÙ GOL GARANTITO — sui passaggi chiave (through/onetwo) decideExecution decide tra assist (gol del compagno) e CHANCE (esito finora inutilizzato): la palla è buona ma la conclusione va giocata — nuovo outcome key `chance` (overlay OCCASIONE CREATA!, cronaca dedicata, taxonomy timeline aggiornata), il chaining inietta SEMPRE il secondo tempo (mischia/second_ball) e in 3D il tocco del ricevente RIMBALZA (deflect) invece di gonfiare la rete (coerenza M1 preservata via hlOutcomeKind); (3) F3 IL RIGORE LEGGE LE STAT — handleRigore ora passa da decideExecution('penalty') (tiro/mentalità/fatica/morale/meteo → qualità) con l'angolo scelto come minigame; media conversione invariata ma le stat contano; il rigore emette ActionResolved (timeline) e il gol compare negli eventi partita; (4) BUG-14 guardia di profondità REALE sul chaining (_chainDepth: una catena non può incatenarne un'altra — prima la header-chain poteva auto-rigenerarsi). Gate 14/14 verde.
+const GAME_VERSION="5.79.0"; // [5.79.0] FASE 2.3 «SELEZIONE LAZY CONTESTUALE» (audit SIT-1/SIT-5, priorità 9): la situation di ogni highlight si sceglie AL TRIGGER col contesto VIVO — punteggio reale, minuto, momentum e possesso (nuovi pesi: mom≥65 off ×1.25/def ×0.65 · mom≤35 def ×1.6 · possesso analogo) — non più tutta al calcio d'inizio con ctx neutro ('drawing'/clock 0): fine del «Contropiede! Campo aperto» col 75% di possesso. FILTRI DURI in selectContextualSituations: ctx losing/winning coerente col punteggio, finestre temporali tactic.minClock/maxClock (nuovo campo opzionale — il «RIGORE a 5' dalla fine» ora esce SOLO dall'80'), niente ripetizioni della stessa sit nella partita (exclude). Il vecchio skip su ctx-mismatch al trigger (che BRUCIAVA l'highlight, riducendo i momenti promessi da numHL) è RIMOSSO: il mismatch è impossibile a monte. Le sit incatenate (_chainDepth) si giocano come sono; gli extra reattivi/60'/72' passano a seed deterministici (via bgSimSeedRef) + contesto vivo. Il force-sit del gate bypassa la selezione (gate-safe); il trigger lazy è ESERCITATO dal check live-smoke. ⚠️ Distribuzione delle situations percepita in partita = gate-cieca → collaudo dal vivo.
 const SAVE_VERSION=7;// v7: aggiunto player.foot (piede preferito) — migration retro-compatibile
 // 5.67.0 — TABELLONE realistico del torneo per NAZIONALI (Europeo/Mondiale): dopo il girone la fase a
 //   eliminazione segue Ottavi → Quarti → Semifinale → Finale (prima saltava dritta alla semifinale).
@@ -8672,7 +8672,19 @@ function selectContextualSituations(all,numHL,player,seed,opts){
   var passaggio=stats.passaggio||60;
   var velocita=stats["velocità"]||60;
   var _oppId=opts&&opts.opponentId||null;
+  // [5.79.0 SIT-1/5] contesto VIVO: momentum/possesso pesano la selezione; ctx e finestre temporali
+  //   (tactic.minClock/maxClock) sono FILTRI DURI → una sit incoerente non può più essere pescata
+  //   (prima il mismatch veniva scoperto solo al trigger e l'highlight andava perso).
+  var _mom=opts&&opts.momentum!=null?opts.momentum:50;
+  var _poss=opts&&opts.possession!=null?opts.possession:50;
+  var _excl=(opts&&opts.exclude)||[];
   var pool=all.filter(function(sit){
+    if(sit.ctx==="losing"&&scoreCtx!=="losing")return false;
+    if(sit.ctx==="winning"&&scoreCtx!=="winning")return false;
+    var _tc=sit.tactic||{};
+    if(_tc.minClock&&clockCtx<_tc.minClock)return false;
+    if(_tc.maxClock&&clockCtx>_tc.maxClock)return false;
+    if(_excl.indexOf(sit.text)>=0)return false;// niente ripetizioni nella stessa partita
     // Ex-club situation: mostra solo se l'avversario è realmente un ex club
     if(sit.ctx==="is_ex_club"){
       if(!_oppId)return false;
@@ -8705,6 +8717,12 @@ function selectContextualSituations(all,numHL,player,seed,opts){
       var hasArea=sit.zones&&(sit.zones.indexOf("area")>=0||sit.zones.indexOf("bordo")>=0);
       if(hasArea)w=Math.round(w*1.25);
     }
+    // [5.79.0 SIT-1] momentum/possesso come ATTUATORI della selezione: chi domina vive momenti offensivi
+    //   e avanzati, chi soffre vive più difesa/transizione — l'highlight nasce dallo stato della partita.
+    if(_mom>=65){if(t==="off")w=Math.round(w*1.25);if(t==="def")w=Math.round(w*0.65);}
+    else if(_mom<=35){if(t==="def")w=Math.round(w*1.6);if(t==="off")w=Math.round(w*0.8);}
+    if(_poss>=62&&t==="off")w=Math.round(w*1.1);
+    else if(_poss<=38&&t==="def")w=Math.round(w*1.25);
     return{sit:sit,w:Math.max(1,w)};
   });
   var result=[];var remaining=pool.slice();var s=seed;
@@ -9670,7 +9688,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           reactiveHLQueueRef.current.shift();
           // [5.75.0 BLK-1] _sctx76 era fuori scope (vive solo nel callback di setClock) → ReferenceError = clock congelato al primo HL reattivo. Contesto calcolato inline.
           var _scRQ=scoreRef.current;var _ctxRQ=_scRQ.home>_scRQ.away?"winning":_scRQ.home<_scRQ.away?"losing":"drawing";
-          var extras=selectContextualSituations([...SITUATIONS],1,player,Date.now()^(ck*31),{scoreCtx:_ctxRQ,clock:ck,opponentId:opponent?.id||opponent?.n||null});
+          var extras=selectContextualSituations([...SITUATIONS],1,player,((bgSimSeedRef.current^(ck*8191))>>>0),{scoreCtx:_ctxRQ,clock:ck,momentum:momentumRef.current,possession:possessionRef.current,opponentId:opponent?.id||opponent?.n||null});// [5.79.0] seed deterministico + contesto vivo
           if(extras.length>0){
             setSituations(function(prev){return[...prev,extras[0]];});
             var addT=ck+2;
@@ -9685,7 +9703,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
         var sc60=scoreRef.current;
         if(sc60.away-sc60.home===1){
           earlyDespRef.current=true;
-          var eextra=selectContextualSituations([...SITUATIONS],1,player,Date.now()^607,{scoreCtx:"losing",clock:ck,opponentId:opponent?.id||opponent?.n||null});
+          var eextra=selectContextualSituations([...SITUATIONS],1,player,((bgSimSeedRef.current^60607)>>>0),{scoreCtx:"losing",clock:ck,momentum:momentumRef.current,possession:possessionRef.current,opponentId:opponent?.id||opponent?.n||null});
           if(eextra.length>0){
             setSituations(function(prev){return[...prev,eextra[0]];});
             var etime=63+rng(0,4);
@@ -9700,7 +9718,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
         var sc=scoreRef.current;
         if(sc.away-sc.home>=2){
           desperateFiredRef.current=true;
-          var dextra=selectContextualSituations([...SITUATIONS],1,player,Date.now()^997,{scoreCtx:"losing",clock:ck,opponentId:opponent?.id||opponent?.n||null});
+          var dextra=selectContextualSituations([...SITUATIONS],1,player,((bgSimSeedRef.current^72997)>>>0),{scoreCtx:"losing",clock:ck,momentum:momentumRef.current,possession:possessionRef.current,opponentId:opponent?.id||opponent?.n||null});
           if(dextra.length>0){
             setSituations(function(prev){return[...prev,dextra[0]];});
             var dtime=76+rng(0,4);
@@ -9717,8 +9735,18 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           if(onBenchRef.current){setHlIdx(hi=>hi+1);}else{
             const _sc=scoreRef.current;
             const _realCtx=_sc.home>_sc.away?"winning":_sc.home<_sc.away?"losing":"drawing";
-            const _sitCtx=situationsRef.current[hlIdx]?.ctx||null;
-            if(_sitCtx&&_sitCtx!==_realCtx){setHlIdx(hi=>hi+1);}else{setBgAction(null);setPhase("hl_intro");}// COERENZA: spegni la cronaca BG (testo+arco) entrando nell'highlight → niente azione di sottofondo che contraddice l'highlight
+            // [5.79.0 SIT-1] SELEZIONE LAZY: la situation si sceglie ADESSO, col contesto VIVO (punteggio,
+            //   minuto, momentum, possesso) — non più tutta al calcio d'inizio con ctx neutro. Le sit
+            //   incatenate (_chainDepth) si giocano come sono. Il vecchio skip su ctx-mismatch sparisce:
+            //   il filtro a monte rende il mismatch impossibile → nessun highlight più bruciato (SIT-5).
+            const _cur79=situationsRef.current[hlIdx];
+            if(!(_cur79&&_cur79._chainDepth)){
+              const _lzSeed=(((bgSimSeedRef.current^(hlIdx*2654435761))>>>0)+nx*97)>>>0;
+              const _used79=situationsRef.current.slice(0,hlIdx).map(s2=>s2&&s2.text).filter(Boolean);
+              const _fresh79=selectContextualSituations([...SITUATIONS],1,player,_lzSeed,{scoreCtx:_realCtx,clock:nx,momentum:momentumRef.current,possession:possessionRef.current,opponentId:opponent?.id||opponent?.n||null,exclude:_used79});
+              if(_fresh79.length>0)setSituations(prev=>{const c=[...prev];c[hlIdx]=_fresh79[0];return c;});
+            }
+            setBgAction(null);setPhase("hl_intro");// COERENZA: spegni la cronaca BG (testo+arco) entrando nell'highlight
           }
           return nx;
         }
