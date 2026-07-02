@@ -1036,9 +1036,9 @@ const WEEKLY_EVENTS=[
   // ── TEAM / CLUB — POSITIVE ───────────────────────────────────────────────
   {w:5,txt:"🍽️ Cena col presidente. Ti promette un futuro da titolare.",ef:{morale:12,coachTrust:6,popularity:5}},
   {w:4,txt:"💬 Il capitano ti porta in giro per la città. Amicizia solida.",ef:{morale:10,coachTrust:5}},
-  {w:4,txt:"🌄 Ritiro pre-campionato fantastico. Gruppo unito come mai.",ef:{morale:11,form:7,fatigue:-8}},
+  {w:4,txt:"🌄 Ritiro pre-campionato fantastico. Gruppo unito come mai.",ef:{morale:11,form:7,fatigue:-8},cond:p=>(p.week||1)<=3},
   {w:4,txt:"🏠 Ambiente familiare sereno. Testa libera, gambe leggere.",ef:{morale:9,fatigue:-10,form:6}},
-  {w:3,txt:"⭐ Il club annuncia bonus se raggiungi 10 gol. Motivazione!",ef:{morale:14,form:8}},
+  {w:3,txt:"⭐ Il club annuncia bonus se raggiungi 10 gol. Motivazione!",ef:{morale:14,form:8},cond:p=>(p.goals||0)<10},
   {w:3,txt:"🎮 Gaming session con i compagni. Legame fortissimo.",ef:{morale:8,coachTrust:3}},
   // ── NEGATIVE — FATIGUE / PHYSICAL ────────────────────────────────────────
   {w:11,txt:"😓 Piccolo affaticamento muscolare. Serve riposo.",ef:{fatigue:16,form:-5,morale:-4}},
@@ -1094,7 +1094,7 @@ const WEEKLY_EVENTS=[
   {w:5,txt:"🤝 Il club firma un accordo con un brand globale. Bonus per tutti i giocatori.",ef:{morale:11,popularity:5}},
   {w:4,txt:"👔 Cambia il direttore sportivo. Nuova gestione, nuove priorità: senti pressione.",ef:{coachTrust:-4,morale:-6,form:-3}},
   {w:4,txt:"💸 Il club acquista un big internazionale: i tifosi esplodono di gioia, tu ti senti in competizione.",ef:{morale:-5,form:3,coachTrust:-2}},
-  {w:3,txt:"🏆 Il presidente promette un mercato di gennaio ambizioso. Clima eccitante.",ef:{morale:10,form:5}},
+  {w:3,txt:"🏆 Il presidente promette un mercato di gennaio ambizioso. Clima eccitante.",ef:{morale:10,form:5},cond:p=>(p.week||1)>=15&&(p.week||1)<=22&&(p.proStatus||"u18")==="pro"},
   // ── NAZIONALE & PALCOSCENICO INTERNAZIONALE ───────────────────────────────
   {w:6,txt:"🌍 Il ct della nazionale ti segue da vicino: sei nella lista dei pre-convocati.",ef:{morale:12,popularity:11,form:6},cond:p=>p.proStatus==="pro"&&p.ovr>=70},
   {w:5,txt:"📺 Il tuo nome appare per la prima volta in una lista ufficiale della nazionale.",ef:{popularity:14,morale:11,value:0.2},cond:p=>p.proStatus==="pro"&&p.ovr>=68},
@@ -1132,6 +1132,7 @@ function resolveEvText(txt,p){
    WEEKLY RANDOM EVENTS — life events (10 pool)
    Fire during doAdvanceWeek when weekLived=false (25% chance)
 ======================================== */
+let _lastWRE=-1,_lastImpulseId=null;/* [5.98.0 D1] anti-ripetizione consecutiva (memoria di sessione) */
 const WEEKLY_RANDOM_EVENTS=[
   {txt:"🤝 Il tuo agente chiama: interesse concreto da un club importante. Sei motivato!",ef:{morale:9,popularity:6}},
   {txt:"🎽 Il club presenta la nuova maglia. Sei in prima fila per la foto. Grande hype!",ef:{popularity:8,morale:5}},
@@ -1178,12 +1179,12 @@ const WEEKLY_RANDOM_EVENTS=[
   {txt:"⚖️ Protesta per un rigore negato. Il club presenta ricorso. Ambiente teso ma unito.",ef:{morale:-4,coachTrust:5}},
   {txt:"📊 Il club pubblica le statistiche stagionali: sei in testa per diverse categorie. Orgoglio.",ef:{morale:11,popularity:8,value:0.06}},
   {txt:"🔥 Virale su Twitter/X: un tuo dribbling viene visto 3 milioni di volte in 24 ore.",ef:{popularity:14,morale:8,value:0.07}},
-  {txt:"🌅 Mercato estivo: trattativa sfumata per un big. Lo spogliatoio si concentra sul campo.",ef:{morale:-3,coachTrust:4}},
+  {txt:"🌅 Mercato estivo: trattativa sfumata per un big. Lo spogliatoio si concentra sul campo.",ef:{morale:-3,coachTrust:4},cond:p=>(p.week||1)<=6&&(p.proStatus||"u18")==="pro"},
   {txt:"📈 Record storico del club in vista: mancano pochissimo per raggiungerlo.",ef:{morale:12,form:7}},
   {txt:"🗺️ Ritiro tattico in montagna. Il mister presenta il nuovo modulo: eccitazione e curiosità.",ef:{coachTrust:7,mentalità:1,fatigue:8}},
   {txt:"🎙️ Intervista a un media internazionale: sei definito 'il talento del momento'. Brividi.",ef:{popularity:12,morale:9,value:0.05}},
   {txt:"🏟️ Un tifoso ti riconosce per strada e scoppia in lacrime. L'impatto del calcio sulla gente.",ef:{morale:13,popularity:7}},
-  {txt:"🏕️ Training camp pre-stagionale intensissimo. Ne esci più forte e con la testa giusta.",ef:{fisico:1,mentalità:1,fatigue:14}},
+  {txt:"🏕️ Training camp pre-stagionale intensissimo. Ne esci più forte e con la testa giusta.",ef:{fisico:1,mentalità:1,fatigue:14},cond:p=>(p.week||1)<=3},
   {txt:"🎂 Il club festeggia il centenario. Atmosfera storica, responsabilità enorme.",ef:{morale:10,popularity:8,coachTrust:3}},
   {txt:"🏗️ Inaugurazione della nuova ala dello stadio. Il club cresce — e tu ne fai parte.",ef:{morale:8,popularity:6,value:0.05}},
   {txt:"🤜 Piccolo scontro in allenamento con un compagno. Il mister risolve tutto prima di sera.",ef:{morale:-5,coachTrust:3,fatigue:5}},
@@ -1255,7 +1256,7 @@ const WEEKLY_IMPULSES=[
     {txt:"🛌 Salto — devo recuperare",ef:{fatigue:-6,chem:-4}},
   ]},
   {id:"wi_investimento",cat:"conseguenza",txt:"Il tuo consulente propone un investimento immobiliare «sicuro». Serve liquidità subito.",choices:[
-    {txt:"📈 Investo metà del conto",ef:{bank:-40000,morale:3},note:"rendita a fine stagione"},
+    {txt:"📈 Investo metà del conto",ef:{bank:-40000,morale:3},flag:"investment",note:"rendita a fine stagione"},
     {txt:"🏦 Tengo i soldi fermi",ef:{morale:1}},
   ]},
   {id:"wi_beneficenza",cat:"scelta",txt:"La fondazione del club ti chiede di finanziare un campetto di quartiere, a nome tuo.",choices:[
@@ -3078,7 +3079,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="5.97.0"; // [5.97.0] SPRINT 2 «IL CALCIO TORNA CALCIO» (audit SL-1/2/4, CP-1/4/5/6, MP-1): (a) λ del motore risultati CALIBRATE con sweep da 300 stagioni — updateStandings/calcWorldStandings 1.40+diff·1.00 / 1.22−diff·0.85, simulateMatch 1.40+diff·1.10 / 1.22−diff·0.95, cap Poisson unificato a 8 (era 5 vs 8): gol/match 2.16→2.63, 0-0 11.5%→7.2%, pareggi 29%→23.5%, campione 63.6→74.4pt, titoli ai top-prestigio 58%→87% (dinastie realistiche); (b) i QUARTI DI FINALE europei ESISTONO: r16→quarti→sf→final in tutte e 3 le macchine di fase (sim/played/rollover) + label/weeks/migration + clamp ≤W37 sui KO tardivi + notifica di avanzamento corretta; (c) spareggi KO stat-based e SEEDATI (koShootoutWin: base 50% ±OVR/morale, cap 35-72%) al posto del Math.random()<0.55 fisso pro-giocatore nei 4 siti coppa/euro; (d) la CATENA (25%) passa dalla selezione lazy: situation ri-pescata col contesto VIVO + exclude + clock allo slot (chiuso il bypass MP-1) e roll seedato; (e) la PRIMA stagione pro ha la Coppa Nazionale (Europa esclusa by design: non qualificato). // [5.96.0] SPRINT 1 STORE-READY (audit CR-1/CR-2/DB-1/DB-2/DB-3 — il CRITICO): (a) gate copyright ESTESO a stadi (pool+CLUB_STADIUMS+U18), allenatori e ROSTER GENERATI vs blocklist full-name _CR_FULLNAMES (55 coppie reali) — prima era cieco («Stade Vélodrome B» era assegnato in-game col termine IN blocklist); guardia in generateTeamRoster: la coppia bloccata slitta di cognome; (b) bonifica stadi: ~50 impianti reali/sponsorizzati sostituiti con nomi di fantasia coerenti per lingua; (c) CLUB_STADIUMS: 19 chiavi morte rimappate sugli id attuali + collisione mon/mon2 risolta (FC Monaco→Stade Princier, FC Brianzolo→Brianza Stadium) + CLUB_STADIUM_STYLE riallineata; (d) COACH_NAMES: via gli 11 allenatori reali; (e) cognomi distintivi di giocatori reali rimossi dai pool NL/TR; (f) 17 club rinominati (solo name, id stabili → save-safe): QPR→Queensway, AT Madrid→AT Manzanares, Betis→Verdiblanco, Standard→Vallonia, St. Pauli→Sankt Hafen, Gladbach→Niederrhein…; (g) LEAGUE_RECORDS: club fantasma corretti (AC Roma→FC Capitale, Paris FC→FC Paris) + record propri per Deutsche Liga 2/Ligue Nationale 2/Liga Ibérica 2 (via il fallback coi nomi italiani); (h) pool nomi 🇧🇷/🇦🇷 (Brasile/Argentina non pescano più nomi italiani). // [5.95.0] QUICK WINS dell'AUDIT QA v2 (8 fix, bug Top50 #2-#9+#22-23+#48+#50): (a) tornei nazionali RICORRENTI — euroMondiale/nationsCupQueue settano active:false al completamento (prima restava true per sempre → UN solo Europeo/Mondiale e UNA sola Coppa delle Nazioni per carriera) + repair in migration per i save bloccati; (b) il task agente «Prepara rinnovo» ora APPLICA il bonus accumulato in _acceptNegoWage (prima veniva azzerato senza pagare: ramo consumer dead); (c) rinnovi con cooldown stagionale (renewalSeason) + morale +8 solo al primo + durata proposta deterministica (niente reroll); (d) CTA «Gioca →» di nuovo VERDE (lo spread background:undefined uccideva la variante), label modulo avversario leggibile, badge versione con auto-fade 9s (su mobile copriva tab-bar e bottoni azione); (e) i tiri dell'eroe (e i rigori) contano in mxStats.shots (MOT-6: «3 gol, 1 tiro» addio); (f) ordini mister 28/63/75/85 e intervallo a soglia >= (lo skip non li brucia più); (g) spese-evento disabilitate a fondi insufficienti (niente benefici gratis a saldo 0); (h) windowOfferUsed reset a inizio stagione, id impulso duplicato rinominato, 8 duplicati nei pool nomi NL/BE/IT/PT sostituiti. // [5.94.0] ARC-1b+1c (audit priorità 13, gate potenziato): (1b) rimosso il monkey-patch globale di Math.random sotto ?cpmtest=1 — i core helper rng/pick/wPick usano uno stream interno seedabile (stessa formula/seed → valori identici a parità di __CPM_RESEED) e il check determinism misura finalmente una proprietà del codice di gioco (un Math.random() nudo nel setup path ora FA FALLIRE il gate, prima era mascherato); (1c) firma golden estesa coi campi PURI della situation (intent/ballState/movesCap via probe sitSig) — oracolo più ricco, posizioni off-ball sempre escluse (flaky). Golden rigenerata deliberatamente (solo campi aggiunti, htx/hty invariati). // [5.93.0] QUINTETTO da collaudo PO: (1) pallini probabilità RIMOSSI dai bottoni azione (condizionavano il player); (2) BIL-7 coppe post-trasferimento: gare cup/euro non giocate riportate nel nuovo calendario (euro con avversari embedded, coppa ri-localizzata nella nuova lega, bracket/survivors rigenerati), rischedulate in avanti se la week è passata, chiusura onesta se non c'è spazio; repair in migrazione per i save già rotti (girone 0/6, R16 zombie) + clamp del turno successivo (mai nel passato, ≤W37); (3) MVP: candidati = veri capocannonieri (niente più MVP con 15 gol contro un 35-gol mai candidato); (4) dominanza post-trasferimento moderata: bgMicroTick — ovrF non svuota più la difesa avversaria (0.3→0.10), momentum difensivo 0.35→0.25, floor gA 0.0045; (5) cerimonia trofeo 3D: premiazione TARDIVA alla prima gara dopo il clinch matematico (prima alreadyClinched la sopprimeva per sempre), flag titleCeremonyShown per stagione. // [5.92.0] TRIPLO FIX da collaudo PO: (1) TIFOSI IN PROPORZIONE — makeCrowdTex accetta rowsMul e buildStadium calcola le file per settore dall'ALTEZZA REALE della tribuna (curva mono-anello tedesca/sudamericana: ~1.6x file → figure più piccole e fitte, niente più giganti); (2) SUSPENSE SULL'ESITO — l'esito dell'azione non appare più istantaneo: prima la simulazione 3D (850-1250ms a seconda dell'azione: gol/assist/chance 1250, conclusioni 1100, resto 850), poi overlay+cronaca+flash insieme (resultReveal + outcome.revealMs; strip "⏳ azione…" durante l'attesa; vale anche per il rigore: gol/parata/errore a 1000ms); (3) STADI TEDESCHI TUTTI UGUALI — varietà DETERMINISTICA per club nello stesso template (altezza ±10%, distanza ±8%, tono tetto ×3, cemento caldo/freddo, angoli chiusi→curva per 1/3 dei club) + pool Deutsche Liga allargato (tedesco/moderno_it/comunale): 10 club tedeschi = 10 firme visive uniche (verificato). // [5.91.0] BIL-9 «EVENTI A BIVI» (audit priorità 14, ultimo tassello): la carriera smette di essere fatta di eventi-notifica. (a) gli IMPULSI INTERATTIVI (WEEKLY_IMPULSES, scelte con trade-off) escono anche nelle SETTIMANE DI PARTITA (~25%, prima del match — dove fatica/forma pesano davvero); prima vivevano solo nelle rare settimane libere: per questo il 90% degli eventi sembrava rumore automatico. (b) le scelte possono muovere i SOLDI VERI (nuova chiave ef.bank → bankBalance dell'economia 3.2) e la CHIMICA (ef.chem → teamChemistry). (c) +12 nuovi dilemmi con conseguenze reali: spot personale (cachet vs fiducia mister), cena di squadra (chimica vs fatica), investimento, beneficenza, agente che forza sui giornali (valore vs trust), aiutare il ragazzo della Primavera, intervista scomoda, chef personale, visita dei genitori, video virale, paciere tra compagni, l'orologio della squadra. Pool interattivo: 36→48.
+const GAME_VERSION="5.98.0"; // [5.98.0] SPRINT 3 «CONTRATTI E MERCATO ONESTI» (audit EC-1/4/5/7/8/10, A4, B3, D1/D2): (a) lo SVINCOLATO non percepisce più lo stipendio e non viene schierato nelle partite auto-simulate (G/A a zero — prima il contratto scaduto era di cartone); (b) il contratto col club MADRE viene ricordato nel prestito (parentContract) e RIPRISTINATO al rientro (≥1 anno); il riscatto (opzione/obbligo) genera un biennale a wage +10% — prima OGNI prestito finiva in svincolo automatico; (c) niente rinnovo col club di prestito (openNegoModal + bottone) e niente offerte di mercato mentre sei in prestito; (d) finestre di mercato REALI: essere in lista non apre più il mercato tutto l'anno (BIL-6 chiuso; fuori finestra solo un rivolo 7%/4%); (e) il counter dell'agente sulle offerte può essere RIFIUTATO (62% seedato; rifiuto = termini originali); (f) l'investimento immobiliare PAGA la rendita promessa (+55k a fine stagione, flag investmentPending); (g) l'agente è LICENZIABILE (Rescindi nel pannello procuratore); (h) anti-ripetizione consecutiva su TUTTI e 3 i pool eventi + cond contestuali (ritiro/training camp solo W≤3, mercato gennaio W15-22 pro, bonus 10 gol solo se <10, mercato estivo W≤6) e il picker dei WEEKLY_RANDOM ora rispetta le cond. // [5.97.0] SPRINT 2 «IL CALCIO TORNA CALCIO» (audit SL-1/2/4, CP-1/4/5/6, MP-1): (a) λ del motore risultati CALIBRATE con sweep da 300 stagioni — updateStandings/calcWorldStandings 1.40+diff·1.00 / 1.22−diff·0.85, simulateMatch 1.40+diff·1.10 / 1.22−diff·0.95, cap Poisson unificato a 8 (era 5 vs 8): gol/match 2.16→2.63, 0-0 11.5%→7.2%, pareggi 29%→23.5%, campione 63.6→74.4pt, titoli ai top-prestigio 58%→87% (dinastie realistiche); (b) i QUARTI DI FINALE europei ESISTONO: r16→quarti→sf→final in tutte e 3 le macchine di fase (sim/played/rollover) + label/weeks/migration + clamp ≤W37 sui KO tardivi + notifica di avanzamento corretta; (c) spareggi KO stat-based e SEEDATI (koShootoutWin: base 50% ±OVR/morale, cap 35-72%) al posto del Math.random()<0.55 fisso pro-giocatore nei 4 siti coppa/euro; (d) la CATENA (25%) passa dalla selezione lazy: situation ri-pescata col contesto VIVO + exclude + clock allo slot (chiuso il bypass MP-1) e roll seedato; (e) la PRIMA stagione pro ha la Coppa Nazionale (Europa esclusa by design: non qualificato). // [5.96.0] SPRINT 1 STORE-READY (audit CR-1/CR-2/DB-1/DB-2/DB-3 — il CRITICO): (a) gate copyright ESTESO a stadi (pool+CLUB_STADIUMS+U18), allenatori e ROSTER GENERATI vs blocklist full-name _CR_FULLNAMES (55 coppie reali) — prima era cieco («Stade Vélodrome B» era assegnato in-game col termine IN blocklist); guardia in generateTeamRoster: la coppia bloccata slitta di cognome; (b) bonifica stadi: ~50 impianti reali/sponsorizzati sostituiti con nomi di fantasia coerenti per lingua; (c) CLUB_STADIUMS: 19 chiavi morte rimappate sugli id attuali + collisione mon/mon2 risolta (FC Monaco→Stade Princier, FC Brianzolo→Brianza Stadium) + CLUB_STADIUM_STYLE riallineata; (d) COACH_NAMES: via gli 11 allenatori reali; (e) cognomi distintivi di giocatori reali rimossi dai pool NL/TR; (f) 17 club rinominati (solo name, id stabili → save-safe): QPR→Queensway, AT Madrid→AT Manzanares, Betis→Verdiblanco, Standard→Vallonia, St. Pauli→Sankt Hafen, Gladbach→Niederrhein…; (g) LEAGUE_RECORDS: club fantasma corretti (AC Roma→FC Capitale, Paris FC→FC Paris) + record propri per Deutsche Liga 2/Ligue Nationale 2/Liga Ibérica 2 (via il fallback coi nomi italiani); (h) pool nomi 🇧🇷/🇦🇷 (Brasile/Argentina non pescano più nomi italiani). // [5.95.0] QUICK WINS dell'AUDIT QA v2 (8 fix, bug Top50 #2-#9+#22-23+#48+#50): (a) tornei nazionali RICORRENTI — euroMondiale/nationsCupQueue settano active:false al completamento (prima restava true per sempre → UN solo Europeo/Mondiale e UNA sola Coppa delle Nazioni per carriera) + repair in migration per i save bloccati; (b) il task agente «Prepara rinnovo» ora APPLICA il bonus accumulato in _acceptNegoWage (prima veniva azzerato senza pagare: ramo consumer dead); (c) rinnovi con cooldown stagionale (renewalSeason) + morale +8 solo al primo + durata proposta deterministica (niente reroll); (d) CTA «Gioca →» di nuovo VERDE (lo spread background:undefined uccideva la variante), label modulo avversario leggibile, badge versione con auto-fade 9s (su mobile copriva tab-bar e bottoni azione); (e) i tiri dell'eroe (e i rigori) contano in mxStats.shots (MOT-6: «3 gol, 1 tiro» addio); (f) ordini mister 28/63/75/85 e intervallo a soglia >= (lo skip non li brucia più); (g) spese-evento disabilitate a fondi insufficienti (niente benefici gratis a saldo 0); (h) windowOfferUsed reset a inizio stagione, id impulso duplicato rinominato, 8 duplicati nei pool nomi NL/BE/IT/PT sostituiti. // [5.94.0] ARC-1b+1c (audit priorità 13, gate potenziato): (1b) rimosso il monkey-patch globale di Math.random sotto ?cpmtest=1 — i core helper rng/pick/wPick usano uno stream interno seedabile (stessa formula/seed → valori identici a parità di __CPM_RESEED) e il check determinism misura finalmente una proprietà del codice di gioco (un Math.random() nudo nel setup path ora FA FALLIRE il gate, prima era mascherato); (1c) firma golden estesa coi campi PURI della situation (intent/ballState/movesCap via probe sitSig) — oracolo più ricco, posizioni off-ball sempre escluse (flaky). Golden rigenerata deliberatamente (solo campi aggiunti, htx/hty invariati). // [5.93.0] QUINTETTO da collaudo PO: (1) pallini probabilità RIMOSSI dai bottoni azione (condizionavano il player); (2) BIL-7 coppe post-trasferimento: gare cup/euro non giocate riportate nel nuovo calendario (euro con avversari embedded, coppa ri-localizzata nella nuova lega, bracket/survivors rigenerati), rischedulate in avanti se la week è passata, chiusura onesta se non c'è spazio; repair in migrazione per i save già rotti (girone 0/6, R16 zombie) + clamp del turno successivo (mai nel passato, ≤W37); (3) MVP: candidati = veri capocannonieri (niente più MVP con 15 gol contro un 35-gol mai candidato); (4) dominanza post-trasferimento moderata: bgMicroTick — ovrF non svuota più la difesa avversaria (0.3→0.10), momentum difensivo 0.35→0.25, floor gA 0.0045; (5) cerimonia trofeo 3D: premiazione TARDIVA alla prima gara dopo il clinch matematico (prima alreadyClinched la sopprimeva per sempre), flag titleCeremonyShown per stagione. // [5.92.0] TRIPLO FIX da collaudo PO: (1) TIFOSI IN PROPORZIONE — makeCrowdTex accetta rowsMul e buildStadium calcola le file per settore dall'ALTEZZA REALE della tribuna (curva mono-anello tedesca/sudamericana: ~1.6x file → figure più piccole e fitte, niente più giganti); (2) SUSPENSE SULL'ESITO — l'esito dell'azione non appare più istantaneo: prima la simulazione 3D (850-1250ms a seconda dell'azione: gol/assist/chance 1250, conclusioni 1100, resto 850), poi overlay+cronaca+flash insieme (resultReveal + outcome.revealMs; strip "⏳ azione…" durante l'attesa; vale anche per il rigore: gol/parata/errore a 1000ms); (3) STADI TEDESCHI TUTTI UGUALI — varietà DETERMINISTICA per club nello stesso template (altezza ±10%, distanza ±8%, tono tetto ×3, cemento caldo/freddo, angoli chiusi→curva per 1/3 dei club) + pool Deutsche Liga allargato (tedesco/moderno_it/comunale): 10 club tedeschi = 10 firme visive uniche (verificato). // [5.91.0] BIL-9 «EVENTI A BIVI» (audit priorità 14, ultimo tassello): la carriera smette di essere fatta di eventi-notifica. (a) gli IMPULSI INTERATTIVI (WEEKLY_IMPULSES, scelte con trade-off) escono anche nelle SETTIMANE DI PARTITA (~25%, prima del match — dove fatica/forma pesano davvero); prima vivevano solo nelle rare settimane libere: per questo il 90% degli eventi sembrava rumore automatico. (b) le scelte possono muovere i SOLDI VERI (nuova chiave ef.bank → bankBalance dell'economia 3.2) e la CHIMICA (ef.chem → teamChemistry). (c) +12 nuovi dilemmi con conseguenze reali: spot personale (cachet vs fiducia mister), cena di squadra (chimica vs fatica), investimento, beneficenza, agente che forza sui giornali (valore vs trust), aiutare il ragazzo della Primavera, intervista scomoda, chef personale, visita dei genitori, video virale, paciere tra compagni, l'orologio della squadra. Pool interattivo: 36→48.
 const SAVE_VERSION=8;// v8 [5.81.0 BIL-3b]: bankBalance (stipendio accumulato, €) + perkTrainer/perkNutrition (staff personale) — migration retro-compatibile. v7: player.foot
 // 5.67.0 — TABELLONE realistico del torneo per NAZIONALI (Europeo/Mondiale): dopo il girone la fase a
 //   eliminazione segue Ottavi → Quarti → Semifinale → Finale (prima saltava dritta alla semifinale).
@@ -14705,7 +14706,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
         notify(`🩹 Infort. (saltata) ${sim.homeScore}–${sim.awayScore} vs ${opp.n}`,sim.won?TH.success:sim.drew?TH.warning:TH.danger);
         return{...p,...injBase,standings:newSt,calendar:newCal,matchHistory:injHistory,morale:clamp((p.morale||70)+(sim.won?1:sim.drew?0:-1),0,100),week:_pendingEuro?(p.week||1):(p.week||1)+1,weekLived:_pendingEuro?true:false,...(!_pendingEuro?{sessionsThisWeek:0,sessionLog:[],weeklyFocusType:null}:{})};
       }
-      const _sPS131=_pSimStats(sim,p.ovr||65,p.archetype?.id||p.archetype||"",seededRng((_aSd+2)>>>0));
+      const _sPS131=p.contractExpired?{goals:0,assists:0}:_pSimStats(sim,p.ovr||65,p.archetype?.id||p.archetype||"",seededRng((_aSd+2)>>>0));/* [5.98.0 EC-1] svincolato: non vieni schierato */
       const _adjRat131=Math.round(clamp(sim.rating+_sPS131.goals*0.4+_sPS131.assists*0.2,4.0,9.5)*10)/10;
       const newHistory=[...(p.matchHistory||[]),{week:p.week||1,opponent:opp.n,oppAbbr:opp.a,oppCol:opp.c,homeScore:sim.homeScore,awayScore:sim.awayScore,goals:_sPS131.goals,assists:_sPS131.assists,rating:_adjRat131,won:sim.won,drew:sim.drew,simulated:true}].slice(-200);
       const moD=sim.won?3:sim.drew?1:-2;
@@ -15175,6 +15176,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
         coachTrust:clamp((p.coachTrust||60)+(ef.coachTrust||0),0,100),
         value:Math.max(0.5,(p.value||0.8)+(ef.value||0)),
         ...(ef.bank!=null?{bankBalance:Math.max(0,Math.round((p.bankBalance||0)+ef.bank))}:{}),// [5.91.0 BIL-9] i bivi muovono i SOLDI veri (economia 3.2)
+        ...(choice.flag==="investment"?{investmentPending:true}:{}),/* [5.98.0 EC-5] la rendita promessa ora ESISTE */
         ...(ef.chem!=null?{teamChemistry:clamp((p.teamChemistry||60)+ef.chem,0,100)}:{}),
       };
       // Sprint 69: apply archetype bond_bonus on milestone
@@ -15268,7 +15270,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     //   prima del match: i trade-off fatica/forma pesano davvero) — prima vivevano solo nelle rare settimane
     //   libere, per questo la carriera sembrava fatta di eventi senza decisioni.
     if((!hasMdThisWeek&&Math.random()<0.40)||(hasMdThisWeek&&Math.random()<0.25)){
-      const impulse=pick(WEEKLY_IMPULSES);
+      const _impPool=WEEKLY_IMPULSES.filter(im=>im.id!==_lastImpulseId);const impulse=pick(_impPool.length?_impPool:WEEKLY_IMPULSES);_lastImpulseId=impulse&&impulse.id;/* [5.98.0 D1] */
       setPlayer(p=>({...p,weekLived:true}));
       const catIcon={opportunità:"🌟",scelta:"⚡",tensione:"🔥",conseguenza:"🎲"}[impulse.cat]||"💡";
       setTimeout(()=>setWeekLiveModal({event:{txt:impulse.txt,e:catIcon},changes:{},choices:impulse.choices,isImpulse:true,cat:impulse.cat,coachMsg:_liveCoachMsg}),50);
@@ -15594,7 +15596,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
               const injHist=[...(p.matchHistory||[]),{week:p.week||1,opponent:opp.n,oppAbbr:opp.a,oppCol:opp.c,homeScore:sim.homeScore,awayScore:sim.awayScore,goals:0,assists:0,rating:null,won:sim.won,drew:sim.drew,simulated:true,injured:true}].slice(-200);
               updP={...updP,standings:newSt,calendar:newCal,matchHistory:injHist,morale:clamp((p.morale||70)+(sim.won?1:sim.drew?0:-1),0,100)};
             }else{
-              const _ps131=_pSimStats(sim,p.ovr||65,p.archetype?.id||p.archetype||"",seededRng((_wSd+2)>>>0));
+              const _ps131=p.contractExpired?{goals:0,assists:0}:_pSimStats(sim,p.ovr||65,p.archetype?.id||p.archetype||"",seededRng((_wSd+2)>>>0));/* [5.98.0 EC-1] svincolato: non vieni schierato */
               const _adjRat=Math.round(clamp(sim.rating+_ps131.goals*0.4+_ps131.assists*0.2,4.0,9.5)*10)/10;
               const newHistory=[...(p.matchHistory||[]),{week:p.week||1,opponent:opp.n,oppAbbr:opp.a,oppCol:opp.c,homeScore:sim.homeScore,awayScore:sim.awayScore,goals:_ps131.goals,assists:_ps131.assists,rating:_adjRat,won:sim.won,drew:sim.drew,simulated:true}].slice(-200);
               updP={...updP,standings:newSt,calendar:newCal,matchHistory:newHistory,matches:(p.matches||0)+1,goals:(p.goals||0)+_ps131.goals,totalGoals:(p.totalGoals||0)+_ps131.goals,assists:(p.assists||0)+_ps131.assists,totalAssists:(p.totalAssists||0)+_ps131.assists,morale:clamp((p.morale||70)+(sim.won?3:sim.drew?1:-2),0,100)};
@@ -15605,17 +15607,17 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       const wk=p.week||1;
       // S11.5: transfer windows only (summer W1-5, winter W19-23)
       const isSummerWin=wk>=1&&wk<=5;const isWinterWin=wk>=19&&wk<=23;
-      const inWindow=p.transferListed||(isSummerWin||isWinterWin);
+      const inWindow=(isSummerWin||isWinterWin);/* [5.98.0 EC-8] essere in lista NON apre più il mercato tutto l'anno (BIL-6 chiuso) */
       const agentSearchBoost=(p.agentTask==="cerca_offerte"&&p.hasAgent)?0.15:0;
-      const offerProb=inWindow?(p.transferListed?0.28:Math.min(0.35,0.12+agentSearchBoost)):(agentSearchBoost>0?agentSearchBoost*0.4:0);
-      if(Math.random()<offerProb&&p.matches>=0){const offer=generateTransferOffer(p,p.transferRequest?.pref);if(offer)setTransferOffer(offer);}
+      const offerProb=inWindow?(p.transferListed?0.28:Math.min(0.35,0.12+agentSearchBoost)):(p.transferListed?0.07:(agentSearchBoost>0?0.04:0));/* [5.98.0 EC-8] fuori finestra: solo un rivolo (7% listed / 4% task) */
+      if(!p.loan&&Math.random()<offerProb&&p.matches>=0){const offer=generateTransferOffer(p,p.transferRequest?.pref);if(offer)setTransferOffer(offer);}/* [5.98.0 B3] niente offerte mentre sei in prestito */
       if(wk===1)setTimeout(()=>notify("🏷️ Mercato estivo aperto! Settimane 1-5.","#0ea5e9"),200);
       if(wk===6)setTimeout(()=>notify("🔒 Mercato estivo chiuso.","#64748b"),200);
       if(wk===19){setTimeout(()=>notify("🏷️ Mercato invernale aperto! Settimane 19-23.","#0ea5e9"),200);if(p.transferListed&&!transferOffer){const _off19=generateTransferOffer(p,p.transferRequest?.pref);if(_off19)setTimeout(()=>setTransferOffer(_off19),600);}}
       if(wk===24)setTimeout(()=>notify("🔒 Mercato invernale chiuso.","#64748b"),200);
       // S9.1: random life events now fire on every advance (no weekLived guard) — random life events must fire every advance, not just once
       if(!p.injured&&Math.random()<0.25){
-        const re=WEEKLY_RANDOM_EVENTS[Math.floor(Math.random()*WEEKLY_RANDOM_EVENTS.length)];
+        const _wrePool=WEEKLY_RANDOM_EVENTS.map((e,i)=>({e,i})).filter(x=>x.i!==_lastWRE&&(!x.e.cond||(function(){try{return x.e.cond(p);}catch(_e){return true;}})()));const _wreP=_wrePool.length?_wrePool[Math.floor(Math.random()*_wrePool.length)]:{e:WEEKLY_RANDOM_EVENTS[0],i:0};_lastWRE=_wreP.i;const re=_wreP.e;/* [5.98.0 D1/D2] niente doppioni consecutivi + rispetto delle cond */
         const ef=re.ef||{};
         const extras={morale:clamp((p.morale||70)+(ef.morale||0),0,100),fatigue:clamp((p.fatigue||0)+(ef.fatigue||0),0,100),form:clamp((p.form||70)+(ef.form||0),30,95),popularity:clamp((p.popularity||20)+popGain(p,ef.popularity||0),0,100),coachTrust:clamp((p.coachTrust||60)+(ef.coachTrust||0),0,100),value:Math.max(0.5,(p.value||0.8)+(ef.value||0))};
         setTimeout(()=>setWeekLiveModal({event:re,changes:{morale:ef.morale||0,form:ef.form||0,fatigue:ef.fatigue||0}}),100);
@@ -15681,7 +15683,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
           if(_xopp){
             const _xSd=(standingsSeed(p.club?.id||p.club?.n,p.season,p.week)+(xmd.matchday||0)*31)>>>0;// [5.76.0 BUG-6]
             const _xs=simulateMatch(p.club,_xopp,p.ovr||65,xmd.isHome,_xSd);
-            const _xps=_pSimStats(_xs,p.ovr||65,p.archetype?.id||p.archetype||"",seededRng((_xSd+2)>>>0));
+            const _xps=p.contractExpired?{goals:0,assists:0}:_pSimStats(_xs,p.ovr||65,p.archetype?.id||p.archetype||"",seededRng((_xSd+2)>>>0));/* [5.98.0 EC-1] svincolato: non vieni schierato */
             _sCal=_sCal.map(m=>m.matchday===xmd.matchday?{...m,played:true,result:{homeScore:_xs.homeScore,awayScore:_xs.awayScore,won:_xs.won,drew:_xs.drew},simulated:true}:m);
             if(!xmd.type||xmd.type==="league"){const _xCId=p.club?.id||p.club?.n;_xSt=updateStandings(_xSt,_xCId,_xs,p.clubPrestigeShifts||{},{opponentId:xmd.opponentId||_xopp.id||_xopp.n,seed:_xSd});}
             _xg+=_xps.goals;_xa+=_xps.assists;_xm++;
@@ -15752,7 +15754,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       // [5.81.0 BIL-3b] ECONOMIA REALE: lo stipendio si ACCUMULA (bankBalance, €). L'agente COSTA il 10%
       //   (prima era gratis con +15% sui contratti per sempre: no-brainer); i servizi dello staff personale
       //   hanno costi settimanali ed effetti veri. Fondi finiti → servizi sospesi automaticamente.
-      if((p.proStatus||"u18")!=="u18"){
+      if((p.proStatus||"u18")!=="u18"&&!p.contractExpired){/* [5.98.0 EC-1] lo SVINCOLATO non percepisce stipendio */
         const _wg81=(p.contract?.wage||0);
         const _cost81=(p.hasAgent?Math.round(_wg81*0.10):0)+(p.perkTrainer?Math.max(2000,Math.round(_wg81*0.05)):0)+(p.perkNutrition?Math.max(1500,Math.round(_wg81*0.04)):0);
         let _bb81=(p.bankBalance||0)+_wg81-_cost81;
@@ -16011,26 +16013,29 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       // E-3: resolve expiring loan before computing nextClub84
       let _loanE3=p.loan||null;
       let _loanReturnClub=null;
-      let _loanStayClub=null;// §9.5: prestito convertito in acquisto definitivo → normalizza transferType
+      let _loanStayClub=null;
+      let _loanRestC=null,_loanNewDeal=null;/* [5.98.0 EC-4] contratto al rientro/riscatto: prima OGNI prestito finiva in svincolo (duration 1→0) */// §9.5: prestito convertito in acquisto definitivo → normalizza transferType
       if(_loanE3&&newSeason>=(_loanE3.untilSeason||newSeason+1)){
         const _lt3=_loanE3.type||"prestito";
         if(_lt3==="prestito"){
-          _loanReturnClub=_loanE3.parentClub;
+          _loanReturnClub=_loanE3.parentClub;_loanRestC=_loanE3.parentContract||null;
           setTimeout(()=>notify(`↩️ Fine prestito — rientri al ${_loanE3.parentClub?.n||"club madre"}.`,"#6366f1"),400);
         }else if(_lt3==="prestito con opzione"){
           if((p.matches||0)>=8&&(p.coachTrust||60)>=50){
             _loanStayClub={...(p.club||{}),transferType:"trasferimento definitivo"};
+            _loanNewDeal={duration:2,wage:Math.round(((p.contract&&p.contract.wage)||600)*1.10),expiresAtSeason:newSeason+2};
             setTimeout(()=>notify(`💰 Opzione esercitata — rimani al ${p.club?.n||"club"} a titolo definitivo!`,"#16a34a"),400);
           }else{
-            _loanReturnClub=_loanE3.parentClub;
+            _loanReturnClub=_loanE3.parentClub;_loanRestC=_loanE3.parentContract||null;
             setTimeout(()=>notify(`↩️ Opzione non esercitata — rientri al ${_loanE3.parentClub?.n||"club madre"}.`,"#6366f1"),400);
           }
         }else if(_lt3==="prestito con obbligo"){
           if((p.matches||0)>=(_loanE3.minMatches||10)){
             _loanStayClub={...(p.club||{}),transferType:"trasferimento definitivo"};
+            _loanNewDeal={duration:2,wage:Math.round(((p.contract&&p.contract.wage)||600)*1.10),expiresAtSeason:newSeason+2};
             setTimeout(()=>notify(`💰 Obbligo scattato — rimani al ${p.club?.n||"club"} a titolo definitivo!`,"#16a34a"),400);
           }else{
-            _loanReturnClub=_loanE3.parentClub;
+            _loanReturnClub=_loanE3.parentClub;_loanRestC=_loanE3.parentContract||null;
             setTimeout(()=>notify(`↩️ Obbligo non scattato — rientri al ${_loanE3.parentClub?.n||"club madre"}.`,"#6366f1"),400);
           }
         }
@@ -16041,7 +16046,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       const newStandings=initStandings(lc);
       const seed=(newSeason*7919+newSeason*newSeason*31)%2147483647+hashStr(nextClub84?.id||nextClub84?.n||"u18")*17;
       let newCalendar=generateSeasonCalendar(nextClub84||{id:"u18",n:"U18"},lc,seed);
-      const newContract={...p.contract,duration:Math.max(0,(p.contract?.duration||1)-1),expiresAtSeason:p.contract?.expiresAtSeason||newSeason+1}; // Sprint 104: floor at 0
+      const newContract=_loanNewDeal?_loanNewDeal:_loanRestC?{..._loanRestC,duration:Math.max(1,(_loanRestC.duration||1)-1),expiresAtSeason:Math.max(newSeason+1,_loanRestC.expiresAtSeason||newSeason+1)}:{...p.contract,duration:Math.max(0,(p.contract?.duration||1)-1),expiresAtSeason:p.contract?.expiresAtSeason||newSeason+1}; /* [5.98.0 EC-4] riscatto→biennale · rientro→contratto madre (≥1 anno) · Sprint 104: floor at 0 */
       const contractExpired=newContract.duration<=0;
       let agedStats={...p.stats};
       // Sprint 102: age-based passive growth (applied BEFORE decay)
@@ -16207,7 +16212,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       // Sprint 70: record coach tenure stats before coach possibly changes
       const _ch70={name:p.coach?.name||"Il Mister",style:p.coach?.style||"Bilanciato",season:p.season||1,goals:p.goals||0,assists:p.assists||0,matches:p.matches||0,ovr:p.ovr||60,coachTrust:p.coachTrust||60,coachChanged};
       const newCoachHistory=[...(p.coachHistory||[]),_ch70].slice(-20);
-      return{...p,season:newSeason,age:newAge,week:1,weekLived:false,windowOfferUsed:false,goals:0,assists:0,matches:0,fatigue:0,skillPoints:0,stats:agedStats,ovr:newOvr,contract:newContract,contractExpired,club:nextClub84||p.club,loan:_loanE3,leagueOverrides:_newOvPre,morale:clamp((p.morale||70)+bonM+(playerClubRelegated?-10:playerClubPromoted?8:0)+(isGB?15:0),0,100),coachTrust:clamp((p.coachTrust||60)+bonCT+(playerClubRelegated?-8:playerClubPromoted?5:0)+(coachChanged?newCoach.trustMod:0)+_promiseTrustDelta,0,100),coachPromise:null,popularity:clamp((p.popularity||20)+bonPop+(isGB?25:0),0,100),value:Math.max(0.5,(p.value||0.8)+bonVal+(playerClubRelegated?-0.3:playerClubPromoted?0.15:0)+(isGB?0.8:0)),log:[agingLog,...objLogs,...[_growthLog102,gbLog,coachLog,phenomLog,relegLog,stadiumEvoLog].filter(Boolean),...(p.log||[])].slice(0,60),standings:newStandings,calendar:newCalendar,matchHistory:[],seasonObjectives:newObjectives,history:[...(p.history||[]),prevHist].slice(-50),clubPrestigeShifts:updatedShifts,cup:newCup,euro:newEuro,coach:newCoach,goldenBoys:gbSeasons,records:newRecords,teammates:newTeammates,journalists:newJournalists,fanLegend:updFanLegend,leagueArchive:newLeagueArchive,coachHistory:newCoachHistory,jerseyNumSeason:0,yellAccum:0,isSuspended:false,seasonCards:{y:0,r:0},lastLeagueShift:_lastShiftPre,campDone:false,...(captainReset?{isCaptain:false}:{})}; // Sprint 84 + E-3: club+loan updated · Sprint C: reset ritiro
+      return{...p,season:newSeason,age:newAge,week:1,weekLived:false,windowOfferUsed:false,...(p.investmentPending?{bankBalance:Math.round((p.bankBalance||0)+55000),investmentPending:false}:{}),goals:0,assists:0,matches:0,fatigue:0,skillPoints:0,stats:agedStats,ovr:newOvr,contract:newContract,contractExpired,club:nextClub84||p.club,loan:_loanE3,leagueOverrides:_newOvPre,morale:clamp((p.morale||70)+bonM+(playerClubRelegated?-10:playerClubPromoted?8:0)+(isGB?15:0),0,100),coachTrust:clamp((p.coachTrust||60)+bonCT+(playerClubRelegated?-8:playerClubPromoted?5:0)+(coachChanged?newCoach.trustMod:0)+_promiseTrustDelta,0,100),coachPromise:null,popularity:clamp((p.popularity||20)+bonPop+(isGB?25:0),0,100),value:Math.max(0.5,(p.value||0.8)+bonVal+(playerClubRelegated?-0.3:playerClubPromoted?0.15:0)+(isGB?0.8:0)),log:[agingLog,...objLogs,...[_growthLog102,gbLog,coachLog,phenomLog,relegLog,stadiumEvoLog].filter(Boolean),...(p.log||[])].slice(0,60),standings:newStandings,calendar:newCalendar,matchHistory:[],seasonObjectives:newObjectives,history:[...(p.history||[]),prevHist].slice(-50),clubPrestigeShifts:updatedShifts,cup:newCup,euro:newEuro,coach:newCoach,goldenBoys:gbSeasons,records:newRecords,teammates:newTeammates,journalists:newJournalists,fanLegend:updFanLegend,leagueArchive:newLeagueArchive,coachHistory:newCoachHistory,jerseyNumSeason:0,yellAccum:0,isSuspended:false,seasonCards:{y:0,r:0},lastLeagueShift:_lastShiftPre,campDone:false,...(captainReset?{isCaptain:false}:{})}; // Sprint 84 + E-3: club+loan updated · Sprint C: reset ritiro
     });
     // S41: double achievement — won league + cup same season
     {const _sd=[...(player.standings||[])].sort((a,b)=>b.pts-a.pts||b.gd-a.gd||b.gf-a.gf);const _ch=_sd[0];const _pid=player.club?.id||player.club?.n;if(player.cup?.champion&&_ch&&(_ch.id===_pid||_ch.n===player.club?.n)&&!(player.achievements||[]).includes("double")){setTimeout(()=>{setPlayer(p=>({...p,achievements:[...(p.achievements||[]),"double"]}));notify("🏆🏆🏆 DOPPIO! Campionato + Coppa nella stessa stagione! Leggendario!","#f59e0b");},1200);}}
@@ -16217,6 +16222,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     setTab("dashboard");
     setTimeout(()=>{
       notify("🆕 Nuova stagione iniziata!",TH.success);
+      if(player.investmentPending)setTimeout(()=>notify("📈 L'investimento immobiliare rende: +55.000€ sul conto!","#16a34a"),3000);/* [5.98.0 EC-5] */
       if(objLogs.length)setTimeout(()=>notify(objLogs.join(" · "),objLogs.every(m=>m.startsWith("✅"))?TH.success:TH.warning),1400);
       if(willContractExpire)setTimeout(()=>notify("📋 Contratto scaduto! Rinnova o cerca un nuovo club.",TH.warning),3200);
       if(coachChanged)setTimeout(()=>notify(`🧑‍💼 Cambio panchina: ${newCoach.name} (${newCoach.style})`,TH.warning),2400);
@@ -16311,6 +16317,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
 
   // Sprint 54: Contract negotiation helpers
   const openNegoModal=()=>{
+    if(player.loan){notify("📋 Sei in prestito: il contratto si discute col club proprietario a fine stagione.",TH.warning);return;}/* [5.98.0 A4] */
     // [5.82.0 BIL-8] il rinnovo NON è più un diritto: con fiducia bassa (o ruolo marginale + fiducia tiepida)
     //   il club RIFIUTA di trattare → lo svincolo è un rischio reale: il tasto GIOCA resta bloccato finché
     //   non firmi altrove (il flusso «trova squadra» / offerte esiste già). Prima il club non rifiutava MAI.
@@ -16369,7 +16376,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       const newClub={...tc.club,transferType:tc.type,isU18:false};
       // E-3: set loan record when offer type is a prestito
       const _tcIsLoan=(tc.type||"").includes("prest");
-      const _newLoan=_tcIsLoan?{parentClubId:p.club?.id,parentClub:p.club,type:tc.type,untilSeason:(p.season||1)+1,buyClause:tc.buyClause||null,minMatches:tc.minMatches||null}:null;
+      const _newLoan=_tcIsLoan?{parentClubId:p.club?.id,parentClub:p.club,parentContract:(p.contract?{...p.contract}:null),type:tc.type,untilSeason:(p.season||1)+1,buyClause:tc.buyClause||null,minMatches:tc.minMatches||null}:null;/* [5.98.0 EC-4] il contratto col club madre viene RICORDATO */
       const lc=CLUBS.filter(c=>c.lg===tc.club.lg);
       const lc2=CLUBS.filter(c=>c.nat===tc.club.nat);
       const lcs=lc.length>=4?lc:lc2.length>=4?lc2:CLUBS.slice(0,16);
@@ -17052,10 +17059,10 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
               <div style={{background:"#eff6ff",borderRadius:10,padding:"9px 12px",marginBottom:10,border:"1px solid #bfdbfe"}}>
                 <div style={{fontSize:10,color:TH.primary,fontWeight:700,marginBottom:4}}>🤵 Il tuo agente propone un counter:</div>
                 <div style={{fontSize:11,color:TH.text}}>Stipendio: <strong>{_fmtWageY133(Math.round((transferOffer.wage||577)*1.20))}/anno</strong> · Durata: <strong>{(transferOffer.duration||2)+1} stagioni</strong></div>
-                <button onClick={()=>setTransferOffer(o=>({...o,wage:Math.round((o.wage||500)*1.20),duration:(o.duration||2)+1,_counter:true}))} style={{marginTop:6,padding:"5px 12px",borderRadius:8,border:"1px solid "+TH.primary,background:"#fff",color:TH.primary,fontSize:11,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>Proponi counter →</button>
+                <button onClick={()=>setTransferOffer(o=>{const _okC=seededRng((Math.abs(hashStr((o.club?.id||"x")+"|counter|"+(player.season||1)))>>>0)||1)()<0.62;/* [5.98.0 EC-7] il club può DIRE NO */return _okC?{...o,wage:Math.round((o.wage||500)*1.20),duration:(o.duration||2)+1,_counter:true}:{...o,_counter:"rejected"};})} style={{marginTop:6,padding:"5px 12px",borderRadius:8,border:"1px solid "+TH.primary,background:"#fff",color:TH.primary,fontSize:11,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>Proponi counter →</button>
               </div>
             )}
-            {transferOffer._counter&&<div style={{fontSize:12,color:TH.success,fontWeight:700,marginBottom:8,textAlign:"center"}}>✅ Counter accettato dal club! Stipendio e durata aggiornati.</div>}
+            {transferOffer._counter===true&&<div style={{fontSize:12,color:TH.success,fontWeight:700,marginBottom:8,textAlign:"center"}}>✅ Counter accettato dal club! Stipendio e durata aggiornati.</div>}{transferOffer._counter==="rejected"&&<div style={{fontSize:12,color:TH.danger,fontWeight:700,marginBottom:8,textAlign:"center"}}>❌ Il club non rilancia: restano i termini originali.</div>}
             <div style={{display:"flex",gap:10}}>
               <Btn onClick={()=>setTransferOffer(null)} v="secondary" fw>Rifiuta</Btn>
               <Btn onClick={acceptTransfer} v="primary" fw>Accetta →</Btn>
@@ -19482,7 +19489,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                   <Btn onClick={()=>{setPlayer(p=>({...p,transferListed:false,morale:clamp((p.morale||70)+5,0,100),log:["📢 Richiesta di cessione ritirata.",...(p.log||[])].slice(0,60)}));notify("Richiesta di cessione ritirata.",TH.muted);}} v="ghost" style={{flexShrink:0,fontSize:11,padding:"6px 10px"}}>Annulla</Btn>
                 </div>
               </Card>
-              :((player.contract?.duration||2)<=1&&week<=35&&!player.contractExpired&&(player.renewalSeason||0)!==(player.season||1)&&<Card style={{padding:"10px 14px"}}>
+              :((player.contract?.duration||2)<=1&&week<=35&&!player.contractExpired&&(player.renewalSeason||0)!==(player.season||1)&&!player.loan&&<Card style={{padding:"10px 14px"}}>
                 <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:8}}>
                   <div style={{fontSize:12,color:"#d97706",fontWeight:600}}>⚠️ Ultimo anno · tratta ora per rinnovare.</div>
                   <Btn onClick={openNegoModal} v="primary" style={{flexShrink:0,fontSize:11,padding:"6px 12px"}}>📋 Rinnova</Btn>
@@ -19931,6 +19938,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                       <div style={{fontSize:10,color:"rgba(147,197,253,0.7)",textTransform:"uppercase",letterSpacing:1.5,marginBottom:2}}>IL TUO PROCURATORE</div>
                       <div style={{fontSize:14,fontWeight:900,color:"#dbeafe"}}>{agentName}</div>
                       <div style={{fontSize:10,color:"rgba(147,197,253,0.55)"}}>Agente Federale · Dal S.{Math.max(1,(player.season||1)-1)}</div>
+                      <button onClick={function(){setPlayer(function(p){return{...p,hasAgent:false,agentTask:null};});notify("✂️ Rapporto chiuso: stop al 10% settimanale (e ai bonus contrattuali).",TH.warning);}} style={{marginTop:4,background:"transparent",border:"1px solid rgba(147,197,253,0.35)",borderRadius:6,color:"rgba(147,197,253,0.8)",fontSize:9,padding:"3px 8px",cursor:"pointer",fontFamily:"inherit"}}>✂️ Rescindi (stop 10%/sett.)</button>{/* [5.98.0 EC-10] l'agente non era licenziabile: costo perpetuo */}
                     </div>
                     <div style={{background:"rgba(59,130,246,0.15)",borderRadius:8,padding:"6px 10px",textAlign:"center",flexShrink:0}}>
                       <div style={{fontSize:10,color:"rgba(147,197,253,0.5)"}}>MERCATO</div>
