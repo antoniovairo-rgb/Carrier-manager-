@@ -118,8 +118,8 @@
 <script type="text/babel" data-presets="react">
 const React=window.React;const ReactDOM=window.ReactDOM;const THREE=window.THREE;
 const{useState,useEffect,useRef,useCallback}=React;
-const _SIT_TEST=(typeof window!=='undefined')&&/[?&]sit=\d/.test((window.location&&window.location.search)||"");// 5.43.1 Situation Test Mode: blocca la fine-partita così il match resta vivo nell'highlight forzato (mai attivo in gioco normale)
-const _CPM_TEST=(typeof window!=='undefined')&&/[?&]cpmtest=1\b/.test((window.location&&window.location.search)||"");// gate visivo (?cpmtest=1): il gate forza le situation e valida l'AI off-ball → il read-freeze d'avvio highlight (presentazione) è disattivato qui per non mascherare la liveness; in gioco normale è attivo.
+const _SIT_TEST=(typeof window!=='undefined')&&!window.__CPM_STORE_BUILD&&/[?&]sit=\d/.test((window.location&&window.location.search)||"");// [5.85.0 ARC-5] test-mode SPENTO nella build store// 5.43.1 Situation Test Mode: blocca la fine-partita così il match resta vivo nell'highlight forzato (mai attivo in gioco normale)
+const _CPM_TEST=(typeof window!=='undefined')&&!window.__CPM_STORE_BUILD&&/[?&]cpmtest=1\b/.test((window.location&&window.location.search)||"");// [5.85.0 ARC-5]// gate visivo (?cpmtest=1): il gate forza le situation e valida l'AI off-ball → il read-freeze d'avvio highlight (presentazione) è disattivato qui per non mascherare la liveness; in gioco normale è attivo.
 // Polish P1 (5.55.0): guardia pallonetto — il motore non deve rendere un scavetto sopra un portiere FERMO
 //   (coerente solo in 1v1 / uscita GK o se il giocatore lo sceglie esplicitamente). Default ON; ?cpmchip=0 lo spegne.
 const _CPM_CHIP_GUARD=!((typeof window!=='undefined')&&/[?&]cpmchip=0\b/.test((window.location&&window.location.search)||""));
@@ -145,7 +145,7 @@ const _CPM_IDLE=!((typeof window!=='undefined')&&/[?&]cpmidle=0\b/.test((window.
 // VISUAL-TEST DETERMINISM (4.83.0): con ?cpmtest=1 sostituisce Math.random con un PRNG seedato
 // (mulberry32) → crowd texture / roster / animazioni riproducibili run-to-run. Prerequisito per la
 // golden visual regression. Eseguito PRIMA di ogni codice di gioco. Zero impatto in produzione.
-if(typeof window!=='undefined'&&/[?&]cpmtest=1\b/.test(window.location.search||"")){
+if(typeof window!=='undefined'&&!window.__CPM_STORE_BUILD&&/[?&]cpmtest=1\b/.test(window.location.search||"")){
   (function(){var s=0x9e3779b9>>>0;Math.random=function(){s=(s+0x6D2B79F5)|0;var t=Math.imul(s^(s>>>15),1|s);t=(t+Math.imul(t^(t>>>7),61|t))^t;return((t^(t>>>14))>>>0)/4294967296;};
     // reseed deterministico per indice: rende getStartPos (rng) e ogni random per-situation riproducibile a prescindere dalla storia del match
     window.__CPM_RESEED=function(n){s=(0x9e3779b9^Math.imul((n>>>0)+1,0x6D2B79F5))>>>0;};})();
@@ -2987,7 +2987,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="5.84.0"; // [5.84.0] FASE 4.2 «IL LOOP SI LEGGE» (audit UX-2/3 — chiude la Fase 4): UX-2a PROBABILITÀ VISIBILI — pallini ●●●○ (4 fasce) su ogni bottone azione, mobile e desktop (prima la probabilità era codificata SOLO nell'alpha 0x33 del bordo: illeggibile — il cuore del gameplay era al buio); UX-2b FEEDBACK CAUSALE — il fattore dominante dell'esito arriva a schermo nell'hl_result («Difensore addosso −15%», «Stanchezza», «Momento d'oro»): il motore lo sapeva già, ora il fallimento INSEGNA; UX-3 RESULT SKIPPABILE su mobile — tap per continuare con guardia 800ms anti-tap-accidentale (prima ~25s di attese forzate a partita; desktop aveva già Enter) + chip energia ⚡ visibile in hl_choose (spariva proprio quando serviva per pesare un'azione fisica); UX-2c MICRO-ONBOARDING — hint one-shot nei primi 5 highlight del device (contatore safeLS cpm-hl-tips): pallini=probabilità, muoviti per cambiare le opzioni (il tutorial copriva solo la shell, il match era prova-ed-errore). RAFFINAMENTO IA-1: l'assestamento sull'intercetto vale SOLO per gli outKind di perdita di possesso conclamata (le famiglie ambigue con fail "miss" tengono il pull storico — il check final-state pretende gx≥45 sui miss). UI-only → collaudo dal vivo.
+const GAME_VERSION="5.85.0"; // [5.85.0] FASE 5.1 «STORE HARDENING» (audit ARC-5/F-04 + verifica filiera BLK-3): TUTTI i punti d'ingresso del test-mode sono SPENTI nella build store via !window.__CPM_STORE_BUILD (flag iniettato nell'<head> della dist, quindi PRIMA del gioco): _SIT_TEST (?sit=N Situation Test Mode), _CPM_TEST (?cpmtest=1), il monkey-patch seedato di Math.random (righe ~148), il blocco probe/hook di ThreeMatchView (__CPM_STATE/__CPM_PROBE/__CPM3D), e runCPMTest50/cpmDebugSimulate diventano no-op — prima erano raggiungibili in una WebView con deeplink manipolati (superficie cheat/manipolazione, audit F-04); nel gioco web e nel gate NULLA cambia (il flag non esiste lì). FILIERA STORE VERIFICATA in sessione: build-dist 2.7MB zero-CDN + JSX precompilato ✅ · validate-dist offline (React monta, home ok, zero richieste esterne, zero errori, flag store attivo) ✅ · audit-copyright 0 hit ✅. BLK-3 (Capacitor→AAB): deps @capacitor/* 6.x già dichiarate e config sana (appId com.elevora.football, webDir dist) ma l'ambiente cloud NON ha l'Android SDK → la compilazione AAB va eseguita in locale (npx cap add android && npx cap sync && gradle bundleRelease), passi in PACKAGING.md.
 const SAVE_VERSION=8;// v8 [5.81.0 BIL-3b]: bankBalance (stipendio accumulato, €) + perkTrainer/perkNutrition (staff personale) — migration retro-compatibile. v7: player.foot
 // 5.67.0 — TABELLONE realistico del torneo per NAZIONALI (Europeo/Mondiale): dopo il girone la fase a
 //   eliminazione segue Ottavi → Quarti → Semifinale → Finale (prima saltava dritta alla semifinale).
@@ -4507,7 +4507,7 @@ const toThree=(gx,gy)=>({x:gx-50,z:(gy/100)*60-30});
 /* ========================================
    DEBUG TOOLS  (console only)
 ======================================== */
-window.cpmDebugSimulate=function(nSeasons=10,leagueName="Lega A"){
+if(typeof window!=='undefined'&&window.__CPM_STORE_BUILD){window.cpmDebugSimulate=function(){return null;};}else window.cpmDebugSimulate=function(nSeasons=10,leagueName="Lega A"){
   const lc=CLUBS.filter(c=>c.lg===leagueName);
   if(!lc.length){console.warn("[CPM-DEBUG] Lega non trovata:",leagueName);return;}
   const playerClub=lc[0];
@@ -6887,7 +6887,7 @@ function ThreeMatchView(props){
 
     // VISUAL-TEST (4.81.0): hook di validazione regia/3D, attivi SOLO con ?cpmtest=1.
     // In produzione (GitHub Pages, senza il param) questo blocco non viene mai eseguito → zero impatto.
-    if(typeof window!=='undefined' && (/[?&]cpmtest=1\b/.test(window.location.search||"")||/[?&]sit=\d/.test(window.location.search||""))){// 5.43.6: probe di stato (__CPM_STATE/__CPM_PROBE) attivi anche in Situation Test Mode
+    if(typeof window!=='undefined' && !window.__CPM_STORE_BUILD && (/[?&]cpmtest=1\b/.test(window.location.search||"")||/[?&]sit=\d/.test(window.location.search||""))){// 5.43.6: probe di stato (__CPM_STATE/__CPM_PROBE) attivi anche in Situation Test Mode
       window.__CPM3D={scene,camera,renderer,hero,ball,players};
       window.__CPM_PROBE=function(){
         const proj=(obj)=>{ if(!obj||!obj.position)return null; const p=obj.position.clone().project(camera);
@@ -9156,7 +9156,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   const matchMemRef=useRef({goals:0,assists:0,misses:0,gkSaves:0,byFlank:{L:0,C:0,R:0}});
   const [movesLeft,setMovesLeft]=useState(0);
   // VISUAL-TEST: mirror esito/mosse su window (solo ?cpmtest=1) per validare stato finale e cap movimenti
-  useEffect(()=>{ if(typeof window!=='undefined'&&/[?&]cpmtest=1\b/.test(window.location.search||"")){window.__CPM_OUTCOME=outcome;window.__CPM_MOVES=movesLeft;} },[outcome,movesLeft]);// eslint-disable-line
+  useEffect(()=>{ if(typeof window!=='undefined'&&!window.__CPM_STORE_BUILD&&/[?&]cpmtest=1\b/.test(window.location.search||"")){window.__CPM_OUTCOME=outcome;window.__CPM_MOVES=movesLeft;} },[outcome,movesLeft]);// eslint-disable-line
   const [pressureBar,setPressureBar]=useState(1);
   const [paused,setPaused]=useState(false);
   // VISUAL-TEST (4.82.0): force-situation per validare TUTTE le SITUATIONS in 3D.
@@ -20415,7 +20415,7 @@ function App(){
 }
 
 // S10.4 — Dev 50-season headless simulation (run in browser console: runCPMTest50())
-window.runCPMTest50=function(verbose=false){
+if(typeof window!=='undefined'&&window.__CPM_STORE_BUILD){window.runCPMTest50=function(){return null;};}else window.runCPMTest50=function(verbose=false){
   let p={name:"TestPlayer",age:17,season:1,week:1,weekLived:false,proStatus:"pro",ovr:70,goals:0,assists:0,matches:0,totalGoals:0,totalAssists:0,totalMatches:0,morale:70,fatigue:0,form:70,popularity:30,coachTrust:60,value:1.2,skillPoints:2,trophies:[],nationalCaps:0,lastNationalSeason:0,clubPrestigeShifts:{},cup:null,contract:{duration:2,wage:800,expiresAtSeason:3},stats:{velocità:72,tecnica:70,fisico:68,mentalità:68,tiro:74,passaggio:65,dribbling:70,posizionamento:70},club:{id:"juve",n:"Torino Athletic",a:"TAT",p:95,c:"#000",c2:"#fff",nat:"🇮🇹",lg:"Lega A"},history:[],matchHistory:[],log:[],seasonObjectives:[],aiData:{pressReports:{},scoutReports:{},lastOpponentTactic:null}};
   const lc=CLUBS.filter(c=>c.lg==="Lega A");
   p.standings=initStandings(lc);p.calendar=generateSeasonCalendar(p.club,lc,p.season*7919);p.seasonObjectives=generateSeasonObjectives(p);
