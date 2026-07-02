@@ -23,6 +23,7 @@ Carrier-manager-/
 ├── CLAUDE.md
 ├── CHANGELOG.md
 ├── LIVE-MATCH-ENGINE.md      ← architettura del motore di partita (pipeline Intent→Decision→Simulation→Animation)
+├── MATCH_ENGINE_REDESIGN.md  ← ⭐ RIPROGETTAZIONE motore+situations (direttiva PO priorità assoluta): analisi W1-W5, blueprint 9 moduli, roadmap R0-R5 (R0 = Live Match Validator PRIMA di toccare il motore)
 ├── docs/                      ← report/roadmap storici del live match
 └── tests/
     ├── situations-3d-validation.js   ← regole di validazione SITUATIONS (coerenza HL↔3D) + suite analitica (537 combo)
