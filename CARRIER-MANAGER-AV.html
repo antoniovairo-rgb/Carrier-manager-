@@ -259,17 +259,20 @@ const AVATARS = [
 /* [6.18.0] AVATAR = libreria DiceBear (stile 'adventurer'), bundle locale offline assets/dicebear-avatars.min.js
    → volti SVG dettagliati, deterministici da seed, scalabili/manutenibili. Cache per seed@size. */
 const _dbAvCache={};
-function _dbAv(seed,size){
-  var k=seed+"@"+size;
+function _dbAv(seed,size,opts){
+  var k=seed+"@"+size+"@"+(opts?JSON.stringify(opts):"");
   if(_dbAvCache[k]!==undefined)return _dbAvCache[k];
   var h="";
-  try{ if(typeof window!=='undefined'&&window.DiceBear&&window.DiceBear.makeAvatar) h=window.DiceBear.makeAvatar(seed,{size:size}); }catch(e){}
+  try{ if(typeof window!=='undefined'&&window.DiceBear&&window.DiceBear.makeAvatar) h=window.DiceBear.makeAvatar(seed,Object.assign({size:size},opts||{})); }catch(e){}
   _dbAvCache[k]=h; return h;
 }
 function AvatarSVG({id=0, size=60, border=false, style={}, seed}) {
   const p = AVATARS[id%AVATARS.length];
   const _seed = seed!=null ? String(seed) : ("elevora-hero-"+(id%40));
-  const _html = _dbAv(_seed, Math.round(size));
+  // [6.18.0] FEDELTÀ COL MODELLO 3D CH38 in partita: se guidato da avatarId (eroe/preset), forza carnagione+capelli
+  //   dalla STESSA fonte AVATARS[id].skin/.hair/bald che il CH38 usa (r.7127) → avatar dei menu ≈ modello in partita.
+  const _opts = seed!=null ? null : { skinColor:[String(p.skin).replace('#','')], hairColor:[String(p.hair).replace('#','')], hairProbability: p.style==='bald'?0:100 };
+  const _html = _dbAv(_seed, Math.round(size), _opts);
   const wrap = {width:size,height:size,borderRadius:"50%",overflow:"hidden",display:"block",flexShrink:0,background:"#e8eef7",border:border?"2px solid "+TH.primary:"none",...style};
   if(_html) return <div style={wrap} dangerouslySetInnerHTML={{__html:_html}}/>;
   // Fallback (bundle DiceBear non caricato): disco con iniziale — mai in produzione (script locale bloccante).
