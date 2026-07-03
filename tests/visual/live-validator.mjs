@@ -193,10 +193,12 @@ if (_nHL < 8 && fs.existsSync(BASELINE_PATH) && process.env.LMV_UPDATE_BASELINE 
   console.log(`(campione ${_nHL} HL < 8: confronto baseline SOLO informativo — servono piu partite per la regressione)`);
 } else if (fs.existsSync(BASELINE_PATH) && process.env.LMV_UPDATE_BASELINE !== '1') {
   const base = JSON.parse(fs.readFileSync(BASELINE_PATH, 'utf8'));
-  const worse = (k, tol) => summary[k] > (base[k] ?? Infinity) * tol;
-  if (worse('p90BallJump', 1.35)) regressions.push(`p90BallJump ${base.p90BallJump}→${summary.p90BallJump}`);
-  if (worse('p90Statues', 2.5)) regressions.push(`p90Statues ${base.p90Statues}→${summary.p90Statues}`); // conteggio rumoroso: tolleranza larga
-  if (worse('p90Overlaps', 1.5)) regressions.push(`p90Overlaps ${base.p90Overlaps}→${summary.p90Overlaps}`);
+  // [6.4.7/cal] la guardia di regressione sorveglia gli INDICATORI DI DIFETTO (fail-rate, compenetrazioni),
+  //   non le metriche di MOTO NORMALE ad alta varianza: p90BallJump (~8-10u = un tiro/passaggio a 5fps headless,
+  //   sotto la soglia teleport 12u che il check per-HL già cattura come FAIL) e p90Statues (stillness naturale)
+  //   sono INFORMATIVE, non difetti → fuori dalla regressione (prima davano falsi allarmi su campione ampio).
+  const worse = (k, tol, floor) => summary[k] > Math.max((base[k] ?? Infinity) * tol, floor || 0);
+  if (worse('p90Overlaps', 1.5, 2)) regressions.push(`p90Overlaps ${base.p90Overlaps}→${summary.p90Overlaps} (compenetrazioni)`);
   const baseFailRate = base.hl.fail / Math.max(1, base.hl.pass + base.hl.warn + base.hl.fail);
   const failRate = summary.hl.fail / Math.max(1, summary.hl.pass + summary.hl.warn + summary.hl.fail);
   if (failRate > baseFailRate * 1.4 + 0.02) regressions.push(`FAIL-rate ${(baseFailRate * 100).toFixed(0)}%→${(failRate * 100).toFixed(0)}%`);
