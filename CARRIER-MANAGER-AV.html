@@ -3080,7 +3080,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="6.3.4"; // [6.3.4] R1 CHIUSO (MATCH_ENGINE_REDESIGN W1): verificato che NESSUNA lettura runtime di sit.text/act.label branchia il comportamento (restano solo revealMs=presentazione e text come seed-material innocuo; setup posizionale gia guidato da zones/geometria/type + isPenaltySit). Le situations sono pura configurazione per il comportamento, il motore governa. + Live Match Validator calibrato: il setup-snap d avvio highlight (hl_intro riposiziona palla+22 = cut di scena mascherato dall intro) escluso dalla detection teleport (finestra 600ms): spariscono i falsi-positivi (p90 ballJump 14-17u verso ~5-8u), la metrica vede solo i teleport VERI (target R3). Baseline live ri-scattate (trial 6/6 PASS, career 5P/1W). GIOCO INVARIATO (solo commento versione + validator/doc).
+const GAME_VERSION="6.4.0"; // [6.4.0] R2.1 (MATCH_ENGINE_REDESIGN W2, Outcome Engine slice 1): «il difensore conta davvero». defDist (proximità del marcatore che guida malus e barra pressione) NON parte piu da Math.random 80-100 ma dalla PRESSIONE REALE della situation (nearby_def 0-3, deterministico con jitter seedato) → barra e malus onesti al momento, e via un Math.random nudo dal gameplay (Determinism First). La proximità VIVA plasma anche il TIPO di esito mancato in decideExecution (addosso→murato, libero→largo/parato): coerente su 3D+overlay+cronaca (M1), balance-neutral sul ok/fail. Penalità d avvio capata a ~0.08 (mai il tier 0.15 al via).
 const SAVE_VERSION=8;// v8 [5.81.0 BIL-3b]: bankBalance (stipendio accumulato, €) + perkTrainer/perkNutrition (staff personale) — migration retro-compatibile. v7: player.foot
 // 5.67.0 — TABELLONE realistico del torneo per NAZIONALI (Europeo/Mondiale): dopo il girone la fase a
 //   eliminazione segue Ottavi → Quarti → Semifinale → Finale (prima saltava dritta alla semifinale).
@@ -9869,7 +9869,14 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   const startHL=()=>{
     const sit=situations[hlIdx];
     const mm=hideDirCursor(sit)?0:cappedMM(sit);// item 3: in area (non rigore) niente passo di movimento → conclusione diretta
-    movesLeftRef.current=mm;setMovesLeft(mm);moveCoolRef.current=0;pressureRef.current=1;setPressureBar(1);defDistRef.current=80+Math.random()*20;setDefDist(defDistRef.current);
+    /* [6.4.0 R2.1] la proximità del marcatore parte dalla PRESSIONE REALE della situation (nearby_def 0-3),
+       non piu da un Math.random 80-100 scollegato: una situazione «difensore addosso» inizia col difensore
+       vicino → barra pressione e malus onesti al momento. Deterministico (jitter seedato), penalità d'avvio
+       capata a ~0.08 (mai il tier 0.15 al via) per non stravolgere il bilanciamento. */
+    const _nd21=(sit&&sit.tactic&&sit.tactic.nearby_def!=null)?sit.tactic.nearby_def:({none:0,low:1,medium:2,high:3}[sit&&sit.tactic&&sit.tactic.pressure]||1);
+    const _ddBase21=[88,74,58,44][clamp(Math.round(_nd21),0,3)];
+    const _ddJit21=(Math.abs(hashStr(((sit&&sit.text)||"")+"|dd|"+hlIdx))%13)-6;
+    movesLeftRef.current=mm;setMovesLeft(mm);moveCoolRef.current=0;pressureRef.current=1;setPressureBar(1);defDistRef.current=clamp(_ddBase21+_ddJit21,26,99);setDefDist(defDistRef.current);
     // CINE-TAC: aerial/immediate situations skip hl_move and go straight to action choice
     if(mm===0&&!sit?.lockMovement){setPhase("hl_choose");}else{setPhase("hl_move");}
   };
@@ -10527,7 +10534,8 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
       const _cn=(typeof deriveHL==="function"&&deriveHL(_fkSit,action))||{};
       const _htp=_cn.type,_hpp=_cn.pattern;
       const _tac=(_fkSit&&_fkSit.tactic)||{},_pmap={none:0,low:1,medium:2,high:3};
-      const _press=(_tac.nearby_def!=null?_tac.nearby_def:(_pmap[_tac.pressure]||1))+(((oppTactic&&oppTactic.pressure)||50)>65?1:(((oppTactic&&oppTactic.pressure)||50)<35?-1:0));
+      const _livePx=defDistRef.current<25?1:defDistRef.current<45?0.5:defDistRef.current>78?-0.5:0;/* [6.4.0 R2.1] la proximità REALE del marcatore plasma il TIPO d'esito: addosso→piu murato, libero→piu largo/parato (colore, non ok/fail) */
+      const _press=(_tac.nearby_def!=null?_tac.nearby_def:(_pmap[_tac.pressure]||1))+(((oppTactic&&oppTactic.pressure)||50)>65?1:(((oppTactic&&oppTactic.pressure)||50)<35?-1:0))+_livePx;
       const _ctx={attrs:player.stats||{},pressure:clamp(_press,0,5),support:_tac.support||0,fatigue:player.fatigue||0,morale:player.morale||60,x:pPos.x,weather:(weather&&weather.id)||"clear",
         foot:player.foot||"R",side:(pPos.y<50?"L":"R"),
         seed:hashStr(((_fkSit&&_fkSit.text)||"")+"|"+((action.label)||"")+"|"+hlIdx+"|"+Math.round(player.fatigue||0)+"|"+Math.round(player.form||0))};
