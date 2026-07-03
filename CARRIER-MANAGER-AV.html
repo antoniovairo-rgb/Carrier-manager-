@@ -2612,18 +2612,21 @@ const _MISS_OVL={
   saved:["Grande parata del portiere","Il portiere dice di no","Tentativo respinto","Conclusione centrale","Il gol sembrava fatto"],
   blocked:["Murato dalla difesa","Tentativo respinto","Conclusione murata"],
   wide:["Tiro fuori di poco","Non trova lo specchio","Che peccato!","Occasione mancata","Sfiora il vantaggio"],
+  corner:["Deviata in angolo","Corner conquistato","Respinta in corner","A un passo — è angolo"],
 };
 const _MISS_TX={
   post:["😤 Palo! Fortuna avversaria.","💨 Sopra la traversa — che rimpianto!"],
   saved:["😔 Para il portiere.","❌ Tiro debole, para comodo.","😔 Tiro centrale — parata facile.","😕 Il portiere devia in corner."],
   blocked:["❌ Murato dalla difesa.","🧱 La difesa mura la conclusione."],
   wide:["😬 Tiro fuori!","💨 Sopra la traversa — che rimpianto!","😔 Non trova lo specchio."],
+  corner:["🚩 Deviata in angolo!","🏳️ La conclusione finisce in corner.","🚩 Respinta in corner — si riparte dalla bandierina."],
 };
 // normalizza l'esito granulare (~30 valori) nelle 4 famiglie visive del "miss"; null → pool piatto legacy
 function _missKindNorm(k){
   if(!k)return null;
   if(k==="post")return"post";
-  if(k==="saved"||k==="save"||k==="corner")return"saved";
+  if(k==="corner")return"corner";/* [6.4.1 R2.2] esito offensivo di PRIMA CLASSE: tiro/cross deviato in angolo (prima appiattito in "saved" = parata) */
+  if(k==="saved"||k==="save")return"saved";
   if(k==="blocked"||k==="intercepted"||k==="wall_blocked")return"blocked";
   if(k==="wide"||k==="out"||k==="overhit"||k==="missed"||k==="deflected_out"||k==="shielded_out"||k==="lost"||k==="stopped")return"wide";
   return null;
@@ -3080,7 +3083,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="6.4.0"; // [6.4.0] R2.1 (MATCH_ENGINE_REDESIGN W2, Outcome Engine slice 1): «il difensore conta davvero». defDist (proximità del marcatore che guida malus e barra pressione) NON parte piu da Math.random 80-100 ma dalla PRESSIONE REALE della situation (nearby_def 0-3, deterministico con jitter seedato) → barra e malus onesti al momento, e via un Math.random nudo dal gameplay (Determinism First). La proximità VIVA plasma anche il TIPO di esito mancato in decideExecution (addosso→murato, libero→largo/parato): coerente su 3D+overlay+cronaca (M1), balance-neutral sul ok/fail. Penalità d avvio capata a ~0.08 (mai il tier 0.15 al via).
+const GAME_VERSION="6.4.1"; // [6.4.1] R2.2 (Outcome Engine): CORNER esito offensivo di PRIMA CLASSE. Un tiro/cross deviato in angolo era appiattito da _missKindNorm in "saved" (3D=parata, cronaca vaga, box-score 0). Ora: categoria propria (3D=palla oltre la linea di fondo come out+niente tuffo GK · overlay/cronaca dedicati «deviata in angolo» · mxStats.corners++ dall azione dell eroe). Coerenza M1 preservata per costruzione (overlay.fam e _arcFam derivano entrambi da _missKindNorm → gate timeline verde).
 const SAVE_VERSION=8;// v8 [5.81.0 BIL-3b]: bankBalance (stipendio accumulato, €) + perkTrainer/perkNutrition (staff personale) — migration retro-compatibile. v7: player.foot
 // 5.67.0 — TABELLONE realistico del torneo per NAZIONALI (Europeo/Mondiale): dopo il girone la fase a
 //   eliminazione segue Ottavi → Quarti → Semifinale → Finale (prima saltava dritta alla semifinale).
@@ -7542,7 +7545,7 @@ function ThreeMatchView(props){
           //   d'intercetto (prima planava da sola fino all'area avversaria: possesso «all'avversario» in porta!).
           //   E un tiro FUORI supera la linea di fondo (palla oltre la porta, non rimbalzo-fantasma in campo).
           {const _sf83=(P.hlType==="shot"||P.hlType==="penalty"||P.hlType==="freekick"||P.hlType==="header");
-           const _wide83=_sf83&&(P.hlOutcomeKind==="wide"||P.hlOutcomeKind==="out");
+           const _wide83=_sf83&&(P.hlOutcomeKind==="wide"||P.hlOutcomeKind==="out"||P.hlOutcomeKind==="corner");/* [6.4.1 R2.2] corner = palla oltre la linea di fondo (come out), non parata */
            const _lossK83=!_sf83&&P.hlType!=="cross"&&["intercepted","dispossessed","lost","stopped","shielded_out","overhit","offside"].indexOf(P.hlOutcomeKind)>=0;// SOLO perdite di possesso conclamate (le famiglie ambigue tengono il pull storico: il check final-state pretende gx≥45 sui "miss")
            const _tx83=_wide83?(AWAY_GOAL_X+2.5):_lossK83?(ballArcTgtX!=null?ballArcTgtX:ball.position.x):(AWAY_GOAL_X-7);
            ball.position.x+=(_tx83-ball.position.x)*Math.min(aDt*1.6,1);}
@@ -7721,7 +7724,7 @@ function ThreeMatchView(props){
           if(t==="cross"&&awayGkMesh&&!P.hlDef&&(P.hlOutcomeKind==="saved"||P.hlOutcomeKind==="save")){
             oppActType="gk_catch";oppActT=0;oppMesh=awayGkMesh;
             oppMesh._divePz=oppMesh.position.z;oppMesh._diveYaw=oppMesh.rotation.y;oppMesh._diveToZ=clamp(ballArcTgtZ,oppMesh.position.z-4,oppMesh.position.z+4);oppDiveDir=ballArcTgtZ>=oppMesh.position.z?1:-1;
-          } else if((t==="shot"||t==="penalty"||t==="header")&&awayGkMesh&&!P.hlDef&&!(P.hlOutcomeKind==="wide"||P.hlOutcomeKind==="out")){// 5.49.11: niente tuffo su azione difensiva
+          } else if((t==="shot"||t==="penalty"||t==="header")&&awayGkMesh&&!P.hlDef&&!(P.hlOutcomeKind==="wide"||P.hlOutcomeKind==="out"||P.hlOutcomeKind==="corner")){// 5.49.11: niente tuffo su azione difensiva · [6.4.1 R2.2] niente tuffo sul corner (palla fuori)
             oppActType="gk_dive";oppActT=0;oppMesh=awayGkMesh;
             oppDiveDir=ballArcTgtZ>=oppMesh.position.z?1:-1; // tuffo VERSO il lato del tiro
             oppMesh._divePz=oppMesh.position.z;oppMesh._diveYaw=oppMesh.rotation.y;
@@ -10544,6 +10547,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
       const _dd=decideExecution(_di,{..._ctx,seed:(_ctx.seed^0x5f3759df)>>>0}).outcome;
       _outKind=_neg.indexOf(_dd)>=0?_dd:"saved";
     }catch(_e){_outKind=null;}}
+    if(_outKind==="corner")setMxStats(s=>({...s,corners:(s.corners||0)+1}));/* [6.4.1 R2.2] l angolo guadagnato dall azione dell eroe entra nel box-score (prima solo la cronaca BG) */
     // [5.78.0 SIT-4] L'ASSIST NON È PIÙ UN GOL GARANTITO: sui passaggi chiave (through/onetwo) il Decision
     //   Engine decide se il filtrante diventa GOL del compagno (assist) o OCCASIONE da finalizzare (esito
     //   `chance`, finora inutilizzato): la palla è buona ma la conclusione va giocata — il chaining inietta
