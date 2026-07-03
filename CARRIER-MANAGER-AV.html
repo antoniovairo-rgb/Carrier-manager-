@@ -2614,6 +2614,7 @@ const _MISS_OVL={
   wide:["Tiro fuori di poco","Non trova lo specchio","Che peccato!","Occasione mancata","Sfiora il vantaggio"],
   corner:["Deviata in angolo","Corner conquistato","Respinta in corner","A un passo — è angolo"],
   foul:["Conquista una punizione","Subisce il fallo","Guadagna un calcio piazzato","Steso — punizione"],
+  offside:["In fuorigioco!","La bandierina è alzata","Oltre la linea — offside","Fuorigioco di un soffio"],
 };
 const _MISS_TX={
   post:["😤 Palo! Fortuna avversaria.","💨 Sopra la traversa — che rimpianto!"],
@@ -2622,6 +2623,7 @@ const _MISS_TX={
   wide:["😬 Tiro fuori!","💨 Sopra la traversa — che rimpianto!","😔 Non trova lo specchio."],
   corner:["🚩 Deviata in angolo!","🏳️ La conclusione finisce in corner.","🚩 Respinta in corner — si riparte dalla bandierina."],
   foul:["🟢 Fallo subito — punizione per noi!","🎯 Conquista una punizione in zona interessante.","🟢 Steso da un avversario: calcio piazzato."],
+  offside:["🚩 Fuorigioco! L assistente alza la bandierina.","🏳️ In posizione irregolare — offside.","🚩 Oltre la linea di un soffio: fuorigioco."],
 };
 // normalizza l'esito granulare (~30 valori) nelle 4 famiglie visive del "miss"; null → pool piatto legacy
 function _missKindNorm(k){
@@ -2629,8 +2631,9 @@ function _missKindNorm(k){
   if(k==="post")return"post";
   if(k==="corner")return"corner";/* [6.4.1 R2.2] esito offensivo di PRIMA CLASSE: tiro/cross deviato in angolo (prima appiattito in "saved" = parata) */
   if(k==="fouled"||k==="win_freekick")return"foul";/* [6.4.2 R2.3] fallo SUBITO dall azione dell eroe → punizione a favore (prima → pool piatto) */
+  if(k==="offside")return"offside";/* [6.4.3 R2.4] filtrante in fuorigioco (prima → pool piatto) */
   if(k==="saved"||k==="save")return"saved";
-  if(k==="blocked"||k==="intercepted"||k==="wall_blocked")return"blocked";
+  if(k==="blocked"||k==="intercepted"||k==="wall_blocked"||k==="dispossessed"||k==="beaten")return"blocked";/* [6.4.3 R2.4] avversario vince il pallone → famiglia "murato/fermato" (prima → pool piatto) */
   if(k==="wide"||k==="out"||k==="overhit"||k==="missed"||k==="deflected_out"||k==="shielded_out"||k==="lost"||k==="stopped")return"wide";
   return null;
 }
@@ -3086,7 +3089,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="6.4.2"; // [6.4.2] R2.3 (Outcome Engine): FALLO SUBITO esito offensivo di prima classe. decideExecution genera fouled/win_freekick su dribbling/scatti falliti ma _missKindNorm li appiattiva nel pool piatto → ora categoria propria "foul": overlay/cronaca «conquista una punizione» (semantica fallo A FAVORE, distinta da HL_OVERLAY_POOLS.foul = fallo commesso) + mxStats.fouls++ (falli avversari). win_freekick aggiunto a _neg (2 siti). Coerenza M1 per costruzione (overlay.fam=_missKindNorm=foul → gate timeline verde).
+const GAME_VERSION="6.4.3"; // [6.4.3] R2.4 (Outcome Engine): completata la copertura degli esiti di decideExecution in _missKindNorm. OFFSIDE categoria propria (filtrante in fuorigioco: overlay/cronaca «l assistente alza la bandierina», prima → pool piatto generico); dispossessed/beaten → famiglia "blocked" (l avversario vince il pallone → murato/fermato). Coerenza M1 per costruzione (overlay.fam=_missKindNorm → gate timeline verde).
 const SAVE_VERSION=8;// v8 [5.81.0 BIL-3b]: bankBalance (stipendio accumulato, €) + perkTrainer/perkNutrition (staff personale) — migration retro-compatibile. v7: player.foot
 // 5.67.0 — TABELLONE realistico del torneo per NAZIONALI (Europeo/Mondiale): dopo il girone la fase a
 //   eliminazione segue Ottavi → Quarti → Semifinale → Finale (prima saltava dritta alla semifinale).
