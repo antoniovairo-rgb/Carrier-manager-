@@ -80,12 +80,19 @@ function analyzeSegment(frames, events) {
   return { metrics: m, issues, warns };
 }
 
-/* ── coerenza esito⟺traiettoria: gol ⟹ la palla raggiunge la porta avversaria (world x≈+50) ── */
+/* ── coerenza esito⟺traiettoria: gol ⟹ la palla raggiunge la porta avversaria (world x≈+50).
+   [6.4.2/cal] l'in_net del gol prosegue oltre il confine del segmento hl_result (il taglio alla fase
+   `playing` chiude il campione mentre la palla è ancora in volo verso la rete): un gol è coerente se la
+   palla RAGGIUNGE la porta (x>44) OPPURE è chiaramente in TRAIETTORIA verso di essa (x>40 e in avvicinamento
+   monotono negli ultimi frame). Un gol con palla ferma a centrocampo o che va INDIETRO fallisce ancora. ── */
 function checkOutcomeCoherence(seg, ev) {
   if (!ev || !ev.ok) return null;
   if (ev.key === 'goal') {
+    const maxX = Math.max(...seg.map(f => f.b[0]));
     const reached = seg.some(f => f.b[0] > 44 && Math.abs(f.b[1]) < 8);
-    if (!reached) return `esito GOL ma la palla non raggiunge mai la porta avversaria (max x=${Math.max(...seg.map(f => f.b[0])).toFixed(1)})`;
+    const tail = seg.slice(-5).map(f => f.b[0]);
+    const goalBound = maxX > 40 && tail.length >= 3 && tail[tail.length - 1] >= tail[0] && tail[tail.length - 1] > 40; // in avvicinamento alla porta al taglio
+    if (!reached && !goalBound) return `esito GOL ma la palla non va verso la porta avversaria (max x=${maxX.toFixed(1)}, coda ${tail.map(x => x.toFixed(0)).join('→')})`;
   }
   return null;
 }
