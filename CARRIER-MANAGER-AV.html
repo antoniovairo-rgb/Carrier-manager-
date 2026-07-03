@@ -3089,7 +3089,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="6.4.7"; // [6.4.7] R5.3 (feel): il CORNER conquistato (R2.2) diventa una VERA occasione. Prima la conclusione deviata in angolo finiva li; ora incatena l attacco del calcio d angolo (CHAIN_SITS header/mischia = cross in area → stacco di testa), la sequenza calcistica reale «tiro murato → angolo → colpo di testa». Bounded da _chainDepth. Additivo (il gate resetta le catene al force → gate-safe; esercitato da live-smoke/validator), gate-cieco sul feel → collaudo dal vivo.
+const GAME_VERSION="6.4.8"; // [6.4.8] R5.4 (feel/narrativa): la Match Memory (M2) ora RICORDA corner e falli guadagnati (esiti di prima classe R2.2/2.3). Alla seconda occasione dello stesso tipo la cronaca coglie la PRESSIONE crescente. Additivo (solo cronaca, via _missKindNorm coerente), zero rischio 3D/gate. NOTA R3 (Ball Physics) NON fatto di proposito: la palla è misurabilmente pulita (validator 0 teleport) e l arcBlock è gate-checked da data-coherence (Math.random shadowato + guardie regex) → refactoring alla cieca romperebbe il gate per eleganza (viola Zero Regression).
 const SAVE_VERSION=8;// v8 [5.81.0 BIL-3b]: bankBalance (stipendio accumulato, €) + perkTrainer/perkNutrition (staff personale) — migration retro-compatibile. v7: player.foot
 // 5.67.0 — TABELLONE realistico del torneo per NAZIONALI (Europeo/Mondiale): dopo il girone la fase a
 //   eliminazione segue Ottavi → Quarti → Semifinale → Finale (prima saltava dritta alla semifinale).
@@ -9684,7 +9684,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   // Async handler: load opponent tactic then go to formations
   const handleGoToFormations=async()=>{
     cpmTimelineReset(); cpmEmit("MatchStart",{opponent:(opponent&&(opponent.n||opponent.name))||null});// LMQP-1
-    matchMemRef.current={goals:0,assists:0,misses:0,gkSaves:0,byFlank:{L:0,C:0,R:0}};// M2: azzera la memoria narrativa a inizio partita
+    matchMemRef.current={goals:0,assists:0,misses:0,gkSaves:0,corners:0,foulsWon:0,byFlank:{L:0,C:0,R:0}};// M2: azzera la memoria narrativa a inizio partita
     setOppTacticLoading(true);
     setPhase("formations");
     const tactic=await generateOpponentTactic(opponent,player.stats,player.week||1);
@@ -10644,7 +10644,10 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
         if(_mm.assists===2)_cont="🎯 Secondo assist della partita!";
         else if(_mm.assists>=3)_cont="🎯 "+_mm.assists+"° assist — è in cattedra!";}
       else if(!ok&&(key==="miss"||key==="miss_easy")){_mm.misses++;
-        if(_missKindNorm(_outKind)==="saved"){_mm.gkSaves++;if(_mm.gkSaves>=2)_cont="🧤 Il portiere avversario è in serata di grazia.";}}
+        const _nk84=_missKindNorm(_outKind);
+        if(_nk84==="saved"){_mm.gkSaves++;if(_mm.gkSaves>=2)_cont="🧤 Il portiere avversario è in serata di grazia.";}
+        else if(_nk84==="corner"){_mm.corners=(_mm.corners||0)+1;if(_mm.corners>=2)_cont="🚩 Pressione totale — un altro angolo guadagnato!";}/* [6.4.8 R5.4] la memoria narrativa coglie la pressione crescente */
+        else if(_nk84==="foul"){_mm.foulsWon=(_mm.foulsWon||0)+1;if(_mm.foulsWon>=2)_cont="🎯 Un'altra punizione conquistata: l'avversario è in affanno.";}}
       if(_cont)addCom(_cont,ok?"#22c55e":"#f59e0b",clock);
       // cpmadapt: registra la FASCIA da cui l'Eroe agisce (y logico) → l'IA off-ball ci "ombreggia" (Cap.4.12).
       //   USA pPosRef.current (valore LIVE): pPos dalla closure è stale (la dep list di handleAction ha pPos.x, non .y).
