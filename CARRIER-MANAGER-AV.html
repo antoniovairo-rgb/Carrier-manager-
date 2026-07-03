@@ -3080,7 +3080,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="6.3.2"; // [6.3.2] R1a (MATCH_ENGINE_REDESIGN W1, 1a slice): il TESTO smette di essere API in 4 punti — chainOn bakato in S() con la regex runtime esatta (handleAction legge il campo), isPenaltySit intent-first, setup posizionale e GK-dive del rigore leggono isPenaltySit invece di text.includes("RIGORE"). Equivalenza verificata offline: 0 divergenze su 179 (regex vs intent) e 42/179 chainOn identici alla regex runtime.
+const GAME_VERSION="6.3.3"; // [6.3.3] TRE BUG COLLAUDO PO: (1) CLASSIFICA — invariante double round-robin in updateStandings (nessuna squadra oltre 2*(N-1) partite → stop al 35 turno over-count); (2) METEO/ORARIO — MatchdayCard riceve meteo/orario VERI seedati da LiveMatch (niente piu pick() casuale che cambiava entrando in campo e a ogni reload); (3) NEVE — fiocchi tondi/morbidi (texture radiale) + opacita .9->.55 e size .55->.48 (i quadrati bianchi opachi vicino alla camera bassa della punizione coprivano i giocatori).
 const SAVE_VERSION=8;// v8 [5.81.0 BIL-3b]: bankBalance (stipendio accumulato, €) + perkTrainer/perkNutrition (staff personale) — migration retro-compatibile. v7: player.foot
 // 5.67.0 — TABELLONE realistico del torneo per NAZIONALI (Europeo/Mondiale): dopo il girone la fase a
 //   eliminazione segue Ottavi → Quarti → Semifinale → Finale (prima saltava dritta alla semifinale).
@@ -5192,6 +5192,12 @@ function initStandings(clubs){
 //   non deterministica del gioco. Senza opts il comportamento resta identico a prima (compat).
 function updateStandings(standings,playerClubId,playerResult,prestigeShifts,opts){
   if(!standings?.length)return[];
+  /* [6.3.3 BUG-STAND] INVARIANTE double round-robin: in una lega a N squadre ogni squadra gioca 2*(N-1)
+     partite. Se una squadra è GIÀ al massimo, la stagione di lega è completa → nessun turno aggiuntivo
+     (previene il 35° turno segnalato dal PO: over-count emergente da interazioni live/sim/coppa). Zero
+     regressione sul flusso corretto (34<=34 non scatta mai); si applica solo allo stato impossibile. */
+  {const _mxG=standings.length>1?2*(standings.length-1):9999;
+   if(standings.some(t=>(t.played||0)>=_mxG))return[...standings].sort((a,b)=>b.pts-a.pts||b.gd-a.gd||b.gf-a.gf);}
   const sh=prestigeShifts||{};
   const _o=opts||{};
   const _rng=_o.seed!=null?seededRng((_o.seed>>>0)||1):Math.random;
@@ -6998,7 +7004,12 @@ function ThreeMatchView(props){
       const wpos=new Float32Array(N*3);
       for(let i=0;i<N;i++){wpos[i*3]=(Math.random()-0.5)*132;wpos[i*3+1]=Math.random()*64;wpos[i*3+2]=(Math.random()-0.5)*92;}
       const wgeo=new THREE.BufferGeometry();wgeo.setAttribute('position',new THREE.BufferAttribute(wpos,3));
-      const wmat=new THREE.PointsMaterial({color:isSnow?0xffffff:0xbcd8ee,size:isSnow?0.55:0.3,transparent:true,opacity:isSnow?0.9:0.5,depthWrite:false});
+      /* [6.3.3 BUG-NEVE] i fiocchi erano sprite QUADRATI opachi (size .55, opacity .9): vicino alla camera bassa
+         della punizione diventavano grossi quadrati bianchi che coprivano i giocatori. Ora fiocco TONDO e morbido
+         (texture radiale) + opacità/size ridotte → nevica ma il campo resta leggibile. */
+      let _snowTex=null;
+      if(isSnow){const _sc=document.createElement('canvas');_sc.width=_sc.height=16;const _sx=_sc.getContext('2d');const _sg=_sx.createRadialGradient(8,8,0,8,8,8);_sg.addColorStop(0,'rgba(255,255,255,0.95)');_sg.addColorStop(0.45,'rgba(255,255,255,0.55)');_sg.addColorStop(1,'rgba(255,255,255,0)');_sx.fillStyle=_sg;_sx.fillRect(0,0,16,16);_snowTex=new THREE.CanvasTexture(_sc);}
+      const wmat=new THREE.PointsMaterial({color:isSnow?0xffffff:0xbcd8ee,size:isSnow?0.48:0.3,map:_snowTex,transparent:true,opacity:isSnow?0.55:0.5,depthWrite:false});
       const wpts=new THREE.Points(wgeo,wmat);scene.add(wpts);
       wParticles={pts:wpts,pos:wpos,N,vy:isSnow?6:(wfx==="storm"?72:50),snow:isSnow};
     }
@@ -8778,9 +8789,11 @@ function AIDecisionOverlay({tactic,loading}){
 /* ========================================
    MATCHDAY CARD  (req #10 – calendario)
 ======================================== */
-function MatchdayCard({homeTeam,awayTeam,stadium,attendance,league,onContinue,onSkip,scoutReport,scoutLoading,onShowScout,matchWeight=1,matchContext}){
-  const weather=pick(["☀️ Sereno","🌥️ Nuvoloso","🌧️ Pioggia leggera","⛅ Parzialmente nuvoloso"]);
-  const time=pick(["15:00","17:30","18:00","20:45","19:00"]);
+function MatchdayCard({homeTeam,awayTeam,stadium,attendance,league,onContinue,onSkip,scoutReport,scoutLoading,onShowScout,matchWeight=1,matchContext,weatherObj=null,kickoffHour=null}){
+  /* [6.3.3 BUG-WX] meteo/orario REALI (seedati) della partita, passati da LiveMatch → niente più valori
+     casuali che cambiavano entrando in campo e a ogni reload. Fallback ai vecchi pick() se assenti. */
+  const weather=weatherObj?`${weatherObj.e||"☀️"} ${weatherObj.name||"Sereno"}`:pick(["☀️ Sereno","🌥️ Nuvoloso","🌧️ Pioggia leggera","⛅ Parzialmente nuvoloso"]);
+  const time=(kickoffHour!=null)?`${kickoffHour}:00`:pick(["15:00","17:30","18:00","20:45","19:00"]);
   useEffect(()=>{
     const h=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();onContinue();}};
     window.addEventListener("keydown",h);return()=>window.removeEventListener("keydown",h);
@@ -10993,7 +11006,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
         const isExCl=(player.history||[]).some(h=>h.club===opponent?.n||h.clubId===opponent?.id)||(player.worldMemory||[]).some(m=>m.type==="ex_club"&&m.clubId===opponent?.id);
         const rivalMatch=player.rival&&(player.rival.club?.id===opponent?.id||player.rival.club?.n===opponent?.n);
         const mCtx=drby?`${drby.e} ${drby.name}`:isExCl?"🏠 Ritorno al passato — ex squadra":rivalMatch?`🆚 La squadra di ${player.rival?.name||"il tuo rivale"}`:(mw>=8)?"Partita decisiva per il titolo":(mw>=6)?"Scontro diretto in classifica":null;
-        return<MatchdayCard homeTeam={homeTeamObj} awayTeam={awayTeamObj} stadium={stadium} attendance={attendance} league={isNatCtx?"Nazionale":(context==="euro_group"||context==="euro_ko")?(player.euro?.competition||"UCL"):context==="cup"?"Coppa Nazionale":player.club?.lg||(player.club?.isU18||context==="trial"?(player.club?.lg||"Primavera"):null)} onContinue={handleGoToFormations} onSkip={()=>setPhase("playing")} scoutReport={scoutReport} scoutLoading={scoutLoading} onShowScout={()=>setShowScout(true)} matchWeight={mw} matchContext={mCtx}/>;
+        return<MatchdayCard homeTeam={homeTeamObj} awayTeam={awayTeamObj} stadium={stadium} attendance={attendance} league={isNatCtx?"Nazionale":(context==="euro_group"||context==="euro_ko")?(player.euro?.competition||"UCL"):context==="cup"?"Coppa Nazionale":player.club?.lg||(player.club?.isU18||context==="trial"?(player.club?.lg||"Primavera"):null)} onContinue={handleGoToFormations} onSkip={()=>setPhase("playing")} scoutReport={scoutReport} scoutLoading={scoutLoading} onShowScout={()=>setShowScout(true)} matchWeight={mw} matchContext={mCtx} weatherObj={weather} kickoffHour={kickoffHour}/>;
       })()}
       {phase==="matchday"&&showScout&&<ScoutReportScreen report={scoutReport} opponent={opponent} loading={scoutLoading} onClose={()=>setShowScout(false)}/>}
       {phase==="formations"&&<FormationView homeTeam={homeTeamObj} awayTeam={awayTeamObj} player={player} homeRoster={homeRoster} awayRoster={awayRoster} onContinue={()=>setPhase("walkout")} onSkip={()=>setPhase("playing")} oppTactic={oppTactic} oppTacticLoading={oppTacticLoading} homeKitCol={scoreHomeCol} awayKitCol={scoreAwayCol} competition={(context==="euro_group"||context==="euro_ko")?(player.euro?.competition||null):null} euroRound={(context==="euro_group")?`Giornata ${(player.euro?.groupResults||[]).length+1}/6`:(context==="euro_ko")?({r16:"Ottavi di Finale",quarti:"Quarti di Finale",sf:"Semifinale",final:"Finale"}[player.euro?.phase]||"KO"):null}/>}
