@@ -3089,7 +3089,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="6.5.3"; // [6.5.3] PRE-INGRESSO TELEVISIVO — redesign completo di FormationView (schermata "— FORMAZIONI —" / Ingresso in campo, segnalata dal PO) in stile broadcast TV. Design da panel di 4 concept giudicati ("MATCHDAY LIVE — Broadcast Lower-Third"): header competizione con hairline ambra + tag PREPARTITA; banda VS diagonale coi colori-DIVISA (spine luminose ai bordi + seam ambra + medaglione bicolore con VS + pip di prestigio); due pannelli-formazione "lower-third" con spina colore squadra e chip formazione (casa derivata dal roster), eroe con anello ambra; la TATTICA AVVERSARIA non e piu un box rosso d allarme ma uno scout lower-third (formazione + dot-matrix + meter PRESSING verde->ambra->rosso segmentato, skeleton shimmer in caricamento); CTA ambra con shine. Solo restyle: logica numeri/eroe (withNums/hRoster/aRoster) INVARIATA. Mobile-first, flash-safe (motion one-shot). Verificato con screenshot standalone (pieno+loading, 0 pageerror). // [6.5.2] PANCHINA — (1) niente piu panchinari "pelati": mkFig costruisce un cap di capelli PIENO (corona+nuca) con colore VARIATO per figura (8 tinte), prima era un disco scuro piatto uguale per tutti che dalla camera broadcast sembrava rasato. (2) INGRESSO DAL PANCHINA piu televisivo: coreografia a 4 beat (istruzioni alla linea girato verso il mister -> "pronto" -> SCATTO in campo con ease-in-out cosi animOne mostra la corsa vera -> saluto al pubblico a meta -> gesto di carica all arrivo). Gate-cieco (panchina/arbitri fuori dalla firma golden; l ingresso parte solo su una sostituzione reale che il gate non innesca) -> collaudo dal vivo. // [6.5.1] COLLAUDO PO — 7 fix: (A) TABELLONE sincronizzato: lo score del gol dell eroe si aggiorna quando la palla ENTRA in rete (differito a fireGoalCeleb, guardia in handleContinue per lo skip veloce), non all istante del tap; rigore idem al reveal. (B) ESULTANZA non anticipata: fallback celebrazione 3200->5200ms (col build-up R5 su cross/testa il tempo palla->rete e cresciuto) -> onGoalInNet vince sempre. (C) STRISCIONI coerenti: la scenografia tifo (bandiere/striscioni/sciarpe) usa i colori SOCIALI del club (sHome/sAway), non la divisa indossata -> in trasferta niente piu colori sbagliati. (D) CURVA TEDESCA piu bassa (1.5->1.28 altezza) + rake piu dolce (top arretrato 0.30->0.40). (E) PRE-INGRESSO piu televisivo: lower-third broadcast (DIRETTA + stadio + spettatori + orario) sul pannello walkout. (BUG stadio NAZIONALE) le gare della nazionale si giocano nello stadio del PAESE (casa=nazione eroe, trasferta=nazione avversaria), non piu dello stadio del club dell eroe. (SICUREZZA epilessia) GOVERNOR anti-strobo: intervallo minimo 750ms fra flash a schermo (max ~1.3/s, sotto la soglia WCAG di 3/s) + cap opacita 0.42; tutti i setScreenFlash della partita passano di qui. // [6.5.0] R2-residuo (Outcome Engine, chiusura W2): (1) RIGORE nel flusso Unified Outcome (M1) — handleRigore setta outcome.outKind (goal/saved/post/wide) deciso UNA volta dal seed, cosi il 3D (props r.11171) legge l esito deciso qui invece di ricalcolarlo con un altro seed (prima: testo «PARATA/Palo» scollegato dall arco 3D); rigore sbagliato = palo(28%)/fuori onesto (mai parata se il portiere va dal lato opposto) + testo derivato dal kind; emette ActionResolved.outKind + CoherenceCheck (M3). (2) LEDGER UNICO eventi partita — helper pushMatchEvent(min,type,txt): unica via di scrittura del feed, clamp MONOTONO del minuto + cap 90 + slice(-12) in UN posto (prima 6 siti con semantiche diverse: i gol ambientali bgMicro usavano nx grezzo -> minuti non monotoni). Testo via funzione (em)=> cosi combacia sempre col .min. Score invariato (gia coerente; derive-da-buffer-cappato = trappola scartata). // [6.4.9] R5-backbone (build-up esteso): l esecutore cinematico della timeline (CINE-TL, prima solo hlType shot) ora antepone la COSTRUZIONE anche a CROSS e COLPO DI TESTA. Chiave: tlBuildN = indice della PRIMA beat di conclusione della famiglia hlType (cross->beat cross, header->beat header, shot->concl = length-1 INVARIATO) cosi fireConclusion esegue la conclusione reale una volta sola (niente doppioni cross/testa). Il tiro resta bit-identico (zero regressione). Gate-cieco (?cpmtest=1 salta l esecutore) -> feel da collaudo dal vivo; motion/teleport coperti dal Live Match Validator. // [6.4.8] R5.4 (feel/narrativa): la Match Memory (M2) ora RICORDA corner e falli guadagnati (esiti di prima classe R2.2/2.3). Alla seconda occasione dello stesso tipo la cronaca coglie la PRESSIONE crescente. Additivo (solo cronaca, via _missKindNorm coerente), zero rischio 3D/gate. NOTA R3 (Ball Physics) NON fatto di proposito: la palla è misurabilmente pulita (validator 0 teleport) e l arcBlock è gate-checked da data-coherence (Math.random shadowato + guardie regex) → refactoring alla cieca romperebbe il gate per eleganza (viola Zero Regression).
+const GAME_VERSION="6.5.4"; // [6.5.4] COLLAUDO PO — 4 fix UX: (1) HL esito in basso SINCRONIZZATO con la sovraimpressione: il pannello risultato non si rivela piu a _rd92 (spesso PRIMA dell overlay col build-up R5) — goal/assist rivelati da fireGoalCeleb (ingresso in rete), gli altri esiti insieme al floatGoal; tabellone/overlay/pannello coerenti. (2) MAGLIE FormationView ridisegnate (JerseyIcon): silhouette moderna con maniche raglan, colletto a giro, volume via highlight/ombra, drop-shadow, numero con ombra, orlo con accento; leggibili su kit scuri e chiari. (3) CTA settimana (vivi/gioca/avanza) STICKY in cima al dashboard: sempre visibile senza scorrere (prima in fondo alla prima card). (4) DIALOGHI/INTERVISTE: rimossi i suggerimenti bonus/malus dalle scelte (Chimica ±N nell intervista + chip morale/forma/fatica/fiducia/popolarita/legame nei bivi) — la decisione non e piu condizionata dall esito; resta il feedback DOPO la scelta + il vincolo fondi. // [6.5.3] PRE-INGRESSO TELEVISIVO — redesign completo di FormationView (schermata "— FORMAZIONI —" / Ingresso in campo, segnalata dal PO) in stile broadcast TV. Design da panel di 4 concept giudicati ("MATCHDAY LIVE — Broadcast Lower-Third"): header competizione con hairline ambra + tag PREPARTITA; banda VS diagonale coi colori-DIVISA (spine luminose ai bordi + seam ambra + medaglione bicolore con VS + pip di prestigio); due pannelli-formazione "lower-third" con spina colore squadra e chip formazione (casa derivata dal roster), eroe con anello ambra; la TATTICA AVVERSARIA non e piu un box rosso d allarme ma uno scout lower-third (formazione + dot-matrix + meter PRESSING verde->ambra->rosso segmentato, skeleton shimmer in caricamento); CTA ambra con shine. Solo restyle: logica numeri/eroe (withNums/hRoster/aRoster) INVARIATA. Mobile-first, flash-safe (motion one-shot). Verificato con screenshot standalone (pieno+loading, 0 pageerror). // [6.5.2] PANCHINA — (1) niente piu panchinari "pelati": mkFig costruisce un cap di capelli PIENO (corona+nuca) con colore VARIATO per figura (8 tinte), prima era un disco scuro piatto uguale per tutti che dalla camera broadcast sembrava rasato. (2) INGRESSO DAL PANCHINA piu televisivo: coreografia a 4 beat (istruzioni alla linea girato verso il mister -> "pronto" -> SCATTO in campo con ease-in-out cosi animOne mostra la corsa vera -> saluto al pubblico a meta -> gesto di carica all arrivo). Gate-cieco (panchina/arbitri fuori dalla firma golden; l ingresso parte solo su una sostituzione reale che il gate non innesca) -> collaudo dal vivo. // [6.5.1] COLLAUDO PO — 7 fix: (A) TABELLONE sincronizzato: lo score del gol dell eroe si aggiorna quando la palla ENTRA in rete (differito a fireGoalCeleb, guardia in handleContinue per lo skip veloce), non all istante del tap; rigore idem al reveal. (B) ESULTANZA non anticipata: fallback celebrazione 3200->5200ms (col build-up R5 su cross/testa il tempo palla->rete e cresciuto) -> onGoalInNet vince sempre. (C) STRISCIONI coerenti: la scenografia tifo (bandiere/striscioni/sciarpe) usa i colori SOCIALI del club (sHome/sAway), non la divisa indossata -> in trasferta niente piu colori sbagliati. (D) CURVA TEDESCA piu bassa (1.5->1.28 altezza) + rake piu dolce (top arretrato 0.30->0.40). (E) PRE-INGRESSO piu televisivo: lower-third broadcast (DIRETTA + stadio + spettatori + orario) sul pannello walkout. (BUG stadio NAZIONALE) le gare della nazionale si giocano nello stadio del PAESE (casa=nazione eroe, trasferta=nazione avversaria), non piu dello stadio del club dell eroe. (SICUREZZA epilessia) GOVERNOR anti-strobo: intervallo minimo 750ms fra flash a schermo (max ~1.3/s, sotto la soglia WCAG di 3/s) + cap opacita 0.42; tutti i setScreenFlash della partita passano di qui. // [6.5.0] R2-residuo (Outcome Engine, chiusura W2): (1) RIGORE nel flusso Unified Outcome (M1) — handleRigore setta outcome.outKind (goal/saved/post/wide) deciso UNA volta dal seed, cosi il 3D (props r.11171) legge l esito deciso qui invece di ricalcolarlo con un altro seed (prima: testo «PARATA/Palo» scollegato dall arco 3D); rigore sbagliato = palo(28%)/fuori onesto (mai parata se il portiere va dal lato opposto) + testo derivato dal kind; emette ActionResolved.outKind + CoherenceCheck (M3). (2) LEDGER UNICO eventi partita — helper pushMatchEvent(min,type,txt): unica via di scrittura del feed, clamp MONOTONO del minuto + cap 90 + slice(-12) in UN posto (prima 6 siti con semantiche diverse: i gol ambientali bgMicro usavano nx grezzo -> minuti non monotoni). Testo via funzione (em)=> cosi combacia sempre col .min. Score invariato (gia coerente; derive-da-buffer-cappato = trappola scartata). // [6.4.9] R5-backbone (build-up esteso): l esecutore cinematico della timeline (CINE-TL, prima solo hlType shot) ora antepone la COSTRUZIONE anche a CROSS e COLPO DI TESTA. Chiave: tlBuildN = indice della PRIMA beat di conclusione della famiglia hlType (cross->beat cross, header->beat header, shot->concl = length-1 INVARIATO) cosi fireConclusion esegue la conclusione reale una volta sola (niente doppioni cross/testa). Il tiro resta bit-identico (zero regressione). Gate-cieco (?cpmtest=1 salta l esecutore) -> feel da collaudo dal vivo; motion/teleport coperti dal Live Match Validator. // [6.4.8] R5.4 (feel/narrativa): la Match Memory (M2) ora RICORDA corner e falli guadagnati (esiti di prima classe R2.2/2.3). Alla seconda occasione dello stesso tipo la cronaca coglie la PRESSIONE crescente. Additivo (solo cronaca, via _missKindNorm coerente), zero rischio 3D/gate. NOTA R3 (Ball Physics) NON fatto di proposito: la palla è misurabilmente pulita (validator 0 teleport) e l arcBlock è gate-checked da data-coherence (Math.random shadowato + guardie regex) → refactoring alla cieca romperebbe il gate per eleganza (viola Zero Regression).
 const SAVE_VERSION=8;// v8 [5.81.0 BIL-3b]: bankBalance (stipendio accumulato, €) + perkTrainer/perkNutrition (staff personale) — migration retro-compatibile. v7: player.foot
 // 5.67.0 — TABELLONE realistico del torneo per NAZIONALI (Europeo/Mondiale): dopo il girone la fase a
 //   eliminazione segue Ottavi → Quarti → Semifinale → Finale (prima saltava dritta alla semifinale).
@@ -8909,27 +8909,35 @@ function MatchdayCard({homeTeam,awayTeam,stadium,attendance,league,onContinue,on
 
 /* Jersey icon — shirt SVG with number and player name */
 function JerseyIcon({color="#3b82f6",number,name,isPlayer=false,size=46}){
+  // [6.5.4] maglia SVG ridisegnata — silhouette moderna (spalle morbide, maniche raglan, colletto a giro,
+  //   volume via highlight/ombra, orlo con accento, numero con ombra). Look pulito da broadcast.
   const col=isPlayer?"#f59e0b":color;
-  const dark=col==="#ffffff"||col==="#fff"||col==="#f0f0f0";
-  const txtCol=dark?"#222":"#fff";
+  const _low=(col||"").toLowerCase();
+  const light=["#ffffff","#fff","#f0f0f0","#f2f1ec","#f4f4f4","#e8e8ee","#f1f1f3"].includes(_low);
+  const txtCol=light?"#14141c":"#fff";
+  const detail=light?"rgba(0,0,0,0.30)":"rgba(255,255,255,0.55)";
   const lastName=(name||"").split(" ").slice(-1)[0].toUpperCase();
+  const S=size;
   return(
     <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2,cursor:"default"}}>
-      <svg width={size} height={Math.round(size*1.05)} viewBox="0 0 52 55" xmlns="http://www.w3.org/2000/svg">
-        {/* shadow */}
-        <ellipse cx={26} cy={53} rx={14} ry={2} fill="rgba(0,0,0,0.35)"/>
-        {/* shirt body */}
-        <path d="M10 16 L4 28 L14 31 L14 51 L38 51 L38 31 L48 28 L42 16 L34 20 C32 13 20 13 18 20 Z" fill={col} stroke="rgba(255,255,255,0.18)" strokeWidth="1"/>
-        {/* collar */}
-        <path d="M18 20 C20 26 32 26 34 20" fill="rgba(0,0,0,0.2)" stroke="rgba(255,255,255,0.35)" strokeWidth="0.8"/>
-        {/* stripe highlight */}
-        <path d="M14 31 L14 51 L20 51 L20 31 Z" fill="rgba(255,255,255,0.07)"/>
-        {/* number */}
-        <text x="26" y="41" textAnchor="middle" dominantBaseline="central" fill={txtCol} fontSize="15" fontWeight="900" fontFamily="Arial,sans-serif" letterSpacing="-0.5">{number}</text>
-        {/* player star */}
-        {isPlayer&&<text x="26" y="22" textAnchor="middle" dominantBaseline="central" fill="#fff" fontSize="6" fontFamily="Arial,sans-serif">★</text>}
+      <svg width={S} height={Math.round(S*1.02)} viewBox="0 0 52 53" xmlns="http://www.w3.org/2000/svg" style={{filter:"drop-shadow(0 2px 2px rgba(0,0,0,0.35))"}}>
+        {/* corpo + maniche raglan (silhouette unica, spalle arrotondate → vita → orlo dritto) */}
+        <path d="M16 11 C20 7.6 32 7.6 36 11 L41 13.5 L49 24.5 L42.6 31 L38 26.4 L38 49 L14 49 L14 26.4 L9.4 31 L3 24.5 L11 13.5 Z" fill={col}/>
+        {/* volume: colonna di luce a sinistra, ombra a destra */}
+        <path d="M14 26.4 L14 49 L22 49 L22 26.4 Z" fill="rgba(255,255,255,0.10)"/>
+        <path d="M31 26.4 L31 49 L38 49 L38 26.4 Z" fill="rgba(0,0,0,0.12)"/>
+        {/* colletto a giro */}
+        <path d="M20.5 10.4 C23 15 29 15 31.5 10.4" fill="none" stroke={detail} strokeWidth="1.7" strokeLinecap="round"/>
+        {/* polsini */}
+        <path d="M3 24.5 L9.4 31 L11.4 28.8 L5.2 22.4 Z" fill="rgba(0,0,0,0.16)"/>
+        <path d="M49 24.5 L42.6 31 L40.6 28.8 L46.8 22.4 Z" fill="rgba(0,0,0,0.16)"/>
+        {/* accento all'orlo */}
+        <rect x="14" y="47" width="24" height="2" fill={detail} opacity="0.5"/>
+        {/* numero: ombra + testo */}
+        <text x="26.5" y="37.4" textAnchor="middle" dominantBaseline="central" fill="rgba(0,0,0,0.30)" fontSize="16.5" fontWeight="900" fontFamily="Arial,Helvetica,sans-serif">{number}</text>
+        <text x="26" y="36.4" textAnchor="middle" dominantBaseline="central" fill={txtCol} fontSize="16.5" fontWeight="900" fontFamily="Arial,Helvetica,sans-serif" letterSpacing="-0.6">{number}</text>
       </svg>
-      <div style={{fontSize:7,color:isPlayer?"#f59e0b":"rgba(255,255,255,0.82)",fontWeight:isPlayer?800:600,textAlign:"center",width:size+8,lineHeight:1.1,letterSpacing:"0.3px",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>
+      <div style={{fontSize:7,color:isPlayer?"#f59e0b":"rgba(255,255,255,0.82)",fontWeight:isPlayer?800:600,textAlign:"center",width:S+8,lineHeight:1.1,letterSpacing:"0.3px",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>
         {lastName}
       </div>
     </div>
@@ -9671,6 +9679,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     // [6.5.1 Polish A] il TABELLONE si aggiorna ORA (palla in rete), non all'istante della scelta:
     //   lo score-increment del gol dell'eroe è differito qui → scoreboard + esultanza + rete SINCRONI.
     if(g.scoreHome)setScore(sc=>({...sc,home:sc.home+1}));
+    setResultReveal(true);// [6.5.4] l'ESITO IN BASSO si rivela ORA (ingresso in rete = sovraimpressione GOL): pannello risultato + floatGoal/goalCinema SINCRONI (prima il pannello usciva a _rd92, spesso PRIMA dell'overlay col build-up R5)
     flashScreen({col:"rgba(255,255,255,0.42)",dur:600});// [6.5.1 SICUREZZA] via il lampo 0.75 → 0.42 governato
     setFloatGoal({text:g.assist?"🎯 ASSIST!":"⚽ GOL!",col:"#f59e0b",key:g.gk});
     setGoalCinema({text:g.assist?"ASSIST!":"GOOOOL!",col:g.clubCol,key:g.gk,shakeKey:g.gk,assist:!!g.assist});
@@ -10758,7 +10767,9 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     //   difensiva e flash rosso si rivelano quando l'arco è arrivato (gol/assist ~1.25s, conclusioni 1.1s, resto 0.85s).
     const _rd92=(key==="goal"||key==="assist"||key==="chance")?1250:(/tir|conclus|rovesciat|vol[eé]|testa|punizion|rigor|bordata|missile/i.test(action.label||"")?1100:850);
     setResultReveal(false);
-    fxTimeout(()=>setResultReveal(true),_rd92);
+    // [6.5.4] ESITO IN BASSO ⟺ SOVRAIMPRESSIONE: il pannello risultato NON si rivela più a _rd92 (spesso PRIMA
+    //   dell'overlay). Per goal/assist lo rivela fireGoalCeleb (ingresso in rete); per gli altri esiti lo rivela
+    //   il timeout del floatGoal (stessa callback → stesso istante). Qui resta solo la cronaca (log scorrevole).
     fxTimeout(()=>addCom(txt,ok?"#16a34a":"#dc2626",clock),_rd92);
     // 5.65.0 — COERENZA CRONACA↔TRAIETTORIA per gli esiti difensivi che finiscono FUORI o avviano il gioco:
     //   la scritta deve combaciare con ciò che la palla fa in 3D (rimessa/angolo/ripartenza/rilancio pulito).
@@ -10799,12 +10810,12 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
       goalCelebRef.current={gk:_gk,clubCol:player.club?.c||"#f59e0b",assist:(key==="assist"),domino:false,fired:false,scoreHome:true};// [6.5.1 Polish A] scoreHome → il tabellone si aggiorna all'ingresso in rete
       fxTimeout(()=>fireGoalCeleb(),5200);// [6.5.1 Polish B] fallback più generoso (3200→5200): con il build-up R5 su cross/testa il tempo palla→rete è cresciuto; così l'esultanza non parte PRIMA dell'ingresso (onGoalInNet vince sempre nel caso normale)
     } else if(ok&&key==="recovery"){
-      fxTimeout(()=>setFloatGoal({text:_ovl.text,col:"#60a5fa",key:Date.now()}),1300);
+      fxTimeout(()=>{setFloatGoal({text:_ovl.text,col:"#60a5fa",key:Date.now()});setResultReveal(true);},1300);// [6.5.4] bottom + sovraimpressione insieme
     } else if(ok&&!["goal","assist"].includes(key)){
-      fxTimeout(()=>setFloatGoal({text:_ovl.text,col:"#a78bfa",key:Date.now()}),1300);
+      fxTimeout(()=>{setFloatGoal({text:_ovl.text,col:"#a78bfa",key:Date.now()});setResultReveal(true);},1300);
     } else if(!ok){
-      fxTimeout(()=>setFloatGoal({text:_ovl.text,col:_ovl.tone==="neutral"?"#cbd5e1":"#f87171",key:Date.now()}),1300);
-      if(key==="miss_easy"||key==="goal_against")fxTimeout(()=>flashScreen({col:"rgba(239,68,68,0.35)",dur:400}),_rd92);// [5.92.0] il flash arriva col reveal
+      fxTimeout(()=>{setFloatGoal({text:_ovl.text,col:_ovl.tone==="neutral"?"#cbd5e1":"#f87171",key:Date.now()});setResultReveal(true);},1300);
+      if(key==="miss_easy"||key==="goal_against")fxTimeout(()=>flashScreen({col:"rgba(239,68,68,0.35)",dur:400}),1300);// [6.5.4] il flash arriva col reveal (allineato al floatGoal a 1300, non più a _rd92)
     }
     // Particle effect based on action outcome
     const shotActions=["tiro","shot","cross","punizione","rigore","volée","colpo di testa","tiro a giro","tocco sotto"];
@@ -17072,16 +17083,8 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                     onMouseEnter={e=>{e.currentTarget.style.background=TH.bg;e.currentTarget.style.borderColor=TH.primary;}}
                     onMouseLeave={e=>{e.currentTarget.style.background="transparent";e.currentTarget.style.borderColor=TH.cardBorder;}}>
                     <div style={{fontSize:13,color:TH.text,lineHeight:1.5}}>{ch.txt}</div>
-                    {ch.ef&&Object.keys(ch.ef).length>0&&(
-                      <div style={{display:"flex",gap:5,flexWrap:"wrap",marginTop:4}}>
-                        {ch.ef.morale!=null&&ch.ef.morale!==0&&<span style={{fontSize:10,color:ch.ef.morale>0?TH.success:TH.danger,fontWeight:700}}>😄{ch.ef.morale>0?"+":""}{ch.ef.morale}</span>}
-                        {ch.ef.form!=null&&ch.ef.form!==0&&<span style={{fontSize:10,color:ch.ef.form>0?TH.success:TH.danger,fontWeight:700}}>💪{ch.ef.form>0?"+":""}{ch.ef.form}</span>}
-                        {ch.ef.fatigue!=null&&ch.ef.fatigue!==0&&<span style={{fontSize:10,color:ch.ef.fatigue<0?TH.success:TH.warning,fontWeight:700}}>⚡{ch.ef.fatigue>0?"+":""}{ch.ef.fatigue}</span>}
-                        {ch.ef.coachTrust!=null&&ch.ef.coachTrust!==0&&<span style={{fontSize:10,color:ch.ef.coachTrust>0?TH.success:TH.danger,fontWeight:700}}>🤝{ch.ef.coachTrust>0?"+":""}{ch.ef.coachTrust}</span>}
-                        {ch.ef.popularity!=null&&ch.ef.popularity!==0&&<span style={{fontSize:10,color:ch.ef.popularity>0?TH.success:TH.danger,fontWeight:700}}>⭐{ch.ef.popularity>0?"+":""}{ch.ef.popularity}</span>}
-                        {ch.bond!=null&&ch.bond!==0&&<span style={{fontSize:10,color:ch.bond>0?"#7c3aed":"#64748b",fontWeight:700}}>💜 Legame{ch.bond>0?"+":""}{ch.bond}</span>}
-                      </div>
-                    )}
+                    {/* [6.5.4 direttiva PO] niente più chip bonus/malus (morale/forma/fatica/fiducia/popolarità/legame)
+                       sulle scelte: l'esito non deve condizionare la decisione. Resta solo il vincolo DURO dei fondi. */}
                     {!_afford95&&<div style={{fontSize:10,color:TH.danger,fontWeight:700,marginTop:4}}>💸 Fondi insufficienti ({Math.round((player.bankBalance||0)/1000)}k€)</div>}
                   </button>
                 );})}
@@ -17202,15 +17205,14 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                 // Sprint 120: ambizioso/critico labels
                 const toneColor=ans.tone==="diretto"?"#f97316":ans.tone==="umile"?"#7c3aed":"#2563eb";
                 const toneLabel=ans.tone==="diretto"?"🔥 Ambizioso":ans.tone==="umile"?"🎯 Critico":"🤝 Diplomatico";
-                const tcDelta=ans.tone==="umile"?"+4":ans.tone==="diplomatico"?"+2":"-3";
-                const tcHint=`Chimica ${tcDelta}`;
+                // [6.5.4 direttiva PO] niente più suggerimento «Chimica ±N» nelle scelte: l'esito NON deve
+                //   condizionare la risposta (decisione di ruolo, non di ottimizzazione). Solo il TONO resta visibile.
                 return(
                   <button key={i} onClick={()=>applyInterviewAnswer(ans)} style={{textAlign:"left",background:"transparent",border:`1.5px solid ${toneColor}20`,borderRadius:10,padding:"10px 12px",cursor:"pointer",transition:"all 0.15s",outline:"none",display:"block",width:"100%"}}
                     onMouseEnter={e=>{e.currentTarget.style.background=`${toneColor}10`;e.currentTarget.style.borderColor=toneColor;}}
                     onMouseLeave={e=>{e.currentTarget.style.background="transparent";e.currentTarget.style.borderColor=`${toneColor}20`;}}>
                     <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:5}}>
                       <span style={{fontSize:10,fontWeight:800,color:toneColor,padding:"2px 8px",borderRadius:20,background:`${toneColor}15`}}>{toneLabel}</span>
-                      <span style={{fontSize:10,color:"rgba(99,102,241,0.7)",fontWeight:600}}>👥 {tcHint}</span>
                     </div>
                     <div style={{fontSize:12,color:TH.text,lineHeight:1.5}}>"{(ans.txt||"").replace(/\{club\}/g,player.club?.n||player.club?.name||"il club").replace(/\{opp\}/g,interviewModal.opponent||"l'avversario").replace(/\{nome\}/g,player.name||"")}"</div>
                   </button>
@@ -17668,6 +17670,28 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
         </div>
       )}
 
+      {/* [6.5.4 collaudo PO] CTA PRIMARIA STICKY in cima al dashboard — «vivi settimana / gioca / avanza» sempre
+          visibile senza scorrere (prima era in fondo alla prima card, sotto stats/forma → serviva scorrere). */}
+      {tab==="dashboard"&&(()=>{
+        const cs=getContinuaState();
+        return(
+          <div style={{position:"sticky",top:0,zIndex:8,margin:"-4px -2px 12px",padding:"6px 2px 8px",background:TH.bg}}>
+            <button onClick={cs.disabled?undefined:handleContinua} disabled={cs.disabled}
+              style={{width:"100%",padding:"16px 18px",borderRadius:14,border:"none",background:cs.disabled?"#e5e7eb":`linear-gradient(135deg,${cs.color},${cs.color}cc)`,cursor:cs.disabled?"not-allowed":"pointer",fontFamily:"inherit",boxShadow:cs.disabled?"none":"0 6px 18px rgba(0,0,0,0.22)",transition:"transform .1s,box-shadow .1s",display:"flex",alignItems:"center",justifyContent:"space-between"}}
+              onMouseEnter={e=>{if(!cs.disabled){e.currentTarget.style.transform="translateY(-1px)";e.currentTarget.style.boxShadow="0 8px 24px rgba(0,0,0,0.26)";}}}
+              onMouseLeave={e=>{e.currentTarget.style.transform="";e.currentTarget.style.boxShadow=cs.disabled?"none":"0 6px 18px rgba(0,0,0,0.22)";}}>
+              <div style={{textAlign:"left"}}>
+                <div style={{fontSize:15,fontWeight:800,color:"#fff",marginBottom:2}}>{cs.label}</div>
+                <div style={{fontSize:11,color:"rgba(255,255,255,0.7)"}}>{cs.sub}</div>
+              </div>
+              <div style={{display:"flex",alignItems:"center",gap:6}}>
+                {_dk&&<span className="kbd" style={{opacity:0.85}}>Enter</span>}
+                <span style={{fontSize:18,color:"rgba(255,255,255,0.9)"}}>›</span>
+              </div>
+            </button>
+          </div>
+        );
+      })()}
       {/* Sprint 19 — Career stats mini widget */}
       {tab==="dashboard"&&(player.totalMatches||0)>0&&(
         <Card style={{marginBottom:8,padding:"9px 14px"}}>
@@ -18226,25 +18250,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                 </div>
               );
             })()}
-            {/* CONTINUA — smart primary CTA */}
-            {(()=>{
-              const cs=getContinuaState();
-              return(
-                <button onClick={cs.disabled?undefined:handleContinua} disabled={cs.disabled}
-                  style={{width:"100%",padding:"16px 18px",borderRadius:14,border:"none",background:cs.disabled?"#e5e7eb":`linear-gradient(135deg,${cs.color},${cs.color}cc)`,cursor:cs.disabled?"not-allowed":"pointer",fontFamily:"inherit",marginBottom:10,boxShadow:cs.disabled?"none":"0 4px 14px rgba(0,0,0,0.18)",transition:"transform .1s,box-shadow .1s",display:"flex",alignItems:"center",justifyContent:"space-between"}}
-                  onMouseEnter={e=>{if(!cs.disabled){e.currentTarget.style.transform="translateY(-1px)";e.currentTarget.style.boxShadow="0 6px 20px rgba(0,0,0,0.22)";}}}
-                  onMouseLeave={e=>{e.currentTarget.style.transform="";e.currentTarget.style.boxShadow=cs.disabled?"none":"0 4px 14px rgba(0,0,0,0.18)";}}>
-                  <div style={{textAlign:"left"}}>
-                    <div style={{fontSize:15,fontWeight:800,color:"#fff",marginBottom:2}}>{cs.label}</div>
-                    <div style={{fontSize:11,color:"rgba(255,255,255,0.7)"}}>{cs.sub}</div>
-                  </div>
-                  <div style={{display:"flex",alignItems:"center",gap:6}}>
-                    {_dk&&<span className="kbd" style={{opacity:0.85}}>Enter</span>}
-                    <span style={{fontSize:18,color:"rgba(255,255,255,0.9)"}}>›</span>
-                  </div>
-                </button>
-              );
-            })()}
+            {/* [6.5.4] CONTINUA — CTA primaria SPOSTATA in cima al dashboard (sticky), sempre visibile senza scorrere */}
             {/* Result badge when match already played */}
             {(()=>{
               const alreadyPlayed=!!(player.calendar||[]).find(m=>m.week===(player.week||1)&&m.played);
