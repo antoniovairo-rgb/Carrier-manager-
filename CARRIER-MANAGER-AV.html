@@ -3089,7 +3089,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="6.5.0"; // [6.5.0] R2-residuo (Outcome Engine, chiusura W2): (1) RIGORE nel flusso Unified Outcome (M1) — handleRigore setta outcome.outKind (goal/saved/post/wide) deciso UNA volta dal seed, cosi il 3D (props r.11171) legge l esito deciso qui invece di ricalcolarlo con un altro seed (prima: testo «PARATA/Palo» scollegato dall arco 3D); rigore sbagliato = palo(28%)/fuori onesto (mai parata se il portiere va dal lato opposto) + testo derivato dal kind; emette ActionResolved.outKind + CoherenceCheck (M3). (2) LEDGER UNICO eventi partita — helper pushMatchEvent(min,type,txt): unica via di scrittura del feed, clamp MONOTONO del minuto + cap 90 + slice(-12) in UN posto (prima 6 siti con semantiche diverse: i gol ambientali bgMicro usavano nx grezzo -> minuti non monotoni). Testo via funzione (em)=> cosi combacia sempre col .min. Score invariato (gia coerente; derive-da-buffer-cappato = trappola scartata). // [6.4.9] R5-backbone (build-up esteso): l esecutore cinematico della timeline (CINE-TL, prima solo hlType shot) ora antepone la COSTRUZIONE anche a CROSS e COLPO DI TESTA. Chiave: tlBuildN = indice della PRIMA beat di conclusione della famiglia hlType (cross->beat cross, header->beat header, shot->concl = length-1 INVARIATO) cosi fireConclusion esegue la conclusione reale una volta sola (niente doppioni cross/testa). Il tiro resta bit-identico (zero regressione). Gate-cieco (?cpmtest=1 salta l esecutore) -> feel da collaudo dal vivo; motion/teleport coperti dal Live Match Validator. // [6.4.8] R5.4 (feel/narrativa): la Match Memory (M2) ora RICORDA corner e falli guadagnati (esiti di prima classe R2.2/2.3). Alla seconda occasione dello stesso tipo la cronaca coglie la PRESSIONE crescente. Additivo (solo cronaca, via _missKindNorm coerente), zero rischio 3D/gate. NOTA R3 (Ball Physics) NON fatto di proposito: la palla è misurabilmente pulita (validator 0 teleport) e l arcBlock è gate-checked da data-coherence (Math.random shadowato + guardie regex) → refactoring alla cieca romperebbe il gate per eleganza (viola Zero Regression).
+const GAME_VERSION="6.5.1"; // [6.5.1] COLLAUDO PO — 7 fix: (A) TABELLONE sincronizzato: lo score del gol dell eroe si aggiorna quando la palla ENTRA in rete (differito a fireGoalCeleb, guardia in handleContinue per lo skip veloce), non all istante del tap; rigore idem al reveal. (B) ESULTANZA non anticipata: fallback celebrazione 3200->5200ms (col build-up R5 su cross/testa il tempo palla->rete e cresciuto) -> onGoalInNet vince sempre. (C) STRISCIONI coerenti: la scenografia tifo (bandiere/striscioni/sciarpe) usa i colori SOCIALI del club (sHome/sAway), non la divisa indossata -> in trasferta niente piu colori sbagliati. (D) CURVA TEDESCA piu bassa (1.5->1.28 altezza) + rake piu dolce (top arretrato 0.30->0.40). (E) PRE-INGRESSO piu televisivo: lower-third broadcast (DIRETTA + stadio + spettatori + orario) sul pannello walkout. (BUG stadio NAZIONALE) le gare della nazionale si giocano nello stadio del PAESE (casa=nazione eroe, trasferta=nazione avversaria), non piu dello stadio del club dell eroe. (SICUREZZA epilessia) GOVERNOR anti-strobo: intervallo minimo 750ms fra flash a schermo (max ~1.3/s, sotto la soglia WCAG di 3/s) + cap opacita 0.42; tutti i setScreenFlash della partita passano di qui. // [6.5.0] R2-residuo (Outcome Engine, chiusura W2): (1) RIGORE nel flusso Unified Outcome (M1) — handleRigore setta outcome.outKind (goal/saved/post/wide) deciso UNA volta dal seed, cosi il 3D (props r.11171) legge l esito deciso qui invece di ricalcolarlo con un altro seed (prima: testo «PARATA/Palo» scollegato dall arco 3D); rigore sbagliato = palo(28%)/fuori onesto (mai parata se il portiere va dal lato opposto) + testo derivato dal kind; emette ActionResolved.outKind + CoherenceCheck (M3). (2) LEDGER UNICO eventi partita — helper pushMatchEvent(min,type,txt): unica via di scrittura del feed, clamp MONOTONO del minuto + cap 90 + slice(-12) in UN posto (prima 6 siti con semantiche diverse: i gol ambientali bgMicro usavano nx grezzo -> minuti non monotoni). Testo via funzione (em)=> cosi combacia sempre col .min. Score invariato (gia coerente; derive-da-buffer-cappato = trappola scartata). // [6.4.9] R5-backbone (build-up esteso): l esecutore cinematico della timeline (CINE-TL, prima solo hlType shot) ora antepone la COSTRUZIONE anche a CROSS e COLPO DI TESTA. Chiave: tlBuildN = indice della PRIMA beat di conclusione della famiglia hlType (cross->beat cross, header->beat header, shot->concl = length-1 INVARIATO) cosi fireConclusion esegue la conclusione reale una volta sola (niente doppioni cross/testa). Il tiro resta bit-identico (zero regressione). Gate-cieco (?cpmtest=1 salta l esecutore) -> feel da collaudo dal vivo; motion/teleport coperti dal Live Match Validator. // [6.4.8] R5.4 (feel/narrativa): la Match Memory (M2) ora RICORDA corner e falli guadagnati (esiti di prima classe R2.2/2.3). Alla seconda occasione dello stesso tipo la cronaca coglie la PRESSIONE crescente. Additivo (solo cronaca, via _missKindNorm coerente), zero rischio 3D/gate. NOTA R3 (Ball Physics) NON fatto di proposito: la palla è misurabilmente pulita (validator 0 teleport) e l arcBlock è gate-checked da data-coherence (Math.random shadowato + guardie regex) → refactoring alla cieca romperebbe il gate per eleganza (viola Zero Regression).
 const SAVE_VERSION=8;// v8 [5.81.0 BIL-3b]: bankBalance (stipendio accumulato, €) + perkTrainer/perkNutrition (staff personale) — migration retro-compatibile. v7: player.foot
 // 5.67.0 — TABELLONE realistico del torneo per NAZIONALI (Europeo/Mondiale): dopo il girone la fase a
 //   eliminazione segue Ottavi → Quarti → Semifinale → Finale (prima saltava dritta alla semifinale).
@@ -5836,7 +5836,7 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
   const sideX=(xl?78:lg?70:md?64:58)*_dK;
   const endH=(xl?22:lg?16:md?13:10)*_hK*((T&&T.asym)?0.55:1);// sudamericano: una tribuna bassa (asimmetria reale)
   const sideH=(xl?20:lg?14:md?11:8)*_hK;
-  const _sudH=sideH*((T&&T.megaCurva)?1.5:1);// tedesco: il "muro" — curva di casa gigante a un anello
+  const _sudH=sideH*((T&&T.megaCurva)?1.28:1);// tedesco: il "muro" — curva di casa alta ma NON esagerata [6.5.1 Polish D: 1.5→1.28, ~-15%, segnalazione PO]
   const _tiers=T?(!stadCfg.isDesktop?Math.min(T.rings,2):T.rings):2;// mobile cap: max 2 anelli
   const _roofT=T?T.roof:"legacy";// none | west | partial | full | legacy
   const _fenceT=T?T.fence:"legacy";
@@ -5897,8 +5897,8 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
     // pendenze da vero stadio (~33°/42°): più piatte, dalla camera broadcast alta si vedrebbero di taglio
     let mLow,mUp;
     if(_nt===1){// anello UNICO ripido (provincia/comunale · curva-muro tedesca)
-      mLow=mkTier(-standD/2+0.6,3.0,standD*0.30,standH+1.0,crowdObj.texFull);/* [6.2.0 CROWD-SCALE] muro intero = canvas INTERA (grandi in basso, piccoli/fitti in alto), non piu la sola banda bassa stirata */
-      mUp=mkTier(standD*0.30,standH+1.0,standD*0.34,standH+1.2,crowdObj.texUp);// fascia sommitale minima (tiene vivo texUp)
+      mLow=mkTier(-standD/2+0.6,3.0,standD*0.40,standH+0.6,crowdObj.texFull);/* [6.2.0 CROWD-SCALE] muro intero = canvas INTERA · [6.5.1 Polish D] top arretrato 0.30→0.40 + cap +1.0→+0.6 → RAKE più dolce (stessa altezza distribuita su più profondità = incline meno ripido) */
+      mUp=mkTier(standD*0.40,standH+0.6,standD*0.44,standH+0.8,crowdObj.texUp);// fascia sommitale minima (tiene vivo texUp) · [6.5.1] start allineato al nuovo top di mLow
     }else{
       mLow=mkTier(-standD/2+0.6,3.0,-standD*0.10,standH*0.62,crowdObj.texLow);
       mUp=mkTier(-standD*0.02,standH*0.68,standD*0.32,standH+1.4,crowdObj.texUp);
@@ -7082,8 +7082,13 @@ function ThreeMatchView(props){
     const flagGroups=[];
     // 3DV-8: canvas texture bicolore (c1/c2 del club) per ogni bandiera
     const _mkFlagTex=(c1Hex,c2Hex)=>{const fc=document.createElement("canvas");fc.width=64;fc.height=32;const fx=fc.getContext("2d");fx.fillStyle=c1Hex;fx.fillRect(0,0,64,16);fx.fillStyle=c2Hex;fx.fillRect(0,16,64,16);fx.fillStyle="rgba(255,255,255,0.18)";fx.fillRect(0,15,64,2);return new THREE.CanvasTexture(fc);};
-    const _hc2=homeClub?.c2||"#ffffff",_ac2=oppCol||"#ffffff";
-    const _fhTex=_mkFlagTex(_hCol,_hc2),_faTex=_mkFlagTex(_aCol,_ac2);
+    // [6.5.1 Polish C] la SCENOGRAFIA tifo (bandiere/striscioni/sciarpe) usa i colori SOCIALI del club — come gli
+    //   spalti (KIT-1) — NON la divisa INDOSSATA: in trasferta homeCol/oppCol sono le maglie del match, così gli
+    //   striscioni uscivano coi colori sbagliati. sHome/sAway = colori sociali (homeTeamObj/awayTeamObj); il
+    //   secondario di casa è homeClub.c2 (sociale), quello ospite un accento neutro (nessun prop awayClub).
+    const _tHCol=sHome,_tACol=sAway;
+    const _hc2=homeClub?.c2||"#f0f0f0",_ac2="#f0f0f0";
+    const _fhTex=_mkFlagTex(_tHCol,_hc2),_faTex=_mkFlagTex(_tACol,_ac2);
     const _mkFlag=(x,z,tex)=>{const fg=new THREE.Group();
       const pm=new THREE.MeshLambertMaterial({color:0xd0d0d0});
       const pole=new THREE.Mesh(new THREE.CylinderGeometry(0.07,0.07,4.2,6),pm);pole.position.y=2.1;fg.add(pole);
@@ -7099,8 +7104,8 @@ function ThreeMatchView(props){
     // 3DV-11: striscioni grandi — davanti faccia tribuna, testo curva leggibile
     const _mkStriscione=(cx,z,rotY,c1Hex,c2Hex)=>{const sc=document.createElement("canvas");sc.width=512;sc.height=64;const sx=sc.getContext("2d");sx.fillStyle=c1Hex;sx.fillRect(0,0,512,32);sx.fillStyle=c2Hex;sx.fillRect(0,32,512,32);sx.fillStyle="rgba(255,255,255,0.28)";sx.fillRect(0,30,512,4);const stex=new THREE.CanvasTexture(sc);const sm=new THREE.Mesh(new THREE.PlaneGeometry(30,3.8),new THREE.MeshBasicMaterial({map:stex,side:THREE.DoubleSide,transparent:true,opacity:0.92,depthWrite:false}));sm.position.set(cx,5.5,z);sm.rotation.y=rotY;scene.add(sm);};
     // 2 striscioni per tribuna — SOLO colori di casa (§5); il lato ospite vive nella Curva Nord
-    if(_tifoHome){_mkStriscione(-12,-(_fez-3),0,_hCol,_hc2);_mkStriscione(12,-(_fez-3),0,_hc2,_hCol);
-      _mkStriscione(-12,_fez-3,Math.PI,_hCol,_hc2);_mkStriscione(12,_fez-3,Math.PI,_hc2,_hCol);}
+    if(_tifoHome){_mkStriscione(-12,-(_fez-3),0,_tHCol,_hc2);_mkStriscione(12,-(_fez-3),0,_hc2,_tHCol);
+      _mkStriscione(-12,_fez-3,Math.PI,_tHCol,_hc2);_mkStriscione(12,_fez-3,Math.PI,_hc2,_tHCol);}
     // item 8 (5.49.2): CARTELLONE COMPETIZIONE sulla TRIBUNA EST (z+) — logo (emblema) + nome ufficiale, coerente per tutta la partita (statico).
     {const bc=document.createElement("canvas");bc.width=1024;bc.height=240;const b2=bc.getContext("2d");
      const _grd=b2.createLinearGradient(0,0,1024,0);_grd.addColorStop(0,"#091226");_grd.addColorStop(0.5,"#14233f");_grd.addColorStop(1,"#091226");b2.fillStyle=_grd;b2.fillRect(0,0,1024,240);
@@ -7153,17 +7158,17 @@ function ThreeMatchView(props){
     [-21,-14,-7,0,7,14,21].forEach(z=>{if(_tifoHome)_mkBigFlag(_sideX-4,z,_fhTex);if(_tifoAway)_mkBigFlag(-_sideX+4,z,_faTex);});
     if(_tifoHot)[-17.5,-10.5,-3.5,3.5,10.5,17.5].forEach(z=>{if(_tifoHome)_mkBigFlag(_sideX-7,z,_fhTex);if(_tifoAway)_mkBigFlag(-_sideX+7,z,_faTex);});
     // striscioni grandi attraverso le curve (rivolti verso il campo)
-    if(_tifoHome)_mkStriscione(_sideX-3,0,Math.PI/2,_hCol,_hc2);
-    if(_tifoAway)_mkStriscione(-_sideX+3,0,-Math.PI/2,_aCol,_ac2);
+    if(_tifoHome)_mkStriscione(_sideX-3,0,Math.PI/2,_tHCol,_hc2);
+    if(_tifoAway)_mkStriscione(-_sideX+3,0,-Math.PI/2,_tACol,_ac2);
     // onda di SCIARPE alzate — strip con texture a sciarpe affiancate, oscillazione lenta + boost al gol
     const scarfMs=[];
     const _mkScarf=(x,z,rotY,c1Hex,c2Hex,y)=>{const sc=document.createElement("canvas");sc.width=256;sc.height=32;const sx=sc.getContext("2d");
       for(let i=0;i<16;i++){sx.fillStyle=i%2?c1Hex:c2Hex;sx.fillRect(i*16,0,16,32);}sx.fillStyle="rgba(255,255,255,0.22)";sx.fillRect(0,13,256,5);
       const tex=new THREE.CanvasTexture(sc);const m=new THREE.Mesh(new THREE.PlaneGeometry(26,1.7),new THREE.MeshBasicMaterial({map:tex,side:THREE.DoubleSide,transparent:true,opacity:0.9,depthWrite:false}));
-      m.position.set(x,y||3.0,z);m.rotation.y=rotY;m._home=(c1Hex===_hCol);m._baseY=y||3.0;scene.add(m);scarfMs.push(m);};// 5.45.2: tag lato + baseY
+      m.position.set(x,y||3.0,z);m.rotation.y=rotY;m._home=(c1Hex===_tHCol);m._baseY=y||3.0;scene.add(m);scarfMs.push(m);};// 5.45.2: tag lato + baseY · [6.5.1] tag su colore sociale
     // 5.45.2: più sciarpe — 3 file a quote diverse per curva (muro di sciarpe) + 2 sulla tribuna casa · gate dal contesto (§7/§8)
-    [2.3,3.4,4.5].forEach(y=>{if(_tifoHome)_mkScarf(_sideX-3.5,0,Math.PI/2,_hCol,_hc2,y);if(_tifoAway)_mkScarf(-_sideX+3.5,0,-Math.PI/2,_aCol,_ac2,y);});
-    if(_tifoHome){_mkScarf(-13,-(_fez-2.5),0,_hCol,_hc2,3.2);_mkScarf(13,-(_fez-2.5),0,_hCol,_hc2,4.4);}
+    [2.3,3.4,4.5].forEach(y=>{if(_tifoHome)_mkScarf(_sideX-3.5,0,Math.PI/2,_tHCol,_hc2,y);if(_tifoAway)_mkScarf(-_sideX+3.5,0,-Math.PI/2,_tACol,_ac2,y);});
+    if(_tifoHome){_mkScarf(-13,-(_fez-2.5),0,_tHCol,_hc2,3.2);_mkScarf(13,-(_fez-2.5),0,_tHCol,_hc2,4.4);}
     // Sprint 3D-G3C: particelle coriandoli al gol (pre-allocate, attivate sul goal burst)
     const CONF_N=64,confPos=new Float32Array(CONF_N*3),confVel=new Float32Array(CONF_N*3);
     const confGeo=new THREE.BufferGeometry();confGeo.setAttribute('position',new THREE.BufferAttribute(confPos,3));
@@ -9406,7 +9411,16 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   // riempimento visivo degli spalti 3D e intensità dell'atmosfera. Seedato → riproducibile (gate-safe).
   const [crowdCtx]=useState(()=>{
     try{
-      const hClub=context==="trial"?null:(isMatchHome?(player.club||opponent):opponent);
+      // [6.5.1 BUG stadio nazionale] le gare della NAZIONALE si giocano nello stadio del PAESE, non del club dell'eroe:
+      //   casa → stadio della nazione dell'eroe (NAT_CLUB_DATA); trasferta → stadio della nazione avversaria (opponent).
+      //   (Mondiali/Europei: stadio nazionale del lato di casa — l'approssimazione più vicina finché non c'è un
+      //   campo `host` nel model di euroMondiale.)
+      const _isNatC=context==="national"||context==="nationsCup"||context==="euroMondiale_group"||context==="euroMondiale_ko"||context==="euroMondiale"||context==="euroMondiale_qualif";
+      const _myNatC=_isNatC?(NAT_CLUB_DATA[player.nation||"Italia"]||{id:"nt-"+((player.nation||"it").slice(0,3).toLowerCase()),a:(player.nation||"NAZ").slice(0,3).toUpperCase(),p:82,c:"#003399",c2:"#ffffff",nat:"🇮🇹"}):null;
+      // le entry NAT_CLUB_DATA non hanno `lg`/`n`: normalizzo a lg:"Nazionale" (→ stadiumConfigFor sceglie lo
+      //   stadio nazionale grande, moderno_it ≥62k) e nome dal paese, così lo stadio del paese è coerente.
+      const _mkNatClub=(c,natName)=>c?{...c,lg:"Nazionale",n:c.n||natName||c.a||"Nazionale"}:c;
+      const hClub=context==="trial"?null:(_isNatC?_mkNatClub(isMatchHome?_myNatC:(opponent||_myNatC),isMatchHome?(player.nation||"Italia"):(opponent&&(opponent.n||opponent.name))):(isMatchHome?(player.club||opponent):opponent));
       const _drby=context==="trial"?null:isDerby(player.club?.id,opponent?.id);
       const _mw=context==="trial"?1:calcMatchWeight(player,opponent?.id||opponent?.n,player.standings||[],player.week||1);
       const _isFinal=(context==="cup"&&(player.cup?.round||1)>=4)
@@ -9540,6 +9554,14 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   const [bgAction,setBgAction]=useState(null); // ATE-1: tipo azione corrente per arco palla 3D
   const [actionEffect,setActionEffect]=useState(null);
   const [screenFlash,setScreenFlash]=useState(null);
+  // [6.5.1 SICUREZZA — rischio epilessia] GOVERNOR anti-strobo dei flash a schermo intero: intervallo MINIMO
+  //   fra due flash (≥750ms → max ~1.3 flash/s, ben sotto la soglia delle linee guida WCAG di 3/s) + CAP
+  //   dell'opacità di picco a 0.42 (niente lampi accecanti). La luminanza a tutto schermo — la vera fonte di
+  //   rischio — non può più susseguirsi rapidamente né saturare. Tutti i setScreenFlash della partita passano di qui.
+  const _lastFlashRef=useRef(0);
+  const flashScreen=(cfg)=>{const now=Date.now();if(now-_lastFlashRef.current<750)return;_lastFlashRef.current=now;
+    let c=cfg&&cfg.col;try{if(c){const _m=c.match(/rgba?\(([^)]+)\)/);if(_m){const _p=_m[1].split(",").map(s=>s.trim());if(_p.length>=4){const _a=Math.min(parseFloat(_p[3])||0,0.42);c=`rgba(${_p[0]},${_p[1]},${_p[2]},${_a})`;}}}}catch(_e){}
+    setScreenFlash({...cfg,col:c});};
   const [cutFx,setCutFx]=useState(null);// stacco nero di transizione sull'esito positivo
   const [floatGoal,setFloatGoal]=useState(null);
   const [goalCinema,setGoalCinema]=useState(null); // Sprint 95: {text,col,key,shakeKey}
@@ -9549,7 +9571,10 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   const goalCelebRef=useRef(null);
   const fireGoalCeleb=useCallback(()=>{
     const g=goalCelebRef.current; if(!g||g.fired)return; g.fired=true;
-    setScreenFlash({col:"rgba(255,255,255,0.75)",dur:600});
+    // [6.5.1 Polish A] il TABELLONE si aggiorna ORA (palla in rete), non all'istante della scelta:
+    //   lo score-increment del gol dell'eroe è differito qui → scoreboard + esultanza + rete SINCRONI.
+    if(g.scoreHome)setScore(sc=>({...sc,home:sc.home+1}));
+    flashScreen({col:"rgba(255,255,255,0.42)",dur:600});// [6.5.1 SICUREZZA] via il lampo 0.75 → 0.42 governato
     setFloatGoal({text:g.assist?"🎯 ASSIST!":"⚽ GOL!",col:"#f59e0b",key:g.gk});
     setGoalCinema({text:g.assist?"ASSIST!":"GOOOOL!",col:g.clubCol,key:g.gk,shakeKey:g.gk,assist:!!g.assist});
     setWaveEvent({t:g.gk,home:true});// innesca esultanza eroe + compagni + coriandoli + boato + disperazione portiere
@@ -10303,14 +10328,14 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
               fxTimeout(function(){addCom("📢 "+reactOrd.e+" Mister: «"+reactOrd.ctx+"»","#ef4444",nx);},300);
             }
             return{...s,away:newAway};
-          });setPossession(p=>clamp(p-4,20,80));setScreenFlash({col:"rgba(239,68,68,0.22)",dur:500});
+          });setPossession(p=>clamp(p-4,20,80));flashScreen({col:"rgba(239,68,68,0.22)",dur:500});
             // Sprint 113: away fan chant when opponent scores
             chantTimersRef.current.push(setTimeout(()=>{const _awayC=pick(CROWD_CHANTS.away_goal||["Gol ospiti..."]);setCrowdChant({text:_awayC,type:"away_goal",key:Date.now(),clubCol:"#9ca3af"});const _tid=setTimeout(()=>setCrowdChant(null),2200);chantTimersRef.current.push(_tid);},300));
             pushMatchEvent(nx,"opp_goal","😨 Gol di "+( awayRoster[Math.floor(Math.random()*11)].name.split(" ").pop()));
             // Dynamic HL — queue a reactive highlight a few minutes after conceding
             if(nx<75&&numHLRef.current<8)reactiveHLQueueRef.current.push(nx+rng(4,8));}
-          if(ev.ef==="opp_red"){if(oppRedRef.current){setMomentum(m=>clamp(m+6,0,100));}else{oppRedRef.current=true;setMomentum(m=>clamp(m+20,0,100));}/* [6.0.0 MP-5] mai due rossi fantasma */setPossession(p=>clamp(p+8,20,80));setScreenFlash({col:"rgba(22,163,74,0.20)",dur:600});pushMatchEvent(nx,"red",em=>"🟥 Espulsione avversaria al "+em+"'");}
-          if(ev.ef==="opp_injury"){setMomentum(m=>clamp(m+8,0,100));setScreenFlash({col:"rgba(245,158,11,0.15)",dur:400});}
+          if(ev.ef==="opp_red"){if(oppRedRef.current){setMomentum(m=>clamp(m+6,0,100));}else{oppRedRef.current=true;setMomentum(m=>clamp(m+20,0,100));}/* [6.0.0 MP-5] mai due rossi fantasma */setPossession(p=>clamp(p+8,20,80));flashScreen({col:"rgba(22,163,74,0.20)",dur:600});pushMatchEvent(nx,"red",em=>"🟥 Espulsione avversaria al "+em+"'");}
+          if(ev.ef==="opp_injury"){setMomentum(m=>clamp(m+8,0,100));flashScreen({col:"rgba(245,158,11,0.15)",dur:400});}
           // Sprint 113: track palo/traversa in match events
           if(ev.txt&&(ev.txt.includes("PALO")||ev.txt.includes("TRAVERSA"))&&ev.ms?.shots)pushMatchEvent(nx,"post",em=>"🔩 Palo/traversa al "+em+"'");
           if(ev.poss){
@@ -10630,7 +10655,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     const _ovl=hlOverlay(key,ok,action.label,(player.name||"").split(" ")[0],_seedOvl,_outKind);
     setEnergy(e=>clamp(e-action.nrg,0,100));
     if(action.rew==="goal")setMxStats(s=>({...s,shots:s.shots+1}));// [5.95.0 QW audit MP-3/MOT-6] la conclusione dell'eroe è un TIRO nelle statistiche (prima solo gli eventi BG incrementavano shots)
-    setMStats(s=>{let{goals,assists,rb,xg}={...s};const _xgAdd=calcXG(action,pPos.x);xg=Math.round((xg+_xgAdd)*100)/100;const _ck=clockRef.current;if(ok){if(key==="goal"){goals++;rb+=5;setScore(sc=>({...sc,home:sc.home+1}));pushMatchEvent(_ck,"player_goal",em=>"⚽ Tuo gol al "+em+"'");}if(key==="assist"){assists++;rb+=3;setScore(sc=>({...sc,home:sc.home+1}));pushMatchEvent(_ck,"player_assist",em=>"🎯 Tuo assist al "+em+"'");}if(!["goal","assist"].includes(key))rb+=1;}else{if(key==="goal_against"){rb-=3;setScore(sc=>({...sc,away:sc.away+1}));pushMatchEvent(_ck,"opp_goal",em=>"😨 Gol subito al "+em+"'");}if(key==="miss_easy"){rb-=2;pushMatchEvent(_ck,"miss",em=>"😱 Gol clamorosamente sprecato al "+em+"'");}}return{goals,assists,rb,xg};});
+    setMStats(s=>{let{goals,assists,rb,xg}={...s};const _xgAdd=calcXG(action,pPos.x);xg=Math.round((xg+_xgAdd)*100)/100;const _ck=clockRef.current;if(ok){if(key==="goal"){goals++;rb+=5;pushMatchEvent(_ck,"player_goal",em=>"⚽ Tuo gol al "+em+"'");}if(key==="assist"){assists++;rb+=3;pushMatchEvent(_ck,"player_assist",em=>"🎯 Tuo assist al "+em+"'");}/* [6.5.1 Polish A] score differito a fireGoalCeleb (palla in rete) */if(!["goal","assist"].includes(key))rb+=1;}else{if(key==="goal_against"){rb-=3;setScore(sc=>({...sc,away:sc.away+1}));pushMatchEvent(_ck,"opp_goal",em=>"😨 Gol subito al "+em+"'");}if(key==="miss_easy"){rb-=2;pushMatchEvent(_ck,"miss",em=>"😱 Gol clamorosamente sprecato al "+em+"'");}}return{goals,assists,rb,xg};});
     if(ok&&(key==="recovery"||key==="intercept"))setPossession(p=>clamp(p+1,20,80));
     // [5.92.0 FIX PO] SUSPENSE: prima la simulazione 3D, POI la scritta — cronaca dell'esito, riga
     //   difensiva e flash rosso si rivelano quando l'arco è arrivato (gol/assist ~1.25s, conclusioni 1.1s, resto 0.85s).
@@ -10674,15 +10699,15 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
       //   sia per i GOL diretti sia per gli ASSIST (il compagno segna) → messaggio SEMPRE presente e mai
       //   accavallato all'azione. Fallback timeout solo se l'ingresso non viene rilevato.
       const _gk=Date.now();
-      goalCelebRef.current={gk:_gk,clubCol:player.club?.c||"#f59e0b",assist:(key==="assist"),domino:false,fired:false};
-      fxTimeout(()=>fireGoalCeleb(),3200);
+      goalCelebRef.current={gk:_gk,clubCol:player.club?.c||"#f59e0b",assist:(key==="assist"),domino:false,fired:false,scoreHome:true};// [6.5.1 Polish A] scoreHome → il tabellone si aggiorna all'ingresso in rete
+      fxTimeout(()=>fireGoalCeleb(),5200);// [6.5.1 Polish B] fallback più generoso (3200→5200): con il build-up R5 su cross/testa il tempo palla→rete è cresciuto; così l'esultanza non parte PRIMA dell'ingresso (onGoalInNet vince sempre nel caso normale)
     } else if(ok&&key==="recovery"){
       fxTimeout(()=>setFloatGoal({text:_ovl.text,col:"#60a5fa",key:Date.now()}),1300);
     } else if(ok&&!["goal","assist"].includes(key)){
       fxTimeout(()=>setFloatGoal({text:_ovl.text,col:"#a78bfa",key:Date.now()}),1300);
     } else if(!ok){
       fxTimeout(()=>setFloatGoal({text:_ovl.text,col:_ovl.tone==="neutral"?"#cbd5e1":"#f87171",key:Date.now()}),1300);
-      if(key==="miss_easy"||key==="goal_against")fxTimeout(()=>setScreenFlash({col:"rgba(239,68,68,0.35)",dur:400}),_rd92);// [5.92.0] il flash arriva col reveal
+      if(key==="miss_easy"||key==="goal_against")fxTimeout(()=>flashScreen({col:"rgba(239,68,68,0.35)",dur:400}),_rd92);// [5.92.0] il flash arriva col reveal
     }
     // Particle effect based on action outcome
     const shotActions=["tiro","shot","cross","punizione","rigore","volée","colpo di testa","tiro a giro","tocco sotto"];
@@ -10780,7 +10805,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     if(saved){
       const txt=`🧤 PARATA! Il portiere intuisce — vola ${gkLabel}!`;
       setResultReveal(false);fxTimeout(()=>setResultReveal(true),1000);// [5.92.0] suspense anche sul rigore
-      fxTimeout(()=>{addCom(txt,"#f87171",clock);setScreenFlash({col:"rgba(239,68,68,0.4)",dur:500});},1000);
+      fxTimeout(()=>{addCom(txt,"#f87171",clock);flashScreen({col:"rgba(239,68,68,0.4)",dur:500});},1000);
       // [6.5.0 R2-residuo] M1 per il RIGORE: outKind="saved" → il 3D (props r.11171) legge l'esito DECISO qui
       //   invece di ricalcolarlo con un altro seed (prima: testo «PARATA» ma il 3D poteva mostrare un arco non-parata).
       setOutcome({text:txt,ok:false,actionLabel:shotLabel,revealMs:1000,outKind:"saved"});setChosenAct({label:shotLabel,stat:"tiro",nrg:8});
@@ -10801,8 +10826,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
       if(ok){
         const txt=`⚽ GOOOAL! Angolo perfetto — portiere va ${gkLabel}.`;
         setResultReveal(false);fxTimeout(()=>setResultReveal(true),1000);// [5.92.0] suspense: prima il 3D, poi l'esito
-        fxTimeout(()=>{addCom(txt,"#16a34a",clock);setScreenFlash({col:"rgba(255,255,255,0.5)",dur:500});setCutFx({key:Date.now(),dur:560});setFloatGoal({text:"⚽ GOL!",col:"#f59e0b",key:Date.now()});},1000);
-        setScore(s=>({...s,home:s.home+1}));
+        fxTimeout(()=>{addCom(txt,"#16a34a",clock);flashScreen({col:"rgba(255,255,255,0.42)",dur:500});setCutFx({key:Date.now(),dur:560});setFloatGoal({text:"⚽ GOL!",col:"#f59e0b",key:Date.now()});setScore(s=>({...s,home:s.home+1}));},1000);// [6.5.1 Polish A] anche il rigore aggiorna il tabellone al reveal (palla in rete ~0.72s / reveal 1000ms), non all'istante del tap
         pushMatchEvent(clockRef.current,"player_goal",em=>"⚽ Tuo rigore al "+em+"'");// [5.78.0 F3] il gol su rigore ora compare negli eventi partita (via ledger unico 6.5.0)
         setMStats(s=>({...s,goals:s.goals+1,rb:s.rb+5}));
         try{const _mm=matchMemRef.current;if(_mm)_mm.goals=(_mm.goals||0)+1;}catch(_e){}/* [6.4.6 R5.2] il gol su rigore conta per la continuità narrativa (doppietta/tripletta) */
@@ -10816,7 +10840,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
         const _missK=seededRng((_pSeed^0x2545f491)>>>0)()<0.28?"post":"wide";
         const txt=`❌ ${_missK==="post"?pick(["Palo! Che peccato!","Sul palo — che sfortuna!"]):pick(["Tiro alto — sprecato!","Fuori di poco.","Non trova lo specchio."])} Portiere andava ${gkLabel}.`;
         setResultReveal(false);fxTimeout(()=>setResultReveal(true),1000);// [5.92.0] suspense anche sul rigore sbagliato
-        fxTimeout(()=>{addCom(txt,"#f87171",clock);setScreenFlash({col:"rgba(239,68,68,0.3)",dur:400});},1000);
+        fxTimeout(()=>{addCom(txt,"#f87171",clock);flashScreen({col:"rgba(239,68,68,0.3)",dur:400});},1000);
         setOutcome({text:txt,ok:false,actionLabel:shotLabel,revealMs:1000,outKind:_missK});
         try{cpmEmit("ActionResolved",{gi:hlIdxRef.current,intent:"penalty",label:shotLabel,stat:"tiro",ok:false,key:"miss",outKind:_missK});}catch(_e){}
         try{const _af=_missKindNorm(_missK);cpmEmit("CoherenceCheck",{gi:hlIdxRef.current,kind:"overlay_arc",outKey:"miss",outKind:_missK,arcFam:_af,overlayFam:_af,ok:true});}catch(_e){}// M3: coerente per costruzione
@@ -10828,6 +10852,9 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   };
   handleRigoreRef.current=handleRigore;// [6.3.0 R0] per l AUTOPLAY del Live Match Validator (assegnato DOPO la definizione: niente TDZ)
   const handleContinue=()=>{
+    // [6.5.1 Polish A/B] se l'utente avanza PRIMA che la palla entri in rete (skip veloce), conta comunque
+    //   il gol e fai partire l'esultanza ora (idempotente via g.fired) → niente gol non contato né tabellone «fermo».
+    if(goalCelebRef.current&&!goalCelebRef.current.fired)fireGoalCeleb();
     _hlActionFiredRef.current=false; // reset for next HL
     gkDiveRef.current=null; // Bug #10: clear GK dive so penalty arrows don't persist
     cpmEmit("HighlightAdvance",{from:hlIdx,chained:!!pendingChainSitRef.current});// LMQP-1
@@ -10988,7 +11015,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
       const tackleTexts=["Il difensore anticipa e recupera palla.","Intervento difensivo! Palla persa.","Il pressing paga: il difensore chiude l'azione.","Troppo lento — il marcatore intercetta."];
       const txt=pick(tackleTexts);
       addCom(txt,"#f87171",clock);
-      setScreenFlash({col:"rgba(239,68,68,0.3)",dur:400});
+      flashScreen({col:"rgba(239,68,68,0.3)",dur:400});
       setOutcome({text:txt,ok:false,actionLabel:worst.label});
       setChosenAct(worst);
       setPhase("hl_result");
@@ -11255,6 +11282,14 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                       {(!_tvComp||!_tvComp.played)&&<div style={{textAlign:"center",fontSize:10,color:"rgba(255,255,255,0.45)",fontStyle:"italic"}}>Esordio in questa competizione</div>}
                     </div>
                     )}
+                    {/* [6.5.1 Polish E] LOWER-THIRD broadcast: strip "in diretta" con stadio, spettatori e orario — look TV moderno */}
+                    <div style={{display:"flex",alignItems:"center",gap:7,padding:"6px 12px",background:"rgba(0,0,0,0.32)",borderTop:"1px solid rgba(255,255,255,0.08)",fontSize:9,fontWeight:700,color:"rgba(255,255,255,0.62)"}}>
+                      <span style={{display:"inline-flex",alignItems:"center",gap:4,color:"#ff6b6b",letterSpacing:1}}><span style={{width:7,height:7,borderRadius:"50%",background:"#ff3b3b",animation:"pulse 1.1s ease-in-out infinite",display:"inline-block"}}/>DIRETTA</span>
+                      <span style={{opacity:0.3}}>·</span>
+                      <span style={{flex:1,minWidth:0,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{(crowdCtx&&crowdCtx.stadiumTpl&&crowdCtx.stadiumTpl.name)||"Stadio"}</span>
+                      {attendance?<span style={{whiteSpace:"nowrap"}}>👥 {attendance.toLocaleString("it-IT")}</span>:null}
+                      {kickoffHour!=null?<span style={{whiteSpace:"nowrap"}}>🕐 {kickoffHour}:00</span>:null}
+                    </div>
                   </div>
                 </div>
               )}
