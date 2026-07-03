@@ -17,7 +17,7 @@ await page.addInitScript((dark) => {
     fitnessCoachRel:62, assistantCoachRel:58, teamChemistry:71,
     matchHistory:[{won:true,drew:false,homeScore:2,awayScore:1,opponent:'FC Nord',rating:7.8,goals:1,assists:1,week:13},{won:false,drew:true,homeScore:1,awayScore:1,opponent:'SV Ost',rating:6.5,goals:0,assists:0,week:12},{won:true,drew:false,homeScore:3,awayScore:0,opponent:'TSV Süd',rating:8.4,goals:2,assists:0,week:11},{won:true,drew:false,homeScore:2,awayScore:0,opponent:'FC West',rating:7.2,goals:1,assists:1,week:10},{won:false,drew:false,homeScore:0,awayScore:2,opponent:'FC Kron',rating:5.4,goals:0,assists:0,week:9}],
     goalStreak:3, seasonObjectives:[{type:'goals',target:15,label:'Segna 15 gol'},{type:'standing',target:4,label:'Top 4 in campionato'}],
-    contract:{ duration:3, wage:9000, expiresAtSeason:6 }, log:['⚽ Gol vs FC Nord','🏆 Nominato MVP del mese','📈 Valore di mercato in crescita'] } };
+    hasAgent:true, contract:{ duration:3, wage:9000, expiresAtSeason:6 }, log:['⚽ Gol vs FC Nord','🏆 Nominato MVP del mese','📈 Valore di mercato in crescita'] } };
   localStorage.setItem('cpm-v3', JSON.stringify(save));
 }, DARK);
 await page.goto(`http://localhost:${port}/CARRIER-MANAGER-AV.html?cpmtest=1`, { waitUntil:'load', timeout:30000 });
