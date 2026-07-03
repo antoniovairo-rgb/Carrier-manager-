@@ -3089,7 +3089,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="6.4.5"; // [6.4.5] R5.1 (feel): LE OCCASIONI CONTANO. Il momentum crollava di -8 su OGNI fallimento, anche corner/palo/fallo guadagnato in attacco (che invece sono pressione, fallimenti solo sul tabellino). Ora gli esiti pericolosi (_outKind corner/post, o fouled/win_freekick con pPos.x>=60) danno +2 invece di -8 → il momentum riflette la pericolosità reale. + il pubblico reagisce al corner in 3D (crowdOhT, come su palo/parata). Additivo, gate-cieco sul feel → collaudo dal vivo.
+const GAME_VERSION="6.4.6"; // [6.4.6] R5.2 (feel): continuità narrativa sui rigori. handleRigore bypassava matchMemRef (la memoria narrativa M2) → un gol su rigore non contava per «doppietta/tripletta» e una parata non alimentava «il portiere è in serata / si riscatta». Ora il rigore aggiorna matchMem come ogni altro highlight (gol→goals++, parata→misses++/gkSaves++). Additivo, gate-cieco sul feel → collaudo dal vivo.
 const SAVE_VERSION=8;// v8 [5.81.0 BIL-3b]: bankBalance (stipendio accumulato, €) + perkTrainer/perkNutrition (staff personale) — migration retro-compatibile. v7: player.foot
 // 5.67.0 — TABELLONE realistico del torneo per NAZIONALI (Europeo/Mondiale): dopo il girone la fase a
 //   eliminazione segue Ottavi → Quarti → Semifinale → Finale (prima saltava dritta alla semifinale).
@@ -10762,6 +10762,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
       setOutcome({text:txt,ok:false,actionLabel:shotLabel,revealMs:1000});setChosenAct({label:shotLabel,stat:"tiro",nrg:8});
       try{cpmEmit("ActionResolved",{gi:hlIdxRef.current,intent:"penalty",label:shotLabel,stat:"tiro",ok:false,key:"miss"});}catch(_e){}// [5.78.0 F3] anche il rigore parato entra nella timeline
       setMomentum(m=>clamp(m-15,0,100));
+      try{const _mm=matchMemRef.current;if(_mm){_mm.misses=(_mm.misses||0)+1;_mm.gkSaves=(_mm.gkSaves||0)+1;}}catch(_e){}/* [6.4.6 R5.2] il rigore parato entra nella memoria narrativa (portiere in serata / prepara «si riscatta») */
     }else{
       // [5.78.0 F3] IL RIGORE LEGGE FINALMENTE LE STAT: decideExecution('penalty') col contesto reale
       //   (tiro/mentalità, fatica, morale, meteo) decide la QUALITÀ; l'angolo scelto resta il minigame
@@ -10779,6 +10780,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
         setScore(s=>({...s,home:s.home+1}));
         setMatchEvents(prev=>{const _em=Math.min(90,prev.length>0&&prev[prev.length-1].min>=clockRef.current?prev[prev.length-1].min+1:clockRef.current);return[...prev,{min:_em,type:"player_goal",txt:"⚽ Tuo rigore al "+_em+"'"}].slice(-12);});// [5.78.0 F3] il gol su rigore ora compare negli eventi partita
         setMStats(s=>({...s,goals:s.goals+1,rb:s.rb+5}));
+        try{const _mm=matchMemRef.current;if(_mm)_mm.goals=(_mm.goals||0)+1;}catch(_e){}/* [6.4.6 R5.2] il gol su rigore conta per la continuità narrativa (doppietta/tripletta) */
         setActionEffect({type:"goal",key:Date.now()});
         setOutcome({text:txt,ok:true,actionLabel:shotLabel,revealMs:1000});
         setMomentum(m=>clamp(m+20,0,100));
