@@ -3089,7 +3089,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="6.4.8"; // [6.4.8] R5.4 (feel/narrativa): la Match Memory (M2) ora RICORDA corner e falli guadagnati (esiti di prima classe R2.2/2.3). Alla seconda occasione dello stesso tipo la cronaca coglie la PRESSIONE crescente. Additivo (solo cronaca, via _missKindNorm coerente), zero rischio 3D/gate. NOTA R3 (Ball Physics) NON fatto di proposito: la palla è misurabilmente pulita (validator 0 teleport) e l arcBlock è gate-checked da data-coherence (Math.random shadowato + guardie regex) → refactoring alla cieca romperebbe il gate per eleganza (viola Zero Regression).
+const GAME_VERSION="6.4.9"; // [6.4.9] R5-backbone (build-up esteso): l esecutore cinematico della timeline (CINE-TL, prima solo hlType shot) ora antepone la COSTRUZIONE anche a CROSS e COLPO DI TESTA. Chiave: tlBuildN = indice della PRIMA beat di conclusione della famiglia hlType (cross->beat cross, header->beat header, shot->concl = length-1 INVARIATO) cosi fireConclusion esegue la conclusione reale una volta sola (niente doppioni cross/testa). Il tiro resta bit-identico (zero regressione). Gate-cieco (?cpmtest=1 salta l esecutore) -> feel da collaudo dal vivo; motion/teleport coperti dal Live Match Validator. // [6.4.8] R5.4 (feel/narrativa): la Match Memory (M2) ora RICORDA corner e falli guadagnati (esiti di prima classe R2.2/2.3). Alla seconda occasione dello stesso tipo la cronaca coglie la PRESSIONE crescente. Additivo (solo cronaca, via _missKindNorm coerente), zero rischio 3D/gate. NOTA R3 (Ball Physics) NON fatto di proposito: la palla è misurabilmente pulita (validator 0 teleport) e l arcBlock è gate-checked da data-coherence (Math.random shadowato + guardie regex) → refactoring alla cieca romperebbe il gate per eleganza (viola Zero Regression).
 const SAVE_VERSION=8;// v8 [5.81.0 BIL-3b]: bankBalance (stipendio accumulato, €) + perkTrainer/perkNutrition (staff personale) — migration retro-compatibile. v7: player.foot
 // 5.67.0 — TABELLONE realistico del torneo per NAZIONALI (Europeo/Mondiale): dopo il girone la fase a
 //   eliminazione segue Ottavi → Quarti → Semifinale → Finale (prima saltava dritta alla semifinale).
@@ -7751,11 +7751,20 @@ function ThreeMatchView(props){
           //   Abilitato per le conclusioni di TIRO (il tiro non deve "comparire dal nulla"). In test (?cpmtest=1)
           //   salta il build-up → la conclusione parte subito → i check del gate restano identici.
           let _tlc=null;
-          if(!_cineTest&&P.hlType==="shot"&&typeof buildHLTimeline==="function"){
+          const _tlKind=P.hlType;// R5-backbone: build-up esteso a shot + cross + header (mappatura conclusione pulita); dribble/pass restano immediati
+          if(!_cineTest&&(_tlKind==="shot"||_tlKind==="cross"||_tlKind==="header")&&typeof buildHLTimeline==="function"){
             try{_tlc=buildHLTimeline({type:P.hlType,pattern:P.hlPattern,variant:P.hlVariant},{x:P.playerX,y:P.playerY,reward:P.hlReward,support:P.support,nearby_def:P.nearby_def});}catch(e){_tlc=null;}
           }
           if(_tlc&&_tlc.beats.length>1&&typeof resolveTimeline==="function"){
-            tlSeg=resolveTimeline(_tlc);tlBuildN=tlSeg.length-1;tlMap=mapCineActors(_tlc);tlOn=tlBuildN>0;tlT=0;
+            tlSeg=resolveTimeline(_tlc);
+            // R5-backbone: il build-up termina alla PRIMA beat di conclusione della famiglia hlType
+            //   (cross→beat 'cross', header→beat 'header', shot/altri→'shot'/'header') così fireConclusion
+            //   esegue SEMPRE la conclusione reale una volta sola (niente doppioni cross/testa).
+            //   Per il tiro _cn = ultima beat (concl) = length-1 → comportamento INVARIATO (zero regressione shot).
+            const _cf=(_tlKind==="cross")?["cross"]:(_tlKind==="header")?["header"]:["shot","header"];
+            let _cn=-1;for(let _i=0;_i<tlSeg.length;_i++){if(_cf.indexOf(tlSeg[_i].tag)>=0){_cn=_i;break;}}
+            tlBuildN=(_cn>0)?_cn:(tlSeg.length-1);
+            tlMap=mapCineActors(_tlc);tlOn=tlBuildN>0;tlT=0;
             if(!tlOn)fireConclusion();
           } else { fireConclusion(); }
         }
