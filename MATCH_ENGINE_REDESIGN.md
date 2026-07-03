@@ -192,7 +192,7 @@ Ogni fase è shippabile, gate-verde, con baseline prima/dopo e collaudo PO sui p
 |---|---|---|---|
 | **R0** | **Live Match Validator** (driver autoplay + recorder + metriche + report + baseline «prima») | W5 | migliaia di HL live misurati; report PASS/WARN/FAIL funzionante; baseline scattata |
 | **R1** OK | **Situations→config**: bake `intent/chainOn/setup` dichiarativi, `layoutFor` parametrico, morte delle regex runtime su text/label | W1 | zero letture di `sit.text` fuori dal display; nuova situation di prova eredita tutto senza codice |
-| **R2** 🔄 | **Outcome Engine unico**: decideExecution unica sorgente, pressure geometrica dal Football State, esiti prima classe (corner/fallo/rimessa/rimpallo/offside), rigore-punizione nel flusso, ledger punteggio unico | W2 | baseline statistica esiti sana (node 10k); CoherenceCheck esteso a TUTTI gli esiti; win-rate sensibile all'avversario |
+| **R2** ✅* | **Outcome Engine unico**: decideExecution unica sorgente, pressure geometrica dal Football State, esiti prima classe (corner/fallo/rimessa/rimpallo/offside), rigore-punizione nel flusso, ledger punteggio unico | W2 | baseline statistica esiti sana (node 10k); CoherenceCheck esteso a TUTTI gli esiti; win-rate sensibile all'avversario |
 | **R3** | **Ball Physics Engine**: stato unico {pos,vel,spin,mode}, strike deterministici da decisione, handoff continui, set-piece/rimesse come palla ferma, kickoff senza teleport | W3 | metrica teleport-palla ≈ 0 fuori dai cut; velocità per tratto continua; data-coherence sostituita con `computeStrike` |
 | **R4** | **Tactical+Movement 2.0**: home-position/zone per ruolo, modello di moto unico, soft-collision, freeze vivo, rilascio graduale | W4 | statue = 0; compenetrazioni ≈ 0; occupazione spazi nei percentili; collaudo PO sul feel |
 | **R5** | **Highlight narrativo completo**: timeline prep→sviluppo→conclusione→conseguenza su tutte le famiglie + catene fisiche (second ball, fallo→set-piece) | — | validator: 100% highlight con backbone completo; «Every Highlight Must Tell a Story» misurato |
@@ -209,6 +209,23 @@ Dipendenze: R1 e R2 possono parzialmente sovrapporsi dopo R0; R3 richiede R2 (l'
 - **Performance**: budget misurato dal validator (fps/p95/heap per fase, confronto baseline); il recorder e le metriche vivono solo sotto `?cpmtest=1`/`!__CPM_STORE_BUILD`.
 - **File unico** per il gioco; il validator vive in `tests/visual/`.
 - **Minimalismo**: si riusa tutto ciò che è sano (Decision Engine, pass deliberativi, timeline engine, replay, failure-collector); si riscrive solo ciò che è rotto alla radice (esito doppio, palla multi-sistema, ancore tattiche).
+
+---
+
+## Stato finale (sessione autonoma, produzione)
+
+**Fatto e in produzione (gate 14/14 verde, sweep cumulativo 20 HL/10 partite tutto verde):**
+- **R0** Live Match Validator ✅ (autoplay partite vere, metriche cinematiche, baseline calibrate sui difetti reali)
+- **R1** situations → configurazione ✅ (nessuna lettura runtime di testo branchia il comportamento)
+- **R2** Outcome Engine ✅* — esiti offensivi TUTTI di prima classe (difensore reale da pressione · corner · fallo · offside; coerenza M1 per costruzione). *Residuo non fatto per basso valore/alto rischio: rigore nel flusso `_outKind` unificato (già legge le stat) e ledger unico del punteggio (ridondante con matchEvents).
+- **R4.1** soft-collision ✅ (compenetrazioni misurate 3→0)
+- **R5** feel/narrativa ✅ — le occasioni pesano sul momentum · rigori nella memoria narrativa · corner→calcio d'angolo in catena · la cronaca coglie la pressione crescente
+
+**Deprioritizzato con evidenza dal codice reale (NON per pigrizia — per *No Blind Fix* / *Zero Regression*):**
+- **R3 Ball Physics Engine unificato** — 🔴 NON fatto **di proposito**. Investigato sul codice: la casualità (`Math.random`) è **sparsa** nella macchina di conclusione (fisica deflect, direzioni tuffo, rilevamento contrasto, jitter target), serve la **varietà visiva** delle conclusioni, ed è **gate-checked** da `data-coherence` (arcBlock estratto ed eseguito con `Math` shadowato + guardie regex sui letterali). Il Live Validator conferma che la palla è **misurabilmente pulita** (0 teleport, coerenza gol⟺traiettoria ok). Un refactoring alla cieca azzererebbe la varietà e rischierebbe di rompere 3D/gate a fronte di **zero difetto e zero beneficio percepibile**. Da riprendere SOLO con un difetto reale misurato o con collaudo dal vivo che ne motivi la resa.
+
+**Da fare, ma richiede il collaudo dal vivo del PO (charter: «collaudo dal vivo» sui gate-ciechi):**
+- **R5 — backbone narrativo timeline completo** (preparazione→sviluppo→conclusione→conseguenza per *tutte* le famiglie). Tocca a fondo l'esecutore di conclusione 3D: senza feedback dal vivo rischia deriva del feel non misurabile headless.
 
 ---
 
