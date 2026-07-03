@@ -191,7 +191,7 @@ Ogni fase è shippabile, gate-verde, con baseline prima/dopo e collaudo PO sui p
 | Fase | Contenuto | Rottura | Misura di successo |
 |---|---|---|---|
 | **R0** | **Live Match Validator** (driver autoplay + recorder + metriche + report + baseline «prima») | W5 | migliaia di HL live misurati; report PASS/WARN/FAIL funzionante; baseline scattata |
-| **R1** | **Situations→config**: bake `intent/chainOn/setup` dichiarativi, `layoutFor` parametrico, morte delle regex runtime su text/label | W1 | zero letture di `sit.text` fuori dal display; nuova situation di prova eredita tutto senza codice |
+| **R1** OK | **Situations→config**: bake `intent/chainOn/setup` dichiarativi, `layoutFor` parametrico, morte delle regex runtime su text/label | W1 | zero letture di `sit.text` fuori dal display; nuova situation di prova eredita tutto senza codice |
 | **R2** | **Outcome Engine unico**: decideExecution unica sorgente, pressure geometrica dal Football State, esiti prima classe (corner/fallo/rimessa/rimpallo/offside), rigore-punizione nel flusso, ledger punteggio unico | W2 | baseline statistica esiti sana (node 10k); CoherenceCheck esteso a TUTTI gli esiti; win-rate sensibile all'avversario |
 | **R3** | **Ball Physics Engine**: stato unico {pos,vel,spin,mode}, strike deterministici da decisione, handoff continui, set-piece/rimesse come palla ferma, kickoff senza teleport | W3 | metrica teleport-palla ≈ 0 fuori dai cut; velocità per tratto continua; data-coherence sostituita con `computeStrike` |
 | **R4** | **Tactical+Movement 2.0**: home-position/zone per ruolo, modello di moto unico, soft-collision, freeze vivo, rilascio graduale | W4 | statue = 0; compenetrazioni ≈ 0; occupazione spazi nei percentili; collaudo PO sul feel |
@@ -212,4 +212,4 @@ Dipendenze: R1 e R2 possono parzialmente sovrapporsi dopo R0; R3 richiede R2 (l'
 
 ---
 
-*FASE 1 completa. Prossimo passo: R0 — Live Match Validator.*
+*FASE 1 completa. R0 (Live Match Validator) operativo e calibrato. R1 (situations->config) CHIUSO: nessuna lettura runtime di testo branchia il comportamento. Prossimo: **R2 — Outcome Engine unico**.*

@@ -33,16 +33,21 @@ function analyzeSegment(frames, events) {
   const m = { frames: frames.length, ballTeleports: 0, worstBallJump: 0, playerTeleports: 0, maxBallSpeed: 0, statues: 0, overlaps: 0 };
   if (frames.length < 4) return { metrics: m, issues, warns };
   // teleport & velocità palla per tratto (stessa fase: i cambi fase sono cut di regia dichiarati)
+  // [6.3.4 R1/cal] il SETUP-SNAP d'avvio highlight (hl_intro riposiziona palla+22 alle posizioni della
+  //   situation) è un CUT DI SCENA legittimo, non un teleport fisico: mascherato dall'intro (~2.5s di camera).
+  //   Escluso dalla detection (finestra di setup ~600ms dall'inizio del segmento) → restano i teleport VERI in gioco.
+  const segStart = frames[0].t;
   for (let i = 1; i < frames.length; i++) {
     const a = frames[i - 1], b = frames[i];
     const dtm = Math.max(1, b.t - a.t);
     if (a.ph === b.ph) {
+      const settled = (b.t - segStart) > 600; // fuori dalla finestra di setup-snap
       const d = dist(a.b, b.b);
       const v = d / (dtm / 1000);
-      if (d > m.worstBallJump) m.worstBallJump = +d.toFixed(1);
-      if (d > 12 && dtm < 220) { m.ballTeleports++; if (m.ballTeleports <= 2) issues.push(`teleport palla ${d.toFixed(1)}u in ${dtm}ms (fase ${b.ph}, t=${b.t})`); }
+      if (settled && d > m.worstBallJump) m.worstBallJump = +d.toFixed(1);
+      if (settled && d > 12 && dtm < 220) { m.ballTeleports++; if (m.ballTeleports <= 2) issues.push(`teleport palla ${d.toFixed(1)}u in ${dtm}ms (fase ${b.ph}, t=${b.t})`); }
       else if (v > 60 && d > 3) { m.maxBallSpeed = Math.max(m.maxBallSpeed, +v.toFixed(0)); }
-      for (let j = 0; j < Math.min(a.p.length, b.p.length); j++) {
+      if (settled) for (let j = 0; j < Math.min(a.p.length, b.p.length); j++) {
         const pd = dist(a.p[j], b.p[j]);
         if (pd > 9 && dtm < 220) { m.playerTeleports++; if (m.playerTeleports <= 2) issues.push(`teleport giocatore #${j} ${pd.toFixed(1)}u in ${dtm}ms (fase ${b.ph})`); }
       }

@@ -1,12 +1,12 @@
 {
  "hl": {
   "pass": 5,
-  "warn": 0,
-  "fail": 1
+  "warn": 1,
+  "fail": 0
  },
- "p90BallJump": 12.1,
- "p90Statues": 4,
- "p90Overlaps": 2,
+ "p90BallJump": 4.9,
+ "p90Statues": 2,
+ "p90Overlaps": 5,
  "pageErrors": 0,
  "stalled": 0
 }
