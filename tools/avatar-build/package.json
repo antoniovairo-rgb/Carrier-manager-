@@ -1,0 +1,1 @@
+{"name":"avatar-build","private":true,"type":"module","version":"1.0.0","dependencies":{"@dicebear/collection":"^9.4.2","@dicebear/core":"^9.4.2","esbuild":"^0.28.1"}}

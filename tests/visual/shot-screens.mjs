@@ -33,8 +33,7 @@ console.log('shot dashboard', tag);
 // Profilo tab: click nav "Carriera" then "Profilo"
 try{ await page.getByText('Carriera',{exact:false}).first().click({timeout:5000}); await sleep(1000);
   await page.screenshot({ path:`${OUT}/now-profile-${tag}.png`, fullPage:true }); console.log('shot profile', tag);}catch(e){console.log('profile nav fail',e.message.slice(0,60));}
-// Stagione → classifica
-try{ await page.getByText('Stagione',{exact:false}).first().click({timeout:5000}); await sleep(800);
-  await page.getByText('Classifica',{exact:false}).first().click({timeout:4000}).catch(()=>{}); await sleep(1000);
-  await page.screenshot({ path:`${OUT}/now-standings-${tag}.png`, fullPage:true }); console.log('shot standings', tag);}catch(e){console.log('standings nav fail',e.message.slice(0,60));}
+// Agente (per confronto volti eroe vs agente)
+try{ await page.getByText('Agente',{exact:false}).first().click({timeout:5000}); await sleep(1000);
+  await page.screenshot({ path:`${OUT}/now-agente-${tag}.png`, fullPage:true }); console.log('shot agente', tag);}catch(e){console.log('agente nav fail',e.message.slice(0,60));}
 await browser.close(); srv.close(); process.exit(0);
