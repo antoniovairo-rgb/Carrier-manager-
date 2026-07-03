@@ -3089,7 +3089,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="6.4.3"; // [6.4.3] R2.4 (Outcome Engine): completata la copertura degli esiti di decideExecution in _missKindNorm. OFFSIDE categoria propria (filtrante in fuorigioco: overlay/cronaca «l assistente alza la bandierina», prima → pool piatto generico); dispossessed/beaten → famiglia "blocked" (l avversario vince il pallone → murato/fermato). Coerenza M1 per costruzione (overlay.fam=_missKindNorm → gate timeline verde).
+const GAME_VERSION="6.4.4"; // [6.4.4] R4.1 (Movement): SOFT-COLLISION di posizione. La repulsione off-ball agiva sui TARGET (bolla 6.5u) ma animOne ha inerzia -> i mesh si compenetravano transitoriamente (giocatori che si attraversano, warning overlaps del Live Validator). Ora un passo di separazione minima sulle POSIZIONI reali dopo il movimento (coppie <1.7u world spinte simmetricamente 0.25x overlap/lato, deterministico, ~190 coppie, solo in gioco non nel freeze). Gate-safe (posizioni off-ball fuori dalla golden), misurato dal validator.
 const SAVE_VERSION=8;// v8 [5.81.0 BIL-3b]: bankBalance (stipendio accumulato, €) + perkTrainer/perkNutrition (staff personale) — migration retro-compatibile. v7: player.foot
 // 5.67.0 — TABELLONE realistico del torneo per NAZIONALI (Europeo/Mondiale): dopo il girone la fase a
 //   eliminazione segue Ottavi → Quarti → Semifinale → Finale (prima saltava dritta alla semifinale).
@@ -8102,6 +8102,17 @@ function ThreeMatchView(props){
           if(subEntryT<1.3&&hero._torso){hero.rotation.y=Math.atan2(-14-hero.position.x,-38-hero.position.z);}// si gira verso il mister (dugout home x≈-14,z≈-38)
           if(subEntryT>SUB_DUR)subEntryT=-1;
         } else animOne(hero,G2X(_hxg),G2Z(_hyg),aDt,ak,bx,bz);
+        // [6.4.4 R4.1] SOFT-COLLISION di posizione: la repulsione (PASS 2) agisce sui TARGET, ma animOne ha
+        //   inerzia → i mesh off-ball possono compenetrarsi transitoriamente (i giocatori si attraversano).
+        //   Dopo il movimento, separa le coppie troppo vicine (< _MINSEP world) spingendole SIMMETRICAMENTE:
+        //   deterministico, bounded, cheap (~190 coppie). Solo in gioco (non durante il freeze/snap di lettura,
+        //   che pone i giocatori di proposito). Gate-safe (posizioni off-ball fuori dalla firma golden).
+        if(!_readFreeze&&!_doSnap){const _MINSEP=1.7;
+          for(let i=0;i<_players.length;i++){const pi=_players[i];if(!pi||!pi.mesh||pi.gk||pi.mesh===passTargetMesh)continue;
+            for(let j=i+1;j<_players.length;j++){const pj=_players[j];if(!pj||!pj.mesh||pj.gk||pj.mesh===passTargetMesh)continue;
+              const dx=pi.mesh.position.x-pj.mesh.position.x,dz=pi.mesh.position.z-pj.mesh.position.z,d=Math.hypot(dx,dz);
+              if(d<_MINSEP&&d>0.001){const push=(_MINSEP-d)*0.25,ux=dx/d,uz=dz/d;
+                pi.mesh.position.x+=ux*push;pi.mesh.position.z+=uz*push;pj.mesh.position.x-=ux*push;pj.mesh.position.z-=uz*push;}}}}
         if(_hlSnap)_hlSnap=false;// snap eseguito (una volta all'avvio dell'highlight)
         // 5.43.16: PORTIERI — posizione di PRONTO con POSA FISSA (no run-cycle). animOne sposta dolcemente (target stabile),
         //   poi SOVRASCRIVO le gambe/braccia in posa di pronto (gambe divaricate, leggera flessione, braccia pronte) → il portiere
