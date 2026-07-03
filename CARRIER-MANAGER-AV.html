@@ -3089,7 +3089,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="6.4.4"; // [6.4.4] R4.1 (Movement): SOFT-COLLISION di posizione. La repulsione off-ball agiva sui TARGET (bolla 6.5u) ma animOne ha inerzia -> i mesh si compenetravano transitoriamente (giocatori che si attraversano, warning overlaps del Live Validator). Ora un passo di separazione minima sulle POSIZIONI reali dopo il movimento (coppie <1.7u world spinte simmetricamente 0.25x overlap/lato, deterministico, ~190 coppie, solo in gioco non nel freeze). Gate-safe (posizioni off-ball fuori dalla golden), misurato dal validator.
+const GAME_VERSION="6.4.5"; // [6.4.5] R5.1 (feel): LE OCCASIONI CONTANO. Il momentum crollava di -8 su OGNI fallimento, anche corner/palo/fallo guadagnato in attacco (che invece sono pressione, fallimenti solo sul tabellino). Ora gli esiti pericolosi (_outKind corner/post, o fouled/win_freekick con pPos.x>=60) danno +2 invece di -8 → il momentum riflette la pericolosità reale. + il pubblico reagisce al corner in 3D (crowdOhT, come su palo/parata). Additivo, gate-cieco sul feel → collaudo dal vivo.
 const SAVE_VERSION=8;// v8 [5.81.0 BIL-3b]: bankBalance (stipendio accumulato, €) + perkTrainer/perkNutrition (staff personale) — migration retro-compatibile. v7: player.foot
 // 5.67.0 — TABELLONE realistico del torneo per NAZIONALI (Europeo/Mondiale): dopo il girone la fase a
 //   eliminazione segue Ottavi → Quarti → Semifinale → Finale (prima saltava dritta alla semifinale).
@@ -7550,7 +7550,8 @@ function ThreeMatchView(props){
           //   CONCLUSIONI (la palla è già lì); un passaggio/dribbling perso a centrocampo si assesta sul punto
           //   d'intercetto (prima planava da sola fino all'area avversaria: possesso «all'avversario» in porta!).
           //   E un tiro FUORI supera la linea di fondo (palla oltre la porta, non rimbalzo-fantasma in campo).
-          {const _sf83=(P.hlType==="shot"||P.hlType==="penalty"||P.hlType==="freekick"||P.hlType==="header");
+          {if(P.hlOutcomeKind==="corner"&&crowdOhT<0)crowdOhT=0;/* [6.4.5 R5.1] ATMO: il pubblico reagisce al corner conquistato (come su palo/parata) */
+           const _sf83=(P.hlType==="shot"||P.hlType==="penalty"||P.hlType==="freekick"||P.hlType==="header");
            const _wide83=_sf83&&(P.hlOutcomeKind==="wide"||P.hlOutcomeKind==="out"||P.hlOutcomeKind==="corner");/* [6.4.1 R2.2] corner = palla oltre la linea di fondo (come out), non parata */
            const _lossK83=!_sf83&&P.hlType!=="cross"&&["intercepted","dispossessed","lost","stopped","shielded_out","overhit","offside"].indexOf(P.hlOutcomeKind)>=0;// SOLO perdite di possesso conclamate (le famiglie ambigue tengono il pull storico: il check final-state pretende gx≥45 sui "miss")
            const _tx83=_wide83?(AWAY_GOAL_X+2.5):_lossK83?(ballArcTgtX!=null?ballArcTgtX:ball.position.x):(AWAY_GOAL_X-7);
@@ -10704,8 +10705,12 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     if(ok){streakRef.current=Math.min(streakRef.current+1,5);}
     else{streakRef.current=0;}
     const _streakBonus97=ok?streakRef.current*4:0;
+    /* [6.4.5 R5.1] LE OCCASIONI CONTANO: un corner/palo/fallo guadagnato in attacco è un fallimento
+       SOLO sul tabellino — stai pressando. Non crolli (delta +2 invece di -8): il momentum riflette la
+       pericolosità reale dell'azione, non solo goal/non-goal. */
+    const _dangerFail=(!ok)&&(_outKind==="corner"||_outKind==="post"||((_outKind==="fouled"||_outKind==="win_freekick")&&pPos.x>=60));
     setMomentum(m=>{
-      const nm=clamp(m+(ok?10:-8)+_streakBonus97,0,100);
+      const nm=clamp(m+(ok?10:(_dangerFail?2:-8))+_streakBonus97,0,100);
       // Trigger pressure cinema at thresholds
       if(nm>=85&&m<85){// 5.43.8: su gol/assist il DOMINIO parte con l'esultanza (palla in rete, via fireGoalCeleb); altrimenti differito breve
         if(goalCelebRef.current&&!goalCelebRef.current.fired){goalCelebRef.current.domino=true;}
