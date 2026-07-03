@@ -3089,7 +3089,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="6.5.2"; // [6.5.2] PANCHINA — (1) niente piu panchinari "pelati": mkFig costruisce un cap di capelli PIENO (corona+nuca) con colore VARIATO per figura (8 tinte), prima era un disco scuro piatto uguale per tutti che dalla camera broadcast sembrava rasato. (2) INGRESSO DAL PANCHINA piu televisivo: coreografia a 4 beat (istruzioni alla linea girato verso il mister -> "pronto" -> SCATTO in campo con ease-in-out cosi animOne mostra la corsa vera -> saluto al pubblico a meta -> gesto di carica all arrivo). Gate-cieco (panchina/arbitri fuori dalla firma golden; l ingresso parte solo su una sostituzione reale che il gate non innesca) -> collaudo dal vivo. // [6.5.1] COLLAUDO PO — 7 fix: (A) TABELLONE sincronizzato: lo score del gol dell eroe si aggiorna quando la palla ENTRA in rete (differito a fireGoalCeleb, guardia in handleContinue per lo skip veloce), non all istante del tap; rigore idem al reveal. (B) ESULTANZA non anticipata: fallback celebrazione 3200->5200ms (col build-up R5 su cross/testa il tempo palla->rete e cresciuto) -> onGoalInNet vince sempre. (C) STRISCIONI coerenti: la scenografia tifo (bandiere/striscioni/sciarpe) usa i colori SOCIALI del club (sHome/sAway), non la divisa indossata -> in trasferta niente piu colori sbagliati. (D) CURVA TEDESCA piu bassa (1.5->1.28 altezza) + rake piu dolce (top arretrato 0.30->0.40). (E) PRE-INGRESSO piu televisivo: lower-third broadcast (DIRETTA + stadio + spettatori + orario) sul pannello walkout. (BUG stadio NAZIONALE) le gare della nazionale si giocano nello stadio del PAESE (casa=nazione eroe, trasferta=nazione avversaria), non piu dello stadio del club dell eroe. (SICUREZZA epilessia) GOVERNOR anti-strobo: intervallo minimo 750ms fra flash a schermo (max ~1.3/s, sotto la soglia WCAG di 3/s) + cap opacita 0.42; tutti i setScreenFlash della partita passano di qui. // [6.5.0] R2-residuo (Outcome Engine, chiusura W2): (1) RIGORE nel flusso Unified Outcome (M1) — handleRigore setta outcome.outKind (goal/saved/post/wide) deciso UNA volta dal seed, cosi il 3D (props r.11171) legge l esito deciso qui invece di ricalcolarlo con un altro seed (prima: testo «PARATA/Palo» scollegato dall arco 3D); rigore sbagliato = palo(28%)/fuori onesto (mai parata se il portiere va dal lato opposto) + testo derivato dal kind; emette ActionResolved.outKind + CoherenceCheck (M3). (2) LEDGER UNICO eventi partita — helper pushMatchEvent(min,type,txt): unica via di scrittura del feed, clamp MONOTONO del minuto + cap 90 + slice(-12) in UN posto (prima 6 siti con semantiche diverse: i gol ambientali bgMicro usavano nx grezzo -> minuti non monotoni). Testo via funzione (em)=> cosi combacia sempre col .min. Score invariato (gia coerente; derive-da-buffer-cappato = trappola scartata). // [6.4.9] R5-backbone (build-up esteso): l esecutore cinematico della timeline (CINE-TL, prima solo hlType shot) ora antepone la COSTRUZIONE anche a CROSS e COLPO DI TESTA. Chiave: tlBuildN = indice della PRIMA beat di conclusione della famiglia hlType (cross->beat cross, header->beat header, shot->concl = length-1 INVARIATO) cosi fireConclusion esegue la conclusione reale una volta sola (niente doppioni cross/testa). Il tiro resta bit-identico (zero regressione). Gate-cieco (?cpmtest=1 salta l esecutore) -> feel da collaudo dal vivo; motion/teleport coperti dal Live Match Validator. // [6.4.8] R5.4 (feel/narrativa): la Match Memory (M2) ora RICORDA corner e falli guadagnati (esiti di prima classe R2.2/2.3). Alla seconda occasione dello stesso tipo la cronaca coglie la PRESSIONE crescente. Additivo (solo cronaca, via _missKindNorm coerente), zero rischio 3D/gate. NOTA R3 (Ball Physics) NON fatto di proposito: la palla è misurabilmente pulita (validator 0 teleport) e l arcBlock è gate-checked da data-coherence (Math.random shadowato + guardie regex) → refactoring alla cieca romperebbe il gate per eleganza (viola Zero Regression).
+const GAME_VERSION="6.5.3"; // [6.5.3] PRE-INGRESSO TELEVISIVO — redesign completo di FormationView (schermata "— FORMAZIONI —" / Ingresso in campo, segnalata dal PO) in stile broadcast TV. Design da panel di 4 concept giudicati ("MATCHDAY LIVE — Broadcast Lower-Third"): header competizione con hairline ambra + tag PREPARTITA; banda VS diagonale coi colori-DIVISA (spine luminose ai bordi + seam ambra + medaglione bicolore con VS + pip di prestigio); due pannelli-formazione "lower-third" con spina colore squadra e chip formazione (casa derivata dal roster), eroe con anello ambra; la TATTICA AVVERSARIA non e piu un box rosso d allarme ma uno scout lower-third (formazione + dot-matrix + meter PRESSING verde->ambra->rosso segmentato, skeleton shimmer in caricamento); CTA ambra con shine. Solo restyle: logica numeri/eroe (withNums/hRoster/aRoster) INVARIATA. Mobile-first, flash-safe (motion one-shot). Verificato con screenshot standalone (pieno+loading, 0 pageerror). // [6.5.2] PANCHINA — (1) niente piu panchinari "pelati": mkFig costruisce un cap di capelli PIENO (corona+nuca) con colore VARIATO per figura (8 tinte), prima era un disco scuro piatto uguale per tutti che dalla camera broadcast sembrava rasato. (2) INGRESSO DAL PANCHINA piu televisivo: coreografia a 4 beat (istruzioni alla linea girato verso il mister -> "pronto" -> SCATTO in campo con ease-in-out cosi animOne mostra la corsa vera -> saluto al pubblico a meta -> gesto di carica all arrivo). Gate-cieco (panchina/arbitri fuori dalla firma golden; l ingresso parte solo su una sostituzione reale che il gate non innesca) -> collaudo dal vivo. // [6.5.1] COLLAUDO PO — 7 fix: (A) TABELLONE sincronizzato: lo score del gol dell eroe si aggiorna quando la palla ENTRA in rete (differito a fireGoalCeleb, guardia in handleContinue per lo skip veloce), non all istante del tap; rigore idem al reveal. (B) ESULTANZA non anticipata: fallback celebrazione 3200->5200ms (col build-up R5 su cross/testa il tempo palla->rete e cresciuto) -> onGoalInNet vince sempre. (C) STRISCIONI coerenti: la scenografia tifo (bandiere/striscioni/sciarpe) usa i colori SOCIALI del club (sHome/sAway), non la divisa indossata -> in trasferta niente piu colori sbagliati. (D) CURVA TEDESCA piu bassa (1.5->1.28 altezza) + rake piu dolce (top arretrato 0.30->0.40). (E) PRE-INGRESSO piu televisivo: lower-third broadcast (DIRETTA + stadio + spettatori + orario) sul pannello walkout. (BUG stadio NAZIONALE) le gare della nazionale si giocano nello stadio del PAESE (casa=nazione eroe, trasferta=nazione avversaria), non piu dello stadio del club dell eroe. (SICUREZZA epilessia) GOVERNOR anti-strobo: intervallo minimo 750ms fra flash a schermo (max ~1.3/s, sotto la soglia WCAG di 3/s) + cap opacita 0.42; tutti i setScreenFlash della partita passano di qui. // [6.5.0] R2-residuo (Outcome Engine, chiusura W2): (1) RIGORE nel flusso Unified Outcome (M1) — handleRigore setta outcome.outKind (goal/saved/post/wide) deciso UNA volta dal seed, cosi il 3D (props r.11171) legge l esito deciso qui invece di ricalcolarlo con un altro seed (prima: testo «PARATA/Palo» scollegato dall arco 3D); rigore sbagliato = palo(28%)/fuori onesto (mai parata se il portiere va dal lato opposto) + testo derivato dal kind; emette ActionResolved.outKind + CoherenceCheck (M3). (2) LEDGER UNICO eventi partita — helper pushMatchEvent(min,type,txt): unica via di scrittura del feed, clamp MONOTONO del minuto + cap 90 + slice(-12) in UN posto (prima 6 siti con semantiche diverse: i gol ambientali bgMicro usavano nx grezzo -> minuti non monotoni). Testo via funzione (em)=> cosi combacia sempre col .min. Score invariato (gia coerente; derive-da-buffer-cappato = trappola scartata). // [6.4.9] R5-backbone (build-up esteso): l esecutore cinematico della timeline (CINE-TL, prima solo hlType shot) ora antepone la COSTRUZIONE anche a CROSS e COLPO DI TESTA. Chiave: tlBuildN = indice della PRIMA beat di conclusione della famiglia hlType (cross->beat cross, header->beat header, shot->concl = length-1 INVARIATO) cosi fireConclusion esegue la conclusione reale una volta sola (niente doppioni cross/testa). Il tiro resta bit-identico (zero regressione). Gate-cieco (?cpmtest=1 salta l esecutore) -> feel da collaudo dal vivo; motion/teleport coperti dal Live Match Validator. // [6.4.8] R5.4 (feel/narrativa): la Match Memory (M2) ora RICORDA corner e falli guadagnati (esiti di prima classe R2.2/2.3). Alla seconda occasione dello stesso tipo la cronaca coglie la PRESSIONE crescente. Additivo (solo cronaca, via _missKindNorm coerente), zero rischio 3D/gate. NOTA R3 (Ball Physics) NON fatto di proposito: la palla è misurabilmente pulita (validator 0 teleport) e l arcBlock è gate-checked da data-coherence (Math.random shadowato + guardie regex) → refactoring alla cieca romperebbe il gate per eleganza (viola Zero Regression).
 const SAVE_VERSION=8;// v8 [5.81.0 BIL-3b]: bankBalance (stipendio accumulato, €) + perkTrainer/perkNutrition (staff personale) — migration retro-compatibile. v7: player.foot
 // 5.67.0 — TABELLONE realistico del torneo per NAZIONALI (Europeo/Mondiale): dopo il girone la fase a
 //   eliminazione segue Ottavi → Quarti → Semifinale → Finale (prima saltava dritta alla semifinale).
@@ -9013,34 +9013,119 @@ function FormationView({homeTeam,awayTeam,player,homeRoster,awayRoster,onContinu
   const _isEuro=!!competition;
   const _ecFull122={UCL:"⭐ Elevora Champions Cup",UEL:"🟡 Elevora Europa Cup",UECL:"🟣 Elevora Conference Cup"}[competition]||`🌍 ${competition||""}`;
   const _ecCol122={UCL:"#93c5fd",UEL:"#fde68a",UECL:"#c4b5fd"}[competition]||"#93c5fd";
-  return(
-    <div style={{width:"100%",background:"linear-gradient(180deg,#0a0e1a 0%,#0d1528 100%)",borderRadius:10,padding:"12px 8px 10px",minHeight:320}}>
-      {/* Competition header */}
-      {_isEuro?(
-        <div style={{textAlign:"center",marginBottom:10}}>
-          <div style={{display:"inline-flex",alignItems:"center",gap:6,background:"rgba(30,64,175,0.25)",border:`1px solid ${_ecCol122}44`,borderRadius:20,padding:"3px 14px"}}>
-            <span style={{fontSize:10,fontWeight:800,color:_ecCol122,letterSpacing:1}}>{_ecFull122}</span>
-            {euroRound&&<span style={{fontSize:10,color:"rgba(255,255,255,0.4)"}}>· {euroRound}</span>}
-          </div>
-        </div>
-      ):(
-        <div style={{textAlign:"center",fontSize:8,color:"rgba(255,255,255,0.25)",letterSpacing:4,textTransform:"uppercase",marginBottom:10}}>— FORMAZIONI —</div>
-      )}
-      <div style={{display:"flex",gap:4,alignItems:"flex-start"}}>
-        <TeamFormation team={homeTeam} roster={withNums(hRoster,true)} isHome={true} kitCol={homeKitCol}/>
-        {/* center divider */}
-        <div style={{width:1,alignSelf:"stretch",background:"rgba(255,255,255,0.08)",margin:"0 2px"}}/>
-        <TeamFormation team={awayTeam} roster={withNums(aRoster,false)} isHome={false} kitCol={awayKitCol}/>
+  // [6.5.3 Polish E] REDESIGN broadcast/TV (design panel "MATCHDAY LIVE — Broadcast Lower-Third"):
+  //   header competizione con hairline ambra, banda VS diagonale coi colori-divisa + medaglione, due
+  //   pannelli-formazione "lower-third", tattica avversaria come meter scout (verde→ambra→rosso) invece
+  //   del box rosso d'allarme, CTA ambra. Logica numeri/eroe (withNums/hRoster/aRoster) INVARIATA.
+  const _rgba=(h,a)=>{try{const c=hexToRgb(h);return "rgba("+c.r+","+c.g+","+c.b+","+a+")";}catch(e){return "rgba(255,255,255,"+a+")";}};
+  const ACC="#f59e0b";
+  const _fmtOf=(rr)=>{let d=0,m=0,a=0;(rr||[]).forEach(p=>{const r=(p.role||"").toUpperCase();if(r==="GK"||r==="POR"||r.includes("PORTIERE"))return;if(r==="DEF"||r.includes("DIFENSORE")||r.includes("TERZINO"))d++;else if(r==="MID"||r==="CEN"||r.includes("CENTROCAMPISTA")||r.includes("MEDIANO")||r.includes("TREQUARTISTA")||r.includes("MEZZALA"))m++;else a++;});return d+"-"+m+"-"+a;};
+  const _homeNums=withNums(hRoster,true),_awayNums=withNums(aRoster,false);
+  const _pips=p=>clamp(Math.round((p||60)/20),1,5);
+  const _pipRow=(p,rev)=>(<div style={{display:"flex",gap:3,marginTop:4,flexDirection:rev?"row-reverse":"row"}}>{[0,1,2,3,4].map(i=><span key={i} style={{width:6,height:6,borderRadius:"50%",background:i<_pips(p)?"rgba(255,255,255,0.85)":"rgba(255,255,255,0.2)"}}/>)}</div>);
+  const _dotMatrix=fmt=>{const raw=(fmt||"").split("-").map(n=>parseInt(n,10)).filter(n=>n>0);if(!raw.length)return null;const lines=raw.slice().reverse();const W=54,H=38,rows=lines.length;return(<svg width={W} height={H} viewBox={"0 0 "+W+" "+H} style={{flexShrink:0}}>{lines.map((cnt,ri)=>{const y=7+ri*((H-14)/Math.max(rows-1,1));return Array.from({length:cnt}).map((_,ci)=>{const x=cnt===1?W/2:7+ci*((W-14)/(cnt-1));return<circle key={ri+"_"+ci} cx={x} cy={y} r={2.2} fill={ri===0?ACC:"rgba(255,255,255,0.7)"}/>;});})}</svg>);};
+  const _panel=(team,rr,kit)=>(
+    <div style={{flex:1,minWidth:0,borderRadius:10,overflow:"hidden",background:"rgba(255,255,255,0.02)",border:"1px solid "+_rgba(kit,0.25),boxShadow:"inset 0 0 24px rgba(0,0,0,0.25)"}}>
+      <div style={{display:"flex",alignItems:"center",gap:6,padding:"6px 8px",borderBottom:"1px solid rgba(255,255,255,0.06)",borderLeft:"4px solid "+kit,boxShadow:"inset 6px 0 8px "+_rgba(kit,0.25)}}>
+        <span style={{fontSize:13,fontWeight:900,letterSpacing:"0.06em",textTransform:"uppercase",color:"#f1f5f9",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{team?.a||team?.abbr||"—"}</span>
+        <span style={{marginLeft:"auto",padding:"2px 7px",borderRadius:6,background:"rgba(255,255,255,0.06)",fontSize:10,fontWeight:700,color:"rgba(255,255,255,0.75)",whiteSpace:"nowrap"}}>{_fmtOf(rr)}</span>
       </div>
-      <div style={{marginTop:12}}>
-        <AIDecisionOverlay tactic={oppTactic} loading={oppTacticLoading}/>
-        <div style={{display:"flex",gap:8,marginTop:8}}>
-          <Btn onClick={onSkip} v="ghost" style={{flex:0,padding:"8px 12px",fontSize:11}}>Salta →</Btn>
-          <Btn onClick={onContinue} fw style={{padding:"10px",fontSize:13}}>⚽ Ingresso in campo →</Btn>
-        </div>
+      <div style={{padding:"8px 4px 10px"}}>
+        {rosterRows(rr).map((row,ri)=>(
+          <div key={ri} style={{display:"flex",justifyContent:"center",gap:3,flexWrap:"wrap",marginBottom:2}}>
+            {row.map((pl,pi)=>{const isP=!!player&&pl.name===player.name;return isP?(
+              <div key={pi} style={{boxShadow:"0 0 0 2px "+ACC+",0 0 10px rgba(245,158,11,0.55)",borderRadius:8,padding:1}}><JerseyIcon color={kit} number={pl.num} name={pl.name} isPlayer={true} size={30}/></div>
+            ):(<JerseyIcon key={pi} color={kit} number={pl.num} name={pl.name} isPlayer={false} size={30}/>);})}
+          </div>
+        ))}
       </div>
     </div>
   );
+  return(
+    <div style={{position:"relative",overflow:"hidden",width:"100%",maxWidth:640,margin:"0 auto",background:"linear-gradient(180deg,#0a0e1a 0%,#0d1528 100%)",borderRadius:12,padding:"0 0 12px"}}>
+      <style>{"@keyframes cpmLtSlide{from{opacity:0;transform:translateX(-16px)}to{opacity:1;transform:translateX(0)}}@keyframes cpmLtMeter{from{transform:scaleX(0)}to{transform:scaleX(1)}}@keyframes cpmLtShine{from{transform:translateX(-140%) skewX(-18deg)}to{transform:translateX(240%) skewX(-18deg)}}"}</style>
+      <div style={{position:"absolute",inset:0,pointerEvents:"none",zIndex:3,background:"repeating-linear-gradient(0deg, rgba(255,255,255,0.025) 0 1px, transparent 1px 3px)"}}>
+        <div style={{position:"absolute",inset:0,background:"radial-gradient(120% 80% at 50% 40%, transparent 55%, rgba(0,0,0,0.45) 100%)"}}/>
+      </div>
+      <div style={{position:"relative",zIndex:1}}>
+        {/* competition header */}
+        <div style={{position:"relative",display:"flex",alignItems:"center",justifyContent:"center",padding:"9px 12px 8px",borderBottom:"2px solid "+ACC,animation:"cpmLtSlide .4s ease-out both"}}>
+          <span style={{position:"absolute",left:12,top:11,fontSize:8,fontWeight:700,letterSpacing:"0.14em",color:"rgba(255,255,255,0.35)"}}>PREPARTITA</span>
+          <div style={{textAlign:"center"}}>
+            <div style={{fontSize:11,fontWeight:800,letterSpacing:"0.12em",color:"rgba(255,255,255,0.85)",textTransform:"uppercase"}}>{_isEuro?_ecFull122:(homeTeam?.lg||"Campionato")}</div>
+            {_isEuro&&euroRound&&<div style={{fontSize:9,fontWeight:600,letterSpacing:"0.06em",color:"rgba(255,255,255,0.45)",marginTop:1}}>{euroRound}</div>}
+          </div>
+        </div>
+        {/* VS hero band */}
+        <div style={{position:"relative",height:"clamp(112px,32vw,140px)",overflow:"hidden",marginTop:6,animation:"cpmLtSlide .4s ease-out 80ms both"}}>
+          <div style={{position:"absolute",inset:0,clipPath:"polygon(0 0,58% 0,42% 100%,0 100%)",background:"linear-gradient(90deg,"+_rgba(homeKitCol,0.14)+", transparent 78%)"}}/>
+          <div style={{position:"absolute",inset:0,clipPath:"polygon(58% 0,100% 0,100% 100%,42% 100%)",background:"linear-gradient(270deg,"+_rgba(awayKitCol,0.14)+", transparent 78%)"}}/>
+          <div style={{position:"absolute",left:"50%",top:"-10%",width:3,height:"120%",transform:"skewX(-18deg)",background:"linear-gradient(180deg,transparent,"+ACC+",transparent)",boxShadow:"0 0 10px rgba(245,158,11,0.6)"}}/>
+          <div style={{position:"absolute",left:0,top:0,width:4,height:"100%",background:"linear-gradient(180deg,transparent,"+homeKitCol+",transparent)",boxShadow:"0 0 12px "+_rgba(homeKitCol,0.55)}}/>
+          <div style={{position:"absolute",right:0,top:0,width:4,height:"100%",background:"linear-gradient(180deg,transparent,"+awayKitCol+",transparent)",boxShadow:"0 0 12px "+_rgba(awayKitCol,0.55)}}/>
+          <div style={{position:"absolute",inset:0,display:"flex",alignItems:"center",justifyContent:"space-between",padding:"0 14px"}}>
+            <div style={{display:"flex",flexDirection:"column",alignItems:"flex-start",minWidth:0}}>
+              <TeamBadge team={homeTeam} size={46}/>
+              <div style={{fontSize:"clamp(22px,7vw,30px)",fontWeight:900,letterSpacing:"0.04em",color:"#f1f5f9",marginTop:2}}>{homeTeam?.a}</div>
+              <div style={{fontSize:11,fontWeight:600,color:"rgba(255,255,255,0.5)",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis",maxWidth:"32vw"}}>{homeTeam?.n}</div>
+              {_pipRow(homeTeam?.p,false)}
+            </div>
+            <div style={{display:"flex",flexDirection:"column",alignItems:"flex-end",minWidth:0,textAlign:"right"}}>
+              <TeamBadge team={awayTeam} size={46}/>
+              <div style={{fontSize:"clamp(22px,7vw,30px)",fontWeight:900,letterSpacing:"0.04em",color:"#f1f5f9",marginTop:2}}>{awayTeam?.a}</div>
+              <div style={{fontSize:11,fontWeight:600,color:"rgba(255,255,255,0.5)",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis",maxWidth:"32vw"}}>{awayTeam?.n}</div>
+              {_pipRow(awayTeam?.p,true)}
+            </div>
+          </div>
+          <div style={{position:"absolute",left:"50%",top:"50%",transform:"translate(-50%,-50%)"}}>
+            <svg width={52} height={52} viewBox="0 0 52 52">
+              <path d="M26 3 A23 23 0 0 0 26 49 Z" fill={_rgba(homeKitCol,0.26)}/>
+              <path d="M26 3 A23 23 0 0 1 26 49 Z" fill={_rgba(awayKitCol,0.26)}/>
+              <circle cx={26} cy={26} r={23} fill="none" stroke="rgba(255,255,255,0.15)" strokeWidth={1}/>
+              <circle cx={26} cy={26} r={24.5} fill="none" stroke={ACC} strokeWidth={1.5}/>
+              <text x={26} y={27} textAnchor="middle" dominantBaseline="central" fontSize={15} fontWeight={900} fill="#f1f5f9">VS</text>
+            </svg>
+          </div>
+        </div>
+        {/* formation panels */}
+        <div style={{display:"flex",gap:8,padding:"10px 8px 0"}}>
+          {_panel(homeTeam,_homeNums,homeKitCol)}
+          {_panel(awayTeam,_awayNums,awayKitCol)}
+        </div>
+        {/* opponent tactic — scout lower-third */}
+        <div style={{margin:"12px 8px 0",padding:"10px 12px",borderRadius:10,background:"rgba(255,255,255,0.03)",borderLeft:"4px solid "+awayKitCol,boxShadow:"inset 6px 0 10px "+_rgba(awayKitCol,0.2),animation:"cpmLtSlide .4s ease-out 160ms both"}}>
+          <div style={{fontSize:9,fontWeight:700,letterSpacing:"0.1em",textTransform:"uppercase",color:"rgba(255,255,255,0.45)",marginBottom:6}}>Formazione avversaria</div>
+          {(oppTacticLoading||!oppTactic)?(
+            <div style={{display:"flex",alignItems:"center",gap:10}}>
+              <div style={{width:64,height:22,borderRadius:5,background:"rgba(255,255,255,0.06)",position:"relative",overflow:"hidden"}}><div style={{position:"absolute",top:0,left:0,width:"60%",height:"100%",background:"linear-gradient(90deg,transparent,rgba(255,255,255,0.12),transparent)",animation:"cpmLtShine 1.1s linear infinite"}}/></div>
+              <div style={{flex:1,minWidth:150,height:8,borderRadius:4,background:"rgba(255,255,255,0.06)",position:"relative",overflow:"hidden"}}><div style={{position:"absolute",top:0,left:0,width:"60%",height:"100%",background:"linear-gradient(90deg,transparent,rgba(255,255,255,0.12),transparent)",animation:"cpmLtShine 1.1s linear infinite"}}/></div>
+            </div>
+          ):(
+            <div style={{display:"flex",alignItems:"center",gap:10,flexWrap:"wrap"}}>
+              <div style={{fontSize:19,fontWeight:800,color:"#f8fafc",textShadow:"0 0 8px rgba(245,158,11,0.25)"}}>{oppTactic.formation}</div>
+              {_dotMatrix(oppTactic.formation)}
+              <div style={{marginLeft:"auto",minWidth:150,flex:1}}>
+                <div style={{fontSize:10,fontWeight:800,color:ACC,marginBottom:3}}>PRESSING {oppTactic.pressure}%</div>
+                <div style={{position:"relative",height:8,borderRadius:4,overflow:"hidden",background:"rgba(255,255,255,0.08)"}}>
+                  <div style={{position:"absolute",left:0,top:0,height:"100%",width:clamp(oppTactic.pressure||0,0,100)+"%",transformOrigin:"left",animation:"cpmLtMeter .6s ease-out both",background:"linear-gradient(90deg,#22c55e,#f59e0b 55%,#ef4444)"}}/>
+                  <div style={{position:"absolute",inset:0,background:"repeating-linear-gradient(90deg, transparent 0 calc(10% - 1px), rgba(10,14,26,0.9) calc(10% - 1px) 10%)"}}/>
+                </div>
+              </div>
+            </div>
+          )}
+          <div style={{fontSize:9,fontWeight:500,color:"rgba(255,255,255,0.28)",marginTop:6}}>Tattica deterministica</div>
+        </div>
+        {/* CTA */}
+        <div style={{display:"flex",gap:8,flexWrap:"wrap",padding:"12px 8px 0"}}>
+          <Btn onClick={onSkip} v="ghost" style={{flex:0,padding:"10px 14px",fontSize:12}}>Salta</Btn>
+          <Btn onClick={onContinue} fw style={{flexBasis:"100%",flex:"1 1 100%",position:"relative",overflow:"hidden",padding:"13px",fontSize:14,fontWeight:800,background:"linear-gradient(135deg,#f59e0b,#d97706)",boxShadow:"0 6px 20px rgba(245,158,11,0.25)"}}>
+            <span style={{position:"relative",zIndex:1}}>⚽ Ingresso in campo →</span>
+            <span style={{position:"absolute",top:0,left:0,width:"40%",height:"100%",background:"linear-gradient(90deg,transparent,rgba(255,255,255,0.35),transparent)",animation:"cpmLtShine 0.9s ease-out 1",pointerEvents:"none"}}/>
+          </Btn>
+        </div>
+      </div>
+    </div>
+    );
 }
 
 /* WALKOUT OVERLAY */
