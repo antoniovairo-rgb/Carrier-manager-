@@ -3123,7 +3123,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="6.19.0"; // [6.19.0] HOME title screen → HERO masthead branded (banner gradiente granata, wordmark bianco elev-pallone-RA, tagline, decori) invece del logo centrato piatto → prima impressione premium. Save-slot con avatar DiceBear + OVR ring. Gate-cieco su HomeScreen → transpile + gate 14/14.
+const GAME_VERSION="6.20.0"; // [6.20.0] ROSA (Club) → righe-giocatore stile Football Manager: chip RUOLO colorato (P cyan/D blu/C verde/A rosso) + badge OVR (verde>=80/ambra>=68) + zebra surface2 + eroe evidenziato in primaryTint (era rgba blu). OVR NPC da pl.ovr o derivato deterministico dal prestige club. Gate-cieco su Club → transpile + gate 14/14.
 // [6.18.0-note] // [6.18.0] AVATAR = libreria DiceBear (direttiva PO): CH38 3D via dai menu (resta solo nel live match). EROE/giocatori = stile AVATAAARS con FEDELTA al modello CH38 (forza carnagione+capelli+calvizie dalla stessa fonte AVATARS[avatarId] usata dal CH38 a r.7127 -> avatar dei menu ≈ giocatore in campo). NPC/staff (agente, mister via NpcFaceCoach) = stile MICAH seedato dal nome. Bundle locale offline assets/dicebear-avatars.min.js (esbuild IIFE avataaars+micah, ~163KB) caricato da script locale -> no CDN, funziona in gate/offline/produzione. AvatarSVG DiceBear-backed (API invariata, cache seed). Sorgente rigenerabile in tools/avatar-build/. Gate-cieco su CareerApp ma DiceBear carica anche in gate.
 const SAVE_VERSION=8;// v8 [5.81.0 BIL-3b]: bankBalance (stipendio accumulato, €) + perkTrainer/perkNutrition (staff personale) — migration retro-compatibile. v7: player.foot
 // 5.67.0 — TABELLONE realistico del torneo per NAZIONALI (Europeo/Mondiale): dopo il girone la fase a
@@ -19385,14 +19385,19 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
             {(()=>{
               const titolari=roster.slice(0,11);
               const panchina=roster.slice(11);
+              const _roleCat=r=>/portiere/i.test(r)?["P","#0891b2"]:/difensore|terzino|centrale/i.test(r)?["D","#2563eb"]:/mediano|centrocampista|mezzala|regista|interno/i.test(r)?["C","#16a34a"]:/trequartista|ala|centravanti|attaccante|punta|esterno/i.test(r)?["A","#dc2626"]:["·","#64748b"];
               const renderRow=(pl,i,offset=0)=>{
                 const isMe=pl.name===(player.name||"");
+                const _rc=_roleCat(pl.role||"");
+                const ov=isMe?(player.ovr||70):(pl.ovr!=null?pl.ovr:clamp((club.p||65)+((Math.abs(hashStr(pl.name||"x"))%13)-7),42,90));
+                const ovc=ov>=80?TH.success:ov>=68?TH.warning:TH.muted;
                 return(
-                  <div key={i} style={{display:"flex",alignItems:"center",gap:8,padding:"4px 6px",borderRadius:6,background:isMe?"rgba(59,130,246,0.1)":"transparent"}}>
-                    <div style={{fontSize:10,color:TH.faint,minWidth:18,textAlign:"right"}}>{pl.jerseyNum||i+1+offset}</div>
-                    <div style={{fontSize:13,width:18,flexShrink:0}}>{roleIcons[pl.role]||"⚽"}</div>
-                    <div style={{flex:1,fontSize:11,color:isMe?TH.primary:TH.text,fontWeight:isMe?700:400}}>{pl.name}</div>
-                    <div style={{fontSize:10,color:TH.faint,textAlign:"right"}}>{pl.role}</div>
+                  <div key={i} style={{display:"flex",alignItems:"center",gap:8,padding:"6px 8px",borderRadius:RAD.sm,background:isMe?TH.primaryTint:(i%2?TH.surface2:"transparent")}}>
+                    <span className="cpm-num" style={{fontSize:10,color:TH.faint,minWidth:16,textAlign:"center",fontWeight:FW.bold}}>{pl.jerseyNum||i+1+offset}</span>
+                    <span style={{fontSize:9,fontWeight:FW.black,color:"#fff",background:_rc[1],borderRadius:RAD.xs,padding:"2px 0",width:17,textAlign:"center",flexShrink:0,letterSpacing:.3}}>{_rc[0]}</span>
+                    <span style={{flex:1,minWidth:0,fontSize:12,color:isMe?TH.primary:TH.text,fontWeight:isMe?FW.bold:FW.regular,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{isMe?"★ ":""}{pl.name}</span>
+                    <span style={{fontSize:9,color:TH.faint,textTransform:"uppercase",letterSpacing:.3,whiteSpace:"nowrap"}}>{pl.role}</span>
+                    <span className="cpm-num" style={{fontSize:13,fontWeight:FW.black,color:ovc,minWidth:22,textAlign:"right"}}>{ov}</span>
                   </div>
                 );
               };
