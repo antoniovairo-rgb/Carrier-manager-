@@ -64,6 +64,26 @@ const R = await page.evaluate(()=>{
   F(q.length===2&&g.length===3, `STAB-NT: qualOpponents ${q.length}/2, groupOpponents ${g.length}/3`);
   F(!all.includes('Italia'), `STAB-NT: la propria nazione tra gli avversari`);
   F(new Set(all).size===all.length, `STAB-NT: avversari duplicati tra qual/group`);
+
+  // ---- [6.35.0 STAB-7/8] ECONOMIA settimanale (weeklyEconomyFields): stipendio − costi, gating pro ----
+  const eco=window.__CPM_CAREER&&window.__CPM_CAREER.weeklyEconomyFields;
+  if(typeof eco==='function'){
+    const pro=(o)=>({proStatus:'pro',contractExpired:false,contract:{wage:40000},bankBalance:0,hasAgent:false,perkTrainer:false,perkNutrition:false,...o});
+    // pro senza agente/perk → +wage pieno
+    F(eco(pro({})).bankBalance===40000, `STAB-ECO: wage pieno non accreditato (got ${eco(pro({})).bankBalance})`);
+    // agente 10% → +36000
+    F(eco(pro({hasAgent:true})).bankBalance===36000, `STAB-ECO: costo agente 10% errato (got ${eco(pro({hasAgent:true})).bankBalance})`);
+    // agente + trainer 5% + nutrizione 4% = 19% → +32400
+    F(eco(pro({hasAgent:true,perkTrainer:true,perkNutrition:true})).bankBalance===32400, `STAB-ECO: costi staff (19%) errati (got ${eco(pro({hasAgent:true,perkTrainer:true,perkNutrition:true})).bankBalance})`);
+    // U18 → nessun campo (no stipendio)
+    F(Object.keys(eco(pro({proStatus:'u18'}))).length===0, `STAB-ECO: U18 non deve accreditare stipendio`);
+    // svincolato → nessun campo
+    F(Object.keys(eco(pro({contractExpired:true}))).length===0, `STAB-ECO: svincolato non deve accreditare stipendio`);
+    // saldo già negativo tale che wage non lo copre → sospende i perk e non va sotto zero
+    const broke=eco(pro({hasAgent:true,perkTrainer:true,perkNutrition:true,contract:{wage:1000},bankBalance:-50000}));
+    F(broke.perkTrainer===false&&broke.perkNutrition===false, `STAB-ECO: perk non sospesi a fondi insufficienti`);
+    F(broke.bankBalance>=0, `STAB-ECO: bankBalance negativo (${broke.bankBalance})`);
+  } else { fails.push('STAB-ECO: hook weeklyEconomyFields non disponibile'); }
   return { fails };
 });
 
