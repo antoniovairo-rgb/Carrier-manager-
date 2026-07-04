@@ -39,23 +39,23 @@ for(let i=0;i<list.length;i++){
     await sleep(650);
     const ball0=await page.evaluate(()=>{const p=window.__CPM_PROBE();return p&&p.ball&&p.ball.world;});
     await page.evaluate((k)=>{ window.__CPM_FORCE_OUTCOME='success'; window.__CPM_RESOLVE(k); }, r.ai);
-    let gNames=new Set(), maxGw=0, hlType=null, hlVariant=null;
-    let limbSpan={lR:[],lL:[],aL:[],aR:[]};
-    for(let f=0;f<11;f++){
+    // [refined] finestra LUNGA (copre il build-up delle conclusioni) con EARLY-STOP appena il gesto GLB parte
+    //   → immediate finiscono subito, solo shot/cross/header usano l'intera finestra. Segnale RELIABLE = solo GLB.
+    let gNames=new Set(), maxGw=0, hlType=null, hlVariant=null, maxBall=0;
+    for(let f=0;f<30;f++){
       const g=await page.evaluate(()=>window.__CPM_GESTURE());
       if(g){ hlType=hlType||g.hlType; hlVariant=hlVariant||g.hlVariant;
-        if(g.glb){ if(g.glb.gName)gNames.add(g.glb.gName); if(g.glb.gw>maxGw)maxGw=g.glb.gw; }
-        ['lR','lL','aL','aR'].forEach(k=>{ if(g[k]&&typeof g[k].x==='number')limbSpan[k].push(g[k].x); }); }
-      await sleep(55);
+        if(g.glb){ if(g.glb.gName)gNames.add(g.glb.gName); if(g.glb.gw>maxGw)maxGw=g.glb.gw; } }
+      const b=await page.evaluate(()=>{const p=window.__CPM_PROBE();return p&&p.ball&&p.ball.world;});
+      if(b&&ball0){const dd=Math.hypot(b.x-ball0.x,b.z-ball0.z);if(dd>maxBall)maxBall=dd;}
+      if(maxGw>0.35)break; // gesto GLB chiaramente partito → basta
+      await sleep(90);
     }
-    const ball1=await page.evaluate(()=>{const p=window.__CPM_PROBE();return p&&p.ball&&p.ball.world;});
-    const ballMove = (ball0&&ball1)?+Math.hypot(ball1.x-ball0.x,ball1.z-ball0.z).toFixed(1):null;
-    const span=(a)=>a.length?Math.max(...a)-Math.min(...a):0;
-    const limbMax=Math.max(span(limbSpan.lR),span(limbSpan.lL),span(limbSpan.aL),span(limbSpan.aR));
+    const ballMove=+maxBall.toFixed(1);
     const glbGesture=[...gNames].filter(n=>n).join(',')||null;
-    const gestureFired = maxGw>0.15 || limbMax>0.3; // GLB clip a peso o swing procedurale reale
-    const ballMoved = ballMove!=null && ballMove>1.5;
-    results.push({...r, hlType, hlVariant, glbGesture, maxGw:+maxGw.toFixed(2), limbMax:+limbMax.toFixed(2), ballMove, gestureFired, ballMoved});
+    const gestureFired = maxGw>0.2; // SOLO il gesto GLB VISIBILE (niente più mesh procedurale nascosto)
+    const ballMoved = ballMove>2;
+    results.push({...r, hlType, hlVariant, glbGesture, maxGw:+maxGw.toFixed(2), ballMove, gestureFired, ballMoved});
   }catch(e){ results.push({...r, error:String(e.message).slice(0,60)}); }
   if(i%40===0)console.log(`  …${i}/${list.length}`);
 }
