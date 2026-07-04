@@ -24,7 +24,8 @@
     "selftest": "node run-golden.mjs --selftest",
     "setup": "npm install && npx playwright install chromium",
     "career-invariants": "node career-invariants.mjs",
-    "career-sim": "node career-sim-test.mjs"
+    "career-sim": "node career-sim-test.mjs",
+    "stab-nat-trigger": "node stab-nat-trigger-test.mjs"
   },
   "dependencies": {
     "playwright": "^1.48.0",

@@ -3130,7 +3130,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="6.31.1"; // [6.31.1] COLLAUDO PO «miglior giovane, ho 28 anni!»: la rassegna stampa usava «Miglior Giovane» (premio U21, PASSATO) come descrittore ATTUALE per chi aveva vinto il Golden Boy da giovane (isGB resta true per sempre) → ora il descrittore corrente si applica solo se age<=23 (isYoungGB); a 28 anni la stampa NON lo chiama piu' «Miglior Giovane». Il log del premio e il badge storico restano (riferimenti al passato). Gate 14/14. // [6.31.0] COLLAUDO PO — coerenza contesto NAZIONALE: (1) «rassegna stampa completamente sbagliata dopo la nazionale»: la rassegna titolava/tabellava col CLUB (FC Werkstadt, WRK) invece della NAZIONE (Italia, ITA) → ora per i match nazionali (result.context national/nationsCup/euroMondiale*) la squadra dell'eroe è la Nazione, sia nel report (locale+async) sia nel tabellino di PostMatchPress; (2) «la nazionale gioca nello stadio del club»: il NOME stadio usava player.club anche in nazionale → ora «Stadio Nazionale — <Nazione>» (coerente con crowdCtx già normalizzato). Gate 14/14 + career-invariants. // [6.30.0] COLLAUDO PO: (1) NUOVA sezione «📅 Calendario Nazionale — prossime partite» nel Tab Nazionale: prossima gara del torneo in corso + calendario REALE dei prossimi tornei (dai trigger del motore: settimana 20, %4===0→Europeo/Mondiale, altrimenti stagione pari→Coppa Nazioni). (2) fix UX «servizio sospeso, che significa?»: i toggle staff avevano etichette ambigue ATTIVA/ATTIVO e il messaggio «Servizio sospeso» criptico → ora «ATTIVA →» (azione, colore primario) vs «✓ ATTIVO» (stato, verde) + messaggi chiari («attivato — bonus attivo, costo Nk€» / «disattivato — non paghi più il costo»). Gate 14/14. // [6.29.0] COLLAUDO PO «posizionamento giocatori assolutamente sbagliata» (HL difensivo): il possesso off-ball poteva risultare "casa attacca" anche in un highlight DIFENSIVO (palla a centrocampo, bGX>50) → forme squadra INVERTITE (avversari ammucchiati come se difendessero, compagni sparsi invece di pressare). Ora un HL difensivo (P.hlDef) forza casa=DIFENDE → avversari in forma d'attacco (larghi), squadra di casa compatta e in pressing. Gate 14/14. // [6.28.0] COLLAUDO PO — FIX CRITICO «primavera 2 con 36 squadre, calendario contro l'Inter»: alla firma del 1° contratto pro il club senior ereditava la lega U18 ("Primavera 1/2") → getLeagueClubs cadeva sul fallback per NAZIONALITÀ (36 club = 2 divisioni mescolate). Ora: (a) l'offerta "stesso club" risolve la lega SENIOR reale dall'id (P1→Lega A, P2→Lega B); (b) cap difensivo a 18 sul fallback nazionale; (c) MIGRATION che ripara i save già rotti (rimappa lega senior + rigenera calendario coerente). + repair calendari esistenti per avversari consecutivi (fix 6.27.0 esteso ai vecchi save). + INGRESSO in campo: l'entrata scaglionata dal tunnel in due file ora parte SEMPRE (prima quasi mai → giocatori sparsi). Verificato: pro-league-probe (18 non 36, opp tutti in lega) + gate 14/14. // [6.27.0] COLLAUDO PO «duplicazione partita, l'ho giocata poco prima»: il calendario (double round-robin) poteva schedulare la STESSA squadra in due giornate CONSECUTIVE (andata+ritorno adiacenti, per via degli shuffle home/away indipendenti) → sembrava di rigiocare la stessa gara. generateSeasonCalendar ora evita l'avversario consecutivo (solo RIORDINO, stesse partite: verificato 34 gare, 0 dup reali, 0 consecutivi su 6 stagioni). Nessun cambio di logica su risultati/classifica. Gate 14/14. // [6.26.0] COLLAUDO PO Tab Club: (1) box «Obiettivi S.» RIMOSSO dal Tab Club (era DUPLICATO del box obiettivi già nel dashboard Home); (2) box «Staff & Spogliatoio» (allenatore in 2ª/preparatore/chimica) — che sembrava sparito perché era in fondo al Tab, sotto i 23 giocatori della rosa — spostato IN ALTO accanto al box Allenatore (dove stava l'Obiettivi). Gate 14/14. // [6.25.0] COLLAUDO PO regia 3D (slice 1 — cross): sulla CONCLUSIONE di un cross la camera non stacca più di colpo sul portiere (tagliando fuori il compagno che finalizza) ma tiene in quadro il FINALIZZATORE (fuoco-palla in area) INSIEME alla porta → si vede il colpo di testa/volo verso la rete. Solo isResult+hlType cross (shot/rigore/testa invariati) → firma golden (catturata al choose) INVARIATA. Gate 14/14. // [6.24.0] COLLAUDO PO 4-fix: (1) AVATAR eroe = GIOVANE: via lo stile "sides" (capelli solo ai lati=stempiatura) + via i capelli grigi (→ castano chiaro) → niente più «pelato anziano»; (2) box «Staff & Spogliatoio» spostato da Home al Tab CLUB; (3) box «Risultati Internazionali» spostato da Home al Tab STAGIONE (sotto la Classifica); (4) fix ESULTANZA TIFOSI INVERTITA: il pubblico/tifo/panchina esultavano sempre lato-CASA anche quando segnava l'eroe in TRASFERTA → nuovo flag stadiumHome (lato tribuna reale, distinto dal lato-mesh dell'eroe). Gate 14/14. // [6.23.0] COLLAUDO PO: fix «Personal trainer/Nutrizionista si disattivano da soli» — i costi settimanali dello staff erano a MINIMO FISSO (2000/1500€) che per stipendi modesti + saldo ≈0 superava il salario → auto-sospensione la settimana dopo l'attivazione. Ora costi SOLO proporzionali (5%/4% dello stipendio, come l'agente 10%): finché percepisci lo stipendio li copri sempre → restano attivi. Display costo aggiornato. // [6.22.0] COLLAUDO PO 4-fix: (1) AVATAR = SOLO 10 volti (griglia 5×2, niente shift) e NIENTE rasati/pelati (tutti con capelli); (2) fix DUPLICAZIONE sezione Nazionale nel Tab Profilo (viveva sia in Profilo sia nel Tab dedicato → rimossa da Profilo); (3) pallone ARANCIONE alta-visibilità con neve/nebbia/tempesta; (4) fix «a volte la rassegna stampa non carica» (Naz/Coppa/Euro uscivano prima della generazione report → report locale sincrono per OGNI contesto + .catch). Gate 14/14. // [6.21.0] AVATAR EROE = SOLO MASCHILE (direttiva PO): il bundle avataaars ora vincola acconciature corte maschili (MALE_TOP, niente capelli lunghi/hijab/bob), niente barba (coerente CH38 beardless), accessoriesProbability 0 (via occhiali/benda), occhi/sopracciglia/bocca neutri-positivi, abbigliamento maschile senza rosa. Ripristina+estende il polish 6.18.1 (perso nel rebuild avataaars+micah). Solo assets/dicebear-avatars.min.js. Gate 14/14.
+const GAME_VERSION="6.32.0"; // [6.32.0] STABILIZZAZIONE (audit multi-agente «stabilizzare il gioco») — 2 bug HIGH strutturali sui PERCORSI DI AVANZAMENTO frammentati: (STAB-1) il risultato di LEGA simulato veniva SCARTATO dalla classifica quando una gara europea era pendente la stessa settimana (la guardia _pendingEuro gating anche l'update classifica) → desync classifica↔calendario, invariante 34 partite/GF-GA rotto. Ora l'update classifica del match di lega è INCONDIZIONATO; _pendingEuro gating SOLO l'avanzamento settimana. (STAB-2) il torneo Nazionale (Europeo/Mondiale) partiva SOLO da doAdvanceWeek → giocando dal vivo o SIMULANDO la partita di W20 (che avanza la settimana altrove) il torneo non partiva MAI. Estratto helper condiviso natTournamentPatch/applyNatTournamentTrigger (Coppa Nazioni %2 + Euro/Mondiale %4, seed/opponenti IDENTICI ai blocchi inline) invocato da TUTTI e 3 i path (doAdvanceWeek/onMatchEnd/simulateAndAdvance), idempotente. Gate 14/14 + career-invariants. // [6.31.1] COLLAUDO PO «miglior giovane, ho 28 anni!»: la rassegna stampa usava «Miglior Giovane» (premio U21, PASSATO) come descrittore ATTUALE per chi aveva vinto il Golden Boy da giovane (isGB resta true per sempre) → ora il descrittore corrente si applica solo se age<=23 (isYoungGB); a 28 anni la stampa NON lo chiama piu' «Miglior Giovane». Il log del premio e il badge storico restano (riferimenti al passato). Gate 14/14. // [6.31.0] COLLAUDO PO — coerenza contesto NAZIONALE: (1) «rassegna stampa completamente sbagliata dopo la nazionale»: la rassegna titolava/tabellava col CLUB (FC Werkstadt, WRK) invece della NAZIONE (Italia, ITA) → ora per i match nazionali (result.context national/nationsCup/euroMondiale*) la squadra dell'eroe è la Nazione, sia nel report (locale+async) sia nel tabellino di PostMatchPress; (2) «la nazionale gioca nello stadio del club»: il NOME stadio usava player.club anche in nazionale → ora «Stadio Nazionale — <Nazione>» (coerente con crowdCtx già normalizzato). Gate 14/14 + career-invariants. // [6.30.0] COLLAUDO PO: (1) NUOVA sezione «📅 Calendario Nazionale — prossime partite» nel Tab Nazionale: prossima gara del torneo in corso + calendario REALE dei prossimi tornei (dai trigger del motore: settimana 20, %4===0→Europeo/Mondiale, altrimenti stagione pari→Coppa Nazioni). (2) fix UX «servizio sospeso, che significa?»: i toggle staff avevano etichette ambigue ATTIVA/ATTIVO e il messaggio «Servizio sospeso» criptico → ora «ATTIVA →» (azione, colore primario) vs «✓ ATTIVO» (stato, verde) + messaggi chiari («attivato — bonus attivo, costo Nk€» / «disattivato — non paghi più il costo»). Gate 14/14. // [6.29.0] COLLAUDO PO «posizionamento giocatori assolutamente sbagliata» (HL difensivo): il possesso off-ball poteva risultare "casa attacca" anche in un highlight DIFENSIVO (palla a centrocampo, bGX>50) → forme squadra INVERTITE (avversari ammucchiati come se difendessero, compagni sparsi invece di pressare). Ora un HL difensivo (P.hlDef) forza casa=DIFENDE → avversari in forma d'attacco (larghi), squadra di casa compatta e in pressing. Gate 14/14. // [6.28.0] COLLAUDO PO — FIX CRITICO «primavera 2 con 36 squadre, calendario contro l'Inter»: alla firma del 1° contratto pro il club senior ereditava la lega U18 ("Primavera 1/2") → getLeagueClubs cadeva sul fallback per NAZIONALITÀ (36 club = 2 divisioni mescolate). Ora: (a) l'offerta "stesso club" risolve la lega SENIOR reale dall'id (P1→Lega A, P2→Lega B); (b) cap difensivo a 18 sul fallback nazionale; (c) MIGRATION che ripara i save già rotti (rimappa lega senior + rigenera calendario coerente). + repair calendari esistenti per avversari consecutivi (fix 6.27.0 esteso ai vecchi save). + INGRESSO in campo: l'entrata scaglionata dal tunnel in due file ora parte SEMPRE (prima quasi mai → giocatori sparsi). Verificato: pro-league-probe (18 non 36, opp tutti in lega) + gate 14/14. // [6.27.0] COLLAUDO PO «duplicazione partita, l'ho giocata poco prima»: il calendario (double round-robin) poteva schedulare la STESSA squadra in due giornate CONSECUTIVE (andata+ritorno adiacenti, per via degli shuffle home/away indipendenti) → sembrava di rigiocare la stessa gara. generateSeasonCalendar ora evita l'avversario consecutivo (solo RIORDINO, stesse partite: verificato 34 gare, 0 dup reali, 0 consecutivi su 6 stagioni). Nessun cambio di logica su risultati/classifica. Gate 14/14. // [6.26.0] COLLAUDO PO Tab Club: (1) box «Obiettivi S.» RIMOSSO dal Tab Club (era DUPLICATO del box obiettivi già nel dashboard Home); (2) box «Staff & Spogliatoio» (allenatore in 2ª/preparatore/chimica) — che sembrava sparito perché era in fondo al Tab, sotto i 23 giocatori della rosa — spostato IN ALTO accanto al box Allenatore (dove stava l'Obiettivi). Gate 14/14. // [6.25.0] COLLAUDO PO regia 3D (slice 1 — cross): sulla CONCLUSIONE di un cross la camera non stacca più di colpo sul portiere (tagliando fuori il compagno che finalizza) ma tiene in quadro il FINALIZZATORE (fuoco-palla in area) INSIEME alla porta → si vede il colpo di testa/volo verso la rete. Solo isResult+hlType cross (shot/rigore/testa invariati) → firma golden (catturata al choose) INVARIATA. Gate 14/14. // [6.24.0] COLLAUDO PO 4-fix: (1) AVATAR eroe = GIOVANE: via lo stile "sides" (capelli solo ai lati=stempiatura) + via i capelli grigi (→ castano chiaro) → niente più «pelato anziano»; (2) box «Staff & Spogliatoio» spostato da Home al Tab CLUB; (3) box «Risultati Internazionali» spostato da Home al Tab STAGIONE (sotto la Classifica); (4) fix ESULTANZA TIFOSI INVERTITA: il pubblico/tifo/panchina esultavano sempre lato-CASA anche quando segnava l'eroe in TRASFERTA → nuovo flag stadiumHome (lato tribuna reale, distinto dal lato-mesh dell'eroe). Gate 14/14. // [6.23.0] COLLAUDO PO: fix «Personal trainer/Nutrizionista si disattivano da soli» — i costi settimanali dello staff erano a MINIMO FISSO (2000/1500€) che per stipendi modesti + saldo ≈0 superava il salario → auto-sospensione la settimana dopo l'attivazione. Ora costi SOLO proporzionali (5%/4% dello stipendio, come l'agente 10%): finché percepisci lo stipendio li copri sempre → restano attivi. Display costo aggiornato. // [6.22.0] COLLAUDO PO 4-fix: (1) AVATAR = SOLO 10 volti (griglia 5×2, niente shift) e NIENTE rasati/pelati (tutti con capelli); (2) fix DUPLICAZIONE sezione Nazionale nel Tab Profilo (viveva sia in Profilo sia nel Tab dedicato → rimossa da Profilo); (3) pallone ARANCIONE alta-visibilità con neve/nebbia/tempesta; (4) fix «a volte la rassegna stampa non carica» (Naz/Coppa/Euro uscivano prima della generazione report → report locale sincrono per OGNI contesto + .catch). Gate 14/14. // [6.21.0] AVATAR EROE = SOLO MASCHILE (direttiva PO): il bundle avataaars ora vincola acconciature corte maschili (MALE_TOP, niente capelli lunghi/hijab/bob), niente barba (coerente CH38 beardless), accessoriesProbability 0 (via occhiali/benda), occhi/sopracciglia/bocca neutri-positivi, abbigliamento maschile senza rosa. Ripristina+estende il polish 6.18.1 (perso nel rebuild avataaars+micah). Solo assets/dicebear-avatars.min.js. Gate 14/14.
 // [6.18.0-note] // [6.18.0] AVATAR = libreria DiceBear (direttiva PO): CH38 3D via dai menu (resta solo nel live match). EROE/giocatori = stile AVATAAARS con FEDELTA al modello CH38 (forza carnagione+capelli+calvizie dalla stessa fonte AVATARS[avatarId] usata dal CH38 a r.7127 -> avatar dei menu ≈ giocatore in campo). NPC/staff (agente, mister via NpcFaceCoach) = stile MICAH seedato dal nome. Bundle locale offline assets/dicebear-avatars.min.js (esbuild IIFE avataaars+micah, ~163KB) caricato da script locale -> no CDN, funziona in gate/offline/produzione. AvatarSVG DiceBear-backed (API invariata, cache seed). Sorgente rigenerabile in tools/avatar-build/. Gate-cieco su CareerApp ma DiceBear carica anche in gate.
 const SAVE_VERSION=8;// v8 [5.81.0 BIL-3b]: bankBalance (stipendio accumulato, €) + perkTrainer/perkNutrition (staff personale) — migration retro-compatibile. v7: player.foot
 // 5.67.0 — TABELLONE realistico del torneo per NAZIONALI (Europeo/Mondiale): dopo il girone la fase a
@@ -15427,9 +15427,51 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
         if(!player.weekLived){liveCurrentWeek();return "lived";}
         if(getThisWeekMatchday()){simulateAndAdvance();return "simulated";}
         doAdvanceWeek();return "advanced";
-      }catch(e){return "error:"+(e&&e.message);}}
+      }catch(e){return "error:"+(e&&e.message);}},
+      natTournamentPatch:(p)=>{try{return natTournamentPatch(p);}catch(e){return "error:"+(e&&e.message);}} // [6.32.0 STAB-2] espone l'helper trigger tornei Nazionali per la suite career-invariants
     };
   }});
+  // [6.32.0 STAB-2] Trigger tornei Nazionali (W20) — UNICA sorgente condivisa da TUTTI i path di
+  // avanzamento (doAdvanceWeek / onMatchEnd live / simulateAndAdvance). Prima il trigger Europeo/Mondiale
+  // viveva SOLO in doAdvanceWeek → giocando dal vivo o SIMULANDO la partita di W20 (che avanza la settimana
+  // fuori da doAdvanceWeek) il torneo Nazionale non partiva MAI. Puro: dato lo stato `p` con la settimana
+  // ANCORA a 20 ritorna {patch,notif}|null; il chiamante fa il merge nel proprio setPlayer ed emette la
+  // notifica. Le guardie idempotenti (active + worldMemory della stagione) garantiscono un SOLO fire anche
+  // se più path lo chiamano. I due tornei (Coppa Nazioni %2, Euro/Mondiale %4) sono mutuamente esclusivi.
+  const _NAT_POOL=["Italia","Spagna","Francia","Germania","Inghilterra","Portogallo","Brasile","Argentina","Olanda","Belgio"];
+  const natTournamentPatch=(p)=>{
+    const wk=p.week||1;const inU18=(p.proStatus||"u18")==="u18";
+    if(inU18||wk!==20)return null;
+    const season=p.season||1;
+    const mkRng=(s)=>{let sr=hashStr(s);return ()=>{sr=((sr*1664525+1013904223)&0xffffffff)>>>0;return sr/0xffffffff;};};
+    // Coppa delle Nazioni — ogni 2 stagioni pro (skip negli anni Euro/Mondiale)
+    if(season%2===0&&season%4!==0&&(p.nationalCaps||0)>=2&&!(p.worldMemory||[]).some(m=>m.type==="nations_cup"&&m.season===season)&&!p.nationsCupQueue?.active){
+      const rng=mkRng((p.nation||"Italia")+season);
+      const opps=[..._NAT_POOL.filter(n=>n!==(p.nation||"Italia"))].sort(()=>rng()-.5).slice(0,3);
+      return {patch:{nationsCupQueue:{active:true,opponents:opps,matchIdx:0,pts:0,matches:[],done:false,season}},
+        notif:{msg:"🌍 Sei convocato per la Coppa delle Nazioni! Gioca le 3 partite dal tuo profilo.",col:TH.accent,delay:600}};
+    }
+    // Europeo/Mondiale — ogni 4 stagioni pro (qualificazioni a W20)
+    if(season%4===0&&(p.nationalCaps||0)>=3&&!p.euroMondiale?.active&&!(p.worldMemory||[]).some(m=>m.type==="euro_mondiale"&&m.season===season)){
+      const emType=season%8===0?"Mondiale":"Europeo";
+      const rng=mkRng((p.nation||"Italia")+emType+season);
+      const shuffled=[..._NAT_POOL.filter(n=>n!==(p.nation||"Italia"))].sort(()=>rng()-.5);
+      return {patch:{euroMondiale:{active:true,type:emType,season,phase:"qualificazioni",
+        qualOpponents:shuffled.slice(0,2),qualMatchIdx:0,qualPts:0,qualDone:false,qualQualified:false,
+        groupOpponents:shuffled.slice(2,5),groupMatchIdx:0,groupPts:0,groupMatches:[],
+        koPhase:null,koOpponent:null,koResults:[],qualified:false,champion:false,eliminated:false,done:false}},
+        notif:{msg:`🌍 ${emType} — Qualificazioni! 2 partite per staccare il pass. Gioca dal pannello Nazione.`,col:TH.accent,delay:600}};
+    }
+    return null;
+  };
+  const applyNatTournamentTrigger=(basePlayer)=>{
+    const ntp=natTournamentPatch(basePlayer);
+    if(!ntp)return false;
+    setPlayer(p=>({...p,...ntp.patch}));
+    setTimeout(()=>notify(ntp.notif.msg,ntp.notif.col),ntp.notif.delay);
+    return true;
+  };
+
   // Simulate current week's match then advance
   const simulateAndAdvance=()=>{
     setShowMatchPrompt(null);
@@ -15494,7 +15536,11 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       // League/Cup match — check pending euro/cup at same week
       const _pendingEuro=newCal.some(m=>m.week===(p.week||1)&&!m.played&&(m.type==="euro_group"||m.type==="euro"));
       const clubId=p.club?.id||p.club?.n;
-      const newSt=_pendingEuro?p.standings:updateStandings(p.standings||initStandings(lc),clubId,sim,p.clubPrestigeShifts||{},{opponentId:md2.opponentId||opp?.id||opp?.n,seed:_aSd});
+      // [6.32.0 STAB-1] La partita di LEGA è stata giocata/simulata (marcata played in newCal + in matchHistory):
+      // il suo risultato DEVE entrare in classifica SEMPRE. _pendingEuro gating SOLO l'avanzamento settimana,
+      // MAI l'update della classifica (prima: con un match europeo pendente la stessa settimana il risultato di
+      // lega veniva scartato → desync classifica↔calendario, l'invariante 34 partite/GF-GA si rompeva).
+      const newSt=updateStandings(p.standings||initStandings(lc),clubId,sim,p.clubPrestigeShifts||{},{opponentId:md2.opponentId||opp?.id||opp?.n,seed:_aSd});
       if(isInjured){
         const injHistory=[...(p.matchHistory||[]),{week:p.week||1,opponent:opp.n,oppAbbr:opp.a,oppCol:opp.c,homeScore:sim.homeScore,awayScore:sim.awayScore,goals:0,assists:0,rating:null,won:sim.won,drew:sim.drew,simulated:true,injured:true}].slice(-200);
         notify(`🩹 Infort. (saltata) ${sim.homeScore}–${sim.awayScore} vs ${opp.n}`,sim.won?TH.success:sim.drew?TH.warning:TH.danger);
@@ -15507,6 +15553,9 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       notify(`Simulazione: ${sim.homeScore}–${sim.awayScore} vs ${opp.n}`,sim.won?TH.success:sim.drew?TH.warning:TH.danger);
       return{...p,standings:newSt,calendar:newCal,matchHistory:newHistory,matches:(p.matches||0)+1,goals:(p.goals||0)+_sPS131.goals,totalGoals:(p.totalGoals||0)+_sPS131.goals,assists:(p.assists||0)+_sPS131.assists,totalAssists:(p.totalAssists||0)+_sPS131.assists,morale:clamp((p.morale||70)+moD,0,100),week:_pendingEuro?(p.week||1):(p.week||1)+1,weekLived:_pendingEuro?true:false,returnPenaltyWeeks:_pendingEuro?(p.returnPenaltyWeeks||0):Math.max(0,(p.returnPenaltyWeeks||0)-1),...(!_pendingEuro?{sessionsThisWeek:0,sessionLog:[],weeklyFocusType:null}:{})};
     });
+    // [6.32.0 STAB-2] SIMULANDO la partita di W20 la settimana avanza qui (fuori da doAdvanceWeek) → il
+    // torneo Nazionale non partiva mai. Ora il trigger condiviso scatta anche su questo path (idempotente).
+    applyNatTournamentTrigger(player);
   };
 
   const getContinuaState=()=>{
@@ -15924,19 +15973,11 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     if(newAch.length>0){setPlayer(p=>({...p,achievements:[...(p.achievements||[]),...newAch]}));newAch.forEach((id,i)=>{const def=ACHIEVEMENTS.find(a=>a.id===id);if(def)setTimeout(()=>notify(`${def.icon} Achievement: ${def.name}!`,"#7c3aed"),2000+i*2500);});}
     // S21: rivalry tracking
     if(result.opponent){setPlayer(p=>{const rv=p.rivalries||[];const existing=rv.find(r=>r.opponent===result.opponent);if(existing){const upd=rv.map(r=>r.opponent===result.opponent?{...r,matches:r.matches+1,wins:r.wins+(result.won?1:0),goals:r.goals+result.goals,lastSeason:p.season||1}:r);return{...p,rivalries:upd};}else if(rv.length<10){return{...p,rivalries:[...rv,{opponent:result.opponent,oppAbbr:result.oppAbbr||"???",oppCol:result.oppCol||"#888",matches:1,wins:result.won?1:0,goals:result.goals,lastSeason:p.season||1}]};}return p;});}
-    // Item 4: Nations Cup trigger via onMatchEnd — covers the case where playing a W20 career match
-    // advances the week via onMatchEnd (bypassing doAdvanceWeek's check at weekVal===20)
-    {const _nc4Wk=player.week||1;const _nc4IsInU18=(player.proStatus||"u18")==="u18";
-    const _nc4PendingEuro=(player.calendar||[]).some(m=>m.week===_nc4Wk&&!m.played&&(m.type==="euro_group"||m.type==="euro"));
-    if(!_nc4IsInU18&&_nc4Wk===20&&!_nc4PendingEuro&&(player.season||1)%2===0&&(player.season||1)%4!==0&&(player.nationalCaps||0)>=2&&!(player.worldMemory||[]).some(m=>m.type==="nations_cup"&&m.season===(player.season||1))&&!player.nationsCupQueue?.active){
-      const _nc4Nat=["Italia","Spagna","Francia","Germania","Inghilterra","Portogallo","Brasile","Argentina","Olanda","Belgio"];
-      const _nc4Pool=_nc4Nat.filter(n=>n!==(player.nation||"Italia"));
-      const _nc4Seed=hashStr((player.nation||"Italia")+(player.season||1));
-      let _nc4Sr=_nc4Seed;const _nc4Rng=()=>{_nc4Sr=((_nc4Sr*1664525+1013904223)&0xffffffff)>>>0;return _nc4Sr/0xffffffff;};
-      const _nc4Opps=[..._nc4Pool].sort(()=>_nc4Rng()-.5).slice(0,3);
-      setPlayer(p=>({...p,nationsCupQueue:{active:true,opponents:_nc4Opps,matchIdx:0,pts:0,matches:[],done:false,season:p.season||1}}));
-      setTimeout(()=>notify("🌍 Sei convocato per la Coppa delle Nazioni! Gioca le 3 partite dal tuo profilo.",TH.accent),700);
-    }}
+    // [6.32.0 STAB-2] Trigger tornei Nazionali via onMatchEnd — copre il caso in cui si GIOCA dal vivo la
+    // partita di W20 (la settimana avanza qui, bypassando il check di doAdvanceWeek). Prima copriva SOLO la
+    // Coppa delle Nazioni → l'Europeo/Mondiale non partiva mai giocando la partita di lega di W20. Ora usa
+    // l'helper condiviso natTournamentPatch (Coppa Nazioni + Euro/Mondiale), idempotente.
+    applyNatTournamentTrigger(player);
   };
 
   // Sprint 24 — apply impulse/spogliatoio choice effects (called from weekLiveModal choice buttons)
@@ -16265,34 +16306,10 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
         }else{setPlayer(p=>({...p,euro:{...p.euro,phase:"eliminated",eliminated:true,qualified:false}}));setTimeout(()=>notify(`❌ ${player.euro?.competition}: eliminato dalla fase a gironi.`,TH.danger),400);}
       }
     }
-    // Sprint 43: Nations Cup trigger — every 2 pro seasons at week 20 (Sprint 53: skip on euroMondiale years)
-    if(!isInU18&&weekVal===20&&(player.season||1)%2===0&&(player.season||1)%4!==0&&(player.nationalCaps||0)>=2&&!(player.worldMemory||[]).some(m=>m.type==="nations_cup"&&m.season===(player.season||1))&&!player.nationsCupQueue?.active){
-      const _allNat=["Italia","Spagna","Francia","Germania","Inghilterra","Portogallo","Brasile","Argentina","Olanda","Belgio"];
-      const _oppPool=_allNat.filter(n=>n!==(player.nation||"Italia"));
-      const _seed=hashStr((player.nation||"Italia")+(player.season||1));
-      let _sr=_seed;const _srng=()=>{_sr=((_sr*1664525+1013904223)&0xffffffff)>>>0;return _sr/0xffffffff;};
-      const _shuffled=[..._oppPool].sort(()=>_srng()-.5);
-      const _opps=_shuffled.slice(0,3);
-      setPlayer(p=>({...p,nationsCupQueue:{active:true,opponents:_opps,matchIdx:0,pts:0,matches:[],done:false,season:p.season||1}}));
-      setTimeout(()=>notify("🌍 Sei convocato per la Coppa delle Nazioni! Gioca le 3 partite dal tuo profilo.",TH.accent),500);
-    }
-    // Item 6: Europeo/Mondiale — qualificazioni a W20, torneo a W24 (ogni 4 stagioni pro)
-    // W20: avvia fase qualificazioni (2 partite, servono ≥3pt per qualificarsi)
-    if(!isInU18&&weekVal===20&&(player.season||1)%4===0&&(player.nationalCaps||0)>=3&&!player.euroMondiale?.active&&!(player.worldMemory||[]).some(m=>m.type==="euro_mondiale"&&m.season===(player.season||1))){
-      const _emType=(player.season||1)%8===0?"Mondiale":"Europeo";
-      const _allNat=["Italia","Spagna","Francia","Germania","Inghilterra","Portogallo","Brasile","Argentina","Olanda","Belgio"];
-      const _oppPool=_allNat.filter(n=>n!==(player.nation||"Italia"));
-      const _seed=hashStr((player.nation||"Italia")+_emType+(player.season||1));
-      let _sr=_seed;const _srng=()=>{_sr=((_sr*1664525+1013904223)&0xffffffff)>>>0;return _sr/0xffffffff;};
-      const _shuffled=[..._oppPool].sort(()=>_srng()-.5);
-      const _qualOpps=_shuffled.slice(0,2);   // 2 avversari qualificazioni
-      const _groupOpps=_shuffled.slice(2,5); // pre-generati per il torneo
-      setPlayer(p=>({...p,euroMondiale:{active:true,type:_emType,season:p.season||1,
-        phase:"qualificazioni",qualOpponents:_qualOpps,qualMatchIdx:0,qualPts:0,qualDone:false,qualQualified:false,
-        groupOpponents:_groupOpps,groupMatchIdx:0,groupPts:0,groupMatches:[],
-        koPhase:null,koOpponent:null,koResults:[],qualified:false,champion:false,eliminated:false,done:false}}));
-      setTimeout(()=>notify(`🌍 ${_emType} — Qualificazioni! 2 partite per staccare il pass. Gioca dal pannello Nazione.`,TH.accent),500);
-    }
+    // [6.32.0 STAB-2] Trigger tornei Nazionali (Coppa Nazioni %2 · Europeo/Mondiale %4) a W20 — ora
+    // dall'helper condiviso natTournamentPatch (stesso identico patch delle vecchie due blocchi inline,
+    // seed/opponenti invariati), così doAdvanceWeek / onMatchEnd / simulateAndAdvance usano UNA sola logica.
+    applyNatTournamentTrigger(player);
     // W24: se qualificazioni completate → transizione a fase gironi (o eliminazione)
     if(!isInU18&&weekVal===24&&player.euroMondiale?.active&&player.euroMondiale?.phase==="qualificazioni"){
       if(player.euroMondiale.qualDone){
