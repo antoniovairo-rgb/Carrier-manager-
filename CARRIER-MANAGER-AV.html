@@ -2888,7 +2888,10 @@ function getLeagueClubs(player){
     }
     if(lc.length>=4)return lc;}
   const nat=player.club.nat;
-  if(nat){const nc=CLUBS.filter(c=>c.nat===nat);if(nc.length>=4)return nc;}
+  if(nat){let nc=CLUBS.filter(c=>c.nat===nat);
+    if(nc.length>18){ // [6.28.0] CAP DIFENSIVO: una nazione ha 36 club (Lega A+B) → senza cap la lega esplodeva a 36 squadre mescolando due divisioni. Club dell'eroe sempre incluso, poi i più forti fino a 18.
+      const myId=player.club.id;const mine=nc.filter(c=>c.id===myId),rest=nc.filter(c=>c.id!==myId).sort((a,b)=>(b.p||0)-(a.p||0));nc=[...mine,...rest].slice(0,18);}
+    if(nc.length>=4)return nc;}
   return CLUBS.slice(0,16);
 }
 // contextual start position: player spawns inside the situation zone
@@ -3018,7 +3021,13 @@ function generateProContracts(player){
   const offers=[];
   // 1. Same club first pro contract — conditional on performance (Sprint 105)
   const parentName=((player.club?.n||player.club?.name||"?")+"").replace(/\s+(Primavera|U18)\s*$/i,"").trim();
-  const parentClub={...(player.club||{}),n:parentName,name:parentName,isU18:false,p:(player.club?.p||55)+12};
+  // [6.28.0 collaudo PO «primavera 2 con 36 squadre, il calendario inizia contro l'Inter»] FIX CRITICO:
+  //   il club "senior" del primo contratto ereditava per spread la lega U18 (lg:"Primavera 1/2"), che NON esiste
+  //   tra i club senior → getLeagueClubs cadeva sul fallback per NAZIONALITÀ (36 club = Lega A+B mescolate: "Modena
+  //   con l'Inter"). Ora la lega senior si RISOLVE dall'id del club (U18_CLUBS_P2 deriva da Lega B → "serie B").
+  const _seniorC=CLUBS.find(c=>c.id===(player.club?.id));
+  const _seniorLg=(_seniorC&&_seniorC.lg)||(player.club?.lg==="Primavera 1"?"Lega A":player.club?.lg==="Primavera 2"?"Lega B":(player.club?.lg&&CLUBS.some(c=>c.lg===player.club.lg)?player.club.lg:"Lega B"));
+  const parentClub={...(player.club||{}),n:parentName,name:parentName,isU18:false,p:(player.club?.p||55)+12,lg:_seniorLg};
   // Sprint 133: use unified wage helper (weekly €)
   const _wageWeek133=_ovrToWageWeekly133(ovr,parentClub.p||55);
   // Sprint 105: First Team offer requires minimum performance threshold
@@ -3121,7 +3130,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="6.27.0"; // [6.27.0] COLLAUDO PO «duplicazione partita, l'ho giocata poco prima»: il calendario (double round-robin) poteva schedulare la STESSA squadra in due giornate CONSECUTIVE (andata+ritorno adiacenti, per via degli shuffle home/away indipendenti) → sembrava di rigiocare la stessa gara. generateSeasonCalendar ora evita l'avversario consecutivo (solo RIORDINO, stesse partite: verificato 34 gare, 0 dup reali, 0 consecutivi su 6 stagioni). Nessun cambio di logica su risultati/classifica. Gate 14/14. // [6.26.0] COLLAUDO PO Tab Club: (1) box «Obiettivi S.» RIMOSSO dal Tab Club (era DUPLICATO del box obiettivi già nel dashboard Home); (2) box «Staff & Spogliatoio» (allenatore in 2ª/preparatore/chimica) — che sembrava sparito perché era in fondo al Tab, sotto i 23 giocatori della rosa — spostato IN ALTO accanto al box Allenatore (dove stava l'Obiettivi). Gate 14/14. // [6.25.0] COLLAUDO PO regia 3D (slice 1 — cross): sulla CONCLUSIONE di un cross la camera non stacca più di colpo sul portiere (tagliando fuori il compagno che finalizza) ma tiene in quadro il FINALIZZATORE (fuoco-palla in area) INSIEME alla porta → si vede il colpo di testa/volo verso la rete. Solo isResult+hlType cross (shot/rigore/testa invariati) → firma golden (catturata al choose) INVARIATA. Gate 14/14. // [6.24.0] COLLAUDO PO 4-fix: (1) AVATAR eroe = GIOVANE: via lo stile "sides" (capelli solo ai lati=stempiatura) + via i capelli grigi (→ castano chiaro) → niente più «pelato anziano»; (2) box «Staff & Spogliatoio» spostato da Home al Tab CLUB; (3) box «Risultati Internazionali» spostato da Home al Tab STAGIONE (sotto la Classifica); (4) fix ESULTANZA TIFOSI INVERTITA: il pubblico/tifo/panchina esultavano sempre lato-CASA anche quando segnava l'eroe in TRASFERTA → nuovo flag stadiumHome (lato tribuna reale, distinto dal lato-mesh dell'eroe). Gate 14/14. // [6.23.0] COLLAUDO PO: fix «Personal trainer/Nutrizionista si disattivano da soli» — i costi settimanali dello staff erano a MINIMO FISSO (2000/1500€) che per stipendi modesti + saldo ≈0 superava il salario → auto-sospensione la settimana dopo l'attivazione. Ora costi SOLO proporzionali (5%/4% dello stipendio, come l'agente 10%): finché percepisci lo stipendio li copri sempre → restano attivi. Display costo aggiornato. // [6.22.0] COLLAUDO PO 4-fix: (1) AVATAR = SOLO 10 volti (griglia 5×2, niente shift) e NIENTE rasati/pelati (tutti con capelli); (2) fix DUPLICAZIONE sezione Nazionale nel Tab Profilo (viveva sia in Profilo sia nel Tab dedicato → rimossa da Profilo); (3) pallone ARANCIONE alta-visibilità con neve/nebbia/tempesta; (4) fix «a volte la rassegna stampa non carica» (Naz/Coppa/Euro uscivano prima della generazione report → report locale sincrono per OGNI contesto + .catch). Gate 14/14. // [6.21.0] AVATAR EROE = SOLO MASCHILE (direttiva PO): il bundle avataaars ora vincola acconciature corte maschili (MALE_TOP, niente capelli lunghi/hijab/bob), niente barba (coerente CH38 beardless), accessoriesProbability 0 (via occhiali/benda), occhi/sopracciglia/bocca neutri-positivi, abbigliamento maschile senza rosa. Ripristina+estende il polish 6.18.1 (perso nel rebuild avataaars+micah). Solo assets/dicebear-avatars.min.js. Gate 14/14.
+const GAME_VERSION="6.28.0"; // [6.28.0] COLLAUDO PO — FIX CRITICO «primavera 2 con 36 squadre, calendario contro l'Inter»: alla firma del 1° contratto pro il club senior ereditava la lega U18 ("Primavera 1/2") → getLeagueClubs cadeva sul fallback per NAZIONALITÀ (36 club = 2 divisioni mescolate). Ora: (a) l'offerta "stesso club" risolve la lega SENIOR reale dall'id (P1→Lega A, P2→Lega B); (b) cap difensivo a 18 sul fallback nazionale; (c) MIGRATION che ripara i save già rotti (rimappa lega senior + rigenera calendario coerente). + repair calendari esistenti per avversari consecutivi (fix 6.27.0 esteso ai vecchi save). + INGRESSO in campo: l'entrata scaglionata dal tunnel in due file ora parte SEMPRE (prima quasi mai → giocatori sparsi). Verificato: pro-league-probe (18 non 36, opp tutti in lega) + gate 14/14. // [6.27.0] COLLAUDO PO «duplicazione partita, l'ho giocata poco prima»: il calendario (double round-robin) poteva schedulare la STESSA squadra in due giornate CONSECUTIVE (andata+ritorno adiacenti, per via degli shuffle home/away indipendenti) → sembrava di rigiocare la stessa gara. generateSeasonCalendar ora evita l'avversario consecutivo (solo RIORDINO, stesse partite: verificato 34 gare, 0 dup reali, 0 consecutivi su 6 stagioni). Nessun cambio di logica su risultati/classifica. Gate 14/14. // [6.26.0] COLLAUDO PO Tab Club: (1) box «Obiettivi S.» RIMOSSO dal Tab Club (era DUPLICATO del box obiettivi già nel dashboard Home); (2) box «Staff & Spogliatoio» (allenatore in 2ª/preparatore/chimica) — che sembrava sparito perché era in fondo al Tab, sotto i 23 giocatori della rosa — spostato IN ALTO accanto al box Allenatore (dove stava l'Obiettivi). Gate 14/14. // [6.25.0] COLLAUDO PO regia 3D (slice 1 — cross): sulla CONCLUSIONE di un cross la camera non stacca più di colpo sul portiere (tagliando fuori il compagno che finalizza) ma tiene in quadro il FINALIZZATORE (fuoco-palla in area) INSIEME alla porta → si vede il colpo di testa/volo verso la rete. Solo isResult+hlType cross (shot/rigore/testa invariati) → firma golden (catturata al choose) INVARIATA. Gate 14/14. // [6.24.0] COLLAUDO PO 4-fix: (1) AVATAR eroe = GIOVANE: via lo stile "sides" (capelli solo ai lati=stempiatura) + via i capelli grigi (→ castano chiaro) → niente più «pelato anziano»; (2) box «Staff & Spogliatoio» spostato da Home al Tab CLUB; (3) box «Risultati Internazionali» spostato da Home al Tab STAGIONE (sotto la Classifica); (4) fix ESULTANZA TIFOSI INVERTITA: il pubblico/tifo/panchina esultavano sempre lato-CASA anche quando segnava l'eroe in TRASFERTA → nuovo flag stadiumHome (lato tribuna reale, distinto dal lato-mesh dell'eroe). Gate 14/14. // [6.23.0] COLLAUDO PO: fix «Personal trainer/Nutrizionista si disattivano da soli» — i costi settimanali dello staff erano a MINIMO FISSO (2000/1500€) che per stipendi modesti + saldo ≈0 superava il salario → auto-sospensione la settimana dopo l'attivazione. Ora costi SOLO proporzionali (5%/4% dello stipendio, come l'agente 10%): finché percepisci lo stipendio li copri sempre → restano attivi. Display costo aggiornato. // [6.22.0] COLLAUDO PO 4-fix: (1) AVATAR = SOLO 10 volti (griglia 5×2, niente shift) e NIENTE rasati/pelati (tutti con capelli); (2) fix DUPLICAZIONE sezione Nazionale nel Tab Profilo (viveva sia in Profilo sia nel Tab dedicato → rimossa da Profilo); (3) pallone ARANCIONE alta-visibilità con neve/nebbia/tempesta; (4) fix «a volte la rassegna stampa non carica» (Naz/Coppa/Euro uscivano prima della generazione report → report locale sincrono per OGNI contesto + .catch). Gate 14/14. // [6.21.0] AVATAR EROE = SOLO MASCHILE (direttiva PO): il bundle avataaars ora vincola acconciature corte maschili (MALE_TOP, niente capelli lunghi/hijab/bob), niente barba (coerente CH38 beardless), accessoriesProbability 0 (via occhiali/benda), occhi/sopracciglia/bocca neutri-positivi, abbigliamento maschile senza rosa. Ripristina+estende il polish 6.18.1 (perso nel rebuild avataaars+micah). Solo assets/dicebear-avatars.min.js. Gate 14/14.
 // [6.18.0-note] // [6.18.0] AVATAR = libreria DiceBear (direttiva PO): CH38 3D via dai menu (resta solo nel live match). EROE/giocatori = stile AVATAAARS con FEDELTA al modello CH38 (forza carnagione+capelli+calvizie dalla stessa fonte AVATARS[avatarId] usata dal CH38 a r.7127 -> avatar dei menu ≈ giocatore in campo). NPC/staff (agente, mister via NpcFaceCoach) = stile MICAH seedato dal nome. Bundle locale offline assets/dicebear-avatars.min.js (esbuild IIFE avataaars+micah, ~163KB) caricato da script locale -> no CDN, funziona in gate/offline/produzione. AvatarSVG DiceBear-backed (API invariata, cache seed). Sorgente rigenerabile in tools/avatar-build/. Gate-cieco su CareerApp ma DiceBear carica anche in gate.
 const SAVE_VERSION=8;// v8 [5.81.0 BIL-3b]: bankBalance (stipendio accumulato, €) + perkTrainer/perkNutrition (staff personale) — migration retro-compatibile. v7: player.foot
 // 5.67.0 — TABELLONE realistico del torneo per NAZIONALI (Europeo/Mondiale): dopo il girone la fase a
@@ -7164,7 +7173,8 @@ function ThreeMatchView(props){
     const _placeRow=(list,xRow,side)=>{const n=list.length;list.forEach((m,i)=>{
       m._wx=xRow;m._wz=n>1?(-28+56*i/(n-1)):0;// slot finale schierato
       m._wDelay=0.18+i*0.20;// scaglionamento: emergono uno dopo l'altro dal tunnel
-      if(_isWalkStart){m.position.x=xRow-9;m.position.z=side*36;m._px=m.position.x;m._pz=m.position.z;m._sp=0;}// partenza: bocca del tunnel (lato campo)
+      m._wStartX=xRow-9;m._wStartZ=side*36;// [6.28.0] bocca del tunnel (lato campo) SEMPRE memorizzata → l'ingresso scaglionato si può riavviare all'inizio della fase walkout (non solo al mount)
+      if(_isWalkStart){m.position.x=m._wStartX;m.position.z=m._wStartZ;m._px=m.position.x;m._pz=m.position.z;m._sp=0;}// partenza: bocca del tunnel (lato campo)
     });};
     _placeRow(_homeMeshes,-15,-1);_placeRow(_awayMeshes,-7,1);
 
@@ -7551,7 +7561,7 @@ function ThreeMatchView(props){
       if(prog>=1){replaying=false;replayDone=true;setReplayOn(false);}
     };
     // Stato walkout 3D: i giocatori si schierano in fila, camera che scorre, poi calcio d'inizio
-    let walkT=0,walkDone=false;const WALK_DUR=6.2;
+    let walkT=0,walkDone=false,_wasWalk=false;const WALK_DUR=6.2;// [6.28.0] _wasWalk: rileva l'INIZIO della fase walkout nel render-loop → riavvia l'ingresso scaglionato dal tunnel ANCHE quando ThreeMatchView è montato prima (fase matchday) — prima l'ingresso "vero" partiva solo se il mount avveniva già in walkout (quasi mai) → i giocatori scivolavano dalla formazione, «sballato».
     // Cammina verso lo slot di walkout, fronte alla camera (-x)
     const animWalk=(mesh,dt,k)=>{
       // 5.47.17: prima del proprio turno il giocatore ASPETTA alla bocca del tunnel (idle leggero), poi entra
@@ -8114,6 +8124,15 @@ function ThreeMatchView(props){
             fr.body.instanceMatrix.needsUpdate=true;fr.head.instanceMatrix.needsUpdate=true;}_cm._frDirty=false;}}}
       // item 9: la cerimonia (tappeto-logo + mascotte) vive SOLO nella walkout → nascondi appena si esce (guard sul flag → lavoro una sola volta)
       if(!isWalk&&_ceremonyCarpet&&_ceremonyCarpet.visible){_ceremonyCarpet.visible=false;for(const m of _mascots)m.c.visible=false;}
+      // [6.28.0] INIZIO fase walkout (transizione matchday/formations → walkout): riporta TUTTI i mesh alla
+      //   bocca del tunnel e riavvia il timer d'ingresso → l'ingresso scaglionato in due file si vede SEMPRE,
+      //   non solo se il componente montava già in walkout. Escluso sotto ?cpmtest=1 (il gate salta la walkout).
+      if(isWalk&&!_wasWalk&&!_CPM_TEST){
+        const _toTunnel=(m)=>{if(!m||m._wStartX==null)return;m.position.x=m._wStartX;m.position.z=m._wStartZ;m.position.y=0;m._px=m.position.x;m._pz=m.position.z;m._sp=0;m._idle=0;};
+        sr.current.players.forEach(pp=>_toTunnel(pp.mesh));_toTunnel(hero);
+        walkT=0;walkDone=false;
+      }
+      _wasWalk=isWalk;
       if(isWalk){
         sr.current.players.forEach(pp=>animWalk(pp.mesh,aDt,ak));
         animWalk(hero,aDt,ak);
@@ -14636,6 +14655,20 @@ function migratePlayer(player){
       const _fc=ALL_U18_CLUBS.find(c=>c.id===newP.club.id);
       if(_fc){newP={...newP,club:_fc};changed=true;}
     }
+    // [6.28.0 collaudo PO «primavera 2 con 36 squadre»] REPAIR save PRO rotto: la transizione U18→pro poteva
+    //   lasciare la LEGA U18 ("Primavera 1/2") sul club senior → getLeagueClubs cadeva sul fallback nazionale
+    //   (lega a 36 squadre, divisioni mescolate: "Modena con l'Inter", "calendario contro l'Inter"). Rimappa alla
+    //   lega SENIOR reale (dall'id: P1→Lega A, P2→Lega B) e rigenera il calendario coerente (il vecchio aveva
+    //   avversari di altre divisioni). Le standings le ricostruisce già il blocco sotto (length ≠ lc.length).
+    if((newP.proStatus||"u18")==="pro"&&newP.club&&["Primavera 1","Primavera 2"].includes(newP.club.lg)){
+      const _scFix=CLUBS.find(c=>c.id===newP.club.id);
+      const _lgFix=(_scFix&&_scFix.lg)||(newP.club.lg==="Primavera 1"?"Lega A":"Lega B");
+      newP={...newP,club:{...newP.club,lg:_lgFix,isU18:false}};
+      const _seedFix28=((newP.season||1)*777+hashStr(newP.club.id||"club"))>>>0;
+      const _lcFix28=getLeagueClubs(newP);
+      newP={...newP,standings:initStandings(_lcFix28),calendar:generateSeasonCalendar(newP.club,_lcFix28,_seedFix28)};
+      changed=true;
+    }
     const lc=getLeagueClubs(newP);
     // Regenerate standings if missing, wrong size, or player's club not present (wrong pool)
     const _clubInStandings=(newP.standings||[]).some(s=>s.id===newP.club?.id);
@@ -14660,6 +14693,25 @@ function migratePlayer(player){
         const _newLeague176=_freshCal176.filter(m=>!_keptWks176.has(m.week));
         newP={...newP,calendar:[..._keepCal176,..._newLeague176].sort((a,b)=>(a.week||0)-(b.week||0))};
         changed=true;
+      }
+    }
+    // [6.28.0 collaudo PO «duplicazione partita, l'ho giocata poco prima»] REPAIR calendari ESISTENTI (generati
+    //   prima del fix 6.27.0): riordina la parte NON giocata per non affrontare lo STESSO avversario in due
+    //   giornate consecutive (andata+ritorno adiacenti). SOLO riordino degli slot week futuri: preserva le gare
+    //   giocate, il set di fixture e il bilancio casa/trasferta. Verificato standalone (multiset+H/A preservati).
+    if(Array.isArray(newP.calendar)&&newP.calendar.length){
+      const _cal28=newP.calendar,_isLg28=m=>!m.type;
+      const _futIdx28=[];_cal28.forEach((m,i)=>{if(_isLg28(m)&&!m.played)_futIdx28.push(i);});
+      if(_futIdx28.length>2){
+        let _lastOpp28=null;for(let i=0;i<_cal28.length;i++){if(_isLg28(_cal28[i])&&_cal28[i].played)_lastOpp28=_cal28[i].opponentId;}
+        let _prob28=false,_pv28=_lastOpp28;for(const i of _futIdx28){if(_cal28[i].opponentId===_pv28){_prob28=true;break;}_pv28=_cal28[i].opponentId;}
+        if(_prob28){
+          const _fx28=_futIdx28.map(i=>({opponentId:_cal28[i].opponentId,opponentName:_cal28[i].opponentName,isHome:_cal28[i].isHome}));
+          const _used28=new Array(_fx28.length).fill(false),_ord28=[];let _p28=_lastOpp28;
+          for(let s=0;s<_futIdx28.length;s++){let pick=_fx28.findIndex((f,k)=>!_used28[k]&&f.opponentId!==_p28);if(pick<0)pick=_used28.findIndex(u=>!u);_used28[pick]=true;_p28=_fx28[pick].opponentId;_ord28.push(pick);}
+          const _nc28=_cal28.slice();_futIdx28.forEach((ci,s)=>{const f=_fx28[_ord28[s]];_nc28[ci]={..._nc28[ci],opponentId:f.opponentId,opponentName:f.opponentName,isHome:f.isHome};});
+          newP={...newP,calendar:_nc28};changed=true;
+        }
       }
     }
     if(!newP.aiData){
