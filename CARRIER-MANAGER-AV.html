@@ -3121,7 +3121,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="6.25.0"; // [6.25.0] COLLAUDO PO regia 3D (slice 1 — cross): sulla CONCLUSIONE di un cross la camera non stacca più di colpo sul portiere (tagliando fuori il compagno che finalizza) ma tiene in quadro il FINALIZZATORE (fuoco-palla in area) INSIEME alla porta → si vede il colpo di testa/volo verso la rete. Solo isResult+hlType cross (shot/rigore/testa invariati) → firma golden (catturata al choose) INVARIATA. Gate 14/14. // [6.24.0] COLLAUDO PO 4-fix: (1) AVATAR eroe = GIOVANE: via lo stile "sides" (capelli solo ai lati=stempiatura) + via i capelli grigi (→ castano chiaro) → niente più «pelato anziano»; (2) box «Staff & Spogliatoio» spostato da Home al Tab CLUB; (3) box «Risultati Internazionali» spostato da Home al Tab STAGIONE (sotto la Classifica); (4) fix ESULTANZA TIFOSI INVERTITA: il pubblico/tifo/panchina esultavano sempre lato-CASA anche quando segnava l'eroe in TRASFERTA → nuovo flag stadiumHome (lato tribuna reale, distinto dal lato-mesh dell'eroe). Gate 14/14. // [6.23.0] COLLAUDO PO: fix «Personal trainer/Nutrizionista si disattivano da soli» — i costi settimanali dello staff erano a MINIMO FISSO (2000/1500€) che per stipendi modesti + saldo ≈0 superava il salario → auto-sospensione la settimana dopo l'attivazione. Ora costi SOLO proporzionali (5%/4% dello stipendio, come l'agente 10%): finché percepisci lo stipendio li copri sempre → restano attivi. Display costo aggiornato. // [6.22.0] COLLAUDO PO 4-fix: (1) AVATAR = SOLO 10 volti (griglia 5×2, niente shift) e NIENTE rasati/pelati (tutti con capelli); (2) fix DUPLICAZIONE sezione Nazionale nel Tab Profilo (viveva sia in Profilo sia nel Tab dedicato → rimossa da Profilo); (3) pallone ARANCIONE alta-visibilità con neve/nebbia/tempesta; (4) fix «a volte la rassegna stampa non carica» (Naz/Coppa/Euro uscivano prima della generazione report → report locale sincrono per OGNI contesto + .catch). Gate 14/14. // [6.21.0] AVATAR EROE = SOLO MASCHILE (direttiva PO): il bundle avataaars ora vincola acconciature corte maschili (MALE_TOP, niente capelli lunghi/hijab/bob), niente barba (coerente CH38 beardless), accessoriesProbability 0 (via occhiali/benda), occhi/sopracciglia/bocca neutri-positivi, abbigliamento maschile senza rosa. Ripristina+estende il polish 6.18.1 (perso nel rebuild avataaars+micah). Solo assets/dicebear-avatars.min.js. Gate 14/14.
+const GAME_VERSION="6.26.0"; // [6.26.0] COLLAUDO PO Tab Club: (1) box «Obiettivi S.» RIMOSSO dal Tab Club (era DUPLICATO del box obiettivi già nel dashboard Home); (2) box «Staff & Spogliatoio» (allenatore in 2ª/preparatore/chimica) — che sembrava sparito perché era in fondo al Tab, sotto i 23 giocatori della rosa — spostato IN ALTO accanto al box Allenatore (dove stava l'Obiettivi). Gate 14/14. // [6.25.0] COLLAUDO PO regia 3D (slice 1 — cross): sulla CONCLUSIONE di un cross la camera non stacca più di colpo sul portiere (tagliando fuori il compagno che finalizza) ma tiene in quadro il FINALIZZATORE (fuoco-palla in area) INSIEME alla porta → si vede il colpo di testa/volo verso la rete. Solo isResult+hlType cross (shot/rigore/testa invariati) → firma golden (catturata al choose) INVARIATA. Gate 14/14. // [6.24.0] COLLAUDO PO 4-fix: (1) AVATAR eroe = GIOVANE: via lo stile "sides" (capelli solo ai lati=stempiatura) + via i capelli grigi (→ castano chiaro) → niente più «pelato anziano»; (2) box «Staff & Spogliatoio» spostato da Home al Tab CLUB; (3) box «Risultati Internazionali» spostato da Home al Tab STAGIONE (sotto la Classifica); (4) fix ESULTANZA TIFOSI INVERTITA: il pubblico/tifo/panchina esultavano sempre lato-CASA anche quando segnava l'eroe in TRASFERTA → nuovo flag stadiumHome (lato tribuna reale, distinto dal lato-mesh dell'eroe). Gate 14/14. // [6.23.0] COLLAUDO PO: fix «Personal trainer/Nutrizionista si disattivano da soli» — i costi settimanali dello staff erano a MINIMO FISSO (2000/1500€) che per stipendi modesti + saldo ≈0 superava il salario → auto-sospensione la settimana dopo l'attivazione. Ora costi SOLO proporzionali (5%/4% dello stipendio, come l'agente 10%): finché percepisci lo stipendio li copri sempre → restano attivi. Display costo aggiornato. // [6.22.0] COLLAUDO PO 4-fix: (1) AVATAR = SOLO 10 volti (griglia 5×2, niente shift) e NIENTE rasati/pelati (tutti con capelli); (2) fix DUPLICAZIONE sezione Nazionale nel Tab Profilo (viveva sia in Profilo sia nel Tab dedicato → rimossa da Profilo); (3) pallone ARANCIONE alta-visibilità con neve/nebbia/tempesta; (4) fix «a volte la rassegna stampa non carica» (Naz/Coppa/Euro uscivano prima della generazione report → report locale sincrono per OGNI contesto + .catch). Gate 14/14. // [6.21.0] AVATAR EROE = SOLO MASCHILE (direttiva PO): il bundle avataaars ora vincola acconciature corte maschili (MALE_TOP, niente capelli lunghi/hijab/bob), niente barba (coerente CH38 beardless), accessoriesProbability 0 (via occhiali/benda), occhi/sopracciglia/bocca neutri-positivi, abbigliamento maschile senza rosa. Ripristina+estende il polish 6.18.1 (perso nel rebuild avataaars+micah). Solo assets/dicebear-avatars.min.js. Gate 14/14.
 // [6.18.0-note] // [6.18.0] AVATAR = libreria DiceBear (direttiva PO): CH38 3D via dai menu (resta solo nel live match). EROE/giocatori = stile AVATAAARS con FEDELTA al modello CH38 (forza carnagione+capelli+calvizie dalla stessa fonte AVATARS[avatarId] usata dal CH38 a r.7127 -> avatar dei menu ≈ giocatore in campo). NPC/staff (agente, mister via NpcFaceCoach) = stile MICAH seedato dal nome. Bundle locale offline assets/dicebear-avatars.min.js (esbuild IIFE avataaars+micah, ~163KB) caricato da script locale -> no CDN, funziona in gate/offline/produzione. AvatarSVG DiceBear-backed (API invariata, cache seed). Sorgente rigenerabile in tools/avatar-build/. Gate-cieco su CareerApp ma DiceBear carica anche in gate.
 const SAVE_VERSION=8;// v8 [5.81.0 BIL-3b]: bankBalance (stipendio accumulato, €) + perkTrainer/perkNutrition (staff personale) — migration retro-compatibile. v7: player.foot
 // 5.67.0 — TABELLONE realistico del torneo per NAZIONALI (Europeo/Mondiale): dopo il girone la fase a
@@ -19371,32 +19371,18 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
               );
             })()}
 
-            {/* Obiettivi stagionali */}
-            {objs.length>0&&(
-              <Card style={{padding:"10px 14px"}}>
-                <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>🎯 Obiettivi S.{player.season||1}</div>
-                {objs.map((obj,i)=>{
-                  let cur=0;
-                  if(obj.type==="goals")cur=player.goals||0;
-                  else if(obj.type==="assists")cur=player.assists||0;
-                  else if(obj.type==="matches")cur=player.matches||0;
-                  else if(obj.type==="standing"){const ss=[...(player.standings||[])].sort((a,b)=>b.pts-a.pts||(b.gd||0)-(a.gd||0));const ci=club.id||club.n;const pi=ss.findIndex(t=>t.id===ci||(t.n||t.name)===(club.n||club.name));cur=pi>=0?pi+1:99;}
-                  const done=obj.type==="standing"?cur<=obj.target:cur>=obj.target;
-                  const pct=obj.type==="standing"?Math.min(100,Math.max(0,Math.round((1-(cur-1)/Math.max(1,obj.target))*100))):Math.min(100,Math.round((cur/Math.max(1,obj.target))*100));
-                  return(
-                    <div key={i} style={{marginBottom:i<objs.length-1?9:0}}>
-                      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:3}}>
-                        <div style={{fontSize:11,color:done?TH.success:TH.text,fontWeight:done?700:400}}>{done?"✅ ":"🎯 "}{obj.label}</div>
-                        <div style={{fontSize:10,color:done?TH.success:TH.muted,fontWeight:600,flexShrink:0,marginLeft:4}}>
-                          {done?"FATTO":obj.type==="standing"?`${cur===99?"–":cur}° / top ${obj.target}`:`${cur}/${obj.target}`}
-                        </div>
-                      </div>
-                      <div style={{height:4,background:"#e2e8f0",borderRadius:2,overflow:"hidden"}}>
-                        <div style={{height:"100%",width:`${pct}%`,background:done?TH.success:TH.primary,borderRadius:2,transition:"width .4s"}}/>
-                      </div>
-                    </div>
-                  );
-                })}
+            {/* [6.26.0 collaudo PO] Obiettivi stagionali RIMOSSI dal Tab Club (erano DUPLICATI: già nel dashboard Home).
+                Al loro posto, accanto all'Allenatore, il box «Staff & Spogliatoio» (allenatore in 2ª/preparatore/chimica)
+                che prima era in fondo al Tab, sepolto sotto i 23 giocatori della rosa → sembrava sparito. */}
+            {(player.proStatus||"u18")==="pro"&&(
+              <Card style={{padding:"12px 14px"}}>
+                <SectionHeader icon="🧑‍🏫">Staff & Spogliatoio</SectionHeader>
+                {[{l:"Preparatore",v:player.fitnessCoachRel||50,c:TH.energy,fx:"💨 +recupero fatica"},{l:"Vice-Mister",v:player.assistantCoachRel||50,c:TH.accent,fx:"📈 +efficacia allenamento"},{l:"Chimica Squadra",v:player.teamChemistry||60,c:TH.success,fx:"✨ +forma & morale"}].map(it=>(
+                  <div key={it.l} style={{marginBottom:10}}>
+                    <Meter value={it.v} color={it.c} label={it.l} right={it.v} height={5} mb={2}/>
+                    <div style={{fontSize:FS.caption,color:TH.faint,marginTop:2}}>{it.fx}</div>
+                  </div>
+                ))}
               </Card>
             )}
 
@@ -19478,18 +19464,6 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
               <Card style={{padding:"10px 14px",textAlign:"center"}}>
                 <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:6}}>🏆 Bacheca — {club.n}</div>
                 <div style={{fontSize:11,color:TH.faint}}>Nessun trofeo ancora. Questa stagione è quella giusta!</div>
-              </Card>
-            )}
-            {/* [6.24.0 collaudo PO] «Staff & Spogliatoio» spostato qui dalla Home (Tab Club) */}
-            {(player.proStatus||"u18")==="pro"&&(
-              <Card style={{padding:"12px 14px"}}>
-                <SectionHeader icon="🧑‍🏫">Staff & Spogliatoio</SectionHeader>
-                {[{l:"Preparatore",v:player.fitnessCoachRel||50,c:TH.energy,fx:"💨 +recupero fatica"},{l:"Vice-Mister",v:player.assistantCoachRel||50,c:TH.accent,fx:"📈 +efficacia allenamento"},{l:"Chimica Squadra",v:player.teamChemistry||60,c:TH.success,fx:"✨ +forma & morale"}].map(it=>(
-                  <div key={it.l} style={{marginBottom:10}}>
-                    <Meter value={it.v} color={it.c} label={it.l} right={it.v} height={5} mb={2}/>
-                    <div style={{fontSize:FS.caption,color:TH.faint,marginTop:2}}>{it.fx}</div>
-                  </div>
-                ))}
               </Card>
             )}
           </div>
