@@ -22,7 +22,9 @@
     "test": "node run-3d-validation.mjs",
     "force-all": "node run-force-all.mjs",
     "selftest": "node run-golden.mjs --selftest",
-    "setup": "npm install && npx playwright install chromium"
+    "setup": "npm install && npx playwright install chromium",
+    "career-invariants": "node career-invariants.mjs",
+    "career-sim": "node career-sim-test.mjs"
   },
   "dependencies": {
     "playwright": "^1.48.0",
