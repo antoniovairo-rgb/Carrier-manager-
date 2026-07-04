@@ -104,6 +104,14 @@ const R = await page.evaluate(()=>{
       F(keptRow && keptRow.played===5 && keptRow.pts===15, `INV-MIG-RECON: classifica in corso AZZERATA dalla migration (played=${keptRow&&keptRow.played}, pts=${keptRow&&keptRow.pts}, atteso 5/15)`);
       F((mR.player.standings||[]).length===goodLc.length, `INV-MIG-RECON: dimensione classifica ${(mR.player.standings||[]).length} != ${goodLc.length}`);
       F(!(mR.player.standings||[]).some(s=>s.id==='__BOGUS__'), `INV-MIG-RECON: riga extra (BOGUS) non scartata`);
+
+      // [6.37.0 STAB-17] form===0 (falsy) DEVE essere normalizzata a [30,95] (prima (form||70) la mascherava a 70).
+      const mForm0=window.__CPM_MIGRATE({proStatus:'pro',club:{...p2,lg:'Lega B',isU18:false},form:0,season:2,week:1,standings:[],calendar:[]});
+      F(mForm0.player.form>=30&&mForm0.player.form<=95, `INV-MIG-FORM: form===0 non normalizzata (got ${mForm0.player.form})`);
+      const mForm150=window.__CPM_MIGRATE({proStatus:'pro',club:{...p2,lg:'Lega B',isU18:false},form:150,season:2,week:1,standings:[],calendar:[]});
+      F(mForm150.player.form>=30&&mForm150.player.form<=95, `INV-MIG-FORM: form fuori range (150) non clampata (got ${mForm150.player.form})`);
+      const mForm60=window.__CPM_MIGRATE({proStatus:'pro',club:{...p2,lg:'Lega B',isU18:false},form:60,season:2,week:1,standings:[],calendar:[]});
+      F(mForm60.player.form===60, `INV-MIG-FORM: form valida (60) alterata (got ${mForm60.player.form})`);
     }
   }catch(e){fails.push('INV-MIG threw: '+e.message);}
 
