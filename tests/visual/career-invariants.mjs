@@ -87,6 +87,23 @@ const R = await page.evaluate(()=>{
       // idempotenza: ri-migrare il risultato non deve piu' cambiare la lega/standings (no churn instabile)
       const m2=window.__CPM_MIGRATE(m1.player);
       F(m2.player.club.lg===m1.player.club.lg && (m2.player.standings||[]).length===(m1.player.standings||[]).length, `INV-MIG: migrazione NON idempotente (churn)`);
+
+      // [6.36.0 STAB-12] la migration RICONCILIA (non azzera) la classifica in corso su mismatch di dimensione:
+      //   un club reale con partite giocate DEVE conservare played/pts dopo la migrazione (prima → azzerato).
+      const goodClub=CLUBS.find(c=>c.lg==='Lega A')||CLUBS[0];
+      const goodLc=getLeagueClubs({proStatus:'pro',club:{...goodClub,isU18:false}});
+      const baseSt=goodLc.map(c=>({...c,played:0,wins:0,draws:0,losses:0,gf:0,ga:0,gd:0,pts:0}));
+      baseSt[0]={...baseSt[0],played:5,wins:5,gf:12,ga:3,gd:9,pts:15}; // il club dell'eroe ha già giocato
+      const keepId=baseSt[0].id;
+      const drift={proStatus:'pro',nation:goodClub.nat||'🇮🇹',season:3,week:12,age:22,ovr:75,stats:{},
+        club:{...goodClub,isU18:false},
+        standings:[...baseSt,{id:'__BOGUS__',n:'Bogus',a:'BOG',played:0,wins:0,draws:0,losses:0,gf:0,ga:0,gd:0,pts:0}],// length = lc+1 → trigger reconcile
+        calendar:[{matchday:1,week:1,opponentId:goodLc[1]?.id,opponentName:goodLc[1]?.n,isHome:true,played:false}], matchHistory:[]};
+      const mR=window.__CPM_MIGRATE(drift);
+      const keptRow=(mR.player.standings||[]).find(s=>s.id===keepId);
+      F(keptRow && keptRow.played===5 && keptRow.pts===15, `INV-MIG-RECON: classifica in corso AZZERATA dalla migration (played=${keptRow&&keptRow.played}, pts=${keptRow&&keptRow.pts}, atteso 5/15)`);
+      F((mR.player.standings||[]).length===goodLc.length, `INV-MIG-RECON: dimensione classifica ${(mR.player.standings||[]).length} != ${goodLc.length}`);
+      F(!(mR.player.standings||[]).some(s=>s.id==='__BOGUS__'), `INV-MIG-RECON: riga extra (BOGUS) non scartata`);
     }
   }catch(e){fails.push('INV-MIG threw: '+e.message);}
 
