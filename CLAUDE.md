@@ -12,7 +12,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ```
 Carrier-manager-/
-├── CARRIER-MANAGER-AV.html   ← FILE DI LAVORO ATTIVO (~20 600 righe, tutto qui dentro)
+├── CARRIER-MANAGER-AV.html   ← FILE DI LAVORO ATTIVO (~21 700 righe, tutto qui dentro)
 ├── MASTER_PROMPT.md         ← ⭐ CHARTER DI GOVERNO: Live Match Quality Platform (LMQP) — vincolante
 ├── LIVE_MATCH_QA_SPEC.md    ← spec tecnica LMQP (architettura 3.1–3.13 + mappatura sul codice)
 ├── VALIDATORS.md            ← standard universale + catalogo validator LMV-001..030 (cap. 1, COMPLETO)
@@ -34,7 +34,10 @@ Carrier-manager-/
         ├── lib/                        ← harness + failure-collector.mjs (LMQP-7) + perf-monitor.mjs (LMQP-8)
         ├── report.mjs                  ← report HTML + run-summary.json + LMQP Dashboard (LMQP-9)
         ├── out/                        ← artefatti generati (report.json · run-summary.json · index.html · shots/)
-        └── package.json               ← script npm del gate + devDependencies dei bundle CDN locali
+        ├── career-invariants.mjs       ← ⭐ guardiano REGRESSIONE CARRIERA (non-gate, PRIMA di ogni push su carriera): INV leghe/calendario/standings/pro/migration/euroGroupTable/prestito/forma
+        ├── stab-nat-trigger-test.mjs   ← ⭐ trigger tornei Nazionali (determinismo/idempotenza) + economia settimanale (STAB-2/7/8)
+        ├── career-sim-test.mjs         ← simula N stagioni sugli handler VERI (`__CPM_CAREER`)
+        └── package.json               ← script npm del gate + career-invariants/stab-nat-trigger/career-sim + devDependencies dei bundle CDN locali
 ```
 
 - **File attivo:** `CARRIER-MANAGER-AV.html` — modificare SEMPRE questo, mai creare file JS separati.
@@ -66,9 +69,11 @@ Il **sorgente `CARRIER-MANAGER-AV.html` resta INVARIATO** (dev workflow e gate i
 
 Tutto è in un singolo `<script type="text/babel">`. Nessun module system — global scope, dichiarazioni in ordine di dipendenza.
 
-### Layers (top → bottom) — CPM 5.57.0 (~19 500 righe)
+### Layers (top → bottom) — CPM 6.37.0 (~21 700 righe)
 
-| Linea | Contenuto |
+> ⚠️ **I numeri di riga qui sotto sono STORICI (era ~19 500 righe) e sono DERIVATI ORMAI di parecchie centinaia di righe** dopo gli sprint 6.9→6.37 (UX/UI overhaul + stabilizzazione carriera). Sono utili solo come *ordine* dei layer: **verifica SEMPRE con `grep -n`** prima di editare attorno a un confine. La versione/size corrente è quella del titolo.
+
+| Linea (storica) | Contenuto |
 |-------|-----------|
 | 1–151 | HTML shell, CDN imports, loading spinner, theme constants (`TH`, `TH_DARK`) |
 | 152–427 | `AVATARS` + `AvatarSVG` |
@@ -80,7 +85,7 @@ Tutto è in un singolo `<script type="text/babel">`. Nessun module system — gl
 | 2038–2090 | `ZONES` — zone del campo |
 | 2091–2352 | `BG_MATCH` — cronaca di background (con `momThreshold`, `ctx`, `pd`, pesi `w`) |
 | 2353–2638 | Helpers core: `rng`, `clamp`, `pick`, `baseStats`, `calcOvr` (2377), `succRate` (2389), `generateTransferOffer` (2507), `generateProContracts` (2567), `storage` |
-| 2639–2681 | `ARCHETYPES`, `GAME_VERSION` (**5.57.0**), `SAVE_VERSION` (**8**) |
+| 2639–2681 | `ARCHETYPES`, `GAME_VERSION` (**6.37.0**), `SAVE_VERSION` (**8**) |
 | 2682–4531 | `NAME_BY_NAT` (4502) + calendario/roster: `hashStr` (4532), `generateTeamRoster` (4533), `generateSeasonCalendar` (4554), `initStandings` (4715), `updateStandings` (4719), `simulateMatch` (4824) |
 | 4860–4904 | UI primitives: `Card`, `Btn`, `StatBar`, `OvrRing`, `Notif` |
 | 4905–6708 | Three.js: `makeCrowdTex` (4905), `buildStadium` (5027) |
@@ -230,6 +235,14 @@ Dal 5.46 i 22 calciatori sono modelli **GLB reali** (Mixamo CH38) di **DEFAULT**
 
 Suite Playwright headless che carica il gioco, forza ogni `SITUATION`, risolve le azioni e valida rendering 3D + stato. **Va eseguita e deve passare 14/14 prima di ogni push.**
 
+> ⚠️ **Il gate visivo è CIECO sulla logica di CARRIERA** (forza le situation, non gioca la carriera). Per QUALSIASI push che tocca il layer carriera (avanzamento settimana, classifiche, tornei, economia, mercato, migration, transizione pro) esegui ANCHE i guardiani di regressione carriera introdotti con la stabilizzazione 6.32→6.37 — sono ciò che intercetta la classe di bug che il gate non vede:
+> ```bash
+> cd tests/visual
+> CPM_CHROME=/opt/pw-browsers/chromium-1194/chrome-linux/chrome PLAYWRIGHT_BROWSERS_PATH=/opt/pw-browsers node career-invariants.mjs      # INV puri (leghe/calendario/standings/pro/migration/euroGroupTable/prestito/forma)
+> CPM_CHROME=… PLAYWRIGHT_BROWSERS_PATH=/opt/pw-browsers node stab-nat-trigger-test.mjs   # trigger tornei + economia settimanale
+> CPM_CHROME=… PLAYWRIGHT_BROWSERS_PATH=/opt/pw-browsers node career-sim-test.mjs         # 2 stagioni sugli handler veri
+> ```
+
 ```bash
 cd tests/visual
 # setup una tantum: npm install (Chromium è pre-installato in /opt/pw-browsers nelle sessioni cloud)
@@ -279,6 +292,17 @@ Sprint di coerenza guidati da `LIVE_MATCH_MANIFESTO.md` + review in `LIVE_MATCH_
 - **UX-BANNER (6.2.1, collaudo PO):** le strisce fisse ☕ Sostieni / 💡 Idee & Feedback (sopra la nav bar) si NASCONDONO quando lo scroll di `.cpm-scroll` arriva a fine pagina — coprivano l'ultima card — e ricompaiono risalendo. Solo mobile (<900px: su desktop la nav è sidebar) e solo su pagine realmente scrollabili; listener passivo+rAF in `CareerApp` (`hideStrips`, ~14296), ricalcolo su cambio tab/screen e resize. Collaudo: `banner-hide-test` (scratchpad, 2→0→2).
 
 - **TRE FIX DA COLLAUDO PO (6.3.3):** (1) **Classifica 35 partite** (lega a 18 → max 34): invariante *double round-robin* al chokepoint unico `updateStandings` (~5193) — se una squadra è già a `2*(N-1)` la stagione di lega è completa e nessun turno aggiuntivo viene applicato. Il flusso pulito dà già 34 (verificato in node e con l'harness `__CPM_CAREER` su stagione intera: max=min=34, ΣGF=ΣGA); il 35 era un over-count emergente da interazioni live/sim/coppa. La guardia lo rende strutturalmente impossibile (richiesti 40 turni → tetto 34), zero-regressione (34≤34 non scatta). ⚠️ un save GIÀ a 35 resta tale fino al rollover (reset a 0 a inizio stagione). (2) **Meteo/orario che cambiavano dopo il primo load**: la `MatchdayCard` usava `pick()` casuale (2 sorgenti scollegate dal meteo VERO seedato di `LiveMatch`) → ora riceve `weatherObj`/`kickoffHour` reali come prop e li mostra (fallback ai pick legacy se assenti). (3) **Neve che copre i giocatori sulle punizioni**: le particelle erano sprite QUADRATI opachi (`size .55`, `opacity .9`) che vicino alla camera bassa del set-piece diventavano grossi quadrati bianchi → ora fiocco TONDO e morbido (texture radiale canvas) + `opacity .55` e `size .48` (verificato con screenshot `?cpmwx=snow` su sit 81: giocatori pienamente leggibili). Gate-cieco su meteo/neve → collaudo dal vivo.
+
+- **STABILIZZAZIONE CARRIERA — audit multi-agente «stabilizzare il gioco» (6.32.0→6.37.0, direttiva PO):** dopo una raffica di bug di carriera segnalati in partita, audit adversariale (workflow multi-agente) → **17 bug confermati con UNA causa strutturale comune: la FRAMMENTAZIONE dei percorsi di avanzamento settimana** (`onMatchEnd` live / `simulateAndAdvance` / `doAdvanceWeek`) — le logiche critiche (classifica, tick economia, trigger tornei Nazionali, totali di carriera) vivevano in UN solo ramo e non negli altri → esiti divergenti a seconda di come l'utente risolve la settimana. Risolti in 6 release, tutte **additive (nessun bump SAVE), gate 14/14 (fingerprint `00001505` invariato), zero regressioni**:
+  - **6.32.0 (STAB-1/2, HIGH):** classifica di lega non più SCARTATA quando c'è una gara europea pendente la stessa settimana (update **incondizionato**, `_pendingEuro` gating SOLO l'avanzamento settimana); estratto helper condiviso **`natTournamentPatch`/`applyNatTournamentTrigger`** (Coppa Nazioni %2 + Europeo/Mondiale %4) invocato da **tutti e 3** i path → il torneo Nazionale parte comunque tu risolva la W20 (prima l'Euro/Mondiale partiva solo da `doAdvanceWeek`).
+  - **6.33.0 (STAB-3/4/16):** `euroGroupTable` — l'auto-sim scriveva la voce `groupResults` con chiavi `opponent/homeScore/awayScore` invece di `opp/hs/as` → gf/ga=0, tiebreaker/qualificazione corrotti (ora chiavi corrette); reset dei tornei Nazionali al **rollover** (`active:false` in entrambi i path di `doStartNewSeason`) → niente più lockout permanente di Europei/Mondiali; rami terminali W24/W27 con `active:false` coerente.
+  - **6.34.0 (STAB-6/9/11):** gol/assist/**presenze di Coppa Europea (club) nei TOTALI di carriera** (prima solo stagionali); guardia «niente offerte in prestito» spostata al chokepoint unico `generateTransferOffer` (prima 2/3 call-site la bypassavano); **KO Nazionale deterministico** (`koShootoutWin` seedato al posto di `Math.random()` nudo).
+  - **6.35.0 (STAB-7/8):** estratto **`weeklyEconomyFields(p)`** (stipendio − costi staff) applicato a OGNI return che incrementa la settimana → lo **stipendio si accredita giocando dal vivo/simulando/infortunato** (prima solo nel path normale di `doAdvanceWeek`: si perdevano ~26 paghe/stagione).
+  - **6.36.0 (STAB-12):** la **migration RICONCILIA la classifica** invece di azzerarla su mismatch di dimensione del pool (preserva `played/pts/gf/ga` per id, crea a zero solo i club nuovi) → la stagione in corso sopravvive.
+  - **6.37.0 (STAB-10/13/14/15/17):** al 1° contratto pro le offerte di «prestito» (senza club madre senior) sono **firme definitive** (etichetta coerente, scelta PO); trasferimento a W2-3 → standings ricostruite (`currentWeek>1`); presenze delle gare euro auto-simulate; **rosa+allenatore rigenerati** passando U18→pro; normalizzazione forma sul valore grezzo (un `form===0` non era più mascherato da `||70`).
+  - **RETE DI SICUREZZA nuova (il gate visivo è CIECO sulla logica di carriera — era il buco che lasciava passare questi bug):** `tests/visual/career-invariants.mjs` (INV leghe≤18 · calendario · standings↔calendario · transizione pro · **migration RICONCILIA+FORM** · schedule Nazionale · **euroGroupTable** · **prestito**) + `tests/visual/stab-nat-trigger-test.mjs` (trigger tornei deterministico/idempotente + **economia settimanale**) + `career-sim-test.mjs` (2 stagioni sugli handler veri). Helper `natTournamentPatch`/`weeklyEconomyFields` esposti su `window.__CPM_CAREER` sotto `?cpmtest=1`. Script npm: `career-invariants` · `stab-nat-trigger` · `career-sim`. **Girano PRIMA di ogni push che tocca la carriera.**
+
+- **UX/UI OVERHAUL + COLLAUDO PO (6.9.0→6.31.1, ~30 release — dettaglio per-versione in Git/`CHANGELOG.md`):** macro-fase di modernizzazione visiva (Ondate 1–8: design tokens, primitive `Card/Btn/StatBar/OvrRing/Modal/Sheet/Tabs/Badge/Meter/KpiTile/DataTable`, dashboard a priorità, tabella Classifica coi crest, redesign FormationView broadcast, hero/KPI) + una lunga serie di fix da collaudo PO in partita: avatar eroe SOLO maschile/giovane (bundle DiceBear, 10 volti), pallone arancione con neve/nebbia, rassegna stampa post-partita (`PostMatchPress` newsprint), personal trainer/nutrizionista con costi proporzionali, sezioni Nazionale/Internazionale ricollocate, esultanze tifosi lato-stadio corretto (`goalBurstStadHome`), regia 3D del cross, calendario senza avversari consecutivi, **fix «Primavera 2 a 36 squadre»** (lega senior risolta dall'id + cap fallback nazionale a 18 + repair migration), stadio/rassegna Nazionale coerenti, «Miglior Giovane» solo under-23. ⚠️ Questa voce è un **riassunto**: le singole 6.9→6.31 hanno commit dedicati.
 
 - **TRE FIX «CRITERI» — competizioni & premi (6.8.2, collaudo PO):** tre incongruenze segnalate in partita. **(1) Coppa Europea — qualificazione girone:** era decisa da una **soglia PUNTI** (`pts>=5`, ~15927/15936) mentre il display mostra «Top 2 passano» → un **3° posto con 11pt** «passava» agli Ottavi. Ora **UNICA fonte** `euroGroupTable(euro,club)` (~14074, riga reale eroe da `groupResults` + avversari stimati deterministici): la usano **display Coppe tab** (~20953), **pannello standings** (~18576) e la **DECISIONE** → qualificato ⟺ **TOP 2**, coerente con ciò che l'utente vede. + robustezza: conteggio gare girone da `max(groupResults, gare euro_group giocate a calendario)` e cap del repair (~14472) alle voci `euro_group` già presenti → mai più **7ª gara** da desync groupResults↔calendario, né stallo del girone. **(2) MVP della Stagione — «non credo di averlo meritato»:** la **PRODUZIONE (gol+assist) domina**, l'OVR è solo un modificatore (`_mvpScore=g*2.0+a*1.3+(ovr-70)*0.35+champ*7`); prima l'OVR pesava troppo (×0.40) e quello dei candidati era sottostimato → un **7° in classifica marcatori con 23 gol** batteva i capocannonieri da 33-34 gol. + **guardia dura**: l'eroe è MVP solo se è primo per punteggio E `gol+assist` entro 3 dal miglior candidato **oppure** è lui il capocannoniere. **(3) Europeo/Mondiale — pianificazione «Prossimo torneo»** (pannello Nazionale ~20012) ora **coerente col motore** (trigger reale ~15959-15960: **settimana 20** di ogni stagione **%4===0**; tipo = **stagione%8===0 ? Mondiale : Europeo**): prima **(a)** saltava il torneo della stagione CORRENTE se era un anno-torneo (mostrava +4 → «S.16» stando a S.12), **(b)** aveva il **TIPO INVERTITO** (`floor(n/4)%2` dava Europeo dove il motore fa Mondiale e viceversa), **(c)** diceva «Settimana 24» invece di 20. Tutti gate-ciechi su CareerApp → verificato **transpile + gate 14/14** (non-regressione) + verifica logica in node. ⚠️ Un save GIÀ qualificato per errore resta in quello stato (il fix vale d'ora in avanti). Nota minore aperta: «Esordio» Nazionale può mostrare «S.—» sui veterani (voce di diario del debutto sfrattata dal cap 80).
 
@@ -381,7 +405,7 @@ Sprint di coerenza guidati da `LIVE_MATCH_MANIFESTO.md` + review in `LIVE_MATCH_
 - **No build tool:** edit diretti nel `.html`. JSX valido dentro `<script type="text/babel">`.
 - **Coordinate:** logica `{x:0–100,y:0–100}`; mondo Three.js `{x:-50..+50, z:-30..+30}`.
 - **Random seedato:** usa `hashStr` + aritmetica per tutto ciò che deve essere riproducibile tra save. `rng()`/`pick()` solo per eventi one-off. ⚠️ Mai far dipendere setup/render dal random non seedato (rompe `determinism`/`golden`).
-- **Save compat:** incrementa `SAVE_VERSION` aggiungendo campi obbligatori; aggiungi migration backward-compat nel `useEffect(()=>{...},[])` di `CareerApp` che rileva/riempie i campi mancanti (`calendar`/`standings`/nuovi campi). Ultimo bump: **v7** (campo `foot`, F8 5.29) — pattern: `if(!('foot' in newP)){newP={...newP,foot:...};changed=true;}`.
+- **Save compat:** incrementa `SAVE_VERSION` aggiungendo campi obbligatori; aggiungi migration backward-compat nel `useEffect(()=>{...},[])` di `CareerApp` che rileva/riempie i campi mancanti (`calendar`/`standings`/nuovi campi). Ultimo bump: **v8** (`bankBalance`/`perkTrainer`/`perkNutrition`, FASE 3.2 5.81.0) — pattern: `if(!('foot' in newP)){newP={...newP,foot:...};changed=true;}`. ⚠️ La stabilizzazione 6.32→6.37 è **additiva/repair** (nessun bump SAVE): la migration di `CareerApp` ora RICONCILIA la classifica (non l'azzera, STAB-12), ripara la lega pro rotta, normalizza la forma sul valore grezzo (STAB-17) e sblocca i tornei Nazionali al rollover (STAB-3).
 - **Versioning:** bump `GAME_VERSION` ad ogni push (anche fix minori), con commento sintetico di cosa cambia.
 - **File unico:** mai creare file JS separati per il gioco.
 
@@ -420,7 +444,7 @@ Prima di ogni modifica: leggere le righe coinvolte, dichiarare le dipendenze not
 - **Aggiornare `CLAUDE.md`** ad ogni sprint significativo (range linee, nuovi sistemi, campi `player`).
 - **Bump `GAME_VERSION`** ad ogni push.
 - **Gate 14/14 verde** prima di ogni push — il QA Engineer valida ogni sprint.
-- **Branch workflow:** sviluppo sul branch di lavoro corrente (attuale: `claude/play-store-readiness-audit-vjn2xz`), poi promozione su `main` (produzione/Pages → GitHub Pages) SOLO dopo gate 14/14 verde: `git fetch origin main && git checkout -B main origin/main && git merge --ff-only <branch> && git push origin main && git checkout <branch>`. Branch storici: `claude/play-store-readiness-audit-waq8cb`, `claude/ai-vision-first-run`, `claude/cpm-resume-work-71ntrj`, `claude/continue-work-y3mh4y`.
+- **Branch workflow:** sviluppo sul branch di lavoro corrente (attuale: `claude/cpm-ux-ui-overhaul-ikhany`), poi promozione su `main` (produzione/Pages → GitHub Pages) SOLO dopo gate 14/14 verde: `git fetch origin main && git checkout -B main origin/main && git merge --ff-only <branch> && git push origin main && git checkout <branch>`. Branch storici: `claude/play-store-readiness-audit-vjn2xz`, `claude/play-store-readiness-audit-waq8cb`, `claude/ai-vision-first-run`, `claude/cpm-resume-work-71ntrj`, `claude/continue-work-y3mh4y`.
   - **`main` solo su autorizzazione esplicita del proprietario** — mai in automatico dopo un singolo sprint senza via libero.
 - **Annunciare sempre** "Pushato su GitHub — CPM x.y.z." dopo ogni `git push`.
 - **Zero regressions · Minimalismo · File unico.**
