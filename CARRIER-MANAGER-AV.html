@@ -241,20 +241,18 @@ const MO={fast:120,base:200,slow:320,cine:550,easeStd:"cubic-bezier(.2,0,0,1)",e
    AVATAR PRESETS  (req #2 – 12 varianti)
 ======================================== */
 const AVATARS = [
-  // 5.50.5: label ALLINEATE a ciò che il modello mostra davvero (carnagione + colore capelli + rasato).
-  // Niente barba/forma-capelli: il volto è il modello unico CH38 → descrivo solo i tratti renderizzati.
-  {id:0,label:"Carnagione chiara · capelli castani", skin:"#f0c8a0",hair:"#3a2410",eye:"#5a3e2b",style:"short",beard:false},
-  {id:1,label:"Carnagione chiara · capelli biondi",  skin:"#f5d2b3",hair:"#dcb64c",eye:"#5b8dd9",style:"short",beard:false},
-  {id:2,label:"Carnagione chiara · capelli neri",    skin:"#e8b890",hair:"#181410",eye:"#4a3728",style:"short",beard:false},
-  {id:3,label:"Carnagione chiara · capelli ramati",  skin:"#f2cba0",hair:"#b5491f",eye:"#5b8dd9",style:"short",beard:false},
-  {id:4,label:"Carnagione chiara · rasato",          skin:"#e6bc94",hair:"#2a1c10",eye:"#4a3728",style:"bald",beard:false},
-  {id:5,label:"Carnagione chiara · capelli grigi",   skin:"#eec79c",hair:"#9a9a9a",eye:"#4a6b8a",style:"short",beard:false},
-  {id:6,label:"Carnagione olivastra · capelli neri", skin:"#c8956a",hair:"#161210",eye:"#3d2800",style:"short",beard:false},
-  {id:7,label:"Carnagione olivastra · capelli castani",skin:"#bd8a5e",hair:"#4a3018",eye:"#2d1800",style:"short",beard:false},
-  {id:8,label:"Carnagione ambrata · capelli neri",   skin:"#a9743f",hair:"#120d0a",eye:"#2d1800",style:"short",beard:false},
-  {id:9,label:"Carnagione ambrata · rasato",         skin:"#9c6736",hair:"#120d0a",eye:"#2d1800",style:"bald",beard:false},
-  {id:10,label:"Carnagione scura · capelli neri",    skin:"#7c4a1e",hair:"#100a06",eye:"#2d1800",style:"short",beard:false},
-  {id:11,label:"Carnagione scura · rasato",          skin:"#5e3414",hair:"#100a06",eye:"#1a0800",style:"bald",beard:false},
+  // [6.22.0] direttiva PO: SOLO 10 volti (griglia 5×2 stabile, niente shift tra pagine) e NIENTE rasati/pelati
+  //   → tutti con capelli, spettro carnagione chiaro→scuro. Label = tratti realmente renderizzati (carnagione + colore capelli).
+  {id:0,label:"Carnagione chiara · capelli castani",  skin:"#f0c8a0",hair:"#3a2410",eye:"#5a3e2b",style:"short",beard:false},
+  {id:1,label:"Carnagione chiara · capelli biondi",   skin:"#f5d2b3",hair:"#dcb64c",eye:"#5b8dd9",style:"short",beard:false},
+  {id:2,label:"Carnagione chiara · capelli neri",     skin:"#e8b890",hair:"#181410",eye:"#4a3728",style:"short",beard:false},
+  {id:3,label:"Carnagione chiara · capelli ramati",   skin:"#f2cba0",hair:"#b5491f",eye:"#5b8dd9",style:"short",beard:false},
+  {id:4,label:"Carnagione chiara · capelli grigi",    skin:"#eec79c",hair:"#9a9a9a",eye:"#4a6b8a",style:"short",beard:false},
+  {id:5,label:"Carnagione olivastra · capelli neri",  skin:"#c8956a",hair:"#161210",eye:"#3d2800",style:"short",beard:false},
+  {id:6,label:"Carnagione olivastra · capelli castani",skin:"#bd8a5e",hair:"#4a3018",eye:"#2d1800",style:"short",beard:false},
+  {id:7,label:"Carnagione ambrata · capelli neri",    skin:"#a9743f",hair:"#120d0a",eye:"#2d1800",style:"short",beard:false},
+  {id:8,label:"Carnagione scura · capelli neri",      skin:"#7c4a1e",hair:"#100a06",eye:"#2d1800",style:"short",beard:false},
+  {id:9,label:"Carnagione scura · capelli castani",   skin:"#6b3f18",hair:"#3d2412",eye:"#1a0800",style:"short",beard:false},
 ];
 /* [6.18.0] AVATAR = libreria DiceBear (stile 'adventurer'), bundle locale offline assets/dicebear-avatars.min.js
    → volti SVG dettagliati, deterministici da seed, scalabili/manutenibili. Cache per seed@size. */
@@ -3123,7 +3121,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="6.20.0"; // [6.20.0] ROSA (Club) → righe-giocatore stile Football Manager: chip RUOLO colorato (P cyan/D blu/C verde/A rosso) + badge OVR (verde>=80/ambra>=68) + zebra surface2 + eroe evidenziato in primaryTint (era rgba blu). OVR NPC da pl.ovr o derivato deterministico dal prestige club. Gate-cieco su Club → transpile + gate 14/14.
+const GAME_VERSION="6.22.0"; // [6.22.0] COLLAUDO PO 4-fix: (1) AVATAR = SOLO 10 volti (griglia 5×2, niente shift) e NIENTE rasati/pelati (tutti con capelli); (2) fix DUPLICAZIONE sezione Nazionale nel Tab Profilo (viveva sia in Profilo sia nel Tab dedicato → rimossa da Profilo); (3) pallone ARANCIONE alta-visibilità con neve/nebbia/tempesta; (4) fix «a volte la rassegna stampa non carica» (Naz/Coppa/Euro uscivano prima della generazione report → report locale sincrono per OGNI contesto + .catch). Gate 14/14. // [6.21.0] AVATAR EROE = SOLO MASCHILE (direttiva PO): il bundle avataaars ora vincola acconciature corte maschili (MALE_TOP, niente capelli lunghi/hijab/bob), niente barba (coerente CH38 beardless), accessoriesProbability 0 (via occhiali/benda), occhi/sopracciglia/bocca neutri-positivi, abbigliamento maschile senza rosa. Ripristina+estende il polish 6.18.1 (perso nel rebuild avataaars+micah). Solo assets/dicebear-avatars.min.js. Gate 14/14.
 // [6.18.0-note] // [6.18.0] AVATAR = libreria DiceBear (direttiva PO): CH38 3D via dai menu (resta solo nel live match). EROE/giocatori = stile AVATAAARS con FEDELTA al modello CH38 (forza carnagione+capelli+calvizie dalla stessa fonte AVATARS[avatarId] usata dal CH38 a r.7127 -> avatar dei menu ≈ giocatore in campo). NPC/staff (agente, mister via NpcFaceCoach) = stile MICAH seedato dal nome. Bundle locale offline assets/dicebear-avatars.min.js (esbuild IIFE avataaars+micah, ~163KB) caricato da script locale -> no CDN, funziona in gate/offline/produzione. AvatarSVG DiceBear-backed (API invariata, cache seed). Sorgente rigenerabile in tools/avatar-build/. Gate-cieco su CareerApp ma DiceBear carica anche in gate.
 const SAVE_VERSION=8;// v8 [5.81.0 BIL-3b]: bankBalance (stipendio accumulato, €) + perkTrainer/perkNutrition (staff personale) — migration retro-compatibile. v7: player.foot
 // 5.67.0 — TABELLONE realistico del torneo per NAZIONALI (Europeo/Mondiale): dopo il girone la fase a
@@ -7162,20 +7160,26 @@ function ThreeMatchView(props){
 
     // Palla — 5.47.17: design MATCH-BALL MODERNO e RICONOSCIBILE — base bianca, pannelli curvi a contrasto (slate) + un
     //   accento di colore vivo (teal) a "swoosh" → niente pentagoni retro, niente bianco piatto "identico" (feedback PO).
-    const _mkBallTex=()=>{const c=document.createElement('canvas');c.width=c.height=256;const x=c.getContext('2d');
-      x.fillStyle='#f4f7fb';x.fillRect(0,0,256,256);
-      // ombreggiatura morbida (volume)
-      const g=x.createRadialGradient(96,84,20,128,128,150);g.addColorStop(0,'#ffffff');g.addColorStop(1,'#dfe5ee');x.fillStyle=g;x.fillRect(0,0,256,256);
+    // [6.22.0] hiVis (direttiva PO): con neve/nebbia/tempesta il pallone bianco sparisce sul manto chiaro/nella
+    //   foschia → pallone ARANCIONE alta visibilità (come i palloni invernali reali), pannelli scuri per contrasto.
+    const _mkBallTex=(hiVis)=>{const c=document.createElement('canvas');c.width=c.height=256;const x=c.getContext('2d');
+      if(hiVis){x.fillStyle='#ff7a12';x.fillRect(0,0,256,256);
+        const g=x.createRadialGradient(96,84,20,128,128,150);g.addColorStop(0,'#ffab4d');g.addColorStop(1,'#e35c00');x.fillStyle=g;x.fillRect(0,0,256,256);
+      }else{x.fillStyle='#f4f7fb';x.fillRect(0,0,256,256);
+        // ombreggiatura morbida (volume)
+        const g=x.createRadialGradient(96,84,20,128,128,150);g.addColorStop(0,'#ffffff');g.addColorStop(1,'#dfe5ee');x.fillStyle=g;x.fillRect(0,0,256,256);
+      }
       // pannelli curvi a contrasto (struttura riconoscibile anche da lontano sul mobile)
-      x.strokeStyle='#2c3440';x.lineWidth=6;x.lineCap='round';x.lineJoin='round';
+      x.strokeStyle=hiVis?'#3a1400':'#2c3440';x.lineWidth=6;x.lineCap='round';x.lineJoin='round';
       [[60,58,78,0.15,1.55],[202,52,82,1.6,3.05],[214,200,80,3.2,4.7],[44,196,76,4.75,6.25],[128,128,120,0,6.283]].forEach(([ax,ay,r,a0,a1])=>{x.beginPath();x.arc(ax,ay,r,a0,a1);x.stroke();});
-      // accenti "swoosh" di colore vivo (look contemporaneo)
-      x.strokeStyle='#12b6c8';x.lineWidth=9;x.lineCap='round';
+      // accenti "swoosh" (cyan sul bianco / scuri sull'arancio per non lavare il contrasto)
+      x.strokeStyle=hiVis?'#2a1000':'#12b6c8';x.lineWidth=9;x.lineCap='round';
       [[128,40,18,0.6,2.55],[40,150,16,5.0,6.4],[216,150,16,2.7,4.1]].forEach(([ax,ay,r,a0,a1])=>{x.beginPath();x.arc(ax,ay,r,a0,a1);x.stroke();});
       // piccoli nodi scuri ai vertici dei pannelli (definizione)
-      x.fillStyle='#1c2330';[[128,30,5],[36,150,4.5],[220,150,4.5],[128,226,5]].forEach(([u,v,r])=>{x.beginPath();x.arc(u,v,r,0,6.283);x.fill();});
+      x.fillStyle=hiVis?'#2a1000':'#1c2330';[[128,30,5],[36,150,4.5],[220,150,4.5],[128,226,5]].forEach(([u,v,r])=>{x.beginPath();x.arc(u,v,r,0,6.283);x.fill();});
       return new THREE.CanvasTexture(c);};
-    const ball=new THREE.Mesh(new THREE.SphereGeometry(0.32,24,16),new THREE.MeshPhongMaterial({map:_mkBallTex(),shininess:42}));// 5.47.17: pallone ancora più piccolo (0.36→0.32) + design moderno riconoscibile
+    const _hiVisBall=(wfx==='snow'||wfx==='fog'||wfx==='storm');// neve/grandine·nebbia/foschia·tempesta → pallone arancione
+    const ball=new THREE.Mesh(new THREE.SphereGeometry(0.32,24,16),new THREE.MeshPhongMaterial({map:_mkBallTex(_hiVisBall),shininess:42}));// 5.47.17: pallone ancora più piccolo (0.36→0.32) + design moderno riconoscibile
     ball.castShadow=true;ball.position.set(G2X(ballX||50),0.65,G2Z(ballY||50));scene.add(ball);
     // Sprint 3D-BALL: alone occlusione (depthTest:false) — palla visibile anche dietro i giocatori — 3DV-1: raggio 0.95, opacità ridotta
     const ballHalo=new THREE.Mesh(new THREE.SphereGeometry(0.46,10,7),new THREE.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:0.05,depthTest:false,depthWrite:false}));// 5.47.17: halo proporzionato al pallone più piccolo (0.32)
@@ -13217,7 +13221,7 @@ function CreateScreen({onCreate,legacyBonus,onClearLegacy}){
     const newPlayerBase={name:name.trim(),nation,avatarId,foot:(Math.abs(hashStr((name||"")+(nation||"")))%100)<22?"L":"R",archetype:arc,position:"Attaccante",age,stats,ovr:calcOvr(stats),club:null,trialsDone:0,trialStats:[],season:1,week:1,weekLived:false,u18Seasons:0,isU18:true,proStatus:"u18",goals:0,assists:0,matches:0,totalGoals:0,totalAssists:0,totalMatches:0,morale:legacyBonus?clamp(70+(legacyBonus.moraleBoost||0),0,100):70,fatigue:0,popularity:20,skillPoints:2,log:[],history:[],matchHistory:[],value:0.8,coachTrust:60,form:70,transferOffers:[],offerHistory:[],contract:{duration:1,wage:577,expiresAtSeason:2},aiData:{lastOpponentTactic:null,scoutReports:{},pressReports:{}},dreamClub:dreamClub||null,worldMemory:[],rival:null,saveVersion:SAVE_VERSION,...(legacyBonus?{legacyBonusLabel:legacyBonus.label}:{}),...(challenge?{challenge:{id:challenge.id,completed:false,failed:false}}:{})};
     onCreate({...newPlayerBase,teammates:generateTeammates(newPlayerBase),journalists:generateJournalists()});
   };
-  const perPage=6;const totalPages=Math.ceil(AVATARS.length/perPage);const pageAvatars=AVATARS.slice(page*perPage,(page+1)*perPage);
+  const perPage=10;const totalPages=Math.ceil(AVATARS.length/perPage);const pageAvatars=AVATARS.slice(page*perPage,(page+1)*perPage);
   return(
     <div style={{width:"100%"}}>
       <div style={{textAlign:"center",marginBottom:20}}>
@@ -13235,19 +13239,21 @@ function CreateScreen({onCreate,legacyBonus,onClearLegacy}){
           </div>
           <div>
             <label style={lbl}>Aspetto calciatore</label>
-            <div style={{display:"grid",gridTemplateColumns:"repeat(6,1fr)",gap:6}}>
+            <div style={{display:"grid",gridTemplateColumns:"repeat(5,1fr)",gap:6}}>
               {pageAvatars.map(av=>(
                 <button key={av.id} onClick={()=>setAvatarId(av.id)} title={av.label} style={{padding:4,borderRadius:10,border:`2px solid ${avatarId===av.id?TH.primary:"transparent"}`,background:avatarId===av.id?TH.primaryTint:"transparent",cursor:"pointer",display:"flex",justifyContent:"center"}}>
                   <AvatarSVG id={av.id} size={44}/>
                 </button>
               ))}
             </div>
-            <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginTop:8}}>
-              <button onClick={()=>setPage(p=>Math.max(0,p-1))} disabled={page===0} style={{background:"none",border:"1px solid "+TH.cardBorder,borderRadius:8,padding:"4px 12px",cursor:"pointer",color:TH.muted,fontSize:12}}>←</button>
-              <span style={{fontSize:11,color:TH.faint}}>{page+1}/{totalPages}</span>
-              <button onClick={()=>setPage(p=>Math.min(totalPages-1,p+1))} disabled={page>=totalPages-1} style={{background:"none",border:"1px solid "+TH.cardBorder,borderRadius:8,padding:"4px 12px",cursor:"pointer",color:TH.muted,fontSize:12}}>→</button>
-            </div>
-            <div style={{textAlign:"center",marginTop:4,fontSize:11,color:TH.muted}}>{AVATARS[avatarId]?.label}</div>
+            {totalPages>1&&(
+              <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginTop:8}}>
+                <button onClick={()=>setPage(p=>Math.max(0,p-1))} disabled={page===0} style={{background:"none",border:"1px solid "+TH.cardBorder,borderRadius:8,padding:"4px 12px",cursor:"pointer",color:TH.muted,fontSize:12}}>←</button>
+                <span style={{fontSize:11,color:TH.faint}}>{page+1}/{totalPages}</span>
+                <button onClick={()=>setPage(p=>Math.min(totalPages-1,p+1))} disabled={page>=totalPages-1} style={{background:"none",border:"1px solid "+TH.cardBorder,borderRadius:8,padding:"4px 12px",cursor:"pointer",color:TH.muted,fontSize:12}}>→</button>
+              </div>
+            )}
+            <div style={{textAlign:"center",marginTop:8,fontSize:11,color:TH.muted}}>{AVATARS[avatarId]?.label}</div>
           </div>
           <div><label style={lbl}>Nome</label><input style={inp} value={name} onChange={e=>setName(e.target.value)} placeholder="Es. Luca Conti" maxLength={22} onKeyDown={e=>e.key==="Enter"&&go()}/></div>
           <div><label style={lbl}>Nazionalità</label><select style={inp} value={nation} onChange={e=>setNation(e.target.value)}>{NATIONS.map(n=><option key={n}>{n}</option>)}</select></div>
@@ -15458,6 +15464,11 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
   const [lastPressReport,setLastPressReport]=useState(null);
   const onMatchEnd=result=>{
     setLastMatch(result);
+    // [6.22.0] fix collaudo PO «a volte la rassegna stampa non carica»: i contesti Nazionale/Coppa/Europeo
+    //   uscivano con `return` PRIMA della generazione del report (~15666, solo la lega lo generava) → in
+    //   postmatch `lastPressReport` restava null → titolo e «altre testate» in shimmer per sempre. Ora un
+    //   report LOCALE (sincrono, mai vuoto) è settato SUBITO per OGNI contesto; l'AI async (lega) lo arricchisce.
+    try{ setLastPressReport(generateLocalPressAnalysis(result,{name:player.name,club:player.club?.n||player.club?.name||"–",goals:result.goals,assists:result.assists,rating:result.rating,oppPrestige:player.standings?undefined:(result.oppPrestige||65),homeRoster:result.homeRoster||[]},{archetype:player.archetype,records:player.records,goldenBoys:player.goldenBoys,matchHistory:player.matchHistory,season:player.season,age:player.age})); }catch(_ep){}
     setMisterDiscorsoModal(null); // safety net: clear any stale pre-match coach speech
     // [5.93.0] cerimonia consegnata → non ripeterla nelle gare successive della stagione
     try{const _ts93=titleStakesRef.current;if(_ts93&&(result.won||_ts93.late)){setPlayer(p=>({...p,titleCeremonyShown:p.season||1}));}titleStakesRef.current=null;}catch(_e){}
@@ -15658,6 +15669,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     const newMilestoneIds=triggeredMilestones.map(m=>m.id);
     // Generate press analysis async (non-blocking)
     generatePressAnalysis(result,{name:player.name,club:player.club?.n||player.club?.name||"–",goals:result.goals,assists:result.assists,rating:result.rating,oppPrestige:player.standings?undefined:(result.oppPrestige||65),homeRoster:result.homeRoster||[]},{archetype:player.archetype,records:player.records,goldenBoys:player.goldenBoys,matchHistory:player.matchHistory,season:player.season,age:player.age}).then(press=>{
+      if(!press)return;// [6.22.0] tieni il report locale già mostrato se l'AI non restituisce nulla
       setLastPressReport(press);
       setPlayer(p=>{
         const matchdayId=`S${p.season||1}W${p.week||1}`;
@@ -15666,7 +15678,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
         const newAiData={...(p.aiData||{lastOpponentTactic:null,scoutReports:{},pressReports:{}}),pressReports:trimmedPR};
         return{...p,aiData:newAiData};
       });
-    });
+    }).catch(_ep=>{});// [6.22.0] il report LOCALE è già mostrato (cima onMatchEnd) → mai shimmer infinito
     // S41: pre-compute cup outcome BEFORE setPlayer so both state + notifications use same result
     // Sprint 88: only look for cup entry if the match being played IS a cup match
     const cupCalEntry=matchTypeRef.current==="cup"?(player.calendar||[]).find(md=>md.week===(player.week||1)&&md.type==="cup"&&!md.played):null;
@@ -20212,99 +20224,9 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
               {[{l:"Gol stag.",v:player.goals||0,c:TH.warning},{l:"Assist stag.",v:player.assists||0,c:TH.primary},{l:"Partite",v:player.matches||0,c:TH.energy},{l:"Gol tot.",v:player.totalGoals||0,c:TH.warning},{l:"Assist tot.",v:player.totalAssists||0,c:TH.primary},{l:"Valore",v:`${parseFloat((player.value||0.8).toFixed(1))}M€`,c:TH.success}].map(s=><div key={s.l} style={{background:TH.surface2,borderRadius:RAD.md,padding:"9px 8px",border:"1px solid "+TH.divider}}><div style={{fontSize:10,color:TH.faint,marginBottom:2}}>{s.l}</div><div className="cpm-num" style={{fontSize:FS.subhead,fontWeight:FW.black,color:s.c}}>{s.v}</div></div>)}
             </div>
           </div>);})()}
-          {/* Sprint 129: Espansione Nazionale */}
-          {(player.nationalCaps||0)>0&&(()=>{
-            const _nd=NAT_DATA[player.nation||"Italia"]||{flag:"🏳",col:"#003399",col2:"#fff"};
-            const _caps=player.nationalCaps||0;
-            const _ngoals=player.nationalGoals||0;
-            const _debut=(player.diary||[]).find(d=>d.type==="first_national");
-            const _debutSeason=_debut?_debut.season:"–";
-            const _nations=Object.entries(NAT_CLUB_DATA).map(([nat,d])=>({nat,p:d.p,flag:NAT_DATA[nat]?.flag||"🏳"}));
-            const _ranked=[..._nations].sort((a,b)=>{
-              const s1=Math.abs(hashStr(`fifa_${a.nat}_${player.season||1}`))%7;
-              const s2=Math.abs(hashStr(`fifa_${b.nat}_${player.season||1}`))%7;
-              return(b.p+s2)-(a.p+s1);
-            });
-            const _myRank=_ranked.findIndex(n=>n.nat===(player.nation||"Italia"))+1;
-            // [6.8.2] pianificazione Europeo/Mondiale COERENTE col motore (trigger reale ~15959-15960: settimana 20
-            //   di ogni stagione multipla di 4; tipo = stagione%8===0 ? "Mondiale" : "Europeo"). Prima il pannello:
-            //   (a) SALTAVA il torneo della stagione CORRENTE se era un anno-torneo (mostrava +4 → «S.16» a S.12);
-            //   (b) aveva il TIPO INVERTITO (floor(n/4)%2 dava Europeo dove il motore fa Mondiale e viceversa);
-            //   (c) diceva «Settimana 24» mentre il torneo parte alla 20. Ora combacia con ciò che il gioco fa davvero.
-            const _curSeason=player.season||1;const _curWk=player.week||1;
-            const _emHadThis=(player.worldMemory||[]).some(m=>m.type==="euro_mondiale"&&m.season===_curSeason);
-            const _nextEM=(_curSeason%4===0&&!_emHadThis&&_curWk<20)?_curSeason:_curSeason+(((4-(_curSeason%4))%4)||4);
-            const _emType=(_nextEM%8===0)?"Mondiale":"Europeo";
-            const _natDiary=(player.diary||[]).filter(d=>isNationalEvent(d.type)).slice(0,3);// 5.71.0: filtro per scope Nazionale (EVENT_SCOPE) — coerente con l'altra sezione, niente eventi di club
-            return(
-              <Card style={{padding:"12px 14px"}}>
-                <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:10}}>
-                  <span style={{fontSize:28}}>{_nd.flag}</span>
-                  <div style={{flex:1}}>
-                    <div style={{fontSize:13,fontWeight:900,color:TH.text}}>Nazionale {player.nation}</div>
-                    <div style={{fontSize:10,color:TH.muted}}>Ranking Mondiale: #{_myRank}</div>
-                  </div>
-                  <div style={{textAlign:"center",background:`${_nd.col}18`,border:`1px solid ${_nd.col}40`,borderRadius:8,padding:"6px 12px"}}>
-                    <div style={{fontSize:20,fontWeight:900,color:_nd.col}}>{_caps}</div>
-                    <div style={{fontSize:8,color:TH.faint,textTransform:"uppercase",letterSpacing:1}}>Cap</div>
-                  </div>
-                </div>
-                <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:6,marginBottom:10}}>
-                  {[{l:"Gol",v:_ngoals},{l:"Esordio",v:`S.${_debutSeason}`},{l:"Ultimo",v:`S.${player.lastNationalSeason||"–"}`}].map(s=>(
-                    <div key={s.l} style={{background:"#f8fafc",borderRadius:8,padding:"7px",border:"1px solid "+TH.cardBorder,textAlign:"center"}}>
-                      <div style={{fontSize:10,color:TH.faint,marginBottom:2}}>{s.l}</div>
-                      <div style={{fontSize:14,fontWeight:700,color:TH.text}}>{s.v}</div>
-                    </div>
-                  ))}
-                </div>
-                <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:5}}>Ranking Mondiale</div>
-                {_ranked.slice(0,5).map((n,i)=>(
-                  <div key={n.nat} style={{display:"flex",alignItems:"center",gap:6,padding:"3px 6px",borderRadius:6,background:n.nat===(player.nation||"Italia")?`${_nd.col}14`:"transparent",marginBottom:2}}>
-                    <span style={{fontSize:10,color:TH.faint,minWidth:18,fontWeight:n.nat===(player.nation||"Italia")?900:400}}>#{i+1}</span>
-                    <span style={{fontSize:13}}>{n.flag}</span>
-                    <span style={{fontSize:10,color:TH.text,flex:1,fontWeight:n.nat===(player.nation||"Italia")?800:400}}>{n.nat}</span>
-                    {n.nat===(player.nation||"Italia")&&<span style={{fontSize:8,background:_nd.col,color:"#fff",padding:"1px 5px",borderRadius:4}}>TU</span>}
-                  </div>
-                ))}
-                {_myRank>5&&(
-                  <div style={{display:"flex",alignItems:"center",gap:6,padding:"3px 6px",borderRadius:6,background:`${_nd.col}14`,marginBottom:2}}>
-                    <span style={{fontSize:10,color:TH.faint,minWidth:18,fontWeight:900}}>#{_myRank}</span>
-                    <span style={{fontSize:13}}>{_nd.flag}</span>
-                    <span style={{fontSize:10,color:TH.text,flex:1,fontWeight:800}}>{player.nation}</span>
-                    <span style={{fontSize:8,background:_nd.col,color:"#fff",padding:"1px 5px",borderRadius:4}}>TU</span>
-                  </div>
-                )}
-                {player.euroMondiale?.active&&!player.euroMondiale?.done?(
-                  <div style={{marginTop:10,padding:"6px 10px",background:"#f0fdf4",border:"1px solid #86efac",borderRadius:6,display:"flex",alignItems:"center",gap:8}}>
-                    <span style={{fontSize:16}}>🟢</span>
-                    <div>
-                      <div style={{fontSize:10,fontWeight:700,color:"#15803d"}}>{player.euroMondiale.type||"Torneo"} IN CORSO</div>
-                      <div style={{fontSize:10,color:"#16a34a"}}>Fase: {player.euroMondiale.phase==="group"?"Gironi":player.euroMondiale.phase==="qualificazioni"?"Qualificazioni":player.euroMondiale.phase==="ko"?(EM_KO_LABEL[player.euroMondiale.koPhase]||"KO"):"KO"}{player.euroMondiale.phase==="group"?` · ${player.euroMondiale.groupPts||0} punti`:""}</div>
-                    </div>
-                  </div>
-                ):(
-                  <div style={{marginTop:10,padding:"6px 10px",background:"#f0f9ff",border:"1px solid #bae6fd",borderRadius:6,display:"flex",alignItems:"center",gap:8}}>
-                    <span style={{fontSize:16}}>{_emType==="Europeo"?"🏆":"🌍"}</span>
-                    <div>
-                      <div style={{fontSize:10,fontWeight:700,color:"#0369a1"}}>{_nextEM===_curSeason?`${_emType} — QUESTA STAGIONE`:`Prossimo ${_emType}`}</div>
-                      <div style={{fontSize:10,color:"#0284c7"}}>Stagione {_nextEM} · Settimana 20</div>
-                    </div>
-                  </div>
-                )}
-                {_natDiary.length>0&&(
-                  <div style={{marginTop:10}}>
-                    <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:5}}>Momenti in Nazionale</div>
-                    {_natDiary.map((d,i)=>(
-                      <div key={i} style={{padding:"5px 8px",background:"#f8fafc",borderRadius:6,marginBottom:4,borderLeft:`3px solid ${d.color||_nd.col}`}}>
-                        <div style={{fontSize:10,fontWeight:700,color:TH.text}}>{d.headline}</div>
-                        <div style={{fontSize:10,color:TH.muted}}>S.{d.season} W.{d.week}</div>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </Card>
-            );
-          })()}
+          {/* [6.22.0] fix duplicazione (collaudo PO): la sezione Nazionale viveva sia qui (Profilo) sia
+              nel Tab dedicato «🌍 Nazionale» (~20866, header+presenze+coppe+Europeo/Mondiale+ranking+momenti)
+              → stessi box due volte. Rimossa da Profilo: il Tab Nazionale è l'unica casa dei contenuti azzurri. */}
           <Card>
             <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>{L.attributes||"Attributi"}</div>
             {Object.entries(player.stats).map(([k,v])=><StatBar key={k} label={k} value={v} tone="attribute" height={6}/>)}
