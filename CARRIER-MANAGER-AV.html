@@ -3121,7 +3121,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="6.22.0"; // [6.22.0] COLLAUDO PO 4-fix: (1) AVATAR = SOLO 10 volti (griglia 5×2, niente shift) e NIENTE rasati/pelati (tutti con capelli); (2) fix DUPLICAZIONE sezione Nazionale nel Tab Profilo (viveva sia in Profilo sia nel Tab dedicato → rimossa da Profilo); (3) pallone ARANCIONE alta-visibilità con neve/nebbia/tempesta; (4) fix «a volte la rassegna stampa non carica» (Naz/Coppa/Euro uscivano prima della generazione report → report locale sincrono per OGNI contesto + .catch). Gate 14/14. // [6.21.0] AVATAR EROE = SOLO MASCHILE (direttiva PO): il bundle avataaars ora vincola acconciature corte maschili (MALE_TOP, niente capelli lunghi/hijab/bob), niente barba (coerente CH38 beardless), accessoriesProbability 0 (via occhiali/benda), occhi/sopracciglia/bocca neutri-positivi, abbigliamento maschile senza rosa. Ripristina+estende il polish 6.18.1 (perso nel rebuild avataaars+micah). Solo assets/dicebear-avatars.min.js. Gate 14/14.
+const GAME_VERSION="6.23.0"; // [6.23.0] COLLAUDO PO: fix «Personal trainer/Nutrizionista si disattivano da soli» — i costi settimanali dello staff erano a MINIMO FISSO (2000/1500€) che per stipendi modesti + saldo ≈0 superava il salario → auto-sospensione la settimana dopo l'attivazione. Ora costi SOLO proporzionali (5%/4% dello stipendio, come l'agente 10%): finché percepisci lo stipendio li copri sempre → restano attivi. Display costo aggiornato. // [6.22.0] COLLAUDO PO 4-fix: (1) AVATAR = SOLO 10 volti (griglia 5×2, niente shift) e NIENTE rasati/pelati (tutti con capelli); (2) fix DUPLICAZIONE sezione Nazionale nel Tab Profilo (viveva sia in Profilo sia nel Tab dedicato → rimossa da Profilo); (3) pallone ARANCIONE alta-visibilità con neve/nebbia/tempesta; (4) fix «a volte la rassegna stampa non carica» (Naz/Coppa/Euro uscivano prima della generazione report → report locale sincrono per OGNI contesto + .catch). Gate 14/14. // [6.21.0] AVATAR EROE = SOLO MASCHILE (direttiva PO): il bundle avataaars ora vincola acconciature corte maschili (MALE_TOP, niente capelli lunghi/hijab/bob), niente barba (coerente CH38 beardless), accessoriesProbability 0 (via occhiali/benda), occhi/sopracciglia/bocca neutri-positivi, abbigliamento maschile senza rosa. Ripristina+estende il polish 6.18.1 (perso nel rebuild avataaars+micah). Solo assets/dicebear-avatars.min.js. Gate 14/14.
 // [6.18.0-note] // [6.18.0] AVATAR = libreria DiceBear (direttiva PO): CH38 3D via dai menu (resta solo nel live match). EROE/giocatori = stile AVATAAARS con FEDELTA al modello CH38 (forza carnagione+capelli+calvizie dalla stessa fonte AVATARS[avatarId] usata dal CH38 a r.7127 -> avatar dei menu ≈ giocatore in campo). NPC/staff (agente, mister via NpcFaceCoach) = stile MICAH seedato dal nome. Bundle locale offline assets/dicebear-avatars.min.js (esbuild IIFE avataaars+micah, ~163KB) caricato da script locale -> no CDN, funziona in gate/offline/produzione. AvatarSVG DiceBear-backed (API invariata, cache seed). Sorgente rigenerabile in tools/avatar-build/. Gate-cieco su CareerApp ma DiceBear carica anche in gate.
 const SAVE_VERSION=8;// v8 [5.81.0 BIL-3b]: bankBalance (stipendio accumulato, €) + perkTrainer/perkNutrition (staff personale) — migration retro-compatibile. v7: player.foot
 // 5.67.0 — TABELLONE realistico del torneo per NAZIONALI (Europeo/Mondiale): dopo il girone la fase a
@@ -16473,7 +16473,12 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       //   hanno costi settimanali ed effetti veri. Fondi finiti → servizi sospesi automaticamente.
       if((p.proStatus||"u18")!=="u18"&&!p.contractExpired){/* [5.98.0 EC-1] lo SVINCOLATO non percepisce stipendio */
         const _wg81=(p.contract?.wage||0);
-        const _cost81=(p.hasAgent?Math.round(_wg81*0.10):0)+(p.perkTrainer?Math.max(2000,Math.round(_wg81*0.05)):0)+(p.perkNutrition?Math.max(1500,Math.round(_wg81*0.04)):0);
+        // [6.23.0 collaudo PO «li attivo ma dopo poco non sono più attivi»]: i costi dello staff erano a MINIMO
+        //   FISSO (max 2000/1500) → per un giocatore con stipendio modesto e saldo ≈0 quel minimo superava il
+        //   salario settimanale ⇒ auto-sospensione la settimana dopo l'attivazione. Ora i costi sono SOLO
+        //   proporzionali (5%/4% dello stipendio, come l'agente 10%): finché percepisci lo stipendio (19% tot)
+        //   lo copri sempre → i servizi restano attivi. La sospensione scatta SOLO se davvero non copri i costi.
+        const _cost81=(p.hasAgent?Math.round(_wg81*0.10):0)+(p.perkTrainer?Math.round(_wg81*0.05):0)+(p.perkNutrition?Math.round(_wg81*0.04):0);
         let _bb81=(p.bankBalance||0)+_wg81-_cost81;
         let _pt81=p.perkTrainer,_pn81=p.perkNutrition;
         if(_bb81<0){_pt81=false;_pn81=false;_bb81=Math.max(0,(p.bankBalance||0)+_wg81-(p.hasAgent?Math.round(_wg81*0.10):0));setTimeout(()=>notify("💸 Fondi insufficienti: servizi dello staff personale sospesi.",TH.warning),700);}
@@ -20490,8 +20495,8 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                   </div>
                   <div style={{textAlign:"right",fontSize:FS.caption,color:TH.muted,lineHeight:1.5}}>Stipendio<br/><span className="cpm-num" style={{color:TH.text,fontWeight:FW.bold}}>{Math.round((player.contract?.wage||0)/1000)}k€</span>/sett.{player.hasAgent?<span style={{color:TH.accent}}> · agente −10%</span>:""}</div>
                 </div>
-                {[{k:"perkTrainer",e:"🏋️",l:"Personal trainer",d:"+10% efficacia allenamenti",c:Math.max(2000,Math.round((player.contract?.wage||0)*0.05))},
-                  {k:"perkNutrition",e:"🥗",l:"Nutrizionista",d:"Recupero fatica accelerato",c:Math.max(1500,Math.round((player.contract?.wage||0)*0.04))}].map(function(pk){
+                {[{k:"perkTrainer",e:"🏋️",l:"Personal trainer",d:"+10% efficacia allenamenti",c:Math.round((player.contract?.wage||0)*0.05)},
+                  {k:"perkNutrition",e:"🥗",l:"Nutrizionista",d:"Recupero fatica accelerato",c:Math.round((player.contract?.wage||0)*0.04)}].map(function(pk){
                   var on=!!player[pk.k];
                   return(
                     <div key={pk.k} style={{display:"flex",alignItems:"center",gap:8,padding:"7px 0",borderTop:"1px solid "+TH.cardBorder}}>
