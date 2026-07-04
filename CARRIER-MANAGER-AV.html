@@ -247,7 +247,7 @@ const AVATARS = [
   {id:1,label:"Carnagione chiara · capelli biondi",   skin:"#f5d2b3",hair:"#dcb64c",eye:"#5b8dd9",style:"short",beard:false},
   {id:2,label:"Carnagione chiara · capelli neri",     skin:"#e8b890",hair:"#181410",eye:"#4a3728",style:"short",beard:false},
   {id:3,label:"Carnagione chiara · capelli ramati",   skin:"#f2cba0",hair:"#b5491f",eye:"#5b8dd9",style:"short",beard:false},
-  {id:4,label:"Carnagione chiara · capelli grigi",    skin:"#eec79c",hair:"#9a9a9a",eye:"#4a6b8a",style:"short",beard:false},
+  {id:4,label:"Carnagione chiara · capelli castano chiaro", skin:"#eec79c",hair:"#8a5a2e",eye:"#4a6b8a",style:"short",beard:false},
   {id:5,label:"Carnagione olivastra · capelli neri",  skin:"#c8956a",hair:"#161210",eye:"#3d2800",style:"short",beard:false},
   {id:6,label:"Carnagione olivastra · capelli castani",skin:"#bd8a5e",hair:"#4a3018",eye:"#2d1800",style:"short",beard:false},
   {id:7,label:"Carnagione ambrata · capelli neri",    skin:"#a9743f",hair:"#120d0a",eye:"#2d1800",style:"short",beard:false},
@@ -3121,7 +3121,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="6.23.0"; // [6.23.0] COLLAUDO PO: fix «Personal trainer/Nutrizionista si disattivano da soli» — i costi settimanali dello staff erano a MINIMO FISSO (2000/1500€) che per stipendi modesti + saldo ≈0 superava il salario → auto-sospensione la settimana dopo l'attivazione. Ora costi SOLO proporzionali (5%/4% dello stipendio, come l'agente 10%): finché percepisci lo stipendio li copri sempre → restano attivi. Display costo aggiornato. // [6.22.0] COLLAUDO PO 4-fix: (1) AVATAR = SOLO 10 volti (griglia 5×2, niente shift) e NIENTE rasati/pelati (tutti con capelli); (2) fix DUPLICAZIONE sezione Nazionale nel Tab Profilo (viveva sia in Profilo sia nel Tab dedicato → rimossa da Profilo); (3) pallone ARANCIONE alta-visibilità con neve/nebbia/tempesta; (4) fix «a volte la rassegna stampa non carica» (Naz/Coppa/Euro uscivano prima della generazione report → report locale sincrono per OGNI contesto + .catch). Gate 14/14. // [6.21.0] AVATAR EROE = SOLO MASCHILE (direttiva PO): il bundle avataaars ora vincola acconciature corte maschili (MALE_TOP, niente capelli lunghi/hijab/bob), niente barba (coerente CH38 beardless), accessoriesProbability 0 (via occhiali/benda), occhi/sopracciglia/bocca neutri-positivi, abbigliamento maschile senza rosa. Ripristina+estende il polish 6.18.1 (perso nel rebuild avataaars+micah). Solo assets/dicebear-avatars.min.js. Gate 14/14.
+const GAME_VERSION="6.24.0"; // [6.24.0] COLLAUDO PO 4-fix: (1) AVATAR eroe = GIOVANE: via lo stile "sides" (capelli solo ai lati=stempiatura) + via i capelli grigi (→ castano chiaro) → niente più «pelato anziano»; (2) box «Staff & Spogliatoio» spostato da Home al Tab CLUB; (3) box «Risultati Internazionali» spostato da Home al Tab STAGIONE (sotto la Classifica); (4) fix ESULTANZA TIFOSI INVERTITA: il pubblico/tifo/panchina esultavano sempre lato-CASA anche quando segnava l'eroe in TRASFERTA → nuovo flag stadiumHome (lato tribuna reale, distinto dal lato-mesh dell'eroe). Gate 14/14. // [6.23.0] COLLAUDO PO: fix «Personal trainer/Nutrizionista si disattivano da soli» — i costi settimanali dello staff erano a MINIMO FISSO (2000/1500€) che per stipendi modesti + saldo ≈0 superava il salario → auto-sospensione la settimana dopo l'attivazione. Ora costi SOLO proporzionali (5%/4% dello stipendio, come l'agente 10%): finché percepisci lo stipendio li copri sempre → restano attivi. Display costo aggiornato. // [6.22.0] COLLAUDO PO 4-fix: (1) AVATAR = SOLO 10 volti (griglia 5×2, niente shift) e NIENTE rasati/pelati (tutti con capelli); (2) fix DUPLICAZIONE sezione Nazionale nel Tab Profilo (viveva sia in Profilo sia nel Tab dedicato → rimossa da Profilo); (3) pallone ARANCIONE alta-visibilità con neve/nebbia/tempesta; (4) fix «a volte la rassegna stampa non carica» (Naz/Coppa/Euro uscivano prima della generazione report → report locale sincrono per OGNI contesto + .catch). Gate 14/14. // [6.21.0] AVATAR EROE = SOLO MASCHILE (direttiva PO): il bundle avataaars ora vincola acconciature corte maschili (MALE_TOP, niente capelli lunghi/hijab/bob), niente barba (coerente CH38 beardless), accessoriesProbability 0 (via occhiali/benda), occhi/sopracciglia/bocca neutri-positivi, abbigliamento maschile senza rosa. Ripristina+estende il polish 6.18.1 (perso nel rebuild avataaars+micah). Solo assets/dicebear-avatars.min.js. Gate 14/14.
 // [6.18.0-note] // [6.18.0] AVATAR = libreria DiceBear (direttiva PO): CH38 3D via dai menu (resta solo nel live match). EROE/giocatori = stile AVATAAARS con FEDELTA al modello CH38 (forza carnagione+capelli+calvizie dalla stessa fonte AVATARS[avatarId] usata dal CH38 a r.7127 -> avatar dei menu ≈ giocatore in campo). NPC/staff (agente, mister via NpcFaceCoach) = stile MICAH seedato dal nome. Bundle locale offline assets/dicebear-avatars.min.js (esbuild IIFE avataaars+micah, ~163KB) caricato da script locale -> no CDN, funziona in gate/offline/produzione. AvatarSVG DiceBear-backed (API invariata, cache seed). Sorgente rigenerabile in tools/avatar-build/. Gate-cieco su CareerApp ma DiceBear carica anche in gate.
 const SAVE_VERSION=8;// v8 [5.81.0 BIL-3b]: bankBalance (stipendio accumulato, €) + perkTrainer/perkNutrition (staff personale) — migration retro-compatibile. v7: player.foot
 // 5.67.0 — TABELLONE realistico del torneo per NAZIONALI (Europeo/Mondiale): dopo il girone la fase a
@@ -7514,7 +7514,7 @@ function ThreeMatchView(props){
     let prevBgT=0,ballArcIsBG=false,ballArcTgtX=0,ballArcTgtZ=0;
     const BALL_ARC_BY_TYPE={shot:{h:2.8,dur:0.52},cross:{h:3.2,dur:0.68},save:{h:1.8,dur:0.55},tackle:{h:0.4,dur:0.35},pass:{h:0.9,dur:0.48}};
     // Sprint 3D-11A: reazione folla al gol — burst luce calda + camera shake
-    let prevWaveT=0,goalBurstT=-1,goalBurstHome=false,shakePow=0,contactFlashT=-1,celebT=-1,crowdOhT=-1;// ATMO #4: crowdOhT = pulse "ooh" del pubblico su palo/parata (reazione neutrale, non solo gol)
+    let prevWaveT=0,goalBurstT=-1,goalBurstHome=false,goalBurstStadHome=false,shakePow=0,contactFlashT=-1,celebT=-1,crowdOhT=-1;// ATMO #4: crowdOhT = pulse "ooh" del pubblico su palo/parata (reazione neutrale, non solo gol) · goalBurstStadHome [6.24.0] = lato TRIBUNA che ha segnato (per pubblico/tifo/panchina, distinto dal lato-mesh)
     // Sprint 3D-8b: replay con riavvolgimento — ring buffer posizioni (≈2.5s) + macchina a stati
     const REP_CAP=150,snapSize=(players.length+1)*2+3;
     const repRing=new Float32Array(REP_CAP*snapSize);
@@ -8042,7 +8042,7 @@ function ThreeMatchView(props){
        else zoneRingMat.opacity=0;}
       // Sprint 3D-11A: trigger burst al gol — rileva cambio di waveEvent.t
       const _we=P.waveEvent;
-      if(_we&&_we.t&&_we.t!==prevWaveT){prevWaveT=_we.t;goalBurstT=0;goalBurstHome=!!_we.home;shakePow=0.55;
+      if(_we&&_we.t&&_we.t!==prevWaveT){prevWaveT=_we.t;goalBurstT=0;goalBurstHome=!!_we.home;goalBurstStadHome=(_we.stadiumHome!=null?!!_we.stadiumHome:!!_we.home);shakePow=0.55;
         // QW-C: esultanza eroe sul gol di casa
         if(goalBurstHome){celebT=0;concededT=0;}// CINE-6: gol di casa → il portiere avversario si dispera
         // coriandoli dalla porta in cui è entrato il gol (AWAY_GOAL_X se casa, HOME_GOAL_X se ospiti)
@@ -8074,13 +8074,13 @@ function ThreeMatchView(props){
       // CROWD 2.0 — pulse al gol sui MATERIALI di settore: settori casa caldi / curva ospiti fredda (o viceversa)
       if(sr.current.crowdMats){const _cm=sr.current.crowdMats;
         const _tint=(arr,r,g,b)=>{if(arr)for(const m of arr)m.color.setRGB(r,g,b);};
-        if(_goalExcite>0&&goalBurstHome){_tint(_cm.homeMats,1,0.90+_goalExcite*0.10,0.55+_goalExcite*0.35);_tint(_cm.awayMats,1,1,1);}
+        if(_goalExcite>0&&goalBurstStadHome){_tint(_cm.homeMats,1,0.90+_goalExcite*0.10,0.55+_goalExcite*0.35);_tint(_cm.awayMats,1,1,1);}
         else if(_goalExcite>0){_tint(_cm.awayMats,0.55+_goalExcite*0.25,0.72+_goalExcite*0.15,1);_tint(_cm.homeMats,1,1,1);}
         else{_tint(_cm.homeMats,1,1,1);_tint(_cm.awayMats,1,1,1);}}
       // CROWD 2.0 §3/§10 — TIFOSI ANIMATI, cadenza ADATTIVA: burst pieno su gol/occasioni, a riposo la cadenza
       // viene dal contesto (stadio caldo=vivo · partita normale=calmo · spalti radi=quasi statico). Round-robin: ≤1 upload texture/frame.
       if(sr.current.crowdMats&&sr.current.crowdMats.crowdAnims){const _cm=sr.current.crowdMats;const _ca=_cm.crowdAnims;
-        const _gs=goalBurstT>=0?(goalBurstHome?1:-1):0;
+        const _gs=goalBurstT>=0?(goalBurstStadHome?1:-1):0;
         // cadenza SEMPRE step-gated (round-robin, mai ogni-frame): le canvas v2 sono 6× più grandi — un
         // repaint per frame nei burst satura il frame-time (mobile deboli e rendering software del gate).
         // Sotto ?cpmtest=1 il pubblico resta STATICO dopo il primo frame (zero upload texture): è pura
@@ -8446,7 +8446,7 @@ function ThreeMatchView(props){
         refMesh.rotation.z=Math.sin(now*0.0040)*0.032;refMesh.position.y=Math.abs(Math.sin(now*0.0032))*0.07;
         linRef1.rotation.y=Math.sin(now*0.0022+0.8)*0.055;linRef1.rotation.z=Math.sin(now*0.0018+0.5)*0.025;
         linRef2.rotation.y=Math.PI+Math.sin(now*0.0022+2.3)*0.055;linRef2.rotation.z=Math.sin(now*0.0018+1.9)*0.025;
-        {const _gsB=goalBurstT>=0?(goalBurstHome?1:-1):0;benchFigs.forEach((f,i)=>{f._ph+=dt*1.1;const _bBase=f._isCoach?0:0.72;const mine=_gsB===0?0:((f._home&&_gsB>0)||(!f._home&&_gsB<0)?1:-1);const _ex=mine>0?_goalExcite:0;f.position.y=_bBase+Math.sin(f._ph)*0.03+_ex*Math.abs(Math.sin(f._ph*2+i))*0.34;});}// 5.45.2: solo la panchina del marcatore esulta
+        {const _gsB=goalBurstT>=0?(goalBurstStadHome?1:-1):0;benchFigs.forEach((f,i)=>{f._ph+=dt*1.1;const _bBase=f._isCoach?0:0.72;const mine=_gsB===0?0:((f._home&&_gsB>0)||(!f._home&&_gsB<0)?1:-1);const _ex=mine>0?_goalExcite:0;f.position.y=_bBase+Math.sin(f._ph)*0.03+_ex*Math.abs(Math.sin(f._ph*2+i))*0.34;});}// 5.45.2: solo la panchina del marcatore esulta
         // CINE-VAR: animazione eroe per tipo + variante cinematografica (Sprint 4.73.0)
         // Ogni variant ha gesti fisicamente distinti: sw=sin(u*π) → auto-reset a 0 al termine
         if(actType){actT+=aDt;const _T=actType==="header"?0.75:actType==="penalty"?0.70:actType==="tackle"?0.6:actType==="cross"?0.65:0.55,u=Math.min(actT/_T,1),sw=Math.sin(u*Math.PI);
@@ -8759,9 +8759,9 @@ function ThreeMatchView(props){
       }
       // Sprint 3D-H3 MT-5: bandiere — ampiezza 2.5× al gol, ritorno graduale in 2.5s
       // 3DV-8: bandiere — onde sequenziali più veloci al gol, ampiezza 2.5×
-      {const _gsB=goalBurstT>=0?(goalBurstHome?1:-1):0;flagGroups.forEach((fg,fi)=>{const mine=_gsB===0?0:((fg._home&&_gsB>0)||(!fg._home&&_gsB<0)?1:-1);const _ex=Math.max(mine>0?_goalExcite:0,_walkExc),_fAmp=0.55+_ex*1.50,_fSpd=0.003+_ex*0.006;fg._fl.rotation.y=Math.sin(now*_fSpd+fi*0.72)*_fAmp;fg._fl.rotation.x=(mine<0?-0.5*_goalExcite:0)+Math.sin(now*_fSpd*0.65+fi*0.55)*(0.08+_ex*0.24);});}// 5.45.2: esultanza per LATO; item 7: tifo pre-partita su ENTRAMBI i lati
+      {const _gsB=goalBurstT>=0?(goalBurstStadHome?1:-1):0;flagGroups.forEach((fg,fi)=>{const mine=_gsB===0?0:((fg._home&&_gsB>0)||(!fg._home&&_gsB<0)?1:-1);const _ex=Math.max(mine>0?_goalExcite:0,_walkExc),_fAmp=0.55+_ex*1.50,_fSpd=0.003+_ex*0.006;fg._fl.rotation.y=Math.sin(now*_fSpd+fi*0.72)*_fAmp;fg._fl.rotation.x=(mine<0?-0.5*_goalExcite:0)+Math.sin(now*_fSpd*0.65+fi*0.55)*(0.08+_ex*0.24);});}// 5.45.2: esultanza per LATO; item 7: tifo pre-partita su ENTRAMBI i lati
       // 3DV-TIFO: onda sciarpe sulle curve — saliscendi lento, ampiezza maggiore al gol
-      {const _gsB=goalBurstT>=0?(goalBurstHome?1:-1):0;scarfMs.forEach((m,si)=>{const mine=_gsB===0?0:((m._home&&_gsB>0)||(!m._home&&_gsB<0)?1:-1);const _ex=Math.max(mine>0?_goalExcite:0,_walkExc),_scA=0.28+_ex*0.9,by=m._baseY||3.0;m.position.y=(mine<0?by-0.5*_goalExcite:by)+Math.sin(now*0.0022+si*2.1)*_scA;m.rotation.z=Math.sin(now*0.0017+si)*0.05;});}// 5.45.2: esultanza per LATO; item 7: tifo pre-partita
+      {const _gsB=goalBurstT>=0?(goalBurstStadHome?1:-1):0;scarfMs.forEach((m,si)=>{const mine=_gsB===0?0:((m._home&&_gsB>0)||(!m._home&&_gsB<0)?1:-1);const _ex=Math.max(mine>0?_goalExcite:0,_walkExc),_scA=0.28+_ex*0.9,by=m._baseY||3.0;m.position.y=(mine<0?by-0.5*_goalExcite:by)+Math.sin(now*0.0022+si*2.1)*_scA;m.rotation.z=Math.sin(now*0.0017+si)*0.05;});}// 5.45.2: esultanza per LATO; item 7: tifo pre-partita
       // Sprint 3D-G3: coriandoli — fisica gravità + fade
       if(confActive){for(let i=0;i<CONF_N;i++){confPos[i*3]+=confVel[i*3]*dt;confPos[i*3+1]+=confVel[i*3+1]*dt;confVel[i*3+1]-=12*dt;confPos[i*3+2]+=confVel[i*3+2]*dt;}
         confMat.opacity*=(1-dt*1.4);confGeo.attributes.position.needsUpdate=true;
@@ -10004,7 +10004,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     flashScreen({col:"rgba(255,255,255,0.42)",dur:600});// [6.5.1 SICUREZZA] via il lampo 0.75 → 0.42 governato
     setFloatGoal({text:g.assist?"🎯 ASSIST!":"⚽ GOL!",col:"#f59e0b",key:g.gk});
     setGoalCinema({text:g.assist?"ASSIST!":"GOOOOL!",col:g.clubCol,key:g.gk,shakeKey:g.gk,assist:!!g.assist});
-    setWaveEvent({t:g.gk,home:true});// innesca esultanza eroe + compagni + coriandoli + boato + disperazione portiere
+    setWaveEvent({t:g.gk,home:true,stadiumHome:isMatchHome});// [6.24.0] home=lato-mesh (eroe=casa mesh) per esultanza giocatori/coriandoli; stadiumHome=lato TRIBUNA reale (l'eroe segna in trasferta → esulta la curva OSPITE, non quella di casa)
     setActionEffect({type:"goal",key:g.gk});
     fxTimeout(()=>setGoalCinema(null),2600);
     if(g.domino){setPressureCinema({text:"⚡ DOMINIO!",col:"#22c55e",key:g.gk+7});fxTimeout(()=>setPressureCinema(null),1800);}// 5.43.8: DOMINIO insieme all'esultanza (palla in rete), non più timer fisso che mancava la finestra
@@ -10803,7 +10803,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           //   squadra) → la scritta a schermo (TIRO/CROSS/PARATA/CONTRASTO/PASSAGGIO) è sempre coerente con l'azione del testo.
           const _arcType=ev.at||BG_ARC_MAP[ev.pd]||null;
           if(_arcType)setBgAction({type:_arcType,t:Date.now(),ballEnd:ev.bpos||{x:50,y:50}}); // ATE-1
-          if(ev.ef==="team_goal"||ev.ef==="opp_goal")setWaveEvent({t:Date.now(),home:ev.ef==="team_goal"});
+          if(ev.ef==="team_goal"||ev.ef==="opp_goal")setWaveEvent({t:Date.now(),home:ev.ef==="team_goal",stadiumHome:(ev.ef==="team_goal")===isMatchHome});// [6.24.0] stadiumHome = lato TRIBUNA reale che ha segnato (team_goal=eroe → casa iff isMatchHome; opp_goal → casa iff !isMatchHome)
           // Crowd chant triggers — tutti i setTimeout tracciati in chantTimersRef
           if(ev.ef==="team_goal"){
             chantTimersRef.current.push(setTimeout(()=>chantFor("goal",3800),200));
@@ -18410,29 +18410,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
           </Card>
         );
       })()}
-      {/* Sprint 128 — Risultati Internazionali */}
-      {tab==="dashboard"&&(player.proStatus||"u18")==="pro"&&(()=>{
-        const _wr=generateWorldResults(player);
-        if(!_wr.length)return null;
-        const _lgs=[...new Set(_wr.map(r=>r.lg))];
-        return(
-          <Card style={{marginBottom:8,padding:"10px 14px"}}>
-            <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>🌍 Risultati Internazionali — W.{player.week||1}</div>
-            {_lgs.map((lg,li)=>(
-              <div key={lg} style={{marginBottom:li<_lgs.length-1?10:0}}>
-                <div style={{fontSize:10,color:TH.faint,fontWeight:700,marginBottom:4,textTransform:"uppercase",letterSpacing:1}}>{lg}</div>
-                {_wr.filter(r=>r.lg===lg).map((r,ri)=>(
-                  <div key={ri} style={{display:"flex",alignItems:"center",gap:4,padding:"3px 0",borderTop:ri>0?"1px solid "+TH.cardBorder:"none"}}>
-                    <span style={{flex:1,fontSize:10,fontWeight:r.hg>r.ag?700:400,color:r.hg>r.ag?TH.text:TH.faint,textAlign:"right",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{r.h}</span>
-                    <span style={{fontSize:11,fontWeight:700,minWidth:34,textAlign:"center"}}>{r.hg}–{r.ag}</span>
-                    <span style={{flex:1,fontSize:10,fontWeight:r.ag>r.hg?700:400,color:r.ag>r.hg?TH.text:TH.faint,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{r.a}</span>
-                  </div>
-                ))}
-              </div>
-            ))}
-          </Card>
-        );
-      })()}
+      {/* [6.24.0 collaudo PO] Risultati Internazionali SPOSTATI nel Tab Stagione (dopo la Classifica) → vedi ~19000 */}
       {/* Sprint 129 (Vita dinamica) — Voci di Mercato settimanali */}
       {tab==="dashboard"&&(player.proStatus||"u18")==="pro"&&(()=>{
         const _mn=generateMarketNews(player);
@@ -18640,16 +18618,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
               </Card>
             ))}
           </div>
-          {/* Sprint D2: Staff & Spogliatoio */}
-          <Card style={{padding:"12px 14px"}}>
-            <SectionHeader icon="🧑‍🏫">Staff & Spogliatoio</SectionHeader>
-            {[{l:"Preparatore",v:player.fitnessCoachRel||50,c:TH.energy,fx:"💨 +recupero fatica"},{l:"Vice-Mister",v:player.assistantCoachRel||50,c:TH.accent,fx:"📈 +efficacia allenamento"},{l:"Chimica Squadra",v:player.teamChemistry||60,c:TH.success,fx:"✨ +forma & morale"}].map(it=>(
-              <div key={it.l} style={{marginBottom:10}}>
-                <Meter value={it.v} color={it.c} label={it.l} right={it.v} height={5} mb={2}/>
-                <div style={{fontSize:FS.caption,color:TH.faint,marginTop:2}}>{it.fx}</div>
-              </div>
-            ))}
-          </Card>
+          {/* [6.24.0 collaudo PO] «Staff & Spogliatoio» SPOSTATO nel Tab Club (profilo squadra) → vedi ~19300 */}
           {(player.log||[]).length>0&&<Card style={{padding:"12px 14px"}}><div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:6}}>Ultime notizie</div>{(player.log||[]).slice(0,5).map((e,i)=><div key={i} style={{fontSize:11,color:TH.text,padding:"3px 0",borderBottom:i<4?"1px solid "+TH.cardBorder:"none"}}>{e}</div>)}</Card>}
           <Card style={{padding:"10px 14px"}} shadow={false} bg={TH.surface2}>
             <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:_dk?6:0}}>
@@ -18987,6 +18956,30 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
             );
           })()}
         </div>
+        );
+      })()}
+
+      {/* [6.24.0 collaudo PO] Risultati Internazionali — spostati qui dalla Home (Tab Stagione, sotto la Classifica) */}
+      {tab==="standings"&&(player.proStatus||"u18")==="pro"&&(()=>{
+        const _wr=generateWorldResults(player);
+        if(!_wr.length)return null;
+        const _lgs=[...new Set(_wr.map(r=>r.lg))];
+        return(
+          <Card style={{marginBottom:8,padding:"10px 14px"}}>
+            <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>🌍 Risultati Internazionali — W.{player.week||1}</div>
+            {_lgs.map((lg,li)=>(
+              <div key={lg} style={{marginBottom:li<_lgs.length-1?10:0}}>
+                <div style={{fontSize:10,color:TH.faint,fontWeight:700,marginBottom:4,textTransform:"uppercase",letterSpacing:1}}>{lg}</div>
+                {_wr.filter(r=>r.lg===lg).map((r,ri)=>(
+                  <div key={ri} style={{display:"flex",alignItems:"center",gap:4,padding:"3px 0",borderTop:ri>0?"1px solid "+TH.cardBorder:"none"}}>
+                    <span style={{flex:1,fontSize:10,fontWeight:r.hg>r.ag?700:400,color:r.hg>r.ag?TH.text:TH.faint,textAlign:"right",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{r.h}</span>
+                    <span style={{fontSize:11,fontWeight:700,minWidth:34,textAlign:"center"}}>{r.hg}–{r.ag}</span>
+                    <span style={{flex:1,fontSize:10,fontWeight:r.ag>r.hg?700:400,color:r.ag>r.hg?TH.text:TH.faint,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{r.a}</span>
+                  </div>
+                ))}
+              </div>
+            ))}
+          </Card>
         );
       })()}
 
@@ -19476,6 +19469,18 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
               <Card style={{padding:"10px 14px",textAlign:"center"}}>
                 <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:6}}>🏆 Bacheca — {club.n}</div>
                 <div style={{fontSize:11,color:TH.faint}}>Nessun trofeo ancora. Questa stagione è quella giusta!</div>
+              </Card>
+            )}
+            {/* [6.24.0 collaudo PO] «Staff & Spogliatoio» spostato qui dalla Home (Tab Club) */}
+            {(player.proStatus||"u18")==="pro"&&(
+              <Card style={{padding:"12px 14px"}}>
+                <SectionHeader icon="🧑‍🏫">Staff & Spogliatoio</SectionHeader>
+                {[{l:"Preparatore",v:player.fitnessCoachRel||50,c:TH.energy,fx:"💨 +recupero fatica"},{l:"Vice-Mister",v:player.assistantCoachRel||50,c:TH.accent,fx:"📈 +efficacia allenamento"},{l:"Chimica Squadra",v:player.teamChemistry||60,c:TH.success,fx:"✨ +forma & morale"}].map(it=>(
+                  <div key={it.l} style={{marginBottom:10}}>
+                    <Meter value={it.v} color={it.c} label={it.l} right={it.v} height={5} mb={2}/>
+                    <div style={{fontSize:FS.caption,color:TH.faint,marginTop:2}}>{it.fx}</div>
+                  </div>
+                ))}
               </Card>
             )}
           </div>

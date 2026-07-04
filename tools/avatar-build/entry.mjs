@@ -4,7 +4,9 @@ const STYLES = { avataaars, micah };
 // [6.21.0] Eroe (avataaars) = SEMPRE MASCHILE, pulito e professionale:
 //   acconciature corte maschili · niente barba (CH38 beardless) · niente occhiali/benda ·
 //   occhi/sopracciglia/bocca neutri-positivi · abbigliamento maschile · colori maglia non-rosa.
-const MALE_TOP = ["dreads01","dreads02","frizzle","shaggy","shaggyMullet","shortCurly","shortFlat","shortRound","shortWaved","sides","theCaesar","theCaesarAndSidePart","fro","froBand"];
+// [6.24.0] via "sides" (capelli SOLO ai lati = stempiatura/calvizie → l'eroe sembrava un uomo anziano
+//   pelato): l'eroe è un GIOVANE calciatore, tutte le teste hanno capelli pieni.
+const MALE_TOP = ["dreads01","dreads02","frizzle","shaggy","shaggyMullet","shortCurly","shortFlat","shortRound","shortWaved","theCaesar","theCaesarAndSidePart","fro","froBand"];
 const OK_EYES = ["default","happy","squint","wink","side"];
 const OK_BROWS = ["default","defaultNatural","flatNatural","raisedExcited","upDown"];
 const OK_MOUTH = ["default","smile","serious","twinkle"];
