@@ -117,6 +117,19 @@ const R = await page.evaluate(()=>{
     }
   }catch(e){fails.push('INV-EGT threw: '+e.message);}
 
+  // ---- 8) [6.34.0 STAB-9] PRESTITO: generateTransferOffer non produce MAI offerte se il giocatore è in
+  //   prestito — guardia al chokepoint unico (prima 2 dei 3 call-site la bypassavano). ----
+  try{
+    if(typeof generateTransferOffer==='function'){
+      const base={ovr:78,season:5,totalMatches:60,age:22,nation:'Italia',club:CLUBS.find(c=>c.lg==='Lega A')||CLUBS[0],stats:{},archetype:'finisher',form:75,morale:75,value:12};
+      const onLoan=generateTransferOffer({...base,loan:{parentClubId:'x',parentClub:base.club,untilSeason:6}});
+      F(onLoan===null, `INV-LOAN: generateTransferOffer produce un'offerta mentre in prestito (atteso null)`);
+      // sanity: senza prestito PUÒ produrre offerte (non deve essere sempre null per un bug di guardia)
+      let anyOffer=false; for(let k=0;k<12;k++){ if(generateTransferOffer({...base,loan:null})){anyOffer=true;break;} }
+      F(anyOffer, `INV-LOAN: generateTransferOffer non produce MAI offerte senza prestito (guardia troppo aggressiva?)`);
+    }
+  }catch(e){fails.push('INV-LOAN threw: '+e.message);}
+
   return { fails, clubs:CLUBS.length };
 });
 
