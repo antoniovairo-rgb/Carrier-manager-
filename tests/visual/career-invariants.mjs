@@ -97,6 +97,26 @@ const R = await page.evaluate(()=>{
       `INV-NAT: schedule nazionale non coerente coi trigger`);
   }catch(e){fails.push('INV-NAT threw: '+e.message);}
 
+  // ---- 7) [6.33.0 STAB-4] EURO GROUP TABLE: legge le chiavi opp/hs/as → gf/ga della riga eroe corretti.
+  //   (Il bug: l'auto-sim di doAdvanceWeek scriveva opponent/homeScore/awayScore → gf/ga=0, tiebreaker rotto.)
+  try{
+    if(typeof euroGroupTable==='function'){
+      const eu={competition:'UCL',groupResults:[
+        {opp:'A',won:true,drew:false,hs:3,as:1},
+        {opp:'B',won:false,drew:false,hs:0,as:2},
+        {opp:'C',won:false,drew:true,hs:1,as:1}],
+        groupOpponents:[{n:'Alfa',a:'ALF'},{n:'Beta',a:'BET'},{n:'Gamma',a:'GAM'}]};
+      const t=euroGroupTable(eu,{n:'TU',a:'TU'});
+      const me=t.find(r=>r.isPlayer);
+      F(me && me.gf===4 && me.ga===4, `INV-EGT: riga eroe gf/ga errati (gf=${me&&me.gf} ga=${me&&me.ga}, atteso 4/4) → chiavi hs/as non lette`);
+      F(me && me.pts===4, `INV-EGT: pts eroe ${me&&me.pts} (atteso 4 = 1V+1P+1N)`);
+      F(t.length===4, `INV-EGT: tabella girone ${t.length} righe (atteso 4)`);
+      // determinismo: stessa tabella a due chiamate
+      const t2=euroGroupTable(eu,{n:'TU',a:'TU'});
+      F(JSON.stringify(t.map(r=>[r.n,r.pts,r.gf,r.ga]))===JSON.stringify(t2.map(r=>[r.n,r.pts,r.gf,r.ga])), `INV-EGT: euroGroupTable NON deterministica`);
+    }
+  }catch(e){fails.push('INV-EGT threw: '+e.message);}
+
   return { fails, clubs:CLUBS.length };
 });
 
