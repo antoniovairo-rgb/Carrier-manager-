@@ -149,7 +149,7 @@
  "147": "pass/COMBINATION:5:shot|build/BUILDUP:3:shot|shot/EDGE_SHOT:3:shot",
  "148": "cross/FAR_POST_CROSS:5:shot|pass/COMBINATION:5:shot|build/BUILDUP:3:shot",
  "149": "build/BUILDUP:3:shot|pass/COMBINATION:5:shot|build/BUILDUP:3:shot",
- "150": "freekick/SET_PIECE:1:shot|freekick/SET_PIECE:1:shot|freekick/SET_PIECE:1:shot",
+ "150": "dribble/DRIBBLE_SHOT:4:shot|shot/EDGE_SHOT:3:shot|shot/EDGE_SHOT:3:shot",
  "151": "shot/EDGE_SHOT:3:shot|shot/EDGE_SHOT:3:shot|pass/COMBINATION:5:shot",
  "152": "pass/COMBINATION:5:shot|build/BUILDUP:3:shot|pass/COMBINATION:5:shot",
  "153": "shot/EDGE_SHOT:3:shot|shot/EDGE_SHOT:3:shot|pass/COMBINATION:5:shot",
