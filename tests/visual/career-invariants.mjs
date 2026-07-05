@@ -39,14 +39,17 @@ const R = await page.evaluate(()=>{
       const seed=s*777+(typeof hashStr==='function'?hashStr(pool[0].id):s);
       const cal=generateSeasonCalendar(pool[0],pool,seed);
       F(cal.length<=34, `INV-CAL: stagione ${s} ha ${cal.length} gare (>34)`);
-      const seen=new Set(); let dup=0,consec=0,home=0,away=0;
+      const seen=new Set(); let dup=0,consec=0,home=0,away=0,near5=0;
       for(let i=0;i<cal.length;i++){
         const k=cal[i].opponentId+'|'+cal[i].isHome; if(seen.has(k))dup++; seen.add(k);
         if(i>0&&cal[i].opponentId===cal[i-1].opponentId)consec++;
+        for(let j=Math.max(0,i-5);j<i;j++){if(cal[j].opponentId===cal[i].opponentId){near5++;break;}}
         if(cal[i].isHome)home++; else away++;
       }
       F(dup===0, `INV-CAL: stagione ${s} ha ${dup} fixture DUPLICATE`);
       F(consec===0, `INV-CAL: stagione ${s} ha ${consec} avversari CONSECUTIVI`);
+      // [6.52.0] andata/ritorno speculare → mai lo stesso avversario entro 5 giornate
+      F(near5===0, `INV-CAL: stagione ${s} ha ${near5} avversari RAVVICINATI (entro 5 giornate)`);
       F(Math.abs(home-away)<=2, `INV-CAL: stagione ${s} sbilancio casa/trasferta ${home}/${away}`);
     }
   }catch(e){fails.push('INV-CAL threw: '+e.message);}
