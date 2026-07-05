@@ -155,6 +155,53 @@ const R = await page.evaluate(()=>{
     }
   }catch(e){fails.push('INV-LOAN threw: '+e.message);}
 
+  // ---- 9) [6.50.0] CALENDAR SELF-HEAL: migratePlayer deduplica i fixture di LEGA (opp+sede) e risolve le
+  //   collisioni di settimana lega↔lega, senza toccare coppa/euro né le partite giocate. NO-OP su calendario sano. ----
+  try{
+    if(typeof window.__CPM_MIGRATE==='function'){
+      const club=CLUBS.find(c=>c.lg==='Lega A')||CLUBS[0];
+      const lc=getLeagueClubs({proStatus:'pro',club:{...club,isU18:false}}).filter(c=>c.id!==club.id);
+      const oA=lc[0],oB=lc[1],oC=lc[2];
+      // calendario CORROTTO: due gare di lega alla STESSA settimana (34), un fixture DUPLICATO (oA/H ×2),
+      //   + una gara di COPPA che CONDIVIDE la settimana con una di lega (deve restare, non è collisione lega↔lega).
+      const corrupt={proStatus:'pro',nation:club.nat||'🇮🇹',season:3,week:33,age:24,ovr:76,stats:{},form:70,
+        club:{...club,isU18:false},standings:[],matchHistory:[],
+        calendar:[
+          {matchday:30,week:30,opponentId:oA.id,opponentName:oA.n,isHome:true,played:true,result:{homeScore:1,awayScore:0,won:true,drew:false}},
+          {matchday:31,week:34,opponentId:oB.id,opponentName:oB.n,isHome:true,played:false,result:null},
+          {matchday:32,week:34,opponentId:oC.id,opponentName:oC.n,isHome:false,played:false,result:null}, // collisione lega↔lega con matchday 31
+          {matchday:33,week:35,opponentId:oA.id,opponentName:oA.n,isHome:true,played:false,result:null},   // DUPLICATO di matchday 30 (oA/H)
+          {matchday:990,week:34,opponentId:oB.id,opponentName:oB.n,isHome:true,played:false,result:null,type:'cup',competition:'Coppa Nazionale'} // condivide W34 con la lega: OK
+        ]};
+      const mh=window.__CPM_MIGRATE(corrupt);
+      const cal=mh.player.calendar||[];
+      const lgU=cal.filter(m=>(!m.type||m.type==='league')&&!m.played);
+      // nessuna collisione di settimana tra voci di lega non giocate
+      const wk=lgU.map(m=>m.week); const wkDup=wk.length-new Set(wk).size;
+      F(wkDup===0, `INV-CALHEAL: ${wkDup} collisioni di settimana lega↔lega dopo heal (attese 0)`);
+      // nessun fixture di lega duplicato (opp+sede) tra TUTTE le voci di lega
+      const lgAll=cal.filter(m=>!m.type||m.type==='league');
+      const fk=lgAll.map(m=>`${m.opponentId||m.opponentName}|${m.isHome?'H':'A'}`);
+      const fkDup=fk.length-new Set(fk).size;
+      F(fkDup===0, `INV-CALHEAL: ${fkDup} fixture di lega DUPLICATI dopo heal (attesi 0)`);
+      // la gara di COPPA sopravvive e mantiene la sua settimana (non è lega↔lega)
+      const cup=cal.find(m=>m.type==='cup');
+      F(cup && cup.week===34, `INV-CALHEAL: gara di coppa rimossa/spostata (week=${cup&&cup.week}, attesa 34)`);
+      // la partita GIOCATA resta intatta (week + risultato)
+      const played=cal.find(m=>m.matchday===30);
+      F(played && played.played===true && played.week===30, `INV-CALHEAL: partita giocata alterata`);
+      // NO-OP su calendario SANO: nessun cambio alle settimane di lega
+      const seed=3*777+(typeof hashStr==='function'?hashStr(club.id):3);
+      const healthy=generateSeasonCalendar(club,[club,...lc],seed);
+      const good={proStatus:'pro',nation:club.nat||'🇮🇹',season:3,week:1,age:24,ovr:76,stats:{},form:70,
+        club:{...club,isU18:false},standings:[],matchHistory:[],calendar:healthy.map(m=>({...m}))};
+      const mg=window.__CPM_MIGRATE(good);
+      const before=healthy.map(m=>m.matchday+':'+m.week).join(',');
+      const after=(mg.player.calendar||[]).filter(m=>!m.type||m.type==='league').sort((a,b)=>a.matchday-b.matchday).map(m=>m.matchday+':'+m.week).join(',');
+      F(before===after, `INV-CALHEAL: heal ha ALTERATO un calendario sano (regressione)`);
+    }
+  }catch(e){fails.push('INV-CALHEAL threw: '+e.message);}
+
   return { fails, clubs:CLUBS.length };
 });
 
