@@ -121,13 +121,13 @@ const GOLDEN = path.join(HERE, 'golden-sigs.json');
       // catturare troppo presto dà un FALSO POSITIVO (palla ancora a metà azione, es. gi=40 @gx=38.6). Poll fino a settle stabile.
       let fstate = await page.evaluate(() => window.__CPM_STATE());
       { const _t0 = Date.now(); let _stab = 0;
-        while (Date.now() - _t0 < 3200) {
+        while (Date.now() - _t0 < 5200) {
           await sleep(130);
           const _s = await page.evaluate(() => window.__CPM_STATE());
           if (!_s || !_s.ok || !_s.ball || !fstate || !fstate.ball) { if (_s) fstate = _s; _stab = 0; continue; }
           const _mv = Math.hypot((_s.ball.x || 0) - (fstate.ball.x || 0), (_s.ball.y || 0) - (fstate.ball.y || 0));
           fstate = _s;
-          if (_mv < 0.3) { if (++_stab >= 6) break; } else _stab = 0; // 6 campioni fermi (~780ms) → lo stop finale, non le pause del dribbling
+          if (_mv < 0.3 && (_s.ball.worldY == null || _s.ball.worldY <= 1.2)) { if (++_stab >= 6) break; } else _stab = 0; // 6 campioni fermi (~780ms) → lo stop finale, non le pause del dribbling
         } }
       const sr = sitResults[gi];
       for (const chk of FINAL_CHECKS) {

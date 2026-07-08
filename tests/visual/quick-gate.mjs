@@ -86,13 +86,13 @@ const FS_STEP = 16;   // final-state ~12 campioni
       await sleep(700); const outcome = await page.evaluate(() => window.__CPM_OUTCOME);
       let fstate = await page.evaluate(() => window.__CPM_STATE());
       { const _t0 = Date.now(); let _stab = 0;
-        while (Date.now() - _t0 < 3000) {
+        while (Date.now() - _t0 < 5200) {
           await sleep(130);
           const _s = await page.evaluate(() => window.__CPM_STATE());
           if (!_s || !_s.ok || !_s.ball || !fstate || !fstate.ball) { if (_s) fstate = _s; _stab = 0; continue; }
           const _mv = Math.hypot((_s.ball.x || 0) - (fstate.ball.x || 0), (_s.ball.y || 0) - (fstate.ball.y || 0));
           fstate = _s;
-          if (_mv < 0.3) { if (++_stab >= 6) break; } else _stab = 0;
+          if (_mv < 0.3 && (_s.ball.worldY == null || _s.ball.worldY <= 1.2)) { if (++_stab >= 6) break; } else _stab = 0;
         } }
       const r = finalState.run({ sit, outcome, finalState: fstate });
       for (const msg of (r.issues || [])) agg['final-state'].issues.push({ gi, msg });
