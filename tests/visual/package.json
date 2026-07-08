@@ -25,7 +25,9 @@
     "setup": "npm install && npx playwright install chromium",
     "career-invariants": "node career-invariants.mjs",
     "career-sim": "node career-sim-test.mjs",
-    "stab-nat-trigger": "node stab-nat-trigger-test.mjs"
+    "stab-nat-trigger": "node stab-nat-trigger-test.mjs",
+    "engine-sweep": "node engine-mass-sweep.mjs",
+    "def-sweep": "node def-mass-sweep.mjs"
   },
   "dependencies": {
     "playwright": "^1.48.0",

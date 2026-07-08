@@ -12,7 +12,8 @@
    Copre i remap runtime (chance/deflect/dribbling-duel) che l'audit statico non vede. */
 import { startServer, launchBrowser, installCdnRoutes, sleep, openMatch } from './lib/harness.mjs';
 import fs from 'fs';
-const OUT='/tmp/claude-0/-home-user-Carrier-manager-/2f559cb2-4a90-52cc-818f-c4a2700303e9/scratchpad';
+const OUT=process.env.CPM_AUDIT_OUT||new URL('./out/credit-live-audit',import.meta.url).pathname;// [6.76.0] niente piu' path di sessione hardcoded (rompeva il guardiano in ogni sessione nuova)
+fs.mkdirSync(OUT,{recursive:true});
 const srv = await startServer(); const port = srv.address().port;
 const browser = await launchBrowser();
 const page = await browser.newPage({ viewport:{ width:402, height:900 } });
