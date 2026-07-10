@@ -1,7 +1,7 @@
-/* CROWD 2.0 — test analitico di computeCrowdContext (§6/§7 del charter pubblico):
-   fill nei range di contesto, derby>big>campionato>provino, determinismo run-to-run,
-   malus meteo che non svuota mai lo stadio, spicchio ospiti (awayFill) coerente. */
-import { startServer, launchBrowser, installCdnRoutes, sleep } from './lib/harness.mjs';
+/* [7.4.0 FASE 1] AFFLUENZA MULTI-FATTORE — test PROPRIETÀ del nuovo modello (non più solo prestigio):
+   il bacino batte il prestigio, la forma/derby/finale/meteo pesano ma non dominano, la fedeltà smorza i cali,
+   la passione alza il pavimento, spettatori ≤ capienza, determinismo. */
+import { startServer, launchBrowser, installCdnRoutes } from './lib/harness.mjs';
 const srv = await startServer(); const port = srv.address().port;
 const browser = await launchBrowser(); const page = await browser.newPage();
 await installCdnRoutes(page);
@@ -9,20 +9,29 @@ await page.goto(`http://localhost:${port}/CARRIER-MANAGER-AV.html?cpmtest=1`, { 
 await page.waitForFunction(() => typeof window.__CPM_crowdCtx === 'function', { timeout: 40000 });
 
 const res = await page.evaluate(() => {
-  const F = window.__CPM_crowdCtx;
-  const club = { id: 'test_fc', n: 'Test FC', p: 78 };
+  const F = window.__CPM_crowdCtx, PC = window.__CPM_profileCapacity, PR = window.__CPM_clubProfile;
+  const club = { id: 'test_fc', n: 'Test FC', p: 78, lg: 'Lega A' };
+  const cap = PC(PR(club));
+  const base = x => ({ context: 'career', homeClub: club, capacity: cap, week: 12, season: 1, standPos: 9, standN: 18, oppPrestige: 65, ...x });
   const out = { cases: [], det: null };
   const mk = (name, args) => { const r = F(args); out.cases.push({ name, ...r }); return r; };
   mk('trial', { context: 'trial', week: 4, season: 1 });
-  mk('league', { context: 'career', homeClub: club, matchWeight: 2, week: 12, season: 1 });
-  mk('big', { context: 'career', homeClub: club, matchWeight: 8, week: 30, season: 1 });
-  mk('derby', { context: 'career', homeClub: club, matchWeight: 8, derby: true, week: 30, season: 1 });
-  mk('cupFinal', { context: 'cup', homeClub: club, isFinal: true, week: 34, season: 1 });
-  mk('euroKO', { context: 'euro_ko', homeClub: club, matchWeight: 5, week: 22, season: 1 });
-  mk('storm', { context: 'career', homeClub: club, matchWeight: 2, weather: { id: 'storm' }, week: 12, season: 1 });
-  // determinismo: due chiamate identiche → identiche
-  const a = F({ context: 'career', homeClub: club, matchWeight: 3, week: 9, season: 2 });
-  const b = F({ context: 'career', homeClub: club, matchWeight: 3, week: 9, season: 2 });
+  mk('league', base({ matchWeight: 2 }));
+  mk('big', base({ matchWeight: 9, standPos: 2 }));
+  mk('derby', base({ matchWeight: 8, derby: true, standPos: 4 }));
+  mk('cupFinal', { context: 'cup', homeClub: club, isFinal: true, week: 34, season: 1, capacity: cap });
+  mk('storm', base({ matchWeight: 2, weather: { id: 'storm' } }));
+  mk('winStreak', base({ matchWeight: 2, formStreak: 5, standPos: 2 }));
+  mk('lossStreak', base({ matchWeight: 2, formStreak: -5, standPos: 17 }));
+  // bacino vs prestigio: club BIG MARKET low prestige (Salerno) vs SMALL MARKET high prestige (Sassuolo)
+  const saler = { id: 'sal', n: 'FC Salernum', p: 45, lg: 'Lega B' };
+  const sasso = { id: 'sas', n: 'FC Neroverde', p: 68, lg: 'Lega A' };
+  const rSal = F(base({ homeClub: saler, capacity: PC(PR(saler)), matchWeight: 2 }));
+  const rSas = F(base({ homeClub: sasso, capacity: PC(PR(sasso)), matchWeight: 2 }));
+  out.marketBeatsPrestige = rSal.attendance > rSas.attendance;
+  out.salAtt = rSal.attendance; out.sasAtt = rSas.attendance;
+  // determinismo
+  const a = F(base({ matchWeight: 3, week: 9, season: 2 })), b = F(base({ matchWeight: 3, week: 9, season: 2 }));
   out.det = JSON.stringify(a) === JSON.stringify(b);
   return out;
 });
@@ -30,20 +39,22 @@ await browser.close(); srv.close();
 
 const C = Object.fromEntries(res.cases.map(c => [c.name, c]));
 const checks = [
-  ['provino quasi vuoto (fill≤0.05, ≤300 spettatori, 0 ospiti)', C.trial.fill <= 0.05 && C.trial.attendance <= 300 && C.trial.awayFill === 0],
-  ['campionato 0.45–0.75', C.league.fill >= 0.44 && C.league.fill <= 0.76],
-  ['big match 0.80–0.95', C.big.fill >= 0.79 && C.big.fill <= 0.96],
-  ['derby 0.95–1.0 e pieno più del big', C.derby.fill >= 0.94 && C.derby.fill >= C.big.fill],
-  ['finale = 1.0', C.cupFinal.fill >= 0.99],
-  ['KO europeo 0.80–0.95', C.euroKO.fill >= 0.79 && C.euroKO.fill <= 0.96],
-  ['malus meteo riduce ma non svuota', C.storm.fill < C.league.fill * 1.001 && C.storm.fill >= 0.30],
-  ['curva ospiti: derby piena (awayFill≥0.9)', C.derby.awayFill >= 0.9],
-  ['curva ospiti: campionato parziale (awayFill<fill)', C.league.awayFill < C.league.fill],
-  ['spettatori ≤ capienza', res.cases.every(c => c.attendance <= c.capacity)],
+  ['provino quasi vuoto (≤300 spettatori, 0 ospiti)', C.trial.attendance <= 300 && C.trial.awayFill === 0],
+  ['finale quasi pieno (fill≥0.90)', C.cupFinal.fill >= 0.90],
+  ['derby > campionato', C.derby.fill > C.league.fill],
+  ['big match > campionato', C.big.fill > C.league.fill],
+  ['meteo riduce ma non svuota (storm<league, ≥0.30)', C.storm.fill < C.league.fill && C.storm.fill >= 0.30],
+  ['forma: 5 vittorie > 5 sconfitte', C.winStreak.fill > C.lossStreak.fill],
+  ['fedeltà: il calo per 5 sconfitte è contenuto (>65% del campionato)', C.lossStreak.fill > C.league.fill * 0.65],
+  ['IL BACINO BATTE IL PRESTIGIO: Salerno(p45) > Sassuolo(p68)', res.marketBeatsPrestige === true],
+  ['derby: curva ospiti specchia la casa (awayFill≈fill)', Math.abs(C.derby.awayFill - C.derby.fill) < 0.03],
+  ['campionato: curva ospiti parziale (awayFill<fill)', C.league.awayFill < C.league.fill],
+  ['spettatori ≤ capienza (tutti i casi)', res.cases.every(c => c.attendance <= c.capacity)],
   ['deterministico run-to-run', res.det === true],
 ];
 let fail = 0;
 for (const [name, ok] of checks) { console.log((ok ? '  ✅ ' : '  ❌ ') + name); if (!ok) fail++; }
-console.log('\ndettaglio:'); res.cases.forEach(c => console.log(`  ${c.name.padEnd(9)} tier=${c.tier.padEnd(9)} fill=${c.fill} away=${c.awayFill} int=${c.intensity} att=${c.attendance}/${c.capacity}`));
-console.log(fail === 0 ? '\n✅ computeCrowdContext OK' : `\n❌ ${fail} check falliti`);
+console.log(`\n  bacino>prestigio: Salerno ${res.salAtt} vs Sassuolo ${res.sasAtt}`);
+console.log('dettaglio:'); res.cases.forEach(c => console.log(`  ${c.name.padEnd(11)} tier=${(c.tier||'').padEnd(8)} fill=${c.fill} away=${c.awayFill} int=${c.intensity} att=${c.attendance}/${c.capacity}`));
+console.log(fail === 0 ? '\n✅ AFFLUENZA MULTI-FATTORE OK' : `\n❌ ${fail} check falliti`);
 process.exit(fail === 0 ? 0 : 1);

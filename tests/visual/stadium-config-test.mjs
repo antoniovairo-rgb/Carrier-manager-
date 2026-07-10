@@ -17,9 +17,15 @@ const res = await page.evaluate(() => {
   // 1) determinismo: stessa entry → stessa config, sempre
   const a = f(mk('testclub', 75, 'Lega A')), b = f(mk('testclub', 75, 'Lega A'));
   if (JSON.stringify(a) !== JSON.stringify(b)) issues.push('NON deterministico a parità di club');
-  // 2) bande capienza della direttiva (3-8k / 5-15k / 10-30k / 20-45k / 40-80k+)
-  const bandOk = (p, lo, hi) => { for (let i = 0; i < 40; i++) { const c = f(mk('c' + i + '_' + p, p, 'Lega A')).capacity; if (c < lo || c > hi) return 'p=' + p + ' capienza ' + c + ' fuori banda ' + lo + '-' + hi; } return null; };
-  for (const [p, lo, hi] of [[45, 3000, 8000], [56, 5000, 15000], [68, 10000, 30000], [78, 20000, 45000], [90, 40000, 82000]]) { const e = bandOk(p, lo, hi); if (e) issues.push(e); }
+  // 2) [7.4.0] capienza dal PROFILO (bacino), non dalle bande di prestigio: range globale sano + il bacino DOMINA
+  const capOf = (id, p, lg) => f(mk(id, p, lg)).capacity;
+  for (const [id, p, lg] of [['rma', 99, 'Liga Ibérica'], ['sas', 68, 'Lega A'], ['sal', 45, 'Lega B'], ['cit', 42, 'Lega B'], ['bay', 99, 'Deutsche Liga'], ['mun', 88, 'Premier Division'], ['unkA', 55, 'Lega A'], ['unkB', 45, 'Lega B']]) {
+    const c = capOf(id, p, lg); if (c < 9000 || c > 82000) issues.push('capienza ' + id + ' ' + c + ' fuori range sano 9k-82k');
+  }
+  // il BACINO domina il prestigio: grande piazza (Madrid) ha uno stadio MOLTO più grande di una piccola piazza ad alto prestigio (Sassuolo)
+  if (!(capOf('rma', 99, 'Liga Ibérica') > capOf('sas', 68, 'Lega A') * 2)) issues.push('bacino non domina: Madrid non ha uno stadio >2× Sassuolo');
+  // prestigio alto ma piazza piccola RESTA piccola: Sassuolo (p68) < Salerno (p45)
+  if (!(capOf('sas', 68, 'Lega A') < capOf('sal', 45, 'Lega B'))) issues.push('Sassuolo(p68) dovrebbe avere stadio più piccolo di Salerno(p45)');
   // 3) niente pista d'atletica in NESSUN template (decisione PO)
   const leghe = ['Lega A', 'Lega B', 'Premier Division', 'Championship', 'Liga Ibérica', 'Liga Ibérica 2', 'Deutsche Liga', 'Deutsche Liga 2', 'Ligue Nationale', 'Ligue Nationale 2', 'Liga Oranje', 'Liga Lusitana', 'Liga Belga', 'Liga Anatolica'];
   const tplSeen = {};
