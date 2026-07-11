@@ -23,7 +23,7 @@ const res = await page.evaluate(async (pat) => {
   function tex(shirt, c2, p) {
     const S = 256, cv = document.createElement('canvas'); cv.width = cv.height = S; const x = cv.getContext('2d');
     x.fillStyle = shirt; x.fillRect(0, 0, S, S); x.fillStyle = c2;
-    if (p === 'stripes') { const n = 7, w = S / n; for (let i = 1; i < n; i += 2) x.fillRect(Math.round(i * w), 0, Math.ceil(w), S); }
+    if (p === 'stripes') { const n = 16, w = S / n; for (let i = 1; i < n; i += 2) x.fillRect(Math.round(i * w), 0, Math.ceil(w), S); }
     else if (p === 'hoops') { const n = 8, h = S / n; for (let i = 1; i < n; i += 2) x.fillRect(0, Math.round(i * h), S, Math.ceil(h)); }
     else if (p === 'halves') { x.fillRect(S / 2, 0, S / 2, S); }
     else if (p === 'sash') { x.save(); x.translate(S / 2, S / 2); x.rotate(-Math.PI / 4); x.fillRect(-S, -S * 0.11, S * 2, S * 0.22); x.restore(); }
