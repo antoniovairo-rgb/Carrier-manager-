@@ -11,6 +11,8 @@
     "validate-situations:update-baseline": "CPM_UPDATE_BASELINE=1 node validate-situations.mjs",
     "attendance-sim": "node attendance-sim.mjs",
     "club-evolution-sim": "node club-evolution-sim.mjs",
+    "kit-pattern-shot": "node kit-pattern-shot.mjs",
+    "kit-3d-uv": "node kit-3d-uv.mjs",
     "crowd-context": "node crowd-context-test.mjs",
     "ai-vision": "node ai-vision-review.mjs",
     "ai-vision:strict": "node ai-vision-review.mjs --strict",
