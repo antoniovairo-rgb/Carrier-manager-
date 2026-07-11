@@ -10,6 +10,7 @@
     "validate-situations:update-golden": "node validate-situations.mjs --update-golden",
     "validate-situations:update-baseline": "CPM_UPDATE_BASELINE=1 node validate-situations.mjs",
     "attendance-sim": "node attendance-sim.mjs",
+    "club-evolution-sim": "node club-evolution-sim.mjs",
     "crowd-context": "node crowd-context-test.mjs",
     "ai-vision": "node ai-vision-review.mjs",
     "ai-vision:strict": "node ai-vision-review.mjs --strict",
