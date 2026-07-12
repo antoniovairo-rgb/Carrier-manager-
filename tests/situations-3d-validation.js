@@ -86,12 +86,12 @@ guard('G2X=(gx-50)', /G2X=gx=>\(gx-50\)/.test(src));
 guard('parabola y=0.65+sin(u*PI)*ballArcH', /ball\.position\.y=0\.65\+Math\.sin\(u\*Math\.PI\)\*ballArcH/.test(src));
 guard('outcome: goal→in_net/in_net_high', /hlPostArcType=\(_hv==="shot_chip"\|\|_hv==="shot_volley"\)\?"in_net_high":"in_net"/.test(src));
 guard('outcome: cross→cross_goal', /_ht==="cross"\)\{hlPostArcT=0;hlPostArcType="cross_goal"/.test(src));
-guard('outcome success: pass→assist_recv→assist_shot', /_hs===true&&_ht==="pass"\)\{hlPostArcT=0;hlPostArcType="assist_recv"/.test(src) && /hlPostArcType="assist_shot"/.test(src));
+guard('outcome success: pass→assist_recv→assist_shot', /_hs===true&&_ht==="pass"\)\{[\s\S]{0,900}?hlPostArcType="assist_recv"/.test(src) && /hlPostArcType===\"assist_shot\"/.test(src) && /:"assist_shot";hlPostArcT=0/.test(src)); // [7.8.28 QA] il ramo pass-success ha ora chance/goal PRIMA di assist_recv (7.1.2/7.8.10) e l'assegnazione assist_shot è un ternario SWITCH→cross_goal (5.43.7) — la guardia valida l'invariante (stage assist_recv→assist_shot raggiungibile), non il literal esatto
 guard('outcome fail: palo decision-driven (_ek|| roll<0.20)→hit_post', /_isPost=_ek\?\(_ek==="post"\):\(_isShotHL&&_roll<0\.20\)/.test(src) && /if\(_isPost\)\{[\s\S]*?hlPostArcType="hit_post"/.test(src));
 guard('outcome fail: parata decision-driven (_ek|| roll<0.85), split save/wide', /_isSave=_ek\?\(_ek==="saved"\|\|_ek==="save"\):\(_isShotHL&&_roll<0\.85\)/.test(src) && /_isSave\?"save":"wide"/.test(src));
 guard('camera FAR_POST_CROSS side-tracking', /_pat==="FAR_POST_CROSS"\)\{cPx=clamp\(fX-6/.test(src));
 guard('arc cross_far_post tgtZ=-_side*(11..)', /cross_far_post"\)\{ballArcH=4\.2;ballArcDur=0\.90;ballArcTgtX=AWAY_GOAL_X-9/.test(src));
-guard('fix: dribble/build/tackle(non-def)-gol → in_net', /\(_ht==="dribble"\|\|_ht==="build"\|\|\(_ht==="tackle"&&!P\.hlDef\)\)&&P\.hlReward==="goal"\)\{hlPostArcT=0;hlOutcomeVariant="goal";hlPostArcType="in_net"/.test(src));
+guard('fix: dribble/build/tackle(non-def)-gol → in_net', /\(_ht==="dribble"\|\|_ht==="build"\|\|\(_ht==="tackle"&&!P\.hlDef\)\)&&P\.hlReward==="goal"\)\{[\s\S]{0,400}?hlPostArcType="in_net"/.test(src)); // [7.8.28 QA] il ramo ha ora la guardia chance (5.90.0/7.8.10) prima di in_net — la guardia valida l'invariante, non il literal esatto
 guard('fix: hlReward passato come prop', /hlReward=\{chosenAct\?\.rew\|\|null\}/.test(src));
 guard('fix: shot_curled palo lontano usa -_side', /shot_curled.*ballArcTgtZ=-_side\*/.test(src));
 guard('fix: header_far_post usa -_side', /header_far_post.*ballArcTgtZ=-_side\*/.test(src));
