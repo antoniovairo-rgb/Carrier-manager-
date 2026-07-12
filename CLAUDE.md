@@ -532,7 +532,7 @@ Prima di ogni modifica: leggere le righe coinvolte, dichiarare le dipendenze not
 - **Bump `GAME_VERSION`** ad ogni push.
 - **Gate 14/14 verde** prima di ogni push — il QA Engineer valida ogni sprint.
 - **Branch workflow:** sviluppo sul branch di lavoro corrente (attuale: `claude/cpm-ux-ui-overhaul-ikhany`), poi promozione su `main` (produzione/Pages → GitHub Pages) SOLO dopo gate 14/14 verde: `git fetch origin main && git checkout -B main origin/main && git merge --ff-only <branch> && git push origin main && git checkout <branch>`. Branch storici: `claude/play-store-readiness-audit-vjn2xz`, `claude/play-store-readiness-audit-waq8cb`, `claude/ai-vision-first-run`, `claude/cpm-resume-work-71ntrj`, `claude/continue-work-y3mh4y`.
-  - **`main` solo su autorizzazione esplicita del proprietario** — mai in automatico dopo un singolo sprint senza via libero.
+  - **`main`: promozione AUTOMATICA dopo ogni push col gate verde** — direttiva PO del 2026-07-12 («promuovi sempre in produzione!»), che sostituisce la vecchia regola dell'autorizzazione esplicita per-release. Il requisito resta: gate 14/14 (+ guardiani carriera se il push tocca la carriera) PRIMA del push; poi branch di lavoro E `main` insieme.
 - **Annunciare sempre** "Pushato su GitHub — CPM x.y.z." dopo ogni `git push`.
 - **Zero regressions · Minimalismo · File unico.**
 
