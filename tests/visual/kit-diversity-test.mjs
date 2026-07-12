@@ -11,7 +11,7 @@ function extractLine(prefix){const i=SRC.indexOf(prefix);if(i<0)throw new Error(
 function extractArrow(name){const i=SRC.indexOf(`const ${name}=(`);const i2=i<0?SRC.indexOf(`const ${name}=`):i;if(i2<0)throw new Error(name);let d=0,j=SRC.indexOf('{',i2),started=false;for(let k=i2;k<SRC.length;k++){const ch=SRC[k];if(ch==='{'||ch==='('){d++;started=true;}else if(ch==='}'||ch===')'){d--;}if(started&&d===0&&SRC[k+1]===';'&&/[)}]/.test(ch)){return SRC.slice(i2,k+2);}}throw new Error('end '+name);}
 const parts=[extract('hashStr'),
   extractLine('const hexToRgb='),extractLine('const colorDist='),extractLine('const _hueOf='),
-  extractLine('const _satOf='),extractLine('const kitsClash='),extractLine('const ALT_KITS='),
+  extractLine('const _satOf='),extractArrow('kitsClash'),extractLine('const ALT_KITS='),/* [7.8.28 QA] kitsClash è multi-linea (commento interno) → extractLine troncava al 1° ;\n e la Function generata era sintatticamente rotta */
   extractArrow('resolveKitConflict'),extractLine('const hexLum='),extractLine('const buildKit='),
   extractLine('const KIT_PALETTE='),extractLine('const _mixHex='),
   extractArrow('clubKits'),extractArrow('selectMatchKits')].join('\n');

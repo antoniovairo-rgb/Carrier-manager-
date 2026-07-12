@@ -28,7 +28,7 @@ console.log(`AUDIT CREDITO LIVE — ${meta.length} situazioni · ${meta.reduce((
 const HERO=new Set(['goal','assist']);       // accredita CASA
 const OPP =new Set(['goal_against']);         // accredita OSPITE
 // chiavi note d'esito (successo+fallimento) → tutto il resto va segnalato come sconosciuto
-const KNOWN=new Set(['goal','assist','recovery','save','chance','intercept','miss','miss_easy','goal_against','through','foul','nothing','win_freekick','corner','block','beaten','offside','deflect','dispossessed','lost','stopped']);
+const KNOWN=new Set(['goal','assist','recovery','save','chance','intercept','miss','miss_easy','goal_against','through','foul','nothing','win_freekick','corner','block','beaten','offside','deflect','dispossessed','lost','stopped','loose']);/* [7.8.28 QA] 'loose' (palla vagante — fail-key di 2 azioni dribbling, es. gi=98) è nella taxonomy del gate (checks/timeline.mjs OUTCOME_FAIL) ma mancava qui */
 
 async function resolveOnce(gi,ai,outcome){
   await page.evaluate(({gi})=>{ const sz=SITUATIONS[gi].startZone; const sx=(sz&&sz.x)?(sz.x[0]+sz.x[1])/2:70; const sy=(sz&&sz.y)?(sz.y[0]+sz.y[1])/2:50;
