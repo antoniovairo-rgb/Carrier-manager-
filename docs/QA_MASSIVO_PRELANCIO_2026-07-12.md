@@ -97,3 +97,16 @@ completa dopo il batch. Charter LMQP rispettato: QA First · No Blind Fix · Zer
 Vedi esito in coda a questo documento / log di sessione: gate 14/14 + career-invariants + stab-nat + career-sim
 + stress esteso (3 profili × 4 stagioni con invarianti profondi: cap 34 gare, no fixture duplicate, età/fatica/
 morale/valore in range, ΣGF=ΣGA, banca ≥0) devono essere TUTTI verdi prima del push.
+
+## 6 · Follow-up — Sprint «I 4 deferiti» (7.9.0, direttive PO)
+Il PO ha deciso sui 4 deferiti principali (tutte le opzioni raccomandate approvate):
+
+| Direttiva | Implementazione |
+|---|---|
+| Curve d'età su TUTTI i path (sprint dedicato) | `weeklyGrowthFields(p,base)` — helper puro (pattern `weeklyEconomyFields`): auto-training + declino 31+ + drift morale→60 + valore di mercato, applicato su ogni return che avanza la settimana (live `onMatchEnd` · Simula lega/coppa/euro-girone/euro-KO/amichevole nazionale · Avanza, che ora delega). Parametri invariati: la taratura 5.80 ora vale per tutti i path. Chiude anche la «divergenza blocchi training». |
+| Infortuni anche sui path simulati | `simInjuryRoll(p,seed)` seedato, stesse bande del live (fatica>82→7%, >68→3%, carico virtuale +12..22) su Simula/Avanza di lega e coppa. Nazionali/Europa senza roll come i path live (simmetria per competizione). |
+| Coppa delle Nazioni simulabile | `simulateNationsCupMatch` riusa `onMatchEnd` context `nationsCup` (pattern 6.56.0, zero logica duplicata) + bottone «⏩ Simula» nel pannello Nazionale. Probe dedicata: 3 gare simulate, coda/caps/natHistory/done coerenti, 0 pageerror. |
+| Rientro anticipato: malus proporzionale | `returnPenaltyWeeks = clamp(1+ceil(settimaneRimanenti·0.8), 2, 5)` — scala con le settimane di recupero SALTATE, cap 5 (prima `max(3, originalInjuryWeeks)`: 12 settimane di malus su uno stop da 12). |
+
+QA 7.9.0: transpile + quick-gate + gate completo 14/14 + career-invariants + stab-nat + career-sim + stress
+esteso 3 profili × 4 stagioni + probe Nations-Cup sim. Esiti nel log di sessione.
