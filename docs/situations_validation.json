@@ -1,7 +1,7 @@
 {
   "totalCombos": 537,
-  "clean": 526,
-  "warns": 11,
+  "clean": 525,
+  "warns": 12,
   "fails": 0,
   "catFails": 0,
   "catWarns": 1,
@@ -35,15 +35,15 @@
       "ok": true
     },
     {
-      "name": "outcome: pass→assist_shot",
+      "name": "outcome success: pass→assist_recv→assist_shot",
       "ok": true
     },
     {
-      "name": "outcome fail: palo 20% (hit_post)",
+      "name": "outcome fail: palo decision-driven (_ek|| roll<0.20)→hit_post",
       "ok": true
     },
     {
-      "name": "outcome fail: save/wide split 0.85",
+      "name": "outcome fail: parata decision-driven (_ek|| roll<0.85), split save/wide",
       "ok": true
     },
     {
@@ -55,7 +55,7 @@
       "ok": true
     },
     {
-      "name": "fix: dribble/build/tackle-gol → in_net",
+      "name": "fix: dribble/build/tackle(non-def)-gol → in_net",
       "ok": true
     },
     {
@@ -80,6 +80,30 @@
     }
   ],
   "worst": [
+    {
+      "si": 148,
+      "ai": 0,
+      "realismo": 93,
+      "sit": "🏃 Rimessa dal portiere — verticale!",
+      "act": "🏃 Scatto in profondità e cross basso",
+      "cls": {
+        "type": "cross",
+        "pattern": "FAR_POST_CROSS",
+        "variant": "cross_far_post"
+      },
+      "issues": [
+        {
+          "cat": "ball",
+          "sev": "warn",
+          "msg": "velocità di picco non plausibile (79 u/s)"
+        },
+        {
+          "cat": "coerenza",
+          "sev": "warn",
+          "msg": "cross da posizione centrale (non laterale)"
+        }
+      ]
+    },
     {
       "si": 63,
       "ai": 2,
@@ -635,7 +659,7 @@
       "act": "🏃 Avanza in area",
       "cls": {
         "type": "shot",
-        "pattern": "EDGE_SHOT",
+        "pattern": "BALL_CARRY",
         "variant": "shot_power"
       },
       "issues": []
@@ -778,20 +802,7 @@
       "act": "🎯 Rientra e tira",
       "cls": {
         "type": "shot",
-        "pattern": "EDGE_SHOT",
-        "variant": "shot_power"
-      },
-      "issues": []
-    },
-    {
-      "si": 12,
-      "ai": 2,
-      "realismo": 100,
-      "sit": "🦵 Tiro con l'esterno del piede!",
-      "act": "🤸 Colpo d'esterno",
-      "cls": {
-        "type": "shot",
-        "pattern": "EDGE_SHOT",
+        "pattern": "DRIBBLE_SHOT",
         "variant": "shot_power"
       },
       "issues": []
