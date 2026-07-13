@@ -9,7 +9,7 @@ const srv = await startServer(); const port = srv.address().port;
 const browser = await launchBrowser();
 const issues = [];
 
-const ctx = await browser.newContext({ viewport: { width: 480, height: 940 }, recordVideo: { dir: 'out/intro-video', size: { width: 480, height: 940 } } });
+const ctx = await browser.newContext({ viewport: { width: 390, height: 760 }, recordVideo: { dir: 'out/intro-video', size: { width: 390, height: 760 } } });/* [7.32.7] viewport ridotto: meno raster per frame in headless → registrazione più fluida */
 const page = await ctx.newPage();
 await installCdnRoutes(page);
 page.on('pageerror', e => issues.push('pageerror: ' + String(e.message).slice(0, 150)));
