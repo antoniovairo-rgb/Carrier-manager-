@@ -39,14 +39,24 @@ const stage3d = await page.evaluate(() => !!document.querySelector('canvas'));
 console.log('(1b) palco 3D (canvas):', stage3d);
 if (!stage3d) issues.push('palco 3D assente (canvas non montato nell\'overlay gala)');
 await page.screenshot({ path: 'out/gala-stage-busta.png' });
-await clickBtn('Apri la busta'); await sleep(700);
-const b3 = await hasTxt('🥉') || await page.evaluate(() => /Il secondo posto/i.test(document.body.innerText));
-if (!b3) issues.push('reveal 3° posto non avvenuto');
-await clickBtn('Il secondo posto'); await sleep(700);
-await clickBtn('e il vincitore è'); await sleep(1600);
-await page.screenshot({ path: 'out/gala-stage-winner.png' });
+// [7.33.0] SEQUENZA multi-premio: per ogni atto — busta → (3°→2°→) 1° → prossimo premio / cerimonia
+const seenActs = [];
+for (let act = 0; act < 8; act++) {
+  const title = await page.evaluate(() => { const m = document.body.innerText.match(/(Giovane dell'Anno|Capocannoniere|MVP della Stagione|Re dei Bomber|Trofeo d'Oro)/); return m ? m[1] : null; });
+  if (title) seenActs.push(title);
+  await clickBtn('Apri la busta'); await sleep(700);
+  if (await page.evaluate(() => /Il secondo posto/i.test(document.body.innerText))) { await clickBtn('Il secondo posto'); await sleep(600); }
+  if (await page.evaluate(() => /e il vincitore è/i.test(document.body.innerText))) { await clickBtn('e il vincitore è'); await sleep(1200); }
+  if (act === 0) await page.screenshot({ path: 'out/gala-stage-act1.png' });
+  const isLast = await page.evaluate(() => /Vai alla cerimonia/i.test(document.body.innerText));
+  if (isLast) { await page.screenshot({ path: 'out/gala-stage-winner.png' }); break; }
+  const nxt = await clickBtn('Il prossimo premio'); await sleep(900);
+  if (!nxt) { issues.push('atto ' + act + ' senza bottone di avanzamento'); break; }
+}
+console.log('(2) atti visti:', seenActs.join(' → '));
+if (seenActs.length < 3) issues.push('sequenza gala troppo corta (attesi ≥3 premi): ' + seenActs.join(','));
+if (seenActs[seenActs.length - 1] !== "Trofeo d'Oro") issues.push('il Trofeo d\'Oro non è l\'atto FINALE');
 const win = await page.evaluate(() => /🥇/.test(document.body.innerText) || /Vai alla cerimonia/i.test(document.body.innerText));
-console.log('(2) reveal completo:', b3, win);
 if (!win) issues.push('reveal del vincitore non avvenuto');
 await clickBtn('Vai alla cerimonia'); await sleep(900);
 const closed = await page.evaluate(() => !/La busta, per favore/i.test(document.body.innerText) && /Premi Stagione/i.test(document.body.innerText));
@@ -54,5 +64,5 @@ console.log('(3) chiusura → schermata premi:', closed);
 if (!closed) issues.push('overlay non chiuso / schermata premi non visibile');
 
 await browser.close(); srv.close();
-console.log(issues.length ? '❌ FAIL\n' + issues.map(i => '  ✗ ' + i).join('\n') : '✅ GALA OK (overlay · reveal a buste 3°→2°→1° · chiusura alla cerimonia)');
+console.log(issues.length ? '❌ FAIL\n' + issues.map(i => '  ✗ ' + i).join('\n') : "✅ GALA OK (overlay · sequenza multi-premio → Trofeo d'Oro finale · chiusura alla cerimonia)");
 process.exit(issues.length ? 1 : 0);
