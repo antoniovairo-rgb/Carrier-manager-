@@ -34,11 +34,17 @@ const clickBtn = (rx) => page.evaluate((x) => { const r = new RegExp(x, 'i'); co
 const overlay = await hasTxt('La notte del Gala') && await hasTxt('La busta, per favore');
 console.log('(1) overlay gala:', overlay);
 if (!overlay) issues.push('overlay gala assente all\'ingresso nella schermata premi');
+// [7.24.0] palco 3D: canvas montato dentro l'overlay (fallback senza canvas = solo se WebGL giù)
+const stage3d = await page.evaluate(() => !!document.querySelector('canvas'));
+console.log('(1b) palco 3D (canvas):', stage3d);
+if (!stage3d) issues.push('palco 3D assente (canvas non montato nell\'overlay gala)');
+await page.screenshot({ path: 'out/gala-stage-busta.png' });
 await clickBtn('Apri la busta'); await sleep(700);
 const b3 = await hasTxt('🥉') || await page.evaluate(() => /Il secondo posto/i.test(document.body.innerText));
 if (!b3) issues.push('reveal 3° posto non avvenuto');
 await clickBtn('Il secondo posto'); await sleep(700);
-await clickBtn('e il vincitore è'); await sleep(800);
+await clickBtn('e il vincitore è'); await sleep(1600);
+await page.screenshot({ path: 'out/gala-stage-winner.png' });
 const win = await page.evaluate(() => /🥇/.test(document.body.innerText) || /Vai alla cerimonia/i.test(document.body.innerText));
 console.log('(2) reveal completo:', b3, win);
 if (!win) issues.push('reveal del vincitore non avvenuto');
