@@ -39,12 +39,23 @@ const hasTxt = (page, rx) => page.evaluate((x) => new RegExp(x, 'i').test(docume
   if (!pre) issues.push('vigilia della finale di Coppa assente');
   await pg.close();
 }
-// (2) vinta (cup.champion)
+// (2) vinta (cup.champion) → [7.25.1] copy SOBRIO della Coppa Nazionale (gerarchia: campionato > coppa)
 {
   const pg = await boot(mkSave({ calendar: cupFinal(true, true), cup: { active: true, round: 5, eliminated: false, champion: true, winnerId: 'sal', results: [{ round: 4, name: 'FINALE', opponent: 'FC Pisano', homeScore: 2, awayScore: 0, won: true }] }, arcSeen: { 'fin1_w35_S4': true } }));
-  const won = await hasTxt(pg, 'Il giorno che non dimenticherai');
-  console.log('(2) trionfo:', won);
-  if (!won) issues.push('capitolo trionfo assente con cup.champion');
+  const won = await hasTxt(pg, 'La coppa in bacheca');
+  const epic = await hasTxt(pg, 'Il giorno che non dimenticherai');
+  console.log('(2) trionfo coppa (sobrio):', won, '· epico (solo euro):', epic);
+  if (!won) issues.push('capitolo trionfo coppa (sobrio) assente con cup.champion');
+  if (epic) issues.push('copy EPICO usato per la Coppa Nazionale (riservato all\'Europa)');
+  await pg.close();
+}
+// (2b) [7.25.1] LA VOLATA SCUDETTO — W31, primo a +2 sulla seconda
+{
+  const st = Array.from({ length: 18 }, (_, i) => ({ id: i === 0 ? 'sal' : 'c' + i, n: i === 0 ? 'FC Salernum' : 'Club ' + i, played: 30, pts: i === 0 ? 68 : 68 - 2 - (i - 1) * 2, gf: 50 - i, ga: 20 + i, gd: 30 - 2 * i, wins: 20, draws: 5, losses: 5 }));
+  const pg = await boot(mkSave({ week: 31, calendar: [], cup: null, standings: st }));
+  const vol = await hasTxt(pg, 'La volata scudetto');
+  console.log('(2b) volata:', vol);
+  if (!vol) issues.push('capitolo «La volata scudetto» assente (1° a +2, W31)');
   await pg.close();
 }
 // (3) persa
