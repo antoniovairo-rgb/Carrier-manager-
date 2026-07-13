@@ -52,7 +52,7 @@ const goNaz = async (page) => { await page.evaluate(() => { const b = [...docume
 // (2) ESAME SUPERATO — 4 gare dopo l'esonero con media 7.0
 {
   const pg = await boot(mkSave({ week: 17, coachSackSeason: 4, newCoachExam: { season: 4, fromWeek: 12, games: 4 }, matchHistory: [...badRun, lgGame(13, 1, 7.2, true), lgGame(14, 0, 6.8, false, true), lgGame(15, 1, 7.0, true), lgGame(16, 1, 7.1, true)] }));
-  const card = await hasTxt(pg, 'esame superato|riconquistato');
+  const card = await hasTxt(pg, "dell'esame: superato|Il posto è tuo finché lo difendi");
   if (!card) issues.push('verdetto esame superato assente (media 7.0 su 4)');
   const t0 = (await getP(pg)).coachTrust;
   try { await pg.getByText('Il posto è mio', { exact: false }).first().click({ timeout: 6000 }); } catch (e) { issues.push('bottone esame non cliccabile'); }
@@ -109,16 +109,17 @@ const goNaz = async (page) => { await page.evaluate(() => { const b = [...docume
 {
   const pg = await boot(mkSave({}));
   await goNaz(pg);
-  const n1 = await pg.evaluate(() => { const rows = document.body.innerText.match(/La lista del CT[\s\S]{0,600}/); return rows ? rows[0] : ''; });
-  await pg.reload(); await sleep(1800);
-  try { await pg.getByText('Continua', { exact: false }).first().click({ timeout: 5000 }); } catch (e) {}
-  await sleep(1000);
-  await goNaz(pg);
-  const n2 = await pg.evaluate(() => { const rows = document.body.innerText.match(/La lista del CT[\s\S]{0,600}/); return rows ? rows[0] : ''; });
-  const same = n1 && n1 === n2;
-  console.log('(6) determinismo lista:', same);
-  if (!same) issues.push('lista CT non deterministica su reload');
+  const grab = (page) => page.evaluate(() => { const rows = document.body.innerText.match(/la lista del ct[\s\S]{0,600}/i); return rows ? rows[0] : ''; });
+  const n1 = await grab(pg);
   await pg.close();
+  /* boot FRESCO con lo stesso save: la lista è derivata (nazione+ciclo) ⇒ deve essere identica */
+  const pgB = await boot(mkSave({}));
+  await goNaz(pgB);
+  const n2 = await grab(pgB);
+  const same = n1 && n1 === n2;
+  console.log('(6) determinismo lista:', same, '· n1len', n1.length, '· n2len', n2.length);
+  if (!same) issues.push('lista CT non deterministica su boot ripetuto');
+  await pgB.close();
 }
 
 await browser.close(); srv.close();
