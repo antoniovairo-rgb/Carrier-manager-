@@ -10,7 +10,7 @@ const srv = await startServer(); const port = srv.address().port;
 const browser = await launchBrowser();
 const issues = [];
 
-const mkSave = (over = {}) => ({ phase: 'career', player: { name: 'Obj Probe', nation: 'Italia', avatarId: 0, proStatus: 'pro', season: 3, week: 20, weekLived: false, age: 23, ovr: 76, tutorialDone: true, campDone: true, jerseyNumSeason: 3, presidentModalSeason: 3, seasonPledge: null, drawSeen: 3, squadRole: 'titolare', coachTrust: 80, value: 2.0, popularity: 40, hasAgent: true,
+const mkSave = (over = {}) => ({ phase: 'career', player: { name: 'Obj Probe', nation: 'Italia', avatarId: 0, proStatus: 'pro', season: 3, week: 20, weekLived: false, age: 23, ovr: 76, tutorialDone: true, campDone: true, jerseyNumSeason: 3, presidentModalSeason: 3, seasonPledge: null, drawSeen: 3, squadRole: 'titolare', coachTrust: 80, value: 30, popularity: 40, hasAgent: true,
   history: [{ season: 2, club: 'FC Werkstadt', clubId: 'b04', goals: 12, assists: 5, matches: 30, ovr: 74, league: 'Deutsche Liga' }],
   goals: 5, assists: 2, matches: 10,
   matchHistory: [1, 2, 3, 4, 5, 6].map(i => ({ opponent: 'X' + i, rating: 7.0, goals: 1, assists: 0 })),
@@ -45,15 +45,15 @@ const boot = async (save) => {
   await page.keyboard.press('g');
   await sleep(700);
   const ag = await page.evaluate(() => document.body.innerText);
-  console.log('(2) agente:', /IL PIANO DEL PROCURATORE/i.test(ag) ? 'piano ✓' : 'piano ASSENTE', '·', /2M a €2\.7M|da €2M a €2\.7M/.test(ag) ? 'target 2.7M ✓' : '(testo target: ' + ((ag.match(/Ti porto da[^\n]*/) || ['?'])[0]) + ')');
+  console.log('(2) agente:', /IL PIANO DEL PROCURATORE/i.test(ag) ? 'piano ✓' : 'piano ASSENTE', '·', /€40\.5M/.test(ag) ? 'target 40.5M ✓' : '(testo target: ' + ((ag.match(/Ti porto da[^\n]*/) || ['?'])[0]) + ')');
   if (!/IL PIANO DEL PROCURATORE/i.test(ag)) issues.push('(2) «IL PIANO DEL PROCURATORE» assente nel Tab Agente');
-  if (!/€2\.7M/.test(ag)) issues.push('(2) target valore atteso €2.7M (2.0 × 1.35 a 23 anni) non mostrato');
+  if (!/€40\.5M/.test(ag)) issues.push('(2) target valore atteso €40.5M (30 × 1.35 a 23 anni) non mostrato');
   await page.close();
 }
 
 // ── (3) rollover: verdetti + nuovo agentPlan ─────────────────────────────
 {
-  const save = mkSave({ week: 38, goals: 14, value: 2.8, agentPlan: { season: 3, base: 2.0, target: 2.7, hold: false } });
+  const save = mkSave({ week: 38, goals: 14, value: 45, agentPlan: { season: 3, base: 38, target: 44, hold: false } });
   const page = await boot(save);
   const res = await page.evaluate(() => window.__CPM_CAREER.startNewSeason());
   await sleep(2500);
@@ -66,14 +66,14 @@ const boot = async (save) => {
   if (st.season !== 4) issues.push('(3) rollover non avvenuto (season ' + st.season + ')');
   if (st.diary !== 1) issues.push('(3) voce diario persgoal attesa 1, trovate ' + st.diary);
   if (!st.logPers) issues.push('(3) log «Obiettivi personali CENTRATI» assente (14 gol ≥ 13, avg 7.0 su 6 gare)');
-  if (!st.logAgent) issues.push('(3) log del procuratore (piano centrato, 2.8 ≥ 2.7) assente');
+  if (!st.logAgent) issues.push('(3) log del procuratore (piano centrato, 45 ≥ 44) assente');
   if (st.apSeason !== 4) issues.push('(3) agentPlan della nuova stagione non scritto (season ' + st.apSeason + ')');
   await page.close();
 }
 
 // ── (4) U18: niente card personale ───────────────────────────────────────
 {
-  const save = mkSave({ proStatus: 'u18', history: [], agentPlan: undefined, club: { id: 'b04', n: 'FC Werkstadt U18', a: 'WRK', p: 56, c: '#dc2626', c2: '#111111', nat: '🇩🇪', lg: 'Primavera 1', isU18: true } });
+  const save = mkSave({ proStatus: 'u18', history: [], agentPlan: undefined, value: 0.6, hasAgent: false, club: { id: 'b04', n: 'FC Werkstadt U18', a: 'WRK', p: 56, c: '#dc2626', c2: '#111111', nat: '🇩🇪', lg: 'Primavera 1', isU18: true } });
   const page = await boot(save);
   const dash = await page.evaluate(() => document.body.innerText);
   console.log('(4) U18:', /Obiettivi personali/i.test(dash) ? 'card PRESENTE (sbagliato)' : 'niente card ✓');
