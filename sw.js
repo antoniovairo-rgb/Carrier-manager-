@@ -23,8 +23,11 @@ self.addEventListener('fetch', e => {
   e.respondWith(
     fetch(fetchReq)
       .then(r => {
-        // conserva una copia SOLO del documento principale, per il fallback offline
-        if (req.method === 'GET' && r.ok && isDoc) {
+        // [7.46.2 BL-01] cache-on-first-fetch per TUTTI gli asset GET (CDN React/Three/Babel + GLB + icone):
+        //   prima si conservava SOLO il documento → CDN irraggiungibile = boot morto (single point of failure E1).
+        //   Le risposte CROSS-ORIGIN dei CDN sono OPACHE (type 'opaque', ok=false): si cachano comunque (lecito)
+        //   e vengono riservite identiche. Semantica network-first INVARIATA: la cache si usa solo nel .catch.
+        if (req.method === 'GET' && (r.ok || r.type === 'opaque')) {
           const clone = r.clone();
           caches.open(CACHE).then(c => c.put(req, clone));
         }
