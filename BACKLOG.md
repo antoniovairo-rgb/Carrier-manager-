@@ -6,7 +6,7 @@
 ## Priorità HIGH 🟠
 | ID | Titolo | Fase | Eff | Dipendenze | Verifica | Stato |
 |---|---|---|---|---|---|---|
-| BL-01 | CDN fallback in PRODUZIONE (React/Three/Babel locali o SW-cache) — rimuove il single-point-of-failure E1 | 4 | M | — | Gate + Live | ☐ |
+| BL-01 | CDN fallback in PRODUZIONE (React/Three/Babel locali o SW-cache) — rimuove il single-point-of-failure E1. FATTO 7.46.2: il SW cacha tutti gli asset GET al primo fetch (risposte opache incluse), network-first invariato. ⚠️ Collaudo dal vivo: prima visita online → modalità aereo → il gioco deve partire | 4 | M | — | Gate + Live | ✅ (collaudo live pendente) |
 | BL-02 | Split `CareerApp` in sotto-componenti UI (tabs) — primo split a basso rischio | 3 | L | baseline | Gate + Live | ☐ |
 | BL-03 | Split `LiveMatch` (state-machine / UI / hook) | 3 | L | BL-02 | Gate + Live | ☐ |
 | BL-04 | Split `ThreeMatchView` (off-ball AI / locomozione / conclusione / camera) — massimo rischio | 3 | L | BL-03, mappa | **Live** (gate-blind) | ☐ |
