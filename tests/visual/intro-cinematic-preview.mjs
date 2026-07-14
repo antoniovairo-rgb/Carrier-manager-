@@ -20,7 +20,7 @@ const click = (rx) => page.evaluate((x) => { const r = new RegExp(x, 'i'); const
 console.log('nuova:', await click('Nuova Partita|Nuova Carriera|Nuova'));
 await sleep(1400);
 // CreateScreen: nome + crea
-try { const inp = page.locator('input').first(); await inp.fill('Leo Vairo', { timeout: 5000 }); } catch (e) {}
+try { const inp = page.locator('input').first(); await inp.fill('Giovanni Pisano', { timeout: 5000 });/* [7.42.1 collaudo PO] l'eroe del video È Giovanni Pisano */ } catch (e) {}
 await sleep(400);
 console.log('crea:', await click('INIZIA I PROVINI'));
 await sleep(1200);
