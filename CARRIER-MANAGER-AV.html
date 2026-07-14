@@ -17636,7 +17636,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     const ns={...player.stats};
     if(s.ef.fisico)ns.fisico=clamp((ns.fisico||60)+s.ef.fisico,1,99);
     if(s.ef.tecnica)ns.tecnica=clamp((ns.tecnica||60)+s.ef.tecnica,1,99);
-    const np={...player,stats:ns,ovr:calcOvr(ns),
+    let np={...player,stats:ns,ovr:calcOvr(ns),
       fatigue:clamp((player.fatigue||0)+(s.ef.fatigue||0),0,100),
       coachTrust:clamp((player.coachTrust||60)+(s.ef.coachTrust||0),0,100),
       morale:clamp((player.morale||70)+(s.ef.morale||0),0,100),
@@ -17644,11 +17644,29 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       teamChemistry:clamp((player.teamChemistry||50)+(s.ef.teamChemistry||0),0,100),
       campDone:true,
       log:[`🏕️ Ritiro: sessione ${s.l} completata (S.${player.season||1})`,...(player.log||[])].slice(0,60)};
+    /* [7.39.0 §9.1] AMICHEVOLE DI RITIRO — il precampionato si chiude con una partita di prova VERA (seedata,
+       avversario reale della tua lega, esito da simulateMatch): il voto pesa su fiducia/forma prima della
+       gerarchia. NON entra in matchHistory (è un'amichevole: niente presenze/standings/anti-loop). */
+    let _amic39=null;
+    try{
+      const _pool39=getLeagueClubs(player).filter(c=>c&&c.id!==player.club?.id);
+      const _sd39=hashStr((player.club?.id||"x")+"|amic|"+(player.season||1));
+      const _opp39=_pool39.length?_pool39[_sd39%_pool39.length]:null;
+      if(_opp39){
+        const _sim39=simulateMatch(player.club,_opp39,np.ovr,true,_sd39);
+        const _rat39=Math.round(clamp(_sim39.rating+(s.id==="amichevole"?0.5:0.15)+((np.form||70)-70)*0.01,4,9.5)*10)/10;
+        const _dTrust=_rat39>=7?2:_rat39>=6?1:0, _dForm=_rat39>=7?2:_rat39<5.5?-1:0;
+        _amic39={opp:_opp39.n,hs:_sim39.homeScore,as:_sim39.awayScore,rat:_rat39};
+        np={...np,coachTrust:clamp(np.coachTrust+_dTrust,0,100),form:clamp(np.form+_dForm,30,95),
+          log:[`🤝 Amichevole di ritiro: ${player.club?.n||"Noi"} ${_sim39.homeScore}-${_sim39.awayScore} ${_opp39.n} — il tuo voto ${_rat39}`,...np.log].slice(0,60)};
+      }
+    }catch(_e){}
     const newRole=calcSquadRole(np);
     setPlayer(p=>({...np,squadRole:newRole}));
     const _roleLbl={leader:"Leader spogliatoio",titolare:"Titolare",rotazione:"Rotazione",riserva:"Riserva",primavera:"Primavera"};
     setTimeout(()=>notify(s.txt,TH.success),200);
-    setTimeout(()=>notify(`📋 Gerarchia iniziale: ${_roleLbl[newRole]||"Riserva"} — definita dal ritiro.`,TH.primary),1600);
+    if(_amic39)setTimeout(()=>notify(`🤝 Amichevole di ritiro: ${player.club?.n||"Noi"} ${_amic39.hs}-${_amic39.as} ${_amic39.opp} — voto ${_amic39.rat}${_amic39.rat>=7?": il mister prende appunti (+fiducia)":_amic39.rat<5.5?": gambe ancora imballate":""}`,_amic39.rat>=7?TH.success:TH.accent),1400);
+    setTimeout(()=>notify(`📋 Gerarchia iniziale: ${_roleLbl[newRole]||"Riserva"} — definita dal ritiro.`,TH.primary),2700);
   };
   const doOpeningPledge=(tone)=>{setPlayer(p=>({...p,seasonPledge:{season:p.season||1,tone},...ledgerPush(p,{t:"promessa",who:"la piazza",what:`Conferenza d'apertura: tono ${tone}`}),/* [7.26.0 S2] la parola data entra nel registro */popularity:clamp((p.popularity||20)+(tone==="ambizioso"?4:tone==="equilibrato"?1:0),0,100),morale:clamp((p.morale||70)+(tone==="prudente"?3:tone==="equilibrato"?2:0),0,100),log:[`🎙️ Conferenza d'apertura S.${p.season||1}: hai scelto un tono ${tone}`,...(p.log||[])].slice(0,60)}));notify(tone==="ambizioso"?"🎙️ Parole forti in conferenza: la piazza sogna (+popolarità). Ora mantienile.":tone==="prudente"?"🤫 Basso profilo: zero pressione — e spazio per sorprendere tutti.":"🎯 Messaggio equilibrato: obiettivi chiari, piazza con te.",TH.accent);};
   const startMatch=()=>{
@@ -23388,9 +23406,20 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
             const roleColors={'primavera':'#94a3b8','riserva':'#f59e0b','rotazione':'#3b82f6','titolare':'#16a34a','leader':'#7c3aed'};
             const roleLabels={'primavera':'Primavera','riserva':'Riserva','rotazione':'In Rotazione','titolare':'Titolare','leader':'Leader Spogliatoio'};
             const role=player.squadRole||'riserva';
-            return <div style={{display:"inline-flex",alignItems:"center",gap:5,padding:"4px 10px",borderRadius:20,background:roleColors[role]+"22",border:`1px solid ${roleColors[role]}66`,marginTop:6}}>
-              <div style={{width:7,height:7,borderRadius:"50%",background:roleColors[role]}}/>
-              <span style={{fontSize:11,fontWeight:700,color:roleColors[role]}}>{roleLabels[role]}</span>
+            /* [7.39.0 §9.2] il gradino successivo è TRASPARENTE: soglie 1:1 di calcSquadRole coi tuoi valori vivi */
+            const _rec5=(player.matchHistory||[]).slice(-5);
+            const _avg5=_rec5.length?Math.round(_rec5.reduce((s,m)=>s+(m.rating||6),0)/_rec5.length*10)/10:6.0;
+            const _next39=role==='leader'?null
+              :role==='titolare'?"Prossimo gradino — Leader: la fascia si guadagna (età 27+ · 130+ presenze · fiducia 90+)"
+              :role==='rotazione'?`Prossimo gradino — Titolare: OVR ≥78 (ora ${player.ovr||60}) · fiducia ≥72 (ora ${player.coachTrust||60}) · media voti ≥6.8 (ora ${_avg5})`
+              :role==='riserva'?`Prossimo gradino — Rotazione: OVR ≥68 (ora ${player.ovr||60}) · fiducia ≥55 (ora ${player.coachTrust||60}) · media voti ≥6.2 (ora ${_avg5})`
+              :"Prossimo gradino: firma il primo contratto da professionista";
+            return <div style={{marginTop:6}}>
+              <div style={{display:"inline-flex",alignItems:"center",gap:5,padding:"4px 10px",borderRadius:20,background:roleColors[role]+"22",border:`1px solid ${roleColors[role]}66`}}>
+                <div style={{width:7,height:7,borderRadius:"50%",background:roleColors[role]}}/>
+                <span style={{fontSize:11,fontWeight:700,color:roleColors[role]}}>{roleLabels[role]}</span>
+              </div>
+              {_next39&&<div style={{fontSize:10,color:TH.muted,marginTop:4,lineHeight:1.5}}>{_next39}</div>}
             </div>;
           })()}
           {/* Sprint 33 C4 — Statistiche Carriera sparklines */}
