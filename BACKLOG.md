@@ -19,7 +19,7 @@
 | ID | Titolo | Fase | Eff | Dipendenze | Verifica | Stato |
 |---|---|---|---|---|---|---|
 | BL-10 | Camera broadcast: tracking/framing/zoom/cinematic (cameraQuality 50-65→↑) | 9 | L | — | AIV + Live | ☐ |
-| BL-11 | Off-ball AI: bufferizzare oggetti per-frame (no alloc) + griglia spaziale (O(N²)→) | 10 | M | — | Gate(motion) + perf | ☐ |
+| BL-11 | Off-ball AI: bufferizzare oggetti per-frame (no alloc) + griglia spaziale (O(N²)→). FATTO 7.47.0 (prima metà): pooling dei buffer per-frame del PASS 1 (`_tgB/_tgPool` 24 slot 7 campi · `_hmPB/_awPB/_ptPool` · `_mkClaimB.clear()`) su `sr.current` — semantica identica (nessun consumatore trattiene riferimenti oltre il frame), fingerprint gate invariato. La griglia spaziale (O(N²)→O(N)) resta a backlog: N=22 → il quadratico costa poco, il GC era il collo | 10 | M | — | Gate(motion) + perf | ◑ (pooling ✅) |
 | BL-12 | Leak/zombie detection automatica + CPU/GPU nel perf-monitor | 10 | M | — | perf-monitor | ☐ |
 | BL-13 | `SAVE_VERSION` come gate di migrazione reale (+stamp) | 4 | M | — | Node(save-compat) | ☐ |
 | BL-14 | Audit & cleanup dei `setTimeout` in `LiveMatch` (no leak/race) + `dispose()` Three | 4 | M | — | Gate + stress | ☐ |
