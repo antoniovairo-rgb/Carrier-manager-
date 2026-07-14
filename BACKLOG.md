@@ -13,6 +13,8 @@
 | BL-05 | Archi conclusione 100% derivati dalla decisione (ritiro pre-autorati residui, scorecard #3) | 7 | L | — | AIV + Live | ◑ (F4-F7 fatti) |
 | BL-06 | Animation quality: blending/transizioni/fluidità (AI Vision animationQuality ~40-55→↑) | 7 | L | — | AIV + Live | ☐ |
 
+| BL-07 | **cpmadapt indebolito** — la risposta adattiva della difesa (shading fascia calda) misura 0.4-0.8u su TUTTA la storia raggiungibile (bisezione 7.46.0: 7.8.20→0.81u · 7.9.0→0.37u · 7.15.0→0.42u · 7.24.0→0.59u · HEAD→0.41u) contro la baseline 6.75.0 di ±6u; valori da «pre-DEF-4» (0.78u) → sospetto: la marcatura PASS 1b o un pass 3D successivo sovrascrive di nuovo lo shading del blocco (`_adSHL`/`adaptShift`). Root cause fuori dalla storia del clone: servono strumentazione in-page (probe su `_adSHL` applicato vs y finale dei DIF) e fix alla fonte, NON ritarature cieche | 7 | M | — | adapt-test + Live | ☐ |
+
 ## Priorità MEDIUM 🟡
 | ID | Titolo | Fase | Eff | Dipendenze | Verifica | Stato |
 |---|---|---|---|---|---|---|
