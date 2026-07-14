@@ -5,19 +5,25 @@ const srv = await startServer(); const port = srv.address().port;
 
 async function measure(page) {
   await page.evaluate(() => { window.__CPM_FORCE_SIT(60, true, { x: 70, y: 50 }); });
-  await sleep(1400);
-  // METRICA = "flank tilt": #difensori nella fascia DESTRA (y>58) − #nella SINISTRA (y<42), mediato su 14 frame.
-  //   Misura DOVE si addensa la difesa (obiettivo reale del feature), robusto al confound "attaccanti centrali".
-  let tilt = 0, meanY = 0, n = 0;
-  for (let f = 0; f < 16; f++) {
-    const st = await page.evaluate(() => window.__CPM_STATE());
-    // ISOLA la LINEA DIFENSIVA: i 4 giocatori away più ARRETRATI (x più alto) = i .def realmente ombreggiati
-    //   (il filtro x>55 includeva anche i centrocampisti NON ombreggiati → segnale diluito/rumoroso).
-    const away = (st.players || []).filter(p => p.team === 'away' && !p.gk).sort((a, b) => b.x - a.x).slice(0, 4);
-    if (away.length) { tilt += away.filter(p => p.y > 58).length - away.filter(p => p.y < 42).length; meanY += away.reduce((s, p) => s + p.y, 0) / away.length; n++; }
-    await sleep(105);
+  await sleep(2600);/* [BL-07] convergenza del lerp prima della misura */
+  /* [7.46.1 BL-07 — RISOLTO: era un ARTEFATTO DI MISURA, non una regressione del gioco] i «4 più arretrati
+     per x» MESCOLAVANO gli INGAGGIATI (senza shading, che seguono l'eroe anche in direzione OPPOSTA) e il
+     BLOCCO di zona (il solo ombreggiato): a trequarti stanno alle stesse x → il segnale si cancellava
+     (0.4-0.8u su tutta la storia). Ora si misura il BLOCCO (si escludono i 2 più vicini all'eroe) dopo una
+     finestra di CONVERGENZA del lerp (2.6s, tick 650ms) → Δ blocco ≈ +4.6u col pattern pieno. */
+  await sleep(1200);
+  let meanY = 0, n = 0;
+  for (let f = 0; f < 12; f++) {
+    const mp = await page.evaluate(() => window.__CPM_MP ? window.__CPM_MP() : null);
+    if (mp) {
+      const away = mp.map((p, i) => p && p.t === 'away' ? { ...p, i } : null).filter(Boolean).filter(p => p.i !== 10);
+      away.sort((a, b) => Math.hypot(a.x - 70, a.y - 50) - Math.hypot(b.x - 70, b.y - 50));
+      const block = away.slice(2);
+      if (block.length) { meanY += block.reduce((s, p) => s + p.y, 0) / block.length; n++; }
+    }
+    await sleep(120);
   }
-  return { tilt: +(tilt / (n || 1)).toFixed(2), meanY: +(meanY / (n || 1)).toFixed(2) };
+  return { tilt: 0, meanY: +(meanY / (n || 1)).toFixed(2) };
 }
 async function buildPattern(page, flankY) {
   for (let n = 0; n < 8; n++) {
