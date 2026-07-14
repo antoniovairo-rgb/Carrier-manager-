@@ -55,3 +55,28 @@ export async function measurePerf(page, { frameWindowMs = 1000 } = {}) {
 
   return { nav, heap, frames, thresholds: TH, warnings };
 }
+
+/* [BL-12] LEAK/ZOMBIE DETECTION (warn-only, come tutto LMQP-8) — campiona lo JS heap N volte a
+   pagina "ferma" (render-loop attivo ma nessuna nuova azione) e stima la PENDENZA (MB/s): una
+   crescita sostenuta con scena statica è il segnale classico di leak per-frame (allocazioni nel
+   render-loop, listener/timer accumulati). In più conta i <canvas> montati a fine run: un numero
+   anomalo = componenti 3D zombie mai smontati (match + gala/interview/intro coexistono al massimo
+   in transizione). Headless è rumoroso (GC non forzabile senza --expose-gc) → soglie LARGHE, mai FAIL. */
+const LEAK_TH = { slopeMaxMBs: 3, canvasMax: 4 };
+
+export async function measureLeak(page, { samples = 4, gapMs = 700 } = {}) {
+  const warnings = [];
+  const heaps = [];
+  for (let i = 0; i < samples; i++) {
+    const h = await page.evaluate(() => performance.memory ? +(performance.memory.usedJSHeapSize / 1048576).toFixed(1) : null);
+    if (h == null) return null; // non-Chromium: nessuna misura
+    heaps.push(h);
+    if (i < samples - 1) await new Promise(r => setTimeout(r, gapMs));
+  }
+  const spanS = ((samples - 1) * gapMs) / 1000;
+  const slope = spanS > 0 ? (heaps[heaps.length - 1] - heaps[0]) / spanS : 0; // MB/s
+  const canvases = await page.evaluate(() => document.querySelectorAll('canvas').length);
+  if (slope > LEAK_TH.slopeMaxMBs) warnings.push(`leak: heap +${slope.toFixed(1)}MB/s a scena statica (> ${LEAK_TH.slopeMaxMBs}MB/s)`);
+  if (canvases > LEAK_TH.canvasMax) warnings.push(`zombie: ${canvases} canvas montati a fine run (> ${LEAK_TH.canvasMax})`);
+  return { heapsMB: heaps, slopeMBs: +slope.toFixed(2), canvases, thresholds: LEAK_TH, warnings };
+}

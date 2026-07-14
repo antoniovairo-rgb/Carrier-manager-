@@ -20,7 +20,7 @@ import { startServer, launchBrowser, openMatch, forceSituation, freeze, unfreeze
 import { loadSituations } from './lib/situations.mjs';
 import { writeReports } from './report.mjs';
 import { collectFailures } from './lib/failure-collector.mjs';
-import { measurePerf } from './lib/perf-monitor.mjs';
+import { measurePerf, measureLeak } from './lib/perf-monitor.mjs';
 import { writeReplayTrace } from './lib/replay-trace.mjs';
 import { runAiVision, visionEnabled } from './lib/ai-vision.mjs';
 import initialState from './checks/initial-state.mjs';
@@ -210,7 +210,9 @@ const GOLDEN = path.join(HERE, 'golden-sigs.json');
     try {
       await forceSituation(page, 0, { settle: 500, choose: true });
       perf = await measurePerf(page, { frameWindowMs: 1000 });
-      console.log(`perf: ${perf.frames.fps}fps (avg ${perf.frames.avgMs}ms · p95 ${perf.frames.p95Ms}ms)` + (perf.heap ? ` · heap ${perf.heap.usedMB}MB` : '') + (perf.nav && perf.nav.loadMs != null ? ` · load ${perf.nav.loadMs}ms` : ''));
+      const leak = await measureLeak(page).catch(() => null); // [BL-12] warn-only: slope heap + canvas zombie
+      if (leak) { perf.leak = leak; perf.warnings.push(...leak.warnings); }
+      console.log(`perf: ${perf.frames.fps}fps (avg ${perf.frames.avgMs}ms · p95 ${perf.frames.p95Ms}ms)` + (perf.heap ? ` · heap ${perf.heap.usedMB}MB` : '') + (perf.nav && perf.nav.loadMs != null ? ` · load ${perf.nav.loadMs}ms` : '') + (leak ? ` · leak-slope ${leak.slopeMBs}MB/s · canvas ${leak.canvases}` : ''));
     } catch (e) { perf = { error: String(e && e.message || e), warnings: [] }; console.log('perf: misura non disponibile (' + perf.error + ')'); }
 
     // LIVE-SMOKE (F1 · ARC-1a, 5.76.0) — partita REALE su pagina pulita: nessuna situation forzata,
