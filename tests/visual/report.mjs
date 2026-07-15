@@ -10,7 +10,7 @@ export function writeReports(outDir, data) {
   fs.mkdirSync(outDir, { recursive: true });
   fs.writeFileSync(path.join(outDir, 'report.json'), JSON.stringify(data, null, 2));
 
-  const { meta, categories, situations, runSummary } = data;
+  const { meta, categories, situations, runSummary, gateTrend } = data;
   const failCats = categories.filter(c => !c.pass);
   const failSits = situations.filter(s => s.issues.length);
   const ok = failCats.length === 0;
@@ -59,6 +59,13 @@ export function writeReports(outDir, data) {
     <span class="kpi">Warning<br><b>${esc(rs.counts.warnings)}</b></span>
     <span class="kpi">Fingerprint<br><b><code>${esc(rs.fingerprint)}</code></b></span>
   </div>
+  ${gateTrend ? `<h3>Regression history <span class="muted">(BL-20, build-to-build)</span></h3>
+  <div>
+    ${gateTrend.regressed ? '<span class="kpi" style="background:#3a0d0d"><b class="bad">🔴 REGRESSIONE</b><br><span class="muted">pulita → rotta</span></span>' : gateTrend.recovered ? '<span class="kpi"><b class="good">🟢 riparata</b><br><span class="muted">rotta → pulita</span></span>' : gateTrend.fpChanged ? `<span class="kpi"><b>↔ fingerprint cambiato</b><br><span class="muted">Δfailure ${gateTrend.failDelta > 0 ? '+' : ''}${esc(gateTrend.failDelta)}</span></span>` : `<span class="kpi"><b class="good">stabile</b><br><span class="muted">${esc(gateTrend.cleanStreak)} run pulite</span></span>`}
+    <span class="kpi">Run tracciate<br><b>${esc(gateTrend.runs)}</b></span>
+    <span class="kpi">Precedente<br><b><code>${esc(gateTrend.previous || '—')}</code></b></span>
+    <span class="kpi">Storico<br><b style="letter-spacing:1px">${(gateTrend.spark || []).map(v => v ? '<span class="good">▰</span>' : '<span class="bad">▰</span>').join('')}</b></span>
+  </div>` : ''}
   <h3>Performance <span class="muted">(slice headless, warn-only)</span></h3>
   <div>${perfHtml}</div>
   <h3>Decision baseline (regressione)</h3>

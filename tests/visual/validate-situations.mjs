@@ -278,7 +278,7 @@ const GOLDEN = path.join(HERE, 'golden-sigs.json');
   const gateHist = appendGateHistory(OUT, runSummary);
   const gTrend = gateTrend(gateHist);
   // LMQP-9: il report HTML riceve il summary normalizzato per la Dashboard
-  const { ok, htmlPath, failCats } = writeReports(OUT, { meta, categories, situations: sitResults, runSummary });
+  const { ok, htmlPath, failCats } = writeReports(OUT, { meta, categories, situations: sitResults, runSummary, gateTrend: gTrend });
 
   console.log('\n=== QUALITY GATE — VALIDAZIONE SITUATIONS ===');
   console.log(`gameVersion ${gameVersion} · ${sitResults.length} Situations`);
