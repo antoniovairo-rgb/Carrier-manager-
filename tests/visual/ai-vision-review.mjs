@@ -16,6 +16,7 @@ import './lib/vision/providers/index.mjs'; // side-effect: registra i provider
 import { VisionReviewEngine } from './lib/vision/engine.mjs';
 import { captureHighlight } from './lib/vision/capture.mjs';
 import { writeVisionReport } from './lib/vision/report.mjs';
+import { appendHistory, readHistory, computeTrend, makeRecord } from './lib/vision/history.mjs';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const OUT = path.join(HERE, 'out', 'vision');
@@ -74,9 +75,18 @@ const STRICT = process.argv.includes('--strict');
     await browser.close(); srv.close();
   }
 
+  // [BL-19] SCORING STORICO: trend calcolato su (storico prior + run corrente) per il report, POI persiste la run.
+  if (!review.skipped) {
+    const decisionNow = (review.verdicts && (review.verdicts.FAIL || review.verdicts.BLOCKED)) ? 'FAIL' : (review.verdicts && review.verdicts.WARNING) ? 'WARNING' : 'PASS';
+    review.trend = computeTrend([...readHistory(OUT), makeRecord(review, meta, decisionNow)]);
+  }
   const { htmlPath, decision } = writeVisionReport(OUT, review, meta);
+  if (!review.skipped) appendHistory(OUT, review, meta, decision);
   if (review.skipped) console.log(`⏭️  AI Vision SKIP — ${review.reason}`);
-  else console.log(`AI Vision: decisione ${decision} · quality medio ${review.avgQuality} · verdetti ${JSON.stringify(review.verdicts)} · ${review.perf.totalMs}ms`);
+  else {
+    console.log(`AI Vision: decisione ${decision} · quality medio ${review.avgQuality} · verdetti ${JSON.stringify(review.verdicts)} · ${review.perf.totalMs}ms`);
+    if (review.trend) console.log(`  trend: ${review.trend.dir === 'first' ? 'prima run' : (review.trend.delta > 0 ? '+' : '') + review.trend.delta + ' vs precedente'} · best ${review.trend.best} · worst ${review.trend.worst} · ${review.trend.runs} run`);
+  }
   console.log(`report → ${path.relative(ROOT, htmlPath)}`);
 
   const bad = !review.skipped && (decision === 'FAIL');

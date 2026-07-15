@@ -28,6 +28,27 @@ export function writeVisionReport(outDir, review, meta = {}) {
     ${review.perf ? `<span class="kpi">Tempo totale<br><b>${esc(review.perf.totalMs)}ms</b></span><span class="kpi">Cache<br><b>${esc(review.perf.cacheHits)}/${esc(review.perf.cacheHits + review.perf.cacheMisses)}</b></span>` : ''}
   </div>`;
 
+  // [BL-19] TREND STORICO — benchmark evolutivo della qualità percettiva tra build (sparkline dependency-free)
+  const t = review.trend;
+  const trendBlock = t ? (() => {
+    const arrow = t.dir === 'up' ? '▲' : t.dir === 'down' ? '▼' : t.dir === 'flat' ? '▬' : '•';
+    const dcls = t.dir === 'up' ? 'tup' : t.dir === 'down' ? 'tdown' : 'tflat';
+    const dtxt = t.delta == null ? 'prima run' : `${t.delta > 0 ? '+' : ''}${t.delta} vs precedente`;
+    const lo = t.worst, hi = t.best, span = hi - lo || 1;
+    const bars = (t.spark || []).map(q => {
+      const h = 6 + Math.round(((q - lo) / span) * 34);
+      return `<span class="bar" style="height:${h}px" title="${esc(q)}"></span>`;
+    }).join('');
+    return `<div class="trend">
+      <div class="thead">📈 Trend storico <span class="muted">(${esc(t.runs)} run · dedotto da ai-vision-history.json)</span></div>
+      <div class="trow">
+        <span class="tk">Quality medio <b class="${dcls}">${esc(t.current)} ${arrow}</b> <span class="muted">${esc(dtxt)}</span></span>
+        <span class="tk muted">best <b>${esc(t.best)}</b> · worst <b>${esc(t.worst)}</b> · media <b>${esc(t.mean)}</b></span>
+      </div>
+      <div class="spark">${bars}</div>
+    </div>`;
+  })() : '';
+
   const card = r => {
     const dims = DIMENSIONS.map(d => `<span class="chip">${esc(d)}: <b>${r.scores && r.scores[d] != null ? esc(r.scores[d]) : '-'}</b></span>`).join('');
     const shots = (r.images || []).map(im => `<figure><img src="${esc(im.file)}" loading="lazy"><figcaption>${esc(im.phase)}</figcaption></figure>`).join('');
@@ -49,6 +70,7 @@ export function writeVisionReport(outDir, review, meta = {}) {
     ? `<div class="banner vwarn">⏭️ AI Vision SALTATA — ${esc(review.reason || 'provider non disponibile')} (secondo livello, non blocca la CI)</div>`
     : `<div class="banner ${vcls(decision)}">Decisione finale: ${esc(decision)} <span class="muted">— AI Vision è secondo livello, non blocca la CI</span></div>
        ${overview}
+       ${trendBlock}
        ${results.map(card).join('')}`;
 
   const html = `<!doctype html><html lang="it"><head><meta charset="utf-8"><title>AI Vision Review — CPM</title>
@@ -66,6 +88,12 @@ h1{margin:0 0 4px}.sub{color:#94a3b8;margin-bottom:18px}
 .lst{margin:6px 0;font-size:13px}.lst ul{margin:2px 0 0;padding-left:18px}.lst.vfail li{color:#fda4af}.lst.vwarn li{color:#fcd34d}
 .shots{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}.shots figure{margin:0;text-align:center}.shots img{height:110px;border-radius:6px;border:1px solid #334155}.shots figcaption{font-size:10px;color:#94a3b8}
 .muted{color:#64748b}
+.trend{background:#0f1629;border:1px solid #1f2937;border-radius:10px;padding:12px 16px;margin:0 0 16px}
+.thead{font-size:14px;font-weight:800;margin-bottom:8px}
+.trow{display:flex;flex-wrap:wrap;gap:16px;font-size:13px;margin-bottom:10px}.tk b{font-size:15px}
+.tup{color:#6ee7b7}.tdown{color:#fda4af}.tflat{color:#cbd5e1}
+.spark{display:flex;align-items:flex-end;gap:3px;height:44px}
+.spark .bar{width:8px;background:linear-gradient(#38bdf8,#0ea5e9);border-radius:2px 2px 0 0;display:inline-block}
 </style></head><body>
 <h1>AI Vision Review — Live Match</h1>
 <div class="sub">${esc(meta.generatedAt || '')} · gioco <b>${esc(meta.gameVersion || '?')}</b> · provider <b>${esc(review.provider)}</b>/<b>${esc(review.model)}</b></div>
