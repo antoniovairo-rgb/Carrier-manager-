@@ -1,7 +1,14 @@
-# assets/audio/sfx/crowd/ — boato del gol (drop-in)
+# assets/audio/sfx/crowd/ — boato del gol
 
-Metti qui il file del **boato della folla al gol** e il gioco lo userà
-automaticamente al posto del suono sintetizzato. **Nessuna modifica al codice.**
+**È già presente un file di default: `goal-roar.wav`** — un boato renderato OFFLINE
+(sintesi granulare ad alta densità, ~180 voci + applausi, generato da
+`tools/gen-crowd-roar.mjs`; licenza-safe perché generato, non un campione di terzi).
+Il gioco lo usa automaticamente al gol.
+
+## Vuoi un boato REALE registrato? Sostituiscilo (nessuna modifica al codice)
+
+Se preferisci una **registrazione vera**, basta rimpiazzare il file: carica in questa
+cartella un `goal-roar.ogg` / `goal-roar.mp3` (ha priorità sul `.wav`) e il gioco userà quello.
 
 ## Cosa fare (1 passo)
 
