@@ -55,7 +55,9 @@ export class VisionReviewEngine {
   async reviewHighlight(hl) {
     const t0 = Date.now();
     const images = readImages(hl.images);
-    const key = cacheKey({ images, model: this._modelName(), promptVersion: PROMPT_VERSION });
+    // [VIDEO CONTINUO] il prompt cambia con la modalità → distingui la cache frames vs video (le immagini già differiscono)
+    const pv = PROMPT_VERSION + (hl.context && hl.context.mode === 'video' ? '-video' : '');
+    const key = cacheKey({ images, model: this._modelName(), promptVersion: pv });
 
     // dedup intra-run + cache su disco (analisi incrementale: highlight non cambiato → riuso)
     if (this._dedup.has(key)) { this.log.info('dedup hit', { id: hl.id }); return { ...this._dedup.get(key), id: hl.id, cached: 'dedup' }; }

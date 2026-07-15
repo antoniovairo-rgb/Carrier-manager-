@@ -39,6 +39,12 @@ export function getConfig(env = process.env) {
     logLevel: env.VISION_LOG_LEVEL || env.OLLAMA_LOG_LEVEL || 'info',
     maxHighlights: num(env.VISION_MAX_HIGHLIGHTS, 6),
     promptFile: env.VISION_PROMPT_FILE || null,
+    // [BL-19 · VIDEO CONTINUO] modalità di cattura: 'frames' = 5 fasi statiche (default) ·
+    //   'video' = burst denso e ORDINATO dei fotogrammi della conclusione (filmstrip) → l'AI giudica il MOVIMENTO
+    //   (fluidità, continuità della traiettoria, tempi esito↔3D, niente scatti/teleport). Prompt dedicato, schema invariato.
+    visionMode: /^video$/i.test(env.VISION_MODE || '') ? 'video' : 'frames',
+    videoFrames: Math.max(3, Math.min(16, num(env.VISION_VIDEO_FRAMES, 10))),   // quanti fotogrammi nel filmstrip (cap 16 per costo/token)
+    videoIntervalMs: Math.max(40, num(env.VISION_VIDEO_INTERVAL, 110)),          // passo di campionamento tra i frame
     // blocchi per-provider (nessun valore hardcoded nel Core Engine)
     ollama: {
       baseUrl: env.OLLAMA_BASE_URL || 'http://localhost:11434',

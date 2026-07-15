@@ -74,4 +74,39 @@ export async function captureHighlight(page, gi, outDir) {
   return shots;
 }
 
+/* [BL-19 · VIDEO CONTINUO] cattura un BURST denso e ORDINATO dei fotogrammi della CONCLUSIONE (filmstrip):
+   begin (framing) + N frame campionati a passo fisso attraverso la finestra dell'azione (main→outcome→post).
+   Stessa GUARDIA ANTI-ARTEFATTO: i frame nero/card sono marcati (`artifact`) ma TENUTI in sequenza (il tempo
+   scorre — un buco va mostrato, non nascosto), col fallback all'ultimo 3D valido solo se il primo frame è artefatto.
+   L'AI riceve i frame IN ORDINE → può giudicare il MOVIMENTO, non solo pose statiche. Additivo: non tocca captureHighlight. */
+export async function captureHighlightSequence(page, gi, outDir, { frames = 10, intervalMs = 110 } = {}) {
+  const shotsDir = path.join(outDir, 'shots');
+  fs.mkdirSync(shotsDir, { recursive: true });
+  const shots = [];
+  let lastGood = null;
+  const write = (label, buf, artifact) => {
+    const fn = `gi${String(gi).padStart(3, '0')}_${label}.png`;
+    fs.writeFileSync(path.join(shotsDir, fn), buf);
+    shots.push({ phase: label, path: path.join(shotsDir, fn), rel: 'shots/' + fn, ...(artifact ? { artifact } : {}) });
+  };
+
+  // framing interattivo (il primo frame del filmstrip = la situation prima dell'esecuzione)
+  await forceSituation(page, gi, { settle: 600, choose: true });
+  let buf = await canvasShot(page); if (!classify(meanLuma(buf))) lastGood = buf;
+  write('f00', buf);
+
+  // esegui l'azione, poi campiona a passo fisso il volgersi dell'azione (movimento reale, niente freeze)
+  await page.evaluate(() => { if (typeof window.__CPM_RESOLVE === 'function') window.__CPM_RESOLVE(0); });
+  const n = Math.max(3, Math.min(16, frames | 0));
+  for (let i = 1; i < n; i++) {
+    await sleep(Math.max(40, intervalMs | 0));
+    buf = await canvasShot(page);
+    const art = classify(meanLuma(buf));
+    if (!art) { lastGood = buf; write('f' + String(i).padStart(2, '0'), buf); }
+    else if (lastGood) { write('f' + String(i).padStart(2, '0'), lastGood, art); } // buco → riusa l'ultimo 3D valido, marcato
+    else { write('f' + String(i).padStart(2, '0'), buf, art); }                    // ancora nessun 3D valido → tieni comunque il frame
+  }
+  return shots;
+}
+
 export { PHASES };

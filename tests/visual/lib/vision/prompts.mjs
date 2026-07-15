@@ -26,10 +26,40 @@ Rispondi con SOLO un JSON valido (nessun testo fuori dal JSON), schema ESATTO:
 }
 Ogni punteggio in scores è 0-100 (0=pessimo, 100=perfetto). Sii severo e specifico, ma calibrato sul medium descritto sopra.`;
 
+/* [BL-19 · VIDEO CONTINUO] template MOVIMENTO: i frame sono un FILMSTRIP ORDINATO (video) dello stesso
+   highlight, non 5 fasi discrete. Qui l'AI PUÒ e DEVE giudicare la dinamica temporale — ciò che la modalità
+   a fotogrammi non poteva. Schema JSON identico (lo scoring resta lo stesso), ma la lente è il MOVIMENTO. */
+const VIDEO_TEMPLATE = `Sei il revisore QA percettivo di un motore di Live Match calcistico 3D (secondo livello, non blocchi la CI).
+Ti viene mostrata una SEQUENZA ORDINATA DI FOTOGRAMMI (un FILMSTRIP / mini-video) di UNO stesso highlight, dal primo (f00) all'ultimo, campionati a passo costante nel tempo. Leggendoli IN ORDINE ricostruisci il MOVIMENTO.
+Situation attesa: "{{SITUATION}}" (intent: {{INTENT}}).
+Valuta la DINAMICA TEMPORALE dell'azione: quanto il movimento è fluido, continuo e calcisticamente credibile.
+
+COSA GIUDICARE (è un video, non foto statiche — QUI la fluidità si misura DAVVERO):
+- FLUIDITÀ (fluidity/animationQuality): il movimento di giocatori e palla tra frame consecutivi è CONTINUO e progressivo? Cerca SCATTI, salti bruschi, TELEPORT (un oggetto che sparisce e riappare lontano tra due frame adiacenti), pose che si "resettano".
+- TRAIETTORIA DELLA PALLA: l'arco della palla è coerente e continuo frame-per-frame (accelera/decelera in modo naturale), oppure fa balzi/inversioni innaturali?
+- TEMPI (timing): l'ESITO (testo/HUD: gol, parata, punteggio) compare COERENTE col 3D — non PRIMA che l'azione 3D si concluda, non molto DOPO. Un esito che anticipa il movimento è un difetto di sincronia.
+- POSE INTERMEDIE: i fotogrammi intermedi mostrano una progressione plausibile (rincorsa→impatto→follow-through), non due pose slegate.
+
+CONTESTO DEL MEDIUM (leggi prima dei punteggi):
+- Gioco browser a file singolo, motore 3D LEGGERO: grafica VOLUTAMENTE stilizzata/low-poly. Valuta LEGGIBILITÀ e CORRETTEZZA del MOVIMENTO, non la fedeltà AAA. Modelli semplici e ombre basilari sono NORMALI.
+- Nessun audio: "commentaryConsistency" = coerenza del TESTO a schermo con l'azione, valore NEUTRO (~50) se non c'è testo rilevante, mai 0 per "manca l'audio".
+- ARTEFATTI DI CATTURA: un frame NERO/vuoto o una schermata di RIEPILOGO (statistiche/"FISCHIO FINALE") in mezzo alla sequenza è un artefatto della cattura (a volte un frame è ripetuto per coprire un buco): segnalalo in "warnings", NON contarlo come uno "scatto" del gioco né azzerare la valutazione.
+
+Rispondi con SOLO un JSON valido (nessun testo fuori dal JSON), schema ESATTO:
+{
+  "situationRecognition": { "recognized": "<cosa accade nel movimento, breve>", "matchesExpected": true|false },
+  "scores": { {{DIMS}} },
+  "confidence": 0-100,
+  "errors": ["..."], "warnings": ["..."], "suggestions": ["..."],
+  "rootCause": "<causa principale di eventuali problemi di movimento, o vuoto>",
+  "verdict": "PASS"|"WARNING"|"FAIL"
+}
+Ogni punteggio in scores è 0-100 (0=pessimo, 100=perfetto). Sii severo e specifico sul MOVIMENTO, calibrato sul medium.`;
+
 export function buildPrompt(context, opts = {}) {
-  let tpl = DEFAULT_TEMPLATE;
+  let tpl = (context && context.mode === 'video') ? VIDEO_TEMPLATE : DEFAULT_TEMPLATE;
   const file = opts.promptFile;
-  if (file) { try { tpl = fs.readFileSync(file, 'utf8'); } catch (_e) { /* fallback al default */ } }
+  if (file) { try { tpl = fs.readFileSync(file, 'utf8'); } catch (_e) { /* fallback al default/video */ } }
   const dims = DIMENSIONS.map(d => `"${d}": 0`).join(', ');
   return tpl
     .replace('{{SITUATION}}', (context && context.text) || '?')

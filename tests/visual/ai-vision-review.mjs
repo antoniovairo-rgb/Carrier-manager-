@@ -14,7 +14,7 @@ import { createLogger } from './lib/vision/logger.mjs';
 import { createProvider } from './lib/vision/registry.mjs';
 import './lib/vision/providers/index.mjs'; // side-effect: registra i provider
 import { VisionReviewEngine } from './lib/vision/engine.mjs';
-import { captureHighlight } from './lib/vision/capture.mjs';
+import { captureHighlight, captureHighlightSequence } from './lib/vision/capture.mjs';
 import { writeVisionReport } from './lib/vision/report.mjs';
 import { appendHistory, readHistory, computeTrend, makeRecord } from './lib/vision/history.mjs';
 
@@ -62,12 +62,17 @@ const STRICT = process.argv.includes('--strict');
     await openMatch(page, port);
     logger.info('match pronto', { total, willCapture: indices });
 
+    const videoMode = config.visionMode === 'video';
+    logger.info('modalità cattura', { mode: config.visionMode, ...(videoMode ? { frames: config.videoFrames, intervalMs: config.videoIntervalMs } : {}) });
     const highlights = [];
     for (const gi of indices) {
-      const shots = await captureHighlight(page, gi, OUT);
+      const shots = videoMode
+        ? await captureHighlightSequence(page, gi, OUT, { frames: config.videoFrames, intervalMs: config.videoIntervalMs })
+        : await captureHighlight(page, gi, OUT);
       const sit = situations[gi] || {};
-      highlights.push({ id: `gi${gi}`, context: { gi, text: sit.text, intent: sit.intent || null }, images: shots });
-      logger.info('catturato', { gi, phases: shots.length });
+      // [VIDEO CONTINUO] context.mode='video' → l'Engine sceglie il prompt MOVIMENTO (filmstrip ordinato)
+      highlights.push({ id: `gi${gi}`, context: { gi, text: sit.text, intent: sit.intent || null, ...(videoMode ? { mode: 'video' } : {}) }, images: shots });
+      logger.info('catturato', { gi, frames: shots.length });
     }
     review = await engine.review(highlights);
   } finally {
