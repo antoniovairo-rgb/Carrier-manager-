@@ -27,7 +27,7 @@
 | BL-16 | AI individuale per-frame (scelte portatore, coperture multiple) | 6 | L | — | Gate(motion) + Live | ◑ (F10/F11/F13) |
 | BL-17 | Fine-tuning mirato situations (su flag dal gioco) + intent-decouple uso reale | 6 | M | tactic.it | data-audit + Live | ◑ (gi69) |
 | BL-18 | +Varietà cronaca (nuove righe BG_MATCH, anti-ripetizione). 7.48.0: +16 voci lint-coerenti (pool 189) + finestra dedup del picker 3→6 | 6 | S | — | Node(cronaca-audit) + bg-coherence | ✅ |
-| BL-19 | AI Vision: implementare analyze() OpenAI/Gemini + video continuo + scoring storico | 11 | M | — | test:vision | ◑ (Ollama) |
+| BL-19 | AI Vision: implementare analyze() OpenAI/Gemini + video continuo + scoring storico. FATTO (provider, post-7.54.0): analyze() OpenAI (Chat Completions vision, data-URL) e Gemini (generateContent, inline_data) sul pattern proxy-aware di anthropic.mjs — healthCheck reale, timeout AbortError/TimeoutError, verificati con mock server (request-shape + parsing + errori); si attivano con OPENAI_API_KEY/GEMINI_API_KEY in .env. Video continuo + scoring storico restano a backlog | 11 | M | — | test:vision | ◑ (4 provider ✅) |
 | BL-20 | Acceptance + Regression come step formali della CI + Failure Package ricco | 12 | M | — | CI | ◑ (CI base) |
 | BL-21 | Replay Engine: registrazione completa di OGNI HL + snapshot/diff tra build | 8 | L | replay slice | replay + Live | ◑ (slice) |
 | BL-22 | Plugin/registry runtime (Situation/Validator/Event) — cap. 3.12/3.13 | 3 | L | — | Gate | ☐ |
