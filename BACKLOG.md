@@ -28,7 +28,7 @@
 | BL-17 | Fine-tuning mirato situations (su flag dal gioco) + intent-decouple uso reale | 6 | M | tactic.it | data-audit + Live | ◑ (gi69) |
 | BL-18 | +Varietà cronaca (nuove righe BG_MATCH, anti-ripetizione). 7.48.0: +16 voci lint-coerenti (pool 189) + finestra dedup del picker 3→6 | 6 | S | — | Node(cronaca-audit) + bg-coherence | ✅ |
 | BL-19 | AI Vision: analyze() OpenAI/Gemini ✅ (4 provider) + SCORING STORICO ✅ (post-7.55.0: `lib/vision/history.mjs` — `ai-vision-history.json` rolling cap 200, run SKIPPED escluse; trend nel report — delta vs precedente/best/worst/media + sparkline dependency-free; wiring nel runner standalone; 8 test mock in `test/vision/history.test.mjs`, test:vision 36/36). Resta: VIDEO CONTINUO (analisi di un video invece di frame discreti) | 11 | M | — | test:vision | ◑ (provider+storico ✅) |
-| BL-20 | Acceptance + Regression come step formali della CI + Failure Package ricco | 12 | M | — | CI | ◑ (CI base) |
+| BL-20 | Acceptance + Regression come step formali della CI + Failure Package ricco. 7.58.x: ogni failure del run-summary porta una **REPRO RECIPE** azionabile (`__CPM_RESEED(seed)` + `__CPM_FORCE_SIT(gi)` o run-command) accanto a check/gi/situation/intent/shot; test `test/logic/failure-package.test.mjs` (4). Restano: Acceptance/Regression come step CI formali distinti | 12 | M | — | CI | ◑ (repro ✅) |
 | BL-21 | Replay Engine: registrazione completa di OGNI HL + snapshot/diff tra build | 8 | L | replay slice | replay + Live | ◑ (slice) |
 | BL-22 | Plugin/registry runtime (Situation/Validator/Event) — cap. 3.12/3.13 | 3 | L | — | Gate | ☐ |
 | BL-23 | Magic numbers/regex dei motori centralizzati (contestuale allo split) | 3 | M | BL-04 | Gate | ☐ |

@@ -37,6 +37,10 @@ export function collectFailures(outDir, data) {
         situation: sit ? sit.text : null,
         intent: sit ? (sit.intent || null) : null,
         shot: sit ? (sit.shotInitial || sit.shotFinal || null) : null,
+        // [7.58.x PHASE 5] REPRO RECIPE: come riprodurre il fallimento a mano (seed deterministico + force-sit)
+        repro: gi != null
+          ? `apri CARRIER-MANAGER-AV.html?cpmtest=1 · window.__CPM_RESEED(${meta.seed}) · window.__CPM_FORCE_SIT(${gi})`
+          : `run: CPM_RESEED=${meta.seed} npm run validate-situations (check ${c.id})`,
       });
     }
   }
