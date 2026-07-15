@@ -20,6 +20,7 @@ import { startServer, launchBrowser, openMatch, forceSituation, freeze, unfreeze
 import { loadSituations } from './lib/situations.mjs';
 import { writeReports } from './report.mjs';
 import { collectFailures } from './lib/failure-collector.mjs';
+import { appendHistory as appendGateHistory, computeTrend as gateTrend } from './lib/gate-history.mjs';
 import { measurePerf, measureLeak } from './lib/perf-monitor.mjs';
 import { writeReplayTrace } from './lib/replay-trace.mjs';
 import { runAiVision, visionEnabled } from './lib/ai-vision.mjs';
@@ -273,6 +274,9 @@ const GOLDEN = path.join(HERE, 'golden-sigs.json');
   const meta = { generatedAt: new Date().toISOString(), gameVersion, seed: SEED, total: sitResults.length, maxJitterBits: agg.determinism.info.diverged === 0 ? 0 : `${agg.determinism.info.diverged} divergenze`, goldenNote, performance: perf, replay: replayRefs, aiVision };
   // LMQP-7: pacchetto di fallimento compatto/machine-readable (CI + Dashboard + regression history)
   const runSummary = collectFailures(OUT, { meta, categories, situations: sitResults });
+  // BL-20: REGRESSION HISTORY — accumula il fingerprint del gate build-to-build (deriva/regressione tracciata)
+  const gateHist = appendGateHistory(OUT, runSummary);
+  const gTrend = gateTrend(gateHist);
   // LMQP-9: il report HTML riceve il summary normalizzato per la Dashboard
   const { ok, htmlPath, failCats } = writeReports(OUT, { meta, categories, situations: sitResults, runSummary });
 
@@ -282,6 +286,10 @@ const GOLDEN = path.join(HERE, 'golden-sigs.json');
   if (goldenNote) console.log(`  📸 ${goldenNote}`);
   console.log(`report HTML → ${path.relative(ROOT, htmlPath)}`);
   console.log(`run-summary → ${path.relative(ROOT, path.join(OUT, 'run-summary.json'))} · fingerprint ${runSummary.fingerprint} · ${runSummary.counts.failures} failure`);
+  if (gTrend) {
+    const s = gTrend.regressed ? '🔴 REGRESSIONE (pulita → rotta)' : gTrend.recovered ? '🟢 riparata (rotta → pulita)' : gTrend.fpChanged ? `↔ fingerprint cambiato (Δfailure ${gTrend.failDelta > 0 ? '+' : ''}${gTrend.failDelta})` : `stabile (streak ${gTrend.cleanStreak} run pulite)`;
+    console.log(`gate-history → ${gTrend.runs} run · ${s}`);
+  }
   console.log(ok ? '\n✅ PASS' : `\n❌ FAIL — ${failCats.map(c => c.id).join(', ')}`);
   process.exit(ok ? 0 : 1);
 })();
