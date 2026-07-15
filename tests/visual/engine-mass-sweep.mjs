@@ -15,7 +15,7 @@ await sleep(300);
 const res = await page.evaluate(() => {
   const DE = window.decideExecution;
   if (typeof DE !== 'function') return { err: 'decideExecution non esposta' };
-  const INTENTS = ['shot','cross','through','onetwo','dribble','insertion','penalty','freekick','recover','anticipate','intercept','progression','switch'];
+  const INTENTS = ['shot','header','cross','through','onetwo','dribble','insertion','penalty','freekick','recover','anticipate','intercept','progression','switch'];/* [7.58.0] +header (famiglia decideExecution con fattore distanza) */
   const TIERS = {
     scarso:   { posizionamento: 46, passaggio: 45, tecnica: 44, mentalità: 46, fisico: 52, velocità: 50, tiro: 42, dribbling: 42 },
     medio:    { posizionamento: 66, passaggio: 62, tecnica: 60, mentalità: 63, fisico: 68, velocità: 64, tiro: 60, dribbling: 60 },
@@ -27,6 +27,7 @@ const res = await page.evaluate(() => {
   const WX = ['clear','rain','snow','fog'];
   for (const intent of INTENTS) {
     const F = out.fam[intent] = { n: 0, ok: 0, okByPress: [0,0,0,0,0,0], nByPress: [0,0,0,0,0,0], okByTier: {}, execs: {}, outs: {} };
+    F.okByX = { 30: { ok: 0, n: 0 }, 62: { ok: 0, n: 0 }, 84: { ok: 0, n: 0 } };
     for (const tier of Object.keys(TIERS)) {
       F.okByTier[tier] = { ok: 0, n: 0 };
       for (const pressure of [0,1,2,3,4,5]) {
@@ -43,8 +44,8 @@ const res = await page.evaluate(() => {
                 F.execs[d.execution] = (F.execs[d.execution]||0)+1;
                 F.outs[d.outcome] = (F.outs[d.outcome]||0)+1;
                 const ok = OKKEYS.has(d.outcome);
-                if (ok) { F.ok++; F.okByPress[pressure]++; F.okByTier[tier].ok++; }
-                F.nByPress[pressure]++; F.okByTier[tier].n++;
+                if (ok) { F.ok++; F.okByPress[pressure]++; F.okByTier[tier].ok++; F.okByX[x].ok++; }
+                F.nByPress[pressure]++; F.okByTier[tier].n++; F.okByX[x].n++;
                 const d2 = DE(intent, ctx);
                 if (JSON.stringify(d) !== JSON.stringify(d2)) out.det = false;
               }
@@ -77,5 +78,11 @@ for (const [k,F] of Object.entries(res.fam)) {
 // il rigore deve convertire molto più della punizione
 const pen = res.fam.penalty, fk = res.fam.freekick;
 if (pen && fk && pct(pen.ok,pen.n) <= pct(fk.ok,fk.n)) { console.log('   ❌ penalty ≤ freekick come conversione'); fail = true; }
+// [7.58.0 PHASE 3] FATTORE DISTANZA (xG): tiro e testa convertono di più da vicino (x=84) che da lontano (x=30)
+for (const k of ['shot','header']) { const F = res.fam[k]; if (!F || !F.okByX) continue;
+  const x30 = pct(F.okByX[30].ok,F.okByX[30].n), x62 = pct(F.okByX[62].ok,F.okByX[62].n), x84 = pct(F.okByX[84].ok,F.okByX[84].n);
+  console.log(`   distanza ${k}: x30=${x30.toFixed(0)}% < x62=${x62.toFixed(0)}% < x84=${x84.toFixed(0)}%`);
+  if (!(x84 > x62 + 1e-9 && x62 > x30 + 1e-9)) { console.log(`   ❌ ${k}: conversione NON monotona con la distanza (xG)`); fail = true; }
+}
 console.log(fail ? '\n❌ FAIL' : '\n✅ PASS — 13 famiglie sane su tutta la griglia (determinismo, taxonomy, monotonie, conversioni sensate).');
 process.exit(fail ? 2 : 0);

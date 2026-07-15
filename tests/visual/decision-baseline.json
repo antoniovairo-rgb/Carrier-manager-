@@ -21,5 +21,6 @@
  "152": "onetwo|pass|feet",
  "160": "shot|shot|feet",
  "168": "recover|tackle|feet",
- "176": "cross|dribble|feet"
+ "176": "cross|dribble|feet",
+ "184": "intercept|tackle|feet"
 }
