@@ -1,41 +1,23 @@
-# assets/audio/sfx/crowd/ — boato del gol
+# assets/audio/sfx/crowd/ — audio folla (campioni REALI)
 
-**È già presente un file di default: `goal-roar.wav`** — un boato renderato OFFLINE
-(sintesi granulare ad alta densità, ~180 voci + applausi, generato da
-`tools/gen-crowd-roar.mjs`; licenza-safe perché generato, non un campione di terzi).
-Il gioco lo usa automaticamente al gol.
+Contiene i campioni **reali** forniti dal PO (scaricati da fonti royalty-free) e collegati
+automaticamente dal gioco (`AudioMgr`, registro `URL_SFX`):
 
-## Vuoi un boato REALE registrato? Sostituiscilo (nessuna modifica al codice)
+| File | Uso nel gioco | Note |
+|---|---|---|
+| `mixkit-stadium-joy-shouting-crowd-3022.wav` | **Boato del GOL** (`crowd.roar`) | clip ~15s → il gioco ne suona i **primi ~4.2s** con fade (l'esplosione iniziale) |
+| `freesound_community-football-crowd-3-69245.mp3` | **Brusio di folla** durante il gioco (`crowd.bed`, in loop) | registrato quieto → il gioco lo **amplifica** (`_bedGain`) e lo modula sul momentum |
 
-Se preferisci una **registrazione vera**, basta rimpiazzare il file: carica in questa
-cartella un `goal-roar.ogg` / `goal-roar.mp3` (ha priorità sul `.wav`) e il gioco userà quello.
+## Sostituire o aggiungere
 
-## Cosa fare (1 passo)
+- **Cambiare il boato**: sostituisci il file di `crowd.roar` (o aggiungi `goal-roar.ogg/mp3`,
+  che ha priorità) — vedi il registro `URL_SFX` in `CARRIER-MANAGER-AV.html`.
+- **Cambiare il brusio**: sostituisci il file di `crowd.bed`.
+- Il **service worker** cachea i file al 1° caricamento → offline ok. `build-dist` copia `assets/`.
 
-1. Scarica un boato di stadio che ti piace (puoi ascoltarlo prima) da una fonte
-   con licenza chiara — es. **Pixabay** o **Mixkit** (royalty-free) o **Freesound**
-   (filtra su **CC0**). Durata consigliata ~**2–4 secondi**, un vero *boato + esultanza*.
-2. Rinominalo **`goal-roar.ogg`** (oppure `goal-roar.mp3` / `goal-roar.wav`) e
-   caricalo in **questa cartella** (`assets/audio/sfx/crowd/`).
-   - Da GitHub web: apri questa cartella → **Add file → Upload files** → trascina il file.
-3. Fatto. Al primo gol dopo il caricamento suonerà il **campione reale**.
+## Note
 
-## Come funziona
-
-- Il registro `URL_SFX['crowd.roar']` (in `CARRIER-MANAGER-AV.html`, blocco `AudioMgr`)
-  è già puntato a `goal-roar.ogg|mp3|wav` in questa cartella.
-- Al primo gesto dell'utente il file viene scaricato e decodificato; se c'è, il boato
-  del gol usa **quello**; se manca, si ricade automaticamente sul synth (com'è ora).
-- Il **service worker** cachea il file al primo caricamento riuscito → funziona anche
-  **offline** (nessuna modifica a `sw.js` necessaria).
-
-## Licenza
-
-Registra sempre **fonte + licenza** del file che carichi (per il rilascio store).
-Consigliato **CC0** (nessuna attribuzione richiesta) o royalty-free con licenza che
-consenta l'uso in un'app pubblicata.
-
-## Estendibile
-
-Lo stesso meccanismo vale per altri suoni: aggiungi la voce a `URL_SFX` con l'evento
-corrispondente e metti il file nella sottocartella giusta.
+- I due file sono **WAV/MP3 non compressi/grandi** (2.7MB / 785KB). Per il rilascio store si possono
+  ri-comprimere in **OGG** (~10× più piccoli) senza toccare il codice (basta rinominare l'estensione
+  nel registro). Registrare **fonte + licenza** di ogni file (Mixkit/Freesound: royalty-free / CC — verificare).
+- Se un file manca o non si decodifica, il gioco ricade automaticamente sul **synth** (0 crash).
