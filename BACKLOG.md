@@ -32,7 +32,7 @@
 | BL-21 | Replay Engine: registrazione completa di OGNI HL + snapshot/diff tra build | 8 | L | replay slice | replay + Live | ◑ (slice) |
 | BL-22 | Plugin/registry runtime (Situation/Validator/Event) — cap. 3.12/3.13 | 3 | L | — | Gate | ☐ |
 | BL-23 | Magic numbers/regex dei motori centralizzati (contestuale allo split) | 3 | M | BL-04 | Gate | ☐ |
-| BL-25 | Sede dei turni KO successivi (coppa/euro) con `Math.random()<0.5` NUDO (3 siti: ~19142/19167/19496) — va SEEDATA (hashStr club|round|season) per Determinism First; scoperto durante la caccia ai «tifosi sbagliati» 7.52.2 | 4 | S | — | Node + dup-fixture | ☐ |
+| BL-25 | Sede dei turni KO successivi con Math.random NUDO. FATTO 7.53.2: erano 6 siti (cup ×3, euro ×3) → seedati da fase/round+settimana (hashStr) | 4 | S | — | Node + dup-fixture | ✅ |
 | BL-24 | `deriveIntent` text-free completo (usando tactic.it su tutte) — opzionale | 3 | M | tactic.it | Gate(decision) | ☐ |
 
 ## Priorità LOW 🟢
