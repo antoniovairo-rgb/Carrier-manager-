@@ -3643,7 +3643,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="7.106.0"; // [7.106.0 collaudo PO «gli impulsi settimanali sono ripetitivi, aumenta i dialoghi: tutti ragionati/realistici con conseguenze positive o negative»] +28 nuovi dilemmi settimanali (WEEKLY_IMPULSES) con trade-off reali su soldi/morale/fatica/fiducia/popolarita/chimica/forma/valore (temi mercato/immagine/vita privata/spogliatoio/campo, sempre con opzione prudente a costo zero) + memoria anti-ripetizione allargata 24->40 -> niente piu «di nuovo investo».
+const GAME_VERSION="7.106.1"; // [7.106.1 collaudo PO «questo box e fuori standard»] card DEADLINE DAY allineata al pattern kit degli altri box-evento del dashboard: eyebrow ambra + corpo di testo leggibile normale (TH.text) + CTA piena granata (v=primary) al posto del corpo tutto-grassetto-ambra e del bottone ghost slavato sul giallo.
 // [6.18.0-note] // [6.18.0] AVATAR = libreria DiceBear (direttiva PO): CH38 3D via dai menu (resta solo nel live match). EROE/giocatori = stile AVATAAARS con FEDELTA al modello CH38 (forza carnagione+capelli+calvizie dalla stessa fonte AVATARS[avatarId] usata dal CH38 a r.7127 -> avatar dei menu ≈ giocatore in campo). NPC/staff (agente, mister via NpcFaceCoach) = stile MICAH seedato dal nome. Bundle locale offline assets/dicebear-avatars.min.js (esbuild IIFE avataaars+micah, ~163KB) caricato da script locale -> no CDN, funziona in gate/offline/produzione. AvatarSVG DiceBear-backed (API invariata, cache seed). Sorgente rigenerabile in tools/avatar-build/. Gate-cieco su CareerApp ma DiceBear carica anche in gate.
 const SAVE_VERSION=9;// v9 [7.6.0 FASE 2]: clubEvo (evoluzione pluriennale del club: fanbase/stadiumTier/budget/seasonsTop-Low) — migration retro-compatibile. v8 [5.81.0 BIL-3b]: bankBalance (stipendio accumulato, €) + perkTrainer/perkNutrition (staff personale) — migration retro-compatibile. v7: player.foot
 // 5.67.0 — TABELLONE realistico del torneo per NAZIONALI (Europeo/Mondiale): dopo il girone la fase a
@@ -23413,9 +23413,10 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
         const _listed=!!player.transferListed;
         return(
         <Card style={{marginBottom:8,padding:"12px 14px",background:TH.bgAmber,border:`1px solid ${TH.bdAmber}`}}>
-          <div style={{fontSize:10,color:TH.txAmber,textTransform:"uppercase",letterSpacing:1.5,marginBottom:4}}>🔥 Deadline Day — finestra invernale aperta</div>
-          <div style={{fontSize:11.5,color:TH.txAmber,fontWeight:700,marginBottom:8}}>{_listed?"Sei sulla lista di mercato: le prossime ore possono cambiare la tua carriera. Tieni d'occhio le offerte.":"I telefoni degli agenti bollono in tutta Europa. Se vuoi muoverti, questa è la settimana: parla col tuo procuratore."}</div>
-          <Btn v="ghost" fw onClick={()=>goTab("agente")}>💼 Vai dal procuratore</Btn>
+          {/* [7.106.1 collaudo PO «questo box è fuori standard»] allineato al pattern degli altri box-evento del dashboard (eyebrow colorato · corpo leggibile normale · CTA piena granata come i sorteggi), niente più corpo tutto-grassetto-ambra + bottone ghost slavato sul giallo */}
+          <div style={{fontSize:10,color:TH.txAmber,textTransform:"uppercase",letterSpacing:1.5,marginBottom:5,fontWeight:800}}>🔥 Deadline Day — finestra invernale aperta</div>
+          <div style={{fontSize:11.5,color:TH.text,marginBottom:10,lineHeight:1.55}}>{_listed?"Sei sulla lista di mercato: le prossime ore possono cambiare la tua carriera. Tieni d'occhio le offerte.":"I telefoni degli agenti bollono in tutta Europa. Se vuoi muoverti, questa è la settimana: parla col tuo procuratore."}</div>
+          <Btn v="primary" fw onClick={()=>goTab("agente")}>💼 Vai dal procuratore</Btn>
         </Card>);})()}
       {/* [7.17.0 SAGA DEL MERCATO — backlog favola] la trattativa a puntate: episodio derivato da
           p.transferSaga e dalla distanza in settimane (d0 indiscrezione · d1 pressing con SCELTA di tono ·
