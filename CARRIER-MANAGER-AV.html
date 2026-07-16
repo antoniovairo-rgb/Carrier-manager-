@@ -3643,7 +3643,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="7.108.0"; // [7.108.0 collaudo PO «è la semifinale, non la finale — importante per una piazza come Salerno»] etichetta del turno KO ora dal campo AFFIDABILE della gara in corso: (1) FIX auto-sim euro che etichettava i QUARTI come «Semifinale» (binario final?Finale:Semifinale) → mappa corretta; (2) walkout/pre-partita derivano fase Coppa/Europa dalla VOCE DI CALENDARIO (cupRound/euroPhase) e non da player.cup.round/euro.phase (puntatore mutabile) → mai più semifinale mostrata come «Finale»; (3) HEAL migration: ricalcola cupRoundName delle voci euro dai euroPhase sui save esistenti.
+const GAME_VERSION="7.109.0"; // [7.109.0 collaudo PO «sono sempre stato alla Salernitana, è irreale»] il mercato corteggia il campione che OUTCRESCE il proprio club: la probabilità di offerta in finestra scala col divario OVR−prestigio club (boost bounded, cap 0.52) e con un divario netto + pretendente più grande l offerta è UFFICIALE e concreta subito (non più solo «indiscrezioni» ignorabili). Cap 1 offerta/stagione invariato; loyalty resta una scelta.
 // [6.18.0-note] // [6.18.0] AVATAR = libreria DiceBear (direttiva PO): CH38 3D via dai menu (resta solo nel live match). EROE/giocatori = stile AVATAAARS con FEDELTA al modello CH38 (forza carnagione+capelli+calvizie dalla stessa fonte AVATARS[avatarId] usata dal CH38 a r.7127 -> avatar dei menu ≈ giocatore in campo). NPC/staff (agente, mister via NpcFaceCoach) = stile MICAH seedato dal nome. Bundle locale offline assets/dicebear-avatars.min.js (esbuild IIFE avataaars+micah, ~163KB) caricato da script locale -> no CDN, funziona in gate/offline/produzione. AvatarSVG DiceBear-backed (API invariata, cache seed). Sorgente rigenerabile in tools/avatar-build/. Gate-cieco su CareerApp ma DiceBear carica anche in gate.
 const SAVE_VERSION=9;// v9 [7.6.0 FASE 2]: clubEvo (evoluzione pluriennale del club: fanbase/stadiumTier/budget/seasonsTop-Low) — migration retro-compatibile. v8 [5.81.0 BIL-3b]: bankBalance (stipendio accumulato, €) + perkTrainer/perkNutrition (staff personale) — migration retro-compatibile. v7: player.foot
 // 5.67.0 — TABELLONE realistico del torneo per NAZIONALI (Europeo/Mondiale): dopo il girone la fase a
@@ -21479,14 +21479,22 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       const isSummerWin=wk>=1&&wk<=5;const isWinterWin=wk>=19&&wk<=23;
       const inWindow=(isSummerWin||isWinterWin);/* [5.98.0 EC-8] essere in lista NON apre più il mercato tutto l'anno (BIL-6 chiuso) */
       const agentSearchBoost=(p.agentTask==="cerca_offerte"&&p.hasAgent)?0.15:0;
-      const offerProb=inWindow?(p.transferListed?0.28:Math.min(0.35,0.12+agentSearchBoost)):(p.transferListed?0.07:(agentSearchBoost>0?0.04:0));/* [5.98.0 EC-8] fuori finestra: solo un rivolo (7% listed / 4% task) */
-      if(!p.loan&&!(p.transferSaga&&p.transferSaga.season===(p.season||1))&&Math.random()<offerProb&&p.matches>=0){const offer=generateTransferOffer(p,p.transferRequest?.pref);if(offer){/* [5.98.0 B3] niente offerte mentre sei in prestito */
+      /* [7.109.0 collaudo PO «sono sempre stato alla Salernitana, è irreale»] un campione che SUPERA il livello del
+         proprio club attira mercato: più l'OVR eccede il prestigio del club, più le grandi si fanno avanti (boost
+         bounded). Con un divario netto e un pretendente più grande l'offerta è FERMA e CONCRETA subito (le big vengono
+         a prenderti, non mandano solo «indiscrezioni»). Resta 1 offerta/stagione via la guardia transferSaga esistente. */
+      const _outgrowth=Math.max(0,(p.ovr||60)-(p.club?.p||60));
+      const _outB=Math.min(0.22,Math.max(0,(_outgrowth-6)*0.013));
+      const offerProb=inWindow?(p.transferListed?0.28:Math.min(0.52,0.12+agentSearchBoost+_outB)):(p.transferListed?0.07:(agentSearchBoost>0?0.04:0));/* [5.98.0 EC-8] fuori finestra: solo un rivolo (7% listed / 4% task) — le stelle firmano nelle finestre */
+      if(!p.loan&&!(p.transferSaga&&p.transferSaga.season===(p.season||1))&&!transferOffer&&Math.random()<offerProb&&p.matches>=0){const offer=generateTransferOffer(p,p.transferRequest?.pref);if(offer){/* [5.98.0 B3] niente offerte mentre sei in prestito */
         /* [7.17.0 SAGA DEL MERCATO — backlog favola] l'offerta non piomba più dal nulla: diventa una STORIA a
            3 episodi (indiscrezione → pressing dei media → offerta ufficiale), card sul dashboard derivate da
            p.transferSaga (offerta VERA conservata verbatim, consegnata dall'episodio 3). A ridosso della
            deadline (W4-5 / W22-23) o fuori finestra l'offerta resta DIRETTA (colpo last-minute, realistico). */
         const _lateWin=(isSummerWin&&wk>=4)||(isWinterWin&&wk>=22)||!inWindow;
+        const _bigMove=_outgrowth>=13&&(offer.club?.p||60)>=(p.club?.p||60)+6;/* [7.109.0] pretendente nettamente più grande + tu l'hai meritato → offerta ufficiale SUBITO (delivered:true → salta la card-saga, tiene la guardia stagionale) */
         if(_lateWin){setTransferOffer(offer);}
+        else if(_bigMove){setTransferOffer(offer);updP={...updP,transferSaga:{offer,week:wk,season:(p.season||1),club:offer.club?.n||"Un club",tone:null,delivered:true},log:[`📩 ${offer.club?.n||"Un grande club"} presenta un'offerta ufficiale: hai superato il livello del tuo club.`,...(updP.log||p.log||[])].slice(0,60)};setTimeout(()=>notify(`📩 Offerta ufficiale: ${offer.club?.n||"un grande club"} ti vuole!`,"#22c55e"),350);}
         else{updP={...updP,transferSaga:{offer,week:wk,season:(p.season||1),club:offer.club?.n||"Un club",tone:null},log:[`📡 Radio mercato: ${offer.club?.n||"un club"} ha chiesto informazioni su di te. L'agente conferma i contatti.`,...(updP.log||p.log||[])].slice(0,60)};setTimeout(()=>notify(`📡 Indiscrezione: ${offer.club?.n||"un club"} ti osserva…`,"#0ea5e9"),350);}
       }}
       if(wk===1)setTimeout(()=>notify("🏷️ Mercato estivo aperto! Settimane 1-5.","#0ea5e9"),200);
@@ -23502,7 +23510,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       {/* [7.17.0 SAGA DEL MERCATO — backlog favola] la trattativa a puntate: episodio derivato da
           p.transferSaga e dalla distanza in settimane (d0 indiscrezione · d1 pressing con SCELTA di tono ·
           d≥2 offerta ufficiale che apre il modal VERO). Card-driven → funziona su ogni path settimanale. */}
-      {tab==="dashboard"&&player.transferSaga&&player.transferSaga.season===(player.season||1)&&(()=>{
+      {tab==="dashboard"&&player.transferSaga&&!player.transferSaga.delivered&&player.transferSaga.season===(player.season||1)&&(()=>{/* [7.109.0] delivered:true = offerta grande già consegnata come modale → nessuna card-saga */
         const sg=player.transferSaga;const d=(player.week||1)-(sg.week||1);if(d<0)return null;
         const _cl=sg.club||"Un club";
         return(
