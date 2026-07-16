@@ -3643,7 +3643,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="7.106.2"; // [7.106.2 collaudo PO x2] (1) cartelloni curva CONTINUI (fix «staccati»): passo uniforme + larghezza=passo+overlap 0.5, con stagger di profondità per-cartellone → nessun gap E nessun z-fighting/lampeggio (evita la regressione del 7.105.0); (2) header dashboard: aggiunta la POSIZIONE in classifica accanto a lega/stagione/settimana.
+const GAME_VERSION="7.106.3"; // [7.106.3 collaudo PO «Nino il mentore non lo vedo in rosa · metti il cognome»] i compagni «Nello spogliatoio» (teammates) ora hanno archetipi/slot STABILI dal solo club ma NOMI dalla rosa CORRENTE (season-aware) -> sono sempre giocatori REALI presenti in rosa; ri-sincronizzazione dei nomi al load (syncTeammateNames, bond preservato); mateEcho mostra il COGNOME invece del nome.
 // [6.18.0-note] // [6.18.0] AVATAR = libreria DiceBear (direttiva PO): CH38 3D via dai menu (resta solo nel live match). EROE/giocatori = stile AVATAAARS con FEDELTA al modello CH38 (forza carnagione+capelli+calvizie dalla stessa fonte AVATARS[avatarId] usata dal CH38 a r.7127 -> avatar dei menu ≈ giocatore in campo). NPC/staff (agente, mister via NpcFaceCoach) = stile MICAH seedato dal nome. Bundle locale offline assets/dicebear-avatars.min.js (esbuild IIFE avataaars+micah, ~163KB) caricato da script locale -> no CDN, funziona in gate/offline/produzione. AvatarSVG DiceBear-backed (API invariata, cache seed). Sorgente rigenerabile in tools/avatar-build/. Gate-cieco su CareerApp ma DiceBear carica anche in gate.
 const SAVE_VERSION=9;// v9 [7.6.0 FASE 2]: clubEvo (evoluzione pluriennale del club: fanbase/stadiumTier/budget/seasonsTop-Low) — migration retro-compatibile. v8 [5.81.0 BIL-3b]: bankBalance (stipendio accumulato, €) + perkTrainer/perkNutrition (staff personale) — migration retro-compatibile. v7: player.foot
 // 5.67.0 — TABELLONE realistico del torneo per NAZIONALI (Europeo/Mondiale): dopo il girone la fase a
@@ -4967,15 +4967,27 @@ function generateRival(player){
     relationship:"sconosciuto"};
 }
 // Sprint 24 — generate 3 teammates from the actual squad roster (seeded by club+season)
-function generateTeammates(player){
-  const seed=hashStr((player.club?.id||"u18")+"_"+(player.season||1));
-  const sr=(n)=>((seed*9301+49297*(n+1))%233280)/233280;
-  // Pick names directly from the match roster so they match formation players
+function generateTeammates(player,keepBond){
+  // [7.106.3 collaudo PO «Nino non lo vedo in rosa»] archetipi/SLOT stabili dal SOLO club (non cambiano ogni stagione),
+  //   ma i NOMI vengono dalla rosa CORRENTE (season-aware, stesso pool di generateTeamRoster) → i compagni «Nello
+  //   spogliatoio» sono SEMPRE giocatori REALI presenti in rosa. keepBond{archetype:bond} preserva il legame al refresh.
+  const cseed=hashStr(player.club?.id||player.club?.n||"u18");
+  const sr=(n)=>((cseed*9301+49297*(n+1))%233280)/233280;
   const roster=generateTeamRoster(player.club||{id:"u18",n:"U18",nat:"🇮🇹"},player.season||1);
-  const pool=seededShuffle(roster.slice(1),seed^0xDEADBEEF); // skip GK, distinct seed for pool shuffle
+  const pool=seededShuffle(roster.slice(1),cseed^0xDEADBEEF); // skip GK
   const archs=[...TEAMMATE_ARCHETYPES];
   for(let i=archs.length-1;i>0;i--){const j=Math.floor(sr(i)*(i+1));[archs[i],archs[j]]=[archs[j],archs[i]];}
-  return archs.slice(0,3).map((a,i)=>({name:pool[i].name,archetype:a.id,icon:a.icon,bond:40}));
+  return archs.slice(0,3).map((a,i)=>({name:(pool[i]&&pool[i].name)||"Compagno",archetype:a.id,icon:a.icon,bond:(keepBond&&keepBond[a.id]!=null)?keepBond[a.id]:40}));
+}
+// [7.106.3] i compagni salvati (name congelato alla stagione di ingaggio) vanno RI-SINCRONIZZATI alla rosa corrente:
+//   stesso pool di generateTeammates → l'i-esimo teammate riceve il nome dell'i-esimo slot ATTUALE (archetipi/bond intatti).
+function syncTeammateNames(player){
+  const tms=player.teammates;if(!tms||!tms.length||!player.club||(player.proStatus||"u18")==="u18")return tms;
+  const cseed=hashStr(player.club?.id||player.club?.n||"u18");
+  const roster=generateTeamRoster(player.club,player.season||1);
+  const pool=seededShuffle(roster.slice(1),cseed^0xDEADBEEF);
+  let changed=false;const out=tms.map((t,i)=>{const nm=(pool[i%pool.length]||{}).name;if(nm&&nm!==t.name){changed=true;return{...t,name:nm};}return t;});
+  return changed?out:tms;
 }
 // Sprint 24 — pick 3 journalists (seeded random selection from pool)
 function generateJournalists(){
@@ -18645,6 +18657,8 @@ function migratePlayer(player){
     }
     // Sprint 24 migrations
     if(!('teammates' in newP)){newP={...newP,teammates:generateTeammates(newP)};changed=true;}
+    // [7.106.3 collaudo PO «Nino non lo vedo in rosa»] ri-sincronizza i nomi dei compagni alla rosa CORRENTE (real players)
+    else{const _syncT=syncTeammateNames(newP);if(_syncT!==newP.teammates){newP={...newP,teammates:_syncT};changed=true;}}
     if(!('journalists' in newP)){newP={...newP,journalists:generateJournalists()};changed=true;}
     // Sprint 25 migrations
     if(!('momentsFired' in newP)){newP={...newP,momentsFired:[]};changed=true;}
@@ -19746,7 +19760,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     const last=(p.matchHistory||[]).filter(m=>m&&!m.injured).slice(-1)[0];if(!last)return null;
     const sn=p.season||1,wk=p.week||1;
     const seed=Math.abs(hashStr((p.name||"H")+"|mte|"+sn+"|"+wk+"|"+(last.opponent||"")))>>>0;
-    const tm=tms[seed%tms.length];const nm=((tm.name||"Il compagno").split(" ")[0])||tm.name;
+    const tm=tms[seed%tms.length];const nm=((tm.name||"Il compagno").split(" ").pop())||tm.name;/* [7.106.3 collaudo PO «metti il cognome, non il nome»] COGNOME */
     const won=!!last.won,drew=!!last.drew,lost=!won&&!drew;
     const scored=(last.goals||0)>0,ass=(last.assists||0)>0,gr=last.rating!=null&&last.rating>=7.4,br=last.rating!=null&&last.rating<5.6;
     const A=tm.archetype,pool=[];
