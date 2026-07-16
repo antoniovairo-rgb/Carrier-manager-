@@ -3527,7 +3527,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="7.105.0"; // [7.105.0 collaudo PO «alcuni cartelloni si accavallano, non si leggono, fanno effetto lampeggiante»] i board erano larghi 13 ma distanziati 11-12 -> SOVRAPPOSTI (testo tagliato) e in Z-FIGHTING (due piani trasparenti complanari sovrapposti = lampeggio). FIX: larghezza < passo (dietro-porta w=10.2 su passo 11 · touchline w=11.4 su passo 12) -> gap tra i cartelloni, niente overlap ne z-fight, testo intero.
+const GAME_VERSION="7.105.1"; // [7.105.1 collaudo PO «il tasto impostazioni deve stare in basso a destra come nelle schermate di gioco»] SettingsQuickBtn spostato da top-right a bottom-right (coerente con Opzioni nella nav bar in gioco).
 // [6.18.0-note] // [6.18.0] AVATAR = libreria DiceBear (direttiva PO): CH38 3D via dai menu (resta solo nel live match). EROE/giocatori = stile AVATAAARS con FEDELTA al modello CH38 (forza carnagione+capelli+calvizie dalla stessa fonte AVATARS[avatarId] usata dal CH38 a r.7127 -> avatar dei menu ≈ giocatore in campo). NPC/staff (agente, mister via NpcFaceCoach) = stile MICAH seedato dal nome. Bundle locale offline assets/dicebear-avatars.min.js (esbuild IIFE avataaars+micah, ~163KB) caricato da script locale -> no CDN, funziona in gate/offline/produzione. AvatarSVG DiceBear-backed (API invariata, cache seed). Sorgente rigenerabile in tools/avatar-build/. Gate-cieco su CareerApp ma DiceBear carica anche in gate.
 const SAVE_VERSION=9;// v9 [7.6.0 FASE 2]: clubEvo (evoluzione pluriennale del club: fanbase/stadiumTier/budget/seasonsTop-Low) — migration retro-compatibile. v8 [5.81.0 BIL-3b]: bankBalance (stipendio accumulato, €) + perkTrainer/perkNutrition (staff personale) — migration retro-compatibile. v7: player.foot
 // 5.67.0 — TABELLONE realistico del torneo per NAZIONALI (Europeo/Mondiale): dopo il girone la fase a
@@ -27462,7 +27462,7 @@ function SettingsQuickBtn({onOpen}){
   return(
     <button onClick={()=>{try{AudioMgr.unlock();}catch(_e){}if(onOpen)onOpen();}}
       title="Impostazioni"
-      style={{position:"fixed",top:"calc(env(safe-area-inset-top,0px) + 10px)",right:12,zIndex:99999,width:42,height:42,borderRadius:"50%",border:"1px solid rgba(255,255,255,0.28)",background:"rgba(0,0,0,0.42)",color:"#fff",fontSize:18,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",WebkitBackdropFilter:"blur(4px)",backdropFilter:"blur(4px)"}}>
+      style={{position:"fixed",bottom:"calc(env(safe-area-inset-bottom,0px) + 30px)",right:12,zIndex:99999,width:42,height:42,borderRadius:"50%",border:"1px solid rgba(255,255,255,0.28)",background:"rgba(0,0,0,0.42)",color:"#fff",fontSize:18,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",WebkitBackdropFilter:"blur(4px)",backdropFilter:"blur(4px)"}}>
       ⚙️
     </button>
   );
