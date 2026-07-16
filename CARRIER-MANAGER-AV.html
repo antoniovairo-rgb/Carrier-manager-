@@ -3643,7 +3643,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="7.107.0"; // [7.107.0 collaudo PO «dialoghi mister ripetitivi, sempre le stesse risposte»] verifica trimestrale col mister: battute ampliate (8→14/fascia, memoria 6→10) e RISPOSTE non più fisse (choicePool ~10/fascia → 3 estratte e ruotate per settimana, escludendo le recenti via recentCoachChoices); messaggio settimanale del mister 3→7 varianti per fascia.
+const GAME_VERSION="7.108.0"; // [7.108.0 collaudo PO «è la semifinale, non la finale — importante per una piazza come Salerno»] etichetta del turno KO ora dal campo AFFIDABILE della gara in corso: (1) FIX auto-sim euro che etichettava i QUARTI come «Semifinale» (binario final?Finale:Semifinale) → mappa corretta; (2) walkout/pre-partita derivano fase Coppa/Europa dalla VOCE DI CALENDARIO (cupRound/euroPhase) e non da player.cup.round/euro.phase (puntatore mutabile) → mai più semifinale mostrata come «Finale»; (3) HEAL migration: ricalcola cupRoundName delle voci euro dai euroPhase sui save esistenti.
 // [6.18.0-note] // [6.18.0] AVATAR = libreria DiceBear (direttiva PO): CH38 3D via dai menu (resta solo nel live match). EROE/giocatori = stile AVATAAARS con FEDELTA al modello CH38 (forza carnagione+capelli+calvizie dalla stessa fonte AVATARS[avatarId] usata dal CH38 a r.7127 -> avatar dei menu ≈ giocatore in campo). NPC/staff (agente, mister via NpcFaceCoach) = stile MICAH seedato dal nome. Bundle locale offline assets/dicebear-avatars.min.js (esbuild IIFE avataaars+micah, ~163KB) caricato da script locale -> no CDN, funziona in gate/offline/produzione. AvatarSVG DiceBear-backed (API invariata, cache seed). Sorgente rigenerabile in tools/avatar-build/. Gate-cieco su CareerApp ma DiceBear carica anche in gate.
 const SAVE_VERSION=9;// v9 [7.6.0 FASE 2]: clubEvo (evoluzione pluriennale del club: fanbase/stadiumTier/budget/seasonsTop-Low) — migration retro-compatibile. v8 [5.81.0 BIL-3b]: bankBalance (stipendio accumulato, €) + perkTrainer/perkNutrition (staff personale) — migration retro-compatibile. v7: player.foot
 // 5.67.0 — TABELLONE realistico del torneo per NAZIONALI (Europeo/Mondiale): dopo il girone la fase a
@@ -14116,9 +14116,17 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     if((context==="euro_group"||context==="euro_ko")&&player.euro){
       const e=player.euro,gr=e.groupResults||[],kr=e.koResults||[];
       const form=[...gr,...kr].map(r=>r.won?"W":r.drew?"D":"L").slice(-5);
-      _tvComp={phase:(context==="euro_group")?`Fase a gironi · Giornata ${gr.length+1}/6`:({r16:"Ottavi di Finale",quarti:"Quarti di Finale",sf:"Semifinale",final:"Finale"}[e.phase]||"Fase a eliminazione"),pts:(context==="euro_group")?(e.pts||0):null,played:gr.length+kr.length,form};
+      /* [7.108.0 collaudo PO «è la semifinale, non la finale»] la fase KO deriva dalla VOCE DI CALENDARIO della gara
+         in corso (euroPhase, campo affidabile e coerente col CTA/matchday) e non da player.euro.phase (puntatore mutabile
+         che poteva restare avanti di un turno → semifinale mostrata come «Finale»). */
+      const _euMd=context==="euro_ko"?((player.calendar||[]).find(m=>m&&m.type==="euro"&&!m.played&&m.week===(player.week||1))||(player.calendar||[]).find(m=>m&&m.type==="euro"&&!m.played)):null;
+      const _koPh=(_euMd&&_euMd.euroPhase)||e.phase;
+      _tvComp={phase:(context==="euro_group")?`Fase a gironi · Giornata ${gr.length+1}/6`:({r16:"Ottavi di Finale",quarti:"Quarti di Finale",sf:"Semifinale",final:"Finale"}[_koPh]||"Fase a eliminazione"),pts:(context==="euro_group")?(e.pts||0):null,played:gr.length+kr.length,form};
     } else if(context==="cup"&&player.cup){
-      const cr=player.cup.round||1,_names={1:"Ottavi di Finale",2:"Quarti di Finale",3:"Semifinale",4:"Finale"};/* [6.45.0 RC] la Coppa ha 4 turni canonici (_CRN R16/Quarti/Semi/FINALE): la mappa a 5 voci era sfasata → la FINALE (round 4) veniva etichettata «Semifinale» */
+      /* [7.108.0] il turno di Coppa deriva dal cupRound della VOCE DI CALENDARIO della gara in corso (fonte unica col
+         CTA/matchday), non da player.cup.round → mai più semifinale (round 3) mostrata come «Finale». */
+      const _cupMd=(player.calendar||[]).find(m=>m&&m.type==="cup"&&!m.played&&m.week===(player.week||1))||(player.calendar||[]).find(m=>m&&m.type==="cup"&&!m.played);
+      const cr=(_cupMd&&_cupMd.cupRound)||player.cup.round||1,_names={1:"Ottavi di Finale",2:"Quarti di Finale",3:"Semifinale",4:"Finale"};/* [6.45.0 RC] la Coppa ha 4 turni canonici (_CRN R16/Quarti/Semi/FINALE) */
       const cres=player.cup.results||[];const form=cres.map(r=>r.won?"W":r.drew?"D":"L").slice(-5);
       _tvComp={phase:_names[cr]||`Turno ${cr}`,pts:null,played:cres.length,form};
     } else if(isNatCtx&&player.euroMondiale){
@@ -18523,6 +18531,12 @@ function migratePlayer(player){
         if(_m41opp){newP={...newP,calendar:[...(newP.calendar||[]),{matchday:990,week:_m41wkEff,opponentId:_m41opp.id,opponentName:_m41opp.n||_m41opp.name,isHome:true,played:false,result:null,type:"cup",competition:"Coppa Nazionale",cupRound:_m41cr,cupRoundName:_m41RN[_m41cr]}]};changed=true;}
       }else{newP={...newP,cup:{...newP.cup,active:false,eliminated:true}};changed=true;}
     }
+    // [7.108.0 collaudo PO «è la semifinale, non la finale»] HEAL: le voci euro KO auto-simulate pre-7.108 avevano
+    //   cupRoundName sfasato (es. i QUARTI etichettati «Semifinale») per il binario final?"Finale":"Semifinale".
+    //   Ricalcola l'etichetta dal campo AFFIDABILE euroPhase (invariata la programmazione: solo il nome del turno).
+    {const _EPN={r16:"Ottavi di Finale",quarti:"Quarti di Finale",sf:"Semifinale",final:"Finale"};let _relbl=false;
+     const _calR=(newP.calendar||[]).map(m=>(m&&m.type==="euro"&&m.euroPhase&&_EPN[m.euroPhase]&&m.cupRoundName!==_EPN[m.euroPhase])?(_relbl=true,{...m,cupRoundName:_EPN[m.euroPhase]}):m);
+     if(_relbl){newP={...newP,calendar:_calR};changed=true;}}
     // [6.64.0 collaudo PO «mi ripropone la semifinale di UCL»] CLEAN dei duplicati/voci euro KO STANTIE: in un save
     //   con la Coppa Europea in fase KO, rimuovi le voci euro NON giocate di un turno GIÀ SUPERATO (euroPhase prima
     //   di euro.phase nell'ordine r16<quarti<sf<final) → una carriera lunga poteva accumularle e farle ripresentare.
@@ -21407,7 +21421,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
               const _facedKO=[...(p.euro?.groupOpponents||[]).flatMap(o=>[o.id,o.n]),...newKOR.flatMap(r=>[r.oppId,r.opp,r.opponent])].filter(Boolean);// [6.52.0] «ottavi e quarti contro la stessa squadra!»: l'auto-sim del prossimo turno KO NON escludeva gli avversari già affrontati → stesso avversario in più turni. Ora esclusi per id E nome.
               const _koPool2=CLUBS.filter(c=>c.lg!==(p.club?.lg||"Lega A")&&!c.isU18&&c.p>=(md.competition==="UCL"?80:62)&&!_facedKO.includes(c.id)&&!_facedKO.includes(c.n));
               const _nxtOpp2=_koPool2.length?pick(_koPool2):CLUBS.find(c=>c.lg!==(p.club?.lg||"Lega A")&&!c.isU18&&!_facedKO.includes(c.id)&&!_facedKO.includes(c.n))||CLUBS[0];
-              if(_nxtOpp2)newCal3=[...newCal3,{matchday:996+koRound,week:nextWk,opponentId:_nxtOpp2.id,opponentName:_nxtOpp2.n,isHome:(Math.abs(hashStr("kov|"+String(nextPhase)+"|"+nextWk))%2)===0/* [7.53.2 BL-25] sede SEEDATA */,played:false,result:null,type:"euro",competition:md.competition,euroPhase:nextPhase,cupRoundName:nextPhase==="final"?"Finale":"Semifinale",opponentData:_nxtOpp2}];
+              if(_nxtOpp2)newCal3=[...newCal3,{matchday:996+koRound,week:nextWk,opponentId:_nxtOpp2.id,opponentName:_nxtOpp2.n,isHome:(Math.abs(hashStr("kov|"+String(nextPhase)+"|"+nextWk))%2)===0/* [7.53.2 BL-25] sede SEEDATA */,played:false,result:null,type:"euro",competition:md.competition,euroPhase:nextPhase,cupRoundName:({r16:"Ottavi di Finale",quarti:"Quarti di Finale",sf:"Semifinale",final:"Finale"}[nextPhase]||"Fase a eliminazione")/* [7.108.0 collaudo PO «è la semifinale, non la finale»] il binario final?"Finale":"Semifinale" etichettava i QUARTI come «Semifinale» (uno step troppo avanti) → mappa corretta come tutti gli altri path */,opponentData:_nxtOpp2}];
             }
             updP={...updP,calendar:newCal3,matchHistory:[...(updP.matchHistory||p.matchHistory||[]),{week:p.week||1,opponent:opp.n,oppAbbr:opp.a,oppCol:opp.c,homeScore:sim.homeScore,awayScore:sim.awayScore,goals:0,assists:0,rating:sim.rating,won:koWon,drew:sim.drew,simulated:true,euro:true}].slice(-200),/* [7.8.28 QA] entry di storico anche sul KO auto-simulato (parità col path SIMULA) */matches:(updP.matches||0)+1,totalMatches:(updP.totalMatches||0)+1,/* [6.37.0 STAB-14] presenza euro KO auto-simulata */euro:{...p.euro,phase:newEuroPhase,koResults:newKOR,koRound},trophies:newTrophies4,morale:clamp((p.morale||70)+(koWon?5:-3),0,100),popularity:clamp((p.popularity||20)+(koWon?8:0),0,100)};
             setTimeout(()=>notify(`🌍 ${euroSig(md.competition)||"Euro"} ${koPhase.toUpperCase()} (sim.) vs ${opp.n}: ${sim.homeScore}-${sim.awayScore}${cpPen?" · ai rig.":""} · ${koWon?"✅":"❌"}`,koWon?TH.success:TH.danger),900);
