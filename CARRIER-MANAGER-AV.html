@@ -3516,7 +3516,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="7.100.0"; // [7.100.0 collaudo PO «ci vorrebbe una barra di caricamento con percentuale intelligente/paracula per intrattenere»] loading screen #ld: barra di avanzamento ASINTOTICA (la % non conosce il progresso reale del transpile Babel → avanza verso un tetto crescente, mai inchiodata, SCATTA a 100% quando React monta) + messaggi calcistici a rotazione + fade-out morbido. Vanilla JS pre-React, reduced-motion-safe.
+const GAME_VERSION="7.101.0"; // [7.101.0 collaudo PO «la musica delle schermate deve essere sempre diversa ed allegra + l'audio folla è disattivato, cosa attivare per rendere più avvolgente?»] (1) musica menu: 4 PROGRESSIONI solari che RUOTANO ogni 8 barre (loop che evolve, non più lo stesso giro) + crash morbido al cambio sezione, ogni schermata parte da una progressione diversa; (2) AMBIENCE nei menu: letto sottile di brusio da stadio + applausi/cori lontani sparsi (categoria folla, mai in match) → schermate vive, non mute sotto la musica.
 // [6.18.0-note] // [6.18.0] AVATAR = libreria DiceBear (direttiva PO): CH38 3D via dai menu (resta solo nel live match). EROE/giocatori = stile AVATAAARS con FEDELTA al modello CH38 (forza carnagione+capelli+calvizie dalla stessa fonte AVATARS[avatarId] usata dal CH38 a r.7127 -> avatar dei menu ≈ giocatore in campo). NPC/staff (agente, mister via NpcFaceCoach) = stile MICAH seedato dal nome. Bundle locale offline assets/dicebear-avatars.min.js (esbuild IIFE avataaars+micah, ~163KB) caricato da script locale -> no CDN, funziona in gate/offline/produzione. AvatarSVG DiceBear-backed (API invariata, cache seed). Sorgente rigenerabile in tools/avatar-build/. Gate-cieco su CareerApp ma DiceBear carica anche in gate.
 const SAVE_VERSION=9;// v9 [7.6.0 FASE 2]: clubEvo (evoluzione pluriennale del club: fanbase/stadiumTier/budget/seasonsTop-Low) — migration retro-compatibile. v8 [5.81.0 BIL-3b]: bankBalance (stipendio accumulato, €) + perkTrainer/perkNutrition (staff personale) — migration retro-compatibile. v7: player.foot
 // 5.67.0 — TABELLONE realistico del torneo per NAZIONALI (Europeo/Mondiale): dopo il girone la fase a
@@ -5443,6 +5443,31 @@ const AudioMgr=(function(){
       setTimeout(()=>{try{b.src.stop();b.src.disconnect();if(b.lp)b.lp.disconnect();b.g.disconnect();}catch(_e){}},1500);}catch(_e){}
   }
 
+  // [7.101.0 collaudo PO «l'audio folla è disattivato, cosa attivare per rendere il gioco più avvolgente?»]
+  //   AMBIENCE nei MENU (fuori dal match): letto SOTTILE di brusio "da stadio/club" (molto più basso del letto-folla
+  //   della partita) + eventi lontani sparsi (applauso/coro ovattato ogni ~18-36s) → le schermate non sono più mute
+  //   sotto la musica, ma vive. Categoria 'crowd' (rispetta il toggle Folla delle Impostazioni). Mai durante il match.
+  let amb=null,ambTimer=null;
+  function ambienceStart(){
+    if(!ready||amb||inMatch)return;
+    try{
+      const src=ctx.createBufferSource();src.buffer=noiseBuf;src.loop=true;
+      const hp=ctx.createBiquadFilter();hp.type='highpass';hp.frequency.value=90;
+      const lp=ctx.createBiquadFilter();lp.type='lowpass';lp.frequency.value=480;lp.Q.value=0.2;
+      const g=ctx.createGain();g.gain.value=0.0001;
+      src.connect(hp);hp.connect(lp);lp.connect(g);g.connect(dest('crowd'));src.start();
+      g.gain.setTargetAtTime(0.05,now(),2.2);// brusio da concourse: appena percepibile, mai invadente
+      amb={src,g};
+      const _fire=()=>{ if(!amb||inMatch)return; try{ if(cfg.on.crowd&&!cfg.mute)(Math.random()<0.5?crowdApplause(1.4,0.09):crowdSwell(1.6,0.09,900)); }catch(_e){} ambTimer=setTimeout(_fire,18000+Math.random()*18000); };
+      ambTimer=setTimeout(_fire,9000+Math.random()*9000);
+    }catch(_e){}
+  }
+  function ambienceStop(){
+    if(ambTimer){clearTimeout(ambTimer);ambTimer=null;}
+    if(!amb)return;try{const a=amb;amb=null;a.g.gain.setTargetAtTime(0.0001,now(),0.8);
+      setTimeout(()=>{try{a.src.stop();a.src.disconnect();a.g.disconnect();}catch(_e){}},1500);}catch(_e){}
+  }
+
   // ---- MUSICA MENU — [7.96.0 collaudo PO «musica stile FIFA 98, energica»] LOOP RITMICO generativo (era un pad
   //   ambient lento e "assente"): batteria (kick four-on-the-floor + rullante 2&4 + hi-hat 8vi) + basso pulsante +
   //   RIFF di lead brillante su una progressione energica (i-VI-III-VII: Am-F-C-G). ~124 BPM, sintetizzato, loop
@@ -5452,8 +5477,15 @@ const AudioMgr=(function(){
     career:{bpm:120, bassOct:[98.00,87.31,110,130.81], lead:0.85},  // più raccolto
     menu:  {bpm:124, bassOct:[110,87.31,130.81,98.00], lead:0.95},
   };
-  // triadi (Hz) per barra della progressione Am · F · C · G — il riff di lead ci arpeggia sopra
-  const _MUS_TRIADS=[[440,523.25,659.25],[349.23,440,523.25],[523.25,659.25,783.99],[392,493.88,587.33]];
+  // [7.101.0 collaudo PO «la musica delle schermate deve essere sempre diversa ed allegra»] più PROGRESSIONI
+  //   solari che RUOTANO ogni 8 barre → il loop EVOLVE (non è più lo stesso giro di 4 accordi all'infinito).
+  //   Ogni variante = 4 triadi (Hz, una per barra) + walk di basso + pattern del riff di lead. Tutte "maggiori/allegre".
+  const _MUS_PROG=[
+    {tri:[[440,523.25,659.25],[349.23,440,523.25],[523.25,659.25,783.99],[392,493.88,587.33]],bass:[110,87.31,130.81,98.00],seq:[0,1,2,1,0,1,2,2]},   // Am-F-C-G (energico)
+    {tri:[[523.25,659.25,783.99],[392,493.88,587.33],[440,523.25,659.25],[349.23,440,523.25]],bass:[130.81,98.00,110,87.31],seq:[2,1,0,1,2,2,1,0]},   // C-G-Am-F (solare)
+    {tri:[[349.23,440,523.25],[523.25,659.25,783.99],[392,493.88,587.33],[440,523.25,659.25]],bass:[87.31,130.81,98.00,110],seq:[0,2,1,2,0,1,2,1]},   // F-C-G-Am (trionfale)
+    {tri:[[392,493.88,587.33],[440,523.25,659.25],[349.23,440,523.25],[523.25,659.25,783.99]],bass:[98.00,110,87.31,130.81],seq:[1,2,2,1,0,1,2,0]},   // G-Am-F-C (spinta)
+  ];
   const _KICK=[1,0,0,0, 1,0,0,0, 1,0,0,1, 1,0,0,0], _SNARE=[0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0], _BASS=[1,0,1,0,1,0,1,1,1,0,1,0,1,0,1,0];
   let mus=null,musScene=null,musTimer=null;
   function _nz(g,t,dur,peak,freq,type){try{if(!noiseBuf){noiseBuf=ctx.createBuffer(1,Math.floor(ctx.sampleRate*0.5),ctx.sampleRate);const d=noiseBuf.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=Math.random()*2-1;}
@@ -5472,13 +5504,16 @@ const AudioMgr=(function(){
       const snare=(t)=>{_nz(g,t,0.15,0.5,1500,'highpass');const o=ctx.createOscillator(),k=ctx.createGain();o.type='triangle';o.frequency.setValueAtTime(200,t);k.gain.setValueAtTime(0.28,t);k.gain.exponentialRampToValueAtTime(0.0001,t+0.11);o.connect(k);k.connect(g);o.start(t);o.stop(t+0.13);o.onended=()=>{try{o.disconnect();k.disconnect();}catch(_e){}};};
       const bass=(t,f,dur)=>{const o=ctx.createOscillator(),k=ctx.createGain(),lp=ctx.createBiquadFilter();o.type='sawtooth';o.frequency.setValueAtTime(f,t);lp.type='lowpass';lp.frequency.value=560;k.gain.setValueAtTime(0.0001,t);k.gain.exponentialRampToValueAtTime(0.5,t+0.012);k.gain.setTargetAtTime(0.0001,t+dur*0.6,0.06);o.connect(lp);lp.connect(k);k.connect(g);o.start(t);o.stop(t+dur+0.05);o.onended=()=>{try{o.disconnect();lp.disconnect();k.disconnect();}catch(_e){}};};
       const lead=(t,f,dur,peak)=>{const o=ctx.createOscillator(),o2=ctx.createOscillator(),k=ctx.createGain(),lp=ctx.createBiquadFilter();o.type='square';o2.type='sawtooth';o.frequency.setValueAtTime(f,t);o2.frequency.setValueAtTime(f*1.005,t);lp.type='lowpass';lp.frequency.value=2100;k.gain.setValueAtTime(0.0001,t);k.gain.exponentialRampToValueAtTime(peak,t+0.012);k.gain.exponentialRampToValueAtTime(0.0001,t+dur);o.connect(lp);o2.connect(lp);lp.connect(k);k.connect(g);o.start(t);o2.start(t);o.stop(t+dur+0.03);o2.stop(t+dur+0.03);o.onended=()=>{try{o.disconnect();o2.disconnect();lp.disconnect();k.disconnect();}catch(_e){}};};
+      const _v0={home:0,career:1,menu:2}[key]||0;// ogni schermata parte da una progressione diversa
       const advance=()=>{ if(!mus||musScene!==key)return;const s=mus.step%16,bar=Math.floor(mus.step/16)%4,t=now()+0.03;
+        const P=_MUS_PROG[(_v0+Math.floor(mus.step/(16*8)))%_MUS_PROG.length];// la progressione RUOTA ogni 8 barre → loop che evolve
+        if(mus.step>0&&mus.step%(16*8)===0)_nz(g,t,1.1,0.15,6000,'highpass');// crash morbido al cambio di sezione (freschezza)
         if(_KICK[s])kick(t);
         if(_SNARE[s])snare(t);
         if(s%2===0)_nz(g,t,s%4===2?0.10:0.045,s%4===2?0.11:0.16,8500,'highpass');// hi-hat: aperto sugli 8vi in levare
-        if(_BASS[s]){const r=S.bassOct[bar];bass(t,s%8===0?r:(s%4===0?r*1.5:r),stepMs/1000*1.2);}// basso pulsante col walk d'ottava
-        // RIFF di lead: arpeggio della triade sugli 8vi (step pari), con accento sul battere
-        if(s%2===0){const tri=_MUS_TRIADS[bar],n=[0,1,2,1,0,1,2,2][(s/2)|0];lead(t,tri[n],stepMs/1000*(s%4===0?2.0:1.4),(s%4===0?0.16:0.11)*S.lead);}
+        if(_BASS[s]){const r=P.bass[bar];bass(t,s%8===0?r:(s%4===0?r*1.5:r),stepMs/1000*1.2);}// basso pulsante col walk d'ottava
+        // RIFF di lead: arpeggio della triade della progressione CORRENTE sugli 8vi (step pari), accento sul battere
+        if(s%2===0){const tri=P.tri[bar],n=P.seq[(s/2)|0];lead(t,tri[n],stepMs/1000*(s%4===0?2.0:1.4),(s%4===0?0.16:0.11)*S.lead);}
         mus.step++; };
       advance();musTimer=setInterval(advance,stepMs);
     }catch(_e){}
@@ -5545,13 +5580,13 @@ const AudioMgr=(function(){
     _curPhase=phase;
     if(SILENT)return;
     if(!ready){_pendingScene=phase;return;}
-    if(phase==='career'){ if(!inMatch)musicStart('career'); }
-    else if(phase==='home'||phase==='offers'){ musicStart('home'); }
-    else if(phase==='create'||phase==='trial'){ musicStart('menu'); }
-    else { musicStop(true); }// loading/cinematic → silenzio
+    if(phase==='career'){ if(!inMatch){musicStart('career');ambienceStart();} }
+    else if(phase==='home'||phase==='offers'){ musicStart('home');ambienceStart(); }
+    else if(phase==='create'||phase==='trial'){ musicStart('menu');ambienceStart(); }
+    else { musicStop(true);ambienceStop(); }// loading/cinematic → silenzio
   }
-  function enterMatch(){ if(SILENT)return; inMatch=true; if(!ready)return; musicStop(true); crowdStart(0.30); }
-  function exitMatch(){ if(SILENT)return; inMatch=false; crowdStop(); if(ready&&_curPhase==='career')musicStart('career'); }
+  function enterMatch(){ if(SILENT)return; inMatch=true; if(!ready)return; musicStop(true);ambienceStop(); crowdStart(0.30); }
+  function exitMatch(){ if(SILENT)return; inMatch=false; crowdStop(); if(ready&&_curPhase==='career'){musicStart('career');ambienceStart();} }
   function event(e){
     if(SILENT||!ready)return;
     try{
