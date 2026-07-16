@@ -10,20 +10,22 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.6/babel.min.js"></script>
 <style>
   *{box-sizing:border-box;}
-  html,body{margin:0;padding:0;font-family:-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;-webkit-font-smoothing:antialiased;}
+  html,body{margin:0;padding:0;font-family:-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;}
   #root{min-height:100vh;}
   .cpm-num{font-variant-numeric:tabular-nums;font-feature-settings:'tnum' 1;}
-  /* scaffold di layout SOLO (colori via var() alimentate dai TOKENS, mai literal) */
+  /* scaffold di layout SOLO (colori via var()/inline dai TOKENS, mai literal in CSS) */
   .duo{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:14px;}
-  .lift{transition:transform .16s ease, box-shadow .16s ease;}
-  .lift:hover{transform:translateY(-2px);}
+  .lift{transition:transform .18s cubic-bezier(.2,0,0,1), box-shadow .18s ease;}
+  .lift:hover{transform:translateY(-3px);}
   .btnx{transition:transform .12s ease, filter .12s ease, opacity .12s ease;cursor:pointer;}
-  .btnx:hover{filter:brightness(1.06);}
+  .btnx:hover{filter:brightness(1.07) saturate(1.03);}
   .btnx:active{transform:translateY(1px);}
   .btnx:focus-visible,.rowx:focus-visible{outline:2px solid var(--focus);outline-offset:2px;}
-  .rise{animation:rise .5s cubic-bezier(.2,0,0,1) both;}
-  @keyframes rise{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:none;}}
-  @media (prefers-reduced-motion: reduce){.rise,.lift,.btnx{animation:none!important;transition:none!important;}}
+  .rise{opacity:0;animation:rise .55s cubic-bezier(.2,0,0,1) forwards;}
+  @keyframes rise{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:none;}}
+  .pulse{animation:pulse 1.7s cubic-bezier(0,0,.2,1) infinite;}
+  @keyframes pulse{0%{opacity:.55;transform:scale(1);}70%{opacity:0;transform:scale(2.6);}100%{opacity:0;transform:scale(2.6);}}
+  @media (prefers-reduced-motion: reduce){.rise,.lift,.btnx,.pulse{animation:none!important;transition:none!important;opacity:1!important;}}
 </style>
 </head>
 <body>
@@ -34,12 +36,14 @@ const React = window.React;
 const { useState, useRef, useEffect } = React;
 
 /* ===== TOKENS (inline da src/theme.js — unica fonte di verita') =====
-   Aggiunte SOLO composizioni di valori esistenti (gradienti brand base->dark), documentate. */
+   Uniche aggiunte: composizioni di valori GIA' esistenti (gradienti brand base->dark,
+   overlay bianchi su brand) + gruppo medal (oro/bronzo da TH.goldGrad 291; silver DA CONFERMARE). */
 const T = {
   brand: { base:"#8e1f33", dark:"#6a1326", tint:"#f7e9ec", border:"#e3c3cb", on:"#ffffff",
-           grad:"linear-gradient(135deg,#8e1f33,#6a1326)",  /* composizione base+dark (270) */
-           onSoft:"rgba(255,255,255,0.14)", onLine:"rgba(255,255,255,0.35)", onTrack:"rgba(255,255,255,0.20)" }, /* overlay bianchi su brand */
-  medal: { gold:"#f6c04b", silver:"#c4cdd8", bronze:"#d4922a" }, /* gold/bronze da TH.goldGrad (291); silver DA CONFERMARE (non nel codice) */
+           grad:"linear-gradient(135deg,#8e1f33,#6a1326)",
+           onSoft:"rgba(255,255,255,0.14)", onLine:"rgba(255,255,255,0.35)", onTrack:"rgba(255,255,255,0.20)", onGhost:"rgba(255,255,255,0.08)" },
+  medal: { gold:"#f6c04b", silver:"#c4cdd8", bronze:"#d4922a" },
+  material: { hiLight:"rgba(255,255,255,0.6)", hiDark:"rgba(255,255,255,0.08)" }, /* hairline highlight superiore delle card */
   surfaces: {
     light: { bg0:"#f0f7ff", bg1:"#f4f7fb", bg2:"#ffffff", text:"#1e293b", text2:"#64748b", muted:"#94a3b8", border:"#e6edf5", scrim:"rgba(15,23,42,0.45)" },
     dark:  { bg0:"#0f172a", bg1:"#172033", bg2:"#1e293b", text:"#f1f5f9", text2:"#94a3b8", muted:"#64748b", border:"#2c3a52", scrim:"rgba(0,0,0,0.62)" },
@@ -61,89 +65,123 @@ const T = {
   spacing: { xs:4, sm:8, md:12, lg:16, xl:24, xxl:32 },
   radius: { sm:8, md:12, lg:16, pill:999 },
   shadow: {
-    light:{ s1:"0 1px 2px rgba(15,23,42,0.06),0 2px 10px rgba(15,23,42,0.05)", s2:"0 4px 16px rgba(15,23,42,0.10)", s3:"0 18px 48px rgba(15,23,42,0.18)" },
-    dark: { s1:"0 1px 2px rgba(0,0,0,0.5),0 2px 12px rgba(0,0,0,0.4)", s2:"0 6px 20px rgba(0,0,0,0.5)", s3:"0 22px 56px rgba(0,0,0,0.62)" },
+    light:{ s1:"0 1px 2px rgba(15,23,42,0.06),0 2px 10px rgba(15,23,42,0.05)", s2:"0 4px 18px rgba(15,23,42,0.10)", s3:"0 22px 54px rgba(15,23,42,0.20)" },
+    dark: { s1:"0 1px 2px rgba(0,0,0,0.5),0 2px 12px rgba(0,0,0,0.4)", s2:"0 8px 24px rgba(0,0,0,0.5)", s3:"0 26px 60px rgba(0,0,0,0.66)" },
   },
   typography: {
     family:"-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif",
-    size:{ caption:11, small:12, body:13, bodyLg:15, subhead:17, title:20, h:24, display:32, hero:44 },
+    size:{ caption:11, small:12, body:13, bodyLg:15, subhead:17, title:20, h:24, display:32, hero:44, mega:88 },
     weight:{ regular:400, medium:500, semibold:600, bold:700, black:800 },
-    tracking:{ normal:0, wide:1.5, wider:2 },
+    tracking:{ tight:-0.4, normal:0, wide:1.5, wider:2.4 },
   },
   zIndex:{ base:1, overlay:3, sticky:16, dropdown:60, modal:9998, toast:9999, top:99999 },
 };
 
-/* ===== helper: sempre dai TOKENS ===== */
 const isDark = (m) => m !== "light";
 const sur = (m) => T.surfaces[m] || T.surfaces.light;
 const shadow = (m, lvl) => (isDark(m) ? T.shadow.dark : T.shadow.light)["s" + (lvl || 1)];
 const semTint = (m, name) => (isDark(m) ? T.semantic[name].dark : T.semantic[name].light);
 const outTint = (m, name) => (isDark(m) ? T.outcome[name].dark : T.outcome[name].light);
-const ovrColor = (v) => v >= 80 ? T.semantic.success.solid : v >= 65 ? T.semantic.warning.solid : T.semantic.danger.solid;
+const ovrPair = (v) => v >= 80 ? [T.semantic.success.solid, T.semantic.success.dark.fg]
+                     : v >= 65 ? [T.semantic.warning.solid, T.semantic.warning.dark.fg]
+                     : [T.semantic.danger.solid, T.semantic.danger.dark.fg];
 
-/* ===== Sparkline (canvas, per grafica generativa) ===== */
+/* ===== marchio (canvas): un pallone essenziale nei colori brand ===== */
+function LogoMark({ size }) {
+  const ref = useRef(null);
+  useEffect(() => {
+    const c = ref.current; if (!c) return; const dpr = window.devicePixelRatio || 1;
+    c.width = size * dpr; c.height = size * dpr; const g = c.getContext("2d"); g.scale(dpr, dpr);
+    const r = size / 2, cx = r, cy = r; g.clearRect(0, 0, size, size);
+    g.beginPath(); g.arc(cx, cy, r - 1, 0, 6.283); g.fillStyle = T.brand.base; g.fill();
+    g.strokeStyle = T.brand.on; g.lineWidth = 1.4; g.globalAlpha = 0.9;
+    g.beginPath(); g.moveTo(cx, cy - r * 0.55);
+    for (let i = 0; i < 5; i++) { const a = -1.5708 + i * 1.2566; g.lineTo(cx + Math.cos(a) * r * 0.34, cy + Math.sin(a) * r * 0.34); }
+    g.closePath(); g.stroke();
+    for (let i = 0; i < 5; i++) { const a = -1.5708 + i * 1.2566; g.beginPath(); g.moveTo(cx + Math.cos(a) * r * 0.34, cy + Math.sin(a) * r * 0.34); g.lineTo(cx + Math.cos(a) * (r - 2), cy + Math.sin(a) * (r - 2)); g.stroke(); }
+  }, [size]);
+  return <canvas ref={ref} style={{ width: size, height: size }} />;
+}
+
+/* ===== Sparkline (canvas): area + baseline tenue + endpoint enfatizzato ===== */
 function Sparkline({ data, color, w, h }) {
   const ref = useRef(null);
   useEffect(() => {
-    const c = ref.current; if (!c) return;
-    const dpr = window.devicePixelRatio || 1; c.width = w * dpr; c.height = h * dpr;
-    const g = c.getContext("2d"); g.scale(dpr, dpr); g.clearRect(0, 0, w, h);
+    const c = ref.current; if (!c) return; const dpr = window.devicePixelRatio || 1;
+    c.width = w * dpr; c.height = h * dpr; const g = c.getContext("2d"); g.scale(dpr, dpr); g.clearRect(0, 0, w, h);
     const mn = Math.min(...data), mx = Math.max(...data), rng = (mx - mn) || 1;
-    const x = (i) => (i / (data.length - 1)) * (w - 2) + 1;
-    const y = (v) => h - 3 - ((v - mn) / rng) * (h - 6);
-    g.beginPath(); data.forEach((v, i) => { const px = x(i), py = y(v); i ? g.lineTo(px, py) : g.moveTo(px, py); });
-    g.lineTo(x(data.length - 1), h); g.lineTo(x(0), h); g.closePath();
-    g.fillStyle = color + "22"; g.fill();
-    g.beginPath(); data.forEach((v, i) => { const px = x(i), py = y(v); i ? g.lineTo(px, py) : g.moveTo(px, py); });
-    g.strokeStyle = color; g.lineWidth = 1.6; g.lineJoin = "round"; g.stroke();
-    const lx = x(data.length - 1), ly = y(data[data.length - 1]);
+    const X = (i) => (i / (data.length - 1)) * (w - 4) + 2;
+    const Y = (v) => h - 4 - ((v - mn) / rng) * (h - 8);
+    g.strokeStyle = color; g.globalAlpha = 0.12; g.lineWidth = 1; g.beginPath(); g.moveTo(2, h - 3); g.lineTo(w - 2, h - 3); g.stroke(); g.globalAlpha = 1;
+    const grd = g.createLinearGradient(0, 0, 0, h); grd.addColorStop(0, color + "33"); grd.addColorStop(1, color + "00");
+    g.beginPath(); data.forEach((v, i) => { const px = X(i), py = Y(v); i ? g.lineTo(px, py) : g.moveTo(px, py); });
+    g.lineTo(X(data.length - 1), h); g.lineTo(X(0), h); g.closePath(); g.fillStyle = grd; g.fill();
+    g.beginPath(); data.forEach((v, i) => { const px = X(i), py = Y(v); i ? g.lineTo(px, py) : g.moveTo(px, py); });
+    g.strokeStyle = color; g.lineWidth = 2; g.lineJoin = "round"; g.lineCap = "round"; g.stroke();
+    const lx = X(data.length - 1), ly = Y(data[data.length - 1]);
+    g.beginPath(); g.arc(lx, ly, 4, 0, 6.283); g.fillStyle = color; g.globalAlpha = 0.18; g.fill(); g.globalAlpha = 1;
     g.beginPath(); g.arc(lx, ly, 2.4, 0, 6.283); g.fillStyle = color; g.fill();
   }, [data, color, w, h]);
   return <canvas ref={ref} style={{ width: w, height: h, display: "block" }} />;
 }
 
-/* ===== OVR ring (canvas) ===== */
-function OvrRing({ value, size }) {
-  const ref = useRef(null); const col = ovrColor(value);
+/* ===== OVR ring (canvas): stroke a gradiente solid->chiaro + endpoint ===== */
+function OvrRing({ value, size, onBrand }) {
+  const ref = useRef(null); const pair = ovrPair(value);
   useEffect(() => {
     const c = ref.current; if (!c) return; const dpr = window.devicePixelRatio || 1;
     c.width = size * dpr; c.height = size * dpr; const g = c.getContext("2d"); g.scale(dpr, dpr);
-    const cx = size / 2, cy = size / 2, r = size / 2 - 4; g.clearRect(0, 0, size, size);
-    g.lineWidth = 5; g.strokeStyle = T.surfaces.light.border; g.beginPath(); g.arc(cx, cy, r, 0, 6.283); g.stroke();
-    g.strokeStyle = col; g.lineCap = "round"; g.beginPath(); g.arc(cx, cy, r, -1.5708, -1.5708 + 6.283 * (value / 99)); g.stroke();
-  }, [value, size]);
+    const cx = size / 2, cy = size / 2, r = size / 2 - 5; g.clearRect(0, 0, size, size);
+    g.lineWidth = 5; g.lineCap = "round";
+    g.strokeStyle = onBrand ? T.brand.onTrack : T.surfaces.light.border; g.beginPath(); g.arc(cx, cy, r, 0, 6.283); g.stroke();
+    const grd = g.createLinearGradient(0, 0, size, size); grd.addColorStop(0, pair[0]); grd.addColorStop(1, pair[1]);
+    const end = -1.5708 + 6.283 * (value / 99);
+    g.strokeStyle = grd; g.beginPath(); g.arc(cx, cy, r, -1.5708, end); g.stroke();
+    g.beginPath(); g.arc(cx + Math.cos(end) * r, cy + Math.sin(end) * r, 3, 0, 6.283); g.fillStyle = pair[1]; g.fill();
+  }, [value, size, onBrand]);
   return (
     <div style={{ position: "relative", width: size, height: size }}>
       <canvas ref={ref} style={{ width: size, height: size }} />
       <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
-        <span className="cpm-num" style={{ fontSize: size * 0.3, fontWeight: T.typography.weight.black, color: col, lineHeight: 1 }}>{value}</span>
-        <span style={{ fontSize: 8, color: T.brand.on, opacity: 0.72, letterSpacing: 1 }}>OVR</span>
+        <span className="cpm-num" style={{ fontSize: size * 0.3, fontWeight: T.typography.weight.black, color: onBrand ? T.brand.on : pair[0], lineHeight: 1, letterSpacing: T.typography.tracking.tight }}>{value}</span>
+        <span style={{ fontSize: 8, color: onBrand ? T.brand.on : sur("light").muted, opacity: 0.75, letterSpacing: 1 }}>OVR</span>
       </div>
     </div>
   );
 }
 
-/* ===== Player Header — componente firma (identita' football manager) ===== */
+/* ===== scudetto squadra (device broadcast) ===== */
+function Shield({ color, on, abbr, size }) {
+  const sz = size || 24;
+  return <span style={{ width: sz, height: sz * 1.14, background: color, color: on, borderRadius: sz * 0.16 + "px " + sz * 0.16 + "px " + sz * 0.42 + "px " + sz * 0.42 + "px", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: sz * 0.42, fontWeight: T.typography.weight.black, letterSpacing: T.typography.tracking.tight, flexShrink: 0 }}>{abbr}</span>;
+}
+function LiveDot({ color }) {
+  return <span style={{ position: "relative", width: 8, height: 8, display: "inline-flex" }}><span className="pulse" style={{ position: "absolute", inset: 0, borderRadius: T.radius.pill, background: color }} /><span style={{ position: "absolute", inset: 0, borderRadius: T.radius.pill, background: color }} /></span>;
+}
+
+/* ===== Player Header — componente FIRMA (broadcast player bug) ===== */
 function PlayerHeader() {
   const dots = ["win", "win", "draw", "loss", "win"];
   return (
-    <div className="rise" style={{ background: T.brand.grad, borderRadius: T.radius.lg, padding: T.spacing.xl, color: T.brand.on, boxShadow: T.shadow.dark.s2, position: "relative", overflow: "hidden" }}>
-      <div style={{ display: "flex", alignItems: "center", gap: T.spacing.lg, flexWrap: "wrap" }}>
-        <div style={{ width: 64, height: 64, borderRadius: T.radius.pill, background: T.brand.onSoft, border: "2px solid " + T.brand.onLine, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 30 }}>{"⚽"}</div>
-        <div style={{ flex: 1, minWidth: 160 }}>
-          <div style={{ fontSize: T.typography.size.caption, letterSpacing: T.typography.tracking.wider, opacity: 0.8, textTransform: "uppercase" }}>Italia · Attaccante</div>
-          <div style={{ fontSize: T.typography.size.display, fontWeight: T.typography.weight.black, lineHeight: 1.05 }}>Hernanes jr</div>
-          <div style={{ fontSize: T.typography.size.small, opacity: 0.85, marginTop: 2 }}>FC Salernum · Lega A · S.10 W.21/38</div>
+    <div style={{ background: T.brand.grad, borderRadius: T.radius.lg, padding: T.spacing.xl, color: T.brand.on, boxShadow: T.shadow.dark.s2, position: "relative", overflow: "hidden" }}>
+      <div style={{ position: "absolute", right: -6, top: -34, fontSize: T.typography.size.mega, fontWeight: T.typography.weight.black, color: T.brand.onGhost, lineHeight: 1, letterSpacing: T.typography.tracking.tight, pointerEvents: "none" }} className="cpm-num">9</div>
+      <div style={{ position: "absolute", left: 0, right: 0, bottom: 0, height: 3, background: T.brand.onLine, opacity: 0.5 }} />
+      <div style={{ display: "flex", alignItems: "center", gap: T.spacing.lg, flexWrap: "wrap", position: "relative" }}>
+        <div style={{ width: 60, height: 60, borderRadius: T.radius.pill, background: T.brand.onSoft, border: "2px solid " + T.brand.onLine, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 28 }}>{"⚽"}</div>
+        <div style={{ flex: 1, minWidth: 170 }}>
+          <div style={{ fontSize: T.typography.size.caption, letterSpacing: T.typography.tracking.wider, opacity: 0.82, textTransform: "uppercase" }}>Italia · Attaccante · N.9</div>
+          <div style={{ fontSize: T.typography.size.display, fontWeight: T.typography.weight.black, lineHeight: 1.02, letterSpacing: T.typography.tracking.tight }}>Hernanes jr</div>
+          <div style={{ fontSize: T.typography.size.small, opacity: 0.86, marginTop: 2 }}>FC Salernum · Lega A · S.10 W.21/38</div>
           <div style={{ display: "flex", gap: 4, marginTop: T.spacing.md }}>
-            {dots.map((d, i) => <span key={i} title={d} style={{ width: 16, height: 16, borderRadius: T.radius.sm, background: T.outcome[d].light.fg, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 9, fontWeight: T.typography.weight.black, color: T.brand.on }}>{d === "win" ? "V" : d === "draw" ? "P" : "S"}</span>)}
+            {dots.map((d, i) => <span key={i} style={{ width: 17, height: 17, borderRadius: T.radius.sm, background: T.outcome[d].light.fg, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 9, fontWeight: T.typography.weight.black, color: T.brand.on }}>{d === "win" ? "V" : d === "draw" ? "P" : "S"}</span>)}
           </div>
         </div>
-        <OvrRing value={85} size={78} />
+        <OvrRing value={85} size={82} onBrand={true} />
       </div>
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: T.spacing.md, marginTop: T.spacing.lg }}>
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: T.spacing.md, marginTop: T.spacing.lg, position: "relative" }}>
         {[["Forma", 95, "success"], ["Morale", 100, "info"], ["Fatica", 22, "warning"]].map(([lb, v, tone]) => (
           <div key={lb}>
-            <div style={{ display: "flex", justifyContent: "space-between", fontSize: T.typography.size.caption, opacity: 0.85, marginBottom: 3 }}><span style={{ textTransform: "uppercase", letterSpacing: T.typography.tracking.wide }}>{lb}</span><span className="cpm-num" style={{ fontWeight: T.typography.weight.bold }}>{v}</span></div>
+            <div style={{ display: "flex", justifyContent: "space-between", fontSize: T.typography.size.caption, opacity: 0.88, marginBottom: 3 }}><span style={{ textTransform: "uppercase", letterSpacing: T.typography.tracking.wide }}>{lb}</span><span className="cpm-num" style={{ fontWeight: T.typography.weight.bold }}>{v}</span></div>
             <div style={{ height: 5, borderRadius: T.radius.pill, background: T.brand.onTrack, overflow: "hidden" }}><div style={{ height: "100%", width: v + "%", background: T.semantic[tone].solid, borderRadius: T.radius.pill }} /></div>
           </div>
         ))}
@@ -152,11 +190,12 @@ function PlayerHeader() {
   );
 }
 
-/* ===== Card ===== */
+/* ===== Card (materiale: hairline highlight in alto) ===== */
 function Card({ mode, tone, children, style, interactive }) {
   const s = sur(mode); let bg = s.bg2, bd = s.border, fg = s.text;
   if (tone) { const tt = semTint(mode, tone); bg = tt.bg; bd = tt.bd; fg = tt.fg; }
-  return <div className={interactive ? "lift" : ""} style={{ background: bg, border: "1px solid " + bd, borderRadius: T.radius.md, padding: T.spacing.lg, boxShadow: shadow(mode, 1), color: fg, cursor: interactive ? "pointer" : "default", ...style }}>{children}</div>;
+  const hi = isDark(mode) ? T.material.hiDark : T.material.hiLight;
+  return <div className={interactive ? "lift" : ""} style={{ background: bg, border: "1px solid " + bd, borderRadius: T.radius.md, padding: T.spacing.lg, boxShadow: shadow(mode, 1) + ", inset 0 1px 0 " + hi, color: fg, cursor: interactive ? "pointer" : "default", ...style }}>{children}</div>;
 }
 
 function SectionHeader({ mode, children, accent, right }) {
@@ -165,20 +204,19 @@ function SectionHeader({ mode, children, accent, right }) {
     <div style={{ display: "flex", alignItems: "center", gap: T.spacing.sm, marginBottom: T.spacing.md }}>
       <span style={{ width: 3, height: 13, borderRadius: T.radius.sm, background: accent ? col : T.brand.base }} />
       <span style={{ fontSize: T.typography.size.caption, fontWeight: T.typography.weight.bold, letterSpacing: T.typography.tracking.wide, textTransform: "uppercase", color: col, flex: 1 }}>{children}</span>
-      {right ? <span style={{ fontSize: T.typography.size.caption, color: s.muted }}>{right}</span> : null}
+      {right ? <span className="cpm-num" style={{ fontSize: T.typography.size.caption, color: s.muted }}>{right}</span> : null}
     </div>
   );
 }
 
-/* ===== Button — sizes + stati; UNA primaria (brand) ===== */
 function Btn({ mode, v, size, children, disabled, icon }) {
   const s = sur(mode);
   const styles = {
-    primary:   { background: T.brand.grad,             color: T.brand.on,             border: "none" },
-    success:   { background: T.semantic.success.solid, color: T.semantic.success.on,  border: "none" },
-    danger:    { background: T.semantic.danger.solid,  color: T.semantic.danger.on,   border: "none" },
-    secondary: { background: s.bg2,                    color: s.text,                 border: "1px solid " + s.border },
-    ghost:     { background: "transparent",            color: s.text2,                border: "1px solid " + s.border },
+    primary:   { background: T.brand.grad,             color: T.brand.on,            border: "none" },
+    success:   { background: T.semantic.success.solid, color: T.semantic.success.on, border: "none" },
+    danger:    { background: T.semantic.danger.solid,  color: T.semantic.danger.on,  border: "none" },
+    secondary: { background: s.bg2,                    color: s.text,                border: "1px solid " + s.border },
+    ghost:     { background: "transparent",            color: s.text2,               border: "1px solid " + s.border },
   };
   const SZ = { sm: { p: "6px 12px", h: 32, f: T.typography.size.small }, md: { p: "9px 16px", h: 40, f: T.typography.size.body }, lg: { p: "12px 22px", h: 48, f: T.typography.size.bodyLg } };
   const z = SZ[size || "md"]; const st = styles[v] || styles.primary;
@@ -189,15 +227,12 @@ function Btn({ mode, v, size, children, disabled, icon }) {
   );
 }
 
-/* ===== Segmented tabs ===== */
 function Segmented({ mode, items, value, onChange }) {
   const s = sur(mode);
   return (
     <div style={{ display: "inline-flex", background: s.bg1, border: "1px solid " + s.border, borderRadius: T.radius.pill, padding: 3, gap: 2 }}>
-      {items.map((it) => {
-        const on = it === value;
-        return <button key={it} className="btnx" onClick={() => onChange(it)} style={{ border: "none", cursor: "pointer", borderRadius: T.radius.pill, padding: "6px 14px", fontFamily: "inherit", fontSize: T.typography.size.small, fontWeight: T.typography.weight.bold, background: on ? T.brand.base : "transparent", color: on ? T.brand.on : s.text2 }}>{it}</button>;
-      })}
+      {items.map((it) => { const on = it === value;
+        return <button key={it} className="btnx" onClick={() => onChange(it)} style={{ border: "none", borderRadius: T.radius.pill, padding: "6px 14px", fontFamily: "inherit", fontSize: T.typography.size.small, fontWeight: T.typography.weight.bold, background: on ? T.brand.base : "transparent", color: on ? T.brand.on : s.text2, boxShadow: on ? shadow(mode, 1) : "none" }}>{it}</button>; })}
     </div>
   );
 }
@@ -207,13 +242,12 @@ function StatBlock({ mode, value, label, meaning }) {
   const col = meaning === "growth" ? T.semantic.success.solid : meaning === "decline" ? T.semantic.danger.solid : meaning === "energy" ? T.semantic.info.solid : s.text;
   return (
     <div style={{ textAlign: "center", padding: T.spacing.sm }}>
-      <div className="cpm-num" style={{ fontSize: T.typography.size.h, fontWeight: T.typography.weight.black, color: col, lineHeight: 1 }}>{value}</div>
+      <div className="cpm-num" style={{ fontSize: T.typography.size.h, fontWeight: T.typography.weight.black, color: col, lineHeight: 1, letterSpacing: T.typography.tracking.tight }}>{value}</div>
       <div style={{ fontSize: T.typography.size.caption, color: s.muted, textTransform: "uppercase", letterSpacing: T.typography.tracking.wide, marginTop: T.spacing.xs }}>{label}</div>
     </div>
   );
 }
 
-/* ===== KpiTile con sparkline + delta ===== */
 function KpiTile({ mode, label, value, unit, delta, data, tone }) {
   const s = sur(mode); const col = T.semantic[tone || "info"].solid;
   const up = (delta || 0) >= 0; const dCol = up ? T.semantic.success.solid : T.semantic.danger.solid;
@@ -222,11 +256,11 @@ function KpiTile({ mode, label, value, unit, delta, data, tone }) {
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
         <div>
           <div style={{ fontSize: T.typography.size.caption, color: s.muted, textTransform: "uppercase", letterSpacing: T.typography.tracking.wide }}>{label}</div>
-          <div className="cpm-num" style={{ fontSize: T.typography.size.title, fontWeight: T.typography.weight.black, color: s.text }}>{value}<span style={{ fontSize: T.typography.size.small, color: s.text2, fontWeight: T.typography.weight.semibold }}>{unit ? " " + unit : ""}</span></div>
+          <div className="cpm-num" style={{ fontSize: T.typography.size.title, fontWeight: T.typography.weight.black, color: s.text, letterSpacing: T.typography.tracking.tight }}>{value}<span style={{ fontSize: T.typography.size.small, color: s.text2, fontWeight: T.typography.weight.semibold }}>{unit ? " " + unit : ""}</span></div>
         </div>
         <span className="cpm-num" style={{ fontSize: T.typography.size.caption, fontWeight: T.typography.weight.bold, color: dCol }}>{up ? "▲" : "▼"} {Math.abs(delta)}</span>
       </div>
-      <div style={{ marginTop: T.spacing.sm }}><Sparkline data={data} color={col} w={220} h={34} /></div>
+      <div style={{ marginTop: T.spacing.sm }}><Sparkline data={data} color={col} w={230} h={36} /></div>
     </Card>
   );
 }
@@ -250,28 +284,27 @@ function OutcomePill({ mode, kind }) {
   return <span style={{ display: "inline-block", background: tt.bg, color: tt.fg, border: "1px solid " + tt.bd, borderRadius: T.radius.pill, padding: "3px 12px", fontSize: T.typography.size.caption, fontWeight: T.typography.weight.bold }}>{label}</span>;
 }
 
-function ResultRow({ mode, home, away, hs, as, kind }) {
+function ResultRow({ mode, home, away, hs, as, kind, hAb, aAb, hCol, aCol }) {
   const s = sur(mode); const tt = outTint(mode, kind); const letter = kind === "win" ? "V" : kind === "draw" ? "P" : "S";
   return (
-    <div className="lift" style={{ display: "flex", alignItems: "center", gap: T.spacing.md, padding: T.spacing.sm + "px " + T.spacing.md + "px", background: s.bg2, border: "1px solid " + s.border, borderLeft: "3px solid " + tt.fg, borderRadius: T.radius.sm }}>
-      <span style={{ flex: 1, fontSize: T.typography.size.body, fontWeight: T.typography.weight.semibold, color: s.text, textAlign: "right" }}>{home}</span>
-      <span className="cpm-num" style={{ fontSize: T.typography.size.bodyLg, fontWeight: T.typography.weight.black, color: s.text, minWidth: 44, textAlign: "center" }}>{hs}-{as}</span>
-      <span style={{ flex: 1, fontSize: T.typography.size.body, fontWeight: T.typography.weight.semibold, color: s.text }}>{away}</span>
+    <div className="lift" style={{ display: "flex", alignItems: "center", gap: T.spacing.sm, padding: T.spacing.sm + "px " + T.spacing.md + "px", background: s.bg2, border: "1px solid " + s.border, borderLeft: "3px solid " + tt.fg, borderRadius: T.radius.sm }}>
+      <span style={{ flex: 1, display: "flex", alignItems: "center", gap: T.spacing.sm, justifyContent: "flex-end", fontSize: T.typography.size.body, fontWeight: T.typography.weight.semibold, color: s.text }}>{home}<Shield color={hCol} on={T.brand.on} abbr={hAb} size={22} /></span>
+      <span className="cpm-num" style={{ fontSize: T.typography.size.bodyLg, fontWeight: T.typography.weight.black, color: s.text, minWidth: 46, textAlign: "center", letterSpacing: T.typography.tracking.tight }}>{hs}-{as}</span>
+      <span style={{ flex: 1, display: "flex", alignItems: "center", gap: T.spacing.sm, fontSize: T.typography.size.body, fontWeight: T.typography.weight.semibold, color: s.text }}><Shield color={aCol} on={T.brand.on} abbr={aAb} size={22} />{away}</span>
       <span style={{ width: 22, height: 22, borderRadius: T.radius.sm, background: tt.bg, color: tt.fg, border: "1px solid " + tt.bd, display: "flex", alignItems: "center", justifyContent: "center", fontSize: T.typography.size.caption, fontWeight: T.typography.weight.black }}>{letter}</span>
     </div>
   );
 }
 
 const STANDINGS = [
-  { pos: 1, team: "FC Salernum", pg: 12, dr: "+18", pts: 30, form: ["win","win","draw","win","win"], you: true },
-  { pos: 2, team: "AC Fiorenza", pg: 12, dr: "+11", pts: 26, form: ["win","loss","win","draw","win"], you: false },
-  { pos: 3, team: "Real Castilla", pg: 12, dr: "+9", pts: 24, form: ["draw","win","win","loss","win"], you: false },
-  { pos: 4, team: "Nord United", pg: 12, dr: "+3", pts: 19, form: ["loss","draw","win","loss","draw"], you: false },
+  { pos: 1, team: "FC Salernum", ab: "SAL", pg: 12, dr: "+18", pts: 30, form: ["win","win","draw","win","win"], you: true },
+  { pos: 2, team: "AC Fiorenza", ab: "FIO", pg: 12, dr: "+11", pts: 26, form: ["win","loss","win","draw","win"], you: false },
+  { pos: 3, team: "Real Castilla", ab: "CAS", pg: 12, dr: "+9", pts: 24, form: ["draw","win","win","loss","win"], you: false },
+  { pos: 4, team: "Nord United", ab: "NOR", pg: 12, dr: "+3", pts: 19, form: ["loss","draw","win","loss","draw"], you: false },
 ];
 const MEDAL = { 1: T.medal.gold, 2: T.medal.silver, 3: T.medal.bronze };
 function StandingsTable({ mode }) {
-  const s = sur(mode);
-  const cols = "34px 1fr 74px 34px 46px 40px";
+  const s = sur(mode); const cols = "34px 1fr 74px 34px 46px 40px";
   const cell = { padding: T.spacing.sm + "px " + T.spacing.sm + "px", fontSize: T.typography.size.small };
   return (
     <div style={{ background: s.bg2, border: "1px solid " + s.border, borderRadius: T.radius.md, overflow: "hidden" }}>
@@ -279,9 +312,9 @@ function StandingsTable({ mode }) {
         <div style={cell}>#</div><div style={cell}>Club</div><div style={{ ...cell, textAlign: "center" }}>Forma</div><div style={{ ...cell, textAlign: "center" }}>PG</div><div style={{ ...cell, textAlign: "center" }}>DR</div><div style={{ ...cell, textAlign: "center" }}>Pt</div>
       </div>
       {STANDINGS.map((r, i) => (
-        <div key={r.pos} style={{ display: "grid", gridTemplateColumns: cols, alignItems: "center", background: r.you ? T.brand.tint : (i % 2 ? s.bg1 : s.bg2), borderLeft: r.you ? "3px solid " + T.brand.base : "3px solid transparent", color: r.you ? T.brand.dark : s.text }}>
-          <div style={cell}><span style={{ display: "inline-flex", width: 20, height: 20, borderRadius: T.radius.pill, background: MEDAL[r.pos] || (r.you ? T.brand.base : s.bg1), color: MEDAL[r.pos] ? T.surfaces.dark.bg0 : (r.you ? T.brand.on : s.text2), alignItems: "center", justifyContent: "center", fontSize: T.typography.size.caption, fontWeight: T.typography.weight.black }}>{r.pos}</span></div>
-          <div style={{ ...cell, fontWeight: r.you ? T.typography.weight.bold : T.typography.weight.semibold }}>{r.team}</div>
+        <div key={r.pos} className="rowx" style={{ display: "grid", gridTemplateColumns: cols, alignItems: "center", background: r.you ? T.brand.tint : (i % 2 ? s.bg1 : s.bg2), borderLeft: r.you ? "3px solid " + T.brand.base : "3px solid transparent", color: r.you ? T.brand.dark : s.text }}>
+          <div style={cell}><span className="cpm-num" style={{ display: "inline-flex", width: 20, height: 20, borderRadius: T.radius.pill, background: MEDAL[r.pos] || (r.you ? T.brand.base : s.bg1), color: MEDAL[r.pos] ? T.surfaces.dark.bg0 : (r.you ? T.brand.on : s.text2), alignItems: "center", justifyContent: "center", fontSize: T.typography.size.caption, fontWeight: T.typography.weight.black }}>{r.pos}</span></div>
+          <div style={{ ...cell, display: "flex", alignItems: "center", gap: T.spacing.sm, fontWeight: r.you ? T.typography.weight.bold : T.typography.weight.semibold }}><Shield color={r.you ? T.brand.base : T.semantic.neutral.solid} on={T.brand.on} abbr={r.ab} size={20} />{r.team}</div>
           <div style={{ ...cell, display: "flex", gap: 3, justifyContent: "center" }}>{r.form.map((f, k) => <span key={k} style={{ width: 8, height: 8, borderRadius: T.radius.pill, background: T.outcome[f][isDark(mode) ? "dark" : "light"].fg }} />)}</div>
           <div className="cpm-num" style={{ ...cell, textAlign: "center" }}>{r.pg}</div>
           <div className="cpm-num" style={{ ...cell, textAlign: "center" }}>{r.dr}</div>
@@ -295,14 +328,14 @@ function StandingsTable({ mode }) {
 function ModalDemo({ mode }) {
   const s = sur(mode); const win = outTint(mode, "win");
   return (
-    <div style={{ position: "relative", background: s.scrim, borderRadius: T.radius.md, padding: T.spacing.xl, minHeight: 250, display: "flex", alignItems: "center", justifyContent: "center" }}>
-      <div className="rise" style={{ width: "100%", maxWidth: 320, background: s.bg2, border: "1px solid " + s.border, borderRadius: T.radius.lg, boxShadow: shadow(mode, 3), padding: T.spacing.xl, color: s.text }}>
+    <div style={{ position: "relative", background: s.scrim, borderRadius: T.radius.md, padding: T.spacing.xl, minHeight: 256, display: "flex", alignItems: "center", justifyContent: "center" }}>
+      <div style={{ width: "100%", maxWidth: 320, background: s.bg2, border: "1px solid " + s.border, borderRadius: T.radius.lg, boxShadow: shadow(mode, 3), padding: T.spacing.xl, color: s.text }}>
         <div style={{ textAlign: "center", fontSize: T.typography.size.h }}>{"\u{1F30D}"}</div>
-        <div style={{ textAlign: "center", fontSize: T.typography.size.subhead, fontWeight: T.typography.weight.black, marginTop: T.spacing.xs }}>Coppa delle Nazioni</div>
+        <div style={{ textAlign: "center", fontSize: T.typography.size.subhead, fontWeight: T.typography.weight.black, marginTop: T.spacing.xs, letterSpacing: T.typography.tracking.tight }}>Coppa delle Nazioni</div>
         <div style={{ textAlign: "center", fontSize: T.typography.size.caption, color: s.text2, marginBottom: T.spacing.md, letterSpacing: T.typography.tracking.wide }}>S.10 · FINALE · Italia</div>
         <div style={{ display: "flex", flexDirection: "column", gap: T.spacing.xs, marginBottom: T.spacing.md }}>
-          <ResultRow mode={mode} home="Italia" away="Germania" hs={2} as={1} kind="win" />
-          <ResultRow mode={mode} home="Italia" away="Spagna" hs={3} as={3} kind="draw" />
+          <ResultRow mode={mode} home="Italia" away="Germania" hs={2} as={1} kind="win" hAb="ITA" aAb="GER" hCol={T.brand.base} aCol={T.semantic.neutral.solid} />
+          <ResultRow mode={mode} home="Italia" away="Spagna" hs={3} as={3} kind="draw" hAb="ITA" aAb="SPA" hCol={T.brand.base} aCol={T.semantic.info.solid} />
         </div>
         <div style={{ textAlign: "center", background: win.bg, color: win.fg, border: "1px solid " + win.bd, borderRadius: T.radius.md, padding: T.spacing.md, fontWeight: T.typography.weight.black, fontSize: T.typography.size.body }}>{"\u{1F3C6}"} CAMPIONI! Finale vinta ai rigori</div>
         <div style={{ marginTop: T.spacing.md }}><Btn mode={mode} v="primary" size="lg">Continua</Btn></div>
@@ -316,43 +349,39 @@ function Toast({ mode, tone, children }) {
   return <div style={{ display: "inline-flex", alignItems: "center", gap: T.spacing.sm, background: s.bg2, border: "1px solid " + col, borderLeft: "4px solid " + col, borderRadius: T.radius.pill, padding: "9px 16px", boxShadow: shadow(mode, 2), color: s.text, fontSize: T.typography.size.body, fontWeight: T.typography.weight.semibold }}><span style={{ width: 8, height: 8, borderRadius: T.radius.pill, background: col }} />{children}</div>;
 }
 
-/* ===== Match HUD (broadcast, superficie cinematica) ===== */
+/* ===== Match HUD (broadcast, superficie cinematica): scudetti, LIVE, floodlight ===== */
 function MatchHUD() {
   const m = "cinematic"; const s = sur(m);
-  const bar = (aPct, aCol, bCol) => <div style={{ height: 6, borderRadius: T.radius.pill, overflow: "hidden", display: "flex", background: s.border }}><div style={{ width: aPct + "%", background: aCol }} /><div style={{ flex: 1, background: bCol }} /></div>;
   return (
-    <div style={{ background: "radial-gradient(120% 80% at 50% 0%, " + sur("cinematic").bg2 + " 0%, " + sur("cinematic").bg0 + " 70%)", borderRadius: T.radius.lg, padding: T.spacing.lg, color: s.text, border: "1px solid " + s.border, boxShadow: T.shadow.dark.s3 }}>
-      <div style={{ textAlign: "center", fontSize: 9, letterSpacing: T.typography.tracking.wider, color: s.muted, textTransform: "uppercase", marginBottom: T.spacing.sm }}>Coppa delle Nazioni · Finale</div>
-      <div style={{ display: "grid", gridTemplateColumns: "1fr auto 1fr", alignItems: "center", gap: T.spacing.md }}>
-        <div style={{ textAlign: "right" }}>
-          <div style={{ fontSize: T.typography.size.small, color: s.text2, letterSpacing: T.typography.tracking.wide, fontWeight: T.typography.weight.bold }}>ITALIA</div>
-          <div className="cpm-num" style={{ fontSize: T.typography.size.hero, fontWeight: T.typography.weight.black, color: T.semantic.success.solid, lineHeight: 1 }}>1</div>
+    <div style={{ background: "radial-gradient(120% 90% at 50% -10%, " + s.bg2 + " 0%, " + s.bg0 + " 68%)", borderRadius: T.radius.lg, padding: T.spacing.lg, color: s.text, border: "1px solid " + s.border, boxShadow: T.shadow.dark.s3, position: "relative", overflow: "hidden" }}>
+      <div style={{ position: "absolute", left: 0, right: 0, top: 0, height: 2, background: T.brand.grad }} />
+      <div style={{ textAlign: "center", fontSize: 9, letterSpacing: T.typography.tracking.wider, color: s.muted, textTransform: "uppercase", marginBottom: T.spacing.md, display: "flex", alignItems: "center", justifyContent: "center", gap: 8 }}><LiveDot color={T.semantic.danger.solid} />Coppa delle Nazioni · Finale</div>
+      <div style={{ display: "grid", gridTemplateColumns: "1fr auto 1fr", alignItems: "center", gap: T.spacing.sm }}>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-end", gap: T.spacing.sm }}>
+          <div style={{ textAlign: "right" }}><div style={{ fontSize: T.typography.size.small, color: s.text2, letterSpacing: T.typography.tracking.wide, fontWeight: T.typography.weight.bold }}>ITALIA</div></div>
+          <Shield color={T.brand.base} on={T.brand.on} abbr="ITA" size={30} />
         </div>
-        <div style={{ textAlign: "center" }}>
-          <div style={{ display: "inline-flex", alignItems: "center", gap: 5, background: T.semantic.danger.solid, color: T.semantic.danger.on, borderRadius: T.radius.pill, padding: "2px 10px", fontSize: T.typography.size.caption, fontWeight: T.typography.weight.black }}><span style={{ width: 6, height: 6, borderRadius: T.radius.pill, background: T.brand.on }} />78'</div>
+        <div className="cpm-num" style={{ fontSize: T.typography.size.hero, fontWeight: T.typography.weight.black, letterSpacing: T.typography.tracking.tight, display: "flex", alignItems: "center", gap: 8 }}>
+          <span style={{ color: T.semantic.success.solid }}>1</span><span style={{ color: s.muted, fontSize: T.typography.size.title }}>–</span><span style={{ color: s.text }}>1</span>
         </div>
-        <div style={{ textAlign: "left" }}>
-          <div style={{ fontSize: T.typography.size.small, color: s.text2, letterSpacing: T.typography.tracking.wide, fontWeight: T.typography.weight.bold }}>SPAGNA</div>
-          <div className="cpm-num" style={{ fontSize: T.typography.size.hero, fontWeight: T.typography.weight.black, color: s.text, lineHeight: 1 }}>1</div>
+        <div style={{ display: "flex", alignItems: "center", gap: T.spacing.sm }}>
+          <Shield color={T.semantic.info.solid} on={T.brand.on} abbr="SPA" size={30} />
+          <div><div style={{ fontSize: T.typography.size.small, color: s.text2, letterSpacing: T.typography.tracking.wide, fontWeight: T.typography.weight.bold }}>SPAGNA</div></div>
         </div>
       </div>
+      <div style={{ textAlign: "center", marginTop: T.spacing.xs }}><span className="cpm-num" style={{ display: "inline-block", background: T.semantic.danger.solid, color: T.semantic.danger.on, borderRadius: T.radius.pill, padding: "2px 12px", fontSize: T.typography.size.caption, fontWeight: T.typography.weight.black }}>78'</span></div>
       <div style={{ marginTop: T.spacing.md }}>
-        <div style={{ display: "flex", justifyContent: "space-between", fontSize: T.typography.size.caption, color: s.text2, marginBottom: 3 }}><span className="cpm-num">54%</span><span style={{ letterSpacing: T.typography.tracking.wide }}>POSSESSO</span><span className="cpm-num">46%</span></div>
-        {bar(54, T.brand.base, T.semantic.info.solid)}
-      </div>
-      <div style={{ marginTop: T.spacing.sm }}>
-        <div style={{ display: "flex", justifyContent: "space-between", fontSize: T.typography.size.caption, color: s.text2, marginBottom: 3 }}><span>{"⚡"}</span><span style={{ letterSpacing: T.typography.tracking.wide }}>MOMENTUM</span><span>{"⚡"}</span></div>
-        {bar(64, T.semantic.highlight.solid, s.bg1)}
+        <div style={{ display: "flex", justifyContent: "space-between", fontSize: T.typography.size.caption, color: s.text2, marginBottom: 4 }}><span className="cpm-num">54%</span><span style={{ letterSpacing: T.typography.tracking.wide }}>POSSESSO</span><span className="cpm-num">46%</span></div>
+        <div style={{ height: 6, borderRadius: T.radius.pill, overflow: "hidden", display: "flex", background: s.border }}><div style={{ width: "54%", background: T.brand.base }} /><div style={{ flex: 1, background: T.semantic.info.solid }} /></div>
       </div>
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: T.spacing.sm, marginTop: T.spacing.lg }}>
-        <button className="btnx" style={{ background: T.brand.grad, color: T.brand.on, border: "none", borderRadius: T.radius.sm, padding: T.spacing.md, fontFamily: "inherit", fontSize: T.typography.size.body, fontWeight: T.typography.weight.bold, cursor: "pointer" }}>{"\u{1F3AF}"} Conclusione</button>
-        <button className="btnx" style={{ background: "transparent", color: s.text, border: "1px solid " + s.border, borderRadius: T.radius.sm, padding: T.spacing.md, fontFamily: "inherit", fontSize: T.typography.size.body, fontWeight: T.typography.weight.bold, cursor: "pointer" }}>Scavetto</button>
+        <button className="btnx" style={{ background: T.brand.grad, color: T.brand.on, border: "none", borderRadius: T.radius.sm, padding: T.spacing.md, fontFamily: "inherit", fontSize: T.typography.size.body, fontWeight: T.typography.weight.bold }}>{"\u{1F3AF}"} Conclusione</button>
+        <button className="btnx" style={{ background: "transparent", color: s.text, border: "1px solid " + s.border, borderRadius: T.radius.sm, padding: T.spacing.md, fontFamily: "inherit", fontSize: T.typography.size.body, fontWeight: T.typography.weight.bold }}>Scavetto</button>
       </div>
     </div>
   );
 }
 
-/* ===== impaginazione ===== */
 function Panel({ mode, children }) {
   const s = sur(mode);
   return (
@@ -362,15 +391,12 @@ function Panel({ mode, children }) {
     </div>
   );
 }
-function Section({ page, title, render }) {
-  const s = sur(page);
+function Section({ title, idx, render }) {
+  const s = sur("light");
   return (
-    <div className="rise" style={{ marginBottom: T.spacing.xxl }}>
-      <div style={{ fontSize: T.typography.size.subhead, fontWeight: T.typography.weight.black, color: s.text, marginBottom: T.spacing.md }}>{title}</div>
-      <div className="duo">
-        <Panel mode="light">{render("light")}</Panel>
-        <Panel mode="dark">{render("dark")}</Panel>
-      </div>
+    <div className="rise" style={{ marginBottom: T.spacing.xxl, animationDelay: (0.04 * idx) + "s" }}>
+      <div style={{ fontSize: T.typography.size.subhead, fontWeight: T.typography.weight.black, color: s.text, marginBottom: T.spacing.md, letterSpacing: T.typography.tracking.tight }}>{title}</div>
+      <div className="duo"><Panel mode="light">{render("light")}</Panel><Panel mode="dark">{render("dark")}</Panel></div>
     </div>
   );
 }
@@ -383,37 +409,40 @@ function App() {
   const stack = { display: "flex", flexDirection: "column", gap: T.spacing.md };
   const rowWrap = { display: "flex", flexWrap: "wrap", gap: T.spacing.sm, alignItems: "center" };
   return (
-    <div style={{ background: s.bg0, minHeight: "100vh", padding: T.spacing.xl, color: s.text, transition: "background .2s" }}>
+    <div style={{ background: s.bg0, minHeight: "100vh", padding: T.spacing.xl, color: s.text, transition: "background .25s ease" }}>
       <div style={{ maxWidth: 1180, margin: "0 auto" }}>
 
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: T.spacing.md, flexWrap: "wrap", marginBottom: T.spacing.lg }}>
-          <div style={{ borderLeft: "4px solid " + T.brand.base, paddingLeft: T.spacing.md }}>
-            <div style={{ fontSize: T.typography.size.h, fontWeight: T.typography.weight.black, color: T.brand.base, letterSpacing: -0.3 }}>CPM · UI Kit</div>
-            <div style={{ fontSize: T.typography.size.small, color: s.text2 }}>Sistema visivo unico · brand bordeaux {T.brand.base} · tutto dai TOKENS</div>
+        <div className="rise" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: T.spacing.md, flexWrap: "wrap", marginBottom: T.spacing.lg }}>
+          <div style={{ display: "flex", alignItems: "center", gap: T.spacing.md }}>
+            <LogoMark size={38} />
+            <div>
+              <div style={{ fontSize: T.typography.size.h, fontWeight: T.typography.weight.black, color: T.brand.base, letterSpacing: T.typography.tracking.tight }}>CPM · UI Kit</div>
+              <div style={{ fontSize: T.typography.size.small, color: s.text2 }}>Un solo sistema visivo · brand bordeaux {T.brand.base} · tutto dai TOKENS</div>
+            </div>
           </div>
-          <button className="btnx" onClick={() => setDark(!dark)} style={{ background: s.bg2, color: s.text, border: "1px solid " + s.border, borderRadius: T.radius.pill, padding: "8px 16px", fontFamily: "inherit", fontSize: T.typography.size.small, fontWeight: T.typography.weight.bold, cursor: "pointer" }}>{dark ? "☀ Sfondo chiaro" : "☾ Sfondo scuro"}</button>
+          <button className="btnx" onClick={() => setDark(!dark)} style={{ background: s.bg2, color: s.text, border: "1px solid " + s.border, borderRadius: T.radius.pill, padding: "8px 16px", fontFamily: "inherit", fontSize: T.typography.size.small, fontWeight: T.typography.weight.bold, boxShadow: shadow(page, 1) }}>{dark ? "☀ Sfondo chiaro" : "☾ Sfondo scuro"}</button>
         </div>
 
-        <div style={{ marginBottom: T.spacing.xxl }}><PlayerHeader /></div>
+        <div className="rise" style={{ marginBottom: T.spacing.xxl, animationDelay: ".04s" }}><PlayerHeader /></div>
 
-        <div style={{ marginBottom: T.spacing.xxl }} className="rise">
-          <div style={{ fontSize: T.typography.size.subhead, fontWeight: T.typography.weight.black, color: s.text, marginBottom: T.spacing.md }}>KPI · stagione</div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(220px,1fr))", gap: T.spacing.md }}>
+        <div className="rise" style={{ marginBottom: T.spacing.xxl, animationDelay: ".08s" }}>
+          <div style={{ fontSize: T.typography.size.subhead, fontWeight: T.typography.weight.black, color: s.text, marginBottom: T.spacing.md, letterSpacing: T.typography.tracking.tight }}>KPI · stagione</div>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(230px,1fr))", gap: T.spacing.md }}>
             <KpiTile mode={page} label="Gol" value="24" delta={3} data={SPARK} tone="success" />
             <KpiTile mode={page} label="Media voto" value="7.4" delta={2} data={[6.8,7,6.9,7.2,7.1,7.3,7.2,7.4,7.5,7.4]} tone="info" />
             <KpiTile mode={page} label="Valore" value="52" unit="M€" delta={-1} data={[40,42,45,44,48,50,49,51,53,52]} tone="warning" />
           </div>
         </div>
 
-        <Section page={page} title="Card / Panel" render={(m) => (
+        <Section idx={3} title="Card / Panel" render={(m) => (
           <div style={stack}>
-            <Card mode={m} interactive><div style={{ fontWeight: T.typography.weight.bold }}>Card standard</div><div style={{ fontSize: T.typography.size.small, color: sur(m).text2 }}>Un solo trattamento per superficie. Hover = leggera elevazione.</div></Card>
+            <Card mode={m} interactive><div style={{ fontWeight: T.typography.weight.bold }}>Card standard</div><div style={{ fontSize: T.typography.size.small, color: sur(m).text2 }}>Un trattamento per superficie · hairline + hover-lift.</div></Card>
             <Card mode={m} tone="info"><div style={{ fontWeight: T.typography.weight.bold }}>Card tono info</div><div style={{ fontSize: T.typography.size.small }}>Colore semantico, mai decorativo.</div></Card>
             <Card mode={m} tone="warning"><div style={{ fontWeight: T.typography.weight.bold }}>Card tono warning</div></Card>
           </div>
         )} />
 
-        <Section page={page} title="Header · Tabs · Meter" render={(m) => (
+        <Section idx={4} title="Header · Tabs · Meter" render={(m) => (
           <div style={stack}>
             <SectionHeader mode={m} right="12 giocate">Rendimento</SectionHeader>
             <Segmented mode={m} items={["Panoramica", "Storico", "Note"]} value={tab} onChange={setTab} />
@@ -422,7 +451,7 @@ function App() {
           </div>
         )} />
 
-        <Section page={page} title="Button — una sola primaria (brand)" render={(m) => (
+        <Section idx={5} title="Button — una sola primaria (brand)" render={(m) => (
           <div style={stack}>
             <div style={rowWrap}>
               <Btn mode={m} v="primary" icon={"\u{1F3AF}"}>Primaria</Btn>
@@ -432,43 +461,33 @@ function App() {
               <Btn mode={m} v="ghost">Ghost</Btn>
               <Btn mode={m} v="primary" disabled={true}>Disabled</Btn>
             </div>
-            <div style={rowWrap}>
-              <Btn mode={m} v="primary" size="sm">Small</Btn>
-              <Btn mode={m} v="primary" size="md">Medium</Btn>
-              <Btn mode={m} v="primary" size="lg">Large</Btn>
-            </div>
+            <div style={rowWrap}><Btn mode={m} v="primary" size="sm">Small</Btn><Btn mode={m} v="primary" size="md">Medium</Btn><Btn mode={m} v="primary" size="lg">Large</Btn></div>
           </div>
         )} />
 
-        <Section page={page} title="StatBlock + Badge / Pill" render={(m) => (
+        <Section idx={6} title="StatBlock + Badge / Pill" render={(m) => (
           <div style={stack}>
             <div style={rowWrap}>
-              <StatBlock mode={m} value="85" label="OVR" />
-              <StatBlock mode={m} value="+4" label="Crescita" meaning="growth" />
-              <StatBlock mode={m} value="-2" label="Forma" meaning="decline" />
-              <StatBlock mode={m} value="72" label="Energia" meaning="energy" />
+              <StatBlock mode={m} value="85" label="OVR" /><StatBlock mode={m} value="+4" label="Crescita" meaning="growth" /><StatBlock mode={m} value="-2" label="Forma" meaning="decline" /><StatBlock mode={m} value="72" label="Energia" meaning="energy" />
             </div>
             <div style={rowWrap}>
-              <Badge mode={m} tone="success" dot>FORMA 95</Badge>
-              <Badge mode={m} tone="info">MORALE 100</Badge>
-              <Badge mode={m} tone="danger" dot>LIVE</Badge>
-              <Badge mode={m} tone="warning">DERBY</Badge>
+              <Badge mode={m} tone="success" dot>FORMA 95</Badge><Badge mode={m} tone="info">MORALE 100</Badge><Badge mode={m} tone="danger" dot>LIVE</Badge><Badge mode={m} tone="warning">DERBY</Badge>
               <OutcomePill mode={m} kind="win" /><OutcomePill mode={m} kind="draw" /><OutcomePill mode={m} kind="loss" />
             </div>
           </div>
         )} />
 
-        <Section page={page} title="ResultRow — win / draw / loss" render={(m) => (
+        <Section idx={7} title="ResultRow — scudetti + esito" render={(m) => (
           <div style={stack}>
-            <ResultRow mode={m} home="Italia" away="Germania" hs={2} as={1} kind="win" />
-            <ResultRow mode={m} home="Italia" away="Spagna" hs={3} as={3} kind="draw" />
-            <ResultRow mode={m} home="Italia" away="Inghilterra" hs={2} as={4} kind="loss" />
+            <ResultRow mode={m} home="Italia" away="Germania" hs={2} as={1} kind="win" hAb="ITA" aAb="GER" hCol={T.brand.base} aCol={T.semantic.neutral.solid} />
+            <ResultRow mode={m} home="Italia" away="Spagna" hs={3} as={3} kind="draw" hAb="ITA" aAb="SPA" hCol={T.brand.base} aCol={T.semantic.info.solid} />
+            <ResultRow mode={m} home="Italia" away="Inghilterra" hs={2} as={4} kind="loss" hAb="ITA" aAb="ENG" hCol={T.brand.base} aCol={T.semantic.danger.solid} />
           </div>
         )} />
 
-        <Section page={page} title="StandingsTable — medaglie · forma · riga 'sei tu'" render={(m) => (<StandingsTable mode={m} />)} />
+        <Section idx={8} title="StandingsTable — scudetti · medaglie · forma" render={(m) => (<StandingsTable mode={m} />)} />
 
-        <Section page={page} title="Modal (Coppa delle Nazioni) + Toast" render={(m) => (
+        <Section idx={9} title="Modal (Coppa delle Nazioni) + Toast" render={(m) => (
           <div style={stack}>
             <ModalDemo mode={m} />
             <div style={rowWrap}><Toast mode={m} tone="success">Contratto rinnovato</Toast></div>
@@ -476,8 +495,8 @@ function App() {
           </div>
         )} />
 
-        <div className="rise" style={{ marginBottom: T.spacing.xxl }}>
-          <div style={{ fontSize: T.typography.size.subhead, fontWeight: T.typography.weight.black, color: s.text, marginBottom: T.spacing.md }}>HUD Match — superficie cinematica</div>
+        <div className="rise" style={{ marginBottom: T.spacing.xxl, animationDelay: ".4s" }}>
+          <div style={{ fontSize: T.typography.size.subhead, fontWeight: T.typography.weight.black, color: s.text, marginBottom: T.spacing.md, letterSpacing: T.typography.tracking.tight }}>HUD Match — superficie cinematica</div>
           <div style={{ maxWidth: 480 }}><MatchHUD /></div>
         </div>
 
