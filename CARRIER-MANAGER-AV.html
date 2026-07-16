@@ -3481,7 +3481,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="7.98.0"; // [7.98.0 collaudo PO «diceva sempre gol ospiti con coriandoli ad ogni gol della squadra di casa»] in TRASFERTA il gol della squadra di CASA (avversario) mostrava chant «Goool ospiti» + esplosione coriandoli 3D → sembrava festeggiare un gol SUBITO. FIX: (1) coriandoli 3D solo sul gol dell'EROE (goalBurstHome, player-centric — il tint dei settori resta venue-aware); (2) pool away_goal neutralizzato in 8 lingue (via «ospiti»/«away end erupts» → «Gol subito»/«L'avversario esulta»): il chant è dal POV dell'eroe (avversario segna) e non assume mai che l'avversario sia la squadra ospite.
+const GAME_VERSION="7.99.0"; // [7.99.0 collaudo PO «il giornale post-partita deve sembrare un vero giornale, più ricco»] riepilogo ended arricchito a RASSEGNA STAMPA: analisi del giornalista (occhiello per importanza/prestigio + nota tattica), «Dalle altre testate» (headline multi-giornale), «Le parole del protagonista» (commento eroe), MIGLIORE IN CAMPO + LA CURVA (tifosi), memoriaTag+trending — tutto DERIVATO da generateLocalPressAnalysis. Bottone footer GRANATA di brand «Torna alla dashboard».
 // [6.18.0-note] // [6.18.0] AVATAR = libreria DiceBear (direttiva PO): CH38 3D via dai menu (resta solo nel live match). EROE/giocatori = stile AVATAAARS con FEDELTA al modello CH38 (forza carnagione+capelli+calvizie dalla stessa fonte AVATARS[avatarId] usata dal CH38 a r.7127 -> avatar dei menu ≈ giocatore in campo). NPC/staff (agente, mister via NpcFaceCoach) = stile MICAH seedato dal nome. Bundle locale offline assets/dicebear-avatars.min.js (esbuild IIFE avataaars+micah, ~163KB) caricato da script locale -> no CDN, funziona in gate/offline/produzione. AvatarSVG DiceBear-backed (API invariata, cache seed). Sorgente rigenerabile in tools/avatar-build/. Gate-cieco su CareerApp ma DiceBear carica anche in gate.
 const SAVE_VERSION=9;// v9 [7.6.0 FASE 2]: clubEvo (evoluzione pluriennale del club: fanbase/stadiumTier/budget/seasonsTop-Low) — migration retro-compatibile. v8 [5.81.0 BIL-3b]: bankBalance (stipendio accumulato, €) + perkTrainer/perkNutrition (staff personale) — migration retro-compatibile. v7: player.foot
 // 5.67.0 — TABELLONE realistico del torneo per NAZIONALI (Europeo/Mondiale): dopo il girone la fase a
@@ -14703,12 +14703,62 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
               </div>
             </div>}
           </div>);})()}
+          {/* [7.99.0 collaudo PO «il giornale post-partita deve sembrare un vero giornale, più ricco: considerazioni reali del giornalista/mister/tifosi, eventi per importanza/prestigio, pagelle, commenti dell'eroe»] RASSEGNA STAMPA integrata nel riepilogo ended — tutto DERIVATO da generateLocalPressAnalysis (headline multi-testata, analisi tattica, MVP/flop, voci mister+eroe, curva) + occhiello per importanza/prestigio della gara. Solo carriera (i provini restano sobri). */}
+          {context!=="trial"&&(()=>{
+            const _rbP=Math.min(mStats.rb,30),_ratP=Math.round(clamp(5.8+_rbP*0.13+(winning?0.35:losing?-0.30:0),4.0,10.0)*10)/10;
+            const _oppN=(opponent&&(opponent.n||opponent.name))||"l'avversario";
+            const _press=generateLocalPressAnalysis(
+              {won:winning,drew:!winning&&!losing,opponent:_oppN,homeScore:score.home,awayScore:score.away,isDerby:!!drby},
+              {goals:mStats.goals,assists:mStats.assists,rating:_ratP,name:player.name,club:(player.club?.n||player.club?.name||"la squadra"),homeRoster:(isMatchHome?homeRoster:awayRoster)||[]},
+              {season:player.season,age:player.age,matchHistory:player.matchHistory,isDerby:!!drby,archetype:player.archetype,records:{topSeasonGoals:0,topSeasonAssists:0,topOvr:player.ovr||60}}
+            );
+            const _serif="Georgia,'Times New Roman',serif";
+            const _clubP=player.club?.p||player.club?.prestige||60,_oppP=opponent?.p||opponent?.prestige||65;
+            const _kick=drby?"Un derby sentitissimo: in palio molto più di tre punti.":(mw>=8||_isFinalKO)?"Una sfida da dentro-o-fuori, di quelle che segnano una stagione.":(winning&&_oppP-_clubP>=12)?"Impresa di prestigio: piegata una squadra di categoria superiore.":((!winning)&&_clubP-_oppP>=12)?"Passo falso contro un avversario alla portata.":(mw>=6)?"Big match dal peso specifico enorme in classifica.":"";
+            const _sub=(_press.headlines||[]).slice(1,4);
+            const _hero=(_press.quotes||[]).find(q=>!/—\s*Mister\s*$/.test(q));
+            const _hd={fontSize:9.5,color:TH.muted,fontWeight:800,letterSpacing:1.5,marginBottom:6,textTransform:"uppercase",fontFamily:_serif};
+            return(<div style={{marginTop:14,borderTop:`3px double ${TH.text}`,paddingTop:12,textAlign:"left"}}>
+              {/* Il pezzo del giornalista: occhiello (importanza/prestigio) + analisi tattica */}
+              <div style={_hd}>L'analisi</div>
+              {_kick&&<div style={{fontFamily:_serif,fontSize:12.5,fontWeight:700,fontStyle:"italic",color:TH.text,marginBottom:5,lineHeight:1.4}}>{_kick}</div>}
+              <div style={{fontFamily:_serif,fontSize:12.5,color:TH.text,lineHeight:1.55}}>{_press.tacticalNote}</div>
+              {/* Dalle altre testate — headline multi-giornale = colpo d'occhio da vero quotidiano */}
+              {_sub.length>0&&<div style={{marginTop:14}}>
+                <div style={_hd}>Dalle altre testate</div>
+                {_sub.map((h,i)=>(<div key={i} style={{display:"flex",gap:9,padding:"7px 0",borderTop:i>0?`1px solid ${TH.divider}`:"none"}}>
+                  <span style={{width:8,height:8,borderRadius:"50%",background:(_press.paperColors||[])[i+1]||TH.primary,flexShrink:0,marginTop:5}}/>
+                  <div style={{minWidth:0}}><div style={{fontSize:8.5,letterSpacing:1,color:(_press.paperColors||[])[i+1]||TH.faint,fontWeight:800,textTransform:"uppercase"}}>{(_press.papers||[])[i+1]||"Cronaca"}</div><div style={{fontFamily:_serif,fontSize:13,color:TH.text,lineHeight:1.32,fontWeight:700}}>{h}</div></div>
+                </div>))}
+              </div>}
+              {/* Le parole del protagonista (commento dell'eroe) */}
+              {_hero&&<div style={{marginTop:14,borderLeft:`3px solid ${TH.primary}`,paddingLeft:11}}>
+                <div style={{fontSize:8.5,letterSpacing:1,color:TH.primary,fontWeight:800,marginBottom:3,textTransform:"uppercase"}}>Le parole del protagonista</div>
+                <div style={{fontFamily:_serif,fontSize:13,fontStyle:"italic",color:TH.text,lineHeight:1.5}}>{_hero.replace(/\s*—\s*[^—]+$/,"")}</div>
+              </div>}
+              {/* MIGLIORE IN CAMPO + LA CURVA (tifosi) */}
+              <div style={{marginTop:14,display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}>
+                <div style={{background:TH.surface2,border:`1px solid ${TH.divider}`,borderRadius:RAD.sm,padding:"9px 11px"}}>
+                  <div style={{fontSize:8.5,letterSpacing:1,color:TH.success,fontWeight:800,marginBottom:3}}>⭐ MIGLIORE IN CAMPO</div>
+                  <div style={{fontSize:12,fontWeight:800,color:TH.text}}>{_press.motm}</div>
+                </div>
+                <div style={{background:TH.surface2,border:`1px solid ${TH.divider}`,borderRadius:RAD.sm,padding:"9px 11px"}}>
+                  <div style={{fontSize:8.5,letterSpacing:1,color:TH.warning,fontWeight:800,marginBottom:3}}>📣 LA CURVA</div>
+                  <div style={{fontSize:11,color:TH.muted,fontStyle:"italic",lineHeight:1.35}}>«{(_press.fanReactions||[])[0]||""}»</div>
+                </div>
+              </div>
+              {(_press.memoriaTag||_press.trending)&&<div style={{marginTop:12,display:"flex",gap:8,flexWrap:"wrap",alignItems:"center"}}>
+                {_press.memoriaTag&&<span style={{fontSize:10,color:TH.accent,fontWeight:700}}>{_press.memoriaTag}</span>}
+                {_press.trending&&<span style={{fontSize:10,fontWeight:800,color:TH.primary,background:TH.primary+"18",padding:"3px 10px",borderRadius:20}}>#{String(_press.trending).replace(/^#/,"")}</span>}
+              </div>}
+            </div>);
+          })()}
         </Card>
         </div>
-        {/* footer PINNATO — sempre visibile: SALVA il risultato e torna alla Home */}
+        {/* footer PINNATO — sempre visibile: SALVA il risultato e torna alla dashboard (bottone GRANATA di brand) */}
         <div style={{flexShrink:0,padding:isNarrow?"10px 12px":"12px 0 4px",background:TH.bg,borderTop:isNarrow?`1px solid ${TH.border}`:"none",boxShadow:isNarrow?"0 -4px 16px rgba(0,0,0,0.07)":"none"}}>
-          <Btn onClick={handleEnd} v={context==="trial"?"primary":"green"} fw style={{padding:"14px",fontSize:15}}>
-            {context==="trial"?"📋 Risultati provino":"🏟️ Salva e torna alla Home"} {!isNarrow&&<span className="kbd" style={{opacity:0.7,fontSize:11}}>Enter</span>}
+          <Btn onClick={handleEnd} v="primary" fw style={{padding:"14px",fontSize:15,background:`linear-gradient(135deg,${TH.primary},${TH.primaryDk})`,color:"#fff"}}>
+            {context==="trial"?"📋 Risultati provino":"🏟️ Torna alla dashboard"} {!isNarrow&&<span className="kbd" style={{opacity:0.7,fontSize:11}}>Enter</span>}
           </Btn>
         </div>
         </div>
