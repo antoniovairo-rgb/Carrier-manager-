@@ -3527,7 +3527,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="7.103.0"; // [7.103.0 collaudo PO «standardizza all-ui kit la schermata dell-agente, un po- fuori standard»] Tab Agente allineato al kit: tutti gli hex light hardcoded (verdi/rossi/ambra/blu/viola delle card Finestra di Mercato, Richiedi Cessione, Stato Prestito, banner) mappati ai token semantici theme-aware (bgGreen/bdGreen/txGreen, bgRed/bdRed, bgAmber, bgBlue, bgPurple) -> ora corretto anche in dark mode; CTA cerca-offerta e Richiedi Cessione ora sono Btn del kit (green/danger); chip preferenza destinazione in brand granata; variant Btn success/danger resi theme-aware.
+const GAME_VERSION="7.104.0"; // [7.104.0 collaudo PO x3] (1) home/provini: tolto il toggle muto, messo il tasto Impostazioni (apre SettingsScreen, che contiene anche il muto); (2) modale «Hai una partita!» reso kit: pulsanti a gerarchia pulita (green lg / secondary / ghost) + badge/banner con token semantici theme-aware; (3) schermata GIORNALE (ended): il tocco non riavvia piu il letto-folla (flag _matchHushed su unlock/hushMatch) -> davvero muta dopo il fischio finale.
 // [6.18.0-note] // [6.18.0] AVATAR = libreria DiceBear (direttiva PO): CH38 3D via dai menu (resta solo nel live match). EROE/giocatori = stile AVATAAARS con FEDELTA al modello CH38 (forza carnagione+capelli+calvizie dalla stessa fonte AVATARS[avatarId] usata dal CH38 a r.7127 -> avatar dei menu ≈ giocatore in campo). NPC/staff (agente, mister via NpcFaceCoach) = stile MICAH seedato dal nome. Bundle locale offline assets/dicebear-avatars.min.js (esbuild IIFE avataaars+micah, ~163KB) caricato da script locale -> no CDN, funziona in gate/offline/produzione. AvatarSVG DiceBear-backed (API invariata, cache seed). Sorgente rigenerabile in tools/avatar-build/. Gate-cieco su CareerApp ma DiceBear carica anche in gate.
 const SAVE_VERSION=9;// v9 [7.6.0 FASE 2]: clubEvo (evoluzione pluriennale del club: fanbase/stadiumTier/budget/seasonsTop-Low) — migration retro-compatibile. v8 [5.81.0 BIL-3b]: bankBalance (stipendio accumulato, €) + perkTrainer/perkNutrition (staff personale) — migration retro-compatibile. v7: player.foot
 // 5.67.0 — TABELLONE realistico del torneo per NAZIONALI (Europeo/Mondiale): dopo il girone la fase a
@@ -5345,7 +5345,7 @@ const AudioMgr=(function(){
   }
 
   // ---- FOLLA (letto continuo + reazioni) --------------------------------
-  let bed=null;
+  let bed=null,_matchHushed=false;/* [7.104.0] a partita finita (schermata GIORNALE) il letto-folla resta SPENTO anche se l'utente tocca lo schermo (unlock non lo riavvia) */
   const _bedGain=t=>1.6+t*2.4;// [7.72.1] il brusio reale (Freesound) è registrato QUIETO (peak .13) → boost; peak out resta <0.6 (no clip)
   function _startRealBed(base){// letto = registrazione REALE di folla in loop (Freesound), fornita dal PO
     const src=ctx.createBufferSource();src.buffer=_urlBufs['crowd.bed'];src.loop=true;
@@ -5361,6 +5361,7 @@ const AudioMgr=(function(){
   }
   function crowdStart(base){
     if(!ready||bed)return;
+    _matchHushed=false;
     try{
       if(_urlBufs['crowd.bed']){_startRealBed(base);return;}
       // fallback SYNTH (finché il file reale non è caricato/assente): rumore filtrato
@@ -5596,12 +5597,12 @@ const AudioMgr=(function(){
     else if(phase==='create'||phase==='trial'){ musicStart('menu');ambienceStart(); }
     else { musicStop(true);ambienceStop(); }// loading/cinematic → silenzio
   }
-  function enterMatch(){ if(SILENT)return; inMatch=true; if(!ready)return; musicStop(true);ambienceStop(); crowdStart(0.30); }
+  function enterMatch(){ if(SILENT)return; inMatch=true; _matchHushed=false; if(!ready)return; musicStop(true);ambienceStop(); crowdStart(0.30); }
   function exitMatch(){ if(SILENT)return; inMatch=false; crowdStop(); if(ready&&_curPhase==='career'){musicStart('career');ambienceStart();} }
   // [7.102.0 collaudo PO «rumore folla ed effetti della partita devono spegnersi nella schermata del giornale»]
   //   al FISCHIO FINALE (fase 'ended' = rassegna stampa) il letto-folla si SPEGNE (gli effetti di partita sono one-shot
   //   su evento → a ended non ne parte più nessuno). inMatch resta true: la musica menu riparte solo all'uscita reale.
-  function hushMatch(){ if(SILENT)return; try{crowdStop();ambienceStop();}catch(_e){} }
+  function hushMatch(){ if(SILENT)return; _matchHushed=true; try{crowdStop();ambienceStop();}catch(_e){} }
   function event(e){
     if(SILENT||!ready)return;
     try{
@@ -5649,7 +5650,7 @@ const AudioMgr=(function(){
     unlocked=true;loadSamples();/* [7.70.0] carica i campioni reali registrati (se presenti) al primo gesto */
     if(_pendingScene){const p=_pendingScene;_pendingScene=null;scene(p);}
     else if(_curPhase&&!inMatch)scene(_curPhase);
-    if(inMatch&&!bed)crowdStart(0.30);
+    if(inMatch&&!bed&&!_matchHushed)crowdStart(0.30);/* [7.104.0] non riavviare il letto-folla dopo il fischio finale (schermata giornale) */
   }
   // settings
   function setOn(c,v){cfg.on[c]=!!v;applyBus();persist();}
@@ -22797,15 +22798,15 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
         <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.55)",zIndex:9998,display:"flex",alignItems:"center",justifyContent:"center",padding:20}}>
           <Card style={{maxWidth:380,width:"100%",padding:"24px",textAlign:"center"}}>
             {showMatchPrompt.type==="national"?(
-              <><div style={{fontSize:32,marginBottom:4}}>🏳️</div><div style={{fontSize:11,fontWeight:700,color:"#1d4ed8",background:"#eff6ff",border:"1px solid #bfdbfe",borderRadius:8,padding:"3px 12px",display:"inline-block",marginBottom:6}}>NAZIONALE · Amichevole Internazionale</div></>
+              <><div style={{fontSize:32,marginBottom:4}}>🏳️</div><div style={{fontSize:11,fontWeight:700,color:TH.txBlue,background:TH.bgBlue,border:"1px solid #bfdbfe",borderRadius:8,padding:"3px 12px",display:"inline-block",marginBottom:6}}>NAZIONALE · Amichevole Internazionale</div></>
             ):showMatchPrompt.type==="cup"?(
-              <><div style={{fontSize:32,marginBottom:4}}>🏆</div><div style={{fontSize:11,fontWeight:700,color:"#d97706",background:"#fef3c7",border:"1px solid #fde68a",borderRadius:8,padding:"3px 12px",display:"inline-block",marginBottom:6}}>COPPA NAZIONALE · {showMatchPrompt.cupRoundName||"Round"}</div></>
+              <><div style={{fontSize:32,marginBottom:4}}>🏆</div><div style={{fontSize:11,fontWeight:700,color:TH.warning,background:TH.bgAmber,border:"1px solid #fde68a",borderRadius:8,padding:"3px 12px",display:"inline-block",marginBottom:6}}>COPPA NAZIONALE · {showMatchPrompt.cupRoundName||"Round"}</div></>
             ):showMatchPrompt.type==="euro_group"||showMatchPrompt.type==="euro"?(()=>{
               const _ec=showMatchPrompt.competition||player.euro?.competition||"UCL";
               const _ecFull={UCL:"⭐ Korward Champions Cup",UEL:"🟡 Korward Europa Cup",UECL:"🟣 Korward Conference Cup"}[_ec]||`🌍 ${_ec}`;
               const _ecCol={UCL:"#1e40af",UEL:"#92400e",UECL:"#5b21b6"}[_ec]||"#1e40af";
-              const _ecBg={UCL:"#dbeafe",UEL:"#fef3c7",UECL:"#ede9fe"}[_ec]||"#dbeafe";
-              const _ecBorder={UCL:"#93c5fd",UEL:"#fde68a",UECL:"#c4b5fd"}[_ec]||"#93c5fd";
+              const _ecBg={UCL:"#dbeafe",UEL:TH.bgAmber,UECL:"#ede9fe"}[_ec]||"#dbeafe";
+              const _ecBorder={UCL:"#93c5fd",UEL:TH.bdAmber,UECL:"#c4b5fd"}[_ec]||"#93c5fd";
               const _ecE={UCL:"⭐",UEL:"🟡",UECL:"🟣"}[_ec]||"🌍";
               const _grPts=player.euro?.pts||0;const _grPlayed=(player.euro?.groupResults||[]).length;
               const _round=showMatchPrompt.type==="euro_group"?`Giornata ${_grPlayed+1}/6`:(showMatchPrompt.cupRoundName||"KO");
@@ -22814,7 +22815,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                   <div style={{fontSize:34,marginBottom:4}}>{_ecE}</div>
                   <div style={{fontSize:11,fontWeight:700,color:_ecCol,background:_ecBg,border:`1px solid ${_ecBorder}`,borderRadius:8,padding:"3px 14px",display:"inline-block",marginBottom:4}}>{_ecFull}</div>
                   <div style={{fontSize:10,color:_ecCol,marginBottom:showMatchPrompt.type==="euro_group"?4:6}}>{_round}</div>
-                  {showMatchPrompt.type==="euro_group"&&_grPlayed>0&&<div style={{fontSize:10,color:"#64748b",marginBottom:4}}>Girone: {_grPts} pt su {_grPlayed} gare</div>}
+                  {showMatchPrompt.type==="euro_group"&&_grPlayed>0&&<div style={{fontSize:10,color:TH.muted,marginBottom:4}}>Girone: {_grPts} pt su {_grPlayed} gare</div>}
                 </>
               );
             })():(
@@ -22824,31 +22825,33 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
             <div style={{fontSize:13,color:TH.muted,marginBottom:6}}>
               {showMatchPrompt.isHome?`🏟️ ${L.homeMatch}`:`✈️ ${L.awayMatch}`} · {showMatchPrompt.opponentName}
             </div>
-            {showMatchPrompt.type!=="cup"&&isDerby(player.club?.id,showMatchPrompt.opponentId)&&<div style={{fontSize:12,fontWeight:700,color:"#f59e0b",background:"rgba(245,158,11,0.12)",borderRadius:8,padding:"4px 12px",marginBottom:8,display:"inline-block"}}>{isDerby(player.club?.id,showMatchPrompt.opponentId).e} {isDerby(player.club?.id,showMatchPrompt.opponentId).name}</div>}
+            {showMatchPrompt.type!=="cup"&&isDerby(player.club?.id,showMatchPrompt.opponentId)&&<div style={{fontSize:12,fontWeight:700,color:TH.warning,background:"rgba(245,158,11,0.12)",borderRadius:8,padding:"4px 12px",marginBottom:8,display:"inline-block"}}>{isDerby(player.club?.id,showMatchPrompt.opponentId).e} {isDerby(player.club?.id,showMatchPrompt.opponentId).name}</div>}
             <div style={{fontSize:11,color:TH.faint,marginBottom:10}}>W.{player.week||1} — {L.matchPromptWhat}</div>
             {/* Sprint 116 — Coach Decision Card */}
             {coachDecision&&showMatchPrompt.type!=="national"&&(/* [7.38.0 Sezione 8] la decisione del mister ora si MOSTRA anche in coppa/Europa (turnover reale); solo la Nazionale resta fuori */
               <div style={{background:coachDecision.status==="starter"?"rgba(34,197,94,0.08)":coachDecision.status==="bench"?"rgba(245,158,11,0.10)":"rgba(239,68,68,0.10)",border:`1px solid ${coachDecision.status==="starter"?"rgba(34,197,94,0.25)":coachDecision.status==="bench"?"rgba(245,158,11,0.30)":"rgba(239,68,68,0.30)"}`,borderRadius:10,padding:"10px 14px",marginBottom:12,textAlign:"left"}}>
                 <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:coachDecision.reason?5:0}}>
                   <span style={{fontSize:15}}>{coachDecision.status==="starter"?"🟢":coachDecision.status==="bench"?"🟡":"⛔"}</span>
-                  <span style={{fontSize:12,fontWeight:800,color:coachDecision.status==="starter"?TH.success:coachDecision.status==="bench"?"#d97706":"#dc2626"}}>
+                  <span style={{fontSize:12,fontWeight:800,color:coachDecision.status==="starter"?TH.success:coachDecision.status==="bench"?TH.warning:TH.danger}}>
                     {coachDecision.status==="starter"?"Sei Titolare":coachDecision.status==="bench"?"Panchina — a disposizione":"Non Convocato"}
                   </span>
                 </div>
                 {coachDecision.reason&&<div style={{fontSize:11,color:TH.muted,lineHeight:1.5,fontStyle:"italic"}}>"{coachDecision.reason}"</div>}
               </div>
             )}
-            {player.isSuspended&&<div style={{background:"#fef2f2",border:"1px solid #fca5a5",borderRadius:8,padding:"8px 12px",marginBottom:10,fontSize:11,color:"#dc2626",fontWeight:700,textAlign:"center"}}>⛔ Sei squalificato — la partita viene simulata automaticamente</div>}
+            {player.isSuspended&&<div style={{background:TH.bgRed,border:"1px solid #fca5a5",borderRadius:8,padding:"8px 12px",marginBottom:10,fontSize:11,color:TH.danger,fontWeight:700,textAlign:"center"}}>⛔ Sei squalificato — la partita viene simulata automaticamente</div>}
+            {/* [7.104.0 collaudo PO «rendi la schermata kit-compatibile, in particolare i pulsanti»] gerarchia
+                kit pulita: azione primaria green (lg) · Simula secondary · Annulla ghost — niente più padding/opacity inline. */}
             <div style={{display:"flex",flexDirection:"column",gap:10}}>
               {coachDecision?.status!=="not_called"&&(
-                <Btn onClick={()=>{if(player.injured){notify(L.cannotPlayInjured,TH.danger);return;}if(player.isSuspended){notify("⛔ Sei squalificato — usa Simula","#dc2626");return;}setShowMatchPrompt(null);setCoachDecision(null);startMatch();}} v="green" fw style={{padding:"14px",fontSize:14,opacity:(player.injured||player.isSuspended)?0.35:1}}>
+                <Btn onClick={()=>{if(player.injured){notify(L.cannotPlayInjured,TH.danger);return;}if(player.isSuspended){notify("⛔ Sei squalificato — usa Simula",TH.danger);return;}setShowMatchPrompt(null);setCoachDecision(null);startMatch();}} v="green" size="lg" fw style={{opacity:(player.injured||player.isSuspended)?0.4:1}}>
                   {player.isSuspended?"⛔ Non puoi giocare (squalificato)":player.injured?`🩹 ${L.cannotPlayInjured}`:coachDecision?.status==="bench"?`🪑 Gioca (inizio in panchina)`:`🎮 ${L.playMatch} la partita`}
                 </Btn>
               )}
-              <Btn onClick={()=>{if(player.isSuspended)setPlayer(p=>({...p,isSuspended:false}));simulateAndAdvance();}} v="secondary" fw style={{padding:"12px",fontSize:13}}>
+              <Btn onClick={()=>{if(player.isSuspended)setPlayer(p=>({...p,isSuspended:false}));simulateAndAdvance();}} v="secondary" fw>
                 {player.injured?`⏭️ ${L.skipAndRecover}`:player.isSuspended?"⚡ Simula la partita (squalificato)":coachDecision?.status==="not_called"?"⚡ Simula partita (non convocato)":`⚡ ${L.simulateMatch} e avanza settimana`}
               </Btn>
-              <Btn onClick={()=>setShowMatchPrompt(null)} v="secondary" fw style={{padding:"10px",fontSize:12,opacity:0.7}}>
+              <Btn onClick={()=>setShowMatchPrompt(null)} v="ghost" fw>
                 ✕ {L.cancel} — {L.cancelStay}
               </Btn>
             </div>
@@ -27448,15 +27451,15 @@ function AudioSettings(){
     </Card>
   );
 }
-/* [7.64.0 collaudo PO «dove si spegne l'audio? la musica mette ansia»] mute rapido ACCESSIBILE nelle schermate
-   pre-carriera (home/provini) dove non c'è il tab Profilo: un solo bottone fisso 🔊/🔇 (persiste via AudioMgr). */
-function AudioQuickBtn(){
-  const[mute,setMute]=useState(()=>{try{return AudioMgr.getCfg().mute;}catch(_e){return false;}});
+/* [7.104.0 collaudo PO «elimina il pulsante muto e metti il tasto impostazioni come nelle altre schermate»]
+   nelle schermate pre-carriera (home/provini), dove non c'è la nav bar col tasto Opzioni, un bottone fisso ⚙️
+   apre il SettingsScreen completo (che contiene anche il muto). Sostituisce il vecchio toggle 🔊/🔇. */
+function SettingsQuickBtn({onOpen}){
   return(
-    <button onClick={()=>{try{AudioMgr.unlock();const m=AudioMgr.toggleMute();setMute(m);}catch(_e){}}}
-      title={mute?"Audio disattivato — tocca per riattivare":"Tocca per silenziare l'audio"}
+    <button onClick={()=>{try{AudioMgr.unlock();}catch(_e){}if(onOpen)onOpen();}}
+      title="Impostazioni"
       style={{position:"fixed",top:"calc(env(safe-area-inset-top,0px) + 10px)",right:12,zIndex:99999,width:42,height:42,borderRadius:"50%",border:"1px solid rgba(255,255,255,0.28)",background:"rgba(0,0,0,0.42)",color:"#fff",fontSize:18,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",WebkitBackdropFilter:"blur(4px)",backdropFilter:"blur(4px)"}}>
-      {mute?"🔇":"🔊"}
+      ⚙️
     </button>
   );
 }
@@ -27466,6 +27469,12 @@ function App(){
   //   i bottoni «Rivedi l'intro» (Home + Profilo) emettono l'evento 'cpm-replay-intro' → overlay sopra la fase corrente.
   const[showIntro,setShowIntro]=useState(false);
   useEffect(()=>{const h=()=>setShowIntro(true);window.addEventListener('cpm-replay-intro',h);return()=>window.removeEventListener('cpm-replay-intro',h);},[]);
+  // [7.104.0 collaudo PO «elimina il pulsante muto e metti il tasto impostazioni come nelle altre schermate»]
+  //   SettingsScreen raggiungibile anche dalle schermate PRE-carriera (home/provini), dove non c'è la nav bar.
+  const[showSettings,setShowSettings]=useState(false);
+  const[dark,setDark]=useState(()=>{try{return safeLS.get("cpm-dark")==="1";}catch(_e){return false;}});
+  Object.assign(TH,dark?TH_DARK:TH_LIGHT_ORIG);// tema applicato anche fuori dalla carriera
+  useEffect(()=>{try{setDark(safeLS.get("cpm-dark")==="1");}catch(_e){}},[phase]);// re-sync col tema scelto in carriera al ritorno in home
   // [7.62.0 AUDIO] gesture-unlock dell'AudioContext (autoplay policy) + click UI DELEGATO (un solo listener copre TUTTI i bottoni, non invasivo)
   useEffect(()=>{const clickH=(ev)=>{try{AudioMgr.unlock();const t=ev.target;if(t&&t.closest&&t.closest('button,[role="button"],a[href],.cpm-clickable,label'))AudioMgr.play('ui.click');}catch(_a){}};document.addEventListener('pointerdown',clickH,true);return()=>document.removeEventListener('pointerdown',clickH,true);},[]);
   // [7.62.0 AUDIO] musica di alto livello per schermata (un solo useEffect sul phase globale → crossfade menu↔partita)
@@ -27545,7 +27554,8 @@ function App(){
   const wrap=ch=>(
     <div className="cpm-root" style={{background:TH.bgGrad,color:TH.text,fontFamily:"'Barlow','Segoe UI',sans-serif"}}>
       {showIntro&&<IntroCinematic onDone={()=>setShowIntro(false)}/>}{/* [7.32.0] replay on-demand sopra ogni fase */}
-      {(phase==="home"||phase==="create"||phase==="offers"||phase==="trial")&&<AudioQuickBtn/>}{/* [7.64.0] mute rapido nelle schermate senza tab Profilo */}
+      {(phase==="home"||phase==="create"||phase==="offers"||phase==="trial")&&<SettingsQuickBtn onOpen={()=>setShowSettings(true)}/>}{/* [7.104.0] tasto Impostazioni ⚙️ nelle schermate senza nav bar */}
+      {showSettings&&<SettingsScreen darkMode={dark} onTheme={nd=>{try{safeLS.set("cpm-dark",nd?"1":"0");}catch(_e){}setDark(nd);}} onClose={()=>setShowSettings(false)}/>}
       <div style={{position:"fixed",bottom:6,right:8,zIndex:9999,display:"flex",alignItems:"center",gap:6,pointerEvents:"none",fontFamily:"monospace",fontSize:11,letterSpacing:"0.05em",animation:"cpmBadgeFade 9s ease forwards"}}>{/* [5.95.0 QW] auto-fade: visibile al boot per verificare la versione, poi sparisce (su mobile copriva tab-bar/azioni) */}
         <span title="Ambiente di esecuzione" style={{color:"#fff",fontWeight:800,padding:"2px 7px",borderRadius:6,background:APP_ENV==="PRODUCTION"?"rgba(22,163,74,0.85)":"rgba(217,119,6,0.95)",boxShadow:APP_ENV==="PRODUCTION"?"none":"0 0 0 1px rgba(255,255,255,0.35)"}}>{APP_ENV==="PRODUCTION"?"PROD":"TEST"}</span>
         <span style={{color:"#fff",background:"rgba(0,0,0,0.55)",padding:"2px 7px",borderRadius:6}}>KE {GAME_VERSION}</span>
