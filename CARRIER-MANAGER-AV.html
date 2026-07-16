@@ -3643,7 +3643,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="7.109.0"; // [7.109.0 collaudo PO «sono sempre stato alla Salernitana, è irreale»] il mercato corteggia il campione che OUTCRESCE il proprio club: la probabilità di offerta in finestra scala col divario OVR−prestigio club (boost bounded, cap 0.52) e con un divario netto + pretendente più grande l offerta è UFFICIALE e concreta subito (non più solo «indiscrezioni» ignorabili). Cap 1 offerta/stagione invariato; loyalty resta una scelta.
+const GAME_VERSION="7.110.0"; // [7.110.0 collaudo PO «memorizza a chi ho fatto l assist e chi mi ha fatto l assist — sbocchi narrativi»] durante la partita si registrano le CONNESSIONI assist coi compagni VERI (nomi da player.teammates, seedati per minuto → deterministici): assist serviti (a chi ha segnato) e gol su assist (chi ti ha servito, ~52% dei tuoi gol). Persistite in matchHistory (assistLinks) e mostrate nel riepilogo post-partita (blocco «Le connessioni») e nella lista Partite giocate. Campo lazy, no SAVE bump.
 // [6.18.0-note] // [6.18.0] AVATAR = libreria DiceBear (direttiva PO): CH38 3D via dai menu (resta solo nel live match). EROE/giocatori = stile AVATAAARS con FEDELTA al modello CH38 (forza carnagione+capelli+calvizie dalla stessa fonte AVATARS[avatarId] usata dal CH38 a r.7127 -> avatar dei menu ≈ giocatore in campo). NPC/staff (agente, mister via NpcFaceCoach) = stile MICAH seedato dal nome. Bundle locale offline assets/dicebear-avatars.min.js (esbuild IIFE avataaars+micah, ~163KB) caricato da script locale -> no CDN, funziona in gate/offline/produzione. AvatarSVG DiceBear-backed (API invariata, cache seed). Sorgente rigenerabile in tools/avatar-build/. Gate-cieco su CareerApp ma DiceBear carica anche in gate.
 const SAVE_VERSION=9;// v9 [7.6.0 FASE 2]: clubEvo (evoluzione pluriennale del club: fanbase/stadiumTier/budget/seasonsTop-Low) — migration retro-compatibile. v8 [5.81.0 BIL-3b]: bankBalance (stipendio accumulato, €) + perkTrainer/perkNutrition (staff personale) — migration retro-compatibile. v7: player.foot
 // 5.67.0 — TABELLONE realistico del torneo per NAZIONALI (Europeo/Mondiale): dopo il girone la fase a
@@ -12235,6 +12235,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   const pPosRef=useRef({x:58,y:50});
   useEffect(()=>{pPosRef.current=pPos;},[pPos]);
   const [mStats,setMStats]=useState({goals:0,assists:0,rb:0,xg:0});
+  const assistLinksRef=useRef({given:[],received:[]});/* [7.110.0 collaudo PO «memorizza a chi ho fatto l'assist e chi mi ha fatto l'assist»] connessioni coi compagni VERI, seedate, persistite in matchHistory per gli sbocchi narrativi */
   const [energy,setEnergy]=useState(100);
   const [coms,setComs]=useState([]);
   const [outcome,setOutcome]=useState(null);
@@ -13566,6 +13567,12 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     setEnergy(e=>clamp(e-action.nrg,0,100));
     if(action.rew==="goal")setMxStats(s=>({...s,shots:s.shots+1}));// [5.95.0 QW audit MP-3/MOT-6] la conclusione dell'eroe è un TIRO nelle statistiche (prima solo gli eventi BG incrementavano shots)
     setMStats(s=>{let{goals,assists,rb,xg}={...s};const _xgAdd=calcXG(action,pPos.x);xg=Math.round((xg+_xgAdd)*100)/100;const _ck=clockRef.current;if(ok){if(key==="goal"){goals++;rb+=5;pushMatchEvent(_ck,"player_goal",em=>"⚽ Tuo gol al "+em+"'");}if(key==="assist"){assists++;rb+=3;pushMatchEvent(_ck,"player_assist",em=>"🎯 Tuo assist al "+em+"'");}/* [6.5.1 Polish A] score differito a fireGoalCeleb (palla in rete) */if(!["goal","assist"].includes(key))rb+=1;}else{if(key==="goal_against"){rb-=3;setScore(sc=>({...sc,away:sc.away+1}));pushMatchEvent(_ck,"opp_goal",em=>"😨 Gol subito al "+em+"'");}if(key==="miss_easy"){rb-=2;pushMatchEvent(_ck,"miss",em=>"😱 Gol clamorosamente sprecato al "+em+"'");}}return{goals,assists,rb,xg};});
+    // [7.110.0 collaudo PO] connessioni assist coi compagni REALI (nomi da player.teammates, seedati per min → deterministici)
+    if(ok&&(key==="goal"||key==="assist")){const _ck2=clockRef.current;const _tm=player.teammates||[];
+      if(_tm.length){const _pk=slt=>{const m=_tm[Math.abs(hashStr("al|"+(player.season||1)+"|"+(player.week||1)+"|"+_ck2+"|"+slt))%_tm.length];const nm=(m&&m.name)||"";return{name:((nm.split(" ").pop())||nm||"un compagno"),full:nm,archetype:m&&m.archetype};};
+        if(key==="assist"){const r=_pk("to");assistLinksRef.current.given.push({min:_ck2,name:r.name,full:r.full,archetype:r.archetype});}
+        else if(key==="goal"){const _assisted=(Math.abs(hashStr("ga|"+(player.season||1)+"|"+(player.week||1)+"|"+_ck2))%100)<52;if(_assisted){const r=_pk("by");assistLinksRef.current.received.push({min:_ck2,name:r.name,full:r.full,archetype:r.archetype});}}
+      }}
     // [6.41.0 collaudo PO «hanno festeggiato i tifosi ospiti anziché quelli di casa»] GOL SUBITO via highlight
     //   DIFENSIVO (goal_against): segna l'AVVERSARIO → devono esultare i SUOI tifosi. Prima questo path
     //   incrementava il punteggio ma NON emetteva alcun wave-event → nessuna esultanza sul gol subito (la
@@ -13889,7 +13896,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     const rbCapped=Math.min(mStats.rb,30);/* [7.8.28 QA] cap 20→30 e slope 0.115→0.13: la vecchia scala cappava il voto live a 8.45 — «voto 10»/«Prestazione storica» (≥9) e l'achievement perfect erano MATEMATICAMENTE irraggiungibili, e una tripletta+2 assist (21 punti) valeva quanto un gol+2 assist. Ora 9+ ~ tripletta+2 assist in vittoria, 10 solo su prestazioni epiche (rb≥30). Scala media quasi invariata (rb10: 7.30→7.45). */
     const resultBonus=score.home>score.away?0.35:score.home===score.away?0.0:-0.30;
     const raw=clamp(5.8+rbCapped*0.13+resultBonus,4.0,10.0);
-    return {goals:mStats.goals,assists:mStats.assists,minutesPlayed:benchStart?Math.max(0,90-(benchMinute||60)):(subbedOffRef.current?subOffMinRef.current:90),matchStatus:benchStart?"bench":subbedOffRef.current?"subbed_off":"starter",/* [7.38.0 Sezione 8] */homeScore:score.home,awayScore:score.away,won:score.home>score.away,drew:score.home===score.away,wasBehind:wasBehindRef.current,/* [7.8.28 QA] per l'achievement Rimonta */opponent:opponent?.name||opponent?.n,oppAbbr:opponent?.abbr||opponent?.a,oppCol:opponent?.col||opponent?.c,rating:Math.round(raw*10)/10,context,isHome:isMatchHome,attendance:attendance,/* [7.1.3] luogo · [7.6.0 FASE 2] affluenza → ricavi matchday */oppTactic:oppTactic||null,scoutReport:scoutReport||null,homeRoster,heroRoster:(isMatchHome?homeRoster:awayRoster),shots:mxStats.shots,oppShots:mxStats.oppShots,fouls:mxStats.fouls,corners:mxStats.corners,possession:Math.round(possession)};/* [6.45.0 RC] heroRoster = rosa dell'EROE (in trasferta homeRoster è la squadra AVVERSARIA → il «Migliore in campo» della rassegna finiva agli ospiti) */
+    return {goals:mStats.goals,assists:mStats.assists,minutesPlayed:benchStart?Math.max(0,90-(benchMinute||60)):(subbedOffRef.current?subOffMinRef.current:90),matchStatus:benchStart?"bench":subbedOffRef.current?"subbed_off":"starter",/* [7.38.0 Sezione 8] */homeScore:score.home,awayScore:score.away,won:score.home>score.away,drew:score.home===score.away,wasBehind:wasBehindRef.current,/* [7.8.28 QA] per l'achievement Rimonta */opponent:opponent?.name||opponent?.n,oppAbbr:opponent?.abbr||opponent?.a,oppCol:opponent?.col||opponent?.c,rating:Math.round(raw*10)/10,context,isHome:isMatchHome,attendance:attendance,/* [7.1.3] luogo · [7.6.0 FASE 2] affluenza → ricavi matchday */oppTactic:oppTactic||null,scoutReport:scoutReport||null,homeRoster,heroRoster:(isMatchHome?homeRoster:awayRoster),shots:mxStats.shots,oppShots:mxStats.oppShots,fouls:mxStats.fouls,corners:mxStats.corners,possession:Math.round(possession),assistLinks:{given:[...(assistLinksRef.current.given||[])],received:[...(assistLinksRef.current.received||[])]}};/* [6.45.0 RC] heroRoster = rosa dell'EROE (in trasferta homeRoster è la squadra AVVERSARIA → il «Migliore in campo» della rassegna finiva agli ospiti) · [7.110.0] assistLinks: connessioni assist coi compagni */
   };
   const handleEnd=()=>{onMatchEnd(_buildEndResult());};
 
@@ -14896,6 +14903,20 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
               </Card>
             ))}
           </div>
+          {(()=>{/* [7.110.0 collaudo PO «memorizza a chi ho fatto l'assist e chi mi ha fatto l'assist»] le connessioni della gara */
+            const _al=assistLinksRef.current||{given:[],received:[]};const _gv=_al.given||[],_rc=_al.received||[];
+            if(!_gv.length&&!_rc.length)return null;
+            const _row=(icon,lbl,arr,col)=>arr.length?(<div style={{display:"flex",alignItems:"flex-start",gap:8,padding:"7px 9px",background:TH.surface2,borderRadius:RAD.sm,border:`1px solid ${TH.divider}`,marginBottom:6}}>
+              <span style={{fontSize:14,flexShrink:0}}>{icon}</span>
+              <div style={{minWidth:0}}><div style={{fontSize:10,color:TH.muted,fontWeight:700,textTransform:"uppercase",letterSpacing:0.5}}>{lbl}</div>
+                <div style={{fontSize:12,color:TH.text,fontWeight:700,lineHeight:1.5}}>{arr.map((x,i)=>(<span key={i}><span style={{color:col}}>{x.name}</span> <span className="cpm-num" style={{color:TH.muted,fontWeight:600}}>{x.min}'</span>{i<arr.length-1?"   ·   ":""}</span>))}</div></div>
+            </div>):null;
+            return(<div style={{marginBottom:14}}>
+              <div style={{fontSize:10,color:TH.muted,fontWeight:700,letterSpacing:1,marginBottom:6,textAlign:"left"}}>🔗 LE CONNESSIONI</div>
+              {_row("🎯","Assist serviti a",_gv,TH.primary)}
+              {_row("⚽","Gol su assist di",_rc,TH.warning)}
+            </div>);
+          })()}
           <div style={{fontSize:10,color:TH.muted,fontWeight:700,letterSpacing:1,marginBottom:6,textAlign:"left"}}>STATISTICHE GARA</div>
           <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:6,marginBottom:14}}>
             {[{l:"Falli avversari",v:mxStats.fouls,e:"🟡"},{l:"Calci d'angolo",v:mxStats.corners,e:"🏳️"},{l:"Tiri avversari",v:mxStats.oppShots,e:"🔴"},{l:"Tiro medio",v:mxStats.shots>0?`${mStats.goals}/${mxStats.shots}`:"0/0",e:"🎯"}].map(s=>(
@@ -20814,7 +20835,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       const newOvr=calcOvr(ns);
       const moD=result.won?6:result.drew?2:-4;
       const logE=`⚽ vs ${result.opponent} (${result.homeScore}-${result.awayScore}) | ${result.goals}⚽ ${result.assists}🎯 | ${result.rating}★`;
-      const newHistory=[...(p.matchHistory||[]),{season:p.season||1,week:p.week||1,opponent:result.opponent,oppAbbr:result.oppAbbr,oppCol:result.oppCol,homeScore:result.homeScore,awayScore:result.awayScore,goals:result.goals,assists:result.assists,rating:result.rating,won:result.won,drew:result.drew,...(result.minutesPlayed!=null?{minutesPlayed:result.minutesPlayed,matchStatus:result.matchStatus}:{}),...(cupCalEntry&&p.cup?.active&&!p.cup?.eliminated?{cup:true,cupRound:p.cup?.round||1}:{})}].slice(-200);/* [7.38.0 Sezione 8] minuti+status nella gara *//* [7.8.28 QA] la gara di COPPA giocata dal vivo non portava cup:true → (1) capocannonieri Coppa dell'eroe sempre 0 (7.8.18 rotto), (2) la guardia anti-loop 6.98/HEAL2 la contava come gara di LEGA vs lo stesso avversario → il ritorno di campionato veniva rimosso (stagione a 33 gare), (3) forma «ultime 5 di lega» sporcata */
+      const newHistory=[...(p.matchHistory||[]),{season:p.season||1,week:p.week||1,opponent:result.opponent,oppAbbr:result.oppAbbr,oppCol:result.oppCol,homeScore:result.homeScore,awayScore:result.awayScore,goals:result.goals,assists:result.assists,rating:result.rating,won:result.won,drew:result.drew,...(result.minutesPlayed!=null?{minutesPlayed:result.minutesPlayed,matchStatus:result.matchStatus}:{}),...(result.assistLinks&&(((result.assistLinks.given||[]).length)||((result.assistLinks.received||[]).length))?{assistLinks:result.assistLinks}:{}),/* [7.110.0] connessioni assist (chi ho servito / chi mi ha servito) persistite nella gara */...(cupCalEntry&&p.cup?.active&&!p.cup?.eliminated?{cup:true,cupRound:p.cup?.round||1}:{})}].slice(-200);/* [7.38.0 Sezione 8] minuti+status nella gara *//* [7.8.28 QA] la gara di COPPA giocata dal vivo non portava cup:true → (1) capocannonieri Coppa dell'eroe sempre 0 (7.8.18 rotto), (2) la guardia anti-loop 6.98/HEAL2 la contava come gara di LEGA vs lo stesso avversario → il ritorno di campionato veniva rimosso (stagione a 33 gare), (3) forma «ultime 5 di lega» sporcata */
       // S41: detect cup match and conditionally skip standings update
       const _isCup=!!(cupCalEntry&&p.cup?.active&&!p.cup?.eliminated);
       const clubId=p.club?.id||p.club?.n;
@@ -24479,6 +24500,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                   <div style={{flex:1,minWidth:0}}>
                     <div style={{fontSize:12,fontWeight:FW.semibold,color:TH.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>vs {m.opponent}{m.simulated&&<span style={{fontSize:10,color:TH.faint,marginLeft:4}}>(sim.)</span>}</div>
                     <div style={{fontSize:10,color:TH.muted}}>W.{m.week} · ⚽{m.goals} 🎯{m.assists}</div>
+                    {m.assistLinks&&(((m.assistLinks.given||[]).length)||((m.assistLinks.received||[]).length))?(<div style={{fontSize:9.5,color:TH.faint,marginTop:1,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{/* [7.110.0] connessioni assist della gara */}{(m.assistLinks.given||[]).length?<span>🎯→ {(m.assistLinks.given).map(x=>x.name).join(", ")}</span>:null}{(m.assistLinks.given||[]).length&&(m.assistLinks.received||[]).length?"  ·  ":""}{(m.assistLinks.received||[]).length?<span>⚽← {(m.assistLinks.received).map(x=>x.name).join(", ")}</span>:null}</div>):null}
                   </div>
                   <div className="cpm-num" style={{fontSize:FS.bodyLg,fontWeight:FW.black,color:TH.text,minWidth:44,textAlign:"center",letterSpacing:-.3}}>{m.homeScore}<span style={{color:TH.faint,margin:"0 1px"}}>–</span>{m.awayScore}</div>
                   <div style={{textAlign:"right",minWidth:28}}>
