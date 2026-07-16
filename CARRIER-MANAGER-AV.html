@@ -1675,6 +1675,122 @@ const WEEKLY_IMPULSES=[
     {txt:"😊 «È un onore. Gli sarò sempre grato.»",ef:{coachTrust:9,morale:8}},
     {txt:"😅 Ridi imbarazzato e cambi argomento",ef:{morale:4}},
   ]},
+  // [7.106.0 collaudo PO «gli impulsi settimanali sono ripetitivi, aumenta i dialoghi: tutti ragionati, realistici,
+  //   con conseguenze positive o negative»] +28 dilemmi nuovi con trade-off reali (bank/morale/fatica/fiducia/
+  //   popolarità/chimica/forma/valore), varietà di temi mercato/immagine/vita/spogliatoio/campo. Ognuno ha l'opzione
+  //   prudente a costo ~zero → il player non è mai forzato a spendere. Anti-ripetizione allargata (recentImpulses -40).
+  {id:"wi_auto_lusso",cat:"scelta",txt:"Un concessionario ti presta un'auto di lusso per un mese in cambio di qualche post social.",choices:[
+    {txt:"🚗 Accetto — che spettacolo",ef:{popularity:6,morale:4,coachTrust:-3}},
+    {txt:"🚙 Tengo la mia, niente distrazioni",ef:{coachTrust:4,morale:-1}},
+  ]},
+  {id:"wi_polemica_social",cat:"tensione",txt:"Un tifoso avversario ti insulta online e diventa virale. I tuoi fan aspettano una tua reazione.",choices:[
+    {txt:"🔥 Rispondo per le rime",ef:{popularity:5,morale:-3,coachTrust:-4}},
+    {txt:"🤐 Ignoro, parlerò in campo",ef:{coachTrust:4,morale:2}},
+  ]},
+  {id:"wi_scuola_calcio",cat:"opportunità",cond:p=>(p.popularity||20)>=42,txt:"Ti propongono di aprire una scuola calcio col tuo nome: investimento e un po' del tuo tempo.",choices:[
+    {txt:"⚽ Ci metto faccia e soldi",ef:{bank:-30000,popularity:9,morale:6}},
+    {txt:"🤝 Presto solo il nome",ef:{popularity:3,bank:6000}},
+  ]},
+  {id:"wi_giornata_libera",cat:"scelta",txt:"Il mister concede un giorno libero: mare coi compagni o palestra da solo per limare i dettagli?",choices:[
+    {txt:"🏖 Mare col gruppo",ef:{chem:7,morale:6,fatigue:3}},
+    {txt:"🏋️ Palestra e focus",ef:{form:5,fatigue:5,chem:-2}},
+  ]},
+  {id:"wi_videogioco",cat:"opportunità",txt:"Una software house vuole il tuo volto in un videogioco di calcio.",choices:[
+    {txt:"🎮 Firmo — sarò un personaggio",ef:{bank:25000,popularity:8}},
+    {txt:"🕹 Chiedo troppo, salta tutto",ef:{morale:-2}},
+  ]},
+  {id:"wi_genitori_tribuna",cat:"personale",txt:"I tuoi genitori vogliono venire a vederti giocare da lontano: viaggio e hotel a carico tuo.",choices:[
+    {txt:"✈️ Li porto in tribuna d'onore",ef:{bank:-6000,morale:9}},
+    {txt:"📞 Li sento al telefono, ora no",ef:{morale:2,fatigue:-2}},
+  ]},
+  {id:"wi_infortunato_posto",cat:"tensione",txt:"Un compagno infortunato teme di perdere il posto e ti chiede di «non brillare troppo» in allenamento.",choices:[
+    {txt:"🤝 Lo rassicuro, gioco sereno",ef:{chem:6,form:-2}},
+    {txt:"😤 In campo non si fanno sconti",ef:{coachTrust:4,chem:-5}},
+  ]},
+  {id:"wi_tv_primaserata",cat:"opportunità",cond:p=>(p.popularity||20)>=45,txt:"Una TV nazionale ti vuole in prima serata. Grande vetrina, ma è la sera prima della gara.",choices:[
+    {txt:"📺 Ci vado — occasione unica",ef:{popularity:9,fatigue:4,form:-2}},
+    {txt:"🛌 Prima la partita, sempre",ef:{coachTrust:4,popularity:-2}},
+  ]},
+  {id:"wi_cripto",cat:"conseguenza",txt:"Un amico ti spinge su una criptovaluta «che esploderà». Rischio alto, tutto o niente.",choices:[
+    {txt:"🚀 Ci punto una fetta",ef:{bank:-20000,morale:2},flag:"investment",note:"esito incerto a fine stagione"},
+    {txt:"🧊 Non è roba per me",ef:{morale:1}},
+  ]},
+  {id:"wi_bimbo_sogno",cat:"scelta",txt:"Il papà di un bimbo malato ti scrive: il sogno del figlio è conoscerti.",choices:[
+    {txt:"💙 Lo invito all'allenamento",ef:{morale:9,popularity:5,fatigue:2}},
+    {txt:"🎁 Gli mando maglia e videomessaggio",ef:{morale:4,bank:-2000}},
+  ]},
+  {id:"wi_mental_coach",cat:"scelta",txt:"Un mental coach propone due giorni di lavoro sulla concentrazione.",choices:[
+    {txt:"🧘 Ci provo — testa libera",ef:{morale:6,form:3,fatigue:-3}},
+    {txt:"⚽ Preferisco il campo",ef:{form:2}},
+  ]},
+  {id:"wi_orologi_squadra",cat:"scelta",txt:"Vuoi cementare il gruppo regalando un orologio a ogni compagno. Costa parecchio.",choices:[
+    {txt:"⌚ Li prendo per tutti",ef:{bank:-22000,chem:10,morale:3}},
+    {txt:"🍻 Basta una cena insieme",ef:{bank:-4000,chem:4}},
+  ]},
+  {id:"wi_opinionista",cat:"tensione",txt:"Un opinionista TV ti critica pesantemente in diretta. Il tuo agente vuole rispondere.",choices:[
+    {txt:"🔥 Rispondo in conferenza",ef:{popularity:3,coachTrust:-4,morale:-2}},
+    {txt:"💪 Uso la rabbia in campo",ef:{form:4,morale:3}},
+  ]},
+  {id:"wi_bonus_gol_social",cat:"opportunità",txt:"Uno sponsor mette un bonus per ogni tuo gol del mese, ma vuole il logo sui tuoi social.",choices:[
+    {txt:"💸 Ci sto",ef:{bank:8000,popularity:4,coachTrust:-2}},
+    {txt:"🚫 Niente vetrine sui social",ef:{coachTrust:3}},
+  ]},
+  {id:"wi_casa_citta",cat:"conseguenza",txt:"Puoi comprare casa in città: ti radichi alla piazza, ma immobilizzi liquidità.",choices:[
+    {txt:"🏠 Compro — è casa mia",ef:{bank:-45000,morale:6,popularity:4}},
+    {txt:"🔑 Resto in affitto, più libero",ef:{morale:1}},
+  ]},
+  {id:"wi_primo_mister",cat:"personale",txt:"Il tuo primo allenatore, oggi in difficoltà, ti chiede una mano per un provino ai suoi ragazzi.",choices:[
+    {txt:"🎓 Ci vado di persona",ef:{morale:7,fatigue:4,chem:2}},
+    {txt:"💌 Mando due parole di stima",ef:{morale:2}},
+  ]},
+  {id:"wi_tifoso_fisso",cat:"tensione",txt:"Un tifoso ti aspetta ogni giorno fuori dal centro sportivo: gentile ma insistente.",choices:[
+    {txt:"🤝 Gli dedico cinque minuti",ef:{popularity:5,morale:2,fatigue:1}},
+    {txt:"🚗 Passo dritto, ho fretta",ef:{morale:-1,popularity:-2}},
+  ]},
+  {id:"wi_esports",cat:"opportunità",txt:"Ti offrono di essere il volto di una squadra esports.",choices:[
+    {txt:"🎮 Divento ambassador",ef:{bank:18000,popularity:7}},
+    {txt:"🧢 Non fa per me",ef:{morale:1}},
+  ]},
+  {id:"wi_compagno_prestito",cat:"tensione",txt:"Un compagno in difficoltà economica ti chiede in confidenza un prestito personale.",choices:[
+    {txt:"🤝 Lo aiuto, senza dirlo a nessuno",ef:{bank:-15000,chem:9,morale:4}},
+    {txt:"💬 Gli trovo un consulente serio",ef:{chem:3}},
+  ]},
+  {id:"wi_pioggia_scelta",cat:"scelta",txt:"Diluvia. Il mister lascia scegliere: campo fangoso o palestra al coperto?",choices:[
+    {txt:"🌧 Esco a lavorare duro",ef:{form:5,fatigue:6,coachTrust:4}},
+    {txt:"🏋️ Palestra, niente rischi",ef:{fatigue:2,form:2}},
+  ]},
+  {id:"wi_scommessa_amici",cat:"tensione",txt:"Degli amici ti coinvolgono in una scommessa «innocente» sul campionato. Ma per te è vietata.",choices:[
+    {txt:"🚫 Rifiuto netto — è la regola",ef:{morale:3,coachTrust:3}},
+    {txt:"🤫 Solo una piccola, che sarà mai…",ef:{morale:-4,coachTrust:-8,popularity:-3}},
+  ]},
+  {id:"wi_maglia_dieci",cat:"scelta",cond:p=>(p.ovr||60)>=72,txt:"Si libera la maglia numero 10: prenderla è un onore, ma anche una pressione enorme.",choices:[
+    {txt:"🔟 La prendo — me la merito",ef:{morale:6,popularity:5,form:-1}},
+    {txt:"🙅 Tengo il mio numero",ef:{morale:2}},
+  ]},
+  {id:"wi_sosta_nazionali",cat:"scelta",cond:p=>!((p.calendar||[]).some(m=>m&&m.week===(p.week||1)&&!m.played)),txt:"Sosta per le nazionali: puoi staccare la spina o allenarti extra col preparatore.",choices:[
+    {txt:"😴 Stacco e ricarico",ef:{fatigue:-10,form:-1}},
+    {txt:"🏃 Lavoro sui dettagli",ef:{form:5,fatigue:4}},
+  ]},
+  {id:"wi_ristorante_socio",cat:"conseguenza",txt:"Ti propongono di entrare come socio in un ristorante di lusso in centro.",choices:[
+    {txt:"🍽 Investo e ci metto la faccia",ef:{bank:-28000,popularity:6},flag:"investment",note:"rendita se l'attività gira"},
+    {txt:"🤔 Troppo rischio adesso",ef:{morale:1}},
+  ]},
+  {id:"wi_dirigente_idolo",cat:"conseguenza",txt:"Un tuo vecchio idolo, oggi dirigente di un altro club, ti chiama: «C'è un progetto per te».",choices:[
+    {txt:"👂 Ascolto la proposta",ef:{value:0.2,coachTrust:-4,morale:3}},
+    {txt:"🔒 Sono concentrato qui",ef:{coachTrust:5}},
+  ]},
+  {id:"wi_compleanno_tifosi",cat:"scelta",cond:p=>(p.popularity||20)>=40,txt:"È il tuo compleanno: i tifosi organizzano una festa a sorpresa fuori dallo stadio.",choices:[
+    {txt:"🎂 Esco a salutarli tutti",ef:{popularity:7,morale:6,fatigue:3}},
+    {txt:"🏠 Festeggio in famiglia",ef:{morale:5,fatigue:-3}},
+  ]},
+  {id:"wi_dieta_brand",cat:"scelta",txt:"Un brand alimentare ti paga per seguire e mostrare i loro pasti per una settimana.",choices:[
+    {txt:"🥦 Accetto e mi adatto",ef:{bank:12000,form:-2,morale:-2}},
+    {txt:"🍖 Non cambio alimentazione ora",ef:{form:2}},
+  ]},
+  {id:"wi_massaggiatore_addio",cat:"scelta",txt:"Il vecchio massaggiatore va in pensione. Puoi organizzargli una festa d'addio a tue spese.",choices:[
+    {txt:"🎉 Organizzo tutto io",ef:{bank:-8000,chem:8,morale:5}},
+    {txt:"👏 Un applauso in spogliatoio",ef:{chem:2}},
+  ]},
 ];
 
 /* ========================================
@@ -3527,7 +3643,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="7.105.1"; // [7.105.1 collaudo PO «il tasto impostazioni deve stare in basso a destra come nelle schermate di gioco»] SettingsQuickBtn spostato da top-right a bottom-right (coerente con Opzioni nella nav bar in gioco).
+const GAME_VERSION="7.106.0"; // [7.106.0 collaudo PO «gli impulsi settimanali sono ripetitivi, aumenta i dialoghi: tutti ragionati/realistici con conseguenze positive o negative»] +28 nuovi dilemmi settimanali (WEEKLY_IMPULSES) con trade-off reali su soldi/morale/fatica/fiducia/popolarita/chimica/forma/valore (temi mercato/immagine/vita privata/spogliatoio/campo, sempre con opzione prudente a costo zero) + memoria anti-ripetizione allargata 24->40 -> niente piu «di nuovo investo».
 // [6.18.0-note] // [6.18.0] AVATAR = libreria DiceBear (direttiva PO): CH38 3D via dai menu (resta solo nel live match). EROE/giocatori = stile AVATAAARS con FEDELTA al modello CH38 (forza carnagione+capelli+calvizie dalla stessa fonte AVATARS[avatarId] usata dal CH38 a r.7127 -> avatar dei menu ≈ giocatore in campo). NPC/staff (agente, mister via NpcFaceCoach) = stile MICAH seedato dal nome. Bundle locale offline assets/dicebear-avatars.min.js (esbuild IIFE avataaars+micah, ~163KB) caricato da script locale -> no CDN, funziona in gate/offline/produzione. AvatarSVG DiceBear-backed (API invariata, cache seed). Sorgente rigenerabile in tools/avatar-build/. Gate-cieco su CareerApp ma DiceBear carica anche in gate.
 const SAVE_VERSION=9;// v9 [7.6.0 FASE 2]: clubEvo (evoluzione pluriennale del club: fanbase/stadiumTier/budget/seasonsTop-Low) — migration retro-compatibile. v8 [5.81.0 BIL-3b]: bankBalance (stipendio accumulato, €) + perkTrainer/perkNutrition (staff personale) — migration retro-compatibile. v7: player.foot
 // 5.67.0 — TABELLONE realistico del torneo per NAZIONALI (Europeo/Mondiale): dopo il girone la fase a
@@ -20945,7 +21061,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       const impulse=_impPool.length?pick(_impPool):pick(WEEKLY_IMPULSES.filter(_impCond));
       if(impulse){
         _lastImpulseId=impulse.id;
-        setPlayer(p=>({...p,weekLived:true,recentImpulses:[...(p.recentImpulses||[]),impulse.id].slice(-24)}));
+        setPlayer(p=>({...p,weekLived:true,recentImpulses:[...(p.recentImpulses||[]),impulse.id].slice(-40)}));/* [7.106.0] memoria anti-ripetizione 24→40: col pool ampliato nessun impulso si ripete entro ~una stagione */
         const catIcon={opportunità:"🌟",scelta:"⚡",tensione:"🔥",conseguenza:"🎲"}[impulse.cat]||"💡";
         setTimeout(()=>setWeekLiveModal({event:{txt:resolveEvText(impulse.txt,player),e:catIcon},changes:{},choices:impulse.choices,isImpulse:true,cat:impulse.cat,coachMsg:_liveCoachMsg}),50);/* [7.8.5] resolveEvText → sostituisce {DERBY}/{RIVAL} anche negli impulsi */
         return;
