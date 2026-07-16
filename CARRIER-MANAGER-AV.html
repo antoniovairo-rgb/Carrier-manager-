@@ -3527,7 +3527,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="7.102.0"; // [7.102.0 collaudo PO x2] (1) rumore folla/effetti partita si spengono nella schermata GIORNALE (fase ended -> AudioMgr.hushMatch spegne il letto-folla); (2) all-apertura la barra di caricamento ora anima via CSS sul COMPOSITOR (transform:scaleX + @property counter) invece che via JS -> spinge anche mentre Babel blocca il main thread (prima la % guidata da rAF/setInterval si congelava durante il transpile).
+const GAME_VERSION="7.103.0"; // [7.103.0 collaudo PO «standardizza all-ui kit la schermata dell-agente, un po- fuori standard»] Tab Agente allineato al kit: tutti gli hex light hardcoded (verdi/rossi/ambra/blu/viola delle card Finestra di Mercato, Richiedi Cessione, Stato Prestito, banner) mappati ai token semantici theme-aware (bgGreen/bdGreen/txGreen, bgRed/bdRed, bgAmber, bgBlue, bgPurple) -> ora corretto anche in dark mode; CTA cerca-offerta e Richiedi Cessione ora sono Btn del kit (green/danger); chip preferenza destinazione in brand granata; variant Btn success/danger resi theme-aware.
 // [6.18.0-note] // [6.18.0] AVATAR = libreria DiceBear (direttiva PO): CH38 3D via dai menu (resta solo nel live match). EROE/giocatori = stile AVATAAARS con FEDELTA al modello CH38 (forza carnagione+capelli+calvizie dalla stessa fonte AVATARS[avatarId] usata dal CH38 a r.7127 -> avatar dei menu ≈ giocatore in campo). NPC/staff (agente, mister via NpcFaceCoach) = stile MICAH seedato dal nome. Bundle locale offline assets/dicebear-avatars.min.js (esbuild IIFE avataaars+micah, ~163KB) caricato da script locale -> no CDN, funziona in gate/offline/produzione. AvatarSVG DiceBear-backed (API invariata, cache seed). Sorgente rigenerabile in tools/avatar-build/. Gate-cieco su CareerApp ma DiceBear carica anche in gate.
 const SAVE_VERSION=9;// v9 [7.6.0 FASE 2]: clubEvo (evoluzione pluriennale del club: fanbase/stadiumTier/budget/seasonsTop-Low) — migration retro-compatibile. v8 [5.81.0 BIL-3b]: bankBalance (stipendio accumulato, €) + perkTrainer/perkNutrition (staff personale) — migration retro-compatibile. v7: player.foot
 // 5.67.0 — TABELLONE realistico del torneo per NAZIONALI (Europeo/Mondiale): dopo il girone la fase a
@@ -6800,8 +6800,8 @@ const Btn=({children,onClick,v="primary",disabled=false,style={},fw=false,size="
     primary:{background:TH.primary,color:"#fff",fontWeight:700},
     green:{background:TH.success,color:"#fff",fontWeight:700},
     secondary:{background:TH.card,color:TH.muted,border:"1px solid "+TH.cardBorder},
-    success:{background:"#dcfce7",color:TH.success,border:"1px solid #bbf7d0"},
-    danger:{background:"#fee2e2",color:TH.danger,border:"1px solid #fecaca"},
+    success:{background:TH.bgGreen,color:TH.txGreen,border:"1px solid "+TH.bdGreen,fontWeight:700},/* [7.103.0] token semantici (theme-aware) al posto degli hex light hardcoded */
+    danger:{background:TH.bgRed,color:TH.danger,border:"1px solid "+TH.bdRed,fontWeight:700},
     ghost:{background:"transparent",color:TH.faint,border:"1px solid "+TH.cardBorder},
     gold:{background:"linear-gradient(135deg,#f59e0b,#d97706)",color:"#fff",fontWeight:800},
   };
@@ -26056,33 +26056,33 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                 {/* Allenatore — ora nel tab Club */}
                 {/* Finestra di Mercato */}
                 {txOpen&&(
-                  <Card style={{padding:"12px 14px",background:"#ecfdf5",border:"1px solid #6ee7b7"}}>
-                    <div style={{fontSize:10,color:"#065f46",textTransform:"uppercase",letterSpacing:1.5,marginBottom:10,fontWeight:700}}>
+                  <Card style={{padding:"12px 14px",background:TH.bgGreen,border:"1px solid #6ee7b7"}}>
+                    <div style={{fontSize:10,color:TH.txGreen,textTransform:"uppercase",letterSpacing:1.5,marginBottom:10,fontWeight:700}}>
                       🌊 Finestra di Mercato — {week>=19?"Inverno":"Estate"} · Sett. {week}
                     </div>
                     {/* Transfer listed toggle */}
                     {player.transferListed?(
-                      <div style={{padding:"9px 11px",borderRadius:9,background:"#fee2e2",border:"1px solid #fca5a5",display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:8}}>
+                      <div style={{padding:"9px 11px",borderRadius:9,background:TH.bgRed,border:"1px solid #fca5a5",display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:8}}>
                         <div>
-                          <div style={{fontSize:11,fontWeight:700,color:"#dc2626"}}>📋 Sei in lista transfer</div>
-                          <div style={{fontSize:10,color:"#7f1d1d",marginTop:1}}>Il mercato si muove — aspetta le offerte.</div>
+                          <div style={{fontSize:11,fontWeight:700,color:TH.danger}}>📋 Sei in lista transfer</div>
+                          <div style={{fontSize:10,color:TH.txRed,marginTop:1}}>Il mercato si muove — aspetta le offerte.</div>
                         </div>
-                        <button onClick={function(){setPlayer(function(p){return{...p,transferListed:false,coachTrust:clamp((p.coachTrust||60)+5,0,100)};});notify("✅ Rimosso dalla lista. +5 fiducia mister.",TH.success);}} style={{padding:"5px 11px",borderRadius:7,border:"1px solid #dc2626",background:"#fff",color:"#dc2626",fontSize:10,fontWeight:700,cursor:"pointer",fontFamily:"inherit",flexShrink:0}}>
+                        <button onClick={function(){setPlayer(function(p){return{...p,transferListed:false,coachTrust:clamp((p.coachTrust||60)+5,0,100)};});notify("✅ Rimosso dalla lista. +5 fiducia mister.",TH.success);}} style={{padding:"5px 11px",borderRadius:7,border:"1px solid #dc2626",background:TH.card,color:TH.danger,fontSize:10,fontWeight:700,cursor:"pointer",fontFamily:"inherit",flexShrink:0}}>
                           Rimuoviti
                         </button>
                       </div>
                     ):(
-                      <button onClick={function(){setPlayer(function(p){return{...p,transferListed:true,coachTrust:clamp((p.coachTrust||60)-8,0,100)};});notify("📋 In lista transfer. −8 fiducia mister.",TH.warning);}} style={{width:"100%",padding:"9px 12px",borderRadius:9,border:"1px solid #6ee7b7",background:"#f0fdf4",display:"flex",alignItems:"center",justifyContent:"space-between",cursor:"pointer",fontFamily:"inherit",marginBottom:8}}>
+                      <button onClick={function(){setPlayer(function(p){return{...p,transferListed:true,coachTrust:clamp((p.coachTrust||60)-8,0,100)};});notify("📋 In lista transfer. −8 fiducia mister.",TH.warning);}} style={{width:"100%",padding:"9px 12px",borderRadius:9,border:"1px solid #6ee7b7",background:TH.bgGreen,display:"flex",alignItems:"center",justifyContent:"space-between",cursor:"pointer",fontFamily:"inherit",marginBottom:8}}>
                         <div style={{textAlign:"left"}}>
-                          <div style={{fontSize:11,fontWeight:700,color:"#065f46"}}>📋 Mettiti in lista transfer</div>
-                          <div style={{fontSize:10,color:"#6b7280",marginTop:1}}>Più visibilità — ma il mister lo saprà</div>
+                          <div style={{fontSize:11,fontWeight:700,color:TH.txGreen}}>📋 Mettiti in lista transfer</div>
+                          <div style={{fontSize:10,color:TH.muted,marginTop:1}}>Più visibilità — ma il mister lo saprà</div>
                         </div>
-                        <div style={{fontSize:10,color:"#dc2626",fontWeight:600,flexShrink:0}}>−8 trust</div>
+                        <div style={{fontSize:10,color:TH.danger,fontWeight:600,flexShrink:0}}>−8 trust</div>
                       </button>
                     )}
                     {/* Genera offerta */}
                     {!player.windowOfferUsed?(
-                      <button onClick={function(){
+                      <Btn v="green" fw onClick={function(){
                         var offer=generateTransferOffer(player);
                         if(offer){
                           setTransferOffer(offer);
@@ -26092,9 +26092,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                           setPlayer(function(p){return{...p,windowOfferUsed:true};});
                           notify("🔍 Nessun club interessato al momento.",TH.muted);
                         }
-                      }} style={{width:"100%",padding:"10px 12px",borderRadius:9,border:"none",background:"#059669",color:"#fff",fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>
-                        🔍 Fai girare il nome — cerca offerta
-                      </button>
+                      }}>🔍 Fai girare il nome — cerca offerta</Btn>
                     ):(
                       <div style={{padding:"8px 10px",borderRadius:8,background:TH.surface2,border:"1px solid #d1fae5",fontSize:10,color:TH.muted,textAlign:"center"}}>
                         ✅ Ricerca effettuata questa finestra · Prossima: {week>=19?"Estate S."+((player.season||1)+1):"Inverno W.19"}{/* [6.45.0 RC] parentesi: prima concatenava "S."+season+"1" (es. "S.31" invece di "S.4") */}
@@ -26110,27 +26108,27 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                       var _rumors=[..._usedIdx].map(function(ci){
                         var _c=_pool[ci];if(!_c)return null;
                         var _d=(_c.p||65)-(player.ovr||65);
-                        return{club:_c,int:_d<-8?"🔥 Forte interesse":_d<10?"⚖️ Interesse moderato":"🌡️ Sondaggio iniziale",col:_d<-8?"#dc2626":_d<10?"#d97706":"#6b7280"};
+                        return{club:_c,int:_d<-8?"🔥 Forte interesse":_d<10?"⚖️ Interesse moderato":"🌡️ Sondaggio iniziale",col:_d<-8?TH.danger:_d<10?TH.warning:TH.muted};
                       }).filter(Boolean);
                       if(!_rumors.length)return null;
                       return(
                         <div style={{marginTop:10,paddingTop:10,borderTop:"1px solid #a7f3d0"}}>
-                          <div style={{fontSize:10,color:"#065f46",fontWeight:700,textTransform:"uppercase",letterSpacing:1.2,marginBottom:6}}>📡 Voci di Mercato</div>
+                          <div style={{fontSize:10,color:TH.txGreen,fontWeight:700,textTransform:"uppercase",letterSpacing:1.2,marginBottom:6}}>📡 Voci di Mercato</div>
                           {_rumors.map(function(r,i){return(
                             <div key={i} style={{display:"flex",alignItems:"center",gap:8,padding:"4px 0",borderBottom:i<_rumors.length-1?"1px solid #d1fae5":"none"}}>
                               <div style={{width:20,height:20,flexShrink:0}}><TeamBadge team={r.club} size={20}/></div>
-                              <span style={{flex:1,fontSize:11,color:"#065f46",fontWeight:600,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{r.club.n}</span>
+                              <span style={{flex:1,fontSize:11,color:TH.txGreen,fontWeight:600,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{r.club.n}</span>
                               <span style={{fontSize:10,fontWeight:700,color:r.col,flexShrink:0}}>{r.int}</span>
                             </div>
                           );})}
-                          <div style={{fontSize:10,color:"#6b7280",marginTop:6,fontStyle:"italic"}}>Solo indiscrezioni — non è garantita un'offerta formale.</div>
+                          <div style={{fontSize:10,color:TH.muted,marginTop:6,fontStyle:"italic"}}>Solo indiscrezioni — non è garantita un'offerta formale.</div>
                         </div>
                       );
                     })()}
                   </Card>
                 )}
                 {/* Contract status card */}
-                <Card style={{padding:"12px 14px",border:"1px solid "+(isExpiringSoon||isUnderpaid?"#fca5a5":TH.cardBorder)}}>
+                <Card style={{padding:"12px 14px",border:"1px solid "+(isExpiringSoon||isUnderpaid?TH.bdRed:TH.cardBorder)}}>
                   <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>📋 Situazione Contratto</div>
                   <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:6,marginBottom:8}}>
                     <div style={{background:TH.surface2,borderRadius:7,padding:"7px 9px"}}>
@@ -26151,7 +26149,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                     </div>
                   </div>
                   {(isExpiringSoon||isUnderpaid)&&(
-                    <div style={{padding:"6px 10px",borderRadius:7,background:isExpiringSoon?"#fee2e2":"#fff7ed",border:"1px solid "+(isExpiringSoon?"#fca5a5":"#fed7aa"),fontSize:10,color:isExpiringSoon?TH.danger:"#92400e",fontWeight:600}}>
+                    <div style={{padding:"6px 10px",borderRadius:7,background:isExpiringSoon?TH.bgRed:TH.bgAmber,border:"1px solid "+(isExpiringSoon?TH.bdRed:TH.bdAmber),fontSize:10,color:isExpiringSoon?TH.danger:TH.txAmber,fontWeight:600}}>
                       {isExpiringSoon&&!isUnderpaid?"⚠️ Contratto in scadenza — usa il task Prepara rinnovo!":isUnderpaid&&!isExpiringSoon?"💸 Sei sottopagato rispetto al mercato. L'agente può aiutarti.":"⚠️ Contratto in scadenza e stipendio sotto mercato!"}
                     </div>
                   )}
@@ -26176,7 +26174,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                     </div>);
                   })()}
                   {(player.agentRenewalBonus||0)>0&&(
-                    <div style={{marginTop:6,padding:"5px 9px",borderRadius:7,background:"#eff6ff",border:"1px solid #bfdbfe",fontSize:10,color:TH.primary,fontWeight:600}}>
+                    <div style={{marginTop:6,padding:"5px 9px",borderRadius:7,background:TH.bgBlue,border:"1px solid #bfdbfe",fontSize:10,color:TH.primary,fontWeight:600}}>
                       🤵 Bonus rinnovo accumulato: +{Math.round((player.agentRenewalBonus||0)*100)}% — verrà applicato al prossimo rinnovo
                     </div>
                   )}
@@ -26188,24 +26186,24 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                   var hasAccepted=tr&&tr.status==="accepted";
                   var hasRejected=tr&&tr.status==="rejected";
                   return(
-                    <Card style={{padding:"12px 14px",border:"1px solid "+(hasPending?"#fbbf24":hasAccepted?"#6ee7b7":hasRejected?"#fca5a5":TH.cardBorder)}}>
+                    <Card style={{padding:"12px 14px",border:"1px solid "+(hasPending?TH.bdAmber:hasAccepted?TH.bdGreen:hasRejected?TH.bdRed:TH.cardBorder)}}>
                       <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>🚪 Richiedi Cessione</div>
                       {hasPending?(
-                        <div style={{padding:"9px 11px",borderRadius:9,background:"#fffbeb",border:"1px solid #fde68a"}}>
-                          <div style={{fontSize:11,fontWeight:700,color:"#92400e"}}>⏳ Richiesta in valutazione</div>
-                          <div style={{fontSize:10,color:"#78350f",marginTop:2}}>Il club sta valutando la tua richiesta. Risposta entro 2 settimane.</div>
+                        <div style={{padding:"9px 11px",borderRadius:9,background:TH.bgAmber,border:"1px solid #fde68a"}}>
+                          <div style={{fontSize:11,fontWeight:700,color:TH.txAmber}}>⏳ Richiesta in valutazione</div>
+                          <div style={{fontSize:10,color:TH.txAmber,marginTop:2}}>Il club sta valutando la tua richiesta. Risposta entro 2 settimane.</div>
                         </div>
                       ):hasAccepted?(
-                        <div style={{padding:"9px 11px",borderRadius:9,background:"#f0fdf4",border:"1px solid #86efac"}}>
-                          <div style={{fontSize:11,fontWeight:700,color:"#166534"}}>✅ Richiesta accettata — sei in lista transfer</div>
-                          <div style={{fontSize:10,color:"#14532d",marginTop:2}}>Il club ti metterà sul mercato. Aspetta le offerte.</div>
-                          <button onClick={function(){setPlayer(function(p){return{...p,transferRequest:null,transferListed:false,coachTrust:clamp((p.coachTrust||60)+5,0,100)};});notify("↩️ Richiesta ritirata. +5 fiducia mister.",TH.success);}} style={{marginTop:6,padding:"4px 10px",borderRadius:7,border:"1px solid #16a34a",background:"#fff",color:"#16a34a",fontSize:10,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>Ritira richiesta</button>
+                        <div style={{padding:"9px 11px",borderRadius:9,background:TH.bgGreen,border:"1px solid #86efac"}}>
+                          <div style={{fontSize:11,fontWeight:700,color:TH.txGreen}}>✅ Richiesta accettata — sei in lista transfer</div>
+                          <div style={{fontSize:10,color:TH.txGreen,marginTop:2}}>Il club ti metterà sul mercato. Aspetta le offerte.</div>
+                          <button onClick={function(){setPlayer(function(p){return{...p,transferRequest:null,transferListed:false,coachTrust:clamp((p.coachTrust||60)+5,0,100)};});notify("↩️ Richiesta ritirata. +5 fiducia mister.",TH.success);}} style={{marginTop:6,padding:"4px 10px",borderRadius:7,border:"1px solid #16a34a",background:TH.card,color:TH.success,fontSize:10,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>Ritira richiesta</button>
                         </div>
                       ):hasRejected?(
-                        <div style={{padding:"9px 11px",borderRadius:9,background:"#fef2f2",border:"1px solid #fca5a5"}}>
-                          <div style={{fontSize:11,fontWeight:700,color:"#991b1b"}}>❌ Richiesta respinta</div>
-                          <div style={{fontSize:10,color:"#7f1d1d",marginTop:2}}>Il club non intende cedere. Il rapporto col mister ne risente.</div>
-                          <button onClick={function(){setPlayer(function(p){return{...p,transferRequest:null};});}} style={{marginTop:6,padding:"4px 10px",borderRadius:7,border:"1px solid #dc2626",background:"#fff",color:"#dc2626",fontSize:10,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>Chiudi</button>
+                        <div style={{padding:"9px 11px",borderRadius:9,background:TH.bgRed,border:"1px solid #fca5a5"}}>
+                          <div style={{fontSize:11,fontWeight:700,color:TH.txRed}}>❌ Richiesta respinta</div>
+                          <div style={{fontSize:10,color:TH.txRed,marginTop:2}}>Il club non intende cedere. Il rapporto col mister ne risente.</div>
+                          <button onClick={function(){setPlayer(function(p){return{...p,transferRequest:null};});}} style={{marginTop:6,padding:"4px 10px",borderRadius:7,border:"1px solid #dc2626",background:TH.card,color:TH.danger,fontSize:10,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>Chiudi</button>
                         </div>
                       ):(
                         <div>
@@ -26216,19 +26214,17 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                             {[{id:"any",label:"Qualsiasi",desc:"Aperto a tutto"},{id:"ambizioso",label:"Ambiziosa",desc:"Club più forte (prestige +15)"},{id:"top",label:"Top club",desc:"Club élite (prestige 80+)"}].map(function(opt){
                               var active=transferPref===opt.id;
                               return(
-                                <button key={opt.id} onClick={function(){setTransferPref(opt.id);}} title={opt.desc} style={{flex:1,padding:"5px 4px",borderRadius:8,border:"1px solid "+(active?"#dc2626":"#e2e8f0"),background:active?"#fff1f2":"#f8fafc",color:active?"#dc2626":TH.muted,fontSize:10,fontWeight:active?700:500,cursor:"pointer",fontFamily:"inherit"}}>
+                                <button key={opt.id} onClick={function(){setTransferPref(opt.id);}} title={opt.desc} style={{flex:1,padding:"6px 4px",borderRadius:RAD.sm,border:"1px solid "+(active?TH.primary:TH.divider),background:active?TH.primaryTint:TH.surface2,color:active?TH.primary:TH.muted,fontSize:10,fontWeight:active?700:500,cursor:"pointer",fontFamily:"inherit"}}>
                                   {opt.label}
                                 </button>
                               );
                             })}
                           </div>
-                          <button onClick={function(){
+                          <Btn v="danger" fw onClick={function(){
                             var _pref=transferPref==="any"?null:transferPref==="ambizioso"?{mode:"prestige",prestigeTarget:Math.min(99,(player.club?.p||65)+15)}:{mode:"prestige",prestigeTarget:85};
                             setPlayer(function(p){return{...p,transferRequest:{season:p.season||1,week:p.week||1,status:"pending",pref:_pref},coachTrust:clamp((p.coachTrust||60)-10,0,100)};});
                             notify("🚪 Richiesta di cessione inviata. −10 fiducia mister.",TH.warning);
-                          }} style={{width:"100%",padding:"10px 12px",borderRadius:9,border:"1px solid #fca5a5",background:"#fff1f2",color:"#dc2626",fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>
-                            🚪 Richiedi Cessione
-                          </button>
+                          }}>🚪 Richiedi Cessione</Btn>
                           <div style={{fontSize:10,color:TH.muted,marginTop:6,textAlign:"center"}}>Attenzione: riduce la fiducia del mister (−10)</div>
                         </div>
                       )}
@@ -26241,29 +26237,29 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                   var lType=ln.type||"prestito";
                   var turnsLeft=(ln.untilSeason||1)-(player.season||1);
                   return(
-                    <Card style={{padding:"12px 14px",border:"1px solid #c4b5fd",background:"#f5f3ff"}}>
-                      <div style={{fontSize:10,color:"#7c3aed",textTransform:"uppercase",letterSpacing:1.5,marginBottom:8,fontWeight:700}}>🔄 Stato Prestito</div>
+                    <Card style={{padding:"12px 14px",border:"1px solid #c4b5fd",background:TH.bgPurple}}>
+                      <div style={{fontSize:10,color:TH.txPurple,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8,fontWeight:700}}>🔄 Stato Prestito</div>
                       <div style={{display:"flex",gap:8,marginBottom:8}}>
-                        <div style={{flex:1,background:"#ede9fe",borderRadius:8,padding:"7px 9px"}}>
-                          <div style={{fontSize:9,color:"#6d28d9",textTransform:"uppercase",letterSpacing:1}}>TIPO</div>
-                          <div style={{fontSize:11,fontWeight:700,color:"#4c1d95"}}>{lType==="prestito con opzione"?"Con opzione":lType==="prestito con obbligo"?"Con obbligo":"Semplice"}</div>
+                        <div style={{flex:1,background:TH.surface3,borderRadius:8,padding:"7px 9px"}}>
+                          <div style={{fontSize:9,color:TH.txPurple,textTransform:"uppercase",letterSpacing:1}}>TIPO</div>
+                          <div style={{fontSize:11,fontWeight:700,color:TH.txPurple}}>{lType==="prestito con opzione"?"Con opzione":lType==="prestito con obbligo"?"Con obbligo":"Semplice"}</div>
                         </div>
-                        <div style={{flex:1,background:"#ede9fe",borderRadius:8,padding:"7px 9px"}}>
-                          <div style={{fontSize:9,color:"#6d28d9",textTransform:"uppercase",letterSpacing:1}}>CLUB MADRE</div>
-                          <div style={{fontSize:11,fontWeight:700,color:"#4c1d95"}}>{ln.parentClub?.n||"–"}</div>
+                        <div style={{flex:1,background:TH.surface3,borderRadius:8,padding:"7px 9px"}}>
+                          <div style={{fontSize:9,color:TH.txPurple,textTransform:"uppercase",letterSpacing:1}}>CLUB MADRE</div>
+                          <div style={{fontSize:11,fontWeight:700,color:TH.txPurple}}>{ln.parentClub?.n||"–"}</div>
                         </div>
                       </div>
                       <div style={{display:"flex",gap:8}}>
-                        <div style={{flex:1,background:"#ede9fe",borderRadius:8,padding:"7px 9px"}}>
-                          <div style={{fontSize:9,color:"#6d28d9",textTransform:"uppercase",letterSpacing:1}}>SCADENZA</div>
-                          <div style={{fontSize:11,fontWeight:700,color:"#4c1d95"}}>S.{ln.untilSeason||"?"}{turnsLeft===0?" (questa stagione)":turnsLeft>0?` (${turnsLeft} stagion${turnsLeft===1?"e":"i"})`:""}</div>
+                        <div style={{flex:1,background:TH.surface3,borderRadius:8,padding:"7px 9px"}}>
+                          <div style={{fontSize:9,color:TH.txPurple,textTransform:"uppercase",letterSpacing:1}}>SCADENZA</div>
+                          <div style={{fontSize:11,fontWeight:700,color:TH.txPurple}}>S.{ln.untilSeason||"?"}{turnsLeft===0?" (questa stagione)":turnsLeft>0?` (${turnsLeft} stagion${turnsLeft===1?"e":"i"})`:""}</div>
                         </div>
-                        {ln.buyClause?<div style={{flex:1,background:"#ede9fe",borderRadius:8,padding:"7px 9px"}}>
-                          <div style={{fontSize:9,color:"#6d28d9",textTransform:"uppercase",letterSpacing:1}}>CLAUSOLA</div>
-                          <div style={{fontSize:11,fontWeight:700,color:"#4c1d95"}}>€{(ln.buyClause/1e6).toFixed(1)}M</div>
+                        {ln.buyClause?<div style={{flex:1,background:TH.surface3,borderRadius:8,padding:"7px 9px"}}>
+                          <div style={{fontSize:9,color:TH.txPurple,textTransform:"uppercase",letterSpacing:1}}>CLAUSOLA</div>
+                          <div style={{fontSize:11,fontWeight:700,color:TH.txPurple}}>€{(ln.buyClause/1e6).toFixed(1)}M</div>
                         </div>:null}
                       </div>
-                      {ln.minMatches?<div style={{marginTop:8,padding:"6px 10px",borderRadius:7,background:"#ede9fe",fontSize:10,color:"#7c3aed",fontWeight:600}}>⚽ Obbligo riscatto se ≥{ln.minMatches} presenze</div>:null}
+                      {ln.minMatches?<div style={{marginTop:8,padding:"6px 10px",borderRadius:7,background:TH.surface3,fontSize:10,color:TH.txPurple,fontWeight:600}}>⚽ Obbligo riscatto se ≥{ln.minMatches} presenze</div>:null}
                     </Card>
                   );
                 })()}
@@ -26272,7 +26268,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                   <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>🎯 Task Settimanale</div>
                   {currentTask?(
                     <div>
-                      <div style={{padding:"10px 12px",borderRadius:9,background:"#eff6ff",border:"1px solid #bfdbfe",marginBottom:8}}>
+                      <div style={{padding:"10px 12px",borderRadius:9,background:TH.bgBlue,border:"1px solid #bfdbfe",marginBottom:8}}>
                         <div style={{fontSize:12,fontWeight:700,color:TH.primary}}>{taskDef?taskDef.e+" "+taskDef.l:"Task assegnato"}</div>
                         <div style={{fontSize:10,color:TH.muted,marginTop:2}}>{taskDef?taskDef.d:"In esecuzione..."}</div>
                       </div>
@@ -26297,7 +26293,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                 </Card>
                 {/* Active offer — agent opinion */}
                 {transferOffer&&!transferOffer.isRenewal&&(
-                  <Card style={{padding:"12px 14px",background:"#eff6ff",border:"1px solid #bfdbfe"}}>
+                  <Card style={{padding:"12px 14px",background:TH.bgBlue,border:"1px solid #bfdbfe"}}>
                     <div style={{fontSize:10,color:TH.primary,fontWeight:700,textTransform:"uppercase",letterSpacing:1.5,marginBottom:6}}>🤵 Opinione agente — Offerta attiva</div>
                     <div style={{fontSize:11,color:TH.text,lineHeight:1.6,fontStyle:"italic"}}>
                       «{(transferOffer.club?.p||60)>=(player.club?.p||60)+10?"Questa offerta è un salto di qualità. Vale la pena valutarla seriamente.":(transferOffer.wage||500)>(player.contract?.wage||500)*1.20?"Lo stipendio è nettamente superiore. Dal punto di vista economico, è interessante.":transferOffer.minutaggio>=80?"Il minutaggio garantito è ottimo per il tuo sviluppo. Considerala.":"È un'offerta nella norma. Dipende dalle tue ambizioni."}»
