@@ -3643,7 +3643,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="7.106.3"; // [7.106.3 collaudo PO «Nino il mentore non lo vedo in rosa · metti il cognome»] i compagni «Nello spogliatoio» (teammates) ora hanno archetipi/slot STABILI dal solo club ma NOMI dalla rosa CORRENTE (season-aware) -> sono sempre giocatori REALI presenti in rosa; ri-sincronizzazione dei nomi al load (syncTeammateNames, bond preservato); mateEcho mostra il COGNOME invece del nome.
+const GAME_VERSION="7.107.0"; // [7.107.0 collaudo PO «dialoghi mister ripetitivi, sempre le stesse risposte»] verifica trimestrale col mister: battute ampliate (8→14/fascia, memoria 6→10) e RISPOSTE non più fisse (choicePool ~10/fascia → 3 estratte e ruotate per settimana, escludendo le recenti via recentCoachChoices); messaggio settimanale del mister 3→7 varianti per fascia.
 // [6.18.0-note] // [6.18.0] AVATAR = libreria DiceBear (direttiva PO): CH38 3D via dai menu (resta solo nel live match). EROE/giocatori = stile AVATAAARS con FEDELTA al modello CH38 (forza carnagione+capelli+calvizie dalla stessa fonte AVATARS[avatarId] usata dal CH38 a r.7127 -> avatar dei menu ≈ giocatore in campo). NPC/staff (agente, mister via NpcFaceCoach) = stile MICAH seedato dal nome. Bundle locale offline assets/dicebear-avatars.min.js (esbuild IIFE avataaars+micah, ~163KB) caricato da script locale -> no CDN, funziona in gate/offline/produzione. AvatarSVG DiceBear-backed (API invariata, cache seed). Sorgente rigenerabile in tools/avatar-build/. Gate-cieco su CareerApp ma DiceBear carica anche in gate.
 const SAVE_VERSION=9;// v9 [7.6.0 FASE 2]: clubEvo (evoluzione pluriennale del club: fanbase/stadiumTier/budget/seasonsTop-Low) — migration retro-compatibile. v8 [5.81.0 BIL-3b]: bankBalance (stipendio accumulato, €) + perkTrainer/perkNutrition (staff personale) — migration retro-compatibile. v7: player.foot
 // 5.67.0 — TABELLONE realistico del torneo per NAZIONALI (Europeo/Mondiale): dopo il girone la fase a
@@ -18088,7 +18088,7 @@ const getWinStreak=(history)=>{
 };
 /* Sprint 60 — Verifica Trimestrale del Mister */
 const MONTHLY_COACH_REVIEWS=[
-  {perf:"excellent",lines:[/* [6.85.0 collaudo PO «dialoghi mister ripetitivi»] 3→8 battute per fascia + memoria recentCoachLines */
+  {perf:"excellent",lines:[/* [7.107.0 collaudo PO «dialoghi mister ripetitivi, sempre le stesse risposte»] battute ampliate + choicePool ruotato (3 su ~10) */
     "Sei in un momento di forma straordinaria. Continua così e questa stagione sarà memorabile.",
     "I numeri parlano chiaro: sei tra i migliori in questo momento. Il club è orgoglioso di te.",
     "Non potrei chiedere di meglio. Stai dimostrando ogni settimana chi sei davvero.",
@@ -18097,10 +18097,23 @@ const MONTHLY_COACH_REVIEWS=[
     "Il presidente mi ha chiesto di te. Gli ho detto una cosa sola: è il nostro faro.",
     "C'è poco da correggere e molto da custodire: gestisci le energie, al resto pensiamo noi.",
     "Quando il pallone scotta lo vuoi tu. È questa la differenza tra un buon giocatore e un leader.",
-  ],choices:[
+    "Gli osservatori delle grandi in tribuna ci sono per te. Ma la tua testa deve restare qui, su questa maglia.",
+    "Ti dico una cosa da allenatore navigato: questi momenti durano se non smetti di lavorare. Mai.",
+    "I compagni ti guardano diverso, ora. Il peso della squadra inizia a passare dai tuoi piedi.",
+    "Non ricordo un giocatore così determinante da quando alleno. Godiamocelo, ma con la fame di sempre.",
+    "La stampa ti incorona ogni domenica. Io ti chiedo solo di non leggere i giornali e di ascoltare me.",
+    "Sei l'esempio che porto ai giovani del vivaio. Sappi che questo, per un tecnico, vale più di dieci gol.",
+  ],choicePool:[
     {txt:"💪 Grazie, mister. Non mi fermo qui.",ef:{coachTrust:8,morale:9,form:4}},
     {txt:"😊 È il lavoro di squadra che fa la differenza.",ef:{coachTrust:6,morale:6,popularity:4}},
     {txt:"🔥 Voglio fare ancora meglio nel girone di ritorno.",ef:{coachTrust:4,morale:7,form:6}},
+    {txt:"🎯 Merito anche del suo lavoro. Mi ha reso un giocatore migliore.",ef:{coachTrust:10,morale:5}},
+    {txt:"😌 Resto coi piedi per terra: la stagione è ancora lunga.",ef:{coachTrust:7,morale:4,form:3}},
+    {txt:"🏆 Se continuo così, punto a qualcosa di grande quest'anno.",ef:{coachTrust:3,morale:8,popularity:5,form:4}},
+    {txt:"🙏 I complimenti mi caricano, ma non voglio montarmi la testa.",ef:{coachTrust:8,morale:6}},
+    {txt:"⚡ Sto benissimo fisicamente, posso reggere ritmi ancora più alti.",ef:{coachTrust:5,form:7,fatigue:4}},
+    {txt:"🤝 Dedico tutto ai tifosi: senza di loro non spingerei così.",ef:{coachTrust:4,morale:5,popularity:7}},
+    {txt:"🧊 Le voci di mercato non mi toccano. Penso solo alla prossima gara.",ef:{coachTrust:9,morale:3}},
   ]},
   {perf:"medium",lines:[
     "Non è il tuo momento migliore, ma vedo impegno. Dobbiamo lavorare insieme per sbloccarti.",
@@ -18111,10 +18124,23 @@ const MONTHLY_COACH_REVIEWS=[
     "A tratti illumini, a tratti sparisci. Trova il modo di restare dentro la partita per 90 minuti.",
     "Ho difeso le tue scelte davanti alla squadra. Ora tocca a te ripagare la fiducia.",
     "La condizione va e viene, la testa no: voglio vederti comandare anche nelle giornate storte.",
-  ],choices:[
+    "Ti manca l'ultimo passo, quello che separa il buon giocatore dal titolare inamovibile. Cerchiamolo insieme.",
+    "Non voglio l'assistman timido. Voglio quello che si prende la responsabilità di sbagliare per vincere.",
+    "In allenamento sei tra i primi. In partita ti nascondi. Perché? Questa è la domanda della settimana.",
+    "Ti sto valutando, come valuto tutti. Dammi tre buone gare di fila e cambia tutto, per te.",
+    "La media è un posto comodo, ma pericoloso. Da lì si scivola in panchina senza accorgersene.",
+    "Ho parlato col preparatore: le gambe ci sono. Manca la scintilla. Quella la metti solo tu.",
+  ],choicePool:[
     {txt:"💪 Ha ragione. Alzo il ritmo da domani.",ef:{coachTrust:7,form:5,morale:4}},
     {txt:"😐 Sto trovando il ritmo giusto. Ci vuole pazienza.",ef:{coachTrust:3,morale:3}},
     {txt:"🧠 Ho idee per migliorare. Mi dia fiducia.",ef:{coachTrust:5,form:3,morale:5}},
+    {txt:"🔧 Lavorerò sui dettagli che mi chiede. Voglio quel gradino in più.",ef:{coachTrust:8,form:4}},
+    {txt:"🗣️ Se mi dà più responsabilità, le dimostro chi sono.",ef:{coachTrust:-2,morale:7,form:4}},
+    {txt:"😤 So di poter fare di più. Non la deluderò.",ef:{coachTrust:6,morale:5}},
+    {txt:"🤝 Mi metta dove serve alla squadra: io rispondo presente.",ef:{coachTrust:9,morale:2}},
+    {txt:"⏳ Mi dia qualche partita e la musica cambia, glielo garantisco.",ef:{coachTrust:4,morale:6,form:3}},
+    {txt:"🏋️ Resto dopo gli allenamenti a lavorare sui miei limiti.",ef:{coachTrust:7,form:6,fatigue:6}},
+    {txt:"🎧 Ascolto tutto quello che mi dice. Voglio crescere qui.",ef:{coachTrust:8,morale:4}},
   ]},
   {perf:"bad",lines:[
     "Devo essere diretto: questo non è il tuo livello. Dobbiamo parlare seriamente.",
@@ -18125,10 +18151,23 @@ const MONTHLY_COACH_REVIEWS=[
     "Non guardo il nome sulla maglia, guardo il campo. E il campo ultimamente dice poco.",
     "C'è qualcosa fuori dal campo che ti pesa? Se sì, parliamone. Se no, alza il livello.",
     "Le attenuanti sono finite. Da qui alla prossima verifica voglio fatti, non promesse.",
-  ],choices:[
+    "Il presidente mi chiede conto delle prestazioni. Non voglio fare il tuo nome in senso negativo.",
+    "Ti ho voluto io in questa rosa. Non farmi passare per quello che ha sbagliato valutazione.",
+    "In questo momento un ragazzo della Primavera mi darebbe le stesse garanzie. È dura da sentire, lo so.",
+    "Il talento non basta più. Serve fame, corsa, sacrificio. Le tre cose che ultimamente non vedo.",
+    "Non ti mollo, ma non posso nemmeno aspettarti in eterno. Il tempo nel calcio è tiranno.",
+    "Guardami: io in te credo ancora. Ma devi darmi qualcosa a cui aggrapparmi, e presto.",
+  ],choicePool:[
     {txt:"🙏 Ha ragione. Mi allenerò il doppio.",ef:{coachTrust:9,form:5,fatigue:8,morale:-4}},
     {txt:"😤 Sono in un momento difficile ma tornerò.",ef:{coachTrust:2,morale:5}},
     {txt:"🗣️ Ho bisogno di più spazio per esprimermi.",ef:{coachTrust:-4,morale:8,fatigue:-6}},
+    {txt:"😔 Mi assumo le mie responsabilità. Cambio marcia.",ef:{coachTrust:8,morale:-2,form:4}},
+    {txt:"💬 C'è qualcosa che mi pesa fuori dal campo. Ne parliamo?",ef:{coachTrust:5,morale:6}},
+    {txt:"🔥 Mi dia una chance da titolare e le ricambio la fiducia.",ef:{coachTrust:-2,morale:7,form:3}},
+    {txt:"🧊 Resto tranquillo: le difficoltà fanno parte del percorso.",ef:{coachTrust:-3,morale:4}},
+    {txt:"🏋️ Lavoro extra in palestra e sul campo. Nessun alibi.",ef:{coachTrust:7,form:6,fatigue:10,morale:-3}},
+    {txt:"🤝 Non voglio deluderla. Mi dica esattamente cosa cambiare.",ef:{coachTrust:10,morale:-2,form:3}},
+    {txt:"😑 Il campo dirà chi ha ragione. Parlo con i fatti.",ef:{coachTrust:-2,morale:6,form:4}},
   ]},
 ];
 // [7.93.0 collaudo PO «biografia non allineata con le vere statistiche + nuove considerazioni (bandiera e capitano
@@ -21007,12 +21046,12 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       const _a=_r.length?_r.reduce((s,m)=>s+(m.rating||6.5),0)/_r.length:6.5;
       // [6.85.0 collaudo PO «dialoghi mister ripetitivi»] 3 varianti per fascia, ruotate DETERMINISTICAMENTE
       //   per settimana (stessa settimana ⇒ stessa frase, settimane diverse ⇒ voce diversa).
-      const _cmV=(arr)=>arr[Math.abs(hashStr("cm|"+(player.season||1)+"|"+(player.week||1)))%arr.length];
-      return _f>85?_cmV(["Sei a pezzi. Riposo assoluto — non si allena in queste condizioni.","Ho visto i dati del GPS: sei in riserva. Questa settimana scarico totale.","Niente eroismi: le gambe vanno ricaricate. Ci penso io col preparatore."])
-        :_f>65?_cmV(["Stai spingendo troppo. Lavoro leggero e poi recupero.","Gestiamo il carico: metà campo e piscina, la brillantezza va protetta.","Regime ridotto in settimana: mi servi fresco alla prossima."])
-        :_a>=7.5?_cmV(["Stai volando — intensifico il lavoro tecnico per sfruttare il momento.","Il momento è d'oro: aggiungo rifinitura e palle inattive, cavalchiamolo.","Chi è in fiducia deve toccare più palloni: settimana ad alta intensità tecnica."])
-        :_a<=5.5?_cmV(["Dobbiamo migliorare. Doppio lavoro tecnico e fisico.","Ripartiamo dalle basi: possesso, movimenti, letture. Testa bassa.","Settimana di lavoro sporco: video, campo e ancora video. Ti rimetto in carreggiata."])
-        :_cmV(["Questa settimana puntiamo su tecnica e fisico. Segui il piano.","Programma standard ma fatto bene: cura i dettagli, fanno la differenza.","Lavoro equilibrato: tattica, ritmo e un occhio al recupero."]);
+      const _cmV=(arr)=>arr[Math.abs(hashStr("cm|"+(player.season||1)+"|"+(player.week||1)))%arr.length];/* [7.107.0] varianti ampliate 3→7 per fascia */
+      return _f>85?_cmV(["Sei a pezzi. Riposo assoluto — non si allena in queste condizioni.","Ho visto i dati del GPS: sei in riserva. Questa settimana scarico totale.","Niente eroismi: le gambe vanno ricaricate. Ci penso io col preparatore.","Fermati. Un giocatore spremuto così si fa male: recupero e basta.","Ti guardo camminare e mi basta: questa settimana non tocchi il campo.","Il fisioterapista ti prende in cura. Voglio indietro il giocatore fresco, non l'eroe stanco.","Zero partitelle. Massaggi, sonno e alimentazione: il resto lo rimandiamo."])
+        :_f>65?_cmV(["Stai spingendo troppo. Lavoro leggero e poi recupero.","Gestiamo il carico: metà campo e piscina, la brillantezza va protetta.","Regime ridotto in settimana: mi servi fresco alla prossima.","Un po' di stanchezza si vede. Alleggeriamo, senza esagerare.","Meglio prevenire: settimana calibrata, niente strappi inutili.","Ti tengo a scartamento ridotto. Alla domenica devi arrivare pimpante.","Occhio ai carichi: la condizione è un tesoro, non la buttiamo via ora."])
+        :_a>=7.5?_cmV(["Stai volando — intensifico il lavoro tecnico per sfruttare il momento.","Il momento è d'oro: aggiungo rifinitura e palle inattive, cavalchiamolo.","Chi è in fiducia deve toccare più palloni: settimana ad alta intensità tecnica.","Sei in fiducia e si vede: lavoriamo sulle giocate che ti stanno riuscendo.","Non cambio nulla di quello che funziona, ci metto solo un po' di brillantezza in più.","Quando uno è così, va assecondato: più libertà negli esercizi offensivi.","Continua a fare quello che fai. Io aggiungo solo qualche schema per te."])
+        :_a<=5.5?_cmV(["Dobbiamo migliorare. Doppio lavoro tecnico e fisico.","Ripartiamo dalle basi: possesso, movimenti, letture. Testa bassa.","Settimana di lavoro sporco: video, campo e ancora video. Ti rimetto in carreggiata.","Analisi degli errori e poi campo: voglio vederti reagire con i fatti.","Ti serve fiducia: lavoriamo su cose semplici che ti riescano bene.","Rivediamo insieme le ultime gare. Poi si suda per correggere.","Niente panico: torniamo all'essenziale e da lì risaliamo, passo dopo passo."])
+        :_cmV(["Questa settimana puntiamo su tecnica e fisico. Segui il piano.","Programma standard ma fatto bene: cura i dettagli, fanno la differenza.","Lavoro equilibrato: tattica, ritmo e un occhio al recupero.","Routine collaudata: qualità negli esercizi, testa sul pezzo.","Settimana normale, ma la normalità fatta bene è già tanto.","Manteniamo la barra dritta: allenamento pulito e concentrazione.","Nulla di speciale in programma, se non farlo tutto al 100%."]);
     })();
     if(player.injured){
       const type=player.injuryType||"stiramento";
@@ -21037,13 +21076,20 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       const _form=player.form||70;
       const _perf=_form>=72?"excellent":_form>=55?"medium":"bad";
       const _rev=MONTHLY_COACH_REVIEWS.find(r=>r.perf===_perf)||MONTHLY_COACH_REVIEWS[1];
-      // [6.85.0 collaudo PO «dialoghi mister ripetitivi»] mai la stessa battuta delle ultime 6 (memoria persistente)
+      // [7.107.0 collaudo PO «dialoghi mister ripetitivi, sempre le stesse risposte»] battuta mai tra le ultime 10
+      //   + le RISPOSTE non sono più le solite 3 fisse: 3 scelte estratte dal choicePool (rotate per settimana,
+      //   escludendo quelle mostrate di recente → varietà reale ad ogni verifica).
       const _seenL85=(player.recentCoachLines||[]);
       const _linePool=_rev.lines.filter(l=>!_seenL85.includes(l));
       const _line=pick(_linePool.length?_linePool:_rev.lines);
+      const _cPool=_rev.choicePool||_rev.choices||[];
+      const _seenC=(player.recentCoachChoices||[]);
+      const _cShuf=seededShuffle(_cPool,hashStr("cmc|"+(player.season||1)+"|"+(_curW)+"|"+_perf));
+      const _cFresh=_cShuf.filter(c=>!_seenC.includes(c.txt));
+      const _choices=(_cFresh.length>=3?_cFresh:_cShuf).slice(0,3);
       const _cName=(player.coach?.name||"Il Mister");
-      setPlayer(p=>({...p,weekLived:true,lastMonthlyReview:_curW,recentCoachLines:[...(p.recentCoachLines||[]),_line].slice(-6)}));
-      setTimeout(()=>setMonthlyReviewModal({perf:_perf,line:_line,choices:_rev.choices,coachName:_cName,week:_curW,season:player.season||1}),60);
+      setPlayer(p=>({...p,weekLived:true,lastMonthlyReview:_curW,recentCoachLines:[...(p.recentCoachLines||[]),_line].slice(-10),recentCoachChoices:[...(p.recentCoachChoices||[]),..._choices.map(c=>c.txt)].slice(-12)}));
+      setTimeout(()=>setMonthlyReviewModal({perf:_perf,line:_line,choices:_choices,coachName:_cName,week:_curW,season:player.season||1}),60);
       return;
     }
     // Sprint 24A: 12% chance spogliatoio moment on match weeks
