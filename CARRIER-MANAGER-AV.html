@@ -3643,7 +3643,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="7.106.1"; // [7.106.1 collaudo PO «questo box e fuori standard»] card DEADLINE DAY allineata al pattern kit degli altri box-evento del dashboard: eyebrow ambra + corpo di testo leggibile normale (TH.text) + CTA piena granata (v=primary) al posto del corpo tutto-grassetto-ambra e del bottone ghost slavato sul giallo.
+const GAME_VERSION="7.106.2"; // [7.106.2 collaudo PO x2] (1) cartelloni curva CONTINUI (fix «staccati»): passo uniforme + larghezza=passo+overlap 0.5, con stagger di profondità per-cartellone → nessun gap E nessun z-fighting/lampeggio (evita la regressione del 7.105.0); (2) header dashboard: aggiunta la POSIZIONE in classifica accanto a lega/stagione/settimana.
 // [6.18.0-note] // [6.18.0] AVATAR = libreria DiceBear (direttiva PO): CH38 3D via dai menu (resta solo nel live match). EROE/giocatori = stile AVATAAARS con FEDELTA al modello CH38 (forza carnagione+capelli+calvizie dalla stessa fonte AVATARS[avatarId] usata dal CH38 a r.7127 -> avatar dei menu ≈ giocatore in campo). NPC/staff (agente, mister via NpcFaceCoach) = stile MICAH seedato dal nome. Bundle locale offline assets/dicebear-avatars.min.js (esbuild IIFE avataaars+micah, ~163KB) caricato da script locale -> no CDN, funziona in gate/offline/produzione. AvatarSVG DiceBear-backed (API invariata, cache seed). Sorgente rigenerabile in tools/avatar-build/. Gate-cieco su CareerApp ma DiceBear carica anche in gate.
 const SAVE_VERSION=9;// v9 [7.6.0 FASE 2]: clubEvo (evoluzione pluriennale del club: fanbase/stadiumTier/budget/seasonsTop-Low) — migration retro-compatibile. v8 [5.81.0 BIL-3b]: bankBalance (stipendio accumulato, €) + perkTrainer/perkNutrition (staff personale) — migration retro-compatibile. v7: player.foot
 // 5.67.0 — TABELLONE realistico del torneo per NAZIONALI (Europeo/Mondiale): dopo il girone la fase a
@@ -8802,9 +8802,14 @@ function ThreeMatchView(props){
     // [7.87.0 collaudo PO «mancano alcuni cartelloni pubblicitari nella curva (laterali)»] la fila dietro-porta
     //   copriva solo z=±13; +z=±24 la ESTENDE verso i lati della curva (i pannelli diagonali d'angolo restano
     //   RIMOSSI — 7.55.0, entravano in campo — qui è solo una fila retta più lunga a x=50.2, mai sul terreno).
-    [-24,-13,0,13,24].forEach((z,k)=>{_mkAdBoard(50.2,z,-Math.PI/2,k,z!==0,10.2);_mkAdBoard(-50.2,z,Math.PI/2,k+1,z!==0,10.2);});/* [7.44.0] dietro le porte: Korward al centro (brand del gioco), pubblicità di fantasia ai lati · [7.105.0] w=10.2 < passo 11 → niente overlap/z-fight */
-    // lungo le linee laterali (lato TRIBUNA, camera-side z- e opposta z+): TUTTE pubblicità di fantasia seedate; +x=±38 fino agli angoli
-    [-38,-26,-13,0,13,26,38].forEach((x,k)=>{_mkAdBoard(x,-33.2,0,k,true,11.4);_mkAdBoard(x,33.2,Math.PI,k+4,true,11.4);});/* [7.105.0] w=11.4 < passo 12 → niente overlap/z-fight (testo non più tagliato ai bordi) */
+    /* [7.106.2 collaudo PO «i cartelloni della curva sono STACCATI tra loro, brutto effetto TV»] il 7.105.0 li aveva
+       stretti troppo (larghezza < passo → GAP visibili). Ora perimetro CONTINUO come i LED reali: passo UNIFORME e
+       larghezza = passo + piccolo overlap (niente buchi), + ogni cartellone scostato di un epsilon in PROFONDITÀ
+       (x per le porte, z per le fasce) → l'overlap NON è complanare, quindi niente z-fighting/lampeggio (la
+       regressione del 7.105.0 evitata per costruzione). */
+    [-24,-12,0,12,24].forEach((z,i)=>{_mkAdBoard(50.2+i*0.03,z,-Math.PI/2,i,z!==0,12.5);_mkAdBoard(-50.2-i*0.03,z,Math.PI/2,i+1,z!==0,12.5);});/* dietro le porte: Korward al centro + fantasia ai lati · passo 12, w 12.5 (overlap 0.5), x-stagger anti-flicker */
+    // lungo le linee laterali (lato TRIBUNA, camera-side z- e opposta z+): TUTTE pubblicità di fantasia seedate
+    [-37.8,-25.2,-12.6,0,12.6,25.2,37.8].forEach((x,i)=>{_mkAdBoard(x,-33.2-i*0.03,0,i,true,13.1);_mkAdBoard(x,33.2+i*0.03,Math.PI,i+4,true,13.1);});/* passo 12.6, w 13.1 (overlap 0.5), z-stagger anti-flicker → strip continua */
     /* [7.55.0 collaudo PO «i cartelloni pubblicitari angolari entrano nel campo, valuta se eliminarli proprio!»]
        RIMOSSI i 4 pannelli d'angolo (7.51.1→7.52.1): la «verifica geometrica» del 7.52.1 considerava solo il
        CENTRO del pannello (46.5,32.2) — ma il board è un PIANO con larghezza, e il bordo vicino del segmento
@@ -23333,6 +23338,8 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
               <div style={{display:"flex",flexWrap:"wrap",alignItems:"center",gap:6,marginTop:2}}>
                 <span style={{fontSize:FS.caption,color:"#fff",fontWeight:FW.bold,background:"rgba(255,255,255,0.16)",borderRadius:RAD.pill,padding:"2px 9px"}}>{player.club?.n||player.club?.name||"–"}</span>
                 <span className="cpm-num" style={{fontSize:10,color:"rgba(255,255,255,0.7)"}}>{player.club?.lg?player.club.lg:player.proStatus==="u18"?"U18":""} · S.{season} W.{week}/38</span>
+                {/* [7.106.2 collaudo PO «aggiungi nell'header anche la posizione in classifica»] posizione REALE dalla classifica di lega (sort pts/gd/gf) accanto ai dati anagrafici */}
+                {(()=>{const st=player.standings||[];if(!st.length||!player.club?.id)return null;const sorted=[...st].sort((a,b)=>(b.pts-a.pts)||((b.gd||0)-(a.gd||0))||((b.gf||0)-(a.gf||0)));const idx=sorted.findIndex(s=>s.id===player.club.id);if(idx<0)return null;const pos=idx+1;const _pc=pos<=3?"#4ade80":pos>=st.length-2?"#f87171":"rgba(255,255,255,0.9)";return<span className="cpm-num" style={{fontSize:10,fontWeight:800,color:_pc,background:"rgba(255,255,255,0.14)",borderRadius:RAD.pill,padding:"2px 8px"}}>{pos}° in classifica</span>;})()}
               </div>
             </div>
             <div style={{flexShrink:0}}><OvrRing value={ovr} size={64}/></div>
