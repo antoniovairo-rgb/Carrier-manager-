@@ -132,16 +132,26 @@
   opacity:0;animation:sp3sub .6s ease 1.06s forwards;}
 
 /* [7.100.0] BARRA DI CARICAMENTO «paracula» — intrattiene il player durante il transpile Babel (~1-2s, a volte più) */
+/* [7.102.0 collaudo PO «non parte lo "spingere percentuale" all'apertura, solo un istante dopo»] CAUSA: Babel
+   transpila il gioco in-browser BLOCCANDO il main thread → qualsiasi animazione guidata da JS/setInterval si
+   CONGELA durante l'attesa (partiva solo dopo). SOLUZIONE: la barra ora anima via CSS sul COMPOSITOR (transform:
+   scaleX) → «spinge» anche mentre il main thread è bloccato; la % via @property+counter è sincronizzata. */
+@property --sp3p{syntax:'<integer>';initial-value:0;inherits:false;}
 #ld{transition:opacity .42s ease;}
 #ld .sp3bar{position:relative;z-index:1;width:min(250px,66vw);margin-top:5px;opacity:0;animation:sp3sub .55s ease 1.2s forwards;}
 #ld .sp3track{width:100%;height:5px;border-radius:4px;background:rgba(255,255,255,.12);overflow:hidden;}
-#ld .sp3fill{height:100%;width:0%;border-radius:4px;background:linear-gradient(90deg,#a3263a,#e0526a 58%,#f0b33a);
-  transition:width .28s cubic-bezier(.3,.8,.3,1);box-shadow:0 0 10px rgba(224,82,106,.55);}
+#ld .sp3fill{height:100%;width:100%;border-radius:4px;background:linear-gradient(90deg,#a3263a,#e0526a 58%,#f0b33a);
+  box-shadow:0 0 10px rgba(224,82,106,.55);transform-origin:left center;transform:scaleX(0);will-change:transform;
+  animation:sp3grow 7s cubic-bezier(.12,.72,.2,1) .1s forwards;}
+@keyframes sp3grow{to{transform:scaleX(.95);}}/* spinge in modo asintotico verso ~95% (paracula) — il 100% lo mette window._hide al mount */
 #ld .sp3prow{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-top:8px;}
 #ld .sp3msg{color:rgba(255,255,255,.64);font-family:sans-serif;font-weight:600;font-size:clamp(9px,2.6vw,11px);
   letter-spacing:.01em;min-height:14px;transition:opacity .25s ease;}
 #ld .sp3pct{color:#f0b33a;font-family:-apple-system,'Segoe UI',Roboto,sans-serif;font-weight:800;
-  font-size:clamp(10px,2.8vw,12px);font-variant-numeric:tabular-nums;flex-shrink:0;}
+  font-size:clamp(10px,2.8vw,12px);font-variant-numeric:tabular-nums;flex-shrink:0;
+  --sp3p:0;counter-reset:sp3c var(--sp3p);animation:sp3count 7s cubic-bezier(.12,.72,.2,1) .1s forwards;}
+#ld .sp3pct::after{content:counter(sp3c) "%";}
+@keyframes sp3count{to{--sp3p:95;}}
 
 /* ball flight: kicked from lower-left, arcs up, drops into the "o" */
 @keyframes sp3fly{
@@ -233,7 +243,7 @@
   <div class="sp3sub">FOOTBALL CAREER</div>
   <div class="sp3bar">
     <div class="sp3track"><div class="sp3fill" id="sp3fill"></div></div>
-    <div class="sp3prow"><span class="sp3msg" id="sp3msg">Gonfiamo i palloni…</span><span class="sp3pct" id="sp3pct">0%</span></div>
+    <div class="sp3prow"><span class="sp3msg" id="sp3msg">Gonfiamo i palloni…</span><span class="sp3pct" id="sp3pct"></span></div>
   </div>
 </div>
 </div>
@@ -245,13 +255,14 @@
 (function(){
   var fill=document.getElementById("sp3fill"),pct=document.getElementById("sp3pct"),msg=document.getElementById("sp3msg");
   var MSGS=["Gonfiamo i palloni…","Tagliamo l'erba del campo…","Convochiamo i tifosi…","Prepariamo gli spogliatoi…","Accendiamo i riflettori…","Stiriamo le maglie…","L'arbitro controlla i cartellini…","Riscaldamento in corso…","Il mister detta la formazione…","Lucidiamo i trofei in bacheca…","Segniamo le righe del campo…","Carichiamo la Curva Sud…"];
-  var p=0,done=false,mi=0,raf=0,mt=0;
-  function tick(){ if(done)return; var cap=93; p+=(cap-p)*0.02+0.12; if(p>cap)p=cap; if(fill)fill.style.width=p.toFixed(0)+"%"; if(pct)pct.textContent=p.toFixed(0)+"%"; raf=requestAnimationFrame(tick); }
-  raf=requestAnimationFrame(tick);
+  // [7.102.0] barra + % animate via CSS (compositor/@property) → «spingono» anche mentre Babel blocca il main thread.
+  //   Qui solo: rotazione messaggi (best-effort) + SNAP a 100% quando React monta (window._hide).
+  var done=false,mi=0,mt=0;
   mt=setInterval(function(){ if(done||!msg)return; mi=(mi+1)%MSGS.length; msg.style.opacity="0"; setTimeout(function(){ if(done)return; msg.textContent=MSGS[mi]; msg.style.opacity=""; },240); },1150);
   window._hide=function(){
-    if(done)return; done=true; try{cancelAnimationFrame(raf);}catch(_e){} try{clearInterval(mt);}catch(_e){}
-    if(fill)fill.style.width="100%"; if(pct)pct.textContent="100%"; if(msg){msg.style.opacity="";msg.textContent="Si scende in campo! ⚽";}
+    if(done)return; done=true; try{clearInterval(mt);}catch(_e){}
+    try{ if(fill){fill.style.animation="none";fill.style.transform="scaleX(1)";} if(pct){pct.style.animation="none";pct.style.setProperty("--sp3p","100");} }catch(_e){}
+    if(msg){msg.style.opacity="";msg.textContent="Si scende in campo! ⚽";}
     var e=document.getElementById("ld"); if(e){ setTimeout(function(){ e.style.opacity="0"; setTimeout(function(){ e.style.display="none"; },440); },230); }
   };
   setTimeout(window._hide,15000);
@@ -3516,7 +3527,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="7.101.0"; // [7.101.0 collaudo PO «la musica delle schermate deve essere sempre diversa ed allegra + l'audio folla è disattivato, cosa attivare per rendere più avvolgente?»] (1) musica menu: 4 PROGRESSIONI solari che RUOTANO ogni 8 barre (loop che evolve, non più lo stesso giro) + crash morbido al cambio sezione, ogni schermata parte da una progressione diversa; (2) AMBIENCE nei menu: letto sottile di brusio da stadio + applausi/cori lontani sparsi (categoria folla, mai in match) → schermate vive, non mute sotto la musica.
+const GAME_VERSION="7.102.0"; // [7.102.0 collaudo PO x2] (1) rumore folla/effetti partita si spengono nella schermata GIORNALE (fase ended -> AudioMgr.hushMatch spegne il letto-folla); (2) all-apertura la barra di caricamento ora anima via CSS sul COMPOSITOR (transform:scaleX + @property counter) invece che via JS -> spinge anche mentre Babel blocca il main thread (prima la % guidata da rAF/setInterval si congelava durante il transpile).
 // [6.18.0-note] // [6.18.0] AVATAR = libreria DiceBear (direttiva PO): CH38 3D via dai menu (resta solo nel live match). EROE/giocatori = stile AVATAAARS con FEDELTA al modello CH38 (forza carnagione+capelli+calvizie dalla stessa fonte AVATARS[avatarId] usata dal CH38 a r.7127 -> avatar dei menu ≈ giocatore in campo). NPC/staff (agente, mister via NpcFaceCoach) = stile MICAH seedato dal nome. Bundle locale offline assets/dicebear-avatars.min.js (esbuild IIFE avataaars+micah, ~163KB) caricato da script locale -> no CDN, funziona in gate/offline/produzione. AvatarSVG DiceBear-backed (API invariata, cache seed). Sorgente rigenerabile in tools/avatar-build/. Gate-cieco su CareerApp ma DiceBear carica anche in gate.
 const SAVE_VERSION=9;// v9 [7.6.0 FASE 2]: clubEvo (evoluzione pluriennale del club: fanbase/stadiumTier/budget/seasonsTop-Low) — migration retro-compatibile. v8 [5.81.0 BIL-3b]: bankBalance (stipendio accumulato, €) + perkTrainer/perkNutrition (staff personale) — migration retro-compatibile. v7: player.foot
 // 5.67.0 — TABELLONE realistico del torneo per NAZIONALI (Europeo/Mondiale): dopo il girone la fase a
@@ -5587,6 +5598,10 @@ const AudioMgr=(function(){
   }
   function enterMatch(){ if(SILENT)return; inMatch=true; if(!ready)return; musicStop(true);ambienceStop(); crowdStart(0.30); }
   function exitMatch(){ if(SILENT)return; inMatch=false; crowdStop(); if(ready&&_curPhase==='career'){musicStart('career');ambienceStart();} }
+  // [7.102.0 collaudo PO «rumore folla ed effetti della partita devono spegnersi nella schermata del giornale»]
+  //   al FISCHIO FINALE (fase 'ended' = rassegna stampa) il letto-folla si SPEGNE (gli effetti di partita sono one-shot
+  //   su evento → a ended non ne parte più nessuno). inMatch resta true: la musica menu riparte solo all'uscita reale.
+  function hushMatch(){ if(SILENT)return; try{crowdStop();ambienceStop();}catch(_e){} }
   function event(e){
     if(SILENT||!ready)return;
     try{
@@ -5649,7 +5664,7 @@ const AudioMgr=(function(){
   function preview(c){ if(!ready)return; if(c==='music'){arp(['C','E','G'],'music',0.12,0.14);} else if(c==='crowd')crowdSwell(0.7,0.5,1800); else if(c==='referee')refWhistle(1); else if(c==='match')play('ball.kick'); else play('ui.confirm'); }
   function debug(){ return {ready,unlocked,silent:SILENT,ctx:ctx?ctx.state:'none',inMatch,scene:musScene,bed:!!bed,played:_played,cfg:getCfg(),catalog:Object.keys(SFX)}; }
 
-  return {unlock,play,scene,enterMatch,exitMatch,event,crowd:crowdLevel,notifyCue,vibrate,setSuspended,
+  return {unlock,play,scene,enterMatch,exitMatch,hushMatch,event,crowd:crowdLevel,notifyCue,vibrate,setSuspended,
     ui:{click:()=>play('ui.click'),nav:()=>play('ui.nav'),back:()=>play('ui.back')},
     setOn,setVol,setMaster,toggleMute,getCfg,preview,debug,catalog:()=>Object.keys(SFX),cats:CATS};
 })();
@@ -11956,6 +11971,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   },[benchPhase,onBench]);
   const [phase,setPhase]=useState(context==="trial"?"playing":"matchday");
   useEffect(()=>{phaseRef.current=phase;},[phase]);
+  useEffect(()=>{if(phase==="ended"){try{AudioMgr.hushMatch&&AudioMgr.hushMatch();}catch(_a){}}},[phase]);/* [7.102.0 collaudo PO] nella schermata GIORNALE (ended) il rumore folla/effetti partita si spengono */
   // 5.49.23 / [7.2.0]: CERIMONIA TROFEO 3D — quando la partita appena vinta assegna un titolo (titleStakes!=null),
   //   al fischio finale si entra nella FASE DEDICATA "ceremony" (il 3D resta montato: premiazione SUL CAMPO con
   //   giro di campo, sotto la curva e podio a centrocampo — vedi ThreeMatchView) e SOLO dopo si va a "ended" (card
