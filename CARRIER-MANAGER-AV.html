@@ -3527,7 +3527,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="7.104.0"; // [7.104.0 collaudo PO x3] (1) home/provini: tolto il toggle muto, messo il tasto Impostazioni (apre SettingsScreen, che contiene anche il muto); (2) modale «Hai una partita!» reso kit: pulsanti a gerarchia pulita (green lg / secondary / ghost) + badge/banner con token semantici theme-aware; (3) schermata GIORNALE (ended): il tocco non riavvia piu il letto-folla (flag _matchHushed su unlock/hushMatch) -> davvero muta dopo il fischio finale.
+const GAME_VERSION="7.105.0"; // [7.105.0 collaudo PO «alcuni cartelloni si accavallano, non si leggono, fanno effetto lampeggiante»] i board erano larghi 13 ma distanziati 11-12 -> SOVRAPPOSTI (testo tagliato) e in Z-FIGHTING (due piani trasparenti complanari sovrapposti = lampeggio). FIX: larghezza < passo (dietro-porta w=10.2 su passo 11 · touchline w=11.4 su passo 12) -> gap tra i cartelloni, niente overlap ne z-fight, testo intero.
 // [6.18.0-note] // [6.18.0] AVATAR = libreria DiceBear (direttiva PO): CH38 3D via dai menu (resta solo nel live match). EROE/giocatori = stile AVATAAARS con FEDELTA al modello CH38 (forza carnagione+capelli+calvizie dalla stessa fonte AVATARS[avatarId] usata dal CH38 a r.7127 -> avatar dei menu ≈ giocatore in campo). NPC/staff (agente, mister via NpcFaceCoach) = stile MICAH seedato dal nome. Bundle locale offline assets/dicebear-avatars.min.js (esbuild IIFE avataaars+micah, ~163KB) caricato da script locale -> no CDN, funziona in gate/offline/produzione. AvatarSVG DiceBear-backed (API invariata, cache seed). Sorgente rigenerabile in tools/avatar-build/. Gate-cieco su CareerApp ma DiceBear carica anche in gate.
 const SAVE_VERSION=9;// v9 [7.6.0 FASE 2]: clubEvo (evoluzione pluriennale del club: fanbase/stadiumTier/budget/seasonsTop-Low) — migration retro-compatibile. v8 [5.81.0 BIL-3b]: bankBalance (stipendio accumulato, €) + perkTrainer/perkNutrition (staff personale) — migration retro-compatibile. v7: player.foot
 // 5.67.0 — TABELLONE realistico del torneo per NAZIONALI (Europeo/Mondiale): dopo il girone la fase a
@@ -8673,7 +8673,11 @@ function ThreeMatchView(props){
       const t=new THREE.CanvasTexture(c);t.anisotropy=8;return t;};
     const _adSeed44=(props.adSeed>>>0)||1;
     const _adPal=[["#140a0e","#d27f8c"],["#180c10","#ffffff"],["#140a0e","#cf6d7e"]];// 5.49.14: logo ELEVORA in GRANATA CHIARO (non più azzurro)
-    const _mkAdBoard=(x,z,rotY,k,brandMode)=>{const p=_adPal[((k%3)+3)%3];const _bi=(_adSeed44+k*7)%AD_BRANDS.length;const m=new THREE.Mesh(new THREE.PlaneGeometry(13,1.7),new THREE.MeshBasicMaterial({map:brandMode?_mkBrandTex(AD_BRANDS[_bi],_adSeed44+k):_mkAdTex(p[0],p[1]),side:THREE.DoubleSide,transparent:true,opacity:0.98}));m.position.set(x,1.0,z);m.rotation.y=rotY;scene.add(m);};
+    /* [7.105.0 collaudo PO «alcuni cartelloni si accavallano, non si leggono, fanno effetto lampeggiante»] CAUSA: i
+       board erano larghi 13 ma distanziati solo 11-12 → si SOVRAPPONEVANO (testo tagliato ai bordi) e, essendo due
+       piani trasparenti COMPLANARI sovrapposti, facevano Z-FIGHTING (il renderer alterna quale sta davanti a ogni
+       frame = «lampeggio»). FIX: larghezza < passo (parametro w) → gap tra i board → niente overlap né z-fight. */
+    const _mkAdBoard=(x,z,rotY,k,brandMode,w)=>{const p=_adPal[((k%3)+3)%3];const _bi=(_adSeed44+k*7)%AD_BRANDS.length;const m=new THREE.Mesh(new THREE.PlaneGeometry(w||13,1.7),new THREE.MeshBasicMaterial({map:brandMode?_mkBrandTex(AD_BRANDS[_bi],_adSeed44+k):_mkAdTex(p[0],p[1]),side:THREE.DoubleSide,transparent:true,opacity:0.98}));m.position.set(x,1.0,z);m.rotation.y=rotY;scene.add(m);};
     // [7.8.12/7.8.13 collaudo tester] i cartelloni erano a x=±49, IN FRONT della rete di fondo (49.4) → il piano
     //   TAGLIAVA la bocca della porta (comparivano davanti alla rete). Spostarli a ±51.2 (dietro TUTTA la porta,
     //   rete laterale ~51.15) li ha fatti SPARIRE dietro la curva/perimetro negli stadi piccoli. Posizione giusta:
@@ -8682,9 +8686,9 @@ function ThreeMatchView(props){
     // [7.87.0 collaudo PO «mancano alcuni cartelloni pubblicitari nella curva (laterali)»] la fila dietro-porta
     //   copriva solo z=±13; +z=±24 la ESTENDE verso i lati della curva (i pannelli diagonali d'angolo restano
     //   RIMOSSI — 7.55.0, entravano in campo — qui è solo una fila retta più lunga a x=50.2, mai sul terreno).
-    [-24,-13,0,13,24].forEach((z,k)=>{_mkAdBoard(50.2,z,-Math.PI/2,k,z!==0);_mkAdBoard(-50.2,z,Math.PI/2,k+1,z!==0);});/* [7.44.0] dietro le porte: Korward al centro (brand del gioco), pubblicità di fantasia ai lati */
+    [-24,-13,0,13,24].forEach((z,k)=>{_mkAdBoard(50.2,z,-Math.PI/2,k,z!==0,10.2);_mkAdBoard(-50.2,z,Math.PI/2,k+1,z!==0,10.2);});/* [7.44.0] dietro le porte: Korward al centro (brand del gioco), pubblicità di fantasia ai lati · [7.105.0] w=10.2 < passo 11 → niente overlap/z-fight */
     // lungo le linee laterali (lato TRIBUNA, camera-side z- e opposta z+): TUTTE pubblicità di fantasia seedate; +x=±38 fino agli angoli
-    [-38,-26,-13,0,13,26,38].forEach((x,k)=>{_mkAdBoard(x,-33.2,0,k,true);_mkAdBoard(x,33.2,Math.PI,k+4,true);});
+    [-38,-26,-13,0,13,26,38].forEach((x,k)=>{_mkAdBoard(x,-33.2,0,k,true,11.4);_mkAdBoard(x,33.2,Math.PI,k+4,true,11.4);});/* [7.105.0] w=11.4 < passo 12 → niente overlap/z-fight (testo non più tagliato ai bordi) */
     /* [7.55.0 collaudo PO «i cartelloni pubblicitari angolari entrano nel campo, valuta se eliminarli proprio!»]
        RIMOSSI i 4 pannelli d'angolo (7.51.1→7.52.1): la «verifica geometrica» del 7.52.1 considerava solo il
        CENTRO del pannello (46.5,32.2) — ma il board è un PIANO con larghezza, e il bordo vicino del segmento
