@@ -241,6 +241,7 @@ Suite Playwright headless che carica il gioco, forza ogni `SITUATION`, risolve l
 > CPM_CHROME=/opt/pw-browsers/chromium-1194/chrome-linux/chrome PLAYWRIGHT_BROWSERS_PATH=/opt/pw-browsers node career-invariants.mjs      # INV puri (leghe/calendario/standings/pro/migration/euroGroupTable/prestito/forma)
 > CPM_CHROME=… PLAYWRIGHT_BROWSERS_PATH=/opt/pw-browsers node stab-nat-trigger-test.mjs   # trigger tornei + economia settimanale
 > CPM_CHROME=… PLAYWRIGHT_BROWSERS_PATH=/opt/pw-browsers node career-sim-test.mjs         # 2 stagioni sugli handler veri
+> node tripath-chokepoint-test.mjs                                                         # GUARDIANO TRI-PATH (statico, no browser): i 3 path settimana delegano a OGNI chokepoint (economia/crescita/staff/tornei) → blocca strutturalmente la classe STAB
 > ```
 
 ```bash

@@ -32,7 +32,8 @@
     "career-sim": "node career-sim-test.mjs",
     "stab-nat-trigger": "node stab-nat-trigger-test.mjs",
     "engine-sweep": "node engine-mass-sweep.mjs",
-    "def-sweep": "node def-mass-sweep.mjs"
+    "def-sweep": "node def-mass-sweep.mjs",
+    "tripath-chokepoint": "node tripath-chokepoint-test.mjs"
   },
   "dependencies": {
     "playwright": "^1.48.0",
