@@ -3644,7 +3644,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="7.114.0"; // [7.114.0 AUDIT GENERALE CARRIERA — 4 agenti + 11 sweep] fix confermati: (COMP-1 HIGH) AVANZA sul KO euro auto-sim ora setta champion/eliminated → vincere la Coppa Europea non viene più «riparato» in eliminazione al reload; (COMP-2 HIGH) floor «mai nel passato» sulla settimana del turno euro successivo → niente campagna euro congelata; (INJ-1 MED-HIGH) la settimana d infortunio scala UNA volta per settimana (non 2 sui turni doppi) e un infortunato non prende più una presenza da sano; (ECO-1 MED) reddito sponsor + commissione boutique 8% anche sul path Avanza (delega al chokepoint economico); (PROG-1) vice-mister ±12% ora attivo nell auto-training; (PROG-2) reset stato training al rollover.
+const GAME_VERSION="7.115.0"; // [7.115.0 audit — fix backlog] (D4/B1) un fallimento OFFENSIVO al piede (dribbling/passaggio) non mostra più «Grande parata del portiere» (nessun portiere in scena): fallback dispossessed/intercepted (famiglia «murato/fermato») + 3D di perdita possesso; (B3) tiro in taglio-interno sulla fascia opposta = piede FORTE → leggero bonus, non più il malus −5; (E4) una palla persa su lancio profondo non si assesta più nel terzo avversario (cap superiore); (leagueGoalsOf) esclude anche i risultati di Nazionale (trappola latente capocannoniere di lega).
 // [6.18.0-note] // [6.18.0] AVATAR = libreria DiceBear (direttiva PO): CH38 3D via dai menu (resta solo nel live match). EROE/giocatori = stile AVATAAARS con FEDELTA al modello CH38 (forza carnagione+capelli+calvizie dalla stessa fonte AVATARS[avatarId] usata dal CH38 a r.7127 -> avatar dei menu ≈ giocatore in campo). NPC/staff (agente, mister via NpcFaceCoach) = stile MICAH seedato dal nome. Bundle locale offline assets/dicebear-avatars.min.js (esbuild IIFE avataaars+micah, ~163KB) caricato da script locale -> no CDN, funziona in gate/offline/produzione. AvatarSVG DiceBear-backed (API invariata, cache seed). Sorgente rigenerabile in tools/avatar-build/. Gate-cieco su CareerApp ma DiceBear carica anche in gate.
 const SAVE_VERSION=9;// v9 [7.6.0 FASE 2]: clubEvo (evoluzione pluriennale del club: fanbase/stadiumTier/budget/seasonsTop-Low) — migration retro-compatibile. v8 [5.81.0 BIL-3b]: bankBalance (stipendio accumulato, €) + perkTrainer/perkNutrition (staff personale) — migration retro-compatibile. v7: player.foot
 // 5.67.0 — TABELLONE realistico del torneo per NAZIONALI (Europeo/Mondiale): dopo il girone la fase a
@@ -6295,8 +6295,8 @@ function generateSeasonCalendar(playerClub,leagueClubs,seed){
 /* [7.8.28 QA] gol/assist di SOLA LEGA dalla matchHistory stagionale (entry cup/euro flaggate): player.goals somma
    TUTTE le competizioni → gonfiava classifica marcatori di lega, capocannoniere, MVP e record di lega con gol di
    coppa (doppio conteggio vs le classifiche per competizione 7.8.18). Fallback: history vuota ⇒ player.goals. */
-const leagueGoalsOf=(p)=>{const h=(p.matchHistory||[]).filter(m=>m&&!m.cup&&!m.euro);return h.length?h.reduce((s,m)=>s+(m.goals||0),0):(p.goals||0);};
-const leagueAssistsOf=(p)=>{const h=(p.matchHistory||[]).filter(m=>m&&!m.cup&&!m.euro);return h.length?h.reduce((s,m)=>s+(m.assists||0),0):(p.assists||0);};
+const leagueGoalsOf=(p)=>{const h=(p.matchHistory||[]).filter(m=>m&&!m.cup&&!m.euro&&!m.national);return h.length?h.reduce((s,m)=>s+(m.goals||0),0):(p.goals||0);};/* [7.115.0 audit · +!m.national] trappola latente: se un risultato di Nazionale entrasse in matchHistory di club gonfierebbe il capocannoniere/MVP di lega */
+const leagueAssistsOf=(p)=>{const h=(p.matchHistory||[]).filter(m=>m&&!m.cup&&!m.euro&&!m.national);return h.length?h.reduce((s,m)=>s+(m.assists||0),0):(p.assists||0);};
 function generateSeasonAwards(player, finalStandings){
   const lg=player.club?.lg||"Lega A";
   let lgRec=LEAGUE_RECORDS[lg]||_LR_DEFAULT;
@@ -8147,7 +8147,7 @@ function decideExecution(intent, ctx){
     exec=wpick([{k:'cross_far_post',w:(3+cr*0.03)*(weakFlank?0.5:1)},{k:'cross_near_post',w:3+cr*0.025},{k:'cross_low_driven',w:2+sk('tecnica')*0.03+(wet?-0.6:0)},{k:'cross_cutback',w:1+(x>78?2.5:0)+(weakFlank?1.5:0)},{k:'cross_deep',w:1.5*(weakFlank?0.6:1)}]);
     outcome=wpick([{k:'assist',w:q*4.2},{k:'goal',w:q*1.1},{k:'corner',w:1+pressure*0.6},{k:'blocked',w:pressure*1.5},{k:'intercepted',w:pressure*1.1+(1-q)*1.6},{k:'out',w:(1-q)*2+(windy?1.2:0)+fatigue*0.012}]);
   } else if(intent==='shot'){
-    const sh=sk('tiro')*0.7+sk('tecnica')*0.3; q=qOf(sh-(weakFlank?5:0)+clamp((x-78)*0.45,-14,7));/* F8: piede debole penalizzato · [7.58.0 PHASE 3 «decisioni credibili»] FATTORE DISTANZA (xG): un tiro dal limite/da fuori converte MENO di uno in area (x alto→bonus, x basso→malus forte: da metà campo quasi impossibile) — prima la conversione ignorava la distanza dalla porta */
+    const sh=sk('tiro')*0.7+sk('tecnica')*0.3; q=qOf(sh+(weakFlank?2:0)+clamp((x-78)*0.45,-14,7));/* [7.115.0 audit · fix B3] sulla fascia OPPOSTA al piede forte il TIRO è un taglio-interno sul piede FORTE (inverted winger) → leggero BONUS, non più il malus −5 «di piede debole» (che valeva per il cross ma era invertito sul tiro) · [7.58.0 PHASE 3] FATTORE DISTANZA (xG): un tiro dal limite converte meno di uno in area */
     exec=wpick([{k:'shot_power',w:2.5+sk('tiro')*0.03},{k:'shot_curled',w:1.5+sk('tecnica')*0.035},{k:'shot_first_time',w:1.5+(pressure>=2?1.2:0)},{k:'shot_chip',w:0.6+(ctx.gkOut?2:0)},{k:'shot_placed',w:1.5+sk('mentalità')*0.02}]);
     outcome=wpick([{k:'goal',w:q*3.4},{k:'saved',w:1.4+(1-q)*1.6},{k:'blocked',w:pressure*1.3},{k:'post',w:0.5+(q>0.6?0.4:0)},{k:'wide',w:(1-q)*2.2+(windy?0.8:0)}]);
   } else if(intent==='dribble'){
@@ -9485,7 +9485,7 @@ function ThreeMatchView(props){
            const _sf83=(P.hlType==="shot"||P.hlType==="penalty"||P.hlType==="freekick"||P.hlType==="header");
            const _wide83=(_sf83&&(P.hlOutcomeKind==="wide"||P.hlOutcomeKind==="out"))||(P.hlOutcomeKind==="corner");/* [6.4.1 R2.2] corner = palla oltre la linea di fondo (come out) · [7.113.0 audit massivo · fix E1] il CORNER vale per QUALSIASI hlType (prima solo shot-family: un CROSS deviato in angolo restava nel cuore dell'area mentre cronaca+pubblico annunciavano il corner) */
            const _lossK83=!_sf83&&P.hlType!=="cross"&&["intercepted","dispossessed","lost","stopped","shielded_out","overhit","offside","fouled","missed","deflected_out","win_freekick"].indexOf(P.hlOutcomeKind)>=0;// perdite di possesso + fallo/contrasto mancato ([6.76.0 LMV-B2]: fouled/missed/deflected_out/win_freekick planavano ancora verso il terzo offensivo — reverse-boomerang residuo)
-           const _tx83=_wide83?(AWAY_GOAL_X+2.5):_lossK83?Math.max(ballArcTgtX!=null?ballArcTgtX:ball.position.x,-4.8):(AWAY_GOAL_X-7);// clamp a game-x≥45.2: il check final-state pretende gx≥45 sui "miss"
+           const _tx83=_wide83?(AWAY_GOAL_X+2.5):_lossK83?Math.min(10,Math.max(ballArcTgtX!=null?ballArcTgtX:ball.position.x,-4.8)):(AWAY_GOAL_X-7);// clamp a game-x≥45.2: il check final-state pretende gx≥45 sui "miss" · [7.115.0 audit · fix E4] CAP superiore (world +10 ≈ centrocampo/trequarti): una PERDITA di possesso (intercetto/dispossessed su lancio profondo) non si assesta più nel terzo avversario («palla nostra vicino alla loro porta dopo un pallone perso») — l'avversario che vince palla la riporta indietro
            ball.position.x+=(_tx83-ball.position.x)*Math.min(aDt*1.6,1);}
           if(hlPostArcT>2.5){hlPostArcT=-1;hlPostArcType=null;hlPostVY=0;}}}
       else{ball.position.y+=(0.65-ball.position.y)*Math.min(aDt*6,1);}// y rest 0.65
@@ -13498,7 +13498,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
       const _di=_htp==="cross"?"cross":_htp==="dribble"?"dribble":_htp==="pass"?(_hpp==="THROUGH_BALL"?"through":"onetwo"):_htp==="tackle"?"intercept":"shot";
       const _neg=["saved","blocked","wide","post","intercepted","out","corner","dispossessed","fouled","win_freekick","overhit","offside","missed","lost","stopped","deflected_out","shielded_out"];
       const _dd=decideExecution(_di,{..._ctx,seed:(_ctx.seed^0x5f3759df)>>>0}).outcome;
-      _outKind=_neg.indexOf(_dd)>=0?_dd:"saved";
+      _outKind=_neg.indexOf(_dd)>=0?_dd:(_di==="dribble"?"dispossessed":(_di==="through"||_di==="onetwo")?"intercepted":_di==="intercept"?"beaten":"saved");/* [7.115.0 audit · fix D4/B1] fallback fuori-whitelist NON più «saved» (parata del portiere) su un fallimento OFFENSIVO al piede: dribbling→dispossessed · passaggio→intercepted (famiglia «murato/fermato», nessun portiere in scena) · difensivo→beaten. «saved» resta solo per tiro/cross (dove il portiere c'è). Coerente col CoherenceCheck (overlay-fam = arc-fam via _missKindNorm) + 3D più corretto (dispossessed/intercepted = perdita possesso, non deflect verso l'area) */
     }catch(_e){_outKind=null;}}
     if(_outKind==="corner")setMxStats(s=>({...s,corners:(s.corners||0)+1}));/* [6.4.1 R2.2] l angolo guadagnato dall azione dell eroe entra nel box-score (prima solo la cronaca BG) */
     if(_outKind==="fouled"||_outKind==="win_freekick")setMxStats(s=>({...s,fouls:(s.fouls||0)+1}));/* [6.4.2 R2.3] fallo subito → conta tra i falli avversari */
@@ -14296,7 +14296,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                 //   e cronaca raccontano lo STESSO esito. Fallback al calcolo inline se assente (robustezza).
                 if(outcome.outKind){_hlOutcomeKind=outcome.outKind;}
                 else{const _neg=["saved","blocked","wide","post","intercepted","out","corner","dispossessed","fouled","win_freekick","overhit","offside","missed","lost","stopped","deflected_out","shielded_out"];
-                const _dd=decideExecution(_di,{...(_ctx),seed:(_ctx.seed^0x5f3759df)>>>0}).outcome;_hlOutcomeKind=_neg.indexOf(_dd)>=0?_dd:"saved";}}
+                const _dd=decideExecution(_di,{...(_ctx),seed:(_ctx.seed^0x5f3759df)>>>0}).outcome;_hlOutcomeKind=_neg.indexOf(_dd)>=0?_dd:(_di==="dribble"?"dispossessed":(_di==="through"||_di==="onetwo")?"intercepted":_di==="intercept"?"beaten":"saved");/* [7.115.0 fix D4/B1] idem lato 3D-props (fallback quando outcome.outKind assente) */}}
               // [7.8.20 collaudo tester «azione a catena: gol finto alla PRIMA azione dopo un dribbling netto»] ROOT
               //   CAUSE del residuo (perché i fix in handleAction non bastavano): _hlOutcomeKind veniva popolato da
               //   outcome.outKind SOLO su ok===false. Un'azione RIUSCITA convertita a CHANCE (dribble/build/pass: il
