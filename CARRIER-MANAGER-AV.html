@@ -2562,17 +2562,17 @@ S("🔥 Siamo in vantaggio — gestisci!",["trequarti","centro"],{x:[38,75],y:[2
 S("🔥 Caccia al gol — attacca!",["trequarti","bordo"],{x:[55,88],y:[22,78]},{x:[58,74],y:[28,72]},[
   A("💥 Tiro dalla distanza!","tiro",-3,"goal","miss",14),A("⚡ Sprint verso la porta","velocità",6,"goal","intercept",18),A("🎯 Assist preciso","passaggio",5,"assist","intercept",12)],false,3,"🔥 Spingi forte — serve il gol!","off",null,{pressure:"medium",support:1,nearby_def:1,lanes:[]}),// 5.43.17: rimosso il riferimento al "tempo residuo" (non sincronizzato col clock reale) → urgenza generica
 S("🌧️ Campo pesante — pioggia torrenziale!",["trequarti","bordo"],{x:[55,88],y:[22,78]},{x:[58,74],y:[28,72]},[
-  A("🌧️ Tiro rasoterra sul bagnato","tiro",5,"goal","miss",14),A("💪 Usa il fisico — campo pesante","fisico",4,"goal","miss",13),A("🎯 Passaggio corto e sicuro","passaggio",4,"assist","intercept",8)],false,-1,"","off",null,{pressure:"medium",support:1,nearby_def:1,lanes:[]}),
+  A("🌧️ Tiro rasoterra sul bagnato","tiro",5,"goal","miss",14),A("💪 Usa il fisico — campo pesante","fisico",4,"goal","miss",13),A("🎯 Passaggio corto e sicuro","passaggio",4,"assist","intercept",8)],false,-1,"","off","is_wet",{pressure:"medium",support:1,nearby_def:1,lanes:[]}),/* [7.117.0] ctx=is_wet → «campo pesante/pioggia» solo col campo bagnato (rain/snow), non più in giornate serene */
 S("🏟️ Derby cittadino! Intensità massima.",["bordo","trequarti"],{x:[58,88],y:[22,78]},{x:[60,76],y:[28,72]},[
   A("🔥 Tiro potente — adrenalina pura","tiro",4,"goal","miss",16),A("🌀 Dribbling tecnico da campione","dribbling",3,"goal","miss",15),A("🎯 Assist preciso — vinci il derby","passaggio",5,"assist","intercept",10)],false,3,"🏟️ È il derby! Sessantamila tifosi. Solo tu e il pallone.","off","is_derby",{pressure:"medium",support:1,nearby_def:1,lanes:[]}),/* [7.116.0 collaudo PO «il derby cittadino nel 99% dei casi non è vero»] ctx=is_derby → l'highlight con testo/azione/mister che nominano il DERBY appare SOLO in una gara di derby REALE (isDerby club↔avversario), come is_ex_club. Prima era ungated → falso derby ~99% delle volte. */
 S("💔 Davanti alla tua ex squadra — momento decisivo.",["bordo","area"],{x:[70,96],y:[22,78]},{x:[72,86],y:[28,72]},[
   A("💥 Gol dell'ex — silenzio assoluto","tiro",6,"goal","miss",18),A("🎯 Assist gelido e decisivo","passaggio",5,"assist","intercept",12),A("⚡ Scatto senza rimpianti","velocità",4,"goal","intercept",16)],false,3,"💔 È la partita contro la tua ex squadra. Cosa fai?","off","is_ex_club",{pressure:"medium",support:1,nearby_def:1,lanes:[]}),
 S("🌟 Stadio in delirio! Fai il gol dell'anno.",["bordo","area"],{x:[72,96],y:[22,78]},{x:[74,88],y:[28,72]},[
   A("🌟 Gol dell'anno — ci provo!","tiro",3,"goal","miss",20),A("🎯 Assist decisivo per la vittoria","passaggio",5,"assist","intercept",12),A("⚡ Gioco sul sicuro","velocità",4,"goal","intercept",14)],false,3,"🌟 Lo stadio è in delirio! Fai la cosa più difficile!","off",null,{pressure:"medium",support:1,nearby_def:1,lanes:[]}),
-S("😤 Siamo in dieci uomini! Difendi.",["difesa","centro"],{x:[18,55],y:[20,80]},{x:[22,42],y:[28,72]},[
-  A("😤 Blocca con tutto il fisico","fisico",7,"recovery","foul",14),A("⚡ Sprint disperato di copertura","velocità",6,"recovery","through",18),A("🧠 Intelligenza tattica — posizionati","mentalità",5,"recovery","nothing",12)],false,2,"😤 Espulsione! Siamo in dieci. Ogni pallone è oro.","def",null,{pressure:"high",support:1,nearby_def:1,lanes:[]}),
+S("🛡️ Assalto avversario! Difendi con tutto.",["difesa","centro"],{x:[18,55],y:[20,80]},{x:[22,42],y:[28,72]},[
+  A("🛡️ Blocca con tutto il fisico","fisico",7,"recovery","foul",14),A("⚡ Sprint disperato di copertura","velocità",6,"recovery","through",18),A("🧠 Intelligenza tattica — posizionati","mentalità",5,"recovery","nothing",12)],false,2,"🛡️ L'avversario spinge a testa bassa. Ogni pallone è oro.","def",null,{pressure:"high",support:1,nearby_def:1,lanes:[]}),/* [7.117.0 congruenza] era «Siamo in dieci uomini!/Espulsione» ma NON esiste uno stato di espulsione PROPRIA in partita → falso claim in ogni gara. Neutralizzato a stand difensivo ad alta pressione (stesso type/azioni). */
 S("🎯 Superiorità numerica — sfruttala!",["trequarti","bordo"],{x:[55,88],y:[22,78]},{x:[58,74],y:[28,72]},[
-  A("🎯 Sfrutta lo spazio in più","passaggio",7,"assist","intercept",10),A("⚡ Scatto senza pressione","velocità",5,"goal","intercept",16),A("💥 Tiro con fiducia","tiro",3,"goal","miss",14)],false,-1,"","off",null,{pressure:"low",support:3,nearby_def:0,lanes:[]}),
+  A("🎯 Sfrutta lo spazio in più","passaggio",7,"assist","intercept",10),A("⚡ Scatto senza pressione","velocità",5,"goal","intercept",16),A("💥 Tiro con fiducia","tiro",3,"goal","miss",14)],false,-1,"","off","is_opp_red",{pressure:"low",support:3,nearby_def:0,lanes:[]}),/* [7.117.0] ctx=is_opp_red → «superiorità numerica» solo dopo un'espulsione avversaria REALE (oppRedRef) */
 S("🏃 Rimessa dal portiere — verticale!",["difesa","centro"],{x:[10,40],y:[25,75]},{x:[12,32],y:[30,70]},[
   A("🏃 Scatto in profondità e cross basso","velocità",6,"assist","intercept",16),A("🎯 Triangolo col portiere","passaggio",4,"assist","intercept",8),A("🧠 Costruisci con qualità","tecnica",3,"assist","nothing",6)],false,-1,"","off",null,{pressure:"low",support:2,nearby_def:0,lanes:[]}),
 S("⚡ Rimessa rapida del compagno — sorpresa!",["trequarti","centro"],{x:[42,72],y:[14,34]},{x:[45,62],y:[18,30]},[
@@ -3644,7 +3644,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="7.116.0"; // [7.116.0 collaudo PO «highlight del derby cittadino ma nel 99% dei casi non è vero»] la SITUATION «🏟️ Derby cittadino!» (testo+azione «vinci il derby»+mister «È il derby!») era UNGATED → pescabile in QUALSIASI gara = falso derby quasi sempre. Ora ctx=is_derby: appare SOLO in un derby REALE (isDerby club↔avversario), stesso meccanismo di is_ex_club. // [7.115.0 audit — fix backlog] (D4/B1) un fallimento OFFENSIVO al piede (dribbling/passaggio) non mostra più «Grande parata del portiere» (nessun portiere in scena): fallback dispossessed/intercepted (famiglia «murato/fermato») + 3D di perdita possesso; (B3) tiro in taglio-interno sulla fascia opposta = piede FORTE → leggero bonus, non più il malus −5; (E4) una palla persa su lancio profondo non si assesta più nel terzo avversario (cap superiore); (leagueGoalsOf) esclude anche i risultati di Nazionale (trappola latente capocannoniere di lega).
+const GAME_VERSION="7.117.0"; // [7.117.0 congruenza — audit gating contenuti (Sprint A)] altri highlight cablati fuori contesto: «campo pesante/pioggia» usciva col sereno (ora ctx=is_wet, solo campo bagnato rain/snow), «superiorità numerica» senza espulsione (ora ctx=is_opp_red, solo dopo un rosso avversario reale), «siamo in dieci uomini!» senza uno stato di rosso proprio (neutralizzato a stand difensivo). Il selettore riceve weatherFx+oppRed; situations useState spostato dopo weather/oppRedRef per gating anche del set iniziale. // [7.116.0 collaudo PO «highlight del derby cittadino ma nel 99% dei casi non è vero»] la SITUATION «🏟️ Derby cittadino!» (testo+azione «vinci il derby»+mister «È il derby!») era UNGATED → pescabile in QUALSIASI gara = falso derby quasi sempre. Ora ctx=is_derby: appare SOLO in un derby REALE (isDerby club↔avversario), stesso meccanismo di is_ex_club. // [7.115.0 audit — fix backlog] (D4/B1) un fallimento OFFENSIVO al piede (dribbling/passaggio) non mostra più «Grande parata del portiere» (nessun portiere in scena): fallback dispossessed/intercepted (famiglia «murato/fermato») + 3D di perdita possesso; (B3) tiro in taglio-interno sulla fascia opposta = piede FORTE → leggero bonus, non più il malus −5; (E4) una palla persa su lancio profondo non si assesta più nel terzo avversario (cap superiore); (leagueGoalsOf) esclude anche i risultati di Nazionale (trappola latente capocannoniere di lega).
 // [6.18.0-note] // [6.18.0] AVATAR = libreria DiceBear (direttiva PO): CH38 3D via dai menu (resta solo nel live match). EROE/giocatori = stile AVATAAARS con FEDELTA al modello CH38 (forza carnagione+capelli+calvizie dalla stessa fonte AVATARS[avatarId] usata dal CH38 a r.7127 -> avatar dei menu ≈ giocatore in campo). NPC/staff (agente, mister via NpcFaceCoach) = stile MICAH seedato dal nome. Bundle locale offline assets/dicebear-avatars.min.js (esbuild IIFE avataaars+micah, ~163KB) caricato da script locale -> no CDN, funziona in gate/offline/produzione. AvatarSVG DiceBear-backed (API invariata, cache seed). Sorgente rigenerabile in tools/avatar-build/. Gate-cieco su CareerApp ma DiceBear carica anche in gate.
 const SAVE_VERSION=9;// v9 [7.6.0 FASE 2]: clubEvo (evoluzione pluriennale del club: fanbase/stadiumTier/budget/seasonsTop-Low) — migration retro-compatibile. v8 [5.81.0 BIL-3b]: bankBalance (stipendio accumulato, €) + perkTrainer/perkNutrition (staff personale) — migration retro-compatibile. v7: player.foot
 // 5.67.0 — TABELLONE realistico del torneo per NAZIONALI (Europeo/Mondiale): dopo il girone la fase a
@@ -11659,6 +11659,8 @@ function selectContextualSituations(all,numHL,player,seed,opts){
   var passaggio=stats.passaggio||60;
   var velocita=stats["velocità"]||60;
   var _oppId=opts&&opts.opponentId||null;
+  var _wxFx=(opts&&opts.weatherFx)||null;/* [7.117.0] pitchFx del meteo → gate is_wet */
+  var _oppRed=(opts&&opts.oppRed)||false;/* [7.117.0] espulsione avversaria in corso → gate is_opp_red */
   // [5.79.0 SIT-1/5] contesto VIVO: momentum/possesso pesano la selezione; ctx e finestre temporali
   //   (tactic.minClock/maxClock) sono FILTRI DURI → una sit incoerente non può più essere pescata
   //   (prima il mismatch veniva scoperto solo al trigger e l'highlight andava perso).
@@ -11681,6 +11683,14 @@ function selectContextualSituations(all,numHL,player,seed,opts){
     if(sit.ctx==="is_derby"){
       if(!_oppId||typeof isDerby!=="function")return false;
       return !!isDerby(player.club&&player.club.id,_oppId);
+    }
+    // [7.117.0] Meteo: la sit «campo pesante/pioggia» appare SOLO col campo bagnato (pitchFx rain/snow)
+    if(sit.ctx==="is_wet"){
+      return _wxFx==="rain"||_wxFx==="snow";
+    }
+    // [7.117.0] Uomo in più: la sit «superiorità numerica» appare SOLO dopo un'espulsione avversaria REALE
+    if(sit.ctx==="is_opp_red"){
+      return !!_oppRed;
     }
     return true;
   }).map(function(sit){
@@ -11894,10 +11904,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     hlTimesRef.current=v;
     return v;
   });
-  // Sprint 159: include opponent+context in seed so consecutive national matches never share situations
-  const [situations,setSituations]=useState(()=>selectContextualSituations([...SITUATIONS],numHLRef.current,player,(player.season||1)*1000+(player.week||1)*13+hashStr((opponent?.n||opponent?.id||context||"")),{opponentId:opponent?.id||opponent?.n||null}));
-  const situationsRef=useRef(situations);
-  useEffect(()=>{situationsRef.current=situations;},[situations]);
+  // [7.117.0] situations useState spostato SOTTO weather/oppRedRef (vedi più giù) così il set iniziale può gating su meteo (is_wet) e uomo in più (is_opp_red).
   useEffect(()=>{numHLRef.current=numHL;},[numHL]);
   useEffect(()=>{hlTimesRef.current=hlTimes;},[hlTimes]);
   // Sprint 33 C7 / Sprint 118 — bench start mechanic
@@ -11985,6 +11992,11 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     let tot=pool.reduce((s,e)=>s+e.w,0);let r=(seed%10000)/10000*tot;
     for(const wt of pool){r-=wt.w;if(r<=0)return wt;}return pool[0];
   });
+  // Sprint 159: include opponent+context in seed so consecutive national matches never share situations
+  // [7.117.0] qui (dopo weather/oppRedRef) → il set iniziale gata su meteo (is_wet) e uomo in più (is_opp_red, false al fischio d'inizio)
+  const [situations,setSituations]=useState(()=>selectContextualSituations([...SITUATIONS],numHLRef.current,player,(player.season||1)*1000+(player.week||1)*13+hashStr((opponent?.n||opponent?.id||context||"")),{opponentId:opponent?.id||opponent?.n||null,weatherFx:(weather&&weather.pitchFx)||null,oppRed:oppRedRef.current}));
+  const situationsRef=useRef(situations);
+  useEffect(()=>{situationsRef.current=situations;},[situations]);
   // Sprint 16 — crowd chant overlay state
   const [crowdChant,setCrowdChant]=useState(null); // {text,type,key}
   // Sprint 17
@@ -13055,7 +13067,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           // [5.75.0 BLK-1] _sctx76 era fuori scope (vive solo nel callback di setClock) → ReferenceError = clock congelato al primo HL reattivo. Contesto calcolato inline.
           var _scRQ=scoreRef.current;var _ctxRQ=_scRQ.home>_scRQ.away?"winning":_scRQ.home<_scRQ.away?"losing":"drawing";
           var _exRQ=situationsRef.current.map(function(s2){return s2&&s2.text;}).filter(Boolean);// [6.76.0 LMV-L2] anti-ripetizione anche sugli HL dinamici
-          var extras=selectContextualSituations([...SITUATIONS],1,player,((bgSimSeedRef.current^(ck*8191))>>>0),{scoreCtx:_ctxRQ,clock:ck,momentum:momentumRef.current,possession:possessionRef.current,opponentId:opponent?.id||opponent?.n||null,exclude:_exRQ});// [5.79.0] seed deterministico + contesto vivo
+          var extras=selectContextualSituations([...SITUATIONS],1,player,((bgSimSeedRef.current^(ck*8191))>>>0),{scoreCtx:_ctxRQ,clock:ck,momentum:momentumRef.current,possession:possessionRef.current,opponentId:opponent?.id||opponent?.n||null,weatherFx:(weather&&weather.pitchFx)||null,oppRed:oppRedRef.current,exclude:_exRQ});// [5.79.0] seed deterministico + contesto vivo
           if(extras.length>0){
             // [6.76.0 LMV-L1] inserimento ORDINATO all'indice corrente (come le catene), non append in coda:
             //   prima la «risposta immediata» del 30' finiva DOPO l'ultimo HL scriptato (giocata all'80' col
@@ -13073,7 +13085,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
         var sc60=scoreRef.current;
         if(sc60.away-sc60.home===1){
           earlyDespRef.current=true;
-          var eextra=selectContextualSituations([...SITUATIONS],1,player,((bgSimSeedRef.current^60607)>>>0),{scoreCtx:"losing",clock:ck,momentum:momentumRef.current,possession:possessionRef.current,opponentId:opponent?.id||opponent?.n||null,exclude:situationsRef.current.map(function(s2){return s2&&s2.text;}).filter(Boolean)});
+          var eextra=selectContextualSituations([...SITUATIONS],1,player,((bgSimSeedRef.current^60607)>>>0),{scoreCtx:"losing",clock:ck,momentum:momentumRef.current,possession:possessionRef.current,opponentId:opponent?.id||opponent?.n||null,weatherFx:(weather&&weather.pitchFx)||null,oppRed:oppRedRef.current,exclude:situationsRef.current.map(function(s2){return s2&&s2.text;}).filter(Boolean)});
           if(eextra.length>0){
             var etime=63+rng(0,4);// [6.76.0 LMV-L1] inserimento ordinato (vedi HL reattivi)
             setSituations(function(prev){var c=[...prev];c.splice(hlIdx,0,eextra[0]);return c;});
@@ -13088,7 +13100,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
         var sc=scoreRef.current;
         if(sc.away-sc.home>=2){
           desperateFiredRef.current=true;
-          var dextra=selectContextualSituations([...SITUATIONS],1,player,((bgSimSeedRef.current^72997)>>>0),{scoreCtx:"losing",clock:ck,momentum:momentumRef.current,possession:possessionRef.current,opponentId:opponent?.id||opponent?.n||null,exclude:situationsRef.current.map(function(s2){return s2&&s2.text;}).filter(Boolean)});
+          var dextra=selectContextualSituations([...SITUATIONS],1,player,((bgSimSeedRef.current^72997)>>>0),{scoreCtx:"losing",clock:ck,momentum:momentumRef.current,possession:possessionRef.current,opponentId:opponent?.id||opponent?.n||null,weatherFx:(weather&&weather.pitchFx)||null,oppRed:oppRedRef.current,exclude:situationsRef.current.map(function(s2){return s2&&s2.text;}).filter(Boolean)});
           if(dextra.length>0){
             var dtime=76+rng(0,4);// [6.76.0 LMV-L1] inserimento ordinato (vedi HL reattivi)
             setSituations(function(prev){var c=[...prev];c.splice(hlIdx,0,dextra[0]);return c;});
@@ -13113,7 +13125,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
             if(!(_cur79&&_cur79._chainDepth)){
               const _lzSeed=(((bgSimSeedRef.current^(hlIdx*2654435761))>>>0)+nx*97)>>>0;
               const _used79=situationsRef.current.slice(0,hlIdx).map(s2=>s2&&s2.text).filter(Boolean);
-              const _fresh79=selectContextualSituations([...SITUATIONS],1,player,_lzSeed,{scoreCtx:_realCtx,clock:nx,momentum:momentumRef.current,possession:possessionRef.current,opponentId:opponent?.id||opponent?.n||null,exclude:_used79});
+              const _fresh79=selectContextualSituations([...SITUATIONS],1,player,_lzSeed,{scoreCtx:_realCtx,clock:nx,momentum:momentumRef.current,possession:possessionRef.current,opponentId:opponent?.id||opponent?.n||null,weatherFx:(weather&&weather.pitchFx)||null,oppRed:oppRedRef.current,exclude:_used79});
               if(_fresh79.length>0)setSituations(prev=>{const c=[...prev];c[hlIdx]=_fresh79[0];return c;});
             }
             setBgAction(null);setPhase("hl_intro");// COERENZA: spegni la cronaca BG (testo+arco) entrando nell'highlight
@@ -13882,7 +13894,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
         var _slotCH=(hlTimesRef.current[nx]&&hlTimesRef.current[nx]<9000)?hlTimesRef.current[nx]:clockRef.current;
         var _ckCH=Math.max(clockRef.current,_slotCH);
         try{
-          var _reCH=selectContextualSituations([...SITUATIONS],1,player,((bgSimSeedRef.current^(_ckCH*331+nx*17))>>>0),{scoreCtx:_ctxCH,clock:_ckCH,momentum:momentumRef.current,possession:possessionRef.current,opponentId:opponent?.id||opponent?.n||null,exclude:situationsRef.current.slice(0,nx).map(function(x){return x&&x.text;})});
+          var _reCH=selectContextualSituations([...SITUATIONS],1,player,((bgSimSeedRef.current^(_ckCH*331+nx*17))>>>0),{scoreCtx:_ctxCH,clock:_ckCH,momentum:momentumRef.current,possession:possessionRef.current,opponentId:opponent?.id||opponent?.n||null,weatherFx:(weather&&weather.pitchFx)||null,oppRed:oppRedRef.current,exclude:situationsRef.current.slice(0,nx).map(function(x){return x&&x.text;})});
           if(_reCH&&_reCH.length>0)setSituations(function(prev){var c=[...prev];c[nx]=_reCH[0];return c;});
         }catch(_e){}
         setClock(function(c){return Math.max(c,_ckCH);});
