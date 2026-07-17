@@ -2564,7 +2564,7 @@ S("🔥 Caccia al gol — attacca!",["trequarti","bordo"],{x:[55,88],y:[22,78]},
 S("🌧️ Campo pesante — pioggia torrenziale!",["trequarti","bordo"],{x:[55,88],y:[22,78]},{x:[58,74],y:[28,72]},[
   A("🌧️ Tiro rasoterra sul bagnato","tiro",5,"goal","miss",14),A("💪 Usa il fisico — campo pesante","fisico",4,"goal","miss",13),A("🎯 Passaggio corto e sicuro","passaggio",4,"assist","intercept",8)],false,-1,"","off",null,{pressure:"medium",support:1,nearby_def:1,lanes:[]}),
 S("🏟️ Derby cittadino! Intensità massima.",["bordo","trequarti"],{x:[58,88],y:[22,78]},{x:[60,76],y:[28,72]},[
-  A("🔥 Tiro potente — adrenalina pura","tiro",4,"goal","miss",16),A("🌀 Dribbling tecnico da campione","dribbling",3,"goal","miss",15),A("🎯 Assist preciso — vinci il derby","passaggio",5,"assist","intercept",10)],false,3,"🏟️ È il derby! Sessantamila tifosi. Solo tu e il pallone.","off",null,{pressure:"medium",support:1,nearby_def:1,lanes:[]}),
+  A("🔥 Tiro potente — adrenalina pura","tiro",4,"goal","miss",16),A("🌀 Dribbling tecnico da campione","dribbling",3,"goal","miss",15),A("🎯 Assist preciso — vinci il derby","passaggio",5,"assist","intercept",10)],false,3,"🏟️ È il derby! Sessantamila tifosi. Solo tu e il pallone.","off","is_derby",{pressure:"medium",support:1,nearby_def:1,lanes:[]}),/* [7.116.0 collaudo PO «il derby cittadino nel 99% dei casi non è vero»] ctx=is_derby → l'highlight con testo/azione/mister che nominano il DERBY appare SOLO in una gara di derby REALE (isDerby club↔avversario), come is_ex_club. Prima era ungated → falso derby ~99% delle volte. */
 S("💔 Davanti alla tua ex squadra — momento decisivo.",["bordo","area"],{x:[70,96],y:[22,78]},{x:[72,86],y:[28,72]},[
   A("💥 Gol dell'ex — silenzio assoluto","tiro",6,"goal","miss",18),A("🎯 Assist gelido e decisivo","passaggio",5,"assist","intercept",12),A("⚡ Scatto senza rimpianti","velocità",4,"goal","intercept",16)],false,3,"💔 È la partita contro la tua ex squadra. Cosa fai?","off","is_ex_club",{pressure:"medium",support:1,nearby_def:1,lanes:[]}),
 S("🌟 Stadio in delirio! Fai il gol dell'anno.",["bordo","area"],{x:[72,96],y:[22,78]},{x:[74,88],y:[28,72]},[
@@ -3644,7 +3644,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="7.115.0"; // [7.115.0 audit — fix backlog] (D4/B1) un fallimento OFFENSIVO al piede (dribbling/passaggio) non mostra più «Grande parata del portiere» (nessun portiere in scena): fallback dispossessed/intercepted (famiglia «murato/fermato») + 3D di perdita possesso; (B3) tiro in taglio-interno sulla fascia opposta = piede FORTE → leggero bonus, non più il malus −5; (E4) una palla persa su lancio profondo non si assesta più nel terzo avversario (cap superiore); (leagueGoalsOf) esclude anche i risultati di Nazionale (trappola latente capocannoniere di lega).
+const GAME_VERSION="7.116.0"; // [7.116.0 collaudo PO «highlight del derby cittadino ma nel 99% dei casi non è vero»] la SITUATION «🏟️ Derby cittadino!» (testo+azione «vinci il derby»+mister «È il derby!») era UNGATED → pescabile in QUALSIASI gara = falso derby quasi sempre. Ora ctx=is_derby: appare SOLO in un derby REALE (isDerby club↔avversario), stesso meccanismo di is_ex_club. // [7.115.0 audit — fix backlog] (D4/B1) un fallimento OFFENSIVO al piede (dribbling/passaggio) non mostra più «Grande parata del portiere» (nessun portiere in scena): fallback dispossessed/intercepted (famiglia «murato/fermato») + 3D di perdita possesso; (B3) tiro in taglio-interno sulla fascia opposta = piede FORTE → leggero bonus, non più il malus −5; (E4) una palla persa su lancio profondo non si assesta più nel terzo avversario (cap superiore); (leagueGoalsOf) esclude anche i risultati di Nazionale (trappola latente capocannoniere di lega).
 // [6.18.0-note] // [6.18.0] AVATAR = libreria DiceBear (direttiva PO): CH38 3D via dai menu (resta solo nel live match). EROE/giocatori = stile AVATAAARS con FEDELTA al modello CH38 (forza carnagione+capelli+calvizie dalla stessa fonte AVATARS[avatarId] usata dal CH38 a r.7127 -> avatar dei menu ≈ giocatore in campo). NPC/staff (agente, mister via NpcFaceCoach) = stile MICAH seedato dal nome. Bundle locale offline assets/dicebear-avatars.min.js (esbuild IIFE avataaars+micah, ~163KB) caricato da script locale -> no CDN, funziona in gate/offline/produzione. AvatarSVG DiceBear-backed (API invariata, cache seed). Sorgente rigenerabile in tools/avatar-build/. Gate-cieco su CareerApp ma DiceBear carica anche in gate.
 const SAVE_VERSION=9;// v9 [7.6.0 FASE 2]: clubEvo (evoluzione pluriennale del club: fanbase/stadiumTier/budget/seasonsTop-Low) — migration retro-compatibile. v8 [5.81.0 BIL-3b]: bankBalance (stipendio accumulato, €) + perkTrainer/perkNutrition (staff personale) — migration retro-compatibile. v7: player.foot
 // 5.67.0 — TABELLONE realistico del torneo per NAZIONALI (Europeo/Mondiale): dopo il girone la fase a
@@ -11676,6 +11676,11 @@ function selectContextualSituations(all,numHL,player,seed,opts){
     if(sit.ctx==="is_ex_club"){
       if(!_oppId)return false;
       return (player.history||[]).some(function(h){return h.clubId===_oppId||h.club===_oppId;});
+    }
+    // [7.116.0] Derby situation: solo se la gara è un DERBY REALE (isDerby club↔avversario)
+    if(sit.ctx==="is_derby"){
+      if(!_oppId||typeof isDerby!=="function")return false;
+      return !!isDerby(player.club&&player.club.id,_oppId);
     }
     return true;
   }).map(function(sit){
