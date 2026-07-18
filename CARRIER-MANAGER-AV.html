@@ -2844,7 +2844,7 @@ if(typeof window!=='undefined'){window.__CPM_SP={setPieceChoices,setPieceOptions
 
 const BG_MATCH=[
   // Goals (very rare)
-  {txt:"⚽ {H} segna! Squadra in vantaggio!",ef:"team_goal",w:0.4,bpos:{x:85,y:50},pd:"attack_goal"},
+  {txt:"⚽ {H} segna! Squadra in vantaggio!",ef:"team_goal",w:0.4,bpos:{x:85,y:50},ms:{shots:1},pd:"attack_goal"},/* [7.120.0 audit] un gol della nostra squadra È un tiro nostro: simmetrico a opp_goal (oppShots) → box-score coerente */
   {txt:"😨 Gol avversario. {A} buca la nostra difesa.",ef:"opp_goal",w:0.4,bpos:{x:15,y:50},ms:{oppShots:1},pd:"opp_goal"},/* [6.86.0 collaudo PO] un gol subìto È un tiro avversario: il box-score mostrava «0 tiri avversari» con 2-4 gol al passivo */
   // Possession
   {txt:"🔵 {H} controlla bene il gioco a centrocampo.",ef:null,w:4,poss:+2,bpos:{x:52,y:50},pd:"midfield"},
@@ -3644,7 +3644,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="7.119.0"; // [7.119.0 collaudi PO — stadio 3D] (1) «i cartelloni si vedono su tutti i lati ma senza sponsor»: i board a bordo campo delle linee laterali (tribuna/distinti) sono di TAGLIO rispetto alla camera dietro la porta → una fascia LED di sponsor RIALZATA e INCLINATA sul fronte dei due lati lunghi, che la camera alta legge (additiva, board a bordo campo intatti). (2) «bandierine non congruenti»: erano rettangoli piatti orientati lungo z (di taglio dalla camera down-the-pitch) → ora PENNANT TRIANGOLARE su asta più alta, orientato lungo x (face-on alla camera). // [7.118.0 collaudi PO — congruenza NAZIONALE] (1) cronaca/assist del live match: nomi+sigla dei compagni venivano da player.club/player.teammates anche in gara di NAZIONALE (Giannico (SAL)…) → in nat-ctx sigla={nazione}.a (ITA) e pool compagni = rosa nazionale (già in NAT_CLUB_DATA); fix latente sigla H/A anche in gare di club in trasferta. (2) rassegna stampa dello schermo ENDED titolava «FC Salernum–Germania» (club invece della nazione) → nazione in nat-ctx. (3) KO pareggiato vinto ai rigori: la rassegna diceva «0-0, la classifica non sorride» → ora passa koPen («RIGORI SENZA FIATO… superati il turno!»). (4) pulsante «Torna alla dashboard» ripristinato sul pre-partita di nazionale/coppe (onQuit è pura navigazione, la gara resta pendente → non re-introduce lo skip del 6.80). // [7.117.0 congruenza — audit gating contenuti (Sprint A)] altri highlight cablati fuori contesto: «campo pesante/pioggia» usciva col sereno (ora ctx=is_wet, solo campo bagnato rain/snow), «superiorità numerica» senza espulsione (ora ctx=is_opp_red, solo dopo un rosso avversario reale), «siamo in dieci uomini!» senza uno stato di rosso proprio (neutralizzato a stand difensivo). Il selettore riceve weatherFx+oppRed; situations useState spostato dopo weather/oppRedRef per gating anche del set iniziale. // [7.116.0 collaudo PO «highlight del derby cittadino ma nel 99% dei casi non è vero»] la SITUATION «🏟️ Derby cittadino!» (testo+azione «vinci il derby»+mister «È il derby!») era UNGATED → pescabile in QUALSIASI gara = falso derby quasi sempre. Ora ctx=is_derby: appare SOLO in un derby REALE (isDerby club↔avversario), stesso meccanismo di is_ex_club. // [7.115.0 audit — fix backlog] (D4/B1) un fallimento OFFENSIVO al piede (dribbling/passaggio) non mostra più «Grande parata del portiere» (nessun portiere in scena): fallback dispossessed/intercepted (famiglia «murato/fermato») + 3D di perdita possesso; (B3) tiro in taglio-interno sulla fascia opposta = piede FORTE → leggero bonus, non più il malus −5; (E4) una palla persa su lancio profondo non si assesta più nel terzo avversario (cap superiore); (leagueGoalsOf) esclude anche i risultati di Nazionale (trappola latente capocannoniere di lega).
+const GAME_VERSION="7.120.0"; // [7.120.0 DEEP-DIVE QA — hardening pre-release] audit multi-agente + sim massive (engine 37.9k/def 16.5k/career/live-validator tutti verdi). Fix: (LIVE-Alta) fireGoalCeleb sincronizza scoreRef sul gol da GIOCO APERTO (come il set-piece) → niente più rigori/cerimonia fasulli su «Continua» rapido nell'ultimo HL di un KO; (robustezza) rimosso componente MORTO FootballMatch (~270 righe, mai montato) + guardia crash cronaca BG (roster vuoto → index -1) + off-by-one {H}; (economia) capocannoniere: rivali stimati su 34 gare (non 37) → l'eroe non viene scavalcato in volata; Giovane dell'Anno COMPARATIVO (non soglia assoluta); chimica reagisce al risultato anche SIMULANDO (divergenza live/sim); leagueGoalsOf non gonfia coi gol di coppa post-trasferimento; +weeklyStaffRel nella settimana di nazionale; (meteo) drizzle/hail/storm ora contano nel decideExecution; (UI) 2 fix dark-mode illeggibili; (narrativa) 2 interviste genericizzate + typo «dò»→«do». // [7.119.0 collaudi PO — stadio 3D] (1) «i cartelloni si vedono su tutti i lati ma senza sponsor»: i board a bordo campo delle linee laterali (tribuna/distinti) sono di TAGLIO rispetto alla camera dietro la porta → una fascia LED di sponsor RIALZATA e INCLINATA sul fronte dei due lati lunghi, che la camera alta legge (additiva, board a bordo campo intatti). (2) «bandierine non congruenti»: erano rettangoli piatti orientati lungo z (di taglio dalla camera down-the-pitch) → ora PENNANT TRIANGOLARE su asta più alta, orientato lungo x (face-on alla camera). // [7.118.0 collaudi PO — congruenza NAZIONALE] (1) cronaca/assist del live match: nomi+sigla dei compagni venivano da player.club/player.teammates anche in gara di NAZIONALE (Giannico (SAL)…) → in nat-ctx sigla={nazione}.a (ITA) e pool compagni = rosa nazionale (già in NAT_CLUB_DATA); fix latente sigla H/A anche in gare di club in trasferta. (2) rassegna stampa dello schermo ENDED titolava «FC Salernum–Germania» (club invece della nazione) → nazione in nat-ctx. (3) KO pareggiato vinto ai rigori: la rassegna diceva «0-0, la classifica non sorride» → ora passa koPen («RIGORI SENZA FIATO… superati il turno!»). (4) pulsante «Torna alla dashboard» ripristinato sul pre-partita di nazionale/coppe (onQuit è pura navigazione, la gara resta pendente → non re-introduce lo skip del 6.80). // [7.117.0 congruenza — audit gating contenuti (Sprint A)] altri highlight cablati fuori contesto: «campo pesante/pioggia» usciva col sereno (ora ctx=is_wet, solo campo bagnato rain/snow), «superiorità numerica» senza espulsione (ora ctx=is_opp_red, solo dopo un rosso avversario reale), «siamo in dieci uomini!» senza uno stato di rosso proprio (neutralizzato a stand difensivo). Il selettore riceve weatherFx+oppRed; situations useState spostato dopo weather/oppRedRef per gating anche del set iniziale. // [7.116.0 collaudo PO «highlight del derby cittadino ma nel 99% dei casi non è vero»] la SITUATION «🏟️ Derby cittadino!» (testo+azione «vinci il derby»+mister «È il derby!») era UNGATED → pescabile in QUALSIASI gara = falso derby quasi sempre. Ora ctx=is_derby: appare SOLO in un derby REALE (isDerby club↔avversario), stesso meccanismo di is_ex_club. // [7.115.0 audit — fix backlog] (D4/B1) un fallimento OFFENSIVO al piede (dribbling/passaggio) non mostra più «Grande parata del portiere» (nessun portiere in scena): fallback dispossessed/intercepted (famiglia «murato/fermato») + 3D di perdita possesso; (B3) tiro in taglio-interno sulla fascia opposta = piede FORTE → leggero bonus, non più il malus −5; (E4) una palla persa su lancio profondo non si assesta più nel terzo avversario (cap superiore); (leagueGoalsOf) esclude anche i risultati di Nazionale (trappola latente capocannoniere di lega).
 // [6.18.0-note] // [6.18.0] AVATAR = libreria DiceBear (direttiva PO): CH38 3D via dai menu (resta solo nel live match). EROE/giocatori = stile AVATAAARS con FEDELTA al modello CH38 (forza carnagione+capelli+calvizie dalla stessa fonte AVATARS[avatarId] usata dal CH38 a r.7127 -> avatar dei menu ≈ giocatore in campo). NPC/staff (agente, mister via NpcFaceCoach) = stile MICAH seedato dal nome. Bundle locale offline assets/dicebear-avatars.min.js (esbuild IIFE avataaars+micah, ~163KB) caricato da script locale -> no CDN, funziona in gate/offline/produzione. AvatarSVG DiceBear-backed (API invariata, cache seed). Sorgente rigenerabile in tools/avatar-build/. Gate-cieco su CareerApp ma DiceBear carica anche in gate.
 const SAVE_VERSION=9;// v9 [7.6.0 FASE 2]: clubEvo (evoluzione pluriennale del club: fanbase/stadiumTier/budget/seasonsTop-Low) — migration retro-compatibile. v8 [5.81.0 BIL-3b]: bankBalance (stipendio accumulato, €) + perkTrainer/perkNutrition (staff personale) — migration retro-compatibile. v7: player.foot
 // 5.67.0 — TABELLONE realistico del torneo per NAZIONALI (Europeo/Mondiale): dopo il girone la fase a
@@ -3731,7 +3731,7 @@ const INTERVIEW_QS=[
   {tone:"diretto",txt:"Mi ha detto che ero il migliore. Ormai è una cosa che sento spesso ultimamente.",ef:{m:9,p:6,t:-6}},
   {tone:"umile",txt:"Ha detto che dobbiamo restare umili. Ha ragione, ovviamente. Seguiamo il mister.",ef:{m:4,p:3,t:10}},
 ]},
-{ctx:["win"],q:"È già il suo terzo man of the match di fila. Come spiega questo momento?",a:[
+{ctx:["win"],q:"Sta attraversando un gran momento di forma. Come lo spiega?",a:[/* [7.120.0 audit narrativa] era «terzo man of the match di fila» — striscia MOTM non tracciata → asserzione non garantita, genericizzata */
   {tone:"diplomatico",txt:"Mi sento bene fisicamente e mentalmente. E la squadra mi mette nelle condizioni.",ef:{m:7,p:6,t:5}},
   {tone:"diretto",txt:"Sono entrato in un tunnel di prestazioni. Sono il migliore della rosa, punto.",ef:{m:12,p:10,t:-7}},
   {tone:"umile",txt:"I numeri sono lusinghieri ma conta solo la squadra. È un lavoro di tutti.",ef:{m:5,p:5,t:9}},
@@ -4062,7 +4062,7 @@ const INTERVIEW_QS=[
 {ctx:["weekly"],q:"Cosa significa per lei indossare questa maglia?",a:[
   {tone:"diplomatico",txt:"È un onore e una responsabilità. Rappresento il club e i suoi tifosi ogni giorno.",ef:{m:5,p:7,t:6}},
   {tone:"diretto",txt:"Molto. E voglio che questa maglia significhi qualcosa di ancora più grande grazie a me.",ef:{m:7,p:7,t:-2}},
-  {tone:"umile",txt:"È un privilegio. Non lo dò mai per scontato. Ogni partita potrebbe essere l'ultima.",ef:{m:5,p:7,t:6}},
+  {tone:"umile",txt:"È un privilegio. Non lo do mai per scontato. Ogni partita potrebbe essere l'ultima.",ef:{m:5,p:7,t:6}},
 ]},
 {ctx:["weekly"],q:"Parliamo di leadership. Si sente un punto di riferimento nello spogliatoio?",a:[
   {tone:"diplomatico",txt:"Cerco di esserlo. Con l'esempio prima di tutto. Le parole vengono dopo.",ef:{m:5,p:5,t:7}},
@@ -4282,7 +4282,7 @@ const INTERVIEW_QS=[
 {ctx:["high_trust"],q:"Il mister si fida ciecamente di lei. Come ricambia questa fiducia?",a:[
   {tone:"diplomatico",txt:"Con il lavoro, la dedizione e il rispetto per le sue scelte tattiche.",ef:{m:5,p:4,t:9}},
   {tone:"diretto",txt:"Con le prestazioni. È il miglior modo per ricambiare. E lo faccio ogni domenica.",ef:{m:8,p:5,t:2}},
-  {tone:"umile",txt:"Non dò mai per scontata la sua fiducia. Ogni giorno cerco di meritarla.",ef:{m:4,p:4,t:10}},
+  {tone:"umile",txt:"Non do mai per scontata la sua fiducia. Ogni giorno cerco di meritarla.",ef:{m:4,p:4,t:10}},
 ]},
 // === FIDUCIA ALLENATORE BASSA ===
 {ctx:["low_trust"],q:"Sembra che il mister le preferisca altri. Come si sente?",a:[
@@ -4575,7 +4575,7 @@ const INTERVIEW_QS=[
   {tone:"diretto",txt:"Difensori forti più un pressing alto micidiale. Io contribuisco dalla cima.",ef:{m:7,p:5,t:-2}},
   {tone:"umile",txt:"Il mister ha costruito un sistema difensivo eccellente. I difensori fanno miracoli.",ef:{m:4,p:4,t:8}},
 ]},
-{ctx:["loss"],q:"Avete perso punti per la seconda volta di fila in casa. Come si spiega?",a:[
+{ctx:["loss"],q:"Avete perso punti pesanti in questa gara. Come si spiega?",a:[/* [7.120.0 audit narrativa] era «seconda volta di fila in casa» — sede+striscia non garantite dal ctx:loss → genericizzata */
   {tone:"diplomatico",txt:"Dobbiamo analizzare bene cosa non va. Non si possono perdere punti così in casa.",ef:{m:-2,p:0,t:5}},
   {tone:"diretto",txt:"Non è solo colpa mia. C'è qualcosa che non funziona nel sistema. Va affrontato.",ef:{m:1,p:-2,t:-6}},
   {tone:"umile",txt:"Errori individuali e collettivi. Ne prendiamo atto e lavoriamo per uscirne.",ef:{m:-2,p:1,t:7}},
@@ -6295,8 +6295,11 @@ function generateSeasonCalendar(playerClub,leagueClubs,seed){
 /* [7.8.28 QA] gol/assist di SOLA LEGA dalla matchHistory stagionale (entry cup/euro flaggate): player.goals somma
    TUTTE le competizioni → gonfiava classifica marcatori di lega, capocannoniere, MVP e record di lega con gol di
    coppa (doppio conteggio vs le classifiche per competizione 7.8.18). Fallback: history vuota ⇒ player.goals. */
-const leagueGoalsOf=(p)=>{const h=(p.matchHistory||[]).filter(m=>m&&!m.cup&&!m.euro&&!m.national);return h.length?h.reduce((s,m)=>s+(m.goals||0),0):(p.goals||0);};/* [7.115.0 audit · +!m.national] trappola latente: se un risultato di Nazionale entrasse in matchHistory di club gonfierebbe il capocannoniere/MVP di lega */
-const leagueAssistsOf=(p)=>{const h=(p.matchHistory||[]).filter(m=>m&&!m.cup&&!m.euro&&!m.national);return h.length?h.reduce((s,m)=>s+(m.assists||0),0):(p.assists||0);};
+/* [7.120.0 audit economia] fallback a player.goals SOLO se matchHistory è del tutto vuota (save vecchio senza
+   storico); se ci sono gare ma NESSUNA di lega (es. 1ª gara post-trasferimento è una coppa → matchHistory=[{cup}])
+   ritorna 0, altrimenti gonfiava i gol di lega col gol di coppa. */
+const leagueGoalsOf=(p)=>{const h=(p.matchHistory||[]).filter(m=>m&&!m.cup&&!m.euro&&!m.national);return h.length?h.reduce((s,m)=>s+(m.goals||0),0):((p.matchHistory||[]).length?0:(p.goals||0));};/* [7.115.0 audit · +!m.national] trappola latente: se un risultato di Nazionale entrasse in matchHistory di club gonfierebbe il capocannoniere/MVP di lega */
+const leagueAssistsOf=(p)=>{const h=(p.matchHistory||[]).filter(m=>m&&!m.cup&&!m.euro&&!m.national);return h.length?h.reduce((s,m)=>s+(m.assists||0),0):((p.matchHistory||[]).length?0:(p.assists||0));};
 function generateSeasonAwards(player, finalStandings){
   const lg=player.club?.lg||"Lega A";
   let lgRec=LEAGUE_RECORDS[lg]||_LR_DEFAULT;
@@ -6367,10 +6370,15 @@ function generateSeasonAwards(player, finalStandings){
   const youngLgClub=finalStandings?.[Math.abs(_h(88))%Math.max(1,Math.min(5,finalStandings?.length||1))];
   const youngLgName=(youngLgClub?_clubYoung(youngLgClub,`lgyoung_${season}`):null)||lgRec.topScorers?.[2]?.name||"Giovane Talento";
   const youngLgGoals=Math.max(6,Math.round(_h(88)%9+6));
-  const playerWinsLeagueYoung=isYoung&&myGoals>=5&&myGoals+myAssists>=10;
+  const youngLgAssists=Math.round(_h(55)%7)+2;
+  // [7.120.0 audit economia] premio COMPARATIVO come MVP/capocannoniere (prima soglia ASSOLUTA: un U23 a 5+5 in
+  //   una squadra retrocessa vinceva anche se il miglior U23 della lega ne aveva 15). Ora la produzione dell'eroe
+  //   deve reggere il confronto col miglior U23 rivale (entro 2), con floor storico 5 gol / 10 contributi.
+  const _youngRivalContrib=youngLgGoals+youngLgAssists;
+  const playerWinsLeagueYoung=isYoung&&myGoals>=5&&(myGoals+myAssists)>=Math.max(10,_youngRivalContrib-2);
   const leagueYoungWinner=playerWinsLeagueYoung
     ?{name:player.name,goals:myGoals,assists:myAssists,isPlayer:true}
-    :{name:youngLgName,goals:youngLgGoals,assists:Math.round(_h(55)%7)+2,isPlayer:false};
+    :{name:youngLgName,goals:youngLgGoals,assists:youngLgAssists,isPlayer:false};
 
   // 4. Squadra dell'Anno della lega
   // [7.15.0 collaudo PO «squadra dell'anno NON meritata — 13 gol, 18° marcatore, stagione in chiaroscuro»]
@@ -8138,7 +8146,7 @@ function decideExecution(intent, ctx){
   const rnd=()=>{s=(s*1664525+1013904223)>>>0;return s/4294967296;};
   const wpick=(opts)=>{const f=opts.filter(o=>o.w>0);const tot=f.reduce((y,o)=>y+o.w,0)||1;let r=rnd()*tot;for(const o of f){r-=o.w;if(r<=0)return o.k;}return f.length?f[f.length-1].k:null;};
   const qOf=(skillVal)=>clamp((skillVal-pressure*9-fatigue*0.16+(morale-60)*0.12)/100+(rnd()-0.5)*0.28,0.02,0.99);
-  const wet=weather==='rain'||weather==='snow', windy=weather==='wind'||weather==='storm';
+  const wet=weather==='rain'||weather==='snow'||weather==='drizzle'||weather==='hail', windy=weather==='wind'||weather==='storm'||weather==='hail';/* [7.120.0 audit] includi drizzle/hail (pitchFx rain/snow) e hail nel vento — prima metà dei meteo bagnati/ventosi era ignorata */
   let exec,outcome,q;
   // F8: piede preferito — sulla fascia OPPOSTA al piede forte il cross/tiro è "di piede debole" (qualità ridotta, bias al taglio interno)
   const weakFlank=!!(ctx.side&&ctx.foot&&ctx.side!==ctx.foot);
@@ -8522,7 +8530,7 @@ function ThreeMatchView(props){
       }
       return _c;})()});if(_sc){sr.current.crowdMats=_sc;sr.current.goalNet=_sc.goalNet;}}catch(e){}
 
-    // Factory giocatore (derivata da FootballMatch, MeshPhong procedurale)
+    // Factory giocatore (MeshPhong procedurale)
     // Sprint 3D-6: varietà deterministica per indice — altezza/corporatura + carnagione,
     // così i 22 giocatori non sono più cloni identici (nessun nuovo prop, seed = indice roster).
     const _fr=(n)=>{const s=Math.sin(n*127.1+311.7)*43758.5453;return s-Math.floor(s);};
@@ -12332,7 +12340,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     try{AudioMgr.event({type:'GoalHero',assist:!!g.assist});}catch(_a){}/* [7.62.0 AUDIO] boato SINCRONO all'ingresso in rete (non alla scelta) */
     // [6.5.1 Polish A] il TABELLONE si aggiorna ORA (palla in rete), non all'istante della scelta:
     //   lo score-increment del gol dell'eroe è differito qui → scoreboard + esultanza + rete SINCRONI.
-    if(g.scoreHome)setScore(sc=>({...sc,home:sc.home+1}));
+    if(g.scoreHome){scoreRef.current={home:(scoreRef.current.home||0)+1,away:scoreRef.current.away||0};/* [7.120.0 audit live · Alta] il gol da GIOCO APERTO incrementa lo score LOGICO (scoreRef) SUBITO, come già fa il set-piece (fix C1 7.113.0): prima solo setScore differito → se era l'ULTIMO HL di un KO in parità e si toccava «Continua» nella finestra 800ms→ingresso-rete, `_goEndOrCeremony` leggeva ancora il pari → RIGORI FASULLI / sidecar con risultato stantìo. Il setScore resta per la sincronia visiva. L'useEffect([score]) riconcilia scoreRef al valore committato (stesso numero → nessun doppio conteggio). */setScore(sc=>({...sc,home:sc.home+1}));}
     setResultReveal(true);// [6.5.4] l'ESITO IN BASSO si rivela ORA (ingresso in rete = sovraimpressione GOL): pannello risultato + floatGoal/goalCinema SINCRONI (prima il pannello usciva a _rd92, spesso PRIMA dell'overlay col build-up R5)
     if(g.com)try{g.com();}catch(_e){}// [7.54.0 BL-15] anche la CRONACA del gol/assist esce all'ingresso in rete (prima a _rd92 fisso: la riga poteva precedere la palla in volo)
     flashScreen({col:"rgba(255,255,255,0.42)",dur:600});// [6.5.1 SICUREZZA] via il lampo 0.75 → 0.42 governato
@@ -13318,9 +13326,13 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           // Resolve {H},{H2},{A} name tokens from rosters
           const hAbbr=_homeClubObj?.a||_homeClubObj?.id?.slice(0,3).toUpperCase()||"HOME";/* [7.118.0] sigla NAZIONALE (ITA) in nat-ctx, non del club */
           const aAbbr=_awayClubObj?.a||_awayClubObj?.id?.slice(0,3).toUpperCase()||"AWAY";
-          const hN=homeRoster[Math.floor(Math.random()*(homeRoster.length-1))].name.split(" ").pop()+" ("+hAbbr+")";
-          const hN2=homeRoster[Math.floor(Math.random()*(homeRoster.length-1))].name.split(" ").pop()+" ("+hAbbr+")";
-          const aN=awayRoster[Math.floor(Math.random()*awayRoster.length)].name.split(" ").pop()+" ("+aAbbr+")";
+          // [7.120.0 audit robustezza] helper unico: usa TUTTA la lunghezza del roster (prima `length-1` escludeva
+          //   sempre l'ultimo giocatore da {H}/{H2}) + guardia su roster vuoto (length 0 → index -1 → .name su
+          //   undefined = pageerror in partita). {A} era già corretto.
+          const _pickN=(r,ab)=>{if(!r||!r.length)return "il compagno ("+ab+")";const m=r[Math.floor(Math.random()*r.length)];return (((m&&m.name)||"").split(" ").pop()||"il compagno")+" ("+ab+")";};
+          const hN=_pickN(homeRoster,hAbbr);
+          const hN2=_pickN(homeRoster,hAbbr);
+          const aN=_pickN(awayRoster,aAbbr);
           const _pN76=player.name.split(" ").pop();
           const evTxt=ev.txt.replace(/{H2}/g,hN2).replace(/{H}/g,hN).replace(/{A}/g,aN).replace(/{P}/g,_pN76).replace(/{DERBY}/g,drby?.name||"Derby");
           // ATE-3: colore commentary tipo-specifico + C: il testo appare all'APICE ESATTO dell'arco → delay = metà della
@@ -16799,7 +16811,7 @@ function CreateScreen({onCreate,legacyBonus,onClearLegacy}){
               })}
             </div>
             {(()=>{const arc=ARCHETYPES.find(a=>a.id===archetypeId);return arc?(
-              <div style={{marginTop:6,padding:"7px 10px",background:"#f0fdf4",borderRadius:8,border:"1px solid #bbf7d0",fontSize:10,color:TH.muted}}>
+              <div style={{marginTop:6,padding:"7px 10px",background:"#f0fdf4",borderRadius:8,border:"1px solid #bbf7d0",fontSize:10,color:"#166534"}}>/* [7.120.0 audit UI] bg verde chiaro FISSO → testo verde scuro FISSO (era TH.muted = chiaro in dark mode → illeggibile) */
                 {Object.entries(arc.bonus).map(([k,v])=><span key={k} style={{marginRight:6,color:v>0?TH.success:TH.danger,fontWeight:700}}>{k} {v>0?"+":""}{v}</span>)}
               </div>
             ):null;})()}
@@ -16894,309 +16906,6 @@ function OffersScreen({player,trialStats,onChoose}){
   );
 }
 
-/* ========================================
-   FOOTBALL MATCH — 11v11 simulazione
-======================================== */
-function FootballMatch({player,opponent,context="career",onMatchEnd}){
-  const mountRef=useRef(null);
-  const keysRef=useRef({});
-  const gmRef=useRef({scoreA:0,scoreB:0,time:0,pGoals:0,pAssists:0,pShots:0,pPasses:0,ended:false});
-  const [ui,setUi]=useState({scoreA:0,scoreB:0,time:"0'"});
-
-  useEffect(()=>{
-    const mount=mountRef.current;if(!mount)return;
-    const W=mount.clientWidth||window.innerWidth,H=Math.min(460,Math.round(W*0.58));
-    mount.style.height=H+'px';
-    const scene=new THREE.Scene();scene.background=new THREE.Color(0x1b2d45);scene.fog=new THREE.Fog(0x1b2d45,95,185);
-    const camera=new THREE.PerspectiveCamera(65,W/H,0.1,300);camera.position.set(0,30,-55);camera.lookAt(0,0,8);
-    const renderer=new THREE.WebGLRenderer({antialias:true,powerPreference:'high-performance'});
-    renderer.setSize(W,H);renderer.setPixelRatio(Math.min(devicePixelRatio,2));
-    renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;
-    mount.appendChild(renderer.domElement);
-
-    scene.add(new THREE.AmbientLight(0xffffff,0.44));
-    const sun=new THREE.DirectionalLight(0xfff5e0,0.88);sun.position.set(22,65,28);sun.castShadow=true;
-    sun.shadow.mapSize.set(2048,2048);sun.shadow.camera.left=-62;sun.shadow.camera.right=62;sun.shadow.camera.top=46;sun.shadow.camera.bottom=-46;scene.add(sun);
-    scene.add(new THREE.HemisphereLight(0x88ccff,0x2a5c14,0.28));
-
-    // Field
-    const grass=new THREE.Mesh(new THREE.PlaneGeometry(104,68),new THREE.MeshLambertMaterial({color:0x2c6a1d}));grass.rotation.x=-Math.PI/2;grass.receiveShadow=true;scene.add(grass);
-    for(let i=0;i<8;i++){const m=new THREE.MeshLambertMaterial({color:i%2?0x2c6a1d:0x357a24});const s=new THREE.Mesh(new THREE.PlaneGeometry(13,68),m);s.rotation.x=-Math.PI/2;s.position.set(-45.5+i*13,0.01,0);scene.add(s);}
-    const lM=new THREE.LineBasicMaterial({color:0xffffff,opacity:0.85,transparent:true});
-    const ln=pts=>{const g=new THREE.BufferGeometry().setFromPoints(pts.map(([x,z])=>new THREE.Vector3(x,0.02,z)));scene.add(new THREE.Line(g,lM));};
-    ln([[-50,-34],[50,-34],[50,34],[-50,34],[-50,-34]]);ln([[0,-34],[0,34]]);
-    const cc=[];for(let i=0;i<=48;i++){const a=i/48*Math.PI*2;cc.push([Math.cos(a)*9.15,Math.sin(a)*9.15]);}ln(cc);
-    [-1,1].forEach(s=>{const gx=s*50,ix=gx-s*16.5,si=gx-s*5.5;ln([[gx,-20.16],[ix,-20.16],[ix,20.16],[gx,20.16]]);ln([[gx,-9.16],[si,-9.16],[si,9.16],[gx,9.16]]);});
-    // Simple stands
-    const stM=new THREE.MeshLambertMaterial({color:0x2a3a4a});
-    [-38,38].forEach(z=>{const s=new THREE.Mesh(new THREE.BoxGeometry(108,9,9),stM);s.position.set(0,4.5,z);scene.add(s);});
-    [-56,56].forEach(x=>{const s=new THREE.Mesh(new THREE.BoxGeometry(18,9,76),stM);s.position.set(x,4.5,0);scene.add(s);});
-    // Goals
-    const gM=new THREE.MeshLambertMaterial({color:0xf5f5f5});
-    [-1,1].forEach(s=>{
-      const gg=new THREE.Group();
-      [-3.66,3.66].forEach(z=>{const p=new THREE.Mesh(new THREE.CylinderGeometry(0.10,0.10,2.44,8),gM);p.position.set(0,1.22,z);p.castShadow=true;gg.add(p);});
-      const cb=new THREE.Mesh(new THREE.CylinderGeometry(0.08,0.08,7.32,8),gM);cb.rotation.z=Math.PI/2;cb.position.y=2.44;gg.add(cb);
-      const net=new THREE.Mesh(new THREE.PlaneGeometry(2.8,2.44),new THREE.MeshBasicMaterial({color:0xffffff,opacity:.08,transparent:true,side:THREE.DoubleSide}));net.rotation.y=Math.PI/2;net.position.set(s*1.4,1.22,0);gg.add(net);
-      gg.position.x=s*51;scene.add(gg);
-    });
-
-    // Player factory — procedural, MeshPhong
-    const mkP=(col,isUser=false)=>{
-      const g=new THREE.Group();
-      const _jc2=new THREE.Color(col);const _jh2={h:0,s:0,l:0};_jc2.getHSL(_jh2);_jc2.setHSL(_jh2.h,_jh2.s*0.80,_jh2.l*0.92);
-      const jM=new THREE.MeshPhongMaterial({color:_jc2,shininess:16});// 3DV-2: desatura+opaco
-      const sM=new THREE.MeshPhongMaterial({color:0x0d1226});
-      const skM=new THREE.MeshPhongMaterial({color:0xcfa07a,shininess:18});
-      const wh=new THREE.MeshPhongMaterial({color:0xfafafa});
-      const bt=new THREE.MeshPhongMaterial({color:0x0a0a0a});
-      const sho=new THREE.MeshPhongMaterial({color:0xeef0f3,shininess:14});// 5.44.0: pantaloncini
-      const add=(geo,mat,x,y,z)=>{const m=new THREE.Mesh(geo,mat);m.position.set(x,y,z);m.castShadow=true;m.receiveShadow=true;g.add(m);return m;};
-      add(new THREE.SphereGeometry(0.24,10,7),skM,0,1.96,0);// 5.44.0: testa più proporzionata (era 0.27)
-      const hr=new THREE.Mesh(new THREE.SphereGeometry(0.27,10,6),new THREE.MeshPhongMaterial({color:0x2d1800}));hr.scale.y=0.62;hr.position.set(0,2.04,0);g.add(hr);
-      add(new THREE.CylinderGeometry(0.09,0.11,0.16,7),skM,0,1.70,0);
-      add(new THREE.CylinderGeometry(0.30,0.235,0.84,12),jM,0,1.22,0);// 5.44.2: busto atletico a V (era a pera)
-      add(new THREE.BoxGeometry(0.54,0.14,0.27),jM,0,1.58,0);// 5.44.1: clavicola stretta
-      add(new THREE.SphereGeometry(0.11,9,7),jM,-0.38,1.56,0);add(new THREE.SphereGeometry(0.11,9,7),jM,0.38,1.56,0);// 5.44.1: deltoidi piccoli allineati al braccio
-      add(new THREE.CylinderGeometry(0.30,0.27,0.40,10),sho,0,0.74,0);// 5.44.0: pantaloncini
-      const mkArm=(sx)=>{const ag=new THREE.Group();ag.position.set(sx*0.38,1.58,0);const u=new THREE.Mesh(new THREE.CylinderGeometry(0.07,0.06,0.44,7),jM);u.position.y=-0.22;ag.add(u);const f=new THREE.Mesh(new THREE.CylinderGeometry(0.055,0.05,0.36,6),skM);f.position.y=-0.56;ag.add(f);const el=new THREE.Mesh(new THREE.SphereGeometry(0.058,8,6),skM);el.position.y=-0.45;ag.add(el);const hn=new THREE.Mesh(new THREE.SphereGeometry(0.055,8,6),skM);hn.position.y=-0.77;ag.add(hn);g.add(ag);return ag;};// 5.44.0: + gomito e mano
-      const mkLeg=(sx)=>{const lg=new THREE.Group();lg.position.set(sx*0.15,0.86,0);const th=new THREE.Mesh(new THREE.CylinderGeometry(0.097,0.082,0.50,8),skM);th.position.y=-0.26;lg.add(th);const sh=new THREE.Mesh(new THREE.CylinderGeometry(0.075,0.063,0.40,8),wh);sh.position.y=-0.65;lg.add(sh);const kn=new THREE.Mesh(new THREE.SphereGeometry(0.08,8,6),skM);kn.position.y=-0.49;lg.add(kn);const bk=new THREE.Mesh(new THREE.BoxGeometry(0.155,0.086,0.31),bt);bk.position.set(0,-0.86,0.06);lg.add(bk);g.add(lg);return lg;};// 5.44.2: gambe più lunghe/slanciate
-      const aL=mkArm(-1),aR=mkArm(1),lL=mkLeg(-1),lR=mkLeg(1);
-      if(isUser){const r=new THREE.Mesh(new THREE.TorusGeometry(0.55,0.055,7,24),new THREE.MeshBasicMaterial({color:0xffd700}));r.rotation.x=Math.PI/2;r.position.y=0.03;g.add(r);}
-      g._aL=aL;g._aR=aR;g._lL=lL;g._lR=lR;g._ph=0;
-      g.traverse(m=>{if(m.isMesh){m.castShadow=true;m.receiveShadow=true;}});
-      return g;
-    };
-
-    // Formation 4-4-2
-    const FA=[
-      {r:'GK',x:-47,z:0},{r:'DEF',x:-30,z:-16},{r:'DEF',x:-30,z:-5.5},{r:'DEF',x:-30,z:5.5},{r:'DEF',x:-30,z:16},
-      {r:'MID',x:-14,z:-16},{r:'MID',x:-14,z:-5.5},{r:'MID',x:-14,z:5.5},{r:'MID',x:-14,z:16},
-      {r:'FWD',x:-4,z:-9},{r:'FWD',x:-4,z:9},
-    ];
-    const colA=player?.club?.c||'#2563eb',colB=opponent?.c||'#dc2626';
-    const PS=[];
-    FA.forEach((f,i)=>{
-      const isU=(i===9);const mesh=mkP(colA,isU);mesh.position.set(f.x,0,f.z);scene.add(mesh);
-      PS.push({pos:new THREE.Vector3(f.x,0,f.z),vel:new THREE.Vector3(),rot:0,team:'A',role:f.r,isU,hasBall:false,fx:f.x,fz:f.z,mesh});
-    });
-    FA.forEach((f,i)=>{
-      const mx=-f.x;const mesh=mkP(colB);mesh.position.set(mx,0,f.z);mesh.rotation.y=Math.PI;scene.add(mesh);
-      PS.push({pos:new THREE.Vector3(mx,0,f.z),vel:new THREE.Vector3(),rot:Math.PI,team:'B',role:f.r,isU:false,hasBall:false,fx:mx,fz:f.z,mesh});
-    });
-    const uP=PS.find(p=>p.isU);
-
-    // Ball
-    const bMat=new THREE.MeshPhongMaterial({color:0xfafafa,shininess:90});
-    const bMesh=new THREE.Mesh(new THREE.SphereGeometry(0.22,12,9),bMat);bMesh.castShadow=true;scene.add(bMesh);
-    [[0,.22,0],[.17,.13,0],[-.17,.13,0],[0,.1,.18],[0,.1,-.18]].forEach(([x,y,z])=>{const pm=new THREE.Mesh(new THREE.SphereGeometry(0.065,6,5),new THREE.MeshPhongMaterial({color:0x111111}));pm.position.set(x,y,z);bMesh.add(pm);});
-    const ball={pos:new THREE.Vector3(0,0.22,0),vel:new THREE.Vector3(),owner:PS.indexOf(uP),lastTouch:-1,cd:0};
-    uP.hasBall=true;bMesh.position.copy(ball.pos);
-
-    // Input
-    const K=keysRef.current;
-    const GAME_KEYS=new Set(['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','Space','KeyA','KeyD','KeyW','KeyS','KeyE']);
-    const onKD=e=>{K[e.code]=true;if(GAME_KEYS.has(e.code))e.preventDefault();};
-    const onKU=e=>{K[e.code]=false;};
-    window.addEventListener('keydown',onKD);window.addEventListener('keyup',onKU);
-    renderer.domElement.addEventListener('click',()=>renderer.domElement.focus?.());
-    renderer.domElement.setAttribute('tabindex','0');
-
-    const G=gmRef.current;
-    Object.assign(G,{scoreA:0,scoreB:0,time:0,pGoals:0,pAssists:0,pShots:0,pPasses:0,ended:false});
-    const DUR=context==='trial'?210:270;
-    const camT=new THREE.Vector3();
-    const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
-
-    const bestPass=(me)=>{let bs=-99,bt=null;PS.forEach(p=>{if(p.team!==me.team||p===me)return;const d=me.pos.distanceTo(p.pos);if(d>40)return;let mo=99;PS.forEach(q=>{if(q.team===me.team)return;const od=q.pos.distanceTo(p.pos);if(od<mo)mo=od;});const sc=mo-d*0.14;if(sc>bs){bs=sc;bt=p;}});return bt;};
-    const doShoot=(me,idx)=>{const gx=me.team==='A'?51:-51;ball.vel.set((gx-me.pos.x)*0.44,2.2,-me.pos.z*0.22+(Math.random()-0.5)*1.8);ball.owner=-1;ball.lastTouch=idx;ball.cd=0.35;me.hasBall=false;};
-    const doPass=(me,target,idx)=>{const d=new THREE.Vector3().subVectors(target.pos,ball.pos).normalize();ball.vel.copy(d.multiplyScalar(15+(Math.random()-0.5)));ball.owner=-1;ball.lastTouch=idx;ball.cd=0.2;me.hasBall=false;};
-
-    // Pre-calcola i 2 presser più vicini alla palla per ogni squadra
-    const pressers={A:new Set(),B:new Set()};
-    function calcPressers(){
-      ['A','B'].forEach(tm=>{
-        pressers[tm].clear();
-        const bO=ball.owner>=0?PS[ball.owner]:null;
-        const opp=bO&&bO.team!==tm; // pressing when opp has ball
-        if(!opp){return;} // don't press when own team has ball
-        const dists=[];
-        PS.forEach((p,i)=>{if(p.isU||p.team!==tm||p.role==='GK')return;dists.push([p.pos.distanceTo(ball.pos),i]);});
-        dists.sort((a,b)=>a[0]-b[0]);
-        dists.slice(0,2).forEach(([,i])=>pressers[tm].add(i));
-      });
-    }
-
-    function aiTick(p,i){
-      const oppGx=p.team==='A'?51:-51,myGx=p.team==='A'?-51:51;
-      const bO=ball.owner>=0?PS[ball.owner]:null;const myBall=bO&&bO.team===p.team;
-      const scoreDiff=p.team==='A'?G.scoreA-G.scoreB:G.scoreB-G.scoreA;
-      const pressing=pressers[p.team]&&pressers[p.team].has(i);
-      let tx=p.fx,tz=p.fz;
-      if(ball.owner===i){
-        if(p.role==='GK'){
-          const t=bestPass(p);if(t)doPass(p,t,i);
-          tx=myGx*0.91;tz=clamp(ball.pos.z*0.18,-4,4);
-        } else {
-          const dg=Math.abs(p.pos.x-oppGx);
-          const shootChance=p.role==='ATT'?0.035:0.022;
-          const passChance=0.014+(scoreDiff<0?0.01:0); // passing more when losing
-          if(dg<26&&Math.abs(p.pos.z)<20&&Math.random()<shootChance){doShoot(p,i);}
-          else if(Math.random()<passChance){const t=bestPass(p);if(t)doPass(p,t,i);}
-          else{tx=oppGx;tz=p.pos.z*0.65;}
-        }
-      } else if(myBall){
-        if(p.role==='GK'){tx=myGx*0.88;tz=0;}
-        else if(p.role==='DEF'){tx=p.fx*0.80;tz=p.fz;}
-        else if(p.role==='MID'){tx=Math.sign(oppGx)*clamp(Math.abs(p.fx)+14,10,42);tz=p.fz;}
-        else{// ATT: run deep into opposition half
-          tx=Math.sign(oppGx)*clamp(Math.abs(p.fx)+18,18,48);
-          tz=p.fz+(Math.random()-0.5)*3; // slight stagger each tick
-        }
-      } else {
-        if(p.role==='GK'){tx=myGx*0.91;tz=clamp(ball.pos.z*0.28,-5,5);}
-        else if(pressing){
-          // Aggressive: run directly at ball carrier
-          tx=bO?bO.pos.x:ball.pos.x;
-          tz=bO?bO.pos.z:ball.pos.z;
-        } else {
-          const bx=clamp(ball.pos.x,-50,50);
-          // All non-pressing defenders shift toward ball side tighter
-          const pullFactor=scoreDiff<0?0.55:0.42; // press harder when losing
-          tx=p.fx+(bx-p.fx)*pullFactor;
-          tz=p.fz+ball.pos.z*0.28;
-        }
-      }
-      const toT=new THREE.Vector3(tx-p.pos.x,0,tz-p.pos.z);const td=toT.length();
-      if(td>0.5){
-        const spd=p.role==='GK'?4:pressing?8:6.5;
-        toT.normalize().multiplyScalar(Math.min(spd,td*4));
-        p.vel.lerp(toT,pressing?0.22:0.14);
-      } else p.vel.multiplyScalar(0.55);
-    }
-
-    let animId,lastT=performance.now()/1000,tick=0;
-
-    const resetKO=()=>{
-      ball.pos.set(0,0.22,0);ball.vel.set(0,0,0);ball.owner=PS.indexOf(uP);ball.lastTouch=-1;ball.cd=0;
-      PS.forEach(p=>{p.pos.set(p.fx,0,p.fz);p.vel.set(0,0,0);p.hasBall=p===uP;p.mesh.position.copy(p.pos);});
-      setUi(u=>({...u,scoreA:G.scoreA,scoreB:G.scoreB}));
-    };
-    const endMatch=()=>{
-      const r=clamp(Math.round(50+G.pGoals*15+G.pAssists*8+G.pShots*2+(G.scoreA>G.scoreB?10:0)),30,99);
-      setUi(u=>({...u,time:"90'"}));
-      setTimeout(()=>onMatchEnd({goals:G.pGoals,assists:G.pAssists,rating:r,shots:G.pShots,passes:G.pPasses,squadAGoals:G.scoreA,squadBGoals:G.scoreB}),1600);
-    };
-
-    const animate=()=>{
-      animId=requestAnimationFrame(animate);
-      const now=performance.now()/1000,dt=clamp(now-lastT,0,0.05);lastT=now;tick++;
-      if(G.ended){renderer.render(scene,camera);return;}
-      G.time+=dt;if(G.time>=DUR){G.ended=true;endMatch();return;}
-      ball.cd=Math.max(0,ball.cd-dt);
-
-      // User input — ISS-style: ↑/W verso porta avversaria, ↓/S indietro, ←/→/A/D laterale
-      const dir=new THREE.Vector3();
-      const fwd=uP.team==='A'?1:-1;
-      if(K['ArrowUp']||K['KeyW'])dir.x+=fwd;if(K['ArrowDown']||K['KeyS'])dir.x-=fwd;
-      if(K['ArrowLeft']||K['KeyA'])dir.z-=1;if(K['ArrowRight']||K['KeyD'])dir.z+=1;
-      if(dir.lengthSq()>0){dir.normalize();uP.vel.addScaledVector(dir,22*dt);if(uP.vel.length()>7)uP.vel.normalize().multiplyScalar(7);}
-      if(K['Space']&&!K._sw){
-        if(uP.hasBall){
-          const gx=uP.team==='A'?51:-51;
-          if(Math.abs(uP.pos.x-gx)<32&&Math.abs(uP.pos.z)<20){G.pShots++;doShoot(uP,PS.indexOf(uP));}
-          else{const t=bestPass(uP);if(t){G.pPasses++;doPass(uP,t,PS.indexOf(uP));}}
-        }
-      }
-      K._sw=K['Space'];
-
-      // Players
-      calcPressers();
-      PS.forEach((p,i)=>{
-        if(!p.isU)aiTick(p,i);
-        p.vel.multiplyScalar(0.80);
-        p.pos.addScaledVector(p.vel,dt);
-        p.pos.x=clamp(p.pos.x,-50,50);p.pos.z=clamp(p.pos.z,-33,33);
-        // Hard GK zone — never crosses midfield
-        if(p.role==='GK'){
-          if(p.team==='A'){p.pos.x=clamp(p.pos.x,-50,-22);p.pos.z=clamp(p.pos.z,-10,10);}
-          else{p.pos.x=clamp(p.pos.x,22,50);p.pos.z=clamp(p.pos.z,-10,10);}
-        }
-        const spd=p.vel.length();
-        if(spd>0.4){const ta=Math.atan2(p.vel.x,p.vel.z),da=((ta-p.rot+Math.PI*3)%(Math.PI*2))-Math.PI;p.rot+=da*clamp(9*dt,0,1);}
-        p.mesh.position.copy(p.pos);p.mesh.rotation.y=p.rot;
-        const m=p.mesh;
-        if(spd>0.3){m._ph=(m._ph||0)+spd*dt*2.8;const amp=clamp(spd*0.11,0,0.72);m._lL.rotation.x=Math.sin(m._ph)*amp;m._lR.rotation.x=-Math.sin(m._ph)*amp;m._aL.rotation.x=-Math.sin(m._ph)*amp*0.44;m._aR.rotation.x=Math.sin(m._ph)*amp*0.44;}
-        else{m._lL.rotation.x*=0.84;m._lR.rotation.x*=0.84;m._aL.rotation.x*=0.84;m._aR.rotation.x*=0.84;}
-        if(ball.owner===i){ball.pos.set(p.pos.x+Math.sin(p.rot)*0.46,0.22,p.pos.z+Math.cos(p.rot)*0.46);ball.vel.set(0,0,0);}
-      });
-
-      // Ball free physics
-      if(ball.owner<0){
-        ball.vel.multiplyScalar(0.968);ball.vel.y-=9.8*dt;
-        ball.pos.addScaledVector(ball.vel,dt);
-        if(ball.pos.y<0.22){ball.pos.y=0.22;ball.vel.y=Math.abs(ball.vel.y)*0.45;if(Math.abs(ball.vel.y)<0.7)ball.vel.y=0;}
-        if(Math.abs(ball.pos.z)>33.6){ball.vel.z*=-0.65;ball.pos.z=Math.sign(ball.pos.z)*33.6;}
-        if(Math.abs(ball.pos.x)>51&&Math.abs(ball.pos.z)<3.7&&ball.pos.y<2.5){
-          const sc=ball.pos.x>0?'A':'B';
-          if(sc==='A'){G.scoreA++;if(ball.lastTouch>=0&&PS[ball.lastTouch]?.team==='A'&&PS[ball.lastTouch]?.isU)G.pGoals++;}
-          else G.scoreB++;
-          resetKO();return;
-        }
-        PS.forEach((p,i)=>{
-          if(ball.owner>=0)return;
-          if(ball.cd>0&&i===ball.lastTouch)return;
-          if(p.pos.distanceTo(ball.pos)<0.92){ball.owner=i;p.hasBall=true;PS.forEach((q,j)=>{if(j!==i)q.hasBall=false;});}
-        });
-      }
-      bMesh.position.copy(ball.pos);bMesh.rotation.y+=0.07;
-
-      // Camera follow
-      // Camera ISS-style: laterale fissa, segue solo X del giocatore
-      camT.x+=(uP.pos.x-camT.x)*3*dt;
-      camera.position.set(camT.x,30,-55);camera.lookAt(camT.x,0,8);
-
-      // UI tick
-      if(tick%28===0){const t90=Math.floor(G.time*90/DUR);setUi({scoreA:G.scoreA,scoreB:G.scoreB,time:t90+"'"});}
-      renderer.render(scene,camera);
-    };
-    animate();
-
-    return()=>{
-      G.ended=true;
-      window.removeEventListener('keydown',onKD);window.removeEventListener('keyup',onKU);
-      cancelAnimationFrame(animId);try{renderer.forceContextLoss();}catch(_e){}renderer.dispose();// 5.69.3: rilascia il contesto WebGL a unmount (dispose da solo non lo fa)
-      if(mount.contains(renderer.domElement))mount.removeChild(renderer.domElement);
-    };
-  },[]);// eslint-disable-line
-
-  const abbA=player?.club?.a||player?.club?.abbr||'TUA',abbB=opponent?.a||opponent?.abbr||'OPP';
-  return(
-    <div style={{position:'relative',borderRadius:12,overflow:'hidden',background:'#1b2d45'}}>
-      <div ref={mountRef} style={{width:'100%',display:'block'}}/>
-      <div style={{position:'absolute',top:0,left:0,right:0,display:'flex',justifyContent:'space-between',alignItems:'center',padding:'10px 20px',background:'rgba(0,0,0,0.62)',color:'#fff',fontFamily:'monospace',zIndex:1}}>
-        <div style={{display:'flex',alignItems:'center',gap:10}}>
-          <div style={{width:24,height:24,borderRadius:4,background:player?.club?.c||TH.primary}}/>
-          <span style={{fontSize:12,opacity:.75}}>{abbA}</span>
-          <span style={{fontSize:30,fontWeight:900,color:'#7dd3fc'}}>{ui.scoreA}</span>
-        </div>
-        <div style={{textAlign:'center'}}>
-          <div style={{fontSize:14,fontWeight:700}}>{ui.time}</div>
-          <div style={{fontSize:10,color:'#64748b',marginTop:1}}>WASD muovi · SPAZIO passa/tira</div>
-        </div>
-        <div style={{display:'flex',alignItems:'center',gap:10}}>
-          <span style={{fontSize:30,fontWeight:900,color:'#fca5a5'}}>{ui.scoreB}</span>
-          <span style={{fontSize:12,opacity:.75}}>{abbB}</span>
-          <div style={{width:24,height:24,borderRadius:4,background:opponent?.c||'#dc2626'}}/>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-/* ========================================
-   FOOTBALL MATCH 2D — SENSIBLE SOCCER STYLE
-======================================== */
 
 /* ========================================
    TRIAL FLOW
@@ -17979,7 +17688,9 @@ const generateLeagueScorers=(player,opts)=>{
     const seed=hashStr(c.id+"_"+season+"_s59");
     const seed2=hashStr(c.id+"_ln_"+season+"_s59"); // Sprint 81: separate seed for last name → no duplicates
     const rate=0.30+(c.p||60)/99*0.45;
-    const played=Math.max(0,week-1); // games actually played
+    // [7.120.0 audit economia] cap alle gare REALI di lega (doppio girone di 18 = 34 giornate). Prima usava
+    //   week-1 = 37 a W38 → rivali gonfiati ~9% (≈+2-3 gol) → l'eroe capocannoniere veniva scavalcato in volata.
+    const played=Math.min(Math.max(0,week-1),34); // games actually played (cap stagione di lega)
     const goals=Math.max(0,Math.round(rate*played)+((seed%3)-1)); // ±1 swing (was ±2)
     const name=FNAMES[seed%FNAMES.length]+" "+LNAMES[seed2%LNAMES.length];
     return{name,club:(opts&&opts.fullClub)?(c.n||c.a):(c.a||c.n),goals,isPlayer:false};/* [7.9.2] fullClub → nomi estesi per la cerimonia premi */
@@ -20404,7 +20115,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
         const _psN=(typeof _pSimStats==="function")?_pSimStats(simN,p.ovr||65,p.archetype?.id||p.archetype||"",seededRng((_sdN+2)>>>0)):{goals:0,assists:0};
         const newCalN=(p.calendar||[]).map(m=>m.matchday===md2.matchday?{...m,played:true,result:{homeScore:simN.homeScore,awayScore:simN.awayScore,won:simN.won,drew:simN.drew},simulated:true}:m);
         const _pendNat28=newCalN.some(m=>m.week===(p.week||1)&&!m.played&&(m.type==="euro_group"||m.type==="euro"||m.type==="cup"));/* [7.8.28 QA] un turno di coppa/europa nella STESSA settimana non va strandato: la settimana resta ferma (weekLived) finché non lo risolvi */
-        const _wkNat28=_pendNat28?{weekLived:true}:{...weeklyEconomyFields(p),week:(p.week||1)+1,weekLived:false,sessionsThisWeek:0,sessionLog:[],weeklyFocusType:null,returnPenaltyWeeks:Math.max(0,(p.returnPenaltyWeeks||0)-1)};
+        const _wkNat28=_pendNat28?{weekLived:true}:{...weeklyEconomyFields(p),...weeklyStaffRel(p),week:(p.week||1)+1,weekLived:false,sessionsThisWeek:0,sessionLog:[],weeklyFocusType:null,returnPenaltyWeeks:Math.max(0,(p.returnPenaltyWeeks||0)-1)};/* [7.120.0 audit] +weeklyStaffRel: la settimana della nazionale applicava l'economia ma NON la deriva relazioni staff (asimmetria coi rami lega/euro/coppa) */
         if(isInjured){/* [7.8.28 QA] INFORTUNATO: la Nazionale gioca senza di te — voce marcata, NIENTE cap/gol/morale (prima l'auto-sim accreditava Cap+gol a un giocatore ai box) */
           notify(`🏳️ Amichevole ${p.nation||"Italia"}: convocazione saltata per infortunio`,TH.warning);
           return{...p,..._wkNat28,...(_pendNat28?{}:injBase),calendar:newCalN,log:[`🏳️ Amichevole nazionale saltata (infortunio)`,...(p.log||[])].slice(0,60)};/* [7.114.0 fix INJ-1] injBase solo quando la settimana avanza (non con un altro turno pendente) */
@@ -20510,7 +20221,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       if(isInjured){
         const injHistory=[...(p.matchHistory||[]),{week:p.week||1,opponent:opp.n,oppAbbr:opp.a,oppCol:opp.c,homeScore:sim.homeScore,awayScore:sim.awayScore,goals:0,assists:0,rating:null,won:sim.won,drew:sim.drew,simulated:true,injured:true}].slice(-200);
         notify(`🩹 Infort. (saltata) ${sim.homeScore}–${sim.awayScore} vs ${opp.n}`,sim.won?TH.success:sim.drew?TH.warning:TH.danger);
-        return{...p,...(_pendingEuro?{}:injBase),standings:newSt,calendar:newCal,matchHistory:injHistory,morale:clamp((p.morale||70)+(sim.won?1:sim.drew?0:-1),0,100),...(!_pendingEuro?weeklyEconomyFields(p):{})/* [7.114.0 fix INJ-1] injBase solo se la settimana avanza */,...(!_pendingEuro?weeklyStaffRel(p):{}),/* [6.35.0 STAB-8] stipendio anche nelle settimane di infortunio (simulate) · [6.43.0] relazioni staff */week:_pendingEuro?(p.week||1):(p.week||1)+1,weekLived:_pendingEuro?true:false,...(!_pendingEuro?{sessionsThisWeek:0,sessionLog:[],weeklyFocusType:null}:{})};
+        return{...p,...(_pendingEuro?{}:injBase),standings:newSt,calendar:newCal,matchHistory:injHistory,morale:clamp((p.morale||70)+(sim.won?1:sim.drew?0:-1),0,100),...(!_pendingEuro?weeklyEconomyFields(p):{})/* [7.114.0 fix INJ-1] injBase solo se la settimana avanza */,...(!_pendingEuro?weeklyStaffRel(p):{}),...(!_pendingEuro?{teamChemistry:clamp((p.teamChemistry||60)+(sim.won?2:sim.drew?0:-2),0,100)}:{}),/* [7.120.0 audit economia] la chimica reagisce al RISULTATO della gara SIMULATA (come il path LIVE 20680), non solo alla mean-reversion di weeklyStaffRel → prima chi simulava le vittorie vedeva la chimica DERIVARE a 60 invece di salire (divergenza live/sim) */ /* [6.35.0 STAB-8] stipendio anche nelle settimane di infortunio (simulate) · [6.43.0] relazioni staff */week:_pendingEuro?(p.week||1):(p.week||1)+1,weekLived:_pendingEuro?true:false,...(!_pendingEuro?{sessionsThisWeek:0,sessionLog:[],weeklyFocusType:null}:{})};
       }
       const _sPS131=p.contractExpired?{goals:0,assists:0}:_pSimStats(sim,p.ovr||65,p.archetype?.id||p.archetype||"",seededRng((_aSd+2)>>>0));/* [5.98.0 EC-1] svincolato: non vieni schierato */
       const _adjRat131=Math.round(clamp(sim.rating+_sPS131.goals*0.4+_sPS131.assists*0.2,4.0,9.5)*10)/10;
@@ -27234,7 +26945,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       <div className="cpm-nav-hint" style={{borderTop:"1px solid "+TH.cardBorder}}>
         {[{k:"Enter",l:"Gioca"},{k:"0",l:"Avanza"},{k:"Esc",l:"Indietro"},{k:"Spc",l:"Conferma"}].map(h=>(
           <span key={h.k} style={{fontSize:10,color:TH.muted,display:"flex",alignItems:"center",gap:3}}>
-            <span style={{background:"#e2e8f0",borderRadius:3,padding:"1px 5px",fontFamily:"monospace",fontSize:10,color:TH.text}}>{h.k}</span>
+            <span style={{background:"#e2e8f0",borderRadius:3,padding:"1px 5px",fontFamily:"monospace",fontSize:10,color:"#334155"}}>{h.k}</span>/* [7.120.0 audit UI] chip chiaro FISSO → testo slate scuro FISSO (era TH.text = chiaro in dark mode → illeggibile) */
             {h.l}
           </span>
         ))}
