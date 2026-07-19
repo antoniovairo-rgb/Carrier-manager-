@@ -13,7 +13,10 @@
   (texture embedded, niente normal map). ATTIVA nell'intervista, verificata con screenshot
   GLB-ON (win+loss) + `actor-diag` (7 ossa matchate) + `interview-3d-test`.
 - ✅ **`assets/actor-presenter.glb` = Male_Adult_03** (giacca di tweed, elegante, 3.9MB):
-  convertito e COMMITTATO in staging — **hook GalaStage3D = prossimo scaglione**.
+  **ATTIVO nel gala** (7.143.0, `mkActorG`) — il palco torna ad avere una persona (rimossa al
+  7.85.0 perché il CH38 era «disegnato malissimo»); SOLO l'actor, senza file la cerimonia resta
+  senza persone. Busta del reveal di nuovo visibile, PARENTATA alla mano sinistra (lezione mic
+  7.128.0). Verificato con `gala-glb-shot` (busta + reveal) + `gala-test`.
 - ✅ Filiera COMPLETA in-session (il PO non può scaricare nulla): vedi sotto.
 - Fallback CH38 automatico se il file manca/non carica; compat mixamo (Michelle-style) intatta.
 
@@ -71,7 +74,7 @@ azzera metallic, toglie le normal map (variante lean; `NORMALS=1` per tenerle).
 | File | Modello | Scena | Stato |
 |---|---|---|---|
 | `assets/actor-journalist.glb` | Rocketbox Female_Adult_15 | InterviewStage3D | ✅ attivo (7.142.0) |
-| `assets/actor-presenter.glb`  | Rocketbox Male_Adult_03 (giacca) | GalaStage3D | ⏳ file pronto, hook prossimo scaglione |
+| `assets/actor-presenter.glb`  | Rocketbox Male_Adult_03 (giacca) | GalaStage3D | ✅ attivo (7.143.0) |
 
 ## Probe
 
