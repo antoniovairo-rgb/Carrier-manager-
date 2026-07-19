@@ -36,18 +36,24 @@ if (!overlay) issues.push('overlay gala assente');
 await sleep(4500); /* attesa aggancio actor GLB */
 const diag = await page.evaluate(() => window.__CPM_ACTOR_G || null);
 console.log('ACTOR_G DIAG:', JSON.stringify(diag));
-if (!diag) issues.push('__CPM_ACTOR_G assente (actor-presenter non agganciato)');
-else if (!(diag.bones || []).includes('lHand')) issues.push('osso lHand non matchato (busta orfana)');
+/* [7.144.0] diag ad ARRAY: uomo + donna, entrambi con lHand (la busta passa di mano) */
+if (!diag || !diag.length) issues.push('__CPM_ACTOR_G assente (nessun actor agganciato)');
+else { if (diag.length < 2) issues.push('attesi 2 presentatori (uomo+donna), agganciati ' + diag.length);
+  diag.forEach((d, i) => { if (!(d.bones || []).includes('lHand')) issues.push(`actor ${i}: osso lHand non matchato (busta orfana)`); }); }
 await page.screenshot({ path: 'out/gala-glb-busta.png' });
-console.log('→ out/gala-glb-busta.png');
+console.log('→ out/gala-glb-busta.png  (atto 1 · DONNA con la busta)');
 
-/* avanza al reveal del 1° premio (beat 3 del primo atto) */
+/* avanza al reveal del 1° premio (beat 3), poi al 2° ATTO: la busta deve PASSARE ALL'UOMO */
 const clickBtn = (rx) => page.evaluate((x) => { const r = new RegExp(x, 'i'); const el = [...document.querySelectorAll('button,a,[role=button]')].find(e => r.test((e.textContent || '').trim()) && e.offsetParent !== null); if (el) { el.click(); return true; } return false; }, rx);
 await clickBtn('Apri la busta'); await sleep(900);
 if (await page.evaluate(() => /Il secondo posto/i.test(document.body.innerText))) { await clickBtn('Il secondo posto'); await sleep(700); }
 if (await page.evaluate(() => /e il vincitore è/i.test(document.body.innerText))) { await clickBtn('e il vincitore è'); await sleep(1600); }
 await page.screenshot({ path: 'out/gala-glb-reveal.png' });
 console.log('→ out/gala-glb-reveal.png');
+const next = await clickBtn('Il prossimo premio'); await sleep(2200);
+if (!next) issues.push('secondo atto non raggiungibile (bottone assente)');
+await page.screenshot({ path: 'out/gala-glb-act2.png' });
+console.log('→ out/gala-glb-act2.png  (atto 2 · UOMO con la busta)');
 
 await browser.close(); srv.close();
 console.log(issues.length ? '❌ ISSUES\n' + issues.map(i => '  ✗ ' + i).join('\n') : '✅ gala GLB-ON: actor presentatore agganciato');

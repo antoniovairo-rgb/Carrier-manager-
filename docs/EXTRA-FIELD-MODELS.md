@@ -17,6 +17,11 @@
   7.85.0 perché il CH38 era «disegnato malissimo»); SOLO l'actor, senza file la cerimonia resta
   senza persone. Busta del reveal di nuovo visibile, PARENTATA alla mano sinistra (lezione mic
   7.128.0). Verificato con `gala-glb-shot` (busta + reveal) + `gala-test`.
+- ✅ **`assets/actor-presenter-f.glb` = Female_Adult_11** (abito da cerimonia scuro, chignon, 4.1MB —
+  scelta dai preview raw del repo, 7.144.0): collaudo PO «la cerimonia sia con DONNA che UOMO che si
+  alternano all'apertura delle buste» — i due presentatori stanno AI LATI del podio e si ALTERNANO
+  per atto (pari donna · dispari uomo), la busta PASSA DI MANO (re-parent), la regia inquadra il
+  lato di chi presenta.
 - ✅ Filiera COMPLETA in-session (il PO non può scaricare nulla): vedi sotto.
 - Fallback CH38 automatico se il file manca/non carica; compat mixamo (Michelle-style) intatta.
 
@@ -74,7 +79,8 @@ azzera metallic, toglie le normal map (variante lean; `NORMALS=1` per tenerle).
 | File | Modello | Scena | Stato |
 |---|---|---|---|
 | `assets/actor-journalist.glb` | Rocketbox Female_Adult_15 | InterviewStage3D | ✅ attivo (7.142.0) |
-| `assets/actor-presenter.glb`  | Rocketbox Male_Adult_03 (giacca) | GalaStage3D | ✅ attivo (7.143.0) |
+| `assets/actor-presenter.glb`  | Rocketbox Male_Adult_03 (giacca) | GalaStage3D (uomo, atti dispari) | ✅ attivo (7.143.0) |
+| `assets/actor-presenter-f.glb` | Rocketbox Female_Adult_11 (abito da cerimonia) | GalaStage3D (donna, atti pari) | ✅ attivo (7.144.0) |
 
 ## Probe
 
