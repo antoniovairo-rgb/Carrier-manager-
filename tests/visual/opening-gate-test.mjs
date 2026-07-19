@@ -41,22 +41,25 @@ const wizStep = (page) => page.evaluate(() => { const el = [...document.querySel
   const pg = await boot(mkSave({}));
   const pend0 = await pg.evaluate(() => window.__CPM_CAREER.openingPending());
   console.log('(A) pendenti:', JSON.stringify(pend0));
-  if (JSON.stringify(pend0) !== JSON.stringify(['ritiro', 'presidente', 'stampa', 'maglia'])) issues.push('ordine/insieme passi inatteso: ' + JSON.stringify(pend0));
+  if (JSON.stringify(pend0) !== JSON.stringify(['ritiro', 'presidente', 'mercato', 'stampa', 'maglia'])) issues.push('ordine/insieme passi inatteso: ' + JSON.stringify(pend0));/* [7.147.0] +mercato dopo il presidente */
   await clickBtn(pg, 'Vivi la Settimana|Vivi la settimana'); await sleep(900);
   let st = await wizStep(pg);
   console.log('(A) wizard:', st);
-  if (!st || !/Passo 1 di 4/.test(st) || !/Ritiro/i.test(st)) issues.push('wizard non aperto sul passo 1 (ritiro): ' + st);
+  if (!st || !/Passo 1 di 5/.test(st) || !/Ritiro/i.test(st)) issues.push('wizard non aperto sul passo 1 (ritiro): ' + st);
   if (await pg.evaluate(() => window.__CPM_CAREER.get().lived)) issues.push('settimana vissuta NONOSTANTE il wizard');
   // passo 1: ritiro (sessione Amichevole)
   await clickBtn(pg, 'Amichevole'); await sleep(900);
   st = await wizStep(pg); console.log('(B) dopo ritiro:', st);
-  if (!st || !/Passo 2 di 4/.test(st) || !/Presidente/i.test(st)) issues.push('passo 2 (presidente) non mostrato: ' + st);
+  if (!st || !/Passo 2 di 5/.test(st) || !/Presidente/i.test(st)) issues.push('passo 2 (presidente) non mostrato: ' + st);
   await clickBtn(pg, 'Capito, Presidente'); await sleep(900);
+  st = await wizStep(pg); console.log('(B) passo mercato:', st);
+  if (!st || !/mercato/i.test(st)) issues.push('passo mercato non mostrato: ' + st);/* [7.147.0] presentazione acquisti/partenze */
+  await clickBtn(pg, 'Benvenuti ai nuovi|Avanti tutta'); await sleep(900);
   st = await wizStep(pg); console.log('(B) dopo presidente:', st);
-  if (!st || !/Passo 3 di 4/.test(st) || !/stampa/i.test(st)) issues.push('passo 3 (stampa) non mostrato: ' + st);
+  if (!st || !/stampa/i.test(st)) issues.push('passo stampa non mostrato: ' + st);/* [7.147.0] il numero di passo dipende dal mercato */
   await clickBtn(pg, 'Obiettivi chiari, un passo alla volta'); await sleep(900);
   st = await wizStep(pg); console.log('(B) dopo stampa:', st);
-  if (!st || !/Passo 4 di 4/.test(st) || !/maglia/i.test(st)) issues.push('passo 4 (maglia) non mostrato: ' + st);
+  if (!st || !/Passo 5 di 5/.test(st) || !/maglia/i.test(st)) issues.push('passo 4 (maglia) non mostrato: ' + st);
   await clickBtn(pg, 'Tieni #'); await sleep(900);
   const fine = await pg.evaluate(() => /La squadra è al completo/i.test(document.body.innerText));
   console.log('(C) schermata finale:', fine);
@@ -92,7 +95,7 @@ const wizStep = (page) => page.evaluate(() => { const el = [...document.querySel
   const pg = await boot(mkSave({ euro: { active: true, competition: 'UEL', phase: 'group', pts: 0, groupResults: [], qualified: false, champion: false, eliminated: false, koResults: [], koRound: 0, groupOpponents: groupOpps }, calendar: egCalW1 }));
   const pend = await pg.evaluate(() => window.__CPM_CAREER.openingPending());
   console.log('(F) pendenti con euro:', JSON.stringify(pend));
-  if (pend[pend.length - 1] !== 'sorteggi' || pend.length !== 5) issues.push('sorteggi non in coda al wizard: ' + JSON.stringify(pend));
+  if (pend[pend.length - 1] !== 'sorteggi' || pend.length !== 6)/* [7.147.0] +mercato */ issues.push('sorteggi non in coda al wizard: ' + JSON.stringify(pend));
   // risolvi i primi 4 via hook parziale (click-through già coperto in A/B) e i sorteggi NEL wizard
   await pg.evaluate(() => new Promise(res => { window.__CPM_CAREER.dismiss(); setTimeout(res, 300); }));
   await pg.evaluate(() => { const f = window.__CPM_CAREER; f && f.resolveOpening && f.resolveOpening(); });
@@ -103,5 +106,5 @@ const wizStep = (page) => page.evaluate(() => { const el = [...document.querySel
 }
 
 await browser.close(); srv.close();
-console.log(issues.length ? '❌ FAIL\n' + issues.map(i => '  ✗ ' + i).join('\n') : '✅ WIZARD SETTIMANA 1 OK (blocco+wizard 4 passi · finale · sblocco · W2 libera · harness · sorteggi)');
+console.log(issues.length ? '❌ FAIL\n' + issues.map(i => '  ✗ ' + i).join('\n') : '✅ WIZARD SETTIMANA 1 OK (blocco+wizard 5 passi (con mercato) · finale · sblocco · W2 libera · harness · sorteggi)');
 process.exit(issues.length ? 1 : 0);
