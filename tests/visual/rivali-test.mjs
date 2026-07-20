@@ -30,28 +30,37 @@ const boot = async (save) => {
 };
 const hasTxt = (page, rx) => page.evaluate((x) => new RegExp(x, 'i').test(document.body.innerText), rx);
 
-// (1) pre-partita
+const storyBody = (page) => page.evaluate(() => { const el=[...document.querySelectorAll('*')].find(e=>/LA TUA STORIA/i.test(e.textContent||'')&&e.textContent.length<800); return el?el.textContent:document.body.innerText; });
+// (1) pre-partita — [7.156.0] titolo SEEDATO → si verifica l'arco tramite emoji 🆚 + nome rivale (non il titolo letterale)
 {
   const pg = await boot(mkSave({}));
-  const pre = await hasTxt(pg, 'Gli eterni rivali') && await hasTxt(pg, 'Dario Ferrero');
+  const pre = await hasTxt(pg, '🆚') && await hasTxt(pg, 'Dario Ferrero');
   console.log('(1) pre-partita:', pre);
-  if (!pre) issues.push('capitolo pre-partita rivali assente');
+  if (!pre) issues.push('capitolo pre-partita rivali assente (🆚 + nome)');
   await pg.close();
 }
-// (2) giocato con gol → duello tuo
+// (1b) VARIETÀ — [7.156.0] settimane diverse → testo pre-partita DIVERSO (non più statico/ripetitivo)
+{
+  const b12 = await boot(mkSave({ week: 12, calendar: [{ matchday: 11, week: 12, opponentId: 'pis', opponentName: 'FC Pisano', isHome: true, played: false, result: null }] })).then(async pg => { const t = await storyBody(pg); await pg.close(); return t; });
+  const b20 = await boot(mkSave({ week: 20, calendar: [{ matchday: 19, week: 20, opponentId: 'pis', opponentName: 'FC Pisano', isHome: false, played: false, result: null }] })).then(async pg => { const t = await storyBody(pg); await pg.close(); return t; });
+  const varied = b12 && b20 && b12 !== b20;
+  console.log('(1b) varietà W12≠W20:', varied);
+  if (!varied) issues.push('capitolo rivali IDENTICO tra settimane diverse (ripetitivo)');
+}
+// (2) giocato con gol → verdetto positivo (emoji 🏆)
 {
   const pg = await boot(mkSave({ calendar: [{ matchday: 11, week: 12, opponentId: 'pis', opponentName: 'FC Pisano', isHome: true, played: true, result: { homeScore: 2, awayScore: 0, won: true, drew: false } }], matchHistory: [{ week: 12, opponent: 'FC Pisano', goals: 2, assists: 0, rating: 8, won: true }], arcSeen: { 'rivw1_w12_S4': true } }));
-  const win = await hasTxt(pg, 'Il duello è tuo');
-  console.log('(2) gol → duello tuo:', win);
-  if (!win) issues.push('verdetto «Il duello è tuo» assente con 2 gol');
+  const win = await hasTxt(pg, '🏆') && await hasTxt(pg, 'Dario Ferrero');
+  console.log('(2) gol → verdetto positivo:', win);
+  if (!win) issues.push('verdetto positivo (🏆) assente con 2 gol vs rivale');
   await pg.close();
 }
-// (3) perso senza gol → round al rivale
+// (3) perso senza gol → verdetto negativo (emoji 😤)
 {
   const pg = await boot(mkSave({ calendar: [{ matchday: 11, week: 12, opponentId: 'pis', opponentName: 'FC Pisano', isHome: true, played: true, result: { homeScore: 0, awayScore: 1, won: false, drew: false } }], matchHistory: [{ week: 12, opponent: 'FC Pisano', goals: 0, assists: 0, rating: 6, won: false }], arcSeen: { 'rivw1_w12_S4': true } }));
-  const loss = await hasTxt(pg, 'Round al rivale');
-  console.log('(3) sconfitta → round al rivale:', loss);
-  if (!loss) issues.push('verdetto «Round al rivale» assente su sconfitta senza gol');
+  const loss = await hasTxt(pg, '😤') && await hasTxt(pg, 'Dario Ferrero');
+  console.log('(3) sconfitta → verdetto negativo:', loss);
+  if (!loss) issues.push('verdetto negativo (😤) assente su sconfitta senza gol vs rivale');
   await pg.close();
 }
 // (4) senza rivale → nessun capitolo
