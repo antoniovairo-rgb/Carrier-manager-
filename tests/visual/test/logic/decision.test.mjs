@@ -65,11 +65,19 @@ test('#19 FI: forte+libero >> debole+sotto pressione (quality e tasso positivo)'
   }
 });
 
-test('#30 piede debole: cross/tiro sulla fascia opposta al piede forte hanno quality minore', () => {
-  // foot R: side L = fascia debole; side R = fascia forte. weakFlank penalizza la quality.
-  for (const intent of ['cross', 'shot']) {
-    const strong = avgQ(intent, { foot: 'R', side: 'R' });
-    const weakF = avgQ(intent, { foot: 'R', side: 'L' });
-    assert.ok(weakF < strong, `${intent}: piede debole ${weakF.toFixed(3)} non < piede forte ${strong.toFixed(3)}`);
+test('#30 piede preferito: cross di piede debole peggiore · tiro da fascia opposta = taglio interno (bonus)', () => {
+  // foot R, side L = fascia opposta. CROSS: davvero di piede debole → quality minore (malus −8).
+  // TIRO [7.115.0 fix B3]: dalla fascia opposta tagli DENTRO sul piede FORTE (inverted winger) → leggero bonus (+2),
+  // NON un malus. Il vecchio assert (weakF < strong anche sul tiro) era la semantica pre-7.115.0.
+  {
+    const strong = avgQ('cross', { foot: 'R', side: 'R' });
+    const weakF = avgQ('cross', { foot: 'R', side: 'L' });
+    assert.ok(weakF < strong, `cross: piede debole ${weakF.toFixed(3)} non < piede forte ${strong.toFixed(3)}`);
+  }
+  {
+    const sameFlank = avgQ('shot', { foot: 'R', side: 'R' });
+    const inverted = avgQ('shot', { foot: 'R', side: 'L' });
+    assert.ok(inverted >= sameFlank, `shot: taglio interno ${inverted.toFixed(3)} non >= stessa fascia ${sameFlank.toFixed(3)} (bonus inverted winger 7.115.0)`);
+    assert.ok(inverted - sameFlank < 0.08, `shot: bonus taglio interno ${((inverted - sameFlank)).toFixed(3)} sospettosamente grande (atteso ~+2 su scala quality)`);
   }
 });
