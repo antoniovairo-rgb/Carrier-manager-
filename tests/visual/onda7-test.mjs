@@ -50,7 +50,10 @@ const WIN81 = { opponent: 'FC Aquila', rating: 8.1, goals: 2, assists: 0, won: t
   const { page, body, o7 } = await boot(mk({ last: LOSS }));
   if (!o7) issues.push('(1) hook __CPM_ONDA7 assente');
   const spog = /Nello spogliatoio/i.test(body);
-  const mateName = /Marco/i.test(body);
+  /* [7.178.0] il nome del compagno NON è più asseribile come literal: dal 7.106.3 si mostra il COGNOME e
+     syncTeammateNames (migration) riallinea i nomi alla ROSA vera del club → si asserisce che la riga dello
+     spogliatoio abbia un nome in grassetto NON vuoto (il compagno reale c'è, qualunque sia). */
+  const mateName = await page.evaluate(() => { const h = [...document.querySelectorAll('div')].find(d => /^Nello spogliatoio$/i.test((d.textContent || '').trim())); const row = h && h.nextElementSibling; const b = row && row.querySelector('b'); return !!(b && (b.textContent || '').trim().length >= 2); });
   const capLoss = /Testa alta/i.test(body);
   const pesa = /ti pesa/i.test(body);
   console.log('(1) sconfitta → spogliatoio:', spog, '· compagno:', mateName, '· riga-sconfitta:', capLoss, '· driver "ti pesa":', pesa);
@@ -115,12 +118,12 @@ const WIN81 = { opponent: 'FC Aquila', rating: 8.1, goals: 2, assists: 0, won: t
 
 // (6) determinismo: doppio boot scenario 1 → stessa battuta compagno
 {
-  const a = await boot(mk({ last: LOSS })); const la = (a.body.match(/Nello spogliatoio\s*\n?\s*🤝?\s*Marco[^\n]*/i) || [])[0] || '';
+  const a = await boot(mk({ last: LOSS })); const la = (a.body.match(/Nello spogliatoio\s*\n([^\n]+)/i) || [])[1] || '';
   await a.page.close();
-  const b = await boot(mk({ last: LOSS })); const lb = (b.body.match(/Nello spogliatoio\s*\n?\s*🤝?\s*Marco[^\n]*/i) || [])[0] || '';
+  const b = await boot(mk({ last: LOSS })); const lb = (b.body.match(/Nello spogliatoio\s*\n([^\n]+)/i) || [])[1] || '';
   await b.page.close();
   console.log('(6) determinismo battuta:', la === lb && !!la);
-  if (la !== lb) issues.push('(6) battuta compagno non deterministica');
+  if (la !== lb || !la) issues.push('(6) battuta compagno non deterministica o assente');
 }
 
 await browser.close(); srv.close();
