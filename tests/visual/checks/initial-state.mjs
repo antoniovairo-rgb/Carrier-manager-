@@ -47,7 +47,12 @@ export default {
     const _atFeet = (sit.ballState == null || sit.ballState === 'feet');
     // 5.72.0: le situazioni OFF-BALL (eroe che si smarca per ricevere) hanno la palla su un COMPAGNO PER DESIGN
     //   → esenti dall'invariante "palla ai piedi dell'eroe" (il campo sit.offBall è la sorgente unica, come ballState).
-    if (!isDef && !sit.offBall && _atFeet && dBallHero > 8) issues.push(`Situation offensiva ma palla lontana dall'eroe (${dBallHero.toFixed(1)}u) — possesso non agganciato`);
+    // [7.194.0 S1] la sorgente di verità è ora il campo dichiarativo `ballAt`: corner (bandierina), wing (cross
+    //   dalla fascia), gk (rinvio), mate (appoggio arretrato) hanno la palla lontana dall'eroe PER DESIGN — è
+    //   esattamente il difetto che S1 ha corretto (prima la palla veniva incollata ai piedi dell'eroe anche sui
+    //   calci d'angolo). L'invariante resta HARD per le situation che dichiarano la palla ai piedi.
+    const _ballElsewhere = !!(sit.ballAt && sit.ballAt !== 'hero');
+    if (!isDef && !sit.offBall && !_ballElsewhere && _atFeet && dBallHero > 8) issues.push(`Situation offensiva ma palla lontana dall'eroe (${dBallHero.toFixed(1)}u) — possesso non agganciato`);
     // Difensiva: per design la palla NON è posizionata sull'avversario al frame di setup (è gestita nel
     //   loop live di pressing); ballPos resta quella ereditata dalla situation precedente → non è un
     //   invariante deterministico a setup-time. Resta SOFT (warning informativo), non blocca il gate.

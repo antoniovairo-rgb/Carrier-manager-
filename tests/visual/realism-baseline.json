@@ -1,0 +1,34 @@
+{
+ "matches": 3,
+ "hl": {
+  "turnP90": 265.333,
+  "turnP99": 901.667,
+  "jerkP90": 9.933,
+  "stopStart": 10,
+  "idleFrac": 0.069,
+  "spread": 0.443,
+  "meanSpd": 1.877,
+  "syncFrac": 0.981,
+  "minDistP05": 1.513,
+  "overlapFrames": 0,
+  "gkSpanHome": 2.5,
+  "gkSpanAway": 3.833
+ },
+ "playing": {
+  "turnP90": 171.333,
+  "idleFrac": 0.038,
+  "spread": 0.403,
+  "meanSpd": 1.957,
+  "minDistP05": 1.463
+ },
+ "ball": {
+  "arcs": 10.333,
+  "apexMean": 2.603,
+  "apexSd": 1.413,
+  "durMean": 1.763,
+  "durSd": 0.943,
+  "straightFrac": 0.4,
+  "bendMean": 0.289
+ },
+ "pageErrors": 0
+}
