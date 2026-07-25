@@ -15,7 +15,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { startServer, launchBrowser, openMatch, forceSituation, freeze, unfreeze, canvasShot, stateSig, sleep, ROOT, installCdnRoutes } from './lib/harness.mjs';
+import { startServer, launchBrowser, openMatch, forceSituation, freeze, unfreeze, canvasShot, stateSig, sleep, frameState, ROOT, installCdnRoutes } from './lib/harness.mjs';
 import { loadSituations } from './lib/situations.mjs';
 import initialState from './checks/initial-state.mjs';
 import orientation from './checks/orientation.mjs';
@@ -86,9 +86,8 @@ const FS_STEP = 16;   // final-state ~12 campioni
       await sleep(700); const outcome = await page.evaluate(() => window.__CPM_OUTCOME);
       let fstate = await page.evaluate(() => window.__CPM_STATE());
       { const _t0 = Date.now(); let _stab = 0;
-        while (Date.now() - _t0 < 5200) {
-          await sleep(130);
-          const _s = await page.evaluate(() => window.__CPM_STATE());
+        while (Date.now() - _t0 < 9000) {
+          const _s = await frameState(page);
           if (!_s || !_s.ok || !_s.ball || !fstate || !fstate.ball) { if (_s) fstate = _s; _stab = 0; continue; }
           const _mv = Math.hypot((_s.ball.x || 0) - (fstate.ball.x || 0), (_s.ball.y || 0) - (fstate.ball.y || 0));
           fstate = _s;

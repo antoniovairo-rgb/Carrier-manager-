@@ -14,6 +14,23 @@ export const __dirname = path.dirname(fileURLToPath(import.meta.url));
 export const ROOT = path.resolve(__dirname, '..', '..', '..');           // repo root (tests/visual/lib → repo)
 export const sleep = ms => new Promise(r => setTimeout(r, ms));
 
+/* [7.190.0 flake-fix del poller di final-state] campiona __CPM_STATE AGGANCIANDOSI A FRAME REALI.
+   Il poller «palla ferma» confrontava due letture distanti 130ms di wall-clock: su macchina lenta
+   (headless a ~7fps = 143ms/frame) le due letture cadevano nello STESSO frame → spostamento 0 →
+   6 campioni «fermi» dichiaravano a regime una palla ancora IN VOLO (falso FAIL, es. gi=144 @gx=40.4,
+   riprodotto 2/2 nel gate e 0/8 in isolamento a fps normali). Attendendo 2 rAF veri ogni campione è
+   un frame DIVERSO → la quiete misurata è quella del gioco, non quella dello scheduler.
+   Fallback: se rAF è throttled (tab nascosta) un timer sblocca comunque la lettura. */
+export async function frameState(page, timeoutMs = 1500) {
+  try {
+    return await page.evaluate((to) => new Promise(res => {
+      let done = false; const fin = () => { if (!done) { done = true; res(window.__CPM_STATE ? window.__CPM_STATE() : null); } };
+      requestAnimationFrame(() => requestAnimationFrame(fin));
+      setTimeout(fin, to);
+    }), timeoutMs);
+  } catch (_e) { return await page.evaluate(() => (window.__CPM_STATE ? window.__CPM_STATE() : null)); }
+}
+
 const MIME = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '.json': 'application/json', '.glb': 'model/gltf-binary', '.png': 'image/png' };
 
 export function startServer(root = ROOT) {
