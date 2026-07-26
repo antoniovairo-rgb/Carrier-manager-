@@ -1,14 +1,14 @@
 {
- "awayBack_spread": 46,
- "awayBack_slope": 0.019,
+ "awayBack_spread": 44.2,
+ "awayBack_slope": -0.136,
  "awayBack_minGap": 0,
- "awayBack_pinned": 0.156,
- "awayMid_spread": 32.8,
- "awayMid_slope": -0.067,
- "awayMid_minGap": 0.44,
- "awayMid_pinned": 0.156,
- "homeBack_spread": 51.6,
- "homeBack_slope": 0.314,
- "homeBack_minGap": 0,
- "homeBack_pinned": 0.091
+ "awayBack_pinned": 0.212,
+ "awayMid_spread": 35,
+ "awayMid_slope": -0.071,
+ "awayMid_minGap": 0.15,
+ "awayMid_pinned": 0.078,
+ "homeBack_spread": 47.8,
+ "homeBack_slope": 0.015,
+ "homeBack_minGap": 0.15,
+ "homeBack_pinned": 0.197
 }
