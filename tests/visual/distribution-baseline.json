@@ -1,0 +1,34 @@
+{
+ "attacco·centrale": {
+  "n": 140,
+  "nn": 8.37,
+  "sdx": 17.3,
+  "sdy": 13.8,
+  "near": 1.34,
+  "dBall": 29.6
+ },
+ "attacco·fascia": {
+  "n": 39,
+  "nn": 12.19,
+  "sdx": 21.8,
+  "sdy": 20.1,
+  "near": 0.05,
+  "dBall": 50.6
+ },
+ "centro·centrale": {
+  "n": 126,
+  "nn": 11.96,
+  "sdx": 20.4,
+  "sdy": 19.5,
+  "near": 0.25,
+  "dBall": 27.6
+ },
+ "centro·fascia": {
+  "n": 9,
+  "nn": 11.25,
+  "sdx": 20.4,
+  "sdy": 17.7,
+  "near": 0.33,
+  "dBall": 32.2
+ }
+}
