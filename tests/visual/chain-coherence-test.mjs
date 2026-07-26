@@ -33,7 +33,7 @@ const cands = await page.evaluate(() => {
 console.log(`situations aeree con azione assist: ${cands.length}`);
 if (!cands.length) { issues.push('nessuna situation chainOn aerial con azione assist trovata'); }
 
-let tested = 0, inZone = 0, inBox = 0;
+let tested = 0, inZone = 0, inBox = 0, selfHead = 0; const chainKinds = {};
 for (const c of cands) {
   await page.evaluate(() => { try { window.__CPM_CHAIN_COH = null; } catch (e) {} });
   await page.evaluate((g) => window.__CPM_FORCE_SIT(g), c.gi);
@@ -45,12 +45,20 @@ for (const c of cands) {
   tested++;
   if (coh.inZone) inZone++; else issues.push(`gi${c.gi}: settle (${coh.settle.x.toFixed(1)},${coh.settle.y.toFixed(1)}) FUORI da startZone x[${coh.sz.x}] y[${coh.sz.y}]`);
   if (coh.settle.x >= 78) inBox++;
-  console.log(`gi${c.gi} "${(c.text || '').slice(0, 34)}" → settle x=${coh.settle.x.toFixed(1)} y=${coh.settle.y.toFixed(1)} · inZone=${coh.inZone} · sz.x=[${coh.sz.x}]`);
+  /* [7.201.0] L'EROE NON PUÒ INCORNARE IL PROPRIO CROSS: se la consegna aerea l'ha battuta lui (queste sit
+     sono tutte a consegna dell'eroe: cross/corner/punizione/rimessa), il secondo tempo NON può essere
+     `CHAIN_SITS.header` («Cross in area! Attacca il secondo palo») — deve essere una sponda del compagno,
+     una mischia o un rimbalzo. */
+  if (/^✈️ Cross in area!/.test(coh.chainText || '')) { selfHead++; issues.push(`gi${c.gi} "${(c.text || '').slice(0, 40)}": il cross lo mette l'EROE e poi lo incorna LUI («${coh.chainText}»)`); }
+  chainKinds[coh.chainText || '?'] = (chainKinds[coh.chainText || '?'] || 0) + 1;
+  console.log(`gi${c.gi} "${(c.text || '').slice(0, 30)}" → 2° tempo: "${(coh.chainText || '?').slice(0, 40)}" · settle x=${coh.settle.x.toFixed(1)} · inZone=${coh.inZone}`);
 }
-console.log(`\ncatene testate: ${tested} · settle IN zona: ${inZone}/${tested} · settle in area (x≥78): ${inBox}/${tested}`);
+console.log('\nsecondi tempi assegnati: ' + JSON.stringify(chainKinds));
+console.log(`catene testate: ${tested} · settle IN zona: ${inZone}/${tested} · settle in area (x≥78): ${inBox}/${tested}`);
 if (tested === 0) issues.push('nessuna catena aerea effettivamente innescata (impossibile verificare)');
 if (tested > 0 && inZone !== tested) issues.push(`${tested - inZone}/${tested} catene con settle FUORI dalla startZone (snap residuo)`);
 if (tested > 0 && inBox < tested) issues.push(`${tested - inBox}/${tested} catene aeree assestano FUORI area (x<78) — irrealistico per header/mischia`);
+if (!selfHead && tested > 0) console.log('nessun caso di eroe che incorna il proprio cross');
 
 await browser.close(); srv.close();
 console.log(issues.length ? '❌ FAIL\n' + issues.map(i => '  ✗ ' + i).join('\n') : '✅ CHAIN COHERENCE OK (assestamento ∈ startZone del secondo tempo · catene aeree in area)');
