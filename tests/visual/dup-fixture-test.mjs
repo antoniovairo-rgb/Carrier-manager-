@@ -26,11 +26,28 @@ const res = await page.evaluate(() => {
   p2.matchHistory=[{week:20,opponent:'FC Catalunya',homeScore:2,awayScore:0,won:true,drew:false},{week:30,opponent:'FC Catalunya',homeScore:1,awayScore:1,won:false,drew:true}];
   const c = M(p2);
   const heal2 = !(c.player.calendar||[]).some(m=>!m.type&&!m.played&&m.opponentName==='FC Catalunya');
-  return { left, changed:a.changed, idem:(b.player.calendar||[]).length===(a.player.calendar||[]).length, heal2 };
+  /* [7.210.0 HEAL 3 — collaudo PO «bug partita già giocata, pareggiata 2 a 2!»] il caso che le guardie
+     precedenti NON coprivano: PRIMO incrocio giocato (sta nello storico) ma la voce di calendario non è mai
+     stata marcata. Nessuna gemella nel calendario e una sola gara vs quel club ⇒ HEAL 1 e HEAL 2 sono ciechi. */
+  /* l'avversario deve appartenere al pool REALE della lega, altrimenti il repair del calendario lo ri-punta
+     su un altro club e la misura non riguarda più HEAL 3 */
+  const _pool = (window.__CPM_CLUBS||[]).filter(c=>c.lg==='Liga Ibérica'&&c.id!=='cfm'&&c.id!=='cat');
+  const _op = _pool[0] || { id:'gir', n:'Girona X' };
+  const p3 = mk([
+    { matchday:14, week:24, opponentId:_op.id, opponentName:_op.n, isHome:false, played:false, result:null },  // GIOCATA (2-2) ma mai marcata
+    { matchday:31, week:36, opponentId:_op.id, opponentName:_op.n, isHome:true,  played:false, result:null },  // ritorno LEGITTIMO (sede opposta)
+  ]);
+  p3.week=24;
+  p3.matchHistory=[{season:16,week:24,opponent:_op.n,isHome:false,homeScore:2,awayScore:2,won:false,drew:true}];
+  const d = M(JSON.parse(JSON.stringify(p3)));
+  const dCal = (d.player.calendar||[]).filter(m=>m.opponentId===_op.id).map(m=>(m.isHome?'H':'A')).sort();
+  const heal3 = !dCal.includes('A') && dCal.includes('H');   // stantia (trasferta già giocata) rimossa · ritorno in casa intatto
+  /* controprova RUNTIME: senza migration, getThisWeekMatchday non deve servirla comunque */
+  return { left, changed:a.changed, idem:(b.player.calendar||[]).length===(a.player.calendar||[]).length, heal2, heal3, dCal };
 });
 await browser.close(); srv.close();
 if (res.err){ console.error('❌ '+res.err); process.exit(2); }
 console.log(JSON.stringify(res));
-const ok = res.left.includes('cat|HP') && res.left.includes('cat|AU') && !res.left.includes('cat|HU') && res.left.length===3 && res.idem && res.heal2 && !errs.length;// invarianti: duplicato (cat|H non giocata) RIMOSSO · ritorno cat|A intatto · giocata intatta · terza fixture conservata (repair pool può ripuntarla)
-console.log(ok ? '✅ PASS — duplicato rimosso, ritorno intatto, idempotente' : '❌ FAIL');
+const ok = res.left.includes('cat|HP') && res.left.includes('cat|AU') && !res.left.includes('cat|HU') && res.left.length===3 && res.idem && res.heal2 && res.heal3 && !errs.length;// invarianti: duplicato (cat|H non giocata) RIMOSSO · ritorno cat|A intatto · giocata intatta · terza fixture conservata (repair pool può ripuntarla)
+console.log(ok ? '✅ PASS — duplicato rimosso, ritorno intatto, idempotente, HEAL 3 (giocata mai marcata) bonificata' : '❌ FAIL');
 process.exit(ok?0:2);
