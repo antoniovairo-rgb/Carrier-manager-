@@ -1,7 +1,7 @@
 {
-  "totalCombos": 537,
-  "clean": 525,
-  "warns": 12,
+  "totalCombos": 573,
+  "clean": 558,
+  "warns": 15,
   "fails": 0,
   "catFails": 0,
   "catWarns": 1,
@@ -81,26 +81,40 @@
   ],
   "worst": [
     {
-      "si": 148,
-      "ai": 0,
-      "realismo": 93,
-      "sit": "🏃 Rimessa dal portiere — verticale!",
-      "act": "🏃 Scatto in profondità e cross basso",
+      "si": 5,
+      "ai": 1,
+      "realismo": 96,
+      "sit": "🔴 RIGORE! Sul dischetto.",
+      "act": "🎯 Cucchiaio",
       "cls": {
-        "type": "cross",
-        "pattern": "FAR_POST_CROSS",
-        "variant": "cross_far_post"
+        "type": "penalty",
+        "pattern": "PENALTY",
+        "variant": "penalty_panenka"
       },
       "issues": [
         {
           "cat": "ball",
           "sev": "warn",
-          "msg": "velocità di picco non plausibile (79 u/s)"
-        },
+          "msg": "velocità di picco non plausibile (88 u/s)"
+        }
+      ]
+    },
+    {
+      "si": 58,
+      "ai": 1,
+      "realismo": 96,
+      "sit": "🔴 RIGORE! Sul dischetto a 5' dalla fine. Respira. Tira.",
+      "act": "🌀 Cucchiaio — glaciale",
+      "cls": {
+        "type": "penalty",
+        "pattern": "PENALTY",
+        "variant": "penalty_panenka"
+      },
+      "issues": [
         {
-          "cat": "coerenza",
+          "cat": "ball",
           "sev": "warn",
-          "msg": "cross da posizione centrale (non laterale)"
+          "msg": "velocità di picco non plausibile (76 u/s)"
         }
       ]
     },
@@ -295,6 +309,25 @@
       ]
     },
     {
+      "si": 148,
+      "ai": 0,
+      "realismo": 97,
+      "sit": "🏃 Rimessa dal portiere — verticale!",
+      "act": "🏃 Scatto in profondità e cross basso",
+      "cls": {
+        "type": "cross",
+        "pattern": "FAR_POST_CROSS",
+        "variant": "cross_far_post"
+      },
+      "issues": [
+        {
+          "cat": "coerenza",
+          "sev": "warn",
+          "msg": "cross da posizione centrale (non laterale)"
+        }
+      ]
+    },
+    {
       "si": 173,
       "ai": 2,
       "realismo": 97,
@@ -310,6 +343,25 @@
           "cat": "coerenza",
           "sev": "warn",
           "msg": "cross da posizione centrale (non laterale)"
+        }
+      ]
+    },
+    {
+      "si": 186,
+      "ai": 2,
+      "realismo": 97,
+      "sit": "👟 Muro di prima e scatto — dai e vai in area!",
+      "act": "⚡ Uno-due e conclusione al volo",
+      "cls": {
+        "type": "shot",
+        "pattern": "EDGE_SHOT",
+        "variant": "shot_power"
+      },
+      "issues": [
+        {
+          "cat": "coerenza",
+          "sev": "warn",
+          "msg": "volée su palla non aerea (feet)"
         }
       ]
     },
@@ -518,19 +570,6 @@
         "type": "penalty",
         "pattern": "PENALTY",
         "variant": null
-      },
-      "issues": []
-    },
-    {
-      "si": 5,
-      "ai": 1,
-      "realismo": 100,
-      "sit": "🔴 RIGORE! Sul dischetto.",
-      "act": "🎯 Cucchiaio",
-      "cls": {
-        "type": "penalty",
-        "pattern": "PENALTY",
-        "variant": "penalty_panenka"
       },
       "issues": []
     },
@@ -778,32 +817,6 @@
         "type": "dribble",
         "pattern": "DRIBBLE_SHOT",
         "variant": "dribble_feint"
-      },
-      "issues": []
-    },
-    {
-      "si": 12,
-      "ai": 0,
-      "realismo": 100,
-      "sit": "🦵 Tiro con l'esterno del piede!",
-      "act": "🦵 Esterno a giro",
-      "cls": {
-        "type": "shot",
-        "pattern": "EDGE_SHOT",
-        "variant": "shot_curled"
-      },
-      "issues": []
-    },
-    {
-      "si": 12,
-      "ai": 1,
-      "realismo": 100,
-      "sit": "🦵 Tiro con l'esterno del piede!",
-      "act": "🎯 Rientra e tira",
-      "cls": {
-        "type": "shot",
-        "pattern": "DRIBBLE_SHOT",
-        "variant": "shot_power"
       },
       "issues": []
     }
