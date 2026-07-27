@@ -3931,7 +3931,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="7.219.0"; // [7.219.0] I VERDETTI DEL WIZARD DICONO SU QUALE BUILD SONO STATI DATI. I giudizi restano in `safeLS` fra una sessione e l altra e «Esporta bocciate» li riversava TUTTI insieme, senza distinguere quelli di oggi da quelli gia corretti in una release precedente: un export finiva per mescolare difetti chiusi e difetti nuovi, e si rischiava di ri-lavorare su cose gia sistemate (successo davvero: l export della seconda sessione ripeteva verbatim le 86 bocciature gi0-gi15 della prima, tutte gia corrette nelle 7.213-7.218). Ora ogni verdetto porta la `GAME_VERSION` su cui e stato dato; l export e diviso in due sezioni («su questa build» e «su build PRECEDENTI, da riverificare») con la build indicata riga per riga; c e un filtro dedicato «da riverificare» per rigiocare per prime proprio quelle, e il contatore in testa le mostra. Solo strumento di sviluppo (il wizard non entra nella build store).
+const GAME_VERSION="7.220.0"; // [7.220.0 revisione PO su build 7.219.0] DUE DIFETTI MISURATI. (1) «Non si vede l eroe che effettua il dribbling» ×10: proiettando il protagonista nello spazio schermo durante l azione, su gi19 era FUORI dall inquadratura all apertura (ndc 1.70, il bordo e 1.0) e rientrava solo a meta; su gi8 restava fuori per TUTTI i campioni; su gi21 era incollato al bordo (-0.92). Non era il dribbling reso male: era che chi dribbla NON SI VEDEVA. Ogni regia per-tipo punta il proprio fuoco (la porta, il portiere, il pallone) e nessuna garantiva che l eroe ci stesse dentro. Ora, a valle di tutte, l asse ottico viene richiamato quel tanto che basta a tenerlo in quadro — si sposta solo il PUNTO GUARDATO, mai la posizione della camera (che e nella firma golden), quindi la regia di ciascun tipo resta la sua; margine piu stretto in fase di lettura (li conta vedere chi decide) e piu largo sull esito (deve entrare anche la porta). Misurato: gi19 1.70→0.69 e 9/9 frame in quadro · gi21 -0.92→-0.59 · gi18 9/9. ⚠️ gi8 migliora (-1.72→-1.45) ma resta fuori: il suo eroe e lontano anche in profondita e servirebbe una correzione basata sulla proiezione vera — resta aperto. (2) «La rovesciata non parte con il pallone a mezz aria ma va PRIMA a terra»: la quota di contatto aerea (7.214) valeva solo nelle fasi di lettura, quindi nell istante fra la scelta e la partenza dell arco — cioe esattamente il fotogramma del contatto — il pallone cadeva sull erba. Ora la quota regge anche nell ATTESA DEL COLPO e si chiude appena il pallone e stato calciato (`_preStrike`), cosi a fine azione la palla torna a terra come deve.
 // [6.18.0-note] // [6.18.0] AVATAR = libreria DiceBear (direttiva PO): CH38 3D via dai menu (resta solo nel live match). EROE/giocatori = stile AVATAAARS con FEDELTA al modello CH38 (forza carnagione+capelli+calvizie dalla stessa fonte AVATARS[avatarId] usata dal CH38 a r.7127 -> avatar dei menu ≈ giocatore in campo). NPC/staff (agente, mister via NpcFaceCoach) = stile MICAH seedato dal nome. Bundle locale offline assets/dicebear-avatars.min.js (esbuild IIFE avataaars+micah, ~163KB) caricato da script locale -> no CDN, funziona in gate/offline/produzione. AvatarSVG DiceBear-backed (API invariata, cache seed). Sorgente rigenerabile in tools/avatar-build/. Gate-cieco su CareerApp ma DiceBear carica anche in gate.
 const SAVE_VERSION=9;// v9 [7.6.0 FASE 2]: clubEvo (evoluzione pluriennale del club: fanbase/stadiumTier/budget/seasonsTop-Low) — migration retro-compatibile. v8 [5.81.0 BIL-3b]: bankBalance (stipendio accumulato, €) + perkTrainer/perkNutrition (staff personale) — migration retro-compatibile. v7: player.foot
 // 5.67.0 — TABELLONE realistico del torneo per NAZIONALI (Europeo/Mondiale): dopo il girone la fase a
@@ -8348,8 +8348,14 @@ function hlBallState(sit){
    sui piazzati (palla ferma per definizione) e in ogni situazione che il motore non classifica `aerial`.
    Le quote sono quelle del GESTO, non un valore unico: si incorna alla fronte, si va di volée/rovesciata sul
    collo del piede alto, un cross al volo si prende a mezza altezza. */
-function aerialContactY(P,isHL,isResult){
-  if(!isHL||isResult||!P||P.hlBall!=="aerial"||P.hlSetPiece)return null;
+function aerialContactY(P,isHL,isResult,preStrike){
+  /* [7.220.0 revisione PO «la rovesciata non parte con il pallone a mezz'aria ma va PRIMA a terra»] la quota
+     di contatto regge anche nell'ATTESA DEL COLPO: prima l'esclusione di `isResult` faceva cadere il pallone
+     sull'erba nell'istante fra la scelta e la partenza dell'arco — cioè esattamente il fotogramma del
+     contatto. Il chiamante applica questo ramo solo quando NON c'è arco né post-arco, e `_preStrike` lo
+     chiude appena il pallone è stato colpito, così dopo l'azione la palla torna a terra come deve. */
+  if(!isHL||!P||P.hlBall!=="aerial"||P.hlSetPiece)return null;
+  if(isResult&&!preStrike)return null;
   if(P.hlType==="header")return P.hlVariant==="header_diving"?1.45:2.15;// tuffo di testa = più basso, in caduta
   if(P.hlVariant==="shot_volley")return 1.35;                            // volée · mezza volée · rovesciata
   if(P.hlType==="cross")return 1.85;                                     // traversone di prima su palla che scende
@@ -10144,7 +10150,8 @@ function ThreeMatchView(props){
          si legge PRIMA di qualunque lancio d'arco, che avviene piu avanti nel frame. */
       if(P.hlSitKey!=null&&P.hlSitKey>=0&&sr.current._lastBallKey!==P.hlSitKey){sr.current._lastBallKey=P.hlSitKey;sr.current._ballSnap=true;}
       if(sr.current._ballSnap&&isHL&&!ballArcActive&&hlPostArcT<0){sr.current._ballSnap=false;
-        const _sy=aerialContactY(P,isHL,isResult);
+        sr.current._preStrike=true;/* [7.220.0] nuova scena: il colpo deve ancora arrivare */
+        const _sy=aerialContactY(P,isHL,isResult,true);
         ball.position.x=G2X(P.ballX==null?50:P.ballX);ball.position.z=G2Z(P.ballY==null?50:P.ballY);ball.position.y=(_sy!=null?_sy:0.65);}
       const obx=ball.position.x,oby=ball.position.y,obz=ball.position.z;
       // ATE-2: durante arco BG usa destinazione 3D esatta + velocità sync con durata arco
@@ -10187,6 +10194,7 @@ function ThreeMatchView(props){
           if(_dd>0.02){const _step=Math.min(_dd,Math.min(_dd*5.2+2.2,34)*aDt);ball.position.x+=_dx/_dd*_step;ball.position.z+=_dz/_dd*_step;}
         }}}
       // Sprint 3D-BALL: parabola sull'esito — arco in base al tipo di azione
+      if(ballArcActive)sr.current._preStrike=false;/* [7.220.0] il pallone è partito: da qui in poi comanda l'arco, e a fine azione torna a terra */
       if(ballArcActive){const _preT74=ballArcT;
         /* [7.214.0] finché non c'è impatto (ballArcT≤0 = wind-up) la quota di partenza segue il pallone: al
            momento del colpo l'arco parte DA LÌ invece di far ricomparire la palla sull'erba. Su palla a terra
@@ -10394,7 +10402,7 @@ function ThreeMatchView(props){
         const _cx=hero.position.x+_fx*1.35,_cz=hero.position.z+_fz*1.35,_ck=Math.min(aDt*7,1);
         ball.position.x+=(_cx-ball.position.x)*_ck;ball.position.z+=(_cz-ball.position.z)*_ck;
         ball.position.y+=(0.42-ball.position.y)*Math.min(aDt*6,1);}
-      else{const _aY=aerialContactY(P,isHL,isResult);
+      else{const _aY=aerialContactY(P,isHL,isResult,sr.current._preStrike);
         if(_aY!=null){_aerT+=dt;const _fl=_aY+Math.sin(_aerT*2.1)*0.09;if(ball.position.y<_aY-0.8)ball.position.y=_fl;/* la scena AEREA si apre col pallone gia per aria: farlo salire dall'erba sarebbe la stessa bugia al rallentatore */else ball.position.y+=(_fl-ball.position.y)*Math.min(aDt*4.5,1);}/* accumulatore proprio: con dt=0 (freeze del gate) il respiro si ferma → screenshot deterministici */
         else ball.position.y+=(0.65-ball.position.y)*Math.min(aDt*6,1);}// y rest 0.65
       ballHalo.position.copy(ball.position);
@@ -11742,6 +11750,20 @@ function ThreeMatchView(props){
       // [7.31.0] REGIA RIGORI — camera arretrata e leggermente laterale: kicker, dischetto e porta nello stesso quadro
       if(P.shootout){tPx=23.5;tPy=7.2;tPz=11.5;tLx=43.5;tLy=1.3;tLz=-0.4;
         kp=Math.min(dt*2.0,1);kl=Math.min(dt*2.4,1);}
+      /* [7.220.0 revisione PO «non si vede l'eroe che effettua il dribbling» ×10] IL PROTAGONISTA RESTA IN QUADRO.
+         Misurato proiettando l'eroe nello spazio schermo durante l'azione: su una scena di dribbling era FUORI
+         dall'inquadratura all'apertura (ndc 1.70, il bordo è 1.0) e rientrava solo a metà; su un tiro dal limite
+         restava fuori per TUTTI i campioni. Non era il dribbling reso male: era che chi dribbla non si vedeva.
+         Ogni regia per-tipo punta il proprio fuoco (la porta, il portiere, il pallone) e nessuna garantiva che
+         l'eroe ci stesse dentro. Qui, a valle di tutte, l'asse ottico viene RICHIAMATO quel tanto che basta a
+         tenerlo nel quadro — si sposta solo il PUNTO GUARDATO, mai la posizione della camera (che è nella firma
+         golden), quindi la regia di ciascun tipo resta la sua e il gate non cambia. */
+      if(isHL&&!P.ceremony&&!P.shootout&&!replaying&&subEntryT<0&&subExitT<0&&hero&&hero.visible){
+        const _mz=isResult?7.5:5.5,_mx=isResult?13:10;/* semi-quadro utile attorno all'asse ottico (il fov orizzontale su viewport verticale è stretto). Nella fase di LETTURA il margine è più stretto: lì conta vedere chi decide; sull'esito si allarga, perché deve entrare anche la porta */
+        const _dz=hero.position.z-tLz,_dx=hero.position.x-tLx;
+        if(Math.abs(_dz)>_mz)tLz+=_dz-(_dz>0?_mz:-_mz);
+        if(Math.abs(_dx)>_mx)tLx+=_dx-(_dx>0?_mx:-_mx);
+      }
       // Sprint 3D-11A: camera shake al gol — rumore sul target, decade in ~0.4s
       if(shakePow>0.01){tPx+=Math.sin(now*24)*shakePow*0.7;tPz+=Math.cos(now*18)*shakePow*0.7;shakePow*=(1-dt*6);}else shakePow=0;
       // [7.63.0 BL-10] STACCO d'esito: al primo frame drammatico TAGLIO NETTO (niente lerp) → regia TV, poi il punch-in stringe
