@@ -3923,7 +3923,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="7.213.0"; // [7.213.0 revisione PO — 25 verdetti su 86 dicono «sembra sempre un pallonetto»] OGNI CONCLUSIONE ERA UN PALLONETTO, e la causa e una sola riga: la parabola e `y=0.65+sin(u*PI)*ballArcH`, quindi `ballArcH` e l APICE IN METRI. La traversa (`_GH`) sta a 2.44 m: il tiro di potenza di default aveva apice 4.8 -> a meta volo il pallone passava al DOPPIO dell altezza della porta, e lo stesso valeva per rigore (4.2), volee (5.2), tiro a giro (4.4), colpo di testa (3.2-3.6), punizione (3.2), cross (fino a 4.2). Il cucchiaio a 9.0 era una parabola da rinvio. Riportati tutti gli apici a valori calcistici (potenza 1.6 · rigore 1.15 · prima 1.5 · 1v1 1.0 · volee 2.2 · giro 2.3 · testa 1.0-2.0 · punizione 2.4 · cross 1.0-3.4), lasciando SOLO pallonetto (5.2) e cucchiaio (3.6) a scavalcare il portiere: cosi il pallonetto torna a essere riconoscibile perche gli altri non lo sono piu. Il difetto era invisibile a tutti i controlli — l arco non e nella firma golden e la suite analitica sorvegliava solo il tetto assurdo (14 m) — quindi arriva un guardiano permanente: `tests/visual/shot-apex-test.mjs` (legge i valori REALI dal sorgente, li confronta con la geometria della porta letta anch essa dal sorgente, e pretende che le conclusioni tese stiano sotto un tetto calcistico e che i due pallonetti restino distinguibili; verificato in negativo reintroducendo il 4.8). Chiusi nello stesso giro due BUCHI DEL GATE trovati strada facendo: (1) il timeout di caricamento dell harness era 30s mentre Babel in-browser ora impiega 14-22s sul sorgente da 2.9 MB — sotto carico sforava, la passata principale abortiva e il gate stampava 13 check VERDI su ZERO situations (un falso «pass»): timeout a 90s + riga di avviso esplicita quando non e stata esaminata nessuna situation; (2) le GUARDIE DI CONSISTENZA della suite analitica (il modello rispecchia ancora il motore?) finivano solo nel report .md — due erano gia rotte da questa release e il check restava verde: ora una guardia rotta e un FAIL del check (verificato in negativo), e le due guardie sui literal dell arco sono state riscritte sull INVARIANTE (palo lontano, cucchiaio piu alto del rigore normale) invece che sui numeri di taratura.
+const GAME_VERSION="7.214.0"; // [7.214.0 revisione PO «la rovesciata deve partire con il pallone ancora in aria e non con palla a terra» · «il colpo di testa non e sincronizzato con il pallone in aria, scende a terra» · «la volee non parte con la palla in aria»] LE AZIONI AEREE SI GIOCAVANO SU UNA PALLA A TERRA. Il motore SA da sempre quali situazioni hanno il pallone per aria (`hlBallState` = l invariante CINE che autorizza testa/rovesciata/volee: 46 situations su 191), ma quel dato non arrivava al render: fuori dall arco la mesh palla tornava SEMPRE a 0.65, cioe sull erba. Quindi si sceglieva una rovesciata guardando un pallone fermo nell erba, e l incornata colpiva il prato. Ora lo stato-palla viaggia come prop (`hlBall`) e il render lo rispetta: (1) nelle fasi di lettura dell highlight il pallone STA IN ARIA alla quota del gesto (helper puro `aerialContactY`: fronte 2.15 · tuffo di testa 1.45 · volee/rovesciata 1.35 · traversone di prima 1.85), con un respiro appena percettibile che lo fa leggere sospeso in volo e non incollato a mezz aria — e con uno SNAP all apertura della scena, perche farlo salire dall erba sarebbe la stessa bugia al rallentatore; (2) l ARCO parte dalla quota di contatto invece di riportare il pallone a terra un istante prima del colpo (nuovo `ballArcY0`, catturato durante il wind-up: su palla a terra vale 0.65 e il termine si annulla, quindi le traiettorie a terra sono bit-identiche a prima). Controprova inclusa nel guardiano: le 136 situazioni a palla al piede devono restare a terra — il sollevamento non e indiscriminato. Probe permanente `tests/visual/aerial-contact-test.mjs` (14 aeree + 8 a terra campionate: prima 12 aeree su 14 col pallone nell erba, ora 0). Gate 14/14 (00001505 invariato: la quota della palla non e nella firma golden).
 // [6.18.0-note] // [6.18.0] AVATAR = libreria DiceBear (direttiva PO): CH38 3D via dai menu (resta solo nel live match). EROE/giocatori = stile AVATAAARS con FEDELTA al modello CH38 (forza carnagione+capelli+calvizie dalla stessa fonte AVATARS[avatarId] usata dal CH38 a r.7127 -> avatar dei menu ≈ giocatore in campo). NPC/staff (agente, mister via NpcFaceCoach) = stile MICAH seedato dal nome. Bundle locale offline assets/dicebear-avatars.min.js (esbuild IIFE avataaars+micah, ~163KB) caricato da script locale -> no CDN, funziona in gate/offline/produzione. AvatarSVG DiceBear-backed (API invariata, cache seed). Sorgente rigenerabile in tools/avatar-build/. Gate-cieco su CareerApp ma DiceBear carica anche in gate.
 const SAVE_VERSION=9;// v9 [7.6.0 FASE 2]: clubEvo (evoluzione pluriennale del club: fanbase/stadiumTier/budget/seasonsTop-Low) — migration retro-compatibile. v8 [5.81.0 BIL-3b]: bankBalance (stipendio accumulato, €) + perkTrainer/perkNutrition (staff personale) — migration retro-compatibile. v7: player.foot
 // 5.67.0 — TABELLONE realistico del torneo per NAZIONALI (Europeo/Mondiale): dopo il girone la fase a
@@ -8335,6 +8335,18 @@ function hlBallState(sit){
   if(sit&&sit.ballState!=null)return sit.ballState;
   return (typeof deriveBallState==="function")?deriveBallState(sit):"feet";
 }
+/* [7.214.0] QUOTA DI CONTATTO di una giocata AEREA (metri, mondo Three) — puro, esposto per i test.
+   Ritorna null quando il pallone deve stare a terra: fuori dagli highlight, sull'esito (dove comanda l'arco),
+   sui piazzati (palla ferma per definizione) e in ogni situazione che il motore non classifica `aerial`.
+   Le quote sono quelle del GESTO, non un valore unico: si incorna alla fronte, si va di volée/rovesciata sul
+   collo del piede alto, un cross al volo si prende a mezza altezza. */
+function aerialContactY(P,isHL,isResult){
+  if(!isHL||isResult||!P||P.hlBall!=="aerial"||P.hlSetPiece)return null;
+  if(P.hlType==="header")return P.hlVariant==="header_diving"?1.45:2.15;// tuffo di testa = più basso, in caduta
+  if(P.hlVariant==="shot_volley")return 1.35;                            // volée · mezza volée · rovesciata
+  if(P.hlType==="cross")return 1.85;                                     // traversone di prima su palla che scende
+  return 1.75;
+}
 // CINE-1: motore cinematografico — deriva {type, pattern, variant} da situation+azione.
 // `type` resta byte-identico al cascade legacy (zero regressioni); pattern/variant sono il nuovo backbone.
 function deriveHL(sit,act){
@@ -9876,6 +9888,7 @@ function ThreeMatchView(props){
     let ballArcT=0,ballArcDur=0,ballArcH=0,ballArcActive=false;
     // ATE-1/2: arco BG_MATCH — tipo azione, destinazione 3D esatta, flag bg vs HL
     let prevBgT=0,ballArcIsBG=false,ballArcTgtX=0,ballArcTgtZ=0;
+    let ballArcY0=0.65,_aerT=0;// [7.214.0] quota da cui PARTE l'arco: catturata all'impatto, così una conclusione aerea non teletrasporta il pallone a terra prima di volare
     const BALL_ARC_BY_TYPE={shot:{h:2.8,dur:0.52},cross:{h:3.2,dur:0.68},save:{h:1.8,dur:0.55},tackle:{h:0.4,dur:0.35},pass:{h:0.9,dur:0.48}};
     // Sprint 3D-11A: reazione folla al gol — burst luce calda + camera shake
     let prevWaveT=0,goalBurstT=-1,goalBurstHome=false,goalBurstStadHome=false,shakePow=0,contactFlashT=-1,celebT=-1,crowdOhT=-1;// ATMO #4: crowdOhT = pulse "ooh" del pubblico su palo/parata (reazione neutrale, non solo gol) · goalBurstStadHome [6.24.0] = lato TRIBUNA che ha segnato (per pubblico/tifo/panchina, distinto dal lato-mesh)
@@ -10139,9 +10152,14 @@ function ThreeMatchView(props){
           if(_dd>0.02){const _step=Math.min(_dd,Math.min(_dd*5.2+2.2,34)*aDt);ball.position.x+=_dx/_dd*_step;ball.position.z+=_dz/_dd*_step;}
         }}}
       // Sprint 3D-BALL: parabola sull'esito — arco in base al tipo di azione
-      if(ballArcActive){const _preT74=ballArcT;ballArcT+=aDt;
+      if(ballArcActive){const _preT74=ballArcT;
+        /* [7.214.0] finché non c'è impatto (ballArcT≤0 = wind-up) la quota di partenza segue il pallone: al
+           momento del colpo l'arco parte DA LÌ invece di far ricomparire la palla sull'erba. Su palla a terra
+           la quota è 0.65 e il termine si annulla → traiettoria bit-identica a prima. */
+        if(_preT74<=0)ballArcY0=ball.position.y;
+        ballArcT+=aDt;
         if(_preT74<0&&ballArcT>=0)contactFlashT=0;// [6.74.0 3D-8] flash all'IMPATTO reale (fine wind-up), non al frame 0
-        const u=Math.min(Math.max(ballArcT,0)/ballArcDur,1);ball.position.y=0.65+Math.sin(u*Math.PI)*ballArcH;
+        const u=Math.min(Math.max(ballArcT,0)/ballArcDur,1);ball.position.y=0.65+Math.sin(u*Math.PI)*ballArcH+(ballArcY0-0.65)*(1-u);
         // [6.74.0 3D-5] il compagno designato ATTACCA il cross correndo sul punto di caduta (prima restava fermo)
         if(isResult&&!P.hlDef&&P.hlType==="cross"&&crossRcvMesh){crossRcvMesh.position.x+=((ballArcTgtX-1.8)-crossRcvMesh.position.x)*Math.min(aDt*3.4,1);crossRcvMesh.position.z+=(ballArcTgtZ-crossRcvMesh.position.z)*Math.min(aDt*3.4,1);}
         // [6.74.0 3D-7] il ricevente dell'IMBUCATA corre verso il punto dello scatto GIÀ DURANTE il volo della palla
@@ -10316,7 +10334,16 @@ function ThreeMatchView(props){
            const _tx83=_wide83?(AWAY_GOAL_X+2.5):_lossK83?Math.min(10,Math.max(ballArcTgtX!=null?ballArcTgtX:ball.position.x,-4.8)):(AWAY_GOAL_X-7);// clamp a game-x≥45.2: il check final-state pretende gx≥45 sui "miss" · [7.115.0 audit · fix E4] CAP superiore (world +10 ≈ centrocampo/trequarti): una PERDITA di possesso (intercetto/dispossessed su lancio profondo) non si assesta più nel terzo avversario («palla nostra vicino alla loro porta dopo un pallone perso») — l'avversario che vince palla la riporta indietro
            ball.position.x+=(_tx83-ball.position.x)*Math.min(aDt*1.6,1);}
           if(hlPostArcT>2.5){hlPostArcT=-1;hlPostArcType=null;hlPostVY=0;}}}
-      else{ball.position.y+=(0.65-ball.position.y)*Math.min(aDt*6,1);}// y rest 0.65
+      /* [7.214.0 revisione PO — le azioni aeree partivano con la palla a terra] QUOTA DI CONTATTO.
+         Fuori dall'arco il pallone tornava SEMPRE a 0.65 (sull'erba). Nelle situazioni che il motore classifica
+         `aerial` (cross che pende, corner, rimbalzo, sponda) questo è il difetto che il PO vede: si sceglie una
+         rovesciata mentre la palla è ferma per terra, e l'incornata colpisce l'erba. Ora, nelle fasi di lettura
+         dell'highlight, il pallone STA IN ARIA alla quota a cui verrà colpito — diversa per gesto (testa alla
+         fronte, volée/rovesciata al collo del piede alto) — con un respiro appena percettibile che lo fa leggere
+         sospeso in volo e non incollato a mezz'aria. Il post-arco e l'arco d'esito restano padroni della quota. */
+      else{const _aY=aerialContactY(P,isHL,isResult);
+        if(_aY!=null){_aerT+=dt;const _fl=_aY+Math.sin(_aerT*2.1)*0.09;if(ball.position.y<_aY-0.8)ball.position.y=_fl;/* la scena AEREA si apre col pallone gia per aria: farlo salire dall'erba sarebbe la stessa bugia al rallentatore */else ball.position.y+=(_fl-ball.position.y)*Math.min(aDt*4.5,1);}/* accumulatore proprio: con dt=0 (freeze del gate) il respiro si ferma → screenshot deterministici */
+        else ball.position.y+=(0.65-ball.position.y)*Math.min(aDt*6,1);}// y rest 0.65
       ballHalo.position.copy(ball.position);
       const _hTgt=isHL?0.10:0.04;ballHalo.material.opacity+=(_hTgt-ballHalo.material.opacity)*Math.min(dt*3,1);// 3DV-1: opacità halo ridotta (era 0.18/0.08)
       const moved=Math.hypot(ball.position.x-obx,ball.position.y-oby,ball.position.z-obz);
@@ -15635,7 +15662,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           {/* ── Field + Panel: responsive layout ── */}
           {(()=>{const _isHL=["hl_move","hl_choose","hl_result","hl_intro"].includes(phase);
           // CINE-1: contesto cinematografico centralizzato — type (legacy) + pattern + variant
-          let _hlType=null,_hlPattern=null,_hlVariant=null,_hlOutcomeKind=null,_hlQuality=null,_isDefHL=false,_hlSetPiece=null;
+          let _hlType=null,_hlPattern=null,_hlVariant=null,_hlOutcomeKind=null,_hlQuality=null,_isDefHL=false,_hlSetPiece=null,_hlBall=null;
           // cpmadapt: bias di "shading" difensivo verso la fascia più attaccata dall'Eroe. Deterministico, bounded (±4u).
           //   Parte solo dopo ≥3 azioni (serve un pattern) e cresce con la dominanza della fascia. 0 se off/nessun pattern.
           let _adaptShift=0,_adaptHotY=50,_adaptStr=0;
@@ -15648,6 +15675,13 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
             //   SITUATION (intent) → AFFIDABILE in OGNI fase HL (anche in AIMING/hl_choose, quando chosenAct è null e la
             //   regia della barriera dovrebbe già essere schierata). Il 3D lo usa per formare il muro fin dalla mira.
             _hlSetPiece=_sit?(((typeof isPenaltySit==="function")&&isPenaltySit(_sit))?"penalty":((_sit.intent==="freekick"||_hlType==="freekick")?"freekick":null)):null;
+            /* [7.214.0 revisione PO «la rovesciata deve partire col pallone ancora in aria», «il colpo di testa
+               non è sincronizzato con il pallone in aria, scende a terra», «la volée non parte con la palla in
+               aria»] STATO-PALLA AL RENDER. Il motore sa da sempre quali situazioni hanno il pallone per aria
+               (`hlBallState`: è l'invariante CINE che autorizza testa/rovesciata/volée) ma il 3D non lo sapeva:
+               la mesh riposava a 0.65 = sull'erba, e la conclusione aerea partiva da lì. Ora lo stato viaggia
+               come prop e il render tiene il pallone alla quota di contatto. */
+            _hlBall=(typeof hlBallState==="function"&&_sit)?hlBallState(_sit):null;
             // 5.65.0: un highlight è DIFENSIVO se la situation è type:"def" oppure l'azione risolta è un contrasto
             //   che NON vale gol/assist (una conclusione difensiva "da gol" resta offensiva) → attiva la traiettoria difensiva varia.
             _isDefHL=(_sit&&_sit.type==="def")||(_hlType==="tackle"&&chosenAct&&chosenAct.rew!=="goal"&&chosenAct.rew!=="assist");
@@ -15704,7 +15738,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                 heroKitCol={heroKitCol} heroKitCol2={heroKitCol2} heroClub={_heroClubObj} oppClub={_oppClubObj} adSeed={(Math.abs(hashStr((player.club?.id||"x")+"|ads|"+(player.season||1)+"|"+((homeTeamObj&&homeTeamObj.nat)||player.nation||""))))>>>0}/* [7.44.0] pubblicità seedate per club+stagione+nazione */
                 stadiumHomeCol={homeTeamObj?.c||scoreHomeCol} stadiumAwayCol={awayTeamObj?.c||scoreAwayCol} stadiumHomeName={homeTeamObj?.n||homeTeamObj?.name||null} stadiumAwayName={awayTeamObj?.n||awayTeamObj?.name||null} stadiumHomeAbbr={homeTeamObj?.a||null} stadiumAwayAbbr={awayTeamObj?.a||null}/* [7.175.0] sigle reali per le bandiere */ stadiumHomeNat={homeTeamObj?.nat||null} stadiumAwayNat={awayTeamObj?.nat||null}/* [7.180.0] lingua degli striscioni */ stadiumHomeId={homeTeamObj?.id||null} stadiumAwayId={awayTeamObj?.id||null}/* [7.181.0] anno di fondazione per NUCLEO <anno> *//* [7.171.0 TIFO 2.0] nomi REALI casa/ospite per gli striscioni dei gruppi ultras */ /* [6.2.0 KIT-1] tifo coi colori SOCIALI, non con la divisa indossata */
                 stadiumStyle={getStadiumStyle(homeTeamObj)}
-                ballX={ballPos.x} ballY={ballPos.y} hlSitKey={phase==="playing"||phase==="matchday"?-1:(hlIdx+(_forceSeqRef.current||0)*10000)}/* [7.212.0] +progressivo: rigiocare la stessa situation riarma lo snap di scena */ hlType={_hlType} hlSetPiece={_hlSetPiece} hlVariant={_hlVariant} hlPattern={_hlPattern} hlOutcomeKind={_hlOutcomeKind} hlQuality={_hlQuality} adaptShift={_adaptShift} adaptHotY={_adaptHotY} adaptStr={_adaptStr} bgAction={bgAction} hlZone={hlZone}
+                ballX={ballPos.x} ballY={ballPos.y} hlSitKey={phase==="playing"||phase==="matchday"?-1:(hlIdx+(_forceSeqRef.current||0)*10000)}/* [7.212.0] +progressivo: rigiocare la stessa situation riarma lo snap di scena */ hlType={_hlType} hlSetPiece={_hlSetPiece} hlBall={_hlBall} hlVariant={_hlVariant} hlPattern={_hlPattern} hlOutcomeKind={_hlOutcomeKind} hlQuality={_hlQuality} adaptShift={_adaptShift} adaptHotY={_adaptHotY} adaptStr={_adaptStr} bgAction={bgAction} hlZone={hlZone}
                 timeOfDay={timeOfDay} weather={weather} kickoffHour={kickoffHour} attendance={attendance} crowd={crowdCtx}
                 waveEvent={waveEvent} isDerby={!!drby} isBigGame={mw>=7}
                 hlSuccess={outcome?.ok??null} hlReward={chosenAct?.rew||null} hlDef={_isDefHL} hlDefTraj={outcome?.defTraj||null}
