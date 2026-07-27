@@ -3931,7 +3931,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="7.223.0"; // [7.223.0 direttiva PO «non c e altro modo per testare come me dal wizard in maniera automatica, con lo stesso occhio critico e note?»] IL CRITICO AUTOMATICO — `tests/visual/auto-review.mjs`. Percorre le STESSE combinazioni del wizard (situazione × azione visibile × esito riuscito/fallito), le gioca davvero e le giudica con criteri MISURABILI, scrivendo le bocciature nel formato dell export del wizard: una regressione si legge esattamente come la leggerebbe il proprietario. Non sostituisce l occhio umano, sostituisce la PAZIENZA — su 1096 combinazioni una persona si stanca alla trecentesima, e i difetti chiusi in questa sessione (il pallonetto universale, la palla nell erba sulle aeree, il protagonista fuori inquadratura, il compagno del filtrante a 26 metri) erano tutti riducibili a un numero. Quattro criteri sono FIDATI perche poggiano su misure verificate nei due sensi in questa sessione: AER (giocata aerea col pallone sull erba) · CAM (protagonista fuori quadro) · ATT (gli attori dichiarati dall azione non sono in scena) · TEC (la tecnica nominata non e quella resa). Due — LOB e RETE — sono emessi come SOSPETTI e tenuti fuori dal verdetto: misurano valori che non tornano con la geometria nota (apici di 6-8 m dove il modello analitico ne calcola 3.5, gol in cui il pallone si ferma a 4 unita dalla linea), e finche non e chiaro se sia un difetto vero o un artefatto della finestra di campionamento NON vanno usati per aprire correzioni — un numero che non si sa spiegare non e una prova. Nessuna dipendenza esterna: il secondo passaggio percettivo (AI Vision, gia in repo con 4 provider) resta disponibile ma richiede una chiave API.
+const GAME_VERSION="7.224.0"; // [7.224.0 revisione PO «manca l avversario» · «non c e il compagno» · «giocata corta a chi?» · «l eroe non aggancia nemmeno lontanamente il pallone» — l intero cluster ATTORI ASSENTI, ~30 verdetti in due sessioni] LE SCENE FORZATE NON AVEVANO REGIA POSIZIONALE. Il setup che mette in scena i 21 (set-piece / area / TACT-POS — che gli attori li piazza correttamente: portatore avversario sull eroe nelle difensive, terzino accanto sulle fasce, compagni in appoggio) girava SOLO entrando da hl_intro/hl_move. Il percorso di FORZATURA (`__CPM_FORCE_SIT` con choose=true) — cioe il WIZARD DI REVISIONE con cui il PO giudica ogni combinazione, e il gate — salta dritto a hl_choose e NON lo eseguiva MAI: ogni scena del wizard nasceva coi 21 dove li aveva lasciati la scena precedente. Misurato con lo strato logico strumentato nel recorder: su «Muro in area! Blocca il tiro» l avversario piu vicino stava a 43 unita GIA NELLA LOGICA (mesh a 42) — si murava il tiro di nessuno; «Duello aereo su corner» 34u, «Dai e vai» compagno a 24u. La regia lenta di pressing (tick 550-700ms, tetto 5u) non poteva recuperare in una scena da un secondo, ed e il motivo per cui il primo tentativo (snap DENTRO quella regia, 7.224-tentativo-1, revertito) non muoveva nulla: correggeva lo strato sbagliato nel momento sbagliato. FIX: il setup e estratto nel chokepoint unico `stageSitPositions(sit,hp)` (pattern STAB) chiamato sia dall effect (percorso live, identico a prima) sia da `__CPM_FORCE_SIT`; ancorato alla posizione REALE dell eroe (hp) e non al centro-zona — l eroe puo nascere sul bordo (continuita/seed) e l ancora al centro lasciava comunque 12-17u di buco (i set-piece restano ancorati al punto palla, li comanda il pallone). MISURATO prima→dopo in condizioni WIZARD REALI (pagina senza cpmtest, solo __CPM_REVIEW — probe 3D ora attive anche li, completando il 7.211.0): Muro in area avversario 31.7→2.8u · Duello aereo 34.4→2.6u · Contropiede 18.1→2.9u · Dai e vai compagno 23.9→3.8u · Filtrante 20.5→3.3u · Cross in area 18.3→3.9u. Critico automatico sul blocco difensivo (gi29-40, 72 combinazioni): criterio ATT 23→0 bocciature (ATT ora misura lo strato LOGICO lp/ht: sotto ?cpmtest=1 lo snap dei mesh e volutamente spento e misurare i mesh li significava bocciare la modalita test, non il gioco). Strumentazione permanente: il recorder porta anche le posizioni logiche (lp) e il bersaglio eroe (ht).
 // [6.18.0-note] // [6.18.0] AVATAR = libreria DiceBear (direttiva PO): CH38 3D via dai menu (resta solo nel live match). EROE/giocatori = stile AVATAAARS con FEDELTA al modello CH38 (forza carnagione+capelli+calvizie dalla stessa fonte AVATARS[avatarId] usata dal CH38 a r.7127 -> avatar dei menu ≈ giocatore in campo). NPC/staff (agente, mister via NpcFaceCoach) = stile MICAH seedato dal nome. Bundle locale offline assets/dicebear-avatars.min.js (esbuild IIFE avataaars+micah, ~163KB) caricato da script locale -> no CDN, funziona in gate/offline/produzione. AvatarSVG DiceBear-backed (API invariata, cache seed). Sorgente rigenerabile in tools/avatar-build/. Gate-cieco su CareerApp ma DiceBear carica anche in gate.
 const SAVE_VERSION=9;// v9 [7.6.0 FASE 2]: clubEvo (evoluzione pluriennale del club: fanbase/stadiumTier/budget/seasonsTop-Low) — migration retro-compatibile. v8 [5.81.0 BIL-3b]: bankBalance (stipendio accumulato, €) + perkTrainer/perkNutrition (staff personale) — migration retro-compatibile. v7: player.foot
 // 5.67.0 — TABELLONE realistico del torneo per NAZIONALI (Europeo/Mondiale): dopo il girone la fase a
@@ -9831,7 +9831,7 @@ function ThreeMatchView(props){
 
     // VISUAL-TEST (4.81.0): hook di validazione regia/3D, attivi SOLO con ?cpmtest=1.
     // In produzione (GitHub Pages, senza il param) questo blocco non viene mai eseguito → zero impatto.
-    if(typeof window!=='undefined' && !window.__CPM_STORE_BUILD && (/[?&]cpmtest=1\b/.test(window.location.search||"")||/[?&]sit=\d/.test(window.location.search||""))){// 5.43.6: probe di stato (__CPM_STATE/__CPM_PROBE) attivi anche in Situation Test Mode
+    if(typeof window!=='undefined' && !window.__CPM_STORE_BUILD && (/[?&]cpmtest=1\b/.test(window.location.search||"")||/[?&]sit=\d/.test(window.location.search||"")||window.__CPM_REVIEW)){/* [7.224.0] +modalità REVISIONE: il 7.211.0 aveva esteso al wizard i hook di LiveMatch ma non le probe di osservazione del 3D — senza, ciò che il wizard mostra non è misurabile */// 5.43.6: probe di stato (__CPM_STATE/__CPM_PROBE) attivi anche in Situation Test Mode
       window.__CPM3D={scene,camera,renderer,hero,ball,players};
       window.__CPM_PROBE=function(){
         const proj=(obj)=>{ if(!obj||!obj.position)return null; const p=obj.position.clone().project(camera);
@@ -10125,6 +10125,11 @@ function ThreeMatchView(props){
         _rb.push({t:Math.round(now),ph:_p0.matchPhase||null,ck:_p0.matchClock==null?null:_p0.matchClock,
           b:[+ball.position.x.toFixed(2),+ball.position.z.toFixed(2),+ball.position.y.toFixed(2)],pa:hlPostArcType||null,/* [7.215.0] fase del POST-ARCO nel frame registrato: senza questo, un difetto di traiettoria dopo la conclusione (la palla che rientra dopo essere entrata) non e attribuibile a nessun ramo */
           h:[+hero.position.x.toFixed(2),+hero.position.z.toFixed(2)],
+          /* [7.224.0 strumentazione] posizioni LOGICHE (matchPlayers) accanto a quelle dei MESH: senza il
+             confronto fra i due strati non si distingue «la logica non piazza gli attori» da «il renderer
+             non segue la logica» — ed è esattamente l'ambiguità che ha fatto fallire il primo tentativo. */
+          lp:(_p0.allPlayers||[]).map(q=>q?[+(+q.x).toFixed(1),+(+q.y).toFixed(1)]:null),
+          ht:[_p0.playerX==null?null:+(+_p0.playerX).toFixed(1),_p0.playerY==null?null:+(+_p0.playerY).toFixed(1)],
           p:players.map(pp=>{const m=pp.mesh||pp;return [+m.position.x.toFixed(1),+m.position.z.toFixed(1)];})});
         if(_rb.length>2600)_rb.splice(0,_rb.length-2600);
       }catch(_e){}}
@@ -13790,7 +13795,8 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
       if(window.__CPM_RESEED)window.__CPM_RESEED(gi); // start position deterministica per indice
       _hlActionFiredRef.current=false; setOutcome(null); setChosenAct(null); pendingChainSitRef.current=null; pendingActionRef.current=null;
       setSituations(SITUATIONS.slice());// [5.90.0] le CHAIN (assist-chance/dribbling) splice-ano l'array tra un force e l'altro → gli indici slittavano e la timeline confrontava sit diverse: riparti sempre dalla base statica // reset (consenti nuova risoluzione, niente azione "pending" residua che si auto-risolverebbe entrando in hl_choose)
-      setHlIdx(gi); setPPos(ppos||getStartPos(sit)||{x:58,y:50});// 5.43.1: ppos opzionale (Situation Test Mode → avanza l'eroe per rivelare le azioni rew=goal filtrate da px<55). Gate usa 2 arg → retro-compatibile.
+      setHlIdx(gi); const _sp224=ppos||getStartPos(sit)||{x:58,y:50}; setPPos(_sp224);// 5.43.1: ppos opzionale (Situation Test Mode → avanza l'eroe per rivelare le azioni rew=goal filtrate da px<55). Gate usa 2 arg → retro-compatibile.
+      stageSitPositions(sit,_sp224);/* [7.224.0] il wizard/gate entra a hl_choose saltando hl_intro: senza questa chiamata la scena forzata NON aveva regia posizionale (attori della scena a 30-43u dall'eroe) */
       cpmEmit("HighlightForced",{gi:gi,intent:sit.intent||null,zone:(sit.zones&&sit.zones[0])||null});// LMQP-1
       const mm=cappedMM(sit); setPhase(choose?"hl_choose":(mm===0&&!sit.lockMovement?"hl_choose":"hl_move")); return true; };
     // risolve l'azione k della Situation corrente in modo deterministico → hl_result (validazione stato finale)
@@ -13954,36 +13960,26 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   },[]);// eslint-disable-line
 
   // reset position + selectedActionIdx when highlight changes
-  useEffect(()=>{
-    if(phase==="hl_move"||phase==="hl_intro"){
-      // CONTINUITÀ (4.86.0): la nuova Situation nasce dalla posizione FINALE dell'azione precedente,
-      // agganciata (clamp) alla sua startZone → niente teletrasporto, l'eroe scivola di poco e la
-      // camera (che segue la mesh) resta fluida. I set-piece (lockMovement) mantengono lo spot fisso.
-      const _curSit=situations[hlIdx];
-      let sp;
-      if(_curSit?.lockMovement){ sp=getStartPos(_curSit); }
-      else { const _sz=_curSit?.startZone||{x:[55,72],y:[30,70]};
-             /* [7.34.1 collaudo PO «BUG/INCOERENZA CATENA: l'azione a cascata deve riprendere più o meno dal
-                punto X dove è finita la palla (che per le chance è al limite dell'area), non a caso»] per le
-                sit INCATENATE (_chainDepth): (a) il punto di partenza è l'ASSESTAMENTO finale della palla
-                (ballTargetRef — al cambio HL ballPosRef è ancora in volo a metà lerp); (b) se X è fuori dalla
-                startZone si fa un CLAMP MINIMO dentro la zona (slide di pochi passi) invece del fallback
-                getStartPos casuale — era quello il «punto a caso». Le sit NON incatenate mantengono il
-                comportamento 4.86 (fallback allo spot corretto sui salti di campo legittimi). */
-             const _isChain=!!(_curSit&&_curSit._chainDepth);
-             const _pv=(_isChain&&ballTargetRef.current)?ballTargetRef.current:(ballPosRef.current||{x:58,y:50});
-             const _in=_pv.x>=_sz.x[0]&&_pv.x<=_sz.x[1]&&_pv.y>=_sz.y[0]&&_pv.y<=_sz.y[1];
-             sp=_in?{x:_pv.x,y:_pv.y}
-               :_isChain?{x:clamp(_pv.x,_sz.x[0],_sz.x[1]),y:clamp(_pv.y,_sz.y[0],_sz.y[1])}
-               :(getStartPos(_curSit)||{x:(_sz.x[0]+_sz.x[1])/2,y:(_sz.y[0]+_sz.y[1])/2}); }
-      setPPos(sp);
+  /* [7.224.0 revisione PO «manca l'avversario» · «non c'è il compagno» · «blocchi il tiro di nessuno»]
+     LA REGIA DEGLI ATTORI ESTRATTA IN UN HELPER. Il setup posizionale (set-piece / area / TACT-POS) girava
+     SOLO entrando da hl_intro/hl_move: il percorso di FORZATURA (`__CPM_FORCE_SIT` con choose=true — cioè il
+     WIZARD DI REVISIONE e il gate) salta dritto a hl_choose e quindi NON lo eseguiva MAI. Ogni scena del
+     wizard nasceva coi 21 dove li aveva lasciati la scena precedente: misurato, su «Muro in area! Blocca il
+     tiro» l'avversario più vicino stava a 43 unità GIÀ NELLO STRATO LOGICO (e i mesh, che dalla logica
+     derivano, a 42) — si bloccava il tiro di nessuno, si scambiava con nessuno. La regia lenta di pressing
+     (tick 550-700ms, tetto 5u) non poteva recuperare in una scena da un secondo, e il primo tentativo di
+     correzione (snap sugli attori DENTRO quella regia) falliva proprio perché correggeva lo strato sbagliato
+     al momento sbagliato. Ora il setup è un chokepoint unico (pattern STAB) e il force-sit lo chiama. */
+  const stageSitPositions=(sit0,hp)=>{if(!sit0)return;/* hp = posizione REALE dell'eroe: la regia si ancora a LUI,
+     non al centro della zona — l'eroe può nascere sul bordo (continuità/seed) e un ancoraggio al centro lasciava
+     gli attori a 12-17u. I set-piece restano ancorati al punto palla (szX/szY): lì è la palla a comandare. */
       // Sprint 117b/124: realistic positioning for lockMovement (rigore/punizione)
       /* [7.186.0 collaudo PO «punizione senza barriera e giocatori mal posizionati»] lo schieramento da set-piece
          girava SOLO per le situation con lockMovement: le punizioni CON movimento (la maggior parte — «a effetto»,
          «muro a 9 metri», dalla trequarti…) restavano col posizionamento di gioco aperto ereditato, quindi senza
          barriera e con i giocatori sparsi. Ora vale per OGNI set-piece (rigore o intent freekick). */
-      if(isSetPieceSit(situations[hlIdx])){
-        const sit=situations[hlIdx];
+      if(isSetPieceSit(sit0)){
+        const sit=sit0;
         const szX=(sit.startZone.x[0]+sit.startZone.x[1])/2;
         const szY=(sit.startZone.y[0]+sit.startZone.y[1])/2;
         // Sprint 159: text-based detection so rovesciata (lockMovement+area) isn't misclassified as penalty
@@ -14038,10 +14034,10 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
         }));
       // Sprint 157: non-lockMovement area highlights — place players in the box so it never
       // looks like a penalty (players outside the area) due to inherited BG_MATCH positions
-      }else if(situations[hlIdx]?.zones?.[0]==="area"){
-        const sit=situations[hlIdx];
-        const szX=(sit.startZone.x[0]+sit.startZone.x[1])/2;
-        const szY=(sit.startZone.y[0]+sit.startZone.y[1])/2;
+      }else if(sit0?.zones?.[0]==="area"){
+        const sit=sit0;
+        const szX=(hp&&hp.x!=null)?hp.x:(sit.startZone.x[0]+sit.startZone.x[1])/2;
+        const szY=(hp&&hp.y!=null)?hp.y:(sit.startZone.y[0]+sit.startZone.y[1])/2;
         setMatchPlayers(prev=>prev.map((pl,idx)=>{
           if(pl.team==="ref")return pl;
           if(pl.team==="away"){
@@ -14062,11 +14058,11 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
       // TACT-POS (4.74.0): posizionamento tattico per zone non-area (trequarti/bordo/fascia/centro/difesa/propria)
       // Prima di questo fix le 129 situazioni non-lockMovement fuori area ereditavano posizioni casuali da BG_MATCH.
       }else{
-        const sit=situations[hlIdx];
+        const sit=sit0;
         if(sit){
           const z0=sit.zones?.[0]||"trequarti";
-          const szX=(sit.startZone?.x[0]+sit.startZone?.x[1])/2||65;
-          const szY=(sit.startZone?.y[0]+sit.startZone?.y[1])/2||50;
+          const szX=(hp&&hp.x!=null)?hp.x:((sit.startZone?.x[0]+sit.startZone?.x[1])/2||65);
+          const szY=(hp&&hp.y!=null)?hp.y:((sit.startZone?.y[0]+sit.startZone?.y[1])/2||50);
           const isDef=sit.type==="def";
           const isWide=z0==="fascia"||(sit.startZone?.y&&((sit.startZone.y[0]+sit.startZone.y[1])/2<28||(sit.startZone.y[0]+sit.startZone.y[1])/2>72));
           setMatchPlayers(prev=>prev.map((pl,idx)=>{
@@ -14115,6 +14111,31 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           }));
         }
       }
+  };
+  useEffect(()=>{
+    if(phase==="hl_move"||phase==="hl_intro"){
+      // CONTINUITÀ (4.86.0): la nuova Situation nasce dalla posizione FINALE dell'azione precedente,
+      // agganciata (clamp) alla sua startZone → niente teletrasporto, l'eroe scivola di poco e la
+      // camera (che segue la mesh) resta fluida. I set-piece (lockMovement) mantengono lo spot fisso.
+      const _curSit=situations[hlIdx];
+      let sp;
+      if(_curSit?.lockMovement){ sp=getStartPos(_curSit); }
+      else { const _sz=_curSit?.startZone||{x:[55,72],y:[30,70]};
+             /* [7.34.1 collaudo PO «BUG/INCOERENZA CATENA: l'azione a cascata deve riprendere più o meno dal
+                punto X dove è finita la palla (che per le chance è al limite dell'area), non a caso»] per le
+                sit INCATENATE (_chainDepth): (a) il punto di partenza è l'ASSESTAMENTO finale della palla
+                (ballTargetRef — al cambio HL ballPosRef è ancora in volo a metà lerp); (b) se X è fuori dalla
+                startZone si fa un CLAMP MINIMO dentro la zona (slide di pochi passi) invece del fallback
+                getStartPos casuale — era quello il «punto a caso». Le sit NON incatenate mantengono il
+                comportamento 4.86 (fallback allo spot corretto sui salti di campo legittimi). */
+             const _isChain=!!(_curSit&&_curSit._chainDepth);
+             const _pv=(_isChain&&ballTargetRef.current)?ballTargetRef.current:(ballPosRef.current||{x:58,y:50});
+             const _in=_pv.x>=_sz.x[0]&&_pv.x<=_sz.x[1]&&_pv.y>=_sz.y[0]&&_pv.y<=_sz.y[1];
+             sp=_in?{x:_pv.x,y:_pv.y}
+               :_isChain?{x:clamp(_pv.x,_sz.x[0],_sz.x[1]),y:clamp(_pv.y,_sz.y[0],_sz.y[1])}
+               :(getStartPos(_curSit)||{x:(_sz.x[0]+_sz.x[1])/2,y:(_sz.y[0]+_sz.y[1])/2}); }
+      setPPos(sp);
+      stageSitPositions(situations[hlIdx],sp);/* [7.224.0] estratto in helper — lo chiama anche __CPM_FORCE_SIT */
     }
     // Coro folla all'ingresso del momento clou
     if(phase==="hl_intro"){

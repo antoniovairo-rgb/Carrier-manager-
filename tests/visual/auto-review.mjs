@@ -110,9 +110,15 @@ for (const c of sel) {
     /* — ATT: gli attori dichiarati dall'azione devono essere in scena — */
     {
       const f = fr[Math.floor(fr.length * 0.6)] || fr[fr.length - 1];
-      if (f && f.h && f.p) {
+      /* [7.224.0] ATT misura lo strato LOGICO (lp/ht), non i mesh: sotto ?cpmtest=1 lo snap di scena dei mesh
+         è volutamente spento, quindi qui i mesh restano dove stavano anche quando la regia è corretta — nel
+         WIZARD (la presentazione che giudica il PO) i mesh snappano proprio sulle posizioni logiche, verificato
+         con la probe in condizioni reali (2.6-3.9u). Misurare i mesh sotto test = bocciare la modalità test. */
+      if (f && f.ht && f.ht[0] != null && f.lp && f.lp.length) {
+        const W = (x, y) => [x - 50, (y - 50) * 0.68];
+        const hw = W(f.ht[0], f.ht[1]);
         let nm = 1e9, no = 1e9;
-        f.p.forEach((p, i) => { if (!p || i === 0 || i === 10) return; const d = Math.hypot(p[0] - f.h[0], p[1] - f.h[1]); if (i < 10) { if (d < nm) nm = d; } else if (d < no) no = d; });
+        f.lp.forEach((q, i) => { if (!q || i === 0 || i === 10) return; const w = W(q[0], q[1]); const d = Math.hypot(w[0] - hw[0], w[1] - hw[1]); if (i < 10) { if (d < nm) nm = d; } else if (d < no) no = d; });
         const needMate = (c.rew === 'assist') || /pass|cross|build/.test(c.type) || /dai e vai|servi|scarico|appoggio|corta/.test(c.lbl.toLowerCase());
         const needFoe = (c.type === 'dribble') || (c.ndef >= 2) || /dribbl|supera|duello|salta/.test(c.lbl.toLowerCase());
         if (needMate && nm > 18) add(c, ok, 'ATT', `l'azione serve un compagno ma il più vicino è a ${nm.toFixed(0)} m`);
