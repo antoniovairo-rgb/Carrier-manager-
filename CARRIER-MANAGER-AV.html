@@ -3379,7 +3379,7 @@ const HL_OVERLAY_POOLS={
 //   Prima ogni sistema pescava a caso dentro un pool "miss" misto → l'overlay poteva
 //   dire "PALO!" mentre il 3D mostrava una parata (viola Cap.6.8/GR-048/065). Ora no.
 const _MISS_OVL={
-  post:["Palo!","Traversa!","Ci è andato vicinissimo","A un passo dal gol"],
+  post:["Palo!","Il palo gli dice no","Ci è andato vicinissimo","A un passo dal gol"],
   saved:["Grande parata del portiere","Il portiere dice di no","Tentativo respinto","Conclusione centrale","Il gol sembrava fatto"],
   blocked:["Murato dalla difesa","Tentativo respinto","Conclusione murata"],
   wide:["Tiro fuori di poco","Non trova lo specchio","Che peccato!","Occasione mancata","Sfiora il vantaggio"],
@@ -3388,7 +3388,7 @@ const _MISS_OVL={
   offside:["In fuorigioco!","La bandierina è alzata","Oltre la linea — offside","Fuorigioco di un soffio"],
 };
 const _MISS_TX={
-  post:["😤 Palo! Fortuna avversaria.","💨 Sopra la traversa — che rimpianto!"],
+  post:["😤 Palo! Fortuna avversaria.","😖 Il legno respinge la conclusione.","😤 Palo pieno — che sfortuna."],
   saved:["😔 Para il portiere.","❌ Tiro debole, para comodo.","😔 Tiro centrale — parata facile.","😕 Il portiere devia in corner."],
   blocked:["❌ Murato dalla difesa.","🧱 La difesa mura la conclusione."],
   wide:["😬 Tiro fuori!","💨 Sopra la traversa — che rimpianto!","😔 Non trova lo specchio."],
@@ -3396,6 +3396,14 @@ const _MISS_TX={
   foul:["🟢 Fallo subito — punizione per noi!","🎯 Conquista una punizione in zona interessante.","🟢 Steso da un avversario: calcio piazzato."],
   offside:["🚩 Fuorigioco! L assistente alza la bandierina.","🏳️ In posizione irregolare — offside.","🚩 Oltre la linea di un soffio: fuorigioco."],
 };
+/* [7.217.0 revisione PO «rendere più nitida la parata / traversa / palo»] IL LEGNO COLPITO E QUELLO DETTO.
+   Il pool del palo mescolava «Palo!» e «Traversa!» pescando a caso, mentre il 3D mostrava SEMPRE un palo
+   laterale: la parola e l'immagine si contraddicevano una volta su due. Dal 7.215.0 la traversa esiste davvero,
+   quindi QUALE legno sia lo decide UNA volta `handleAction` (campo `woodwork` dell'outcome, pattern M1) e lo
+   consumano insieme 3D, overlay e cronaca. Restano nella stessa FAMIGLIA visiva "post" → l'invariante
+   overlay-family ⟺ arc-family verificato dal check `timeline` del gate non cambia. */
+const _BAR_OVL=["Traversa!","La traversa gli dice no","Il legno alto respinge","Traversa piena!"];
+const _BAR_TX=["😤 Traversa! Il pallone sbatte sotto l'incrocio.","😖 Il legno alto respinge la conclusione.","😤 Traversa piena — e ricade in campo."];
 // normalizza l'esito granulare (~30 valori) nelle 4 famiglie visive del "miss"; null → pool piatto legacy
 function _missKindNorm(k){
   if(!k)return null;
@@ -3435,14 +3443,14 @@ function _hlOvlCat(outKey,ok,actionLabel){
   if(reShot.test(L))return"miss";
   return"pass";
 }
-function hlOverlay(outKey,ok,actionLabel,heroFirst,seed,outKind){
+function hlOverlay(outKey,ok,actionLabel,heroFirst,seed,outKind,wood){
   const cat=_hlOvlCat(outKey,ok,actionLabel);
   // M1: sul "miss" usa il sotto-pool coerente con l'esito granulare deciso dal motore (palo/parata/murato/fuori).
   //   [6.76.0 LMV-S1] esteso a TUTTI i fail offensivi con esito granulare noto (fail:"intercept"/"through"/
   //   "miss_easy"): prima un cross deviato in ANGOLO con fail:"intercept" mostrava «Passaggio intercettato»
   //   mentre 3D+box-score raccontavano il corner — il layer M1 era di fatto ristretto a key==="miss".
   const _nk=(cat==="miss"||(!ok&&(cat==="pass_fail"||cat==="def_fail"||cat==="dribble_fail"||cat==="miss_big")))?_missKindNorm(outKind):null;
-  const pool=(_nk&&_MISS_OVL[_nk])||HL_OVERLAY_POOLS[cat]||HL_OVERLAY_POOLS.nothing;
+  const pool=(_nk==="post"&&wood==="bar")?_BAR_OVL:((_nk&&_MISS_OVL[_nk])||HL_OVERLAY_POOLS[cat]||HL_OVERLAY_POOLS.nothing);/* [7.217.0] stessa famiglia, parole del legno REALMENTE colpito */
   const i=(((seed|0)%pool.length)+pool.length)%pool.length;
   const good=["goal","assist","chance","pass","cross","dribble","recovery","tackle","save_hero"];
   // [7.136.0 collaudo PO «ogni messaggio esito azione deve avere la sua iconcina, come la catena, il gol ecc.»]
@@ -3923,7 +3931,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="7.216.0"; // [7.216.0 revisione PO «sembra un cross basso» sulla punizione dalla fascia] SULLA PUNIZIONE LA SCELTA NON ARRIVAVA ALLA CINEMATICA. `deriveHL` classificava OGNI azione di una punizione come `freekick` senza guardare quale fosse: «Cross alto», «Cross basso teso» e «Giocata corta» uscivano tutte e tre con lo STESSO identico filmato, cioe l arco del tiro diretto verso la porta — le tre opzioni erano indistinguibili a schermo, e chi sceglieva il cross alto vedeva un cross basso. La distinzione nel gameplay esisteva gia (dal 7.8.9 solo la punizione da tiro diretto apre la griglia di mira), mancava solo nel 3D. Ora la punizione ha QUATTRO traiettorie: consegna alta pennellata all altezza della testa sul secondo palo (arrivo 1.84-2.08 m) · consegna tesa che vola raso davanti alla porta (0.57-0.81 m) · giocata corta d appoggio laterale · tiro diretto invariato. Il discriminante e la stat dell azione (una consegna e passaggio/tecnica, una conclusione e `tiro`), cosi «Tiro rasoterra» non viene scambiato per un cross basso, e il primo palo si serve TESO mentre il secondo si pennella. Variante null senza azione ⇒ fase di lettura, regia e firma golden invariate. Due guardiani: `tests/visual/freekick-delivery-test.mjs` (interroga il motore VERO in pagina su tutte e 7 le punizioni: una conclusione deve dare `freekick_direct`, una consegna mai, e due consegne diverse della stessa punizione non possono avere la stessa traiettoria) e `shot-apex-test` esteso (le tre consegne devono differire per quota d arrivo e apice). Corretta anche la finestra di estrazione del blocco d arco nella suite analitica: era 96 righe, il blocco e cresciuto oltre e la suite moriva con un FATAL invece di validare.
+const GAME_VERSION="7.217.0"; // [7.217.0 chiude la nota aperta del 7.215.0] IL LEGNO DETTO E QUELLO COLPITO. Il pool dell esito «palo» mescolava «Palo!» e «Traversa!» e ne pescava uno a caso, mentre il 3D mostrava sempre e comunque un palo laterale: la parola contraddiceva l immagine una volta su due. Dal 7.215.0 la traversa esiste davvero in campo, quindi QUALE legno sia lo decide UNA volta sola `handleAction` (campo `woodwork` dell outcome, seedato) e lo consumano insieme 3D, overlay e cronaca — lo stesso pattern M1 con cui nel 5.52.0 si e chiusa la divergenza «overlay dice PALO, 3D mostra parata». Le giocate strutturalmente basse (colpo di testa, tiro in 1v1, cross a rientrare, cross teso, punizione tesa) finiscono sul palo per geometria; la traversa resta alle conclusioni che vanno in alto. I due sotto-pool restano dentro la STESSA famiglia visiva «post» ⇒ l invariante overlay-family ⟺ arc-family verificato dal check `timeline` del gate non cambia. Probe permanente `tests/visual/woodwork-test.mjs` (interroga il picker VERO in pagina su 60 seed: con «traversa» non deve mai uscire la parola palo e viceversa, e la famiglia visiva deve restare una sola).
 // [6.18.0-note] // [6.18.0] AVATAR = libreria DiceBear (direttiva PO): CH38 3D via dai menu (resta solo nel live match). EROE/giocatori = stile AVATAAARS con FEDELTA al modello CH38 (forza carnagione+capelli+calvizie dalla stessa fonte AVATARS[avatarId] usata dal CH38 a r.7127 -> avatar dei menu ≈ giocatore in campo). NPC/staff (agente, mister via NpcFaceCoach) = stile MICAH seedato dal nome. Bundle locale offline assets/dicebear-avatars.min.js (esbuild IIFE avataaars+micah, ~163KB) caricato da script locale -> no CDN, funziona in gate/offline/produzione. AvatarSVG DiceBear-backed (API invariata, cache seed). Sorgente rigenerabile in tools/avatar-build/. Gate-cieco su CareerApp ma DiceBear carica anche in gate.
 const SAVE_VERSION=9;// v9 [7.6.0 FASE 2]: clubEvo (evoluzione pluriennale del club: fanbase/stadiumTier/budget/seasonsTop-Low) — migration retro-compatibile. v8 [5.81.0 BIL-3b]: bankBalance (stipendio accumulato, €) + perkTrainer/perkNutrition (staff personale) — migration retro-compatibile. v7: player.foot
 // 5.67.0 — TABELLONE realistico del torneo per NAZIONALI (Europeo/Mondiale): dopo il girone la fase a
@@ -8782,7 +8790,7 @@ function bgMicroTick(ctx){
   if(roll<_gHe+_gAe)return{side:"away"};
   return null;
 }
-if(typeof window!=='undefined'){window.buildHLTimeline=buildHLTimeline;window.validateHLTimeline=validateHLTimeline;window.resolveTimeline=resolveTimeline;window.decideExecution=decideExecution;window.resolveDefensiveOutcome=resolveDefensiveOutcome;window.bgMicroTick=bgMicroTick;window.intentLabel=intentLabel;window.deriveIntent=deriveIntent;window.deriveHL=deriveHL;/* [7.1.2] esposto per l'audit massivo situations↔3D */window.__CPM_SITS=SITUATIONS;window.hlBallState=hlBallState;window.filterSitActions=filterSitActions;window.__CPM_BG=BG_MATCH;/* B: cronaca BG per il check bg-coherence del gate */}
+if(typeof window!=='undefined'){window.buildHLTimeline=buildHLTimeline;window.validateHLTimeline=validateHLTimeline;window.resolveTimeline=resolveTimeline;window.decideExecution=decideExecution;window.resolveDefensiveOutcome=resolveDefensiveOutcome;window.bgMicroTick=bgMicroTick;window.intentLabel=intentLabel;window.deriveIntent=deriveIntent;window.deriveHL=deriveHL;/* [7.1.2] esposto per l'audit massivo situations↔3D */window.__CPM_SITS=SITUATIONS;window.hlBallState=hlBallState;window.filterSitActions=filterSitActions;window.hlOverlay=hlOverlay;/* [7.217.0] esposto per la probe di coerenza legno colpito ⟺ legno detto */window.__CPM_MISS_TX=_MISS_TX;window.__CPM_BAR_TX=_BAR_TX;window.__CPM_BG=BG_MATCH;/* B: cronaca BG per il check bg-coherence del gate */}
 // ── LMQP-1 (Phase 2 / M2 — EVENT + TIMELINE LAYER) ──────────────────────────────
 //   Bus eventi OSSERVABILE del Live Match: registra la SEQUENZA reale dei beat di un highlight
 //   (HighlightForced · ActionResolved · HighlightAdvance · MatchStart …) in un ring buffer leggibile
@@ -10278,7 +10286,7 @@ function ThreeMatchView(props){
              era SEMPRE un palo laterale: una conclusione diretta all'incrocio convergeva comunque a ±3.66 e
              scendeva, e la traversa non si vedeva mai. Ora, se il tiro era indirizzato ALTO, il pallone sale a
              sbattere sotto la traversa mantenendo la propria direzione, e da lì ricade. */
-          const _bar215=(ballArcTgtY!=null&&ballArcTgtY>=1.55);
+          const _bar215=(P.hlWood!=null)?(P.hlWood==="bar"):(ballArcTgtY!=null&&ballArcTgtY>=1.55);/* [7.217.0] la decisione arriva da handleAction (unica sorgente, condivisa con overlay e cronaca); la deduzione dalla quota resta solo come fallback */
           ball.position.x+=(GOAL_LINE_X-ball.position.x)*Math.min(aDt*6.5,1);/* [6.74.0 3D-1] il contatto avviene SUL palo reale (48.6), non su un muro invisibile a 44-46 */
           if(_bar215){const _cz=clamp(ballArcTgtZ,-3.2,3.2);ball.position.z+=(_cz-ball.position.z)*Math.min(aDt*4.0,1);}
           else{const _pz74=(ballArcTgtZ>=0?3.66:-3.66);ball.position.z+=(_pz74-ball.position.z)*Math.min(aDt*4.0,1);}/* la palla converge sul PALO (±3.66), non verso il centro-porta */
@@ -14901,7 +14909,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     // M1 · UNIFIED OUTCOME MODEL: su un'azione FALLITA il TIPO di esito (palo/parata/murato/fuori) lo decide
     //   UNA sola volta il motore (decideExecution) con lo STESSO ctx/seed del render 3D → identico valore →
     //   3D byte-identico (golden stabile) MA ora overlay + cronaca leggono lo stesso esito. Fine divergenza.
-    let _outKind=null;
+    let _outKind=null,_wood=null;
     if(!ok){try{
       const _cn=(typeof deriveHL==="function"&&deriveHL(_fkSit,action))||{};
       const _htp=_cn.type,_hpp=_cn.pattern;
@@ -14915,6 +14923,13 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
       const _neg=["saved","blocked","wide","post","intercepted","out","corner","dispossessed","fouled","win_freekick","overhit","offside","missed","lost","stopped","deflected_out","shielded_out"];
       const _dd=decideExecution(_di,{..._ctx,seed:(_ctx.seed^0x5f3759df)>>>0}).outcome;
       _outKind=_neg.indexOf(_dd)>=0?_dd:(_di==="dribble"?"dispossessed":(_di==="through"||_di==="onetwo")?"intercepted":_di==="intercept"?"beaten":"saved");/* [7.115.0 audit · fix D4/B1] fallback fuori-whitelist NON più «saved» (parata del portiere) su un fallimento OFFENSIVO al piede: dribbling→dispossessed · passaggio→intercepted (famiglia «murato/fermato», nessun portiere in scena) · difensivo→beaten. «saved» resta solo per tiro/cross (dove il portiere c'è). Coerente col CoherenceCheck (overlay-fam = arc-fam via _missKindNorm) + 3D più corretto (dispossessed/intercepted = perdita possesso, non deflect verso l'area) */
+      /* [7.217.0] QUALE LEGNO: deciso qui, una volta sola, e consumato da 3D + overlay + cronaca (pattern M1).
+         Un colpo di testa, un tiro in 1v1 o un cross a rientrare finiscono sul palo per geometria (sono giocate
+         basse): la traversa resta alle conclusioni che vanno in alto. Seedato → riproducibile. */
+      if(_outKind==="post"){
+        const _hv=_cn.variant,_lowG=(_htp==="header"||_hv==="shot_one_on_one"||_hv==="cross_cutback"||_hv==="cross_low_driven"||_hv==="freekick_cross_low");
+        _wood=(!_lowG&&(Math.abs(hashStr("wood|"+((action.label)||"")+"|"+hlIdx+"|"+((_fkSit&&_fkSit.text)||"")))%100)<40)?"bar":"post";
+      }
     }catch(_e){_outKind=null;}}
     if(_outKind==="corner")setMxStats(s=>({...s,corners:(s.corners||0)+1}));/* [6.4.1 R2.2] l angolo guadagnato dall azione dell eroe entra nel box-score (prima solo la cronaca BG) */
     if(_outKind==="fouled"||_outKind==="win_freekick")setMxStats(s=>({...s,fouls:(s.fouls||0)+1}));/* [6.4.2 R2.3] fallo subito → conta tra i falli avversari */
@@ -14979,8 +14994,9 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     if(!ok&&key==="goal_against")_defTraj={kind:"goal_against",poss:"opp",toOwnGoal:true,arcH:0.8,arcDur:0.55};
     const _seedOvl=Math.abs(hashStr((action.label||"")+key+hlIdx+score.home+score.away));
     const _nkTx=(key==="miss"||(!ok&&!_isDefHL76&&(key==="intercept"||key==="through"||key==="miss_easy")))?_missKindNorm(_outKind):null;// [6.76.0 LMV-S1] cronaca coerente con l'esito del motore anche sui fail non-"miss" (HL difensivi esclusi: lì parla _defTraj)
-    const txt=(_nkTx&&_MISS_TX[_nkTx])?_MISS_TX[_nkTx][_seedOvl%_MISS_TX[_nkTx].length]:(_chanceDrb?OUTCOME_TX.chance_dribble[_seedOvl%OUTCOME_TX.chance_dribble.length]:pick(OUTCOME_TX[key]||["Azione completata."]));// [5.90.0] cronaca dedicata all'uomo saltato
-    const _ovl=hlOverlay(key,ok,action.label,(player.name||"").split(" ")[0],_seedOvl,_isDefHL76?null:_outKind);/* [7.113.0 audit massivo · fix D1] HL DIFENSIVO fallito: l'overlay NON usa più l'esito OFFENSIVO del motore (_outKind da decideExecution('intercept') → mappato a «parata/fuori») ma il pool def_fail coerente («L'avversario passa») — allineato al gate del `!_isDefHL76` che già escludeva cronaca/memoria/CoherenceCheck. Prima l'overlay diceva «Grande parata del portiere» su un contrasto perso, senza portiere in scena */
+    const _woodTx=(_nkTx==="post"&&_wood==="bar")?_BAR_TX:null;/* [7.217.0] la cronaca nomina il legno che il 3D colpisce davvero */
+    const txt=_woodTx?_woodTx[_seedOvl%_woodTx.length]:(_nkTx&&_MISS_TX[_nkTx])?_MISS_TX[_nkTx][_seedOvl%_MISS_TX[_nkTx].length]:(_chanceDrb?OUTCOME_TX.chance_dribble[_seedOvl%OUTCOME_TX.chance_dribble.length]:pick(OUTCOME_TX[key]||["Azione completata."]));// [5.90.0] cronaca dedicata all'uomo saltato
+    const _ovl=hlOverlay(key,ok,action.label,(player.name||"").split(" ")[0],_seedOvl,_isDefHL76?null:_outKind,_isDefHL76?null:_wood);/* [7.113.0 audit massivo · fix D1] HL DIFENSIVO fallito: l'overlay NON usa più l'esito OFFENSIVO del motore (_outKind da decideExecution('intercept') → mappato a «parata/fuori») ma il pool def_fail coerente («L'avversario passa») — allineato al gate del `!_isDefHL76` che già escludeva cronaca/memoria/CoherenceCheck. Prima l'overlay diceva «Grande parata del portiere» su un contrasto perso, senza portiere in scena */
     // [7.137.0 collaudo PO «la squalifica per espulsione deve essere REALE, dalla partita, non randomica»] CARTELLINO REALE:
     //   un fallo COMMESSO dall'eroe (key "foul") può portare un giallo SEEDATO; alla 2ª ammonizione o (raro) rosso diretto →
     //   ESPULSIONE reale in campo (evento cronaca + flash + uscita dal campo riusando il binario SOSTITUITO). A fine partita
@@ -15088,7 +15104,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     else if(isShot&&ok)setActionEffect({type:"spark",col:homeKitCol,key:Date.now()});
     else if(isShot&&!ok)setActionEffect({type:"spark",col:"#ef4444",key:Date.now()});
     else if(isTackle)setActionEffect({type:"dust",key:Date.now()});
-    setOutcome({text:txt,ok,actionLabel:action.label,outKey:key,overlay:_ovl.text,overlayIcon:_ovl.icon,overlayTone:_ovl.tone,outKind:_outKind,revealMs:_rd92,defTraj:_defTraj,cause:(ok?(_posC84[0]&&_posC84[0][1]):(_negC84[0]&&_negC84[0][1]))||null});setChosenAct(action);// [5.84.0 UX-2b] · [7.136.0] overlayIcon
+    setOutcome({text:txt,ok,actionLabel:action.label,outKey:key,overlay:_ovl.text,overlayIcon:_ovl.icon,overlayTone:_ovl.tone,outKind:_outKind,woodwork:_wood,/* [7.217.0] palo o traversa: deciso qui, il 3D lo obbedisce invece di dedurlo per conto suo */revealMs:_rd92,defTraj:_defTraj,cause:(ok?(_posC84[0]&&_posC84[0][1]):(_negC84[0]&&_negC84[0][1]))||null});setChosenAct(action);// [5.84.0 UX-2b] · [7.136.0] overlayIcon
     // LMQP-1/3: registra l'esito risolto + i fatti cinematici DECISI A RUNTIME (deriveHL/hlBallState),
     //   così il check timeline valida gli invarianti CINE sulla decisione LIVE (testa⟹aerea, volée⟹aerea, set-piece⟹palla ferma).
     let _cine={};try{const _s=situationsRef.current[hlIdxRef.current];if(_s){const _h=(typeof deriveHL==="function"&&deriveHL(_s,action))||{};_cine={type:_h.type||null,variant:_h.variant||null,pattern:_h.pattern||null,ballState:(typeof hlBallState==="function"?hlBallState(_s):null)};}}catch(_e){}
@@ -15728,7 +15744,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           {/* ── Field + Panel: responsive layout ── */}
           {(()=>{const _isHL=["hl_move","hl_choose","hl_result","hl_intro"].includes(phase);
           // CINE-1: contesto cinematografico centralizzato — type (legacy) + pattern + variant
-          let _hlType=null,_hlPattern=null,_hlVariant=null,_hlOutcomeKind=null,_hlQuality=null,_isDefHL=false,_hlSetPiece=null,_hlBall=null;
+          let _hlType=null,_hlPattern=null,_hlVariant=null,_hlOutcomeKind=null,_hlQuality=null,_isDefHL=false,_hlSetPiece=null,_hlBall=null,_hlWood=null;
           // cpmadapt: bias di "shading" difensivo verso la fascia più attaccata dall'Eroe. Deterministico, bounded (±4u).
           //   Parte solo dopo ≥3 azioni (serve un pattern) e cresce con la dominanza della fascia. 0 se off/nessun pattern.
           let _adaptShift=0,_adaptHotY=50,_adaptStr=0;
@@ -15780,6 +15796,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                 // M1: SORGENTE UNICA — usa l'outKind già deciso in handleAction (stesso ctx/seed) così 3D, overlay
                 //   e cronaca raccontano lo STESSO esito. Fallback al calcolo inline se assente (robustezza).
                 if(outcome.outKind){_hlOutcomeKind=outcome.outKind;}
+                if(outcome.woodwork)_hlWood=outcome.woodwork;
                 else{const _neg=["saved","blocked","wide","post","intercepted","out","corner","dispossessed","fouled","win_freekick","overhit","offside","missed","lost","stopped","deflected_out","shielded_out"];
                 const _dd=decideExecution(_di,{...(_ctx),seed:(_ctx.seed^0x5f3759df)>>>0}).outcome;_hlOutcomeKind=_neg.indexOf(_dd)>=0?_dd:(_di==="dribble"?"dispossessed":(_di==="through"||_di==="onetwo")?"intercepted":_di==="intercept"?"beaten":"saved");/* [7.115.0 fix D4/B1] idem lato 3D-props (fallback quando outcome.outKind assente) */}}
               // [7.8.20 collaudo tester «azione a catena: gol finto alla PRIMA azione dopo un dribbling netto»] ROOT
@@ -15804,7 +15821,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                 heroKitCol={heroKitCol} heroKitCol2={heroKitCol2} heroClub={_heroClubObj} oppClub={_oppClubObj} adSeed={(Math.abs(hashStr((player.club?.id||"x")+"|ads|"+(player.season||1)+"|"+((homeTeamObj&&homeTeamObj.nat)||player.nation||""))))>>>0}/* [7.44.0] pubblicità seedate per club+stagione+nazione */
                 stadiumHomeCol={homeTeamObj?.c||scoreHomeCol} stadiumAwayCol={awayTeamObj?.c||scoreAwayCol} stadiumHomeName={homeTeamObj?.n||homeTeamObj?.name||null} stadiumAwayName={awayTeamObj?.n||awayTeamObj?.name||null} stadiumHomeAbbr={homeTeamObj?.a||null} stadiumAwayAbbr={awayTeamObj?.a||null}/* [7.175.0] sigle reali per le bandiere */ stadiumHomeNat={homeTeamObj?.nat||null} stadiumAwayNat={awayTeamObj?.nat||null}/* [7.180.0] lingua degli striscioni */ stadiumHomeId={homeTeamObj?.id||null} stadiumAwayId={awayTeamObj?.id||null}/* [7.181.0] anno di fondazione per NUCLEO <anno> *//* [7.171.0 TIFO 2.0] nomi REALI casa/ospite per gli striscioni dei gruppi ultras */ /* [6.2.0 KIT-1] tifo coi colori SOCIALI, non con la divisa indossata */
                 stadiumStyle={getStadiumStyle(homeTeamObj)}
-                ballX={ballPos.x} ballY={ballPos.y} hlSitKey={phase==="playing"||phase==="matchday"?-1:(hlIdx+(_forceSeqRef.current||0)*10000)}/* [7.212.0] +progressivo: rigiocare la stessa situation riarma lo snap di scena */ hlType={_hlType} hlSetPiece={_hlSetPiece} hlBall={_hlBall} hlVariant={_hlVariant} hlPattern={_hlPattern} hlOutcomeKind={_hlOutcomeKind} hlQuality={_hlQuality} adaptShift={_adaptShift} adaptHotY={_adaptHotY} adaptStr={_adaptStr} bgAction={bgAction} hlZone={hlZone}
+                ballX={ballPos.x} ballY={ballPos.y} hlSitKey={phase==="playing"||phase==="matchday"?-1:(hlIdx+(_forceSeqRef.current||0)*10000)}/* [7.212.0] +progressivo: rigiocare la stessa situation riarma lo snap di scena */ hlType={_hlType} hlSetPiece={_hlSetPiece} hlBall={_hlBall} hlWood={_hlWood} hlVariant={_hlVariant} hlPattern={_hlPattern} hlOutcomeKind={_hlOutcomeKind} hlQuality={_hlQuality} adaptShift={_adaptShift} adaptHotY={_adaptHotY} adaptStr={_adaptStr} bgAction={bgAction} hlZone={hlZone}
                 timeOfDay={timeOfDay} weather={weather} kickoffHour={kickoffHour} attendance={attendance} crowd={crowdCtx}
                 waveEvent={waveEvent} isDerby={!!drby} isBigGame={mw>=7}
                 hlSuccess={outcome?.ok??null} hlReward={chosenAct?.rew||null} hlDef={_isDefHL} hlDefTraj={outcome?.defTraj||null}
