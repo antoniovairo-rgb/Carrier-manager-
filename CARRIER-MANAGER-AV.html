@@ -3931,7 +3931,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="7.218.0"; // [7.218.0 revisione PO «non si capisce assolutamente che e un dribbling»] LO STACCO DI SCENA VALE ANCHE PER IL PALLONE. Inseguendo il difetto del dribbling ho trovato una causa che riguarda OGNI highlight: dal 7.194.0, all apertura di una scena i 22 giocatori SNAPPANO in posizione (e uno stacco di regia, non una corsa) — il pallone no. Restava dove l aveva lasciato la scena precedente e ci arrivava SCIVOLANDO. Misurato su un dribbling forzato: la scena si apriva col pallone a CENTROCAMPO e l eroe a 26 unita di distanza, e per tutta l azione la palla viaggiava verso di lui senza mai raggiungerlo. Ecco perche nessuna giocata tecnica era leggibile: non era il dribbling a essere reso male, e che il pallone non e mai stato ai piedi di chi lo esegue. Ora lo stacco porta anche la palla dove l azione comincia, alla quota giusta (a terra o per aria, 7.214). Misura: scarto medio fra pallone e punto dell azione all apertura della scena 1.56u → 0.15u su 28 situazioni campionate. In piu, sul DRIBBLING in particolare: la spinta era un lancio di 8u in avanti e fino a 5 di lato mentre l eroe avanzava di 4 e si fermava a meta gesto — ora e un TOCCO corto e raso (poco piu di un passo), l eroe corre per tutta la durata del gesto (avanzamento 4→10) e su un dribbling RIUSCITO il pallone resta ai piedi in conduzione invece di fermarsi nell erba (se lo perde, resta all avversario). Probe permanente `tests/visual/ball-scene-snap-test.mjs` (verificata in negativo: disattivando lo snap la media risale a 1.56u e fallisce).
+const GAME_VERSION="7.219.0"; // [7.219.0] I VERDETTI DEL WIZARD DICONO SU QUALE BUILD SONO STATI DATI. I giudizi restano in `safeLS` fra una sessione e l altra e «Esporta bocciate» li riversava TUTTI insieme, senza distinguere quelli di oggi da quelli gia corretti in una release precedente: un export finiva per mescolare difetti chiusi e difetti nuovi, e si rischiava di ri-lavorare su cose gia sistemate (successo davvero: l export della seconda sessione ripeteva verbatim le 86 bocciature gi0-gi15 della prima, tutte gia corrette nelle 7.213-7.218). Ora ogni verdetto porta la `GAME_VERSION` su cui e stato dato; l export e diviso in due sezioni («su questa build» e «su build PRECEDENTI, da riverificare») con la build indicata riga per riga; c e un filtro dedicato «da riverificare» per rigiocare per prime proprio quelle, e il contatore in testa le mostra. Solo strumento di sviluppo (il wizard non entra nella build store).
 // [6.18.0-note] // [6.18.0] AVATAR = libreria DiceBear (direttiva PO): CH38 3D via dai menu (resta solo nel live match). EROE/giocatori = stile AVATAAARS con FEDELTA al modello CH38 (forza carnagione+capelli+calvizie dalla stessa fonte AVATARS[avatarId] usata dal CH38 a r.7127 -> avatar dei menu ≈ giocatore in campo). NPC/staff (agente, mister via NpcFaceCoach) = stile MICAH seedato dal nome. Bundle locale offline assets/dicebear-avatars.min.js (esbuild IIFE avataaars+micah, ~163KB) caricato da script locale -> no CDN, funziona in gate/offline/produzione. AvatarSVG DiceBear-backed (API invariata, cache seed). Sorgente rigenerabile in tools/avatar-build/. Gate-cieco su CareerApp ma DiceBear carica anche in gate.
 const SAVE_VERSION=9;// v9 [7.6.0 FASE 2]: clubEvo (evoluzione pluriennale del club: fanbase/stadiumTier/budget/seasonsTop-Low) — migration retro-compatibile. v8 [5.81.0 BIL-3b]: bankBalance (stipendio accumulato, €) + perkTrainer/perkNutrition (staff personale) — migration retro-compatibile. v7: player.foot
 // 5.67.0 — TABELLONE realistico del torneo per NAZIONALI (Europeo/Mondiale): dopo il girone la fase a
@@ -29077,6 +29077,9 @@ function ReviewWizard({onExit}){
   const [filter,setFilter]=useState("todo");
   const list=React.useMemo(()=>{
     if(filter==="ko")return combos.filter(c=>verd[kOf(c)]&&verd[kOf(c)].v===0);
+    /* [7.219.0] «da riverificare» = bocciate su una build PRECEDENTE: sono le candidate a essere gia corrette,
+       e sono anche le uniche che vale la pena rigiocare per prime dopo una raffica di fix. */
+    if(filter==="stale")return combos.filter(c=>verd[kOf(c)]&&verd[kOf(c)].v===0&&(verd[kOf(c)].b||null)!==GAME_VERSION);
     if(filter==="todo")return combos.filter(c=>!verd[kOf(c)]);
     return combos;
   },[combos,verd,filter]);
@@ -29107,20 +29110,27 @@ function ReviewWizard({onExit}){
   useEffect(()=>{setNote("");play(cur);},[cur&&cur.gi,cur&&cur.ai,cur&&cur.ok]);// eslint-disable-line
   const mark=(v)=>{
     if(!cur)return;
-    const nv={...verd,[kOf(cur)]:{v,n:note.trim(),t:Date.now()}};
+    const nv={...verd,[kOf(cur)]:{v,n:note.trim(),t:Date.now(),b:GAME_VERSION}};/* [7.219.0] la build su cui il verdetto e stato dato: senza, una bocciatura del mese scorso e indistinguibile da una di oggi e si finisce a ri-correggere cose gia corrette */
     setVerd(nv);_rvwSave(nv);
     /* con il filtro «mai viste» la combinazione appena giudicata esce dalla lista: l'indice resta dov'è
        e mostra automaticamente la successiva. Con gli altri filtri si avanza di uno. */
     if(filter==="todo")setI(x=>Math.min(x,Math.max(0,list.length-2)));else setI(x=>Math.min(x+1,list.length-1));
   };
   const done=combos.filter(c=>verd[kOf(c)]).length,ko=combos.filter(c=>verd[kOf(c)]&&verd[kOf(c)].v===0).length;
+  const stale=combos.filter(c=>verd[kOf(c)]&&verd[kOf(c)].v===0&&(verd[kOf(c)].b||null)!==GAME_VERSION).length;/* [7.219.0] bocciate su build precedenti */
   const sit=cur?ALL[cur.gi]:null,act=sit&&sit.actions?sit.actions[cur.ai]:null;
   const bs={background:"#334155",color:"#fff",border:"none",borderRadius:8,padding:"9px 12px",fontSize:13,fontWeight:800,cursor:"pointer",fontFamily:"inherit"};
   const doExport=()=>{
-    const rows=combos.filter(c=>verd[kOf(c)]&&verd[kOf(c)].v===0).map(c=>{
-      const s2=ALL[c.gi],a2=s2&&s2.actions?s2.actions[c.ai]:null;
-      return `gi${c.gi} · ${(s2&&s2.text)||"?"} · azione: ${(a2&&a2.label)||c.ai} · esito: ${c.ok?"RIUSCITO":"FALLITO"}${verd[kOf(c)].n?` · nota: ${verd[kOf(c)].n}`:""}`;});
-    const txt=rows.length?rows.join("\n"):"(nessuna combinazione da correggere)";
+    /* [7.219.0] i verdetti restano salvati fra una sessione e l'altra: senza dire su QUALE build sono stati
+       dati, un export mescola le bocciature di oggi con quelle gia corrette in una release precedente — ed e
+       esattamente cosi che si finisce a ri-lavorare su difetti gia chiusi. Le vecchie sono in coda, marcate. */
+    const _ko=combos.filter(c=>verd[kOf(c)]&&verd[kOf(c)].v===0);
+    const _fmt=c=>{const s2=ALL[c.gi],a2=s2&&s2.actions?s2.actions[c.ai]:null,vv=verd[kOf(c)];
+      return `gi${c.gi} · ${(s2&&s2.text)||"?"} · azione: ${(a2&&a2.label)||c.ai} · esito: ${c.ok?"RIUSCITO":"FALLITO"}${vv.n?` · nota: ${vv.n}`:""}`;};
+    const cur1=_ko.filter(c=>(verd[kOf(c)].b||null)===GAME_VERSION),old=_ko.filter(c=>(verd[kOf(c)].b||null)!==GAME_VERSION);
+    const rows=[`— bocciate su questa build (${GAME_VERSION}): ${cur1.length} —`,...cur1.map(_fmt)];
+    if(old.length)rows.push("",`— bocciate su build PRECEDENTI (${old.length}, da riverificare: potrebbero essere gia corrette) —`,...old.map(c=>`[${verd[kOf(c)].b||"build ignota"}] `+_fmt(c)));
+    const txt=_ko.length?rows.join("\n"):"(nessuna combinazione da correggere)";
     setExp(txt);try{navigator.clipboard&&navigator.clipboard.writeText(txt);}catch(_e){}
   };
   return <div style={{width:"100%",height:"100vh",position:"relative",background:"#050810",display:"flex",flexDirection:"column"}}>
@@ -29132,6 +29142,7 @@ function ReviewWizard({onExit}){
       <b style={{color:"#fbbf24",letterSpacing:1}}>🎬 REVISIONE</b>
       <span style={{fontWeight:800}}>{done} / {combos.length}</span>
       <span style={{color:"#f87171",fontWeight:800}}>{ko} da correggere</span>
+      {stale>0&&<span style={{color:"#fbbf24",fontWeight:800}}>· {stale} da riverificare (build precedenti)</span>}
       <div style={{flex:1,minWidth:60,height:6,background:"#1e293b",borderRadius:3,overflow:"hidden"}}><div style={{width:`${combos.length?done/combos.length*100:0}%`,height:"100%",background:"#22c55e"}}/></div>
       <button onClick={onExit} style={{...bs,padding:"5px 10px",background:"#7f1d1d"}}>✕ Esci</button>
     </div>
@@ -29157,7 +29168,7 @@ function ReviewWizard({onExit}){
         </div>
       </>}
       <div style={{display:"flex",gap:7,marginTop:7,flexWrap:"wrap",alignItems:"center"}}>
-        {[["todo","mai viste"],["ko","da correggere"],["all","tutte"]].map(([k,l])=>
+        {[["todo","mai viste"],["ko","da correggere"],["stale","da riverificare"],["all","tutte"]].map(([k,l])=>
           <button key={k} onClick={()=>{setFilter(k);setI(0);}} style={{...bs,padding:"5px 10px",fontSize:11,background:filter===k?"#2563eb":"#1e293b"}}>{l}</button>)}
         <span style={{flex:1}}/>
         <button onClick={doExport} style={{...bs,padding:"5px 10px",fontSize:11,background:"#b45309"}}>📤 Esporta bocciate</button>
