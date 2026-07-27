@@ -33,7 +33,14 @@ export default {
     try {
       const j = JSON.parse(fs.readFileSync(tmpJson, 'utf8'));
       fails = (j.fails || 0) + (j.catFails || 0);
-      info = { clean: j.clean, warns: j.warns, fails: j.fails, catFails: j.catFails, scores: j.scores };
+      /* [7.213.0] le GUARDIE DI CONSISTENZA della suite (il modello analitico rispecchia il motore reale?)
+         venivano lette solo dal report .md: se una falliva, il gate restava verde e il modello poteva
+         divergere in silenzio dal sorgente — esattamente il rischio che quelle guardie esistono per coprire.
+         Ora una guardia rotta è un FAIL del check. */
+      const gBad = (Array.isArray(j.guards) ? j.guards : []).filter(g => !g.ok);
+      fails += gBad.length;
+      info = { clean: j.clean, warns: j.warns, fails: j.fails, catFails: j.catFails, guardsFailed: gBad.length, scores: j.scores };
+      for (const g of gBad) issues.push(`guardia di consistenza fallita: ${g.name} — il modello analitico non rispecchia più il motore (aggiorna la guardia o correggi il sorgente)`);
       if (fails > 0 && Array.isArray(j.worst)) for (const w of j.worst.slice(0, 10)) issues.push(`[${w.si}/${w.ai}] ${w.sit}: ${(w.issues || []).join('; ')}`);
     } catch {
       const m = out.match(/FAIL:\s*(\d+)/); fails = m ? +m[1] : (res.status === 0 ? 0 : 1);

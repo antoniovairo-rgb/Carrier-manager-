@@ -89,7 +89,11 @@ async function clickByText(page, src, timeout = 9000) {
    Ritorna { total, consoleErrors } e lascia la pagina pronta per forceSituation(). */
 export async function openMatch(page, port, opts) {
   const url = `http://localhost:${port}/CARRIER-MANAGER-AV.html?cpmtest=1`;
-  await page.goto(url, { waitUntil: 'load', timeout: 30000 });
+  /* [7.213.0] il timeout era 30s: il sorgente è cresciuto (2.9 MB) e Babel in-browser, su software-GL cloud,
+     impiega 14-22s a transpilare — sotto carico (più pagine aperte dai check) sforava e faceva abortire l'INTERA
+     passata del gate (FATAL su openMatch → 0 Situations e tutti i check verdi a vuoto: un falso «pass» pericoloso).
+     La store build precompila il JSX offline, quindi è un costo del solo harness. */
+  await page.goto(url, { waitUntil: 'load', timeout: 90000 });
   await page.waitForFunction(() => { const r = document.getElementById('root'); return r && r.children.length > 0; }, { timeout: 40000 });
   if (!await clickByText(page, 'Nuova carriera')) throw new Error('flusso: "Nuova carriera" non trovato');
   await sleep(700);

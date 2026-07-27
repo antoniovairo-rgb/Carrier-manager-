@@ -95,13 +95,18 @@ guard('outcome success: pass→assist_recv→assist_shot', /_hs===true&&_ht==="p
 guard('outcome fail: palo decision-driven (_ek|| roll<0.20)→hit_post', /_isPost=_ek\?\(_ek==="post"\):\(_isShotHL&&_roll<0\.20\)/.test(src) && /if\(_isPost\)\{[\s\S]*?hlPostArcType="hit_post"/.test(src));
 guard('outcome fail: parata decision-driven (_ek|| roll<0.85), split save/wide', /_isSave=_ek\?\(_ek==="saved"\|\|_ek==="save"\):\(_isShotHL&&_roll<0\.85\)/.test(src) && /_isSave\?"save":"wide"/.test(src));
 guard('camera FAR_POST_CROSS side-tracking', /_pat==="FAR_POST_CROSS"\)\{cPx=clamp\(fX-6/.test(src));
-guard('arc cross_far_post tgtZ=-_side*(11..)', /cross_far_post"\)\{ballArcH=4\.2;ballArcDur=0\.90;ballArcTgtX=AWAY_GOAL_X-9/.test(src));
+guard('arc cross_far_post tgtZ=-_side*(11..)', /cross_far_post"\)\{ballArcH=[\d.]+;ballArcDur=[\d.]+;ballArcTgtX=AWAY_GOAL_X-9/.test(src) && /cross_far_post.*ballArcTgtZ=-_side\*\(11/.test(src)); // [7.213.0] l'invariante è il palo LONTANO (tgtX/-_side), non i valori dell'arco: quelli sono taratura e cambiano
 guard('fix: dribble/build/tackle(non-def)-gol → in_net', /\(_ht==="dribble"\|\|_ht==="build"\|\|\(_ht==="tackle"&&!P\.hlDef\)\)&&P\.hlReward==="goal"\)\{[\s\S]{0,400}?hlPostArcType="in_net"/.test(src)); // [7.8.28 QA] il ramo ha ora la guardia chance (5.90.0/7.8.10) prima di in_net — la guardia valida l'invariante, non il literal esatto
 guard('fix: hlReward passato come prop', /hlReward=\{chosenAct\?\.rew\|\|null\}/.test(src));
 guard('fix: shot_curled palo lontano usa -_side', /shot_curled.*ballArcTgtZ=-_side\*/.test(src));
 guard('fix: header_far_post usa -_side', /header_far_post.*ballArcTgtZ=-_side\*/.test(src));
 guard('fix: near_post_cross clamp TgtX byline+speed', /_cp\+45/.test(src));
-guard('fix: penalty_panenka arco alto', /penalty_panenka.*ballArcH=9\.0/.test(src));
+/* [7.213.0] l'invariante non è «9.0» (era il DOPPIO di una traversa: ogni rigore leggeva come un pallonetto)
+   ma la RELAZIONE — il cucchiaio deve restare nettamente più alto del rigore normale. */
+guard('fix: penalty_panenka arco più alto del rigore normale', (()=>{
+  const m=src.match(/penalty_panenka"\)\{ballArcH=([\d.]+);[^}]*\}else\{ballArcH=([\d.]+);/);
+  return !!m && parseFloat(m[1])>parseFloat(m[2])*1.6;
+})());
 
 // ---------- 4. modello outcome (puro: dipende solo da success,type,variant,roll) ----------
 //   NB: dal Decision Engine (serie F) l'esito reale deriva da P.hlOutcomeKind; questo modello a
@@ -212,8 +217,10 @@ function simulate(sit,act){
     add('sync','warn','"pallonetto/cucchiaio" ma variante non chip ('+cls.variant+')');
   if(/pallonett|cucchiaio/.test(lbl)&&cls.type==='penalty'&&cls.variant!=='penalty_panenka')
     add('sync','warn','rigore con cucchiaio/pallonetto ma variant non penalty_panenka');
-  if(/pallonett|cucchiaio/.test(lbl)&&arc&&arc.ballArcH<6)
-    add('sync','warn','pallonetto con arco basso ('+arc.ballArcH+'m) — poco riconoscibile');
+  /* [7.213.0] soglia 6→3.4: gli apici sono in METRI e la traversa sta a 2.44 — un «pallonetto» a 6m era una
+     parabola da rinvio. Un cucchiaio riconoscibile passa sopra il portiere (~2.6m di allungo), non sopra lo stadio. */
+  if(/pallonett|cucchiaio/.test(lbl)&&arc&&arc.ballArcH<3.4)
+    add('sync','warn','pallonetto con arco basso ('+arc.ballArcH+'m) — non scavalca il portiere');
   if(/rigore/.test(txt)&&cls.type!=='penalty')add('sync','fail','testo "rigore" ma type non penalty ('+cls.type+')');
 
   // --- COERENZA HL ↔ AZIONE ↔ STATO PALLA (CINE-COH) ---
@@ -399,7 +406,7 @@ const recs=[];
 const goalNotNet=results.filter(r=>r.issues.some(i=>/non è una rete/.test(i.msg)));
 if(goalNotNet.length)recs.push(`**${goalNotNet.length} azioni "goal" da dribbling/costruzione mostrano solo l'esultanza (fist), non la palla in rete.** L'outcome dispatch (hl_result) per \`type==="dribble"/"build"\` non conosce \`act.rew\`. Proposta: passare il reward all'esito così un dribbling-gol instradi un post-HL "in_net" (porta vuota) invece del solo pugno.`);
 const chipLow=results.filter(r=>r.issues.some(i=>/pallonetto con arco basso/.test(i.msg)));
-if(chipLow.length)recs.push(`**${chipLow.length} pallonetti** con arco < 6m: poco riconoscibili come "cucchiaio". Verificare che la label mappi a \`shot_chip\` (ballArcH=8.5).`);
+if(chipLow.length)recs.push(`**${chipLow.length} pallonetti** con arco < 3.4m: non scavalcano il portiere. Verificare che la label mappi a \`shot_chip\`.`);
 const farSame=results.filter(r=>r.issues.some(i=>/far post dichiarato ma target Z sullo stesso lato/.test(i.msg)));
 if(farSame.length)recs.push(`**${farSame.length} cross "secondo palo"** con target Z sullo stesso lato di partenza: rivedere il segno di \`_side\` per quelle situations.`);
 if(!recs.length)recs.push('Nessuna raccomandazione critica — catalogo coerente.');

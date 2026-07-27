@@ -281,6 +281,9 @@ const GOLDEN = path.join(HERE, 'golden-sigs.json');
 
   console.log('\n=== QUALITY GATE — VALIDAZIONE SITUATIONS ===');
   console.log(`gameVersion ${gameVersion} · ${sitResults.length} Situations`);
+  /* [7.213.0] guardia anti-«verde a vuoto»: se la passata principale muore (es. timeout di caricamento) i check
+     per-situation non girano su NULLA e stampano tutti ✅ — a colpo d'occhio sembra un gate passato. Va detto forte. */
+  if (!sitResults.length) console.log('  ⚠️  NESSUNA SITUATION ESAMINATA — i check per-situation qui sopra sono VUOTI, non verdi (vedi il FATAL)');
   for (const c of categories) console.log(`  ${c.pass ? '✅' : '❌'} ${c.id.padEnd(16)} ${c.pass ? 'OK' : c.issues.length + ' issue'}${c.warnings.length ? ' · ' + c.warnings.length + ' warn' : ''}`);
   if (goldenNote) console.log(`  📸 ${goldenNote}`);
   console.log(`report HTML → ${path.relative(ROOT, htmlPath)}`);

@@ -1,7 +1,7 @@
 {
   "totalCombos": 573,
-  "clean": 558,
-  "warns": 15,
+  "clean": 560,
+  "warns": 13,
   "fails": 0,
   "catFails": 0,
   "catWarns": 1,
@@ -75,49 +75,11 @@
       "ok": true
     },
     {
-      "name": "fix: penalty_panenka arco alto",
+      "name": "fix: penalty_panenka arco più alto del rigore normale",
       "ok": true
     }
   ],
   "worst": [
-    {
-      "si": 5,
-      "ai": 1,
-      "realismo": 96,
-      "sit": "🔴 RIGORE! Sul dischetto.",
-      "act": "🎯 Cucchiaio",
-      "cls": {
-        "type": "penalty",
-        "pattern": "PENALTY",
-        "variant": "penalty_panenka"
-      },
-      "issues": [
-        {
-          "cat": "ball",
-          "sev": "warn",
-          "msg": "velocità di picco non plausibile (88 u/s)"
-        }
-      ]
-    },
-    {
-      "si": 58,
-      "ai": 1,
-      "realismo": 96,
-      "sit": "🔴 RIGORE! Sul dischetto a 5' dalla fine. Respira. Tira.",
-      "act": "🌀 Cucchiaio — glaciale",
-      "cls": {
-        "type": "penalty",
-        "pattern": "PENALTY",
-        "variant": "penalty_panenka"
-      },
-      "issues": [
-        {
-          "cat": "ball",
-          "sev": "warn",
-          "msg": "velocità di picco non plausibile (76 u/s)"
-        }
-      ]
-    },
     {
       "si": 63,
       "ai": 2,
@@ -575,6 +537,19 @@
     },
     {
       "si": 5,
+      "ai": 1,
+      "realismo": 100,
+      "sit": "🔴 RIGORE! Sul dischetto.",
+      "act": "🎯 Cucchiaio",
+      "cls": {
+        "type": "penalty",
+        "pattern": "PENALTY",
+        "variant": "penalty_panenka"
+      },
+      "issues": []
+    },
+    {
+      "si": 5,
       "ai": 2,
       "realismo": 100,
       "sit": "🔴 RIGORE! Sul dischetto.",
@@ -817,6 +792,19 @@
         "type": "dribble",
         "pattern": "DRIBBLE_SHOT",
         "variant": "dribble_feint"
+      },
+      "issues": []
+    },
+    {
+      "si": 12,
+      "ai": 0,
+      "realismo": 100,
+      "sit": "🦵 Tiro con l'esterno del piede!",
+      "act": "🦵 Esterno a giro",
+      "cls": {
+        "type": "shot",
+        "pattern": "EDGE_SHOT",
+        "variant": "shot_curled"
       },
       "issues": []
     }
