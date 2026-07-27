@@ -26,7 +26,7 @@ if (!/ball\.position\.y=0\.65\+Math\.sin\(u\*Math\.PI\)\*ballArcH\+\(ballArcY0-0
 /* ── esecuzione del blocco d'arco REALE (stesso pattern della suite analitica) ── */
 const rz = L.findIndex(l => /const _rz=\(Math\.random\(\)-\.5\)/.test(l));
 let arcEnd = -1;
-for (let i = rz; i < rz + 140; i++) if (/ARC_BLOCK_END/.test(L[i])) { for (let j = i; j < i + 30; j++) if (/^\s*\}\s*$/.test(L[j])) { arcEnd = j; break; } break; }
+for (let i = rz; i < rz + 220; i++) if (/ARC_BLOCK_END/.test(L[i])) { for (let j = i; j < i + 30; j++) if (/^\s*\}\s*$/.test(L[j])) { arcEnd = j; break; } break; }
 if (rz < 0 || arcEnd < 0) { console.log('❌ FAIL — blocco d\'arco non estraibile dal sorgente'); process.exit(1); }
 const arcBlock = L.slice(rz, arcEnd + 1).join('\n');
 const runArc = (t, variant, q) => {
@@ -56,7 +56,10 @@ const FAM = [
   ['colpo di testa in tuffo',     'header',  'header_diving',     2.3,  false],
   ['colpo di testa (primo palo)', 'header',  'header_near_post',  3.0,  false],
   ['colpo di testa (secondo palo)','header', 'header_far_post',   3.2,  false],
-  ['punizione',                   'freekick', null,               3.6,  false],
+  ['punizione (tiro diretto)',    'freekick', 'freekick_direct',  3.6,  false],
+  ['punizione · cross alto',      'freekick', 'freekick_cross_high', null, false],
+  ['punizione · cross teso',      'freekick', 'freekick_cross_low',  null, false],
+  ['punizione · giocata corta',   'freekick', 'freekick_short',      null, false],
   ['cross al primo palo',         'cross',   'cross_near_post',   null, false],
   ['cross al secondo palo',       'cross',   'cross_far_post',    null, false],
   ['cross teso',                  'cross',   'cross_low_driven',  null, false],
@@ -84,6 +87,12 @@ if (got['rigore a cucchiaio'].pk < got['rigore'].pk * 1.4)
 /* [7.215.0] l'ANGOLO ALTO deve esistere: almeno una conclusione ben calciata arriva sopra il metro e mezzo */
 const topCorner = Object.entries(got).filter(([n]) => /tiro|punizione|rigore/.test(n)).some(([, v]) => v.yHi >= 1.5);
 if (!topCorner) issues.push('nessuna conclusione arriva in alto: l\'angolo alto non esiste e il portiere non ha nulla da parare sopra la vita');
+/* [7.216.0] SULLA PUNIZIONE LE TRE CONSEGNE DEVONO ESSERE DISTINGUIBILI: prima uscivano tutte con l'arco del
+   tiro diretto, quindi «Cross alto» e «Cross basso teso» erano lo stesso identico filmato. */
+{const hi = got['punizione · cross alto'], lo = got['punizione · cross teso'], sh = got['punizione · giocata corta'], dir = got['punizione (tiro diretto)'];
+ if (hi.yLo - lo.yLo < 0.7) issues.push(`punizione: cross alto (${hi.yLo.toFixed(2)} m) e cross teso (${lo.yLo.toFixed(2)} m) arrivano quasi alla stessa quota — restano indistinguibili`);
+ if (Math.abs(hi.pk - dir.pk) < 0.25 && Math.abs(hi.yLo - dir.yLo) < 0.25) issues.push('punizione: la consegna alta ha la stessa traiettoria del tiro diretto');
+ if (sh.pk > 1.6) issues.push(`punizione: la giocata corta si alza a ${sh.pk.toFixed(2)} m — è un appoggio, non un traversone`);}
 /* un CROSS alto deve consegnare all'altezza della testa, altrimenti lo stacco non può essere sincronizzato */
 for (const n of ['cross al primo palo', 'cross al secondo palo'])
   if (got[n].yLo < 1.5) issues.push(`${n}: consegna a ${got[n].yLo.toFixed(2)} m — troppo basso perché un compagno ci stacchi di testa`);

@@ -35,7 +35,8 @@
     "def-sweep": "node def-mass-sweep.mjs",
     "tripath-chokepoint": "node tripath-chokepoint-test.mjs",
     "shot-apex": "node shot-apex-test.mjs",
-    "aerial-contact": "node aerial-contact-test.mjs"
+    "aerial-contact": "node aerial-contact-test.mjs",
+    "freekick-delivery": "node freekick-delivery-test.mjs"
   },
   "dependencies": {
     "playwright": "^1.48.0",

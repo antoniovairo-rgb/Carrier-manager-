@@ -63,10 +63,10 @@ const rzIdx=findLine(/const _rz=\(Math\.random\(\)-\.5\)/);
 // includi tutti i rami: penalty, shot, header, cross E freekick (l'ultimo del blocco)
 // [7.196.0 S3] il blocco non finisce piu' col ramo freekick: a valle dei literal per-variante c'e' la
 // normalizzazione della DURATA sulla distanza, che fa parte della traiettoria e va valutata anche qui.
-let arcEnd=-1;for(let i=rzIdx;i<rzIdx+96;i++){if(/ARC_BLOCK_END/.test(L[i])){
+let arcEnd=-1;for(let i=rzIdx;i<rzIdx+220;i++){if(/ARC_BLOCK_END/.test(L[i])){
   // dal marcatore si avanza fino alla graffa che CHIUDE il blocco di normalizzazione (riga di sola parentesi)
   for(let j=i;j<i+24;j++){if(/^\s*\}\s*$/.test(L[j])){arcEnd=j;break;}}
-  break;}}// finestra 80: il blocco-arco cresce con F4/F5/F6 (traiettorie derivate dalla decisione)
+  break;}}// finestra 220: il blocco-arco cresce a ogni rifinitura delle traiettorie (F4/F5/F6, 7.213-7.216) — se e troppo stretta l'estrazione fallisce e la suite muore con un FATAL invece di validare
 if(arcEnd<0){console.error('FATAL: ramo freekick dell\'arco non trovato — il blocco potrebbe essere cambiato');process.exit(1);}
 const arcBlock=L.slice(rzIdx,arcEnd+1).join('\n');
 function computeArc(t,variant,playerY,rnd,playerX=50){

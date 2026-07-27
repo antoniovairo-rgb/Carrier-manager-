@@ -3923,7 +3923,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="7.215.0"; // [7.215.0 revisione PO «il portiere non effettua bene la parata, gesti innaturali» · «rendere piu nitida la parata / traversa / palo»] LA PARATA NON ERA NITIDA PERCHE NON C ERA NIENTE DA PARARE IN ALTO. Cercando la causa nell animazione ho trovato qualcosa di piu grosso: la parabola finiva SEMPRE a 0.65, cioe OGNI conclusione — tiro a giro, punizione, rigore, colpo di testa — arrivava sulla linea di porta RASOTERRA. L angolo alto non esisteva proprio, il portiere non aveva nulla da parare sopra la vita e il legno era sempre e solo un palo laterale. Tre correzioni: (1) l arco ha ora un bersaglio anche in ALTEZZA (`ballArcTgtY`), derivato dal gesto e dalla qualita decisa dal motore — il tiro a giro ben calciato arriva a 2.03 m, il 1v1 resta a 0.40 (angolo rasoterra), il pallonetto scende sotto la traversa, l incornata riuscita si SCHIACCIA a terra mentre quella sbagliata sale, la punizione scavalca la barriera e rientra sotto la traversa, e soprattutto il CROSS ALTO consegna a 1.8-2.1 m = all altezza della testa, che e il presupposto perche lo stacco sia sincronizzato (il cutback e il cross teso restano raso, come devono); default 0.65 ⇒ le traiettorie che non lo impostano sono bit-identiche. (2) IL TUFFO SEGUE LA CONCLUSIONE invece di essere sempre uguale a se stesso: durata agganciata a quella del tiro (prima l estensione era completa al 42% del tuffo, molto prima dell arrivo — il portiere restava disteso ad aspettare e il contatto non si vedeva) e stacco/assetto proporzionati alla quota della palla (raso = corpo disteso a terra · alto = volo con le braccia su; prima era un salto fisso di 1.15 che sul tiro raso lo faceva volare SOPRA il pallone). (3) LA TRAVERSA ESISTE: una conclusione indirizzata alta che prende il legno sale a sbattere sotto la traversa mantenendo la propria direzione e da li RICADE, invece di convergere comunque sul palo laterale. Guardiano `tests/visual/shot-apex-test.mjs` esteso: ora ESEGUE il blocco d arco reale (come la suite analitica) e verifica apici, quota d arrivo dentro lo specchio, esistenza dell angolo alto e cross alti all altezza della testa. Gate 14/14 (00001505 invariato) · gk-reflex ✅. NOTA APERTA: il testo dell esito pesca ancora a caso tra «Palo!» e «Traversa!» — ora che in 3D la traversa esiste davvero, la scelta va unificata alla sorgente (prossima release). IN PIU: il frame registrato dal recorder porta ora anche il ramo di POST-ARCO (`pa`) — senza, un difetto di traiettoria dopo la conclusione non e attribuibile a nessun ramo; e servito subito a smontare un falso positivo (una sonda diceva che il pallone «esce dalla rete», era il campionamento a ~6 fps dell headless che tagliava il volo a meta).
+const GAME_VERSION="7.216.0"; // [7.216.0 revisione PO «sembra un cross basso» sulla punizione dalla fascia] SULLA PUNIZIONE LA SCELTA NON ARRIVAVA ALLA CINEMATICA. `deriveHL` classificava OGNI azione di una punizione come `freekick` senza guardare quale fosse: «Cross alto», «Cross basso teso» e «Giocata corta» uscivano tutte e tre con lo STESSO identico filmato, cioe l arco del tiro diretto verso la porta — le tre opzioni erano indistinguibili a schermo, e chi sceglieva il cross alto vedeva un cross basso. La distinzione nel gameplay esisteva gia (dal 7.8.9 solo la punizione da tiro diretto apre la griglia di mira), mancava solo nel 3D. Ora la punizione ha QUATTRO traiettorie: consegna alta pennellata all altezza della testa sul secondo palo (arrivo 1.84-2.08 m) · consegna tesa che vola raso davanti alla porta (0.57-0.81 m) · giocata corta d appoggio laterale · tiro diretto invariato. Il discriminante e la stat dell azione (una consegna e passaggio/tecnica, una conclusione e `tiro`), cosi «Tiro rasoterra» non viene scambiato per un cross basso, e il primo palo si serve TESO mentre il secondo si pennella. Variante null senza azione ⇒ fase di lettura, regia e firma golden invariate. Due guardiani: `tests/visual/freekick-delivery-test.mjs` (interroga il motore VERO in pagina su tutte e 7 le punizioni: una conclusione deve dare `freekick_direct`, una consegna mai, e due consegne diverse della stessa punizione non possono avere la stessa traiettoria) e `shot-apex-test` esteso (le tre consegne devono differire per quota d arrivo e apice). Corretta anche la finestra di estrazione del blocco d arco nella suite analitica: era 96 righe, il blocco e cresciuto oltre e la suite moriva con un FATAL invece di validare.
 // [6.18.0-note] // [6.18.0] AVATAR = libreria DiceBear (direttiva PO): CH38 3D via dai menu (resta solo nel live match). EROE/giocatori = stile AVATAAARS con FEDELTA al modello CH38 (forza carnagione+capelli+calvizie dalla stessa fonte AVATARS[avatarId] usata dal CH38 a r.7127 -> avatar dei menu ≈ giocatore in campo). NPC/staff (agente, mister via NpcFaceCoach) = stile MICAH seedato dal nome. Bundle locale offline assets/dicebear-avatars.min.js (esbuild IIFE avataaars+micah, ~163KB) caricato da script locale -> no CDN, funziona in gate/offline/produzione. AvatarSVG DiceBear-backed (API invariata, cache seed). Sorgente rigenerabile in tools/avatar-build/. Gate-cieco su CareerApp ma DiceBear carica anche in gate.
 const SAVE_VERSION=9;// v9 [7.6.0 FASE 2]: clubEvo (evoluzione pluriennale del club: fanbase/stadiumTier/budget/seasonsTop-Low) — migration retro-compatibile. v8 [5.81.0 BIL-3b]: bankBalance (stipendio accumulato, €) + perkTrainer/perkNutrition (staff personale) — migration retro-compatibile. v7: player.foot
 // 5.67.0 — TABELLONE realistico del torneo per NAZIONALI (Europeo/Mondiale): dopo il girone la fase a
@@ -8394,6 +8394,19 @@ function deriveHL(sit,act){
     else variant="shot_power";
   } else if(type==="penalty"){
     if(/cucchiaio|pallonett/.test(lbl))variant="penalty_panenka";// Panenka → arco alto
+  } else if(type==="freekick"&&act){
+    /* [7.216.0 revisione PO «sembra un cross basso»] SULLA PUNIZIONE LA SCELTA CONTA. Il ramo `freekick`
+       ignorava del tutto l'azione: «Cross alto», «Cross basso teso» e «Giocata corta» producevano la STESSA
+       identica traiettoria (quella del tiro diretto in porta), quindi le tre opzioni erano indistinguibili a
+       schermo. La distinzione esisteva già nel gameplay — dal 7.8.9 solo la punizione da TIRO DIRETTO apre la
+       griglia di mira — ma non arrivava alla cinematica. Discriminante: la stat dell'azione (una CONSEGNA è
+       passaggio/tecnica, una conclusione è `tiro`), così «Tiro rasoterra» non viene scambiato per un cross basso.
+       Il variant resta null senza azione (fase di lettura) → regia e firma golden invariate. */
+    const _dl=(st!=="tiro"&&act.rew!=="goal");
+    if(!_dl)variant="freekick_direct";
+    else if(/alto|in area|traversone|pennell|incornat|secondo palo/.test(lbl))variant="freekick_cross_high";
+    else if(/cross|teso|raso|bass|filtrant|primo palo/.test(lbl))variant="freekick_cross_low";/* il primo palo si serve TESO, non pennellato */
+    else variant="freekick_short";
   } else if(type==="dribble"){
     if(/rientr|interno/.test(lbl))variant="dribble_inside";
     else if(/sterzat|esterno/.test(lbl))variant="dribble_outside";
@@ -10469,7 +10482,24 @@ function ThreeMatchView(props){
                 davanti a chi salta. Il cutback e il cross teso restano rasoterra, come devono. */
              ballArcTgtY=(_v==="cross_cutback")?0.55:(_v==="cross_low_driven")?clamp(0.55+(1-_q)*0.35,0.50,0.95):clamp(1.75+_q*0.35,1.60,2.15);
             }}
-          else if(t==="freekick"){ballArcH=2.4;ballArcDur=0.78;ballArcT=0;ballArcActive=true;ballArcTgtX=AWAY_GOAL_X-3+Math.random()*4;ballArcTgtZ=_rz*7;/* F6 (traiettoria della PUNIZIONE = conseguenza della DECISIONE): q (tiro/tecnica, seedata) plasma pace+precisione+altezza */{const _q=P.hlQuality!=null?P.hlQuality:0.6;ballArcTgtZ*=(0.6+_q*0.4);ballArcDur*=clamp(1.15-_q*0.30,0.80,1.16);ballArcH*=clamp(1.12-_q*0.22,0.85,1.14);ballArcTgtY=clamp(0.85+_q*1.25,0.70,2.10);/* [7.215.0] la punizione scavalca la barriera e SCENDE sotto la traversa: q alta = sette, q bassa = mezz'altezza */}}
+          else if(t==="freekick"){ballArcT=0;ballArcActive=true;
+            /* [7.216.0 revisione PO «sembra un cross basso»] LA PUNIZIONE HA TRE TRAIETTORIE, non una. Prima ogni
+               azione — cross alto, cross teso, giocata corta, tiro diretto — usciva con lo stesso arco verso la
+               porta: chi sceglieva «Cross alto» vedeva la stessa cosa di chi sceglieva «Cross basso teso». Ora la
+               consegna alta pennella all'altezza della testa sul secondo palo, quella tesa vola raso davanti alla
+               porta, la giocata corta è un appoggio laterale; il tiro diretto resta com'era. */
+            const _vf=P.hlVariant;
+            if(_vf==="freekick_cross_high"){ballArcH=2.6;ballArcDur=0.95;ballArcTgtX=AWAY_GOAL_X-9+Math.random()*5;ballArcTgtZ=-_side*(8+Math.random()*6);}
+            else if(_vf==="freekick_cross_low"){ballArcH=0.9;ballArcDur=0.70;ballArcTgtX=AWAY_GOAL_X-12+Math.random()*5;ballArcTgtZ=_side*(4+Math.random()*5);}
+            else if(_vf==="freekick_short"){ballArcH=0.45;ballArcDur=0.44;ballArcTgtX=(P.playerX||50)-50+7+Math.random()*5;ballArcTgtZ=_side*(7+Math.random()*5);}
+            else{ballArcH=2.4;ballArcDur=0.78;ballArcTgtX=AWAY_GOAL_X-3+Math.random()*4;ballArcTgtZ=_rz*7;}
+            /* F6 (traiettoria della PUNIZIONE = conseguenza della DECISIONE): q (tiro/tecnica, seedata) plasma pace+precisione+altezza */
+            {const _q=P.hlQuality!=null?P.hlQuality:0.6;
+             ballArcTgtZ*=(0.6+_q*0.4);ballArcDur*=clamp(1.15-_q*0.30,0.80,1.16);ballArcH*=clamp(1.12-_q*0.22,0.85,1.14);
+             ballArcTgtY=(_vf==="freekick_cross_high")?clamp(1.80+_q*0.30,1.65,2.15)
+               :(_vf==="freekick_cross_low")?clamp(0.55+(1-_q)*0.30,0.50,0.90)
+               :(_vf==="freekick_short")?0.55
+               :clamp(0.85+_q*1.25,0.70,2.10);/* [7.215.0] il tiro diretto scavalca la barriera e SCENDE sotto la traversa */}}
           /* [7.197.0 S4 · direttiva PO «esiti onesti»] IL TIRO MURATO SI FERMA SUL MURO. Con l'overlay «Murato
              dalla difesa» e la cronaca «la difesa mura la conclusione», il pallone attraversava indisturbato tutta
              la difesa, arrivava sullo specchio e faceva pure tuffare il portiere: quello che il motore aveva deciso
