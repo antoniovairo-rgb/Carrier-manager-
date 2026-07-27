@@ -3931,7 +3931,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="7.217.0"; // [7.217.0 chiude la nota aperta del 7.215.0] IL LEGNO DETTO E QUELLO COLPITO. Il pool dell esito «palo» mescolava «Palo!» e «Traversa!» e ne pescava uno a caso, mentre il 3D mostrava sempre e comunque un palo laterale: la parola contraddiceva l immagine una volta su due. Dal 7.215.0 la traversa esiste davvero in campo, quindi QUALE legno sia lo decide UNA volta sola `handleAction` (campo `woodwork` dell outcome, seedato) e lo consumano insieme 3D, overlay e cronaca — lo stesso pattern M1 con cui nel 5.52.0 si e chiusa la divergenza «overlay dice PALO, 3D mostra parata». Le giocate strutturalmente basse (colpo di testa, tiro in 1v1, cross a rientrare, cross teso, punizione tesa) finiscono sul palo per geometria; la traversa resta alle conclusioni che vanno in alto. I due sotto-pool restano dentro la STESSA famiglia visiva «post» ⇒ l invariante overlay-family ⟺ arc-family verificato dal check `timeline` del gate non cambia. Probe permanente `tests/visual/woodwork-test.mjs` (interroga il picker VERO in pagina su 60 seed: con «traversa» non deve mai uscire la parola palo e viceversa, e la famiglia visiva deve restare una sola).
+const GAME_VERSION="7.218.0"; // [7.218.0 revisione PO «non si capisce assolutamente che e un dribbling»] LO STACCO DI SCENA VALE ANCHE PER IL PALLONE. Inseguendo il difetto del dribbling ho trovato una causa che riguarda OGNI highlight: dal 7.194.0, all apertura di una scena i 22 giocatori SNAPPANO in posizione (e uno stacco di regia, non una corsa) — il pallone no. Restava dove l aveva lasciato la scena precedente e ci arrivava SCIVOLANDO. Misurato su un dribbling forzato: la scena si apriva col pallone a CENTROCAMPO e l eroe a 26 unita di distanza, e per tutta l azione la palla viaggiava verso di lui senza mai raggiungerlo. Ecco perche nessuna giocata tecnica era leggibile: non era il dribbling a essere reso male, e che il pallone non e mai stato ai piedi di chi lo esegue. Ora lo stacco porta anche la palla dove l azione comincia, alla quota giusta (a terra o per aria, 7.214). Misura: scarto medio fra pallone e punto dell azione all apertura della scena 1.56u → 0.15u su 28 situazioni campionate. In piu, sul DRIBBLING in particolare: la spinta era un lancio di 8u in avanti e fino a 5 di lato mentre l eroe avanzava di 4 e si fermava a meta gesto — ora e un TOCCO corto e raso (poco piu di un passo), l eroe corre per tutta la durata del gesto (avanzamento 4→10) e su un dribbling RIUSCITO il pallone resta ai piedi in conduzione invece di fermarsi nell erba (se lo perde, resta all avversario). Probe permanente `tests/visual/ball-scene-snap-test.mjs` (verificata in negativo: disattivando lo snap la media risale a 1.56u e fallisce).
 // [6.18.0-note] // [6.18.0] AVATAR = libreria DiceBear (direttiva PO): CH38 3D via dai menu (resta solo nel live match). EROE/giocatori = stile AVATAAARS con FEDELTA al modello CH38 (forza carnagione+capelli+calvizie dalla stessa fonte AVATARS[avatarId] usata dal CH38 a r.7127 -> avatar dei menu ≈ giocatore in campo). NPC/staff (agente, mister via NpcFaceCoach) = stile MICAH seedato dal nome. Bundle locale offline assets/dicebear-avatars.min.js (esbuild IIFE avataaars+micah, ~163KB) caricato da script locale -> no CDN, funziona in gate/offline/produzione. AvatarSVG DiceBear-backed (API invariata, cache seed). Sorgente rigenerabile in tools/avatar-build/. Gate-cieco su CareerApp ma DiceBear carica anche in gate.
 const SAVE_VERSION=9;// v9 [7.6.0 FASE 2]: clubEvo (evoluzione pluriennale del club: fanbase/stadiumTier/budget/seasonsTop-Low) — migration retro-compatibile. v8 [5.81.0 BIL-3b]: bankBalance (stipendio accumulato, €) + perkTrainer/perkNutrition (staff personale) — migration retro-compatibile. v7: player.foot
 // 5.67.0 — TABELLONE realistico del torneo per NAZIONALI (Europeo/Mondiale): dopo il girone la fase a
@@ -10132,6 +10132,20 @@ function ThreeMatchView(props){
       const slow=isResult?(0.28+0.72*Math.min(resultT/1.6,1)):1;
       const aDt=dt*slow,ak=Math.min(1,aDt*6.5);
       // palla per prima, così i giocatori fermi si orientano verso di essa
+      /* [7.218.0 revisione PO «non si capisce assolutamente che e un dribbling»] LO STACCO DI SCENA VALE ANCHE
+         PER IL PALLONE. Dal 7.194.0 all'avvio di un highlight i 22 giocatori SNAPPANO in posizione (uno stacco di
+         regia, non una corsa); il pallone no — restava dov'era e ci arrivava scivolando. Misurato su un dribbling
+         forzato: la scena si apriva col pallone a CENTROCAMPO e l'eroe a 26 unita di distanza, e per tutta l'azione
+         la palla viaggiava verso di lui senza mai raggiungerlo. Cosi nessuna giocata tecnica e leggibile: non e il
+         dribbling a essere fatto male, e che il pallone non e mai stato ai piedi di chi dribbla. Ora lo stacco
+         porta anche la palla dove l'azione comincia, alla quota giusta (a terra o per aria). */
+      /* memo PROPRIO del blocco palla: il flag armato dal blocco giocatori arriverebbe un frame dopo, e a quel
+         punto l'arco della conclusione puo essere gia partito (lo snap verrebbe saltato). Qui la chiave di scena
+         si legge PRIMA di qualunque lancio d'arco, che avviene piu avanti nel frame. */
+      if(P.hlSitKey!=null&&P.hlSitKey>=0&&sr.current._lastBallKey!==P.hlSitKey){sr.current._lastBallKey=P.hlSitKey;sr.current._ballSnap=true;}
+      if(sr.current._ballSnap&&isHL&&!ballArcActive&&hlPostArcT<0){sr.current._ballSnap=false;
+        const _sy=aerialContactY(P,isHL,isResult);
+        ball.position.x=G2X(P.ballX==null?50:P.ballX);ball.position.z=G2Z(P.ballY==null?50:P.ballY);ball.position.y=(_sy!=null?_sy:0.65);}
       const obx=ball.position.x,oby=ball.position.y,obz=ball.position.z;
       // ATE-2: durante arco BG usa destinazione 3D esatta + velocità sync con durata arco
       // 3DV-10: skip lerp x/z durante post-arco (deflect/cross_goal/in_net gestiscono x/z propri)
@@ -10370,6 +10384,16 @@ function ThreeMatchView(props){
          dell'highlight, il pallone STA IN ARIA alla quota a cui verrà colpito — diversa per gesto (testa alla
          fronte, volée/rovesciata al collo del piede alto) — con un respiro appena percettibile che lo fa leggere
          sospeso in volo e non incollato a mezz'aria. Il post-arco e l'arco d'esito restano padroni della quota. */
+      /* [7.218.0 revisione PO «non si capisce assolutamente che e un dribbling»] IL PALLONE RESTA AI PIEDI.
+         Finita la spinta, la palla restava ferma dove era arrivata mentre l'eroe le correva accanto: a schermo
+         un pallone solo nell'erba, con l'uomo di fianco. Un dribbling riuscito e CONDUZIONE — il pallone
+         accompagna chi lo porta (stesso principio del beat `carry` del build-up, 5.43.5). Solo sul dribbling
+         RIUSCITO: se l'eroe lo perde, la palla deve restare all'avversario. */
+      else if(isResult&&P.hlType==="dribble"&&P.hlSuccess===true&&!P.hlDef&&hero){
+        const _fx=Math.sin(hero.rotation.y),_fz=Math.cos(hero.rotation.y);
+        const _cx=hero.position.x+_fx*1.35,_cz=hero.position.z+_fz*1.35,_ck=Math.min(aDt*7,1);
+        ball.position.x+=(_cx-ball.position.x)*_ck;ball.position.z+=(_cz-ball.position.z)*_ck;
+        ball.position.y+=(0.42-ball.position.y)*Math.min(aDt*6,1);}
       else{const _aY=aerialContactY(P,isHL,isResult);
         if(_aY!=null){_aerT+=dt;const _fl=_aY+Math.sin(_aerT*2.1)*0.09;if(ball.position.y<_aY-0.8)ball.position.y=_fl;/* la scena AEREA si apre col pallone gia per aria: farlo salire dall'erba sarebbe la stessa bugia al rallentatore */else ball.position.y+=(_fl-ball.position.y)*Math.min(aDt*4.5,1);}/* accumulatore proprio: con dt=0 (freeze del gate) il respiro si ferma → screenshot deterministici */
         else ball.position.y+=(0.65-ball.position.y)*Math.min(aDt*6,1);}// y rest 0.65
@@ -10576,7 +10600,11 @@ function ThreeMatchView(props){
             else{ballArcH=1.2;ballArcDur=0.40;ballArcTgtX=G2X(P.playerX||50)+(P.hlSuccess===true?12:-8);ballArcTgtZ=G2Z(P.playerY||50)+_rz*14;}}// contrasto offensivo normale → palla avanti/indietro
           else if(t==="dribble"){ballArcT=0;ballArcActive=true;
             if(P.hlSuccess===true&&P.hlReward==="goal"){ballArcH=1.3;ballArcDur=0.52;ballArcTgtX=AWAY_GOAL_X-3+Math.random()*3;ballArcTgtZ=_rz*6;}// dribbling-gol → la palla punta la porta
-            else{ballArcH=0.7;ballArcDur=0.32;ballArcTgtX=G2X(P.playerX||50)+(P.hlSuccess===true?8:-5);ballArcTgtZ=G2Z(P.playerY||50)+_rz*10;}}// 3DV-14: dribbling → palla laterale
+            else{/* [7.218.0 revisione PO «non si capisce assolutamente che e un dribbling»] LA SPINTA E CORTA.
+                 Il pallone veniva scagliato 8u avanti e fino a 5u di lato mentre l'eroe restava indietro: a schermo
+                 si vedeva una palla che parte da sola verso l'erba vuota, non un uomo che salta l'avversario.
+                 Ora e un tocco: poco piu di un passo avanti, appena di lato, raso terra. */
+              ballArcH=0.28;ballArcDur=0.34;ballArcTgtX=G2X(P.playerX||50)+(P.hlSuccess===true?4.2:-4);ballArcTgtZ=G2Z(P.playerY||50)+_rz*4.5;}}
           else if(!t||t==="build"){ballArcT=0;ballArcActive=true;
             if(P.hlSuccess===true&&P.hlReward==="goal"){ballArcH=1.5;ballArcDur=0.56;ballArcTgtX=AWAY_GOAL_X-3+Math.random()*3;ballArcTgtZ=_rz*6;}// costruzione-gol → la palla punta la porta
             else{ballArcH=0.9;ballArcDur=0.38;ballArcTgtX=G2X(P.playerX||50)+(P.hlSuccess===true?6:-4);ballArcTgtZ=G2Z(P.playerY||50)+_rz*12;}}// 3DV-14: build-up → corto ma visibile
@@ -10833,8 +10861,9 @@ function ThreeMatchView(props){
             _hxg=clamp(_hxg+((P.ballX||_hxg)-_hxg)*_ap*0.9,2,98);
             _hyg=clamp(_hyg+((P.ballY||_hyg)-_hyg)*_ap*0.9,2,98);
           } else {
-            const _amp=(actType==="shot"||actType==="header")?5:actType==="tackle"?6:actType==="dribble"?4:actType==="cross"?3:2.5;
-            _hxg=clamp(_hxg+_ap*_amp,2,96);// home attacca verso x crescente
+            const _amp=(actType==="shot"||actType==="header")?5:actType==="tackle"?6:actType==="dribble"?10:actType==="cross"?3:2.5;/* [7.218.0] sul DRIBBLING l'avanzamento era 4 e finiva a meta gesto: l'eroe restava piantato mentre la palla se ne andava. Un dribbling e superare l'uomo, quindi ora corre davvero oltre */
+            const _apD=(actType==="dribble")?Math.min(actT/_T2,1):_ap;/* sul dribbling la corsa dura QUANTO il gesto, non meta */
+            _hxg=clamp(_hxg+_apD*_amp,2,96);// home attacca verso x crescente
             _hyg=clamp(_hyg+((P.ballY||_hyg)-_hyg)*_ap*0.4,2,98);// converge leggermente sulla y della palla
           }
         }
@@ -11185,7 +11214,7 @@ function ThreeMatchView(props){
         /* uno snap di scena è uno STACCO, quindi anche la CAMERA taglia invece di inseguire: senza questo i 22
            erano già in posizione mentre l'inquadratura arrivava un quarto di secondo dopo, e il protagonista
            restava fuori dai bordi per tutta la fase di lettura (37 situation su 191 nel gate). */
-        if(_hlSnap){sr.current._sceneCut=true;
+        if(_hlSnap){sr.current._sceneCut=true;sr.current._ballSnap=true;/* [7.218.0] lo stacco di scena vale anche per IL PALLONE — vedi il blocco palla */
           /* [7.212.0] uno stacco di scena azzera anche le REAZIONI in corso: un tuffo/riflesso del portiere
              lasciato a metà continuava a muovere il mesh nella scena successiva (e la posa restava storta). */
           if(oppActType&&oppMesh){try{oppMesh.position.y=0;oppMesh.rotation.z=0;if(oppMesh._aL){oppMesh._aL.rotation.x=0;oppMesh._aL.rotation.z=0;}if(oppMesh._aR){oppMesh._aR.rotation.x=0;oppMesh._aR.rotation.z=0;}if(oppMesh._lR)oppMesh._lR.rotation.x=0;if(oppMesh._lL)oppMesh._lL.rotation.x=0;if(oppMesh._diveYaw!=null)oppMesh.rotation.y=oppMesh._diveYaw;oppMesh._diveToZ=null;}catch(_e){}}

@@ -37,7 +37,8 @@
     "shot-apex": "node shot-apex-test.mjs",
     "aerial-contact": "node aerial-contact-test.mjs",
     "freekick-delivery": "node freekick-delivery-test.mjs",
-    "woodwork": "node woodwork-test.mjs"
+    "woodwork": "node woodwork-test.mjs",
+    "ball-scene-snap": "node ball-scene-snap-test.mjs"
   },
   "dependencies": {
     "playwright": "^1.48.0",
