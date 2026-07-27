@@ -3923,7 +3923,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="7.214.0"; // [7.214.0 revisione PO «la rovesciata deve partire con il pallone ancora in aria e non con palla a terra» · «il colpo di testa non e sincronizzato con il pallone in aria, scende a terra» · «la volee non parte con la palla in aria»] LE AZIONI AEREE SI GIOCAVANO SU UNA PALLA A TERRA. Il motore SA da sempre quali situazioni hanno il pallone per aria (`hlBallState` = l invariante CINE che autorizza testa/rovesciata/volee: 46 situations su 191), ma quel dato non arrivava al render: fuori dall arco la mesh palla tornava SEMPRE a 0.65, cioe sull erba. Quindi si sceglieva una rovesciata guardando un pallone fermo nell erba, e l incornata colpiva il prato. Ora lo stato-palla viaggia come prop (`hlBall`) e il render lo rispetta: (1) nelle fasi di lettura dell highlight il pallone STA IN ARIA alla quota del gesto (helper puro `aerialContactY`: fronte 2.15 · tuffo di testa 1.45 · volee/rovesciata 1.35 · traversone di prima 1.85), con un respiro appena percettibile che lo fa leggere sospeso in volo e non incollato a mezz aria — e con uno SNAP all apertura della scena, perche farlo salire dall erba sarebbe la stessa bugia al rallentatore; (2) l ARCO parte dalla quota di contatto invece di riportare il pallone a terra un istante prima del colpo (nuovo `ballArcY0`, catturato durante il wind-up: su palla a terra vale 0.65 e il termine si annulla, quindi le traiettorie a terra sono bit-identiche a prima). Controprova inclusa nel guardiano: le 136 situazioni a palla al piede devono restare a terra — il sollevamento non e indiscriminato. Probe permanente `tests/visual/aerial-contact-test.mjs` (14 aeree + 8 a terra campionate: prima 12 aeree su 14 col pallone nell erba, ora 0). Gate 14/14 (00001505 invariato: la quota della palla non e nella firma golden).
+const GAME_VERSION="7.215.0"; // [7.215.0 revisione PO «il portiere non effettua bene la parata, gesti innaturali» · «rendere piu nitida la parata / traversa / palo»] LA PARATA NON ERA NITIDA PERCHE NON C ERA NIENTE DA PARARE IN ALTO. Cercando la causa nell animazione ho trovato qualcosa di piu grosso: la parabola finiva SEMPRE a 0.65, cioe OGNI conclusione — tiro a giro, punizione, rigore, colpo di testa — arrivava sulla linea di porta RASOTERRA. L angolo alto non esisteva proprio, il portiere non aveva nulla da parare sopra la vita e il legno era sempre e solo un palo laterale. Tre correzioni: (1) l arco ha ora un bersaglio anche in ALTEZZA (`ballArcTgtY`), derivato dal gesto e dalla qualita decisa dal motore — il tiro a giro ben calciato arriva a 2.03 m, il 1v1 resta a 0.40 (angolo rasoterra), il pallonetto scende sotto la traversa, l incornata riuscita si SCHIACCIA a terra mentre quella sbagliata sale, la punizione scavalca la barriera e rientra sotto la traversa, e soprattutto il CROSS ALTO consegna a 1.8-2.1 m = all altezza della testa, che e il presupposto perche lo stacco sia sincronizzato (il cutback e il cross teso restano raso, come devono); default 0.65 ⇒ le traiettorie che non lo impostano sono bit-identiche. (2) IL TUFFO SEGUE LA CONCLUSIONE invece di essere sempre uguale a se stesso: durata agganciata a quella del tiro (prima l estensione era completa al 42% del tuffo, molto prima dell arrivo — il portiere restava disteso ad aspettare e il contatto non si vedeva) e stacco/assetto proporzionati alla quota della palla (raso = corpo disteso a terra · alto = volo con le braccia su; prima era un salto fisso di 1.15 che sul tiro raso lo faceva volare SOPRA il pallone). (3) LA TRAVERSA ESISTE: una conclusione indirizzata alta che prende il legno sale a sbattere sotto la traversa mantenendo la propria direzione e da li RICADE, invece di convergere comunque sul palo laterale. Guardiano `tests/visual/shot-apex-test.mjs` esteso: ora ESEGUE il blocco d arco reale (come la suite analitica) e verifica apici, quota d arrivo dentro lo specchio, esistenza dell angolo alto e cross alti all altezza della testa. Gate 14/14 (00001505 invariato) · gk-reflex ✅. NOTA APERTA: il testo dell esito pesca ancora a caso tra «Palo!» e «Traversa!» — ora che in 3D la traversa esiste davvero, la scelta va unificata alla sorgente (prossima release). IN PIU: il frame registrato dal recorder porta ora anche il ramo di POST-ARCO (`pa`) — senza, un difetto di traiettoria dopo la conclusione non e attribuibile a nessun ramo; e servito subito a smontare un falso positivo (una sonda diceva che il pallone «esce dalla rete», era il campionamento a ~6 fps dell headless che tagliava il volo a meta).
 // [6.18.0-note] // [6.18.0] AVATAR = libreria DiceBear (direttiva PO): CH38 3D via dai menu (resta solo nel live match). EROE/giocatori = stile AVATAAARS con FEDELTA al modello CH38 (forza carnagione+capelli+calvizie dalla stessa fonte AVATARS[avatarId] usata dal CH38 a r.7127 -> avatar dei menu ≈ giocatore in campo). NPC/staff (agente, mister via NpcFaceCoach) = stile MICAH seedato dal nome. Bundle locale offline assets/dicebear-avatars.min.js (esbuild IIFE avataaars+micah, ~163KB) caricato da script locale -> no CDN, funziona in gate/offline/produzione. AvatarSVG DiceBear-backed (API invariata, cache seed). Sorgente rigenerabile in tools/avatar-build/. Gate-cieco su CareerApp ma DiceBear carica anche in gate.
 const SAVE_VERSION=9;// v9 [7.6.0 FASE 2]: clubEvo (evoluzione pluriennale del club: fanbase/stadiumTier/budget/seasonsTop-Low) — migration retro-compatibile. v8 [5.81.0 BIL-3b]: bankBalance (stipendio accumulato, €) + perkTrainer/perkNutrition (staff personale) — migration retro-compatibile. v7: player.foot
 // 5.67.0 — TABELLONE realistico del torneo per NAZIONALI (Europeo/Mondiale): dopo il girone la fase a
@@ -9887,7 +9887,7 @@ function ThreeMatchView(props){
     // Sprint 3D-BALL: arco parabolico della palla (shot/header/cross/freekick/penalty)
     let ballArcT=0,ballArcDur=0,ballArcH=0,ballArcActive=false;
     // ATE-1/2: arco BG_MATCH — tipo azione, destinazione 3D esatta, flag bg vs HL
-    let prevBgT=0,ballArcIsBG=false,ballArcTgtX=0,ballArcTgtZ=0;
+    let prevBgT=0,ballArcIsBG=false,ballArcTgtX=0,ballArcTgtZ=0,ballArcTgtY=0.65;/* [7.215.0] ALTEZZA D'ARRIVO. Prima la parabola finiva SEMPRE a 0.65: qualunque conclusione, dal tiro a giro alla punizione, arrivava sulla linea di porta RASOTERRA. Non esisteva l'angolo alto, e il portiere non aveva nulla in alto da parare — una delle ragioni per cui «la parata non e nitida». Ora l'arco ha un bersaglio anche in altezza; il default 0.65 mantiene identiche le traiettorie che non lo impostano. */
     let ballArcY0=0.65,_aerT=0;// [7.214.0] quota da cui PARTE l'arco: catturata all'impatto, così una conclusione aerea non teletrasporta il pallone a terra prima di volare
     const BALL_ARC_BY_TYPE={shot:{h:2.8,dur:0.52},cross:{h:3.2,dur:0.68},save:{h:1.8,dur:0.55},tackle:{h:0.4,dur:0.35},pass:{h:0.9,dur:0.48}};
     // Sprint 3D-11A: reazione folla al gol — burst luce calda + camera shake
@@ -10095,7 +10095,7 @@ function ThreeMatchView(props){
         const _rb=window.__CPM_REC_BUF||(window.__CPM_REC_BUF=[]);
         const _p0=propsRef.current||{};
         _rb.push({t:Math.round(now),ph:_p0.matchPhase||null,ck:_p0.matchClock==null?null:_p0.matchClock,
-          b:[+ball.position.x.toFixed(2),+ball.position.z.toFixed(2),+ball.position.y.toFixed(2)],
+          b:[+ball.position.x.toFixed(2),+ball.position.z.toFixed(2),+ball.position.y.toFixed(2)],pa:hlPostArcType||null,/* [7.215.0] fase del POST-ARCO nel frame registrato: senza questo, un difetto di traiettoria dopo la conclusione (la palla che rientra dopo essere entrata) non e attribuibile a nessun ramo */
           h:[+hero.position.x.toFixed(2),+hero.position.z.toFixed(2)],
           p:players.map(pp=>{const m=pp.mesh||pp;return [+m.position.x.toFixed(1),+m.position.z.toFixed(1)];})});
         if(_rb.length>2600)_rb.splice(0,_rb.length-2600);
@@ -10159,7 +10159,7 @@ function ThreeMatchView(props){
         if(_preT74<=0)ballArcY0=ball.position.y;
         ballArcT+=aDt;
         if(_preT74<0&&ballArcT>=0)contactFlashT=0;// [6.74.0 3D-8] flash all'IMPATTO reale (fine wind-up), non al frame 0
-        const u=Math.min(Math.max(ballArcT,0)/ballArcDur,1);ball.position.y=0.65+Math.sin(u*Math.PI)*ballArcH+(ballArcY0-0.65)*(1-u);
+        const u=Math.min(Math.max(ballArcT,0)/ballArcDur,1);ball.position.y=0.65+Math.sin(u*Math.PI)*ballArcH+(ballArcY0-0.65)*(1-u)+(ballArcTgtY-0.65)*u;/* [7.215.0] la corda va dalla quota di CONTATTO a quella d'ARRIVO; il seno e il rigonfiamento sopra la corda */
         // [6.74.0 3D-5] il compagno designato ATTACCA il cross correndo sul punto di caduta (prima restava fermo)
         if(isResult&&!P.hlDef&&P.hlType==="cross"&&crossRcvMesh){crossRcvMesh.position.x+=((ballArcTgtX-1.8)-crossRcvMesh.position.x)*Math.min(aDt*3.4,1);crossRcvMesh.position.z+=(ballArcTgtZ-crossRcvMesh.position.z)*Math.min(aDt*3.4,1);}
         // [6.74.0 3D-7] il ricevente dell'IMBUCATA corre verso il punto dello scatto GIÀ DURANTE il volo della palla
@@ -10261,11 +10261,19 @@ function ThreeMatchView(props){
           if(!hlInNetFlashed&&ball.position.x>GOAL_LINE_X-0.05){hlInNetFlashed=true;contactFlashT=0;shakePow=0.15;}
           if(hlPostArcT>1.9){hlPostArcT=-1;hlPostArcType=null;hlInNetFlashed=false;}}
         else if(hlPostArcType==="hit_post"){// CINE-3: palla va verso il palo, vibrazione, rimbalzo
+          /* [7.215.0 revisione PO «rendere più nitida la parata / traversa / palo»] LA TRAVERSA ESISTE. Il legno
+             era SEMPRE un palo laterale: una conclusione diretta all'incrocio convergeva comunque a ±3.66 e
+             scendeva, e la traversa non si vedeva mai. Ora, se il tiro era indirizzato ALTO, il pallone sale a
+             sbattere sotto la traversa mantenendo la propria direzione, e da lì ricade. */
+          const _bar215=(ballArcTgtY!=null&&ballArcTgtY>=1.55);
           ball.position.x+=(GOAL_LINE_X-ball.position.x)*Math.min(aDt*6.5,1);/* [6.74.0 3D-1] il contatto avviene SUL palo reale (48.6), non su un muro invisibile a 44-46 */
-          {const _pz74=(ballArcTgtZ>=0?3.66:-3.66);ball.position.z+=(_pz74-ball.position.z)*Math.min(aDt*4.0,1);}/* la palla converge sul PALO (±3.66), non verso il centro-porta */
-          ball.position.y=0.65+Math.max(0,Math.sin(hlPostArcT*5.5)*1.4*Math.exp(-hlPostArcT*2.5));
+          if(_bar215){const _cz=clamp(ballArcTgtZ,-3.2,3.2);ball.position.z+=(_cz-ball.position.z)*Math.min(aDt*4.0,1);}
+          else{const _pz74=(ballArcTgtZ>=0?3.66:-3.66);ball.position.z+=(_pz74-ball.position.z)*Math.min(aDt*4.0,1);}/* la palla converge sul PALO (±3.66), non verso il centro-porta */
+          if(_bar215)ball.position.y+=(2.44-ball.position.y)*Math.min(aDt*6.5,1);// sale a sbattere SOTTO LA TRAVERSA
+          else ball.position.y=0.65+Math.max(0,Math.sin(hlPostArcT*5.5)*1.4*Math.exp(-hlPostArcT*2.5));
           if(!hlInNetFlashed&&ball.position.x>GOAL_LINE_X-0.8){
             hlInNetFlashed=true;contactFlashT=0;shakePow=0.38;// vibrazione palo più forte
+            if(_bar215){hlPostVY=-(2.2+Math.random()*1.8);hlPostVZ*=0.35;}/* [7.215.0] dalla TRAVERSA il pallone ricade, non schizza verso l'alto come dal palo */
             hlPostArcType="post_rebound";hlPostArcT=0;}
           else if(hlPostArcT>0.9){hlPostArcType="post_rebound";hlPostArcT=0;}}// fallback
         else if(hlPostArcType==="post_rebound"){// CINE-3: palla rimbalza via dal palo
@@ -10377,12 +10385,12 @@ function ThreeMatchView(props){
             actType="build";actT=0;// nessuno swing di tiro: l'eroe viene contrastato
             let _nd=99,_nm=null;sr.current.players.forEach((pp,ii)=>{const src=(P.allPlayers||[])[ii];if(src&&src.team==='away'&&!src.gk){const d=Math.hypot(pp.mesh.position.x-hero.position.x,pp.mesh.position.z-hero.position.z);if(d<_nd){_nd=d;_nm=pp.mesh;}}});
             if(_nm){oppActType="opp_tackle";oppActT=0;oppMesh=_nm;oppMesh._divePz=_nm.position.z;oppDiveDir=_nm.position.z>=0?1:-1;oppMesh._slideToX=hero.position.x+0.5;oppMesh._slideToZ=hero.position.z;
-              ballArcT=0;ballArcActive=true;ballArcIsBG=true;ballArcH=0.5;ballArcDur=0.42;ballArcTgtX=_nm.position.x;ballArcTgtZ=_nm.position.z;contactFlashT=0;}
+              ballArcT=0;ballArcActive=true;ballArcIsBG=true;ballArcTgtY=0.65;ballArcH=0.5;ballArcDur=0.42;ballArcTgtX=_nm.position.x;ballArcTgtZ=_nm.position.z;contactFlashT=0;}
             else{ballArcActive=false;}
             return;// salta l'arco di tiro
           }
           // 3DV-11: archi HL con destinazione esplicita verso porta avversaria (+x), non posizione eroe
-          const _rz=(Math.random()-.5),_side=(P.playerY||50)<50?-1:1;// _side: lato attaccante — usato da cross, shot_curled, header_far_post
+          const _rz=(Math.random()-.5),_side=(P.playerY||50)<50?-1:1;ballArcTgtY=0.65;/* [7.215.0] default rasoterra: ogni famiglia che ha un bersaglio in altezza lo sovrascrive qui sotto */// _side: lato attaccante — usato da cross, shot_curled, header_far_post
           if(t==="penalty"){// Panenka/cucchiaio → arco molto alto; rigore normale → arco standard
             if(P.hlVariant==="penalty_panenka"){ballArcH=3.6;ballArcDur=1.10;}else{ballArcH=1.15;ballArcDur=0.62;}/* [7.213.0 revisione PO «sembra sempre un pallonetto»] apici in METRI: la traversa sta a 2.44 — un rigore che picchiava a 4.2 passava sopra la porta a metà volo. Il cucchiaio resta alto, ma 9m era una parabola da rinvio */
             ballArcT=0;ballArcActive=true;ballArcTgtX=AWAY_GOAL_X-3+Math.random()*3;ballArcTgtZ=_rz*7;
@@ -10391,7 +10399,11 @@ function ThreeMatchView(props){
             {const _q=P.hlQuality!=null?P.hlQuality:0.6;
              ballArcTgtZ*=(0.55+_q*0.45);// precisione: q bassa → verso il centro (più parabile)
              ballArcDur*=clamp(1.14-_q*0.26,0.82,1.16);// q alta → conclusione più veloce
-             if(P.hlVariant!=="penalty_panenka")ballArcH*=clamp(1.10-_q*0.20,0.86,1.12);}}
+             if(P.hlVariant!=="penalty_panenka")ballArcH*=clamp(1.10-_q*0.20,0.86,1.12);
+             /* [7.215.0] ALTEZZA D'ARRIVO del rigore: q alta = angolo alto, q bassa = centrale a mezz'altezza —
+                prima ogni rigore moriva sulla linea rasoterra e il portiere non aveva nulla da parare in alto.
+                Il cucchiaio scende morbido appena sotto la traversa. Sempre dentro lo specchio (max 2.05 < 2.44). */
+             ballArcTgtY=(P.hlVariant==="penalty_panenka")?1.55:clamp(0.42+_q*1.55,0.38,2.05);}}
           else if(t==="shot"){ballArcT=0;ballArcActive=true;
             // CINE-2: variant shot — traiettorie distinte per ogni tipo di conclusione
             const _vs=P.hlVariant;
@@ -10408,6 +10420,15 @@ function ThreeMatchView(props){
              ballArcTgtZ*=(0.6+_q*0.4);// precisione (angolo)
              ballArcDur*=clamp(1.15-_q*0.32,0.78,1.18);// F4: q alta → tiro più veloce
              if(_vs!=="shot_chip"&&_vs!=="shot_volley")ballArcH*=clamp(1.12-_q*0.26,0.82,1.14);// F4: q alta → arco più teso (non per gesti alti)
+             /* [7.215.0] ALTEZZA D'ARRIVO: prima OGNI tiro finiva sulla linea rasoterra (0.65) — l'angolo alto non
+                esisteva e il portiere non aveva niente da parare in alto. Ora l'altezza segue il GESTO e la qualità:
+                il pallonetto scende sotto la traversa, il tiro in 1v1 resta basso (angolo rasoterra), il tiro a giro
+                sale all'incrocio quando è ben calciato. Sempre dentro lo specchio (max 2.15 < traversa 2.44). */
+             ballArcTgtY=(_vs==="shot_chip")?clamp(1.45+_q*0.55,1.35,2.05)
+               :(_vs==="shot_one_on_one")?clamp(0.32+_q*0.55,0.30,0.90)
+               :(_vs==="shot_curled")?clamp(0.75+_q*1.35,0.60,2.15)
+               :(_vs==="shot_volley")?clamp(0.55+_q*1.10,0.45,1.70)
+               :clamp(0.45+_q*1.30,0.38,1.85);
             }}
           else if(t==="header"){ballArcT=0;ballArcActive=true;
             // CINE-2: variant header — tuffo rasoterra / primo palo / secondo palo
@@ -10421,7 +10442,11 @@ function ThreeMatchView(props){
             {const _q=P.hlQuality!=null?P.hlQuality:0.6;
              ballArcTgtZ*=(0.55+_q*0.45);// precisione: q bassa → incornata centrale
              ballArcDur*=clamp(1.12-_q*0.20,0.86,1.12);// q alta → colpo di testa più deciso
-             ballArcH*=clamp(1.15-_q*0.30,0.82,1.18);}}// q alta → schiacciata in basso; q bassa → alta/sballata
+             ballArcH*=clamp(1.15-_q*0.30,0.82,1.18);// q alta → schiacciata in basso; q bassa → alta/sballata
+             /* [7.215.0] ALTEZZA D'ARRIVO della testa: un'incornata ben fatta si SCHIACCIA a terra (il colpo di
+                testa che il portiere para meno), una sbagliata sale a mezz'altezza. Il tuffo di testa arriva
+                sempre raso. */
+             ballArcTgtY=(_vh==="header_diving")?clamp(0.30+(1-_q)*0.35,0.28,0.70):clamp(1.35-_q*0.95,0.32,1.55);}}
           else if(t==="cross"){ballArcT=0;ballArcActive=true;
             // CINE-1: variant cross — primo palo (stesso lato fascia), secondo palo (lato opposto), cutback (dal fondo)
             const _v=P.hlVariant;// _side definito sopra (globale all'arc block)
@@ -10439,8 +10464,12 @@ function ThreeMatchView(props){
              ballArcTgtZ*=(0.62+_q*0.38);// precisione: q bassa → cross meno angolato (cade verso il centro)
              ballArcDur*=clamp(1.16-_q*0.30,0.80,1.18);// q alta → cross più teso/veloce
              if(_v!=="cross_cutback"&&_v!=="cross_low_driven")ballArcH*=clamp(1.14-_q*0.24,0.84,1.16);// q alta → traiettoria più tesa (non per i cross bassi)
+             /* [7.215.0] ALTEZZA D'ARRIVO del cross — è il presupposto perché lo stacco sia sincronizzato: un
+                traversone alto deve CONSEGNARE il pallone all'altezza della testa (~2m), non depositarlo sull'erba
+                davanti a chi salta. Il cutback e il cross teso restano rasoterra, come devono. */
+             ballArcTgtY=(_v==="cross_cutback")?0.55:(_v==="cross_low_driven")?clamp(0.55+(1-_q)*0.35,0.50,0.95):clamp(1.75+_q*0.35,1.60,2.15);
             }}
-          else if(t==="freekick"){ballArcH=2.4;ballArcDur=0.78;ballArcT=0;ballArcActive=true;ballArcTgtX=AWAY_GOAL_X-3+Math.random()*4;ballArcTgtZ=_rz*7;/* F6 (traiettoria della PUNIZIONE = conseguenza della DECISIONE): q (tiro/tecnica, seedata) plasma pace+precisione+altezza */{const _q=P.hlQuality!=null?P.hlQuality:0.6;ballArcTgtZ*=(0.6+_q*0.4);ballArcDur*=clamp(1.15-_q*0.30,0.80,1.16);ballArcH*=clamp(1.12-_q*0.22,0.85,1.14);}}
+          else if(t==="freekick"){ballArcH=2.4;ballArcDur=0.78;ballArcT=0;ballArcActive=true;ballArcTgtX=AWAY_GOAL_X-3+Math.random()*4;ballArcTgtZ=_rz*7;/* F6 (traiettoria della PUNIZIONE = conseguenza della DECISIONE): q (tiro/tecnica, seedata) plasma pace+precisione+altezza */{const _q=P.hlQuality!=null?P.hlQuality:0.6;ballArcTgtZ*=(0.6+_q*0.4);ballArcDur*=clamp(1.15-_q*0.30,0.80,1.16);ballArcH*=clamp(1.12-_q*0.22,0.85,1.14);ballArcTgtY=clamp(0.85+_q*1.25,0.70,2.10);/* [7.215.0] la punizione scavalca la barriera e SCENDE sotto la traversa: q alta = sette, q bassa = mezz'altezza */}}
           /* [7.197.0 S4 · direttiva PO «esiti onesti»] IL TIRO MURATO SI FERMA SUL MURO. Con l'overlay «Murato
              dalla difesa» e la cronaca «la difesa mura la conclusione», il pallone attraversava indisturbato tutta
              la difesa, arrivava sullo specchio e faceva pure tuffare il portiere: quello che il motore aveva deciso
@@ -10592,6 +10621,7 @@ function ThreeMatchView(props){
             const _saveReach=_isSaveDv?9:6;// M1 fix: legge il PROP (hlOutcomeVariant qui è ancora null) → ora la portata estesa su parata si attiva davvero
             const _dvTgt74=_isSaveDv?ballArcTgtZ:(oppMesh.position.z+(ballArcTgtZ-oppMesh.position.z)*0.55);/* [6.74.0 3D-3] sul GOL il tuffo resta CORTO (battuto, ~55% della distanza): prima il reach 6 copriva comunque tutti i target nello specchio → il GK si distendeva ESATTAMENTE sulla z d'ingresso e la palla gli passava ATTRAVERSO il corpo su ogni rigore/tiro segnato */
             oppMesh._diveToZ=clamp(_dvTgt74,oppMesh.position.z-_saveReach,oppMesh.position.z+_saveReach);
+            oppMesh._diveBallY=ballArcTgtY;oppMesh._diveDur=clamp(ballArcDur*0.92,0.48,1.20);/* [7.215.0] quota e tempo della conclusione → il tuffo li segue invece di essere sempre uguale a se stesso */
           } else if(t==="tackle"||t==="dribble"){
             let nearD=99,nearM=null;
             sr.current.players.forEach((pp,ii)=>{const src=(P.allPlayers||[])[ii];if(src&&src.team==='away'&&!src.gk){const d=Math.hypot(pp.mesh.position.x-hero.position.x,pp.mesh.position.z-hero.position.z);if(d<nearD){nearD=d;nearM=pp.mesh;}}});
@@ -10667,7 +10697,7 @@ function ThreeMatchView(props){
       {const _ba=P.bgAction;
        if(_ba&&_ba.t&&_ba.t!==prevBgT&&_curPh==="playing"){prevBgT=_ba.t;
          const _arc=BALL_ARC_BY_TYPE[_ba.type];
-         if(_arc&&!ballArcActive){ballArcH=_arc.h;ballArcDur=_arc.dur;ballArcT=0;ballArcActive=true;
+         if(_arc&&!ballArcActive){ballArcH=_arc.h;ballArcDur=_arc.dur;ballArcT=0;ballArcActive=true;ballArcTgtY=0.65;
            ballArcIsBG=true;ballArcTgtX=G2X(_ba.ballEnd.x);ballArcTgtZ=G2Z(_ba.ballEnd.y); // ATE-2
            contactFlashT=0;}}}
       // Sprint 3D-11C: pulse ambientale big match/derby
@@ -11155,15 +11185,21 @@ function ThreeMatchView(props){
         if(_curPh==="hl_choose"&&_chooseT>=0)_chooseT+=dt; // FREEZE #2: avanza il timer della fase di lettura
         // CIN-2: reazione avversario — gk_dive (portiere), opp_stumble/opp_spin (difensore); si applica DOPO animOne per sovrascriverlo
         if(oppActType&&oppMesh){
-          oppActT+=aDt;const _OT=oppActType==="gk_dive"?0.90:oppActType==="opp_tackle"?0.85:oppActType==="gk_block"?0.62:0.55,u=Math.min(oppActT/_OT,1),sw=Math.sin(u*Math.PI);/* [7.203.0] il riflesso è più RAPIDO del tuffo */
+          oppActT+=aDt;const _OT=oppActType==="gk_dive"?(oppMesh._diveDur||0.90):oppActType==="opp_tackle"?0.85:oppActType==="gk_block"?0.62:0.55,u=Math.min(oppActT/_OT,1),sw=Math.sin(u*Math.PI);/* [7.203.0] il riflesso è più RAPIDO del tuffo · [7.215.0] la durata del tuffo segue quella del tiro: il portiere arriva sulla palla, non prima */
           if(oppActType==="gk_dive"){// item 1 (5.49.0): tuffo CREDIBILE — estensione COMPLETA verso la palla, mani avanti, FACING FISSO, niente recoil/molla
             if(oppMesh._diveYaw!=null)oppMesh.rotation.y=oppMesh._diveYaw;
             const _dpz=(oppMesh._divePz||0),_dtz=(oppMesh._diveToZ!=null?oppMesh._diveToZ:_dpz+oppDiveDir*5);
-            const _e=Math.min(u/0.42,1),_ext=_e*_e*(3-2*_e);// smoothstep: estensione rapida fino al 42% poi RESTA disteso (niente ritorno a molla)
+            const _e=Math.min(u/0.72,1),_ext=_e*_e*(3-2*_e);/* smoothstep: l'estensione ACCOMPAGNA il volo della palla (prima era completa al 42% del tuffo, cioè molto prima dell'arrivo: il portiere restava disteso a terra ad aspettare, e il contatto non si vedeva) */
+            /* [7.215.0 revisione PO «il portiere non effettua bene la parata, gesti innaturali»] IL TUFFO HA
+               UN'ALTEZZA. Era un salto fisso (1.15) qualunque fosse la conclusione: sul tiro raso il portiere
+               volava sopra il pallone, su quello alto restava sotto. Ora lo stacco e l'assetto del corpo
+               seguono la quota d'arrivo del tiro: raso = tuffo disteso a terra, alto = volo con le braccia su. */
+            const _bh=(oppMesh._diveBallY!=null?oppMesh._diveBallY:0.65),_hiD=clamp((_bh-0.55)/1.45,0,1);
             oppMesh.position.z=_dpz+(_dtz-_dpz)*_ext;// raggiunge ESATTAMENTE la Z della palla (bersaglio della conclusione) e ci resta
-            oppMesh.position.y=Math.sin(_e*Math.PI)*1.15+_ext*0.12;// breve stacco aereo nello slancio, poi corpo (quasi) a terra disteso
-            oppMesh.rotation.z=oppDiveDir*_ext*1.7;// corpo ORIZZONTALE verso il lato del tuffo (estensione piena)
-            oppMesh._aL.rotation.x=-_ext*2.7;oppMesh._aR.rotation.x=-_ext*2.7;oppMesh._aL.rotation.z=-oppDiveDir*_ext*1.15;oppMesh._aR.rotation.z=-oppDiveDir*_ext*1.15;// braccia TESE + MANI verso la palla
+            oppMesh.position.y=Math.sin(_e*Math.PI)*(0.55+_hiD*1.25)+_ext*(0.10+_hiD*0.55);// stacco proporzionato alla quota della palla
+            oppMesh.rotation.z=oppDiveDir*_ext*(1.75-_hiD*0.45);// raso = corpo ORIZZONTALE · alto = più inclinato che disteso
+            {const _ax=-_ext*(2.7-_hiD*1.5);oppMesh._aL.rotation.x=_ax;oppMesh._aR.rotation.x=_ax;}// braccia TESE avanti sul raso, ALTE sul pallone alto
+            oppMesh._aL.rotation.z=-oppDiveDir*_ext*1.15;oppMesh._aR.rotation.z=-oppDiveDir*_ext*1.15;// mani verso la palla
             if(oppMesh._lR)oppMesh._lR.rotation.x=-_ext*0.7;if(oppMesh._lL)oppMesh._lL.rotation.x=-_ext*0.7;}// gambe DISTESE (estensione completa del corpo)
           else if(oppActType==="gk_block"){/* [7.203.0] RIFLESSO: il portiere si oppone col CORPO — resta in piedi
               (corpo appena inclinato verso la palla, niente rotazione orizzontale), scarica il peso sulle gambe
@@ -11192,7 +11228,7 @@ function ThreeMatchView(props){
             oppMesh._lR.rotation.x=-sw*2.1;oppMesh._lL.rotation.x=sw*0.9;
             oppMesh._aL.rotation.x=sw*1.1;oppMesh._aR.rotation.x=-sw*0.5;
             if(oppMesh._slideToX!=null){oppMesh.position.x+=(oppMesh._slideToX-oppMesh.position.x)*Math.min(aDt*3.2,1);oppMesh.position.z+=((oppMesh._slideToZ!=null?oppMesh._slideToZ:oppMesh.position.z)-oppMesh.position.z)*Math.min(aDt*3.2,1);}}/* 5.43.9: scivolata più morbida (lerp 5→3.2, durata 0.64→0.85) */
-          if(u>=1){oppActType=null;if(oppMesh){oppMesh.position.y=0;oppMesh.rotation.z=0;if(oppMesh._aL){oppMesh._aL.rotation.z=0;oppMesh._aR.rotation.z=0;oppMesh._aL.rotation.x=0;oppMesh._aR.rotation.x=0;}if(oppMesh._lR){oppMesh._lR.rotation.x=0;oppMesh._lL.rotation.x=0;}/* [7.203.0] le pose del riflesso sono ASSEGNAZIONI ASSOLUTE (non scalate da sw, che si azzera da solo): senza cleanup il portiere restava a braccia larghe */if(oppMesh._spinYaw!=null){oppMesh.rotation.y=oppMesh._spinYaw;oppMesh._spinYaw=null;}oppMesh._slideToX=null;oppMesh._slideToZ=null;oppMesh._diveToZ=null;oppMesh=null;}}
+          if(u>=1){oppActType=null;if(oppMesh){oppMesh.position.y=0;oppMesh.rotation.z=0;if(oppMesh._aL){oppMesh._aL.rotation.z=0;oppMesh._aR.rotation.z=0;oppMesh._aL.rotation.x=0;oppMesh._aR.rotation.x=0;}if(oppMesh._lR){oppMesh._lR.rotation.x=0;oppMesh._lL.rotation.x=0;}/* [7.203.0] le pose del riflesso sono ASSEGNAZIONI ASSOLUTE (non scalate da sw, che si azzera da solo): senza cleanup il portiere restava a braccia larghe */if(oppMesh._spinYaw!=null){oppMesh.rotation.y=oppMesh._spinYaw;oppMesh._spinYaw=null;}oppMesh._slideToX=null;oppMesh._slideToZ=null;oppMesh._diveToZ=null;oppMesh._diveBallY=null;oppMesh._diveDur=null;oppMesh=null;}}
         }
         // Sprint 3D-G2: arbitro segue la palla con offset laterale; guardalinee seguono x dell'azione
         // 3DV-10: durante isHL l'arbitro esce dal campo (fuori camera) per non bloccare l'azione

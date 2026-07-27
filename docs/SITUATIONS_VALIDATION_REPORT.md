@@ -1,6 +1,6 @@
 # CPM — Report Validazione Automatica Situations (motore 3D)
 
-_GAME_VERSION 7.212.0_
+_GAME_VERSION 7.215.0_
 
 ## Sommario
 | Metrica | Valore |
@@ -33,7 +33,7 @@ _GAME_VERSION 7.212.0_
 | coerenza | 0 | 13 |
 
 ## Guardie di consistenza modello↔sorgente
-✅ Tutte le 16 guardie superate — il modello rispecchia il motore reale.
+✅ Tutte le 17 guardie superate — il modello rispecchia il motore reale.
 
 ## Raccomandazioni azionabili
 1. Nessuna raccomandazione critica — catalogo coerente.
