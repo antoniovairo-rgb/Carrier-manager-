@@ -100,9 +100,13 @@ for (const c of sel) {
 
     /* — AER: una giocata aerea non può avvenire con il pallone sull'erba — */
     if (c.ball === 'aerial' && /header|shot/.test(c.type)) {
-      const pre = fr.slice(0, Math.max(3, Math.floor(fr.length * 0.45))).map(f => f.b && f.b[2]).filter(v => typeof v === 'number');
-      const minY = pre.length ? Math.min(...pre) : null;
-      if (minY != null && minY < 1.0) add(c, ok, 'AER', `giocata aerea con il pallone a ${minY.toFixed(2)} m — è praticamente a terra`);
+      /* [7.227.0] servono ≥2 frame CONSECUTIVI bassi: il primissimo frame dopo il force può ancora leggere i
+         prop della scena precedente (React non ha committato) e produce un singolo 0.65 fantasma — misurato
+         su gi9, dove tutti i frame successivi tengono la quota aerea. Un pallone davvero a terra ci RESTA. */
+      const pre = fr.slice(1, Math.max(4, Math.floor(fr.length * 0.45))).map(f => f.b && f.b[2]).filter(v => typeof v === 'number');
+      let low = 0, lowMax = 0, lowMin = null;
+      pre.forEach(v => { if (v < 1.0) { low++; lowMax = Math.max(lowMax, low); if (lowMin == null || v < lowMin) lowMin = v; } else low = 0; });
+      if (lowMax >= 2) add(c, ok, 'AER', `giocata aerea con il pallone a ${lowMin.toFixed(2)} m — è praticamente a terra`);
     }
     /* — CAM: il protagonista deve stare in quadro (il difetto «non si vede l'eroe») — */
     const offN = fr.filter(f => f.h && Math.abs(f.h[0]) > 900).length; // guardia difensiva, non usata
@@ -142,8 +146,16 @@ for (const c of sel) {
       if (pk > CROSSBAR + 1.6 && !/pallonett|cucchiaio|scavin/.test(c.lbl.toLowerCase()))
         add(c, ok, 'LOB', `la conclusione tocca ${pk.toFixed(1)} m contro una traversa di ${CROSSBAR} m — legge come un pallonetto`);
     }
-    if (ok && c.rew === 'goal' && xs.length && Math.max(...xs) < GOAL_X - 1.5)
-      add(c, ok, 'RETE', `gol assegnato ma il pallone non supera mai la linea (arriva a ${(Math.max(...xs)).toFixed(1)}, la linea è ${GOAL_X})`);
+    /* [7.227.0 — spiegato, esce dalla calibrazione] la valanga di falsi RETE era la FINESTRA: a ~6 fps headless
+       col bullet-time dell'esito (0.28×) l'arco del gol parte ~1.3s dopo il resolve e attraversa la linea OLTRE
+       i 2.6s campionati — il pallone «non supera mai la linea» solo perché il campione finisce prima. Coi campi
+       arc/pa nel frame (strumentazione 7.227.0) il criterio distingue: se a fine finestra il volo è ANCORA in
+       corso (arc attivo, o executor in build-up, o post-arco d'ingresso in rete) il gol sta semplicemente
+       arrivando — flag solo quando la scena è FERMA e la palla non ha mai superato la linea. */
+    if (ok && c.rew === 'goal' && xs.length && Math.max(...xs) < GOAL_X - 1.5) {
+      const tailFly = fr.slice(-3).some(f => f && (f.arc || f.tl || /in_net/.test(f.pa || '')));
+      if (!tailFly) add(c, ok, 'RETE', `gol assegnato ma il pallone non supera mai la linea (arriva a ${(Math.max(...xs)).toFixed(1)}, la linea è ${GOAL_X}) e la scena è ferma`);
+    }
 
     if (n % 40 === 0) console.log(`  …${n}/${sel.length * 2} · bocciature finora ${rows.length}`);
   }

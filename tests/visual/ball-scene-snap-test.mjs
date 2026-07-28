@@ -32,11 +32,19 @@ const rows = [];
 for (let gi = 0; gi < total; gi += step) {
   await page.evaluate(() => { try { window.__CPM_REC_DRAIN(); } catch (e) {} });
   await forceSituation(page, gi, { settle: 500, choose: true });
-  const st = await page.evaluate(() => { try { const s = window.__CPM_STATE(); return { bx: s.ball.x, by: s.ball.y }; } catch (e) { return null; } });
-  const fr = await page.evaluate(() => (window.__CPM_REC_DRAIN ? window.__CPM_REC_DRAIN() : []));
-  const last = fr.length ? fr[fr.length - 1] : null;
-  if (!st || !last || !last.b) { issues.push(`gi${gi}: campione mancante`); continue; }
-  const d = Math.hypot(last.b[0] - G2X(st.bx), last.b[1] - G2Z(st.by));
+  /* [7.227.0] il criterio è il MINIMO su tre istanti, non un campione singolo: nelle scene con la palla
+     logica IN MOTO all'apertura (es. gi35, contropiede: il portatore avanza ~8u) il mesh la insegue con un
+     gap transitorio di ~4.6u che riconverge a 0.06 in un secondo — misurato: snap perfetto a t+300ms, poi
+     moto legittimo. Uno snap DAVVERO mancato (il caso storico da 26u) resta grande su TUTTI i campioni. */
+  let d = 1e9, missing = true;
+  for (let s2 = 0; s2 < 3; s2++) {
+    const st = await page.evaluate(() => { try { const s = window.__CPM_STATE(); return { bx: s.ball.x, by: s.ball.y }; } catch (e) { return null; } });
+    const fr = await page.evaluate(() => (window.__CPM_REC_DRAIN ? window.__CPM_REC_DRAIN() : []));
+    const last = fr.length ? fr[fr.length - 1] : null;
+    if (st && last && last.b) { missing = false; d = Math.min(d, Math.hypot(last.b[0] - G2X(st.bx), last.b[1] - G2Z(st.by))); }
+    if (s2 < 2) await sleep(400);
+  }
+  if (missing) { issues.push(`gi${gi}: campione mancante`); continue; }
   rows.push({ gi, d: +d.toFixed(2) });
 }
 const bad = rows.filter(r => r.d > TOL);

@@ -3931,7 +3931,8 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="7.226.0"; // [7.226.0 #43 chiuso — strumentato PRIMA di correggere, come da metodo] LA GUARDIA SUL QUADRO REALE. Il residuo CAM del critico (9 flag su gi29-40) e stato spiegato dalla sonda per-frame: il richiamo 7.225.0 garantisce l inquadratura per la camera TARGET, ma la camera REALE la insegue coi lerp — durante lo STACCO d esito col punch-in in dolly e l eroe in sprint, la vista reale resta indietro ~0.5-1s e l eroe sfora il bordo (misurati rientri da ndc 1.32 e -1.12 in hl_result; l outlier 4.41 era la proiezione che esplode con l eroe vicino al piano camera nel transitorio). Dopo i lerp, la STESSA matematica angolare gira sulla vista reale e CLAMPA camLook: identita finche l eroe sta nel 94% del semiquadro, correzione limitata in velocita (dt-corretta: 2.5 rad/s yaw, 1.8 pitch) perche il caso patologico diventi una panoramica rapida e mai un colpo di frusta. Solo camLook, mai la posizione camera → firma golden intatta per costruzione. MISURATO prima→dopo (stessa sonda, stessi 9 combo): gi36 esce a -1.12 per 3 campioni → max -0.80 e 9/9 in quadro; gi33 «Chiama il portiere» 4 campioni fuori (1.32→0.98) → 1 solo campione al frame dello stacco (1.16, <50ms a 60fps reali) poi 0.77; critico su gi29-40: CAM 9→0.
+const GAME_VERSION="7.227.0"; // [7.227.0 collaudo PO su 7.225.0 — «non si vede poi la conclusione» ×6 + «il pallone va prima a terra»] LA REVISIONE MOSTRA IL SECONDO TEMPO, E IL BUILD-UP HA IL PORTATORE GIUSTO. Tre difetti misurati in CONDIZIONI WIZARD (pagina reale + __CPM_REVIEW, dove gira l executor che il gate/cpmtest saltano): (1) il successo su dribbling/cross converte in CHANCE e la conclusione vive nella CATENA, che il wizard non giocava mai (force-mode blocca handleContinue) → il PO vedeva solo il primo tempo. Ora SOLO in revisione la catena si gioca da sola: avanzamento nel secondo tempo dopo l esito (stessi binari: handleContinue + __CPM_RESOLVE, banner e intro reali) e conclusione risolta con lo stesso esito forzato in giudizio — misurato su gi20/gi16/gi17: 2 risoluzioni (chance + conclusione della catena), gi13 tiro diretto resta singolo. (2) l override di conduzione dell executor incollava la palla all EROE per OGNI segmento carry: nel build-up di testa il portatore e il COMPAGNO che crossa → misurati 2.6s di palla sull erba ai piedi di chi doveva staccare + teleport di 6.4u al crossatore al via del cross («il pallone va prima a terra», gi7). Ora la palla segue i piedi del PORTATORE VERO del beat (resolveTimeline conserva fromId/toId) e sull ultimo passo verso una conclusione AEREA non scende mai a terra (sta arrivando dal cross: resta in quota) — gap al cross 6.4→2.4u, portatore corretto. (3) lo snap di scena della palla era BLOCCATO da un arco residuo della scena precedente (il wizard salta hl_intro, dove il 7.42.1 annullava gli archi) → frame d apertura con la palla a 3.3m in volo da un altra azione. Ora lo snap annulla arco e post-arco residui: a chiave-scena cambiata sono per definizione della scena vecchia. + strumentazione permanente: il recorder registra arc/at/tl (arco ed executor per frame) — senza, «l arco non parte» e «il build-up non finisce» erano indistinguibili. Restano tracciati: il reveal che puo precedere la conclusione lunga (executor+slow-mo) e la leggibilita gi10/gi12 (#46).
+// [7.226.0 #43 chiuso — strumentato PRIMA di correggere, come da metodo] LA GUARDIA SUL QUADRO REALE. Il residuo CAM del critico (9 flag su gi29-40) e stato spiegato dalla sonda per-frame: il richiamo 7.225.0 garantisce l inquadratura per la camera TARGET, ma la camera REALE la insegue coi lerp — durante lo STACCO d esito col punch-in in dolly e l eroe in sprint, la vista reale resta indietro ~0.5-1s e l eroe sfora il bordo (misurati rientri da ndc 1.32 e -1.12 in hl_result; l outlier 4.41 era la proiezione che esplode con l eroe vicino al piano camera nel transitorio). Dopo i lerp, la STESSA matematica angolare gira sulla vista reale e CLAMPA camLook: identita finche l eroe sta nel 94% del semiquadro, correzione limitata in velocita (dt-corretta: 2.5 rad/s yaw, 1.8 pitch) perche il caso patologico diventi una panoramica rapida e mai un colpo di frusta. Solo camLook, mai la posizione camera → firma golden intatta per costruzione. MISURATO prima→dopo (stessa sonda, stessi 9 combo): gi36 esce a -1.12 per 3 campioni → max -0.80 e 9/9 in quadro; gi33 «Chiama il portiere» 4 campioni fuori (1.32→0.98) → 1 solo campione al frame dello stacco (1.16, <50ms a 60fps reali) poi 0.77; critico su gi29-40: CAM 9→0.
 // [7.225.0 critico automatico: 14 scene con il protagonista fuori quadro a fine azione, derive fino a ndc -6.75] IL RICHIAMO DI CAMERA USA LA PROIEZIONE VERA. Il richiamo 7.220.0 lavorava con margini in unita MONDO attorno al punto guardato: ±10u laterali sono meta schermo con la camera lontana e TRE schermi con la camera addosso — per questo gi8 restava fuori e le scene difensive derivavano (l eroe che corre via a fine azione mentre la regia resta sul fuoco d esito: misurato su gi30 una deriva progressiva -0.3 → -1.41). Ora si misura l ANGOLO reale fra l asse ottico e il protagonista (fov e aspect letti dalla camera a runtime, niente numeri cablati) e, se sfora il quadro utile, si ruota il punto guardato quel tanto che basta a riportarlo dentro — yaw e pitch, MAI la posizione della camera (che resta della regia per-tipo, ed e cio che la firma golden osserva via abovePitch); quadro utile piu largo sull esito (deve entrare la porta) e piu stretto in lettura. Il lerp del lookAt smussa la correzione: niente colpi di frusta. MISURATO: le 8 scene campione (gi8/18/29/30/36/37/38/39) tutte 9/9 frame in quadro (gi30 si ferma a -0.51 invece di uscire a -1.41); critico automatico su gi29-40: CAM 14→9, e il residuo e caratterizzato — transitori di inseguimento appena oltre il bordo (1.09-1.92: il lerp che rincorre un eroe in sprint, si vede come panoramica, non come eroe perso), due flag con ndc orizzontale DENTRO il quadro (probabile bordo verticale: da investigare con la prossima strumentazione) e un outlier singolo (4.41) non ancora spiegato. Restano tracciati: NON dichiarati risolti.
 // [6.18.0-note] // [6.18.0] AVATAR = libreria DiceBear (direttiva PO): CH38 3D via dai menu (resta solo nel live match). EROE/giocatori = stile AVATAAARS con FEDELTA al modello CH38 (forza carnagione+capelli+calvizie dalla stessa fonte AVATARS[avatarId] usata dal CH38 a r.7127 -> avatar dei menu ≈ giocatore in campo). NPC/staff (agente, mister via NpcFaceCoach) = stile MICAH seedato dal nome. Bundle locale offline assets/dicebear-avatars.min.js (esbuild IIFE avataaars+micah, ~163KB) caricato da script locale -> no CDN, funziona in gate/offline/produzione. AvatarSVG DiceBear-backed (API invariata, cache seed). Sorgente rigenerabile in tools/avatar-build/. Gate-cieco su CareerApp ma DiceBear carica anche in gate.
 const SAVE_VERSION=9;// v9 [7.6.0 FASE 2]: clubEvo (evoluzione pluriennale del club: fanbase/stadiumTier/budget/seasonsTop-Low) — migration retro-compatibile. v8 [5.81.0 BIL-3b]: bankBalance (stipendio accumulato, €) + perkTrainer/perkNutrition (staff personale) — migration retro-compatibile. v7: player.foot
@@ -8577,7 +8578,7 @@ function resolveTimeline(tl){
     (b.moves||[]).forEach(m=>{pos[m.who]=m.to.slice();});
     const after={}; Object.keys(pos).forEach(k=>after[k]=pos[k].slice());
     const to=res(b.ball.to);
-    out.push({tag:b.tag,dur:b.dur,kind:b.ball.kind,from,to,before,after});
+    out.push({tag:b.tag,dur:b.dur,kind:b.ball.kind,from,to,before,after,fromId:(typeof b.ball.from==='string')?b.ball.from:null,toId:(typeof b.ball.to==='string')?b.ball.to:null});/* [7.227.0 #45] l'ID del portatore sopravvive alla risoluzione: l'executor deve incollare la palla ai piedi di CHI la porta, non dell'eroe per definizione */
   });
   return out;
 }
@@ -10125,6 +10126,7 @@ function ThreeMatchView(props){
         const _p0=propsRef.current||{};
         _rb.push({t:Math.round(now),ph:_p0.matchPhase||null,ck:_p0.matchClock==null?null:_p0.matchClock,
           b:[+ball.position.x.toFixed(2),+ball.position.z.toFixed(2),+ball.position.y.toFixed(2)],pa:hlPostArcType||null,/* [7.215.0] fase del POST-ARCO nel frame registrato: senza questo, un difetto di traiettoria dopo la conclusione (la palla che rientra dopo essere entrata) non e attribuibile a nessun ramo */
+          arc:ballArcActive?1:0,at:ballArcActive?+(ballArcT||0).toFixed(2):null,tl:tlOn?1:0,/* [7.227.0 #45 strumentazione] stato di ARCO ed EXECUTOR nel frame: senza, «l'arco non è mai partito», «l'arco è partito ma qualcosa sovrascrive la y» e «il build-up non è mai finito» sono indistinguibili */
           h:[+hero.position.x.toFixed(2),+hero.position.z.toFixed(2)],
           /* [7.224.0 strumentazione] posizioni LOGICHE (matchPlayers) accanto a quelle dei MESH: senza il
              confronto fra i due strati non si distingue «la logica non piazza gli attori» da «il renderer
@@ -10156,7 +10158,8 @@ function ThreeMatchView(props){
          punto l'arco della conclusione puo essere gia partito (lo snap verrebbe saltato). Qui la chiave di scena
          si legge PRIMA di qualunque lancio d'arco, che avviene piu avanti nel frame. */
       if(P.hlSitKey!=null&&P.hlSitKey>=0&&sr.current._lastBallKey!==P.hlSitKey){sr.current._lastBallKey=P.hlSitKey;sr.current._ballSnap=true;}
-      if(sr.current._ballSnap&&isHL&&!ballArcActive&&hlPostArcT<0){sr.current._ballSnap=false;
+      if(sr.current._ballSnap&&isHL){sr.current._ballSnap=false;
+        ballArcActive=false;hlPostArcT=-1;hlPostArcType=null;/* [7.227.0 #45] un arco/post-arco ancora vivo QUI è della scena PRECEDENTE (lo snap si arma solo al cambio di chiave-scena): il wizard salta hl_intro — dove il 7.42.1 annullava gli archi — e il volo residuo bloccava lo snap e attraversava la scena nuova (misurato: frame d'apertura a y 3.3 in volo) */
         sr.current._preStrike=true;/* [7.220.0] nuova scena: il colpo deve ancora arrivare */
         const _sy=aerialContactY(P,isHL,isResult,true);
         ball.position.x=G2X(P.ballX==null?50:P.ballX);ball.position.z=G2Z(P.ballY==null?50:P.ballY);ball.position.y=(_sy!=null?_sy:0.65);}
@@ -11266,7 +11269,17 @@ function ThreeMatchView(props){
             const _arcH=sg.kind==="cross"?4.2:sg.kind==="through"?0.35:(sg.kind==="pass"||sg.kind==="give")?1.0:0.0;
             ball.position.y=(_aerTL!=null)?(_aerTL+Math.sin(p*Math.PI)*Math.max(_arcH,0.35)):(0.65+Math.sin(p*Math.PI)*_arcH);/* [7.222.0] nelle situazioni aeree il pallone e IN VOLO per tutta la costruzione: non deve mai toccare l erba */
             if(tlMap)Object.keys(sg.before).forEach(id=>{const m=tlMap[id];if(!m)return;const a=sg.before[id],b2=sg.after[id];animOne(m,G2X(a[0]+(b2[0]-a[0])*p),G2Z(a[1]+(b2[1]-a[1])*p),aDt,ak,ball.position.x,ball.position.z);});
-            if(sg.kind==='carry'&&hero){ball.position.x=hero.position.x+1.3;ball.position.z=hero.position.z;ball.position.y=0.42;}// 5.43.5: in CONDUZIONE la palla resta INCOLLATA ai piedi dell'eroe (segue la mesh reale, non la posizione interpolata del beat → niente "rincorsa")
+            /* [7.227.0 #45 revisione PO «il pallone va prima a terra» + misura in condizioni wizard] l'override
+               di conduzione (5.43.5) incollava la palla all'EROE per OGNI segmento carry — ma nel build-up di
+               testa/cross il portatore è il COMPAGNO che poi crossa (HEADER_ATTACK: run di MATE1): misurati 2.6s
+               di palla sull'erba ai piedi di chi doveva STACCARE, più il teleport al crossatore al via del cross.
+               Ora la palla segue i piedi del PORTATORE VERO del beat (fromId/toId), e sull'ULTIMO passo verso una
+               conclusione AEREA non scende mai a terra (è il cross che sta arrivando: resta in quota, formula sopra). */
+            if(sg.kind==='carry'&&!(bi===tlBuildN-1&&_aerTL!=null)){
+              const _hid=(typeof sg.toId==='string')?sg.toId:((typeof sg.fromId==='string')?sg.fromId:null);
+              const _hm=(_hid==='HERO')?hero:((tlMap&&_hid)?tlMap[_hid]:null);
+              if(_hm){ball.position.x=_hm.position.x+1.3;ball.position.z=_hm.position.z;ball.position.y=0.42;}
+            }
           }
         }
         if(isHL&&preActionT>=0)preActionT+=dt; // CINE-4: avanza timer pre-action
@@ -13687,6 +13700,8 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   const hlIdxRef=useRef(0);useEffect(()=>{hlIdxRef.current=hlIdx;},[hlIdx]);// VISUAL-TEST: indice HL corrente per gli hook
   const handleActionRef=useRef(null);// VISUAL-TEST: riferimento sempre aggiornato a handleAction (evita closure stale)
   const handleRigoreRef=useRef(null);// [6.3.0 R0] idem per il rigore (l AUTOPLAY del validator risolve anche i penalty)
+  const handleContinueRef=useRef(null);/* [7.227.0 #44] idem per handleContinue: in REVISIONE la continuazione della catena parte da un effect (pattern anti-closure-stale) */
+  const _rvwChainOkRef=useRef(true),_rvwChainArmRef=useRef(false);/* [7.227.0 #44] esito da propagare al secondo tempo + armamento one-shot per ciclo di revisione */
   // position resets to situation startZone on each new highlight
   const [pPos,setPPos]=useState(()=>getStartPos(situations[0])||{x:58,y:50});
   const pPosRef=useRef({x:58,y:50});
@@ -13839,7 +13854,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
       //   (fail intermittenti su sit borderline, dipendenti dal timing del run). Solo path forzato: autoplay/live-smoke intatti.
       window.__CPM_LAST_FORCED_GI=gi;// [5.94.0 ARC-1c] la probe __CPM_STATE deriva i campi puri della sit corrente
       if(window.__CPM_RESEED)window.__CPM_RESEED(gi); // start position deterministica per indice
-      _hlActionFiredRef.current=false; setOutcome(null); setChosenAct(null); pendingChainSitRef.current=null; pendingActionRef.current=null;
+      _hlActionFiredRef.current=false; setOutcome(null); setChosenAct(null); pendingChainSitRef.current=null; pendingActionRef.current=null; _rvwChainArmRef.current=false;/* [7.227.0 #44] una nuova forzatura disinnesca la continuazione-catena della scena precedente */
       setSituations(SITUATIONS.slice());// [5.90.0] le CHAIN (assist-chance/dribbling) splice-ano l'array tra un force e l'altro → gli indici slittavano e la timeline confrontava sit diverse: riparti sempre dalla base statica // reset (consenti nuova risoluzione, niente azione "pending" residua che si auto-risolverebbe entrando in hl_choose)
       setHlIdx(gi); const _sp224=ppos||getStartPos(sit)||{x:58,y:50}; setPPos(_sp224);// 5.43.1: ppos opzionale (Situation Test Mode → avanza l'eroe per rivelare le azioni rew=goal filtrate da px<55). Gate usa 2 arg → retro-compatibile.
       stageSitPositions(sit,_sp224);/* [7.224.0] il wizard/gate entra a hl_choose saltando hl_intro: senza questa chiamata la scena forzata NON aveva regia posizionale (attori della scena a 30-43u dall'eroe) */
@@ -14253,6 +14268,36 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     },STEP);
     return()=>clearInterval(iv);
   },[phase,hlIdx,situations,paused]);// eslint-disable-line
+  /* [7.227.0 #44 collaudo PO «non si vede poi la conclusione del compagno / in porta» — gi18/gi19 ×6]
+     IN REVISIONE LA CATENA SI GIOCA. Il successo su dribbling/cross/assist converte in CHANCE e la
+     conclusione vive nel SECONDO TEMPO (catena) che il wizard non giocava mai: il force-mode blocca
+     handleContinue, quindi il PO vedeva solo il primo tempo — la palla respinta — e bocciava un'azione
+     che in partita vera si conclude davvero. SOLO in revisione: (1) dopo l'esito con catena pendente si
+     avanza da soli nel secondo tempo (banner «⚡ CATENA!» + intro reali, presentazione identica alla
+     partita); (2) la conclusione della catena si risolve da sola con lo STESSO esito forzato della
+     combinazione in giudizio (riuscito → si vede il gol; fallito → si vede il tentativo). Zero logica
+     nuova: passa da handleContinue e __CPM_RESOLVE, gli stessi binari del gioco. Partita vera e gate
+     INTATTI per costruzione (tutto gated su __CPM_REVIEW, che né il gioco né il gate settano). */
+  useEffect(()=>{
+    if(!(typeof window!=='undefined'&&window.__CPM_REVIEW))return;
+    if(phase!=="hl_result"||!outcome||!pendingChainSitRef.current)return;
+    _rvwChainOkRef.current=!!outcome.ok;_rvwChainArmRef.current=true;
+    const t=setTimeout(()=>{try{handleContinueRef.current&&handleContinueRef.current();}catch(_e){}},2600);
+    return ()=>clearTimeout(t);
+  },[phase,outcome]);// eslint-disable-line
+  useEffect(()=>{
+    if(!(typeof window!=='undefined'&&window.__CPM_REVIEW))return;
+    const _s=situations[hlIdx];
+    if(!_s||!_s._chainDepth||!_rvwChainArmRef.current)return;
+    if(phase!=="hl_move"&&phase!=="hl_choose")return;
+    _rvwChainArmRef.current=false;
+    const t=setTimeout(()=>{try{
+      const _acts=_s.actions||[];let _k=_acts.findIndex(a=>a&&a.rew==="goal");if(_k<0)_k=0;
+      window.__CPM_FORCE_OUTCOME=_rvwChainOkRef.current?'success':'fail';
+      window.__CPM_RESOLVE&&window.__CPM_RESOLVE(_k);
+    }catch(_e){}},1400);
+    return ()=>clearTimeout(t);
+  },[phase,hlIdx,situations]);// eslint-disable-line
 
   // Continuous AI pressing during all HL phases — opponents and teammates always move
   useEffect(()=>{
@@ -15411,7 +15456,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     //   (ne' "ended" ne' ripresa dal centro ne' catene) — il prossimo stato arriva dal prossimo __CPM_FORCE_SIT.
     //   Prima l'auto-advance sul GOL faceva la ripresa (palla→50,50, phase→playing) MENTRE il poller final-state
     //   campionava ancora → sui run freddi il check leggeva la palla a centrocampo («goal ma palla @37»).
-    if(typeof window!=='undefined'&&window.__CPM_FORCED_MODE)return;
+    if(typeof window!=='undefined'&&window.__CPM_FORCED_MODE&&!(window.__CPM_REVIEW&&pendingChainSitRef.current))return;/* [7.227.0 #44] in REVISIONE la CATENA si gioca: con un secondo tempo pendente il wizard può avanzarci dentro (il ramo catena ritorna prima di ogni fine-partita; _goEndOrCeremony resta comunque guardato dal force-mode) */
     // [6.76.0 LMV-L7] guardia anti-rientro: auto-timer + Enter/tap nello stesso burst chiamavano handleContinue
     //   due volte — la 1ª consumava la CATENA (pendingChainSitRef→null), la 2ª cadeva nel ramo else e poteva
     //   avanzare con lo stato sbagliato. Lock breve (300ms), trasparente per l'uso normale.
@@ -15508,6 +15553,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
       }
     }
   };
+  handleContinueRef.current=handleContinue;/* [7.227.0 #44] riferimento fresco per la continuazione-catena in revisione */
   const _buildEndResult=()=>{/* [7.24.3] risultato UNICO condiviso: consumato da handleEnd (tap post-partita) E dal sidecar al FISCHIO FINALE */
     const rbCapped=Math.min(mStats.rb,30);/* [7.8.28 QA] cap 20→30 e slope 0.115→0.13: la vecchia scala cappava il voto live a 8.45 — «voto 10»/«Prestazione storica» (≥9) e l'achievement perfect erano MATEMATICAMENTE irraggiungibili, e una tripletta+2 assist (21 punti) valeva quanto un gol+2 assist. Ora 9+ ~ tripletta+2 assist in vittoria, 10 solo su prestazioni epiche (rb≥30). Scala media quasi invariata (rb10: 7.30→7.45). */
     const _sc=(scoreRef&&scoreRef.current)?scoreRef.current:score;/* [7.113.0 audit massivo · fix C1] il risultato REGISTRATO usa il punteggio LOGICO immediato (scoreRef, come già `_goEndOrCeremony`), non lo `score` state che ritarda fino al setScore differito del set-piece → homeScore/won/drew coerenti con la decisione rigori-o-no */
