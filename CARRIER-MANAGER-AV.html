@@ -3931,7 +3931,8 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="7.235.0"; // [7.235.0 #51 — batch PO «il dribbling/la sterzata non si vede» sui FALLITI] IL DRIBBLING FALLITO E UN DUELLO, NON UN RIMBALZINO. Misurato wall-clock: il fail della famiglia dribble era un tocco di 4u in 0.34s (arco a ~220-410ms, tutto spento a ~1.1s) col verdetto a 1200ms che copriva la coda — sotto la soglia di leggibilita a 60fps. Ora OGNI dribbling fallito (netto/sterzata/doppio passo/elastico/tunnel/finta) usa il trattamento COLLAUDATO del BALL_CARRY fallito: niente swing di tiro, il difensore piu vicino entra in SCIVOLATA e PORTA VIA il pallone (arco alla sua posizione) — il cambio di possesso si vede; e il verdetto dei dribbling falliti aspetta il duello (revealMs 1200→2100, dentro il cap [1800,4000] del check post-highlight). Verificato sui fogli-provini gi18/19/20 FALLITI: scivolata visibile accanto all eroe, palla che rotola al difensore, overlay DOPO l azione. + collaudo PO con screenshot «rendi piu trasparente lo sfondo nero»: le barre del ReviewWizard (solo sviluppo) passano da 0.94/0.86 a ~0.50 di opacita con blur leggero e text-shadow — la scena 3D si vede anche sotto i pannelli.
+const GAME_VERSION="7.236.0"; // [7.236.0 #53 — batch PO «L'eroe compare e scompare» gi8/12/21] L'EROE NON SI TELEPORTA PIU: misurato col trap per-frame DBG51, durante il build-up dell'executor il bersaglio della timeline correva a ~25 u/s contro il cap eroe di 9.2 → il gap superava la soglia «cut» di 12u e l'eroe si TELEPORTAVA sul pallone, poi fireConclusion ri-ancorava il bersaglio allo spot d'apertura → TELEPORT di ritorno (doppio lampo deterministico). Tre fix: (1) in animOne il cut di scena e una DISCONTINUITA DEL BERSAGLIO (salto >12u/frame), mai un gap di inseguimento — oltre 6u di ritardo l'eroe passa allo SCATTO 13 u/s; (2) pavimento di velocita umana (~11 u/s) sulle durate dei segmenti di conduzione HERO→HERO (solo al consumo executor, timeline pura intatta); (3) durante il build-up l'executor e l'UNICO driver dell'eroe (via il doppio drive che lo teneva fermo mentre la palla scappava = il «fantasma») e la conclusione si ANCORA al punto d'arrivo del build-up (sr._tlHeroEnd, chiave di scena, follow-through dimezzato). Misura prima→dopo: salto max per-frame 16-31u → 5.15u; l'eroe porta palla fino al punto del tiro e conclude LI (fogli-provini gi21/gi12/gi8). +strumentazione permanente: trappola salti eroe nel recorder (__CPM_REC).
+// [7.235.0 #51 — batch PO «il dribbling/la sterzata non si vede» sui FALLITI] IL DRIBBLING FALLITO E UN DUELLO, NON UN RIMBALZINO. Misurato wall-clock: il fail della famiglia dribble era un tocco di 4u in 0.34s (arco a ~220-410ms, tutto spento a ~1.1s) col verdetto a 1200ms che copriva la coda — sotto la soglia di leggibilita a 60fps. Ora OGNI dribbling fallito (netto/sterzata/doppio passo/elastico/tunnel/finta) usa il trattamento COLLAUDATO del BALL_CARRY fallito: niente swing di tiro, il difensore piu vicino entra in SCIVOLATA e PORTA VIA il pallone (arco alla sua posizione) — il cambio di possesso si vede; e il verdetto dei dribbling falliti aspetta il duello (revealMs 1200→2100, dentro il cap [1800,4000] del check post-highlight). Verificato sui fogli-provini gi18/19/20 FALLITI: scivolata visibile accanto all eroe, palla che rotola al difensore, overlay DOPO l azione. + collaudo PO con screenshot «rendi piu trasparente lo sfondo nero»: le barre del ReviewWizard (solo sviluppo) passano da 0.94/0.86 a ~0.50 di opacita con blur leggero e text-shadow — la scena 3D si vede anche sotto i pannelli.
 // [7.234.0 batch PO su 7.233 — «l eroe non segue il pallone, sembra un fantasma» ×6 + «la conclusione non si vede» ×11] IL TEMPO E MISURATO, NON PRESUNTO. I fogli-provini a ~7fps sovracampionano: cio che a me appariva leggibile, a 60fps sul device e un lampo. Nuova misura WALL-CLOCK degli stati (indipendente dagli fps): (1) la conclusione della CATENA in revisione arrivava a 6.5-7s dal tap — il PO aveva gia votato ed era passato oltre: ora attesa 2.6→1.1s, auto-risoluzione 1.4→0.7s, intro del secondo tempo dimezzata (1.2s) e build-up dell executor SALTATO sulle sole sit di catena in revisione (il primo tempo e appena stato visto; nuovo prop hlChain) → conclusione a 4.5s dal tap (−36%%, misurato). (2) FOLLOW-RUN dell eroe: dopo il gesto restava una STATUA mentre la giocata proseguiva (misurati build-up di 1.4-3.7s con l eroe congelato dopo tacco/assist) — ora da fine gesto il suo bersaglio scivola VERSO la palla logica (45%%/35%% della distanza, rampa morbida, solo azioni offensive di gioco aperto, deterministico): nel foglio gi26 l eroe accompagna il tacco fino all area. Restano tracciati: micro-azioni fallite troppo veloci (#51, dribbling in 0.8s sotto l overlay — serve durata minima leggibile), palla sospesa pre-stacco su gi6 (#52), regia d esito della punizione dalla fascia (#50).
 // [7.233.0 #50 parziale — revisione percettiva completa dei 22 fogli-provini] LA PUNIZIONE DALLA FASCIA SI LEGGE IN BATTUTA. Revisione a vista di TUTTE le combinazioni «da riverificare» (fogli-provini in condizioni wizard): 19 promosse — i fix 7.226-7.232 si vedono nei frame (GK dentro la porta, lancio→assist→gol, scia del giro che curva, scivolate e chiusure leggibili, catene col secondo tempo in quadro) — 1 borderline (gi7: coordinazione palla→stacco), 2 bocciate vere: gi15 k0/k2, regia col maxischermo in quadro. Fix di questa release: la camera del set-piece era UNICA e pensata per la palla centrale (asse cLz=bz*0.5) — sulla fascia l asse finiva ~13u più interno del battitore (eroe sul bordo, tribuna al centro). Ora la punizione dalla FASCIA usa l inquadratura collaudata del cross dal secondo palo (laterale alta, asse verso il lato opposto), ancorata alla fascia STATICA del battitore (P.playerY — il primo tentativo leggeva la z viva della palla e il ramo flippava a metà volo, misurato cam z 26→12 in-scena; il secondo «camera esterna + asse interno» riempiva il viewport di spalti: entrambi misurati e buttati). MISURATO: lettura e consegna del cross basso ora leggibili (battitore+barriera+scia nei frame f0-f2). RESIDUO APERTO (#50): all ESITO gli override di conclusione pre-esistenti (fuoco porta/portiere) da quella fascia inquadrano ancora la tribuna a tilt basso — serve una regia d esito dedicata alla consegna da fermo, da strumentare con il vettore di sguardo prima di toccare.
 // [7.232.0 #40] IL COMPAGNO NON SPARA DA CENTROCAMPO. Misurato sul lancio lungo (gi29): il ricevente prendeva palla a game ~40 e la transizione ricezione→tiro, CIECA alla posizione (0.42s fissi), faceva partire da li una «bomba» rasoterra che volava in rete da 50u — il «la palla vola in porta senza alcuna dinamica realistica» di gi28/29. Se al tocco la palla e LONTANA (x<20 world = game 70) il secondo tempo diventa una CONSEGNA IN AREA finalizzata da un terzo uomo (cross_goal: consegna→incornata→rete, path esistente): ricevi il lancio, servi in area, un compagno conclude. In range il tiro diretto resta bit-identico. ⚠️ Prima stesura («il ricevente conduce finche non e in range») STALLAVA — _rm sparisce a fine gesto _rcvT e la palla restava ferma a meta campo per sempre: misurata e buttata. Serie dopo il fix: lancio → ricezione a -10 → traversone in volo (y 3.6) fino all area → tocco → rete. Chiuso anche il cluster «palla in posti irreali a centrocampo»: il vecchio «vola in porta da gi28» non si riproduce piu (avanzamento graduale misurato).
@@ -9984,9 +9985,19 @@ function ThreeMatchView(props){
            catena) → riposizionamento immediato, come già fanno i 21 off-ball con lo snap d'avvio; (b) sotto i 12u
            è un moto vero con punta ~9.2 u/s (≈33 km/h), rampa d'accelerazione e decelerazione in arrivo. */
         const _HVMAX=9.2;
-        if(d>12){mesh.position.x=tx;mesh.position.z=tz;mesh._hvx=0;mesh._hvz=0;mesh._px=tx;mesh._pz=tz;}
+        /* [7.236.0 batch PO «l'eroe compare e scompare» gi8/12/21 — misurato col trap DBG51] il cut era
+           deciso dalla DISTANZA (d>12 → teleport): ma durante il build-up dell'executor il BERSAGLIO corre
+           (burst della timeline ~25 u/s) e l'eroe, cappato a 9.2, restava indietro finché il gap superava
+           12u → TELEPORT in avanti sul pallone; poi fireConclusion ri-ancorava il bersaglio dietro →
+           TELEPORT di ritorno. Doppio lampo deterministico = esattamente «compare e scompare». Un CUT DI
+           SCENA è una DISCONTINUITÀ DEL BERSAGLIO (il target salta in un frame: nuovo highlight/catena),
+           non un gap di inseguimento: ora si teleporta SOLO su salto del bersaglio (>12u/frame, o desync
+           estremo >30u di sicurezza); un bersaglio in fuga continua si INSEGUE, con punta da scatto. */
+        const _tj51=(mesh._htx!=null)?Math.hypot(tx-mesh._htx,tz-mesh._htz):1e9;
+        mesh._htx=tx;mesh._htz=tz;
+        if(_tj51>12||d>30){mesh.position.x=tx;mesh.position.z=tz;mesh._hvx=0;mesh._hvz=0;mesh._px=tx;mesh._pz=tz;}
         else if(d>0.06){
-          const _n=1/d,_want=Math.min(_HVMAX,d*4.2),_a=Math.min(dt*3.4,1);
+          const _n=1/d,_want=Math.min(d>6?13.0:_HVMAX,d*4.2),_a=Math.min(dt*3.4,1);/* [7.236.0] oltre 6u di ritardo l'eroe passa allo SCATTO (13 u/s): rincorre la sua stessa giocata invece di teleportarsi */
           mesh._hvx=(mesh._hvx||0)+(dx*_n*_want-(mesh._hvx||0))*_a;
           mesh._hvz=(mesh._hvz||0)+(dz*_n*_want-(mesh._hvz||0))*_a;
           mesh.position.x+=mesh._hvx*dt;mesh.position.z+=mesh._hvz*dt;
@@ -10136,6 +10147,12 @@ function ThreeMatchView(props){
           b:[+ball.position.x.toFixed(2),+ball.position.z.toFixed(2),+ball.position.y.toFixed(2)],pa:hlPostArcType||null,/* [7.215.0] fase del POST-ARCO nel frame registrato: senza questo, un difetto di traiettoria dopo la conclusione (la palla che rientra dopo essere entrata) non e attribuibile a nessun ramo */
           arc:ballArcActive?1:0,at:ballArcActive?+(ballArcT||0).toFixed(2):null,ad:ballArcActive?+(ballArcDur||0).toFixed(2):null,tl:tlOn?1:0,sk:_p0.hlSitKey!=null?_p0.hlSitKey:null,/* [7.227.0 #45 strumentazione] stato di ARCO ed EXECUTOR nel frame: senza, «l'arco non è mai partito», «l'arco è partito ma qualcosa sovrascrive la y» e «il build-up non è mai finito» sono indistinguibili · [7.229.0 #47] +chiave di scena: uno snap che scatta A METÀ AZIONE si vede solo da qui */
           h:[+hero.position.x.toFixed(2),+hero.position.z.toFixed(2)],
+          /* [7.236.0 strumentazione permanente] trappola sui SALTI del mesh eroe (>6u tra due frame): tagga
+             la transizione con lo stato concorrente (executor/arco/gesto) → un «compare e scompare» futuro è
+             attribuibile al suo scrittore dal primo run. Solo sotto __CPM_REC (test-only, mai in store). */
+          ...(function(){try{const _pp51=window.__CPM_DBG51P;const _cx=hero.position.x,_cz=hero.position.z;
+            if(_pp51&&Math.hypot(_cx-_pp51[0],_cz-_pp51[1])>6){(window.__CPM_DBG51=window.__CPM_DBG51||[]).push({t:Math.round(now),from:[+_pp51[0].toFixed(1),+_pp51[1].toFixed(1)],to:[+_cx.toFixed(1),+_cz.toFixed(1)],pa:hlPostArcType||null,tl:tlOn?1:0,arc:ballArcActive?1:0,at:actType||null,aT:+(actT||0).toFixed(2),hp:heroPostType||null,ls:sr.current._lastSitKey,se:subEntryT,mfx:!!sr.current._mateFx});}
+            window.__CPM_DBG51P=[_cx,_cz];}catch(_e){}return {};})(),
           /* [7.224.0 strumentazione] posizioni LOGICHE (matchPlayers) accanto a quelle dei MESH: senza il
              confronto fra i due strati non si distingue «la logica non piazza gli attori» da «il renderer
              non segue la logica» — ed è esattamente l'ambiguità che ha fatto fallire il primo tentativo. */
@@ -10765,6 +10782,11 @@ function ThreeMatchView(props){
           }
           if(_tlc&&_tlc.beats.length>1&&typeof resolveTimeline==="function"){
             tlSeg=resolveTimeline(_tlc);
+            /* [7.236.0 batch «compare e scompare»] la coreografia deve essere UMANAMENTE corribile: il burst
+               della timeline chiedeva ~25 u/s (90 km/h) e nessun inseguitore poteva starci dietro. Pavimento
+               sulla durata dei segmenti di CONDUZIONE dell'eroe (HERO→HERO): velocità max ~11 u/s. Solo qui
+               (consumo executor), la timeline pura e i suoi test node restano intatti; il gate salta l'executor. */
+            tlSeg.forEach(g=>{if(g&&g.fromId==='HERO'&&g.toId==='HERO'&&g.from&&g.to){const _d51=Math.hypot(g.to[0]-g.from[0],g.to[1]-g.from[1]);if(_d51>1)g.dur=Math.max(g.dur||0,_d51/11);}});
             // R5-backbone: il build-up termina alla PRIMA beat di conclusione della famiglia hlType
             //   (cross→beat 'cross', header→beat 'header', shot/altri→'shot'/'header') così fireConclusion
             //   esegue SEMPRE la conclusione reale una volta sola (niente doppioni cross/testa).
@@ -10778,7 +10800,7 @@ function ThreeMatchView(props){
         }
         if(_curPh==="hl_intro"||(_curPh==="hl_move"&&prevPhase==="playing")){repCount=0;repHead=0;replayDone=false;}
         if(_curPh!=="hl_result"&&replaying){replaying=false;setReplayOn(false);}
-        if(_curPh!=="hl_result"){sr.current._mateFx=null;/* [7.209.0] */hlPostArcT=-1;hlPostArcType=null;heroPostT=-1;heroPostType=null;gkSaveCelebT=-1;gkSaveMesh=null;hlInNetFlashed=false;hlPostVY=0;passTargetMesh=null;crossRcvMesh=null;_arcSrcX=null;_arcSrcZ=null;/* [6.74.0 3D-5/6] cleanup */hlOutcomeVariant=null;tlOn=false;sr.current.players.forEach(pp=>{if(pp.mesh){pp.mesh._failRunT=null;if(pp.mesh._rcvT!=null){pp.mesh._rcvT=null;pp.mesh.position.y=0;if(pp.mesh._lR)pp.mesh._lR.rotation.x=0;if(pp.mesh._lL)pp.mesh._lL.rotation.x=0;pp.mesh._runToX=null;pp.mesh._runToZ=null;}}});}// reset post-arco + executor timeline + corsa-fail compagno · [6.45.0 RC] reset anche _rcvT (uno skip-veloce del result trascinava la gamba di ricezione + posizione congelata nell'highlight dopo)
+        if(_curPh!=="hl_result"){sr.current._mateFx=null;/* [7.209.0] */sr.current._tlHeroEnd=null;/* [7.236.0] */hlPostArcT=-1;hlPostArcType=null;heroPostT=-1;heroPostType=null;gkSaveCelebT=-1;gkSaveMesh=null;hlInNetFlashed=false;hlPostVY=0;passTargetMesh=null;crossRcvMesh=null;_arcSrcX=null;_arcSrcZ=null;/* [6.74.0 3D-5/6] cleanup */hlOutcomeVariant=null;tlOn=false;sr.current.players.forEach(pp=>{if(pp.mesh){pp.mesh._failRunT=null;if(pp.mesh._rcvT!=null){pp.mesh._rcvT=null;pp.mesh.position.y=0;if(pp.mesh._lR)pp.mesh._lR.rotation.x=0;if(pp.mesh._lL)pp.mesh._lL.rotation.x=0;pp.mesh._runToX=null;pp.mesh._runToZ=null;}}});}// reset post-arco + executor timeline + corsa-fail compagno · [6.45.0 RC] reset anche _rcvT (uno skip-veloce del result trascinava la gamba di ricezione + posizione congelata nell'highlight dopo)
         if(_curPh==="playing"||_curPh==="ended"||_curPh==="walkout"){preActionT=-1;
           // CINE-6: ripristina rete e portiere se si esce dall'esito
           if(sr.current.goalNet){const _gn=sr.current.goalNet;if(_gn._restX!==undefined)_gn.position.x=_gn._restX;_gn.material.opacity=0.42;}
@@ -10909,6 +10931,10 @@ function ThreeMatchView(props){
         // FIX rigore/punizione: su un set-piece i giocatori NON pressano/corrono — restano schierati fuori area.
         const _setPiece=isHL&&(P.hlType==="penalty"||P.hlType==="freekick"||!!P.hlSetPiece);/* [7.8.8] flag set-piece dalla situation → il muro si schiera fin dall'AIMING (prima P.hlType poteva non essere ancora "freekick" in hl_choose → nessuna barriera) */
         let _hxg=P.playerX||50,_hyg=P.playerY||50;const _pat=P.hlPattern||"";
+        /* [7.236.0 batch «compare e scompare»] se l'executor ha portato l'eroe avanti col build-up, la
+           conclusione parte DA LÌ: l'ancora della approach è il punto d'arrivo della costruzione (stessa
+           scena), non lo spot d'apertura — il calcio avviene dov'è il pallone, niente teleport all'indietro. */
+        let _anch51=false;{const _tle51=sr.current._tlHeroEnd;if(_tle51&&_tle51.k===P.hlSitKey&&!P.hlDef){_hxg=_tle51.x;_hyg=_tle51.y;_anch51=true;}}
         // CINE-APPROACH (4.96.0): durante l'esito l'eroe "entra" nell'azione — un breve passo verso palla/porta
         //   invece di colpire da fermo. Sincronizzato al gesto (actT → rallenta col bullet-time), additivo,
         //   auto-azzerante a fine azione. Escluso sui set-piece (rigore/punizione battuti da fermo, regia dedicata).
@@ -10922,7 +10948,7 @@ function ThreeMatchView(props){
           } else {
             const _amp=(actType==="shot"||actType==="header")?5:actType==="tackle"?6:actType==="dribble"?10:actType==="cross"?3:2.5;/* [7.218.0] sul DRIBBLING l'avanzamento era 4 e finiva a meta gesto: l'eroe restava piantato mentre la palla se ne andava. Un dribbling e superare l'uomo, quindi ora corre davvero oltre */
             const _apD=(actType==="dribble")?Math.min(actT/_T2,1):_ap;/* sul dribbling la corsa dura QUANTO il gesto, non meta */
-            _hxg=clamp(_hxg+_apD*_amp,2,96);// home attacca verso x crescente
+            _hxg=clamp(_hxg+_apD*_amp*(_anch51?0.45:1),2,96);// home attacca verso x crescente · [7.236.0] ancorato a fine build-up (già avanti): passo di follow-through dimezzato, non un'altra corsa
             /* [7.230.0 #46 collaudo PO «Rientra e tira: non si vede il movimento dell'eroe con la palla»] IL
                TIRO A GIRO DALLA FASCIA HA IL RIENTRO. Un `shot_curled` calciato da posizione larga nasce dal
                taglio verso l'interno — l'approach era solo in avanti e il «rientra» non esisteva a schermo.
@@ -11266,7 +11292,11 @@ function ThreeMatchView(props){
              qui non si valida un comportamento ma si POSIZIONA la scena — è il gate stesso che forza pPos con
              __CPM_FORCE_SIT, quindi l'eroe deve trovarsi lì, non a metà di una corsa di avvicinamento. */
           if(_hlSnap){const _shx=G2X(_hxg),_shz=G2Z(_hyg);hero.position.x=_shx;hero.position.z=_shz;hero._hvx=0;hero._hvz=0;hero._px=_shx;hero._pz=_shz;}
-          animOne(hero,G2X(_hxg),G2Z(_hyg),aDt,ak,bx,bz);
+          /* [7.236.0 batch «compare e scompare»] durante il build-up l'EXECUTOR è l'UNICO driver dell'eroe:
+             qui il doppio drive (executor→segmento della timeline, questo blocco→bersaglio approach) alternava
+             i bersagli frame su frame — con la nuova regola «cut = salto del bersaglio» diventava un teleport
+             a raffica, e prima ancora era il tiro alla fune che teneva l'eroe fermo mentre la palla scappava. */
+          if(!(tlOn&&tlMap&&tlMap.HERO===hero))animOne(hero,G2X(_hxg),G2Z(_hyg),aDt,ak,bx,bz);
         }/* [7.2.0] premiazione: eroe guidato dal blocco ceremony · [7.127.0] _benched: eroe uscito resta fuori (nascosto), non insegue più il gioco */
         // [6.4.4 R4.1] SOFT-COLLISION di posizione: la repulsione (PASS 2) agisce sui TARGET, ma animOne ha
         //   inerzia → i mesh off-ball possono compenetrarsi transitoriamente (i giocatori si attraversano).
@@ -11292,7 +11322,7 @@ function ThreeMatchView(props){
           /* [7.212.0] uno stacco di scena azzera anche le REAZIONI in corso: un tuffo/riflesso del portiere
              lasciato a metà continuava a muovere il mesh nella scena successiva (e la posa restava storta). */
           if(oppActType&&oppMesh){try{oppMesh.position.y=0;oppMesh.rotation.z=0;if(oppMesh._aL){oppMesh._aL.rotation.x=0;oppMesh._aL.rotation.z=0;}if(oppMesh._aR){oppMesh._aR.rotation.x=0;oppMesh._aR.rotation.z=0;}if(oppMesh._lR)oppMesh._lR.rotation.x=0;if(oppMesh._lL)oppMesh._lL.rotation.x=0;if(oppMesh._diveYaw!=null)oppMesh.rotation.y=oppMesh._diveYaw;oppMesh._diveToZ=null;}catch(_e){}}
-          oppActType=null;oppMesh=null;oppActT=0;gkSaveCelebT=-1;gkSaveMesh=null;sr.current._mateFx=null;}/* bandiera DEDICATA: _cutSnap la azzera il blocco stacco-d'esito a ogni frame non-isResult */
+          oppActType=null;oppMesh=null;oppActT=0;gkSaveCelebT=-1;gkSaveMesh=null;sr.current._mateFx=null;sr.current._tlHeroEnd=null;/* [7.236.0] l'ancora di fine build-up muore con la scena */}/* bandiera DEDICATA: _cutSnap la azzera il blocco stacco-d'esito a ogni frame non-isResult */
         // 5.43.16: PORTIERI — posizione di PRONTO con POSA FISSA (no run-cycle). animOne sposta dolcemente (target stabile),
         //   poi SOVRASCRIVO le gambe/braccia in posa di pronto (gambe divaricate, leggera flessione, braccia pronte) → il portiere
         //   NON fa più la "corsa sul posto" (il run-cycle delle gambe è annullato). Il tuffo (gk_dive) lo controlla quando attivo.
@@ -11317,7 +11347,13 @@ function ThreeMatchView(props){
              palla in aria → a terra → e solo dopo l arco. Qui la costruzione rispetta lo stato-palla. */
           const _aerTL=aerialContactY(P,true,false);
           let acc=0,bi=0; for(;bi<tlBuildN;bi++){if(tlT<acc+tlSeg[bi].dur)break;acc+=tlSeg[bi].dur;}
-          if(bi>=tlBuildN){const last=tlSeg[tlBuildN-1];ball.position.x=G2X(last.to[0]);ball.position.z=G2Z(last.to[1]);ball.position.y=(_aerTL!=null?_aerTL:0.65);/* [7.222.0] su una situazione AEREA il build-up CONSEGNA il pallone alla quota del colpo: depositarlo a 0.65 era la causa del «la palla sbatte a terra e poi sale» */tlOn=false;if(fireConclusion)fireConclusion();}
+          if(bi>=tlBuildN){const last=tlSeg[tlBuildN-1];ball.position.x=G2X(last.to[0]);ball.position.z=G2Z(last.to[1]);ball.position.y=(_aerTL!=null?_aerTL:0.65);/* [7.222.0] su una situazione AEREA il build-up CONSEGNA il pallone alla quota del colpo: depositarlo a 0.65 era la causa del «la palla sbatte a terra e poi sale» */
+            /* [7.236.0 batch «compare e scompare»] il build-up ha PORTATO AVANTI l'eroe (fin sotto porta sul
+               burst): memorizzare il punto d'arrivo — la CINE-APPROACH della conclusione deve ancorarsi QUI,
+               non a P.playerX (lo spot d'apertura, 12-16u più indietro), o l'eroe si teleporta all'indietro
+               un frame prima del tiro. Chiave di scena → mai riusato su un highlight diverso. */
+            {const _ha51=last&&last.after&&last.after.HERO;if(_ha51)sr.current._tlHeroEnd={x:_ha51[0],y:_ha51[1],k:P.hlSitKey};}
+            tlOn=false;if(fireConclusion)fireConclusion();}
           else{
             const sg=tlSeg[bi],p=clamp((tlT-acc)/Math.max(sg.dur,0.01),0,1);
             const _bxg=sg.from[0]+(sg.to[0]-sg.from[0])*p,_byg=sg.from[1]+(sg.to[1]-sg.from[1])*p;
