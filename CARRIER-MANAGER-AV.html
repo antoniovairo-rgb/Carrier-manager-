@@ -3931,7 +3931,8 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="7.225.0"; // [7.225.0 critico automatico: 14 scene con il protagonista fuori quadro a fine azione, derive fino a ndc -6.75] IL RICHIAMO DI CAMERA USA LA PROIEZIONE VERA. Il richiamo 7.220.0 lavorava con margini in unita MONDO attorno al punto guardato: ±10u laterali sono meta schermo con la camera lontana e TRE schermi con la camera addosso — per questo gi8 restava fuori e le scene difensive derivavano (l eroe che corre via a fine azione mentre la regia resta sul fuoco d esito: misurato su gi30 una deriva progressiva -0.3 → -1.41). Ora si misura l ANGOLO reale fra l asse ottico e il protagonista (fov e aspect letti dalla camera a runtime, niente numeri cablati) e, se sfora il quadro utile, si ruota il punto guardato quel tanto che basta a riportarlo dentro — yaw e pitch, MAI la posizione della camera (che resta della regia per-tipo, ed e cio che la firma golden osserva via abovePitch); quadro utile piu largo sull esito (deve entrare la porta) e piu stretto in lettura. Il lerp del lookAt smussa la correzione: niente colpi di frusta. MISURATO: le 8 scene campione (gi8/18/29/30/36/37/38/39) tutte 9/9 frame in quadro (gi30 si ferma a -0.51 invece di uscire a -1.41); critico automatico su gi29-40: CAM 14→9, e il residuo e caratterizzato — transitori di inseguimento appena oltre il bordo (1.09-1.92: il lerp che rincorre un eroe in sprint, si vede come panoramica, non come eroe perso), due flag con ndc orizzontale DENTRO il quadro (probabile bordo verticale: da investigare con la prossima strumentazione) e un outlier singolo (4.41) non ancora spiegato. Restano tracciati: NON dichiarati risolti.
+const GAME_VERSION="7.226.0"; // [7.226.0 #43 chiuso — strumentato PRIMA di correggere, come da metodo] LA GUARDIA SUL QUADRO REALE. Il residuo CAM del critico (9 flag su gi29-40) e stato spiegato dalla sonda per-frame: il richiamo 7.225.0 garantisce l inquadratura per la camera TARGET, ma la camera REALE la insegue coi lerp — durante lo STACCO d esito col punch-in in dolly e l eroe in sprint, la vista reale resta indietro ~0.5-1s e l eroe sfora il bordo (misurati rientri da ndc 1.32 e -1.12 in hl_result; l outlier 4.41 era la proiezione che esplode con l eroe vicino al piano camera nel transitorio). Dopo i lerp, la STESSA matematica angolare gira sulla vista reale e CLAMPA camLook: identita finche l eroe sta nel 94% del semiquadro, correzione limitata in velocita (dt-corretta: 2.5 rad/s yaw, 1.8 pitch) perche il caso patologico diventi una panoramica rapida e mai un colpo di frusta. Solo camLook, mai la posizione camera → firma golden intatta per costruzione. MISURATO prima→dopo (stessa sonda, stessi 9 combo): gi36 esce a -1.12 per 3 campioni → max -0.80 e 9/9 in quadro; gi33 «Chiama il portiere» 4 campioni fuori (1.32→0.98) → 1 solo campione al frame dello stacco (1.16, <50ms a 60fps reali) poi 0.77; critico su gi29-40: CAM 9→0.
+// [7.225.0 critico automatico: 14 scene con il protagonista fuori quadro a fine azione, derive fino a ndc -6.75] IL RICHIAMO DI CAMERA USA LA PROIEZIONE VERA. Il richiamo 7.220.0 lavorava con margini in unita MONDO attorno al punto guardato: ±10u laterali sono meta schermo con la camera lontana e TRE schermi con la camera addosso — per questo gi8 restava fuori e le scene difensive derivavano (l eroe che corre via a fine azione mentre la regia resta sul fuoco d esito: misurato su gi30 una deriva progressiva -0.3 → -1.41). Ora si misura l ANGOLO reale fra l asse ottico e il protagonista (fov e aspect letti dalla camera a runtime, niente numeri cablati) e, se sfora il quadro utile, si ruota il punto guardato quel tanto che basta a riportarlo dentro — yaw e pitch, MAI la posizione della camera (che resta della regia per-tipo, ed e cio che la firma golden osserva via abovePitch); quadro utile piu largo sull esito (deve entrare la porta) e piu stretto in lettura. Il lerp del lookAt smussa la correzione: niente colpi di frusta. MISURATO: le 8 scene campione (gi8/18/29/30/36/37/38/39) tutte 9/9 frame in quadro (gi30 si ferma a -0.51 invece di uscire a -1.41); critico automatico su gi29-40: CAM 14→9, e il residuo e caratterizzato — transitori di inseguimento appena oltre il bordo (1.09-1.92: il lerp che rincorre un eroe in sprint, si vede come panoramica, non come eroe perso), due flag con ndc orizzontale DENTRO il quadro (probabile bordo verticale: da investigare con la prossima strumentazione) e un outlier singolo (4.41) non ancora spiegato. Restano tracciati: NON dichiarati risolti.
 // [6.18.0-note] // [6.18.0] AVATAR = libreria DiceBear (direttiva PO): CH38 3D via dai menu (resta solo nel live match). EROE/giocatori = stile AVATAAARS con FEDELTA al modello CH38 (forza carnagione+capelli+calvizie dalla stessa fonte AVATARS[avatarId] usata dal CH38 a r.7127 -> avatar dei menu ≈ giocatore in campo). NPC/staff (agente, mister via NpcFaceCoach) = stile MICAH seedato dal nome. Bundle locale offline assets/dicebear-avatars.min.js (esbuild IIFE avataaars+micah, ~163KB) caricato da script locale -> no CDN, funziona in gate/offline/produzione. AvatarSVG DiceBear-backed (API invariata, cache seed). Sorgente rigenerabile in tools/avatar-build/. Gate-cieco su CareerApp ma DiceBear carica anche in gate.
 const SAVE_VERSION=9;// v9 [7.6.0 FASE 2]: clubEvo (evoluzione pluriennale del club: fanbase/stadiumTier/budget/seasonsTop-Low) — migration retro-compatibile. v8 [5.81.0 BIL-3b]: bankBalance (stipendio accumulato, €) + perkTrainer/perkNutrition (staff personale) — migration retro-compatibile. v7: player.foot
 // 5.67.0 — TABELLONE realistico del torneo per NAZIONALI (Europeo/Mondiale): dopo il girone la fase a
@@ -11804,6 +11805,34 @@ function ThreeMatchView(props){
       if(sr.current._cutSnap||sr.current._sceneCut){sr.current._cutSnap=false;sr.current._sceneCut=false;try{camera.position.set(tPx,tPy,tPz);camLook.set(tLx,tLy,tLz);}catch(_e){}}
       camera.position.x+=(tPx-camera.position.x)*kp;camera.position.y+=(tPy-camera.position.y)*kp;camera.position.z+=(tPz-camera.position.z)*kp;
       camLook.x+=(tLx-camLook.x)*kl;camLook.y+=(tLy-camLook.y)*kl;camLook.z+=(tLz-camLook.z)*kl;
+      /* [7.226.0 #43] GUARDIA SUL QUADRO REALE. Il richiamo 7.225.0 garantisce che l'eroe stia nel quadro della
+         camera TARGET — ma la camera REALE lo insegue coi lerp (posizione kp, sguardo kl): durante uno stacco
+         d'esito col punch-in in dolly e l'eroe in sprint, la vista reale resta indietro e per ~0.5-1s l'eroe
+         sfora il bordo anche se il quadro target lo conterrebbe (misurato: rientri da ndc 1.32 e −1.12 in
+         hl_result, più un'esplosione di proiezione a 4.41 con l'eroe vicino al piano camera). Qui, DOPO i lerp,
+         la stessa matematica angolare gira sulla vista reale e CLAMPA camLook: identità finché l'eroe è dentro
+         il 94% del semiquadro (il richiamo target-level resta il regista; questa è solo la rete), correzione
+         limitata in velocità (dt-corretta) perché il caso patologico eroe-dietro-camera diventi una panoramica
+         rapida e non un colpo di frusta. Solo camLook, mai la posizione → firma golden intatta per costruzione. */
+      if(isHL&&!P.ceremony&&!P.shootout&&!replaying&&subEntryT<0&&subExitT<0&&hero&&hero.visible){
+        const _cxG=camera.position.x,_cyG=camera.position.y,_czG=camera.position.z;
+        const _dxG=hero.position.x-_cxG,_dzG=hero.position.z-_czG,_dyG=(hero.position.y+1.1)-_cyG;
+        const _lxG=camLook.x-_cxG,_lzG=camLook.z-_czG,_lyG=camLook.y-_cyG;
+        const _hlG=Math.hypot(_lxG,_lzG)||1;
+        const _tHG=Math.tan(((camera&&camera.fov)||46)*Math.PI/360);
+        const _aLG=Math.atan2(_lzG,_lxG),_aHG=Math.atan2(_dzG,_dxG);
+        let _dAG=_aHG-_aLG;while(_dAG>Math.PI)_dAG-=2*Math.PI;while(_dAG<-Math.PI)_dAG+=2*Math.PI;
+        const _aMG=Math.atan(_tHG*((camera&&camera.aspect)||0.75))*0.94;
+        if(Math.abs(_dAG)>_aMG){
+          let _corA=_dAG-Math.sign(_dAG)*_aMG*0.98;const _capA=Math.min(Math.abs(_corA),dt*2.5);_corA=Math.sign(_corA)*_capA;
+          const _a2G=_aLG+_corA;camLook.x=_cxG+Math.cos(_a2G)*_hlG;camLook.z=_czG+Math.sin(_a2G)*_hlG;}
+        const _gdG=Math.hypot(_dxG,_dzG)||1;
+        const _eLG=Math.atan2(_lyG,_hlG),_eHG=Math.atan2(_dyG,_gdG);
+        const _eMG=Math.atan(_tHG)*0.90;const _dEG=_eHG-_eLG;
+        if(Math.abs(_dEG)>_eMG){
+          let _corE=_dEG-Math.sign(_dEG)*_eMG*0.98;const _capE=Math.min(Math.abs(_corE),dt*1.8);_corE=Math.sign(_corE)*_capE;
+          camLook.y=clamp(_cyG+Math.tan(_eLG+_corE)*_hlG,0.4,26);}
+      }
       camera.lookAt(camLook.x,camLook.y,camLook.z);
 
       // ---- Meteo: caduta particelle + flash temporale ----
