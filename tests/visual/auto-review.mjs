@@ -86,17 +86,24 @@ for (const c of sel) {
   for (const ok of [true, false]) {
     n++;
     pageErr = null;
-    await page.evaluate(() => { try { window.__CPM_REC_DRAIN(); } catch (e) {} });
-    await page.evaluate(([gi, ai, okk]) => {
-      const s = window.__CPM_SITS[gi], sz = s.startZone || s.zones;
-      window.__CPM_FORCE_SIT(gi, true);
-      setTimeout(() => { try { window.__CPM_FORCE_OUTCOME = okk ? 'success' : 'fail'; window.__CPM_RESOLVE(ai); } catch (e) {} }, 420);
-    }, [c.gi, c.ai, ok]);
-    await sleep(2600);/* [calibrazione] 1.5s non bastavano: a ~6 fps headless il post-arco dell ingresso in rete veniva TAGLIATO a meta e ogni gol risultava «mai entrato». Verificato tracciando la x del pallone frame per frame. */
-    const st = await page.evaluate(() => { try { const s = window.__CPM_STATE(); return { hOn: !!s.hero.onScreen, hx: s.hero.ndc.x, bx: s.ball.x, by: s.ball.y }; } catch (e) { return null; } });
-    const fr = await page.evaluate(() => (window.__CPM_REC_DRAIN ? window.__CPM_REC_DRAIN() : []));
+    /* [7.229.0] la RISOLUZIONE va VERIFICATA, non presunta: sul primo combo a pagina fredda il RESOLVE a
+       420ms cadeva nel vuoto e la scena ferma veniva giudicata come difetto («gol senza rete» a x=spawn).
+       Si controlla che la timeline abbia registrato ActionResolved; niente risoluzione → un retry, poi ERR. */
+    let st = null, fr = [], resolved = false;
+    for (let att = 0; att < 2 && !resolved; att++) {
+      await page.evaluate(() => { try { window.__CPM_REC_DRAIN(); window.__CPM_TIMELINE_RESET && window.__CPM_TIMELINE_RESET(); } catch (e) {} });
+      await page.evaluate(([gi, ai, okk]) => {
+        window.__CPM_FORCE_SIT(gi, true);
+        setTimeout(() => { try { window.__CPM_FORCE_OUTCOME = okk ? 'success' : 'fail'; window.__CPM_RESOLVE(ai); } catch (e) {} }, 420);
+      }, [c.gi, c.ai, ok]);
+      await sleep(2600);/* [calibrazione] 1.5s non bastavano: a ~6 fps headless il post-arco dell ingresso in rete veniva TAGLIATO a meta e ogni gol risultava «mai entrato». Verificato tracciando la x del pallone frame per frame. */
+      st = await page.evaluate(() => { try { const s = window.__CPM_STATE(); return { hOn: !!s.hero.onScreen, hx: s.hero.ndc.x, hy: s.hero.ndc.y, bx: s.ball.x, by: s.ball.y }; } catch (e) { return null; } });
+      fr = await page.evaluate(() => (window.__CPM_REC_DRAIN ? window.__CPM_REC_DRAIN() : []));
+      resolved = await page.evaluate(() => { try { return window.__CPM_TIMELINE().some(e => e.type === 'ActionResolved'); } catch (e) { return false; } });
+    }
     if (pageErr) { add(c, ok, 'ERR', `errore JavaScript nella scena: ${pageErr}`); continue; }
     if (!fr.length || !st) { add(c, ok, 'ERR', 'scena non campionabile'); continue; }
+    if (!resolved) { add(c, ok, 'ERR', 'azione mai risolta (anche al retry): scena non giudicabile'); continue; }
 
     /* — AER: una giocata aerea non può avvenire con il pallone sull'erba — */
     if (c.ball === 'aerial' && /header|shot/.test(c.type)) {
@@ -110,7 +117,7 @@ for (const c of sel) {
     }
     /* — CAM: il protagonista deve stare in quadro (il difetto «non si vede l'eroe») — */
     const offN = fr.filter(f => f.h && Math.abs(f.h[0]) > 900).length; // guardia difensiva, non usata
-    if (st.hOn === false || Math.abs(st.hx) > 1) add(c, ok, 'CAM', `il protagonista è fuori inquadratura (bordo schermo ${st.hx.toFixed(2)}, il limite è 1.00)`);
+    if (st.hOn === false || Math.abs(st.hx) > 1) add(c, ok, 'CAM', `il protagonista è fuori inquadratura (ndc x ${st.hx.toFixed(2)} · y ${st.hy.toFixed(2)}, il limite è 1.00)`);
     /* — ATT: gli attori dichiarati dall'azione devono essere in scena — */
     {
       const f = fr[Math.floor(fr.length * 0.6)] || fr[fr.length - 1];
@@ -125,7 +132,18 @@ for (const c of sel) {
         f.lp.forEach((q, i) => { if (!q || i === 0 || i === 10) return; const w = W(q[0], q[1]); const d = Math.hypot(w[0] - hw[0], w[1] - hw[1]); if (i < 10) { if (d < nm) nm = d; } else if (d < no) no = d; });
         const needMate = (c.rew === 'assist') || /pass|cross|build/.test(c.type) || /dai e vai|servi|scarico|appoggio|corta/.test(c.lbl.toLowerCase());
         const needFoe = (c.type === 'dribble') || (c.ndef >= 2) || /dribbl|supera|duello|salta/.test(c.lbl.toLowerCase());
-        if (needMate && nm > 18) add(c, ok, 'ATT', `l'azione serve un compagno ma il più vicino è a ${nm.toFixed(0)} m`);
+        /* [7.229.0] una CONSEGNA (cross/corner/punizione dalla fascia) ha il compagno IN AREA, non accanto al
+           battitore: gi14 flaggava «compagno a 20m» con i runners CORRETTAMENTE schierati in area a 30u dal
+           punto di battuta — misurare la distanza dall'eroe su una battuta è anti-calcio. Per le consegne il
+           criterio diventa: almeno un compagno dentro l'area d'attacco (x≥76). */
+        const isDelivery = (/cross|corner|in area|traversone|punizione/.test(c.lbl.toLowerCase() + ' ' + c.txt.toLowerCase()) || c.type === 'cross' || c.type === 'freekick')
+          && !/rimorchio|sponda|scarico|appoggio/.test(c.lbl.toLowerCase());/* [7.229.0] lo SCARICO ARRETRATO ha il ricevente al LIMITE dell'area per definizione (il rimorchio arriva da dietro): pretendere un compagno DENTRO l'area su una sponda all'indietro è anti-calcio — per quelle azioni vale la distanza dal più vicino */
+        if (needMate) {
+          if (isDelivery) {
+            const inBox = f.lp.filter((q, i) => q && i >= 1 && i < 10 && q[0] >= 76).length;
+            if (!inBox) add(c, ok, 'ATT', `la consegna non ha NESSUN compagno in area ad attaccarla`);
+          } else if (nm > 18) add(c, ok, 'ATT', `l'azione serve un compagno ma il più vicino è a ${nm.toFixed(0)} m`);
+        }
         if (needFoe && no > 12) add(c, ok, 'ATT', `l'azione serve un avversario da superare ma il più vicino è a ${no.toFixed(0)} m`);
       }
     }
@@ -139,10 +157,12 @@ for (const c of sel) {
     const ys = fr.map(f => f.b && f.b[2]).filter(v => typeof v === 'number');
     const xs = fr.map(f => f.b && f.b[0]).filter(v => typeof v === 'number');
     if (/shot|header|penalty|freekick/.test(c.type) && ys.length) {
-      /* [calibrazione] l'apice va misurato sulla CONCLUSIONE, non sulla costruzione: il build-up ha segmenti
-         propri (un cross di costruzione arriva a ~4.9 m ed è legittimo) e includerli faceva risultare
-         «pallonetto» ogni azione che nasce da un traversone. Si guarda perciò la seconda metà della scena. */
-      const pk = Math.max(...ys.slice(Math.floor(ys.length * 0.5)));
+      /* [7.229.0 — LOB misurato sull'ARCO DI CONCLUSIONE, non più su una euristica] la «seconda metà della
+         scena» era un surrogato: con i campi arc/at del recorder l'apice si misura SOLO sui frame in cui
+         l'arco della conclusione è in volo (at>0 = post-impatto, tl spento = niente build-up). Se nessun
+         frame qualifica (finestra corta), si torna al surrogato storico. */
+      const flight = fr.filter(f => f.arc && !f.tl && typeof f.at === 'number' && f.at > 0).map(f => f.b && f.b[2]).filter(v => typeof v === 'number');
+      const pk = flight.length ? Math.max(...flight) : Math.max(...ys.slice(Math.floor(ys.length * 0.5)));
       if (pk > CROSSBAR + 1.6 && !/pallonett|cucchiaio|scavin/.test(c.lbl.toLowerCase()))
         add(c, ok, 'LOB', `la conclusione tocca ${pk.toFixed(1)} m contro una traversa di ${CROSSBAR} m — legge come un pallonetto`);
     }
@@ -163,8 +183,12 @@ for (const c of sel) {
 await browser.close(); srv.close();
 
 /* ── report nel formato dell'export del wizard ── */
-const LBL = { AER: 'palla non aerea', CAM: 'protagonista fuori quadro', ATT: 'attori assenti', TEC: 'tecnica non resa', LOB: 'pallonetto involontario ⚠️ in calibrazione', RETE: 'gol senza rete ⚠️ in calibrazione', ERR: 'errore' };
-const TRUST = new Set(['AER', 'CAM', 'ATT', 'TEC', 'ERR']);// gli altri restano sospetti finché non superano la controprova
+const LBL = { AER: 'palla non aerea', CAM: 'protagonista fuori quadro', ATT: 'attori assenti', TEC: 'tecnica non resa', LOB: 'pallonetto involontario', RETE: 'gol senza rete', ERR: 'errore' };
+/* [7.229.0] RETE esce dalla calibrazione: i falsi erano DUE artefatti ora spiegati e chiusi — la finestra di
+   campionamento che tagliava il volo (criterio window-aware coi campi arc/tl/pa) e __CPM_FORCE_OUTCOME mai
+   consumato sotto cpmtest (le righe «RIUSCITO» giocavano il roll naturale, spesso un fallimento → deflect
+   scambiato per «gol senza rete»). Controprova: gi0/gi8 forzati a successo volano e attraversano la linea. */
+const TRUST = new Set(['AER', 'CAM', 'ATT', 'TEC', 'RETE', 'LOB', 'ERR']);/* [7.229.0] anche LOB è promosso: l'apice ora si misura sui SOLI frame dell'arco di conclusione in volo (arc attivo, at>0, executor spento) — le altezze del build-up e dei post-archi non inquinano più la misura */
 const byCode = {};
 for (const r of rows) (byCode[r.code] = byCode[r.code] || []).push(r);
 const firm = rows.filter(r => TRUST.has(r.code)), susp = rows.filter(r => !TRUST.has(r.code));
