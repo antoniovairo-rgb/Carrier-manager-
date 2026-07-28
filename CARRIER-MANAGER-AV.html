@@ -3931,7 +3931,8 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="7.236.0"; // [7.236.0 #53 — batch PO «L'eroe compare e scompare» gi8/12/21] L'EROE NON SI TELEPORTA PIU: misurato col trap per-frame DBG51, durante il build-up dell'executor il bersaglio della timeline correva a ~25 u/s contro il cap eroe di 9.2 → il gap superava la soglia «cut» di 12u e l'eroe si TELEPORTAVA sul pallone, poi fireConclusion ri-ancorava il bersaglio allo spot d'apertura → TELEPORT di ritorno (doppio lampo deterministico). Tre fix: (1) in animOne il cut di scena e una DISCONTINUITA DEL BERSAGLIO (salto >12u/frame), mai un gap di inseguimento — oltre 6u di ritardo l'eroe passa allo SCATTO 13 u/s; (2) pavimento di velocita umana (~11 u/s) sulle durate dei segmenti di conduzione HERO→HERO (solo al consumo executor, timeline pura intatta); (3) durante il build-up l'executor e l'UNICO driver dell'eroe (via il doppio drive che lo teneva fermo mentre la palla scappava = il «fantasma») e la conclusione si ANCORA al punto d'arrivo del build-up (sr._tlHeroEnd, chiave di scena, follow-through dimezzato). Misura prima→dopo: salto max per-frame 16-31u → 5.15u; l'eroe porta palla fino al punto del tiro e conclude LI (fogli-provini gi21/gi12/gi8). +strumentazione permanente: trappola salti eroe nel recorder (__CPM_REC).
+const GAME_VERSION="7.237.0"; // [7.237.0 #50+#52 — chiusura direttiva PO «vai di chiusura 50 e 52»] LA REGIA HA UN PASSAGGIO DI SOGGETTO + IL CROSS NON ASPETTA. (#50) misurato su gi15 «punizione dalla fascia» FALLITA (palla fuori quadro in 8/10 campioni di volo, ndc fino a -22, look z=42-46 FUORI DAL CAMPO): il colpevole era il RICHIAMO-EROE (7.225/7.226) che dopo la battuta continuava a trascinare l'asse ottico sul battitore rimasto sulla fascia mentre la palla volava in area. Nella regia vera il protagonista e il soggetto FINCHE E NELLA GIOCATA: quando la palla se n'e andata lontana (>10u world, solo hl_result) il soggetto diventa LA PALLA — i richiami-eroe cedono e un RICHIAMO-PALLA gemello (target-level + guardia real-view rate-capped) tiene il volo in quadro. Misura prima→dopo su gi15: 8/10→0 fuori quadro su TUTTE le 6 combinazioni; sweep gi8/21/6/17 (24 combo): 0 fuori quadro in volo. (#52) misurato su gi6 corner: palla CONGELATA a mezz'aria ~520ms (mv 0.00) tra fine consegna e arco d'incornata (finestra del wind-up) → la consegna aerea ora arriva ~3u prima del contatto e PLANA verso il punto (avvicinamento esponenziale, blocco _aerIn52): quota in moto continuo, mai sospesa. +strumentazione: __CPM_STATE espone camLook (senza, «quale regia possiede la camera» resta una deduzione).
+// [7.236.0 #53 — batch PO «L'eroe compare e scompare» gi8/12/21] L'EROE NON SI TELEPORTA PIU: misurato col trap per-frame DBG51, durante il build-up dell'executor il bersaglio della timeline correva a ~25 u/s contro il cap eroe di 9.2 → il gap superava la soglia «cut» di 12u e l'eroe si TELEPORTAVA sul pallone, poi fireConclusion ri-ancorava il bersaglio allo spot d'apertura → TELEPORT di ritorno (doppio lampo deterministico). Tre fix: (1) in animOne il cut di scena e una DISCONTINUITA DEL BERSAGLIO (salto >12u/frame), mai un gap di inseguimento — oltre 6u di ritardo l'eroe passa allo SCATTO 13 u/s; (2) pavimento di velocita umana (~11 u/s) sulle durate dei segmenti di conduzione HERO→HERO (solo al consumo executor, timeline pura intatta); (3) durante il build-up l'executor e l'UNICO driver dell'eroe (via il doppio drive che lo teneva fermo mentre la palla scappava = il «fantasma») e la conclusione si ANCORA al punto d'arrivo del build-up (sr._tlHeroEnd, chiave di scena, follow-through dimezzato). Misura prima→dopo: salto max per-frame 16-31u → 5.15u; l'eroe porta palla fino al punto del tiro e conclude LI (fogli-provini gi21/gi12/gi8). +strumentazione permanente: trappola salti eroe nel recorder (__CPM_REC).
 // [7.235.0 #51 — batch PO «il dribbling/la sterzata non si vede» sui FALLITI] IL DRIBBLING FALLITO E UN DUELLO, NON UN RIMBALZINO. Misurato wall-clock: il fail della famiglia dribble era un tocco di 4u in 0.34s (arco a ~220-410ms, tutto spento a ~1.1s) col verdetto a 1200ms che copriva la coda — sotto la soglia di leggibilita a 60fps. Ora OGNI dribbling fallito (netto/sterzata/doppio passo/elastico/tunnel/finta) usa il trattamento COLLAUDATO del BALL_CARRY fallito: niente swing di tiro, il difensore piu vicino entra in SCIVOLATA e PORTA VIA il pallone (arco alla sua posizione) — il cambio di possesso si vede; e il verdetto dei dribbling falliti aspetta il duello (revealMs 1200→2100, dentro il cap [1800,4000] del check post-highlight). Verificato sui fogli-provini gi18/19/20 FALLITI: scivolata visibile accanto all eroe, palla che rotola al difensore, overlay DOPO l azione. + collaudo PO con screenshot «rendi piu trasparente lo sfondo nero»: le barre del ReviewWizard (solo sviluppo) passano da 0.94/0.86 a ~0.50 di opacita con blur leggero e text-shadow — la scena 3D si vede anche sotto i pannelli.
 // [7.234.0 batch PO su 7.233 — «l eroe non segue il pallone, sembra un fantasma» ×6 + «la conclusione non si vede» ×11] IL TEMPO E MISURATO, NON PRESUNTO. I fogli-provini a ~7fps sovracampionano: cio che a me appariva leggibile, a 60fps sul device e un lampo. Nuova misura WALL-CLOCK degli stati (indipendente dagli fps): (1) la conclusione della CATENA in revisione arrivava a 6.5-7s dal tap — il PO aveva gia votato ed era passato oltre: ora attesa 2.6→1.1s, auto-risoluzione 1.4→0.7s, intro del secondo tempo dimezzata (1.2s) e build-up dell executor SALTATO sulle sole sit di catena in revisione (il primo tempo e appena stato visto; nuovo prop hlChain) → conclusione a 4.5s dal tap (−36%%, misurato). (2) FOLLOW-RUN dell eroe: dopo il gesto restava una STATUA mentre la giocata proseguiva (misurati build-up di 1.4-3.7s con l eroe congelato dopo tacco/assist) — ora da fine gesto il suo bersaglio scivola VERSO la palla logica (45%%/35%% della distanza, rampa morbida, solo azioni offensive di gioco aperto, deterministico): nel foglio gi26 l eroe accompagna il tacco fino all area. Restano tracciati: micro-azioni fallite troppo veloci (#51, dribbling in 0.8s sotto l overlay — serve durata minima leggibile), palla sospesa pre-stacco su gi6 (#52), regia d esito della punizione dalla fascia (#50).
 // [7.233.0 #50 parziale — revisione percettiva completa dei 22 fogli-provini] LA PUNIZIONE DALLA FASCIA SI LEGGE IN BATTUTA. Revisione a vista di TUTTE le combinazioni «da riverificare» (fogli-provini in condizioni wizard): 19 promosse — i fix 7.226-7.232 si vedono nei frame (GK dentro la porta, lancio→assist→gol, scia del giro che curva, scivolate e chiusure leggibili, catene col secondo tempo in quadro) — 1 borderline (gi7: coordinazione palla→stacco), 2 bocciate vere: gi15 k0/k2, regia col maxischermo in quadro. Fix di questa release: la camera del set-piece era UNICA e pensata per la palla centrale (asse cLz=bz*0.5) — sulla fascia l asse finiva ~13u più interno del battitore (eroe sul bordo, tribuna al centro). Ora la punizione dalla FASCIA usa l inquadratura collaudata del cross dal secondo palo (laterale alta, asse verso il lato opposto), ancorata alla fascia STATICA del battitore (P.playerY — il primo tentativo leggeva la z viva della palla e il ramo flippava a metà volo, misurato cam z 26→12 in-scena; il secondo «camera esterna + asse interno» riempiva il viewport di spalti: entrambi misurati e buttati). MISURATO: lettura e consegna del cross basso ora leggibili (battitore+barriera+scia nei frame f0-f2). RESIDUO APERTO (#50): all ESITO gli override di conclusione pre-esistenti (fuoco porta/portiere) da quella fascia inquadrano ancora la tribuna a tilt basso — serve una regia d esito dedicata alla consegna da fermo, da strumentare con il vettore di sguardo prima di toccare.
@@ -9870,6 +9871,7 @@ function ThreeMatchView(props){
         const c2=camera.position; const pr0=propsRef.current||{};
         return { ok:true, phase:pr0.matchPhase||null, clock:pr0.matchClock||null,
           camera:{x:+c2.x.toFixed(2),y:+c2.y.toFixed(2),z:+c2.z.toFixed(2),abovePitch:c2.y>0.5},
+          camLook:(function(){try{return{x:+camLook.x.toFixed(1),y:+camLook.y.toFixed(1),z:+camLook.z.toFixed(1)};}catch(_e){return null;}})(),/* [7.237.0 #50 strumentazione] senza il punto guardato REALE, «quale regia possiede la camera» resta una deduzione — campo additivo, la firma golden legge solo i campi che già leggeva */
           // target LOGICI (deterministici con reseed) — distinti dalla posa mesh che lerpa
           heroTarget:{x:pr0.playerX==null?null:+(+pr0.playerX).toFixed(1),y:pr0.playerY==null?null:+(+pr0.playerY).toFixed(1)},
           ballTarget:{x:pr0.ballX==null?null:+(+pr0.ballX).toFixed(1),y:pr0.ballY==null?null:+(+pr0.ballY).toFixed(1)},
@@ -11347,7 +11349,18 @@ function ThreeMatchView(props){
              palla in aria → a terra → e solo dopo l arco. Qui la costruzione rispetta lo stato-palla. */
           const _aerTL=aerialContactY(P,true,false);
           let acc=0,bi=0; for(;bi<tlBuildN;bi++){if(tlT<acc+tlSeg[bi].dur)break;acc+=tlSeg[bi].dur;}
-          if(bi>=tlBuildN){const last=tlSeg[tlBuildN-1];ball.position.x=G2X(last.to[0]);ball.position.z=G2Z(last.to[1]);ball.position.y=(_aerTL!=null?_aerTL:0.65);/* [7.222.0] su una situazione AEREA il build-up CONSEGNA il pallone alla quota del colpo: depositarlo a 0.65 era la causa del «la palla sbatte a terra e poi sale» */
+          if(bi>=tlBuildN){const last=tlSeg[tlBuildN-1];
+            if(_aerTL!=null){
+              /* [7.237.0 #52 misurato su gi6: palla CONGELATA a mezz'aria ~520ms (mv 0.00) tra fine consegna
+                 e lancio dell'arco d'incornata — la finestra del wind-up del gesto] UN CROSS NON ASPETTA:
+                 l'ultimo tratto della parabola si consuma DURANTE il wind-up. La palla viene consegnata
+                 ~3u PRIMA del punto di contatto (e ~1u più alta) e plana verso di esso con avvicinamento
+                 esponenziale (blocco _aerIn52 sotto) — in moto fino all'impatto, mai sospesa. */
+              const _lfx52=G2X(last.from[0]),_lfz52=G2Z(last.from[1]),_ltx52=G2X(last.to[0]),_ltz52=G2Z(last.to[1]);
+              const _ddx52=_ltx52-_lfx52,_ddz52=_ltz52-_lfz52,_dl52=Math.hypot(_ddx52,_ddz52)||1;
+              ball.position.x=_ltx52-_ddx52/_dl52*3.0;ball.position.z=_ltz52-_ddz52/_dl52*3.0;ball.position.y=_aerTL+1.0;
+              sr.current._aerIn52={x:_ltx52,z:_ltz52,y:_aerTL};
+            } else {ball.position.x=G2X(last.to[0]);ball.position.z=G2Z(last.to[1]);ball.position.y=0.65;}/* [7.222.0] su una situazione AEREA il build-up CONSEGNA il pallone alla quota del colpo: depositarlo a 0.65 era la causa del «la palla sbatte a terra e poi sale» */
             /* [7.236.0 batch «compare e scompare»] il build-up ha PORTATO AVANTI l'eroe (fin sotto porta sul
                burst): memorizzare il punto d'arrivo — la CINE-APPROACH della conclusione deve ancorarsi QUI,
                non a P.playerX (lo spot d'apertura, 12-16u più indietro), o l'eroe si teleporta all'indietro
@@ -11373,6 +11386,16 @@ function ThreeMatchView(props){
               if(_hm){ball.position.x=_hm.position.x+1.3;ball.position.z=_hm.position.z;ball.position.y=0.42;}
             }
           }
+        }
+        /* [7.237.0 #52] PLANATA D'ARRIVO: il tratto finale della consegna aerea vive durante il wind-up del
+           gesto — avvicinamento esponenziale al punto di contatto (a 0.5s resta ~1u, a 1s ~0.3u: sempre in
+           moto percettibile, mai parcheggiata). L'arco della conclusione la consuma; lo stacco/fine esito la azzera. */
+        if(sr.current._aerIn52){
+          if(ballArcActive||hlPostArcType||!isResult)sr.current._aerIn52=null;/* l'arco o il post-arco la consumano: il glide non deve mai contendersi la palla con un altro driver */
+          else if(!tlOn&&dt>0){const _g52=sr.current._aerIn52;
+            ball.position.x+=(_g52.x-ball.position.x)*Math.min(aDt*2.2,1);
+            ball.position.z+=(_g52.z-ball.position.z)*Math.min(aDt*2.2,1);
+            ball.position.y+=(_g52.y-ball.position.y)*Math.min(aDt*2.6,1);}
         }
         if(isHL&&preActionT>=0)preActionT+=dt; // CINE-4: avanza timer pre-action
         if(_curPh==="hl_choose"&&_chooseT>=0)_chooseT+=dt; // FREEZE #2: avanza il timer della fase di lettura
@@ -11911,7 +11934,16 @@ function ThreeMatchView(props){
          cablati) e, se sfora il quadro utile, si RUOTA il punto guardato quel tanto che basta a riportarlo
          dentro — yaw e pitch, mai la posizione della camera (che resta della regia per-tipo, ed è ciò che la
          firma golden osserva via abovePitch). Il lerp del lookAt smussa la correzione: niente colpi di frusta. */
-      if(isHL&&!P.ceremony&&!P.shootout&&!replaying&&subEntryT<0&&subExitT<0&&hero&&hero.visible){
+      /* [7.237.0 #50 — ricostruito dai numeri: look z misurato 42-46 = fuori dal campo] IL PASSAGGIO DI
+         SOGGETTO. Dopo una consegna (punizione dalla fascia, lancio, tiro respinto) il richiamo-eroe
+         continuava a trascinare l'asse ottico sul BATTITORE rimasto sulla fascia — angolarmente estremo
+         rispetto alla camera — e il quadro finiva sulla tribuna mentre la palla volava in area dall'altra
+         parte (gi15 FALLITO: palla fuori quadro in 8/10 campioni di volo, ndc fino a −22). Nella regia
+         vera il protagonista resta il soggetto FINCHÉ È NELLA GIOCATA: quando la palla se n'è andata
+         lontana (>18u world), il soggetto diventa LA PALLA — i richiami-eroe (target 7.225 e vista reale
+         7.226) cedono, e la guardia-palla (sotto) tiene il volo in quadro. */
+      const _subjBall50=isResult&&Math.hypot(bx-hx,bz-hz)>10;/* soglia 10u: a 18 la panoramica partiva a volo già a metà (misurati ancora 3-4 campioni fuori quadro nel primo secondo); sotto i 10u palla ed eroe stanno comunque nello stesso quadro */
+      if(isHL&&!_subjBall50&&!P.ceremony&&!P.shootout&&!replaying&&subEntryT<0&&subExitT<0&&hero&&hero.visible){
         const _dxC=hero.position.x-tPx,_dzC=hero.position.z-tPz,_dyC=(hero.position.y+1.1)-tPy;
         const _lxC=tLx-tPx,_lzC=tLz-tPz,_lyC=tLy-tPy;
         const _hlC=Math.hypot(_lxC,_lzC)||1;
@@ -11925,6 +11957,23 @@ function ThreeMatchView(props){
         const _elMax=Math.atan(_tanHV)*(isResult?0.72:0.62);
         const _dEl=_elH-_elL;
         if(Math.abs(_dEl)>_elMax){const _el2=_elL+(_dEl-Math.sign(_dEl)*_elMax*0.9);tLy=clamp(tPy+Math.tan(_el2)*_hlC,0.4,26);}
+      }
+      /* [7.237.0 #50] RICHIAMO-PALLA A LIVELLO TARGET: quando il soggetto è passato alla palla, la stessa
+         rotazione del richiamo 7.225 gira sul PALLONE — così il lerp del lookAt lavora A FAVORE della
+         panoramica (la sola guardia real-view, rate-capped, combatteva il lerp e il rientro tardava). */
+      if(_subjBall50&&!P.ceremony&&!P.shootout&&!replaying){
+        const _dxD=ball.position.x-tPx,_dzD=ball.position.z-tPz,_dyD=(ball.position.y+0.2)-tPy;
+        const _lxD=tLx-tPx,_lzD=tLz-tPz,_lyD=tLy-tPy;
+        const _hlD=Math.hypot(_lxD,_lzD)||1;
+        const _tanHD=Math.tan(((camera&&camera.fov)||46)*Math.PI/360);
+        const _azLD=Math.atan2(_lzD,_lxD),_azBD=Math.atan2(_dzD,_dxD);
+        let _dAD=_azBD-_azLD;while(_dAD>Math.PI)_dAD-=2*Math.PI;while(_dAD<-Math.PI)_dAD+=2*Math.PI;
+        const _azMD=Math.atan(_tanHD*((camera&&camera.aspect)||0.75))*0.85;
+        if(Math.abs(_dAD)>_azMD){const _az2D=_azLD+(_dAD-Math.sign(_dAD)*_azMD*0.92);tLx=tPx+Math.cos(_az2D)*_hlD;tLz=tPz+Math.sin(_az2D)*_hlD;}
+        const _gdD=Math.hypot(_dxD,_dzD)||1;
+        const _elLD=Math.atan2(_lyD,_hlD),_elBD=Math.atan2(_dyD,_gdD);
+        const _elMD=Math.atan(_tanHD)*0.80;const _dED=_elBD-_elLD;
+        if(Math.abs(_dED)>_elMD){const _el2D=_elLD+(_dED-Math.sign(_dED)*_elMD*0.9);tLy=clamp(tPy+Math.tan(_el2D)*_hlD,0.4,26);}
       }
       // Sprint 3D-11A: camera shake al gol — rumore sul target, decade in ~0.4s
       if(shakePow>0.01){tPx+=Math.sin(now*24)*shakePow*0.7;tPz+=Math.cos(now*18)*shakePow*0.7;shakePow*=(1-dt*6);}else shakePow=0;
@@ -11941,7 +11990,8 @@ function ThreeMatchView(props){
          il 94% del semiquadro (il richiamo target-level resta il regista; questa è solo la rete), correzione
          limitata in velocità (dt-corretta) perché il caso patologico eroe-dietro-camera diventi una panoramica
          rapida e non un colpo di frusta. Solo camLook, mai la posizione → firma golden intatta per costruzione. */
-      if(isHL&&!P.ceremony&&!P.shootout&&!replaying&&subEntryT<0&&subExitT<0&&hero&&hero.visible){
+      let _gCor50=false;
+      if(isHL&&!_subjBall50&&!P.ceremony&&!P.shootout&&!replaying&&subEntryT<0&&subExitT<0&&hero&&hero.visible){/* [7.237.0 #50] col soggetto passato alla palla anche la guardia reale sull'eroe cede */
         const _cxG=camera.position.x,_cyG=camera.position.y,_czG=camera.position.z;
         const _dxG=hero.position.x-_cxG,_dzG=hero.position.z-_czG,_dyG=(hero.position.y+1.1)-_cyG;
         const _lxG=camLook.x-_cxG,_lzG=camLook.z-_czG,_lyG=camLook.y-_cyG;
@@ -11950,15 +12000,41 @@ function ThreeMatchView(props){
         const _aLG=Math.atan2(_lzG,_lxG),_aHG=Math.atan2(_dzG,_dxG);
         let _dAG=_aHG-_aLG;while(_dAG>Math.PI)_dAG-=2*Math.PI;while(_dAG<-Math.PI)_dAG+=2*Math.PI;
         const _aMG=Math.atan(_tHG*((camera&&camera.aspect)||0.75))*0.94;
-        if(Math.abs(_dAG)>_aMG){
+        if(Math.abs(_dAG)>_aMG){_gCor50=true;
           let _corA=_dAG-Math.sign(_dAG)*_aMG*0.98;const _capA=Math.min(Math.abs(_corA),dt*2.5);_corA=Math.sign(_corA)*_capA;
           const _a2G=_aLG+_corA;camLook.x=_cxG+Math.cos(_a2G)*_hlG;camLook.z=_czG+Math.sin(_a2G)*_hlG;}
         const _gdG=Math.hypot(_dxG,_dzG)||1;
         const _eLG=Math.atan2(_lyG,_hlG),_eHG=Math.atan2(_dyG,_gdG);
         const _eMG=Math.atan(_tHG)*0.90;const _dEG=_eHG-_eLG;
-        if(Math.abs(_dEG)>_eMG){
+        if(Math.abs(_dEG)>_eMG){_gCor50=true;
           let _corE=_dEG-Math.sign(_dEG)*_eMG*0.98;const _capE=Math.min(Math.abs(_corE),dt*1.8);_corE=Math.sign(_corE)*_capE;
           camLook.y=clamp(_cyG+Math.tan(_eLG+_corE)*_hlG,0.4,26);}
+      }
+      /* [7.237.0 #50 misurato su gi15 «punizione dalla fascia» FALLITA: palla fuori quadro in 8/10 campioni
+         di volo, ndc x fino a −22 — la regia del punto di battuta non segue il pallone respinto verso l'area]
+         LA REGIA NON PERDE MAI IL PALLONE DURANTE L'ESITO: stessa matematica angolare della guardia-eroe
+         (7.226) ma sul PALLONE, attiva solo in hl_result — identità finché la palla è dentro il 97% del
+         semiquadro, panoramica rate-capped quando lo sfora (mai un colpo di frusta). L'eroe ha PRIORITÀ:
+         se la guardia-eroe ha corretto in questo frame, quella palla aspetta il frame dopo (niente tiro
+         alla fune). Solo camLook, mai la posizione camera → firma golden intatta per costruzione. */
+      if(isResult&&!_gCor50&&!P.ceremony&&!P.shootout&&!replaying){
+        const _cxB=camera.position.x,_cyB=camera.position.y,_czB=camera.position.z;
+        const _dxB=ball.position.x-_cxB,_dzB=ball.position.z-_czB,_dyB=(ball.position.y+0.2)-_cyB;
+        const _lxB=camLook.x-_cxB,_lzB=camLook.z-_czB,_lyB=camLook.y-_cyB;
+        const _hlB=Math.hypot(_lxB,_lzB)||1;
+        const _tHB=Math.tan(((camera&&camera.fov)||46)*Math.PI/360);
+        const _aLB=Math.atan2(_lzB,_lxB),_aBB=Math.atan2(_dzB,_dxB);
+        let _dAB=_aBB-_aLB;while(_dAB>Math.PI)_dAB-=2*Math.PI;while(_dAB<-Math.PI)_dAB+=2*Math.PI;
+        const _aMB=Math.atan(_tHB*((camera&&camera.aspect)||0.75))*0.97;
+        if(Math.abs(_dAB)>_aMB){
+          let _corB=_dAB-Math.sign(_dAB)*_aMB*0.98;const _capB=Math.min(Math.abs(_corB),dt*2.8);_corB=Math.sign(_corB)*_capB;
+          const _a2B=_aLB+_corB;camLook.x=_cxB+Math.cos(_a2B)*_hlB;camLook.z=_czB+Math.sin(_a2B)*_hlB;}
+        const _gdB=Math.hypot(_dxB,_dzB)||1;
+        const _eLB=Math.atan2(_lyB,_hlB),_eBB=Math.atan2(_dyB,_gdB);
+        const _eMB=Math.atan(_tHB)*0.92;const _dEB=_eBB-_eLB;
+        if(Math.abs(_dEB)>_eMB){
+          let _corE2=_dEB-Math.sign(_dEB)*_eMB*0.98;const _capE2=Math.min(Math.abs(_corE2),dt*2.0);_corE2=Math.sign(_corE2)*_capE2;
+          camLook.y=clamp(_cyB+Math.tan(_eLB+_corE2)*_hlB,0.4,26);}
       }
       camera.lookAt(camLook.x,camLook.y,camLook.z);
 
