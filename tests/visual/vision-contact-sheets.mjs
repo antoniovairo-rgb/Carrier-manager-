@@ -27,7 +27,8 @@ const b = await launchBrowser();
 const pg = await b.newPage({ viewport: { width: 390, height: 700 } });
 await installCdnRoutes(pg);
 pg.on('pageerror', e => console.log('PE', String(e.message).slice(0, 120)));
-await pg.addInitScript(() => { window.__CPM_GLB = false; window.__CPM_REVIEW = true; try { localStorage.setItem('cpm-intro-seen', '1'); } catch (e) {} });
+const GLB_ON = process.env.VS_GLB === '1';/* [7.245.0] VS_GLB=1 → fogli col CH38 (la vista del PO): le pose procedurali sono nascoste sotto GLB — verificare i gesti SOLO GLB-OFF ha fatto sfuggire un'intera classe di bocciature */
+await pg.addInitScript(([g]) => { window.__CPM_GLB = g; window.__CPM_REVIEW = true; try { localStorage.setItem('cpm-intro-seen', '1'); } catch (e) {} }, [GLB_ON]);
 await pg.goto(`http://127.0.0.1:${port}/CARRIER-MANAGER-AV.html`, { waitUntil: 'load', timeout: 90000 });
 await pg.waitForFunction(() => { const r = document.getElementById('root'); return r && r.children.length > 0; }, { timeout: 60000 });
 const click = async rx => { try { await pg.getByText(rx).first().click({ timeout: 5000, noWaitAfter: true }); return true; } catch (e) { return false; } };
@@ -54,7 +55,7 @@ for (const c of COMBOS) {
   const frames = [await canvasShot(pg)];// f0 = lettura (hl_choose)
   await pg.evaluate(([k, ok]) => { window.__CPM_FORCE_OUTCOME = ok ? 'success' : 'fail'; window.__CPM_RESOLVE(k); }, [c.k, c.ok]);
   for (let i = 1; i < N; i++) { await sleep(MS); frames.push(await canvasShot(pg)); }
-  const name = `gi${c.gi}_k${c.k}_${c.ok ? 'ok' : 'fail'}.png`;
+  const name = `gi${c.gi}_k${c.k}_${c.ok ? 'ok' : 'fail'}${GLB_ON ? '_glb' : ''}.png`;
   fs.writeFileSync(OUTDIR + name, grid(frames, 4));
   console.log(`${name} · «${meta.txt}» × «${meta.lbl}» × ${c.ok ? 'RIUSCITO' : 'FALLITO'} · ${N} frame`);
 }
