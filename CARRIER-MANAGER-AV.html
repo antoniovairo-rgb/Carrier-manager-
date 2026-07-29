@@ -3945,7 +3945,8 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="7.242.0"; // [7.242.0 #56 chiusura — batch PO gi31-35 «Non si vede il gesto tecnico specifico» + verdetto difensivo] IL GESTO DIFENSIVO HA UNA FAMIGLIA. Ogni azione difensiva derivava `tackle/-` senza variante: la posa era UNA (scivolata) per pressing, anticipo, muro e deviazione. Tre famiglie STRUTTURALI congelate in factory (patto chainOn/gkCall — la regex vive solo in S()): slide (scivolata/disperato, posa storica a terra) · lunge (intercetto/anticipo/deviazione/muro: AFFONDO in piedi, gamba tesa e braccia larghe) · press (pressing/finta/recupero/copertura: ADDOSSO al portatore, busto avanti, braccio a schermare, tocco di punta). Prop hlDefGesto → pose sw-scalate auto-azzeranti nel blocco CINE-VAR; fallito = perdita di equilibrio comune. + VERDETTO DIFENSIVO RITARDATO (pattern #51): con l inbound 7.239 il pallone doveva ancora ARRIVARE quando usciva l overlay (misurato ~0.9s su gi31) → revealMs def 2250 con inbound / 1900 senza. Verificato sui fogli-provini: gi34 pressing = eroe addosso al portatore che vacilla, verdetto dopo il contatto.
+const GAME_VERSION="7.243.0"; // [7.243.0 #57 — direttiva PO «Elimina audio ed effetti sonori dal wizard!» + batch su 7.242] (1) WIZARD MUTO: SILENT di AudioMgr da costante a FUNZIONE (il flag __CPM_REVIEW nasce entrando in revisione, non al boot → va letto a ogni chiamata) + sospensione dell AudioContext all ingresso in revisione e ripresa all uscita (setSuspended sganciato dal gate SILENT: sotto test ctx non nasce mai → safe). Copre musica menu gia in corso, sfx, folla, fischietto, campioni. (2) IL GESTO TECNICO SI VEDE ANCHE SUI FALLITI (6/7 bocciature del batch): le pose famiglia slide/lunge/press valevano solo su successo — nel calcio la scivolata fallita e comunque una scivolata: la posa vale per entrambi gli esiti, il fallimento aggiunge lo sbilanciamento (yaw wobble) e l esito lo racconta la palla che prosegue. Verificato: gi31 FALLITO = scivolata a terra + «FALLO!» dopo il tentativo. (3) gi30 «compagno che riceve e conclude»: arrivo a 3.4u (misurato: l inseguimento tocca il minimo a ~3.6 e ondeggia — il tocco parte sul passo piu vicino, conclusione di prima) e fallback 3.0→2.6s.
+// [7.242.0 #56 chiusura — batch PO gi31-35 «Non si vede il gesto tecnico specifico» + verdetto difensivo] IL GESTO DIFENSIVO HA UNA FAMIGLIA. Ogni azione difensiva derivava `tackle/-` senza variante: la posa era UNA (scivolata) per pressing, anticipo, muro e deviazione. Tre famiglie STRUTTURALI congelate in factory (patto chainOn/gkCall — la regex vive solo in S()): slide (scivolata/disperato, posa storica a terra) · lunge (intercetto/anticipo/deviazione/muro: AFFONDO in piedi, gamba tesa e braccia larghe) · press (pressing/finta/recupero/copertura: ADDOSSO al portatore, busto avanti, braccio a schermare, tocco di punta). Prop hlDefGesto → pose sw-scalate auto-azzeranti nel blocco CINE-VAR; fallito = perdita di equilibrio comune. + VERDETTO DIFENSIVO RITARDATO (pattern #51): con l inbound 7.239 il pallone doveva ancora ARRIVARE quando usciva l overlay (misurato ~0.9s su gi31) → revealMs def 2250 con inbound / 1900 senza. Verificato sui fogli-provini: gi34 pressing = eroe addosso al portatore che vacilla, verdetto dopo il contatto.
 // [7.241.0 #56 batch PO gi28/29/37 «Non si vede il compagno che conclude»] FRENA PER GIRARTI — il difetto NON era la scelta del ricevente ne la transizione: attribuzione per-frame (AR53/54: oth=0, own>0, _ctx GIA sulla palla) → era il MODELLO DI STERZATA di animOne. Il ricevente lanciato sulla corsa profonda, con il filtrante atterrato ALLE SPALLE, navigava un inversione a U larga 20u e lunga secondi: il turn-rate e ∝1/velocita e la magnitudine della velocita-obiettivo restava PIENA nella direzione sbagliata. Ora quando la direzione voluta supera ~60° da quella di marcia la velocita-obiettivo cala col disallineamento (fino a 0.18×): la frenata passa dal limitatore di accelerazione, la velocita scende, il turn-rate risale → due passi di frenata e pivot, come in campo. Misurato prima→dopo: gi29 ricevente da divergenza a 24u → ARRIVO a 1.3u (t 0.41) con palla che parte con lui; gi37 2.0u; gi28 convergenza stretta. Vale per TUTTI i 21 off-ball (fisica piu vera anche su pressing/rientri — plausibile beneficio sul cluster difensivo «non aggancia il pallone»). +selezione demergenza del ricevente nel driver assist_recv (ogni scena ha SEMPRE un uomo sulla palla). ⚠️ modello core: gate 14/14 obbligatorio + realismo da riverificare sui baseline.
 // [7.240.0 #55B batch PO gi25/gi26 «Non si vede il compagno che riceve (e tira)» + gi43/28/29/30 storici] IL COMPAGNO ARRIVA SUL PALLONE PRIMA DI CALCIARE. Diagnosi strumentata (probe AR51/AR52 in-page, solo __CPM_REC): la catena assist_recv era VIVA e corretta — il primo sospetto «catena congelata» era un artefatto del campione stantio — ma (a) la transizione ricezione→tiro era a TEMPO FISSO 0.42s col ricevente ancora a 8-15u → il pallone volava in porta DA SOLO col gesto di calcio a vuoto; (b) il puntatore del ricevente (passTargetMesh) veniva AZZERATO all'avvio di assist_recv in 2 dei 3 siti (pass+assist = gi25 filtrante · tacco/scarico = gi26) e il driver, che scandiva solo il gesto _rcvT (0.52s di vita), restava senza nessuno da far correre. Fix: puntatore PERSISTENTE su tutti i siti (+_runToX fresco), fallback del driver sul puntatore, transizione ALL'ARRIVO (<2.2u, minimo 0.30s) con fallback 3.0s. Misurato prima→dopo: ricevente a 8-9u dalla palla al momento del tiro → 3.5-4u col gesto agganciato; gi26 duello leggibile sul foglio-provini; gi25 in wizard chiude con la catena e il gol.
 // [7.239.0 #55 batch PO gi45 «Non si vede la parata/il tackle» + cluster storico gi31-36] LA SCENA DIFENSIVA HA UN PRIMA. La minaccia era IMPLICITA: la palla nasceva accanto all'eroe e si spostava di 4u — nessun intervento poteva leggersi, perche non c'era nulla in arrivo da fermare. Ora due famiglie STRUTTURALI ricevono il pallone avversario IN ARRIVO prima del gesto (pre-fase via executor, un segmento manuale sorgente-avversaria→punto di contatto): bs aerial (cross/lancio/corner avversario → arco alto, gi44/36) e maxMoves===0 (tiro in arrivo sulla linea → sassata rasa, gi45/33). La famiglia «portatore» (mm≥1, gi31/34) ha gia il tackle-carrier e resta com'e. Il segnale viaggia su _defTraj.inbound (campi derivati, mai testo a runtime); sotto ?cpmtest=1 la pre-fase si salta → gate identico. Verificato sui fogli-provini: gi45 k1 pallone in volo → tuffo dell'eroe sulla linea → «CHE PARATA!» DOPO l'azione; gi44 k0 FALLITO = cross in arrivo → liscio → palla nella PROPRIA porta con «GOL SUBITO».
@@ -5682,7 +5683,7 @@ const safeLS={get(k){try{return localStorage.getItem(k);}catch(_e){return null;}
    in try/catch; AudioContext creato/resumed SOLO al primo gesto utente (autoplay policy).
    ============================================================================ */
 const AudioMgr=(function(){
-  const SILENT=(typeof _CPM_TEST!=='undefined'&&_CPM_TEST)||(typeof _SIT_TEST!=='undefined'&&_SIT_TEST);
+  const SILENT=()=>((typeof _CPM_TEST!=='undefined'&&_CPM_TEST)||(typeof _SIT_TEST!=='undefined'&&_SIT_TEST)||(typeof window!=='undefined'&&!!window.__CPM_REVIEW));/* [7.243.0 direttiva PO «Elimina audio ed effetti sonori dal wizard!»] FUNZIONE, non costante: il flag __CPM_REVIEW nasce quando si ENTRA in revisione (non al boot) → va letto a ogni chiamata; copre musica, sfx, folla, fischietto e campioni */
   const LSK='cpm-audio';
   const CATS=['music','match','sfx','crowd','referee'];// bus reali; tel/vibr = predisposti (nessun bus)
   const DEF={master:0.85,
@@ -5714,7 +5715,7 @@ const AudioMgr=(function(){
     fetch(urls[i]).then(r=>r.ok?r.arrayBuffer():Promise.reject()).then(ab=>ctx.decodeAudioData(ab)).then(buf=>onOk(buf)).catch(()=>_tryFetchDecode(urls,i+1,onOk));
   }
   function loadSamples(){
-    if(_samplesTried||SILENT||!ready)return;_samplesTried=true;
+    if(_samplesTried||SILENT()||!ready)return;_samplesTried=true;
     try{Object.keys(URL_SFX).forEach(k=>{const v=URL_SFX[k];_tryFetchDecode(Array.isArray(v)?v:[v],0,buf=>{_urlBufs[k]=buf;if(k==='crowd.bed'&&inMatch&&bed&&!bed.real)_swapBedToReal();});});}catch(_e){}
   }
   function playSample(key,peak,cat,dur){
@@ -5737,7 +5738,7 @@ const AudioMgr=(function(){
     return b;
   }
   function ensureCtx(){
-    if(ready||SILENT)return ready;
+    if(ready||SILENT())return ready;
     try{
       const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return false;
       ctx=new AC();
@@ -6052,26 +6053,26 @@ const AudioMgr=(function(){
 
   // ---- API pubblica ------------------------------------------------------
   function play(name){
-    if(SILENT||!ready)return;
+    if(SILENT()||!ready)return;
     try{const fn=SFX[name];if(fn){_played++;fn();}}catch(_e){}
   }
   function scene(phase){
     _curPhase=phase;
-    if(SILENT)return;
+    if(SILENT())return;
     if(!ready){_pendingScene=phase;return;}
     if(phase==='career'){ if(!inMatch){musicStart('career');ambienceStart();} }
     else if(phase==='home'||phase==='offers'){ musicStart('home');ambienceStart(); }
     else if(phase==='create'||phase==='trial'){ musicStart('menu');ambienceStart(); }
     else { musicStop(true);ambienceStop(); }// loading/cinematic → silenzio
   }
-  function enterMatch(){ if(SILENT)return; inMatch=true; _matchHushed=false; if(!ready)return; musicStop(true);ambienceStop(); crowdStart(0.30); }
-  function exitMatch(){ if(SILENT)return; inMatch=false; crowdStop(); if(ready&&_curPhase==='career'){musicStart('career');ambienceStart();} }
+  function enterMatch(){ if(SILENT())return; inMatch=true; _matchHushed=false; if(!ready)return; musicStop(true);ambienceStop(); crowdStart(0.30); }
+  function exitMatch(){ if(SILENT())return; inMatch=false; crowdStop(); if(ready&&_curPhase==='career'){musicStart('career');ambienceStart();} }
   // [7.102.0 collaudo PO «rumore folla ed effetti della partita devono spegnersi nella schermata del giornale»]
   //   al FISCHIO FINALE (fase 'ended' = rassegna stampa) il letto-folla si SPEGNE (gli effetti di partita sono one-shot
   //   su evento → a ended non ne parte più nessuno). inMatch resta true: la musica menu riparte solo all'uscita reale.
-  function hushMatch(){ if(SILENT)return; _matchHushed=true; try{crowdStop();ambienceStop();}catch(_e){} }
+  function hushMatch(){ if(SILENT())return; _matchHushed=true; try{crowdStop();ambienceStop();}catch(_e){} }
   function event(e){
-    if(SILENT||!ready)return;
+    if(SILENT()||!ready)return;
     try{
       const t=e&&e.type;
       if(t==='ActionResolved'){
@@ -6102,7 +6103,7 @@ const AudioMgr=(function(){
     }catch(_e){}
   }
   function notifyCue(msg,color){
-    if(SILENT||!ready)return;
+    if(SILENT()||!ready)return;
     try{const m=String(msg||'');const TC=(typeof TH!=='undefined')?TH:{};
       if(color===TC.danger||/❌|⚠️|infortun|svincol|retroces|eliminat|sconfitt|mancat/i.test(m))play('notify.neg');
       else if(/🏆|trofeo|campion|scudetto|record/i.test(m))play('career.trophy');
@@ -6111,7 +6112,7 @@ const AudioMgr=(function(){
     }catch(_e){}
   }
   function unlock(){
-    if(SILENT)return;
+    if(SILENT())return;
     if(!ready)ensureCtx();
     try{if(ctx&&ctx.state==='suspended')ctx.resume().catch(()=>{});}catch(_e){}
     unlocked=true;loadSamples();/* [7.70.0] carica i campioni reali registrati (se presenti) al primo gesto */
@@ -6127,10 +6128,10 @@ const AudioMgr=(function(){
   // [7.89.0 collaudo PO «se l'app è in background gli effetti sonori devono essere messi in pausa»] sospende/riprende
   //   l'INTERO AudioContext (musica + letto-folla + sfx in un colpo). Riprende SOLO se l'audio era già stato sbloccato
   //   da un gesto (unlocked) → non forza l'avvio dell'audio al primo foreground. No-op sotto test / senza ctx.
-  function setSuspended(v){if(SILENT||!ctx)return;try{if(v){if(ctx.state==='running')ctx.suspend().catch(()=>{});}else{if(ctx.state==='suspended'&&unlocked)ctx.resume().catch(()=>{});}}catch(_e){}}
+  function setSuspended(v){if(!ctx)return;/* [7.243.0] NON gated da SILENT(): entrando nel wizard il flag e gia alzato e la sospensione deve comunque passare (sotto gate ctx non nasce mai → safe) */try{if(v){if(ctx.state==='running')ctx.suspend().catch(()=>{});}else{if(ctx.state==='suspended'&&unlocked)ctx.resume().catch(()=>{});}}catch(_e){}}
   function getCfg(){try{return JSON.parse(JSON.stringify(cfg));}catch(_e){return {...DEF};}}
   function preview(c){ if(!ready)return; if(c==='music'){arp(['C','E','G'],'music',0.12,0.14);} else if(c==='crowd')crowdSwell(0.7,0.5,1800); else if(c==='referee')refWhistle(1); else if(c==='match')play('ball.kick'); else play('ui.confirm'); }
-  function debug(){ return {ready,unlocked,silent:SILENT,ctx:ctx?ctx.state:'none',inMatch,scene:musScene,bed:!!bed,played:_played,cfg:getCfg(),catalog:Object.keys(SFX)}; }
+  function debug(){ return {ready,unlocked,silent:SILENT(),ctx:ctx?ctx.state:'none',inMatch,scene:musScene,bed:!!bed,played:_played,cfg:getCfg(),catalog:Object.keys(SFX)}; }
 
   return {unlock,play,scene,enterMatch,exitMatch,hushMatch,event,crowd:crowdLevel,notifyCue,vibrate,setSuspended,
     ui:{click:()=>play('ui.click'),nav:()=>play('ui.nav'),back:()=>play('ui.back')},
@@ -10460,7 +10461,7 @@ function ThreeMatchView(props){
              chiude da ~15u in ~2-2.5s di scene-time — la corsa sul filtrante È la scena). */
           const _rmNear240=_rm?Math.hypot(_rm.position.x-ball.position.x,_rm.position.z-ball.position.z):99;
           if(typeof window!=='undefined'&&window.__CPM_REC){try{const _pd=_rm&&_rm._pd56!=null?+( _rmNear240-_rm._pd56).toFixed(2):null;if(_rm)_rm._pd56=_rmNear240;window.__CPM_AR53={d:+_rmNear240.toFixed(1),dd:_pd,t:+hlPostArcT.toFixed(2),rx:_rm?+_rm.position.x.toFixed(1):null,rz:_rm?+_rm.position.z.toFixed(1):null,rto:_rm&&_rm._runToX!=null?+_rm._runToX.toFixed(1):null,cx:_rm&&_rm._ctx!=null?+_rm._ctx.toFixed(1):null,cz:_rm&&_rm._ctz!=null?+_rm._ctz.toFixed(1):null,bx2:+ball.position.x.toFixed(1),bz2:+ball.position.z.toFixed(1),ptm:_rm===passTargetMesh,drv:((window.__CPM_AR53&&window.__CPM_AR53.drv)||0)+1};}catch(_e){}}/* [7.241.0 strumentazione, solo __CPM_REC] distanza del ricevente GUIDATO dalla palla + delta per-frame + identita col puntatore + contatore vitalita driver */
-          if((_rmNear240<2.2&&hlPostArcT>=0.30)||hlPostArcT>=3.0){hlPostArcType=(P.hlPattern==="SWITCH"||ball.position.x<20)?"cross_goal":"assist_shot";hlPostArcT=0;contactFlashT=0;
+          if((_rmNear240<3.4&&hlPostArcT>=0.30)||hlPostArcT>=2.6){hlPostArcType=(P.hlPattern==="SWITCH"||ball.position.x<20)?"cross_goal":"assist_shot";hlPostArcT=0;contactFlashT=0;/* [7.243.0 gi30 «Non si vede il compagno che riceve e conclude»] arrivo a 3.4u (misurato: l'inseguimento tocca il minimo a ~3.6 e poi ondeggia — il tocco parte sul passo più vicino, come una conclusione di prima) · fallback 3.0→2.6s */
             /* [7.209.0 collaudo PO «il pallone non sembrava calciato ma partiva e volava su traiettorie
                predefinite»] È IL COMPAGNO CHE CALCIA: fino a qui il pallone partiva verso la porta mentre chi
                concludeva restava in corsa (nessun gesto era registrato sui giocatori diversi dall'eroe e dai
@@ -11591,13 +11592,17 @@ function ThreeMatchView(props){
                anticipo/muro/deviazione) · press = ADDOSSO al portatore, busto avanti e braccio a
                schermare, tocco di punta sul pallone (pressing/finta/recupero). Tutto scalato da sw
                (auto-azzerante), fallito = perdita d'equilibrio comune (leggibile per tutte). */
-            if(P.hlSuccess===true){
-              const _dg42=P.hlDefGesto;
-              if(_dg42==="lunge"){hero.rotation.z=0.55*sw;hero.position.y=-0.18*sw;hero._lR.rotation.x=2.0*sw;hero._lR.rotation.z=0.5*sw;hero._aL.rotation.z=-0.9*sw;hero._aR.rotation.z=0.9*sw;}
-              else if(_dg42==="press"){hero.rotation.z=0.25*sw;hero.position.y=-0.06*sw;hero._aR.rotation.x=-1.1*sw;hero._aR.rotation.z=0.55*sw;hero._aL.rotation.x=0.4*sw;hero._lR.rotation.x=1.0*sw;hero.rotation.y=Math.sin(u*Math.PI)*0.22;}
-              else{hero.rotation.z=1.4*sw;hero.position.y=-0.35*sw;hero._lR.rotation.x=2.4*sw;hero._lL.rotation.x=-0.8*sw;}// scivolata storica
-            }else{// contrasto fallito/perso: perdita equilibrio, vacillamento laterale
-              hero.rotation.z=0.8*sw;hero.position.y=-0.12*sw;hero._lR.rotation.x=1.5*sw;hero._lL.rotation.x=-0.3*sw;hero.rotation.y=Math.sin(u*Math.PI*2)*0.28;
+            {const _dg42=P.hlDefGesto,_fl42=(P.hlSuccess===true)?0:1;
+              /* [7.243.0 batch PO «non si vede il gesto tecnico» sui FALLITI] il TENTATIVO è lo stesso gesto
+                 del successo — nel calcio la scivolata fallita è comunque una scivolata: la posa famiglia vale
+                 per entrambi gli esiti, il fallimento aggiunge lo SBILANCIAMENTO (yaw wobble) e l'esito lo
+                 racconta la palla che prosegue col portatore. Prima il fail cadeva nel vacillamento generico. */
+              const _wb42=Math.sin(u*Math.PI*2)*0.26*_fl42;
+              if(_dg42==="lunge"){hero.rotation.z=0.55*sw;hero.position.y=-0.18*sw;hero._lR.rotation.x=2.0*sw;hero._lR.rotation.z=0.5*sw;hero._aL.rotation.z=-0.9*sw;hero._aR.rotation.z=0.9*sw;hero.rotation.y=_wb42;}
+              else if(_dg42==="press"){hero.rotation.z=0.25*sw+0.2*sw*_fl42;hero.position.y=-0.06*sw;hero._aR.rotation.x=-1.1*sw;hero._aR.rotation.z=0.55*sw;hero._aL.rotation.x=0.4*sw;hero._lR.rotation.x=1.0*sw;hero.rotation.y=Math.sin(u*Math.PI)*0.22+_wb42;}
+              else if(_dg42==="slide"){hero.rotation.z=1.4*sw;hero.position.y=-0.35*sw;hero._lR.rotation.x=2.4*sw;hero._lL.rotation.x=-0.8*sw;hero.rotation.y=_wb42;}
+              else if(P.hlSuccess===true){hero.rotation.z=1.4*sw;hero.position.y=-0.35*sw;hero._lR.rotation.x=2.4*sw;hero._lL.rotation.x=-0.8*sw;}// tackle senza famiglia: scivolata storica
+              else{hero.rotation.z=0.8*sw;hero.position.y=-0.12*sw;hero._lR.rotation.x=1.5*sw;hero._lL.rotation.x=-0.3*sw;hero.rotation.y=Math.sin(u*Math.PI*2)*0.28;}// fail generico storico (nessuna famiglia)
             }
           }
           else if(actType==="dribble"){
@@ -30329,8 +30334,8 @@ function App(){
   {const _m=(typeof window!=='undefined'&&(window.location.search||"").match(/[?&]sit=(\d+)/));if(_m)return wrap(<SitTest sitN={parseInt(_m[1],10)}/>);}// 5.43.1: ?sit=N → Situation Test Mode (bypassa il flow normale)
   /* [7.211.0] WIZARD DI REVISIONE: il flag va acceso PRIMA che LiveMatch monti (gli hook di forzatura si
      registrano nel suo useEffect) → si imposta qui, nel render del padre, e si spegne all'uscita. */
-  if(phase==="review"){try{window.__CPM_REVIEW=true;}catch(_e){}
-    return wrap(<ReviewWizard onExit={()=>{try{window.__CPM_REVIEW=false;window.__CPM_FORCED_MODE=false;}catch(_e){}setPhase("home");}}/>);}
+  if(phase==="review"){try{window.__CPM_REVIEW=true;if(typeof AudioMgr!=="undefined")AudioMgr.setSuspended(true);}catch(_e){}/* [7.243.0 direttiva PO] il wizard e MUTO: sospende anche l audio gia in corso (musica menu) */
+    return wrap(<ReviewWizard onExit={()=>{try{window.__CPM_REVIEW=false;window.__CPM_FORCED_MODE=false;if(typeof AudioMgr!=="undefined")AudioMgr.setSuspended(false);}catch(_e){}setPhase("home");}}/>);}
   if(phase==="loading")return wrap(<div style={{textAlign:"center",paddingTop:80,color:TH.faint}}>Caricamento…</div>);
   if(phase==="home")return wrap(<><HomeScreen slots={slots} onNew={startNew} onLoad={loadSave} onDelete={deleteSlot} onImport={importSave}/>
     {(typeof window!=='undefined'&&!window.__CPM_STORE_BUILD)&&<div style={{textAlign:"center",padding:"6px 0 26px"}}>
