@@ -3950,7 +3950,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="7.259.0"; // [7.259.0 #74 — screenshot PO «stesso giudizio al ritiro!»] Verdetto della Stampa nel finale di carriera: (1) la variante per-nome del 7.257.0 COLLIDE (3 bucket hash su 3 firme ≈78% doppioni — Ferretti ed Esposito identici) → l'indice del giornalista entra nel seed: 3 firme = 3 varianti distinte PER COSTRUZIONE; (2) la fascia del verdetto era keyed solo sulla FIDUCIA → una leggenda da 612 gol e Mondiale+Europeo liquidata come «un buon giocatore»: ora la carriera fa da pavimento (legacy≥600 → mai sotto la fascia «solida», ≥400 → mai sotto la media) — la fiducia bassa raffredda il tono, non riscrive i fatti. Probe ritiro-definitivo/addio verdi.
+const GAME_VERSION="7.260.0"; // [7.260.0 #75+#76 — 2 screenshot PO] (1) «i numeri di maglia escono fuori dai bordi!»: il numero GLB era un PIANO FLOTTANTE 0.52×0.52 solo-yaw dietro la spina — più largo del busto e cieco al lean → sbordava dalla sagoma. Ora è DIPINTO nella texture della maglia (kitPatternTex 4° arg, cache per numero): per costruzione non può uscire dai bordi e si deforma con la skinning. Mappatura UV EMPIRICA del dorso Ch38_Shirt (metodo 7.32.7): centro-spina x=288/512 · scapole y=128/512 · campionamento V flippato → glifo disegnato specchiato in verticale; fit-to-width per i 2 cifre. (2) «il meteo non è congruente»: ☀️ Soleggiato nell'header di una partita NOTTURNA — sunny/partly/heat non hanno vincolo tod (una notte serena esiste) ma nome+emoji sono diurni → adattatore di display weatherNightDisp (notte: 🌙 Notte serena / Poco nuvoloso / Notte afosa) su header live e MatchdayCard (kickoffHour≥21). Meteo e scena invariati: cambia solo come lo racconti.
 // [7.242.0 #56 chiusura — batch PO gi31-35 «Non si vede il gesto tecnico specifico» + verdetto difensivo] IL GESTO DIFENSIVO HA UNA FAMIGLIA. Ogni azione difensiva derivava `tackle/-` senza variante: la posa era UNA (scivolata) per pressing, anticipo, muro e deviazione. Tre famiglie STRUTTURALI congelate in factory (patto chainOn/gkCall — la regex vive solo in S()): slide (scivolata/disperato, posa storica a terra) · lunge (intercetto/anticipo/deviazione/muro: AFFONDO in piedi, gamba tesa e braccia larghe) · press (pressing/finta/recupero/copertura: ADDOSSO al portatore, busto avanti, braccio a schermare, tocco di punta). Prop hlDefGesto → pose sw-scalate auto-azzeranti nel blocco CINE-VAR; fallito = perdita di equilibrio comune. + VERDETTO DIFENSIVO RITARDATO (pattern #51): con l inbound 7.239 il pallone doveva ancora ARRIVARE quando usciva l overlay (misurato ~0.9s su gi31) → revealMs def 2250 con inbound / 1900 senza. Verificato sui fogli-provini: gi34 pressing = eroe addosso al portatore che vacilla, verdetto dopo il contatto.
 // [7.241.0 #56 batch PO gi28/29/37 «Non si vede il compagno che conclude»] FRENA PER GIRARTI — il difetto NON era la scelta del ricevente ne la transizione: attribuzione per-frame (AR53/54: oth=0, own>0, _ctx GIA sulla palla) → era il MODELLO DI STERZATA di animOne. Il ricevente lanciato sulla corsa profonda, con il filtrante atterrato ALLE SPALLE, navigava un inversione a U larga 20u e lunga secondi: il turn-rate e ∝1/velocita e la magnitudine della velocita-obiettivo restava PIENA nella direzione sbagliata. Ora quando la direzione voluta supera ~60° da quella di marcia la velocita-obiettivo cala col disallineamento (fino a 0.18×): la frenata passa dal limitatore di accelerazione, la velocita scende, il turn-rate risale → due passi di frenata e pivot, come in campo. Misurato prima→dopo: gi29 ricevente da divergenza a 24u → ARRIVO a 1.3u (t 0.41) con palla che parte con lui; gi37 2.0u; gi28 convergenza stretta. Vale per TUTTI i 21 off-ball (fisica piu vera anche su pressing/rientri — plausibile beneficio sul cluster difensivo «non aggancia il pallone»). +selezione demergenza del ricevente nel driver assist_recv (ogni scena ha SEMPRE un uomo sulla palla). ⚠️ modello core: gate 14/14 obbligatorio + realismo da riverificare sui baseline.
 // [7.240.0 #55B batch PO gi25/gi26 «Non si vede il compagno che riceve (e tira)» + gi43/28/29/30 storici] IL COMPAGNO ARRIVA SUL PALLONE PRIMA DI CALCIARE. Diagnosi strumentata (probe AR51/AR52 in-page, solo __CPM_REC): la catena assist_recv era VIVA e corretta — il primo sospetto «catena congelata» era un artefatto del campione stantio — ma (a) la transizione ricezione→tiro era a TEMPO FISSO 0.42s col ricevente ancora a 8-15u → il pallone volava in porta DA SOLO col gesto di calcio a vuoto; (b) il puntatore del ricevente (passTargetMesh) veniva AZZERATO all'avvio di assist_recv in 2 dei 3 siti (pass+assist = gi25 filtrante · tacco/scarico = gi26) e il driver, che scandiva solo il gesto _rcvT (0.52s di vita), restava senza nessuno da far correre. Fix: puntatore PERSISTENTE su tutti i siti (+_runToX fresco), fallback del driver sul puntatore, transizione ALL'ARRIVO (<2.2u, minimo 0.30s) con fallback 3.0s. Misurato prima→dopo: ricevente a 8-9u dalla palla al momento del tiro → 3.5-4u col gesto agganciato; gi26 duello leggibile sul foglio-provini; gi25 in wizard chiude con la catena e il gol.
@@ -5367,6 +5367,14 @@ const WEATHER_TYPES=[
   {id:"sunset",   name:"Tramonto rosso",  e:"🌅",  pitchFx:null,   ef:{},                        w:2,tod:["dusk"]},
   {id:"starry",   name:"Notte stellata",  e:"🌟",  pitchFx:null,   ef:{},                        w:2,tod:["night"]},
 ];
+/* [7.260.0 collaudo PO «il meteo non è congruente» — ☀️ nell'header su partita NOTTURNA] «sunny/partly/heat» non
+   hanno vincolo tod (giusto: una notte serena esiste) ma nome+emoji sono DIURNI → adattatore di DISPLAY per le
+   gare serali: il meteo resta lo stesso, cambia solo come lo racconti. Puro, usato dai siti di render. */
+const weatherNightDisp=(w,night)=>{if(!w||!night)return w;
+  if(w.id==="sunny")return{...w,e:"🌙",name:"Notte serena"};
+  if(w.id==="partly")return{...w,e:"🌙",name:"Poco nuvoloso"};
+  if(w.id==="heat")return{...w,e:"🌡️",name:"Notte afosa"};
+  return w;};
 // [7.0.0 collaudo PO «gli eventi atmosferici non devono essere casuali: in Germania nebbia/neve, al Sud Italia
 //   rarissimo»] CLIMA PER SEDE: moltiplicatori sui pesi meteo in base al campionato del padrone di casa,
 //   con distinzione NORD/SUD per l'Italia a livello di club (la pianura padana ha la nebbia, Palermo no).
@@ -9160,7 +9168,7 @@ function ThreeMatchView(props){
         const root=(THREE.SkeletonUtils&&THREE.SkeletonUtils.clone)?THREE.SkeletonUtils.clone(_cg.scene):_cg.scene;
         root.traverse(o=>{if(!o.isMesh)return;const _nm=(o.name||'').toLowerCase();if(_nm.includes('joint')){o.visible=false;return;}o.castShadow=isDesktop;o.frustumCulled=false;
           let _kc=null;if(_nm.includes('shirt'))_kc=kit.shirt;else if(_nm.includes('shorts'))_kc=kit.shorts;else if(_nm.includes('socks'))_kc=kit.socks;else if(_nm.includes('shoes'))_kc=kit.shoes;
-          if(_kc!=null){const _c=new THREE.Color(_kc);let _tex=null;if(_nm.includes('shirt')&&typeof kitPatternTex==='function')_tex=kitPatternTex(_kc,kit.c2||'#f0f0f0',kit.pattern||'solid');/* [7.168.0] anche le tinta unita: shading tessuto (darkening 7.8.2 bakato in texture) */
+          if(_kc!=null){const _c=new THREE.Color(_kc);let _tex=null;if(_nm.includes('shirt')&&typeof kitPatternTex==='function')_tex=kitPatternTex(_kc,kit.c2||'#f0f0f0',kit.pattern||'solid',proc._num!=null?proc._num:undefined);/* [7.168.0] anche le tinta unita: shading tessuto (darkening 7.8.2 bakato in texture) · [7.260.0] +numero dipinto sul dorso */
             if(_tex){o.material=new THREE.MeshLambertMaterial({map:_tex,emissive:_c.clone().multiplyScalar(0.12),skinning:true});}
             else{/* [7.8.2 collaudo PO «Salernitana troppo rossa»] le molte luci del prato SATURANO i rossi scuri (il granata #6c1f2e clampava verso il rosa/rosso). Darkening AWARE della saturazione+scurezza: i colori SATURI e SCURI (granata, bordeaux) sono attenuati fino a ~−40% così restano fedeli sotto le luci; bianchi/neutri (s≈0) intatti → i kit chiari non si spengono. */
               const _hsl={};_c.getHSL(_hsl);const _dim=1-_hsl.s*0.60*(0.45+0.55*(1-_hsl.l));const _cd=_c.clone().multiplyScalar(_dim);
@@ -9184,7 +9192,7 @@ function ThreeMatchView(props){
         //   Trova l'osso della SCHIENA (spine/chest) e in render-loop posiziona il piano-numero sul dorso reale animato.
         let _spine=null;root.traverse(o=>{if(o.isBone&&!_spine&&/spine2|spine_02|chest/i.test(o.name||""))_spine=o;});
         if(!_spine)root.traverse(o=>{if(o.isBone&&!_spine&&/spine1|spine/i.test(o.name||""))_spine=o;});
-        let _np=null;if(proc._num!=null){_np=_mkNumPlane(proc._num,proc._name||"",0.52,0.52);_np.renderOrder=4;scene.add(_np);}// [7.130.0] cognome+numero sul dorso GLB
+        let _np=null;/* [7.260.0 collaudo PO «i numeri escono fuori dai bordi!»] via il PIANO FLOTTANTE 0.52 solo-yaw (più largo del busto, non seguiva il lean): il numero è ora DIPINTO nella texture della maglia (kitPatternTex 4° arg) — il loop render sui numPlane resta e no-opa su null */
         scene.add(root);
         return {root,mx,idle,run,proc,lx:proc.position.x,lz:proc.position.z,numPlane:_np,spine:_spine,_h:_h,bbMinY:_bb.min.y,bbMinZ:_bb.min.z};
       };
@@ -12834,7 +12842,8 @@ function leagueFlagBg(nat){const code=_flagCode(nat);return (code&&_FLAG_BG[code
 function MatchdayCard({homeTeam,awayTeam,stadium,attendance,league,onContinue,onSkip,scoutReport,scoutLoading,onShowScout,matchWeight=1,matchContext,weatherObj=null,kickoffHour=null,onBack=null,onSimulate=null,roundLabel=null}){/* [7.32.7 collaudo PO] roundLabel: giornata/turno della competizione *//* [7.14.0 collaudo PO «non posso simulare!»] onSimulate: le gare di NAZIONALE entrate dal CTA finivano su questa schermata SENZA uscita né Simula (6.80 vieta l'abbandono) → ora il bottone c'è qui *//* [6.77.0 collaudo PO] onBack: ritorno alla dashboard in caso di cambio idea (prima solo ESC da desktop) */
   /* [6.3.3 BUG-WX] meteo/orario REALI (seedati) della partita, passati da LiveMatch → niente più valori
      casuali che cambiavano entrando in campo e a ogni reload. Fallback ai vecchi pick() se assenti. */
-  const weather=weatherObj?`${weatherObj.e||"☀️"} ${weatherObj.name||"Sereno"}`:pick(["☀️ Sereno","🌥️ Nuvoloso","🌧️ Pioggia leggera","⛅ Parzialmente nuvoloso"]);
+  const _wDisp60=(typeof weatherNightDisp==="function")?weatherNightDisp(weatherObj,(kickoffHour!=null&&kickoffHour>=21)):weatherObj;/* [7.260.0] pre-partita coerente con la scena notturna */
+  const weather=_wDisp60?`${_wDisp60.e||"☀️"} ${_wDisp60.name||"Sereno"}`:pick(["☀️ Sereno","🌥️ Nuvoloso","🌧️ Pioggia leggera","⛅ Parzialmente nuvoloso"]);
   const time=(kickoffHour!=null)?`${kickoffHour}:00`:pick(["15:00","17:30","18:00","20:45","19:00"]);
   useEffect(()=>{
     const h=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();onContinue();}};
@@ -13288,12 +13297,12 @@ const buildKit=shirt=>{const L=hexLum(shirt);return{shirt,shorts:L<0.5?'#f1f1f3'
    e `hoops`; metà/sciarpa/maniche restano tinta unita in campo (UV irregolari → colorerebbero una manica/mezzo
    busto; le icone-maglia 2D le mostrano tutte). Ritorna CanvasTexture (cache) o null. */
 const _kitTexCache={};
-const kitPatternTex=(shirt,c2,pat)=>{
+const kitPatternTex=(shirt,c2,pat,num)=>{/* [7.260.0 collaudo PO «i numeri escono fuori dai bordi!»] 4° arg opzionale: il numero di maglia è DIPINTO nella texture del dorso (per costruzione non può uscire dalla sagoma e si deforma con la skinning) — via il piano flottante 0.52 solo-yaw che sbordava dal busto. Mappatura UV EMPIRICA di Ch38_Shirt (metodo 7.32.7, probe uvnum75): dorso = U [0.46..0.63] con centro-spina a x=288/512 · scapole a y=128/512 · campionamento V FLIPPATO (flipY: il glifo va disegnato specchiato in verticale per uscire dritto). */
   /* [7.168.0 collaudo PO «maglie più moderne anche nel live match»] +pat 'solid': anche i kit tinta unita passano
      per la texture (darkening 7.8.2 BAKATO nella base, identico al vecchio material-color) e TUTTI i kit ricevono
      uno shading tessuto verticale (luce sul petto → ombra all'orlo) → profondità da broadcast, zero flat. */
   if(typeof document==='undefined'||typeof THREE==='undefined'||(pat!=='hoops'&&pat!=='stripes'&&pat!=='band'&&pat!=='solid'))return null;
-  const key=shirt+'|'+c2+'|'+pat;if(_kitTexCache[key])return _kitTexCache[key];
+  const key=shirt+'|'+c2+'|'+pat+(num!=null?'|#'+num:'');if(_kitTexCache[key])return _kitTexCache[key];
   const S=512,cv=document.createElement('canvas');cv.width=cv.height=S;const x=cv.getContext('2d');
   let _base=shirt;
   if(pat==='solid'){try{const _c=new THREE.Color(shirt),_h={};_c.getHSL(_h);const _dim=1-_h.s*0.60*(0.45+0.55*(1-_h.l));_base='#'+_c.multiplyScalar(_dim).getHexString();}catch(_e){}}
@@ -13309,8 +13318,13 @@ const kitPatternTex=(shirt,c2,pat)=>{
      finale era un ELSE nudo → anche pat='solid' disegnava le HOOPS (ogni tinta unita usciva a bande bianche).
      Ora hoops è esplicito e 'solid' resta LISCIA (solo base scurita + shading tessuto). */
   {const gr=x.createLinearGradient(0,0,0,S);gr.addColorStop(0,'rgba(255,255,255,0.085)');gr.addColorStop(0.45,'rgba(0,0,0,0)');gr.addColorStop(1,'rgba(0,0,0,0.15)');x.fillStyle=gr;x.fillRect(0,0,S,S);}/* [7.168.0] shading tessuto */
+  if(num!=null){/* [7.260.0] numero sul dorso: centro-spina (288,128) verificato con screenshot, flip verticale (flipY), fit-to-width per i 2 cifre */
+    const _ns=String(num);x.save();x.translate(288,128);x.scale(1,-1);
+    let _fs=64;x.font='bold '+_fs+'px Arial, sans-serif';while(_fs>40&&x.measureText(_ns).width>82){_fs-=4;x.font='bold '+_fs+'px Arial, sans-serif';}
+    x.textAlign='center';x.textBaseline='middle';x.lineJoin='round';x.lineWidth=8;x.strokeStyle='rgba(10,12,18,0.92)';x.strokeText(_ns,0,0);x.fillStyle='#ffffff';x.fillText(_ns,0,0);x.restore();}
   const t=new THREE.CanvasTexture(cv);t.needsUpdate=true;t.anisotropy=4;_kitTexCache[key]=t;return t;
 };
+if(typeof window!=='undefined'&&!window.__CPM_STORE_BUILD){window.__CPM_kitPatternTex=kitPatternTex;}// [7.260.0] hook probe numeri maglia (test-only)
 /* [6.2.0 KIT-1] GUARDAROBA DIVISE PER CLUB (direttiva PO: identita cromatica per club, mai azzurro di default).
    Tre divise deterministiche dai colori sociali (zero campi save): Home = colori sociali; Away = seconda maglia
    di IDENTITA (c2 se leggibile contro la Home, altrimenti neutro chiaro/scuro VELATO del colore sociale, sfumatura
@@ -16294,7 +16308,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                 <div style={{padding:"2px 10px",borderRadius:14,fontSize:12,fontWeight:900,background:winning?"rgba(34,197,94,0.18)":losing?"rgba(239,68,68,0.18)":"rgba(255,255,255,0.09)",color:winning?"#4ade80":losing?"#f87171":"#f1f5f9",letterSpacing:.5}}>
                   {phase==="walkout"?"🏃":phase==="ceremony"?"🏆":phase==="ended"?"FT":`${clock}'`}
                 </div>
-                <div style={{fontSize:11}} title={weather?.name}>{weather?.e||(timeOfDay==="day"?"☀️":"🌙")}</div>
+                <div style={{fontSize:11}} title={weatherNightDisp(weather,timeOfDay==="night")?.name}>{weatherNightDisp(weather,timeOfDay==="night")?.e||(timeOfDay==="day"?"☀️":"🌙")}</div>{/* [7.260.0] mai il sole su una notturna */}
                 {["playing","hl_intro","hl_move","hl_choose","hl_result"].includes(phase)&&(
                   <button onClick={()=>setPaused(v=>!v)} style={{background:"none",border:"none",cursor:"pointer",fontSize:13,padding:"14px 12px",margin:"-12px -8px",color:"rgba(255,255,255,0.6)",lineHeight:1}} title={paused?"Riprendi (P)":"Pausa (P)"}>
                     {paused?"▶":"⏸"}
