@@ -3967,7 +3967,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="7.269.0"; // [7.269.0 #85 — P1 delle proposte, approvata dal PO] LE MINI-SERIE A PUNTATE. La settimana aveva gia' venticinque produttori di contenuto, ma erano TUTTI one-shot: ogni card nasceva e moriva nella stessa settimana (le uniche eccezioni erano la saga di mercato e il patto col mister) — senza attesa fra una settimana e l'altra la stagione resta un ELENCO di momenti, non una storia. Arriva un motore generico di archi a PUNTATE: `serialView` + tabella `SERIALS`, una serie alla volta (budget d'attenzione), episodi distanziati di almeno due settimane e soprattutto SCELTE CHE SI COMPONGONO — la puntata N legge quello che hai deciso alla N-1 e il finale dipende dal percorso, non da un dado. Tre serie al lancio, tutte innescate da fatti VERI: «Il caso disciplinare» (nasce da un'espulsione reale in storico: convocazione in societa' → come reagisci → verdetto dello spogliatoio), «Il ragazzo della Primavera» (un compagno vero della rosa ti sceglie come modello: lo segui o no → il suo esordio → diventa il tuo erede o saluta), «La corsa al capocannoniere» (dalla classifica marcatori reale, col rivale vero e i numeri veri a ogni puntata). Stato in `p.serial`/`p.serialDone`, campi LAZY: nessun bump SAVE. Due garanzie strutturali: la serie si CHIUDE per costruzione entro la stagione (epilogo forzato dalla W36 → niente archi appesi al rollover) e decade al cambio maglia. La card vive fra i box AZIONABILI sotto il CTA (direttiva 7.57.2) con i pallini di avanzamento, e ogni puntata entra nel diario → nel Film della stagione. Guardiano permanente serial-arc-test: avvio dai fatti, attesa fra le puntate, due percorsi opposti che danno finali diversi, chiusura e non-ripetizione nella stagione, epilogo forzato, campi lazy, decadenza al cambio club, e copertura d'innesco di tutte e tre le serie.
+const GAME_VERSION="7.270.0"; // [7.270.0 #86 — P2 e P4 delle proposte, approvate dal PO] IL MONDO TI ATTRAVERSA + IL LEDGER SI RISCUOTE. (P2) Il rivale di carriera, gli ex club, gli ex compagni e il CT esistono gia' nel salvataggio e vivono la loro stagione, ma incrociavano il giocatore quasi SOLO dentro i novanta minuti: fuori dal campo il mondo era muto. Ora `worldTouch` da' loro voce partendo sempre da dati VERI — il rivale ti cita in conferenza coi numeri di stagione suoi e tuoi; un ex compagno ti telefona col NOME REALE preso dalla rosa di quel club (generateTeamRoster sull'id salvato in history, non un nome inventato); il club dove sei cresciuto viene raccontato con la sua POSIZIONE vera in classifica; il CT era in tribuna e lo scopri dopo (solo con pochi caps e profilo credibile). Una voce alla volta, mai due settimane di fila, ognuna una volta per stagione (`p.worldSeen` lazy). (P4) `p.ledger` registrava promesse e torti dal 7.26.0 ma aveva pochissimi consumatori: le parole non tornavano quasi mai indietro. Ora `ledgerDue` le RISCUOTE dopo almeno sei settimane, col nome di chi se l'era segnata, e il verdetto guarda i FATTI successivi (gare, gol+assist e media voto dopo la promessa), non un dado; la voce riscossa si marca `done` e non torna. Campi lazy su entrambi: nessun bump SAVE. Guardiano permanente mondo-ledger-test (numeri veri del rivale, nome dell'ex compagno verificato contro la rosa reale, posizione vera dell'ex club, cooldown, soglia delle sei settimane, verdetto dai fatti, marcatura done). Nota di misura: l'etichetta della card e' «Il mondo fuori» e non «Fuori dal campo» perche' quella frase compare gia' in un testo dello sponsor e rendeva ciechi i test.
 // [7.242.0 #56 chiusura — batch PO gi31-35 «Non si vede il gesto tecnico specifico» + verdetto difensivo] IL GESTO DIFENSIVO HA UNA FAMIGLIA. Ogni azione difensiva derivava `tackle/-` senza variante: la posa era UNA (scivolata) per pressing, anticipo, muro e deviazione. Tre famiglie STRUTTURALI congelate in factory (patto chainOn/gkCall — la regex vive solo in S()): slide (scivolata/disperato, posa storica a terra) · lunge (intercetto/anticipo/deviazione/muro: AFFONDO in piedi, gamba tesa e braccia larghe) · press (pressing/finta/recupero/copertura: ADDOSSO al portatore, busto avanti, braccio a schermare, tocco di punta). Prop hlDefGesto → pose sw-scalate auto-azzeranti nel blocco CINE-VAR; fallito = perdita di equilibrio comune. + VERDETTO DIFENSIVO RITARDATO (pattern #51): con l inbound 7.239 il pallone doveva ancora ARRIVARE quando usciva l overlay (misurato ~0.9s su gi31) → revealMs def 2250 con inbound / 1900 senza. Verificato sui fogli-provini: gi34 pressing = eroe addosso al portatore che vacilla, verdetto dopo il contatto.
 // [7.241.0 #56 batch PO gi28/29/37 «Non si vede il compagno che conclude»] FRENA PER GIRARTI — il difetto NON era la scelta del ricevente ne la transizione: attribuzione per-frame (AR53/54: oth=0, own>0, _ctx GIA sulla palla) → era il MODELLO DI STERZATA di animOne. Il ricevente lanciato sulla corsa profonda, con il filtrante atterrato ALLE SPALLE, navigava un inversione a U larga 20u e lunga secondi: il turn-rate e ∝1/velocita e la magnitudine della velocita-obiettivo restava PIENA nella direzione sbagliata. Ora quando la direzione voluta supera ~60° da quella di marcia la velocita-obiettivo cala col disallineamento (fino a 0.18×): la frenata passa dal limitatore di accelerazione, la velocita scende, il turn-rate risale → due passi di frenata e pivot, come in campo. Misurato prima→dopo: gi29 ricevente da divergenza a 24u → ARRIVO a 1.3u (t 0.41) con palla che parte con lui; gi37 2.0u; gi28 convergenza stretta. Vale per TUTTI i 21 off-ball (fisica piu vera anche su pressing/rientri — plausibile beneficio sul cluster difensivo «non aggancia il pallone»). +selezione demergenza del ricevente nel driver assist_recv (ogni scena ha SEMPRE un uomo sulla palla). ⚠️ modello core: gate 14/14 obbligatorio + realismo da riverificare sui baseline.
 // [7.240.0 #55B batch PO gi25/gi26 «Non si vede il compagno che riceve (e tira)» + gi43/28/29/30 storici] IL COMPAGNO ARRIVA SUL PALLONE PRIMA DI CALCIARE. Diagnosi strumentata (probe AR51/AR52 in-page, solo __CPM_REC): la catena assist_recv era VIVA e corretta — il primo sospetto «catena congelata» era un artefatto del campione stantio — ma (a) la transizione ricezione→tiro era a TEMPO FISSO 0.42s col ricevente ancora a 8-15u → il pallone volava in porta DA SOLO col gesto di calcio a vuoto; (b) il puntatore del ricevente (passTargetMesh) veniva AZZERATO all'avvio di assist_recv in 2 dei 3 siti (pass+assist = gi25 filtrante · tacco/scarico = gi26) e il driver, che scandiva solo il gesto _rcvT (0.52s di vita), restava senza nessuno da far correre. Fix: puntatore PERSISTENTE su tutti i siti (+_runToX fresco), fallback del driver sul puntatore, transizione ALL'ARRIVO (<2.2u, minimo 0.30s) con fallback 3.0s. Misurato prima→dopo: ricevente a 8-9u dalla palla al momento del tiro → 3.5-4u col gesto agganciato; gi26 duello leggibile sul foglio-provini; gi25 in wizard chiude con la catena e il gol.
@@ -22551,6 +22551,81 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
      Stato in `p.serial` {k,ep,s,w,ch[]} + `p.serialDone` {k:stagione}: campi LAZY, nessun bump SAVE.
      Ogni serie si CHIUDE per costruzione entro la stagione (epilogo forzato dalla W36) → niente archi appesi
      al rollover. Testi e conseguenze derivano dai fatti veri (cartellini, rosa reale, classifica marcatori). */
+  /* [7.270.0 P2 — IL MONDO TI ATTRAVERSA] Il rivale di carriera, gli ex club, gli ex compagni e il CT
+     esistono già nel salvataggio e vivono la loro stagione, ma incrociavano il giocatore quasi SOLO dentro
+     i novanta minuti: fuori dal campo il mondo era muto. Qui prendono voce, sempre partendo da dati veri
+     (numeri del rivale, storia dei club, rosa reale, classifica, presenze in Nazionale). Display + effetti
+     minimi bounded; una voce a settimana al massimo, ognuna una volta per stagione (`p.worldSeen` lazy). */
+  const worldTouch=(p)=>{try{
+    if((p.proStatus||"u18")!=="pro")return null;
+    const sn=p.season||1,wk=p.week||1;if(wk<3)return null;
+    const seen=(p.worldSeen&&p.worldSeen.s===sn&&p.worldSeen.k)||[];
+    if(p.worldSeen&&p.worldSeen.s===sn&&(wk-(p.worldSeen.w||0))<3)return null;/* mai due settimane di fila */
+    const out=[];
+    const R=p.rival;
+    /* — il rivale parla di te (numeri di stagione VERI, suoi e tuoi) — */
+    if(R&&R.name&&seen.indexOf("rivalTalk")<0&&(R.goals!=null)){
+      const mg=(typeof leagueGoalsOf==="function")?leagueGoalsOf(p):(p.goals||0);
+      out.push({k:"rivalTalk",e:"🎙️",t:`${R.name} parla di te`,
+        d:mg>(R.goals||0)?`Gli chiedono di te in conferenza e non si nasconde: «Fa una stagione da ${mg} gol, è davanti a me e lo merita. Ma è lunga, e io non mi sono mai accontentato.» Il messaggio è arrivato.`
+          :`In conferenza gli chiedono chi sia il migliore. Risponde con un mezzo sorriso: «I numeri dicono ${R.goals} a ${mg}. Poi ognuno racconti la stagione come preferisce.»`,
+        fx:(q)=>({morale:clamp((q.morale||70)+(mg>(R.goals||0)?2:-1),0,100)})});
+    }
+    /* — un ex compagno del club dove giocavi: nome VERO dalla rosa di quel club — */
+    const hs=(p.history||[]).filter(h=>h&&h.clubId&&h.clubId!==((p.club&&p.club.id)||""));
+    if(hs.length&&seen.indexOf("exMate")<0){
+      const h=hs[Math.abs(hashStr((p.name||"x")+"|exm|"+sn))%hs.length];
+      const oc=CLUBS.find(c=>c.id===h.clubId);
+      let nm=null;try{const rr=oc?generateTeamRoster(oc,sn):null;if(rr&&rr.length)nm=(rr[Math.abs(hashStr(h.clubId+"|m|"+sn))%rr.length]||{}).name;}catch(_e){}
+      if(nm)out.push({k:"exMate",e:"📞",t:`Ti chiama ${nm}`,
+        d:`Numero non salvato, voce che riconosci al primo «ehi». È ${nm}, dai tempi del ${h.club}: due chiacchiere sul nulla, poi la frase vera — «Qui non è più come quando c'eri tu». Riattacchi che ti gira in testa per tutto il giorno.`,
+        fx:(q)=>({morale:clamp((q.morale||70)+3,0,100)})});
+    }
+    /* — il club dove sei cresciuto vive la SUA stagione (classifica vera, se è nella tua lega) — */
+    if(hs.length&&seen.indexOf("exClub")<0){
+      const st=[...(p.standings||[])].sort((a,b)=>(b.pts||0)-(a.pts||0));
+      for(const h of hs){const ix=st.findIndex(t=>t&&(t.id===h.clubId||(t.n||t.name)===h.club));
+        if(ix>=0&&st.length>=6){const pos=ix+1;
+          if(pos<=3||pos>=st.length-2){
+            out.push({k:"exClub",e:"🏟️",t:pos<=3?`Il ${h.club} vola`:`Il ${h.club} è nei guai`,
+              d:pos<=3?`${pos}° posto per il club dove sei cresciuto. Un cronista ti ferma: «Le fa piacere?» — e la risposta onesta è sì, anche se oggi giochi contro di loro.`
+                :`${pos}° posto: la piazza dove hai imparato tutto sta soffrendo. Ti chiedono un commento e non riesci a essere freddo come vorresti.`,
+              fx:(q)=>({morale:clamp((q.morale||70)+(pos<=3?1:-1),0,100)})});
+            break;}}}
+    }
+    /* — il CT era in tribuna (solo se ha davvero senso: non convocato di recente e profilo credibile) — */
+    if(seen.indexOf("ctWatch")<0&&(p.nationalCaps||0)<12&&(p.ovr||0)>=74){
+      const nat=(NAT_CLUB_DATA&&NAT_CLUB_DATA[p.nation||"Italia"])||null;
+      out.push({k:"ctWatch",e:"👀",t:"C'era il CT, in tribuna",
+        d:`Lo scopri il giorno dopo, dalle foto: il commissario tecnico ${nat&&nat.nat?nat.nat+" ":""}era allo stadio, terza fila, senza dire niente a nessuno. Non significa nulla — e intanto non pensi ad altro.`,
+        fx:(q)=>({morale:clamp((q.morale||70)+2,0,100)})});
+    }
+    if(!out.length)return null;
+    return out[Math.abs(hashStr("wt|"+(p.name||"")+"|"+sn+"|"+wk))%out.length];
+  }catch(_e){return null;}};
+  /* [7.270.0 P4 — IL LEDGER SI RISCUOTE] `p.ledger` registrava promesse e torti dal 7.26.0, ma aveva
+     pochissimi consumatori: le parole non tornavano quasi mai indietro. Ora ogni voce viene RISCOSSA dopo
+     almeno sei settimane, in bene o in male, col nome di chi se l'era segnata — e il verdetto guarda i
+     FATTI successivi (gol e voti nelle gare dopo la promessa), non un dado. La voce riscossa si marca
+     `done` (campo lazy sulla voce esistente, nessun bump SAVE). */
+  const ledgerDue=(p)=>{try{
+    if((p.proStatus||"u18")!=="pro")return null;
+    const sn=p.season||1,wk=p.week||1;
+    const led=(p.ledger||[]);
+    const i=led.findIndex(l=>l&&!l.done&&l.season===sn&&(wk-(l.week||0))>=6);
+    if(i<0)return null;
+    const l=led[i];
+    const dopo=(p.matchHistory||[]).filter(m=>m&&!m.injured&&(m.week||0)>(l.week||0));
+    const g=dopo.reduce((s,m)=>s+(m.goals||0)+(m.assists||0),0);
+    const rt=dopo.length?dopo.reduce((s,m)=>s+(m.rating||6),0)/dopo.length:6;
+    const bene=dopo.length>=3&&(g>=2||rt>=6.9);
+    const chi=l.who||"qualcuno";
+    return{i,e:bene?"🤝":"📌",t:bene?"Le parole hanno retto":"Il conto è ancora aperto",
+      d:bene?`${chi.charAt(0).toUpperCase()+chi.slice(1)} torna su quello che vi eravate detti (${l.what}). Da allora: ${dopo.length} gare, ${g} tra gol e assist, media ${rt.toFixed(1)}. «Hai fatto quello che avevi detto» — e in questo ambiente non è una frase che si regala.`
+        :`${chi.charAt(0).toUpperCase()+chi.slice(1)} non ha dimenticato (${l.what}). Da allora sono passate ${dopo.length} gare con ${g} tra gol e assist e una media di ${rt.toFixed(1)}: il discorso resta lì, sospeso, e lo sapete entrambi.`,
+      fx:(q)=>bene?({coachTrust:clamp((q.coachTrust||60)+4,0,100),morale:clamp((q.morale||70)+3,0,100)})
+        :({morale:clamp((q.morale||70)-2,0,100)})};
+  }catch(_e){return null;}};
   const SERIAL_MAXW=36;
   const SERIALS={
     /* ── IL CASO DISCIPLINARE — nasce da un'espulsione VERA di questa stagione ───────────────── */
@@ -26478,6 +26553,37 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
               <Btn key={i} v={i===0?"primary":"ghost"} fw onClick={()=>setPlayer(p=>({...p,...c.fx(p),onceSeen:{...(p.onceSeen||{}),[ov.k]:true},onceSeenSeason:p.season||1,diary:[...(p.diary||[]),{season:p.season||1,week:p.week||1,type:"story",e:ov.e,headline:ov.t,body:(ov.d||"").slice(0,110),color:"#d4a017"}].slice(-80),log:[`${ov.e} ${ov.t} — ${c.l.replace(/^[^\s]+\s/,"")}`,...(p.log||[])].slice(0,60)}))}>{c.l}</Btn>
             ))}
           </div>
+        </Card>);})()}
+      {/* [7.270.0 P2] IL MONDO TI ATTRAVERSA — rivale, ex compagni, ex club, CT */}
+      {tab==="dashboard"&&(()=>{
+        const wt=worldTouch(player);if(!wt)return null;
+        return(
+        <Card style={{marginBottom:8,padding:"13px 15px",background:"linear-gradient(150deg,#0b1a22,#0f2430)",border:"1px solid #2a5a6b"}}>
+          <div style={{fontSize:10,color:"#7dd3fc",textTransform:"uppercase",letterSpacing:2,marginBottom:6}}>🌍 Il mondo fuori</div>
+          <div style={{display:"flex",gap:10,alignItems:"flex-start",marginBottom:10}}>
+            <span style={{fontSize:21,lineHeight:1}}>{wt.e}</span>
+            <div style={{flex:1,minWidth:0}}>
+              <div style={{fontSize:12.5,fontWeight:900,color:"#fff",marginBottom:3}}>{wt.t}</div>
+              <div style={{fontSize:11,color:"rgba(255,255,255,0.76)",lineHeight:1.55}}>{wt.d}</div>
+            </div>
+          </div>
+          <Btn v="ghost" fw onClick={()=>setPlayer(p=>({...p,...wt.fx(p),
+            worldSeen:{s:p.season||1,w:p.week||1,k:[...(((p.worldSeen&&p.worldSeen.s===(p.season||1))?p.worldSeen.k:[])||[]),wt.k]},
+            log:[`${wt.e} ${wt.t}`,...(p.log||[])].slice(0,60)}))}>Ho letto →</Btn>
+        </Card>);})()}
+      {/* [7.270.0 P4] IL LEDGER SI RISCUOTE — le parole tornano indietro, coi fatti alla mano */}
+      {tab==="dashboard"&&(()=>{
+        const ld=ledgerDue(player);if(!ld)return null;
+        const bene=ld.e==="🤝";
+        return(
+        <Card style={{marginBottom:8,padding:"13px 15px",background:bene?"linear-gradient(150deg,#0d2418,#10301f)":TH.bgAmber,border:bene?"1px solid #1d6b45":`1px solid ${TH.bdAmber}`}}>
+          <div style={{fontSize:10,color:bene?"#6ee7b7":TH.txAmber,textTransform:"uppercase",letterSpacing:2,marginBottom:6}}>📒 Il conto delle parole</div>
+          <div style={{fontSize:12.5,fontWeight:900,color:bene?"#fff":TH.txAmber,marginBottom:3}}>{ld.t}</div>
+          <div style={{fontSize:11,color:bene?"rgba(255,255,255,0.78)":TH.txAmber,lineHeight:1.55,marginBottom:10}}>{ld.d}</div>
+          <Btn v={bene?"primary":"ghost"} fw onClick={()=>setPlayer(p=>{
+            const _l=[...(p.ledger||[])];if(_l[ld.i])_l[ld.i]={..._l[ld.i],done:true};
+            return{...p,...ld.fx(p),ledger:_l,log:[`📒 ${ld.t}`,...(p.log||[])].slice(0,60)};
+          })}>{bene?"Una stretta di mano →":"Prendere nota →"}</Btn>
         </Card>);})()}
       {/* [7.269.0 P1] LA SERIE A PUNTATE — un arco alla volta, con scelte che si compongono */}
       {tab==="dashboard"&&(()=>{
