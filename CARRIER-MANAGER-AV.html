@@ -3967,7 +3967,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="7.263.0"; // [7.263.0 #79 — collaudo PO «FC Hornets con lo stemma WAT»] la sigla non combaciava col nome: e' una CLASSE, non un caso isolato. La bonifica copyright (5.96.0) rinomino' i club ma lascio' le SIGLE del mondo reale → 77 club su 252 mostravano lo stemma della squadra VERA sotto un nome di fantasia: «FC Islington»→ARS, «FC Stamford»→CHE, «FC Haringey»→TOT, «FC Merseyside»→LIV, «FC Hornets»→WAT. Oltre all'incoerenza (visibile su ogni tabellone, classifica e calendario) era un residuo di de-branding che audit-copyright NON vede: scansiona nomi di club/leghe/competizioni/record/giocatori, mai le sigle. Tutte e 77 rigenerate DAL NOME MOSTRATO con regola unica (radice della parola principale, in subordine scheletro consonantico: Salento→SLN · Weser→WSR · Vallonia→VLA), 3 lettere, zero collisioni nuove. Gli ID restano INVARIATI (save-safe) e cosi' colori, prestigio e leghe. I 5 duplicati storici tra nazioni diverse (VAL Valenciano/Valencien · MOR · EST · ASC · BRS) restano: gia' valutati legittimi nell'audit 7.8.2. SAVE IN CORSO: player.club si risincronizza gia' da solo (_syncClub70 7.0.2), ma la CLASSIFICA salvata e' uno snapshot dei club → aggiunta la stessa bonifica per id sulle righe di standings (solo campi di display, mai punti/gol). Guardiano permanente club-abbr-coherence-test: 0 sigle che codificano il club reale · formato 2-4 maiuscole · nessun duplicato nuovo · la migrazione risincronizza la classifica. audit-copyright: 0 hit.
+const GAME_VERSION="7.264.0"; // [7.264.0 #80 — direttiva PO «burattini non ne voglio mai vedere in campo, piuttosto messaggio di errore/warning»] Scelta di progetto RIBALTATA. Finora i modelli procedurali erano la RETE DI SICUREZZA: se il CH38 non si agganciava entro 3s entravano in campo (7.8.25, per non lasciare il campo vuoto) e a 30s il fischio d'inizio partiva comunque CON loro (7.9.3) — ecco perche' potevi vederli al 25'. Ora, quando il CH38 e' ATTESO: (a) niente backstop coi procedurali — restano nascosti e guidano solo la logica; (b) se il caricamento fallisce (errore duro) o tarda oltre 12s si alza un AVVISO esplicito al posto del fischio: «Modelli 3D non caricati», con ↻ Riprova (rimonta la scena via key → il caricatore riparte da zero senza perdere la partita) e, come uscita DICHIARATA dall'utente, «Gioca comunque senza modelli 3D» (i procedurali entrano solo se lo decide lui, mai come ripiego silenzioso del gioco); (c) via lo sblocco automatico a 30s che faceva giocare i burattini. Il flag di fallimento si azzera a ogni mount (una partita non eredita l'errore della precedente). Quando il GLB e' spento DI PROPOSITO (gate con __CPM_GLB=false, ?glb=0, preferenza salvata) nulla cambia: li' i procedurali restano il renderer legittimo e il fischio non viene mai trattenuto.
 // [7.242.0 #56 chiusura — batch PO gi31-35 «Non si vede il gesto tecnico specifico» + verdetto difensivo] IL GESTO DIFENSIVO HA UNA FAMIGLIA. Ogni azione difensiva derivava `tackle/-` senza variante: la posa era UNA (scivolata) per pressing, anticipo, muro e deviazione. Tre famiglie STRUTTURALI congelate in factory (patto chainOn/gkCall — la regex vive solo in S()): slide (scivolata/disperato, posa storica a terra) · lunge (intercetto/anticipo/deviazione/muro: AFFONDO in piedi, gamba tesa e braccia larghe) · press (pressing/finta/recupero/copertura: ADDOSSO al portatore, busto avanti, braccio a schermare, tocco di punta). Prop hlDefGesto → pose sw-scalate auto-azzeranti nel blocco CINE-VAR; fallito = perdita di equilibrio comune. + VERDETTO DIFENSIVO RITARDATO (pattern #51): con l inbound 7.239 il pallone doveva ancora ARRIVARE quando usciva l overlay (misurato ~0.9s su gi31) → revealMs def 2250 con inbound / 1900 senza. Verificato sui fogli-provini: gi34 pressing = eroe addosso al portatore che vacilla, verdetto dopo il contatto.
 // [7.241.0 #56 batch PO gi28/29/37 «Non si vede il compagno che conclude»] FRENA PER GIRARTI — il difetto NON era la scelta del ricevente ne la transizione: attribuzione per-frame (AR53/54: oth=0, own>0, _ctx GIA sulla palla) → era il MODELLO DI STERZATA di animOne. Il ricevente lanciato sulla corsa profonda, con il filtrante atterrato ALLE SPALLE, navigava un inversione a U larga 20u e lunga secondi: il turn-rate e ∝1/velocita e la magnitudine della velocita-obiettivo restava PIENA nella direzione sbagliata. Ora quando la direzione voluta supera ~60° da quella di marcia la velocita-obiettivo cala col disallineamento (fino a 0.18×): la frenata passa dal limitatore di accelerazione, la velocita scende, il turn-rate risale → due passi di frenata e pivot, come in campo. Misurato prima→dopo: gi29 ricevente da divergenza a 24u → ARRIVO a 1.3u (t 0.41) con palla che parte con lui; gi37 2.0u; gi28 convergenza stretta. Vale per TUTTI i 21 off-ball (fisica piu vera anche su pressing/rientri — plausibile beneficio sul cluster difensivo «non aggancia il pallone»). +selezione demergenza del ricevente nel driver assist_recv (ogni scena ha SEMPRE un uomo sulla palla). ⚠️ modello core: gate 14/14 obbligatorio + realismo da riverificare sui baseline.
 // [7.240.0 #55B batch PO gi25/gi26 «Non si vede il compagno che riceve (e tira)» + gi43/28/29/30 storici] IL COMPAGNO ARRIVA SUL PALLONE PRIMA DI CALCIARE. Diagnosi strumentata (probe AR51/AR52 in-page, solo __CPM_REC): la catena assist_recv era VIVA e corretta — il primo sospetto «catena congelata» era un artefatto del campione stantio — ma (a) la transizione ricezione→tiro era a TEMPO FISSO 0.42s col ricevente ancora a 8-15u → il pallone volava in porta DA SOLO col gesto di calcio a vuoto; (b) il puntatore del ricevente (passTargetMesh) veniva AZZERATO all'avvio di assist_recv in 2 dei 3 siti (pass+assist = gi25 filtrante · tacco/scarico = gi26) e il driver, che scandiva solo il gesto _rcvT (0.52s di vita), restava senza nessuno da far correre. Fix: puntatore PERSISTENTE su tutti i siti (+_runToX fresco), fallback del driver sul puntatore, transizione ALL'ARRIVO (<2.2u, minimo 0.30s) con fallback 3.0s. Misurato prima→dopo: ricevente a 8-9u dalla palla al momento del tiro → 3.5-4u col gesto agganciato; gi26 duello leggibile sul foglio-provini; gi25 in wizard chiude con la catena e il gol.
@@ -9155,7 +9155,7 @@ function ThreeMatchView(props){
     if(_glbUrl){try{localStorage.setItem('cpm-glb',_glbUrl[1]);}catch(e){}}
     let _glbPref=null;try{_glbPref=localStorage.getItem('cpm-glb');}catch(e){}
     const _useGLB=(typeof window!=='undefined')&&window.__CPM_GLB!==false&&_glbPref!=='0';
-    try{window.__CPM_GLB_READY=_useGLB?false:true;}catch(_e){}/* [7.9.3 direttiva PO «basta burattini: se CH38 non è pronto non si gioca»] readiness esposta a LiveMatch: false=GLB atteso ma non ancora agganciato → il kickoff viene TRATTENUTO (overlay pre-fischio); diventa true all'aggancio del primo CH38 o su fallimento duro (ultima risorsa) */
+    try{window.__CPM_GLB_READY=_useGLB?false:true;window.__CPM_GLB_FAIL=null;}catch(_e){}/* [7.264.0] il flag di fallimento si azzera a ogni mount: una partita non eredita l'errore della precedente *//* [7.9.3 direttiva PO «basta burattini: se CH38 non è pronto non si gioca»] readiness esposta a LiveMatch: false=GLB atteso ma non ancora agganciato → il kickoff viene TRATTENUTO (overlay pre-fischio); diventa true all'aggancio del primo CH38 o su fallimento duro (ultima risorsa) */
     // [6.95.0 · 7.8.1 collaudo PO «iniziano la partita i soldatini — va assolutamente evitato / mai burattini»]
     //   GRACE PERIOD: finché il CH38 non è agganciato i mesh procedurali (giocatori + EROE) restano NASCOSTI
     //   (la logica/posizioni girano comunque); l'aggancio GLB ripristina la visibilità (coi figli procedurali
@@ -9172,7 +9172,15 @@ function ThreeMatchView(props){
       //   a 45s lasciava il campo VUOTO fino a 45s durante un load GLB lento/fallito. Ora 3s: campo vuoto al massimo
       //   ~3s (il GLB prefetchato si aggancia prima → nessun burattino), poi i procedurali GIOCABILI come rete di
       //   sicurezza (mai campo vuoto), e il CH38 subentra appena carica (il retry lo aggancia → i procedurali si rinascondono).
-      sr.current&&(sr.current._showProc=_showProc);setTimeout(_hideProc,0);sr.current&&(sr.current._glbBackstop=setTimeout(()=>{if(!(sr.current&&sr.current._glbOn))_showProc();},3000));}
+      /* [7.264.0 direttiva PO «burattini non ne voglio mai vedere in campo, piuttosto messaggio di errore/warning»]
+         Il backstop a 3s mostrava i modelli procedurali come rete di sicurezza (e a 30s il fischio partiva CON
+         loro): scelta ribaltata. Con il CH38 ATTESO i procedurali non entrano MAI in campo — restano nascosti e
+         guidano solo la logica. Se il modello non arriva, LiveMatch mostra un AVVISO esplicito con «Riprova»
+         (segnale __CPM_GLB_FAIL) invece di far giocare i burattini. Quando il GLB e' spento DI PROPOSITO
+         (gate, ?glb=0, preferenza salvata) _useGLB e' false e questo blocco non esiste: li' i procedurali
+         restano il renderer legittimo. */
+      sr.current&&(sr.current._showProc=_showProc);try{window.__CPM_SHOW_PROC=_showProc;window.__CPM_PROCVIS=()=>{try{let c=0;((sr.current&&sr.current.players)||[]).forEach(pp=>{if(pp&&pp.mesh&&pp.mesh.visible&&!pp.mesh._glbDriven)c++;});if(hero&&hero.visible&&!hero._glbDriven)c++;return c;}catch(_x){return -1;}};}catch(_e){}/* [7.264.0] __CPM_PROCVIS: quanti modelli PROCEDURALI sono davvero visibili in campo — e' la misura con cui il guardiano no-puppets prova la direttiva (funzione: costa zero finche' nessuno la chiama) *//* [7.264.0] uscita DICHIARATA dall'avviso «Gioca comunque senza modelli 3D»: i procedurali entrano solo se lo decide l'utente */setTimeout(_hideProc,0);
+      sr.current&&(sr.current._glbBackstop=setTimeout(()=>{if(!(sr.current&&sr.current._glbOn)){try{window.__CPM_GLB_FAIL="slow";}catch(_e){}}},9000));}
     // [7.8.1 collaudo PO «mai burattini»] SOLO footballer.glb è obbligatorio; OGNI clip di animazione è opzionale
     //   (.catch→null) → una singola anim che tarda/fallisce NON abbatte più l'intero modello (prima Promise.all
     //   rigettava se una qualsiasi delle 12 falliva → soldatini). Il modello si costruisce appena il corpo è pronto.
@@ -9263,7 +9271,7 @@ function ThreeMatchView(props){
       // [6.74.0 3D-13] anche il portiere di CASA ha le clip di tuffo: sul gol subito (toOwnGoal) riceveva il
       //   gk_dive procedurale ma il suo GLB restava in locomozione → "scivolava" lateralmente senza tuffarsi.
       {const _hgkP=players.find(p=>p.gk&&p.team==='home');const _hgkAv=_hgkP&&glbAvatars.find(a=>a.proc===_hgkP.mesh);if(_hgkAv){_hgkAv._isGk=true;_hgkAv.gestures=null;_mkGestures(_hgkAv,{dive:_dg,catch:_cag,block:_bg});}}
-    }).catch(e=>{try{console.warn('[CPM-GLB] load fail',e&&e.message);}catch(_){}try{sr.current&&sr.current._showProc&&sr.current._showProc();}catch(_2){}try{window.__CPM_GLB_READY=true;}catch(_3){}/* [7.9.3] fallimento DURO → sblocca il kickoff (burattini = ultima risorsa, mai deadlock) */});}/* [7.8.1] fallimento DURO del corpo (footballer.glb) → ripristina SUBITO i procedurali (niente campo vuoto in attesa del timer di 12s) */
+    }).catch(e=>{try{console.warn('[CPM-GLB] load fail',e&&e.message);}catch(_){}try{window.__CPM_GLB_FAIL="error";}catch(_2){}/* [7.264.0 direttiva PO] niente piu' ripristino dei procedurali sul fallimento: il campo NON mostra burattini, LiveMatch alza l'avviso. __CPM_GLB_READY resta false → il fischio non parte con i modelli sbagliati */});}
 
     // Slot di walkout: due file (home+protagonista / away) lungo la larghezza, rivolte alla camera
     const _homeMeshes=[...players.filter(p=>p.team==="home").map(p=>p.mesh),hero];
@@ -14218,6 +14226,13 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   //   stesso pattern del read-freeze 5.47.12).
   const [kickoffHold,setKickoffHold]=useState(true);
   const [holdTick,setHoldTick]=useState(0);
+  /* [7.264.0 direttiva PO «burattini non ne voglio mai vedere in campo, piuttosto messaggio di errore/warning»]
+     glbFail: il CH38 non e' arrivato (lento o errore). Prima il fischio partiva comunque dopo 30s e la partita
+     si giocava coi modelli procedurali; ora l'attesa diventa un AVVISO esplicito con «Riprova» (rimonta la
+     scena 3D via glbTry, che e' la key di ThreeMatchView) e, come uscita dichiarata dall'utente, la scelta di
+     giocare senza modelli 3D — che resta una SUA decisione, mai un ripiego silenzioso del gioco. */
+  const [glbFail,setGlbFail]=useState(null);
+  const [glbTry,setGlbTry]=useState(0);
   // [7.13.0 Sprint «Presentazione» — backlog PO] SERATA DI PRESENTAZIONE: il PRIMO match CASALINGO di lega
   //   della stagione (S≥2) apre con lo speaker che annuncia la squadra durante il walkout (che è già la scena
   //   3D con orbita a 360° sullo stadio) + fuochi d'artificio (riuso pirotecnica big-match). Per costruzione
@@ -14244,10 +14259,14 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     const t0=Date.now();
     const iv=setInterval(()=>{
       setHoldTick(t=>t+1);
-      if((typeof window!=='undefined'&&window.__CPM_GLB_READY===true)||Date.now()-t0>30000){setKickoffHold(false);clearInterval(iv);}
+      if(typeof window!=='undefined'&&window.__CPM_GLB_READY===true){setGlbFail(null);setKickoffHold(false);clearInterval(iv);return;}
+      /* [7.264.0] niente piu' sblocco automatico a 30s (giocava coi burattini): dopo 12s, o subito su errore
+         duro del caricamento, si passa all'AVVISO e la partita resta ferma finche' l'utente non decide. */
+      const _f=(typeof window!=='undefined')?window.__CPM_GLB_FAIL:null;
+      if(_f==="error"||Date.now()-t0>12000)setGlbFail(_f==="error"?"error":"slow");
     },400);
     return ()=>clearInterval(iv);
-  },[phase]);
+  },[phase,glbTry]);
   // VISUAL-TEST (4.82.0): force-situation per validare TUTTE le SITUATIONS in 3D.
   // Attivo SOLO con ?cpmtest=1 → in produzione non viene mai registrato. Phase 2 dell'harness.
   useEffect(()=>{
@@ -16451,7 +16470,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
 
             {/* FIELD — height-constrained on desktop, full width on narrow */}
             <div style={isNarrow?{position:"relative",overflow:"hidden",cursor:"default",flex:1,minHeight:0,display:"flex",flexDirection:"column"}:{flex:"0 0 62%",position:"relative",overflow:"hidden",alignSelf:"stretch",cursor:"default"}}>
-              <ThreeMatchView playerX={pPos.x} playerY={pPos.y} zone={zone}
+              <ThreeMatchView key={"tmv"+glbTry}/* [7.264.0] «Riprova» rimonta la scena 3D → il caricatore del CH38 riparte da zero senza perdere la partita */ playerX={pPos.x} playerY={pPos.y} zone={zone}
                 homeCol={homeKitCol} oppCol={awayKitCol}
                 opponents={opponents.current} matchPhase={matchPhase3D} matchClock={clock} avatarId={player.avatarId||0}
                 allPlayers={matchPlayers} homeClub={homeTeamObj} competitionLabel={_compLabel} competitionColor={_compCol} matchImportance={mw} isFinal={_isNeutralFinal} seasonPresentation={_presNight} heroNum={player.jerseyNum||10} heroName={player.name} subEntry={subEntryKey} subEntryVar={subEntryVar} subExit={subExitKey} subExitVar={subExitVar}
@@ -16625,7 +16644,19 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                 return <div key={crowdChant.key} style={{position:"absolute",bottom:"8%",left:"5%",right:"5%",textAlign:"center",fontSize:fs,fontWeight:900,color:col,textShadow:`0 0 22px ${col},0 2px 10px rgba(0,0,0,0.95)`,animation:"chantPulse 2.8s ease-out forwards",zIndex:22,pointerEvents:"none",letterSpacing:1.5,textTransform:"uppercase",padding:"5px 10px",background:isGoal?`linear-gradient(90deg,transparent,rgba(0,0,0,0.55),transparent)`:"transparent",borderRadius:8}}><EmoText>{crowdChant.text}</EmoText></div>;
               })()}
               {/* [7.9.3] Kickoff hold — attesa elegante finché il CH38 non è agganciato (mai burattini in campo) */}
-              {kickoffHold&&!paused&&phase==="playing"&&(()=>{
+              {kickoffHold&&!paused&&phase==="playing"&&glbFail&&(
+                <div style={{position:"absolute",inset:0,background:"rgba(5,8,20,0.94)",backdropFilter:"blur(6px)",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",zIndex:41,padding:"0 26px",textAlign:"center"}}>
+                  <div style={{fontSize:38,marginBottom:10}}>⚠️</div>
+                  <div style={{fontSize:15,fontWeight:900,color:"#f59e0b",letterSpacing:1.6,textTransform:"uppercase",marginBottom:8}}>Modelli 3D non caricati</div>
+                  <div style={{fontSize:12.5,color:"rgba(255,255,255,0.82)",lineHeight:1.55,maxWidth:330,marginBottom:16}}>
+                    {glbFail==="error"?"Il caricamento dei giocatori non è riuscito. Controlla la connessione e riprova: la partita non parte con i modelli di ripiego.":"I giocatori ci stanno mettendo troppo a caricare (connessione lenta). Puoi riprovare senza perdere la partita."}
+                  </div>
+                  <button onClick={()=>{try{window.__CPM_GLB_FAIL=null;window.__CPM_GLB_READY=false;}catch(_e){}setGlbFail(null);setGlbTry(t=>t+1);}}
+                    style={{padding:"12px 26px",borderRadius:11,border:"none",background:"#f59e0b",color:"#1a1206",fontWeight:900,fontSize:14,cursor:"pointer",fontFamily:"inherit",marginBottom:10}}>↻ Riprova il caricamento</button>
+                  <button onClick={()=>{try{window.__CPM_GLB_FAIL=null;}catch(_e){}setGlbFail(null);setKickoffHold(false);try{if(typeof window!=='undefined'&&window.__CPM_SHOW_PROC)window.__CPM_SHOW_PROC();}catch(_e2){}}}
+                    style={{padding:"9px 18px",borderRadius:9,border:"1px solid rgba(255,255,255,0.22)",background:"transparent",color:"rgba(255,255,255,0.62)",fontWeight:700,fontSize:11.5,cursor:"pointer",fontFamily:"inherit"}}>Gioca comunque senza modelli 3D</button>
+                </div>)}
+              {kickoffHold&&!paused&&phase==="playing"&&!glbFail&&(()=>{
                 const _kh=["🟢 Le squadre completano il riscaldamento…","📋 Ultime indicazioni dei mister…","🤝 L'arbitro chiama i capitani per il sorteggio…","📸 Foto di rito e strette di mano…","🏟️ Il pubblico si prepara: ci siamo quasi…"];
                 return(
                 <div style={{position:"absolute",inset:0,background:"rgba(5,8,20,0.88)",backdropFilter:"blur(5px)",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",zIndex:40}}>
