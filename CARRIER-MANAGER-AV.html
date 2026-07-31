@@ -3833,6 +3833,17 @@ function generateTransferOffer(player,pref){
 }
 // Generate pro contract offers at end of U18 career
 function generateProContracts(player){
+  /* [7.262.0 collaudo PO «cambiano le squadre, prima carica alcune squadre e poi ne mostra altre! bug grave!»]
+     Le offerte nascevano da _pk()/_rf() NON seedati ed erano calcolate nel corpo del render di
+     ProTransitionScreen: bastava un qualunque re-render del contenitore (una notifica, l'autosave, un timer)
+     perche' club e stipendi venissero riestratti sotto gli occhi del giocatore. Ora l'intera generazione usa
+     uno stream SEEDATO sull'identita' del giocatore (nome+nazione+stagione+club+u18Seasons): le stesse
+     offerte a ogni render E dopo un reload, per costruzione. `_pk`/`_rf`/`_ri` sostituiscono pick/rngF/rng
+     SOLO dentro questa funzione. */
+  const _prg=(typeof seededRng==="function")?seededRng((hashStr("prooff|"+(player.name||"?")+"|"+(player.nation||"")+"|"+(player.club?.id||"")+"|"+(player.season||1)+"|"+(player.u18Seasons||0))>>>0)||1):Math.random;
+  const _pk=a=>(a&&a.length)?a[Math.floor(_prg()*a.length)%a.length]:undefined;
+  const _rf=(a,b)=>a+_prg()*(b-a);
+  const _ri=(a,b)=>a+Math.floor(_prg()*(b-a+1));
   const ovr=player.ovr||60;
   const u18S=player.u18Seasons||0;
   const forced=u18S>=2; // max 2 seasons: MUST leave
@@ -3855,10 +3866,10 @@ function generateProContracts(player){
   // Sprint 105: First Team offer requires minimum performance threshold
   const _qualifiesFirstTeam105=ovr>=64&&perf>=3.5;
   if(_qualifiesFirstTeam105){
-    offers.push({id:"same_pro",club:parentClub,contractType:"Primo contratto professionistico",wage:Math.round(clamp(_wageWeek133*(1+rngF(-0.10,0.10)),500,500000)*agentMult*roleWageBonus),duration:rng(1,3),role:ovr>=72?"Titolare giovane":ovr>=65?"Giovane promessa":"Aggregato alla rosa",moralBonus:14,growthBonus:perf>5?20:10,isMain:true});
+    offers.push({id:"same_pro",club:parentClub,contractType:"Primo contratto professionistico",wage:Math.round(clamp(_wageWeek133*(1+_rf(-0.10,0.10)),500,500000)*agentMult*roleWageBonus),duration:_ri(1,3),role:ovr>=72?"Titolare giovane":ovr>=65?"Giovane promessa":"Aggregato alla rosa",moralBonus:14,growthBonus:perf>5?20:10,isMain:true});
   }else{
     // Non confermato in prima squadra: proposta ridotta o solo prestito
-    offers.push({id:"same_pro",club:parentClub,contractType:ovr>=60?"Aggregato alla rosa (prestito interno)":"Non confermato — svincolo",wage:Math.round(clamp(_wageWeek133*0.65*(1+rngF(-0.08,0.08)),300,200000)*agentMult),duration:1,role:"Riserva giovane",moralBonus:-4,growthBonus:6,isMain:false,isNonConfirmed:true});
+    offers.push({id:"same_pro",club:parentClub,contractType:ovr>=60?"Aggregato alla rosa (prestito interno)":"Non confermato — svincolo",wage:Math.round(clamp(_wageWeek133*0.65*(1+_rf(-0.08,0.08)),300,200000)*agentMult),duration:1,role:"Riserva giovane",moralBonus:-4,growthBonus:6,isMain:false,isNonConfirmed:true});
   }
   // 2. External club (credibility-filtered)
   if(perf>2||forced){
@@ -3867,19 +3878,19 @@ function generateProContracts(player){
     const extMinP=ovr>=73?65:ovr>=65?52:40;
     const extPool=CLUBS.filter(c=>c.p>=extMinP&&c.p<=extMaxP&&c.id!==parentClub.id);
     if(extPool.length){
-      const ext=pick(extPool);
-      const _extWage133=Math.round(clamp(_ovrToWageWeekly133(ovr,ext.p)*(1+rngF(-0.10,0.15)),400,500000)*agentMult);
+      const ext=_pk(extPool);
+      const _extWage133=Math.round(clamp(_ovrToWageWeekly133(ovr,ext.p)*(1+_rf(-0.10,0.15)),400,500000)*agentMult);
       // [6.37.0 STAB-10] al PRIMO contratto pro non esiste un club madre senior → un'offerta di «prestito» era
       //   fuorviante (viene comunque eseguita come trasferimento definitivo). Per scelta PO: sempre FIRMA
       //   DEFINITIVA (etichetta coerente), niente più «Prestito annuale».
-      offers.push({id:"external",club:ext,contractType:ovr>=65?"Trasferimento definitivo":"Contratto professionistico",wage:_extWage133,duration:ovr>=65?rng(2,3):1,role:ovr>=70?"Titolare":"Titolare garantito",moralBonus:8,growthBonus:15});
+      offers.push({id:"external",club:ext,contractType:ovr>=65?"Trasferimento definitivo":"Contratto professionistico",wage:_extWage133,duration:ovr>=65?_ri(2,3):1,role:ovr>=70?"Titolare":"Titolare garantito",moralBonus:8,growthBonus:15});
     }
   }
   // 3. Contratto con un club minore (fallback garantito) — [6.37.0 STAB-10] era etichettato «Prestito»
   //    (semantica indefinita al 1° pro): firma DEFINITIVA con un club di categoria inferiore, minutaggio garantito.
   const loanPool=CLUBS.filter(c=>c.p<68&&c.id!==parentClub.id);
-  const loanClub=pick(loanPool.length?loanPool:CLUBS);
-  offers.push({id:"loan_small",club:loanClub,contractType:"Contratto (squadra minore)",wage:Math.round(clamp(_ovrToWageWeekly133(ovr,loanClub?.p||45)*(1+rngF(-0.10,0.10)),300,80000)*agentMult),duration:1,role:"Minutaggio garantito",moralBonus:4,growthBonus:10});
+  const loanClub=_pk(loanPool.length?loanPool:CLUBS);
+  offers.push({id:"loan_small",club:loanClub,contractType:"Contratto (squadra minore)",wage:Math.round(clamp(_ovrToWageWeekly133(ovr,loanClub?.p||45)*(1+_rf(-0.10,0.10)),300,80000)*agentMult),duration:1,role:"Minutaggio garantito",moralBonus:4,growthBonus:10});
   // 4. Stay another year in U18 (ONLY if under limit)
   if(!forced){
     const isLast=u18S>=1;
@@ -3956,7 +3967,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="7.261.0"; // [7.261.0 #77 — screenshot PO «non essere severo con le simulazioni, l'eroe spesso non fa assist e gol» + «nel toast specifica assist, gol e voto»] (1) _pSimStats era davvero severa (λ-gol ~0.33 a OVR 71 → 72% di sim senza gol dell'eroe anche a squadra in rete): λ ora scala con l'OVR (65→0.31 · 71→0.42 · 80→0.58 · 88→0.73 +arch/won, assist analoghi) → l'eroe è coinvolto in ~metà delle sim vinte, da star quasi sempre. (2) SCOPERTO IL PEGGIO: i 6 rami girone-euro/KO-euro/Coppa (SIMULA + AVANZA) hardcodavano goals:0,assists:0 — l'eroe NON SEGNAVA MAI nelle coppe simulate (e i capocannonieri di Coppa dell'eroe leggono quelle entry): ora tutti e 6 passano da _pSimStats (seed dedicato, guardia infortunio/svincolo) con G/A nei totali stagione+carriera e voto aggiustato (+0.4/gol come il ramo lega). (3) TOAST del risultato con la riga-eroe condivisa _heroSimLine (⚽N · 🅰️N · voto X, G/A solo se >0) su tutti e 9 i toast delle sim: lega, amichevole nazionale (SIMULA e AVANZA), girone/KO euro (SIMULA e AVANZA), Coppa (SIMULA e AVANZA). Misure (probe permanente sim-hero-stats-test, 20k gare/profilo, 20% delle gare a secco di squadra): titolare 71 gol/gara 0.21→0.38 e coinvolto 35%→48% · bomber 80 0.38→0.59 e 49%→62% · star 88 0.45→0.68 e 55%→69%; invarianti intatti (mai G/A con squadra a secco, mai G+A oltre i gol di squadra, monotonia sull'OVR, determinismo). (4) VOTO: la qualita' contava SOLO nelle vittorie (un fuoriclasse che pareggiava prendeva 5.8 tondo come una riserva) → ora pesa anche su pari e sconfitta, bounded ±0.22 e ancora NEGATIVA sotto la media; effetto misurato sulla media stagionale +0.06 riserva · +0.07 titolare · +0.11 star (nessuna inflazione: le soglie della gerarchia restano dove sono). (5) AUDIT ADVERSARIALE del batch (4 lenti + verifica) → 4 difetti MIEI corretti prima del push: (a) SEED CLONATI — xorshift32 ha il primo output quasi identico per seed vicini (0.09504 vs 0.09486 con offset +5/+6/+8) e _pSimStats consuma proprio i primi due: campionato, Europa e Coppa della STESSA settimana davano l'identico gol/assist nel 72% dei casi → stream dedicato per competizione (hashStr "psim|eg|ek|cp") → 0.7%; (b) stesso incontro, esito personale DIVERSO da «Simula» e da «Avanza» (offset divergenti) → stessi tag su entrambi i path → divergenza 0%; (c) il ramo Coppa di AVANZA accumulava su p.goals invece che su updP come i fratelli (latente, ma incoerente); (d) ANTI-FARM: la prima correzione (misurare solo il vissuto dal vivo) e' stata scartata dopo averla MISURATA — su un profilo misto (17 gare live a 1.1 gpg + 17 simulate) portava la difficolta' da ×1.00 a ×1.21, cioe' PUNIVA chi simula, l'opposto della richiesta. Resta l'aggregato: le simulate (gpg piu' basso del vivo) possono solo abbassare il fattore, quindi simulare non rende mai piu' dure le partite giocate. (e) RECORD DI LEGA gonfiato: veniva BATTUTO contando i soli gol di lega (leagueGoalsOf) ma PERSISTITO con p.goals di tutte le competizioni → il record salvato nasceva gonfiato dei gol di coppa/Europa e restava nel save come asticella (cricchetto) — ora stessa unita' da entrambe le parti; (f) ASPETTATIVE con unita' diverse: l'asticella veniva dai gol di TUTTE le competizioni della scorsa stagione mentre il rendimento si misura in soli gol di LEGA (la riga «22 gol · attesi ~32» dello screenshot) → lo storico di stagione ora salva anche leagueGoals e le attese leggono quello (fallback al totale per le stagioni archiviate prima). Le tre proprieta' del batch (decorrelazione dei seed, parita' Simula↔Avanza, «simulare non indurisce il vivo») sono asserite dal guardiano permanente sim-hero-stats-test.
+const GAME_VERSION="7.262.0"; // [7.262.0 #78 — screenshot PO «cambiano le squadre, prima carica alcune squadre e poi ne mostra altre! bug grave!»] Le offerte di PRIMO CONTRATTO PRO nascevano da pick()/rngF() NON seedati ed erano calcolate nel CORPO DEL RENDER di ProTransitionScreen: bastava un qualunque re-render del contenitore (una notifica, l'autosave, un timer) perche' club, stipendi e durate venissero riestratti sotto gli occhi del giocatore. Doppia rete: (1) generateProContracts usa ora uno stream SEEDATO sull'identita' (nome+nazione+club+stagione+stagioni U18) — tutte e 10 le estrazioni interne convertite (_pk/_rf/_ri) → stesse offerte a ogni render E dopo un reload, per costruzione; (2) il componente le memoizza (React.useMemo) → non si rigenerano nemmeno a parita' di seed. Probe permanente pro-offers-stable-test: statico (0 estrazioni non seedate nella funzione) · puro (50 chiamate → firma identica) · VIVO (schermata reale + 8 re-render forzati via i nuovi hook goScreen/bump → club invariati) · sensibilita' (due giocatori diversi ricevono offerte diverse: il seed non e' una costante). + FIX DI UN FIX: il campo leagueGoals introdotto nel 7.261.0 per le ASPETTATIVE era INERTE — l'avevo messo su prevHist (rollover), ma sul percorso pro prevHist non viene mai pushato (la chiusura di stagione archivia gia' la voce con `hist` e il rollover salta il push): ora il campo sta sul writer che atterra davvero, e anche su quello del ritiro. Trovato dall'audit adversariale del batch precedente.
 // [7.242.0 #56 chiusura — batch PO gi31-35 «Non si vede il gesto tecnico specifico» + verdetto difensivo] IL GESTO DIFENSIVO HA UNA FAMIGLIA. Ogni azione difensiva derivava `tackle/-` senza variante: la posa era UNA (scivolata) per pressing, anticipo, muro e deviazione. Tre famiglie STRUTTURALI congelate in factory (patto chainOn/gkCall — la regex vive solo in S()): slide (scivolata/disperato, posa storica a terra) · lunge (intercetto/anticipo/deviazione/muro: AFFONDO in piedi, gamba tesa e braccia larghe) · press (pressing/finta/recupero/copertura: ADDOSSO al portatore, busto avanti, braccio a schermare, tocco di punta). Prop hlDefGesto → pose sw-scalate auto-azzeranti nel blocco CINE-VAR; fallito = perdita di equilibrio comune. + VERDETTO DIFENSIVO RITARDATO (pattern #51): con l inbound 7.239 il pallone doveva ancora ARRIVARE quando usciva l overlay (misurato ~0.9s su gi31) → revealMs def 2250 con inbound / 1900 senza. Verificato sui fogli-provini: gi34 pressing = eroe addosso al portatore che vacilla, verdetto dopo il contatto.
 // [7.241.0 #56 batch PO gi28/29/37 «Non si vede il compagno che conclude»] FRENA PER GIRARTI — il difetto NON era la scelta del ricevente ne la transizione: attribuzione per-frame (AR53/54: oth=0, own>0, _ctx GIA sulla palla) → era il MODELLO DI STERZATA di animOne. Il ricevente lanciato sulla corsa profonda, con il filtrante atterrato ALLE SPALLE, navigava un inversione a U larga 20u e lunga secondi: il turn-rate e ∝1/velocita e la magnitudine della velocita-obiettivo restava PIENA nella direzione sbagliata. Ora quando la direzione voluta supera ~60° da quella di marcia la velocita-obiettivo cala col disallineamento (fino a 0.18×): la frenata passa dal limitatore di accelerazione, la velocita scende, il turn-rate risale → due passi di frenata e pivot, come in campo. Misurato prima→dopo: gi29 ricevente da divergenza a 24u → ARRIVO a 1.3u (t 0.41) con palla che parte con lui; gi37 2.0u; gi28 convergenza stretta. Vale per TUTTI i 21 off-ball (fisica piu vera anche su pressing/rientri — plausibile beneficio sul cluster difensivo «non aggancia il pallone»). +selezione demergenza del ricevente nel driver assist_recv (ogni scena ha SEMPRE un uomo sulla palla). ⚠️ modello core: gate 14/14 obbligatorio + realismo da riverificare sui baseline.
 // [7.240.0 #55B batch PO gi25/gi26 «Non si vede il compagno che riceve (e tira)» + gi43/28/29/30 storici] IL COMPAGNO ARRIVA SUL PALLONE PRIMA DI CALCIARE. Diagnosi strumentata (probe AR51/AR52 in-page, solo __CPM_REC): la catena assist_recv era VIVA e corretta — il primo sospetto «catena congelata» era un artefatto del campione stantio — ma (a) la transizione ricezione→tiro era a TEMPO FISSO 0.42s col ricevente ancora a 8-15u → il pallone volava in porta DA SOLO col gesto di calcio a vuoto; (b) il puntatore del ricevente (passTargetMesh) veniva AZZERATO all'avvio di assist_recv in 2 dei 3 siti (pass+assist = gi25 filtrante · tacco/scarico = gi26) e il driver, che scandiva solo il gesto _rcvT (0.52s di vita), restava senza nessuno da far correre. Fix: puntatore PERSISTENTE su tutti i siti (+_runToX fresco), fallback del driver sul puntatore, transizione ALL'ARRIVO (<2.2u, minimo 0.30s) con fallback 3.0s. Misurato prima→dopo: ricevente a 8-9u dalla palla al momento del tiro → 3.5-4u col gesto agganciato; gi26 duello leggibile sul foglio-provini; gi25 in wizard chiude con la catena e il gol.
@@ -17176,7 +17187,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
 ======================================== */
 function ProTransitionScreen({player,onChoose}){
   const _dk=window.innerWidth>=640;
-  const{offers,forced,perf}=generateProContracts(player);
+  const{offers,forced,perf}=React.useMemo(()=>generateProContracts(player),[player.name,player.season,player.club?.id,player.u18Seasons,player.ovr,player.hasAgent,player.squadRole]);/* [7.262.0] doppia rete: il seed rende le offerte stabili anche dopo un reload, il memo evita di rigenerarle a ogni render */
   const u18S=player.u18Seasons||0;
   const[selIdx,setSelIdx]=useState(0);
   useEffect(()=>{
@@ -21762,6 +21773,8 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
   //   handler veri del gioco. Registrato a ogni render → closure sempre fresche.
   useEffect(()=>{if(_CPM_TEST&&typeof window!=='undefined'){
     window.__CPM_CAREER={
+      goScreen:(sc)=>{try{setScreen(sc);return true;}catch(e){return "error:"+(e&&e.message);}},/* [7.262.0] la probe pro-offers-stable deve poter raggiungere la schermata delle offerte pro senza attraversare due stagioni U18 */
+      bump:()=>{try{setNotif({msg:"probe",color:"#000"});setTimeout(()=>setNotif(null),60);return true;}catch(e){return "error:"+(e&&e.message);}},/* [7.262.0] forza un re-render del contenitore: e' proprio la condizione in cui le offerte si riestraevano */
       get:()=>({season:player.season||1,week:player.week||1,lived:!!player.weekLived,screen,ovr:player.ovr,bank:player.bankBalance||0,injured:!!player.injured,goals:player.goals||0,matches:player.matches||0,club:player.club?.id,standingsN:(player.standings||[]).length,gf:(player.standings||[]).reduce((a,t)=>a+(t.gf||0),0),ga:(player.standings||[]).reduce((a,t)=>a+(t.ga||0),0),contractDur:player.contract?.duration}),
       dismiss:()=>{try{setWeekLiveModal(null);setShowMatchPrompt(null);setTransferOffer(null);setNegoModal(null);setNationalCallupData(null);}catch(_e){}},
       clearTournaments:()=>setPlayer(p=>({...p,nationsCupQueue:p.nationsCupQueue?{...p.nationsCupQueue,done:true,active:false}:p.nationsCupQueue,euroMondiale:p.euroMondiale?{...p.euroMondiale,done:true,active:false,phase:"done"}:p.euroMondiale})),
@@ -23592,7 +23605,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       // Save history + trophies into player state now
       setPlayer(p=>{
         if((p.seasonClosedAt||0)===(p.season||1))return p;// [6.74.0 QA-4] idempotenza: reload sulla schermata premi → il blocco NON si riesegue (prima: trofeo campione duplicato, palloni d'oro doppi, morale/popolarità premi 2×, history duplicata, rivale invecchiato 2×)
-        const hist={season:p.season,club:p.club?.name||p.club?.n,clubId:p.club?.id,goals:p.goals,assists:p.assists,matches:p.matches,ovr:p.ovr,league:p.club?.lg};/* [6.74.0 QA-16] +league: la Hall of Fame confrontava con la prima lega del DB perché l'entry non salvava la lega */
+        const hist={season:p.season,club:p.club?.name||p.club?.n,clubId:p.club?.id,goals:p.goals,assists:p.assists,matches:p.matches,ovr:p.ovr,league:p.club?.lg,leagueGoals:(typeof leagueGoalsOf==="function"?leagueGoalsOf(p):(p.goals||0))};/* [7.262.0] il campo leagueGoals del 7.261.0 era finito SOLO su prevHist (rollover) — ma sul percorso pro prevHist NON viene mai pushato (24612 salta se la stagione e' gia' archiviata, e la chiusura qui sotto l'ha appena archiviata con `hist`): il fix delle ASPETTATIVE era di fatto inerte. Ora il campo sta sul writer che atterra davvero *//* [6.74.0 QA-16] +league: la Hall of Fame confrontava con la prima lega del DB perché l'entry non salvava la lega */
         const newTrophies=isChampion?[...(p.trophies||[]),{season:p.season,club:p.club?.n||p.club?.name,league:p.club?.lg}]:(p.trophies||[]);
         // worldMemory: record gol stagione
         let newMem=[...(p.worldMemory||[])];
@@ -24141,7 +24154,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
   };
 
   const doRetire=()=>{
-    const hist={season:player.season,club:player.club?.n||player.club?.name,clubId:player.club?.id,goals:player.goals,assists:player.assists,matches:player.matches,ovr:player.ovr,league:player.club?.lg};
+    const hist={season:player.season,club:player.club?.n||player.club?.name,clubId:player.club?.id,goals:player.goals,assists:player.assists,matches:player.matches,ovr:player.ovr,league:player.club?.lg,leagueGoals:(typeof leagueGoalsOf==="function"?leagueGoalsOf(player):(player.goals||0))};/* [7.262.0] stesso campo su tutti i writer di storico */
     const updPlayer={...player,history:((player.history||[]).some(h=>h.season===player.season)?(player.history||[]):[...(player.history||[]),hist]).slice(-50),trophies:player.trophies||[]};/* [6.74.0 QA-4] la stagione era già stata chiusa (e pushata) dal blocco premi → niente terza copia al ritiro */
     const score=calcLegacyScore(updPlayer);
     setPlayer(p=>({...p,retired:true,history:updPlayer.history,trophies:updPlayer.trophies}));/* [7.258.0 collaudo PO «dopo il ritiro non deve essere possibile tornare indietro!»] il ritiro era solo stato LOCALE (screen) → al reload il save rientrava in dashboard. Ora il flag è PERSISTITO (autosave) e il guard di render instrada per sempre alla pagina celebrativa */
