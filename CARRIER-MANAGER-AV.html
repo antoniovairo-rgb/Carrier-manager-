@@ -3967,7 +3967,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="7.266.0"; // [7.266.0 #82 — collaudo PO «dovrebbe essere l'Atletico Madrid che principalmente e' bianco e rosso, il blu e' un TERZO colore. fai una verifica massiva»] VERIFICA MASSIVA dei colori sociali su TUTTI i 252 club: `c`/`c2` sono la sorgente UNICA di maglie (clubKits/kitPatternTex), scudetto, tifo e coreografie 3D, quindi un colore sbagliato si propaga ovunque. Due classi di difetto trovate: (A) `c2` occupato da un TERZO colore (pantaloncino o rifinitura) invece del vero secondo colore d'identita' — l'Atletico rosso+BLU invece del rojiblanco rosso+bianco (il caso segnalato: le strisce del kit uscivano rosso-blu), Liverpool/United/Bayern rosso+ORO, Leicester blu+oro, Villarreal giallo+NERO invece di giallo+blu, Estoril e Le Havre; (B) primario e secondario INVERTITI — `c` deve essere il colore della MAGLIA, non quello dei pantaloncini: Tottenham, Fulham, Gladbach, Marsiglia, Siviglia, Rayo e Lipsia sono squadre BIANCHE e in campo scendevano in nero/rosso/celeste. 16 club corretti in tutto; gli id restano invariati e la migrazione `_syncClub70` propaga i nuovi colori anche ai salvataggi gia' in corso. Guardiano permanente club-colors-identity-test: classifica ogni esadecimale in una FAMIGLIA cromatica (cosi' una futura ritaratura di tonalita' non lo fa fallire) e la confronta con una tabella curata di 89 club riconoscibili, con copertura minima garantita sulle cinque leghe di vertice.
+const GAME_VERSION="7.267.0"; // [7.267.0 #83 — collaudo PO «questa storia del rivale e' un po' noiosa e ripetitiva ed anche il patto con il mister dovrebbe essere variabile»] Due archi che TORNANO per tutta la carriera, entrambi con un cuore unico. (1) IL RIVALE: il capitolo esce ~2 volte a stagione (una trentina in una carriera) e il centro del testo era sempre lo stesso template — il conto dei gol in CARRIERA — con soglie ASSOLUTE (40 gol): con 34 a 7 diceva «sei avanti in carriera», cioe' raccontava un dominio 5:1 come un margine qualunque. Ora il centro e' scelto tra gli ANGOLI davvero applicabili ai fatti dello stato: il duello di QUESTA stagione (gol tuoi contro i suoi), le due classifiche reali dei club con lo scarto in punti, la gara d'ANDATA gia' giocata col suo esito vero, le pagelle (OVR), la bacheca, i Trofei d'Oro che ha gia' alzato, il rapporto umano che evolve (rivale/rispettato/amico), la stessa generazione — e il divario di carriera e' ora RELATIVO. Misurato su 4000 duelli: 9 angoli distinti, il piu' frequente al 20% (prima: uno solo al 100%), pool medio 6,7 angoli per gara; aperture, chiusure e titoli ampliati. (2) IL PATTO COL MISTER: era sempre «N GOL in 5 gare» con la stessa proposta e lo stesso verdetto — un rifinitore si sentiva chiedere gol stagione dopo stagione. Ora il mister chiede quello che sai fare davvero: gol, assist, giocate decisive (gol+assist) o prestazioni da 7, derivato dal profilo REALE (media gol/assist, tiro contro passaggio, quota di voti alti) con scarto seedato tra i tipi adatti; durata 4-6 gare invece che fissa; apertura, premio e verdetto seedati; barra, diario e log parlano nell'unita' del patto. Misurato su 6000 offerte: 4 tipi, il piu' frequente al 28%, durata distribuita. `kind` e' un campo LAZY (i patti gia' in corso valgono come «gol»): nessun bump SAVE. Guardiano permanente rivale-patto-variety-test.
 // [7.242.0 #56 chiusura — batch PO gi31-35 «Non si vede il gesto tecnico specifico» + verdetto difensivo] IL GESTO DIFENSIVO HA UNA FAMIGLIA. Ogni azione difensiva derivava `tackle/-` senza variante: la posa era UNA (scivolata) per pressing, anticipo, muro e deviazione. Tre famiglie STRUTTURALI congelate in factory (patto chainOn/gkCall — la regex vive solo in S()): slide (scivolata/disperato, posa storica a terra) · lunge (intercetto/anticipo/deviazione/muro: AFFONDO in piedi, gamba tesa e braccia larghe) · press (pressing/finta/recupero/copertura: ADDOSSO al portatore, busto avanti, braccio a schermare, tocco di punta). Prop hlDefGesto → pose sw-scalate auto-azzeranti nel blocco CINE-VAR; fallito = perdita di equilibrio comune. + VERDETTO DIFENSIVO RITARDATO (pattern #51): con l inbound 7.239 il pallone doveva ancora ARRIVARE quando usciva l overlay (misurato ~0.9s su gi31) → revealMs def 2250 con inbound / 1900 senza. Verificato sui fogli-provini: gi34 pressing = eroe addosso al portatore che vacilla, verdetto dopo il contatto.
 // [7.241.0 #56 batch PO gi28/29/37 «Non si vede il compagno che conclude»] FRENA PER GIRARTI — il difetto NON era la scelta del ricevente ne la transizione: attribuzione per-frame (AR53/54: oth=0, own>0, _ctx GIA sulla palla) → era il MODELLO DI STERZATA di animOne. Il ricevente lanciato sulla corsa profonda, con il filtrante atterrato ALLE SPALLE, navigava un inversione a U larga 20u e lunga secondi: il turn-rate e ∝1/velocita e la magnitudine della velocita-obiettivo restava PIENA nella direzione sbagliata. Ora quando la direzione voluta supera ~60° da quella di marcia la velocita-obiettivo cala col disallineamento (fino a 0.18×): la frenata passa dal limitatore di accelerazione, la velocita scende, il turn-rate risale → due passi di frenata e pivot, come in campo. Misurato prima→dopo: gi29 ricevente da divergenza a 24u → ARRIVO a 1.3u (t 0.41) con palla che parte con lui; gi37 2.0u; gi28 convergenza stretta. Vale per TUTTI i 21 off-ball (fisica piu vera anche su pressing/rientri — plausibile beneficio sul cluster difensivo «non aggancia il pallone»). +selezione demergenza del ricevente nel driver assist_recv (ogni scena ha SEMPRE un uomo sulla palla). ⚠️ modello core: gate 14/14 obbligatorio + realismo da riverificare sui baseline.
 // [7.240.0 #55B batch PO gi25/gi26 «Non si vede il compagno che riceve (e tira)» + gi43/28/29/30 storici] IL COMPAGNO ARRIVA SUL PALLONE PRIMA DI CALCIARE. Diagnosi strumentata (probe AR51/AR52 in-page, solo __CPM_REC): la catena assist_recv era VIVA e corretta — il primo sospetto «catena congelata» era un artefatto del campione stantio — ma (a) la transizione ricezione→tiro era a TEMPO FISSO 0.42s col ricevente ancora a 8-15u → il pallone volava in porta DA SOLO col gesto di calcio a vuoto; (b) il puntatore del ricevente (passTargetMesh) veniva AZZERATO all'avvio di assist_recv in 2 dei 3 siti (pass+assist = gi25 filtrante · tacco/scarico = gi26) e il driver, che scandiva solo il gesto _rcvT (0.52s di vita), restava senza nessuno da far correre. Fix: puntatore PERSISTENTE su tutti i siti (+_runToX fresco), fallback del driver sul puntatore, transizione ALL'ARRIVO (<2.2u, minimo 0.30s) con fallback 3.0s. Misurato prima→dopo: ricevente a 8-9u dalla palla al momento del tiro → 3.5-4u col gesto agganciato; gi26 duello leggibile sul foglio-provini; gi25 in wizard chiude con la catena e il gol.
@@ -22202,16 +22202,33 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
   //   gara di lega dal vivo con voto ≥7.2), target derivato dalla TUA media reale (gpg·5·0.85, clamp 2-5 —
   //   mai impossibile), verdetto AUTOMATICO dal matchHistory (gare di lega dopo fromWeek). Stato in
   //   p.coachPact {season,fromWeek,target,games,status} (lazy, no bump); il patto entra nel ledger (S2).
+  /* [7.267.0 #83 collaudo PO «anche il patto con il mister dovrebbe essere variabile»] il patto era SEMPRE lo
+     stesso: N GOL in 5 gare, con la stessa identica frase di proposta e di verdetto — un rifinitore o un
+     attaccante di manovra si sentiva chiedere gol e basta, stagione dopo stagione. Ora il mister chiede quello
+     che TU sai fare davvero: gol, assist, giocate decisive (gol+assist) o prestazioni da 7, scelto dal profilo
+     REALE (media gol/assist, stat tiro/passaggio, voti) con uno scarto seedato tra i tipi adatti — due stagioni
+     identiche non producono lo stesso patto. Durata 4-6 gare (era fissa a 5); apertura, premio e verdetto
+     seedati. `kind` è un campo LAZY: i patti già in corso valgono come "gol" (nessun bump SAVE). */
+  const PACT_K={
+    gol:{u:"gol",v:l=>l.reduce((s,m)=>s+(m.goals||0),0),ask:(t,g)=>`Ti do le prossime ${g} di campionato da riferimento dell'attacco: voglio ${t} gol.`},
+    assist:{u:"assist",v:l=>l.reduce((s,m)=>s+(m.assists||0),0),ask:(t,g)=>`Nelle prossime ${g} di campionato ti voglio a inventare per gli altri: ${t} assist.`},
+    contributo:{u:"giocate decisive",v:l=>l.reduce((s,m)=>s+(m.goals||0)+(m.assists||0),0),ask:(t,g)=>`Non m'interessa chi la mette dentro: nelle prossime ${g} di campionato voglio ${t} giocate decisive, gol o assist.`},
+    prove:{u:"gare da 7",v:l=>l.filter(m=>(m.rating||0)>=7).length,ask:(t,g)=>`Il gol viene e va. Nelle prossime ${g} di campionato voglio ${t} partite vere, da 7 in pagella.`}
+  };
+  const PACT_OPEN=["Mi piace come stai giocando.","Ho bisogno di sapere su chi posso contare.","Ti guardo da settimane e voglio farti una proposta.","Parliamoci chiaro, senza giri di parole."];
+  const PACT_REW=["Se ci riesci, il rigorista sei tu.","Se ci riesci, i piazzati da qui in avanti li batti tu.","Se ci riesci, quella maglia non te la toglie più nessuno.","Se ci riesci, la fascia da vice-capitano è tua.","Se ci riesci, in questo spogliatoio parli tu."];
   const pactView=(p)=>{try{
     if((p.proStatus||"u18")!=="pro")return null;
     const sn=p.season||1,wk=p.week||1;
     const pact=p.coachPact;
     if(pact&&pact.season===sn&&pact.status==="active"){
+      const kd=PACT_K[pact.kind]||PACT_K.gol;
       const lg=(p.matchHistory||[]).filter(m=>m&&!m.cup&&!m.euro&&!m.injured&&(m.week||0)>pact.fromWeek);
-      const played=lg.length,goals=lg.reduce((s,m)=>s+(m.goals||0),0);
-      if(goals>=pact.target)return{st:"kept",pact,played,goals};
-      if(played>=pact.games)return{st:"failed",pact,played,goals};
-      return{st:"active",pact,played,goals};
+      const played=lg.length,val=kd.v(lg);
+      const base={pact,played,val,goals:val,kind:pact.kind||"gol",kd,seed:Math.abs(hashStr("pact|"+(p.name||"")+"|"+sn+"|"+(pact.fromWeek||0)))};
+      if(val>=pact.target)return{st:"kept",...base};
+      if(played>=pact.games)return{st:"failed",...base};
+      return{st:"active",...base};
     }
     if(pact&&pact.season===sn)return null;/* già chiuso questa stagione */
     if((p.coachPactSeason||0)===sn)return null;/* proposto e declinato */
@@ -22220,9 +22237,29 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     if(lgAll.length<3)return null;
     const last=lgAll[lgAll.length-1];
     if(!last||last.simulated||(last.rating||0)<7.2)return null;
-    const gpg=(p.goals||0)/Math.max(1,p.matches||1);
-    const target=clamp(Math.round(gpg*5*0.85)||2,2,5);
-    return{st:"offer",target,games:5};
+    /* il TIPO di patto nasce dal profilo vero: chi segna si sente chiedere gol, chi rifinisce assist, chi
+       incide senza numeri le giocate decisive, chi gioca bene ma non finalizza le prestazioni da 7. */
+    const mp=Math.max(1,p.matches||1),gpg=(p.goals||0)/mp,apg=(p.assists||0)/mp;
+    const r7=lgAll.filter(m=>(m.rating||0)>=7).length/Math.max(1,lgAll.length);
+    const S=p.stats||{},cand=[];
+    if(gpg>=0.30)cand.push("gol");
+    if(apg>=0.18||(S.passaggio||0)>=(S.tiro||0)+4)cand.push("assist");
+    if(gpg+apg>=0.40)cand.push("contributo");
+    if(r7>=0.30)cand.push("prove");
+    if(!cand.length)cand.push("contributo","prove");
+    const _sd=Math.abs(hashStr("pact|"+(p.name||"")+"|"+sn+"|"+(p.club&&p.club.id||"")));
+    const games=4+((_sd>>>3)%3);
+    const T={gol:clamp(Math.round(gpg*games*0.85),2,5),assist:clamp(Math.round(apg*games*0.85),2,4),
+      contributo:clamp(Math.round((gpg+apg)*games*0.85),2,7),prove:clamp(Math.round(r7*games*0.9),2,4)};
+    /* [7.267.0] EQUITA': il pavimento di 2 rendeva impossibili certi patti (a chi serve 0,05 assist a gara
+       «2 assist in 4 gare» e' otto volte il suo passo) -> si scartano i tipi che chiedono piu' di 1,6 volte il
+       rendimento reale sull'arco del patto; se nessuno passa resta il MENO sproporzionato. Misurato su 8000
+       offerte: la quota di patti oltre 1,6x scende dal 32% (assist) allo 0% su tutti e quattro i tipi. */
+    const RATE={gol:gpg,assist:apg,contributo:gpg+apg,prove:r7};
+    const fair=cand.filter(k=>T[k]<=RATE[k]*games*1.6);
+    const pool=fair.length?fair:[cand.reduce((a,b)=>(T[a]/Math.max(0.05,RATE[a]*games)<=T[b]/Math.max(0.05,RATE[b]*games)?a:b))];
+    const kind=pool[_sd%pool.length];
+    return{st:"offer",kind,kd:PACT_K[kind],target:T[kind],games,seed:_sd};
   }catch(_e){return null;}};
   // [7.27.0 ONDA 2 — §S3] SPOGLIATOIO VIVO: stati leggibili del legame + episodio derivato dai FATTI
   //   (i tuoi assist/gol/striscia reali), sul compagno vero di p.teammates (nomi dal roster stabile 7.8.16).
@@ -22680,13 +22717,54 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
           const _open=[`Settimana di ${_rvC.n}, ${_at}: dall'altra parte c'è ${p.rival.name}.`,
             `${_rvC.n} all'orizzonte, e con loro ${p.rival.name}: la gara che senti diversa dal risveglio.`,
             `Il calendario rimette di fronte te e ${p.rival.name} (${_rvC.n}), ${_at}.`,
-            `${p.rival.name} torna sulla tua strada con la maglia del ${_rvC.n}.`];
-          const _mid=_gp>=40?`Un tempo eravate alla pari; oggi in carriera l'hai staccato (${_myG} a ${_rvG}) — e proprio per questo lui vive per battere te.`
-            :_gp<=-40?`Ti insegue da una vita e ora ti guarda dall'alto (${_rvG} a ${_myG} in carriera): l'occasione per ribadirlo è questa.`
-            :Math.abs(_gp)<=8?`In carriera siete lì, testa a testa (${_myG} a ${_rvG}): un equilibrio che dura da anni.`
-            :(_gp>0?`Sei avanti in carriera (${_myG} a ${_rvG}), ma con lui il conto riparte sempre da zero.`:`Lui è avanti (${_rvG} a ${_myG}) e non te lo lascia dimenticare.`);
-          const _close=[`I giornali non parlano d'altro.`,`La città si spacca in due: chi c'è, non se la perde.`,`Novanta minuti per un anno di sfottò.`,`Lo sai come finiscono queste gare: conta solo chi segna per ultimo.`,`Il resto della classifica, oggi, non esiste.`];
-          return{key:K("rivw1_w"+wk),e:"🆚",title:_pk(["Gli eterni rivali","Di nuovo faccia a faccia","La sfida di sempre"],9),body:`${_pk(_open,1)} ${_mid} ${_pk(_close,2)}`,fx:{morale:1}};
+            `${p.rival.name} torna sulla tua strada con la maglia del ${_rvC.n}.`,
+            `Si gioca ${_at}: c'è ${_rvC.n}, c'è ${p.rival.name}, e non serve aggiungere altro.`,
+            `Una settimana come le altre, salvo che domenica ${_at} incroci di nuovo ${p.rival.name}.`];
+          /* [7.267.0 #83 collaudo PO «questa storia del rivale è un po' noiosa e ripetitiva»] il CUORE del
+             capitolo era SEMPRE lo stesso: il conto dei gol in CARRIERA. Su ~2 duelli a stagione per quindici
+             stagioni si leggeva trenta volte la stessa frase con numeri diversi — e con 34 a 7 la chiamava
+             «sei avanti» perché le soglie erano ASSOLUTE (40 gol): a inizio carriera un dominio 5:1 suonava
+             come un equilibrio. Ora il centro è scelto tra gli ANGOLI davvero applicabili ai FATTI (il duello
+             di questa stagione, le due classifiche reali, la gara d'andata già giocata, le pagelle, la
+             bacheca, i Trofei d'Oro, il rapporto umano, la stessa generazione) e il divario di carriera è
+             RELATIVO, non a soglia fissa. Tutto derivato e seedato: niente inventato, niente random. */
+          const _ang=[],_myS=p.goals||0,_rvS=p.rival.goals||0;
+          if(_myS+_rvS>=3)_ang.push(_myS>_rvS?`Quest'anno lo stai battendo dove conta: ${_myS} gol a ${_rvS}. Novanta minuti per ricordarglielo di persona.`
+            :_myS<_rvS?`In questa stagione è lui a essere avanti (${_rvS} gol a ${_myS}), e ogni domenica te lo ricordano: oggi puoi rispondere.`
+            :`Stagione in fotocopia: ${_myS} gol a testa. Qualcosa dovrà pur separarvi, e forse è questa gara.`);
+          const _stR=[...(p.standings||[])].sort((a,b)=>(b.pts||0)-(a.pts||0)||(((b.gf||0)-(b.ga||0))-((a.gf||0)-(a.ga||0))));
+          const _iM=_stR.findIndex(t=>t&&(t.id===(p.club&&p.club.id)||(t.n||t.name)===(p.club&&p.club.n)));
+          const _iR=_stR.findIndex(t=>t&&(t.id===_rvC.id||(t.n||t.name)===_rvC.n));
+          if(_iM>=0&&_iR>=0){const _a=_iM+1,_b=_iR+1,_dp=Math.abs((_stR[_iM].pts||0)-(_stR[_iR].pts||0));
+            _ang.push(_a<_b?`Voi ${_a}° e loro ${_b}°: vincere oggi è il messaggio più chiaro che possiate mandare al campionato.`
+              :_a>_b?`Loro ${_b}°, voi ${_a}°: ${_dp} punt${_dp===1?"o":"i"} da recuperare, e la prima occasione arriva proprio contro di lui.`
+              :`Stesso posto in classifica, ${_a}° in condivisione: chi vince oggi resta lassù, l'altro scivola.`);}
+          const _and=lh.find(m=>m&&m.opponent===_rvC.n&&(m.week||0)<wk);
+          if(_and)_ang.push((_and.goals||0)>0?`All'andata gli avevi segnato${_and.won?" e portato via i tre punti":""}: lui non l'ha dimenticato, e si capisce da come ne parlano i giornali.`
+            :_and.won?`All'andata l'avete vinta senza un tuo gol: con lui il conto personale è ancora aperto.`
+            :`All'andata era finita male, e tu eri rimasto a secco: certe gare si restituiscono, e l'occasione è oggi.`);
+          const _rO=p.rival.ovr||0,_mO=p.ovr||0;
+          if(_rO&&Math.abs(_rO-_mO)>=6)_ang.push(_rO>_mO?`Sulla carta il più forte è lui (${_rO} contro ${_mO}): le partite come questa servono esattamente a smentire la carta.`
+            :`Le pagelle dicono che il migliore in campo dovresti essere tu (${_mO} contro ${_rO}). Dirlo è facile; farlo con lui davanti, un po' meno.`);
+          const _mT=(p.trophies||[]).length,_rT=p.rival.trophies||0;
+          if(_mT||_rT)_ang.push(_mT>_rT?`In bacheca sei avanti (${_mT} a ${_rT}) — ed è l'unica statistica che, quando vi incontrate, lui non riesce a ribaltare.`
+            :_mT<_rT?`Lui ha vinto più di te (${_rT} trofei a ${_mT}): finché resta così, ogni confronto parte in salita.`
+            :`Stessa bacheca, ${_mT} trofei a testa: la vostra storia si decide ancora sul campo.`);
+          const _rvPO=((p.rival.awards&&p.rival.awards.palloneOros)||[]).length;
+          if(_rvPO)_ang.push(`Ha già alzato il Trofeo d'Oro${_rvPO>1?` ${_rvPO} volte`:""}: quando entra in campo lo sanno tutti. Oggi tocca a te ricordare che il migliore si decide in novanta minuti.`);
+          const _rel=p.rival.relationship||"rivale";
+          if(_rel==="amico")_ang.push(`Fuori dal campo ormai vi sentite: siete cresciuti nella stessa corsa. Ma dal fischio d'inizio l'amicizia resta negli spogliatoi.`);
+          else if(_rel==="rispettato")_ang.push(`Col tempo tra voi è nato il rispetto, quello vero, che non si dice mai ad alta voce. Ed è proprio per questo che nessuno dei due vuole perdere oggi.`);
+          if(p.rival.age&&Math.abs((p.rival.age||0)-(p.age||0))<=1&&(p.rival.seasons||0)>=3)
+            _ang.push(`Siete della stessa annata e vi inseguite da ${p.rival.seasons} stagioni: ogni volta che uno alza l'asticella, l'altro la rialza.`);
+          const _rt=(_myG+1)/(_rvG+1);
+          _ang.push(_rt>=2?`In carriera l'hai staccato (${_myG} a ${_rvG}) — e proprio per questo lui vive per battere te.`
+            :_rt<=0.5?`In carriera ti guarda dall'alto (${_rvG} a ${_myG}): l'unico modo di accorciare è cominciare da oggi.`
+            :Math.abs(_gp)<=Math.max(4,Math.round(_myG*0.12))?`In carriera siete lì, testa a testa (${_myG} a ${_rvG}): un equilibrio che dura da anni.`
+            :(_gp>0?`Sei avanti in carriera (${_myG} a ${_rvG}), ma con lui il conto riparte sempre da zero.`:`Lui è avanti (${_rvG} a ${_myG}) e non te lo lascia dimenticare.`));
+          const _mid=_ang[_rvSeed(11)%_ang.length];
+          const _close=[`I giornali non parlano d'altro.`,`La città si spacca in due: chi c'è, non se la perde.`,`Novanta minuti per un anno di sfottò.`,`Lo sai come finiscono queste gare: conta solo chi segna per ultimo.`,`Il resto della classifica, oggi, non esiste.`,`Domenica sera uno dei due dovrà stare zitto per sei mesi.`,`Non è una gara qualunque, e lo sapete entrambi.`];
+          return{key:K("rivw1_w"+wk),e:"🆚",title:_pk(["Gli eterni rivali","Di nuovo faccia a faccia","La sfida di sempre","Il duello che aspettavi","Quello che conta è oggi","Ancora voi due"],9),body:`${_pk(_open,1)} ${_mid} ${_pk(_close,2)}`,fx:{morale:1}};
         }
         const plR=lh.find(m=>m.week===wk&&m.opponent===_rvC.n);
         if(plR&&!seen[K("rivw2_w"+wk)])return (plR.goals||0)>0
@@ -26119,9 +26197,9 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
         if(pv.st==="offer")return(
           <Card style={{marginBottom:8,padding:"13px 14px",background:"linear-gradient(150deg,#0d2418,#10301f)",border:"1px solid #1d6b45"}}>
             <div style={{fontSize:10,color:"#6ee7b7",textTransform:"uppercase",letterSpacing:2,marginBottom:6}}>🤝 Il patto col mister</div>
-            <div style={{fontSize:11.5,color:"rgba(255,255,255,0.85)",lineHeight:1.5,marginBottom:10}}>{cName} ti ferma dopo l'allenamento: «Mi piace come stai giocando. Ti do le prossime <strong>{pv.games} di campionato</strong> da riferimento dell'attacco: voglio <strong>{pv.target} gol</strong>. Se li fai, il rigorista sei tu.»</div>
+            <div style={{fontSize:11.5,color:"rgba(255,255,255,0.85)",lineHeight:1.5,marginBottom:10}}>{cName} ti ferma dopo l'allenamento: «{PACT_OPEN[pv.seed%PACT_OPEN.length]} {pv.kd.ask(pv.target,pv.games)} {PACT_REW[(pv.seed>>>5)%PACT_REW.length]}»</div>
             <div style={{display:"flex",gap:8}}>
-              <Btn v="primary" fw onClick={()=>setPlayer(p=>({...p,coachPact:{season:p.season||1,fromWeek:p.week||1,target:pv.target,games:pv.games,status:"active"},...ledgerPush(p,{t:"patto",who:"il mister",what:`${pv.target} gol in ${pv.games} gare di lega`}),coachTrust:clamp((p.coachTrust||60)+2,0,100),log:[`🤝 Patto col mister: ${pv.target} gol nelle prossime ${pv.games} di lega.`,...(p.log||[])].slice(0,60)}))}>🤝 «Ci sto»</Btn>
+              <Btn v="primary" fw onClick={()=>setPlayer(p=>({...p,coachPact:{season:p.season||1,fromWeek:p.week||1,target:pv.target,games:pv.games,kind:pv.kind,status:"active"},...ledgerPush(p,{t:"patto",who:"il mister",what:`${pv.target} ${pv.kd.u} in ${pv.games} gare di lega`}),coachTrust:clamp((p.coachTrust||60)+2,0,100),log:[`🤝 Patto col mister: ${pv.target} ${pv.kd.u} nelle prossime ${pv.games} di lega.`,...(p.log||[])].slice(0,60)}))}>🤝 «Ci sto»</Btn>
               <Btn v="ghost" fw onClick={()=>setPlayer(p=>({...p,coachPactSeason:p.season||1,log:[`💬 Hai declinato il patto del mister: «Preferisco parlare sul campo».`,...(p.log||[])].slice(0,60)}))}>«Parlo sul campo»</Btn>
             </div>
           </Card>);
@@ -26129,16 +26207,25 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
           <Card style={{marginBottom:8,padding:"10px 14px"}}>
             <div style={{display:"flex",alignItems:"center",gap:8}}>
               <span style={{fontSize:15}}>🤝</span>
-              <div style={{flex:1,fontSize:11,color:TH.text,fontWeight:700}}>Patto col mister: <span style={{color:TH.success}}>{pv.goals}/{pv.pact.target} gol</span> · gara {pv.played}/{pv.pact.games}</div>
+              <div style={{flex:1,fontSize:11,color:TH.text,fontWeight:700}}>Patto col mister: <span style={{color:TH.success}}>{pv.val}/{pv.pact.target} {pv.kd.u}</span> · gara {pv.played}/{pv.pact.games}</div>
             </div>
-            <div style={{height:5,background:TH.cardBorder,borderRadius:3,overflow:"hidden",marginTop:6}}><div style={{height:"100%",width:`${clamp(Math.round(pv.goals/Math.max(1,pv.pact.target)*100),4,100)}%`,background:TH.success,borderRadius:3}}/></div>
+            <div style={{height:5,background:TH.cardBorder,borderRadius:3,overflow:"hidden",marginTop:6}}><div style={{height:"100%",width:`${clamp(Math.round(pv.val/Math.max(1,pv.pact.target)*100),4,100)}%`,background:TH.success,borderRadius:3}}/></div>
           </Card>);
         const _kept=pv.st==="kept";
+        /* [7.267.0] verdetto SEEDATO (3 formule per esito) e nell'unità del patto: «4 assist» / «5 giocate
+           decisive» / «3 gare da 7», non più sempre «gol». */
+        const _u=pv.kd.u,_KEPT=[`«Avevi chiesto la mia fiducia e me l'hai restituita: ${pv.val} ${_u} in ${pv.played} gare. Da oggi in questo spogliatoio la tua parola pesa.»`,
+          `«${pv.val} ${_u}, come promesso. Io le parole le annoto — e le tue, d'ora in poi, valgono.»`,
+          `«Patto rispettato: ${pv.val} ${_u} su ${pv.pact.target}. Adesso alza l'asticella, perché io lo farò.»`];
+        const _FAIL=[`«${pv.val} ${_u} su ${pv.pact.target} promessi. Non è bastato — la prossima volta parliamo dopo, non prima.» Il patto è andato a vuoto.`,
+          `«Ti avevo dato ${pv.played} gare: ne sono usciti ${pv.val} ${_u} su ${pv.pact.target}. Il campo non fa sconti, nemmeno a me.»`,
+          `«${pv.val} su ${pv.pact.target}. Non te ne faccio una colpa: ma il posto, adesso, te lo devi riprendere.»`];
+        const _vTx=_kept?_KEPT[pv.seed%_KEPT.length]:_FAIL[pv.seed%_FAIL.length];
         return(
           <Card style={{marginBottom:8,padding:"13px 14px",background:_kept?"linear-gradient(150deg,#0d2418,#10301f)":TH.bgAmber,border:_kept?"1px solid #1d6b45":`1px solid ${TH.bdAmber}`}}>
             <div style={{fontSize:10,color:_kept?"#6ee7b7":TH.txAmber,textTransform:"uppercase",letterSpacing:2,marginBottom:6}}>🤝 Il patto col mister — verdetto</div>
-            <div style={{fontSize:11.5,color:_kept?"rgba(255,255,255,0.85)":TH.txAmber,lineHeight:1.5,marginBottom:10}}>{_kept?`«Avevi promesso ${pv.pact.target} gol: ne hai fatti ${pv.goals}. Da oggi il rigorista sei tu — e in questo spogliatoio la tua parola pesa.»`:`«${pv.goals} gol su ${pv.pact.target} promessi. Non è bastato — la prossima volta parliamo dopo, non prima.» Il patto è andato a vuoto.`}</div>
-            <Btn v={_kept?"primary":"ghost"} fw onClick={()=>setPlayer(p=>({...p,coachPact:{...p.coachPact,status:_kept?"kept":"failed"},coachTrust:clamp((p.coachTrust||60)+(_kept?8:-5),0,100),morale:clamp((p.morale||70)+(_kept?5:-3),0,100),diary:[...(p.diary||[]),{season:p.season||1,week:p.week||1,type:"pact",e:_kept?"🤝":"💔",headline:_kept?"Patto mantenuto col mister":"Il patto è sfumato",body:_kept?`${pv.goals} gol nelle ${pv.played} gare del patto: parola mantenuta.`:`${pv.goals}/${pv.pact.target} gol: il patto col mister non è stato onorato.`,color:_kept?"#16a34a":"#b45309"}].slice(-80),log:[_kept?`🤝 PATTO MANTENUTO (${pv.goals}/${pv.pact.target} gol) — la fiducia del mister vola.`:`💔 Patto mancato (${pv.goals}/${pv.pact.target}): il mister incassa.`,...(p.log||[])].slice(0,60)}))}>{_kept?"Una stretta di mano →":"Incassa e riparti →"}</Btn>
+            <div style={{fontSize:11.5,color:_kept?"rgba(255,255,255,0.85)":TH.txAmber,lineHeight:1.5,marginBottom:10}}>{_vTx}</div>
+            <Btn v={_kept?"primary":"ghost"} fw onClick={()=>setPlayer(p=>({...p,coachPact:{...p.coachPact,status:_kept?"kept":"failed"},coachTrust:clamp((p.coachTrust||60)+(_kept?8:-5),0,100),morale:clamp((p.morale||70)+(_kept?5:-3),0,100),diary:[...(p.diary||[]),{season:p.season||1,week:p.week||1,type:"pact",e:_kept?"🤝":"💔",headline:_kept?"Patto mantenuto col mister":"Il patto è sfumato",body:_kept?`${pv.val} ${_u} nelle ${pv.played} gare del patto: parola mantenuta.`:`${pv.val}/${pv.pact.target} ${_u}: il patto col mister non è stato onorato.`,color:_kept?"#16a34a":"#b45309"}].slice(-80),log:[_kept?`🤝 PATTO MANTENUTO (${pv.val}/${pv.pact.target} ${_u}) — la fiducia del mister vola.`:`💔 Patto mancato (${pv.val}/${pv.pact.target} ${_u}): il mister incassa.`,...(p.log||[])].slice(0,60)}))}>{_kept?"Una stretta di mano →":"Incassa e riparti →"}</Btn>
           </Card>);
       })()}
       {/* [7.27.0 ONDA 2 — §S3] SPOGLIATOIO VIVO: episodio di legame derivato dai fatti (max 1 ogni ≥3 settimane) */}
