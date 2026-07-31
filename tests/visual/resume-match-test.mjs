@@ -28,7 +28,9 @@ if (!fix) { console.log('❌ nessuna casalinga W>2'); await browser.close(); srv
 console.log('fixture: W' + fix.week + ' ' + (fix.isHome ? 'CASA' : 'TRASFERTA'));
 
 // ── Fase 2: snapshot in-match + boot SENZA cpmtest ──
-const sig = `${3}|${fix.week}|career|${fix.isHome ? 'H' : 'A'}`;
+/* [7.178.0 RC-2] la firma porta anche il NOME (due slot alla stessa stagione/settimana non si scambiano
+   più lo snapshot): nome|stagione|settimana|contesto|sede. */
+const sig = `${base.player.name}|${3}|${fix.week}|career|${fix.isHome ? 'H' : 'A'}`;
 const snap = { v: 1, sig, context: 'career', isHome: fix.isHome, clock: 63, score: { home: 1, away: 0 }, momentum: 58 };
 const bctx = await browser.newContext({ viewport: { width: 480, height: 900 }, serviceWorkers: 'block' });
 const page = await bctx.newPage();

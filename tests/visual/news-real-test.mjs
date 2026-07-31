@@ -80,11 +80,15 @@ const boot = async (save) => {
   const pg = await boot(mkSave({ totalMatches: 80, totalGoals: 40, transferSaga: { offer: { wage: 1 }, week: 12, season: 4 } }));
   const ord = await pg.evaluate(() => {
     const b = document.body.innerText;
-    return { iSett: b.search(/LA TUA SETTIMANA/i), iSaga: b.search(/Saga di mercato/i), iStats: b.search(/Presenze/) };
+    return { iSaga: b.search(/Saga di mercato/i), iSett: b.search(/LA TUA SETTIMANA/i), iNews: b.search(/ULTIME NOTIZIE/i) };
   });
-  const ok = ord.iSett >= 0 && ord.iSaga > ord.iSett && ord.iStats > ord.iSaga;
-  console.log('(4) ordine (settimana → saga → stats):', ok, JSON.stringify(ord));
-  if (!ok) issues.push('la saga di mercato non è tra La tua settimana e il widget statistiche');
+  /* [7.57.2 direttiva PO «questi box falli comparire sotto al pulsante vivi settimana altrimenti rischio
+     di perderli»] l'ordine VOLUTO è: CTA → box AZIONABILI (saga, storia, sorteggi…) → la card passiva
+     «La tua settimana» → notizie. Il test asseriva ancora l'ordine pre-7.57.2 (settimana → saga) e
+     ancorava le statistiche a un'etichetta «Presenze» che su questa dashboard non esiste. */
+  const ok = ord.iSaga >= 0 && ord.iSett > ord.iSaga && ord.iNews > ord.iSett;
+  console.log('(4) ordine (azionabili → la tua settimana → notizie):', ok, JSON.stringify(ord));
+  if (!ok) issues.push('ordine dashboard errato: la saga (azionabile) deve stare SOPRA «La tua settimana», che a sua volta precede le notizie');
   await pg.close();
 }
 

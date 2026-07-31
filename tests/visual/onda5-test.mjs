@@ -141,7 +141,9 @@ const clickBtn = async (page, rx, label) => { const ok = await page.evaluate((x)
 // (8) ALLENAMENTO-EVENTO — fisioterapista a fatica 85
 {
   const pg = await boot(mkSave({ fatigue: 85 }));
-  const ev = await hasTxt(pg, 'fisioterapista');
+  /* [7.132.0] l'evento ha 5 varianti seedate e solo due nominano il «fisioterapista»: l'invariante è la
+     scelta di recupero che l'evento offre. */
+  const ev = await hasTxt(pg, 'Ascolto: recupero');
   if (!ev) issues.push('evento fisioterapista assente (fatica 85)');
   await clickBtn(pg, 'Ascolto: recupero', 'fisio ascolto');
   await sleep(1200);

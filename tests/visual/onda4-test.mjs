@@ -86,7 +86,10 @@ const clickBtn = async (page, rx, label) => { const ok = await page.evaluate((x)
 // (4) MATRIMONIO — stagione dopo, W2, nomina un compagno vero
 {
   const pg = await boot(mkSave({ week: 2, season: 5, jerseyNumSeason: 5, presidentModalSeason: 5, seasonPledge: { season: 5, tone: 'equilibrato' }, drawSeen: 5, coachPactSeason: 5, bondEv: { s: 5, w: 1 }, sponsorDecl: { tier: 'tecnico', season: 5 }, popularity: 40, life: { stage: 'coppia', name: 'Giulia', since: { s: 4, w: 12 } }, teammates: [{ name: 'Rino Marchesi', archetype: 'capitano', icon: '💪', bond: 62 }], calendar: pauseCal(2) }));
-  const ev = await hasTxt(pg, 'matrimonio') && await hasTxt(pg, 'Rino Marchesi');
+  /* [7.268.0] il compagno iniettato viene sostituito dalla rosa VERA in migrazione (roster stabile per
+     club, 7.8.16): si asserisce che sia nominato UN compagno reale del save, non un nome cablato. */
+  const _tm0 = ((await getP(pg)).teammates || [{}])[0].name || '';
+  const ev = await hasTxt(pg, 'matrimonio') && !!_tm0 && await hasTxt(pg, _tm0.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
   if (!ev) issues.push('card matrimonio assente (coppia, W2 stagione dopo, con compagno nominato)');
   await clickBtn(pg, 'Il giorno più bello', 'matrimonio');
   await sleep(1200);

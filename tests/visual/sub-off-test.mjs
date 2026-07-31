@@ -54,7 +54,19 @@ const boot = async (save) => {
       const st = await page.evaluate(() => ({ txt: document.body.innerText.slice(0, 2500), ap: typeof window.__CPM_AUTOPLAY === 'function' }));
       lastTxt = st.txt;
       if (/SOSTITUITO AL \d+'/.test(st.txt)) sawSubOverlay = true;
-      if (/FISCHIO FINALE/i.test(st.txt)) { over = true; if (/' giocati/.test(st.txt)) sawMinLine = true; break; }
+      /* ⚠️ NON usare /FISCHIO FINALE/i: da sostituito compare il pulsante «Salta al fischio finale →»
+         mentre la partita è ancora in corso, e il ciclo usciva al 73' credendola finita. */
+      if (/FISCHIO FINALE/.test(st.txt) && !/Salta al fischio finale/i.test(st.txt)) {
+        /* il banner del fischio finale compare mentre la schermata di fine partita sta ancora montando:
+           la riga dei minuti giocati arriva un istante dopo → si campiona di nuovo prima di giudicare. */
+        over = true; await sleep(2600);
+        const fin = await page.evaluate(() => document.body.innerText.slice(0, 2500));
+        lastTxt = fin;
+        if (/' giocati/.test(st.txt) || /' giocati/.test(fin)) sawMinLine = true;
+        if (process.env.SO_DEBUG) console.log('[debug] testo post-fischio:\n' + fin.replace(/\n{2,}/g, '\n').slice(0, 900));
+        if (/SOSTITUITO AL \d+'/.test(fin)) sawSubOverlay = true;
+        break;
+      }
       if (!st.ap) { over = true; break; } // LiveMatch smontato = già committato
     }
     if (!over) issues.push('(1) partita mai finita entro 5 min');

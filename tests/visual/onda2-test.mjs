@@ -39,12 +39,12 @@ const getP = (page) => page.evaluate(() => JSON.parse(localStorage.getItem('cpm-
 // (1) OFFERTA patto (ultima di lega dal vivo, voto 7.8) → accetta → pact attivo + ledger
 {
   const pg = await boot(mkSave({ matchHistory: [lgGame(9, 1, 6.8), lgGame(10, 0, 6.4), lgGame(11, 2, 7.8)] }));
-  const off = await hasTxt(pg, 'Il patto col mister') && await hasTxt(pg, 'il rigorista sei tu');
+  const off = await hasTxt(pg, 'Il patto col mister') && await hasTxt(pg, 'Se ci riesci')/* [7.267.0] il premio è seedato tra 5 formule: si asserisce la CLASSE, non una frase */;
   if (!off) issues.push('offerta patto assente con ultima di lega live ≥7.2');
   try { await pg.getByText('«Ci sto»', { exact: false }).first().click({ timeout: 6000 }); } catch (e) { issues.push('bottone «Ci sto» non cliccabile'); }
   await sleep(1200);
   const p = await getP(pg);
-  const okPact = p.coachPact && p.coachPact.status === 'active' && p.coachPact.season === 4 && p.coachPact.fromWeek === 12 && p.coachPact.games === 5;
+  const okPact = p.coachPact && p.coachPact.status === 'active' && p.coachPact.season === 4 && p.coachPact.fromWeek === 12 && p.coachPact.games >= 4 && p.coachPact.games <= 6/* [7.267.0] durata seedata 4-6 */;
   const okLed = (p.ledger || []).some(l => l.t === 'patto');
   console.log('(1) offerta:', off, '· pact attivo:', okPact, '· ledger:', okLed, '· target:', p.coachPact && p.coachPact.target);
   if (!okPact) issues.push('coachPact non attivo dopo accettazione: ' + JSON.stringify(p.coachPact));
@@ -56,7 +56,7 @@ const getP = (page) => page.evaluate(() => JSON.parse(localStorage.getItem('cpm-
 // (2) VERDETTO MANTENUTO — pact attivo, 3 gol nelle gare successive a fromWeek
 {
   const pg = await boot(mkSave({ week: 16, coachPact: { season: 4, fromWeek: 12, target: 3, games: 5, status: 'active' }, matchHistory: [lgGame(11, 2, 7.8), lgGame(13, 1, 7.0), lgGame(14, 0, 6.5), lgGame(15, 2, 7.6)] }));
-  const verd = await hasTxt(pg, 'verdetto') && await hasTxt(pg, 'Da oggi il rigorista sei tu');
+  const verd = await hasTxt(pg, 'verdetto') && await hasTxt(pg, "me l'hai restituita|come promesso|Patto rispettato")/* [7.267.0] 3 formule seedate */;
   if (!verd) issues.push('verdetto MANTENUTO assente (3/3 gol)');
   const t0 = (await getP(pg)).coachTrust;
   try { await pg.getByText('Una stretta di mano', { exact: false }).first().click({ timeout: 6000 }); } catch (e) { issues.push('bottone verdetto kept non cliccabile'); }
@@ -70,7 +70,7 @@ const getP = (page) => page.evaluate(() => JSON.parse(localStorage.getItem('cpm-
 // (3) VERDETTO FALLITO — 5 gare giocate, 1 gol su 3
 {
   const pg = await boot(mkSave({ week: 18, coachPact: { season: 4, fromWeek: 12, target: 3, games: 5, status: 'active' }, matchHistory: [lgGame(13, 0, 6.2), lgGame(14, 1, 6.8), lgGame(15, 0, 6.0), lgGame(16, 0, 6.3), lgGame(17, 0, 6.1)] }));
-  const verd = await hasTxt(pg, 'Il patto è andato a vuoto');
+  const verd = await hasTxt(pg, 'andato a vuoto|non fa sconti|te lo devi riprendere');/* [7.267.0] 3 formule seedate */
   console.log('(3) failed:', verd);
   if (!verd) issues.push('verdetto FALLITO assente (1/3 in 5 gare)');
   await pg.close();
