@@ -3967,7 +3967,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="7.268.0"; // [7.268.0 #84 — batteria di regressione su richiesta PO «procedi con altri collaudi»] 75 guardiani eseguiti, 6 rossi, un BUG VERO trovato. LA SOSTITUZIONE IN USCITA ERA DI FATTO MORTA: dentro setClock il dispatch dell'highlight fa un RETURN anticipato, quindi su ogni minuto che coincide con un highlight il resto del tick — cronaca, grida del mister e la sostituzione dell'eroe — non veniva mai raggiunto; con gli highlight fitti nel finale la finestra d'uscita veniva scavalcata minuto per minuto (misurato: uscita prevista al 63', partita finita al 68' con l'eroe ancora in campo e matchStatus «starter»). Ora la condizione si valuta PRIMA del dispatch e, quando l'uscita e' dovuta, l'highlight di quel minuto cede il passo; al tick successivo l'eroe e' fuori e l'highlight viene saltato dal binario panchina (che ora guarda anche subbedOff, non solo onBench: il ref della panchina si aggiorna un frame dopo). Verificato: sostituito al 63', overlay mostrato, matchHistory subbed_off/63. Secondo intervento: i MINUTI GIOCATI esistevano dal 7.38.0 ma vivevano solo nel tabellone di fine partita di LiveMatch, che scorre via in un attimo — ora si leggono anche nella rassegna stampa, dove il giocatore atterra davvero (panchina, sostituito, espulso). Gli altri cinque rossi erano test fermi al passato, non difetti: la firma dello snapshot di ripresa porta il NOME dal 7.178.0 (il test ne costruiva una a 4 campi), il fisioterapista ha 5 varianti seedate dal 7.132.0 (solo due lo nominano), il compagno invitato alle nozze viene dalla rosa VERA dal 7.8.16 (il test cablava un nome), l'ordine della dashboard e' stato invertito dalla direttiva PO del 7.57.2 (azionabili sopra la card passiva) e il patto col mister non parla piu' solo di gol dal 7.267.0. In piu' due difetti di misura corretti: sub-off usciva dal ciclo al 73' perche' il regex del fischio finale matchava il pulsante «Salta al fischio finale», e giudicava la riga dei minuti prima che la schermata finisse di montare.
+const GAME_VERSION="7.269.0"; // [7.269.0 #85 — P1 delle proposte, approvata dal PO] LE MINI-SERIE A PUNTATE. La settimana aveva gia' venticinque produttori di contenuto, ma erano TUTTI one-shot: ogni card nasceva e moriva nella stessa settimana (le uniche eccezioni erano la saga di mercato e il patto col mister) — senza attesa fra una settimana e l'altra la stagione resta un ELENCO di momenti, non una storia. Arriva un motore generico di archi a PUNTATE: `serialView` + tabella `SERIALS`, una serie alla volta (budget d'attenzione), episodi distanziati di almeno due settimane e soprattutto SCELTE CHE SI COMPONGONO — la puntata N legge quello che hai deciso alla N-1 e il finale dipende dal percorso, non da un dado. Tre serie al lancio, tutte innescate da fatti VERI: «Il caso disciplinare» (nasce da un'espulsione reale in storico: convocazione in societa' → come reagisci → verdetto dello spogliatoio), «Il ragazzo della Primavera» (un compagno vero della rosa ti sceglie come modello: lo segui o no → il suo esordio → diventa il tuo erede o saluta), «La corsa al capocannoniere» (dalla classifica marcatori reale, col rivale vero e i numeri veri a ogni puntata). Stato in `p.serial`/`p.serialDone`, campi LAZY: nessun bump SAVE. Due garanzie strutturali: la serie si CHIUDE per costruzione entro la stagione (epilogo forzato dalla W36 → niente archi appesi al rollover) e decade al cambio maglia. La card vive fra i box AZIONABILI sotto il CTA (direttiva 7.57.2) con i pallini di avanzamento, e ogni puntata entra nel diario → nel Film della stagione. Guardiano permanente serial-arc-test: avvio dai fatti, attesa fra le puntate, due percorsi opposti che danno finali diversi, chiusura e non-ripetizione nella stagione, epilogo forzato, campi lazy, decadenza al cambio club, e copertura d'innesco di tutte e tre le serie.
 // [7.242.0 #56 chiusura — batch PO gi31-35 «Non si vede il gesto tecnico specifico» + verdetto difensivo] IL GESTO DIFENSIVO HA UNA FAMIGLIA. Ogni azione difensiva derivava `tackle/-` senza variante: la posa era UNA (scivolata) per pressing, anticipo, muro e deviazione. Tre famiglie STRUTTURALI congelate in factory (patto chainOn/gkCall — la regex vive solo in S()): slide (scivolata/disperato, posa storica a terra) · lunge (intercetto/anticipo/deviazione/muro: AFFONDO in piedi, gamba tesa e braccia larghe) · press (pressing/finta/recupero/copertura: ADDOSSO al portatore, busto avanti, braccio a schermare, tocco di punta). Prop hlDefGesto → pose sw-scalate auto-azzeranti nel blocco CINE-VAR; fallito = perdita di equilibrio comune. + VERDETTO DIFENSIVO RITARDATO (pattern #51): con l inbound 7.239 il pallone doveva ancora ARRIVARE quando usciva l overlay (misurato ~0.9s su gi31) → revealMs def 2250 con inbound / 1900 senza. Verificato sui fogli-provini: gi34 pressing = eroe addosso al portatore che vacilla, verdetto dopo il contatto.
 // [7.241.0 #56 batch PO gi28/29/37 «Non si vede il compagno che conclude»] FRENA PER GIRARTI — il difetto NON era la scelta del ricevente ne la transizione: attribuzione per-frame (AR53/54: oth=0, own>0, _ctx GIA sulla palla) → era il MODELLO DI STERZATA di animOne. Il ricevente lanciato sulla corsa profonda, con il filtrante atterrato ALLE SPALLE, navigava un inversione a U larga 20u e lunga secondi: il turn-rate e ∝1/velocita e la magnitudine della velocita-obiettivo restava PIENA nella direzione sbagliata. Ora quando la direzione voluta supera ~60° da quella di marcia la velocita-obiettivo cala col disallineamento (fino a 0.18×): la frenata passa dal limitatore di accelerazione, la velocita scende, il turn-rate risale → due passi di frenata e pivot, come in campo. Misurato prima→dopo: gi29 ricevente da divergenza a 24u → ARRIVO a 1.3u (t 0.41) con palla che parte con lui; gi37 2.0u; gi28 convergenza stretta. Vale per TUTTI i 21 off-ball (fisica piu vera anche su pressing/rientri — plausibile beneficio sul cluster difensivo «non aggancia il pallone»). +selezione demergenza del ricevente nel driver assist_recv (ogni scena ha SEMPRE un uomo sulla palla). ⚠️ modello core: gate 14/14 obbligatorio + realismo da riverificare sui baseline.
 // [7.240.0 #55B batch PO gi25/gi26 «Non si vede il compagno che riceve (e tira)» + gi43/28/29/30 storici] IL COMPAGNO ARRIVA SUL PALLONE PRIMA DI CALCIARE. Diagnosi strumentata (probe AR51/AR52 in-page, solo __CPM_REC): la catena assist_recv era VIVA e corretta — il primo sospetto «catena congelata» era un artefatto del campione stantio — ma (a) la transizione ricezione→tiro era a TEMPO FISSO 0.42s col ricevente ancora a 8-15u → il pallone volava in porta DA SOLO col gesto di calcio a vuoto; (b) il puntatore del ricevente (passTargetMesh) veniva AZZERATO all'avvio di assist_recv in 2 dei 3 siti (pass+assist = gi25 filtrante · tacco/scarico = gi26) e il driver, che scandiva solo il gesto _rcvT (0.52s di vita), restava senza nessuno da far correre. Fix: puntatore PERSISTENTE su tutti i siti (+_runToX fresco), fallback del driver sul puntatore, transizione ALL'ARRIVO (<2.2u, minimo 0.30s) con fallback 3.0s. Misurato prima→dopo: ricevente a 8-9u dalla palla al momento del tiro → 3.5-4u col gesto agganciato; gi26 duello leggibile sul foglio-provini; gi25 in wizard chiude con la catena e il gol.
@@ -22542,6 +22542,114 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
           {l:"😤 «Dovevate chiamarmi prima»",fx:(q)=>({morale:clamp((q.morale||70)+2,0,100),popularity:clamp((q.popularity||20)+3,0,100),...ledgerPush(q,{t:"torto",who:"la Federazione",what:`${sn-lastNatS} stagioni senza una chiamata`})})}]};}
     return null;
   }catch(_e){return null;}};
+  /* [7.269.0 P1 — LE MINI-SERIE A PUNTATE] La settimana aveva venticinque produttori di contenuto ma
+     erano TUTTI one-shot: ogni card nasceva e moriva nella stessa settimana (le uniche eccezioni erano la
+     saga di mercato e il patto). Senza attesa fra una settimana e l'altra la stagione resta un ELENCO di
+     momenti, non una storia. Qui arriva un motore generico di archi a PUNTATE: una serie alla volta (budget
+     d'attenzione), episodi distanziati di almeno due settimane, e soprattutto SCELTE CHE SI COMPONGONO — la
+     puntata N legge quello che hai deciso alla N-1 e il finale dipende dal percorso, non da un dado.
+     Stato in `p.serial` {k,ep,s,w,ch[]} + `p.serialDone` {k:stagione}: campi LAZY, nessun bump SAVE.
+     Ogni serie si CHIUDE per costruzione entro la stagione (epilogo forzato dalla W36) → niente archi appesi
+     al rollover. Testi e conseguenze derivano dai fatti veri (cartellini, rosa reale, classifica marcatori). */
+  const SERIAL_MAXW=36;
+  const SERIALS={
+    /* ── IL CASO DISCIPLINARE — nasce da un'espulsione VERA di questa stagione ───────────────── */
+    disciplina:{e:"🟥",lab:"Il caso disciplinare",once:"season",
+      can:(p)=>(p.matchHistory||[]).some(m=>m&&m.redCard)&&(p.week||1)<=30,
+      eps:[
+        (p)=>{const ds=((staffNames(p.club)||{}).ds)||"Il direttore sportivo";
+          return{t:"Convocato in società",d:`${ds} ti riceve col referto arbitrale sul tavolo. «Non discuto il fallo, discuto la reazione. Adesso decidiamo insieme come uscirne — perché a pagare è lo spogliatoio, non solo tu.»`,
+          choices:[{l:"Mi scuso pubblicamente",c:"scuse",fx:(q)=>({popularity:clamp((q.popularity||50)-2,0,100),coachTrust:clamp((q.coachTrust||60)+6,0,100)})},
+                   {l:"Nessun commento",c:"silenzio",fx:(q)=>({teamChemistry:clamp((q.teamChemistry||60)+3,0,100),coachTrust:clamp((q.coachTrust||60)-2,0,100)})},
+                   {l:"Pago la multa e chiudo",c:"multa",fx:(q)=>({bankBalance:Math.max(0,Math.round((q.bankBalance||0)-((q.contract&&q.contract.wage)||5000)*0.5)),coachTrust:clamp((q.coachTrust||60)+2,0,100)})}]};},
+        (p,S)=>{const c0=S.ch[0];
+          return{t:c0==="scuse"?"La piazza ti ha ascoltato":c0==="silenzio"?"Il silenzio fa rumore":"«I soldi non bastano»",
+          d:c0==="scuse"?"Le tue parole hanno spento la polemica in due giorni. Il mister però ti guarda in allenamento più di prima: adesso vuole i fatti."
+            :c0==="silenzio"?"Nello spogliatoio hanno apprezzato che non ti sia giustificato. Fuori, invece, la questione non si è chiusa: ogni tuo intervento duro finisce in prima pagina."
+            :"La multa l'hai pagata senza fiatare, e questo in società l'hanno notato. Ma un compagno te lo dice chiaro: «Il problema non erano i soldi».",
+          choices:[{l:"Doppie sedute: rispondo sul campo",c:"campo",fx:(q)=>({fatigue:clamp((q.fatigue||0)+8,0,100),coachTrust:clamp((q.coachTrust||60)+5,0,100)})},
+                   {l:"Testa bassa e profilo basso",c:"basso",fx:(q)=>({morale:clamp((q.morale||70)+3,0,100)})}]};},
+        (p,S)=>{const bene=S.ch[0]!=="silenzio"&&S.ch[1]==="campo";
+          return{t:bene?"Il caso è chiuso":"Resta una crepa",fin:true,
+          d:bene?"Il mister lo dice davanti a tutti: «Ha sbagliato e ha lavorato il doppio. Fine della storia.» Nello spogliatoio la vicenda è archiviata — e tu ne esci con qualcosa in più."
+            :"La vicenda si sgonfia da sola, senza che nessuno l'abbia davvero chiusa. In certi sguardi, per qualche settimana, resterà.",
+          choices:[{l:bene?"Voltare pagina →":"Incassare e andare avanti →",c:"fine",fx:(q)=>bene?({coachTrust:clamp((q.coachTrust||60)+6,0,100),teamChemistry:clamp((q.teamChemistry||60)+4,0,100),morale:clamp((q.morale||70)+4,0,100)}):({morale:clamp((q.morale||70)-2,0,100)})}]};}
+      ]},
+    /* ── IL RAGAZZO DELLA PRIMAVERA — un compagno VERO della rosa ────────────────────────────── */
+    giovane:{e:"🌱",lab:"Il ragazzo della Primavera",once:"career",
+      can:(p)=>(p.season||1)>=2&&(p.ovr||0)>=72&&((p.teammates||[]).length>0)&&(p.week||1)<=28,
+      who:(p)=>{const t=(p.teammates||[]);return (t[hashStr((p.name||"x")+"_giov")%Math.max(1,t.length)]||{}).name||"il ragazzo";},
+      eps:[
+        (p,S)=>({t:`${S.who} ti aspetta a bordo campo`,d:`Finito l'allenamento resta lì col pallone sotto il braccio. «Mi fai vedere come calci quello a giro? Ti guardo da quando ero nelle giovanili.» Ha gli occhi di chi ci crede davvero.`,
+          choices:[{l:"Resto e glielo insegno",c:"resto",fx:(q)=>({fatigue:clamp((q.fatigue||0)+5,0,100),teamChemistry:clamp((q.teamChemistry||60)+3,0,100)})},
+                   {l:"Oggi no, ho la famiglia",c:"vado",fx:(q)=>({morale:clamp((q.morale||70)+2,0,100)})}]}),
+        (p,S)=>({t:`L'esordio di ${S.who}`,d:S.ch[0]==="resto"?`Il mister lo manda in campo e lui, prima di entrare, cerca te in panchina. Quelle sessioni in più adesso pesano: sa che qualcuno lo guarda.`:`Il mister lo manda in campo. Non cerca nessuno con lo sguardo: è entrato da solo, come si era allenato.`,
+          choices:[{l:"Lo carico prima di entrare",c:"carico",fx:(q)=>({teamChemistry:clamp((q.teamChemistry||60)+3,0,100)})},
+                   {l:"Lo lascio alla sua partita",c:"lascio",fx:()=>({})}]}),
+        (p,S)=>{const bene=S.ch[0]==="resto";
+          return{t:bene?`${S.who} comincia a incidere`:`${S.who} fatica`,
+          d:bene?`Due gare, un gol e la sensazione che il ragazzo ci sia. In sala video il mister ferma l'immagine sul suo movimento e dice: «Questo l'ha imparato da lui» — e indica te.`
+            :`Il ragazzo si perde: entra contratto, sbaglia le scelte facili. Nessuno gli sta accanto, e si vede anche da fuori.`,
+          choices:[{l:bene?"Continuo a seguirlo":"Adesso lo prendo da parte",c:"seguo",fx:(q)=>({teamChemistry:clamp((q.teamChemistry||60)+3,0,100),fatigue:clamp((q.fatigue||0)+3,0,100)})},
+                   {l:"Ognuno la sua strada",c:"mollo",fx:()=>({})}]};},
+        (p,S)=>{const erede=S.ch.filter(x=>["resto","carico","seguo"].indexOf(x)>=0).length>=2;
+          return{t:erede?`${S.who} ti chiama «maestro»`:`${S.who} saluta tutti`,fin:true,
+          d:erede?`A fine stagione il club lo aggrega stabilmente alla prima squadra. In sala stampa dice una frase che ti resta addosso: «Ho imparato guardando lui, ogni giorno». Un pezzo della tua carriera adesso vive in un altro.`
+            :`Il club lo gira in prestito. Ti stringe la mano senza rancore, ma senza calore: siete stati compagni di squadra, niente di più.`,
+          choices:[{l:erede?"Il mio erede →":"Buona fortuna →",c:"fine",fx:(q)=>erede?({popularity:clamp((q.popularity||50)+5,0,100),teamChemistry:clamp((q.teamChemistry||60)+6,0,100),morale:clamp((q.morale||70)+4,0,100)}):({morale:clamp((q.morale||70)-1,0,100)})}]};}
+      ]},
+    /* ── LA CORSA AL CAPOCANNONIERE — dalla classifica marcatori VERA ─────────────────────────── */
+    bomber:{e:"🎯",lab:"La corsa al capocannoniere",once:"season",
+      can:(p)=>{try{if((p.week||1)<18||(p.week||1)>32)return false;const g=(typeof leagueGoalsOf==="function")?leagueGoalsOf(p):(p.goals||0);return g>=8;}catch(_e){return false;}},
+      rival:(p)=>{try{const sc=generateLeagueScorers(p,{week:p.week||1});const o=(sc||[]).filter(x=>!x.isPlayer)[0];return o?{n:o.name,g:o.goals||0}:{n:"il capocannoniere",g:0};}catch(_e){return{n:"il capocannoniere",g:0};}},
+      eps:[
+        (p,S)=>{const g=(typeof leagueGoalsOf==="function")?leagueGoalsOf(p):(p.goals||0);
+          return{t:"Sei nella corsa",d:`${g} gol in campionato: i giornali cominciano a mettere il tuo nome accanto a quello di ${S.rv.n} (${S.rv.g}). Da oggi ogni domenica sarà un confronto a distanza, che tu lo voglia o no.`,
+          choices:[{l:"Punto al titolo di capocannoniere",c:"punto",fx:(q)=>({morale:clamp((q.morale||70)+3,0,100)})},
+                   {l:"Penso solo alla squadra",c:"squadra",fx:(q)=>({teamChemistry:clamp((q.teamChemistry||60)+4,0,100)})}]};},
+        (p,S)=>{const g=(typeof leagueGoalsOf==="function")?leagueGoalsOf(p):(p.goals||0);const av=g>=S.rv.g;
+          return{t:av?"Sei davanti":"Ti hanno superato",
+          d:av?`${g} a ${S.rv.g}: sei tu davanti, e adesso lo sanno tutti. ${S.ch[0]==="punto"?"Averlo detto in pubblico ti mette addosso una pressione in più.":"Non l'hai mai dichiarato, ma il conto lo tieni anche tu."}`
+             :`${S.rv.n} è a ${S.rv.g}, tu a ${g}. ${S.ch[0]==="punto"?"L'avevi detto che puntavi al titolo: adesso ogni gara a secco pesa doppio.":"Hai sempre detto che contava la squadra — e proprio per questo nessuno ti sta col fiato sul collo."}`,
+          choices:[{l:"Tiro anch'io da posizioni impossibili",c:"forzo",fx:(q)=>({morale:clamp((q.morale||70)+2,0,100),teamChemistry:clamp((q.teamChemistry||60)-3,0,100)})},
+                   {l:"Continuo a giocare come so",c:"lucido",fx:(q)=>({form:clamp((q.form||60)+3,0,100)})}]};},
+        (p,S)=>{const g=(typeof leagueGoalsOf==="function")?leagueGoalsOf(p):(p.goals||0);const av=g>=S.rv.g;const pulito=S.ch[1]==="lucido";
+          return{t:av?"L'ultimo mese è tuo":"Il duello si chiude qui",fin:true,
+          d:av?`Arrivi alla volata davanti (${g} a ${S.rv.g}). ${pulito?"E ci sei arrivato giocando da giocatore vero, non da cecchino ossessionato: è questo che i compagni ti riconoscono.":"Qualche pallone di troppo l'hai tenuto per te, e in spogliatoio non è passato inosservato."}`
+             :`${S.rv.n} chiude davanti. ${pulito?"Tu hai fatto la tua stagione senza tradirti: il prossimo anno si riparte da qui.":"E la sensazione è di aver forzato più del necessario, senza nemmeno arrivarci."}`,
+          choices:[{l:"Chiudere il capitolo →",c:"fine",fx:(q)=>av?({popularity:clamp((q.popularity||50)+4,0,100),morale:clamp((q.morale||70)+4,0,100)}):({morale:clamp((q.morale||70)+(pulito?1:-3),0,100)})}]};}
+      ]}
+  };
+  /* Motore: una serie ALLA VOLTA, episodi distanziati ≥2 settimane, epilogo forzato entro la W36
+     (nessun arco appeso al rollover) e chiusura pulita al cambio club. */
+  const serialView=(p)=>{try{
+    if((p.proStatus||"u18")!=="pro")return null;
+    const sn=p.season||1,wk=p.week||1;
+    const S=p.serial;
+    if(S&&S.k&&SERIALS[S.k]){
+      const D=SERIALS[S.k];
+      if(S.s!==sn||S.club!==((p.club&&p.club.id)||""))return null;/* stagione o maglia cambiata: la serie decade */
+      const ep=Math.min(S.ep||0,D.eps.length-1);
+      const forced=wk>=SERIAL_MAXW&&ep<D.eps.length-1;/* si chiude comunque prima del rollover */
+      if(!forced&&wk-(S.w||0)<2)return null;/* attesa fra una puntata e l'altra */
+      const idx=forced?D.eps.length-1:ep;
+      const ctx={...S,ch:S.ch||[],who:D.who?D.who(p):null,rv:D.rival?D.rival(p):null};
+      const e=D.eps[idx](p,ctx);
+      return{k:S.k,e:D.e,lab:D.lab,ep:idx,tot:D.eps.length,last:idx>=D.eps.length-1||!!e.fin,t:e.t,d:e.d,choices:e.choices,ctx};
+    }
+    if((p.serialSeenSeason||0)===sn)return null;/* una serie nuova per stagione: mai due in parallelo */
+    const done=p.serialDone||{};
+    const cand=Object.keys(SERIALS).filter(k=>{const D=SERIALS[k];
+      if(D.once==="career"&&done[k])return false;
+      if(D.once==="season"&&done[k]===sn)return false;
+      try{return !!D.can(p);}catch(_e){return false;}});
+    if(!cand.length)return null;
+    const k=cand[Math.abs(hashStr("srl|"+(p.name||"")+"|"+sn+"|"+wk))%cand.length];
+    const D=SERIALS[k];
+    const ctx={ch:[],who:D.who?D.who(p):null,rv:D.rival?D.rival(p):null};
+    const e=D.eps[0](p,ctx);
+    return{k,e:D.e,lab:D.lab,ep:0,tot:D.eps.length,last:D.eps.length<=1,t:e.t,d:e.d,choices:e.choices,ctx,start:true};
+  }catch(_e){return null;}};
   // [7.30.0 ONDA 5 — §S8] PANCHINA COME GAMEPLAY: quando sei riserva la settimana diventa RICONQUISTA — un
   //   arco di 3 gare con verdetto automatico dalla media voti (pattern esame S7). p.benchArc lazy.
   const benchView=(p)=>{try{
@@ -26368,6 +26476,38 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
           <div style={{display:"flex",gap:8}}>
             {ov.choices.map((c,i)=>(
               <Btn key={i} v={i===0?"primary":"ghost"} fw onClick={()=>setPlayer(p=>({...p,...c.fx(p),onceSeen:{...(p.onceSeen||{}),[ov.k]:true},onceSeenSeason:p.season||1,diary:[...(p.diary||[]),{season:p.season||1,week:p.week||1,type:"story",e:ov.e,headline:ov.t,body:(ov.d||"").slice(0,110),color:"#d4a017"}].slice(-80),log:[`${ov.e} ${ov.t} — ${c.l.replace(/^[^\s]+\s/,"")}`,...(p.log||[])].slice(0,60)}))}>{c.l}</Btn>
+            ))}
+          </div>
+        </Card>);})()}
+      {/* [7.269.0 P1] LA SERIE A PUNTATE — un arco alla volta, con scelte che si compongono */}
+      {tab==="dashboard"&&(()=>{
+        const sv=serialView(player);if(!sv)return null;
+        return(
+        <Card style={{marginBottom:8,padding:"14px 16px",background:"linear-gradient(150deg,#12101f,#1b1730)",border:"1px solid #4c3f7a"}}>
+          <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:7}}>
+            <div style={{fontSize:10,color:"#c4b5fd",textTransform:"uppercase",letterSpacing:2,flex:1,minWidth:0,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>📺 {sv.lab}</div>
+            <div style={{display:"flex",gap:4,flexShrink:0}}>{Array.from({length:sv.tot}).map((_,i)=>(
+              <span key={i} style={{width:i===sv.ep?14:6,height:6,borderRadius:3,background:i<=sv.ep?"#a78bfa":"#3b3358",transition:"width .2s"}}/>))}</div>
+          </div>
+          <div style={{fontSize:9.5,color:"#8b7fb8",fontWeight:700,marginBottom:6}}>PUNTATA {sv.ep+1} DI {sv.tot}</div>
+          <div style={{display:"flex",gap:10,alignItems:"flex-start",marginBottom:10}}>
+            <span style={{fontSize:22,lineHeight:1}}>{sv.e}</span>
+            <div style={{flex:1,minWidth:0}}>
+              <div style={{fontSize:13,fontWeight:900,color:"#fff",marginBottom:3}}>{sv.t}</div>
+              <div style={{fontSize:11,color:"rgba(255,255,255,0.78)",lineHeight:1.55}}>{sv.d}</div>
+            </div>
+          </div>
+          <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
+            {sv.choices.map((c,i)=>(
+              <Btn key={i} v={i===0?"primary":"ghost"} style={{flex:"1 1 46%"}} onClick={()=>setPlayer(p=>{
+                const _ch=[...((p.serial&&p.serial.ch)||[]),c.c];
+                const _fin=sv.last;
+                return{...p,...c.fx(p),
+                  serial:_fin?null:{k:sv.k,ep:sv.ep+1,s:p.season||1,w:p.week||1,ch:_ch,club:(p.club&&p.club.id)||""},
+                  ...(_fin?{serialDone:{...(p.serialDone||{}),[sv.k]:p.season||1},serialSeenSeason:p.season||1}:{}),
+                  diary:[...(p.diary||[]),{season:p.season||1,week:p.week||1,type:"story",e:sv.e,headline:sv.t,body:sv.d.slice(0,180),color:"#a78bfa"}].slice(-80),
+                  log:[`${sv.e} ${sv.lab} — ${sv.t}`,...(p.log||[])].slice(0,60)};
+              })}>{c.l}</Btn>
             ))}
           </div>
         </Card>);})()}
