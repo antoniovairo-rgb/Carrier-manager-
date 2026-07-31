@@ -3967,7 +3967,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="7.264.0"; // [7.264.0 #80 — direttiva PO «burattini non ne voglio mai vedere in campo, piuttosto messaggio di errore/warning»] Scelta di progetto RIBALTATA. Finora i modelli procedurali erano la RETE DI SICUREZZA: se il CH38 non si agganciava entro 3s entravano in campo (7.8.25, per non lasciare il campo vuoto) e a 30s il fischio d'inizio partiva comunque CON loro (7.9.3) — ecco perche' potevi vederli al 25'. Ora, quando il CH38 e' ATTESO: (a) niente backstop coi procedurali — restano nascosti e guidano solo la logica; (b) se il caricamento fallisce (errore duro) o tarda oltre 12s si alza un AVVISO esplicito al posto del fischio: «Modelli 3D non caricati», con ↻ Riprova (rimonta la scena via key → il caricatore riparte da zero senza perdere la partita) e, come uscita DICHIARATA dall'utente, «Gioca comunque senza modelli 3D» (i procedurali entrano solo se lo decide lui, mai come ripiego silenzioso del gioco); (c) via lo sblocco automatico a 30s che faceva giocare i burattini. Il flag di fallimento si azzera a ogni mount (una partita non eredita l'errore della precedente). Quando il GLB e' spento DI PROPOSITO (gate con __CPM_GLB=false, ?glb=0, preferenza salvata) nulla cambia: li' i procedurali restano il renderer legittimo e il fischio non viene mai trattenuto.
+const GAME_VERSION="7.265.0"; // [7.265.0 #81 — collaudo PO «spesso viene indicato che il progetto del club e' solido, e' ripetitivo»] MISURATO prima di toccare: su una carriera realistica (evoluzione pluriennale quasi sempre a zero, shift di prestigio piccoli) «Progetto solido» usciva nel 74% delle settimane — perche' era il FALLBACK di una scala a soli 4 gradini — sempre con la STESSA identica frase, e l'intestazione del Tab Club lo ripete a ogni render. Ora gli stati sono 10 e derivano dai FATTI della stagione in corso: promozione (2ª divisione, top 3), sorpresa e delusione (scarto tra classifica reale e rango di prestigio EFFETTIVO della rosa, come in 7.207), corsa europea, lotta salvezza, cantiere societario (stadio ampliato o tifoseria in crescita), oltre ai tre pluriennali gia' esistenti. La storia della stagione ha la precedenza sulla zona di classifica (una piccola sesta e' «la sorpresa del campionato», non «a un passo dall'Europa»). Ogni stato ha 3 formulazioni scelte in modo SEEDATO da club+stagione: stabili dentro l'annata (niente testo che balla a ogni render), diverse tra una stagione e l'altra; diverse voci citano il dato vero (posizione). Nuovo campo `tone` (good/bad/neutral): i due punti che colorano card e intestazione leggono quello invece di confrontare le chiavi — senza, i sei stati nuovi sarebbero rimasti grigi. MISURA dopo: nessuno stato oltre il 37%, 10 stati raggiungibili, formulazione deterministica entro la stagione e diversa in 5 stagioni su 8. Guardiano permanente club-project-variety-test.
 // [7.242.0 #56 chiusura — batch PO gi31-35 «Non si vede il gesto tecnico specifico» + verdetto difensivo] IL GESTO DIFENSIVO HA UNA FAMIGLIA. Ogni azione difensiva derivava `tackle/-` senza variante: la posa era UNA (scivolata) per pressing, anticipo, muro e deviazione. Tre famiglie STRUTTURALI congelate in factory (patto chainOn/gkCall — la regex vive solo in S()): slide (scivolata/disperato, posa storica a terra) · lunge (intercetto/anticipo/deviazione/muro: AFFONDO in piedi, gamba tesa e braccia larghe) · press (pressing/finta/recupero/copertura: ADDOSSO al portatore, busto avanti, braccio a schermare, tocco di punta). Prop hlDefGesto → pose sw-scalate auto-azzeranti nel blocco CINE-VAR; fallito = perdita di equilibrio comune. + VERDETTO DIFENSIVO RITARDATO (pattern #51): con l inbound 7.239 il pallone doveva ancora ARRIVARE quando usciva l overlay (misurato ~0.9s su gi31) → revealMs def 2250 con inbound / 1900 senza. Verificato sui fogli-provini: gi34 pressing = eroe addosso al portatore che vacilla, verdetto dopo il contatto.
 // [7.241.0 #56 batch PO gi28/29/37 «Non si vede il compagno che conclude»] FRENA PER GIRARTI — il difetto NON era la scelta del ricevente ne la transizione: attribuzione per-frame (AR53/54: oth=0, own>0, _ctx GIA sulla palla) → era il MODELLO DI STERZATA di animOne. Il ricevente lanciato sulla corsa profonda, con il filtrante atterrato ALLE SPALLE, navigava un inversione a U larga 20u e lunga secondi: il turn-rate e ∝1/velocita e la magnitudine della velocita-obiettivo restava PIENA nella direzione sbagliata. Ora quando la direzione voluta supera ~60° da quella di marcia la velocita-obiettivo cala col disallineamento (fino a 0.18×): la frenata passa dal limitatore di accelerazione, la velocita scende, il turn-rate risale → due passi di frenata e pivot, come in campo. Misurato prima→dopo: gi29 ricevente da divergenza a 24u → ARRIVO a 1.3u (t 0.41) con palla che parte con lui; gi37 2.0u; gi28 convergenza stretta. Vale per TUTTI i 21 off-ball (fisica piu vera anche su pressing/rientri — plausibile beneficio sul cluster difensivo «non aggancia il pallone»). +selezione demergenza del ricevente nel driver assist_recv (ogni scena ha SEMPRE un uomo sulla palla). ⚠️ modello core: gate 14/14 obbligatorio + realismo da riverificare sui baseline.
 // [7.240.0 #55B batch PO gi25/gi26 «Non si vede il compagno che riceve (e tira)» + gi43/28/29/30 storici] IL COMPAGNO ARRIVA SUL PALLONE PRIMA DI CALCIARE. Diagnosi strumentata (probe AR51/AR52 in-page, solo __CPM_REC): la catena assist_recv era VIVA e corretta — il primo sospetto «catena congelata» era un artefatto del campione stantio — ma (a) la transizione ricezione→tiro era a TEMPO FISSO 0.42s col ricevente ancora a 8-15u → il pallone volava in porta DA SOLO col gesto di calcio a vuoto; (b) il puntatore del ricevente (passTargetMesh) veniva AZZERATO all'avvio di assist_recv in 2 dei 3 siti (pass+assist = gi25 filtrante · tacco/scarico = gi26) e il driver, che scandiva solo il gesto _rcvT (0.52s di vita), restava senza nessuno da far correre. Fix: puntatore PERSISTENTE su tutti i siti (+_runToX fresco), fallback del driver sul puntatore, transizione ALL'ARRIVO (<2.2u, minimo 0.30s) con fallback 3.0s. Misurato prima→dopo: ricevente a 8-9u dalla palla al momento del tiro → 3.5-4u col gesto agganciato; gi26 duello leggibile sul foglio-provini; gi25 in wizard chiude con la catena e il gol.
@@ -22302,6 +22302,13 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
   // [7.28.0 ONDA 3 — §S6] IL PROGETTO CLUB: stato societario DERIVATO da clubEvo (7.6.0: seasonsTop/Low,
   //   budget) + shift di prestigio + classifica reale — ciclo vincente · crisi · ricostruzione · solido.
   //   La transizione è un EVENTO (card annuncio, p.clubProjSeen lazy); lo stato colora il Tab Club.
+  /* [7.265.0 collaudo PO «spesso viene indicato che il progetto del club è solido, è ripetitivo»] MISURATO:
+     su una carriera realistica (evo quasi sempre a zero, shift di prestigio piccoli) «Progetto solido» usciva
+     nel 74% delle settimane — perche' era il FALLBACK di una scala a 4 gradini — sempre con la STESSA identica
+     frase. Ora gli stati derivano dai fatti della stagione in corso (posizione reale, zona europea/salvezza,
+     promozione in seconda divisione, scarto tra classifica e forza reale della rosa, cantiere societario) e
+     ognuno ha 3 formulazioni scelte in modo SEEDATO da club+stagione: stabili dentro l'annata, diverse tra una
+     stagione e l'altra. Il campo `tone` sostituisce il confronto sulle chiavi nei due punti che colorano la card. */
   const clubProject=(p)=>{try{
     if((p.proStatus||"u18")!=="pro"||!p.club)return null;
     const cid=p.club.id||p.club.n;
@@ -22309,11 +22316,57 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     const shift=(p.clubPrestigeShifts||{})[cid]||0;
     const sd=[...(p.standings||[])].sort((a,b)=>((b.pts||0)-(a.pts||0))||(((b.gf||0)-(b.ga||0))-((a.gf||0)-(a.ga||0))));
     const pos=sd.length?sd.findIndex(t=>t.id===cid||(t.n||t.name)===p.club.n)+1:0;
-    const N=sd.length||18;const wk=p.week||1;
-    if((evo&&(evo.seasonsTop||0)>=2)||(shift>=8&&pos>0&&pos<=4))return{k:"vincente",e:"🏆",t:"Ciclo vincente",d:"La società costruisce per vincere ORA: obiettivi alti, mercato ambizioso, zero alibi. Chi gioca qui porta un peso — e un privilegio."};
-    if((evo&&(evo.seasonsLow||0)>=2)||(pos>0&&pos>=N-2&&wk>=10))return{k:"crisi",e:"🌧️",t:"Crisi societaria",d:"Conti in rosso e classifica che brucia: il club deve vendere i pezzi pregiati e il mister vive alla giornata. Restare e riportarla su vale doppio."};
-    if(shift<=-8||(evo&&(evo.seasonsLow||0)===1))return{k:"ricostruzione",e:"🧱",t:"Ricostruzione",d:"Anno zero tecnico: si riparte dalle fondamenta. Spazio a chi si fa trovare pronto — le gerarchie sono tutte da scrivere."};
-    return{k:"solido",e:"🏛️",t:"Progetto solido",d:"Rotta stabile: la società cresce un mattone alla volta e chiede continuità, non miracoli."};
+    const N=sd.length||18;const wk=p.week||1;const lg=p.club.lg||"";
+    const _2a=(typeof LEAGUE_PAIRS!=="undefined")&&LEAGUE_PAIRS.some(pr=>pr[1]===lg);/* seconda divisione */
+    /* forza REALE della rosa nel campionato: rango di prestigio EFFETTIVO (base + evoluzione), come in 7.207 */
+    const _shifts=p.clubPrestigeShifts||{};
+    const _rank=sd.length?[...sd].map(t=>({id:t.id||t.n,pe:(t.p||60)+(_shifts[t.id||t.n]||0)})).sort((a,b)=>b.pe-a.pe).findIndex(t=>t.id===cid)+1:0;
+    const _gap=(pos>0&&_rank>0)?(_rank-pos):0;/* >0 = si sta facendo MEGLIO di quanto valga la rosa */
+    const V=(k,arr)=>arr[Math.abs(hashStr("proj|"+k+"|"+cid+"|"+(p.season||1)))%arr.length];/* variante stabile per stagione */
+    const R=(k,e,t,d,tone)=>({k,e,t,d,tone});
+    /* 1-3 — gli stati PLURIENNALI restano in cima: parlano della societa', non della singola stagione */
+    if((evo&&(evo.seasonsTop||0)>=2)||(shift>=8&&pos>0&&pos<=4))return R("vincente","🏆","Ciclo vincente",V("vincente",[
+      "La societa' costruisce per vincere ORA: obiettivi alti, mercato ambizioso, zero alibi. Chi gioca qui porta un peso — e un privilegio.",
+      "Qui non si programma: si pretende. Ogni sessione di mercato aggiunge un titolare, ogni pareggio diventa un caso.",
+      "Il club e' entrato nella fascia in cui si vince o si fallisce. Nessuna stagione di passaggio e' ammessa."]),"good");
+    if((evo&&(evo.seasonsLow||0)>=2)||(pos>0&&pos>=N-2&&wk>=10))return R("crisi","🌧️","Crisi societaria",V("crisi",[
+      "Conti in rosso e classifica che brucia: il club deve vendere i pezzi pregiati e il mister vive alla giornata. Restare e riportarla su vale doppio.",
+      "Si naviga a vista: stipendi pagati in ritardo, mercato bloccato, spogliatoio che si guarda le spalle.",
+      "La societa' ha smesso di programmare e cerca solo di arrivare a giugno. Chi resta lo fa per orgoglio."]),"bad");
+    if(shift<=-8||(evo&&(evo.seasonsLow||0)===1))return R("ricostruzione","🧱","Ricostruzione",V("ricostruzione",[
+      "Anno zero tecnico: si riparte dalle fondamenta. Spazio a chi si fa trovare pronto — le gerarchie sono tutte da scrivere.",
+      "Rosa svuotata e ricostruita coi giovani: il club chiede pazienza e in cambio offre spazio a chi se lo prende.",
+      "Nuovo corso, nuovo staff, nuove regole. Chi accetta il progetto adesso, domani sara' un intoccabile."]),"neutral");
+    /* 4-8 — la STAGIONE IN CORSO: e' qui che prima c'era il buco (tutto finiva in «solido») */
+    if(_2a&&pos>0&&pos<=3&&wk>=8)return R("promozione","⬆️","Il progetto è salire",V("promozione",[
+      "Una sola parola in societa': promozione. Ogni scelta di mercato, ogni allenamento, ogni convocazione passa da li'.",
+      "Il club ha costruito per vincere questa categoria: restare quaggiu' un altro anno sarebbe un fallimento e lo sanno tutti.",
+      "Si respira la categoria superiore: la piazza conta i punti che mancano e non parla d'altro."]),"good");
+    if(_gap>=5&&pos>0&&wk>=12)return R("sorpresa","✨","La sorpresa del campionato",V("sorpresa",[
+      "Il "+pos+"° posto con questa rosa non lo aveva previsto nessuno: la societa' cavalca l'onda e comincia a sognare.",
+      "Nelle proiezioni di agosto questo club stava molto piu' in basso. Adesso in sede si chiedono fin dove puo' arrivare.",
+      "Una squadra che vale meno di quanto raccoglie: il gruppo ha creato qualcosa che i numeri non spiegano."]),"good");
+    if(_gap<=-5&&pos>0&&wk>=12)return R("delusione","📉","Sotto le attese",V("delusione",[
+      "Per valore della rosa il club dovrebbe stare molto piu' su del "+pos+"° posto: in societa' la pazienza sta finendo.",
+      "I conti non tornano: questa squadra e' costruita per un'altra classifica e in dirigenza cercano un colpevole.",
+      "Il progetto non e' fallito, ma il campo dice il contrario di quello che dicevano i piani. E si sente."]),"bad");
+    if(!_2a&&pos>0&&pos<=Math.max(5,Math.round(N*0.33))&&wk>=10)return R("europa","🌍","A un passo dall'Europa",V("europa",[
+      "Il club annusa l'Europa: il "+pos+"° posto vale bilanci diversi e giocatori diversi. In societa' non si parla d'altro.",
+      "Qualificarsi cambierebbe la dimensione della societa': lo sanno in dirigenza e lo sa lo spogliatoio.",
+      "La stagione ha preso una piega che nessuno aveva messo a bilancio: adesso l'Europa e' un obiettivo dichiarato."]),"good");
+    if(!_2a&&pos>0&&pos>=N-5&&wk>=10)return R("salvezza","🧯","Il progetto è salvarsi",V("salvezza",[
+      "Obiettivo unico e dichiarato: la salvezza. Il club taglia il superfluo e chiede punti, non spettacolo.",
+      "Ogni riunione finisce con lo stesso numero: i punti che mancano per restare in categoria.",
+      "Non e' l'anno dei progetti: e' l'anno in cui bisogna portare a casa la categoria, con qualunque mezzo."]),"bad");
+    if(evo&&((evo.stadiumTier||0)>0||(evo.fanbase||0)>=60))return R("cantiere","🏗️","Il club investe",V("cantiere",[
+      "Cantieri aperti: stadio e strutture crescono prima della rosa. E' un club che pensa a dove sara' tra cinque anni.",
+      "La societa' mette i soldi nel mattone e nel vivaio: chi cresce qui adesso, raccogliera' quando la squadra sara' pronta.",
+      "Si costruisce l'infrastruttura prima della squadra: scelta impopolare a marzo, lungimirante a lungo termine."]),"neutral");
+    /* 9 — fallback VERO: meta' classifica senza segnali forti. Anche qui, tre voci e un dato reale. */
+    return R("solido","🏛️","Progetto solido",V("solido",[
+      "Rotta stabile: la societa' cresce un mattone alla volta e chiede continuita', non miracoli."+(pos>0?" Il "+pos+"° posto e' esattamente dove i piani dicevano di essere.":""),
+      "Nessuno scossone: bilancio in ordine, mercato mirato, obiettivi realistici. Un club che non promette e non tradisce.",
+      "Il club naviga in acque tranquille e lo rivendica: prima le fondamenta, i salti in avanti quando saranno sostenibili."]),"neutral");
   }catch(_e){return null;}};
   // [7.28.0 ONDA 3 — §S12] LA MAGLIA NUMERO 9 — la lista del CT: gerarchia VIVA del tuo ruolo in Nazionale.
   //   3 NPC persistenti per ciclo di 4 stagioni (nomi/score SEEDATI da nazione+ciclo, stabili tra reload);
@@ -26127,16 +26180,16 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
         const seen=player.clubProjSeen;
         if(seen&&seen.k===pj.k&&seen.cid===(player.club?.id||player.club?.n))return null;
         return(
-        <Card style={{marginBottom:8,padding:"13px 14px",background:pj.k==="crisi"?"linear-gradient(150deg,#2a1a0e,#33210f)":pj.k==="vincente"?"linear-gradient(150deg,#1a1610,#2a2113)":TH.card,border:pj.k==="crisi"?"1px solid #7a4a2a":pj.k==="vincente"?"1px solid #8a6d1a":`1px solid ${TH.cardBorder}`}}>
-          <div style={{fontSize:10,color:pj.k==="crisi"?"#fdba74":pj.k==="vincente"?"#fcd34d":TH.muted,textTransform:"uppercase",letterSpacing:2,marginBottom:6}}>🏢 Il progetto del club</div>
+        <Card style={{marginBottom:8,padding:"13px 14px",background:pj.tone==="bad"?"linear-gradient(150deg,#2a1a0e,#33210f)":pj.tone==="good"?"linear-gradient(150deg,#1a1610,#2a2113)":TH.card,border:pj.tone==="bad"?"1px solid #7a4a2a":pj.tone==="good"?"1px solid #8a6d1a":`1px solid ${TH.cardBorder}`}}>
+          <div style={{fontSize:10,color:pj.tone==="bad"?"#fdba74":pj.tone==="good"?"#fcd34d":TH.muted,textTransform:"uppercase",letterSpacing:2,marginBottom:6}}>🏢 Il progetto del club</div>
           <div style={{display:"flex",gap:10,alignItems:"flex-start",marginBottom:10}}>
             <span style={{fontSize:20,lineHeight:1}}>{pj.e}</span>
             <div style={{flex:1,minWidth:0}}>
-              <div style={{fontSize:12.5,fontWeight:900,color:pj.k==="crisi"||pj.k==="vincente"?"#fff":TH.text,marginBottom:3}}>{pj.t}</div>
-              <div style={{fontSize:11,color:pj.k==="crisi"||pj.k==="vincente"?"rgba(255,255,255,0.78)":TH.muted,lineHeight:1.5}}>{pj.d}</div>
+              <div style={{fontSize:12.5,fontWeight:900,color:pj.tone!=="neutral"?"#fff":TH.text,marginBottom:3}}>{pj.t}</div>
+              <div style={{fontSize:11,color:pj.tone!=="neutral"?"rgba(255,255,255,0.78)":TH.muted,lineHeight:1.5}}>{pj.d}</div>
             </div>
           </div>
-          <Btn v="primary" fw onClick={()=>setPlayer(p=>({...p,clubProjSeen:{k:pj.k,cid:p.club?.id||p.club?.n,season:p.season||1},morale:clamp((p.morale||70)+(pj.k==="vincente"?2:pj.k==="crisi"?-2:0),0,100),log:[`${pj.e} ${pj.t} — la direzione del club è chiara.`,...(p.log||[])].slice(0,60)}))}>Si vede in campo →</Btn>
+          <Btn v="primary" fw onClick={()=>setPlayer(p=>({...p,clubProjSeen:{k:pj.k,cid:p.club?.id||p.club?.n,season:p.season||1},morale:clamp((p.morale||70)+(pj.tone==="good"?2:pj.tone==="bad"?-2:0),0,100),log:[`${pj.e} ${pj.t} — la direzione del club è chiara.`,...(p.log||[])].slice(0,60)}))}>Si vede in campo →</Btn>
         </Card>);})()}
       {/* [7.55.0 ONDA 7 — §S6b] CAMBIO DI CLIMA — la TRANSIZIONE di stance di uno stakeholder (presidente/mister/
           curva) come EVENTO una-tantum (pattern clubProjSeen): fira solo verso stati FORTI, baseline seedato in
@@ -27509,7 +27562,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                   <div style={{fontSize:11,color:TH.muted,marginTop:2}}>{club.nat||"🏳️"} {club.lg||"–"}</div>
                   <div style={{fontSize:13,marginTop:4}}>{"⭐".repeat(stars)}{"☆".repeat(Math.max(0,5-stars))}</div>
                   {currentStanding&&<div style={{fontSize:10,color:TH.primary,marginTop:3}}>#{currentStanding.pos}/{currentStanding.total} in classifica · {currentStanding.pts}pt</div>}
-                  {(()=>{const pj=clubProject(player);return pj?<div style={{fontSize:10,color:pj.k==="crisi"?"#b45309":pj.k==="vincente"?"#a16207":TH.muted,marginTop:3,fontWeight:700}}>{pj.e} Progetto: {pj.t}{/* [7.28.0 ONDA 3 §S6] */}</div>:null;})()}
+                  {(()=>{const pj=clubProject(player);return pj?<div style={{fontSize:10,color:pj.tone==="bad"?"#b45309":pj.tone==="good"?"#a16207":TH.muted,marginTop:3,fontWeight:700}}>/* [7.265.0] colore per TONO: con gli stati nuovi il confronto sulle chiavi lasciava tutto grigio */{pj.e} Progetto: {pj.t}{/* [7.28.0 ONDA 3 §S6] */}</div>:null;})()}
                   {(()=>{/* [7.30.0 ONDA 5 §S11] il tuo legame con la curva + contestazione onesta */
                     const cv=curvaView(player);if(!cv)return null;
                     return(<div style={{marginTop:3}}>
