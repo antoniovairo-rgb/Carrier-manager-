@@ -23,13 +23,21 @@ const clubProject = new Function('hashStr', 'LEAGUE_PAIRS', 'return ' + src.slic
 // evoluzione pluriennale rara (serve un biennio ai vertici o in fondo), shift di prestigio piccoli.
 const mk = (seed) => {
   const R = (() => { let s = seed >>> 0 || 1; return () => { s ^= s << 13; s ^= s >>> 17; s ^= s << 5; s >>>= 0; return s / 4294967296; }; })();
+  /* [7.275.0 collaudo PO «progetto solido sempre ripetitivo», 2ª segnalazione] La popolazione di prima
+     sovra-rappresentava i casi distintivi e per questo il test diceva verde mentre a schermo usciva sempre
+     il fallback: la carriera vera è fatta soprattutto di club a METÀ CLASSIFICA senza segnali. Ora due
+     terzi dei campioni sono esattamente quelli. */
   const myP = 45 + Math.floor(R() * 45);
   const others = Array.from({ length: 17 }, () => 45 + Math.floor(R() * 45));
   const rank = [myP, ...others].sort((a, b) => b - a).indexOf(myP) + 1;
-  const pos = Math.max(1, Math.min(18, rank + Math.round((R() + R() + R() - 1.5) * 6)));
+  const pos = R() < 0.66 ? 6 + Math.floor(R() * 8) : Math.max(1, Math.min(18, rank + Math.round((R() + R() + R() - 1.5) * 6)));
   const st = Array.from({ length: 18 }, (_, q) => ({ id: 'c' + q, n: 'C' + q, pts: 100 - q, gf: 10, ga: 5, p: others[q] || 50 }));
-  st[pos - 1] = { id: 'me', n: 'Club', pts: 100 - pos, gf: 10, ga: 5, p: myP };
-  return { proStatus: 'pro', season: 1 + Math.floor(R() * 8), week: 4 + Math.floor(R() * 35),
+  /* gol fatti/subiti realistici e correlati alla posizione: sono il materiale dei nuovi stati ordinari */
+  const _w = 6 + Math.floor(R() * 30);
+  const _gf = Math.round(_w * (0.7 + (18 - pos) * 0.055) + R() * 6), _ga = Math.round(_w * (0.6 + pos * 0.045) + R() * 6);
+  st.forEach((t, q) => { t.gf = Math.round(_w * (0.7 + (18 - q) * 0.05)); t.ga = Math.round(_w * (0.6 + q * 0.045)); t.pts = Math.max(0, Math.round(_w * (2.2 - q * 0.09))); });
+  st[pos - 1] = { id: 'me', n: 'Club', pts: Math.max(0, Math.round(_w * (2.2 - (pos - 1) * 0.09))), gf: _gf, ga: _ga, p: myP };
+  return { proStatus: 'pro', season: 1 + Math.floor(R() * 8), week: _w,
     club: { id: 'me', n: 'Club', lg: R() < 0.3 ? 'Lega B' : 'Lega A' },
     clubEvo: { clubId: 'me', seasonsTop: R() < 0.10 ? 1 + (R() < 0.4 ? 1 : 0) : 0, seasonsLow: R() < 0.10 ? 1 + (R() < 0.4 ? 1 : 0) : 0, stadiumTier: R() < 0.08 ? 1 : 0, fanbase: 40 },
     clubPrestigeShifts: { me: Math.round((R() + R() + R() - 1.5) * 5) }, standings: st };
