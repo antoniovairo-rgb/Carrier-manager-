@@ -3967,7 +3967,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="7.271.0"; // [7.271.0 #87 — P3 e P6 delle proposte, approvate dal PO] GLI ARCHI DELLA FASE DI CARRIERA + LA VOCE LOCALE. (P3) Lo stesso pool narrativo serviva il diciottenne e il trentatreenne: per questo la stagione 12 somigliava alla 2. Ora la carriera si divide in tre ETA' con capitoli propri — l'ESORDIENTE (il primo spogliatoio dei grandi, l'errore che hanno visto tutti col voto e l'avversario VERI, il posto da conquistare), il TITOLARE (i piu' giovani che copiano i tuoi esercizi, il peso della maglia, la concorrenza che arriva), il VETERANO (il corpo che parla dopo N partite reali, l'eredita' dei tuoi gol di carriera, la panchina che non ti aspettavi) — one-shot per CARRIERA (`p.phaseSeen`) e uno solo per stagione, scelti fra quelli applicabili ai fatti. (P6) La piazza era intercambiabile: lo stesso evento con le stesse parole a Napoli, Londra e Istanbul. `piazzaVoice` deriva dalla NAZIONE del club un piccolo lessico — come si chiama il settore caldo (la Sud, la Kop, il Fondo Sur, la Sudtribune, il Virage, la Bancada Sul, la F-Side, la Kale Ardi), dove si giudica (il bar sotto casa, il pub davanti allo stadio, le penas, la Fankneipe, i kahvehane) e un modo di dire del posto — e la voce della curva ora lo usa. Campi lazy su entrambi: nessun bump SAVE. Guardiano permanente fase-piazza-test (ogni eta' riceve i suoi capitoli e non quelli delle altre, marcatura one-shot, uno per stagione, fatti veri nei testi, la curva cambia nome per nazione, save senza i campi nuovi che non si rompe). Nota di misura: le voci del club sono DUE a settimana in rotazione seedata, quindi il guardiano sonda piu' settimane prima di dichiarare muta una piazza.
+const GAME_VERSION="7.272.0"; // [7.272.0 #88 — due collaudi PO] (1) REGRESSIONE: un COMMENTO DI CODICE stampato a schermo. Nel JSX un commento scritto fra i figli di un tag non e' un commento, e' TESTO: nella scheda del club compariva «/* [7.265.0] colore per TONO… */» davanti a «Progetto: La sorpresa del campionato». La scansione ne ha trovati QUATTRO, il piu' vecchio dal 7.32.1 — non un caso isolato ma una CLASSE — e tre sono stati racchiusi in una espressione. ⚠️ Il primo tentativo ha ROTTO il mount: il quarto era in posizione JS (ramo di un ternario in IntroCinematic), dove le graffe sono un errore di sintassi; ripristinato e annotato sul posto. Guardiano permanente jsx-comment-leak-test: euristica statica con lista esplicita dei siti verificati in posizione JS, piu' — ed e' questa l'autorita' — una scansione DAL VIVO di nove schermate della carriera che verifica l'assenza di delimitatori di commento nel testo visibile. (2) «non sono 50 partite da professionista, le partite in Primavera non devono rientrare nel conteggio»: le presenze giovanili finivano nei totali di carriera e da li' nei testi che parlano esplicitamente di professionismo. Nuovo `proCareerOf` scorpora presenze, gol, assist e stagioni giovanili riconoscendo le stagioni in Primavera dal nome del club salvato nello storico; se sei ancora in Primavera anche la stagione in corso e' giovanile. Applicato al traguardo delle 50 partite e alla biografia del ritiro. Derivato, nessun campo nuovo, nessun bump SAVE.
 // [7.242.0 #56 chiusura — batch PO gi31-35 «Non si vede il gesto tecnico specifico» + verdetto difensivo] IL GESTO DIFENSIVO HA UNA FAMIGLIA. Ogni azione difensiva derivava `tackle/-` senza variante: la posa era UNA (scivolata) per pressing, anticipo, muro e deviazione. Tre famiglie STRUTTURALI congelate in factory (patto chainOn/gkCall — la regex vive solo in S()): slide (scivolata/disperato, posa storica a terra) · lunge (intercetto/anticipo/deviazione/muro: AFFONDO in piedi, gamba tesa e braccia larghe) · press (pressing/finta/recupero/copertura: ADDOSSO al portatore, busto avanti, braccio a schermare, tocco di punta). Prop hlDefGesto → pose sw-scalate auto-azzeranti nel blocco CINE-VAR; fallito = perdita di equilibrio comune. + VERDETTO DIFENSIVO RITARDATO (pattern #51): con l inbound 7.239 il pallone doveva ancora ARRIVARE quando usciva l overlay (misurato ~0.9s su gi31) → revealMs def 2250 con inbound / 1900 senza. Verificato sui fogli-provini: gi34 pressing = eroe addosso al portatore che vacilla, verdetto dopo il contatto.
 // [7.241.0 #56 batch PO gi28/29/37 «Non si vede il compagno che conclude»] FRENA PER GIRARTI — il difetto NON era la scelta del ricevente ne la transizione: attribuzione per-frame (AR53/54: oth=0, own>0, _ctx GIA sulla palla) → era il MODELLO DI STERZATA di animOne. Il ricevente lanciato sulla corsa profonda, con il filtrante atterrato ALLE SPALLE, navigava un inversione a U larga 20u e lunga secondi: il turn-rate e ∝1/velocita e la magnitudine della velocita-obiettivo restava PIENA nella direzione sbagliata. Ora quando la direzione voluta supera ~60° da quella di marcia la velocita-obiettivo cala col disallineamento (fino a 0.18×): la frenata passa dal limitatore di accelerazione, la velocita scende, il turn-rate risale → due passi di frenata e pivot, come in campo. Misurato prima→dopo: gi29 ricevente da divergenza a 24u → ARRIVO a 1.3u (t 0.41) con palla che parte con lui; gi37 2.0u; gi28 convergenza stretta. Vale per TUTTI i 21 off-ball (fisica piu vera anche su pressing/rientri — plausibile beneficio sul cluster difensivo «non aggancia il pallone»). +selezione demergenza del ricevente nel driver assist_recv (ogni scena ha SEMPRE un uomo sulla palla). ⚠️ modello core: gate 14/14 obbligatorio + realismo da riverificare sui baseline.
 // [7.240.0 #55B batch PO gi25/gi26 «Non si vede il compagno che riceve (e tira)» + gi43/28/29/30 storici] IL COMPAGNO ARRIVA SUL PALLONE PRIMA DI CALCIARE. Diagnosi strumentata (probe AR51/AR52 in-page, solo __CPM_REC): la catena assist_recv era VIVA e corretta — il primo sospetto «catena congelata» era un artefatto del campione stantio — ma (a) la transizione ricezione→tiro era a TEMPO FISSO 0.42s col ricevente ancora a 8-15u → il pallone volava in porta DA SOLO col gesto di calcio a vuoto; (b) il puntatore del ricevente (passTargetMesh) veniva AZZERATO all'avvio di assist_recv in 2 dei 3 siti (pass+assist = gi25 filtrante · tacco/scarico = gi26) e il driver, che scandiva solo il gesto _rcvT (0.52s di vita), restava senza nessuno da far correre. Fix: puntatore PERSISTENTE su tutti i siti (+_runToX fresco), fallback del driver sul puntatore, transizione ALL'ARRIVO (<2.2u, minimo 0.30s) con fallback 3.0s. Misurato prima→dopo: ricevente a 8-9u dalla palla al momento del tiro → 3.5-4u col gesto agganciato; gi26 duello leggibile sul foglio-provini; gi25 in wizard chiude con la catena e il gol.
@@ -6667,6 +6667,22 @@ function generateSeasonCalendar(playerClub,leagueClubs,seed){
 /* [7.120.0 audit economia] fallback a player.goals SOLO se matchHistory è del tutto vuota (save vecchio senza
    storico); se ci sono gare ma NESSUNA di lega (es. 1ª gara post-trasferimento è una coppa → matchHistory=[{cup}])
    ritorna 0, altrimenti gonfiava i gol di lega col gol di coppa. */
+/* [7.272.0 collaudo PO «non sono 50 partite da professionista, le partite in primavera non devono
+   rientrare nel conteggio»] Le presenze GIOVANILI finivano nei totali di carriera e da li' nei testi che
+   parlano esplicitamente di professionismo (il traguardo delle 50 partite, la biografia del ritiro). Qui
+   si scorporano: le stagioni in Primavera si riconoscono dal nome del club salvato nello storico (i club
+   giovanili sono «<club> Primavera», vedi U18_CLUBS) e, se sei ancora in Primavera, anche la stagione in
+   corso e' giovanile. Derivato, nessun campo nuovo, nessun bump SAVE. */
+const _isYouthClubName=(n)=>/\bPrimavera\b|\bU18\b/i.test(String(n||""));
+const proCareerOf=(p)=>{try{
+  const h=(p&&p.history)||[];
+  let ym=0,yg=0,ya=0,ys=0;
+  h.forEach(x=>{if(x&&_isYouthClubName(x.club)){ym+=x.matches||0;yg+=x.goals||0;ya+=x.assists||0;ys++;}});
+  const u18=(p&&(p.proStatus||"u18")==="u18");
+  if(u18){ym+=(p.matches||0);yg+=(p.goals||0);ya+=(p.assists||0);}
+  return{matches:Math.max(0,((p&&p.totalMatches)||0)-ym),goals:Math.max(0,((p&&p.totalGoals)||0)-yg),
+    assists:Math.max(0,((p&&p.totalAssists)||0)-ya),seasons:Math.max(0,Math.max(0,((p&&p.season)||1)-1)-ys)};
+}catch(_e){return{matches:(p&&p.totalMatches)||0,goals:(p&&p.totalGoals)||0,assists:(p&&p.totalAssists)||0,seasons:Math.max(0,((p&&p.season)||1)-1)};}};
 const leagueGoalsOf=(p)=>{const h=(p.matchHistory||[]).filter(m=>m&&!m.cup&&!m.euro&&!m.national);return h.length?h.reduce((s,m)=>s+(m.goals||0),0):((p.matchHistory||[]).length?0:(p.goals||0));};/* [7.115.0 audit · +!m.national] trappola latente: se un risultato di Nazionale entrasse in matchHistory di club gonfierebbe il capocannoniere/MVP di lega */
 const leagueAssistsOf=(p)=>{const h=(p.matchHistory||[]).filter(m=>m&&!m.cup&&!m.euro&&!m.national);return h.length?h.reduce((s,m)=>s+(m.assists||0),0):((p.matchHistory||[]).length?0:(p.assists||0));};
 function generateSeasonAwards(player, finalStandings){
@@ -19127,7 +19143,7 @@ function CreateScreen({onCreate,legacyBonus,onClearLegacy}){
               })}
             </div>
             {(()=>{const arc=ARCHETYPES.find(a=>a.id===archetypeId);return arc?(
-              <div style={{marginTop:6,padding:"7px 10px",background:TH.bgGreen,borderRadius:8,border:"1px solid #bbf7d0",fontSize:10,color:TH.txGreen}}>/* [7.120.0 audit UI] bg verde chiaro FISSO → testo verde scuro FISSO (era TH.muted = chiaro in dark mode → illeggibile) */
+              <div style={{marginTop:6,padding:"7px 10px",background:TH.bgGreen,borderRadius:8,border:"1px solid #bbf7d0",fontSize:10,color:TH.txGreen}}>{/* [7.120.0 audit UI] bg verde chiaro FISSO → testo verde scuro FISSO (era TH.muted = chiaro in dark mode → illeggibile) */}
                 {Object.entries(arc.bonus).map(([k,v])=><span key={k} style={{marginRight:6,color:v>0?TH.success:TH.danger,fontWeight:700}}>{k} {v>0?"+":""}{v}</span>)}
               </div>
             ):null;})()}
@@ -19510,9 +19526,9 @@ function getLegacyGrade(score){
 }
 function generateRetirementBio(p,legacyScore){
   const name=p.name||"Il giocatore";
-  const seasons=Math.max(0,(p.season||1)-1);
+  const seasons=proCareerOf(p).seasons/* [7.272.0] solo le stagioni da professionista */;
   const goals=p.totalGoals||0;
-  const matches=p.totalMatches||0;
+  const matches=proCareerOf(p).matches/* [7.272.0] presenze pro, Primavera esclusa */;
   const trophies=(p.trophies||[]).length;
   const caps=p.nationalCaps||0;
   const clubs=[...new Set((p.history||[]).map(h=>h.club).filter(Boolean))];
@@ -19994,7 +20010,7 @@ const CAREER_MILESTONES=[
   {id:"g50",big:true,check:p=>(p.totalGoals||0)>=50,txt:"💥 CINQUANTA GOL! Leggenda nascente.",color:"#ef4444",sub:"Traguardo straordinario — sei entrato nella storia del club."},
   {id:"g100",big:true,check:p=>(p.totalGoals||0)>=100,txt:"👑 CENTO GOL! Sei nella storia del calcio.",color:"#7c3aed",sub:"Pochi calciatori raggiungono questa vetta. Sei uno di loro."},
   {id:"m25",check:p=>(p.totalMatches||0)>=25,txt:"👟 25 presenze in carriera!",color:"#0891b2"},
-  {id:"m50",check:p=>(p.totalMatches||0)>=50,txt:"⚡ 50 partite da professionista!",color:"#0891b2"},
+  {id:"m50",check:p=>proCareerOf(p).matches>=50/* [7.272.0] pro-only: la Primavera non conta */,txt:"⚡ 50 partite da professionista!",color:"#0891b2"},
   {id:"m100",big:true,check:p=>(p.totalMatches||0)>=100,txt:"💎 100 PRESENZE! Una carriera vera.",color:"#7c3aed",sub:"Cento battaglie. Cento storie. Una carriera che merita rispetto."},
   {id:"ovr75",check:p=>(p.ovr||60)>=75,txt:"📈 Livello 75 — Giocatore solido e affidabile!",color:"#059669"},
   {id:"ovr80",check:p=>(p.ovr||60)>=80,txt:"🌟 Livello 80 — TOP PLAYER!",color:TH.txAmber},
@@ -28005,7 +28021,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                   <div style={{fontSize:11,color:TH.muted,marginTop:2}}>{club.nat||"🏳️"} {club.lg||"–"}</div>
                   <div style={{fontSize:13,marginTop:4}}>{"⭐".repeat(stars)}{"☆".repeat(Math.max(0,5-stars))}</div>
                   {currentStanding&&<div style={{fontSize:10,color:TH.primary,marginTop:3}}>#{currentStanding.pos}/{currentStanding.total} in classifica · {currentStanding.pts}pt</div>}
-                  {(()=>{const pj=clubProject(player);return pj?<div style={{fontSize:10,color:pj.tone==="bad"?"#b45309":pj.tone==="good"?"#a16207":TH.muted,marginTop:3,fontWeight:700}}>/* [7.265.0] colore per TONO: con gli stati nuovi il confronto sulle chiavi lasciava tutto grigio */{pj.e} Progetto: {pj.t}{/* [7.28.0 ONDA 3 §S6] */}</div>:null;})()}
+                  {(()=>{const pj=clubProject(player);return pj?<div style={{fontSize:10,color:pj.tone==="bad"?"#b45309":pj.tone==="good"?"#a16207":TH.muted,marginTop:3,fontWeight:700}}>{/* [7.265.0] colore per TONO: con gli stati nuovi il confronto sulle chiavi lasciava tutto grigio */}{pj.e} Progetto: {pj.t}{/* [7.28.0 ONDA 3 §S6] */}</div>:null;})()}
                   {(()=>{/* [7.30.0 ONDA 5 §S11] il tuo legame con la curva + contestazione onesta */
                     const cv=curvaView(player);if(!cv)return null;
                     return(<div style={{marginTop:3}}>
@@ -30181,7 +30197,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       <div className="cpm-nav-hint" style={{borderTop:"1px solid "+TH.cardBorder}}>
         {[{k:"Enter",l:"Gioca"},{k:"0",l:"Avanza"},{k:"Esc",l:"Indietro"},{k:"Spc",l:"Conferma"}].map(h=>(
           <span key={h.k} style={{fontSize:10,color:TH.muted,display:"flex",alignItems:"center",gap:3}}>
-            <span style={{background:"#e2e8f0",borderRadius:3,padding:"1px 5px",fontFamily:"monospace",fontSize:10,color:"#334155"}}>{h.k}</span>/* [7.120.0 audit UI] chip chiaro FISSO → testo slate scuro FISSO (era TH.text = chiaro in dark mode → illeggibile) */
+            <span style={{background:"#e2e8f0",borderRadius:3,padding:"1px 5px",fontFamily:"monospace",fontSize:10,color:"#334155"}}>{h.k}</span>{/* [7.120.0 audit UI] chip chiaro FISSO → testo slate scuro FISSO (era TH.text = chiaro in dark mode → illeggibile) */}
             {h.l}
           </span>
         ))}
