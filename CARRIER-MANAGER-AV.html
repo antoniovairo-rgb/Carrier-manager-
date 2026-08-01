@@ -3967,7 +3967,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="7.273.0"; // [7.273.0 #89 — collaudo PO «non e' prematuro che a 18 anni gia' fa da mentore ed e' l'idolo dei giovani della Primavera? posticiperei questo tipo di storia»] Aveva ragione: la serie «Il ragazzo della Primavera» (7.269.0) chiedeva solo stagione ≥2 e OVR ≥72 — nessun vincolo d'ETA' — quindi un diciottenne appena sbarcato in prima squadra si ritrovava maestro di bottega di un coetaneo. Il mentore lo si diventa dopo: ora servono 25 anni, la terza stagione, OVR ≥74 e un centinaio di partite vere alle spalle. Stessa direttiva applicata al capitolo d'eta' «Adesso guardano te» (7.271.0), che scattava gia' a 23 anni con 80 presenze: portato a 26 anni e 120 presenze. Il resto degli archi da veterano (l'erede, l'eredita', il corpo che parla) aveva gia' soglie alte e resta invariato. Aggiornati gli scenari dei due guardiani, che con le vecchie soglie passavano con un profilo troppo giovane. // [7.273.0 · 2° collaudo] «la frase del girone di ritorno non ha senso se siamo gia' alla 28ª partita»: la verifica trimestrale del mister esce quattro volte a stagione ma due risposte del pool nominavano una FASE precisa («nel girone di ritorno», «la stagione e' ancora lunga») — sbagliate in tre casi su quattro. Sostituite con formule valide in qualunque momento; il pool non passa da un risolutore di contesto, quindi la correzione giusta e' togliere l'affermazione temporale, non parametrizzarla.
+const GAME_VERSION="7.274.0"; // [7.273.0 #89 — collaudo PO «non e' prematuro che a 18 anni gia' fa da mentore ed e' l'idolo dei giovani della Primavera? posticiperei questo tipo di storia»] Aveva ragione: la serie «Il ragazzo della Primavera» (7.269.0) chiedeva solo stagione ≥2 e OVR ≥72 — nessun vincolo d'ETA' — quindi un diciottenne appena sbarcato in prima squadra si ritrovava maestro di bottega di un coetaneo. Il mentore lo si diventa dopo: ora servono 25 anni, la terza stagione, OVR ≥74 e un centinaio di partite vere alle spalle. Stessa direttiva applicata al capitolo d'eta' «Adesso guardano te» (7.271.0), che scattava gia' a 23 anni con 80 presenze: portato a 26 anni e 120 presenze. Il resto degli archi da veterano (l'erede, l'eredita', il corpo che parla) aveva gia' soglie alte e resta invariato. Aggiornati gli scenari dei due guardiani, che con le vecchie soglie passavano con un profilo troppo giovane. // [7.273.0 · 2° collaudo] «la frase del girone di ritorno non ha senso se siamo gia' alla 28ª partita»: la verifica trimestrale del mister esce quattro volte a stagione ma due risposte del pool nominavano una FASE precisa («nel girone di ritorno», «la stagione e' ancora lunga») — sbagliate in tre casi su quattro. Sostituite con formule valide in qualunque momento; il pool non passa da un risolutore di contesto, quindi la correzione giusta e' togliere l'affermazione temporale, non parametrizzarla. // [7.274.0 #90 collaudo PO «dice R16 ma in realta' sono gli ottavi di finale della Coppa Nazionale»] Il tabellone della Coppa mostrava il CODICE interno del turno invece del suo nome: l'array di etichette usato nei punti dell'interfaccia (Coppa in gara, «eliminato al…», riepiloghi) era rimasto `["","R16","Quarti",…]`, mentre altrove il gioco traduce gia' correttamente in «Ottavi di Finale». Ora si legge «Ottavi di Finale» e «Quarti di Finale» anche li', e il fallback numerico dice «Turno N» invece di «R N». Le CHIAVI di fase restano «R16»: cambiano solo le etichette mostrate al giocatore.
 // [7.242.0 #56 chiusura — batch PO gi31-35 «Non si vede il gesto tecnico specifico» + verdetto difensivo] IL GESTO DIFENSIVO HA UNA FAMIGLIA. Ogni azione difensiva derivava `tackle/-` senza variante: la posa era UNA (scivolata) per pressing, anticipo, muro e deviazione. Tre famiglie STRUTTURALI congelate in factory (patto chainOn/gkCall — la regex vive solo in S()): slide (scivolata/disperato, posa storica a terra) · lunge (intercetto/anticipo/deviazione/muro: AFFONDO in piedi, gamba tesa e braccia larghe) · press (pressing/finta/recupero/copertura: ADDOSSO al portatore, busto avanti, braccio a schermare, tocco di punta). Prop hlDefGesto → pose sw-scalate auto-azzeranti nel blocco CINE-VAR; fallito = perdita di equilibrio comune. + VERDETTO DIFENSIVO RITARDATO (pattern #51): con l inbound 7.239 il pallone doveva ancora ARRIVARE quando usciva l overlay (misurato ~0.9s su gi31) → revealMs def 2250 con inbound / 1900 senza. Verificato sui fogli-provini: gi34 pressing = eroe addosso al portatore che vacilla, verdetto dopo il contatto.
 // [7.241.0 #56 batch PO gi28/29/37 «Non si vede il compagno che conclude»] FRENA PER GIRARTI — il difetto NON era la scelta del ricevente ne la transizione: attribuzione per-frame (AR53/54: oth=0, own>0, _ctx GIA sulla palla) → era il MODELLO DI STERZATA di animOne. Il ricevente lanciato sulla corsa profonda, con il filtrante atterrato ALLE SPALLE, navigava un inversione a U larga 20u e lunga secondi: il turn-rate e ∝1/velocita e la magnitudine della velocita-obiettivo restava PIENA nella direzione sbagliata. Ora quando la direzione voluta supera ~60° da quella di marcia la velocita-obiettivo cala col disallineamento (fino a 0.18×): la frenata passa dal limitatore di accelerazione, la velocita scende, il turn-rate risale → due passi di frenata e pivot, come in campo. Misurato prima→dopo: gi29 ricevente da divergenza a 24u → ARRIVO a 1.3u (t 0.41) con palla che parte con lui; gi37 2.0u; gi28 convergenza stretta. Vale per TUTTI i 21 off-ball (fisica piu vera anche su pressing/rientri — plausibile beneficio sul cluster difensivo «non aggancia il pallone»). +selezione demergenza del ricevente nel driver assist_recv (ogni scena ha SEMPRE un uomo sulla palla). ⚠️ modello core: gate 14/14 obbligatorio + realismo da riverificare sui baseline.
 // [7.240.0 #55B batch PO gi25/gi26 «Non si vede il compagno che riceve (e tira)» + gi43/28/29/30 storici] IL COMPAGNO ARRIVA SUL PALLONE PRIMA DI CALCIARE. Diagnosi strumentata (probe AR51/AR52 in-page, solo __CPM_REC): la catena assist_recv era VIVA e corretta — il primo sospetto «catena congelata» era un artefatto del campione stantio — ma (a) la transizione ricezione→tiro era a TEMPO FISSO 0.42s col ricevente ancora a 8-15u → il pallone volava in porta DA SOLO col gesto di calcio a vuoto; (b) il puntatore del ricevente (passTargetMesh) veniva AZZERATO all'avvio di assist_recv in 2 dei 3 siti (pass+assist = gi25 filtrante · tacco/scarico = gi26) e il driver, che scandiva solo il gesto _rcvT (0.52s di vita), restava senza nessuno da far correre. Fix: puntatore PERSISTENTE su tutti i siti (+_runToX fresco), fallback del driver sul puntatore, transizione ALL'ARRIVO (<2.2u, minimo 0.30s) con fallback 3.0s. Misurato prima→dopo: ricevente a 8-9u dalla palla al momento del tiro → 3.5-4u col gesto agganciato; gi26 duello leggibile sul foglio-provini; gi25 in wizard chiude con la catena e il gol.
@@ -20681,7 +20681,7 @@ function migratePlayer(player){
      }}
     // S41: migrate old saves — add current cup round to calendar if missing
     if((newP.proStatus||"u18")==="pro"&&newP.cup?.active&&!newP.cup?.eliminated&&!newP.cup?.champion&&(newP.cup.round||1)<=4&&!(newP.calendar||[]).some(md=>md.type==="cup"&&!md.played)){
-      const _m41RW=[0,9,19,28,35];const _m41RN=["","R16","Quarti","Semifinale","FINALE"];
+      const _m41RW=[0,9,19,28,35];const _m41RN=["","Ottavi di Finale","Quarti di Finale","Semifinale","FINALE"];
       const _m41cr=Math.min(newP.cup.round||1,4);const _m41wk=_m41RW[_m41cr];
       // [5.93.0 BIL-7] la week standard del turno può essere GIÀ PASSATA (save post-trasferimento pre-5.93):
       //   fallback sulla prima week libera ≤37; niente spazio → la coppa si chiude onestamente.
@@ -23192,7 +23192,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       // e p.cup non avanzava mai (coppa zombie; al reload la repair S41 riproponeva lo stesso turno → «stessa partita»).
       // Ora replica il ramo cup di doAdvanceWeek: niente standings, koShootoutWin sul pari, bracket+round avanzati.
       if(md2.type==="cup"){
-        const _CRW=[0,9,19,28,35];const _CRN=["","R16","Quarti","Semifinale","FINALE"];
+        const _CRW=[0,9,19,28,35];const _CRN=["","Ottavi di Finale","Quarti di Finale","Semifinale","FINALE"];
         const cupRound=p.cup?.round||1;
         const cupWon=sim.won||(sim.drew&&koShootoutWin(p,"cupko2|"+(p.season||1)+"|"+cupRound));
         const cpPen=!sim.won&&sim.drew&&cupWon;
@@ -23642,7 +23642,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       const clubId=p.club?.id||p.club?.n;
       const newStandings=_isCup?(p.standings||[]):updateStandings(p.standings||initStandings(getLeagueClubs(p)),clubId,result,p.clubPrestigeShifts||{},{opponentId:result.opponentId||result.opponent,seed:standingsSeed(clubId,p.season,p.week)});
       // S41: build cup state update + next-round calendar entry
-      const _CRW=[0,9,19,28,35];const _CRN=["","R16","Quarti","Semifinale","FINALE"];
+      const _CRW=[0,9,19,28,35];const _CRN=["","Ottavi di Finale","Quarti di Finale","Semifinale","FINALE"];
       let cupUpdate2={};let extraCupCal=[];
       if(_isCup){
         const cupRound=p.cup?.round||1;
@@ -23716,7 +23716,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     triggeredMilestones.forEach((m,i)=>setTimeout(()=>{if(m.big)setMilestoneModal(m);else notify(m.txt,m.color);},1200+i*2400));
     // S41: cup match result notification (played interactively)
     if(cupCalEntry){
-      const _cr=player.cup?.round||1;const _rn=["","R16","Quarti","Semifinale","FINALE"][_cr]||`R${_cr}`;
+      const _cr=player.cup?.round||1;const _rn=["","Ottavi di Finale","Quarti di Finale","Semifinale","FINALE"][_cr]||`Turno ${_cr}`;
       setTimeout(()=>notify(`🏆 Coppa · ${_rn}: ${isCupWon?"✅ PASSA":"❌ ELIMINATO"} vs ${result.opponent} (${result.homeScore}-${result.awayScore}${isCupPenalties?" · ai rigori":""})`,isCupWon?TH.success:TH.danger),400);
       if(isCupFinal)setTimeout(()=>notify("🏆🏆 HAI VINTO LA COPPA NAZIONALE! Straordinario!","#f59e0b"),2000);
     }
@@ -24258,7 +24258,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
             if(euroWon)setTimeout(()=>notify(`🏆🏆 HAI VINTO LA ${euroSig(md.competition)}! STRAORDINARIO!`,"#f59e0b"),2800);
           } else if(isCupMd){
             // S41: cup auto-sim — no standings update; resolve draws by penalties (55%)
-            const _CRW=[0,9,19,28,35];const _CRN=["","R16","Quarti","Semifinale","FINALE"];
+            const _CRW=[0,9,19,28,35];const _CRN=["","Ottavi di Finale","Quarti di Finale","Semifinale","FINALE"];
             const cupRound=p.cup?.round||1;
             const cupWon=sim.won||(sim.drew&&koShootoutWin(p,"cupko2|"+(p.season||1)+"|"+(p.cup?.round||1)));// [5.97.0 CP-6]
             const cpPen=!sim.won&&sim.drew&&cupWon;
@@ -24951,7 +24951,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       const isPhenomSeason=(newSeason%8===0||newSeason%8===1)&&Math.random()<0.45;
       // S41: initialize Coppa Nazionale for pro players — R16 added to calendar at rest week 9
       const CUP_ROUND_WEEKS=[0,9,19,28,35]; // week per round: [unused,R16,Quarti,Semi,Finale]
-      const CUP_ROUND_NAMES=["","R16","Quarti","Semifinale","FINALE"];
+      const CUP_ROUND_NAMES=["","Ottavi di Finale","Quarti di Finale","Semifinale","FINALE"];
       let newCup=null;
       if((p.proStatus||"u18")==="pro"&&p.club){
         const _cupClub74=nextClub84||p.club;// [6.74.0 QA-8] al rientro dal prestito la coppa usava p.club (club di PRESTITO, stato pre-rollover): il bracket della nuova lega conteneva il vecchio club e il sorteggio R16 poteva pescare il TUO club madre come avversario
@@ -25366,7 +25366,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
         }
         if(_updCup7&&_updCup7.active&&!_updCup7.eliminated&&!_updCup7.champion){
           const _cu7=(p.calendar||[]).filter(m=>!m.played&&m.type==="cup").sort((x,y)=>(x.week||0)-(y.week||0)).slice(0,1);
-          const _CRW7=[0,9,19,28,35],_CRN7=["","R16","Quarti","Semifinale","FINALE"];
+          const _CRW7=[0,9,19,28,35],_CRN7=["","Ottavi di Finale","Quarti di Finale","Semifinale","FINALE"];
           const _rd7=Math.min(_updCup7.round||1,4);
           const _base7=_cu7[0]||{matchday:990+_rd7,isHome:true,played:false,result:null,type:"cup",competition:"Coppa Nazionale",cupRound:_rd7,cupRoundName:_CRN7[_rd7],week:_CRW7[_rd7]||9};
           const _poolC7=lcs.filter(c=>c.id!==newClub.id&&c.n!==newClub.n);
@@ -27528,11 +27528,11 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
               {player.cup.champion?(
                 <div style={{fontSize:13,fontWeight:800,color:"#f59e0b",marginBottom:6}}>🏆🏆 CAMPIONE DI COPPA!</div>
               ):player.cup.eliminated?(
-                <div style={{fontSize:11,color:TH.danger,marginBottom:6}}>❌ Eliminato al {["","R16","Quarti","Semifinale","Finale"][player.cup.round-1]||`Round ${player.cup.round-1}`}</div>
+                <div style={{fontSize:11,color:TH.danger,marginBottom:6}}>❌ Eliminato al {["","Ottavi di Finale","Quarti di Finale","Semifinale","Finale"][player.cup.round-1]||`Round ${player.cup.round-1}`}</div>
               ):(()=>{
                 const nextCupMd=(player.calendar||[]).find(md=>md.type==="cup"&&!md.played);
                 return(<div style={{fontSize:11,color:TH.txAmber,marginBottom:6}}>
-                  🏆 In gara · <strong>{["","R16","Quarti","Semifinale","FINALE"][player.cup.round]||`R${player.cup.round}`}</strong>
+                  🏆 In gara · <strong>{["","Ottavi di Finale","Quarti di Finale","Semifinale","FINALE"][player.cup.round]||`Turno ${player.cup.round}`}</strong>
                   {nextCupMd?<> · prossima: <strong>vs {nextCupMd.opponentName}</strong> · W.{nextCupMd.week}</>:<> · prossima settimana: <strong>W.{player.cup.nextWeek||"–"}</strong></>}
                 </div>);
               })()}
@@ -29957,7 +29957,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       {tab==="coppe"&&(()=>{
         const cup=player.cup||null;const eu=player.euro||null;const em=player.euroMondiale||null;
         const _isPro=(player.proStatus||"u18")==="pro";
-        const ROUNDS=["","R16","Quarti","Semi","Finale"];
+        const ROUNDS=["","Ottavi di Finale","Quarti di Finale","Semifinale","Finale"];
         const getAbbr=id=>{const c=CLUBS.find(c=>c.id===id||c.n===id);return c?.a||String(id||"?").slice(0,3).toUpperCase();};
         const _bar=(won)=><span className="cpm-num" style={{fontSize:10,fontWeight:FW.bold,color:won?TH.winFg:TH.lossFg,background:won?TH.winBg:TH.lossBg,padding:"1px 6px",borderRadius:RAD.pill,minWidth:16,textAlign:"center",display:"inline-block"}}>{won?"V":"X"}</span>;
         return(
