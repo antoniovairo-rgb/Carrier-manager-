@@ -1,116 +1,69 @@
 # Proposte — rendere la settimana avvincente e non ripetitiva
 
-> Documento di proposta (2026-07-31), su richiesta del proprietario: «proponi nuove storie
-> settimanali, funzionalità per rendere più avvincente, coinvolgente, meno ripetitivo il gioco
-> nell'avanzare delle settimane». Nessuna implementazione: qui c'è la diagnosi e il piano.
+> Documento di proposta (2026-07-31), su richiesta del proprietario: «proponi nuove storie settimanali,
+> funzionalità per rendere più avvincente, coinvolgente, meno ripetitivo il gioco nell'avanzare delle
+> settimane». **Stato: P1, P2, P3, P4 e P6 realizzate (7.269.0 → 7.271.0). P5 RESPINTA.**
 
-## 1. Che cosa produce oggi una settimana
+## 1. La diagnosi
 
-Il ciclo settimanale ha già **venticinque produttori** distinti, quasi tutti derivati dai fatti:
+Il ciclo settimanale aveva già **venticinque produttori** di contenuto (tema della settimana, meteo
+interiore, driver motivazionale, voci del club, spogliatoio, aspettative, patto col mister, impulsi,
+interviste, sponsor, vita privata, esonero, progetto club, lista del CT, curva, panchina, irripetibili,
+allenamento, obiettivi personali, piano del procuratore, saga di mercato, sorteggi, deadline day,
+apertura di stagione, archi di `storyChapter`).
 
-| Categoria | Produttori |
-|---|---|
-| Cornice | `weekTheme` (tema della settimana), `innerWeather` (meteo interiore), `mindDriver` (driver motivazionale) |
-| Persone | `clubVoices` (presidente/mister/curva/procuratore), `mateEcho` (spogliatoio), `bondEvent` (legame con un compagno), `curvaView` (legame con la curva) |
-| Pressione | `expectationView` (attese vs rendimento), `pactView` (patto col mister), `persGoals`, piano del procuratore |
-| Mondo | `clubProject`, `sackView` (esonero), `ctListView` (lista del CT), `sponsorView`, `lifeView` (vita privata) |
-| Eventi | `WEEKLY_EVENTS`, `WEEKLY_IMPULSES` (60 voci, battito garantito), `SPOGLIATOIO_MOMENTS`, interviste |
-| Archi | `storyChapter` (12 chiavi one-shot), saga mercato, apertura di stagione, sorteggi, deadline day |
+**Il problema non era la quantità.** Erano tre difetti strutturali:
 
-**Il problema non è la quantità.** È strutturale, e sono tre difetti precisi.
+- **D1 — tutto one-shot e senza memoria.** Ogni card nasceva e moriva nella stessa settimana: nessuna
+  attesa fra una settimana e l'altra, quindi la stagione restava un *elenco* di momenti, non una storia.
+- **D2 — dodici archi con chiave per stagione.** Dalla terza stagione il giocatore li aveva visti tutti e
+  li rivedeva identici ogni anno.
+- **D3 — il mondo non ti attraversava.** Rivale, ex compagni, ex club, CT esistevano nel salvataggio e
+  vivevano la loro stagione, ma incrociavano il giocatore quasi solo dentro i novanta minuti.
 
-### D1 — Quasi tutto è one-shot e senza memoria
-Ogni card nasce e muore nella stessa settimana. Le uniche eccezioni sono la **saga mercato**
-(3 puntate) e il **patto col mister** (a scadenza). Tutto il resto è un evento isolato: nessuna
-tensione che cresce, nessuna attesa di «come va a finire». Una stagione è un *elenco* di momenti,
-non una *storia*.
+## 2. Le proposte e il loro esito
 
-### D2 — Gli archi narrativi sono 12 e ripartono ogni stagione
-`storyChapter` ha dodici chiavi one-shot con chiave **per stagione**: «la piazza dubita», «il
-ritorno da ex», «gli eterni rivali», «la volata», «le parole di agosto»… Dalla terza stagione il
-giocatore li ha visti tutti, e li rivede identici ogni anno. (Il duello col rivale è stato appena
-variato — 7.267.0 — ma resta un caso isolato.)
+### P1 — Mini-serie a puntate ✅ realizzata in 7.269.0
+Motore generico di archi a 3-6 puntate (`serialView` + tabella `SERIALS`): una serie alla volta, episodi
+distanziati di almeno due settimane, **scelte che si compongono** (la puntata N legge quella N-1). Tre
+serie al lancio: *il caso disciplinare*, *il ragazzo della Primavera*, *la corsa al capocannoniere*.
+Chiusura garantita entro la stagione, decadenza al cambio maglia. Attacca D1.
 
-### D3 — Il mondo non ti attraversa
-Il rivale, gli ex compagni, gli ex club, il CT, il giovane della Primavera **esistono già nel
-salvataggio** e vivono la loro stagione, ma incrociano il giocatore quasi solo dentro la partita.
-Fuori dai novanta minuti il mondo è muto.
+### P2 — Il mondo ti attraversa ✅ realizzata in 7.270.0
+`worldTouch`: il rivale ti cita in conferenza coi numeri veri, un ex compagno ti telefona col nome reale
+preso dalla rosa di quel club, il club dove sei cresciuto è raccontato con la sua posizione vera, il CT
+era in tribuna. Una voce alla volta, mai due settimane di fila. Attacca D3.
 
----
+### P3 — Archi per fase di carriera ✅ realizzata in 7.271.0
+Tre età con capitoli propri (esordiente, titolare, veterano), one-shot per carriera e uno per stagione,
+derivati dai fatti. Attacca D2.
 
-## 2. Proposte, in ordine di rapporto impatto/rischio
+### P4 — Il ledger si riscuote ✅ realizzata in 7.270.0
+`ledgerDue`: ogni promessa o torto torna dopo almeno sei settimane, col nome di chi se l'era segnata, e il
+verdetto guarda i fatti successivi.
 
-### P1 — Mini-serie a puntate (il feuilleton settimanale) ⭐ la più importante
-**Cosa.** Un motore generico `serialArc` per archi a **3-6 puntate** distribuite su alcune
-settimane, con stato salvato (`p.serials`, campo lazy) e **scelte che si compongono**: la puntata
-N legge quello che hai scelto alla N-1, e il finale dipende dal percorso, non da un dado.
+### P5 — La settimana ha un costo ❌ RESPINTA DAL PROPRIETARIO (2026-08-01)
 
-Serie al lancio, tutte innescate da fatti già tracciati:
-- **Il caso disciplinare** — cartellino rosso o fatica cronica → convocazione dal DS → multa,
-  scuse pubbliche o silenzio → verdetto dello spogliatoio (chimica/fiducia).
-- **Il ragazzo della Primavera** — un giovane VERO del roster ti sceglie come modello → lo segui o
-  lo ignori → il suo esordio → diventa il tuo erede o se ne va altrove.
-- **Il rinnovo che non arriva** — quattro puntate di pressione crescente (media, procuratore,
-  curva) prima del modale di rinnovo che oggi appare dal nulla.
-- **La fascia ad interim** — il capitano si ferma → guidi tu per N gare → verdetto sulla leadership.
-- **La corsa al capocannoniere** — il duello (che oggi è una card statica) diventa una serie con
-  sorpassi, controsorpassi e l'ultima giornata.
+> **Decisione definitiva: «p5 assolutamente niente!».** Non va implementata — né in variante leggera né in
+> variante piena — e **non va ri-proposta**. Resta qui solo come traccia di ciò che è stato valutato e
+> scartato.
 
-**Perché funziona.** La serialità è ciò che trasforma una stagione in una storia: dà attesa fra una
-settimana e l'altra, che è esattamente ciò che manca. E riusa tutto — `ledgerPush`, il diario, le
-card esistenti, il Film della stagione.
-**Rischio.** Basso: additivo, campo lazy, nessun bump SAVE. Serve un guardiano sulla varietà e
-sulla chiusura garantita delle serie (mai una serie che resta appesa a fine stagione).
+Era: due slot settimanali da assegnare fra carico extra, scarico, studio dell'avversario, media, famiglia,
+mentoring. Le tre ragioni per cui era stata sottoposta al proprietario invece che realizzata — e che oggi
+sono la motivazione del no:
+1. confinava con la **scelta del focus di allenamento**, rimossa su direttiva del proprietario nel 5.86.0
+   («funzionalità noiosa»);
+2. toccava il **bilanciamento della crescita**, tarata su un allenamento automatico e costante (picco di
+   progetto ~90-92 OVR a 29-31 anni);
+3. rischiava la **scelta dominante**, cioè esattamente la noia che si voleva curare.
 
-### P2 — Il mondo ti attraversa
-Nuovi produttori che usano **entità già vive nel salvataggio**, fuori dalla partita:
-- il **rivale** parla di te in un'intervista, ti scavalca in classifica marcatori, cambia squadra;
-- un **ex compagno** che è andato via ti chiama (da `p.history` + roster passati);
-- il **club dove sei cresciuto** vive una crisi o una festa e la stampa ti chiede un commento;
-- il **CT** viene a vederti in tribuna (e lo scopri dopo).
+### P6 — La voce locale ✅ realizzata in 7.271.0
+`piazzaVoice`: la curva si chiama come si chiama davvero (la Sud, la Kop, il Fondo Sur, la Südtribüne, il
+Virage, la Bancada Sul, la F-Side, la Kale Ardı) e parla come si parla lì.
 
-**Perché funziona.** Attacca D3 direttamente e non costa contenuto nuovo: sono relazioni che il
-gioco già simula, oggi invisibili.
-**Rischio.** Molto basso (display + micro-effetti bounded).
+### P7 — La pagina del mese ⏸️ non richiesta
+Ogni quattro settimane un bilancio impaginato come una pagina di giornale. Mai approvata, resta a backlog.
 
-### P3 — Archi scalati sulla fase di carriera
-Oggi lo stesso pool serve il diciottenne e il trentatreenne. Tre fasi con archi propri:
-- **l'esordiente** — la paura, la prima volta, il posto da conquistare, il primo errore pubblico;
-- **il titolare** — la leadership, la gestione, il peso delle attese, la concorrenza che arriva;
-- **il veterano** — il corpo che parla, l'eredità, la panchina, la scelta del momento giusto.
+## 3. Guardiani permanenti introdotti
 
-**Perché funziona.** Attacca D2 alla radice: le stagioni 1-3 e 12-15 smettono di somigliarsi.
-**Rischio.** Basso, ma è il pezzo che richiede più scrittura.
-
-### P4 — Le conseguenze del ledger si riscuotono
-`p.ledger` registra promesse e torti, ma ha pochissimi consumatori. Regola: **ogni voce del ledger
-torna entro 6-10 settimane**, in bene o in male, con il nome di chi se l'è segnata.
-**Perché funziona.** Dà peso alle scelte già prese: il giocatore impara che le parole contano.
-**Rischio.** Basso.
-
-### P5 — La settimana ha un costo (bilanciamento)
-Oggi una settimana senza partita è quasi identica a ogni altra. Un **budget settimanale** con due
-scelte reali (allenamento extra, recupero, media, vita privata) che compongono nel medio periodo.
-**Rischio.** Medio — tocca il bilanciamento della crescita: va misurato su una carriera intera
-prima di rilasciarlo, e va deciso dal proprietario perché cambia il ritmo del gioco.
-
-### P6 — Voce locale
-Lo stesso evento raccontato con la voce della piazza: Napoli, Londra e Istanbul non parlano allo
-stesso modo. Variante di testo per nazione/piazza sui pool già esistenti.
-**Rischio.** Basso, effetto percepito alto sulla ripetitività dei testi.
-
-### P7 — La pagina del mese
-Ogni quattro settimane una card impaginata come una pagina di giornale: la tua traiettoria, la
-classifica, il tuo rendimento, una frase della piazza. Un punto di respiro e di bilancio.
-**Rischio.** Nullo (display).
-
----
-
-## 3. Ordine consigliato
-
-1. **P1 — mini-serie** (il salto vero: dalla settimana-elenco alla settimana-storia)
-2. **P2 — il mondo ti attraversa** (massimo effetto per il costo più basso)
-3. **P3 — archi per fase di carriera** (chiude la ripetitività fra stagioni)
-4. **P4 — ledger che si riscuote**, **P6 — voce locale**, **P7 — pagina del mese**
-5. **P5 — budget settimanale**: solo su decisione esplicita del proprietario, perché cambia il
-   bilanciamento.
+`serial-arc-test` (P1) · `mondo-ledger-test` (P2+P4) · `fase-piazza-test` (P3+P6).
