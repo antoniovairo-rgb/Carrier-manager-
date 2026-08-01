@@ -3967,7 +3967,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="7.270.0"; // [7.270.0 #86 — P2 e P4 delle proposte, approvate dal PO] IL MONDO TI ATTRAVERSA + IL LEDGER SI RISCUOTE. (P2) Il rivale di carriera, gli ex club, gli ex compagni e il CT esistono gia' nel salvataggio e vivono la loro stagione, ma incrociavano il giocatore quasi SOLO dentro i novanta minuti: fuori dal campo il mondo era muto. Ora `worldTouch` da' loro voce partendo sempre da dati VERI — il rivale ti cita in conferenza coi numeri di stagione suoi e tuoi; un ex compagno ti telefona col NOME REALE preso dalla rosa di quel club (generateTeamRoster sull'id salvato in history, non un nome inventato); il club dove sei cresciuto viene raccontato con la sua POSIZIONE vera in classifica; il CT era in tribuna e lo scopri dopo (solo con pochi caps e profilo credibile). Una voce alla volta, mai due settimane di fila, ognuna una volta per stagione (`p.worldSeen` lazy). (P4) `p.ledger` registrava promesse e torti dal 7.26.0 ma aveva pochissimi consumatori: le parole non tornavano quasi mai indietro. Ora `ledgerDue` le RISCUOTE dopo almeno sei settimane, col nome di chi se l'era segnata, e il verdetto guarda i FATTI successivi (gare, gol+assist e media voto dopo la promessa), non un dado; la voce riscossa si marca `done` e non torna. Campi lazy su entrambi: nessun bump SAVE. Guardiano permanente mondo-ledger-test (numeri veri del rivale, nome dell'ex compagno verificato contro la rosa reale, posizione vera dell'ex club, cooldown, soglia delle sei settimane, verdetto dai fatti, marcatura done). Nota di misura: l'etichetta della card e' «Il mondo fuori» e non «Fuori dal campo» perche' quella frase compare gia' in un testo dello sponsor e rendeva ciechi i test.
+const GAME_VERSION="7.271.0"; // [7.271.0 #87 — P3 e P6 delle proposte, approvate dal PO] GLI ARCHI DELLA FASE DI CARRIERA + LA VOCE LOCALE. (P3) Lo stesso pool narrativo serviva il diciottenne e il trentatreenne: per questo la stagione 12 somigliava alla 2. Ora la carriera si divide in tre ETA' con capitoli propri — l'ESORDIENTE (il primo spogliatoio dei grandi, l'errore che hanno visto tutti col voto e l'avversario VERI, il posto da conquistare), il TITOLARE (i piu' giovani che copiano i tuoi esercizi, il peso della maglia, la concorrenza che arriva), il VETERANO (il corpo che parla dopo N partite reali, l'eredita' dei tuoi gol di carriera, la panchina che non ti aspettavi) — one-shot per CARRIERA (`p.phaseSeen`) e uno solo per stagione, scelti fra quelli applicabili ai fatti. (P6) La piazza era intercambiabile: lo stesso evento con le stesse parole a Napoli, Londra e Istanbul. `piazzaVoice` deriva dalla NAZIONE del club un piccolo lessico — come si chiama il settore caldo (la Sud, la Kop, il Fondo Sur, la Sudtribune, il Virage, la Bancada Sul, la F-Side, la Kale Ardi), dove si giudica (il bar sotto casa, il pub davanti allo stadio, le penas, la Fankneipe, i kahvehane) e un modo di dire del posto — e la voce della curva ora lo usa. Campi lazy su entrambi: nessun bump SAVE. Guardiano permanente fase-piazza-test (ogni eta' riceve i suoi capitoli e non quelli delle altre, marcatura one-shot, uno per stagione, fatti veri nei testi, la curva cambia nome per nazione, save senza i campi nuovi che non si rompe). Nota di misura: le voci del club sono DUE a settimana in rotazione seedata, quindi il guardiano sonda piu' settimane prima di dichiarare muta una piazza.
 // [7.242.0 #56 chiusura — batch PO gi31-35 «Non si vede il gesto tecnico specifico» + verdetto difensivo] IL GESTO DIFENSIVO HA UNA FAMIGLIA. Ogni azione difensiva derivava `tackle/-` senza variante: la posa era UNA (scivolata) per pressing, anticipo, muro e deviazione. Tre famiglie STRUTTURALI congelate in factory (patto chainOn/gkCall — la regex vive solo in S()): slide (scivolata/disperato, posa storica a terra) · lunge (intercetto/anticipo/deviazione/muro: AFFONDO in piedi, gamba tesa e braccia larghe) · press (pressing/finta/recupero/copertura: ADDOSSO al portatore, busto avanti, braccio a schermare, tocco di punta). Prop hlDefGesto → pose sw-scalate auto-azzeranti nel blocco CINE-VAR; fallito = perdita di equilibrio comune. + VERDETTO DIFENSIVO RITARDATO (pattern #51): con l inbound 7.239 il pallone doveva ancora ARRIVARE quando usciva l overlay (misurato ~0.9s su gi31) → revealMs def 2250 con inbound / 1900 senza. Verificato sui fogli-provini: gi34 pressing = eroe addosso al portatore che vacilla, verdetto dopo il contatto.
 // [7.241.0 #56 batch PO gi28/29/37 «Non si vede il compagno che conclude»] FRENA PER GIRARTI — il difetto NON era la scelta del ricevente ne la transizione: attribuzione per-frame (AR53/54: oth=0, own>0, _ctx GIA sulla palla) → era il MODELLO DI STERZATA di animOne. Il ricevente lanciato sulla corsa profonda, con il filtrante atterrato ALLE SPALLE, navigava un inversione a U larga 20u e lunga secondi: il turn-rate e ∝1/velocita e la magnitudine della velocita-obiettivo restava PIENA nella direzione sbagliata. Ora quando la direzione voluta supera ~60° da quella di marcia la velocita-obiettivo cala col disallineamento (fino a 0.18×): la frenata passa dal limitatore di accelerazione, la velocita scende, il turn-rate risale → due passi di frenata e pivot, come in campo. Misurato prima→dopo: gi29 ricevente da divergenza a 24u → ARRIVO a 1.3u (t 0.41) con palla che parte con lui; gi37 2.0u; gi28 convergenza stretta. Vale per TUTTI i 21 off-ball (fisica piu vera anche su pressing/rientri — plausibile beneficio sul cluster difensivo «non aggancia il pallone»). +selezione demergenza del ricevente nel driver assist_recv (ogni scena ha SEMPRE un uomo sulla palla). ⚠️ modello core: gate 14/14 obbligatorio + realismo da riverificare sui baseline.
 // [7.240.0 #55B batch PO gi25/gi26 «Non si vede il compagno che riceve (e tira)» + gi43/28/29/30 storici] IL COMPAGNO ARRIVA SUL PALLONE PRIMA DI CALCIARE. Diagnosi strumentata (probe AR51/AR52 in-page, solo __CPM_REC): la catena assist_recv era VIVA e corretta — il primo sospetto «catena congelata» era un artefatto del campione stantio — ma (a) la transizione ricezione→tiro era a TEMPO FISSO 0.42s col ricevente ancora a 8-15u → il pallone volava in porta DA SOLO col gesto di calcio a vuoto; (b) il puntatore del ricevente (passTargetMesh) veniva AZZERATO all'avvio di assist_recv in 2 dei 3 siti (pass+assist = gi25 filtrante · tacco/scarico = gi26) e il driver, che scandiva solo il gesto _rcvT (0.52s di vita), restava senza nessuno da far correre. Fix: puntatore PERSISTENTE su tutti i siti (+_runToX fresco), fallback del driver sul puntatore, transizione ALL'ARRIVO (<2.2u, minimo 0.30s) con fallback 3.0s. Misurato prima→dopo: ricevente a 8-9u dalla palla al momento del tiro → 3.5-4u col gesto agganciato; gi26 duello leggibile sul foglio-provini; gi25 in wizard chiude con la catena e il gol.
@@ -22150,9 +22150,11 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       :tr<50?{who:"Il mister",e:"🧊",t:"Ti saluta con un cenno e passa oltre: la fiducia si ricostruisce in campo, non a parole."}
       :{who:"Il mister",e:"📋",t:"Ti chiede più lavoro sporco: «Il talento ce l'hai, ora dammi anche i chilometri»."});
     const cv=curvaView(p);
-    if(cv)out.push(cv.score>=60?{who:"La curva",e:"❤️‍🔥",t:"Il tuo coro parte anche quando non tocchi palla: sei uno di loro, adesso."}
-      :cv.contest?{who:"La curva",e:"📢",t:"Mugugni dopo il digiuno — ma lo striscione è chiaro: «Un gol e torniamo a cantare»."}
-      :{who:"La curva",e:"🧣",t:"Ti osservano ancora: i cori si conquistano coi fatti, settimana dopo settimana."});
+    /* [7.271.0 P6] la curva parla la LINGUA della piazza: come si chiama il settore e come si dice, li'. */
+    const _pz=piazzaVoice(p.club),_pzN=_pz.tif.charAt(0).toUpperCase()+_pz.tif.slice(1);
+    if(cv)out.push(cv.score>=60?{who:_pzN,e:"❤️‍🔥",t:`Il tuo coro parte anche quando non tocchi palla: sei uno di loro, adesso. ${_pz.det[Math.abs(hashStr(((p.club&&p.club.id)||"")+"|pz1"))%_pz.det.length]}.`}
+      :cv.contest?{who:_pzN,e:"📢",t:`Mugugni dopo il digiuno — ma lo striscione è chiaro: «Un gol e torniamo a cantare». ${_pz.det[Math.abs(hashStr(((p.club&&p.club.id)||"")+"|pz2"))%_pz.det.length]}.`}
+      :{who:_pzN,e:"🧣",t:`Ti osservano ancora: i cori si conquistano coi fatti, e ${_pz.luo} il giudizio è già cominciato.`});
     if(p.hasAgent&&p.agentPlan&&p.agentPlan.season===sn){const up=(p.value||10)>=((p.agentPlan.target)||0);
       out.push(up?{who:"Il procuratore",e:"📈",t:"Messaggio alle 7:40: «Il piano corre. Non firmare NIENTE senza chiamarmi»."}
         :{who:"Il procuratore",e:"📉",t:"«La valutazione è ferma», dice asciutto. «Serve un mese da copertina, non da comparsa»."});}
@@ -22556,6 +22558,79 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
      i novanta minuti: fuori dal campo il mondo era muto. Qui prendono voce, sempre partendo da dati veri
      (numeri del rivale, storia dei club, rosa reale, classifica, presenze in Nazionale). Display + effetti
      minimi bounded; una voce a settimana al massimo, ognuna una volta per stagione (`p.worldSeen` lazy). */
+  /* [7.271.0 P6 — LA VOCE LOCALE] Lo stesso evento raccontato con le stesse identiche parole a Napoli, a
+     Londra e a Istanbul: la piazza era intercambiabile. `piazzaVoice` deriva dalla NAZIONE del club un
+     piccolo lessico (come chiamano i tifosi, come si chiama la curva, un modo di dire) con cui i produttori
+     già esistenti — a partire dalla voce della curva — parlano la lingua del posto. Puro e deterministico. */
+  const PIAZZA={
+    "🇮🇹":{tif:"la Sud",luo:"al bar sotto casa",det:["«Mo' se famo sentì»","«Qui si suda la maglia»","«O con noi, o contro di noi»"]},
+    "🏴󠁧󠁢󠁥󠁮󠁧󠁿":{tif:"la Kop",luo:"al pub davanti allo stadio",det:["«Sing your heart out»","«Ninety minutes, no excuses»","«This is our house»"]},
+    "🇪🇸":{tif:"il Fondo Sur",luo:"nelle peñas del quartiere",det:["«Hay que sudar la camiseta»","«El escudo pesa»","«Aquí se viene a ganar»"]},
+    "🇩🇪":{tif:"la Südtribüne",luo:"nella Fankneipe",det:["«Ohne Fans kein Spiel»","«Malocher, nicht Diven»","«Elf Freunde müsst ihr sein»"]},
+    "🇫🇷":{tif:"il Virage",luo:"nei bar del quartiere",det:["«Le maillot d'abord»","«On lâche rien»","«Ici c'est chez nous»"]},
+    "🇵🇹":{tif:"la Bancada Sul",luo:"nelle tascas del quartiere",det:["«Suor e alma»","«O símbolo primeiro»","«Aqui joga-se com o coração»"]},
+    "🇳🇱":{tif:"la F-Side",luo:"nei caffè lungo il canale",det:["«Voetbal is denken»","«Geen woorden maar daden»","«Samen sterk»"]},
+    "🇧🇪":{tif:"la tribuna 3",luo:"nei café del centro",date:null,det:["«Werk en wil»","«Le club avant tout»","«Nooit opgeven»"]},
+    "🇹🇷":{tif:"la Kale Ardı",luo:"nei kahvehane del quartiere",det:["«Bu maç bizim»","«Formanın hakkını ver»","«Buradan geçilmez»"]}
+  };
+  const piazzaVoice=(club)=>{try{const k=(club&&club.nat)||"🇮🇹";return PIAZZA[k]||PIAZZA["🇮🇹"];}catch(_e){return PIAZZA["🇮🇹"];}};
+  /* [7.271.0 P3 — GLI ARCHI DELLA FASE DI CARRIERA] Lo stesso pool narrativo serviva il diciottenne e il
+     trentatreenne: per questo la stagione 12 somigliava alla 2. Qui la carriera si divide in tre ETÀ —
+     l'esordiente che deve conquistarsi il posto, il titolare che regge il peso, il veterano che fa i conti
+     col corpo e con l'eredità — e ogni età ha capitoli propri, one-shot per CARRIERA (`p.phaseSeen`), uno
+     solo per stagione. Tutti derivati dai fatti: presenze, voti reali, ruolo in rosa, gol di carriera. */
+  const PHASE_ARCS=[
+    /* — L'ESORDIENTE — */
+    {k:"debutto",f:"esordiente",e:"👦",t:"Il primo spogliatoio dei grandi",
+      can:(p)=>(p.totalMatches||0)<=6&&(p.age||18)<=21,
+      d:(p)=>`Il tuo posto è l'ultimo della fila, vicino alla porta. Nessuno ti parla per venti minuti, poi il capitano ti passa il nastro per i parastinchi senza dire niente. È così che si entra: in silenzio, guardando.`,
+      fx:(q)=>({morale:clamp((q.morale||70)+3,0,100)})},
+    {k:"errore",f:"esordiente",e:"😰",t:"L'errore che hanno visto tutti",
+      can:(p)=>(p.age||18)<=22&&(p.matchHistory||[]).some(m=>m&&(m.rating||9)<5.6),
+      d:(p)=>{const m=(p.matchHistory||[]).filter(x=>x&&(x.rating||9)<5.6).slice(-1)[0]||{};
+        return `Voto ${(m.rating||5).toFixed(1)} contro ${m.opponent||"l'avversario"}: la tua partita peggiore, e in tribuna c'era mezza città. Il mister non ti dice niente, ed è la cosa che fa più male. Poi, sul pullman, ti manda un messaggio di tre parole: «Domani si allena».`;},
+      fx:(q)=>({morale:clamp((q.morale||70)-2,0,100),coachTrust:clamp((q.coachTrust||60)+2,0,100)})},
+    {k:"posto",f:"esordiente",e:"🪑",t:"Il posto non te lo regala nessuno",
+      can:(p)=>(p.age||18)<=22&&((p.squadRole||"")==="riserva"||(p.squadRole||"")==="primavera"),
+      d:(p)=>`Ti chiamano «il ragazzo» e per adesso è tutto quello che sei. Davanti a te c'è chi gioca da anni e non ha nessuna intenzione di spostarsi. Il vice-allenatore te la mette giù semplice: «Nessuno qui ti deve niente. È una buona notizia: vuol dire che dipende da te».`,
+      fx:(q)=>({coachTrust:clamp((q.coachTrust||60)+2,0,100)})},
+    /* — IL TITOLARE — */
+    {k:"guardano",f:"titolare",e:"👁️",t:"Adesso guardano te",
+      can:(p)=>(p.age||18)>=23&&(p.age||18)<=30&&(p.totalMatches||0)>=80&&["titolare","leader"].indexOf(p.squadRole||"")>=0,
+      d:(p)=>`Te ne accorgi da una sciocchezza: in riscaldamento i più giovani fanno l'esercizio come lo fai tu. Nessuno l'ha deciso, è successo. ${(p.totalMatches||0)} partite fa eri tu quello che copiava.`,
+      fx:(q)=>({teamChemistry:clamp((q.teamChemistry||60)+4,0,100),morale:clamp((q.morale||70)+2,0,100)})},
+    {k:"peso",f:"titolare",e:"🧱",t:"Il peso della maglia",
+      can:(p)=>(p.age||18)>=24&&(p.age||18)<=31&&(p.popularity||0)>=55,
+      d:(p)=>`Una volta la gente ti chiedeva una foto. Adesso ti chiede conto: del gol sbagliato, della partita di domenica, di dove finirà la stagione. ${piazzaVoice(p.club).luo.charAt(0).toUpperCase()+piazzaVoice(p.club).luo.slice(1)} parlano di te anche quando non ci sei.`,
+      fx:(q)=>({morale:clamp((q.morale||70)-1,0,100),popularity:clamp((q.popularity||50)+2,0,100)})},
+    {k:"concorrenza",f:"titolare",e:"⚔️",t:"È arrivato uno che gioca nel tuo ruolo",
+      can:(p)=>(p.age||18)>=23&&(p.age||18)<=31&&(p.season||1)>=4&&((p.coachTrust||60)<78),
+      d:(p)=>`Il club ha preso un giocatore del tuo ruolo, giovane e con la fila di gente che lo aspetta. Nessuno ti dice niente — e proprio per questo il messaggio arriva forte. La differenza la farà chi regge meglio le prossime settimane.`,
+      fx:(q)=>({morale:clamp((q.morale||70)-2,0,100),form:clamp((q.form||60)+3,0,100)})},
+    /* — IL VETERANO — */
+    {k:"corpo",f:"veterano",e:"🦵",t:"Il corpo comincia a parlare",
+      can:(p)=>(p.age||18)>=31,
+      d:(p)=>`Il lunedì non è più come il martedì. Ti alzi e senti cose che a venticinque anni non esistevano: non è un infortunio, è il conto delle ${(p.totalMatches||0)} partite. Il preparatore ti guarda e non commenta — ha già cambiato il tuo programma.`,
+      fx:(q)=>({fatigue:clamp((q.fatigue||0)-6,0,100),morale:clamp((q.morale||70)-1,0,100)})},
+    {k:"eredita",f:"veterano",e:"🏛️",t:"Quello che lasci",
+      can:(p)=>(p.age||18)>=32&&(p.totalGoals||0)>=80,
+      d:(p)=>`${p.totalGoals} gol in carriera. Un giornalista te lo mette davanti come se fosse un epitaffio e ti chiede cosa vuoi lasciare. Rispondi una banalità, poi ci pensi per tutta la notte: la verità è che a questa domanda non avevi mai voluto rispondere.`,
+      fx:(q)=>({morale:clamp((q.morale||70)+3,0,100),popularity:clamp((q.popularity||50)+2,0,100)})},
+    {k:"panchina",f:"veterano",e:"🕰️",t:"La panchina che non ti aspettavi",
+      can:(p)=>(p.age||18)>=32&&["riserva","rotazione"].indexOf(p.squadRole||"")>=0,
+      d:(p)=>`Formazione letta in sala video: il tuo nome non c'è. Non è una punizione e nemmeno una bocciatura — è il calcio che va avanti. La parte difficile non è restare fuori: è restare utile.`,
+      fx:(q)=>({morale:clamp((q.morale||70)-3,0,100),teamChemistry:clamp((q.teamChemistry||60)+2,0,100)})}
+  ];
+  const phaseArc=(p)=>{try{
+    if((p.proStatus||"u18")!=="pro")return null;
+    const sn=p.season||1,wk=p.week||1;if(wk<4)return null;
+    if((p.phaseSeenSeason||0)===sn)return null;/* un capitolo d'età per stagione */
+    const seen=p.phaseSeen||{};
+    const cand=PHASE_ARCS.filter(a=>!seen[a.k]&&(()=>{try{return !!a.can(p);}catch(_e){return false;}})());
+    if(!cand.length)return null;
+    const a=cand[Math.abs(hashStr("pha|"+(p.name||"")+"|"+sn+"|"+wk))%cand.length];
+    return{k:a.k,f:a.f,e:a.e,t:a.t,d:a.d(p),fx:a.fx};
+  }catch(_e){return null;}};
   const worldTouch=(p)=>{try{
     if((p.proStatus||"u18")!=="pro")return null;
     const sn=p.season||1,wk=p.week||1;if(wk<3)return null;
@@ -26553,6 +26628,25 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
               <Btn key={i} v={i===0?"primary":"ghost"} fw onClick={()=>setPlayer(p=>({...p,...c.fx(p),onceSeen:{...(p.onceSeen||{}),[ov.k]:true},onceSeenSeason:p.season||1,diary:[...(p.diary||[]),{season:p.season||1,week:p.week||1,type:"story",e:ov.e,headline:ov.t,body:(ov.d||"").slice(0,110),color:"#d4a017"}].slice(-80),log:[`${ov.e} ${ov.t} — ${c.l.replace(/^[^\s]+\s/,"")}`,...(p.log||[])].slice(0,60)}))}>{c.l}</Btn>
             ))}
           </div>
+        </Card>);})()}
+      {/* [7.271.0 P3] IL CAPITOLO DELLA TUA ETÀ — esordiente · titolare · veterano */}
+      {tab==="dashboard"&&(()=>{
+        const pa=phaseArc(player);if(!pa)return null;
+        const _lab=pa.f==="esordiente"?"I PRIMI PASSI":pa.f==="titolare"?"NEL PIENO":"L'ULTIMO TRATTO";
+        return(
+        <Card style={{marginBottom:8,padding:"13px 15px",background:"linear-gradient(150deg,#1a1410,#241a12)",border:"1px solid #6b5233"}}>
+          <div style={{fontSize:10,color:"#fbbf24",textTransform:"uppercase",letterSpacing:2,marginBottom:6}}>⏳ {_lab}</div>
+          <div style={{display:"flex",gap:10,alignItems:"flex-start",marginBottom:10}}>
+            <span style={{fontSize:21,lineHeight:1}}>{pa.e}</span>
+            <div style={{flex:1,minWidth:0}}>
+              <div style={{fontSize:12.5,fontWeight:900,color:"#fff",marginBottom:3}}>{pa.t}</div>
+              <div style={{fontSize:11,color:"rgba(255,255,255,0.76)",lineHeight:1.55}}>{pa.d}</div>
+            </div>
+          </div>
+          <Btn v="ghost" fw onClick={()=>setPlayer(p=>({...p,...pa.fx(p),
+            phaseSeen:{...(p.phaseSeen||{}),[pa.k]:p.season||1},phaseSeenSeason:p.season||1,
+            diary:[...(p.diary||[]),{season:p.season||1,week:p.week||1,type:"story",e:pa.e,headline:pa.t,body:pa.d.slice(0,180),color:"#fbbf24"}].slice(-80),
+            log:[`${pa.e} ${pa.t}`,...(p.log||[])].slice(0,60)}))}>Continua →</Btn>
         </Card>);})()}
       {/* [7.270.0 P2] IL MONDO TI ATTRAVERSA — rivale, ex compagni, ex club, CT */}
       {tab==="dashboard"&&(()=>{
