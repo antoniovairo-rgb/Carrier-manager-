@@ -144,7 +144,10 @@ const finale = async (path) => {
 {
   const casi = [
     ['disciplina', 'caso disciplinare', { week: 10, ovr: 70, matchHistory: RED }],
-    ['giovane', 'ragazzo della Primavera', { week: 10, ovr: 78, matchHistory: [lg(6), lg(7)],
+    /* [7.273.0] il mentore ha un'età: 25 anni, 3ª stagione, OVR 74+, 100 presenze — a 18 anni no */
+    ['giovane', 'ragazzo della Primavera', { week: 10, ovr: 78, age: 27, season: 5, totalMatches: 160,
+      jerseyNumSeason: 5, presidentModalSeason: 5, drawSeen: 5, coachPactSeason: 5, seasonPledge: { season: 5, tone: 'equilibrato' },
+      serialDone: {}, matchHistory: [lg(6), lg(7)],
       teammates: [{ name: 'Luca Ferrante', archetype: 'giovane', icon: '🌱', bond: 40 }] }],
     ['bomber', 'capocannoniere', { week: 22, ovr: 70,
       matchHistory: Array.from({ length: 10 }, (_, i) => lg(6 + i, { goals: 1 })) }],
