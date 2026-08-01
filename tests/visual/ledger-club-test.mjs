@@ -59,5 +59,15 @@ const base = (x) => ({ proStatus: 'pro', season: 5, week: 12, club: { id: 'bha',
   if (mosso) issues.push('(3) le voci senza club escono anche dopo un trasferimento');
 }
 
+// ── (5) [7.282.0 collaudo PO «è rimasto il richiedi cessione di due squadre fa!»] stessa classe: uno stato che
+//     riguarda UNA società non può sopravvivere al cambio di maglia. Controllo statico sui due punti che contano.
+{
+  const creaz = /transferRequest:\{season:p\.season\|\|1,week:p\.week\|\|1,status:"pending",pref:_pref,club:/.test(src);
+  const reset = /transferListed:false,transferRequest:null,/.test(src);
+  console.log(`(5) richiesta di cessione — porta il club: ${creaz} · azzerata al trasferimento: ${reset}`);
+  if (!creaz) issues.push('(5) la richiesta di cessione non registra il club: dopo un trasferimento resterebbe appesa');
+  if (!reset) issues.push('(5) acceptTransfer non azzera transferRequest: la richiesta respinta segue il giocatore al club nuovo');
+}
+
 if (issues.length) { console.log('\n❌ FAIL\n' + issues.map(x => ' · ' + x).join('\n')); process.exit(1); }
 console.log('\n✅ PASS — le parole restano nella piazza in cui sono state dette');

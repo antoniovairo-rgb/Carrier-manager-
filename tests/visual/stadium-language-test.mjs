@@ -66,6 +66,11 @@ for (const b of brands) {
   const have = new Set([...b[2].matchAll(/(\w+)\s*:/g)].map(m => m[1]));
   const miss = LANGS.filter(l => !have.has(l));
   if (miss.length) { mancanti++; issues.push(`(3) brand ${b[1]}: tagline mancante in ${miss.join(', ')}`); }
+  /* [7.282.0] non basta che la voce ESISTA: se è identica all'italiano, in quello stadio si legge italiano lo stesso
+     — è esattamente il caso segnalato («PIZZA IN 5'» uguale in it e in en). */
+  const tg = Object.fromEntries([...b[2].matchAll(/(\w+)\s*:\s*"([^"]*)"/g)].map(m => [m[1], m[2]]));
+  const uguali = LANGS.filter(l => l !== 'it' && tg[l] && tg[l] === tg.it);
+  if (uguali.length) { mancanti++; issues.push(`(3) brand ${b[1]}: tagline «${tg.it}» identica all'italiano in ${uguali.join(', ')}`); }
 }
 if (!brands.length) issues.push('(3) nessun brand con tagline multilingua trovato: i cartelloni sarebbero ancora monolingua');
 console.log(`(3) cartelloni — brand ${brands.length} · lingue richieste ${LANGS.length} · brand incompleti ${mancanti}`);
