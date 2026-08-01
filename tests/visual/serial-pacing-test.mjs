@@ -34,14 +34,22 @@ const { SERIALS, serialView, SERIAL_MAXW } = new Function('clamp', 'hashStr', 's
   body + '\nreturn {SERIALS,serialView,SERIAL_MAXW};')(clamp, hashStr, staffNames, generateLeagueScorers, leagueGoalsOf);
 
 // ── una stagione simulata: ogni settimana si guarda la dashboard e si risolve la puntata offerta
+/* [7.284.0 collaudo PO «il duello si deve chiudere dopo l'ultima partita!»] la stagione simulata ha ora un
+   CALENDARIO vero — 34 giornate sparse fino alla 36ª — e le gare si marcano giocate col passare delle settimane:
+   è la sola cosa che permette di verificare la richiesta, cioè che l'epilogo arrivi a campionato FINITO. */
+const CAL = (() => { const c = []; let w = 1; for (let g = 0; g < 34 && w <= 36; g++) { c.push({ week: w, matchday: g + 1, played: false }); w += (g % 8 === 7) ? 2 : 1; } return c; })();
+const ULTIMA = CAL[CAL.length - 1].week;
+
 const runSeason = (base, label) => {
-  let p = { ...base };
+  let p = { ...base, calendar: CAL.map(m => ({ ...m })) };
   const seen = [];
   for (let wk = 1; wk <= 38; wk++) {
-    p = { ...p, week: wk };
+    p = { ...p, week: wk, calendar: p.calendar.map(m => (m.week <= wk ? { ...m, played: true } : m)) };
     const sv = serialView(p);
     if (!sv) continue;
-    seen.push({ wk, k: sv.k, ep: sv.ep, tot: sv.tot, last: sv.last, t: sv.t });
+    /* la proprietà da verificare non è la settimana ma lo STATO del campionato quando la puntata esce:
+       nell'ultima non deve restare nessuna giornata da giocare. */
+    seen.push({ wk, k: sv.k, ep: sv.ep, tot: sv.tot, last: sv.last, t: sv.t, restano: p.calendar.filter(m => !m.played).length });
     // sceglie sempre la prima opzione, come farebbe un giocatore che va avanti
     const ch = [...((p.serial && p.serial.ch) || []), (sv.choices[0] || {}).c];
     p = sv.last
@@ -50,7 +58,7 @@ const runSeason = (base, label) => {
   }
   if (seen.length) {
     const k = seen[0].k, fin = seen.filter(x => x.last)[0];
-    console.log(`  ${label}: «${SERIALS[k].lab}» → puntate alle W.${seen.map(x => x.wk).join(', W.')}${fin ? ` · epilogo W.${fin.wk}` : ' · NESSUN epilogo'}`);
+    console.log(`  ${label}: «${SERIALS[k].lab}» → puntate alle W.${seen.map(x => x.wk).join(', W.')}${fin ? ` · epilogo W.${fin.wk} (giornate ancora da giocare: ${fin.restano})` : ' · NESSUN epilogo'}`);
   } else console.log(`  ${label}: nessuna serie attivata`);
   return seen;
 };
@@ -59,7 +67,7 @@ const CLUB = { id: 'cel', n: 'FC Celeste', p: 70 };
 const base = (x) => ({ proStatus: 'pro', season: 4, name: 'Ritmo Probe', club: CLUB, age: 27, ovr: 78, totalMatches: 150,
   teammates: [{ name: 'Luca Bianchi' }], goals: 14, matchHistory: [], morale: 70, form: 70, coachTrust: 70, teamChemistry: 60, ...x });
 
-console.log('stagioni simulate (una settimana alla volta, sul motore VERO):');
+console.log(`stagioni simulate settimana per settimana sul motore VERO · calendario di ${CAL.length} giornate, ultima alla W.${ULTIMA}:`);
 const S = {
   bomber: runSeason(base({ goals: 14, age: 22, totalMatches: 40 }), 'bomber'),           // età bassa: esclude «giovane»
   giovane: runSeason(base({ goals: 2, teammates: [{ name: 'Luca Bianchi' }] }), 'giovane'),
@@ -72,7 +80,7 @@ for (const [k, seen] of Object.entries(S)) {
   const fw = SERIALS[seen[0].k].finW || 0;
   const fin = seen.filter(x => x.last)[0];
   if (!fin) { issues.push(`(3) «${seen[0].k}» resta appesa: nessun epilogo entro la W.38`); continue; }
-  if (fw && fin.wk < fw) issues.push(`(1) «${seen[0].k}»: epilogo alla W.${fin.wk}, prima della volata (attesa ≥ W.${fw})`);
+  if (fw && fin.restano > 0) issues.push(`(1) «${seen[0].k}»: epilogo alla W.${fin.wk} con ancora ${fin.restano} giornate da giocare`);
 }
 
 // ── (2) l'arco copre la stagione invece di bruciarsi in un mese
