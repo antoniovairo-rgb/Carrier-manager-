@@ -3989,7 +3989,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="7.293.0"; // [7.293.0 #117-120, quattro collaudi PO — tre con la STESSA radice: cambiando maglia a stagione in corso il gioco buttava via la prima parte dell'anno] (1) «non vengono calcolati/sommati i gol assist ecc della prima parte di campionato con la squadra precedente»: `acceptTransfer` AZZERAVA gol/assist/presenze, cosi' a gennaio, dopo venti giornate, il cruscotto ripartiva da zero e gli obiettivi di stagione («Segna 20 gol», «Batti il tuo record: 49+») diventavano irraggiungibili per costruzione. Una stagione e' UNA anche con due maglie: i totali proseguono, lo storico partite resta azzerato (e' il registro del club corrente — lo leggono le guardie anti-doppione e la lista «ultimi risultati») e la produzione gia' maturata si travasa nel campo lazy `seasonCarry`, sommato dentro `leagueGoalsOf`/`leagueAssistsOf`: essendo QUEI DUE i chokepoint che definiscono «gol di campionato in questa stagione», capocannonieri, MVP, premi, record watch, duello e aspettative vedono la stagione intera con una riga a testa. Il cruscotto dichiara la prima parte («Prima parte con il <club>: N partite · N gol · N assist»). Nessun bump SAVE: il travaso scade da solo al cambio di stagione. (2) «continuo a vedere il cammino della coppa nazionale sbagliato!»: il 7.292.0 si era fermato al TIMBRO per non manomettere un salvataggio in corso — il collaudo dice che quella prudenza produce solo una schermata che non e' tua. Ora la bonifica fa lo stesso di `acceptTransfer`: se a calendario c'e' spazio la Coppa RIPARTE col club attuale dal turno che ci sta; se spazio non ce n'e' resta attribuita, ma il TABELLONE di quella coppa (altri sedici club, spesso di un'altra nazione) e i suoi capocannonieri spariscono dal pannello. (3) «l'articolo non deve essere pareggio combattuto ma ELIMINAZIONE dalla coppa!»: il flag di display dei rigori chiedeva `clock>=90` mentre la serie parte SENZA condizione sul cronometro, e dal 7.38.0 il fischio finale arriva all'ultimo highlight — le due condizioni divergevano, quindi la serie si giocava davvero (il PO ha pure sbagliato il suo rigore) e poi tabellone e giornale la NEGAVANO, titolando «pareggio combattuto» su un quarto di finale che era un'eliminazione. Ora il flag segue il fatto e il titolone dice «FUORI AI RIGORI» / «DAL DISCHETTO ALLA GLORIA». (4) «ma chi e' il rivale interno? deve esserci il cognome e deve essere effettivamente della squadra»: il «Luca» dello schermo NON era un nome proprio, era «Diego De Luca» TRONCATO — `_surnBG` prendeva l'ultimo token e spezzava i cognomi con particella (De Luca · De Santis · Di Stefano · De la Fuente), lasciando qualcosa che sembra un nome di battesimo. Ora la particella resta attaccata, in UN solo punto valido per ogni consumatore (spogliatoio, cronaca, nome sulla maglia); i compagni erano gia' giocatori veri della rosa. Guardiano nuovo `stagione-trasferimento-test` (4 casi, verificato in negativo: col vecchio helper la probe legge «Luca» come sullo screenshot)
+const GAME_VERSION="7.294.0"; // [7.294.0 direttiva PO «anche obiettivo seconda squadra», seguito del 7.293.0] Gli OBIETTIVI sono del club, la STAGIONE e' tua. Sommare la prima parte dell'anno (7.293.0) era giusto per record, classifiche e premi, ma aveva un effetto collaterale che ho segnalato io stesso: arrivando a gennaio con 43 gol, l'obiettivo del club NUOVO («Segna 19 gol») risultava centrato prima ancora di scendere in campo. Ora chi ti ingaggia a stagione in corso ti chiede quello che puoi fare DA QUI IN POI: al trasferimento il bersaglio si riscala sulle giornate rimaste (a W20 «Segna 19 gol» diventa «Segna 9 gol col nuovo club») e l'obiettivo nasce `clubScoped`, cioe' misurato sulla produzione con QUESTA maglia — il totale di stagione meno quanto gia' fatto con le precedenti, che `seasonCarry` conosce per spell. Il piazzamento non si tocca: e' gia' del club nuovo. Perche' cruscotto, verdetto di fine stagione, giudizio del presidente, promessa d'apertura e notifiche di traguardo non possano divergere, «a che punto sono» lo dice ora UN SOLO punto (`objCurrent`/`objDone`) che tutti e sei i siti chiamano. Zero regressione per chi non cambia maglia: senza `clubScoped` lo scarto e' nullo e il conto resta quello di sempre. Guardiano `stagione-trasferimento-test` esteso: nello stesso caso verifica insieme il totale di stagione (43 gol sommati) e l'obiettivo del nuovo club (0/9, riscalato)
 // [7.242.0 #56 chiusura — batch PO gi31-35 «Non si vede il gesto tecnico specifico» + verdetto difensivo] IL GESTO DIFENSIVO HA UNA FAMIGLIA. Ogni azione difensiva derivava `tackle/-` senza variante: la posa era UNA (scivolata) per pressing, anticipo, muro e deviazione. Tre famiglie STRUTTURALI congelate in factory (patto chainOn/gkCall — la regex vive solo in S()): slide (scivolata/disperato, posa storica a terra) · lunge (intercetto/anticipo/deviazione/muro: AFFONDO in piedi, gamba tesa e braccia larghe) · press (pressing/finta/recupero/copertura: ADDOSSO al portatore, busto avanti, braccio a schermare, tocco di punta). Prop hlDefGesto → pose sw-scalate auto-azzeranti nel blocco CINE-VAR; fallito = perdita di equilibrio comune. + VERDETTO DIFENSIVO RITARDATO (pattern #51): con l inbound 7.239 il pallone doveva ancora ARRIVARE quando usciva l overlay (misurato ~0.9s su gi31) → revealMs def 2250 con inbound / 1900 senza. Verificato sui fogli-provini: gi34 pressing = eroe addosso al portatore che vacilla, verdetto dopo il contatto.
 // [7.241.0 #56 batch PO gi28/29/37 «Non si vede il compagno che conclude»] FRENA PER GIRARTI — il difetto NON era la scelta del ricevente ne la transizione: attribuzione per-frame (AR53/54: oth=0, own>0, _ctx GIA sulla palla) → era il MODELLO DI STERZATA di animOne. Il ricevente lanciato sulla corsa profonda, con il filtrante atterrato ALLE SPALLE, navigava un inversione a U larga 20u e lunga secondi: il turn-rate e ∝1/velocita e la magnitudine della velocita-obiettivo restava PIENA nella direzione sbagliata. Ora quando la direzione voluta supera ~60° da quella di marcia la velocita-obiettivo cala col disallineamento (fino a 0.18×): la frenata passa dal limitatore di accelerazione, la velocita scende, il turn-rate risale → due passi di frenata e pivot, come in campo. Misurato prima→dopo: gi29 ricevente da divergenza a 24u → ARRIVO a 1.3u (t 0.41) con palla che parte con lui; gi37 2.0u; gi28 convergenza stretta. Vale per TUTTI i 21 off-ball (fisica piu vera anche su pressing/rientri — plausibile beneficio sul cluster difensivo «non aggancia il pallone»). +selezione demergenza del ricevente nel driver assist_recv (ogni scena ha SEMPRE un uomo sulla palla). ⚠️ modello core: gate 14/14 obbligatorio + realismo da riverificare sui baseline.
 // [7.240.0 #55B batch PO gi25/gi26 «Non si vede il compagno che riceve (e tira)» + gi43/28/29/30 storici] IL COMPAGNO ARRIVA SUL PALLONE PRIMA DI CALCIARE. Diagnosi strumentata (probe AR51/AR52 in-page, solo __CPM_REC): la catena assist_recv era VIVA e corretta — il primo sospetto «catena congelata» era un artefatto del campione stantio — ma (a) la transizione ricezione→tiro era a TEMPO FISSO 0.42s col ricevente ancora a 8-15u → il pallone volava in porta DA SOLO col gesto di calcio a vuoto; (b) il puntatore del ricevente (passTargetMesh) veniva AZZERATO all'avvio di assist_recv in 2 dei 3 siti (pass+assist = gi25 filtrante · tacco/scarico = gi26) e il driver, che scandiva solo il gesto _rcvT (0.52s di vita), restava senza nessuno da far correre. Fix: puntatore PERSISTENTE su tutti i siti (+_runToX fresco), fallback del driver sul puntatore, transizione ALL'ARRIVO (<2.2u, minimo 0.30s) con fallback 3.0s. Misurato prima→dopo: ricevente a 8-9u dalla palla al momento del tiro → 3.5-4u col gesto agganciato; gi26 duello leggibile sul foglio-provini; gi25 in wizard chiude con la catena e il gol.
@@ -6730,6 +6730,22 @@ const leagueAssistsOf=(p)=>{const c=_scOf(p),h=(p.matchHistory||[]).filter(m=>m&
   if(h.length)return (c?(c.la||0):0)+h.reduce((s,m)=>s+(m.assists||0),0);
   if(c)return c.la||0;
   return (p.matchHistory||[]).length?0:(p.assists||0);};
+/* [7.294.0 direttiva PO «anche obiettivo seconda squadra»] GLI OBIETTIVI SONO DEL CLUB, LA STAGIONE E' TUA.
+   Col 7.293.0 la stagione non si azzera piu' cambiando maglia — giusto per record, classifiche e premi, ma
+   produceva un effetto collaterale: arrivando a gennaio con 43 gol l'obiettivo del club NUOVO («Segna 19 gol»)
+   risultava centrato prima ancora di scendere in campo. Ora il club che ti ingaggia a stagione in corso ti
+   chiede quel che puoi fare DA QUI IN POI: al trasferimento il bersaglio si riscala sulle giornate rimaste e
+   l'obiettivo diventa `clubScoped`, cioe' misurato sulla produzione con QUESTA maglia (totale di stagione meno
+   quanto gia' fatto con le precedenti — i numeri per spell li ha `seasonCarry`). Le classifiche restano
+   integrali. `objCurrent` e' l'UNICO punto che dice «a che punto sono»: lo usano cruscotto, verdetto di fine
+   stagione, promessa d'apertura, presidente e le notifiche di traguardo, cosi' non possono divergere. */
+const _objSpent=(p)=>{const c=p&&p.seasonCarry;if(!c||c.season!==(p.season||1))return{g:0,a:0,m:0};
+  const sp=c.spells||[];return{g:sp.reduce((s,x)=>s+(x.g||0),0),a:sp.reduce((s,x)=>s+(x.a||0),0),m:sp.reduce((s,x)=>s+(x.m||0),0)};};
+const objCurrent=(obj,tot,spent,pos)=>{const b=(obj&&obj.clubScoped)?(spent||{g:0,a:0,m:0}):{g:0,a:0,m:0};
+  return obj.type==="goals"?Math.max(0,(tot.g||0)-(b.g||0))
+    :obj.type==="assists"?Math.max(0,(tot.a||0)-(b.a||0))
+    :obj.type==="matches"?Math.max(0,(tot.m||0)-(b.m||0)):pos;};
+const objDone=(obj,cur)=>obj.type==="standing"?cur<=obj.target:cur>=obj.target;
 /* [7.285.0 #108 collaudo PO «18 a 1 in che senso? dopo la prima giornata ha gia' fatto 18 gol??»] I GOL DEL
    RIVALE MATURANO DURANTE LA STAGIONE. `rival.goals` era scritto UNA volta sola, al rollover (`rng(7,20)`, per
    giunta scollegato dal suo valore): durante l'anno restava fermo sul totale della stagione PRECEDENTE, mentre
@@ -18610,10 +18626,9 @@ function SeasonEndScreen({data,player,onNewSeason,onRetire,notifBusy}){
   const _coachPool100=SEASON_END_COACH.filter(d=>(d.result===_coachResult100||(d.result==="any"&&_ct100>=(d.trustMin||0)))&&(!d.style||d.style===_cs100));
   const _coachLine100=(_coachPool100.length>0?_coachPool100:SEASON_END_COACH.filter(d=>d.result===_coachResult100||d.result==="any"))[hashStr((player.name||"x")+String(season||1))%Math.max(1,(_coachPool100.length||1))];
   // Sprint 100: pick president dialog
-  const _objsMet100=(player.seasonObjectives||[]).length>0&&(player.seasonObjectives||[]).filter(o=>{
-    const g=playerStats.goals||0,a=playerStats.assists||0,m=playerStats.matches||0;
-    if(o.type==="goals")return g>=o.target;if(o.type==="assists")return a>=o.target;if(o.type==="matches")return m>=o.target;if(o.type==="standing")return playerPos+1<=o.target;return false;
-  }).length>=(player.seasonObjectives||[]).length;
+  const _objsMet100=(player.seasonObjectives||[]).length>0&&(player.seasonObjectives||[]).filter(o=>/* [7.294.0] stesso metro degli altri siti */
+    objDone(o,objCurrent(o,{g:playerStats.goals||0,a:playerStats.assists||0,m:playerStats.matches||0},(typeof _objSpent==="function")?_objSpent(player):{g:0,a:0,m:0},playerPos+1))
+  ).length>=(player.seasonObjectives||[]).length;
   /* [7.285.0 #107 collaudo PO «presidente troppo severo o mi sbaglio?» — 2° di 18, qualificato in Coppa dei
      Campioni, 26 gol, e il presidente rispondeva «Stagione sufficiente — ma sufficiente non è quello per cui
      questo club paga»] Aveva ragione. Fuori dal titolo, TUTTO finiva in un unico secchio «good» (il ternario
@@ -18671,9 +18686,10 @@ function SeasonEndScreen({data,player,onNewSeason,onRetire,notifBusy}){
   }
 
   // Sprint 87: obiettivi progress
+  const _spEnd=(typeof _objSpent==="function")?_objSpent(player||{}):{g:0,a:0,m:0};/* [7.294.0] obiettivi del club: al netto delle maglie precedenti */
   const objs=(seasonObjectives||[]).map(obj=>{
-    const cur=obj.type==="goals"?playerStats.goals:obj.type==="assists"?playerStats.assists:obj.type==="matches"?playerStats.matches:playerPos>=0?playerPos+1:99;
-    const done=obj.type==="standing"?cur<=obj.target:cur>=obj.target;
+    const cur=objCurrent(obj,{g:playerStats.goals,a:playerStats.assists,m:playerStats.matches},_spEnd,playerPos>=0?playerPos+1:99);
+    const done=objDone(obj,cur);
     const pct=obj.type==="standing"?Math.min(100,Math.round((obj.target/Math.max(cur,1))*100)):Math.min(100,Math.round((cur/obj.target)*100));
     return{...obj,cur,done,pct};
   });
@@ -22466,7 +22482,8 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     const _sd=[...(p.standings||[])].sort((x,y)=>((y.pts||0)-(x.pts||0))||(((y.gf||0)-(y.ga||0))-((x.gf||0)-(x.ga||0))));
     const _pid=p.club?.id||p.club?.n;
     const pos=Math.max(1,_sd.findIndex(t=>t.id===_pid||t.n===p.club?.n)+1);
-    const met=objs.filter(o=>o.type==="goals"?g>=o.target:o.type==="assists"?a>=o.target:o.type==="matches"?m>=o.target:o.type==="standing"?pos<=o.target:false).length;
+    const _sp=_objSpent(p);
+    const met=objs.filter(o=>objDone(o,objCurrent(o,{g,a,m},_sp,pos))).length;/* [7.294.0] stesso metro del cruscotto */
     const ok=objs.length>0&&met>=Math.ceil(objs.length*0.67);
     let dPop=0,dMor=0,em="💬",head="Bilancio della conferenza d'apertura",body="";
     if(pl.tone==="ambizioso"){if(ok){dPop=6;dMor=3;em="🎙️";head="Promessa mantenuta!";body="Avevi parlato da ambizioso e i fatti ti hanno seguito: la piazza ti adora.";}else{dPop=-4;dMor=-3;em="🗞️";head="I proclami non bastano";body="Obiettivi mancati dopo le promesse di inizio anno — la stampa non perdona.";}}
@@ -24178,7 +24195,10 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     const isCupFinal=!!(cupCalEntry&&(player.cup?.round||1)===4&&isCupWon);
     // Sprint 73 — Obiettivo Live: detect newly completed season objectives
     const _prevGoals73=player.goals||0,_prevAssists73=player.assists||0,_prevMatches73=player.matches||0;
-    const _objCompleted73=(player.seasonObjectives||[]).filter(o=>(o.type==="goals"&&_prevGoals73<o.target&&(_prevGoals73+(result.goals||0))>=o.target)||(o.type==="assists"&&_prevAssists73<o.target&&(_prevAssists73+(result.assists||0))>=o.target)||(o.type==="matches"&&_prevMatches73<o.target&&(_prevMatches73+1)>=o.target));
+    const _spN73=_objSpent(player);/* [7.294.0] su obiettivo club-scoped il traguardo si misura al netto di quanto fatto con le maglie precedenti */
+    const _objCompleted73=(player.seasonObjectives||[]).filter(o=>{const b=o.clubScoped?_spN73:{g:0,a:0,m:0};
+      const pg=Math.max(0,_prevGoals73-(b.g||0)),pa=Math.max(0,_prevAssists73-(b.a||0)),pm=Math.max(0,_prevMatches73-(b.m||0));
+      return (o.type==="goals"&&pg<o.target&&(pg+(result.goals||0))>=o.target)||(o.type==="assists"&&pa<o.target&&(pa+(result.assists||0))>=o.target)||(o.type==="matches"&&pm<o.target&&(pm+1)>=o.target);});
     // Sprint 75 — Sistema Cartellini · [7.137.0 collaudo PO «la squalifica per espulsione deve essere REALE, dalla partita,
     //   non randomica ed inventata»] i cartellini NON sono più un Math.random a fine gara: arrivano dai FATTI del live match
     //   (heroRedRef/heroYellowsRef → result.redCard/yellowCards), decisi e MOSTRATI in campo quando l'eroe commette il fallo.
@@ -25237,8 +25257,8 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     let bonM=0,bonCT=0,bonPop=0,bonVal=0;
     const objLogs=[];
     (player.seasonObjectives||[]).forEach(obj=>{
-      const cur=obj.type==="goals"?(player.goals||0):obj.type==="assists"?(player.assists||0):obj.type==="matches"?(player.matches||0):clubPos>=0?clubPos+1:99;
-      const done=obj.type==="standing"?cur<=obj.target:cur>=obj.target;
+      const cur=objCurrent(obj,{g:player.goals||0,a:player.assists||0,m:player.matches||0},_objSpent(player),clubPos>=0?clubPos+1:99);/* [7.294.0] */
+      const done=objDone(obj,cur);
       if(done){bonM+=(obj.bonus?.morale||0);bonCT+=(obj.bonus?.coachTrust||0);bonPop+=(obj.bonus?.popularity||0);bonVal+=(obj.bonus?.value||0);objLogs.push(`✅ ${obj.label}`);}
       else{bonM-=8;bonCT-=5;objLogs.push(`❌ Mancato: ${obj.label}`);}
     });
@@ -26094,7 +26114,14 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       const _newWage98=tc.wage||Math.round((p.ovr||65)*50);
       const _newDur98=tc.duration||2;
       const _newContract98={duration:_newDur98,wage:_newWage98,expiresAtSeason:(p.season||1)+_newDur98};
-      return{...p,club:newClub,isU18:false,proStatus:"pro",contractExpired:false,transferListed:false,transferRequest:null,/* [7.282.0] cambiando maglia la vecchia richiesta di cessione decade: restava lì, respinta, anche due club dopo */isCaptain:false,seasonObjectives:generateSeasonObjectives({...p,club:newClub,goals:0,assists:0,matches:0}),renewalSeason:null,/* [7.8.28 QA] obiettivi RIGENERATI sul nuovo club (prima restavano quelli tarati sul vecchio: obiettivo classifica valutato sulla classifica sbagliata + obiettivo gol a target pieno con goals azzerati = malus ingiusto a fine stagione) + reset cooldown rinnovi del vecchio club */
+      return{...p,club:newClub,isU18:false,proStatus:"pro",contractExpired:false,transferListed:false,transferRequest:null,/* [7.282.0] cambiando maglia la vecchia richiesta di cessione decade: restava lì, respinta, anche due club dopo */isCaptain:false,seasonObjectives:(function(){/* [7.294.0 direttiva PO «anche obiettivo seconda squadra»] il club che ti prende a
+        stagione in corso non puo' chiederti il bottino di un anno intero (ne' vederselo gia' pagato dai gol fatti
+        altrove): il bersaglio si riscala sulle giornate che restano e il conto riparte da questa maglia. */
+        const _rem=clamp((38-(p.week||1))/38,0.2,1);
+        return generateSeasonObjectives({...p,club:newClub}).map(o=>{
+          if(o.type==="standing"||!o.target)return o;/* il piazzamento e' gia' del club nuovo */
+          const t=Math.max(2,Math.round(o.target*_rem));
+          return{...o,target:t,clubScoped:true,label:String(o.label||"").replace(/\d+/,String(t))+" col nuovo club"};});})(),renewalSeason:null,/* [7.8.28 QA] obiettivi RIGENERATI sul nuovo club (prima restavano quelli tarati sul vecchio: obiettivo classifica valutato sulla classifica sbagliata + obiettivo gol a target pieno con goals azzerati = malus ingiusto a fine stagione) + reset cooldown rinnovi del vecchio club */
         /* [7.293.0] la STAGIONE prosegue (gol/assist/presenze non si azzerano piu'); si azzera solo lo storico
            partite, che e' il registro del club corrente — [6.45.0 RC] senza quel reset la dashboard mostrava le
            gare del VECCHIO club come risultati di stagione corrente e le guardie anti-doppione ci inciampavano. */
@@ -27982,12 +28009,10 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
         <Card style={{marginBottom:8,padding:"10px 14px"}}>
           <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>🎯 Obiettivi Stagione {season}</div>
           {(player.seasonObjectives||[]).map((obj,i)=>{
-            let cur=0;
-            if(obj.type==="goals")cur=player.goals||0;
-            else if(obj.type==="assists")cur=player.assists||0;
-            else if(obj.type==="matches")cur=player.matches||0;
-            else if(obj.type==="standing"){const ss=[...(player.standings||[])].sort((a,b)=>b.pts-a.pts||(b.gd||0)-(a.gd||0));const ci=player.club?.id||player.club?.n;const pi=ss.findIndex(t=>t.id===ci||(t.n||t.name)===(player.club?.n||player.club?.name));cur=pi>=0?pi+1:99;}
-            const done=obj.type==="standing"?cur<=obj.target:cur>=obj.target;
+            let _pos=99;
+            if(obj.type==="standing"){const ss=[...(player.standings||[])].sort((a,b)=>b.pts-a.pts||(b.gd||0)-(a.gd||0));const ci=player.club?.id||player.club?.n;const pi=ss.findIndex(t=>t.id===ci||(t.n||t.name)===(player.club?.n||player.club?.name));_pos=pi>=0?pi+1:99;}
+            const cur=objCurrent(obj,{g:player.goals||0,a:player.assists||0,m:player.matches||0},_objSpent(player),_pos);/* [7.294.0] club-scoped dopo un trasferimento */
+            const done=objDone(obj,cur);
             const pct=obj.type==="standing"?Math.min(100,Math.max(0,Math.round((1-(cur-1)/Math.max(1,obj.target))*100))):Math.min(100,Math.round((cur/Math.max(1,obj.target))*100));
             return(
               <div key={i} style={{marginBottom:i<(player.seasonObjectives||[]).length-1?10:0}}>

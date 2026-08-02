@@ -6,7 +6,9 @@
          precedente»: gol/assist/presenze venivano AZZERATI → il cruscotto ripartiva da zero e gli obiettivi di
          stagione diventavano irraggiungibili. Ora la stagione e' una sola: i totali proseguono, lo storico
          partite (registro del club corrente, letto dalle guardie anti-doppione) resta azzerato e la produzione
-         gia' maturata si travasa in `seasonCarry`.
+         gia' maturata si travasa in `seasonCarry`. E, per la direttiva «anche obiettivo seconda squadra»
+         (7.294.0), l'OBIETTIVO del club nuovo riparte da zero su un bersaglio riscalato sulle giornate rimaste:
+         i due requisiti convivono e vanno misurati nello stesso caso.
      (B) #117 «continuo a vedere il cammino della coppa nazionale sbagliato!»: un salvataggio trasferito prima
          del 7.292.0 mostrava la Coppa dell'ex club, tabellone compreso. Ora la bonifica FA RIPARTIRE la Coppa
          col club attuale se a calendario c'e' spazio; se non ce n'e', il cammino resta attribuito ma il
@@ -85,15 +87,23 @@ const testo = (p) => p.evaluate(() => (document.body.innerText || '').replace(/\
   if (!(sc.spells || []).length || (sc.spells[0].n || '') !== OLD.n) issues.push('(A) lo spell non nomina il club lasciato');
   // gli obiettivi di stagione devono vedere la stagione INTERA
   const t = await testo(page);
-  /* l'obiettivo gol della stagione deve vedere la stagione INTERA: con 43 gol gia' fatti risulta CENTRATO,
-     non «3/20» come nello screenshot del PO (⚠️ la prima stesura cercava «Segna N gol X / Y» e non trovava
-     nulla — a obiettivo raggiunto il progresso e' l'etichetta FATTO: un'asserzione che non aggancia mai non
-     misura niente). */
-  const mo = t.match(/Segna (\d+) gol\s*(FATTO|\d+\s*\/\s*\d+)/);
-  console.log(`    obiettivo gol a schermo: ${mo ? mo[0] : '(non trovato)'}`);
+  /* [7.294.0 direttiva PO «anche obiettivo seconda squadra»] I due requisiti convivono e vanno misurati insieme:
+     il TOTALE di stagione somma le due maglie (sopra), mentre l'OBIETTIVO del club nuovo riparte da zero su un
+     bersaglio riscalato sulle giornate rimaste — altrimenti arrivare a gennaio con 43 gol lo pagherebbe gia'
+     centrato. ⚠️ La prima stesura cercava «Segna N gol X / Y»: a obiettivo raggiunto il progresso e' l'etichetta
+     FATTO, quindi non agganciava nulla e non misurava niente. */
+  const mo = t.match(/Segna (\d+) gol[^\n]{0,24}?(FATTO|\d+\s*\/\s*\d+)/);
+  console.log(`    obiettivo gol a schermo: ${mo ? mo[0].replace(/\s+/g, ' ') : '(non trovato)'}`);
   if (!mo) issues.push('(A) obiettivo gol non renderizzato: impossibile misurare il progresso');
-  else if (mo[2] !== 'FATTO') { const n = Number(String(mo[2]).split('/')[0].trim());
-    if (!(n >= 43)) issues.push(`(A) il progresso dell'obiettivo ignora la prima parte (${mo[2]} con 43 gol in stagione)`); }
+  else {
+    if (mo[2] === 'FATTO') issues.push('(A) l\'obiettivo del club nuovo risulta già centrato dai gol fatti con la maglia precedente');
+    else {
+      const [cur, tgt] = String(mo[2]).split('/').map(x => Number(x.trim()));
+      if (cur !== 0) issues.push(`(A) il conto dell'obiettivo non riparte dal club nuovo (${cur} invece di 0)`);
+      if (!(tgt >= 2 && tgt < 19)) issues.push(`(A) il bersaglio non è riscalato sulle giornate rimaste (${tgt}, pieno = 19)`);
+    }
+    if (!/col nuovo club/i.test(t)) issues.push('(A) l\'obiettivo non dichiara di riferirsi al nuovo club');
+  }
   if (!/Prima parte con il/i.test(t)) issues.push('(A) il cruscotto non dichiara la prima parte con la maglia precedente');
   await page.close();
 }
