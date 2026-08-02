@@ -210,6 +210,55 @@ const testo = (p) => p.evaluate(() => (document.body.innerText || '').replace(/\
   await page.close();
 }
 
+// ── (F) obiettivi PERSONALI e ALBO D'ORO: stessa logica del resto
+{
+  /* 7.296.0, due collaudi PO nello stesso cruscotto:
+     · «obiettivi personali non allineati con la stessa logica al cambio club»: il club chiedeva «9 gol col
+       nuovo club» (centrato) mentre due centimetri sotto il record personale restava su 49 gol pieni contando
+       solo i 14 di questa maglia;
+     · «albo d'oro non c'è la serie A»: l'albo si scriveva solo al rollover, quindi il campionato in corso non
+       compariva. */
+  const OBJ = [{ type: 'goals', target: 20, label: 'Segna 20 gol', bonus: {} },
+    { type: 'standing', target: 3, label: 'Finisci nei primi 3', bonus: {} }];
+  const ST = ['fio', 'juve', 'inter', 'milan', 'napoli', 'roma', 'ata', 'lazio', 'bol', 'udi', 'sas', 'cag', 'gen', 'ver', 'lec', 'emp', 'sal', 'mon2']
+    .map((id, i) => ({ id, n: id === 'fio' ? NEW.n : 'Club ' + id, pts: 70 - i * 3, played: 31, gf: 50 - i, ga: 25 + i }));
+  const page = await boot(save({ week: 36, club: NEW, goals: 14, assists: 5, matches: 15, extra: {
+    seasonObjectives: OBJ, standings: ST,
+    history: [{ season: 7, club: 'FC Lipsia', goals: 48, assists: 14, matches: 34, ovr: 83 }],
+    /* ⚠️ la stagione ARCHIVIATA non dev'essere un titolo: col 1° posto in archivio il banner «Hai vinto la lega»
+       e' legittimo e il controllo sulla fuga della stagione in corso diventa un falso positivo (ci sono cascato). */
+    leagueArchive: [{ season: 7, league: 'Deutsche Liga', champion: 'FC Bayern', playerClub: 'FC Lipsia', playerPos: 4, playerGoals: 48, playerAssists: 14, relegated: [] }],
+    offerHistory: [{ club: NEW.n, type: 'Trasferimento', season: 8, accepted: true }],
+    matchHistory: Array.from({ length: 13 }, (_, i) => ({ week: 23 + i, opponent: 'Club ' + i, goals: 1, assists: i < 5 ? 1 : 0, rating: 7.1, won: true })) } }), 'F');
+  const tf = await testo(page);
+  const mp = tf.match(/(Batti il tuo record|Ritmo da record|Da qui a fine stagione)[^\n]{0,70}?(FATTO|\d+\s*\/\s*\d+)/);
+  console.log(`\n(F) obiettivo personale: ${mp ? mp[0].replace(/\s+/g, ' ') : '(non trovato)'}`);
+  if (!mp) issues.push('(F) obiettivo personale non renderizzato');
+  else {
+    if (/Batti il tuo record/.test(mp[0])) issues.push('(F) il record personale usa ancora il bersaglio pieno di una stagione intera');
+    if (mp[2] !== 'FATTO') { const [c, t] = String(mp[2]).split('/').map(x => Number(x.trim()));
+      if (!(t < 49)) issues.push(`(F) bersaglio personale non riscalato (${t}, pieno = 49)`);
+      if (!(c === 14)) issues.push(`(F) il conto personale non è quello della maglia attuale (${c} invece di 14)`); }
+  }
+  // albo d'oro: deve contenere il campionato in corso, senza assegnare titoli
+  const nav = await page.evaluate(() => window.__CPM_CAREER.goTab('standings'));
+  if (nav !== true) issues.push('(F) impossibile aprire la Classifica: ' + nav);
+  await sleep(1100);
+  const ta = await testo(page);
+  const albo = /ALBO D'ORO/i.test(ta), lega = /LEGA A/i.test(ta), corso = /IN CORSO/i.test(ta), testa = /In testa/i.test(ta);
+  console.log(`    albo: ${albo} · campionato attuale (Lega A) presente: ${lega} · marcato in corso: ${corso} · «in testa»: ${testa}`);
+  if (!albo) issues.push('(F) albo d\'oro non renderizzato');
+  else {
+    if (!lega) issues.push('(F) il campionato in corso non compare nell\'albo');
+    if (!corso || !testa) issues.push('(F) la stagione in corso non è dichiarata tale (rischio: sembra un titolo già vinto)');
+    /* l'eroe e' PRIMO nella classifica viva ma la stagione non e' finita: nessun titolo, nessun «miglior
+       piazzamento» — in archivio il suo unico anno chiuso e' un 4° posto. */
+    if (/Hai vinto la lega/i.test(ta)) issues.push('(F) la stagione in corso viene contata come titolo vinto');
+    if (/Miglior piazzamento/i.test(ta)) issues.push('(F) la stagione in corso entra nel miglior piazzamento');
+  }
+  await page.close();
+}
+
 await browser.close(); srv.close();
 if (issues.length) { console.log('\n❌ FAIL\n' + issues.map(x => ' · ' + x).join('\n')); process.exit(1); }
 console.log('\n✅ PASS — la stagione sopravvive al trasferimento, le coppe sono del club giusto, i rigori si dichiarano');

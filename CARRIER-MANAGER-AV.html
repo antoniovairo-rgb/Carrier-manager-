@@ -3989,7 +3989,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="7.295.0"; // [7.295.0 collaudo PO «continuo a vedere solo gli obiettivi della squadra corrente»] Il 7.293/7.294 agisce AL MOMENTO del trasferimento: chi la maglia l'aveva gia' cambiata restava col bersaglio pieno di un anno intero — «Segna 20 gol» a 13/20 alla 36ª giornata — e non vedeva nulla di nuovo. E' la stessa lezione della Coppa (7.292 → 7.293): una correzione agganciata all'evento non raggiunge chi l'evento l'ha gia' passato, serve una bonifica al caricamento. Ora, per un salvataggio con un'offerta accettata in questa stagione e meno giornate di campionato dell'eroe che del suo club, gli obiettivi diventano `clubScoped` e il bersaglio si riscala sulla quota di stagione giocata con questa maglia (misurata su dati veri: giornate dell'eroe / giornate del club) — sul caso del PO «Segna 20 gol» diventa «Segna 8 gol col nuovo club», centrato. Il piazzamento non si tocca: e' gia' del club attuale. ⚠️ Il BOTTINO della prima parte, invece, NON e' recuperabile da quei salvataggi e non l'ho inventato: il vecchio codice azzerava gol/assist/presenze, `worldMemory` registra il club lasciato ma non i suoi numeri e i gol dei provini stanno dentro `totalGoals` senza traccia separata — quindi ogni ricostruzione sarebbe una stima spacciata per dato. Dal prossimo trasferimento il travaso c'e' e la somma si vede. Guardiano `stagione-trasferimento-test` esteso col caso (E), che riproduce esattamente quel salvataggio
+const GAME_VERSION="7.296.0"; // [7.296.0 due collaudi PO sullo stesso cruscotto] (1) «obiettivi personali non allineati con la stessa logica al cambio club, senza tenere il conteggio solo del nuovo club»: sul cruscotto il club chiedeva «Segna 9 gol col nuovo club» (centrato) mentre due centimetri sotto il record personale restava su 49 gol pieni contando solo i 14 di questa maglia — due metri diversi nella stessa schermata. Ora la quota di stagione giocata con la maglia attuale la definisce UN solo criterio (`seasonSplitShare`: giornate di campionato dell'eroe su giornate del suo club) e la usano sia gli obiettivi di club sia i personali: a stagione spezzata dal mercato il record si insegue col RITMO — «Ritmo da record: 21+ gol col nuovo club (S.7: 48)» — contando i gol di questa maglia. Il criterio scatta SOLO a stagione spezzata da un trasferimento (`clubScoped`): chi resta tutto l'anno e' invariato, e nemmeno chi salta mezza stagione per infortunio viene toccato — quello non e' un cambio di maglia. (2) «albo d'oro non c'e' la serie A»: l'albo si scriveva solo al rollover, quindi il campionato che stai GIOCANDO non compariva — chi era passato in Lega A a stagione in corso vedeva l'elenco delle leghe precedenti e la propria no. Ora in cima c'e' la stagione in corso, derivata dalla classifica vera (chi e' in testa, dove sei tu) e marcata IN CORSO; non assegna nulla in anticipo: fuori dal conteggio degli scudetti e dal «miglior piazzamento». Guardiano `stagione-trasferimento-test` esteso col caso (F) — ⚠️ la prima stesura del controllo era un falso positivo mio: col 1° posto nella stagione archiviata il banner «Hai vinto la lega» e' legittimo e non misurava affatto la fuga della stagione in corso
 // [7.242.0 #56 chiusura — batch PO gi31-35 «Non si vede il gesto tecnico specifico» + verdetto difensivo] IL GESTO DIFENSIVO HA UNA FAMIGLIA. Ogni azione difensiva derivava `tackle/-` senza variante: la posa era UNA (scivolata) per pressing, anticipo, muro e deviazione. Tre famiglie STRUTTURALI congelate in factory (patto chainOn/gkCall — la regex vive solo in S()): slide (scivolata/disperato, posa storica a terra) · lunge (intercetto/anticipo/deviazione/muro: AFFONDO in piedi, gamba tesa e braccia larghe) · press (pressing/finta/recupero/copertura: ADDOSSO al portatore, busto avanti, braccio a schermare, tocco di punta). Prop hlDefGesto → pose sw-scalate auto-azzeranti nel blocco CINE-VAR; fallito = perdita di equilibrio comune. + VERDETTO DIFENSIVO RITARDATO (pattern #51): con l inbound 7.239 il pallone doveva ancora ARRIVARE quando usciva l overlay (misurato ~0.9s su gi31) → revealMs def 2250 con inbound / 1900 senza. Verificato sui fogli-provini: gi34 pressing = eroe addosso al portatore che vacilla, verdetto dopo il contatto.
 // [7.241.0 #56 batch PO gi28/29/37 «Non si vede il compagno che conclude»] FRENA PER GIRARTI — il difetto NON era la scelta del ricevente ne la transizione: attribuzione per-frame (AR53/54: oth=0, own>0, _ctx GIA sulla palla) → era il MODELLO DI STERZATA di animOne. Il ricevente lanciato sulla corsa profonda, con il filtrante atterrato ALLE SPALLE, navigava un inversione a U larga 20u e lunga secondi: il turn-rate e ∝1/velocita e la magnitudine della velocita-obiettivo restava PIENA nella direzione sbagliata. Ora quando la direzione voluta supera ~60° da quella di marcia la velocita-obiettivo cala col disallineamento (fino a 0.18×): la frenata passa dal limitatore di accelerazione, la velocita scende, il turn-rate risale → due passi di frenata e pivot, come in campo. Misurato prima→dopo: gi29 ricevente da divergenza a 24u → ARRIVO a 1.3u (t 0.41) con palla che parte con lui; gi37 2.0u; gi28 convergenza stretta. Vale per TUTTI i 21 off-ball (fisica piu vera anche su pressing/rientri — plausibile beneficio sul cluster difensivo «non aggancia il pallone»). +selezione demergenza del ricevente nel driver assist_recv (ogni scena ha SEMPRE un uomo sulla palla). ⚠️ modello core: gate 14/14 obbligatorio + realismo da riverificare sui baseline.
 // [7.240.0 #55B batch PO gi25/gi26 «Non si vede il compagno che riceve (e tira)» + gi43/28/29/30 storici] IL COMPAGNO ARRIVA SUL PALLONE PRIMA DI CALCIARE. Diagnosi strumentata (probe AR51/AR52 in-page, solo __CPM_REC): la catena assist_recv era VIVA e corretta — il primo sospetto «catena congelata» era un artefatto del campione stantio — ma (a) la transizione ricezione→tiro era a TEMPO FISSO 0.42s col ricevente ancora a 8-15u → il pallone volava in porta DA SOLO col gesto di calcio a vuoto; (b) il puntatore del ricevente (passTargetMesh) veniva AZZERATO all'avvio di assist_recv in 2 dei 3 siti (pass+assist = gi25 filtrante · tacco/scarico = gi26) e il driver, che scandiva solo il gesto _rcvT (0.52s di vita), restava senza nessuno da far correre. Fix: puntatore PERSISTENTE su tutti i siti (+_runToX fresco), fallback del driver sul puntatore, transizione ALL'ARRIVO (<2.2u, minimo 0.30s) con fallback 3.0s. Misurato prima→dopo: ricevente a 8-9u dalla palla al momento del tiro → 3.5-4u col gesto agganciato; gi26 duello leggibile sul foglio-provini; gi25 in wizard chiude con la catena e il gol.
@@ -6746,6 +6746,22 @@ const objCurrent=(obj,tot,spent,pos)=>{const b=(obj&&obj.clubScoped)?(spent||{g:
     :obj.type==="assists"?Math.max(0,(tot.a||0)-(b.a||0))
     :obj.type==="matches"?Math.max(0,(tot.m||0)-(b.m||0)):pos;};
 const objDone=(obj,cur)=>obj.type==="standing"?cur<=obj.target:cur>=obj.target;
+/* [7.296.0 collaudo PO «obiettivi personali non allineati con la stessa logica al cambio club»] La quota di
+   stagione giocata con la maglia ATTUALE, in UN solo criterio: giornate di campionato dell'eroe su giornate
+   del suo club. La usano il bersaglio degli obiettivi di club e quello dei personali, cosi' non possono
+   divergere — nello screenshot il club chiedeva «9 gol col nuovo club» (centrato) mentre lo stesso cruscotto,
+   due centimetri sotto, misurava il record personale su 49 gol pieni contando solo i 14 di questa maglia.
+   Vale SOLO a stagione spezzata da un trasferimento (`clubScoped`): chi resta tutto l'anno non viene toccato,
+   e nemmeno chi salta mezza stagione per infortunio — quello non e' un cambio di maglia. */
+const seasonSplitShare=(p)=>{try{
+  if(!p||(p.proStatus||"u18")!=="pro"||!p.club)return 1;
+  if(!((p.seasonObjectives||[]).some(o=>o&&o.clubScoped)))return 1;
+  const mh=(p.matchHistory||[]).filter(m=>m&&!m.cup&&!m.euro&&!m.national).length;
+  const row=[...(p.standings||[])].find(t=>t&&(t.id===p.club.id||(t.n||t.name)===p.club.n));
+  const pl=(row&&row.played)||0;
+  if(!(pl>0)||!(mh>0)||mh>=pl)return 1;
+  return clamp(mh/pl,0.2,1);
+}catch(_e){return 1;}};
 /* [7.285.0 #108 collaudo PO «18 a 1 in che senso? dopo la prima giornata ha gia' fatto 18 gol??»] I GOL DEL
    RIVALE MATURANO DURANTE LA STAGIONE. `rival.goals` era scritto UNA volta sola, al rollover (`rng(7,20)`, per
    giunta scollegato dal suo valore): durante l'anno restava fermo sul totale della stagione PRECEDENTE, mentre
@@ -22479,11 +22495,17 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     if((p.proStatus||"u18")!=="pro")return null;
     const hist=(p.history||[]).slice(-1)[0];
     const clubGoalT=((p.seasonObjectives||[]).find(o=>o.type==="goals")||{}).target||8;
-    const gT=hist?Math.max(4,(hist.goals||0)+1):Math.max(4,clubGoalT-2);
+    const _gT0=hist?Math.max(4,(hist.goals||0)+1):Math.max(4,clubGoalT-2);
+    /* [7.296.0] a stagione spezzata dal mercato il record si insegue col RITMO, non col totale pieno: bersaglio
+       pro-rata sulla quota giocata qui e conto della sola maglia attuale (lo scarto lo da' `seasonCarry`). */
+    const _shP=seasonSplitShare(p),_spP=_objSpent(p),_split=_shP<1;
+    const gT=_split?Math.max(3,Math.round(_gT0*_shP)):_gT0;
+    const _curG=_split?Math.max(0,(p.goals||0)-(_spP.g||0)):(p.goals||0);
     const rated=(p.matchHistory||[]).filter(m=>m&&typeof m.rating==="number");
     const avg=rated.length?Math.round(rated.reduce((s,m)=>s+m.rating,0)/rated.length*100)/100:null;
     return[
-      {k:"gol",label:hist?`Batti il tuo record: ${gT}+ gol (S.${hist.season}: ${hist.goals||0})`:`La prima stagione da pro: ${gT}+ gol`,cur:p.goals||0,target:gT,done:(p.goals||0)>=gT},
+      {k:"gol",label:_split?(hist?`Ritmo da record: ${gT}+ gol col nuovo club (S.${hist.season}: ${hist.goals||0})`:`Da qui a fine stagione: ${gT}+ gol col nuovo club`)
+        :(hist?`Batti il tuo record: ${gT}+ gol (S.${hist.season}: ${hist.goals||0})`:`La prima stagione da pro: ${gT}+ gol`),cur:_curG,target:gT,done:_curG>=gT},
       {k:"voto",label:"Media voto ≥ 6.7 (almeno 5 gare)",cur:avg,target:6.7,done:avg!=null&&rated.length>=5&&avg>=6.7,n:rated.length}
     ];
   }catch(_e){return null;}};
@@ -28690,16 +28712,31 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       {/* LEAGUE ARCHIVE — standings tab */}
       {tab==="standings"&&(()=>{
         const arch=[...(player.leagueArchive||[])].reverse();
-        if(!arch.length)return null;
-        // Count titles per club
+        /* [7.296.0 collaudo PO «albo d'oro non c'è la serie A»] L'albo si scriveva SOLO al rollover, quindi il
+           campionato che stai giocando non compariva: chi era passato in Lega A a stagione in corso vedeva
+           l'elenco delle leghe precedenti e la propria no. Ora in cima c'e' la stagione IN CORSO, derivata
+           dalla classifica vera (chi e' in testa, dove sei tu) e marcata come tale — nessun titolo assegnato
+           prima del tempo: non entra nel conteggio degli scudetti ne' nel «miglior piazzamento». */
+        const _curArc=(()=>{try{
+          if((player.proStatus||"u18")!=="pro"||!player.club||!player.club.lg)return null;
+          const st=[...(player.standings||[])].sort((a,b)=>(b.pts||0)-(a.pts||0)||(((b.gf||0)-(b.ga||0))-((a.gf||0)-(a.ga||0))));
+          if(!st.length||!(st[0].played>0))return null;/* prima giornata non ancora giocata: niente da mostrare */
+          const pid=player.club.id||player.club.n;
+          const pos=st.findIndex(t=>t&&(t.id===pid||(t.n||t.name)===player.club.n));
+          return{season:player.season||1,league:player.club.lg,champion:(st[0].n||st[0].name||""),playerClub:player.club.n,
+            playerPos:pos>=0?pos+1:0,playerGoals:player.goals||0,playerAssists:player.assists||0,relegated:[],inProgress:true};
+        }catch(_e){return null;}})();
+        const rows=_curArc?[_curArc,...arch]:arch;
+        if(!rows.length)return null;
+        // Count titles per club — SOLO stagioni chiuse
         const titleCount={};
         arch.forEach(e=>{if(e.champion)titleCount[e.champion]=(titleCount[e.champion]||0)+1;});
         const topClubs=Object.entries(titleCount).sort((a,b)=>b[1]-a[1]).slice(0,3);
-        // Best player finish ever
+        // Best player finish ever — idem: una stagione in corso non e' un piazzamento
         const bestPos=arch.reduce((best,e)=>e.playerPos>0&&(best===0||e.playerPos<best)?e.playerPos:best,0);
         // Group by league
-        const leagues=[...new Set(arch.map(e=>e.league).filter(Boolean))];
-        const isPlayerChamp=e=>e.champion===e.playerClub;
+        const leagues=[...new Set(rows.map(e=>e.league).filter(Boolean))];
+        const isPlayerChamp=e=>!e.inProgress&&e.champion===e.playerClub;
         return(
           <Card style={{marginTop:8,padding:"12px 14px"}}>
             <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:10}}>🏆 Albo d'Oro — Storico Campioni</div>
@@ -28723,7 +28760,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
             )}
             {/* Per-league sections */}
             {leagues.map(lg=>{
-              const entries=arch.filter(e=>e.league===lg);
+              const entries=rows.filter(e=>e.league===lg);
               return(
                 <div key={lg} style={{marginBottom:leagues.length>1?14:0}}>
                   {leagues.length>1&&<div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:2,marginBottom:6,borderBottom:"1px solid "+TH.cardBorder,paddingBottom:4}}>{lg}</div>}
@@ -28737,8 +28774,9 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
                           <div style={{flex:1}}>
                             <div style={{display:"flex",alignItems:"center",gap:5,flexWrap:"wrap"}}>
                               <span style={{fontSize:11,fontWeight:isChamp?FW.black:FW.semibold,color:isChamp?TH.goldText:TH.text}}>
-                                {isChamp?"🏆":""} {e.champion}
+                                {e.inProgress?"🔴 In testa: ":isChamp?"🏆 ":""}{e.champion}
                               </span>
+                              {e.inProgress&&<span style={{fontSize:9,fontWeight:FW.bold,letterSpacing:0.5,padding:"1px 6px",borderRadius:RAD.pill,background:TH.surface2,border:"1px solid "+TH.divider,color:TH.muted}}>IN CORSO</span>}
                               {e.isPlayerCupChamp&&<Badge tone="warn" size="sm">🥇 Coppa</Badge>}
                               {e.isPlayerEuroChamp&&<Badge tone="info" size="sm">🌍 Euro</Badge>}
                             </div>
