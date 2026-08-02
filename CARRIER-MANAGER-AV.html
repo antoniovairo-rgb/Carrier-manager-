@@ -3989,7 +3989,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="7.300.1"; // [7.300.1 collaudo PO «non mi porta all'azione, si apre direttamente la carriera»] Il link diretto del 7.300.0 lo avevo messo DOPO l'auto-ripresa della carriera (7.149.0), che con un salvataggio attivo fa `return` prima: quindi funzionava soltanto su un dispositivo senza partita in corso — l'unico caso in cui non serve. Ora `?review=` si legge PRIMA di tutto il resto. Errore doppio, perche' anche il mio test girava senza salvataggio e per questo non l'ha visto: ora la verifica usa una carriera ATTIVA (slot + puntatore `cpm-active`, come sul telefono) e confronta i due casi — senza parametro si apre la carriera, col parametro si apre la scena (gi148 · «Triangolo col portiere» · esito riuscito)
+const GAME_VERSION="7.301.0"; // [7.301.0 richiesta PO «su tutti i muretti delle tribune metterei degli striscioni con logo e nome della competizione (vedi Champions League nella realta') per dare subito a colpo d'occhio l'atmosfera giusta» + «gli striscioni dei tifosi devono essere SOVRAPPOSTI»] Ogni settore ha ora la sua fascia brandizzata sul MURETTO — la base in cemento davanti alla prima fila, la stessa quota a cui il 3DV-TIFO appende i teli: fondo scuro, filetti nel colore della competizione e il motivo «badge + NOME COMPETIZIONE» ripetuto, come le fasce a bordo campo delle coppe vere. Etichetta e colore NON sono nuovi dati: sono gli stessi che gia' alimentano il tappeto di centrocampo e gli header (`competitionLabel`/`competitionColor`), passati a `buildStadium` — una sola fonte, cosi' il muretto non puo' dichiarare una competizione diversa dal resto della schermata. Gerarchia visiva come allo stadio: la fascia sta ADERENTE al muro (0.04) mentre gli striscioni degli ultras sono appesi piu' avanti (0.14), quindi il tifo COPRE la pubblicita' e non viceversa (`renderOrder` basso e `depthWrite:false` tolgono ogni ambiguita' di z-fighting). Costo: UNA texture per tutto lo stadio, ripetuta per la larghezza del settore → 4 mesh e 1 canvas, trascurabile anche su mobile. Verificato con screenshot: fascia leggibile in campo largo e, a stadio pieno, il telo «FORZA SELEZIONE» davanti alla fascia
 // [7.242.0 #56 chiusura — batch PO gi31-35 «Non si vede il gesto tecnico specifico» + verdetto difensivo] IL GESTO DIFENSIVO HA UNA FAMIGLIA. Ogni azione difensiva derivava `tackle/-` senza variante: la posa era UNA (scivolata) per pressing, anticipo, muro e deviazione. Tre famiglie STRUTTURALI congelate in factory (patto chainOn/gkCall — la regex vive solo in S()): slide (scivolata/disperato, posa storica a terra) · lunge (intercetto/anticipo/deviazione/muro: AFFONDO in piedi, gamba tesa e braccia larghe) · press (pressing/finta/recupero/copertura: ADDOSSO al portatore, busto avanti, braccio a schermare, tocco di punta). Prop hlDefGesto → pose sw-scalate auto-azzeranti nel blocco CINE-VAR; fallito = perdita di equilibrio comune. + VERDETTO DIFENSIVO RITARDATO (pattern #51): con l inbound 7.239 il pallone doveva ancora ARRIVARE quando usciva l overlay (misurato ~0.9s su gi31) → revealMs def 2250 con inbound / 1900 senza. Verificato sui fogli-provini: gi34 pressing = eroe addosso al portatore che vacilla, verdetto dopo il contatto.
 // [7.241.0 #56 batch PO gi28/29/37 «Non si vede il compagno che conclude»] FRENA PER GIRARTI — il difetto NON era la scelta del ricevente ne la transizione: attribuzione per-frame (AR53/54: oth=0, own>0, _ctx GIA sulla palla) → era il MODELLO DI STERZATA di animOne. Il ricevente lanciato sulla corsa profonda, con il filtrante atterrato ALLE SPALLE, navigava un inversione a U larga 20u e lunga secondi: il turn-rate e ∝1/velocita e la magnitudine della velocita-obiettivo restava PIENA nella direzione sbagliata. Ora quando la direzione voluta supera ~60° da quella di marcia la velocita-obiettivo cala col disallineamento (fino a 0.18×): la frenata passa dal limitatore di accelerazione, la velocita scende, il turn-rate risale → due passi di frenata e pivot, come in campo. Misurato prima→dopo: gi29 ricevente da divergenza a 24u → ARRIVO a 1.3u (t 0.41) con palla che parte con lui; gi37 2.0u; gi28 convergenza stretta. Vale per TUTTI i 21 off-ball (fisica piu vera anche su pressing/rientri — plausibile beneficio sul cluster difensivo «non aggancia il pallone»). +selezione demergenza del ricevente nel driver assist_recv (ogni scena ha SEMPRE un uomo sulla palla). ⚠️ modello core: gate 14/14 obbligatorio + realismo da riverificare sui baseline.
 // [7.240.0 #55B batch PO gi25/gi26 «Non si vede il compagno che riceve (e tira)» + gi43/28/29/30 storici] IL COMPAGNO ARRIVA SUL PALLONE PRIMA DI CALCIARE. Diagnosi strumentata (probe AR51/AR52 in-page, solo __CPM_REC): la catena assist_recv era VIVA e corretta — il primo sospetto «catena congelata» era un artefatto del campione stantio — ma (a) la transizione ricezione→tiro era a TEMPO FISSO 0.42s col ricevente ancora a 8-15u → il pallone volava in porta DA SOLO col gesto di calcio a vuoto; (b) il puntatore del ricevente (passTargetMesh) veniva AZZERATO all'avvio di assist_recv in 2 dei 3 siti (pass+assist = gi25 filtrante · tacco/scarico = gi26) e il driver, che scandiva solo il gesto _rcvT (0.52s di vita), restava senza nessuno da far correre. Fix: puntatore PERSISTENTE su tutti i siti (+_runToX fresco), fallback del driver sul puntatore, transizione ALL'ARRIVO (<2.2u, minimo 0.30s) con fallback 3.0s. Misurato prima→dopo: ricevente a 8-9u dalla palla al momento del tiro → 3.5-4u col gesto agganciato; gi26 duello leggibile sul foglio-provini; gi25 in wizard chiude con la catena e il gol.
@@ -8145,6 +8145,28 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
 
   // Helper: gradinata a DUE ANELLI inclinati verso il campo (§1 profondità reale, via muro piatto)
   // + LOD1 (§2): prime file di BUSTI 3D instanziati (2 draw call per settore, bob solo nei burst)
+  /* [7.301.0 richiesta PO «striscioni con logo e nome della competizione sui muretti delle tribune»] Fascia
+     brandizzata sul MURETTO (la base in cemento davanti a ogni settore, la stessa quota a cui il 3DV-TIFO appende
+     gli striscioni): fondo scuro, filetti nel colore della competizione e il motivo «badge + NOME» ripetuto, come
+     le fasce a bordo campo delle coppe vere. UNA texture per tutto lo stadio, ripetuta per la larghezza del
+     settore → 4 mesh e 1 canvas: costo trascurabile anche su mobile. */
+  const _compBanner=(function(){try{
+    const _c=(stadCfg.comp&&stadCfg.comp.lbl)?stadCfg.comp:null;if(!_c)return null;
+    const cv=document.createElement("canvas");cv.width=1024;cv.height=128;const x=cv.getContext("2d");
+    const col=_c.col||"#d27f8c";
+    const g=x.createLinearGradient(0,0,0,128);g.addColorStop(0,"#111a27");g.addColorStop(0.5,"#0b1220");g.addColorStop(1,"#0a0f1a");
+    x.fillStyle=g;x.fillRect(0,0,1024,128);
+    x.fillStyle=col;x.globalAlpha=0.9;x.fillRect(0,0,1024,7);x.fillRect(0,121,1024,7);x.globalAlpha=1;
+    const nm=String(_c.lbl).slice(0,26);
+    x.font="800 58px system-ui,Segoe UI,Arial";x.textAlign="left";x.textBaseline="middle";x.letterSpacing="2px";
+    const unit=1024/2;/* due ripetizioni per canvas: il motivo resta leggibile anche sui settori stretti */
+    for(let u=0;u<2;u++){const ox=u*unit;
+      if(typeof _cvLogoBadge==="function"){try{_cvLogoBadge(x,ox+62,64,92);}catch(_e){}}
+      x.fillStyle="#f2f5fa";x.fillText(nm,ox+120,67);
+      x.strokeStyle=col;x.globalAlpha=0.5;x.lineWidth=3;x.beginPath();x.moveTo(ox+unit-22,26);x.lineTo(ox+unit-22,102);x.stroke();x.globalAlpha=1;}
+    const t=new THREE.CanvasTexture(cv);t.wrapS=THREE.RepeatWrapping;t.wrapT=THREE.ClampToEdgeWrapping;
+    return t;
+  }catch(_e){return null;}})();
   const frontRows=[];
   const addStand=(cx,cz,rotY,standW,standD,standH,crowdObj,frontFill,isHome,isAway,opts)=>{
     opts=opts||{};const _nt=opts.tiers||2,_roofOn=opts.roofOn!==false;// anelli variabili + tetto per-settore (S2)
@@ -8178,6 +8200,16 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
     // Concrete base strip
     const base=new THREE.Mesh(new THREE.BoxGeometry(standW+2,3,standD+3),cM);
     base.position.set(0,1.5,0);g.add(base);
+    if(_compBanner){/* [7.301.0] striscione della competizione sulla FACCIA CAMPO del muretto (in locale il campo
+        sta a -z: stessa convenzione dei gradoni, che partono da -standD/2) */
+      const _bw=standW+2,_bh=1.7,_m=_compBanner.clone();
+      _m.wrapS=THREE.RepeatWrapping;_m.repeat.set(Math.max(1,Math.round(_bw/26)),1);_m.needsUpdate=true;
+      const _bn=new THREE.Mesh(new THREE.PlaneGeometry(_bw,_bh),new THREE.MeshBasicMaterial({map:_m}));
+      /* [7.301.0 collaudo PO «gli striscioni dei tifosi devono essere SOVRAPPOSTI»] la fascia della competizione
+         sta ADERENTE al muro (0.04) mentre gli striscioni ultras del 3DV-TIFO sono appesi piu' avanti (0.14):
+         cosi' i teli dei tifosi coprono la fascia, come allo stadio — la pubblicita' e' il fondo, il tifo sta
+         davanti. `renderOrder` basso e `depthWrite:false` tolgono ogni ambiguita' di z-fighting. */
+      _bn.position.set(0,1.85,-(standD+3)/2-0.04);_bn.rotation.y=Math.PI;_bn.renderOrder=-2;_bn.material.depthWrite=false;g.add(_bn);}
     // Roof: PENSILINA arretrata sopra il fondo dell'anello alto — il vecchio sbalzo in avanti, visto
     // dalla camera broadcast alta, COPRIVA l'anello inferiore (banda opaca al posto dei tifosi)
     if(_roofOn){
@@ -9225,7 +9257,13 @@ function ThreeMatchView(props){
     const sHome=stadiumHomeCol||homeCol||'#2563eb',sAway=stadiumAwayCol||oppCol||'#dc2626';
     // CROWD 2.0: il contesto folla arriva da computeCrowdContext (LiveMatch); __CPM_CROWD_OVERRIDE = hook di collaudo (solo test)
     const _crowdCtx=(typeof window!=='undefined'&&window.__CPM_CROWD_OVERRIDE)||crowd||null;
-    try{const _sc=buildStadium(scene,sHome,sAway,{prestige:club.p||club.prestige||65,style:stadiumStyle,floodColor:pal.flood,crowd:_crowdCtx,isDesktop,tpl:(function(){let _c=(_crowdCtx&&_crowdCtx.stadiumTpl)||((typeof stadiumConfigFor==="function")?stadiumConfigFor(club):null);// [5.89.0 S3] config con evoluzione/atmo dal LiveMatch
+    /* [7.301.0 richiesta PO «su tutti i muretti delle tribune metterei striscioni con logo e nome della
+       competizione, per dare a colpo d'occhio l'atmosfera giusta»] etichetta e colore della competizione — gli
+       STESSI del tappeto di centrocampo e degli header (props.competitionLabel/competitionColor) — arrivano
+       allo stadio: una sola fonte, cosi' il muretto non puo' dire una competizione diversa dal resto. */
+    const _cmpLbl301=String(props.competitionLabel||club?.lg||"CAMPIONATO").toUpperCase();
+    const _cmpCol301=props.competitionColor||(/coppa|cup|champions|europa|conference|continental/i.test(_cmpLbl301)?"#f5c542":/mondiale|europeo|nazional/i.test(_cmpLbl301)?"#34d399":"#d27f8c");
+    try{const _sc=buildStadium(scene,sHome,sAway,{comp:{lbl:_cmpLbl301,col:_cmpCol301},prestige:club.p||club.prestige||65,style:stadiumStyle,floodColor:pal.flood,crowd:_crowdCtx,isDesktop,tpl:(function(){let _c=(_crowdCtx&&_crowdCtx.stadiumTpl)||((typeof stadiumConfigFor==="function")?stadiumConfigFor(club):null);// [5.89.0 S3] config con evoluzione/atmo dal LiveMatch
       // [5.88.0 S2] hook di COLLAUDO template (test-only, spento nella build store): window.__CPM_STADIUM_TPL_FORCE
       if(_c&&typeof window!=="undefined"&&!window.__CPM_STORE_BUILD&&window.__CPM_STADIUM_TPL_FORCE&&STADIUM_TEMPLATES[window.__CPM_STADIUM_TPL_FORCE]){
         const _ft=STADIUM_TEMPLATES[window.__CPM_STADIUM_TPL_FORCE];
