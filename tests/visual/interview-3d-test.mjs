@@ -52,6 +52,26 @@ const st3 = await page.evaluate(() => { const ovs = [...document.querySelectorAl
 console.log('(3) prematch:', JSON.stringify(st3));
 if (st3.modal && st3.canvas) issues.push('(3) mixed zone montata anche PRE-partita');
 
+// (4) [7.299.0] la FIGURA in mixed zone deve avere il genere del NOME mostrato nel modal
+{
+  /* Collaudo PO «l'intervistatrice non è una donna! occhio alla coerenza!»: il nome veniva dal pool dei
+     giornalisti, il genere della figura 3D da un lancio di moneta sul seed → una volta su due la giornalista
+     era resa come uomo. Il genere ora è un dato del pool e la scena lo riceve: qui si verifica che il legame
+     esista nel codice e che il pool tagghi le giornaliste. */
+  const src = await (await import('node:fs/promises')).readFile(new URL('../../CARRIER-MANAGER-AV.html', import.meta.url), 'utf8');
+  const i0 = src.indexOf('function InterviewStage3D'), i1 = src.indexOf('function GalaStage3D');
+  const scena = src.slice(i0, i1);
+  const legato = /journalistIsFemale\(jName\)/.test(scena) && /jName=null/.test(scena);
+  const passato = /jName=\{\(interviewModal\.paper/.test(src);
+  const donne = await page.evaluate(() => (window.JOURNALIST_POOL || []).filter(j => j && j.f).map(j => j.name));
+  const genere = await page.evaluate(() => (window.journalistIsFemale ? [window.journalistIsFemale('Anna Lombardi'), window.journalistIsFemale('Marco Ferretti'), window.journalistIsFemale('Nome Ignoto')] : null));
+  console.log(`(4) genere legato al nome: ${legato} · prop passata dal modal: ${passato} · giornaliste nel pool: ${donne.join(', ') || '(nessuna)'} · lookup [Anna, Marco, ignoto]: ${JSON.stringify(genere)}`);
+  if (!legato) issues.push('(4) la scena decide il genere col seed invece che dal nome mostrato');
+  if (!passato) issues.push('(4) il nome del giornalista non arriva alla scena 3D');
+  if (!donne.length) issues.push('(4) nessuna giornalista taggata nel pool: il lookup non può funzionare');
+  if (!genere || genere[0] !== true || genere[1] !== false || genere[2] !== null) issues.push(`(4) lookup del genere errato: ${JSON.stringify(genere)}`);
+}
+
 await browser.close(); srv.close();
 console.log(issues.length ? '❌ FAIL\n' + issues.map(i => '  ✗ ' + i).join('\n') : '✅ INTERVISTA 3D OK (mixed zone post-partita · dispose · prematch escluso)');
 process.exit(issues.length ? 1 : 0);
