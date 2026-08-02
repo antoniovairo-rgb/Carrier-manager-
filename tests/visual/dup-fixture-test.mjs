@@ -42,12 +42,23 @@ const res = await page.evaluate(() => {
   const d = M(JSON.parse(JSON.stringify(p3)));
   const dCal = (d.player.calendar||[]).filter(m=>m.opponentId===_op.id).map(m=>(m.isHome?'H':'A')).sort();
   const heal3 = !dCal.includes('A') && dCal.includes('H');   // stantia (trasferta già giocata) rimossa · ritorno in casa intatto
-  /* controprova RUNTIME: senza migration, getThisWeekMatchday non deve servirla comunque */
-  return { left, changed:a.changed, idem:(b.player.calendar||[]).length===(a.player.calendar||[]).length, heal2, heal3, dCal };
+  /* [7.302.0 collaudo PO «bug grave! partita già giocata» — 6a variante, su «Giornata 34 DI 34»] HEAL 4:
+     invariante che non dipende da nessuna chiave sporcabile — il calendario ha UNA voce per numero di
+     GIORNATA, quindi una voce di lega NON giocata con un numero di giornata GIA' giocato e' un duplicato. */
+  const p4 = mk([
+    { matchday:34, week:37, opponentId:'cat', opponentName:'FC Catalunya', isHome:true, played:true,  result:'W 2-0' },
+    { matchday:34, week:37, opponentId:'gir', opponentName:'Altro Club',   isHome:true, played:false, result:null },
+  ]);
+  const e = M(JSON.parse(JSON.stringify(p4)));
+  const heal4 = !(e.player.calendar||[]).some(m=>!m.type&&!m.played&&m.matchday===34);
+  /* e la STAGIONE dev'essere timbrata su OGNI entry di storico, non solo su quelle giocate dal vivo:
+     senza, la guardia (C) del 7.210.0 e' morta dalla stagione 2 in poi per tutte le gare simulate. */
+  const simStamped = (window.__CPM_SRC_HAS_SEASON!==false);
+  return { left, changed:a.changed, idem:(b.player.calendar||[]).length===(a.player.calendar||[]).length, heal2, heal3, heal4, simStamped, dCal };
 });
 await browser.close(); srv.close();
 if (res.err){ console.error('❌ '+res.err); process.exit(2); }
 console.log(JSON.stringify(res));
-const ok = res.left.includes('cat|HP') && res.left.includes('cat|AU') && !res.left.includes('cat|HU') && res.left.length===3 && res.idem && res.heal2 && res.heal3 && !errs.length;// invarianti: duplicato (cat|H non giocata) RIMOSSO · ritorno cat|A intatto · giocata intatta · terza fixture conservata (repair pool può ripuntarla)
-console.log(ok ? '✅ PASS — duplicato rimosso, ritorno intatto, idempotente, HEAL 3 (giocata mai marcata) bonificata' : '❌ FAIL');
+const ok = res.left.includes('cat|HP') && res.left.includes('cat|AU') && !res.left.includes('cat|HU') && res.left.length===3 && res.idem && res.heal2 && res.heal3 && res.heal4 && !errs.length;// invarianti: duplicato (cat|H non giocata) RIMOSSO · ritorno cat|A intatto · giocata intatta · terza fixture conservata (repair pool può ripuntarla)
+console.log(ok ? '✅ PASS — duplicato rimosso, ritorno intatto, idempotente, HEAL 3 (giocata mai marcata) + HEAL 4 (giornata duplicata) bonificate' : '❌ FAIL');
 process.exit(ok?0:2);
