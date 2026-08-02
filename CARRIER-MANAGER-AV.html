@@ -3989,7 +3989,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="7.296.0"; // [7.296.0 due collaudi PO sullo stesso cruscotto] (1) «obiettivi personali non allineati con la stessa logica al cambio club, senza tenere il conteggio solo del nuovo club»: sul cruscotto il club chiedeva «Segna 9 gol col nuovo club» (centrato) mentre due centimetri sotto il record personale restava su 49 gol pieni contando solo i 14 di questa maglia — due metri diversi nella stessa schermata. Ora la quota di stagione giocata con la maglia attuale la definisce UN solo criterio (`seasonSplitShare`: giornate di campionato dell'eroe su giornate del suo club) e la usano sia gli obiettivi di club sia i personali: a stagione spezzata dal mercato il record si insegue col RITMO — «Ritmo da record: 21+ gol col nuovo club (S.7: 48)» — contando i gol di questa maglia. Il criterio scatta SOLO a stagione spezzata da un trasferimento (`clubScoped`): chi resta tutto l'anno e' invariato, e nemmeno chi salta mezza stagione per infortunio viene toccato — quello non e' un cambio di maglia. (2) «albo d'oro non c'e' la serie A»: l'albo si scriveva solo al rollover, quindi il campionato che stai GIOCANDO non compariva — chi era passato in Lega A a stagione in corso vedeva l'elenco delle leghe precedenti e la propria no. Ora in cima c'e' la stagione in corso, derivata dalla classifica vera (chi e' in testa, dove sei tu) e marcata IN CORSO; non assegna nulla in anticipo: fuori dal conteggio degli scudetti e dal «miglior piazzamento». Guardiano `stagione-trasferimento-test` esteso col caso (F) — ⚠️ la prima stesura del controllo era un falso positivo mio: col 1° posto nella stagione archiviata il banner «Hai vinto la lega» e' legittimo e non misurava affatto la fuga della stagione in corso
+const GAME_VERSION="7.297.0"; // [7.297.0 collaudo PO sulla serata di presentazione (3 screenshot): «i giocatori sono tutti uguali, l'eroe e' vestito da portiere, la maglia della Juve deve essere a strisce bianche e nere» + «presenterei i giocatori importanti ed i nuovi acquisti!»] La scena che avevo scritto nel 7.292.0 si era costruita un guardaroba e un'anagrafica TUTTI SUOI invece di usare quelli del gioco — errore mio, e si vedeva: kit a tinta unita (maglia = 1° colore sociale, pantaloncini = 2°) quindi Torino Athletic bianco-nero liscio invece che a strisce; cloni identici a meno di due centimetri d'altezza; e l'eroe tinto d'AMBRA, che nel match e' il colore per farlo RISALTARE ma qui, in fila con gli altri, leggeva come un portiere. Ora la presentazione usa gli strumenti che il gioco ha gia': `kitPatternFor`+`kitPatternTex` per il kit VERO del club (strisce comprese, col numero dell'eroe dipinto sul dorso), `appearanceFromSeed` per statura/corporatura/incarnato/capelli/calvizie per giocatore — stessa formula del match, quindi chi vedi alla presentazione e' chi scende in campo — e l'avatar di carriera per l'eroe, che indossa la divisa della squadra come tutti. Cambia anche CHI viene chiamato: non piu' quattro slot fissi della rosa ma i NUOVI ACQUISTI (lo stesso diff rosa-di-quest'anno / rosa-dell'anno-scorso del passo mercato, 7.147.0) e le facce note dello spogliatoio (capitano, mentore, rivale interno: nomi reali della rosa), completati dai ruoli offensivi se restano posti; l'eroe chiude sempre. Guardiano `presentazione-stadio-test` esteso: la scena deve usare kit e aspetto del gioco (mai l'ambra sull'eroe) e i chiamati devono essere giocatori VERI della rosa, con almeno un nuovo acquisto annunciato
 // [7.242.0 #56 chiusura — batch PO gi31-35 «Non si vede il gesto tecnico specifico» + verdetto difensivo] IL GESTO DIFENSIVO HA UNA FAMIGLIA. Ogni azione difensiva derivava `tackle/-` senza variante: la posa era UNA (scivolata) per pressing, anticipo, muro e deviazione. Tre famiglie STRUTTURALI congelate in factory (patto chainOn/gkCall — la regex vive solo in S()): slide (scivolata/disperato, posa storica a terra) · lunge (intercetto/anticipo/deviazione/muro: AFFONDO in piedi, gamba tesa e braccia larghe) · press (pressing/finta/recupero/copertura: ADDOSSO al portatore, busto avanti, braccio a schermare, tocco di punta). Prop hlDefGesto → pose sw-scalate auto-azzeranti nel blocco CINE-VAR; fallito = perdita di equilibrio comune. + VERDETTO DIFENSIVO RITARDATO (pattern #51): con l inbound 7.239 il pallone doveva ancora ARRIVARE quando usciva l overlay (misurato ~0.9s su gi31) → revealMs def 2250 con inbound / 1900 senza. Verificato sui fogli-provini: gi34 pressing = eroe addosso al portatore che vacilla, verdetto dopo il contatto.
 // [7.241.0 #56 batch PO gi28/29/37 «Non si vede il compagno che conclude»] FRENA PER GIRARTI — il difetto NON era la scelta del ricevente ne la transizione: attribuzione per-frame (AR53/54: oth=0, own>0, _ctx GIA sulla palla) → era il MODELLO DI STERZATA di animOne. Il ricevente lanciato sulla corsa profonda, con il filtrante atterrato ALLE SPALLE, navigava un inversione a U larga 20u e lunga secondi: il turn-rate e ∝1/velocita e la magnitudine della velocita-obiettivo restava PIENA nella direzione sbagliata. Ora quando la direzione voluta supera ~60° da quella di marcia la velocita-obiettivo cala col disallineamento (fino a 0.18×): la frenata passa dal limitatore di accelerazione, la velocita scende, il turn-rate risale → due passi di frenata e pivot, come in campo. Misurato prima→dopo: gi29 ricevente da divergenza a 24u → ARRIVO a 1.3u (t 0.41) con palla che parte con lui; gi37 2.0u; gi28 convergenza stretta. Vale per TUTTI i 21 off-ball (fisica piu vera anche su pressing/rientri — plausibile beneficio sul cluster difensivo «non aggancia il pallone»). +selezione demergenza del ricevente nel driver assist_recv (ogni scena ha SEMPRE un uomo sulla palla). ⚠️ modello core: gate 14/14 obbligatorio + realismo da riverificare sui baseline.
 // [7.240.0 #55B batch PO gi25/gi26 «Non si vede il compagno che riceve (e tira)» + gi43/28/29/30 storici] IL COMPAGNO ARRIVA SUL PALLONE PRIMA DI CALCIARE. Diagnosi strumentata (probe AR51/AR52 in-page, solo __CPM_REC): la catena assist_recv era VIVA e corretta — il primo sospetto «catena congelata» era un artefatto del campione stantio — ma (a) la transizione ricezione→tiro era a TEMPO FISSO 0.42s col ricevente ancora a 8-15u → il pallone volava in porta DA SOLO col gesto di calcio a vuoto; (b) il puntatore del ricevente (passTargetMesh) veniva AZZERATO all'avvio di assist_recv in 2 dei 3 siti (pass+assist = gi25 filtrante · tacco/scarico = gi26) e il driver, che scandiva solo il gesto _rcvT (0.52s di vita), restava senza nessuno da far correre. Fix: puntatore PERSISTENTE su tutti i siti (+_runToX fresco), fallback del driver sul puntatore, transizione ALL'ARRIVO (<2.2u, minimo 0.30s) con fallback 3.0s. Misurato prima→dopo: ricevente a 8-9u dalla palla al momento del tiro → 3.5-4u col gesto agganciato; gi26 duello leggibile sul foglio-provini; gi25 in wizard chiude con la catena e il gol.
@@ -17958,7 +17958,7 @@ function InterviewStage3D({avatarId=0,club=null,ctx="win",seed=7}){
    schierata a centrocampo, fari, fuochi d'artificio sul finale, camera che gira attorno alla fila.
    I calciatori sono i CH38 clonati (SkeletonUtils) e restano INVISIBILI finche' il modello non e' agganciato
    — regola «mai burattini in campo» (7.9.3/7.8.19); senza GLB la scena mostra lo stadio e basta. */
-function PresentationStage3D({club,beat=0,total=6,seed=7,youth=false}){
+function PresentationStage3D({club,beat=0,total=6,seed=7,youth=false,avatarId=0,heroNum=0}){
   const ref=React.useRef(null);const st=React.useRef({beat:0,total:6});
   st.current.beat=beat|0;st.current.total=Math.max(1,total|0);
   React.useEffect(()=>{
@@ -18000,27 +18000,52 @@ function PresentationStage3D({club,beat=0,total=6,seed=7,youth=false}){
        ⚠️ Un clone SENZA clip resta in BIND POSE, cioe' a braccia larghe: sullo screenshot sembrava esattamente un
        burattino. Ogni giocatore ha quindi il suo mixer con l'idle, sfasato per non farli respirare all'unisono. */
     const line=new THREE.Group();scene.add(line);
-    const N=5,SP=4.6,HERO=N-1,LZ=6,STEP=10.4;/* HERO ultimo: lo speaker chiude su di lui */
+    /* [7.297.0 collaudo PO «i giocatori sono tutti uguali, l'eroe e' vestito da portiere, la maglia della Juve
+       deve essere a strisce bianche e nere»] La prima stesura si era costruita un guardaroba e un'anagrafica
+       tutti suoi: kit a tinta unita (maglia = 1° colore sociale, pantaloncini = 2°) e cloni identici a meno di
+       due centimetri d'altezza. Il gioco ha gia' gli strumenti giusti e vanno usati QUELLI, altrimenti la
+       presentazione mostra una squadra che in campo non esiste:
+         · `kitPatternFor` + `kitPatternTex` → il kit VERO del club (Torino Athletic e' a strisce, non bianco);
+         · `appearanceFromSeed` → statura, corporatura, incarnato, capelli e calvizie per giocatore, seedati sul
+           club+slot come nel match (stessa formula ⇒ chi vedi qui e' chi scende in campo);
+         · l'eroe indossa la DIVISA DELLA SQUADRA con il suo numero sul dorso — l'ambra della prima stesura era
+           il colore che il match usa per FARLO RISALTARE, ma qui, in fila con gli altri, leggeva come un portiere.
+       Chi viene presentato lo decide `presBeats`: il numero di beat comanda la lunghezza della fila. */
+    const N=Math.max(2,Math.min(9,(st.current.total|0)-1)),SP=4.6,HERO=N-1,LZ=6,STEP=10.4;
     const men=[];const mixers=[];
+    const _pat=(typeof kitPatternFor==="function")?kitPatternFor(club||{}):"solid";
+    const _num=heroNum|0;
+    /* l'eroe e' il SUO avatar di carriera, con la stessa formula del match (9405): incarnato/capelli da AVATARS */
+    const heroAppr=(function(){try{const av=(typeof AVATARS!=="undefined")&&AVATARS[((avatarId|0)%AVATARS.length+AVATARS.length)%AVATARS.length];
+      return av?{height:1.86+((avatarId*73)%100)/100*0.16,girth:0.97+((avatarId*131)%100)/100*0.10,skin:av.skin,hair:av.hair,bald:av.style==='bald'}:null;}catch(_e){return null;}})();
     if(window.__CPM_GLB!==false&&typeof loadGLB==="function"&&THREE.SkeletonUtils&&THREE.SkeletonUtils.clone){
       Promise.all([loadGLB('./assets/footballer.glb'),loadGLB('./assets/anim-idle.glb').catch(()=>null)]).then(([glb,idle])=>{
         if(!glb||!glb.scene)return;
         for(let i=0;i<N;i++){
           const root=THREE.SkeletonUtils.clone(glb.scene);
-          const bb=new THREE.Box3().setFromObject(root),hh=Math.max(0.001,bb.max.y-bb.min.y);
-          root.scale.setScalar((1.76+R(40+i)*0.10)/hh);root.position.set((i-(N-1)/2)*SP,0,LZ);root.rotation.y=0;/* verso la tribuna della camera: con Math.PI si presentavano di SPALLE */
-          const kit=new THREE.Color(i===HERO?"#f59e0b":homeHex),sh=new THREE.Color(i===HERO?"#1b2432":awayHex);
+          const isHero=(i===HERO);
+          const ap=(isHero&&heroAppr)?heroAppr:((typeof appearanceFromSeed==="function")?appearanceFromSeed(hashStr(String((club&&club.id)||"x")+"|pres|"+i)):{height:1.82,girth:1});
           root.traverse(o=>{if(!o.isMesh||!o.material)return;o.frustumCulled=false;const n=(o.name||"").toLowerCase();
-            const set=(c)=>{o.material=o.material.clone();if(o.material.map)o.material.map=null;o.material.color=new THREE.Color(c);
-              if(o.material.emissive)o.material.emissive=new THREE.Color(c).multiplyScalar(0.12);o.material.needsUpdate=true;};
-            if(n.indexOf('shirt')>=0||n.indexOf('socks')>=0)set(kit);else if(n.indexOf('shorts')>=0)set(sh);else if(n.indexOf('shoes')>=0)set(0x222222);});
+            if(n.indexOf('joint')>=0){o.visible=false;return;}
+            const set=(c)=>{const col=new THREE.Color(c);o.material=new THREE.MeshLambertMaterial({color:col,emissive:col.clone().multiplyScalar(0.14),skinning:true});};
+            if(n.indexOf('shirt')>=0){let t=null;
+              if(typeof kitPatternTex==="function")t=kitPatternTex(homeHex,awayHex,_pat||'solid',(isHero&&_num)?_num:undefined);
+              if(t)o.material=new THREE.MeshLambertMaterial({map:t,emissive:new THREE.Color(homeHex).multiplyScalar(0.12),skinning:true});
+              else set(homeHex);}
+            else if(n.indexOf('shorts')>=0)set(awayHex);
+            else if(n.indexOf('socks')>=0)set(homeHex);
+            else if(n.indexOf('shoes')>=0)set(0x222222);
+            else if(n.indexOf('hair')>=0){if(ap.bald)o.visible=false;else o.material=new THREE.MeshLambertMaterial({color:new THREE.Color(ap.hair||'#2d1800'),skinning:true});}
+            else if(n.indexOf('body')>=0&&o.material.map){o.material=o.material.clone();const sk=new THREE.Color(ap.skin||0xffffff);o.material.color=sk;if('emissive'in o.material)o.material.emissive=sk.clone().multiplyScalar(0.24);}});
+          const bb=new THREE.Box3().setFromObject(root),hh=Math.max(0.001,bb.max.y-bb.min.y);
+          const sc=(ap.height||1.82)/hh,gi=ap.girth||1;root.scale.set(sc*gi,sc,sc*gi);
+          root.position.set((i-(N-1)/2)*SP,0,LZ);root.rotation.y=0;/* verso la tribuna della camera */
           line.add(root);men.push(root);
           if(idle&&idle.animations&&idle.animations[0]){const mx=new THREE.AnimationMixer(root);
             const a=mx.clipAction(idle.animations[0]);a.play();a.timeScale=0.55+R(60+i)*0.12;mx.setTime(R(70+i)*2.4);mixers.push(mx);}
         }
       }).catch(()=>{});
     }
-    /* fuochi d'artificio sul beat finale */
     /* ⚠️ `size` e' in UNITA' MONDO con sizeAttenuation: 1.5 a ~35u di distanza sono ~50px a punto — i 90 punti
        ancora raccolti a inizio scoppio si fondevano in un DISCO azzurro pieno (visto a schermo). Scintille piccole,
        piu' numerose e additive: leggono come fuochi anche nel primo fotogramma del burst. */
@@ -22041,13 +22066,30 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
   // Handler CONDIVISI card⟷wizard (una sola logica di effetti):
   /* [7.292.0 direttiva PO] LA SERATA DI PRESENTAZIONE, evento pre-campionato: stato dei beat + chiusura. */
   const[presEvent,setPresEvent]=useState(null);/* {beat} */
+  /* [7.297.0 collaudo PO «presenterei i giocatori importanti ed i nuovi acquisti!»] Chi chiami sul prato non
+     puo' essere una quaterna di slot fissi (2·6·7·10): una presentazione ha senso se annuncia i NUOVI ACQUISTI
+     — lo stesso diff rosa-di-quest'anno contro rosa-dell'anno-scorso del passo mercato (7.147.0) — e le facce
+     note dello spogliatoio (`p.teammates`: capitano, mentore, amico, rivale — nomi REALI della rosa), completate
+     dai ruoli offensivi se restano posti. L'eroe chiude sempre. */
   const presBeats=()=>{try{
-    const p=player,cl=p.club||{};let ros=[];try{ros=generateTeamRoster(cl,p.season||1)||[];}catch(_e){}
-    const picks=[ros[2],ros[6],ros[7],ros[10]].filter(Boolean);
+    const p=player,cl=p.club||{},sn=p.season||1;
+    let ros=[],prev=[];
+    try{ros=generateTeamRoster(cl,sn)||[];}catch(_e){}
+    try{prev=(sn>1)?(generateTeamRoster(cl,sn-1)||[]):[];}catch(_e){}
     const _yt=(p.proStatus||"u18")!=="pro";
+    const seen=new Set(),out=[];
+    const add=(r,tag)=>{if(!r||!r.name||seen.has(r.name)||out.length>=5)return;seen.add(r.name);out.push({t:tag||r.role,n:r.name});};
+    /* 1. i nuovi acquisti (max 3): chi occupa uno slot che l'anno scorso era di un altro */
+    ros.forEach((r,i)=>{if(out.length<3&&prev[i]&&prev[i].name&&prev[i].name!==r.name)add(r,`Nuovo acquisto · ${r.role}`);});
+    /* 2. le facce note dello spogliatoio, col loro ruolo vero in rosa */
+    (p.teammates||[]).forEach(t=>{if(!t||!t.name)return;const r=ros.find(x=>x&&x.name===t.name);
+      const lbl=((typeof TEAMMATE_ARCHETYPES!=="undefined"&&(TEAMMATE_ARCHETYPES.find(a=>a.id===t.archetype)||{}).name)||"")||null;
+      add(r||{name:t.name,role:"La squadra"},lbl?`${lbl} · ${(r&&r.role)||"La squadra"}`:undefined);});
+    /* 3. se restano posti, i ruoli che il pubblico aspetta */
+    [10,7,8,5].forEach(i=>add(ros[i]));
     return[{t:"Buonasera e benvenuti allo",n:(getStadiumName?getStadiumName(cl):null)||"nostro stadio"},
-      {t:"Signore e signori… ecco a voi",n:`${_yt?"LA ":"IL VOSTRO "}${(cl.n||"SQUADRA").toUpperCase()}${_yt?"!":"!"}`},
-      ...picks.map(r=>({t:r.role,n:r.name})),
+      {t:"Signore e signori… ecco a voi",n:`${_yt?"LA ":"IL VOSTRO "}${(cl.n||"SQUADRA").toUpperCase()}!`},
+      ...out,
       {t:`…e il vostro numero ${p.jerseyNum||10}`,n:(p.name||"").toUpperCase()+"!"}];
   }catch(_e){return[{t:"Presentazione",n:"LA SQUADRA!"}];}};
   const doSerataPres=()=>{setPresEvent(null);setPlayer(p=>({...p,presentSeason:p.season||1,
@@ -22364,7 +22406,8 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
   useEffect(()=>{if(_CPM_TEST&&typeof window!=='undefined'){
     window.__CPM_CAREER={
       goScreen:(sc)=>{try{setScreen(sc);return true;}catch(e){return "error:"+(e&&e.message);}},
-      goTab:(t)=>{try{setTab(t);setScreen(t);return true;}catch(e){return "error:"+(e&&e.message);}},/* [7.293.0] la probe stagione-trasferimento deve poter aprire il sotto-tab Coppe: le voci di nav non sono <button> *//* [7.262.0] la probe pro-offers-stable deve poter raggiungere la schermata delle offerte pro senza attraversare due stagioni U18 */
+      goTab:(t)=>{try{setTab(t);setScreen(t);return true;}catch(e){return "error:"+(e&&e.message);}},
+      presBeats:()=>{try{return presBeats();}catch(e){return null;}},/* [7.297.0] la probe verifica CHI viene chiamato sul prato *//* [7.293.0] la probe stagione-trasferimento deve poter aprire il sotto-tab Coppe: le voci di nav non sono <button> *//* [7.262.0] la probe pro-offers-stable deve poter raggiungere la schermata delle offerte pro senza attraversare due stagioni U18 */
       bump:()=>{try{setNotif({msg:"probe",color:"#000"});setTimeout(()=>setNotif(null),60);return true;}catch(e){return "error:"+(e&&e.message);}},/* [7.262.0] forza un re-render del contenitore: e' proprio la condizione in cui le offerte si riestraevano */
       get:()=>({season:player.season||1,week:player.week||1,lived:!!player.weekLived,screen,ovr:player.ovr,bank:player.bankBalance||0,injured:!!player.injured,goals:player.goals||0,matches:player.matches||0,club:player.club?.id,standingsN:(player.standings||[]).length,gf:(player.standings||[]).reduce((a,t)=>a+(t.gf||0),0),ga:(player.standings||[]).reduce((a,t)=>a+(t.ga||0),0),contractDur:player.contract?.duration}),
       dismiss:()=>{try{setWeekLiveModal(null);setShowMatchPrompt(null);setTransferOffer(null);setNegoModal(null);setNationalCallupData(null);}catch(_e){}},
@@ -26220,7 +26263,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     const _cl=player.club||{};
     return(
     <div style={{position:"fixed",inset:0,zIndex:9997,background:"#050810"}}>
-      <PresentationStage3D club={_cl} beat={_i} total={_n} seed={Math.abs(hashStr((_cl.id||"x")+"pres"+(player.season||1)))} youth={(player.proStatus||"u18")!=="pro"}/>
+      <PresentationStage3D club={_cl} beat={_i} total={_n} seed={Math.abs(hashStr((_cl.id||"x")+"pres"+(player.season||1)))} youth={(player.proStatus||"u18")!=="pro"} avatarId={player.avatarId||0} heroNum={player.jerseyNum||0}/>
       <div style={{position:"absolute",left:0,right:0,top:"9%",display:"flex",justifyContent:"center",padding:"0 14px",pointerEvents:"none"}}>
         <div key={_i} style={{textAlign:"center",animation:"logoIn 0.45s ease-out"}}>
           <div style={{fontSize:10,fontWeight:800,letterSpacing:3,textTransform:"uppercase",color:_last?"#fde68a":"rgba(255,255,255,0.75)",textShadow:"0 2px 10px rgba(0,0,0,0.85)"}}>{_b.t}</div>

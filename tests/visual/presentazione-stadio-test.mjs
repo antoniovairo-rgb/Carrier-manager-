@@ -128,6 +128,41 @@ const testo = (p) => p.evaluate(() => (document.body.innerText || '').replace(/\
   if (!off || legacy) issues.push('(5) la presentazione è ancora agganciata alla prima gara casalinga');
 }
 
+// ── (6)(7) [7.297.0] chi si presenta, e con che maglia
+{
+  /* Collaudo PO: «i giocatori sono tutti uguali, l'eroe è vestito da portiere, la maglia della Juve deve essere
+     a strisce bianche e nere» + «presenterei i giocatori importanti ed i nuovi acquisti!». La scena si era
+     costruita kit e anagrafica propri invece di usare quelli del gioco: qui si verifica che usi i suoi. */
+  const src = await (await import('node:fs/promises')).readFile(new URL('../../CARRIER-MANAGER-AV.html', import.meta.url), 'utf8');
+  const i0 = src.indexOf('function PresentationStage3D'), i1 = src.indexOf('function GalaStage3D');
+  const scena = src.slice(i0, i1);
+  const usaKit = /kitPatternFor\(/.test(scena) && /kitPatternTex\(/.test(scena);
+  const usaAspetto = /appearanceFromSeed\(/.test(scena);
+  const eroeAmbra = /#f59e0b/.test(scena);
+  console.log(`\n(6) la scena usa il kit VERO del club: ${usaKit} · aspetto per giocatore: ${usaAspetto} · eroe tinto d'ambra: ${eroeAmbra}`);
+  if (!usaKit) issues.push('(6) la scena dipinge un kit suo invece del kit del club (niente strisce)');
+  if (!usaAspetto) issues.push('(6) i giocatori sono cloni identici: manca l\'aspetto per giocatore');
+  if (eroeAmbra) issues.push('(6) l\'eroe è ancora tinto d\'ambra: in fila con gli altri sembra un portiere');
+
+  const page = await boot(save(PRO, true, { presentSeason: 0 }), 'chiamati');
+  const d = await page.evaluate(() => { const s = JSON.parse(localStorage.getItem('cpm-v3')).player;
+    return { beats: window.__CPM_CAREER.presBeats ? window.__CPM_CAREER.presBeats() : null,
+      ros: (window.generateTeamRoster(s.club, s.season) || []).map(r => r.name), nome: (s.name || '').toUpperCase() }; });
+  if (!d.beats) { issues.push('(7) presBeats non esposto: impossibile misurare chi viene chiamato'); }
+  else {
+    const chiamati = d.beats.slice(2, -1);
+    console.log(`(7) chiamati: ${chiamati.map(b => `${b.n} (${b.t})`).join(' · ')}`);
+    const fuoriRosa = chiamati.filter(b => d.ros.indexOf(b.n) < 0);
+    if (fuoriRosa.length) issues.push(`(7) chiamati che non sono in rosa: ${fuoriRosa.map(b => b.n).join(', ')}`);
+    if (chiamati.length < 3) issues.push(`(7) solo ${chiamati.length} giocatori presentati`);
+    if (!chiamati.some(b => /Nuovo acquisto/i.test(b.t || ''))) issues.push('(7) nessun nuovo acquisto annunciato');
+    /* ⚠️ case-INSENSITIVE: l'uppercase a schermo lo fa il CSS, nel dato la riga è «…e il vostro numero 30». */
+    const ult = d.beats[d.beats.length - 1] || {};
+    if (!/numero/i.test(ult.t || '') || (ult.n || '').indexOf(d.nome.split(' ')[0]) < 0) issues.push(`(7) l'eroe non chiude la presentazione (ultimo: «${ult.t} ${ult.n}»)`);
+  }
+  await page.close();
+}
+
 await browser.close(); srv.close();
 if (issues.length) { console.log('\n❌ FAIL\n' + issues.map(x => ' · ' + x).join('\n')); process.exit(1); }
 console.log('\n✅ PASS — la squadra si presenta allo stadio prima del campionato, Primavera compresa');
