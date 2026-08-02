@@ -3989,7 +3989,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="7.299.0"; // [7.299.0 due collaudi PO] (1) «l'intervistatrice non e' una donna! occhio alla coerenza!»: il NOME nel modal e la FIGURA in mixed zone venivano da due sorgenti scollegate — il nome dal pool dei giornalisti («Anna Lombardi»), il genere del personaggio 3D da un lancio di moneta sul seed — quindi una volta su due la giornalista era resa come uomo. Ora il genere e' un DATO del pool (`f:true` su Sofia Esposito, Anna Lombardi, Elena Greco) e la scena riceve il nome mostrato: una sola fonte, coerente per costruzione; se il nome non e' nel pool si torna al seed come prima. Nel Gala la presentatrice non ha nome a schermo, li' il seed resta corretto e non si tocca. Guardiano `interview-3d-test` esteso col caso (4). (2) «azione scatto per dargli una soluzione al portiere ed esito positivo: il pallone fa giri strani, va a un compagno, parte il tiro, poi TORNA INDIETRO e parte il tiro da un altro compagno»: nel driver della consegna (`assist_recv`) il ricevente veniva ri-scelto A OGNI FRAME con una priorita' a tre livelli — chi ha il gesto `_rcvT` attivo, poi `passTargetMesh`, poi il piu' vicino alla palla. Ma quel gesto dura 0.52s: quando scadeva sul compagno A il livello successivo poteva restituire B, e la palla — che insegue il ricevente corrente — invertiva la marcia per raggiungerlo. Da qui il pallone che torna indietro e la seconda conclusione. Ora la scelta si fa UNA volta e resta bloccata per tutta la consegna (`_arRcv`, azzerato quando il post-arco riparte e al cambio di scena): una consegna, un ricevente, una conclusione. ⚠️ ONESTA' SUL METODO: il difetto NON sono riuscito a riprodurlo in headless — il force-mode del gate congela la palla e il recorder per-frame non si e' attivato dalle probe — quindi questa correzione e' ragionata sul codice e verificata solo per non-regressione (gate 14/14, transpile, live-smoke): la conferma deve arrivare dal collaudo dal vivo
+const GAME_VERSION="7.300.0"; // [7.300.0 richiesta PO «dammi il link del wizard specifico della giocata, cosi' chiudiamo il test»] LINK DIRETTO a una singola combinazione del wizard di revisione: `?review=<situazione>.<azione>.<esito>` (esito 1=riuscita, 0=fallita) apre il gioco gia' dentro la scena voluta, saltando home, pulsante e filtri — chiudere un collaudo su UNA giocata non richiede piu' di scorrere 1096 combinazioni. Il filtro parte da «tutte» apposta: quello predefinito («mai viste») nasconderebbe proprio la combinazione gia' revisionata che si vuole ricontrollare dopo un fix. Resta uno strumento di SVILUPPO come il wizard: sotto `__CPM_STORE_BUILD` la fase non e' raggiungibile. Verificato: `?review=148.1.1` apre «🏃 Rimessa dal portiere — verticale!» → «🎯 Triangolo col portiere» → ESITO RIUSCITO (combinazione 859/1096), che e' la giocata del collaudo sul pallone che tornava indietro (7.299.0)
 // [7.242.0 #56 chiusura — batch PO gi31-35 «Non si vede il gesto tecnico specifico» + verdetto difensivo] IL GESTO DIFENSIVO HA UNA FAMIGLIA. Ogni azione difensiva derivava `tackle/-` senza variante: la posa era UNA (scivolata) per pressing, anticipo, muro e deviazione. Tre famiglie STRUTTURALI congelate in factory (patto chainOn/gkCall — la regex vive solo in S()): slide (scivolata/disperato, posa storica a terra) · lunge (intercetto/anticipo/deviazione/muro: AFFONDO in piedi, gamba tesa e braccia larghe) · press (pressing/finta/recupero/copertura: ADDOSSO al portatore, busto avanti, braccio a schermare, tocco di punta). Prop hlDefGesto → pose sw-scalate auto-azzeranti nel blocco CINE-VAR; fallito = perdita di equilibrio comune. + VERDETTO DIFENSIVO RITARDATO (pattern #51): con l inbound 7.239 il pallone doveva ancora ARRIVARE quando usciva l overlay (misurato ~0.9s su gi31) → revealMs def 2250 con inbound / 1900 senza. Verificato sui fogli-provini: gi34 pressing = eroe addosso al portatore che vacilla, verdetto dopo il contatto.
 // [7.241.0 #56 batch PO gi28/29/37 «Non si vede il compagno che conclude»] FRENA PER GIRARTI — il difetto NON era la scelta del ricevente ne la transizione: attribuzione per-frame (AR53/54: oth=0, own>0, _ctx GIA sulla palla) → era il MODELLO DI STERZATA di animOne. Il ricevente lanciato sulla corsa profonda, con il filtrante atterrato ALLE SPALLE, navigava un inversione a U larga 20u e lunga secondi: il turn-rate e ∝1/velocita e la magnitudine della velocita-obiettivo restava PIENA nella direzione sbagliata. Ora quando la direzione voluta supera ~60° da quella di marcia la velocita-obiettivo cala col disallineamento (fino a 0.18×): la frenata passa dal limitatore di accelerazione, la velocita scende, il turn-rate risale → due passi di frenata e pivot, come in campo. Misurato prima→dopo: gi29 ricevente da divergenza a 24u → ARRIVO a 1.3u (t 0.41) con palla che parte con lui; gi37 2.0u; gi28 convergenza stretta. Vale per TUTTI i 21 off-ball (fisica piu vera anche su pressing/rientri — plausibile beneficio sul cluster difensivo «non aggancia il pallone»). +selezione demergenza del ricevente nel driver assist_recv (ogni scena ha SEMPRE un uomo sulla palla). ⚠️ modello core: gate 14/14 obbligatorio + realismo da riverificare sui baseline.
 // [7.240.0 #55B batch PO gi25/gi26 «Non si vede il compagno che riceve (e tira)» + gi43/28/29/30 storici] IL COMPAGNO ARRIVA SUL PALLONE PRIMA DI CALCIARE. Diagnosi strumentata (probe AR51/AR52 in-page, solo __CPM_REC): la catena assist_recv era VIVA e corretta — il primo sospetto «catena congelata» era un artefatto del campione stantio — ma (a) la transizione ricezione→tiro era a TEMPO FISSO 0.42s col ricevente ancora a 8-15u → il pallone volava in porta DA SOLO col gesto di calcio a vuoto; (b) il puntatore del ricevente (passTargetMesh) veniva AZZERATO all'avvio di assist_recv in 2 dei 3 siti (pass+assist = gi25 filtrante · tacco/scarico = gi26) e il driver, che scandiva solo il gesto _rcvT (0.52s di vita), restava senza nessuno da far correre. Fix: puntatore PERSISTENTE su tutti i siti (+_runToX fresco), fallback del driver sul puntatore, transizione ALL'ARRIVO (<2.2u, minimo 0.30s) con fallback 3.0s. Misurato prima→dopo: ricevente a 8-9u dalla palla al momento del tiro → 3.5-4u col gesto agganciato; gi26 duello leggibile sul foglio-provini; gi25 in wizard chiude con la catena e il gol.
@@ -31215,7 +31215,10 @@ function ReviewWizard({onExit}){
   },[]);
   const [verd,setVerd]=useState(_rvwLoad);
   const kOf=(c)=>c.gi+"|"+c.ai+"|"+(c.ok?1:0);
-  const [filter,setFilter]=useState("todo");
+  /* [7.300.0] con `?review=gi.ai.ok` si parte da TUTTE le combinazioni (il filtro «mai viste» nasconderebbe
+     proprio quella gia' revisionata che si vuole ricontrollare dopo un fix). */
+  const _jump=(typeof window!=="undefined"&&window.__CPM_REVIEW_JUMP)||null;
+  const [filter,setFilter]=useState(_jump?"all":"todo");
   const list=React.useMemo(()=>{
     if(filter==="ko")return combos.filter(c=>verd[kOf(c)]&&verd[kOf(c)].v===0);
     /* [7.219.0] «da riverificare» = bocciate su una build PRECEDENTE: sono le candidate a essere gia corrette,
@@ -31224,7 +31227,8 @@ function ReviewWizard({onExit}){
     if(filter==="todo")return combos.filter(c=>!verd[kOf(c)]);
     return combos;
   },[combos,verd,filter]);
-  const [i,setI]=useState(0);
+  const [i,setI]=useState(()=>{if(!_jump)return 0;
+    const k=combos.findIndex(c=>c.gi===_jump.gi&&c.ai===_jump.ai&&!!c.ok===!!_jump.ok);return k>=0?k:0;});
   const cur=list[Math.min(i,Math.max(0,list.length-1))]||null;
   const [note,setNote]=useState("");
   const [busy,setBusy]=useState(true);
@@ -31887,6 +31891,13 @@ function App(){
           try{const d=await storage.load(slot);if(d&&d.player){setPlayer(d.player);setCurrentSlot(slot);setPhase("career");return;}}catch(_e){}
         }
       }
+      /* [7.300.0 richiesta PO «dammi il link del wizard specifico della giocata, così chiudiamo il test»]
+         LINK DIRETTO alla singola combinazione: `?review=<situazione>.<azione>.<esito>` (esito 1=riuscita,
+         0=fallita) apre il wizard di revisione gia' su quella scena, saltando home e filtri. Serve a chiudere
+         un collaudo su UNA giocata senza scorrere 1096 combinazioni. Solo sviluppo, come il wizard: sotto
+         `__CPM_STORE_BUILD` la fase non e' raggiungibile perche' il pulsante non c'e' e il flag non si attiva. */
+      try{const _rv=/[?&]review=([0-9]+)\.([0-9]+)\.([01])/.exec((window.location&&window.location.search)||"");
+        if(_rv&&!window.__CPM_STORE_BUILD){window.__CPM_REVIEW_JUMP={gi:+_rv[1],ai:+_rv[2],ok:_rv[3]==="1"};setPhase("review");return;}}catch(_e){}
       setPhase("home");
     });
   },[]);// eslint-disable-line — [6.44.0] la catch garantisce che si raggiunga SEMPRE una fase valida (niente spinner infinito con site-data bloccati)
