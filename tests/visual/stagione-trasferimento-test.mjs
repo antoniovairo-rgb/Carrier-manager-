@@ -178,6 +178,38 @@ const testo = (p) => p.evaluate(() => (document.body.innerText || '').replace(/\
   await page.close();
 }
 
+// ── (E) il salvataggio che la maglia l'aveva GIÀ cambiata (il caso del PO: obiettivo pieno a stagione inoltrata)
+{
+  /* 7.293/7.294 agiscono al momento del trasferimento: senza una bonifica, chi era già passato di club restava
+     con «Segna 20 gol» a 13/20 alla 36ª. Qui si riproduce esattamente quel salvataggio: nessun `seasonCarry`,
+     obiettivi a bersaglio pieno, un'offerta accettata in questa stagione e meno giornate dell'eroe che del club. */
+  const OBJ = [{ type: 'goals', target: 20, label: 'Segna 20 gol', bonus: {} },
+    { type: 'standing', target: 3, label: 'Finisci nei primi 3', bonus: {} },
+    { type: 'assists', target: 11, label: 'Fornisci 11 assist', bonus: {} }];
+  const ST = ['fio', 'juve', 'inter', 'milan', 'napoli', 'roma', 'ata', 'lazio', 'bol', 'udi', 'sas', 'cag', 'gen', 'ver', 'lec', 'emp', 'sal', 'mon2']
+    .map((id, i) => ({ id, n: 'Club ' + id, pts: 70 - i * 3, played: 31, gf: 50 - i, ga: 25 + i }));
+  const page = await boot(save({ week: 36, club: NEW, goals: 13, assists: 5, matches: 15, extra: {
+    seasonObjectives: OBJ, standings: ST,
+    offerHistory: [{ club: NEW.n, type: 'Trasferimento', season: 8, accepted: true }],
+    matchHistory: Array.from({ length: 13 }, (_, i) => ({ week: 23 + i, opponent: 'Club ' + i, goals: i < 13 ? 1 : 0, assists: i < 5 ? 1 : 0, rating: 7.1, won: true })) } }), 'E');
+  const pe = await player(page);
+  const og = (pe.seasonObjectives || []).find(o => o.type === 'goals') || {};
+  const oa = (pe.seasonObjectives || []).find(o => o.type === 'assists') || {};
+  const os = (pe.seasonObjectives || []).find(o => o.type === 'standing') || {};
+  console.log(`\n(E) salvataggio già trasferito → gol: «${og.label}» target ${og.target} clubScoped ${!!og.clubScoped}`);
+  console.log(`    assist: target ${oa.target} · piazzamento (non si tocca): target ${os.target} clubScoped ${!!os.clubScoped}`);
+  if (!og.clubScoped) issues.push('(E) l\'obiettivo gol non è stato dichiarato del club attuale');
+  if (!(og.target > 1 && og.target < 20)) issues.push(`(E) il bersaglio gol non è riscalato sulla quota giocata qui (${og.target}, pieno = 20)`);
+  if (!(oa.target > 1 && oa.target < 11)) issues.push(`(E) il bersaglio assist non è riscalato (${oa.target}, pieno = 11)`);
+  if (os.clubScoped || os.target !== 3) issues.push('(E) il piazzamento è stato toccato: è già del club attuale');
+  const te = await testo(page);
+  const me = te.match(/Segna (\d+) gol[^\n]{0,24}?(FATTO|\d+\s*\/\s*\d+)/);
+  console.log(`    a schermo: ${me ? me[0].replace(/\s+/g, ' ') : '(non trovato)'}`);
+  if (!me) issues.push('(E) obiettivo non renderizzato');
+  else if (me[2] !== 'FATTO') issues.push(`(E) con 13 gol su un bersaglio riscalato l'obiettivo dovrebbe risultare centrato (${me[2]})`);
+  await page.close();
+}
+
 await browser.close(); srv.close();
 if (issues.length) { console.log('\n❌ FAIL\n' + issues.map(x => ' · ' + x).join('\n')); process.exit(1); }
 console.log('\n✅ PASS — la stagione sopravvive al trasferimento, le coppe sono del club giusto, i rigori si dichiarano');
