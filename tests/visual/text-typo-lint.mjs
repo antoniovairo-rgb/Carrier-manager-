@@ -127,6 +127,22 @@ for (const { s, line } of strings) {
   if (rep) add('R3 parola ripetuta', line, `«${rep[1]} ${rep[1]}»`, s);
 }
 
+/* ── R4 · cognomi troncati ──────────────────────────────────────────────────────────────────────
+   [7.304.0 collaudo PO «non è Luca ma De Luca!», seconda segnalazione] il cognome mostrato non si
+   ricava con `split(" ").pop()`: sui cognomi con particella («De Luca», «Van Dijk», «O'Brien») quello
+   tiene solo l'ultimo token. L'unico modo corretto è `_surnBG`, che riattacca le particelle. Il lint
+   fallisce su ogni nuovo `.pop()` applicato a un nome che non passi da `_surnBG` sulla stessa riga. */
+{
+  const linesAll = RAW.split('\n');
+  linesAll.forEach((ln, i) => {
+    if (!/\.split\((["'`]\s["'`]|\/\\s\+\/)\)\.pop\(\)/.test(ln)) return;
+    if (!/\b(name|nm|nome|heroName|surn)\b/i.test(ln)) return;
+    if (ln.includes('_surnBG')) return;               // già instradato sull'helper corretto
+    if (/_SURN_PART/.test(ln)) return;                // è la definizione dell'helper
+    add('R4 cognome troncato', i + 1, 'split(" ").pop() su un nome senza _surnBG', ln.trim());
+  });
+}
+
 console.log(`stringhe di prosa analizzate: ${strings.length}`);
 if (!fails.length) { console.log('✅ nessun refuso'); process.exit(0); }
 fails.sort((a, b) => a.line - b.line);
