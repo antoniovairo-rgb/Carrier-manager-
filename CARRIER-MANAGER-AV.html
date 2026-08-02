@@ -3989,7 +3989,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="7.302.0"; // [7.302.0 collaudo PO x3: «Davide Ricci ma e' un'intervistatrice, occhio gia' te lo avevo segnalato» + «occhio agli errori nelle frasi, manca una lettera» + «ci sono scritte erroneamente sovrapposte»] (1) GENERE DEL GIORNALISTA — il fix 7.299.0 (il genere lo dice il NOME mostrato) governava SOLO il fallback procedurale CH38: l'actor GLB era `actor-journalist.glb`, un modello FEMMINILE caricato incondizionatamente, quindi con l'asset in cache OGNI giornalista appariva donna qualunque nome dicesse la scheda. Ora l'actor si sceglie dal genere (donna → journalist · uomo → presenter, stesso rig Biped gia' usato dal Gala) e se l'asset manca il fallback CH38 e' del genere GIUSTO, mai di quello sbagliato. (2) REFUSI — «Relativement si'» (mancava la «a») corretto in «Relativamente si'», e trovato un secondo difetto della stessa famiglia che nessuno poteva vedere a schermo: «rivedо gli schemi» aveva una «о» CIRILLICA (U+043E) al posto della «o» latina. Poiche' e' la SECONDA ricorrenza, arriva un guardiano permanente: `tests/visual/text-typo-lint.mjs` (statico, niente browser) estrae le ~2900 stringhe di prosa mostrate al giocatore (commenti esclusi) e applica tre regole ad alta precisione — omoglifi cirillici/greci, parole che finiscono in consonante fuori allowlist (in italiano non esistono: e' li' che cade «Relativement», anche a inizio frase), spazi doppi/parola ripetuta. Verificato in NEGATIVO: reiniettando i due refusi il lint fallisce, rimossi torna a 0. (3) SCRITTE SOVRAPPOSTE — il modal dell'intervista viveva dentro `.cpm-scroll`, che porta `zoom:1.12`: un ancestor con zoom diventa blocco contenitore dei `position:fixed` discendenti e apre un contesto di impilamento, e su alcuni browser mobili le righe della dashboard sottostante finivano DAVANTI alla scena 3D. Il modal esce dall'albero via PORTALE su `document.body` (fixed torna relativo al viewport, z-index alla radice) e l'host del canvas diventa OPACO come quello della presentazione. ⚠️ La sovrapposizione NON si riproduce headless (provata anche con dashboard scrollata a 430x956): il portale rimuove la causa strutturale, la conferma e' dal vivo sul device. (4) BUG GRAVE «partita gia' giocata», 6a variante su «Giornata 34 DI 34» — due difetti REALI risalendo le guardie precedenti: (i) la guardia (C) del 7.210.0 filtra lo storico per STAGIONE, ma il campo `season` lo scriveva SOLO il path LIVE → tutte le gare SIMULATE (lega/coppa/euro, sia «Simula» sia auto-sim di «Avanza») entravano senza stagione e dalla stagione 2 in poi quella guardia era MORTA (ora la timbrano tutti e 10 i writer); (ii) mancava l'invariante che non dipende da nessuna chiave sporcabile — il calendario ha UNA voce per numero di GIORNATA, quindi una giornata gia' giocata non puo' ripresentarsi: nuove guardie runtime (D) «giornata gia' giocata» ed (E) «campionato completo: 2·(N−1) gare in classifica ⇒ nessuna voce di lega e' legittima» + HEAL 4 in migration che bonifica il save invece di limitarsi a saltarlo. `dup-fixture-test` esteso (HEAL 4 verde). (5) «Eliminati in fase eliminato» — la card europea di fine stagione componeva «Eliminati in fase {label}» con label gia' uguale a «Eliminato»: ora dice DOVE si e' usciti, derivandolo dai fatti (ultimo turno KO disputato, oppure girone col bilancio vero punti/gare).
+const GAME_VERSION="7.303.0"; // [7.303.0 collaudo PO x3: «il calciatore e' un portiere ma e' vestito come gli altri» + «occhio ai colori delle maglie, non devono confondersi le due squadre» + «l'arbitro durante la cronaca e' una scheggia impazzita, riduci i movimenti»] (1) PORTIERE IN PRESENTAZIONE — il beat «IL CAPITANO · PORTIERE» mostrava il numero uno con la divisa di movimento. Ora `presBeats` marca il beat col ruolo VERO in rosa e la scena veste quel clone con una tinta unita dalla stessa palette del match (GK_POOL), scelta per contrasto con ENTRAMBI i colori sociali — contro una maglia a strisce bianco/nere il piu' lontano dal solo bianco sarebbe il NERO, cioe' l'altra meta' delle strisce. ⚠️ Il beat inquadra il clone `b-2` (0=stadio · 1=la squadra): con la mappatura `b-1` il kit finiva sul giocatore accanto — beccato dallo screenshot, non dal codice. Probe permanente `pres-gk-kit-test` (riproduce il caso esatto del PO: Torino Athletic, «Nicolas Amato»). (2) DIVISE CHE SI CONFONDONO — `kitsClash` confrontava il colore BASE, ma in campo il 3D dipinge il PATTERN del club (7.8.3): la maglia BIANCA a strisce NERE di Torino Athletic non legge bianca, legge grigio-scura, e contro il verde di FC Leões le due squadre erano indistinguibili. Nuovo `kitPerceived` (base miscelata all'accento secondo la copertura reale del motivo) e la selezione pre-partita confronta i colori PERCEPITI; la lista d'emergenza non e' piu' una sola divisa neutra ma bianco+quasi-nero+intera KIT_PALETTE a tinta unita, e una passata preferenziale evita di regalare all'ospite un azzurro che non e' suo. Misurato su 63.252 incontri: conflitti percepiti 0, azzurro non-sociale 0, guardaroba unici 223/252 invariati; sul caso del PO l'ospite passa dalle strisce bianco/nere al GIALLO pieno. (3) ARBITRO — il lato su cui si teneva era `bz>=0?1:-1`: bastava che il pallone sfiorasse la mediana perche' il bersaglio saltasse di 28u da una fascia all'altra, e con un lerp da 1.8/s attraversava il campo di corsa a ogni oscillazione della cronaca. Ora isteresi sul lato (cambia solo oltre ±7u), bersaglio smussato e passo per-frame cappato a velocita' umana. Misurato con la nuova probe `referee-motion-test`: velocita' media 7.15 → 1.13 u/s, PICCO 88.95 → 4.55 u/s, cambi di fascia 2 → 0 (verificata in negativo: sul codice vecchio la probe fallisce).
 // [7.242.0 #56 chiusura — batch PO gi31-35 «Non si vede il gesto tecnico specifico» + verdetto difensivo] IL GESTO DIFENSIVO HA UNA FAMIGLIA. Ogni azione difensiva derivava `tackle/-` senza variante: la posa era UNA (scivolata) per pressing, anticipo, muro e deviazione. Tre famiglie STRUTTURALI congelate in factory (patto chainOn/gkCall — la regex vive solo in S()): slide (scivolata/disperato, posa storica a terra) · lunge (intercetto/anticipo/deviazione/muro: AFFONDO in piedi, gamba tesa e braccia larghe) · press (pressing/finta/recupero/copertura: ADDOSSO al portatore, busto avanti, braccio a schermare, tocco di punta). Prop hlDefGesto → pose sw-scalate auto-azzeranti nel blocco CINE-VAR; fallito = perdita di equilibrio comune. + VERDETTO DIFENSIVO RITARDATO (pattern #51): con l inbound 7.239 il pallone doveva ancora ARRIVARE quando usciva l overlay (misurato ~0.9s su gi31) → revealMs def 2250 con inbound / 1900 senza. Verificato sui fogli-provini: gi34 pressing = eroe addosso al portatore che vacilla, verdetto dopo il contatto.
 // [7.241.0 #56 batch PO gi28/29/37 «Non si vede il compagno che conclude»] FRENA PER GIRARTI — il difetto NON era la scelta del ricevente ne la transizione: attribuzione per-frame (AR53/54: oth=0, own>0, _ctx GIA sulla palla) → era il MODELLO DI STERZATA di animOne. Il ricevente lanciato sulla corsa profonda, con il filtrante atterrato ALLE SPALLE, navigava un inversione a U larga 20u e lunga secondi: il turn-rate e ∝1/velocita e la magnitudine della velocita-obiettivo restava PIENA nella direzione sbagliata. Ora quando la direzione voluta supera ~60° da quella di marcia la velocita-obiettivo cala col disallineamento (fino a 0.18×): la frenata passa dal limitatore di accelerazione, la velocita scende, il turn-rate risale → due passi di frenata e pivot, come in campo. Misurato prima→dopo: gi29 ricevente da divergenza a 24u → ARRIVO a 1.3u (t 0.41) con palla che parte con lui; gi37 2.0u; gi28 convergenza stretta. Vale per TUTTI i 21 off-ball (fisica piu vera anche su pressing/rientri — plausibile beneficio sul cluster difensivo «non aggancia il pallone»). +selezione demergenza del ricevente nel driver assist_recv (ogni scena ha SEMPRE un uomo sulla palla). ⚠️ modello core: gate 14/14 obbligatorio + realismo da riverificare sui baseline.
 // [7.240.0 #55B batch PO gi25/gi26 «Non si vede il compagno che riceve (e tira)» + gi43/28/29/30 storici] IL COMPAGNO ARRIVA SUL PALLONE PRIMA DI CALCIARE. Diagnosi strumentata (probe AR51/AR52 in-page, solo __CPM_REC): la catena assist_recv era VIVA e corretta — il primo sospetto «catena congelata» era un artefatto del campione stantio — ma (a) la transizione ricezione→tiro era a TEMPO FISSO 0.42s col ricevente ancora a 8-15u → il pallone volava in porta DA SOLO col gesto di calcio a vuoto; (b) il puntatore del ricevente (passTargetMesh) veniva AZZERATO all'avvio di assist_recv in 2 dei 3 siti (pass+assist = gi25 filtrante · tacco/scarico = gi26) e il driver, che scandiva solo il gesto _rcvT (0.52s di vita), restava senza nessuno da far correre. Fix: puntatore PERSISTENTE su tutti i siti (+_runToX fresco), fallback del driver sul puntatore, transizione ALL'ARRIVO (<2.2u, minimo 0.30s) con fallback 3.0s. Misurato prima→dopo: ricevente a 8-9u dalla palla al momento del tiro → 3.5-4u col gesto agganciato; gi26 duello leggibile sul foglio-provini; gi25 in wizard chiude con la catena e il gol.
@@ -10150,6 +10150,8 @@ function ThreeMatchView(props){
         let held=null,bd=1e9; plist.concat([heroState]).forEach(p=>{const d=Math.hypot(p.x-bg.x,p.y-bg.y);if(d<bd){bd=d;held=p;}});
         const c2=camera.position; const pr0=propsRef.current||{};
         return { ok:true, phase:pr0.matchPhase||null, clock:pr0.matchClock||null,
+          ref:(function(){try{return{x:+refMesh.position.x.toFixed(2),z:+refMesh.position.z.toFixed(2)};}catch(_e){return null;}})(),/* [7.303.0] posizione dell'arbitro per la probe referee-motion (test-only) */
+          ball:(function(){try{return{x:+ball.position.x.toFixed(2),z:+ball.position.z.toFixed(2)};}catch(_e){return null;}})(),
           camera:{x:+c2.x.toFixed(2),y:+c2.y.toFixed(2),z:+c2.z.toFixed(2),abovePitch:c2.y>0.5},
           camLook:(function(){try{return{x:+camLook.x.toFixed(1),y:+camLook.y.toFixed(1),z:+camLook.z.toFixed(1)};}catch(_e){return null;}})(),/* [7.237.0 #50 strumentazione] senza il punto guardato REALE, «quale regia possiede la camera» resta una deduzione — campo additivo, la firma golden legge solo i campi che già leggeva */
           // target LOGICI (deterministici con reseed) — distinti dalla posa mesh che lerpa
@@ -11889,9 +11891,25 @@ function ThreeMatchView(props){
         }
         // Sprint 3D-G2: arbitro segue la palla con offset laterale; guardalinee seguono x dell'azione
         // 3DV-10: durante isHL l'arbitro esce dal campo (fuori camera) per non bloccare l'azione
-        {const _rk=Math.min(aDt*1.8,1);
+        {const _rk=Math.min(aDt*1.2,1);/* [7.303.0] inseguimento più calmo */
         if(isHL){refMesh.position.x+=(-90-refMesh.position.x)*Math.min(aDt*10,1);}
-        else{const _rs=(bz>=0?1:-1);refMesh.position.x+=((bx-6)-refMesh.position.x)*_rk;refMesh.position.z+=(clamp(bz+_rs*14,-28,28)-refMesh.position.z)*_rk;}// FIX: arbitro in diagonale (di lato e dietro l'azione), mai in mezzo al gioco
+        else{
+          /* [7.303.0 collaudo PO «l'arbitro durante la cronaca è una scheggia impazzita, riduci i movimenti»]
+             il lato su cui si teneva era `bz>=0?1:-1`: bastava che il pallone sfiorasse la mediana perché il
+             bersaglio saltasse di 28u da una fascia all'altra, e con un lerp da 1.8/s l'arbitro attraversava
+             il campo di corsa — a ogni oscillazione della cronaca. Ora: ISTERESI sul lato (cambia solo oltre
+             ±7u dalla mediana), bersaglio SMUSSATO (la palla della cronaca si sposta a scatti, lui no) e
+             passo per-frame CAPPATO a una velocità umana. */
+          const _S=sr.current;
+          if(_S._refSide==null)_S._refSide=(bz>=0?1:-1);
+          if(bz>7)_S._refSide=1;else if(bz<-7)_S._refSide=-1;
+          const _tx=bx-6,_tz=clamp(bz+_S._refSide*14,-28,28);
+          if(_S._refTx==null){_S._refTx=_tx;_S._refTz=_tz;}
+          const _e=Math.min(aDt*1.6,1);_S._refTx+=(_tx-_S._refTx)*_e;_S._refTz+=(_tz-_S._refTz)*_e;
+          let _dx=(_S._refTx-refMesh.position.x)*_rk,_dz=(_S._refTz-refMesh.position.z)*_rk;
+          const _mx=9*aDt,_dl=Math.hypot(_dx,_dz);if(_dl>_mx){_dx*=_mx/_dl;_dz*=_mx/_dl;}
+          refMesh.position.x+=_dx;refMesh.position.z+=_dz;
+        }// arbitro in diagonale (di lato e dietro l'azione), mai in mezzo al gioco
         refMesh.rotation.y=Math.atan2(bx-refMesh.position.x,bz-refMesh.position.z);
         linRef1.position.x+=(bx*0.5-linRef1.position.x)*Math.min(aDt*0.9,1);
         linRef2.position.x+=(bx*0.5-linRef2.position.x)*Math.min(aDt*0.9,1);}
@@ -13636,11 +13654,40 @@ const clubKits=(club)=>{
 };
 /* Selezione automatica pre-partita: la squadra di casa veste la Home; l ospite la PRIMA divisa del SUO guardaroba
    che non confligge (Home poi Away poi Third: se puo, gioca coi propri colori) — fallback: massimo contrasto. */
+/* [7.302.0 collaudo PO «occhio ai colori delle maglie, non devono confondersi le due squadre»]
+   COLORE PERCEPITO di una divisa. `kitsClash` confrontava solo il colore BASE, ma in campo il 3D dipinge
+   il PATTERN del club (7.8.3): una maglia bianca a strisce NERE (Torino Athletic) non legge bianca — legge
+   grigio-scura, e contro un verde bosco scuro (FC Leões) le due squadre si confondono, esattamente come nel
+   collaudo. Qui la base viene miscelata con l'accento secondo la copertura reale del motivo, e il risultato
+   e' cio' che l'occhio vede a distanza: e' QUELLO che va confrontato. */
+const _PAT_COVER={stripes:0.50,hoops:0.46,halves:0.50,band:0.26,vband:0.26,sash:0.22,sleeves:0.24};
+const kitPerceived=(hex,c2,pat)=>{try{
+  const k=_PAT_COVER[pat||'solid'];if(!k||!c2)return hex;
+  const a=hexToRgb(hex),b=hexToRgb(c2);if(!a||!b)return hex;
+  const mix=(u,v)=>Math.round(u+(v-u)*k),h2=(v)=>('0'+Math.max(0,Math.min(255,v)).toString(16)).slice(-2);
+  return '#'+h2(mix(a.r,b.r))+h2(mix(a.g,b.g))+h2(mix(a.b,b.b));
+}catch(_e){return hex;}};
 const selectMatchKits=(homeClub,awayClub)=>{
   const hk=clubKits(homeClub),ak=clubKits(awayClub),homeShirt=hk.home.shirt;
-  const cands=[ak.home,ak.away,ak.third,{shirt:hexLum(homeShirt)<0.5?'#f2f1ec':'#15151c',accent:ak.home.shirt,name:'Third'}];
-  let pick=cands.find(k=>!kitsClash(homeShirt,k.shirt));
-  if(!pick)pick=cands.reduce((b,k)=>colorDist(homeShirt,k.shirt)>colorDist(homeShirt,b.shirt)?k:b,cands[0]);
+  /* [7.302.0] la lista d'emergenza non e' piu' UNA sola divisa neutra: dopo Home/Away/Third arrivano il
+     bianco, il quasi-nero e l'intera KIT_PALETTE a tinta unita (quindi percepito == base). Cosi' una
+     divisa che stacca DAVVERO esiste quasi sempre, invece di ripiegare sul «meno peggio». */
+  const _EMG=['#f2f1ec','#15151c'].concat(KIT_PALETTE.filter(c=>c!=='#f5efe0'));
+  const cands=[ak.home,ak.away,ak.third].concat(_EMG.map(c=>({shirt:c,accent:c,name:'Third'})));
+  /* [7.302.0] il confronto avviene sul colore PERCEPITO: in campo entrambe le squadre indossano il MOTIVO
+     del proprio club (7.8.3), quindi e' la miscela base+accento a doversi distinguere, non la sola base.
+     La 4a candidata d'emergenza e' a tinta unita per costruzione. */
+  const _hp=(typeof kitPatternFor==='function')?kitPatternFor(homeClub):null;
+  const _ap=(typeof kitPatternFor==='function')?kitPatternFor(awayClub):null;
+  const homePerc=kitPerceived(homeShirt,hk.home.accent,_hp);
+  const _perc=(k,i)=>kitPerceived(k.shirt,k.accent,i<3?_ap:null);/* le divise d'emergenza sono tinta unita */
+  /* [7.302.0] e senza regalare all'ospite un AZZURRO che non e' suo: prima passata escludendo le tinte
+     ciano/azzurre non sociali (la vecchia trappola del resolver pre-6.2), seconda passata senza vincolo. */
+  const _cyan=(h)=>{try{const H=_hueOf(h);return H>=168&&H<=215&&_satOf(h)>0.3;}catch(_e){return false;}};
+  const _awayIsCyan=_cyan(awayClub&&awayClub.c)||_cyan(awayClub&&awayClub.c2);
+  let pick=cands.find((k,i)=>!kitsClash(homePerc,_perc(k,i))&&(_awayIsCyan||!_cyan(k.shirt)));
+  if(!pick)pick=cands.find((k,i)=>!kitsClash(homePerc,_perc(k,i)));
+  if(!pick)pick=cands.reduce((b,k,i)=>colorDist(homePerc,_perc(k,i))>colorDist(homePerc,_perc(b,cands.indexOf(b)))?k:b,cands[0]);
   return {homeShirt,homeAccent:hk.home.accent,awayShirt:pick.shirt,awayAccent:pick.accent,awayKitName:pick.name};
 };
 if(typeof window!=='undefined'&&!window.__CPM_STORE_BUILD){window.__CPM_clubKits=clubKits;window.__CPM_kitSel=selectMatchKits;window.__CPM_kitsClash=kitsClash;/* [7.192.0] predicato esposto alla probe divise */}
@@ -18036,7 +18083,7 @@ function InterviewStage3D({avatarId=0,club=null,ctx="win",seed=7,jName=null}){
    schierata a centrocampo, fari, fuochi d'artificio sul finale, camera che gira attorno alla fila.
    I calciatori sono i CH38 clonati (SkeletonUtils) e restano INVISIBILI finche' il modello non e' agganciato
    — regola «mai burattini in campo» (7.9.3/7.8.19); senza GLB la scena mostra lo stadio e basta. */
-function PresentationStage3D({club,beat=0,total=6,seed=7,youth=false,avatarId=0,heroNum=0}){
+function PresentationStage3D({club,beat=0,total=6,seed=7,youth=false,avatarId=0,heroNum=0,gkIdx=[]}){
   const ref=React.useRef(null);const st=React.useRef({beat:0,total:6});
   st.current.beat=beat|0;st.current.total=Math.max(1,total|0);
   React.useEffect(()=>{
@@ -18102,16 +18149,28 @@ function PresentationStage3D({club,beat=0,total=6,seed=7,youth=false,avatarId=0,
         for(let i=0;i<N;i++){
           const root=THREE.SkeletonUtils.clone(glb.scene);
           const isHero=(i===HERO);
+          /* [7.302.0] il PORTIERE non veste come gli altri: divisa a tinta unita dalla stessa palette del
+             match (GK_POOL), scelta per contrasto con la maglia di squadra, e niente pattern del club. */
+          const isGk=!isHero&&(gkIdx||[]).indexOf(i)>=0;
+          const _GKP=['#1d1d1f','#facc15','#16a34a','#db2777','#e5e7eb','#06b6d4','#f97316'];
+          /* il contrasto va tenuto con ENTRAMBI i colori sociali: contro una maglia a strisce bianco/nere
+             il piu' lontano dal solo bianco sarebbe il NERO — cioe' l'altra meta' delle strisce. */
+          const _gkCol=(function(){try{const cs=[new THREE.Color(homeHex),new THREE.Color(awayHex)];
+            let best=_GKP[0],bd=-1;_GKP.forEach(c=>{const q=new THREE.Color(c);
+              const d=Math.min.apply(null,cs.map(h=>Math.abs(q.r-h.r)+Math.abs(q.g-h.g)+Math.abs(q.b-h.b)));
+              if(d>bd){bd=d;best=c;}});
+            return best;}catch(_e){return '#16a34a';}})();
           const ap=(isHero&&heroAppr)?heroAppr:((typeof appearanceFromSeed==="function")?appearanceFromSeed(hashStr(String((club&&club.id)||"x")+"|pres|"+i)):{height:1.82,girth:1});
           root.traverse(o=>{if(!o.isMesh||!o.material)return;o.frustumCulled=false;const n=(o.name||"").toLowerCase();
             if(n.indexOf('joint')>=0){o.visible=false;return;}
             const set=(c)=>{const col=new THREE.Color(c);o.material=new THREE.MeshLambertMaterial({color:col,emissive:col.clone().multiplyScalar(0.14),skinning:true});};
             if(n.indexOf('shirt')>=0){let t=null;
+              if(isGk){set(_gkCol);return;}
               if(typeof kitPatternTex==="function")t=kitPatternTex(homeHex,awayHex,_pat||'solid',(isHero&&_num)?_num:undefined);
               if(t)o.material=new THREE.MeshLambertMaterial({map:t,emissive:new THREE.Color(homeHex).multiplyScalar(0.12),skinning:true});
               else set(homeHex);}
-            else if(n.indexOf('shorts')>=0)set(awayHex);
-            else if(n.indexOf('socks')>=0)set(homeHex);
+            else if(n.indexOf('shorts')>=0)set(isGk?_gkCol:awayHex);
+            else if(n.indexOf('socks')>=0)set(isGk?_gkCol:homeHex);
             else if(n.indexOf('shoes')>=0)set(0x222222);
             else if(n.indexOf('hair')>=0){if(ap.bald)o.visible=false;else o.material=new THREE.MeshLambertMaterial({color:new THREE.Color(ap.hair||'#2d1800'),skinning:true});}
             else if(n.indexOf('body')>=0&&o.material.map){o.material=o.material.clone();const sk=new THREE.Color(ap.skin||0xffffff);o.material.color=sk;if('emissive'in o.material)o.material.emissive=sk.clone().multiplyScalar(0.24);}});
@@ -22200,7 +22259,11 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     try{prev=(sn>1)?(generateTeamRoster(cl,sn-1)||[]):[];}catch(_e){}
     const _yt=(p.proStatus||"u18")!=="pro";
     const seen=new Set(),out=[];
-    const add=(r,tag)=>{if(!r||!r.name||seen.has(r.name)||out.length>=5)return;seen.add(r.name);out.push({t:tag||r.role,n:r.name});};
+    /* [7.302.0 collaudo PO «il calciatore e' un portiere ma e' vestito come gli altri»] il beat porta il
+       flag PORTIERE (dal ruolo VERO in rosa o dall'etichetta): la scena 3D veste di conseguenza. */
+    const add=(r,tag)=>{if(!r||!r.name||seen.has(r.name)||out.length>=5)return;seen.add(r.name);
+      const _gk=/portiere/i.test(String((r&&r.role)||""))||/portiere/i.test(String(tag||""));
+      out.push({t:tag||r.role,n:r.name,gk:_gk});};
     /* 1. i nuovi acquisti (max 3): chi occupa uno slot che l'anno scorso era di un altro */
     ros.forEach((r,i)=>{if(out.length<3&&prev[i]&&prev[i].name&&prev[i].name!==r.name)add(r,`Nuovo acquisto · ${r.role}`);});
     /* 2. le facce note dello spogliatoio, col loro ruolo vero in rosa */
@@ -22529,7 +22592,9 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     window.__CPM_CAREER={
       goScreen:(sc)=>{try{setScreen(sc);return true;}catch(e){return "error:"+(e&&e.message);}},
       goTab:(t)=>{try{setTab(t);setScreen(t);return true;}catch(e){return "error:"+(e&&e.message);}},
-      presBeats:()=>{try{return presBeats();}catch(e){return null;}},/* [7.297.0] la probe verifica CHI viene chiamato sul prato *//* [7.293.0] la probe stagione-trasferimento deve poter aprire il sotto-tab Coppe: le voci di nav non sono <button> *//* [7.262.0] la probe pro-offers-stable deve poter raggiungere la schermata delle offerte pro senza attraversare due stagioni U18 */
+      presBeats:()=>{try{return presBeats();}catch(e){return null;}},
+      roster:()=>{try{return generateTeamRoster(player.club||{},player.season||1);}catch(e){return null;}},
+      patch:(o)=>{try{setPlayer(p=>({...p,...(o||{})}));return true;}catch(e){return "error:"+(e&&e.message);}},/* [7.303.0] iniezione di stato per le probe (test-only): evita il reload, che l'addInitScript sovrascriverebbe *//* [7.303.0] la probe pres-gk-kit deve poter pescare il PORTIERE vero della rosa *//* [7.297.0] la probe verifica CHI viene chiamato sul prato *//* [7.293.0] la probe stagione-trasferimento deve poter aprire il sotto-tab Coppe: le voci di nav non sono <button> *//* [7.262.0] la probe pro-offers-stable deve poter raggiungere la schermata delle offerte pro senza attraversare due stagioni U18 */
       bump:()=>{try{setNotif({msg:"probe",color:"#000"});setTimeout(()=>setNotif(null),60);return true;}catch(e){return "error:"+(e&&e.message);}},/* [7.262.0] forza un re-render del contenitore: e' proprio la condizione in cui le offerte si riestraevano */
       get:()=>({season:player.season||1,week:player.week||1,lived:!!player.weekLived,screen,ovr:player.ovr,bank:player.bankBalance||0,injured:!!player.injured,goals:player.goals||0,matches:player.matches||0,club:player.club?.id,standingsN:(player.standings||[]).length,gf:(player.standings||[]).reduce((a,t)=>a+(t.gf||0),0),ga:(player.standings||[]).reduce((a,t)=>a+(t.ga||0),0),contractDur:player.contract?.duration}),
       dismiss:()=>{try{setWeekLiveModal(null);setShowMatchPrompt(null);setTransferOffer(null);setNegoModal(null);setNationalCallupData(null);}catch(_e){}},
@@ -26385,7 +26450,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     const _cl=player.club||{};
     return(
     <div style={{position:"fixed",inset:0,zIndex:9997,background:"#050810"}}>
-      <PresentationStage3D club={_cl} beat={_i} total={_n} seed={Math.abs(hashStr((_cl.id||"x")+"pres"+(player.season||1)))} youth={(player.proStatus||"u18")!=="pro"} avatarId={player.avatarId||0} heroNum={player.jerseyNum||0}/>
+      <PresentationStage3D club={_cl} beat={_i} total={_n} seed={Math.abs(hashStr((_cl.id||"x")+"pres"+(player.season||1)))} youth={(player.proStatus||"u18")!=="pro"} avatarId={player.avatarId||0} heroNum={player.jerseyNum||0} gkIdx={_bs.map((b,k)=>(b&&b.gk)?k-2:-1).filter(k=>k>=0)}/* il beat b inquadra il clone b-2 (0=stadio · 1=la squadra) *//>
       <div style={{position:"absolute",left:0,right:0,top:"9%",display:"flex",justifyContent:"center",padding:"0 14px",pointerEvents:"none"}}>
         <div key={_i} style={{textAlign:"center",animation:"logoIn 0.45s ease-out"}}>
           <div style={{fontSize:10,fontWeight:800,letterSpacing:3,textTransform:"uppercase",color:_last?"#fde68a":"rgba(255,255,255,0.75)",textShadow:"0 2px 10px rgba(0,0,0,0.85)"}}>{_b.t}</div>

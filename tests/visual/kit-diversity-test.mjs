@@ -14,8 +14,10 @@ const parts=[extract('hashStr'),
   extractLine('const _satOf='),extractArrow('kitsClash'),extractLine('const ALT_KITS='),/* [7.8.28 QA] kitsClash è multi-linea (commento interno) → extractLine troncava al 1° ;\n e la Function generata era sintatticamente rotta */
   extractArrow('resolveKitConflict'),extractLine('const hexLum='),extractLine('const buildKit='),
   extractLine('const KIT_PALETTE='),extractLine('const _mixHex='),
+  extractLine('const _PAT_COVER='),extractArrow('kitPerceived'),
+  extractLine('const KIT_PATTERN='),extractLine('const _KIT_SOLID_IDS='),extractArrow('kitPatternFor'),
   extractArrow('clubKits'),extractArrow('selectMatchKits')].join('\n');
-const G=new Function(parts+'\nreturn {clubKits,selectMatchKits,kitsClash,colorDist,resolveKitConflict,_hueOf,_satOf,KIT_PALETTE};')();
+const G=new Function(parts+'\nreturn {clubKits,selectMatchKits,kitsClash,colorDist,resolveKitConflict,_hueOf,_satOf,KIT_PALETTE,kitPerceived,kitPatternFor};')();
 
 const clubs=[...SRC.matchAll(/mkT\("([^"]+)","([^"]+)","[^"]*",(\d+),"([^"]*)","([^"]*)","[^"]*","([^"]*)"\)/g)]
   .map(m=>({id:m[1],n:m[2],p:+m[3],c:m[4],c2:m[5],lg:m[6]}));
@@ -35,7 +37,11 @@ for(const c of clubs){
 for(const h of clubs)for(const a of clubs){
   if(h.id===a.id)continue;stat.pairs++;
   const s=G.selectMatchKits(h,a);stat.sel[s.awayKitName]++;
-  if(G.kitsClash(s.homeShirt,s.awayShirt)){stat.clashNew++;if(stat.clashNew<=5)bad.push(`CLASH ${h.id} vs ${a.id}: ${s.homeShirt} ~ ${s.awayShirt} [${s.awayKitName}]`);}
+  /* [7.302.0] il confronto e' sul colore PERCEPITO in campo (base miscelata all'accento secondo il motivo
+     del club): e' cosi' che l'occhio le vede, ed e' li' che nasceva il caso «FC Leões vs Torino Athletic». */
+  const hp=G.kitPerceived(s.homeShirt,s.homeAccent,G.kitPatternFor(h));
+  const ap=G.kitPerceived(s.awayShirt,s.awayAccent,s.awayKitName==='Third'&&s.awayShirt!==G.clubKits(a).third.shirt?null:G.kitPatternFor(a));
+  if(G.kitsClash(hp,ap)){stat.clashNew++;if(stat.clashNew<=5)bad.push(`CLASH ${h.id} vs ${a.id}: ${hp} ~ ${ap} [${s.awayKitName}]`);}
   if(isCyan(s.awayShirt)&&!isCyan(a.c)&&!isCyan(a.c2))stat.cyanNew++;
   const old=G.resolveKitConflict(h.c,a.c);
   if(G.kitsClash(h.c,old))stat.clashOld++;
