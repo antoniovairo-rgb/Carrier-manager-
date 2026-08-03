@@ -3989,7 +3989,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="7.311.0"; // [7.311.0 collaudo PO ×2] (A) «l'azione con smarcati per ricevere (dal portiere) con esito positivo sfarfalla, l'eroe praticamente non riceve palla, quest'ultimo arriva a centrocampo e parte un tiro senza compagno che va in porta» — su una situation OFF-BALL l'eroe NON ha il pallone: si smarca per RICEVERLO (qui la battuta e' del portiere). Ma il 3D non sapeva nemmeno di essere in un off-ball (il campo `offBall` non era plumbato a ThreeMatchView), quindi trattava l'eroe da PASSATORE: l'arco di costruzione puntava «eroe +6u avanti, +12u di lato» e il dispatch faceva `assist_recv` scegliendo un compagno piu' avanzato. Misurato su gi158 «Costruzione dal basso»: la palla partiva da (7,50), passava a 4.4u dall'eroe e proseguiva fino a game x 42 — 27.1u di distanza finale — mentre lui restava fermo a x 15; da li' «il tiro senza compagno» (il ricevente era a centrocampo, fuori scena) e lo sfarfallio (arco di consegna e driver del ricevente che scrivono la palla negli stessi frame, piu' il gesto di CALCIO dell'eroe mentre il pallone gli stava arrivando addosso). Ora: prop `hlOffBall`, arco che atterra SULL'EROE (±1.5u di jitter, arco piu' morbido: e' un appoggio, non un lancio), dispatch che si ferma li' con il gesto del CONTROLLO invece di rilanciare a un terzo, e niente piu' actType «pass» su off-ball. Prima→dopo: distanza finale eroe-palla 27.1u → 0.9u. (B) «le punizioni con l'eroe: postura sbagliata del corpo, deve essere direzionato verso la porta!» — il facing dell'eroe deriva dal MOVIMENTO (animOne per il procedurale, delta di posizione per il CH38): fermo sul pallone di un piazzato non lo ruotava NESSUNO dei due, e restava con l'orientamento che aveva. Misurato prima del fix: scarto rispetto alla porta 41° (gi13, punizione centrale) · 34° (gi14, fascia sinistra) · 58° (gi15, fascia destra). Ora, e solo mentre e' fermo davanti al pallone (il gesto del calcio scrive lui la rotazione), il corpo ruota gradualmente verso la porta, e il CH38 eredita lo stesso orientamento. Dopo: scarto 1-2° su tutte, rigori compresi. Guardiano permanente `tests/visual/offball-setpiece-test.mjs` (consegna off-ball entro 4u dall'eroe + corpo entro 17° dalla porta), verificato in negativo: disattivando il blocco del facing gli scarti tornano a 34-58°.
+const GAME_VERSION="7.312.0"; // [7.312.0 collaudo PO «un'altra volta stesso bug. correggi definitivamente. le partite possono essere simulate, giocate NON deve piu' ricapitare. E' grave» — 7ª ricorrenza, screenshot su «GIORNATA 34 DI 34»] IL REGISTRO DELLE GIORNATE GIOCATE SOPRAVVIVE AL RELOAD. Le sei guardie accumulate finora (6.91 · 6.98 · 7.0.5 · 7.5.2 · 7.210 · 7.302) hanno tutte lo stesso punto debole: DEDUCONO che una gara e' stata giocata da un ALTRO campo — la voce di calendario marcata, il nome dell'avversario nello storico, la sede, la settimana, il conteggio in classifica. Basta che uno solo di quei campi non venga scritto (un commit interrotto, un'app chiusa, una marcatura che non combacia per nome) e l'intera catena e' cieca. L'unica rete che NON deduceva niente — `_committedMdRef`, la 6.73 — era un `useRef`: viveva in memoria e MORIVA a ogni riavvio dell'app, cioe' esattamente nel caso in cui sarebbe servita. Ora quella stessa informazione e' un campo del salvataggio: `player.playedMd={s:<stagione>,md:[numeri]}`, specchiato dal ref a ogni cambio di stato (quindi subito dopo ogni commit, live o simulato — un solo effect invece di toccare i ~10 path), letto come guardia (F) da `getThisWeekMatchday`, seedato in migration da tutto cio' che il save gia' sa di aver giocato, e invalidato per costruzione al cambio di stagione (chiave `s`). Non dipende da nessun'altra chiave: una giornata committata non puo' piu' essere riproposta, comunque sia andato il resto del commit. Campo lazy → nessun bump di SAVE_VERSION. Guardiano permanente `tests/visual/playedmd-registry-test.mjs`: su un save con storico VUOTO, classifica a zero e voce non marcata — cioe' con tutte le guardie precedenti cieche per costruzione — la giornata nel registro non viene servita; controprova senza registro (la stessa gara ESCE, quindi il test non e' vacuo) e verifica che alla stagione successiva la giornata torni legittima.
 // [7.242.0 #56 chiusura — batch PO gi31-35 «Non si vede il gesto tecnico specifico» + verdetto difensivo] IL GESTO DIFENSIVO HA UNA FAMIGLIA. Ogni azione difensiva derivava `tackle/-` senza variante: la posa era UNA (scivolata) per pressing, anticipo, muro e deviazione. Tre famiglie STRUTTURALI congelate in factory (patto chainOn/gkCall — la regex vive solo in S()): slide (scivolata/disperato, posa storica a terra) · lunge (intercetto/anticipo/deviazione/muro: AFFONDO in piedi, gamba tesa e braccia larghe) · press (pressing/finta/recupero/copertura: ADDOSSO al portatore, busto avanti, braccio a schermare, tocco di punta). Prop hlDefGesto → pose sw-scalate auto-azzeranti nel blocco CINE-VAR; fallito = perdita di equilibrio comune. + VERDETTO DIFENSIVO RITARDATO (pattern #51): con l inbound 7.239 il pallone doveva ancora ARRIVARE quando usciva l overlay (misurato ~0.9s su gi31) → revealMs def 2250 con inbound / 1900 senza. Verificato sui fogli-provini: gi34 pressing = eroe addosso al portatore che vacilla, verdetto dopo il contatto.
 // [7.241.0 #56 batch PO gi28/29/37 «Non si vede il compagno che conclude»] FRENA PER GIRARTI — il difetto NON era la scelta del ricevente ne la transizione: attribuzione per-frame (AR53/54: oth=0, own>0, _ctx GIA sulla palla) → era il MODELLO DI STERZATA di animOne. Il ricevente lanciato sulla corsa profonda, con il filtrante atterrato ALLE SPALLE, navigava un inversione a U larga 20u e lunga secondi: il turn-rate e ∝1/velocita e la magnitudine della velocita-obiettivo restava PIENA nella direzione sbagliata. Ora quando la direzione voluta supera ~60° da quella di marcia la velocita-obiettivo cala col disallineamento (fino a 0.18×): la frenata passa dal limitatore di accelerazione, la velocita scende, il turn-rate risale → due passi di frenata e pivot, come in campo. Misurato prima→dopo: gi29 ricevente da divergenza a 24u → ARRIVO a 1.3u (t 0.41) con palla che parte con lui; gi37 2.0u; gi28 convergenza stretta. Vale per TUTTI i 21 off-ball (fisica piu vera anche su pressing/rientri — plausibile beneficio sul cluster difensivo «non aggancia il pallone»). +selezione demergenza del ricevente nel driver assist_recv (ogni scena ha SEMPRE un uomo sulla palla). ⚠️ modello core: gate 14/14 obbligatorio + realismo da riverificare sui baseline.
 // [7.240.0 #55B batch PO gi25/gi26 «Non si vede il compagno che riceve (e tira)» + gi43/28/29/30 storici] IL COMPAGNO ARRIVA SUL PALLONE PRIMA DI CALCIARE. Diagnosi strumentata (probe AR51/AR52 in-page, solo __CPM_REC): la catena assist_recv era VIVA e corretta — il primo sospetto «catena congelata» era un artefatto del campione stantio — ma (a) la transizione ricezione→tiro era a TEMPO FISSO 0.42s col ricevente ancora a 8-15u → il pallone volava in porta DA SOLO col gesto di calcio a vuoto; (b) il puntatore del ricevente (passTargetMesh) veniva AZZERATO all'avvio di assist_recv in 2 dei 3 siti (pass+assist = gi25 filtrante · tacco/scarico = gi26) e il driver, che scandiva solo il gesto _rcvT (0.52s di vita), restava senza nessuno da far correre. Fix: puntatore PERSISTENTE su tutti i siti (+_runToX fresco), fallback del driver sul puntatore, transizione ALL'ARRIVO (<2.2u, minimo 0.30s) con fallback 3.0s. Misurato prima→dopo: ricevente a 8-9u dalla palla al momento del tiro → 3.5-4u col gesto agganciato; gi26 duello leggibile sul foglio-provini; gi25 in wizard chiude con la catena e il gol.
@@ -21413,6 +21413,16 @@ function migratePlayer(player){
        const _c302=(newP.calendar||[]).filter(m=>!(!m.type&&!m.played&&m.matchday!=null&&_pmd302.has(m.matchday)));
        if(_c302.length!==(newP.calendar||[]).length){newP={...newP,calendar:_c302};changed=true;}
      }}
+    /* [7.312.0 collaudo PO «un'altra volta stesso bug… le partite possono essere simulate, giocate NON deve
+       piu' ricapitare. E' grave»] SEED del registro persistente delle giornate giocate. Il registro nasce
+       vuoto sui salvataggi esistenti: qui viene riempito con tutto cio' che il save gia' sa di aver giocato —
+       le voci di calendario marcate (qualunque competizione) — cosi' la guardia (F) e' attiva dal primo
+       caricamento e non solo dalla prima gara successiva all'aggiornamento. Campo lazy, nessun bump. */
+    {const _sn312=newP.season||1;
+     const _seed312=(newP.calendar||[]).filter(m=>m&&m.played&&m.matchday!=null).map(m=>m.matchday);
+     const _cur312=(newP.playedMd&&newP.playedMd.s===_sn312&&Array.isArray(newP.playedMd.md))?newP.playedMd.md:[];
+     const _mrg312=[...new Set([..._cur312,..._seed312])];
+     if(_mrg312.length!==_cur312.length||!newP.playedMd||newP.playedMd.s!==_sn312){newP={...newP,playedMd:{s:_sn312,md:_mrg312}};changed=true;}}
     // S41: migrate old saves — add current cup round to calendar if missing
     if((newP.proStatus||"u18")==="pro"&&newP.cup?.active&&!newP.cup?.eliminated&&!newP.cup?.champion&&(newP.cup.round||1)<=4&&!(newP.calendar||[]).some(md=>md.type==="cup"&&!md.played)){
       const _m41RW=[0,9,19,28,35];const _m41RN=["","Ottavi di Finale","Quarti di Finale","Semifinale","FINALE"];
@@ -21993,6 +22003,19 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
   // [6.73.0] RETE DI SICUREZZA anti-loop «stessa partita»: traccia i matchday REALMENTE committati questa sessione.
   //   getThisWeekMatchday non ri-serve mai un matchday già giocato, anche se un desync di stato lo mostrasse «non giocato».
   const _committedMdRef=useRef(new Set());
+  /* [7.312.0] …e da qui il registro finisce NEL SALVATAGGIO. Un effect di specchiatura invece di toccare i
+     ~10 path che committano una gara: ogni volta che il player cambia (cioe' subito dopo ogni commit, che e'
+     anche il momento in cui scatta l'autosave) le giornate marcate in memoria vengono fuse nel campo
+     persistente. Idempotente per costruzione — se non c'e' nulla da aggiungere ritorna lo stesso oggetto e
+     non innesca un altro render. */
+  useEffect(()=>{try{
+    const sn=player.season||1;
+    const mine=[..._committedMdRef.current].filter(k=>String(k).startsWith(sn+"|")).map(k=>+String(k).split("|")[1]).filter(n=>!isNaN(n));
+    if(!mine.length)return;
+    const cur=(player.playedMd&&player.playedMd.s===sn&&Array.isArray(player.playedMd.md))?player.playedMd.md:[];
+    if(mine.every(n=>cur.indexOf(n)>=0))return;
+    setPlayer(pp=>{let out=pp;mine.forEach(n=>{out=_mdCommit(out,n);});return out;});
+  }catch(_e){}},[player]);// eslint-disable-line
   const _playingMdRef=useRef(null);
   const[lastMatch,setLastMatch]=useState(null);
   const[seasonEndData,setSeasonEndData]=useState(null);
@@ -22319,7 +22342,28 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     setForceReturnConfirm(false);
   };
   // only allow playing if current week has a scheduled match
-  const getThisWeekMatchday=()=>{
+    /* [7.312.0 collaudo PO «un'altra volta stesso bug. correggi definitivamente. le partite possono essere
+     simulate, giocate NON deve piu' ricapitare. E' grave» — 7ª ricorrenza della classe]
+     IL REGISTRO DELLE GIORNATE GIOCATE ORA SOPRAVVIVE AL RELOAD.
+     Tutte le guardie accumulate finora (6.91 · 6.98 · 7.0.5 · 7.5.2 · 7.210 · 7.302) hanno una cosa in
+     comune: DEDUCONO che una gara e' stata giocata da un altro campo — la voce di calendario marcata, il
+     nome dell'avversario nello storico, la sede, la settimana, il conteggio in classifica. Basta che UNO di
+     quei campi non venga scritto (un errore a meta' commit, un'app chiusa, una marcatura che non combacia
+     per nome) perche' l'intera catena sia cieca. L'unica rete che non deduceva niente — `_committedMdRef`,
+     6.73 — era un `useRef`: viveva in memoria e MORIVA a ogni riavvio dell'app, cioe' esattamente nel caso
+     in cui serviva.
+     Ora la stessa informazione e' un campo del salvataggio: `player.playedMd = {s:<stagione>, md:[numeri]}`.
+     Si scrive nello STESSO setPlayer che committa il risultato (atomico col save, live e simulato), si legge
+     come guardia (F), si azzera al rollover di stagione. Non dipende da nessun'altra chiave: una giornata
+     committata non puo' piu' essere riproposta, comunque sia andato il resto del commit.
+     Campo lazy → nessun bump di SAVE_VERSION. */
+  const _mdCommit=(p,mdNum)=>{
+    if(!p||mdNum==null)return p;
+    const sn=p.season||1,cur=(p.playedMd&&p.playedMd.s===sn&&Array.isArray(p.playedMd.md))?p.playedMd.md:[];
+    if(cur.indexOf(mdNum)>=0)return (p.playedMd&&p.playedMd.s===sn)?p:{...p,playedMd:{s:sn,md:cur}};
+    return {...p,playedMd:{s:sn,md:[...cur,mdNum]}};
+  };
+const getThisWeekMatchday=()=>{
     const cal=player.calendar||[];const _sn=player.season||1;
     // [6.73.0] anti-loop: salta i matchday GIÀ giocati questa sessione (anche se un desync di stato li mostrasse non-giocati → niente «stessa partita»)
     // [6.79.0] + salta le voci di COPPA ZOMBIE (coppa già chiusa: campione/eliminato/non attiva) — la finale
@@ -22374,6 +22418,8 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
        (iii) e se il campionato è FINITO (la classifica dice che il club ha già disputato tutte le
            2·(N−1) giornate) nessuna voce di lega è più legittima: stesso tetto del chokepoint 6.3.3. */
     const _pMdNums=new Set(_playedLg.filter(m=>m.matchday!=null).map(m=>m.matchday));
+    /* [7.312.0] (F) registro persistente delle giornate committate in QUESTA stagione (vedi `_mdCommit`) */
+    const _mdDone312=new Set(((player.playedMd&&player.playedMd.s===_sn&&Array.isArray(player.playedMd.md))?player.playedMd.md:[]).concat([..._committedMdRef.current].filter(k=>String(k).startsWith(_sn+"|")).map(k=>+String(k).split("|")[1]).filter(n=>!isNaN(n))));
     const _lgDone302=(function(){try{
       const st=player.standings||[];if(st.length<2)return false;
       const _cid=player.club&&(player.club.id||player.club.n);
@@ -22389,6 +22435,9 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
         ||_alreadyPlayed210(md)/* (C) [7.210.0] lo STORICO dice che questa gara è già stata giocata */
         ||(md.matchday!=null&&_pMdNums.has(md.matchday))/* (D) [7.302.0] questa GIORNATA è già stata giocata */
         ||_lgDone302/* (E) [7.302.0] campionato completo: nessuna altra giornata è legittima */
+      ))
+      &&!(md.matchday!=null&&_mdDone312.has(md.matchday))/* (F) [7.312.0] REGISTRO PERSISTENTE: questa giornata è già stata committata — vale per OGNI competizione e sopravvive al riavvio dell'app */
+      &&!(false&&(0
       )))||null;
   };
   // [7.16.0 direttiva PO «dalla prima settimana non si può avanzare se non risolte tutte le interazioni:
@@ -22766,6 +22815,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
   useEffect(()=>{if(_CPM_TEST&&typeof window!=='undefined'){
     window.__CPM_CAREER={
       goScreen:(sc)=>{try{setScreen(sc);return true;}catch(e){return "error:"+(e&&e.message);}},
+      thisWeekMd:()=>{try{const m=getThisWeekMatchday();return m?{matchday:m.matchday,week:m.week,opp:m.opponentName,type:m.type||null}:null;}catch(e){return "error:"+(e&&e.message);}},/* [7.312.0] la probe anti-duplicato interroga la stessa funzione che serve la gara al giocatore */
       goTab:(t)=>{try{setTab(t);setScreen(t);return true;}catch(e){return "error:"+(e&&e.message);}},
       presBeats:()=>{try{return presBeats();}catch(e){return null;}},
       roster:()=>{try{return generateTeamRoster(player.club||{},player.season||1);}catch(e){return null;}},
