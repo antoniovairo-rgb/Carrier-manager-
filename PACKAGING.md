@@ -61,6 +61,12 @@ keytool -genkey -v -keystore elevora-upload.jks -keyalg RSA -keysize 2048 \
 
 In `android/app/build.gradle` aggiungi una `signingConfigs.release` che legge il keystore (idealmente da variabili d'ambiente / `keystore.properties` **non** versionato), e collegala a `buildTypes.release`. In Android Studio puoi farlo da *Generate Signed Bundle* senza editare il gradle.
 
+## Tester del test chiuso
+
+Vedi **`TESTER_ONBOARDING.md`**: messaggio pronto da inoltrare, istruzioni di opt-in, cosa chiedere di
+segnalare e come monitorare il contatore in Console. I 14 giorni partono dall'**iscrizione dei tester**,
+non dalla fine dello sviluppo → gli inviti vanno mandati **subito**, in parallelo al lavoro sul gioco.
+
 ## Requisiti Play Console (una tantum)
 
 - **Account Play Developer**: 25 $ una tantum. I nuovi account *personali* richiedono un **test chiuso con ≥12 tester per 14 giorni** prima della produzione → da pianificare.

@@ -74,13 +74,18 @@ fs.mkdirSync(DIST, { recursive: true });
 fs.writeFileSync(path.join(DIST, 'index.html'), html);
 const assetsSrc = path.join(ROOT, 'assets');
 if (fs.existsSync(assetsSrc)) fs.cpSync(assetsSrc, path.join(DIST, 'assets'), { recursive: true });
-for (const f of ['sw.js']) { const s = path.join(ROOT, f); if (fs.existsSync(s)) fs.copyFileSync(s, path.join(DIST, f)); }
+/* [7.310.1] la dist copiava SOLO sw.js: manifest e icone PWA restavano fuori, e la pagina — che le
+   referenzia con <link rel="manifest"> e <link rel="icon"> — chiedeva `icon-192.png` a ogni avvio
+   ottenendo un 404 (misurato con validate-dist: unico errore di console della build offline).
+   Nella WebView Capacitor e' una richiesta fallita a ogni lancio; se la dist viene servita come PWA
+   e' proprio l'installabilita' a saltare, perche' il manifest non c'e'. */
+for (const f of ['sw.js', 'manifest.webmanifest', 'icon-192.png', 'icon-512.png', 'icon-maskable-512.png']) { const s = path.join(ROOT, f); if (fs.existsSync(s)) fs.copyFileSync(s, path.join(DIST, f)); }
 
 const outKB = (Buffer.byteLength(html) / 1024) | 0;
 const hasCDN = /https?:\/\/(cdnjs|cdn\.jsdelivr)/.test(html);
 const hasBabelTag = html.includes('type="text/babel"');
 console.log(`\n=== BUILD DIST ===`);
-console.log(`sorgente ${srcKB}KB → dist/index.html ${outKB}KB · assets copiati: ${fs.existsSync(path.join(DIST, 'assets'))}`);
+console.log(`sorgente ${srcKB}KB → dist/index.html ${outKB}KB · assets copiati: ${fs.existsSync(path.join(DIST, 'assets'))} · manifest+icone: ${['manifest.webmanifest','icon-192.png','icon-512.png','icon-maskable-512.png'].every(f => fs.existsSync(path.join(DIST, f)))}`);
 console.log(`CDN residue: ${hasCDN ? '❌ ANCORA PRESENTI' : '✅ nessuna'} · Babel-in-browser: ${hasBabelTag ? '❌ ancora presente' : '✅ rimosso (JSX precompilato)'}`);
 console.log(`tempo ${((Date.now() - t0) / 1000).toFixed(1)}s`);
 if (hasCDN || hasBabelTag) process.exit(2);
