@@ -3989,7 +3989,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="7.308.0"; // [7.308.0 direttiva PO «sono carine queste saghe ad episodi, proponimene altre» → approvate la 2, la 3 e la 4] TRE SAGHE NUOVE su un MOTORE condiviso. La saga di mercato (7.17.0) funziona perche' ha tre ingredienti — parte da un FATTO vero, ha un bivio nel mezzo, il finale cambia secondo cosa hai scelto — ma era scritta a mano dentro la sua card. Ora quel meccanismo e' un motore riusabile: un arco dichiara il proprio `trigger(p)` (che deve nascere dai DATI: contratto in scadenza, capitano in rosa, un ragazzo della Primavera nel tuo ruolo — niente pool casuali), gli episodi arrivano UNO alla volta distanziati di qualche settimana come una serie, ogni scelta e' una funzione pura p→delta con effetti bounded, e lo stato salvato e' minimo (`p.sagas[id]={s,st,w,ch}`, campo LAZY → nessun bump di SAVE_VERSION). Gli ATTORI (capitano, ragazzo) si ri-derivano ogni volta dalla rosa con lo stesso seed invece di essere salvati: non possono divergere dal mondo. I tre archi: (1) LA FASCIA — il capitano si ferma, prendi la fascia ad interim o fai un passo indietro; nel mezzo uno strappo nello spogliatoio da gestire; al rientro la restituisci o la tieni (e tenerla riesce solo se fiducia/OVR/eta' te lo consentono davvero, altrimenti la societa' la ridà al capitano e lo spogliatoio se lo ricorda). (2) IL RAGAZZO — un 17enne del TUO ruolo si allena con voi: lo prendi sotto la tua ala o no, esordisce, ti insidia il posto, e in due stagioni diventa il tuo erede o il tuo rivale interno (unica saga che attraversa due stagioni). (3) IL CONTRATTO — scade davvero a giugno e la societa' rinvia il colloquio: la stampa lo scopre, e al bivio finale ti siedi a trattare (apre la trattativa VERA), vai a scadenza, o chiedi la cessione. Ogni scelta lascia una riga nel diario e nelle Notizie, cosi' la serie resta leggibile anche a settimane di distanza.
+const GAME_VERSION="7.309.0"; // [7.309.0 collaudo PO «gli striscioni della competizione si accavallano tra di loro» + «per logo intendo ad esempio il logo con le stelle della bandiera europea e l'acronimo KCC»] DUE difetti nella prima stesura della fascia. (a) ACCAVALLAMENTO — la piastrella e' larga 512px ma il nome ci veniva scritto a 58px SENZA misurarlo: «KORWARD CHAMPIONS CUP» occupa ~670px, quindi sbordava DENTRO la piastrella successiva e si sovrapponeva al suo motivo, ed e' esattamente il «KORWARD CHA…KORWARD CH» dello screenshot. (b) IL LOGO — era il badge generico del gioco, non un marchio della COMPETIZIONE. Ora ogni piastrella contiene UN solo motivo, costruito per non toccare mai i bordi: emblema a CORONA DI 12 STELLE nel colore della competizione con la SIGLA al centro, poi la sigla in grande e il nome per esteso sotto, entrambi FIT-TO-WIDTH (misurati e rimpiccioliti finche' entrano nello spazio disponibile) → nessun testo puo' piu' invadere la piastrella accanto, su qualunque larghezza di settore. La sigla e' quella UFFICIALE del gioco per le coppe europee (KCC · KEC · KCF, le stesse dell'header) e per tutto il resto sono le iniziali delle parole, coi marcatori di categoria che contano (LEGA A → LA · PRIMAVERA 1 → P1 · COPPA NAZIONALE → CN · COPPA DELLE NAZIONI → CDN). Verificato con screenshot ravvicinato della tribuna: motivo ripetuto pulito, nessuna sovrapposizione.
 // [7.242.0 #56 chiusura — batch PO gi31-35 «Non si vede il gesto tecnico specifico» + verdetto difensivo] IL GESTO DIFENSIVO HA UNA FAMIGLIA. Ogni azione difensiva derivava `tackle/-` senza variante: la posa era UNA (scivolata) per pressing, anticipo, muro e deviazione. Tre famiglie STRUTTURALI congelate in factory (patto chainOn/gkCall — la regex vive solo in S()): slide (scivolata/disperato, posa storica a terra) · lunge (intercetto/anticipo/deviazione/muro: AFFONDO in piedi, gamba tesa e braccia larghe) · press (pressing/finta/recupero/copertura: ADDOSSO al portatore, busto avanti, braccio a schermare, tocco di punta). Prop hlDefGesto → pose sw-scalate auto-azzeranti nel blocco CINE-VAR; fallito = perdita di equilibrio comune. + VERDETTO DIFENSIVO RITARDATO (pattern #51): con l inbound 7.239 il pallone doveva ancora ARRIVARE quando usciva l overlay (misurato ~0.9s su gi31) → revealMs def 2250 con inbound / 1900 senza. Verificato sui fogli-provini: gi34 pressing = eroe addosso al portatore che vacilla, verdetto dopo il contatto.
 // [7.241.0 #56 batch PO gi28/29/37 «Non si vede il compagno che conclude»] FRENA PER GIRARTI — il difetto NON era la scelta del ricevente ne la transizione: attribuzione per-frame (AR53/54: oth=0, own>0, _ctx GIA sulla palla) → era il MODELLO DI STERZATA di animOne. Il ricevente lanciato sulla corsa profonda, con il filtrante atterrato ALLE SPALLE, navigava un inversione a U larga 20u e lunga secondi: il turn-rate e ∝1/velocita e la magnitudine della velocita-obiettivo restava PIENA nella direzione sbagliata. Ora quando la direzione voluta supera ~60° da quella di marcia la velocita-obiettivo cala col disallineamento (fino a 0.18×): la frenata passa dal limitatore di accelerazione, la velocita scende, il turn-rate risale → due passi di frenata e pivot, come in campo. Misurato prima→dopo: gi29 ricevente da divergenza a 24u → ARRIVO a 1.3u (t 0.41) con palla che parte con lui; gi37 2.0u; gi28 convergenza stretta. Vale per TUTTI i 21 off-ball (fisica piu vera anche su pressing/rientri — plausibile beneficio sul cluster difensivo «non aggancia il pallone»). +selezione demergenza del ricevente nel driver assist_recv (ogni scena ha SEMPRE un uomo sulla palla). ⚠️ modello core: gate 14/14 obbligatorio + realismo da riverificare sui baseline.
 // [7.240.0 #55B batch PO gi25/gi26 «Non si vede il compagno che riceve (e tira)» + gi43/28/29/30 storici] IL COMPAGNO ARRIVA SUL PALLONE PRIMA DI CALCIARE. Diagnosi strumentata (probe AR51/AR52 in-page, solo __CPM_REC): la catena assist_recv era VIVA e corretta — il primo sospetto «catena congelata» era un artefatto del campione stantio — ma (a) la transizione ricezione→tiro era a TEMPO FISSO 0.42s col ricevente ancora a 8-15u → il pallone volava in porta DA SOLO col gesto di calcio a vuoto; (b) il puntatore del ricevente (passTargetMesh) veniva AZZERATO all'avvio di assist_recv in 2 dei 3 siti (pass+assist = gi25 filtrante · tacco/scarico = gi26) e il driver, che scandiva solo il gesto _rcvT (0.52s di vita), restava senza nessuno da far correre. Fix: puntatore PERSISTENTE su tutti i siti (+_runToX fresco), fallback del driver sul puntatore, transizione ALL'ARRIVO (<2.2u, minimo 0.30s) con fallback 3.0s. Misurato prima→dopo: ricevente a 8-9u dalla palla al momento del tiro → 3.5-4u col gesto agganciato; gi26 duello leggibile sul foglio-provini; gi25 in wizard chiude con la catena e il gol.
@@ -8152,18 +8152,61 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
      settore → 4 mesh e 1 canvas: costo trascurabile anche su mobile. */
   const _compBanner=(function(){try{
     const _c=(stadCfg.comp&&stadCfg.comp.lbl)?stadCfg.comp:null;if(!_c)return null;
+    /* [7.309.0 collaudo PO «gli striscioni della competizione si accavallano tra di loro» + «per logo intendo
+       ad esempio il logo con le stelle della bandiera europea e l'acronimo KCC»]
+       DUE difetti nella prima stesura. (a) ACCAVALLAMENTO: la piastrella era larga 512px ma il nome ci veniva
+       scritto a 58px senza misurarlo — «KORWARD CHAMPIONS CUP» occupa ~670px, quindi sbordava DENTRO la
+       piastrella successiva e si sovrapponeva al suo motivo: da qui il «KORWARD CHA…KORWARD CH» dello
+       screenshot. (b) IL LOGO: era il badge generico del gioco, non un marchio della COMPETIZIONE.
+       Ora ogni piastrella contiene UN solo motivo, costruito per non toccare mai i bordi: emblema a CORONA
+       DI STELLE nel colore della competizione con la SIGLA al centro (KCC/KEC/KCF…), poi la sigla in grande
+       e il nome per esteso sotto — entrambi FIT-TO-WIDTH (misurati e rimpiccioliti finche' entrano nello
+       spazio disponibile), quindi nessun testo puo' piu' invadere la piastrella accanto. */
     const cv=document.createElement("canvas");cv.width=1024;cv.height=128;const x=cv.getContext("2d");
     const col=_c.col||"#d27f8c";
+    const nm=String(_c.lbl||"").toUpperCase().replace(/\s+/g," ").trim();
+    /* la SIGLA: quella ufficiale del gioco se il nome e' una coppa europea, altrimenti le iniziali delle
+       parole (KORWARD CHAMPIONS CUP → KCC · LEGA A → LA), sempre 2-4 lettere. */
+    const _sig=(function(){try{
+      if(typeof EURO_SIGLA==="object")for(const k in EURO_SIGLA){const v=EURO_SIGLA[k];if(v&&nm.indexOf(v)>=0)return v;}
+      const w=nm.split(/[^A-ZÀ-Ý0-9]+/).filter(t=>t&&!/^(DI|DE|DEL|DELLA|IL|E)$/.test(t));/* i token di UNA lettera/cifra contano: sono i marcatori di categoria (LEGA A → LA · PRIMAVERA 1 → P1) */
+      const ini=w.map(t=>t[0]).join("");
+      return (ini.length>=2?ini:nm.replace(/[^A-Z0-9]/g,"")).slice(0,4)||"CUP";
+    }catch(_e){return "CUP";}})();
     const g=x.createLinearGradient(0,0,0,128);g.addColorStop(0,"#111a27");g.addColorStop(0.5,"#0b1220");g.addColorStop(1,"#0a0f1a");
     x.fillStyle=g;x.fillRect(0,0,1024,128);
     x.fillStyle=col;x.globalAlpha=0.9;x.fillRect(0,0,1024,7);x.fillRect(0,121,1024,7);x.globalAlpha=1;
-    const nm=String(_c.lbl).slice(0,26);
-    x.font="800 58px system-ui,Segoe UI,Arial";x.textAlign="left";x.textBaseline="middle";x.letterSpacing="2px";
-    const unit=1024/2;/* due ripetizioni per canvas: il motivo resta leggibile anche sui settori stretti */
+    /* testo che si RIMPICCIOLISCE finche' entra: la misura e' la sola difesa contro lo sbordo */
+    const _fit=(txt,maxW,px,weight)=>{let f=px;x.font=(weight||"800")+" "+f+"px system-ui,Segoe UI,Arial";
+      let w=x.measureText(txt).width;
+      while(w>maxW&&f>10){f-=1;x.font=(weight||"800")+" "+f+"px system-ui,Segoe UI,Arial";w=x.measureText(txt).width;}
+      return f;};
+    /* EMBLEMA: corona di 12 stelle (come le bandiere delle competizioni continentali) + sigla al centro */
+    const _star=(cx,cy,r,rot)=>{x.beginPath();
+      for(let i=0;i<10;i++){const a=rot+i*Math.PI/5,rr=(i%2===0)?r:r*0.44;
+        const px2=cx+Math.cos(a-Math.PI/2)*rr,py2=cy+Math.sin(a-Math.PI/2)*rr;
+        i?x.lineTo(px2,py2):x.moveTo(px2,py2);}
+      x.closePath();x.fill();};
+    const _emblem=(cx,cy,R)=>{
+      x.save();
+      x.fillStyle="#0d1524";x.beginPath();x.arc(cx,cy,R,0,Math.PI*2);x.fill();
+      x.strokeStyle=col;x.lineWidth=Math.max(2,R*0.09);x.globalAlpha=0.95;x.beginPath();x.arc(cx,cy,R,0,Math.PI*2);x.stroke();x.globalAlpha=1;
+      x.fillStyle=col;
+      for(let i=0;i<12;i++){const a=i*Math.PI/6-Math.PI/2;_star(cx+Math.cos(a)*R*0.74,cy+Math.sin(a)*R*0.74,R*0.135,0);}
+      x.fillStyle="#f2f5fa";x.textAlign="center";x.textBaseline="middle";
+      const fs=_fit(_sig,R*1.02,Math.round(R*0.62),"900");x.font="900 "+fs+"px system-ui,Segoe UI,Arial";
+      x.fillText(_sig,cx,cy+1);
+      x.restore();};
+    const unit=1024/2;/* due piastrelle per canvas: il motivo resta leggibile anche sui settori stretti */
     for(let u=0;u<2;u++){const ox=u*unit;
-      if(typeof _cvLogoBadge==="function"){try{_cvLogoBadge(x,ox+62,64,92);}catch(_e){}}
-      x.fillStyle="#f2f5fa";x.fillText(nm,ox+120,67);
-      x.strokeStyle=col;x.globalAlpha=0.5;x.lineWidth=3;x.beginPath();x.moveTo(ox+unit-22,26);x.lineTo(ox+unit-22,102);x.stroke();x.globalAlpha=1;}
+      const R=42,ex=ox+16+R,tx=ox+16+R*2+18,tw=unit-(tx-ox)-26;/* margine 26px a destra: mai a filo del bordo */
+      _emblem(ex,64,R);
+      x.textAlign="left";x.textBaseline="alphabetic";
+      const f1=_fit(_sig,tw,46,"900");x.font="900 "+f1+"px system-ui,Segoe UI,Arial";
+      x.fillStyle="#f2f5fa";x.fillText(_sig,tx,60);
+      const f2=_fit(nm,tw,26,"700");x.font="700 "+f2+"px system-ui,Segoe UI,Arial";
+      x.fillStyle="rgba(226,232,240,0.78)";x.fillText(nm,tx,96);
+      x.strokeStyle=col;x.globalAlpha=0.45;x.lineWidth=3;x.beginPath();x.moveTo(ox+unit-13,30);x.lineTo(ox+unit-13,98);x.stroke();x.globalAlpha=1;}
     const t=new THREE.CanvasTexture(cv);t.wrapS=THREE.RepeatWrapping;t.wrapT=THREE.ClampToEdgeWrapping;
     return t;
   }catch(_e){return null;}})();
