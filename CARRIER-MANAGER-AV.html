@@ -3989,7 +3989,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="7.306.0"; // [7.306.0 chiude il residuo dichiarato nel 7.305.0 — collaudo PO «azione con rimorchio, un vero casino... la palla vola!»] L'INQUADRATURA CONTIENE L'AZIONE. La rete del 7.305.0 agisce sul solo `camLook` e ha un pavimento (y>=0.4): quando il pallone sta quasi SOTTO la camera — piu' vicino di dove essa guarda, come in «Inserimento da centrocampo in area», dove la palla e' col compagno 18u dietro l'eroe — nessun angolo di sguardo lo riporta dentro, e restava a ndc.y ~ -1.3 per l'INTERA scena. L'unica leva e' la DISTANZA: arretrando la camera lungo il proprio asse il pallone si allontana e il suo scarto angolare rientra nel semiquadro. Sul TARGET (prima dei lerp, cosi' il movimento resta morbido) una bisezione deterministica a 9 passi cerca l'arretramento MINIMO che lo fa entrare — considerando INSIEME il semiquadro verticale e quello orizzontale, perche' arretrare riduce entrambi gli scarti — cappato a 34u e dentro i bound di campo; se nemmeno il massimo arretramento inquadra (pallone praticamente alle spalle) non si sposta nulla e decide la rete su camLook. Correggere sul TARGET invece che solo dopo i lerp toglie anche il tiro alla fune con la regia, che ogni frame richiama lo sguardo sul proprio punto: era il motivo per cui gli sfori LATERALI si assestavano appena FUORI dal bordo invece di rientrare. Misurato con la nuova probe permanente `hl-framing-test` (proiezione REALE della camera su tutte le 191 situations): fuori quadro 5 → 1 a 340ms dall'ingresso in scena, e l'ultima (gi133) rientra da sola in ~2,1s. La quota `tPy` non cambia: l'invariante `abovePitch` resta.
+const GAME_VERSION="7.307.0"; // [7.307.0 collaudo PO x4] (1) STRISCIONI DELLA COMPETIZIONE — «sui muretti non ci sono, solo quelli dei tifosi»: la fascia c'era ma spariva. Per tenerla SOTTO ai teli degli ultras le avevo dato `renderOrder:-2` + `depthWrite:false`, cioe' disegnata PRIMA di tutto e senza scrivere profondita', e il muro di cemento — opaco, disegnato dopo — la ricopriva; su qualche settore sopravviveva per puro ordine di traversata della scena (da qui il «a volte si vede»). Ora e' un opaco normale a 0.06 davanti alla faccia del muro: occlude il cemento per profondita' REALE. La gerarchia col tifo resta perche' i teli ultras sono TRASPARENTI (quindi disegnati dopo ogni opaco) e appesi piu' avanti, a 0.14. Verificato con screenshot dietro la porta, tifo acceso e spento. (2) «Nicolas Amato e' il PORTIERE, e' piu' credibile con un attaccante o trequartista!»: l'episodio di spogliatoio pescava il compagno per indice, senza guardare il ruolo — e «in campo vi trovate a memoria, un asse che gli avversari temono» detto del portiere non sta in piedi. Ora il ruolo VERO arriva dalla rosa e il pool si stringe: intesa offensiva (cena/asse) solo con un compagno d'attacco, sostegno morale con chiunque tranne il portiere. (3) «il mondo fuori, la frase e' ripetitiva»: la telefonata dell'ex compagno aveva UN SOLO testo (cambiava il nome, non una parola) e tornava identica a ogni club della storia e a ogni stagione → cinque telefonate diverse (nostalgia, sfotto', consiglio, richiesta, rimpianto) seedate su club+stagione; stessa cura sull'occhiata del CT, ora a tre varianti. (4) «al rifiuto di un'offerta, soprattutto cosi' importante, deve esserci una conseguenza»: «Rifiuta» faceva UNA cosa, chiudere il modale — dire no a una corazzata non lasciava traccia ne' nella piazza ne' nella tua storia. Ora il rifiuto pesa in proporzione all'offerta (salto di PRESTIGIO e di STIPENDIO, dati che l'offerta porta gia', nessun campo nuovo): proposta qualunque = silenzio; buona offerta = la piazza la nota; no a una corazzata = attestato di fedelta' — popolarita' +7, fiducia mister +8, legame curva, voce nel diario e nelle Notizie, e la cosa entra nel LEDGER, cosi' il mondo potra' ricordarsela nelle stagioni a venire.
 // [7.242.0 #56 chiusura — batch PO gi31-35 «Non si vede il gesto tecnico specifico» + verdetto difensivo] IL GESTO DIFENSIVO HA UNA FAMIGLIA. Ogni azione difensiva derivava `tackle/-` senza variante: la posa era UNA (scivolata) per pressing, anticipo, muro e deviazione. Tre famiglie STRUTTURALI congelate in factory (patto chainOn/gkCall — la regex vive solo in S()): slide (scivolata/disperato, posa storica a terra) · lunge (intercetto/anticipo/deviazione/muro: AFFONDO in piedi, gamba tesa e braccia larghe) · press (pressing/finta/recupero/copertura: ADDOSSO al portatore, busto avanti, braccio a schermare, tocco di punta). Prop hlDefGesto → pose sw-scalate auto-azzeranti nel blocco CINE-VAR; fallito = perdita di equilibrio comune. + VERDETTO DIFENSIVO RITARDATO (pattern #51): con l inbound 7.239 il pallone doveva ancora ARRIVARE quando usciva l overlay (misurato ~0.9s su gi31) → revealMs def 2250 con inbound / 1900 senza. Verificato sui fogli-provini: gi34 pressing = eroe addosso al portatore che vacilla, verdetto dopo il contatto.
 // [7.241.0 #56 batch PO gi28/29/37 «Non si vede il compagno che conclude»] FRENA PER GIRARTI — il difetto NON era la scelta del ricevente ne la transizione: attribuzione per-frame (AR53/54: oth=0, own>0, _ctx GIA sulla palla) → era il MODELLO DI STERZATA di animOne. Il ricevente lanciato sulla corsa profonda, con il filtrante atterrato ALLE SPALLE, navigava un inversione a U larga 20u e lunga secondi: il turn-rate e ∝1/velocita e la magnitudine della velocita-obiettivo restava PIENA nella direzione sbagliata. Ora quando la direzione voluta supera ~60° da quella di marcia la velocita-obiettivo cala col disallineamento (fino a 0.18×): la frenata passa dal limitatore di accelerazione, la velocita scende, il turn-rate risale → due passi di frenata e pivot, come in campo. Misurato prima→dopo: gi29 ricevente da divergenza a 24u → ARRIVO a 1.3u (t 0.41) con palla che parte con lui; gi37 2.0u; gi28 convergenza stretta. Vale per TUTTI i 21 off-ball (fisica piu vera anche su pressing/rientri — plausibile beneficio sul cluster difensivo «non aggancia il pallone»). +selezione demergenza del ricevente nel driver assist_recv (ogni scena ha SEMPRE un uomo sulla palla). ⚠️ modello core: gate 14/14 obbligatorio + realismo da riverificare sui baseline.
 // [7.240.0 #55B batch PO gi25/gi26 «Non si vede il compagno che riceve (e tira)» + gi43/28/29/30 storici] IL COMPAGNO ARRIVA SUL PALLONE PRIMA DI CALCIARE. Diagnosi strumentata (probe AR51/AR52 in-page, solo __CPM_REC): la catena assist_recv era VIVA e corretta — il primo sospetto «catena congelata» era un artefatto del campione stantio — ma (a) la transizione ricezione→tiro era a TEMPO FISSO 0.42s col ricevente ancora a 8-15u → il pallone volava in porta DA SOLO col gesto di calcio a vuoto; (b) il puntatore del ricevente (passTargetMesh) veniva AZZERATO all'avvio di assist_recv in 2 dei 3 siti (pass+assist = gi25 filtrante · tacco/scarico = gi26) e il driver, che scandiva solo il gesto _rcvT (0.52s di vita), restava senza nessuno da far correre. Fix: puntatore PERSISTENTE su tutti i siti (+_runToX fresco), fallback del driver sul puntatore, transizione ALL'ARRIVO (<2.2u, minimo 0.30s) con fallback 3.0s. Misurato prima→dopo: ricevente a 8-9u dalla palla al momento del tiro → 3.5-4u col gesto agganciato; gi26 duello leggibile sul foglio-provini; gi25 in wizard chiude con la catena e il gol.
@@ -8205,11 +8205,14 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
       const _bw=standW+2,_bh=1.7,_m=_compBanner.clone();
       _m.wrapS=THREE.RepeatWrapping;_m.repeat.set(Math.max(1,Math.round(_bw/26)),1);_m.needsUpdate=true;
       const _bn=new THREE.Mesh(new THREE.PlaneGeometry(_bw,_bh),new THREE.MeshBasicMaterial({map:_m}));
-      /* [7.301.0 collaudo PO «gli striscioni dei tifosi devono essere SOVRAPPOSTI»] la fascia della competizione
-         sta ADERENTE al muro (0.04) mentre gli striscioni ultras del 3DV-TIFO sono appesi piu' avanti (0.14):
-         cosi' i teli dei tifosi coprono la fascia, come allo stadio — la pubblicita' e' il fondo, il tifo sta
-         davanti. `renderOrder` basso e `depthWrite:false` tolgono ogni ambiguita' di z-fighting. */
-      _bn.position.set(0,1.85,-(standD+3)/2-0.04);_bn.rotation.y=Math.PI;_bn.renderOrder=-2;_bn.material.depthWrite=false;g.add(_bn);}
+      /* [7.306.1 collaudo PO «sui muretti gli striscioni della competizione non ci sono, solo quelli dei
+         tifosi»] la fascia c'era ma spariva: per tenerla SOTTO ai teli degli ultras le avevo messo
+         `renderOrder:-2` + `depthWrite:false`, cioe' disegnata PRIMA di tutto e senza scrivere profondita' —
+         e il muro di cemento, opaco e disegnato dopo, la ricopriva. (Su qualche settore sopravviveva per puro
+         ordine di traversata della scena: da qui il «a volte si vede».) Ora e' un opaco normale, 0.06 davanti
+         alla faccia del muro: occlude il cemento per profondita' REALE. La gerarchia col tifo resta perche' i
+         teli ultras sono TRASPARENTI (quindi disegnati dopo ogni opaco) e appesi piu' avanti, a 0.14. */
+      _bn.position.set(0,1.85,-(standD+3)/2-0.06);_bn.rotation.y=Math.PI;g.add(_bn);}
     // Roof: PENSILINA arretrata sopra il fondo dell'anello alto — il vecchio sbalzo in avanti, visto
     // dalla camera broadcast alta, COPRIVA l'anello inferiore (banda opaca al posto dei tifosi)
     if(_roofOn){
@@ -23120,10 +23123,25 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     const lg=(p.matchHistory||[]).filter(m=>m&&!m.injured);
     const l3=lg.slice(-3);if(!l3.length)return null;
     const a3=l3.reduce((s,m)=>s+(m.assists||0),0),g3=l3.reduce((s,m)=>s+(m.goals||0),0),w3=l3.filter(m=>m.won).length;
-    const ix=(sn*7+wk)%tms.length;const tm=tms[ix];if(!tm)return null;
-    if(a3>=2&&_ks.indexOf("cena")<0)return{k:"cena",ix,tm,e:"🎁",t:`${tm.name} ti deve una cena`,d:`${a3} assist tuoi nelle ultime gare: in area lo cerchi sempre, e lui lo sa. «Con te alle spalle è un altro calcio», ti dice a fine allenamento.`,db:4,chem:2,mor:2};
+    /* [7.307.0 collaudo PO «Nicolas Amato è il portiere, è più credibile con un altro attaccante o
+       trequartista!»] il compagno si pescava per indice, senza guardare CHE RUOLO ha: e «in campo vi
+       trovate a memoria… un asse che gli avversari temono» detto del portiere non sta in piedi. Ora il
+       ruolo VERO arriva dalla rosa (`generateTeamRoster`, la stessa fonte dei nomi) e il pool si stringe:
+       gli episodi di INTESA OFFENSIVA (cena/asse) vogliono un compagno d'attacco, il sostegno morale
+       chiunque tranne il portiere. Se il pool stretto è vuoto si allarga, ma il portiere resta fuori
+       dagli episodi che parlano di gioco offensivo. */
+    const _ros7=(function(){try{return generateTeamRoster(p.club||{},sn)||[];}catch(_e){return[];}})();
+    const _rl7=(nm)=>{const r=_ros7.find(x=>x&&x.name===nm);return String((r&&r.role)||"");};
+    const _gk7=(t)=>/portiere/i.test(_rl7(t&&t.name));
+    const _att7=(t)=>/attaccante|centravanti|ala|trequartista|mezzala|punta/i.test(_rl7(t&&t.name));
+    const _pick7=(f)=>{const q=tms.filter(f);return q.length?q[(sn*7+wk)%q.length]:null;};
+    const _tmAtt=_pick7(_att7)||_pick7(t=>!_gk7(t));            // intesa offensiva
+    const _tmAny=_pick7(t=>!_gk7(t))||tms[(sn*7+wk)%tms.length];// sostegno umano
+    const ix=tms.indexOf(_tmAny),tm=_tmAny;if(!tm)return null;
+    const ixA=tms.indexOf(_tmAtt||tm),tmA=_tmAtt||tm;
+    if(a3>=2&&_ks.indexOf("cena")<0)return{k:"cena",ix:ixA,tm:tmA,e:"🎁",t:`${tmA.name} ti deve una cena`,d:`${a3} assist tuoi nelle ultime gare: in area lo cerchi sempre, e lui lo sa. «Con te alle spalle è un altro calcio», ti dice a fine allenamento.`,db:4,chem:2,mor:2};
     if(l3.length>=3&&g3===0&&(p.matches||0)>=5&&_ks.indexOf("sostegno")<0)return{k:"sostegno",ix,tm,e:"🤝",t:`${tm.name} ti prende da parte`,d:`Il momento è secco e negli occhi dei compagni lo leggi. «Ci sono passato anch'io — resta nel gioco, il gol arriva», ti dice ${tm.name} negli spogliatoi.`,db:3,chem:1,mor:3};
-    if(w3>=2&&g3>=2&&_ks.indexOf("asse")<0)return{k:"asse",ix,tm,e:"🔥",t:`L'asse con ${tm.name}`,d:`La squadra vola e in campo vi trovate a memoria: con ${tm.name} è nato un asse che gli avversari hanno iniziato a temere.`,db:3,chem:2,mor:1};
+    if(w3>=2&&g3>=2&&_ks.indexOf("asse")<0)return{k:"asse",ix:ixA,tm:tmA,e:"🔥",t:`L'asse con ${tmA.name}`,d:`La squadra vola e in campo vi trovate a memoria: con ${tmA.name} è nato un asse che gli avversari hanno iniziato a temere.`,db:3,chem:2,mor:1};
     return null;
   }catch(_e){return null;}};
   // [7.27.0 ONDA 2 — §S9] INDICE DI ASPETTATIVA: quanto il mondo si aspetta da te (derivato: gol dell'anno
@@ -23528,9 +23546,19 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       const h=hs[Math.abs(hashStr((p.name||"x")+"|exm|"+sn))%hs.length];
       const oc=CLUBS.find(c=>c.id===h.clubId);
       let nm=null;try{const rr=oc?generateTeamRoster(oc,sn):null;if(rr&&rr.length)nm=(rr[Math.abs(hashStr(h.clubId+"|m|"+sn))%rr.length]||{}).name;}catch(_e){}
-      if(nm)out.push({k:"exMate",e:"📞",t:`Ti chiama ${nm}`,
-        d:`Numero non salvato, voce che riconosci al primo «ehi». È ${nm}, dai tempi del ${h.club}: due chiacchiere sul nulla, poi la frase vera — «Qui non è più come quando c'eri tu». Riattacchi che ti gira in testa per tutto il giorno.`,
-        fx:(q)=>({morale:clamp((q.morale||70)+3,0,100)})});
+      /* [7.307.0 collaudo PO «il mondo fuori, la frase è ripetitiva»] la telefonata dell'ex compagno aveva
+         UN SOLO testo: cambiava il nome, non una parola. Con più club nella storia e più stagioni tornava
+         identica. Ora cinque telefonate diverse — nostalgia, sfottò, consiglio, richiesta, rimpianto —
+         scelte in modo deterministico da club+stagione, così ogni chiamata ha una voce sua. */
+      if(nm){const _EXM=[
+        (n,c)=>`Numero non salvato, voce che riconosci al primo «ehi». È ${n}, dai tempi del ${c}: due chiacchiere sul nulla, poi la frase vera — «Qui non è più come quando c'eri tu». Riattacchi che ti gira in testa per tutto il giorno.`,
+        (n,c)=>`${n} ti manda un vocale di tre minuti alle due di notte. Ride, ricorda un allenamento del ${c} che tu avevi rimosso, poi chiude serio: «Non te lo dico mai, ma ti guardo tutte le domeniche».`,
+        (n,c)=>`Ti chiama ${n}: al ${c} lo hanno messo fuori rosa e non sa a chi chiederlo. «Se senti qualcuno che cerca uno come me, fai il mio nome». Dici di sì, e speri di poterlo mantenere.`,
+        (n,c)=>`${n} ti becca al telefono mentre sale in macchina. Nessuna nostalgia: «Ti ho visto sabato. Parti mezzo passo in ritardo sul secondo palo». Vorresti mandarlo a quel paese — ma ha ragione, e lo sai.`,
+        (n,c)=>`Squilla ${n}. Al ${c} hanno buttato giù la vecchia tribuna e lui ha fatto la foto per te. «Volevo che lo sapessi da me». Restate zitti qualche secondo, e va bene così.`,
+      ];const _exi=Math.abs(hashStr((h.clubId||"x")+"|exm|"+sn+"|"+(nm||"")))%_EXM.length;
+        out.push({k:"exMate",e:"📞",t:`Ti chiama ${nm}`,d:_EXM[_exi](nm,h.club),
+        fx:(q)=>({morale:clamp((q.morale||70)+(_exi===3?1:3),0,100)})});}
     }
     /* — il club dove sei cresciuto vive la SUA stagione (classifica vera, se è nella tua lega) — */
     if(hs.length&&seen.indexOf("exClub")<0){
@@ -23547,8 +23575,14 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     /* — il CT era in tribuna (solo se ha davvero senso: non convocato di recente e profilo credibile) — */
     if(seen.indexOf("ctWatch")<0&&(p.nationalCaps||0)<12&&(p.ovr||0)>=74){
       const nat=(NAT_CLUB_DATA&&NAT_CLUB_DATA[p.nation||"Italia"])||null;
+      /* [7.307.0] anche l'occhiata del CT aveva un testo solo: tre varianti seedate su stagione+settimana. */
+      const _CTW=[
+        (f)=>`Lo scopri il giorno dopo, dalle foto: il commissario tecnico ${f}era allo stadio, terza fila, senza dire niente a nessuno. Non significa nulla — e intanto non pensi ad altro.`,
+        (f)=>`Un magazziniere te lo dice come si dice il meteo: «Ieri c'era il CT ${f}, è rimasto fino al novantesimo». Poi se ne va. Tu resti lì con la borsa in mano.`,
+        (f)=>`Nessuno ti avvisa, ma il video del club inquadra la tribuna autorità per due secondi: il CT ${f}c'è, e non sta guardando il pallone. Sta guardando dove ti muovi senza.`,
+      ];const _ctf=(nat&&nat.nat)?nat.nat+" ":"";
       out.push({k:"ctWatch",e:"👀",t:"C'era il CT, in tribuna",
-        d:`Lo scopri il giorno dopo, dalle foto: il commissario tecnico ${nat&&nat.nat?nat.nat+" ":""}era allo stadio, terza fila, senza dire niente a nessuno. Non significa nulla — e intanto non pensi ad altro.`,
+        d:_CTW[Math.abs(hashStr((p.name||"x")+"|ctw|"+sn+"|"+wk))%_CTW.length](_ctf),
         fx:(q)=>({morale:clamp((q.morale||70)+2,0,100)})});
     }
     if(!out.length)return null;
@@ -26192,6 +26226,45 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
 
 
   // accept transfer: update club, league, calendar, standings
+  /* [7.307.0 collaudo PO «al rifiuto di un'offerta, soprattutto così importante, deve esserci una
+     conseguenza, un attestato di stima per la fedeltà o roba simile»] «Rifiuta» faceva UNA cosa: chiudere
+     il modale. Dire di no al FC München — 99 di prestigio, stipendio triplicato — non lasciava traccia da
+     nessuna parte: né la piazza, né il mister, né la tua storia se ne accorgevano.
+     Ora il rifiuto PESA, e pesa in proporzione a quanto era grossa l'offerta: il peso lo dice il salto di
+     PRESTIGIO rispetto al tuo club e il salto di STIPENDIO rispetto al tuo contratto (nessun campo nuovo,
+     sono dati che l'offerta porta già). Tre fasce — una proposta qualunque si declina in silenzio, una
+     buona offerta la piazza la nota, il no a una corazzata diventa un attestato di fedeltà: popolarità e
+     fiducia del mister salgono, il legame con la curva pure, e la cosa entra nel diario, nelle Notizie e
+     nel LEDGER (così il mondo potrà rinfacciartelo, o ricordartelo, nelle stagioni a venire). */
+  const declineTransferOffer=()=>{
+    const o=transferOffer;setTransferOffer(null);if(!o||o.isRenewal)return;
+    {const _mp=clamp((player.club&&player.club.p)||50,1,99),_tp=clamp((o.club&&o.club.p)||_mp,1,99);
+     const _mw=Math.max(1,(player.contract&&player.contract.wage)||1),_tw=Math.max(1,o.wage||_mw);
+     const _bg=((_tp-_mp)>=12&&(_tw/_mw)>=1.6)||(_tp-_mp)>=22||(_tw/_mw)>=2.6;
+     if(_bg)try{notify("🛡️ Fedeltà ripagata: la piazza e il mister te ne rendono merito.",TH.warning);}catch(_e){}}
+    setPlayer(p=>{
+      const myP=clamp((p.club&&p.club.p)||50,1,99),thP=clamp((o.club&&o.club.p)||myP,1,99);
+      const myW=Math.max(1,(p.contract&&p.contract.wage)||1),thW=Math.max(1,o.wage||myW);
+      const dP=thP-myP,rW=thW/myW;
+      const big=(dP>=12&&rW>=1.6)||dP>=22||rW>=2.6;      // corazzata: no che fa notizia
+      const mid=!big&&(dP>=5||rW>=1.25);                  // buona offerta: la piazza la nota
+      if(!big&&!mid)return p;                             // proposta qualunque: si declina in silenzio
+      const cn=(o.club&&o.club.n)||"un altro club",myN=(p.club&&p.club.n)||"il club";
+      const head=big?`Ha detto no al ${cn}`:`Rifiutata l'offerta del ${cn}`;
+      const body=big
+        ? `${cn} aveva messo sul tavolo un ingaggio da ${_fmtWageY133(thW)}. La risposta è stata no: ${myN} resta casa. La curva ha capito prima dei giornali.`
+        : `Sondaggio del ${cn} respinto: nessun tentennamento, si continua qui.`;
+      return{...p,
+        popularity:clamp((p.popularity||20)+(big?7:2),0,100),
+        coachTrust:clamp((p.coachTrust||60)+(big?8:3),0,100),
+        teamChemistry:clamp((p.teamChemistry||60)+(big?4:1),0,100),
+        morale:clamp((p.morale||70)+(big?4:1),0,100),
+        fanLegend:(p.fanLegend||0)+(big?2:0),
+        diary:[...(p.diary||[]),{season:p.season||1,week:p.week||1,type:"story",e:big?"🛡️":"✋",headline:head,body,color:big?"#b45309":"#64748b"}].slice(-80),
+        log:[`${big?"🛡️":"✋"} ${head}${big?" — la piazza te ne rende merito.":"."}`,...(p.log||[])].slice(0,60),
+        ...(big?ledgerPush(p,{t:"promessa",who:"la piazza",what:`ha rifiutato il ${cn} per restare`}):{})};
+    });
+  };
   const acceptTransfer=()=>{
     if(!transferOffer)return;
     const tc=transferOffer;
@@ -27099,7 +27172,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
             )}
             {transferOffer._counter===true&&<div style={{fontSize:12,color:TH.success,fontWeight:700,marginBottom:8,textAlign:"center"}}>✅ Counter accettato dal club! Stipendio e durata aggiornati.</div>}{transferOffer._counter==="rejected"&&<div style={{fontSize:12,color:TH.danger,fontWeight:700,marginBottom:8,textAlign:"center"}}>❌ Il club non rilancia: restano i termini originali.</div>}
             <div style={{display:"flex",gap:10}}>
-              <Btn onClick={()=>setTransferOffer(null)} v="secondary" fw>Rifiuta</Btn>
+              <Btn onClick={declineTransferOffer} v="secondary" fw>Rifiuta</Btn>
               <Btn onClick={acceptTransfer} v="primary" fw>Accetta →</Btn>
             </div>
           </Card>
