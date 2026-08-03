@@ -3989,7 +3989,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="7.310.0"; // [7.310.0 collaudo PO «azione chip millimetrico a centrocampo/trequarti ha dato vita ad una scena surreale con assist ad un compagno che ha segnato, la palla ha fatto un cerchio su se stesso!»] DUE difetti, entrambi misurati su gi106 «Chip pass oltre la difesa» prima di toccare il codice. (a) ASSIST ORFANO — il selettore del ricevente del ramo costruzione/dribbling (7.1.1) accetta SOLO compagni davanti al portatore (`_fw>-2`): quando l'eroe e' il giocatore piu' avanzato della squadra — e su un chip dalla trequarti e' la norma — non selezionava NESSUNO (misurato: `rcv:null`), quindi la consegna partiva senza destinatario. Ora, se l'assist resta orfano, si prende comunque il compagno piu' avanzato e lo si manda SULLA palla (e se non esiste nemmeno quello l'assist_recv viene annullato, cosi' il pallone non resta mai senza un uomo che lo giochi); in piu' il peso sull'AVANZAMENTO nella scelta del ricevente sale da 0.6 a 2.4 contro una distanza in unita' piene — prima vinceva il compagno piu' VICINO, quasi in linea con l'eroe ma spostato di lato. (b) LA PALLA TORNAVA INDIETRO A CERCARLO — il driver della consegna porta il pallone su `ricevente + lead`: col ricevente 10.6u alle spalle (eroe world x 13.8, miglior compagno 3.2) la palla arretrava un pezzo di campo per andargli incontro, e quel tratto all'indietro sommato alla convergenza laterale e' esattamente il «cerchio su se stesso» dello screenshot. Ora il punto d'atterraggio dell'arco fa da PAVIMENTO: la palla puo' assestarsi al massimo ~1.5u dietro, poi resta li' e il compagno ci arriva correndo — come un filtrante vero, la palla si gioca nello spazio e l'uomo ci va. Misurato prima→dopo su gi106: arretramento 2.4u (e ancora in discesa) → 1.0u, col ricevente che sale da game x 53 a 67 sul pallone fermo a 68. Guardiano permanente `tests/visual/assist-delivery-test.mjs` (ogni consegna ha un uomo + arretramento ≤2u su 7 situation, gi106 sempre nel campione), verificato in negativo: togliendo il pavimento il test fallisce.
+const GAME_VERSION="7.311.0"; // [7.311.0 collaudo PO ×2] (A) «l'azione con smarcati per ricevere (dal portiere) con esito positivo sfarfalla, l'eroe praticamente non riceve palla, quest'ultimo arriva a centrocampo e parte un tiro senza compagno che va in porta» — su una situation OFF-BALL l'eroe NON ha il pallone: si smarca per RICEVERLO (qui la battuta e' del portiere). Ma il 3D non sapeva nemmeno di essere in un off-ball (il campo `offBall` non era plumbato a ThreeMatchView), quindi trattava l'eroe da PASSATORE: l'arco di costruzione puntava «eroe +6u avanti, +12u di lato» e il dispatch faceva `assist_recv` scegliendo un compagno piu' avanzato. Misurato su gi158 «Costruzione dal basso»: la palla partiva da (7,50), passava a 4.4u dall'eroe e proseguiva fino a game x 42 — 27.1u di distanza finale — mentre lui restava fermo a x 15; da li' «il tiro senza compagno» (il ricevente era a centrocampo, fuori scena) e lo sfarfallio (arco di consegna e driver del ricevente che scrivono la palla negli stessi frame, piu' il gesto di CALCIO dell'eroe mentre il pallone gli stava arrivando addosso). Ora: prop `hlOffBall`, arco che atterra SULL'EROE (±1.5u di jitter, arco piu' morbido: e' un appoggio, non un lancio), dispatch che si ferma li' con il gesto del CONTROLLO invece di rilanciare a un terzo, e niente piu' actType «pass» su off-ball. Prima→dopo: distanza finale eroe-palla 27.1u → 0.9u. (B) «le punizioni con l'eroe: postura sbagliata del corpo, deve essere direzionato verso la porta!» — il facing dell'eroe deriva dal MOVIMENTO (animOne per il procedurale, delta di posizione per il CH38): fermo sul pallone di un piazzato non lo ruotava NESSUNO dei due, e restava con l'orientamento che aveva. Misurato prima del fix: scarto rispetto alla porta 41° (gi13, punizione centrale) · 34° (gi14, fascia sinistra) · 58° (gi15, fascia destra). Ora, e solo mentre e' fermo davanti al pallone (il gesto del calcio scrive lui la rotazione), il corpo ruota gradualmente verso la porta, e il CH38 eredita lo stesso orientamento. Dopo: scarto 1-2° su tutte, rigori compresi. Guardiano permanente `tests/visual/offball-setpiece-test.mjs` (consegna off-ball entro 4u dall'eroe + corpo entro 17° dalla porta), verificato in negativo: disattivando il blocco del facing gli scarti tornano a 34-58°.
 // [7.242.0 #56 chiusura — batch PO gi31-35 «Non si vede il gesto tecnico specifico» + verdetto difensivo] IL GESTO DIFENSIVO HA UNA FAMIGLIA. Ogni azione difensiva derivava `tackle/-` senza variante: la posa era UNA (scivolata) per pressing, anticipo, muro e deviazione. Tre famiglie STRUTTURALI congelate in factory (patto chainOn/gkCall — la regex vive solo in S()): slide (scivolata/disperato, posa storica a terra) · lunge (intercetto/anticipo/deviazione/muro: AFFONDO in piedi, gamba tesa e braccia larghe) · press (pressing/finta/recupero/copertura: ADDOSSO al portatore, busto avanti, braccio a schermare, tocco di punta). Prop hlDefGesto → pose sw-scalate auto-azzeranti nel blocco CINE-VAR; fallito = perdita di equilibrio comune. + VERDETTO DIFENSIVO RITARDATO (pattern #51): con l inbound 7.239 il pallone doveva ancora ARRIVARE quando usciva l overlay (misurato ~0.9s su gi31) → revealMs def 2250 con inbound / 1900 senza. Verificato sui fogli-provini: gi34 pressing = eroe addosso al portatore che vacilla, verdetto dopo il contatto.
 // [7.241.0 #56 batch PO gi28/29/37 «Non si vede il compagno che conclude»] FRENA PER GIRARTI — il difetto NON era la scelta del ricevente ne la transizione: attribuzione per-frame (AR53/54: oth=0, own>0, _ctx GIA sulla palla) → era il MODELLO DI STERZATA di animOne. Il ricevente lanciato sulla corsa profonda, con il filtrante atterrato ALLE SPALLE, navigava un inversione a U larga 20u e lunga secondi: il turn-rate e ∝1/velocita e la magnitudine della velocita-obiettivo restava PIENA nella direzione sbagliata. Ora quando la direzione voluta supera ~60° da quella di marcia la velocita-obiettivo cala col disallineamento (fino a 0.18×): la frenata passa dal limitatore di accelerazione, la velocita scende, il turn-rate risale → due passi di frenata e pivot, come in campo. Misurato prima→dopo: gi29 ricevente da divergenza a 24u → ARRIVO a 1.3u (t 0.41) con palla che parte con lui; gi37 2.0u; gi28 convergenza stretta. Vale per TUTTI i 21 off-ball (fisica piu vera anche su pressing/rientri — plausibile beneficio sul cluster difensivo «non aggancia il pallone»). +selezione demergenza del ricevente nel driver assist_recv (ogni scena ha SEMPRE un uomo sulla palla). ⚠️ modello core: gate 14/14 obbligatorio + realismo da riverificare sui baseline.
 // [7.240.0 #55B batch PO gi25/gi26 «Non si vede il compagno che riceve (e tira)» + gi43/28/29/30 storici] IL COMPAGNO ARRIVA SUL PALLONE PRIMA DI CALCIARE. Diagnosi strumentata (probe AR51/AR52 in-page, solo __CPM_REC): la catena assist_recv era VIVA e corretta — il primo sospetto «catena congelata» era un artefatto del campione stantio — ma (a) la transizione ricezione→tiro era a TEMPO FISSO 0.42s col ricevente ancora a 8-15u → il pallone volava in porta DA SOLO col gesto di calcio a vuoto; (b) il puntatore del ricevente (passTargetMesh) veniva AZZERATO all'avvio di assist_recv in 2 dei 3 siti (pass+assist = gi25 filtrante · tacco/scarico = gi26) e il driver, che scandiva solo il gesto _rcvT (0.52s di vita), restava senza nessuno da far correre. Fix: puntatore PERSISTENTE su tutti i siti (+_runToX fresco), fallback del driver sul puntatore, transizione ALL'ARRIVO (<2.2u, minimo 0.30s) con fallback 3.0s. Misurato prima→dopo: ricevente a 8-9u dalla palla al momento del tiro → 3.5-4u col gesto agganciato; gi26 duello leggibile sul foglio-provini; gi25 in wizard chiude con la catena e il gol.
@@ -10637,6 +10637,17 @@ function ThreeMatchView(props){
               if((_ht==="dribble"||_ht==="build"||(_ht==="tackle"&&!P.hlDef))&&P.hlReward==="goal"){
                 if(P.hlOutcomeKind==="chance"){heroPostT=0;heroPostType="fist";}// [5.90.0 BLK-2] uomo saltato: palla al piede, la conclusione arriva dalla chain (niente rete qui)
                 else{hlPostArcT=0;hlOutcomeVariant="goal";hlPostArcType="in_net";}}// pressing/dribbling-gol → palla in rete (MAI in un highlight difensivo: P.hlDef)
+              else if(P.hlOffBall&&_hs===true){
+                /* [7.311.0 collaudo PO — stessa segnalazione] L'EROE E' IL RICEVENTE, NON IL PASSATORE.
+                   Su una situation off-ball il reward «assist» sta sul TABELLONE (il tuo smarcamento avvia
+                   l'azione), ma in campo il gesto e' una RICEZIONE. Il dispatch invece cadeva nel ramo
+                   build+assist e faceva `assist_recv`: sceglieva un compagno piu' avanzato e gli mandava la
+                   palla. Misurato su gi158: ricevente a game x~46 mentre l'eroe restava a x~15 — il pallone
+                   passava a 4u da lui e proseguiva per 27u fino a meta' campo, dove partiva una conclusione
+                   con l'eroe fuori scena. Ecco perche' «l'eroe praticamente non riceve palla» e perche' il
+                   tiro sembrava partire da solo. Ora la palla si ferma dove e' arrivata — ai piedi
+                   dell'eroe — e lui fa il gesto del controllo: la scena dice quello che dice il prompt. */
+                heroPostT=0;heroPostType="recv";hlPostArcType=null;passTargetMesh=null;}
               else if((_ht==="build"||_ht==="dribble"||(_ht==="tackle"&&!P.hlDef))&&P.hlReward==="assist"){
                 // [7.1.1 collaudo PO «le costruzioni dal basso che portano all'assist non sono riprodotte in 3D — assurdità»]
                 //   una COSTRUZIONE/dribbling che vale ASSIST GIOCA la palla IN AVANTI a un compagno che avanza (stesso
@@ -10951,7 +10962,7 @@ function ThreeMatchView(props){
             return;// salta l'arco di tiro
           }
           if(t==="build"&&P.hlReward==="goal"&&P.hlOutcomeKind!=="chance")actType="shot";/* [7.244.0 gi46 «Taglio verso l'area» «non si vede il gesto tecnico»] la CORSA che FINALIZZA (build+reward goal) si conclude con un TIRO visibile — successo (rete) o esito parata/palo/fuori: il gesto neutro build era un cenno invisibile mentre l'arco volava comunque in porta. Il caso chance (7.8.10, catena che finalizza) resta neutro: lì l'eroe non tira */
-          else if(t==="build"&&P.hlReward==="assist"&&P.hlOutcomeKind!=="chance")actType="pass";/* [7.245.0 batch PO gi29/30/37 «non si vede il gesto tecnico finale»] il SERVIZIO al compagno (build+reward assist: scatto e servi, lancio lungo, rimorchio) è un CALCIO al pallone — GLB-ON il gesto build era la clip receive da 4.96s di cui si vedeva l'11%: ora suona il kick (0.54s, il gesto del passaggio). Solo gesto/posa: la macchina dell'assist (reward) è invariata */
+          else if(t==="build"&&P.hlReward==="assist"&&P.hlOutcomeKind!=="chance"&&!P.hlOffBall)actType="pass";/* [7.311.0] ...ma NON su una situation OFF-BALL: li' l'eroe non serve nessuno, si smarca per RICEVERE — mimare un passaggio mentre il pallone gli sta arrivando addosso e' la stessa bugia del ramo assist_recv. Resta il gesto «build» = clip receive, cioe' il controllo. *//* [7.245.0 batch PO gi29/30/37 «non si vede il gesto tecnico finale»] il SERVIZIO al compagno (build+reward assist: scatto e servi, lancio lungo, rimorchio) è un CALCIO al pallone — GLB-ON il gesto build era la clip receive da 4.96s di cui si vedeva l'11%: ora suona il kick (0.54s, il gesto del passaggio). Solo gesto/posa: la macchina dell'assist (reward) è invariata */
           // 3DV-11: archi HL con destinazione esplicita verso porta avversaria (+x), non posizione eroe
           const _rz=(Math.random()-.5),_side=(P.playerY||50)<50?-1:1;ballArcTgtY=0.65;/* [7.215.0] default rasoterra: ogni famiglia che ha un bersaglio in altezza lo sovrascrive qui sotto */// _side: lato attaccante — usato da cross, shot_curled, header_far_post
           if(t==="penalty"){// Panenka/cucchiaio → arco molto alto; rigore normale → arco standard
@@ -11125,6 +11136,16 @@ function ThreeMatchView(props){
               ballArcH=0.28;ballArcDur=0.34;ballArcTgtX=G2X(P.playerX||50)+(P.hlSuccess===true?4.2:-4);ballArcTgtZ=G2Z(P.playerY||50)+_rz*4.5;}}
           else if(!t||t==="build"){ballArcT=0;ballArcActive=true;
             if(P.hlSuccess===true&&P.hlReward==="goal"){ballArcH=1.5;ballArcDur=0.56;ballArcTgtX=AWAY_GOAL_X-3+Math.random()*3;ballArcTgtZ=_rz*6;}// costruzione-gol → la palla punta la porta
+            else if(P.hlOffBall&&P.hlSuccess===true){
+              /* [7.311.0 collaudo PO «l'azione con smarcati per ricevere (dal portiere) con esito positivo
+                 sfarfalla, l'eroe praticamente non riceve palla»] LA CONSEGNA FINISCE SULL'EROE. Su una
+                 situation OFF-BALL l'eroe non ha la palla: si smarca per RICEVERLA (qui la battuta e' del
+                 portiere, `ballAt:"gk"`). Ma il bersaglio dell'arco di costruzione era `eroe +6u in avanti,
+                 +12u di lato`: misurato su gi106... no, su gi158 «Costruzione dal basso» — la palla partiva
+                 da (7,50), passava a 4.4u dall'eroe e proseguiva OLTRE. Ora atterra su di lui (micro-jitter
+                 laterale ±1.5u per non sembrare calamitata) e l'arco e' piu' morbido: e' un appoggio, non un
+                 lancio. */
+              ballArcH=0.8;ballArcDur=0.46;ballArcTgtX=G2X(P.playerX||50);ballArcTgtZ=G2Z(P.playerY||50)+_rz*1.5;}
             else{ballArcH=0.9;ballArcDur=0.38;ballArcTgtX=G2X(P.playerX||50)+(P.hlSuccess===true?6:-4);ballArcTgtZ=G2Z(P.playerY||50)+_rz*12;}}// 3DV-14: build-up → corto ma visibile
           else ballArcActive=false;
           // [6.74.0 3D-2] ESITO GOL della famiglia tiro/testa: il punto d'atterraggio dell'ARCO deve stare
@@ -11435,6 +11456,19 @@ function ThreeMatchView(props){
         const _homeBall=(propsRef.current&&propsRef.current.hlDef)?false:((_fs&&_fs.attackingHome!=null)?_fs.attackingHome:(_bGX>50));// possesso AFFIDABILE (palla logica), non mesh
         // FIX rigore/punizione: su un set-piece i giocatori NON pressano/corrono — restano schierati fuori area.
         const _setPiece=isHL&&(P.hlType==="penalty"||P.hlType==="freekick"||!!P.hlSetPiece);/* [7.8.8] flag set-piece dalla situation → il muro si schiera fin dall'AIMING (prima P.hlType poteva non essere ancora "freekick" in hl_choose → nessuna barriera) */
+        /* [7.311.0 collaudo PO «le punizioni con l'eroe: postura sbagliata del corpo, deve essere direzionato
+           verso la porta!»] SUL PIAZZATO L'EROE GUARDA LA PORTA. Il facing dell'eroe e' derivato dal MOVIMENTO
+           (in `animOne`, e per il CH38 dal delta di posizione): su un calcio piazzato l'eroe e' FERMO sul
+           pallone, quindi nessuno dei due lo ruota mai e resta con l'orientamento che aveva — con rotation.y
+           a 0 significa guardare lungo +z, cioe' di FIANCO alla porta. Qui, e solo mentre e' fermo davanti al
+           pallone (nessun gesto in corso: il gesto del calcio scrive lui la rotazione), il corpo ruota in modo
+           graduale verso la porta avversaria. Nessun effetto su traiettoria, esito o posizione → puramente
+           postura. */
+        if(_setPiece&&hero&&actType==null&&heroPostT<0){
+          const _spY=Math.atan2(AWAY_GOAL_X-hero.position.x,-hero.position.z);
+          let _spD=((_spY-hero.rotation.y+Math.PI*3)%(Math.PI*2))-Math.PI;
+          hero.rotation.y+=_spD*Math.min(aDt*3.2,1);
+        }
         let _hxg=P.playerX||50,_hyg=P.playerY||50;const _pat=P.hlPattern||"";
         /* [7.236.0 batch «compare e scompare»] se l'executor ha portato l'eroe avanti col build-up, la
            conclusione parte DA LÌ: l'ancora della approach è il punto d'arrivo della costruzione (stessa
@@ -12250,6 +12284,11 @@ function ThreeMatchView(props){
         if(heroPostT>=0){heroPostT+=aDt;const _hpu=Math.min(heroPostT/1.6,1),_hsw=Math.sin(_hpu*Math.PI);
           if(heroPostType==="miss"){if(hero._hd)hero._hd.rotation.x=-_hsw*0.9;hero._aL.rotation.z=_hsw*1.3;hero._aR.rotation.z=-_hsw*1.3;hero.position.y=0;}
           else if(heroPostType==="fist"){const _fu=Math.min(_hpu*2,1),_fd=Math.max(0,_hpu*2-1);hero._aR.rotation.x=-_fu*(1-_fd)*2.2;hero._aR.rotation.z=_fu*(1-_fd)*0.6;hero.position.y=_fu*(1-_fd)*0.3;}// 3DV-14: braccio destro su, poi giù
+          else if(heroPostType==="recv"){/* [7.311.0] CONTROLLO: chi si e' smarcato ADDOMESTICA il pallone —
+             piede che va sulla palla e braccia che bilanciano. Tutto scalato da _hsw = sin(u·π) → si azzera
+             da solo a u=1 (invariante CINE-VAR), nessun cleanup assoluto necessario. GLB-ON domina comunque
+             la clip `receive` che l'actType «build» gia' richiede. */
+            if(hero._lR)hero._lR.rotation.x=-_hsw*0.55;if(hero._aL)hero._aL.rotation.z=_hsw*0.5;if(hero._aR)hero._aR.rotation.z=-_hsw*0.35;hero.position.y=0;}
           if(_hpu>=1){heroPostT=-1;heroPostType=null;if(hero._hd)hero._hd.rotation.x=0;hero._aL.rotation.z=0;hero._aR.rotation.z=0;hero._aR.rotation.x=0;hero.position.y=0;}}
         // 3DV-FIX3: esultanza compagni sul gol di casa — braccia alzate + saltello (home outfield = indici 1-9)
         if(goalBurstHome&&goalBurstT>=0){const _ta=Math.min(goalBurstT/0.5,1)*Math.max(0,1-goalBurstT/1.8);
@@ -12706,6 +12745,11 @@ function ThreeMatchView(props){
           // facing GRADUALE verso la direzione di movimento (turn-rate cap) — NIENTE snap per-frame (era la causa principale del "twitch schizofrenico"
           // degli avatar). Soglia di movimento più alta (0.02 vs 0.003) → non rifà il facing per micro-movimenti. Fermo durante il tuffo GK.
           if(_gsp>0.03&&!_a._isGk){const _ta=Math.atan2(_gdx,_gdz);let _da=((_ta-_a.root.rotation.y+Math.PI*3)%(Math.PI*2))-Math.PI;_a.root.rotation.y+=_da*Math.min(dt*5.5,1);}
+          else if(_ai===0&&!_a._gName&&propsRef.current&&(propsRef.current.hlType==="penalty"||propsRef.current.hlType==="freekick"||propsRef.current.hlSetPiece)){
+            /* [7.311.0 collaudo PO «postura sbagliata sulle punizioni»] il CH38 ruota SOLO col movimento: fermo
+               sul pallone del piazzato non si girava mai. Qui eredita il facing del modello procedurale, che
+               dal 7.311.0 punta la porta — stesso smorzamento, nessuno snap. */
+            let _dsp=((_p.rotation.y-_a.root.rotation.y+Math.PI*3)%(Math.PI*2))-Math.PI;_a.root.rotation.y+=_dsp*Math.min(dt*4,1);}
           else if(_a._isGk&&!_a._gName){const _bp166=sr.current.ball&&sr.current.ball.position;if(_bp166){const _ta2=Math.atan2(_bp166.x-_p.position.x,_bp166.z-_p.position.z);let _da2=((_ta2-_a.root.rotation.y+Math.PI*3)%(Math.PI*2))-Math.PI;_a.root.rotation.y+=_da2*Math.min(dt*4,1);}}/* [7.166.0 collaudo PO «il portiere a volte è di spalle/in diagonale»] il GK GLB non eredita mai il facing dallo shuffle laterale: guarda SEMPRE la palla (fermo durante il tuffo, come prima) */// item 5 (5.49.1): facing GLB più morbido (turn-rate 8→5.5, soglia 0.02→0.03) → rotazioni fluide, niente twitch
           _a.lx=_p.position.x;_a.lz=_p.position.z;
           // Step D: blend locomozione da velocità SMUSSATA (EMA τ≈0.12s) + crossfade (τ≈0.14s) → niente flicker idle↔corsa.
@@ -16941,7 +16985,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                 ballX={ballPos.x} ballY={ballPos.y} hlSitKey={phase==="playing"||phase==="matchday"?-1:(hlIdx+(_forceSeqRef.current||0)*10000)}/* [7.212.0] +progressivo: rigiocare la stessa situation riarma lo snap di scena */ hlType={_hlType} hlSetPiece={_hlSetPiece} hlBall={_hlBall} hlWood={_hlWood} hlVariant={_hlVariant} hlPattern={_hlPattern} hlChain={!!(situations[hlIdx]&&situations[hlIdx]._chainDepth)}/* [7.234.0 #51] il 3D sa se la scena è un SECONDO TEMPO (catena) */ hlOutcomeKind={_hlOutcomeKind} hlQuality={_hlQuality} hlGkOut={_hlGkOut} adaptShift={_adaptShift} adaptHotY={_adaptHotY} adaptStr={_adaptStr} bgAction={bgAction} hlZone={hlZone}
                 timeOfDay={timeOfDay} weather={weather} kickoffHour={kickoffHour} attendance={attendance} crowd={crowdCtx}
                 waveEvent={waveEvent} isDerby={!!drby} isBigGame={mw>=7}
-                hlSuccess={outcome?.ok??null} hlReward={chosenAct?.rew||null} hlDef={_isDefHL} hlDefTraj={outcome?.defTraj||null} hlDefGesto={chosenAct?.defGesto||null}
+                hlSuccess={outcome?.ok??null} hlReward={chosenAct?.rew||null} hlDef={_isDefHL} hlDefTraj={outcome?.defTraj||null} hlDefGesto={chosenAct?.defGesto||null} hlOffBall={!!situations[hlIdx]?.offBall}
                 isDesktop={!isNarrow} ceremony={ceremony} shootout={phase==="shootout"?{kick:soFx}:null} onWalkoutDone={()=>{if(benchStart)setOnBench(true);
                   // [6.88.0 collaudo PO «maggiore pathos durante la cronaca»] il calcio d'inizio dei BIG MATCH
                   //   apre con una riga d'atmosfera dedicata (finale > big match), scelta deterministica.
