@@ -3989,7 +3989,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="7.307.0"; // [7.307.0 collaudo PO x4] (1) STRISCIONI DELLA COMPETIZIONE — «sui muretti non ci sono, solo quelli dei tifosi»: la fascia c'era ma spariva. Per tenerla SOTTO ai teli degli ultras le avevo dato `renderOrder:-2` + `depthWrite:false`, cioe' disegnata PRIMA di tutto e senza scrivere profondita', e il muro di cemento — opaco, disegnato dopo — la ricopriva; su qualche settore sopravviveva per puro ordine di traversata della scena (da qui il «a volte si vede»). Ora e' un opaco normale a 0.06 davanti alla faccia del muro: occlude il cemento per profondita' REALE. La gerarchia col tifo resta perche' i teli ultras sono TRASPARENTI (quindi disegnati dopo ogni opaco) e appesi piu' avanti, a 0.14. Verificato con screenshot dietro la porta, tifo acceso e spento. (2) «Nicolas Amato e' il PORTIERE, e' piu' credibile con un attaccante o trequartista!»: l'episodio di spogliatoio pescava il compagno per indice, senza guardare il ruolo — e «in campo vi trovate a memoria, un asse che gli avversari temono» detto del portiere non sta in piedi. Ora il ruolo VERO arriva dalla rosa e il pool si stringe: intesa offensiva (cena/asse) solo con un compagno d'attacco, sostegno morale con chiunque tranne il portiere. (3) «il mondo fuori, la frase e' ripetitiva»: la telefonata dell'ex compagno aveva UN SOLO testo (cambiava il nome, non una parola) e tornava identica a ogni club della storia e a ogni stagione → cinque telefonate diverse (nostalgia, sfotto', consiglio, richiesta, rimpianto) seedate su club+stagione; stessa cura sull'occhiata del CT, ora a tre varianti. (4) «al rifiuto di un'offerta, soprattutto cosi' importante, deve esserci una conseguenza»: «Rifiuta» faceva UNA cosa, chiudere il modale — dire no a una corazzata non lasciava traccia ne' nella piazza ne' nella tua storia. Ora il rifiuto pesa in proporzione all'offerta (salto di PRESTIGIO e di STIPENDIO, dati che l'offerta porta gia', nessun campo nuovo): proposta qualunque = silenzio; buona offerta = la piazza la nota; no a una corazzata = attestato di fedelta' — popolarita' +7, fiducia mister +8, legame curva, voce nel diario e nelle Notizie, e la cosa entra nel LEDGER, cosi' il mondo potra' ricordarsela nelle stagioni a venire.
+const GAME_VERSION="7.308.0"; // [7.308.0 direttiva PO «sono carine queste saghe ad episodi, proponimene altre» → approvate la 2, la 3 e la 4] TRE SAGHE NUOVE su un MOTORE condiviso. La saga di mercato (7.17.0) funziona perche' ha tre ingredienti — parte da un FATTO vero, ha un bivio nel mezzo, il finale cambia secondo cosa hai scelto — ma era scritta a mano dentro la sua card. Ora quel meccanismo e' un motore riusabile: un arco dichiara il proprio `trigger(p)` (che deve nascere dai DATI: contratto in scadenza, capitano in rosa, un ragazzo della Primavera nel tuo ruolo — niente pool casuali), gli episodi arrivano UNO alla volta distanziati di qualche settimana come una serie, ogni scelta e' una funzione pura p→delta con effetti bounded, e lo stato salvato e' minimo (`p.sagas[id]={s,st,w,ch}`, campo LAZY → nessun bump di SAVE_VERSION). Gli ATTORI (capitano, ragazzo) si ri-derivano ogni volta dalla rosa con lo stesso seed invece di essere salvati: non possono divergere dal mondo. I tre archi: (1) LA FASCIA — il capitano si ferma, prendi la fascia ad interim o fai un passo indietro; nel mezzo uno strappo nello spogliatoio da gestire; al rientro la restituisci o la tieni (e tenerla riesce solo se fiducia/OVR/eta' te lo consentono davvero, altrimenti la societa' la ridà al capitano e lo spogliatoio se lo ricorda). (2) IL RAGAZZO — un 17enne del TUO ruolo si allena con voi: lo prendi sotto la tua ala o no, esordisce, ti insidia il posto, e in due stagioni diventa il tuo erede o il tuo rivale interno (unica saga che attraversa due stagioni). (3) IL CONTRATTO — scade davvero a giugno e la societa' rinvia il colloquio: la stampa lo scopre, e al bivio finale ti siedi a trattare (apre la trattativa VERA), vai a scadenza, o chiedi la cessione. Ogni scelta lascia una riga nel diario e nelle Notizie, cosi' la serie resta leggibile anche a settimane di distanza.
 // [7.242.0 #56 chiusura — batch PO gi31-35 «Non si vede il gesto tecnico specifico» + verdetto difensivo] IL GESTO DIFENSIVO HA UNA FAMIGLIA. Ogni azione difensiva derivava `tackle/-` senza variante: la posa era UNA (scivolata) per pressing, anticipo, muro e deviazione. Tre famiglie STRUTTURALI congelate in factory (patto chainOn/gkCall — la regex vive solo in S()): slide (scivolata/disperato, posa storica a terra) · lunge (intercetto/anticipo/deviazione/muro: AFFONDO in piedi, gamba tesa e braccia larghe) · press (pressing/finta/recupero/copertura: ADDOSSO al portatore, busto avanti, braccio a schermare, tocco di punta). Prop hlDefGesto → pose sw-scalate auto-azzeranti nel blocco CINE-VAR; fallito = perdita di equilibrio comune. + VERDETTO DIFENSIVO RITARDATO (pattern #51): con l inbound 7.239 il pallone doveva ancora ARRIVARE quando usciva l overlay (misurato ~0.9s su gi31) → revealMs def 2250 con inbound / 1900 senza. Verificato sui fogli-provini: gi34 pressing = eroe addosso al portatore che vacilla, verdetto dopo il contatto.
 // [7.241.0 #56 batch PO gi28/29/37 «Non si vede il compagno che conclude»] FRENA PER GIRARTI — il difetto NON era la scelta del ricevente ne la transizione: attribuzione per-frame (AR53/54: oth=0, own>0, _ctx GIA sulla palla) → era il MODELLO DI STERZATA di animOne. Il ricevente lanciato sulla corsa profonda, con il filtrante atterrato ALLE SPALLE, navigava un inversione a U larga 20u e lunga secondi: il turn-rate e ∝1/velocita e la magnitudine della velocita-obiettivo restava PIENA nella direzione sbagliata. Ora quando la direzione voluta supera ~60° da quella di marcia la velocita-obiettivo cala col disallineamento (fino a 0.18×): la frenata passa dal limitatore di accelerazione, la velocita scende, il turn-rate risale → due passi di frenata e pivot, come in campo. Misurato prima→dopo: gi29 ricevente da divergenza a 24u → ARRIVO a 1.3u (t 0.41) con palla che parte con lui; gi37 2.0u; gi28 convergenza stretta. Vale per TUTTI i 21 off-ball (fisica piu vera anche su pressing/rientri — plausibile beneficio sul cluster difensivo «non aggancia il pallone»). +selezione demergenza del ricevente nel driver assist_recv (ogni scena ha SEMPRE un uomo sulla palla). ⚠️ modello core: gate 14/14 obbligatorio + realismo da riverificare sui baseline.
 // [7.240.0 #55B batch PO gi25/gi26 «Non si vede il compagno che riceve (e tira)» + gi43/28/29/30 storici] IL COMPAGNO ARRIVA SUL PALLONE PRIMA DI CALCIARE. Diagnosi strumentata (probe AR51/AR52 in-page, solo __CPM_REC): la catena assist_recv era VIVA e corretta — il primo sospetto «catena congelata» era un artefatto del campione stantio — ma (a) la transizione ricezione→tiro era a TEMPO FISSO 0.42s col ricevente ancora a 8-15u → il pallone volava in porta DA SOLO col gesto di calcio a vuoto; (b) il puntatore del ricevente (passTargetMesh) veniva AZZERATO all'avvio di assist_recv in 2 dei 3 siti (pass+assist = gi25 filtrante · tacco/scarico = gi26) e il driver, che scandiva solo il gesto _rcvT (0.52s di vita), restava senza nessuno da far correre. Fix: puntatore PERSISTENTE su tutti i siti (+_runToX fresco), fallback del driver sul puntatore, transizione ALL'ARRIVO (<2.2u, minimo 0.30s) con fallback 3.0s. Misurato prima→dopo: ricevente a 8-9u dalla palla al momento del tiro → 3.5-4u col gesto agganciato; gi26 duello leggibile sul foglio-provini; gi25 in wizard chiude con la catena e il gol.
@@ -22637,6 +22637,14 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       goTab:(t)=>{try{setTab(t);setScreen(t);return true;}catch(e){return "error:"+(e&&e.message);}},
       presBeats:()=>{try{return presBeats();}catch(e){return null;}},
       roster:()=>{try{return generateTeamRoster(player.club||{},player.season||1);}catch(e){return null;}},
+      sagaView:()=>{try{const v=sagaView(player);return v?{id:v.A.id,ep:v.ix,tot:v.A.eps.length}:null;}catch(e){return null;}},/* [7.308.0] la probe legge quale episodio e' a schermo */
+      forceSaga:(id)=>{try{/* avvia una saga saltando i cancelli seedati (settimana/probabilita'): gli ATTORI restano quelli veri */
+        const cap=((player.teammates||[]).find(t=>t&&t.archetype==="capitano")||{}).name||"Il capitano";
+        const ros=(function(){try{return generateTeamRoster(player.club||{},player.season||1)||[];}catch(e){return[];}})();
+        const yg=((ros.find(r=>r&&/under|jolly/i.test(r.role||""))||{}).name)||"Il ragazzo";
+        const d=id==="capitano"?{cap}:id==="erede"?{yg}:{club:(player.club&&player.club.n)||"il club"};
+        setPlayer(q=>({...q,sagas:{...(q.sagas||{}),[id]:{s:q.season||1,st:0,w:q.week||1,ch:[],d}}}));return true;
+      }catch(e){return "error:"+(e&&e.message);}},
       patch:(o)=>{try{setPlayer(p=>({...p,...(o||{})}));return true;}catch(e){return "error:"+(e&&e.message);}},/* [7.303.0] iniezione di stato per le probe (test-only): evita il reload, che l'addInitScript sovrascriverebbe *//* [7.303.0] la probe pres-gk-kit deve poter pescare il PORTIERE vero della rosa *//* [7.297.0] la probe verifica CHI viene chiamato sul prato *//* [7.293.0] la probe stagione-trasferimento deve poter aprire il sotto-tab Coppe: le voci di nav non sono <button> *//* [7.262.0] la probe pro-offers-stable deve poter raggiungere la schermata delle offerte pro senza attraversare due stagioni U18 */
       bump:()=>{try{setNotif({msg:"probe",color:"#000"});setTimeout(()=>setNotif(null),60);return true;}catch(e){return "error:"+(e&&e.message);}},/* [7.262.0] forza un re-render del contenitore: e' proprio la condizione in cui le offerte si riestraevano */
       get:()=>({season:player.season||1,week:player.week||1,lived:!!player.weekLived,screen,ovr:player.ovr,bank:player.bankBalance||0,injured:!!player.injured,goals:player.goals||0,matches:player.matches||0,club:player.club?.id,standingsN:(player.standings||[]).length,gf:(player.standings||[]).reduce((a,t)=>a+(t.gf||0),0),ga:(player.standings||[]).reduce((a,t)=>a+(t.ga||0),0),contractDur:player.contract?.duration}),
@@ -23142,6 +23150,160 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     if(a3>=2&&_ks.indexOf("cena")<0)return{k:"cena",ix:ixA,tm:tmA,e:"🎁",t:`${tmA.name} ti deve una cena`,d:`${a3} assist tuoi nelle ultime gare: in area lo cerchi sempre, e lui lo sa. «Con te alle spalle è un altro calcio», ti dice a fine allenamento.`,db:4,chem:2,mor:2};
     if(l3.length>=3&&g3===0&&(p.matches||0)>=5&&_ks.indexOf("sostegno")<0)return{k:"sostegno",ix,tm,e:"🤝",t:`${tm.name} ti prende da parte`,d:`Il momento è secco e negli occhi dei compagni lo leggi. «Ci sono passato anch'io — resta nel gioco, il gol arriva», ti dice ${tm.name} negli spogliatoi.`,db:3,chem:1,mor:3};
     if(w3>=2&&g3>=2&&_ks.indexOf("asse")<0)return{k:"asse",ix:ixA,tm:tmA,e:"🔥",t:`L'asse con ${tmA.name}`,d:`La squadra vola e in campo vi trovate a memoria: con ${tmA.name} è nato un asse che gli avversari hanno iniziato a temere.`,db:3,chem:2,mor:1};
+    return null;
+  }catch(_e){return null;}};
+  /* [7.308.0 direttiva PO «sono carine queste saghe ad episodi, proponimene altre» → approvate 2·3·4]
+     MOTORE DELLE SAGHE. La saga di mercato (7.17.0) funziona perche' ha tre ingredienti: parte da un
+     FATTO vero, ha un bivio nel mezzo, e il finale cambia secondo cosa hai scelto. Era pero' scritta a
+     mano, tutta dentro la sua card. Qui quel meccanismo diventa un motore riusabile:
+
+       · un arco dichiara `trigger(p)` — deve nascere dai DATI (contratto in scadenza, capitano in rosa,
+         un ragazzo della Primavera nel tuo ruolo): niente pool casuali, mai un evento che «capita»;
+       · gli episodi arrivano UNO alla volta, distanziati di qualche settimana (`gap`), come una serie;
+       · ogni scelta e' una funzione pura p→delta, quindi gli effetti restano bounded e leggibili;
+       · lo stato salvato e' minimo — `p.sagas[id] = {s,st,w,ch}` (stagione d'avvio, episodio corrente,
+         settimana dell'ultimo passo, scelte fatte) — campo LAZY: nessun bump di SAVE_VERSION.
+     Gli attori (capitano, ragazzo) si RIDERIVANO ogni volta dalla rosa con lo stesso seed: non vengono
+     salvati, quindi non possono divergere dal mondo se la rosa cambia. */
+  const _sagaState=(p,id)=>((p.sagas||{})[id])||null;
+  const _sagaRoster=(p)=>{try{return generateTeamRoster(p.club||{},p.season||1)||[];}catch(_e){return[];}};
+  const SAGA_ARCS=[
+    /* ── L'INFORTUNIO DEL CAPITANO ─────────────────────────────────────────────────────────────
+       Il capitano si ferma e la fascia resta scoperta: la prendi o fai un passo indietro? Il gruppo
+       se ne accorge in entrambi i casi, e al rientro c'e' un conto da chiudere. */
+    {id:"capitano",lbl:"La fascia",e:"🎖️",c1:"#2a1a06",c2:"#7c4a03",ac:"#fbbf24",
+     trigger:(p)=>{
+       if((p.proStatus||"u18")!=="pro"||p.isCaptain)return null;
+       const wk=p.week||1;if(wk<6||wk>26)return null;
+       if((p.ovr||0)<74||(p.coachTrust||0)<58)return null;/* la fascia non la offrono a chiunque */
+       const cap=(p.teammates||[]).find(t=>t&&t.archetype==="capitano");if(!cap||!cap.name)return null;
+       /* seedato su club+stagione: non capita ogni anno, e quando capita e' sempre la stessa settimana */
+       const h=Math.abs(hashStr(((p.club&&p.club.id)||"x")+"|capinj|"+(p.season||1)));
+       if(h%100>=34)return null;                       /* ~1 stagione su 3 */
+       if(wk!==(6+(h>>7)%18))return null;              /* settimana fissa per quella stagione */
+       return{cap:cap.name};},
+     eps:[
+       {gap:0,t:(d)=>`${d.cap} si ferma`,
+        b:(p,d)=>`Crociato, si teme. ${d.cap} esce dal campo d'allenamento sulle spalle dei magazzinieri e lo spogliatoio ammutolisce. Il mister ti cerca dopo la doccia: «Serve qualcuno che tenga insieme il gruppo. Te la senti?»`,
+        ch:[{l:"🎖️ «Me la prendo io»",k:"prendo",fx:(p)=>({coachTrust:clamp((p.coachTrust||60)+5,0,100),morale:clamp((p.morale||70)+3,0,100),teamChemistry:clamp((p.teamChemistry||60)+2,0,100)})},
+            {l:"🤝 «C'è chi la merita più di me»",k:"cedo",fx:(p)=>({teamChemistry:clamp((p.teamChemistry||60)+4,0,100),morale:clamp((p.morale||70)-1,0,100)})}]},
+       {gap:2,t:()=>"Lo strappo",
+        b:(p,d,ch)=>ch[0]==="prendo"
+          ?`Due compagni si prendono a male parole a fine allenamento: uno accusa l'altro di non rientrare mai. Si girano verso di te. Adesso la fascia pesa davvero.`
+          :`Due compagni si prendono a male parole a fine allenamento. Non hai la fascia, ma sei uno che gli altri ascoltano: se ti muovi tu, finisce lì.`,
+        ch:[{l:"🗣️ «Qui dentro si parla, non si urla»",k:"impongo",fx:(p)=>({teamChemistry:clamp((p.teamChemistry||60)+5,0,100),coachTrust:clamp((p.coachTrust||60)+3,0,100),popularity:clamp((p.popularity||20)+1,0,100)})},
+            {l:"🙈 Lasci sfogare",k:"lascio",fx:(p)=>({teamChemistry:clamp((p.teamChemistry||60)-3,0,100),morale:clamp((p.morale||70)+1,0,100)})}]},
+       {gap:3,t:(d)=>`Il rientro di ${d.cap}`,
+        b:(p,d,ch)=>ch[0]==="prendo"
+          ?`${d.cap} è tornato in gruppo e alla prima riunione guarda la fascia sul tuo braccio senza dire niente. Il mister lascia decidere a te.`
+          :`${d.cap} è tornato in gruppo. Ti cerca per primo: «Mi hanno detto come ti sei comportato mentre non c'ero».`,
+        ch:(p,d,ch)=>ch[0]==="prendo"
+          ?[{l:"🤝 Gliela restituisci",k:"restituisco",fx:(q)=>({teamChemistry:clamp((q.teamChemistry||60)+6,0,100),coachTrust:clamp((q.coachTrust||60)+2,0,100),morale:clamp((q.morale||70)+2,0,100)})},
+            {l:"🎖️ La tieni",k:"tengo",fx:(q)=>{const ok=(q.coachTrust||0)>=78&&(q.ovr||0)>=80&&(q.age||18)>=25;
+              return ok?{isCaptain:true,popularity:clamp((q.popularity||20)+4,0,100),teamChemistry:clamp((q.teamChemistry||60)-4,0,100)}
+                       :{teamChemistry:clamp((q.teamChemistry||60)-7,0,100),coachTrust:clamp((q.coachTrust||60)-3,0,100),morale:clamp((q.morale||70)-2,0,100)};}}]
+          :[{l:"⚽ «Ho solo fatto il mio»",k:"chiudo",fx:(q)=>({coachTrust:clamp((q.coachTrust||60)+3,0,100),teamChemistry:clamp((q.teamChemistry||60)+3,0,100)})}],
+        end:(p,d,ch)=>ch[2]==="tengo"
+          ? (p.isCaptain?`La fascia resta al tuo braccio. Qualcuno nello spogliatoio non l'ha digerita — ma il mister ti ha dato ragione.`
+                        :`La società ha deciso: la fascia torna a ${d.cap}. Lo spogliatoio ha registrato il tentativo.`)
+          : ch[2]==="restituisco"?`Gliela riconsegni davanti a tutti. È il tipo di gesto che in uno spogliatoio non si dimentica.`
+          : `Nessun premio, nessun titolo: solo il fatto che quando serviva c'eri.`}
+     ]},
+    /* ── IL RAGAZZO DELLA PRIMAVERA ────────────────────────────────────────────────────────────
+       Un 17enne del TUO ruolo si allena con la prima squadra. Lo aiuti o lo ignori: in due stagioni
+       diventa il tuo erede o il tuo rivale interno. Unica saga che attraversa due stagioni. */
+    {id:"erede",lbl:"Il ragazzo",e:"🌱",c1:"#06210f",c2:"#0b3d1c",ac:"#4ade80",multi:true,
+     trigger:(p)=>{
+       if((p.proStatus||"u18")!=="pro")return null;
+       const wk=p.week||1,sn=p.season||1;if(sn<2||wk<4||wk>20)return null;
+       if((p.age||18)<24)return null;                  /* serve qualcuno da cui imparare */
+       const ros=_sagaRoster(p);const yg=ros.find(r=>r&&/under|jolly/i.test(r.role||""));
+       const nm=(yg&&yg.name)||null;if(!nm)return null;
+       const h=Math.abs(hashStr(((p.club&&p.club.id)||"x")+"|erede|"+sn));
+       if(h%100>=30)return null;
+       if(wk!==(4+(h>>6)%16))return null;
+       return{yg:nm};},
+     eps:[
+       {gap:0,t:(d)=>`${d.yg} si allena con voi`,
+        b:(p,d)=>`Diciassette anni, il tuo stesso ruolo, e una faccia che dice che non ha dormito. Il mister lo aggrega e nessuno gli rivolge la parola. A fine seduta resta a calciare da solo.`,
+        ch:[{l:"🧑‍🏫 Lo prendi sotto la tua ala",k:"mentore",fx:(p)=>({teamChemistry:clamp((p.teamChemistry||60)+3,0,100),coachTrust:clamp((p.coachTrust||60)+2,0,100),fatigue:clamp((p.fatigue||0)+4,0,100)})},
+            {l:"🙃 «Sono affari suoi»",k:"ignoro",fx:(p)=>({})}]},
+       {gap:3,t:(d)=>`L'esordio di ${d.yg}`,
+        b:(p,d,ch)=>ch[0]==="mentore"
+          ?`Entra al 78' e la prima cosa che fa è cercarti con lo sguardo. Tocca tre palloni, non ne sbaglia uno. Negli spogliatoi ti abbraccia senza dire niente.`
+          :`Entra al 78' e gioca venti minuti di personalità. Un cronista scrive che «ha già i tempi del titolare». Nessuno gli ha spiegato niente: ci è arrivato da solo.`,
+        ch:[{l:"👏 Te ne compiaci",k:"applaudo",fx:(p)=>({morale:clamp((p.morale||70)+2,0,100)})},
+            {l:"⚡ Ti serve da sveglia",k:"sveglia",fx:(p)=>({form:clamp((p.form||70)+3,30,95),fatigue:clamp((p.fatigue||0)+3,0,100)})}]},
+       {gap:4,t:()=>"Il ballottaggio",
+        b:(p,d,ch)=>ch[0]==="mentore"
+          ?`Il mister lo prova nel tuo ruolo per una partita intera. Alla fine ti cerca: «Non è contro di te. È che tu me lo hai cresciuto».`
+          :`Il mister lo prova nel tuo ruolo per una partita intera. Non ti dice niente, e il silenzio è più eloquente di qualunque discorso.`,
+        ch:[{l:"🤝 «Il ragazzo se lo merita»",k:"apro",fx:(p)=>({teamChemistry:clamp((p.teamChemistry||60)+4,0,100),coachTrust:clamp((p.coachTrust||60)+2,0,100),morale:clamp((p.morale||70)-1,0,100)})},
+            {l:"🔥 «Il posto me lo riprendo»",k:"sfido",fx:(p)=>({form:clamp((p.form||70)+4,30,95),morale:clamp((p.morale||70)+2,0,100),teamChemistry:clamp((p.teamChemistry||60)-3,0,100)})}]},
+       {gap:6,t:(d)=>`Cosa è diventato ${d.yg}`,
+        b:(p,d,ch)=>ch[0]==="mentore"
+          ?`Lo intervistano dopo una grande partita e la prima cosa che dice è il tuo nome: «Mi ha insegnato dove guardare prima di ricevere». In sala stampa si girano tutti verso di te.`
+          :`Ormai gioca stabilmente. In un'intervista gli chiedono di te e sceglie le parole con cura: «Ci alleniamo insieme». Nient'altro. Il messaggio arriva lo stesso.`,
+        ch:[{l:"📖 Chiudi il capitolo",k:"fine",fx:(p,d,ch)=>ch[0]==="mentore"
+              ?{popularity:clamp((p.popularity||20)+4,0,100),morale:clamp((p.morale||70)+3,0,100),teamChemistry:clamp((p.teamChemistry||60)+4,0,100)}
+              :{morale:clamp((p.morale||70)-1,0,100),form:clamp((p.form||70)+2,30,95)}}],
+        end:(p,d,ch)=>ch[0]==="mentore"
+          ?`Da qualche parte, fra qualche anno, un ragazzo dirà di aver imparato da te. È il tipo di eredità che non sta in bacheca.`
+          :`Non gli hai insegnato niente, e ha imparato lo stesso. Adesso è uno con cui devi fare i conti ogni domenica.`}
+     ]},
+    /* ── IL RINNOVO CHE NON ARRIVA ─────────────────────────────────────────────────────────────
+       Contratto in scadenza e societa' che non chiama. La saga vive DENTRO il tuo contratto vero:
+       parte solo se scade davvero, e l'ultimo episodio apre la trattativa REALE. */
+    {id:"rinnovo",lbl:"Il contratto",e:"📄",c1:"#1a1206",c2:"#3d2a06",ac:"#f59e0b",
+     trigger:(p)=>{
+       if((p.proStatus||"u18")!=="pro"||p.loan)return null;
+       const wk=p.week||1,sn=p.season||1;if(wk<8||wk>26)return null;
+       const c=p.contract||{};const exp=(c.expiresAtSeason!=null)?c.expiresAtSeason:(sn+(c.duration||2)-1);
+       if(exp>sn)return null;                          /* scade DAVVERO a fine stagione */
+       if(p.renewalSeason===sn)return null;            /* hai gia' rinnovato quest'anno */
+       const h=Math.abs(hashStr(((p.club&&p.club.id)||"x")+"|rin|"+sn));
+       if(wk!==(8+h%12))return null;
+       return{club:(p.club&&p.club.n)||"il club"};},
+     eps:[
+       {gap:0,t:()=>"Il colloquio rinviato",
+        b:(p,d)=>`Il tuo contratto scade a giugno. L'appuntamento con il direttore sportivo era fissato per martedì: te lo spostano per la seconda volta, senza una ragione. L'agente ti scrive tre parole: «Non mi piace».`,
+        ch:[{l:"😌 Aspetti con calma",k:"aspetto",fx:(p)=>({coachTrust:clamp((p.coachTrust||60)+2,0,100)})},
+            {l:"📞 Chiedi chiarezza subito",k:"forzo",fx:(p)=>({popularity:clamp((p.popularity||20)+2,0,100),coachTrust:clamp((p.coachTrust||60)-2,0,100)})}]},
+       {gap:3,t:()=>"La stampa lo scopre",
+        b:(p,d,ch)=>ch[0]==="forzo"
+          ?`«${d.club}, il rinnovo è un caso»: il tuo pressing è finito sui giornali prima che sul tavolo del direttore. Sotto casa ci sono due telecamere.`
+          :`«${d.club}, il rinnovo non si muove»: la notizia esce lo stesso, e la piazza si divide in due prima ancora che tu apra bocca.`,
+        ch:[{l:"🕊️ Tranquillizzi i tifosi",k:"calmo",fx:(p)=>({popularity:clamp((p.popularity||20)+3,0,100),morale:clamp((p.morale||70)+1,0,100)})},
+            {l:"🤐 Lasci parlare i fatti",k:"muto",fx:(p)=>({coachTrust:clamp((p.coachTrust||60)+3,0,100),popularity:clamp((p.popularity||20)-1,0,100)})}]},
+       {gap:3,t:()=>"Il bivio",
+        b:(p,d)=>`Il direttore ti riceve davvero. Sul tavolo c'è una proposta, e fuori dalla porta il tuo agente ti ricorda che a giugno saresti libero di scegliere chiunque.`,
+        ch:[{l:"✍️ Ti siedi e tratti",k:"tratto",fx:(p)=>({}),act:"nego"},
+            {l:"⏳ Vai a scadenza",k:"scadenza",fx:(p)=>({popularity:clamp((p.popularity||20)+3,0,100),coachTrust:clamp((p.coachTrust||60)-6,0,100),morale:clamp((p.morale||70)-1,0,100)})},
+            {l:"🚪 Chiedi la cessione",k:"cessione",fx:(p)=>({transferListed:true,coachTrust:clamp((p.coachTrust||60)-9,0,100),popularity:clamp((p.popularity||20)-3,0,100),morale:clamp((p.morale||70)+2,0,100)})}],
+        end:(p,d,ch)=>ch[2]==="tratto"?`Il tavolo è apparecchiato: adesso conta quanto vali, non quanto hai aspettato.`
+          :ch[2]==="scadenza"?`Nessuna firma. A giugno sarai libero — e da domani ogni partita sarà un provino davanti a tutti.`
+          :`Hai chiesto di andare via. La società non l'ha presa bene, ma almeno adesso le carte sono scoperte.`}
+     ]},
+  ];
+  /* la saga VISIBILE questa settimana: quella gia' in corso col suo episodio maturo, altrimenti la
+     prima che si accende dai fatti. Mai due insieme (budget d'attenzione della dashboard). */
+  const sagaView=(p)=>{try{
+    if((p.proStatus||"u18")!=="pro")return null;
+    const sn=p.season||1,wk=p.week||1;
+    for(const A of SAGA_ARCS){
+      const st=_sagaState(p,A.id);if(!st||st.done)continue;
+      if(!A.multi&&st.s!==sn)continue;                 /* archi di stagione: scadono col rollover */
+      if(A.multi&&(sn-st.s)>1)continue;                /* il pluriennale vive al massimo due stagioni */
+      const ep=A.eps[st.st];if(!ep)continue;
+      const dw=(sn-st.s)*38+wk-(st.w||wk);
+      if(dw<(ep.gap||0))continue;
+      return{A,st,ep,ix:st.st,d:st.d||{}};
+    }
+    for(const A of SAGA_ARCS){
+      if(_sagaState(p,A.id))continue;                  /* gia' vissuta (o in corso) */
+      const d=A.trigger(p);if(!d)continue;
+      return{A,st:null,ep:A.eps[0],ix:0,d};
+    }
     return null;
   }catch(_e){return null;}};
   // [7.27.0 ONDA 2 — §S9] INDICE DI ASPETTATIVA: quanto il mondo si aspetta da te (derivato: gol dell'anno
@@ -27618,6 +27780,40 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
             <div style={{fontSize:11.5,color:"rgba(255,255,255,0.8)",lineHeight:1.5,marginBottom:10}}><strong>{_cl}</strong> ha presentato l'offerta: il tuo agente ti aspetta con le carte sul tavolo.</div>
             <Btn v="primary" fw onClick={()=>{const _o=sg.offer;setPlayer(p=>({...p,transferSaga:null}));if(_o)setTimeout(()=>setTransferOffer(_o),150);}}>💼 Ascolta l'offerta →</Btn>
           </div>)}
+        </Card>);})()}
+      {/* [7.308.0] LE SAGHE A EPISODI — una card, tre archi (la fascia · il ragazzo · il contratto).
+          L'episodio arriva quando il calendario lo matura; la scelta lo fa avanzare e ne scrive UNA riga
+          nel diario e nelle Notizie, cosi' la serie resta leggibile anche a distanza di settimane. */}
+      {tab==="dashboard"&&(()=>{
+        const V=sagaView(player);if(!V)return null;
+        const{A,st,ep,ix,d}=V;const _ch=(st&&st.ch)||[];
+        const _tot=A.eps.length;
+        const _title=typeof ep.t==="function"?ep.t(d,player,_ch):ep.t;
+        const _body=typeof ep.b==="function"?ep.b(player,d,_ch):ep.b;
+        const _chs=typeof ep.ch==="function"?ep.ch(player,d,_ch):ep.ch;
+        const advance=(c)=>{
+          setPlayer(q=>{
+            const nch=[..._ch];nch[ix]=c.k;
+            const last=ix>=_tot-1;
+            const fx=(typeof c.fx==="function"?c.fx(q,d,nch):null)||{};
+            const _end=last&&typeof ep.end==="function"?ep.end({...q,...fx},d,nch):null;
+            const head=`${A.e} ${A.lbl} · ${typeof ep.t==="function"?ep.t(d,q,nch):ep.t}`;
+            const nx={...(q.sagas||{}),[A.id]:{s:(st&&st.s)||(q.season||1),st:last?_tot:ix+1,w:q.week||1,ch:nch,d,done:!!last}};
+            return{...q,...fx,sagas:nx,
+              diary:[...(q.diary||[]),{season:q.season||1,week:q.week||1,type:"story",e:A.e,headline:head,
+                body:_end||`Hai scelto: ${c.l.replace(/^[^A-Za-zÀ-ÿ«"]+/,"")}`,color:A.ac}].slice(-80),
+              log:[`${A.e} ${A.lbl}: ${c.l.replace(/^[^A-Za-zÀ-ÿ«"]+/,"")}`,...(q.log||[])].slice(0,60)};
+          });
+          if(c.act==="nego"){try{setTimeout(()=>openNegoModal(),260);}catch(_e){}}
+        };
+        return(
+        <Card style={{marginBottom:8,padding:"13px 14px",background:`linear-gradient(150deg,${A.c1},${A.c2})`,border:`1px solid ${A.ac}44`}}>
+          <div style={{fontSize:10,color:A.ac,textTransform:"uppercase",letterSpacing:2,marginBottom:6}}>{A.e} {A.lbl} · episodio {ix+1} di {_tot}</div>
+          <div style={{fontSize:13,fontWeight:900,color:"#fff",marginBottom:4}}>{_title}</div>
+          <div style={{fontSize:11.5,color:"rgba(255,255,255,0.82)",lineHeight:1.5,marginBottom:10}}>{_body}</div>
+          <div style={{display:"flex",flexDirection:"column",gap:6}}>
+            {(_chs||[]).map((c,i)=>(<Btn key={c.k} v={i===0?"primary":"ghost"} fw onClick={()=>advance(c)}>{c.l}</Btn>))}
+          </div>
         </Card>);})()}
       {/* [7.14.0] LA TUA STORIA — capitolo narrativo della settimana (motore derivato, mai casuale) */}
       {tab==="dashboard"&&(player.proStatus||"u18")==="pro"&&(()=>{
