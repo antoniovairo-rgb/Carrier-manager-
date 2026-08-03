@@ -3989,7 +3989,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="7.316.0"; // [7.316.0 domanda PO «pensi che sia corretto il funzionamento o dovrebbe incidere di piu'?»] LA MARCATURA E' UNA RAMPA, NON UNO SCALINO — e il PESO resta quello di prima. Giudizio, con la misura: la quota che i movimenti hanno gia' (fino a 15 punti percentuali per lo stacco dal marcatore) e' quella giusta, e la posizione DEVE contare poco qui perche' la distanza dalla porta e' gia' pesata a valle, nel motore d'esito (7.58.0, `clamp((x-78)*0.45,-14,7)` su tiro e colpo di testa): alzarla anche in `succRate` sarebbe contarla due volte. Il difetto non era QUANTO incideva, era COME: i tre gradini (−15 sotto 25 · −8 sotto 50 · 0 sopra) facevano valere la stessa mossa 7 punti o ZERO a seconda di quale lato di una soglia INVISIBILE ti lasciava — e con i numeri tolti dai bottoni per direttiva (5.93.0) l'unico segnale rimasto e' il colore del bordo, che scattava con loro. Stare a 51 era identico a essere completamente libero. Ora il malus scala con CONTINUITA' da −15 addosso a 0 fuori portata: la media sull'intero arco di defDist e' 5.71 punti contro i 5.72 dei gradini (verificata numericamente su 201 campioni), quindi la difficolta' non si muove di un punto; cambia solo che ogni passo guadagnato vale qualcosa e il colore del bottone lo mostra muoversi. Resta a backlog, come proposta separata, la DIREZIONE della mossa: oggi le quattro direzioni valgono tutte +12 identici, quindi la giocata ottimale e' un trucco di tempismo (aspetta che ti arrivi addosso, poi muoviti) invece di una scelta di calcio — smarcarsi VIA dal difensore dovrebbe valere piu' che andargli incontro.
+const GAME_VERSION="7.317.0"; // [7.317.0 direttiva PO «implementa!» sulla proposta del 7.316] LA DIREZIONE DELLA MOSSA E' UNA DECISIONE. Fino a qui ogni mossa valeva +12 di stacco dal marcatore, IDENTICI in tutte e quattro le direzioni: andare INCONTRO al difensore ti liberava esattamente quanto scappargli via. Conseguenza, la giocata ottimale non era calcistica ma un trucco di tempismo — aspetti che ti arrivi addosso, poi premi una direzione qualunque. Ora il guadagno scala con quanto ti allontani DAVVERO da lui: si prende il marcatore piu' vicino dalle posizioni reali dei giocatori, si confronta la direzione della mossa con quella che porta via da lui, e il guadagno va da ~20 (gli scappi via netto) a ~12 (di traverso) a ~4 (gli vai addosso). BILANCIAMENTO NEUTRO PER COSTRUZIONE: la media sulle quattro direzioni resta esattamente 12, cioe' il valore fisso di prima — misurato 20/12/12/4, media 12.00. Non cambia quanto e' difficile: cambia che adesso conta DOVE ti muovi. Guardiano permanente `tests/visual/move-direction-test.mjs` (ordinamento fuga>traverso>addosso + estremi + media neutra). ⚠️ Due trappole incontrate scrivendo la probe, entrambe annotate nel codice: (1) il marcatore del modello LOGICO (`matchPlayers`, lo stesso layer di defDist/nearby_def/barra pressione) puo' essere un avversario DIVERSO dal piu' vicino fra le MESH 3D — misurare contro la fonte sbagliata dava il risultato invertito; la divergenza fra i due modelli e' nota (stessa classe emersa su gi158) e resta da chiudere a parte. (2) i gancetti di test erano registrati con dep array `[outcome,movesLeft]` e restavano appesi a una closure VECCHIA: la probe leggeva la posizione dell'eroe di parecchi render prima (32,53 invece di 90,59) e la direzione usciva capovolta — il GIOCO usava la closure fresca ed era corretto, era la misura a leggere il passato.
 // [7.242.0 #56 chiusura — batch PO gi31-35 «Non si vede il gesto tecnico specifico» + verdetto difensivo] IL GESTO DIFENSIVO HA UNA FAMIGLIA. Ogni azione difensiva derivava `tackle/-` senza variante: la posa era UNA (scivolata) per pressing, anticipo, muro e deviazione. Tre famiglie STRUTTURALI congelate in factory (patto chainOn/gkCall — la regex vive solo in S()): slide (scivolata/disperato, posa storica a terra) · lunge (intercetto/anticipo/deviazione/muro: AFFONDO in piedi, gamba tesa e braccia larghe) · press (pressing/finta/recupero/copertura: ADDOSSO al portatore, busto avanti, braccio a schermare, tocco di punta). Prop hlDefGesto → pose sw-scalate auto-azzeranti nel blocco CINE-VAR; fallito = perdita di equilibrio comune. + VERDETTO DIFENSIVO RITARDATO (pattern #51): con l inbound 7.239 il pallone doveva ancora ARRIVARE quando usciva l overlay (misurato ~0.9s su gi31) → revealMs def 2250 con inbound / 1900 senza. Verificato sui fogli-provini: gi34 pressing = eroe addosso al portatore che vacilla, verdetto dopo il contatto.
 // [7.241.0 #56 batch PO gi28/29/37 «Non si vede il compagno che conclude»] FRENA PER GIRARTI — il difetto NON era la scelta del ricevente ne la transizione: attribuzione per-frame (AR53/54: oth=0, own>0, _ctx GIA sulla palla) → era il MODELLO DI STERZATA di animOne. Il ricevente lanciato sulla corsa profonda, con il filtrante atterrato ALLE SPALLE, navigava un inversione a U larga 20u e lunga secondi: il turn-rate e ∝1/velocita e la magnitudine della velocita-obiettivo restava PIENA nella direzione sbagliata. Ora quando la direzione voluta supera ~60° da quella di marcia la velocita-obiettivo cala col disallineamento (fino a 0.18×): la frenata passa dal limitatore di accelerazione, la velocita scende, il turn-rate risale → due passi di frenata e pivot, come in campo. Misurato prima→dopo: gi29 ricevente da divergenza a 24u → ARRIVO a 1.3u (t 0.41) con palla che parte con lui; gi37 2.0u; gi28 convergenza stretta. Vale per TUTTI i 21 off-ball (fisica piu vera anche su pressing/rientri — plausibile beneficio sul cluster difensivo «non aggancia il pallone»). +selezione demergenza del ricevente nel driver assist_recv (ogni scena ha SEMPRE un uomo sulla palla). ⚠️ modello core: gate 14/14 obbligatorio + realismo da riverificare sui baseline.
 // [7.240.0 #55B batch PO gi25/gi26 «Non si vede il compagno che riceve (e tira)» + gi43/28/29/30 storici] IL COMPAGNO ARRIVA SUL PALLONE PRIMA DI CALCIARE. Diagnosi strumentata (probe AR51/AR52 in-page, solo __CPM_REC): la catena assist_recv era VIVA e corretta — il primo sospetto «catena congelata» era un artefatto del campione stantio — ma (a) la transizione ricezione→tiro era a TEMPO FISSO 0.42s col ricevente ancora a 8-15u → il pallone volava in porta DA SOLO col gesto di calcio a vuoto; (b) il puntatore del ricevente (passTargetMesh) veniva AZZERATO all'avvio di assist_recv in 2 dei 3 siti (pass+assist = gi25 filtrante · tacco/scarico = gi26) e il driver, che scandiva solo il gesto _rcvT (0.52s di vita), restava senza nessuno da far correre. Fix: puntatore PERSISTENTE su tutti i siti (+_runToX fresco), fallback del driver sul puntatore, transizione ALL'ARRIVO (<2.2u, minimo 0.30s) con fallback 3.0s. Misurato prima→dopo: ricevente a 8-9u dalla palla al momento del tiro → 3.5-4u col gesto agganciato; gi26 duello leggibile sul foglio-provini; gi25 in wizard chiude con la catena e il gol.
@@ -14697,7 +14697,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   const matchMemRef=useRef({goals:0,assists:0,misses:0,gkSaves:0,byFlank:{L:0,C:0,R:0}});
   const [movesLeft,setMovesLeft]=useState(0);
   // VISUAL-TEST: mirror esito/mosse su window (solo ?cpmtest=1) per validare stato finale e cap movimenti
-  useEffect(()=>{ if(typeof window!=='undefined'&&!window.__CPM_STORE_BUILD&&/[?&]cpmtest=1\b/.test(window.location.search||"")){window.__CPM_OUTCOME=outcome;window.__CPM_MOVES=movesLeft;} },[outcome,movesLeft]);// eslint-disable-line
+  useEffect(()=>{ if(typeof window!=='undefined'&&!window.__CPM_STORE_BUILD&&/[?&]cpmtest=1\b/.test(window.location.search||"")){window.__CPM_OUTCOME=outcome;window.__CPM_MOVES=movesLeft;window.__CPM_DEFDIST=()=>defDistRef.current;window.__CPM_MOVEGAIN=(dx,dy)=>_moveGain317(dx,dy);window.__CPM_MARKER=()=>_marker317();/* [7.317.0] la probe misura il guadagno per direzione */} });/* [7.317.0] SENZA dep array: con `[outcome,movesLeft]` i gancetti restavano appesi a una closure VECCHIA — `__CPM_MOVEGAIN` misurava la posizione dell'eroe di parecchi render prima (32,53 invece di 90,59) e la direzione usciva INVERTITA. Il gioco usava la closure fresca ed era corretto: era la probe a leggere il passato. */// eslint-disable-line
   const [pressureBar,setPressureBar]=useState(1);
   const [paused,setPaused]=useState(false);
   // [7.9.3 direttiva PO «basta burattini: se CH38 non è pronto NON si gioca — prendi tempo in maniera paracula»]
@@ -15957,7 +15957,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
              frecce/WASD da desktop — spostava l'eroe e consumava la mossa SENZA toccare defDist: la stessa
              azione valeva fino a 15 punti col pad del telefono e zero con la tastiera. Ora i due ingressi
              fanno la stessa cosa. */
-          defDistRef.current=Math.min(100,defDistRef.current+12);
+          defDistRef.current=Math.min(100,defDistRef.current+_moveGain317(dx,dy));/* [7.317.0] stessa regola direzionale del pad */
           setDefDist(defDistRef.current);
           setPPos(p=>({x:clamp(p.x+dx,mz.x[0],mz.x[1]),y:clamp(p.y+dy,mz.y[0],mz.y[1])}));
           const nm=Math.max(0,movesLeftRef.current-1);
@@ -15971,12 +15971,41 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     return()=>{if(moveRef.current)cancelAnimationFrame(moveRef.current);};
   },[phase,hlIdx,situations]);
 
+  /* [7.317.0 direttiva PO «implementa!» dopo la domanda sui movimenti] LA DIREZIONE DELLA MOSSA CONTA.
+     Fino al 7.316 ogni mossa valeva +12 di stacco dal marcatore, IDENTICI in tutte e quattro le direzioni:
+     andare incontro al difensore ti liberava esattamente quanto scappargli via. Conseguenza: la giocata
+     ottimale non era una scelta di calcio ma un trucco di tempismo — aspetti che ti arrivi addosso, poi
+     premi una direzione qualunque. Ora il guadagno dipende da QUANTO ti allontani da lui: si prende il
+     marcatore piu' vicino (dalle posizioni VERE dei giocatori, non da un valore astratto), si confronta la
+     direzione della mossa con la direzione che porta via da lui, e il guadagno scala di conseguenza —
+     ~20 se gli scappi via netto, ~12 di traverso, ~4 se gli vai addosso.
+     BILANCIAMENTO NEUTRO PER COSTRUZIONE: la media sulle quattro direzioni resta 12, cioe' esattamente il
+     valore fisso di prima. Non cambia quanto e' difficile: cambia che la direzione e' una decisione.
+     Se non si trova un marcatore (nessun avversario in scena) si torna al +12 storico. */
+  /* il marcatore e' quello del modello LOGICO (`matchPlayers`) — lo stesso layer in cui vivono `defDist`,
+     `nearby_def` e la barra pressione. ⚠️ Le mesh 3D in fase highlight hanno un proprio pass off-ball e
+     possono indicare un avversario DIVERSO come piu' vicino: e' una divergenza nota fra i due modelli
+     (stessa classe emersa su gi158) e va chiusa a parte; qui si sceglie la fonte coerente col resto della
+     marcatura, ed e' quella che la probe deve interrogare. */
+  const _marker317=()=>{try{const _hx=pPos.x,_hy=pPos.y;let _bd=1e9,_o=null;
+    (matchPlayers||[]).forEach((q,ix)=>{if(!q||q.team!=="away"||(ix-10)===0)return;
+      const d=Math.hypot(q.x-_hx,q.y-_hy);if(d<_bd){_bd=d;_o={x:q.x,y:q.y,d:d};}});if(_o){_o.hx=_hx;_o.hy=_hy;}return _o;}catch(_e){return null;}};/* [7.317.0] la probe ha bisogno ANCHE della posizione LOGICA dell'eroe: quella delle mesh 3D e' un'altra (stessa divergenza) e misurare la direzione con due fonti diverse dava il risultato invertito */
+  const _moveGain317=(dx,dy)=>{try{
+    const _hx=pPos.x,_hy=pPos.y;
+    const _m=_marker317();
+    if(!_m)return 12;
+    const _ox=_m.x,_oy=_m.y;
+    const _ax=_hx-_ox,_ay=_hy-_oy,_al=Math.hypot(_ax,_ay);if(_al<0.001)return 12;/* sovrapposti: direzione indefinita */
+    const _ml=Math.hypot(dx,dy);if(_ml<0.001)return 12;
+    const _dot=((dx/_ml)*(_ax/_al))+((dy/_ml)*(_ay/_al));/* +1 = gli scappi via · −1 = gli vai addosso */
+    return clamp(12+8*_dot,3,20);
+  }catch(_e){return 12;}};
   const handleDPad=(dx,dy)=>{
     if(phase!=="hl_move"&&phase!=="hl_choose")return;
     const sit=situations[hlIdx];
     if(sit?.lockMovement)return;
     const mz=sit?.moveZone||{x:[0,100],y:[0,100]};
-    defDistRef.current=Math.min(100,defDistRef.current+12);
+    defDistRef.current=Math.min(100,defDistRef.current+_moveGain317(dx,dy));/* [7.317.0] il guadagno dipende dalla DIREZIONE */
     setDefDist(defDistRef.current);
     setPPos(p=>({x:clamp(p.x+dx,mz.x[0],mz.x[1]),y:clamp(p.y+dy,mz.y[0],mz.y[1])}));
     const nm=Math.max(0,movesLeftRef.current-1);
