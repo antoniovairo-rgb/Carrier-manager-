@@ -92,9 +92,14 @@ for (const [tipo, GP] of Object.entries(SP)) {
   await page.evaluate(() => { window.__CPM_FORCE_OUTCOME = 'success'; window.__CPM_RESOLVE(0); });
   /* si misura il MINIMO raggiunto: la rincorsa e' riuscita quando il battitore ARRIVA sul pallone, e il
      valore finale non serve (a gesto esaurito il blocco si disattiva e l'ultimo campione resta appeso). */
-  let minimo = attesa;
-  for (let k = 0; k < 16; k++) { await sleep(230); const o = await page.evaluate(() => (window.__CPM_RUNUP || {}).off); if (o != null && o < minimo) minimo = o; }
-  say(minimo <= 0.3, `${tipo} (gi${GP}) · durante la battuta la rincorsa si consuma fino a ${minimo}u (arriva sul pallone)`);
+  /* minimo PER-FRAME dalla pagina (__CPM_RUNUP_MIN): il poll da node perdeva il fondo della rincorsa */
+  await sleep(3400);
+  const minimo = await page.evaluate(() => window.__CPM_RUNUP_MIN == null ? 99 : +window.__CPM_RUNUP_MIN.toFixed(2));
+  /* [7.323.0] la rincorsa non si consuma piu' fino a 0 — 0 era il corpo ESATTAMENTE SUL pallone, il
+     «supera il pallone» del collaudo — ma fino al punto di contatto _SP_REST=0.62: il piede d'appoggio
+     accanto alla palla, la gamba che calcia la raggiunge. Si asserisce l'ARRIVO (≤0.75) e insieme che il
+     corpo NON attraversi mai la palla (≥0.45): la geometria fine e' nel guardiano setpiece-contact-test. */
+  say(minimo <= 0.75 && minimo >= 0.45, `${tipo} (gi${GP}) · la rincorsa si consuma fino a ${minimo}u (punto di contatto 0.62: arriva ACCANTO al pallone, mai oltre)`);
 }
 
 if (errs.length) { console.log('❌ pageerror:', errs.slice(0, 3).join(' | ')); fails++; }
