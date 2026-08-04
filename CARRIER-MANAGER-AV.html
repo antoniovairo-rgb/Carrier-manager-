@@ -3989,7 +3989,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="7.323.0"; // [7.323.0 direttiva PO — campagna animazioni/fisica, 1° batch: PIAZZATI E CONDUZIONE] (1) IL BATTITORE NON SUPERA PIU' IL PALLONE. Misurato prima del fix (proiezione del corpo sull'asse pallone→porta, recorder per-frame): +0.51/+0.62/+0.93 unita' OLTRE la palla prima che partisse, su rigore e due punizioni. Due cause: la rincorsa terminava a offset 0 — corpo esattamente SUL pallone — e il fermo del battitore era legato alla fine del GESTO, non alla partenza della PALLA: esaurito il gesto, il driver normale lo portava avanti oltre la palla ancora ferma. Ora la rincorsa termina a _SP_REST=0.62 dietro lo spot (piede d'appoggio ACCANTO alla palla, offset laterale _SP_PLANT=0.28 perpendicolare all'asse; la gamba che calcia la raggiunge con lo swing) e il fermo dura finche' il pallone non parte (segnale primario: impatto dell'arco; paracadute: spostamento >1.3u — a 0.6 scattava sugli assestamenti residui, misurato — piu' fallback 1.6s anti-deadlock). Il follow-through oltre il punto di battuta esiste ancora, ma SOLO a palla partita. Tre trappole pagate e documentate: l'ancora dello spot catturata al primo frame coincideva con una palla ancora a mezz'aria dallo snap d'ingresso (gi14: corpo piazzato 10u oltre — ora si aggiorna finche' la battuta non parte e si congela al calcio); il filtro di smorzamento inseguiva la curva analitica con ~70ms di ritardo e all'impatto il corpo era 0.45u corto (durante la battuta l'offset segue la curva ESATTA, lo smoothstep e' gia' il profilo di corsa); il minimo della rincorsa campionato da node a 230ms perdeva il fondo (ora tracciato per-frame in pagina, __CPM_RUNUP_MIN). Dopo: -0.62 (rigore, esattamente il punto di contatto) e -0.25/-0.26 (punizioni) — corpo SEMPRE dietro la palla fino alla partenza. Il wind-up dell'arco (0.24s) e il contatto del gesto (0.224/0.247s) erano gia' sincroni by design: non toccati. (2) IN CONDUZIONE LA PALLA NON RESTA MAI DIETRO. Il pallone insegue il bersaglio LOGICO mentre il corpo visibile ha la dinamica di animOne: due catene di ritardo diverse, e a ogni passo la palla restava transitoriamente alle spalle (misurato con la pressione vera dei tasti direzione: fino a -0.56u dietro la marcia, 7% dei frame in conduzione). Clamp di conduzione — stesso pattern collaudato sull'intro 7.32.5 — sulla direzione di marcia REALE del corpo (velocita' del modello fisico), palla mai sotto 0.28u davanti, componente laterale conservata; solo in conduzione vera (palla vicina, eroe in moto, niente set-piece/difensivo/arco/esito). Dopo: peggiore +0.18, zero frame dietro. Guardiani permanenti nuovi: setpiece-contact-test.mjs (corpo mai oltre la palla + arrivo al contatto + rincorsa esistente) e carry-ball-test.mjs (conduzione coi tasti veri); pass-pattern ritarato sul punto di contatto 0.62 con banda [0.45,0.75]. Punti 3-6 della direttiva (fluidita' eroe/off-ball, sync completa, QA massivo) nei batch successivi.
+const GAME_VERSION="7.324.0"; // [7.324.0 campagna animazioni batch 2 + 2 collaudi PO] (1) COLLAUDO «Controlla e serve: scena assurda — il pallone sembra intercettato, la scena si ferma, poi vola a un compagno che tira e segna»: era il ritorno dell'uno-due del 7.321 che scattava dove non doveva. Il cancello era `pattern==="COMBINATION"`, ma COMBINATION e' anche il FALLBACK di ogni passaggio senza intento dichiarato (misurato su gi109: intent="progression") → un appoggio semplice faceva QUATTRO tratte: palla al muro (letta come intercetto), ritorno all'eroe (la «scena ferma»), ri-selezione di un ALTRO compagno, tiro e gol. Ora la sponda esiste solo per `sit.intent==="onetwo"` DICHIARATO (nuova prop hlOneTwo): «Controlla e serve» torna a essere UNA consegna. Guardiano onetwo-return esteso con la controprova su gi109 (7/7: i 5 uno-due veri tornano, filtrante e progressione no). (2) COLLAUDO «la neve deve essere un evento rarissimo» (due gare dell'Europeo di fila imbiancate): la finestra dei tornei per Nazionali (W20-24) cade ESATTAMENTE nel moltiplicatore invernale — neve 1.6 + grandine 1.2 (stesso effetto visivo) davano il 6.9% a partita = ~35% di vederne almeno una in un torneo da 6 gare. Ritarata la stagionalita' (inverno 0.3/0.35, autunno 0.05/0.3, primavera 0.02/0.2): 1.7% a partita d'inverno sul neutro, Germania 2.7% (il clima-sede resta), sud Italia 0.3%. Guardiano STATICO nuovo `snow-rarity-test.mjs`: ricalcola la probabilita' composta DAL SORGENTE (pattern no-calendar-year) e fallisce sopra il 2.5% — un futuro rebalancing non puo' rialzarla di nascosto. (3) QA MASSIVO (punto 6 della direttiva, `anim-sync-sweep.mjs` permanente): 24 situations × 2 esiti, quattro classi di anomalie (lancio orfano · palla dietro in conduzione · teleport eroe · pallone sospeso senza arco). Unica anomalia trovata: su gi135 (HL difensivo) l'eroe si teletrasportava di 32.6u A META' ESITO — la regola 7.236 «salto del bersaglio = stacco di scena» teleportava anche sui salti del bersaglio logico fuori dagli stacchi (l'assestamento del recupero difensivo sposta il punto di ~32u). Ora il teleport e' concesso solo entro ~0.9s dall'armamento dello snap di scena (sr._cutAt): fuori dalla finestra l'eroe RINCORRE a 13 u/s, come un giocatore vero. Sweep di conferma: 48 scene, ZERO anomalie su tutte e quattro le classi. (4) E il guardiano dell'uno-due, convertito alla misura per-frame (terza ricorrenza della trappola di campionamento node), ha scoperto un difetto vero: durante la sponda l'eroe fa il «vai» a ~13 u/s e la palla gli INSEGUIVA I TALLONI (gap d'equilibrio ~3u, consegna morta a 4.7u sul fallback). Ora la restituzione si gioca SULLA CORSA: bersaglio = eroe + velocita' x lead che DECADE (prima nello spazio, poi sull'uomo) + fallback 1.9s. Nota di metodo: la fase o2 corre in tempo-scena mentre l'auto-advance del result corre in tempo-wall — nei run headless dilatati la coda della consegna puo' essere tagliata a un passo dall'uomo; a 60fps reali la corsa fra i due orologi non esiste.
 // [7.242.0 #56 chiusura — batch PO gi31-35 «Non si vede il gesto tecnico specifico» + verdetto difensivo] IL GESTO DIFENSIVO HA UNA FAMIGLIA. Ogni azione difensiva derivava `tackle/-` senza variante: la posa era UNA (scivolata) per pressing, anticipo, muro e deviazione. Tre famiglie STRUTTURALI congelate in factory (patto chainOn/gkCall — la regex vive solo in S()): slide (scivolata/disperato, posa storica a terra) · lunge (intercetto/anticipo/deviazione/muro: AFFONDO in piedi, gamba tesa e braccia larghe) · press (pressing/finta/recupero/copertura: ADDOSSO al portatore, busto avanti, braccio a schermare, tocco di punta). Prop hlDefGesto → pose sw-scalate auto-azzeranti nel blocco CINE-VAR; fallito = perdita di equilibrio comune. + VERDETTO DIFENSIVO RITARDATO (pattern #51): con l inbound 7.239 il pallone doveva ancora ARRIVARE quando usciva l overlay (misurato ~0.9s su gi31) → revealMs def 2250 con inbound / 1900 senza. Verificato sui fogli-provini: gi34 pressing = eroe addosso al portatore che vacilla, verdetto dopo il contatto.
 // [7.241.0 #56 batch PO gi28/29/37 «Non si vede il compagno che conclude»] FRENA PER GIRARTI — il difetto NON era la scelta del ricevente ne la transizione: attribuzione per-frame (AR53/54: oth=0, own>0, _ctx GIA sulla palla) → era il MODELLO DI STERZATA di animOne. Il ricevente lanciato sulla corsa profonda, con il filtrante atterrato ALLE SPALLE, navigava un inversione a U larga 20u e lunga secondi: il turn-rate e ∝1/velocita e la magnitudine della velocita-obiettivo restava PIENA nella direzione sbagliata. Ora quando la direzione voluta supera ~60° da quella di marcia la velocita-obiettivo cala col disallineamento (fino a 0.18×): la frenata passa dal limitatore di accelerazione, la velocita scende, il turn-rate risale → due passi di frenata e pivot, come in campo. Misurato prima→dopo: gi29 ricevente da divergenza a 24u → ARRIVO a 1.3u (t 0.41) con palla che parte con lui; gi37 2.0u; gi28 convergenza stretta. Vale per TUTTI i 21 off-ball (fisica piu vera anche su pressing/rientri — plausibile beneficio sul cluster difensivo «non aggancia il pallone»). +selezione demergenza del ricevente nel driver assist_recv (ogni scena ha SEMPRE un uomo sulla palla). ⚠️ modello core: gate 14/14 obbligatorio + realismo da riverificare sui baseline.
 // [7.240.0 #55B batch PO gi25/gi26 «Non si vede il compagno che riceve (e tira)» + gi43/28/29/30 storici] IL COMPAGNO ARRIVA SUL PALLONE PRIMA DI CALCIARE. Diagnosi strumentata (probe AR51/AR52 in-page, solo __CPM_REC): la catena assist_recv era VIVA e corretta — il primo sospetto «catena congelata» era un artefatto del campione stantio — ma (a) la transizione ricezione→tiro era a TEMPO FISSO 0.42s col ricevente ancora a 8-15u → il pallone volava in porta DA SOLO col gesto di calcio a vuoto; (b) il puntatore del ricevente (passTargetMesh) veniva AZZERATO all'avvio di assist_recv in 2 dei 3 siti (pass+assist = gi25 filtrante · tacco/scarico = gi26) e il driver, che scandiva solo il gesto _rcvT (0.52s di vita), restava senza nessuno da far correre. Fix: puntatore PERSISTENTE su tutti i siti (+_runToX fresco), fallback del driver sul puntatore, transizione ALL'ARRIVO (<2.2u, minimo 0.30s) con fallback 3.0s. Misurato prima→dopo: ricevente a 8-9u dalla palla al momento del tiro → 3.5-4u col gesto agganciato; gi26 duello leggibile sul foglio-provini; gi25 in wizard chiude con la catena e il gol.
@@ -5438,9 +5438,15 @@ function climateWeights(club){
 //   FASE dell'anno, composti col clima della sede (climateWeights): neve SOLO nel cuore dell'inverno.
 function seasonalWeights(wk){
   if(wk<=6)  return{heat:1.6,sunny:1.5,partly:1.2,humid:1.3,snow:0,hail:0.2,cold:0.2,fog:0.3,mist:0.5,rain:0.55,drizzle:0.6,storm:0.8,thunder:0.9};      // fine estate (ago-set)
-  if(wk<=13) return{rain:1.25,drizzle:1.2,fog:1.15,mist:1.2,wind:1.2,snow:0.12,hail:0.5,cold:0.7,heat:0.5};                                              // autunno (ott-nov)
-  if(wk<=24) return{cold:1.6,snow:1.6,fog:1.5,mist:1.4,rain:1.15,drizzle:1.1,hail:1.2,heat:0.15,sunny:0.75,humid:0.3};                                   // inverno (dic-feb)
-  if(wk<=31) return{sunny:1.25,partly:1.2,rain:0.8,drizzle:0.8,snow:0.06,hail:0.3,fog:0.5,mist:0.7,cold:0.5,heat:0.8};                                   // primavera (mar-apr)
+  if(wk<=13) return{rain:1.25,drizzle:1.2,fog:1.15,mist:1.2,wind:1.2,snow:0.05,hail:0.3,cold:0.7,heat:0.5};                                              // autunno (ott-nov)
+  /* [7.324.0 collaudo PO «la neve deve essere un evento rarissimo» — due gare dell'Europeo di fila imbiancate]
+     La finestra dei tornei per Nazionali (W20-24) cade ESATTAMENTE nel moltiplicatore invernale: neve 1.6 +
+     grandine 1.2 (che usa lo stesso effetto visivo) davano il 6.8% a partita d'inverno = ~35% di vederne
+     almeno una in un torneo da 6 gare. Ora 0.3/0.35 → ~1.6% a partita nel cuore dell'inverno (~9% su un
+     torneo intero), che scala col clima della sede: in Germania resta piu' probabile (×2.2), al sud quasi
+     impossibile (×0.08). Rara davvero, senza sparire dal gioco. */
+  if(wk<=24) return{cold:1.6,snow:0.3,fog:1.5,mist:1.4,rain:1.15,drizzle:1.1,hail:0.35,heat:0.15,sunny:0.75,humid:0.3};                                  // inverno (dic-feb)
+  if(wk<=31) return{sunny:1.25,partly:1.2,rain:0.8,drizzle:0.8,snow:0.02,hail:0.2,fog:0.5,mist:0.7,cold:0.5,heat:0.8};                                   // primavera (mar-apr)
   return{sunny:1.6,heat:1.3,partly:1.25,rain:0.35,drizzle:0.4,storm:0.6,thunder:0.7,snow:0,hail:0.1,fog:0.2,mist:0.35,cold:0.15};                        // tarda primavera (mag)
 }
 // Sprint 16 — Crowd chants (expanded Sprint 22)
@@ -10361,7 +10367,14 @@ function ThreeMatchView(props){
            estremo >30u di sicurezza); un bersaglio in fuga continua si INSEGUE, con punta da scatto. */
         const _tj51=(mesh._htx!=null)?Math.hypot(tx-mesh._htx,tz-mesh._htz):1e9;
         mesh._htx=tx;mesh._htz=tz;
-        if(_tj51>12||d>30){mesh.position.x=tx;mesh.position.z=tz;mesh._hvx=0;mesh._hvz=0;mesh._px=tx;mesh._pz=tz;}
+        /* [7.324.0 QA massivo anim-sync-sweep] IL TELEPORT E' SOLO PER LO STACCO DI SCENA. La regola 7.236
+           «salto del bersaglio = cut» teleportava anche sui salti del bersaglio A META' ESITO — misurato su
+           gi135 (HL difensivo): l'assestamento del recupero sposta il punto logico di ~32u e l'eroe si
+           teletrasportava in chiaro, davanti alla camera. Ora il teleport e' concesso solo entro ~0.9s
+           dall'armamento dello snap di scena (sr._cutAt, scritto dove si arma _hlSnap): fuori dalla
+           finestra il salto del bersaglio e' UNA CORSA — l'eroe rincorre a 13 u/s, come un giocatore vero. */
+        const _cutOk51=(function(){try{const _ca=sr.current._cutAt;return _ca!=null&&(performance.now()-_ca)<900;}catch(_e){return true;}})();
+        if((_tj51>12||d>30)&&_cutOk51){mesh.position.x=tx;mesh.position.z=tz;mesh._hvx=0;mesh._hvz=0;mesh._px=tx;mesh._pz=tz;}
         else if(d>0.06){
           const _n=1/d,_want=Math.min(d>6?13.0:_HVMAX,d*4.2),_a=Math.min(dt*3.4,1);/* [7.236.0] oltre 6u di ritardo l'eroe passa allo SCATTO (13 u/s): rincorre la sua stessa giocata invece di teleportarsi */
           mesh._hvx=(mesh._hvx||0)+(dx*_n*_want-(mesh._hvx||0))*_a;
@@ -10738,13 +10751,22 @@ function ThreeMatchView(props){
                torna sui piedi dell'eroe, lui la controlla, e da li' parte quello che sarebbe partito comunque
                (rete se il premio e' il gol, servizio al compagno se e' l'assist). L'esito e il tabellone non
                cambiano di una virgola: cambia che la scena racconta cio' che l'etichetta ha promesso. */
-            if(_hs===true&&_ht==="pass"&&P.hlPattern==="COMBINATION"&&(hlPostArcType==="in_net"||hlPostArcType==="assist_recv"||(hlPostArcType==null&&P.hlOutcomeKind==="chance"))){
+            /* [7.324.0 collaudo PO con screenshot «Controlla e serve: scena assurda — il pallone sembra
+               intercettato, la scena si ferma, poi vola a un compagno che tira e segna»] IL RITORNO DELL'UNO-DUE
+               SOLO A CHI LO DICHIARA. Il cancello 7.321 era `pattern==="COMBINATION"` — ma COMBINATION e' anche
+               il FALLBACK di ogni passaggio senza intento (misurato su «Controlla e serve», gi109:
+               intent="progression", pattern COMBINATION) → un appoggio semplice faceva QUATTRO tratte:
+               palla al muro (letta come intercetto), ritorno all'eroe (la «scena ferma»), ri-selezione di un
+               ALTRO compagno, tiro e gol. Ora la sponda esiste solo per `sit.intent==="onetwo"` dichiarato
+               (prop hlOneTwo): «Controlla e serve» torna a essere UNA consegna, come promette l'etichetta. */
+            if(_hs===true&&_ht==="pass"&&P.hlOneTwo===true&&(hlPostArcType==="in_net"||hlPostArcType==="assist_recv"||(hlPostArcType==null&&P.hlOutcomeKind==="chance"))){
               /* il terzo caso e' l'OCCASIONE (`chance`): li' il post-arco resta vuoto perche' la conclusione
                  arriva dalla catena («ricevi e TIRA»), e il commento diceva «la palla RESTA all'eroe» — ma
                  l'arco del primo appoggio l'aveva gia' portata via, sul compagno, a 8 unita'. Misurato su
                  gi180 e gi121: il secondo tempo partiva col pallone dall'altra parte. Con la restituzione il
                  pallone e' davvero dove la catena lo aspetta. */
-              sr.current._o2Fin=hlPostArcType||"none";hlPostArcType="onetwo_back";hlPostArcT=0;/* [7.322.0] il «vai» parte NELL'ISTANTE dell'appoggio, come in campo: il bersaglio dell'eroe avanza subito e ci resta (l'accelerazione limitata di animOne fa il resto, quindi si vede una corsa e non uno scatto). Ramparlo durante la sponda non bastava: quella fase dura ~0.4s e l'eroe si spostava di 2.4u soltanto — misurato. */sr.current._o2Push=6.5;}
+              sr.current._o2Fin=hlPostArcType||"none";hlPostArcType="onetwo_back";hlPostArcT=0;
+              if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){try{window.__CPM_O2MIN=null;window.__CPM_O2RUN=0;sr.current._o2Rx0=hero.position.x;}catch(_e){}}/* [7.324.0] tracker PER-FRAME del guardiano: minimo palla↔eroe e corsa del «vai» — il poll da node a 120ms perdeva gli estremi (terza volta che la trappola si ripresenta: rincorsa, lancio orfano, ora questa) *//* [7.322.0] il «vai» parte NELL'ISTANTE dell'appoggio, come in campo: il bersaglio dell'eroe avanza subito e ci resta (l'accelerazione limitata di animOne fa il resto, quindi si vede una corsa e non uno scatto). Ramparlo durante la sponda non bastava: quella fase dura ~0.4s e l'eroe si spostava di 2.4u soltanto — misurato. */sr.current._o2Push=6.5;}
             if((_CPM_TEST||_SIT_TEST)&&typeof window!=="undefined"){try{window.__CPM_DISPATCH={ht:_ht,rew:P.hlReward,ok:_hs,post:hlPostArcType,rcv:passTargetMesh?{x:+passTargetMesh.position.x.toFixed(1),z:+passTargetMesh.position.z.toFixed(1)}:null,hero:{x:+hero.position.x.toFixed(1),z:+hero.position.z.toFixed(1)}};}catch(_e){}}/* [7.310.0] osservabilita' del dispatch post-arco (test-only) */
             if(hlPostArcType==="assist_recv"&&(!passTargetMesh||!passTargetMesh.parent)){
               let _bx310=-1e9,_bm310=null;
@@ -10859,12 +10881,19 @@ function ThreeMatchView(props){
              deciso. Guardia d'arrivo a 2u con un minimo di 0.22s per far leggere il viaggio, fallback a
              1.5s: la scena non puo' restare appesa se qualcosa va storto. */
           const _o2hx=hero.position.x,_o2hz=hero.position.z;
-          const _o2tx=Math.min(_o2hx+0.9,AWAY_GOAL_X-8);
+          /* [7.324.0] LA SPONDA SI GIOCA SULLA CORSA. Il bersaglio era la posizione CORRENTE dell'eroe — ma
+             durante la restituzione l'eroe sta facendo il «vai» (sprint fino a ~13 u/s) e la palla gli
+             inseguiva i talloni con un gap d'equilibrio di ~3u (misura per-frame: sul fallback la consegna
+             moriva a 4.7u da lui). Un muro vero restituisce NELLO SPAZIO: bersaglio = eroe + velocita' × lead,
+             la palla e l'uomo si incontrano davanti. */
+          const _o2ld=0.45*Math.max(0,1-hlPostArcT/0.8);/* il lead DECADE: all'inizio la palla va nello spazio davanti alla corsa, poi converge sull'uomo — a lead fisso inseguiva un punto sempre 6u avanti e la consegna non arrivava mai (misurato: min 3.9-4.6 costante) */
+          const _o2tx=Math.min(_o2hx+(hero._hvx||0)*_o2ld+0.9,AWAY_GOAL_X-8);
+          const _o2tz=_o2hz+(hero._hvz||0)*_o2ld;
           ball.position.x+=((_o2tx)-ball.position.x)*Math.min(aDt*4.4,1);
-          ball.position.z+=((_o2hz)-ball.position.z)*Math.min(aDt*4.4,1);
+          ball.position.z+=((_o2tz)-ball.position.z)*Math.min(aDt*4.4,1);
           ball.position.y+=(0.65-ball.position.y)*Math.min(aDt*7,1);
-          if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){try{window.__CPM_O2={t:+hlPostArcT.toFixed(2),d:+Math.hypot(ball.position.x-_o2hx,ball.position.z-_o2hz).toFixed(2),fin:sr.current._o2Fin||null};}catch(_e){}}
-          if((Math.hypot(ball.position.x-_o2hx,ball.position.z-_o2hz)<2.0&&hlPostArcT>=0.22)||hlPostArcT>=1.5){
+          if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){try{const _d2=+Math.hypot(ball.position.x-_o2hx,ball.position.z-_o2hz).toFixed(2);window.__CPM_O2={t:+hlPostArcT.toFixed(2),d:_d2,fin:sr.current._o2Fin||null};window.__CPM_O2MIN=(window.__CPM_O2MIN==null||_d2<window.__CPM_O2MIN)?_d2:window.__CPM_O2MIN;}catch(_e){}}
+          if((Math.hypot(ball.position.x-_o2hx,ball.position.z-_o2hz)<2.0&&hlPostArcT>=0.22)||hlPostArcT>=1.9){/* [7.324.0] fallback 1.5→1.9: e' solo anti-deadlock, ma a 1.5 tagliava la sponda a meta' corsa (l'eroe fa il «vai» e la palla lo raggiunge sulla corsa: serve il tempo che serve) — misurato: consegna morta a 3.4-3.9u dall'uomo */
             heroPostT=0;heroPostType="recv";contactFlashT=0;
             const _o2f=sr.current._o2Fin;
             hlPostArcType=(_o2f&&_o2f!=="none")?_o2f:null;hlPostArcT=(hlPostArcType==null)?-1:0;
@@ -11441,7 +11470,7 @@ function ThreeMatchView(props){
           //   è SETTLED già al PRIMO fotogramma dell'highlight (preActionT pieno, non 0) → le squadre sono subito schierate correttamente
           //   per la situazione, niente "ramp-in" visibile sotto il freeze. Solo gioco reale (il gate salta hl_intro → motion intatto).
           if(ballArcActive){ballArcActive=false;ballArcIsBG=false;contactFlashT=-1;_arcSrcX=null;_arcSrcZ=null;}}/* COERENZA: entrando nell'highlight si annulla QUALSIASI arco ancora in volo — [7.42.1 collaudo PO «nelle catene il pallone si blocca in posizioni illogiche»] prima si spegneva SOLO l'arco BG: sulle CATENE l'arco d'ESITO della prima azione (deflect/chance verso l'area) restava vivo e la mesh palla PENDEVA A MEZZ'ARIA vicino alla porta per tutto l'hl_intro, mentre la nuova azione riparte dal punto d'assestamento (7.34.1). Il nuovo HL parte SEMPRE dal suo stato-palla pulito. */
-        if(_curPh==="hl_intro"){_chooseT=0;_hlSnap=true;}// FREEZE #2: all'AVVIO dell'highlight → snap dei giocatori in posizione + congelamento (così non si muovono in cronaca→intro)
+        if(_curPh==="hl_intro"){_chooseT=0;_hlSnap=true;sr.current._cutAt=performance.now();}// FREEZE #2: all'AVVIO dell'highlight → snap dei giocatori in posizione + congelamento (così non si muovono in cronaca→intro)
         if(_curPh==="hl_choose")_chooseT=0; else if(_curPh==="playing"||_curPh==="ended"||_curPh==="walkout"||_curPh==="hl_result")_chooseT=-1;// timer di lettura: parte entrando in hl_choose; azzerato fuori dalla fase di lettura
         if(_curPh==="playing"||_curPh==="ended"||_curPh==="walkout"){zoneRingT=-1;zoneRingMat.opacity=0;}
       }
@@ -11960,6 +11989,7 @@ function ThreeMatchView(props){
              farebbe tornare indietro di corsa — che e' il difetto opposto). Il bersaglio LOGICO nei
              props non viene toccato: la firma golden, che legge quello, e' invariata per costruzione. */
           const _o2p=Math.min(sr.current._o2Push||0,6.5);
+          if(_o2p>0&&typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){try{const _rr=hero.position.x-(sr.current._o2Rx0!=null?sr.current._o2Rx0:hero.position.x);if(window.__CPM_O2RUN==null||_rr>window.__CPM_O2RUN)window.__CPM_O2RUN=+_rr.toFixed(2);}catch(_e){}}
           if(!(tlOn&&tlMap&&tlMap.HERO===hero))animOne(hero,Math.min(G2X(_hxg)+_o2p,AWAY_GOAL_X-9),G2Z(_hyg),aDt,ak,bx,bz);
         }/* [7.2.0] premiazione: eroe guidato dal blocco ceremony · [7.127.0] _benched: eroe uscito resta fuori (nascosto), non insegue più il gioco */
         // [6.4.4 R4.1] SOFT-COLLISION di posizione: la repulsione (PASS 2) agisce sui TARGET, ma animOne ha
@@ -11978,7 +12008,7 @@ function ThreeMatchView(props){
         /* [7.194.0 S1] lo snap di scena si arma anche al CAMBIO DI SITUATION, non solo entrando in hl_intro:
            il force-sit del gate (e le catene) entrano direttamente in hl_choose saltando l'intro, e senza questo
            l'eroe restava a metà della corsa di avvicinamento alla posizione appena forzata. */
-        if(P.hlSitKey!=null&&P.hlSitKey>=0&&sr.current._lastSitKey!==P.hlSitKey){sr.current._lastSitKey=P.hlSitKey;_hlSnap=true;}
+        if(P.hlSitKey!=null&&P.hlSitKey>=0&&sr.current._lastSitKey!==P.hlSitKey){sr.current._lastSitKey=P.hlSitKey;_hlSnap=true;sr.current._cutAt=performance.now();}
         /* uno snap di scena è uno STACCO, quindi anche la CAMERA taglia invece di inseguire: senza questo i 22
            erano già in posizione mentre l'inquadratura arrivava un quarto di secondo dopo, e il protagonista
            restava fuori dai bordi per tutta la fase di lettura (37 situation su 191 nel gate). */
@@ -17169,7 +17199,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           {/* ── Field + Panel: responsive layout ── */}
           {(()=>{const _isHL=["hl_move","hl_choose","hl_result","hl_intro"].includes(phase);
           // CINE-1: contesto cinematografico centralizzato — type (legacy) + pattern + variant
-          let _hlType=null,_hlPattern=null,_hlVariant=null,_hlOutcomeKind=null,_hlQuality=null,_isDefHL=false,_hlSetPiece=null,_hlBall=null,_hlWood=null,_hlGkOut=null;
+          let _hlType=null,_hlPattern=null,_hlVariant=null,_hlOneTwo=false,_hlOutcomeKind=null,_hlQuality=null,_isDefHL=false,_hlSetPiece=null,_hlBall=null,_hlWood=null,_hlGkOut=null;
           // cpmadapt: bias di "shading" difensivo verso la fascia più attaccata dall'Eroe. Deterministico, bounded (±4u).
           //   Parte solo dopo ≥3 azioni (serve un pattern) e cresce con la dominanza della fascia. 0 se off/nessun pattern.
           let _adaptShift=0,_adaptHotY=50,_adaptStr=0;
@@ -17177,7 +17207,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
             if(_tot>=3){const _top=Math.max(_bf.L,_bf.C,_bf.R);_adaptStr=clamp((_top/_tot-0.34)/0.4,0,1);
               _adaptHotY=_bf.R===_top?75:(_bf.L===_top?25:50);_adaptShift=(_adaptHotY-50)*_adaptStr*0.24;}}// (b) ±6u max
           const _scoreDiff=isMatchHome?((score.home||0)-(score.away||0)):((score.away||0)-(score.home||0));// per la coerenza-stato dei titoli
-          if(_isHL){const _sit=situations[hlIdx];const _d=deriveHL(_sit,chosenAct);_hlType=_d.type;_hlPattern=_d.pattern;_hlVariant=_d.variant;
+          if(_isHL){const _sit=situations[hlIdx];const _d=deriveHL(_sit,chosenAct);_hlType=_d.type;_hlPattern=_d.pattern;_hlVariant=_d.variant;_hlOneTwo=(_sit&&_sit.intent==="onetwo");
             // [7.8.8 collaudo PO «punizione senza barriera e giocatori mal posizionati»] flag SET-PIECE derivato dalla
             //   SITUATION (intent) → AFFIDABILE in OGNI fase HL (anche in AIMING/hl_choose, quando chosenAct è null e la
             //   regia della barriera dovrebbe già essere schierata). Il 3D lo usa per formare il muro fin dalla mira.
@@ -17252,7 +17282,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                 heroKitCol={heroKitCol} heroKitCol2={heroKitCol2} heroClub={_heroClubObj} oppClub={_oppClubObj} adSeed={(Math.abs(hashStr((player.club?.id||"x")+"|ads|"+(player.season||1)+"|"+((homeTeamObj&&homeTeamObj.nat)||player.nation||""))))>>>0}/* [7.44.0] pubblicità seedate per club+stagione+nazione */
                 stadiumHomeCol={homeTeamObj?.c||scoreHomeCol} stadiumAwayCol={awayTeamObj?.c||scoreAwayCol} stadiumHomeName={homeTeamObj?.n||homeTeamObj?.name||null} stadiumAwayName={awayTeamObj?.n||awayTeamObj?.name||null} stadiumHomeAbbr={homeTeamObj?.a||null} stadiumAwayAbbr={awayTeamObj?.a||null}/* [7.175.0] sigle reali per le bandiere */ stadiumHomeNat={homeTeamObj?.nat||null} stadiumAwayNat={awayTeamObj?.nat||null}/* [7.180.0] lingua degli striscioni */ stadiumHomeId={homeTeamObj?.id||null} stadiumAwayId={awayTeamObj?.id||null}/* [7.181.0] anno di fondazione per NUCLEO <anno> *//* [7.171.0 TIFO 2.0] nomi REALI casa/ospite per gli striscioni dei gruppi ultras */ /* [6.2.0 KIT-1] tifo coi colori SOCIALI, non con la divisa indossata */
                 stadiumStyle={getStadiumStyle(homeTeamObj)}
-                ballX={ballPos.x} ballY={ballPos.y} hlSitKey={phase==="playing"||phase==="matchday"?-1:(hlIdx+(_forceSeqRef.current||0)*10000)}/* [7.212.0] +progressivo: rigiocare la stessa situation riarma lo snap di scena */ meshDef={meshDefRef} hlType={_hlType} hlSetPiece={_hlSetPiece} hlBall={_hlBall} hlWood={_hlWood} hlVariant={_hlVariant} hlPattern={_hlPattern} hlChain={!!(situations[hlIdx]&&situations[hlIdx]._chainDepth)}/* [7.234.0 #51] il 3D sa se la scena è un SECONDO TEMPO (catena) */ hlOutcomeKind={_hlOutcomeKind} hlQuality={_hlQuality} hlGkOut={_hlGkOut} adaptShift={_adaptShift} adaptHotY={_adaptHotY} adaptStr={_adaptStr} bgAction={bgAction} hlZone={hlZone}
+                ballX={ballPos.x} ballY={ballPos.y} hlSitKey={phase==="playing"||phase==="matchday"?-1:(hlIdx+(_forceSeqRef.current||0)*10000)}/* [7.212.0] +progressivo: rigiocare la stessa situation riarma lo snap di scena */ meshDef={meshDefRef} hlType={_hlType} hlSetPiece={_hlSetPiece} hlBall={_hlBall} hlWood={_hlWood} hlVariant={_hlVariant} hlPattern={_hlPattern} hlOneTwo={_hlOneTwo} hlChain={!!(situations[hlIdx]&&situations[hlIdx]._chainDepth)}/* [7.234.0 #51] il 3D sa se la scena è un SECONDO TEMPO (catena) */ hlOutcomeKind={_hlOutcomeKind} hlQuality={_hlQuality} hlGkOut={_hlGkOut} adaptShift={_adaptShift} adaptHotY={_adaptHotY} adaptStr={_adaptStr} bgAction={bgAction} hlZone={hlZone}
                 timeOfDay={timeOfDay} weather={weather} kickoffHour={kickoffHour} attendance={attendance} crowd={crowdCtx}
                 waveEvent={waveEvent} isDerby={!!drby} isBigGame={mw>=7}
                 hlSuccess={outcome?.ok??null} hlReward={chosenAct?.rew||null} hlDef={_isDefHL} hlDefTraj={outcome?.defTraj||null} hlDefGesto={chosenAct?.defGesto||null} hlOffBall={!!situations[hlIdx]?.offBall}

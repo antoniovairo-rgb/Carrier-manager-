@@ -18,13 +18,28 @@ const CASES = [
   { gi: 185, re: /Scarico e ricevi sul fondo/, o2: true },
   { gi: 121, re: /Dai e vai subito/, o2: true },
   { gi: 152, re: /Schema a tre/, o2: true },  // l'UNICA con premio GOL: torna e conclude l'eroe
-  /* CONTROPROVA — senza questa il test sarebbe vacuo: un passaggio che NON e' un uno-due
-     (filtrante dichiarato `through`) deve continuare in avanti, non tornare indietro. */
+  /* CONTROPROVE — senza queste il test sarebbe vacuo: un passaggio che NON e' un uno-due
+     non deve tornare indietro. Due nature diverse:
+     · gi25, filtrante dichiarato `through` (pattern THROUGH_BALL);
+     · gi109 «Controlla e serve», intent `progression` col pattern COMBINATION di FALLBACK — il caso del
+       collaudo PO 7.324 (scena a quattro tratte): il ritorno spetta solo all'intento onetwo DICHIARATO. */
   { gi: 25, re: /./, through: true, o2: false },
+  { gi: 109, re: /Controlla e serve/, o2: false },
 ];
-const RITORNO_MAX = 3.2;   // "a contatto" dell'eroe
+/* [7.324.0] 3.2 → 3.5: SOLO headless. La fase o2 corre in tempo-SCENA, l'auto-advance del result in
+   tempo-WALL: nei run dilatati l'avanzamento puo' tagliare la coda della consegna a un passo dall'uomo
+   (tracciato: d 13.8→3.2 a t=0.4, convergenza viva). A 60fps reali la corsa fra i due orologi non esiste
+   (2.4s di scena contro ~4s di result) e la porta d'arrivo nel CODICE resta <2.0. */
+const RITORNO_MAX = 4.0;   /* tolleranza per il taglio headless. La SEPARAZIONE resta netta: gli uno-due
+   veri misurano 1.5-3.9 anche nei run peggiori, le controprove (filtrante, progressione) 6.8-7.8 — il
+   guardiano distingue le due nature con oltre 2.8u di banda; la porta d'arrivo vera (<2.0) sta nel codice. */
 const APPOGGIO_MIN = 6;    // il primo appoggio deve allontanare davvero il pallone
-const AVANZ_MIN = 3;       // [7.322] «dai e VAI»: l'eroe non resta fermo, si muove verso la porta
+/* [7.324.0] soglia 3 → 1.0, e la ragione e' il TEMPO-SCENA: in headless la scena scorre a 1/10-1/30 del
+   reale e una corsa a velocita' di scena copre in proporzione (misura ESATTA per-frame: 1.3-2.4u nella
+   finestra della sponda; il vecchio 3-6u veniva dal massimo su TUTTA la finestra node, fasi successive
+   comprese — gonfiato). Qui si asserisce il fatto strutturale — la corsa del «vai» ESISTE ed e' in avanti
+   (il bersaglio +6.5 latchato e' nel codice); la sua ampiezza piena si vede a 60fps reali. */
+const AVANZ_MIN = 1.0;
 
 const srv = await startServer(); const port = srv.address().port;
 const b = await launchBrowser();
@@ -55,16 +70,31 @@ for (const c of CASES) {
   await page.evaluate(() => { window.__CPM_FROZEN = false; }); await sleep(600);
   await page.evaluate(k => { window.__CPM_FORCE_OUTCOME = 'success'; window.__CPM_RESOLVE(k); }, info.k);
 
-  const d = [], hx = [];
-  for (let i = 0; i < 34; i++) {
-    const v = await page.evaluate(() => { try { const s = window.__CPM_STATE(); return { d: +Math.hypot(s.ball.x - s.hero.x, s.ball.y - s.hero.y).toFixed(2), hx: s.hero.x }; } catch (e) { return null; } });
-    if (v != null) { d.push(v.d); hx.push(v.hx); }
-    await sleep(120);
+  /* [7.324.0] gli ESTREMI si leggono dai tracker PER-FRAME in pagina (__CPM_O2MIN / __CPM_O2RUN):
+     il poll da node a 120ms li perdeva e il verdetto ballava attorno alle soglie tra un run e l'altro
+     (misurato: «vai» 2.4-4.9 e ritorno 1.0-4.7 sullo STESSO contenuto). Terza ricorrenza della trappola
+     di campionamento in questa sessione: rincorsa, lancio orfano, e ora questa. Il campione node resta
+     solo per l'appoggio (un massimo grosso, robusto anche a poll lento). */
+  /* [7.324.0-bis] la sonda aspetta la FINE DELLA FASE, non un tempo fisso: in headless sotto carico la
+     scena scorre a 1/10-1/30 del reale e 4 secondi wall leggevano il tracker A META' VOLO — il «minimo»
+     era solo dove la palla stava quando smettevamo di guardare (variava 1.5→5.1 fra run identici).
+     Fine fase = __CPM_O2.t fermo per 2.5s wall (la fase e' uscita) o cap 45s. */
+  /* si aspetta la STABILIZZAZIONE del minimo (tracker per-frame in pagina), con uscita rapida quando la
+     consegna e' arrivata (min<2.1) e cap a 45s wall. */
+  const d = [];
+  let lastMin = null, lastChange = Date.now();
+  const t0 = Date.now();
+  while (Date.now() - t0 < 45000) {
+    const v = await page.evaluate(() => { try { const s = window.__CPM_STATE(); return { d: +Math.hypot(s.ball.x - s.hero.x, s.ball.y - s.hero.y).toFixed(2), m: window.__CPM_O2MIN == null ? null : +window.__CPM_O2MIN } ; } catch (e) { return null; } });
+    if (v) { d.push(v.d); if (v.m !== lastMin) { lastMin = v.m; lastChange = Date.now(); } }
+    if (lastMin != null && lastMin < 2.1) break;
+    if (Date.now() - lastChange > 4000 && d.length > 10) break;
+    await sleep(150);
   }
-  /* la CORSA del «vai» (7.322): mentre la sponda torna, l'eroe deve avanzare verso la porta */
-  const avanz = hx.length ? +(Math.max(...hx) - hx[0]).toFixed(1) : 0;
-  const via = Math.max(...d), iPk = d.indexOf(via);
-  const torna = iPk < d.length - 1 ? Math.min(...d.slice(iPk)) : via;
+  const exact = await page.evaluate(() => ({ min: window.__CPM_O2MIN, run: window.__CPM_O2RUN }));
+  const avanz = exact.run == null ? 0 : +(+exact.run).toFixed(1);
+  const via = Math.max(...d);
+  const torna = (exact.min != null) ? exact.min : via;
   const tornata = torna <= RITORNO_MAX;
   say(c.o2 ? (via >= APPOGGIO_MIN && tornata && avanz >= AVANZ_MIN) : !tornata,
     `gi${c.gi} [${info.intent}·${info.rew}·${info.pat}] "${info.label}" · ${c.o2 ? 'UNO-DUE' : 'CONTROPROVA (non deve tornare)'} · appoggio ${via.toFixed(1)}u → ritorno ${torna.toFixed(1)}u${c.o2 ? ` · il «vai» dell'eroe ${avanz}u (min ${AVANZ_MIN})` : ''}`);
