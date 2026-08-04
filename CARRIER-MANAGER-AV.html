@@ -3989,7 +3989,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="7.317.0"; // [7.317.0 direttiva PO «implementa!» sulla proposta del 7.316] LA DIREZIONE DELLA MOSSA E' UNA DECISIONE. Fino a qui ogni mossa valeva +12 di stacco dal marcatore, IDENTICI in tutte e quattro le direzioni: andare INCONTRO al difensore ti liberava esattamente quanto scappargli via. Conseguenza, la giocata ottimale non era calcistica ma un trucco di tempismo — aspetti che ti arrivi addosso, poi premi una direzione qualunque. Ora il guadagno scala con quanto ti allontani DAVVERO da lui: si prende il marcatore piu' vicino dalle posizioni reali dei giocatori, si confronta la direzione della mossa con quella che porta via da lui, e il guadagno va da ~20 (gli scappi via netto) a ~12 (di traverso) a ~4 (gli vai addosso). BILANCIAMENTO NEUTRO PER COSTRUZIONE: la media sulle quattro direzioni resta esattamente 12, cioe' il valore fisso di prima — misurato 20/12/12/4, media 12.00. Non cambia quanto e' difficile: cambia che adesso conta DOVE ti muovi. Guardiano permanente `tests/visual/move-direction-test.mjs` (ordinamento fuga>traverso>addosso + estremi + media neutra). ⚠️ Due trappole incontrate scrivendo la probe, entrambe annotate nel codice: (1) il marcatore del modello LOGICO (`matchPlayers`, lo stesso layer di defDist/nearby_def/barra pressione) puo' essere un avversario DIVERSO dal piu' vicino fra le MESH 3D — misurare contro la fonte sbagliata dava il risultato invertito; la divergenza fra i due modelli e' nota (stessa classe emersa su gi158) e resta da chiudere a parte. (2) i gancetti di test erano registrati con dep array `[outcome,movesLeft]` e restavano appesi a una closure VECCHIA: la probe leggeva la posizione dell'eroe di parecchi render prima (32,53 invece di 90,59) e la direzione usciva capovolta — il GIOCO usava la closure fresca ed era corretto, era la misura a leggere il passato.
+const GAME_VERSION="7.319.0"; // [7.319.0 due collaudi PO] (A) «azione scarica e ricevi sul fondo, l'azione e' disegnata male, il pallone fa dei giri strani!» — IL DATO COMANDA SUL TESTO. Il pattern del passaggio si deduceva SOLO dall'etichetta, e la parola «scarico» bastava a farlo diventare SWITCH (cambio di fronte diagonale, col lato scelto A CASO). Ma «Scarico e RICEVI sul fondo» e' un UNO-DUE e la situation lo DICHIARA (`it:"onetwo"`): 3 conflitti nel pool (gi28 · gi180 · gi185), ora l'intento dichiarato comanda e la regex resta solo dove il dato tace. In piu' il compagno largo del cambio gioco veniva scelto senza chiedere che fosse ALMENO alla stessa altezza di chi passa, quindi la diagonale poteva finire ALLE SPALLE. Misurato su gi185: la palla partiva a (59,33) e finiva a (47,69) — 11 indietro e 36 di traverso — poi strisciava quattro secondi verso il ricevente e ripartiva con un altro arco; percorso 63.3 unita' con 10.3 di arretramento. Ora 26.2 e 0.8. (B) «sulle punizioni e rigori ci deve essere la rincorsa, non possono tirare da fermo!» — LA RINCORSA DEL RIGORE. Il battitore non si spostava MAI: restava sul pallone e muoveva solo la gamba. Ora arretra ~3.2 unita' lungo l'asse pallone→porta e CORRE sul pallone, arrivandoci quando la gamba colpisce (misurato 3.18 → 0 durante la battuta). E' presentazione pura: posizione logica, palla ed esito non si toccano; il CH38 eredita la posa dal modello procedurale. ⚠️ LA PUNIZIONE E' ESCLUSA DI PROPOSITO, e il guardiano lo asserisce: li' il timer del gesto risulta gia' avviato durante l'attesa (misurato u=0.96 prima ancora di risolvere l'azione), quindi la rincorsa si consumerebbe PRIMA del tiro e il battitore resterebbe congelato mezzo metro dietro il pallone — un artefatto nuovo, peggiore di quello che c'era. Va risolta alla radice capendo perche' `actType` e' gia' vivo in attesa: e' il prossimo passo. Tre stesure buttate prima di quella giusta, tutte annotate nel codice: offset come delta (si sommava: il battitore camminava all'indietro per 19 unita'), offset disfatto a ogni frame (il lerp ne erodeva due terzi), e infine posizionamento ASSOLUTO dal pallone — esatto per costruzione. Guardiano permanente `tests/visual/pass-pattern-test.mjs` (4 asserzioni).
 // [7.242.0 #56 chiusura — batch PO gi31-35 «Non si vede il gesto tecnico specifico» + verdetto difensivo] IL GESTO DIFENSIVO HA UNA FAMIGLIA. Ogni azione difensiva derivava `tackle/-` senza variante: la posa era UNA (scivolata) per pressing, anticipo, muro e deviazione. Tre famiglie STRUTTURALI congelate in factory (patto chainOn/gkCall — la regex vive solo in S()): slide (scivolata/disperato, posa storica a terra) · lunge (intercetto/anticipo/deviazione/muro: AFFONDO in piedi, gamba tesa e braccia larghe) · press (pressing/finta/recupero/copertura: ADDOSSO al portatore, busto avanti, braccio a schermare, tocco di punta). Prop hlDefGesto → pose sw-scalate auto-azzeranti nel blocco CINE-VAR; fallito = perdita di equilibrio comune. + VERDETTO DIFENSIVO RITARDATO (pattern #51): con l inbound 7.239 il pallone doveva ancora ARRIVARE quando usciva l overlay (misurato ~0.9s su gi31) → revealMs def 2250 con inbound / 1900 senza. Verificato sui fogli-provini: gi34 pressing = eroe addosso al portatore che vacilla, verdetto dopo il contatto.
 // [7.241.0 #56 batch PO gi28/29/37 «Non si vede il compagno che conclude»] FRENA PER GIRARTI — il difetto NON era la scelta del ricevente ne la transizione: attribuzione per-frame (AR53/54: oth=0, own>0, _ctx GIA sulla palla) → era il MODELLO DI STERZATA di animOne. Il ricevente lanciato sulla corsa profonda, con il filtrante atterrato ALLE SPALLE, navigava un inversione a U larga 20u e lunga secondi: il turn-rate e ∝1/velocita e la magnitudine della velocita-obiettivo restava PIENA nella direzione sbagliata. Ora quando la direzione voluta supera ~60° da quella di marcia la velocita-obiettivo cala col disallineamento (fino a 0.18×): la frenata passa dal limitatore di accelerazione, la velocita scende, il turn-rate risale → due passi di frenata e pivot, come in campo. Misurato prima→dopo: gi29 ricevente da divergenza a 24u → ARRIVO a 1.3u (t 0.41) con palla che parte con lui; gi37 2.0u; gi28 convergenza stretta. Vale per TUTTI i 21 off-ball (fisica piu vera anche su pressing/rientri — plausibile beneficio sul cluster difensivo «non aggancia il pallone»). +selezione demergenza del ricevente nel driver assist_recv (ogni scena ha SEMPRE un uomo sulla palla). ⚠️ modello core: gate 14/14 obbligatorio + realismo da riverificare sui baseline.
 // [7.240.0 #55B batch PO gi25/gi26 «Non si vede il compagno che riceve (e tira)» + gi43/28/29/30 storici] IL COMPAGNO ARRIVA SUL PALLONE PRIMA DI CALCIARE. Diagnosi strumentata (probe AR51/AR52 in-page, solo __CPM_REC): la catena assist_recv era VIVA e corretta — il primo sospetto «catena congelata» era un artefatto del campione stantio — ma (a) la transizione ricezione→tiro era a TEMPO FISSO 0.42s col ricevente ancora a 8-15u → il pallone volava in porta DA SOLO col gesto di calcio a vuoto; (b) il puntatore del ricevente (passTargetMesh) veniva AZZERATO all'avvio di assist_recv in 2 dei 3 siti (pass+assist = gi25 filtrante · tacco/scarico = gi26) e il driver, che scandiva solo il gesto _rcvT (0.52s di vita), restava senza nessuno da far correre. Fix: puntatore PERSISTENTE su tutti i siti (+_runToX fresco), fallback del driver sul puntatore, transizione ALL'ARRIVO (<2.2u, minimo 0.30s) con fallback 3.0s. Misurato prima→dopo: ricevente a 8-9u dalla palla al momento del tiro → 3.5-4u col gesto agganciato; gi26 duello leggibile sul foglio-provini; gi25 in wizard chiude con la catena e il gol.
@@ -8753,7 +8753,20 @@ function deriveHL(sit,act){
   else if(type==="shot")pattern=cn.oneOnOne?"ONE_ON_ONE":isCarry?"BALL_CARRY":(/dribbl|finta|elastico|doppio passo|step-?over|sterzat|serpentin|sombrero|tunnel|rientr/.test(lbl)&&!/senza dribbl/.test(lbl))?"DRIBBLE_SHOT":"EDGE_SHOT";// 5.42.0: un TIRO la cui LABEL descrive un dribbling ("doppio passo/elastico/finta/rientra e tira") usa il build-up DRIBBLE_SHOT (finta+accelerazione poi tiro) invece di EDGE_SHOT → il dribbling non si perde più nella regia. "senza dribblare" resta EDGE_SHOT. pattern da campo cine (1v1) ha priorità.
   else if(type==="dribble")pattern="DRIBBLE_SHOT";
   else if(type==="tackle")pattern="TACKLE";
-  else if(type==="pass")pattern=/filtrante|imbucata|profond/.test(lbl)?"THROUGH_BALL":/scarico|cambia campo|allarg|ribalt|fascia/.test(lbl)?"SWITCH":"COMBINATION";// 5.43.3: SWITCH = scarico/cambio gioco → palla diagonale verso un compagno sulla fascia (distinto dal passaggio verticale)
+  else if(type==="pass"){
+    /* [7.318.0 collaudo PO «azione scarica e ricevi sul fondo: l'azione e' disegnata male, il pallone fa dei
+       giri strani!»] IL PATTERN RISPETTA L'INTENTO DICHIARATO. Il pattern del passaggio si deduceva SOLO dal
+       testo dell'azione, e la parola «scarico» bastava a farlo diventare SWITCH — un cambio di gioco
+       diagonale verso un compagno largo. Ma «Scarico e RICEVI sul fondo» e' un UNO-DUE (la situation lo
+       dichiara: `it:"onetwo"`), non un cambio di fronte: misurato su gi185, la palla partiva dall'eroe a
+       (59,33) e finiva a (47,69) — indietro di 11 e attraverso di 36 unita' — per poi strisciare per quattro
+       secondi verso il ricevente e ripartire con un altro arco. Esattamente i «giri strani».
+       Le situation che DICHIARANO l'intento ora comandano loro (3 conflitti misurati: gi28 · gi180 · gi185);
+       la regex sul testo resta solo dove il dato tace. */
+    const _itP=sit&&sit.intent;
+    pattern=(_itP==="through")?"THROUGH_BALL":(_itP==="switch")?"SWITCH":(_itP==="onetwo")?"COMBINATION"
+      :/filtrante|imbucata|profond/.test(lbl)?"THROUGH_BALL":/scarico|cambia campo|allarg|ribalt|fascia/.test(lbl)?"SWITCH":"COMBINATION";
+  }// 5.43.3: SWITCH = scarico/cambio gioco → palla diagonale verso un compagno sulla fascia (distinto dal passaggio verticale)
   return{type,pattern,variant};
 }
 // ============================================================================
@@ -11106,7 +11119,10 @@ function ThreeMatchView(props){
             {const _q=P.hlQuality!=null?P.hlQuality:0.6;ballArcDur*=clamp(1.18-_q*0.34,0.78,1.18);// q alta → passaggio più teso/veloce
              if(_fwd&&P.hlPattern==="SWITCH"){// 5.43.3: SCARICO SULLA FASCIA — palla DIAGONALE verso un compagno largo (fascia random dx/sx), distinta dal verticale
                const _sd=(Math.random()<0.5?1:-1);let _wm=null,_wd=1e9;
-               sr.current.players.forEach((pp,ii)=>{const src=(P.allPlayers||[])[ii];if(src&&src.team==='home'&&!src.gk&&pp.mesh!==hero){const _scw=Math.abs(pp.mesh.position.z-_sd*22)-pp.mesh.position.x*0.5;if(_scw<_wd){_wd=_scw;_wm=pp.mesh;}}});// 5.43.8: compagno LARGO ma AVANZATO (alto x) → cross da posizione di rifinitura, non da centrocampo
+               /* [7.318.0] IL CAMBIO DI GIOCO NON TORNA INDIETRO: il compagno largo veniva scelto per sola
+                  vicinanza alla fascia, senza chiedere che fosse ALMENO alla stessa altezza di chi passa —
+                  da posizione avanzata la diagonale finiva alle spalle (11 unita' indietro su gi185). */
+               sr.current.players.forEach((pp,ii)=>{const src=(P.allPlayers||[])[ii];if(src&&src.team==='home'&&!src.gk&&pp.mesh!==hero&&pp.mesh.position.x>=hero.position.x-2){const _scw=Math.abs(pp.mesh.position.z-_sd*22)-pp.mesh.position.x*0.5;if(_scw<_wd){_wd=_scw;_wm=pp.mesh;}}});// 5.43.8: compagno LARGO ma AVANZATO (alto x) → cross da posizione di rifinitura, non da centrocampo
                ballArcH=2.4;// pallonata diagonale lobbata sulla fascia
                if(_wm){passTargetMesh=_wm;_wm._runToX=_wm.position.x;_wm._runToZ=_wm.position.z;ballArcTgtX=_wm.position.x;ballArcTgtZ=_wm.position.z;}
                else{passTargetMesh=null;ballArcTgtX=_phx+4;ballArcTgtZ=_sd*22;}}
@@ -12033,6 +12049,49 @@ function ThreeMatchView(props){
         {const _gsB=goalBurstT>=0?(goalBurstHome?1:-1):0;/* [7.52.2 collaudo PO «a volte festeggiano i tifosi sbagliati»] la PANCHINA è taggata per lato-MESH (bx<0 = kit dell'eroe) ma esultava sul lato-TRIBUNA (goalBurstStadHome): in TRASFERTA il gol dell'eroe faceva saltare la panchina AVVERSARIA (e viceversa sul gol subìto). La panchina usa goalBurstHome (lato-mesh, come i giocatori); spalti/bandiere/sciarpe restano su goalBurstStadHome (sono TRIBUNE). */benchFigs.forEach((f,i)=>{f._ph+=dt*1.1;const _bBase=f._isCoach?0:0.72;const mine=_gsB===0?0:((f._home&&_gsB>0)||(!f._home&&_gsB<0)?1:-1);const _ex=mine>0?_goalExcite:0;f.position.y=_bBase+Math.sin(f._ph)*0.03+_ex*Math.abs(Math.sin(f._ph*2+i))*0.34;});}// 5.45.2: solo la panchina del marcatore esulta
         // CINE-VAR: animazione eroe per tipo + variante cinematografica (Sprint 4.73.0)
         // Ogni variant ha gesti fisicamente distinti: sw=sin(u*π) → auto-reset a 0 al termine
+        /* [7.319.0 collaudo PO «sulle punizioni e rigori ci deve essere la rincorsa, non possono tirare da
+           fermo!»] LA RINCORSA. Sul calcio piazzato l'eroe non si spostava MAI: restava incollato al pallone
+           e muoveva solo la gamba — nel calcio non esiste, e sullo schermo si vede subito. Ora, per la sola
+           MESH (la palla, l'esito e la posizione logica non si toccano: e' presentazione pura), il
+           battitore ARRETRA di ~3.2 unita' lungo l'asse pallone→porta mentre e' in attesa, e quando parte il
+           gesto CORRE sul pallone, arrivandoci esattamente quando la gamba colpisce — 0.32 sul rigore
+           (dove lo swing culmina a 0.35) e 0.45 sulla punizione (swing a 0.50). L'ingresso in attesa e'
+           smorzato, cosi' non c'e' nessuno scatto quando la scena si apre. Il CH38 eredita la posizione dal
+           modello procedurale, quindi la rincorsa si vede anche col modello vero. */
+        {/* ⚠️ SOLO IL RIGORE, per ora, ed e' una scelta misurata. Sulle PUNIZIONI il timer del gesto
+             (`actType`) risulta gia' avviato durante l'attesa (misurato u=0.96 prima ancora di risolvere
+             l'azione): la rincorsa si consumerebbe PRIMA del tiro e il battitore resterebbe congelato
+             mezzo metro dietro il pallone — un artefatto nuovo, peggiore di quello che c'era. Il rigore,
+             dove il gesto parte davvero al momento del tiro, e' misurato pulito (3.18 → 0 durante la
+             battuta). La punizione resta da fare, e va risolta alla radice: capire perche' `actType` e'
+             gia' vivo in attesa. */
+         const _spNow=isHL&&P.hlType==="penalty";
+         if(_spNow&&hero){
+           const _bx=(sr.current.ball&&sr.current.ball.position.x)||hero.position.x,_bz=(sr.current.ball&&sr.current.ball.position.z)||hero.position.z;
+           let _ax=AWAY_GOAL_X-_bx,_az=-_bz;const _aL=Math.hypot(_ax,_az)||1;_ax/=_aL;_az/=_aL;/* direzione pallone→porta */
+           const _kick=(actType==="penalty"||actType==="freekick");
+           /* ⚠️ una volta che il pallone e' partito la rincorsa e' FINITA. Senza questo fermo, appena il gesto
+              si esauriva `_kick` tornava falso, l'arretramento risaliva a 3.2 e il battitore CAMMINAVA
+              ALL'INDIETRO di tre metri a palla gia' in volo — misurato sulle punizioni (dove il gesto dura
+              0.55s e finisce in fretta), mentre sul rigore non si vedeva perche' il campione finiva prima. */
+           if(_kick)sr.current._spDone=true;
+           if(sr.current._spDone&&!_kick){sr.current._spOff=null;sr.current._spVx=0;sr.current._spVz=0;}
+           const _uK=_kick?Math.min(actT/(actType==="penalty"?0.70:0.55),1):0;
+           const _done=_kick?Math.min(_uK/(actType==="penalty"?0.32:0.45),1):0;
+           const _ease=_done*_done*(3-2*_done);/* smoothstep: parte piano, arriva lanciato */
+           if(sr.current._spDone&&!_kick){/* rincorsa consumata: il movimento torna quello normale */}
+           else{
+           const _want=3.2*(1-_ease);
+           sr.current._spOff=(sr.current._spOff==null)?0:sr.current._spOff;
+           sr.current._spOff+=(_want-sr.current._spOff)*Math.min(aDt*(_kick?14:4.5),1);
+           try{if(_CPM_TEST||_SIT_TEST)window.__CPM_RUNUP={off:+sr.current._spOff.toFixed(2),want:+_want.toFixed(2),kick:!!_kick,u:+_uK.toFixed(2)};}catch(_e){}
+           /* ⚠️ POSIZIONAMENTO ASSOLUTO, non uno scostamento. Prima stesura come delta su `hero.position`:
+              si SOMMAVA su se stesso (il battitore camminava all'indietro per 19 unita'); seconda stesura con
+              disfacimento a ogni frame: il lerp che riporta l'eroe sul pallone ne ERODEVA due terzi, e la
+              rincorsa si riduceva a un passo e mezzo. Qui la posa e' calcolata dal pallone — che sul piazzato
+              e' fermo — meno l'arretramento corrente: esatta per costruzione, senza accumulo ne' erosione. */
+           hero.position.x=_bx-_ax*sr.current._spOff;hero.position.z=_bz-_az*sr.current._spOff;}
+         } else if(sr.current._spOff!=null){sr.current._spOff=null;sr.current._spDone=false;}}
         if(actType){actT+=aDt;const _T=actType==="header"?0.75:actType==="penalty"?0.70:actType==="tackle"?1.7:actType==="cross"?0.65:0.55,u=Math.min(actT/_T,1),sw=Math.sin(u*Math.PI);/* [7.244.0 batch PO «non si vede la scivolata/il contrasto» sui gi31/32/45] il gesto difensivo durava 0.6s con inviluppo a seno — a 60fps saliva e spariva PRIMA che l'occhio si assestasse (verdetto a 1.9-2.25s = eroe in piedi da oltre un secondo). Ora il tackle dura 1.7s con inviluppo salita→TENUTA→recupero (la scivolata RESTA a terra ~0.9s, come nel calcio vero): il movimento verso la palla resta su _T2=0.6 invariato */
           if(actType==="shot"){
             if(P.hlVariant==="shot_chip"){// pallonetto: corpo indietro, tocco leggero di punta, salto all'indietro
