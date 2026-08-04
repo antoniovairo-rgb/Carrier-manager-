@@ -24,6 +24,7 @@ const CASES = [
 ];
 const RITORNO_MAX = 3.2;   // "a contatto" dell'eroe
 const APPOGGIO_MIN = 6;    // il primo appoggio deve allontanare davvero il pallone
+const AVANZ_MIN = 3;       // [7.322] «dai e VAI»: l'eroe non resta fermo, si muove verso la porta
 
 const srv = await startServer(); const port = srv.address().port;
 const b = await launchBrowser();
@@ -54,17 +55,19 @@ for (const c of CASES) {
   await page.evaluate(() => { window.__CPM_FROZEN = false; }); await sleep(600);
   await page.evaluate(k => { window.__CPM_FORCE_OUTCOME = 'success'; window.__CPM_RESOLVE(k); }, info.k);
 
-  const d = [];
+  const d = [], hx = [];
   for (let i = 0; i < 34; i++) {
-    const v = await page.evaluate(() => { try { const s = window.__CPM_STATE(); return +Math.hypot(s.ball.x - s.hero.x, s.ball.y - s.hero.y).toFixed(2); } catch (e) { return null; } });
-    if (v != null) d.push(v);
+    const v = await page.evaluate(() => { try { const s = window.__CPM_STATE(); return { d: +Math.hypot(s.ball.x - s.hero.x, s.ball.y - s.hero.y).toFixed(2), hx: s.hero.x }; } catch (e) { return null; } });
+    if (v != null) { d.push(v.d); hx.push(v.hx); }
     await sleep(120);
   }
+  /* la CORSA del «vai» (7.322): mentre la sponda torna, l'eroe deve avanzare verso la porta */
+  const avanz = hx.length ? +(Math.max(...hx) - hx[0]).toFixed(1) : 0;
   const via = Math.max(...d), iPk = d.indexOf(via);
   const torna = iPk < d.length - 1 ? Math.min(...d.slice(iPk)) : via;
   const tornata = torna <= RITORNO_MAX;
-  say(c.o2 ? (via >= APPOGGIO_MIN && tornata) : !tornata,
-    `gi${c.gi} [${info.intent}·${info.rew}·${info.pat}] "${info.label}" · ${c.o2 ? 'UNO-DUE' : 'CONTROPROVA (non deve tornare)'} · appoggio ${via.toFixed(1)}u → ritorno ${torna.toFixed(1)}u`);
+  say(c.o2 ? (via >= APPOGGIO_MIN && tornata && avanz >= AVANZ_MIN) : !tornata,
+    `gi${c.gi} [${info.intent}·${info.rew}·${info.pat}] "${info.label}" · ${c.o2 ? 'UNO-DUE' : 'CONTROPROVA (non deve tornare)'} · appoggio ${via.toFixed(1)}u → ritorno ${torna.toFixed(1)}u${c.o2 ? ` · il «vai» dell'eroe ${avanz}u (min ${AVANZ_MIN})` : ''}`);
   await page.close();
 }
 

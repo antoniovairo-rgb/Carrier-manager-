@@ -59,9 +59,41 @@ else {
   console.log(`gi${GI} · eroe (${M.hero.x.toFixed(1)},${M.hero.y.toFixed(1)}) · marcatore a ${M.d}u`);
   console.log(`   scappi via ${M.via} · di traverso ${M.lat1}/${M.lat2} · gli vai addosso ${M.contro}`);
   say(M.via > M.lat1 + 2 && M.lat1 > M.contro + 2, 'allontanarsi rende più del di-traverso, che rende più che andargli addosso');
-  say(M.via >= 19 && M.contro <= 5, `gli estremi sono quelli previsti (~20 in fuga · ~4 addosso): ${M.via} / ${M.contro}`);
+  /* [7.322.0] soglie allargate 19/5 → 17/7, e il motivo va detto: fino al 7.321 il marcatore era un
+     giocatore dell'array LOGICO, che si trovava quasi in asse con le direzioni del pad — da lì gli estremi
+     quasi perfetti (20 / 4). Ora il marcatore è il difensore VERO in scena, e le quattro direzioni cardinali
+     non ci si allineano quasi mai: il prodotto scalare non tocca ±1 e gli estremi si stringono (misurato
+     18.78 / 5.22). Non è un peggioramento del bilanciamento — la media resta 12, asserita qui sotto — è la
+     geometria reale che sostituisce quella di un avversario che sullo schermo non esisteva. */
+  say(M.via >= 17 && M.contro <= 7, `gli estremi restano netti (in fuga ≥17 · addosso ≤7): ${M.via} / ${M.contro}`);
   const media = (M.via + M.contro + M.lat1 + M.lat2) / 4;
   say(Math.abs(media - 12) < 0.6, `BILANCIAMENTO NEUTRO — media sulle 4 direzioni ${media.toFixed(2)} (il valore fisso di prima era 12)`);
+}
+
+/* [7.322.0] TERZA PROPRIETÀ — IL MARCATORE È QUELLO CHE SI VEDE.
+   Il guadagno della mossa si calcola rispetto a un marcatore: fino al 7.321 quel marcatore veniva
+   dall'array LOGICO `matchPlayers`, che è un insieme di 22 giocatori DIVERSO dalle mesh in campo.
+   Misurato su 12 situation: scarti fino a 20 unità (gi100 logico 10.0 contro 25.0 reali) — il gioco
+   ti penalizzava per un avversario che sullo schermo non c'era. Qui si verifica che la distanza dichiarata
+   dal modello coincida col difensore più vicino REALMENTE in scena. */
+{
+  const CAMPIONE = [0, 20, 60, 100, 140, 185];
+  let peggiore = 0, dove = null;
+  for (const gi of CAMPIONE) {
+    await page.evaluate(g => window.__CPM_FORCE_SIT(g, true), gi); await sleep(450);
+    await page.evaluate(() => { window.__CPM_FROZEN = false; }); await sleep(850);
+    const r = await page.evaluate(() => {
+      const st = window.__CPM_STATE(); let m = 1e9;
+      (st.players || []).forEach(p => { if (p.team === 'away' && !p.gk) { const d = Math.hypot(p.x - st.hero.x, p.y - st.hero.y); if (d < m) m = d; } });
+      const lg = window.__CPM_MARKER ? window.__CPM_MARKER() : null;
+      return { mesh: m, log: lg ? lg.d : null, src: lg ? lg.src : null };
+    });
+    if (r.log == null) { say(false, `gi${gi} — nessun marcatore restituito`); continue; }
+    say(r.src === 'mesh', `gi${gi} · il marcatore viene dalla scena (src=${r.src})`);
+    const delta = Math.abs(r.mesh - r.log);
+    if (delta > peggiore) { peggiore = delta; dove = gi; }
+  }
+  say(peggiore < 1.5, `il modello e la scena dicono la stessa cosa — scarto massimo ${peggiore.toFixed(2)}u su gi${dove} (prima si arrivava a 20u)`);
 }
 
 if (errs.length) { console.log('❌ pageerror:', errs.slice(0, 3).join(' | ')); fails++; }

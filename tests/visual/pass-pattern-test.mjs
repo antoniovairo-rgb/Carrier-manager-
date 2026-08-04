@@ -19,7 +19,13 @@
 */
 import { startServer, launchBrowser, installCdnRoutes, openMatch, sleep } from './lib/harness.mjs';
 
-const BACK_MAX = 3.0;
+/* [7.322.0] soglia 3.0 → 5.0, e il motivo va detto perche' allentare un guardiano e' sempre sospetto:
+   dal 7.321 l'uno-due ha la RESTITUZIONE, e un muro che torna al passatore E' movimento all'indietro del
+   pallone — legittimo, anzi e' il punto della giocata. Le cifre: il difetto originale («il pallone fa dei
+   giri strani») misurava 10.3u di arretramento su un percorso di 63.3; col solo fix 7.319 era sceso a 0.8;
+   oggi la sponda ne costa 3.2 su un percorso di 16.2. Il tetto a 5 lascia un fattore 2 di margine rispetto
+   al difetto vero, quindi il guardiano continua a intercettarlo. */
+const BACK_MAX = 5.0;
 const srv = await startServer(); const port = srv.address().port;
 const b = await launchBrowser();
 let page = await b.newPage();
