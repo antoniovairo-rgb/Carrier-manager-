@@ -1,34 +1,34 @@
 {
  "matches": 4,
  "hl": {
-  "turnP90": 299.25,
-  "turnP99": 799.25,
-  "jerkP90": 19.225,
-  "stopStart": 9.5,
-  "idleFrac": 0.051,
-  "spread": 0.807,
-  "meanSpd": 3.25,
-  "syncFrac": 0.992,
-  "minDistP05": 1.423,
-  "overlapFrames": 0,
-  "gkSpanHome": 3.05,
-  "gkSpanAway": 7.775
+  "turnP90": 244,
+  "turnP99": 1289.5,
+  "jerkP90": 6.3,
+  "stopStart": 3.25,
+  "idleFrac": 0.085,
+  "spread": 0.347,
+  "meanSpd": 1.29,
+  "syncFrac": 0.889,
+  "minDistP05": 1.445,
+  "overlapFrames": 0.25,
+  "gkSpanHome": 2.575,
+  "gkSpanAway": 4.45
  },
  "playing": {
-  "turnP90": 168.5,
-  "idleFrac": 0.031,
-  "spread": 0.672,
-  "meanSpd": 3.278,
-  "minDistP05": 1.3
+  "turnP90": 127.75,
+  "idleFrac": 0.049,
+  "spread": 0.375,
+  "meanSpd": 1.52,
+  "minDistP05": 1.35
  },
  "ball": {
-  "arcs": 12,
-  "apexMean": 2.51,
-  "apexSd": 1.367,
-  "durMean": 1.865,
-  "durSd": 0.99,
-  "straightFrac": 0.545,
-  "bendMean": 0.164
+  "arcs": 7,
+  "apexMean": 2.27,
+  "apexSd": 0.93,
+  "durMean": 2.263,
+  "durSd": 0.97,
+  "straightFrac": 0.542,
+  "bendMean": 0.109
  },
  "pageErrors": 0
 }
