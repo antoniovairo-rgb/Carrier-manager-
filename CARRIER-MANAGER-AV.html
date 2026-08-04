@@ -3989,7 +3989,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="7.325.0"; // [7.325.0 collaudo PO con screenshot «appena arrivato nel nuovo club e' impossibile»] LO SPOGLIATOIO NON TI SEGUE NEL TRASLOCO. Il giorno dell'arrivo al nuovo club la scheda mostrava Preparatore 100 · Vice-Mister 100 · Chimica Squadra 100: acceptTransfer azzerava SOLO coachTrust (il mister ripartiva da 50) mentre fitnessCoachRel/assistantCoachRel/teamChemistry viaggiavano col giocatore dai massimi del club precedente. Ora al cambio club preparatore e vice ripartono da 50 (non ti conoscono) e la chimica parte da 42, SOTTO il default 60: sei il nuovo arrivato, il posto nello spogliatoio si guadagna. Stessa classe chiusa sui due siti gemelli: transizione U18→pro (primo spogliatoio da professionista: 50/50/45) e cambio club al rollover / rientro dal prestito (50/50/48 — il club madre lo conosci gia'). Il RINNOVO (stesso club) non tocca nulla, e la controprova sta nel guardiano permanente `staff-reset-transfer-test.mjs`: trasferimento vero sul VERO acceptTransfer via setOffer/acceptOffer (100/100/100 → 50/50/42), rinnovo che lascia 100/100/100, boot che non macera i valori. QA: guardiano 6/6 + career-invariants (252 club) + career-sim 2 stagioni + gate.
+const GAME_VERSION="7.326.0"; // [7.326.0 collaudo PO «risolvi definitivamente questo maledetto bug — partita gia' giocata, vinta ed anche il campionato!» — 8ª ricorrenza, Giornata 34/34] IL RECOVERY NON BUTTA PIU' LA PROVA. Le sette guardie di getThisWeekMatchday (A-F + campionato completo) erano tutte legittimamente CIECHE: se la 34ª e' stata riproposta, il commit del risultato era andato perso PER INTERO (niente storico, niente classifica, niente registro, voce mai marcata) — e l'unico posto dove quel risultato esisteva era il sidecar del fischio finale (cpm-pending-mr, 7.24.3). Il buco stava nel suo RECOVERY: scartava in silenzio (removeItem) su qualunque mismatch — settimana non identica (gate duro `_pk.w===player.week`) o nome dell'avversario in forma diversa da quella del calendario (la classe «due sorgenti per una verita'», per l'ennesima volta) — cancellando l'unica prova della partita giocata. Tre interventi: (1) SCRITTURA con chiavi ricche: il sidecar porta id avversario, nome e sede (oid/on/ih) oltre al risultato; (2) RECOVERY senza scarti silenziosi: gate duri solo nome+stagione; la voce si cerca per ID (chiave forte) → nome sidecar → nome del risultato, con la sede a conferma; la settimana e' una PREFERENZA fra i candidati, mai un motivo di scarto; se la voce trovata non e' alla settimana corrente il player viene ri-allineato PRIMA del dispatch (il commit di onMatchEnd marca per settimana corrente); si scarta solo quando nessuna voce non giocata e' compatibile = gia' committata; (3) GUARDIA (G) lato serve: una gara il cui risultato sta nel sidecar non viene MAI riproposta, nemmeno nella finestra dei 1200ms prima che il recovery dispatci. Guardiano pending-result-test esteso coi due casi assassini: (4) settimana avanzata di uno → commit sulla voce della SUA settimana (prima: risultato buttato → loop); (5) nome variante con ID valido → commit per ID. QA: pending-result 5/5 + dup-fixture (HEAL3+4) + playedmd-registry + career-invariants + gate.
 // [7.242.0 #56 chiusura — batch PO gi31-35 «Non si vede il gesto tecnico specifico» + verdetto difensivo] IL GESTO DIFENSIVO HA UNA FAMIGLIA. Ogni azione difensiva derivava `tackle/-` senza variante: la posa era UNA (scivolata) per pressing, anticipo, muro e deviazione. Tre famiglie STRUTTURALI congelate in factory (patto chainOn/gkCall — la regex vive solo in S()): slide (scivolata/disperato, posa storica a terra) · lunge (intercetto/anticipo/deviazione/muro: AFFONDO in piedi, gamba tesa e braccia larghe) · press (pressing/finta/recupero/copertura: ADDOSSO al portatore, busto avanti, braccio a schermare, tocco di punta). Prop hlDefGesto → pose sw-scalate auto-azzeranti nel blocco CINE-VAR; fallito = perdita di equilibrio comune. + VERDETTO DIFENSIVO RITARDATO (pattern #51): con l inbound 7.239 il pallone doveva ancora ARRIVARE quando usciva l overlay (misurato ~0.9s su gi31) → revealMs def 2250 con inbound / 1900 senza. Verificato sui fogli-provini: gi34 pressing = eroe addosso al portatore che vacilla, verdetto dopo il contatto.
 // [7.241.0 #56 batch PO gi28/29/37 «Non si vede il compagno che conclude»] FRENA PER GIRARTI — il difetto NON era la scelta del ricevente ne la transizione: attribuzione per-frame (AR53/54: oth=0, own>0, _ctx GIA sulla palla) → era il MODELLO DI STERZATA di animOne. Il ricevente lanciato sulla corsa profonda, con il filtrante atterrato ALLE SPALLE, navigava un inversione a U larga 20u e lunga secondi: il turn-rate e ∝1/velocita e la magnitudine della velocita-obiettivo restava PIENA nella direzione sbagliata. Ora quando la direzione voluta supera ~60° da quella di marcia la velocita-obiettivo cala col disallineamento (fino a 0.18×): la frenata passa dal limitatore di accelerazione, la velocita scende, il turn-rate risale → due passi di frenata e pivot, come in campo. Misurato prima→dopo: gi29 ricevente da divergenza a 24u → ARRIVO a 1.3u (t 0.41) con palla che parte con lui; gi37 2.0u; gi28 convergenza stretta. Vale per TUTTI i 21 off-ball (fisica piu vera anche su pressing/rientri — plausibile beneficio sul cluster difensivo «non aggancia il pallone»). +selezione demergenza del ricevente nel driver assist_recv (ogni scena ha SEMPRE un uomo sulla palla). ⚠️ modello core: gate 14/14 obbligatorio + realismo da riverificare sui baseline.
 // [7.240.0 #55B batch PO gi25/gi26 «Non si vede il compagno che riceve (e tira)» + gi43/28/29/30 storici] IL COMPAGNO ARRIVA SUL PALLONE PRIMA DI CALCIARE. Diagnosi strumentata (probe AR51/AR52 in-page, solo __CPM_REC): la catena assist_recv era VIVA e corretta — il primo sospetto «catena congelata» era un artefatto del campione stantio — ma (a) la transizione ricezione→tiro era a TEMPO FISSO 0.42s col ricevente ancora a 8-15u → il pallone volava in porta DA SOLO col gesto di calcio a vuoto; (b) il puntatore del ricevente (passTargetMesh) veniva AZZERATO all'avvio di assist_recv in 2 dei 3 siti (pass+assist = gi25 filtrante · tacco/scarico = gi26) e il driver, che scandiva solo il gesto _rcvT (0.52s di vita), restava senza nessuno da far correre. Fix: puntatore PERSISTENTE su tutti i siti (+_runToX fresco), fallback del driver sul puntatore, transizione ALL'ARRIVO (<2.2u, minimo 0.30s) con fallback 3.0s. Misurato prima→dopo: ricevente a 8-9u dalla palla al momento del tiro → 3.5-4u col gesto agganciato; gi26 duello leggibile sul foglio-provini; gi25 in wizard chiude con la catena e il gol.
@@ -14723,7 +14723,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     //   validato su nome/stagione/settimana + voce di calendario ancora non giocata). Provini esclusi.
     try{if(context!=="trial"&&!_SIT_TEST){
       const _r=_buildEndResult();
-      localStorage.setItem('cpm-pending-mr',JSON.stringify({v:1,n:player?.name||"",s:(player?.season||1),w:(player?.week||1),result:_r}));
+      localStorage.setItem('cpm-pending-mr',JSON.stringify({v:1,n:player?.name||"",s:(player?.season||1),w:(player?.week||1),oid:(opponent&&opponent.id)||null,on:(opponent&&(opponent.n||opponent.name))||null,ih:(isMatchHome!==false),result:_r}));/* [7.326.0] chiavi RICCHE (id+nome+sede): il recovery ritrovava la voce SOLO per uguaglianza di nome alla settimana corrente — ogni mismatch cancellava l'unica prova della partita giocata */
       try{safeLS.set('cpm-match-resume','');}catch(_e){}/* [7.163.0 super-test LIVE-F5] mutua esclusione: col risultato già nel sidecar uno snapshot in-match stantio farebbe RIGIOCARE la partita mentre il recovery la committa (doppio conteggio) */
     }}catch(_e){}
     try{/* [7.31.0] turno KO pareggiato → CALCI DI RIGORE 3D prima del post-partita (l'esito non si scopre più
@@ -22737,6 +22737,11 @@ const getThisWeekMatchday=()=>{
         ||_lgDone302/* (E) [7.302.0] campionato completo: nessuna altra giornata è legittima */
       ))
       &&!(md.matchday!=null&&_mdDone312.has(md.matchday))/* (F) [7.312.0] REGISTRO PERSISTENTE: questa giornata è già stata committata — vale per OGNI competizione e sopravvive al riavvio dell'app */
+      &&!(function(){try{/* (G) [7.326.0] il RISULTATO di questa gara sta nel SIDECAR del fischio finale (app chiusa durante la premiazione): il recovery al mount la committa — non va MAI ri-proposta, nemmeno nella finestra dei 1200ms prima del dispatch */
+        const _pr=localStorage.getItem('cpm-pending-mr');if(!_pr)return false;const _pj=JSON.parse(_pr);
+        if(!_pj||_pj.v!==1||_pj.n!==(player.name||"")||_pj.s!==_sn)return false;
+        return (_pj.oid&&md.opponentId===_pj.oid)||(_pj.on&&md.opponentName===_pj.on)||(_pj.result&&md.opponentName&&md.opponentName===_pj.result.opponent);
+      }catch(_eG){return false;}})()
       &&!(false&&(0
       )))||null;
   };
@@ -23162,14 +23167,36 @@ const getThisWeekMatchday=()=>{
   //   'cpm-pending-mr' (scritto da _goEndOrCeremony) viene ri-dispatchato QUI sullo STESSO onMatchEnd —
   //   una volta sola, validato su nome/stagione/settimana e con la voce di calendario ancora NON giocata.
   useEffect(()=>{try{
+    /* [7.326.0 collaudo PO «risolvi definitivamente questo maledetto bug — partita gia' giocata, vinta ed
+       anche il campionato!» — 8ª ricorrenza, G34/34] IL RECOVERY NON SCARTA PIU' IN SILENZIO. Le sette
+       guardie di getThisWeekMatchday erano tutte legittimamente cieche: nessuna puo' sapere di un risultato
+       che non esiste in NESSUN campo del save. L'unica prova viveva qui, nel sidecar del fischio finale — e
+       questa validazione la CANCELLAVA (removeItem) su qualsiasi mismatch: settimana non identica (gate duro
+       `_pk.w===player.week`) o nome dell'avversario in una forma diversa da quella del calendario (la classe
+       «due sorgenti per una verita'», per l'ennesima volta). Persa la prova → niente storico, niente
+       classifica, niente registro → la giornata riproposta con tutte le guardie cieche. Ora:
+       (1) i gate DURI sono solo nome+stagione (un sidecar di un altro save/stagione resta scartabile);
+       (2) la voce si cerca per ID avversario (chiave piu' forte), poi per nome sidecar, poi per nome del
+           risultato — con la SEDE come conferma quando disponibile;
+       (3) la settimana e' una PREFERENZA di scelta fra i candidati, mai un motivo di scarto;
+       (4) si scarta solo quando non esiste NESSUNA voce non giocata compatibile = gia' committata (legittimo). */
     const _raw=localStorage.getItem('cpm-pending-mr');if(!_raw)return;
     const _pk=JSON.parse(_raw);
-    const _ok=_pk&&_pk.v===1&&_pk.result&&_pk.n===(player.name||"")&&_pk.s===(player.season||1)&&_pk.w===(player.week||1);
+    const _ok=_pk&&_pk.v===1&&_pk.result&&_pk.n===(player.name||"")&&_pk.s===(player.season||1);
     if(!_ok){localStorage.removeItem('cpm-pending-mr');return;}
     const _r=_pk.result;
-    const _md=(player.calendar||[]).find(m=>m&&m.week===(player.week||1)&&!m.played&&(m.opponentName===_r.opponent||m.opponentId===_r.opponent));
+    const _cands=(player.calendar||[]).filter(m=>m&&!m.played&&(
+      (_pk.oid&&m.opponentId===_pk.oid)||(_pk.on&&m.opponentName===_pk.on)
+      ||(m.opponentName&&m.opponentName===_r.opponent)||(m.opponentId&&m.opponentId===_r.opponent))
+      &&(_pk.ih==null||m.isHome==null||(!!m.isHome)===(!!_pk.ih)));
+    const _md=_cands.find(m=>m.week===(_pk.w||0))||_cands.find(m=>m.week===(player.week||1))||_cands[0]||null;
     const _natC=_r.context&&_r.context!=="career"&&_r.context!=="cup"&&_r.context!=="euro_group"&&_r.context!=="euro_ko";
-    if(!_md&&!_natC){localStorage.removeItem('cpm-pending-mr');return;}/* già committata (o voce sparita) → scarta */
+    if(!_md&&!_natC){localStorage.removeItem('cpm-pending-mr');return;}/* nessuna voce non giocata compatibile = gia' committata → scarto LEGITTIMO */
+    /* [7.326.0] se la voce trovata NON e' alla settimana corrente, il commit di onMatchEnd (che marca per
+       settimana corrente + _playingMdRef, qui vuoto dopo il reboot) non la troverebbe: si ri-allinea la
+       settimana del player alla voce PRIMA del dispatch — il risultato appartiene a quella giornata. */
+    const _wFix=(_md&&_md.week!==(player.week||1))?_md.week:null;
+    if(_wFix!=null)setPlayer(q=>({...q,week:_wFix}));
     setTimeout(()=>{try{localStorage.removeItem('cpm-pending-mr');/* [7.178.0 RC-14] consumo AL dispatch: rimuoverlo 1200ms prima apriva una finestra in cui richiudere l'app perdeva di nuovo il risultato */onMatchEnd(_r);notify("💾 Risultato recuperato: la partita era finita quando l'app si è chiusa — esito salvato.",TH.primary);}catch(_e2){}},1200);
   }catch(_e){}},[]);// eslint-disable-line
   // [6.32.0 STAB-2] Trigger tornei Nazionali (W20) — UNICA sorgente condivisa da TUTTI i path di

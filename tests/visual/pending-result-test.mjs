@@ -65,6 +65,34 @@ const state = (page) => page.evaluate(() => { const s = JSON.parse(localStorage.
   await pg.close();
 }
 
+/* [7.326.0 — 8ª ricorrenza del «maledetto bug» (G34/34, partita giocata, vinta, e campionato vinto)]
+   I DUE CASI CHE CANCELLAVANO LA PROVA. Il vecchio recovery scartava (removeItem) su qualunque mismatch:
+   (4) SETTIMANA NON IDENTICA — l'app muore durante la premiazione, al reboot un desync qualunque ha la
+       settimana avanti di uno: il gate duro `_pk.w===player.week` buttava il risultato → giornata riproposta
+       con TUTTE le 7 guardie legittimamente cieche (nessun campo del save sapeva della partita);
+   (5) NOME IN FORMA DIVERSA — result.opponent in una variante che non combacia con calendar.opponentName:
+       stessa classe «due sorgenti per una verita'». Ora l'ID avversario nel sidecar e' la chiave forte. */
+// (4) settimana avanzata di uno → il risultato NON si butta: si committa sulla voce della SUA settimana
+{
+  const sv = mkSave(false); sv.player.week = 13; sv.player.weekLived = false;
+  const pg = await boot(sv, { v: 1, n: 'Pend Probe', s: 4, w: 12, oid: 'pis', on: 'FC Pisano', ih: true, result: RESULT });
+  const st = await state(pg);
+  console.log('(4) settimana avanzata:', JSON.stringify(st));
+  if (!st.mdPlayed) issues.push('(4) week-mismatch: risultato BUTTATO (voce non marcata) — il maledetto loop');
+  if (st.mh !== 1) issues.push('(4) week-mismatch: matchHistory attesa 1 voce, trovate ' + st.mh);
+  if (st.sidecar) issues.push('(4) sidecar non consumato');
+  await pg.close();
+}
+// (5) nome avversario in forma diversa ma ID nel sidecar → committa per ID
+{
+  const pg = await boot(mkSave(false), { v: 1, n: 'Pend Probe', s: 4, w: 12, oid: 'pis', on: null, ih: true, result: { ...RESULT, opponent: 'Pisano' } });
+  const st = await state(pg);
+  console.log('(5) nome variante + id:', JSON.stringify(st));
+  if (!st.mdPlayed) issues.push('(5) name-variant: risultato BUTTATO nonostante l\'ID combaci');
+  if (st.sidecar) issues.push('(5) sidecar non consumato');
+  await pg.close();
+}
+
 await browser.close(); srv.close();
-console.log(issues.length ? '❌ FAIL\n' + issues.map(i => '  ✗ ' + i).join('\n') : '✅ COMMIT AL FISCHIO FINALE OK (recovery · sidecar altrui scartato · niente doppio conteggio)');
+console.log(issues.length ? '❌ FAIL\n' + issues.map(i => '  ✗ ' + i).join('\n') : '✅ COMMIT AL FISCHIO FINALE OK (recovery · sidecar altrui scartato · niente doppio conteggio · week-mismatch e nome-variante NON buttano piu\' il risultato)');
 process.exit(issues.length ? 1 : 0);
