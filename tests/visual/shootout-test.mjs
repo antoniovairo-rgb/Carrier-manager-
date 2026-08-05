@@ -99,6 +99,52 @@ const toPlaying = async (page) => {
   await pg.close();
 }
 
+/* (3) [7.327.0 collaudo PO con screenshot «i rigori non devono essere al 69esimo minuto! ho vinto ai rigori
+   e non e' partito il festeggiamento 3D» + «PRS» nel tabellino di Italia-Spagna] FINALE DI COPPA DELLE
+   NAZIONI dal vivo: (a) il fischio finale ALZA il clock a 90 anche se l'ultimo highlight era al 69'
+   (SO_FORCE(69) inietta proprio quel caso); (b) nel tabellino della serie la squadra di casa e' la NAZIONE
+   (ITA), non il club dell'eroe (SAL); (c) serie VINTA in finale → fase CEREMONY col nome della coppa.
+   La stagione si sceglie in modo che il seed natcup|S|final dia la serie VINTA (il caso del PO). */
+{
+  const NCF = (season) => ({ active: true, opponents: ['Francia', 'Germania', 'Portogallo', 'Spagna'], matchIdx: 3, pts: 7,
+    matches: [{ opp: 'Francia', won: true, drew: false, homeScore: 2, awayScore: 1 }, { opp: 'Germania', won: true, drew: false, homeScore: 1, awayScore: 0 }, { opp: 'Portogallo', won: false, drew: true, homeScore: 1, awayScore: 1 }],
+    done: false, isFinal: true, finalOpp: 'Spagna', season });
+  let pg = null, won = false, season = 4;
+  for (const sTry of [4, 5, 6, 7]) {
+    pg = await boot(mkSave({ season: sTry, jerseyNumSeason: sTry, presidentModalSeason: sTry, seasonPledge: { season: sTry, tone: 'equilibrato' }, drawSeen: sTry, coachPactSeason: sTry, bondEv: { s: sTry, w: 11 }, sponsorDecl: { tier: 'tecnico', season: sTry }, cup: null, calendar: [], nationsCupQueue: NCF(sTry) }));
+    won = await pg.evaluate(() => { const p = JSON.parse(localStorage.getItem('cpm-v3')).player; return koShootoutWin(p, 'natcup|' + (p.season || 1) + '|final'); });
+    if (won) { season = sTry; break; }
+    await pg.close(); pg = null;
+  }
+  if (!pg) { issues.push('(3) nessuna stagione 4-7 con serie vinta dal seed — scegliere altri parametri'); }
+  else {
+    console.log('(3) finale Nazioni · stagione', season, '· serie vinta attesa:', won);
+    /* si raggiunge la gara dal pannello Nazionale — PRIMA si entra in carriera dalla Home */
+    await click(pg, '^Continua'); await sleep(1400);
+    await pg.keyboard.press('n'); await sleep(900);
+    await click(pg, 'Gioca'); await sleep(1400);
+    await click(pg, 'Gioca la partita'); await sleep(1500);
+    await click(pg, 'Formazioni'); await sleep(1400);
+    await click(pg, 'Entra in campo|ENTRA|Scendi in campo|In campo'); await sleep(1200);
+    await click(pg, 'Salta'); await sleep(900);
+    await pg.waitForFunction(() => window.__CPM_PHASE && ['playing', 'hl_intro', 'hl_move', 'hl_choose'].includes(window.__CPM_PHASE()), null, { timeout: 30000 });
+    await pg.evaluate(() => window.__CPM_SO_FORCE && window.__CPM_SO_FORCE(69));/* il caso del PO: fischio all'HL del 69' */
+    await sleep(1600);
+    const st3 = await pg.evaluate(() => ({ phase: window.__CPM_PHASE && window.__CPM_PHASE(), clock: (window.__CPM_STATE && window.__CPM_STATE() || {}).clock, txt: (document.body.innerText || '').slice(0, 4000) }));
+    console.log('(3) in shootout · fase:', st3.phase, '· clock:', st3.clock);
+    if (st3.phase !== 'shootout') issues.push('(3) la finale di Nazioni pareggiata non apre i rigori: ' + st3.phase);
+    if (!(st3.clock >= 90)) issues.push('(3) CLOCK AI RIGORI ' + st3.clock + "' — il fischio finale non l'ha alzato a 90 (il 69esimo del PO)");
+    if (!/\bITA\b/.test(st3.txt)) issues.push('(3) sigla di casa nel tabellino: manca ITA');
+    if (/\bSAL\b/.test(st3.txt)) issues.push('(3) sigla di casa nel tabellino: compare il CLUB (SAL) in una gara di NAZIONALE');
+    await click(pg, 'Salta la serie'); await sleep(5200);
+    const st4 = await pg.evaluate(() => ({ phase: window.__CPM_PHASE && window.__CPM_PHASE(), txt: (document.body.innerText || '').slice(0, 4000) }));
+    console.log('(3) dopo la serie · fase:', st4.phase);
+    if (st4.phase !== 'ceremony') issues.push('(3) FINALE VINTA AI RIGORI SENZA FESTEGGIAMENTO 3D: fase ' + st4.phase);
+    if (st4.phase === 'ceremony' && !/COPPA DELLE NAZIONI/i.test(st4.txt)) issues.push('(3) cerimonia senza il nome della coppa');
+    await pg.close();
+  }
+}
+
 await browser.close(); srv.close();
-console.log(issues.length ? '❌ FAIL\n' + issues.map(i => '  ✗ ' + i).join('\n') : '✅ RIGORI 3D OK (coppa → serie+banner coerenti col motore + commit · campionato → nessuna serie)');
+console.log(issues.length ? '❌ FAIL\n' + issues.map(i => '  ✗ ' + i).join('\n') : '✅ RIGORI 3D OK (coppa · campionato senza serie · finale Nazioni: clock 90, sigla ITA, cerimonia)');
 process.exit(issues.length ? 1 : 0);
