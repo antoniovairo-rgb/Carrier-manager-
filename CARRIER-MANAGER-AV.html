@@ -1221,6 +1221,7 @@ function TeamBadge({team,size=40}) {
   // interno pattern (clip alla forma)
   const patFill=(()=>{const el=[];
     if(pat==="stripes"){for(let i=0;i<3;i++)el.push(<rect key={"s"+i} x={20+i*24} y="0" width="12" height="110" fill={c2} opacity="0.95"/>);}
+    else if(pat==="stripesw"){for(let i=0;i<2;i++)el.push(<rect key={"sw"+i} x={22+i*38} y="0" width="18" height="110" fill={c2} opacity="0.95"/>);}/* [7.328.0] strisce larghe (PSG): barre c2 più strette del fondo → colore sociale dominante */
     else if(pat==="hoops"){for(let i=0;i<3;i++)el.push(<rect key={"h"+i} x="0" y={18+i*26} width="100" height="11" fill={c2} opacity="0.95"/>);}
     else if(pat==="halves"||pat==="half"){el.push(<rect key="hf" x="50" y="0" width="50" height="110" fill={c2} opacity="0.95"/>);}/* [7.280.0] il ramo confrontava «half» ma kitPatternFor ritorna «halves»: era CODICE MORTO e i club a metà campo (Feyenoord, Cagliari, Monaco, Montpellier, Blackburn, Galatasaray) avevano lo stemma liscio */
     else if(pat==="vband"){/* [7.280.0] fascia verticale centrale: fondo c2, banda larga col colore sociale */
@@ -3989,7 +3990,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="7.327.0"; // [7.327.0 collaudo PO con screenshot «i rigori non devono essere al 69esimo minuto! ho vinto ai rigori e non e' partito il festeggiamento 3D»] TRE FIX SULLA SERIE DI RIGORI. (1) L'OROLOGIO DICE 90: il fischio finale arriva all'ultimo highlight (7.2.0), che sul cronometro puo' essere il 69' — e nessuno alzava il clock entrando nei rigori/premiazione/ended, quindi header e maxischermo mostravano una serie di rigori «al 69esimo». Ora _goEndOrCeremony porta il clock a 90 (il hook di test __CPM_SO_FORCE lo faceva gia'; il path vero no — classico caso di test che maschera il difetto). (2) LA FINALE DI COPPA DELLE NAZIONI FESTEGGIA: il cancello della cerimonia post-serie elencava euroMondiale_ko/euro_ko/cup — la finale di Nazioni MANCAVA: il 7.72.2 le aveva dato i rigori (_koSeed natcup|final) ma nessuno le aveva dato la cerimonia, e vinta ai rigori si andava dritti a ended. Aggiunta al cancello (cerimonia «COPPA DELLE NAZIONI», kind int) e al banner «DAL DISCHETTO ALLA GLORIA». (3) LA SIGLA DI CASA E' LA NAZIONE: nel tabellino della serie compariva «PRS» (il club dell'eroe, FC Paris) in una Italia-Spagna — in contesto nazionale la sigla viene ora da NAT_CLUB_DATA (ITA), non dal club. Guardiano shootout-test esteso con lo scenario finale-di-Nazioni dal vivo: SO_FORCE(69) → clock 90 in shootout · sigla ITA presente e SAL assente · serie vinta → fase ceremony col nome della coppa. ⚠️ Nota di sessione: il container ha riavvolto il clone DUE volte durante questo fix (7.289) — base ripristinata da origin e edit ri-applicati; la versione nel gate e' la prova.
+const GAME_VERSION="7.328.0"; // [7.328.0 collaudo PO ×3] (1) «le gambe dei cerimonieri sono all'interno del palco»: i presentatori del gala stavano a x=±1.05/-1.15 = DENTRO il footprint del podio p1 (box 2.6×1.7 → x∈[-1.3,1.3]) e le gambe compenetravano la pedana; ora ai lati veri (|x|=1.72) con regia beat 1/2 riallineata, e anche il VINCITORE (che si fermava a z=-0.35 = esattamente la faccia frontale della pedana) chiude a z=-0.02. (2) «il PSG deve avere la maglia a strisce verticali larghe blu e rosso»: nuovo pattern stripesw (2D JerseyIcon + 3D kitPatternTex sulla griglia-16 provata sulle UV CH38, riempita a coppie + stemma TeamBadge); psg esce dalla lista tinta unita dove stava dal 7.8.0. (3) «storico piazzamenti relativo solo alle stagioni con l'eroe, l'ideale sarebbe averlo dall'inizio»: la card del Tab Club non filtra più per club corrente — INTERA CARRIERA dalla S.1 (Primavera comprese) col club di ogni stagione in riga; cap archivio 20→30 stagioni. // [7.327.0 collaudo PO con screenshot «i rigori non devono essere al 69esimo minuto! ho vinto ai rigori e non e' partito il festeggiamento 3D»] TRE FIX SULLA SERIE DI RIGORI. (1) L'OROLOGIO DICE 90: il fischio finale arriva all'ultimo highlight (7.2.0), che sul cronometro puo' essere il 69' — e nessuno alzava il clock entrando nei rigori/premiazione/ended, quindi header e maxischermo mostravano una serie di rigori «al 69esimo». Ora _goEndOrCeremony porta il clock a 90 (il hook di test __CPM_SO_FORCE lo faceva gia'; il path vero no — classico caso di test che maschera il difetto). (2) LA FINALE DI COPPA DELLE NAZIONI FESTEGGIA: il cancello della cerimonia post-serie elencava euroMondiale_ko/euro_ko/cup — la finale di Nazioni MANCAVA: il 7.72.2 le aveva dato i rigori (_koSeed natcup|final) ma nessuno le aveva dato la cerimonia, e vinta ai rigori si andava dritti a ended. Aggiunta al cancello (cerimonia «COPPA DELLE NAZIONI», kind int) e al banner «DAL DISCHETTO ALLA GLORIA». (3) LA SIGLA DI CASA E' LA NAZIONE: nel tabellino della serie compariva «PRS» (il club dell'eroe, FC Paris) in una Italia-Spagna — in contesto nazionale la sigla viene ora da NAT_CLUB_DATA (ITA), non dal club. Guardiano shootout-test esteso con lo scenario finale-di-Nazioni dal vivo: SO_FORCE(69) → clock 90 in shootout · sigla ITA presente e SAL assente · serie vinta → fase ceremony col nome della coppa. ⚠️ Nota di sessione: il container ha riavvolto il clone DUE volte durante questo fix (7.289) — base ripristinata da origin e edit ri-applicati; la versione nel gate e' la prova.
 // [7.242.0 #56 chiusura — batch PO gi31-35 «Non si vede il gesto tecnico specifico» + verdetto difensivo] IL GESTO DIFENSIVO HA UNA FAMIGLIA. Ogni azione difensiva derivava `tackle/-` senza variante: la posa era UNA (scivolata) per pressing, anticipo, muro e deviazione. Tre famiglie STRUTTURALI congelate in factory (patto chainOn/gkCall — la regex vive solo in S()): slide (scivolata/disperato, posa storica a terra) · lunge (intercetto/anticipo/deviazione/muro: AFFONDO in piedi, gamba tesa e braccia larghe) · press (pressing/finta/recupero/copertura: ADDOSSO al portatore, busto avanti, braccio a schermare, tocco di punta). Prop hlDefGesto → pose sw-scalate auto-azzeranti nel blocco CINE-VAR; fallito = perdita di equilibrio comune. + VERDETTO DIFENSIVO RITARDATO (pattern #51): con l inbound 7.239 il pallone doveva ancora ARRIVARE quando usciva l overlay (misurato ~0.9s su gi31) → revealMs def 2250 con inbound / 1900 senza. Verificato sui fogli-provini: gi34 pressing = eroe addosso al portatore che vacilla, verdetto dopo il contatto.
 // [7.241.0 #56 batch PO gi28/29/37 «Non si vede il compagno che conclude»] FRENA PER GIRARTI — il difetto NON era la scelta del ricevente ne la transizione: attribuzione per-frame (AR53/54: oth=0, own>0, _ctx GIA sulla palla) → era il MODELLO DI STERZATA di animOne. Il ricevente lanciato sulla corsa profonda, con il filtrante atterrato ALLE SPALLE, navigava un inversione a U larga 20u e lunga secondi: il turn-rate e ∝1/velocita e la magnitudine della velocita-obiettivo restava PIENA nella direzione sbagliata. Ora quando la direzione voluta supera ~60° da quella di marcia la velocita-obiettivo cala col disallineamento (fino a 0.18×): la frenata passa dal limitatore di accelerazione, la velocita scende, il turn-rate risale → due passi di frenata e pivot, come in campo. Misurato prima→dopo: gi29 ricevente da divergenza a 24u → ARRIVO a 1.3u (t 0.41) con palla che parte con lui; gi37 2.0u; gi28 convergenza stretta. Vale per TUTTI i 21 off-ball (fisica piu vera anche su pressing/rientri — plausibile beneficio sul cluster difensivo «non aggancia il pallone»). +selezione demergenza del ricevente nel driver assist_recv (ogni scena ha SEMPRE un uomo sulla palla). ⚠️ modello core: gate 14/14 obbligatorio + realismo da riverificare sui baseline.
 // [7.240.0 #55B batch PO gi25/gi26 «Non si vede il compagno che riceve (e tira)» + gi43/28/29/30 storici] IL COMPAGNO ARRIVA SUL PALLONE PRIMA DI CALCIARE. Diagnosi strumentata (probe AR51/AR52 in-page, solo __CPM_REC): la catena assist_recv era VIVA e corretta — il primo sospetto «catena congelata» era un artefatto del campione stantio — ma (a) la transizione ricezione→tiro era a TEMPO FISSO 0.42s col ricevente ancora a 8-15u → il pallone volava in porta DA SOLO col gesto di calcio a vuoto; (b) il puntatore del ricevente (passTargetMesh) veniva AZZERATO all'avvio di assist_recv in 2 dei 3 siti (pass+assist = gi25 filtrante · tacco/scarico = gi26) e il driver, che scandiva solo il gesto _rcvT (0.52s di vita), restava senza nessuno da far correre. Fix: puntatore PERSISTENTE su tutti i siti (+_runToX fresco), fallback del driver sul puntatore, transizione ALL'ARRIVO (<2.2u, minimo 0.30s) con fallback 3.0s. Misurato prima→dopo: ricevente a 8-9u dalla palla al momento del tiro → 3.5-4u col gesto agganciato; gi26 duello leggibile sul foglio-provini; gi25 in wizard chiude con la catena e il gol.
@@ -13635,11 +13636,15 @@ const KIT_PATTERN={
   /* [7.280.0 audit dei kit reali, stessa segnalazione] quattro club vestivano liscio pur avendo un disegno
      inconfondibile: Verona e Arnhem giocano a METÀ CAMPO, Baleari e Pisano a STRISCE verticali. */
   ver:"halves",vita:"halves",mall:"stripes",pis:"stripes",
+  /* [7.328.0 collaudo PO «il PSG deve avere la maglia a strisce verticali larghe blu e rosso»] STRISCE LARGHE
+     (stripesw): il pattern "stripes" (16 colonne) è troppo fitto per il kit parigino — nuove barre verticali
+     LARGHE blu/rosso alternate (2D+3D+stemma). Il club esce dalla lista tinta unita dove stava dal 7.8.0. */
+  psg:"stripesw",
 };
 /* [7.8.0] club che nella REALTÀ vestono tinta unita → restano lisci (mai patternizzati dalla derivazione).
    Napoli azzurro, Real Madrid bianco, Liverpool rosso, Bayern rosso… è il loro kit vero. */
 const _KIT_SOLID_IDS={napoli:1,roma:1,lazio:1,fio:1,tor:1,rma:1,liv:1,mcy:1,che:1,mun:1,tot:1,bay:1,bvb:1,rbl:1,b04:1,
-  psg:1,ben:1,psv:1,sev:1,vill:1,val:1,eve:1,ful:1,nfo:1,wol:1,lei:1,marse:1,lyon:1,lille:1,nan:1,tou:1,lor:1,
+  ben:1,psv:1,sev:1,vill:1,val:1,eve:1,ful:1,nfo:1,wol:1,lei:1,marse:1,lyon:1,lille:1,nan:1,tou:1,lor:1,/* [7.328.0] psg RIMOSSO: ora stripesw (strisce larghe blu-rosso) */
   mon2:1,fenk:1,bes:1,tra:1,sal:1,cit:1,metz:1,pal:1,mgb:1,stu:1,fre:1,wob:1,wer:1,ber:1,mai:1,hof:1,boc:1,han:1,
   osa:1,cel:1,get:1,las:1,mod:1,spe:1,ven:1,ces:1,samp:1,par:1,cat:1,fro:1,std:1,and:1,genk:1,
   mid:1,cov:1,swn:1,ips:1,lee:1,nor:1,car:1,wat:1,pre:1,milw:1,lut:1,bra:1,estoril:1,gron:1,utr:1,twe:1,az:1};
@@ -13682,6 +13687,10 @@ function JerseyIcon({color="#3b82f6",number,name,isPlayer=false,size=46,pattern=
   const patG=(()=>{
     if(!pat)return null;const R=[];
     if(pat==="stripes"){for(let x=3;x<49;x+=12)R.push(<rect key={"s"+x} x={x+6} y="7" width="6" height="42" fill={color2}/>);}
+    else if(pat==="stripesw"){/* [7.328.0 collaudo PO PSG] strisce verticali LARGHE alternate col/c2 — 5 fasce
+      quasi uguali (blu-rosso-blu-rosso-blu): il colore SOCIALE resta dominante, le barre c2 sono larghe ma non
+      ribaltano la maglia (il 1° taglio a barre 10/15 leggeva ROSSA con strisce blu = club invertito) */
+      for(const x of[12,31])R.push(<rect key={"sw"+x} x={x} y="0" width="9" height="53" fill={color2}/>);}
     else if(pat==="hoops"){for(let y=9;y<49;y+=10)R.push(<rect key={"h"+y} x="2" y={y+5} width="48" height="5" fill={color2}/>);}
     else if(pat==="halves"){R.push(<rect key="hv" x="26" y="7" width="26" height="42" fill={color2}/>);}
     else if(pat==="sash"){R.push(<polygon key="sa" points="9,7 19,7 47,49 37,49" fill={color2}/>);}
@@ -13983,13 +13992,19 @@ const kitPatternTex=(shirt,c2,pat,num)=>{/* [7.260.0 collaudo PO «i numeri esco
   /* [7.168.0 collaudo PO «maglie più moderne anche nel live match»] +pat 'solid': anche i kit tinta unita passano
      per la texture (darkening 7.8.2 BAKATO nella base, identico al vecchio material-color) e TUTTI i kit ricevono
      uno shading tessuto verticale (luce sul petto → ombra all'orlo) → profondità da broadcast, zero flat. */
-  if(typeof document==='undefined'||typeof THREE==='undefined'||(pat!=='hoops'&&pat!=='stripes'&&pat!=='band'&&pat!=='vband'&&pat!=='solid'))return null;
+  if(typeof document==='undefined'||typeof THREE==='undefined'||(pat!=='hoops'&&pat!=='stripes'&&pat!=='stripesw'&&pat!=='band'&&pat!=='vband'&&pat!=='solid'))return null;
   const key=shirt+'|'+c2+'|'+pat+(num!=null?'|#'+num:'');if(_kitTexCache[key])return _kitTexCache[key];
   const S=512,cv=document.createElement('canvas');cv.width=cv.height=S;const x=cv.getContext('2d');
   let _base=shirt;
   if(pat==='solid'){try{const _c=new THREE.Color(shirt),_h={};_c.getHSL(_h);const _dim=1-_h.s*0.60*(0.45+0.55*(1-_h.l));_base='#'+_c.multiplyScalar(_dim).getHexString();}catch(_e){}}
   x.fillStyle=_base;x.fillRect(0,0,S,S);
   if(pat==='stripes'){x.fillStyle=c2;const n=16,w=S/n;for(let i=1;i<n;i+=2)x.fillRect(Math.round(i*w),0,Math.ceil(w),S);}
+  else if(pat==='stripesw'){/* [7.328.0 collaudo PO «PSG a strisce verticali larghe blu e rosso»] stesse colonne
+    della griglia 16 PROVATA sulle UV CH38 (7.8.2: a bassa frequenza le strisce collassano), ma riempite a COPPIE
+    → 4 barre c2 larghe il doppio, alternate al fondo. Stessa mappatura pulita, lettura «larga». */
+    x.fillStyle=c2;const n=16,w=S/n;for(let i=3;i<n;i+=4){x.fillRect(Math.round(i*w),0,Math.ceil(w*2),S);}
+    /* fase i=3 (non 1): il centro-petto delle UV CH38 sta nella colonna 2 (U~0.156, misura vband 7.280.0) —
+       con la fase 1 il petto cadeva DENTRO la barra c2 e la maglia leggeva del colore sbagliato */}
   else if(pat==='vband'){/* [7.280.0 collaudo PO «la maglia dell'Ajax deve essere con la striscia verticale rossa larga come nella realtà»]
     FASCIA VERTICALE CENTRALE. Il fondo prende il colore SECONDARIO e la banda il colore sociale. L'ancora non
     poteva essere indovinata: il numero sul dorso sta a U~0.5625 (7.260.0) ma il PETTO non era mai stato mappato.
@@ -18793,7 +18808,11 @@ function GalaStage3D({beat,heroWins,avatarId=0,seed=7,act=0}){
      const head=new THREE.Mesh(new THREE.SphereGeometry(0.148,14,12),skinM);head.position.y=1.6;fig.add(head);
      const hair=new THREE.Mesh(new THREE.SphereGeometry(0.15,14,10,0,Math.PI*2,0,Math.PI*0.5),new THREE.MeshStandardMaterial({color:new THREE.Color(pHair),roughness:0.55,metalness:0.08}));hair.position.y=1.63;fig.add(hair);
      const aM=suit;[[-1],[1]].forEach(sx=>{const a=new THREE.Mesh(new THREE.CylinderGeometry(0.05,0.045,0.52,8),aM);a.position.set(sx[0]*0.235,1.12,0);a.rotation.z=sx[0]*0.18;fig.add(a);});
-     fig.position.set(1.05,0,-0.9);fig.rotation.y=-0.5;/* [7.85.0 collaudo PO opzione 2] figura procedurale NON aggiunta: cerimonia SENZA persone */}
+     fig.position.set(1.62,0,-0.62);fig.rotation.y=-0.5;/* [7.85.0 collaudo PO opzione 2] figura procedurale NON aggiunta: cerimonia SENZA persone
+       [7.328.0 collaudo PO «le gambe dei cerimonieri sono all'interno del palco»] x 1.05→1.72: il podio p1 è un
+       box 2.6×1.7 centrato in (0,-1.2) → footprint x∈[-1.3,1.3], z∈[-2.05,-0.35], alto 0.35 — i presentatori a
+       x=±1.05/-1.15 stavano DENTRO quel footprint e le gambe compenetravano la pedana fino allo stinco. Ora i
+       lati del podio sono davvero AI LATI (|x|=1.62 = bordo 1.3 + ~0.32 di margine corpo/abito; il wide beat-0 arretra a z 9.3 per tenerli in frame). */}
     // ── coriandoli ──
     const confSys=[];[[0xd4a017,60],[0xffffff,40],[0xa3263a,40]].forEach(cd=>{
       const g=new THREE.BufferGeometry();const n=cd[1];const arr=new Float32Array(n*3);const vel=new Float32Array(n);
@@ -18914,7 +18933,7 @@ function GalaStage3D({beat,heroWins,avatarId=0,seed=7,act=0}){
       Promise.all([loadGLB('./assets/actor-presenter.glb').catch(()=>null),loadGLB('./assets/actor-presenter-f.glb').catch(()=>null)]).then(([aM,aF])=>{
         if(!THREE.SkeletonUtils||!THREE.SkeletonUtils.clone)return;
         if(aM&&aM.scene)presM=mkActorG(aM,{at:fig.position,rotY:fig.rotation.y,height:pH});
-        if(aF&&aF.scene)presF=mkActorG(aF,{at:{x:-1.15,y:0,z:-0.75},rotY:0.55,height:1.70});
+        if(aF&&aF.scene)presF=mkActorG(aF,{at:{x:-1.62,y:0,z:-0.62},rotY:0.55,height:1.70});/* [7.328.0] fuori dal footprint del podio (era -1.15 = gambe nella pedana) */
         if(presM||presF)env.visible=true;/* la busta torna in scena SOLO con chi la regge */
       }).catch(()=>{});
     }
@@ -18963,7 +18982,7 @@ function GalaStage3D({beat,heroWins,avatarId=0,seed=7,act=0}){
         if(_liftG&&_liftG.animations&&_liftG.animations[0]&&heroAv.mx){_heroLift=heroAv.mx.clipAction(_liftG.animations[0]);_heroLift.setLoop(THREE.LoopOnce);_heroLift.clampWhenFinished=true;}
         _cue("winner_enter");}
       if(heroAv){heroIn=Math.min(1,heroIn+dt*0.32);const e2=heroIn*heroIn*(3-2*heroIn);
-        heroAv.root.position.x=3.6+(-0.95-3.6)*e2;heroAv.root.position.z=0.4+(-0.35-0.4)*e2;heroAv.root.rotation.y=-1.1+(0.15+1.1)*e2*0.9;/* [7.68.0] finale ACCANTO al podio (x=-0.95): il volto NON è più coperto dal trofeo */
+        heroAv.root.position.x=3.6+(-0.95-3.6)*e2;heroAv.root.position.z=0.4+(-0.02-0.4)*e2;heroAv.root.rotation.y=-1.1+(0.15+1.1)*e2*0.9;/* [7.68.0] finale ACCANTO al podio (x=-0.95): il volto NON è più coperto dal trofeo · [7.328.0] z -0.35→-0.02: -0.35 è ESATTAMENTE la faccia frontale della pedana p1 → i polpacci del vincitore ci entravano; ora il corpo resta davanti con ~0.33 di margine */
         if(heroIn>=1){
           if(_heroLift){if(!_heroLiftOn){_heroLiftOn=true;_heroLift.reset().fadeIn(0.35).play();_cue("trophy_lift");}const ap=_heroLift.getClip().duration*0.34;if(_heroLift.time>=ap){_heroLift.time=ap;_heroLift.paused=true;}}
           else if(heroAv.bones.lArm&&heroAv.bones.rArm){/* [7.68.0] niente clip lift → posa MANUALE: braccia alzate che reggono il trofeo (prima restava sul podio) */
@@ -18978,9 +18997,9 @@ function GalaStage3D({beat,heroWins,avatarId=0,seed=7,act=0}){
       flashLight.intensity*=0.86;
       // ── REGIA a beat (stacchi dolci dt-corretti); i beat 1-2 inquadrano il LATO di chi presenta (7.144.0) ──
       const _psgn=actP===presF?-1:1;
-      const tgt=b===0?[camVX,2.2,8.6,0,1.4,-0.8]
-        :b===1?[camVX+1.1*_psgn,1.72,5.4,0.9*_psgn,1.35,-0.85]
-        :b===2?[camVX+0.9*_psgn,1.5,3.6,0.75*_psgn,1.25,-0.7]
+      const tgt=b===0?[camVX,2.2,9.3,0,1.4,-0.8]
+        :b===1?[camVX+1.35*_psgn,1.72,5.4,1.25*_psgn,1.35,-0.72]/* [7.328.0] presentatori spostati a |x|=1.72 → il lookAt li segue */
+        :b===2?[camVX+1.15*_psgn,1.5,3.6,1.15*_psgn,1.25,-0.62]
         :st.current.heroWins?[camVX,1.95,5.0,0,1.55,-1.05]/* [7.85.0 opzione 2] niente vincitore in scena → push-in sul TROFEO sul podio */
         :[camVX,2.0,6.6,0,1.5,-1.0];
       const k2=1-Math.exp(-dt*2.2);
@@ -26696,7 +26715,7 @@ const getThisWeekMatchday=()=>{
       const champion=sortedForShifts[0];
       const relegated=nT>3?sortedForShifts.slice(nT-3).map(t=>t.n||t.id):[];
       const archiveEntry={season:p.season||1,league:p.club?.lg||"–",champion:champion?.n||"–",championId:champion?.id||"–",playerClub:p.club?.n||"–",playerClubId:p.club?.id||p.club?.n||"–"/* [7.123.0] ID del club per lo storico piazzamenti robusto ai rinomini */,playerPos:(p.standings||[]).length>0?sortedForShifts.findIndex(t=>(t.id&&t.id===(p.club?.id||p.club?.n))||(t.n&&t.n===(p.club?.n||p.club?.id)))+1:0,playerGoals:p.goals||0,playerAssists:p.assists||0,relegated,isPlayerCupChamp:p.cup?.champion===true,isPlayerEuroChamp:(p.euro?.champion||false)||(p.euroMondiale?.champion||false),euroComp:(p.euro&&p.euro.champion&&p.euro.competition)||null,cupR:p.cup?(p.cup.champion?"W":(p.cup.round||1)):null,euroPlayed:(p.euro&&p.euro.competition)||null,euroEnd:p.euro?(p.euro.champion?"W":(p.euro.phase==="eliminated"?(((p.euro.koResults||[]).length>0)?"ko":"group"):(p.euro.phase||"group"))):null}; // Sprint 103 · [7.35.1] euroComp: QUALE coppa hai vinto · [7.36.0 collaudo PO «storico dei piazzamenti nelle varie competizioni»] cupR/euroPlayed/euroEnd: TURNO raggiunto in Coppa e fase Europa per lo storico del Tab Club
-      const newLeagueArchive=[...(p.leagueArchive||[]),archiveEntry].slice(-20);
+      const newLeagueArchive=[...(p.leagueArchive||[]),archiveEntry].slice(-30);/* [7.328.0 collaudo PO «storico dall'inizio (stagione 1)»] cap 20→30: una carriera 17→36 anni fa ~20 stagioni — il vecchio cap avrebbe tagliato proprio le prime (S.1 Primavera) a fine carriera */
       // Sprint 70: record coach tenure stats before coach possibly changes
       const _ch70={name:p.coach?.name||"Il Mister",style:p.coach?.style||"Bilanciato",season:p.season||1,goals:p.goals||0,assists:p.assists||0,matches:p.matches||0,ovr:p.ovr||60,coachTrust:p.coachTrust||60,coachChanged};
       _fx61={objLogs,willContractExpire,coachChanged,newCoach,isPhenomSeason,isGB,isNewGoalRecord,isNewAssistRecord,_willEuroPre,_euroCompPre,_playerNextLgPre,_pairPre,_nextClubPre};/* [6.1.0] pacchetto per le notifiche post-rollover */
@@ -30023,10 +30042,11 @@ const getThisWeekMatchday=()=>{
               //   con fallback al nome. (3) le stagioni U18 (S.1-3) erano ESCLUSE: il club Primavera ha lo STESSO id
               //   ma nome «<club> Primavera» → il filtro per nome le tagliava. Ora incluse (stesso id / nome+Primavera)
               //   → lo storico parte dall'inizio della carriera (riga con lega «Primavera 1/2»).
-              const _cnA36=(club.n||club.name||"");
-              const _arc36=(player.leagueArchive||[]).filter(a=>a&&(
-                (a.playerClubId&&(club.id||club.name)&&a.playerClubId===(club.id||club.name))
-                ||a.playerClub===_cnA36||a.playerClub===(_cnA36+" Primavera"))).reverse();
+              /* [7.328.0 collaudo PO «storico piazzamenti relativo solo alle stagioni con l'eroe, l'ideale sarebbe
+                 averlo dall'inizio (stagione 1)»] VIA il filtro per club: lo storico è ora l'INTERA CARRIERA — tutte
+                 le stagioni archiviate dalla S.1 (Primavera comprese), ognuna col SUO club in riga. Il filtro 7.36.0
+                 mostrava solo lo stint al club corrente → dopo un trasferimento la carriera «spariva». */
+              const _arc36=(player.leagueArchive||[]).filter(Boolean).reverse();
               if(!_arc36.length)return null;
               const _cupN36={1:"Ottavi",2:"Quarti",3:"Semifinale",4:"Finale"};
               const _euN36={group:"Girone",ko:"Fase KO",r16:"Ottavi",quarti:"Quarti",sf:"Semifinale",final:"Finale"};
@@ -30062,7 +30082,7 @@ const getThisWeekMatchday=()=>{
                   return(<div key={i} style={{display:"flex",alignItems:"center",gap:9,padding:"6px 10px",marginBottom:i<_arc36.length-1?5:0,background:TH.surface2,border:"1px solid "+TH.divider,borderLeft:"3px solid "+_accCol,borderRadius:RAD.sm}}>
                     <span className="cpm-num" style={{fontSize:10,fontWeight:FW.black,color:TH.faint,minWidth:26,flexShrink:0}}>S.{a.season}</span>
                     {_mBg?<span className="cpm-num" style={{display:"inline-flex",width:18,height:18,borderRadius:RAD.pill,background:_mBg,color:TH_DARK.bg,alignItems:"center",justifyContent:"center",fontSize:9,fontWeight:FW.black,flexShrink:0}}>{a.playerPos}</span>:<span className="cpm-num" style={{minWidth:18,textAlign:"center",fontSize:11,fontWeight:FW.bold,color:TH.muted,flexShrink:0}}>{a.playerPos>0?a.playerPos+"°":"—"}</span>}
-                    <span style={{flex:1,fontSize:11,fontWeight:FW.semibold,color:_isCh?"#a16207":TH.text,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{a.league}{_isCh?" 🏆":""}{_prom36?" ⬆️":""}{_rel36?" ⬇️":""}</span>
+                    <span style={{flex:1,fontSize:11,fontWeight:FW.semibold,color:_isCh?"#a16207":TH.text,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis",lineHeight:1.25}}>{a.playerClub||a.league}{_isCh?" 🏆":""}{_prom36?" ⬆️":""}{_rel36?" ⬇️":""}{a.playerClub?<span style={{display:"block",fontSize:9,fontWeight:FW.medium,color:TH.faint}}>{a.league}</span>:null}</span>{/* [7.328.0] storico a carriera intera → il CLUB della stagione in riga, lega sotto */}
                     <span style={{fontSize:9,color:TH.faint,textAlign:"right",maxWidth:"46%",lineHeight:1.3}}>{[_cup,_eu].filter(Boolean).join(" · ")||"—"}</span>
                   </div>);})}
               </Card>);})()}
