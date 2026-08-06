@@ -16,6 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       HAS_KEYSTORE: ${{ secrets.ANDROID_KEYSTORE_BASE64 != '' }}
+      HAS_PLAY_SA: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON != '' }}
     steps:
       - uses: actions/checkout@v4
 
@@ -48,6 +49,17 @@ jobs:
         run: |
           npx cap add android
           npx cap sync android
+
+      # versionCode AUTOMATICO: il progetto android/ nasce fresco a ogni run (versionCode 1) e Play
+      # rifiuta un codice già usato → si stampa un codice monotòno dal numero di run + la versionName
+      # dal tag (v1.2.3 → 1.2.3). Nessun file da toccare a mano per rilasciare.
+      - name: Stamp versionCode/versionName
+        run: |
+          VC=$((100 + ${{ github.run_number }}))
+          if [[ "${GITHUB_REF}" == refs/tags/v* ]]; then VN="${GITHUB_REF_NAME#v}"; else VN="0.0.${{ github.run_number }}"; fi
+          sed -i -E "s/versionCode [0-9]+/versionCode $VC/" android/app/build.gradle
+          sed -i -E "s/versionName \"[^\"]*\"/versionName \"$VN\"/" android/app/build.gradle
+          grep -E "versionCode|versionName" android/app/build.gradle
 
       - name: Build AAB (release, unsigned)
         run: |
@@ -85,6 +97,20 @@ jobs:
         run: |
           mkdir -p release
           cp android/app/build/outputs/bundle/release/app-release.aab "release/korward-elite-${GITHUB_REF_NAME}.aab"
+
+      # ── PUBBLICAZIONE DIRETTA SU PLAY CONSOLE (se il service account è configurato) ──
+      # Secret PLAY_SERVICE_ACCOUNT_JSON = JSON del service account con accesso all'app in Play Console.
+      # ⚠️ Funziona dal SECONDO rilascio in poi: il PRIMO AAB va caricato una volta a mano in Console
+      # (requisito di Google). Track di default: internal (promuovibile a closed/production dalla Console).
+      - name: Publish to Play Console (track internal)
+        if: env.HAS_PLAY_SA == 'true' && env.HAS_KEYSTORE == 'true' && startsWith(github.ref, 'refs/tags/v')
+        uses: r0adkll/upload-google-play@v1
+        with:
+          serviceAccountJsonPlainText: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON }}
+          packageName: com.korward.elite
+          releaseFiles: android/app/build/outputs/bundle/release/app-release.aab
+          track: internal
+          status: completed
 
       - name: Publish GitHub Release
         if: startsWith(github.ref, 'refs/tags/v')

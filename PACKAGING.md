@@ -132,6 +132,24 @@ Per ottenere un AAB **firmato** col tuo upload key, aggiungi i secret (Settings 
 
 Senza secret il workflow produce comunque l'AAB **unsigned** (utile come smoke-test della toolchain; firmabile dopo).
 
+## Rilascio SENZA PC (automazione completa)
+
+Setup una tantum (dal PC, l'ultima volta):
+
+1. **Secrets della keystore** — su GitHub → repo → Settings → Secrets and variables → Actions → New secret:
+   - `ANDROID_KEYSTORE_BASE64` → dal PC (PowerShell): `[Convert]::ToBase64String([IO.File]::ReadAllBytes("korward-upload.jks")) | Set-Clipboard` e incolla;
+   - `ANDROID_KEYSTORE_PASSWORD` · `ANDROID_KEY_ALIAS` (es. `upload`) · `ANDROID_KEY_PASSWORD`.
+2. *(Opzionale, per il caricamento automatico su Play)* **`PLAY_SERVICE_ACCOUNT_JSON`** — Play Console →
+   Impostazioni → Accesso API → crea/collega un service account Google Cloud, scarica il JSON, concedi al
+   service account i permessi di rilascio sull'app; incolla il JSON nel secret. ⚠️ Il PRIMO AAB va comunque
+   caricato una volta a mano in Console (requisito Google); dal secondo in poi è tutto automatico.
+
+Da quel momento il rilascio è: **creare un tag `v*`** (si fa anche dal telefono: GitHub → Releases →
+"Draft a new release" → nuovo tag es. `v1.0.1` → Publish). Il workflow:
+`build:web` → Capacitor → **versionCode automatico** (dal run number: mai più da toccare a mano) →
+AAB firmato → GitHub Release con l'.aab allegato → *(se configurato)* upload diretto su Play, track
+**internal** (poi si promuove a closed/production dalla Console, anche da telefono).
+
 **Release automatica sui tag:** se avvii il workflow con un **tag** `v*` (`git tag v1.0.0 && git push origin v1.0.0`), oltre all'artifact viene creata una **GitHub Release** "Korward Elite v1.0.0" con l'AAB allegato (`korward-elite-v1.0.0.aab`) — firmato se i secret sono presenti, altrimenti segnalato come unsigned nel corpo della release.
 
 ## Alternativa: TWA/Bubblewrap
