@@ -20,7 +20,8 @@ const LOGO = `<g transform="translate(50 52) scale(0.8) translate(-51.75 -38.5)"
   <rect x="43" y="36" width="15" height="36" rx="7" fill="#fff"/>
   <rect x="62" y="24" width="15" height="48" rx="7" fill="#fff"/>
   <circle cx="69.5" cy="15" r="10" fill="#fff" stroke="#1e293b" stroke-width="1.3"/>
-  <g fill="#1e293b">
+  <clipPath id="ballclip"><circle cx="69.5" cy="15" r="10"/></clipPath>
+  <g fill="#1e293b" clip-path="url(#ballclip)">
     <polygon points="69.5,11.6 72.73,13.95 71.5,17.75 67.5,17.75 66.27,13.95"/>
     <polygon points="73.44,9.58 72.24,5.89 75.38,3.61 78.52,5.89 77.32,9.58"/>
     <polygon points="75.87,17.07 79.01,14.79 82.15,17.07 80.95,20.76 77.07,20.76"/>
