@@ -85,6 +85,35 @@ const boot = async (init) => {
   await ctx.close();
 }
 
+/* [7.332.0 BUG GRAVE «mi ha sovrascritto una carriera»] SCENARI SLOT — la ripresa non deve MAI
+   puntare uno slot con una carriera dentro se non è quello scelto alla creazione */
+/* (S1) envelope CON slot:2 → la ripresa restaura currentSlot=2 (la firma scriverà lì) */
+{
+  const env = { ph: 'trial', p: mkPlayer(), tn: 0, res: [], opps: ['t_reg', 't_acc', 't_rap'], slot: 2 };
+  const { page } = await boot({ fn: (e) => { try { localStorage.setItem('cpm-trial-prog', JSON.stringify(e)); } catch (x) {} }, arg: env });
+  const slot = await page.evaluate(() => window.__CPM_CUR_SLOT);
+  say(slot === 2, `(S1) envelope con slot:2 → currentSlot restaurato a 2 (letto: ${slot})`);
+  await page.close();
+}
+/* (S2) envelope STANTIO senza slot + carriera in slot 0 + slot 1 vuoto → ripresa su PRIMO SLOT VUOTO (1), mai 0 */
+{
+  const career = { phase: 'career', player: { ...mkPlayer(), name: 'Carriera Preziosa', proStatus: 'pro', season: 5, club: { id: 'sal', n: 'FC Salernum', a: 'SAL', p: 55, c: '#6c1f2e', c2: '#fff', nat: '🇮🇹', lg: 'Lega B' } } };
+  const env = { ph: 'trial', p: mkPlayer(), tn: 0, res: [], opps: ['t_reg', 't_acc', 't_rap'] };
+  const { page } = await boot({ fn: (d) => { try { localStorage.setItem('cpm-v3', JSON.stringify(d.c)); localStorage.setItem('cpm-trial-prog', JSON.stringify(d.e)); } catch (x) {} }, arg: { c: career, e: env } });
+  const st = await page.evaluate(() => ({ slot: window.__CPM_CUR_SLOT, pre: /Inizia il provino/i.test(document.body.innerText) }));
+  say(st.pre && st.slot !== 0 && st.slot != null, `(S2) envelope 7.330 senza slot + carriera in slot 0 → ripresa sul primo slot VUOTO (letto: ${st.slot}) — lo slot 0 non verrà MAI sovrascritto`);
+  await page.close();
+}
+/* (S3) envelope senza slot e TUTTI gli slot occupati → niente ripresa (Home): mai distruggere un salvataggio */
+{
+  const mkCareer = (nm) => ({ phase: 'career', player: { ...mkPlayer(), name: nm, proStatus: 'pro', season: 3, club: { id: 'sal', n: 'FC Salernum', a: 'SAL', p: 55, c: '#6c1f2e', c2: '#fff', nat: '🇮🇹', lg: 'Lega B' } } });
+  const env = { ph: 'trial', p: mkPlayer(), tn: 0, res: [], opps: ['t_reg', 't_acc', 't_rap'] };
+  const { page } = await boot({ fn: (d) => { try { localStorage.setItem('cpm-v3', JSON.stringify(d.a)); localStorage.setItem('cpm-v3-s2', JSON.stringify(d.b)); localStorage.setItem('cpm-v3-s3', JSON.stringify(d.c)); localStorage.setItem('cpm-trial-prog', JSON.stringify(d.e)); } catch (x) {} }, arg: { a: mkCareer('Uno'), b: mkCareer('Due'), c: mkCareer('Tre'), e: env } });
+  const st = await page.evaluate(() => ({ home: !/Inizia il provino/i.test(document.body.innerText), envGone: !localStorage.getItem('cpm-trial-prog') }));
+  say(st.home && st.envGone, `(S3) envelope senza slot + 3 slot PIENI → niente ripresa (Home) e envelope azzerato: nessuna carriera a rischio`);
+  await page.close();
+}
+
 /* (3) ripresa dalle offerte */
 {
   const env = { ph: 'offers', p: mkPlayer(), res: [{ goals: 1, assists: 0, rating: 7.2 }, { goals: 2, assists: 1, rating: 7.8 }, { goals: 0, assists: 1, rating: 6.6 }] };
