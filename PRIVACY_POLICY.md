@@ -1,14 +1,14 @@
-# Informativa sulla privacy — Elevora: Football Career Simulator
+# Informativa sulla privacy — Korward Elite: Football Career Simulator
 
-_Ultimo aggiornamento: 30 giugno 2026_
+_Ultimo aggiornamento: 6 agosto 2026_
 
-Elevora ("l'app", "il gioco") è un simulatore di carriera calcistica gratuito. Questa informativa
+Korward Elite ("l'app", "il gioco") è un simulatore di carriera calcistica gratuito. Questa informativa
 spiega quali dati l'app tratta. **Versione breve: l'app non raccoglie, non invia e non condivide
 alcun dato personale.** Tutto resta sul tuo dispositivo.
 
 ## 1. Dati raccolti
 
-**Nessuno.** Elevora non raccoglie dati personali, non richiede registrazione né account, non usa
+**Nessuno.** Korward Elite non raccoglie dati personali, non richiede registrazione né account, non usa
 identificatori pubblicitari e non include SDK di analisi o tracciamento di terze parti.
 
 ## 2. Salvataggi di gioco

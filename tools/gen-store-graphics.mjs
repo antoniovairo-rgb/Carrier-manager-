@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-/* CPM — GRAFICA PER IL LISTING PLAY STORE (roadmap 1.9), brand granata Elevora.
+/* CPM — GRAFICA PER IL LISTING PLAY STORE (roadmap 1.9), brand granata Korward Elite.
    Produce in `store-assets/`:
      • play-icon-512.png   (512×512)    — icona alta risoluzione del listing
      • feature-graphic.png (1024×500)   — feature graphic obbligatoria del listing
@@ -34,8 +34,8 @@ const ICON = `<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" v
 const FEATURE = `<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="500" viewBox="0 0 1024 500"><defs>${grad('g', 1024, 0)}</defs>
   <rect width="1024" height="500" fill="url(#g)"/>
   <svg x="84" y="118" width="264" height="264" viewBox="0 0 100 100">${LOGO}</svg>
-  <text x="392" y="232" font-family="Arial,Helvetica,sans-serif" font-weight="900" font-size="104" letter-spacing="2" fill="#ffffff">ELEVORA</text>
-  <text x="398" y="292" font-family="Arial,Helvetica,sans-serif" font-weight="700" font-size="31" letter-spacing="7" fill="#ffd9e0">FOOTBALL CAREER</text>
+  <text x="392" y="232" font-family="Arial,Helvetica,sans-serif" font-weight="900" font-size="104" letter-spacing="2" fill="#ffffff">KORWARD</text>
+  <text x="398" y="292" font-family="Arial,Helvetica,sans-serif" font-weight="700" font-size="27" letter-spacing="4.5" fill="#ffd9e0">ELITE · FOOTBALL CAREER</text>
   <text x="398" y="346" font-family="Arial,Helvetica,sans-serif" font-weight="500" font-size="27" letter-spacing="1" fill="#f3cdd4" opacity="0.92">From prospect to legend</text>
 </svg>`;
 

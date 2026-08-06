@@ -1,6 +1,6 @@
 {
-  "appId": "com.elevora.football",
-  "appName": "Elevora",
+  "appId": "com.korward.elite",
+  "appName": "Korward Elite",
   "webDir": "dist",
   "android": {
     "allowMixedContent": false

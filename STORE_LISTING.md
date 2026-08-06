@@ -1,4 +1,4 @@
-# Elevora — testi per la scheda Google Play (bozza, roadmap 1.9)
+# Korward Elite — testi per la scheda Google Play (bozza, roadmap 1.9)
 
 > Bozza pronta da incollare in Play Console. I limiti di caratteri sono quelli ufficiali Play.
 > Conteggi indicati come (N/limite). Lingua principale: italiano.
@@ -6,13 +6,13 @@
 ## Titolo (≤ 30 caratteri)
 
 ```
-Elevora: Carriera Calcio
+Korward Elite: Carriera Calcio
 ```
-(24/30)
+(30/30)
 
 Alternative:
-- `Elevora — Carriera Calcistica` (29/30)
-- `Elevora: Football Career` (24/30, in inglese)
+- `Korward Elite — Carriera` (24/30)
+- `Korward Elite: Football Career` (30/30, in inglese)
 
 ## Descrizione breve (≤ 80 caratteri)
 
@@ -24,7 +24,7 @@ Vivi la carriera di un calciatore: dalle giovanili ai grandi stadi. Decidi tu.
 ## Descrizione completa (≤ 4000 caratteri)
 
 ```
-Elevora è un simulatore di carriera calcistica in cui controlli UN solo giocatore: il tuo. Dalle
+Korward Elite è un simulatore di carriera calcistica in cui controlli UN solo giocatore: il tuo. Dalle
 giovanili fino ai palcoscenici più importanti, ogni scelta — in campo e fuori — costruisce la tua
 storia.
 
@@ -81,7 +81,7 @@ una schermata "Info/Crediti" in-app:
 | Campo | Valore |
 |---|---|
 | Email sviluppatore | antoniovairo@gmail.com |
-| Privacy policy URL | (ospitare `PRIVACY_POLICY.md` su GitHub Pages e incollare qui l'URL) |
+| Privacy policy URL | https://antoniovairo-rgb.github.io/Carrier-manager-/privacy.html |
 | Contiene annunci | No |
 | Acquisti in-app | No (donazione solo via link esterno, nessuna ricompensa) |
 | Data Safety | Nessun dato raccolto / condiviso |

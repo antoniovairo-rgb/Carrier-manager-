@@ -1,7 +1,7 @@
-// Elevora PWA — service worker (network-first, no-cache per il documento principale)
+// Korward Elite PWA — service worker (network-first, no-cache per il documento principale)
 // 5.69.0: il DOCUMENTO principale viene sempre scaricato con cache:'reload' → bypassa la cache HTTP del
 //   browser/CDN, così dopo un deploy si vede SUBITO l'ultima versione online (la cache resta solo per l'OFFLINE).
-const CACHE = 'elevora-v3';
+const CACHE = 'korward-v4'; // [rebrand] era 'elevora-v3' — l'activate elimina le cache non correnti, quindi il rename migra da solo
 
 self.addEventListener('install', () => self.skipWaiting());
 

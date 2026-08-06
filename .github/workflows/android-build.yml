@@ -1,6 +1,6 @@
 name: Android AAB
 
-# Compila l'Android App Bundle di Elevora (PWA → Capacitor) sui runner GitHub,
+# Compila l'Android App Bundle di Korward Elite (PWA → Capacitor) sui runner GitHub,
 # dove l'Android SDK è disponibile. Produce un .aab come artifact, firmato se i
 # secret della keystore sono presenti, altrimenti unsigned (firmabile dopo).
 on:
@@ -74,7 +74,7 @@ jobs:
       - name: Upload AAB artifact
         uses: actions/upload-artifact@v4
         with:
-          name: elevora-aab
+          name: korward-elite-aab
           path: android/app/build/outputs/bundle/release/*.aab
           if-no-files-found: error
           retention-days: 14
@@ -84,17 +84,17 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/v')
         run: |
           mkdir -p release
-          cp android/app/build/outputs/bundle/release/app-release.aab "release/elevora-${GITHUB_REF_NAME}.aab"
+          cp android/app/build/outputs/bundle/release/app-release.aab "release/korward-elite-${GITHUB_REF_NAME}.aab"
 
       - name: Publish GitHub Release
         if: startsWith(github.ref, 'refs/tags/v')
         uses: softprops/action-gh-release@v2
         with:
-          name: Elevora ${{ github.ref_name }}
-          files: release/elevora-*.aab
+          name: Korward Elite ${{ github.ref_name }}
+          files: release/korward-elite-*.aab
           fail_on_unmatched_files: true
           body: |
-            **Elevora ${{ github.ref_name }}** — Android App Bundle (.aab)
+            **Korward Elite ${{ github.ref_name }}** — Android App Bundle (.aab)
 
             Firma: ${{ env.HAS_KEYSTORE == 'true' && 'firmato con upload key ✅' || '⚠️ UNSIGNED — firmare prima del caricamento su Play Console (vedi PACKAGING.md)' }}
 

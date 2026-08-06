@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-/* CPM — GENERA le immagini sorgente icona/splash di Elevora (GRANATA) per il packaging Android.
+/* CPM — GENERA le immagini sorgente icona/splash di Korward Elite (GRANATA) per il packaging Android.
    Rasterizza il MARCHIO reale del gioco (barre + pallone, gradiente granata #a3263a→#5e0f1d) via Chromium
    in `assets/`, che `@capacitor/assets` espande poi in tutte le densità Android (mipmap + drawable).
    Produce: icon-only.png · icon-foreground.png · icon-background.png · splash.png · splash-dark.png
@@ -14,7 +14,7 @@ const OUT = join(dirname(fileURLToPath(import.meta.url)), '..', 'resources');
 mkdirSync(OUT, { recursive: true });
 
 const GRAD = `<linearGradient id="g" x1="0" y1="0" x2="100" y2="100" gradientUnits="userSpaceOnUse"><stop stop-color="#a3263a"/><stop offset="1" stop-color="#5e0f1d"/></linearGradient>`;
-// MARCHIO Elevora (3 barre bianche che salgono + pallone), nel viewBox 0..100 — identico al logo del gioco
+// MARCHIO Korward Elite (3 barre bianche che salgono + pallone — il badge LogoMark del gioco), nel viewBox 0..100 — identico al logo del gioco
 const LOGO = `<g transform="translate(50 52) scale(0.8) translate(-51.75 -38.5)">
   <rect x="24" y="46" width="15" height="26" rx="7" fill="#fff"/>
   <rect x="43" y="36" width="15" height="36" rx="7" fill="#fff"/>
@@ -39,8 +39,8 @@ const badge = (cx, cy, s) =>
   `<svg x="${cx - s / 2}" y="${cy - s / 2}" width="${s}" height="${s}" viewBox="0 0 100 100">${LOGO}</svg>`;
 
 const wordmark = (col) =>
-  `<text x="50" y="69" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-weight="900" font-size="8.5" letter-spacing="1.5" fill="${col}">ELEVORA</text>` +
-  `<text x="50" y="75" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-weight="700" font-size="2.7" letter-spacing="2.6" fill="${col}" opacity="0.85">FOOTBALL CAREER</text>`;
+  `<text x="50" y="69" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-weight="900" font-size="8.5" letter-spacing="1.5" fill="${col}">KORWARD</text>` +
+  `<text x="50" y="75" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-weight="700" font-size="2.3" letter-spacing="1.0" fill="${col}" opacity="0.85">ELITE · FOOTBALL CAREER</text>`;
 
 // definizione degli asset: [file, larghezza, altezza, contenuto SVG, sfondo trasparente?]
 const ASSETS = [

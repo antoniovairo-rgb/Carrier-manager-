@@ -1,4 +1,4 @@
-# PACKAGING — Elevora → Google Play (AAB via Capacitor)
+# PACKAGING — Korward Elite → Google Play (AAB via Capacitor)
 
 Pipeline per trasformare il gioco (singolo file `CARRIER-MANAGER-AV.html`) in un **Android App Bundle (.aab)** pubblicabile. Il **sorgente di lavoro non cambia mai**: il packaging produce solo artefatti derivati.
 
@@ -11,7 +11,7 @@ Pipeline per trasformare il gioco (singolo file `CARRIER-MANAGER-AV.html`) in un
 | `tools/build-dist.mjs` | Build di produzione → `dist/` **offline**: precompila il JSX (niente Babel-in-browser) e inlina React/Three/Phaser dai `node_modules` del gate. |
 | `tools/validate-dist.mjs` | Verifica che `dist/` monti e giri **senza rete** (blocca ogni CDN). |
 | `package.json` | Dipendenze Capacitor + script npm. |
-| `capacitor.config.json` | `appId=com.elevora.football`, `appName=Elevora`, `webDir=dist`, splash. |
+| `capacitor.config.json` | `appId=com.korward.elite`, `appName=Korward Elite`, `webDir=dist`, splash. |
 
 `dist/` e `android/` **non sono versionati** (build-output riproducibile).
 
@@ -78,7 +78,7 @@ non dalla fine dello sviluppo → gli inviti vanno mandati **subito**, in parall
 
 Il manifest generato include solo **`INTERNET`** (default Capacitor). Il gioco gira **offline** e la build store disabilita la feature AI: se non servono né AI né link esterni in-app puoi **rimuovere** `INTERNET` da `android/app/src/main/AndroidManifest.xml` per un profilo permessi a zero (meglio per la review privacy). Il link donazione apre il **browser di sistema** (intent), che non richiede il permesso in-app.
 
-## Icona e splash (granata Elevora)
+## Icona e splash (granata Korward Elite)
 
 Le immagini **sorgente** sono versionate in **`resources/`** (generate dal marchio reale del gioco — barre + pallone, gradiente granata `#a3263a→#5e0f1d`):
 
@@ -106,7 +106,7 @@ npm run assets:android       # = npx capacitor-assets generate --assetPath resou
 
 ## Grafica del listing (Play Console)
 
-In **`store-assets/`** (granata Elevora):
+In **`store-assets/`** (granata Korward Elite):
 
 | File | Uso |
 |---|---|
@@ -131,7 +131,7 @@ Per ottenere un AAB **firmato** col tuo upload key, aggiungi i secret (Settings 
 
 Senza secret il workflow produce comunque l'AAB **unsigned** (utile come smoke-test della toolchain; firmabile dopo).
 
-**Release automatica sui tag:** se avvii il workflow con un **tag** `v*` (`git tag v1.0.0 && git push origin v1.0.0`), oltre all'artifact viene creata una **GitHub Release** "Elevora v1.0.0" con l'AAB allegato (`elevora-v1.0.0.aab`) — firmato se i secret sono presenti, altrimenti segnalato come unsigned nel corpo della release.
+**Release automatica sui tag:** se avvii il workflow con un **tag** `v*` (`git tag v1.0.0 && git push origin v1.0.0`), oltre all'artifact viene creata una **GitHub Release** "Korward Elite v1.0.0" con l'AAB allegato (`korward-elite-v1.0.0.aab`) — firmato se i secret sono presenti, altrimenti segnalato come unsigned nel corpo della release.
 
 ## Alternativa: TWA/Bubblewrap
 
