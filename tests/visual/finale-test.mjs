@@ -49,13 +49,33 @@ const hasTxt = (page, rx) => page.evaluate((x) => new RegExp(x, 'i').test(docume
   if (epic) issues.push('copy EPICO usato per la Coppa Nazionale (riservato all\'Europa)');
   await pg.close();
 }
-// (2b) [7.25.1] LA VOLATA SCUDETTO — W31, primo a +2 sulla seconda
+// (2b) [7.25.1 + 7.335.0] LA VOLATA — W31, primo a +2 sulla seconda. sal è LEGA B → tier-aware: «La volata promozione»
 {
   const st = Array.from({ length: 18 }, (_, i) => ({ id: i === 0 ? 'sal' : 'c' + i, n: i === 0 ? 'FC Salernum' : 'Club ' + i, played: 30, pts: i === 0 ? 68 : 68 - 2 - (i - 1) * 2, gf: 50 - i, ga: 20 + i, gd: 30 - 2 * i, wins: 20, draws: 5, losses: 5 }));
   const pg = await boot(mkSave({ week: 31, calendar: [], cup: null, standings: st }));
-  const vol = await hasTxt(pg, 'La volata scudetto');
-  console.log('(2b) volata:', vol);
-  if (!vol) issues.push('capitolo «La volata scudetto» assente (1° a +2, W31)');
+  const volP = await hasTxt(pg, 'La volata promozione');
+  const volS = await hasTxt(pg, 'La volata scudetto');
+  console.log('(2b) volata promozione (Lega B):', volP, '· scudetto (NON deve):', volS);
+  if (!volP) issues.push('capitolo «La volata promozione» assente in 2ª divisione (1° a +2, W31)');
+  if (volS) issues.push('«La volata scudetto» servita in 2ª divisione (tier-aware 7.335 rotto)');
+  await pg.close();
+}
+// (2c) [7.335.0] VOLATA SCUDETTO in PRIMA divisione (Lega A) — stesso scenario, club top-tier
+{
+  const st = Array.from({ length: 18 }, (_, i) => ({ id: i === 0 ? 'nap' : 'c' + i, n: i === 0 ? 'SC Vesuvio' : 'Club ' + i, played: 30, pts: i === 0 ? 68 : 68 - 2 - (i - 1) * 2, gf: 50 - i, ga: 20 + i, gd: 30 - 2 * i, wins: 20, draws: 5, losses: 5 }));
+  const pg = await boot(mkSave({ week: 31, calendar: [], cup: null, standings: st, club: { id: 'nap', n: 'SC Vesuvio', a: 'VES', p: 82, c: '#0ea5e9', c2: '#ffffff', nat: '🇮🇹', lg: 'Lega A' } }));
+  const volS = await hasTxt(pg, 'La volata scudetto');
+  console.log('(2c) volata scudetto (Lega A):', volS);
+  if (!volS) issues.push('capitolo «La volata scudetto» assente in 1ª divisione (1° a +2, W31)');
+  await pg.close();
+}
+// (2d) [7.335.0] CAMPIONATO GIÀ VINTO → NIENTE volata (margine > punti rimanenti): 1° a +15 con 2 gare al termine
+{
+  const st = Array.from({ length: 18 }, (_, i) => ({ id: i === 0 ? 'sal' : 'c' + i, n: i === 0 ? 'FC Salernum' : 'Club ' + i, played: 32, pts: i === 0 ? 82 : 67 - (i - 1) * 2, gf: 60 - i, ga: 18 + i, gd: 40 - 2 * i, wins: 26, draws: 4, losses: 2 }));
+  const pg = await boot(mkSave({ week: 31, calendar: [], cup: null, standings: st }));
+  const vol = await hasTxt(pg, 'La volata');
+  console.log('(2d) volata su campionato chiuso (NON deve):', vol);
+  if (vol) issues.push('volata servita a campionato già matematicamente vinto (+15 a 2 giornate dalla fine)');
   await pg.close();
 }
 // (3) persa
