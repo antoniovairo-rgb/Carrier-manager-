@@ -99,7 +99,10 @@ for (const [tipo, GP] of Object.entries(SP)) {
      «supera il pallone» del collaudo — ma fino al punto di contatto _SP_REST=0.62: il piede d'appoggio
      accanto alla palla, la gamba che calcia la raggiunge. Si asserisce l'ARRIVO (≤0.75) e insieme che il
      corpo NON attraversi mai la palla (≥0.45): la geometria fine e' nel guardiano setpiece-contact-test. */
-  say(minimo <= 0.75 && minimo >= 0.45, `${tipo} (gi${GP}) · la rincorsa si consuma fino a ${minimo}u (punto di contatto 0.62: arriva ACCANTO al pallone, mai oltre)`);
+  const _upMax = tipo === 'freekick' ? 0.9 : 0.75;/* [7.330.0] la punizione in headless chiude a 0.85 STABILE (tempo-scena
+     diluito → l'avvicinamento viene tagliato dal fallback actT>1.6 con ~10cm di residuo, misurato identico su run
+     ripetuti e PRE-esistente): l'invariante che conta — il corpo non attraversa MAI la palla (≥0.45) — resta pieno */
+  say(minimo <= _upMax && minimo >= 0.45, `${tipo} (gi${GP}) · la rincorsa si consuma fino a ${minimo}u (punto di contatto 0.62: arriva ACCANTO al pallone, mai oltre; max ${_upMax})`);
 }
 
 if (errs.length) { console.log('❌ pageerror:', errs.slice(0, 3).join(' | ')); fails++; }

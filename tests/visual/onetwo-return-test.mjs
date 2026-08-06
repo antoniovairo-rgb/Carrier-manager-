@@ -33,7 +33,10 @@ const CASES = [
 const RITORNO_MAX = 4.0;   /* tolleranza per il taglio headless. La SEPARAZIONE resta netta: gli uno-due
    veri misurano 1.5-3.9 anche nei run peggiori, le controprove (filtrante, progressione) 6.8-7.8 — il
    guardiano distingue le due nature con oltre 2.8u di banda; la porta d'arrivo vera (<2.0) sta nel codice. */
-const APPOGGIO_MIN = 6;    // il primo appoggio deve allontanare davvero il pallone
+const APPOGGIO_MIN = 3;    // il primo appoggio deve comunque allontanare il pallone (sponda visibile)
+const APPOGGIO_MAX = 14;   /* [7.330.0 collaudo PO «pallone volante che torna indietro»] il muro è l'uomo VICINO:
+   prima del fix l'appoggio volava 18.7-22.9u (selezione da assist + scatto +12u) e la sponda era un boomerang
+   che attraversava il campo. Un dai-e-vai vero tiene l'appoggio nel corto (banda 2.2-13u + margine poll). */
 /* [7.324.0] soglia 3 → 1.0, e la ragione e' il TEMPO-SCENA: in headless la scena scorre a 1/10-1/30 del
    reale e una corsa a velocita' di scena copre in proporzione (misura ESATTA per-frame: 1.3-2.4u nella
    finestra della sponda; il vecchio 3-6u veniva dal massimo su TUTTA la finestra node, fasi successive
@@ -85,8 +88,8 @@ for (const c of CASES) {
   let lastMin = null, lastChange = Date.now();
   const t0 = Date.now();
   while (Date.now() - t0 < 45000) {
-    const v = await page.evaluate(() => { try { const s = window.__CPM_STATE(); return { d: +Math.hypot(s.ball.x - s.hero.x, s.ball.y - s.hero.y).toFixed(2), m: window.__CPM_O2MIN == null ? null : +window.__CPM_O2MIN } ; } catch (e) { return null; } });
-    if (v) { d.push(v.d); if (v.m !== lastMin) { lastMin = v.m; lastChange = Date.now(); } }
+    const v = await page.evaluate(() => { try { const s = window.__CPM_STATE(); return { d: +Math.hypot((s.ball.x - s.hero.x) * 0.972, (s.ball.y - s.hero.y) * 0.6).toFixed(2), m: window.__CPM_O2MIN == null ? null : +window.__CPM_O2MIN }/* [7.330.0] distanza in unità MONDO (game y ×0.6): in unità di gioco uno scarico LATERALE legittimo leggeva 17u e sembrava un lancio — stessa scala del tracker __CPM_O2MIN */ ; } catch (e) { return null; } });
+    if (v) { if (!(v.m != null && v.m < 2.1)) d.push(v.d);/* [7.330.0] l'appoggio si misura SOLO fino all'arrivo del ritorno: il campione preso quando la sponda è già consegnata appartiene alla gamba dell'ASSIST (l'eroe serve l'uomo profondo) e a 150ms di poll gonfiava «via» di 10u su gi180 — boomerang finto, artefatto di campionamento (quarta ricorrenza della trappola) */ if (v.m !== lastMin) { lastMin = v.m; lastChange = Date.now(); } }
     if (lastMin != null && lastMin < 2.1) break;
     if (Date.now() - lastChange > 4000 && d.length > 10) break;
     await sleep(150);
@@ -96,8 +99,8 @@ for (const c of CASES) {
   const via = Math.max(...d);
   const torna = (exact.min != null) ? exact.min : via;
   const tornata = torna <= RITORNO_MAX;
-  say(c.o2 ? (via >= APPOGGIO_MIN && tornata && avanz >= AVANZ_MIN) : !tornata,
-    `gi${c.gi} [${info.intent}·${info.rew}·${info.pat}] "${info.label}" · ${c.o2 ? 'UNO-DUE' : 'CONTROPROVA (non deve tornare)'} · appoggio ${via.toFixed(1)}u → ritorno ${torna.toFixed(1)}u${c.o2 ? ` · il «vai» dell'eroe ${avanz}u (min ${AVANZ_MIN})` : ''}`);
+  say(c.o2 ? (via >= APPOGGIO_MIN && via <= APPOGGIO_MAX && tornata && avanz >= AVANZ_MIN) : !tornata,
+    `gi${c.gi} [${info.intent}·${info.rew}·${info.pat}] "${info.label}" · ${c.o2 ? 'UNO-DUE' : 'CONTROPROVA (non deve tornare)'} · appoggio ${via.toFixed(1)}u (banda ${APPOGGIO_MIN}-${APPOGGIO_MAX}) → ritorno ${torna.toFixed(1)}u${c.o2 ? ` · il «vai» dell'eroe ${avanz}u (min ${AVANZ_MIN})` : ''}`);
   await page.close();
 }
 
