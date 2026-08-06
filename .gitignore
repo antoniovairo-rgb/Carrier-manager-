@@ -8,3 +8,5 @@ tests/visual/out/
 # Capacitor: il progetto nativo android/ è build-output riproducibile (nessun codice
 # nativo custom: tutta la config sta in capacitor.config.json). Si rigenera con `npx cap add android`.
 android/
+# Added by code-review-graph
+.code-review-graph/
