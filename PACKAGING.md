@@ -25,8 +25,9 @@ Pipeline per trasformare il gioco (singolo file `CARRIER-MANAGER-AV.html`) in un
 ## Build dell'AAB — passo per passo
 
 ```bash
-# 1. dipendenze di packaging
+# 1. dipendenze di packaging (ENTRAMBE: la build inlina React/Three/Babel dai node_modules del GATE)
 npm install
+cd tests/visual && npm install && cd ../..   # senza questo build:web muore con MODULE_NOT_FOUND @babel/standalone
 
 # 2. build web di produzione (offline) + verifica
 npm run build:web
