@@ -30,13 +30,17 @@ const boot = async (init) => {
 
 /* (1)+(2) ripresa provini a metà: envelope tn:1 con 1 risultato */
 {
-  const env = { ph: 'trial', p: mkPlayer(), tn: 1, res: [{ goals: 1, assists: 0, rating: 7.2 }], opps: ['t_reg', 't_acc', 't_rap'] };
+  const env = { ph: 'trial', p: mkPlayer(), tn: 1, res: [{ goals: 1, assists: 0, rating: 7.2 }], opps: ['t_reg', 't_acc', 't_rap'] };/* tn coerente con res.length=1 → 2° provino */
   const { page, errs } = await boot({ fn: (e) => { try { localStorage.setItem('cpm-trial-prog', JSON.stringify(e)); } catch (x) {} }, arg: env });
   const t = await page.evaluate(() => document.body.innerText);
   say(/PROVINO/i.test(t) && /Secondo provino/i.test(t), `(1) boot con envelope tn:1 → schermata PRE del 2° provino (visto: ${/Secondo provino/i.test(t)})`);
   say(/Finora ai provini:\s*1 gol/i.test(t), `(1b) i risultati del 1° provino sono CONSERVATI («Finora ai provini: 1 gol» renderizzato)`);
-  const optPre = await page.evaluate(() => [...document.querySelectorAll('button')].some(b => /Opzioni/.test(b.textContent || '')));/* position:fixed → offsetParent è null anche da visibile: si controlla la PRESENZA nel DOM */
-  say(optPre, `(2a) nella schermata PRE il tasto ⚙️ Opzioni c'è (come da 7.104)`);
+  const optPre = await page.evaluate(() => [...document.querySelectorAll('button')].some(b => /Opzioni/.test(b.textContent || '')));
+  say(!optPre, `(2a) [7.331.0] il tasto ⚙️ Opzioni NON esiste più nelle fasi pre-carriera (solo Home e carriera)`);
+  const kbHint = await page.evaluate(() => /\[Enter\]/.test(document.body.innerText));
+  say(kbHint, `(2a-bis) [7.331.0] su DESKTOP (hover reale) l'hint [Enter] resta`);
+  const tipMira = await page.evaluate(() => /barra di mira/i.test(document.body.innerText));
+  say(!tipMira, `(2a-ter) [7.331.0] il tip deprecato «barra di mira» non c'è più`);
   await page.evaluate(() => { const b = [...document.querySelectorAll('button')].find(x => /Inizia il provino/.test(x.textContent || '')); if (b) b.click(); });
   await sleep(2500);
   const inMatch = await page.evaluate(() => /PROVINO 2\/3/.test(document.body.innerText));
@@ -45,6 +49,40 @@ const boot = async (init) => {
   say(!optInMatch, `(2c) DURANTE il match il tasto ⚙️ Opzioni NON è visibile`);
   say(!errs.length, `(1c) 0 pageerror (${errs.join('; ') || 'ok'})`);
   await page.close();
+}
+
+/* (1-quater) IL BUG DEI 4 PROVINI: envelope con tn=1 STANTIO ma res GIÀ 2 (chiusura nella schermata post)
+   → la ripresa deve andare al TERZO provino (derivato da res.length), non rigiocare il secondo */
+{
+  const env = { ph: 'trial', p: mkPlayer(), tn: 1, res: [{ goals: 1, assists: 0, rating: 7.2 }, { goals: 0, assists: 1, rating: 6.9 }], opps: ['t_reg', 't_acc', 't_rap'] };
+  const { page } = await boot({ fn: (e) => { try { localStorage.setItem('cpm-trial-prog', JSON.stringify(e)); } catch (x) {} }, arg: env });
+  const t = await page.evaluate(() => document.body.innerText);
+  say(/Ultimo provino/i.test(t), `(1d) tn stantio + 2 risultati → si riprende dal TERZO provino (mai 4 provini)`);
+  await page.close();
+}
+
+/* (1-quinquies) envelope trial con 3 risultati (chiusura sull'ultimo post) → dritto alle OFFERTE */
+{
+  const env = { ph: 'trial', p: mkPlayer(), tn: 2, res: [{ goals: 1, assists: 0, rating: 7 }, { goals: 1, assists: 0, rating: 7 }, { goals: 0, assists: 0, rating: 6.2 }], opps: ['t_reg', 't_acc', 't_rap'] };
+  const { page } = await boot({ fn: (e) => { try { localStorage.setItem('cpm-trial-prog', JSON.stringify(e)); } catch (x) {} }, arg: env });
+  const t = await page.evaluate(() => document.body.innerText);
+  say(/offert/i.test(t) && !/Inizia il provino/i.test(t) && !/Provino 4/i.test(t), `(1e) envelope trial COMPLETO → offerte, e nessun «Provino 4»`);
+  await page.close();
+}
+
+/* (2-touch) su un dispositivo TOUCH (hover:none) l'hint [Enter] NON deve comparire */
+{
+  const ctx = await browser.newContext({ viewport: { width: 480, height: 980 }, hasTouch: true, isMobile: true });
+  const page = await ctx.newPage(); await installCdnRoutes(page);
+  await page.addInitScript(() => { window.__CPM_GLB = false; try { localStorage.setItem('cpm-intro-seen', '1'); } catch (e) {} });
+  const env = { ph: 'trial', p: mkPlayer(), tn: 0, res: [], opps: ['t_reg', 't_acc', 't_rap'] };
+  await page.addInitScript((e) => { try { localStorage.setItem('cpm-trial-prog', JSON.stringify(e)); } catch (x) {} }, env);
+  await page.goto(`http://localhost:${port}/CARRIER-MANAGER-AV.html`, { waitUntil: 'load', timeout: 40000 });
+  await page.waitForFunction(() => { const r = document.getElementById('root'); return r && r.children.length > 0; }, null, { timeout: 60000 });
+  await sleep(1600);
+  const t = await page.evaluate(() => ({ enter: /\[Enter\]/.test(document.body.innerText), pre: /Inizia il provino/i.test(document.body.innerText) }));
+  say(t.pre && !t.enter, `(2f) su TOUCH (hover:none emulato) niente scritta [Enter] («Inizia il provino» pulito)`);
+  await ctx.close();
 }
 
 /* (3) ripresa dalle offerte */
