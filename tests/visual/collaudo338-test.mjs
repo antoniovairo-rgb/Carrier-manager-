@@ -200,9 +200,14 @@ for (const [tag, journo] of [['uomo', MEN], ['donna', WOMEN]]) {
       snap: window.draftBugNote(mk(base(240, i => ({ x: i < 120 ? -20 + i * 0.12 : 20 + (i - 120) * 0.12, sk: i < 120 ? 5 : 6 }))), {}),/* traccia dentro i limiti del campo: qui deve emergere SOLO lo stacco (che non è un difetto) */
       still: window.draftBugNote(mk(base(240, i => ({ x: i < 40 ? 10 + i * 0.2 : 18 }))), {}),
       out: window.draftBugNote(mk(base(240, i => ({ x: 20 + i * 0.16 }))), {}),
-      mateNo: window.draftBugNote(mk(base(240, i => ({ x: -10 + i * 0.12, md: 9 }))), { intent: 'pass' }),
-      mateShot: window.draftBugNote(mk(base(240, i => ({ x: -10 + i * 0.12, md: 9 }))), { intent: 'shot' }),
+      mateNo: window.draftBugNote(mk(base(240, i => ({ x: -10 + i * 0.12, md: 9 }))), { intent: 'pass', ok: true }),
+      mateShot: window.draftBugNote(mk(base(240, i => ({ x: -10 + i * 0.12, md: 9 }))), { intent: 'shot', ok: true }),
+      mateFail: window.draftBugNote(mk(base(240, i => ({ x: -10 + i * 0.12, md: 9 }))), { intent: 'pass', ok: false }),/* [7.341.0] su una giocata FALLITA nessuno deve arrivare sul pallone: non e' un difetto */
       net: window.draftBugNote(mk(base(240, i => ({ x: i < 220 ? 10 + i * 0.16 : 46.3, z: 0, y: 1 }))), { out: 'saved' }),
+      /* [7.341.0] tre trappole di misura che nel setaccio segnalavano azioni SANE */
+      corner: window.draftBugNote(mk(base(240, i => ({ x: 47 - Math.min(i, 160) * 0.045, z: -32 + Math.min(i, 160) * 0.19 }))), { out: 'miss' }),/* battuta d'angolo: arretra sempre in x, non e' un boomerang */
+      assistShort: window.draftBugNote(mk(base(240, i => ({ x: -10 + i * 0.1, md: 1.2 }))), { out: 'assist', intent: 'pass', ok: true }),/* l'assist finisce sui piedi del compagno, non in porta */
+      goalSettle: window.draftBugNote(mk(base(240, i => ({ x: i < 200 ? 10 + i * 0.2 : 49.4 - (i - 200) * 0.04, z: 0.5, y: i < 200 ? 1.2 : 0.45 }))), { out: 'goal', intent: 'shot', ok: true }),/* gol vero: entra e poi si assesta nella bocca della porta */
       clean: window.draftBugNote(mk(base(240, i => ({ x: -10 + i * 0.12, md: 1.4 }))), {}),
     };
   });
@@ -215,7 +220,11 @@ for (const [tag, journo] of [['uomo', MEN], ['donna', WOMEN]]) {
   if (!has('out', /uscita dal campo/)) issues.push('(D) la palla fuori campo non viene descritta');
   if (!has('mateNo', /nessun compagno/)) issues.push('(D) il destinatario mancante non viene descritto su un passaggio');
   if (has('mateShot', /nessun compagno/)) issues.push('(D) su un TIRO non deve lamentare il compagno assente (falso allarme)');
+  if (has('mateFail', /nessun compagno/)) issues.push('(D) su una giocata FALLITA non deve lamentare il compagno assente (falso allarme)');
   if (!has('net', /IN RETE/)) issues.push('(D) esito «parata» con palla in rete non viene descritto');
+  if (has('corner', /INDIETRO/)) issues.push('(D) la battuta d\'angolo viene scambiata per un pallone che torna indietro: ' + d.corner.slice(0, 90));
+  if (has('assistShort', /dalla porta|in porta/)) issues.push('(D) un ASSIST non deve dover arrivare in porta: ' + d.assistShort.slice(0, 90));
+  if (has('goalSettle', /mai arrivata in porta|IN RETE/)) issues.push('(D) un GOL entrato e poi assestato viene segnalato: ' + d.goalSettle.slice(0, 90));
   if (d.clean) issues.push('(D) una traccia PULITA non deve produrre bozza: ' + d.clean.slice(0, 90));
   /* dal vivo: azione vera → il tasto ⚠️ precompila la nota con la bozza (o la lascia vuota, mai un errore) */
   await page.close();
