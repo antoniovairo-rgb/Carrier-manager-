@@ -1,6 +1,11 @@
 .claude/*
 !.claude/settings.json
 !.claude/PLUGINS.md
+# [7.346.0] Le Project Skill VANNO versionate col repo: sono parte del progetto, non configurazione locale.
+# Restando ignorate, `git add -A` le saltava in silenzio e un riavvolgimento del clone le ha cancellate tutte
+# e dieci senza che nulla lo segnalasse. Il commit che le "conteneva" aveva in realtà due file.
+!.claude/skills/
+!.claude/skills/**
 node_modules/
 package-lock.json
 dist/
