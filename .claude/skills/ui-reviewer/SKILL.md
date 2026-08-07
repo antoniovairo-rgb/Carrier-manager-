@@ -1,6 +1,6 @@
 ---
 name: ui-reviewer
-description: "Interfaccia di Korward Elite col vincolo TELEFONO (412x915): da usare quando tocchi schermate, card, modali, nav, tab, testi o colori di CareerApp — scroll orizzontale, safe-area, strisce che coprono l'ultima card, token TH/FS/FW/RAD invece di colori cablati, dark mode, primitive riusabili, testo che sfora, e la verifica per screenshot perche' il gate e' cieco qui."
+description: "Interfaccia di Korward Elite col vincolo TELEFONO (412x915): da usare quando tocchi schermate, card, modali, nav, tab o colori di CareerApp — scroll orizzontale, safe-area, strisce che coprono l'ultima card, token TH/FS/FW/RAD invece di colori cablati, dark mode, primitive riusabili, verifica per screenshot perche' il gate e' cieco."
 ---
 
 # ui-reviewer — la schermata deve funzionare su un telefono
