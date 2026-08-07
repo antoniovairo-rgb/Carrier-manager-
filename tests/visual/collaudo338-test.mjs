@@ -9,7 +9,7 @@
    (C) APPUNTI DI COLLAUDO nel live match — il tasto ⚠️ mette in PAUSA, apre il campo note col contesto già
        registrato, salva in locale e li ripropone nel Profilo.
    Uso: node collaudo338-test.mjs */
-import { startServer, launchBrowser, installCdnRoutes, sleep } from './lib/harness.mjs';
+import { startServer, launchBrowser, installCdnRoutes, openMatch, sleep } from './lib/harness.mjs';
 
 const srv = await startServer(); const port = srv.address().port;
 const browser = await launchBrowser();
@@ -169,6 +169,65 @@ for (const [tag, journo] of [['uomo', MEN], ['donna', WOMEN]]) {
   await page.close();
 }
 
+/* ─────────── (D) [7.339.0] la ⚠️ ABBOZZA da sola l'appunto da ciò che ha visto ─────────── */
+{
+  const page = await browser.newPage({ viewport: { width: 412, height: 915 } });
+  await installCdnRoutes(page);
+  page.on('pageerror', e => issues.push('(D) pageerror: ' + String(e.message).slice(0, 120)));
+  await page.addInitScript(() => { window.__CPM_GLB = false; });
+  await page.goto(`http://localhost:${port}/CARRIER-MANAGER-AV.html?cpmtest=1`, { waitUntil: 'load', timeout: 40000 });
+  await page.waitForFunction(() => typeof window.draftBugNote === 'function', null, { timeout: 45000 });
+  /* motore puro su tracce sintetiche: ogni classe di difetto deve avere la sua frase, e una traccia PULITA
+     non deve produrre nulla (mai gridare al lupo) — compreso lo STACCO DI SCENA, che non è un teletrasporto */
+  const d = await page.evaluate(() => {
+    const mk = (pts) => ({ samples: pts, goalX: 46, now: 0 });
+    const base = (n, fn) => { const a = []; for (let i = 0; i < n; i++) a.push(Object.assign({ t: i * 16, x: 0, y: 0.5, z: 0, hx: 0, md: 1.5, f: 1, sk: 5 }, fn(i))); return a; };
+    return {
+      back: window.draftBugNote(mk(base(240, i => ({ x: i < 120 ? 5 + i * 0.18 : 26.6 - (i - 120) * 0.16 }))), {}),
+      tele: window.draftBugNote(mk(base(240, i => ({ x: i === 120 ? 40 : -10 + i * 0.12 }))), {}),
+      snap: window.draftBugNote(mk(base(240, i => ({ x: i < 120 ? -20 + i * 0.12 : 20 + (i - 120) * 0.12, sk: i < 120 ? 5 : 6 }))), {}),/* traccia dentro i limiti del campo: qui deve emergere SOLO lo stacco (che non è un difetto) */
+      still: window.draftBugNote(mk(base(240, i => ({ x: i < 40 ? 10 + i * 0.2 : 18 }))), {}),
+      out: window.draftBugNote(mk(base(240, i => ({ x: 20 + i * 0.16 }))), {}),
+      mateNo: window.draftBugNote(mk(base(240, i => ({ x: -10 + i * 0.12, md: 9 }))), { intent: 'pass' }),
+      mateShot: window.draftBugNote(mk(base(240, i => ({ x: -10 + i * 0.12, md: 9 }))), { intent: 'shot' }),
+      net: window.draftBugNote(mk(base(240, i => ({ x: i < 220 ? 10 + i * 0.16 : 46.3, z: 0, y: 1 }))), { out: 'saved' }),
+      clean: window.draftBugNote(mk(base(240, i => ({ x: -10 + i * 0.12, md: 1.4 }))), {}),
+    };
+  });
+  const has = (k, rx) => rx.test(d[k] || '');
+  console.log('(D) motore:', Object.entries(d).map(([k, v]) => `${k}:${v ? 'sì' : 'no'}`).join(' · '));
+  if (!has('back', /INDIETRO/)) issues.push('(D) il pallone che torna indietro non viene descritto');
+  if (!has('tele', /teletrasporto/)) issues.push('(D) il teletrasporto non viene descritto');
+  if (d.snap) issues.push('(D) lo STACCO DI SCENA viene scambiato per un difetto: ' + d.snap.slice(0, 90));
+  if (!has('still', /FERMA/)) issues.push('(D) la palla ferma non viene descritta');
+  if (!has('out', /uscita dal campo/)) issues.push('(D) la palla fuori campo non viene descritta');
+  if (!has('mateNo', /nessun compagno/)) issues.push('(D) il destinatario mancante non viene descritto su un passaggio');
+  if (has('mateShot', /nessun compagno/)) issues.push('(D) su un TIRO non deve lamentare il compagno assente (falso allarme)');
+  if (!has('net', /IN RETE/)) issues.push('(D) esito «parata» con palla in rete non viene descritto');
+  if (d.clean) issues.push('(D) una traccia PULITA non deve produrre bozza: ' + d.clean.slice(0, 90));
+  /* dal vivo: azione vera → il tasto ⚠️ precompila la nota con la bozza (o la lascia vuota, mai un errore) */
+  await page.close();
+  const pg2 = await browser.newPage({ viewport: { width: 412, height: 915 } });
+  await installCdnRoutes(pg2);
+  pg2.on('pageerror', e => issues.push('(D-live) pageerror: ' + String(e.message).slice(0, 120)));
+  await pg2.addInitScript(() => { window.__CPM_GLB = false; });
+  await openMatch(pg2, port);
+  await sleep(1000);
+  await pg2.evaluate(() => window.__CPM_FORCE_SIT(7, true)); await sleep(900);
+  await pg2.evaluate(() => { window.__CPM_FROZEN = false; }); await sleep(500);
+  await pg2.evaluate(() => { window.__CPM_FORCE_OUTCOME = 'fail'; window.__CPM_RESOLVE(0); });
+  await sleep(3000);
+  const snapOk = await pg2.evaluate(() => { try { const s = window.__CPM_WATCH_SNAP && window.__CPM_WATCH_SNAP(); return !!(s && s.samples && s.samples.length > 5); } catch (e) { return false; } });
+  console.log('(D) testimone attivo dal vivo:', snapOk);
+  if (!snapOk) issues.push('(D) il testimone del render-loop non registra la traccia dal vivo');
+  await pg2.evaluate(() => { const b = [...document.querySelectorAll('button')].find(x => (x.textContent || '').includes('⚠️')); b && b.click(); });
+  await sleep(700);
+  const live = await pg2.evaluate(() => { const t = document.querySelector('textarea'); return t ? t.value : null; });
+  console.log('(D) bozza dal vivo:', live ? live.split('\n')[1] : '(vuota: nessuna anomalia)');
+  if (live && !/Cosa ho visto/.test(live)) issues.push('(D) bozza dal vivo malformata: ' + live.slice(0, 80));
+  await pg2.close();
+}
+
 await browser.close(); srv.close();
-console.log(issues.length ? '\n❌ FAIL\n' + issues.map(i => '  ✗ ' + i).join('\n') : '\n✅ COLLAUDO 7.338 OK (taccuino piatto · reazioni al rifiuto · appunti nel live)');
+console.log(issues.length ? '\n❌ FAIL\n' + issues.map(i => '  ✗ ' + i).join('\n') : '\n✅ COLLAUDO 7.338/7.339 OK (taccuino piatto · reazioni al rifiuto · appunti nel live · bozza automatica)');
 process.exit(issues.length ? 1 : 0);
