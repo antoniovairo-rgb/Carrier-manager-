@@ -17,6 +17,13 @@ const CASES = [
   { gi: 186, re: /Sponda corta e ricevi in area/, o2: true },
   { gi: 185, re: /Scarico e ricevi sul fondo/, o2: true },
   { gi: 121, re: /Dai e vai subito/, o2: true },
+  /* [7.348.0 collaudo PO «il triangolo sostanzialmente non c'e'»] IL CASO CHE MANCAVA. Questo guardiano
+     esercitava solo azioni con premio ASSIST — le uniche che il 7.311 rimappava a `pass`, l'hlType che il
+     cancello del triangolo pretendeva. «Triangolo e vai» ha premio GOL, che il 7.8.10 converte in OCCASIONE:
+     finiva nel ramo dell'appoggio corto, senza muro e senza ritorno (misurato: palla a 9,2 unita' dall'eroe),
+     e il guardiano passava lo stesso perche' non lo provava. E' la prima azione della lista, quella che il
+     PO sceglie per prima. */
+  { gi: 121, re: /Triangolo e vai/, o2: true },
   { gi: 152, re: /Schema a tre/, o2: true },  // l'UNICA con premio GOL: torna e conclude l'eroe
   /* CONTROPROVE — senza queste il test sarebbe vacuo: un passaggio che NON e' un uno-due
      non deve tornare indietro. Due nature diverse:
