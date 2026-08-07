@@ -40,6 +40,19 @@ const browser = await launchBrowser();
   const cg = src.lastIndexOf('{devToolsOn()&&(()=>{', card);
   if (card > 0 && (cg < 0 || card - cg > 2500))
     issues.push('(A) la card degli appunti nel Profilo non e\' governata da devToolsOn()');
+  /* [7.344.0] IL TASTO NON BASTA. Il 7.342.0 aveva liberato il pulsante e la card, ma il TESTIMONE
+     (l'anello che registra la partita) e il REGISTRO DELLE SCENE erano rimasti dietro `__CPM_STORE_BUILD`:
+     sul telefono il taccuino si apriva ma la bozza automatica era sempre vuota e il selettore «quale azione»
+     non compariva mai — cioe' le due funzioni per cui il taccuino esiste. Si controllano tutti e tre. */
+  for (const [nome, ancora] of [['testimone (anello di registrazione)', 'const W=sr.current._wd||(sr.current._wd='],
+                                ['registro delle scene', 'const key=hlIdx+(_forceSeqRef.current']]) {
+    const at = src.indexOf(ancora);
+    if (at < 0) { issues.push(`(A) non trovo il ${nome} nel sorgente (ancora cambiata?)`); continue; }
+    const pre = src.slice(Math.max(0, at - 800), at);
+    const gated = /_DEVT344|devToolsOn\(\)/.test(pre);
+    if (!gated) issues.push(`(A) il ${nome} non segue l'interruttore del taccuino: sul telefono resta spento e il taccuino nasce cieco`);
+    console.log(`(A) ${nome} → ${gated ? 'interruttore taccuino ✓' : 'flag di build ✗'}`);
+  }
   if (!/const DEVTOOLS_DEFAULT=true;/.test(src))
     issues.push('(A) DEVTOOLS_DEFAULT non e\' piu\' acceso: sul telefono il taccuino nasce spento');
   console.log(`(A) card appunti → devToolsOn() ${card > 0 && cg >= 0 && card - cg <= 2500 ? '✓' : '✗'} · DEVTOOLS_DEFAULT acceso ${/const DEVTOOLS_DEFAULT=true;/.test(src) ? '✓' : '✗'}`);
