@@ -40,14 +40,26 @@ for (const [tag, journo] of [['uomo', MEN], ['donna', WOMEN]]) {
   await sleep(6000);
   const rig = await page.evaluate(() => window.__CPM_IVRIG || null);
   if (!rig || !rig.pad) { issues.push(`(A/${tag}) taccuino assente dalla sonda`); await bctx.close(); continue; }
-  const hY = +(rig.pad.bb.max[1] - rig.pad.bb.min[1]).toFixed(3);
-  const wide = Math.max(rig.pad.bb.max[0] - rig.pad.bb.min[0], rig.pad.bb.max[2] - rig.pad.bb.min[2]);
   const dSpine = Math.hypot(rig.pad.p[0] - rig.spine[0], rig.pad.p[2] - rig.spine[2]);
-  console.log(`(A/${tag}) taccuino: altezza ${hY} · lato ${wide.toFixed(3)} · dal busto ${dSpine.toFixed(3)} · dalla mano ${rig.padFromHand}`);
-  if (hY > 0.06) issues.push(`(A/${tag}) il taccuino è ancora di TAGLIO (ingombro verticale ${hY} > 0.06)`);
-  if (wide < 0.09) issues.push(`(A/${tag}) il taccuino non mostra la faccia (lato max ${wide.toFixed(3)} < 0.09)`);
+  /* [7.340.0] l'invariante è «mai DI TAGLIO»: si misura quanto la faccia del blocchetto guarda la camera
+     (1 = faccia piena · 0 = solo il bordo = la lama del collaudo «film horror»). Il vecchio test sull'ingombro
+     verticale valeva finché il taccuino stava in orizzontale sul palmo; col braccio disteso ora PENDE dal pugno. */
+  console.log(`(A/${tag}) taccuino: faccia verso camera ${rig.padFace} · dal busto ${dSpine.toFixed(3)} · dalla mano ${rig.padFromHand}`);
+  if (!(rig.padFace >= 0.45)) issues.push(`(A/${tag}) il taccuino si vede DI TAGLIO (faccia verso camera ${rig.padFace}, serve ≥0.45)`);
   if (rig.padFromHand > 0.13) issues.push(`(A/${tag}) taccuino staccato dalla mano (${rig.padFromHand}u)`);
   if (dSpine < 0.14) issues.push(`(A/${tag}) taccuino dentro il busto (${dSpine.toFixed(3)}u dall'asse)`);
+  /* [7.340.0 collaudo PO «la mano non è collegata al braccio, sembra incollata al corpo»] la catena del braccio
+     libero si misura in SPAZIO PERSONAGGIO (asse laterale = congiungente spalla-spalla): deve uscire dal busto
+     e scendere, mai finire sulla linea mediana davanti alla pancia (misurato prima del fix: lat −0.02, fwd +0.19). */
+  const B = rig.body;
+  if (!B || !B.lHand || !B.lFore || !B.lArm) issues.push(`(A/${tag}) misure in spazio personaggio assenti`);
+  else {
+    console.log(`(A/${tag}) braccio: spalla lat ${B.lArm.lat} · gomito ${B.lFore.lat} · mano ${B.lHand.lat} (fwd ${B.lHand.fwd}, dy ${B.lHand.dy})`);
+    if (B.lHand.lat < 0.22) issues.push(`(A/${tag}) la mano libera è addosso al busto (lat ${B.lHand.lat}, serve ≥0.22)`);
+    if (!(B.lArm.lat < B.lFore.lat && B.lFore.lat < B.lHand.lat)) issues.push(`(A/${tag}) la catena del braccio non esce progressivamente dal corpo: spalla ${B.lArm.lat} · gomito ${B.lFore.lat} · mano ${B.lHand.lat}`);
+    if (B.lHand.dy > -0.25) issues.push(`(A/${tag}) la mano libera non scende lungo il fianco (dy ${B.lHand.dy})`);
+    if (Math.abs(B.lHand.fwd) > 0.30) issues.push(`(A/${tag}) la mano libera è troppo avanti/indietro rispetto al busto (fwd ${B.lHand.fwd})`);
+  }
   await bctx.close();
 }
 
@@ -228,6 +240,39 @@ for (const [tag, journo] of [['uomo', MEN], ['donna', WOMEN]]) {
   await pg2.close();
 }
 
+/* ─────────── (E) [7.340.0] il testimone copre TUTTA la partita e si sceglie quale azione annotare ─────────── */
+{
+  const page = await browser.newPage({ viewport: { width: 412, height: 915 } });
+  await installCdnRoutes(page);
+  page.on('pageerror', e => issues.push('(E) pageerror: ' + String(e.message).slice(0, 120)));
+  await page.addInitScript(() => { window.__CPM_GLB = false; });
+  await openMatch(page, port);
+  await sleep(900);
+  for (const gi of [7, 30, 12]) {
+    await page.evaluate(g => window.__CPM_FORCE_SIT(g, true), gi); await sleep(900);
+    await page.evaluate(() => { window.__CPM_FROZEN = false; }); await sleep(400);
+    await page.evaluate(() => { window.__CPM_FORCE_OUTCOME = 'fail'; window.__CPM_RESOLVE(0); });
+    await sleep(2500);
+  }
+  const snap = await page.evaluate(() => { const s = window.__CPM_WATCH_SNAP && window.__CPM_WATCH_SNAP(); return s ? { n: s.samples.length, span: s.span, res: s.res } : null; });
+  console.log('(E) traccia:', JSON.stringify(snap));
+  if (!snap || snap.span < 12) issues.push('(E) il testimone non copre l\'intera partita (span ' + (snap && snap.span) + 's dopo 3 azioni)');
+  await page.evaluate(() => { const b = [...document.querySelectorAll('button')].find(x => (x.textContent || '').includes('⚠️')); b && b.click(); });
+  await sleep(700);
+  const chips = await page.evaluate(() => [...document.querySelectorAll('button')].filter(b => /^\d+'/.test((b.textContent || '').trim())).length);
+  console.log('(E) azioni selezionabili nel campo appunti:', chips);
+  if (chips < 3) issues.push('(E) il campo appunti non offre le azioni PASSATE da annotare (trovate ' + chips + ')');
+  /* scegliendo un'azione passata, il contesto della nota deve cambiare di conseguenza */
+  const ctx0 = await page.evaluate(() => { const d = [...document.querySelectorAll('div')].find(e => /^\[KE /.test((e.textContent || '').trim())); return d ? d.textContent : ''; });
+  await page.evaluate(() => { const b = [...document.querySelectorAll('button')].filter(x => /^\d+'/.test((x.textContent || '').trim()))[2]; b && b.click(); });
+  await sleep(600);
+  const ctx1 = await page.evaluate(() => { const d = [...document.querySelectorAll('div')].find(e => /^\[KE /.test((e.textContent || '').trim())); return d ? d.textContent : ''; });
+  const sit0 = (ctx0.match(/SIT #(\d+)/) || [])[1], sit1 = (ctx1.match(/SIT #(\d+)/) || [])[1];
+  console.log('(E) scena corrente #' + sit0 + ' → scelta passata #' + sit1);
+  if (!sit1 || sit1 === sit0) issues.push('(E) scegliendo un\'azione passata il contesto della nota non cambia');
+  await page.close();
+}
+
 await browser.close(); srv.close();
-console.log(issues.length ? '\n❌ FAIL\n' + issues.map(i => '  ✗ ' + i).join('\n') : '\n✅ COLLAUDO 7.338/7.339 OK (taccuino piatto · reazioni al rifiuto · appunti nel live · bozza automatica)');
+console.log(issues.length ? '\n❌ FAIL\n' + issues.map(i => '  ✗ ' + i).join('\n') : '\n✅ COLLAUDO 7.338→7.340 OK (braccio e taccuino · reazioni al rifiuto · appunti nel live · bozza automatica · tutta la partita)');
 process.exit(issues.length ? 1 : 0);
