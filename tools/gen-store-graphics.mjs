@@ -14,7 +14,7 @@ const OUT = join(dirname(fileURLToPath(import.meta.url)), '..', 'store-assets');
 mkdirSync(OUT, { recursive: true });
 
 const grad = (id, x2, y2) => `<linearGradient id="${id}" x1="0" y1="0" x2="${x2}" y2="${y2}" gradientUnits="userSpaceOnUse"><stop stop-color="#a3263a"/><stop offset="1" stop-color="#5e0f1d"/></linearGradient>`;
-const LOGO = `<g transform="translate(50 52) scale(0.8) translate(-51.75 -38.5)">
+const LOGO = `<g transform="translate(50 50) scale(0.92) translate(-51.75 -38.5)">/* [7.338.0] marchio più grande: stessa resa dell'icona dell'app (collaudo PO «icona troppo piccola») */
   <rect x="24" y="46" width="15" height="26" rx="7" fill="#fff"/>
   <rect x="43" y="36" width="15" height="36" rx="7" fill="#fff"/>
   <rect x="62" y="24" width="15" height="48" rx="7" fill="#fff"/>

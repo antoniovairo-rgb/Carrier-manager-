@@ -21,7 +21,7 @@ function mkIconSrc() {
     var rg=ctx.createRadialGradient(sz*0.5,sz*0.42,sz*0.04,sz*0.5,sz*0.52,sz*0.7);
     rg.addColorStop(0,'rgba(255,214,170,0.17)');rg.addColorStop(1,'rgba(0,0,0,0)');
     ctx.fillStyle=rg;ctx.fillRect(0,0,sz,sz);
-    ctx.save();ctx.translate(50*u,52*u);ctx.scale(0.8,0.8);ctx.translate(-51.75*u,-38.5*u);
+    ctx.save();ctx.translate(50*u,50*u);ctx.scale(0.92,0.92);ctx.translate(-51.75*u,-38.5*u);/* [7.338.0] marchio al 61,6% del lato (era 53,6): l'icona sul telefono era troppo piccola */
     ctx.fillStyle='#fff';
     var base=72*u;
     function bar(x,top){var w=15*u,rad=7*u,y=top,h=base-top;

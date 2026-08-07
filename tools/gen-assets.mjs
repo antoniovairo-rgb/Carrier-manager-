@@ -14,8 +14,15 @@ const OUT = join(dirname(fileURLToPath(import.meta.url)), '..', 'resources');
 mkdirSync(OUT, { recursive: true });
 
 const GRAD = `<linearGradient id="g" x1="0" y1="0" x2="100" y2="100" gradientUnits="userSpaceOnUse"><stop stop-color="#a3263a"/><stop offset="1" stop-color="#5e0f1d"/></linearGradient>`;
-// MARCHIO Korward Elite (3 barre bianche che salgono + pallone — il badge LogoMark del gioco), nel viewBox 0..100 — identico al logo del gioco
-const LOGO = `<g transform="translate(50 52) scale(0.8) translate(-51.75 -38.5)">
+/* MARCHIO Korward Elite (3 barre bianche che salgono + pallone — il badge LogoMark del gioco), nel viewBox 0..100.
+   [7.338.0 collaudo PO «l'icona del gioco dell'app android è troppo piccola!»] Il segno era disegnato a scala 0.8
+   (altezza 53,6 su 100) e nel FOREGROUND dell'adaptive icon veniva ulteriormente ridotto a 0.64 → 0.8×0.64 = 34,3
+   su 100. Ma il launcher Android mostra solo il quadrato centrale (72dp su 108 = 66,7% della tela): il marchio
+   occupava quindi appena il 51% della piastrella visibile, contro il ~65-70% delle app accanto (Claude, ChatGPT).
+   Ora la scala è un PARAMETRO e ogni asset usa la sua: MK_ICON riempie l'icona quadrata, MK_FG è tarato sull'area
+   VISIBILE dell'adaptive icon restando dentro la safe-zone circolare (66dp: il riquadro del segno ha diagonale 59,8
+   < 61 di raggio utile → non viene mai tagliato da nessuna maschera). */
+const MK = (sc, cy) => `<g transform="translate(50 ${cy}) scale(${sc}) translate(-51.75 -38.5)">
   <rect x="24" y="46" width="15" height="26" rx="7" fill="#fff"/>
   <rect x="43" y="36" width="15" height="36" rx="7" fill="#fff"/>
   <rect x="62" y="24" width="15" height="48" rx="7" fill="#fff"/>
@@ -30,6 +37,9 @@ const LOGO = `<g transform="translate(50 52) scale(0.8) translate(-51.75 -38.5)"
     <polygon points="65.56,9.58 61.68,9.58 60.48,5.89 63.62,3.61 66.76,5.89"/>
   </g>
 </g>`;
+const MK_ICON = MK(0.92, 50);   /* icona piena: marchio al 61,6% del lato (era 53,6) */
+const MK_FG   = MK(0.69, 50);   /* foreground adaptive: 46,2 su 100 = ~69% dell'area visibile (era 34,3 = 51%) */
+const LOGO    = MK(0.92, 50);   /* badge degli splash: stessa resa dell'icona */
 
 const svg = (w, h, inner) =>
   `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" viewBox="0 0 100 100"><defs>${GRAD}</defs>${inner}</svg>`;
@@ -45,10 +55,10 @@ const wordmark = (col) =>
 
 // definizione degli asset: [file, larghezza, altezza, contenuto SVG, sfondo trasparente?]
 const ASSETS = [
-  ['icon-only.png',       1024, 1024, `<rect width="100" height="100" fill="url(#g)"/>${LOGO}`,          false],
+  ['icon-only.png',       1024, 1024, `<rect width="100" height="100" fill="url(#g)"/>${MK_ICON}`,       false],
   ['icon-background.png', 1024, 1024, `<rect width="100" height="100" fill="url(#g)"/>`,                 false],
-  // foreground: marchio bianco ridotto al 64% (safe-zone adaptive icon), sfondo trasparente
-  ['icon-foreground.png', 1024, 1024, `<g transform="translate(50 50) scale(0.64) translate(-50 -50)">${LOGO}</g>`, true],
+  // foreground adaptive: marchio già tarato (MK_FG) sull'area visibile 72/108, dentro la safe-zone; sfondo trasparente
+  ['icon-foreground.png', 1024, 1024, MK_FG,                                                             true],
   ['splash.png',          2732, 2732, `<rect width="100" height="100" fill="#f0f7ff"/>${badge(50, 42, 30)}${wordmark('#8e1f33')}`, false],
   ['splash-dark.png',     2732, 2732, `<rect width="100" height="100" fill="#0f172a"/>${badge(50, 42, 30)}${wordmark('#ffffff')}`, false],
 ];

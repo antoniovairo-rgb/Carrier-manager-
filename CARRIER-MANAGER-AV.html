@@ -3990,7 +3990,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="7.337.0"; // [7.337.0 direttiva PO — RITIRO 2.0] «L'eroe deve VIVERE il ritiro, non organizzarlo»: riprogettazione completa del precampionato. VIA la scelta manuale della preparazione (irreale: un giovane non decide il programma del club) → tre motori PURI e SEEDATI per club+stagione: ritiroPlan (località/hotel/centro/sponsor/clima/durata/eventi DIVERSI ogni stagione + preparazione DECISA DALLO STAFF, derivata da filosofia del mister, categoria, obiettivi, coppe europee, nuovi acquisti dal diff rosa, condizione — con la motivazione dichiarata), ritiroHierarchyVerdict (le gerarchie le stabilisce SOLO il mister: responso da età/OVR/esperienza/rendimento precedente/livello rosa/concorrente arrivato nel ruolo), ritiroFriendlies (calendario di amichevoli: selezione locale → pari categoria → internazionale, con la decisione dello staff sull'impiego — titolare/subentro/panchina/non convocato — e conseguenze reali su fiducia/forma/morale; mai in matchHistory). Il racconto è un overlay a beat (arrivo → decisione staff → vita del ritiro → gerarchie → amichevoli → la TUA risposta); l'unica scelta dell'eroe è COMPORTAMENTALE (lavora più di tutti / aiuta i nuovi / cura i dettagli), mai organizzativa. Wizard d'apertura e card dashboard diventano launcher (con «Salta il racconto» che applica comunque tutto). Guardiano permanente ritiro2-test + opening-gate/career-invariants/career-sim aggiornati. // [7.336.0 collaudo PO con 4 screenshot «vengono conteggiati anche i gol con la primavera, questo condiziona le classifiche. ma la cosa più assurda e grave è il pallone d'oro!!!!!!»] DUE RADICI, ENTRAMBE CHIUSE AL CHOKEPOINT. (1) IL TRAVASO CONOSCE LA LEGA: il primo contratto pro a metà stagione passa da acceptTransfer, che dal 7.293 travasa i gol di lega della maglia precedente in seasonCarry — QUALUNQUE fosse la lega, Primavera compresa: capocannoniere, MVP, record e duelli della lega pro si trovavano in pancia i gol del campionato giovanile (nello screenshot: 30 «gol di lega» alla S.1). Nuovo helper puro buildSeasonCarry: lg/la viaggiano SOLO tra maglie della STESSA lega (come i capocannonieri veri: gennaio in Serie A somma, cambiare campionato azzera), gli spells restano completi per display e obiettivi, il carry ricorda la lega (lgName) e _scOf la verifica in lettura (difesa in profondità). (2) I PREMI EUROPEI SONO DELLE MASSIME DIVISIONI: Re dei Bomber e TROFEO D'ORO non avevano un filtro di livello — un campo di 2ª serie gonfiato dai gol Primavera vinceva il pallone d'oro alla prima stagione. Ora il giocatore entra nel campo europeo SOLO da una massima divisione (LEAGUE_PAIRS lato 0); i premi DELLA PROPRIA lega restano vincibili in ogni tier. Guardiano permanente primavera-awards-test (6 scenari: U18→pro azzera · stessa lega somma · cross-league azzera · leagueGoalsOf col carry Primavera · tier2 mai nei premi europei ma capocannoniere di lega suo · controprova top-flight). //  [7.335.0 collaudo PO ×4] (1) «verticalizzazione: la palla passa da un compagno a un altro senza dinamica chiara e conclude in rete» + «chip millimetrico a zig-zag»: il punto di corsa del ricevente era +12u oltre l'uomo (misurato 6.7s di palla parcheggiata su gi174, poi fallback e scena sfilacciata) → rendez-vous RAGGIUNGIBILE (max +7 world dal ricevente); e il terzo uomo del «servi in area» non può più stare DIETRO la palla (la scelta per sola vicinanza produceva lo snap all'indietro 84→50 visto in traccia). (2) «l'intervistatore non è disegnato bene — la mano senza microfono»: la mano libera del giornalista regge ora un TACCUINO da cronista (bone-attached, pattern busta 7.143). (3) «non è una volata scudetto, sono in serie B spagnola»: capitolo tier-aware (2ª divisione → «La volata promozione»). //  [7.334.0 collaudo PO «dribbling feroce in corsa: parte un mezzo tiro senza senso che dà vita a una catena»] il dribbling (e la corsa/build) riusciti con reward GOAL sono convertiti a CHANCE dal 7.8.10 — il primo tocco non segna, la catena finalizza — ma i rami dell'arco 3D guardavano solo hlReward e SPARAVANO la palla verso la porta: mezzo tiro → deflect → catena. Ora su outcome CHANCE il dribbling è un TOCCO corto oltre l'uomo saltato e la costruzione un appoggio corto: la conclusione arriva nel secondo tempo, come promesso dalla catena. Gate-invariante (nel force-mode le azioni falliscono deterministicamente → il ramo success non è nella baseline); probe dedicata su «Dribbling individuale feroce». //  [7.333.0 collaudo PO «scarico e ricevi sul fondo: il pallone vola avanti-dx, torna indietro e poi verso la porta — completamente da ritarare»] GEOMETRIA DELL'UNO-DUE: il muro sta avanti all'eroe, quindi la restituzione mirata sull'eroe viaggiava ALL'INDIETRO (ping-pong a 3 gambe). Ora il bersaglio del ritorno ha un PAVIMENTO in avanti (mai una x dietro la palla): la sponda scorre nello SPAZIO davanti e l'eroe la raggiunge sulla corsa del «vai» — tutte le gambe dell'azione progrediscono verso la porta. Tracker __CPM_O2BK (moto all'indietro cumulato, test-only) + asserzione nel guardiano onetwo-return: ritorno mai all'indietro >1.2u. //  [7.332.0 BUG GRAVE collaudo PO «mi ha sovrascritto una carriera, stranissimo»] l'envelope di ripresa provini (7.330) NON registrava lo SLOT scelto: riaprendo l'app durante i provini la ripresa ripartiva con currentSlot=0 e la firma del contratto salvava la nuova carriera SOPRA quella dello slot 0 = perdita dati. Ora lo slot viaggia nell'envelope (onCreate/onTrials; TrialFlow lo PRESERVA dall'envelope precedente perché non conosce currentSlot) e il boot lo RESTAURA; envelope stantio senza slot (7.330/7.331 già sui device) → primo slot VUOTO, e se sono tutti occupati NON si riprende affatto (meglio la Home che distruggere un salvataggio). Hook diagnostico __CPM_CUR_SLOT (mai in store build) + guardiano trial-persist esteso con gli scenari slot. //  [7.331.0 collaudo PO ×5 dal device] (1) «I provini non sono QUATTRO!»: chiudendo l'app nella schermata post-provino i risultati erano già n+1 mentre trialNum non era avanzato → la ripresa rigiocava un provino (4 risultati). Ora il provino corrente è DERIVATO dai risultati (res.length), cap 3 ovunque + guardia sull'append + envelope trial già completo → dritto alle offerte. (2) il tasto ⚙️ Opzioni vive SOLO nella nav della Home e della carriera: rimosso il bottone fisso da creazione/provini/offerte. (3) «in nessuna azione si può mirare»: il tip «barra di mira» era deprecato dal SET-PIECE 2.0 (7.51.0) → ora spiega gli STILI dei piazzati. (4) «le partite non si possono saltare, non è corretta la scritta» + wizard datato: tutorial carriera aggiornato (via «Non saltarla!», via i tab inglesi Calendar/Standings/Profile → Stagione/Club/Carriera/Agente/Opzioni). (5) «elimina da cellulare la scritta Enter»: gli hint tastiera compaiono solo dove esiste una tastiera (hover:none = touch → niente [Enter]). + FILTRANTE MURATO onesto: la famiglia blocked ferma la palla al 22% della linea (cap 6u, arco corto) = rimpallo sul muro — prima volava all'intercetto a metà campo mentre l'overlay diceva «murato» (intercepted resta profondo). //  [7.330.0 collaudo PO ×3 dal collaudo su device] (1) «il dai e vai genera azioni assurde con pallone volante che torna indietro»: il MURO dell'uno-due era scelto con la logica degli ASSIST (avanzamento ×0.6 + penalità <6u del 7.254 + scatto in profondità +12u) → appoggio di 18.7-22.9u che attraversava il campo e tornava = boomerang. Nuovo ramo hlOneTwo al lancio dell'arco: muro = compagno VICINO (2.2-13u) che TIENE la posizione, palla bassa (arcH 0.6) ai suoi piedi, cap 12u di sicurezza se nessuno è in banda; il viaggio lungo lo fa l'EROE col «vai». (2) il tasto ⚙️ Opzioni copriva la cronaca nel live dei provini → nascosto durante la fase match (segnale TrialFlow→App). (3) «se non termino i provini non viene salvata la carriera»: la fase pre-carriera ora PERSISTE (cpm-trial-prog scritta alla creazione e a ogni provino; auto-ripresa al boot col pattern 7.149, avversari e risultati inclusi; anche la schermata OFFERTE sopravvive; azzerata quando la carriera è salvata o si ricomincia). //  [7.329.0 collaudo PO «lo storico di piazzamenti lo intendevo del club, nel Tab club»] la card Storico piazzamenti del Tab Club è ora il CAMMINO DEL CLUB dalla S.1 (il 7.328.0 l'aveva letta come carriera dell'eroe): stagioni con l'eroe in rosa = piazzamento REALE (riga 👤, coppe comprese) · stagioni in cui l'eroe condivideva la lega = àncore reali campione 🏆/retrocessa ⬇️ dal registro · tutte le altre = righe DERIVATE seedate (pattern albo euro 7.35.1), sempre «senza eventi» (pos 4-13, mai titoli/promozioni/retrocessioni inventate) con la lega del punto noto più vicino. //  [7.328.0 collaudo PO ×3] (1) «le gambe dei cerimonieri sono all'interno del palco»: i presentatori del gala stavano a x=±1.05/-1.15 = DENTRO il footprint del podio p1 (box 2.6×1.7 → x∈[-1.3,1.3]) e le gambe compenetravano la pedana; ora ai lati veri (|x|=1.72) con regia beat 1/2 riallineata, e anche il VINCITORE (che si fermava a z=-0.35 = esattamente la faccia frontale della pedana) chiude a z=-0.02. (2) «il PSG deve avere la maglia a strisce verticali larghe blu e rosso»: nuovo pattern stripesw (2D JerseyIcon + 3D kitPatternTex sulla griglia-16 provata sulle UV CH38, riempita a coppie + stemma TeamBadge); psg esce dalla lista tinta unita dove stava dal 7.8.0. (3) «storico piazzamenti relativo solo alle stagioni con l'eroe, l'ideale sarebbe averlo dall'inizio»: la card del Tab Club non filtra più per club corrente — INTERA CARRIERA dalla S.1 (Primavera comprese) col club di ogni stagione in riga; cap archivio 20→30 stagioni. // [7.327.0 collaudo PO con screenshot «i rigori non devono essere al 69esimo minuto! ho vinto ai rigori e non e' partito il festeggiamento 3D»] TRE FIX SULLA SERIE DI RIGORI. (1) L'OROLOGIO DICE 90: il fischio finale arriva all'ultimo highlight (7.2.0), che sul cronometro puo' essere il 69' — e nessuno alzava il clock entrando nei rigori/premiazione/ended, quindi header e maxischermo mostravano una serie di rigori «al 69esimo». Ora _goEndOrCeremony porta il clock a 90 (il hook di test __CPM_SO_FORCE lo faceva gia'; il path vero no — classico caso di test che maschera il difetto). (2) LA FINALE DI COPPA DELLE NAZIONI FESTEGGIA: il cancello della cerimonia post-serie elencava euroMondiale_ko/euro_ko/cup — la finale di Nazioni MANCAVA: il 7.72.2 le aveva dato i rigori (_koSeed natcup|final) ma nessuno le aveva dato la cerimonia, e vinta ai rigori si andava dritti a ended. Aggiunta al cancello (cerimonia «COPPA DELLE NAZIONI», kind int) e al banner «DAL DISCHETTO ALLA GLORIA». (3) LA SIGLA DI CASA E' LA NAZIONE: nel tabellino della serie compariva «PRS» (il club dell'eroe, FC Paris) in una Italia-Spagna — in contesto nazionale la sigla viene ora da NAT_CLUB_DATA (ITA), non dal club. Guardiano shootout-test esteso con lo scenario finale-di-Nazioni dal vivo: SO_FORCE(69) → clock 90 in shootout · sigla ITA presente e SAL assente · serie vinta → fase ceremony col nome della coppa. ⚠️ Nota di sessione: il container ha riavvolto il clone DUE volte durante questo fix (7.289) — base ripristinata da origin e edit ri-applicati; la versione nel gate e' la prova.
+const GAME_VERSION="7.338.0"; // [7.338.0 collaudo PO ×3] (1) «sistema la mano dell'intervistatore, sembra un film horror»: il TACCUINO del 7.335.0 era posizionato in spazio-OSSO (position.set(0,0.05·u,…)+rotation.x=0.28) ma gli assi locali della mano non sono quelli del mondo — misurato sul rig vero, il blocchetto (7,5×1,2×10,5 cm di progetto) usciva con 12,8 cm di ingombro VERTICALE: in piedi e visto di taglio, un coltello nel pugno. Ora geometria a misura reale (scala compensata come il mic) e assetto ricalcolato OGNI FRAME in WORLD: faccia verso alto/camera, lato lungo fuori dal corpo → non può più essere vista di taglio, per costruzione (misura dopo: 4,1 cm, uomo e donna). (2) «quando l'eroe rifiuta un'offerta ci devono essere delle reazioni, in particolare positive visto l'attestato di fedeltà»: gli effetti c'erano dal 7.307.0 ma vivevano in un toast da 3 secondi. Nuovo motore puro refuseEcho (fasce dal peso REALE dell'offerta: salto di prestigio + salto di stipendio) e SCENA dedicata — la curva col legame vero, il presidente, il mister COL SUO NOME, un compagno REALE della rosa, la firma che ti segue — con gli effetti dichiarati a schermo; un sondaggio qualunque resta senza premi (niente farming) ma non è più muto. + BUG GRAVE: `fanLegend` è un ARRAY {clubId,seasons} ovunque, ma il rifiuto faceva `(p.fanLegend||0)+2` → il campo diventava la stringa "2" e ogni lettura successiva lanciava: spariva il pannello della CURVA, si rompevano gli achievement bandiera e i numeri di maglia liberi. Corretto alla fonte + HEAL in migration per i salvataggi già colpiti. (3) «un pulsante di warning per niente invasivo nel live match … la partita in PAUSA finché non mi segno l'appunto»: tasto ⚠️ accanto alla pausa (stessa discrezione, mai in build store) che FERMA la partita e apre il campo note in sovraimpressione col CONTESTO già registrato (versione, minuto, fase, avversario, punteggio, situation+intento, azione scelta ed esito) → l'appunto nasce già bug report; «Salva e copia» lo mette negli appunti di sistema, e in Carriera → Profilo c'è 🐞 Appunti di collaudo con elenco, «Copia tutto» e svuota. Guardiano permanente collaudo338-test (taccuino piatto su entrambi i modelli · fasce e voci del rifiuto + heal fanLegend + end-to-end dal modale offerta · appunti col contesto). // [7.337.0 direttiva PO — RITIRO 2.0] «L'eroe deve VIVERE il ritiro, non organizzarlo»: riprogettazione completa del precampionato. VIA la scelta manuale della preparazione (irreale: un giovane non decide il programma del club) → tre motori PURI e SEEDATI per club+stagione: ritiroPlan (località/hotel/centro/sponsor/clima/durata/eventi DIVERSI ogni stagione + preparazione DECISA DALLO STAFF, derivata da filosofia del mister, categoria, obiettivi, coppe europee, nuovi acquisti dal diff rosa, condizione — con la motivazione dichiarata), ritiroHierarchyVerdict (le gerarchie le stabilisce SOLO il mister: responso da età/OVR/esperienza/rendimento precedente/livello rosa/concorrente arrivato nel ruolo), ritiroFriendlies (calendario di amichevoli: selezione locale → pari categoria → internazionale, con la decisione dello staff sull'impiego — titolare/subentro/panchina/non convocato — e conseguenze reali su fiducia/forma/morale; mai in matchHistory). Il racconto è un overlay a beat (arrivo → decisione staff → vita del ritiro → gerarchie → amichevoli → la TUA risposta); l'unica scelta dell'eroe è COMPORTAMENTALE (lavora più di tutti / aiuta i nuovi / cura i dettagli), mai organizzativa. Wizard d'apertura e card dashboard diventano launcher (con «Salta il racconto» che applica comunque tutto). Guardiano permanente ritiro2-test + opening-gate/career-invariants/career-sim aggiornati. // [7.336.0 collaudo PO con 4 screenshot «vengono conteggiati anche i gol con la primavera, questo condiziona le classifiche. ma la cosa più assurda e grave è il pallone d'oro!!!!!!»] DUE RADICI, ENTRAMBE CHIUSE AL CHOKEPOINT. (1) IL TRAVASO CONOSCE LA LEGA: il primo contratto pro a metà stagione passa da acceptTransfer, che dal 7.293 travasa i gol di lega della maglia precedente in seasonCarry — QUALUNQUE fosse la lega, Primavera compresa: capocannoniere, MVP, record e duelli della lega pro si trovavano in pancia i gol del campionato giovanile (nello screenshot: 30 «gol di lega» alla S.1). Nuovo helper puro buildSeasonCarry: lg/la viaggiano SOLO tra maglie della STESSA lega (come i capocannonieri veri: gennaio in Serie A somma, cambiare campionato azzera), gli spells restano completi per display e obiettivi, il carry ricorda la lega (lgName) e _scOf la verifica in lettura (difesa in profondità). (2) I PREMI EUROPEI SONO DELLE MASSIME DIVISIONI: Re dei Bomber e TROFEO D'ORO non avevano un filtro di livello — un campo di 2ª serie gonfiato dai gol Primavera vinceva il pallone d'oro alla prima stagione. Ora il giocatore entra nel campo europeo SOLO da una massima divisione (LEAGUE_PAIRS lato 0); i premi DELLA PROPRIA lega restano vincibili in ogni tier. Guardiano permanente primavera-awards-test (6 scenari: U18→pro azzera · stessa lega somma · cross-league azzera · leagueGoalsOf col carry Primavera · tier2 mai nei premi europei ma capocannoniere di lega suo · controprova top-flight). //  [7.335.0 collaudo PO ×4] (1) «verticalizzazione: la palla passa da un compagno a un altro senza dinamica chiara e conclude in rete» + «chip millimetrico a zig-zag»: il punto di corsa del ricevente era +12u oltre l'uomo (misurato 6.7s di palla parcheggiata su gi174, poi fallback e scena sfilacciata) → rendez-vous RAGGIUNGIBILE (max +7 world dal ricevente); e il terzo uomo del «servi in area» non può più stare DIETRO la palla (la scelta per sola vicinanza produceva lo snap all'indietro 84→50 visto in traccia). (2) «l'intervistatore non è disegnato bene — la mano senza microfono»: la mano libera del giornalista regge ora un TACCUINO da cronista (bone-attached, pattern busta 7.143). (3) «non è una volata scudetto, sono in serie B spagnola»: capitolo tier-aware (2ª divisione → «La volata promozione»). //  [7.334.0 collaudo PO «dribbling feroce in corsa: parte un mezzo tiro senza senso che dà vita a una catena»] il dribbling (e la corsa/build) riusciti con reward GOAL sono convertiti a CHANCE dal 7.8.10 — il primo tocco non segna, la catena finalizza — ma i rami dell'arco 3D guardavano solo hlReward e SPARAVANO la palla verso la porta: mezzo tiro → deflect → catena. Ora su outcome CHANCE il dribbling è un TOCCO corto oltre l'uomo saltato e la costruzione un appoggio corto: la conclusione arriva nel secondo tempo, come promesso dalla catena. Gate-invariante (nel force-mode le azioni falliscono deterministicamente → il ramo success non è nella baseline); probe dedicata su «Dribbling individuale feroce». //  [7.333.0 collaudo PO «scarico e ricevi sul fondo: il pallone vola avanti-dx, torna indietro e poi verso la porta — completamente da ritarare»] GEOMETRIA DELL'UNO-DUE: il muro sta avanti all'eroe, quindi la restituzione mirata sull'eroe viaggiava ALL'INDIETRO (ping-pong a 3 gambe). Ora il bersaglio del ritorno ha un PAVIMENTO in avanti (mai una x dietro la palla): la sponda scorre nello SPAZIO davanti e l'eroe la raggiunge sulla corsa del «vai» — tutte le gambe dell'azione progrediscono verso la porta. Tracker __CPM_O2BK (moto all'indietro cumulato, test-only) + asserzione nel guardiano onetwo-return: ritorno mai all'indietro >1.2u. //  [7.332.0 BUG GRAVE collaudo PO «mi ha sovrascritto una carriera, stranissimo»] l'envelope di ripresa provini (7.330) NON registrava lo SLOT scelto: riaprendo l'app durante i provini la ripresa ripartiva con currentSlot=0 e la firma del contratto salvava la nuova carriera SOPRA quella dello slot 0 = perdita dati. Ora lo slot viaggia nell'envelope (onCreate/onTrials; TrialFlow lo PRESERVA dall'envelope precedente perché non conosce currentSlot) e il boot lo RESTAURA; envelope stantio senza slot (7.330/7.331 già sui device) → primo slot VUOTO, e se sono tutti occupati NON si riprende affatto (meglio la Home che distruggere un salvataggio). Hook diagnostico __CPM_CUR_SLOT (mai in store build) + guardiano trial-persist esteso con gli scenari slot. //  [7.331.0 collaudo PO ×5 dal device] (1) «I provini non sono QUATTRO!»: chiudendo l'app nella schermata post-provino i risultati erano già n+1 mentre trialNum non era avanzato → la ripresa rigiocava un provino (4 risultati). Ora il provino corrente è DERIVATO dai risultati (res.length), cap 3 ovunque + guardia sull'append + envelope trial già completo → dritto alle offerte. (2) il tasto ⚙️ Opzioni vive SOLO nella nav della Home e della carriera: rimosso il bottone fisso da creazione/provini/offerte. (3) «in nessuna azione si può mirare»: il tip «barra di mira» era deprecato dal SET-PIECE 2.0 (7.51.0) → ora spiega gli STILI dei piazzati. (4) «le partite non si possono saltare, non è corretta la scritta» + wizard datato: tutorial carriera aggiornato (via «Non saltarla!», via i tab inglesi Calendar/Standings/Profile → Stagione/Club/Carriera/Agente/Opzioni). (5) «elimina da cellulare la scritta Enter»: gli hint tastiera compaiono solo dove esiste una tastiera (hover:none = touch → niente [Enter]). + FILTRANTE MURATO onesto: la famiglia blocked ferma la palla al 22% della linea (cap 6u, arco corto) = rimpallo sul muro — prima volava all'intercetto a metà campo mentre l'overlay diceva «murato» (intercepted resta profondo). //  [7.330.0 collaudo PO ×3 dal collaudo su device] (1) «il dai e vai genera azioni assurde con pallone volante che torna indietro»: il MURO dell'uno-due era scelto con la logica degli ASSIST (avanzamento ×0.6 + penalità <6u del 7.254 + scatto in profondità +12u) → appoggio di 18.7-22.9u che attraversava il campo e tornava = boomerang. Nuovo ramo hlOneTwo al lancio dell'arco: muro = compagno VICINO (2.2-13u) che TIENE la posizione, palla bassa (arcH 0.6) ai suoi piedi, cap 12u di sicurezza se nessuno è in banda; il viaggio lungo lo fa l'EROE col «vai». (2) il tasto ⚙️ Opzioni copriva la cronaca nel live dei provini → nascosto durante la fase match (segnale TrialFlow→App). (3) «se non termino i provini non viene salvata la carriera»: la fase pre-carriera ora PERSISTE (cpm-trial-prog scritta alla creazione e a ogni provino; auto-ripresa al boot col pattern 7.149, avversari e risultati inclusi; anche la schermata OFFERTE sopravvive; azzerata quando la carriera è salvata o si ricomincia). //  [7.329.0 collaudo PO «lo storico di piazzamenti lo intendevo del club, nel Tab club»] la card Storico piazzamenti del Tab Club è ora il CAMMINO DEL CLUB dalla S.1 (il 7.328.0 l'aveva letta come carriera dell'eroe): stagioni con l'eroe in rosa = piazzamento REALE (riga 👤, coppe comprese) · stagioni in cui l'eroe condivideva la lega = àncore reali campione 🏆/retrocessa ⬇️ dal registro · tutte le altre = righe DERIVATE seedate (pattern albo euro 7.35.1), sempre «senza eventi» (pos 4-13, mai titoli/promozioni/retrocessioni inventate) con la lega del punto noto più vicino. //  [7.328.0 collaudo PO ×3] (1) «le gambe dei cerimonieri sono all'interno del palco»: i presentatori del gala stavano a x=±1.05/-1.15 = DENTRO il footprint del podio p1 (box 2.6×1.7 → x∈[-1.3,1.3]) e le gambe compenetravano la pedana; ora ai lati veri (|x|=1.72) con regia beat 1/2 riallineata, e anche il VINCITORE (che si fermava a z=-0.35 = esattamente la faccia frontale della pedana) chiude a z=-0.02. (2) «il PSG deve avere la maglia a strisce verticali larghe blu e rosso»: nuovo pattern stripesw (2D JerseyIcon + 3D kitPatternTex sulla griglia-16 provata sulle UV CH38, riempita a coppie + stemma TeamBadge); psg esce dalla lista tinta unita dove stava dal 7.8.0. (3) «storico piazzamenti relativo solo alle stagioni con l'eroe, l'ideale sarebbe averlo dall'inizio»: la card del Tab Club non filtra più per club corrente — INTERA CARRIERA dalla S.1 (Primavera comprese) col club di ogni stagione in riga; cap archivio 20→30 stagioni. // [7.327.0 collaudo PO con screenshot «i rigori non devono essere al 69esimo minuto! ho vinto ai rigori e non e' partito il festeggiamento 3D»] TRE FIX SULLA SERIE DI RIGORI. (1) L'OROLOGIO DICE 90: il fischio finale arriva all'ultimo highlight (7.2.0), che sul cronometro puo' essere il 69' — e nessuno alzava il clock entrando nei rigori/premiazione/ended, quindi header e maxischermo mostravano una serie di rigori «al 69esimo». Ora _goEndOrCeremony porta il clock a 90 (il hook di test __CPM_SO_FORCE lo faceva gia'; il path vero no — classico caso di test che maschera il difetto). (2) LA FINALE DI COPPA DELLE NAZIONI FESTEGGIA: il cancello della cerimonia post-serie elencava euroMondiale_ko/euro_ko/cup — la finale di Nazioni MANCAVA: il 7.72.2 le aveva dato i rigori (_koSeed natcup|final) ma nessuno le aveva dato la cerimonia, e vinta ai rigori si andava dritti a ended. Aggiunta al cancello (cerimonia «COPPA DELLE NAZIONI», kind int) e al banner «DAL DISCHETTO ALLA GLORIA». (3) LA SIGLA DI CASA E' LA NAZIONE: nel tabellino della serie compariva «PRS» (il club dell'eroe, FC Paris) in una Italia-Spagna — in contesto nazionale la sigla viene ora da NAT_CLUB_DATA (ITA), non dal club. Guardiano shootout-test esteso con lo scenario finale-di-Nazioni dal vivo: SO_FORCE(69) → clock 90 in shootout · sigla ITA presente e SAL assente · serie vinta → fase ceremony col nome della coppa. ⚠️ Nota di sessione: il container ha riavvolto il clone DUE volte durante questo fix (7.289) — base ripristinata da origin e edit ri-applicati; la versione nel gate e' la prova.
 // [7.242.0 #56 chiusura — batch PO gi31-35 «Non si vede il gesto tecnico specifico» + verdetto difensivo] IL GESTO DIFENSIVO HA UNA FAMIGLIA. Ogni azione difensiva derivava `tackle/-` senza variante: la posa era UNA (scivolata) per pressing, anticipo, muro e deviazione. Tre famiglie STRUTTURALI congelate in factory (patto chainOn/gkCall — la regex vive solo in S()): slide (scivolata/disperato, posa storica a terra) · lunge (intercetto/anticipo/deviazione/muro: AFFONDO in piedi, gamba tesa e braccia larghe) · press (pressing/finta/recupero/copertura: ADDOSSO al portatore, busto avanti, braccio a schermare, tocco di punta). Prop hlDefGesto → pose sw-scalate auto-azzeranti nel blocco CINE-VAR; fallito = perdita di equilibrio comune. + VERDETTO DIFENSIVO RITARDATO (pattern #51): con l inbound 7.239 il pallone doveva ancora ARRIVARE quando usciva l overlay (misurato ~0.9s su gi31) → revealMs def 2250 con inbound / 1900 senza. Verificato sui fogli-provini: gi34 pressing = eroe addosso al portatore che vacilla, verdetto dopo il contatto.
 // [7.241.0 #56 batch PO gi28/29/37 «Non si vede il compagno che conclude»] FRENA PER GIRARTI — il difetto NON era la scelta del ricevente ne la transizione: attribuzione per-frame (AR53/54: oth=0, own>0, _ctx GIA sulla palla) → era il MODELLO DI STERZATA di animOne. Il ricevente lanciato sulla corsa profonda, con il filtrante atterrato ALLE SPALLE, navigava un inversione a U larga 20u e lunga secondi: il turn-rate e ∝1/velocita e la magnitudine della velocita-obiettivo restava PIENA nella direzione sbagliata. Ora quando la direzione voluta supera ~60° da quella di marcia la velocita-obiettivo cala col disallineamento (fino a 0.18×): la frenata passa dal limitatore di accelerazione, la velocita scende, il turn-rate risale → due passi di frenata e pivot, come in campo. Misurato prima→dopo: gi29 ricevente da divergenza a 24u → ARRIVO a 1.3u (t 0.41) con palla che parte con lui; gi37 2.0u; gi28 convergenza stretta. Vale per TUTTI i 21 off-ball (fisica piu vera anche su pressing/rientri — plausibile beneficio sul cluster difensivo «non aggancia il pallone»). +selezione demergenza del ricevente nel driver assist_recv (ogni scena ha SEMPRE un uomo sulla palla). ⚠️ modello core: gate 14/14 obbligatorio + realismo da riverificare sui baseline.
 // [7.240.0 #55B batch PO gi25/gi26 «Non si vede il compagno che riceve (e tira)» + gi43/28/29/30 storici] IL COMPAGNO ARRIVA SUL PALLONE PRIMA DI CALCIARE. Diagnosi strumentata (probe AR51/AR52 in-page, solo __CPM_REC): la catena assist_recv era VIVA e corretta — il primo sospetto «catena congelata» era un artefatto del campione stantio — ma (a) la transizione ricezione→tiro era a TEMPO FISSO 0.42s col ricevente ancora a 8-15u → il pallone volava in porta DA SOLO col gesto di calcio a vuoto; (b) il puntatore del ricevente (passTargetMesh) veniva AZZERATO all'avvio di assist_recv in 2 dei 3 siti (pass+assist = gi25 filtrante · tacco/scarico = gi26) e il driver, che scandiva solo il gesto _rcvT (0.52s di vita), restava senza nessuno da far correre. Fix: puntatore PERSISTENTE su tutti i siti (+_runToX fresco), fallback del driver sul puntatore, transizione ALL'ARRIVO (<2.2u, minimo 0.30s) con fallback 3.0s. Misurato prima→dopo: ricevente a 8-9u dalla palla al momento del tiro → 3.5-4u col gesto agganciato; gi26 duello leggibile sul foglio-provini; gi25 in wizard chiude con la catena e il gol.
@@ -7626,6 +7626,57 @@ const ritiroFriendlies=(p,plan)=>{
   });
 };
 
+/* ========================================================================
+   [7.338.0 direttiva PO] IL NO HA UNA VOCE — reazioni al RIFIUTO di un'offerta.
+   Il 7.307.0 dava già gli effetti (popolarità/fiducia/chimica) ma li sussurrava in un toast: la fedeltà non
+   si VEDEVA da nessuna parte. `refuseEcho` è puro e seedato: dal peso REALE dell'offerta (salto di prestigio
+   + salto di stipendio, dati che l'offerta porta già) deriva la fascia e le reazioni di chi esiste davvero
+   nel salvataggio — la curva col suo legame, il presidente, il mister COL SUO NOME, un compagno VERO della
+   rosa, la firma che ti segue. Nessun campo nuovo, nessun testo inventato su fatti non accaduti.
+======================================================================== */
+const refuseEcho=(p,o)=>{try{
+  if(!p||!o||o.isRenewal)return null;
+  const myP=clamp((p.club&&p.club.p)||50,1,99),thP=clamp((o.club&&o.club.p)||myP,1,99);
+  const myW=Math.max(1,(p.contract&&p.contract.wage)||1),thW=Math.max(1,o.wage||myW);
+  const dP=thP-myP,rW=thW/myW;
+  const tier=((dP>=12&&rW>=1.6)||dP>=22||rW>=2.6)?"storica":(dP>=5||rW>=1.25)?"importante":"normale";
+  const cn=(o.club&&o.club.n)||"un altro club",myN=(p.club&&p.club.n)||"il club";
+  const cid=(p.club&&(p.club.id||p.club.n))||"x";
+  const _fl=Array.isArray(p.fanLegend)?p.fanLegend:[];/* [7.338.0] difesa: un save col campo corrotto non deve far saltare la scena */
+  const seasons=((_fl.find(f=>f&&f.clubId===cid)||{}).seasons)||0;
+  const bond=seasons*10+((p.popularity||0)*0.15)+((p.isCaptain)?8:0);
+  const seed=Math.abs(hashStr((p.name||"H")+"|refuse|"+(p.season||1)+"|"+(p.week||1)+"|"+cn))>>>0;
+  const pick=(arr,salt)=>arr[(seed+salt*7919)%arr.length];
+  const sn=(nm)=>{try{return (typeof _surnBG==="function"&&_surnBG(nm))||nm;}catch(_e){return nm;}};
+  const voices=[];
+  /* la curva: parla in proporzione al legame che ha davvero con te */
+  if(tier!=="normale")voices.push({e:"🧣",who:"La curva",line:bond>=45
+    ?pick([`Striscione pronto per domenica: «${(p.name||"").split(" ").slice(-1)[0].toUpperCase()} UNO DI NOI».`,`Sotto la sede, cori per un'ora: la Sud lo sapeva già prima dei giornali.`],1)
+    :pick([`In curva hanno letto la notizia e hanno cantato il tuo nome per dieci minuti.`,`«Chi resta quando può andare, qui non si dimentica»: lo striscione è comparso in nottata.`],2)});
+  /* il presidente: il no gli toglie un pensiero */
+  if(tier==="storica")voices.push({e:"🏛️",who:"Il presidente",line:pick([`«Ho detto no a un assegno importante anch'io, oggi. Ma la squadra si costruisce così.»`,`«Questo club se lo ricorderà. Adesso però portiamoci a casa qualcosa insieme.»`],3)});
+  /* il mister, col suo nome vero */
+  {const mn=(p.coach&&p.coach.name)||"Il mister";
+   voices.push({e:"🎽",who:mn,line:tier==="storica"
+     ?pick([`«Con te in gruppo, riprogrammo tutto. Adesso ti voglio decisivo.»`,`«Non ti chiedo altro: sei rimasto, ora comanda il campo.»`],4)
+     :pick([`«Bene così: qui il tuo posto ce l'hai. Dimostrami che ho ragione.»`,`«Non mi piacciono le teste altrove. La tua è qui: si lavora.»`],5)});}
+  /* un compagno REALE della rosa */
+  {const tms=(p.teammates||[]).filter(t=>t&&t.name);
+   if(tms.length&&tier!=="normale"){const tm=tms[seed%tms.length];
+     voices.push({e:"🤝",who:sn(tm.name),line:pick([`ti ha cercato appena l'ha saputo: «Sapevo che restavi».`,`nello spogliatoio ha detto una cosa sola: «Adesso però ce la giochiamo davvero».`],6)});}}
+  /* la stampa: la firma che ti segue */
+  {const js=(p.journalists||[]).filter(j=>j&&j.name);
+   if(js.length&&tier==="storica"){const j=js[(seed>>3)%js.length];
+     voices.push({e:"📰",who:(j.paper||sn(j.name)),line:pick([`titola: «Il no che vale una bandiera».`,`apre con la tua faccia e una riga sola: «È rimasto».`],7)});}}
+  const head=tier==="storica"?`Hai detto no al ${cn}`:tier==="importante"?`Rifiutata l'offerta del ${cn}`:`Sondaggio del ${cn} respinto`;
+  const body=tier==="storica"
+    ?`Sul tavolo c'erano ${(typeof _fmtWageY133==="function")?_fmtWageY133(thW):thW+"€"} l'anno e un club da ${thP} di prestigio. Hai scelto ${myN}: da oggi questa piazza ti guarda in un altro modo.`
+    :tier==="importante"?`${cn} ci aveva provato sul serio. Nessun tentennamento: si continua qui.`
+    :`Un sondaggio senza sostanza, declinato in giornata. La squadra non se n'è nemmeno accorta.`;
+  const fx=tier==="storica"?{popularity:7,coachTrust:8,teamChemistry:4,morale:4}
+    :tier==="importante"?{popularity:2,coachTrust:3,teamChemistry:1,morale:1}:{};
+  return{tier,head,body,voices,fx,club:cn,wage:thW};
+}catch(_e){return null;}};
 function simulateMatch(playerClub,opponent,playerOvr,isHome=true,seed,shifts){
   const _rng=seed!=null?seededRng((seed>>>0)||1):Math.random;
   const _pg=l=>seed!=null?seededPoissonGoals(l,_rng):poissonGoals(l);
@@ -9304,7 +9355,7 @@ function bgMicroTick(ctx){
   if(roll<_gHe+_gAe)return{side:"away"};
   return null;
 }
-if(typeof window!=='undefined'){window.buildHLTimeline=buildHLTimeline;window.validateHLTimeline=validateHLTimeline;window.resolveTimeline=resolveTimeline;window.decideExecution=decideExecution;window.resolveDefensiveOutcome=resolveDefensiveOutcome;window.bgMicroTick=bgMicroTick;window.intentLabel=intentLabel;window.deriveIntent=deriveIntent;window.deriveHL=deriveHL;/* [7.1.2] esposto per l'audit massivo situations↔3D */window.__CPM_SITS=SITUATIONS;window.hlBallState=hlBallState;window.filterSitActions=filterSitActions;window.hlOverlay=hlOverlay;/* [7.217.0] esposto per la probe di coerenza legno colpito ⟺ legno detto */window.__CPM_MISS_TX=_MISS_TX;window.__CPM_BAR_TX=_BAR_TX;window.__CPM_BG=BG_MATCH;/* B: cronaca BG per il check bg-coherence del gate */window.generateLocalPressAnalysis=generateLocalPressAnalysis;/* [7.277.0] esposta per la probe di stabilita' della rassegna stampa */window.buildSeasonCarry=buildSeasonCarry;window.leagueGoalsOf=leagueGoalsOf;window.generateSeasonAwards=generateSeasonAwards;/* [7.336.0] esposti per il guardiano primavera-awards-test (travaso per lega + premi europei top-flight) */window.ritiroPlan=ritiroPlan;window.ritiroHierarchyVerdict=ritiroHierarchyVerdict;window.ritiroFriendlies=ritiroFriendlies;/* [7.337.0] esposti per il guardiano ritiro2-test */}
+if(typeof window!=='undefined'){window.buildHLTimeline=buildHLTimeline;window.validateHLTimeline=validateHLTimeline;window.resolveTimeline=resolveTimeline;window.decideExecution=decideExecution;window.resolveDefensiveOutcome=resolveDefensiveOutcome;window.bgMicroTick=bgMicroTick;window.intentLabel=intentLabel;window.deriveIntent=deriveIntent;window.deriveHL=deriveHL;/* [7.1.2] esposto per l'audit massivo situations↔3D */window.__CPM_SITS=SITUATIONS;window.hlBallState=hlBallState;window.filterSitActions=filterSitActions;window.hlOverlay=hlOverlay;/* [7.217.0] esposto per la probe di coerenza legno colpito ⟺ legno detto */window.__CPM_MISS_TX=_MISS_TX;window.__CPM_BAR_TX=_BAR_TX;window.__CPM_BG=BG_MATCH;/* B: cronaca BG per il check bg-coherence del gate */window.generateLocalPressAnalysis=generateLocalPressAnalysis;/* [7.277.0] esposta per la probe di stabilita' della rassegna stampa */window.buildSeasonCarry=buildSeasonCarry;window.leagueGoalsOf=leagueGoalsOf;window.generateSeasonAwards=generateSeasonAwards;/* [7.336.0] esposti per il guardiano primavera-awards-test (travaso per lega + premi europei top-flight) */window.ritiroPlan=ritiroPlan;window.ritiroHierarchyVerdict=ritiroHierarchyVerdict;window.ritiroFriendlies=ritiroFriendlies;/* [7.337.0] esposti per il guardiano ritiro2-test */window.refuseEcho=refuseEcho;/* [7.338.0] esposto per il guardiano refuse-echo-test */}
 // ── LMQP-1 (Phase 2 / M2 — EVENT + TIMELINE LAYER) ──────────────────────────────
 //   Bus eventi OSSERVABILE del Live Match: registra la SEQUENZA reale dei beat di un highlight
 //   (HighlightForced · ActionResolved · HighlightAdvance · MatchStart …) in un ring buffer leggibile
@@ -15138,6 +15189,32 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   useEffect(()=>{ if(typeof window!=='undefined'&&!window.__CPM_STORE_BUILD&&/[?&]cpmtest=1\b/.test(window.location.search||"")){window.__CPM_OUTCOME=outcome;window.__CPM_MOVES=movesLeft;window.__CPM_DEFDIST=()=>defDistRef.current;window.__CPM_MOVEGAIN=(dx,dy)=>_moveGain317(dx,dy);window.__CPM_MARKER=()=>_marker317();/* [7.317.0] la probe misura il guadagno per direzione */} });/* [7.317.0] SENZA dep array: con `[outcome,movesLeft]` i gancetti restavano appesi a una closure VECCHIA — `__CPM_MOVEGAIN` misurava la posizione dell'eroe di parecchi render prima (32,53 invece di 90,59) e la direzione usciva INVERTITA. Il gioco usava la closure fresca ed era corretto: era la probe a leggere il passato. */// eslint-disable-line
   const [pressureBar,setPressureBar]=useState(1);
   const [paused,setPaused]=useState(false);
+  /* [7.338.0 direttiva PO «prevedere un pulsante di warning per niente invasivo durante il live match che
+     permetta di prendere appunti sull'azione sbagliata … la partita deve essere messa in PAUSA finché non mi
+     segno l'appunto in un campo in sovraimpressione dedicato»] TACCUINO DI COLLAUDO. Il tasto ⚠️ vive accanto
+     alla pausa (stessa discrezione), FERMA la partita e apre il campo note; il CONTESTO dell'azione viene
+     catturato da solo (minuto, fase, situation, azione scelta, esito, versione) così l'appunto è già un bug
+     report completo e al PO resta da scrivere solo cosa non va. Gli appunti si salvano in locale e si copiano
+     con un tocco (anche in blocco, dal Profilo). Mai in store build: è uno strumento di collaudo. */
+  const [bugNote,setBugNote]=useState(null);/* {ctx, txt} */
+  const _bugCtx=()=>{try{
+    const sit=(situations||[])[hlIdx]||null,o=outcome||null;
+    const _act=(o&&(o.actionLabel||o.label))||null;
+    return{v:GAME_VERSION,when:`S.${player.season||1} W.${player.week||1}`,min:clock,phase,
+      opp:(opponent&&(opponent.n||opponent.a))||"?",score:`${score.home}-${score.away}`,
+      sit:sit?String(sit.text||"").slice(0,90):null,gi:sit?((typeof SITUATIONS!=="undefined"?SITUATIONS.indexOf(sit):-1)):-1,
+      intent:sit?((typeof deriveIntent==="function"?deriveIntent(sit,null):null)||sit.it||null):null,
+      act:_act,out:o?(o.outKey||o.outKind||null):null,ok:o?!!o.ok:null};
+  }catch(_e){return{v:GAME_VERSION,min:clock,phase};}};
+  const _bugFmt=(n)=>`[KE ${n.ctx.v}] ${n.ctx.when||""} · ${n.ctx.min}' · ${n.ctx.phase}${n.ctx.opp?` · vs ${n.ctx.opp} (${n.ctx.score||"-"})`:""}\n`
+    +(n.ctx.sit?`SIT${n.ctx.gi>=0?` #${n.ctx.gi}`:""}${n.ctx.intent?` [${n.ctx.intent}]`:""}: «${n.ctx.sit}»\n`:"")
+    +(n.ctx.act?`AZIONE: «${n.ctx.act}» → esito ${n.ctx.out||"?"}${n.ctx.ok===false?" (fallita)":n.ctx.ok===true?" (riuscita)":""}\n`:"")
+    +`NOTA: ${n.txt}`;
+  const _bugSave=(copy)=>{const n=bugNote;if(!n)return;
+    const rec={...n,t:Date.now()};
+    try{const cur=JSON.parse(safeLS.get("cpm-bugnotes")||"[]");cur.unshift(rec);safeLS.set("cpm-bugnotes",JSON.stringify(cur.slice(0,60)));}catch(_e){}
+    if(copy){try{navigator.clipboard.writeText(_bugFmt(rec)).catch(()=>{});}catch(_e){}}
+    setBugNote(null);setPaused(false);};
   // [7.9.3 direttiva PO «basta burattini: se CH38 non è pronto NON si gioca — prendi tempo in maniera paracula»]
   //   il backstop 3s del 7.8.25 rimandava in campo i procedurali su rete lenta e la partita PARTIVA coi burattini
   //   (screenshot PO al 20'). Ora il KICKOFF è TRATTENUTO finché il CH38 non è agganciato: overlay broadcast
@@ -17391,6 +17468,9 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                     {paused?"▶":"⏸"}
                   </button>
                 )}
+                {!window.__CPM_STORE_BUILD&&["playing","hl_intro","hl_move","hl_choose","hl_result"].includes(phase)&&(
+                  <button onClick={()=>{setPaused(true);setBugNote({ctx:_bugCtx(),txt:""});}} style={{background:"none",border:"none",cursor:"pointer",fontSize:12,padding:"14px 10px",margin:"-12px -6px",color:"rgba(255,255,255,0.38)",lineHeight:1}} title="Segna un'azione sbagliata (mette in pausa)">⚠️</button>
+                )}
               </div>
               <div style={{fontSize:7,color:"rgba(255,255,255,0.25)",letterSpacing:1,textTransform:"uppercase",marginBottom:3}}>
 {(()=>{
@@ -17701,8 +17781,32 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                     <div style={{height:"100%",width:"40%",background:"#f59e0b",borderRadius:2,animation:"pulse 1.1s ease-in-out infinite alternate"}}/>
                   </div>
                 </div>);})()}
+              {/* [7.338.0] TACCUINO DI COLLAUDO — campo appunti in sovraimpressione, partita ferma finché non chiudi.
+                  Sta SOPRA l'overlay di pausa (z 41) e ne blocca il tap-per-riprendere: la nota viene prima. */}
+              {bugNote&&(
+                <div style={{position:"absolute",inset:0,background:"rgba(3,6,16,0.92)",backdropFilter:"blur(6px)",zIndex:41,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:14}} onClick={e=>e.stopPropagation()}>
+                  <div style={{width:"100%",maxWidth:430,background:"#0e1524",border:"1px solid rgba(245,158,11,0.42)",borderRadius:14,padding:"14px 14px 12px",boxShadow:"0 18px 50px rgba(0,0,0,0.6)"}}>
+                    <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:8}}>
+                      <span style={{fontSize:18}}>⚠️</span>
+                      <div style={{flex:1,minWidth:0}}>
+                        <div style={{fontSize:12.5,fontWeight:900,color:"#f59e0b"}}>Appunto sull'azione</div>
+                        <div style={{fontSize:9.5,color:"rgba(255,255,255,0.5)"}}>Partita in pausa · il contesto è già registrato</div>
+                      </div>
+                    </div>
+                    <div style={{fontSize:10,color:"rgba(255,255,255,0.62)",lineHeight:1.5,background:"rgba(255,255,255,0.05)",borderRadius:8,padding:"7px 9px",marginBottom:9,fontFamily:"ui-monospace,Menlo,monospace",whiteSpace:"pre-wrap",maxHeight:120,overflowY:"auto"}}>{_bugFmt({...bugNote,txt:"…"}).replace(/\nNOTA: …$/,"")}</div>
+                    <textarea autoFocus value={bugNote.txt} onChange={e=>setBugNote(n=>({...n,txt:e.target.value}))} rows={3}
+                      placeholder="Cosa non va in questa azione? (es. il pallone torna indietro dopo il cross)"
+                      style={{width:"100%",boxSizing:"border-box",background:"#060b16",color:"#e8edf7",border:"1px solid rgba(255,255,255,0.16)",borderRadius:9,padding:"9px 10px",fontSize:12.5,fontFamily:"inherit",resize:"vertical",lineHeight:1.45}}/>
+                    <div style={{display:"flex",gap:7,marginTop:9}}>
+                      <button onClick={()=>_bugSave(true)} disabled={!bugNote.txt.trim()} style={{flex:1,padding:"10px 8px",borderRadius:9,border:"none",background:bugNote.txt.trim()?"#f59e0b":"rgba(255,255,255,0.10)",color:bugNote.txt.trim()?"#1a1206":"rgba(255,255,255,0.35)",fontWeight:800,fontSize:12,cursor:bugNote.txt.trim()?"pointer":"default",fontFamily:"inherit"}}>📋 Salva e copia</button>
+                      <button onClick={()=>_bugSave(false)} disabled={!bugNote.txt.trim()} style={{flex:1,padding:"10px 8px",borderRadius:9,border:"1px solid rgba(255,255,255,0.22)",background:"transparent",color:bugNote.txt.trim()?"#e8edf7":"rgba(255,255,255,0.35)",fontWeight:700,fontSize:12,cursor:bugNote.txt.trim()?"pointer":"default",fontFamily:"inherit"}}>Salva</button>
+                      <button onClick={()=>{setBugNote(null);setPaused(false);}} style={{padding:"10px 12px",borderRadius:9,border:"1px solid rgba(255,255,255,0.16)",background:"transparent",color:"rgba(255,255,255,0.55)",fontWeight:700,fontSize:12,cursor:"pointer",fontFamily:"inherit"}}>Annulla</button>
+                    </div>
+                    <div style={{fontSize:9,color:"rgba(255,255,255,0.34)",marginTop:7,textAlign:"center"}}>Li ritrovi tutti in Carriera → Profilo → 🐞 Appunti di collaudo</div>
+                  </div>
+                </div>)}
               {/* Pause overlay */}
-              {paused&&["playing","hl_intro","hl_move","hl_choose","hl_result"].includes(phase)&&(
+              {paused&&!bugNote&&["playing","hl_intro","hl_move","hl_choose","hl_result"].includes(phase)&&(
                 <div style={{position:"absolute",inset:0,background:"rgba(5,8,20,0.78)",backdropFilter:"blur(4px)",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",zIndex:30,cursor:"pointer"}} onClick={()=>setPaused(false)}>
                   <div style={{fontSize:38,marginBottom:6,filter:"drop-shadow(0 0 16px rgba(245,158,11,0.8))"}}>⏸</div>
                   <div style={{fontSize:18,fontWeight:900,color:"#f59e0b",letterSpacing:3,textTransform:"uppercase",marginBottom:8}}>PAUSA</div>
@@ -18542,6 +18646,8 @@ function InterviewStage3D({avatarId=0,club=null,ctx="win",seed=7,jName=null}){
     const _glbRoots=[];const _mixers=[];let heroAv=null,jAv=null;
     const _hV=new THREE.Vector3(),_hV2=new THREE.Vector3(),_hV3=new THREE.Vector3(),_hUp=new THREE.Vector3(0,1,0),_hV4=new THREE.Vector3(),_shf=new THREE.Vector3(),_hHer=new THREE.Vector3();
     const _qPar=new THREE.Quaternion(),_qDes=new THREE.Quaternion();// [7.128.0] mic parentato all'osso mano
+    const _pV=new THREE.Vector3(),_pV2=new THREE.Vector3(),_pFing=new THREE.Vector3(),_pAway=new THREE.Vector3(),_pN=new THREE.Vector3(),_pRt=new THREE.Vector3(),_pOff=new THREE.Vector3(),_pCam=new THREE.Vector3();
+    const _qP2=new THREE.Quaternion(),_qD2=new THREE.Quaternion(),_m4=new THREE.Matrix4();/* [7.338.0] taccuino orientato in world (mai di taglio) */
     if(typeof loadGLB==="function"&&window.__CPM_GLB!==false){
       /* [7.302.0 collaudo PO «Davide Ricci ma e' un'intervistatrice, occhio gia' te lo avevo segnalato»]
          il fix 7.299.0 (genere dal NOME mostrato) governava SOLO il fallback procedurale CH38: l'actor GLB
@@ -18621,11 +18727,20 @@ function InterviewStage3D({avatarId=0,club=null,ctx="win",seed=7,jName=null}){
              LIBERA (sinistra, lungo il fianco) regge un TACCUINO da cronista: copertina scura + block chiaro,
              agganciato all'osso mano col world-scale (pattern busta gala 7.143) → le dita semichiuse stringono
              davvero qualcosa. Se il rig non espone la mano, nessun taccuino (mai un oggetto flottante). */
-          try{if(rec.bones.lHand){const hb=rec.bones.lHand;av.updateMatrixWorld(true);const _ws5=new THREE.Vector3();hb.getWorldScale(_ws5);const u5=1/(_ws5.y||1);
+          /* [7.338.0 collaudo PO «sistema la mano dell'intervistatore, sembra un film horror»] IL TACCUINO ERA UNA
+             LAMA. Il 7.335.0 lo posizionava in spazio-OSSO (position.set(0,0.05·u,…) + rotation.x=0.28): ma gli assi
+             locali dell'osso mano non sono quelli del mondo — misurato sul rig vero, il blocchetto (progettato
+             7,5 × 1,2 × 10,5 cm) usciva con un ingombro verticale di 12,8 cm e uno spessore di 4 cm, cioè IN PIEDI e
+             visto DI TAGLIO: un coltello nel pugno. Ora la geometria è a misura reale (scala dell'oggetto compensata
+             come il mic, non bakata nella geometria) e l'orientamento si calcola OGNI FRAME in WORLD nel tick: la
+             faccia del blocchetto guarda in alto verso la camera → non può MAI essere vista di taglio, per costruzione. */
+          try{if(rec.bones.lHand){const hb=rec.bones.lHand;av.updateMatrixWorld(true);const _ws5=new THREE.Vector3();hb.getWorldScale(_ws5);
             const pad=new THREE.Group();
-            const pc5=new THREE.Mesh(new THREE.BoxGeometry(0.075*u5,0.012*u5,0.105*u5),new THREE.MeshStandardMaterial({color:0x232830,roughness:0.65}));pad.add(pc5);
-            const pw5=new THREE.Mesh(new THREE.BoxGeometry(0.068*u5,0.013*u5,0.096*u5),new THREE.MeshStandardMaterial({color:0xf2efe4,roughness:0.85}));pw5.position.y=0.006*u5;pad.add(pw5);
-            pad.position.set(0,0.05*u5,0.015*u5);pad.rotation.x=0.28;hb.add(pad);}}catch(_e){}
+            const pc5=new THREE.Mesh(new THREE.BoxGeometry(0.088,0.009,0.124),new THREE.MeshStandardMaterial({color:0x232830,roughness:0.68}));pad.add(pc5);
+            const pw5=new THREE.Mesh(new THREE.BoxGeometry(0.080,0.010,0.114),new THREE.MeshStandardMaterial({color:0xf2efe4,roughness:0.85}));pw5.position.y=0.007;pad.add(pw5);
+            const pb5=new THREE.Mesh(new THREE.BoxGeometry(0.084,0.014,0.010),new THREE.MeshStandardMaterial({color:0x8a1a2c,roughness:0.6}));pb5.position.set(0,0.007,-0.058);pad.add(pb5);/* rilegatura: dà il verso e dice «blocchetto» a colpo d'occhio */
+            pad.scale.setScalar(1/(_ws5.x||1));pad._ws=(_ws5.x||1);
+            hb.add(pad);rec.pad=pad;}}catch(_e){}
           rec.axes={left:_axL,up:new THREE.Vector3(0,1,0)};
           /* base-pose QUATERNION per il tick: l'actor non ha mixer che azzera le ossa ogni frame → un += per-frame
              ACCUMULEREBBE (testa riversa all'indietro, visto in collaudo). Il tick fa copy(base)+axisRot(delta). */
@@ -18762,6 +18877,44 @@ function InterviewStage3D({avatarId=0,club=null,ctx="win",seed=7,jName=null}){
         _hV4.applyQuaternion(_qPar.clone().invert()).multiplyScalar(1/mic._ws);
         mic.position.copy(_hV4);
       }
+      /* [7.338.0] IL TACCUINO SI TIENE PIATTO, MAI DI TAGLIO. Stesso mestiere del mic (7.128.0): l'oggetto è figlio
+         dell'osso mano — quindi lo segue sempre — ma posizione e assetto si ricalcolano in WORLD ogni frame:
+         · faccia (asse corto) verso l'ALTO inclinata verso la CAMERA → si vede sempre la superficie, mai il bordo;
+         · lato lungo lungo la direzione busto→mano (fuori dal corpo) → il blocchetto non entra nel maglione;
+         · posizione = mano + un filo verso le dita e verso l'esterno → appoggiato sul pugno, non infilzato dentro. */
+      if(jAv&&jAv.pad&&jAv.bones.lHand&&jAv.bones.lFore&&jAv.bones.spine){
+        const pd=jAv.pad;jAv.root.updateMatrixWorld(true);
+        jAv.bones.lHand.getWorldPosition(_pV);jAv.bones.lFore.getWorldPosition(_pV2);
+        _pFing.copy(_pV).sub(_pV2).normalize();/* polso→dita */
+        jAv.bones.spine.getWorldPosition(_pV2);
+        _pAway.copy(_pV).sub(_pV2);_pAway.y=0;if(_pAway.lengthSq()<1e-5)_pAway.set(0,0,1);_pAway.normalize();/* busto→mano, orizzontale = via dal corpo */
+        _pCam.copy(cam.position).sub(_pV).normalize();
+        _pN.copy(_hUp).multiplyScalar(0.80).addScaledVector(_pCam,0.55);
+        _pN.addScaledVector(_pAway,-_pN.dot(_pAway));/* ortogonale al lato lungo (che resta esatto) */
+        if(_pN.lengthSq()<1e-5)_pN.copy(_hUp);_pN.normalize();
+        _pRt.crossVectors(_pN,_pAway).normalize();/* base destrorsa: x = y × z */
+        _m4.makeBasis(_pRt,_pN,_pAway);_qD2.setFromRotationMatrix(_m4);
+        jAv.bones.lHand.getWorldQuaternion(_qP2);
+        pd.quaternion.copy(_qP2).invert().multiply(_qD2);
+        _pOff.copy(_pFing).multiplyScalar(0.030).addScaledVector(_pAway,0.052).addScaledVector(_hUp,0.006);
+        _pOff.applyQuaternion(_qP2.clone().invert()).multiplyScalar(1/(pd._ws||1));
+        pd.position.copy(_pOff);
+      }
+      /* [7.338.0] SONDA test-only: posizioni/ingombri VERI di mani, mic e taccuino (in world) + distanza del
+         taccuino dall'asse del busto → la mano si misura, non si giudica a occhio (lezione 7.206/7.246). */
+      if(_CPM_TEST&&jAv&&typeof window!=='undefined'){try{
+        const _P=(o)=>{const v=new THREE.Vector3();o.getWorldPosition(v);return[+v.x.toFixed(3),+v.y.toFixed(3),+v.z.toFixed(3)];};
+        const _B=(o)=>{const b=new THREE.Box3().setFromObject(o);return{min:b.min.toArray().map(n=>+n.toFixed(3)),max:b.max.toArray().map(n=>+n.toFixed(3))};};
+        const _o={actor:!!jAv.actor,female:!!female,
+          rHand:jAv.bones.rHand?_P(jAv.bones.rHand):null,lHand:jAv.bones.lHand?_P(jAv.bones.lHand):null,
+          spine:jAv.bones.spine?_P(jAv.bones.spine):null,head:jAv.bones.head?_P(jAv.bones.head):null,
+          mic:mic?{p:_P(mic),bb:_B(mic)}:null,pad:jAv.pad?{p:_P(jAv.pad),bb:_B(jAv.pad)}:null};
+        if(jAv.pad&&jAv.bones.lHand){const a=new THREE.Vector3().fromArray(_o.pad.p),h=new THREE.Vector3().fromArray(_o.lHand);_o.padFromHand=+a.distanceTo(h).toFixed(3);}
+        /* proiezione su schermo (px del canvas): la probe ritaglia ESATTAMENTE attorno alle mani */
+        const _cv=renderer.domElement,_wpx=_cv.clientWidth||W(),_hpx=_cv.clientHeight||H();
+        const _prj=(arr)=>{if(!arr)return null;const v=new THREE.Vector3().fromArray(arr).project(cam);return[Math.round((v.x*0.5+0.5)*_wpx),Math.round((-v.y*0.5+0.5)*_hpx)];};
+        _o.px={w:_wpx,h:_hpx,rHand:_prj(_o.rHand),lHand:_prj(_o.lHand),mic:_o.mic?_prj(_o.mic.p):null,pad:_o.pad?_prj(_o.pad.p):null};
+        window.__CPM_IVRIG=_o;}catch(_e){}}
       flashes.forEach(f=>{if(f.t<0&&rnd()<0.010)f.t=0;if(f.t>=0){f.t+=0.05;const o=Math.max(0,1-f.t*3.2);f.sp.material.opacity=o;if(o>0.6)flashLight.intensity=1.5;if(f.t>0.4)f.t=-1;}});
       flashLight.intensity*=0.86;
       cam.position.x=camVX+Math.sin(el*0.13)*0.10;cam.lookAt(0.08,0.62,0);
@@ -22298,6 +22451,10 @@ function migratePlayer(player){
     if(!('isCaptain' in newP)){newP={...newP,isCaptain:false};changed=true;}
     if(!('captainSince' in newP)){newP={...newP,captainSince:null};changed=true;}
     if(!('fanLegend' in newP)){newP={...newP,fanLegend:[]};changed=true;}
+    /* [7.338.0 HEAL] il rifiuto di un'offerta importante (7.307.0) faceva `(p.fanLegend||0)+2` su un campo che
+       e' un ARRAY: il salvataggio si ritrovava con la stringa "2" e ogni lettura successiva (curva, achievement
+       bandiera, numeri di maglia liberi) lanciava. I save gia' colpiti si bonificano al caricamento. */
+    if(!Array.isArray(newP.fanLegend)){newP={...newP,fanLegend:[]};changed=true;}
     // Sprint 26 migrations
     if(!('hasAgent' in newP)){newP={...newP,hasAgent:false};changed=true;}
     if(!('bankBalance' in newP)){newP={...newP,bankBalance:0};changed=true;}// v8 [5.81.0] economia
@@ -23070,6 +23227,7 @@ const getThisWeekMatchday=()=>{
      gerarchie/amichevoli) è derivato dai motori puri ritiroPlan/ritiroHierarchyVerdict/ritiroFriendlies;
      l'unica scelta dell'eroe è COMPORTAMENTALE (impegno/gruppo/concentrazione), mai organizzativa. */
   const[ritiroEvent,setRitiroEvent]=useState(null);/* {beat} */
+  const[refuseEvent,setRefuseEvent]=useState(null);/* [7.338.0] la scena delle reazioni al rifiuto di un'offerta */
   const RITIRO_BEHAVIORS=[
     {id:"lavoro",e:"💪",l:"Testa bassa: lavora più di tutti",d:"Primo ad arrivare al campo, ultimo ad andartene",fx:{form:2,fatigue:4,trust:2}},
     {id:"gruppo",e:"🤝",l:"Aiuta i nuovi a inserirsi",d:"Il gruppo prima di tutto: cene, consigli, spogliatoio",fx:{chem:4,morale:3}},
@@ -23388,6 +23546,7 @@ const getThisWeekMatchday=()=>{
       dismiss:()=>{try{setWeekLiveModal(null);setShowMatchPrompt(null);setTransferOffer(null);setNegoModal(null);setNationalCallupData(null);}catch(_e){}},
       clearTournaments:()=>setPlayer(p=>({...p,nationsCupQueue:p.nationsCupQueue?{...p.nationsCupQueue,done:true,active:false}:p.nationsCupQueue,euroMondiale:p.euroMondiale?{...p.euroMondiale,done:true,active:false,phase:"done"}:p.euroMondiale})),
       startNewSeason:()=>{try{doStartNewSeason();return true;}catch(e){return "error:"+(e&&e.message);}},
+      setOffer:(o)=>{try{setTransferOffer(o);return true;}catch(e){return "error:"+(e&&e.message);}},/* [7.338.0] la probe apre il modale OFFERTA vero per collaudare il rifiuto */
       forceInterview:(ctx)=>{try{const iw=pickInterviewByCtx({...player,lastMatchCtx:ctx||"win"});setInterviewModal({q:iw.q,paper:(player.journalists||[])[0]||null,opponent:"FC Test",matchCtx:ctx||"win"});return true;}catch(e){return "error:"+(e&&e.message);}},/* [7.43.0] collaudo mixed zone 3D */
       playMatch:()=>{try{if(openingPending().length)return "opening";/* [7.160.0 super-test] a W1 startMatch è gated dal wizard d'apertura (7.16.0): prima ritornava true SENZA entrare in partita → il live-validator career skippava il match 1 in silenzio; ora segnala e il chiamante risolve con step() */if(!getThisWeekMatchday())return "nomatch";startMatch();return true;}catch(e){return "error:"+(e&&e.message);}},/* [6.3.1 R0] Live Match Validator: entra nella partita LIVE della settimana con gli handler VERI */
       step:()=>{try{
@@ -27171,34 +27330,33 @@ const getThisWeekMatchday=()=>{
      buona offerta la piazza la nota, il no a una corazzata diventa un attestato di fedeltà: popolarità e
      fiducia del mister salgono, il legame con la curva pure, e la cosa entra nel diario, nelle Notizie e
      nel LEDGER (così il mondo potrà rinfacciartelo, o ricordartelo, nelle stagioni a venire). */
+  /* [7.338.0 direttiva PO «quando l'eroe rifiuta un'offerta ci devono essere delle reazioni, in particolare
+     positive visto l'attestato di fedeltà per il club»] Le conseguenze c'erano dal 7.307.0 ma vivevano in un
+     toast di 3 secondi e in una voce di diario: la fedeltà non si VEDEVA. Ora il no apre una SCENA di reazioni
+     (refuseEcho, motore puro): la curva, il presidente, il mister col suo nome, un compagno vero, la stampa.
+     + BUG GRAVE CORRETTO: `fanLegend` è un ARRAY di {clubId,seasons} in tutto il gioco, ma qui il 7.307.0
+     faceva `(p.fanLegend||0)+2` → su ogni rifiuto importante il campo diventava la STRINGA "2" e da lì in poi
+     ogni `.find`/`.some`/`.filter` su fanLegend lanciava: spariva il pannello della curva (curvaView), si
+     rompevano gli achievement bandiera e la scelta del numero di maglia. Il legame con la piazza ora passa
+     dalla popolarità (che curvaView già legge), e la migration bonifica i salvataggi già corrotti. */
   const declineTransferOffer=()=>{
     const o=transferOffer;setTransferOffer(null);if(!o||o.isRenewal)return;
-    {const _mp=clamp((player.club&&player.club.p)||50,1,99),_tp=clamp((o.club&&o.club.p)||_mp,1,99);
-     const _mw=Math.max(1,(player.contract&&player.contract.wage)||1),_tw=Math.max(1,o.wage||_mw);
-     const _bg=((_tp-_mp)>=12&&(_tw/_mw)>=1.6)||(_tp-_mp)>=22||(_tw/_mw)>=2.6;
-     if(_bg)try{notify("🛡️ Fedeltà ripagata: la piazza e il mister te ne rendono merito.",TH.warning);}catch(_e){}}
+    const ec=(typeof refuseEcho==="function")?refuseEcho(player,o):null;
     setPlayer(p=>{
-      const myP=clamp((p.club&&p.club.p)||50,1,99),thP=clamp((o.club&&o.club.p)||myP,1,99);
-      const myW=Math.max(1,(p.contract&&p.contract.wage)||1),thW=Math.max(1,o.wage||myW);
-      const dP=thP-myP,rW=thW/myW;
-      const big=(dP>=12&&rW>=1.6)||dP>=22||rW>=2.6;      // corazzata: no che fa notizia
-      const mid=!big&&(dP>=5||rW>=1.25);                  // buona offerta: la piazza la nota
-      if(!big&&!mid)return p;                             // proposta qualunque: si declina in silenzio
-      const cn=(o.club&&o.club.n)||"un altro club",myN=(p.club&&p.club.n)||"il club";
-      const head=big?`Ha detto no al ${cn}`:`Rifiutata l'offerta del ${cn}`;
-      const body=big
-        ? `${cn} aveva messo sul tavolo un ingaggio da ${_fmtWageY133(thW)}. La risposta è stata no: ${myN} resta casa. La curva ha capito prima dei giornali.`
-        : `Sondaggio del ${cn} respinto: nessun tentennamento, si continua qui.`;
+      if(!ec)return p;
+      const fx=ec.fx||{};
+      if(ec.tier==="normale")return{...p,log:[`✋ ${ec.head}.`,...(p.log||[])].slice(0,60)};/* niente effetti: un sondaggio non fa notizia — ma una riga resta */
       return{...p,
-        popularity:clamp((p.popularity||20)+(big?7:2),0,100),
-        coachTrust:clamp((p.coachTrust||60)+(big?8:3),0,100),
-        teamChemistry:clamp((p.teamChemistry||60)+(big?4:1),0,100),
-        morale:clamp((p.morale||70)+(big?4:1),0,100),
-        fanLegend:(p.fanLegend||0)+(big?2:0),
-        diary:[...(p.diary||[]),{season:p.season||1,week:p.week||1,type:"story",e:big?"🛡️":"✋",headline:head,body,color:big?"#b45309":"#64748b"}].slice(-80),
-        log:[`${big?"🛡️":"✋"} ${head}${big?" — la piazza te ne rende merito.":"."}`,...(p.log||[])].slice(0,60),
-        ...(big?ledgerPush(p,{t:"promessa",who:"la piazza",what:`ha rifiutato il ${cn} per restare`}):{})};
+        popularity:clamp((p.popularity||20)+(fx.popularity||0),0,100),
+        coachTrust:clamp((p.coachTrust||60)+(fx.coachTrust||0),0,100),
+        teamChemistry:clamp((p.teamChemistry||60)+(fx.teamChemistry||0),0,100),
+        morale:clamp((p.morale||70)+(fx.morale||0),0,100),
+        diary:[...(p.diary||[]),{season:p.season||1,week:p.week||1,type:"story",e:ec.tier==="storica"?"🛡️":"✋",headline:ec.head,body:ec.body,color:ec.tier==="storica"?"#b45309":"#64748b"}].slice(-80),
+        log:[`${ec.tier==="storica"?"🛡️":"✋"} ${ec.head}${ec.tier==="storica"?" — la piazza te ne rende merito.":"."}`,...(p.log||[])].slice(0,60),
+        ...(ec.tier==="storica"?ledgerPush(p,{t:"promessa",who:"la piazza",what:`ha rifiutato il ${ec.club} per restare`}):{})};
     });
+    if(ec&&ec.tier!=="normale")setRefuseEvent(ec);
+    else if(ec)notify(`✋ ${ec.head}.`,TH.muted);
   };
   const acceptTransfer=()=>{
     if(!transferOffer)return;
@@ -28154,6 +28312,33 @@ const getThisWeekMatchday=()=>{
           </Card>
         </div>
       )}
+
+      {/* [7.338.0] LA SCENA DEL NO: chi reagisce quando resti (curva · presidente · mister · compagno · stampa) */}
+      {refuseEvent&&(()=>{const R=refuseEvent,st=R.tier==="storica";return(
+        <div style={{position:"fixed",inset:0,background:"rgba(2,6,18,0.82)",zIndex:9998,display:"flex",alignItems:"center",justifyContent:"center",padding:16}}>
+          <Card style={{maxWidth:430,width:"100%",padding:"18px 18px 14px",maxHeight:"86vh",overflowY:"auto",border:st?`1.5px solid ${thPastel("#fde68a","rgba(245,158,11,0.5)")}`:`1px solid ${TH.cardBorder}`}}>
+            <div style={{textAlign:"center",marginBottom:10}}>
+              <div style={{fontSize:34,lineHeight:1}}>{st?"🛡️":"✋"}</div>
+              <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:2,marginTop:6}}>{st?"Attestato di fedeltà":"Mercato"}</div>
+              <div style={{fontSize:16,fontWeight:900,color:st?TH.accent:TH.text,marginTop:2}}>{R.head}</div>
+            </div>
+            <div style={{fontSize:11.5,color:TH.text,lineHeight:1.55,marginBottom:12}}>{R.body}</div>
+            {R.voices.map((v,i)=>(
+              <div key={i} style={{display:"flex",gap:9,alignItems:"flex-start",padding:"8px 10px",marginBottom:6,borderRadius:10,background:TH.surface2,borderLeft:`3px solid ${st?TH.accent:TH.cardBorder}`}}>
+                <span style={{fontSize:17,flexShrink:0}}>{v.e}</span>
+                <div style={{minWidth:0}}>
+                  <div style={{fontSize:10.5,fontWeight:800,color:TH.muted}}>{v.who}</div>
+                  <div style={{fontSize:11.5,color:TH.text,lineHeight:1.45}}>{v.line}</div>
+                </div>
+              </div>))}
+            {!!(R.fx&&(R.fx.popularity||R.fx.coachTrust||R.fx.teamChemistry||R.fx.morale))&&(
+              <div style={{display:"flex",flexWrap:"wrap",gap:6,margin:"10px 0 4px",justifyContent:"center"}}>
+                {[["⭐ Popolarità",R.fx.popularity],["🤝 Fiducia",R.fx.coachTrust],["💜 Chimica",R.fx.teamChemistry],["😄 Morale",R.fx.morale]].filter(x=>x[1]).map(([l,n])=>(
+                  <span key={l} style={{fontSize:10,fontWeight:800,color:TH.txGreen,background:TH.winBg,borderRadius:20,padding:"3px 9px"}}>{l} +{n}</span>))}
+              </div>)}
+            <Btn v="primary" fw onClick={()=>setRefuseEvent(null)} style={{marginTop:8}}>{st?"Resto qui →":"Avanti →"}</Btn>
+          </Card>
+        </div>);})()}
 
       {/* Sprint 54: Contract Negotiation Modal */}
       {negoModal&&(()=>{
@@ -31462,6 +31647,37 @@ const getThisWeekMatchday=()=>{
           {/* [7.92.0 collaudo PO «sezione/menu dedicato per le impostazioni»] entry al menu IMPOSTAZIONI dedicato
               (Grafica: tema + modelli 3D · Audio: volumi/musica/effetti/pubblico/arbitro/muto/vibrazione) */}
           <Btn onClick={()=>setShowSettings(true)} v="ghost" fw style={{padding:"12px",fontSize:13}}>⚙️ Impostazioni</Btn>
+          {/* [7.338.0] 🐞 APPUNTI DI COLLAUDO — quelli presi col tasto ⚠️ durante la partita: qui si rileggono,
+              si copiano in blocco (per mandarmeli) e si svuotano. Strumento di collaudo: mai in build store. */}
+          {!window.__CPM_STORE_BUILD&&(()=>{
+            let _bn=[];try{_bn=JSON.parse(safeLS.get("cpm-bugnotes")||"[]")||[];}catch(_e){}
+            if(!_bn.length)return null;
+            const _fmt1=(n)=>{const c=n.ctx||{};return `[KE ${c.v||"?"}] ${c.when||""} · ${c.min}' · ${c.phase||""}${c.opp?` · vs ${c.opp} (${c.score||"-"})`:""}\n`
+              +(c.sit?`SIT${c.gi>=0?` #${c.gi}`:""}${c.intent?` [${c.intent}]`:""}: «${c.sit}»\n`:"")
+              +(c.act?`AZIONE: «${c.act}» → esito ${c.out||"?"}${c.ok===false?" (fallita)":c.ok===true?" (riuscita)":""}\n`:"")
+              +`NOTA: ${n.txt||""}`;};
+            const _all=()=>_bn.map(_fmt1).join("\n\n———\n\n");
+            return(
+            <Card style={{padding:"12px 14px"}}>
+              <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:8}}>
+                <span style={{fontSize:16}}>🐞</span>
+                <div style={{flex:1,minWidth:0}}>
+                  <div style={{fontSize:12.5,fontWeight:900,color:TH.text}}>Appunti di collaudo</div>
+                  <div style={{fontSize:10,color:TH.muted}}>{_bn.length} annotat{_bn.length===1?"o":"i"} durante le partite</div>
+                </div>
+              </div>
+              <div style={{maxHeight:190,overflowY:"auto",marginBottom:8}}>
+                {_bn.slice(0,12).map((n,i)=>(
+                  <div key={i} style={{borderLeft:`3px solid ${TH.accent}`,background:TH.surface2,borderRadius:8,padding:"6px 9px",marginBottom:5}}>
+                    <div style={{fontSize:9.5,color:TH.faint}}>{(n.ctx&&n.ctx.when)||""} · {(n.ctx&&n.ctx.min)||0}&apos; · {(n.ctx&&n.ctx.sit)||(n.ctx&&n.ctx.phase)||"—"}</div>
+                    <div style={{fontSize:11.5,color:TH.text,lineHeight:1.4}}>{n.txt}</div>
+                  </div>))}
+              </div>
+              <div style={{display:"flex",gap:7}}>
+                <Btn v="primary" fw onClick={()=>{try{navigator.clipboard.writeText(_all()).then(()=>notify("📋 Appunti copiati: incollali nella chat.",TH.success)).catch(()=>notify("Copia non riuscita su questo dispositivo.",TH.warning));}catch(_e){}}}>📋 Copia tutto</Btn>
+                <Btn v="ghost" onClick={()=>{safeLS.set("cpm-bugnotes","[]");notify("🗑 Appunti svuotati.",TH.muted);setTab(t=>t);setScreen("profile");}} style={{flexShrink:0}}>🗑</Btn>
+              </div>
+            </Card>);})()}
           {/* [6.84.0 collaudo PO «l'esporta salvataggio in fondo a tutto»] Export save — ULTIMA voce del sottotab Profilo */}
           <Card style={{padding:"10px 14px"}} shadow={false}>
             <button onClick={()=>{try{window.dispatchEvent(new CustomEvent('cpm-replay-intro'));}catch(_e){}}} style={{width:"100%",padding:"7px",borderRadius:9,border:`1px solid ${TH.cardBorder}`,background:"transparent",cursor:"pointer",fontFamily:"inherit",fontSize:11,color:TH.faint,marginBottom:6}}>🎬 Rivedi l'intro</button>{/* [7.32.0 collaudo PO «rivedibile»] */}
