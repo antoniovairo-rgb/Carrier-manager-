@@ -29,12 +29,13 @@ const boot = async () => {
 };
 
 const doRitiro = async (page) => {
-  // la card ritiro è sul dashboard W1 (campDone false): clic sulla sessione "Amichevole"
-  await page.getByText('Amichevole', { exact: false }).first().click({ timeout: 8000 });
+  /* [7.337.0 RITIRO 2.0] la card/wizard è un launcher: «Salta il racconto» applica preparazione dello
+     staff + gerarchie + amichevoli in un colpo (stesso handler del racconto completo). */
+  await page.getByText('Salta il racconto', { exact: false }).first().click({ timeout: 8000 });
   await sleep(1800);
   return page.evaluate(() => { const s = JSON.parse(localStorage.getItem('cpm-v3')); const p = s.player;
-    const amic = (p.log || []).find(l => l.includes('Amichevole di ritiro'));
-    return { amic: amic || null, campDone: !!p.campDone, mh: (p.matchHistory || []).length, role: p.squadRole }; });
+    const amic = (p.log || []).find(l => l.includes('Amichevole ('));
+    return { amic: amic || null, nAmic: (p.log || []).filter(l => l.includes('Amichevole (')).length, campDone: !!p.campDone, mh: (p.matchHistory || []).length, role: p.squadRole }; });
 };
 
 // (1)+(2) amichevole nel log, niente matchHistory, determinismo su doppio boot
@@ -43,7 +44,8 @@ let first = null;
   const pg = await boot(); first = await doRitiro(pg);
   console.log('(1) dopo il ritiro:', JSON.stringify(first));
   if (!first.campDone) issues.push('(1) campDone non settato');
-  if (!first.amic) issues.push('(1) voce «Amichevole di ritiro» assente dal log');
+  if (!first.amic) issues.push('(1) voci amichevoli assenti dal log');
+  if ((first.nAmic || 0) < 2) issues.push('(1) attese ≥2 amichevoli di precampionato nel log (trovate ' + first.nAmic + ')');
   if (first.mh !== 0) issues.push('(1) l\'amichevole NON deve entrare in matchHistory (trovate ' + first.mh + ' voci)');
   await pg.close();
 }

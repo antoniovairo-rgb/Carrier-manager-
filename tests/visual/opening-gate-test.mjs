@@ -14,7 +14,7 @@ const issues = [];
 const groupOpps = [{ id: 'x1', n: 'FC Lusitano', a: 'LUS', p: 78, nat: '🇵🇹' }, { id: 'x2', n: 'SC Flandria', a: 'FLA', p: 71, nat: '🇧🇪' }, { id: 'x3', n: 'FC Anatolia', a: 'ANA', p: 74, nat: '🇹🇷' }];
 const egCalW1 = Array.from({ length: 6 }, (_, i) => ({ matchday: 950 + i, week: 21 + i * 2, opponentId: groupOpps[i % 3].id, opponentName: groupOpps[i % 3].n, isHome: i % 2 === 0, played: false, result: null, type: 'euro_group', competition: 'UEL', opponentData: groupOpps[i % 3] }));
 const mkSave = (patch) => ({ phase: 'career', player: { name: 'Wiz Probe', nation: 'Italia', avatarId: 0, proStatus: 'pro', season: 3, week: 1, weekLived: false, age: 22, ovr: 78, tutorialDone: true,
-  campDone: false, jerseyNum: 10, jerseyNumSeason: 0, presidentModalSeason: 0, drawSeen: 0,
+  campDone: false, jerseyNum: 10, jerseyNumSeason: 0, presidentModalSeason: 0, drawSeen: 0, presentSeason: 3,/* [7.337.0] la serata di presentazione (passo 7.292) ha la sua probe dedicata: qui si neutralizza per tenere stabile il flusso a 5 passi */
   seasonObjectives: [{ id: 'goals', label: 'Segna 12 gol in campionato', target: 12, type: 'goals' }],
   club: { id: 'sal', n: 'FC Salernum', a: 'SAL', p: 45, c: '#6c1f2e', c2: '#f5f5f5', nat: '🇮🇹', lg: 'Lega B' },
   stats: { 'velocità': 78, tecnica: 77, fisico: 76, 'mentalità': 78, tiro: 80, passaggio: 77, dribbling: 79, posizionamento: 78 },
@@ -47,8 +47,8 @@ const wizStep = (page) => page.evaluate(() => { const el = [...document.querySel
   console.log('(A) wizard:', st);
   if (!st || !/Passo 1 di 5/.test(st) || !/Ritiro/i.test(st)) issues.push('wizard non aperto sul passo 1 (ritiro): ' + st);
   if (await pg.evaluate(() => window.__CPM_CAREER.get().lived)) issues.push('settimana vissuta NONOSTANTE il wizard');
-  // passo 1: ritiro (sessione Amichevole)
-  await clickBtn(pg, 'Amichevole'); await sleep(900);
+  // passo 1: ritiro — [7.337.0 RITIRO 2.0] il passo è un launcher: «Salta il racconto» applica tutto (staff/gerarchie/amichevoli)
+  await clickBtn(pg, 'Salta il racconto'); await sleep(1100);
   st = await wizStep(pg); console.log('(B) dopo ritiro:', st);
   if (!st || !/Passo 2 di 5/.test(st) || !/Presidente/i.test(st)) issues.push('passo 2 (presidente) non mostrato: ' + st);
   await clickBtn(pg, 'Capito, Presidente'); await sleep(900);

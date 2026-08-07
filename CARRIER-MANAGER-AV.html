@@ -3990,7 +3990,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="7.336.0"; // [7.336.0 collaudo PO con 4 screenshot «vengono conteggiati anche i gol con la primavera, questo condiziona le classifiche. ma la cosa più assurda e grave è il pallone d'oro!!!!!!»] DUE RADICI, ENTRAMBE CHIUSE AL CHOKEPOINT. (1) IL TRAVASO CONOSCE LA LEGA: il primo contratto pro a metà stagione passa da acceptTransfer, che dal 7.293 travasa i gol di lega della maglia precedente in seasonCarry — QUALUNQUE fosse la lega, Primavera compresa: capocannoniere, MVP, record e duelli della lega pro si trovavano in pancia i gol del campionato giovanile (nello screenshot: 30 «gol di lega» alla S.1). Nuovo helper puro buildSeasonCarry: lg/la viaggiano SOLO tra maglie della STESSA lega (come i capocannonieri veri: gennaio in Serie A somma, cambiare campionato azzera), gli spells restano completi per display e obiettivi, il carry ricorda la lega (lgName) e _scOf la verifica in lettura (difesa in profondità). (2) I PREMI EUROPEI SONO DELLE MASSIME DIVISIONI: Re dei Bomber e TROFEO D'ORO non avevano un filtro di livello — un campo di 2ª serie gonfiato dai gol Primavera vinceva il pallone d'oro alla prima stagione. Ora il giocatore entra nel campo europeo SOLO da una massima divisione (LEAGUE_PAIRS lato 0); i premi DELLA PROPRIA lega restano vincibili in ogni tier. Guardiano permanente primavera-awards-test (6 scenari: U18→pro azzera · stessa lega somma · cross-league azzera · leagueGoalsOf col carry Primavera · tier2 mai nei premi europei ma capocannoniere di lega suo · controprova top-flight). //  [7.335.0 collaudo PO ×4] (1) «verticalizzazione: la palla passa da un compagno a un altro senza dinamica chiara e conclude in rete» + «chip millimetrico a zig-zag»: il punto di corsa del ricevente era +12u oltre l'uomo (misurato 6.7s di palla parcheggiata su gi174, poi fallback e scena sfilacciata) → rendez-vous RAGGIUNGIBILE (max +7 world dal ricevente); e il terzo uomo del «servi in area» non può più stare DIETRO la palla (la scelta per sola vicinanza produceva lo snap all'indietro 84→50 visto in traccia). (2) «l'intervistatore non è disegnato bene — la mano senza microfono»: la mano libera del giornalista regge ora un TACCUINO da cronista (bone-attached, pattern busta 7.143). (3) «non è una volata scudetto, sono in serie B spagnola»: capitolo tier-aware (2ª divisione → «La volata promozione»). //  [7.334.0 collaudo PO «dribbling feroce in corsa: parte un mezzo tiro senza senso che dà vita a una catena»] il dribbling (e la corsa/build) riusciti con reward GOAL sono convertiti a CHANCE dal 7.8.10 — il primo tocco non segna, la catena finalizza — ma i rami dell'arco 3D guardavano solo hlReward e SPARAVANO la palla verso la porta: mezzo tiro → deflect → catena. Ora su outcome CHANCE il dribbling è un TOCCO corto oltre l'uomo saltato e la costruzione un appoggio corto: la conclusione arriva nel secondo tempo, come promesso dalla catena. Gate-invariante (nel force-mode le azioni falliscono deterministicamente → il ramo success non è nella baseline); probe dedicata su «Dribbling individuale feroce». //  [7.333.0 collaudo PO «scarico e ricevi sul fondo: il pallone vola avanti-dx, torna indietro e poi verso la porta — completamente da ritarare»] GEOMETRIA DELL'UNO-DUE: il muro sta avanti all'eroe, quindi la restituzione mirata sull'eroe viaggiava ALL'INDIETRO (ping-pong a 3 gambe). Ora il bersaglio del ritorno ha un PAVIMENTO in avanti (mai una x dietro la palla): la sponda scorre nello SPAZIO davanti e l'eroe la raggiunge sulla corsa del «vai» — tutte le gambe dell'azione progrediscono verso la porta. Tracker __CPM_O2BK (moto all'indietro cumulato, test-only) + asserzione nel guardiano onetwo-return: ritorno mai all'indietro >1.2u. //  [7.332.0 BUG GRAVE collaudo PO «mi ha sovrascritto una carriera, stranissimo»] l'envelope di ripresa provini (7.330) NON registrava lo SLOT scelto: riaprendo l'app durante i provini la ripresa ripartiva con currentSlot=0 e la firma del contratto salvava la nuova carriera SOPRA quella dello slot 0 = perdita dati. Ora lo slot viaggia nell'envelope (onCreate/onTrials; TrialFlow lo PRESERVA dall'envelope precedente perché non conosce currentSlot) e il boot lo RESTAURA; envelope stantio senza slot (7.330/7.331 già sui device) → primo slot VUOTO, e se sono tutti occupati NON si riprende affatto (meglio la Home che distruggere un salvataggio). Hook diagnostico __CPM_CUR_SLOT (mai in store build) + guardiano trial-persist esteso con gli scenari slot. //  [7.331.0 collaudo PO ×5 dal device] (1) «I provini non sono QUATTRO!»: chiudendo l'app nella schermata post-provino i risultati erano già n+1 mentre trialNum non era avanzato → la ripresa rigiocava un provino (4 risultati). Ora il provino corrente è DERIVATO dai risultati (res.length), cap 3 ovunque + guardia sull'append + envelope trial già completo → dritto alle offerte. (2) il tasto ⚙️ Opzioni vive SOLO nella nav della Home e della carriera: rimosso il bottone fisso da creazione/provini/offerte. (3) «in nessuna azione si può mirare»: il tip «barra di mira» era deprecato dal SET-PIECE 2.0 (7.51.0) → ora spiega gli STILI dei piazzati. (4) «le partite non si possono saltare, non è corretta la scritta» + wizard datato: tutorial carriera aggiornato (via «Non saltarla!», via i tab inglesi Calendar/Standings/Profile → Stagione/Club/Carriera/Agente/Opzioni). (5) «elimina da cellulare la scritta Enter»: gli hint tastiera compaiono solo dove esiste una tastiera (hover:none = touch → niente [Enter]). + FILTRANTE MURATO onesto: la famiglia blocked ferma la palla al 22% della linea (cap 6u, arco corto) = rimpallo sul muro — prima volava all'intercetto a metà campo mentre l'overlay diceva «murato» (intercepted resta profondo). //  [7.330.0 collaudo PO ×3 dal collaudo su device] (1) «il dai e vai genera azioni assurde con pallone volante che torna indietro»: il MURO dell'uno-due era scelto con la logica degli ASSIST (avanzamento ×0.6 + penalità <6u del 7.254 + scatto in profondità +12u) → appoggio di 18.7-22.9u che attraversava il campo e tornava = boomerang. Nuovo ramo hlOneTwo al lancio dell'arco: muro = compagno VICINO (2.2-13u) che TIENE la posizione, palla bassa (arcH 0.6) ai suoi piedi, cap 12u di sicurezza se nessuno è in banda; il viaggio lungo lo fa l'EROE col «vai». (2) il tasto ⚙️ Opzioni copriva la cronaca nel live dei provini → nascosto durante la fase match (segnale TrialFlow→App). (3) «se non termino i provini non viene salvata la carriera»: la fase pre-carriera ora PERSISTE (cpm-trial-prog scritta alla creazione e a ogni provino; auto-ripresa al boot col pattern 7.149, avversari e risultati inclusi; anche la schermata OFFERTE sopravvive; azzerata quando la carriera è salvata o si ricomincia). //  [7.329.0 collaudo PO «lo storico di piazzamenti lo intendevo del club, nel Tab club»] la card Storico piazzamenti del Tab Club è ora il CAMMINO DEL CLUB dalla S.1 (il 7.328.0 l'aveva letta come carriera dell'eroe): stagioni con l'eroe in rosa = piazzamento REALE (riga 👤, coppe comprese) · stagioni in cui l'eroe condivideva la lega = àncore reali campione 🏆/retrocessa ⬇️ dal registro · tutte le altre = righe DERIVATE seedate (pattern albo euro 7.35.1), sempre «senza eventi» (pos 4-13, mai titoli/promozioni/retrocessioni inventate) con la lega del punto noto più vicino. //  [7.328.0 collaudo PO ×3] (1) «le gambe dei cerimonieri sono all'interno del palco»: i presentatori del gala stavano a x=±1.05/-1.15 = DENTRO il footprint del podio p1 (box 2.6×1.7 → x∈[-1.3,1.3]) e le gambe compenetravano la pedana; ora ai lati veri (|x|=1.72) con regia beat 1/2 riallineata, e anche il VINCITORE (che si fermava a z=-0.35 = esattamente la faccia frontale della pedana) chiude a z=-0.02. (2) «il PSG deve avere la maglia a strisce verticali larghe blu e rosso»: nuovo pattern stripesw (2D JerseyIcon + 3D kitPatternTex sulla griglia-16 provata sulle UV CH38, riempita a coppie + stemma TeamBadge); psg esce dalla lista tinta unita dove stava dal 7.8.0. (3) «storico piazzamenti relativo solo alle stagioni con l'eroe, l'ideale sarebbe averlo dall'inizio»: la card del Tab Club non filtra più per club corrente — INTERA CARRIERA dalla S.1 (Primavera comprese) col club di ogni stagione in riga; cap archivio 20→30 stagioni. // [7.327.0 collaudo PO con screenshot «i rigori non devono essere al 69esimo minuto! ho vinto ai rigori e non e' partito il festeggiamento 3D»] TRE FIX SULLA SERIE DI RIGORI. (1) L'OROLOGIO DICE 90: il fischio finale arriva all'ultimo highlight (7.2.0), che sul cronometro puo' essere il 69' — e nessuno alzava il clock entrando nei rigori/premiazione/ended, quindi header e maxischermo mostravano una serie di rigori «al 69esimo». Ora _goEndOrCeremony porta il clock a 90 (il hook di test __CPM_SO_FORCE lo faceva gia'; il path vero no — classico caso di test che maschera il difetto). (2) LA FINALE DI COPPA DELLE NAZIONI FESTEGGIA: il cancello della cerimonia post-serie elencava euroMondiale_ko/euro_ko/cup — la finale di Nazioni MANCAVA: il 7.72.2 le aveva dato i rigori (_koSeed natcup|final) ma nessuno le aveva dato la cerimonia, e vinta ai rigori si andava dritti a ended. Aggiunta al cancello (cerimonia «COPPA DELLE NAZIONI», kind int) e al banner «DAL DISCHETTO ALLA GLORIA». (3) LA SIGLA DI CASA E' LA NAZIONE: nel tabellino della serie compariva «PRS» (il club dell'eroe, FC Paris) in una Italia-Spagna — in contesto nazionale la sigla viene ora da NAT_CLUB_DATA (ITA), non dal club. Guardiano shootout-test esteso con lo scenario finale-di-Nazioni dal vivo: SO_FORCE(69) → clock 90 in shootout · sigla ITA presente e SAL assente · serie vinta → fase ceremony col nome della coppa. ⚠️ Nota di sessione: il container ha riavvolto il clone DUE volte durante questo fix (7.289) — base ripristinata da origin e edit ri-applicati; la versione nel gate e' la prova.
+const GAME_VERSION="7.337.0"; // [7.337.0 direttiva PO — RITIRO 2.0] «L'eroe deve VIVERE il ritiro, non organizzarlo»: riprogettazione completa del precampionato. VIA la scelta manuale della preparazione (irreale: un giovane non decide il programma del club) → tre motori PURI e SEEDATI per club+stagione: ritiroPlan (località/hotel/centro/sponsor/clima/durata/eventi DIVERSI ogni stagione + preparazione DECISA DALLO STAFF, derivata da filosofia del mister, categoria, obiettivi, coppe europee, nuovi acquisti dal diff rosa, condizione — con la motivazione dichiarata), ritiroHierarchyVerdict (le gerarchie le stabilisce SOLO il mister: responso da età/OVR/esperienza/rendimento precedente/livello rosa/concorrente arrivato nel ruolo), ritiroFriendlies (calendario di amichevoli: selezione locale → pari categoria → internazionale, con la decisione dello staff sull'impiego — titolare/subentro/panchina/non convocato — e conseguenze reali su fiducia/forma/morale; mai in matchHistory). Il racconto è un overlay a beat (arrivo → decisione staff → vita del ritiro → gerarchie → amichevoli → la TUA risposta); l'unica scelta dell'eroe è COMPORTAMENTALE (lavora più di tutti / aiuta i nuovi / cura i dettagli), mai organizzativa. Wizard d'apertura e card dashboard diventano launcher (con «Salta il racconto» che applica comunque tutto). Guardiano permanente ritiro2-test + opening-gate/career-invariants/career-sim aggiornati. // [7.336.0 collaudo PO con 4 screenshot «vengono conteggiati anche i gol con la primavera, questo condiziona le classifiche. ma la cosa più assurda e grave è il pallone d'oro!!!!!!»] DUE RADICI, ENTRAMBE CHIUSE AL CHOKEPOINT. (1) IL TRAVASO CONOSCE LA LEGA: il primo contratto pro a metà stagione passa da acceptTransfer, che dal 7.293 travasa i gol di lega della maglia precedente in seasonCarry — QUALUNQUE fosse la lega, Primavera compresa: capocannoniere, MVP, record e duelli della lega pro si trovavano in pancia i gol del campionato giovanile (nello screenshot: 30 «gol di lega» alla S.1). Nuovo helper puro buildSeasonCarry: lg/la viaggiano SOLO tra maglie della STESSA lega (come i capocannonieri veri: gennaio in Serie A somma, cambiare campionato azzera), gli spells restano completi per display e obiettivi, il carry ricorda la lega (lgName) e _scOf la verifica in lettura (difesa in profondità). (2) I PREMI EUROPEI SONO DELLE MASSIME DIVISIONI: Re dei Bomber e TROFEO D'ORO non avevano un filtro di livello — un campo di 2ª serie gonfiato dai gol Primavera vinceva il pallone d'oro alla prima stagione. Ora il giocatore entra nel campo europeo SOLO da una massima divisione (LEAGUE_PAIRS lato 0); i premi DELLA PROPRIA lega restano vincibili in ogni tier. Guardiano permanente primavera-awards-test (6 scenari: U18→pro azzera · stessa lega somma · cross-league azzera · leagueGoalsOf col carry Primavera · tier2 mai nei premi europei ma capocannoniere di lega suo · controprova top-flight). //  [7.335.0 collaudo PO ×4] (1) «verticalizzazione: la palla passa da un compagno a un altro senza dinamica chiara e conclude in rete» + «chip millimetrico a zig-zag»: il punto di corsa del ricevente era +12u oltre l'uomo (misurato 6.7s di palla parcheggiata su gi174, poi fallback e scena sfilacciata) → rendez-vous RAGGIUNGIBILE (max +7 world dal ricevente); e il terzo uomo del «servi in area» non può più stare DIETRO la palla (la scelta per sola vicinanza produceva lo snap all'indietro 84→50 visto in traccia). (2) «l'intervistatore non è disegnato bene — la mano senza microfono»: la mano libera del giornalista regge ora un TACCUINO da cronista (bone-attached, pattern busta 7.143). (3) «non è una volata scudetto, sono in serie B spagnola»: capitolo tier-aware (2ª divisione → «La volata promozione»). //  [7.334.0 collaudo PO «dribbling feroce in corsa: parte un mezzo tiro senza senso che dà vita a una catena»] il dribbling (e la corsa/build) riusciti con reward GOAL sono convertiti a CHANCE dal 7.8.10 — il primo tocco non segna, la catena finalizza — ma i rami dell'arco 3D guardavano solo hlReward e SPARAVANO la palla verso la porta: mezzo tiro → deflect → catena. Ora su outcome CHANCE il dribbling è un TOCCO corto oltre l'uomo saltato e la costruzione un appoggio corto: la conclusione arriva nel secondo tempo, come promesso dalla catena. Gate-invariante (nel force-mode le azioni falliscono deterministicamente → il ramo success non è nella baseline); probe dedicata su «Dribbling individuale feroce». //  [7.333.0 collaudo PO «scarico e ricevi sul fondo: il pallone vola avanti-dx, torna indietro e poi verso la porta — completamente da ritarare»] GEOMETRIA DELL'UNO-DUE: il muro sta avanti all'eroe, quindi la restituzione mirata sull'eroe viaggiava ALL'INDIETRO (ping-pong a 3 gambe). Ora il bersaglio del ritorno ha un PAVIMENTO in avanti (mai una x dietro la palla): la sponda scorre nello SPAZIO davanti e l'eroe la raggiunge sulla corsa del «vai» — tutte le gambe dell'azione progrediscono verso la porta. Tracker __CPM_O2BK (moto all'indietro cumulato, test-only) + asserzione nel guardiano onetwo-return: ritorno mai all'indietro >1.2u. //  [7.332.0 BUG GRAVE collaudo PO «mi ha sovrascritto una carriera, stranissimo»] l'envelope di ripresa provini (7.330) NON registrava lo SLOT scelto: riaprendo l'app durante i provini la ripresa ripartiva con currentSlot=0 e la firma del contratto salvava la nuova carriera SOPRA quella dello slot 0 = perdita dati. Ora lo slot viaggia nell'envelope (onCreate/onTrials; TrialFlow lo PRESERVA dall'envelope precedente perché non conosce currentSlot) e il boot lo RESTAURA; envelope stantio senza slot (7.330/7.331 già sui device) → primo slot VUOTO, e se sono tutti occupati NON si riprende affatto (meglio la Home che distruggere un salvataggio). Hook diagnostico __CPM_CUR_SLOT (mai in store build) + guardiano trial-persist esteso con gli scenari slot. //  [7.331.0 collaudo PO ×5 dal device] (1) «I provini non sono QUATTRO!»: chiudendo l'app nella schermata post-provino i risultati erano già n+1 mentre trialNum non era avanzato → la ripresa rigiocava un provino (4 risultati). Ora il provino corrente è DERIVATO dai risultati (res.length), cap 3 ovunque + guardia sull'append + envelope trial già completo → dritto alle offerte. (2) il tasto ⚙️ Opzioni vive SOLO nella nav della Home e della carriera: rimosso il bottone fisso da creazione/provini/offerte. (3) «in nessuna azione si può mirare»: il tip «barra di mira» era deprecato dal SET-PIECE 2.0 (7.51.0) → ora spiega gli STILI dei piazzati. (4) «le partite non si possono saltare, non è corretta la scritta» + wizard datato: tutorial carriera aggiornato (via «Non saltarla!», via i tab inglesi Calendar/Standings/Profile → Stagione/Club/Carriera/Agente/Opzioni). (5) «elimina da cellulare la scritta Enter»: gli hint tastiera compaiono solo dove esiste una tastiera (hover:none = touch → niente [Enter]). + FILTRANTE MURATO onesto: la famiglia blocked ferma la palla al 22% della linea (cap 6u, arco corto) = rimpallo sul muro — prima volava all'intercetto a metà campo mentre l'overlay diceva «murato» (intercepted resta profondo). //  [7.330.0 collaudo PO ×3 dal collaudo su device] (1) «il dai e vai genera azioni assurde con pallone volante che torna indietro»: il MURO dell'uno-due era scelto con la logica degli ASSIST (avanzamento ×0.6 + penalità <6u del 7.254 + scatto in profondità +12u) → appoggio di 18.7-22.9u che attraversava il campo e tornava = boomerang. Nuovo ramo hlOneTwo al lancio dell'arco: muro = compagno VICINO (2.2-13u) che TIENE la posizione, palla bassa (arcH 0.6) ai suoi piedi, cap 12u di sicurezza se nessuno è in banda; il viaggio lungo lo fa l'EROE col «vai». (2) il tasto ⚙️ Opzioni copriva la cronaca nel live dei provini → nascosto durante la fase match (segnale TrialFlow→App). (3) «se non termino i provini non viene salvata la carriera»: la fase pre-carriera ora PERSISTE (cpm-trial-prog scritta alla creazione e a ogni provino; auto-ripresa al boot col pattern 7.149, avversari e risultati inclusi; anche la schermata OFFERTE sopravvive; azzerata quando la carriera è salvata o si ricomincia). //  [7.329.0 collaudo PO «lo storico di piazzamenti lo intendevo del club, nel Tab club»] la card Storico piazzamenti del Tab Club è ora il CAMMINO DEL CLUB dalla S.1 (il 7.328.0 l'aveva letta come carriera dell'eroe): stagioni con l'eroe in rosa = piazzamento REALE (riga 👤, coppe comprese) · stagioni in cui l'eroe condivideva la lega = àncore reali campione 🏆/retrocessa ⬇️ dal registro · tutte le altre = righe DERIVATE seedate (pattern albo euro 7.35.1), sempre «senza eventi» (pos 4-13, mai titoli/promozioni/retrocessioni inventate) con la lega del punto noto più vicino. //  [7.328.0 collaudo PO ×3] (1) «le gambe dei cerimonieri sono all'interno del palco»: i presentatori del gala stavano a x=±1.05/-1.15 = DENTRO il footprint del podio p1 (box 2.6×1.7 → x∈[-1.3,1.3]) e le gambe compenetravano la pedana; ora ai lati veri (|x|=1.72) con regia beat 1/2 riallineata, e anche il VINCITORE (che si fermava a z=-0.35 = esattamente la faccia frontale della pedana) chiude a z=-0.02. (2) «il PSG deve avere la maglia a strisce verticali larghe blu e rosso»: nuovo pattern stripesw (2D JerseyIcon + 3D kitPatternTex sulla griglia-16 provata sulle UV CH38, riempita a coppie + stemma TeamBadge); psg esce dalla lista tinta unita dove stava dal 7.8.0. (3) «storico piazzamenti relativo solo alle stagioni con l'eroe, l'ideale sarebbe averlo dall'inizio»: la card del Tab Club non filtra più per club corrente — INTERA CARRIERA dalla S.1 (Primavera comprese) col club di ogni stagione in riga; cap archivio 20→30 stagioni. // [7.327.0 collaudo PO con screenshot «i rigori non devono essere al 69esimo minuto! ho vinto ai rigori e non e' partito il festeggiamento 3D»] TRE FIX SULLA SERIE DI RIGORI. (1) L'OROLOGIO DICE 90: il fischio finale arriva all'ultimo highlight (7.2.0), che sul cronometro puo' essere il 69' — e nessuno alzava il clock entrando nei rigori/premiazione/ended, quindi header e maxischermo mostravano una serie di rigori «al 69esimo». Ora _goEndOrCeremony porta il clock a 90 (il hook di test __CPM_SO_FORCE lo faceva gia'; il path vero no — classico caso di test che maschera il difetto). (2) LA FINALE DI COPPA DELLE NAZIONI FESTEGGIA: il cancello della cerimonia post-serie elencava euroMondiale_ko/euro_ko/cup — la finale di Nazioni MANCAVA: il 7.72.2 le aveva dato i rigori (_koSeed natcup|final) ma nessuno le aveva dato la cerimonia, e vinta ai rigori si andava dritti a ended. Aggiunta al cancello (cerimonia «COPPA DELLE NAZIONI», kind int) e al banner «DAL DISCHETTO ALLA GLORIA». (3) LA SIGLA DI CASA E' LA NAZIONE: nel tabellino della serie compariva «PRS» (il club dell'eroe, FC Paris) in una Italia-Spagna — in contesto nazionale la sigla viene ora da NAT_CLUB_DATA (ITA), non dal club. Guardiano shootout-test esteso con lo scenario finale-di-Nazioni dal vivo: SO_FORCE(69) → clock 90 in shootout · sigla ITA presente e SAL assente · serie vinta → fase ceremony col nome della coppa. ⚠️ Nota di sessione: il container ha riavvolto il clone DUE volte durante questo fix (7.289) — base ripristinata da origin e edit ri-applicati; la versione nel gate e' la prova.
 // [7.242.0 #56 chiusura — batch PO gi31-35 «Non si vede il gesto tecnico specifico» + verdetto difensivo] IL GESTO DIFENSIVO HA UNA FAMIGLIA. Ogni azione difensiva derivava `tackle/-` senza variante: la posa era UNA (scivolata) per pressing, anticipo, muro e deviazione. Tre famiglie STRUTTURALI congelate in factory (patto chainOn/gkCall — la regex vive solo in S()): slide (scivolata/disperato, posa storica a terra) · lunge (intercetto/anticipo/deviazione/muro: AFFONDO in piedi, gamba tesa e braccia larghe) · press (pressing/finta/recupero/copertura: ADDOSSO al portatore, busto avanti, braccio a schermare, tocco di punta). Prop hlDefGesto → pose sw-scalate auto-azzeranti nel blocco CINE-VAR; fallito = perdita di equilibrio comune. + VERDETTO DIFENSIVO RITARDATO (pattern #51): con l inbound 7.239 il pallone doveva ancora ARRIVARE quando usciva l overlay (misurato ~0.9s su gi31) → revealMs def 2250 con inbound / 1900 senza. Verificato sui fogli-provini: gi34 pressing = eroe addosso al portatore che vacilla, verdetto dopo il contatto.
 // [7.241.0 #56 batch PO gi28/29/37 «Non si vede il compagno che conclude»] FRENA PER GIRARTI — il difetto NON era la scelta del ricevente ne la transizione: attribuzione per-frame (AR53/54: oth=0, own>0, _ctx GIA sulla palla) → era il MODELLO DI STERZATA di animOne. Il ricevente lanciato sulla corsa profonda, con il filtrante atterrato ALLE SPALLE, navigava un inversione a U larga 20u e lunga secondi: il turn-rate e ∝1/velocita e la magnitudine della velocita-obiettivo restava PIENA nella direzione sbagliata. Ora quando la direzione voluta supera ~60° da quella di marcia la velocita-obiettivo cala col disallineamento (fino a 0.18×): la frenata passa dal limitatore di accelerazione, la velocita scende, il turn-rate risale → due passi di frenata e pivot, come in campo. Misurato prima→dopo: gi29 ricevente da divergenza a 24u → ARRIVO a 1.3u (t 0.41) con palla che parte con lui; gi37 2.0u; gi28 convergenza stretta. Vale per TUTTI i 21 off-ball (fisica piu vera anche su pressing/rientri — plausibile beneficio sul cluster difensivo «non aggancia il pallone»). +selezione demergenza del ricevente nel driver assist_recv (ogni scena ha SEMPRE un uomo sulla palla). ⚠️ modello core: gate 14/14 obbligatorio + realismo da riverificare sui baseline.
 // [7.240.0 #55B batch PO gi25/gi26 «Non si vede il compagno che riceve (e tira)» + gi43/28/29/30 storici] IL COMPAGNO ARRIVA SUL PALLONE PRIMA DI CALCIARE. Diagnosi strumentata (probe AR51/AR52 in-page, solo __CPM_REC): la catena assist_recv era VIVA e corretta — il primo sospetto «catena congelata» era un artefatto del campione stantio — ma (a) la transizione ricezione→tiro era a TEMPO FISSO 0.42s col ricevente ancora a 8-15u → il pallone volava in porta DA SOLO col gesto di calcio a vuoto; (b) il puntatore del ricevente (passTargetMesh) veniva AZZERATO all'avvio di assist_recv in 2 dei 3 siti (pass+assist = gi25 filtrante · tacco/scarico = gi26) e il driver, che scandiva solo il gesto _rcvT (0.52s di vita), restava senza nessuno da far correre. Fix: puntatore PERSISTENTE su tutti i siti (+_runToX fresco), fallback del driver sul puntatore, transizione ALL'ARRIVO (<2.2u, minimo 0.30s) con fallback 3.0s. Misurato prima→dopo: ricevente a 8-9u dalla palla al momento del tiro → 3.5-4u col gesto agganciato; gi26 duello leggibile sul foglio-provini; gi25 in wizard chiude con la catena e il gol.
@@ -7482,6 +7482,150 @@ function koShootoutWin(p,seedStr){
    allineato al modello di lega, pavimenti/soffitti calcistici (0.62-2.55 in casa · 0.55-2.45 fuori) e —
    soprattutto — il FUORICLASSE PESA: il protagonista è il valore aggiunto della squadra, un 88 OVR sposta
    la stagione invece di valere 2 punti. */
+/* ========================================================================
+   [7.337.0 direttiva PO] RITIRO 2.0 — «L'eroe deve VIVERE il ritiro, non organizzarlo».
+   Tre motori PURI e SEEDATI (club+stagione): il racconto del precampionato è deciso
+   dalla SOCIETÀ e dallo STAFF, mai dal giocatore.
+   - ritiroPlan(p): località/hotel/centro/sponsor/clima/durata/eventi DIVERSI ogni
+     stagione + la PREPARAZIONE decisa dallo staff (derivata da filosofia del mister,
+     categoria, qualità della rosa, obiettivi, coppe europee, numero di nuovi acquisti,
+     condizione fisica) con la motivazione esplicita.
+   - ritiroHierarchyVerdict(p,plan): le gerarchie le stabilisce SOLO l'allenatore —
+     responso derivato da età/OVR/esperienza/rendimento precedente/livello rosa/acquisti
+     nel ruolo. L'eroe riceve il responso; poi cambieranno solo le prestazioni.
+   - ritiroFriendlies(p,plan): calendario di amichevoli (selezione locale → pari
+     categoria → internazionale) con la DECISIONE DELLO STAFF sull'impiego dell'eroe
+     (titolare/subentro/panchina/non convocato) e conseguenze reali su fiducia/forma.
+   Niente entra in matchHistory (amichevoli: zero presenze/standings/anti-loop).
+======================================================================== */
+const RITIRO_LOCS=[
+  {n:"Valdorlando",e:"🏔️",clima:"fresco di montagna",fl:"boschi, aria fina e salite che tolgono il fiato"},
+  {n:"Lago Sereno",e:"🌅",clima:"mite sul lago",fl:"nebbioline all'alba e corse lungo il pontile"},
+  {n:"Costa del Faro",e:"🌊",clima:"brezza di mare",fl:"sabbia per i piedi e vento contro"},
+  {n:"Sankt Alben",e:"⛰️",clima:"alpino e ventoso",fl:"prati perfetti e notti fredde"},
+  {n:"Pineta Alta",e:"🌲",clima:"ombroso tra i pini",fl:"resina nell'aria e sentieri infiniti"},
+  {n:"Colle Ventoso",e:"🌬️",clima:"ventilato di collina",fl:"il pallone curva da solo"},
+  {n:"Bad Quellen",e:"♨️",clima:"termale",fl:"vasche di recupero e silenzio"},
+  {n:"Punta Miramar",e:"🏖️",clima:"caldo atlantico",fl:"doppie sedute all'alba per scappare dal sole"},
+  {n:"Alpe Chiara",e:"🐄",clima:"d'alta quota",fl:"fiato corto i primi giorni, gambe d'acciaio dopo"},
+  {n:"Terme di Rocca",e:"🏛️",clima:"asciutto e caldo",fl:"pietra antica e campi appena rifatti"},
+  {n:"Verdefonte",e:"⛲",clima:"umido di valle",fl:"erba alta e tifosi ovunque"},
+  {n:"Isola Brezza",e:"🏝️",clima:"insulare",fl:"traghetto, salsedine e un campo in mezzo al blu"},
+  {n:"Montenevoso",e:"❄️",clima:"rigido anche d'estate",fl:"felpe in luglio e fiato che si vede"},
+  {n:"Prato del Re",e:"👑",clima:"continentale",fl:"otto campi in fila e una tribuna sempre piena"}];
+const RITIRO_HOTELS=["Grand Hotel Panorama","Sport Resort La Quercia","Albergo La Vetta","Hotel Belvedere Reale","Residence del Parco","Villa dei Pini","Elite Mountain Lodge","Hotel Fontechiara"];
+const RITIRO_CENTRI=["Centro Tecnico Federale","Arena Verde","Cittadella dello Sport","Campo Base"];
+const RITIRO_SPONSOR=["NORDIK","VOLTARA","CRISTALLA","VULCANO GYM","OLIMPO","SKYLINEA"];
+const RITIRO_EVENTS=[
+  {e:"🏃",t:"Doppia seduta",d:"mattina atletica, pomeriggio col pallone: si rientra a cena senza parole"},
+  {e:"🧠",t:"Riunione tecnica",d:"video, lavagna e i principi del mister ripetuti fino a saperli a memoria"},
+  {e:"🏋️",t:"Palestra e test fisici",d:"lo staff misura tutto: chi è indietro lo sa subito"},
+  {e:"⚽",t:"Partitella in famiglia",d:"titolari contro riserve — nessuno vuole perdere nemmeno questa"},
+  {e:"🗣️",t:"Discorso del capitano",d:"a cena il capitano parla al gruppo: «qui si suda per la maglia»"},
+  {e:"📸",t:"Shooting con le nuove maglie",d:"foto ufficiali: le nuove divise brillano sotto i riflettori"},
+  {e:"✍️",t:"Firma autografi",d:"i tifosi arrivati in ritiro aspettano fuori dal campo: si firma tutto"},
+  {e:"🎤",t:"Conferenza dal ritiro",d:"la stampa sale a trovare la squadra: domande su obiettivi e mercato"},
+  {e:"🧗",t:"Team building",d:"una giornata fuori dal campo: il gruppo si scopre squadra"},
+  {e:"🍝",t:"Cena di squadra",d:"tavolata unica, i nuovi in piedi a cantare: benvenuti nel gruppo"},
+  {e:"🌊",t:"Recupero in acqua",d:"piscina fredda e fisioterapia: le gambe ringraziano"},
+  {e:"🚌",t:"Visita dei tifosi organizzati",d:"pullman di tifosi al campo: cori d'estate, la stagione chiama"},
+  {e:"😴",t:"Giornata libera",d:"mezza giornata di riposo: chi dorme, chi chiama casa"},
+  {e:"🎯",t:"Lavoro sui calci piazzati",d:"schemi provati e riprovati: il mister vuole i dettagli"},
+  {e:"🩹",t:"Piccoli acciacchi gestiti",d:"lo staff medico dosa i carichi: nessun rischio inutile"},
+  {e:"🎥",t:"Contenuti per i social del club",d:"telecamere al seguito: il ritiro raccontato ai tifosi da casa"}];
+const ritiroPlan=(p)=>{
+  const sn=p.season||1,cid=(p.club&&p.club.id)||"x";
+  const H=(s)=>Math.abs(hashStr(cid+"|rit2|"+sn+"|"+s));
+  const loc=RITIRO_LOCS[H("loc")%RITIRO_LOCS.length];
+  const hotel=RITIRO_HOTELS[H("hot")%RITIRO_HOTELS.length];
+  const centro=RITIRO_CENTRI[H("cen")%RITIRO_CENTRI.length]+" di "+loc.n;
+  const sponsor=RITIRO_SPONSOR[H("spo")%RITIRO_SPONSOR.length];
+  const days=10+H("day")%8;
+  /* eventi: 4 distinti, seedati */
+  const evs=[];{const used=new Set();let k=0;while(evs.length<4&&k<40){const i=H("ev"+k)%RITIRO_EVENTS.length;if(!used.has(i)){used.add(i);evs.push(RITIRO_EVENTS[i]);}k++;}}
+  /* nuovi acquisti dal diff rosa (7.147) + eventuale concorrente nel ruolo dell'eroe */
+  let signings=[],inRole=null;
+  try{const cu=generateTeamRoster(p.club,sn)||[],pr=sn>1?(generateTeamRoster(p.club,sn-1)||[]):[];
+    signings=cu.map((r,i)=>({name:r.name,role:r.role,out:pr[i]?pr[i].name:null})).filter((m,i)=>m.out&&m.name!==m.out);
+    const fam=/attacc|ala|centravanti|trequart|punta/i.test(String(p.position||"Attaccante"))?/attacc|ala|centravanti|trequart|punta/i:/centrocamp|mediano|mezzala|regista/i.test(String(p.position||""))?/centrocamp|mediano|mezzala|regista/i:/difens|terzino|centrale/i;
+    inRole=signings.find(s=>fam.test(String(s.role||"")))||null;
+  }catch(_e){}
+  /* PREPARAZIONE: decide lo STAFF — punteggi derivati dai fattori reali, mai scelti dall'eroe */
+  const style=(p.coach&&p.coach.style)||"Bilanciato";
+  const tier2=(typeof LEAGUE_PAIRS!=="undefined")&&LEAGUE_PAIRS.some(pr2=>pr2[1]===(p.club&&p.club.lg));
+  const euro=!!(p.euro&&p.euro.active);
+  const nSign=signings.length;
+  const ambizioso=(p.seasonObjectives||[]).some(o=>o&&o.type==="standing"&&(o.target||20)<=6);
+  const tired=(p.fatigue||0)>45;
+  const sc={atletico:0,tattico:0,tecnico:0,equilibrato:2,rigenerante:-3};
+  if(style==="Pressing"||style==="Contropiede")sc.atletico+=4;
+  if(style==="Difensivo")sc.tattico+=3;
+  if(style==="Possesso Palla"){sc.tecnico+=3;sc.tattico+=2;}
+  if(style==="Offensivo")sc.tecnico+=2;
+  if(tier2)sc.atletico+=2;else sc.tecnico+=1;
+  if(euro){sc.tattico+=3;sc.rigenerante+=2;}
+  if(nSign>=3)sc.tattico+=3;else if(nSign<=1)sc.atletico+=1;
+  if(ambizioso)sc.tattico+=1;
+  if(tired)sc.rigenerante+=7;
+  Object.keys(sc).forEach((k,i)=>{sc[k]+=H("prep"+i)%3;});
+  const pid=Object.keys(sc).sort((a,b)=>sc[b]-sc[a])[0];
+  const reasons=[];
+  if(pid==="atletico"){if(style==="Pressing"||style==="Contropiede")reasons.push("il calcio d'intensità che chiede il mister");if(tier2)reasons.push("la battaglia della categoria");if(nSign<=1)reasons.push("un gruppo che si conosce già");}
+  if(pid==="tattico"){if(euro)reasons.push("il doppio impegno europeo");if(nSign>=3)reasons.push(`${nSign} volti nuovi da integrare`);if(style==="Difensivo"||style==="Possesso Palla")reasons.push("i principi di gioco del mister");if(ambizioso)reasons.push("gli obiettivi dichiarati dalla società");}
+  if(pid==="tecnico")reasons.push(style==="Possesso Palla"?"la qualità che il mister pretende palla al piede":"la qualità della rosa");
+  if(pid==="rigenerante")reasons.push("una rosa arrivata stanca a fine stagione");
+  if(pid==="equilibrato")reasons.push("un'estate senza urgenze: si costruisce con calma");
+  const PREPS={
+    atletico:{l:"molto intensa sul piano atletico",e:"🏃",fx:{form:4,fatigue:14,chem:2},int:"altissima",risk:"un po' più alto"},
+    tattico:{l:"centrata sul lavoro tattico",e:"🧠",fx:{form:2,fatigue:8,chem:4,trust:2},int:"cerebrale",risk:"contenuto"},
+    tecnico:{l:"tutta sul pallone e sulla qualità",e:"⚽",fx:{form:3,fatigue:7,chem:3},int:"alta",risk:"basso"},
+    equilibrato:{l:"equilibrata tra lavoro atletico e tecnico",e:"⚖️",fx:{form:3,fatigue:9,chem:3,trust:1},int:"sostenuta",risk:"nella norma"},
+    rigenerante:{l:"dosata: prima si ricaricano le batterie",e:"🔋",fx:{form:5,fatigue:3,chem:2},int:"progressiva",risk:"minimo"}};
+  return{season:sn,loc,hotel,centro,sponsor,days,events:evs,signings:signings.slice(0,5),inRole,
+    prep:{id:pid,...PREPS[pid],reason:reasons.length?reasons.join(" e "):"le valutazioni dello staff"}};
+};
+const ritiroHierarchyVerdict=(p,plan)=>{
+  const ovr=p.ovr||60,age=p.age||20,lvl=(p.club&&(p.club.prestige||p.club.p))||65;
+  const lastH=(p.history||[]).slice(-1)[0]||null;
+  const lastG=lastH?(lastH.leagueGoals!=null?lastH.leagueGoals:(lastH.goals||0)):0;
+  let s=(ovr-lvl)*1.1+(age<=20?-4:age>=30?2:0)+Math.min(6,(p.totalMatches||0)/40)
+    +(lastG>=15?5:lastG>=8?2:0)+(p.isCaptain?6:0)+((p.coachTrust||60)-60)*0.12
+    -(plan&&plan.inRole?5:0);
+  const rival=plan&&plan.inRole?` L'arrivo di ${plan.inRole.name} nel tuo reparto alza la concorrenza.`:"";
+  if(s>=12)return{band:"fermo",msg:"Il mister ti considera un punto fermo: sei tra i titolari, ma dovrai confermarti ogni settimana."+rival,fx:{trust:2,morale:2}};
+  if(s>=5)return{band:"vicino",msg:"Sei vicino ai titolari: le gerarchie sono aperte e le deciderà il campo."+rival,fx:{trust:1,morale:1}};
+  if(s>=-2)return{band:"alternativa",msg:"Lo staff tecnico ti considera una valida alternativa: sfrutta ogni occasione."+rival,fx:{}};
+  if(s>=-8)return{band:"indietro",msg:"Parti leggermente indietro nelle gerarchie: il mister vuole osservarti nelle prime settimane."+rival,fx:{morale:-1}};
+  return{band:"panchina",msg:"Partirai dalla panchina nelle prime amichevoli: ogni minuto andrà guadagnato in allenamento."+rival,fx:{morale:-2}};
+};
+const ritiroFriendlies=(p,plan)=>{
+  const sn=p.season||1,cid=(p.club&&p.club.id)||"x";
+  const H=(s)=>Math.abs(hashStr(cid+"|rit2am|"+sn+"|"+s));
+  const verdict=ritiroHierarchyVerdict(p,plan);
+  /* avversarie: selezione locale → pari categoria → internazionale (livello ∝ prestigio del club) */
+  const opps=[];
+  opps.push({club:{id:"amic-loc-"+sn,n:"Selezione "+plan.loc.n,p:26},kind:"la squadra del posto"});
+  try{const pool=getLeagueClubs(p).filter(c=>c&&c.id!==(p.club&&p.club.id));
+    if(pool.length)opps.push({club:pool[H("same")%pool.length],kind:"pari categoria"});}catch(_e){}
+  try{const myLg=(p.club&&p.club.lg)||"",myP=(p.club&&p.club.p)||60;
+    const intl=CLUBS.filter(c=>c.lg!==myLg&&Math.abs(c.p-(myP+8))<=10);
+    if(intl.length)opps.push({club:intl[H("intl")%intl.length],kind:myP>=76?"big europea":"club internazionale"});}catch(_e){}
+  /* impiego deciso dallo STAFF dalla gerarchia (con la rotazione tipica del precampionato) */
+  const EMP={fermo:["titolare","titolare","titolare"],vicino:["titolare","subentro","titolare"],alternativa:["subentro","titolare","subentro"],indietro:["subentro","panchina","subentro"],panchina:["panchina","subentro","nc"]}[verdict.band]||["subentro","subentro","panchina"];
+  return opps.map((o,i)=>{
+    const sd=H("m"+i);
+    let status=EMP[i]||"subentro";
+    if(status==="titolare"&&sd%7===0)status="subentro";/* rotazione: anche i titolari riposano */
+    const sim=simulateMatch(p.club,o.club,p.ovr||60,true,sd,p.clubPrestigeShifts||{});
+    const played=status==="titolare"||status==="subentro";
+    const rat=played?Math.round(clamp(5.9+((p.form||70)-70)*0.02+((sd%25)-12)*0.09,4.8,8.6)*10)/10:null;
+    const min=status==="subentro"?(46+sd%25):status==="titolare"?(60+sd%31):0;
+    const fx=!played?(status==="nc"?{morale:-1}:{chem:1})
+      :rat>=7.2?{trust:2,form:1,morale:1}:rat>=6.2?{trust:1}:rat<5.5?{form:-1}:{};
+    return{opp:o.club.n,kind:o.kind,hs:sim.homeScore,as:sim.awayScore,status,min,rat,fx};
+  });
+};
+
 function simulateMatch(playerClub,opponent,playerOvr,isHome=true,seed,shifts){
   const _rng=seed!=null?seededRng((seed>>>0)||1):Math.random;
   const _pg=l=>seed!=null?seededPoissonGoals(l,_rng):poissonGoals(l);
@@ -9160,7 +9304,7 @@ function bgMicroTick(ctx){
   if(roll<_gHe+_gAe)return{side:"away"};
   return null;
 }
-if(typeof window!=='undefined'){window.buildHLTimeline=buildHLTimeline;window.validateHLTimeline=validateHLTimeline;window.resolveTimeline=resolveTimeline;window.decideExecution=decideExecution;window.resolveDefensiveOutcome=resolveDefensiveOutcome;window.bgMicroTick=bgMicroTick;window.intentLabel=intentLabel;window.deriveIntent=deriveIntent;window.deriveHL=deriveHL;/* [7.1.2] esposto per l'audit massivo situations↔3D */window.__CPM_SITS=SITUATIONS;window.hlBallState=hlBallState;window.filterSitActions=filterSitActions;window.hlOverlay=hlOverlay;/* [7.217.0] esposto per la probe di coerenza legno colpito ⟺ legno detto */window.__CPM_MISS_TX=_MISS_TX;window.__CPM_BAR_TX=_BAR_TX;window.__CPM_BG=BG_MATCH;/* B: cronaca BG per il check bg-coherence del gate */window.generateLocalPressAnalysis=generateLocalPressAnalysis;/* [7.277.0] esposta per la probe di stabilita' della rassegna stampa */window.buildSeasonCarry=buildSeasonCarry;window.leagueGoalsOf=leagueGoalsOf;window.generateSeasonAwards=generateSeasonAwards;/* [7.336.0] esposti per il guardiano primavera-awards-test (travaso per lega + premi europei top-flight) */}
+if(typeof window!=='undefined'){window.buildHLTimeline=buildHLTimeline;window.validateHLTimeline=validateHLTimeline;window.resolveTimeline=resolveTimeline;window.decideExecution=decideExecution;window.resolveDefensiveOutcome=resolveDefensiveOutcome;window.bgMicroTick=bgMicroTick;window.intentLabel=intentLabel;window.deriveIntent=deriveIntent;window.deriveHL=deriveHL;/* [7.1.2] esposto per l'audit massivo situations↔3D */window.__CPM_SITS=SITUATIONS;window.hlBallState=hlBallState;window.filterSitActions=filterSitActions;window.hlOverlay=hlOverlay;/* [7.217.0] esposto per la probe di coerenza legno colpito ⟺ legno detto */window.__CPM_MISS_TX=_MISS_TX;window.__CPM_BAR_TX=_BAR_TX;window.__CPM_BG=BG_MATCH;/* B: cronaca BG per il check bg-coherence del gate */window.generateLocalPressAnalysis=generateLocalPressAnalysis;/* [7.277.0] esposta per la probe di stabilita' della rassegna stampa */window.buildSeasonCarry=buildSeasonCarry;window.leagueGoalsOf=leagueGoalsOf;window.generateSeasonAwards=generateSeasonAwards;/* [7.336.0] esposti per il guardiano primavera-awards-test (travaso per lega + premi europei top-flight) */window.ritiroPlan=ritiroPlan;window.ritiroHierarchyVerdict=ritiroHierarchyVerdict;window.ritiroFriendlies=ritiroFriendlies;/* [7.337.0] esposti per il guardiano ritiro2-test */}
 // ── LMQP-1 (Phase 2 / M2 — EVENT + TIMELINE LAYER) ──────────────────────────────
 //   Bus eventi OSSERVABILE del Live Match: registra la SEQUENZA reale dei beat di un highlight
 //   (HighlightForced · ActionResolved · HighlightAdvance · MatchStart …) in un ring buffer leggibile
@@ -22921,46 +23065,42 @@ const getThisWeekMatchday=()=>{
     diary:[...(p.diary||[]),{season:p.season||1,week:1,type:"story",e:"🏟️",headline:"La serata di presentazione",
       body:`${(p.club&&p.club.n)||"Il club"} si presenta ai tifosi allo stadio: la stagione può cominciare.`,color:"#f59e0b"}].slice(-80),
     log:[`🏟️ Serata di presentazione: ${(p.club&&p.club.n)||"la squadra"} davanti ai propri tifosi.`,...(p.log||[])].slice(0,60)}));};
-  const RITIRO_SESSIONS=[
-    {id:"atletico",e:"🏃",l:"Atletico",d:"Lavoro fisico intenso col preparatore",ef:{fisico:1,fatigue:15,coachTrust:3,morale:5},txt:"Hai spinto al massimo sulla preparazione atletica. Le gambe rispondono."},
-    {id:"tecnico",e:"⚽",l:"Tecnico",d:"Sessioni col pallone e schemi di gioco",ef:{tecnica:1,fatigue:10,coachTrust:3,morale:6},txt:"Allenamento tecnico curato nei dettagli. Il mister ha apprezzato la qualità."},
-    {id:"amichevole",e:"🤝",l:"Amichevole",d:"Partite di prova: fiducia di mister e compagni",ef:{morale:12,form:6,coachTrust:8,fatigue:5,teamChemistry:10},txt:"Amichevoli e spogliatoio compatto: la fiducia di mister e compagni sale, arrivi alla stagione con la testa giusta."},
-  ];
-  const doRitiroSession=(s)=>{
-    const ns={...player.stats};
-    if(s.ef.fisico)ns.fisico=clamp((ns.fisico||60)+s.ef.fisico,1,99);
-    if(s.ef.tecnica)ns.tecnica=clamp((ns.tecnica||60)+s.ef.tecnica,1,99);
-    let np={...player,stats:ns,ovr:calcOvr(ns),
-      fatigue:clamp((player.fatigue||0)+(s.ef.fatigue||0),0,100),
-      coachTrust:clamp((player.coachTrust||60)+(s.ef.coachTrust||0),0,100),
-      morale:clamp((player.morale||70)+(s.ef.morale||0),0,100),
-      form:clamp((player.form||70)+(s.ef.form||0),30,95),
-      teamChemistry:clamp((player.teamChemistry||50)+(s.ef.teamChemistry||0),0,100),
+  /* [7.337.0 direttiva PO — RITIRO 2.0] «L'eroe deve VIVERE il ritiro, non organizzarlo»: via la
+     scelta manuale della preparazione (decideva l'eroe = irreale). Il racconto (località/hotel/staff/
+     gerarchie/amichevoli) è derivato dai motori puri ritiroPlan/ritiroHierarchyVerdict/ritiroFriendlies;
+     l'unica scelta dell'eroe è COMPORTAMENTALE (impegno/gruppo/concentrazione), mai organizzativa. */
+  const[ritiroEvent,setRitiroEvent]=useState(null);/* {beat} */
+  const RITIRO_BEHAVIORS=[
+    {id:"lavoro",e:"💪",l:"Testa bassa: lavora più di tutti",d:"Primo ad arrivare al campo, ultimo ad andartene",fx:{form:2,fatigue:4,trust:2}},
+    {id:"gruppo",e:"🤝",l:"Aiuta i nuovi a inserirsi",d:"Il gruppo prima di tutto: cene, consigli, spogliatoio",fx:{chem:4,morale:3}},
+    {id:"dettagli",e:"🎯",l:"Cura ogni dettaglio davanti al mister",d:"Concentrazione totale in ogni esercizio",fx:{trust:3,morale:1}}];
+  const doRitiro2=(behavior)=>{
+    const plan=ritiroPlan(player);
+    const verdict=ritiroHierarchyVerdict(player,plan);
+    const ams=ritiroFriendlies(player,plan);
+    const bh=RITIRO_BEHAVIORS.find(b=>b.id===behavior)||null;
+    let dT=(plan.prep.fx.trust||0)+(verdict.fx.trust||0)+((bh&&bh.fx.trust)||0);
+    let dF=(plan.prep.fx.form||0)+((bh&&bh.fx.form)||0);
+    let dM=(verdict.fx.morale||0)+((bh&&bh.fx.morale)||0)+3;/* l'entusiasmo della stagione che comincia */
+    let dC=(plan.prep.fx.chem||0)+((bh&&bh.fx.chem)||0);
+    const dFat=(plan.prep.fx.fatigue||0)+((bh&&bh.fx.fatigue)||0);
+    ams.forEach(a=>{dT+=(a.fx.trust||0);dF+=(a.fx.form||0);dM+=(a.fx.morale||0);dC+=(a.fx.chem||0);});
+    let np={...player,
+      fatigue:clamp((player.fatigue||0)+dFat,0,100),
+      coachTrust:clamp((player.coachTrust||60)+dT,0,100),
+      morale:clamp((player.morale||70)+dM,0,100),
+      form:clamp((player.form||70)+dF,30,95),
+      teamChemistry:clamp((player.teamChemistry||50)+dC,0,100),
       campDone:true,
-      log:[`🏕️ Ritiro: sessione ${s.l} completata (S.${player.season||1})`,...(player.log||[])].slice(0,60)};
-    /* [7.39.0 §9.1] AMICHEVOLE DI RITIRO — il precampionato si chiude con una partita di prova VERA (seedata,
-       avversario reale della tua lega, esito da simulateMatch): il voto pesa su fiducia/forma prima della
-       gerarchia. NON entra in matchHistory (è un'amichevole: niente presenze/standings/anti-loop). */
-    let _amic39=null;
-    try{
-      const _pool39=getLeagueClubs(player).filter(c=>c&&c.id!==player.club?.id);
-      const _sd39=hashStr((player.club?.id||"x")+"|amic|"+(player.season||1));
-      const _opp39=_pool39.length?_pool39[_sd39%_pool39.length]:null;
-      if(_opp39){
-        const _sim39=simulateMatch(player.club,_opp39,np.ovr,true,_sd39,player.clubPrestigeShifts||{});
-        const _rat39=Math.round(clamp(_sim39.rating+(s.id==="amichevole"?0.5:0.15)+((np.form||70)-70)*0.01,4,9.5)*10)/10;
-        const _dTrust=_rat39>=7?2:_rat39>=6?1:0, _dForm=_rat39>=7?2:_rat39<5.5?-1:0;
-        _amic39={opp:_opp39.n,hs:_sim39.homeScore,as:_sim39.awayScore,rat:_rat39};
-        np={...np,coachTrust:clamp(np.coachTrust+_dTrust,0,100),form:clamp(np.form+_dForm,30,95),
-          log:[`🤝 Amichevole di ritiro: ${player.club?.n||"Noi"} ${_sim39.homeScore}-${_sim39.awayScore} ${_opp39.n} — il tuo voto ${_rat39}`,...np.log].slice(0,60)};
-      }
-    }catch(_e){}
+      diary:[...(player.diary||[]),{season:player.season||1,week:1,type:"story",e:plan.loc.e,headline:`Il ritiro di ${plan.loc.n}`,body:`${plan.days} giorni di precampionato (${plan.loc.clima}): preparazione ${plan.prep.l}. ${verdict.msg}`,color:"#f59e0b"}].slice(-80),
+      log:[
+        ...ams.slice().reverse().map(a=>`🤝 Amichevole (${a.kind}): ${player.club?.n||"Noi"} ${a.hs}-${a.as} ${a.opp}${a.rat!=null?` — il tuo voto ${a.rat}`:a.status==="nc"?" — non convocato":" — dalla panchina"}`),
+        `🏕️ Ritiro di ${plan.loc.n} (S.${player.season||1}): ${plan.days} giorni, preparazione ${plan.prep.l} — la scelta dello staff pesa su ${plan.prep.reason}.`,
+        ...(player.log||[])].slice(0,60)};
     const newRole=calcSquadRole(np);
     setPlayer(p=>({...np,squadRole:newRole}));
-    const _roleLbl={leader:"Leader spogliatoio",titolare:"Titolare",rotazione:"Rotazione",riserva:"Riserva",primavera:"Primavera"};
-    setTimeout(()=>notify(s.txt,TH.success),200);
-    if(_amic39)setTimeout(()=>notify(`🤝 Amichevole di ritiro: ${player.club?.n||"Noi"} ${_amic39.hs}-${_amic39.as} ${_amic39.opp} — voto ${_amic39.rat}${_amic39.rat>=7?": il mister prende appunti (+fiducia)":_amic39.rat<5.5?": gambe ancora imballate":""}`,_amic39.rat>=7?TH.success:TH.accent),1400);
-    setTimeout(()=>notify(`📋 Gerarchia iniziale: ${_roleLbl[newRole]||"Riserva"} — definita dal ritiro.`,TH.primary),2700);
+    setRitiroEvent(null);
+    setTimeout(()=>notify(`🏕️ Ritiro concluso: ${plan.days} giorni a ${plan.loc.n}. ${verdict.msg}`,TH.primary),250);
   };
   const doOpeningPledge=(tone)=>{setPlayer(p=>({...p,seasonPledge:{season:p.season||1,tone},...ledgerPush(p,{t:"promessa",who:"la piazza",what:`Conferenza d'apertura: tono ${tone}`}),/* [7.26.0 S2] la parola data entra nel registro */popularity:clamp((p.popularity||20)+(tone==="ambizioso"?4:tone==="equilibrato"?1:0),0,100),morale:clamp((p.morale||70)+(tone==="prudente"?3:tone==="equilibrato"?2:0),0,100),log:[`🎙️ Conferenza d'apertura S.${p.season||1}: hai scelto un tono ${tone}`,...(p.log||[])].slice(0,60)}));notify(tone==="ambizioso"?"🎙️ Parole forti in conferenza: la piazza sogna (+popolarità). Ora mantienile.":tone==="prudente"?"🤫 Basso profilo: zero pressione — e spazio per sorprendere tutti.":"🎯 Messaggio equilibrato: obiettivi chiari, piazza con te.",TH.accent);};
   const startMatch=(resumeSnap=null)=>{
@@ -27368,6 +27508,54 @@ const getThisWeekMatchday=()=>{
       </div>
     </div>);})():null;
   if(presEvent)return _presOverlay;
+  /* [7.337.0 RITIRO 2.0] IL RACCONTO DEL RITIRO — overlay a beat (pattern serata di presentazione):
+     arrivo → decisione dello staff → vita del ritiro → gerarchie del mister → amichevoli → la TUA risposta
+     (unica scelta, comportamentale). Tutto derivato dai motori puri: chiudere e riaprire non cambia nulla. */
+  const _ritOverlay=ritiroEvent?(()=>{
+    const plan=ritiroPlan(player);
+    const verdict=ritiroHierarchyVerdict(player,plan);
+    const ams=ritiroFriendlies(player,plan);
+    const _stLbl={titolare:"parti TITOLARE",subentro:"entri dalla panchina",panchina:"resti in panchina 90'",nc:"non sei tra i convocati"};
+    const _bs=[
+      {e:plan.loc.e,t:`Destinazione ${plan.loc.n}`,sub:`${plan.days} giorni · clima ${plan.loc.clima}`,body:(<span>Il pullman della squadra arriva a <strong>{plan.loc.n}</strong>: {plan.loc.fl}. Base al <strong>{plan.hotel}</strong>, si lavora al <strong>{plan.centro}</strong> — i teloni <strong>{plan.sponsor}</strong> già montati a bordo campo. {plan.signings.length>0?`Con la squadra viaggiano ${plan.signings.length} volti nuovi del mercato.`:"Il gruppo è quello della scorsa stagione: si riparte da certezze."}</span>)},
+      {e:plan.prep.e,t:"La decisione dello staff",sub:`intensità ${plan.prep.int}`,body:(<span>Riunione tecnica la prima sera. Il mister ha deciso: la preparazione sarà <strong>{plan.prep.l}</strong> — a pesare, {plan.prep.reason}. Rischio infortuni {plan.prep.risk}; nessuno ti ha chiesto un parere: qui si lavora.</span>)},
+      {e:"🗓️",t:"La vita del ritiro",sub:"i giorni al campo",body:(<span>{plan.events.map((ev,i)=>(<span key={i} style={{display:"block",marginBottom:5}}>{ev.e} <strong>{ev.t}</strong> — {ev.d}</span>))}</span>)},
+      {e:"📋",t:"Le gerarchie del mister",sub:"il responso dello staff",body:(<span>{plan.inRole?(<span style={{display:"block",marginBottom:6}}>📰 Dal mercato: <strong>{plan.inRole.name}</strong> ({plan.inRole.role}) si allena già col gruppo.</span>):null}A fine ritiro il vice ti chiama in ufficio. <strong>{verdict.msg}</strong> D'ora in poi parlerà solo il campo.</span>)},
+      ...ams.map((a,i)=>({e:"🤝",t:`Amichevole ${i+1} · ${a.kind}`,sub:`${player.club?.n||"Noi"} ${a.hs}-${a.as} ${a.opp}`,body:(<span>La decisione dello staff: <strong>{_stLbl[a.status]||a.status}</strong>{a.status==="subentro"?` al ${a.min}'`:""}.{a.rat!=null?(<span> Il tuo voto: <strong>{a.rat}</strong>{a.rat>=7.2?" — il mister prende appunti.":a.rat<5.5?" — gambe ancora imballate.":"."}</span>):a.status==="nc"?" Fa male, ma la risposta si dà in allenamento.":" Dalla panchina si impara: studia chi gioca al posto tuo."}</span>)})),
+      {e:"🧭",t:"La tua risposta",sub:"l'unica cosa che decidi tu",choice:true,body:(<span>La società organizza, il mister decide, lo staff misura. A te resta la cosa più importante: <strong>come vivi questo ritiro</strong>.</span>)}];
+    const _n=_bs.length,_i=Math.min(ritiroEvent.beat|0,_n-1),_b=_bs[_i],_last=_i>=_n-1;
+    return(
+    <div style={{position:"fixed",inset:0,zIndex:9997,background:"linear-gradient(180deg,#07131f 0%,#0c2233 55%,#123047 100%)",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:18}}>
+      <div style={{fontSize:9.5,fontWeight:800,letterSpacing:3,textTransform:"uppercase",color:"rgba(255,255,255,0.55)",marginBottom:10}}>🏕️ Ritiro pre-campionato · Stagione {player.season||1}</div>
+      <Card key={_i} style={{maxWidth:440,width:"100%",padding:"18px 18px 14px",maxHeight:"72vh",overflowY:"auto",animation:"logoIn 0.4s ease-out"}}>
+        <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:8}}>
+          <span style={{fontSize:26}}>{_b.e}</span>
+          <div>
+            <div style={{fontSize:14,fontWeight:900,color:TH.text}}>{_b.t}</div>
+            <div style={{fontSize:10,color:TH.muted}}>{_b.sub}</div>
+          </div>
+        </div>
+        <div style={{fontSize:11.5,color:TH.text,lineHeight:1.55}}>{_b.body}</div>
+        {_b.choice&&(<div style={{display:"flex",flexDirection:"column",gap:7,marginTop:12}}>
+          {RITIRO_BEHAVIORS.map(b=>(
+            <button key={b.id} onClick={()=>doRitiro2(b.id)} style={{width:"100%",textAlign:"left",padding:"11px 12px",borderRadius:10,border:`1px solid ${TH.cardBorder}`,background:TH.surface2,cursor:"pointer",fontFamily:"inherit",display:"flex",alignItems:"center",gap:10}}>
+              <span style={{fontSize:20,flexShrink:0}}>{b.e}</span>
+              <div style={{flex:1}}>
+                <div style={{fontSize:12,fontWeight:800,color:TH.text}}>{b.l}</div>
+                <div style={{fontSize:10,color:TH.muted,marginTop:1}}>{b.d}</div>
+              </div>
+              <span style={{fontSize:16,color:TH.muted}}>›</span>
+            </button>))}
+        </div>)}
+      </Card>
+      <div style={{display:"flex",gap:5,margin:"12px 0 8px"}}>{_bs.map((_,i)=>(<span key={i} style={{width:i===_i?20:7,height:7,borderRadius:5,background:i<=_i?"#f59e0b":"rgba(255,255,255,0.28)",transition:"all .25s"}}/>))}</div>
+      {!_last&&(<div style={{display:"flex",gap:8,width:"100%",maxWidth:440}}>
+        <Btn v="primary" fw onClick={()=>setRitiroEvent({beat:_i+1})}>Avanti →</Btn>
+        <Btn v="ghost" onClick={()=>setRitiroEvent({beat:_n-1})} style={{flexShrink:0}}>Vai al finale</Btn>
+      </div>)}
+    </div>);})():null;
+  if(ritiroEvent)return _ritOverlay;
+
 
   if(screen==="seasonEnd"&&seasonEndData)return(
     <div style={{width:"100%"}}>
@@ -28105,20 +28293,14 @@ const getThisWeekMatchday=()=>{
               </div>
               <div style={{fontSize:12,fontWeight:900,color:TH.text}}>{k?`Passo ${stepN} di ${tot} — ${OPENING_LBL[k]}`:"Tutto pronto!"}</div>
             </div>
-            {k==="ritiro"&&(<div>
-              <div style={{fontSize:11.5,color:TH.muted,lineHeight:1.5,marginBottom:10}}>🏕️ Il pullman parte per il <strong>ritiro pre-campionato</strong>. Una sola sessione a scelta: definirà la tua condizione e la gerarchia iniziale in rosa.</div>
-              <div style={{display:"flex",flexDirection:"column",gap:7}}>
-                {RITIRO_SESSIONS.map(s=>(
-                  <button key={s.id} onClick={()=>doRitiroSession(s)} style={{width:"100%",textAlign:"left",padding:"11px 12px",borderRadius:10,border:`1px solid ${TH.cardBorder}`,background:TH.surface2,cursor:"pointer",fontFamily:"inherit",display:"flex",alignItems:"center",gap:10}}>
-                    <span style={{fontSize:20,flexShrink:0}}>{s.e}</span>
-                    <div style={{flex:1}}>
-                      <div style={{fontSize:12,fontWeight:800,color:TH.text}}>{s.l}</div>
-                      <div style={{fontSize:10,color:TH.muted,marginTop:1}}>{s.d}</div>
-                    </div>
-                    <span style={{fontSize:16,color:TH.muted}}>›</span>
-                  </button>))}
+            {k==="ritiro"&&(()=>{const _pl=ritiroPlan(player);return(<div>
+              <div style={{fontSize:11.5,color:TH.muted,lineHeight:1.5,marginBottom:10}}>{_pl.loc.e} La società ha scelto: <strong style={{color:TH.text}}>{_pl.days} giorni a {_pl.loc.n}</strong> ({_pl.loc.clima}). Il pullman parte per il <strong>ritiro pre-campionato</strong>: preparazione decisa dallo staff, gerarchie del mister, amichevoli. Tu pensa a farti trovare pronto.</div>
+              <div style={{display:"flex",gap:8}}>
+                <Btn v="primary" fw onClick={()=>{setOpeningWiz(false);setRitiroEvent({beat:0});}}>🚌 Parti per il ritiro</Btn>
+                <Btn v="ghost" onClick={()=>doRitiro2(null)} style={{flexShrink:0}}>Salta il racconto</Btn>
               </div>
-            </div>)}
+              <div style={{fontSize:9.5,color:TH.faint,marginTop:6}}>Anche saltando, ritiro e amichevoli si giocano lo stesso: perdi solo il racconto (e la tua scelta di atteggiamento).</div>
+            </div>);})()}
             {k==="presidente"&&(<div>
               <div style={{fontSize:11.5,color:TH.muted,marginBottom:8}}>🏛️ Il Presidente ti convoca nel suo ufficio: gli obiettivi della stagione.</div>
               <div style={{fontSize:12,color:TH.text,fontStyle:"italic",marginBottom:10,paddingLeft:8,borderLeft:`3px solid ${TH.accent}`}}>{getPresidentOpeningQuote(player)}</div>
@@ -28911,32 +29093,22 @@ const getThisWeekMatchday=()=>{
         </div>
       )}
       {/* [6.10.0 Ondata 2] Recent form strip RIMOSSA: duplicava il last-5 già mostrato (con contesto streak) nella season-card del grid. */}
-      {/* Sprint C — Ritiro Pre-Campionato (inizio stagione, solo pro) */}
+      {/* [7.337.0 RITIRO 2.0] card del ritiro: LAUNCHER del racconto (la preparazione la decide lo staff) */}
       {tab==="dashboard"&&(player.proStatus||"u18")==="pro"&&(player.season||1)>=2&&(player.week||1)===1&&!player.campDone&&!player.injured&&(()=>{
-        const SESSIONS=RITIRO_SESSIONS,doSession=doRitiroSession;/* [7.16.0] logica CONDIVISA col wizard d'apertura */
+        const _pl=ritiroPlan(player);
         return(
           <Card bg={TH.bgBlue} border={TH.bdBlue} style={{marginBottom:8,padding:"14px 14px"}}>
             <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:4}}>
-              <span style={{fontSize:20}}>🏕️</span>
+              <span style={{fontSize:20}}>{_pl.loc.e}</span>
               <div>
-                <div style={{fontSize:13,fontWeight:900,color:TH.txBlue}}>Ritiro Pre-Campionato</div>
-                <div style={{fontSize:10,color:TH.txBlue,opacity:0.75}}>Stagione {player.season||1} · scegli come prepararti</div>
+                <div style={{fontSize:13,fontWeight:900,color:TH.txBlue}}>Ritiro Pre-Campionato · {_pl.loc.n}</div>
+                <div style={{fontSize:10,color:TH.txBlue,opacity:0.75}}>Stagione {player.season||1} · {_pl.days} giorni · clima {_pl.loc.clima}</div>
               </div>
             </div>
-            <div style={{fontSize:11,color:TH.muted,marginBottom:10,lineHeight:1.4}}>Una sola sessione: definirà la tua condizione e la gerarchia iniziale in rosa.</div>
-            <div style={{display:"flex",flexDirection:"column",gap:7}}>
-              {SESSIONS.map(s=>(
-                <button key={s.id} onClick={()=>doSession(s)} style={{width:"100%",textAlign:"left",padding:"10px 12px",borderRadius:10,border:`1px solid ${TH.bdBlue}`,background:TH.card,cursor:"pointer",fontFamily:"inherit",display:"flex",alignItems:"center",gap:10,transition:"all .12s"}}
-                  onMouseEnter={e=>{e.currentTarget.style.background=TH.bgBlue;e.currentTarget.style.borderColor=TH.txBlue;}}
-                  onMouseLeave={e=>{e.currentTarget.style.background=TH.card;e.currentTarget.style.borderColor=TH.bdBlue;}}>
-                  <span style={{fontSize:20,flexShrink:0}}>{s.e}</span>
-                  <div style={{flex:1}}>
-                    <div style={{fontSize:12,fontWeight:800,color:TH.txBlue}}>{s.l}</div>
-                    <div style={{fontSize:10,color:TH.muted,marginTop:1}}>{s.d}</div>
-                  </div>
-                  <span style={{fontSize:16,color:TH.bdBlue}}>›</span>
-                </button>
-              ))}
+            <div style={{fontSize:11,color:TH.muted,marginBottom:10,lineHeight:1.4}}>La società ha organizzato tutto: preparazione decisa dallo staff, gerarchie del mister, amichevoli in calendario. Tu devi solo farti trovare pronto.</div>
+            <div style={{display:"flex",gap:8}}>
+              <Btn v="primary" fw onClick={()=>setRitiroEvent({beat:0})}>🚌 Parti per il ritiro</Btn>
+              <Btn v="ghost" onClick={()=>doRitiro2(null)} style={{flexShrink:0}}>Salta il racconto</Btn>
             </div>
           </Card>
         );
