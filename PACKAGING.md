@@ -50,11 +50,34 @@ npm run android:open
 
 ## Aggiornare l'app sul TUO telefono (ciclo veloce di collaudo)
 
+**Via Android Studio (la più semplice: JDK e SDK sono già dentro l'IDE)**
+
 ```bash
 git pull                      # prende l'ultima versione
+npm run package               # build:web + cap sync android   ← NON saltabile
+```
+poi in Android Studio premi **▶ Run**. Installa sopra lo stesso package id → **i salvataggi restano**.
+
+> ⚠️ `npm run package` non è opzionale: Android Studio compila solo il **guscio nativo**, il gioco vive in
+> `dist/` e ci finisce dentro solo con `cap sync`. Premere Run senza quel comando installa il guscio nuovo
+> **col gioco vecchio**. Verifica in *Carriera → Profilo* che il badge versione sia quello atteso.
+
+**Via riga di comando** (necessaria per l'AAB dello store e per build automatiche)
+
+```bash
+git pull
 npm run package               # build:web + cap sync android
 npm run android:apk           # → android/app/build/outputs/apk/debug/app-debug.apk
 adb install -r android/app/build/outputs/apk/debug/app-debug.apk   # -r = mantiene i salvataggi
+```
+
+`tools/gradle.mjs` cerca da solo il **JDK** (JBR di Android Studio, Temurin, Zulu, Corretto…) e l'**SDK
+Android** (scrivendo `android/local.properties` se manca, come fa Android Studio al primo avvio). Se non
+trova un JDK te lo dice con la riga esatta da eseguire, invece del criptico «JAVA_HOME is not set».
+Per impostarlo a mano una volta per tutte:
+
+```cmd
+setx JAVA_HOME "C:\Program Files\Android\Android Studio\jbr"   :: Windows, poi riapri il terminale
 ```
 
 Solo quando cambiano icona o splash, prima di `android:apk`:
