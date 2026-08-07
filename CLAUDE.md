@@ -120,7 +120,7 @@ Tutto è in un singolo `<script type="text/babel">`. Nessun module system — gl
 | 2038–2090 | `ZONES` — zone del campo |
 | 2091–2352 | `BG_MATCH` — cronaca di background (con `momThreshold`, `ctx`, `pd`, pesi `w`) |
 | 2353–2638 | Helpers core: `rng`, `clamp`, `pick`, `baseStats`, `calcOvr` (2377), `succRate` (2389), `generateTransferOffer` (2507), `generateProContracts` (2567), `storage` |
-| 2639–2681 | `ARCHETYPES`, `GAME_VERSION` (**6.45.0**), `SAVE_VERSION` (**8**) |
+| 2639–2681 | `ARCHETYPES`, `GAME_VERSION`, `SAVE_VERSION` — ⚠️ **i valori si leggono col grep, non qui**: `grep -o 'const \(GAME\|SAVE\)_VERSION=["0-9.]*' CARRIER-MANAGER-AV.html`. Questa riga ha dichiarato 6.45.0 e SAVE 8 mentre il codice era a 7.345 e 9. |
 | 2682–4531 | `NAME_BY_NAT` (4502) + calendario/roster: `hashStr` (4532), `generateTeamRoster` (4533), `generateSeasonCalendar` (4554), `initStandings` (4715), `updateStandings` (4719), `simulateMatch` (4824) |
 | 4860–4904 | UI primitives: `Card`, `Btn`, `StatBar`, `OvrRing`, `Notif` |
 | 4905–6708 | Three.js: `makeCrowdTex` (4905), `buildStadium` (5027) |

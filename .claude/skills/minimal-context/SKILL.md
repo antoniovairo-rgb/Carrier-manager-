@@ -8,7 +8,7 @@ description: "Disciplina di lettura del repo Korward Elite: da usare PRIMA di ap
 ## Quando si attiva
 
 Prima di **ogni** Read su `CARRIER-MANAGER-AV.html` (34.000 righe / 3,3 MB) o su un doc grande
-(`docs/RELEASE_HISTORY.md` 292 KB, `VALIDATORS.md` 96 KB, `LIVE_MATCH_QA_SPEC.md` 55 KB,
+(`docs/RELEASE_HISTORY.md` 292 KB, `VALIDATORS.md` 98 KB, `LIVE_MATCH_QA_SPEC.md` 55 KB,
 `CLAUDE.md` 42 KB). Vale anche quando "sembra una riga sola": in questo file una riga può pesare 57 KB.
 
 Confine: come **scrivere** poco (output, riassunti) è di `token-optimizer`; **pianificare** un intervento
@@ -25,8 +25,9 @@ multi-fase è di `architect`. Qui si tratta solo di quanto codice entra nel cont
    ```bash
    grep -n 'animOne' CARRIER-MANAGER-AV.html | awk -F: '$1>9496 && $1<14815'  # solo ThreeMatchView
    ```
-4. **Doc: si cercano, non si leggono.** `RELEASE_HISTORY`, `VALIDATORS`, `LIVE_MATCH_QA_SPEC` hanno un
-   blocco **COME SI CONSULTA** nelle prime righe con i grep giusti: `head -12 <doc>`, poi cerca.
+4. **Doc: si cercano, non si leggono.** `VALIDATORS.md` e `LIVE_MATCH_QA_SPEC.md` hanno un blocco
+   **COME SI CONSULTA** nelle prime righe coi grep giusti (`head -12 <doc>`); `RELEASE_HISTORY.md` no,
+   ma vale la stessa regola: si cerca per tema o per numero di release, mai `head` dell'intero file.
    `RELEASE_HISTORY.md` è stato estratto da CLAUDE.md proprio perché caricarlo costava ~76k token a turno.
 5. **Delega** quando la domanda è esplorativa (punto 4 sotto).
 
@@ -62,7 +63,7 @@ sed -n '3993p' CARRIER-MANAGER-AV.html | cut -c1-200
 | Motore d'esito / decisione | `grep -n 'function decideExecution'` |
 | Cinematica dell'highlight | `grep -n 'function deriveHL\|function hlBallState'` |
 | Una situation (191) | `grep -n 'const SITUATIONS'` poi Read con offset |
-| Un club (252) | `grep -n '"salernitana"' CARRIER-MANAGER-AV.html` |
+| Un club (252, id brevi via `mkT`) | `grep -n 'mkT("sal"' CARRIER-MANAGER-AV.html` |
 | Versione corrente / SAVE_VERSION | `grep -o` (vedi sopra) |
 | Un hook di test | `grep -n '__CPM_FORCE_SIT\|__CPM_PRESENT'` |
 | Quando si è già toccato un tema | `grep -n -i 'portiere' docs/RELEASE_HISTORY.md` |
@@ -73,13 +74,8 @@ sed -n '3993p' CARRIER-MANAGER-AV.html | cut -c1-200
 
 ### Quando delegare a un subagent
 
-Delega (Task) — e chiedi **solo righe + riassunto, mai il codice incollato** — quando:
-- la domanda è "dove, in tutto il file, si decide X" e non hai un'ancora;
-- devi setacciare i 240 script di `tests/visual/` o più doc insieme;
-- serve leggere un output lungo (report del gate, `run-summary.json` grande, log di una probe) per
-  estrarne tre numeri.
-
-Non delegare una lettura che sai già puntare: costa più il giro che il Read.
+Regole e casi della delega → `token-optimizer`; qui vale solo: non delegare una lettura che sai già
+puntare, costa più il giro del Read.
 
 ## Criteri di uscita
 
@@ -98,11 +94,10 @@ Non delegare una lettura che sai già puntare: costa più il giro che il Read.
 - **Fidarsi dei numeri di riga di CLAUDE.md**: sono storici e derivati di centinaia di righe. Servono come
   *ordine* dei layer, mai come offset. Verifica sempre con `grep -n`.
 - **Fidarsi di un valore ricordato**: CLAUDE.md dice `SAVE_VERSION 8`, il codice dice **9**. I numeri si
-  greppano, non si citano a memoria. Vale doppio per `GAME_VERSION`: **greppalo prima di ogni edit** —
-  il container ha già riavvolto il clone tre volte e si è ripartiti da una versione vecchia.
+  greppano, non si citano a memoria (regola del grep di `GAME_VERSION` prima di editare: `patch-only`).
 - **Leggere `docs/RELEASE_HISTORY.md`** per sapere "com'è andata": 292 KB. Si greppa per tema o release.
-- **Leggere un componente intero** per cambiare tre righe: `LiveMatch` da solo è ~5.300 righe
-  (9496→14815 solo `ThreeMatchView`). Nessun intervento in questo repo richiede di vederlo tutto.
+- **Leggere un componente intero** per cambiare tre righe: `ThreeMatchView` da solo è ~5.300 righe
+  (9496→14815) e `LiveMatch` ~7.400 (14815→22270). Nessun intervento richiede di vederli tutti.
 - **`Grep output_mode:"content"` senza `head_limit`** su un simbolo comune: 62 hit di `hlType` con
   contesto riempiono lo stesso il contesto. Prima `files_with_matches`/`count`, poi mira.
-- **Editare mentre gira il gate** (~10 min): il file cambia sotto il runner e il risultato non vale nulla.
+- **Editare mentre gira il gate**: regola e conseguenze in `patch-only`.

@@ -19,9 +19,9 @@ Se hai toccato solo il 3D/UI: non serve, vai a `game-qa` per la suite giusta.
 
 ## Procedura
 
-1. **Chokepoint unico prima di tutto.** Se la logica nuova vive in UN solo path settimanale,
-   e' gia' un bug: i 3 path (live / simula / avanza) devono delegare allo stesso helper.
-   `tripath-chokepoint-test.mjs` e' statico (no browser, ~1s) → lanciarlo per PRIMO.
+1. **Chokepoint unico prima di tutto** (regola e tabella dei chokepoint esistenti: `architect`).
+   `tripath-chokepoint-test.mjs` e' statico (no browser, ~1s) → lanciarlo per PRIMO: e' lui che
+   verifica che i 3 path settimanali deleghino davvero allo stesso helper.
 2. **I 4 guardiani** (sotto). Girano su Chromium: ~4-6 min in totale.
 3. **Se hai aggiunto un campo a `player`**: migration additiva + `npm run save-compat`.
 4. **Se hai corretto un bug di stato**: scrivi la probe permanente che lo riproduce (§ save sintetici),

@@ -22,8 +22,8 @@ piu' volte: se e' **piu' bassa** di quella gia' pubblicata, il lavoro e' perso �
 gate ci mette 10 minuti a dirtelo. 3 secondi qui.
 
 **2 · Gate 14/14.** Obbligatorio per ogni push che tocca `CARRIER-MANAGER-AV.html`. ~10 min.
-**Mentre gira NON si edita il file**: il gate lo rilegge, e misureresti una cosa mentre ne pubblichi
-un'altra. L'esito si legge da `run-summary.json`, mai a occhio dallo scroll del terminale.
+Mentre gira non si tocca il file (regola in `patch-only`). L'esito si legge da `run-summary.json`,
+mai a occhio dallo scroll del terminale.
 
 **3 · Guardiani, se l'area li richiede.** Carriera / settimana / classifiche / tornei / economia /
 mercato / migration → i quattro guardiani. Il gate e' cieco su tutto questo. Altre aree: vedi `game-qa`.
@@ -67,17 +67,13 @@ grep -n "GAME_VERSION=" CARRIER-MANAGER-AV.html | head -1 | cut -c1-90
 # 1 · transpile (~3 s) — becca le lexical declaration in un if senza graffe
 node -e 'const fs=require("fs"),B=require("./tests/visual/node_modules/@babel/standalone"),h=fs.readFileSync("CARRIER-MANAGER-AV.html","utf8"),s=h.indexOf("<script type=\"text/babel\""),b=h.indexOf(">",s)+1,e=h.lastIndexOf("</script>");try{B.transform(h.slice(b,e),{presets:["react"]});console.log("TRANSPILE OK")}catch(x){console.log("TRANSPILE FAIL:",x.message.split("\n")[0]);process.exit(1)}'
 
-# 2 · gate completo (~10 min) — non editare il file mentre gira
-cd tests/visual && CPM_CHROME=/opt/pw-browsers/chromium-1194/chrome-linux/chrome \
-  PLAYWRIGHT_BROWSERS_PATH=/opt/pw-browsers npm run validate-situations
+# 2 · gate completo (~10 min): comando in `game-qa`   [cd tests/visual]
 
 # 2b · VERDETTO, letto dal file (non dallo scroll)
 node -p "const s=require('./out/validate/run-summary.json'),c=s.counts;[s.ok?'PASS':'FAIL','fp='+s.fingerprint,(c.checks-c.checksFailed)+'/'+c.checks,'failures='+c.failures,'v='+s.gameVersion].join(' ')"
 # atteso esatto: PASS fp=00001505 14/14 failures=0 v=<la versione che hai appena messo>
 
-# 3 · guardiani carriera (solo se l'area li richiede)
-node career-invariants.mjs && node stab-nat-trigger-test.mjs \
-  && node career-sim-test.mjs && node tripath-chokepoint-test.mjs
+# 3 · guardiani carriera (solo se l'area li richiede): comandi in `auto-regression`
 
 # 6-7 · commit e promozione
 cd /home/user/Carrier-manager-
@@ -106,8 +102,7 @@ node tools/build-dist.mjs && node tools/validate-dist.mjs && node tools/audit-co
 - **Fingerprint letto a occhio.** Lo scroll del gate e' lungo e il fingerprint scorre via; si e' dichiarato
   verde un run che non lo era. Si legge da `run-summary.json`, sempre. E se `gameVersion` nel summary non
   e' quella sul disco, quel summary e' di un altro run.
-- **File editato mentre il gate girava.** Il gate ricarica il sorgente: il risultato non descrive ne' la
-  versione vecchia ne' la nuova. Dieci minuti buttati, e a volte creduti.
+- **File editato mentre il gate girava.** Dieci minuti buttati, e a volte creduti: regola in `patch-only`.
 - **Versione regredita e non notata.** Il clone e' stato riavvolto tre volte. Senza il `grep` iniziale si
   bumpa 7.201 sopra un file che era gia' 7.345 e si pubblica un salto indietro di 140 release.
 - **File nuovi mai committati.** `.claude/skills/*` era coperto da `.claude/*` in `.gitignore`: `git add -A`

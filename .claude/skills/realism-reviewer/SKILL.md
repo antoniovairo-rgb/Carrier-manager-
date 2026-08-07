@@ -64,8 +64,7 @@ cd /home/user/Carrier-manager-/tests/visual
 export CPM_CHROME=/opt/pw-browsers/chromium-1194/chrome-linux/chrome
 export PLAYWRIGHT_BROWSERS_PATH=/opt/pw-browsers
 
-node action-sweep.mjs                    # setaccio: 191 situations, legge draftBugNote
-AS_FROM=100 AS_TO=130 AS_ACT=1 node action-sweep.mjs   # fetta mirata
+node action-sweep.mjs                    # setaccio 191 situations (flag e fette: `game-qa`)
 LMV_CTX=career LMV_MATCHES=3 node live-validator.mjs   # partite vere (o LMV_CTX=trial)
 node realism-analyzer.mjs                # RA_UPDATE=1 rigenera realism-baseline.json
 node shape-analyzer.mjs                  # SH_UPDATE=1 · 3 partite, non una
@@ -76,7 +75,7 @@ npm run engine-sweep && npm run def-sweep    # motori puri: determinismo + monot
 npm run aerial-contact && npm run shot-apex && npm run woodwork
 VS_GLB=1 node vision-contact-sheets.mjs  # fogli-provini percettivi, GLB-ON
 node glb-gesture-smoke.mjs
-npm run validate-situations              # 14/14 + 00001505, obbligatorio prima del push
+# gate 14/14 prima del push: comando in `game-qa`
 ```
 
 ## Criteri di uscita
@@ -113,5 +112,4 @@ npm run validate-situations              # 14/14 + 00001505, obbligatorio prima 
   oscilla 0,20-0,30 sullo stesso build.
 - **In headless GLB-ON i tempi non sono giudicabili a occhio** (scena a 1/10-1/30 del reale):
   misura le durate delle clip contro la finestra `actType`.
-- `grep -n GAME_VERSION` **prima** di ogni edit (il container ha riavvolto il clone tre volte) e
-  mai editare il file di gioco mentre gira il gate.
+- Igiene dell'edit (grep di `GAME_VERSION` prima, mai scrivere mentre gira il gate): `patch-only`.

@@ -45,14 +45,13 @@ filiera store → `production-ready` · leggibilita' schermate → `ui-reviewer`
 cd tests/visual && CPM_CHROME=/opt/pw-browsers/chromium-1194/chrome-linux/chrome \
   PLAYWRIGHT_BROWSERS_PATH=/opt/pw-browsers npm run validate-situations
 # atteso: 14/14 · "✅ PASS" · fingerprint 00001505 · 0 failure (i warn NON bloccano)
-node -e "const r=require('./out/validate/run-summary.json');console.log(r.ok,r.meta.gameVersion,JSON.stringify(r.meta.timings))"
+# il verdetto si legge da run-summary.json, mai dallo scroll: one-liner in `production-ready`
 
 # loop di sviluppo, ~2 min — NON sostituisce il gate
 npm run quick-gate
 
-# guardiani carriera (settimana/classifiche/tornei/economia/mercato/migration)
-node career-invariants.mjs && node stab-nat-trigger-test.mjs && node career-sim-test.mjs
-node tripath-chokepoint-test.mjs        # statico, no browser
+# guardiani carriera (settimana/classifiche/tornei/economia/mercato/migration): comandi e cosa
+# asserisce ciascuno in `auto-regression`
 
 # partite VERE (il gate non le gioca)
 LMV_CTX=career LMV_MATCHES=3 node live-validator.mjs
@@ -80,26 +79,17 @@ piedi · palla che torna indietro (boomerang) · statue con palla viva · esito 
 - Gate 14/14, `✅ PASS`, fingerprint `00001505`, 0 failure.
 - Ogni riga del router pertinente all'area toccata e' stata lanciata, non solo il gate.
 - Per ogni difetto: numero **prima** e numero **dopo**, citati nel messaggio di commit/risposta.
-- `GAME_VERSION` bumpata con commento italiano che dice **causa** e **misura** (non "fix vari").
+- `GAME_VERSION` bumpata (contenuto obbligatorio del commento: `production-ready`).
 - Se il push tocca la carriera: i quattro guardiani verdi. Se tocca nomi/testi: `audit-copyright` 0 hit.
 - Se una parte resta gate-cieca e non misurata, dillo esplicitamente: "da collaudare dal vivo".
 
 ## Errori gia' commessi (non ripeterli)
 - **Dichiarare chiuso col solo gate.** Carriera, movimento, GLB, audio, camera, transizioni, cerimonie e UI
   sono ciechi al gate: 29 bug del QA massivo vivevano proprio li'.
-- **Misurare la presentazione sotto `?cpmtest=1`.** Snap di scena e freeze di lettura sono SPENTI li'
-  (7.345.0): serve `window.__CPM_PRESENT=1`, altrimenti si giudica una scena che il giocatore non vede mai.
-- **Verifiche percettive GLB-OFF.** Sotto CH38 le pose procedurali sono invisibili: parlano solo le clip.
-  Ventisei bocciature del PO sono nate cosi'. Percettivo ⇒ `VS_GLB=1`.
-- **Giudicare i TEMPI a occhio in headless GLB-ON:** la scena scorre a 1/10-1/30 del reale. Misura le durate
-  delle clip contro la finestra `actType`, non guardare.
-- **Chiamare teletrasporto lo stacco di scena.** Grazia 750 ms; il teleport si misura in velocita' (>85 u/s).
-- **Usare 46 come piano della porta:** `AWAY_GOAL_X=46` e' l'ancora logica, i pali stanno a **48.6**.
-- **Giudicare il gol su dove la palla si ferma** invece che sulla penetrazione MASSIMA.
-- **Mediare due sottogruppi opposti** (ingaggiati vs blocco di zona): la media li cancella e il difetto
-  "sparisce". Separa i gruppi prima di concludere che una regressione c'e' o non c'e'.
-- **Un campione singolo su metrica rumorosa** letto come regressione (caso `pinned` 56%→14%): piu' partite.
-- **Editare mentre gira il gate** e non fare `grep -n GAME_VERSION` prima di editare (il clone e' stato
-  riavvolto tre volte: la riga che credi di conoscere puo' non esserci piu').
+- **Misurare male una scena in campo** (presentazione spenta sotto `?cpmtest=1`, verifiche percettive
+  GLB-OFF, tempi giudicati a occhio in headless, stacco di scena scambiato per teletrasporto, piano
+  della porta sbagliato, medie su sottogruppi opposti, campione singolo): catalogo completo delle
+  trappole di misura in `realism-reviewer`.
+- **Editare mentre gira il gate** o senza aver letto `GAME_VERSION`: regole in `patch-only`.
 - **Rigenerare golden/baseline per far tornare verde.** Si rigenerano solo quando il cambio di numeri e'
   voluto, spiegato e citato nel commit.

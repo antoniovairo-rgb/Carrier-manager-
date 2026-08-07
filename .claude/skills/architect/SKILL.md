@@ -23,7 +23,7 @@ si scrive: si torna a misurare.
    cita la frase testuale del PO.
 2. **Causa MISURATA** — un numero, non un sospetto. «il compagno è a 34,6u all'apertura»,
    «la cadenza deriva ×3,14». *No Blind Fix*: senza misura si scrive prima la probe.
-   ⚠️ Verifica che la misura non sia un artefatto (vedi Errori già commessi).
+   ⚠️ Verifica che la misura non sia un artefatto (catalogo delle trappole di misura: `realism-reviewer`).
 3. **Punto d'intervento** — nome del simbolo + riga trovata ORA con `grep -n`. Mai i numeri
    di riga di CLAUDE.md: sono storici e derivati di migliaia di righe.
 4. **Chokepoint** — se aggiungi LOGICA (non display), dichiara il punto UNICO dove va.
@@ -71,10 +71,10 @@ già senza guardiano.
 
 ## Comandi
 
-```bash
-# SEMPRE per primo: la versione dice su quale base stai lavorando (il clone è stato riavvolto)
-grep -n 'const GAME_VERSION' CARRIER-MANAGER-AV.html | head -1
+Controlli d'ingresso prima di pianificare un edit (versione vera sul disco, working tree pulito):
+`patch-only`.
 
+```bash
 # trovare il punto d'intervento (mai per numero di riga)
 grep -n 'const nomeFunzione=' CARRIER-MANAGER-AV.html
 grep -n 'weeklyEconomyFields\|weeklyGrowthFields\|natTournamentPatch' CARRIER-MANAGER-AV.html
@@ -101,12 +101,11 @@ grep -rln '<simbolo>' tests/visual/*.mjs
 ## Errori già commessi
 
 - **Pianificare sui numeri di riga di CLAUDE.md.** Sono storici. Solo `grep -n`, adesso.
-- **Editare senza aver letto `GAME_VERSION`.** Il container ha riavvolto il clone tre volte:
-  si sono ri-applicati edit su una base sbagliata. La versione nel gate è la prova.
-- **Misurare un artefatto e chiamarlo causa.** 7.345.0: snap e freeze sono spenti sotto
-  `?cpmtest=1`, quindi ogni probe misurava una scena che il giocatore non vede mai
-  (34,6u → 4,4u con `window.__CPM_PRESENT=1`). 7.202.0/7.204.0: una media su due sottogruppi
-  con dinamiche opposte li cancella. 7.46.1: la «regressione» di cpmadapt era la metrica.
+- **Editare senza aver letto `GAME_VERSION`.** Si sono ri-applicati edit su una base sbagliata
+  (regola in `patch-only`).
+- **Misurare un artefatto e chiamarlo causa.** Un piano costruito su una misura falsa nasce morto:
+  le trappole note (presentazione spenta, medie su sottogruppi opposti, campione singolo) sono
+  catalogate in `realism-reviewer` — passaci prima di compilare la voce 2.
 - **Mettere la logica nel ramo invece che nel chokepoint.** 7.160.0: il fix fatica era andato
   solo in `weeklyGrowthFields` e i rami gemelli divergevano. Chi gioca dal vivo, chi simula e
   chi avanza devono ottenere lo stesso.
@@ -114,4 +113,4 @@ grep -rln '<simbolo>' tests/visual/*.mjs
   è quello che non si riesce più a bisezionare quando il gate cade.
 - **Dare per scontato che il gate copra.** È cieco su carriera, movimento dal vivo, GLB,
   audio, camera, transizioni, cerimonie, UI di CareerApp: lì il piano deve nominare una probe.
-- **Editare mentre gira il gate.** Legge il file dal disco: il verdetto non vale.
+- **Editare mentre gira il gate.** Regola in `patch-only`.

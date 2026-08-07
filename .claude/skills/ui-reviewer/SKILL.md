@@ -22,14 +22,17 @@ Il gate 14/14 **non vede nulla di tutto questo**: qui l'unica prova e' uno scree
    `calc(80px + env(safe-area-inset-bottom,0px))`; le strisce ☕/💡 sopra la nav coprono l'ultima
    card e per questo esiste `hideStrips` (si nascondono a fine scroll). Se aggiungi contenuto in
    coda, verifica che l'ULTIMA card sia raggiungibile e cliccabile.
-4. **Colori solo dai token.** `TH`/`TH_DARK` (~353), `FS` (376), `FW` (377), `RAD` (379). Un colore
+4. **Colori solo dai token.** `TH` (~318, e' un `let`: il dark lo shadowa), `TH_DARK` (~353),
+   `FS` (376), `FW` (377), `RAD` (379). Un colore
    cablato e' un pannello invisibile in dark mode: 14 pannelli `#f8fafc` erano illeggibili prima del
    6.45. Il file ha ~2700 esadecimali: molti sono legittimi (colori sociali dei club, palette 3D,
    accenti di brand) — il divieto vale su **sfondi e testo delle superfici UI**, che devono venire
    da `TH.card/surface2/bg/text/muted/faint/cardBorder`.
 5. **Prima riusare, poi disegnare.** Esistono gia' `Card`, `Btn`, `StatBar`, `OvrRing`, `Modal`,
    `TeamBadge`, `JerseyIcon` e i wrapper scroll di tabelle/tab. Cercali prima di inventare un box:
-   `grep -n "^const \(Card\|Btn\|Modal\|Badge\|Meter\|Tabs\|Sheet\|KpiTile\|DataTable\|MatchBadge\|Sparkline\)=" CARRIER-MANAGER-AV.html`
+   `grep -nE "^(const|function) (Card|Btn|StatBar|OvrRing|Sparkline|Badge|MatchBadge|Meter|KpiTile|Modal|BottomSheet|Tabs|DataTable|TeamBadge|JerseyIcon)[=(]" CARRIER-MANAGER-AV.html`
+   ⚠️ le due forme convivono: `Card`/`Btn`/`StatBar`/`OvrRing` sono `const`, tutte le altre sono
+   `function`; il foglio dal basso si chiama **`BottomSheet`**, non `Sheet`.
    Un componente nuovo si giustifica solo se nessuna primitiva lo copre.
 6. **Il testo deve entrare.** Nomi di competizione, brand dei cartelloni, tagline: su canvas si
    riduce il font finche' entra (`measureText` + shrink, vedi `_fit` ~9990); in DOM si usa
@@ -44,8 +47,8 @@ sul telefono.
 1. **Audit prima dell'edit.** `grep -n` il testo visibile o il nome del componente, leggi solo
    l'intorno. Dichiara: quale schermata, quale primitiva riusi, quali token, cosa NON cambia.
 2. **Misura lo stato attuale con uno screenshot**, non a memoria: scegli la probe piu' vicina fra
-   quelle esistenti e clonala (vedi Comandi). Il save sintetico deve avere `club.lg` coerente col
-   database, altrimenti la migration ripara e stai guardando un'altra schermata.
+   quelle esistenti e clonala (vedi Comandi). Regole del save sintetico (coerenza col database,
+   altrimenti la migration ripara e misuri un'altra schermata): `auto-regression`.
 3. **Applica la modifica** (→ `patch-only`).
 4. **Rimisura**: stesso screenshot chiaro **e** scuro, 412x915. Confronta prima/dopo.
 5. **Non-regressione**: gate 14/14 (transpile + il resto del gioco) e, se hai toccato anche dati
@@ -64,8 +67,7 @@ node home-navbar-shot.mjs       # nav e home
 node postmatch-news-shot.mjs    # post-partita
 ls *shot*.mjs *test*.mjs        # ~240 script: cerca prima, non riscrivere
 
-# gate (obbligatorio prima del push, anche per una modifica di sola UI)
-npm run validate-situations     # atteso 14/14, fingerprint 00001505, 0 failure
+# gate obbligatorio prima del push, anche per una modifica di sola UI: comando in `game-qa`
 ```
 Scheletro di una probe UI nuova (dall'harness): `startServer` → `launchBrowser` →
 `page.newPage({viewport:{width:412,height:915}})` → `installCdnRoutes` →
@@ -95,10 +97,8 @@ Aggancia sempre `page.on('pageerror')`: zero errori e' parte del verdetto.
 - **Scroll orizzontale nascosto.** Una riga di chip senza contenitore proprio fa scorrere l'intera
   pagina: il difetto si vede solo trascinando, mai in uno screenshot statico — vai a controllare
   `scrollWidth` nella probe.
-- **Save sintetico incoerente** (`club.lg` diverso dal database): la migration ricostruisce
-  calendario/classifica e la schermata mostrata non e' quella che volevi misurare.
-- **Toccare la UI mentre gira il gate**, o editare senza aver fatto `grep GAME_VERSION` prima: il
-  container ha riavvolto il clone piu' volte, la versione a schermo e' l'unica prova di cosa stai
-  guardando.
+- **Save sintetico incoerente**: la migration ricostruisce calendario/classifica e stai guardando
+  un'altra schermata — trappole dei save sintetici in `auto-regression`.
+- **Toccare il file mentre gira il gate**, o editare senza aver letto `GAME_VERSION`: `patch-only`.
 - **Riscrivere una probe che esiste.** Prima `ls tests/visual/*shot*.mjs`: la schermata che ti
   serve ha quasi sempre gia' il suo script.

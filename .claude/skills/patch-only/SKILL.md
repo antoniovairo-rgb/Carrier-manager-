@@ -52,11 +52,10 @@ python con **assert prima di scrivere** (`str.replace` NON fallisce se non trova
 hai riscritto qualcosa senza volerlo: `git checkout` e ricomincia).
 
 **5 — Bump `GAME_VERSION`, sempre, anche per un fix minimo.** Il marcatore nuovo si
-INFILA in testa alla catena esistente (la riga è uno storico impilato, i vecchi restano).
-Il commento è in italiano e dichiara **CAUSA misurata** e **MISURA presa** — non «fix
-posizionamento» ma «il bersaglio cadeva fra i pali (48,2) → cap a GOAL_LINE_X−5,2, misurato 43,4».
-Campo obbligatorio nuovo in `player` ⇒ serve anche `SAVE_VERSION` + migration: è materia
-di `architect`, torna lì prima di procedere.
+INFILA in testa alla catena esistente (la riga è uno storico impilato, i vecchi restano);
+si ancora al prefisso, mai alla riga intera. Cosa deve contenere il commento →
+`production-ready`. Campo obbligatorio nuovo in `player` ⇒ serve anche `SAVE_VERSION` +
+migration: è materia di `architect`, torna lì prima di procedere.
 
 ## Comandi
 

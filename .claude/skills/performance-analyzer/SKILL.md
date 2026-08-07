@@ -10,10 +10,9 @@ Il target non e' questo container ma un Android di fascia media con lo stadio, 2
 CH38 skinnati, le particelle meteo e quattro canvas del pubblico.
 
 ## Quando si attiva
-- Stai per aggiungere codice **dentro il render-loop** di `ThreeMatchView` (`animOne`,
-  AI off-ball, archi palla, camera, tifo) o dentro `_mkGestures`/mixer GLB.
-- Aggiungi mesh, materiali, `CanvasTexture`, particelle, o una nuova strumentazione
-  per-frame (recorder, trappole, probe).
+- Codice nuovo **dentro il render-loop** di `ThreeMatchView` (`animOne`, AI off-ball, archi
+  palla, camera, tifo) o dentro `_mkGestures`/mixer GLB; mesh, materiali, `CanvasTexture`,
+  particelle, strumentazione per-frame (recorder, trappole, probe).
 - Sospetto di stutter, crescita dello heap, campo nero alla partita successiva.
 - Qualcuno propone di importare asset 3D/audio pesanti (→ vedi «peso APK»).
 
@@ -87,11 +86,8 @@ un asset: quanto pesa nell'AAB, e si puo' generare a runtime?
 cd /home/user/Carrier-manager-/tests/visual
 # perf + leak dell'ultimo gate (nessun run nuovo)
 python3 -c "import json;d=json.load(open('out/validate/run-summary.json'));print(json.dumps(d['performance'],indent=1,ensure_ascii=False))"
-# cronometro per fase del gate (se il run e' recente)
-python3 -c "import json;print(json.load(open('out/validate/report.json'))['meta'].get('timings'))"
-# gate completo (~10 min) — rimisura perf+leak
-CPM_CHROME=/opt/pw-browsers/chromium-1194/chrome-linux/chrome \
-PLAYWRIGHT_BROWSERS_PATH=/opt/pw-browsers npm run validate-situations
+# dove spende il gate stesso (campo `timings`): `token-optimizer`
+# rilanciare il gate per rimisurare perf+leak: comando in `game-qa`
 # partite vere (GLB, presentazione): LMV_CTX=career|trial
 CPM_CHROME=... PLAYWRIGHT_BROWSERS_PATH=/opt/pw-browsers node live-validator.mjs
 ```
@@ -130,6 +126,5 @@ grep -n "_tgPool\|_mkClaimB\|_crowdI\|frontRowPerStand" CARRIER-MANAGER-AV.html 
   di bottiglia — il costo era il GC. Misura prima di refactorare (No Blind Fix).
 - **Credere agli fps del gate**: 10,6 fps in headless e' il normale software rendering,
   non una regressione. Guarda invece heap slope e frame p95.
-- **Snap e freeze spenti sotto `?cpmtest=1`** (7.345.0): se misuri il costo della
-  presentazione, accendi `window.__CPM_PRESENT=1`, altrimenti stai cronometrando una
-  scena che il giocatore non vede mai.
+- **Cronometrare una scena che il giocatore non vede**: per misurare il costo della
+  presentazione serve `window.__CPM_PRESENT=1` — perche', in `realism-reviewer`.
