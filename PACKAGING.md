@@ -41,11 +41,30 @@ npx cap sync android          # = npm run package fa build:web + questo
 
 # 5a. build dell'AAB di release
 npm run android:aab           # → android/app/build/outputs/bundle/release/app-release.aab
+#     (gli script npm scelgono da soli gradlew.bat su Windows e ./gradlew su macOS/Linux — 7.340.1)
 # 5b. oppure apri in Android Studio e usa Build > Generate Signed Bundle
 npm run android:open
 ```
 
 > Da qui in poi, dopo ogni modifica al gioco: `npm run package` (rifà `dist/` + `cap sync`) e poi `npm run android:aab`.
+
+## Aggiornare l'app sul TUO telefono (ciclo veloce di collaudo)
+
+```bash
+git pull                      # prende l'ultima versione
+npm run package               # build:web + cap sync android
+npm run android:apk           # → android/app/build/outputs/apk/debug/app-debug.apk
+adb install -r android/app/build/outputs/apk/debug/app-debug.apk   # -r = mantiene i salvataggi
+```
+
+Solo quando cambiano icona o splash, prima di `android:apk`:
+
+```bash
+npm run assets:gen && npm run assets:android
+```
+
+Sul telefono servono, nelle Opzioni sviluppatore, **Debug USB** e — su Xiaomi/HyperOS — **Installa via USB**
+(richiede SIM inserita e account Mi connesso).
 
 ## Salvataggi: storage nativo anti-eviction
 

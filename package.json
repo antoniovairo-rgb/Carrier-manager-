@@ -10,8 +10,8 @@
     "assets:gen": "node tools/gen-assets.mjs",
     "assets:android": "npx capacitor-assets generate --assetPath resources --android",
     "android:open": "npx cap open android",
-    "android:aab": "cd android && ./gradlew bundleRelease",
-    "android:apk": "cd android && ./gradlew assembleDebug"
+    "android:aab": "node tools/gradle.mjs bundleRelease",
+    "android:apk": "node tools/gradle.mjs assembleDebug"
   },
   "devDependencies": {
     "@capacitor/assets": "^3.0.5",
