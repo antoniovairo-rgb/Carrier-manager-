@@ -1,47 +1,46 @@
-# Plugin & Skill per Elevora (Claude Code)
+# Plugin & Skill per Korward Elite
 
-Come installare/attivare le skill richieste. **L'installazione dei plugin avviene nel client Claude Code
-LOCALE** (una sessione remota/web non può scaricarli). La config `.claude/settings.json` di questo repo
-*dichiara* i marketplace e i plugin: quando apri il progetto in locale, Claude Code ti chiede il "trust" e
-poi te li propone/attiva automaticamente. Dopo modifiche: `/reload-plugins`.
+## Prima di aggiungere qualcosa: guarda cosa c'è già
 
-## 1) Già INTEGRATI in Claude Code — nessuna installazione
-- **`/code-review`** — review del diff corrente (bug + pulizia). Già disponibile.
-- **`/security-review`** — review di sicurezza delle modifiche pendenti. Già disponibile.
+Le capacità di sviluppo di questo progetto vivono in **10 Project Skill** in `.claude/skills/`, versionate col
+repo e ancorate agli strumenti reali (gate, guardiani carriera, live-validator, action-sweep, analyzer…):
 
-## 2) Dichiarati in `.claude/settings.json` (marketplace GitHub) — attivazione 1-clic in locale
-| Plugin | Repo marketplace | Cosa fa |
-|--------|------------------|---------|
-| **superpowers** | `obra/superpowers` | Framework di skill agentiche componibili (TDD, debug, brainstorming). |
-| **claude-mem** | `thedotmack/claude-mem` | Memoria persistente tra sessioni (osservazioni compresse, su disco locale). |
-| **gstack** | `garrytan/gstack` | Setup di Garry Tan: ~28 slash-command (modalità CEO/Designer/QA…). |
+`architect` · `minimal-context` · `token-optimizer` · `patch-only` · `game-qa` · `auto-regression` ·
+`performance-analyzer` · `production-ready` · `realism-reviewer` · `ui-reviewer`
 
-Se il client non li attiva da solo, installali a mano:
+Si caricano **su richiesta**: non pesano sul contesto finché non servono. L'indice sta in `CLAUDE.md`.
+
+## Già integrati in Claude Code — nessuna installazione
+- **`/code-review`** — review del diff corrente.
+- **`/security-review`** — review di sicurezza delle modifiche pendenti.
+
+## Plugin dichiarati in `.claude/settings.json`
+
+| Plugin | Repo | Perché |
+|---|---|---|
+| **claude-mem** | `thedotmack/claude-mem` | memoria persistente tra sessioni. **Complementare**: le skill dicono *come* lavorare, la memoria ricorda *cosa* è successo. |
+
+L'installazione avviene nel client Claude Code **locale** (una sessione remota non può scaricare i plugin).
+Aprendo il progetto in locale ti viene chiesto il *trust* e poi l'attivazione. A mano:
 ```
-/plugin marketplace add obra/superpowers
-/plugin install superpowers@superpowers
-
 /plugin marketplace add thedotmack/claude-mem
 /plugin install claude-mem@claude-mem
+```
 
-/plugin marketplace add garrytan/gstack
-/plugin install gstack@gstack
-```
-> Nota: i nomi esatti di marketplace/plugin possono differire nel manifest di ciascun repo — se il client
-> segnala un nome diverso, adegua la stringa (o correggi `.claude/settings.json`).
+## Rimossi il 2026-08-07 (duplicavano le Project Skill)
 
-## 3) Dal marketplace ufficiale Anthropic — installa dal client
-Non li ho messi in settings.json perché non ho verificato il repo esatto del marketplace ufficiale.
-Cerca e installa dal client:
-```
-/plugin                      # apre il browser dei marketplace/plugin
-/plugin install frontend-design@<marketplace-ufficiale>
-/plugin install security-guidance@<marketplace-ufficiale>
-```
-- **frontend-design** — specialista UI/UX (React/Vue/Svelte).
-- **security-guidance** — review di sicurezza inline a tre livelli (l'alternativa "plugin" di `/security-review`).
+- **`gstack`** (`garrytan/gstack`) — ~28 slash-command generici (modalità CEO/Designer/QA…). Coprono a grandi
+  linee lo stesso terreno delle 10 skill, ma senza sapere nulla di questo repo: nessun comando del gate,
+  nessun guardiano, nessuna delle trappole di misura già pagate. Due sistemi che dicono cose simili in modo
+  diverso rendono ambigua la scelta e fanno perdere l'aggancio a quello giusto.
+- **`superpowers`** (`obra/superpowers`) — framework di skill agentiche generiche (TDD, debug, brainstorming).
+  Stesso motivo: diluisce la selezione fra molte skill generiche e dieci specifiche.
+
+Non è un giudizio sui due progetti: è che qui il lavoro è troppo particolare (un file da 33.902 righe, un gate
+da 25 minuti, un motore di partita 3D con invarianti propri) perché un set generico aggiunga qualcosa.
+
+**Rimetterli è banale** se cambi idea — due voci in `extraKnownMarketplaces` e due in `enabledPlugins`; la
+versione precedente del file sta nella storia git di `.claude/settings.json`.
 
 ## Fonti
-- https://code.claude.com/docs/en/discover-plugins
-- https://code.claude.com/docs/en/settings
-- https://github.com/obra/superpowers · https://github.com/thedotmack/claude-mem · https://github.com/garrytan/gstack
+- https://code.claude.com/docs/en/discover-plugins · https://code.claude.com/docs/en/settings

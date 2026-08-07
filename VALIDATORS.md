@@ -1,5 +1,16 @@
 # VALIDATORS.md
 
+> **COME SI CONSULTA — 96 KB, non si legge intero.** Aprirlo tutto costa quanto mezza
+> sessione di lavoro. Si cerca:
+>
+> ```bash
+> grep -n 'LMV-014' VALIDATORS.md            # un validator per codice (LMV-001…030)
+> grep -n -i 'portiere' VALIDATORS.md        # tutti i validator che toccano un tema
+> grep -n '^## ' VALIDATORS.md               # i capitoli
+> ```
+>
+> Indice dei capitoli:  `grep -n '^#' VALIDATORS.md`
+
 Standard e catalogo dei **validator** della Live Match Development Platform.
 
 > Documento vivo, organizzato per capitoli. Si conforma a `MASTER_PROMPT.md` (charter LMQP) e a `LIVE_MATCH_QA_SPEC.md` (architettura, cap. 3.4 Validator Engine).

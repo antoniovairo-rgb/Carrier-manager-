@@ -15,7 +15,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { startServer, launchBrowser, openMatch, forceSituation, freeze, unfreeze, canvasShot, stateSig, sleep, frameState, ROOT, installCdnRoutes } from './lib/harness.mjs';
+import { startServer, launchBrowser, openMatch, forceSituation, freeze, unfreeze, canvasShot, stateSig, sleep, frameState, waitBallSettle, ROOT, installCdnRoutes } from './lib/harness.mjs';
 import { loadSituations } from './lib/situations.mjs';
 import initialState from './checks/initial-state.mjs';
 import orientation from './checks/orientation.mjs';
@@ -84,15 +84,10 @@ const FS_STEP = 16;   // final-state ~12 campioni
       await forceSituation(page, gi, { settle: 550, choose: true });
       await page.evaluate(() => window.__CPM_RESOLVE(0));
       await sleep(700); const outcome = await page.evaluate(() => window.__CPM_OUTCOME);
-      let fstate = await page.evaluate(() => window.__CPM_STATE());
-      { const _t0 = Date.now(); let _stab = 0;
-        while (Date.now() - _t0 < 9000) {
-          const _s = await frameState(page);
-          if (!_s || !_s.ok || !_s.ball || !fstate || !fstate.ball) { if (_s) fstate = _s; _stab = 0; continue; }
-          const _mv = Math.hypot((_s.ball.x || 0) - (fstate.ball.x || 0), (_s.ball.y || 0) - (fstate.ball.y || 0));
-          fstate = _s;
-          if (_mv < 0.3 && (_s.ball.worldY == null || _s.ball.worldY <= 1.2)) { if (++_stab >= 6) break; } else _stab = 0;
-        } }
+      /* [7.343.0] stessa attesa del gate completo, ma dall'helper condiviso: qui il poll era DUPLICATO
+         riga per riga, quindi ogni taratura andava fatta due volte (e una delle due si dimenticava). */
+      await waitBallSettle(page, { maxMs: 9000, quietMs: 700, pollMs: 110 });
+      let fstate = await frameState(page);
       const r = finalState.run({ sit, outcome, finalState: fstate });
       for (const msg of (r.issues || [])) agg['final-state'].issues.push({ gi, msg });
       for (const msg of (r.warnings || [])) agg['final-state'].warnings.push({ gi, msg });

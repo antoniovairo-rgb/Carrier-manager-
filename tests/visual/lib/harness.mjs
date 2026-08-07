@@ -31,6 +31,28 @@ export async function frameState(page, timeoutMs = 1500) {
   } catch (_e) { return await page.evaluate(() => (window.__CPM_STATE ? window.__CPM_STATE() : null)); }
 }
 
+/* [7.343.0] ATTESA DELL'ASSESTAMENTO DELLA PALLA — a costo basso.
+   Il gate deve giudicare lo stato finale a palla ferma, e prima lo faceva con `frameState` (due rAF + stato
+   completo dei 22: ~530 ms a lettura) preteso 6 volte di fila: 3,2 s ininterrotti, azzerati da ogni sussulto,
+   e 6 item su 10 arrivavano al limite di 9 s. Qui si campiona SOLO la palla (`__CPM_BALL`, hook leggero) a
+   cadenza fissa e si chiede quiete per una FINESTRA DI TEMPO, non per un numero di letture lente: il criterio
+   e' lo stesso (movimento < 0.3 e pallone a terra) ma diventa raggiungibile.
+   Ritorna {ms, settled}: chi chiama cattura poi UNA volta lo stato completo. */
+export async function waitBallSettle(page, { maxMs = 9000, quietMs = 700, pollMs = 110, moveEps = 0.3, groundY = 1.2 } = {}) {
+  const t0 = Date.now(); let prev = null, quietFrom = null;
+  while (Date.now() - t0 < maxMs) {
+    let b = null; try { b = await page.evaluate(() => (window.__CPM_BALL ? window.__CPM_BALL() : null)); } catch (_e) {}
+    if (!b) { await sleep(pollMs); continue; }
+    const mv = prev ? Math.hypot(b.x - prev.x, b.y - prev.y) : Infinity;
+    prev = b;
+    const quiet = mv < moveEps && (b.worldY == null || b.worldY <= groundY);
+    if (quiet) { if (quietFrom == null) quietFrom = Date.now(); else if (Date.now() - quietFrom >= quietMs) return { ms: Date.now() - t0, settled: true }; }
+    else quietFrom = null;
+    await sleep(pollMs);
+  }
+  return { ms: Date.now() - t0, settled: false };
+}
+
 const MIME = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '.json': 'application/json', '.glb': 'model/gltf-binary', '.png': 'image/png' };
 
 export function startServer(root = ROOT) {

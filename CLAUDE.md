@@ -295,6 +295,14 @@ Le **14 categorie**: `initial-state · orientation · visual · movements · gol
 
 > **`live-smoke` (5.76.0, ARC-1a):** 14° check BLOCCANTE — partita REALE non forzata su pagina pulita (provino → `playing` col clock vero): verifica che il clock avanzi, che la coda degli HL reattivi venga processata (hook `__CPM_QUEUE_REACTIVE`/`__CPM_NUMHL`) e che non ci siano pageerror. È il primo check che ESEGUE il tick di `playing` (dove viveva il soft-lock BLK-1) invece di bypassarlo col force-sit.
 
+### Il gate dice dove vanno i suoi minuti (7.343.0)
+
+Ogni run stampa la ripartizione per fase e la scrive in `run-summary.json` (`meta.timings`). Prima di
+ottimizzare il gate, **guarda quella tabella**: la prima misura ha spostato l'attenzione da dove tutti la
+mettevano (le 191 situations) a dove il tempo andava davvero — 33% speso ad aspettare la palla ferma, con un
+criterio irraggiungibile. L'attesa di assestamento è l'helper condiviso **`waitBallSettle`** in
+`lib/harness.mjs`: usato sia dal gate sia dal quick-gate, dove il codice era duplicato riga per riga.
+
 ## Cronologia delle release → `docs/RELEASE_HISTORY.md`
 
 Le **265 voci** di storia (5.x → 7.x: sintomo → causa misurata → correzione → guardiano) vivevano qui dentro:
@@ -361,59 +369,3 @@ Restano le regole che non appartengono a nessuna skill in particolare.
 - **Zero regressions · Minimalismo · File unico.**
 
 ---
-
-## Specifica di Design — Fase 2 "Feature Complete" (ROADMAP / direttiva)
-
-> Questa sezione è la **roadmap** vincolante per i prossimi sprint, NON lo stato attuale. Vedi la nota in *State Architecture* per cosa è già implementato.
-
-### 8. Gestione Intelligente delle Convocazioni e delle Sostituzioni
-
-Il giocatore **non deve essere automaticamente titolare**. L'allenatore decide su: OVR vs compagni di ruolo, `form`, `fatigue`, `coachTrust`, prestazioni recenti (`matchHistory`), importanza partita, infortuni rosa, ruoli d'emergenza.
-
-Esiti: `"starter"` | `"bench"` | `"not_called"`. Esperienza panchina (visione + riscaldamento + istruzioni + ingresso a 46'/60'/70'/80'). Sostituzioni in-match (tattica/stanchezza/rendimento/infortunio/gestione risultato). Comunicazione allenatore sempre motivata, mai percepita casuale.
-
-Nuovi campi richiesti:
-```js
-player.matchStatus    // "starter"|"bench"|"not_called"
-player.minutesPlayed  // minuti giocati nella partita corrente
-```
-
-### 9. Vita da Calciatore e Carriera Evoluta
-
-- **9.1 Ritiro precampionato** (settimane -2/-1): allenamenti, amichevoli, guadagno fiducia, gerarchie iniziali.
-- **9.2 Gerarchie:** `U18 → Primavera → Riserve → Titolari → Leader spogliatoio` — influenza minutaggio, convocazioni, crescita, rinnovi.
-- **9.3 Rapporti staff/compagni:** `coachTrust` (presente), `assistantCoachRel`, `fitnessCoachRel`, `teamChemistry` (0-100).
-- **9.4 Conferenze/interviste:** scelte di dialogo (diplomatico/ambizioso/critico) → impatto su `popularity`, `coachTrust`, `teamChemistry`, stampa.
-- **9.5 Mercato:** `loan` / `loan_with_option` / `loan_with_obligation` / `sale`, richieste di trasferimento, promesse allenatore.
-- **9.6 Infortuni e recupero:**
-```js
-player.injury = null | {
-  type:"muscolare"|"articolare"|"frattura"|"botta",
-  severity:"lieve"|"medio"|"grave",
-  weeksRemaining:number, recoveryPct:0-100, relapse_risk:0-1
-}
-```
-Tempi 1-2 / 3-5 / 6-12 settimane, riabilitazione, rischio ricaduta, rientro graduale.
-- **9.7 Obiettivi stagionali:** club (`seasonObjectives`, presente), personali (`{type:"goals_personal",target:N}`), allenatore, procuratore.
-- **9.8 Premi:** Miglior Giovane, Capocannoniere (presente), Squadra dell'Anno, Pallone d'Oro (presente), MVP.
-- **9.9 Vita dinamica:** notizie mercato settimanali, risultati altri campionati in dashboard, record real-time, rivalità/derby (Clasico, Derby della Madonnina, ecc.).
-
-### 10. Test di Realismo della Carriera
-
-Simulare ≥10 stagioni complete su profili campione/promessa/medio/riserva. Criteri: niente titolare troppo facile (2-3 stagioni da riserva), crescita OVR credibile (50→85 in 8-10 stagioni), convocazioni coerenti con `coachTrust`/form, sostituzioni coerenti col momento, scelte allenatore sempre motivate.
-
-### 11. Stabilità, Qualità e Assenza di Regressioni
-
-**Principio cardine: stabilità > nuove feature.** Ogni feature aumenta la profondità senza introdurre bug.
-
-**Invarianti da proteggere:** state machine `CareerApp`, partite (`LiveMatch`/`simulateMatch`), mercato/contratti, statistiche, classifiche, Coppa, Euro/Mondiale, training, progressione (`calcOvr`), save backward-compat, generazione news/cronaca/highlights/IA.
-
-**Suite di non-regressione (oltre al gate visivo):**
-1. Babel transpile check (implicito: se il gate carica il gioco, transpila)
-2. Nuova carriera → genera calendario + standings
-3. Caricamento save esistente → migrazione campi mancanti
-4. Avanzamento 5+ settimane senza crash
-5. Partita completa giocata (`LiveMatch` fino a `ended`)
-6. Inizio nuova stagione → promozioni/retrocessioni + spot europei
-
-**Approccio:** step piccoli e verificabili (≤300 righe/sprint), validare ogni modifica col gate, correggere subito le regressioni. Priorità assoluta: **stabilità > feature**.

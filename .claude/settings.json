@@ -1,20 +1,17 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
   "extraKnownMarketplaces": {
-    "superpowers": {
-      "source": { "source": "github", "repo": "obra/superpowers" },
-      "autoUpdate": true
-    },
     "claude-mem": {
-      "source": { "source": "github", "repo": "thedotmack/claude-mem" }
-    },
-    "gstack": {
-      "source": { "source": "github", "repo": "garrytan/gstack" }
+      "source": {
+        "source": "github",
+        "repo": "thedotmack/claude-mem"
+      }
     }
   },
   "enabledPlugins": [
-    { "marketplace": "superpowers", "plugin": "superpowers" },
-    { "marketplace": "claude-mem", "plugin": "claude-mem" },
-    { "marketplace": "gstack", "plugin": "gstack" }
+    {
+      "marketplace": "claude-mem",
+      "plugin": "claude-mem"
+    }
   ]
 }

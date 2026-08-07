@@ -1,5 +1,16 @@
 # LIVE_MATCH_QA_SPEC.md
 
+> **COME SI CONSULTA — 54 KB, non si legge intero.** Aprirlo tutto costa quanto mezza
+> sessione di lavoro. Si cerca:
+>
+> ```bash
+> grep -n '^### 3\.' LIVE_MATCH_QA_SPEC.md   # le sezioni dell'architettura 3.1-3.13
+> grep -n -i 'replay\|semantic\|narrative' LIVE_MATCH_QA_SPEC.md
+> grep -n '^## ' LIVE_MATCH_QA_SPEC.md        # i capitoli
+> ```
+>
+> Indice dei capitoli:  `grep -n '^#' LIVE_MATCH_QA_SPEC.md`
+
 Specifica tecnica della **Live Match Quality Platform (LMQP)**.
 
 > Documento vivo, organizzato per capitoli. Si conforma alla charter `MASTER_PROMPT.md`.

@@ -16,7 +16,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { startServer, launchBrowser, openMatch, forceSituation, freeze, unfreeze, canvasShot, samplePostHighlight, sampleMotion, sampleBallPath, stateSig, sigStr, sleep, frameState, ROOT, installCdnRoutes } from './lib/harness.mjs';
+import { startServer, launchBrowser, openMatch, forceSituation, freeze, unfreeze, canvasShot, samplePostHighlight, sampleMotion, sampleBallPath, stateSig, sigStr, sleep, frameState, waitBallSettle, ROOT, installCdnRoutes } from './lib/harness.mjs';
 import { loadSituations } from './lib/situations.mjs';
 import { writeReports } from './report.mjs';
 import { collectFailures } from './lib/failure-collector.mjs';
@@ -66,6 +66,11 @@ const GOLDEN = path.join(HERE, 'golden-sigs.json');
   page.on('pageerror', e => consoleErrors.push('PAGEERROR: ' + e.message));
 
   const sitResults = []; const sigs = {}; let perf = null; const replayRefs = []; let aiVision = null;
+  /* [7.343.0] CRONOMETRO PER FASE — il gate dura ~25 minuti e nessuno sapeva dove finissero: qualunque
+     ottimizzazione sarebbe stata a naso. `T('nome')` chiude la fase precedente e apre la nuova; il
+     riepilogo finisce a schermo e in run-summary.json (campo `timings`). Costo: due Date.now(). */
+  const TIM = {}; let _tPrev = Date.now(), _tName = 'boot';
+  const T = (name) => { const n = Date.now(); TIM[_tName] = (TIM[_tName] || 0) + (n - _tPrev); _tPrev = n; _tName = name; };
   const agg = {}; for (const c of [...SIT_CHECKS, ...FINAL_CHECKS, ...GLOBAL_CHECKS]) agg[c.id] = { id: c.id, title: c.title, scope: c.scope, issues: [], warnings: [], info: {} };
 
   try {
@@ -77,6 +82,7 @@ const GOLDEN = path.join(HERE, 'golden-sigs.json');
     const { total } = await openMatch(page, port);
     console.log(`match pronto · ${total} Situations · gameVersion ${gameVersion}`);
 
+    T('situations (191 × force+check+shot)');
     for (let gi = 0; gi < total; gi++) {
       const sit = situations[gi] || { text: '?', type: 'off', actions: [] };
       const issues = [], warnings = [];
@@ -102,16 +108,19 @@ const GOLDEN = path.join(HERE, 'golden-sigs.json');
       if ((gi + 1) % 40 === 0) console.log(`  …${gi + 1}/${total}`);
     }
 
+    T('determinism');
     // GLOBALE: determinismo — ri-cattura un campione e confronta le firme (esatte)
     const sample = []; for (let gi = 0; gi < situations.length; gi += 12) sample.push(gi);
     const recapture = async (gi) => stateSig(await forceSituation(page, gi, { settle: 550, choose: true }));
     const detRes = await determinism.run({ pass1: sigs, recapture, sampleIndices: sample });
     agg.determinism.issues.push(...detRes.issues.map(msg => ({ gi: null, msg }))); agg.determinism.info = detRes.info;
 
+    T('final-state (risoluzione azione)');
     // CAT 6 — passata dedicata e ISOLATA sullo stato finale (campione): risolve l'azione,
     // cattura l'esito presto (prima dell'auto-advance) e la palla a regime, con buffer tra le iterazioni
     // per evitare il bleed dei timer di risoluzione. FORCE_SIT azzera il chaining → indici stabili.
     const fsSample = []; for (let gi = 0; gi < situations.length; gi += 8) fsSample.push(gi); // ~23 Situations
+    const fsSettle = [];
     await page.evaluate(() => window.__CPM_TIMELINE_RESET && window.__CPM_TIMELINE_RESET()); // LMQP-2: timeline pulita per la passata force+resolve
     for (const gi of fsSample) {
       const sit = situations[gi] || { text: '?', type: 'off', actions: [] };
@@ -120,15 +129,14 @@ const GOLDEN = path.join(HERE, 'golden-sigs.json');
       await sleep(700); const outcome = await page.evaluate(() => window.__CPM_OUTCOME);
       // stato finale a PALLA FERMA: l'arco di conclusione (es. gol dopo dribbling/build-up) può durare oltre un wait fisso →
       // catturare troppo presto dà un FALSO POSITIVO (palla ancora a metà azione, es. gi=40 @gx=38.6). Poll fino a settle stabile.
-      let fstate = await page.evaluate(() => window.__CPM_STATE());
-      { const _t0 = Date.now(); let _stab = 0;
-        while (Date.now() - _t0 < 9000) {
-          const _s = await frameState(page);
-          if (!_s || !_s.ok || !_s.ball || !fstate || !fstate.ball) { if (_s) fstate = _s; _stab = 0; continue; }
-          const _mv = Math.hypot((_s.ball.x || 0) - (fstate.ball.x || 0), (_s.ball.y || 0) - (fstate.ball.y || 0));
-          fstate = _s;
-          if (_mv < 0.3 && (_s.ball.worldY == null || _s.ball.worldY <= 1.2)) { if (++_stab >= 6) break; } else _stab = 0; // 6 FRAME fermi → lo stop finale, non le pause del dribbling ([7.190.0] campioni agganciati a rAF: a 7fps due letture a 130ms cadevano nello stesso frame e «fermavano» una palla in volo)
-        } }
+      /* [7.343.0] L'attesa e' la stessa (palla ferma, a terra, prima di giudicare lo stato finale) ma il
+         campionamento e' leggero: `waitBallSettle` legge SOLO la palla ogni 110 ms e chiede quiete per una
+         FINESTRA DI TEMPO. Prima si usava `frameState` (due rAF + stato completo dei 22, ~530 ms a lettura)
+         preteso 6 volte DI FILA: misurati 6 item su 10 al limite dei 9 s, 225 s = il 33% dell'intero gate
+         speso ad aspettare. Lo stato completo si cattura UNA volta, quando la palla si e' fermata. */
+      const _st343 = await waitBallSettle(page, { maxMs: 9000, quietMs: 700, pollMs: 110 });
+      fsSettle.push(_st343);
+      let fstate = await frameState(page);
       const sr = sitResults[gi];
       for (const chk of FINAL_CHECKS) {
         const r = chk.run({ sit, outcome, finalState: fstate });
@@ -140,6 +148,9 @@ const GOLDEN = path.join(HERE, 'golden-sigs.json');
     agg['final-state'].info = { sampled: fsSample.length };
     console.log(`final-state: campione ${fsSample.length} Situations risolte`);
 
+    {const _n=fsSettle.length||1,_to=fsSettle.filter(x=>!x.settled).length;
+     console.log(`final-state: assestamento palla · media ${Math.round(fsSettle.reduce((a,x)=>a+x.ms,0)/_n)}ms · ${_to}/${_n} al limite`);}
+    T('timeline');
     // TIMELINE (LMQP-2) — legge il bus eventi raccolto nella passata force+resolve e valida il backbone narrativo
     try {
       const timeline = await page.evaluate(() => (window.__CPM_TIMELINE ? window.__CPM_TIMELINE() : []));
@@ -151,6 +162,7 @@ const GOLDEN = path.join(HERE, 'golden-sigs.json');
       console.log(`timeline: ${tlRes.info.events} eventi · ${tlRes.info.resolved} risolti · ${tlRes.info.paired} coerenti · baseline ${_b.mode}${_b.drift ? ' DRIFT=' + _b.drift : ''} · intents ${(_cov.intents || []).length} types ${(_cov.hlTypes || []).length}`);
     } catch (e) { agg['timeline'].issues.push({ gi: null, msg: 'errore timeline check: ' + (e && e.message || e) }); }
 
+    T('bg-coherence');
     // BG-COHERENCE (B) — lint statico della cronaca di sfondo: la scritta a schermo deve combaciare con l'azione del testo
     try {
       const bg = await page.evaluate(() => (window.__CPM_BG || []));
@@ -162,6 +174,7 @@ const GOLDEN = path.join(HERE, 'golden-sigs.json');
       console.log(`bg-coherence: ${bgRes.info.entries} voci · ${bgRes.info.withAt} con at · archi ${JSON.stringify(_ba)} · ${bgRes.issues.length} issue`);
     } catch (e) { agg['bg-coherence'].issues.push({ gi: null, msg: 'errore bg-coherence check: ' + (e && e.message || e) }); }
 
+    T('post-highlight');
     // POST-HIGHLIGHT — campiona la traiettoria (camera/palla/giocatori) su un set vario di Situations
     const phIdx = [0, 2, 30, 60, 79, 120].filter(gi => gi < situations.length);
     const D = (a, b) => Math.hypot(a.x - b.x, (a.z != null ? a.z : a.y) - (b.z != null ? b.z : b.y));
@@ -185,6 +198,7 @@ const GOLDEN = path.join(HERE, 'golden-sigs.json');
     agg['post-highlight'].info = phRes.info;
     console.log(`post-highlight: campione ${phSamples.length} Situations`);
 
+    T('motion');
     // MOTION (B2) — off-ball liveness (No Dead Players, AC-081-090): campiona le posizioni MESH durante
     // la fase ATTIVA (hl_choose, off-ball AI in moto) su un set vario di Situations.
     const motIdx = [0, 2, 30, 60, 79, 120].filter(gi => gi < situations.length);
@@ -196,6 +210,7 @@ const GOLDEN = path.join(HERE, 'golden-sigs.json');
     agg['motion'].info = motRes.info;
     console.log(`motion: campione ${motSamples.length} · alive ${motSamples.map(s => s.alive + '/' + s.players).join(' ')}`);
 
+    T('ball-motion');
     // BALL-MOTION (#41) — progressione/no-boomerang sulle azioni offensive: campiona la x della palla.
     const ballIdx = [0, 8, 17, 30, 43, 60, 63, 72, 88, 120, 132, 153, 163].filter(gi => gi < situations.length);
     const ballSamples = [];
@@ -206,6 +221,7 @@ const GOLDEN = path.join(HERE, 'golden-sigs.json');
     agg['ball-motion'].info = bmRes.info;
     console.log(`ball-motion: ${bmRes.info.checked} azioni offensive · minBackStep ${Math.min(...ballSamples.map(s => s.maxBackStep))}`);
 
+    T('perf-monitor');
     // LMQP-8: PERFORMANCE MONITOR (warn-only) — render-loop attivo su una situation animata
     try {
       await forceSituation(page, 0, { settle: 500, choose: true });
@@ -215,6 +231,7 @@ const GOLDEN = path.join(HERE, 'golden-sigs.json');
       console.log(`perf: ${perf.frames.fps}fps (avg ${perf.frames.avgMs}ms · p95 ${perf.frames.p95Ms}ms)` + (perf.heap ? ` · heap ${perf.heap.usedMB}MB` : '') + (perf.nav && perf.nav.loadMs != null ? ` · load ${perf.nav.loadMs}ms` : '') + (leak ? ` · leak-slope ${leak.slopeMBs}MB/s · canvas ${leak.canvases}` : ''));
     } catch (e) { perf = { error: String(e && e.message || e), warnings: [] }; console.log('perf: misura non disponibile (' + perf.error + ')'); }
 
+    T('live-smoke');
     // LIVE-SMOKE (F1 · ARC-1a, 5.76.0) — partita REALE su pagina pulita: nessuna situation forzata,
     // clock vero, coda reattiva armata via hook → esercita il path del tick `playing` (dove viveva BLK-1).
     try {
@@ -270,7 +287,13 @@ const GOLDEN = path.join(HERE, 'golden-sigs.json');
     return { id: c.id, title: c.title, scope: c.scope, pass: a.issues.length === 0, issues: a.issues.map(fmt), warnings: a.warnings.map(fmt), info: a.info };
   });
 
-  const meta = { generatedAt: new Date().toISOString(), gameVersion, seed: SEED, total: sitResults.length, maxJitterBits: agg.determinism.info.diverged === 0 ? 0 : `${agg.determinism.info.diverged} divergenze`, goldenNote, performance: perf, replay: replayRefs, aiVision };
+  T('report');
+  {const tot=Object.values(TIM).reduce((a,b)=>a+b,0)||1;
+   console.log('\n⏱  dove vanno i minuti del gate:');
+   Object.entries(TIM).sort((a,b)=>b[1]-a[1]).filter(([,ms])=>ms>500)
+     .forEach(([k,ms])=>console.log(`   ${String(Math.round(ms/1000)).padStart(4)}s  ${String(Math.round(ms*100/tot)).padStart(3)}%  ${k}`));
+   console.log(`   ${String(Math.round(tot/1000)).padStart(4)}s  100%  TOTALE\n`);}
+  const meta = { generatedAt: new Date().toISOString(), timings: TIM, gameVersion, seed: SEED, total: sitResults.length, maxJitterBits: agg.determinism.info.diverged === 0 ? 0 : `${agg.determinism.info.diverged} divergenze`, goldenNote, performance: perf, replay: replayRefs, aiVision };
   // LMQP-7: pacchetto di fallimento compatto/machine-readable (CI + Dashboard + regression history)
   const runSummary = collectFailures(OUT, { meta, categories, situations: sitResults });
   // BL-20: REGRESSION HISTORY — accumula il fingerprint del gate build-to-build (deriva/regressione tracciata)
