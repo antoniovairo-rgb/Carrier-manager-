@@ -42,7 +42,8 @@ const cls = await page.evaluate(() => {
       bad.push({ i, why: x.ballAt ? 'ballAt=' + x.ballAt : x.offBall ? 'offBall' : x.type === 'def' ? 'difensiva' : 'piazzato', t: String(x.text || '').slice(0, 40) });
   });
   return { tot: s.length, recv, bad,
-    probe: [109, 24, 113, 83].map(i => [i, window.isReceptionSit(s[i])]),
+    /* gi69 «Spalle alla porta in area» [7.352.0]: ci si gira PERCHE' la palla arriva da dietro */
+    probe: [109, 24, 113, 83, 69].map(i => [i, window.isReceptionSit(s[i])]),
     ctrl: [22, 154, 28].map(i => [i, window.isReceptionSit(s[i])]) };
 });
 const aer = cls.recv.filter(r => r.aer).length, gnd = cls.recv.length - aer;

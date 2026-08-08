@@ -53,6 +53,18 @@ const browser = await launchBrowser();
     if (!gated) issues.push(`(A) il ${nome} non segue l'interruttore del taccuino: sul telefono resta spento e il taccuino nasce cieco`);
     console.log(`(A) ${nome} → ${gated ? 'interruttore taccuino ✓' : 'flag di build ✗'}`);
   }
+  /* [7.352.0 collaudo PO «non riesco a prendere appunti sull'ultimo highlight perche' poi termina la
+     partita»] IL TASTO DEVE SOPRAVVIVERE AL FISCHIO FINALE. Era elencato solo nelle fasi di gioco: sull'ULTIMA
+     azione la partita passa a `ended` e il tasto spariva prima che si potesse scrivere — cioe' l'azione che si
+     voleva segnalare era l'unica impossibile da segnalare. */
+  {
+    const btn2 = src.indexOf("Segna un'azione sbagliata");
+    const g2 = src.lastIndexOf('devToolsOn()&&[', btn2);
+    const fasi = g2 > 0 ? src.slice(g2, src.indexOf(']', g2)) : '';
+    const okEnd = /"ended"/.test(fasi);
+    if (!okEnd) issues.push('(A) il tasto ⚠️ non e\' attivo a fine partita: l\'ultimo highlight resta impossibile da segnalare');
+    console.log(`(A) tasto ⚠️ disponibile a fine partita → ${okEnd ? '✓' : '✗'}`);
+  }
   if (!/const DEVTOOLS_DEFAULT=true;/.test(src))
     issues.push('(A) DEVTOOLS_DEFAULT non e\' piu\' acceso: sul telefono il taccuino nasce spento');
   console.log(`(A) card appunti → devToolsOn() ${card > 0 && cg >= 0 && card - cg <= 2500 ? '✓' : '✗'} · DEVTOOLS_DEFAULT acceso ${/const DEVTOOLS_DEFAULT=true;/.test(src) ? '✓' : '✗'}`);
