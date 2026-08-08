@@ -11,7 +11,11 @@
      A. STATICO — nel blocco del testimone non c'e' nessun `return` (in quello scope significa «salta il frame»)
      B. DAL VIVO — ad anello PIENO il pallone percorre lo stesso spazio al secondo di quando e' vuoto:
         e' la misura del sintomo vero (rallentatore), non del meccanismo
-     C. la registrazione, quella si', si dirada (altrimenti il diradamento non funziona piu' e la memoria cresce)
+     C. [7.360.0] l'anello resta CIRCOLARE e a risoluzione PIENA, con la traccia in ordine cronologico.
+        Il dimezzamento c'era ancora, e costava: a ogni riempimento `step` raddoppiava e l'intervallo fra due
+        campioni passava da 102ms a 209, 416, 543 — cioe' dopo qualche minuto «in un fotogramma» voleva dire
+        «in mezzo secondo», ed e' da li' che nasceva il «SALTO del pallone di 8,7 unita'» finito in quattro
+        note del PO sempre con lo stesso numero (la soglia 85 u/s moltiplicata per l'intervallo).
    Uso: CPM_CHROME=… PLAYWRIGHT_BROWSERS_PATH=… node witness-frameskip-test.mjs                          */
 import { startServer, launchBrowser, installCdnRoutes, openMatch, sleep } from './lib/harness.mjs';
 import { readFileSync } from 'node:fs';
@@ -30,7 +34,13 @@ const issues = [];
        il return sulla riga che decide se registrare: quello sta nello scope di `loop` e salta il frame. */
     const bad = /W\.skip\+\+%W\.step!==0\s*\)\s*return/.test(blk);
     if (bad) issues.push('(A) il diradamento del testimone usa di nuovo `return`: in quello scope salta l\'INTERO frame, non la registrazione');
-    console.log(`(A) diradamento senza return nello scope di loop → ${bad ? '✗' : '✓'}`);
+    /* [7.360.0] e non deve tornare nemmeno il DIMEZZAMENTO: era la causa della perdita di risoluzione. */
+    const dimezza = /W\.step\*=2/.test(blk);
+    if (dimezza) issues.push('(A) l\'anello del testimone dimezza di nuovo la risoluzione: dopo qualche minuto il taccuino chiama «fotogramma» mezzo secondo');
+    console.log(`(A) diradamento senza return → ${bad ? '✗' : '✓'} · anello senza dimezzamento → ${dimezza ? '✗' : '✓'}`);
+    /* e la bozza non deve tornare a promettere «un fotogramma» senza dire l'intervallo misurato */
+    const promessa = /unità in un fotogramma/.test(src);
+    if (promessa) issues.push('(A) la bozza del taccuino dichiara di nuovo «in un fotogramma» senza l\'intervallo reale: e\' la riga falsa delle quattro note');
   }
 }
 
@@ -59,7 +69,7 @@ if (await page.evaluate(() => typeof window.__CPM_WD_FILL) !== 'function')
 else {
   const vuoto = await travel(8);
   const snapA = await page.evaluate(() => { const s = window.__CPM_WATCH_SNAP(); return s ? s.samples.length : -1; });
-  await page.evaluate(() => window.__CPM_WD_FILL(8));       /* anello pieno, 1 campione su 8 */
+  await page.evaluate(() => window.__CPM_WD_FILL());        /* [7.360.0] solo PIENO: il parametro forzava `step`, cioe' simulava il diradamento che non esiste piu' — passarlo qui faceva fallire la (C) con un valore scritto dal test stesso */
   await sleep(250);
   const pieno = await travel(8);
   const snapB = await page.evaluate(() => { const s = window.__CPM_WATCH_SNAP(); return s ? s.samples.length : -1; });
@@ -67,16 +77,19 @@ else {
   console.log(`(B) spazio percorso dal pallone in 1,2s → anello vuoto ${vuoto}u · anello pieno ${pieno}u · rapporto ${rap}`);
   if (rap == null) issues.push(`(B) misura non valida: ad anello vuoto il pallone ha percorso ${vuoto}u (troppo poco per confrontare)`);
   else if (rap < 0.7) issues.push(`(B) ad anello pieno il pallone percorre solo il ${Math.round(rap * 100)}% dello spazio: la partita va al RALLENTATORE (il testimone sta saltando frame)`);
-  /* (C) il diradamento deve restare vivo: l'anello non supera MAI la capienza e la risoluzione si e' ridotta.
-     Non si misura col delta dei campioni: forzare il riempimento fa scattare il dimezzamento stesso, e il
-     delta conta i 15.000 campioni TENUTI dalla decimazione, non quelli nuovi (misurato: 14.926). */
-  const w = await page.evaluate(() => { const s = window.__CPM_WATCH_SNAP(); return s ? { n: s.samples.length, res: s.res } : null; });
-  console.log(`(C) anello dopo il riempimento forzato: ${w ? w.n : '?'} campioni · risoluzione 1 su ${w ? w.res : '?'} (capienza 30000)`);
-  if (!w || w.n > 30000) issues.push(`(C) l'anello ha superato la capienza (${w ? w.n : '?'}): il diradamento non contiene piu' la memoria`);
-  if (w && !(w.res > 1)) issues.push('(C) la risoluzione non si e\' ridotta dopo il riempimento: il diradamento non scatta piu\'');
+  /* (C) [7.360.0] L'ANELLO E' CIRCOLARE: la memoria resta limitata SENZA sacrificare la risoluzione, e la
+     traccia restituita e' in ordine cronologico anche dopo il giro (senza il riordino tornava spezzata a
+     meta' e il taccuino leggeva un salto temporale all'indietro). */
+  const w = await page.evaluate(() => { const s = window.__CPM_WATCH_SNAP(); if (!s) return null;
+    let fuoriOrdine = 0; for (let i = 1; i < s.samples.length; i++) if (s.samples[i].t < s.samples[i - 1].t) fuoriOrdine++;
+    return { n: s.samples.length, res: s.res, fuoriOrdine }; });
+  console.log(`(C) anello dopo il riempimento forzato: ${w ? w.n : '?'} campioni · risoluzione 1 su ${w ? w.res : '?'} · campioni fuori ordine ${w ? w.fuoriOrdine : '?'} (capienza 30000)`);
+  if (!w || w.n > 30000) issues.push(`(C) l'anello ha superato la capienza (${w ? w.n : '?'}): la memoria non e' piu' limitata`);
+  if (w && w.res !== 1) issues.push(`(C) la risoluzione e' scesa a 1 su ${w.res}: il testimone ha ripreso a diradare e «un fotogramma» torna a non voler dire un fotogramma`);
+  if (w && w.fuoriOrdine > 0) issues.push(`(C) ${w.fuoriOrdine} campioni fuori ordine cronologico: dopo il giro dell'anello la traccia e' spezzata`);
   void snapA; void snapB;
 }
 
 await browser.close(); srv.close();
 if (issues.length) { console.log('\n❌ ' + issues.length + ' problemi:'); issues.forEach(i => console.log('  · ' + i)); process.exit(1); }
-console.log('\n✅ TESTIMONE OK — registra a risoluzione ridotta senza rallentare la partita');
+console.log('\n✅ TESTIMONE OK — anello circolare a risoluzione piena, in ordine, senza rallentare la partita');
