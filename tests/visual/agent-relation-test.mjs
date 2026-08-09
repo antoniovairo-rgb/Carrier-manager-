@@ -108,6 +108,42 @@ const r = await page.evaluate(() => {
     ['first', 'mercato', 'rinnovo', 'interesse', 'sponsor'].forEach(k => { if (!AGENT_HINT_TXT || !AGENT_HINT_TXT[k]) out.err.push(`manca il testo del reminder «${k}»`); });
   }
 
+  /* [7.376.0 R3 §3] IL PRIMO INCONTRO: quattro strade, non nove — e devono essere DIVERSE fra
+     loro, altrimenti la domanda «cosa vuoi davvero» diventa un questionario con quattro sfumature
+     della stessa risposta. */
+  const { agentIntroOptions, agentIntroLine, AGENT_INTRO_REPLY, agentHirePatch } = window;
+  if (!agentIntroOptions) out.err.push('agentIntroOptions non esposto');
+  else {
+    const giovanePiccolo = agentIntroOptions({ age: 19, club: { p: 55 }, popularity: 5 }).map(o => o.id);
+    const maturoBig = agentIntroOptions({ age: 26, club: { p: 84 }, popularity: 55 }).map(o => o.id);
+    out.righe.push(`incontro: giovane/piccolo=${giovanePiccolo.join(',')} · maturo/big=${maturoBig.join(',')}`);
+    [giovanePiccolo, maturoBig].forEach((set, i) => {
+      if (set.length !== 4) out.err.push(`le strade proposte non sono quattro (${set.length}) nel caso ${i}`);
+      if (new Set(set).size !== set.length) out.err.push(`una strada e' proposta due volte nel caso ${i}: ${set.join(',')}`);
+    });
+    if (JSON.stringify(giovanePiccolo) === JSON.stringify(maturoBig)) out.err.push('le strade non dipendono dal contesto: identiche per un esordiente e per un big');
+    if (giovanePiccolo.indexOf('titolare') < 0) out.err.push('a un giovane in un club piccolo non viene proposto di giocare');
+    if (maturoBig.indexOf('champions') < 0) out.err.push('a un giocatore di una big non viene proposta la Champions');
+    /* determinismo: stesso giocatore, stesse strade (non devono cambiare al reload) */
+    if (JSON.stringify(agentIntroOptions({ age: 19, club: { p: 55 }, popularity: 5 }).map(o => o.id)) !== JSON.stringify(giovanePiccolo))
+      out.err.push('le strade proposte non sono deterministiche');
+    /* ogni ambizione deve avere una risposta del procuratore che la CITA */
+    (window.AGENT_AMBITIONS || []).forEach(a => { if (!AGENT_INTRO_REPLY[a.id]) out.err.push(`manca la risposta del procuratore per «${a.id}»`); });
+    const ln = agentIntroLine({}, 'Tizio', 'champions');
+    if (!ln.domanda || ln.domanda.indexOf('cosa vuoi davvero') < 0) out.err.push("la domanda dell'incontro non e' quella della direttiva");
+
+    /* §5 — l'ambizione dichiarata deve ENTRARE nella memoria all'atto della firma */
+    const dopoFirma = agentHirePatch({ name: 'Tizio', season: 2, week: 5, bankBalance: 9000, contract: { wage: 1000 } }, 1000, 'champions');
+    out.righe.push(`firma: hasAgent=${dopoFirma.hasAgent} · saldo=${dopoFirma.bankBalance} · memoria=${JSON.stringify(dopoFirma.agent && dopoFirma.agent.memory.amb)}`);
+    if (!dopoFirma.hasAgent) out.err.push('la firma non attiva il procuratore');
+    if (dopoFirma.bankBalance !== 8000) out.err.push(`l'onorario non e' stato scalato: ${dopoFirma.bankBalance}`);
+    if (!dopoFirma.agent || dopoFirma.agent.memory.amb[0] !== 'champions') out.err.push("l'ambizione dichiarata non entra nella memoria alla firma");
+    if (dopoFirma.agentHint && dopoFirma.agentHint.due) out.err.push('dopo la firma il reminder resta acceso');
+    /* firmare SENZA dichiarare nulla non deve rompere niente */
+    const senzaAmb = agentHirePatch({ name: 'Tizio', bankBalance: 9000, contract: { wage: 1000 } }, 1000);
+    if (!senzaAmb.hasAgent || !senzaAmb.agent) out.err.push('la firma senza ambizione dichiarata non regge');
+  }
+
   /* REGOLA #1 — senza relazione il sistema non deve rompersi */
   const senza = agentAdvice({ matches: 5, goals: 1, assists: 0 }, null);
   if (!senza || !Array.isArray(senza.temi)) out.err.push('senza `player.agent` il consiglio non degrada a un valore utilizzabile');
