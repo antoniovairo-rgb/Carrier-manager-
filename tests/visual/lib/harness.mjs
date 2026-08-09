@@ -102,7 +102,32 @@ async function clickByText(page, src, timeout = 9000) {
   const end = Date.now() + timeout;
   while (Date.now() < end) {
     const h = await page.evaluateHandle(s => { const rx = new RegExp(s, 'i'); return [...document.querySelectorAll('button')].find(b => rx.test((b.textContent || '').trim())) || null; }, src);
-    const el = h.asElement(); if (el) { await el.click(); return true; } await sleep(200);
+    /* [7.367.0 misurato sul gate] IL CICLO DI RIPROVA NON POTEVA RIPROVARE. Il bottone lo si cerca in un
+       ciclo con un budget di `timeout` ms, ma il click portava dentro il PROPRIO timeout di Playwright (30s
+       di default) e, prima di tornare, aspetta «scheduled navigations to finish». Quando quell'attesa si
+       impianta — successo sul gate completo, dove la pagina di live-smoke nasce in un browser gia' carico di
+       una run da 617s — il singolo click brucia 30s, sfonda la finestra dei 9s del ciclo e ESCE per
+       eccezione: il ciclo di riprova non vede mai il secondo tentativo. Il `timeout` del ciclo era una
+       promessa che il click poteva disattendere da solo.
+       Il primo tentativo di correzione — limitare il click a una fetta del budget — ha fatto FALLIRE TUTTO
+       («"Inizia il provino" non trovato», 0 Situations esaminate), e la bocciatura e' stata istruttiva: se
+       accorciare l'attesa fa fallire OGNI click, allora quell'attesa non si conclude quasi mai da sola, e i
+       30s di prima non erano un margine ma il tempo che ci voleva per arrendersi. Il click va a segno — il
+       log Playwright dice «click action done» — e resta appeso DOPO, su «waiting for scheduled navigations
+       to finish». Ma qui navigazione non ce n'e': e' una SPA, la pagina non cambia mai.
+       Quindi: click vero con un tetto breve, e se quel tetto scatta si RIDISPACCIA il click in pagina, che
+       e' lo stesso handler React senza nessuna attesa di navigazione. Misurato: 4 esecuzioni isolate di
+       live-smoke su 7.367.0 verdi, 0 pageerror — il rosso non veniva dal gioco. */
+    const el = h.asElement();
+    if (el) {
+      try { await el.click({ timeout: 3000 }); return true; }
+      catch (e) {
+        /* il click e' andato a segno, ad appendersi e' l'ATTESA DI NAVIGAZIONE: qui non c'e' navigazione da
+           aspettare, e' una SPA. Si ridispaccia in pagina — stesso handler React, zero attese di pagina. */
+        try { await el.evaluate(b => b.click()); return true; } catch (e2) { if (Date.now() >= end) throw e; }
+      }
+    }
+    await sleep(200);
   }
   return false;
 }
