@@ -15,6 +15,7 @@
     "agent-lifecycle": "node agent-lifecycle-test.mjs",
     "setpiece-celebration": "node setpiece-celebration-test.mjs",
     "delivery-origin": "node delivery-origin-test.mjs",
+    "carry-run-ball": "node carry-run-ball-test.mjs",
     "attendance-sim": "node attendance-sim.mjs",
     "club-evolution-sim": "node club-evolution-sim.mjs",
     "kit-pattern-shot": "node kit-pattern-shot.mjs",
