@@ -196,6 +196,48 @@ const r = await page.evaluate(() => {
     if (JSON.stringify(agentCheckinApply({ season: 1, week: 1 }, 'felice')) !== '{}') out.err.push('il confronto produce effetti senza procuratore');
   }
 
+  /* [7.378.0 R5 §6/§8] L'INIZIATIVA: il procuratore bussa, ma UNA voce alla volta e mai un mercato
+     parallelo. Il rischio qui non e' che taccia: e' che diventi rumore, o che prometta cose che il
+     gioco non produce. */
+  const { agentInitiative, agentInitLine } = window;
+  if (!agentInitiative) out.err.push('agentInitiative non esposto');
+  else {
+    const AG = () => agentInit({ id: 'prudente', name: 'X', season: 1, week: 1 });
+    const B = (o) => ({ proStatus: 'pro', hasAgent: true, agent: AG(), season: 2, week: 30, contract: { wage: 5000, years: 3 }, value: 4, popularity: 10, sponsors: [], agentInit: { k: null, s: 0, w: 0 }, ...o });
+    const K = (o) => { const r = agentInitiative(B(o)); return r && r.k; };
+    out.righe.push(`iniziativa: scadenza=${K({ contract: { wage: 5000, years: 1 } })} · sottopagato=${K({ value: 30 })} · immagine=${K({ popularity: 45 })} · quiete=${K({})}`);
+    if (K({ contract: { wage: 5000, years: 1 } }) !== 'contratto') out.err.push('col contratto in scadenza il procuratore non dice niente');
+    if (K({ value: 30 }) !== 'contratto') out.err.push('con uno stipendio non piu\' adeguato il procuratore non dice niente');
+    if (K({ popularity: 45 }) !== 'sponsor') out.err.push('con la popolarita\' alta e nessuno sponsor il procuratore non propone niente');
+    if (K({}) !== null) out.err.push('il procuratore parla anche quando non c\'e\' niente da dire');
+    /* senza procuratore, e nelle giovanili, silenzio */
+    if (agentInitiative({ proStatus: 'pro', season: 2, week: 30 })) out.err.push("l'iniziativa parte senza procuratore");
+    if (agentInitiative(B({ proStatus: 'u18' }))) out.err.push("l'iniziativa parte nelle giovanili");
+    /* §12 — cooldown: non si bussa due volte in un mese e mezzo */
+    const recente = agentInitiative(B({ contract: { wage: 5000, years: 1 }, agentInit: { k: 'sponsor', s: 2, w: 27 } }));
+    if (recente) out.err.push('il procuratore bussa di nuovo dopo tre settimane: e\' spam');
+    /* mai la stessa cosa due volte di fila */
+    const stessa = agentInitiative(B({ contract: { wage: 5000, years: 1 }, agentInit: { k: 'contratto', s: 1, w: 1 } }));
+    if (stessa && stessa.k === 'contratto') out.err.push('il procuratore ripete la stessa iniziativa due volte di fila');
+    /* MERCATO: solo in finestra e solo se il mercato si sta davvero muovendo; e le due fasi
+       raccontano l'avvicinamento senza promettere un'offerta */
+    const fuoriFinestra = K({ week: 30, transferListed: true });
+    const inFinestra = K({ week: 21, transferListed: true });
+    out.righe.push(`mercato: fuoriFinestra=${fuoriFinestra} · inFinestra=${inFinestra}`);
+    if (fuoriFinestra === 'mercato1' || fuoriFinestra === 'mercato2') out.err.push('il procuratore parla di mercato fuori dalle finestre');
+    if (inFinestra !== 'mercato1') out.err.push('in finestra, col giocatore sul mercato, il procuratore non apre la fase 1');
+    const fase2 = agentInitiative(B({ week: 21, transferListed: true, agentInit: { k: 'mercato1', s: 1, w: 1 } }));
+    if (!fase2 || fase2.k !== 'mercato2') out.err.push('la seconda fase del mercato non arriva dopo la prima');
+    /* nessuna delle due deve PROMETTERE un'offerta che il gioco non ha prodotto */
+    ['mercato1', 'mercato2'].forEach(k => {
+      const t = agentInitLine(k, 'finestra');
+      if (!t) out.err.push(`manca il testo di «${k}»`);
+      if (/offerta sul tavolo|c'e' un'offerta|ecco l'offerta/i.test(t)) out.err.push(`«${k}» promette un'offerta che il gioco non ha generato`);
+    });
+    /* ogni combinazione dichiarata deve avere un testo */
+    Object.keys(window.AGENT_INIT_TXT || {}).forEach(k => Object.keys(window.AGENT_INIT_TXT[k]).forEach(w => { if (!agentInitLine(k, w)) out.err.push(`manca il testo ${k}/${w}`); }));
+  }
+
   /* REGOLA #1 — senza relazione il sistema non deve rompersi */
   const senza = agentAdvice({ matches: 5, goals: 1, assists: 0 }, null);
   if (!senza || !Array.isArray(senza.temi)) out.err.push('senza `player.agent` il consiglio non degrada a un valore utilizzabile');
