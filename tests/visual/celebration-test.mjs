@@ -83,6 +83,17 @@ const pure = await page.evaluate(() => {
   for (let sd = 0; sd < 24; sd++) set.add(pc(dec, { clips: { lift: true }, space: { toCrowd: 30, toCorner: 30, toMates: 6, matesNear: 3 }, seed: sd }).id);
   out.varieta = set.size;
   if (set.size < 2) out.err.push(`nessuna varieta': ${set.size} esultanza sola su 24 semi`);
+
+  /* [7.372.0] OGNI ESULTANZA DEVE VEDERSI. Il guardiano che mancava: la verifica GLB-ON del 7.371 ha
+     trovato `contained` con `clip:null` scelta su 3 gol su 4 — sotto CH38 l'eroe non faceva niente,
+     zero gesti su 50 fotogrammi. Un'esultanza senza NESSUN canale visibile (ne' clip, ne' corsa, ne'
+     salto) e' indistinguibile dall'assenza del sistema: e' il difetto da cui e' nata questa feature.
+     L'unica eccezione legittima e' l'autorete, dove il non-esultare E' il comportamento giusto. */
+  (window.CELEBRATIONS || []).forEach(c => {
+    if (c.mute) return;
+    const visibile = !!c.clip || (c.run > 0) || (c.jump > 0) || (c.slide > 0);
+    if (!visibile) out.err.push(`«${c.id}» non ha nessun canale visibile (ne' clip, ne' corsa, ne' salto): sotto CH38 non si vedrebbe niente`);
+  });
   return out;
 });
 
