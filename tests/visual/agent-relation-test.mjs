@@ -144,6 +144,58 @@ const r = await page.evaluate(() => {
     if (!senzaAmb.hasAgent || !senzaAmb.agent) out.err.push('la firma senza ambizione dichiarata non regge');
   }
 
+  /* [7.377.0 R4 §4] IL CONFRONTO: cadenza, memoria, e conseguenze VERE. */
+  const { agentCheckinDue, agentCheckinAsk, agentCheckinApply, AGENT_CHECKIN_REPLY } = window;
+  if (!agentCheckinDue) out.err.push('agentCheckinDue non esposto');
+  else {
+    const mkAg = (sinceW, lastW, amb) => { const a = agentInit({ id: 'prudente', name: 'X', season: 1, week: sinceW }); a.lastCheckin = { s: 1, w: lastW }; if (amb) a.memory = agentRemember(a.memory, { k: 'ambizione', v: amb }); return a; };
+    const P = (w, ag) => ({ proStatus: 'pro', hasAgent: true, name: 'Tizio', season: 1, week: w, agent: ag, matches: 10, goals: 4, assists: 2, coachTrust: 30, morale: 60, contract: { wage: 5000, years: 3 }, value: 4, popularity: 20 });
+    /* appena firmato non si chiede «come stai» */
+    const subito = agentCheckinDue(P(4, mkAg(1, 1)));
+    /* passati 4-5 mesi si', e l'attesa sta nella finestra dichiarata */
+    const lungo = agentCheckinDue(P(30, mkAg(1, 1)));
+    out.righe.push(`confronto: appenaFirmato=${subito.due} · dopo29settimane=${lungo.due} (attesa ${lungo.att})`);
+    if (subito.due) out.err.push('il confronto parte appena firmato: non ha senso chiedere «come stai» dopo tre settimane');
+    if (!lungo.due) out.err.push('il confronto non arriva mai: dopo 29 settimane dovrebbe essere dovuto');
+    if (!(lungo.att >= 16 && lungo.att <= 20)) out.err.push(`l'attesa non e' nei 4-5 mesi dichiarati: ${lungo.att} settimane`);
+    if (agentCheckinDue(P(30, mkAg(1, 1))).att !== lungo.att) out.err.push("l'attesa non e' deterministica: cambia fra due letture identiche");
+    /* variabilita': carriere diverse NON devono avere tutte lo stesso ritmo */
+    const attese = ['Tizio', 'Caio', 'Sempronio', 'Marco', 'Luca', 'Anna'].map(n => agentCheckinDue({ ...P(30, mkAg(1, 1)), name: n }).att);
+    out.righe.push(`ritmi su sei carriere: ${attese.join(',')}`);
+    if (new Set(attese).size < 2) out.err.push('il confronto ha la stessa identica cadenza per tutti: sembra un evento meccanico');
+    /* senza procuratore non si chiede niente */
+    if (agentCheckinDue({ proStatus: 'pro', season: 2, week: 30 }).due) out.err.push('il confronto arriva senza procuratore');
+
+    /* §5 — la domanda RICORDA ciò che l'Eroe ha dichiarato */
+    const conAmb = agentCheckinAsk(P(30, mkAg(1, 1, 'champions')), mkAg(1, 1, 'champions'));
+    const senzAmb = agentCheckinAsk(P(30, mkAg(1, 1)), mkAg(1, 1));
+    out.righe.push(`domanda: conRicordo=${conAmb.ricordo ? 'sì' : 'no'} · senzaRicordo=${senzAmb.ricordo ? 'sì' : 'no'}`);
+    if (!conAmb.ricordo || conAmb.ricordo.indexOf('Champions') < 0) out.err.push('il procuratore non ricorda l\'ambizione dichiarata');
+    if (senzAmb.ricordo) out.err.push('il procuratore «ricorda» qualcosa che non gli e\' mai stato detto');
+    /* la lettura deve dipendere dal contesto reale */
+    if (conAmb.lettura.indexOf('spazio') < 0) out.err.push('con un Eroe che gioca poco e rende bene, la lettura non parla di spazio');
+    if (conAmb.opzioni.length !== 4) out.err.push(`le risposte non sono quattro: ${conAmb.opzioni.length}`);
+    conAmb.opzioni.forEach(o => { if (!AGENT_CHECKIN_REPLY[o.id]) out.err.push(`manca la replica del procuratore per «${o.id}»`); });
+
+    /* §4 — CONSEGUENZE REALI, e sui sistemi che esistono già */
+    const bas = P(30, mkAg(1, 1));
+    const rFel = agentCheckinApply(bas, 'felice');
+    const rGua = agentCheckinApply(bas, 'guardo');
+    const rVia = agentCheckinApply(bas, 'via');
+    out.righe.push(`conseguenze: felice→morale ${rFel.morale} rapporto ${rFel.agent.rapport} · guardo→task ${rGua.agentTask} · via→listed ${rVia.transferListed}`);
+    if (!(rFel.morale > (bas.morale || 0))) out.err.push('«sto benissimo qui» non alza il morale');
+    if (!(rFel.agent.rapport > 50)) out.err.push('«sto benissimo qui» non rafforza il rapporto');
+    if (rGua.agentTask !== 'cerca_offerte') out.err.push('«guardiamoci intorno» non attiva l\'incarico di ricerca offerte esistente');
+    if (rVia.transferListed !== true) out.err.push('«voglio cambiare aria» non attiva il flag di mercato esistente');
+    ['felice', 'ruolo', 'guardo', 'via'].forEach(id => {
+      const r = agentCheckinApply(bas, id);
+      if (!r.agent || !r.agent.lastCheckin || r.agent.lastCheckin.w !== 30) out.err.push(`dopo «${id}» il confronto non viene datato: si ripeterebbe subito`);
+      if (!r.agent.memory.note.length) out.err.push(`dopo «${id}» non resta traccia in memoria`);
+    });
+    if (JSON.stringify(agentCheckinApply(bas, 'inesistente')) !== '{}') out.err.push('una risposta sconosciuta produce effetti');
+    if (JSON.stringify(agentCheckinApply({ season: 1, week: 1 }, 'felice')) !== '{}') out.err.push('il confronto produce effetti senza procuratore');
+  }
+
   /* REGOLA #1 — senza relazione il sistema non deve rompersi */
   const senza = agentAdvice({ matches: 5, goals: 1, assists: 0 }, null);
   if (!senza || !Array.isArray(senza.temi)) out.err.push('senza `player.agent` il consiglio non degrada a un valore utilizzabile');
