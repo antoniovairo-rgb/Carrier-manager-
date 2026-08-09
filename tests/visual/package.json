@@ -9,6 +9,7 @@
     "quick-gate": "node quick-gate.mjs",
     "validate-situations:update-golden": "node validate-situations.mjs --update-golden",
     "validate-situations:update-baseline": "CPM_UPDATE_BASELINE=1 node validate-situations.mjs",
+    "pass-landing": "node pass-landing-test.mjs",
     "attendance-sim": "node attendance-sim.mjs",
     "club-evolution-sim": "node club-evolution-sim.mjs",
     "kit-pattern-shot": "node kit-pattern-shot.mjs",
