@@ -12,6 +12,7 @@
     "pass-landing": "node pass-landing-test.mjs",
     "celebration": "node celebration-test.mjs",
     "agent-relation": "node agent-relation-test.mjs",
+    "agent-lifecycle": "node agent-lifecycle-test.mjs",
     "setpiece-celebration": "node setpiece-celebration-test.mjs",
     "delivery-origin": "node delivery-origin-test.mjs",
     "attendance-sim": "node attendance-sim.mjs",
