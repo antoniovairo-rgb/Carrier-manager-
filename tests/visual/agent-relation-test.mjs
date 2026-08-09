@@ -238,6 +238,56 @@ const r = await page.evaluate(() => {
     Object.keys(window.AGENT_INIT_TXT || {}).forEach(k => Object.keys(window.AGENT_INIT_TXT[k]).forEach(w => { if (!agentInitLine(k, w)) out.err.push(`manca il testo ${k}/${w}`); }));
   }
 
+  /* [7.379.0 R6 §10/§9/§26] CATALOGO, ROTTURA, LOGORIO — e soprattutto la memoria che NON si eredita. */
+  const { agentCandidates, agentPartPatch, agentRapportDrift, agentRapportAdvice } = window;
+  if (!agentCandidates) out.err.push('agentCandidates non esposto');
+  else {
+    const P = (o) => ({ name: 'Tizio', season: 3, week: 10, popularity: 45, value: 12, hasAgent: true, agent: agentInit({ id: 'prudente', name: 'Vecchio', season: 1, week: 1 }), ...o });
+    const cand = agentCandidates(P());
+    out.righe.push(`candidati: ${cand.map(c => c.arch + '/' + c.name).join(' · ')}`);
+    if (!cand.length) out.err.push('nessun candidato disponibile: il cambio sarebbe impossibile');
+    if (cand.length > 3) out.err.push(`troppi candidati (${cand.length}): la direttiva vieta la lista infinita`);
+    if (cand.some(c => c.arch === 'prudente')) out.err.push('fra i candidati compare il procuratore che si sta lasciando');
+    if (cand.some(c => !c.name || !c.desc || !c.forte)) out.err.push('un candidato e\' senza identita\' (nome/descrizione/punto di forza)');
+    if (JSON.stringify(agentCandidates(P())) !== JSON.stringify(cand)) out.err.push('i candidati non sono deterministici');
+    /* un esordiente deve comunque trovare qualcuno */
+    if (!agentCandidates({ name: 'X', popularity: 2, value: 0.2 }).length && !agentCandidates({ name: 'X', popularity: 2, value: 0.2, agent: null }).length)
+      out.err.push('un esordiente non trova nessun candidato');
+
+    /* §26 — LA MEMORIA PERSONALE NON SI EREDITA, lo storico sì */
+    const vecchio = agentInit({ id: 'prudente', name: 'Vecchio', season: 1, week: 1 });
+    vecchio.memory = agentRemember(vecchio.memory, { k: 'ambizione', v: 'champions' });
+    vecchio.memory = agentRemember(vecchio.memory, { k: 'decisione', v: 'restare' });
+    const conVecchio = P({ agent: vecchio });
+    const rotto = agentPartPatch(conVecchio);
+    out.righe.push(`rottura: hasAgent=${rotto.hasAgent} · agent=${rotto.agent} · storico=${(rotto.agentHistory || []).map(h => h.name).join(',')}`);
+    if (rotto.hasAgent !== false || rotto.agent !== null) out.err.push('dopo la rottura il procuratore risulta ancora attivo');
+    if (!rotto.agentHistory || rotto.agentHistory[0].name !== 'Vecchio') out.err.push('la rottura non lascia traccia nello storico di carriera');
+    if (rotto.agentTask !== null || rotto.agentPlan !== null) out.err.push('dopo la rottura restano incarichi o piani del procuratore precedente');
+    const nuovo = agentHirePatch({ ...conVecchio, ...rotto, bankBalance: 9000, contract: { wage: 1000 } }, 1000, 'trofei', 'ambizioso', 'Nuovo');
+    out.righe.push(`nuovo: ${nuovo.agent.name}/${nuovo.agent.arch} · memoria=${JSON.stringify(nuovo.agent.memory.amb)} · note=${nuovo.agent.memory.note.length} · storico=${(nuovo.agentHistory || []).length}`);
+    if (nuovo.agent.arch !== 'ambizioso' || nuovo.agent.name !== 'Nuovo') out.err.push('il procuratore scelto dal catalogo non viene rispettato');
+    if (nuovo.agent.memory.amb.indexOf('champions') >= 0) out.err.push('IL NUOVO PROCURATORE EREDITA CIO\' CHE L\'EROE AVEVA CONFIDATO AL PRECEDENTE');
+    if (nuovo.agent.memory.note.length) out.err.push('il nuovo procuratore eredita le note personali del precedente');
+    if (nuovo.agent.memory.amb[0] !== 'trofei') out.err.push('la nuova ambizione dichiarata non entra nella nuova relazione');
+    if (!(nuovo.agentHistory || []).length) out.err.push('lo storico di carriera va perso col nuovo procuratore');
+    if (nuovo.agent.rapport !== 50) out.err.push('la nuova relazione non riparte da un rapporto neutro');
+
+    /* §9 — il logorio nasce dal DISACCORDO, non dal tempo */
+    const mk = (arch, ambId) => { const a = agentInit({ id: arch }); if (ambId) a.memory = agentRemember(a.memory, { k: 'ambizione', v: ambId }); return a; };
+    const dFed = agentRapportDrift({ hasAgent: true, agent: mk('ambizioso', 'fedelta') });
+    const dCha = agentRapportDrift({ hasAgent: true, agent: mk('ambizioso', 'champions') });
+    out.righe.push(`logorio: ambizioso+fedeltà=${dFed} · ambizioso+champions=${dCha}`);
+    if (!(dFed < 0)) out.err.push('un procuratore che spinge sul mercato non logora chi gli ha detto di voler restare');
+    if (!(dCha > 0)) out.err.push('un procuratore in sintonia con le ambizioni non rafforza il rapporto');
+    if (agentRapportDrift({ hasAgent: false }) !== 0) out.err.push('il logorio agisce senza procuratore');
+    /* §22 — quando è rotto il gioco lo dice, ma non cambia niente da solo */
+    const rot = agentInit({ id: 'prudente' }); rot.rapport = 10;
+    const av = agentRapportAdvice({ hasAgent: true, agent: rot });
+    if (!av || av.tier !== 'conflittuale') out.err.push('con un rapporto conflittuale il gioco non suggerisce nulla');
+    if (agentRapportAdvice({ hasAgent: true, agent: agentInit({ id: 'prudente' }) })) out.err.push('il gioco suggerisce di cambiare anche con un rapporto sano');
+  }
+
   /* REGOLA #1 — senza relazione il sistema non deve rompersi */
   const senza = agentAdvice({ matches: 5, goals: 1, assists: 0 }, null);
   if (!senza || !Array.isArray(senza.temi)) out.err.push('senza `player.agent` il consiglio non degrada a un valore utilizzabile');
