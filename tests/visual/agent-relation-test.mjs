@@ -77,6 +77,37 @@ const r = await page.evaluate(() => {
   out.righe.push(`stesso contesto e procuratore, con «fedelta'» in memoria: ${conFed} (era ${amb})`);
   if (!(conFed < amb)) out.err.push("la memoria non influenza il consiglio: «fedelta'» non frena la spinta al mercato");
 
+  /* [7.375.0 R2 §2 + §12] IL REMINDER, e soprattutto il suo ANTI-SPAM. Il rischio di questa
+     funzione non e' che non compaia: e' che compaia troppo. */
+  const { agentHintCheck, agentHireFee, AGENT_HINT_TXT } = window;
+  if (!agentHintCheck) out.err.push('agentHintCheck non esposto');
+  else {
+    const base = { proStatus: 'pro', contract: { wage: 2000, years: 3 }, bankBalance: 5000, season: 1, week: 10, agentHint: { n: 0, s: 0, w: 0 } };
+    const T = (o) => agentHintCheck({ ...base, ...o }).due;
+    out.righe.push(`reminder: prima=${T({})} · senzaSoldi=${T({ bankBalance: 100 })} · conAgente=${T({ hasAgent: true })} · u18=${T({ proStatus: 'u18' })}`);
+    if (T({}) !== 'first') out.err.push('il reminder non compare la prima volta che l\'Eroe puo\' permetterselo');
+    if (T({ bankBalance: 100 }) !== null) out.err.push('il reminder compare senza i fondi necessari');
+    if (T({ hasAgent: true }) !== null) out.err.push('il reminder compare a chi ha gia\' un procuratore');
+    if (T({ proStatus: 'u18' }) !== null) out.err.push('il reminder compare nelle giovanili');
+    /* il costo NON e' nuovo: e' la stessa formula della card d'ingaggio */
+    if (agentHireFee({ contract: { wage: 2000 } }) !== 2000) out.err.push('l\'onorario non segue lo stipendio');
+    if (agentHireFee({ contract: { wage: 100 } }) !== 500) out.err.push('l\'onorario non rispetta il minimo di 500€');
+    /* dopo un «non ora»: silenzio, salvo un motivo vero e non prima di dieci settimane */
+    const dopo = { agentHint: { n: 1, s: 1, w: 10 } };
+    const sub = T({ ...dopo, week: 12 });
+    const merc = T({ ...dopo, week: 22 });
+    const rinn = T({ ...dopo, week: 30, contract: { wage: 2000, years: 1 } });
+    const nulla = T({ ...dopo, week: 30 });
+    out.righe.push(`anti-spam: subito=${sub} · mercato=${merc} · rinnovo=${rinn} · senzaMotivo=${nulla} · dopo4volte=${T({ week: 22, agentHint: { n: 4, s: 1, w: 1 } })}`);
+    if (sub !== null) out.err.push('il reminder torna subito dopo un «non ora»: e\' spam');
+    if (nulla !== null) out.err.push('il reminder torna senza nessun motivo che lo giustifichi');
+    if (merc !== 'mercato') out.err.push('il reminder non torna all\'apertura del mercato');
+    if (rinn !== 'rinnovo') out.err.push('il reminder non torna col contratto in scadenza');
+    if (T({ week: 22, agentHint: { n: 4, s: 1, w: 1 } }) !== null) out.err.push('il reminder non ha un tetto: continua oltre le quattro volte');
+    /* ogni motivo deve avere un testo: un reminder senza voce non e' un reminder */
+    ['first', 'mercato', 'rinnovo', 'interesse', 'sponsor'].forEach(k => { if (!AGENT_HINT_TXT || !AGENT_HINT_TXT[k]) out.err.push(`manca il testo del reminder «${k}»`); });
+  }
+
   /* REGOLA #1 — senza relazione il sistema non deve rompersi */
   const senza = agentAdvice({ matches: 5, goals: 1, assists: 0 }, null);
   if (!senza || !Array.isArray(senza.temi)) out.err.push('senza `player.agent` il consiglio non degrada a un valore utilizzabile');
