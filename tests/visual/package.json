@@ -11,6 +11,7 @@
     "validate-situations:update-baseline": "CPM_UPDATE_BASELINE=1 node validate-situations.mjs",
     "pass-landing": "node pass-landing-test.mjs",
     "celebration": "node celebration-test.mjs",
+    "setpiece-celebration": "node setpiece-celebration-test.mjs",
     "delivery-origin": "node delivery-origin-test.mjs",
     "attendance-sim": "node attendance-sim.mjs",
     "club-evolution-sim": "node club-evolution-sim.mjs",
