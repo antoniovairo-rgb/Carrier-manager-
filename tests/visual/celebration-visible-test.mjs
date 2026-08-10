@@ -22,6 +22,7 @@
 import { startServer, launchBrowser, installCdnRoutes, openMatch, sleep } from './lib/harness.mjs';
 
 const VERB = process.argv.includes('--verbose');
+const CONTINUA = process.argv.includes('--continua');/* [7.392.0] percorre la strada VERA: dopo il gol si preme «CONTINUA» come farebbe il giocatore */
 const TS_MAX = 1.6;    /* oltre, la clip non e' un gesto: e' un tremolio */
 const ARM_MAX = 1;     /* una clip di gioia si suona UNA volta e si tiene, non va in loop */
 
@@ -33,18 +34,19 @@ const page = await browser.newPage({ viewport: { width: 380, height: 300 } });
 await installCdnRoutes(page);
 /* ⚠️ NIENTE __CPM_GLB=false: si misura il renderer che il giocatore ha davvero (CH38, GLB di default).
    __CPM_PRESENT riaccende snap e freeze della presentazione, spenti sotto cpmtest. */
-await page.addInitScript(() => { window.__CPM_PRESENT = 1; window.__CPM_REC = true; });
+const NO392 = process.argv.includes('--senza392');/* A/B: spegne le due correzioni del 7.392 per provare che il guardiano sia ROSSO senza */
+await page.addInitScript(n => { window.__CPM_PRESENT = 1; window.__CPM_REC = true; if (n) window.__CPM_NO392 = 1; }, NO392);
 const errors = []; page.on('pageerror', e => errors.push(String(e.message).slice(0, 140)));
 await openMatch(page, port); await sleep(1400);
 
-const GOAL_GIS = await page.evaluate(() => {
+const GOAL_GIS = await page.evaluate((LIM) => {
   const out = []; const S = window.__CPM_SITS || [];
-  for (let i = 0; i < S.length && out.length < 4; i++) {
+  for (let i = 0; i < S.length && out.length < LIM; i++) {
     const s = S[i]; if (!s || !s.actions || !s.actions[0]) continue;
     if (s.actions[0].rew === 'goal' && !s.def) out.push(i);
   }
   return out;
-});
+}, +(process.env.CPM_GOALS || 4));
 
 const righe = [], guasti = [];
 for (const gi of GOAL_GIS) {
@@ -53,10 +55,23 @@ for (const gi of GOAL_GIS) {
     window.__CPM_CELGST = 0; window.__CPM_CELFR = 0; window.__CPM_CELTS = 0;
     window.__CPM_CELARM = 0; window.__CPM_CELPREV = null;
     window.__CPM_CELDX = 0; window.__CPM_CELY = 0; window.__CPM_CELN = 0; window.__CPM_CELPOS = null; window.__CPM_CELSTEP = 0; window.__CPM_CELDONE84 = 0;
+    window.__CPM_ARM392 = {};
     window.__CPM_FORCE_SIT(g, true);
   }, gi);
   await sleep(700);
   await page.evaluate(() => { window.__CPM_FORCE_OUTCOME = 'success'; try { window.__CPM_RESOLVE(0); } catch (e) {} });
+  /* ⚠️ [7.392.0] LA STRADA VERA PASSA DA «CONTINUA». Il collaudo forza le scene, e la modalita' forzata
+     fa uscire `handleContinue` alla prima riga: cioe' il guardiano non ha MAI attraversato le righe che
+     in partita vera chiudono la scena e azzerano il piano d'esultanza. E' esattamente il pezzo che il PO
+     descriveva con «l'unica esultanza che vedo e' quella su rigore» — il rigore e' l'unico gol che non
+     passa di li'. Con `--continua` si spegne la modalita' forzata e si preme il pulsante come farebbe il
+     giocatore, subito dopo il gol. */
+  if (CONTINUA) {
+    await sleep(900);
+    await page.evaluate(() => { window.__CPM_FORCED_MODE = false; });
+    try { await page.getByText('CONTINUA', { exact: false }).first().click({ timeout: 2500 }); }
+    catch (e) { await page.keyboard.press('Enter').catch(() => {}); }
+  }
   /* ⚠️ SI ASPETTA IN TEMPO-SCENA, NON IN TEMPO REALE. Il loop avanza a passi limitati e col
      rasterizzatore software un secondo d'orologio vale una frazione di secondo di gioco: con 9 s
      l'esultanza (2,2-4,2 s di scena) non arrivava nemmeno al suo ritardo d'avvio di 0,38 s, e la sonda
@@ -69,6 +84,7 @@ for (const gi of GOAL_GIS) {
   const m = await page.evaluate(() => ({
     c: window.__CPM_CELEB || null, fr: window.__CPM_CELFR || 0, gst: window.__CPM_CELGST || 0,
     ts: window.__CPM_CELTS || 0, arm: window.__CPM_CELARM || 0,
+    diag: window.__CPM_ARM392 || null,
     dx: window.__CPM_CELDX || 0, y: window.__CPM_CELY || 0, n: window.__CPM_CELN || 0, step: window.__CPM_CELSTEP || 0, run: window.__CPM_CELEB ? null : null,
   }));
   if (!m.c) { guasti.push(`gi${gi}: nessun piano d'esultanza prodotto`); continue; }
@@ -91,7 +107,7 @@ for (const gi of GOAL_GIS) {
   if (problemi.length) guasti.push(`gi${gi} [${m.c.pick}/${m.c.ctx.tier}]: ` + problemi.join(' · '));
 
   righe.push({ gi, pick: m.c.pick, tier: m.c.ctx.tier, dur: m.c.dur, fr: m.fr, clipFr, ts: m.ts, arm: m.arm, spost, quota, canali });
-  console.log(`${problemi.length ? '❌' : '✅'} gi${String(gi).padStart(3)} ${String(m.c.pick).padEnd(13)} ${String(m.c.ctx.tier).padEnd(12)} · fotogrammi ${String(m.n).padStart(3)} · clip ${String(((clipFr * 100) | 0) + '%').padStart(4)} · scala ${m.ts.toFixed(1)}x · ri-armi ${m.arm} · spostamento ${spost}u · quota ${quota}u · canali [${canali.join(',') || 'NESSUNO'}]`);
+  console.log(`${problemi.length ? '❌' : '✅'} gi${String(gi).padStart(3)} ${String(m.c.pick).padEnd(13)} ${String(m.c.ctx.tier).padEnd(12)} · fotogrammi ${String(m.n).padStart(3)} · clip ${String(((clipFr * 100) | 0) + '%').padStart(4)} · scala ${m.ts.toFixed(1)}x · ri-armi ${m.arm} · spostamento ${spost}u · quota ${quota}u · canali [${canali.join(',') || 'NESSUNO'}] · armamento ${JSON.stringify(m.diag)}`);
 }
 
 await browser.close(); srv.close();
