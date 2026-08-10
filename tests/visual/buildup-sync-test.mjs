@@ -49,8 +49,17 @@ for (const gi of SCENE) {
     let n = 0, salto = 0, saltoCtx = null, camB = 0, camH = 0, guidato = 0, carB = 0, carH = 0, carN = 0;
     for (let i = 1; i < fr.length; i++) {
       const a = fr[i - 1], c = fr[i];
-      if (c.tl !== 1 || a.tl !== 1) continue;            /* solo dentro il build-up */
+      /* ⚠️ ANCHE IL FOTOGRAMMA DI CONSEGNA (tl 1→0). Chiedere `tl===1` su entrambi i fotogrammi
+         scartava proprio la transizione build-up→conclusione, dove il pallone viene SCRITTO al punto
+         d'arrivo dell'ultimo beat: un punto cieco esattamente sul passaggio piu' brusco della scena. */
+      const bordo = (a.tl === 1 && c.tl !== 1);
+      if (!(c.tl === 1 && a.tl === 1) && !bordo) continue;
       const dt = (c.t - a.t) / 1000; if (dt <= 0 || dt > 0.5) continue;
+      if (bordo) {
+        const dbb = Math.hypot(c.b[0] - a.b[0], c.b[1] - a.b[1]);
+        if (dbb > salto) { salto = dbb; saltoCtx = { da: a.tk, a: 'CONSEGNA', ms: Math.round(dt * 1000), x: c.b[0] }; }
+        continue;                                        /* il bordo conta solo per il salto */
+      }
       n++;
       const db = Math.hypot(c.b[0] - a.b[0], c.b[1] - a.b[1]);
       const dh = Math.hypot(c.h[0] - a.h[0], c.h[1] - a.h[1]);

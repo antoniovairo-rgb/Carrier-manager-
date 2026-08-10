@@ -112,7 +112,9 @@ for (const gi of GOAL_GIS) {
 
 await browser.close(); srv.close();
 if (errors.length) guasti.push(`${errors.length} pageerror: ${errors[0]}`);
-if (righe.length < 3) guasti.push(`solo ${righe.length} esultanze osservate: la misura non e' stata fatta`);
+/* in modalita' «continua» si giudicano solo le scene INIZIALI: sulle tarde il pulsante chiude la
+   partita e smonta il 3D, e quelle righe non misurano un'esultanza ma un unmount */
+if (righe.length < (CONTINUA ? 1 : 3)) guasti.push(`solo ${righe.length} esultanze osservate: la misura non e' stata fatta`);
 
 if (righe.length) {
   const ts = righe.map(r => r.ts).sort((a, b) => a - b), ar = righe.map(r => r.arm).sort((a, b) => a - b);
