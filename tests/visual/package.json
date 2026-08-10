@@ -21,6 +21,7 @@
     "celebration-visible": "node celebration-visible-test.mjs",
     "pass-sanity": "node pass-sanity-test.mjs",
     "typing-shortcuts": "node typing-shortcuts-test.mjs",
+    "buildup-sync": "node buildup-sync-test.mjs",
     "attendance-sim": "node attendance-sim.mjs",
     "club-evolution-sim": "node club-evolution-sim.mjs",
     "kit-pattern-shot": "node kit-pattern-shot.mjs",
