@@ -111,7 +111,13 @@ else {
      derivano fra un run e l'altro e un guardiano tarato sul best-case sarebbe solo un generatore di
      falsi allarmi. */
   if (med(dm) > 5) issues.push(`mediana palla↔compagno ${med(dm).toFixed(1)}u: la consegna nasce in un punto vuoto, non sui piedi di un compagno (il «1,7u» del 7.370 era misurato senza snap di scena: numero non valido)`);
-  if (orfane.length / vals.length > 0.2) issues.push(`${orfane.length} consegne su ${vals.length} nascono a piu' di 6u da CHIUNQUE (lo «0/42» del 7.370 era misurato senza snap di scena: numero non valido)`);
+  /* [7.384.0] SOGLIA FUORI DAL RUMORE, non allargata in silenzio. Le posizioni off-ball variano fra
+     una passata e l'altra (trappola nota di questo repo: si giudica su popolazioni, non su singoli),
+     e il conteggio degli orfani misura 6, 7, 8 e 9 su quattro passate consecutive dello STESSO albero:
+     la soglia al 20% (8 su 42) cadeva dentro quella banda e rendeva il guardiano intermittente. Il
+     numero che conta resta la mediana — 11,1u prima del 7.383, 3,0-4,3u dopo — e una soglia al 28%
+     (12 su 42) e' ancora un quarto di quanto misurava il difetto (29 su 42). */
+  if (orfane.length / vals.length > 0.28) issues.push(`${orfane.length} consegne su ${vals.length} nascono a piu' di 6u da CHIUNQUE (lo «0/42» del 7.370 era misurato senza snap di scena: numero non valido)`);
   /* [7.374.0] IL CRITERIO CHE MANCAVA, e che spiega perche' questo guardiano era VERDE mentre il PO
      continuava a segnalare «il pallone deve essere nei piedi del compagno». Si misurava solo la
      distanza dal compagno piu' vicino: con i mesh fermi alla scena PRECEDENTE la palla e' davvero
