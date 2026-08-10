@@ -29,7 +29,13 @@ const browser = await launchBrowser();
 const page = await browser.newPage({ viewport: { width: 412, height: 915 } });
 await installCdnRoutes(page);
 page.on('pageerror', e => issues.push('pageerror: ' + String(e.message).slice(0, 130)));
-await page.addInitScript(() => { window.__CPM_GLB = false; });
+/* [7.388.0] ⚠️ CON O SENZA LA COSTRUZIONE DELL'AZIONE. Questo guardiano e' stato verde per tutta la sua
+   vita mentre il PO segnalava dal vivo, tre volte, «l'esito dichiarato e' goal ma la palla non e' mai
+   arrivata in porta». La ragione e' la stessa gia' pagata nel 7.381 e nel 7.384: sotto `?cpmtest=1`
+   l'executor cinematografico e' spento, quindi la conclusione parte da uno stato che nel gioco vero non
+   esiste. `--cine` lo riaccende (opt-in `__CPM_CINE`) e misura la scena che il giocatore vede davvero. */
+const CINE = process.argv.includes('--cine');
+await page.addInitScript(c => { window.__CPM_GLB = false; if (c) { window.__CPM_CINE = 1; window.__CPM_PRESENT = 1; } }, CINE);
 const { total } = await openMatch(page, port);
 await sleep(800);
 
