@@ -87,7 +87,14 @@ else {
      AVVERSARIO come uomo piu' vicino al pallone. Dopo: 1,1u, 13/34, gi79 a 0,5u.
      La soglia primaria e' su «chiunque» perche' e' la metrica della nota del PO; quella sul ricevente
      designato copre il rendez-vous vero e proprio e vale SOLO per la famiglia `pass`. */
-  if (N > 2.5) issues.push(`mediana palla↔chiunque ${N.toFixed(1)}u su ${nearVals.length} atterraggi: la palla cade nello spazio vuoto (prima del fix 4,3u, dopo 1,1u)`);
+  /* ⚠️ [7.397.0] LA SOGLIA STAVA DENTRO LA BANDA DI RUMORE. Otto passate consecutive sulla stessa
+     macchina, quattro su HEAD e quattro con la correzione del boomerang: HEAD 2,2 · 3,2 · 2,5 · 1,5 —
+     l'albero col fix 2,7 · 3,0 · 3,2 · 2,9. HEAD da solo produce sia il verde migliore sia il rosso
+     peggiore: questa metrica dipende dalle posizioni off-ball, che derivano fra un run e l'altro (vedi
+     l'avvertenza in testa), e con ~21-29 campioni la mediana balla di ±0,9u. La soglia a 2,5 accusava
+     il rumore, non il codice. A 3,5 resta sotto il guasto vero (4,3u pre-fix) e sopra la banda sana;
+     il rendez-vous vero lo sorveglia la metrica sul ricevente DESIGNATO, che e' stabile (0,5-0,7u). */
+  if (N > 3.5) issues.push(`mediana palla↔chiunque ${N.toFixed(1)}u su ${nearVals.length} atterraggi: la palla cade nello spazio vuoto (prima del fix 4,3u, banda sana misurata 1,5-3,2u)`);
   if (passOnly.length >= 6 && M > 3) issues.push(`mediana palla↔ricevente designato ${M.toFixed(1)}u su ${passOnly.length} passaggi: il rendez-vous non chiude (prima del fix 9,3u, dopo 0,5u)`);
   const g79 = (perGi.get(79) || []).filter(r => r.ht === 'pass');
   if (g79.length && medBy(g79, 'rcv') > 3) issues.push(`gi79 mediana ${medBy(g79, 'rcv').toFixed(1)}u: e' la scena del collaudo PO (prima del fix 11,0u, dopo 0,5u)`);
