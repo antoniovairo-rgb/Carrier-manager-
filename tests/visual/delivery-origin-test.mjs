@@ -67,7 +67,10 @@ const SAMPLE = GIS.filter((_, i) => i % Math.max(1, Math.ceil(GIS.length / 24)) 
 const vals = [];
 for (let r = 0; r < REPS; r++) {
   for (const gi of SAMPLE) {
-    await page.evaluate(g => { window.__CPM_FORCE_INTRO = 2600; window.__CPM_FORCE_SIT(g, true); }, gi);
+    /* ⚠️ l'intro si allunga con `__CPM_FORCE_INTRO_MS`; `__CPM_FORCE_INTRO` e' solo l'interruttore.
+       Scrivendo 2600 nell'interruttore l'intro restava di 300 ms e questa sonda campionava a intro GIA'
+       FINITA — misurava la palla in viaggio verso l'eroe e la chiamava «origine della consegna». */
+    await page.evaluate(g => { window.__CPM_FORCE_INTRO = 1; window.__CPM_FORCE_INTRO_MS = 2600; window.__CPM_FORCE_SIT(g, true); }, gi);
     /* [7.374.0] SI ASPETTA L'EVENTO, NON UN RITARDO. Prima si campionava a 340ms fissi: da quando la
        consegna aspetta che la scena si sia assestata, in headless (~9 fps) quel momento arriva molto
        piu' tardi e la sonda fotografava il pallone PRIMA che venisse piazzato — misurando quindi la
