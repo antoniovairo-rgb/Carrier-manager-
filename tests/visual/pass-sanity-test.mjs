@@ -23,7 +23,14 @@ import { startServer, launchBrowser, installCdnRoutes, openMatch, sleep } from '
 
 const VERB = process.argv.includes('--verbose');
 const N = +(process.env.CPM_N || 191);
-const LUNG_MIN = 6.0;   /* sotto, non e' un passaggio: e' un appoggio che non si capisce */
+/* ⚠️ LA LUNGHEZZA GIUSTA DIPENDE DA COSA PROMETTE L'AZIONE. Un solo numero per tutti condanna
+   giocate corrette: «Passaggio corto e sicuro» a 5,7u e' un passaggio corto e sicuro, e un «Dai e vai»
+   che scarica all'indietro di cinque metri e' un dai-e-vai. La soglia si legge dall'etichetta, come
+   fanno gia' le varianti di tiro e cross. */
+const CORTO = /cort|scaric|tacco|velo|dai e |appoggi|sponda|uno-due|triangol|rimorchi|ricev/i;
+const LUNGO = /lanci|lungo|\b40\b|\b50\b|cambi[oa].*(gioco|fronte|lato)|parabola|verticalizz|apertura/i;
+const minAttesa = (lbl) => CORTO.test(lbl) ? 3.5 : (LUNGO.test(lbl) ? 18 : 8);
+const LUNG_MIN = 8.0;   /* riferimento per il riassunto */
 const RASO_MAX = 0.55;  /* «rasoterra» e' un pallone che non si stacca dall'erba */
 const MURATO = /^(blocked|wall_blocked|dispossessed|beaten)$/;
 
@@ -65,10 +72,16 @@ for (let gi = 0; gi < N; gi++) {
     const raso = /raso|terra|rasoterra/i.test(lbl);
 
     const problemi = [];
-    if (!murato && lung < LUNG_MIN) problemi.push(`lungo ${lung.toFixed(1)}u: il compagno servito e' addosso a chi passa`);
+    /* ⚠️ SU UN PASSAGGIO FALLITO LA DISTANZA NON E' UNA PROMESSA. Se l'avversario taglia la linea, il
+       pallone si ferma dove viene tagliato: pretendere i quaranta metri dell'etichetta vorrebbe dire
+       chiedere al gioco di mentire sull'esito. Del passaggio fallito si giudica solo che sia PARTITO
+       davvero; la lunghezza promessa si pretende quando la giocata riesce. */
+    const riuscito = !d.kind || d.kind === 'chance';
+    const atteso = riuscito ? minAttesa(lbl) : 3.5;
+    if (!murato && lung < atteso) problemi.push(`lungo ${lung.toFixed(1)}u ma ${riuscito ? `l'azione ne promette almeno ${atteso}` : 'un passaggio deve almeno partire'}`);
     if (raso && alt != null && alt > RASO_MAX) problemi.push(`l'azione dice «rasoterra» ma l'arco si alza a ${alt.toFixed(2)}u`);
     if (problemi.length) guasti.push(`gi${gi}/az${k} «${lbl.slice(0, 34)}» [${d.kind || '—'}]: ` + problemi.join(' · '));
-    casi.push({ gi, k, lung, fwd, alt, raso, murato, lbl });
+    casi.push({ gi, k, lung, fwd, alt, raso, murato, lbl, ok: riuscito });
     if (VERB || problemi.length) console.log(`${problemi.length ? '❌' : '✅'} gi${String(gi).padStart(3)}/az${k} · lungo ${lung.toFixed(1).padStart(5)}u · avanti ${fwd.toFixed(1).padStart(6)}u · arco ${alt == null ? ' — ' : alt.toFixed(2)}u ${raso ? '[raso]' : ''}${murato ? '[murato]' : ''} · «${lbl.slice(0, 32)}»`);
   }
 }
@@ -76,8 +89,8 @@ await b.close(); srv.close();
 
 if (casi.length < 10) { console.log(`❌ FAIL — solo ${casi.length} passaggi misurati: la sonda e' cieca`); process.exit(2); }
 const L = casi.filter(c => !c.murato).map(c => c.lung).sort((x, y) => x - y);
-const corti = casi.filter(c => !c.murato && c.lung < LUNG_MIN).length;
+const corti = casi.filter(c => !c.murato && c.lung < (c.ok ? minAttesa(c.lbl) : 3.5)).length;
 const rasoAlti = casi.filter(c => c.raso && c.alt != null && c.alt > RASO_MAX).length;
-console.log(`\npassaggi misurati ${casi.length} · mediana lunghezza ${L[L.length >> 1].toFixed(1)}u · piu' corti di ${LUNG_MIN}u ${corti} · «rasoterra» che si alzano ${rasoAlti}`);
+console.log(`\npassaggi misurati ${casi.length} · mediana lunghezza ${L[L.length >> 1].toFixed(1)}u · piu' corti di quanto promettono ${corti} · «rasoterra» che si alzano ${rasoAlti}`);
 if (guasti.length) { console.log(`\n❌ FAIL — ${guasti.length}`); guasti.slice(0, 24).forEach(g => console.log('  · ' + g)); if (guasti.length > 24) console.log(`  … e altri ${guasti.length - 24}`); process.exit(2); }
 console.log(`\n✅ PASS — ogni passaggio ha una lunghezza sensata e l'altezza che l'azione promette`);

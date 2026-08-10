@@ -4458,7 +4458,8 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="7.385.0"; // [7.385.0 collaudo PO «come mai ci sono tutti questi fail?» — LA CI ERA ROSSA DA UNDICI GIORNI, E NON PER IL GATE]: ogni push mandava una mail di fallimento su entrambi i rami, mentre il quality gate in locale era verde. La ragione e' che il gate e' solo il QUARTO di sei passi della pipeline, e a fallire era il TERZO: `test:logic`, 30 test su 31. Il test rotto e' la regressione strutturale del backbone narrativo, che confronta per ogni situazione la firma `tipo/pattern:beat:conclusione` con una baseline committata. La baseline era ferma al 7.368.0 — il commit che ha introdotto la derivazione del pattern dall'INTENTO della situazione — e quel commit non l'ha rigenerata: da allora, a ogni singolo push, nove scostamenti. VERIFICATO che fosse cosi' prima di rigenerare, montando un worktree sul commit 7.368.0 e rieseguendo il test: gia' rosso li', con gli stessi nove. Non era una regressione di questa serie, era un difetto arrivato rotto. VERIFICATI UNO PER UNO i nove scostamenti prima di toccare la baseline — rigenerare una baseline di regressione senza guardarla e' il modo classico di seppellire un difetto vero. Sono tutti CORRETTI: sono passaggi dentro situazioni il cui intento e' `through` o `switch`, e la firma vecchia li chiamava COMBINATION, cioe' un uno-due. gi119 e gi122 sono letteralmente «Cambio di gioco lungo 50 metri» e valevano COMBINATION; gi125 e' «Lancio in profondita' immediato»; gi105 «Cambio gioco rapido 50 metri». Il 7.368.0 li ha corretti, la baseline no. Rigenerata anche la copertura: 179 situazioni registrate contro le 191 esistenti, quindi dodici scene nate dopo non erano protette da nessuna firma. Verificati anche gli altri due passi che il fallimento anticipato impediva di raggiungere in CI: save-compat 12 pass su 12, replay completi. La sequenza CI intera gira ora verde in locale. Aggiunto `npm run ci` in tests/visual: esegue ESATTAMENTE i cinque passi della pipeline nell'ordine della pipeline. Il gate da solo non e' la CI, e undici giorni di mail rosse sono il prezzo di averlo creduto. In piu' la strumentazione per il prossimo difetto: ALTEZZA e durata dell'arco nel dispatch (test-only) e il nuovo guardiano pass-sanity-test.mjs, ROSSO DI PROPOSITO. Misura su 93 passaggi: 38 piu' corti di sei unita' — gi118 a 0,7u, gi115 a 1,5u, e un «Lancio lungo 50 metri» che ne percorre 5,4 — e tre «rasoterra» che si alzano fino a 1,80u, fra cui gi111, la scena segnalata dal PO. E' la stessa causa gia' corretta nel 7.382 per i soli filtranti: sul passaggio fallito il destinatario si sceglie per pura vicinanza, quindi vince chi e' addosso.
+const GAME_VERSION="7.386.0"; // [7.386.0 collaudo PO «la partita non va in pausa e la lettera P non funziona» + #111 «Non e' rasoterra» + #116 «Passaggio ad un compagno vicinissimo»]: LA TASTIERA APPARTIENE A CHI SCRIVE. Il difetto piu' grave non l'ha trovato una sonda: si leggeva a occhio nudo negli APPUNTI DI COLLAUDO del PO, dove mancava ogni singola «p» — «comagno con la alla tra i iedi» per «compagno con la palla tra i piedi». La scorciatoia della pausa intercetta «p» sul documento, chiama preventDefault e ferma la propagazione: la lettera non arrivava mai alla casella di testo, e in piu' ogni «p» digitata invertiva la pausa — due «p» nella stessa parola la rimettevano com'era, che e' esattamente «la partita non va in pausa». E non era la sola: misurato col nuovo guardiano typing-shortcuts-test.mjs, scrivendo «passaggio ai piedi 123 wasd nmh» arrivava «assaggio ai iei123wasdnmh» — perse le due p, una d, e TUTTI GLI SPAZI, perche' lo spazio e' la scorciatoia «continua». Anche le lettere di navigazione (P, A, S, N, M, H) erano catturate globalmente: scrivere «senza» in un campo di testo cambiava scheda a meta' parola. Una guardia sola, applicata a tutti e dieci i gestori di tastiera: se il fuoco e' in un campo di testo, la tastiera non e' del gioco. Il guardiano ha un interruttore per spegnere la guardia e dimostrare di essere ROSSO senza la correzione — un guardiano mai stato rosso non dimostra niente. IL PASSAGGIO DEVE ESSERE QUELLO CHE L'AZIONE PROMETTE. (1) LA LUNGHEZZA: la scelta del destinatario sul passaggio fallito andava per pura vicinanza — il piu' vicino vince — e il 7.382 l'aveva corretta per i soli filtranti. Misura col nuovo pass-sanity-test.mjs su 93 passaggi: 38 piu' corti di sei unita', fra cui gi115 a 1,5u, gi118 a 0,7u, e un «Lancio lungo 50 metri» che ne percorreva 5,4. Ora il compagno servito deve stare a una distanza minima che dipende dal disegno — undici unita' per un passaggio normale, dodici per un filtrante, diciotto per un cambio di gioco — e anche il passaggio RIUSCITO ha un pavimento, perche' il punto d'incontro nasce dalla posizione del ricevente e se lui e' addosso a chi passa ci nasce addosso anche il pallone (misurati 1,5u e 2,1u). (2) L'ALTEZZA: il passaggio non aveva VARIANTI. Tiro, cross e colpo di testa leggono l'etichetta dell'azione e ne ricavano una traiettoria; il passaggio no — «rasoterra», «lancio lungo», «parabola» finivano tutti nella stessa altezza d'arco, e tre azioni che promettono rasoterra alzavano il pallone fino a 1,80u, fra cui gi111, la scena segnalata. Aggiunte due varianti, `pass_ground` e `pass_lofted`. MISURA prima→dopo su 93 passaggi: mediana della lunghezza 7,2u → 9,4u · piu' corti di quanto promettono 38 → 3 · «rasoterra» che si alzano 3 → 0. ⚠️ Anche il criterio ha dovuto essere corretto due volte, e vale la pena dirlo: una soglia sola per tutti condannava giocate giuste — «Passaggio corto e sicuro» a 5,7u e' un passaggio corto e sicuro — e pretendere la lunghezza promessa da un passaggio INTERCETTATO significa chiedere al gioco di mentire sull'esito, perche' il pallone si ferma dove il difensore lo taglia. Ora la soglia si legge dall'etichetta e la lunghezza si pretende solo quando la giocata riesce. Restano tre residui dichiarati (gi170 al limite esatto, gi179 e gi185 a 2,2 e 2,4 unita'): sono dai-e-vai che passano dal ramo della COMBINAZIONE, dove il pavimento non arriva ancora.
+//  [7.385.0 collaudo PO «come mai ci sono tutti questi fail?» — LA CI ERA ROSSA DA UNDICI GIORNI, E NON PER IL GATE]: ogni push mandava una mail di fallimento su entrambi i rami, mentre il quality gate in locale era verde. La ragione e' che il gate e' solo il QUARTO di sei passi della pipeline, e a fallire era il TERZO: `test:logic`, 30 test su 31. Il test rotto e' la regressione strutturale del backbone narrativo, che confronta per ogni situazione la firma `tipo/pattern:beat:conclusione` con una baseline committata. La baseline era ferma al 7.368.0 — il commit che ha introdotto la derivazione del pattern dall'INTENTO della situazione — e quel commit non l'ha rigenerata: da allora, a ogni singolo push, nove scostamenti. VERIFICATO che fosse cosi' prima di rigenerare, montando un worktree sul commit 7.368.0 e rieseguendo il test: gia' rosso li', con gli stessi nove. Non era una regressione di questa serie, era un difetto arrivato rotto. VERIFICATI UNO PER UNO i nove scostamenti prima di toccare la baseline — rigenerare una baseline di regressione senza guardarla e' il modo classico di seppellire un difetto vero. Sono tutti CORRETTI: sono passaggi dentro situazioni il cui intento e' `through` o `switch`, e la firma vecchia li chiamava COMBINATION, cioe' un uno-due. gi119 e gi122 sono letteralmente «Cambio di gioco lungo 50 metri» e valevano COMBINATION; gi125 e' «Lancio in profondita' immediato»; gi105 «Cambio gioco rapido 50 metri». Il 7.368.0 li ha corretti, la baseline no. Rigenerata anche la copertura: 179 situazioni registrate contro le 191 esistenti, quindi dodici scene nate dopo non erano protette da nessuna firma. Verificati anche gli altri due passi che il fallimento anticipato impediva di raggiungere in CI: save-compat 12 pass su 12, replay completi. La sequenza CI intera gira ora verde in locale. Aggiunto `npm run ci` in tests/visual: esegue ESATTAMENTE i cinque passi della pipeline nell'ordine della pipeline. Il gate da solo non e' la CI, e undici giorni di mail rosse sono il prezzo di averlo creduto. In piu' la strumentazione per il prossimo difetto: ALTEZZA e durata dell'arco nel dispatch (test-only) e il nuovo guardiano pass-sanity-test.mjs, ROSSO DI PROPOSITO. Misura su 93 passaggi: 38 piu' corti di sei unita' — gi118 a 0,7u, gi115 a 1,5u, e un «Lancio lungo 50 metri» che ne percorre 5,4 — e tre «rasoterra» che si alzano fino a 1,80u, fra cui gi111, la scena segnalata dal PO. E' la stessa causa gia' corretta nel 7.382 per i soli filtranti: sul passaggio fallito il destinatario si sceglie per pura vicinanza, quindi vince chi e' addosso.
 //  [7.384.0 collaudo PO «le esultanze non funzionano»]: IL TERZO CASO DELLA FAMIGLIA. I due guardiani dell'esultanza erano VERDI e il gioco no, ed e' la stessa trappola del 7.370 e del 7.381: misuravano una modalita' che il giocatore non vede mai. Entrambi giravano con `__CPM_GLB=false`, cioe' coi modelli procedurali, mentre il renderer DI DEFAULT e' il CH38 — dove `animOne` ritorna subito sui mesh guidati dal modello e le rotazioni procedurali di braccia e gambe non arrivano mai allo schermo. Restano tre canali: la clip, il movimento del corpo, la quota. Nuovo guardiano celebration-visible-test.mjs, GLB-ON, con tutti i contatori DENTRO il loop di render. QUATTRO DIFETTI, tutti misurati prima di essere corretti. (1) LA CLIP SUONATA A 5x. La scala temporale si ricava dalla finestra del gesto in corso (7.356) e durante l'esultanza `actType` viene azzerato a ogni fotogramma: la finestra vale 0,55 s, la durata di un tocco tecnico. Applicata alla clip di gioia da 2,75 s produce 5,0x — misurata esattamente cosi' su cinque esultanze su sei. Il giocatore non vedeva «braccia al cielo»: vedeva una rimessa laterale completa a velocita' quintupla, ri-armata a ogni fine clip. Ora la clip d'esultanza suona a 1,0x e riceve il congelamento all'apice che finora aveva solo la cerimonia. (2) DUE DRIVER SULLO STESSO CORPO. Il driver ordinario dell'eroe girava a ogni fotogramma dell'esito senza guardia sull'esultanza, che piu' in basso chiama `animOne` sullo stesso mesh: e' il difetto del 5.43.13, chiuso nel 7.371 per i compagni e lasciato aperto proprio sull'eroe. (3) L'ESULTANZA TAGLIATA A META'. L'auto-avanzamento aspettava che l'esultanza PARTISSE, non che finisse: appena il gol era confermato chiamava `handleContinue`, che azzera il piano e stacca la scena — da li' in poi l'esultanza restava viva ma SENZA piano, cioe' il difetto che il 7.371 doveva chiudere. E uno stacco di scena non chiudeva l'esultanza: il nuovo highlight TELEPORTAVA l'eroe mentre festeggiava, con la firma piu' netta possibile — lo spostamento totale durante l'esultanza coincideva esattamente col passo massimo di un fotogramma (4,55u, 14,86u, 27,66u: non una corsa, uno strappo). (4) L'ESULTANZA ARMATA DALL'ONDA INVECE CHE DAL PIANO. Il gol produce due aggiornamenti di stato distinti e il renderer vede l'onda del pubblico per prima: il cronometro partiva col piano ancora nullo, quindi senza clip, senza corsa e senza durata vera. Non e' una gara che si possa vincere aspettando: e' una dipendenza sbagliata, e ora e' il piano ad armare l'esultanza. Effetto voluto: un gol della simulazione di sfondo, che manda l'onda senza costruire un piano, non arma piu' una pantomima muta. MISURA prima→dopo (4 gol, GLB-ON): fotogrammi d'esultanza 7-8 → 44-59 · clip montata 0% → 100% dei fotogrammi · scala 5,0x → 1,0x · montaggi della clip 1 (nessun loop) · spostamento durante un'esultanza SUL POSTO fino a 27,66u → 0u · esultanze senza NESSUN canale visibile 6 su 6 → 0 su 4. ⚠️ E lo strumento ha sbagliato tre volte prima del codice, come sempre in questa serie: i contatori azzerati dal test PRIMA di forzare la scena attribuivano alla nuova esultanza i fotogrammi della precedente (che sopravviveva alla scena); la scala della clip letta dopo il congelamento tornava 0 e la misura si auto-assolveva; e l'attesa a orologio comprava meno di mezzo secondo di tempo-scena, cosi' la sonda leggeva «zero clip» su esultanze che non erano ancora cominciate — ora e' il gioco a DICHIARARE quando l'esultanza e' finita. In piu' due regressioni MIE del 7.382, trovate rileggendo: la soglia di ripiego della conduzione era rimasta tarata in unita' di VELOCITA' mentre la sorgente era diventata uno SPOSTAMENTO per fotogramma, quindi la direzione reale veniva sempre scartata a favore di quella del beat (il guardiano non se n'era accorto perche' nel beat di conduzione le due quasi coincidono: numero giusto per la ragione sbagliata); e il latch «l'angolo viene da un movimento vero» leggeva una variabile assegnata quattro righe sopra, quindi si accendeva sempre.
 //  [7.383.0 collaudo PO — NOVE segnalazioni (#163 #114 #12 #11 #103 #4 #63 #27 #180) «la scena deve iniziare con il pallone nei piedi del compagno»]: LA CONSEGNA LA SCEGLIE CHI VEDE. Il difetto piu' segnalato di questa serie, e quattro tentativi di correzione falliti prima di questo. L'origine della consegna la calcolava React, nell'effetto che apre l'highlight, leggendo le mesh attraverso il ponte `meshDef`. Il guaio non era la formula: era il MOMENTO. Quell'effetto gira al commit dell'apertura di scena, e in quell'istante le mesh sono ancora quelle della scena PRECEDENTE — lo snap che le ripiazza avviene nel loop di render, qualche fotogramma dopo (misurato: la mesh «eroe» di una scena coincide esattamente con l'eroe logico di quella prima, scarti fino a 56u). I quattro tentativi falliti — differire, aspettare una soglia, aspettare che il renderer dichiarasse la scena montata — facevano tutti ASPETTARE React, e quell'effetto dipende da `pPos`: si ri-esegue di continuo e ogni ri-esecuzione annullava la propria attesa. La risposta non era attendere meglio, era smettere di attendere. Ora il renderer, nel fotogramma in cui ha appena piazzato i ventidue, SPINGE l'origine a React attraverso una cassetta postale (ref `deliver`), una volta per scena. ⚠️ Tre errori miei prima di arrivarci, tutti trovati da contatori in pagina e non a occhio: (1) legare il tentativo al singolo fotogramma dello snap faceva perdere il turno quando l'effetto React arrivava dopo — ora si ritenta finche' non riesce; (2) la pulizia dell'effetto azzerava la cassetta postale, e la ri-esecuzione usciva dalla guardia «una consegna per scena» senza riscriverla: 302 tentativi del renderer, 302 volte nessun descrittore, zero consegne vere; (3) spingere l'origine non bastava, perche' il pallone non ci si teleporta, ci STRISCIA dentro col moto a velocita' limitata partendo da dove l'aveva lasciato la scena prima — misurato su gi163: origine (55.4, 46.7), pallone a (67, 31) all'apertura e ancora a (63.3, 41.7) settecento millisecondi dopo. Uno stacco di scena non e' un movimento: ora il pallone viene messo dove deve stare nello stesso fotogramma dei ventidue. ⚠️ E anche il guardiano era rotto: allungava l'intro scrivendo 2600 nell'INTERRUTTORE `__CPM_FORCE_INTRO` invece che in `__CPM_FORCE_INTRO_MS`, quindi l'intro restava di 300 ms e la sonda campionava a intro gia' finita — misurava il pallone in viaggio verso l'eroe e lo chiamava «origine della consegna». MISURA prima→dopo su 42 consegne: mediana pallone↔compagno piu' vicino 11.1u → 3.0u · palloni nati a piu' di 6u da CHIUNQUE 29/42 → 7/42 · mediana pallone↔EROE 27.9u → 10.1u · consegne oltre i 25u dall'eroe 25/42 → 2/42. Tre passate consecutive verdi. Il guardiano ball-scene-snap resta verde (scarto medio 0.07u): lo stacco non ha spostato l'apertura delle scene che non hanno consegna.
 //  [7.382.0 collaudo PO #125 «Non e' un lancio in profondita' ma orizzontale» + #84 «Palla non sincronizzata con la corsa»]: DUE DIFETTI DI DIREZIONE, E TRE VOLTE LO STRUMENTO SBAGLIATO PRIMA DEL CODICE. (1) IL FILTRANTE. Su un passaggio fallito la linea veniva scelta prendendo il compagno PIU' VICINO davanti all'eroe, in distanza pura: un compagno un metro avanti e nove di lato batte sempre uno quindici metri dritto per dritto, e il pallone parte orizzontale mentre l'azione promessa era una verticalizzazione dietro la difesa. Nuovo guardiano through-depth-test.mjs sulle scene a intento `through`: prima gi25 guadagnava 1.9u in avanti contro 9.1u di lato, gi120 2.3 contro 3.2, gi23 1.9 contro 1.7; mediana del guadagno 6.0u, mediana del rapporto avanti/lato 4.55, quattro lanci su dieci in difetto. Ora, quando il disegno e' un filtrante, chi sta piu' di lato che avanti non e' un bersaglio legittimo, serve un margine vero (nessun pareggio a 45 gradi) e almeno sei metri di guadagno: sotto quella soglia si torna al ripiego dritto che era gia' li'. Dopo: mediana 8.8u, mediana del rapporto 9.71, zero in difetto. ⚠️ La prima misura di questo difetto era FALSA: prendeva l'eroe-MESH come origine del lancio, e al momento del lancio l'eroe puo' essere gia' altrove — gi125, la scena segnalata dal PO, leggeva «-0.4u in avanti» e con l'origine vera del pallone ne guadagna 12.1. Aggiunto al dispatch il punto di partenza dell'arco, che prima veniva azzerato all'arrivo proprio dove il dispatch si scrive. (2) LA CONDUZIONE CHE SI GIRA. Nel build-up l'offset del pallone seguiva la velocita' del modello fisico: giusto finche' il portatore corre col suo motore, sbagliato quando il corpo viene mosso da altri (il riposizionamento di scena azzera quella velocita' lasciando il corpo in marcia). Misurato su gi84 un fotogramma su 65 con la direzione ribaltata — il pop che il PO chiama «non sincronizzata» — e su gi91/gi103 interi tratti col pallone dietro. Ora la direzione viene dallo SPOSTAMENTO REALE del corpo fra due fotogrammi, la stessa cosa che guarda l'occhio. ⚠️ E anche qui due tentativi sbagliati prima di quello giusto: la memoria della direzione sopravviveva al cambio di scena (guardiano verde su un sottoinsieme, rosso sulla passata intera: e' sempre uno stato che attraversa un confine), e soprattutto lo smorzamento MEDIAVA due versori invece di ruotarli — mediare due versori opposti non li fa girare, li accorcia, e la normalizzazione successiva restituisce quello di partenza: la direzione restava inchiodata a (1,0) per quattordici fotogrammi su quattordici mentre il portatore correva all'indietro. Ora si lavora sull'angolo con un tetto di velocita' angolare, e finche' l'angolo viene da un ripiego il primo movimento reale lo riallinea di netto. Tre passate intere consecutive verdi, zero frame col pallone dietro su 218 campioni.
@@ -9588,6 +9589,22 @@ function goalContext(o){
 
 /* IL VOCABOLARIO. `clip` = animazione GLB richiesta (null = sola locomozione/corpo).
    `need` = spazio richiesto attorno al marcatore. `heat` = fascia d'intensita' ammessa. */
+/* [7.386.0 collaudo PO «la partita non va in pausa e la lettera P non funziona»] NESSUNA SCORCIATOIA
+   RUBA I TASTI A CHI STA SCRIVENDO. Il difetto si e' visto negli APPUNTI DI COLLAUDO del PO, e si legge
+   a occhio nudo: in ogni nota mancava ogni singola «p» — «comagno con la alla tra i iedi» per «compagno
+   con la palla tra i piedi». La scorciatoia della pausa intercetta «p» sul documento, fa
+   `preventDefault` e ferma la propagazione: la lettera non arrivava mai alla casella di testo, e in
+   piu' ogni «p» digitata invertiva la pausa — due «p» nella stessa parola la rimettevano com'era, che
+   e' esattamente «la partita non va in pausa».
+   Non e' un difetto della sola pausa: TUTTE le scorciatoie del match (numeri per le azioni, WASD per il
+   movimento) hanno la stessa porta aperta. Qui la si chiude in un punto solo — se il fuoco e' dentro un
+   campo di testo, la tastiera appartiene a chi scrive. */
+function _scrive386(e){if(typeof window!=="undefined"&&window.__CPM_NOGUARD386)return false;try{const t=e&&e.target;if(!t)return false;
+  if(t.isContentEditable)return true;
+  const g=(t.tagName||"").toUpperCase();
+  return g==="INPUT"||g==="TEXTAREA"||g==="SELECT";}catch(_e){return false;}}
+if(typeof window!=='undefined')window._scrive386=_scrive386;
+
 const CELEBRATIONS=[
   /* sempre disponibile: e' la clip che esiste davvero */
   {id:"arms_up",      clip:"lift", heat:[0,3], run:0,               desc:"braccia al cielo sul posto"},
@@ -9722,6 +9739,15 @@ function deriveHL(sit,act){
   if(type==="build"&&isCarry&&act&&act.rew==="goal")type="shot";// 5.43.0: la conduzione palla al piede che porta al gol è un TIRO preceduto dal build-up di CONDUZIONE (BALL_CARRY) — non più un gesto neutro di costruzione
   // ── VARIANT (nuovo livello cinematografico) ──
   let variant=null;
+  /* [7.386.0 collaudo PO #111 «Non e' rasoterra»] IL PASSAGGIO NON AVEVA VARIANTI. Tiro, cross e colpo
+     di testa leggono l'etichetta dell'azione e ne ricavano una variante che decide la traiettoria; il
+     passaggio no — «rasoterra», «lancio lungo», «parabola» finivano tutti nella stessa altezza d'arco.
+     Misurate tre azioni che promettono «rasoterra» e alzano il pallone fino a 1,80u, fra cui gi111,
+     la scena segnalata. Due varianti bastano: una promessa di palla a terra e una di palla alta. */
+  if(type==="pass"){
+    if(/raso ?terra|rasoterra|raso|a terra|piatto/.test(lbl))variant="pass_ground";
+    else if(/lanci|lungo|parabola|campanil|scavalc|alto|pallonett/.test(lbl))variant="pass_lofted";
+  }
   if(type==="cross"){
     // CINE-7: "secondo palo / palo lontano" va riconosciuto anche dalla label (non solo dal testo) → attiva regia FAR_POST
     if(/rientr|a rientrare/.test(lbl))variant="cross_cutback";
@@ -12417,6 +12443,18 @@ function ThreeMatchView(props){
                   il fallback 2.6s tagliava e la scena si sfilacciava in gambe sconnesse. Il rendez-vous è
                   RAGGIUNGIBILE: max +7 world dal ricevente. */
                passTargetMesh._runToX=clamp(_ptX+12*(0.65+_q*0.6),_lo,Math.min(_hi,_ptX+7));passTargetMesh._runToZ=_ptZ;// q alta → scatto più profondo (entro il raggiungibile)
+               /* [7.386.0 collaudo PO #116 «Passaggio ad un compagno vicinissimo»] ANCHE IL PASSAGGIO
+                  RIUSCITO HA UNA LUNGHEZZA MINIMA. Il punto d'incontro nasce dalla posizione del RICEVENTE,
+                  e se il ricevente e' addosso a chi passa ci nasce addosso anche lui: misurati due passaggi
+                  a 1,5u e 2,1u — un metro e mezzo, cioe' una giocata che a schermo non si legge come un
+                  passaggio. Qui il punto viene allontanato lungo la stessa direzione fino a un minimo
+                  giocabile: non cambia CHI riceve ne' DOVE va la palla, solo di quanto si stacca. Il
+                  rendez-vous regge perche' la durata dell'arco si accorda gia' alla velocita' vera del
+                  ricevente (7.369). */
+               {const _mx386=passTargetMesh._runToX-_phx,_mz386=passTargetMesh._runToZ-_phz,_md386=Math.hypot(_mx386,_mz386);
+                if(_md386>0.05&&_md386<4.6){const _k386=4.6/_md386;
+                  passTargetMesh._runToX=clamp(_phx+_mx386*_k386,_lo,_hi);passTargetMesh._runToZ=clamp(_phz+_mz386*_k386,-30,30);}
+                else if(_md386<=0.05){passTargetMesh._runToX=clamp(_phx+4.6,_lo,_hi);}}
                /* [7.369.0 collaudo PO, residuo di 7.367 su gi79 «Rimessa rapida dal portiere» → k0 «Scatto in
                   profondita' e ultimo passaggio»: «l'ultimo passaggio atterra a 2-5u da chiunque»] IL RICEVENTE
                   ARRIVAVA ALL'APPUNTAMENTO CON LA RETROMARCIA INSERITA.
@@ -12472,11 +12510,29 @@ function ThreeMatchView(props){
                   giocatore si aspetta di vedere. Le altre famiglie di passaggio non cambiano criterio. */
                let _fx=_phx+16,_fz=_phz+_rz*6,_hd=1e9;
                const _thr382=(P.hlPattern==="THROUGH_BALL");
+               /* [7.386.0] il ripiego di un CAMBIO DI GIOCO non puo' essere sei metri di lato: se sul lato
+                  debole non c'e' nessuno da servire, la palla ci va lo stesso — e' quello il disegno. */
+               if(P.hlPattern==="SWITCH"){_fx=_phx+6;_fz=clamp(_phz+(_phz>=0?-1:1)*24,-24,24);}
                sr.current.players.forEach((pp,ii)=>{const src=(P.allPlayers||[])[ii];
                  if(!(src&&src.team==='home'&&!src.gk&&pp.mesh!==hero))return;
                  const _fw382=pp.mesh.position.x-_phx;if(_fw382<=0)return;
                  const _lt382=Math.abs(pp.mesh.position.z-_phz);
                  if(_thr382&&(_fw382<6||_fw382<_lt382*1.4))return;/* [7.382.0] margine, non pareggio: a 45 gradi esatti la linea si legge gia' come diagonale (misurati gi23 e gi117 fermi a rapporto 1.00 col solo divieto di andare piu' di lato che avanti), e un filtrante verso un compagno tre metri avanti non e' un filtrante — sotto i sei metri di guadagno si preferisce il ripiego dritto */
+                 /* [7.386.0 collaudo PO #116 «Passaggio ad un compagno vicinissimo» + #111 «il passaggio
+                    al compagno dietro e' senza senso»] UN PASSAGGIO HA UNA LUNGHEZZA MINIMA. La regola di
+                    scelta era la pura vicinanza — `d<_hd`, il piu' vicino vince — e il 7.382 l'aveva
+                    corretta per i soli FILTRANTI. Le note nuove parlano di altre famiglie, e la misura le
+                    da' ragione in pieno: guardiano pass-sanity-test.mjs su 93 passaggi, 38 piu' corti di
+                    sei unita' — gi115 a 1,5u, gi95 a 2,4u, gi118 a 0,7u — e fra questi «Lancio lungo 50
+                    metri» che ne percorreva 5,4 e «Parabola d'esterno 40m» che ne percorreva 4,3.
+                    Il punto d'intercetto sta al 55% della linea, quindi il compagno scelto deve stare al
+                    DOPPIO della lunghezza minima perche' la giocata si veda: undici unita' per un
+                    passaggio normale, dodici per un filtrante, e per un cambio di gioco molto di piu' —
+                    un ribaltamento di fronte che non attraversa il campo non e' un ribaltamento.
+                    Se nessuno e' abbastanza lontano si usa il ripiego dritto che era gia' qui, che e'
+                    esattamente cio' che il giocatore si aspetta di vedere. */
+                 const _minD386=_thr382?12:(P.hlPattern==="SWITCH"?18:11);
+                 if(Math.hypot(_fw382,_lt382)<_minD386)return;
                  const d=Math.hypot(_fw382,_lt382)-(_thr382?_fw382*0.9:0);
                  if(d<_hd){_hd=d;_fx=pp.mesh.position.x;_fz=pp.mesh.position.z;}});
                /* [7.331.0 collaudo PO «assist filtrante MURATO non produce un'azione realistica»] «murato» significa
@@ -12499,6 +12555,10 @@ function ThreeMatchView(props){
                 pallone che vola nello specchio, indistinguibile da un tiro — e il riassestamento successivo lo
                 riporta indietro (il boomerang che il PO segnala). Il bersaglio di ogni passaggio resta fuori
                 dalla bocca della porta; largo, dove non c'è porta da bucare, nessun limite. */
+             /* [7.386.0] la promessa dell'etichetta vale sulla traiettoria: «rasoterra» e' un pallone che
+                non si stacca dall'erba, «lancio/parabola» e' un pallone che la scavalca. */
+             if(P.hlVariant==="pass_ground"&&ballArcH>0.32)ballArcH=0.32;
+             else if(P.hlVariant==="pass_lofted"&&ballArcH<1.6)ballArcH=1.6;
              if(Math.abs(ballArcTgtZ)<4.6){const _capP=GOAL_LINE_X-5.2;if(ballArcTgtX>_capP)ballArcTgtX=_capP;}}}// la palla converge sul punto di intercetto dove il difensore scivola
           else if(t==="tackle"){ballArcT=0;ballArcActive=true;
             // FIX FASE DIFENSIVA (5.47.17): in un highlight DIFENSIVO (P.hlDef) la palla NON va MAI scaraventata verso la porta avversaria.
@@ -15123,7 +15183,7 @@ function MatchdayCard({homeTeam,awayTeam,stadium,attendance,league,onContinue,on
   const weather=_wDisp60?`${_wDisp60.e||"☀️"} ${_wDisp60.name||"Sereno"}`:pick(["☀️ Sereno","🌥️ Nuvoloso","🌧️ Pioggia leggera","⛅ Parzialmente nuvoloso"]);
   const time=(kickoffHour!=null)?`${kickoffHour}:00`:pick(["15:00","17:30","18:00","20:45","19:00"]);
   useEffect(()=>{
-    const h=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();onContinue();}};
+    const h=e=>{if(_scrive386(e))return;if(e.key==="Enter"||e.key===" "){e.preventDefault();onContinue();}};
     window.addEventListener("keydown",h);return()=>window.removeEventListener("keydown",h);
   },[onContinue]);
   const leagueName=league||(homeTeam?.isU18?(homeTeam?.lg||"Primavera"):(homeTeam?.lg||"Campionato"));
@@ -15416,7 +15476,7 @@ function TeamFormation({team,roster,isHome,kitCol}){
 /* FORMATION VIEW */
 function FormationView({homeTeam,awayTeam,player,homeRoster,awayRoster,onContinue,onSkip,oppTactic,oppTacticLoading,homeKitCol,awayKitCol,competition=null,euroRound=null,contextLabel=null}){
   useEffect(()=>{
-    const h=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();onContinue();}};
+    const h=e=>{if(_scrive386(e))return;if(e.key==="Enter"||e.key===" "){e.preventDefault();onContinue();}};
     window.addEventListener("keydown",h);return()=>window.removeEventListener("keydown",h);
   },[onContinue]);
   const hRoster=homeRoster||generateTeamRoster(homeTeam,player?.season||1).map((r,i)=>i===10?{name:player?.name||"Tu",role:"ATT"}:r);
@@ -17132,7 +17192,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
 
   // ATE-5: debug mode toggle — Shift+D
   useEffect(()=>{
-    const fn=(e)=>{if(e.shiftKey&&e.key==="D")setDebugMode(d=>!d);};
+    const fn=(e)=>{if(_scrive386(e))return;if(e.shiftKey&&e.key==="D")setDebugMode(d=>!d);};
     window.addEventListener("keydown",fn);return()=>window.removeEventListener("keydown",fn);
   },[]);
 
@@ -17160,7 +17220,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     const go=startHL;
     const _introMs51=(typeof window!=='undefined'&&window.__CPM_REVIEW&&situations[hlIdx]&&situations[hlIdx]._chainDepth)?1200:2500;/* [7.234.0 #51] in REVISIONE l'intro del SECONDO TEMPO è metà: il contesto è già noto, la conclusione deve arrivare mentre il PO sta ancora guardando */
     const t=setTimeout(go,_introMs51);
-    const onKey=e=>{if(e.key===" "||e.key==="Enter"){clearTimeout(t);go();}};
+    const onKey=e=>{if(_scrive386(e))return;if(e.key===" "||e.key==="Enter"){clearTimeout(t);go();}};
     document.addEventListener("keydown",onKey);
     return()=>{clearTimeout(t);document.removeEventListener("keydown",onKey);};
   },[phase,hlIdx,situations,paused]);// eslint-disable-line
@@ -18682,6 +18742,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   useEffect(()=>{
     const sit=situations[hlIdx];
     const onD=e=>{
+      if(_scrive386(e))return;/* [7.386.0] il fuoco e' in una casella di testo: la tastiera non e' del gioco */
       keysRef.current.add(e.key);
       // Pause toggle: Escape or P during active match
       if((e.key==="Escape"||e.key==="p"||e.key==="P")&&["playing","hl_intro","hl_move","hl_choose","hl_result"].includes(phase)){
@@ -19977,6 +20038,7 @@ function ProTransitionScreen({player,onChoose}){
   const[selIdx,setSelIdx]=useState(0);
   useEffect(()=>{
     const h=e=>{
+      if(_scrive386(e))return;/* [7.386.0] chi scrive tiene la tastiera */
       if(e.key==="ArrowDown"||e.key==="ArrowRight"){e.preventDefault();setSelIdx(i=>Math.min(offers.length-1,i+1));return;}
       if(e.key==="ArrowUp"||e.key==="ArrowLeft"){e.preventDefault();setSelIdx(i=>Math.max(0,i-1));return;}
       if(e.key==="Enter"){e.preventDefault();if(offers[selIdx])onChoose(offers[selIdx]);return;}
@@ -21981,6 +22043,7 @@ function HomeScreen({onNew,onLoad,onDelete,onImport,slots}){
   const fmtDate=ts=>ts?new Date(ts).toLocaleDateString("it-IT",{day:"2-digit",month:"2-digit",year:"2-digit",hour:"2-digit",minute:"2-digit"}):"–";
   useEffect(()=>{
     const onKey=e=>{
+      if(_scrive386(e))return;/* [7.386.0] chi scrive tiene la tastiera */
       if(e.target.tagName==="INPUT"||confirmDel!==null)return;
       if(e.key==="Enter"){
         e.preventDefault();
@@ -22251,6 +22314,7 @@ function OffersScreen({player,trialStats,onChoose}){
   const[selIdx,setSelIdx]=useState(0);
   useEffect(()=>{
     const onKey=e=>{
+      if(_scrive386(e))return;/* [7.386.0] chi scrive tiene la tastiera */
       if(["1","2","3"].includes(e.key)){const i=parseInt(e.key)-1;if(offers[i])onChoose(offers[i]);return;}
       if(e.key==="ArrowDown"||e.key==="ArrowRight"){e.preventDefault();setSelIdx(i=>Math.min(offers.length-1,i+1));return;}
       if(e.key==="ArrowUp"||e.key==="ArrowLeft"){e.preventDefault();setSelIdx(i=>Math.max(0,i-1));return;}
@@ -22340,6 +22404,7 @@ function TrialFlow({player:initPlayer,onComplete,resume}){
   useEffect(()=>{
     if(phase==="match")return;
     const h=e=>{
+      if(_scrive386(e))return;/* [7.386.0] chi scrive tiene la tastiera */
       if(e.key!=="Enter"&&e.key!==" ")return;
       if(e.target.tagName==="INPUT"||e.target.tagName==="BUTTON")return;
       e.preventDefault();
@@ -24601,6 +24666,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
   // global keyboard shortcuts
   useEffect(()=>{
     const onKey=e=>{
+      if(_scrive386(e))return;/* [7.386.0] chi scrive tiene la tastiera */
       if(e.target.tagName==="INPUT"||e.target.tagName==="SELECT"||e.target.tagName==="TEXTAREA")return;
       const inModal=weekLiveModal||showAdvanceConfirm||showMatchPrompt||transferOffer;
       // ESC — close modals / go back
@@ -24646,6 +24712,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
         return;
       }
       // Only process letter shortcuts when no modal and not in match
+      if(_scrive386(e))return;/* [7.386.0] e nemmeno quando l'utente sta scrivendo: qui le scorciatoie sono LETTERE (P, A, S, N, M, H), quindi scrivere «senza» in un campo di testo cambiava scheda a meta' parola */
       if(inModal||screen==="match")return;
       const k=e.key.toUpperCase();
       // Tab shortcuts: 1-5 or letters

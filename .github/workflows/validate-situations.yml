@@ -52,6 +52,11 @@ jobs:
       - name: Logic tests — Decision Engine + cine backbone + backbone regression (test:logic)
         run: npm run test:logic
 
+      # [7.386.0] la tastiera non deve rubare i tasti a chi scrive: difetto trovato negli appunti di
+      #   collaudo del PO (mancava ogni «p»), non da una sonda. Costa pochi secondi e sta prima del gate.
+      - name: Tastiera — le scorciatoie non mangiano il testo
+        run: npm run typing-shortcuts
+
       - name: Run quality gate (191 Situations, 14 categorie)
         run: npm run validate-situations
 
