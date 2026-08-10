@@ -53,12 +53,13 @@ for (const gi of SCENE) {
          scartava proprio la transizione build-up→conclusione, dove il pallone viene SCRITTO al punto
          d'arrivo dell'ultimo beat: un punto cieco esattamente sul passaggio piu' brusco della scena. */
       const bordo = (a.tl === 1 && c.tl !== 1);
-      if (!(c.tl === 1 && a.tl === 1) && !bordo) continue;
+      const ingresso = (a.tl !== 1 && c.tl === 1);       /* [7.395.0] e anche l'INGRESSO: era il salto piu' visto dal PO */
+      if (!(c.tl === 1 && a.tl === 1) && !bordo && !ingresso) continue;
       const dt = (c.t - a.t) / 1000; if (dt <= 0 || dt > 0.5) continue;
-      if (bordo) {
+      if (bordo || ingresso) {
         const dbb = Math.hypot(c.b[0] - a.b[0], c.b[1] - a.b[1]);
-        if (dbb > salto) { salto = dbb; saltoCtx = { da: a.tk, a: 'CONSEGNA', ms: Math.round(dt * 1000), x: c.b[0] }; }
-        continue;                                        /* il bordo conta solo per il salto */
+        if (dbb > salto) { salto = dbb; saltoCtx = { da: ingresso ? 'INGRESSO' : a.tk, a: ingresso ? c.tk : 'CONSEGNA', ms: Math.round(dt * 1000), x: c.b[0] }; }
+        continue;                                        /* i bordi contano solo per il salto */
       }
       n++;
       const db = Math.hypot(c.b[0] - a.b[0], c.b[1] - a.b[1]);

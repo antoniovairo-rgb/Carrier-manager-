@@ -4458,7 +4458,8 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="7.394.0"; // [7.394.0 collaudo PO «SALTO del pallone — sembra un teletrasporto», la sorgente RESIDUA dopo il 7.387]: LA CONSEGNA A FINE COSTRUZIONE NON STRAPPA LA PALLA DAL PIEDE. Il 7.387 aveva chiuso i salti FRA un beat e l'altro, ma il PO continuava a vedere il teletrasporto (8,7u su gi172, a x 11,8) — quindi c'era un'altra sorgente. Ed era in un PUNTO CIECO dello strumento: il fotogramma di consegna build-up→conclusione e' una transizione tl 1→0, e il filtro del guardiano — «entrambi i fotogrammi nel build-up» — lo scartava da sempre. Aggiunto il fotogramma di bordo alla misura, il colpevole e' comparso subito e SISTEMATICO: 12 costruzioni su 26 con un salto di 3,1-4,6u esattamente al passaggio carry→CONSEGNA. Il meccanismo: a fine build-up il pallone veniva SCRITTO al punto pianificato dell'ultimo beat, ma durante una CONDUZIONE il pallone sta incollato al piede del portatore — che insegue il piano con l'inerzia di un corpo vero e arriva in ritardo di qualche unita'. La palla lasciava il piede con uno strappo secco proprio sul fotogramma della conclusione. Se il pallone e' gia' al piede di chi conclude, la consegna E' GIA' AVVENUTA: ora si lascia dov'e', e l'arco del tiro parte da li' — come nel calcio. Il punto pianificato resta il ripiego per quando il pallone e' davvero lontano (build-up interrotto): meglio la scrittura di ieri che una palla orfana. MISURA prima→dopo su 26 costruzioni: salti alla consegna 12 → 0-1 · salto mediano 3,0u → 1,4-1,5u su tre passate. Il residuo dichiarato resta gi97 (through→carry, 4,5u), gia' in nota dal 7.390.
+const GAME_VERSION="7.395.0"; // [7.395.0 collaudo PO codice 001 + «SALTO del pallone di 8,7u» (sei segnalazioni, fino a 32,2u) + «chi e' questo ex compagno? non lo ricordo»]: IL TELETRASPORTO D'INGRESSO DEL BUILD-UP — la sorgente piu' vista di tutte — e' CHIUSO. La caccia con attribuzione per stato ha messo ogni salto >5u delle scene segnalate (gi7, gi57, gi101, gi113, gi4, gi12) sulla transizione d'ingresso del build-up: il primo beat ripartiva dal punto PIANIFICATO del compagno, riportando indietro di 8-13 unita' una palla che la consegna dell'intro aveva gia' portato avanti. Tre correzioni composte: (1) la CONTINUITA' del 7.387 estesa al PRIMO beat — la sua esclusione poggiava su una premessa falsificata dalle note del PO: la finestra di grazia del rilevatore decorre dall'apertura della scena, e il build-up parte secondi dopo, in piena vista; (2) i beat di passaggio INIZIALI gia' soddisfatti (palla entro 3,2u dal DESTINATARIO REALE, non dal punto del piano: la consegna atterra sull'Eroe vero, che dal piano puo' distare dieci unita') si SALTANO facendo avanzare il cronometro — niente passaggio doppione, firma del backbone intatta perche' la timeline pura non cambia; (3) il RENDEZ-VOUS alla cucitura passaggio→conduzione: durante il volo il bersaglio scivola quadraticamente dal piano al piede vero del prossimo portatore, cosi' la colla della conduzione non ha piu' niente da strappare (gi97: 4,5u → 1,1u). NON e' l'easing revocato nel 7.387: quello inseguiva il piede DENTRO la conduzione, qui si corregge il bersaglio del beat di VOLO. MISURA: caccia ai salti >5u su sei scene segnalate → VUOTA (prima: 7 salti, 8,1-12,6u). Guardiano completo su 26 costruzioni: salto mediano 0,9u, rapporto mediano 1,00. Residuo dichiarato: gi103/az1, 4,8u sull'ingresso di un build-up AEREO che comincia con la conduzione di un compagno — la palla deve raggiungerlo, e il viaggio onesto per quel caso non e' ancora scritto. Il guardiano misura ora anche i due BORDI (ingresso e consegna), che il filtro «entrambi i fotogrammi nel build-up» scartava. E L'EX COMPAGNO E' DI NUOVO UN COMPAGNO: la telefonata del «mondo fuori» pescava il nome dalla rosa del vecchio club alla stagione CORRENTE — ma le rose girano, e dopo anni chi c'e' oggi non ha mai giocato con l'Eroe («Siem Bakker», mai visto, che ricorda allenamenti mai condivisi). Le rose sono deterministiche per club e stagione: ora si ricostruisce quella dell'ANNO dello storico (`h.season`) e il nome e' uno che in quello spogliatoio c'era davvero.
+//  [7.394.0 collaudo PO «SALTO del pallone — sembra un teletrasporto», la sorgente RESIDUA dopo il 7.387]: LA CONSEGNA A FINE COSTRUZIONE NON STRAPPA LA PALLA DAL PIEDE. Il 7.387 aveva chiuso i salti FRA un beat e l'altro, ma il PO continuava a vedere il teletrasporto (8,7u su gi172, a x 11,8) — quindi c'era un'altra sorgente. Ed era in un PUNTO CIECO dello strumento: il fotogramma di consegna build-up→conclusione e' una transizione tl 1→0, e il filtro del guardiano — «entrambi i fotogrammi nel build-up» — lo scartava da sempre. Aggiunto il fotogramma di bordo alla misura, il colpevole e' comparso subito e SISTEMATICO: 12 costruzioni su 26 con un salto di 3,1-4,6u esattamente al passaggio carry→CONSEGNA. Il meccanismo: a fine build-up il pallone veniva SCRITTO al punto pianificato dell'ultimo beat, ma durante una CONDUZIONE il pallone sta incollato al piede del portatore — che insegue il piano con l'inerzia di un corpo vero e arriva in ritardo di qualche unita'. La palla lasciava il piede con uno strappo secco proprio sul fotogramma della conclusione. Se il pallone e' gia' al piede di chi conclude, la consegna E' GIA' AVVENUTA: ora si lascia dov'e', e l'arco del tiro parte da li' — come nel calcio. Il punto pianificato resta il ripiego per quando il pallone e' davvero lontano (build-up interrotto): meglio la scrittura di ieri che una palla orfana. MISURA prima→dopo su 26 costruzioni: salti alla consegna 12 → 0-1 · salto mediano 3,0u → 1,4-1,5u su tre passate. Il residuo dichiarato resta gi97 (through→carry, 4,5u), gia' in nota dal 7.390.
 //  [7.393.0 collaudo PO «continuo a non vedere esultanze» — atto secondo: LA CLIP]: il 7.392 aveva fatto PARTIRE l'esultanza sulla strada vera (da 0 a 47 fotogrammi), ma la clip delle braccia al cielo restava a ZERO: si vedeva un saltello, non un'esultanza. Il contatore diceva anche perche': il piano raggiungeva il renderer per 4 fotogrammi su 47. L'azzeramento differito del 7.392 e' in tempo d'OROLOGIO, ma l'esultanza vive in tempo di SCENA — e a fotogrammi lenti un secondo d'orologio compra una frazione di secondo di gioco, quindi il piano moriva a esultanza appena cominciata. Non e' un problema di taratura del timer: e' una DIPENDENZA sbagliata, la stessa famiglia del 7.384 («l'esultanza si arma dal piano, non dall'onda»). ORA L'ESULTANZA SI TIENE UNA COPIA DEL PIANO, scattata nell'istante in cui si arma: nessun azzeramento esterno — handleContinue, tocco, Invio, auto-avanzamento — puo' piu' spegnere un'esultanza in corso. La copia muore con lei: completamento, stacco di scena, cerimonia, rigori. Il prop resta la sorgente fresca quando c'e'; l'interruttore `--senza392` esclude anche la copia, cosi' il guardiano sa ancora dimostrare il rosso. MISURA A/B sulla strada vera (gol + «CONTINUA», GLB-ON): SENZA 0 fotogrammi, clip 0%, nessun canale; CON 48 fotogrammi, clip montata nel 100% dei fotogrammi a scala 1,0x, montata UNA volta, salto visibile. E la modalita' standard del guardiano (4 gol) resta verde: 4 su 4, clip 100%, 1,0x. Guardiano: in modalita' `--continua` bastano le scene iniziali (sulle tarde il pulsante chiude la partita e smonta il 3D: quelle righe non misurano un'esultanza ma un unmount) — soglia adeguata e dichiarata.
 //  [7.392.0 collaudo PO «continuo a non vedere esultanze, l'unica e' quella su rigore»]: IL PIANO APPARTIENE ALL'ESULTANZA, NON ALLA TRANSIZIONE DI SCENA. La frase del PO E' la diagnosi: il rigore e' l'UNICO gol che non passa da `handleContinue`. Su un piazzato il piano d'esultanza nasce in `handleSetPiece` e nessuno lo tocca; in gioco aperto `handleContinue` lo azzerava IMMEDIATAMENTE — e dal 7.384 il piano non e' un accessorio, e' cio' che tiene in vita la clip, la corsa e la durata. Due correzioni, entrambe sulla vita del piano. (1) L'azzeramento e' DIFFERITO alla fine dell'esultanza, chiunque chiuda la scena: il 7.384 aveva insegnato ad aspettare al solo AUTO-avanzamento, ma qui si arriva anche dal tocco su «CONTINUA» e da Invio, che non passano di li'. (2) Uno stacco di scena non uccide piu' un'esultanza APPENA NATA: premendo «CONTINUA» subito dopo un gol la scena cambia nello stesso fotogramma in cui il piano arriva, e la guardia del 7.384 la spegneva prima di un solo fotogramma — consumandone anche la chiave, cosi' non poteva riarmarsi. ⚠️ E il guardiano non l'aveva mai vista perche' non passava di li': sotto `__CPM_FORCE_SIT` la modalita' forzata fa uscire `handleContinue` alla prima riga. Aggiunta la modalita' `--continua`, che spegne il forzato e preme il pulsante come farebbe il giocatore, piu' un interruttore `--senza392` per dimostrare il rosso. MISURA A/B sulla stessa scena, strada vera: SENZA le correzioni 0 fotogrammi d'esultanza e il piano che non raggiunge MAI il renderer; CON le correzioni 47 fotogrammi e il piano visto quattro volte. Zero fotogrammi e' esattamente «non vedo esultanze». RESTA APERTO e dichiarato: su questa strada la CLIP delle braccia al cielo non si monta (0% dei fotogrammi) e resta visibile il solo salto — il giocatore vede un saltello, non un'esultanza. E la modalita' `--continua` sulle scene TARDE fa finire la partita e smonta il 3D (misurati 7 fotogrammi in tutto): quelle righe non sono giudicabili, e il guardiano va limitato alle scene iniziali finche' non sa distinguere i due casi.
 //  [7.391.0 collaudo PO #41/#172 «il pallone deve stare nei piedi del compagno che effettua il passaggio all'eroe»]: «MOVIMENTO BLOCCATO» NON VUOL DIRE «PIAZZATO». La classificazione che decide se una scena nasce con una CONSEGNA escludeva tutto cio' che alza il flag del movimento bloccato, con la motivazione — giusta — che su rigori e punizioni il pallone e' davvero ai piedi dell'Eroe ed e' lui a batterlo. Ma quel flag una scena puo' alzarlo per tutt'altra ragione: gi41 «Il cross arriva alto — tentazione assoluta in area» blocca i passi perche' stai ASPETTANDO il cross, non perche' il pallone sia tuo. Conseguenza misurata coi contatori in pagina: quella scena non era ne' una ricezione ne' una off-ball, quindi non veniva percorso NESSUNO dei due rami che consegnano il pallone — zero volte su undici tentativi del renderer — e la palla restava dov'era, a 3,6 unita' dal compagno piu' vicino, a 2,3 da un AVVERSARIO e sospesa a 1,5 di quota. Ora la prova di «piazzato» e' l'INTENTO dichiarato, non il flag del movimento. MISURA prima→dopo su gi41: pallone↔compagno 3,6u → 0,0u (esattamente ai piedi), pallone↔avversario 2,3u → 6,2u, quota 1,48u → 0,65u, distanza dall'Eroe 5,3u → 14,2u — cioe' una consegna vera invece di un pallone gia' in area. Impatto sull'intero pool verificato prima di toccare il codice: delle dieci situazioni col movimento bloccato NOVE sono rigori e punizioni e restano escluse, l'unica che cambia classificazione e' gi41. Ricezioni 122 → 123. ⚠️ Nello stesso giro ho PROVATO E REVOCATO un'altra strada: instradare il ramo OFF-BALL — cross dalla fascia, palla su un compagno — nella stessa cassetta postale della consegna, perche' quel ramo mette ancora il pallone in un punto geometrico cieco a dove siano i compagni. La misura non si e' mossa e l'ho tolta invece di spedirla. I contatori hanno poi mostrato perche': su gi41 il ramo off-ball non veniva percorso affatto, quindi stavo correggendo la strada sbagliata. Il difetto del punto geometrico sulle scene OFF-BALL VERE (corner, rimessa) resta aperto e dichiarato.
@@ -12781,6 +12782,35 @@ function ThreeMatchView(props){
             let _cn=-1;for(let _i=0;_i<tlSeg.length;_i++){if(_cf.indexOf(tlSeg[_i].tag)>=0){_cn=_i;break;}}
             tlBuildN=(_cn>0)?_cn:(tlSeg.length-1);
             tlMap=mapCineActors(_tlc);tlOn=tlBuildN>0;tlT=0;
+            /* [7.395.0 collaudo PO codice 001 + «SALTO del pallone di 8,7u» — l'ULTIMA sorgente, e la piu'
+               vista] UN BEAT GIA' AVVENUTO NON SI RIGIOCA ALL'INDIETRO. All'avvio del build-up il pallone
+               sta ai piedi dell'Eroe — ce l'ha appena portato la CONSEGNA dell'intro, un passaggio vero e
+               visibile — e il primo beat della costruzione e' proprio quel passaggio: ripartiva dal punto
+               PIANIFICATO del compagno, teletrasportando la palla all'indietro di 8-13 unita' per rigiocare
+               una scena gia' vista. Misurato con l'attribuzione per stato: OGNI salto >5u delle scene
+               segnalate (gi7, gi57, gi101, gi113, piu' gi4 e gi12) sta esattamente sulla transizione
+               tl 0→1, primo beat `pass` — 8,1-12,6u, i numeri delle note del PO. Il 7.387 aveva risparmiato
+               il primo beat credendo il riposizionamento coperto dalla finestra di grazia del rilevatore:
+               falso — la grazia decorre dall'apertura della SCENA, e il build-up parte secondi dopo.
+               Ora i beat di passaggio INIZIALI gia' soddisfatti — pallone entro 2,4u dal loro punto
+               d'arrivo — si SALTANO facendo avanzare il cronometro della timeline: niente teletrasporto,
+               niente passaggio doppione, e la firma del backbone e' intatta perche' la timeline PURA non
+               cambia (cambia solo da dove il consumo comincia). Un beat NON soddisfatto ferma lo
+               scorrimento: se la palla e' davvero altrove, la costruzione si gioca tutta come prima. */
+            if(tlOn){try{let _ac395=0,_sk395=0;
+              for(let _i=0;_i<tlBuildN;_i++){const _g395=tlSeg[_i];
+                if(!(_g395&&(_g395.kind==='pass'||_g395.kind==='through'||_g395.kind==='give'||_g395.kind==='cross')))break;
+                /* «soddisfatto» = la palla e' dal DESTINATARIO VERO del beat, non sul punto del piano: la
+                   consegna dell'intro atterra sui piedi dell'Eroe reale, che dal piano puo' distare dieci
+                   unita' — misurato su gi4, dove il criterio a punto pianificato non scattava mai */
+                const _tid395=(typeof _g395.toId==='string')?_g395.toId:null;
+                const _tm395=(_tid395==='HERO')?hero:((tlMap&&_tid395)?tlMap[_tid395]:null);
+                const _rx395=_tm395?_tm395.position.x:G2X(_g395.to[0]),_rz395=_tm395?_tm395.position.z:G2Z(_g395.to[1]);
+                const _d395=Math.hypot(ball.position.x-_rx395,ball.position.z-_rz395);
+                if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){try{(window.__CPM_SKIP395=window.__CPM_SKIP395||[]).push({i:_i,kind:_g395.kind,toId:_tid395,d:+_d395.toFixed(1),bx:+ball.position.x.toFixed(1),bz:+ball.position.z.toFixed(1),rx:+_rx395.toFixed(1),rz:+_rz395.toFixed(1),hm:!!_tm395});}catch(_e){}}
+                if(_d395<=3.2){_ac395+=(_g395.dur||0);_sk395=_i+1;}
+                else break;}
+              if(_sk395>0)tlT=_ac395;}catch(_e395){}}
             if(!tlOn)fireConclusion();
           } else if(!_cineTest&&P.hlDef&&P.hlDefTraj&&P.hlDefTraj.inbound){
             /* [7.239.0 #55] IL PALLONE AVVERSARIO ARRIVA DAVVERO: pre-fase difensiva via executor con un
@@ -13579,14 +13609,22 @@ function ThreeMatchView(props){
                solo che il tragitto e' continuo. */
             if(sr.current._tlBi387!==bi){sr.current._tlBi387=bi;
               try{sr.current._tlFrom387=[ball.position.x/1+50,ball.position.z/0.68+50];}catch(_e87){sr.current._tlFrom387=null;}}
-            /* ⚠️ SOLO DAL SECONDO BEAT IN POI. Applicata anche al PRIMO, questa continuita' non correggeva
-               niente: la spegneva. Il primo beat porta il pallone dove l'azione comincia — spesso indietro,
-               ai piedi di chi la avvia — e quel tratto e' il setup della scena, non un difetto (il
-               rilevatore automatico ha per questo una finestra di grazia di 750 ms). Misurato: prendendo
-               come partenza la posizione corrente anche al primo beat, il pallone passava da 10,2 unita'
-               percorse a 1,4 — cioe' la costruzione spariva. Il salto vero e' quello FRA un beat e l'altro,
-               a meta' azione, quando il giocatore sta gia' guardando. */
-            const _f0387=(bi>0&&sr.current._tlFrom387&&Math.hypot(sr.current._tlFrom387[0]-sg.from[0],(sr.current._tlFrom387[1]-sg.from[1])*0.68)>0.6)?sr.current._tlFrom387:sg.from;
+            /* ⚠️ [7.395.0] LA CONTINUITA' VALE ANCHE PER IL PRIMO BEAT — e la storia di questa riga va
+               raccontata intera, perche' e' cambiata due volte sulla base di misure.
+               Il 7.387 l'aveva NEGATA al primo beat con due argomenti: (a) il riposizionamento d'apertura
+               e' un setup coperto dalla finestra di grazia del rilevatore automatico; (b) applicandola, la
+               costruzione «spariva» (10,2u percorse → 1,4). Entrambi sono caduti. (a) e' FALSO in partita
+               vera: la grazia decorre dall'apertura della SCENA, e il build-up parte secondi dopo, a scena
+               in pieno svolgimento — le note del PO («SALTO di 8,7u», quattro segnalazioni sulla stessa
+               costante) erano esattamente questo teletrasporto, misurato con l'attribuzione per stato:
+               ogni salto >5u delle scene segnalate sta sulla transizione d'INGRESSO del build-up, 8,1-12,6u
+               all'indietro verso il `from` pianificato del primo beat. (b) valeva solo nella modalita' di
+               collaudo SENZA la consegna dell'intro, dove la palla giace gia' sul punto d'arrivo del piano:
+               li' il primo beat collassa perche' NON C'E' niente da giocare — ed e' il caso che oggi viene
+               SALTATO esplicitamente dal salto-beat qui sopra. In partita vera la palla sta dove la
+               consegna l'ha portata, il piano sta altrove, e la continuita' trasforma il teletrasporto in
+               un passaggio visibile da li' a dove il beat deve arrivare. */
+            const _f0387=(sr.current._tlFrom387&&Math.hypot(sr.current._tlFrom387[0]-sg.from[0],(sr.current._tlFrom387[1]-sg.from[1])*0.68)>0.6)?sr.current._tlFrom387:sg.from;
             sr.current._tlK381=sg.kind||null;
             sr.current._tlHD387=!!(tlMap&&tlMap.HERO&&sg.before&&sg.before.HERO);/* [7.387.0] questo beat GUIDA l'eroe? Il driver ordinario si fa da parte appena la timeline ha una voce HERO, ma la timeline la usa solo nei beat che lo elencano: se nessun beat lo elenca, nessuno lo muove. */
             /* [7.382.0] IL PORTATORE DICHIARATO VALE SOLO NEL FRAME IN CUI LA CONDUZIONE ACCADE DAVVERO.
@@ -13597,7 +13635,26 @@ function ThreeMatchView(props){
                gi103, 14 frame su 14 «col pallone dietro», tutti falsi. Azzerato a ogni frame e riscritto solo
                dove la palla viene davvero appoggiata al piede. */
             sr.current._tlC381=null;/* [7.382.0] la direzione di conduzione appartiene al beat che finisce: senza questo azzeramento, il beat successivo (o la scena successiva) ripartirebbe dalla media mobile di una corsa che non esiste piu' *//* [7.381.0] il TIPO del beat in corso: senza, un guardiano della conduzione non sa distinguere «il pallone corre da solo perche' e' un passaggio» da «il pallone corre da solo perche' il portatore l'ha perso» — e li giudica uguali */
-            const _bxg=_f0387[0]+(sg.to[0]-_f0387[0])*p,_byg=_f0387[1]+(sg.to[1]-_f0387[1])*p;
+            let _bxg=_f0387[0]+(sg.to[0]-_f0387[0])*p,_byg=_f0387[1]+(sg.to[1]-_f0387[1])*p;
+            /* [7.395.0 collaudo PO «SALTO del pallone», ultima sorgente nota: gi97, 4,5u a through→carry]
+               IL PASSAGGIO ATTERRA SUL PIEDE VERO, NON SUL PUNTO PIANIFICATO. Un beat di passaggio vola
+               verso `sg.to`, che e' il piano; ma chi ricevera' e' un corpo con inerzia, e al momento del
+               cambio di beat puo' stare qualche unita' piu' in la'. Il beat di conduzione successivo
+               incolla il pallone al SUO piede in un fotogramma: strappo secco, misurato 4,5-5,2u.
+               E' il gemello del difetto chiuso nel 7.394 (la palla che LASCIA il piede): qui ci ARRIVA.
+               La cura e' la stessa dei passaggi veri di questo motore (il rendez-vous del 7.369): durante
+               il volo il bersaglio SCIVOLA dal piano al piede vero del prossimo portatore — quadratico su
+               p, cosi' la prima meta' del volo segue il disegno e l'arrivo aggancia l'uomo. Alla cucitura
+               il pallone e' gia' dov'e' lui, e la colla della conduzione non ha piu' niente da strappare.
+               ⚠️ NON e' l'easing revocato nel 7.387: quello inseguiva il piede DENTRO il beat di conduzione,
+               rompendo il riferimento da cui il beat dopo riparte; qui si corregge il bersaglio del beat di
+               VOLO, e la conduzione riceve un pallone gia' consegnato. */
+            {const _nx395=tlSeg[bi+1];
+             if(_nx395&&_nx395.kind==='carry'&&(sg.kind==='pass'||sg.kind==='through'||sg.kind==='give'||sg.kind==='cross')){
+               const _nid395=(typeof _nx395.toId==='string')?_nx395.toId:((typeof _nx395.fromId==='string')?_nx395.fromId:null);
+               const _nm395=(_nid395==='HERO')?hero:((tlMap&&_nid395)?tlMap[_nid395]:null);
+               if(_nm395){const _ngx395=_nm395.position.x+50,_ngy395=_nm395.position.z/0.68+50,_w395=p*p;
+                 _bxg=_bxg*(1-_w395)+_ngx395*_w395;_byg=_byg*(1-_w395)+_ngy395*_w395;}}}
             ball.position.x=G2X(_bxg);ball.position.z=G2Z(_byg);
             const _arcH=sg.kind==="cross"?4.2:sg.kind==="through"?0.35:(sg.kind==="pass"||sg.kind==="give")?1.0:0.0;
             ball.position.y=(_aerTL!=null)?(_aerTL+Math.sin(p*Math.PI)*Math.max(_arcH,0.35)):(0.65+Math.sin(p*Math.PI)*_arcH);/* [7.222.0] nelle situazioni aeree il pallone e IN VOLO per tutta la costruzione: non deve mai toccare l erba */
@@ -26560,7 +26617,15 @@ const getThisWeekMatchday=()=>{
     if(hs.length&&seen.indexOf("exMate")<0){
       const h=hs[Math.abs(hashStr((p.name||"x")+"|exm|"+sn))%hs.length];
       const oc=CLUBS.find(c=>c.id===h.clubId);
-      let nm=null;try{const rr=oc?generateTeamRoster(oc,sn):null;if(rr&&rr.length)nm=(rr[Math.abs(hashStr(h.clubId+"|m|"+sn))%rr.length]||{}).name;}catch(_e){}
+      /* [7.395.0 collaudo PO «ma chi e'? non ricordo un ex compagno con questo nome — e' totalmente
+         inventato?»] L'EX COMPAGNO DEVE ESSERE STATO UN COMPAGNO. Il nome veniva pescato dalla rosa del
+         vecchio club ALLA STAGIONE CORRENTE — ma le rose girano (~3 movimenti l'anno, un giocatore resta
+         ~7 stagioni): dopo una carriera lunga, chi c'e' oggi in quel club quasi certamente non ha mai
+         giocato con l'Eroe. La telefonata diceva «dai tempi del FC Amsterdam» a nome di uno arrivato anni
+         dopo. Le rose sono deterministiche per (club, stagione): basta ricostruire quella DELL'ANNO in cui
+         l'Eroe ci giocava — `h.season`, che lo storico ha sempre avuto — e il nome torna a essere un
+         compagno vero, lo stesso che il giocatore puo' aver visto in campo in quelle partite. */
+      let nm=null;try{const rr=oc?generateTeamRoster(oc,(h.season||sn)):null;if(rr&&rr.length)nm=(rr[Math.abs(hashStr(h.clubId+"|m|"+sn))%rr.length]||{}).name;}catch(_e){}
       /* [7.307.0 collaudo PO «il mondo fuori, la frase è ripetitiva»] la telefonata dell'ex compagno aveva
          UN SOLO testo: cambiava il nome, non una parola. Con più club nella storia e più stagioni tornava
          identica. Ora cinque telefonate diverse — nostalgia, sfottò, consiglio, richiesta, rimpianto —
