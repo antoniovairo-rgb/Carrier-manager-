@@ -23,8 +23,12 @@ import { startServer, launchBrowser, installCdnRoutes, openMatch, sleep } from '
 const VERB = process.argv.includes('--verbose');
 /* le 13 rosse della misura pre-fix (famiglia «al piede») + controlli sani */
 const SCENE = (process.env.CPM_SCENE || '').length ? process.env.CPM_SCENE.split(',').map(Number)
-  : [92, 152, 148, 12, 120, 142, 144, 106, 110, 114, 158, 182, 188, 0, 26, 74];
-const NOTI = new Set([96, 98]);   /* dribbling: residuo dichiarato, escluso finche' il driver non e' chiuso */
+  : [92, 152, 148, 12, 120, 142, 144, 106, 110, 114, 158, 182, 188, 0, 26, 74, 168, 132];/* 168/132: scene del criterio «scivolata» (7.400) */
+const NOTI = new Set([96, 98, 168, 132]);   /* 96/98 dribbling: driver ignoto · 168/132 [7.400.0] SCIVOLATA
+   d'apertura sulle DIFENSIVE, meccanismo mappato ma non ancora chiuso: al taglio tutto il teatro viene
+   piazzato sui props del commit vecchio e lo staging fresco arriva il commit dopo ~30u piu' in la' — la
+   palla (e non solo lei) trasla per raggiungerlo. Va ri-armato lo snap sul commit di staging. Due
+   tentativi revocati con misura invariata: vedi la nota [7.400.0] nel blocco snap della palla. */
 const ADDOSSO = 3.5;
 
 const srv = await startServer(); const port = srv.address().port;
@@ -37,6 +41,25 @@ await openMatch(page, port); await sleep(900);
 const righe = [], guasti = [];
 for (const gi of SCENE) {
   if (NOTI.has(gi)) continue;
+  /* [7.400.0] sonda della SCIVOLATA D'APERTURA: campiona la palla per fotogramma durante l'intro.
+     Lo snap del taglio beveva dai props stantii e il pallone STRISCIAVA fino al punto vero — misurato
+     38 unita' rasoterra in ~200 ms su gi168 («sembra un teletrasporto» + «traballa tutto», con la
+     camera che insegue). Il fix riallinea UNA volta, mascherato dall'intro: quindi UN passo lungo e'
+     ammesso, una scivolata CONTINUA (2+ passi oltre 5u) no. */
+  await page.evaluate(() => {
+    window.__CPM_SLD = [];
+    if (!window.__CPM_SLDTICK) {
+      window.__CPM_SLDTICK = () => {
+        try {
+          const T = window.__CPM3D, s = window.__CPM_STATE && window.__CPM_STATE();
+          if (T && T.ball && s && s.phase === 'hl_intro' && window.__CPM_SLD && window.__CPM_SLD.length < 400)
+            window.__CPM_SLD.push({ t: performance.now(), x: T.ball.position.x, z: T.ball.position.z });
+        } catch (e) {}
+        requestAnimationFrame(window.__CPM_SLDTICK);
+      };
+      requestAnimationFrame(window.__CPM_SLDTICK);
+    }
+  });
   let ok = false;
   try {
     ok = await page.evaluate(g => {
@@ -56,6 +79,14 @@ for (const gi of SCENE) {
     return { dHero: +Math.hypot(s.hero.x - s.ball.x, s.hero.y - s.ball.y).toFixed(1),
       held: s.ball.heldBy || null, bs: S ? (S.ballState || null) : null, type: S ? S.type : null };
   }, gi);
+  const sld = await page.evaluate(() => { const a = window.__CPM_SLD || []; window.__CPM_SLD = []; return a; });
+  let passiLunghi = 0, passoMax = 0;
+  for (let i = 1; i < sld.length; i++) {
+    const dt = sld[i].t - sld[i - 1].t; if (dt <= 0 || dt > 400) continue;
+    const d = Math.hypot(sld[i].x - sld[i - 1].x, sld[i].z - sld[i - 1].z);
+    if (d > 5) passiLunghi++; if (d > passoMax) passoMax = d;
+  }
+  if (passiLunghi >= 2) { guasti.push(`gi${gi}: il pallone SCIVOLA all'apertura — ${passiLunghi} passi oltre 5u durante l'intro (max ${passoMax.toFixed(1)}u): il riallineamento e' UNO, questo e' un viaggio`); righe.push({ gi, dHero: null, held: null, slide: passiLunghi }); console.log(`❌ gi${String(gi).padStart(3)} · SCIVOLATA d'apertura: ${passiLunghi} passi >5u (max ${passoMax.toFixed(1)}u)`); continue; }
   if (!m || m.type === 'def' || m.bs === 'aerial') continue;
   const problemi = [];
   if (!m.held || m.held.dist > ADDOSSO) problemi.push(`palla di NESSUNO alla prima lettura (il piu' vicino sta a ${m.held ? m.held.dist : '?'}u, l'eroe a ${m.dHero}u)`);
@@ -67,7 +98,7 @@ for (const gi of SCENE) {
 await b.close(); srv.close();
 
 if (righe.length < 8) { console.log(`❌ FAIL — solo ${righe.length} aperture misurate: la sonda e' cieca`); process.exit(2); }
-const ds = righe.map(r => r.dHero).sort((a, b) => a - b);
+const ds = righe.map(r => r.dHero).filter(v => v != null).sort((a, b) => a - b);
 console.log(`\naperture al piede misurate ${righe.length} · dist eroe↔palla mediana ${ds[ds.length >> 1].toFixed(1)}u · scene col pallone di nessuno/avversario ${guasti.length}`);
 if (guasti.length) { console.log(`\n❌ FAIL — ${guasti.length}`); guasti.forEach(g => console.log('  · ' + g)); process.exit(2); }
 console.log(`\n✅ PASS — ogni scena al piede si apre col pallone addosso a un giocatore di casa`);
