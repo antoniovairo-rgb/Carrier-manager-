@@ -51,7 +51,7 @@ for (const gi of SCENE) {
     await sleep(2800);
     let fr = []; try { fr = await page.evaluate(() => window.__CPM_REC_DRAIN()); } catch (e) { }
 
-    let tl = 0, n = 0, worst = 99, wd = 0, dietro = 0, lontano = 0;
+    let tl = 0, n = 0, worst = 99, wd = 0, dietro = 0, lontano = 0; const traccia = [];
     for (let i = 2; i < fr.length; i++) {
       /* SOLO i beat di CONDUZIONE: in un beat di passaggio il pallone corre da solo, ed e' giusto cosi'.
          E il PORTATORE lo dichiara il renderer (`tc`) — dedurlo dal mesh piu' vicino al pallone significa
@@ -68,11 +68,16 @@ for (const gi of SCENE) {
       if (bd > wd) wd = bd;
       if (proj < PROJ_MIN) dietro++;
       if (bd > DIST_MAX) lontano++;
+      /* la traccia dei fotogrammi vive sempre: un guardiano che dice «e' rosso» senza dire DOVE
+         costringe a riprodurre a mano un difetto intermittente, ed e' la parte piu' cara */
+      traccia.push({ t: c.t, proj: +proj.toFixed(2), d: +bd.toFixed(2), passo: +ml.toFixed(3), tc: c.tc, b: [c.b[0], c.b[1], c.b[2]] });
     }
     if (!tl) continue;
     const pass = n === 0 || (dietro === 0 && lontano === 0);
     if (!pass) guasti.push(`gi${gi}/az${k}: ${dietro}/${n} frame col pallone DIETRO il portatore (peggio ${worst.toFixed(2)}u) · ${lontano} frame oltre ${DIST_MAX}u (max ${wd.toFixed(2)}u)`);
     righe.push({ gi, k, tl, n, worst, wd, dietro, lontano });
+    if (!pass && traccia.length) { console.log(`   traccia gi${gi}/az${k} (primi 20 dei ${traccia.length} campioni):`);
+      traccia.slice(0, 20).forEach(q => console.log(`     proj ${(q.proj >= 0 ? '+' : '') + q.proj}u · d ${q.d}u · passo ${q.passo}u · portatore [${q.tc}] · palla [${q.b[0]},${q.b[1]},y${q.b[2]}]`)); }
     if (VERB || !pass) console.log(`${pass ? '✅' : '❌'} gi${String(gi).padStart(3)}/az${k} · frame build-up ${String(tl).padStart(3)} · campioni ${String(n).padStart(3)} · proiezione peggiore ${worst === 99 ? '   —' : (worst >= 0 ? '+' : '') + worst.toFixed(2) + 'u'} · dietro ${String(dietro).padStart(3)} · distanza max ${wd.toFixed(2)}u`);
   }
 }
