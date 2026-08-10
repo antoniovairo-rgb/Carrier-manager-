@@ -44,10 +44,15 @@ jobs:
       - name: Unit tests — AI Vision engine (test:vision, 28)
         run: npm run test:vision
 
-      - name: Logic tests — Decision Engine + cine backbone + backbone regression (test:logic, 9)
+      # ⚠️ Se questo passo fallisce con «BACKBONE REGRESSION», la prima domanda NON e' «rigenero la
+      #    baseline?»: e' «gli scostamenti sono corretti?». La baseline e' rimasta ferma dal 7.368.0 al
+      #    7.385.0 — undici giorni di CI rossa a ogni push — perche' quel commit cambio' la derivazione
+      #    del pattern (un passaggio in una situazione `through` non e' piu' una COMBINATION) e non la
+      #    rigenero'. Si verifica scostamento per scostamento, poi: npm run test:logic:update-baseline
+      - name: Logic tests — Decision Engine + cine backbone + backbone regression (test:logic)
         run: npm run test:logic
 
-      - name: Run quality gate (179 Situations, 12 categorie)
+      - name: Run quality gate (191 Situations, 14 categorie)
         run: npm run validate-situations
 
       # Save path GATE-BLIND: esercita la migration reale su save storici sintetici (AC-131..140)

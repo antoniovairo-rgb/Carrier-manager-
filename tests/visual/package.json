@@ -6,6 +6,7 @@
   "type": "module",
   "scripts": {
     "validate-situations": "node validate-situations.mjs",
+    "ci": "npm run test:vision && npm run test:logic && npm run validate-situations && npm run save-compat && npm run replay",
     "quick-gate": "node quick-gate.mjs",
     "validate-situations:update-golden": "node validate-situations.mjs --update-golden",
     "validate-situations:update-baseline": "CPM_UPDATE_BASELINE=1 node validate-situations.mjs",
@@ -18,6 +19,7 @@
     "carry-run-ball": "node carry-run-ball-test.mjs",
     "through-depth": "node through-depth-test.mjs",
     "celebration-visible": "node celebration-visible-test.mjs",
+    "pass-sanity": "node pass-sanity-test.mjs",
     "attendance-sim": "node attendance-sim.mjs",
     "club-evolution-sim": "node club-evolution-sim.mjs",
     "kit-pattern-shot": "node kit-pattern-shot.mjs",
