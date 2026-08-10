@@ -98,10 +98,19 @@ const med = a => { if (!a.length) return NaN; const s = [...a].sort((x, y) => x 
 const dm = vals.map(v => v.mate);
 const dh = vals.map(v => v.hero);
 const orfane = vals.filter(v => v.mate > 6 && v.hero > 6);
+/* [7.391.0] IL CRITERIO CHE MANCAVA — collaudo PO #172: «la scena deve avviarsi con il compagno che ha
+   il pallone tra i piedi e NON in quelli dell'eroe». Fin qui si misuravano due distanze separate, la
+   piu' vicina fra i compagni e quella dall'Eroe, ma non si e' mai chiesto QUALE DELLE DUE VINCE. Una
+   consegna che nasce ai piedi dell'Eroe supera entrambe le soglie a pieni voti — zero dal compagno? no,
+   ma pochi metri; vicino all'Eroe? si', ed e' proprio il difetto — e il guardiano la promuove. Una
+   consegna e' qualcuno CHE TI PASSA LA PALLA: se il pallone e' piu' vicino a te che a chiunque altro,
+   non c'e' nessuna consegna da fare. */
+const dalleTueScarpe = vals.filter(v => v.hero < v.mate && v.hero < 4);
 console.log(`\n  scena   palla↔compagno   palla↔eroe`);
 for (const v of vals.slice(0, 40)) console.log(`  gi${String(v.gi).padStart(3)}   ${String(v.mate).padStart(6)}u        ${String(v.hero).padStart(6)}u${v.mate > 6 && v.hero > 6 ? '   ⚑ nasce dal nulla' : ''}`);
 console.log(`\nconsegne misurate ${vals.length} · mediana palla↔compagno piu' vicino ${med(dm).toFixed(1)}u · palloni orfani (>6u da chiunque) ${orfane.length}/${vals.length}`);
 console.log(`mediana palla↔EROE ${med(dh).toFixed(1)}u · consegne oltre i 25u dall'eroe ${dh.filter(v => v > 25).length}/${dh.length}`);
+console.log(`consegne che nascono nei piedi dell'EROE invece che di un compagno: ${dalleTueScarpe.length}/${vals.length}${dalleTueScarpe.length ? ' → ' + dalleTueScarpe.slice(0, 8).map(v => 'gi' + v.gi + ' (eroe ' + v.hero + 'u, compagno ' + v.mate + 'u)').join(', ') : ''}`);
 
 if (vals.length < 8) issues.push(`solo ${vals.length} consegne osservate: la misura non e' stata fatta (manca __CPM_FORCE_INTRO?)`);
 else {
@@ -117,6 +126,7 @@ else {
      la soglia al 20% (8 su 42) cadeva dentro quella banda e rendeva il guardiano intermittente. Il
      numero che conta resta la mediana — 11,1u prima del 7.383, 3,0-4,3u dopo — e una soglia al 28%
      (12 su 42) e' ancora un quarto di quanto misurava il difetto (29 su 42). */
+  if (dalleTueScarpe.length / vals.length > 0.12) issues.push(`${dalleTueScarpe.length} consegne su ${vals.length} nascono nei piedi dell'EROE invece che in quelli di un compagno: non c'e' nessuna consegna, il pallone ce l'ha gia' lui`);
   if (orfane.length / vals.length > 0.28) issues.push(`${orfane.length} consegne su ${vals.length} nascono a piu' di 6u da CHIUNQUE (lo «0/42» del 7.370 era misurato senza snap di scena: numero non valido)`);
   /* [7.374.0] IL CRITERIO CHE MANCAVA, e che spiega perche' questo guardiano era VERDE mentre il PO
      continuava a segnalare «il pallone deve essere nei piedi del compagno». Si misurava solo la

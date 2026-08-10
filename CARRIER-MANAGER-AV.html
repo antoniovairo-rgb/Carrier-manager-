@@ -18022,6 +18022,16 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
          Ora l'origine `gk` entra nello stesso percorso della ricezione (7.350/7.351): la palla nasce dal
          portiere e ARRIVA all'eroe dentro `hl_intro`, cosi' quando l'azione parte il pallone e' suo. Nessuna
          traiettoria nuova — si riusa la consegna gia' collaudata, si cambia solo da dove parte. */
+      /* ⚠️ [7.391.0] PROVATO E REVOCATO. Le scene OFF-BALL — cross dalla fascia, palla su un compagno —
+         prendono questo ramo e mettono il pallone in un PUNTO GEOMETRICO calcolato da `hlBallSpot`, cieco
+         a dove siano i compagni: e' lo stesso difetto che il 7.383 ha chiuso per l'altro ramo, quello
+         delle scene che nascono al piede, e qui e' rimasto aperto. Ho provato a instradare anche questo
+         ramo nella cassetta postale della consegna, ma la misura NON si e' mossa: gi41 resta a 3,6 unita'
+         dal compagno piu' vicino, identica, e sul campione intero la variazione (10 orfani su 42 contro 8)
+         cade dentro la banda di rumore gia' dichiarata nel 7.384. Revocato invece di spedirlo: un fix che
+         non so dimostrare non e' un fix. Il difetto resta REALE e misurato — vedi il criterio nuovo in
+         delivery-origin-test.mjs — e va ripreso capendo PERCHE' la spinta del renderer non arriva su
+         questo ramo, non aggiungendone un'altra. */
       if(_sp.at!=="hero"&&_sp.at!=="gk"){ballTargetRef.current={x:_sp.x,y:_sp.y};setBallPos({x:_sp.x,y:_sp.y});}
       /* [7.350.0] LA CONSEGNA. Su una RICEZIONE la scena non si apre col pallone gia' tra i piedi: nasce da
          CHI CE L'HA — la fascia da cui parte il cross — e ARRIVA all'eroe. Tutto dentro `hl_intro`, che dura
