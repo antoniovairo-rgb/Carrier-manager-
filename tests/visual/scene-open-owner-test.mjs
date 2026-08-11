@@ -23,9 +23,12 @@ import { startServer, launchBrowser, installCdnRoutes, openMatch, sleep } from '
 const VERB = process.argv.includes('--verbose');
 /* le 13 rosse della misura pre-fix (famiglia «al piede») + controlli sani */
 const SCENE = (process.env.CPM_SCENE || '').length ? process.env.CPM_SCENE.split(',').map(Number)
-  : [92, 152, 148, 12, 120, 142, 144, 106, 110, 114, 158, 182, 188, 0, 26, 74, 168, 132];/* 168/132: scene del criterio «scivolata» (7.400) */
-const NOTI = new Set([96, 98]);   /* dribbling: driver ignoto, residuo dichiarato — 168/132 rientrate col
-   ri-armo dello snap sul commit di staging (7.401) e col conteggio ripulito dall'errore di attribuzione */
+  : [92, 152, 148, 12, 120, 142, 144, 106, 110, 114, 158, 182, 188, 0, 26, 74, 168, 132, 96, 98, 172, 104];/* 168/132: scene del criterio «scivolata» (7.400) · 96/98/172/104: famiglia «duo in retromarcia» (7.413) */
+const NOTI = new Set([]);   /* [7.413.0] VUOTO — il «driver ignoto» di gi96/98 aveva un nome: il tetto in
+   avanti del driver ordinario dell'eroe (AWAY_GOAL_X-9 = x 87) che in LETTURA riportava indietro a piedi
+   l'eroe piazzato sul punto-palla dichiarato a x 93-95, palla in mano (il «duo in retromarcia» di gi96/172,
+   gap 8,0/6,0 → 0,0 su tre repliche; perfino i controlli avevano il gap-tetto da 3,1u). In lettura il tetto
+   sale a AWAY_GOAL_X-1 e le quattro scene della famiglia sono entrate QUI nel giudizio. */
 const ADDOSSO = 3.5;
 
 const srv = await startServer(); const port = srv.address().port;

@@ -9,7 +9,8 @@
      · i RARI al massimo due volte;
      · nessun evento torna prima del suo cooldown;
      · mai piu' di due eventi consecutivi della stessa categoria;
-     · la copertura resta ampia (almeno 10 eventi distinti in tre stagioni).
+     · la copertura resta ampia (almeno 10 eventi distinti in tre stagioni);
+     · [7.413.0] almeno un evento UNICO appare (il punto cieco del 7.412: erano tutti morti).
    PROVA DEL ROSSO: con --senza-cooldown il motore ignora visto/cooldown (interruttore test
    __CPM_VITA_NOCD) e il guardiano DEVE fallire — se non fallisce, non sta misurando niente.
 
@@ -67,6 +68,11 @@ let run = 1; for (let i = 1; i < F.length; i++) { run = (F[i].cat === F[i - 1].c
   if (run > 2) { guasti.push(`tre eventi consecutivi della categoria «${F[i].cat}»`); break; } }
 const distinct = Object.keys(per).length;
 if (distinct < 10) guasti.push(`solo ${distinct} eventi distinti in tre stagioni: la carriera sa di poco`);
+/* [7.413.0] il punto cieco scoperto dal test massivo: questo guardiano era VERDE con gli eventi
+   UNICI morti (il cooldown u=99999 confrontato con l'at di default -9999 li escludeva PER SEMPRE
+   dal pool — 0 unici in 120 stagioni su 20 semi). Gli unici sono i gioielli del pool: almeno uno
+   deve apparire in tre stagioni, o la promessa «momenti irripetibili» e' carta. */
+if (!NOCD && F.filter(f => f.r === 'u').length < 1) guasti.push('nessun evento UNICO in tre stagioni: i gioielli del pool sono morti');
 if (F.length < 8) guasti.push(`solo ${F.length} eventi in tre stagioni: il contorno e' sparito`);
 if (F.length > 45) guasti.push(`${F.length} eventi in tre stagioni: il contorno e' diventato il piatto`);
 
