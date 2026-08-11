@@ -16,6 +16,13 @@
      · il SALTO del pallone fra due fotogrammi, con il beat in cui accade e quello da cui viene;
      · quanto cammina il pallone contro quanto cammina l'eroe, sullo stesso tratto.
 
+   RESIDUI DICHIARATI (rossi noti del run di default, da chiudere):
+     · gi103/az1 — ingresso del build-up AEREO che comincia con la conduzione di un compagno (dal
+       7.395: 4,8u allora, 3,3u dopo il 7.409);
+     · gi27/az1 [7.409.0] — nel dai-e-vai profondo l'eroe non accompagna (0,8u contro 18,8u di
+       palla): sospetto che le `mv` dell'EROE dentro i beat di passaggio non vengano eseguite per la
+       regola «l'executor e' l'unico driver» del 7.236 — da chiudere guardando il consumo delle moves.
+
      CPM_CHROME=… PLAYWRIGHT_BROWSERS_PATH=… node buildup-sync-test.mjs [--verbose]                   */
 import { startServer, launchBrowser, installCdnRoutes, openMatch, sleep } from './lib/harness.mjs';
 
