@@ -21,7 +21,7 @@ import { startServer, launchBrowser, installCdnRoutes, openMatch, sleep } from '
 const VERB = process.argv.includes('--verbose');
 /* le 12 rosse della misura pre-fix + sane di controllo */
 const SCENE = (process.env.CPM_SCENE || '').length ? process.env.CPM_SCENE.split(',').map(Number)
-  : [33, 36, 44, 45, 54, 129, 132, 134, 135, 136, 138, 31, 127, 190];
+  : [33, 36, 44, 45, 54, 129, 132, 134, 135, 136, 138, 31, 127, 190, 148, 79, 168];/* [7.415.0] +148/79/168: palla profonda nella meta' campo propria — la LETTURA sfondava a -52…-60 */
 const CONFINE = -50;      /* fine del campo; la faccia interna della curva sta a -51,3 */
 
 const srv = await startServer(); const port = srv.address().port;
@@ -54,12 +54,15 @@ for (const gi of SCENE) {
   try { await page.evaluate(() => { window.__CPM_RESOLVE(0); }); } catch (e) { continue; }
   await sleep(4200);
   const fr = await page.evaluate(() => { const a = window.__CPM_CAMS || []; window.__CPM_CAMS = []; return a; });
-  const res = fr.filter(f => /result/.test(String(f.ph || '')));
+  /* [7.415.0 collaudo PO gi148 «traballa» in intro/lettura] TUTTE LE FASI HL, NON SOLO L'ESITO.
+     Questo guardiano campionava solo `hl_result` — e QUATTRO scene (gi148/79/168/132) tenevano la
+     LETTURA a x -52…-60, rasente/dentro la cima della gradinata, verdi qui perche' fuori giudizio. */
+  const res = fr.filter(f => /^hl/.test(String(f.ph || '')));
   if (res.length < 8) continue;
   const minCx = Math.min(...res.map(f => f.cx));
   const oltre = res.filter(f => f.cx < CONFINE).length;
   const problemi = [];
-  if (oltre > 0) problemi.push(`la camera esce dal campo per ${oltre}/${res.length} fotogrammi d'esito (x minima ${minCx.toFixed(1)}): la curva le sta davanti`);
+  if (oltre > 0) problemi.push(`la camera esce dal campo per ${oltre}/${res.length} fotogrammi (x minima ${minCx.toFixed(1)}): la curva le sta davanti`);
   if (problemi.length) guasti.push(`gi${gi}: ` + problemi.join(' · '));
   righe.push({ gi, minCx, oltre, n: res.length });
   if (VERB || problemi.length) console.log(`${problemi.length ? '❌' : '✅'} gi${String(gi).padStart(3)} · fr esito ${String(res.length).padStart(3)} · cam.x min ${minCx.toFixed(1)} · oltre il confine ${oltre}/${res.length}`);

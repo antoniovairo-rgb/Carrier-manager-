@@ -68,6 +68,14 @@ for (const gi of SCENE) {
         continue;                                        /* i bordi contano solo per il salto */
       }
       n++;
+      /* [7.415.0] UN FILTRANTE TESO NON E' UN TELETRASPORTO. Dentro un beat di VOLO (pass/through/
+         give/cross/feed) il pallone viaggia a velocita' di passaggio (20-25 u/s): a ~5fps headless
+         sono 4-5u fra due fotogrammi, LISCI e sulla stessa retta — lo stesso argomento con cui questo
+         guardiano esonera i beat di passaggio dal rapporto corpi/palla. Il tetto stretto (3u, «un
+         tocco») resta per conduzioni e BORDI, dove il salto e' davvero una cucitura. Scoperto col
+         rimappo del ricevente 7.414: il through ora vola verso compagni REALI, a distanze che
+         variano con la scena precedente — e un volo piu' lungo e' piu' teso, non piu' rotto. */
+      const _fl415 = (a.tk === c.tk && /pass|through|give|cross|feed/.test(String(c.tk || '')));
       const db = Math.hypot(c.b[0] - a.b[0], c.b[1] - a.b[1]);
       const dh = Math.hypot(c.h[0] - a.h[0], c.h[1] - a.h[1]);
       camB += db; camH += dh;
@@ -79,7 +87,7 @@ for (const gi of SCENE) {
          e misurare il corpo dell'eroe al posto suo condanna una scena sana. Il portatore lo DICHIARA il
          renderer (`tc`, dal 7.381). */
       if (c.tk === 'carry' && c.tc && a.tc) { carB += db; carH += Math.hypot(c.tc[0] - a.tc[0], c.tc[1] - a.tc[1]); carN++; }
-      if (db > salto) { salto = db; saltoCtx = { da: a.tk, a: c.tk, ms: Math.round(dt * 1000), x: c.b[0] }; }
+      if (db > salto && !(_fl415 && db <= 5.5)) { salto = db; saltoCtx = { da: a.tk, a: c.tk, ms: Math.round(dt * 1000), x: c.b[0] }; }
       if (c.hd) guidato++;
     }
     if (n < 4) continue;
