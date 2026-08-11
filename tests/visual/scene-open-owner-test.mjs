@@ -24,11 +24,8 @@ const VERB = process.argv.includes('--verbose');
 /* le 13 rosse della misura pre-fix (famiglia «al piede») + controlli sani */
 const SCENE = (process.env.CPM_SCENE || '').length ? process.env.CPM_SCENE.split(',').map(Number)
   : [92, 152, 148, 12, 120, 142, 144, 106, 110, 114, 158, 182, 188, 0, 26, 74, 168, 132];/* 168/132: scene del criterio «scivolata» (7.400) */
-const NOTI = new Set([96, 98, 168, 132]);   /* 96/98 dribbling: driver ignoto · 168/132 [7.400.0] SCIVOLATA
-   d'apertura sulle DIFENSIVE, meccanismo mappato ma non ancora chiuso: al taglio tutto il teatro viene
-   piazzato sui props del commit vecchio e lo staging fresco arriva il commit dopo ~30u piu' in la' — la
-   palla (e non solo lei) trasla per raggiungerlo. Va ri-armato lo snap sul commit di staging. Due
-   tentativi revocati con misura invariata: vedi la nota [7.400.0] nel blocco snap della palla. */
+const NOTI = new Set([96, 98]);   /* dribbling: driver ignoto, residuo dichiarato — 168/132 rientrate col
+   ri-armo dello snap sul commit di staging (7.401) e col conteggio ripulito dall'errore di attribuzione */
 const ADDOSSO = 3.5;
 
 const srv = await startServer(); const port = srv.address().port;
@@ -46,6 +43,11 @@ for (const gi of SCENE) {
      38 unita' rasoterra in ~200 ms su gi168 («sembra un teletrasporto» + «traballa tutto», con la
      camera che insegue). Il fix riallinea UNA volta, mascherato dall'intro: quindi UN passo lungo e'
      ammesso, una scivolata CONTINUA (2+ passi oltre 5u) no. */
+  /* ⚠️ SI GIUDICA SOLO IL MONDO DELLA SCENA NUOVA. Nel harness il commit React del force arriva
+     centinaia di ms dopo la chiamata: i fotogrammi prima del commit appartengono alla scena
+     PRECEDENTE (fase, bersagli, driver — tutto suo) e attribuirli alla nuova e' l'errore di
+     attribuzione gia' pagato piu' volte in questo repo. Il commit si riconosce dal CAMBIO del
+     bersaglio-palla dichiarato: da li' in poi si conta. */
   await page.evaluate(() => {
     window.__CPM_SLD = [];
     if (!window.__CPM_SLDTICK) {
@@ -53,7 +55,8 @@ for (const gi of SCENE) {
         try {
           const T = window.__CPM3D, s = window.__CPM_STATE && window.__CPM_STATE();
           if (T && T.ball && s && s.phase === 'hl_intro' && window.__CPM_SLD && window.__CPM_SLD.length < 400)
-            window.__CPM_SLD.push({ t: performance.now(), x: T.ball.position.x, z: T.ball.position.z });
+            window.__CPM_SLD.push({ t: performance.now(), x: T.ball.position.x, z: T.ball.position.z,
+              bx: s.ballTarget ? s.ballTarget.x : null, by: s.ballTarget ? s.ballTarget.y : null });
         } catch (e) {}
         requestAnimationFrame(window.__CPM_SLDTICK);
       };
@@ -80,13 +83,20 @@ for (const gi of SCENE) {
       held: s.ball.heldBy || null, bs: S ? (S.ballState || null) : null, type: S ? S.type : null };
   }, gi);
   const sld = await page.evaluate(() => { const a = window.__CPM_SLD || []; window.__CPM_SLD = []; return a; });
+  /* il commit della scena nuova = primo cambio del bersaglio dichiarato rispetto al fotogramma zero */
+  let i0 = 0;
+  if (sld.length > 1 && sld[0].bx != null) {
+    for (let i = 1; i < sld.length; i++) if (sld[i].bx !== sld[0].bx || sld[i].by !== sld[0].by) { i0 = i; break; }
+  }
   let passiLunghi = 0, passoMax = 0;
-  for (let i = 1; i < sld.length; i++) {
+  for (let i = Math.max(1, i0 + 1); i < sld.length; i++) {
     const dt = sld[i].t - sld[i - 1].t; if (dt <= 0 || dt > 400) continue;
     const d = Math.hypot(sld[i].x - sld[i - 1].x, sld[i].z - sld[i - 1].z);
     if (d > 5) passiLunghi++; if (d > passoMax) passoMax = d;
   }
-  if (passiLunghi >= 2) { guasti.push(`gi${gi}: il pallone SCIVOLA all'apertura — ${passiLunghi} passi oltre 5u durante l'intro (max ${passoMax.toFixed(1)}u): il riallineamento e' UNO, questo e' un viaggio`); righe.push({ gi, dHero: null, held: null, slide: passiLunghi }); console.log(`❌ gi${String(gi).padStart(3)} · SCIVOLATA d'apertura: ${passiLunghi} passi >5u (max ${passoMax.toFixed(1)}u)`); continue; }
+  /* UN passo lungo e' il taglio di ri-staging (7.401), mascherato dall'intro: ammesso. Dal secondo
+     in poi e' un viaggio. */
+  if (passiLunghi >= 2) { guasti.push(`gi${gi}: il pallone SCIVOLA all'apertura — ${passiLunghi} passi oltre 5u nel mondo della scena nuova (max ${passoMax.toFixed(1)}u): il taglio e' UNO, questo e' un viaggio`); righe.push({ gi, dHero: null, held: null, slide: passiLunghi }); console.log(`❌ gi${String(gi).padStart(3)} · SCIVOLATA d'apertura: ${passiLunghi} passi >5u (max ${passoMax.toFixed(1)}u)`); continue; }
   if (!m || m.type === 'def' || m.bs === 'aerial') continue;
   const problemi = [];
   if (!m.held || m.held.dist > ADDOSSO) problemi.push(`palla di NESSUNO alla prima lettura (il piu' vicino sta a ${m.held ? m.held.dist : '?'}u, l'eroe a ${m.dHero}u)`);
