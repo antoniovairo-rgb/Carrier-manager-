@@ -26,6 +26,7 @@
     "scene-open-ball": "node scene-open-ball-test.mjs",
     "def-camera-bounds": "node def-camera-bounds-test.mjs",
     "scene-open-owner": "node scene-open-owner-test.mjs",
+    "vita-variety": "node vita-variety-test.mjs",
     "attendance-sim": "node attendance-sim.mjs",
     "club-evolution-sim": "node club-evolution-sim.mjs",
     "kit-pattern-shot": "node kit-pattern-shot.mjs",

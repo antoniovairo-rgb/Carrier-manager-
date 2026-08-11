@@ -1977,6 +1977,98 @@ function careerPhase(p){try{
   if(clubSeasons>=5)return "bandiera";
   return "titolare";
 }catch(_e){return "titolare";}}
+/* ============================================================================================
+   [7.412.0 EVOLUTIVA PO «VITA DELL'EROE»] — eventi di vita quotidiana: contorno leggero,
+   contestuale, ANTI-RIPETITIVO. Riusa i sistemi esistenti: il modale settimanale
+   (setWeekLiveModal), gli effetti `ef` degli eventi random, `worldMemory` come Storia
+   dell'Eroe, il procuratore gia' vivo. QUALITA' > QUANTITA': trenta eventi, ognuno risponde
+   alla domanda «aggiunge davvero qualcosa alla carriera?».
+   Rarita': c=comune (cooldown 8 sett.) · r=raro (25 sett., max 2 per carriera) · u=UNICO
+   (una volta sola). In piu': cooldown di CATEGORIA (3 sett.) e stato persistito nel save
+   (vitaSeen/vitaCat, campi ADDITIVI: i salvataggi esistenti li vedono nascere vuoti).
+   `next:` incatena un seguito a ~2 settimane (poche catene, speciali). `txt` puo' essere
+   funzione di p per i testi contestuali. Vincoli PO rispettati: niente VAR/replay/autogol/
+   allenamento, nessuna meccanica calcistica nuova. */
+const _vitaAgName=(p)=>((p&&p.agent&&(p.agent.name||p.agent.n))||"Il tuo procuratore");
+const VITA_EVENTS=[
+  // ---- SPOGLIATOIO E COMPAGNI ----
+  {id:"vita_sfotto_gol",cat:"squadra",r:"c",cond:p=>(p.goals||0)>=1,txt:"💬 Gruppo squadra: «Bel gol. Però ammettilo: volevi crossare 😂». Rispondi con la foto della tua esultanza e la scritta \"tutto voluto\". Pioggia di risate.",ef:{morale:5}},
+  {id:"vita_cena_squadra",cat:"squadra",r:"c",txt:"🍕 Cena di squadra improvvisata dopo l'allenamento: il portiere paga per una scommessa persa. Si ride fino a mezzanotte.",ef:{morale:7,chem:3}},
+  {id:"vita_scherzo_scarpe",cat:"squadra",r:"c",txt:"🧦 Trovi gli scarpini appesi alla traversa. Il veterano fischietta innocente. La tradizione va rispettata: domani tocca a te scegliere la vittima.",ef:{morale:4}},
+  {id:"vita_consiglio_veterano",cat:"squadra",r:"c",cond:p=>(p.ovr||60)<78,txt:"🎙️ Il capitano ti trattiene a fine allenamento: «Guarda meno il pallone e più lo spazio. Il resto viene da sé.» Te lo scrivi mentalmente.",ef:{form:3,morale:4}},
+  {id:"vita_aiuto_compagno",cat:"squadra",r:"r",txt:"🤝 Il ragazzo della Primavera ti chiede di restare dopo l'allenamento per i tiri. Un'ora dopo segna il suo primo gol in partitella e corre ad abbracciare TE.",ef:{morale:6,coachTrust:4},mem:"Il giorno in cui hai fatto da maestro"},
+  {id:"vita_sale_pranzo",cat:"squadra",r:"c",cond:p=>(p.coachTrust||60)<60,txt:"😠 Il tuo concorrente di reparto non ti passa il sale a pranzo da tre giorni. La panchina pesa a tutti — ma il sale, dai.",ef:{morale:-3}},
+  {id:"vita_gruppo_meme",cat:"squadra",r:"c",cond:p=>(p.popularity||20)>=40,txt:"📱 Il gruppo squadra è pieno di meme sulla tua ultima intervista. Il migliore lo ha fatto il magazziniere. Lo salvi anche tu.",ef:{morale:4,popularity:2}},
+  {id:"vita_karaoke",cat:"squadra",r:"r",txt:"🎤 Serata karaoke d'iniziazione per i nuovi: uno stona così tanto che il mister, di passaggio, applaude per pietà. Il video resta nel gruppo per sempre.",ef:{morale:6,chem:3},mem:"La serata karaoke passata alla storia"},
+  // ---- SOCIAL, MEDIA E TIFOSI ----
+  {id:"vita_telecronaca",cat:"social",r:"c",cond:p=>(p.goals||0)>=3,txt:"📱 Un tifoso ha montato il tuo ultimo gol con una telecronaca argentina d'epoca. 200mila visualizzazioni. Non capisci una parola, ma ti emozioni pure tu.",ef:{popularity:6,morale:4}},
+  {id:"vita_tendenza",cat:"social",r:"r",cond:p=>(p.popularity||20)>=55,txt:p=>`🔥 Sei in tendenza. Migliaia di post sul tuo nome, meta' complimenti e meta' consigli tattici non richiesti. ${(p.club&&p.club.n)||"Il club"} ripubblica il migliore.`,ef:{popularity:8,morale:5},mem:"Il giorno in tendenza"},
+  {id:"vita_opinionista",cat:"social",r:"c",cond:p=>(p.form||70)<55,txt:"💬 Un opinionista ti definisce «discontinuo come il wifi in galleria». Fa male perché è scritto bene.",ef:{morale:-4}},
+  {id:"vita_bimbo_maglia",cat:"social",r:"r",txt:"🧒 Allo stadio un bambino ha la maglia bianca col tuo nome scritto a pennarello: non c'erano ancora le tue nella sua taglia. Gliela firmi. Non smette più di saltare.",ef:{morale:8,popularity:3},mem:"La maglia scritta a pennarello"},
+  {id:"vita_mixed_zone",cat:"social",r:"c",txt:"🎙️ In mixed zone: «Preferisci segnare o far segnare?» Rispondi «Vincere» e te ne vai. Il clip diventa un gif.",ef:{popularity:3,morale:2}},
+  {id:"vita_meme_scivolata",cat:"social",r:"c",cond:p=>(p.form||70)<50,txt:"🙈 La tua scivolata a vuoto è diventata un meme. Lo posti tu per primo con scritto «pattinaggio artistico: 9.5». I tifosi ti perdonano tutto.",ef:{morale:2,popularity:4}},
+  // ---- VITA DELL'EROE ----
+  {id:"vita_primo_stipendio",cat:"vita",r:"u",cond:p=>(p.salary||0)>=10,txt:"💶 Il primo stipendio VERO. Lo guardi sul telefono per dieci minuti. Poi chiami casa: stasera offri tu, e non si discute.",ef:{morale:8},mem:"Il primo stipendio vero"},
+  {id:"vita_auto",cat:"vita",r:"u",cond:p=>(p.bank||0)>=80000,txt:"🚗 Ti concedi l'auto che disegnavi sul diario a scuola. Il concessionario ti chiede un selfie. Guidi piano, ridendo da solo.",ef:{bank:-45000,morale:10},mem:"L'auto dei sogni"},
+  {id:"vita_casa",cat:"vita",r:"u",cond:p=>(p.bank||0)>=250000,txt:"🏠 Le chiavi della prima casa TUA. La prima notte dormi per terra sul materasso, felice come mai.",ef:{bank:-180000,morale:12},mem:"La prima casa"},
+  {id:"vita_compleanno",cat:"vita",r:"c",cond:p=>((p.week||1)%38)===(((typeof hashStr==="function"?Math.abs(hashStr((p.name||"eroe")+"_bday")):7)%30)+3),txt:"🎂 Compleanno. Lo spogliatoio ti aspetta con una torta e una foto tua da bambino trovata chissà dove, stampata in formato POSTER.",ef:{morale:6}},
+  {id:"vita_caffe_oratorio",cat:"vita",r:"r",txt:"☕ Al bar un signore ti paga il caffè senza dire una parola. Poi, sulla porta: «Ti vedevo giocare all'oratorio. Non cambiare.»",ef:{morale:7},mem:"Il caffè dell'oratorio"},
+  {id:"vita_famiglia_stadio",cat:"vita",r:"r",cond:p=>(p.popularity||20)>=30,txt:"👨‍👩‍👦 I tuoi in tribuna per la prima volta nello stadio grande. Li cerchi con lo sguardo al riscaldamento. Ci sono. Basta quello.",ef:{morale:9},mem:"La famiglia in tribuna"},
+  {id:"vita_torneo_quartiere",cat:"vita",r:"r",cond:p=>(p.popularity||20)>=60,txt:"🏅 Il tuo quartiere ti ha intitolato il torneo estivo. La targa è storta e il campo è quello di sempre, con le buche. È il premio più bello dell'anno.",ef:{popularity:6,morale:7},mem:"Il torneo del quartiere"},
+  // ---- EVENTI ASSURDI E MEMORABILI ----
+  {id:"vita_tutto_calcolato",cat:"assurdo",r:"r",cond:p=>(p.goals||0)>=1,txt:"😂 Messaggio di un compagno: «Ho appena visto il tuo gol. Era tutto calcolato?» Rispondi: «Ovviamente no.» «Lo sapevo.»",ef:{morale:6},mem:"«Era tutto calcolato?»"},
+  {id:"vita_gatto",cat:"assurdo",r:"u",txt:"🐈 Un gatto entra al campo d'allenamento, ignora tutti e si accuccia NEL TUO zaino. Il mister: «Almeno lui ha scelto bene». Da oggi è la mascotte, e ha il tuo numero.",ef:{morale:5},mem:"Il gatto portafortuna"},
+  {id:"vita_sosia",cat:"assurdo",r:"r",cond:p=>(p.popularity||20)>=45,txt:"👯 Un sosia firma autografi a tuo nome al centro commerciale. Il club, invece di denunciarlo, gli regala un abbonamento: «Porta bene».",ef:{popularity:4,morale:3},mem:"Il sosia dell'ipermercato"},
+  {id:"vita_gps_buffet",cat:"assurdo",r:"u",cond:p=>(p.goals||0)>=5,txt:"📡 Riunione dati: il preparatore proietta la tua velocità massima stagionale. L'ha registrata il GPS... durante la corsa al buffet del ritiro. Applauso liberatorio.",ef:{morale:6},mem:"Il record del buffet"},
+  // ---- PROCURATORE / CONFIDENTE ----
+  {id:"vita_agente_cena",cat:"agente",r:"c",cond:p=>!!p.agent,txt:p=>`🍝 ${_vitaAgName(p)} ti porta a cena. Niente contratti stavolta: si parla di calcio visto, di viaggi, del suo primo assistito. «Questa la offro io. Succede una volta ogni mai.»`,ef:{morale:5}},
+  {id:"vita_agente_sponsor",cat:"agente",r:"r",cond:p=>!!p.agent&&(p.popularity||20)>=50,txt:p=>`📦 ${_vitaAgName(p)}: «Uno sponsor di scarpini ha chiesto di te. Piccolo, ma serio. Ho detto che ci pensavi — cioè che accettavi.»`,ef:{bank:15000,popularity:3},next:"vita_agente_shooting",mem:"Il primo sponsor"},
+  {id:"vita_agente_shooting",cat:"agente",r:"r",cond:()=>false/* solo via catena */,txt:"📸 Il servizio fotografico dello sponsor: il fotografo ti fa ripetere QUARANTA volte «guarda l'orizzonte con fame». Non sai più dove sia l'orizzonte, né la fame. Le foto, però, spaccano.",ef:{morale:4,popularity:4}},
+  {id:"vita_agente_curva",cat:"agente",r:"c",cond:p=>!!p.agent&&(p.form||70)<55,txt:p=>`📞 ${_vitaAgName(p)}, di sera: «Le carriere non sono rette, sono curve. Chi ti giudica su tre partite non ha mai giocato. Dormici su.» Funziona.`,ef:{morale:6}},
+  {id:"vita_agente_orgoglio",cat:"agente",r:"r",cond:p=>!!p.agent,txt:p=>`🗣️ ${_vitaAgName(p)}: «Non te lo dico mai, ma questo periodo mi ha convinto. Non per i numeri. Per come ti alleni quando nessuno guarda.»`,ef:{morale:5},mem:"Le parole del procuratore"},
+];
+/* il MOTORE anti-ripetitivita': visto/cooldown per evento, cooldown per categoria, rarita',
+   catene. Stato in p.vitaSeen={id:{n,at}} e p.vitaCat={cat:at}, con at=(season*100+week)
+   (ordinamento monotono; attraverso il confine di stagione i cooldown si allungano, mai si
+   accorciano). Puro e testabile; __CPM_VITA_NOCD (solo test) spegne i cooldown per provare
+   che il guardiano della varieta' sappia essere ROSSO. */
+const pickVitaEvent=(p)=>{try{
+  const at=((p.season||1)*100)+(p.week||1);
+  const vs=p.vitaSeen||{},vc=p.vitaCat||{};
+  const noCd=(typeof window!=="undefined"&&window.__CPM_VITA_NOCD);
+  /* catena in scadenza: ha precedenza e salta i filtri (e' un seguito promesso) */
+  if(p.vitaNext&&p.vitaNext.id&&at>=(p.vitaNext.at||0)){
+    const ce=VITA_EVENTS.find(e=>e.id===p.vitaNext.id);
+    if(ce)return{ev:ce,chain:true};
+  }
+  const CD={c:8,r:25,u:99999},MAXN={c:99,r:2,u:1},W={c:4,r:2,u:2},CATCD=3;
+  const pool=VITA_EVENTS.filter(e=>{
+    if(e.cond){try{if(!e.cond(p))return false;}catch(_c){return false;}}
+    if(noCd)return true;
+    const st=vs[e.id]||{n:0,at:-9999};
+    if(st.n>=MAXN[e.r||"c"])return false;
+    if(at-st.at<CD[e.r||"c"])return false;
+    if(at-((vc[e.cat]!=null)?vc[e.cat]:-9999)<CATCD)return false;
+    if(p.vitaLastCat&&e.cat===p.vitaLastCat)return false;/* regola di SEQUENZA (dal guardiano): mai due eventi CONSECUTIVI della stessa categoria, per lontani che siano nel tempo — «evitare sequenze di eventi troppo simili» */
+    return true;});
+  if(!pool.length)return null;
+  /* bonus NOVITA' (dal guardiano: 8 distinti su 30 in tre stagioni, zero unici — i comuni dominavano):
+     un evento MAI VISTO pesa il triplo, cosi' la carriera esplora il pool prima di riciclare */
+  const _w=(e)=>{const _b=W[e.r||"c"];return((vs[e.id]||{}).n||0)===0?_b*3:_b;};
+  let tot=0;pool.forEach(e=>tot+=_w(e));
+  let r=Math.random()*tot;
+  for(const e of pool){r-=_w(e);if(r<=0)return{ev:e,chain:false};}
+  return{ev:pool[pool.length-1],chain:false};
+}catch(_e){return null;}};
+const markVitaEvent=(p,ev)=>{try{
+  const at=((p.season||1)*100)+(p.week||1);
+  const vs={...(p.vitaSeen||{})},st=vs[ev.id]||{n:0,at:0};
+  vs[ev.id]={n:(st.n||0)+1,at};
+  const vc={...(p.vitaCat||{})};vc[ev.cat]=at;
+  const out={vitaSeen:vs,vitaCat:vc,vitaLastCat:ev.cat/* regola di SEQUENZA: il motore esclude la categoria dell'ULTIMO evento */,vitaNext:(p.vitaNext&&p.vitaNext.id===ev.id)?null:(p.vitaNext||null)};
+  if(ev.next)out.vitaNext={id:ev.next,at:at+2};
+  return out;
+}catch(_e){return{};}};
 const CAREER_MOMENTS=[
   {id:"cm_rigore_vita",name:"Il Rigore della Vita",
    trigger:(p)=>p.proStatus==="pro"&&(p.week||1)>=34&&(p.season||1)>=2&&(p.trophies||[]).length===0&&!p.injured&&(p.matchHistory||[]).length>0/* [7.161.0 A4] il momento fire su Avanza (settimane senza gara): serve almeno una gara vera da ricordare, mai da infortunato */,
@@ -4458,7 +4550,8 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="7.411.0"; // [7.411.0 — LA CODA E' CHIUSA: il guardiano del build-up e' INTERAMENTE VERDE per la prima volta nella sua esistenza (31 costruzioni, zero guasti)]: DUE CHIUSURE. (1) gi27/az1 + collaudo PO gi180 «non arriva il pallone al compagno, la palla fa tutto da sola»: UN BEAT CHE PORTA LA CORSA DELL'EROE NON SI SALTA. Lo skip dei beat gia' soddisfatti (7.395) evitava il passaggio doppione ma il beat del «dai» contiene anche il «VAI» — la corsa dell'eroe nello spazio, saltata con lui: misurato col tracciante per-fotogramma (bersaglio executor vs corpo), nella passata pulita l'eroe corre 59→75 e la scena e' un dai-e-vai VERO (passaggio → corsa → restituzione in corsa → conduzione → tiro); nella passata con skip resta di pietra (0,8u contro 18,8 di palla — il rosso del guardiano, che era ordine-dipendente perche' lo skip scatta solo se la scena precedente lascia la palla dal compagno). Ora un beat soddisfatto che sposta l'EROE di piu' di 2 unita' si GIOCA: con la continuita' 7.387 la palla parte dalla posizione reale (gia' dal compagno, quasi ferma) e l'eroe fa la sua corsa. (2) gi103/az1, il residuo dichiarato dal 7.395: IL VIAGGIO ONESTO, SCRITTO — se il primo beat e' una conduzione di un compagno e la palla sta a piu' di 3,5u da lui, si antepone un beat di SERVIZIO (un passaggio vero dalla posizione reale della palla ai suoi piedi); il rendez-vous fa gia' atterrare sul piede vero. MISURA: ingresso 3,3-4,8u → salto max di TUTTO il set 3,0u, guardiano verde. Sonda permanente nel REC: `ht410`, il bersaglio per-fotogramma che l'executor chiede all'eroe. RESTA UN SOLO PUNTO APERTO in coda, dichiarato con strumento pronto: il DUO IN RETROMARCIA di gi96/gi172 (eroe a 6-8u dalla palla all'apertura del dribbling, deterministico su tre repliche; il tracciato mostra eroe e palla che derivano INSIEME all'indietro di 8-9u dopo il ri-snap, coi bersagli dichiarati fermi — serve il tracciato multi-scrittore dei due corpi, prossima sessione).
+const GAME_VERSION="7.412.0"; // [7.412.0 — EVOLUTIVA «LA VITA DELL'EROE»: il contorno della carriera ha un motore che NON si ripete]: trenta eventi di vita quotidiana scritti a mano (spogliatoio e compagni, social/media/tifosi, vita personale, assurdi rari, il procuratore-confidente) con rarita' comune/rara/UNICA, condizioni di CONTESTO sulla carriera vera (gol, popolarita', fiducia, conto in banca, procuratore) e una catena speciale in due atti. IL REQUISITO FONDAMENTALE del PO — «il giocatore deve pensare "chissa' cosa succede stavolta" e mai "ancora questa roba?"» — e' MOTORE, non speranza: memoria per-evento nel salvataggio (visto quante volte e quando), cooldown per rarita' (8/25/mai piu'), tetto di apparizioni (unici UNA volta in carriera, rari due), cooldown di categoria, regola di SEQUENZA (mai due eventi consecutivi della stessa categoria — campo vitaLastCat) e bonus novita' (un evento mai visto pesa il triplo). Frequenza sobria: ~15% a settimana in coda al flusso settimanale esistente, VITA prima e pool storico come riserva — QUALITA' sopra QUANTITA', ~13 eventi in tre stagioni misurate. I ricordi finiscono nella Storia dell'Eroe via worldMemory (type "vita", tetto 40). Campi di salvataggio ADDITIVI (vitaSeen/vitaCat/vitaLastCat/vitaNext): i salvataggi vecchi partono da zero, save-compat verde. VINCOLI RISPETTATI: niente VAR, niente replay, niente autogol, niente gestione allenamento — scelte progettuali deliberate del PO, non toccate. GUARDIANO NUOVO vita-variety-test: tre stagioni simulate col motore VERO (esposto alla pagina) e RNG seedato; verifica tetti, cooldown, sequenze e copertura (almeno 10 distinti); PROVA DEL ROSSO con --senza-cooldown (interruttore __CPM_VITA_NOCD): senza motore l'unico appare due volte, torna dopo 7 settimane e la stessa categoria fa tris — tutte cose che il motore impedisce. Il guardiano e' stato ROSSO davvero durante lo sviluppo (tris di «social», 8 distinti, zero unici) e ha dettato lui la regola di sequenza e il bonus novita'.
+//  [nota 7.411.0] [7.411.0 — LA CODA E' CHIUSA: il guardiano del build-up e' INTERAMENTE VERDE per la prima volta nella sua esistenza (31 costruzioni, zero guasti)]: DUE CHIUSURE. (1) gi27/az1 + collaudo PO gi180 «non arriva il pallone al compagno, la palla fa tutto da sola»: UN BEAT CHE PORTA LA CORSA DELL'EROE NON SI SALTA. Lo skip dei beat gia' soddisfatti (7.395) evitava il passaggio doppione ma il beat del «dai» contiene anche il «VAI» — la corsa dell'eroe nello spazio, saltata con lui: misurato col tracciante per-fotogramma (bersaglio executor vs corpo), nella passata pulita l'eroe corre 59→75 e la scena e' un dai-e-vai VERO (passaggio → corsa → restituzione in corsa → conduzione → tiro); nella passata con skip resta di pietra (0,8u contro 18,8 di palla — il rosso del guardiano, che era ordine-dipendente perche' lo skip scatta solo se la scena precedente lascia la palla dal compagno). Ora un beat soddisfatto che sposta l'EROE di piu' di 2 unita' si GIOCA: con la continuita' 7.387 la palla parte dalla posizione reale (gia' dal compagno, quasi ferma) e l'eroe fa la sua corsa. (2) gi103/az1, il residuo dichiarato dal 7.395: IL VIAGGIO ONESTO, SCRITTO — se il primo beat e' una conduzione di un compagno e la palla sta a piu' di 3,5u da lui, si antepone un beat di SERVIZIO (un passaggio vero dalla posizione reale della palla ai suoi piedi); il rendez-vous fa gia' atterrare sul piede vero. MISURA: ingresso 3,3-4,8u → salto max di TUTTO il set 3,0u, guardiano verde. Sonda permanente nel REC: `ht410`, il bersaglio per-fotogramma che l'executor chiede all'eroe. RESTA UN SOLO PUNTO APERTO in coda, dichiarato con strumento pronto: il DUO IN RETROMARCIA di gi96/gi172 (eroe a 6-8u dalla palla all'apertura del dribbling, deterministico su tre repliche; il tracciato mostra eroe e palla che derivano INSIEME all'indietro di 8-9u dopo il ri-snap, coi bersagli dichiarati fermi — serve il tracciato multi-scrittore dei due corpi, prossima sessione).
 //  [7.410.0 collaudo PO — IL «TRABALLA» HA FINALMENTE I NUMERI, e sono quelli del testimone 7.408 sul dispositivo del PO]: LO SGUARDO NON OSCILLA PIU' — LA CORREZIONE E' UNA RAMPA, NON UN INTERRUTTORE. Le bozze nuove dicono: «lo SGUARDO della camera oscilla: 4,9-32,6 inversioni/s dell'asse ottico, ampiezza ~6°» (gi148, gi176 a 29,1/s, gi43 a 32,6/s) — a camera FERMA. E' l'asse, come sospettato nel 7.408. Il meccanismo: i richiami che tengono eroe e palla in quadro (7.225/7.237) avevano una SOGLIA SECCA — oltre il bordo lo sguardo veniva pinnato a 0,92·max, sotto tornava alla regia cruda: con il soggetto che balla ATTORNO alla soglia, il bersaglio saltava di ~6° a fotogrammi alterni. A 60fps e' il dondolio segnalato da sei release; a ~5fps headless converge in un fotogramma — ecco perche' SEI strumenti locali non l'hanno mai visto, e perche' la strada giusta era portare la misura sul dispositivo (7.404/7.408). La cura: il peso della correzione sale LISCIO da 0 (al 72% del quadro utile) a 1 (al bordo) — il bersaglio dello sguardo e' continuo nella posizione del soggetto, e senza discontinuita' non c'e' nulla da far oscillare. Applicata a tutti e quattro i richiami: azimut ed elevazione, eroe e palla. La verifica vera arrivera' dalle prossime bozze del PO (la riga «lo sguardo oscilla» deve sparire o crollare sotto le 2 inversioni/s): e' il ciclo di misura giusto per un difetto da 60fps. I «salti di CAMERA» da 7,2u (gi100/gi181) sono i tagli di cambio-soggetto sull'assist, ora distinguibili in bozza; in CODA: gi180/gi181/gi100 «la palla fa tutto da sola / il compagno non riceve bene» — il consumo degli ATTORI nelle costruzioni appena aperte (famiglia di gi27/az1: il piano e' giusto, chi lo esegue non muove i corpi come deve).
 //  [7.409.0 collaudo PO gi158 «l'azione non e' stata costruita: si e' freezato il pallone vicino all'eroe e poi esito del gol» · gi27/gi82 «il triangolo con il compagno non si e' visto, il pallone era autonomo»]: LA COSTRUZIONE APRE A PASS E BUILD. Il cancello dell'executor ammetteva solo shot/cross/header («dribble/pass restano immediati», decisione R5): progressioni e uno-due andavano dritti alla conclusione — misurato col guardiano del build-up: CIECO su gi158/gi28/gi118, zero costruzioni. Il costruttore le aveva gia' pronte: COMBINATION e' il dai-e-vai (passaggio → restituzione → conduzione) e il fallback e' lo scambio breve della costruzione dal basso. Aperto il cancello, la macchina del consumo — skip dei beat gia' soddisfatti (7.395), rendez-vous alla cucitura, continuita' (7.387), pavimento di velocita' umana (7.236) — e' la stessa gia' collaudata; la conclusione vera (l'assist) resta di fireConclusion, come per il cross. Il dribbling resta immediato (le sue note sono di sincronia, non di costruzione mancante) e sotto ?cpmtest=1 nulla cambia: gate identico per costruzione. MISURA: gi158/gi28/gi118/gi27/gi82 — da zero costruzioni a costruzioni PIENE (34-69 fotogrammi, salto max 2,8u, rapporto eroe/palla mediano 0,97, timeline che guida l'eroe al 100%); il set storico sale da 26 a 29 build-up osservati, salto mediano 1,0u. DUE ROSSI DICHIARATI nel guardiano (documentati nel suo header): gi103/az1 (storico, 4,8→3,3u) e il nuovo gi27/az1 — nel dai-e-vai profondo l'eroe non accompagna (0,8u contro 18,8u di palla), sospette le `mv` dell'eroe nei beat di passaggio non eseguite per la regola del driver unico (7.236): prossimo bersaglio.
 //  [7.408.0 collaudo PO — lotto con «traballa» ×4 e le prime bozze SENZA la riga-camera]: IL TESTIMONE IMPARA A GUARDARE L'ASSE. L'informazione nuova sta nel negativo: le bozze delle scene «traballa» su 7.405 NON mostrano la riga-camera del 7.404 — la POSIZIONE della camera e' calma sotto soglia durante il tremolio. Quindi il tremolio vive altrove, e il primo indiziato e' l'ASSE DI SGUARDO: i richiami 7.225/7.237 ruotano il solo camLook ogni fotogramma, e un'oscillazione li' dondola lo schermo a camera perfettamente ferma. Anello del testimone 11→14 float (+camLook), nuova riga di bozza «lo SGUARDO della camera oscilla» (inversioni di yaw >2/s), e soglie posizione ABBASSATE (3→1,5 inversioni/s · 2,5→1,2u di passo). ALTRE DUE LENTI NUOVE NELLA BOZZA: (a) sul goal_against che non arriva in porta (gi33/gi44, due volte lo stesso «49,9» — costante sospetta) la bozza ora dice anche il PERCHE': se nella scena non c'e' nemmeno un fotogramma con arco/post-arco vivi, l'esito NON E' MAI PARTITO — e' l'armamento, non la traiettoria (in isolamento arriva in porta a x -48, misurato due volte); (b) sul DRIBBLING, gap 1D eroe↔palla oltre 4 unita' per piu' di mezzo secondo → «il pallone e l'eroe si separano» (gi71/gi40: in isolamento GLB-off conduzione pulita, 0 fotogrammi dietro su quattro repliche — il fenomeno e' percettivo a 60fps e va misurato la'). VERDETTI del lotto: gi71/gi40 non riprodotti in isolamento (misura sopra); gi27/gi82 «triangolo non visto / pallone autonomo» = famiglia della COSTRUZIONE MANCANTE dichiarata nel 7.407 (gi158/28/118, zero beat generati) — stesso cantiere, si allarga agli uno-due; gi63 «traballa» senza bozza → attesa la prossima nota con le lenti nuove.
@@ -10249,7 +10342,7 @@ function bgMicroTick(ctx){
   if(roll<_gHe+_gAe)return{side:"away"};
   return null;
 }
-if(typeof window!=='undefined'){window.buildHLTimeline=buildHLTimeline;window.validateHLTimeline=validateHLTimeline;window.resolveTimeline=resolveTimeline;window.decideExecution=decideExecution;window.resolveDefensiveOutcome=resolveDefensiveOutcome;window.bgMicroTick=bgMicroTick;window.intentLabel=intentLabel;window.deriveIntent=deriveIntent;window.deriveHL=deriveHL;/* [7.1.2] esposto per l'audit massivo situations↔3D */window.__CPM_SITS=SITUATIONS;window.hlBallState=hlBallState;window.filterSitActions=filterSitActions;window.hlOverlay=hlOverlay;/* [7.217.0] esposto per la probe di coerenza legno colpito ⟺ legno detto */window.__CPM_MISS_TX=_MISS_TX;window.__CPM_BAR_TX=_BAR_TX;window.__CPM_BG=BG_MATCH;/* B: cronaca BG per il check bg-coherence del gate */window.generateLocalPressAnalysis=generateLocalPressAnalysis;/* [7.277.0] esposta per la probe di stabilita' della rassegna stampa */window.buildSeasonCarry=buildSeasonCarry;window.leagueGoalsOf=leagueGoalsOf;window.generateSeasonAwards=generateSeasonAwards;/* [7.336.0] esposti per il guardiano primavera-awards-test (travaso per lega + premi europei top-flight) */window.ritiroPlan=ritiroPlan;window.ritiroHierarchyVerdict=ritiroHierarchyVerdict;window.ritiroFriendlies=ritiroFriendlies;/* [7.337.0] esposti per il guardiano ritiro2-test */window.refuseEcho=refuseEcho;/* [7.338.0] esposto per il guardiano refuse-echo-test */window.draftBugNote=draftBugNote;/* [7.339.0] esposto per il guardiano della bozza automatica */}
+if(typeof window!=='undefined'){window.buildHLTimeline=buildHLTimeline;window.validateHLTimeline=validateHLTimeline;window.resolveTimeline=resolveTimeline;window.decideExecution=decideExecution;window.resolveDefensiveOutcome=resolveDefensiveOutcome;window.bgMicroTick=bgMicroTick;window.intentLabel=intentLabel;window.deriveIntent=deriveIntent;window.deriveHL=deriveHL;/* [7.1.2] esposto per l'audit massivo situations↔3D */window.__CPM_SITS=SITUATIONS;window.hlBallState=hlBallState;window.filterSitActions=filterSitActions;window.hlOverlay=hlOverlay;/* [7.217.0] esposto per la probe di coerenza legno colpito ⟺ legno detto */window.__CPM_MISS_TX=_MISS_TX;window.__CPM_BAR_TX=_BAR_TX;window.__CPM_BG=BG_MATCH;/* B: cronaca BG per il check bg-coherence del gate */window.generateLocalPressAnalysis=generateLocalPressAnalysis;/* [7.277.0] esposta per la probe di stabilita' della rassegna stampa */window.buildSeasonCarry=buildSeasonCarry;window.leagueGoalsOf=leagueGoalsOf;window.generateSeasonAwards=generateSeasonAwards;/* [7.336.0] esposti per il guardiano primavera-awards-test (travaso per lega + premi europei top-flight) */window.ritiroPlan=ritiroPlan;window.ritiroHierarchyVerdict=ritiroHierarchyVerdict;window.ritiroFriendlies=ritiroFriendlies;/* [7.337.0] esposti per il guardiano ritiro2-test */window.refuseEcho=refuseEcho;/* [7.338.0] esposto per il guardiano refuse-echo-test */window.draftBugNote=draftBugNote;/* [7.339.0] esposto per il guardiano della bozza automatica */window.VITA_EVENTS=VITA_EVENTS;window.pickVitaEvent=pickVitaEvent;window.markVitaEvent=markVitaEvent;/* [7.412.0] esposti per il guardiano della varieta' vita-variety-test */}
 // ── LMQP-1 (Phase 2 / M2 — EVENT + TIMELINE LAYER) ──────────────────────────────
 //   Bus eventi OSSERVABILE del Live Match: registra la SEQUENZA reale dei beat di un highlight
 //   (HighlightForced · ActionResolved · HighlightAdvance · MatchStart …) in un ring buffer leggibile
@@ -28677,7 +28770,26 @@ const getThisWeekMatchday=()=>{
       if(wk===19){setTimeout(()=>notify("🏷️ Mercato invernale aperto! Settimane 19-23.","#0ea5e9"),200);if(p.transferListed&&!transferOffer){const _off19=generateTransferOffer(p,p.transferRequest?.pref);if(_off19)setTimeout(()=>setTransferOffer(_off19),600);}}
       if(wk===24)setTimeout(()=>notify("🔒 Mercato invernale chiuso.","#64748b"),200);
       // S9.1: random life events now fire on every advance (no weekLived guard) — random life events must fire every advance, not just once
-      if(!p.injured&&Math.random()<0.25){
+      /* [7.412.0 EVOLUTIVA «VITA DELL'EROE»] prima si tenta un evento di VITA (contestuale, col motore
+         anti-ripetitivita'); se non ce n'e' uno adatto, il vecchio pool resta il ripiego. La frequenza
+         complessiva non cresce (era 25%): il contorno resta contorno. Una catena in scadenza ha
+         precedenza (e' un seguito promesso, non un'estrazione). */
+      if(!p.injured&&((typeof pickVitaEvent==="function")&&(Math.random()<0.15||(p.vitaNext&&p.vitaNext.id&&(((p.season||1)*100+(p.week||1))>=(p.vitaNext.at||0)))))){
+        const _vp=pickVitaEvent(p);
+        if(_vp&&_vp.ev){
+          const ev=_vp.ev;
+          const _tx=typeof ev.txt==="function"?(function(){try{return ev.txt(p);}catch(_e){return "";}})():ev.txt;
+          if(_tx){
+            const ef=ev.ef||{};
+            const extras={morale:clamp((p.morale||70)+(ef.morale||0),0,100),fatigue:clamp((p.fatigue||0)+(ef.fatigue||0),0,100),form:clamp((p.form||70)+(ef.form||0),30,95),popularity:clamp((p.popularity||20)+popGain(p,ef.popularity||0),0,100),coachTrust:clamp((p.coachTrust||60)+(ef.coachTrust||0),0,100),chem:clamp((p.chem||50)+(ef.chem||0),0,100),bank:Math.max(0,(p.bank||0)+(ef.bank||0))};
+            const _mk=markVitaEvent(p,ev);
+            const _wm=ev.mem?{worldMemory:[...(p.worldMemory||[]),{type:"vita",label:ev.mem,season:p.season||1,week:p.week||1}].slice(-40)}:{};
+            setTimeout(()=>setWeekLiveModal({event:{...ev,txt:_tx},changes:{morale:ef.morale||0,form:ef.form||0,fatigue:ef.fatigue||0}}),100);
+            updP={...updP,...extras,..._mk,..._wm};
+          }
+        }
+      }
+      else if(!p.injured&&Math.random()<0.12){
         const _wrePool=WEEKLY_RANDOM_EVENTS.map((e,i)=>({e,i})).filter(x=>x.i!==_lastWRE&&(!x.e.cond||(function(){try{return x.e.cond(p);}catch(_e){return true;}})()));const _wreP=_wrePool.length?_wrePool[Math.floor(Math.random()*_wrePool.length)]:{e:WEEKLY_RANDOM_EVENTS[0],i:0};_lastWRE=_wreP.i;const re=_wreP.e;/* [5.98.0 D1/D2] niente doppioni consecutivi + rispetto delle cond */
         const ef=re.ef||{};
         const extras={morale:clamp((p.morale||70)+(ef.morale||0),0,100),fatigue:clamp((p.fatigue||0)+(ef.fatigue||0),0,100),form:clamp((p.form||70)+(ef.form||0),30,95),popularity:clamp((p.popularity||20)+popGain(p,ef.popularity||0),0,100),coachTrust:clamp((p.coachTrust||60)+(ef.coachTrust||0),0,100),value:Math.max(0.5,(p.value||0.8)+(ef.value||0))};
@@ -33713,6 +33825,7 @@ const getThisWeekMatchday=()=>{
               career_moment:{e:"⭐",label:(m)=>m.label||`Momento chiave S.${m.season}`},
               nations_cup:{e:"🌍",label:(m)=>m.won?`🏆 Coppa delle Nazioni vinta! (S.${m.season})`:m.qualified?`Qualificato — Coppa Nazioni S.${m.season}`:`Coppa Nazioni S.${m.season}`},
               euro_mondiale:{e:"🌍",label:(m)=>m.won?`🏆 ${m.type_em||"Torneo"} VINTO! (S.${m.season})`:`${m.type_em||"Torneo"} S.${m.season}`},
+              vita:{e:"📖",label:(m)=>m.label?`${m.label} (S.${m.season})`:`Vita da eroe S.${m.season}`},/* [7.412.0] i ricordi della VITA DELL'EROE entrano nella Storia: senza questa voce il filtro MEM_META li scartava */
             };
             const entries=(player.worldMemory||[]).filter(m=>MEM_META[m.type]).slice(-12).reverse();
             if(!entries.length)return null;
