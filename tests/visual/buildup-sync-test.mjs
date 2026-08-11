@@ -27,7 +27,7 @@ import { startServer, launchBrowser, installCdnRoutes, openMatch, sleep } from '
 
 const VERB = process.argv.includes('--verbose');
 const SCENE = (process.env.CPM_SCENE || '').length ? process.env.CPM_SCENE.split(',').map(Number)
-  : [4, 8, 11, 12, 13, 21, 27, 40, 43, 63, 83, 84, 91, 92, 96, 97, 103, 141, 150, 181];
+  : [4, 8, 11, 12, 13, 21, 24, 27, 40, 43, 63, 79, 83, 84, 91, 92, 96, 97, 103, 141, 150, 174, 181];/* [7.414.0] +24/79/174: la famiglia THROUGH del lotto PO (zig-zag, teletrasporto da 13,9-19,7u alla consegna, verticalizzazione all'indietro) era FUORI popolazione — il guardiano era verde e cieco insieme */
 const SALTO_MAX = 3.0;   /* fra due fotogrammi il pallone non si sposta piu' di un tocco */
 const RAPP_MIN = 0.25;   /* e l'eroe non puo' camminare meno di un quarto di quanto cammina la palla */
 
