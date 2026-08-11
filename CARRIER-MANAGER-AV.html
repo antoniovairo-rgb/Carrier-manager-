@@ -4458,7 +4458,8 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="7.407.0"; // [7.407.0 collaudo PO gi118 «il portiere non tenta mai la parata» su assist]: IL GOL DEL COMPAGNO MERITA UN TUFFO. Misurato: sull'assist che finisce in rete la palla superava il piano dei pali (x 48,9 > 48,6) col portiere avversario IMMOBILE — 0,0 unita' di spostamento su due repliche. Il tuffo era armato solo dal ramo CHANCE del post-arco assist (la respinta lo esige); il ramo GOL mandava la palla dentro col portiere di pietra. Ora si tuffa anche sul gol, BATTUTO: direzione giusta, allungo corto (0,3 contro 0,55 della respinta), armato a u 0,55 cosi' il tuffo parte mentre la palla viaggia. MISURA dopo: portiere in allungo su entrambe le repliche, clip di tuffo montata via gk_dive. ALTRI DUE VERDETTI DEL LOTTO: gi33 «goal_against ma la palla si e' fermata a 49,9u» NON RIPRODOTTO in isolamento (due repliche: palla in porta propria a x -48, come deve) — e' un difetto del solo flusso concatenato, e il testimone in partita ora ha i dati per inchiodarlo alla prossima occorrenza; gi158 «l'azione non e' stata costruita: pallone freezato poi esito» RIPRODOTTO E MISURATO — il guardiano del build-up su gi158/gi28/gi118 e' CIECO: zero costruzioni osservate, la timeline non genera beat per questa famiglia di progressioni — non e' un difetto di esecuzione ma una COSTRUZIONE MANCANTE, e generarla e' il prossimo cantiere di motore, dichiarato qui.
+const GAME_VERSION="7.408.0"; // [7.408.0 collaudo PO — lotto con «traballa» ×4 e le prime bozze SENZA la riga-camera]: IL TESTIMONE IMPARA A GUARDARE L'ASSE. L'informazione nuova sta nel negativo: le bozze delle scene «traballa» su 7.405 NON mostrano la riga-camera del 7.404 — la POSIZIONE della camera e' calma sotto soglia durante il tremolio. Quindi il tremolio vive altrove, e il primo indiziato e' l'ASSE DI SGUARDO: i richiami 7.225/7.237 ruotano il solo camLook ogni fotogramma, e un'oscillazione li' dondola lo schermo a camera perfettamente ferma. Anello del testimone 11→14 float (+camLook), nuova riga di bozza «lo SGUARDO della camera oscilla» (inversioni di yaw >2/s), e soglie posizione ABBASSATE (3→1,5 inversioni/s · 2,5→1,2u di passo). ALTRE DUE LENTI NUOVE NELLA BOZZA: (a) sul goal_against che non arriva in porta (gi33/gi44, due volte lo stesso «49,9» — costante sospetta) la bozza ora dice anche il PERCHE': se nella scena non c'e' nemmeno un fotogramma con arco/post-arco vivi, l'esito NON E' MAI PARTITO — e' l'armamento, non la traiettoria (in isolamento arriva in porta a x -48, misurato due volte); (b) sul DRIBBLING, gap 1D eroe↔palla oltre 4 unita' per piu' di mezzo secondo → «il pallone e l'eroe si separano» (gi71/gi40: in isolamento GLB-off conduzione pulita, 0 fotogrammi dietro su quattro repliche — il fenomeno e' percettivo a 60fps e va misurato la'). VERDETTI del lotto: gi71/gi40 non riprodotti in isolamento (misura sopra); gi27/gi82 «triangolo non visto / pallone autonomo» = famiglia della COSTRUZIONE MANCANTE dichiarata nel 7.407 (gi158/28/118, zero beat generati) — stesso cantiere, si allarga agli uno-due; gi63 «traballa» senza bozza → attesa la prossima nota con le lenti nuove.
+//  [7.407.0 collaudo PO gi118 «il portiere non tenta mai la parata» su assist]: IL GOL DEL COMPAGNO MERITA UN TUFFO. Misurato: sull'assist che finisce in rete la palla superava il piano dei pali (x 48,9 > 48,6) col portiere avversario IMMOBILE — 0,0 unita' di spostamento su due repliche. Il tuffo era armato solo dal ramo CHANCE del post-arco assist (la respinta lo esige); il ramo GOL mandava la palla dentro col portiere di pietra. Ora si tuffa anche sul gol, BATTUTO: direzione giusta, allungo corto (0,3 contro 0,55 della respinta), armato a u 0,55 cosi' il tuffo parte mentre la palla viaggia. MISURA dopo: portiere in allungo su entrambe le repliche, clip di tuffo montata via gk_dive. ALTRI DUE VERDETTI DEL LOTTO: gi33 «goal_against ma la palla si e' fermata a 49,9u» NON RIPRODOTTO in isolamento (due repliche: palla in porta propria a x -48, come deve) — e' un difetto del solo flusso concatenato, e il testimone in partita ora ha i dati per inchiodarlo alla prossima occorrenza; gi158 «l'azione non e' stata costruita: pallone freezato poi esito» RIPRODOTTO E MISURATO — il guardiano del build-up su gi158/gi28/gi118 e' CIECO: zero costruzioni osservate, la timeline non genera beat per questa famiglia di progressioni — non e' un difetto di esecuzione ma una COSTRUZIONE MANCANTE, e generarla e' il prossimo cantiere di motore, dichiarato qui.
 //  [7.406.0 — GIRO DI VERDETTI SULLA CODA, tutti misurati]: (1) gi174 «il portiere non e' posizionato tra i pali» NON RIPRODOTTO: portieri misurati su 5 scene, lettura ed esito — away sempre a x97, y 45-54 (pali 44,6-55,4), home a x4 — sempre in porta; alla prossima nota la bozza-camera (7.404) portera' anche il contesto. (2) gi9 «palla indietro di 17,4u su controllo-e-tiro» CHIUSO RETROATTIVAMENTE dal 7.403: la nota era su 7.402, prima dell'ancora al punto di perdita — rimisurato due volte, ritracciamento 5,6-6,8u, sotto la soglia della bozza (12). (3) gi38 «sembra che gliela intercettano e poi va in rete» NON RIPRODOTTO: due passate, palla 11→36 in avanti senza ritracciamento ne' rete; sospetto la percezione della CATENA assist→occasione — servira' il video. (4) gi48 «avversario vicino alla palla» SANA PER DISEGNO: «Rimbalzo in area! Arrivaci per primo», pressione high e nearby_def 2 — il contrasto sul pallone vagante E' la scena. (5) gi96/gi172 ISOLATI con misura stabile (tre repliche: eroe a 6,0-8,0 unita' dalla palla all'apertura, controlli a ~3): non e' rumore, e il meccanismo intravisto nella traccia per-fotogramma e' un DUO IN FEEDBACK — la palla del dribbling segue l'eroe, l'approccio dell'eroe segue la palla viva, e la coppia converge in retromarcia sul punto stantio dello snap. E' il prossimo bersaglio strumentato, con un tracciante dedicato dei due driver.
 //  [7.405.0 direttiva PO «001 NON e' residuo: il compagno ad inizio scena deve avere il pallone TRA I PIEDI»]: LA COLLA DEL BATTITORE, STAVOLTA DIMOSTRATA — CODICE 001 CHIUSO. Il tracciante mirato (tre repliche per scena, varianza ZERO — lo strumento giusto che mancava alle due revoche) ha inchiodato la causa: la palla sta ESATTAMENTE sul punto dichiarato, e' la MESH del battitore che non arriva mai — snappata sul bersaglio stantio al taglio e poi inchiodata dal freeze di lettura a 3-9,6 unita' dal pallone. Due tentativi precedenti revocati per colpa dello strumento di POPOLAZIONE (ordine-dipendente, banda larga), non del fix: coi controlli misurati a varianza zero, la colla regge. Meccanica: lo staging CONTRASSEGNA il battitore sull'oggetto logico (`_taker402`) — il match per coordinate non scattava mai, perche' i bersagli dell'AI off-ball non sono i logici grezzi — e il renderer tiene quella sola mesh sul punto staggiato per tutta la lettura: il battitore aspetta sul pallone, come nel calcio. E con la mesh addosso, la regola 7.389 fa scendere da sola il pallone dalla quota aerea ai piedi. MISURA prima→dopo (tre repliche ciascuna): gi50 3,9→0,0 · gi76 5,9→0,0 · gi6 9,6→0,0 · gi86 0,0 stabile · controlli gi142/gi144/gi106 a 0,0 e gi0 a 1,0, intatti. Sulla popolazione intera: scene offensive con palla di nessuno 17 (pre-7.399) → 1 — e l'unica e' gi14, punizione col battitore a 3,7 unita' = la rincorsa, fisiologica. Guardiano scene-open-owner verde (mediana eroe↔palla 0,0u). RESTANO DICHIARATI, filone separato («avversario vicino alla palla» / marcatura): gi48/gi96/gi172 con un avversario a 2,6-3,4u — da giudicare contro la pressione dichiarata della situation (nearby_def), non contro il codice 001.
 //  [7.404.0 collaudo PO — lotto con «traballa» ×6 su tre release (gi122/gi157/gi74/gi134/gi28, anche in hl_choose) + gi115]: LA CAMERA ENTRA NEL TESTIMONE, E IL TACCO NON E' UNA GIOCATA AEREA. (1) Il tremolio NON si riproduce in headless — sei strumenti (posa per fotogramma GLB-off e GLB-on con presentazione, rettangolo del canvas, animazioni CSS, flusso vero da 75 e da 170 secondi): camera immobile al pixel, sempre. Il fenomeno vive a frame-rate pieno sul dispositivo del PO. Invece di un settimo strumento cieco, la misura va DOV'E' il fenomeno: l'anello del testimone (7.340) passa da 8 a 11 float e registra la POSA DELLA CAMERA a ogni fotogramma; la bozza automatica ora conta le inversioni di direzione della camera (>3/s = trema) e il passo massimo fra due fotogrammi a scena in corso (>2,5u = salta), fuori dalla grazia degli stacchi voluti. La prossima nota «traballa» del PO arrivera' col numero attaccato — e' lo stesso schema del 7.360, quando fu la bozza a smascherare il falso «salto di 8,7». (2) collaudo gi115 «Attacca il pallone non e' una giocata aerea!»: nella mappa delle etichette-intento la parola nuda `tacco` — messa per coprire «stacco», gia' coperto da \bstacco\b — catturava anche il TACCO: «Tacco in porta» mostrato come incornata. Il tacco tiene la sua etichetta. IN CODA dal lotto: gi38 «sembra che gliela intercettano e poi magicamente va in rete» (uno-due assist — coerenza esito⟺volo); gi174 «il portiere non e' posizionato tra i pali» (+ destinatario a 6,1u su assist: famiglia del battitore gi50/76); gi9 «il pallone e' tornato INDIETRO di 17,4 unita'» su controllo-e-tiro (famiglia assestamento, ma su esito shot: da misurare col punto di perdita); gi86 001 (residuo battitore aereo, gia' dichiarato); gi157 salto 21,4u a x -42 su gol subito (lo stacco difensivo — probabile taglio legittimo di ri-staging, ora distinguibile dalla bozza-camera).
@@ -8214,15 +8215,25 @@ const draftBugNote=(snap,ctx)=>{try{
        INVERSIONI di direzione della camera (piu' di 3 al secondo = tremolio) e il passo massimo fra due
        fotogrammi (oltre 2,5 unita' a scena in corso = strappo) — fuori dalla grazia degli stacchi, che
        sono tagli voluti. La prossima nota «traballa» arrivera' col numero attaccato. */
-    {let _cRev=0,_cMax=0,_cPrev=0,_cDur=0;
+    {let _cRev=0,_cMax=0,_cPrev=0,_cDur=0,_yRev=0,_yPrev=0,_yMax=0;
      for(let i=1;i<W.length;i++){const a=W[i-1],b=W[i],dt=(b.t-a.t)/1000;
        if(dt<=0||dt>0.5||b.cx==null||a.cx==null)continue;if(nearSnap(b.t))continue;
        _cDur+=dt;const _dc=Math.hypot(b.cx-a.cx,(b.cy-a.cy)||0,(b.cz-a.cz)||0);
        if(_dc>_cMax)_cMax=_dc;
-       const _dcx=b.cx-a.cx;if(Math.abs(_dcx)>0.12){if(_cPrev&&Math.sign(_dcx)!==Math.sign(_cPrev))_cRev++;_cPrev=_dcx;}}
-     const _cRevS=_cDur>0.5?_cRev/_cDur:0;
-     if(_cRevS>=3)L.push(`la CAMERA trema: ${_cRevS.toFixed(1)} inversioni di direzione al secondo (passo max ${_cMax.toFixed(2)} unità)`);
-     else if(_cMax>=2.5)L.push(`la CAMERA salta: passo di ${_cMax.toFixed(1)} unità fra due fotogrammi a scena in corso`);}
+       const _dcx=b.cx-a.cx;if(Math.abs(_dcx)>0.12){if(_cPrev&&Math.sign(_dcx)!==Math.sign(_cPrev))_cRev++;_cPrev=_dcx;}
+       /* [7.408.0] l'ASSE DI SGUARDO: yaw dell'asse ottico per fotogramma — un'oscillazione qui dondola
+          lo schermo anche a camera perfettamente ferma (i richiami 7.225/7.237 ruotano SOLO il look) */
+       if(b.lx!=null&&a.lx!=null){
+         const _y1=Math.atan2(a.lz-a.cz,a.lx-a.cx),_y2=Math.atan2(b.lz-b.cz,b.lx-b.cx);
+         let _dy=_y2-_y1;while(_dy>Math.PI)_dy-=2*Math.PI;while(_dy<-Math.PI)_dy+=2*Math.PI;
+         if(Math.abs(_dy)>0.006){if(_yPrev&&Math.sign(_dy)!==Math.sign(_yPrev))_yRev++;_yPrev=_dy;}
+         if(Math.abs(_dy)>_yMax)_yMax=Math.abs(_dy);}}
+     const _cRevS=_cDur>0.5?_cRev/_cDur:0,_yRevS=_cDur>0.5?_yRev/_cDur:0;
+     /* [7.408.0] soglie ABBASSATE (3→1,5 rev/s · 2,5→1,2u): le prime note «traballa» su 7.405 NON hanno
+        fatto scattare la riga — o il tremolio sta sotto le soglie vecchie, o e' nell'asse di sguardo. */
+     if(_cRevS>=1.5)L.push(`la CAMERA trema: ${_cRevS.toFixed(1)} inversioni di direzione al secondo (passo max ${_cMax.toFixed(2)} unità)`);
+     else if(_cMax>=1.2)L.push(`la CAMERA salta: passo di ${_cMax.toFixed(1)} unità fra due fotogrammi a scena in corso`);
+     if(_yRevS>=2)L.push(`lo SGUARDO della camera oscilla: ${_yRevS.toFixed(1)} inversioni/s dell'asse ottico (ampiezza max ${(_yMax*57.3).toFixed(1)}°)`);}
     if(back>=12)L.push(`il pallone è tornato INDIETRO di ${back.toFixed(1)} unità durante l'azione (verso la propria metà campo)`);
     if(jump>=6)L.push(`SALTO del pallone di ${jump.toFixed(1)} unità in ${Math.round(jumpDt*1000)} ms${jumpAt?` (a x ${jumpAt.x.toFixed(1)})`:""} — ${Math.round(jump/jumpDt)} u/s, sembra un teletrasporto`);/* [7.360.0] la bozza dichiara l'INTERVALLO REALE e la velocità: «in un fotogramma» era una promessa che la sonda non poteva mantenere, e ha fatto finire la stessa riga falsa in quattro note del PO */
     /* [7.341.0] in una scena DIFENSIVA l'arco è un segnaposto (la traiettoria vera la decide il post-guard
@@ -8278,8 +8289,25 @@ const draftBugNote=(snap,ctx)=>{try{
       let bestPen=-1e9;for(const q of W){const pen=sgn*(q.x-tx);if(pen>bestPen)bestPen=pen;}
       const _concl=own||/shot|header|penalty|freekick|volley|finish|tap/i.test(String(c.intent||""));
       const _tol=own?14:6;
-      if(!inNet&&netKey&&_concl&&bestPen<-_tol)L.push(`l'esito dichiarato è «${c.out}» ma la palla non è mai arrivata in porta (si è fermata a ${(-bestPen).toFixed(1)} unità)`);
+      if(!inNet&&netKey&&_concl&&bestPen<-_tol){
+        /* [7.408.0 collaudo PO gi33/gi44, due volte lo stesso «49,9»] LA BOZZA DICE ANCHE PERCHE'. In
+           isolamento la traiettoria del gol subito arriva in porta (misurato: x -48, due repliche); nel
+           flusso concatenato la palla resta a meta' campo — e il numero costante suggerisce che NON PARTE
+           proprio. I flag del testimone (arco/post-arco vivi) lo dicono: se nella scena non c'e' nemmeno
+           un fotogramma con l'esito in moto, il difetto e' l'ARMAMENTO, non la traiettoria. */
+        const _fLive=W.filter(q=>(q.f&3)!==0).length;
+        L.push(`l'esito dichiarato è «${c.out}» ma la palla non è mai arrivata in porta (si è fermata a ${(-bestPen).toFixed(1)} unità)${_fLive===0?" — e la traiettoria dell'esito NON È MAI PARTITA (zero fotogrammi con arco/post-arco vivi nella scena)":` — arco/post-arco vivi per ${_fLive} fotogrammi`}`);}
     }
+    /* [7.408.0 collaudo PO gi71 «il pallone rimane indietro durante la corsa» · gi40 «non e'
+       sincronizzato» — in isolamento GLB-off la conduzione e' pulita (0 fotogrammi dietro, max 0,6u):
+       il fenomeno e' percettivo a 60fps. Qui, sul dispositivo del PO: gap 1D eroe↔palla in x durante
+       l'esito di un DRIBBLING — se supera le 4 unita' per piu' di mezzo secondo, la bozza lo dichiara. */
+    if(/dribble/i.test(String(c.intent||""))){
+      let _gapT=0,_gapMax=0;
+      for(let i=1;i<W.length;i++){const a=W[i-1],b=W[i],dt=(b.t-a.t)/1000;
+        if(dt<=0||dt>0.5)continue;if(nearSnap(b.t))continue;if((b.f&3)===0)continue;
+        const _g=Math.abs(b.x-b.hx);if(_g>4)_gapT+=dt;if(_g>_gapMax)_gapMax=_g;}
+      if(_gapT>0.5)L.push(`nel dribbling il pallone e l'eroe si separano: gap oltre 4 unità per ${_gapT.toFixed(1)}s (max ${_gapMax.toFixed(1)}u)`);}
   }
   /* incongruenze puramente logiche, leggibili anche senza traccia */
   if(c.intent&&c.act){
@@ -11643,8 +11671,8 @@ function ThreeMatchView(props){
            l'anello si riempie DIMEZZA la risoluzione (tiene un campione su due) e raddoppia il tempo coperto —
            30.000 campioni = ~8 min a 60fps, poi ~17 min a 30Hz, poi ~33 min a 15Hz. Nessuna azione va perduta:
            si perde solo dettaglio sui minuti più vecchi, e le anomalie che cerchiamo vivono su scale ≥0,2s. */
-        const W=sr.current._wd||(sr.current._wd={n:0,i:0,cap:30000,step:1,skip:0,full:false,buf:new Float32Array(30000*11)});
-        if(W.buf.length<W.cap*11){W.buf=new Float32Array(W.cap*11);W.n=0;W.i=0;W.full=false;}/* [7.404.0] anello allargato (8→11 float: +posa camera) — un buffer vecchio va rifatto, non riletto con lo stride sbagliato */
+        const W=sr.current._wd||(sr.current._wd={n:0,i:0,cap:30000,step:1,skip:0,full:false,buf:new Float32Array(30000*14)});
+        if(W.buf.length<W.cap*14){W.buf=new Float32Array(W.cap*14);W.n=0;W.i=0;W.full=false;}/* [7.408.0] anello 11→14 float: +ASSE DI SGUARDO (camLook). Le bozze del PO su scene «traballa» NON mostravano la riga-camera del 7.404: la POSIZIONE e' calma sotto soglia — il tremolio vive altrove, e il primo indiziato e' l'asse ottico, che i richiami 7.225/7.237 ruotano ogni fotogramma. */
         const _pw=propsRef.current||{};
         let _mdN=99,_mdX=0;/* compagno di movimento più vicino alla palla (esclusi portieri): dice se «chi doveva arrivarci» è arrivato */
         try{((sr.current&&sr.current.players)||[]).forEach((pp,ii)=>{const src=(_pw.allPlayers||[])[ii];
@@ -11674,12 +11702,13 @@ function ThreeMatchView(props){
            fotogramma. `step`/`skip` restano a 1 per compatibilita' con chi li legge. */
         {
         if(W.n>=W.cap){W.i=W.i%W.cap;W.full=true;}
-        const o=W.i*11;
+        const o=W.i*14;
         W.buf[o]=now;W.buf[o+1]=ball.position.x;W.buf[o+2]=ball.position.y;W.buf[o+3]=ball.position.z;
         W.buf[o+4]=hero.position.x;W.buf[o+5]=_mdN>90?-1:_mdN;
         W.buf[o+6]=(ballArcActive?1:0)+(hlPostArcType?2:0)+(tlOn?4:0);
         W.buf[o+7]=(_pw.hlSitKey!=null?+_pw.hlSitKey:-1);/* [7.339.0] chiave di SCENA: al cambio scena la palla viene riposizionata di proposito — non e' un teletrasporto (lezione del Live Validator 6.3.1, dove questa trappola marcava meta' degli highlight come FAIL) */
         W.buf[o+8]=camera.position.x;W.buf[o+9]=camera.position.y;W.buf[o+10]=camera.position.z;/* [7.404.0 collaudo PO «traballa» ×6 in un lotto, su tre release] LA CAMERA ENTRA NEL TESTIMONE. Sei strumenti in headless non hanno mai riprodotto il tremolio: vive solo a 60fps sul dispositivo del PO. Invece di un settimo strumento cieco, si porta la misura DOV'E' il fenomeno: la bozza automatica ora conta inversioni e passi della camera nella scena segnalata. */
+        W.buf[o+11]=camLook.x;W.buf[o+12]=camLook.y;W.buf[o+13]=camLook.z;/* [7.408.0] e l'asse di sguardo */
         W.i++;if(W.n<W.cap)W.n++;else W.i=W.i%W.cap;
         }
         /* [7.352.0] sonda di collaudo: riempie l'anello per provare che il frame prosegue lo stesso (solo test) */
@@ -11689,8 +11718,8 @@ function ThreeMatchView(props){
           /* [7.360.0] con l'anello circolare il campione piu' vecchio sta in `w.i`, non in 0: senza questo
              giro la traccia tornava spezzata a meta' e il taccuino leggeva un salto temporale all'indietro. */
           const _st=w.full?w.i%w.cap:0;
-          for(let _k=0;_k<w.n;_k++){const k=(_st+_k)%w.cap;const q=k*11;
-            out.push({t:w.buf[q],x:w.buf[q+1],y:w.buf[q+2],z:w.buf[q+3],hx:w.buf[q+4],md:w.buf[q+5],f:w.buf[q+6],sk:w.buf[q+7],cx:w.buf[q+8],cy:w.buf[q+9],cz:w.buf[q+10]});}
+          for(let _k=0;_k<w.n;_k++){const k=(_st+_k)%w.cap;const q=k*14;
+            out.push({t:w.buf[q],x:w.buf[q+1],y:w.buf[q+2],z:w.buf[q+3],hx:w.buf[q+4],md:w.buf[q+5],f:w.buf[q+6],sk:w.buf[q+7],cx:w.buf[q+8],cy:w.buf[q+9],cz:w.buf[q+10],lx:w.buf[q+11],ly:w.buf[q+12],lz:w.buf[q+13]});}
           return{samples:out,goalX:GOAL_LINE_X,homeX:-GOAL_LINE_X,now:performance.now(),span:out.length?+((out[out.length-1].t-out[0].t)/1000).toFixed(1):0,res:w.step};}catch(_e){return null;}};
       }catch(_e){}}
       /* [6.3.0 R0/LMQP-10] RECORDER per-frame del Live Match Validator (test-only, spento nella build store):
