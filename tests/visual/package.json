@@ -58,7 +58,8 @@
     "freekick-delivery": "node freekick-delivery-test.mjs",
     "woodwork": "node woodwork-test.mjs",
     "ball-scene-snap": "node ball-scene-snap-test.mjs",
-    "auto-review": "node auto-review.mjs"
+    "auto-review": "node auto-review.mjs",
+    "stale-matchday": "node stale-matchday-test.mjs"
   },
   "dependencies": {
     "playwright": "^1.48.0",

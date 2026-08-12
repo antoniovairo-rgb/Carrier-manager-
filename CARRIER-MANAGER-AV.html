@@ -4551,7 +4551,8 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="7.417.0"; // [7.417.0 collaudo PO «ho rifiutato un'offerta dell'Atletico Madrid, nessuna reazione?!» + lotto live]: DUE INTERVENTI. (1) IL CALIBRO CONTA QUANTO IL SALTO — il tier di refuseEcho misurava solo il SALTO (prestigio loro − mio, rapporto stipendi): per una STELLA in un top club dP non puo' piu' essere ≥5, quindi OGNI rifiuto diventava «normale» = silenzio A VITA, anche il no a una corazzata. Ma rifiutare una big fa notizia per il CALIBRO dell'offerente: la piazza celebra chi resta nonostante il corteggiamento. Ora corazzata (prestigio ≥82) → almeno «importante» (la scena delle reazioni si apre); big quasi pari (≥86, entro 6) col rilancio vero (≥1,35) → «storica». Le soglie del salto restano identiche per i non-stellati. Guardiano collaudo338 esteso con i DUE casi della stella (CF Madrid p88 vs Atletico p84/86): prova del rosso su motore pre-fix — «normale, nv 1» — verde col fix. (2) IL CODICE 001 DIVENTA UNA MISURA DEL TESTIMONE — gi126/gi108 «001» su scene aeree: in headless quelle scene aprono con la palla ADDOSSO all'eroe (0,0-0,1u su tre repliche, camera 0,9-1,2u: il fix curva regge), il fenomeno vive solo nel flusso live sul dispositivo. Stessa cura del «traballa» (7.404/7.408): la bozza automatica ora dice «codice 001 MISURATO: all'apertura il pallone non e' ai piedi di nessuno dei nostri», con finestra 0,75-2,4s dal via (fuori la grazia del riposizionamento), palla oltre 3,5u sia dal compagno di movimento piu' vicino (md, gia' nell'anello) sia dall'eroe per ≥3/4 dei campioni, solo scene offensive. Le prossime bozze del PO porteranno i numeri per chiudere il ramo del punto geometrico (aperto dal 7.401). IN OSSERVAZIONE: gi40 «azione disordinata» e gi120 «traballa» (misure headless sane).
+const GAME_VERSION="7.418.0"; // [7.418.0 collaudo PO «di nuovo il bug della partita gia' giocata! risolvi definitivamente, e' grave» — 8ª ricorrenza]: IL RILEVATORE E' UNO SOLO E LO USANO TUTTI. La radice della recidiva: le sette reti anti-replay accumulate in sei release (6.91 · 6.98 · 7.0.5 · 7.5.2 · 7.210 · 7.302 · 7.312) vivevano DENTRO getThisWeekMatchday — proteggevano solo il path del gioco DAL VIVO. Ma «Simula» e «Avanza» pescavano dal calendario GREZZO (find/filter su week && !played): una gemella stantia che il vivo rifiutava veniva RISIMULATA, ricontata in classifica e storico — ed e' esattamente cosi' che lo stato tornava incoerente e il bug riaffiorava lotto dopo lotto. ORA: (1) rilevatore UNICO _isStaleMd(p,md), funzione pura con tutte le reti piu' la NUOVA (H) — LA CLASSIFICA: la giornata N di lega si gioca con N-1 gare in tabella; se la mia riga dice played ≥ N la voce e' stantia, qualunque campo un desync abbia sporcato (e' la rete che non dipende da nessuna marcatura). (2) Lo usano TUTTI E TRE i selettori: vivo, Simula, Avanza. (3) BONIFICA AUTOMATICA VISIBILE: le voci stantie scadute vengono marcate (healed418) appena compaiono — nessun selettore, nemmeno uno futuro scritto male, potra' mai ripescarle — e la bonifica lascia una riga nel log («🧹 Bonifica calendario: giornata N vs X risultava gia' giocata — voce ritirata»): il PO vede la rete che lavora, non un silenzio. GUARDIANO NUOVO stale-matchday-test (npm run stale-matchday): dieci scenari — sette avvelenati con UNA SOLA spia sporca ciascuno (gemella per settimana/sede/numero, storico doppio, storico-settimana, registro, SOLO classifica) che devono essere flaggati, tre legittimi (il RITORNO a sedi invertite, la prossima giornata, la coppa attiva) che devono passare. Prova del rosso sulla rete (H): neutralizzata, lo scenario solo-classifica torna invisibile — e' il buco che nessuna delle sette reti precedenti copriva. Regressione: stagione intera guidata con gli handler veri (vita-flow) completa e verde.
+//  [nota 7.417.0] [7.417.0 collaudo PO «ho rifiutato un'offerta dell'Atletico Madrid, nessuna reazione?!» + lotto live]: DUE INTERVENTI. (1) IL CALIBRO CONTA QUANTO IL SALTO — il tier di refuseEcho misurava solo il SALTO (prestigio loro − mio, rapporto stipendi): per una STELLA in un top club dP non puo' piu' essere ≥5, quindi OGNI rifiuto diventava «normale» = silenzio A VITA, anche il no a una corazzata. Ma rifiutare una big fa notizia per il CALIBRO dell'offerente: la piazza celebra chi resta nonostante il corteggiamento. Ora corazzata (prestigio ≥82) → almeno «importante» (la scena delle reazioni si apre); big quasi pari (≥86, entro 6) col rilancio vero (≥1,35) → «storica». Le soglie del salto restano identiche per i non-stellati. Guardiano collaudo338 esteso con i DUE casi della stella (CF Madrid p88 vs Atletico p84/86): prova del rosso su motore pre-fix — «normale, nv 1» — verde col fix. (2) IL CODICE 001 DIVENTA UNA MISURA DEL TESTIMONE — gi126/gi108 «001» su scene aeree: in headless quelle scene aprono con la palla ADDOSSO all'eroe (0,0-0,1u su tre repliche, camera 0,9-1,2u: il fix curva regge), il fenomeno vive solo nel flusso live sul dispositivo. Stessa cura del «traballa» (7.404/7.408): la bozza automatica ora dice «codice 001 MISURATO: all'apertura il pallone non e' ai piedi di nessuno dei nostri», con finestra 0,75-2,4s dal via (fuori la grazia del riposizionamento), palla oltre 3,5u sia dal compagno di movimento piu' vicino (md, gia' nell'anello) sia dall'eroe per ≥3/4 dei campioni, solo scene offensive. Le prossime bozze del PO porteranno i numeri per chiudere il ramo del punto geometrico (aperto dal 7.401). IN OSSERVAZIONE: gi40 «azione disordinata» e gi120 «traballa» (misure headless sane).
 //  [nota 7.416.0] [7.416.0 collaudo PO «in una stagione mai capitato un evento...» — LA VITA ABITAVA NELLA CASA SBAGLIATA]: il motore della Vita dell'Eroe (7.412) era perfetto in ogni sua regola E NON ACCADEVA MAI — la stessa classe di difetto del procuratore 7.380 («un sistema puo' essere perfetto in ogni regola e non accadere mai»). Il blocco d'integrazione stava SOLO in doAdvanceWeek, ma nelle settimane con partita (quasi tutte, in stagione) l'avanzamento passa da simulateAndAdvance o dal post-partita live, e «Vivi la Settimana» ha la sua cascata (spogliatoio 12% → impulso GARANTITO 7.35 → eventi classici 78%) che ritorna sempre PRIMA: il motore non veniva mai interrogato nel flusso che il giocatore usa davvero. Con 15%/settimana, zero eventi in 38 settimane ha probabilita' ~0,2%: l'osservazione del PO era gia' la misura. LA VITA ORA VIVE IN «VIVI LA SETTIMANA» — il wizard che si chiama «allenamento, EVENTI e crescita»: prima dello spogliatoio, 15% + precedenza alla catena in scadenza; il ramo in doAdvanceWeek resta per chi salta la settimana senza viverla (gate !weekLived: mai doppia estrazione). MISURA nel flusso VERO (carriera guidata con __CPM_CAREER, gli handler autentici): 0 eventi/stagione → 6-7 eventi/stagione, 12 distinti in due stagioni. GUARDIANO NUOVO vita-flow-test (npm run vita-flow), gemello di agent-lifecycle: guida una stagione REALE e pretende che vitaSeen cresca; sonda `vita` aggiunta a __CPM_CAREER.get() (lezione 7.380: senza il campo, la probe legge un oggetto in cui il sistema non c'e' e conclude che il sistema non c'e'). PROVA DEL ROSSO con --spenta (interruttore test __CPM_VITA_OFF nel motore): 0 eventi → rosso con la frase esatta del PO. La lezione permanente: il guardiano del motore (vita-variety) non poteva vedere questo buco — serviva il guardiano del FLUSSO.
 //  [nota 7.415.0] [7.415.0 collaudo PO lotto 7.414 — QUATTRO CHIUSURE MISURATE]: (1) gi148 «traballa» in intro/lettura + scoperta di popolazione: QUATTRO scene con palla profonda (gi148/79/168/132) tenevano la camera FUORI DALLO STADIO in lettura (x -52…-60, quota 25-27, cima curva 23-26 — bandiere e folla nel near-plane). Il pavimento 7.400 pesa zero sopra y26 di proposito, ma non prevedeva la camera DIETRO il muro: compressione MORBIDA post-blend (tanh, asintoto -49,5, derivata 1 sul bordo -46 — niente soglie secche). Misura: -60,4→-49,5 ovunque, scene sane identiche al decimale. Guardiano def-camera-bounds esteso a TUTTE le fasi hl (campionava solo l esito: verde e cieco) + popolazione +148/79/168 → 17 scene, 0 sfondamenti. (2) gi190 «alza la gamba a vuoto»: il gesto difensivo partiva a t+0 dell esito, SEMPRE (misurato: tackle da subito, palla mai sotto 3,2-4,4u). Ora il contrasto ASPETTA LA PALLA: finche il gesto non e cominciato e la palla sta oltre 5u, l accumulo trattiene (posa neutra) e la scivolata scatta sul passaggio vero (misurato: 0,4-1,2u al gesto quando la traiettoria arriva); fallback 1,4s — mai un eroe congelato. (3) gi180 «la combinazione non e sincronizzata, solo il pallone si muove»: palla 40u, eroe 9-17u, SPONDA 0,3-0,5u — il muro 7.330 tiene la posizione per il tocco (anti-boomerang) ma restava statua. Dopo il tocco si SMARCA (+7u con diagonale via dall eroe): l aggancio sta nel setup dell uno-due (nel caso «chance» il puntatore era gia azzerato dal 7.8.10 — il muro si ritrova come compagno piu vicino al bersaglio dell arco), il driver 11980 apre il cancello anche a hlOneTwo (le situations uno-due sono build/shot, 7.348). Misura: 0,3→2,3-8,6u. (4) gi71 «il dribbling non e chiaro»: il duello c era (poke a 0,1-0,2u) ma il pallone finiva SOLO (avversario a 8-10u a fine scena) — il 7.249 prometteva «e lui che viene a prendersela» senza codice che lo facesse andare. Il vincitore ora RACCOGLIE (aggancio nel poke, driver a scivolata finita, fino a 1,2u): 8,5-10,5→5,2-5,8 gia a 5fps headless. Criterio guardiano build-up raffinato: dentro un beat di VOLO il tetto sale a 5,5u (un filtrante teso fa 4-5u/fotogramma a 5fps ED e liscio — un teletrasporto e una discontinuita, non una velocita), 3,0 resta su conduzioni e bordi. gi93/gi148-hl «traballa» generici: attesa bozze dispositivo con sguardo 7.410 + zig-zag 7.414 chiusi.
 //  [nota 7.414.0] [7.414.0 collaudo PO lotto 7.413 — LA FAMIGLIA THROUGH: verticalizzazione all'indietro (gi174), zig-zag avanti/indietro (gi24), teletrasporto da 16,5u (gi79)]: TRE SCRITTORI, UNA FAMIGLIA, tutti fuori dalla popolazione del guardiano (che era verde e cieco insieme — gi24/79/174 non c'erano). La sonda della timeline VIVA (__CPM_TLSEG, nuova, test-only) mostra il piano: hold → THROUGH dell'eroe verso il punto profondo → controllo del compagno → conclusione. (1) L'ANCORA DELLA CONCLUSIONE ERA LO SPOT D'APERTURA: ricevente (e intercettore su fallito) scelti «avanti» rispetto a G2X(P.playerX) — dopo un build-up che ha mosso la palla, «avanti rispetto a dov'ero» e' INDIETRO rispetto alla palla (misurato: verticalizzazione -5,2u su intercetto, filtrante -16,3u). Ora l'ancora e' LA PALLA: il cancello _fwd2>-3 garantisce il volo in avanti da dove il pallone sta davvero. (2) IL THROUGH SI RICEVE DAVANTI: mapCineActors assegna MATE1 al compagno piu' vicino all'EROE, e il rendez-vous 7.395 risucchiava il volo all'indietro sul compagno DIETRO la traiettoria; per i beat through il ricevente si rimappa una volta sul compagno piu' vicino al punto di caduta. (3) LA GUARDIA DI CONSEGNA VALE PER QUALUNQUE PORTATORE (fromId||toId via tlMap, prima solo eroe — e il beat di controllo ha fromId null): il punto pianificato non strappa piu' la palla dal piede del compagno in ritardo sul piano (teletrasporti misurati 13,9-19,7u → 1,2-2,3u). (4) CHI GIOCA IL FILTRANTE SEGUE LA GIOCATA (rosso del guardiano allargato: palla 27-31u, eroe 0,0u): il «passa e segui» del 7.390 esteso al passatore di through, 4,2u in avanti. MISURA FINALE: conclusioni +8,8/+8,8/+21,1 in avanti, guardiano build-up a 37 costruzioni (da 31) tutto verde, pass-landing 0,7u mediano invariato. APERTI CON STRUMENTO (diag_128_108: force-path pulito su tre repliche, il difetto vive nel flusso live): gi128 «recovery ma palla in rete», gi108 «spizzata aerea passata dietro». Le bozze camera («salta 1,2-2,2u», «sguardo 6,0 inv/s») calano da 29-32 a 6 inv/s dopo il 7.410: attesa conferma dal dispositivo — lo zig-zag della palla appena chiuso era esso stesso un generatore di inversioni dello sguardo.
@@ -25188,6 +25189,27 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     if(mine.every(n=>cur.indexOf(n)>=0))return;
     setPlayer(pp=>{let out=pp;mine.forEach(n=>{out=_mdCommit(out,n);});return out;});
   }catch(_e){}},[player]);// eslint-disable-line
+  /* [7.418.0] BONIFICA AUTOMATICA VISIBILE delle voci stantie SCADUTE: una voce di calendario non
+     giocata, con settimana ≤ corrente, che il rilevatore unico dichiara stantia, viene marcata
+     (healed) appena compare — cosi' NESSUN selettore, nemmeno uno futuro scritto male, potra' mai
+     ripescarla — e la bonifica lascia una riga nel log: il PO vede la rete che lavora, non un
+     silenzio. Idempotente: una voce marcata non e' piu' ne' stantia ne' non-giocata. Le voci FUTURE
+     legittime non possono essere flaggate per costruzione (ritorno = sede opposta, giornata futura >
+     played in classifica). */
+  useEffect(()=>{try{
+    const _wk=player.week||1;
+    const _stale=(player.calendar||[]).filter(m=>m&&!m.played&&(m.week||0)<=_wk&&_isStaleMd(player,m));
+    if(!_stale.length)return;
+    setPlayer(p=>{
+      const _st2=(p.calendar||[]).filter(m=>m&&!m.played&&(m.week||0)<=(p.week||1)&&_isStaleMd(p,m));
+      if(!_st2.length)return p;
+      const _keys=new Set(_st2.map(m=>(m.week||0)+"|"+(m.matchday!=null?m.matchday:"?")+"|"+(m.opponentName||"?")));
+      const _lbl=_st2.map(m=>`giornata ${m.matchday!=null?m.matchday:"?"} vs ${m.opponentName||"?"}`).join(" · ");
+      return{...p,
+        calendar:(p.calendar||[]).map(m=>_keys.has((m.week||0)+"|"+(m.matchday!=null?m.matchday:"?")+"|"+(m.opponentName||"?"))&&!m.played?{...m,played:true,healed418:true}:m),
+        log:[`🧹 Bonifica calendario: ${_lbl} risultava gia' giocata — voce ritirata (mai piu' riproposta).`,...(p.log||[])].slice(0,60)};
+    });
+  }catch(_e){}},[player]);// eslint-disable-line
   const _playingMdRef=useRef(null);
   const[lastMatch,setLastMatch]=useState(null);
   const[seasonEndData,setSeasonEndData]=useState(null);
@@ -25537,6 +25559,41 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     if(cur.indexOf(mdNum)>=0)return (p.playedMd&&p.playedMd.s===sn)?p:{...p,playedMd:{s:sn,md:cur}};
     return {...p,playedMd:{s:sn,md:[...cur,mdNum]}};
   };
+/* [7.418.0 collaudo PO «di nuovo il bug della partita gia' giocata! risolvi definitivamente, e' grave»
+   — 8ª ricorrenza della classe] IL RILEVATORE E' UNO SOLO E LO USANO TUTTI. Le sette reti (A→G)
+   vivevano DENTRO getThisWeekMatchday — cioe' proteggevano SOLO il path del gioco dal vivo. Ma
+   simulateAndAdvance pescava dal calendario GREZZO (`find(week && !played)`) e doAdvanceWeek pure
+   (`filter(week && !played)`): una gemella stantia che il vivo rifiutava veniva RISIMULATA da
+   «Avanza»/«Simula», ricontata in classifica e storico — ed e' proprio cosi' che lo stato torna
+   incoerente e il bug riaffiora a ogni lotto. Il rilevatore ora e' una funzione PURA (p, md) usata
+   da tutti e tre i selettori, con una rete NUOVA: (H) LA CLASSIFICA — la giornata N di lega si
+   gioca con N-1 gare in tabella; se la mia riga dice played ≥ N, la giornata N e' GIA' dentro la
+   classifica e la voce e' stantia, qualunque campo un desync abbia sporcato. In piu': BONIFICA
+   AUTOMATICA VISIBILE (effect sotto) — le voci stantie scadute vengono marcate e la bonifica lascia
+   una riga nel log, cosi' il PO VEDE la rete che lavora invece di un silenzio. */
+const _isStaleMd=(p,md)=>{try{
+    if(!p||!md||md.played)return false;
+    const _sn=p.season||1;
+    if(md.type==="cup"&&p.cup&&(!p.cup.active||p.cup.eliminated||p.cup.champion))return true;
+    if(md.matchday!=null){const _reg=(p.playedMd&&p.playedMd.s===_sn&&Array.isArray(p.playedMd.md))?p.playedMd.md:[];
+      if(_reg.indexOf(md.matchday)>=0)return true;}
+    if(md.type)return false;/* le reti sotto sono di LEGA */
+    const _cal=p.calendar||[],_side=m=>(m.isHome?"H":"A");
+    const _plg=_cal.filter(m=>m.played&&!m.type);
+    if(_plg.some(m=>m.week===md.week))return true;
+    if(md.opponentId&&_plg.some(m=>m.opponentId===md.opponentId&&_side(m)===_side(md)))return true;
+    if(md.opponentName&&_plg.some(m=>m.opponentName===md.opponentName&&_side(m)===_side(md)))return true;
+    if(md.matchday!=null&&_plg.some(m=>m.matchday===md.matchday))return true;
+    const _H=(p.matchHistory||[]).filter(h=>h&&!h.cup&&!h.euro&&!h.national&&(h.season||1)===_sn);
+    if(_H.filter(h=>h.opponent===md.opponentName).length>=2)return true;
+    if(_H.some(h=>((h.week||0)===(md.week||0)&&h.opponent===md.opponentName)||(h.isHome!=null&&h.opponent===md.opponentName&&(h.isHome?"H":"A")===_side(md))))return true;
+    const _st=p.standings||[];
+    if(_st.length>=2){const _cid=p.club&&(p.club.id||p.club.n);
+      const _me=_st.find(r=>r&&(r.id===_cid||r.clubId===_cid||r.n===(p.club&&p.club.n)));
+      if(_me){if((_me.played||0)>=2*(_st.length-1))return true;
+        if(md.matchday!=null&&(_me.played||0)>=md.matchday)return true;/* (H) */}}
+    return false;
+  }catch(_e){return false;}};
 const getThisWeekMatchday=()=>{
     const cal=player.calendar||[];const _sn=player.season||1;
     // [6.73.0] anti-loop: salta i matchday GIÀ giocati questa sessione (anche se un desync di stato li mostrasse non-giocati → niente «stessa partita»)
@@ -25600,7 +25657,7 @@ const getThisWeekMatchday=()=>{
       const me=st.find(r=>r&&(r.id===_cid||r.clubId===_cid||r.n===(player.club&&player.club.n)));
       return !!me&&(me.played||0)>=2*(st.length-1);
     }catch(_e){return false;}})();
-    return cal.find(md=>md.week===(player.week||1)&&!md.played&&!_committedMdRef.current.has(_sn+"|"+md.matchday)&&!(md.type==="cup"&&_cupDead)
+    return cal.find(md=>md.week===(player.week||1)&&!md.played&&!_isStaleMd(player,md)/* [7.418.0] il rilevatore UNICO, prima di tutto */&&!_committedMdRef.current.has(_sn+"|"+md.matchday)&&!(md.type==="cup"&&_cupDead)
       &&!(!md.type&&(
         _lgHist98(md.opponentName)>=2
         ||_pWeeks.has(md.week)/* (A) una gara di lega di questa settimana è già stata giocata → duplicato */
@@ -26022,6 +26079,7 @@ const getThisWeekMatchday=()=>{
         doAdvanceWeek();return "advanced";
       }catch(e){return "error:"+(e&&e.message);}},
       openingPending:()=>{try{return openingPending();}catch(e){return "error:"+(e&&e.message);}}, // [7.16.0] per la probe opening-gate
+      staleMd:(p2,md)=>{try{return _isStaleMd(p2||player,md);}catch(e){return "error:"+(e&&e.message);}}, /* [7.418.0] il rilevatore UNICO delle voci stantie, esposto per il guardiano della partita-gia'-giocata */
       resolveOpening:()=>{try{setPlayer(p=>{const sn=p.season||1;return{...p,campDone:true,presidentModalSeason:sn,jerseyNumSeason:sn,drawSeen:sn,mercatoSeen:sn,presentSeason:sn,...(((p.proStatus||"u18")==="pro"&&sn>=2&&(!p.seasonPledge||p.seasonPledge.season!==sn))?{seasonPledge:{season:sn,tone:"equilibrato"}}:{})};});return true;}catch(e){return "error:"+(e&&e.message);}}, // [7.16.0] risoluzione minima (flag, +drawSeen per i sorteggi) delle interazioni d'apertura per l'harness · [7.147.0] +mercatoSeen
       natTournamentPatch:(p)=>{try{return natTournamentPatch(p);}catch(e){return "error:"+(e&&e.message);}}, // [6.32.0 STAB-2] espone l'helper trigger tornei Nazionali per la suite career-invariants
       weeklyEconomyFields:(p)=>{try{return weeklyEconomyFields(p);}catch(e){return "error:"+(e&&e.message);}}, // [6.35.0 STAB-7/8] espone il tick economia settimanale per la suite
@@ -27630,9 +27688,9 @@ const getThisWeekMatchday=()=>{
   const simulateAndAdvance=()=>{
     if(openingGate())return;/* [7.16.0] W1 vincolante */
     setShowMatchPrompt(null);
-    try{const _sm=(player.calendar||[]).find(m=>m.week===(player.week||1)&&!m.played);if(_sm&&_sm.matchday!=null)_committedMdRef.current.add((player.season||1)+"|"+_sm.matchday);}catch(_e){}// [6.73.0] anche la SIMULA marca il matchday committato (anti re-serve dal vivo)
+    try{const _sm=(player.calendar||[]).find(m=>m.week===(player.week||1)&&!m.played&&!_isStaleMd(player,m));if(_sm&&_sm.matchday!=null)_committedMdRef.current.add((player.season||1)+"|"+_sm.matchday);}catch(_e){}// [6.73.0] anche la SIMULA marca il matchday committato (anti re-serve dal vivo)
     setPlayer(p=>{
-      const md2=(p.calendar||[]).find(m=>m.week===(p.week||1)&&!m.played);
+      const md2=(p.calendar||[]).find(m=>m.week===(p.week||1)&&!m.played&&!_isStaleMd(p,m));/* [7.418.0] LA SIMULA PESCAVA DAL CALENDARIO GREZZO: una gemella stantia che il vivo rifiutava veniva RISIMULATA qui, ricontata in classifica e storico — il vero motore della recidiva */
       const isInjured=p.injured&&(p.injuryWeeks||0)>0;
       const recovSim=p.injuryWeeks-1<=0;
       const injBase={injuryWeeks:p.injuryWeeks-1,injured:!recovSim,...(recovSim?{injuryType:null,justRecovered:true,returnPenaltyWeeks:2}:{returnPenaltyWeeks:Math.max(0,(p.returnPenaltyWeeks||0)-1)}),fatigue:Math.max(0,(p.fatigue||0)-10)};
@@ -28754,7 +28812,7 @@ const getThisWeekMatchday=()=>{
     setPlayer(p=>{
       // Sprint 104: auto-simulate ALL unplayed matches this week (not just the first)
       const _kSp74=m=>(m.type==="cup"||m.type==="euro_group"||m.type==="euro"||m.type==="national")?0:1;// [6.74.0 QA-2] le SPECIALI (coppa/europa/nazionale [6.81.0]) hanno rami dedicati completi → priorità come primaria; la lega va nel loop extra (che aggiorna classifica+stat correttamente)
-      const _weekMds=(p.calendar||[]).filter(m=>m.week===(p.week||1)&&!m.played).sort((a,b)=>_kSp74(a)-_kSp74(b));
+      const _weekMds=(p.calendar||[]).filter(m=>m.week===(p.week||1)&&!m.played&&!_isStaleMd(p,m)).sort((a,b)=>_kSp74(a)-_kSp74(b));/* [7.418.0] anche AVANZA pescava dal calendario grezzo: stessa rete unica del vivo e della Simula */
       const md=_weekMds[0]||null; // primary match (handled below); extras processed after
       let updP={...p};
       if(md){
