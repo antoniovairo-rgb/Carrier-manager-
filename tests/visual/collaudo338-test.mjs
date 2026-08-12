@@ -81,6 +81,13 @@ for (const [tag, journo] of [['uomo', MEN], ['donna', WOMEN]]) {
     const big = window.refuseEcho(base, off(92, 70000));
     const mid = window.refuseEcho(base, off(60, 27000));
     const low = window.refuseEcho(base, off(53, 21000));
+    /* [7.417.0 collaudo PO «ho rifiutato un'offerta dell'Atletico Madrid, nessuna reazione?!»] LA
+       STELLA NEL TOP CLUB: per lei nessuna offerta e' piu' un «salto» (dP mai ≥5) e il vecchio tier
+       taceva PER SEMPRE. Il calibro dell'offerente conta: corazzata laterale senza rilancio →
+       almeno «importante»; big quasi pari col rilancio vero → «storica». */
+    const star = { ...base, club: { id: 'mad', n: 'CF Madrid', p: 88, lg: 'Liga Ibérica' }, contract: { wage: 90000 }, fanLegend: [{ clubId: 'mad', seasons: 2 }] };
+    const lat = window.refuseEcho(star, { club: { n: 'Atletico Madrid', p: 86 }, wage: 126000 });
+    const lat2 = window.refuseEcho(star, { club: { n: 'Atletico Madrid', p: 84 }, wage: 90000 });
     const det = JSON.stringify(window.refuseEcho(base, off(92, 70000))) === JSON.stringify(big);
     /* heal della migration su un save col campo già corrotto (stringa, come lo lasciava il 7.307.0) */
     const heal = window.__CPM_MIGRATE({ name: 'X', proStatus: 'pro', season: 3, week: 5, ovr: 70, stats: {}, form: 70,
@@ -88,6 +95,7 @@ for (const [tag, journo] of [['uomo', MEN], ['donna', WOMEN]]) {
     return { big: big && { tier: big.tier, nv: big.voices.length, who: big.voices.map(v => v.who), fx: big.fx, head: big.head },
       mid: mid && { tier: mid.tier, nv: mid.voices.length, fx: mid.fx },
       low: low && { tier: low.tier, nv: low.voices.length, fx: low.fx }, det,
+      lat: lat && { tier: lat.tier, nv: lat.voices.length }, lat2: lat2 && { tier: lat2.tier, nv: lat2.voices.length },
       healed: Array.isArray(heal && heal.player && heal.player.fanLegend) };
   });
   console.log('(B)', JSON.stringify(r));
@@ -99,6 +107,8 @@ for (const [tag, journo] of [['uomo', MEN], ['donna', WOMEN]]) {
   if (!r.mid || r.mid.tier !== 'importante' || !r.mid.nv) issues.push('(B) fascia intermedia senza reazioni: ' + JSON.stringify(r.mid));
   if (!r.low || r.low.tier !== 'normale') issues.push('(B) un sondaggio qualunque non deve essere «importante»: ' + JSON.stringify(r.low));
   if (r.low && Object.keys(r.low.fx || {}).length) issues.push('(B) il sondaggio non deve dare effetti (farming)');
+  if (!r.lat || r.lat.tier !== 'storica' || r.lat.nv < 3) issues.push('(B) [7.417] big quasi pari col rilancio: attesa «storica», avuto ' + JSON.stringify(r.lat));
+  if (!r.lat2 || r.lat2.tier !== 'importante' || !r.lat2.nv) issues.push('(B) [7.417] corazzata laterale senza rilancio: la stella non deve rifiutare NEL SILENZIO — avuto ' + JSON.stringify(r.lat2));
   if (!r.det) issues.push('(B) refuseEcho non deterministico');
   if (!r.healed) issues.push('(B) la migration non bonifica un fanLegend corrotto (resta rotto il pannello curva)');
   await page.close();
