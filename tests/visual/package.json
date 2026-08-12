@@ -61,7 +61,9 @@
     "auto-review": "node auto-review.mjs",
     "stale-matchday": "node stale-matchday-test.mjs",
     "parata": "node parata-test.mjs",
-    "cerimonie": "node cerimonie-test.mjs"
+    "cerimonie": "node cerimonie-test.mjs",
+    "recv-delivery-dest": "node recv-delivery-dest-test.mjs",
+    "coach-face": "node coach-face-test.mjs"
   },
   "dependencies": {
     "playwright": "^1.48.0",
