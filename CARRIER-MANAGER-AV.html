@@ -1434,7 +1434,15 @@ function resolveEvText(txt,p){
 //   (contatore `seen`). Il picker pesca a caso da questo bucket → prima di rivedere un impulso il gioco esaurisce
 //   il pool. Puro/testabile (usato dal gioco E dalla probe career-moments-test).
 function impulseFreshBucket(pool,recent,seen,condOk){
-  const _r=recent||[],_s=seen||{},_ok=condOk||(()=>true);
+  const _r=recent||[],_s=seen||{},_ok0=condOk||(()=>true);
+  /* [7.430.0 collaudo PO «conseguenza gia' vista nella carriera!» (l'orologio della squadra, di nuovo,
+     a S.21)] GLI IMPULSI UNA-TANTUM NON TORNANO MAI. L'anti-ripetizione ravvicinata (ultimi 40) e il
+     bucket dei meno visti fanno il loro lavoro, ma su una carriera ventennale il pool CICLA per
+     costruzione — e rivivere «compri l'orologio della squadra» quando l'orologio lo possiedi da
+     quindici stagioni e' incoerente. Gli eventi che producono un fatto permanente (l'orologio, la
+     biografia, il murale, la donazione scoperta...) portano `once:true`: visti una volta
+     (contatore a vita `impulseSeen`, 7.159), spariscono per sempre dal pescaggio. */
+  const _ok=im=>_ok0(im)&&!(im.once&&_s[im.id]);
   let p=pool.filter(im=>!_r.includes(im.id)&&_ok(im));
   if(p.length<6)p=pool.filter(im=>!_r.slice(-6).includes(im.id)&&_ok(im));
   if(!p.length)return pool.filter(_ok);
@@ -1564,7 +1572,7 @@ const SPOGLIATOIO_MOMENTS=[
 const WEEKLY_IMPULSES=[
   // [6.85.0 collaudo PO «impulsi settimanali molto ripetitivi»] +12 dilemmi (pool 48→60) + memoria persistente
   //   anti-ripetizione nel picker (player.recentImpulses, ultimi 16 esclusi).
-  {id:"wi_docufilm",cat:"opportunità",cond:p=>(p.popularity||20)>=38,txt:"Il club vuole girarti addosso un mini-documentario: una troupe ti seguirà per tutta la settimana.",choices:[
+  {id:"wi_docufilm",once:true,cat:"opportunità",cond:p=>(p.popularity||20)>=38,txt:"Il club vuole girarti addosso un mini-documentario: una troupe ti seguirà per tutta la settimana.",choices:[
     {txt:"🎬 Accetto — mi racconto",ef:{popularity:8,fatigue:5,coachTrust:-3}},
     {txt:"🚪 No grazie, prima il campo",ef:{coachTrust:3}},
   ]},
@@ -1584,11 +1592,11 @@ const WEEKLY_IMPULSES=[
     {txt:"🎾 Gioco per vincere",ef:{chem:7,fatigue:7}},
     {txt:"🛋 Tifo dal divano",ef:{fatigue:-5,chem:-3}},
   ]},
-  {id:"wi_biografia",cat:"opportunità",txt:"Un editore ti propone la biografia «a metà carriera». Anticipo ricco, ma qualcuno la troverà prematura.",choices:[
+  {id:"wi_biografia",once:true,cat:"opportunità",txt:"Un editore ti propone la biografia «a metà carriera». Anticipo ricco, ma qualcuno la troverà prematura.",choices:[
     {txt:"📖 Firmo il contratto",ef:{bank:20000,popularity:6,coachTrust:-4}},
     {txt:"⌛ È troppo presto",ef:{coachTrust:4}},
   ]},
-  {id:"wi_murale",cat:"scelta",cond:p=>(p.popularity||20)>=50,txt:"I tifosi ti hanno dedicato un murale nel quartiere e ti invitano all'inaugurazione infrasettimanale.",choices:[
+  {id:"wi_murale",once:true,cat:"scelta",cond:p=>(p.popularity||20)>=50,txt:"I tifosi ti hanno dedicato un murale nel quartiere e ti invitano all'inaugurazione infrasettimanale.",choices:[
     {txt:"🎨 Vado di persona",ef:{popularity:8,morale:6,fatigue:5}},
     {txt:"🙏 Ringrazio con un video",ef:{popularity:3}},
   ]},
@@ -1608,7 +1616,7 @@ const WEEKLY_IMPULSES=[
     {txt:"❄️ Ci vivo dentro",ef:{fatigue:-8,form:3,chem:-2}},
     {txt:"👥 Preferisco stare col gruppo",ef:{chem:4}},
   ]},
-  {id:"wi_carita_anonima",cat:"conseguenza",txt:"Un giornalista ha scoperto una tua donazione anonima e vuole pubblicarla. «La gente deve saperlo».",choices:[
+  {id:"wi_carita_anonima",once:true,cat:"conseguenza",txt:"Un giornalista ha scoperto una tua donazione anonima e vuole pubblicarla. «La gente deve saperlo».",choices:[
     {txt:"📰 Che esca pure",ef:{popularity:8,morale:-2}},
     {txt:"🤫 Resti anonima, o niente",ef:{morale:5}},
   ]},
@@ -1621,7 +1629,7 @@ const WEEKLY_IMPULSES=[
     {txt:"🍝 Ci vado — il gruppo conta",ef:{chem:8,morale:6,fatigue:8}},
     {txt:"🛌 Salto — devo recuperare",ef:{fatigue:-6,chem:-4}},
   ]},
-  {id:"wi_investimento",cat:"conseguenza",txt:"Il tuo consulente propone un investimento immobiliare «sicuro». Serve liquidità subito.",choices:[
+  {id:"wi_investimento",once:true,cat:"conseguenza",txt:"Il tuo consulente propone un investimento immobiliare «sicuro». Serve liquidità subito.",choices:[
     {txt:"📈 Investo metà del conto",ef:{bank:-40000,morale:3},flag:"investment",note:"rendita a fine stagione"},
     {txt:"🏦 Tengo i soldi fermi",ef:{morale:1}},
   ]},
@@ -1649,7 +1657,7 @@ const WEEKLY_IMPULSES=[
     {txt:"👨‍👩‍👦 Li ospito — le radici contano",ef:{morale:12,fatigue:6}},
     {txt:"📅 Rimandiamo di un mese",ef:{morale:-4,fatigue:-3}},
   ]},
-  {id:"wi_scommessa_social",cat:"conseguenza",txt:"Un tuo vecchio video da ragazzino è diventato virale. Un brand ti offre di ricreare la scena, autoironia totale.",choices:[
+  {id:"wi_scommessa_social",once:true,cat:"conseguenza",txt:"Un tuo vecchio video da ragazzino è diventato virale. Un brand ti offre di ricreare la scena, autoironia totale.",choices:[
     {txt:"😂 Ci sto — ridiamoci su",ef:{bank:18000,popularity:10,coachTrust:-3}},
     {txt:"🚫 Preferisco il basso profilo",ef:{coachTrust:2}},
   ]},
@@ -1657,7 +1665,7 @@ const WEEKLY_IMPULSES=[
     {txt:"🕊 Faccio da paciere stasera",ef:{chem:10,coachTrust:6,fatigue:5}},
     {txt:"🙈 Non mi immischio",ef:{chem:-5}},
   ]},
-  {id:"wi_orologio",cat:"conseguenza",cond:p=>!p.isCaptain/* [7.161.0 M1] */,txt:"Il capitano ti prende in giro: sei l'unico senza «l'orologio della squadra». Costa quanto un mese del tuo ingaggio."/* [7.161.0 BASSA] via il riferimento allo «stipendio» settimanale (display solo annuale, 7.36.1) */,choices:[
+  {id:"wi_orologio",once:true,cat:"conseguenza",cond:p=>!p.isCaptain/* [7.161.0 M1] */,txt:"Il capitano ti prende in giro: sei l'unico senza «l'orologio della squadra». Costa quanto un mese del tuo ingaggio."/* [7.161.0 BASSA] via il riferimento allo «stipendio» settimanale (display solo annuale, 7.36.1) */,choices:[
     {txt:"⌚ Lo compro — rito di passaggio",ef:{bank:-30000,chem:7,morale:4}},
     {txt:"💸 Follia — passo",ef:{chem:-3,morale:1}},
   ]},
@@ -1687,9 +1695,9 @@ const WEEKLY_IMPULSES=[
     {txt:"🙏 «Scusi, farò meglio»",ef:{popularity:6,morale:-3}},
     {txt:"🚶 Vai avanti senza rispondere",ef:{morale:2}},
   ]},
-  {id:"wi_procuratore",cat:"conseguenza",cond:p=>!!p.hasAgent/* [7.161.0 M1] */,txt:"Il tuo procuratore ti dice che c'è un club interessato, ma serve pazienza.",choices:[
+  {id:"wi_procuratore",cat:"conseguenza",cond:p=>!!p.hasAgent&&!p.transferListed/* [7.161.0 M1] · [7.430.0 collaudo PO «e' compatibile con la nuova funzionalita' del procuratore o e' un refuso sganciato?»] ERA SGANCIATO: prometteva un club interessato e la scelta non produceva alcun fatto. Ora esce solo se il mercato NON si sta gia' muovendo (transferListed) e «voglio muovermi ora» METTE IN LISTA davvero — lo stesso flag che il mercato legge (4142) e che alza le offerte vere */,txt:"Il tuo procuratore ti dice che c'è un club interessato, ma serve pazienza.",choices:[
     {txt:"⏳ Aspettiamo — la pazienza paga",ef:{morale:4}},
-    {txt:"📢 No, voglio muovermi ora",ef:{popularity:4,coachTrust:-5,morale:-4}},
+    {txt:"📢 No, voglio muovermi ora — mettimi in lista",ef:{popularity:4,coachTrust:-5,morale:-4,transferListed:true}},
   ]},
   {id:"wi_giovane",cat:"opportunità",cond:p=>(p.proStatus||"u18")==="pro"/* [7.161.0 M1] */,txt:"Un giocatore della primavera ti chiede di allenarsi con te. Accetti?",choices:[
     {txt:"✅ Certo — è bello trasmettere",ef:{morale:8,coachTrust:5,popularity:4}},
@@ -4575,7 +4583,8 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="7.429.0"; // [7.429.0 collaudo PO premiazione (screenshot dal dispositivo): «mister che e' un burattino, palla che va appresso all'eroe, scudetto e trofeo non bene impugnato, eroe che sprofonda nel palco» — PASS 3 CERIMONIE, TUTTO MISURATO]: (a) MISTER: era un manichino (torso 0,8 — piu' largo di un giocatore — testa-sfera lattea senza capelli) piantato NEL CORRIDOIO DI RIPRESA: il bersaglio di follow (eroe-6, z+5) stava esattamente fra la camera (eroe-8..-11, z+6..8) e il soggetto — misurato dCam 5-7u costanti in ogni beat, il gigante grigio in primo piano degli screenshot. Ora corporatura civile snella con incarnato e capelli, e bersagli fuori dal corridoio (dietro l'eroe a z-4,5; oltre il podio a z-4,2). (b) SCUDETTO IMPUGNATO: la targa stava a y=1,0 LOCALE nel gruppo trofeo (la quota del corpo della coppa): con l'aggancio alle mani vere (7.24.2) fluttuava un metro sopra la testa — ora y=0,14, nel punto della presa; e siccome l'eroe alla consegna sta ACCANTO al podio, il volo podio→mani e' corto (prima il blend partiva con le mani a meta' campo: il disco d'oro volante dello screenshot). (c) SPROFONDAMENTO: il beat present (e il fest di ritorno al centro) bersagliava (0,0) col podio visibile — l'eroe DENTRO il cilindro; ora alla consegna sta di lato, ci sale solo al lift, e un guard di quota (dist<1,7 dal centro → y=1,05) impedisce ogni attraversamento; i compagni hanno la spinta radiale fuori dal palco (uno era mezzo affondato nello screenshot). (d) PALLA: spenta con l'alone per tutta la cerimonia, ripristinata al reset — la partita e' finita. (e) +TELEFONINI in curva (direttiva PUBBLICO): 70 luci fredde tremolanti sulla tribuna dei tuoi, lazy come le bandiere. STRUMENTAZIONE: warp test-only __CPM_CERT_SET (in headless ~4fps il clock dei beat corre a 1/10 del timer React di fase: la sonda moriva nel primo beat — misurato cert 2,3s a fase finita) e +beatsD nella probe __CPM_CER425. Guardiano cerimonie esteso (podio/impugnatura/corridoio/palla), rosso provato sul build pre-fix. + PARATA (collaudo PO: «pullman che sembra uno scatolo di scarpe, trofeo che gira ma non e' lo scudetto vinto, calciatori tutti di colore, non sono i reali giocatori») — (f) il pullman ha MUSETTO (parabrezza inclinato, mascherina, fari, paraurti), montanti sulla fascia finestrini, specchietti, minigonna nel secondo colore, coprimozzi che girano col cerchione; (g) il trofeo a prua e' QUELLO VINTO: scudetto = piatto d'oro inclinato verso la camera (vocabolario 7.425), Champions = coppa grande dalle orecchie larghe, scala raddoppiata, gira il trofeo e non il piedistallo; (h) la squadra sul tetto RIUSA la ricetta della Serata (7.30): appearanceFromSeed per carnagione/capelli/calvizie/altezza per uomo (stesso seed del roster), kitPatternTex per la maglia vera — otto uomini, spettro carnagioni anche nel fallback GLB-OFF.
+const GAME_VERSION="7.430.0"; // [7.430.0 collaudo PO, cinque note in un lotto — SERATA, IMPULSI E MONDO FUORI]: (1) «migliora la dinamica del braccio che saluta e la postura, sono aggobbati e tristi» — RIPRODOTTO e misurato: la clip idle in PAUSA congela anche i fotogrammi di trasferimento di peso (spalle avanti = l'aggobbato), e il saluto era un OFFSET CIECO su Z dalla posa congelata: a seconda del fotogramma la mano finiva IN FRONTE (il facepalm dello screenshot). Lo sweep degli euler (strumento __CPM_WVSET) dice che il rig alza il braccio su X (base 0,79=giu', -2,6=verticale): ora il saluto e' un BLEND verso il bersaglio canonico (x -2,45, gomito disteso, ondeggio avambraccio) e la POSTURA si raddrizza in assoluto dopo il mixer (colonna/collo/testa scalati verso l'eretto — il mixer in pausa riscrive la posa a ogni frame, zero accumulo). Stessa correzione al saluto della parata (stessa classe). (2) «conseguenza gia' vista nella carriera!» (l'orologio, di nuovo, a S.21) — gli impulsi UNA-TANTUM (orologio, biografia, murale, video virale, donazione scoperta, docufilm, investimento) portano once:true e col contatore a vita impulseSeen spariscono per sempre dopo la prima volta: su una carriera ventennale il pool cicla per costruzione, ma un fatto permanente non si rivive. (3) «e' compatibile con la nuova funzionalita' del procuratore o e' un refuso sganciato?» — ERA SGANCIATO (pre-feature): ora wi_procuratore esce solo se il mercato non si sta gia' muovendo (!transferListed) e «voglio muovermi ora» METTE IN LISTA davvero (transferListed:true, il flag che il mercato legge e che alza le offerte vere). (4) «sono passati anni ed anni dal Lipsia, poco contestualizzato, deve essere piu' divertente» — la telefonata dell'ex compagno SA QUANTI ANNI SONO PASSATI: da 6 stagioni in su parla il pool dei VETERANI (ha smesso e allena i Pulcini, l'armadietto-santuario, il fantacalcio aziendale, gli otto chili col mancino-violino): la distanza diventa la battuta, non un errore di continuita'. (5) «non c'e' partita, fai in modo che sia piu' divertente!» (696 a 268 e il rivale «rincorre») — la battuta del rivale si CALIBRA SUL DISTACCO: oltre la soglia (1,8x+30) parte l'autoironia da conferenza stampa (o lo sfotto', se la voragine e' sua); le righe competitive restano per i distacchi veri. FILONE APERTO E MISURATO (bozze gi47/gi185, «il pallone si freeza per un bel po' e si muove da solo» dopo l'assist): tracciante d'esito agli atti — gi47 FREEZE di ~4s e poi 8-11 passi ORFANI (palla in moto, nessuno entro 2,5u) su 3 repliche; gi185 solo freeze (2,6-4,8s). E' la coreografia della FASE DI RISOLUZIONE (l'arco d'esito parte tardi e nessun attore accompagna la palla): va chiuso con la stessa disciplina (strumento diag_47), prossimo ciclo. Le note gemelle su build 7.425 (gi16 teletrasporto 21,3u, gi110 «palla a nessuno») sono VERIFICATE COPERTE dal 7.428 (0u su tutte le repliche).
+// [nota 7.429.0] [7.429.0 collaudo PO premiazione (screenshot dal dispositivo): «mister che e' un burattino, palla che va appresso all'eroe, scudetto e trofeo non bene impugnato, eroe che sprofonda nel palco» — PASS 3 CERIMONIE, TUTTO MISURATO]: (a) MISTER: era un manichino (torso 0,8 — piu' largo di un giocatore — testa-sfera lattea senza capelli) piantato NEL CORRIDOIO DI RIPRESA: il bersaglio di follow (eroe-6, z+5) stava esattamente fra la camera (eroe-8..-11, z+6..8) e il soggetto — misurato dCam 5-7u costanti in ogni beat, il gigante grigio in primo piano degli screenshot. Ora corporatura civile snella con incarnato e capelli, e bersagli fuori dal corridoio (dietro l'eroe a z-4,5; oltre il podio a z-4,2). (b) SCUDETTO IMPUGNATO: la targa stava a y=1,0 LOCALE nel gruppo trofeo (la quota del corpo della coppa): con l'aggancio alle mani vere (7.24.2) fluttuava un metro sopra la testa — ora y=0,14, nel punto della presa; e siccome l'eroe alla consegna sta ACCANTO al podio, il volo podio→mani e' corto (prima il blend partiva con le mani a meta' campo: il disco d'oro volante dello screenshot). (c) SPROFONDAMENTO: il beat present (e il fest di ritorno al centro) bersagliava (0,0) col podio visibile — l'eroe DENTRO il cilindro; ora alla consegna sta di lato, ci sale solo al lift, e un guard di quota (dist<1,7 dal centro → y=1,05) impedisce ogni attraversamento; i compagni hanno la spinta radiale fuori dal palco (uno era mezzo affondato nello screenshot). (d) PALLA: spenta con l'alone per tutta la cerimonia, ripristinata al reset — la partita e' finita. (e) +TELEFONINI in curva (direttiva PUBBLICO): 70 luci fredde tremolanti sulla tribuna dei tuoi, lazy come le bandiere. STRUMENTAZIONE: warp test-only __CPM_CERT_SET (in headless ~4fps il clock dei beat corre a 1/10 del timer React di fase: la sonda moriva nel primo beat — misurato cert 2,3s a fase finita) e +beatsD nella probe __CPM_CER425. Guardiano cerimonie esteso (podio/impugnatura/corridoio/palla), rosso provato sul build pre-fix. + PARATA (collaudo PO: «pullman che sembra uno scatolo di scarpe, trofeo che gira ma non e' lo scudetto vinto, calciatori tutti di colore, non sono i reali giocatori») — (f) il pullman ha MUSETTO (parabrezza inclinato, mascherina, fari, paraurti), montanti sulla fascia finestrini, specchietti, minigonna nel secondo colore, coprimozzi che girano col cerchione; (g) il trofeo a prua e' QUELLO VINTO: scudetto = piatto d'oro inclinato verso la camera (vocabolario 7.425), Champions = coppa grande dalle orecchie larghe, scala raddoppiata, gira il trofeo e non il piedistallo; (h) la squadra sul tetto RIUSA la ricetta della Serata (7.30): appearanceFromSeed per carnagione/capelli/calvizie/altezza per uomo (stesso seed del roster), kitPatternTex per la maglia vera — otto uomini, spettro carnagioni anche nel fallback GLB-OFF.
 // [nota 7.428.0] [7.428.0 collaudo PO gi86 «codice 001 MISURATO: compagno piu' vicino 11.7u, eroe ≥31.5u per 66 campioni» + «CAMERA salta 9.7u» — LA CONSEGNA PUNTAVA A UN EROE CHE NON C'ERA PIU']: il piano dichiarato nel 7.427 parlava di «due sorgenti che non si parlano», e la misura dual-probe (vivo emulato: ppos lontano dallo startZone, come fa la continuita' vera tra una scena e l'altra) ha trovato QUALE coppia: la consegna d'apertura delle scene di RICEZIONE (7.350/7.383) spediva la palla al `pPos` catturato dalla CHIUSURA dell'effetto — che gira PRIMA del clamp di continuita' 4.86 allo startZone. Un commit dopo l'eroe sta anche 30-48u piu' in la', l'effetto si ri-esegue ma la guardia (giusta) «una consegna per scena» esce subito, e il timer a 520ms consegna al bersaglio VECCHIO. FILMATO su gi86 (recv aerea/insertion): palla in hover a quota 1,8 su (40,40) con l'eroe VERO a (88,80) per tutta l'intro, poi al passaggio in hl_choose la sync palla→eroe la strattona per 60 unita' di deriva LENTA a mezz'aria in piena finestra di lettura — palla di NESSUNO (mesh piu' vicina 6,8-8,2u, a tratti possesso AWAY) e camera a inseguire: il 001 e il salto camera del dispositivo, riprodotti al numero. FIX: la destinazione si legge ALLO SPARO del timer — eroe MESH dal ponte 7.322 (la sorgente che l'utente vede), `pPosRef` fresco come rete — mai piu' dalla chiusura. Guardiano recv-delivery-dest (rosso provato con l'interruttore __CPM_NO428 che ripristina la chiusura stantia). Il percorso del gate non cambia: la consegna vive solo in hl_intro, che il force-path del gate salta. (2) IL MISTER HA LA FACCIA DEL MISTER (collaudo PO, screenshot «IL MISTER TI CERCA — Mister Bellandi»: «ma ha il volto di una donna?»): il ritratto era un DiceBear micah a briglia sciolta sul seed del nome — acconciature lunghe, colori fantasia, orecchini: 6 dei 16 COACH_NAMES uscivano incoerenti (Bellandi capelli viola e volto femminile). Ora NpcFaceCoach RIUSA la palette maschile COACH_NPC_FACES (esisteva, mai piu' collegata) via npcFaceIdx: acconciature corte/calvo, barba da palette, niente orecchini/ombretto; il wrapper del bundle inoltra il blocco micah:{…} (patch additiva, le chiamate esistenti non cambiano di un byte). Deterministico per nome. Guardiano coach-face (rosso provato sul build pre-fix: in pagina il micah libero).
 // [nota 7.427.0] [7.427.0 collaudo PO gi128 «non si vede la chiusura dell'eroe» + gi86 «codice 001 MISURATO» — UNA CHIUSURA E UNA REVOCA ONESTA]: (1) IL DIFENSORE BATTUTO SI LANCIA SULLA LINEA DEL PASSAGGIO. La spinta della scivolata (7.420) puntava alla posizione CORRENTE del pallone: con la palla in volo il vettore invecchiava in un frame e la chiusura si fermava a meta' strada (misurato: 6,6-8,8u dalla traiettoria su gi128). Ora, se l'arco e' vivo, il bersaglio e' la PROIEZIONE PERPENDICOLARE dell'eroe sulla traiettoria dichiarata (palla→ballArcTgt, u clampato 0,05-1, tetto 5,2) — dove un difensore vero allunga la gamba. MISURA: gi190 fallito 5,6→2,2u (arriva sulla linea), gi146 riuscito 0,2-0,4u, gi168 1,9u; su gi128 la distanza min palla-eroe resta ~5,6 perche' la palla SUPERA il punto prima che la scivolata arrivi — che e' esattamente il racconto del battuto: l'allungo si vede, il pallone passa. (2) REVOCA DOCUMENTATA sul gi86 (prima bozza «codice 001 MISURATO» dal dispositivo: compagno a 11,7u, eroe 31,5u, 66 campioni — il ramo del punto geometrico aperto dal 7.401): il buco individuato e' VERO — quando un compagno risulta gia' entro 3u nei LOGICI freschi dello staging, il flag _taker402 non viene messo e la colla del renderer non aggancia mai la MESH ancora lontana — ma ENTRAMBI i tentativi di fix (flag-sempre; flag solo sui punti geometrici corner/throw/wing) hanno rotto scene verdi (gi92 orfana; gi152/148/144 orfane): la colla ancora il compagno allo SPOT STAGGIATO mentre il piazzamento del pallone puo' divergere (continuita' 7.399) — due sorgenti che non si parlano. REVOCATO con misura, guardiano riportato verde. IL PIANO DICHIARATO per la prossima sessione: unificare la sorgente (la colla deve ancorare il taker al PUNTO-PALLA EFFETTIVO del commit, non allo spot pianificato) con un tracciato live dual-probe spot-vs-palla; l'evidenza del dispositivo e' agli atti.
 //  [nota 7.426.0] [7.426.0 EVOLUTIVA CELEBRAZIONI, seconda passata — LA COPPA ARRIVA ALLA PREMIAZIONE]: tre rifiniture di credibilita'. (1) ORDINE REALISTICO: il giro di campo va DOPO la consegna, col trofeo in mano (league: burst>hug>present>lift>lap>curva>fest · int idem con coach) — prima la coppa girava il campo prima di essere consegnata. (2) LA CONSEGNA E' UNA CONSEGNA: negli script con `present` il trofeo resta invisibile fino alla premiazione, poi appare SUL PODIO e VOLA alle mani nell'ultimo 40% del beat (blend continuo, niente scatti); la posa GLB d'alzata (_cerLift) parte solo da quando la coppa e' davvero in mano — nei beat prima l'eroe esulta libero. (3) LE BANDIERE DELLA CURVA: durante la cerimonia la curva dei tuoi espone dieci bandiere nei colori del club che sventolano (pigre, riusate, MAI attive in partita: zero costo). Guardiani cerimonie/celebration verdi. DICHIARATO per la prossima passata: verifica sul dispositivo del trofeo in mano durante il giro GLB-ON (la posa 7.24.2 ora si campiona nel beat lift), pose GLB dedicate per abbraccio/inginocchiato, pubblico con telefonini.
@@ -21755,8 +21764,9 @@ function PresentationStage3D({club,beat=0,total=6,seed=7,youth=false,avatarId=0,
              cui il saluto additivo (nel tick) puo' scrivere senza accumulare. */
           if(idle&&idle.animations&&idle.animations[0]){const mx=new THREE.AnimationMixer(root);
             const a=mx.clipAction(idle.animations[0]);a.play();mx.setTime(R(70+i)*2.4);a.paused=true;mixers.push(mx);}
-          /* le ossa del braccio destro per il SALUTO del chiamato (rig mixamorig, come 7.24.2) */
-          {let _wa=null,_wf=null;root.traverse(o=>{if(!o.isBone)return;const n=o.name||"";if(!_wa&&/RightArm$/i.test(n))_wa=o;if(!_wf&&/RightForeArm$/i.test(n))_wf=o;});root._wv={aR:_wa,fR:_wf};}
+          /* le ossa del braccio destro per il SALUTO del chiamato (rig mixamorig, come 7.24.2)
+             [7.430.0] + le ossa di POSTURA (colonna/collo/testa): il raddrizzamento scrive li' */
+          {let _wa=null,_wf=null;const _ps=[];root.traverse(o=>{if(!o.isBone)return;const n=o.name||"";if(!_wa&&/RightArm$/i.test(n))_wa=o;if(!_wf&&/RightForeArm$/i.test(n))_wf=o;if(/Spine$|Spine1$|Spine2$|Neck$|Head$/i.test(n))_ps.push(o);});root._wv={aR:_wa,fR:_wf,ps:_ps};}
         }
       }).catch(()=>{});
     }
@@ -21794,13 +21804,28 @@ function PresentationStage3D({club,beat=0,total=6,seed=7,youth=false,avatarId=0,
          `-=` del 7.419 si ACCUMULAVA — il braccio diventava un'elica. Ora la base dell'osso viene
          campionata UNA volta e ogni frame si scrive base+offset: per quanto giri il tick, il
          braccio sta dove deve — alzato a salutare, e basta. */
+      /* [7.430.0 collaudo PO «migliora la dinamica di movimento del braccio che saluta e la postura,
+         sono aggobbati e tristi»] DUE CAUSE MISURATE SUL RIPRODOTTO: (1) la clip idle in PAUSA congela
+         anche i fotogrammi di TRASFERIMENTO DI PESO — spalle avanti, testa bassa: l'«aggobbato triste»
+         dello screenshot; (2) il saluto era un OFFSET CIECO dalla posa congelata (base.z-1.95): a
+         seconda del fotogramma la mano finiva IN FRONTE (il facepalm dello screenshot) invece che in
+         alto. Ora: la POSTURA si raddrizza in assoluto dopo il mixer (colonna/collo/testa scalati verso
+         l'eretto — il mixer in pausa riscrive la stessa posa a ogni frame, quindi niente accumulo), e il
+         braccio del saluto va a un BERSAGLIO CANONICO (blend base→alzato su x e z, gomito che si
+         distende) con l'ondeggio sull'avambraccio: un saluto ai tifosi, non un grattacapo. */
       for(let i=0;i<men.length;i++){const _m=men[i];if(!_m._wv)continue;
         const _aB=_m._wv.aR,_fB=_m._wv.fR;
         if(_aB&&!_aB._base419)_aB._base419={x:_aB.rotation.x,y:_aB.rotation.y,z:_aB.rotation.z};
         if(_fB&&!_fB._base419)_fB._base419={x:_fB.rotation.x,y:_fB.rotation.y,z:_fB.rotation.z};
+        if(_m._wv.ps)for(const _pb of _m._wv.ps){if(!_pb._base419)_pb._base419={x:_pb.rotation.x,y:_pb.rotation.y,z:_pb.rotation.z};
+          _pb.rotation.set(_pb._base419.x*0.35,_pb._base419.y,_pb._base419.z*0.6);}
         if(called&&i===pi){_m._wvT=(_m._wvT||0)+dt;const _s=Math.min(1,_m._wvT*2.4);
-          if(_aB)_aB.rotation.set(_aB._base419.x,_aB._base419.y,_aB._base419.z-1.95*_s);
-          if(_fB)_fB.rotation.set(_fB._base419.x+Math.sin(el*5.2)*0.3*_s,_fB._base419.y,_fB._base419.z-0.35*_s);}
+          const _ov=(typeof window!=="undefined"&&window.__CPM_WVSET)||null;/* sweep test-only degli euler (collaudo posa) */
+          if(_aB&&typeof window!=="undefined"&&!window.__CPM_WVDBG)window.__CPM_WVDBG={base:{x:_aB._base419.x,y:_aB._base419.y,z:_aB._base419.z},fore:_fB?{x:_fB._base419.x,y:_fB._base419.y,z:_fB._base419.z}:null};
+          if(_aB){if(_ov)_aB.rotation.set(_ov.x,_aB._base419.y,_ov.z);
+            else _aB.rotation.set(_aB._base419.x*(1-_s)+(-2.45)*_s,_aB._base419.y,_aB._base419.z*(1-_s)+(-0.25)*_s);}/* [7.430.0] sweep misurato: il rig alza su X (base 0,79=giu', -2,6=verticale) — l'offset su Z del 7.419 portava la mano in fronte */
+          if(_fB){if(_ov)_fB.rotation.set(_ov.fx!=null?_ov.fx:_fB._base419.x,_fB._base419.y,_ov.fz!=null?_ov.fz:_fB._base419.z);
+            else _fB.rotation.set(_fB._base419.x*(1-_s*0.6)+Math.sin(el*5.2)*0.35*_s,_fB._base419.y,_fB._base419.z*(1-_s*0.85));}}/* gomito quasi disteso: il residuo del -0,57 di base piegava la mano sopra la testa */
         else{_m._wvT=0;
           if(_aB)_aB.rotation.set(_aB._base419.x,_aB._base419.y,_aB._base419.z);
           if(_fB)_fB.rotation.set(_fB._base419.x,_fB._base419.y,_fB._base419.z);}}
@@ -22026,7 +22051,7 @@ function ParataBus3D({club,euroWin,avatarId=0,heroNum=10}){
         /* [7.424.0 collaudo PO «braccio bionico»] posa ASSOLUTA base+offset (vedi Serata): con la
            clip in pausa l'offset additivo si accumulava e il braccio girava come un'elica */
         if(m._wv){const s=0.55+0.45*ph;const _aB=m._wv.aR,_fB=m._wv.fR;
-          if(_aB){if(!_aB._base419)_aB._base419={x:_aB.rotation.x,y:_aB.rotation.y,z:_aB.rotation.z};_aB.rotation.set(_aB._base419.x,_aB._base419.y,_aB._base419.z-1.9*Math.max(0,s));}
+          if(_aB){if(!_aB._base419)_aB._base419={x:_aB.rotation.x,y:_aB.rotation.y,z:_aB.rotation.z};const _k430=Math.max(0,s);_aB.rotation.set(_aB._base419.x*(1-_k430)+(-2.35)*_k430,_aB._base419.y,_aB._base419.z*(1-_k430)+(-0.3)*_k430);}/* [7.430.0] stesso sweep della Serata: si alza su X, non su Z */
           if(_fB){if(!_fB._base419)_fB._base419={x:_fB.rotation.x,y:_fB.rotation.y,z:_fB.rotation.z};_fB.rotation.set(_fB._base419.x+Math.sin(el2*5+i)*0.3*Math.max(0,s),_fB._base419.y,_fB._base419.z);}}
         else if(m._waveArm){m._waveArm.rotation.x=-2.4-0.35*ph;}});
       if(cup._spin429)cup._spin429.rotation.y+=dt*1.1;else cup.rotation.y+=dt*1.4;/* [7.429.0] gira il trofeo, non il piedistallo */
@@ -27681,12 +27706,25 @@ const getThisWeekMatchday=()=>{
       const _stag=(mg+rg)>=6;
       const _mt=p.totalGoals||0,_rt=(R.totalGoals!=null)?R.totalGoals:rg;
       const avanti=_stag?(mg>rg):(_mt>_rt);
+      /* [7.430.0 collaudo PO «non c'e' partita, fai in modo che sia piu' divertente!» (696 a 268 e il
+         rivale dice «mi tocca rincorrere»)] LA BATTUTA SI CALIBRA SUL DISTACCO. «Mi tocca rincorrere»
+         regge quando i numeri sono vicini; quando il divario e' una voragine suona finto — e la
+         conferenza stampa vera in quel caso fa RIDERE: il rivale si arrende con autoironia (o infierisce,
+         se la voragine e' sua). Soglia: il piu' grande supera il piu' piccolo di 1,8 volte + 30 gol. */
+      const _far430=Math.max(_mt,_rt)>=Math.min(_mt,_rt)*1.8+30;
+      const _fi430=Math.abs(hashStr((R.name||"r")+"|rt|"+sn))%2;
+      const _dFar=avanti
+        ?[`Campionato appena cominciato e gli chiedono di te. «In carriera è a ${_mt} gol, io a ${_rt}. Rincorrerlo? Servirebbe una seconda carriera, e pure fortunata. Gli ho chiesto se me ne presta qualcuno: dice di no.» La sala ride, lui un po' meno.`,
+          `In conferenza tirano fuori i numeri: ${_mt} a ${_rt}. Alza le mani: «Ho smesso di contarli, porta bene a lui e malissimo a me. Però a padel lo distruggo, e questo nei vostri articoli non lo scrivete mai.»`][_fi430]
+        :[`Gli chiedono se ti teme. «${_rt} a ${_mt}, con tutto il rispetto: temo di più il traffico dell'ora di punta.» Il giorno dopo la frase è ovunque — e tu la stampi in bacheca come benzina.`,
+          `In conferenza sorride largo: «${_rt} a ${_mt}. Non è una sfida, è beneficenza. Scherzo, eh — ma neanche tanto.» Ti arriva il ritaglio da tre chat diverse.`][_fi430];
       out.push({k:"rivalTalk",e:"🎙️",t:`${R.name} parla di te`,
         d:_stag
           ?(avanti?`Gli chiedono di te in conferenza e non si nasconde: «Fa una stagione da ${mg} gol, è davanti a me e lo merita. Ma è lunga, e io non mi sono mai accontentato.» Il messaggio è arrivato.`
             :`In conferenza gli chiedono chi sia il migliore. Risponde con un mezzo sorriso: «Quest'anno i numeri dicono ${rg} a ${mg}. Poi ognuno racconti la stagione come preferisce.»`)
-          :(avanti?`Campionato appena cominciato e in conferenza gli chiedono già di te. «In carriera è a ${_mt} gol, io a ${_rt}: mi tocca rincorrere. Ma le classifiche si fanno a maggio.»`
-            :`Campionato appena cominciato e in conferenza gli chiedono già di te. Sorride: «In carriera siamo ${_rt} a ${_mt}. Poi certo, si riparte tutti da zero — o quasi.»`),
+          :(_far430?_dFar
+            :(avanti?`Campionato appena cominciato e in conferenza gli chiedono già di te. «In carriera è a ${_mt} gol, io a ${_rt}: mi tocca rincorrere. Ma le classifiche si fanno a maggio.»`
+            :`Campionato appena cominciato e in conferenza gli chiedono già di te. Sorride: «In carriera siamo ${_rt} a ${_mt}. Poi certo, si riparte tutti da zero — o quasi.»`)),
         fx:(q)=>({morale:clamp((q.morale||70)+(avanti?2:-1),0,100)})});
     }
     /* — un ex compagno del club dove giocavi: nome VERO dalla rosa di quel club — */
@@ -27713,9 +27751,26 @@ const getThisWeekMatchday=()=>{
         (n,c)=>`Ti chiama ${n}: al ${c} lo hanno messo fuori rosa e non sa a chi chiederlo. «Se senti qualcuno che cerca uno come me, fai il mio nome». Dici di sì, e speri di poterlo mantenere.`,
         (n,c)=>`${n} ti becca al telefono mentre sale in macchina. Nessuna nostalgia: «Ti ho visto sabato. Parti mezzo passo in ritardo sul secondo palo». Vorresti mandarlo a quel paese — ma ha ragione, e lo sai.`,
         (n,c)=>`Squilla ${n}. Al ${c} hanno buttato giù la vecchia tribuna e lui ha fatto la foto per te. «Volevo che lo sapessi da me». Restate zitti qualche secondo, e va bene così.`,
-      ];const _exi=Math.abs(hashStr((h.clubId||"x")+"|exm|"+sn+"|"+(nm||"")))%_EXM.length;
-        out.push({k:"exMate",e:"📞",t:`Ti chiama ${nm}`,d:_EXM[_exi](nm,h.club),
-        fx:(q)=>({morale:clamp((q.morale||70)+(_exi===3?1:3),0,100)})});}
+      ];
+      /* [7.430.0 collaudo PO «sono passati anni ed anni dal Lipsia, poco contestualizzato. deve essere
+         piu' divertente»] LA TELEFONATA SA QUANTI ANNI SONO PASSATI. Le cinque voci del 7.307 parlano
+         tutte al presente («qui non e' piu' come quando c'eri tu») — sensato a due stagioni dall'addio,
+         stonato a dieci: l'ex compagno di allora ha smesso, e la nostalgia e' diventata un'altra cosa.
+         Da 6 stagioni in su parla il pool dei VETERANI: ha appeso le scarpe, allena i Pulcini, ti ha
+         preso al fantacalcio, e' ingrassato ma «il mancino e' un violino» — la distanza diventa la
+         battuta, non un errore di continuita'. */
+      const _ya430=Math.max(0,sn-(h.season||sn));
+      const _EXV=[
+        (n,c,y)=>`${n}, dal ${c} — ${y} stagioni fa, un'altra vita. Ha smesso: allena i Pulcini del quartiere. «Ho detto ai bambini che i tuoi gol li inventavo io in allenamento. Non mi crede nessuno. Mandami un video in cui lo confermi, ti pago in lasagne di mia suocera».`,
+        (n,c,y)=>`Vocale di ${n}: «Lo sai che al ${c} c'e' ancora il tuo armadietto? ${y} stagioni e nessuno lo tocca. Il magazziniere dice che e' un santuario, io dico che e' pigrizia. Comunque dentro c'e' ancora il tuo phon: lo vendo all'asta o me lo tengo?»`,
+        (n,c,y)=>`${n} ti chiama per farti gli auguri — con due mesi di ritardo. «Meglio tardi che mai: ai tempi del ${c} arrivavo in ritardo pure ai raduni, almeno sono rimasto coerente». Mezz'ora dopo state ancora ridendo dei ritiri di ${y} stagioni fa.`,
+        (n,c,y)=>`È ${n}: ti ha preso all'asta del fantacalcio aziendale. «${y} stagioni che non ci vediamo e mi fido ancora solo di te. Ti ho pagato piu' del mio stipendio: non farmi fare figuracce coi colleghi, capitano». Chiudi la chiamata che stai ancora sorridendo.`,
+        (n,c,y)=>`${n}, voce piu' rotonda di come la ricordavi: «Dal ${c} sono passati ${y} anni e otto chili, ma il mancino e' rimasto un violino. Al torneo dei veterani li lascio tutti sul posto. Vieni a vedermi giocare, per una volta tu in tribuna e io in campo».`,
+      ];
+      const _pool430=(_ya430>=6)?_EXV:_EXM;
+      const _exi=Math.abs(hashStr((h.clubId||"x")+"|exm|"+sn+"|"+(nm||"")))%_pool430.length;
+        out.push({k:"exMate",e:"📞",t:`Ti chiama ${nm}`,d:_pool430[_exi](nm,h.club,_ya430),
+        fx:(q)=>({morale:clamp((q.morale||70)+((_pool430===_EXM&&_exi===3)?1:3),0,100)})});}
     }
     /* — il club dove sei cresciuto vive la SUA stagione (classifica vera, se è nella tua lega) — */
     if(hs.length&&seen.indexOf("exClub")<0){
@@ -28949,6 +29004,7 @@ const getThisWeekMatchday=()=>{
         value:Math.max(0.5,(p.value||0.8)+(ef.value||0)),
         ...(ef.bank!=null?{bankBalance:Math.max(0,Math.round((p.bankBalance||0)+ef.bank))}:{}),// [5.91.0 BIL-9] i bivi muovono i SOLDI veri (economia 3.2)
         ...(choice.flag==="investment"?{investmentPending:true}:{}),/* [5.98.0 EC-5] la rendita promessa ora ESISTE */
+        ...(ef.transferListed===true?{transferListed:true}:{}),/* [7.430.0] «voglio muovermi ora» produce il FATTO: in lista, ed e' il flag che il mercato legge davvero */
         ...(ef.chem!=null?{teamChemistry:clamp((p.teamChemistry||60)+ef.chem,0,100)}:{}),
       };
       // Sprint 69: apply archetype bond_bonus on milestone
