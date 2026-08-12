@@ -4555,7 +4555,8 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="7.424.0"; // [7.424.0 direttiva PO «la parata del pullman migliorala e consolidala» + collaudo «braccio bionico che ruota in maniera impazzita»]: SECONDA STESURA DELLA PARATA, piu' un fix di posa che vale anche per la Serata. (1) CONSOLIDATA: il bus non viaggia piu' nel mondo — il loop da 80u tagliava la scena ogni ~19s con uno scatto visibile dei palazzi; ora il bus resta in scena e IL MONDO GLI SCORRE INCONTRO con periodo modulare 96 (palazzi/lampioni/bandiere/folla ripetono il pattern ogni 96 unita': il wrap e' invisibile PER COSTRUZIONE, la corsa e' infinita). (2) SCENOGRAFIA: REGIA A TRE INQUADRATURE che si alternano con blend smoothstep (tre-quarti da telegiornale con la scritta CAMPIONI sulla fiancata · laterale dalla folla con la squadra che saluta da sopra · ALTA DA DIETRO con il viale che si apre, fumogeni e ali di folla — la cartolina), FUMOGENI nei colori del club dalle ali, BANDIERE che sventolano sui pali, lampioni accesi, scritta CAMPIONI/CAMPIONI D'EUROPA in CanvasTexture coi colori sociali, ruote che girano, sospensioni che respirano, coppa coi MANICI (tori) su piedistallo. Tre iterazioni a schermo anche qui (la laterale era tutta fiancata). (3) IL BRACCIO BIONICO (collaudo PO con screenshot dalla Serata): con la clip idle in PAUSA il mixer NON riscrive le ossa a ogni frame, quindi l'offset additivo del 7.419 si ACCUMULAVA — il braccio del chiamato girava come un'elica. Ora la posa e' ASSOLUTA: base dell'osso campionata una volta, ogni frame si scrive base+offset — per quanto giri il tick, il braccio sta alzato a salutare e basta. Corretti ENTRAMBI i siti (Serata e Parata). Guardiani: parata-test verde sui due bracci (campione/settimo), presentazione-stadio verde.
+const GAME_VERSION="7.425.0"; // [7.425.0 EVOLUTIVA CELEBRAZIONI, prima consegna — OGNI COPPA HA LA SUA CERIMONIA]: la premiazione non e' piu' quattro beat fissi uguali per tutto: e' uno SCRIPT DI BEAT PER COMPETIZIONE, seedato per stagione. Vocabolario: burst (esplosione al fischio) · hug (l'ABBRACCIO: i compagni convergono sull'eroe, qualcuno in ginocchio) · coach (IL MISTER — mesh nuova, abito scuro — arriva con calma e abbraccia; altrove applaude a bordo scena) · lap (giro di campo) · curva (sotto i tifosi, ola) · present (la consegna al podio) · lift (il sollevamento) · fest (collettiva a ruoli). SCRIPT: coppa = burst>hug>present>lift>fest (formale, 9 momenti della spec PO mappati); SCUDETTO = completa con giro e curva (festa di popolo, coriandoli del club); PROMOZIONE (kind nuovo «promo» sul trigger 7.5.4) = burst>hug>coach>curva>fest — emotiva, SENZA coppa (il premio e' la categoria), lunga sotto la curva; INTERNAZIONALE = la massima (8 beat, notte d'oro 7.422); bigwin = breve. VARIETA': durate jitterate ±25% dal seed, il mister puo' arrivare prima o dopo l'abbraccio, 3 varianti di camera — dopo qualche stagione non si prevede ogni secondo. COMPAGNI A RUOLI seedati (salta/abbraccia/ginocchio/corre/applaude): mai cloni sincronizzati. TROFEI: coppa classica coi manici (esistente), PIATTO d'oro con corona per lo scudetto, coppa GRANDE dalle orecchie larghe per l'internazionale. REGIA PER BEAT: primi piani sull'emozione (burst/coach a 5,5u), medie (hug/lap), larghi su squadra e curva — i bersagli li scrive lo script e il liscio kp/kl esistente li rende morbidi per costruzione. DURATA DI FASE legata allo script (il timer fisso 14s tagliava la coppa prima del sollevamento). GUARDIANO NUOVO cerimonie-test (npm run cerimonie): script diversi fra loro (rosso incorporato: cerimonia unica per tutto = fail), promo senza podio ma con mister+curva, coppa con consegna+sollevamento, mister sempre presente, zero pageerror. Regressioni: celebration/setpiece-celebration verdi. VERIFICA A SCHERMO: coppa alzata a due mani coi coriandoli bianco/oro, primo piano di scudetto con piatto e folla. Restano per la seconda passata (dichiarati): pose GLB dedicate per abbraccio/ginocchio (ora procedurali sulle braccia), il piatto meglio ancorato alle mani nel present, pubblico con bandiere/telefoni.
+//  [nota 7.424.0] [7.424.0 direttiva PO «la parata del pullman migliorala e consolidala» + collaudo «braccio bionico che ruota in maniera impazzita»]: SECONDA STESURA DELLA PARATA, piu' un fix di posa che vale anche per la Serata. (1) CONSOLIDATA: il bus non viaggia piu' nel mondo — il loop da 80u tagliava la scena ogni ~19s con uno scatto visibile dei palazzi; ora il bus resta in scena e IL MONDO GLI SCORRE INCONTRO con periodo modulare 96 (palazzi/lampioni/bandiere/folla ripetono il pattern ogni 96 unita': il wrap e' invisibile PER COSTRUZIONE, la corsa e' infinita). (2) SCENOGRAFIA: REGIA A TRE INQUADRATURE che si alternano con blend smoothstep (tre-quarti da telegiornale con la scritta CAMPIONI sulla fiancata · laterale dalla folla con la squadra che saluta da sopra · ALTA DA DIETRO con il viale che si apre, fumogeni e ali di folla — la cartolina), FUMOGENI nei colori del club dalle ali, BANDIERE che sventolano sui pali, lampioni accesi, scritta CAMPIONI/CAMPIONI D'EUROPA in CanvasTexture coi colori sociali, ruote che girano, sospensioni che respirano, coppa coi MANICI (tori) su piedistallo. Tre iterazioni a schermo anche qui (la laterale era tutta fiancata). (3) IL BRACCIO BIONICO (collaudo PO con screenshot dalla Serata): con la clip idle in PAUSA il mixer NON riscrive le ossa a ogni frame, quindi l'offset additivo del 7.419 si ACCUMULAVA — il braccio del chiamato girava come un'elica. Ora la posa e' ASSOLUTA: base dell'osso campionata una volta, ogni frame si scrive base+offset — per quanto giri il tick, il braccio sta alzato a salutare e basta. Corretti ENTRAMBI i siti (Serata e Parata). Guardiani: parata-test verde sui due bracci (campione/settimo), presentazione-stadio verde.
 //  [nota 7.423.0] [7.423.0 evolutiva PO, seconda tappa — LA PARATA DEL PULLMAN SCOPERTO]: su SCUDETTO o COPPA EUROPEA, prima del resoconto di Fine Stagione la citta' fa festa — scena 3D dedicata sul modello della Serata 7.292: la via di notte coi palazzi a finestre accese, DUE ALI DI FOLLA nei colori del club che saltellano, il PULLMAN SCOPERTO nei colori sociali che avanza nel viale con la SQUADRA SUL TETTO a salutare (GLB-ON: cloni veri con posa ferma + saluto additivo, pattern 7.419; GLB-OFF: omini low-poly con braccio animato), la COPPA d'oro su piedistallo a prua, coriandoli nei colori del club (ORO se Champions). Camera tre-quarti frontale «da telegiornale» — QUATTRO iterazioni a schermo per trovarla: la prima inquadrava la fiancata, la seconda era DENTRO un palazzo (cortina edilizia spostata oltre x27), la terza tagliava la folla. Stato locale (niente campi di salvataggio), «Continua» chiude verso il resoconto. GUARDIANO NUOVO parata-test (npm run parata), due carriere VERE portate a Fine Stagione con gli handler autentici: (A) da campione la parata si apre (scena montata, 6 uomini, titolo) e si chiude sul resoconto; (B) da SETTIMO non appare MAI — la prova del rosso e' incorporata: se sfilasse per tutti, non celebrerebbe nessuno. Sonda __CPM_PARATA (test-only).
 //  [nota 7.422.0] [7.422.0 evolutiva PO «cerimonia 3D di premiazione diversa in base alla competizione, molto scenografiche» — PRIMA TAPPA: LA FESTA HA LA FIRMA DELLA COPPA]: `ceremony.kind` esisteva dal 7.2 (league/cup/euro/int/bigwin) e il renderer lo IGNORAVA — stessa cerimonia per scudetto, coppa e Champions. Ora ogni competizione ha la sua firma, sulla macchina a 4 beat esistente (deterministica nei beat, random solo su coriandoli/fuochi): SCUDETTO = coriandoli nei COLORI DEL CLUB alternati al bianco (la citta' in festa) e giro di campo pieno; COPPA NAZIONALE = cerimonia FORMALE — il giro si accorcia (T2 7,0→5,8 · T3 10,2→8,2), il podio arriva prima e dura di piu', fuochi bianco/oro; CHAMPIONS = LA NOTTE D'ORO — coriandoli dorati, fuochi oro a cadenza quasi doppia (×0,55), bagliore dei burst piu' intenso (3,2→4,2); NAZIONALE = azzurro. VERIFICA PERCETTIVA GLB-ON (CH38) via __CPM_FORCE_CEREMONY: screenshot scudetto vs Champions — coriandoli granata a bandiera contro pioggia d'oro, firma visibile. SECONDA TAPPA IN CANTIERE (prossima release): la PARATA DEL PULLMAN SCOPERTO con tifosi e squadra in festa dopo scudetto/coppa europea — scena 3D dedicata sul modello della Serata di Presentazione.
 //  [nota 7.421.0] [7.421.0 collaudo PO «il presidente dice cose non realistiche, al Real Madrid non ci sono coppe europee?» — LA SERATA DELLA CHAMPIONS AVEVA DUE VOCI FUORI PARTE]: (1) IL PRESIDENTE: la riga «in questa bacheca una coppa europea non c'era mai stata» e' scritta dal punto di vista del club piccolo, ma il filtro faceva passare le righe GENERICHE anche per una corazzata (p 88) e l'hash la sceglieva una volta su due — con la variante da big («l'Europa era l'unica cosa che ci mancava per dire di essere tornati davvero») gia' pronta accanto. Regola nuova nel selettore: LA VARIANTE SPECIFICA BATTE LA GENERICA — se nel pool esiste una riga scritta per il prestigio del club, le generiche si fanno da parte. (2) IL MISTER, nello STESSO screenshot: «Stagione discreta... prossima stagione puntiamo piu' in alto» dopo una CHAMPIONS VINTA — la sua classificazione non aveva proprio la voce «euro» (champion/promoted/relegated/good/survival) e il trionfo europeo senza scudetto cadeva su «good». Aggiunta la voce alla classificazione e due battute dedicate nel pool. Due voci della stessa serata che non si erano mai parlate: il presidente celebrava, il mister sminuiva. IN CANTIERE (evolutiva PO appena ricevuta): CERIMONIE DI PREMIAZIONE 3D per competizione, molto scenografiche, con scena del PULLMAN SCOPERTO e festa coi tifosi dopo scudetto/coppa europea — prossima release dedicata.
@@ -14527,7 +14528,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
           //   Curva Sud (x=+) con il trofeo alzato, i compagni al seguito · (B3) SOTTO LA CURVA: raduno + salti verso
           //   i tifosi, il pubblico risponde a ondate · (B4) PODIO a centrocampo: l'eroe sale, alza il trofeo,
           //   apice di coriandoli e fuochi. Solo visivo, deterministico nel percorso (random solo su coriandoli/fuochi).
-          if(ceremonyT<0){ceremonyT=0;trophyGrp.visible=!(P.ceremony&&P.ceremony.light);/* [7.42.0] big-win: festa SENZA coppa */_cerHx0=hero.position.x;_cerHz0=hero.position.z;}
+          if(ceremonyT<0){ceremonyT=0;trophyGrp.visible=!(P.ceremony&&(P.ceremony.light||P.ceremony.kind==="promo"));/* [7.425.0] la promozione festeggia SENZA coppa: il premio e' la categoria *//* [7.42.0] big-win: festa SENZA coppa */_cerHx0=hero.position.x;_cerHz0=hero.position.z;}
           ceremonyT+=aDt;const _ct=ceremonyT;
           /* [7.422.0 evolutiva PO «cerimonia 3D diversa in base alla competizione, molto scenografica»]
              LA FESTA HA LA FIRMA DELLA COPPA. `ceremony.kind` esisteva dal 7.2 e il renderer lo
@@ -14543,14 +14544,87 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
           // compagni di casa (outfield, non portiere, non eroe)
           const _cel=[];sr.current.players.forEach((pp,ii)=>{const src=(P.allPlayers||[])[ii];if(pp.mesh&&pp.mesh!==hero&&src&&src.team==="home"&&!src.gk)_cel.push(pp.mesh);});
           const _cSgn=(propsRef.current.heroStandHome===false)?-1:1;sr.current._cerSgn=_cSgn;/* [7.278.0 collaudo PO «il festeggiamento del trofeo deve avvenire sotto la curva dei propri tifosi»] La Curva Sud (x=+) ospita i tifosi della squadra di CASA REALE (lato-tribuna, lezione 7.52.2): in trasferta i tuoi stanno nella curva opposta, e il giro di campo andava sotto quella sbagliata. */
-          const _NC=Math.max(1,_cel.length),CURVA_X=_cSgn*(AWAY_GOAL_X-6),T1=2.5,T2=_ck422==="cup"?5.8:7.0,T3=_ck422==="cup"?8.2:10.2;/* [7.422.0] coppa: il giro si accorcia, il PODIO arriva prima e dura di piu' — e' la cerimonia formale */
+          const _NC=Math.max(1,_cel.length),CURVA_X=_cSgn*(AWAY_GOAL_X-6);
+          /* [7.425.0 EVOLUTIVA CELEBRAZIONI — direttiva PO «ogni grande traguardo deve essere un
+             momento memorabile: una Coppa deve sembrare una Coppa, uno Scudetto uno Scudetto, una
+             promozione una promozione»] LA CERIMONIA E' UNO SCRIPT DI BEAT PER COMPETIZIONE, seedato
+             per stagione (varianti di ordine/durata: dopo qualche stagione non si prevede ogni
+             secondo). Vocabolario dei beat — burst (esplosione al fischio), hug (l'abbraccio: i
+             compagni CONVERGONO sull'eroe, qualcuno in ginocchio), coach (il MISTER arriva con calma
+             e abbraccia), lap (giro di campo col trofeo), curva (sotto i propri tifosi, ola), present
+             (la consegna al podio), lift (il sollevamento), fest (celebrazione collettiva a ruoli).
+             I compagni hanno RUOLI seedati (saltatore/abbracciatore/inginocchiato/corridore/
+             applauditore): mai cloni sincronizzati. Gli attuatori sono quelli esistenti (animOne,
+             pose procedurali, trofeo alle mani vere 7.24.2, coriandoli/fuochi firmati 7.422). */
+          if(!sr.current._cer425||sr.current._cer425.k!==(P.ceremony.name||"")+(P.ceremony.kind||"")){
+            const _seed=Math.abs(hashStr((P.ceremony.name||"t")+"|"+(propsRef.current.season||1)+"|"+_ck422))>>>0;
+            const _r425=(n)=>{let x=Math.sin((_seed%9973+n)*127.1)*43758.5453;return x-Math.floor(x);};
+            const _mk=(k,d)=>({k,d:d*(0.9+_r425(k.length*7+d*13)*0.25)});
+            let _bs;
+            if(_ck422==="cup")_bs=[_mk("burst",2.2),_mk("hug",2.6),_mk("present",3.0),_mk("lift",3.4),_mk("fest",3.2)];
+            else if(_ck422==="promo")_bs=[_mk("burst",2.8),_mk("hug",3.2),_mk("coach",2.6),_mk("curva",4.2),_mk("fest",3.6)];
+            else if(_ck422==="int")_bs=[_mk("burst",2.4),_mk("hug",2.4),_mk("coach",2.2),_mk("lap",4.2),_mk("curva",2.8),_mk("present",2.8),_mk("lift",3.8),_mk("fest",3.0)];
+            else if(_ck422==="bigwin")_bs=[_mk("burst",2.4),_mk("hug",2.8),_mk("fest",3.0)];
+            else _bs=[_mk("burst",2.4),_mk("hug",2.6),_mk("lap",4.0),_mk("curva",3.0),_mk("present",2.6),_mk("lift",3.6),_mk("fest",3.0)];/* league: la festa di popolo, completa */
+            if(_r425(3)<0.5&&_bs.length>2&&_bs[1].k==="hug"&&_bs[2].k==="coach"){const _t=_bs[1];_bs[1]=_bs[2];_bs[2]=_t;}/* variante: il mister puo' arrivare prima dell'abbraccio */
+            const _roles=[];for(let ri=0;ri<24;ri++)_roles.push(["salta","abbraccia","ginocchio","corre","applaude"][(_seed>>ri%16)%5===undefined?0:Math.floor(_r425(ri*3)*5)%5]);
+            sr.current._cer425={k:(P.ceremony.name||"")+(P.ceremony.kind||""),beats:_bs,roles:_roles,camv:Math.floor(_r425(11)*3)};
+            /* il TROFEO della competizione: la coppa classica resta; per lo scudetto un PIATTO d'oro
+               con corona d'alloro, per l'internazionale la coppa GRANDE dalle orecchie larghe; la
+               promozione festeggia SENZA coppa (il premio e' la categoria) */
+            try{if(trophyGrp._extra425){trophyGrp.remove(trophyGrp._extra425);}
+              const _ex=new THREE.Group();trophyGrp._extra425=_ex;trophyGrp.add(_ex);
+              trophyGrp.children.forEach(ch=>{if(ch!==_ex)ch.visible=true;});trophyGrp.scale.setScalar(0.62);
+              if(_ck422==="league"){trophyGrp.children.forEach(ch=>{if(ch!==_ex)ch.visible=false;});
+                const _pl=new THREE.Mesh(new THREE.CylinderGeometry(0.55,0.55,0.07,24),_goldMat);_pl.rotation.x=Math.PI/2;_pl.position.y=1.0;_ex.add(_pl);
+                const _rim=new THREE.Mesh(new THREE.TorusGeometry(0.55,0.05,10,26),_goldMat);_rim.position.y=1.0;_ex.add(_rim);
+                const _hub=new THREE.Mesh(new THREE.SphereGeometry(0.16,12,9),_goldMat);_hub.position.set(0,1.0,0.06);_ex.add(_hub);}
+              else if(_ck422==="int"){trophyGrp.scale.setScalar(0.8);
+                const _earL=new THREE.Mesh(new THREE.TorusGeometry(0.3,0.06,10,18,Math.PI),_goldMat);_earL.position.set(-0.55,1.05,0);_earL.rotation.z=Math.PI/2;_ex.add(_earL);
+                const _earR=new THREE.Mesh(new THREE.TorusGeometry(0.3,0.06,10,18,Math.PI),_goldMat);_earR.position.set(0.55,1.05,0);_earR.rotation.z=-Math.PI/2;_ex.add(_earR);}
+            }catch(_e425){}
+            /* il MISTER: costruito pigro alla prima cerimonia — abito scuro, corporatura civile */
+            if(!sr.current._cerCoachGrp){try{const _cg=new THREE.Group();
+              const _suit=new THREE.MeshLambertMaterial({color:0x1f2733});
+              const _to=new THREE.Mesh(new THREE.BoxGeometry(0.8,1.1,0.45),_suit);_to.position.y=1.3;_cg.add(_to);
+              const _hd=new THREE.Mesh(new THREE.SphereGeometry(0.27,12,9),new THREE.MeshLambertMaterial({color:0xd8ab8a}));_hd.position.y=2.12;_cg.add(_hd);
+              const _lg=new THREE.Mesh(new THREE.BoxGeometry(0.7,0.95,0.4),new THREE.MeshLambertMaterial({color:0x141a24}));_lg.position.y=0.48;_cg.add(_lg);
+              const _mkArm=(sx)=>{const a=new THREE.Mesh(new THREE.BoxGeometry(0.2,0.9,0.2),_suit);a.geometry.translate(0,-0.45,0);a.position.set(sx,1.8,0);_cg.add(a);return a;};
+              _cg._aL=_mkArm(-0.55);_cg._aR=_mkArm(0.55);_cg.visible=false;scene.add(_cg);sr.current._cerCoachGrp=_cg;}catch(_e){}}
+            if(sr.current._cerCoachGrp){sr.current._cerCoachGrp.visible=true;sr.current._cerCoachGrp.position.set(_cerHx0-_cSgn*14,0,_cerHz0+6);}
+            if(typeof window!=="undefined"&&(_CPM_TEST||_SIT_TEST)){try{window.__CPM_CER425={kind:_ck422,beats:_bs.map(b=>b.k),coach:!!sr.current._cerCoachGrp};}catch(_e){}}
+          }
+          const _SC=sr.current._cer425;let _acc=0,_bi425=_SC.beats.length-1,_bp=1;
+          for(let i=0;i<_SC.beats.length;i++){if(_ct<_acc+_SC.beats[i].d){_bi425=i;_bp=(_ct-_acc)/_SC.beats[i].d;break;}_acc+=_SC.beats[i].d;}
+          const _bk=_SC.beats[_bi425].k;
           let _htx=hero.position.x,_htz=hero.position.z,_armsUp=true,_onPodium=false;
-          if(_ct<T1){_htx=_cerHx0;_htz=_cerHz0;}// B1 esultanza sul posto
-          else if(_ct<T2){const _p=(_ct-T1)/(T2-T1);_htx=_cerHx0+(CURVA_X-_cerHx0)*_p;_htz=_cerHz0*(1-_p)+Math.sin(_p*Math.PI)*(_cerHz0>=0?9:-9);_armsUp=false;}// B2 giro di campo (arco morbido)
-          else if(_ct<T3){_htx=CURVA_X;_htz=0;if(crowdOhT<0&&Math.sin(_ct*3)>0.9)crowdOhT=0;}// B3 sotto la curva
-          else{_htx=0;_htz=0;_onPodium=true;podiumGrp.visible=true;}// B4 podio a centrocampo
+          if(_bk==="burst"||_bk==="hug"||_bk==="coach"){_htx=_cerHx0;_htz=_cerHz0;}
+          else if(_bk==="lap"){_htx=_cerHx0+(CURVA_X-_cerHx0)*_bp;_htz=_cerHz0*(1-_bp)+Math.sin(_bp*Math.PI)*(_cerHz0>=0?9:-9);_armsUp=false;}
+          else if(_bk==="curva"){_htx=CURVA_X;_htz=0;if(crowdOhT<0&&Math.sin(_ct*3)>0.9)crowdOhT=0;}
+          else if(_bk==="present"){_htx=0;_htz=0;podiumGrp.visible=true;}
+          else if(_bk==="lift"){_htx=0;_htz=0;_onPodium=true;podiumGrp.visible=true;}
+          else{_htx=(_ck422==="promo"?CURVA_X*0.7:0);_htz=0;}/* fest: la promozione resta coi tifosi */
           animOne(hero,_htx,_htz,aDt,ak,_htx,_htz);// muove l'eroe (gambe animate quando cammina)
-          const _hop=(_ct>=T1&&_ct<T2)?0:Math.abs(Math.sin(_ct*(_onPodium?4:3.4)))*0.22;
+          /* il MISTER: nel beat coach cammina verso l'eroe e lo abbraccia; altrove applaude a bordo scena */
+          if(sr.current._cerCoachGrp){const _co=sr.current._cerCoachGrp;
+            const _cto=(_bk==="coach")?{x:hero.position.x-_cSgn*1.3,z:hero.position.z}:(_bk==="lift"||_bk==="present")?{x:-4*_cSgn,z:4}:{x:hero.position.x-_cSgn*6,z:hero.position.z+5};
+            _co.position.x+=(_cto.x-_co.position.x)*Math.min(1,aDt*1.4);_co.position.z+=(_cto.z-_co.position.z)*Math.min(1,aDt*1.4);
+            _co.rotation.y=Math.atan2(hero.position.x-_co.position.x,hero.position.z-_co.position.z);
+            if(_bk==="coach"){_co._aL.rotation.x=-1.4;_co._aR.rotation.x=-1.4;_co._aL.rotation.z=0.35;_co._aR.rotation.z=-0.35;}/* abbraccio */
+            else if(_bk==="lift"||_bk==="fest"){const _cl=Math.sin(_ct*7)>0?0.5:0.9;_co._aL.rotation.x=-_cl;_co._aR.rotation.x=-_cl;_co._aL.rotation.z=0;_co._aR.rotation.z=0;}/* applauso */
+            else{_co._aL.rotation.x=-0.3;_co._aR.rotation.x=-0.3;_co._aL.rotation.z=0;_co._aR.rotation.z=0;}}
+          /* la REGIA per beat: primo piano sull'emozione, media sui personaggi, largo su squadra e curva */
+          {const _hx3=hero.position.x,_hz3=hero.position.z,_cv=_SC.camv;
+           let _shot;
+           if(_bk==="burst"||_bk==="coach")_shot={x:_hx3-_cSgn*(5.5+_cv),y:2.5,z:_hz3+3.5,lx:_hx3,ly:1.6,lz:_hz3};
+           else if(_bk==="hug")_shot={x:_hx3-_cSgn*8,y:3.6+_cv*0.4,z:_hz3+6,lx:_hx3,ly:1.4,lz:_hz3};
+           else if(_bk==="lap")_shot={x:_hx3-_cSgn*11,y:5,z:_hz3+8,lx:_hx3,ly:1.5,lz:_hz3};
+           else if(_bk==="curva")_shot={x:_hx3-_cSgn*20,y:8.5,z:_hz3+(_cv-1)*4,lx:_hx3+_cSgn*8,ly:4,lz:0};
+           else if(_bk==="present")_shot={x:-_cSgn*10,y:3.2,z:8,lx:0,ly:2.0,lz:0};
+           else if(_bk==="lift")_shot={x:-_cSgn*(9+_bp*6),y:3.4+_bp*3,z:6+_bp*4,lx:0,ly:2.4,lz:0};
+           else _shot={x:_hx3-_cSgn*16,y:7,z:_hz3+10,lx:_hx3,ly:2,lz:_hz3};
+           sr.current._cerCam=_shot;}
+          const _hop=(_bk==="lap")?0:Math.abs(Math.sin(_ct*(_onPodium?4:3.4)))*0.22;
           if(_onPodium)hero.position.y=1.05+_hop; else hero.position.y=Math.max(0,_hop);
           if(_armsUp){hero._aL.rotation.x=-2.5;hero._aR.rotation.x=-2.5;hero._aL.rotation.z=-0.35;hero._aR.rotation.z=0.35;}
           else{hero._aR.rotation.x=-2.6;hero._aR.rotation.z=0.35;hero._aL.rotation.x=-0.2;hero._aL.rotation.z=0;}// cammina col trofeo alzato (destra) — braccia PROCEDURALI (fallback GLB off)
@@ -14571,13 +14645,24 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
           if(!_thSet)trophyGrp.position.set(hero.position.x+(_armsUp?0:0.22),hero.position.y+1.75+_liftU*0.22,hero.position.z+(_armsUp?0.12:0.08));
           trophyGrp.rotation.y+=aDt*1.3;
           _goldMat.emissiveIntensity=0.4+Math.sin(now*0.006)*0.28;
-          // COMPAGNI: al seguito dietro l'eroe (B1/B2) → fila sotto la curva (B3) → arco attorno al podio (B4)
-          _cel.forEach((m,ci)=>{const _off=(ci/_NC-0.5);let _mx,_mz;
-            if(_ct<T2){_mx=hero.position.x-_cSgn*(6+Math.abs(_off)*4);_mz=hero.position.z+_off*16;}
-            else if(_ct<T3){_mx=CURVA_X-_cSgn*(2+Math.abs(_off)*3);_mz=_off*24;}
-            else{const _a2=(ci/_NC)*Math.PI*2;_mx=Math.cos(_a2)*6.5;_mz=Math.sin(_a2)*7.5;}
+          /* COMPAGNI A RUOLI (seedati): la stessa scena, ventidue reazioni — mai cloni sincronizzati.
+             Nel beat HUG convergono sull'eroe (gli abbracciatori addosso, gli inginocchiati a terra,
+             i corridori arrivano da lontano); nel LAP seguono; in CURVA fila sotto i tifosi; in
+             PRESENT/LIFT arco attorno al podio; in FEST ognuno fa il suo. */
+          _cel.forEach((m,ci)=>{const _off=(ci/_NC-0.5);const _role=_SC.roles[ci%_SC.roles.length];let _mx,_mz;
+            if(_bk==="burst"){_mx=_cerHx0-_cSgn*(4+Math.abs(_off)*5)+Math.sin(ci*2.7)*2;_mz=_cerHz0+_off*18;}
+            else if(_bk==="hug"||_bk==="coach"){const _rr=(_role==="abbraccia")?1.4:(_role==="ginocchio")?2.2:(_role==="corre")?(3.5+(1-_bp)*10):3.0;const _a2=(ci/_NC)*Math.PI*2+0.4;_mx=hero.position.x+Math.cos(_a2)*_rr;_mz=hero.position.z+Math.sin(_a2)*_rr;}
+            else if(_bk==="lap"){_mx=hero.position.x-_cSgn*(6+Math.abs(_off)*4);_mz=hero.position.z+_off*16;}
+            else if(_bk==="curva"){_mx=CURVA_X-_cSgn*(2+Math.abs(_off)*3);_mz=_off*24;}
+            else if(_bk==="present"||_bk==="lift"){const _a2=(ci/_NC)*Math.PI*2;_mx=Math.cos(_a2)*6.5;_mz=Math.sin(_a2)*7.5;}
+            else{const _a2=(ci/_NC)*Math.PI*2;_mx=hero.position.x+Math.cos(_a2)*(5+(ci%3)*2.5);_mz=hero.position.z+Math.sin(_a2)*(6+(ci%2)*3);}
             animOne(m,_mx,_mz,aDt,ak,_mx,_mz);
-            const _cj=(_ct>=T2)?0.34:0.22;m._aL.rotation.x=-2.0;m._aR.rotation.x=-2.0;m._aL.rotation.z=-0.3;m._aR.rotation.z=0.3;m.position.y=Math.abs(Math.sin(_ct*4+ci*1.1))*_cj;});
+            /* la POSA del ruolo: braccia/salto/ginocchio diversi per uomo, fasi sfalsate */
+            const _ph=_ct*(3.4+(ci%5)*0.35)+ci*1.1;
+            if(_role==="ginocchio"&&(_bk==="hug"||_bk==="burst")){m.position.y=-0.35;if(m._lR)m._lR.rotation.x=1.5;m._aL.rotation.x=-1.1;m._aR.rotation.x=-1.1;m._aL.rotation.z=0;m._aR.rotation.z=0;}
+            else if(_role==="applaude"&&_bk!=="curva"){m.position.y=Math.abs(Math.sin(_ph))*0.08;const _cl=Math.sin(_ct*7+ci)>0?0.5:0.95;m._aL.rotation.x=-_cl;m._aR.rotation.x=-_cl;m._aL.rotation.z=0.15;m._aR.rotation.z=-0.15;if(m._lR)m._lR.rotation.x=0;}
+            else if(_role==="abbraccia"&&(_bk==="hug"||_bk==="coach")){m.position.y=0;m._aL.rotation.x=-1.5;m._aR.rotation.x=-1.5;m._aL.rotation.z=0.4;m._aR.rotation.z=-0.4;if(m._lR)m._lR.rotation.x=0;m.rotation.y=Math.atan2(hero.position.x-m.position.x,hero.position.z-m.position.z);}
+            else{const _cj=(_bk==="curva")?0.34:0.22;m._aL.rotation.x=-2.0;m._aR.rotation.x=-2.0;m._aL.rotation.z=-0.3;m._aR.rotation.z=0.3;m.position.y=Math.abs(Math.sin(_ph))*_cj;if(m._lR)m._lR.rotation.x=0;}});
           // coriandoli continui multicolore su tutto il campo
           if(!confActive||confMat.opacity<0.4){for(let i=0;i<CONF_N;i++){confPos[i*3]=(Math.random()-0.5)*62;confPos[i*3+1]=8+Math.random()*9;confPos[i*3+2]=(Math.random()-0.5)*38;confVel[i*3]=(Math.random()-0.5)*4;confVel[i*3+1]=-1-Math.random()*3;confVel[i*3+2]=(Math.random()-0.5)*4;}confGeo.attributes.position.needsUpdate=true;confMat.opacity=0.95;confActive=true;
             /* [7.422.0] il COLORE dei coriandoli e' la firma: scudetto = i colori del club che si
@@ -14601,7 +14686,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
             fwMat.opacity=1;fwActive=true;fwT=0;
             goalBurstLight.position.set(_fx,_fy,_fz);goalBurstLight.intensity=_ck422==="euro"?4.2:3.2;}
           if(goalBurstLight.intensity>0.05)goalBurstLight.intensity*=(1-aDt*1.8);
-        } else if(ceremonyT>=0){ceremonyT=-1;trophyGrp.visible=false;trophyGrp.position.y=-50;podiumGrp.visible=false;sr.current._cerLift=0;}
+        } else if(ceremonyT>=0){ceremonyT=-1;trophyGrp.visible=false;trophyGrp.position.y=-50;podiumGrp.visible=false;sr.current._cerLift=0;sr.current._cer425=null;sr.current._cerCam=null;if(sr.current._cerCoachGrp)sr.current._cerCoachGrp.visible=false;/* [7.425.0] script, regia e mister non sopravvivono alla cerimonia */}
         // [7.31.0 direttiva PO] CALCI DI RIGORE 3D dal dischetto (turni KO pareggiati) — scena guidata dal
         //   prop shootout.kick {key,side,dir,high,scored,wide}: porta AWAY (x=+46), spot a ~11u; run-up del
         //   kicker (eroe sui tuoi, un avversario vero sui loro), volo palla in rete/parata/fuori, tuffo del
@@ -15094,6 +15179,11 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
             tPx=clamp(tPx+ux/ul*hi6,-112,44);tPz=clamp(tPz+uz/ul*hi6,-74,74);}
         }
       }
+      /* [7.425.0 evolutiva celebrazioni] LA REGIA DELLA CERIMONIA: durante la premiazione i bersagli
+         di camera li scrive lo SCRIPT dei beat (primi piani per le emozioni, medie per i personaggi,
+         larghi per squadra e pubblico) — il liscio kp/kl a valle resta lo stesso, quindi i movimenti
+         sono morbidi per costruzione, mai tagli secchi. */
+      if(P.ceremony&&sr.current._cerCam){const _cc=sr.current._cerCam;tPx=_cc.x;tPy=Math.max(2.1,_cc.y);tPz=_cc.z;tLx=_cc.lx;tLy=_cc.ly;tLz=_cc.lz;}
       if(sr.current._cutSnap||sr.current._sceneCut){sr.current._cutSnap=false;sr.current._sceneCut=false;try{camera.position.set(tPx,tPy,tPz);camLook.set(tLx,tLy,tLz);}catch(_e){}}
       camera.position.x+=(tPx-camera.position.x)*kp;camera.position.y+=(tPy-camera.position.y)*kp;camera.position.z+=(tPz-camera.position.z)*kp;
       camLook.x+=(tLx-camLook.x)*kl;camLook.y+=(tLy-camLook.y)*kl;camLook.z+=(tLz-camLook.z)*kl;
@@ -17073,7 +17163,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     if(phase==="ceremony"){
       if(titleStakes&&!ceremony)setCeremony({name:titleStakes.name||"TITOLO",kind:titleStakes.kind||"cup"});
       if(ceremonyEndRef.current)clearTimeout(ceremonyEndRef.current);
-      ceremonyEndRef.current=setTimeout(()=>{setPhase("ended");},(ceremony&&ceremony.light)?9500:CEREMONY_DUR);/* [7.42.0] big-win LIGHT: si chiude sotto la curva, mai al podio (B4 parte a 10.2s) */
+      ceremonyEndRef.current=setTimeout(()=>{setPhase("ended");},(ceremony&&ceremony.light)?9500:(ceremony&&ceremony.kind==="int")?26500:(ceremony&&ceremony.kind==="cup")?17500:(ceremony&&ceremony.kind==="promo")?19500:23500);/* [7.425.0 evolutiva celebrazioni] LA DURATA SEGUE LO SCRIPT: il timer fisso (CEREMONY_DUR) tagliava lo script per competizione a meta' — la coppa non arrivava al sollevamento, lo scudetto mai alla festa. Le durate coprono la somma dei beat col loro jitter (±25%) piu' un margine: coppa ~15s, promo ~17s, scudetto ~20s, internazionale ~24s. */
       return()=>{if(ceremonyEndRef.current){clearTimeout(ceremonyEndRef.current);ceremonyEndRef.current=null;}};
     }
   },[phase]);
@@ -30642,7 +30732,7 @@ const getThisWeekMatchday=()=>{
               const _myAfter=myPts+3;
               const _aboveAfter=others.filter(o=>(o.pts||0)+3*rem>_myAfter).length;// club che possono ancora finire SOPRA dopo la vittoria
               const _aboveNow=others.filter(o=>(o.pts||0)+3*rem>myPts).length;   // …e prima della vittoria
-              if(_aboveAfter<=2&&_aboveNow>2)return{kind:"league",name:"Promozione in "+_promoPair[0]};// la vittoria porta i possibili-sopra da >2 a ≤2 → top 3 blindato
+              if(_aboveAfter<=2&&_aboveNow>2)return{kind:"promo",name:"Promozione in "+_promoPair[0]};/* [7.425.0 evolutiva celebrazioni] la promozione ha la SUA cerimonia (emotiva, niente podio): non e' una copia dello scudetto */// la vittoria porta i possibili-sopra da >2 a ≤2 → top 3 blindato
             }
           }
         }
