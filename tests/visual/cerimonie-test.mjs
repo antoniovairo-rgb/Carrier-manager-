@@ -80,6 +80,46 @@ const wg = [];
     } else wg.push('warp: beatsD assente nella probe');
   } else wg.push('warp: force cerimonia league fallita');
 }
+/* — sezione WARP sulla INT (collaudo PO da screenshot, finale di NAZIONALE: «mister vola/teletrasporto,
+   i giocatori sembra che si riscaldano, la coppa e' enorme, i compagni non festeggiano») —
+   PRE-FIX MISURATO GLB-ON: al beat hug l'eroe era SOLO a centrocampo (zero compagni entro 15u — la
+   nazionale arriva dalla lotteria dei rigori coi giocatori sparsi per il campo, e 2,4s di hug non
+   bastano ad arrivare), trofeo int a scala 0,8 (il piu' grosso di tutti). */
+{
+  const ok = await page.evaluate(() => window.__CPM_FORCE_CEREMONY && window.__CPM_FORCE_CEREMONY({ name: 'W int', kind: 'int' }));
+  if (ok) {
+    await page.waitForFunction(() => window.__CPM_CER425 && window.__CPM_CER425.beatsD, { timeout: 10000 }).catch(() => {});
+    const sc = await page.evaluate(() => window.__CPM_CER425 || null);
+    if (sc && sc.beatsD) {
+      const mid = (name) => { let a = 0; for (let i = 0; i < sc.beats.length; i++) { if (sc.beats[i] === name) return a + sc.beatsD[i] / 2; a += sc.beatsD[i]; } return null; };
+      const probeInt = () => page.evaluate(() => {
+        const T = window.__CPM3D; if (!T) return null;
+        const o = {};
+        /* compagni = rig giocatore (gruppo con _aL) visibili, non l'eroe: quanti entro 4,5u dall'eroe */
+        let near = 0, tot = 0;
+        T.scene.traverse(g => { if (g && g._aL && g !== T.hero && g.visible) { tot++; if (Math.hypot(g.position.x - T.hero.position.x, g.position.z - T.hero.position.z) < 6.5) near++; } });
+        o.matesNear = near; o.matesTot = tot;
+        let tro = null; T.scene.traverse(x => { if (x._extra425 !== undefined && !tro) tro = x; });
+        if (tro) o.troScale = +tro.scale.x.toFixed(2);
+        return o;
+      });
+      /* (11) probe SUBITO DOPO L'INIT (niente warp): l'invariante e' che la festa PARTE addosso
+         all'eroe — l'anello di staging (3,5-6u) e' un fatto d'apertura, misurabile anche a 4fps.
+         (A meta' beat il headless non regge: il burst disperde e la convergenza non fa in tempo —
+         e' un artefatto, non il difetto del PO.) */
+      const mInit = await probeInt();
+      const tLift = mid('lift');
+      await page.evaluate(t => { window.__CPM_CERT_SET = t; }, tLift); await sleep(2600);
+      const mLift2 = await probeInt();
+      if (!mInit || !mLift2) wg.push('warp int: probe cieca');
+      else {
+        console.log(`warp int: init compagni vicini ${mInit.matesNear}/${mInit.matesTot} (entro 6,5u) · trofeo scala ${mLift2.troScale}`);
+        if (mInit.matesTot >= 5 && mInit.matesNear < 6) wg.push(`(11) NAZIONALE: all'apertura della cerimonia i compagni non sono attorno all'eroe (${mInit.matesNear}/${mInit.matesTot} entro 6,5u) — la squadra «si riscalda» sparsa per il campo invece di festeggiare`);
+        if (mLift2.troScale != null && mLift2.troScale > 0.72) wg.push(`(12) NAZIONALE: la coppa e' fuori scala (${mLift2.troScale} — il PO la vede ENORME)`);
+      }
+    } else wg.push('warp int: beatsD assente');
+  } else wg.push('warp int: force fallita');
+}
 await b.close(); srv.close();
 const guasti = [];
 for (const [k, sc] of Object.entries(scripts)) {
