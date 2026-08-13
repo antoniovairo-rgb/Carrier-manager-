@@ -236,7 +236,60 @@ const conSidecar = async (rompi) => {
   }
 }
 
+/* ─────────── CASO J: L'ALTRA META' DELL'IDENTITA' — LA SEDE (CAL-03 / SM-03) ───────────
+   L'identita' di una gara e' AVVERSARIO + COMPETIZIONE + SEDE. Il caso H ha chiuso la competizione;
+   questo chiude la sede, sulla quale il difetto e' persino piu' frequente: il girone e' andata/ritorno
+   SPECULARE, quindi dopo OGNI gara di campionato giocata in casa la voce di ritorno contro lo stesso club
+   e' ancora da giocare — la prova non si consumava mai, e la rete (G) toglieva dal calendario proprio il
+   RITORNO, che veniva poi auto-simulato senza spiegazione. */
+{
+  const cal = [
+    { matchday: 3, week: 20, opponentId: AVV.id, opponentName: AVV.n, isHome: true, played: true, result: { hs: 2, as: 0 } }, // ANDATA giocata in casa
+    { matchday: 20, week: 25, opponentId: AVV.id, opponentName: AVV.n, isHome: false, played: false },                       // RITORNO in trasferta
+  ];
+  /* Il danno vive DENTRO la sessione, non attraverso un riavvio: al mount successivo il recovery consuma
+     comunque la prova da solo (la sua verifica di sede non trova candidati). La prova quindi si inietta a
+     runtime, com'e' subito dopo il fischio finale dell'andata, e si guarda cosa succede al RITORNO. */
+  const misura = async (rompi) => {
+    const save = mkSave(cal, { week: 25 });
+    const mr = mkSidecar(save.player, { oid: AVV.id, on: AVV.n, ih: true, context: 'career' });  // prova dell'ANDATA (in casa)
+    const page = await b.newPage({ viewport: { width: 412, height: 915 } });
+    await installCdnRoutes(page);
+    await page.addInitScript(cfg => {
+      window.__CPM_GLB = false;
+      if (cfg.rompi) window.__CPM_NO_P0_6 = 1;   // ripristina il confronto senza sede
+      localStorage.setItem('cpm-v3', JSON.stringify(cfg.sv));
+    }, { sv: save, rompi });
+    await page.goto(`http://localhost:${port}/CARRIER-MANAGER-AV.html?cpmtest=1`, { waitUntil: 'load', timeout: 40000 });
+    await page.waitForFunction(() => { const r = document.getElementById('root'); return r && r.children.length > 0; }, { timeout: 40000 });
+    await sleep(1500);
+    try { await page.getByText('CONTINUA', { exact: false }).first().click({ timeout: 8000 }); } catch (e) {}
+    await page.waitForFunction(() => !!window.__CPM_CAREER, { timeout: 20000 });
+    await sleep(3000);
+    const prima = await page.evaluate(() => window.__CPM_CAREER.thisWeekMd());
+    /* la prova appare (fischio finale dell'andata) e il gioco salva: e' il momento in cui _mrCleanup decide */
+    const dopo = await page.evaluate(m => { localStorage.setItem('cpm-pending-mr', JSON.stringify(m)); return window.__CPM_CAREER.thisWeekMd(); }, mr);
+    await page.evaluate(() => window.__CPM_CAREER.patch({ morale: 61 }));   // tocca il player → autosave → _mrCleanup
+    await sleep(3000);
+    const r = await page.evaluate(() => {
+      let andata = null; try { const p = JSON.parse(localStorage.getItem('cpm-v3')).player; const e = (p.calendar || []).find(x => x.matchday === 3); andata = e ? !!e.played : null; } catch (er) {}
+      return { sidecar: !!localStorage.getItem('cpm-pending-mr'), andata };
+    });
+    await page.close(); return { ...r, prima, md: dopo };
+  };
+  const rosso = await misura(true);
+  const verde = await misura(false);
+  console.log(`\nJ) andata in casa gia' giocata, RITORNO in trasferta da giocare (andata ancora committata: rosso ${rosso.andata} · verde ${verde.andata}):`);
+  console.log(`   senza filtro di sede (__CPM_NO_P0_6): prova ${rosso.sidecar ? 'ANCORA VIVA — difetto riprodotto ✓' : 'consumata'} · ritorno ${rosso.md ? 'md' + rosso.md.matchday : 'NON GIOCABILE (verrebbe auto-simulato)'}`);
+  console.log(`   col filtro di sede:                   prova ${verde.sidecar ? 'ancora viva ✗' : 'consumata ✓'} · ritorno ${verde.md ? 'md' + verde.md.matchday + ' ✓' : 'non giocabile ✗'}`);
+  if (rosso.andata !== true || verde.andata !== true) guasti.push('(J) l\'andata non risulta piu\' giocata: lo scenario non e\' quello previsto (sonda cieca)');
+  if (!rosso.prima || rosso.prima.matchday !== 20 || !verde.prima || verde.prima.matchday !== 20) guasti.push('(J) il ritorno non e\' proponibile nemmeno prima della prova: sonda cieca');
+  if (!rosso.sidecar) guasti.push('(J-ROSSO) senza filtro di sede la prova viene comunque consumata: il guardiano non dimostra di proteggere nulla');
+  if (verde.sidecar) guasti.push('(J) LA PROVA DELL\'ANDATA SOPRAVVIVE: _mrCleanup non confronta la sede, e la gara di ritorno la tiene viva per sempre');
+  if (!verde.md || verde.md.matchday !== 20) guasti.push(`(J) IL RITORNO NON E' GIOCABILE (${verde.md ? 'md' + verde.md.matchday : 'nessuna gara'}): la prova dell'andata lo sta togliendo dal calendario — verrebbe auto-simulato`);
+}
+
 await b.close(); srv.close();
 console.log(guasti.length ? `\n❌ FAIL — ${guasti.length}\n` + guasti.map(g => '  ✗ ' + g).join('\n')
-  : '\n✅ RECOVERY PER COMPETIZIONE OK (la Coppa si committa in Coppa · il campionato resta intatto · la prova muore quando serve · la rete (G) blocca solo la sua competizione)');
+  : '\n✅ RECOVERY PER COMPETIZIONE OK (la Coppa si committa in Coppa · il campionato resta intatto · la prova muore quando serve · competizione E sede fanno parte dell\'identita\' della gara)');
 process.exit(guasti.length ? 1 : 0);
