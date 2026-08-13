@@ -4712,7 +4712,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="7.454.0"; // [7.450.0 MESSA IN SICUREZZA · P0 #4 dell'audit forense — UN TOCCO DOPPIO APPLICAVA L'AZIONE DUE VOLTE]: nessuna guardia di rientranza sugli handler che cambiano lo stato; due tocchi ravvicinati passavano entrambi prima che React richiudesse il modal. MISURATO: doppio tap su «Conferma avanzamento» = DUE settimane in un colpo, economia applicata due volte (+60.000 invece di +30.000) e la partita della settimana auto-simulata senza poterla giocare; doppio tap su una scelta d'evento = effetti raddoppiati (fatica +8 invece di +4, popolarita' +10 invece di +5, fiducia -12 invece di -6). LA PROTEZIONE NON E' UN TIMEOUT: e' un lock legato al CICLO DI RENDER, che si arma quando l'azione parte e si rilascia da solo appena React ha completato un render — cioe' esattamente quando un secondo tocco non e' piu' un duplicato ma una nuova intenzione. Nessun blocco permanente possibile: il rilascio non dipende dalla riuscita dell'operazione (verificato: dopo il doppio tap la carriera prosegue col percorso reale). +contatore test-only delle applicazioni REALI: l'invariante «una intenzione = una applicazione» va misurato li', non sui valori — quale evento venga estratto e' casuale, il numero di applicazioni no. GUARDIANO double-tap-test, NEL GATE: prova del ROSSO (__CPM_NO_P0_4: Δ2 settimane, 2 applicazioni dell'evento) e i casi — click singolo invariato, doppio tap con una sola applicazione, gioco ancora usabile dopo, evento non raddoppiato.
+const GAME_VERSION="7.455.0"; // [7.450.0 MESSA IN SICUREZZA · P0 #4 dell'audit forense — UN TOCCO DOPPIO APPLICAVA L'AZIONE DUE VOLTE]: nessuna guardia di rientranza sugli handler che cambiano lo stato; due tocchi ravvicinati passavano entrambi prima che React richiudesse il modal. MISURATO: doppio tap su «Conferma avanzamento» = DUE settimane in un colpo, economia applicata due volte (+60.000 invece di +30.000) e la partita della settimana auto-simulata senza poterla giocare; doppio tap su una scelta d'evento = effetti raddoppiati (fatica +8 invece di +4, popolarita' +10 invece di +5, fiducia -12 invece di -6). LA PROTEZIONE NON E' UN TIMEOUT: e' un lock legato al CICLO DI RENDER, che si arma quando l'azione parte e si rilascia da solo appena React ha completato un render — cioe' esattamente quando un secondo tocco non e' piu' un duplicato ma una nuova intenzione. Nessun blocco permanente possibile: il rilascio non dipende dalla riuscita dell'operazione (verificato: dopo il doppio tap la carriera prosegue col percorso reale). +contatore test-only delle applicazioni REALI: l'invariante «una intenzione = una applicazione» va misurato li', non sui valori — quale evento venga estratto e' casuale, il numero di applicazioni no. GUARDIANO double-tap-test, NEL GATE: prova del ROSSO (__CPM_NO_P0_4: Δ2 settimane, 2 applicazioni dell'evento) e i casi — click singolo invariato, doppio tap con una sola applicazione, gioco ancora usabile dopo, evento non raddoppiato.
 // [nota 7.449.0] [7.449.0 MESSA IN SICUREZZA · P0 #3 dell'audit forense — IL RIFERIMENTO ALLA GARA APERTA SOPRAVVIVEVA ALL'USCITA]: `_playingMdRef` descrive la gara di CLUB aperta da startMatch, ma veniva azzerato SOLO da onMatchEnd: uscire dal pre-partita (onQuit) o essere respinti dai suoi return anticipati («non convocato», avversario non risolvibile) lo lasciava CARICO. E il consumo in onMatchEnd avveniva per QUALUNQUE fine partita, comprese quelle di Nazionale, che non passano da startMatch e non lo impostano mai. Catena: apro il pre-partita di campionato, torno indietro, gioco in Nazionale — e il commit registra come giocata una giornata di campionato mai disputata, che la bonifica chiude subito dopo. Stagione a 33 su 34 senza che nulla lo segnali. CICLO DI VITA RICOSTRUITO invece di un reset indiscriminato: il riferimento nasce all'apertura della gara, si INVALIDA su ogni percorso d'uscita dal pre-partita (onQuit e i due return anticipati) e si CONSUMA solo nei contesti di CLUB (career/cup/euro) — una gara di Nazionale non tocca piu' una giornata di campionato, ed e' la rete che copre anche le uscite non previste. +sonda test-only `__CPM_CAREER.mdRef()`: senza, il guardiano misurerebbe gli effetti e non la causa. GUARDIANO playing-mdref-test, NEL GATE: prova del ROSSO (__CPM_NO_P0_3: nel pre-partita il riferimento e' carico e resta carico dopo l'uscita) + i percorsi — uscita che invalida, calendario e presenze immutati dopo un'uscita, riapertura coerente con la gara vera, partita realmente giocata che si committa ancora.
 // [nota 7.448.0] [7.448.0 MESSA IN SICUREZZA · P0 #2 dell'audit forense — UN SALVATAGGIO PIU' VECCHIO POTEVA SOVRASCRIVERE IL PIU' RECENTE]: `storage.save` e' async e non aveva ne' coda ne' sequenza. Nel browser non si vede (localStorage e' sincrono) ma la build pubblicata su Play Store gira su `window.storage` = @capacitor/preferences, iniettato da tools/build-dist.mjs, dove la scrittura passa da un BRIDGE ASINCRONO: due salvataggi concorrenti potevano completare FUORI ORDINE, e `savedAt` veniva scritto ma mai riletto, quindi nulla se ne accorgeva. DIMOSTRATO a runtime con un bridge finto a latenza pilotata: stato A → parte l'autosave (bridge occupato) → stato B → l'app va in background → il flush salva B → il salvataggio di A completa DOPO e riscrive il disco con lo stato vecchio (memoria 2222, disco 1111). Su Android significa perdere una partita, una settimana, a volte una stagione — ed e' anche una spiegazione a monte della «partita gia' giocata», perche' un save che torna indietro riporta in calendario una gara gia' disputata. CURA MINIMA, nessuna infrastruttura nuova e formato del salvataggio IMMUTATO: una CODA per chiave (le scritture si susseguono nell'ordine in cui sono state chieste, mai sovrapposte) e uno SCARTO delle scritture gia' superate (se mentre A aspetta il turno e' arrivata B, A non viene scritta: il suo contenuto e' vecchio per definizione). GUARDIANO save-monotonic-test, NEL GATE: prova del ROSSO incorporata (__CPM_NO_P0_2 ripristina le scritture concorrenti → il disco torna a 1111) e sei scenari — vecchio-lento contro nuovo-veloce, tre scritture a latenza decrescente, salvataggio normale non bloccato, ramo browser invariato, ramo bridge nativo, riapertura dell'app che rilegge l'ultimo stato.
 // [nota 7.447.0] [7.447.0 MESSA IN SICUREZZA · P0 #1 dell'audit forense — IL RECUPERO DOPO UN RIAVVIO CONFONDEVA LE COMPETIZIONI]: e' la vera causa della «partita gia' giocata» che il PO segnala da nove collaudi. Il recovery del sidecar cercava la gara nel calendario per AVVERSARIO e SEDE, senza mai guardare la competizione; siccome l'avversario di Coppa viene sorteggiato DALLA STESSA LEGA e il turno R16 e' cablato «in casa», per costruzione esiste SEMPRE una voce di campionato in casa contro quel club. RIPRODOTTO: recuperando una gara di Coppa, la classifica di campionato passava da 17 a 18 partite e da 40 a 43 punti per una gara mai giocata, e la giornata di lega spariva marcata come giocata. Aggravante: le due ref che portano l'identita' della gara vivono nella SESSIONE e dopo il riavvio sono vuote — `matchTypeRef` torna al default "league" (l'unico writer "cup" e' startMatch, che dopo il reboot non passa mai) e `_playingMdRef` e' null, quindi anche il ramo di commit era quello di lega. DUE CURE MINIME: (1) i candidati si filtrano per COMPETIZIONE, derivata da `result.context` che era gia' nel sidecar dal 7.24.3 — nessun campo nuovo, e un sidecar senza contesto (scritto da una versione precedente) non viene filtrato ne' scartato, mantenendo il comportamento storico; (2) prima del dispatch si ricostruiscono `matchTypeRef` e `_playingMdRef` dalla voce ritrovata, cosi' il commit marca la voce giusta per NUMERO di giornata e registra quella giornata. GUARDIANO recovery-competition-test, NEL GATE: prova del ROSSO incorporata (interruttore __CPM_NO_P0_1 che ripristina la vecchia logica: la voce di lega torna a essere marcata, classifica 18) + casi A-G (coppa committata in coppa, campionato intatto a 17/40, turno di coppa avanzato, nessuna regressione sul recupero di lega). Gli assert leggono lo stato PERSISTITO, non la memoria.
@@ -5115,17 +5115,17 @@ const INTERVIEW_QS=[
   {tone:"umile",txt:"Amarezza. Il gol è niente senza la vittoria. Dobbiamo essere più coesi.",ef:{m:-1,p:2,t:6}},
 ]},
 // === SETTIMANALE / GENERALE ===
-{ctx:["weekly"],q:"Come stanno andando gli allenamenti questa settimana?",a:[
+{ctx:["weekly"],y:1,q:"Come stanno andando gli allenamenti questa settimana?",a:[
   {tone:"diplomatico",txt:"Molto bene. Il gruppo è motivato e il lavoro si vede sul campo.",ef:{m:3,p:2,t:5}},
   {tone:"diretto",txt:"Io mi sto allenando al massimo. Voglio essere pronto per la prossima gara.",ef:{m:5,p:3,t:-2}},
   {tone:"umile",txt:"Sempre con impegno. Non ho mai la sensazione di fare abbastanza.",ef:{m:2,p:2,t:7}},
 ]},
-{ctx:["weekly"],q:"Come descrive il suo rapporto con i tifosi di {club}?",a:[
+{ctx:["weekly"],y:1,q:"Come descrive il suo rapporto con i tifosi di {club}?",a:[
   {tone:"diplomatico",txt:"Straordinario. Il loro supporto è fondamentale. Li rispetto enormemente.",ef:{m:3,p:7,t:2}},
   {tone:"diretto",txt:"Ottimo quando gioco bene. E intendo continuare a giocare bene per loro.",ef:{m:5,p:6,t:-1}},
   {tone:"umile",txt:"Mi fanno sentire amato. Spero di non deluderli mai. Darò sempre il massimo.",ef:{m:3,p:8,t:3}},
 ]},
-{ctx:["weekly"],q:"Qual è il suo obiettivo personale per questa stagione?",a:[
+{ctx:["weekly"],y:1,q:"Qual è il suo obiettivo personale per questa stagione?",a:[
   {tone:"diplomatico",txt:"Aiutare la squadra a raggiungere i suoi obiettivi. Il collettivo prima di tutto.",ef:{m:4,p:4,t:7}},
   {tone:"diretto",txt:"Raggiungere i miei massimi statistici. Gol, assist, prestazioni. Voglio eccellere.",ef:{m:7,p:6,t:-4}},
   {tone:"umile",txt:"Migliorare rispetto alla scorsa stagione. Ogni anno devo fare un passo avanti.",ef:{m:3,p:4,t:7}},
@@ -5140,7 +5140,7 @@ const INTERVIEW_QS=[
   {tone:"diretto",txt:"La pressione mi piace. Mi dà energia. Sono fatto per i momenti importanti.",ef:{m:7,p:5,t:-3}},
   {tone:"umile",txt:"Non sempre è facile. Ma ho buone persone intorno a me che mi aiutano.",ef:{m:3,p:3,t:6}},
 ]},
-{ctx:["weekly"],q:"Chi è stato il suo idolo calcistico da bambino?",a:[
+{ctx:["weekly"],y:1,q:"Chi è stato il suo idolo calcistico da bambino?",a:[
   {tone:"diplomatico",txt:"Molti campioni mi hanno ispirato. Ma ogni giocatore deve trovare la propria strada.",ef:{m:4,p:5,t:3}},
   {tone:"diretto",txt:"Non avevo idoli. Volevo essere meglio di tutti. Me stesso è il mio unico modello.",ef:{m:6,p:4,t:-4}},
   {tone:"umile",txt:"Ho amato i grandi campioni del passato. Mi ricordano quanto strada c'è ancora da fare.",ef:{m:3,p:5,t:4}},
@@ -5150,7 +5150,7 @@ const INTERVIEW_QS=[
   {tone:"diretto",txt:"Sì, voglio la Nazionale. Ne ho le qualità. Serve solo continuità e visibilità.",ef:{m:7,p:6,t:-3}},
   {tone:"umile",txt:"Sarebbe un onore enorme. Non ci penso troppo: lavoro e vedo cosa arriva.",ef:{m:3,p:5,t:5}},
 ]},
-{ctx:["weekly"],q:"Come mantiene il fisico durante la stagione?",a:[
+{ctx:["weekly"],y:1,q:"Come mantiene il fisico durante la stagione?",a:[
   {tone:"diplomatico",txt:"Alimentazione, recupero e lavoro con lo staff medico. È un impegno quotidiano.",ef:{m:3,p:3,t:5}},
   {tone:"diretto",txt:"Sono disciplinato. Il corpo è il mio strumento. Lo curo meglio di qualsiasi cosa.",ef:{m:5,p:4,t:-2}},
   {tone:"umile",txt:"Cerco di ascoltare il corpo e seguire i consigli dello staff. Non sempre facile.",ef:{m:3,p:3,t:6}},
@@ -5160,12 +5160,12 @@ const INTERVIEW_QS=[
   {tone:"diretto",txt:"Le ho avute diverse. Ma la mia carriera è ancora in costruzione. Il meglio viene.",ef:{m:6,p:5,t:-2}},
   {tone:"umile",txt:"Non so. Forse quella in cui ho capito di poter giocare ad alto livello. È stata speciale.",ef:{m:4,p:5,t:5}},
 ]},
-{ctx:["weekly"],q:"Come si trova a {club}? Si trova bene ambientalmente?",a:[
+{ctx:["weekly"],y:1,q:"Come si trova a {club}? Si trova bene ambientalmente?",a:[
   {tone:"diplomatico",txt:"Benissimo. Il club è organizzato, i compagni fantastici. Mi sento a casa.",ef:{m:6,p:6,t:7}},
   {tone:"diretto",txt:"Bene. Mi hanno dato fiducia e io li sto ripagando con le prestazioni.",ef:{m:7,p:5,t:-1}},
   {tone:"umile",txt:"Molto bene. Ogni giorno imparo qualcosa di nuovo. Sono grato di essere qui.",ef:{m:5,p:6,t:7}},
 ]},
-{ctx:["weekly"],q:"Cosa fa per staccare mentalmente dal calcio?",a:[
+{ctx:["weekly"],y:1,q:"Cosa fa per staccare mentalmente dal calcio?",a:[
   {tone:"diplomatico",txt:"Famiglia, musica, qualche hobby. È importante ricaricarsi per dare il massimo.",ef:{m:5,p:4,t:3}},
   {tone:"diretto",txt:"Il calcio è la mia vita. Non sento il bisogno di staccare. È la mia passione.",ef:{m:6,p:4,t:-2}},
   {tone:"umile",txt:"Leggo, mi rilasso con la famiglia. Il cervello deve riposare come il corpo.",ef:{m:4,p:4,t:4}},
@@ -5175,7 +5175,7 @@ const INTERVIEW_QS=[
   {tone:"diretto",txt:"La Premier Division fisicamente, la Lega A tatticamente. Ma io posso giocare ovunque.",ef:{m:5,p:4,t:-2}},
   {tone:"umile",txt:"Tutti sono difficili ad alto livello. Non mi permetto di fare classifiche.",ef:{m:2,p:3,t:5}},
 ]},
-{ctx:["weekly"],q:"Come descrive il suo stile di gioco ai tifosi che non la conoscono?",a:[
+{ctx:["weekly"],y:1,q:"Come descrive il suo stile di gioco ai tifosi che non la conoscono?",a:[
   {tone:"diplomatico",txt:"Sono un giocatore di squadra che cerca di fare la differenza nei momenti che contano.",ef:{m:4,p:5,t:5}},
   {tone:"diretto",txt:"Tecnica, velocità, gol. Chi mi guarda una volta capisce cosa sono.",ef:{m:7,p:6,t:-3}},
   {tone:"umile",txt:"Un lavoratore. Non il più fantasioso, ma cerco di essere utile in ogni situazione.",ef:{m:3,p:4,t:7}},
@@ -5185,12 +5185,12 @@ const INTERVIEW_QS=[
   {tone:"diretto",txt:"La stampa spesso non capisce il calcio. Guardo i risultati, non i giornali.",ef:{m:5,p:-2,t:-3}},
   {tone:"umile",txt:"Alcune critiche erano giuste. Me le porto in campo per migliorare.",ef:{m:1,p:2,t:6}},
 ]},
-{ctx:["weekly"],q:"Come sta il gruppo dopo il periodo recente?",a:[
+{ctx:["weekly"],y:1,q:"Come sta il gruppo dopo il periodo recente?",a:[
   {tone:"diplomatico",txt:"Bene. Siamo uniti e lavoriamo con determinazione. Il morale c'è.",ef:{m:5,p:4,t:6}},
   {tone:"diretto",txt:"Qualcuno è giù ma io sono carico. Provo a trascinare anche gli altri.",ef:{m:6,p:4,t:-2}},
   {tone:"umile",txt:"Ci sono alti e bassi normali. L'importante è non mollare mai come gruppo.",ef:{m:4,p:3,t:6}},
 ]},
-{ctx:["weekly"],q:"Hai un rituale pre-partita? Ce lo racconti.",a:[
+{ctx:["weekly"],y:1,q:"Hai un rituale pre-partita? Ce lo racconti.",a:[
   {tone:"diplomatico",txt:"Preferisco tenerlo privato. Ogni rituale è personale. Mi aiuta a concentrarmi.",ef:{m:3,p:4,t:3}},
   {tone:"diretto",txt:"Mi carico con la musica e visualizzo i momenti chiave. Arrivo sempre pronto.",ef:{m:5,p:5,t:-1}},
   {tone:"umile",txt:"Prego e penso alla famiglia. Mi dà la pace giusta per entrare in campo.",ef:{m:4,p:5,t:4}},
@@ -5215,7 +5215,7 @@ const INTERVIEW_QS=[
   {tone:"diretto",txt:"Le aspettative alte sono il mio pane. Sono un giocatore che ama le grandi sfide.",ef:{m:7,p:6,t:-3}},
   {tone:"umile",txt:"Cerco di non pensarci troppo. Me ne faccio una responsabilità sana, non un peso.",ef:{m:3,p:5,t:5}},
 ]},
-{ctx:["weekly"],q:"Cosa significa per lei indossare questa maglia?",a:[
+{ctx:["weekly"],y:1,q:"Cosa significa per lei indossare questa maglia?",a:[
   {tone:"diplomatico",txt:"È un onore e una responsabilità. Rappresento il club e i suoi tifosi ogni giorno.",ef:{m:5,p:7,t:6}},
   {tone:"diretto",txt:"Molto. E voglio che questa maglia significhi qualcosa di ancora più grande grazie a me.",ef:{m:7,p:7,t:-2}},
   {tone:"umile",txt:"È un privilegio. Non lo do mai per scontato. Ogni partita potrebbe essere l'ultima.",ef:{m:5,p:7,t:6}},
@@ -5230,17 +5230,17 @@ const INTERVIEW_QS=[
   {tone:"diretto",txt:"In parte. Il salto è enorme. Ma avevo le qualità per farcela e ce l'ho fatta.",ef:{m:6,p:4,t:-2}},
   {tone:"umile",txt:"Mi ha dato le basi. Poi ogni giorno imparo qualcosa di nuovo dai professionisti.",ef:{m:3,p:4,t:7}},
 ]},
-{ctx:["weekly"],q:"Come definirebbe la sua stagione finora in una parola?",a:[
+{ctx:["weekly"],y:1,q:"Come definirebbe la sua stagione finora in una parola?",a:[
   {tone:"diplomatico",txt:"'Crescita'. Ogni settimana mi sento più parte di questo gruppo fantastico.",ef:{m:5,p:4,t:6}},
   {tone:"diretto",txt:"'Dominante'. Quando sono in campo faccio la differenza. I numeri lo provano.",ef:{m:9,p:7,t:-5}},
   {tone:"umile",txt:"'Lavoro'. Non mi accontento mai. C'è sempre un aspetto da migliorare.",ef:{m:3,p:3,t:9}},
 ]},
-{ctx:["weekly"],q:"Qual è la più grande qualità del vostro allenatore?",a:[
+{ctx:["weekly"],y:1,q:"Qual è la più grande qualità del vostro allenatore?",a:[
   {tone:"diplomatico",txt:"Sa motivare il gruppo e ha una chiarezza tattica invidiabile. Lo rispettiamo molto.",ef:{m:4,p:3,t:10}},
   {tone:"diretto",txt:"Capisce i giocatori forti e li valorizza. Con me ha fatto un ottimo lavoro.",ef:{m:6,p:4,t:2}},
   {tone:"umile",txt:"La sua pazienza con noi. Sa aspettare i risultati del suo lavoro. È un maestro.",ef:{m:3,p:3,t:10}},
 ]},
-{ctx:["weekly"],q:"C'è un compagno che l'ha sorpresa positivamente quest'anno?",a:[
+{ctx:["weekly"],y:1,q:"C'è un compagno che l'ha sorpresa positivamente quest'anno?",a:[
   {tone:"diplomatico",txt:"Diversi. Il livello della rosa è più alto di quello che si dice dall'esterno.",ef:{m:4,p:3,t:5}},
   {tone:"diretto",txt:"Qualcuno si è avvicinato al mio livello. È una bella competizione interna.",ef:{m:6,p:3,t:-4}},
   {tone:"umile",txt:"Sì. Ho imparato molto da alcuni compagni. Il calcio è scambio continuo.",ef:{m:3,p:3,t:6}},
@@ -5476,7 +5476,7 @@ const INTERVIEW_QS=[
   {tone:"umile",txt:"Forse sì. Ma nei momenti difficili si capisce il carattere. Non mi arrendo.",ef:{m:-1,p:2,t:7}},
 ]},
 // === WEEKLY - extra ===
-{ctx:["weekly"],q:"Preferisce giocare a casa o in trasferta?",a:[
+{ctx:["weekly"],y:1,q:"Preferisce giocare a casa o in trasferta?",a:[
   {tone:"diplomatico",txt:"A casa l'energia dei tifosi è speciale. Ma so vincere anche fuori. Dipende.",ef:{m:3,p:4,t:3}},
   {tone:"diretto",txt:"Mi esalto in trasferta. Il silenzio ostile mi motiva ancora di più.",ef:{m:6,p:4,t:-2}},
   {tone:"umile",txt:"Dove gioco, gioco al meglio. L'importante è essere utile in qualsiasi situazione.",ef:{m:3,p:3,t:5}},
@@ -5491,7 +5491,7 @@ const INTERVIEW_QS=[
   {tone:"diretto",txt:"Quanto sia diverso in realtà. Molti non reggono il salto. Io l'ho fatto.",ef:{m:6,p:4,t:-3}},
   {tone:"umile",txt:"La professionalità di tutti. Anche il più piccolo dettaglio conta enormemente.",ef:{m:3,p:3,t:7}},
 ]},
-{ctx:["weekly"],q:"Che musica ascolta per caricarsi prima delle partite?",a:[
+{ctx:["weekly"],y:1,q:"Che musica ascolta per caricarsi prima delle partite?",a:[
   {tone:"diplomatico",txt:"Dipende dall'umore. A volte ritmo, a volte calma. L'importante è entrare nel giusto stato.",ef:{m:4,p:5,t:3}},
   {tone:"diretto",txt:"Roba che pompa l'adrenalina. Entro in campo come una macchina da guerra.",ef:{m:6,p:5,t:-2}},
   {tone:"umile",txt:"Qualcosa che mi riporta alle origini. Mi ricorda perché amo questo sport.",ef:{m:4,p:5,t:4}},
@@ -5585,7 +5585,7 @@ const INTERVIEW_QS=[
   {tone:"diretto",txt:"Merito più spazio. I miei numeri lo dimostrano. Spero vengano notati prima o poi.",ef:{m:5,p:4,t:-4}},
   {tone:"umile",txt:"Non mi permetto di commentare. Il ct sa cosa fa. Resto concentrato sul club.",ef:{m:2,p:3,t:6}},
 ]},
-{ctx:["weekly"],q:"Qual è la vostra tattica favorita come squadra?",a:[
+{ctx:["weekly"],y:1,q:"Qual è la vostra tattica favorita come squadra?",a:[
   {tone:"diplomatico",txt:"Quella che il mister decide. Siamo flessibili e ci adattiamo all'avversario.",ef:{m:3,p:2,t:7}},
   {tone:"diretto",txt:"Giocare in avanti, pressare alto. Quando attacchiamo siamo devastanti.",ef:{m:6,p:4,t:-3}},
   {tone:"umile",txt:"Quella che massimizza le qualità di tutti. Non esiste una tattica perfetta.",ef:{m:3,p:3,t:6}},
@@ -5595,7 +5595,7 @@ const INTERVIEW_QS=[
   {tone:"diretto",txt:"Bene. Siamo due leader diversi ma complementari nello spogliatoio.",ef:{m:6,p:4,t:-2}},
   {tone:"umile",txt:"Con grande rispetto. Cerco di imparare da lui ogni giorno. È un esempio.",ef:{m:3,p:3,t:8}},
 ]},
-{ctx:["weekly"],q:"Qual è stata la vostra settimana di allenamento più dura questa stagione?",a:[
+{ctx:["weekly"],y:1,q:"Qual è stata la vostra settimana di allenamento più dura questa stagione?",a:[
   {tone:"diplomatico",txt:"Ce ne sono state diverse. Il mister alza sempre il livello per prepararci meglio.",ef:{m:3,p:2,t:6}},
   {tone:"diretto",txt:"Quella pre-stagione. Ma io amo i carichi pesanti. Mi forgia mentalmente.",ef:{m:5,p:3,t:-1}},
   {tone:"umile",txt:"Non saprei. Ogni settimana è dura. Cerco di dare il massimo in ogni seduta.",ef:{m:3,p:3,t:7}},
@@ -5605,27 +5605,27 @@ const INTERVIEW_QS=[
   {tone:"diretto",txt:"Il calcio è al primo posto. La vita privata si adatta. È la mia scelta.",ef:{m:6,p:3,t:-2}},
   {tone:"umile",txt:"Non è sempre facile. Ma ho persone accanto che mi aiutano a stare bene.",ef:{m:4,p:4,t:4}},
 ]},
-{ctx:["weekly"],q:"Guarda il calcio anche da tifoso o è solo lavoro per lei?",a:[
+{ctx:["weekly"],y:1,q:"Guarda il calcio anche da tifoso o è solo lavoro per lei?",a:[
   {tone:"diplomatico",txt:"Sono sempre un tifoso. Amo il calcio come lo amavo da bambino. Non cambia.",ef:{m:5,p:6,t:3}},
   {tone:"diretto",txt:"Guardo soprattutto per studiare gli avversari. Ma l'amore per il calcio c'è.",ef:{m:5,p:4,t:-1}},
   {tone:"umile",txt:"Quando posso mi siedo e guardo come un tifoso vero. Mi ricorda perché gioco.",ef:{m:4,p:6,t:4}},
 ]},
-{ctx:["weekly"],q:"C'è qualcosa che vorrebbe migliorare nel vostro gioco collettivo?",a:[
+{ctx:["weekly"],y:1,q:"C'è qualcosa che vorrebbe migliorare nel vostro gioco collettivo?",a:[
   {tone:"diplomatico",txt:"Sempre qualcosa. Il mister individua le aree e noi lavoriamo per migliorarle.",ef:{m:3,p:2,t:7}},
   {tone:"diretto",txt:"La concretezza sotto porta. Creiamo tanto ma convertiamo poco. Dobbiamo migliorare.",ef:{m:4,p:3,t:-2}},
   {tone:"umile",txt:"Molte cose. La perfezione non esiste nel calcio. Ogni giorno miglioriamo.",ef:{m:3,p:3,t:7}},
 ]},
-{ctx:["weekly"],q:"Chi è il compagno più importante per il suo gioco?",a:[
+{ctx:["weekly"],y:1,q:"Chi è il compagno più importante per il suo gioco?",a:[
   {tone:"diplomatico",txt:"Tutti lo sono a modo loro. Ogni ruolo del campo è fondamentale per il collettivo.",ef:{m:4,p:4,t:6}},
   {tone:"diretto",txt:"Quelli che capiscono i miei movimenti. Non tutti lo fanno ma ci sono.",ef:{m:6,p:3,t:-4}},
   {tone:"umile",txt:"Chi mi crea gli spazi. Ma è un lavoro collettivo. Non un solo compagno.",ef:{m:3,p:4,t:6}},
 ]},
-{ctx:["weekly"],q:"Parla spesso con il tecnico durante la settimana?",a:[
+{ctx:["weekly"],y:1,q:"Parla spesso con il tecnico durante la settimana?",a:[
   {tone:"diplomatico",txt:"Sì, c'è dialogo costante. È fondamentale per capire cosa si aspetta da me.",ef:{m:4,p:3,t:9}},
   {tone:"diretto",txt:"Quando serve. Non ho bisogno di conferme continue. So cosa devo fare.",ef:{m:6,p:3,t:-3}},
   {tone:"umile",txt:"Cerco di farlo il più possibile. Il suo feedback è prezioso per migliorare.",ef:{m:3,p:3,t:10}},
 ]},
-{ctx:["weekly"],q:"Cosa significa giocare davanti al proprio pubblico per lei?",a:[
+{ctx:["weekly"],y:1,q:"Cosa significa giocare davanti al proprio pubblico per lei?",a:[
   {tone:"diplomatico",txt:"Un'emozione speciale ogni volta. L'energia del pubblico cambia tutto.",ef:{m:5,p:8,t:4}},
   {tone:"diretto",txt:"Mi responsabilizza. Davanti a loro devo dare sempre di più. E lo faccio.",ef:{m:7,p:7,t:-1}},
   {tone:"umile",txt:"Mi emoziono ancora ogni volta. È un privilegio enorme. Non lo do per scontato.",ef:{m:5,p:8,t:4}},
@@ -5746,7 +5746,7 @@ const INTERVIEW_QS=[
   {tone:"diretto",txt:"Un po' sì. Ma si è battuto contro un avversario ostico. Non era semplice.",ef:{m:2,p:2,t:-2}},
   {tone:"umile",txt:"Completamente. Non era il risultato che volevamo. Avremmo dovuto fare di più.",ef:{m:-1,p:2,t:8}},
 ]},
-{ctx:["weekly"],q:"Qual è il consiglio più prezioso che le ha dato il suo allenatore?",a:[
+{ctx:["weekly"],y:1,q:"Qual è il consiglio più prezioso che le ha dato il suo allenatore?",a:[
   {tone:"diplomatico",txt:"Di non smettere mai di imparare, anche dai più giovani. Saggio.",ef:{m:4,p:4,t:8}},
   {tone:"diretto",txt:"Di credere in me stesso senza limiti. Ha visto qualcosa in me che valorizza.",ef:{m:7,p:5,t:2}},
   {tone:"umile",txt:"Di restare umile nei momenti di gloria. Non lo dimentico mai.",ef:{m:4,p:4,t:9}},
@@ -5766,7 +5766,7 @@ const INTERVIEW_QS=[
   {tone:"diretto",txt:"Non le guardo. Chi critica non capisce quanto sia difficile giocare ad alto livello.",ef:{m:4,p:-2,t:-3}},
   {tone:"umile",txt:"Alcune critiche fanno male ma sono utili. Mi ricordano che devo fare meglio.",ef:{m:1,p:1,t:5}},
 ]},
-{ctx:["weekly"],q:"Qual è la cosa che nessuno sa di lei come giocatore?",a:[
+{ctx:["weekly"],y:1,q:"Qual è la cosa che nessuno sa di lei come giocatore?",a:[
   {tone:"diplomatico",txt:"Quanto lavoro fuori dal campo. La gente vede i 90 minuti, non le ore dietro.",ef:{m:5,p:6,t:5}},
   {tone:"diretto",txt:"Quanto studio l'avversario prima di ogni partita. Sono molto più preparato di quanto sembri.",ef:{m:7,p:5,t:-2}},
   {tone:"umile",txt:"Quante volte mi sono sentito inadeguato. La facciata è solo una parte della storia.",ef:{m:4,p:6,t:5}},
@@ -5821,7 +5821,7 @@ const INTERVIEW_QS=[
   {tone:"diretto",txt:"Qualcuna sì. Non faccio nomi ma so dove voglio fare bella figura la prossima volta.",ef:{m:6,p:5,t:-3}},
   {tone:"umile",txt:"Non credo nei conti in sospeso. Ogni partita è nuova. Guardo avanti.",ef:{m:3,p:3,t:5}},
 ]},
-{ctx:["weekly"],q:"Quali aspetti della sua personalità la aiutano di più in campo?",a:[
+{ctx:["weekly"],y:1,q:"Quali aspetti della sua personalità la aiutano di più in campo?",a:[
   {tone:"diplomatico",txt:"La determinazione e la capacità di adattarmi alle situazioni. Non mi arrendo.",ef:{m:5,p:4,t:5}},
   {tone:"diretto",txt:"Il sangue freddo e la sicurezza nei miei mezzi. Non mi faccio mai intimorire.",ef:{m:8,p:5,t:-3}},
   {tone:"umile",txt:"La pazienza e la voglia di imparare. Non ho mai pensato di sapere già tutto.",ef:{m:4,p:4,t:7}},
@@ -5836,7 +5836,7 @@ const INTERVIEW_QS=[
   {tone:"diretto",txt:"In 10 non si può vincere contro certi avversari. Ma abbiamo dimostrato carattere.",ef:{m:3,p:3,t:-2}},
   {tone:"umile",txt:"Dobbiamo imparare a non metterci in situazioni così difficili. Disciplina.",ef:{m:0,p:2,t:6}},
 ]},
-{ctx:["weekly"],q:"Se potesse rinascere, sceglierebbe ancora il calcio?",a:[
+{ctx:["weekly"],y:1,q:"Se potesse rinascere, sceglierebbe ancora il calcio?",a:[
   {tone:"diplomatico",txt:"Senza dubbio. È la mia vita, la mia passione. Non riesco a immaginarmi altrove.",ef:{m:6,p:6,t:4}},
   {tone:"diretto",txt:"Sì, ma avrei iniziato prima. Il tempo è la risorsa più preziosa per un atleta.",ef:{m:7,p:5,t:-1}},
   {tone:"umile",txt:"Credo di sì. Ma farei alcune scelte diversamente. Il senno di poi è facile.",ef:{m:5,p:5,t:4}},
@@ -5866,7 +5866,7 @@ const INTERVIEW_QS=[
   {tone:"diretto",txt:"Sì, è la mia stagione migliore. E posso fare ancora meglio. La vetta è vicina.",ef:{m:11,p:10,t:-4}},
   {tone:"umile",txt:"Spero di sì. Ma ci sono ancora molte partite. Non mi fermo finché c'è da lavorare.",ef:{m:6,p:10,t:6}},
 ]},
-{ctx:["weekly"],q:"Qual è il ruolo del divertimento nel calcio ad alto livello?",a:[
+{ctx:["weekly"],y:1,q:"Qual è il ruolo del divertimento nel calcio ad alto livello?",a:[
   {tone:"diplomatico",txt:"Fondamentale. Se non ti diverti non esprimi il meglio. È la base di tutto.",ef:{m:5,p:5,t:4}},
   {tone:"diretto",txt:"Quando vinco mi diverto. La vittoria è il divertimento massimo per me.",ef:{m:7,p:5,t:-2}},
   {tone:"umile",txt:"Cerco di non perderlo mai. Quando il calcio smette di essere gioia, c'è qualcosa che non va.",ef:{m:5,p:5,t:5}},
@@ -5886,7 +5886,7 @@ const INTERVIEW_QS=[
   {tone:"diretto",txt:"Numeri, prestazioni e la conferma che sono tra i migliori. È tangibile.",ef:{m:10,p:8,t:-4}},
   {tone:"umile",txt:"L'umiltà di sapere che il meglio deve ancora venire. Non mi accontento.",ef:{m:5,p:6,t:8}},
 ]},
-{ctx:["weekly"],q:"Qual è la partita dei sogni che le piacerebbe giocare un giorno?",a:[
+{ctx:["weekly"],y:1,q:"Qual è la partita dei sogni che le piacerebbe giocare un giorno?",a:[
   {tone:"diplomatico",txt:"Qualsiasi finale di coppa importante. Il calcio ai massimi livelli, con la squadra.",ef:{m:5,p:6,t:4}},
   {tone:"diretto",txt:"Una finale europea. Da protagonista assoluto. Con gol decisivo. È il mio sogno.",ef:{m:9,p:8,t:-3}},
   {tone:"umile",txt:"Non mi pongo limiti ma neanche aspettative eccessive. Il prossimo match è già il sogno.",ef:{m:4,p:5,t:6}},
@@ -5958,7 +5958,18 @@ function pickInterviewByCtx(p,matchResult=null){
   //   dal risultato (LiveMatch → onMatchEnd.isHome); null nelle interviste settimanali (nessuna partita → le domande
   //   venue-specific hanno ctx post-gara e restano comunque escluse). La cond riceve ora anche l'info di contesto.
   const _venueInfo={isHome:(matchResult&&typeof matchResult.isHome==="boolean")?matchResult.isHome:null,matchResult};
-  const pool=INTERVIEW_QS.filter(q=>q.ctx.some(c=>ctx.has(c))&&(!q.cond||(function(){try{return q.cond(p,_venueInfo);}catch(e){return false;}})()));/* [6.97.0 collaudo PO «eviterei di parlare di Nazionale a un OVR basso in B — tutto deve avere una logica»] le domande possono dichiarare una cond di pertinenza */
+  /* [7.455.0 collaudo PO, quarta segnalazione «un po' presto e fuori luogo la domanda»] LA REGOLA E'
+     INVERTITA: non si elenca piu' cosa VIETARE a un ragazzo, si dichiara cosa ha SENSO chiedergli.
+     Filtrare domanda per domanda non ha funzionato due volte di fila — «voci di mercato» presa, «un
+     mentore nella carriera» sfuggita — perche' delle 65 domande settimanali la maggioranza da' per
+     scontato un passato professionistico («la partita piu' bella della sua CARRIERA finora», «cosa
+     l'ha sorpresa del calcio professionistico rispetto al giovanile», «il peso delle aspettative in un
+     GRANDE CLUB», «com'e' la vita del calciatore professionista»). Ogni setaccio nuovo ne lascia
+     passare una. Ora le domande adatte al settore giovanile portano `y:1` e a un u18 si servono SOLO
+     quelle: una domanda scritta domani e' esclusa PER DIFETTO finche' qualcuno non la dichiara adatta —
+     il caso non previsto cade dalla parte sicura. */
+  const _u18Q455=(p.proStatus||"u18")!=="pro";
+  const pool=INTERVIEW_QS.filter(q=>q.ctx.some(c=>ctx.has(c))&&(!_u18Q455||q.y===1)&&(!q.cond||(function(){try{return q.cond(p,_venueInfo);}catch(e){return false;}})()));/* [6.97.0 collaudo PO «eviterei di parlare di Nazionale a un OVR basso in B — tutto deve avere una logica»] le domande possono dichiarare una cond di pertinenza */
   const fresh=pool.filter(q=>!_recentInterviewQs.includes(q.q));
   const chosen=(fresh.length?fresh:pool.length?pool:INTERVIEW_QS)[Math.floor(Math.random()*((fresh.length||pool.length)||INTERVIEW_QS.length))];
   _recentInterviewQs.push(chosen.q);
@@ -9908,7 +9919,7 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
      la geometria vera della gradinata. Qui la esportiamo: posizione/profondità/altezza/anelli delle due curve →
      il tifo può salire lungo la PENDENZA reale (mLow/mUp di addStand) invece di ammassarsi in basso. */
   const _curveGeo={sideX,sideW,depthHome:(_sudH>sideH?sideD*1.15:sideD),depthAway:sideD,hHome:_sudH,hAway:sideH,tiers:_tiers,endZ,depthEnd:endD,hEnd:endH};/* [7.189.0] + tribune Est/Ovest: servono per appoggiare gli striscioni al loro MURO */
-  return {homeMats,awayMats,goalNet:awayGoalNet,crowdAnims,frontRows,idleMs,burstMs,curve:_curveGeo};// materiali per il goal pulse · redraw animati · prime file 3D (LOD1) · geometria curve per il tifo
+  return {homeMats,awayMats,goalNet:awayGoalNet,crowdAnims,frontRows,idleMs,burstMs,curve:_curveGeo,endH,lvl:_lvl437};// materiali per il goal pulse · redraw animati · prime file 3D (LOD1) · geometria curve per il tifo · [7.455.0] +endH/lvl: l'altezza REALE della tribuna di fondo e il livello architettonico, perche' il maxischermo si appoggi a cio' che c'e' davvero dietro invece che a una quota fissa
 }
 
 /* ========================================
@@ -11298,10 +11309,29 @@ function ThreeMatchView(props){
         sx.fillStyle="#ffffff";sx.font="900 92px Arial, sans-serif";sx.fillText(h+" - "+a,256,124);
         sx.fillStyle="#ffd24a";sx.font="900 38px Arial, sans-serif";sx.fillText((clk|0)+"'",256,196);};
       _sbDraw(homeAbbr,awayAbbr,scoreHome,scoreAway,props.matchClock||0);_sbTex=new THREE.CanvasTexture(sc);}
-    {const _board=new THREE.Mesh(new THREE.PlaneGeometry(17,7.7),new THREE.MeshBasicMaterial({map:_sbTex,transparent:true,opacity:0.98,side:THREE.DoubleSide}));
-     _board.position.set(55,15.5,0);_board.rotation.y=-Math.PI/2;scene.add(_board);
-     // cornice posteriore (backing); 5.49.11: PILONE rimosso (richiesta) → il maxischermo resta sospeso sopra la curva, niente palo a vista
-     const _frame=new THREE.Mesh(new THREE.BoxGeometry(0.5,7.4,18),new THREE.MeshLambertMaterial({color:0x0a0f1c}));_frame.position.set(55.3,15.5,0);scene.add(_frame);}
+    /* [7.455.0 collaudo PO «schermo sospeso in aria negli stadi piccoli!»] IL MAXISCHERMO SI APPOGGIA A
+       CIO' CHE HA DIETRO. La quota era FISSA a 15.5 per qualunque impianto, e il pilone fu tolto su
+       richiesta nel 5.49.11 («resta sospeso sopra la curva, niente palo a vista»): scelta giusta con una
+       curva alta alle spalle, sbagliata in provincia, dove la tribuna di fondo misura ~7 unita' e lo
+       schermo galleggiava piu' in alto del doppio, contro il cielo. Ora la quota nasce dall'altezza VERA
+       della tribuna (endH, la stessa che costruisce le gradinate) e la scala segue: piccolo negli
+       impianti piccoli, grande dove c'e' una curva che lo regge. E dove dietro non c'e' niente da cui
+       sembrare sospeso — livello provincia — torna un TRALICCIO, che li' e' esattamente quello che si
+       vede negli stadi veri: non il palo a vista che il PO aveva fatto togliere da una curva alta. */
+    {const _sc455=(sr.current&&sr.current.crowdMats)||null;/* buildStadium ritorna dentro un try: l'oggetto sopravvive qui */
+     const _endH455=(_sc455&&_sc455.endH)||10, _lvS455=(_sc455&&_sc455.lvl!=null)?_sc455.lvl:1;
+     const _bScale=Math.max(0.62,Math.min(1,_endH455/20));
+     const _bW=17*_bScale,_bH=7.7*_bScale;
+     const _fissa455=(typeof window!=="undefined"&&window.__CPM_NO455);/* interruttore test-only: ripristina la quota fissa — serve al guardiano per provare il rosso */
+     const _bY=_fissa455?15.5:Math.max(_bH/2+2.2, _endH455*0.86);/* il bordo basso resta dentro la tribuna, mai contro il cielo */
+     try{if(typeof window!=="undefined")window.__CPM_JUMBO455={y:+_bY.toFixed(2),h:+_bH.toFixed(2),endH:+_endH455.toFixed(2),lvl:_lvS455};}catch(_e455){}/* sonda: il guardiano confronta il bordo basso dello schermo con la sommita' della tribuna */
+     const _board=new THREE.Mesh(new THREE.PlaneGeometry(_bW,_bH),new THREE.MeshBasicMaterial({map:_sbTex,transparent:true,opacity:0.98,side:THREE.DoubleSide}));
+     _board.position.set(55,_bY,0);_board.rotation.y=-Math.PI/2;scene.add(_board);
+     const _frame=new THREE.Mesh(new THREE.BoxGeometry(0.5,_bH*0.96,_bW*1.06),new THREE.MeshLambertMaterial({color:0x0a0f1c}));_frame.position.set(55.3,_bY,0);scene.add(_frame);
+     if(_lvS455<=0){/* traliccio: due montanti e una traversa, dal terreno al telaio */
+       const _tm=new THREE.MeshLambertMaterial({color:0x353b46});
+       for(const _tz of [-_bW*0.36,_bW*0.36]){const _leg=new THREE.Mesh(new THREE.BoxGeometry(0.42,_bY,0.42),_tm);_leg.position.set(55.35,_bY/2,_tz);scene.add(_leg);}
+       const _cross=new THREE.Mesh(new THREE.BoxGeometry(0.3,0.3,_bW*0.72),_tm);_cross.position.set(55.35,_bY*0.52,0);scene.add(_cross);}}
     // 3DV-7: banner competizione LED — testo scorrevole sulla striscia esterna (canvas 1024×24)
     const _compLbl=(props.competitionLabel||homeClub?.lg||"CAMPIONATO").toUpperCase();
     const _mkCompBanner=(z)=>{
@@ -29537,7 +29567,15 @@ const getThisWeekMatchday=()=>{
     const _isHattrick=result.goals>=3;
     const _isBigWin=result.won&&_oppPres>=70&&_margin>=2;
     const _isBigLoss=!result.won&&!result.drew&&_margin>=3;
-    const _interviewChance=_isHattrick?0.96:(_isBigWin||_isBigLoss)?0.85:0.18;
+    /* [7.455.0 collaudo PO «già interviste?» — screenshot della mixed zone a un ragazzo di Primavera 2]
+       IN PRIMAVERA LA STAMPA NON TI ASPETTA FUORI DALLO SPOGLIATOIO. La probabilita' non guardava mai
+       proStatus: 18% dopo QUALSIASI partita, 85% dopo un big match, 96% dopo una tripletta — anche a un
+       diciassettenne alla settima settimana di sempre. Scelta del PO: restano, ma rare e in tono minore,
+       e solo dopo qualcosa che meriti davvero il taccuino (una tripletta la notano anche in Primavera;
+       una vittoria qualunque no). */
+    const _u18Iv455=(player.proStatus||"u18")!=="pro";
+    const _interviewChance=_u18Iv455?(_isHattrick?0.30:(_isBigWin||_isBigLoss)?0.10:0.04)
+      :(_isHattrick?0.96:(_isBigWin||_isBigLoss)?0.85:0.18);
     if(Math.random()<_interviewChance){
       const iw=pickInterviewByCtx(player,result);
       const pJourno=(player.journalists||[]).length>0&&Math.random()<0.55?pick(player.journalists):null;
@@ -29799,7 +29837,7 @@ const getThisWeekMatchday=()=>{
        la routine che annoia), salvo la settimana-intervista (~15%, resta come variante) e il momento
        spogliatoio (12%, ramo sopra). Anti-ripetizione allargata 16→24 (cadenza settimanale, pool 60);
        le `cond` contestuali restano il filtro di sensatezza. Evento classico = solo fallback a pool vuoto. */
-    const _doInterview35=Math.random()<0.15;
+    const _doInterview35=Math.random()<(((player.proStatus||"u18")!=="pro")?0.04:0.15);/* [7.455.0] anche l'intervista SETTIMANALE si dirada in Primavera: la stampa non passa ogni settimana dal settore giovanile */
     if(!_doInterview35){
       const _seenImp85=(player.recentImpulses||[]);
       // [7.8.5 collaudo PO «la settimana pre-derby è finta»] il picker degli impulsi ora onora `cond` (come WEEKLY_EVENTS)

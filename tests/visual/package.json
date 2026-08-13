@@ -76,7 +76,8 @@
     "playedmd-registry": "node playedmd-registry-test.mjs",
     "impulsi-contesto": "node impulsi-contesto-test.mjs",
     "slot-card-layout": "node slot-card-layout-test.mjs",
-    "parata-legibility": "node parata-legibility-test.mjs"
+    "parata-legibility": "node parata-legibility-test.mjs",
+    "jumbotron-anchor": "node jumbotron-anchor-test.mjs"
   },
   "dependencies": {
     "playwright": "^1.48.0",
