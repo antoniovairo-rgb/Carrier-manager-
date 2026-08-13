@@ -8,8 +8,11 @@
    (B) a 28 anni la card NON esiste (niente ritiro proposto a un ragazzo);
    (C) con l'annuncio fatto, la fine stagione NON offre «Nuova stagione»: il bottone primario e'
        «Il giorno dell'addio» e porta alla pagina celebrativa (retired persistito — lezione 7.258).
+   (D) [7.433.0] la stagione annunciata e' INDIMENTICABILE: gli impulsi dell'addio sono eleggibili
+       (probe addioPool ≥5) e per un non-annunciato sono ZERO; (E) le voci del mondo dedicate
+       (attestato del rivale, premio alla carriera, tour) esistono nel pool dell'annunciato.
    PROVA DEL ROSSO: eseguito sul build pre-cablaggio, (A) non trova la card e (C) trova ancora
-   «Nuova stagione» — fallimento atteso e osservato prima del fix.
+   «Nuova stagione»; (D) provata rossa pre-7.433 (pool addio = 0 anche da annunciato).
 
      CPM_CHROME=… PLAYWRIGHT_BROWSERS_PATH=… node retire-announce-test.mjs                        */
 import { startServer, launchBrowser, installCdnRoutes, sleep } from './lib/harness.mjs';
@@ -126,6 +129,20 @@ const guasti = [];
     }
   }
   await page.close();
+}
+/* (D) annunciato → impulsi dell'addio eleggibili; non annunciato → zero */
+{
+  const page = await apri(mkSave(35, { week: 6, retireAnnounced: 5, retireAskedSeason: 5 }));
+  await page.waitForFunction(() => !!(window.__CPM_CAREER && window.__CPM_CAREER.addioPool), { timeout: 20000 });
+  const nA = await page.evaluate(() => window.__CPM_CAREER.addioPool());
+  await page.close();
+  const page2 = await apri(mkSave(35, { week: 6 }));
+  await page2.waitForFunction(() => !!(window.__CPM_CAREER && window.__CPM_CAREER.addioPool), { timeout: 20000 });
+  const nB = await page2.evaluate(() => window.__CPM_CAREER.addioPool());
+  await page2.close();
+  console.log(`(D) impulsi addio eleggibili: annunciato ${nA} · non annunciato ${nB}`);
+  if (!(typeof nA === 'number' && nA >= 5)) guasti.push(`(D) la stagione annunciata non ha gli impulsi dell'addio (pool ${nA})`);
+  if (nB !== 0) guasti.push(`(D) un non-annunciato vede gli impulsi dell'addio (pool ${nB})`);
 }
 await b.close(); srv.close();
 if (guasti.length) { console.log(`\n❌ FAIL — ${guasti.length}`); guasti.forEach(g => console.log('  · ' + g)); process.exit(2); }
