@@ -63,7 +63,8 @@
     "parata": "node parata-test.mjs",
     "cerimonie": "node cerimonie-test.mjs",
     "recv-delivery-dest": "node recv-delivery-dest-test.mjs",
-    "coach-face": "node coach-face-test.mjs"
+    "coach-face": "node coach-face-test.mjs",
+    "retire-announce": "node retire-announce-test.mjs"
   },
   "dependencies": {
     "playwright": "^1.48.0",

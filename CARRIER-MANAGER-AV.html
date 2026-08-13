@@ -4583,7 +4583,8 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="7.431.0"; // [7.431.0 collaudo PO «occhio che il braccio al saluto alla presentazione e' troppo all'indietro»]: taratura del bersaglio del saluto — a x=-2,45 il braccio superava la verticale e pendeva dietro la testa; ora il blend si ferma a x=-1,95 (alzato e leggermente AVANTI, verso i tifosi), verificato a vista sul riproduttore della Serata; stessa taratura sul saluto della parata (-2,35 → -1,9). Nessun altro cambiamento.
+const GAME_VERSION="7.432.0"; // [7.432.0 EVOLUTIVA PO «la funzionalita' annuncio del ritiro ad inizio stagione sei riuscito a farla?» — L'ULTIMA STAGIONE SI ANNUNCIA E SI VIVE]: non esisteva (il ritiro era solo fine-carriera: forzato a 40, proposto a fine stagione dai 35, manuale dalle Opzioni). Ora: (1) dai 34 anni il WIZARD D'APERTURA propone la card «L'ultima stagione?» (chiave `addio` — `ritiro` era gia' il ritiro pre-campionato) UNA volta per stagione: annunciando si persiste `retireAnnounced` (morale+6, popolarita'+8, diario e log dell'annuncio), rimandando si persiste `retireAskedSeason` (non lo richiede piu' quell'anno); (2) la STAGIONE D'ADDIO si vede e si sente — banner «Tour d'addio» sul dashboard ogni settimana e voci del MONDO FUORI dedicate (lo stadio avversario sold-out, la sciarpa della curva rivale, il telecronista che dice «godetevelo»); (3) la FINE STAGIONE onora l'annuncio: niente «Inizia Stagione», il bottone primario e' «Il giorno dell'addio» e porta alla cerimonia celebrativa ESISTENTE (lettera, maglia ritirata se bandiera, legacy — riuso 7.20/7.258), con guard PER COSTRUZIONE dentro doStartNewSeason (lezione 7.258: qualunque path chiami il rollover di un annunciato finisce alla cerimonia, mai a una stagione nuova). Guardiano retire-announce-test (rosso provato pre-cablaggio: card assente a 35 anni, bottone d'addio assente): card a 34+ e mai a 28, flag persistito, fine stagione senza rollover, ritiro persistito dopo l'addio.
+// [nota 7.431.0] [7.431.0 collaudo PO «occhio che il braccio al saluto alla presentazione e' troppo all'indietro»]: taratura del bersaglio del saluto — a x=-2,45 il braccio superava la verticale e pendeva dietro la testa; ora il blend si ferma a x=-1,95 (alzato e leggermente AVANTI, verso i tifosi), verificato a vista sul riproduttore della Serata; stessa taratura sul saluto della parata (-2,35 → -1,9). Nessun altro cambiamento.
 // [nota 7.430.0] [7.430.0 collaudo PO, cinque note in un lotto — SERATA, IMPULSI E MONDO FUORI]: (1) «migliora la dinamica del braccio che saluta e la postura, sono aggobbati e tristi» — RIPRODOTTO e misurato: la clip idle in PAUSA congela anche i fotogrammi di trasferimento di peso (spalle avanti = l'aggobbato), e il saluto era un OFFSET CIECO su Z dalla posa congelata: a seconda del fotogramma la mano finiva IN FRONTE (il facepalm dello screenshot). Lo sweep degli euler (strumento __CPM_WVSET) dice che il rig alza il braccio su X (base 0,79=giu', -2,6=verticale): ora il saluto e' un BLEND verso il bersaglio canonico (x -2,45, gomito disteso, ondeggio avambraccio) e la POSTURA si raddrizza in assoluto dopo il mixer (colonna/collo/testa scalati verso l'eretto — il mixer in pausa riscrive la posa a ogni frame, zero accumulo). Stessa correzione al saluto della parata (stessa classe). (2) «conseguenza gia' vista nella carriera!» (l'orologio, di nuovo, a S.21) — gli impulsi UNA-TANTUM (orologio, biografia, murale, video virale, donazione scoperta, docufilm, investimento) portano once:true e col contatore a vita impulseSeen spariscono per sempre dopo la prima volta: su una carriera ventennale il pool cicla per costruzione, ma un fatto permanente non si rivive. (3) «e' compatibile con la nuova funzionalita' del procuratore o e' un refuso sganciato?» — ERA SGANCIATO (pre-feature): ora wi_procuratore esce solo se il mercato non si sta gia' muovendo (!transferListed) e «voglio muovermi ora» METTE IN LISTA davvero (transferListed:true, il flag che il mercato legge e che alza le offerte vere). (4) «sono passati anni ed anni dal Lipsia, poco contestualizzato, deve essere piu' divertente» — la telefonata dell'ex compagno SA QUANTI ANNI SONO PASSATI: da 6 stagioni in su parla il pool dei VETERANI (ha smesso e allena i Pulcini, l'armadietto-santuario, il fantacalcio aziendale, gli otto chili col mancino-violino): la distanza diventa la battuta, non un errore di continuita'. (5) «non c'e' partita, fai in modo che sia piu' divertente!» (696 a 268 e il rivale «rincorre») — la battuta del rivale si CALIBRA SUL DISTACCO: oltre la soglia (1,8x+30) parte l'autoironia da conferenza stampa (o lo sfotto', se la voragine e' sua); le righe competitive restano per i distacchi veri. FILONE APERTO E MISURATO (bozze gi47/gi185, «il pallone si freeza per un bel po' e si muove da solo» dopo l'assist): tracciante d'esito agli atti — gi47 FREEZE di ~4s e poi 8-11 passi ORFANI (palla in moto, nessuno entro 2,5u) su 3 repliche; gi185 solo freeze (2,6-4,8s). E' la coreografia della FASE DI RISOLUZIONE (l'arco d'esito parte tardi e nessun attore accompagna la palla): va chiuso con la stessa disciplina (strumento diag_47), prossimo ciclo. Le note gemelle su build 7.425 (gi16 teletrasporto 21,3u, gi110 «palla a nessuno») sono VERIFICATE COPERTE dal 7.428 (0u su tutte le repliche).
 // [nota 7.429.0] [7.429.0 collaudo PO premiazione (screenshot dal dispositivo): «mister che e' un burattino, palla che va appresso all'eroe, scudetto e trofeo non bene impugnato, eroe che sprofonda nel palco» — PASS 3 CERIMONIE, TUTTO MISURATO]: (a) MISTER: era un manichino (torso 0,8 — piu' largo di un giocatore — testa-sfera lattea senza capelli) piantato NEL CORRIDOIO DI RIPRESA: il bersaglio di follow (eroe-6, z+5) stava esattamente fra la camera (eroe-8..-11, z+6..8) e il soggetto — misurato dCam 5-7u costanti in ogni beat, il gigante grigio in primo piano degli screenshot. Ora corporatura civile snella con incarnato e capelli, e bersagli fuori dal corridoio (dietro l'eroe a z-4,5; oltre il podio a z-4,2). (b) SCUDETTO IMPUGNATO: la targa stava a y=1,0 LOCALE nel gruppo trofeo (la quota del corpo della coppa): con l'aggancio alle mani vere (7.24.2) fluttuava un metro sopra la testa — ora y=0,14, nel punto della presa; e siccome l'eroe alla consegna sta ACCANTO al podio, il volo podio→mani e' corto (prima il blend partiva con le mani a meta' campo: il disco d'oro volante dello screenshot). (c) SPROFONDAMENTO: il beat present (e il fest di ritorno al centro) bersagliava (0,0) col podio visibile — l'eroe DENTRO il cilindro; ora alla consegna sta di lato, ci sale solo al lift, e un guard di quota (dist<1,7 dal centro → y=1,05) impedisce ogni attraversamento; i compagni hanno la spinta radiale fuori dal palco (uno era mezzo affondato nello screenshot). (d) PALLA: spenta con l'alone per tutta la cerimonia, ripristinata al reset — la partita e' finita. (e) +TELEFONINI in curva (direttiva PUBBLICO): 70 luci fredde tremolanti sulla tribuna dei tuoi, lazy come le bandiere. STRUMENTAZIONE: warp test-only __CPM_CERT_SET (in headless ~4fps il clock dei beat corre a 1/10 del timer React di fase: la sonda moriva nel primo beat — misurato cert 2,3s a fase finita) e +beatsD nella probe __CPM_CER425. Guardiano cerimonie esteso (podio/impugnatura/corridoio/palla), rosso provato sul build pre-fix. + PARATA (collaudo PO: «pullman che sembra uno scatolo di scarpe, trofeo che gira ma non e' lo scudetto vinto, calciatori tutti di colore, non sono i reali giocatori») — (f) il pullman ha MUSETTO (parabrezza inclinato, mascherina, fari, paraurti), montanti sulla fascia finestrini, specchietti, minigonna nel secondo colore, coprimozzi che girano col cerchione; (g) il trofeo a prua e' QUELLO VINTO: scudetto = piatto d'oro inclinato verso la camera (vocabolario 7.425), Champions = coppa grande dalle orecchie larghe, scala raddoppiata, gira il trofeo e non il piedistallo; (h) la squadra sul tetto RIUSA la ricetta della Serata (7.30): appearanceFromSeed per carnagione/capelli/calvizie/altezza per uomo (stesso seed del roster), kitPatternTex per la maglia vera — otto uomini, spettro carnagioni anche nel fallback GLB-OFF.
 // [nota 7.428.0] [7.428.0 collaudo PO gi86 «codice 001 MISURATO: compagno piu' vicino 11.7u, eroe ≥31.5u per 66 campioni» + «CAMERA salta 9.7u» — LA CONSEGNA PUNTAVA A UN EROE CHE NON C'ERA PIU']: il piano dichiarato nel 7.427 parlava di «due sorgenti che non si parlano», e la misura dual-probe (vivo emulato: ppos lontano dallo startZone, come fa la continuita' vera tra una scena e l'altra) ha trovato QUALE coppia: la consegna d'apertura delle scene di RICEZIONE (7.350/7.383) spediva la palla al `pPos` catturato dalla CHIUSURA dell'effetto — che gira PRIMA del clamp di continuita' 4.86 allo startZone. Un commit dopo l'eroe sta anche 30-48u piu' in la', l'effetto si ri-esegue ma la guardia (giusta) «una consegna per scena» esce subito, e il timer a 520ms consegna al bersaglio VECCHIO. FILMATO su gi86 (recv aerea/insertion): palla in hover a quota 1,8 su (40,40) con l'eroe VERO a (88,80) per tutta l'intro, poi al passaggio in hl_choose la sync palla→eroe la strattona per 60 unita' di deriva LENTA a mezz'aria in piena finestra di lettura — palla di NESSUNO (mesh piu' vicina 6,8-8,2u, a tratti possesso AWAY) e camera a inseguire: il 001 e il salto camera del dispositivo, riprodotti al numero. FIX: la destinazione si legge ALLO SPARO del timer — eroe MESH dal ponte 7.322 (la sorgente che l'utente vede), `pPosRef` fresco come rete — mai piu' dalla chiusura. Guardiano recv-delivery-dest (rosso provato con l'interruttore __CPM_NO428 che ripristina la chiusura stantia). Il percorso del gate non cambia: la consegna vive solo in hl_intro, che il force-path del gate salta. (2) IL MISTER HA LA FACCIA DEL MISTER (collaudo PO, screenshot «IL MISTER TI CERCA — Mister Bellandi»: «ma ha il volto di una donna?»): il ritratto era un DiceBear micah a briglia sciolta sul seed del nome — acconciature lunghe, colori fantasia, orecchini: 6 dei 16 COACH_NAMES uscivano incoerenti (Bellandi capelli viola e volto femminile). Ora NpcFaceCoach RIUSA la palette maschile COACH_NPC_FACES (esisteva, mai piu' collegata) via npcFaceIdx: acconciature corte/calvo, barba da palette, niente orecchini/ombretto; il wrapper del bundle inoltra il blocco micah:{…} (patch additiva, le chiamate esistenti non cambiano di un byte). Deterministico per nome. Guardiano coach-face (rosso provato sul build pre-fix: in pagina il micah libero).
@@ -22611,7 +22612,7 @@ function SeasonAwardsScreen({awards,player,season,club,onContinue}){
 /* ========================================
    SEASON END SCREEN  (Sprint 2 — B06/B05)
 ======================================== */
-function SeasonEndScreen({data,player,onNewSeason,onRetire,notifBusy}){
+function SeasonEndScreen({data,player,onNewSeason,onRetire,notifBusy,farewell}){/* [7.432.0] farewell = ritiro ANNUNCIATO a inizio stagione: la fine stagione onora l'annuncio */
   const{season,club,finalStandings,playerStats,champion,playerPos,isChampion,awards,seasonObjectives,rival,euro,leagueOverrides}=data;
   /* [7.423.0 evolutiva PO] LA PARATA DEL PULLMAN SCOPERTO: su scudetto o coppa europea, prima del
      resoconto la citta' fa festa. Stato locale (non tocca il salvataggio), si chiude con Continua. */
@@ -23137,9 +23138,15 @@ function SeasonEndScreen({data,player,onNewSeason,onRetire,notifBusy}){
           notifiche (premi, crescita, economia, movimenti): partendo prima che finisca, quelle della stagione
           CHIUSA finivano sopra la schermata di quella NUOVA. Ora il pulsante aspetta che il riepilogo sia
           scorso — e la coda 7.286.0, che comprime le raffiche, fa sì che l'attesa duri pochi secondi. */}
+      {farewell&&onRetire?(
+        <Btn onClick={onRetire} v="danger" fw disabled={!!notifBusy} style={{padding:"16px",fontSize:15,marginTop:4,...(notifBusy?{opacity:.55}:{})}}>
+          {notifBusy?"📣 Riepilogo in corso…":"🏁 Il giorno dell'addio →"}
+        </Btn>
+      ):(
       <Btn onClick={onNewSeason} v="primary" fw disabled={!!notifBusy} style={{padding:"16px",fontSize:15,marginTop:4,...(notifBusy?{opacity:.55}:{})}}>
         {notifBusy?"📣 Riepilogo in corso…":`🆕 Inizia Stagione ${season+1} →`}
       </Btn>
+      )}
     </div>
   );
 }
@@ -26237,7 +26244,7 @@ const getThisWeekMatchday=()=>{
   //   preferisce risolverle da lì: il wizard salta automaticamente i passi già risolti).
   const [openingWiz,setOpeningWiz]=useState(false);
   const [openingWizTot,setOpeningWizTot]=useState(0);
-  const OPENING_LBL={ritiro:"🏕️ Ritiro pre-campionato",presidente:"🏛️ Il Presidente ti convoca",mercato:"📰 Presentazione del mercato",stampa:"🎙️ Conferenza stampa",maglia:"👕 Numero di maglia",sorteggi:"🎱 I sorteggi europei",presentazione:"🏟️ Presentazione della squadra"};/* [7.147.0 collaudo PO «non doveva esserci una presentazione dei nuovi acquisti e comunicazione ex compagni che lasciano?»] nuovo passo mercato */
+  const OPENING_LBL={ritiro:"🏕️ Ritiro pre-campionato",addio:"🏁 L'ultima stagione?",presidente:"🏛️ Il Presidente ti convoca",mercato:"📰 Presentazione del mercato",stampa:"🎙️ Conferenza stampa",maglia:"👕 Numero di maglia",sorteggi:"🎱 I sorteggi europei",presentazione:"🏟️ Presentazione della squadra"};/* [7.147.0 collaudo PO «non doveva esserci una presentazione dei nuovi acquisti e comunicazione ex compagni che lasciano?»] nuovo passo mercato */
   const openingPending=()=>{try{
     const p=player;if((p.week||1)!==1)return [];
     const sn=p.season||1,isPro=(p.proStatus||"u18")==="pro";
@@ -26250,6 +26257,9 @@ const getThisWeekMatchday=()=>{
     /* [7.292.0 direttiva PO] la serata di presentazione e' un evento PRE-campionato, non piu' un contorno della
        prima giornata: entra fra le interazioni d'apertura (vale anche in Primavera, come chiesto). */
     if((p.presentSeason||0)<sn)out.push("presentazione");
+    /* [7.432.0 evolutiva PO «annuncio del ritiro ad inizio stagione»] dai 34 anni il wizard chiede
+       UNA volta per stagione se questa e' l'ultima: annunciando si apre la STAGIONE D'ADDIO */
+    if(isPro&&(p.age||17)>=34&&!p.retireAnnounced&&(p.retireAskedSeason||0)<sn&&!p.retired)out.push("addio");
     if(p.euro?.active&&p.euro.phase==="group"&&((p.euro.groupResults||[]).length===0)&&p.drawSeen!==sn&&(p.euro.groupOpponents||[]).length>=3)out.push("sorteggi");
     return out;
   }catch(_e){return [];}};
@@ -27727,6 +27737,16 @@ const getThisWeekMatchday=()=>{
             :(avanti?`Campionato appena cominciato e in conferenza gli chiedono già di te. «In carriera è a ${_mt} gol, io a ${_rt}: mi tocca rincorrere. Ma le classifiche si fanno a maggio.»`
             :`Campionato appena cominciato e in conferenza gli chiedono già di te. Sorride: «In carriera siamo ${_rt} a ${_mt}. Poi certo, si riparte tutti da zero — o quasi.»`)),
         fx:(q)=>({morale:clamp((q.morale||70)+(avanti?2:-1),0,100)})});
+    }
+    /* [7.432.0] LA STAGIONE D'ADDIO SI SENTE: voci dedicate quando il ritiro e' annunciato */
+    if(p.retireAnnounced===sn&&seen.indexOf("addioTour")<0){
+      const _TA=[
+        {t:"Il tour d'addio",d:"Lo stadio che ti aspetta domenica ha esaurito i biglietti in un'ora. Il loro capitano ha chiesto la tua maglia — «per il museo del club», dice. Poi ammette: «per me»."},
+        {t:"L'omaggio degli avversari",d:"In allenamento arriva un pacco: la curva AVVERSARIA della prossima trasferta ha stampato una sciarpa col tuo nome e «GRAZIE DI TUTTO». Il calcio, quando vuole, sa essere una cosa seria."},
+        {t:"Il giro dei saluti",d:"Un telecronista storico apre la trasmissione cosi': «Godetevelo, ogni domenica che resta. Di giocatori cosi' ne passa uno ogni vent'anni». Tua madre ha registrato la clip."},
+      ];
+      const _ta=_TA[Math.abs(hashStr((p.name||"x")+"|addio|"+wk))%_TA.length];
+      out.push({k:"addioTour",e:"🏁",t:_ta.t,d:_ta.d,fx:(q)=>({morale:clamp((q.morale||70)+3,0,100)})});
     }
     /* — un ex compagno del club dove giocavi: nome VERO dalla rosa di quel club — */
     const hs=(p.history||[]).filter(h=>h&&h.clubId&&h.clubId!==((p.club&&p.club.id)||""));
@@ -29852,6 +29872,7 @@ const getThisWeekMatchday=()=>{
 
   // new season: reset stats, advance calendar — called from SeasonEndScreen
   const doStartNewSeason=()=>{
+    if(player.retireAnnounced===(player.season||1)){doRetire();return;}/* [7.432.0] guard PER COSTRUZIONE: annunciato l'addio, la stagione dopo non esiste — qualunque path chiami questo handler finisce alla cerimonia, non a un rollover */
     try{_committedMdRef.current.clear();_playingMdRef.current=null;}catch(_e){}// [6.73.0] nuovo calendario → azzera i matchday committati della stagione prec
     // [7.10.0] BILANCIO DELLA PROMESSA d'apertura: valutata QUI (i dati della stagione chiusa sono ancora su
     //   player), applicata con un setPlayer SEPARATO in coda PRIMA del rollover (React li processa in ordine →
@@ -30900,7 +30921,7 @@ const getThisWeekMatchday=()=>{
 
   if(screen==="seasonEnd"&&seasonEndData)return(
     <div style={{width:"100%"}}>
-      <SeasonEndScreen data={seasonEndData} player={player} notifBusy={notifPending} onNewSeason={doStartNewSeason} onRetire={(player.age||17)>=35?doRetire:undefined}/>
+      <SeasonEndScreen data={seasonEndData} player={player} notifBusy={notifPending} onNewSeason={doStartNewSeason} onRetire={(player.retireAnnounced===(player.season||1)||(player.age||17)>=35)?doRetire:undefined} farewell={player.retireAnnounced===(player.season||1)}/>
     </div>
   );
 
@@ -31709,6 +31730,17 @@ const getThisWeekMatchday=()=>{
               </div>
               <div style={{fontSize:9.5,color:TH.faint,marginTop:6}}>Se scegli un numero nuovo, riprendi il wizard col tasto Avanza.</div>
             </div>)}
+            {k==="addio"&&(<div>
+              <div style={{fontSize:11.5,color:TH.muted,lineHeight:1.5,marginBottom:10}}>🏁 Hai <strong style={{color:TH.text}}>{player.age} anni</strong>. Nello spogliatoio nessuno lo chiede ad alta voce, ma la domanda gira: <strong style={{color:TH.text}}>e' l'ultima stagione?</strong> Annunciarlo adesso trasforma ogni partita in un saluto — ogni stadio vorra' salutarti.</div>
+              <div style={{display:"flex",flexDirection:"column",gap:8}}>
+                <Btn v="danger" fw onClick={()=>{setPlayer(p=>{const sn2=p.season||1;return{...p,retireAnnounced:sn2,retireAskedSeason:sn2,
+                  morale:clamp((p.morale||70)+6,0,100),popularity:clamp((p.popularity||20)+8,0,100),
+                  diary:[...(p.diary||[]),{season:sn2,week:p.week||1,type:"addio",e:"🏁",headline:"L'annuncio: e' l'ultima stagione",body:`«Ho dato tutto a questo sport. A fine stagione appendo gli scarpini.» Il mondo del calcio si ferma ad applaudire · S.${sn2}`,color:"#b45309"}].slice(-80),
+                  log:[`🏁 L'ANNUNCIO: questa e' l'ultima stagione. Da oggi ogni partita e' un addio — il tour comincia.`,...(p.log||[])].slice(0,60)};});
+                  setTimeout(()=>notify("🏁 Annuncio fatto: il TOUR D'ADDIO comincia. Ogni stadio vorra' salutarti.","#b45309"),600);}}>📣 Annuncio il ritiro — questa e' l'ultima stagione</Btn>
+                <Btn v="ghost" onClick={()=>setPlayer(p=>({...p,retireAskedSeason:p.season||1}))}>🔁 Non ancora — si gioca</Btn>
+              </div>
+            </div>)}
             {k==="presentazione"&&(<div>
               <div style={{fontSize:11.5,color:TH.muted,lineHeight:1.5,marginBottom:10}}>🏟️ Lo stadio si riempie per la <strong style={{color:TH.text}}>serata di presentazione</strong>: luci accese, speaker al centrocampo e la squadra schierata davanti ai tifosi. Il campionato comincia dopo.</div>
               <div style={{display:"flex",gap:8}}>
@@ -32474,6 +32506,15 @@ const getThisWeekMatchday=()=>{
       {/* [7.26.0 ONDA 1 — docs/WEEKLY_LIFE_DESIGN §S1+§S13] LA TUA SETTIMANA: cold-open dell'episodio (tema
           DERIVATO dal calendario/classifica reali, weekTheme) + Meteo Interiore (stato psicologico DERIVATO
           dai fatti, innerWeather). Display-only: nessun effetto, nessun random — «nulla si inventa». */}
+      {tab==="dashboard"&&player.retireAnnounced===(player.season||1)&&(
+        <div style={{marginBottom:10,padding:"9px 13px",borderRadius:RAD.lg,background:"linear-gradient(90deg,#78350f,#b45309)",color:"#fef3c7",display:"flex",alignItems:"center",gap:9,boxShadow:TH.el1}}>
+          <span style={{fontSize:18}}>🏁</span>
+          <div style={{flex:1,minWidth:0}}>
+            <div style={{fontSize:10,letterSpacing:1.4,textTransform:"uppercase",fontWeight:800,opacity:0.85}}>Tour d'addio</div>
+            <div style={{fontSize:11.5,fontWeight:700}}>L'ultima stagione — ogni partita è un saluto</div>
+          </div>
+        </div>
+      )}{/* [7.432.0] la stagione d'addio si vede ogni settimana, non solo il giorno dell'annuncio */}
       {tab==="dashboard"&&(()=>{
         const th26=weekTheme(player);const iw26=innerWeather(player);
         if(!th26&&!iw26)return null;
