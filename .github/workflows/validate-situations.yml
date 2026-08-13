@@ -16,6 +16,13 @@ on:
       - 'tests/**'
   workflow_dispatch: {}
 
+# [security audit 2026-08-13] MINIMO PRIVILEGIO. Questo workflow non dichiarava alcun
+# `permissions`, quindi ereditava il default del repository — che puo' essere di SCRITTURA.
+# Il gate non scrive nulla: fa checkout, installa, esegue test e carica un artifact (che
+# non richiede permessi sui contenuti). Sola lettura, esplicita.
+permissions:
+  contents: read
+
 # annulla run obsolete sullo stesso ref
 concurrency:
   group: validate-situations-${{ github.ref }}
