@@ -11,8 +11,12 @@
    (D) [7.433.0] la stagione annunciata e' INDIMENTICABILE: gli impulsi dell'addio sono eleggibili
        (probe addioPool ≥5) e per un non-annunciato sono ZERO; (E) le voci del mondo dedicate
        (attestato del rivale, premio alla carriera, tour) esistono nel pool dell'annunciato.
+   (F) [7.435.0] anche le PRIME stagioni sono memorabili: a S.1 il pool delle pietre miliari
+       (probe milePool) ha ≥5 impulsi; nel PRIMO anno da pro (proSeason===season) idem; in una
+       stagione qualunque di meta' carriera e' ZERO.
    PROVA DEL ROSSO: eseguito sul build pre-cablaggio, (A) non trova la card e (C) trova ancora
-   «Nuova stagione»; (D) provata rossa pre-7.433 (pool addio = 0 anche da annunciato).
+   «Nuova stagione»; (D) provata rossa pre-7.433 (pool addio = 0 anche da annunciato); (F) rossa
+   strutturale pre-7.435 (milePool inesistente).
 
      CPM_CHROME=… PLAYWRIGHT_BROWSERS_PATH=… node retire-announce-test.mjs                        */
 import { startServer, launchBrowser, installCdnRoutes, sleep } from './lib/harness.mjs';
@@ -143,6 +147,22 @@ const guasti = [];
   console.log(`(D) impulsi addio eleggibili: annunciato ${nA} · non annunciato ${nB}`);
   if (!(typeof nA === 'number' && nA >= 5)) guasti.push(`(D) la stagione annunciata non ha gli impulsi dell'addio (pool ${nA})`);
   if (nB !== 0) guasti.push(`(D) un non-annunciato vede gli impulsi dell'addio (pool ${nB})`);
+}
+/* (F) prime stagioni memorabili: S.1 → milePool ≥5 · primo anno pro → ≥5 · meta' carriera → 0 */
+{
+  const casi = [
+    ['S.1', { season: 1, week: 6, age: 17, proStatus: 'u18', presidentModalSeason: 1, jerseyNumSeason: 1, drawSeen: 1, mercatoSeen: 1, presentSeason: 1, seasonPledge: { season: 1, tone: 'equilibrato' }, history: [] }, (n) => n >= 5],
+    ['primo pro', { season: 6, week: 6, age: 19, proSeason: 6 }, (n) => n >= 5],
+    ['metà carriera', { season: 6, week: 6, age: 27, proSeason: 2 }, (n) => n === 0],
+  ];
+  for (const [nome, extra, okFn] of casi) {
+    const page = await apri(mkSave(extra.age, extra));
+    await page.waitForFunction(() => !!(window.__CPM_CAREER && window.__CPM_CAREER.milePool), { timeout: 20000 });
+    const n = await page.evaluate(() => window.__CPM_CAREER.milePool());
+    await page.close();
+    console.log(`(F) ${nome}: milePool ${n}`);
+    if (!okFn(n)) guasti.push(`(F) ${nome}: milePool ${n} fuori attesa`);
+  }
 }
 await b.close(); srv.close();
 if (guasti.length) { console.log(`\n❌ FAIL — ${guasti.length}`); guasti.forEach(g => console.log('  · ' + g)); process.exit(2); }

@@ -1665,6 +1665,57 @@ const WEEKLY_IMPULSES=[
     {txt:"🕊 Faccio da paciere stasera",ef:{chem:10,coachTrust:6,fatigue:5}},
     {txt:"🙈 Non mi immischio",ef:{chem:-5}},
   ]},
+  /* [7.435.0 evolutiva PO «anche il primo anno da calciatore ed il primo da professionista devono
+     essere memorabili»] LE PIETRE MILIARI: sei impulsi per la PRIMA STAGIONE (S.1) e sei per il
+     PRIMO ANNO DA PRO (proSeason). Una-tantum, privilegiati dal picker come l'addio (flag mile). */
+  {id:"wi_es_busta",once:true,mile:true,cat:"esordio",cond:p=>(p.season||1)===1,txt:"La prima busta paga vera della tua vita. Non è una cifra da copertina — ma è TUA, e l'hai guadagnata col pallone.",choices:[
+    {txt:"📸 Foto alla busta, dritta in famiglia",ef:{morale:6}},
+    {txt:"🏦 Da parte, testa bassa: è solo l'inizio",ef:{morale:3,form:2}},
+  ]},
+  {id:"wi_es_canzone",once:true,mile:true,cat:"esordio",cond:p=>(p.season||1)===1,txt:"Rito d'iniziazione: l'esordiente canta in piedi sulla sedia davanti a tutta la squadra. Stasera tocca a te.",choices:[
+    {txt:"🎤 Salgo e canto: playlist della nonna, senza vergogna",ef:{morale:7,chem:6}},
+    {txt:"🙈 Stono apposta per farla finire prima",ef:{chem:3,morale:3}},
+  ]},
+  {id:"wi_es_autografo",once:true,mile:true,cat:"esordio",cond:p=>(p.season||1)===1,txt:"Un bambino ti ferma fuori dal campo... e chiede l'autografo al compagno accanto a te. Poi ti squadra: «Vabbè, firmami pure tu».",choices:[
+    {txt:"😂 Firmo con dedica: «Al mio primo tifoso per sbaglio»",ef:{morale:6,popularity:2}},
+    {txt:"😤 Un giorno la fila la farà per me",ef:{form:2,morale:2}},
+  ]},
+  {id:"wi_es_bar",once:true,mile:true,cat:"esordio",cond:p=>(p.season||1)===1,txt:"Il bar del paese ha incorniciato la tua prima convocazione: sta tra la squadra dell'82 e la foto del sindaco.",choices:[
+    {txt:"🥹 Passo a firmare la cornice di persona",ef:{popularity:4,morale:5}},
+    {txt:"☕ Caffè pagato per tutti, una volta sola",ef:{popularity:5,bank:-1500,morale:3}},
+  ]},
+  {id:"wi_es_prof",once:true,mile:true,cat:"esordio",cond:p=>(p.season||1)===1,txt:"Chiama il tuo vecchio professore: «Il pallone va benissimo, ma il diploma? Ti tengo il posto».",choices:[
+    {txt:"📚 Studio nei ritiri — promesso davvero",ef:{morale:4,fatigue:2}},
+    {txt:"⚽ Il campo è la mia scuola adesso, prof",ef:{form:3,morale:2}},
+  ]},
+  {id:"wi_es_muretto",once:true,mile:true,cat:"esordio",cond:p=>(p.season||1)===1,txt:"I bimbi del muretto sotto casa ti chiedono il pallone dell'allenamento. Non uno qualsiasi: IL pallone.",choices:[
+    {txt:"⚽ Glielo lascio: è cominciato tutto lì",ef:{morale:6,popularity:3}},
+    {txt:"🛒 Ne porto uno NUOVO per tutti, domani",ef:{bank:-1000,popularity:5,morale:4}},
+  ]},
+  {id:"wi_pro_firma",once:true,mile:true,cat:"primopro",cond:p=>(p.proStatus||"u18")==="pro"&&p.proSeason===(p.season||1),txt:"Il primo contratto da professionista: tre copie da firmare e la penna del club che non scrive. Firmi con quella del magazziniere.",choices:[
+    {txt:"✒️ Gliela chiedo in regalo: va in cornice",ef:{morale:6}},
+    {txt:"🧊 Conta la firma, non la penna",ef:{form:2,morale:3}},
+  ]},
+  {id:"wi_pro_armadietto",once:true,mile:true,cat:"primopro",cond:p=>(p.proStatus||"u18")==="pro"&&p.proSeason===(p.season||1),txt:"Il tuo armadietto era di una bandiera del club. Dentro c'è ancora un suo biglietto: «A chi arriva dopo di me: portalo con onore».",choices:[
+    {txt:"🥹 Resta attaccato lì per tutta la mia carriera",ef:{morale:7}},
+    {txt:"🖼️ Lo faccio incorniciare per il museo del club",ef:{popularity:4,chem:3}},
+  ]},
+  {id:"wi_pro_procuratore",once:true,mile:true,cat:"primopro",cond:p=>(p.proStatus||"u18")==="pro"&&p.proSeason===(p.season||1)&&!p.hasAgent,txt:"Fuori dal centro sportivo ti aspetta un procuratore con due biglietti da visita e tre promesse.",choices:[
+    {txt:"🧊 Non ora: al primo anno parla il campo",ef:{coachTrust:4,morale:2}},
+    {txt:"📇 Prendo il biglietto — mai dire mai",ef:{popularity:2}},
+  ]},
+  {id:"wi_pro_store",once:true,mile:true,cat:"primopro",cond:p=>(p.proStatus||"u18")==="pro"&&p.proSeason===(p.season||1),txt:"Allo store del club è comparsa LA TUA maglia. Entri col cappuccio e ne compri una di nascosto, come un ladro.",choices:[
+    {txt:"🛍️ Due: una per me e una per mamma",ef:{bank:-3000,morale:7}},
+    {txt:"😎 Chiedo al commesso se vende: «benino», dice",ef:{popularity:3,morale:4}},
+  ]},
+  {id:"wi_pro_regola",once:true,mile:true,cat:"primopro",cond:p=>(p.proStatus||"u18")==="pro"&&p.proSeason===(p.season||1),txt:"Il veterano ti si siede accanto in pullman: «Regola uno: quello che vedi qui resta qui. Regola due: i cornetti del giovedì li porti tu».",choices:[
+    {txt:"🥐 Giovedì: cornetti per tutti, anche il mister",ef:{chem:7,morale:3,bank:-500}},
+    {txt:"📓 Prendo appunti. Letteralmente.",ef:{morale:4,coachTrust:3}},
+  ]},
+  {id:"wi_pro_battesimo",once:true,mile:true,cat:"primopro",cond:p=>(p.proStatus||"u18")==="pro"&&p.proSeason===(p.season||1),txt:"Battesimo dello spogliatoio dei grandi: scarpe appese al soffitto e borsa nel congelatore. Ridono tutti — aspettano la tua reazione.",choices:[
+    {txt:"😂 Rido più forte di loro: adesso sono dentro",ef:{chem:8,morale:5}},
+    {txt:"🧊 Recupero tutto in silenzio. Domani mi vendico.",ef:{chem:4,form:2}},
+  ]},
   /* [7.433.0 evolutiva PO «l'ultima stagione deve essere indimenticabile, con eventi divertenti,
      attestati di stima ecc»] GLI IMPULSI DELL'ADDIO: escono solo nella stagione annunciata
      (retireAnnounced), sono una-tantum e il picker li PRIVILEGIA — l'ultima stagione non puo'
@@ -4611,7 +4662,8 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="7.434.0"; // [7.434.0 collaudo PO «non ci devono essere burattini nelle scene 3D!» (screenshot: il manichino grigio del mister accanto agli uomini GLB della premiazione)]: GLB-ON IL MISTER E' UN ATTORE VERO — actor-presenter.glb (l'uomo in abito del drop-in 7.141), scalato dalle OSSA (il bbox dei SkinnedMesh mente, lezione 7.141), piedi a terra, braccia abbassate dal T-pose con la rotazione world-space della sala stampa (7.142); il low-poly resta solo come fallback GLB-OFF (dove tutto il teatro e' low-poly, quindi coerente). DUE LEZIONI PAGATE E MISURATE IN SESSIONE: (1) il rig dell'attore e' Biped/Rocketbox (Bip01_R_UpperArm), non mixamo — il primo matcher trovava zero ossa e l'attore restava in T-POSE (sonda arms:false + screenshot agli atti): ora il matcher e' quello tollerante del 7.142 (rupperarm/rforearm inclusi); (2) i GESTI (applauso, abbraccio) non scrivono euler per-rig (lezione 7.340: su Biped cadono male) ma ruotano in WORLD-SPACE attorno all'asse laterale del personaggio, dalla base in quaternione catturata dopo la posa. Verificato GLB-ON con la sonda beat-warp: glb:true, arms:true, niente T-pose, mister umano che cammina verso l'eroe nel beat coach.
+const GAME_VERSION="7.435.0"; // [7.435.0 evolutiva PO «anche il primo anno da calciatore ed il primo da professionista devono essere memorabili»]: LE PIETRE MILIARI, speculari alla stagione d'addio (7.433). (1) PRIMA STAGIONE (S.1), sei impulsi una-tantum: la prima busta paga (foto in famiglia), la canzone dell'esordiente in piedi sulla sedia, il primo autografo chiesto per sbaglio al compagno, la convocazione incorniciata al bar del paese tra la squadra dell'82 e il sindaco, il professore che tiene il posto per il diploma, IL pallone lasciato ai bimbi del muretto. (2) PRIMO ANNO DA PRO (nuovo campo `proSeason`, scritto SOLO al salto u18→pro nei due writer della promozione — offerta e trasferimento — mai sovrascritto): la firma con la penna del magazziniere, l'armadietto della bandiera col biglietto «portalo con onore», il procuratore fuori dal centro sportivo, la propria maglia comprata allo store col cappuccio, la regola dei cornetti del giovedi', il battesimo dello spogliatoio (borsa nel congelatore). (3) il picker privilegia TUTTE le pietre miliari (flag mile, 6 settimane su 10 finche' non vissute) e la probe `milePool` le misura. Guardiano esteso, scenario (F): S.1 → pool 6, primo anno pro → 6, meta' carriera → 0 (rosso strutturale pre-7.435).
+// [nota 7.434.0] [7.434.0 collaudo PO «non ci devono essere burattini nelle scene 3D!» (screenshot: il manichino grigio del mister accanto agli uomini GLB della premiazione)]: GLB-ON IL MISTER E' UN ATTORE VERO — actor-presenter.glb (l'uomo in abito del drop-in 7.141), scalato dalle OSSA (il bbox dei SkinnedMesh mente, lezione 7.141), piedi a terra, braccia abbassate dal T-pose con la rotazione world-space della sala stampa (7.142); il low-poly resta solo come fallback GLB-OFF (dove tutto il teatro e' low-poly, quindi coerente). DUE LEZIONI PAGATE E MISURATE IN SESSIONE: (1) il rig dell'attore e' Biped/Rocketbox (Bip01_R_UpperArm), non mixamo — il primo matcher trovava zero ossa e l'attore restava in T-POSE (sonda arms:false + screenshot agli atti): ora il matcher e' quello tollerante del 7.142 (rupperarm/rforearm inclusi); (2) i GESTI (applauso, abbraccio) non scrivono euler per-rig (lezione 7.340: su Biped cadono male) ma ruotano in WORLD-SPACE attorno all'asse laterale del personaggio, dalla base in quaternione catturata dopo la posa. Verificato GLB-ON con la sonda beat-warp: glb:true, arms:true, niente T-pose, mister umano che cammina verso l'eroe nel beat coach.
 // [nota 7.433.0] [7.433.0 evolutiva PO «l'ultima stagione deve essere indimenticabile, con eventi divertenti, attestati di stima ecc»]: la stagione annunciata (7.432) ora si RIEMPIE. (1) SEI IMPULSI DELL'ADDIO, una-tantum e solo da annunciato (il portiere che chiede la maglia NEL TUNNEL prima della gara; il mister che offre il cambio all'85' per l'ovazione — o i novanta minuti fino al fischio; la teca segreta del magazziniere; il docufilm «L'ultima stagione»; il video a sorpresa dei capitani della lega chiuso dal rivale; l'ultima lezione alla scuola calcio del quartiere) — e il picker li PRIVILEGIA (6 settimane su 10 finche' non sono vissuti tutti): l'ultima stagione non e' una stagione qualunque. (2) GLI ATTESTATI DI STIMA nel MONDO FUORI: il rivale di sempre rompe il silenzio («giocargli contro e' stato l'onore piu' grande... ma l'ultima la vinco io») e la Lega annuncia il PREMIO ALLA CARRIERA da giocatore in attivita' — ciascuno scrive un ATTESTATO nel diario (type addio), che resta agli atti della carriera. (3) probe addioPool nel harness carriera. Guardiano esteso con lo scenario (D): annunciato → pool addio ≥5, non annunciato → 0 (rosso strutturale pre-7.433: il pool non esisteva).
 // [nota 7.432.0] [7.432.0 EVOLUTIVA PO «la funzionalita' annuncio del ritiro ad inizio stagione sei riuscito a farla?» — L'ULTIMA STAGIONE SI ANNUNCIA E SI VIVE]: non esisteva (il ritiro era solo fine-carriera: forzato a 40, proposto a fine stagione dai 35, manuale dalle Opzioni). Ora: (1) dai 34 anni il WIZARD D'APERTURA propone la card «L'ultima stagione?» (chiave `addio` — `ritiro` era gia' il ritiro pre-campionato) UNA volta per stagione: annunciando si persiste `retireAnnounced` (morale+6, popolarita'+8, diario e log dell'annuncio), rimandando si persiste `retireAskedSeason` (non lo richiede piu' quell'anno); (2) la STAGIONE D'ADDIO si vede e si sente — banner «Tour d'addio» sul dashboard ogni settimana e voci del MONDO FUORI dedicate (lo stadio avversario sold-out, la sciarpa della curva rivale, il telecronista che dice «godetevelo»); (3) la FINE STAGIONE onora l'annuncio: niente «Inizia Stagione», il bottone primario e' «Il giorno dell'addio» e porta alla cerimonia celebrativa ESISTENTE (lettera, maglia ritirata se bandiera, legacy — riuso 7.20/7.258), con guard PER COSTRUZIONE dentro doStartNewSeason (lezione 7.258: qualunque path chiami il rollover di un annunciato finisce alla cerimonia, mai a una stagione nuova). Guardiano retire-announce-test (rosso provato pre-cablaggio: card assente a 35 anni, bottone d'addio assente): card a 34+ e mai a 28, flag persistito, fine stagione senza rollover, ritiro persistito dopo l'addio.
 // [nota 7.431.0] [7.431.0 collaudo PO «occhio che il braccio al saluto alla presentazione e' troppo all'indietro»]: taratura del bersaglio del saluto — a x=-2,45 il braccio superava la verticale e pendeva dietro la testa; ora il blend si ferma a x=-1,95 (alzato e leggermente AVANTI, verso i tifosi), verificato a vista sul riproduttore della Serata; stessa taratura sul saluto della parata (-2,35 → -1,9). Nessun altro cambiamento.
@@ -26692,6 +26744,7 @@ const getThisWeekMatchday=()=>{
       thisWeekMd:()=>{try{const m=getThisWeekMatchday();return m?{matchday:m.matchday,week:m.week,opp:m.opponentName,type:m.type||null}:null;}catch(e){return "error:"+(e&&e.message);}},/* [7.312.0] la probe anti-duplicato interroga la stessa funzione che serve la gara al giocatore */
       goTab:(t)=>{try{setTab(t);setScreen(t);return true;}catch(e){return "error:"+(e&&e.message);}},
       addioPool:()=>{try{return WEEKLY_IMPULSES.filter(im=>im.addio&&(!im.cond||im.cond(player))&&!((player.impulseSeen||{})[im.id])).length;}catch(e){return "error:"+(e&&e.message);}},/* [7.433.0] la sonda della stagione d'addio */
+      milePool:()=>{try{return WEEKLY_IMPULSES.filter(im=>im.mile&&(!im.cond||im.cond(player))&&!((player.impulseSeen||{})[im.id])).length;}catch(e){return "error:"+(e&&e.message);}},/* [7.435.0] la sonda delle pietre miliari (esordio/primo pro) */
       presBeats:()=>{try{return presBeats();}catch(e){return null;}},
       roster:()=>{try{return generateTeamRoster(player.club||{},player.season||1);}catch(e){return null;}},
       sagaView:()=>{try{const v=sagaView(player);return v?{id:v.A.id,ep:v.ix,tot:v.A.eps.length}:null;}catch(e){return null;}},/* [7.308.0] la probe legge quale episodio e' a schermo */
@@ -29283,12 +29336,12 @@ const getThisWeekMatchday=()=>{
       const _pickPool=impulseFreshBucket(WEEKLY_IMPULSES,_seenImp85,player.impulseSeen||{},_impCond);
       /* [7.433.0] la stagione d'addio non e' una stagione qualunque: se ci sono impulsi dell'addio
          ancora da vivere, 6 settimane su 10 tocca a loro */
-      const _fw433=(player.retireAnnounced===(player.season||1))?WEEKLY_IMPULSES.filter(im=>im.addio&&_impCond(im)&&!(player.impulseSeen||{})[im.id]):[];
+      const _fw433=WEEKLY_IMPULSES.filter(im=>(im.addio||im.mile)&&_impCond(im)&&!(player.impulseSeen||{})[im.id]);/* [7.435.0] pietre miliari: addio + esordio + primo anno pro — le cond fanno gia' la stagione giusta */
       const impulse=(_fw433.length&&Math.random()<0.6)?pick(_fw433):(_pickPool.length?pick(_pickPool):null);
       if(impulse){
         _lastImpulseId=impulse.id;
         setPlayer(p=>({...p,weekLived:true,recentImpulses:[...(p.recentImpulses||[]),impulse.id].slice(-40),impulseSeen:{...(p.impulseSeen||{}),[impulse.id]:((p.impulseSeen||{})[impulse.id]||0)+1}}));/* [7.106.0] memoria ravvicinata 40 · [7.159.0 C] +contatore a vita per l'anti-ripetizione di lungo periodo */
-        const catIcon={opportunità:"🌟",scelta:"⚡",tensione:"🔥",conseguenza:"🎲",addio:"🏁"}[impulse.cat]||"💡";
+        const catIcon={opportunità:"🌟",scelta:"⚡",tensione:"🔥",conseguenza:"🎲",addio:"🏁",esordio:"🐣",primopro:"🌱"}[impulse.cat]||"💡";
         setTimeout(()=>setWeekLiveModal({event:{txt:resolveEvText(impulse.txt,player),e:catIcon},changes:{},choices:impulse.choices,isImpulse:true,cat:impulse.cat,coachMsg:_liveCoachMsg}),50);/* [7.8.5] resolveEvText → sostituisce {DERBY}/{RIVAL} anche negli impulsi */
         return;
       }
@@ -30486,7 +30539,7 @@ const getThisWeekMatchday=()=>{
       //   dell'Under 18 (rosa/mister del vecchio club) → spogliatoio incoerente col nuovo club senior.
       const _proTeammates=generateTeammates({...base,club:offer.club,proStatus:"pro"});
       const _proCoach={name:"Mister "+pick(COACH_NAMES),style:"Bilanciato",trustMod:0};
-      return{...base,club:offer.club,isU18:false,proStatus:"pro",teammates:_proTeammates,coach:_proCoach,fitnessCoachRel:50,assistantCoachRel:50,teamChemistry:45,/* [7.325.0] primo spogliatoio da pro: i rapporti della Primavera non ti seguono */...(_cupPro?{cup:_cupPro,calendar:_calPro}:{}),value:Math.max(0.5,(p.value||0.8)+0.5),popularity:clamp((p.popularity||20)+popGain(p,15),0,100),log:[`🎓 PROFESSIONISTA! ${offer.contractType} con ${offer.club?.n||offer.club?.name}!`,...(p.log||[])].slice(0,60)};
+      return{...base,club:offer.club,isU18:false,proStatus:"pro",...( (p.proStatus||"u18")!=="pro"?{proSeason:(p.season||1)}:{} ),/* [7.435.0] l'anno del salto: gli impulsi del primo anno da pro leggono questo */teammates:_proTeammates,coach:_proCoach,fitnessCoachRel:50,assistantCoachRel:50,teamChemistry:45,/* [7.325.0] primo spogliatoio da pro: i rapporti della Primavera non ti seguono */...(_cupPro?{cup:_cupPro,calendar:_calPro}:{}),value:Math.max(0.5,(p.value||0.8)+0.5),popularity:clamp((p.popularity||20)+popGain(p,15),0,100),log:[`🎓 PROFESSIONISTA! ${offer.contractType} con ${offer.club?.n||offer.club?.name}!`,...(p.log||[])].slice(0,60)};
     });
     if(offer.isStayU18){setScreen("dashboard");setTab("dashboard");notify("🔄 Resti in Under 18!",TH.warning);return;}
     setPresentationData({club:offer.club,contractType:offer.contractType||"Primo contratto professionistico",playerName:player.name});
@@ -30892,7 +30945,7 @@ const getThisWeekMatchday=()=>{
       const _newWage98=tc.wage||Math.round((p.ovr||65)*50);
       const _newDur98=tc.duration||2;
       const _newContract98={duration:_newDur98,wage:_newWage98,expiresAtSeason:(p.season||1)+_newDur98};
-      return{...p,club:newClub,isU18:false,proStatus:"pro",contractExpired:false,transferListed:false,transferRequest:null,/* [7.282.0] cambiando maglia la vecchia richiesta di cessione decade: restava lì, respinta, anche due club dopo */isCaptain:false,seasonObjectives:(function(){/* [7.294.0 direttiva PO «anche obiettivo seconda squadra»] il club che ti prende a
+      return{...p,club:newClub,isU18:false,proStatus:"pro",...( (p.proStatus||"u18")!=="pro"?{proSeason:(p.season||1)}:{} ),/* [7.435.0] idem: salto a pro via trasferimento */contractExpired:false,transferListed:false,transferRequest:null,/* [7.282.0] cambiando maglia la vecchia richiesta di cessione decade: restava lì, respinta, anche due club dopo */isCaptain:false,seasonObjectives:(function(){/* [7.294.0 direttiva PO «anche obiettivo seconda squadra»] il club che ti prende a
         stagione in corso non puo' chiederti il bottino di un anno intero (ne' vederselo gia' pagato dai gol fatti
         altrove): il bersaglio si riscala sulle giornate che restano e il conto riparte da questa maglia. */
         const _rem=clamp((38-(p.week||1))/38,0.2,1);
