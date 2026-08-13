@@ -34,10 +34,10 @@ const mkSave = (age, extra) => ({ phase: 'career', player: {
   contract: { duration: 2, wage: 30000, expiresAtSeason: 7 },
   ...extra } });
 
-async function apri(save) {
+async function apri(save, opts = {}) {
   const page = await b.newPage({ viewport: { width: 412, height: 915 } });
   await installCdnRoutes(page);
-  await page.addInitScript(sv => { window.__CPM_GLB = false; localStorage.setItem('cpm-v3', JSON.stringify(sv)); }, save);
+  await page.addInitScript(cfg => { window.__CPM_GLB = false; if (cfg.no445) window.__CPM_NO445 = 1; localStorage.setItem('cpm-v3', JSON.stringify(cfg.sv)); }, { sv: save, no445: !!opts.no445 });
   await page.goto(`http://localhost:${port}/CARRIER-MANAGER-AV.html?cpmtest=1`, { waitUntil: 'load', timeout: 40000 });
   await page.waitForFunction(() => { const r = document.getElementById('root'); return r && r.children.length > 0; }, { timeout: 40000 });
   await sleep(1600);
@@ -180,6 +180,73 @@ const guasti = [];
     console.log(`(F) ${nome}: milePool ${n}`);
     if (!okFn(n)) guasti.push(`(F) ${nome}: milePool ${n} fuori attesa`);
   }
+}
+/* (H) [collaudo PO, screenshot Fine Stagione 22 da campioni, con il ritiro gia' annunciato: «il presidente
+   spara solo cazzate, mi sto ritirando»] IL PRESIDENTE CONGEDA, NON PROMETTE. A un giocatore che ha
+   annunciato l'addio il presidente diceva «Ho firmato un'estensione del contratto del mister... per te ho
+   gia' pronto qualcosa di speciale — ne parliamo presto»: un futuro che non esiste. Ora chi ha annunciato
+   sente SOLO righe di congedo, e chi e' in carriera non le sente MAI (sensibilita' della sonda dentro
+   l'assert: senza il secondo caso, un pool vuoto renderebbe il verde una non-prova). */
+{
+  const CAMPIONE = {
+    week: 38, weekLived: true,
+    standings: Array.from({ length: 18 }, (_, i) => ({ id: i === 0 ? 'sal' : 'c' + i, n: i === 0 ? 'FC Salernum' : 'Club ' + i, pts: 40 - i, played: 34, gf: 40, ga: 30, w: 12, d: 4, l: 10 })),
+    calendar: [],
+  };
+  /* stessa traversata di (C): step() fino a seasonEnd, poi gala/premi fino alla schermata di Fine Stagione */
+  const vaiAFineStagione = async (page) => {
+    await page.waitForFunction(() => !!window.__CPM_CAREER, { timeout: 20000 });
+    for (let i = 0; i < 5; i++) {
+      const r = await page.evaluate(() => { const C = window.__CPM_CAREER; const res = C.step(); C.dismiss(); return res; });
+      if (r === 'seasonEnd') break;
+      await sleep(500);
+    }
+    await sleep(2500);
+    for (let i = 0; i < 6; i++) {
+      const arrivato = await page.evaluate(() => /Il Presidente/i.test(document.body.innerText || ''));
+      if (arrivato) break;
+      const hit = await page.evaluate(() => {
+        const bs = Array.from(document.querySelectorAll('button'));
+        const b2 = bs.find(x => /Salta il gala/i.test(x.textContent || '')) || bs.find(x => /Continua alla Fine Stagione|Riepilogo/i.test(x.textContent || '')) || bs.find(x => /^Continua/.test((x.textContent || '').trim()));
+        if (b2) { b2.click(); return true; } return false;
+      });
+      if (!hit) break;
+      await sleep(2200);
+    }
+    return page.evaluate(() => {
+      const lab = Array.from(document.querySelectorAll('div')).find(d => /Il Presidente/i.test(d.textContent || '') && (d.textContent || '').trim().length < 60);
+      if (!lab || !lab.parentElement) return null;
+      const q = Array.from(lab.parentElement.querySelectorAll('div')).find(d => d !== lab && /^«/.test((d.textContent || '').trim()));
+      return q ? q.textContent.trim() : null;
+    });
+  };
+  const CONGEDO = /gratitudine di un club intero|le leggende non firmano rinnovi|un tifoso in piu|un tifoso in più/i;
+  const PROMESSE = /ne parliamo presto|estensione del contratto|prossima stagione|anno prossimo|mercato di riparazione|preparati a qualche cambiamento/i;
+
+  /* rosso PROVATO: con l'interruttore __CPM_NO445 il presidente torna a promettere futuro a chi si ritira */
+  const pR = await apri(mkSave(35, { ...CAMPIONE, retireAnnounced: 5, retireAskedSeason: 5 }), { no445: true });
+  const tR = await vaiAFineStagione(pR);
+  await pR.close();
+  console.log(`(H) rosso (__CPM_NO445): ${tR ? '«' + tR.slice(1, 80) + '…' : '(non letto)'}`);
+  if (!tR) guasti.push('(H) fase rossa: battuta non letta');
+  else if (CONGEDO.test(tR)) guasti.push(`(H) l'interruttore __CPM_NO445 non riproduce il rosso (esce comunque un congedo): «${tR.slice(1, 120)}`);
+  else console.log('(H) rosso riprodotto: senza il fix a chi si ritira arriva una riga da giocatore in attivita\' (nessun congedo) ✓');
+
+  const pA = await apri(mkSave(35, { ...CAMPIONE, retireAnnounced: 5, retireAskedSeason: 5 }));
+  const tA = await vaiAFineStagione(pA);
+  await pA.close();
+  const pB = await apri(mkSave(28, { ...CAMPIONE }));
+  const tB = await vaiAFineStagione(pB);
+  await pB.close();
+  console.log(`(H) presidente · annunciato: ${tA ? '«' + tA.slice(1, 90) + '…' : '(non letto)'}`);
+  console.log(`(H) presidente · in carriera: ${tB ? '«' + tB.slice(1, 90) + '…' : '(non letto)'}`);
+  if (!tA) guasti.push('(H) la sonda non ha letto la battuta del presidente per l\'annunciato: cieca');
+  else {
+    if (PROMESSE.test(tA)) guasti.push(`(H) al giocatore che si ritira il presidente promette futuro: «${tA.slice(1, 120)}`);
+    if (!CONGEDO.test(tA)) guasti.push(`(H) all'annunciato non arriva una riga di CONGEDO: «${tA.slice(1, 120)}`);
+  }
+  if (!tB) guasti.push('(H) la sonda non ha letto la battuta del presidente per il giocatore in carriera: strumento cieco, il verde non proverebbe nulla');
+  else if (CONGEDO.test(tB)) guasti.push(`(H) a un giocatore IN CARRIERA il presidente dice addio: «${tB.slice(1, 120)}`);
 }
 await b.close(); srv.close();
 if (guasti.length) { console.log(`\n❌ FAIL — ${guasti.length}`); guasti.forEach(g => console.log('  · ' + g)); process.exit(2); }
