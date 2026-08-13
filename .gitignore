@@ -13,3 +13,27 @@ tests/visual/out/
 # Capacitor: il progetto nativo android/ è build-output riproducibile (nessun codice
 # nativo custom: tutta la config sta in capacitor.config.json). Si rigenera con `npx cap add android`.
 android/
+
+# [security audit 2026-08-13] RETE DI SICUREZZA sui segreti.
+# L'audit ha verificato che in 1702 commit non è mai finito dentro un .env, una keystore
+# o una chiave: finora ha retto la disciplina, non una regola. Questi pattern rendono la
+# cosa strutturale — se un domani un file del genere compare nella cartella di lavoro,
+# `git add -A` non se lo porta dietro in silenzio. Nessun file oggi tracciato ne è toccato
+# (verificato: solo tests/visual/.env.example, che resta versionato di proposito perché
+# contiene esclusivamente placeholder commentati).
+.env
+.env.*
+!.env.example
+!**/.env.example
+*.jks
+*.keystore
+*.p12
+*.pem
+*.key
+credentials*
+*service-account*.json
+# rumore da ambiente locale
+*.log
+.DS_Store
+.idea/
+.vscode/

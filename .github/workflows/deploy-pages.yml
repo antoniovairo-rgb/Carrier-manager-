@@ -31,13 +31,42 @@ jobs:
 
       - name: Build static site
         run: |
+          # [security audit 2026-08-13] LISTA ESPLICITA di cio' che va online.
+          # Prima qui c'era `rsync -a` dell'INTERA root con sole quattro esclusioni
+          # (.git, _site, tests, node_modules): finivano pubblicati sul sito anche i
+          # documenti interni (CLAUDE.md, MASTER_PROMPT.md, BACKLOG, ROADMAP, docs/ con
+          # gli audit), le skill in .claude/, i workflow di CI, tools/ e versions/ —
+          # 48 build storiche del gioco per 42 MB. Materiale pubblico SENZA MOTIVO: il
+          # gioco e' client-side e deve arrivare al browser, la strategia di sviluppo no.
+          # Effetto collaterale importante: con la copia integrale, rendere PRIVATO il
+          # repository non avrebbe sottratto nulla alla rete, perche' il sito serviva
+          # comunque quei file per URL diretto.
+          # Ora si elenca cio' che serve al gioco; tutto il resto resta fuori per
+          # costruzione (una voce dimenticata fa fallire il passo e il deploy si ferma:
+          # meglio un rilascio mancato che un rilascio che pubblica troppo).
+          # VERIFICATO prima del rilascio, servendo il sito ristretto a un browser vero:
+          # 47 file / 29,3 MB, il gioco parte, zero 404, zero errori JS, privacy.html
+          # risponde (e' l'URL dichiarato a Google Play), nessun documento interno
+          # raggiungibile.
           mkdir -p _site
-          rsync -a --exclude='.git' --exclude='_site' \
-                --exclude='tests' --exclude='node_modules' \
-                ./ _site/
+          cp CARRIER-MANAGER-AV.html privacy.html sw.js manifest.webmanifest _site/
+          cp icon-192.png icon-512.png icon-maskable-512.png _site/
+          cp -r assets _site/
           # index.html = copia del file di gioco → l'URL nudo della Pages funziona
           cp _site/CARRIER-MANAGER-AV.html _site/index.html
           touch _site/.nojekyll
+
+      - name: Guardia — nessun materiale interno nel sito
+        run: |
+          # rete permanente: se un domani la copia viene riallargata, il deploy si ferma
+          # qui invece di pubblicare in silenzio i documenti interni.
+          intrusi=$(find _site -maxdepth 2 \( -name '*.md' -o -name '.claude' -o -name 'tools' \
+                    -o -name 'versions' -o -name 'docs' -o -name 'tests' -o -name '.github' \
+                    -o -name 'test.html' -o -name 'package*.json' \) -print)
+          if [ -n "$intrusi" ]; then
+            echo "::error::materiale interno finito nel sito pubblico:"; echo "$intrusi"; exit 1
+          fi
+          echo "sito pulito: $(find _site -type f | wc -l) file, $(du -sh _site | cut -f1)"
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
