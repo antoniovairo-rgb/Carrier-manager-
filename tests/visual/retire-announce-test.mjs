@@ -148,6 +148,23 @@ const guasti = [];
   if (!(typeof nA === 'number' && nA >= 5)) guasti.push(`(D) la stagione annunciata non ha gli impulsi dell'addio (pool ${nA})`);
   if (nB !== 0) guasti.push(`(D) un non-annunciato vede gli impulsi dell'addio (pool ${nB})`);
 }
+/* (G) [collaudo PO, screenshot wi_procuratore_push a W.33 dell'ultima stagione: «assurdo a poche
+   settimane dal ritiro»] LA FAMIGLIA MERCATO TACE DOPO L'ANNUNCIO: voci di mercato, agente che
+   «valutera' offerte», flash di cessione e «vuoi essere ceduto» non sono pescabili per chi ha
+   annunciato l'addio — e restano pescabili per chi non l'ha annunciato (sensibilita' della sonda). */
+{
+  const pA = await apri(mkSave(35, { week: 33, retireAnnounced: 5, retireAskedSeason: 5, hasAgent: true, agent: { rapport: 60, memory: {} } }));
+  await pA.waitForFunction(() => !!(window.__CPM_CAREER && window.__CPM_CAREER.mktPool), { timeout: 20000 });
+  const mA = await pA.evaluate(() => window.__CPM_CAREER.mktPool());
+  await pA.close();
+  const pB = await apri(mkSave(28, { week: 33, hasAgent: true, agent: { rapport: 60, memory: {} } }));
+  await pB.waitForFunction(() => !!(window.__CPM_CAREER && window.__CPM_CAREER.mktPool), { timeout: 20000 });
+  const mB = await pB.evaluate(() => window.__CPM_CAREER.mktPool());
+  await pB.close();
+  console.log(`(G) famiglia mercato: annunciato ${JSON.stringify(mA)} · in carriera ${JSON.stringify(mB)}`);
+  if (!mA || (mA.ev + mA.rnd + mA.imp) !== 0) guasti.push(`(G) la famiglia mercato parla ancora a chi ha annunciato il ritiro: ${JSON.stringify(mA)}`);
+  if (!mB || (mB.ev + mB.rnd + mB.imp) < 3) guasti.push(`(G) la sonda non vede la famiglia mercato su un giocatore in carriera (${JSON.stringify(mB)}) — strumento cieco, il verde di (G) non proverebbe nulla`);
+}
 /* (F) prime stagioni memorabili: S.1 → milePool ≥5 · primo anno pro → ≥5 · meta' carriera → 0 */
 {
   const casi = [
