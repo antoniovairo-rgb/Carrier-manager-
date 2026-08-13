@@ -83,3 +83,30 @@ jobs:
           path: tests/visual/out/validate
           retention-days: 14
           if-no-files-found: ignore
+
+  # [messa in sicurezza · FASE 5] CRITICAL CAREER TEST SUITE.
+  # L'audit forense ha trovato il buco sistemico: il gate proteggeva benissimo cio' che si VEDE (il
+  # motore 3D delle situazioni) e quasi per niente cio' che si PERDE (salvataggi, calendario, risultati,
+  # classifica). Nessun guardiano di carriera girava in CI, 225 file di test su 280 non avevano nemmeno
+  # uno script npm, e uno era morto da tempo con un import sbagliato senza che nessuno se ne accorgesse.
+  # Questi otto attraversano il runtime vero, rileggono lo stato PERSISTITO e falliscono se la logica
+  # difettosa viene reintrodotta (ognuno porta la sua prova del rosso).
+  # Job SEPARATO: gira in parallelo al gate, cosi' non ne allunga il tempo ne' rischia il timeout.
+  career-critical:
+    name: Critical Career Suite (carriera · calendario · persistenza)
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    defaults:
+      run:
+        working-directory: tests/visual
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install dependencies + Chromium
+        run: |
+          npm install
+          npx playwright install --with-deps chromium
+      - name: Critical Career Suite
+        run: npm run career-critical

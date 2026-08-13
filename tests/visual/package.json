@@ -67,7 +67,13 @@
     "retire-announce": "node retire-announce-test.mjs",
     "gk-bg-react": "node gk-bg-react-test.mjs",
     "def-far-gesture": "node def-far-gesture-test.mjs",
-    "pending-mr-durable": "node pending-mr-durable-test.mjs"
+    "pending-mr-durable": "node pending-mr-durable-test.mjs",
+    "recovery-competition": "node recovery-competition-test.mjs",
+    "save-monotonic": "node save-monotonic-test.mjs",
+    "playing-mdref": "node playing-mdref-test.mjs",
+    "double-tap": "node double-tap-test.mjs",
+    "career-critical": "npm run recovery-competition && npm run save-monotonic && npm run playing-mdref && npm run double-tap && npm run stale-matchday && npm run playedmd-registry && npm run career-invariants && npm run pending-mr-durable",
+    "playedmd-registry": "node playedmd-registry-test.mjs"
   },
   "dependencies": {
     "playwright": "^1.48.0",
