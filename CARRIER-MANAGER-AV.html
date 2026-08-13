@@ -1572,6 +1572,25 @@ const SPOGLIATOIO_MOMENTS=[
   ]},
 ];
 
+/* [7.453.0 collaudo PO «troppo presto, ha poche partite in primavera 2» — screenshot S.1 W.4, FC Calabro
+   Primavera, 70 OVR, quarta settimana di sempre] UN BRAND NON INSEGUE UN RAGAZZO DELLA PRIMAVERA.
+   L'impulso dello spot personale non aveva NESSUNA condizione: usciva a chiunque, in qualunque momento
+   della carriera. Cercandone altri come lui ne sono saltati fuori SEI, tutti della stessa famiglia
+   commerciale e tutti senza condizione — spot, endorsement, video virale, accordo con la casa
+   automobilistica, bonus-gol social, brand alimentare. Un quattordicenne con quattro presenze poteva
+   riceverli tutti. Come per l'identita' della gara, la regola sta in un posto solo: serve essere
+   PROFESSIONISTA e avere qualcosa da vendere — un minimo di carriera alle spalle OPPURE una notorieta'
+   che la anticipa (il ragazzo esploso subito esiste, quello ignoto che firma spot no). */
+const _brandOk453=(p)=>{try{return (p.proStatus||"u18")==="pro"&&(((p.totalMatches||p.matches||0)>=20)||((p.popularity||0)>=40));}catch(_e){return false;}};
+/* …e una seconda, piu' leggera, per gli impulsi che non chiedono un contratto ma solo di essere
+   RICONOSCIUTI (i tifosi fuori dal centro sportivo, l'asta della maglia, la fondazione che ti chiede
+   di metterci il nome): bastano un po' di notorieta' o l'essere passato fra i grandi. */
+const _notoOk453=(p)=>{try{return (p.proStatus||"u18")==="pro"||((p.popularity||0)>=28);}catch(_e){return false;}};
+/* Misura che ha portato a queste due righe (scanner agli atti, impulsi_primavera.mjs): contro il
+   giocatore dello screenshot — 17 anni, Primavera 2, quinta settimana di sempre, 4 presenze — erano
+   eleggibili 56 impulsi su 106, e TREDICI di essi presupponevano una carriera che quel ragazzo non ha.
+   Tredici e' un minimo, non un totale: 50 condizioni su 106 non erano valutabili fuori dal gioco. */
+
 /* ========================================
    SPRINT 24 — B: OGNI SETTIMANA CONTA (IMPULSI)
 ======================================== */
@@ -1582,7 +1601,7 @@ const WEEKLY_IMPULSES=[
     {txt:"🎬 Accetto — mi racconto",ef:{popularity:8,fatigue:5,coachTrust:-3}},
     {txt:"🚪 No grazie, prima il campo",ef:{coachTrust:3}},
   ]},
-  {id:"wi_asta_maglia",cat:"scelta",txt:"Il club dei tifosi mette all'asta la tua maglia per beneficenza e ti chiede un gesto in più.",choices:[
+  {id:"wi_asta_maglia",cond:_notoOk453/* [7.453.0] prima ti devono riconoscere */,cat:"scelta",txt:"Il club dei tifosi mette all'asta la tua maglia per beneficenza e ti chiede un gesto in più.",choices:[
     {txt:"❤️ Aggiungo gli scarpini autografati",ef:{popularity:9,morale:5,bank:-5000}},
     {txt:"👕 Va bene la maglia",ef:{popularity:3}},
   ]},
@@ -1627,7 +1646,7 @@ const WEEKLY_IMPULSES=[
     {txt:"🤫 Resti anonima, o niente",ef:{morale:5}},
   ]},
   // [5.91.0 BIL-9] dilemmi con trade-off REALI: toccano bankBalance (economia 3.2), coachTrust, chimica, fatica.
-  {id:"wi_sponsor_pers",cat:"opportunità",txt:"Un brand sportivo ti offre uno spot personale. Cachet importante, ma il mister storce il naso: «Pensa al campo».",choices:[
+  {id:"wi_sponsor_pers",cond:_brandOk453/* [7.453.0] un brand non insegue un ragazzo della Primavera */,cat:"opportunità",txt:"Un brand sportivo ti offre uno spot personale. Cachet importante, ma il mister storce il naso: «Pensa al campo».",choices:[
     {txt:"💰 Firmo — è il mio momento",ef:{bank:35000,popularity:8,coachTrust:-6}},
     {txt:"🙏 Rifiuto con eleganza",ef:{coachTrust:6,morale:-2}},
   ]},
@@ -1639,7 +1658,7 @@ const WEEKLY_IMPULSES=[
     {txt:"📈 Investo metà del conto",ef:{bank:-40000,morale:3},flag:"investment",note:"rendita a fine stagione"},
     {txt:"🏦 Tengo i soldi fermi",ef:{morale:1}},
   ]},
-  {id:"wi_beneficenza",cat:"scelta",txt:"La fondazione del club ti chiede di finanziare un campetto di quartiere, a nome tuo.",choices:[
+  {id:"wi_beneficenza",cond:_notoOk453/* [7.453.0] prima ti devono riconoscere */,cat:"scelta",txt:"La fondazione del club ti chiede di finanziare un campetto di quartiere, a nome tuo.",choices:[
     {txt:"❤️ Lo pago io",ef:{bank:-25000,popularity:12,morale:8}},
     {txt:"🤝 Partecipo solo all'evento",ef:{popularity:4}},
   ]},
@@ -1663,7 +1682,7 @@ const WEEKLY_IMPULSES=[
     {txt:"👨‍👩‍👦 Li ospito — le radici contano",ef:{morale:12,fatigue:6}},
     {txt:"📅 Rimandiamo di un mese",ef:{morale:-4,fatigue:-3}},
   ]},
-  {id:"wi_scommessa_social",once:true,cat:"conseguenza",txt:"Un tuo vecchio video da ragazzino è diventato virale. Un brand ti offre di ricreare la scena, autoironia totale.",choices:[
+  {id:"wi_scommessa_social",cond:_brandOk453/* [7.453.0] un brand non insegue un ragazzo della Primavera */,once:true,cat:"conseguenza",txt:"Un tuo vecchio video da ragazzino è diventato virale. Un brand ti offre di ricreare la scena, autoironia totale.",choices:[
     {txt:"😂 Ci sto — ridiamoci su",ef:{bank:18000,popularity:10,coachTrust:-3}},
     {txt:"🚫 Preferisco il basso profilo",ef:{coachTrust:2}},
   ]},
@@ -1824,11 +1843,11 @@ const WEEKLY_IMPULSES=[
     {txt:"📱 Guardi video motivazionali fino all'alba",ef:{morale:6,fatigue:10}},
     {txt:"🧘 Rispiri, lasci andare, dormi",ef:{morale:4,fatigue:-5,form:3}},
   ]},
-  {id:"wi_tifosi",cat:"opportunità",txt:"Un gruppo di tifosi ti aspetta fuori dal centro sportivo per foto e autografi.",choices:[
+  {id:"wi_tifosi",cond:_notoOk453/* [7.453.0] prima ti devono riconoscere */,cat:"opportunità",txt:"Un gruppo di tifosi ti aspetta fuori dal centro sportivo per foto e autografi.",choices:[
     {txt:"📸 Mi fermo 20 minuti con loro",ef:{popularity:12,morale:7,fatigue:4}},
     {txt:"🚗 Sorrido e saluto di corsa",ef:{popularity:4,morale:3}},
   ]},
-  {id:"wi_sponsor",cat:"opportunità",txt:"Un marchio sportivo propone un contratto di endorsement minore. Un segnale di visibilità.",choices:[
+  {id:"wi_sponsor",cond:_brandOk453/* [7.453.0] un brand non insegue un ragazzo della Primavera */,cat:"opportunità",txt:"Un marchio sportivo propone un contratto di endorsement minore. Un segnale di visibilità.",choices:[
     {txt:"✅ Firmo — è riconoscimento",ef:{popularity:9,value:0.05,morale:5}},
     {txt:"⏳ Aspetto qualcosa di più grande",ef:{morale:2}},
   ]},
@@ -1854,7 +1873,7 @@ const WEEKLY_IMPULSES=[
     {txt:"✅ Vado — ho bisogno di giocare",ef:{form:8,morale:9,coachTrust:-5,value:0.06}},
     {txt:"❌ Resto e mi batto qui",ef:{coachTrust:5,morale:4,fatigue:5}},
   ]},
-  {id:"wi_nazionale_b",cat:"opportunità",cond:p=>(p.age||24)<=23&&(p.nationalCaps||0)===0/* [7.161.0 M1] mai «Under B» a chi gioca già in Nazionale maggiore */,txt:"Sei convocato per un raduno della nazionale Under B. Opportunità di farti vedere a livello internazionale.",choices:[
+  {id:"wi_nazionale_b",cat:"opportunità",cond:p=>(p.age||24)<=23&&(p.nationalCaps||0)===0&&((p.totalMatches||p.matches||0)>=10)/* [7.161.0 M1] mai «Under B» a chi gioca già in Nazionale maggiore · [7.453.0 collaudo PO «troppo presto!», screenshot S.1 W.5 in Primavera 2] la condizione guardava l'eta' e i gettoni in Nazionale, mai se il ragazzo AVESSE GIOCATO: un diciassettenne alla quinta settimana di sempre, con quattro presenze, le soddisfaceva entrambe il primo giorno. Una convocazione viene DOPO delle partite */,txt:"Sei convocato per un raduno della nazionale Under B. Opportunità di farti vedere a livello internazionale.",choices:[
     {txt:"🌍 Vado — mi metto in mostra",ef:{popularity:12,form:6,morale:10,fatigue:8}},
     {txt:"🏠 Resto con il club — è un momento delicato",ef:{coachTrust:8,morale:3,form:3}},
   ]},
@@ -1879,7 +1898,7 @@ const WEEKLY_IMPULSES=[
     {txt:"🧊 Ci provo — tutto per la forma",ef:{fatigue:-16,form:6,morale:3}},
     {txt:"🚿 Preferisco la doccia calda normale",ef:{fatigue:-7,morale:5}},
   ]},
-  {id:"wi_veterano_allenamento",cat:"formazione",txt:"Un veterano della squadra si offre di allenarti in privato. È un'opportunità rara.",choices:[
+  {id:"wi_veterano_allenamento",cond:p=>(p.proStatus||"u18")==="pro"/* [7.453.0] in Primavera il ragazzo da allenare sei TU */,cat:"formazione",txt:"Un veterano della squadra si offre di allenarti in privato. È un'opportunità rara.",choices:[
     {txt:"💪 Accetto subito — esperienza preziosa",ef:{form:7,coachTrust:5,morale:7,fatigue:6}},
     {txt:"😐 Ho già il mio programma",ef:{morale:2}},
   ]},
@@ -1895,7 +1914,7 @@ const WEEKLY_IMPULSES=[
     {txt:"⛈️ All'aperto — il vero campo si gioca in tutte le condizioni",ef:{fisico:1,fatigue:13,form:5}},
     {txt:"🏋️ Al coperto — tecnica e tattica senza rischi",ef:{tecnica:1,fatigue:7,form:3}},
   ]},
-  {id:"wi_sponsor_auto",cat:"opportunità",txt:"Una casa automobilistica ti offre un accordo sponsorship. Macchina in cambio di 3 post social.",choices:[
+  {id:"wi_sponsor_auto",cond:_brandOk453/* [7.453.0] un brand non insegue un ragazzo della Primavera */,cat:"opportunità",txt:"Una casa automobilistica ti offre un accordo sponsorship. Macchina in cambio di 3 post social.",choices:[
     {txt:"🚗 Firmo — è un bel riconoscimento",ef:{popularity:8,value:0.08,morale:7}},
     {txt:"🤝 Passo — voglio restare autentico",ef:{morale:5,coachTrust:3}},
   ]},
@@ -1912,7 +1931,7 @@ const WEEKLY_IMPULSES=[
   //   con conseguenze positive o negative»] +28 dilemmi nuovi con trade-off reali (bank/morale/fatica/fiducia/
   //   popolarità/chimica/forma/valore), varietà di temi mercato/immagine/vita/spogliatoio/campo. Ognuno ha l'opzione
   //   prudente a costo ~zero → il player non è mai forzato a spendere. Anti-ripetizione allargata (recentImpulses -40).
-  {id:"wi_auto_lusso",cat:"scelta",txt:"Un concessionario ti presta un'auto di lusso per un mese in cambio di qualche post social.",choices:[
+  {id:"wi_auto_lusso",cond:_brandOk453/* [7.453.0] un brand non insegue un ragazzo della Primavera */,cat:"scelta",txt:"Un concessionario ti presta un'auto di lusso per un mese in cambio di qualche post social.",choices:[
     {txt:"🚗 Accetto — che spettacolo",ef:{popularity:6,morale:4,coachTrust:-3}},
     {txt:"🚙 Tengo la mia, niente distrazioni",ef:{coachTrust:4,morale:-1}},
   ]},
@@ -1964,11 +1983,11 @@ const WEEKLY_IMPULSES=[
     {txt:"🔥 Rispondo in conferenza",ef:{popularity:3,coachTrust:-4,morale:-2}},
     {txt:"💪 Uso la rabbia in campo",ef:{form:4,morale:3}},
   ]},
-  {id:"wi_bonus_gol_social",cat:"opportunità",txt:"Uno sponsor mette un bonus per ogni tuo gol del mese, ma vuole il logo sui tuoi social.",choices:[
+  {id:"wi_bonus_gol_social",cond:_brandOk453/* [7.453.0] un brand non insegue un ragazzo della Primavera */,cat:"opportunità",txt:"Uno sponsor mette un bonus per ogni tuo gol del mese, ma vuole il logo sui tuoi social.",choices:[
     {txt:"💸 Ci sto",ef:{bank:8000,popularity:4,coachTrust:-2}},
     {txt:"🚫 Niente vetrine sui social",ef:{coachTrust:3}},
   ]},
-  {id:"wi_casa_citta",cat:"conseguenza",txt:"Puoi comprare casa in città: ti radichi alla piazza, ma immobilizzi liquidità.",choices:[
+  {id:"wi_casa_citta",cond:p=>_brandOk453(p)&&((p.bank||0)+(p.bankBalance||0))>=250000/* [7.453.0] non si compra casa/un ristorante senza averci i soldi */,cat:"conseguenza",txt:"Puoi comprare casa in città: ti radichi alla piazza, ma immobilizzi liquidità.",choices:[
     {txt:"🏠 Compro — è casa mia",ef:{bank:-45000,morale:6,popularity:4}},
     {txt:"🔑 Resto in affitto, più libero",ef:{morale:1}},
   ]},
@@ -2004,7 +2023,7 @@ const WEEKLY_IMPULSES=[
     {txt:"😴 Stacco e ricarico",ef:{fatigue:-10,form:-1}},
     {txt:"🏃 Lavoro sui dettagli",ef:{form:5,fatigue:4}},
   ]},
-  {id:"wi_ristorante_socio",cat:"conseguenza",txt:"Ti propongono di entrare come socio in un ristorante di lusso in centro.",choices:[
+  {id:"wi_ristorante_socio",cond:p=>_brandOk453(p)&&((p.bank||0)+(p.bankBalance||0))>=120000/* [7.453.0] non si compra casa/un ristorante senza averci i soldi */,cat:"conseguenza",txt:"Ti propongono di entrare come socio in un ristorante di lusso in centro.",choices:[
     {txt:"🍽 Investo e ci metto la faccia",ef:{bank:-28000,popularity:6},flag:"investment",note:"rendita se l'attività gira"},
     {txt:"🤔 Troppo rischio adesso",ef:{morale:1}},
   ]},
@@ -2016,7 +2035,7 @@ const WEEKLY_IMPULSES=[
     {txt:"🎂 Esco a salutarli tutti",ef:{popularity:7,morale:6,fatigue:3}},
     {txt:"🏠 Festeggio in famiglia",ef:{morale:5,fatigue:-3}},
   ]},
-  {id:"wi_dieta_brand",cat:"scelta",txt:"Un brand alimentare ti paga per seguire e mostrare i loro pasti per una settimana.",choices:[
+  {id:"wi_dieta_brand",cond:_brandOk453/* [7.453.0] un brand non insegue un ragazzo della Primavera */,cat:"scelta",txt:"Un brand alimentare ti paga per seguire e mostrare i loro pasti per una settimana.",choices:[
     {txt:"🥦 Accetto e mi adatto",ef:{bank:12000,form:-2,morale:-2}},
     {txt:"🍖 Non cambio alimentazione ora",ef:{form:2}},
   ]},
@@ -4685,7 +4704,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="7.452.0"; // [7.450.0 MESSA IN SICUREZZA · P0 #4 dell'audit forense — UN TOCCO DOPPIO APPLICAVA L'AZIONE DUE VOLTE]: nessuna guardia di rientranza sugli handler che cambiano lo stato; due tocchi ravvicinati passavano entrambi prima che React richiudesse il modal. MISURATO: doppio tap su «Conferma avanzamento» = DUE settimane in un colpo, economia applicata due volte (+60.000 invece di +30.000) e la partita della settimana auto-simulata senza poterla giocare; doppio tap su una scelta d'evento = effetti raddoppiati (fatica +8 invece di +4, popolarita' +10 invece di +5, fiducia -12 invece di -6). LA PROTEZIONE NON E' UN TIMEOUT: e' un lock legato al CICLO DI RENDER, che si arma quando l'azione parte e si rilascia da solo appena React ha completato un render — cioe' esattamente quando un secondo tocco non e' piu' un duplicato ma una nuova intenzione. Nessun blocco permanente possibile: il rilascio non dipende dalla riuscita dell'operazione (verificato: dopo il doppio tap la carriera prosegue col percorso reale). +contatore test-only delle applicazioni REALI: l'invariante «una intenzione = una applicazione» va misurato li', non sui valori — quale evento venga estratto e' casuale, il numero di applicazioni no. GUARDIANO double-tap-test, NEL GATE: prova del ROSSO (__CPM_NO_P0_4: Δ2 settimane, 2 applicazioni dell'evento) e i casi — click singolo invariato, doppio tap con una sola applicazione, gioco ancora usabile dopo, evento non raddoppiato.
+const GAME_VERSION="7.453.0"; // [7.450.0 MESSA IN SICUREZZA · P0 #4 dell'audit forense — UN TOCCO DOPPIO APPLICAVA L'AZIONE DUE VOLTE]: nessuna guardia di rientranza sugli handler che cambiano lo stato; due tocchi ravvicinati passavano entrambi prima che React richiudesse il modal. MISURATO: doppio tap su «Conferma avanzamento» = DUE settimane in un colpo, economia applicata due volte (+60.000 invece di +30.000) e la partita della settimana auto-simulata senza poterla giocare; doppio tap su una scelta d'evento = effetti raddoppiati (fatica +8 invece di +4, popolarita' +10 invece di +5, fiducia -12 invece di -6). LA PROTEZIONE NON E' UN TIMEOUT: e' un lock legato al CICLO DI RENDER, che si arma quando l'azione parte e si rilascia da solo appena React ha completato un render — cioe' esattamente quando un secondo tocco non e' piu' un duplicato ma una nuova intenzione. Nessun blocco permanente possibile: il rilascio non dipende dalla riuscita dell'operazione (verificato: dopo il doppio tap la carriera prosegue col percorso reale). +contatore test-only delle applicazioni REALI: l'invariante «una intenzione = una applicazione» va misurato li', non sui valori — quale evento venga estratto e' casuale, il numero di applicazioni no. GUARDIANO double-tap-test, NEL GATE: prova del ROSSO (__CPM_NO_P0_4: Δ2 settimane, 2 applicazioni dell'evento) e i casi — click singolo invariato, doppio tap con una sola applicazione, gioco ancora usabile dopo, evento non raddoppiato.
 // [nota 7.449.0] [7.449.0 MESSA IN SICUREZZA · P0 #3 dell'audit forense — IL RIFERIMENTO ALLA GARA APERTA SOPRAVVIVEVA ALL'USCITA]: `_playingMdRef` descrive la gara di CLUB aperta da startMatch, ma veniva azzerato SOLO da onMatchEnd: uscire dal pre-partita (onQuit) o essere respinti dai suoi return anticipati («non convocato», avversario non risolvibile) lo lasciava CARICO. E il consumo in onMatchEnd avveniva per QUALUNQUE fine partita, comprese quelle di Nazionale, che non passano da startMatch e non lo impostano mai. Catena: apro il pre-partita di campionato, torno indietro, gioco in Nazionale — e il commit registra come giocata una giornata di campionato mai disputata, che la bonifica chiude subito dopo. Stagione a 33 su 34 senza che nulla lo segnali. CICLO DI VITA RICOSTRUITO invece di un reset indiscriminato: il riferimento nasce all'apertura della gara, si INVALIDA su ogni percorso d'uscita dal pre-partita (onQuit e i due return anticipati) e si CONSUMA solo nei contesti di CLUB (career/cup/euro) — una gara di Nazionale non tocca piu' una giornata di campionato, ed e' la rete che copre anche le uscite non previste. +sonda test-only `__CPM_CAREER.mdRef()`: senza, il guardiano misurerebbe gli effetti e non la causa. GUARDIANO playing-mdref-test, NEL GATE: prova del ROSSO (__CPM_NO_P0_3: nel pre-partita il riferimento e' carico e resta carico dopo l'uscita) + i percorsi — uscita che invalida, calendario e presenze immutati dopo un'uscita, riapertura coerente con la gara vera, partita realmente giocata che si committa ancora.
 // [nota 7.448.0] [7.448.0 MESSA IN SICUREZZA · P0 #2 dell'audit forense — UN SALVATAGGIO PIU' VECCHIO POTEVA SOVRASCRIVERE IL PIU' RECENTE]: `storage.save` e' async e non aveva ne' coda ne' sequenza. Nel browser non si vede (localStorage e' sincrono) ma la build pubblicata su Play Store gira su `window.storage` = @capacitor/preferences, iniettato da tools/build-dist.mjs, dove la scrittura passa da un BRIDGE ASINCRONO: due salvataggi concorrenti potevano completare FUORI ORDINE, e `savedAt` veniva scritto ma mai riletto, quindi nulla se ne accorgeva. DIMOSTRATO a runtime con un bridge finto a latenza pilotata: stato A → parte l'autosave (bridge occupato) → stato B → l'app va in background → il flush salva B → il salvataggio di A completa DOPO e riscrive il disco con lo stato vecchio (memoria 2222, disco 1111). Su Android significa perdere una partita, una settimana, a volte una stagione — ed e' anche una spiegazione a monte della «partita gia' giocata», perche' un save che torna indietro riporta in calendario una gara gia' disputata. CURA MINIMA, nessuna infrastruttura nuova e formato del salvataggio IMMUTATO: una CODA per chiave (le scritture si susseguono nell'ordine in cui sono state chieste, mai sovrapposte) e uno SCARTO delle scritture gia' superate (se mentre A aspetta il turno e' arrivata B, A non viene scritta: il suo contenuto e' vecchio per definizione). GUARDIANO save-monotonic-test, NEL GATE: prova del ROSSO incorporata (__CPM_NO_P0_2 ripristina le scritture concorrenti → il disco torna a 1111) e sei scenari — vecchio-lento contro nuovo-veloce, tre scritture a latenza decrescente, salvataggio normale non bloccato, ramo browser invariato, ramo bridge nativo, riapertura dell'app che rilegge l'ultimo stato.
 // [nota 7.447.0] [7.447.0 MESSA IN SICUREZZA · P0 #1 dell'audit forense — IL RECUPERO DOPO UN RIAVVIO CONFONDEVA LE COMPETIZIONI]: e' la vera causa della «partita gia' giocata» che il PO segnala da nove collaudi. Il recovery del sidecar cercava la gara nel calendario per AVVERSARIO e SEDE, senza mai guardare la competizione; siccome l'avversario di Coppa viene sorteggiato DALLA STESSA LEGA e il turno R16 e' cablato «in casa», per costruzione esiste SEMPRE una voce di campionato in casa contro quel club. RIPRODOTTO: recuperando una gara di Coppa, la classifica di campionato passava da 17 a 18 partite e da 40 a 43 punti per una gara mai giocata, e la giornata di lega spariva marcata come giocata. Aggravante: le due ref che portano l'identita' della gara vivono nella SESSIONE e dopo il riavvio sono vuote — `matchTypeRef` torna al default "league" (l'unico writer "cup" e' startMatch, che dopo il reboot non passa mai) e `_playingMdRef` e' null, quindi anche il ramo di commit era quello di lega. DUE CURE MINIME: (1) i candidati si filtrano per COMPETIZIONE, derivata da `result.context` che era gia' nel sidecar dal 7.24.3 — nessun campo nuovo, e un sidecar senza contesto (scritto da una versione precedente) non viene filtrato ne' scartato, mantenendo il comportamento storico; (2) prima del dispatch si ricostruiscono `matchTypeRef` e `_playingMdRef` dalla voce ritrovata, cosi' il commit marca la voce giusta per NUMERO di giornata e registra quella giornata. GUARDIANO recovery-competition-test, NEL GATE: prova del ROSSO incorporata (interruttore __CPM_NO_P0_1 che ripristina la vecchia logica: la voce di lega torna a essere marcata, classifica 18) + casi A-G (coppa committata in coppa, campionato intatto a 17/40, turno di coppa avanzato, nessuna regressione sul recupero di lega). Gli assert leggono lo stato PERSISTITO, non la memoria.
@@ -22269,10 +22288,17 @@ function ParataBus3D({club,euroWin,avatarId=0,heroNum=10}){
     const el=ref.current;if(!el||typeof THREE==="undefined")return;
     const W=()=>el.clientWidth||360,H=()=>el.clientHeight||640;
     const renderer=new THREE.WebGLRenderer({antialias:true});renderer.setSize(W(),H());renderer.setPixelRatio(Math.min(2,window.devicePixelRatio||1));el.appendChild(renderer.domElement);
-    const scene=new THREE.Scene();scene.background=new THREE.Color(0x070a16);scene.fog=new THREE.Fog(0x070a16,55,150);
+    const scene=new THREE.Scene();scene.background=new THREE.Color(0x141b30);scene.fog=new THREE.Fog(0x141b30,70,170);/* [7.453.0] il fondo era quasi nero (0x070a16) e la nebbia mangiava il viale gia' a 55u: la citta' in festa spariva nel buio */
     const cam=new THREE.PerspectiveCamera(52,W()/H(),0.1,400);
-    scene.add(new THREE.AmbientLight(0xffffff,0.55));
-    const dl=new THREE.DirectionalLight(0xfff2d0,0.9);dl.position.set(20,40,10);scene.add(dl);
+    /* [7.453.0 collaudo PO «l'atmosfera/scena è troppo troppo buia»] La via era illuminata da una sola
+       direzionale alta e da un ambiente piatto: tutto cio' che non guardava in su restava nero, e la festa
+       si perdeva nel buio. Resta una scena NOTTURNA — non si accende il giorno — ma con le luci che una
+       via in festa ha davvero: cielo urbano che rimanda il rosa dei lampioni da sopra e il riflesso
+       dell'asfalto da sotto, e due lampioni caldi ai lati del viale che staccano il pullman dal fondo. */
+    scene.add(new THREE.AmbientLight(0xffffff,0.78));
+    scene.add(new THREE.HemisphereLight(0xffd9b0,0x2a3350,0.55));
+    const dl=new THREE.DirectionalLight(0xfff2d0,1.05);dl.position.set(20,40,10);scene.add(dl);
+    for(const _lx of [-16,16]){const _pt=new THREE.PointLight(0xffc98a,0.85,60,2);_pt.position.set(_lx,11,6);scene.add(_pt);}
     const homeHex=(club&&club.c)||"#dc2626",awayHex=(club&&club.c2)||"#ffffff";
     const R=(n)=>{let x=Math.sin(n*127.1)*43758.5453;return x-Math.floor(x);};
     const PERIOD=96,SPEED=4.6;
@@ -22338,9 +22364,23 @@ function ParataBus3D({club,euroWin,avatarId=0,heroNum=10}){
       const _skirt=new THREE.Mesh(new THREE.BoxGeometry(6.5,0.35,16.1),new THREE.MeshLambertMaterial({color:new THREE.Color(awayHex)}));_skirt.position.y=0.95;bus.add(_skirt);
     }catch(_e429p){}
     /* la scritta CAMPIONI sulla fiancata (CanvasTexture, lato camera) */
-    try{const cv=document.createElement('canvas');cv.width=512;cv.height=96;const cx=cv.getContext('2d');
-      cx.fillStyle='#ffffff';cx.fillRect(0,0,512,96);cx.fillStyle=homeHex;cx.font='bold 62px sans-serif';cx.textAlign='center';cx.textBaseline='middle';
-      cx.fillText(euroWin?'CAMPIONI D\'EUROPA':'CAMPIONI',256,50);
+    /* [7.453.0 collaudo PO «la scritta non si vede bene»] DUE guasti indipendenti, entrambi aritmetici.
+       (a) «CAMPIONI D'EUROPA» a 62px non entra in una tela da 512: veniva TAGLIATA ai due lati. Ora il
+       corpo si adatta alla tela invece che sperare che ci stia, su una tela doppia per non impastare.
+       (b) Il testo era scritto coi COLORI SOCIALI su fondo bianco: un club che gioca in bianco — il CF
+       Madrid — scriveva bianco su bianco, contrasto 1:1, scritta inesistente. Ora il fondo lo decide la
+       luminosita' della maglia (chiara ⇒ fondo scuro), con un filetto di contorno nel secondo colore
+       perche' la fiancata si legga anche di sbieco e a distanza. */
+    try{const cv=document.createElement('canvas');cv.width=1024;cv.height=192;const cx=cv.getContext('2d');
+      const _txt453=euroWin?'CAMPIONI D\'EUROPA':'CAMPIONI';
+      const _lum453=(h)=>{try{const v=String(h).replace('#','');return (parseInt(v.slice(0,2),16)*0.2126+parseInt(v.slice(2,4),16)*0.7152+parseInt(v.slice(4,6),16)*0.0722)/255;}catch(_e){return 0.5;}};
+      const _chiara=_lum453(homeHex)>0.6;
+      cx.fillStyle=_chiara?'#12151c':'#ffffff';cx.fillRect(0,0,1024,192);
+      let _fs453=118;cx.font='bold '+_fs453+'px sans-serif';
+      while(cx.measureText(_txt453).width>944&&_fs453>40){_fs453-=4;cx.font='bold '+_fs453+'px sans-serif';}/* il corpo si adatta: la scritta non esce piu' dalla tela */
+      cx.textAlign='center';cx.textBaseline='middle';
+      cx.lineJoin='round';cx.lineWidth=Math.max(4,_fs453*0.09);cx.strokeStyle=_chiara?'#ffffff':(awayHex||'#ffffff');cx.strokeText(_txt453,512,100);
+      cx.fillStyle=homeHex;cx.fillText(_txt453,512,100);
       const tx=new THREE.CanvasTexture(cv);
       const strip=new THREE.Mesh(new THREE.PlaneGeometry(13,1.6),new THREE.MeshBasicMaterial({map:tx}));
       strip.position.set(3.24,2.0,0);strip.rotation.y=Math.PI/2;bus.add(strip);}catch(_e){}
@@ -22355,7 +22395,14 @@ function ParataBus3D({club,euroWin,avatarId=0,heroNum=10}){
        PIATTO d'oro con bordo e fregio (lo stesso vocabolario della cerimonia 7.425), leggermente
        inclinato verso la camera perche' il disco si legga; Champions = la coppa GRANDE dalle orecchie
        larghe. Scala raddoppiata: da lontano la coppetta era un puntino giallo. */
-    const gold=new THREE.MeshLambertMaterial({color:0xffd34d,emissive:0x8a6a10});
+    /* [7.453.0 collaudo PO «la coppa è disegnata male ed è enorme»] Nel 7.429 la scala fu RADDOPPIATA
+       perche' da lontano il trofeo era un puntino giallo: la cura e' diventata il sintomo — accanto a
+       uomini alti 1,84 il gruppo arrivava a ~1,4 unita', cioe' tre quarti di una persona, mentre un
+       trofeo vero sta sotto il mezzo busto. Ora la proporzione e' quella giusta (_TSC453) e la
+       leggibilita' a distanza la da' la LUCE, non la mole: oro piu' acceso e una lampada calda
+       agganciata al trofeo, che a prua del pullman lo fa brillare invece di ingigantirlo. */
+    const _TSC453=0.62;
+    const gold=new THREE.MeshLambertMaterial({color:0xffdf6b,emissive:0xb98a14});
     const cup=new THREE.Group();
     const cped=new THREE.Mesh(new THREE.BoxGeometry(1.15,0.4,1.15),new THREE.MeshLambertMaterial({color:0x2a2f3a}));cup.add(cped);
     const _spin429=new THREE.Group();_spin429.position.y=0.2;cup.add(_spin429);cup._spin429=_spin429;
@@ -22368,6 +22415,8 @@ function ParataBus3D({club,euroWin,avatarId=0,heroNum=10}){
       const rim=new THREE.Mesh(new THREE.TorusGeometry(0.72,0.06,10,28),gold);rim.rotation.x=0.4;rim.position.y=0.95;_spin429.add(rim);
       const hub=new THREE.Mesh(new THREE.SphereGeometry(0.2,12,9),gold);hub.position.set(0,0.98,0.1);_spin429.add(hub);
     }
+    _spin429.scale.setScalar(_TSC453);/* [7.453.0] proporzione umana: il trofeo torna sotto il mezzo busto */
+    try{const _gl453=new THREE.PointLight(0xffd88a,1.15,14,2);_gl453.position.set(0,1.1,0.5);cup.add(_gl453);}catch(_e){}
     /* la SQUADRA sul tetto */
     const men=[];const mixers=[];const NM=8;/* [7.429.0] otto uomini: sei lasciavano il tetto mezzo vuoto */
     const slots=[];for(let i=0;i<NM;i++){slots.push({x:(i%2===0?-1.7:1.7),z:6.0-i*1.9});}
@@ -23768,15 +23817,25 @@ function HomeScreen({onNew,onLoad,onDelete,onImport,slots}){
           </div>
         ):s?(
           <Card key={i} border={TH.cardBorder} style={{padding:"12px 14px"}}>
-            <div style={{display:"flex",alignItems:"center",gap:10}}>
-              <AvatarSVG id={s.avatarId} size={46}/>
-              <div style={{flex:1,minWidth:0}}>
-                <div style={{fontWeight:800,fontSize:14,color:TH.text,marginBottom:1}}>{s.name}</div>
-                <div style={{fontSize:11,color:TH.muted}}>{s.retired?<span style={{color:"#b45309",fontWeight:700}}>🏁 Carriera conclusa · S.{s.season}</span>:<>{s.club} · S.{s.season} W.{s.week}/38</>}</div>{/* [7.258.0] uno slot ritirato non promette una settimana da giocare */}
-                <div style={{fontSize:10,color:TH.faint,marginTop:1}}>💾 {fmtDate(s.savedAt)}</div>
+            {/* [7.453.0 collaudo PO «il testo è sovrapposto!», screenshot della Home] La card teneva QUATTRO
+                colonne su una riga sola — avatar, testo, anello OVR, bottoni — tutte in px fissi tranne il
+                testo, che e' quindi l'unico che cede. MISURATO: la colonna di testo scende a 115px su un
+                viewport da 412, a 67px su 360, a 27px su 320. A quel punto «CF Madrid · S.20 W.1/38» si
+                spezza in cinque righe da una parola l'una, incollate all'anello: e' lo screenshot del PO.
+                Ora avatar+testo+anello sono un gruppo unico che chiede almeno 210px e i bottoni SCENDONO
+                SOTTO quando quella soglia non c'e' — nessuna media query, e' il flex che cede dove deve —
+                e le tre righe di testo troncano con i puntini invece di sbriciolarsi. */}
+            <div style={{display:"flex",alignItems:"center",gap:10,flexWrap:"wrap"}}>
+              <div style={{display:"flex",alignItems:"center",gap:10,flex:"1 1 210px",minWidth:0}}>
+                <AvatarSVG id={s.avatarId} size={46}/>
+                <div style={{flex:1,minWidth:0}}>
+                  <div style={{fontWeight:800,fontSize:14,color:TH.text,marginBottom:1,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{s.name}</div>
+                  <div style={{fontSize:11,color:TH.muted,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{s.retired?<span style={{color:"#b45309",fontWeight:700}}>🏁 Carriera conclusa · S.{s.season}</span>:<>{s.club} · S.{s.season} W.{s.week}/38</>}</div>{/* [7.258.0] uno slot ritirato non promette una settimana da giocare */}
+                  <div style={{fontSize:10,color:TH.faint,marginTop:1,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>💾 {fmtDate(s.savedAt)}</div>
+                </div>
+                <OvrRing value={s.ovr} size={40}/>
               </div>
-              <OvrRing value={s.ovr} size={40}/>
-              <div style={{display:"flex",flexDirection:"column",gap:5,flexShrink:0}}>
+              <div style={{display:"flex",flexDirection:"column",gap:5,flexShrink:0,marginLeft:"auto"}}>
                 <Btn onClick={()=>onLoad(i)} v="primary" style={{padding:"8px 14px",fontSize:13}}>{s.retired?"🏛️ Rivivi il finale →":"Continua →"}</Btn>
                 <button onClick={()=>setConfirmDel(i)} style={{padding:"5px",borderRadius:7,border:"1px solid "+TH.cardBorder,background:"transparent",cursor:"pointer",color:TH.faint,fontSize:11}}>🗑️ Elimina</button>
               </div>
@@ -24322,7 +24381,26 @@ function generateRetirementBio(p,legacyScore){
   const lastClub=p.club?.n||clubs[clubs.length-1]||"–";
   const grade=getLegacyGrade(legacyScore);
   let bio=`${name} ha disputato ${seasons} stagioni da professionista, realizzando ${goals} gol in ${matches} presenze.`;
-  if(trophies>0)bio+=` Ha conquistato ${trophies} titolo${trophies>1?"":""}${trophies>1?" istituzionali":"istituzionale"}.`;
+  /* [7.453.0 collaudo PO «scrivi meglio questo box, istituzionali che significa??»] La riga diceva
+     «Ha conquistato 33 titolo istituzionali»: due guasti in una riga sola. (1) Il plurale di «titolo» non
+     e' mai stato scritto — il ternario che doveva produrlo restituiva stringa vuota in ENTRAMBI i rami,
+     quindi restava «titolo» anche con 33. (2) «istituzionali» non vuol dire niente: in bacheca ci sono
+     campionati, coppe nazionali, trofei europei e titoli con la Nazionale, che sono cose diverse e vanno
+     dette per nome. Il tipo e' gia' su ogni trofeo (type: int/euro/cup, altrimenti campionato), lo stesso
+     che il diario usa per ordinare i momenti di una vita: qui si limita a leggerlo. */
+  if(trophies>0){
+    const _tr453=p.trophies||[];
+    const _n453=(f)=>_tr453.filter(f).length;
+    const _naz=_n453(t=>t&&(t.type==="int"||t.isNational)),_eur=_n453(t=>t&&t.type==="euro"),
+          _cop=_n453(t=>t&&t.type==="cup"),_cam=trophies-_naz-_eur-_cop;
+    const _voci=[];
+    if(_cam>0)_voci.push(`${_cam} campionat${_cam>1?"i":"o"}`);
+    if(_cop>0)_voci.push(`${_cop} copp${_cop>1?"e":"a"} nazional${_cop>1?"i":"e"}`);
+    if(_eur>0)_voci.push(`${_eur} ${_eur>1?"trofei europei":"trofeo europeo"}`);
+    if(_naz>0)_voci.push(`${_naz} titol${_naz>1?"i":"o"} con la Nazionale`);
+    const _elenco=_voci.length>1?_voci.slice(0,-1).join(", ")+" e "+_voci[_voci.length-1]:_voci[0];
+    bio+=trophies===1?` In bacheca ${_elenco}.`:` In bacheca ${trophies} trofei: ${_elenco}.`;
+  }
   if(caps>0)bio+=` ${caps} cap${caps>1?"s":""} con la Nazionale.`;
   if(clubs.length>1)bio+=` Ha vestito la maglia di ${clubs.slice(-3).join(", ")}.`;
   bio+=` Ultima squadra: ${lastClub}. Legacy score: ${legacyScore} — "${grade.label}".`;

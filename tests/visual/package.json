@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "validate-situations": "node validate-situations.mjs",
-    "ci": "npm run test:vision && npm run test:logic && npm run typing-shortcuts && npm run validate-situations && npm run save-compat && npm run replay",
+    "ci": "npm run impulsi-contesto && npm run test:vision && npm run test:logic && npm run typing-shortcuts && npm run validate-situations && npm run save-compat && npm run replay",
     "quick-gate": "node quick-gate.mjs",
     "validate-situations:update-golden": "node validate-situations.mjs --update-golden",
     "validate-situations:update-baseline": "CPM_UPDATE_BASELINE=1 node validate-situations.mjs",
@@ -73,7 +73,10 @@
     "playing-mdref": "node playing-mdref-test.mjs",
     "double-tap": "node double-tap-test.mjs",
     "career-critical": "npm run recovery-competition && npm run save-monotonic && npm run playing-mdref && npm run double-tap && npm run stale-matchday && npm run playedmd-registry && npm run career-invariants && npm run pending-mr-durable",
-    "playedmd-registry": "node playedmd-registry-test.mjs"
+    "playedmd-registry": "node playedmd-registry-test.mjs",
+    "impulsi-contesto": "node impulsi-contesto-test.mjs",
+    "slot-card-layout": "node slot-card-layout-test.mjs",
+    "parata-legibility": "node parata-legibility-test.mjs"
   },
   "dependencies": {
     "playwright": "^1.48.0",
