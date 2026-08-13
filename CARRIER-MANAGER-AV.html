@@ -4611,7 +4611,8 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="7.433.0"; // [7.433.0 evolutiva PO «l'ultima stagione deve essere indimenticabile, con eventi divertenti, attestati di stima ecc»]: la stagione annunciata (7.432) ora si RIEMPIE. (1) SEI IMPULSI DELL'ADDIO, una-tantum e solo da annunciato (il portiere che chiede la maglia NEL TUNNEL prima della gara; il mister che offre il cambio all'85' per l'ovazione — o i novanta minuti fino al fischio; la teca segreta del magazziniere; il docufilm «L'ultima stagione»; il video a sorpresa dei capitani della lega chiuso dal rivale; l'ultima lezione alla scuola calcio del quartiere) — e il picker li PRIVILEGIA (6 settimane su 10 finche' non sono vissuti tutti): l'ultima stagione non e' una stagione qualunque. (2) GLI ATTESTATI DI STIMA nel MONDO FUORI: il rivale di sempre rompe il silenzio («giocargli contro e' stato l'onore piu' grande... ma l'ultima la vinco io») e la Lega annuncia il PREMIO ALLA CARRIERA da giocatore in attivita' — ciascuno scrive un ATTESTATO nel diario (type addio), che resta agli atti della carriera. (3) probe addioPool nel harness carriera. Guardiano esteso con lo scenario (D): annunciato → pool addio ≥5, non annunciato → 0 (rosso strutturale pre-7.433: il pool non esisteva).
+const GAME_VERSION="7.434.0"; // [7.434.0 collaudo PO «non ci devono essere burattini nelle scene 3D!» (screenshot: il manichino grigio del mister accanto agli uomini GLB della premiazione)]: GLB-ON IL MISTER E' UN ATTORE VERO — actor-presenter.glb (l'uomo in abito del drop-in 7.141), scalato dalle OSSA (il bbox dei SkinnedMesh mente, lezione 7.141), piedi a terra, braccia abbassate dal T-pose con la rotazione world-space della sala stampa (7.142); il low-poly resta solo come fallback GLB-OFF (dove tutto il teatro e' low-poly, quindi coerente). DUE LEZIONI PAGATE E MISURATE IN SESSIONE: (1) il rig dell'attore e' Biped/Rocketbox (Bip01_R_UpperArm), non mixamo — il primo matcher trovava zero ossa e l'attore restava in T-POSE (sonda arms:false + screenshot agli atti): ora il matcher e' quello tollerante del 7.142 (rupperarm/rforearm inclusi); (2) i GESTI (applauso, abbraccio) non scrivono euler per-rig (lezione 7.340: su Biped cadono male) ma ruotano in WORLD-SPACE attorno all'asse laterale del personaggio, dalla base in quaternione catturata dopo la posa. Verificato GLB-ON con la sonda beat-warp: glb:true, arms:true, niente T-pose, mister umano che cammina verso l'eroe nel beat coach.
+// [nota 7.433.0] [7.433.0 evolutiva PO «l'ultima stagione deve essere indimenticabile, con eventi divertenti, attestati di stima ecc»]: la stagione annunciata (7.432) ora si RIEMPIE. (1) SEI IMPULSI DELL'ADDIO, una-tantum e solo da annunciato (il portiere che chiede la maglia NEL TUNNEL prima della gara; il mister che offre il cambio all'85' per l'ovazione — o i novanta minuti fino al fischio; la teca segreta del magazziniere; il docufilm «L'ultima stagione»; il video a sorpresa dei capitani della lega chiuso dal rivale; l'ultima lezione alla scuola calcio del quartiere) — e il picker li PRIVILEGIA (6 settimane su 10 finche' non sono vissuti tutti): l'ultima stagione non e' una stagione qualunque. (2) GLI ATTESTATI DI STIMA nel MONDO FUORI: il rivale di sempre rompe il silenzio («giocargli contro e' stato l'onore piu' grande... ma l'ultima la vinco io») e la Lega annuncia il PREMIO ALLA CARRIERA da giocatore in attivita' — ciascuno scrive un ATTESTATO nel diario (type addio), che resta agli atti della carriera. (3) probe addioPool nel harness carriera. Guardiano esteso con lo scenario (D): annunciato → pool addio ≥5, non annunciato → 0 (rosso strutturale pre-7.433: il pool non esisteva).
 // [nota 7.432.0] [7.432.0 EVOLUTIVA PO «la funzionalita' annuncio del ritiro ad inizio stagione sei riuscito a farla?» — L'ULTIMA STAGIONE SI ANNUNCIA E SI VIVE]: non esisteva (il ritiro era solo fine-carriera: forzato a 40, proposto a fine stagione dai 35, manuale dalle Opzioni). Ora: (1) dai 34 anni il WIZARD D'APERTURA propone la card «L'ultima stagione?» (chiave `addio` — `ritiro` era gia' il ritiro pre-campionato) UNA volta per stagione: annunciando si persiste `retireAnnounced` (morale+6, popolarita'+8, diario e log dell'annuncio), rimandando si persiste `retireAskedSeason` (non lo richiede piu' quell'anno); (2) la STAGIONE D'ADDIO si vede e si sente — banner «Tour d'addio» sul dashboard ogni settimana e voci del MONDO FUORI dedicate (lo stadio avversario sold-out, la sciarpa della curva rivale, il telecronista che dice «godetevelo»); (3) la FINE STAGIONE onora l'annuncio: niente «Inizia Stagione», il bottone primario e' «Il giorno dell'addio» e porta alla cerimonia celebrativa ESISTENTE (lettera, maglia ritirata se bandiera, legacy — riuso 7.20/7.258), con guard PER COSTRUZIONE dentro doStartNewSeason (lezione 7.258: qualunque path chiami il rollover di un annunciato finisce alla cerimonia, mai a una stagione nuova). Guardiano retire-announce-test (rosso provato pre-cablaggio: card assente a 35 anni, bottone d'addio assente): card a 34+ e mai a 28, flag persistito, fine stagione senza rollover, ritiro persistito dopo l'addio.
 // [nota 7.431.0] [7.431.0 collaudo PO «occhio che il braccio al saluto alla presentazione e' troppo all'indietro»]: taratura del bersaglio del saluto — a x=-2,45 il braccio superava la verticale e pendeva dietro la testa; ora il blend si ferma a x=-1,95 (alzato e leggermente AVANTI, verso i tifosi), verificato a vista sul riproduttore della Serata; stessa taratura sul saluto della parata (-2,35 → -1,9). Nessun altro cambiamento.
 // [nota 7.430.0] [7.430.0 collaudo PO, cinque note in un lotto — SERATA, IMPULSI E MONDO FUORI]: (1) «migliora la dinamica del braccio che saluta e la postura, sono aggobbati e tristi» — RIPRODOTTO e misurato: la clip idle in PAUSA congela anche i fotogrammi di trasferimento di peso (spalle avanti = l'aggobbato), e il saluto era un OFFSET CIECO su Z dalla posa congelata: a seconda del fotogramma la mano finiva IN FRONTE (il facepalm dello screenshot). Lo sweep degli euler (strumento __CPM_WVSET) dice che il rig alza il braccio su X (base 0,79=giu', -2,6=verticale): ora il saluto e' un BLEND verso il bersaglio canonico (x -2,45, gomito disteso, ondeggio avambraccio) e la POSTURA si raddrizza in assoluto dopo il mixer (colonna/collo/testa scalati verso l'eretto — il mixer in pausa riscrive la posa a ogni frame, zero accumulo). Stessa correzione al saluto della parata (stessa classe). (2) «conseguenza gia' vista nella carriera!» (l'orologio, di nuovo, a S.21) — gli impulsi UNA-TANTUM (orologio, biografia, murale, video virale, donazione scoperta, docufilm, investimento) portano once:true e col contatore a vita impulseSeen spariscono per sempre dopo la prima volta: su una carriera ventennale il pool cicla per costruzione, ma un fatto permanente non si rivive. (3) «e' compatibile con la nuova funzionalita' del procuratore o e' un refuso sganciato?» — ERA SGANCIATO (pre-feature): ora wi_procuratore esce solo se il mercato non si sta gia' muovendo (!transferListed) e «voglio muovermi ora» METTE IN LISTA davvero (transferListed:true, il flag che il mercato legge e che alza le offerte vere). (4) «sono passati anni ed anni dal Lipsia, poco contestualizzato, deve essere piu' divertente» — la telefonata dell'ex compagno SA QUANTI ANNI SONO PASSATI: da 6 stagioni in su parla il pool dei VETERANI (ha smesso e allena i Pulcini, l'armadietto-santuario, il fantacalcio aziendale, gli otto chili col mancino-violino): la distanza diventa la battuta, non un errore di continuita'. (5) «non c'e' partita, fai in modo che sia piu' divertente!» (696 a 268 e il rivale «rincorre») — la battuta del rivale si CALIBRA SUL DISTACCO: oltre la soglia (1,8x+30) parte l'autoironia da conferenza stampa (o lo sfotto', se la voragine e' sua); le righe competitive restano per i distacchi veri. FILONE APERTO E MISURATO (bozze gi47/gi185, «il pallone si freeza per un bel po' e si muove da solo» dopo l'assist): tracciante d'esito agli atti — gi47 FREEZE di ~4s e poi 8-11 passi ORFANI (palla in moto, nessuno entro 2,5u) su 3 repliche; gi185 solo freeze (2,6-4,8s). E' la coreografia della FASE DI RISOLUZIONE (l'arco d'esito parte tardi e nessun attore accompagna la palla): va chiuso con la stessa disciplina (strumento diag_47), prossimo ciclo. Le note gemelle su build 7.425 (gi16 teletrasporto 21,3u, gi110 «palla a nessuno») sono VERIFICATE COPERTE dal 7.428 (0u su tutte le repliche).
@@ -14675,14 +14676,52 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                capelli, sempre in primo piano (vedi il fix del corridoio camera sotto). Ora: corporatura
                civile snella, incarnato caldo, CAPELLI, colletto — un signore in abito a bordo campo. */
             if(!sr.current._cerCoachGrp){try{const _cg=new THREE.Group();
+              const _lp=new THREE.Group();/* [7.434.0] il low-poly diventa il FALLBACK GLB-OFF: sotto CH38 il mister e' un attore vero */
               const _suit=new THREE.MeshLambertMaterial({color:0x2b3442});
-              const _to=new THREE.Mesh(new THREE.BoxGeometry(0.6,1.0,0.32),_suit);_to.position.y=1.32;_cg.add(_to);
-              const _col=new THREE.Mesh(new THREE.BoxGeometry(0.26,0.14,0.06),new THREE.MeshLambertMaterial({color:0xf2f2f2}));_col.position.set(0,1.72,0.17);_cg.add(_col);
-              const _hd=new THREE.Mesh(new THREE.SphereGeometry(0.225,12,9),new THREE.MeshLambertMaterial({color:0xb98559}));_hd.position.y=2.0;_cg.add(_hd);
-              const _hr=new THREE.Mesh(new THREE.SphereGeometry(0.235,12,9),new THREE.MeshLambertMaterial({color:0x35302a}));_hr.scale.set(1,0.62,1);_hr.position.y=2.1;_cg.add(_hr);
-              const _lg=new THREE.Mesh(new THREE.BoxGeometry(0.5,0.92,0.28),new THREE.MeshLambertMaterial({color:0x1a212c}));_lg.position.y=0.46;_cg.add(_lg);
-              const _mkArm=(sx)=>{const a=new THREE.Mesh(new THREE.BoxGeometry(0.16,0.82,0.16),_suit);a.geometry.translate(0,-0.41,0);a.position.set(sx,1.78,0);_cg.add(a);return a;};
-              _cg._aL=_mkArm(-0.42);_cg._aR=_mkArm(0.42);_cg.visible=false;scene.add(_cg);sr.current._cerCoachGrp=_cg;}catch(_e){}}
+              const _to=new THREE.Mesh(new THREE.BoxGeometry(0.6,1.0,0.32),_suit);_to.position.y=1.32;_lp.add(_to);
+              const _col=new THREE.Mesh(new THREE.BoxGeometry(0.26,0.14,0.06),new THREE.MeshLambertMaterial({color:0xf2f2f2}));_col.position.set(0,1.72,0.17);_lp.add(_col);
+              const _hd=new THREE.Mesh(new THREE.SphereGeometry(0.225,12,9),new THREE.MeshLambertMaterial({color:0xb98559}));_hd.position.y=2.0;_lp.add(_hd);
+              const _hr=new THREE.Mesh(new THREE.SphereGeometry(0.235,12,9),new THREE.MeshLambertMaterial({color:0x35302a}));_hr.scale.set(1,0.62,1);_hr.position.y=2.1;_lp.add(_hr);
+              const _lg=new THREE.Mesh(new THREE.BoxGeometry(0.5,0.92,0.28),new THREE.MeshLambertMaterial({color:0x1a212c}));_lg.position.y=0.46;_lp.add(_lg);
+              const _mkArm=(sx)=>{const a=new THREE.Mesh(new THREE.BoxGeometry(0.16,0.82,0.16),_suit);a.geometry.translate(0,-0.41,0);a.position.set(sx,1.78,0);_lp.add(a);return a;};
+              _cg._aL=_mkArm(-0.42);_cg._aR=_mkArm(0.42);_cg.add(_lp);_cg._lp434=_lp;
+              _cg.visible=false;scene.add(_cg);sr.current._cerCoachGrp=_cg;
+              /* [7.434.0 collaudo PO «non ci devono essere burattini nelle scene 3D!» (screenshot: il
+                 manichino grigio accanto agli uomini GLB della premiazione)] GLB-ON IL MISTER E' UN
+                 ATTORE VERO: actor-presenter.glb (l'uomo in abito del drop-in 7.141), scalato dalle
+                 OSSA (lezione 7.141: il bbox dei SkinnedMesh mente), piedi a terra, braccia ABBASSATE
+                 dal T-pose con la rotazione world-space della sala stampa (7.142). I gesti (applauso,
+                 abbraccio) scrivono delta-euler dalla base catturata — il pattern del saluto 7.430. */
+              if((typeof window==="undefined"||window.__CPM_GLB!==false)&&typeof loadGLB==="function"&&THREE.SkeletonUtils&&THREE.SkeletonUtils.clone){
+                loadGLB('./assets/actor-presenter.glb').then(_g=>{try{
+                  if(!_g||!_g.scene)return;
+                  const av=THREE.SkeletonUtils.clone(_g.scene);
+                  av.updateMatrixWorld(true);
+                  let _yMin=Infinity,_yMax=-Infinity;const _bv=new THREE.Vector3();
+                  av.traverse(b=>{if(!b.isBone)return;b.getWorldPosition(_bv);if(_bv.y<_yMin)_yMin=_bv.y;if(_bv.y>_yMax)_yMax=_bv.y;});
+                  let hh=_yMax-_yMin;
+                  if(!(hh>0.01)){const bb=new THREE.Box3().setFromObject(av);hh=Math.max(0.1,bb.max.y-bb.min.y);}
+                  const sc=1.88/hh;av.scale.setScalar(sc);
+                  av.traverse(m=>{if(m.isMesh)m.frustumCulled=false;});
+                  av.updateMatrixWorld(true);
+                  {let xm=Infinity,xM=-Infinity,ym=Infinity,zm=Infinity,zM=-Infinity;
+                   av.traverse(b=>{if(!b.isBone)return;b.getWorldPosition(_bv);if(_bv.x<xm)xm=_bv.x;if(_bv.x>xM)xM=_bv.x;if(_bv.y<ym)ym=_bv.y;if(_bv.z<zm)zm=_bv.z;if(_bv.z>zM)zM=_bv.z;});
+                   if(isFinite(xm)){av.position.x+=-(xm+xM)/2;av.position.z+=-(zm+zM)/2;av.position.y+=-ym;av.updateMatrixWorld(true);}}
+                  let _aLb=null,_aRb=null,_fLb=null,_fRb=null;
+                  av.traverse(b=>{if(!b.isBone)return;const bn=(b.name||"").replace(/[:_. ]/g,"").toLowerCase();/* matcher 7.142: mixamo E Biped (actor-presenter e' Rocketbox: Bip01_R_UpperArm) */
+                    if(/rightforearm$|rforearm$/.test(bn))_fRb=b;else if(/leftforearm$|lforearm$/.test(bn))_fLb=b;
+                    else if(/rightarm$|rupperarm$/.test(bn))_aRb=b;else if(/leftarm$|lupperarm$/.test(bn))_aLb=b;});
+                  /* braccia giu' dal T-pose (world-space, una volta): stessa rotazione della sala stampa */
+                  const _axF=new THREE.Vector3(0,0,1);
+                  const _rotW=(bone,axis,ang)=>{if(!bone||!bone.parent)return;av.updateMatrixWorld(true);
+                    const pw=new THREE.Quaternion();bone.parent.getWorldQuaternion(pw);
+                    const rq=new THREE.Quaternion().setFromAxisAngle(axis,ang);
+                    bone.quaternion.copy(pw.clone().invert().multiply(rq).multiply(pw).multiply(bone.quaternion.clone()));};
+                  _rotW(_aLb,_axF,-1.25);_rotW(_aRb,_axF,1.25);
+                  _cg._lp434.visible=false;_cg.add(av);_cg._glb434=av;
+                  if(_aLb&&_aRb){_cg._aL=_aLb;_cg._aR=_aRb;_cg._fL434=_fLb;_cg._fR434=_fRb;_cg._glbArms434=true;}
+                }catch(_e434){}}).catch(()=>{});}
+              }catch(_e){}}
             if(sr.current._cerCoachGrp){sr.current._cerCoachGrp.visible=true;sr.current._cerCoachGrp.position.set(_cerHx0-_cSgn*14,0,_cerHz0+6);}
             /* [7.426.0] LE BANDIERE DELLA CURVA: durante la cerimonia la curva dei tuoi espone dieci
                bandiere nei colori del club che sventolano — costruite pigre una volta, riusate, mai
@@ -14727,7 +14766,18 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
             const _cto=(_bk==="coach")?{x:hero.position.x-_cSgn*1.3,z:hero.position.z}:(_bk==="lift"||_bk==="present")?{x:-_cSgn*2.6,z:-4.2}:{x:hero.position.x-_cSgn*2.2,z:hero.position.z-4.5};
             _co.position.x+=(_cto.x-_co.position.x)*Math.min(1,aDt*1.4);_co.position.z+=(_cto.z-_co.position.z)*Math.min(1,aDt*1.4);
             _co.rotation.y=Math.atan2(hero.position.x-_co.position.x,hero.position.z-_co.position.z);
-            if(_bk==="coach"){_co._aL.rotation.x=-1.4;_co._aR.rotation.x=-1.4;_co._aL.rotation.z=0.35;_co._aR.rotation.z=-0.35;}/* abbraccio */
+            if(_co._glbArms434){/* [7.434.0] ossa GLB in WORLD-SPACE (lezione 7.340: gli euler per-rig su Biped cadono male): base in quaternione catturata dopo la posa, rotazione attorno all'asse LATERALE del personaggio */
+              const _ry434=_co.rotation.y,_lat434=new THREE.Vector3(Math.cos(_ry434),0,-Math.sin(_ry434));
+              const _gW=(b,ang)=>{if(!b||!b.parent)return;if(!b._q434)b._q434=b.quaternion.clone();
+                if(!ang){b.quaternion.copy(b._q434);return;}
+                b.parent.updateWorldMatrix(true,false);
+                const _pw=new THREE.Quaternion();b.parent.getWorldQuaternion(_pw);
+                const _rq=new THREE.Quaternion().setFromAxisAngle(_lat434,ang);
+                b.quaternion.copy(_pw.clone().invert().multiply(_rq).multiply(_pw).multiply(b._q434.clone()));};
+              if(_bk==="coach"){_gW(_co._aL,-1.5);_gW(_co._aR,-1.5);_gW(_co._fL434,0);_gW(_co._fR434,0);}
+              else if(_bk==="lift"||_bk==="fest"){const _cl=Math.sin(_ct*7)>0?-0.5:-0.9;_gW(_co._aL,_cl);_gW(_co._aR,_cl);_gW(_co._fL434,-0.3);_gW(_co._fR434,-0.3);}
+              else{_gW(_co._aL,-0.1);_gW(_co._aR,-0.1);_gW(_co._fL434,0);_gW(_co._fR434,0);}}
+            else if(_bk==="coach"){_co._aL.rotation.x=-1.4;_co._aR.rotation.x=-1.4;_co._aL.rotation.z=0.35;_co._aR.rotation.z=-0.35;}/* abbraccio */
             else if(_bk==="lift"||_bk==="fest"){const _cl=Math.sin(_ct*7)>0?0.5:0.9;_co._aL.rotation.x=-_cl;_co._aR.rotation.x=-_cl;_co._aL.rotation.z=0;_co._aR.rotation.z=0;}/* applauso */
             else{_co._aL.rotation.x=-0.3;_co._aR.rotation.x=-0.3;_co._aL.rotation.z=0;_co._aR.rotation.z=0;}}
           /* la REGIA per beat: primo piano sull'emozione, media sui personaggi, largo su squadra e curva */
