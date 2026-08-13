@@ -4679,7 +4679,8 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="7.444.0"; // [7.444.0 collaudo PO, screenshot wi_procuratore_push a W.33 dell'ULTIMA stagione: «assurdo a poche settimane dal ritiro»]: LA FAMIGLIA MERCATO TACE DOPO L'ANNUNCIO DEL RITIRO — l'agente che vuole «forzare» un trasferimento a stampa, l'agente che «valutera' offerte a fine stagione», il negoziato «possibile addio a fine anno», le voci di interesse dall'estero, il flash della big europea, il club che dichiara «e' incedibile», le voci di trasferimento che distraggono, il nome «in chiave mercato» online e il giornalista che chiede «vuoi essere ceduto» erano TUTTI ancora pescabili per un giocatore che ha gia' dichiarato l'addio: contraddicono l'annuncio e sporcano la stagione d'addio curata dal 7.433. Stessa regola del chokepoint 7.438 sul procuratore (niente piu' proposte a chi ha annunciato), applicata alla famiglia intera con l'helper _mktOk (retireAnnounced!==season): 4 eventi WEEKLY, 2 random, 2 impulsi. SONDA mktPool in __CPM_CAREER (quanti item a tema mercato/cessione sono pescabili per il giocatore corrente) e sezione (G) nel guardiano retire-announce: annunciato ⇒ {0,0,0}, in carriera ⇒ ≥3 pescabili (la sensibilita' della sonda e' parte dell'assert: uno strumento cieco renderebbe il verde una non-prova).
+const GAME_VERSION="7.445.0"; // [7.445.0 collaudo PO — 9ª RICORRENZA «di nuovo il bug della partita gia' giocata... il big match col Bilbao all'ultima giornata che ho gia' vinto e che ha laureato il Madrid campione», su build 7.443 CON TUTTE le reti, «inficia il rilascio su Play Store»]: LA PROVA DEVE SOPRAVVIVERE FINO ALLA PERSISTENZA. Il save del PO, analizzato voce per voce, e' PULITO (34/34 in classifica, 82 punti = somma esatta del calendario, storico 1:1) — quindi il sintomo non era un doppio conteggio ma un ROLLBACK: il sidecar del fischio finale ('cpm-pending-mr', unica prova della partita giocata) veniva consumato al COMMIT IN MEMORIA (7.24.3) o al dispatch del recovery (7.178), mentre l'autosave e' debounced 600ms e il flush di pagehide su Android «e' spesso l'unica finestra utile» (nota 5.75) — un kill del processo nel mezzo riporta il save a PRIMA della partita CON la prova gia' distrutta: il selettore ripropone il big match, e il save finale resta senza cicatrici (il primo commit non e' mai esistito su disco). TRE cure: (1) il sidecar lo consuma L'AUTOSAVE RIUSCITO (_mrCleanup, anche sul flush di pagehide), quando lo stato PERSISTITO mostra la gara committata — non piu' il commit in memoria ne' il dispatch del recovery (solo la Nazionale, senza voce di calendario da verificare, consuma al dispatch); finche' la prova vive, la rete (G) del selettore tiene la gara fuori dalla riproposta e il recovery al mount la ricommitta (idempotente per validazione). (2) La validazione del recovery NON scarta piu' su calendario ASSENTE (save in migrazione/rigenerazione: l'effect correva prima dell'idratazione e distruggeva la prova per un «nessuna voce compatibile» che non aveva mai guardato niente). (3) GUARDIANO pending-mr-durable-test (npm run pending-mr-durable), riproduzione DETERMINISTICA del kill (persistenza rotta via Storage.setItem che lancia): A1 prova viva a commit non persistito + gara non riproposta, A2 riapertura sana → recupero, consumo, UNA sola gara in storico, B il ROSSO — prova distrutta come pre-fix → il selettore ripropone la stessa giornata, il sintomo esatto del PO, misurato.
+// [nota 7.444.0] [7.444.0 collaudo PO, screenshot wi_procuratore_push a W.33 dell'ULTIMA stagione: «assurdo a poche settimane dal ritiro»]: LA FAMIGLIA MERCATO TACE DOPO L'ANNUNCIO DEL RITIRO — l'agente che vuole «forzare» un trasferimento a stampa, l'agente che «valutera' offerte a fine stagione», il negoziato «possibile addio a fine anno», le voci di interesse dall'estero, il flash della big europea, il club che dichiara «e' incedibile», le voci di trasferimento che distraggono, il nome «in chiave mercato» online e il giornalista che chiede «vuoi essere ceduto» erano TUTTI ancora pescabili per un giocatore che ha gia' dichiarato l'addio: contraddicono l'annuncio e sporcano la stagione d'addio curata dal 7.433. Stessa regola del chokepoint 7.438 sul procuratore (niente piu' proposte a chi ha annunciato), applicata alla famiglia intera con l'helper _mktOk (retireAnnounced!==season): 4 eventi WEEKLY, 2 random, 2 impulsi. SONDA mktPool in __CPM_CAREER (quanti item a tema mercato/cessione sono pescabili per il giocatore corrente) e sezione (G) nel guardiano retire-announce: annunciato ⇒ {0,0,0}, in carriera ⇒ ≥3 pescabili (la sensibilita' della sonda e' parte dell'assert: uno strumento cieco renderebbe il verde una non-prova).
 // [nota 7.443.0] [7.443.0 collaudo PO con screenshot — PREMIAZIONE della NAZIONALE (Coppa delle Nazioni): «il mister vola, si muove con il teletrasporto. i giocatori sembra che si riscaldano. la coppa e' enorme, i compagni non festeggiano»]: il percorso `int` non era MAI stato ispezionato (i collaudi 7.429 coprivano league/cup). MISURATO GLB-ON coi warp: (1) al beat hug l'eroe era SOLO a centrocampo, zero compagni entro 15u — la nazionale arriva dalla lotteria dei RIGORI coi giocatori sparsi per il campo e 2,4s di hug non bastano a raggiungerlo: il pubblico vede undici uomini che corricchiano sparsi = «si riscaldano». FIX: l'apertura della cerimonia e' uno STACCO (la camera taglia comunque) — i compagni si ri-piazzano sull'anello della festa attorno all'eroe (3,5-6u, mai dentro il futuro palco), gli avversari restano dove sono; vale per ogni cerimonia, anche a fine partita normale con squadra sgranata. (2) il MISTER si muoveva per lerp proporzionale (aDt*1.4): su bersagli a 10-15u sono 4-6 u/s di PLANATA senza gambe, e lo spawn a z+6 lo faceva attraversare l'inquadratura — «vola col teletrasporto». FIX: camminata a velocita' UMANA costante (3,2 u/s, rallenta sotto il metro) con falcata verticale leggera in moto, spawn direttamente sul lato di scena dei bersagli di follow (z-4,5, fuori dal corridoio camera). (3) la COPPA int a scala 0,8 era il trofeo piu' grosso di tutti — «enorme»: ora 0,68 (resta il maggiore, ma da sollevare, non da abitare). GUARDIANO cerimonie-test +sezione warp int, rosso PROVATO pre-fix (1/22 compagni vicini, scala 0,8): (11) all'apertura ≥6 compagni entro 6,5u dall'eroe (probe all'init, senza warp: a 4fps il burst disperde e la convergenza non fa in tempo — artefatto headless, non il difetto), (12) scala trofeo ≤0,72. Verifica percettiva GLB-ON: hug = festa di gruppo addosso all'eroe, lift = coppa proporzionata e squadra raccolta al podio, coach = niente piu' gigante in primo piano.
 // [nota 7.442.0] [7.442.0 collaudo PO gi187 [switch] «CAMERA salta 33.8u + SALTO pallone 18.4u in 29ms (643 u/s) — passaggio all'indietro che non arriva bene al compagno e con corpo rivolto alla porta»]: RIPRODOTTO IL PERCORSO, NON IL DIFETTO — gi187 forzata su tutte e tre le azioni e' PULITA (palla ≤1,0u per fotogramma, camera ≤0,9u): i numeri della bozza non vivono nella scena. Vivono nella FINESTRA: l'analisi tiene +320ms dopo l'ultimo fotogramma hl (il settle dell'esito serve alle analisi di posizione) e in quei 320ms cadono DUE TAGLI VOLUTI — la camera che torna in broadcast (~30u) e la palla ri-piazzata per la ripresa della cronaca (10-20u); la chiave di scena `sk` NON cambia a fine highlight (cambia solo al successivo), quindi la grazia degli stacchi non li copriva e finivano in bozza come teletrasporti (quinta bozza falsa della famiglia 7.360/7.361/7.364/7.420: lo strumento sbaglia prima del codice). Ora il FRONTE DI DISCESA del bit 8 del testimone (fase hl → cronaca) e' uno stacco dichiarato con la stessa grazia degli altri. GUARDIANO in collaudo338 (D): il ri-piazzamento e il ritorno-broadcast nei 320ms post-scena NON producono righe, lo STESSO salto a scena viva SI' (sensibilita' intatta, e la riga-camera porta l'etichetta «codice 007»). La parte percettiva della nota («passaggio all'indietro... corpo rivolto alla porta») resta in osservazione: con la bozza ripulita dai falsi tagli, la prossima segnalazione sulla scena portera' solo il segnale vero.
 // [nota 7.441.0] [7.441.0 lotto bozze PO su 7.438 — gi146 e codice 007]: (1) gi146 [recover] «Si tuffa a terra senza nemmeno guardare o avvicinarsi al pallone/avversario» — MISURATO su gi146 az.0 («Blocca con tutto il fisico», famiglia lunge): il fallback 7.415 dopo 1,4s suonava il gesto COMUNQUE con la palla mai sotto 11,6u (GLB-ON addirittura 18u: la clip si montava alla RISOLUZIONE, prima ancora dell'attesa), e la spinta 7.420 (tetto 5,2u) non puo' chiudere un gap a doppia cifra — scivolata/estensione nel vuoto, a terra dove non c'e' niente. DUE cure: la clip GLB parte SOLO col gesto vero (actT>0, durante l'attesa l'eroe resta in locomozione), e se al latch il bersaglio e' oltre 6,5u la famiglia a terra (slide/lunge) DEGRADA a press per quella scena — pressing in corsa addosso al portatore, GLB-ON (mappa 7.245: press=locomozione) e GLB-OFF (posa in piedi). Un difensore a 10 metri non si butta a terra: accorcia. GUARDIANO def-far-gesture-test (npm run def-far-gesture): fase A rosso RIPRODOTTO con l'interruttore __CPM_NO440 (clip a 11-18u), fase B zero clip oltre 6,5u ed eroe che accorcia. (2) gi108 [hl_intro, 7.433] «Traballa, risolvi definitivamente! (Codice 007 da memorizzare)» — il CODICE 007 e' REGISTRATO: e' la classe TRABALLA, e ogni riga-camera della bozza automatica ora arriva etichettata «codice 007 — ...» come chiesto dal PO. E siccome gi108 e' arrivata SENZA riga-camera (post-7.408: soglie gia' abbassate), l'asse che mancava alla misura era il BECCHEGGIO: lo yaw c'e' dal 7.408, il PITCH (dondolio su/giu' dell'asse ottico) non faceva mai scattare niente — ora il testimone conta anche le inversioni su-giu' (>2/s → riga «la camera BECCHEGGIA» con ampiezza). La prossima nota «traballa» arrivera' col numero E l'asse attaccati. gi187 (camera 33,8u + palla 18,4u in 29ms su scena switch) ha il suo ciclo dedicato a seguire.
@@ -26383,10 +26384,28 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
 
   // Autosave — debounced 600ms to avoid redundant writes during rapid state updates
   const saveTimerRef=useRef(null);
+  /* [9ª ricorrenza «partita gia' giocata» — G34 vs Bilbao col titolo, build 7.443 con tutte le reti]
+     IL SIDECAR DEL FISCHIO FINALE SI CONSUMA QUI, A COMMIT PERSISTITO. Il sidecar e' l'unica prova della
+     partita giocata; consumarlo al commit in MEMORIA (7.24.3) o al dispatch del recovery (7.178) lasciava
+     la finestra commit→autosave: un kill di Android li' dentro (pagehide non sempre arriva, nota 5.75)
+     riportava il save a PRIMA della partita con la prova gia' distrutta → big match riproposto, save
+     finale senza cicatrici. Ora: il sidecar muore solo quando lo stato APPENA SALVATO mostra la gara
+     committata (nessuna voce di calendario non giocata compatibile). Finche' vive, la rete (G) del
+     selettore tiene la gara fuori dalla riproposta e il recovery al mount la ricommitta. */
+  const _mrCleanup=(pSaved)=>{try{
+    const _raw=localStorage.getItem('cpm-pending-mr');if(!_raw)return;
+    const _pk=JSON.parse(_raw);if(!_pk||_pk.v!==1)return;
+    if(_pk.n!==((pSaved&&pSaved.name)||"")||_pk.s!==((pSaved&&pSaved.season)||1))return;/* di un altro save/stagione: ci pensa la validazione al mount */
+    const _r=_pk.result||{};
+    const _open=((pSaved&&pSaved.calendar)||[]).some(m=>m&&!m.played&&(
+      (_pk.oid&&m.opponentId===_pk.oid)||(_pk.on&&m.opponentName===_pk.on)
+      ||(m.opponentName&&m.opponentName===_r.opponent)||(m.opponentId&&m.opponentId===_r.opponent)));
+    if(!_open)localStorage.removeItem('cpm-pending-mr');/* la gara e' nel salvataggio: prova non piu' necessaria */
+  }catch(_e){}};
   useEffect(()=>{
     if(saveTimerRef.current)clearTimeout(saveTimerRef.current);
     saveTimerRef.current=setTimeout(()=>{
-      storage.save({phase:"career",player},currentSlot).then(ok=>{if(ok)setLastSaved(Date.now());else notify("⚠️ Salvataggio fallito — spazio insufficiente sul dispositivo.",TH.danger);});
+      storage.save({phase:"career",player},currentSlot).then(ok=>{if(ok){setLastSaved(Date.now());_mrCleanup(player);}else notify("⚠️ Salvataggio fallito — spazio insufficiente sul dispositivo.",TH.danger);});
     },600);
     return()=>{if(saveTimerRef.current)clearTimeout(saveTimerRef.current);};
   },[player]);// eslint-disable-line
@@ -26396,7 +26415,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
   const _flushRef=useRef(null);
   useEffect(()=>{_flushRef.current={player,slot:currentSlot};},[player,currentSlot]);// eslint-disable-line
   useEffect(()=>{
-    const flush=()=>{try{const f=_flushRef.current;if(f&&f.player){if(saveTimerRef.current)clearTimeout(saveTimerRef.current);storage.save({phase:"career",player:f.player},f.slot);}}catch(_e){}};
+    const flush=()=>{try{const f=_flushRef.current;if(f&&f.player){if(saveTimerRef.current)clearTimeout(saveTimerRef.current);storage.save({phase:"career",player:f.player},f.slot).then(ok=>{if(ok)_mrCleanup(f.player);}).catch(()=>{});}}catch(_e){}};/* [9ª ricorrenza] anche il flush di pagehide consuma il sidecar SOLO a salvataggio riuscito */
     const onVis=()=>{if(document.visibilityState==="hidden")flush();};
     window.addEventListener("pagehide",flush);
     document.addEventListener("visibilitychange",onVis);
@@ -27036,13 +27055,21 @@ const getThisWeekMatchday=()=>{
       &&(_pk.ih==null||m.isHome==null||(!!m.isHome)===(!!_pk.ih)));
     const _md=_cands.find(m=>m.week===(_pk.w||0))||_cands.find(m=>m.week===(player.week||1))||_cands[0]||null;
     const _natC=_r.context&&_r.context!=="career"&&_r.context!=="cup"&&_r.context!=="euro_group"&&_r.context!=="euro_ko";
-    if(!_md&&!_natC){localStorage.removeItem('cpm-pending-mr');return;}/* nessuna voce non giocata compatibile = gia' committata → scarto LEGITTIMO */
+    if(!_md&&!_natC){if(((player.calendar||[]).length)>0)localStorage.removeItem('cpm-pending-mr');return;}/* nessuna voce non giocata compatibile = gia' committata → scarto LEGITTIMO. [9ª ricorrenza] MA SOLO SE UN CALENDARIO C'E': su un save che rigenera il calendario al load (migrazione) questo effect puo' correre col calendario ancora assente — scartare qui distruggerebbe l'unica prova della partita giocata; si lascia decidere a un mount con lo stato idratato */
     /* [7.326.0] se la voce trovata NON e' alla settimana corrente, il commit di onMatchEnd (che marca per
        settimana corrente + _playingMdRef, qui vuoto dopo il reboot) non la troverebbe: si ri-allinea la
        settimana del player alla voce PRIMA del dispatch — il risultato appartiene a quella giornata. */
     const _wFix=(_md&&_md.week!==(player.week||1))?_md.week:null;
     if(_wFix!=null)setPlayer(q=>({...q,week:_wFix}));
-    setTimeout(()=>{try{localStorage.removeItem('cpm-pending-mr');/* [7.178.0 RC-14] consumo AL dispatch: rimuoverlo 1200ms prima apriva una finestra in cui richiudere l'app perdeva di nuovo il risultato */onMatchEnd(_r);notify("💾 Risultato recuperato: la partita era finita quando l'app si è chiusa — esito salvato.",TH.primary);}catch(_e2){}},1200);
+    setTimeout(()=>{try{
+      /* [9ª ricorrenza] il consumo AL dispatch (7.178) lasciava comunque scoperta la finestra
+         dispatch→autosave: kill li' dentro = risultato perso di nuovo E prova distrutta. Per le gare di
+         CLUB il sidecar ora sopravvive al dispatch e lo rimuove l'autosave riuscito (hook sotto) quando
+         il commit e' nello stato PERSISTITO; a ogni mount la validazione resta idempotente («nessuna
+         voce non giocata compatibile» → scarto legittimo). Solo per la NAZIONALE (nessuna voce di
+         calendario da verificare) il consumo resta al dispatch. */
+      if(!_md&&_natC)localStorage.removeItem('cpm-pending-mr');
+      onMatchEnd(_r);notify("💾 Risultato recuperato: la partita era finita quando l'app si è chiusa — esito salvato.",TH.primary);}catch(_e2){}},1200);
   }catch(_e){}},[]);// eslint-disable-line
   // [6.32.0 STAB-2] Trigger tornei Nazionali (W20) — UNICA sorgente condivisa da TUTTI i path di
   // avanzamento (doAdvanceWeek / onMatchEnd live / simulateAndAdvance). Prima il trigger Europeo/Mondiale
@@ -28854,7 +28881,17 @@ const getThisWeekMatchday=()=>{
 
   const [lastPressReport,setLastPressReport]=useState(null);
   const onMatchEnd=result=>{
-    try{localStorage.removeItem('cpm-pending-mr');}catch(_e){}/* [7.24.3] commit vero → il sidecar del fischio finale si consuma (niente doppio dispatch) */
+    /* [collaudo PO 9ª ricorrenza «di nuovo la partita gia' giocata» — G34 vs Bilbao, col titolo, su build
+       7.443 con TUTTE le reti] IL SIDECAR DEVE SOPRAVVIVERE AL COMMIT, FINO ALLA PERSISTENZA. Qui il
+       [7.24.3] lo rimuoveva SUBITO («commit vero») — ma il commit vive in memoria: l'autosave e' debounced
+       600ms e su Android WebView il flush di pagehide «e' spesso l'unica finestra utile» (nota 5.75), cioe'
+       a volte non arriva. Kill del processo dentro quella finestra = save pre-partita E prova gia'
+       distrutta → al riavvio il selettore ripropone il big match, senza lasciare cicatrici nel save (il
+       primo commit non e' mai esistito su disco — ed e' esattamente il quadro del save del PO: pulito).
+       Ora il sidecar lo rimuove L'AUTOSAVE RIUSCITO (vedi hook piu' sotto) quando la voce risulta
+       committata nello stato persistito; la rete (G) del selettore lo tiene fuori dalla riproposta anche
+       nella finestra residua, e il recovery al mount ricommitta se il save e' rimasto indietro. Il
+       «doppio dispatch» che il [7.24.3] temeva non esiste: il recovery gira solo al mount. */
     try{safeLS.set("cpm-match-resume","");}catch(_e){}matchResumeRef.current=null;/* [7.150.0] partita conclusa → snapshot di ripresa consumato */
     // [6.73.0] anti-loop «stessa partita»: marca il matchday appena giocato come COMMITTATO questa sessione
     //   (getThisWeekMatchday non lo ri-serve più anche se un desync di stato non avanzasse la settimana). Consuma la ref.
