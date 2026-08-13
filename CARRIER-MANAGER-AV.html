@@ -4666,7 +4666,8 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="7.436.0"; // [7.436.0 CONSOLIDAMENTO — direttiva PO «consolida e testa tutte le ultime funzionalita', verifica bug, trigger mancanti, regressioni»]: passata di collaudo sulle release 7.428-7.435, TUTTO SUL FLUSSO VIVO (lezione 7.380). VERIFICATO VERDE: sweep completo di 11 guardiani (recv-delivery, coach-face, cerimonie, parata, stale-matchday, vita-variety, vita-flow, retire-announce A-F, buildup-sync, scene-open-owner, def-camera-bounds) tutti PASS; trigger degli impulsi ESORDIO provato dal vivo a S.1 da U18 (2 pescate nelle prime 2 settimane vissute — il picker li privilegia davvero) e trigger ADDIO provato dal vivo da annunciato (pescata «la scuola calcio»); milePool=6 sullo stato migrato reale; il rollover stagione e' UNO SOLO (doStartNewSeason) e il guard dell'annunciato lo copre per costruzione. DUE FALLE CHIUSE: (1) le OFFERTE DI TRASFERIMENTO arrivavano anche a chi ha annunciato il ritiro — incoerente con l'impegno pubblico della stagione d'addio: guardia al CHOKEPOINT unico generateTransferOffer (stessa classe della guardia sul prestito 6.34), nessun call-site puo' scavalcarla; (2) le categorie nuove degli impulsi mostravano la CHIAVE GREZZA capitalizzata («Primopro», «Addio», «Esordio» senza colore): ora hanno nome proprio (L'addio · Esordio · Primo anno da pro) e colore dedicato. NOTA di strumento: il primo tracciante S.1 dava zero pescate per un selettore DOM sbagliato — rifatto col matcher sul body, la verita' e' emersa: mai fidarsi di uno strumento non provato rosso.
+const GAME_VERSION="7.437.0"; // [7.437.0 EVOLUTIVA STADI — PASSATA 1/2 (direttiva PO integrale: architettura, tribune, COPERTURE priorita' assoluta, differenziazione piccolo/medio/importante/prestigioso, materiali, luci, dettagli, perf, zero regressioni)]: ANALISI AGLI ATTI (stadi_dossier.md): il parametrico esisteva gia' (stadiumConfigFor: template per nazione, capienza dal profilo piazza, anelli, megaCurva, evoluzione) — l'upgrade costruisce SOPRA, zero campi nuovi nel save. (1) LIVELLO ARCHITETTONICO _lvl437 da capienza+modernita' GIA' esistenti, con la dignita' del template (3 anelli/muro/mod≥0.75 ⇒ almeno liv.2): 0 provincia · 1 medio · 2 importante · 3 prestigioso. (2) KIT COPERTURE per livello al posto della pensilina unica: liv.0 pensilina (4 pilastrini); liv.1+ FALDA vera a sbalzo che copre l'anello alto, SOTTOTETTO scuro, TRAVI reticolari istanziate, PILONI posteriori, gronda; liv.2+ fascia frontale PLEXI semitrasparente + striscia luminosa sottocopertura; liv.3 falda profonda 0.62, piloni alti +7 con STRALLI. (3) STRATIFICAZIONE TRIBUNE: balaustre sul fronte degli anelli, SCALE RADIALI chiare che spezzano la texture-folla in settori, VOMITORI scuri sul camminamento (~15 mesh condivise per tribuna). VERIFICATO: baseline vs v3 su 6 template (provincia resta umile — differenziazione), broadcast pulita (lezione 7.42x: la falda parte dall'anello alto, mai davanti alla folla), gate PASS 00001505 e perf 8.8-9.1fps headless (riferimento 3.9: nessun costo percepibile), heap stabile. PROSSIME PASSATE dichiarate: torri-fari per categoria, tunnel+area tecnica, secondo maxischermo liv≥2, cartellonistica/settori numerati, materiali metallo/vetro mirati, rifinitura artistica.
+// [nota 7.436.0] [7.436.0 CONSOLIDAMENTO — direttiva PO «consolida e testa tutte le ultime funzionalita', verifica bug, trigger mancanti, regressioni»]: passata di collaudo sulle release 7.428-7.435, TUTTO SUL FLUSSO VIVO (lezione 7.380). VERIFICATO VERDE: sweep completo di 11 guardiani (recv-delivery, coach-face, cerimonie, parata, stale-matchday, vita-variety, vita-flow, retire-announce A-F, buildup-sync, scene-open-owner, def-camera-bounds) tutti PASS; trigger degli impulsi ESORDIO provato dal vivo a S.1 da U18 (2 pescate nelle prime 2 settimane vissute — il picker li privilegia davvero) e trigger ADDIO provato dal vivo da annunciato (pescata «la scuola calcio»); milePool=6 sullo stato migrato reale; il rollover stagione e' UNO SOLO (doStartNewSeason) e il guard dell'annunciato lo copre per costruzione. DUE FALLE CHIUSE: (1) le OFFERTE DI TRASFERIMENTO arrivavano anche a chi ha annunciato il ritiro — incoerente con l'impegno pubblico della stagione d'addio: guardia al CHOKEPOINT unico generateTransferOffer (stessa classe della guardia sul prestito 6.34), nessun call-site puo' scavalcarla; (2) le categorie nuove degli impulsi mostravano la CHIAVE GREZZA capitalizzata («Primopro», «Addio», «Esordio» senza colore): ora hanno nome proprio (L'addio · Esordio · Primo anno da pro) e colore dedicato. NOTA di strumento: il primo tracciante S.1 dava zero pescate per un selettore DOM sbagliato — rifatto col matcher sul body, la verita' e' emersa: mai fidarsi di uno strumento non provato rosso.
 // [nota 7.435.0] [7.435.0 evolutiva PO «anche il primo anno da calciatore ed il primo da professionista devono essere memorabili»]: LE PIETRE MILIARI, speculari alla stagione d'addio (7.433). (1) PRIMA STAGIONE (S.1), sei impulsi una-tantum: la prima busta paga (foto in famiglia), la canzone dell'esordiente in piedi sulla sedia, il primo autografo chiesto per sbaglio al compagno, la convocazione incorniciata al bar del paese tra la squadra dell'82 e il sindaco, il professore che tiene il posto per il diploma, IL pallone lasciato ai bimbi del muretto. (2) PRIMO ANNO DA PRO (nuovo campo `proSeason`, scritto SOLO al salto u18→pro nei due writer della promozione — offerta e trasferimento — mai sovrascritto): la firma con la penna del magazziniere, l'armadietto della bandiera col biglietto «portalo con onore», il procuratore fuori dal centro sportivo, la propria maglia comprata allo store col cappuccio, la regola dei cornetti del giovedi', il battesimo dello spogliatoio (borsa nel congelatore). (3) il picker privilegia TUTTE le pietre miliari (flag mile, 6 settimane su 10 finche' non vissute) e la probe `milePool` le misura. Guardiano esteso, scenario (F): S.1 → pool 6, primo anno pro → 6, meta' carriera → 0 (rosso strutturale pre-7.435).
 // [nota 7.434.0] [7.434.0 collaudo PO «non ci devono essere burattini nelle scene 3D!» (screenshot: il manichino grigio del mister accanto agli uomini GLB della premiazione)]: GLB-ON IL MISTER E' UN ATTORE VERO — actor-presenter.glb (l'uomo in abito del drop-in 7.141), scalato dalle OSSA (il bbox dei SkinnedMesh mente, lezione 7.141), piedi a terra, braccia abbassate dal T-pose con la rotazione world-space della sala stampa (7.142); il low-poly resta solo come fallback GLB-OFF (dove tutto il teatro e' low-poly, quindi coerente). DUE LEZIONI PAGATE E MISURATE IN SESSIONE: (1) il rig dell'attore e' Biped/Rocketbox (Bip01_R_UpperArm), non mixamo — il primo matcher trovava zero ossa e l'attore restava in T-POSE (sonda arms:false + screenshot agli atti): ora il matcher e' quello tollerante del 7.142 (rupperarm/rforearm inclusi); (2) i GESTI (applauso, abbraccio) non scrivono euler per-rig (lezione 7.340: su Biped cadono male) ma ruotano in WORLD-SPACE attorno all'asse laterale del personaggio, dalla base in quaternione catturata dopo la posa. Verificato GLB-ON con la sonda beat-warp: glb:true, arms:true, niente T-pose, mister umano che cammina verso l'eroe nel beat coach.
 // [nota 7.433.0] [7.433.0 evolutiva PO «l'ultima stagione deve essere indimenticabile, con eventi divertenti, attestati di stima ecc»]: la stagione annunciata (7.432) ora si RIEMPIE. (1) SEI IMPULSI DELL'ADDIO, una-tantum e solo da annunciato (il portiere che chiede la maglia NEL TUNNEL prima della gara; il mister che offre il cambio all'85' per l'ovazione — o i novanta minuti fino al fischio; la teca segreta del magazziniere; il docufilm «L'ultima stagione»; il video a sorpresa dei capitani della lega chiuso dal rivale; l'ultima lezione alla scuola calcio del quartiere) — e il picker li PRIVILEGIA (6 settimane su 10 finche' non sono vissuti tutti): l'ultima stagione non e' una stagione qualunque. (2) GLI ATTESTATI DI STIMA nel MONDO FUORI: il rivale di sempre rompe il silenzio («giocargli contro e' stato l'onore piu' grande... ma l'ultima la vinco io») e la Lega annuncia il PREMIO ALLA CARRIERA da giocatore in attivita' — ciascuno scrive un ATTESTATO nel diario (type addio), che resta agli atti della carriera. (3) probe addioPool nel harness carriera. Guardiano esteso con lo scenario (D): annunciato → pool addio ≥5, non annunciato → 0 (rosso strutturale pre-7.433: il pool non esisteva).
@@ -9271,6 +9272,23 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
   const stM=new THREE.MeshLambertMaterial({color:0x808088});
   const roofColor92=(stadCfg.tpl&&stadCfg.tpl.roofTone!=null)?[roofColor,0x3a3a46,0x6a6a75][stadCfg.tpl.roofTone]||roofColor:roofColor;// [5.92.0] tono tetto per club
   const roofM=new THREE.MeshLambertMaterial({color:roofColor92,transparent:true,opacity:roofOpacity});
+  /* [7.437.0 EVOLUTIVA STADI — direttiva PO «coperture: priorità assoluta», livelli piccolo/medio/
+     importante/prestigioso] IL LIVELLO ARCHITETTONICO deriva dai parametri GIA' esistenti (capienza
+     dal profilo piazza + modernita' del template): 0 provincia (pensilina o nulla) · 1 medio (sbalzo
+     con travi) · 2 importante (copertura profonda, reticolo, fascia plexi) · 3 prestigioso
+     (monumentale: piloni, stralli, sottotetto illuminato). Nessun campo nuovo nel save. */
+  const _lvl437=(function(){const _cp=_capB||((typeof stadCfg==="object"&&stadCfg.tpl&&stadCfg.tpl.capacity))||18000;const _md=(T&&T.mod)||0.4;
+    let _l=(_cp>=40000||(_cp>=30000&&_md>=0.7))?3:(_cp>=24000)?2:(_cp>=12000)?1:0;
+    /* il TEMPLATE ha una dignita' propria: un 3-anelli/muro/moderno non porta mai la pensilina di
+       provincia, qualunque sia la capienza del giorno (vale anche per il force-hook di collaudo) */
+    if(T){if(T.rings>=3||T.megaCurva||_md>=0.75)_l=Math.max(_l,2);else if(T.rings>=2)_l=Math.max(_l,1);}
+    if(_cp>=52000&&_md>=0.6)_l=3;
+    return _l;})();
+  const _roofDarkM=new THREE.MeshLambertMaterial({color:0x23262c});/* sottotetto */
+  const _plexiM=new THREE.MeshLambertMaterial({color:0xcfe4f2,transparent:true,opacity:0.30,side:THREE.DoubleSide});
+  const _ledM437=new THREE.MeshBasicMaterial({color:0xdfe9f5});/* fascia luminosa sottocopertura (basic = sempre accesa) */
+  const _aisleM437=new THREE.MeshLambertMaterial({color:0x9aa3ad});/* scale/corridoi radiali */
+  const _vomM437=new THREE.MeshLambertMaterial({color:0x14161c});/* vomitori (accessi scuri) */
   // ── CROWD 2.0 §5 — distribuzione settori dal contesto (computeCrowdContext) + CROWD_CFG.sectors ──
   // Curva Sud (x=+sideX, LATO TABELLONE) SOLO casa/ultras · Curva Nord (x=-sideX) SOLO ospiti (riempita
   // da awayFill: derby=piena, provino=vuota) · Tribuna Est (z=+endZ) casa+famiglie+spicchio ospiti ·
@@ -9413,6 +9431,26 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
         walk2.position.set(0,standH+1.5,standD*0.33);g.add(walk2);
       }
     }
+    /* [7.437.0 EVOLUTIVA STADI — «evita l'effetto massa geometrica ripetuta»] STRATIFICAZIONE:
+       parapetti sul fronte degli anelli, SCALE RADIALI sopra i gradoni (i corridoi che spezzano la
+       texture-folla in settori), VOMITORI scuri sul camminamento. Tutta geometria condivisa, ~15
+       mesh per tribuna. */
+    {const _lvS=opts.lvl!=null?opts.lvl:_lvl437;
+      const _mkRail=(y,z)=>{const r=new THREE.Mesh(new THREE.BoxGeometry(standW,0.34,0.12),stM);r.position.set(0,y,z);g.add(r);};
+      _mkRail(3.15,-standD/2+0.55);/* balaustra fronte-campo dell'anello basso */
+      if(_nt>1)_mkRail(standH*0.68+0.2,-standD*0.02-0.05);/* fronte anello alto */
+      const _mkAisle=(z0,y0,z1,y1)=>{const dz=z1-z0,dy=y1-y0,L=Math.hypot(dz,dy);
+        const _na=Math.max(3,Math.round(standW/18));
+        for(let ai=0;ai<_na;ai++){const ax=-standW/2+(ai+0.5)*standW/_na;
+          const st2=new THREE.Mesh(new THREE.PlaneGeometry(0.9,L*0.96),_aisleM437);
+          st2.position.set(ax,(y0+y1)/2+0.06,(z0+z1)/2-0.03);st2.rotation.x=Math.atan2(dz,dy);g.add(st2);}};
+      if(_nt===1)_mkAisle(-standD/2+0.6,3.0,standD*0.40,standH+0.6);
+      else{_mkAisle(-standD/2+0.6,3.0,-standD*0.10,standH*0.62);_mkAisle(-standD*0.02,standH*0.68,standD*0.32,standH+1.4);}
+      if(_nt>1){const _nv=Math.max(2,Math.round(standW/26));
+        for(let vi=0;vi<_nv;vi++){const vx=-standW/2+(vi+0.7)*standW/_nv;
+          const vm=new THREE.Mesh(new THREE.BoxGeometry(1.8,1.15,0.6),_vomM437);
+          vm.position.set(vx,standH*0.645+0.85,-standD*0.06);g.add(vm);}}
+    }
     // Concrete base strip
     const base=new THREE.Mesh(new THREE.BoxGeometry(standW+2,3,standD+3),cM);
     base.position.set(0,1.5,0);g.add(base);
@@ -9433,12 +9471,51 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
     // dalla camera broadcast alta, COPRIVA l'anello inferiore (banda opaca al posto dei tifosi)
     if(_roofOn){
       const _rTop=(_nt>=3)?standH*1.34+2.4:standH+1.8;
-      const roof=new THREE.Mesh(new THREE.BoxGeometry(standW+8,0.8,standD*0.20),roofM);
-      roof.position.set(0,_rTop,standD*((_nt>=3)?0.52:0.34));roof.rotation.x=0.10;g.add(roof);
-      [-standW/2+4,standW/2-4].forEach(px=>{
-        const pl=new THREE.Mesh(new THREE.CylinderGeometry(0.25,0.3,_rTop+0.2,8),stM);
-        pl.position.set(px,_rTop/2,standD*((_nt>=3)?0.48:0.30));g.add(pl);
-      });
+      const _lv=opts.lvl!=null?opts.lvl:_lvl437;
+      if(_lv<=0){/* PROVINCIA: la pensilina storica, con due pilastrini in piu' per non sembrare sospesa */
+        const roof=new THREE.Mesh(new THREE.BoxGeometry(standW+8,0.8,standD*0.20),roofM);
+        roof.position.set(0,_rTop,standD*((_nt>=3)?0.52:0.34));roof.rotation.x=0.10;g.add(roof);
+        [-standW/2+4,-standW/6,standW/6,standW/2-4].forEach(px=>{
+          const pl=new THREE.Mesh(new THREE.CylinderGeometry(0.22,0.28,_rTop+0.2,8),stM);
+          pl.position.set(px,_rTop/2,standD*((_nt>=3)?0.48:0.30));g.add(pl);});
+      } else {/* [7.437.0] COPERTURA VERA A SBALZO: falda che copre l'anello alto, sottotetto scuro,
+          travi reticolari istanziate dal retro al filo, piloni posteriori; dal liv.2 fascia frontale
+          plexi + striscia luminosa; al liv.3 piloni alti sopra il tetto con STRALLI e falda piu' profonda. */
+        const _dp=standD*(_lv>=3?0.62:_lv>=2?0.52:0.40);/* profondita' falda */
+        const _zBack=standD*((_nt>=3)?0.52:0.36);/* attacco posteriore */
+        const _zFront=_zBack-_dp;/* filo campo della falda */
+        const _slope=_lv>=3?0.16:0.12;
+        const roof=new THREE.Mesh(new THREE.BoxGeometry(standW+8,0.55,_dp),roofM);
+        roof.position.set(0,_rTop+Math.sin(_slope)*_dp*0.5,_zBack-_dp/2);roof.rotation.x=_slope;g.add(roof);
+        const under=new THREE.Mesh(new THREE.PlaneGeometry(standW+7.6,_dp*0.96),_roofDarkM);
+        under.position.set(0,_rTop-0.34+Math.sin(_slope)*_dp*0.5,_zBack-_dp/2);under.rotation.x=Math.PI/2+_slope;g.add(under);
+        /* fascia di gronda sul filo (bordo visibile dalla broadcast) */
+        const fascia=new THREE.Mesh(new THREE.BoxGeometry(standW+8,1.1,0.35),stM);
+        fascia.position.set(0,_rTop+0.1,_zFront);g.add(fascia);
+        /* travi reticolari: istanza unica di cilindri sottili inclinati */
+        const _nTr=Math.max(4,Math.round((standW+8)/(_lv>=3?7:10)));
+        const _trLen=Math.hypot(_dp,_rTop*0.32);
+        const truss=new THREE.InstancedMesh(new THREE.CylinderGeometry(0.16,0.16,_trLen,6),stM,_nTr);
+        truss.frustumCulled=false;const _tm=new THREE.Matrix4();const _te=new THREE.Euler(Math.PI/2-Math.atan2(_rTop*0.32,_dp)+_slope,0,0);
+        for(let ti=0;ti<_nTr;ti++){const tx=-standW/2-3+(ti+0.5)*(standW+8)/_nTr;
+          _tm.makeRotationFromEuler(_te);_tm.setPosition(tx,_rTop-_rTop*0.14,_zBack-_dp/2);truss.setMatrixAt(ti,_tm);}
+        g.add(truss);
+        /* piloni posteriori */
+        const _nPy=_lv>=3?5:_lv>=2?4:3;
+        for(let pi=0;pi<_nPy;pi++){const px=-standW/2+2+(pi+0.5)*(standW-4)/_nPy;
+          const pl=new THREE.Mesh(new THREE.CylinderGeometry(0.34,0.44,_rTop+(_lv>=3?7:2),8),stM);
+          pl.position.set(px,(_rTop+(_lv>=3?7:2))/2,_zBack+0.6);g.add(pl);
+          if(_lv>=3){/* STRALLI: cavi dal pilone alto al filo della falda */
+            const _cl=Math.hypot(_dp+0.6,7+Math.sin(_slope)*_dp);
+            const cav=new THREE.Mesh(new THREE.CylinderGeometry(0.055,0.055,_cl,5),stM);
+            cav.position.set(px,_rTop+3.5,_zBack-_dp/2);cav.rotation.x=Math.PI/2-Math.atan2(7,_dp);g.add(cav);}}
+        if(_lv>=2){/* fascia frontale semitrasparente sotto la gronda (vetro/policarbonato) */
+          const px2=new THREE.Mesh(new THREE.PlaneGeometry(standW+7,2.0),_plexiM);
+          px2.position.set(0,_rTop-1.2,_zFront+0.02);g.add(px2);
+          /* striscia luminosa sottocopertura */
+          const led=new THREE.Mesh(new THREE.BoxGeometry(standW+6,0.16,0.16),_ledM437);
+          led.position.set(0,_rTop-0.55,_zFront+0.35);g.add(led);}
+      }
     }
     // Fence rail at pitch-side bottom
     if(_fenceT!=="none"){// inglese: niente recinzione, tribune a filo campo
