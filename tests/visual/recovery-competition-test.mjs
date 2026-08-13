@@ -152,7 +152,91 @@ const letturaSave = (page) => page.evaluate(() => {
   }
 }
 
+/* ─────────── CASO H: LA PROVA MUORE QUANDO IL RISULTATO E' SALVATO ───────────
+   [FASE 8 · audit post-fix] La stessa root cause viveva anche in `_mrCleanup`: per decidere se il sidecar
+   serve ancora cercava una voce non giocata contro quell'avversario SENZA guardare la competizione. Con la
+   gara di coppa gia' committata ma quella di CAMPIONATO contro lo stesso club ancora da giocare, la prova
+   restava viva per sempre — e finche' vive la rete (G) del selettore tiene la gara di lega fuori dalla
+   riproposta. Danno osservabile: la settimana non ha piu' partite da giocare. */
+const conSidecar = async (rompi) => {
+  const cal = [
+    { matchday: 18, week: 20, opponentId: AVV.id, opponentName: AVV.n, isHome: true, played: false },
+    { matchday: 990, week: 20, opponentId: AVV.id, opponentName: AVV.n, isHome: true, played: false, type: 'cup', cupRoundName: 'Sedicesimi' },
+  ];
+  const save = mkSave(cal);
+  const mr = mkSidecar(save.player, { oid: AVV.id, on: AVV.n, ih: true, context: 'cup' });
+  const page = await b.newPage({ viewport: { width: 412, height: 915 } });
+  await installCdnRoutes(page);
+  page.on('pageerror', e => guasti.push('pageerror: ' + String(e.message).slice(0, 120)));
+  await page.addInitScript(cfg => {
+    window.__CPM_GLB = false;
+    if (cfg.rompi) window.__CPM_NO_P0_5 = 1;   // ripristina la ricerca cieca in _mrCleanup e nella rete (G)
+    localStorage.setItem('cpm-v3', JSON.stringify(cfg.sv));
+    localStorage.setItem('cpm-pending-mr', JSON.stringify(cfg.mr));
+  }, { sv: save, mr, rompi });
+  await page.goto(`http://localhost:${port}/CARRIER-MANAGER-AV.html?cpmtest=1`, { waitUntil: 'load', timeout: 40000 });
+  await page.waitForFunction(() => { const r = document.getElementById('root'); return r && r.children.length > 0; }, { timeout: 40000 });
+  await sleep(1500);
+  try { await page.getByText('CONTINUA', { exact: false }).first().click({ timeout: 8000 }); } catch (e) {}
+  await page.waitForFunction(() => !!window.__CPM_CAREER, { timeout: 20000 });
+  await sleep(6000);   // recovery + commit + autosave (debounce 600ms) + _mrCleanup
+  const r = await page.evaluate(() => {
+    let coppa = null; try { const p = JSON.parse(localStorage.getItem('cpm-v3')).player; const e = (p.calendar || []).find(x => x.matchday === 990); coppa = e ? !!e.played : null; } catch (er) {}
+    return { sidecar: !!localStorage.getItem('cpm-pending-mr'), coppa, md: window.__CPM_CAREER.thisWeekMd() };
+  });
+  await page.close(); return r;
+};
+{
+  const rosso = await conSidecar(true);
+  const verde = await conSidecar(false);
+  console.log(`\nH) la prova del fischio finale dopo che il risultato e' nel salvataggio (coppa committata: rosso ${rosso.coppa} · verde ${verde.coppa}):`);
+  console.log(`   senza filtro (__CPM_NO_P0_5): sidecar ${rosso.sidecar ? 'ANCORA VIVO — difetto riprodotto ✓' : 'consumato'} · gara della settimana ${rosso.md ? 'md' + rosso.md.matchday : 'NESSUNA (la lega e\' bloccata dalla rete G)'}`);
+  console.log(`   col filtro:                   sidecar ${verde.sidecar ? 'ancora vivo ✗' : 'consumato ✓'} · gara della settimana ${verde.md ? 'md' + verde.md.matchday + ' ✓' : 'nessuna ✗'}`);
+  if (!rosso.coppa || !verde.coppa) guasti.push('(H) la coppa non risulta committata: lo scenario non e\' quello previsto (sonda cieca)');
+  if (!rosso.sidecar) guasti.push('(H-ROSSO) senza filtro la prova viene comunque consumata: il guardiano non dimostra di proteggere nulla');
+  if (verde.sidecar) guasti.push('(H) LA PROVA SOPRAVVIVE al salvataggio del risultato: _mrCleanup cerca ancora per solo avversario');
+  if (!verde.md || verde.md.matchday !== 18) guasti.push(`(H) la gara di CAMPIONATO della settimana non e' giocabile (${verde.md ? 'md' + verde.md.matchday : 'nessuna'}): la prova di coppa la sta bloccando`);
+}
+
+/* ─────────── CASO I: LA RETE (G) BLOCCA SOLO LA SUA COMPETIZIONE ───────────
+   Il caso H copre `_mrCleanup`; questo isola la rete (G), che va protetta anche da sola: nella finestra
+   legittima fra il fischio finale di COPPA e l'autosave, il sidecar E' vivo per costruzione — e in quella
+   finestra non deve togliere dal calendario la gara di CAMPIONATO contro lo stesso club. Il sidecar viene
+   iniettato a runtime, dopo il mount, proprio per riprodurre quella finestra senza passare dal recovery. */
+{
+  const cal = [
+    { matchday: 18, week: 20, opponentId: AVV.id, opponentName: AVV.n, isHome: true, played: false },                                  // LEGA da giocare
+    { matchday: 990, week: 20, opponentId: AVV.id, opponentName: AVV.n, isHome: true, played: true, type: 'cup', cupRoundName: 'Sedicesimi' }, // COPPA gia' giocata
+  ];
+  const misura = async (rompi) => {
+    const save = mkSave(cal);
+    const mr = mkSidecar(save.player, { oid: AVV.id, on: AVV.n, ih: true, context: 'cup' });
+    const page = await b.newPage({ viewport: { width: 412, height: 915 } });
+    await installCdnRoutes(page);
+    await page.addInitScript(cfg => { window.__CPM_GLB = false; if (cfg.rompi) window.__CPM_NO_P0_5 = 1; localStorage.setItem('cpm-v3', JSON.stringify(cfg.sv)); }, { sv: save, rompi });
+    await page.goto(`http://localhost:${port}/CARRIER-MANAGER-AV.html?cpmtest=1`, { waitUntil: 'load', timeout: 40000 });
+    await page.waitForFunction(() => { const r = document.getElementById('root'); return r && r.children.length > 0; }, { timeout: 40000 });
+    await sleep(1500);
+    try { await page.getByText('CONTINUA', { exact: false }).first().click({ timeout: 8000 }); } catch (e) {}
+    await page.waitForFunction(() => !!window.__CPM_CAREER, { timeout: 20000 });
+    await sleep(2500);
+    const prima = await page.evaluate(() => window.__CPM_CAREER.thisWeekMd());
+    const dopo = await page.evaluate(m => { localStorage.setItem('cpm-pending-mr', JSON.stringify(m)); return window.__CPM_CAREER.thisWeekMd(); }, mr);
+    await page.close(); return { prima, dopo };
+  };
+  const rosso = await misura(true);
+  const verde = await misura(false);
+  console.log(`\nI) prova di COPPA viva, gara di CAMPIONATO vs lo stesso club da giocare:`);
+  console.log(`   senza filtro: md${rosso.prima ? rosso.prima.matchday : '—'} → ${rosso.dopo ? 'md' + rosso.dopo.matchday : 'NESSUNA — difetto riprodotto ✓'}`);
+  console.log(`   col filtro:   md${verde.prima ? verde.prima.matchday : '—'} → ${verde.dopo ? 'md' + verde.dopo.matchday + ' ✓' : 'nessuna ✗'}`);
+  if (!rosso.prima || rosso.prima.matchday !== 18 || !verde.prima || verde.prima.matchday !== 18) guasti.push('(I) la gara di lega non e\' proponibile nemmeno prima di iniettare la prova: sonda cieca');
+  else {
+    if (rosso.dopo) guasti.push('(I-ROSSO) senza filtro la rete (G) non blocca nulla: il guardiano non dimostra di proteggere nulla');
+    if (!verde.dopo || verde.dopo.matchday !== 18) guasti.push('(I) UNA PROVA DI COPPA TOGLIE DAL CALENDARIO LA GARA DI CAMPIONATO contro lo stesso club: la rete (G) non filtra per competizione');
+  }
+}
+
 await b.close(); srv.close();
 console.log(guasti.length ? `\n❌ FAIL — ${guasti.length}\n` + guasti.map(g => '  ✗ ' + g).join('\n')
-  : '\n✅ RECOVERY PER COMPETIZIONE OK (la Coppa si committa in Coppa · il campionato resta intatto · nessuna regressione sul recupero di lega)');
+  : '\n✅ RECOVERY PER COMPETIZIONE OK (la Coppa si committa in Coppa · il campionato resta intatto · la prova muore quando serve · la rete (G) blocca solo la sua competizione)');
 process.exit(guasti.length ? 1 : 0);
