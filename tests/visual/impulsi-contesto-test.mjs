@@ -56,6 +56,32 @@ for (const [nome, atteso] of [['_brandOk453', { ragazzo: false, affermato: true,
   for (const k of Object.keys(atteso)) if (r[k] !== atteso[k]) guasti.push(`${nome} risponde ${r[k]} a «${k}» invece di ${atteso[k]}`);
 }
 
+/* ── (B-bis) le DOMANDE DELLA STAMPA: stesso principio, altro pool ──
+   [collaudo PO «troppo presto!», terza volta] Alla decima settimana di un ragazzo di Primavera 2 il
+   giornalista chiedeva delle «voci di mercato sul suo conto». Il meccanismo per filtrare le domande
+   esiste dal 6.97.0; queste tre non lo usavano. */
+{
+  const qi = src.indexOf('const INTERVIEW_QS=[');
+  const qbody = src.slice(qi, src.indexOf('\n];', qi));
+  const qre = /\{ctx:\[([^\]]*)\],([^\n]*?)q:"([^"]{0,150})/g;
+  const dom = []; let q;
+  while ((q = qre.exec(qbody))) dom.push({ ctx: q[1].replace(/"/g, ''), head: q[2], q: q[3] });
+  const STATUS = /voci di mercato|giocatore importante|punto di riferimento nello spogliatoio/i;
+  const scoperte = dom.filter(d => STATUS.test(d.q) && !/cond:/.test(d.head));
+  console.log(`\ndomande d'intervista nel pool: ${dom.length} · che danno per scontato uno status, senza condizione: ${scoperte.length}`);
+  scoperte.forEach(d => console.log(`   ✗ [${d.ctx}] ${d.q.slice(0, 78)}`));
+  if (dom.length < 150) guasti.push(`solo ${dom.length} domande estratte: il pool delle interviste non e' stato letto (sonda cieca)`);
+  if (scoperte.length) guasti.push(`${scoperte.length} domande della stampa danno per scontato uno status senza condizione: possono essere poste a un ragazzo della Primavera`);
+
+  const s3 = leggi('_statusOk453');
+  if (!s3) guasti.push("la regola condivisa _statusOk453 non esiste piu': il fix e' stato rimosso");
+  else { let f; try { f = eval('(' + s3 + ')'); } catch (e) { guasti.push(`_statusOk453 non e' valutabile: ${e.message}`); }
+    if (f) { const r = { ragazzo: !!f(RAGAZZO), affermato: !!f(AFFERMATO), esploso: !!f(ESPLOSO) };
+      console.log(`_statusOk453: ragazzo di Primavera ${r.ragazzo ? 'SI ✗' : 'no ✓'} · professionista affermato ${r.affermato ? 'si ✓' : 'NO ✗'} · giovane esploso ${r.esploso ? 'si ✓' : 'no (giusto: il peso nello spogliatoio si guadagna)'}`);
+      if (r.ragazzo) guasti.push('_statusOk453 considera «importante» un ragazzo di Primavera');
+      if (!r.affermato) guasti.push('_statusOk453 esclude un professionista affermato: la domanda non uscirebbe mai'); } }
+}
+
 /* ── (C) la convocazione in Nazionale segue delle partite giocate ── */
 const naz = voci.find(v => v.id === 'wi_nazionale_b');
 if (!naz) guasti.push('wi_nazionale_b non trovato: sonda cieca');
