@@ -219,6 +219,13 @@ for (const [tag, journo] of [['uomo', MEN], ['donna', WOMEN]]) {
       assistShort: window.draftBugNote(mk(base(240, i => ({ x: -10 + i * 0.1, md: 1.2 }))), { out: 'assist', intent: 'pass', ok: true }),/* l'assist finisce sui piedi del compagno, non in porta */
       goalSettle: window.draftBugNote(mk(base(240, i => ({ x: i < 200 ? 10 + i * 0.2 : 49.4 - (i - 200) * 0.04, z: 0.5, y: i < 200 ? 1.2 : 0.45 }))), { out: 'goal', intent: 'shot', ok: true }),/* gol vero: entra e poi si assesta nella bocca della porta */
       clean: window.draftBugNote(mk(base(240, i => ({ x: -10 + i * 0.12, md: 1.4 }))), {}),
+      /* [gi187] LA FINE DELLA SCENA È UNO STACCO: nei +320ms dopo la caduta del bit hl (f&8) la camera
+         torna in broadcast (~33u) e la palla viene ri-piazzata per la cronaca (~18u) — tagli voluti,
+         non teletrasporti. Il caso mid* prova che la sensibilità sui salti VERI a scena viva resta. */
+      endCutBall: window.draftBugNote(mk(base(240, i => ({ x: i === 201 ? 30 : -10 + i * 0.12, f: i < 200 ? 9 : 0 }))), {}),
+      endCutCam: window.draftBugNote(mk(base(240, i => ({ x: -10 + i * 0.12, f: i < 200 ? 9 : 0, cx: i <= 200 ? 10 : 43, cy: 8, cz: 20, lx: 0, ly: 1, lz: 0 }))), {}),
+      midCutBall: window.draftBugNote(mk(base(240, i => ({ x: i === 150 ? 30 : -10 + i * 0.12, f: 9 }))), {}),
+      midCutCam: window.draftBugNote(mk(base(240, i => ({ x: -10 + i * 0.12, f: 9, cx: i <= 150 ? 10 : 43, cy: 8, cz: 20, lx: 0, ly: 1, lz: 0 }))), {}),
     };
   });
   const has = (k, rx) => rx.test(d[k] || '');
@@ -236,6 +243,13 @@ for (const [tag, journo] of [['uomo', MEN], ['donna', WOMEN]]) {
   if (has('assistShort', /dalla porta|in porta/)) issues.push('(D) un ASSIST non deve dover arrivare in porta: ' + d.assistShort.slice(0, 90));
   if (has('goalSettle', /mai arrivata in porta|IN RETE/)) issues.push('(D) un GOL entrato e poi assestato viene segnalato: ' + d.goalSettle.slice(0, 90));
   if (d.clean) issues.push('(D) una traccia PULITA non deve produrre bozza: ' + d.clean.slice(0, 90));
+  /* [gi187] il rientro in cronaca (camera in broadcast + palla ri-piazzata, dopo la caduta del bit hl)
+     non deve finire in bozza; lo stesso salto a SCENA VIVA sì (sensibilità intatta) */
+  if (has('endCutBall', /teletrasporto/)) issues.push('(D) gi187: il ri-piazzamento della palla a fine scena viene scambiato per teletrasporto: ' + d.endCutBall.slice(0, 110));
+  if (has('endCutCam', /CAMERA salta|CAMERA trema/)) issues.push('(D) gi187: il ritorno in broadcast a fine scena viene scambiato per salto di camera: ' + d.endCutCam.slice(0, 110));
+  if (!has('midCutBall', /teletrasporto/)) issues.push('(D) gi187: il teletrasporto VERO a scena viva non viene più descritto (sensibilità persa)');
+  if (!has('midCutCam', /CAMERA salta|CAMERA trema/)) issues.push('(D) gi187: il salto di camera VERO a scena viva non viene più descritto (sensibilità persa)');
+  if (d.midCutCam && !/codice 007/.test(d.midCutCam)) issues.push('(D) gi108: la riga-camera non porta l\'etichetta «codice 007»');
   /* dal vivo: azione vera → il tasto ⚠️ precompila la nota con la bozza (o la lascia vuota, mai un errore) */
   await page.close();
   const pg2 = await browser.newPage({ viewport: { width: 412, height: 915 } });
