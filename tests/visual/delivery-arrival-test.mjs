@@ -18,22 +18,26 @@
    su cui e' costruita la riga che il PO ha letto. Se in tutta la scena nessuno scende sotto la
    soglia, il pallone ha viaggiato da solo.
 
-   ⚠️⚠️ NON GIUDICA — E LA RAGIONE VA LETTA PRIMA DI FIDARSI DEI NUMERI. Il criterio giusto sarebbe
-   «nell'azione, qualcuno scende sotto 3,4u dal pallone» (3,4 e' la soglia del gioco stesso per
-   «ai piedi», `_addosso389` r.~12860). Ma la finestra su cui si misura e' la CHIAVE DI SCENA, e la
-   chiave resta attiva molto oltre l'azione: misurate 957 e 832 fotogrammi per una singola scena
-   forzata, dentro cui ci sono i fotogrammi di build-up in cui il pallone e' ai piedi di chi conduce.
-   Il minimo su quella finestra crolla a 0,2-0,9u su TUTTE le scene — comprese quelle che il PO ha
-   segnalato — quindi un verdetto costruito su quel minimo direbbe «tutto a posto» senza aver
-   guardato l'azione. Sarebbe il verde cieco che questo repo ha gia' pagato piu' volte.
-   Cio' che invece DISCRIMINA, e va nella direzione delle note, e' la distanza a FINE finestra:
-   gi30 43,5u · gi105 30,4u · gi56 13,3u · gi188 7,5u contro gi158 3,0u e gi104 4,2u — e gi30/gi105
-   sono proprio due delle scene su cui il PO ha scritto «la palla va da sola».
-   PER CHIUDERE IL CODICE 008 SERVE UN MARCATORE DI FINESTRA D'AZIONE nell'anello del testimone
-   (inizio/fine della consegna), che oggi non c'e': senza, non esiste modo onesto di dare un verdetto.
-   Fino ad allora questa sonda STAMPA e basta.
+   LA FINESTRA D'AZIONE C'ERA GIA', e la prima stesura di questa sonda non l'aveva vista: lo slot 6
+   dell'anello (`f`) e' un BITFIELD scritto ogni fotogramma — bit1 arco in volo, bit2 post-arco vivo,
+   bit4 build-up (`tlOn`), bit8 «sono dentro la scena» (aggiunto dal 7.420 proprio perche' la chiave
+   `sk` resta attiva anche DOPO l'esito e la finestra sconfinava nella cronaca). Misurare il minimo su
+   tutta la chiave di scena dava 0,2-0,9u su OGNI scena, comprese quelle segnalate dal PO: erano i
+   fotogrammi di build-up, dove il pallone e' al piede di chi conduce, a schiacciare il minimo.
 
-     CPM_CHROME=… PLAYWRIGHT_BROWSERS_PATH=… node delivery-arrival-test.mjs [--verbose]             */
+   LA FINESTRA GIUSTA E' UNA SOLA: da quando l'arco della consegna ATTERRA (bit1 che si spegne) fino
+   alla fine della scena (bit8), esclusi i fotogrammi di build-up (bit4). E' l'unico tratto in cui la
+   domanda «qualcuno e' arrivato sul pallone?» ha senso: prima il pallone e' ai piedi del portatore,
+   durante e' in volo e nessuno puo' esserci sopra.
+
+   SOGLIA: 3,4u, che e' quella con cui il GIOCO STESSO considera il pallone «ai piedi»
+   (`_addosso389`, r.~12860; il guardiano gemello giudica a 3). Non e' scelta a occhio.   PROVA DEL ROSSO: `CPM_NO464=1` rimette il ripiego cieco del bersaglio. ⚠️ VA LANCIATA CON L'INTERA
+   SEQUENZA (`CPM_SIT=188,30,104,105,98,158,39,56`): il difetto dipende dallo STATO DI CAMPO che le
+   scene precedenti lasciano — gi56 da sola non lo riproduce (0,7u), in coda alle altre sette si'
+   (5,5u col ripiego cieco, 0,2u col fix). Misurare la scena isolata avrebbe dato un verde falso.
+
+     CPM_CHROME=… PLAYWRIGHT_BROWSERS_PATH=… node delivery-arrival-test.mjs [--verbose]
+     CPM_SIT=188,30,104,105,98,158,39,56 node delivery-arrival-test.mjs      (modo mirato)          */
 import { startServer, launchBrowser, installCdnRoutes, openMatch, sleep } from './lib/harness.mjs';
 
 const VERB = process.argv.includes('--verbose');
@@ -47,10 +51,11 @@ await installCdnRoutes(page);
 const errs = []; page.on('pageerror', e => errs.push(String(e.message).slice(0, 140)));
 /* i DEVTOOLS accendono il testimone di bordo (`_DEVT344`): senza, `__CPM_WATCH_SNAP` non esiste e la
    sonda gira senza guardare niente. `__CPM_CINE` accende l'executor, spento sotto `?cpmtest=1`. */
-await page.addInitScript(() => {
+await page.addInitScript(n => {
   window.__CPM_GLB = false; window.__CPM_CINE = 1; window.__CPM_PRESENT = 1;
+  if (n) window.__CPM_NO464 = 1;   /* prova del rosso: rimette il ripiego cieco del bersaglio */
   try { localStorage.setItem('cpm-devtools', '1'); } catch (e) {}
-});
+}, process.env.CPM_NO464 ? 1 : 0);
 await openMatch(page, port, { skipLoadAll: true });
 await sleep(700);
 
@@ -79,11 +84,21 @@ if ((process.env.CPM_SIT || '').length) {
       if (!snap || !snap.samples || !snap.samples.length) return null;
       const S = snap.samples, ks = S.map(x => x.sk).filter(v => v != null && v >= 0);
       if (!ks.length) return null;
-      const W = S.filter(x => x.sk === Math.max(...ks));
+      const W = S.filter(x => x.sk === Math.max(...ks) && (x.f & 8));
       if (W.length < 8) return null;
-      const mds = W.filter(x => x.md >= 0 && x.md < 900).map(x => x.md);
-      if (!mds.length) return null;
-      return { n: W.length, mdMin: Math.min(...mds), mdFin: mds[mds.length - 1] };
+      /* ultimo fotogramma con l'arco IN VOLO: da li' in poi il pallone e' stato consegnato */
+      let last = -1; for (let i = 0; i < W.length; i++) if (W[i].f & 1) last = i;
+      if (last < 0) return { n: W.length, senzaArco: true };
+      /* ⚠️ E LA FINESTRA VA CHIUSA ANCHE NEL TEMPO. Col force-sit la scena resta aperta ~50 secondi
+         (misurati 860 fotogrammi dopo l'atterraggio): in cinquanta secondi qualcuno passa vicino al
+         pallone comunque, e il minimo torna a 0,7u su tutto — un altro verde che non guarda l'azione.
+         «Arrivare sul pallone» e' una cosa che succede SUBITO: 2,5s e' l'ordine di grandezza della
+         finestra d'esito del gioco (`postHighlightDuration`, >=2,55s). */
+      const t0 = W[last].t;
+      const dopo = W.slice(last + 1).filter(x => x.t - t0 <= 2500 && !(x.f & 4) && x.md >= 0 && x.md < 900);
+      if (dopo.length < 4) return { n: W.length, corta: dopo.length };
+      const mds = dopo.map(x => x.md);
+      return { n: W.length, nDopo: dopo.length, mdMin: Math.min(...mds), mdFin: mds[mds.length - 1] };
     });
     if (r) { r.gi = gi; righe.push(r); console.log(`  gi${gi} · ${r.n} fotogrammi · piu' vicino al pallone ${r.mdMin.toFixed(1)}u (fine scena ${r.mdFin.toFixed(1)}u)`); }
     else console.log(`  gi${gi}: nessun campione`);
@@ -125,28 +140,35 @@ for (let round = 0; !MIRATO && round < TARGET * 12 && righe.length < TARGET; rou
   const r = await page.evaluate(() => {
     const snap = window.__CPM_WATCH_SNAP && window.__CPM_WATCH_SNAP();
     if (!snap || !snap.samples || !snap.samples.length) return null;
-    const S = snap.samples, ks = S.map(s => s.sk).filter(v => v != null && v >= 0);
+    const S = snap.samples, ks = S.map(x => x.sk).filter(v => v != null && v >= 0);
     if (!ks.length) return null;
-    const key = Math.max(...ks);
-    const W = S.filter(s => s.sk === key);
+    const W = S.filter(x => x.sk === Math.max(...ks) && (x.f & 8));
     if (W.length < 8) return null;
-    /* `md` = distanza del compagno di movimento piu' vicino al pallone, per fotogramma (r.~12190).
-       Il minimo sul tempo dice se QUALCUNO ci e' mai arrivato. */
-    const mds = W.map(s => s.md).filter(v => v != null && isFinite(v) && v < 900);
-    if (!mds.length) return null;
-    return { key, n: W.length, mdMin: Math.min(...mds), mdFin: mds[mds.length - 1] };
+    let last = -1; for (let i = 0; i < W.length; i++) if (W[i].f & 1) last = i;
+    if (last < 0) return null;
+    const t0 = W[last].t;
+    const dopo = W.slice(last + 1).filter(x => x.t - t0 <= 2500 && !(x.f & 4) && x.md >= 0 && x.md < 900);
+    if (dopo.length < 4) return null;
+    const mds = dopo.map(x => x.md);
+    return { n: W.length, nDopo: dopo.length, mdMin: Math.min(...mds), mdFin: mds[mds.length - 1] };
   });
   if (r) { r.gi = ctx.gi; righe.push(r); if (VERB) console.log(`  gi${r.gi} · ${r.n} fotogrammi · piu' vicino al pallone: ${r.mdMin.toFixed(1)}u (a fine scena ${r.mdFin.toFixed(1)}u)`); }
 }
 await b.close(); srv.close();
 
 if (!righe.length) { console.log('❌ nessuna consegna misurata: il guardiano e\' cieco, non verde'); process.exit(2); }
-const orfane = righe.filter(r => r.mdMin > VICINO);
-console.log(`\n=== ${righe.length} consegne misurate su ${partite} partita/e (soglia «ai piedi»: ${VICINO}u) ===`);
-for (const r of righe) console.log(`  ${r.mdMin <= VICINO ? '✅' : '❌'} gi${r.gi} · piu' vicino al pallone ${r.mdMin.toFixed(1)}u · a fine scena ${r.mdFin.toFixed(1)}u`);
+const utili = righe.filter(r => r.mdMin != null);
+if (!utili.length) { console.log('❌ nessuna finestra d\'azione utilizzabile: il guardiano e\' cieco'); process.exit(2); }
+const orfane = utili.filter(r => r.mdMin > VICINO);
+console.log(`\n=== ${utili.length} consegne misurate su ${partite} partita/e (soglia «ai piedi»: ${VICINO}u) ===`);
+for (const r of utili) console.log(`  ${r.mdMin <= VICINO ? '✅' : '❌'} gi${r.gi} · dopo la consegna, il piu' vicino arriva a ${r.mdMin.toFixed(1)}u (${r.nDopo} fotogrammi di finestra · a fine scena ${r.mdFin.toFixed(1)}u)`);
 const q = a => { const x = a.slice().sort((m, n) => m - n); return x[x.length >> 1]; };
-console.log(`\ndistanza minima mediana: ${q(righe.map(r => r.mdMin)).toFixed(1)}u · peggiore ${Math.max(...righe.map(r => r.mdMin)).toFixed(1)}u`);
+console.log(`\ndistanza d'arrivo mediana: ${q(utili.map(r => r.mdMin)).toFixed(1)}u · peggiore ${Math.max(...utili.map(r => r.mdMin)).toFixed(1)}u`);
 for (const e of errs.slice(0, 3)) console.log('  ⚠ pageerror: ' + e);
-console.log(`\ndistanza a FINE finestra (la grandezza che discrimina): ${righe.map(r => `gi${r.gi}=${r.mdFin.toFixed(1)}`).join(' · ')}`);
-console.log(`  (col criterio sul minimo sarebbero ${orfane.length}/${righe.length} orfane — numero NON attendibile: vedi l'intestazione)`);
-console.log('\nℹ️  MISURA DICHIARATA, nessun verdetto: manca il marcatore di finestra d\'azione.');
+if (orfane.length) {
+  console.log(`\n❌ FAIL — ${orfane.length}/${utili.length} consegne in cui, dopo l'atterraggio, NESSUNO arriva sul pallone:`);
+  for (const r of orfane) console.log(`   · gi${r.gi}: il piu' vicino si ferma a ${r.mdMin.toFixed(1)} unita'`);
+  console.log('   e\' il «pallone che viaggia da solo» (codice 008).');
+  process.exit(1);
+}
+console.log('\n✅ PASS — dopo ogni consegna qualcuno arriva davvero sul pallone.');
