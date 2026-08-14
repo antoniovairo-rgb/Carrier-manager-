@@ -165,6 +165,31 @@ const guasti = [];
   if (!mA || (mA.ev + mA.rnd + mA.imp) !== 0) guasti.push(`(G) la famiglia mercato parla ancora a chi ha annunciato il ritiro: ${JSON.stringify(mA)}`);
   if (!mB || (mB.ev + mB.rnd + mB.imp) < 3) guasti.push(`(G) la sonda non vede la famiglia mercato su un giocatore in carriera (${JSON.stringify(mB)}) — strumento cieco, il verde di (G) non proverebbe nulla`);
 }
+/* (I) [7.471.0 collaudo PO, screenshot wi_procuratore_push a S.3 W.9 con l'eroe appena arrivato:
+   «ma e' davvero l'agente a parlare? e' fuori luogo, l'eroe si e' trasferito poche settimane prima»]
+   LA FAMIGLIA MERCATO TACE ANCHE PER CHI E' APPENA ARRIVATO. Stessa sonda della (G) dall'altra
+   estremita' della carriera: chi non ha ancora chiuso una stagione col club corrente, e prima che
+   riapra il mercato (settimana 19), non deve trovare in pescata ne' l'agente che «vuole forzare» ne'
+   le voci di cessione. Il CONTROLLO e' lo stesso giocatore alla stessa settimana con una stagione
+   gia' fatta qui: li' la famiglia deve tornare pescabile, altrimenti il verde e' quello di uno
+   strumento cieco e non di una regola. */
+{
+  const fresco = { week: 9, hasAgent: true, agent: { rapport: 60, memory: {} }, ovr: 78,
+    history: [{ season: 4, club: 'AC Vecchio', clubId: 'vec', goals: 9, assists: 3, matches: 30, ovr: 76, league: 'Lega A' }] };
+  const pA = await apri(mkSave(24, fresco));
+  await pA.waitForFunction(() => !!(window.__CPM_CAREER && window.__CPM_CAREER.mktPool), { timeout: 20000 });
+  const mA = await pA.evaluate(() => window.__CPM_CAREER.mktPool());
+  await pA.close();
+  const pB = await apri(mkSave(24, { ...fresco, history: [
+    { season: 3, club: 'AC Vecchio', clubId: 'vec', goals: 9, assists: 3, matches: 30, ovr: 76, league: 'Lega A' },
+    { season: 4, club: 'FC Salernum', clubId: 'sal', goals: 11, assists: 4, matches: 32, ovr: 77, league: 'Lega A' }] }));
+  await pB.waitForFunction(() => !!(window.__CPM_CAREER && window.__CPM_CAREER.mktPool), { timeout: 20000 });
+  const mB = await pB.evaluate(() => window.__CPM_CAREER.mktPool());
+  await pB.close();
+  console.log(`(I) famiglia mercato: appena arrivato ${JSON.stringify(mA)} · una stagione qui ${JSON.stringify(mB)}`);
+  if (!mA || (mA.ev + mA.rnd + mA.imp) !== 0) guasti.push(`(I) la famiglia mercato parla a chi si e' appena trasferito: ${JSON.stringify(mA)}`);
+  if (!mB || (mB.ev + mB.rnd + mB.imp) < 3) guasti.push(`(I) la sonda non vede la famiglia mercato su chi ha gia' una stagione col club (${JSON.stringify(mB)}) — strumento cieco, il verde di (H) non proverebbe nulla`);
+}
 /* (F) prime stagioni memorabili: S.1 → milePool ≥5 · primo anno pro → ≥5 · meta' carriera → 0 */
 {
   const casi = [
