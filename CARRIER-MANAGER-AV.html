@@ -1308,6 +1308,19 @@ function TeamBadge({team,size=40}) {
    silenzio NON e' un numero inventato ma la finestra di mercato che il gioco gia' dichiara altrove
    (`wi_giornalista_mercato`: settimane 1-5 e 19-23) — si torna a parlare di cessioni quando riapre il
    mercato, cioe' dalla settimana 19. */
+/* [7.472.0 collaudo PO «dopo una vittoria con gol e' strano. ma e' davvero l'agente che vuole
+   rispondere o pesca da una lista scollegata di impulsi?»] C'E' QUALCOSA DA CRITICARE?
+   La domanda del PO ha una risposta esatta e va data per intero: SI', il pescatore estrae a caso dal
+   mazzo degli impulsi (`impulseFreshBucket` + `pick`, r.~30379) e l'UNICO filo che lega un impulso alla
+   situazione e' la sua `cond`. Cioe' un impulso senza `cond` non e' «scollegato per sbaglio»: e'
+   scollegato per costruzione, e su 17 impulsi di categoria «tensione» OTTO non ne avevano nessuna.
+   Questo predicato esisteva gia' — parola per parola — dentro `wi_polemica`, scritto nel 7.35.2 per
+   una nota del PO IDENTICA a questa («dopo una vittoria con l'Inter e' fuori luogo!»). Era stato messo
+   sull'ISTANZA invece che sulla CLASSE, quindi il gemello `wi_opinionista` («un opinionista TV ti
+   critica pesantemente») e' rimasto pescabile dopo una vittoria con gol, primo in classifica e morale
+   100 — che e' esattamente lo screenshot di oggi. Un rimedio applicato a un esemplare invece che alla
+   famiglia si ripresenta col nome del fratello. */
+const _criticaOk=(p)=>{try{const l=(p.matchHistory||[]).slice(-1)[0];return !!l&&((l.rating||6.5)<6.1||(!l.won&&!l.drew&&(l.rating||6.5)<6.6));}catch(_e){return false;}};
 const _mktFresh=(p)=>{try{if(typeof window!=='undefined'&&window.__CPM_NO471M)return false;/* prova del rosso del guardiano (sezione I di retire-announce): rimette la famiglia mercato in pescata per chi e' appena arrivato */const _cid=p.club&&(p.club.id||p.club.n);if(!_cid)return false;const _st=(p.history||[]).filter(h=>h&&h.clubId===_cid).length;return _st<1&&(p.week||1)<19;}catch(_e){return false;}};
 const _mktOk=(p)=>p.retireAnnounced!==(p.season||1)&&!_mktFresh(p);
 const WEEKLY_EVENTS=[
@@ -1692,7 +1705,7 @@ const WEEKLY_IMPULSES=[
     {txt:"🎓 Resto un'ora con lui",ef:{chem:6,coachTrust:5,fatigue:6}},
     {txt:"⏱ Non oggi",ef:{fatigue:-2,chem:-2}},
   ]},
-  {id:"wi_intervista_scomoda",cat:"tensione",txt:"Un giornalista ti stuzzica: «Il mister ti sta usando male, non trovi?» La risposta finirà in prima pagina.",choices:[
+  {id:"wi_intervista_scomoda",cat:"tensione",cond:p=>(p.coachTrust||70)<55/* [7.472.0] «il mister ti sta usando male» e' una provocazione che regge solo se il mister davvero non ti sostiene: qui il contesto NON e' la prestazione (quella e' _criticaOk) ma il rapporto col tecnico */,txt:"Un giornalista ti stuzzica: «Il mister ti sta usando male, non trovi?» La risposta finirà in prima pagina.",choices:[
     {txt:"🔥 Dico quello che penso",ef:{popularity:9,coachTrust:-10,morale:4}},
     {txt:"🧊 Glissa con diplomazia",ef:{coachTrust:5,popularity:-2}},
   ]},
@@ -1873,7 +1886,7 @@ const WEEKLY_IMPULSES=[
     {txt:"✅ Firmo — è riconoscimento",ef:{popularity:9,value:0.05,morale:5}},
     {txt:"⏳ Aspetto qualcosa di più grande",ef:{morale:2}},
   ]},
-  {id:"wi_polemica",cat:"tensione",cond:p=>{const l=(p.matchHistory||[]).slice(-1)[0];return !!l&&((l.rating||6.5)<6.1||(!l.won&&!l.drew&&(l.rating||6.5)<6.6));},/* [7.35.2 collaudo PO «dopo una vittoria con l'Inter è fuori luogo!»] solo dopo una PRESTAZIONE davvero brutta */txt:"I media ti criticano aspramente dopo una brutta prestazione. Il club non difende nessuno.",choices:[
+  {id:"wi_polemica",cat:"tensione",cond:_criticaOk,/* [7.35.2 collaudo PO «dopo una vittoria con l'Inter è fuori luogo!»] solo dopo una PRESTAZIONE davvero brutta · [7.472.0] il criterio e' ora UNO SOLO e vale per tutta la famiglia (vedi _criticaOk) */txt:"I media ti criticano aspramente dopo una brutta prestazione. Il club non difende nessuno.",choices:[
     {txt:"💪 La prendo come motivazione",ef:{morale:5,form:4}},
     {txt:"😤 Mi incazzo — e si vede",ef:{morale:-4,popularity:-6,coachTrust:-3}},
     {txt:"😶 Silenzio stampa totale",ef:{popularity:-3,morale:2}},
@@ -1983,10 +1996,17 @@ const WEEKLY_IMPULSES=[
     {txt:"✈️ Li porto in tribuna d'onore",ef:{bank:-6000,morale:9}},
     {txt:"📞 Li sento al telefono, ora no",ef:{morale:2,fatigue:-2}},
   ]},
-  {id:"wi_infortunato_posto",cat:"tensione",txt:"Un compagno infortunato teme di perdere il posto e ti chiede di «non brillare troppo» in allenamento.",choices:[
-    {txt:"🤝 Lo rassicuro, gioco sereno",ef:{chem:6,form:-2}},
-    {txt:"😤 In campo non si fanno sconti",ef:{coachTrust:4,chem:-5}},
-  ]},
+  {id:"wi_infortunato_posto",cat:"tensione",cond:p=>(p.coachTrust||60)>=60/* [7.472.0] si chiede una parola a chi UNA PAROLA CE L'HA: se il mister non ti ascolta, questa richiesta non arriverebbe mai a te */,txt:"Un compagno sta rientrando da un infortunio e teme di non ritrovare il posto. Ti chiede di spendere una parola per lui col mister.",choices:[
+    {txt:"🤝 Parlo col mister: se lo merita",ef:{chem:6,coachTrust:-2}},
+    {txt:"😤 Il posto se lo riprende in campo",ef:{coachTrust:4,chem:-5}},
+  ]},/* [7.472.0 collaudo PO «strana richiesta»] LA PREMESSA ERA STRANA, NON IL MOMENTO. Un compagno che
+     chiede al protagonista di «non brillare troppo in allenamento» non e' una dinamica di spogliatoio:
+     e' una richiesta che nessun professionista fa e che nessuno accetterebbe, e infatti la nota del PO
+     non dice «fuori luogo» (il difetto di contesto che abbiamo chiuso altrove) ma «strana». Qui non
+     serviva una guardia, serviva riscrivere: chi rientra da un infortunio teme di non ritrovare il
+     posto e chiede a chi conta di spendere una parola col tecnico — questa succede davvero, e le due
+     scelte restano le stesse due facce (il gruppo o la gerarchia). La `cond` e' solo il minimo perche'
+     la richiesta abbia senso: la si rivolge a chi il mister ascolta. */
   {id:"wi_tv_primaserata",cat:"opportunità",cond:p=>(p.popularity||20)>=45,txt:"Una TV nazionale ti vuole in prima serata. Grande vetrina, ma è la sera prima della gara.",choices:[
     {txt:"📺 Ci vado — occasione unica",ef:{popularity:9,fatigue:4,form:-2}},
     {txt:"🛌 Prima la partita, sempre",ef:{coachTrust:4,popularity:-2}},
@@ -2007,7 +2027,7 @@ const WEEKLY_IMPULSES=[
     {txt:"⌚ Li prendo per tutti",ef:{bank:-22000,chem:10,morale:3}},
     {txt:"🍻 Basta una cena insieme",ef:{bank:-4000,chem:4}},
   ]},
-  {id:"wi_opinionista",cat:"tensione",cond:p=>!!p.hasAgent/* [7.161.0 M1] */,txt:"Un opinionista TV ti critica pesantemente in diretta. Il tuo agente vuole rispondere.",choices:[
+  {id:"wi_opinionista",cat:"tensione",cond:p=>!!p.hasAgent&&_criticaOk(p)/* [7.161.0 M1] «il tuo agente» solo se ce l'hai · [7.472.0 collaudo PO «dopo una vittoria con gol e' strano»] e un opinionista non ti stronca in diretta dopo che hai vinto segnando: stesso criterio del gemello wi_polemica */,txt:"Un opinionista TV ti critica pesantemente in diretta. Il tuo agente vuole rispondere.",choices:[
     {txt:"🔥 Rispondo in conferenza",ef:{popularity:3,coachTrust:-4,morale:-2}},
     {txt:"💪 Uso la rabbia in campo",ef:{form:4,morale:3}},
   ]},
@@ -4757,7 +4777,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="7.471.0"; // [7.450.0 MESSA IN SICUREZZA · P0 #4 dell'audit forense — UN TOCCO DOPPIO APPLICAVA L'AZIONE DUE VOLTE]: nessuna guardia di rientranza sugli handler che cambiano lo stato; due tocchi ravvicinati passavano entrambi prima che React richiudesse il modal. MISURATO: doppio tap su «Conferma avanzamento» = DUE settimane in un colpo, economia applicata due volte (+60.000 invece di +30.000) e la partita della settimana auto-simulata senza poterla giocare; doppio tap su una scelta d'evento = effetti raddoppiati (fatica +8 invece di +4, popolarita' +10 invece di +5, fiducia -12 invece di -6). LA PROTEZIONE NON E' UN TIMEOUT: e' un lock legato al CICLO DI RENDER, che si arma quando l'azione parte e si rilascia da solo appena React ha completato un render — cioe' esattamente quando un secondo tocco non e' piu' un duplicato ma una nuova intenzione. Nessun blocco permanente possibile: il rilascio non dipende dalla riuscita dell'operazione (verificato: dopo il doppio tap la carriera prosegue col percorso reale). +contatore test-only delle applicazioni REALI: l'invariante «una intenzione = una applicazione» va misurato li', non sui valori — quale evento venga estratto e' casuale, il numero di applicazioni no. GUARDIANO double-tap-test, NEL GATE: prova del ROSSO (__CPM_NO_P0_4: Δ2 settimane, 2 applicazioni dell'evento) e i casi — click singolo invariato, doppio tap con una sola applicazione, gioco ancora usabile dopo, evento non raddoppiato.
+const GAME_VERSION="7.472.0"; // [7.450.0 MESSA IN SICUREZZA · P0 #4 dell'audit forense — UN TOCCO DOPPIO APPLICAVA L'AZIONE DUE VOLTE]: nessuna guardia di rientranza sugli handler che cambiano lo stato; due tocchi ravvicinati passavano entrambi prima che React richiudesse il modal. MISURATO: doppio tap su «Conferma avanzamento» = DUE settimane in un colpo, economia applicata due volte (+60.000 invece di +30.000) e la partita della settimana auto-simulata senza poterla giocare; doppio tap su una scelta d'evento = effetti raddoppiati (fatica +8 invece di +4, popolarita' +10 invece di +5, fiducia -12 invece di -6). LA PROTEZIONE NON E' UN TIMEOUT: e' un lock legato al CICLO DI RENDER, che si arma quando l'azione parte e si rilascia da solo appena React ha completato un render — cioe' esattamente quando un secondo tocco non e' piu' un duplicato ma una nuova intenzione. Nessun blocco permanente possibile: il rilascio non dipende dalla riuscita dell'operazione (verificato: dopo il doppio tap la carriera prosegue col percorso reale). +contatore test-only delle applicazioni REALI: l'invariante «una intenzione = una applicazione» va misurato li', non sui valori — quale evento venga estratto e' casuale, il numero di applicazioni no. GUARDIANO double-tap-test, NEL GATE: prova del ROSSO (__CPM_NO_P0_4: Δ2 settimane, 2 applicazioni dell'evento) e i casi — click singolo invariato, doppio tap con una sola applicazione, gioco ancora usabile dopo, evento non raddoppiato.
 // [nota 7.449.0] [7.449.0 MESSA IN SICUREZZA · P0 #3 dell'audit forense — IL RIFERIMENTO ALLA GARA APERTA SOPRAVVIVEVA ALL'USCITA]: `_playingMdRef` descrive la gara di CLUB aperta da startMatch, ma veniva azzerato SOLO da onMatchEnd: uscire dal pre-partita (onQuit) o essere respinti dai suoi return anticipati («non convocato», avversario non risolvibile) lo lasciava CARICO. E il consumo in onMatchEnd avveniva per QUALUNQUE fine partita, comprese quelle di Nazionale, che non passano da startMatch e non lo impostano mai. Catena: apro il pre-partita di campionato, torno indietro, gioco in Nazionale — e il commit registra come giocata una giornata di campionato mai disputata, che la bonifica chiude subito dopo. Stagione a 33 su 34 senza che nulla lo segnali. CICLO DI VITA RICOSTRUITO invece di un reset indiscriminato: il riferimento nasce all'apertura della gara, si INVALIDA su ogni percorso d'uscita dal pre-partita (onQuit e i due return anticipati) e si CONSUMA solo nei contesti di CLUB (career/cup/euro) — una gara di Nazionale non tocca piu' una giornata di campionato, ed e' la rete che copre anche le uscite non previste. +sonda test-only `__CPM_CAREER.mdRef()`: senza, il guardiano misurerebbe gli effetti e non la causa. GUARDIANO playing-mdref-test, NEL GATE: prova del ROSSO (__CPM_NO_P0_3: nel pre-partita il riferimento e' carico e resta carico dopo l'uscita) + i percorsi — uscita che invalida, calendario e presenze immutati dopo un'uscita, riapertura coerente con la gara vera, partita realmente giocata che si committa ancora.
 // [nota 7.448.0] [7.448.0 MESSA IN SICUREZZA · P0 #2 dell'audit forense — UN SALVATAGGIO PIU' VECCHIO POTEVA SOVRASCRIVERE IL PIU' RECENTE]: `storage.save` e' async e non aveva ne' coda ne' sequenza. Nel browser non si vede (localStorage e' sincrono) ma la build pubblicata su Play Store gira su `window.storage` = @capacitor/preferences, iniettato da tools/build-dist.mjs, dove la scrittura passa da un BRIDGE ASINCRONO: due salvataggi concorrenti potevano completare FUORI ORDINE, e `savedAt` veniva scritto ma mai riletto, quindi nulla se ne accorgeva. DIMOSTRATO a runtime con un bridge finto a latenza pilotata: stato A → parte l'autosave (bridge occupato) → stato B → l'app va in background → il flush salva B → il salvataggio di A completa DOPO e riscrive il disco con lo stato vecchio (memoria 2222, disco 1111). Su Android significa perdere una partita, una settimana, a volte una stagione — ed e' anche una spiegazione a monte della «partita gia' giocata», perche' un save che torna indietro riporta in calendario una gara gia' disputata. CURA MINIMA, nessuna infrastruttura nuova e formato del salvataggio IMMUTATO: una CODA per chiave (le scritture si susseguono nell'ordine in cui sono state chieste, mai sovrapposte) e uno SCARTO delle scritture gia' superate (se mentre A aspetta il turno e' arrivata B, A non viene scritta: il suo contenuto e' vecchio per definizione). GUARDIANO save-monotonic-test, NEL GATE: prova del ROSSO incorporata (__CPM_NO_P0_2 ripristina le scritture concorrenti → il disco torna a 1111) e sei scenari — vecchio-lento contro nuovo-veloce, tre scritture a latenza decrescente, salvataggio normale non bloccato, ramo browser invariato, ramo bridge nativo, riapertura dell'app che rilegge l'ultimo stato.
 // [nota 7.447.0] [7.447.0 MESSA IN SICUREZZA · P0 #1 dell'audit forense — IL RECUPERO DOPO UN RIAVVIO CONFONDEVA LE COMPETIZIONI]: e' la vera causa della «partita gia' giocata» che il PO segnala da nove collaudi. Il recovery del sidecar cercava la gara nel calendario per AVVERSARIO e SEDE, senza mai guardare la competizione; siccome l'avversario di Coppa viene sorteggiato DALLA STESSA LEGA e il turno R16 e' cablato «in casa», per costruzione esiste SEMPRE una voce di campionato in casa contro quel club. RIPRODOTTO: recuperando una gara di Coppa, la classifica di campionato passava da 17 a 18 partite e da 40 a 43 punti per una gara mai giocata, e la giornata di lega spariva marcata come giocata. Aggravante: le due ref che portano l'identita' della gara vivono nella SESSIONE e dopo il riavvio sono vuote — `matchTypeRef` torna al default "league" (l'unico writer "cup" e' startMatch, che dopo il reboot non passa mai) e `_playingMdRef` e' null, quindi anche il ramo di commit era quello di lega. DUE CURE MINIME: (1) i candidati si filtrano per COMPETIZIONE, derivata da `result.context` che era gia' nel sidecar dal 7.24.3 — nessun campo nuovo, e un sidecar senza contesto (scritto da una versione precedente) non viene filtrato ne' scartato, mantenendo il comportamento storico; (2) prima del dispatch si ricostruiscono `matchTypeRef` e `_playingMdRef` dalla voce ritrovata, cosi' il commit marca la voce giusta per NUMERO di giornata e registra quella giornata. GUARDIANO recovery-competition-test, NEL GATE: prova del ROSSO incorporata (interruttore __CPM_NO_P0_1 che ripristina la vecchia logica: la voce di lega torna a essere marcata, classifica 18) + casi A-G (coppa committata in coppa, campionato intatto a 17/40, turno di coppa avanzato, nessuna regressione sul recupero di lega). Gli assert leggono lo stato PERSISTITO, non la memoria.
@@ -4806,6 +4826,54 @@ const GAME_VERSION="7.471.0"; // [7.450.0 MESSA IN SICUREZZA · P0 #4 dell'audit
 //  [7.404.0 collaudo PO — lotto con «traballa» ×6 su tre release (gi122/gi157/gi74/gi134/gi28, anche in hl_choose) + gi115]: LA CAMERA ENTRA NEL TESTIMONE, E IL TACCO NON E' UNA GIOCATA AEREA. (1) Il tremolio NON si riproduce in headless — sei strumenti (posa per fotogramma GLB-off e GLB-on con presentazione, rettangolo del canvas, animazioni CSS, flusso vero da 75 e da 170 secondi): camera immobile al pixel, sempre. Il fenomeno vive a frame-rate pieno sul dispositivo del PO. Invece di un settimo strumento cieco, la misura va DOV'E' il fenomeno: l'anello del testimone (7.340) passa da 8 a 11 float e registra la POSA DELLA CAMERA a ogni fotogramma; la bozza automatica ora conta le inversioni di direzione della camera (>3/s = trema) e il passo massimo fra due fotogrammi a scena in corso (>2,5u = salta), fuori dalla grazia degli stacchi voluti. La prossima nota «traballa» del PO arrivera' col numero attaccato — e' lo stesso schema del 7.360, quando fu la bozza a smascherare il falso «salto di 8,7». (2) collaudo gi115 «Attacca il pallone non e' una giocata aerea!»: nella mappa delle etichette-intento la parola nuda `tacco` — messa per coprire «stacco», gia' coperto da \bstacco\b — catturava anche il TACCO: «Tacco in porta» mostrato come incornata. Il tacco tiene la sua etichetta. IN CODA dal lotto: gi38 «sembra che gliela intercettano e poi magicamente va in rete» (uno-due assist — coerenza esito⟺volo); gi174 «il portiere non e' posizionato tra i pali» (+ destinatario a 6,1u su assist: famiglia del battitore gi50/76); gi9 «il pallone e' tornato INDIETRO di 17,4 unita'» su controllo-e-tiro (famiglia assestamento, ma su esito shot: da misurare col punto di perdita); gi86 001 (residuo battitore aereo, gia' dichiarato); gi157 salto 21,4u a x -42 su gol subito (lo stacco difensivo — probabile taglio legittimo di ri-staging, ora distinguibile dalla bozza-camera).
 //  [7.403.0 — TUTTA LA CODA IN UNA RELEASE, come da direttiva PO] TRE CHIUSURE MISURATE + DUE NON RIPRODOTTI + UNA REVOCA. (1) collaudo gi52 «fa prima un tiro poi tenta il colpo di testa» e gi184 «sembra un ballerino»: IL GESTO DELLA SCENA VECCHIA NON SI MONTA — `actType` e' una variabile del renderer che resta quella della scena precedente finche' `fireConclusion` non scatta (a fine build-up), e per tutta la costruzione la mappa gesti montava la clip vecchia: misurato col collettore GLB-ON, su gi52 (azione di testa) prima clip `tackle` — residuo della difensiva prima — poi `header`; su gi184 (tackle) prima `header` poi `kick`. Ora il gesto dell'Eroe si monta solo se l'azione appartiene a QUESTA scena (chiave scritta da fireConclusion). Dopo: un montaggio per scena, sempre quello giusto, su due giri; esultanza intatta (4/4, clip 1,0x, un montaggio). (2) collaudo gi71 «la finta non e' sincronizzata con il pallone» e gi123 «passaggio all'indietro senza senso»: LA PALLA PERSA RESTA DOV'E' STATA PERSA — l'assestamento-perdita (7.115) tirava la palla verso il tetto di centrocampo da QUALUNQUE distanza: dribbling perso a x 36, palla che rotola all'indietro di 25,6 unita' fino a x 10 mentre l'eroe corre avanti. Il primo tentativo di raggio (9u dalla palla del fotogramma corrente) era il CRICCHETTO ROVESCIATO del 7.397 — ritracciamento identico, misurato — l'ancora giusta e' il PUNTO DI PERDITA, catturato una volta: 25,6u → 9,3u (il passo di chi conquista, non una rotolata a tutto campo); gi123 a 4u, dentro il budget. (3) verifica percettiva GLB-ON (CH38) su gi6 e gi9: inquadratura dentro lo stadio, azione leggibile. NON RIPRODOTTI e dichiarati: gi20 «il pallone rimane dietro all'eroe» (misurati 0 fotogrammi con palla dietro su esito riuscito, palla sempre avanti 22→33) e gi9 «il tiro non e' chiaro» (non giudicabile da fermo-immagine: e' una questione di moto — resta in coda per una sessione di lettura video). REVOCATO (seconda volta) il taglio mirato del battitore verso il punto staggiato: pattern sospetti su scene prima pulite e varianza dello strumento di popolazione troppo alta per dimostrarlo — il residuo gi50/gi76 (battitore a 3,9-5,9u dal pallone) va chiuso con un A/B ripetuto sulle sole scene bersaglio. Guardiani: scene-open-owner verde (mediana 0,0u) · def-camera-bounds verde (minima -46,4) · celebration-visible verde.
 //  [7.402.0 collaudo PO codice 001 «la scena non parte dai piedi del compagno» — chiarito dal PO che NON e' solo aereo, e che la strada giusta e' «portare un compagno sul punto-palla»]: AL PUNTO-PALLA CI VA UN UOMO. Sulle scene offensive con palla che non nasce al piede dell'eroe (fascia, bandierina, rimessa) il pallone veniva messo su un punto geometrico dove non c'era nessuno — misurato: compagno piu' vicino a 10-16 unita' (gi6/gi50/gi76), e quattro note PO in un solo lotto (gi64/gi53/gi7/gi108). Il tentativo del 7.391 spostava la PALLA verso un compagno (cassetta postale) e la misura non si mosse; qui si fa il contrario, che e' anche il calcio vero: lo STAGING porta il compagno di casa piu' vicino sul punto-palla — il corner vuole il battitore alla bandierina, il cross il crossatore sulla fascia — e il piazzamento della palla RIUSA il punto esatto dello staging (una sorgente sola: il doppio calcolo di hlBallSpot dava punti diversi). MISURA prima→dopo su 96 aperture: palla di nessuno 4 → 3, gi6 CHIUSA (da 10,6u a un uomo sul punto), gi50 da 16,3 a 3,9, e il mistero del DRIBBLING gi96/gi98 e' caduto nella stessa retata (il piu' vicino ora e' un compagno; il criterio flip-floppa al confine 3,4-3,5 fra i run — banda dichiarata). PROVATO E REVOCATO nello stesso giro: il taglio per-uomo nella finestra mascherata (per portare la MESH del battitore esattamente sul punto) strappava via anche il compagno a cui la consegna stava nascendo tra i piedi — due scene pulite diventate orfane, misurato e tolto. RESIDUI DICHIARATI: gi50/gi76 col battitore a 3,9-5,9u dal pallone (un driver tiene la mesh lontana dal punto staggiato — da capire, non da forzare) e gi14 freekick a 3,7 (rincorsa del battitore, probabilmente sana). Guardiano scene-open-owner verde (16 scene, mediana eroe↔palla 0,0u).
+//  [7.472.0 collaudo PO — UNA DOMANDA E TRE NOTE SUL MAZZO DEGLI IMPULSI]:
+//  LA DOMANDA, che vale piu' dei difetti: «ma e' davvero l'agente che vuole rispondere o pesca da una
+//  lista scollegata di impulsi?». La risposta esatta e' la seconda, e va data per intero: il pescatore
+//  settimanale (r.~30379) estrae a caso dal mazzo — `impulseFreshBucket` + `pick` — e l'UNICO filo che
+//  lega un impulso alla situazione e' la sua `cond`. Un impulso senza `cond` non e' scollegato per
+//  sbaglio: e' scollegato per costruzione. Censiti: su 69 impulsi, 40 non ne hanno nessuna; nella sola
+//  categoria «tensione» sono 8 su 17.
+//  (1) «DOPO UNA VITTORIA CON GOL E' STRANO» (opinionista TV che ti critica pesantemente, S.3 W.14,
+//  primo in classifica, morale 100). Il predicato «c'e' qualcosa da criticare» esisteva gia' nel file,
+//  parola per parola, dentro `wi_polemica` — scritto nel 7.35.2 per una nota del PO IDENTICA a questa
+//  («dopo una vittoria con l'Inter e' fuori luogo!»). Era stato messo sull'ISTANZA invece che sulla
+//  CLASSE, e si e' ripresentato col nome del fratello. Ora e' un solo helper `_criticaOk` e vale per la
+//  famiglia: `wi_polemica` e `wi_fan_aggression` (che gia' l'avevano) e `wi_opinionista` (che non
+//  l'aveva). A `wi_intervista_scomoda` («il mister ti sta usando male») serviva invece un contesto
+//  DIVERSO — non la prestazione ma il rapporto col tecnico — e ha il suo. MISURATO con la sonda nuova
+//  `critPool`: dopo una vittoria con gol e voto 7,8 pescabili [] (prima: opinionista); dopo una
+//  sconfitta da 5,6 pescabili [fan_aggression, polemica, opinionista]; con la fiducia del mister a 40
+//  compare `intervista_scomoda`. Guardiano `critica-context-test.mjs`.
+//  (2) «LE CONVERSAZIONI SONO MOLTO RIPETITIVE CON IL MISTER» (verifica trimestrale). La selezione
+//  stava IN LINEA dentro l'handler della settimana, quindi non era misurabile: si poteva solo giocare e
+//  dire «sembra ripetitivo». Estratta in `pickCoachReview` (funzione pura usata dall'handler VERO) +
+//  sonda `coachReviewSeq` che simula N verifiche intrecciando la memoria come fa il gioco. Misurato
+//  cosi', il difetto non era il pool (14 battute per fascia) ma la MEMORIA PIU' CORTA DEL POOL:
+//  `recentCoachLines` ne teneva 10 su 14, quindi il filtro «mai vista di recente» lavorava su 4
+//  candidate e la finestra scorrevole rimetteva in gioco le piu' vecchie — con QUATTRO verifiche a
+//  stagione, una battuta ripetuta ogni tre. Ora la memoria copre l'intero pool (13 su 14) e la battuta
+//  si sceglie con la stessa regola delle risposte, ordine seedato invece che `pick` casuale: la
+//  rotazione e' completa e riproducibile. Sulle RISPOSTE il difetto era opposto — memoria 12 su un pool
+//  di 10, cioe' piu' lunga del pool: il filtro «fresche» restava sempre vuoto e si ricadeva ogni volta
+//  sull'intero mazzo. Memoria a 7 e completamento con le MENO RECENTI invece di buttare via le fresche
+//  appena non bastano tre. MISURATO su 16 verifiche = quattro stagioni: 14 battute distinte su 16,
+//  prima ripetizione alla 14ª verifica, 10 risposte distinte. Guardiano `coach-review-variety-test.mjs`.
+//  (2b) «RIPETITIVO» anche sulla VOCE SETTIMANALE del mister (la riga in fondo al riquadro «Questa
+//  settimana»), che e' la battuta piu' esposta di tutto il gioco: si legge UNA VOLTA A SETTIMANA. Si
+//  sceglieva con `hash(stagione|settimana) % 7`, cioe' un'estrazione CON REIMMISSIONE — sette frasi
+//  pescate a caso tornano in media ogni sette, e nulla vieta la stessa due settimane di fila. Ora
+//  l'ordine e' una PERMUTAZIONE seedata per stagione e fascia, percorsa sull'asse delle settimane vere:
+//  dentro una fascia si esauriscono tutte e sette prima di rivederne una. Nessun campo nuovo nel
+//  salvataggio — l'indice e' la settimana stessa. Estratta in `pickCoachWeekMsg` + sonda `coachWeekSeq`;
+//  MISURATO su 20 settimane consecutive: distanza minima fra due repliche 7 settimane, zero repliche
+//  consecutive. PROVA DEL ROSSO `__CPM_NO472`: col modulo, una frase torna dopo DUE settimane.
+//  (3) «STRANA RICHIESTA» (un compagno infortunato che ti chiede di «non brillare troppo» in
+//  allenamento). Qui la premessa era strana, non il momento — e la nota lo dice: non «fuori luogo» ma
+//  «strana». Nessun professionista fa quella richiesta e nessuno l'accetterebbe. Non serviva una
+//  guardia, serviva riscrivere: chi rientra da un infortunio teme di non ritrovare il posto e chiede a
+//  chi conta di spendere una parola col tecnico. Le due scelte restano le stesse due facce (il gruppo o
+//  la gerarchia); la `cond` e' il minimo perche' la richiesta abbia senso — la si rivolge a chi il
+//  mister ascolta.
 //  [7.471.0 collaudo PO — «007 E' GRAVISSIMO, NON E' TOLLERABILE» + «MA E' DAVVERO L'AGENTE A PARLARE?»]:
 //  (1) LA CAMERA SALTA (codice 007). Il 7.456 aveva cercato questo difetto come TREMOLIO — il passo della
 //  camera fra due fotogrammi — e si era arreso dichiarandolo non riproducibile in headless («qui la camera
@@ -25759,6 +25827,66 @@ const MONTHLY_COACH_REVIEWS=[
 //   esatti (gol/assist/presenze/stagioni) — via il «Cento gol» generico — + considerazioni identitarie dedotte:
 //   BANDIERA (≥5 stagioni nello stesso club + contributo), CAPITANO (isCaptain), FEDELTÀ a un solo club, trofei,
 //   presenze in Nazionale, valutazione tecnica. Puro/derivato, zero inventato.
+/* [7.472.0 collaudo PO «le conversazioni sono molto ripetitive con il mister»] LA SCELTA DELLA VERIFICA
+   TRIMESTRALE, ESTRATTA. Stava in linea dentro l'handler della settimana, quindi non era misurabile: si
+   poteva solo GUARDARE il gioco e dire «sembra ripetitivo». Qui e' una funzione pura di (giocatore,
+   fascia, settimana) → {battuta, tre risposte}, usata dall'handler VERO e chiamabile da una sonda che
+   simula N verifiche di fila intrecciando la memoria. Il difetto, MISURATO cosi', non era il pool (14
+   battute per fascia) ma DUE cose:
+   (a) LA MEMORIA ERA PIU' CORTA DEL POOL. `recentCoachLines` teneva 10 battute su 14: alla quarta
+       stagione il filtro «mai vista di recente» aveva 4 candidate e la finestra scorrevole rimetteva in
+       gioco le piu' vecchie — con QUATTRO verifiche a stagione (W8/16/24/32) e' una battuta ripetuta
+       ogni tre. Ora la memoria copre l'INTERO pool: prima di rivedere una battuta si esauriscono le
+       altre tredici, cioe' tre stagioni e mezzo.
+   (b) LA FASCIA ERA UNA SOLA PER TUTTA LA CARRIERA. `perf` nasce dalla FORMA: un titolare in salute sta
+       sopra 72 per anni e vede SOLO la fascia «excellent» — due terzi delle battute scritte non gli
+       arrivano mai. Non si tocca la fascia (e' il senso del dialogo: il mister commenta come stai
+       andando), ma la battuta ora si sceglie dentro la fascia con la stessa regola delle risposte —
+       ordine seedato dalla stagione+settimana invece che `pick` casuale — cosi' la sequenza e'
+       riproducibile e la rotazione e' completa invece che casuale-con-ripescaggi. */
+function pickCoachWeekMsg(p){
+  if((p.proStatus||"u18")!=="pro")return null;
+      const _f=p.fatigue||0;const _r=(p.matchHistory||[]).slice(-3);
+      const _a=_r.length?_r.reduce((s,m)=>s+(m.rating||6.5),0)/_r.length:6.5;
+      // [6.85.0 collaudo PO «dialoghi mister ripetitivi»] 3 varianti per fascia, ruotate DETERMINISTICAMENTE
+      //   per settimana (stessa settimana ⇒ stessa frase, settimane diverse ⇒ voce diversa).
+      /* [7.472.0 collaudo PO «ripetitivo» sulla voce del mister nel riquadro della settimana] ERA UN
+         MODULO, NON UNA ROTAZIONE. `hash(stagione|settimana) % 7` e' un'estrazione CON REIMMISSIONE:
+         sette frasi pescate a caso ogni settimana si ripetono in media ogni sette, e nulla vieta la
+         stessa frase due settimane di fila — che e' esattamente cio' che si legge come «ripetitivo».
+         Ora l'ordine e' una PERMUTAZIONE seedata per stagione e fascia, percorsa sull'asse delle
+         settimane vere: dentro una fascia si esauriscono tutte e sette prima di rivederne una, e due
+         settimane consecutive non possono mai coincidere. Nessun campo nuovo nel salvataggio: l'indice
+         e' la settimana stessa. */
+      const _lw=(((p.season||1)-1)*38+(p.week||1));
+      const _no472=(typeof window!=='undefined'&&window.__CPM_NO472);/* prova del rosso: rimette il modulo con reimmissione */
+      const _cmV=(arr,band)=>{if(_no472)return arr[Math.abs(hashStr("cm|"+(p.season||1)+"|"+(p.week||1)))%arr.length];const o=seededShuffle(arr,hashStr("cm|"+(p.season||1)+"|"+band));return o[((_lw%o.length)+o.length)%o.length];};/* [7.107.0] varianti ampliate 3→7 per fascia */
+      return _f>85?_cmV(["Sei a pezzi. Riposo assoluto — non si allena in queste condizioni.","Ho visto i dati del GPS: sei in riserva. Questa settimana scarico totale.","Niente eroismi: le gambe vanno ricaricate. Ci penso io col preparatore.","Fermati. Un giocatore spremuto così si fa male: recupero e basta.","Ti guardo camminare e mi basta: questa settimana non tocchi il campo.","Il fisioterapista ti prende in cura. Voglio indietro il giocatore fresco, non l'eroe stanco.","Zero partitelle. Massaggi, sonno e alimentazione: il resto lo rimandiamo."],"kaput")
+        :_f>65?_cmV(["Stai spingendo troppo. Lavoro leggero e poi recupero.","Gestiamo il carico: metà campo e piscina, la brillantezza va protetta.","Regime ridotto in settimana: mi servi fresco alla prossima.","Un po' di stanchezza si vede. Alleggeriamo, senza esagerare.","Meglio prevenire: settimana calibrata, niente strappi inutili.","Ti tengo a scartamento ridotto. Alla domenica devi arrivare pimpante.","Occhio ai carichi: la condizione è un tesoro, non la buttiamo via ora."],"stanco")
+        :_a>=7.5?_cmV(["Stai volando — intensifico il lavoro tecnico per sfruttare il momento.","Il momento è d'oro: aggiungo rifinitura e palle inattive, cavalchiamolo.","Chi è in fiducia deve toccare più palloni: settimana ad alta intensità tecnica.","Sei in fiducia e si vede: lavoriamo sulle giocate che ti stanno riuscendo.","Non cambio nulla di quello che funziona, ci metto solo un po' di brillantezza in più.","Quando uno è così, va assecondato: più libertà negli esercizi offensivi.","Continua a fare quello che fai. Io aggiungo solo qualche schema per te."],"volo")
+        :_a<=5.5?_cmV(["Dobbiamo migliorare. Doppio lavoro tecnico e fisico.","Ripartiamo dalle basi: possesso, movimenti, letture. Testa bassa.","Settimana di lavoro sporco: video, campo e ancora video. Ti rimetto in carreggiata.","Analisi degli errori e poi campo: voglio vederti reagire con i fatti.","Ti serve fiducia: lavoriamo su cose semplici che ti riescano bene.","Rivediamo insieme le ultime gare. Poi si suda per correggere.","Niente panico: torniamo all'essenziale e da lì risaliamo, passo dopo passo."],"crisi")
+        :_cmV(["Questa settimana puntiamo su tecnica e fisico. Segui il piano.","Programma standard ma fatto bene: cura i dettagli, fanno la differenza.","Lavoro equilibrato: tattica, ritmo e un occhio al recupero.","Routine collaudata: qualità negli esercizi, testa sul pezzo.","Settimana normale, ma la normalità fatta bene è già tanto.","Manteniamo la barra dritta: allenamento pulito e concentrazione.","Nulla di speciale in programma, se non farlo tutto al 100%."],"norma");
+
+}
+
+function pickCoachReview(p,perf,week){
+  const _rev=MONTHLY_COACH_REVIEWS.find(r=>r.perf===perf)||MONTHLY_COACH_REVIEWS[1];
+  const _sd=hashStr("cmc|"+(p.season||1)+"|"+(week||1)+"|"+perf);
+  const _seenL=(p.recentCoachLines||[]);
+  const _lShuf=seededShuffle(_rev.lines,_sd);
+  const _lFresh=_lShuf.filter(l=>!_seenL.includes(l));
+  const line=(_lFresh.length?_lFresh:_lShuf)[0];
+  const _cPool=_rev.choicePool||_rev.choices||[];
+  const _seenC=(p.recentCoachChoices||[]);
+  const _cShuf=seededShuffle(_cPool,_sd);
+  const _cOk=_cShuf.filter(c=>{try{return !c.cond||c.cond(p);}catch(_e){return false;}});/* [7.470.0] le risposte possono avere una CONDIZIONE di contesto, come gia' l'hanno eventi e impulsi: una battuta giusta al momento sbagliato e' una battuta sbagliata */
+  const _cFresh=_cOk.filter(c=>!_seenC.includes(c.txt));
+  /* si COMPLETA con le meno recenti invece di buttare via la freschezza appena non bastano tre: prima,
+     con `_cFresh.length<3`, si ricadeva sull'intero mazzo e le risposte fresche trovate andavano perse */
+  const choices=[..._cFresh,..._cOk.filter(c=>_cFresh.indexOf(c)<0),..._cShuf].filter((c,i,a)=>a.indexOf(c)===i).slice(0,3);
+  return {line,choices};
+}
+
 const generateBio=(p)=>{
   const cap1=s=>s?s.charAt(0).toUpperCase()+s.slice(1):s;
   const name=p.name||"Il giocatore";
@@ -27697,6 +27825,17 @@ const getThisWeekMatchday=()=>{
       goTab:(t)=>{try{setTab(t);setScreen(t);return true;}catch(e){return "error:"+(e&&e.message);}},
       addioPool:()=>{try{return WEEKLY_IMPULSES.filter(im=>im.addio&&(!im.cond||im.cond(player))&&!((player.impulseSeen||{})[im.id])).length;}catch(e){return "error:"+(e&&e.message);}},/* [7.433.0] la sonda della stagione d'addio */
       milePool:()=>{try{return WEEKLY_IMPULSES.filter(im=>im.mile&&(!im.cond||im.cond(player))&&!((player.impulseSeen||{})[im.id])).length;}catch(e){return "error:"+(e&&e.message);}},/* [7.435.0] la sonda delle pietre miliari (esordio/primo pro) */
+      coachWeekSeq:(n)=>{try{/* [7.472.0] la voce del mister nel riquadro settimanale, N settimane consecutive sugli stessi passaggi del gioco (pickCoachWeekMsg): e' cio' che il giocatore legge una volta a settimana, cioe' la battuta piu' esposta alla ripetizione di tutto il gioco */
+        const out=[];for(let i=0;i<(n||20);i++){const w=((player.week||1)+i-1)%38+1,sn=(player.season||1)+Math.floor(((player.week||1)+i-1)/38);out.push({s:sn,w,m:pickCoachWeekMsg({...player,season:sn,week:w})});}return out;}catch(e){return "error:"+(e&&e.message);}},
+      coachReviewSeq:(n)=>{try{/* [7.472.0] simula N verifiche trimestrali di fila SUGLI STESSI passaggi del gioco (pickCoachReview), intrecciando la memoria come fa l'handler: restituisce la sequenza di battute e risposte, cioe' cio' che il giocatore legge davvero nel tempo */
+        let q={...player},out=[];const W=[8,16,24,32];
+        for(let i=0;i<(n||16);i++){const w=W[i%4];q={...q,week:w,season:(player.season||1)+Math.floor(i/4)};
+          const f=q.form||70,perf=f>=72?"excellent":f>=55?"medium":"bad";
+          const r=pickCoachReview(q,perf,w);
+          out.push({s:q.season,w,line:r.line,ch:r.choices.map(c=>c.txt)});
+          q={...q,recentCoachLines:[...(q.recentCoachLines||[]),r.line].slice(-13),recentCoachChoices:[...(q.recentCoachChoices||[]),...r.choices.map(c=>c.txt)].slice(-7)};}
+        return out;}catch(e){return "error:"+(e&&e.message);}},
+      critPool:()=>{try{const _ids=["wi_opinionista","wi_polemica","wi_fan_aggression","wi_intervista_scomoda"];return WEEKLY_IMPULSES.filter(im=>_ids.indexOf(im.id)>=0&&(!im.cond||im.cond(player))).map(im=>im.id);}catch(e){return "error:"+(e&&e.message);}},/* [7.472.0 collaudo PO «dopo una vittoria con gol e' strano»] la sonda della famiglia CRITICA: quali impulsi «ti criticano» sono pescabili per il giocatore corrente */
       mktPool:()=>{try{const _t=/mercato|estero|cession|offerte|ceduto|trasferiment|vali di più/i;return{ev:WEEKLY_EVENTS.filter(e=>_t.test(e.txt||"")&&(!e.cond||e.cond(player))).length,rnd:WEEKLY_RANDOM_EVENTS.filter(e=>_t.test(e.txt||"")&&(!e.cond||e.cond(player))).length,imp:WEEKLY_IMPULSES.filter(im=>(im.id==="wi_procuratore_push"||im.id==="wi_giornalista_mercato")&&(!im.cond||im.cond(player))).length};}catch(e){return "error:"+(e&&e.message);}},/* [collaudo PO «assurdo a poche settimane dal ritiro»] la sonda della famiglia mercato: quanti item a tema mercato/cessione sono ancora pescabili per il giocatore corrente */
       presBeats:()=>{try{return presBeats();}catch(e){return null;}},
       roster:()=>{try{return generateTeamRoster(player.club||{},player.season||1);}catch(e){return null;}},
@@ -30240,18 +30379,7 @@ const getThisWeekMatchday=()=>{
     if(openingGate())return;/* [7.16.0] W1 vincolante: prima le interazioni d'apertura */
     if(player.weekLived){notify("Hai già vissuto questa settimana. Avanza per passare alla prossima.",TH.warning);return;}
     // Sprint 161: coach plan message shown in weekLiveModal
-    const _liveCoachMsg=(player.proStatus||"u18")==="u18"?null:(()=>{
-      const _f=player.fatigue||0;const _r=(player.matchHistory||[]).slice(-3);
-      const _a=_r.length?_r.reduce((s,m)=>s+(m.rating||6.5),0)/_r.length:6.5;
-      // [6.85.0 collaudo PO «dialoghi mister ripetitivi»] 3 varianti per fascia, ruotate DETERMINISTICAMENTE
-      //   per settimana (stessa settimana ⇒ stessa frase, settimane diverse ⇒ voce diversa).
-      const _cmV=(arr)=>arr[Math.abs(hashStr("cm|"+(player.season||1)+"|"+(player.week||1)))%arr.length];/* [7.107.0] varianti ampliate 3→7 per fascia */
-      return _f>85?_cmV(["Sei a pezzi. Riposo assoluto — non si allena in queste condizioni.","Ho visto i dati del GPS: sei in riserva. Questa settimana scarico totale.","Niente eroismi: le gambe vanno ricaricate. Ci penso io col preparatore.","Fermati. Un giocatore spremuto così si fa male: recupero e basta.","Ti guardo camminare e mi basta: questa settimana non tocchi il campo.","Il fisioterapista ti prende in cura. Voglio indietro il giocatore fresco, non l'eroe stanco.","Zero partitelle. Massaggi, sonno e alimentazione: il resto lo rimandiamo."])
-        :_f>65?_cmV(["Stai spingendo troppo. Lavoro leggero e poi recupero.","Gestiamo il carico: metà campo e piscina, la brillantezza va protetta.","Regime ridotto in settimana: mi servi fresco alla prossima.","Un po' di stanchezza si vede. Alleggeriamo, senza esagerare.","Meglio prevenire: settimana calibrata, niente strappi inutili.","Ti tengo a scartamento ridotto. Alla domenica devi arrivare pimpante.","Occhio ai carichi: la condizione è un tesoro, non la buttiamo via ora."])
-        :_a>=7.5?_cmV(["Stai volando — intensifico il lavoro tecnico per sfruttare il momento.","Il momento è d'oro: aggiungo rifinitura e palle inattive, cavalchiamolo.","Chi è in fiducia deve toccare più palloni: settimana ad alta intensità tecnica.","Sei in fiducia e si vede: lavoriamo sulle giocate che ti stanno riuscendo.","Non cambio nulla di quello che funziona, ci metto solo un po' di brillantezza in più.","Quando uno è così, va assecondato: più libertà negli esercizi offensivi.","Continua a fare quello che fai. Io aggiungo solo qualche schema per te."])
-        :_a<=5.5?_cmV(["Dobbiamo migliorare. Doppio lavoro tecnico e fisico.","Ripartiamo dalle basi: possesso, movimenti, letture. Testa bassa.","Settimana di lavoro sporco: video, campo e ancora video. Ti rimetto in carreggiata.","Analisi degli errori e poi campo: voglio vederti reagire con i fatti.","Ti serve fiducia: lavoriamo su cose semplici che ti riescano bene.","Rivediamo insieme le ultime gare. Poi si suda per correggere.","Niente panico: torniamo all'essenziale e da lì risaliamo, passo dopo passo."])
-        :_cmV(["Questa settimana puntiamo su tecnica e fisico. Segui il piano.","Programma standard ma fatto bene: cura i dettagli, fanno la differenza.","Lavoro equilibrato: tattica, ritmo e un occhio al recupero.","Routine collaudata: qualità negli esercizi, testa sul pezzo.","Settimana normale, ma la normalità fatta bene è già tanto.","Manteniamo la barra dritta: allenamento pulito e concentrazione.","Nulla di speciale in programma, se non farlo tutto al 100%."]);
-    })();
+    const _liveCoachMsg=pickCoachWeekMsg(player);
     if(player.injured){
       const type=player.injuryType||"stiramento";
       const wk=player.injuryWeeks||1;
@@ -30278,17 +30406,9 @@ const getThisWeekMatchday=()=>{
       // [7.107.0 collaudo PO «dialoghi mister ripetitivi, sempre le stesse risposte»] battuta mai tra le ultime 10
       //   + le RISPOSTE non sono più le solite 3 fisse: 3 scelte estratte dal choicePool (rotate per settimana,
       //   escludendo quelle mostrate di recente → varietà reale ad ogni verifica).
-      const _seenL85=(player.recentCoachLines||[]);
-      const _linePool=_rev.lines.filter(l=>!_seenL85.includes(l));
-      const _line=pick(_linePool.length?_linePool:_rev.lines);
-      const _cPool=_rev.choicePool||_rev.choices||[];
-      const _seenC=(player.recentCoachChoices||[]);
-      const _cShuf=seededShuffle(_cPool,hashStr("cmc|"+(player.season||1)+"|"+(_curW)+"|"+_perf));
-      const _cOk=_cShuf.filter(c=>{try{return !c.cond||c.cond(player);}catch(_e){return false;}});/* [7.470.0] le risposte possono avere una CONDIZIONE di contesto, come gia' l'hanno eventi e impulsi: una battuta giusta al momento sbagliato e' una battuta sbagliata */
-      const _cFresh=_cOk.filter(c=>!_seenC.includes(c.txt));
-      const _choices=(_cFresh.length>=3?_cFresh:(_cOk.length>=3?_cOk:_cShuf)).slice(0,3);
+      const {line:_line,choices:_choices}=pickCoachReview(player,_perf,_curW);
       const _cName=(player.coach?.name||"Il Mister");
-      setPlayer(p=>({...p,weekLived:true,lastMonthlyReview:_curW,recentCoachLines:[...(p.recentCoachLines||[]),_line].slice(-10),recentCoachChoices:[...(p.recentCoachChoices||[]),..._choices.map(c=>c.txt)].slice(-12)}));
+      setPlayer(p=>({...p,weekLived:true,lastMonthlyReview:_curW,recentCoachLines:[...(p.recentCoachLines||[]),_line].slice(-13),recentCoachChoices:[...(p.recentCoachChoices||[]),..._choices.map(c=>c.txt)].slice(-7)}));
       setTimeout(()=>setMonthlyReviewModal({perf:_perf,line:_line,choices:_choices,coachName:_cName,week:_curW,season:player.season||1}),60);
       return;
     }
