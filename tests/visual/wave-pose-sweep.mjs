@@ -83,7 +83,11 @@ for (const y of YS) {
   /* CPM_NOOVR=1: nessun override — si fotografa la posa DI PRODUZIONE, cioe' quella che vede il PO.
      E' la verifica finale: uno sweep prova quale numero serve, solo il ramo vero prova che e' quello. */
   if (process.env.CPM_NOOVR) await page.evaluate(() => { window.__CPM_WVSET = null; });
-  else await page.evaluate(v => { window.__CPM_WVSET = { x: -1.95, z: -0.25, y: v }; }, y);
+  /* dal 7.470: si sweeppa la TORSIONE DELL'AVAMBRACCIO (`fy`), che con l'arto alzato e' il comando
+     dominante sull'orientamento del PALMO — la sola Y del braccio non bastava (nota PO: «il palmo
+     della mano deve essere in direzione dello sguardo del calciatore»). */
+  else await page.evaluate(o => { window.__CPM_WVSET = { x: -1.95, z: -0.25, y: o.y, fy: o.fy }; },
+    { y: +(process.env.CPM_WVY_FIX || -0.8), fy: y });
   await sleep(900);
   const f = `${OUT}/wave-y${String(y).replace('.', 'p').replace('-', 'm')}.png`;
   await page.screenshot({ path: f, clip: (process.env.CPM_PAGE ? undefined : process.env.CPM_FULL ? { x: 40, y: 320, width: 400, height: 340 } : { x: 8, y: 478, width: 92, height: 130 }) });
