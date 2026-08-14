@@ -39,7 +39,7 @@ const righe = [];
 for (let round = 0; round < TARGET * 4 && righe.length < TARGET; round++) {
   const inPlay = await page.evaluate(() => { const s = window.__CPM_STATE && window.__CPM_STATE(); return s && s.phase === 'playing'; });
   if (!inPlay) { await sleep(700); continue; }
-  await page.evaluate(() => { window.__CPM_PA457 = []; window.__CPM_TLSEG = null; });
+  await page.evaluate(() => { window.__CPM_PA457 = []; window.__CPM_TLSEG = null; window.__CPM_ARCEND457 = []; });
   await page.evaluate(() => { window.__CPM_QUEUE_REACTIVE && window.__CPM_QUEUE_REACTIVE(); });
   /* si aspetta la fase di SCELTA della partita vera, poi si forza il successo e si risolve */
   const gotChoose = await page.waitForFunction(() => {
@@ -58,7 +58,7 @@ for (let round = 0; round < TARGET * 4 && righe.length < TARGET; round++) {
 
   const d = await page.evaluate(() => ({
     pa: (window.__CPM_PA457 || []).slice(), seg: window.__CPM_TLSEG || null,
-    out: window.__CPM_OUTCOME || null,
+    out: window.__CPM_OUTCOME || null, ae: (window.__CPM_ARCEND457 || []).slice(),
     st: (window.__CPM_STATE && window.__CPM_STATE()) || null
   }));
   if (!d.pa.length) { if (VERB) console.log('  · nessun fotogramma d\'esito campionato'); await tornaAPlaying(); continue; }
@@ -80,8 +80,14 @@ for (let round = 0; round < TARGET * 4 && righe.length < TARGET; round++) {
   const bxFin = d.pa.length ? d.pa[d.pa.length - 1].bx : null;
   righe.push({ tipo, tot: d.pa.length, tlF: conTl.length, paF: conPa.length, bloc: bloccati.length,
     fermo, tl0, tl1, durPian, bn, ok: d.out ? d.out.ok : null, key, bxFin,
+    ht: (d.pa[0] || {}).ht, rew: (d.pa[0] || {}).rew, kind: (d.pa[0] || {}).kind,
+    def: (d.pa[0] || {}).def, hs: (d.pa[0] || {}).hs, arcF: d.pa.filter(r => r.arc).length,
     outKeys: d.out ? Object.keys(d.out).join(',') : null });
-  if (VERB) console.log(`  · esito «${key}» ok=${d.out ? d.out.ok : '?'} · post-arco ${tipo || 'NESSUNO'} vivo ${conPa.length}f · build-up ${conTl.length}f (pian. ${durPian}s/${bn}seg) · BLOCCATI ${bloccati.length}f · palla finale x=${bxFin}`);
+  const f0 = d.pa[0] || {};
+  const arcF = d.pa.filter(r => r.arc).length;
+  if (VERB && (d.ae || []).length) console.log(`      completamenti arco: ${d.ae.map(a => `u=${a.u} early=${a.early} bg=${a.bg} ht=${a.ht} hs=${a.hs} def=${a.def} rew=${a.rew} kind=${a.kind}`).join(' || ')}`);
+  if (VERB && !(d.ae || []).length) console.log('      completamenti arco: NESSUNO — l\'arco non ha mai raggiunto il blocco di completamento');
+  if (VERB) console.log(`  · esito «${key}» ok=${d.out ? d.out.ok : '?'} · hlType=${f0.ht} rew=${f0.rew} kind=${f0.kind} def=${f0.def} hs=${f0.hs} · arco vivo ${arcF}f · post-arco ${tipo || 'NESSUNO'} ${conPa.length}f · build-up ${conTl.length}f · palla finale x=${bxFin}`);
   await tornaAPlaying();
 }
 
@@ -94,12 +100,20 @@ if (!righe.length) { console.log('❌ nessuna conclusione misurata sul flusso ve
 
 console.log(`\n=== ${righe.length} conclusioni misurate SUL FLUSSO VERO ===`);
 for (const r of righe)
-  console.log(`  esito «${String(r.key).padEnd(12)}» ok=${String(r.ok).padEnd(5)} · post-arco ${String(r.tipo || 'NESSUNO').padEnd(12)} ${String(r.paF).padStart(3)}f · build-up ${String(r.tlF).padStart(3)}f (pian. ${r.durPian}s/${r.bn}seg) · BLOCCATI ${String(r.bloc).padStart(3)}f · palla finale x=${r.bxFin}`);
+  console.log(`  «${String(r.key).padEnd(8)}» hlType=${String(r.ht).padEnd(9)} rew=${String(r.rew).padEnd(7)} kind=${String(r.kind).padEnd(7)} def=${String(r.def).padEnd(5)} · arco ${String(r.arcF).padStart(3)}f · post-arco ${String(r.tipo || 'NESSUNO').padEnd(11)} ${String(r.paF).padStart(3)}f · palla x=${r.bxFin}`);
 /* ⚠️ solo l'outKey decide: la prima stesura contava anche `ok===true`, e cosi' una CHANCE riuscita
    finiva nel conteggio dei gol — un numero che diceva il contrario di quello che sembrava dire. */
 const gol = righe.filter(r => /goal/i.test(String(r.key || '')));
 const golSenzaArco = gol.filter(r => r.paF === 0);
-console.log(`\nesiti RIUSCITI/gol: ${gol.length} · di questi SENZA alcun post-arco: ${golSenzaArco.length}`);
+console.log(`\nGOL dichiarati: ${gol.length} · di questi SENZA alcun post-arco: ${golSenzaArco.length}`);
+if (golSenzaArco.length) {
+  const perTipo = {};
+  for (const r of golSenzaArco) { const k = `hlType=${r.ht} rew=${r.rew} kind=${r.kind} def=${r.def}`; perTipo[k] = (perTipo[k] || 0) + 1; }
+  console.log('  · gol SENZA post-arco, per contesto della conclusione:');
+  for (const [k, n] of Object.entries(perTipo)) console.log(`      ${n}× ${k}`);
+  const golOk = gol.filter(r => r.paF > 0);
+  if (golOk.length) console.log(`  · confronto — gol CON post-arco: ${golOk.map(r => `hlType=${r.ht} rew=${r.rew} kind=${r.kind}`).join(' | ')}`);
+}
 if (righe[0]) console.log(`  (campi di __CPM_OUTCOME: ${righe[0].outKeys})`);
 
 const conBlocco = righe.filter(r => r.bloc > 0);
