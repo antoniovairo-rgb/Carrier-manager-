@@ -34,6 +34,7 @@ await sleep(700);
 
 /* si gioca: ogni giro arma un highlight reattivo e lo risolve, cosi' le scene entrano nel testimone */
 let secchi = 0, partite = 1, scene = 0;
+const righe = [];
 for (let round = 0; round < SCENE_TARGET * 4 && scene < SCENE_TARGET; round++) {
   const inPlay = await page.evaluate(() => { const s = window.__CPM_STATE && window.__CPM_STATE(); return s && s.phase === 'playing'; });
   if (!inPlay) {
@@ -51,26 +52,23 @@ for (let round = 0; round < SCENE_TARGET * 4 && scene < SCENE_TARGET; round++) {
   await page.waitForFunction(() => { try { const s = window.__CPM_STATE && window.__CPM_STATE(); return s && s.phase !== 'hl_result'; } catch (e) { return true; } }, { timeout: 25000 }).catch(() => {});
   scene++;
   await sleep(200);
-  /* lo snapshot si prende PRIMA di un eventuale riavvio partita: `openMatch` ricarica la pagina e
-     azzera l'anello — la prima stesura fotografava dopo e trovava il testimone vuoto. */
-  if (scene >= SCENE_TARGET) break;
-}
-
-/* IL DETECTOR VERO + la statistica indipendente dal frame-rate */
-const out = await page.evaluate(() => {
-  const snap = window.__CPM_WATCH_SNAP && window.__CPM_WATCH_SNAP();
-  if (!snap || !snap.samples || !snap.samples.length) return { err: 'nessun campione nel testimone di bordo' };
-  const S = snap.samples;
-  const keys = [...new Set(S.map(s => s.sk).filter(k => k != null && k >= 0))];
-  const righe = [];
-  for (const k of keys) {
+  /* ⚠️ IL CAMPIONE SI PRENDE QUI, non alla fine: `openMatch` ricarica la pagina per aprire la partita
+     successiva e l'anello del testimone riparte da zero — fotografando dopo il ciclo si trovava il
+     testimone VUOTO (due passate buttate cosi'). Ogni scena si porta via il suo dato appena chiusa. */
+  const r = await page.evaluate(() => {
+    const snap = window.__CPM_WATCH_SNAP && window.__CPM_WATCH_SNAP();
+    if (!snap || !snap.samples || !snap.samples.length) return null;
+    const S = snap.samples;
+    const ks = S.map(s => s.sk).filter(k => k != null && k >= 0);
+    if (!ks.length) return null;
+    const k = Math.max(...ks);                       /* la scena appena giocata */
     const W = S.filter(s => s.sk === k);
-    if (W.length < 8) continue;
+    if (W.length < 8) return null;
     let txt = '';
     try { txt = window.__CPM_DRAFTNOTE(snap, { sceneKey: k }) || ''; } catch (e) { txt = 'ERR ' + e.message; }
     /* stessa matematica del detector (r.~8595) ma tenendo ANCHE il dt: il passo grezzo per fotogramma
-       dipende dal frame-rate, la velocita' no. Si saltano i primi 750ms della scena, che e' la finestra
-       in cui `nearSnap` esclude gli stacchi voluti. */
+       dipende dal frame-rate, la velocita' no. Si saltano i primi 750ms, la finestra in cui `nearSnap`
+       esclude gli stacchi voluti. */
     const t0 = W[0].t; let pMax = 0, vMax = 0, dtSum = 0, nn = 0;
     for (let i = 1; i < W.length; i++) {
       const a = W[i - 1], b = W[i], dt = (b.t - a.t) / 1000;
@@ -81,7 +79,34 @@ const out = await page.evaluate(() => {
       if (d / dt > vMax) vMax = d / dt;
       dtSum += dt; nn++;
     }
-    righe.push({ k, n: W.length, cam: txt.split('\n').filter(l => /CAMERA|camera/.test(l)), pMax, vMax, dtMed: nn ? dtSum / nn : null });
-  }
-  return { righe, tot: S.length, span: snap.span, res: snap.res };
-});
+    return { k, n: W.length, cam: txt.split('\n').filter(l => /CAMERA|camera/.test(l)), pMax, vMax, dtMed: nn ? dtSum / nn : null };
+  });
+  if (r) righe.push(r);
+}
+
+const out = { righe, tot: righe.reduce((a, r) => a + r.n, 0) };
+
+await b.close(); srv.close();
+const R = out.righe.filter(r => r.pMax > 0);
+if (!R.length) { console.log('❌ nessuna scena utilizzabile nel testimone'); process.exit(2); }
+const conRiga = out.righe.filter(r => r.cam.length).length;
+const q = (arr, p) => { const a = arr.slice().sort((x, y) => x - y); return a[Math.min(a.length - 1, Math.floor(a.length * p))]; };
+const passi = R.map(r => r.pMax), vel = R.map(r => r.vMax), dts = R.map(r => r.dtMed).filter(Boolean);
+console.log(`\n=== CENSIMENTO CAMERA — ${R.length} scene su ${partite} partita/e (${out.tot} campioni) ===`);
+console.log(`scene che la bozza etichetta con una riga-camera: ${conRiga}/${out.righe.length}  (${(100 * conRiga / out.righe.length).toFixed(0)}%)`);
+console.log(`intervallo fra campioni: mediana ${(q(dts, 0.5) * 1000).toFixed(0)}ms  ⇒  ~${(1 / q(dts, 0.5)).toFixed(0)} campioni/s`);
+console.log(`\nPASSO per fotogramma (cio' che il detector giudica oggi) — mediana ${q(passi, .5).toFixed(2)} · p90 ${q(passi, .9).toFixed(2)} · max ${Math.max(...passi).toFixed(2)}u`);
+console.log(`VELOCITA' della camera (indipendente dal frame-rate)      — mediana ${q(vel, .5).toFixed(1)} · p90 ${q(vel, .9).toFixed(1)} · max ${Math.max(...vel).toFixed(1)} u/s`);
+console.log('\nquante scene SANE verrebbero etichettate, per soglia di PASSO:');
+for (const s of [1.2, 1.5, 2.0, 2.5, 3.0, 4.0, 6.0]) {
+  const n = passi.filter(v => v >= s).length;
+  console.log(`  ${s.toFixed(1)}u → ${n}/${R.length} (${(100 * n / R.length).toFixed(0)}%)${s === 1.2 ? '   ← in vigore dal 7.408' : ''}`);
+}
+console.log('\nquante scene SANE verrebbero etichettate, per soglia di VELOCITA\':');
+for (const s of [20, 30, 40, 60, 80, 120]) {
+  const n = vel.filter(v => v >= s).length;
+  console.log(`  ${s} u/s → ${n}/${R.length} (${(100 * n / R.length).toFixed(0)}%)`);
+}
+for (const e of errs.slice(0, 3)) console.log('  ⚠ pageerror: ' + e);
+console.log('\n→ le note del PO riportano 1,4 · 2,0 · 2,0 · 2,2 e un 14,3: se la banda normale arriva fin li\',');
+console.log('  le prime quattro sono la camera che fa il suo mestiere e solo il 14,3 e\' un difetto.');
