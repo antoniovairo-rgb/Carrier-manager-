@@ -26,8 +26,9 @@
        quasi sempre `outKey="chance"`, che per definizione non mette la palla in rete.
      · si conta come GOL solo l'`outKey`, mai `ok===true`: una chance riuscita finirebbe fra i gol.
 
-   PROVA DEL ROSSO: `CPM_GOALPA_SOGLIA=<x>` sposta la linea pretesa (con 60 il guardiano vira rosso
-   anche sui gol sani: la soglia e' davvero cio' che giudica). Nato ROSSO sul 7.459.0.
+   PROVA DEL ROSSO: `CPM_NO460=1` (rallentatore sulla costruzione + contesto letto all'atterraggio) e
+   `CPM_NO461=1` (la finestra d'esito torna a chiudere sul cronometro invece che sulla scena). Nato ROSSO
+   sul 7.459.0: 4 gol su 7 e 4 su 6 non arrivavano in porta.
 
      CPM_CHROME=… PLAYWRIGHT_BROWSERS_PATH=… node goal-postarc-test.mjs [--verbose]              */
 import { startServer, launchBrowser, installCdnRoutes, openMatch, sleep } from './lib/harness.mjs';
@@ -44,19 +45,28 @@ await installCdnRoutes(page);
 const errs = []; page.on('pageerror', e => errs.push(e.message));
 /* `CPM_REALWAIT=1` apre l'attesa che il gioco VERO concede al gol (r.~20346, spenta sotto test):
    serve per non giudicare una finestra d'esito che il giocatore non ha mai. */
-await page.addInitScript(o => { window.__CPM_GLB = false; window.__CPM_CINE = 1; window.__CPM_PRESENT = 1; if (o.rw) window.__CPM_REALWAIT = 1; if (o.no) window.__CPM_NO460 = 1; },
-  { rw: process.env.CPM_REALWAIT ? 1 : 0, no: process.env.CPM_NO460 ? 1 : 0 });
+await page.addInitScript(o => { window.__CPM_GLB = false; window.__CPM_CINE = 1; window.__CPM_PRESENT = 1; if (o.rw) window.__CPM_REALWAIT = 1; if (o.no) window.__CPM_NO460 = 1; if (o.n1) window.__CPM_NO461 = 1; },
+  { rw: process.env.CPM_REALWAIT ? 1 : 0, no: process.env.CPM_NO460 ? 1 : 0, n1: process.env.CPM_NO461 ? 1 : 0 });
 await openMatch(page, port, { skipLoadAll: true });
 await sleep(700);
 
 const gol = [];
+let secchi = 0, partite = 1;
 /* il rendimento e' basso (molte scene non hanno un'azione da GOL): serve un budget di giri largo,
    altrimenti il guardiano estrae 2-3 gol e una classe che compare 1 volta su 5 non entra nel
    campione — cioe' un verde che non ha guardato abbastanza. */
 for (let round = 0; round < TARGET * 30 && gol.length < TARGET; round++) {
   const inPlay = await page.evaluate(() => { const s = window.__CPM_STATE && window.__CPM_STATE(); return s && s.phase === 'playing'; });
-  if (!inPlay) { await sleep(700); continue; }
-  await page.evaluate(() => { window.__CPM_PA457 = []; window.__CPM_ARCEND457 = []; window.__CPM_ARCFIRE457 = []; window.__CPM_ARCORPHAN457 = []; window.__CPM_ARCCALL457 = []; });
+  if (!inPlay) {
+    /* UNA PARTITA DA SOLA RENDE 1-3 GOL e poi finisce: il campione restava troppo piccolo perche' una
+       classe che compare a intermittenza ci entrasse, e un guardiano che non riesce a virare rosso su
+       richiesta non e' un guardiano. Quando la partita non torna piu' in `playing` se ne apre un'altra. */
+    if (++secchi >= 12) { secchi = 0; partite++; try { await openMatch(page, port, { skipLoadAll: true }); await sleep(700); } catch (e) { break; } }
+    else await sleep(700);
+    continue;
+  }
+  secchi = 0;
+  await page.evaluate(() => { window.__CPM_PA457 = []; window.__CPM_ARCEND457 = []; window.__CPM_ARCFIRE457 = []; window.__CPM_ARCORPHAN457 = []; window.__CPM_ARCCALL457 = []; window.__CPM_WAIT461 = []; window.__CPM_CONT461 = []; });
   await page.evaluate(() => { window.__CPM_QUEUE_REACTIVE && window.__CPM_QUEUE_REACTIVE(); });
   const gotChoose = await page.waitForFunction(() => {
     try { const s = window.__CPM_STATE && window.__CPM_STATE(); return s && s.phase === 'hl_choose'; } catch (e) { return false; }
@@ -79,12 +89,18 @@ for (let round = 0; round < TARGET * 30 && gol.length < TARGET; round++) {
     key = await page.evaluate(() => { const o = window.__CPM_OUTCOME; return o ? (o.outKey || o.key || null) : null; }).catch(() => null);
     if (key == null) await sleep(100);
   }
-  await sleep(3600);   /* tutta la finestra d'esito, post-arco compreso */
+  /* ⚠️ TRAPPOLA PAGATA: la prima stesura aspettava 3,6s FISSI e poi fotografava. Dal 7.461 la scena dura
+     quanto le serve, quindi quel `sleep` misurava LA PROPRIA finestra di osservazione e non quella del
+     gioco — «finestra d'esito 3,46s» era il mio cronometro, e i gol dichiarati rotti erano scene ancora
+     VIVE che nessuno aveva chiuso (`chiCHIUDE: nessun handleContinue registrato`, `uscita: mai uscita da
+     hl_result`). Si aspetta che la scena finisca DAVVERO. */
+  await page.waitForFunction(() => { try { const s = window.__CPM_STATE && window.__CPM_STATE(); return s && s.phase !== 'hl_result'; } catch (e) { return true; } }, { timeout: 25000 }).catch(() => {});
+  await sleep(300);
 
   const d = await page.evaluate(() => ({
     pa: (window.__CPM_PA457 || []).slice(), out: window.__CPM_OUTCOME || null,
     ae: (window.__CPM_ARCEND457 || []).slice(), af: (window.__CPM_ARCFIRE457 || []).slice(),
-    ao: (window.__CPM_ARCORPHAN457 || []).slice(), ac: (window.__CPM_ARCCALL457 || []).slice()
+    ao: (window.__CPM_ARCORPHAN457 || []).slice(), ac: (window.__CPM_ARCCALL457 || []).slice(), wt: (window.__CPM_WAIT461 || []).slice(), ct: (window.__CPM_CONT461 || []).slice()
   }));
   /* solo l'outKey decide, e «goal_against» non e' un gol dell'eroe */
   if (!/goal/i.test(String(key || '')) || /against/i.test(String(key || ''))) { await tornaAPlaying(); continue; }
@@ -95,7 +111,7 @@ for (let round = 0; round < TARGET * 30 && gol.length < TARGET; round++) {
   const post = [...new Set(d.pa.map(r => r.pt).filter(Boolean))].join('>') || null;
   const bxMax = Math.max(...d.pa.map(r => r.bx));
   gol.push({ key, post, bxMax, ht: d.pa[0].ht, rew: d.pa[0].rew, kind: d.pa[0].kind,
-    ae: d.ae, af: d.af, ao: d.ao, ac: d.ac, win: +((d.pa[d.pa.length - 1].t - d.pa[0].t) / 1000).toFixed(2), rt: d.pa[d.pa.length - 1].rt, tl: d.pa.filter(r => r.tlOn).length, tlT: d.pa.length ? d.pa[d.pa.length - 1].tlT : null, bn: (d.pa.find(r => r.tlOn) || {}).bn, frames: d.pa.length, paF: d.pa.filter(r => r.pa >= 0).length });
+    ae: d.ae, af: d.af, ao: d.ao, ac: d.ac, wt: d.wt, ct: d.ct, win: +((d.pa[d.pa.length - 1].t - d.pa[0].t) / 1000).toFixed(2), rt: d.pa[d.pa.length - 1].rt, tl: d.pa.filter(r => r.tlOn).length, tlT: d.pa.length ? d.pa[d.pa.length - 1].tlT : null, bn: (d.pa.find(r => r.tlOn) || {}).bn, frames: d.pa.length, paF: d.pa.filter(r => r.pa >= 0).length });
   await tornaAPlaying();
 }
 
@@ -106,7 +122,7 @@ async function tornaAPlaying() {
 await b.close(); srv.close();
 if (!gol.length) { console.log('❌ nessun gol dichiarato misurato: il guardiano e\' cieco, non verde'); process.exit(2); }
 
-console.log(`\n=== ${gol.length} GOL dichiarati sul FLUSSO VERO (linea di porta: x >= ${LINEA}) ===`);
+console.log(`\n=== ${gol.length} GOL dichiarati sul FLUSSO VERO su ${partite} partita/e (linea di porta: x >= ${LINEA}) ===`);
 /* DUE CLASSI STRUTTURALI, ed e' su quelle che il guardiano giudica — perche' non dipendono dal
    frame-rate dell'ambiente:
      A. la CONCLUSIONE NON E' MAI PARTITA (`fireConclusion` mai chiamata): il build-up si e' mangiato
@@ -118,43 +134,41 @@ console.log(`\n=== ${gol.length} GOL dichiarati sul FLUSSO VERO (linea di porta:
    e in headless dimezza la finestra. Si DICHIARA coi suoi numeri, come il residuo di scene-staging-lag:
    e' una precedenza fra la finestra d'esito (setTimeout, tempo reale) e la catena cinematica (clock di
    scena), cioe' una scelta che non spetta al guardiano. */
-const clA = [], clB = [], clC = [], residuo = [];
-/* IL CLOCK DI SCENA QUALIFICA IL CAMPIONE. La finestra d'esito di un gol vale >=3,05s
-   (`postHighlightDuration`, r.~3997) ma e' un `setTimeout` in tempo REALE, mentre la catena
-   cinematica gira sul clock di scena, che `dt` tappa a 0.05 (r.~12176): a 9 fps headless quel clock
-   avanza meno della meta' del tempo reale e la finestra si chiude con l'arco ancora in volo. Quando
-   il clock di scena HA avuto il suo tempo (>=2,5s, cioe' l'ordine di grandezza della finestra) un
-   gol che non arriva in porta e' un difetto vero e viene GIUDICATO (classe C); quando il clock e'
-   stato affamato dall'ambiente, e' il residuo dichiarato — non un verdetto sul gioco. */
-const CLOCK_MIN = +(process.env.CPM_CLOCK_MIN || 2.5);
+const clA = [], clB = [], clC = [];
+/* [7.461.0] LA CLASSE C ORA SI GIUDICA. Nel 7.460 era il residuo dichiarato: la finestra d'esito si
+   chiudeva con l'arco ancora in volo, e siccome dipende dal CLOCK DI SCENA — che `dt` tappa a 0.05
+   (r.~12176), per cui a 9-10 fps avanza meno della meta' del tempo reale — era una precedenza fra due
+   sistemi, non un verdetto da dare da soli. Il PO l'ha decisa («le azioni/scene/highlights possono
+   prendersi anche piu' tempo»): la scena ha la precedenza sul cronometro, l'auto-avanzamento aspetta
+   che il renderer dichiari di aver finito. Da qui il guardiano giudica il contratto per intero, a
+   qualunque frame-rate — che e' anche l'unico modo di proteggere il telefono lento. */
 for (const g of gol) {
   const ok = g.bxMax >= LINEA;
   const atterrFuori = g.ae.some(a => a.ph !== 'hl_result');
-  const clockPieno = (g.rt || 0) >= CLOCK_MIN;
   if (!g.ac.length) clA.push(g);
   else if (atterrFuori && !g.post) clB.push(g);
-  else if (!ok && clockPieno) clC.push(g);
-  else if (!ok) residuo.push(g);
-  const tag = !g.ac.length ? '❌A' : (atterrFuori && !g.post) ? '❌B' : (!ok && clockPieno) ? '❌C' : ok ? '✅ ' : '⚠️ ';
+  else if (!ok) clC.push(g);
+  const tag = !g.ac.length ? '❌A' : (atterrFuori && !g.post) ? '❌B' : !ok ? '❌C' : '✅ ';
   console.log(`  ${tag} «${g.key}» hlType=${String(g.ht).padEnd(8)} rew=${String(g.rew).padEnd(6)} · post-arco ${String(g.post || 'NESSUNO').padEnd(20)} · palla max x=${g.bxMax.toFixed(1)}`);
   if (tag !== '✅ ' || VERB) {
     console.log(`       fireConcl.: ${g.ac.length ? g.ac.map(a => `ph=${a.ph} ht=${a.ht} hs=${a.hs} rew=${a.rew} pat=${a.pat}`).join(' || ') : 'MAI CHIAMATA'}  · build-up ${g.tl}/${g.frames} fotogrammi, tlT finale ${g.tlT}, segmenti ${g.bn} · FINESTRA d'esito ${g.win}s reali (clock di scena ${g.rt}s)`);
     console.log(`       lancio    : ${g.af.length ? g.af.map(a => `ph=${a.ph} ht=${a.ht}→t=${a.t} hs=${a.hs} rew=${a.rew} tgx=${a.tgx} dur=${a.dur}`).join(' || ') : 'NESSUNO — fireConclusion non ha mai lanciato un arco'}`);
+    console.log(`       attesa461 : ${g.wt.length ? g.wt.map(w => `on=${w.on} att=${w.att} busy=${w.c ? `${w.c.on}/tl${w.c.tl}/arc${w.c.arc}/pa${w.c.pa}` : 'null'}`).join(' || ').slice(0, 400) : 'MAI ENTRATA — la scena non e\' stata chiusa dall\'auto-avanzamento'}`);
+    console.log(`       chiCHIUDE : ${g.ct.length ? g.ct.map(c => `ph=${c.ph} ← ${c.st}`).join(' || ').slice(0, 600) : 'nessun handleContinue registrato'}`);
+    console.log(`       uscita    : ${g.ao.length ? g.ao.map(a => `→${a.to} arco=${a.arc} t=${a.at}/${a.dur} post=${a.pt} bx=${a.bx}`).join(' || ') : 'mai uscita da hl_result nella finestra'}`);
     console.log(`       atterragg.: ${g.ae.length ? g.ae.map(a => `u=${a.u} ph=${a.ph} bg=${a.bg} ht=${a.ht} hs=${a.hs} rew=${a.rew} bx=${a.bx}`).join(' || ') : 'NESSUNO — l\'arco non ha mai raggiunto il completamento'}`);
   }
 }
 for (const e of errs.slice(0, 4)) console.log('  ⚠ pageerror: ' + e);
 const inPorta = gol.filter(g => g.bxMax >= LINEA).length;
 console.log(`\nGOL dichiarati: ${gol.length} · in porta: ${inPorta} · fuori: ${gol.length - inPorta}`);
-if (residuo.length) {
-  console.log(`\nRESIDUO DICHIARATO (non giudicato) — ${residuo.length} gol con la finestra chiusa e l'arco ancora in volo:`);
-  for (const g of residuo) console.log(`  · finestra ${g.win}s reali ma clock di scena ${g.rt}s (${g.frames} fotogrammi ⇒ ~${(g.frames / g.win).toFixed(0)} fps) · arco dur=${(g.af[0] || {}).dur} · palla ferma a x=${g.bxMax.toFixed(1)}`);
-  console.log('  → e\' la precedenza finestra d\'esito ⟷ catena cinematica: va decisa col PO, non qui.');
+if (clC.length) {
+  console.log(`\nCLASSE C — ${clC.length} gol con la finestra chiusa e la conclusione ancora in corso:`);
+  for (const g of clC) console.log(`  · finestra ${g.win}s reali · clock di scena ${g.rt}s (${g.frames} fotogrammi ⇒ ~${(g.frames / g.win).toFixed(0)} fps) · arco dur=${(g.af[0] || {}).dur} · palla ferma a x=${g.bxMax.toFixed(1)}`);
 }
 console.log(`\nCLASSE A (conclusione mai partita): ${clA.length}   ·   CLASSE B (atterraggio fuori scena senza post-arco): ${clB.length}   ·   CLASSE C (clock di scena pieno e palla comunque fuori): ${clC.length}`);
-console.log(`  (campione qualificato dal clock di scena >= ${CLOCK_MIN}s: ${gol.filter(g => (g.rt || 0) >= CLOCK_MIN).length}/${gol.length})`);
 if (clA.length || clB.length || clC.length) {
   console.log('\n❌ FAIL — «esito dichiarato ≠ 3D»: il gioco conta gol la cui conclusione in campo non e\' mai stata giocata.');
   process.exit(1);
 }
-console.log('\n✅ PASS — nessun gol dichiarato resta senza conclusione giocata (classi A e B a zero).');
+console.log('\n✅ PASS — ogni gol dichiarato ha la sua conclusione giocata e la palla arriva in porta.');
