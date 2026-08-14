@@ -32,6 +32,7 @@
     "goal-postarc": "node goal-postarc-test.mjs",
     "camera-step-census": "node camera-step-census-test.mjs",
     "wave-pose-sweep": "node wave-pose-sweep.mjs",
+    "delivery-arrival": "node delivery-arrival-test.mjs",
     "vita-variety": "node vita-variety-test.mjs",
     "vita-flow": "node vita-flow-test.mjs",
     "attendance-sim": "node attendance-sim.mjs",
