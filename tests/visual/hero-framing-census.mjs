@@ -30,6 +30,11 @@
 import { startServer, launchBrowser, installCdnRoutes, openMatch, forceSituation, sleep } from './lib/harness.mjs';
 import fs from 'node:fs';
 
+/* `CPM_TARGET` misura la REGIA CHE SI STA VALUTANDO, non quella di oggi: accende la manopola per taglia
+   (`__CPM_FRAMET480`) e ri-censisce le 191 scene. Serve a rispondere alla sola domanda che conta prima di
+   cambiare la regia di tutto il repertorio — «se scelgo 0,30, dove finisce davvero ognuna delle 191?» —
+   perche' i provini dicono di tre scene, e tre scene non sono una decisione. */
+const TARGET = +(process.env.CPM_TARGET || 0) || 0;
 const PASSO = Math.max(1, +(process.env.CPM_STEP || 1));
 const MAX = +(process.env.CPM_N || 191);
 const srv = await startServer(); const port = srv.address().port;
@@ -46,7 +51,7 @@ const righe = [];
 for (let gi = 0; gi < N; gi += PASSO) {
   const ok = await forceSituation(page, gi, { settle: 400, choose: true }).then(() => true).catch(() => false);
   if (!ok) continue;
-  await page.evaluate(() => { window.__CPM_FRAME480 = null; window.__CPM_FORCE_OUTCOME = 'success'; });
+  await page.evaluate(t => { window.__CPM_FRAME480 = null; window.__CPM_FORCE_OUTCOME = 'success'; window.__CPM_FRAMET480 = t || null; }, TARGET);
   const info = await page.evaluate(() => {
     const s = window.__CPM_STATE && window.__CPM_STATE();
     const a = (window.__CPM_ACTS && window.__CPM_ACTS()) || [];
@@ -80,11 +85,24 @@ console.log(`\n  sotto 0,15 (gesto non distinguibile): ${sotto15.length}/${righe
 console.log(`  sotto 0,08 (figurina):                ${sotto08.length}/${righe.length} scene — ${(100 * sotto08.length / righe.length).toFixed(0)}%`);
 console.log(`  con l'eroe FUORI dal quadro in almeno un fotogramma: ${fuori.length}/${righe.length}`);
 
+/* ⚠️ SECONDA DIMENSIONE, e non e' un raffinamento: e' un difetto DIVERSO. «Piccolo» e «non inquadrato»
+   si correggono con due cose opposte — la distanza e la MIRA — e il criterio del 7.480 («fuori almeno un
+   fotogramma») non li separava: un fotogramma su trenta e' un passaggio, ventotto su trenta e' una scena
+   in cui il gesto non viene mai mostrato. Qui si misura la QUOTA di fotogrammi della conclusione con
+   l'eroe fuori dal quadro, che e' un rapporto — quindi headless e telefono dicono lo stesso numero. */
+const quota = r => (r.n ? r.fuori / r.n : 0);
+const assenti = righe.filter(r => quota(r) >= 0.5).sort((a, c) => quota(c) - quota(a));
+const totFuori = righe.reduce((a, c) => a + c.fuori, 0), totFr = righe.reduce((a, c) => a + c.n, 0);
+console.log(`  quota di fotogrammi con l'eroe fuori dal quadro: ${totFuori}/${totFr} = ${(100 * totFuori / totFr).toFixed(1)}%`);
+console.log(`\n=== SCENE IN CUI L'EROE NON E' IN QUADRO (oltre meta' dei fotogrammi della conclusione) ===`);
+if (!assenti.length) console.log('  nessuna');
+for (const r of assenti) console.log(`  gi${String(r.gi).padStart(3)} ${String((100 * quota(r)).toFixed(0)).padStart(4)}% dei fotogrammi · «${(r.azione || '—').slice(0, 46)}»`);
+
 const peggiori = [...righe].sort((a, c) => a.max - c.max).slice(0, 15);
 console.log(`\n=== le 15 scene in cui l'eroe e' piu' piccolo ===`);
 for (const r of peggiori) console.log(`  gi${String(r.gi).padStart(3)} ${String(r.max.toFixed(3)).padStart(6)} · ${String(r.tipo || '—').padEnd(9)} · «${(r.azione || '—').slice(0, 46)}»`);
 
 fs.mkdirSync('out/framing', { recursive: true });
-fs.writeFileSync('out/framing/hero-framing.json', JSON.stringify({ generatedAt: null, scene: righe.length, mediana: q(0.5), media, sotto15: sotto15.length, sotto08: sotto08.length, righe }, null, 1));
+fs.writeFileSync('out/framing/hero-framing.json', JSON.stringify({ generatedAt: null, target: TARGET || null, scene: righe.length, mediana: q(0.5), media, sotto15: sotto15.length, sotto08: sotto08.length, assenti: assenti.map(r => r.gi), righe }, null, 1));
 console.log(`\ndettaglio → out/framing/hero-framing.json`);
 for (const e of errs.slice(0, 3)) console.log('  ⚠ pageerror: ' + e);

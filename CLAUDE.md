@@ -341,6 +341,24 @@ sportiva sta a 0,35-0,60. ⚠️ Prima di accusare l'inquadratura si esclude il 
 headless (`CPM_WAIT`): se allargando la finestra il numero non cresce, la camera non e' lenta — non si
 avvicina (misurato: 2400→10000 ms, mediana 0,050→0,048).
 
+**Due difetti diversi: «piccolo» e «non inquadrato» (7.482.0).** Si correggono con l'opposto — la distanza
+e la MIRA — quindi il censimento li misura separati. La seconda grandezza e' la **quota di fotogrammi
+della conclusione con l'eroe fuori dal quadro** (rapporto, quindi confrontabile fra headless e telefono):
+oggi **7,8% su 5.281 fotogrammi**, con **9 scene sopra meta'** e due al 100% (gi168 «Tackle duro», gi138
+«Allineamento difensivo») — quasi tutte DIFENSIVE. ⚠️ Le due cause sono distinte e si separano contando
+gli ingaggi delle reti anti-fuoriquadro (`__CPM_HY478`): se la rete sull'eroe non ingaggia MAI mentre lui
+e' fuori (gi33, gi168) e' **spenta** perche' il soggetto e' passato alla palla; se ingaggia e lui resta
+fuori lo stesso (gi138, 13 ingaggi) e' **rate-capped** e non lo recupera. ⚠️ La quota varia fra run (11-27
+fotogrammi osservati col fps headless): stabile e' quali scene compaiono, non il decimale.
+**Per scegliere l'inquadratura** si chiede una TAGLIA, mai un moltiplicatore (lo stesso k dava 0,115 e
+0,455 su due scene): `npm run framing-choices` per i provini, `CPM_TARGET=0.30 npm run hero-framing` per
+sapere dove finiscono le 191 con quella regia **prima** di adottarla. ⚠️ E la prima prova dice di
+aspettare: a taglia 0,30 la mediana arriva a 0,300 e le scene illeggibili crollano da 190 a 1, **ma la
+quota fuori quadro sale da 7,8% a 19,3%** e le scene che non mostrano mai l'eroe da 9 a 20 (nessuna
+guarita). Stringere senza sistemare la MIRA raddoppia il difetto peggiore: le due decisioni si prendono
+insieme. ⚠️ Un'altezza apparente impossibile (gi14: 42,8) si legge «camera troppo vicina, soggetto oltre
+il piano camera», non come una misura.
+
 **Test dal vivo:** `tests/visual/live-match-test.mjs` (non-gate, GLB-ON) verifica la coerenza M1 overlay⟺esito su un campione di tiri falliti + screenshot full-page; `tests/visual/glb-gesture-smoke.mjs` per i gesti GLB. Le parti gate-cieche (movimento, camera, cronaca BG live, cerimonia) si collaudano così.
 
 > **Quick-gate (`npm run quick-gate`, ~1.5 min):** gate **leggero** per iterare veloce in sviluppo (`tests/visual/quick-gate.mjs`). Campiona ~26 Situations sui check di stato (`initial-state/orientation/visual/movements/golden`) + `determinism/final-state/timeline/data-coherence`; **salta** i sampler lenti (`motion/ball-motion/post-highlight/perf/ai-vision`). Riusa harness + gli stessi `checks/*.mjs` → zero duplicazione. ⚠️ **NON sostituisce** il gate completo: `validate-situations` (14/14) resta **obbligatorio prima di ogni push**. Usa il quick-gate per il loop di sviluppo, il gate completo come gate di rilascio.

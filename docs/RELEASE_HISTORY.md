@@ -1,5 +1,84 @@
 # Cronologia delle release — Korward Elite
 
+### 7.482.0 — La manopola diventa una taglia, e la misura trova un secondo difetto
+
+**I provini del 7.481 chiedevano di scegliere fra immagini in cui il soggetto non c'era.** La manopola
+spostava la camera DOPO che le due reti anti-fuoriquadro avevano gia' mirato con la camera vecchia:
+il loro conto non valeva piu', e l'eroe usciva dal quadro in 9 riquadri su 12 — proprio alle distanze
+che si volevano giudicare. Ora, stringendo, si guarda anche piu' verso di lui, che e' quello che fa un
+operatore vero.
+
+**E il moltiplicatore era la grandezza sbagliata.** Lo stesso k=0,55 misurava 0,115 su gi0 e 0,455 su
+gi7, perche' la camera non parte dalla stessa distanza in tutte le scene: un regista non sceglie un
+moltiplicatore, sceglie una TAGLIA. `__CPM_FRAMET480` chiede l'altezza apparente voluta e ricava la
+distanza invertendo la proiezione — `d = 1,75 / (2 · altezza · tan(fov/2))`. Calibrata: chiesto **0,18
+→ misurato 0,175-0,178**, chiesto **0,30 → 0,296-0,299**, chiesto **0,45 → 0,445-0,452**. Cosi' la riga
+che il PO sceglie vale identica su tutte e 191 le scene, e `CPM_TARGET=0,30 npm run hero-framing`
+ri-censisce le 191 con quella regia per dire dove finiscono davvero PRIMA di cambiarla.
+
+#### Il secondo difetto: non «piccolo», NON INQUADRATO
+
+Il criterio del 7.480 — «eroe fuori dal quadro in almeno un fotogramma», 42 scene — non separava un
+passaggio da una scena in cui il gesto non si vede mai. Un fotogramma su trenta e' un transito;
+ventotto su trenta e' un highlight che non mostra il proprio protagonista. Nuova dimensione del
+censimento: la **quota di fotogrammi della conclusione con l'eroe fuori dal quadro**, che e' un
+rapporto — quindi headless e telefono dicono lo stesso numero.
+
+Misurato sulla regia di oggi, 191 scene: **412 fotogrammi su 5.281 (7,8%)** e **nove scene sopra
+meta'**, due al 100%:
+
+| scena | quota fuori quadro | azione dichiarata |
+|---|---|---|
+| gi168 | 100% | 🛡️ Tackle duro — rischio rosso |
+| gi138 | 100% | 📣 Allineamento difensivo immediato |
+| gi133 | 96% | 🏃 Sprint disperato sulla linea |
+| gi130 | 96% | ✋ Anticipo sulla traiettoria |
+| gi33 | 92% | 🧱 Blocca con il corpo |
+| gi14 | 72% | ↗️ Cross basso teso |
+| gi183 | 69% | 🧠 Anticipa il pallone sulla punta |
+| gi146 | 69% | 🛡️ Blocca con tutto il fisico |
+| gi161 | 62% | 📐 Punizione a rientrare |
+
+Il giocatore legge «Grande intervento!» e non si vede mai fare l'intervento. Il provino di gi146 lo
+mostra senza bisogno di commento: tre avversari, la palla che rotola via verso la porta lontana, e
+meta' inquadratura di prato vuoto. **La famiglia e' quasi tutta difensiva.**
+
+⚠️ **Due cause, misurate e distinte — non una.** Contando gli ingaggi delle due reti (`__CPM_HY478`)
+mentre l'eroe e' fuori: su **gi33** (fuori 14/14) e **gi168** la rete sull'EROE non ingaggia MAI, perche'
+e' spenta quando il soggetto della regia passa alla palla — la camera segue il pallone e abbandona il
+protagonista. Su **gi138** invece ingaggia 13 volte e l'eroe resta fuori 9 fotogrammi su 26: li' la rete
+c'e' e non basta, perche' la correzione e' limitata in velocita' e non lo recupera dentro la finestra
+della conclusione. Controlli sani: gi0 e gi94 non lo perdono mai (0 fuori, 0 ingaggi).
+
+**Nessun rimedio in questa release.** Cambiare chi insegue la camera su un'intera famiglia di scene e'
+regia, e la regia la decide il PO: qui ci sono il numero, la lista delle scene e le due cause separate.
+
+⚠️ La quota varia fra run — i fotogrammi osservati vanno da 11 a 27 col fps headless, e la stessa scena
+puo' dare 100% e 41% in due passate. Stabile e' **quali** scene compaiono nella lista, non il decimale:
+il censimento nomina scene, non le classifica al centesimo.
+
+#### E il censimento con la regia nuova dice di aspettare
+
+E' esattamente il motivo per cui `CPM_TARGET` esiste: si prova la regia sulle 191 scene **prima** di
+adottarla. Ri-misurate tutte chiedendo la taglia 0,30:
+
+| | oggi | taglia 0,30 |
+|---|---|---|
+| altezza apparente mediana | 0,057 | **0,300** (quartili 0,294-0,314) |
+| scene sotto 0,15 (gesto non distinguibile) | 190/191 | **1/191** |
+| quota di fotogrammi con l'eroe fuori quadro | 7,8% | **19,3%** |
+| scene che non lo mostrano per oltre meta' della conclusione | 9 | **20** |
+
+La taglia arriva, ed e' calibrata: la mediana su 191 scene e' 0,300 esatta. **Ma la mira peggiora** —
+undici scene nuove entrano nella lista di quelle che non mostrano mai il protagonista, e **nessuna delle
+nove guarisce**. Stringere senza sistemare la mira raddoppia il difetto peggiore: il gesto diventa
+grande e piu' spesso non e' in scena. Le due decisioni vanno prese insieme, e adesso il numero lo dice
+prima di cambiare la regia, invece di farlo scoprire al collaudo.
+
+⚠️ Limite della manopola, registrato: su gi14 la taglia chiesta manda la camera addosso al soggetto e la
+proiezione riporta 42,8 — l'eroe attraversa il piano camera al fondo di 3,5 unita'. **Un'altezza
+impossibile si legge «camera troppo vicina», non come una misura.**
+
 ### 7.481.0 — La manopola per decidere l'inquadratura (test-only)
 
 Il 7.480 ha misurato il problema: l'eroe occupa il 5,7% dell'altezza schermo (mediana su 191 scene),
