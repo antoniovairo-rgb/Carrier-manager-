@@ -87,7 +87,7 @@ const STRICT = process.argv.includes('--strict');
       if (!shots || !shots.length) { saltati.push({ gi, msg: 'nessun fotogramma' }); continue; }
       const sit = situations[gi] || {};
       // [VIDEO CONTINUO] context.mode='video' → l'Engine sceglie il prompt MOVIMENTO (filmstrip ordinato)
-      highlights.push({ id: `gi${gi}`, context: { gi, text: sit.text, intent: sit.intent || null, ...(videoMode ? { mode: 'video' } : {}) }, images: shots });
+      highlights.push({ id: `gi${gi}`, context: { gi, text: sit.text, intent: sit.intent || null, esito: shots.esito || null, ...(videoMode ? { mode: 'video' } : {}) }, images: shots });
       logger.info('catturato', { gi, frames: shots.length });
     }
     if (saltati.length) console.log(`⚠️  ${saltati.length}/${indices.length} highlight non catturati: ${saltati.map(s => 'gi' + s.gi).join(', ')}`);

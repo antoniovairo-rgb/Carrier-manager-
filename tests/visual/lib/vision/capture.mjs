@@ -66,6 +66,18 @@ export async function captureHighlight(page, gi, outDir) {
   await sleep(250); await snap('preparation');
   // evento principale: risolvi l'azione (k=0) e cattura il PRIMO frame 3D valido dell'esito
   await page.evaluate(() => { if (typeof window.__CPM_RESOLVE === 'function') window.__CPM_RESOLVE(0); });
+  /* [7.480.0 dalla PRIMA review vera del PO] L'ESITO DICHIARATO VIAGGIA COL FOTOGRAMMA. Senza, il modello
+     giudica «l'intent progression non e' soddisfatto» su un'azione che il gioco ha dichiarato FALLITA —
+     cioe' condanna il calcio normale: un contrasto subito e' un esito, non un difetto. Misurato su gi141,
+     dove il modello ha detto FAIL e lo scoring interno diceva WARNING: i due non erano d'accordo, e aveva
+     ragione lo scoring. L'esito si legge SUBITO dopo la risoluzione perche' `__CPM_OUTCOME` e' uno stato
+     React e torna nullo a scena chiusa (lezione del guardiano outcome-not-goal). */
+  let esito = null;
+  for (let i = 0; i < 12 && !esito; i++) {
+    esito = await page.evaluate(() => { const o = window.__CPM_OUTCOME; return o ? { key: o.outKey || o.key || null, ok: !!o.ok, testo: (o.text || '').slice(0, 120) } : null; }).catch(() => null);
+    if (!esito) await sleep(70);
+  }
+  shots.esito = esito;
   await guardedSnap('main', { settle: 150, maxWait: 700 });
   // esito: leggero assestamento, ancora dentro la finestra 3D
   await guardedSnap('outcome', { settle: 200, maxWait: 400 });
