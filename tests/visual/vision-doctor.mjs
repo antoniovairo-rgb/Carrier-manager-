@@ -97,7 +97,15 @@ console.log('\n3. PROVIDER (lo stesso healthCheck su cui il gate decide lo skip)
 let health = null;
 try { health = await provider.healthCheck(); }
 catch (e) { health = { ok: false, detail: `healthCheck esploso: ${e.message || e}` }; }
-if (health.ok) ok(health.detail || 'health ok');
+if (health.ok) {
+  ok(health.detail || 'health ok');
+  /* ⚠️ VERDE MORBIDO. Sul cloud, se il modello configurato non compare fra i tag il provider passa lo
+     stesso («verificato in analyze»): e' una scelta ragionevole — alcuni deployment non elencano tutto —
+     ma chi legge deve sapere che quel verde NON ha visto il modello. Misurato sul campo alla prima
+     esecuzione vera: health verde su `gemma3:27b`, e l'anello dopo ha risposto HTTP 410 «retired». */
+  if (/non in \/api\/tags|verificato in analyze/i.test(health.detail || ''))
+    console.log(`     ⚠️  verde MORBIDO: il modello "${pcfg.model}" non compare fra quelli elencati dal server — questo anello non l'ha visto, lo prova solo il prossimo`);
+}
 else ko(health.detail || 'health ko', cfg.provider === 'ollama' && /non installato/.test(health.detail || '') ? `scarica il modello: \`ollama pull ${pcfg.model}\`` : null);
 
 /* ---------- anello 4: il modello VEDE? ---------- */
@@ -125,10 +133,19 @@ try {
   }
 } catch (e) {
   const kind = (e && e.kind) || '';
-  ko(`analyze fallita${kind ? ` (${kind})` : ''}: ${e.message || e}`,
-    kind === 'model_missing' ? `il modello "${pcfg.model}" non esiste sul server` :
+  const msg = String(e.message || e);
+  /* ⚠️ DIAGNOSI SBAGLIATA ALLA PRIMA ESECUZIONE VERA, e corretta qui. Il ramo di ripiego diceva «il
+     modello non sa leggere immagini» a QUALUNQUE errore senza categoria: sul campo e' arrivato un
+     HTTP 410 «gemma3:27b was retired», cioe' un modello ritirato dal cloud, e il consiglio mandava a
+     cercare un modello di vista invece che a cambiare una riga di configurazione. Un dottore che
+     generalizza l'ultimo sospetto a ogni sintomo e' il difetto che questa sonda doveva togliere. */
+  const ritirato = /\b410\b|retired|deprecat/i.test(msg);
+  ko(`analyze fallita${kind ? ` (${kind})` : ''}: ${msg}`,
+    ritirato ? `il modello "${pcfg.model}" e' stato RITIRATO dal server: scegline uno dall'elenco stampato nell'anello 3 e mettilo in .env come OLLAMA_MODEL — deve essere un modello con la VISTA (la famiglia gemma4 lo e' su tutte le taglie)` :
+    kind === 'model_missing' ? `il modello "${pcfg.model}" non esiste sul server: controlla il nome, oppure scaricalo con \`ollama pull ${pcfg.model}\`` :
     kind === 'timeout' ? 'il modello ha superato il timeout: su CPU un modello di vista puo\' volerci minuti — alza VISION_TIMEOUT o usa una taglia piu\' piccola' :
-    'il modello risponde ma non sa leggere immagini: serve un modello di VISTA (es. qwen2.5vl)');
+    /image|vision|multimodal|not support/i.test(msg) ? 'il modello risponde ma non accetta immagini: serve un modello di VISTA (es. qwen2.5vl, gemma4)' :
+    'il server ha risposto con un errore: leggi il messaggio qui sopra — e\' quello del server, non una deduzione di questa sonda');
 }
 console.log('\nCATENA INCOMPLETA: il livello percettivo NON e\' operativo.');
 process.exit(1);
