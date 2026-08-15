@@ -4777,7 +4777,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="7.475.0"; // [7.450.0 MESSA IN SICUREZZA · P0 #4 dell'audit forense — UN TOCCO DOPPIO APPLICAVA L'AZIONE DUE VOLTE]: nessuna guardia di rientranza sugli handler che cambiano lo stato; due tocchi ravvicinati passavano entrambi prima che React richiudesse il modal. MISURATO: doppio tap su «Conferma avanzamento» = DUE settimane in un colpo, economia applicata due volte (+60.000 invece di +30.000) e la partita della settimana auto-simulata senza poterla giocare; doppio tap su una scelta d'evento = effetti raddoppiati (fatica +8 invece di +4, popolarita' +10 invece di +5, fiducia -12 invece di -6). LA PROTEZIONE NON E' UN TIMEOUT: e' un lock legato al CICLO DI RENDER, che si arma quando l'azione parte e si rilascia da solo appena React ha completato un render — cioe' esattamente quando un secondo tocco non e' piu' un duplicato ma una nuova intenzione. Nessun blocco permanente possibile: il rilascio non dipende dalla riuscita dell'operazione (verificato: dopo il doppio tap la carriera prosegue col percorso reale). +contatore test-only delle applicazioni REALI: l'invariante «una intenzione = una applicazione» va misurato li', non sui valori — quale evento venga estratto e' casuale, il numero di applicazioni no. GUARDIANO double-tap-test, NEL GATE: prova del ROSSO (__CPM_NO_P0_4: Δ2 settimane, 2 applicazioni dell'evento) e i casi — click singolo invariato, doppio tap con una sola applicazione, gioco ancora usabile dopo, evento non raddoppiato.
+const GAME_VERSION="7.476.0"; // [7.450.0 MESSA IN SICUREZZA · P0 #4 dell'audit forense — UN TOCCO DOPPIO APPLICAVA L'AZIONE DUE VOLTE]: nessuna guardia di rientranza sugli handler che cambiano lo stato; due tocchi ravvicinati passavano entrambi prima che React richiudesse il modal. MISURATO: doppio tap su «Conferma avanzamento» = DUE settimane in un colpo, economia applicata due volte (+60.000 invece di +30.000) e la partita della settimana auto-simulata senza poterla giocare; doppio tap su una scelta d'evento = effetti raddoppiati (fatica +8 invece di +4, popolarita' +10 invece di +5, fiducia -12 invece di -6). LA PROTEZIONE NON E' UN TIMEOUT: e' un lock legato al CICLO DI RENDER, che si arma quando l'azione parte e si rilascia da solo appena React ha completato un render — cioe' esattamente quando un secondo tocco non e' piu' un duplicato ma una nuova intenzione. Nessun blocco permanente possibile: il rilascio non dipende dalla riuscita dell'operazione (verificato: dopo il doppio tap la carriera prosegue col percorso reale). +contatore test-only delle applicazioni REALI: l'invariante «una intenzione = una applicazione» va misurato li', non sui valori — quale evento venga estratto e' casuale, il numero di applicazioni no. GUARDIANO double-tap-test, NEL GATE: prova del ROSSO (__CPM_NO_P0_4: Δ2 settimane, 2 applicazioni dell'evento) e i casi — click singolo invariato, doppio tap con una sola applicazione, gioco ancora usabile dopo, evento non raddoppiato.
 // [nota 7.449.0] [7.449.0 MESSA IN SICUREZZA · P0 #3 dell'audit forense — IL RIFERIMENTO ALLA GARA APERTA SOPRAVVIVEVA ALL'USCITA]: `_playingMdRef` descrive la gara di CLUB aperta da startMatch, ma veniva azzerato SOLO da onMatchEnd: uscire dal pre-partita (onQuit) o essere respinti dai suoi return anticipati («non convocato», avversario non risolvibile) lo lasciava CARICO. E il consumo in onMatchEnd avveniva per QUALUNQUE fine partita, comprese quelle di Nazionale, che non passano da startMatch e non lo impostano mai. Catena: apro il pre-partita di campionato, torno indietro, gioco in Nazionale — e il commit registra come giocata una giornata di campionato mai disputata, che la bonifica chiude subito dopo. Stagione a 33 su 34 senza che nulla lo segnali. CICLO DI VITA RICOSTRUITO invece di un reset indiscriminato: il riferimento nasce all'apertura della gara, si INVALIDA su ogni percorso d'uscita dal pre-partita (onQuit e i due return anticipati) e si CONSUMA solo nei contesti di CLUB (career/cup/euro) — una gara di Nazionale non tocca piu' una giornata di campionato, ed e' la rete che copre anche le uscite non previste. +sonda test-only `__CPM_CAREER.mdRef()`: senza, il guardiano misurerebbe gli effetti e non la causa. GUARDIANO playing-mdref-test, NEL GATE: prova del ROSSO (__CPM_NO_P0_3: nel pre-partita il riferimento e' carico e resta carico dopo l'uscita) + i percorsi — uscita che invalida, calendario e presenze immutati dopo un'uscita, riapertura coerente con la gara vera, partita realmente giocata che si committa ancora.
 // [nota 7.448.0] [7.448.0 MESSA IN SICUREZZA · P0 #2 dell'audit forense — UN SALVATAGGIO PIU' VECCHIO POTEVA SOVRASCRIVERE IL PIU' RECENTE]: `storage.save` e' async e non aveva ne' coda ne' sequenza. Nel browser non si vede (localStorage e' sincrono) ma la build pubblicata su Play Store gira su `window.storage` = @capacitor/preferences, iniettato da tools/build-dist.mjs, dove la scrittura passa da un BRIDGE ASINCRONO: due salvataggi concorrenti potevano completare FUORI ORDINE, e `savedAt` veniva scritto ma mai riletto, quindi nulla se ne accorgeva. DIMOSTRATO a runtime con un bridge finto a latenza pilotata: stato A → parte l'autosave (bridge occupato) → stato B → l'app va in background → il flush salva B → il salvataggio di A completa DOPO e riscrive il disco con lo stato vecchio (memoria 2222, disco 1111). Su Android significa perdere una partita, una settimana, a volte una stagione — ed e' anche una spiegazione a monte della «partita gia' giocata», perche' un save che torna indietro riporta in calendario una gara gia' disputata. CURA MINIMA, nessuna infrastruttura nuova e formato del salvataggio IMMUTATO: una CODA per chiave (le scritture si susseguono nell'ordine in cui sono state chieste, mai sovrapposte) e uno SCARTO delle scritture gia' superate (se mentre A aspetta il turno e' arrivata B, A non viene scritta: il suo contenuto e' vecchio per definizione). GUARDIANO save-monotonic-test, NEL GATE: prova del ROSSO incorporata (__CPM_NO_P0_2 ripristina le scritture concorrenti → il disco torna a 1111) e sei scenari — vecchio-lento contro nuovo-veloce, tre scritture a latenza decrescente, salvataggio normale non bloccato, ramo browser invariato, ramo bridge nativo, riapertura dell'app che rilegge l'ultimo stato.
 // [nota 7.447.0] [7.447.0 MESSA IN SICUREZZA · P0 #1 dell'audit forense — IL RECUPERO DOPO UN RIAVVIO CONFONDEVA LE COMPETIZIONI]: e' la vera causa della «partita gia' giocata» che il PO segnala da nove collaudi. Il recovery del sidecar cercava la gara nel calendario per AVVERSARIO e SEDE, senza mai guardare la competizione; siccome l'avversario di Coppa viene sorteggiato DALLA STESSA LEGA e il turno R16 e' cablato «in casa», per costruzione esiste SEMPRE una voce di campionato in casa contro quel club. RIPRODOTTO: recuperando una gara di Coppa, la classifica di campionato passava da 17 a 18 partite e da 40 a 43 punti per una gara mai giocata, e la giornata di lega spariva marcata come giocata. Aggravante: le due ref che portano l'identita' della gara vivono nella SESSIONE e dopo il riavvio sono vuote — `matchTypeRef` torna al default "league" (l'unico writer "cup" e' startMatch, che dopo il reboot non passa mai) e `_playingMdRef` e' null, quindi anche il ramo di commit era quello di lega. DUE CURE MINIME: (1) i candidati si filtrano per COMPETIZIONE, derivata da `result.context` che era gia' nel sidecar dal 7.24.3 — nessun campo nuovo, e un sidecar senza contesto (scritto da una versione precedente) non viene filtrato ne' scartato, mantenendo il comportamento storico; (2) prima del dispatch si ricostruiscono `matchTypeRef` e `_playingMdRef` dalla voce ritrovata, cosi' il commit marca la voce giusta per NUMERO di giornata e registra quella giornata. GUARDIANO recovery-competition-test, NEL GATE: prova del ROSSO incorporata (interruttore __CPM_NO_P0_1 che ripristina la vecchia logica: la voce di lega torna a essere marcata, classifica 18) + casi A-G (coppa committata in coppa, campionato intatto a 17/40, turno di coppa avanzato, nessuna regressione sul recupero di lega). Gli assert leggono lo stato PERSISTITO, non la memoria.
@@ -4826,6 +4826,47 @@ const GAME_VERSION="7.475.0"; // [7.450.0 MESSA IN SICUREZZA · P0 #4 dell'audit
 //  [7.404.0 collaudo PO — lotto con «traballa» ×6 su tre release (gi122/gi157/gi74/gi134/gi28, anche in hl_choose) + gi115]: LA CAMERA ENTRA NEL TESTIMONE, E IL TACCO NON E' UNA GIOCATA AEREA. (1) Il tremolio NON si riproduce in headless — sei strumenti (posa per fotogramma GLB-off e GLB-on con presentazione, rettangolo del canvas, animazioni CSS, flusso vero da 75 e da 170 secondi): camera immobile al pixel, sempre. Il fenomeno vive a frame-rate pieno sul dispositivo del PO. Invece di un settimo strumento cieco, la misura va DOV'E' il fenomeno: l'anello del testimone (7.340) passa da 8 a 11 float e registra la POSA DELLA CAMERA a ogni fotogramma; la bozza automatica ora conta le inversioni di direzione della camera (>3/s = trema) e il passo massimo fra due fotogrammi a scena in corso (>2,5u = salta), fuori dalla grazia degli stacchi voluti. La prossima nota «traballa» del PO arrivera' col numero attaccato — e' lo stesso schema del 7.360, quando fu la bozza a smascherare il falso «salto di 8,7». (2) collaudo gi115 «Attacca il pallone non e' una giocata aerea!»: nella mappa delle etichette-intento la parola nuda `tacco` — messa per coprire «stacco», gia' coperto da \bstacco\b — catturava anche il TACCO: «Tacco in porta» mostrato come incornata. Il tacco tiene la sua etichetta. IN CODA dal lotto: gi38 «sembra che gliela intercettano e poi magicamente va in rete» (uno-due assist — coerenza esito⟺volo); gi174 «il portiere non e' posizionato tra i pali» (+ destinatario a 6,1u su assist: famiglia del battitore gi50/76); gi9 «il pallone e' tornato INDIETRO di 17,4 unita'» su controllo-e-tiro (famiglia assestamento, ma su esito shot: da misurare col punto di perdita); gi86 001 (residuo battitore aereo, gia' dichiarato); gi157 salto 21,4u a x -42 su gol subito (lo stacco difensivo — probabile taglio legittimo di ri-staging, ora distinguibile dalla bozza-camera).
 //  [7.403.0 — TUTTA LA CODA IN UNA RELEASE, come da direttiva PO] TRE CHIUSURE MISURATE + DUE NON RIPRODOTTI + UNA REVOCA. (1) collaudo gi52 «fa prima un tiro poi tenta il colpo di testa» e gi184 «sembra un ballerino»: IL GESTO DELLA SCENA VECCHIA NON SI MONTA — `actType` e' una variabile del renderer che resta quella della scena precedente finche' `fireConclusion` non scatta (a fine build-up), e per tutta la costruzione la mappa gesti montava la clip vecchia: misurato col collettore GLB-ON, su gi52 (azione di testa) prima clip `tackle` — residuo della difensiva prima — poi `header`; su gi184 (tackle) prima `header` poi `kick`. Ora il gesto dell'Eroe si monta solo se l'azione appartiene a QUESTA scena (chiave scritta da fireConclusion). Dopo: un montaggio per scena, sempre quello giusto, su due giri; esultanza intatta (4/4, clip 1,0x, un montaggio). (2) collaudo gi71 «la finta non e' sincronizzata con il pallone» e gi123 «passaggio all'indietro senza senso»: LA PALLA PERSA RESTA DOV'E' STATA PERSA — l'assestamento-perdita (7.115) tirava la palla verso il tetto di centrocampo da QUALUNQUE distanza: dribbling perso a x 36, palla che rotola all'indietro di 25,6 unita' fino a x 10 mentre l'eroe corre avanti. Il primo tentativo di raggio (9u dalla palla del fotogramma corrente) era il CRICCHETTO ROVESCIATO del 7.397 — ritracciamento identico, misurato — l'ancora giusta e' il PUNTO DI PERDITA, catturato una volta: 25,6u → 9,3u (il passo di chi conquista, non una rotolata a tutto campo); gi123 a 4u, dentro il budget. (3) verifica percettiva GLB-ON (CH38) su gi6 e gi9: inquadratura dentro lo stadio, azione leggibile. NON RIPRODOTTI e dichiarati: gi20 «il pallone rimane dietro all'eroe» (misurati 0 fotogrammi con palla dietro su esito riuscito, palla sempre avanti 22→33) e gi9 «il tiro non e' chiaro» (non giudicabile da fermo-immagine: e' una questione di moto — resta in coda per una sessione di lettura video). REVOCATO (seconda volta) il taglio mirato del battitore verso il punto staggiato: pattern sospetti su scene prima pulite e varianza dello strumento di popolazione troppo alta per dimostrarlo — il residuo gi50/gi76 (battitore a 3,9-5,9u dal pallone) va chiuso con un A/B ripetuto sulle sole scene bersaglio. Guardiani: scene-open-owner verde (mediana 0,0u) · def-camera-bounds verde (minima -46,4) · celebration-visible verde.
 //  [7.402.0 collaudo PO codice 001 «la scena non parte dai piedi del compagno» — chiarito dal PO che NON e' solo aereo, e che la strada giusta e' «portare un compagno sul punto-palla»]: AL PUNTO-PALLA CI VA UN UOMO. Sulle scene offensive con palla che non nasce al piede dell'eroe (fascia, bandierina, rimessa) il pallone veniva messo su un punto geometrico dove non c'era nessuno — misurato: compagno piu' vicino a 10-16 unita' (gi6/gi50/gi76), e quattro note PO in un solo lotto (gi64/gi53/gi7/gi108). Il tentativo del 7.391 spostava la PALLA verso un compagno (cassetta postale) e la misura non si mosse; qui si fa il contrario, che e' anche il calcio vero: lo STAGING porta il compagno di casa piu' vicino sul punto-palla — il corner vuole il battitore alla bandierina, il cross il crossatore sulla fascia — e il piazzamento della palla RIUSA il punto esatto dello staging (una sorgente sola: il doppio calcolo di hlBallSpot dava punti diversi). MISURA prima→dopo su 96 aperture: palla di nessuno 4 → 3, gi6 CHIUSA (da 10,6u a un uomo sul punto), gi50 da 16,3 a 3,9, e il mistero del DRIBBLING gi96/gi98 e' caduto nella stessa retata (il piu' vicino ora e' un compagno; il criterio flip-floppa al confine 3,4-3,5 fra i run — banda dichiarata). PROVATO E REVOCATO nello stesso giro: il taglio per-uomo nella finestra mascherata (per portare la MESH del battitore esattamente sul punto) strappava via anche il compagno a cui la consegna stava nascendo tra i piedi — due scene pulite diventate orfane, misurato e tolto. RESIDUI DICHIARATI: gi50/gi76 col battitore a 3,9-5,9u dal pallone (un driver tiene la mesh lontana dal punto staggiato — da capire, non da forzare) e gi14 freekick a 3,7 (rincorsa del battitore, probabilmente sana). Guardiano scene-open-owner verde (16 scene, mediana eroe↔palla 0,0u).
+//  [7.476.0 collaudo PO — LA PREMIAZIONE, MISURATA INVECE CHE GUARDATA]: «l'eroe saltella come se si
+//  stesse riscaldando, il mister vola, entrano nel palco, la coppa e' troppo grande». Quattro note che
+//  sembrano impressioni e sono tutte GRANDEZZE. Sonda nuova `ceremony-shot.mjs` (GLB-ON, come impone la
+//  direttiva del 2026-07-29) che apre la cerimonia con l'aggancio gia' esistente e ne porta il tempo su
+//  ciascun beat con `__CPM_CERT_SET`, piu' un testimone `__CPM_CER476` che registra clip dell'eroe,
+//  velocita' del mister, distanza dei due dal cilindro del podio e altezza del trofeo RAPPORTATA a
+//  quella dell'uomo che lo alza — perche' «troppo grande» e' un rapporto, non dei centimetri.
+//  (1) «L'EROE SALTELLA COME SE SI STESSE RISCALDANDO» — MISURATO: sui beat burst, hug e present la clip
+//  dell'attore e' `null` con peso 0. Senza una clip richiesta l'attore ricade sulla locomozione di
+//  partita (il misto fermo/corsa), e quello che si vede e' un uomo che sgambetta sul posto. La causa e'
+//  un'INTENZIONE CHE NON E' SOPRAVVISSUTA AL CH38: il 7.426 aveva deciso che «prima l'eroe esulta
+//  libero», ma «esultare libero» era una posa PROCEDURALE, e sotto il CH38 le pose procedurali non si
+//  vedono — parlano solo le clip. Ora la posa d'alzata (clip `lift`, che l'attore ha gia': nessun asset
+//  nuovo, che su mobile e' un vincolo) copre burst/hug/present/fest; NON `lap` e `curva`, dove l'eroe
+//  corre e la locomozione e' la cosa giusta. Il trofeo non anticipa di un fotogramma: la consegna la
+//  governa `_trofeoInMano`, che e' un'altra variabile. Ri-misurato: peso della clip 0,75-0,97 dove
+//  prima era 0.
+//  (2) «IL MISTER VOLA» — e la causa NON era la velocita'. Il 7.439 l'aveva gia' portato a passo d'uomo
+//  e la misura di oggi lo conferma: 3,2 u/s esatti, in ogni beat. Il punto e' che il mister e'
+//  `actor-presenter.glb` POSATO A OSSA — nessun mixer, nessuna clip di locomozione: un uomo che si
+//  sposta alla velocita' giusta con le gambe ferme non cammina, plana. Ora, mentre si sposta, le cosce
+//  oscillano in controfase con la STESSA macchina world-space gia' usata per le sue braccia dal 7.434;
+//  a destinazione la falcata muore da sola perche' l'ampiezza segue il flag di movimento. Zero asset,
+//  zero mixer.
+//  (3) «ENTRANO NEL PALCO» — MISURATO: l'eroe passa a 1,04 unita' dal centro del podio col piede a quota
+//  0,17, e il corpo del podio ha raggio 1,7: gli cammina dentro. Il BERSAGLIO era gia' fuori (lo aveva
+//  spostato il 7.429 dopo «l'eroe sprofonda nel palco»), quindi correggere il bersaglio non serviva a
+//  niente — era la STRADA ad attraversare il solido, e nessuno guardava la strada. Ora, finche' il podio
+//  e' in scena e non e' il beat in cui ci si sale, chi ci finisce dentro viene spinto sul bordo lungo il
+//  proprio raggio: una deviazione, non un teletrasporto — la traiettoria gira attorno al palco come
+//  farebbe un uomo. Vale per l'eroe e per il mister. Ri-misurato: 0 campioni su 8 dentro il solido,
+//  erano 1 su 8.
+//  (4) «LA COPPA E' TROPPO GRANDE» — LA MISURA DICE DI NO, e lo scrivo invece di ritoccare un numero per
+//  compiacere la nota. Il trofeo e' alto 0,30 volte l'eroe nella cerimonia europea e 0,36 in quella
+//  internazionale; una coppa vera sta fra 0,35 e 0,45 volte un uomo. Semmai e' al limite BASSO. Se la
+//  sensazione resta sul dispositivo e' un'altra grandezza — probabilmente l'inquadratura ravvicinata,
+//  che e' la stessa classe della «scritta che strasborda» chiusa nel 7.474 — e va fotografata li'.
+//  ⚠️ LEZIONE PAGATA ANCHE QUI, e sempre la stessa: il testimone leggeva la clip da `hero`, che e' la
+//  figura PROCEDURALE (nascosta sotto CH38 ma ancora guida di posizione e logica), e trovava «nessuna
+//  clip» per tutta la cerimonia. La clip la suona l'ATTORE, ed e' esposta in `__CPM_GST`. E' la trappola
+//  delle DUE SORGENTI gia' pagata nel 7.322 e nel 7.370: si legge dove la cosa accade.
 //  [7.475.0 — UN INVARIANTE NUOVO E DUE MISURE CHE DICONO DI NO]:
 //  (1) #187 «IL FILTRANTE IN AVANTI E NON ALL'INDIETRO». La rete di riserva che sceglie il bersaglio del
 //  passaggio (nata nel 7.464 per non mirare al vuoto, allargata ai passaggi FALLITI nel 7.470) prendeva
@@ -15523,10 +15564,11 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                   {let xm=Infinity,xM=-Infinity,ym=Infinity,zm=Infinity,zM=-Infinity;
                    av.traverse(b=>{if(!b.isBone)return;b.getWorldPosition(_bv);if(_bv.x<xm)xm=_bv.x;if(_bv.x>xM)xM=_bv.x;if(_bv.y<ym)ym=_bv.y;if(_bv.z<zm)zm=_bv.z;if(_bv.z>zM)zM=_bv.z;});
                    if(isFinite(xm)){av.position.x+=-(xm+xM)/2;av.position.z+=-(zm+zM)/2;av.position.y+=-ym;av.updateMatrixWorld(true);}}
-                  let _aLb=null,_aRb=null,_fLb=null,_fRb=null;
+                  let _aLb=null,_aRb=null,_fLb=null,_fRb=null,_tLb=null,_tRb=null;/* [7.476.0] +cosce: senza gambe il mister non cammina, trasla */
                   av.traverse(b=>{if(!b.isBone)return;const bn=(b.name||"").replace(/[:_. ]/g,"").toLowerCase();/* matcher 7.142: mixamo E Biped (actor-presenter e' Rocketbox: Bip01_R_UpperArm) */
                     if(/rightforearm$|rforearm$/.test(bn))_fRb=b;else if(/leftforearm$|lforearm$/.test(bn))_fLb=b;
-                    else if(/rightarm$|rupperarm$/.test(bn))_aRb=b;else if(/leftarm$|lupperarm$/.test(bn))_aLb=b;});
+                    else if(/rightarm$|rupperarm$/.test(bn))_aRb=b;else if(/leftarm$|lupperarm$/.test(bn))_aLb=b;
+                    else if(/rightupleg$|rightthigh$|rthigh$/.test(bn))_tRb=b;else if(/leftupleg$|leftthigh$|lthigh$/.test(bn))_tLb=b;});
                   /* braccia giu' dal T-pose (world-space, una volta): stessa rotazione della sala stampa */
                   const _axF=new THREE.Vector3(0,0,1);
                   const _rotW=(bone,axis,ang)=>{if(!bone||!bone.parent)return;av.updateMatrixWorld(true);
@@ -15536,6 +15578,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                   _rotW(_aLb,_axF,-1.25);_rotW(_aRb,_axF,1.25);
                   _cg._lp434.visible=false;_cg.add(av);_cg._glb434=av;
                   if(_aLb&&_aRb){_cg._aL=_aLb;_cg._aR=_aRb;_cg._fL434=_fLb;_cg._fR434=_fRb;_cg._glbArms434=true;}
+                  if(_tLb&&_tRb){_cg._tL476=_tLb;_cg._tR476=_tRb;}
                 }catch(_e434){}}).catch(()=>{});}
               }catch(_e){}}
             if(sr.current._cerCoachGrp){sr.current._cerCoachGrp.visible=true;sr.current._cerCoachGrp.position.set(_cerHx0-_cSgn*9,0,_cerHz0-4.5);}/* [collaudo PO nazionale «il mister vola»] spawn gia' sul lato di scena che i bersagli di follow usano (z-4,5, fuori dal corridoio camera): prima partiva a z+6 e attraversava l'inquadratura in planata */
@@ -15586,6 +15629,21 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
           else if(_bk==="lift"){_htx=0;_htz=0;_onPodium=true;podiumGrp.visible=true;}
           else{_htx=(_ck422==="promo"?CURVA_X*0.7:0);_htz=0;}/* fest: la promozione resta coi tifosi */
           animOne(hero,_htx,_htz,aDt,ak,_htx,_htz);// muove l'eroe (gambe animate quando cammina)
+          /* [7.476.0 collaudo PO «entrano nel palco»] IL PODIO E' UN SOLIDO, NON UN DISEGNO SUL PRATO.
+             Il BERSAGLIO della consegna era gia' fuori (il 7.429 l'aveva spostato accanto al podio dopo
+             «l'eroe sprofonda nel palco»), ma nessuno guardava il TRAGITTO: misurato col testimone di
+             cerimonia, l'eroe passa a 1,04 unita' dal centro con il piede a quota 0,17 — dentro il corpo
+             del podio, che ha raggio 1,7. Correggere il bersaglio non serviva a niente: quello era gia'
+             giusto, e' la strada che attraversava il solido. Ora, finche' il podio e' in scena e non e' il
+             beat in cui ci si sale, chi ci finisce dentro viene spinto sul BORDO lungo il proprio raggio
+             — una deviazione, non un teletrasporto: la traiettoria gira attorno al palco come farebbe un
+             uomo. Vale per l'eroe e per il mister, che ha lo stesso problema per lo stesso motivo. */
+          {const _PR476=2.15;/* raggio del corpo (1,7) + mezzo passo d'ingombro */
+           const _fuori476=(o)=>{if(!o)return;const _d=Math.hypot(o.position.x-podiumGrp.position.x,o.position.z-podiumGrp.position.z);
+             if(_d>0.001&&_d<_PR476){const _k=_PR476/_d;
+               o.position.x=podiumGrp.position.x+(o.position.x-podiumGrp.position.x)*_k;
+               o.position.z=podiumGrp.position.z+(o.position.z-podiumGrp.position.z)*_k;}};
+           if(podiumGrp.visible&&!_onPodium&&!(typeof window!=='undefined'&&window.__CPM_NO476))_fuori476(hero);}
           /* il MISTER: nel beat coach cammina verso l'eroe e lo abbraccia; altrove applaude a bordo scena */
           if(sr.current._cerCoachGrp){const _co=sr.current._cerCoachGrp;
             /* [7.429.0] FUORI DAL CORRIDOIO DI RIPRESA: il bersaglio di follow (eroe-6, z+5) stava
@@ -15601,8 +15659,14 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                mentre e' in moto — a destinazione sta fermo e la falcata muore. */
             {const _cdx=_cto.x-_co.position.x,_cdz=_cto.z-_co.position.z,_cdl=Math.hypot(_cdx,_cdz);
              if(_cdl>0.05){const _cst=Math.min(_cdl,(_cdl<1?1.4:3.2)*aDt);_co.position.x+=_cdx/_cdl*_cst;_co.position.z+=_cdz/_cdl*_cst;
-               _co._walk439=(_co._walk439||0)+aDt;_co.position.y=Math.abs(Math.sin(_co._walk439*7))*0.05;}
-             else {_co._walk439=0;_co.position.y=0;}}
+               _co._walk439=(_co._walk439||0)+aDt;_co.position.y=Math.abs(Math.sin(_co._walk439*7))*0.05;_co._mv476=1;}
+             else {_co._walk439=0;_co.position.y=0;_co._mv476=0;}
+             /* [7.476.0] anche il mister sta fuori dal solido del podio (stessa regola dell'eroe) */
+             if(podiumGrp.visible&&!(typeof window!=='undefined'&&window.__CPM_NO476)){
+               const _dp476=Math.hypot(_co.position.x-podiumGrp.position.x,_co.position.z-podiumGrp.position.z);
+               if(_dp476>0.001&&_dp476<2.15){const _k476=2.15/_dp476;
+                 _co.position.x=podiumGrp.position.x+(_co.position.x-podiumGrp.position.x)*_k476;
+                 _co.position.z=podiumGrp.position.z+(_co.position.z-podiumGrp.position.z)*_k476;}}}
             _co.rotation.y=Math.atan2(hero.position.x-_co.position.x,hero.position.z-_co.position.z);
             if(_co._glbArms434){/* [7.434.0] ossa GLB in WORLD-SPACE (lezione 7.340: gli euler per-rig su Biped cadono male): base in quaternione catturata dopo la posa, rotazione attorno all'asse LATERALE del personaggio */
               const _ry434=_co.rotation.y,_lat434=new THREE.Vector3(Math.cos(_ry434),0,-Math.sin(_ry434));
@@ -15612,12 +15676,44 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                 const _pw=new THREE.Quaternion();b.parent.getWorldQuaternion(_pw);
                 const _rq=new THREE.Quaternion().setFromAxisAngle(_lat434,ang);
                 b.quaternion.copy(_pw.clone().invert().multiply(_rq).multiply(_pw).multiply(b._q434.clone()));};
+              /* [7.476.0 collaudo PO «il mister vola»] LA CAUSA NON ERA LA VELOCITA', ERANO LE GAMBE.
+                 Il 7.439 aveva gia' portato lo spostamento a passo d'uomo (3,2 u/s) — misurato oggi, e'
+                 esattamente quello — ma il mister e' `actor-presenter.glb` POSATO A OSSA: nessun mixer,
+                 nessuna clip di locomozione. Un uomo che si sposta a velocita' giusta con le gambe ferme
+                 non cammina: plana. Ora, mentre si sposta, le cosce oscillano in controfase con la stessa
+                 macchina world-space gia' usata per le braccia — nessun asset nuovo, nessun mixer, e a
+                 destinazione la falcata muore da sola perche' l'ampiezza segue `_mv476`. */
+              {const _sw476=(_co._mv476?Math.sin((_co._walk439||0)*7)*0.55:0);
+               if(_co._tL476)_gW(_co._tL476,_sw476);if(_co._tR476)_gW(_co._tR476,-_sw476);}
               if(_bk==="coach"){_gW(_co._aL,-1.5);_gW(_co._aR,-1.5);_gW(_co._fL434,0);_gW(_co._fR434,0);}
               else if(_bk==="lift"||_bk==="fest"){const _cl=Math.sin(_ct*7)>0?-0.5:-0.9;_gW(_co._aL,_cl);_gW(_co._aR,_cl);_gW(_co._fL434,-0.3);_gW(_co._fR434,-0.3);}
               else{_gW(_co._aL,-0.1);_gW(_co._aR,-0.1);_gW(_co._fL434,0);_gW(_co._fR434,0);}}
             else if(_bk==="coach"){_co._aL.rotation.x=-1.4;_co._aR.rotation.x=-1.4;_co._aL.rotation.z=0.35;_co._aR.rotation.z=-0.35;}/* abbraccio */
             else if(_bk==="lift"||_bk==="fest"){const _cl=Math.sin(_ct*7)>0?0.5:0.9;_co._aL.rotation.x=-_cl;_co._aR.rotation.x=-_cl;_co._aL.rotation.z=0;_co._aR.rotation.z=0;}/* applauso */
             else{_co._aL.rotation.x=-0.3;_co._aR.rotation.x=-0.3;_co._aL.rotation.z=0;_co._aR.rotation.z=0;}}
+          /* [7.476.0] TESTIMONE DELLA CERIMONIA (solo sotto test). Le quattro note del PO sulla premiazione
+             — «l'eroe saltella come se si stesse riscaldando», «il mister vola», «entrano nel palco», «la
+             coppa e' troppo grande» — sono tutte GRANDEZZE, non impressioni: la clip che l'eroe sta
+             suonando, la velocita' del mister per secondo, la distanza dei due dal cilindro del podio, e
+             l'altezza del trofeo RAPPORTATA a quella dell'eroe (che e' cio' che rende una coppa «troppo
+             grande»: non i suoi centimetri, il suo rapporto con l'uomo che la alza). */
+          if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){try{
+            const _cw=(window.__CPM_CER476=window.__CPM_CER476||[]);
+            if(_cw.length<400){
+              const _co2=sr.current._cerCoachGrp;
+              const _pod=podiumGrp&&podiumGrp.visible?podiumGrp.position:null;
+              const _tb=new THREE.Box3().setFromObject(trophyGrp),_hb=new THREE.Box3().setFromObject(hero);
+              const _th=(_tb.max.y-_tb.min.y),_hh=(_hb.max.y-_hb.min.y);
+              const _cv2=_co2?Math.hypot(_co2.position.x-(_co2._px476!=null?_co2._px476:_co2.position.x),_co2.position.z-(_co2._pz476!=null?_co2._pz476:_co2.position.z))/Math.max(aDt,1e-3):0;
+              if(_co2){_co2._px476=_co2.position.x;_co2._pz476=_co2.position.z;}
+              _cw.push({t:+_ct.toFixed(2),beat:_bk,
+                hero:{x:+hero.position.x.toFixed(2),z:+hero.position.z.toFixed(2),y:+hero.position.y.toFixed(2),clip:(hero._gName||null),h:+_hh.toFixed(2)},
+                coach:_co2?{x:+_co2.position.x.toFixed(2),z:+_co2.position.z.toFixed(2),v:+_cv2.toFixed(2),vis:!!_co2.visible}:null,
+                trofeo:{vis:!!trophyGrp.visible,h:+_th.toFixed(2),rap:_hh>0.2?+(_th/_hh).toFixed(2):null},
+                podio:_pod?{x:+_pod.x.toFixed(2),z:+_pod.z.toFixed(2),
+                  dHero:+Math.hypot(hero.position.x-_pod.x,hero.position.z-_pod.z).toFixed(2),
+                  dCoach:_co2?+Math.hypot(_co2.position.x-_pod.x,_co2.position.z-_pod.z).toFixed(2):null}:null});
+            }}catch(_e476){}}
           /* la REGIA per beat: primo piano sull'emozione, media sui personaggi, largo su squadra e curva */
           {const _hx3=hero.position.x,_hz3=hero.position.z,_cv=_SC.camv;
            let _shot;
@@ -15650,7 +15746,20 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
           const _hasPres=_SC.beats.some(b=>b.k==="present");
           const _presIdx=_SC.beats.findIndex(b=>b.k==="present");
           const _trofeoInMano=trophyGrp.visible&&(!_hasPres||_bi425>_presIdx);
-          sr.current._cerLift=(_trofeoInMano||(_bk==="present"&&_bp>0.5))?(_armsUp?1:2):0;
+          /* [7.476.0 collaudo PO «l'eroe saltella come se si stesse riscaldando»] «PRIMA L'EROE ESULTA
+             LIBERO» NON E' SOPRAVVISSUTO AL CH38. L'intenzione del 7.426 era che nei primi beat il
+             protagonista festeggiasse senza la posa d'alzata; ma «esultare libero» era una posa
+             PROCEDURALE, e sotto il CH38 le pose procedurali NON SI VEDONO — parlano solo le clip
+             (direttiva PO 2026-07-29). Senza clip richiesta l'attore ricade sulla locomozione di
+             partita, cioe' il misto fermo/corsa: MISURATO col testimone di cerimonia, sui beat burst,
+             hug e present la clip dell'attore e' `null` con peso 0, e quello che si vede e' un uomo che
+             sgambetta sul posto — «come se si stesse riscaldando», appunto.
+             Ora la posa d'alzata (braccia al cielo, la clip `lift` che l'attore ha gia': nessun asset
+             nuovo, che su mobile e' un vincolo) copre TUTTA la cerimonia. Il TROFEO non anticipa di un
+             fotogramma: la consegna la governa `_trofeoInMano`, che e' un'altra variabile e non si
+             tocca. */
+          const _no476c=(typeof window!=='undefined'&&window.__CPM_NO476C);
+          sr.current._cerLift=(_trofeoInMano||(_bk==="present"&&_bp>0.5)||(!_no476c&&(_bk==="burst"||_bk==="hug"||_bk==="present"||_bk==="fest"))/* NON su `lap` e `curva`: li' l'eroe CORRE (giro di campo, sotto la curva) e la locomozione e' la cosa giusta — misurato, forzando la posa la clip non attecchiva comunque perche' stava contendendo con la corsa */)?(_armsUp?1:2):0;
           const _liftU=Math.min(_ct/1.5,1);
           let _thSet=false;
           try{const _hAv=(glbAvatars&&glbAvatars[0]&&glbAvatars[0].proc===hero)?glbAvatars[0]:null;
