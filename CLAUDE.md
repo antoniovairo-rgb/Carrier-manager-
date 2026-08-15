@@ -381,6 +381,16 @@ sull'intera finestra dà 727-833 ms dove la costante è 300 e fa dichiarare rott
 fitto e si sommano solo i tratti in `playing`. Da lì il numero che spiega la cronaca rada: su 30 s di
 partita vera **19,2 s stanno dentro gli highlight e 10,8 in gioco fluido**, e la cronaca è sospesa negli HL.
 
+**La cronaca GUIDA il campo, non lo commenta (7.485.0).** Ogni riga di `BG_MATCH` dichiara dove va il
+pallone (`bpos`), come si dispone la squadra (`pd`) e lancia l'arco 3D — tutte e 188 le voci hanno
+entrambi i campi. Quindi «cronaca non sincronizzata» non è mai un problema di CONTENUTO ma di TEMPO:
+misurato (`__CPM_BGSYNC`), il difetto era il **raggruppamento** — due righe su tick consecutivi, con la
+seconda che smentisce un movimento percorso al 25%. Pavimento di **3 tick** fra due righe (≥58% di ogni
+movimento mostrato) + densità alzata a 0,55-0,80 per tick, perché col solo pavimento la cronaca crollava
+da 15 righe a 4 su 40 s. Guardiano `npm run bg-sync` (prova del rosso `__CPM_NO485`). ⚠️ Due eccezioni da
+NON trattare come difetti: il **gol** è esente dal pavimento, e una coppia a cavallo di un **highlight**
+ha frazione bassa perché lì la cronaca è sospesa e il pallone lo muove l'azione.
+
 **Test dal vivo:** `tests/visual/live-match-test.mjs` (non-gate, GLB-ON) verifica la coerenza M1 overlay⟺esito su un campione di tiri falliti + screenshot full-page; `tests/visual/glb-gesture-smoke.mjs` per i gesti GLB. Le parti gate-cieche (movimento, camera, cronaca BG live, cerimonia) si collaudano così.
 
 > **Quick-gate (`npm run quick-gate`, ~1.5 min):** gate **leggero** per iterare veloce in sviluppo (`tests/visual/quick-gate.mjs`). Campiona ~26 Situations sui check di stato (`initial-state/orientation/visual/movements/golden`) + `determinism/final-state/timeline/data-coherence`; **salta** i sampler lenti (`motion/ball-motion/post-highlight/perf/ai-vision`). Riusa harness + gli stessi `checks/*.mjs` → zero duplicazione. ⚠️ **NON sostituisce** il gate completo: `validate-situations` (14/14) resta **obbligatorio prima di ogni push**. Usa il quick-gate per il loop di sviluppo, il gate completo come gate di rilascio.

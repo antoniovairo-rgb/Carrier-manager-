@@ -1,5 +1,40 @@
 # Cronologia delle release — Korward Elite
 
+### 7.485.0 — La cronaca non smentisce piu' il movimento che ha appena annunciato
+
+Direttiva PO: «la cronaca deve rispecchiare ed essere sincronizzata con i movimenti sul campo».
+
+**Prima il rapporto vero, che non era quello che immaginavo.** La cronaca non *commenta* il campo: lo
+**guida**. Ogni riga di `BG_MATCH` dichiara dove va il pallone (`bpos`), come si dispone la squadra
+(`pd`) e lancia l'arco 3D. Testo e movimento nascono dalla stessa sorgente — e tutte e **188** le voci
+hanno entrambi i campi, contate, non supposte. Quindi la desincronia non era di contenuto: era di
+**tempo**.
+
+**Misurato** col testimone nuovo `__CPM_BGSYNC` (istante d'uscita della riga, posizione dichiarata,
+posizione vera del pallone in quel momento): la frazione del tragitto annunciato percorsa prima che la
+riga successiva sposti il bersaglio ha **mediana 64%**, ma **5 coppie su 12 stanno sotto un terzo** — e
+quelle stanno **tutte a 418-420 ms l'una dall'altra, cioe' un tick solo**, col pallone fermo a un singolo
+passo di lerp (0,25 = 25%) dal punto di partenza. Il difetto era il **raggruppamento**, non la densita'
+media: due righe su tick consecutivi, la seconda che smentisce un movimento appena cominciato.
+
+**Rimedio: un pavimento di 3 tick fra due righe.** Ogni movimento annunciato viene percorso almeno per
+1 − 0,75³ = **58%** prima che qualcuno lo contraddica.
+
+⚠️ **E la prima versione del rimedio era una regressione, misurata e corretta.** Col solo pavimento la
+cronaca crollava da 15 righe a 4 su 40 secondi: piu' sincronizzata e **muta**, cioe' l'opposto di una
+telecronaca. La probabilita' per tick e' quindi salita da 0,18-0,30 a **0,55-0,80**: ora si parla spesso
+e a governare il ritmo e' il pavimento, non il caso. Misurato dopo: **24 righe in 40 s, mediana 58%, zero
+coppie sotto un terzo** (erano il 42%).
+
+⚠️ **Due eccezioni volute**, che il guardiano esclude invece di sanzionare:
+- il **gol** del micro-simulatore e' esente dal pavimento — si racconta quando accade, non quando la
+  pausa lo consente;
+- una coppia **a cavallo di un highlight** ha intervallo enorme (misurati 13,6 s) e frazione bassa, ma li'
+  la cronaca e' sospesa per costruzione e il pallone lo muove l'azione, non la riga.
+
+Guardiano `npm run bg-sync`, prova del rosso `__CPM_NO485`: senza pavimento il 30% delle coppie sta sotto
+un terzo, minimo 25%, e il guardiano fallisce.
+
 ### 7.484.0 — Partite piu' serene, e il ritmo in mano al giocatore
 
 Direttiva PO: «le partite devono essere piu' serene, tranquille, meno frenetiche — fai decidere al
