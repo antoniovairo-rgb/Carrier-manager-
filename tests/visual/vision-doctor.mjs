@@ -25,13 +25,18 @@
    completa; 1 = un anello rotto (il messaggio dice quale e cosa fare); 2 = la sonda stessa non ha
    potuto misurare.
 
-   ⚠️ COSA E' STATO PROVATO, E COSA NO. Scritta in una sessione cloud dove ogni sorgente di modelli e'
-   bloccata dalla network policy (misurato: huggingface.co e registry.ollama.ai non si connettono,
-   github.com/releases risponde 403). Quindi i rami provati davvero sono quelli ROSSI — provider
-   inesistente, server non in ascolto, host vivo ma chiave assente — piu' la separazione fra host e
-   provider, che e' il motivo per cui questa sonda esiste. Il ramo VERDE del quarto anello, cioe' un
-   modello che risponde davvero all'immagine, NON e' stato eseguito: va collaudato sulla macchina dove
-   il modello gira. Chi lo esegue per primo aggiorni questa riga.
+   ✅ COLLAUDATA SUL CAMPO (2026-08-15, Ollama Cloud + gemma4:31b): catena completa, quarto anello
+   risposto in 825 ms. Scritta in una sessione cloud dove ogni sorgente di modelli e' bloccata dalla
+   network policy (huggingface.co e registry.ollama.ai non si connettono, github.com/releases 403), e
+   quindi partita coi soli rami rossi provati. Il collaudo vero ha trovato TRE difetti di questa sonda,
+   uno per giro, e vale la pena averli in fila perche' sono tre modi diversi di sbagliare una diagnosi:
+     · dava «il modello non sa leggere immagini» su un HTTP 410 «modello ritirato» — generalizzava
+       l'ultimo sospetto a ogni sintomo;
+     · dava per buono un health verde che NON aveva visto il modello (cloud, «verificato in analyze»);
+     · mandava al modello un PNG di 2x2 pixel, e il server rispondeva 500. Un encoder di vista lavora
+       a patch di 14-16 px: sotto quella soglia non c'e' niente da leggere. Era la sonda a essere rotta,
+       non il modello — e per due giri ho accusato il modello.
+   Chi la esegue su una configurazione diversa aggiorni questa riga.
 
      node vision-doctor.mjs                                                                          */
 import path from 'node:path';
