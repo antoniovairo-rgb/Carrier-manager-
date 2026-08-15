@@ -20,10 +20,13 @@
    modo di distinguere «il gioco ha sbagliato» da «il gioco ha fatto cio' che aveva dichiarato».
 
    PRIMA PASSATA, E VA SCRITTA: su dieci scene a intento passaggio lo spostamento netto del pallone e'
-   AVANTI in dieci casi su dieci, da +6,8 a +31,8 unita' — filtranti dichiarati compresi (gi24 «Assist
-   filtrante» +31,8 · gi120 «Verticale filtrante di prima» +21,2 · gi187 «Palla filtrante a scavalcare»
-   +8,3). La nota #187 non si riproduce nemmeno guardando il pallone invece del bersaglio: resta aperta
-   come SEGNALAZIONE, ma ora e' senza una sola misura a sostegno, su due strumenti indipendenti.
+   AVANTI in dieci casi su dieci, da +6,8 a +31,7 unita' — filtranti dichiarati compresi (gi24 «Assist
+   filtrante» +31,7 · gi120 «Verticale filtrante di prima» +20,0 · gi187 «Palla filtrante a scavalcare»
+   +8,3). Cinque di quelle dieci si risolvono SENZA arco di passaggio, cioe' meta' — la stessa proporzione
+   che pass-forward stampa da sempre (10 su 20) — e fra loro c'e' proprio un filtrante dichiarato, gi120:
+   la classe che i due guardiani non potevano vedere e' popolata, e sta bene. La nota #187 non si riproduce
+   nemmeno guardando il pallone invece del bersaglio: resta aperta come SEGNALAZIONE, ma ora e' senza una
+   sola misura a sostegno, su due strumenti indipendenti.
 
    NON E' UN GATE: dichiara, non giudica. Vira rosso solo se non misura niente.
 
