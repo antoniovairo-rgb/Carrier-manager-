@@ -24,6 +24,7 @@
     "buildup-sync": "node buildup-sync-test.mjs",
     "moves-budget": "node moves-budget-test.mjs",
     "scene-open-ball": "node scene-open-ball-test.mjs",
+    "scene-open-ball:selftest": "CPM_SELFTEST=1 node scene-open-ball-test.mjs",
     "def-camera-bounds": "node def-camera-bounds-test.mjs",
     "scene-open-owner": "node scene-open-owner-test.mjs",
     "scene-staging-lag": "node scene-staging-lag-test.mjs",
