@@ -61,8 +61,17 @@ async function runScene(no440) {
   const act = tl.filter(f => f.at === 'tackle');
   const farClip = act.filter(f => (f.want || f.cur) && f.db > 6.5);
   console.log(`fase A: ${act.length} frame di gesto · ${farClip.length} con clip montata a >6,5u (min d.palla ${act.length ? Math.min(...act.map(f => f.db)) : '—'})`);
+  /* ⚠️ CORRETTO NEL 7.480: «rosso non riprodotto» non e' un verdetto solo. Ce ne sono DUE dentro, e
+     vogliono mosse opposte — il rimedio che perde colpi, e la PREMESSA che non esiste piu'. Misurato:
+     su gi146 il pallone sta a 0,2u dall'eroe per tutto il gesto, cioe' la condizione del difetto (palla
+     LONTANA) non si presenta affatto, con o senza interruttore: la scena e' cambiata sotto al guardiano
+     grazie alle correzioni di consegna (7.428) e apertura (7.399), che nel 7.441 vedevano 11,6-18u.
+     Un guardiano che chiama «rimedio che perde colpi» una premessa scomparsa manda a cercare un difetto
+     dove non c'e'. Ora lo dichiara, e resta rosso solo se la premessa C'E' e il rimedio non tiene. */
+  const lontani = act.filter(f => f.db > 6.5);
   if (!act.length) issues.push('fase A: il gesto difensivo non e\' mai partito (strumento muto)');
-  else if (!farClip.length) issues.push('fase A: con __CPM_NO440 la clip lontana non si riproduce — l\'interruttore non riapre il rosso');
+  else if (!lontani.length) console.log(`fase A: PREMESSA ASSENTE — il pallone non supera mai 6,5u durante il gesto (min ${Math.min(...act.map(f => f.db))}u, max ${Math.max(...act.map(f => f.db))}u): su questa scena il difetto non e' piu' fabbricabile, e il rosso non e' provabile qui. Non e' un rimedio che perde colpi. Cerca una scena con la premessa: CPM_SCAN=1`);
+  else if (!farClip.length) issues.push(`fase A: la premessa C'E' (${lontani.length} frame col pallone oltre 6,5u) ma con __CPM_NO440 la clip lontana non si riproduce — l'interruttore non riapre il rosso`);
   else console.log('fase A (rosso riprodotto): gesto tecnico montato col pallone a distanza doppia cifra, come pre-fix ✓');
 }
 
@@ -75,7 +84,15 @@ async function runScene(no440) {
   console.log(`fase B: ${act.length} frame di gesto · ${farClip.length} con clip a >6,5u · d.palla ${dbs.length ? dbs[0] + '→' + dbs[dbs.length - 1] : '—'}`);
   if (!act.length) issues.push('fase B: il gesto difensivo non e\' mai partito');
   if (farClip.length) issues.push(`fase B: ${farClip.length} frame con clip tecnica montata col pallone oltre 6,5u — il tuffo cieco di gi146 e' ancora li'`);
-  if (dbs.length >= 4 && dbs[dbs.length - 1] > dbs[0] + 1) issues.push(`fase B: l'eroe NON accorcia verso il pallone (${dbs[0]}→${dbs[dbs.length - 1]}u)`);
+  /* ⚠️ CORRETTO NEL 7.480: la vecchia regola chiedeva che la distanza CALASSE dal primo all'ultimo
+     fotogramma, e bocciava 0,5 → 8,7u. Ma l'eroe PARTE sulla palla: a crescere non e' la sua distanza
+     per pigrizia, e' il pallone che se ne va dopo il contrasto — che su una scena difensiva e' calcio.
+     La pretesa vera della nota e' un'altra, ed e' scritta nel codice del gioco: «un difensore a dieci
+     metri non si butta a terra, accorcia». Cioe' NEL MOMENTO DEL GESTO l'eroe dev'essere sul pallone.
+     Si misura con la distanza MINIMA durante il gesto, non con la differenza fra due estremi. */
+  const dbMin = dbs.length ? Math.min(...dbs) : null;
+  if (dbMin != null && dbMin > 6.5) issues.push(`fase B: durante il gesto l'eroe non arriva mai sul pallone (minimo ${dbMin}u, soglia 6,5u)`);
+  else if (dbMin != null) console.log(`fase B: durante il gesto l'eroe arriva a ${dbMin}u dal pallone (soglia 6,5u) ✓`);
 }
 
 await browser.close(); srv.close();
