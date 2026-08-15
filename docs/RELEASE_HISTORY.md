@@ -1,5 +1,46 @@
 # Cronologia delle release — Korward Elite
 
+### 7.480.0 — «Non si vede il gesto tecnico» smette di essere un'impressione
+
+**DUE REVISORI, LA STESSA RIGA, NELLO STESSO GIORNO.** Il modello di vista alla prima review vera
+(gemma4 sul cloud del PO) su gi0: «la camera e' troppo lontana per apprezzare un uno-contro-uno». La
+lettura dei fogli-provini GLB-ON, fatta indipendentemente: «in sedici fotogrammi su sedici il gesto
+tecnico non e' leggibile». E' anche la famiglia piu' frequente del taccuino, inseguita per release
+ritoccando ANIMAZIONI — cioe' la cosa sbagliata, se il problema e' che l'animazione non si vede.
+
+**«LONTANA» NON SI CORREGGE, UN NUMERO SI'.** Testimone `__CPM_FRAME480`: l'eroe viene proiettato dai
+piedi alla testa nello spazio normalizzato della camera, e se ne tiene l'ALTEZZA APPARENTE come frazione
+dell'altezza del quadro. E' adimensionale — non dipende da risoluzione, fps o dispositivo — quindi
+headless e telefono dicono lo stesso numero, ed e' confrontabile fra tutte le scene. Riferimenti
+dichiarati PRIMA di misurare, per non tarare la soglia sul risultato: un piano americano da regia
+sportiva sta a 0,35-0,60; sotto 0,15 nessun gesto di arti e' distinguibile; sotto 0,08 e' una figurina.
+
+**IL CENSIMENTO, SU TUTTE E 191 LE SCENE** (`npm run hero-framing`):
+
+| grandezza | valore |
+|---|---|
+| mediana | 0,057 |
+| quartili | 0,051 – 0,075 |
+| minimo · massimo | 0,040 · 0,178 |
+| sotto 0,15 (gesto non distinguibile) | **190/191 — 99%** |
+| sotto 0,08 (figurina) | **154/191 — 81%** |
+| eroe FUORI dal quadro in almeno un fotogramma | **42/191** |
+
+Su un telefono da 6 pollici la mediana vale circa 7 millimetri. Non e' il difetto di una scena: e' la
+regia dell'intero repertorio, e spiega perche' cinque release di ritocchi alle pose non hanno mai chiuso
+la nota — si stava migliorando qualcosa che non arrivava all'occhio.
+
+**⚠️ IL CONFONDENTE E' STATO ESCLUSO PRIMA DI DICHIARARLO.** In headless il tempo di scena scorre a un
+decimo del reale: la camera poteva essere semplicemente LENTA ad avvicinarsi, e il censimento avrebbe
+accusato l'inquadratura di una lentezza dello strumento. Quadruplicata la finestra di osservazione
+(2400 → 10000 ms) su un campione: mediana 0,050 → 0,048, 6 su 6 sotto soglia in entrambe. La camera non
+e' lenta ad avvicinarsi — non si avvicina.
+
+**Nessun rimedio in questa release, ed e' voluto.** Cambiare la regia di 191 scene e' una decisione di
+prodotto, non una correzione: tocca al PO dire se il piano deve stringere sempre, solo sulla conclusione,
+o solo per certe famiglie. Il numero adesso c'e', ed e' la prima volta.
+
+
 ### 7.479.0 — «Braccio storto» alla quinta comparsa, e la prima misurata
 
 **IL METODO, PRIMA DEL DIFETTO.** Questa nota e' arrivata cinque volte: 7.419 (offset cieco → facepalm),

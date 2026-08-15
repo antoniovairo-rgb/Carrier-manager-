@@ -332,6 +332,15 @@ riassegnazione secca alla sua sorgente e dice se c'e' uno stacco nero vivo; `CPM
 per provare che il varco guarda davvero. ⚠️ Un «salto» misurato fra due CAMPIONI dell'anello (59-431 ms a
 8-25 fps) non e' un teletrasporto: e' velocita' x intervallo, la trappola del 7.360.
 
+**«Non si vede il gesto tecnico» ha un numero (7.480.0):** `npm run hero-framing` — l'ALTEZZA APPARENTE
+dell'eroe nel quadro (testimone `__CPM_FRAME480`: proiezione piedi→testa in spazio normalizzato, frazione
+dell'altezza dell'immagine). **E' adimensionale**, quindi headless e telefono dicono lo stesso numero — la
+grandezza che mancava a tutta questa famiglia di note. Censimento 191 scene: **mediana 0,057 · 99% sotto
+0,15 · 81% sotto 0,08 · eroe fuori dal quadro su 42 scene**. Riferimento: un piano americano da regia
+sportiva sta a 0,35-0,60. ⚠️ Prima di accusare l'inquadratura si esclude il confondente del tempo di scena
+headless (`CPM_WAIT`): se allargando la finestra il numero non cresce, la camera non e' lenta — non si
+avvicina (misurato: 2400→10000 ms, mediana 0,050→0,048).
+
 **Test dal vivo:** `tests/visual/live-match-test.mjs` (non-gate, GLB-ON) verifica la coerenza M1 overlay⟺esito su un campione di tiri falliti + screenshot full-page; `tests/visual/glb-gesture-smoke.mjs` per i gesti GLB. Le parti gate-cieche (movimento, camera, cronaca BG live, cerimonia) si collaudano così.
 
 > **Quick-gate (`npm run quick-gate`, ~1.5 min):** gate **leggero** per iterare veloce in sviluppo (`tests/visual/quick-gate.mjs`). Campiona ~26 Situations sui check di stato (`initial-state/orientation/visual/movements/golden`) + `determinism/final-state/timeline/data-coherence`; **salta** i sampler lenti (`motion/ball-motion/post-highlight/perf/ai-vision`). Riusa harness + gli stessi `checks/*.mjs` → zero duplicazione. ⚠️ **NON sostituisce** il gate completo: `validate-situations` (14/14) resta **obbligatorio prima di ogni push**. Usa il quick-gate per il loop di sviluppo, il gate completo come gate di rilascio.
