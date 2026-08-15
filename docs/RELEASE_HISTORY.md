@@ -1,5 +1,42 @@
 # Cronologia delle release — Korward Elite
 
+### 7.479.0 — «Braccio storto» alla quinta comparsa, e la prima misurata
+
+**IL METODO, PRIMA DEL DIFETTO.** Questa nota e' arrivata cinque volte: 7.419 (offset cieco → facepalm),
+7.430 (bersaglio canonico su X/Z), 7.462 (torsione baked a -0,8 sui provini), 7.470 (palmo calcolato in
+mondo, torsione tolta). Quattro correzioni, tutte SCELTE guardando fotogrammi in cui la mano e' larga
+quindici pixel, tutte rimandate indietro dal PO. La regola del repo dice che un difetto alla seconda
+comparsa merita una probe nuova: qui si e' smesso di guardare. `wave-arm-geometry.mjs` legge spalla,
+gomito e polso in spazio MONDO sul beat vero, GLB-ON, e giudica per criteri anatomici.
+
+**IL VERDETTO HA SCAGIONATO TRE INDIZIATI SU TRE.** Nessun giunto era fuori range: polso a 1,8-14 gradi
+contro un limite umano di ~70 (quindi la rotazione in spazio mondo del 7.470 non spezzava niente, che era
+il mio primo sospetto), gomito che piega in AVANTI in tutti i beat. Fuori posto era una grandezza che
+nessuna delle quattro release aveva mai guardato: l'ELEVAZIONE. Gomito 0,13u sopra la spalla su un omero
+di 0,30 significa ~26 gradi sopra l'orizzontale, con il gomito a 158-168 gradi, cioe' bloccato. Il codice
+CREDEVA di alzare — l'euler -1,95 e' l'81% della verticale sulla scala misurata dal 7.430 — e il mondo
+diceva un'altra cosa. **Un euler scritto su un osso non e' una direzione finche' non si guarda dove
+finisce l'osso.**
+
+**IL RIMEDIO E' IL PATTERN CHE AVEVA GIA' FUNZIONATO.** Omero e avambraccio si PUNTANO in spazio mondo con
+l'asse dell'osso CALIBRATO (si prende il vettore spalla→gomito e si cerca quale asse locale gli somiglia:
+vero per costruzione, per qualunque rig e qualunque braccio) — lo stesso schema con cui il 7.470 ha chiuso
+il palmo. Bersagli presi dal gesto umano, non da un numero simpatico: omero appena sopra l'orizzontale,
+avambraccio verticale. Ri-misurato: polso sopra la spalla in **6 saluti su 6** (+0,13…+0,31u, erano
+-0,16…+0,22), gomito 96-114 gradi, polso 3,6-10 gradi.
+
+**DUE COSE SBAGLIATE PER STRADA, ENTRAMBE AGLI ATTI.** (1) Il calibratore riceveva lo STESSO vettore di
+scratch come sorgente e destinazione: `copy(pTo).sub(pFrom)` con pFrom uguale al bersaglio da' il vettore
+nullo, e la calibrazione cadeva in silenzio sul valore di ripiego — braccio puntato con un asse mai
+misurato, gomito chiuso a 67-90 gradi e polso ancora sotto la spalla. (2) La banda del criterio e' stata
+CORRETTA dopo la prima misura: la prima stesura diceva «un saluto sta fra 130 e 180», e quella banda dava
+per BUONO proprio il braccio bloccato a 158-168 che il PO aveva fotografato. Un criterio che non separa il
+difetto segnalato non e' un criterio: era la descrizione della posa vecchia. Banda vera, dal gesto umano:
+85-150.
+
+`__CPM_NO479` rimette la posa di prima.
+
+
 ### 7.478.0 — La coda chiusa con le misure, due delle quali dicono di no
 
 **(1) «SALTO del pallone» — l'attribuzione del 7.477 non poteva reggere.** Il censimento misurava il salto

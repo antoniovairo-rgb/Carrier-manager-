@@ -32,6 +32,8 @@
     "goal-postarc": "node goal-postarc-test.mjs",
     "camera-step-census": "node camera-step-census-test.mjs",
     "wave-pose-sweep": "node wave-pose-sweep.mjs",
+    "wave-arm-geometry": "node wave-arm-geometry.mjs",
+    "pass-mesh-direction": "node pass-mesh-direction-census.mjs",
     "delivery-arrival": "node delivery-arrival-test.mjs",
     "gk-dive-sync": "node gk-dive-sync-test.mjs",
     "camera-cut-mask": "node camera-cut-mask-test.mjs",
