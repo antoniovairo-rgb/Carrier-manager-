@@ -273,10 +273,32 @@ export async function resolveAction(page, k = 0, { wait = 850, settleMax = 2800 
   return { outcome, finalState };
 }
 
-/* Screenshot del SOLO canvas 3D (ignora la sidebar testuale che cambia per situation). */
-export async function canvasShot(page) {
-  const box = await page.evaluate(() => { const c = document.querySelector('canvas'); if (!c) return null; const r = c.getBoundingClientRect(); return { x: Math.max(0, r.x), y: Math.max(0, r.y), width: Math.min(r.width, 900 - Math.max(0, r.x)), height: Math.min(r.height, 900 - Math.max(0, r.y)) }; });
-  return page.screenshot(box && box.width > 10 ? { clip: box } : {});
+/* Screenshot del SOLO canvas 3D (ignora la sidebar testuale che cambia per situation).
+   [7.480.0 collaudo PO sulla SUA macchina] Tre difetti, tutti visti alla prima esecuzione vera fuori da
+   questo repo: (a) la clip era ritagliata su un viewport CABLATO a 900 px — giusto per la review, sbagliato
+   per chiunque apra una pagina di dimensione diversa, e una clip fuori viewport manda Playwright su un
+   percorso di cattura piu' lento; (b) `page.screenshot` girava senza timeout esplicito, quindi ereditava i
+   30 s di default e quando la pagina era occupata moriva li'; (c) non ritentava. Ora: clip clampata al
+   viewport reale, timeout dichiarato e regolabile (`CPM_SHOT_TIMEOUT`), e un secondo tentativo senza clip
+   dopo una pausa — perche' la causa piu' probabile e' un istante di saturazione del render-loop, e un
+   istante passa. */
+export async function canvasShot(page, opts = {}) {
+  const vp = (typeof page.viewportSize === 'function' && page.viewportSize()) || { width: 900, height: 900 };
+  const box = await page.evaluate(v => {
+    const c = document.querySelector('canvas'); if (!c) return null;
+    const r = c.getBoundingClientRect();
+    const x = Math.max(0, r.x), y = Math.max(0, r.y);
+    return { x, y, width: Math.min(r.width, v.w - x), height: Math.min(r.height, v.h - y) };
+  }, { w: vp.width, h: vp.height });
+  const timeout = +(process.env.CPM_SHOT_TIMEOUT || opts.timeout || 20000);
+  const clip = box && box.width > 10 && box.height > 10 ? { clip: box } : {};
+  try { return await page.screenshot({ ...clip, timeout }); }
+  catch (e) {
+    await sleep(500);
+    /* ritentativo SENZA clip: se il primo e' morto sul ritaglio, questo lo aggira; se muore anche lui,
+       l'errore sale a chi chiama, che ora sa saltare l'highlight invece di morire (vedi ai-vision-review) */
+    return await page.screenshot({ timeout: Math.max(10000, timeout) });
+  }
 }
 
 /* dHash percettivo 64-bit (16 hex) — robusto al jitter sub-pixel. */

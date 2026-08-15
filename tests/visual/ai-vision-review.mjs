@@ -65,16 +65,38 @@ const STRICT = process.argv.includes('--strict');
     const videoMode = config.visionMode === 'video';
     logger.info('modalità cattura', { mode: config.visionMode, ...(videoMode ? { frames: config.videoFrames, intervalMs: config.videoIntervalMs } : {}) });
     const highlights = [];
+    /* [7.480.0 collaudo PO] UN HIGHLIGHT CHE NON SI CATTURA NON UCCIDE LA REVIEW. Misurato sulla macchina
+       del PO: `page.screenshot` e' andato in timeout sul secondo highlight e l'intero run e' morto FATAL,
+       buttando via il primo che era gia' stato catturato — e senza produrre nessun report. Un revisore
+       percettivo e' un livello che DEGRADA: se una scena non si lascia fotografare, si annota e si va
+       avanti con le altre. Se non se ne cattura nessuna, allora si', il run non ha niente da dire. */
+    const saltati = [];
     for (const gi of indices) {
-      const shots = videoMode
-        ? await captureHighlightSequence(page, gi, OUT, { frames: config.videoFrames, intervalMs: config.videoIntervalMs })
-        : await captureHighlight(page, gi, OUT);
+      let shots = null;
+      try {
+        shots = videoMode
+          ? await captureHighlightSequence(page, gi, OUT, { frames: config.videoFrames, intervalMs: config.videoIntervalMs })
+          : await captureHighlight(page, gi, OUT);
+      } catch (e) {
+        const msg = String((e && e.message) || e).split('\n')[0].slice(0, 160);
+        logger.warn('cattura fallita — highlight saltato', { gi, msg });
+        console.log(`⚠️  gi${gi}: cattura fallita (${msg}) — salto e proseguo`);
+        saltati.push({ gi, msg });
+        continue;
+      }
+      if (!shots || !shots.length) { saltati.push({ gi, msg: 'nessun fotogramma' }); continue; }
       const sit = situations[gi] || {};
       // [VIDEO CONTINUO] context.mode='video' → l'Engine sceglie il prompt MOVIMENTO (filmstrip ordinato)
       highlights.push({ id: `gi${gi}`, context: { gi, text: sit.text, intent: sit.intent || null, ...(videoMode ? { mode: 'video' } : {}) }, images: shots });
       logger.info('catturato', { gi, frames: shots.length });
     }
-    review = await engine.review(highlights);
+    if (saltati.length) console.log(`⚠️  ${saltati.length}/${indices.length} highlight non catturati: ${saltati.map(s => 'gi' + s.gi).join(', ')}`);
+    if (!highlights.length) {
+      review = { skipped: true, reason: `nessun highlight catturato (${saltati.length} falliti: ${saltati.map(s => `gi${s.gi} ${s.msg}`).join(' · ')})`, provider: provider.name, model: engine._modelName(), results: [] };
+    } else {
+      review = await engine.review(highlights);
+      if (saltati.length) review.saltati = saltati;
+    }
   } finally {
     // CLEANUP: chiude browser (Chromium) e server → libera le risorse
     await browser.close(); srv.close();
