@@ -359,6 +359,16 @@ guarita). Stringere senza sistemare la MIRA raddoppia il difetto peggiore: le du
 insieme. ⚠️ Un'altezza apparente impossibile (gi14: 42,8) si legge «camera troppo vicina, soggetto oltre
 il piano camera», non come una misura.
 
+**⚠️ UNA PAGINA STANCA NON E' IL GIOCO (7.483.0) — vale per OGNI sonda di questo repo.** Il censimento
+forza 191 conclusioni di fila sulla stessa pagina, e le scene che aveva nominato al 92-100% stanno a
+**0-2% su pagina nuova**: cinque «difetti» su nove erano lo strumento. Quando una sonda ripete molte
+scene su un solo caricamento, **il confronto fra due bracci regge, i valori assoluti no** — e per
+giudicare una singola scena si apre una pagina nuova (`hero-in-frame-test.mjs` lo fa, e il costo e'
+qualche minuto). Guardiano della mira: `npm run hero-in-frame` (testimoni gi138 58%→18% · gi133 46%→0%,
+prova del rosso `__CPM_NO482`); su un highlight **difensivo** il soggetto della regia non passa piu' al
+pallone, perche' li' la storia e' chi ha fatto l'intervento. ⚠️ Restano fuori gi14 (cross) e gi161
+(punizione), che sono difetti veri ma non difensivi.
+
 **Test dal vivo:** `tests/visual/live-match-test.mjs` (non-gate, GLB-ON) verifica la coerenza M1 overlay⟺esito su un campione di tiri falliti + screenshot full-page; `tests/visual/glb-gesture-smoke.mjs` per i gesti GLB. Le parti gate-cieche (movimento, camera, cronaca BG live, cerimonia) si collaudano così.
 
 > **Quick-gate (`npm run quick-gate`, ~1.5 min):** gate **leggero** per iterare veloce in sviluppo (`tests/visual/quick-gate.mjs`). Campiona ~26 Situations sui check di stato (`initial-state/orientation/visual/movements/golden`) + `determinism/final-state/timeline/data-coherence`; **salta** i sampler lenti (`motion/ball-motion/post-highlight/perf/ai-vision`). Riusa harness + gli stessi `checks/*.mjs` → zero duplicazione. ⚠️ **NON sostituisce** il gate completo: `validate-situations` (14/14) resta **obbligatorio prima di ogni push**. Usa il quick-gate per il loop di sviluppo, il gate completo come gate di rilascio.

@@ -1,5 +1,65 @@
 # Cronologia delle release — Korward Elite
 
+### 7.483.0 — La mira corretta, e il censimento che accusava se stesso
+
+#### Il rimedio
+
+Su un intervento difensivo la storia e' **l'eroe**, non dove finisce il pallone. Dopo un recupero la palla
+se ne va lontano, `_subjBall50` scatta e la regia passa il soggetto alla palla — spegnendo insieme il
+richiamo-eroe a livello target e la rete anti-fuoriquadro. Quel passaggio e' giusto quando il viaggio del
+pallone **e'** la storia (un tiro che vola in porta); non lo e' quando l'highlight racconta chi ha
+spazzato. Ora `hlDef` lo esclude.
+
+Misurato su pagina nuova, mediana di tre passate: **gi138 58% → 18%** di fotogrammi con l'eroe fuori dal
+quadro, **gi133 46% → 0%**. Guardiano `npm run hero-in-frame`, con prova del rosso: `__CPM_NO482` rimette
+la regia di prima e il guardiano fallisce.
+
+#### ⚠️ Il censimento del 7.482 accusava il proprio strumento
+
+E' la lezione piu' cara della giornata. Il 7.482 aveva nominato **nove** scene in cui l'eroe non si vede
+per oltre meta' della conclusione, due al 100%. Rimisurate una per una su **pagina nuova**:
+
+| scena | censimento | pagina nuova (regia vecchia) | verdetto |
+|---|---|---|---|
+| gi138 | 100% | 58% | difetto vero → curato (18%) |
+| gi133 | 96% | 46% | difetto vero → curato (0%) |
+| gi14 «Cross basso teso» | 72% | 69% | difetto vero, **non difensiva** → non toccata |
+| gi161 «Punizione a rientrare» | 62% | 58% | difetto vero, **non difensiva** → non toccata |
+| gi168 · gi130 · gi33 · gi183 · gi146 | 92-100% | **0-2%** | era lo strumento |
+
+Cinque su nove erano la **pagina**, non il gioco: il censimento forza 191 conclusioni di fila sulla stessa
+pagina, e una pagina che ne ha gia' recitate duecento perde l'eroe. Corollario da tenere: i numeri
+aggregati del 7.482 (7,8% oggi, 19,3% a taglia 0,30) sono **gonfiati dallo strumento** — il confronto fra
+le due regie regge, i valori assoluti no.
+
+⚠️ E la soglia del guardiano e' stata ritarata **dopo**: la prima, scelta sui numeri della pagina stanca,
+stava al 75% e sarebbe rimasta verde anche tornando alla regia vecchia. Una soglia che non separa non e'
+un criterio, e' una descrizione.
+
+#### ⚠️ Una modifica provata e revocata
+
+L'ipotesi era che su gi138 la rete fosse solo **troppo lenta** (ingaggia 13 volte e non recupera),
+curabile con un tetto di velocita' crescente col fuori-quadro. Misurata a tre bracci su tre passate: col
+solo cambio di soggetto gi168 sta al 43%, col tetto adattivo **sale al 60%**, e sulle altre non muove
+nulla (35→35, 50→52, 48→48). Ipotesi caduta, codice revocato: la riga e' quella di prima, byte per byte.
+
+#### Il tesserino della giornalista — terza segnalazione, prima guardata grande
+
+7.133.0 aveva rifatto la texture, 7.466.0 il codice a barre, e il PO l'ha segnalato di nuovo. Stavolta la
+scena e' stata resa a **4x di pixel** con un ritaglio del petto, invece di giudicare un'immagine in cui la
+credenziale e' larga quindici pixel — la trappola del «braccio storto». Cio' che si vede a quella scala:
+il **codice a barre aveva il peso visivo rovesciato**, 34 righe su 176, piu' marcato della foto e del
+nome. Ora e' una striscia di 18 righe, la foto cresce, e la card rientra verso il petto (stacco misurato
+dall'osso 0,112 → 0,094).
+
+⚠️ **Due errori dello strumento, pagati qui.** Il testimone `__CPM_BADGE483` leggeva gli estremi del
+cordone a ±0,5 locale — l'assunzione del cilindro unitario — e dichiarava i laccetti **sopra la testa**:
+letta l'altezza vera della geometria, i cordoni vanno da 1,349 a 1,504 con la testa a 1,563, cioe' non
+superano il collo e non c'era niente da correggere. E il rimpicciolimento della card (0,086×0,118 →
+0,070×0,096) e' stato **revocato dopo averlo guardato**: la scritta PRESS smetteva di leggersi e la
+credenziale diventava un rettangolo bianco. **Una misura che migliora non autorizza una modifica che
+peggiora cio' che si vede.**
+
 ### 7.482.0 — La manopola diventa una taglia, e la misura trova un secondo difetto
 
 **I provini del 7.481 chiedevano di scegliere fra immagini in cui il soggetto non c'era.** La manopola
