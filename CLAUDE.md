@@ -391,6 +391,17 @@ da 15 righe a 4 su 40 s. Guardiano `npm run bg-sync` (prova del rosso `__CPM_NO4
 NON trattare come difetti: il **gol** è esente dal pavimento, e una coppia a cavallo di un **highlight**
 ha frazione bassa perché lì la cronaca è sospesa e il pallone lo muove l'azione.
 
+**La riga di cronaca si sceglie da DOVE SI GIOCA, e la partita ha due telecronisti (7.486.0).** La
+selezione guardava minuto/punteggio/momentum/tattica ma mai il pallone: misurato, le voci difensive
+uscivano con la palla nella metà avversaria **4 volte su 6** (scarto zona detta ↔ zona vera: `retreat`
++66,3 · `defend_goal` +52,8). Ora la distanza fra zona dichiarata e zona reale **pesa** (vicino ×2,4,
+lontano ×0,12) → 2/9 e 5/40. Prova del rosso `__CPM_NO486`. **`TELECRONISTI`**: sei coppie inventate
+(voce + commento tecnico + emittente), seedate su avversario+stagione+settimana, nessun campo salvato; la
+seconda voce parla dopo la prima, 1 riga su 3, mai sui gol. ⚠️ Nomi/emittenti inventati → **`node
+tools/audit-copyright.mjs` obbligatorio** (verde). ⚠️ Uscendo da `playing` il gioco azzera i timer dei
+cori (coerenza 5.47.5): una riga schedulata a ~1s viene quasi sempre cancellata dagli HL — con
+`__CPM_TC486` si distingue «mai programmato» da «programmato e cancellato», che vogliono rimedi opposti.
+
 **Test dal vivo:** `tests/visual/live-match-test.mjs` (non-gate, GLB-ON) verifica la coerenza M1 overlay⟺esito su un campione di tiri falliti + screenshot full-page; `tests/visual/glb-gesture-smoke.mjs` per i gesti GLB. Le parti gate-cieche (movimento, camera, cronaca BG live, cerimonia) si collaudano così.
 
 > **Quick-gate (`npm run quick-gate`, ~1.5 min):** gate **leggero** per iterare veloce in sviluppo (`tests/visual/quick-gate.mjs`). Campiona ~26 Situations sui check di stato (`initial-state/orientation/visual/movements/golden`) + `determinism/final-state/timeline/data-coherence`; **salta** i sampler lenti (`motion/ball-motion/post-highlight/perf/ai-vision`). Riusa harness + gli stessi `checks/*.mjs` → zero duplicazione. ⚠️ **NON sostituisce** il gate completo: `validate-situations` (14/14) resta **obbligatorio prima di ogni push**. Usa il quick-gate per il loop di sviluppo, il gate completo come gate di rilascio.

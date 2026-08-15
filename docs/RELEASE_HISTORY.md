@@ -1,5 +1,58 @@
 # Cronologia delle release — Korward Elite
 
+### 7.486.0 — La cronaca racconta la partita che si vede, e ha due voci con un nome
+
+Direttive PO: «la cronaca deve descrivere effettivamente cio' che accade» e «inventa anche i telecronisti».
+
+#### La riga si sceglie da dove si sta giocando
+
+Fino a qui la selezione guardava minuto, punteggio, momentum e tattica del mister — **mai il pallone**.
+Misurato su 71 righe di partita vera, confrontando la zona **dichiarata** dalla riga con la posizione
+**vera** della palla nell'istante in cui esce:
+
+| pd | x dichiarata | x vera | scarto prima | scarto dopo |
+|---|---|---|---|---|
+| retreat | 22,0 | 88,3 | **+66,3** | +12,7 |
+| defend_goal | 9,0 | 61,8 | **+52,8** | +27,1 |
+| attack_goal | 86,1 | 60,1 | −26,0 | −16,4 |
+| wide_right | 72,7 | 55,9 | −16,8 | −5,9 |
+| attack | 67,4 | 58,3 | −9,1 | **−3,0** |
+| midfield | 49,5 | 54,6 | +5,1 | **−2,4** |
+
+Le voci **difensive uscivano con la palla nella meta' avversaria 4 volte su 6**. E siccome dal 7.485
+sappiamo che la riga *guida* il campo, la telecronaca raccontava un'altra partita e poi **trascinava il
+pallone dall'altra parte** per darsi ragione.
+
+Ora la distanza fra zona dichiarata e zona vera **pesa** sulla scelta (vicino ×2,4 · lontano ×0,12): un
+peso e non un filtro, perche' un filtro affamerebbe il repertorio e riporterebbe le ripetizioni. Dopo:
+righe difensive con la palla dall'altra parte **4/6 → 2/9**, righe d'attacco nella propria meta'
+**10/45 → 5/40**. Prova del rosso `__CPM_NO486`.
+
+#### I telecronisti
+
+Una telecronaca ha due persone: chi racconta l'azione e chi la spiega. Sei coppie **inventate** (nome,
+commento tecnico, emittente, modo), seedate su avversario + stagione + settimana — la stessa gara ha
+sempre le stesse voci, come un palinsesto, e non c'e' un solo campo nuovo da salvare. La prima voce si
+presenta una volta all'inizio; la seconda non racconta l'azione, la **legge**, parla **dopo** la prima,
+una riga su tre, mai sui gol. Nomi ed emittenti passano il gate di de-branding (`audit-copyright` verde).
+
+⚠️ **Tre errori dello strumento, tutti della stessa famiglia: la sonda che misura se stessa.**
+- Il commento tecnico «non compariva mai»: la prima sonda leggeva `querySelectorAll('*')` e pescava il
+  **sorgente dentro il tag `<script>`**, dichiarando trovate righe che non erano a schermo.
+- L'osservatore dei nodi si armava **dopo** il caricamento e perdeva la presentazione, che esce alla prima
+  riga: un giro vuoto e uno pieno sembravano un seed rotto.
+- Il controllo «stessa partita, stesse voci» confrontava la riga **intera, minuto compreso**, e bocciava
+  un seed corretto.
+
+Il testimone `__CPM_TC486` (programmati contro usciti) ha chiuso la questione: **8 su 8 e 7 su 6** — i
+commenti uscivano, era la sonda a non vederli.
+
+⚠️ E una correzione vera trovata per strada: il primo commento tecnico stava a 950 ms e una riga su
+cinque, e **non usciva davvero**. Uscendo da `playing` il gioco azzera i timer dei cori (coerenza 5.47.5:
+la cronaca non parla sopra un highlight) e con gli highlight che occupano due terzi del tempo un commento
+a quasi un secondo veniva quasi sempre cancellato. La regola e' giusta; sbagliati erano i numeri — ora
+260 ms e una riga su tre.
+
 ### 7.485.0 — La cronaca non smentisce piu' il movimento che ha appena annunciato
 
 Direttiva PO: «la cronaca deve rispecchiare ed essere sincronizzata con i movimenti sul campo».
