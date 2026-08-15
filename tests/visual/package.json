@@ -46,6 +46,7 @@
     "hero-framing": "node hero-framing-census.mjs",
     "framing-choices": "node framing-choices-shot.mjs",
     "hero-in-frame": "node hero-in-frame-test.mjs",
+    "match-speed": "node match-speed-test.mjs",
     "ceremony-shot": "node ceremony-shot.mjs",
     "critica-context": "node critica-context-test.mjs",
     "coach-review-variety": "node coach-review-variety-test.mjs",

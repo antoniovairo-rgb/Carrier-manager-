@@ -369,6 +369,18 @@ prova del rosso `__CPM_NO482`); su un highlight **difensivo** il soggetto della 
 pallone, perche' li' la storia e' chi ha fatto l'intervento. ⚠️ Restano fuori gi14 (cross) e gi161
 (punizione), che sono difetti veri ma non difensivi.
 
+**Il ritmo della partita ha UN metronomo, e il clock è fermo negli highlight (7.484.0).** Tutto ciò che
+scorre in `playing` — cronaca BG, grida del mister, micro-sim dei gol, lerp del pallone — gira sul tick
+del clock: `MATCH_TICK_MS` **420 ms** per minuto di gioco (era 300), diviso per la velocità scelta dal
+giocatore (**1× · 1,25× · 2×**, comando accanto alla pausa, preferenza in `localStorage` `cpm-match-speed`
+— non nel salvataggio, nessun SAVE bump). Guardiano `npm run match-speed` (misurato 420/341/215 contro
+420/336/210 attesi · prova del rosso `__CPM_NO484`). ⚠️ La manopola muove il FLUSSO, mai le finestre
+d'esito degli highlight: quelle sono il tempo di leggere e il check `post-highlight` le tiene in
+[1800,4000]. ⚠️ **Misurando qualunque tempo: il clock è CONGELATO durante gli `hl_*`** — una media
+sull'intera finestra dà 727-833 ms dove la costante è 300 e fa dichiarare rotto un tick sano; si campiona
+fitto e si sommano solo i tratti in `playing`. Da lì il numero che spiega la cronaca rada: su 30 s di
+partita vera **19,2 s stanno dentro gli highlight e 10,8 in gioco fluido**, e la cronaca è sospesa negli HL.
+
 **Test dal vivo:** `tests/visual/live-match-test.mjs` (non-gate, GLB-ON) verifica la coerenza M1 overlay⟺esito su un campione di tiri falliti + screenshot full-page; `tests/visual/glb-gesture-smoke.mjs` per i gesti GLB. Le parti gate-cieche (movimento, camera, cronaca BG live, cerimonia) si collaudano così.
 
 > **Quick-gate (`npm run quick-gate`, ~1.5 min):** gate **leggero** per iterare veloce in sviluppo (`tests/visual/quick-gate.mjs`). Campiona ~26 Situations sui check di stato (`initial-state/orientation/visual/movements/golden`) + `determinism/final-state/timeline/data-coherence`; **salta** i sampler lenti (`motion/ball-motion/post-highlight/perf/ai-vision`). Riusa harness + gli stessi `checks/*.mjs` → zero duplicazione. ⚠️ **NON sostituisce** il gate completo: `validate-situations` (14/14) resta **obbligatorio prima di ogni push**. Usa il quick-gate per il loop di sviluppo, il gate completo come gate di rilascio.

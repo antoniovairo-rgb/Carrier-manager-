@@ -1,5 +1,46 @@
 # Cronologia delle release — Korward Elite
 
+### 7.484.0 — Partite piu' serene, e il ritmo in mano al giocatore
+
+Direttiva PO: «le partite devono essere piu' serene, tranquille, meno frenetiche — fai decidere al
+giocatore la velocita' 1x 1,25x 2x».
+
+Il ritmo di `playing` ha **un metronomo solo**: il tick del clock, un minuto di gioco per tick. Su quel
+tick girano la cronaca di sfondo, le grida del mister, il micro-simulatore dei gol ambientali e il lerp
+del pallone — quindi rallentare il tick rallenta tutto insieme, senza toccare nient'altro.
+
+**Misurato prima di toccarlo**, sul flusso vero: **307 ms per minuto contro i 300 nominali**. Il tick
+teneva: il frenetico non era una deriva, era la taratura. Base **300 → 420 ms**, cioe' 90' di gioco
+fluido da 28 a 38 secondi d'orologio.
+
+**La manopola** sta nell'intestazione, accanto alla pausa: **1× = 420 · 1,25× = 336** (il ritmo di prima,
+per chi lo rimpiange) **· 2× = 210**. La preferenza vive in `localStorage`, non nel salvataggio: e'
+un'impostazione della persona, non dello stato della carriera — nessun `SAVE_VERSION` da alzare, e vale
+su tutte e tre le carriere.
+
+⚠️ **La manopola muove il FLUSSO, non le finestre d'esito degli highlight.** Quelle restano quelle che
+sono, perche' sono il tempo di *leggere*, e il check `post-highlight` del gate le tiene dentro
+[1800, 4000]: accelerarle sarebbe insieme una regressione di leggibilita' e un gate rosso. Si scorre in
+fretta il riempimento, non i momenti da guardare.
+
+Misurato dopo: **420 / 341 / 215 ms** contro 420 / 336 / 210 attesi (+0 / +2 / +2%). Guardiano
+`npm run match-speed` — tick vero per ciascuna velocita', separazione fra le tre, e la preferenza che
+sopravvive al caricamento. Prova del rosso `__CPM_NO484`: ignorando la scelta le tre collassano su 432 e
+il guardiano fallisce.
+
+⚠️ **Trappola pagata, e vale per ogni misura di tempo in questo gioco: il clock e' FERMO durante gli
+highlight.** Una media sull'intera finestra riporta 727-833 ms per minuto dove la costante e' 300, e
+avrebbe fatto dichiarare rotto un tick perfettamente a specifica. Si campiona fitto e si sommano **solo**
+i tratti in cui la fase e' `playing`.
+
+Nella stessa misura e' uscito il numero che spiega perche' la cronaca sembra rada: su 30 secondi di
+partita vera, **19,2 sono passati dentro gli highlight e 10,8 in gioco fluido**. La cronaca parla in un
+terzo del tempo, perche' e' sospesa per costruzione durante gli `hl_*`.
+
+⚠️ E la banda del guardiano e' stretta per necessita': fra 1× e 1,25× ci sono 20 punti percentuali, quindi
+una tolleranza piu' larga di ±10% non distinguerebbe due velocita' adiacenti — cioe' non guarderebbe
+nulla.
+
 ### 7.483.0 — La mira corretta, e il censimento che accusava se stesso
 
 #### Il rimedio
