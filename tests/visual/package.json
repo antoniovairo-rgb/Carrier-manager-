@@ -53,6 +53,7 @@
     "kit-pattern-shot": "node kit-pattern-shot.mjs",
     "kit-3d-uv": "node kit-3d-uv.mjs",
     "crowd-context": "node crowd-context-test.mjs",
+    "vision-doctor": "node vision-doctor.mjs",
     "ai-vision": "node ai-vision-review.mjs",
     "ai-vision:strict": "node ai-vision-review.mjs --strict",
     "test:vision": "node --test test/vision/*.test.mjs",
