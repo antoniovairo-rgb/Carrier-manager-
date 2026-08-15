@@ -70,6 +70,11 @@ for (let round = 0; round < SCENE_TARGET * 4 && scene < SCENE_TARGET; round++) {
        dipende dal frame-rate, la velocita' no. Si saltano i primi 750ms, la finestra in cui `nearSnap`
        esclude gli stacchi voluti. */
     const t0 = W[0].t; let pMax = 0, vMax = 0, dtSum = 0, nn = 0;
+    /* [7.475.0] stessa matematica del detector anche per l'ASSE DI SGUARDO (yaw), che e' la sotto-riga
+       del codice 007 rimasta aperta dal 7.471: inversioni al secondo e ampiezza massima per fotogramma.
+       Il contatore di inversioni dipende dal FRAME-RATE per costruzione — piu' fotogrammi, piu' cambi di
+       segno possibili — ed e' la stessa forma di errore che il censimento 7.463 ha trovato sul passo. */
+    let yRev = 0, yMax = 0, yPrev = 0, dur = 0;
     for (let i = 1; i < W.length; i++) {
       const a = W[i - 1], b = W[i], dt = (b.t - a.t) / 1000;
       if (dt <= 0 || dt > 0.5 || b.cx == null || a.cx == null) continue;
@@ -77,9 +82,16 @@ for (let round = 0; round < SCENE_TARGET * 4 && scene < SCENE_TARGET; round++) {
       const d = Math.hypot(b.cx - a.cx, (b.cy - a.cy) || 0, (b.cz - a.cz) || 0);
       if (d > pMax) pMax = d;
       if (d / dt > vMax) vMax = d / dt;
-      dtSum += dt; nn++;
+      dtSum += dt; nn++; dur += dt;
+      if (b.lx != null && a.lx != null) {
+        const y1 = Math.atan2(a.lz - a.cz, a.lx - a.cx), y2 = Math.atan2(b.lz - b.cz, b.lx - b.cx);
+        let dy = y2 - y1; while (dy > Math.PI) dy -= 2 * Math.PI; while (dy < -Math.PI) dy += 2 * Math.PI;
+        if (Math.abs(dy) > 0.006) { if (yPrev && Math.sign(dy) !== Math.sign(yPrev)) yRev++; yPrev = dy; }
+        if (Math.abs(dy) > yMax) yMax = Math.abs(dy);
+      }
     }
-    return { k, n: W.length, cam: txt.split('\n').filter(l => /CAMERA|camera/.test(l)), pMax, vMax, dtMed: nn ? dtSum / nn : null };
+    return { k, n: W.length, cam: txt.split('\n').filter(l => /CAMERA|camera|SGUARDO/.test(l)), pMax, vMax, dtMed: nn ? dtSum / nn : null,
+      yRevS: dur > 0.5 ? yRev / dur : 0, yMaxDeg: yMax * 57.3 };
   });
   if (r) righe.push(r);
 }
@@ -108,5 +120,10 @@ for (const s of [20, 30, 40, 60, 80, 120]) {
   console.log(`  ${s} u/s → ${n}/${R.length} (${(100 * n / R.length).toFixed(0)}%)`);
 }
 for (const e of errs.slice(0, 3)) console.log('  ⚠ pageerror: ' + e);
+const yr = R.map(r => r.yRevS), ym = R.map(r => r.yMaxDeg);
+console.log(`\nSGUARDO (asse ottico) — inversioni/s: mediana ${q(yr, .5).toFixed(1)} · p90 ${q(yr, .9).toFixed(1)} · max ${Math.max(...yr).toFixed(1)}   (soglia in vigore: 2,0)`);
+console.log(`                        ampiezza max per fotogramma: mediana ${q(ym, .5).toFixed(1)}° · p90 ${q(ym, .9).toFixed(1)}° · max ${Math.max(...ym).toFixed(1)}°`);
+console.log('quante scene SANE verrebbero etichettate, per soglia di INVERSIONI/s dello sguardo:');
+for (const sgl of [2, 4, 6, 8, 10, 15, 20]) { const n = yr.filter(v => v >= sgl).length; console.log(`  ${sgl} /s → ${n}/${R.length} (${(100 * n / R.length).toFixed(0)}%)${sgl === 2 ? '   ← in vigore' : ''}`); }
 console.log('\n→ le note del PO riportano 1,4 · 2,0 · 2,0 · 2,2 e un 14,3: se la banda normale arriva fin li\',');
 console.log('  le prime quattro sono la camera che fa il suo mestiere e solo il 14,3 e\' un difetto.');

@@ -36,6 +36,7 @@
     "gk-dive-sync": "node gk-dive-sync-test.mjs",
     "camera-cut-mask": "node camera-cut-mask-test.mjs",
     "cup-final-replay": "node cup-final-replay-test.mjs",
+    "pass-forward": "node pass-forward-test.mjs",
     "critica-context": "node critica-context-test.mjs",
     "coach-review-variety": "node coach-review-variety-test.mjs",
     "parata-shot": "node parata-shot.mjs",
