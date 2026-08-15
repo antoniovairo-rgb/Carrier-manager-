@@ -24,14 +24,14 @@ const b = await launchBrowser();
 const page = await b.newPage({ viewport: { width: 412, height: 820 }, deviceScaleFactor: 2 });
 await installCdnRoutes(page);
 const errs = []; page.on('pageerror', e => errs.push(String(e.message).slice(0, 140)));
-await page.addInitScript(() => { window.__CPM_GLB = false; });
+await page.addInitScript(e => { window.__CPM_GLB = false; if (e) window.__CPM_EURO_SHOT = 1; }, !!process.env.CPM_EURO);
 await page.goto(`http://localhost:${port}/CARRIER-MANAGER-AV.html?cpmtest=1`, { waitUntil: 'domcontentloaded', timeout: 90000 });
 await page.waitForFunction(() => typeof window.__CPM_PARATA_C === 'function', null, { timeout: 60000 });
 
 await page.evaluate(() => {
   document.body.innerHTML = '<div id="parata" style="position:fixed;inset:0"></div>';
   const club = { id: 'sal', n: 'FC Salento', a: 'SAL', p: 72, c: '#f4c20d', c2: '#c0392b', nat: '🇮🇹', lg: 'Lega B' };
-  const el = React.createElement(window.__CPM_PARATA_C, { club, euroWin: false, avatarId: 0, heroNum: 9 });
+  const el = React.createElement(window.__CPM_PARATA_C, { club, euroWin: !!window.__CPM_EURO_SHOT, avatarId: 0, heroNum: 9 });
   ReactDOM.createRoot(document.getElementById('parata')).render(el);
 });
 
