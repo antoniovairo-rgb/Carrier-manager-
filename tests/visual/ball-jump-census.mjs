@@ -31,7 +31,7 @@ const page = await b.newPage({ viewport: { width: 412, height: 915 } });
 await installCdnRoutes(page);
 const errs = []; page.on('pageerror', e => errs.push(String(e.message).slice(0, 120)));
 /* il testimone di bordo esiste solo coi DEVTOOLS accesi: senza questa riga la sonda gira e non guarda */
-await page.addInitScript(() => { window.__CPM_GLB = false; window.__CPM_CINE = 1; window.__CPM_PRESENT = 1; try { localStorage.setItem('cpm-devtools', '1'); } catch (e) {} });
+await page.addInitScript(m => { window.__CPM_GLB = false; window.__CPM_CINE = 1; window.__CPM_PRESENT = 1; window.__CPM_REC = true; if (m) window.__CPM_BJMIN = m; try { localStorage.setItem('cpm-devtools', '1'); } catch (e) {} }, +(process.env.CPM_BJMIN || 0));
 await openMatch(page, port, { skipLoadAll: true });
 await sleep(700);
 
@@ -74,6 +74,12 @@ for (let round = 0; round < TARGET * 4 && scene < TARGET; round++) {
   });
   if (r && r.out.length) for (const s of r.out) salti.push({ scena: r.k, ...s });
 }
+/* [7.478.0] LA SORGENTE, non la dimensione. L'anello del testimone dice QUANTO salta il pallone ma non chi
+   lo sposta, e la sua finestra (una sola chiave-scena) esclude proprio l'apertura di scena a cui la prima
+   passata aveva attribuito i salti. Il varco `__CPM_BJ478` e' scritto dal render-loop accanto a ogni
+   riassegnazione secca del pallone e letto a fine fotogramma, con lo stato dello stacco nero. */
+const fonti = await page.evaluate(() => (window.__CPM_BJ478 || []).slice()).catch(() => []);
+const visti = await page.evaluate(() => window.__CPM_BJN478 || 0).catch(() => 0);
 await b.close(); srv.close();
 
 const bit = f => [(f & 1) ? 'arco' : '', (f & 2) ? 'post-arco' : '', (f & 4) ? 'build-up' : '', (f & 8) ? 'in-scena' : ''].filter(Boolean).join('+') || '—';
@@ -88,4 +94,14 @@ if (salti.length) {
   console.log(`dimensioni distinte del salto: ${dd.slice(0, 12).join(', ')}${dd.length > 12 ? '…' : ''}`);
   console.log(dd.length <= 3 ? '→ POCHE dimensioni distinte: e\' una transizione fissa, non rumore.' : '→ molte dimensioni distinte: guardare gli stati, non il numero.');
 } else console.log('nessun salto osservato in questa passata.');
+console.log(`\n=== ${fonti.length} salti ATTRIBUITI su ${visti} fotogrammi VISTI dal varco ===`);
+if (!visti) console.log('  ⚠️  il varco non ha guardato nessun fotogramma: la misura non vale (strumenti spenti o codice non raggiunto).');
+if (fonti.length) {
+  const per = {};
+  for (const f of fonti) { const k = f.src + (f.mask ? ' [dentro lo stacco]' : ' [SCOPERTO]'); (per[k] = per[k] || []).push(f.d); }
+  for (const [k, ds] of Object.entries(per).sort((a, b2) => b2[1].length - a[1].length))
+    console.log(`  ${String(ds.length).padStart(3)}x ${k.padEnd(30)} · da ${Math.min(...ds).toFixed(1)} a ${Math.max(...ds).toFixed(1)} u`);
+  const scoperti = fonti.filter(f => !f.mask);
+  console.log(`\n${scoperti.length}/${fonti.length} salti avvengono SENZA stacco nero vivo: sono quelli che il giocatore vede.`);
+} else console.log('  nessun salto attribuito (varco vuoto: strumenti spenti o pallone continuo).');
 for (const e of errs.slice(0, 3)) console.log('  ⚠ pageerror: ' + e);

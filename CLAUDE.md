@@ -320,6 +320,18 @@ paragrafo. È così che questo file è arrivato a 343 KB.
 
 **Invariante «un gol dichiarato ha sempre la sua conclusione giocata» (7.460.0):** `npm run goal-postarc` — guardiano NON-gate sul flusso vero; il gate e' cieco (forza le situation). Giudica due classi strutturali (conclusione mai partita · arco atterrato fuori scena senza post-arco) e **dichiara senza giudicare** il residuo «finestra d'esito chiusa con l'arco ancora in volo», che e' una precedenza fra la finestra (`setTimeout`, tempo reale) e la catena cinematica (clock di scena, `dt` tappato a 0.05): a fps bassi — headless **e telefono lento** — il clock di scena avanza meno della meta' del reale. Prova del rosso: `__CPM_NO460` (classi A/B) e `__CPM_NO461` (classe C). **Dal 7.461 la precedenza e' decisa dal PO: comanda la SCENA** — il renderer dichiara ogni fotogramma se build-up/arco/post-arco sono vivi (`cineBusyRef`) e l'auto-avanzamento non chiude finche' non ha finito (tetto 6s; skip manuale libero; spenta sotto il gate). ⚠️ Una sonda che aspetta un tempo FISSO e poi fotografa misura il PROPRIO cronometro, non quello del gioco: aspettare l'uscita da `hl_result`. ⚠️ Misurando la finestra d'esito ricordarsi che `_gk76` (l'attesa concessa al gol) e' SPENTA sotto `?cpmtest=1`: serve `__CPM_REALWAIT`.
 
+**Invariante «il pallone sta nel rettangolo» + come si misura «in rete» (7.478.0):** `npm run outcome-not-goal`
+— guardiano NON-gate sul flusso vero e su un percorso forzato (`CPM_FORCE=1`, `CPM_ONLY=50,55` per scene
+nominate). ⚠️ Due costanti si confondono e hanno gia' prodotto tre falsi rossi: **`AWAY_GOAL_X`=46 e' la rete
+interna, la LINEA DI PORTA e' `_GLX`=48,6**, e «finita in rete» pretende anche i **pali** (|z| ≤ 3,35, la
+costante con cui il gioco stesso clampa l'ingresso in rete) — senza la z, ogni cross uscito largo sul fondo
+viene condannato. Il lerp della palla logica ha un fondo campo (0..100, `__CPM_NO478D` lo toglie): la palla
+era stata misurata a 103,5 logici / 54,2 in mesh, cioe' dentro i cartelloni. **Salto del pallone:**
+`npm run ball-jump-census` non misura piu' solo la dimensione — il varco `__CPM_BJ478` **attribuisce** ogni
+riassegnazione secca alla sua sorgente e dice se c'e' uno stacco nero vivo; `CPM_BJMIN` abbassa la soglia
+per provare che il varco guarda davvero. ⚠️ Un «salto» misurato fra due CAMPIONI dell'anello (59-431 ms a
+8-25 fps) non e' un teletrasporto: e' velocita' x intervallo, la trappola del 7.360.
+
 **Test dal vivo:** `tests/visual/live-match-test.mjs` (non-gate, GLB-ON) verifica la coerenza M1 overlay⟺esito su un campione di tiri falliti + screenshot full-page; `tests/visual/glb-gesture-smoke.mjs` per i gesti GLB. Le parti gate-cieche (movimento, camera, cronaca BG live, cerimonia) si collaudano così.
 
 > **Quick-gate (`npm run quick-gate`, ~1.5 min):** gate **leggero** per iterare veloce in sviluppo (`tests/visual/quick-gate.mjs`). Campiona ~26 Situations sui check di stato (`initial-state/orientation/visual/movements/golden`) + `determinism/final-state/timeline/data-coherence`; **salta** i sampler lenti (`motion/ball-motion/post-highlight/perf/ai-vision`). Riusa harness + gli stessi `checks/*.mjs` → zero duplicazione. ⚠️ **NON sostituisce** il gate completo: `validate-situations` (14/14) resta **obbligatorio prima di ogni push**. Usa il quick-gate per il loop di sviluppo, il gate completo come gate di rilascio.

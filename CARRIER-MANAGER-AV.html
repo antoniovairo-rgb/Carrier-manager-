@@ -4777,7 +4777,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="7.477.0"; // [7.450.0 MESSA IN SICUREZZA · P0 #4 dell'audit forense — UN TOCCO DOPPIO APPLICAVA L'AZIONE DUE VOLTE]: nessuna guardia di rientranza sugli handler che cambiano lo stato; due tocchi ravvicinati passavano entrambi prima che React richiudesse il modal. MISURATO: doppio tap su «Conferma avanzamento» = DUE settimane in un colpo, economia applicata due volte (+60.000 invece di +30.000) e la partita della settimana auto-simulata senza poterla giocare; doppio tap su una scelta d'evento = effetti raddoppiati (fatica +8 invece di +4, popolarita' +10 invece di +5, fiducia -12 invece di -6). LA PROTEZIONE NON E' UN TIMEOUT: e' un lock legato al CICLO DI RENDER, che si arma quando l'azione parte e si rilascia da solo appena React ha completato un render — cioe' esattamente quando un secondo tocco non e' piu' un duplicato ma una nuova intenzione. Nessun blocco permanente possibile: il rilascio non dipende dalla riuscita dell'operazione (verificato: dopo il doppio tap la carriera prosegue col percorso reale). +contatore test-only delle applicazioni REALI: l'invariante «una intenzione = una applicazione» va misurato li', non sui valori — quale evento venga estratto e' casuale, il numero di applicazioni no. GUARDIANO double-tap-test, NEL GATE: prova del ROSSO (__CPM_NO_P0_4: Δ2 settimane, 2 applicazioni dell'evento) e i casi — click singolo invariato, doppio tap con una sola applicazione, gioco ancora usabile dopo, evento non raddoppiato.
+const GAME_VERSION="7.478.0"; // [7.478.0 LA CODA CHIUSA CON LE MISURE, DUE DELLE QUALI DICONO DI NO]: (1) «SALTO del pallone» — il censimento del 7.477 attribuiva i salti all'apertura di scena, ma la sua finestra tiene una sola chiave-scena e l'apertura e' proprio la transizione fra due chiavi: non poteva vederla. Varco nuovo per fotogramma (`__CPM_BJ478`, etichetta scritta da chi riassegna il pallone di colpo + stato dello stacco nero): su 142 movimenti misurati gli UNICI teletrasporti veri sono le 2 consegne dichiarate (20,1 e 26,2 unita') ed entrambe stanno DENTRO lo stacco; tutto il resto e' sotto 3 unita'. I 7-46u del censimento erano l'intervallo di campionamento (59-431 ms = 1-10 fotogrammi a 8-25 fps) per la velocita' della palla, non un salto. Stessa trappola del 7.360, soglia x intervallo. (2) codice 007, oscillazione dello sguardo: UN RIMEDIO PROVATO E REVOCATO, e va scritto. L\'ipotesi era che le due reti su camLook fossero un interruttore acceso-spento a ogni fotogramma (la rete riporta il soggetto al 98% del semiquadro, il lerp lo rispinge fuori: una frequenza che scala coi fps, il che spiegherebbe perche\' il fenomeno vive solo sul dispositivo), curabile con un\'isteresi. Scritta e misurata sulle 5 situations con la palla FUORI QUADRO censite dal 7.305 (gi 6·37·77·79·133): gli ingaggi SALGONO, 1,32/s contro 0,66/s — il contrario della previsione. Senza isteresi la rete non lampeggia affatto, resta accesa a lungo. Ipotesi caduta, codice revocato (le costanti sono quelle di prima, byte per byte). Resta il censimento `look-inversion-census.mjs` con la grandezza giusta: inversioni di segno della correzione PER FOTOGRAMMA CORRETTO — un rapporto, non una frequenza, quindi headless e dispositivo dicono lo stesso numero, che e\' proprio cio\' che mancava al 7.475 per poter giudicare. E il primo numero ESCLUDE l\'indiziato: ZERO inversioni su 152 fotogrammi corretti (eroe 12, palla 140) — quando queste reti correggono, spingono sempre nello stesso verso. Il meccanismo che il 7.475 indicava («un ciclo di correzione che agisce una volta per fotogramma sul solo camLook») non oscilla: la caccia al 007 va spostata altrove, e ora c\'e' un numero da confrontare col dispositivo per dirlo. (3) «esito dichiarato != 3D», il rosso era del CRITERIO: `AWAY_GOAL_X`=46 e\' la rete interna, la linea di porta e\' `_GLX`=48,6, e «in rete» vuole i PALI — misurato, i campioni oltre la linea di gi50/55/80 hanno z da -18,4 a +32,3 contro pali a +-3,35: zero palloni dentro la porta, erano cross usciti larghi sul fondo. Il guardiano ora giudica con la linea vera e i pali. Cio\' che la misura ha trovato davvero: la palla LOGICA usciva dal campo (103,5 su 0..100, mesh a 54,2 contro un rettangolo che finisce a 50) — messo il fondo campo nel lerp. ⚠️ Osservato due volte su codice intatto, NON riproducibile a comando (44 scene forzate col clamp spento restano dentro): spedito come limite del modello, non come rimedio dimostrato; il guardiano porta il controllo in permanenza. // [7.450.0 MESSA IN SICUREZZA · P0 #4 dell'audit forense — UN TOCCO DOPPIO APPLICAVA L'AZIONE DUE VOLTE]: nessuna guardia di rientranza sugli handler che cambiano lo stato; due tocchi ravvicinati passavano entrambi prima che React richiudesse il modal. MISURATO: doppio tap su «Conferma avanzamento» = DUE settimane in un colpo, economia applicata due volte (+60.000 invece di +30.000) e la partita della settimana auto-simulata senza poterla giocare; doppio tap su una scelta d'evento = effetti raddoppiati (fatica +8 invece di +4, popolarita' +10 invece di +5, fiducia -12 invece di -6). LA PROTEZIONE NON E' UN TIMEOUT: e' un lock legato al CICLO DI RENDER, che si arma quando l'azione parte e si rilascia da solo appena React ha completato un render — cioe' esattamente quando un secondo tocco non e' piu' un duplicato ma una nuova intenzione. Nessun blocco permanente possibile: il rilascio non dipende dalla riuscita dell'operazione (verificato: dopo il doppio tap la carriera prosegue col percorso reale). +contatore test-only delle applicazioni REALI: l'invariante «una intenzione = una applicazione» va misurato li', non sui valori — quale evento venga estratto e' casuale, il numero di applicazioni no. GUARDIANO double-tap-test, NEL GATE: prova del ROSSO (__CPM_NO_P0_4: Δ2 settimane, 2 applicazioni dell'evento) e i casi — click singolo invariato, doppio tap con una sola applicazione, gioco ancora usabile dopo, evento non raddoppiato.
 // [nota 7.449.0] [7.449.0 MESSA IN SICUREZZA · P0 #3 dell'audit forense — IL RIFERIMENTO ALLA GARA APERTA SOPRAVVIVEVA ALL'USCITA]: `_playingMdRef` descrive la gara di CLUB aperta da startMatch, ma veniva azzerato SOLO da onMatchEnd: uscire dal pre-partita (onQuit) o essere respinti dai suoi return anticipati («non convocato», avversario non risolvibile) lo lasciava CARICO. E il consumo in onMatchEnd avveniva per QUALUNQUE fine partita, comprese quelle di Nazionale, che non passano da startMatch e non lo impostano mai. Catena: apro il pre-partita di campionato, torno indietro, gioco in Nazionale — e il commit registra come giocata una giornata di campionato mai disputata, che la bonifica chiude subito dopo. Stagione a 33 su 34 senza che nulla lo segnali. CICLO DI VITA RICOSTRUITO invece di un reset indiscriminato: il riferimento nasce all'apertura della gara, si INVALIDA su ogni percorso d'uscita dal pre-partita (onQuit e i due return anticipati) e si CONSUMA solo nei contesti di CLUB (career/cup/euro) — una gara di Nazionale non tocca piu' una giornata di campionato, ed e' la rete che copre anche le uscite non previste. +sonda test-only `__CPM_CAREER.mdRef()`: senza, il guardiano misurerebbe gli effetti e non la causa. GUARDIANO playing-mdref-test, NEL GATE: prova del ROSSO (__CPM_NO_P0_3: nel pre-partita il riferimento e' carico e resta carico dopo l'uscita) + i percorsi — uscita che invalida, calendario e presenze immutati dopo un'uscita, riapertura coerente con la gara vera, partita realmente giocata che si committa ancora.
 // [nota 7.448.0] [7.448.0 MESSA IN SICUREZZA · P0 #2 dell'audit forense — UN SALVATAGGIO PIU' VECCHIO POTEVA SOVRASCRIVERE IL PIU' RECENTE]: `storage.save` e' async e non aveva ne' coda ne' sequenza. Nel browser non si vede (localStorage e' sincrono) ma la build pubblicata su Play Store gira su `window.storage` = @capacitor/preferences, iniettato da tools/build-dist.mjs, dove la scrittura passa da un BRIDGE ASINCRONO: due salvataggi concorrenti potevano completare FUORI ORDINE, e `savedAt` veniva scritto ma mai riletto, quindi nulla se ne accorgeva. DIMOSTRATO a runtime con un bridge finto a latenza pilotata: stato A → parte l'autosave (bridge occupato) → stato B → l'app va in background → il flush salva B → il salvataggio di A completa DOPO e riscrive il disco con lo stato vecchio (memoria 2222, disco 1111). Su Android significa perdere una partita, una settimana, a volte una stagione — ed e' anche una spiegazione a monte della «partita gia' giocata», perche' un save che torna indietro riporta in calendario una gara gia' disputata. CURA MINIMA, nessuna infrastruttura nuova e formato del salvataggio IMMUTATO: una CODA per chiave (le scritture si susseguono nell'ordine in cui sono state chieste, mai sovrapposte) e uno SCARTO delle scritture gia' superate (se mentre A aspetta il turno e' arrivata B, A non viene scritta: il suo contenuto e' vecchio per definizione). GUARDIANO save-monotonic-test, NEL GATE: prova del ROSSO incorporata (__CPM_NO_P0_2 ripristina le scritture concorrenti → il disco torna a 1111) e sei scenari — vecchio-lento contro nuovo-veloce, tre scritture a latenza decrescente, salvataggio normale non bloccato, ramo browser invariato, ramo bridge nativo, riapertura dell'app che rilegge l'ultimo stato.
 // [nota 7.447.0] [7.447.0 MESSA IN SICUREZZA · P0 #1 dell'audit forense — IL RECUPERO DOPO UN RIAVVIO CONFONDEVA LE COMPETIZIONI]: e' la vera causa della «partita gia' giocata» che il PO segnala da nove collaudi. Il recovery del sidecar cercava la gara nel calendario per AVVERSARIO e SEDE, senza mai guardare la competizione; siccome l'avversario di Coppa viene sorteggiato DALLA STESSA LEGA e il turno R16 e' cablato «in casa», per costruzione esiste SEMPRE una voce di campionato in casa contro quel club. RIPRODOTTO: recuperando una gara di Coppa, la classifica di campionato passava da 17 a 18 partite e da 40 a 43 punti per una gara mai giocata, e la giornata di lega spariva marcata come giocata. Aggravante: le due ref che portano l'identita' della gara vivono nella SESSIONE e dopo il riavvio sono vuote — `matchTypeRef` torna al default "league" (l'unico writer "cup" e' startMatch, che dopo il reboot non passa mai) e `_playingMdRef` e' null, quindi anche il ramo di commit era quello di lega. DUE CURE MINIME: (1) i candidati si filtrano per COMPETIZIONE, derivata da `result.context` che era gia' nel sidecar dal 7.24.3 — nessun campo nuovo, e un sidecar senza contesto (scritto da una versione precedente) non viene filtrato ne' scartato, mantenendo il comportamento storico; (2) prima del dispatch si ricostruiscono `matchTypeRef` e `_playingMdRef` dalla voce ritrovata, cosi' il commit marca la voce giusta per NUMERO di giornata e registra quella giornata. GUARDIANO recovery-competition-test, NEL GATE: prova del ROSSO incorporata (interruttore __CPM_NO_P0_1 che ripristina la vecchia logica: la voce di lega torna a essere marcata, classifica 18) + casi A-G (coppa committata in coppa, campionato intatto a 17/40, turno di coppa avanzato, nessuna regressione sul recupero di lega). Gli assert leggono lo stato PERSISTITO, non la memoria.
@@ -10626,6 +10626,21 @@ function deriveSitCine(sit){
   return ov?Object.assign(base,ov):base;
 }
 // hlBallState ora è un LETTORE puro del campo precalcolato (fallback: deriva al volo per sit sintetiche/chained).
+/* [7.478.0 codice 007] TESTIMONE DELLE RETI DI SGUARDO — e la grandezza e' cambiata DOPO una misura che ha
+   detto di no. Il 7.475 ha provato che l'AMPIEZZA dell'oscillazione non e' esprimibile in headless (un
+   campione per fotogramma, 8-25 fps, contro 34,7 inversioni/s del dispositivo). La prima ipotesi di questa
+   release era che la rete fosse un interruttore acceso-spento a ogni fotogramma, curabile con isteresi:
+   MISURATO SULLE CINQUE SITUATIONS CON LA PALLA FUORI QUADRO (gi 6·37·77·79·133, censite dal 7.305), e la
+   misura ha detto il CONTRARIO — con l'isteresi gli ingaggi SALGONO (1,32/s contro 0,66/s), perche' senza
+   la rete non lampeggia affatto: resta accesa a lungo, e correggendo piu' a fondo l'isteresi la faceva
+   rilasciare e riagganciare. Ipotesi caduta, isteresi revocata. Resta lo strumento, con la grandezza che
+   descrive davvero un'oscillazione: quante volte la correzione INVERTE IL SEGNO, sui fotogrammi in cui la
+   rete corregge. E' un rapporto, non una frequenza: non dipende dai fps, quindi headless e dispositivo
+   dicono lo stesso numero. Solo strumenti accesi. */
+function _hyBump478(sr,k,cor){try{if(typeof window==='undefined')return;if(!(window.__CPM_REC||window.__CPM_HY478))return;
+  const o=(window.__CPM_HY478=window.__CPM_HY478||{t0:performance.now()});
+  const f=o[k]||(o[k]={n:0,inv:0,s:0});f.n++;
+  const sg=Math.sign(cor||0);if(sg&&f.s&&sg!==f.s)f.inv++;if(sg)f.s=sg;}catch(_e){}}
 function hlBallState(sit){
   if(sit&&sit.ballState!=null)return sit.ballState;
   return (typeof deriveBallState==="function")?deriveBallState(sit):"feet";
@@ -12688,6 +12703,13 @@ function ThreeMatchView(props){
       /* memo PROPRIO del blocco palla: il flag armato dal blocco giocatori arriverebbe un frame dopo, e a quel
          punto l'arco della conclusione puo essere gia partito (lo snap verrebbe saltato). Qui la chiave di scena
          si legge PRIMA di qualunque lancio d'arco, che avviene piu avanti nel frame. */
+      /* [7.478.0 codice «salto del pallone»] TESTIMONE DELLA SORGENTE, non della dimensione. Il censimento
+         del 7.477 misurava QUANTO salta il pallone e attribuiva il salto all'apertura di scena; ma la sua
+         finestra tiene i campioni di UNA sola chiave-scena, e l'apertura e' proprio la transizione fra due
+         chiavi: quella riga non poteva vederla. Qui si apre un varco per fotogramma — posizione all'inizio
+         del frame e un'etichetta scritta da chi riassegna il pallone di colpo — e si legge a fine frame,
+         accanto allo stacco nero. La domanda «chi lo fa» ha una risposta sola, e non e' una deduzione. */
+      if(typeof window!=='undefined'&&(window.__CPM_REC||_CPM_TEST||_SIT_TEST))sr.current._bj0={x:ball.position.x,z:ball.position.z,src:null};else sr.current._bj0=null;
       if(P.hlSitKey!=null&&P.hlSitKey>=0&&sr.current._lastBallKey!==P.hlSitKey){sr.current._lastBallKey=P.hlSitKey;sr.current._ballSnap=true;}
       if(sr.current._ballSnap&&isHL){sr.current._ballSnap=false;
         ballArcActive=false;hlPostArcT=-1;hlPostArcType=null;/* [7.227.0 #45] un arco/post-arco ancora vivo QUI è della scena PRECEDENTE (lo snap si arma solo al cambio di chiave-scena): il wizard salta hl_intro — dove il 7.42.1 annullava gli archi — e il volo residuo bloccava lo snap e attraversava la scena nuova (misurato: frame d'apertura a y 3.3 in volo) */
@@ -12703,7 +12725,7 @@ function ThreeMatchView(props){
            stageSitPositions) arriva il commit DOPO, ~30 unita' piu' in la' — e' l'intera scena che trasla,
            non il pallone. Il fix vero e' ri-armare lo snap dei ventidue E della palla sul commit di staging:
            in coda con questa nota. */
-        ball.position.x=G2X(P.ballX==null?50:P.ballX);ball.position.z=G2Z(P.ballY==null?50:P.ballY);ball.position.y=(_sy!=null?_sy:0.65);}
+        ball.position.x=G2X(P.ballX==null?50:P.ballX);ball.position.z=G2Z(P.ballY==null?50:P.ballY);ball.position.y=(_sy!=null?_sy:0.65);if(sr.current._bj0)sr.current._bj0.src='scena';}
       const obx=ball.position.x,oby=ball.position.y,obz=ball.position.z;
       // ATE-2: durante arco BG usa destinazione 3D esatta + velocità sync con durata arco
       // 3DV-10: skip lerp x/z durante post-arco (deflect/cross_goal/in_net gestiscono x/z propri)
@@ -13026,7 +13048,7 @@ function ThreeMatchView(props){
           const _cgLate=hlPostArcT>=_cgD+2.2;/* [7.335.0] attesa massima bounded: se il terzo uomo non arriva, l'esito parte comunque (senza gesto) */
           if(_uh74>=0.93&&sr.current._cgHold==null&&(_cgNear||_cgLate))sr.current._cgHold=0.22;/* [7.253.0 gi30 «lontanissimo il tiro»] STACCO PERCETTIVO sull'uomo dell'incornata: lancio→testa→rete era UN volo continuo da centrocampo alla porta e leggeva come un tiro da 40m — ora la palla SOSPENDE ~0.22s a quota testa sul terzo uomo (contatto leggibile) e solo poi entra. [7.335.0 collaudo PO «la palla passa senza una dinamica chiara da un compagno a un altro»] lo stacco si arma SOLO a contatto: prima la sospensione TELETRASPORTAVA la palla sul mesh dell'uomo in ritardo (misurato game 84.6→51.3 = mezzo campo all'indietro) — ora la palla resta parcheggiata in area e ASPETTA l'arrivo */
           if(sr.current._cgHold!=null&&sr.current._cgHold>0){sr.current._cgHold-=aDt;
-            if(crossRcvMesh&&_cgNear){ball.position.x=crossRcvMesh.position.x+0.6;ball.position.z=crossRcvMesh.position.z;ball.position.y=1.9;}}
+            if(crossRcvMesh&&_cgNear){ball.position.x=crossRcvMesh.position.x+0.6;ball.position.z=crossRcvMesh.position.z;ball.position.y=1.9;if(sr.current._bj0)sr.current._bj0.src='ricevente-cross';}}
           if(_uh74>=0.93&&sr.current._cgHold!=null&&sr.current._cgHold<=0){sr.current._cgHold=null;/* [7.252.0 gi30 «rimbalza in area senza senso»] l'incornata del terzo uomo colpisce la palla IN ARIA (~93% dell'arco, ancora in discesa) — prima la transizione aspettava il tocco a terra e la ripartenza verso la rete leggeva come un rimbalzo */
             // [5.83.0 IA-3] il tuffo sul CROSS arriva al 2° TOCCO (l'incornata), non al lancio del traversone
             if(awayGkMesh&&!P.hlDef&&!oppActType){oppActType="gk_dive";oppActT=0;oppMesh=awayGkMesh;oppDiveDir=ball.position.z>=oppMesh.position.z?1:-1;oppMesh._divePz=oppMesh.position.z;oppMesh._diveYaw=oppMesh.rotation.y;oppMesh._diveToZ=clamp(oppMesh.position.z+(ball.position.z-oppMesh.position.z)*0.55,oppMesh.position.z-6,oppMesh.position.z+6);}/* [6.74.0 3D-3] anche sull'incornata da cross il tuffo resta corto (il gol sta entrando) */
@@ -13178,7 +13200,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
           const _atGate49=(_rmNear240<2.2&&hlPostArcT>=0.30),_fb49=hlPostArcT>=2.6;
           if(_atGate49&&!_fb49&&sr.current._rcvCtl==null){sr.current._rcvCtl=0.55;if(_rm)sr.current._mateFx={mesh:_rm,name:"receive",t:0.6};}/* [7.251.0 gi30/57 «non si vede il compagno che riceve»] al contatto il ricevente SUONA il controllo (clip receive a 3.2×) e il beat sale a 0.55s: lo stop orientato È la ricezione */
           if(_atGate49&&!_fb49&&sr.current._rcvCtl>0){sr.current._rcvCtl-=aDt;
-            if(_rm){ball.position.x=_rm.position.x+0.7;ball.position.z=_rm.position.z;}
+            if(_rm){ball.position.x=_rm.position.x+0.7;ball.position.z=_rm.position.z;if(sr.current._bj0)sr.current._bj0.src='ricevente-pass';}
           }
           if((_atGate49&&(sr.current._rcvCtl==null||sr.current._rcvCtl<=0))||_fb49){sr.current._rcvCtl=null;/* [7.247.0] col pallone che va incontro al ricevente il CONTATTO è reale: raggio 3.4→2.2 (il calcio parte con la palla sul piede, non a 3 metri) */hlPostArcType=(P.hlPattern==="SWITCH"||ball.position.x<22)?"cross_goal":"assist_shot";hlPostArcT=0;contactFlashT=0;/* [7.243.0 gi30 «Non si vede il compagno che riceve e conclude»] arrivo a 3.4u (misurato: l'inseguimento tocca il minimo a ~3.6 e poi ondeggia — il tocco parte sul passo più vicino, come una conclusione di prima) · fallback 3.0→2.6s · [7.246.0 gi29 «Conclusione da posizione troppo lontana»] tiro diretto solo dal raggio credibile: sotto, il ricevente SERVE IN AREA e conclude il terzo uomo · [7.253.0 gi57 «non si vede il compagno che riceve e CALCIA»] soglia 30→22 world: chi riceve entro ~22m (game ≥72 — misurato il ricevente di fascia a 24.9 world costretto a una SECONDA consegna illeggibile) TIRA davvero; il centrocampo resta consegna (gi29/30) */
             /* [7.209.0 collaudo PO «il pallone non sembrava calciato ma partiva e volava su traiettorie
@@ -14766,7 +14788,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                  Uno STACCO DI SCENA non e' un movimento: qui il pallone viene messo dove deve stare, nello
                  stesso fotogramma in cui i ventidue ci vengono messi. Da qui in poi comanda di nuovo il
                  moto normale, che ha gia' il bersaglio giusto. */
-              try{ball.position.x=G2X(_pt383.x);ball.position.z=G2Z(_pt383.y);ball.position.y=0.65;sr.current._lastBallKey=P.hlSitKey;sr.current._ballSnap=false;}catch(_e2){}if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){const _c=(window.__CPM_DLV383=window.__CPM_DLV383||{});_c.push=(_c.push||0)+1;_c.last={x:+_pt383.x.toFixed(1),y:+_pt383.y.toFixed(1),key:P.hlSitKey,kind:_dv383.kind};}}
+              try{ball.position.x=G2X(_pt383.x);ball.position.z=G2Z(_pt383.y);ball.position.y=0.65;sr.current._lastBallKey=P.hlSitKey;sr.current._ballSnap=false;if(sr.current._bj0)sr.current._bj0.src='consegna';}catch(_e2){}if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){const _c=(window.__CPM_DLV383=window.__CPM_DLV383||{});_c.push=(_c.push||0)+1;_c.last={x:+_pt383.x.toFixed(1),y:+_pt383.y.toFixed(1),key:P.hlSitKey,kind:_dv383.kind};}}
             else if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){const _c=(window.__CPM_DLV383=window.__CPM_DLV383||{});_c.nopt=(_c.nopt||0)+1;}
           }
         }catch(_e383){}}
@@ -14839,7 +14861,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                  esponenziale (blocco _aerIn52 sotto) — in moto fino all'impatto, mai sospesa. */
               const _lfx52=G2X(last.from[0]),_lfz52=G2Z(last.from[1]),_ltx52=G2X(last.to[0]),_ltz52=G2Z(last.to[1]);
               const _ddx52=_ltx52-_lfx52,_ddz52=_ltz52-_lfz52,_dl52=Math.hypot(_ddx52,_ddz52)||1;
-              ball.position.x=_ltx52-_ddx52/_dl52*3.0;ball.position.z=_ltz52-_ddz52/_dl52*3.0;ball.position.y=_aerTL+1.0;
+              ball.position.x=_ltx52-_ddx52/_dl52*3.0;ball.position.z=_ltz52-_ddz52/_dl52*3.0;ball.position.y=_aerTL+1.0;if(sr.current._bj0)sr.current._bj0.src='buildup-aereo';
               sr.current._aerIn52={x:_ltx52,z:_ltz52,y:_aerTL};
             } else if(last&&last.kind==='carry'&&(function(){const _cid414=(typeof last.fromId==='string')?last.fromId:((typeof last.toId==='string')?last.toId:null);const _cm414=(_cid414==='HERO')?hero:((tlMap&&_cid414&&tlMap[_cid414])||hero);return _cm414&&_cm414.position&&Math.hypot(ball.position.x-_cm414.position.x,ball.position.z-_cm414.position.z)<3.4;})()){ball.position.y=0.65;/* [7.414.0 gi24/gi79 «zig-zag» / «teletrasporto da 16,5u»] LA GUARDIA VALE PER QUALUNQUE PORTATORE, NON SOLO L'EROE: se l'ultimo beat e' la conduzione di un COMPAGNO tappato a velocita' umana, il corpo arriva corto sul piano (misurato: portatore a 4,5 col piano a 38 — 26u dall'eroe) e la scrittura del punto pianificato era un teletrasporto da 7,8-13,8u proprio al fotogramma della conclusione. Il portatore lo dice il beat (fromId→tlMap), l'eroe resta il ripiego. */
               /* [7.394.0 collaudo PO «SALTO del pallone — sembra un teletrasporto», la sorgente RESIDUA
@@ -14854,7 +14876,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                  conclude, la consegna E' GIA' AVVENUTA: si lascia dov'e', e l'arco del tiro parte da li'
                  — come nel calcio. Il punto pianificato resta il ripiego per quando il pallone e' lontano
                  (build-up interrotto, portatore perso): meglio la scrittura di ieri che una palla orfana. */}
-            else {ball.position.x=G2X(last.to[0]);ball.position.z=G2Z(last.to[1]);ball.position.y=0.65;}/* [7.222.0] su una situazione AEREA il build-up CONSEGNA il pallone alla quota del colpo: depositarlo a 0.65 era la causa del «la palla sbatte a terra e poi sale» */
+            else {ball.position.x=G2X(last.to[0]);ball.position.z=G2Z(last.to[1]);ball.position.y=0.65;if(sr.current._bj0)sr.current._bj0.src='buildup-fine';}/* [7.222.0] su una situazione AEREA il build-up CONSEGNA il pallone alla quota del colpo: depositarlo a 0.65 era la causa del «la palla sbatte a terra e poi sale» */
             /* [7.236.0 batch «compare e scompare»] il build-up ha PORTATO AVANTI l'eroe (fin sotto porta sul
                burst): memorizzare il punto d'arrivo — la CINE-APPROACH della conclusione deve ancorarsi QUI,
                non a P.playerX (lo spot d'apertura, 12-16u più indietro), o l'eroe si teleporta all'indietro
@@ -14933,7 +14955,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                const _nm395=(_nid395==='HERO')?hero:((tlMap&&_nid395)?tlMap[_nid395]:null);
                if(_nm395){const _ngx395=_nm395.position.x+50,_ngy395=_nm395.position.z/0.68+50,_w395=p*p;
                  _bxg=_bxg*(1-_w395)+_ngx395*_w395;_byg=_byg*(1-_w395)+_ngy395*_w395;}}}
-            ball.position.x=G2X(_bxg);ball.position.z=G2Z(_byg);
+            ball.position.x=G2X(_bxg);ball.position.z=G2Z(_byg);if(sr.current._bj0)sr.current._bj0.src='buildup-volo';
             const _arcH=sg.kind==="cross"?4.2:sg.kind==="through"?0.35:(sg.kind==="pass"||sg.kind==="give")?1.0:0.0;
             ball.position.y=(_aerTL!=null)?(_aerTL+Math.sin(p*Math.PI)*Math.max(_arcH,0.35)):(0.65+Math.sin(p*Math.PI)*_arcH);/* [7.222.0] nelle situazioni aeree il pallone e IN VOLO per tutta la costruzione: non deve mai toccare l erba */
             /* [7.390.0 collaudo PO «si porta solo la palla avanti e fine» · «durante i movimenti si muove
@@ -15056,7 +15078,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                    il piede non e' piu' il riferimento da cui il beat successivo riparte. Resta incollato. */
                 ball.position.x=_hm.position.x+Math.cos(_thN382)*0.95;
                 ball.position.z=_hm.position.z+Math.sin(_thN382)*0.95;
-                ball.position.y=0.42;}
+                ball.position.y=0.42;if(sr.current._bj0)sr.current._bj0.src='testa';}
             }
           }
         }
@@ -16428,14 +16450,29 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
         const _aLG=Math.atan2(_lzG,_lxG),_aHG=Math.atan2(_dzG,_dxG);
         let _dAG=_aHG-_aLG;while(_dAG>Math.PI)_dAG-=2*Math.PI;while(_dAG<-Math.PI)_dAG+=2*Math.PI;
         const _aMG=Math.atan(_tHG*((camera&&camera.aspect)||0.75))*0.94;
+        /* [7.478.0 codice 007 — L'OSCILLAZIONE DELLO SGUARDO, con l'ISTERESI che il 7.475 aveva prescritto e
+           non fatto] Il 7.475 ha censito la banda sana (0,1-0,3 inversioni/s) e provato che gli 8,8 e 34,7
+           del dispositivo sono reali, 30-300 volte quella banda; ha anche stabilito che nessuna sonda di
+           questo repo puo' esprimere quel numero, perche' il testimone campiona una volta per fotogramma e
+           servirebbero 69 fps. Ma la CAUSA non ha bisogno di quel numero per essere letta qui: questa rete
+           riportava il soggetto al 98% del semiquadro — cioe' appena dentro il bordo — e il lerp verso il
+           bersaglio (poche righe sopra) lo rispingeva fuori nel fotogramma seguente. Un interruttore che si
+           accende e si spegne a ogni fotogramma ha per definizione la frequenza del frame-rate: ecco perche'
+           il ping-pong scala coi fps e in headless (8-25 fps) non si vede. Ora c'e' una BANDA: si entra al
+           bordo, si corregge fino all'80% del semiquadro e si esce solo sotto quella soglia — il soggetto
+           deve DERIVARE (tempo di gioco, non fotogrammi) per far riaccendere la rete. Solo camLook, mai la
+           posizione camera → firma golden intatta per costruzione. `__CPM_NO478C` rimette il comportamento
+           di prima (prova del rosso). */
         if(Math.abs(_dAG)>_aMG){_gCor50=true;
           let _corA=_dAG-Math.sign(_dAG)*_aMG*0.98;const _capA=Math.min(Math.abs(_corA),dt*2.5);_corA=Math.sign(_corA)*_capA;
+          _hyBump478(sr,'g',_corA);
           const _a2G=_aLG+_corA;camLook.x=_cxG+Math.cos(_a2G)*_hlG;camLook.z=_czG+Math.sin(_a2G)*_hlG;}
         const _gdG=Math.hypot(_dxG,_dzG)||1;
         const _eLG=Math.atan2(_lyG,_hlG),_eHG=Math.atan2(_dyG,_gdG);
         const _eMG=Math.atan(_tHG)*0.90;const _dEG=_eHG-_eLG;
         if(Math.abs(_dEG)>_eMG){_gCor50=true;
           let _corE=_dEG-Math.sign(_dEG)*_eMG*0.98;const _capE=Math.min(Math.abs(_corE),dt*1.8);_corE=Math.sign(_corE)*_capE;
+          _hyBump478(sr,'ge',_corE);
           camLook.y=clamp(_cyG+Math.tan(_eLG+_corE)*_hlG,0.4,26);}
       }
       /* [7.237.0 #50 misurato su gi15 «punizione dalla fascia» FALLITA: palla fuori quadro in 8/10 campioni
@@ -16463,12 +16500,14 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
         const _aMB=Math.atan(_tHB*((camera&&camera.aspect)||0.75))*0.97;
         if(Math.abs(_dAB)>_aMB){
           let _corB=_dAB-Math.sign(_dAB)*_aMB*0.98;const _capB=Math.min(Math.abs(_corB),dt*2.8);_corB=Math.sign(_corB)*_capB;
+          _hyBump478(sr,'b',_corB);
           const _a2B=_aLB+_corB;camLook.x=_cxB+Math.cos(_a2B)*_hlB;camLook.z=_czB+Math.sin(_a2B)*_hlB;}
         const _gdB=Math.hypot(_dxB,_dzB)||1;
         const _eLB=Math.atan2(_lyB,_hlB),_eBB=Math.atan2(_dyB,_gdB);
         const _eMB=Math.atan(_tHB)*0.92;const _dEB=_eBB-_eLB;
         if(Math.abs(_dEB)>_eMB){
           let _corE2=_dEB-Math.sign(_dEB)*_eMB*0.98;const _capE2=Math.min(Math.abs(_corE2),dt*2.0);_corE2=Math.sign(_corE2)*_capE2;
+          _hyBump478(sr,'be',_corE2);
           camLook.y=clamp(_cyB+Math.tan(_eLB+_corE2)*_hlB,0.4,26);}
       }
       camera.lookAt(camLook.x,camLook.y,camLook.z);
@@ -16726,6 +16765,19 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
         fwGeo.attributes.position.needsUpdate=true;fwMat.opacity=Math.max(0,1-fwT/1.3);
         if(fwMat.opacity<=0.01){fwActive=false;fwMat.opacity=0;}}
 
+      /* [7.478.0] LETTURA DEL VARCO, a valle di OGNI scrittura del pallone del fotogramma. Si registra solo
+         il salto (>=6u, la stessa soglia con cui il 7.471 ha giudicato la camera), con la sua ETICHETTA e
+         con lo stato dello stacco nero: un teletrasporto dentro il nero e' regia, fuori dal nero e' il
+         difetto che il PO rivede nel taccuino. Solo strumenti accesi: in produzione il varco resta nullo. */
+      if(sr.current._bj0){const _b0=sr.current._bj0;sr.current._bj0=null;try{window.__CPM_BJN478=(window.__CPM_BJN478||0)+1;}catch(_e){}/* [7.478.0] fotogrammi VISTI dal varco: «zero salti» non vale niente se il varco non ha guardato (la trappola del censimento che leggeva una chiave inesistente) */
+        const _dBJ=Math.hypot(ball.position.x-_b0.x,ball.position.z-_b0.z);
+        /* la soglia si abbassa da fuori (`__CPM_BJMIN`): «zero salti» vale come misura solo se si e' prima
+           provato che il varco VEDE il pallone. La lezione e' del censimento stesso, che leggeva una chiave
+           inesistente e restituiva zero — un verde che non voleva dire niente. */
+        if(_dBJ>=((typeof window!=='undefined'&&+window.__CPM_BJMIN)||6)){try{const _aBJ=(window.__CPM_BJ478=window.__CPM_BJ478||[]);
+          if(_aBJ.length<300){const _nBJ=performance.now();
+            _aBJ.push({d:+_dBJ.toFixed(1),src:_b0.src||'continuo',ph:P.matchPhase||null,sk:(P.hlSitKey!=null?+P.hlSitKey:null),
+              mask:((_nBJ-Math.max(_CUT471.at,(sr.current._cutAt471||-1e9)))<Math.max(300,_CUT471.dur||0))});}}catch(_eBJ){}}}
       renderer.render(scene,camera);
     };
     loop();
@@ -19969,11 +20021,24 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
         return nx;
       });
       // Ball lerp — interpolazione continua verso il target ad ogni tick (300ms)
+      /* [7.478.0 «esito dichiarato != 3D», e il difetto NON era quello che la nota diceva] IL PALLONE NON
+         ESCE DAL CAMPO. Misurato su gi55/gi80 col percorso forzato: la palla LOGICA arriva a 103,5 su un
+         campo che va da 0 a 100, e la mesh la segue fino a x 56,6 — oltre il piano dei pali (48,6), oltre
+         il prato, dentro i cartelloni pubblicitari (53,2). Nessun clamp c'e' mai stato: questo lerp insegue
+         un bersaglio che qualche consegna mette fuori scala e non ha un fondo campo che lo fermi. Il
+         bersaglio si lascia dov'e' (e' di chi lo scrive); e' la POSIZIONE che non puo' stare fuori dal
+         rettangolo di gioco. Da qui in poi un pallone che esce si ferma sulla riga, come in una partita.
+         ⚠️ E il difetto che la nota denunciava — «esito CHANCE ma la palla e' finita IN RETE» — su queste
+         tre scene NON c'e': i campioni oltre la linea hanno z da -18,4 a +32,3 e i pali stanno a +-3,35,
+         cioe' zero palloni dentro la porta. Era il criterio del guardiano a chiamare «rete» qualunque
+         pallone oltre una x, senza guardare i pali (e con la x sbagliata per giunta). */
       setBallPos(b=>{
         const bx=ballTargetRef.current.x,by=ballTargetRef.current.y;
         const dx=bx-b.x,dy=by-b.y;
         if(Math.abs(dx)<0.3&&Math.abs(dy)<0.3)return b;
-        return{x:b.x+dx*0.25,y:b.y+dy*0.25};
+        const _nx=b.x+dx*0.25,_ny=b.y+dy*0.25;
+        if(typeof window!=='undefined'&&window.__CPM_NO478D)return{x:_nx,y:_ny};/* prova del rosso */
+        return{x:clamp(_nx,0,100),y:clamp(_ny,0,100)};
       });
     },300);
     return()=>clearInterval(iv);

@@ -1,5 +1,44 @@
 # Cronologia delle release — Korward Elite
 
+### 7.478.0 — La coda chiusa con le misure, due delle quali dicono di no
+
+**(1) «SALTO del pallone» — l'attribuzione del 7.477 non poteva reggere.** Il censimento misurava il salto
+fra due CAMPIONI dell'anello e attribuiva i salti all'apertura di scena: ma la sua finestra tiene una sola
+chiave-scena, e l'apertura e' esattamente la transizione fra due chiavi — quella riga non poteva vederla.
+Varco nuovo per fotogramma (`__CPM_BJ478`): etichetta scritta da chi riassegna il pallone di colpo, letta a
+fine frame accanto allo stato dello stacco nero. Misurato: su 142 movimenti, gli UNICI teletrasporti veri
+sono le 2 consegne dichiarate (20,1 e 26,2 unita') ed entrambe stanno DENTRO lo stacco; tutto il resto sta
+sotto 3 unita'. I 7-46u del censimento erano l'intervallo di campionamento (59-431 ms = 1-10 fotogrammi a
+8-25 fps) per la velocita' della palla — la trappola soglia-per-intervallo gia' pagata nel 7.360.
+`CPM_BJMIN` abbassa la soglia per provare che il varco guarda: «zero salti» da uno strumento cieco e' il
+verde che non vuol dire niente (e la prima passata lo era: contatore dei fotogrammi visti aggiunto apposta).
+
+**(2) Codice 007 — un rimedio scritto, misurato e REVOCATO, e l'indiziato del 7.475 e' escluso.** L'ipotesi
+era che le due reti su `camLook` fossero un interruttore acceso-spento a ogni fotogramma (correggono al 98%
+del semiquadro, il lerp rispinge fuori: una frequenza che scala coi fps, il che spiegherebbe perche' il
+fenomeno vive solo sul dispositivo), curabile con un'isteresi. Scritta e misurata sulle 5 situations con la
+palla FUORI QUADRO censite dal 7.305 (gi 6·37·77·79·133): gli ingaggi SALGONO — 1,32/s contro 0,66/s, il
+contrario della previsione. Senza isteresi la rete non lampeggia affatto: resta accesa a lungo, e correggere
+piu' a fondo la faceva rilasciare e riagganciare. Codice revocato (le costanti sono quelle di prima, byte per
+byte). Resta il censimento `look-inversion-census.mjs` con la grandezza giusta — inversioni di segno della
+correzione PER FOTOGRAMMA CORRETTO, un rapporto e non una frequenza, quindi headless e dispositivo dicono lo
+stesso numero, che e' proprio cio' che mancava al 7.475. E il primo numero ESCLUDE l'indiziato: **ZERO
+inversioni su 152 fotogrammi corretti** (eroe 12, palla 140). Quando queste reti correggono, spingono sempre
+nello stesso verso: la caccia al 007 va spostata altrove.
+
+**(3) «Esito dichiarato != 3D»: il rosso era del CRITERIO, e la misura ne ha trovato un altro.** Il gi50
+rimasto rosso dal 7.477 erano in realta' TRE scene (gi50/55/80), e provate DA SOLE erano piu' rosse, non
+pulite — quindi non era contaminazione fra scene. Ma il criterio sbagliava due volte: `AWAY_GOAL_X`=46 e' la
+rete interna, la linea di porta e' `_GLX`=48,6; e «in rete» vuole i PALI. Misurato: i campioni oltre la linea
+hanno z da -18,4 a +32,3 contro pali a ±3,35 — **zero palloni dentro la porta**, erano cross usciti larghi
+sul fondo, cioe' calcio normale. Guardiano corretto (linea vera + pali) → 17/17 verdi. Cio' che la misura ha
+trovato DAVVERO: la palla LOGICA usciva dal campo — 103,5 su 0..100, mesh a 54,2 contro un rettangolo che
+finisce a 50, cioe' dentro i cartelloni (53,2). Messo il fondo campo nel lerp. ⚠️ Osservato due volte su
+codice intatto ma NON riproducibile a comando (44 scene forzate col clamp spento restano dentro): spedito
+come limite del modello, non come rimedio dimostrato; il guardiano porta il controllo in permanenza
+(`CPM_NO478D` lo toglie).
+
+
 > Estratta da `CLAUDE.md` il 2026-08-07 (7.341.1). Stava **dentro** CLAUDE.md, che viene caricato a ogni
 > turno: 305 KB di storia = ~76.000 token per richiesta, pagati anche quando la storia non serviva.
 > Qui non costa nulla finché non la si cerca.

@@ -39,6 +39,7 @@
     "pass-forward": "node pass-forward-test.mjs",
     "outcome-not-goal": "node outcome-not-goal-test.mjs",
     "ball-jump-census": "node ball-jump-census.mjs",
+    "look-inversion": "node look-inversion-census.mjs",
     "ceremony-shot": "node ceremony-shot.mjs",
     "critica-context": "node critica-context-test.mjs",
     "coach-review-variety": "node coach-review-variety-test.mjs",

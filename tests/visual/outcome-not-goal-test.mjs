@@ -27,7 +27,22 @@ import { startServer, launchBrowser, installCdnRoutes, openMatch, sleep } from '
 
 const VERB = process.argv.includes('--verbose');
 const TARGET = +(process.env.CPM_N || 14);            /* azioni non-gol da raccogliere */
-const LINEA = 46, LINEA_MIA = -46;                    /* AWAY_GOAL_X / HOME_GOAL_X, non soglie a occhio */
+/* [7.478.0 — IL CRITERIO ERA SBAGLIATO DUE VOLTE, e va scritto prima del resto]
+   (1) LA X. `AWAY_GOAL_X`=46 e' la rete interna, NON la linea di porta: il piano dei pali sta a
+       `_GLX`=48,6 (r.~11269). Con 46 il guardiano bocciava palloni che la linea non l'avevano nemmeno
+       raggiunta — gi50 si ferma a 47,0.
+   (2) I PALI. «Finita IN RETE» e' una porta, non una x: un cross che esce sul fondo LARGO attraversa la
+       linea ed e' calcio normale. Misurato sulle tre scene rosse: i campioni oltre la linea hanno z da
+       -18,4 a +32,3 e i pali stanno a +-3,35 (la costante con cui il gioco stesso clampa l'ingresso in
+       rete, r.~12985) — ZERO palloni dentro la porta. Il rosso era del criterio, non del gioco.
+   Cio' che la misura ha trovato DAVVERO e' un'altra cosa, e ora e' la seconda pretesa di questo file:
+   la palla LOGICA usciva dal campo (103,5 su 0..100) e la mesh la seguiva a 56,6, cioe' dentro i
+   cartelloni (53,2). Il 7.478 mette il fondo campo; `CPM_NO478D=1` lo toglie (prova del rosso). */
+const LINEA = 48.6, LINEA_MIA = -48.6;                /* _GLX: piano dei pali, non la rete interna */
+const PALI = 3.35;                                    /* mezza porta: oltre la linea DENTRO i pali = rete */
+const FUORI = 50;                                     /* mezzo campo in unita' Three: oltre = fuori dal rettangolo */
+const inRete_ = (pa, mia) => pa.some(r => (mia ? r.bx <= LINEA_MIA : r.bx >= LINEA) && Math.abs(r.bz) <= PALI);
+const fuoriCampo = pa => pa.filter(r => Math.abs(r.bx) > FUORI);
 const RETE = new Set(['in_net', 'in_net_high', 'cross_goal']);
 const NONGOL = new Set(['chance', 'recovery', 'intercept', 'miss', 'nothing', 'save']);
 const srv = await startServer(); const port = srv.address().port;
@@ -37,8 +52,8 @@ await installCdnRoutes(page);
 const errs = []; page.on('pageerror', e => errs.push(e.message));
 /* `CPM_REALWAIT=1` apre l'attesa che il gioco VERO concede al gol (r.~20346, spenta sotto test):
    serve per non giudicare una finestra d'esito che il giocatore non ha mai. */
-await page.addInitScript(o => { window.__CPM_GLB = false; window.__CPM_CINE = 1; window.__CPM_PRESENT = 1; if (o.n477) window.__CPM_NO477 = 1; if (o.rw) window.__CPM_REALWAIT = 1; if (o.no) window.__CPM_NO460 = 1; if (o.n1) window.__CPM_NO461 = 1; },
-  { rw: process.env.CPM_REALWAIT ? 1 : 0, no: process.env.CPM_NO460 ? 1 : 0, n1: process.env.CPM_NO461 ? 1 : 0, n477: process.env.CPM_NO477 ? 1 : 0 });
+await page.addInitScript(o => { window.__CPM_GLB = false; window.__CPM_CINE = 1; window.__CPM_PRESENT = 1; if (o.n477) window.__CPM_NO477 = 1; if (o.rw) window.__CPM_REALWAIT = 1; if (o.no) window.__CPM_NO460 = 1; if (o.n1) window.__CPM_NO461 = 1; if (o.n478d) window.__CPM_NO478D = 1;/* [7.478.0] toglie il fondo campo: prova del rosso del clamp */ },
+  { rw: process.env.CPM_REALWAIT ? 1 : 0, no: process.env.CPM_NO460 ? 1 : 0, n1: process.env.CPM_NO461 ? 1 : 0, n477: process.env.CPM_NO477 ? 1 : 0, n478d: process.env.CPM_NO478D ? 1 : 0 });
 /* ⚠️ DUE PERCORSI, E IL PERCHE'. Il flusso VERO (default) e' l'unico che vede la classe «props del
    commit sbagliato», ma il suo rendimento e' ballerino: due passate hanno dato 3 righe e poi ZERO —
    un guardiano che a volte non guarda niente non e' un guardiano. Con `CPM_FORCE=1` si forza scena e
@@ -48,7 +63,11 @@ await page.addInitScript(o => { window.__CPM_GLB = false; window.__CPM_CINE = 1;
 if (process.env.CPM_FORCE) {
   await openMatch(page, port);
   await sleep(700);
-  const SIT = (await page.evaluate(() => { const o = []; for (let i = 0; i < SITUATIONS.length; i++) o.push(i); return o; })).filter((_, i) => i % 5 === 0).slice(0, 40);
+  /* `CPM_ONLY=50,55,80` restringe il campione a scene NOMINATE: serve per la domanda «e' il gioco o la
+     sonda?», che si risponde solo confrontando la stessa scena in SEQUENZA e da SOLA. */
+  const SIT = process.env.CPM_ONLY
+    ? process.env.CPM_ONLY.split(',').map(v => +v.trim()).filter(v => v >= 0)
+    : (await page.evaluate(() => { const o = []; for (let i = 0; i < SITUATIONS.length; i++) o.push(i); return o; })).filter((_, i) => i % 5 === 0).slice(0, 40);
   const out = [];
   for (const gi of SIT) {
     /* ⚠️ ISOLAMENTO FRA SCENE. Senza, la scena nuova nasce mentre l'arco della precedente e' ancora in
@@ -71,7 +90,9 @@ if (process.env.CPM_FORCE) {
     if (!pa.length || !key) continue;
     if (!NONGOL.has(String(key)) && String(key) !== 'goal_against') continue;
     out.push({ gi, key, post: [...new Set(pa.map(r => r.pt).filter(Boolean))].join('>') || null,
-      bxMax: Math.max(...pa.map(r => r.bx)), bxMin: Math.min(...pa.map(r => r.bx)), ht: pa[0].ht });
+      bxMax: Math.max(...pa.map(r => r.bx)), bxMin: Math.min(...pa.map(r => r.bx)), ht: pa[0].ht,
+      rete: inRete_(pa, false), reteMia: inRete_(pa, true), fuori: fuoriCampo(pa).length,
+      fuoriMax: fuoriCampo(pa).length ? Math.max(...fuoriCampo(pa).map(r => Math.abs(r.bx))) : 0 });
   }
   await b.close(); srv.close();
   if (!out.length) { console.log('❌ percorso forzato: nessuna azione non-gol raccolta — cieco'); process.exit(2); }
@@ -80,13 +101,16 @@ if (process.env.CPM_FORCE) {
      palla si ferma a 40,9 — non entra, e il giocatore vede una palla che non entra. La nota del PO dice
      «la palla e' finita IN RETE»: la posizione della palla e' il criterio, il tipo di post-arco resta
      stampato come contesto (e segnalato come sospetto), non come condanna. */
-  const male = out.filter(r => (NONGOL.has(r.key) && r.bxMax >= LINEA) || (r.key === 'goal_against' && r.bxMin > LINEA_MIA));
-  const sospetti = out.filter(r => NONGOL.has(r.key) && r.bxMax < LINEA && r.post && r.post.split('>').some(p => RETE.has(p)));
+  const male = out.filter(r => (NONGOL.has(r.key) && r.rete) || (r.key === 'goal_against' && !r.reteMia));
+  const usciti = out.filter(r => r.fuori > 0);
+  const sospetti = out.filter(r => NONGOL.has(r.key) && !r.rete && r.post && r.post.split('>').some(p => RETE.has(p)));
   console.log(`\n=== ${out.length} azioni NON da gol (percorso FORZATO) ===`);
-  for (const r of out) console.log(`  ${male.includes(r) ? '❌' : '✅'} gi${String(r.gi).padStart(3)} ${String(r.key).padEnd(13)} ${String(r.ht || '').padEnd(11)} · palla da x ${r.bxMin.toFixed(1)} a ${r.bxMax.toFixed(1)} · post-arco ${r.post || '—'}`);
+  for (const r of out) console.log(`  ${male.includes(r) || r.fuori ? '❌' : '✅'} gi${String(r.gi).padStart(3)} ${String(r.key).padEnd(13)} ${String(r.ht || '').padEnd(11)} · palla da x ${r.bxMin.toFixed(1)} a ${r.bxMax.toFixed(1)} · ${r.rete ? 'DENTRO I PALI' : 'mai fra i pali'}${r.fuori ? ` · FUORI CAMPO ${r.fuoriMax.toFixed(1)}` : ''} · post-arco ${r.post || '—'}`);
   if (sospetti.length) console.log(`\n⚠️  ${sospetti.length} scene nascono con un post-arco d'ingresso in rete pur non essendo gol, ma la palla NON entra: ${sospetti.map(r => 'gi' + r.gi + ' (' + r.post + ', max x ' + r.bxMax.toFixed(1) + ')').join(' · ')}`);
+  if (usciti.length) console.log(`\n❌ ${usciti.length} scene con il pallone FUORI DAL RETTANGOLO (la piu' lontana a x ${Math.max(...usciti.map(r => r.fuoriMax)).toFixed(1)}, il campo finisce a ${FUORI}): ${usciti.map(r => 'gi' + r.gi).join(' · ')}`);
   if (male.length) { console.log(`\n❌ ${male.length}/${out.length} esiti in disaccordo col campo — la palla arriva dove l'esito dice di no.`); process.exit(1); }
-  console.log('\n✅ PASS (percorso forzato) — nessun esito non-gol finisce in rete');
+  if (usciti.length) process.exit(1);
+  console.log('\n✅ PASS (percorso forzato) — nessun esito non-gol finisce in rete, nessun pallone fuori dal rettangolo');
   process.exit(0);
 }
 await openMatch(page, port, { skipLoadAll: true });
@@ -151,7 +175,9 @@ for (let round = 0; round < TARGET * 30 && righe.length < TARGET; round++) {
   const post = [...new Set(d.pa.map(r => r.pt).filter(Boolean))].join('>') || null;
   const bxMax = Math.max(...d.pa.map(r => r.bx));
   const bxMin = Math.min(...d.pa.map(r => r.bx));
-  righe.push({ key, post, bxMax, bxMin, ht: d.pa[0].ht, rew: d.pa[0].rew });
+  righe.push({ key, post, bxMax, bxMin, ht: d.pa[0].ht, rew: d.pa[0].rew,
+    rete: inRete_(d.pa, false), reteMia: inRete_(d.pa, true),
+    fuori: fuoriCampo(d.pa).length, fuoriMax: fuoriCampo(d.pa).length ? Math.max(...fuoriCampo(d.pa).map(r => Math.abs(r.bx))) : 0 });
   await tornaAPlaying();
 }
 
@@ -161,16 +187,18 @@ async function tornaAPlaying() {
 
 await b.close(); srv.close();
 if (!righe.length) { console.log('❌ nessuna azione non-gol raccolta: il guardiano e\' cieco, non verde'); process.exit(2); }
-const inRete = righe.filter(r => NONGOL.has(r.key) && (r.bxMax >= LINEA || (r.post && r.post.split('>').some(p => RETE.has(p)))));
-const subitiCorti = righe.filter(r => r.key === 'goal_against' && r.bxMin > LINEA_MIA);
+const inRete = righe.filter(r => NONGOL.has(r.key) && r.rete);
+const subitiCorti = righe.filter(r => r.key === 'goal_against' && !r.reteMia);
+const usciti = righe.filter(r => r.fuori > 0);
 console.log(`\n=== ${righe.length} azioni NON da gol, sul flusso vero ===`);
 for (const r of righe) {
-  const male = (NONGOL.has(r.key) && (r.bxMax >= LINEA || (r.post && r.post.split('>').some(p => RETE.has(p))))) || (r.key === 'goal_against' && r.bxMin > LINEA_MIA);
+  const male = (NONGOL.has(r.key) && r.rete) || (r.key === 'goal_against' && !r.reteMia) || r.fuori > 0;
   console.log(`  ${male ? '❌' : '✅'} ${String(r.key).padEnd(13)} ${String(r.ht || '').padEnd(11)} · palla da x ${r.bxMin.toFixed(1)} a ${r.bxMax.toFixed(1)} · post-arco ${r.post || '—'}`);
 }
 for (const e of errs.slice(0, 3)) console.log('  ⚠ pageerror: ' + e);
-if (inRete.length || subitiCorti.length) {
-  if (inRete.length) console.log(`\n❌ ${inRete.length} esiti NON da gol con la palla in rete (o con un post-arco d'ingresso in rete).`);
+if (inRete.length || subitiCorti.length || usciti.length) {
+  if (inRete.length) console.log(`\n❌ ${inRete.length} esiti NON da gol con la palla DENTRO I PALI oltre la linea.`);
+  if (usciti.length) console.log(`❌ ${usciti.length} scene con il pallone FUORI DAL RETTANGOLO (la piu' lontana a x ${Math.max(...usciti.map(r => r.fuoriMax)).toFixed(1)}, il campo finisce a ${FUORI}).`);
   if (subitiCorti.length) console.log(`❌ ${subitiCorti.length} gol SUBITI in cui la palla non arriva alla propria porta (la piu' corta si ferma a x ${Math.max(...subitiCorti.map(r => r.bxMin)).toFixed(1)}).`);
   process.exit(1);
 }
