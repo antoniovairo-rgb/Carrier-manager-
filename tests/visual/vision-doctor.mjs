@@ -115,12 +115,28 @@ if (!hostVivo || !health.ok) {
   console.log('\nCATENA INCOMPLETA: il livello percettivo NON e\' operativo.');
   process.exit(1);
 }
-/* PNG 2x2 valido, generato qui: nessun file di appoggio, nessun asset da versionare */
+/* ⚠️ L'IMMAGINE DI PROVA NON PUO' ESSERE DEGENERE. La prima stesura mandava un PNG di 2x2 pixel —
+   «minimo», e quindi comodo da tenere inline. Sul campo il server ha risposto HTTP 500 su un modello
+   che l'anello 3 dava per disponibile, e un encoder di vista lavora a patch di 14-16 pixel: su un
+   fotogramma piu' piccolo di una patch non ha niente da leggere. Al di la' della causa esatta, il
+   principio e' quello di tutte le sonde di questo repo: si prova il percorso VERO, e il percorso vero
+   manda screenshot di gioco, non francobolli. Ora l'immagine e' 64x64 con due tinte e una diagonale
+   (qualcosa da vedere), generata al volo con la stessa pngjs che l'harness ha gia'. */
 const PNG_2x2 = 'iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAYAAACZgbYnAAAAGUlEQVQIW2P8z8Dwn4EIwDiqkL4hNaoQAGxHB/2s0iRaAAAAAElFTkSuQmCC';
+let IMG = PNG_2x2, IMGDESC = '2x2 di ripiego';
+try {
+  const { PNG } = await import('pngjs');
+  const L = 64, png = new PNG({ width: L, height: L });
+  for (let y = 0; y < L; y++) for (let x = 0; x < L; x++) {
+    const i = (y * L + x) << 2, dentro = Math.abs(x - y) < 8;
+    png.data[i] = dentro ? 240 : 20; png.data[i + 1] = dentro ? 60 : 120; png.data[i + 2] = dentro ? 60 : 30; png.data[i + 3] = 255;
+  }
+  IMG = PNG.sync.write(png).toString('base64'); IMGDESC = '64x64 generata';
+} catch (e) { /* senza pngjs si prova lo stesso, col francobollo */ }
 try {
   const t0 = Date.now();
   const r = await provider.analyze({
-    images: [{ base64: PNG_2x2, name: 'probe.png' }],
+    images: [{ base64: IMG, name: 'probe.png' }],
     prompt: 'Rispondi SOLO con questo JSON, senza altro testo: {"visto": true}',
     signal: AbortSignal.timeout(cfg.timeout || 60000),
   });
@@ -140,12 +156,22 @@ try {
      cercare un modello di vista invece che a cambiare una riga di configurazione. Un dottore che
      generalizza l'ultimo sospetto a ogni sintomo e' il difetto che questa sonda doveva togliere. */
   const ritirato = /\b410\b|retired|deprecat/i.test(msg);
+  /* ⚠️ ATTRIBUZIONE, non deduzione. Un errore qui puo' venire dall'IMMAGINE (modello che non la
+     accetta, encoder che si rompe) oppure dal MODELLO/endpoint in se'. Sono due mosse diverse — cambiare
+     modello contro cambiare configurazione — e finora la sonda tirava a indovinare fra le due. Si prova
+     la stessa chiamata SENZA immagine: se quella passa, il modello e' vivo e a rompersi e' la vista. */
+  let soloTesto = null;
+  try { const rt = await provider.analyze({ images: [], prompt: 'Rispondi solo: {"ok":true}', signal: AbortSignal.timeout(cfg.timeout || 60000) });
+    soloTesto = rt && rt.text ? 'passa' : 'vuota'; }
+  catch (e2) { soloTesto = `fallisce (${String(e2.message || e2).slice(0, 60)})`; }
   ko(`analyze fallita${kind ? ` (${kind})` : ''}: ${msg}`,
     ritirato ? `il modello "${pcfg.model}" e' stato RITIRATO dal server: scegline uno dall'elenco stampato nell'anello 3 e mettilo in .env come OLLAMA_MODEL — deve essere un modello con la VISTA (la famiglia gemma4 lo e' su tutte le taglie)` :
     kind === 'model_missing' ? `il modello "${pcfg.model}" non esiste sul server: controlla il nome, oppure scaricalo con \`ollama pull ${pcfg.model}\`` :
     kind === 'timeout' ? 'il modello ha superato il timeout: su CPU un modello di vista puo\' volerci minuti — alza VISION_TIMEOUT o usa una taglia piu\' piccola' :
     /image|vision|multimodal|not support/i.test(msg) ? 'il modello risponde ma non accetta immagini: serve un modello di VISTA (es. qwen2.5vl, gemma4)' :
-    'il server ha risposto con un errore: leggi il messaggio qui sopra — e\' quello del server, non una deduzione di questa sonda');
+    soloTesto === 'passa' ? `la stessa chiamata SENZA immagine PASSA: il modello "${pcfg.model}" e' vivo ma su questo server non regge l'immagine — scegli un modello con la VISTA fra quelli elencati nell'anello 3` :
+    `la stessa chiamata senza immagine ${soloTesto}: non e' l'immagine, e' il modello o l'endpoint — il messaggio qui sopra e' del server, non una deduzione di questa sonda`);
+  console.log(`     (prova di controllo — stessa chiamata senza immagine: ${soloTesto} · immagine usata: ${IMGDESC})`);
 }
 console.log('\nCATENA INCOMPLETA: il livello percettivo NON e\' operativo.');
 process.exit(1);
