@@ -402,6 +402,16 @@ tools/audit-copyright.mjs` obbligatorio** (verde). ⚠️ Uscendo da `playing` i
 cori (coerenza 5.47.5): una riga schedulata a ~1s viene quasi sempre cancellata dagli HL — con
 `__CPM_TC486` si distingue «mai programmato» da «programmato e cancellato», che vogliono rimedi opposti.
 
+**La cronaca ha un protagonista (7.487.0).** Il nome non si estrae piu' a caso: si pesca dal reparto
+compatibile con la `pd` dichiarata (e l'avversario dalla zona **speculare** — se ci difendiamo, chi
+attacca e' un loro attaccante), e **chi e' stato nominato tiene la scena per max 3 righe**, con il filo
+che si spezza al cambio di reparto o su un gol. Misurato: coppie consecutive che condividono il
+protagonista **30%** contro il ~4% dell'estrazione casuale. ⚠️ La coerenza nome↔ruolo e' implementata ma
+NON ancora misurata (i ruoli delle rose non erano risolvibili in pagina) — non dichiararla fatta.
+⚠️ **Il testo della cronaca si misura ALLA SORGENTE** (`__CPM_TXT487`), non dal DOM: leggerlo dal DOM ha
+sbagliato tre volte di fila (il sorgente dentro `<script>`, l'osservatore armato dopo il caricamento, il
+filtro che non trovava i nomi). Dove esiste il punto in cui il dato nasce, si misura li'.
+
 **Test dal vivo:** `tests/visual/live-match-test.mjs` (non-gate, GLB-ON) verifica la coerenza M1 overlay⟺esito su un campione di tiri falliti + screenshot full-page; `tests/visual/glb-gesture-smoke.mjs` per i gesti GLB. Le parti gate-cieche (movimento, camera, cronaca BG live, cerimonia) si collaudano così.
 
 > **Quick-gate (`npm run quick-gate`, ~1.5 min):** gate **leggero** per iterare veloce in sviluppo (`tests/visual/quick-gate.mjs`). Campiona ~26 Situations sui check di stato (`initial-state/orientation/visual/movements/golden`) + `determinism/final-state/timeline/data-coherence`; **salta** i sampler lenti (`motion/ball-motion/post-highlight/perf/ai-vision`). Riusa harness + gli stessi `checks/*.mjs` → zero duplicazione. ⚠️ **NON sostituisce** il gate completo: `validate-situations` (14/14) resta **obbligatorio prima di ogni push**. Usa il quick-gate per il loop di sviluppo, il gate completo come gate di rilascio.

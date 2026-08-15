@@ -1,5 +1,39 @@
 # Cronologia delle release — Korward Elite
 
+### 7.487.0 — La cronaca ha un protagonista, e lo nomina con un ruolo che c'entra
+
+Prima ogni riga pescava un nome **a caso** dalla rosa. Due difetti in uno: il centravanti spazzava in
+area propria e il portiere crossava, e soprattutto ogni riga presentava un **estraneo** — nessun filo,
+che e' l'opposto di una telecronaca.
+
+**Il ruolo c'entra con la zona.** Il nome si pesca dal reparto compatibile con la `pd` dichiarata: area
+avversaria → centravanti/ala/trequartista, propria area → difensori/terzini/portiere, centrocampo →
+mediani/mezzali. E l'avversario si nomina con la zona **speculare**: se noi ci difendiamo, chi attacca e'
+un loro attaccante — non un loro difensore, che era l'effetto del sorteggio cieco. Se un reparto non ha
+nomi disponibili si ripiega sull'intera rosa: mai una riga muta.
+
+**Il protagonista resta.** Chi la cronaca ha appena nominato tiene la scena per un massimo di tre righe,
+e il filo si spezza da solo quando cambia reparto (attacco ↔ difesa) o su un gol. E' cio' che trasforma
+una sequenza di frasi in un'azione *raccontata*.
+
+Misurato sul testo risolto, 21 righe con nome: le coppie consecutive che condividono il protagonista sono
+**6 su 20 (30%)**, contro il **~4%** atteso da un'estrazione casuale su 23 giocatori. E nella traccia il
+filo si legge:
+
+> ✈️ Duello aereo al centro. **Neri (GRA)** vince di testa e serve Pecoraro (GRA).
+> 📢 Il mister urla istruzioni. **Neri (GRA)** si sistema.
+> 🎩 **Neri (GRA)** addomestica un pallone difficile e fa ripartire l'azione.
+> ⚖️ **Neri (GRA)** e De Santis (POL) si equivalgono. Il dettaglio fara' la differenza.
+
+⚠️ **Dichiarato e non verificato:** la coerenza nome↔ruolo e' implementata ma **non misurata** — la sonda
+non e' riuscita a risolvere i ruoli delle due rose in pagina, e senza quel confronto la percentuale
+sarebbe un'affermazione, non un numero. Va misurata prima di dirla fatta.
+
+⚠️ Il testimone `__CPM_TXT487` registra il **testo risolto alla sorgente**, non dal DOM: leggere la
+cronaca dal DOM si e' rivelato inaffidabile tre volte di fila (il sorgente dentro il tag `<script>`,
+l'osservatore armato tardi, il filtro che non trovava i nomi). **Quando esiste il punto in cui il dato
+nasce, si misura li'.**
+
 ### 7.486.0 — La cronaca racconta la partita che si vede, e ha due voci con un nome
 
 Direttive PO: «la cronaca deve descrivere effettivamente cio' che accade» e «inventa anche i telecronisti».
