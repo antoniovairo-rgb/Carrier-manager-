@@ -1,5 +1,37 @@
 # Cronologia delle release — Korward Elite
 
+### 7.481.0 — La manopola per decidere l'inquadratura (test-only)
+
+Il 7.480 ha misurato il problema: l'eroe occupa il 5,7% dell'altezza schermo (mediana su 191 scene),
+il 99% delle scene sta sotto la soglia oltre cui un gesto di arti non e' distinguibile, e su 42 scene
+l'eroe esce dal quadro. Ma un numero non decide: **quanto** stringere e' regia, e la regia si sceglie
+guardando. Questa release non cambia l'inquadratura di nessuna scena — costruisce lo strumento per
+sceglierla.
+
+`__CPM_ZOOM480` accorcia la distanza DALL'EROE lasciando invariata la direzione scelta dal regista, con
+un fondo di 3,5 unita' sotto cui non si scende. `npm run framing-choices` produce la stessa conclusione
+a quattro distanze, GLB acceso e schermo telefono, col numero misurato accanto a ogni provino — cosi' la
+scelta e' «voglio la riga da 0,24», non «piu' stretto».
+
+Misurato su gi0 «Tiro angolato»: **0,050 (oggi) → 0,104 → 0,243 → 0,601**, contro un riferimento da
+regia sportiva di 0,35-0,60. A 0,243 si vedono volti, maglie e appoggio dei piedi; a 0,050 non si
+distingue nemmeno quale sia il proprio giocatore.
+
+⚠️ PRIMA STESURA SBAGLIATA E CORRETTA, con la misura che l'ha smascherata. La manopola avvicinava la
+camera al PUNTO GUARDATO — che e' l'azione, non l'eroe — e a distanza corta le passava attraverso: le
+altezze misurate sono uscite a 34, 47 e 251, numeri impossibili (piu' alti dello schermo) che dicevano
+«l'eroe e' dietro il piano camera». Un provino sbagliato e' peggio di nessun provino: si sarebbe deciso
+su immagini prive di senso. Ora si accorcia la distanza dall'eroe, e i numeri sono progressivi.
+
+⚠️ DUE COSTI DELLA SCELTA, gia' visibili nei provini e da non nascondere: stringendo, l'eroe ESCE dal
+quadro in qualche fotogramma (va gestito facendo seguire meglio la camera, non rinunciando a stringere);
+e sotto il fondo di 3,5 unita' il numero smette di scendere, perche' li' servirebbe una regia diversa,
+non una manopola piu' aggressiva.
+
+Nessun effetto in produzione: la manopola e' nulla se non la si accende. Gate 14/14 verde, fingerprint
+00001505 invariato — la prova che e' davvero spenta.
+
+
 ### 7.480.0 — «Non si vede il gesto tecnico» smette di essere un'impressione
 
 **DUE REVISORI, LA STESSA RIGA, NELLO STESSO GIORNO.** Il modello di vista alla prima review vera
