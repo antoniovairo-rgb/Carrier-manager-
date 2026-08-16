@@ -49,6 +49,7 @@
     "match-speed": "node match-speed-test.mjs",
     "bg-sync": "node bg-sync-test.mjs",
     "bg-name-role": "node bg-name-role-test.mjs",
+    "match-sequence": "node match-sequence-test.mjs",
     "ceremony-shot": "node ceremony-shot.mjs",
     "critica-context": "node critica-context-test.mjs",
     "coach-review-variety": "node coach-review-variety-test.mjs",

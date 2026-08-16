@@ -1,5 +1,62 @@
 # Cronologia delle release — Korward Elite
 
+### 7.489.0 — La cronaca diventa deterministica, e le velocita' sono 1x / 1,5x / 2x
+
+Direttiva PO: «molto piu' lenta, leggibile, immersiva e soprattutto fedele; le tre velocita' devono
+essere la stessa partita».
+
+#### L'audit ha trovato un difetto piu' grande della richiesta
+
+La stessa partita giocata **due volte alla stessa velocita'** produceva lo **zero per cento** di sequenza
+identica, gia' dal primo evento. Non era un problema di velocita': erano **non seedati** il tiro della
+cronaca ambientale, la scelta pesata della riga, il nome estratto, la riga meteo, il grido del mister, i
+nomi dei marcatori, il minuto dell'highlight reattivo, i minuti degli highlight e il drift di momentum e
+possesso. E momentum e possesso alimentano la lambda del micro-simulatore: **nemmeno il risultato era
+riproducibile**.
+
+Percio' «le tre velocita' sono la stessa partita» non si poteva ottenere presentando la stessa coda piu'
+lentamente: andava **costruito**. Ora l'intera catena gira su un generatore seedato su **(seed di
+partita, minuto)** — lo stesso seed che il micro-sim dei gol usava gia'. La cronaca e' una **funzione
+pura del minuto**: identica a ogni velocita' per costruzione, non per verifica a posteriori.
+
+| confronto | prima | dopo |
+|---|---|---|
+| 1x contro 1x | 0% | **100%** |
+| 2x contro 2x | 0% | **100%** |
+| 1x contro 2x | 0% | **100%** (prefisso comune) |
+
+`wPick` accetta ora un generatore iniettato; senza argomento resta il comportamento di prima, quindi
+nessun altro chiamante cambia. Guardiano `npm run match-sequence`, prova del rosso `__CPM_NO489` (torna
+ai generatori liberi: 0% su tutti e tre i confronti).
+
+#### Le velocita'
+
+Base del tick **420 → 900 ms** per minuto di gioco, e **1,25x eliminata**. Le tre velocita' sono rapporti
+onesti sulla stessa base — **1x = 900 · 1,5x = 600 · 2x = 450** — non tre costanti scollegate: e' cio' che
+rende «1,5x» una promessa verificabile. A 1x novanta minuti di gioco fluido durano **85 secondi**
+d'orologio invece di 38, e fra due righe di cronaca passano ~3,4 secondi.
+
+Misurato: **948 / 658 / 475 ms** contro 900 / 600 / 450 attesi. **Migrazione**: una preferenza «1,25»
+salvata da una versione precedente viene riscritta su 1 — lasciata li' tornerebbe a galla a ogni
+caricamento (il guardiano lo verifica).
+
+⚠️ **Il 2x che ne esce (450 ms) e' piu' lento del 2x di ieri (210)**, perche' ieri la base era meno della
+meta'. Chi vuole il ritmo di ieri a 1x oggi sceglie 1,5x. E' una scelta di coerenza: con 2x = 210 su base
+900 l'etichetta «2x» sarebbe stata una bugia (4,3x).
+
+#### ⚠️ Dichiarato e non fatto
+
+La direttiva chiede una cosa che l'architettura oggi non puo' dare: «la cronaca deve rappresentare
+esattamente gli eventi prodotti dalla simulazione, non inventare eventi». Le righe ambientali **non
+nascono da una simulazione**: sono pescate da una tabella di 188 voci, e sono loro a **guidare** il campo
+— dichiarano dove va il pallone e come si dispone la squadra (misurato nel 7.485). Renderle deterministiche
+le rende riproducibili, e le release precedenti le hanno rese coerenti con la zona in cui si gioca (7.486)
+e col ruolo di chi viene nominato (7.488), ma non le rende **derivate** da un motore di eventi.
+
+Cio' che e' davvero simulato oggi: **i gol** (micro-sim seedato), **gli highlight giocati**, e
+**cartellini/infortuni**. Il resto e' narrazione plausibile e ora riproducibile. Un vero flusso
+«simulazione → evento → cronaca» e' un progetto a se', e va detto invece di lasciarlo credere.
+
 ### 7.488.0 — Il punto che il 7.487 aveva lasciato scoperto, ora misurato
 
 Il 7.487 aveva legato il nome della cronaca al reparto compatibile con la zona dichiarata dalla riga, ma

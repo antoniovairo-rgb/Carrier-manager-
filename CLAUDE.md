@@ -369,12 +369,24 @@ prova del rosso `__CPM_NO482`); su un highlight **difensivo** il soggetto della 
 pallone, perche' li' la storia e' chi ha fatto l'intervento. ⚠️ Restano fuori gi14 (cross) e gi161
 (punizione), che sono difetti veri ma non difensivi.
 
+**La cronaca è DETERMINISTICA e le velocità sono 1x/1,5x/2x (7.489.0).** L'audit ha misurato che la stessa
+partita giocata due volte produceva lo **0% di sequenza identica**: tiro ambientale, `wPick`, nome estratto,
+riga meteo, grido del mister, marcatori, minuti degli highlight e drift di momentum/possesso erano tutti
+non seedati — e momentum/possesso alimentano la λ dei gol, quindi nemmeno il risultato era riproducibile.
+Ora l'intera catena gira su `seededRng(seed di partita, minuto)` → **funzione pura del minuto**, identica a
+ogni velocità per costruzione (0% → 100% su tutti e tre i confronti). Guardiano `npm run match-sequence`,
+prova del rosso `__CPM_NO489`. ⚠️ Aggiungendo un generatore nel tick di `playing`, **usa `_rndM`**: un
+`Math.random()` nuovo lì dentro rompe l'invariante e il guardiano diventa rosso. ⚠️ **Ciò che è davvero
+simulato** sono i gol (micro-sim seedato), gli highlight giocati e cartellini/infortuni; le righe ambientali
+sono pescate da una tabella e GUIDANO il campo — riproducibili e coerenti, non derivate da un motore di
+eventi. Non dichiararle «fedeli alla simulazione».
+
 **Il ritmo della partita ha UN metronomo, e il clock è fermo negli highlight (7.484.0).** Tutto ciò che
 scorre in `playing` — cronaca BG, grida del mister, micro-sim dei gol, lerp del pallone — gira sul tick
-del clock: `MATCH_TICK_MS` **420 ms** per minuto di gioco (era 300), diviso per la velocità scelta dal
-giocatore (**1× · 1,25× · 2×**, comando accanto alla pausa, preferenza in `localStorage` `cpm-match-speed`
-— non nel salvataggio, nessun SAVE bump). Guardiano `npm run match-speed` (misurato 420/341/215 contro
-420/336/210 attesi · prova del rosso `__CPM_NO484`). ⚠️ La manopola muove il FLUSSO, mai le finestre
+del clock: `MATCH_TICK_MS` **900 ms** per minuto di gioco (7.489.0; era 420), diviso per la velocità scelta dal
+giocatore (**1× · 1,5× · 2×**, comando accanto alla pausa, preferenza in `localStorage` `cpm-match-speed`
+— non nel salvataggio, nessun SAVE bump). Guardiano `npm run match-speed` (misurato 948/658/475 contro
+900/600/450 attesi · migrazione della vecchia preferenza 1,25 → 1 · prova del rosso `__CPM_NO484`). ⚠️ La manopola muove il FLUSSO, mai le finestre
 d'esito degli highlight: quelle sono il tempo di leggere e il check `post-highlight` le tiene in
 [1800,4000]. ⚠️ **Misurando qualunque tempo: il clock è CONGELATO durante gli `hl_*`** — una media
 sull'intera finestra dà 727-833 ms dove la costante è 300 e fa dichiarare rotto un tick sano; si campiona

@@ -4,7 +4,8 @@
    DA DOVE VIENE. Direttiva PO: «le partite devono essere piu' serene, tranquille, meno frenetiche — fai
    decidere al giocatore la velocita' 1x 1,25x 2x». Il ritmo di `playing` ha un metronomo solo: il tick
    del clock, su cui girano cronaca di sfondo, grida del mister, micro-simulatore e lerp del pallone. La
-   base e' passata da 300 a 420 ms per minuto di gioco, e la manopola divide quel numero.
+   base e' passata a 900 ms per minuto di gioco (direttiva 7.489: «molto piu' lenta, leggibile»), e la
+   manopola divide quel numero: 900 · 600 · 450. La velocita' 1,25x non esiste piu'.
 
    COSA GIUDICA. Il TICK VERO in millisecondi reali per minuto di gioco, a ciascuna delle tre velocita'.
 
@@ -13,9 +14,11 @@
    costante era 300, e ha quasi fatto dichiarare «tick rotto» un tick perfettamente a specifica. Si
    campiona fitto e si sommano SOLO i tratti in cui la fase e' `playing`.
 
-   ⚠️ LA BANDA E' SCELTA PER SEPARARE. Fra 1x (420) e 1,25x (336) ci sono 20 punti percentuali: una banda
-   piu' larga di ±10% non distinguerebbe due velocita' adiacenti, cioe' non guarderebbe nulla. Sta a ±10%,
-   e lo scarto misurato e' +0/+1%.
+   ⚠️ LA BANDA E' SCELTA PER SEPARARE. Fra 1x (900) e 1,5x (600) ci sono 33 punti percentuali: una banda
+   piu' larga di ±16% non distinguerebbe due velocita' adiacenti, cioe' non guarderebbe nulla. Sta a ±10%.
+
+   ⚠️ E CONTROLLA LA MIGRAZIONE: una preferenza «1,25» salvata da una versione precedente non esiste piu'
+   e non va lasciata in giro — tornerebbe a galla a ogni caricamento. Deve essere riscritta su 1.
 
    PROVA DEL ROSSO: `__CPM_NO484` fa ignorare la scelta al tick. Con `CPM_ROSSO=1` il guardiano lo accende
    e PRETENDE di fallire: le tre velocita' collassano tutte su 420.
@@ -23,7 +26,7 @@
      CPM_CHROME=… PLAYWRIGHT_BROWSERS_PATH=… node match-speed-test.mjs [CPM_ROSSO=1]                  */
 import { startServer, launchBrowser, installCdnRoutes, openMatch, sleep } from './lib/harness.mjs';
 
-const ATTESO = { 1: 420, 1.25: 336, 2: 210 };
+const ATTESO = { 1: 900, 1.5: 600, 2: 450 };
 const BANDA = 10;
 const FIN = +(process.env.CPM_FIN || 26000);
 const ROSSO = !!process.env.CPM_ROSSO;
@@ -31,7 +34,7 @@ const ROSSO = !!process.env.CPM_ROSSO;
 const srv = await startServer(); const port = srv.address().port;
 const b = await launchBrowser();
 const misure = {}; const errs = [];
-for (const v of [1, 1.25, 2]) {
+for (const v of [1, 1.5, 2]) {
   const page = await b.newPage({ viewport: { width: 900, height: 900 } });
   await installCdnRoutes(page);
   page.on('pageerror', e => errs.push(String(e.message).slice(0, 110)));
@@ -47,8 +50,8 @@ for (const v of [1, 1.25, 2]) {
     misure[v] = min ? ms / min : null;
   } catch (e) { misure[v] = null; } finally { await page.close().catch(() => {}); }
 }
-/* la preferenza deve anche SOPRAVVIVERE: e' un'impostazione della persona, non della singola partita */
-let persiste = null;
+/* la preferenza deve anche SOPRAVVIVERE, e una vecchia preferenza invalida va MIGRATA */
+let persiste = null, migrata = null;
 try {
   const page = await b.newPage({ viewport: { width: 412, height: 915 } });
   await installCdnRoutes(page);
@@ -56,12 +59,19 @@ try {
   await openMatch(page, port, { skipLoadAll: true });
   persiste = await page.evaluate(() => { try { return localStorage.getItem('cpm-match-speed'); } catch (e) { return null; } });
   await page.close();
+  const pg2 = await b.newPage({ viewport: { width: 412, height: 915 } });
+  await installCdnRoutes(pg2);
+  await pg2.addInitScript(() => { window.__CPM_GLB = false; try { localStorage.setItem('cpm-match-speed', '1.25'); } catch (e) {} });
+  await openMatch(pg2, port, { skipLoadAll: true });
+  await sleep(1200);
+  migrata = await pg2.evaluate(() => { try { return localStorage.getItem('cpm-match-speed'); } catch (e) { return null; } });
+  await pg2.close();
 } catch (e) {}
 await b.close(); srv.close();
 
 let rossi = 0, ciechi = 0;
 console.log(`\n=== RITMO DELLA PARTITA · tick vero, solo tratti in playing${ROSSO ? ' · PROVA DEL ROSSO (__CPM_NO484)' : ''} ===`);
-for (const v of [1, 1.25, 2]) {
+for (const v of [1, 1.5, 2]) {
   const m = misure[v];
   if (m == null) { console.log(`  ${String(v + '×').padStart(6)} · ⚠ nessuna misura`); ciechi++; continue; }
   const sc = 100 * (m - ATTESO[v]) / ATTESO[v], ko = Math.abs(sc) > BANDA;
@@ -70,10 +80,12 @@ for (const v of [1, 1.25, 2]) {
 }
 /* ⚠️ e le tre devono essere DISTINTE: tre numeri ciascuno «entro banda» non provano da soli che la
    manopola agisca — la separazione si controlla a valle, ed e' cio' che il rosso deve rompere. */
-const vals = [1, 1.25, 2].map(v => misure[v]).filter(x => x != null);
+const vals = [1, 1.5, 2].map(v => misure[v]).filter(x => x != null);
 if (vals.length === 3 && !(vals[0] > vals[1] * 1.1 && vals[1] > vals[2] * 1.1)) { console.log('  ❌ le tre velocita\' non sono distinte: la scelta non sta agendo sul tick'); rossi++; }
 if (persiste !== '2') { console.log(`  ❌ la preferenza non sopravvive al caricamento (letto ${JSON.stringify(persiste)})`); rossi++; }
 else console.log('  ✅ la preferenza sopravvive al caricamento');
+if (migrata !== '1') { console.log(`  ❌ la vecchia preferenza 1,25 non e' stata migrata (letto ${JSON.stringify(migrata)})`); rossi++; }
+else console.log('  ✅ la vecchia preferenza 1,25 e\' stata migrata su 1');
 for (const e of errs.slice(0, 3)) console.log('  ⚠ pageerror: ' + e);
 
 if (ciechi) { console.log(`\n❌ CIECO su ${ciechi} velocita'`); process.exit(2); }
