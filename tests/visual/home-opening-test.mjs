@@ -73,7 +73,10 @@ for (const rosso of [false, true]) {
     /* ⚠️ si clicca l'elemento CLICCABILE piu' interno che contiene il testo: prendere l'ultimo nodo con
        quel testo colpiva un contenitore senza handler, e il click «riusciva» senza fare nulla. */
     const aperto = await page.evaluate(() => {
-      const cand = [...document.querySelectorAll('button,[role=button],div,a')].filter(x => /Vivi la Settimana/i.test(x.textContent || ''));
+      /* [7.493.0] alla settimana 1 la CTA si chiama «Avvia Stagione»: il guardiano deve accettare
+         entrambe le diciture, altrimenti la release che rinomina il bottone lo fa diventare rosso per un
+         motivo che non c'entra con cio' che giudica. */
+      const cand = [...document.querySelectorAll('button,[role=button],div,a')].filter(x => /Vivi la Settimana|Avvia Stagione/i.test(x.textContent || ''));
       const clic = cand.filter(x => x.tagName === 'BUTTON' || x.getAttribute('role') === 'button' || getComputedStyle(x).cursor === 'pointer');
       const t = clic.length ? clic[clic.length - 1] : null;
       if (!t) return 'nessun elemento cliccabile con quel testo';
@@ -82,7 +85,7 @@ for (const rosso of [false, true]) {
     await sleep(1800);
     const dopo = await page.evaluate(() => document.body.innerText || '');
     const nelWiz = TITOLI.filter(t => dopo.toLowerCase().includes(t.toLowerCase()));
-    console.log(`  «Vivi la Settimana»: ${aperto} → contenuti d'apertura ora a schermo: ${nelWiz.length ? nelWiz.join(' · ') : 'NESSUNO'}`);
+    console.log(`  CTA d'apertura: ${aperto} → contenuti d'apertura ora a schermo: ${nelWiz.length ? nelWiz.join(' · ') : 'NESSUNO'}`);
     verdi.wizard = /SETTIMANA DI APERTURA|Passo 1 di/i.test(dopo) || nelWiz.length > 0;
     console.log('  primi 200 caratteri dopo il click: ' + dopo.replace(/\s+/g, ' ').slice(0, 200));
     await page.screenshot({ path: 'out/home/wizard.png' });

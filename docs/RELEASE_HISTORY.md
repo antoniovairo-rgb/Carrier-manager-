@@ -1,5 +1,23 @@
 # Cronologia delle release — Korward Elite
 
+### 7.493.0 — Alla prima settimana il bottone dice cosa fa
+
+Direttiva PO: «il bottone vivi la settimana, nella prima settimana chiamalo avvia stagione con
+un'iconcina specifica».
+
+Dal 7.491 quel tasto e' l'**unico** ingresso alle interazioni d'apertura (ritiro · raduno · presidente ·
+maglia · sorteggi), e chiamarlo «Vivi la Settimana» lo faceva sembrare l'allenamento settimanale mentre
+li' comincia la stagione. Alla settimana 1: **«🏁 Avvia Stagione — ritiro, raduno e presentazioni»**;
+dalla settimana 2 in poi resta «⚡ Vivi la Settimana». Voci aggiunte in entrambe le lingue del `LOCALE`.
+
+Verificato su **tutti e due** i casi, non solo su quello nuovo: settimana 1 mostra «Avvia Stagione» e non
+«Vivi la Settimana», settimana 7 il contrario. Una dicitura giusta in un caso solo e' meta' lavoro, e il
+caso non verificato e' quello che poi trova il PO.
+
+⚠️ E il guardiano `home-opening` e' stato allineato **prima**: cliccava la CTA cercando il testo «Vivi la
+Settimana», quindi questa release lo avrebbe fatto diventare rosso per un motivo che non c'entra con cio'
+che giudica. Ora accetta entrambe le diciture.
+
 ### 7.492.0 — Anche la notte dei sorteggi esce dalla home
 
 Collaudo PO sullo screenshot del 7.491: la card «La notte dei sorteggi · Coppa dei Campioni» era rimasta
