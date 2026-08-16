@@ -110,7 +110,8 @@
     "parata-legibility": "node parata-legibility-test.mjs",
     "jumbotron-anchor": "node jumbotron-anchor-test.mjs",
     "event-ledger": "node event-ledger-test.mjs",
-    "ball-owner": "node ball-owner-test.mjs"
+    "ball-owner": "node ball-owner-test.mjs",
+    "bg-continuity": "node bg-continuity-test.mjs"
   },
   "dependencies": {
     "playwright": "^1.48.0",

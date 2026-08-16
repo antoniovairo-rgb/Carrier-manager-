@@ -1,5 +1,42 @@
 # Cronologia delle release — Korward Elite
 
+### 7.498.0 — F3a Match Experience: il testo propone, lo stato reale limita
+
+Prima riga in cui il verso si gira davvero. Fino a qui `ballTargetRef.current = ev.bpos` faceva
+**assegnare** la destinazione del pallone a una frase pescata da una tabella, qualunque fosse la
+posizione reale del gioco.
+
+**Causa misurata** sul flusso vero, prima di toccare nulla (`npm run bg-continuity`, che legge il
+testimone `__CPM_BGSYNC` già esistente dal 7.485 — non si è aggiunta una sonda, si è letta quella che
+c'era): salto dichiarato **mediana 17,6 · p90 52,7 · massimo 71,9 unità**. Cioè il gioco che si sposta da
+una trequarti all'altra fra due frasi, che in una partita non succede.
+
+**Rimedio.** La destinazione dichiarata diventa una **proposta**, e lo stato reale la limita alla
+continuità: tetto 45 unità, si va nella direzione chiesta ma solo fin dove il gioco poteva arrivare.
+
+**Ri-misura.** **0/29** righe oltre mezzo campo, contro 3/29 col freno spento. **Prova del rosso
+`__CPM_NO498`**: la quota risale a **10,3%**, con punte di 71,9.
+
+⚠️ **I gol sono esenti dal freno e dalla misura.** Un gol subìto porta davvero il pallone nella propria
+rete, e **due** delle cinque righe oltre mezzo campo della prima baseline erano `opp_goal`: frenarle — o
+accusarle — avrebbe corretto l'unico evento che ha il diritto di spostare il gioco da parte a parte.
+
+⚠️ **Coerenza a tre.** Il freno vale insieme per il pallone **logico**, per il **testimone** e per l'**arco
+3D** (`setBgAction.ballEnd`). Frenare il primo e lasciare gli altri sulla proposta avrebbe spaccato in due
+proprio la coerenza che questa fase serve a costruire.
+
+⚠️ **La soglia è scelta per separare, e la prima non separava.** Era al 12% perché la baseline grezza
+diceva 12,2% — ma quella contava anche le righe di gol; tolte quelle la baseline è 10,3%, e la prova del
+rosso **falliva** (10,3% < 12%). Ora 5%, in mezzo con margine. E va detto che **sopra il tetto la misura è
+limitata per costruzione**: col freno a 45, «quante righe superano 50» non può che essere zero. Il verde
+da solo dimostra poco — il valore di questo guardiano sta nella prova del rosso.
+
+Nello stesso lotto: un `Math.random()` rimasto nel tick dopo il giro F0 (il micro-scarto dell'eroe) passa
+alla catena seedata `_rndM`.
+
+⚠️ **Questo non è tutto F3.** La selezione della riga resta una pesca pesata (col peso di zona del
+7.486). È il primo punto in cui lo stato reale prevale sul testo, non l'inversione completa.
+
 ### 7.497.0 — F2 Match Experience: chi comanda il pallone, prima passata (solo osservazione)
 
 L'audit ha contato **62 righe** che scrivono la posizione del pallone senza nessun arbitro fra loro. È il

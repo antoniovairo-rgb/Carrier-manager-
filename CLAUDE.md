@@ -438,6 +438,15 @@ apertura di stagione. ⚠️ Prima di togliere una card duplicata, controlla che
 voce. ⚠️ Cliccando una CTA da una sonda, prendi l'elemento **cliccabile più interno**: l'ultimo nodo col
 testo giusto è spesso un contenitore senza handler, e il click «riesce» senza fare nulla.
 
+**Il testo propone, lo stato reale limita (7.498.0, F3a).** `ballTargetRef.current` non prende più
+direttamente `ev.bpos`: la destinazione dichiarata dalla riga di cronaca è una **proposta**, limitata a
+**45 unità** dalla posizione reale del pallone. Guardiano `npm run bg-continuity`, prova del rosso
+`__CPM_NO498` (quota oltre mezzo campo 0% → 10,3%, punte 71,9). ⚠️ **I gol sono esenti** dal freno e dalla
+misura: lì il pallone si sposta davvero, e due delle cinque righe della prima baseline erano `opp_goal`.
+⚠️ **Il freno vale a tre**: pallone logico, testimone `__CPM_BGSYNC` e **arco 3D** (`setBgAction.ballEnd`)
+— frenarne uno solo spacca la coerenza. ⚠️ Sopra il tetto la misura è **limitata per costruzione**: il
+verde da solo dimostra poco, il valore sta nella prova del rosso.
+
 **Chi comanda il pallone — `__CPM_OWN497` (7.497.0, F2, solo osservazione).** Il render-loop conta per
 fotogramma quanti scrittori del pallone si **dichiarano** (`_bj0.srcs`), quante volte più d'uno scrive
 nello **stesso** fotogramma (= conflitto, con la coppia) e quante volte il pallone si muove senza che
