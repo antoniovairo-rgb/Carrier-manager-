@@ -1,5 +1,49 @@
 # Cronologia delle release — Korward Elite
 
+### 7.497.0 — F2 Match Experience: chi comanda il pallone, prima passata (solo osservazione)
+
+L'audit ha contato **62 righe** che scrivono la posizione del pallone senza nessun arbitro fra loro. È il
+candidato principale per le tre note del PO «palla che si muove in autonomia» e per il «ball teleport»
+che l'AI Vision segnala su 17 scene su 30.
+
+Il pallone è il cuore visivo della partita: un arbitro acceso male si vede ovunque e subito. Questa
+passata **non cambia nulla nel gioco** — misura e basta, e l'arbitro vero arriverà con questo numero in
+mano.
+
+**Cosa misura, per fotogramma:** quanti scrittori si dichiarano · quante volte più d'uno scrive nello
+**stesso** fotogramma (definizione operativa di conflitto, con la coppia colpevole) · quante volte il
+pallone si **muove** senza che nessuno si sia dichiarato.
+
+Solo **8 dei 62** punti avevano un nome. Ora lo hanno anche l'**arco** in volo e la palla **addosso**
+all'eroe, che erano i due movimenti posizionali rimasti anonimi: nel varco `__CPM_BJ478` passano da
+«continuo» a nome proprio (misurato: 88 `arco` + 24 `addosso` su 300 voci).
+
+**Baseline** su 3 partite vere fino al fischio (`npm run ball-owner`):
+
+| | |
+|---|---|
+| fotogrammi osservati | **4.355** |
+| con almeno uno dichiarato | 1.347 · **30,9%** |
+| con **più d'uno** (conflitto) | **55 · 1,3%** |
+| in cui il pallone si muove | 2.297 · 52,7% |
+| …di questi, senza nessun padrone | 1.112 · **48,4%** |
+
+E i conflitti hanno un nome: **51× `buildup-volo`+`testa`**, 4× `scena`+`consegna`.
+
+⚠️ «Nessuno dichiarato» **non** vuol dire «nessuno l'ha scritto»: 52 punti su 62 non hanno ancora un
+nome, quindi quella quota misura quanto resta da attribuire, non un difetto in sé. È una mappa di
+copertura e va letta così.
+
+⚠️ **Due errori miei, misurati e corretti.**
+1. Lo script di patch scriveva il file **solo alla fine**, e un `process.exit` sull'ultima sostituzione ha
+   buttato via le dodici riuscite. Il contatore leggeva quindi un campo che nessuno creava e dava
+   **«0 dichiarati su 4.406 fotogrammi»**: un numero pulito e falso. Smascherato leggendo i **due**
+   testimoni sulla stessa pagina — il varco mostrava `scena` e `consegna`, il contatore zero.
+2. La prima **prova del rosso** usava `__CPM_REC` come interruttore ed è **fallita** contando 2.762
+   fotogrammi «a strumenti spenti»: l'armamento del varco accetta anche `_CPM_TEST`, e l'harness apre
+   sempre con `?cpmtest=1`. Un interruttore che non spegne non prova nulla. Ora c'è **`__CPM_NO497`**, e
+   con quello la prova del rosso dà **zero** fotogrammi.
+
 ### 7.496.0 — F1b Match Experience: il libro mastro degli eventi, inerte per scelta
 
 L'audit ha misurato che il gioco **non ha un modello di eventi**: ha quattro generatori che raccontano la

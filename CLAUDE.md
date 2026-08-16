@@ -438,6 +438,19 @@ apertura di stagione. ⚠️ Prima di togliere una card duplicata, controlla che
 voce. ⚠️ Cliccando una CTA da una sonda, prendi l'elemento **cliccabile più interno**: l'ultimo nodo col
 testo giusto è spesso un contenitore senza handler, e il click «riesce» senza fare nulla.
 
+**Chi comanda il pallone — `__CPM_OWN497` (7.497.0, F2, solo osservazione).** Il render-loop conta per
+fotogramma quanti scrittori del pallone si **dichiarano** (`_bj0.srcs`), quante volte più d'uno scrive
+nello **stesso** fotogramma (= conflitto, con la coppia) e quante volte il pallone si muove senza che
+nessuno si dichiari. Guardiano `npm run ball-owner`, prova del rosso **`__CPM_NO497`**. Baseline: 4.355
+fotogrammi · 30,9% dichiarati · **55 conflitti (1,3%)**, di cui **51 `buildup-volo`+`testa`** · movimento
+nel 52,7% dei fotogrammi, 48,4% senza padrone. ⚠️ «Senza padrone» = **da attribuire**, non difetto: 52 dei
+62 punti di scrittura non hanno ancora un nome. ⚠️ **Un interruttore per la prova del rosso dev'essere
+suo:** usare `__CPM_REC` non spegne niente sotto `?cpmtest=1` (l'armamento accetta anche `_CPM_TEST`) — la
+prima prova è fallita contando 2.762 fotogrammi «a strumenti spenti».
+⚠️ **Uno script di patch scrive il file a ogni sostituzione riuscita, non alla fine:** un `process.exit`
+sull'ultima ancora ha già buttato via dodici modifiche buone, e il contatore che ne dipendeva ha prodotto
+uno zero pulito e falso. Due testimoni sulla stessa pagina lo hanno smascherato.
+
 **Libro mastro degli eventi — `cpmEv()` / `window.__CPM_EV` (7.496.0, F1b).** Registro **inerte** accanto
 alla partita: nessuno lo legge dentro il gioco (solo push in try/catch, come `cpmEmit` → gate-safe).
 Registra i gol coi loro quattro percorsi (`microsim`/`cronaca`/`highlight`/`setpiece`) e ogni riga di
