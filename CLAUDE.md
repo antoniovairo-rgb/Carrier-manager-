@@ -438,6 +438,16 @@ apertura di stagione. ⚠️ Prima di togliere una card duplicata, controlla che
 voce. ⚠️ Cliccando una CTA da una sonda, prendi l'elemento **cliccabile più interno**: l'ultimo nodo col
 testo giusto è spesso un contenitore senza handler, e il click «riesce» senza fare nulla.
 
+**Helper condiviso: `matchPhase(page)` in `lib/harness.mjs` (7.495.0).** Ogni sonda che deve sapere in che
+fase è la partita usa quello — legge `__CPM_PHASE`. Tre sonde ci sono già cascate leggendo `__CPM_STATE`.
+⚠️ E **una passata cieca deve uscire ≠0**: `ball-jump-census` usciva **0** dichiarando nel testo che la
+misura non valeva, cioè in CI passava. Ora entrambi i censimenti hanno un **pavimento di copertura** (metà
+del bersaglio, mai sotto tre scene) oltre al controllo «il varco ha guardato qualcosa».
+⚠️ **`openMatch` fa `page.goto`: una navigazione azzera i `window.__CPM_*` accumulati.** Chi raccoglie
+contatori attraverso più partite li deve svuotare **prima** di ogni riapertura, non alla fine.
+⚠️ **Non mettere un cancello su `playing` in un ciclo che vuole scene:** armata la coda reattiva gli
+highlight si incatenano e fra l'uno e l'altro passa **meno di 1,5 s** di gioco fluido.
+
 **La fase della partita si legge da `__CPM_PHASE`, mai da `__CPM_STATE` (7.494.0).** `__CPM_STATE` espone
 `phase` dalle **props del componente 3D**, e `show3D` **non include `ended`**: al fischio finale
 `ThreeMatchView` si smonta e quella funzione continua a restituire l'ultimo valore vivo **per sempre**.

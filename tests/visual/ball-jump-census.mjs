@@ -22,9 +22,24 @@
    comparire nelle note. Non e' ancora un rimedio: e' la pista, misurata.
 
      CPM_CHROME=… PLAYWRIGHT_BROWSERS_PATH=… node ball-jump-census.mjs                             */
-import { startServer, launchBrowser, installCdnRoutes, openMatch, sleep } from './lib/harness.mjs';
+/* ⚠️ [7.495.0 F1] TRE DIFETTI DI QUESTA SONDA, MISURATI E CORRETTI — rilanciata dopo mesi ha risposto
+   «0 salti su 1 scena» e «il varco non ha guardato nessun fotogramma», USCENDO CON CODICE 0. Cioe': non
+   ha misurato niente, e in CI sarebbe passata.
+     (1) LA FASE VENIVA LETTA DA `__CPM_STATE().phase`, che la espone dalle props del 3D. `show3D` non
+         include `ended`: a partita finita il componente si smonta e quella funzione resta congelata
+         sull'ultimo valore. Il ciclo cercava `playing`, non lo trovava mai piu', e consumava il budget in
+         attese a vuoto invece che in scene. Ora usa `matchPhase()` (→ `__CPM_PHASE`, cioe' `phaseRef`
+         dentro LiveMatch) e su `ended` riapre SUBITO invece di bruciare dodici giri secchi.
+     (2) IL VARCO VENIVA RACCOLTO ALLA FINE. `openMatch` fa `page.goto`, e una navigazione AZZERA
+         `__CPM_BJ478`/`__CPM_BJN478`: leggerli dopo l'ultimo riavvio vuol dire leggere i contatori di una
+         partita appena aperta — di qui lo zero. Ora si raccoglie e si ACCUMULA prima di ogni riapertura,
+         come `camera-step-census` gia' faceva.
+     (3) UNA PASSATA CIECA ORA E' ROSSA. Zero fotogrammi visti dal varco, o zero scene giocate, non e' un
+         «nessun salto»: e' una misura che non c'e'. Esce 2. */
+import { startServer, launchBrowser, installCdnRoutes, openMatch, sleep, matchPhase } from './lib/harness.mjs';
 
 const TARGET = +(process.env.CPM_SCENES || 26);
+const BUDGET_MS = +(process.env.CPM_BUDGET_MS || 900000);/* il budget e' il TEMPO, non il numero di giri */
 const srv = await startServer(); const port = srv.address().port;
 const b = await launchBrowser();
 const page = await b.newPage({ viewport: { width: 412, height: 915 } });
@@ -36,20 +51,43 @@ await openMatch(page, port, { skipLoadAll: true });
 await sleep(700);
 
 const salti = [];
+/* accumulatori del varco: vanno svuotati PRIMA di ogni `page.goto`, che li azzererebbe */
+let fonti = [], visti = 0, partite = 1;
+const raccogli = async () => {
+  try {
+    const d = await page.evaluate(() => ({ f: (window.__CPM_BJ478 || []).slice(), n: window.__CPM_BJN478 || 0 }));
+    fonti = fonti.concat(d.f); visti += d.n;
+  } catch (_e) {}
+};
+const riapri = async () => { await raccogli(); await openMatch(page, port, { skipLoadAll: true }); await sleep(700); partite++; };
+
 let secchi = 0, scene = 0;
-for (let round = 0; round < TARGET * 4 && scene < TARGET; round++) {
-  const inPlay = await page.evaluate(() => { const s = window.__CPM_STATE && window.__CPM_STATE(); return s && s.phase === 'playing'; });
-  if (!inPlay) {
-    if (++secchi >= 12) { secchi = 0; try { await openMatch(page, port, { skipLoadAll: true }); await sleep(700); } catch (e) { break; } }
+const t0run = Date.now();
+while (scene < TARGET && Date.now() - t0run < BUDGET_MS) {
+  const ph = await matchPhase(page);
+  /* `ended`/`ceremony` = partita finita: riaprire SUBITO. Prima si aspettava che una fase stantia
+     tornasse `playing`, cosa che non poteva succedere: e' li' che moriva il censimento. */
+  if (ph === 'ended' || ph === 'ceremony' || ph === 'shootout') { secchi = 0; try { await riapri(); } catch (e) { break; } continue; }
+  if (ph == null) {
+    if (++secchi >= 12) { secchi = 0; try { await riapri(); } catch (e) { break; } }
     else await sleep(700);
     continue;
   }
   secchi = 0;
-  await page.evaluate(() => { window.__CPM_QUEUE_REACTIVE && window.__CPM_QUEUE_REACTIVE(); });
-  const ok = await page.waitForFunction(() => { try { const s = window.__CPM_STATE && window.__CPM_STATE(); return s && s.phase === 'hl_choose'; } catch (e) { return false; } }, { timeout: 30000 }).then(() => true).catch(() => false);
+  /* ⚠️ IL CANCELLO SU `playing` AFFAMAVA IL CENSIMENTO. Il ciclo avanzava solo se sorprendeva la partita
+     in gioco fluido — ma armata la coda reattiva `numHL` sale subito al tetto di 8 e gli highlight si
+     incatenano: fra `hl_result` e l'`hl_intro` successivo passa MENO DI 1,5 s (misurato tracciando le
+     transizioni: 28,0→28,5 · 50,4→51,4). La sonda passava il tempo ad aspettare una finestra che quasi
+     non esiste e chiudeva con UNA scena su otto. Ora la coda si arma quando capita di essere in
+     `playing`, ma il ciclo procede da QUALUNQUE fase in-partita: cio' che conta e' il prossimo
+     `hl_choose`, non come ci si arriva. */
+  if (ph === 'playing') await page.evaluate(() => { window.__CPM_QUEUE_REACTIVE && window.__CPM_QUEUE_REACTIVE(); });
+  /* anche queste due attese leggevano la fase dalle props del 3D: stessa sorgente stantia, stesso rischio
+     di aspettare per sempre una transizione gia' avvenuta */
+  const ok = await page.waitForFunction(() => { try { return window.__CPM_PHASE && window.__CPM_PHASE() === 'hl_choose'; } catch (e) { return false; } }, { timeout: 30000 }).then(() => true).catch(() => false);
   if (!ok) { await sleep(600); continue; }
   await page.evaluate(() => window.__CPM_RESOLVE && window.__CPM_RESOLVE(0)).catch(() => {});
-  await page.waitForFunction(() => { try { const s = window.__CPM_STATE && window.__CPM_STATE(); return s && s.phase !== 'hl_result'; } catch (e) { return true; } }, { timeout: 25000 }).catch(() => {});
+  await page.waitForFunction(() => { try { return !window.__CPM_PHASE || window.__CPM_PHASE() !== 'hl_result'; } catch (e) { return true; } }, { timeout: 25000 }).catch(() => {});
   scene++;
   await sleep(250);
   const r = await page.evaluate(() => {
@@ -78,8 +116,7 @@ for (let round = 0; round < TARGET * 4 && scene < TARGET; round++) {
    lo sposta, e la sua finestra (una sola chiave-scena) esclude proprio l'apertura di scena a cui la prima
    passata aveva attribuito i salti. Il varco `__CPM_BJ478` e' scritto dal render-loop accanto a ogni
    riassegnazione secca del pallone e letto a fine fotogramma, con lo stato dello stacco nero. */
-const fonti = await page.evaluate(() => (window.__CPM_BJ478 || []).slice()).catch(() => []);
-const visti = await page.evaluate(() => window.__CPM_BJN478 || 0).catch(() => 0);
+await raccogli();/* ultima raccolta: quella della partita in corso, che nessuna riapertura ha svuotato */
 await b.close(); srv.close();
 
 const bit = f => [(f & 1) ? 'arco' : '', (f & 2) ? 'post-arco' : '', (f & 4) ? 'build-up' : '', (f & 8) ? 'in-scena' : ''].filter(Boolean).join('+') || '—';
@@ -105,3 +142,14 @@ if (fonti.length) {
   console.log(`\n${scoperti.length}/${fonti.length} salti avvengono SENZA stacco nero vivo: sono quelli che il giocatore vede.`);
 } else console.log('  nessun salto attribuito (varco vuoto: strumenti spenti o pallone continuo).');
 for (const e of errs.slice(0, 3)) console.log('  ⚠ pageerror: ' + e);
+
+/* ⚠️ UNA PASSATA CHE NON HA MISURATO NON E' UNA PASSATA PULITA. Fino al 7.494 questo censimento usciva 0
+   anche dichiarando nel testo che la misura non valeva: in CI si legge «passato», e nessuno va a
+   guardare. Un varco vuoto e zero scene sono le due condizioni in cui il risultato non esiste. */
+/* il pavimento non e' «una scena»: con una sola scena «zero salti» non significa nulla. Meta' del
+   bersaglio, mai sotto tre, e' il minimo perche' la frase «nessun salto osservato» valga qualcosa. */
+const MIN_SCENE = Math.max(3, Math.floor(TARGET / 2));
+console.log(`\ncopertura: ${scene}/${TARGET} scene giocate su ${partite} partite · ${visti} fotogrammi visti dal varco`);
+if (!visti) { console.log('❌ CIECO: il varco non ha guardato nessun fotogramma — la misura non esiste, non e\' un «nessun salto»'); process.exit(2); }
+if (scene < MIN_SCENE) { console.log(`❌ COPERTURA INSUFFICIENTE: ${scene} scene su un minimo di ${MIN_SCENE} — «nessun salto» su cosi' poco non e' un risultato`); process.exit(2); }
+console.log('✅ misura valida');

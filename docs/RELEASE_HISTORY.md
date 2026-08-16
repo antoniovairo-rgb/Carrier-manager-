@@ -1,5 +1,50 @@
 # Cronologia delle release — Korward Elite
 
+### 7.495.0 — F1a Match Experience: due censimenti ciechi, e uno usciva verde
+
+Release di **strumenti**: il gioco non cambia. Ma **F2** (proprietà del pallone) e **F6** (regia) si
+appoggiano proprio su questi due censimenti, e costruire su uno strumento cieco significa non sapere se
+si è migliorato o peggiorato.
+
+**Causa misurata.** Rilanciati per verificare il «teleport» che il report AI Vision del PO segnalava su
+17 scene su 30, i due censimenti hanno risposto: `ball-jump-census` **«0 salti su 1 scena · il varco non
+ha guardato nessun fotogramma»** — **uscendo con codice 0** — e `camera-step-census` **«nessuna scena
+utilizzabile nel testimone»**. Tre difetti, tutti nella sonda, nessuno nel gioco:
+
+1. **Leggevano la fase da `__CPM_STATE().phase`**, che la espone dalle *props del componente 3D*.
+   `show3D` non include `ended`: a partita finita il componente si smonta e la funzione resta congelata
+   sull'ultimo valore. Il ciclo cercava `playing` e non lo trovava mai più, consumando tutto il budget in
+   attese a vuoto. È la stessa trappola del 7.494 — terza volta che questa famiglia costa una misura.
+2. **`ball-jump-census` raccoglieva il varco alla fine.** `openMatch` fa `page.goto`, e una navigazione
+   azzera `__CPM_BJ478`/`__CPM_BJN478`: leggerli dopo l'ultimo riavvio significa leggere i contatori di
+   una partita appena aperta. Di qui lo zero. `camera-step-census` questa la sapeva già e raccoglieva per
+   scena.
+3. **Il cancello su `playing` li affamava.** Armata la coda reattiva, `numHL` sale al tetto di 8 e gli
+   highlight si incatenano: fra `hl_result` e l'`hl_intro` successivo passa **meno di 1,5 s** (misurato
+   tracciando le transizioni: 28,0→28,5 · 50,4→51,4). La sonda avanzava solo se sorprendeva la partita in
+   gioco fluido, cioè quasi mai.
+
+**Rimedio.** Helper condiviso **`matchPhase()`** in `lib/harness.mjs` (legge `__CPM_PHASE`, cioè
+`phaseRef` dentro `LiveMatch`); raccolta del varco **prima** di ogni riapertura; budget a **tempo**
+invece che a giri; il ciclo procede da qualunque fase in-partita e arma la coda quando capita di essere
+in `playing`.
+
+**Ri-misura.** Il varco è passato da **0 a 14.907 fotogrammi visti**. Quattro salti del pallone
+attribuiti, da **19,9 a 41,9 unità**, e **tutti e quattro dentro lo stacco nero** (0/4 scoperti).
+`camera-step-census` torna a produrre numeri: inversioni dello sguardo **mediana 0,4/s** contro una
+soglia in vigore di 2,0.
+
+**E ora una passata cieca è rossa.** Entrambi escono **2** se il varco non ha guardato nulla o se la
+copertura sta sotto metà del bersaglio (mai sotto tre scene). «Nessun salto» misurato su una scena non è
+un risultato, e in CI un exit 0 si legge «passato»: uno strumento cieco che passa è peggio di uno rosso,
+perché nessuno va a guardare. Il pavimento ha già fatto il suo lavoro alla prima passata utile — 3 scene
+su un minimo di 4 → rosso.
+
+⚠️ **Quello che questa release NON dimostra.** La copertura resta magra (3 e 2 scene): i numeri sopra
+sono una **pista**, non una banda normale. E il legame col report AI Vision resta un'ipotesi ragionevole,
+non una prova: se i salti veri sono tutti mascherati da uno stacco, un filmstrip campionato a 110 ms
+**non può vedere la maschera** e li chiama teletrasporti — ma per dirlo servono più scene.
+
 ### 7.494.0 — F0 Match Experience: il guardiano delle velocità guardava metà partita
 
 Prima fase della direttiva PO sulla **Match Experience**. Non porta niente di visibile in campo di

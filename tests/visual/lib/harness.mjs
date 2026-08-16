@@ -38,6 +38,20 @@ export async function frameState(page, timeoutMs = 1500) {
    cadenza fissa e si chiede quiete per una FINESTRA DI TEMPO, non per un numero di letture lente: il criterio
    e' lo stesso (movimento < 0.3 e pallone a terra) ma diventa raggiungibile.
    Ritorna {ms, settled}: chi chiama cattura poi UNA volta lo stato completo. */
+
+/* [7.495.0 F1] LA FASE DELLA PARTITA SI LEGGE DA QUI, MAI DA `__CPM_STATE().phase`.
+   `__CPM_STATE` espone la fase dalle PROPS del componente 3D, e `show3D` non include `ended`: al fischio
+   finale `ThreeMatchView` si smonta e quella funzione continua a restituire l'ultimo valore vivo PER
+   SEMPRE. Due censimenti ci sono gia' cascati — cercavano `phase==='playing'` su una pagina la cui
+   partita era finita, non lo trovavano mai piu', e bruciavano l'intero budget di giri in attese a vuoto:
+   `ball-jump-census` ha chiuso con UNA scena su otto richieste e il varco a zero fotogrammi.
+   `__CPM_PHASE` legge `phaseRef` dentro LiveMatch: e' il punto in cui il dato nasce. Ritorna null se
+   l'hook non c'e' ancora (pagina in caricamento) — chi chiama distingue «non lo so» da «e' finita». */
+export async function matchPhase(page) {
+  try { return await page.evaluate(() => (window.__CPM_PHASE ? window.__CPM_PHASE() : null)); }
+  catch (_e) { return null; }
+}
+
 export async function waitBallSettle(page, { maxMs = 9000, quietMs = 700, pollMs = 110, moveEps = 0.3, groundY = 1.2 } = {}) {
   const t0 = Date.now(); let prev = null, quietFrom = null;
   while (Date.now() - t0 < maxMs) {

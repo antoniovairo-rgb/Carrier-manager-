@@ -17,9 +17,10 @@
    NON E' UN GUARDIANO e non giudica: e' il censimento su cui si sceglie un numero.
 
      CPM_CHROME=… PLAYWRIGHT_BROWSERS_PATH=… node camera-step-census-test.mjs                       */
-import { startServer, launchBrowser, installCdnRoutes, openMatch, sleep } from './lib/harness.mjs';
+import { startServer, launchBrowser, installCdnRoutes, openMatch, sleep, matchPhase } from './lib/harness.mjs';
 
 const SCENE_TARGET = +(process.env.CPM_SCENES || 40);
+const BUDGET_MS = +(process.env.CPM_BUDGET_MS || 900000);/* il budget e' il TEMPO, non il numero di giri */
 
 const srv = await startServer(); const port = srv.address().port;
 const b = await launchBrowser();
@@ -35,21 +36,31 @@ await sleep(700);
 /* si gioca: ogni giro arma un highlight reattivo e lo risolve, cosi' le scene entrano nel testimone */
 let secchi = 0, partite = 1, scene = 0;
 const righe = [];
-for (let round = 0; round < SCENE_TARGET * 4 && scene < SCENE_TARGET; round++) {
-  const inPlay = await page.evaluate(() => { const s = window.__CPM_STATE && window.__CPM_STATE(); return s && s.phase === 'playing'; });
-  if (!inPlay) {
+/* ⚠️ [7.495.0 F1] LA FASE SI LEGGE DA `__CPM_PHASE`, NON DA `__CPM_STATE`. Quest'ultima la espone dalle
+   props del 3D e `show3D` non include `ended`: a partita finita il componente si smonta e la funzione
+   resta congelata sull'ultimo valore. Il ciclo aspettava che tornasse `playing` — cosa che non poteva
+   accadere — e la passata chiudeva con «nessuna scena utilizzabile nel testimone». Su `ended` si riapre
+   subito. E il budget diventa TEMPO: con partite che finiscono dopo 2-3 highlight, il conto dei giri lo
+   consumavano le attese a vuoto, non le scene. */
+const t0run = Date.now();
+while (scene < SCENE_TARGET && Date.now() - t0run < BUDGET_MS) {
+  const ph = await matchPhase(page);
+  if (ph === 'ended' || ph === 'ceremony' || ph === 'shootout') { secchi = 0; partite++; try { await openMatch(page, port, { skipLoadAll: true }); await sleep(700); } catch (e) { break; } continue; }
+  if (ph == null) {
     if (++secchi >= 12) { secchi = 0; partite++; try { await openMatch(page, port, { skipLoadAll: true }); await sleep(700); } catch (e) { break; } }
     else await sleep(700);
     continue;
   }
   secchi = 0;
-  await page.evaluate(() => { window.__CPM_QUEUE_REACTIVE && window.__CPM_QUEUE_REACTIVE(); });
+  /* ⚠️ il cancello su `playing` affamava anche questo censimento: armata la coda, fra un highlight e il
+     successivo passa meno di 1,5 s di gioco fluido. Si arma quando capita, si procede da qualunque fase. */
+  if (ph === 'playing') await page.evaluate(() => { window.__CPM_QUEUE_REACTIVE && window.__CPM_QUEUE_REACTIVE(); });
   const ok = await page.waitForFunction(() => {
-    try { const s = window.__CPM_STATE && window.__CPM_STATE(); return s && s.phase === 'hl_choose'; } catch (e) { return false; }
+    try { return window.__CPM_PHASE && window.__CPM_PHASE() === 'hl_choose'; } catch (e) { return false; }
   }, { timeout: 30000 }).then(() => true).catch(() => false);
   if (!ok) { await sleep(600); continue; }
   await page.evaluate(() => window.__CPM_RESOLVE && window.__CPM_RESOLVE(0)).catch(() => {});
-  await page.waitForFunction(() => { try { const s = window.__CPM_STATE && window.__CPM_STATE(); return s && s.phase !== 'hl_result'; } catch (e) { return true; } }, { timeout: 25000 }).catch(() => {});
+  await page.waitForFunction(() => { try { return !window.__CPM_PHASE || window.__CPM_PHASE() !== 'hl_result'; } catch (e) { return true; } }, { timeout: 25000 }).catch(() => {});
   scene++;
   await sleep(200);
   /* ⚠️ IL CAMPIONE SI PRENDE QUI, non alla fine: `openMatch` ricarica la pagina per aprire la partita
@@ -100,7 +111,12 @@ const out = { righe, tot: righe.reduce((a, r) => a + r.n, 0) };
 
 await b.close(); srv.close();
 const R = out.righe.filter(r => r.pMax > 0);
+/* [7.495.0 F1] E un PAVIMENTO di copertura, non solo «zero scene». Una banda normale calcolata su due
+   scene non e' una banda normale: le percentuali che questo censimento stampa (2/2 = 100%) sono
+   indistinguibili dal caso. Meta' del bersaglio, mai sotto tre. */
+const MIN_SCENE = Math.max(3, Math.floor(SCENE_TARGET / 2));
 if (!R.length) { console.log('❌ nessuna scena utilizzabile nel testimone'); process.exit(2); }
+if (R.length < MIN_SCENE) { console.log(`\n❌ COPERTURA INSUFFICIENTE: ${R.length} scene su un minimo di ${MIN_SCENE} — una banda normale su cosi' poche scene non e' una banda`); process.exit(2); }
 const conRiga = out.righe.filter(r => r.cam.length).length;
 const q = (arr, p) => { const a = arr.slice().sort((x, y) => x - y); return a[Math.min(a.length - 1, Math.floor(a.length * p))]; };
 const passi = R.map(r => r.pMax), vel = R.map(r => r.vMax), dts = R.map(r => r.dtMed).filter(Boolean);
