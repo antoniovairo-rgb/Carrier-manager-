@@ -1,5 +1,31 @@
 # Cronologia delle release — Korward Elite
 
+### 7.491.0 — Le interazioni d'apertura vivono in un posto solo
+
+Direttiva PO: «tutti questi eventi pre stagionali non devono comparire come box nella home ma solo nel
+wizard al click vivi settimana».
+
+Ritiro, raduno (mercato / maglie / conferenza), presidente e numero di maglia esistevano in **due posti**:
+card impilate sulla home e passi del wizard, con gli stessi handler condivisi. La home di inizio stagione
+diventava un muro di riquadri prima ancora di far vedere la squadra. Ora la home non li mostra piu': il
+percorso e' **«Vivi la Settimana» → `openingGate()` → wizard**, che li propone uno alla volta.
+
+⚠️ **Verificato prima di togliere, non dopo.** `openingPending()` copre tutte e quattro le voci (ritiro ·
+presidente · mercato · stampa · maglia) e il gate e' gia' chiamato da «Vivi la Settimana», dal calendario
+e dal prompt partita: nessun contenuto diventa irraggiungibile e la prima settimana resta vincolante. Le
+card restano nel sorgente dietro una bandiera — **spegnerle e' reversibile, cancellarle no**.
+
+Misurato: home **0 riquadri su 4**, e il click sulla CTA apre «SETTIMANA DI APERTURA · Passo 1 di 6 —
+Ritiro pre-campionato». Guardiano `npm run home-opening`, che giudica **le due cose insieme** — nessun
+riquadro sulla home *e* il wizard che si apre: togliere le card senza il secondo controllo renderebbe
+irraggiungibile meta' apertura di stagione.
+
+⚠️ **Due errori della sonda, corretti prima di crederle.** La prova del rosso non era cablata e dava 0
+riquadri anche col rimedio spento: non distingueva «card tolte» da «card mai attivate», la stessa trappola
+del guardiano cieco. E il click sulla CTA prendeva l'**ultimo** nodo col testo giusto — un contenitore
+senza handler — quindi «riusciva» senza aprire niente. Ora si clicca l'elemento cliccabile piu' interno, e
+il rosso mostra 4 riquadri su 4.
+
 ### 7.490.0 — Gli eventi importanti hanno piu' respiro, e il cambio di velocita' e' misurato
 
 Direttiva PO §9 (enfasi sugli eventi importanti) e §7 (cambio velocita' durante la partita).

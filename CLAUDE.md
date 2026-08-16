@@ -428,6 +428,16 @@ protagonista **30%** contro il ~4% dell'estrazione casuale. La coerenza nome↔r
 sbagliato tre volte di fila (il sorgente dentro `<script>`, l'osservatore armato dopo il caricamento, il
 filtro che non trovava i nomi). Dove esiste il punto in cui il dato nasce, si misura li'.
 
+**Le interazioni d'apertura stagione vivono SOLO nel wizard (7.491.0).** Ritiro · raduno (mercato/maglie/
+conferenza) · presidente · numero di maglia stavano in due posti — card sulla home e passi del wizard —
+e la home di inizio stagione era un muro di riquadri. Ora la home non li mostra (bandiera
+`_OPENING_HOME_CARDS`, spenta ma reversibile) e il percorso è **«Vivi la Settimana» → `openingGate()` →
+wizard**. Guardiano `npm run home-opening`, che giudica **le due cose insieme**: nessun riquadro sulla home
+E il wizard che si apre — togliere le card senza il secondo controllo renderebbe irraggiungibile mezza
+apertura di stagione. ⚠️ Prima di togliere una card duplicata, controlla che `openingPending()` copra la
+voce. ⚠️ Cliccando una CTA da una sonda, prendi l'elemento **cliccabile più interno**: l'ultimo nodo col
+testo giusto è spesso un contenitore senza handler, e il click «riesce» senza fare nulla.
+
 **Test dal vivo:** `tests/visual/live-match-test.mjs` (non-gate, GLB-ON) verifica la coerenza M1 overlay⟺esito su un campione di tiri falliti + screenshot full-page; `tests/visual/glb-gesture-smoke.mjs` per i gesti GLB. Le parti gate-cieche (movimento, camera, cronaca BG live, cerimonia) si collaudano così.
 
 > **Quick-gate (`npm run quick-gate`, ~1.5 min):** gate **leggero** per iterare veloce in sviluppo (`tests/visual/quick-gate.mjs`). Campiona ~26 Situations sui check di stato (`initial-state/orientation/visual/movements/golden`) + `determinism/final-state/timeline/data-coherence`; **salta** i sampler lenti (`motion/ball-motion/post-highlight/perf/ai-vision`). Riusa harness + gli stessi `checks/*.mjs` → zero duplicazione. ⚠️ **NON sostituisce** il gate completo: `validate-situations` (14/14) resta **obbligatorio prima di ogni push**. Usa il quick-gate per il loop di sviluppo, il gate completo come gate di rilascio.
