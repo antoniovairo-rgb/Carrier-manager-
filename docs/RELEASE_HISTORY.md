@@ -1,5 +1,56 @@
 # Cronologia delle release — Korward Elite
 
+### 7.494.0 — F0 Match Experience: il guardiano delle velocità guardava metà partita
+
+Prima fase della direttiva PO sulla **Match Experience**. Non porta niente di visibile in campo di
+proposito: ogni fase successiva userà «la stessa partita due volte» come strumento di misura, quindi lo
+strumento va reso onesto **prima** di fidarsene.
+
+**Causa misurata.** `match-sequence` aspettava 60 s reali **senza autoplay**. Al primo highlight il gioco
+chiede un'azione, nessuno gliela dava, e il clock si congelava lì. Misurato sulla pagina vera prima di
+toccare nulla: **12 righe raccolte, minuti 1-46, fase a fine finestra `hl_choose` col cronometro fermo al
+50'**. Il verde non diceva che metà partita non era guardata — e i generatori non seedati che l'audit ha
+poi trovato stavano tutti oltre quel confine.
+
+**Rimedio, due parti.**
+
+1. **Cinque generatori passati alla catena deterministica.** La sostituzione 65-70' era
+   `Math.random()<0.38` ed è il più costoso dei cinque: muove `momentum` ed `energy`, che alimentano la λ
+   del micro-simulatore, quindi poteva cambiare il **risultato** fra due partite con lo stesso seed. I
+   minuti degli highlight dinamici al 60' e al 72' erano `rng(0,4)` (stessa regola che il 7.489 aveva già
+   applicato a `hlTimes`: il minuto di un highlight è un evento). Le due righe di commento a momentum
+   estremo avevano la **porta** seedata (`_rndM()<0.12`) ma non la **parola** (`pick()`): la riga usciva
+   al minuto giusto con testo diverso, e il guardiano confronta `minuto|testo`. Un mezzo seed non è un
+   seed. I primi tre stanno fuori dal callback di `setClock`, dove `_rndM` non è in scope: helper
+   `_rndTick(minuto, tag)` sulla stessa sorgente, col tag che separa i flussi perché due rami sullo stesso
+   minuto non estraggano lo stesso numero.
+2. **Il guardiano gioca la partita.** `__CPM_AUTOPLAY` a seed fisso — le scelte avanzano una volta per
+   highlight risolto, non per tick, quindi sono indipendenti dalla velocità — e si aspetta il fischio
+   finale.
+
+**Ri-misura.** 4/4 giri arrivano a `ended`; 14/14 righe identiche su tutti e tre i confronti (1x↔1x,
+2x↔2x, 1x↔2x). **Prova del rosso `__CPM_NO489`**: 0% identico, prima differenza in posizione 0.
+
+⚠️ **La fase si legge da `__CPM_PHASE`, mai da `__CPM_STATE`.** `__CPM_STATE` la espone dalle *props del
+componente 3D*, e `show3D` non include `ended`: al fischio finale il componente si smonta e la funzione
+continua a restituire l'ultimo valore vivo **per sempre**. Misurata così, questa stessa partita risultava
+«100 s bloccata in `hl_result`» e la ripartizione delle fasi usciva **rovesciata** — 28,9% in gioco fluido
+invece del 69,1% reale. È la stessa famiglia della cronaca letta dal DOM (7.487): dove esiste il punto in
+cui il dato nasce, si misura lì.
+
+⚠️ **Cecità residua dichiarata, non nascosta.** La partita finisce quando finiscono gli highlight
+(`handleContinue`, `nx>=numHL`), non al 90': sul percorso del provino — l'unico che l'harness apre — il
+fischio arriva al **50' anche forzando `numHL` al tetto di 8** (misurato). I rami 65-70' e 72' non sono
+quindi esercitati da qui: sono seedati per costruzione e diventeranno verificabili con **F4**, quando la
+partita durerà 90 minuti veri. Il guardiano **stampa il minuto più alto coperto**, così una copertura che
+si abbassa si vede invece di passare in silenzio.
+
+**Collaudo PO nello stesso lotto:** «il pulsante della velocità deve essere unico, non 3 che prendono
+troppo spazio». Ora è **uno solo che ruota** 1 → 1,5 → 2 → 1, con l'etichetta sulla velocità **attiva**.
+Misurato su viewport 390 px: **44×29 px** contro i tre bersagli stretti di prima — il pollice ha più area,
+non meno. La preferenza è la stessa riga di prima (`localStorage` `cpm-match-speed`, fuori dal
+salvataggio) e viene riletta all'avvio della partita successiva: verificato, non dedotto.
+
 ### 7.493.0 — Alla prima settimana il bottone dice cosa fa
 
 Direttiva PO: «il bottone vivi la settimana, nella prima settimana chiamalo avvia stagione con

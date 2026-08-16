@@ -438,6 +438,24 @@ apertura di stagione. ⚠️ Prima di togliere una card duplicata, controlla che
 voce. ⚠️ Cliccando una CTA da una sonda, prendi l'elemento **cliccabile più interno**: l'ultimo nodo col
 testo giusto è spesso un contenitore senza handler, e il click «riesce» senza fare nulla.
 
+**La fase della partita si legge da `__CPM_PHASE`, mai da `__CPM_STATE` (7.494.0).** `__CPM_STATE` espone
+`phase` dalle **props del componente 3D**, e `show3D` **non include `ended`**: al fischio finale
+`ThreeMatchView` si smonta e quella funzione continua a restituire l'ultimo valore vivo **per sempre**.
+Una sonda che misurava così dichiarava «100 s bloccata in `hl_result`» su una partita finita
+regolarmente, e rovesciava la ripartizione delle fasi (28,9% contro il 69,1% reale in gioco fluido).
+`__CPM_PHASE()` legge `phaseRef` dentro `LiveMatch` — è il punto in cui il dato nasce. Stessa famiglia
+della cronaca letta dal DOM (7.487). **Ripartizione misurata a 1x, partita intera:** `playing` 69,1% ·
+`hl_result` 17,3% · `hl_intro` 12,9% · `hl_choose` 0,6%, a **1,28 s reali per minuto di gioco**.
+
+**La partita finisce quando finiscono gli highlight, non al 90' (misurato 7.494.0).** `handleContinue`:
+`if(nx>=numHLRef.current) _goEndOrCeremony()`. `numHL` è 2-7 deciso al fischio d'inizio, e i minuti sono
+una griglia fissa `8+step·i` con `step=82/n` → l'ultimo highlight cade **sempre** prima del 90', quindi il
+ramo «cronometro a 90» non si raggiunge quasi mai. Sul percorso del **provino** il fischio arriva al 50'
+**anche forzando `numHL` al tetto di 8**: i rami che vivono oltre (sostituzione 65-70', HL disperato al
+72') **non sono esercitabili da lì**. ⚠️ Ne segue che un guardiano sul flusso vero deve **stampare il
+minuto più alto coperto**: senza, una sonda che guarda l'avvio passa identica a una che guarda la partita.
+Ancorare il fischio finale al 90' è **F4** della roadmap Match Experience.
+
 **Test dal vivo:** `tests/visual/live-match-test.mjs` (non-gate, GLB-ON) verifica la coerenza M1 overlay⟺esito su un campione di tiri falliti + screenshot full-page; `tests/visual/glb-gesture-smoke.mjs` per i gesti GLB. Le parti gate-cieche (movimento, camera, cronaca BG live, cerimonia) si collaudano così.
 
 > **Quick-gate (`npm run quick-gate`, ~1.5 min):** gate **leggero** per iterare veloce in sviluppo (`tests/visual/quick-gate.mjs`). Campiona ~26 Situations sui check di stato (`initial-state/orientation/visual/movements/golden`) + `determinism/final-state/timeline/data-coherence`; **salta** i sampler lenti (`motion/ball-motion/post-highlight/perf/ai-vision`). Riusa harness + gli stessi `checks/*.mjs` → zero duplicazione. ⚠️ **NON sostituisce** il gate completo: `validate-situations` (14/14) resta **obbligatorio prima di ogni push**. Usa il quick-gate per il loop di sviluppo, il gate completo come gate di rilascio.
@@ -491,8 +509,8 @@ Restano le regole che non appartengono a nessuna skill in particolare.
   richiede). → `production-ready`
 - **`CLAUDE.md` si aggiorna solo** quando cambia il modo di lavorare o nasce un invariante. La cronologia va
   in `docs/RELEASE_HISTORY.md`.
-- **Branch workflow.** Sviluppo sul branch di lavoro corrente — oggi **`claude/career-simulator-qa-testing-sddljf`**,
-  con push gemello su `claude/career-simulator-qa-testing-f4wj26`. Promozione su `main` (produzione → GitHub
+- **Branch workflow.** Sviluppo sul branch di lavoro corrente — oggi **`claude/korward-elite-qa-season-jwcbj1`**.
+  Promozione su `main` (produzione → GitHub
   Pages) **automatica dopo ogni push col gate verde** (direttiva PO del 2026-07-12):
   ```bash
   git fetch origin main -q && git checkout -B main origin/main -q \
