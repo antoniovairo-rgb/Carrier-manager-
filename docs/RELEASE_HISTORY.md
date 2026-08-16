@@ -1,5 +1,24 @@
 # Cronologia delle release — Korward Elite
 
+### 7.492.0 — Anche la notte dei sorteggi esce dalla home
+
+Collaudo PO sullo screenshot del 7.491: la card «La notte dei sorteggi · Coppa dei Campioni» era rimasta
+sulla home. Appartiene alla stessa famiglia delle altre quattro — `openingPending()` la elenca come
+«sorteggi», quindi il wizard la propone gia' — e ora usa la stessa bandiera `_OPENING_HOME_CARDS`. La home
+di inizio stagione non mostra piu' **nessuna** interazione d'apertura.
+
+⚠️ **Nascosta nel prodotto ma non coperta dal guardiano**, e va scritto invece di allargare la lista
+lasciandolo rosso o di toglierla fingendo che sia verificata. Con un salvataggio sintetico non sono
+riuscito a riprodurne la precondizione: lo stato `euro` sopravvive al caricamento (`active` · `group` ·
+`groupResults` vuoto · `drawSeen` 4 contro stagione 6 · tre avversarie) e la card non compare lo stesso,
+nemmeno riaccendendo le card. **Non e' un effetto della modifica**: le altre quattro, con la stessa
+bandiera, compaiono tutte. Finche' la precondizione non e' riproducibile questa voce resta verificata a
+mano — e il guardiano la **segnala** se la incontra, invece di ignorarla.
+
+⚠️ E il criterio del guardiano ora confronta **senza distinzione di maiuscole**: il titolo sta in minuscolo
+nel sorgente ed e' reso maiuscolo dal CSS, quindi un confronto letterale dichiarava mancante una card che
+c'era.
+
 ### 7.491.0 — Le interazioni d'apertura vivono in un posto solo
 
 Direttiva PO: «tutti questi eventi pre stagionali non devono comparire come box nella home ma solo nel
