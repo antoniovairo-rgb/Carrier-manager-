@@ -438,6 +438,15 @@ apertura di stagione. ⚠️ Prima di togliere una card duplicata, controlla che
 voce. ⚠️ Cliccando una CTA da una sonda, prendi l'elemento **cliccabile più interno**: l'ultimo nodo col
 testo giusto è spesso un contenitore senza handler, e il click «riesce» senza fare nulla.
 
+**La simulazione decide l'evento, la cronaca lo descrive (7.499.0, F3b).** Prima che una riga venga
+pescata, `_dec499` **legge** lo stato reale (x del pallone + corsia) e sceglie la famiglia; la riga si
+pesca per descriverla (famiglia decisa ×3, confinanti `_VIC499` ×1, opposte ×0,22). Guardiano
+`npm run bg-decision`, prova del rosso `__CPM_NO499`: accordo esatto **69,0% → 53,1%**, largo 98,3% →
+93,8%. ⚠️ **Peso, non filtro** (73 righe su 188 sono `midfield`, `wide_right` ne ha 11: un filtro
+affamerebbe il repertorio — lezione del 7.486). ⚠️ **Il guardiano misura anche la VARIETÀ** (63,8% vs
+60,9%): un accordo alto comprato con le ripetizioni non è un miglioramento, e senza quel numero il primo
+si può far salire barando. ⚠️ È una **lettura**, non un sorteggio → nessun impatto sul determinismo.
+
 **Il testo propone, lo stato reale limita (7.498.0, F3a).** `ballTargetRef.current` non prende più
 direttamente `ev.bpos`: la destinazione dichiarata dalla riga di cronaca è una **proposta**, limitata a
 **45 unità** dalla posizione reale del pallone. Guardiano `npm run bg-continuity`, prova del rosso

@@ -1,5 +1,41 @@
 # Cronologia delle release — Korward Elite
 
+### 7.499.0 — F3b Match Experience: la simulazione decide l'evento, la cronaca lo descrive
+
+F3a aveva girato il verso sul **dove va il pallone**. Qui arriva al **cosa sta succedendo**.
+
+**Causa.** Il 7.486 faceva già pesare la distanza fra la zona dichiarata dalla riga e quella vera del
+pallone, ma **nessuno decideva prima**: la riga usciva da un sorteggio e poi la sua `pd` diventava la
+verità — muove la forma della squadra, sceglie l'arco, nomina il reparto.
+
+**Rimedio.** La decisione viene **prima** ed è una **lettura** dello stato reale — posizione del pallone e
+corsia → `defend_goal` / `retreat` / `midfield` / `attack` / `wide_right` / `attack_goal` — e la riga si
+pesca per **descriverla**. Nessun generatore nuovo: è una lettura, non un sorteggio, quindi l'invariante
+di determinismo del 7.489 resta intatto.
+
+**Misurato** su 3 partite vere fino al fischio (`npm run bg-decision`):
+
+| | con la decisione | prova del rosso `__CPM_NO499` |
+|---|---|---|
+| accordo **esatto** | **69,0%** (40/58) | 51,6-53,1% |
+| accordo **largo** (decisa o confinante) | **98,3%** | 93,8% |
+| varietà (righe distinte) | 63,8% | 60,9% |
+
+Soglie scelte per separare: **60%** sta in mezzo con ~9 punti di margine da entrambe le parti.
+
+⚠️ **Resta un peso, non un filtro**, per la ragione già scritta nel 7.486: 73 righe su 188 sono
+`midfield` e `wide_right` ne ha 11 — un filtro secco affamerebbe il repertorio e le ripetizioni
+tornerebbero. La famiglia decisa si premia (×3), le **confinanti** restano possibili (×1, tabella
+`_VIC499`: il campo è un continuo, una riga di centrocampo mentre si ripiega non è una bugia; una di area
+avversaria sì), le opposte si smorzano (×0,22).
+
+⚠️ **E il guardiano misura anche la varietà.** Un accordo alto comprato ripetendo tre frasi non è un
+miglioramento: senza quel secondo numero il primo si potrebbe far salire barando. Misurato **63,8% contro
+60,9%** — il repertorio non si è affamato.
+
+⚠️ I gol sono esclusi dalla misura: `opp_goal` ha **una** riga in tutta la tabella, e un gol non è una
+lettura di zona.
+
 ### 7.498.0 — F3a Match Experience: il testo propone, lo stato reale limita
 
 Prima riga in cui il verso si gira davvero. Fino a qui `ballTargetRef.current = ev.bpos` faceva
