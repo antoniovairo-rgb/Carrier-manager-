@@ -1,5 +1,42 @@
 # Cronologia delle release — Korward Elite
 
+### 7.490.0 — Gli eventi importanti hanno piu' respiro, e il cambio di velocita' e' misurato
+
+Direttiva PO §9 (enfasi sugli eventi importanti) e §7 (cambio velocita' durante la partita).
+
+#### L'enfasi e' il respiro
+
+La pausa fra due righe era **uniforme**: un gol aveva lo stesso respiro di una rimessa laterale. In un
+feed di testo il respiro *e'* l'enfasi — non c'e' altro modo di dire «questo conta» a chi legge. Ora la
+pausa si arma **dopo** l'emissione e pesa l'evento: **7 tick (6,3 s a 1x)** dopo gol, espulsione,
+infortunio, rigore, palo/traversa, parata e occasione da gol; **3 tick (2,7 s)** per il resto.
+
+Misurato: **3150 ms** dopo una riga importante contro **1351** dopo una normale — cioe' esattamente 7 e 3
+tick a 450 ms. Il meccanismo e' verificato per aritmetica, non per statistica. Prova del rosso
+`__CPM_NO490`: pausa uniforme, 1351 contro 1350.
+
+⚠️ **La prima definizione di «importante» era troppo stretta, e la misura l'ha detto subito: zero eventi
+importanti su 15 righe.** Gol, espulsioni e infortuni sono rari per costruzione — la lambda del micro-sim
+da' ~0,7 gol a partita — quindi l'enfasi non si sarebbe mai vista. Ma la direttiva nomina anche «grandi
+occasioni» e «parate importanti», e quelle il motore le produce eccome: sono i **tiri**, che ogni riga
+dichiara nel suo `ms`. Contarli non inventa nulla: sono statistiche gia' prodotte, non eventi aggiunti
+per fare scena.
+
+#### Il cambio di velocita' in corsa
+
+Dal 7.489 la cronaca e' una funzione pura del minuto, quindi cambiare velocita' **non puo'** cambiare
+cosa esce. Puo' pero' rompere il **meccanismo**: `matchSpeed` sta nelle dipendenze dell'effetto e ricrea
+l'intervallo del clock — ed e' esattamente il posto in cui un minuto verrebbe saltato o ripetuto.
+
+Guardiano `npm run match-speed-change`: due partite identiche, una a velocita' costante e una con
+**1x → 1,5x → 2x cliccati sui bottoni veri** mentre si gioca. Misurato: sequenza identica **12/12**,
+**zero** doppioni, **zero** minuti fuori ordine.
+
+⚠️ E il guardiano pretende la prova di **non passare a vuoto**: se il cambio non avesse effetto, le due
+partite sarebbero identiche in tutto e il verde non proverebbe niente. Si confronta quindi il clock
+raggiunto — **46' a velocita' costante contro 50' accelerando** — e senza quella differenza il guardiano
+fallisce.
+
 ### 7.489.0 — La cronaca diventa deterministica, e le velocita' sono 1x / 1,5x / 2x
 
 Direttiva PO: «molto piu' lenta, leggibile, immersiva e soprattutto fedele; le tre velocita' devono

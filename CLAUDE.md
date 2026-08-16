@@ -375,7 +375,11 @@ riga meteo, grido del mister, marcatori, minuti degli highlight e drift di momen
 non seedati — e momentum/possesso alimentano la λ dei gol, quindi nemmeno il risultato era riproducibile.
 Ora l'intera catena gira su `seededRng(seed di partita, minuto)` → **funzione pura del minuto**, identica a
 ogni velocità per costruzione (0% → 100% su tutti e tre i confronti). Guardiano `npm run match-sequence`,
-prova del rosso `__CPM_NO489`. ⚠️ Aggiungendo un generatore nel tick di `playing`, **usa `_rndM`**: un
+prova del rosso `__CPM_NO489`, e `npm run match-speed-change` per il cambio in corsa (sequenza 12/12, zero
+doppioni, zero minuti fuori ordine — e pretende la prova che l'accelerazione sia avvenuta, 46'→50',
+altrimenti passerebbe a vuoto). **L'enfasi è il respiro** (7.490.0): la pausa dopo un evento importante
+(gol/espulsione/infortunio/rigore/legno/parata/occasione) è 7 tick contro 3, misurati 3150 ms contro 1351.
+⚠️ Aggiungendo un generatore nel tick di `playing`, **usa `_rndM`**: un
 `Math.random()` nuovo lì dentro rompe l'invariante e il guardiano diventa rosso. ⚠️ **Ciò che è davvero
 simulato** sono i gol (micro-sim seedato), gli highlight giocati e cartellini/infortuni; le righe ambientali
 sono pescate da una tabella e GUIDANO il campo — riproducibili e coerenti, non derivate da un motore di
