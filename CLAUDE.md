@@ -438,6 +438,18 @@ apertura di stagione. ⚠️ Prima di togliere una card duplicata, controlla che
 voce. ⚠️ Cliccando una CTA da una sonda, prendi l'elemento **cliccabile più interno**: l'ultimo nodo col
 testo giusto è spesso un contenitore senza handler, e il click «riesce» senza fare nulla.
 
+**Libro mastro degli eventi — `cpmEv()` / `window.__CPM_EV` (7.496.0, F1b).** Registro **inerte** accanto
+alla partita: nessuno lo legge dentro il gioco (solo push in try/catch, come `cpmEmit` → gate-safe).
+Registra i gol coi loro quattro percorsi (`microsim`/`cronaca`/`highlight`/`setpiece`) e ogni riga di
+cronaca con ciò che dichiara (`pd`, `bpos`, `ms`). Guardiano `npm run event-ledger`, prova del rosso
+`__CPM_NOEV` (il registro si spegne e il guardiano deve dichiararsi **cieco**). Baseline su 4 partite:
+80 eventi · 11 gol · 69 righe · gol↔tabellone 4/4. ⚠️ **Misurato, contro l'ipotesi dell'audit: nessun gol
+nasce da una riga di testo pescata** — `_noGoal77` esclude le righe-gol dal sorteggio. Il verso invertito
+vale per i **tiri** (56 voci su 188 portano `ms`), non per i gol.
+⚠️ **Il seed di partita nasce da avversario+stagione+settimana+NOME.** Variare solo il seed dell'autoplay
+dà N volte **la stessa partita** (misurato: 14 eventi · 1 gol · 2 tiri, tre volte identici). Per partite
+davvero diverse si passa `name` a `openMatch`. Il tabellone si legge da **`__CPM_SCORE`**.
+
 **Helper condiviso: `matchPhase(page)` in `lib/harness.mjs` (7.495.0).** Ogni sonda che deve sapere in che
 fase è la partita usa quello — legge `__CPM_PHASE`. Tre sonde ci sono già cascate leggendo `__CPM_STATE`.
 ⚠️ E **una passata cieca deve uscire ≠0**: `ball-jump-census` usciva **0** dichiarando nel testo che la

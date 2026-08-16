@@ -1,5 +1,39 @@
 # Cronologia delle release — Korward Elite
 
+### 7.496.0 — F1b Match Experience: il libro mastro degli eventi, inerte per scelta
+
+L'audit ha misurato che il gioco **non ha un modello di eventi**: ha quattro generatori che raccontano la
+stessa partita senza consultarsi, e quattro rappresentazioni di «cosa è successo» scritte in punti
+diversi. Prima di invertire il verso (**F3**) serve sapere **di quanto** divergono oggi — un rimedio senza
+il numero di partenza non si può ri-misurare.
+
+**Cosa è.** `cpmEv()` → anello `MATCH_EV`, esposto come `window.__CPM_EV`. **Inerte**: nessuno lo legge
+dentro il gioco, solo push in try/catch come `cpmEmit` → gate-safe (nessun effetto su stato, render,
+firma golden). Registra i gol da tutti e quattro i percorsi (micro-simulatore · riga di cronaca ·
+highlight dell'eroe · palla ferma, che è l'unico a non passare da `handleContinue`) e ogni riga di
+cronaca con ciò che **dichiara**: zona `pd`, destinazione del pallone `bpos`, statistiche `ms`. Nuovo
+hook `__CPM_SCORE`, dal ref di `LiveMatch` — sopravvive allo smontaggio del 3D al fischio finale.
+
+**Baseline misurata** su 4 partite vere fino al fischio (`npm run event-ledger`): **80 eventi · 11 gol ·
+69 righe di cronaca**, gol del libro mastro coincidenti col tabellone **4/4**.
+
+⚠️ **E la baseline ha corretto l'audit.** I gol per percorso sono **«microsim 6 · highlight 5 · cronaca
+0»**: **nessun gol nasce da una riga di testo pescata**, perché il filtro `_noGoal77` esclude le righe-gol
+dal sorteggio pesato. L'audit aveva lasciato intendere il contrario. Il verso invertito **resta vero per i
+tiri** — 1-6 per partita dichiarati dal testo delle righe, 56 voci su 188 portano `ms` — non per i gol.
+È esattamente il motivo per cui questa fase viene prima di F3: una fase di misura che conferma solo le
+proprie ipotesi non sta misurando.
+
+⚠️ **Prima stesura del guardiano sbagliata, e corretta.** Variava solo il seed dell'autoplay e otteneva
+tre partite **identiche** (14 eventi · 1 gol · 2 tiri, tre volte): il seed di partita nasce da
+avversario+stagione+settimana+**nome**, e l'harness usava «Validator» fisso — stava misurando una partita
+sola credendo di misurarne tre. `openMatch` accetta ora un `name` opzionale (default invariato, nessun
+chiamante esistente cambia comportamento).
+
+**Prova del rosso `__CPM_NOEV`:** spegne la registrazione → libro mastro vuoto, **0 eventi**, e il
+guardiano si dichiara **cieco**. È così che una sonda di *misura* dimostra di leggere davvero, invece di
+stampare zeri convincenti.
+
 ### 7.495.0 — F1a Match Experience: due censimenti ciechi, e uno usciva verde
 
 Release di **strumenti**: il gioco non cambia. Ma **F2** (proprietà del pallone) e **F6** (regia) si

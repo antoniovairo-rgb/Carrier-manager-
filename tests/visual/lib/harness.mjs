@@ -158,7 +158,13 @@ export async function openMatch(page, port, opts) {
   await page.waitForFunction(() => { const r = document.getElementById('root'); return r && r.children.length > 0; }, { timeout: 40000 });
   if (!await clickByText(page, 'Nuova carriera')) throw new Error('flusso: "Nuova carriera" non trovato');
   await sleep(700);
-  await page.evaluate(() => { const i = document.querySelector('input[type="text"],input:not([type])'); if (i) { const s = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'value').set; s.call(i, 'Validator'); i.dispatchEvent(new Event('input', { bubbles: true })); } });
+  /* [7.496.0 F1b] IL NOME E' OPZIONALE, E CAMBIARLO CAMBIA LA PARTITA. Il seed di partita nasce da
+     avversario+stagione+settimana+NOME: con «Validator» fisso, N aperture producono N volte LA STESSA
+     partita. La prima baseline del libro mastro l'ha mostrato — tre giri con seed di autoplay diversi
+     davano 14 eventi, 1 gol e 2 tiri IDENTICI: non erano tre partite, era una ripetuta tre volte.
+     Default invariato, quindi nessun chiamante esistente cambia comportamento. */
+  const _nome = (opts && opts.name) || 'Validator';
+  await page.evaluate(n => { const i = document.querySelector('input[type="text"],input:not([type])'); if (i) { const s = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'value').set; s.call(i, n); i.dispatchEvent(new Event('input', { bubbles: true })); } }, _nome);
   if (!await clickByText(page, 'INIZIA I PROVINI')) throw new Error('flusso: "INIZIA I PROVINI" non trovato');
   await sleep(400);
   if (!await clickByText(page, 'Inizia il provino')) throw new Error('flusso: "Inizia il provino" non trovato');
