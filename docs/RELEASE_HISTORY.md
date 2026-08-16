@@ -1,5 +1,30 @@
 # Cronologia delle release — Korward Elite
 
+### 7.488.0 — Il punto che il 7.487 aveva lasciato scoperto, ora misurato
+
+Il 7.487 aveva legato il nome della cronaca al reparto compatibile con la zona dichiarata dalla riga, ma
+aveva dovuto scrivere «implementato e **non misurato**»: la sonda provava a risolvere i ruoli delle due
+rose dal browser e non ci riusciva, e senza quel confronto la coerenza sarebbe stata un'affermazione.
+
+Risolto applicando la lezione della release precedente: **il ruolo scelto si registra dentro la funzione
+che sceglie** (`__CPM_ROLE487`), non si ricostruisce dal testo a schermo.
+
+| | regia attuale | filtro per reparto spento (`__CPM_NO488`) |
+|---|---|---|
+| nomi coerenti con la zona | **60/60 = 100%** | 20/58 = **34%** |
+| attacco | 10/10 | 3/6 |
+| area avversaria | 5/5 | 1/6 |
+| centrocampo | 27/27 | 7/25 |
+| rientro | 8/8 | 6/9 |
+| propria area | 8/8 | 2/5 |
+| fascia | 2/2 | 1/7 |
+
+Il 34% e' il **caso**: un sorteggio su 23 giocatori azzecca il reparto circa due volte su cinque. Le due
+nuvole non si toccano — la soglia del guardiano sta all'85% e nessuno dei due bracci la attraversa.
+
+Guardiano `npm run bg-name-role`, che si rifiuta di dichiararsi verde con meno di 20 nomi giudicabili:
+**un guardiano senza campione non e' verde, e' cieco.**
+
 ### 7.487.0 — La cronaca ha un protagonista, e lo nomina con un ruolo che c'entra
 
 Prima ogni riga pescava un nome **a caso** dalla rosa. Due difetti in uno: il centravanti spazzava in

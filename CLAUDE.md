@@ -406,8 +406,8 @@ cori (coerenza 5.47.5): una riga schedulata a ~1s viene quasi sempre cancellata 
 compatibile con la `pd` dichiarata (e l'avversario dalla zona **speculare** — se ci difendiamo, chi
 attacca e' un loro attaccante), e **chi e' stato nominato tiene la scena per max 3 righe**, con il filo
 che si spezza al cambio di reparto o su un gol. Misurato: coppie consecutive che condividono il
-protagonista **30%** contro il ~4% dell'estrazione casuale. ⚠️ La coerenza nome↔ruolo e' implementata ma
-NON ancora misurata (i ruoli delle rose non erano risolvibili in pagina) — non dichiararla fatta.
+protagonista **30%** contro il ~4% dell'estrazione casuale. La coerenza nome↔ruolo e' **misurata** (7.488.0): `npm run bg-name-role`
+— 60/60 = 100% contro il 34% del sorteggio cieco (prova del rosso `__CPM_NO488`), soglia 85%.
 ⚠️ **Il testo della cronaca si misura ALLA SORGENTE** (`__CPM_TXT487`), non dal DOM: leggerlo dal DOM ha
 sbagliato tre volte di fila (il sorgente dentro `<script>`, l'osservatore armato dopo il caricamento, il
 filtro che non trovava i nomi). Dove esiste il punto in cui il dato nasce, si misura li'.
