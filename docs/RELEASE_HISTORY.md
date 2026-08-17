@@ -1,5 +1,43 @@
 # Cronologia delle release — Korward Elite
 
+### 7.500.0 — F4 Match Experience: la partita dura novanta minuti
+
+Direttiva PO: **«90 veri»**. L'audit aveva misurato che il fischio finale non arrivava al 90' ma
+all'**esaurimento degli highlight** (`handleContinue`, `nx>=numHL`): sul percorso del provino la gara
+moriva al **50'**, e ci moriva anche forzando `numHL` al tetto di 8.
+
+**Rimedio in due metà, che sono un rimedio solo.** (a) Gli highlight si spalmano su **[8, 84]** invece
+che sui primi due terzi — il passo era `82/n` dal minuto 8, quindi l'ultimo cadeva fra il 62' e il 74'.
+(b) Esauriti gli highlight si torna al **gioco fluido** (stesso punto di ripresa coerente e stesso stacco
+del ramo montaggio) e a chiudere resta solo il 90'. Spostare il fischio **senza** spalmare avrebbe
+lasciato venti minuti di coda vuota: si sarebbe risolto un difetto creandone un altro. In più, la catena
+non parte più a highlight esauriti (manderebbe `hl_intro` su una situation inesistente).
+
+**Ri-misura** (`npm run match-full`, 3 partite vere): fischio al **90' 3/3**, ultimo highlight all'**86'**,
+cronaca fino all'**87'** (era il 47'), **111 s reali** a 1x.
+
+⚠️ **Tre prove del rosso fallite prima di trovare quella giusta**, e vale la pena scriverlo perché è la
+parte istruttiva. Misurando il **minuto finale** non separava (col rimedio spento le partite arrivavano lo
+stesso al 90'); né il **calendario** letto a fine gara — la coda reattiva ne aggiunge in corsa, un gol
+subìto ne vale uno; né il calendario letto **all'avvio** — il vecchio jitter era largo fino a `step-3` =
+38 minuti, quindi anche il vecchio ultimo highlight poteva cadere tardi. Ciò che il rimedio cambia **per
+definizione** è *chi* decide la fine: ora il gioco registra la **causa** del fischio
+(`cpmEv('fine',{causa})`) e la prova del rosso separa netta — **verde 3/3 per cronometro, rosso 3/3 per
+esaurimento degli highlight**.
+
+⚠️ **L'interruttore spegne tutto il rimedio, non metà**: col solo sgancio disattivato ma gli highlight già
+spalmati, il rosso passava.
+
+⚠️ **Un rosso del gate che non era una regressione.** La prima passata ha dato `post-highlight` 1 issue
+(`gi79: salto camera 36,7 > 30`) e fingerprint `126c31b8`. Rilanciata: **PASS, fingerprint `00001505`,
+0 failure**. È tremolio dell'headless — quel check misura lo spostamento della camera fra due campioni
+consecutivi, cioè velocità × intervallo — e F4 non tocca la camera: sotto il gate `handleContinue` esce
+subito perché `__CPM_FORCED_MODE` è attivo, quindi la fase è inerte lì. Il fingerprint tornato identico
+alla baseline lo conferma.
+
+Nuovi hook `__CPM_CLOCK` e `__CPM_HLTIMES`, dai ref di `LiveMatch`: come `__CPM_PHASE` e `__CPM_SCORE`,
+sopravvivono allo smontaggio del 3D al fischio finale.
+
 ### 7.499.0 — F3b Match Experience: la simulazione decide l'evento, la cronaca lo descrive
 
 F3a aveva girato il verso sul **dove va il pallone**. Qui arriva al **cosa sta succedendo**.

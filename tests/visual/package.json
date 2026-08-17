@@ -112,7 +112,8 @@
     "event-ledger": "node event-ledger-test.mjs",
     "ball-owner": "node ball-owner-test.mjs",
     "bg-continuity": "node bg-continuity-test.mjs",
-    "bg-decision": "node bg-decision-test.mjs"
+    "bg-decision": "node bg-decision-test.mjs",
+    "match-full": "node match-full-test.mjs"
   },
   "dependencies": {
     "playwright": "^1.48.0",

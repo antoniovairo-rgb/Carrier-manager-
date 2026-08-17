@@ -438,6 +438,17 @@ apertura di stagione. ⚠️ Prima di togliere una card duplicata, controlla che
 voce. ⚠️ Cliccando una CTA da una sonda, prendi l'elemento **cliccabile più interno**: l'ultimo nodo col
 testo giusto è spesso un contenitore senza handler, e il click «riesce» senza fare nulla.
 
+**La partita dura novanta minuti (7.500.0, F4).** Il fischio finale non dipende più dall'esaurimento
+degli highlight: quelli si spalmano su **[8, 84]** e, finiti, si torna al gioco fluido — a chiudere resta
+solo il 90'. Guardiano `npm run match-full`, prova del rosso `__CPM_NO500` (che spegne **entrambe** le
+metà: col solo sgancio disattivato il rosso passava). Misurato: 90' 3/3, ultimo highlight 86', cronaca
+fino all'87' (era 47'), **111 s reali a 1x**. ⚠️ **Il minuto finale non è una misura utile per una prova
+del rosso**: la coda reattiva fa crescere `numHL` in corsa, quindi anche il vecchio comportamento arriva
+spesso al 90'. Si registra la **causa** del fischio (`cpmEv('fine',{causa})`): verde 3/3 `clock`, rosso
+3/3 `highlight`. ⚠️ `post-highlight` è **tremolante in headless** (`gi79: salto camera 36,7 > 30`, poi
+verde alla passata dopo): misura lo spostamento della camera fra due campioni, cioè velocità × intervallo
+— prima di chiamarla regressione, rilanciare e confrontare il fingerprint.
+
 **La simulazione decide l'evento, la cronaca lo descrive (7.499.0, F3b).** Prima che una riga venga
 pescata, `_dec499` **legge** lo stato reale (x del pallone + corsia) e sceglie la famiglia; la riga si
 pesca per descriverla (famiglia decisa ×3, confinanti `_VIC499` ×1, opposte ×0,22). Guardiano
