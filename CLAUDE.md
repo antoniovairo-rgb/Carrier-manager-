@@ -465,7 +465,11 @@ gonfiava il numero e il check lo chiamava «cambio inquadratura brusco» — tre
 volta su una scena diversa. Ora il campione porta `t`, le coppie oltre il doppio del nominale si
 **scartano**, e una scena con meno di 4 coppie buone è dichiarata **non giudicata**. Stessa trappola di
 7.360 e 7.478. ⚠️ **Ogni check che confronta due campioni deve portarsi dietro il tempo**: senza, misura
-il proprio scheduler.
+il proprio scheduler. ⚠️ **E deve sapere degli stacchi neri (7.504.0)**: un salto di camera DENTRO un
+nero vivo è regia TV voluta (regola 7.471), non un difetto — `gi79` falliva ricorrente a 36-54 unità ed
+era lo snap drammatico mascherato. Hook test-only `__CPM_CUTLIVE` (stesso criterio del render-loop); il
+salto SCOPERTO resta un issue. Un check «rosso ricorrente sulla stessa scena» non è flake: si verifica in
+isolamento con lo stato dello stacco accanto.
 
 **La partita dura novanta minuti (7.500.0, F4).** Il fischio finale non dipende più dall'esaurimento
 degli highlight: quelli si spalmano su **[8, 84]** e, finiti, si torna al gioco fluido — a chiudere resta

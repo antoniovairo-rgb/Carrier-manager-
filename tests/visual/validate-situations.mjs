@@ -195,7 +195,14 @@ const GOLDEN = path.join(HERE, 'golden-sigs.json');
         const dt = (f0.t != null && f1.t != null) ? (f1.t - f0.t) : POLL;
         if (dt > POLL * 2.2) { scartati++; continue; }
         coppie++;
-        if (f0.cam && f1.cam) maxCam = Math.max(maxCam, Math.hypot(f1.cam.x - f0.cam.x, f1.cam.y - f0.cam.y, f1.cam.z - f0.cam.z));
+        /* [7.504.0] UN SALTO DENTRO LO STACCO NERO E' REGIA, NON UN DIFETTO. gi79 falliva a 36,7-38,4 in
+           modo ricorrente: e' lo snap drammatico che il gioco arma APPOSTA sotto `setCutFx` (7.471 — «un
+           teletrasporto della camera deve stare dentro uno stacco»). Il censimento del pallone (F1a) ha la
+           stessa regola: attribuisce e marca `mask`. Qui: se uno dei due campioni della coppia sta dentro
+           un nero vivo (`__CPM_CUTLIVE`), il salto di camera non si giudica. Il salto SCOPERTO resta un
+           issue, ed e' l'unico che il giocatore vede davvero. */
+        const _mascherata = !!(f0.cut || f1.cut);
+        if (f0.cam && f1.cam && !_mascherata) maxCam = Math.max(maxCam, Math.hypot(f1.cam.x - f0.cam.x, f1.cam.y - f0.cam.y, f1.cam.z - f0.cam.z));
         if (f0.ball && f1.ball) maxBall = Math.max(maxBall, D(f0.ball, f1.ball));
         if (f0.players && f1.players) { let mv = 0; for (let p = 0; p < f0.players.length; p++) if (f1.players[p] && Math.hypot(f1.players[p].x - f0.players[p].x, f1.players[p].y - f0.players[p].y) > 0.8) mv++; movers = Math.max(movers, mv); }
       }

@@ -200,6 +200,7 @@ export async function samplePostHighlight(page, gi, { settle = 600, k = 0, pollM
   while (Date.now() < end) {
     const d = await page.evaluate(() => ({
       dur: window.__CPM_RESULT_DUR || null,
+      cut: (typeof window.__CPM_CUTLIVE === 'function') ? window.__CPM_CUTLIVE() : false,
       probe: typeof window.__CPM_PROBE === 'function' ? window.__CPM_PROBE() : null,
       st: typeof window.__CPM_STATE === 'function' ? window.__CPM_STATE() : null,
     }));
@@ -210,6 +211,7 @@ export async function samplePostHighlight(page, gi, { settle = 600, k = 0, pollM
          che scorre liscia produce numeri diversi: e' velocita' x intervallo, la trappola gia' pagata due
          volte su questo repo (7.360 sul pallone, 7.478 sul varco). Il tempo va portato dietro. */
       t: Date.now(),
+      cut: d.cut||false,
       cam: d.probe.camera,
       ball: d.probe.ball ? d.probe.ball.world : null,
       players: (d.st && d.st.players) ? d.st.players.map(p => ({ x: p.x, y: p.y })) : null,

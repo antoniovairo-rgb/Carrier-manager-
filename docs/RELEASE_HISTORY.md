@@ -1,5 +1,34 @@
 # Cronologia delle release — Korward Elite
 
+### 7.504.0 — F6/2: tutte e otto le mani contate, e il salto di gi79 era regia
+
+**Prima parte: il censimento completo.** Il 7.503 aveva dato un nome a 5 passate su 8 e i suoi numeri
+erano dichiaratamente un pavimento. Causa della cecità: il testimone era una `const` locale al ramo degli
+highlight, e la raccolta stava subito dopo il `guinzaglio` — le tre passate a valle (bisezione · snap ·
+vista-reale) giravano **dopo** la raccolta. Ora il testimone vive su `sr.current`, si azzera una volta per
+fotogramma e si raccoglie a fine blocco.
+
+**Misurato su 278 fotogrammi:** **65,8%** con più d'una passata (contro il 48,4% del pavimento) ·
+`guinzaglio` 100% · `porta`/`gk` 39,2% sempre insieme · `snap` 31,7% · `vista-reale` 19,1% ·
+`bordo-lift` 7,9% · `bisezione` 5,4% · **`bordo-tanh` sempre 0** (codice morto, confermato). Caso
+peggiore reale: **16 fotogrammi con cinque passate insieme**.
+
+⚠️ **Il dato dice dove va l'arbitro**: il cluster affollato è fatto di passate che riscrivono **lo
+sguardo** (`cLx/cLz` o `camLook`) — cinque opinioni su cosa guardare, sommate in ordine di scrittura. La
+catena di regia (posizione) è sana. L'arbitro da costruire è quello dello **sguardo**.
+
+**Seconda parte: `gi79` non era flake, era regia.** Il gate è tornato rosso su `gi79: salto camera 38,4`
+— **seconda volta sulla stessa scena** (prima 36,7), quindi non più liquidabile come campionamento.
+Verificato in isolamento (5 ripetizioni): il salto massimo (54,6, coppia ben spaziata a 127 ms) avviene
+**dentro lo stacco nero** (`__CPM_CUTLIVE: true`). È lo snap drammatico che il gioco arma apposta sotto
+`setCutFx` — la regola del 7.471, «un teletrasporto della camera deve stare dentro uno stacco» — e il
+check lo puniva perché non sapeva dello stacco. Ora il frame campiona anche lo stato del nero (hook
+test-only `__CPM_CUTLIVE`, stesso criterio del render-loop) e **un salto mascherato non si giudica**; il
+salto **scoperto** resta un issue, ed è l'unico che il giocatore vede davvero. Stessa struttura del
+censimento del pallone (F1a: 4 salti, tutti `mask`).
+
+Suite CI completa: **7/7 EXIT=0**, fingerprint `00001505`.
+
 ### 7.503.0 — F6/1: quante mani toccano l'inquadratura (solo osservazione)
 
 Nessun comportamento cambiato: solo contatori. L'arbitro arriva dopo, con questi numeri in mano.

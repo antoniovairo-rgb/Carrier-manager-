@@ -14,10 +14,12 @@
    e QUALI in coppia. E' il numero che serve prima di mettere le passate sotto un arbitro con priorita'
    dichiarate — perche' «si pestano i piedi» senza un conteggio e' un'impressione, non una diagnosi.
 
-   ⚠️ NON SONO STRUMENTATE TUTTE. Cinque su otto portano un nome (`porta` · `gk` · `bordo-lift` ·
-   `bordo-tanh` · `guinzaglio`); restano fuori l'arretramento per bisezione, la guardia sullo snap e il
-   clamp sulla vista reale, che vivono piu' a valle. Quindi i numeri qui sono un PAVIMENTO: il vero
-   affollamento e' almeno questo, probabilmente di piu'.
+   ⚠️ ORA SONO STRUMENTATE TUTTE E OTTO (7.503.1): `porta` · `gk` · `bordo-lift` · `bordo-tanh` ·
+   `guinzaglio` · `bisezione` · `snap` · `vista-reale`. La prima stesura ne copriva cinque, perche' il
+   testimone era una `const` locale al ramo degli highlight e raccoglieva prima che le ultime tre
+   girassero: i suoi numeri (1,85 passate per fotogramma · 48,4% con piu' d'una) erano un PAVIMENTO.
+   Ora il testimone vive su `sr.current`, si azzera una volta per fotogramma e si raccoglie a fine
+   blocco, quando tutte hanno parlato.
 
    ⚠️ La fase si legge da `__CPM_PHASE` (7.494/7.495/7.496), mai da `__CPM_STATE`.
 
