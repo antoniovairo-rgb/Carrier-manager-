@@ -438,6 +438,20 @@ apertura di stagione. ⚠️ Prima di togliere una card duplicata, controlla che
 voce. ⚠️ Cliccando una CTA da una sonda, prendi l'elemento **cliccabile più interno**: l'ultimo nodo col
 testo giusto è spesso un contenitore senza handler, e il click «riesce» senza fare nulla.
 
+**La partita ha un ritmo (7.501.0, F5).** `playing` ha tre stati **letti** dalla decisione di F3b —
+`pericolo` (aree) · `sviluppo` (trequarti/fascia) · `costruzione` (centrocampo/ripiegamento) — e da lì
+dipendono densità della cronaca e pavimento fra due righe. Guardiano `npm run bg-rhythm`, prova del rosso
+`__CPM_NO501`: costruzione/sviluppo **1,47× contro 0,84×**. ⚠️ **Non si giudica su `pericolo`**: lì
+l'intervallo è più lungo perché scatta la pausa d'enfasi del 7.490 (che ha la precedenza), e misurare lì
+metterebbe due regole giuste una contro l'altra. ⚠️ **Cambiare la densità per fase cambia il MIX e può
+rompere `bg-decision`**: è successo (69,0% → 51,3%) perché le famiglie di `pericolo` hanno repertori
+sottili — il premio di famiglia ora **scala col repertorio** (×7 sulle sottili). Non si abbassa la soglia
+di un guardiano per far passare una fase nuova.
+⚠️ **`post-highlight` è instabile dal 7.500**: tre rossi su cinque passate, scena diversa ogni volta
+(`gi79` 36,7 · `gi0` 39,8, soglia 30), fingerprint identico alla baseline quando passa. Nesso causale
+**non stabilito** — il gate forza le situation e F4/F5 vivono nel tick di `playing`, che lì non gira.
+Prima di dichiarare una regressione: rilanciare e confrontare il fingerprint.
+
 **La partita dura novanta minuti (7.500.0, F4).** Il fischio finale non dipende più dall'esaurimento
 degli highlight: quelli si spalmano su **[8, 84]** e, finiti, si torna al gioco fluido — a chiudere resta
 solo il 90'. Guardiano `npm run match-full`, prova del rosso `__CPM_NO500` (che spegne **entrambe** le

@@ -1,5 +1,48 @@
 # Cronologia delle release — Korward Elite
 
+### 7.501.0 — F5 Match Experience: la partita ha un ritmo, non una cadenza
+
+Direttiva PO: «fase normale → costruzione → sviluppo → azione pericolosa → attesa · devono esistere anche
+fasi meno importanti fra gli highlight, così da creare ritmo e attesa».
+
+Fino al 7.500 `playing` **non aveva stati**: la cronaca usciva con la stessa probabilità per tutti i
+novanta minuti (0,55 + momentum) e con lo stesso pavimento di 3 tick. Una rimessa laterale a centrocampo
+e un pallone in area avevano lo stesso respiro — e in un feed di testo il respiro **è** il ritmo.
+
+**Rimedio.** La fase si **legge** dalla decisione di F3b (non si sorteggia): pallone in una delle due aree
+= `pericolo`, trequarti avversaria o fascia = `sviluppo`, centrocampo o ripiegamento = `costruzione`. Da
+lì dipendono densità (×1,30 / ×1,00 / ×0,60) e pavimento fra due righe (2 / 3 / 5 tick).
+
+**Misurato** su 6 partite vere (`npm run bg-rhythm`, intervalli in **minuti di gioco** — il tempo reale
+dipende da velocità e fps, i minuti no): costruzione **5,72** · sviluppo **3,90** · rapporto **1,47×**
+contro **0,84×** col ritmo piatto. Prova del rosso `__CPM_NO501`.
+
+⚠️ **La prima stesura giudicava su `pericolo`, e la misura l'ha smentita.** L'attesa era «in area si
+racconta più fitto»; misurato, in `pericolo` l'intervallo è **più lungo** che in `sviluppo`. Il motivo è
+corretto e va lasciato stare: in area gli eventi sono quasi sempre importanti (sono tiri) e lì scatta la
+pausa d'enfasi di 7 tick del 7.490, che ha la **precedenza** ed è la direttiva PO «eventi importanti: più
+tempo di lettura». Giudicare lì avrebbe messo due regole giuste una contro l'altra.
+
+⚠️ **F5 ha rotto il guardiano di F3b, e la causa era vera.** Spostando le righe verso `pericolo`, l'accordo
+esatto di `bg-decision` è crollato da 69,0% a **51,3%**: le famiglie di quella fase hanno repertori
+sottili (`attack_goal` 27 righe, `defend_goal` 17, `wide_right` 11) contro le 73 di `midfield`, e un
+premio unico ×3 non batteva quella massa. **Non si è abbassata la soglia**: il premio ora scala col
+repertorio (×7 sulle famiglie sottili, confinanti ×0,8, opposte ×0,14) → accordo **73,0%**, largo 100%,
+varietà 73,0%.
+
+⚠️ **Soglia ri-scelta due volte.** La prima (1,45) lasciava **due centesimi** di margine al verde: sarebbe
+diventata rossa a caso, cioè il difetto già pagato con `match-speed`. Ora 1,30, col verde a +13% e il
+rosso a −35%. Se questo guardiano inizia a tremolare, la risposta è rendere più marcato il ritmo, non
+abbassare ancora la soglia.
+
+⚠️ **Punto aperto: `post-highlight` è instabile dal 7.500.** Tre rossi su cinque passate dal F4 in poi
+(`gi79: salto camera 36,7` · `gi0: 39,8`, soglia 30), sempre su una **scena diversa** e con un valore
+appena sopra la soglia; quando passa, il fingerprint torna **identico alla baseline** `00001505`. Il
+7.500 rilanciato da solo è verde. Non ho stabilito il nesso causale: il gate **forza** le situation e le
+modifiche di F4/F5 vivono nel tick di `playing`, che lì non gira (`__CPM_FORCED_MODE` fa uscire subito
+`handleContinue`). Il check misura lo spostamento della camera **fra due campioni**, cioè velocità ×
+intervallo. Va indagato prima che eroda la fiducia nel gate.
+
 ### 7.500.0 — F4 Match Experience: la partita dura novanta minuti
 
 Direttiva PO: **«90 veri»**. L'audit aveva misurato che il fischio finale non arrivava al 90' ma
