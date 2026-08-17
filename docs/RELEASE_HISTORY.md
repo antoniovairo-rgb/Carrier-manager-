@@ -1,5 +1,36 @@
 # Cronologia delle release — Korward Elite
 
+### 7.507.0 — Codice 007: il bersaglio dello sguardo è legale prima del lerp
+
+Il PO, da collaudo rapido sul dispositivo dopo F6, segnala che il 007 c'è ancora. **Coerente coi libri**:
+in questa sessione il 007 non è mai stato chiuso — e il criterio con cui l'arbitrio era stato rimandato
+(«solo se i numeri peggiorano») era **sbagliato per questo difetto**: i numeri erano headless, e il 7.475
+ha dimostrato che l'headless è strutturalmente cieco sul 007 (servono ~69 fps; l'headless gira a 8-25, e
+infatti scagionò il sospetto con 0 inversioni su 152 fotogrammi). **Il telefono è l'unico strumento che
+lo vede, e ha parlato.** Aggravante possibile, dichiarata: la taglia del 7.505 avvicina la camera, e a
+camera vicina la stessa correzione produce oscillazioni angolari più grandi.
+
+**Meccanismo** (dossier 7.475/7.478C, mai chiuso alla radice): il lerp trascina `camLook` verso un
+bersaglio che può lasciare il soggetto fuori dal quadro **reale**; la rete post-lerp lo riporta dentro
+con un tetto di velocità; il fotogramma dopo il lerp tira di nuovo fuori — un interruttore a frequenza di
+**frame-rate**, che scala coi fps. La banda d'isteresi del 7.478C ha ridotto il sintomo, non il
+meccanismo.
+
+**Rimedio.** Il bersaglio dello sguardo viene reso **legale prima del lerp** — stessa geometria della
+rete, ma calcolata dalla posizione **reale** della camera di questo fotogramma. Da lì in poi lerp e rete
+spingono nella **stessa direzione**: il tiro alla fune sparisce per costruzione. Stesse esenzioni della
+rete (soggetto-palla, cerimonie, rigori, ingressi). Ingaggio del pre-clamp: 9,8% dei fotogrammi
+(`sguardo-pre` in `__CPM_CAM503`).
+
+⚠️ **Onestà sulla prova: non c'è, e non può esserci in headless.** Il proxy tentato (ingaggio della rete
+post-lerp) **non separa**: 25,8% col rimedio, 24,7% senza — quel contatore misura anche il normale
+ritardo di convergenza del lerp, non solo la lotta. **Il verdetto è il taccuino del PO sul dispositivo**:
+le note «codice 007» escono auto-etichettate con le inversioni/s — baseline del lotto **6,4-20,8 inv/s**
+contro una banda sana di 0,1-0,3. Se i numeri nuovi crollano, è chiuso; se no, **prova del rosso e via di
+ritirata** `__CPM_NO507`.
+
+Suite CI 7/7 · `framing-guard` verde (mediana 0,167 · fuori quadro 7,8%) · gate fingerprint `00001505`.
+
 ### 7.506.0 — L'AI Vision smette di misurare se stessa
 
 Il gioco non cambia: è la taratura promessa dello strumento percettivo, **prima** del re-run PO con

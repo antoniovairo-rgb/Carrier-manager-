@@ -491,6 +491,23 @@ affamerebbe il repertorio — lezione del 7.486). ⚠️ **Il guardiano misura a
 60,9%): un accordo alto comprato con le ripetizioni non è un miglioramento, e senza quel numero il primo
 si può far salire barando. ⚠️ È una **lettura**, non un sorteggio → nessun impatto sul determinismo.
 
+**Codice 007 — lo sguardo ha un bersaglio legale (7.507.0).** Il tiro alla fune lerp↔rete post-lerp (il
+meccanismo del «traballa», 7.475) è chiuso alla radice: il bersaglio `tL*` viene clampato angolarmente
+sulla posizione **reale** della camera **prima** del lerp, così le due forze spingono nella stessa
+direzione. Prova del rosso `__CPM_NO507`. ⚠️ **Questo difetto non ha prova headless e non può averla**
+(7.475: servono ~69 fps; l'headless gira a 8-25 e scagionò il sospetto con 0 inversioni). Il proxy
+«ingaggio della rete post-lerp» **non separa** (25,8% vs 24,7%: conta anche il ritardo di convergenza).
+Il verdetto è il **taccuino del PO sul dispositivo** (note auto-etichettate «codice 007» con inversioni/s;
+baseline del lotto 6,4-20,8 contro banda sana 0,1-0,3). ⚠️ Un rimedio senza prova headless si spedisce
+solo con: ragionamento strutturale scritto, interruttore di ritirata, e protocollo di collaudo sul
+dispositivo — mai dichiarandolo chiuso prima del telefono.
+
+**I codici del taccuino PO** (legenda, dal repo): **000** gesti scoordinati del corpo · **001** apertura
+di scena (pallone ai piedi di nessuno / consegna sbagliata) · **002** eroe non in posizione a inizio
+scena · **007** classe TRABALLA della camera (auto-etichettata dal taccuino con inversioni/s) · **008**
+pallone che viaggia da solo (chiuso: «il pallone va a un uomo, non a un punto») · **111/112** portiere
+non sincronizzato col pallone nel tuffo.
+
 **La taglia è regia (7.505.0, F6).** Il bersaglio di camera negli highlight si stringe sull'eroe fino a
 ~0,17 di altezza apparente (costante 0,24 nel codice: il percorso reale rende ~0,75 del chiesto), subito
 **prima** del richiamo target-level 7.225 — mai dopo i lerp, che è il motivo per cui la manopola di prova
