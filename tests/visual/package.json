@@ -42,6 +42,7 @@
     "pass-forward": "node pass-forward-test.mjs",
     "outcome-not-goal": "node outcome-not-goal-test.mjs",
     "ball-jump-census": "node ball-jump-census.mjs",
+    "ball-alive": "node ball-alive-test.mjs",
     "look-inversion": "node look-inversion-census.mjs",
     "hero-framing": "node hero-framing-census.mjs",
     "framing-choices": "node framing-choices-shot.mjs",

@@ -517,6 +517,15 @@ telefono comanda sulle soglie euristiche headless, e infatti il costo dichiarato
 soglia 0,15 del censimento. Guardiano `npm run framing-guard` (= il censimento validato, soglie
 `CPM_MED_MIN=0.11`/`CPM_FUORI_MAX=10`), prova del rosso `CPM_NO505=1` → mediana 0,056. Misurato a 0,18:
 mediana 0,140 · figurine 1% · fuori quadro 6,3%.
+**Il pallone vive in cronaca (7.511.0, restyling R1).** In `playing` il pallone raggiunge il dichiarato
+con passo 0,65/tick (per-tick = deterministico fra velocità) e poi il **possesso avanza** con deriva
+seedata su flusso dedicato (`ballRngRef`, mai `_rndM`: sposterebbe i sorteggi della cronaca e romperebbe
+il replay). `setBgAction` è emesso DOPO la risoluzione dei nomi con origine/lato/attore; l'attore più
+vicino all'origine suona il gesto via `_mateFx` (tetto 14u). Guardiano `npm run ball-alive`: giudica la
+**striscia massima di fermo** (≤2,0s; verde 0,9 · rosso `__CPM_NO511` 4,6) — MAI la «% in moto», che è
+cieca: `__CPM_STATE().ball` arrotonda all'intero. ⚠️ Chi tocca il motore del pallone rigioca anche
+`bg-continuity`/`bg-decision`/`bg-rhythm`.
+
 ⚠️ **Un guardiano nuovo non si scrive accanto a un censimento validato**: il primo tentativo divergeva su
 entrambi i bracci (20,1% dove il censimento dice 4,7%) — le soglie si mettono sullo strumento che ha
 preso la decisione. ⚠️ Le otto passate della camera restano **contate** (`__CPM_CAM503`, `npm run

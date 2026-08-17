@@ -1,5 +1,30 @@
 # Cronologia delle release — Korward Elite
 
+### 7.511.0 — Restyling R1: il pallone vive, la cronaca ha un attore
+
+Primo tratto della spina dorsale MatchEvent disegnata dall'audit del restyling (52 cause radice, 5
+agenti). Tre rimedi, tutti misurati.
+
+**Il motore del pallone.** Via il lerp al 25% con banda morta 0,3 (il pallone restava fermo fino a
+**4,4s** fra due righe di cronaca, misurato con la sonda in-pagina): ora il dichiarato si raggiunge con
+passo 0,65/tick — deterministico fra le velocità, perché il passo è per tick e i tick per minuto sono
+costanti — e quando non c'è nulla da inseguire il **possesso avanza**: deriva seedata su flusso
+**dedicato** (mai `_rndM`: un sorteggio in più avrebbe spostato tutta la cronaca e rotto il replay).
+Striscia massima di fermo: **4,4s → 0,9s**.
+
+**L'evento arriva intero al 3D.** `setBgAction` era emesso prima della risoluzione dei nomi con tre
+campi ({type,t,ballEnd}): l'arco partiva «da dove la mesh si trova per caso» e il 3D non sapeva chi
+agisce. Ora l'evento porta **origine, lato e attore**, emesso dopo i nomi, stesso tick sincrono.
+
+**La cronaca ha un attore.** Il giocatore di movimento del lato giusto più vicino all'origine **suona
+il gesto** (canale `_mateFx`, collaudato 7.209/7.251; tetto 14u — meglio nessun gesto che un gesto
+teletrasportato).
+
+Guardiano nuovo: `npm run ball-alive` (striscia ≤ 2,0s; ⚠️ giudica la **striscia**, non la «% in moto»:
+`__CPM_STATE().ball` arrotonda all'intero e i passi piccoli del possesso non attraversano il confine —
+misurato: % 49,2→42,3 mentre la striscia crolla). Prova del rosso `__CPM_NO511`: motore vecchio →
+striscia 4,6s, separazione netta. `bg-continuity`, `bg-decision`, `bg-rhythm` verdi sul motore nuovo.
+
 ### 7.510.0 — AI Vision: la strip smette di mentire sugli stacchi
 
 Solo strumenti, zero gioco. Il run ollama del PO (30 scene, gemma4:31b, misurata la 7.506) dà 23 FAIL
