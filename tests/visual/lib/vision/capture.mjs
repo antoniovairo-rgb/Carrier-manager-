@@ -95,7 +95,6 @@ export async function captureHighlightSequence(page, gi, outDir, { frames = 10, 
   const shotsDir = path.join(outDir, 'shots');
   fs.mkdirSync(shotsDir, { recursive: true });
   const shots = [];
-  let lastGood = null;
   const write = (label, buf, artifact) => {
     const fn = `gi${String(gi).padStart(3, '0')}_${label}.png`;
     fs.writeFileSync(path.join(shotsDir, fn), buf);
@@ -104,7 +103,7 @@ export async function captureHighlightSequence(page, gi, outDir, { frames = 10, 
 
   // framing interattivo (il primo frame del filmstrip = la situation prima dell'esecuzione)
   await forceSituation(page, gi, { settle: 600, choose: true });
-  let buf = await canvasShot(page); if (!classify(meanLuma(buf))) lastGood = buf;
+  let buf = await canvasShot(page);
   write('f00', buf);
 
   // esegui l'azione, poi campiona a passo fisso il volgersi dell'azione (movimento reale, niente freeze)
@@ -114,9 +113,13 @@ export async function captureHighlightSequence(page, gi, outDir, { frames = 10, 
     await sleep(Math.max(40, intervalMs | 0));
     buf = await canvasShot(page);
     const art = classify(meanLuma(buf));
-    if (!art) { lastGood = buf; write('f' + String(i).padStart(2, '0'), buf); }
-    else if (lastGood) { write('f' + String(i).padStart(2, '0'), lastGood, art); } // buco → riusa l'ultimo 3D valido, marcato
-    else { write('f' + String(i).padStart(2, '0'), buf, art); }                    // ancora nessun 3D valido → tieni comunque il frame
+    /* [strip onesta] Il frame nero/card resta nella strip COSI' COM'E', marcato `artifact`. Prima veniva
+       sostituito con una copia dell'ultimo 3D valido: la controfigura cadeva ESATTAMENTE sugli stacchi di
+       regia e fabbricava per il giudice la firma «freeze + teleport fra frame luminosi adiacenti» — cioe'
+       cancellava l'unica prova (il nero) che il prompt v3 accetta come giustificazione del salto. Misurato
+       su gi132: f01 controfigura di f00, poi f02 altrove → teleport inventato dallo strumento. Il commento
+       di testa lo dichiarava gia' («un buco va mostrato, non nascosto»): ora il codice lo fa davvero. */
+    write('f' + String(i).padStart(2, '0'), buf, art);
   }
   return shots;
 }

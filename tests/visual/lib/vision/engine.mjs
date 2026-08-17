@@ -81,7 +81,7 @@ export class VisionReviewEngine {
           errors: parsed.errors || [], warnings: parsed.warnings || [], suggestions: parsed.suggestions || [],
           rootCause: parsed.rootCause || '',
           ...agg, attempts, providerMs, totalMs: Date.now() - t0, cached: false,
-          images: (hl.images || []).map(i => ({ phase: i.phase, file: i.rel || i.path })),
+          images: (hl.images || []).map(i => ({ phase: i.phase, file: i.rel || i.path, ...(i.artifact ? { artifact: i.artifact } : {}) })),/* [strip onesta] senza il flag il report non sa dire quali frame erano stacchi */
         };
         this.log.info('highlight valutato', { id: hl.id, verdict: agg.verdict, score: agg.qualityScore, confidence: agg.confidence, ms: result.totalMs });
       }

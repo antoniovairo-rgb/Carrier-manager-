@@ -1,5 +1,26 @@
 # Cronologia delle release — Korward Elite
 
+### 7.510.0 — AI Vision: la strip smette di mentire sugli stacchi
+
+Solo strumenti, zero gioco. Il run ollama del PO (30 scene, gemma4:31b, misurata la 7.506) dà 23 FAIL
+quasi tutti con la stessa causa radice: «teleport fra frame luminosi adiacenti». **La causa era nello
+strumento**: `capture.mjs` sostituiva ogni frame NERO del filmstrip con una copia dell'ultimo frame
+valido. La controfigura cadeva esattamente sugli **stacchi di regia** e fabbricava per il giudice la
+firma «freeze + teleport» — cancellando l'unica prova (il nero) che il prompt v3 accetta come
+giustificazione del salto. Misurato: gi132 f01 controfigura identica a f00, poi f02 altrove.
+
+Rimedio in tre mosse: il nero **resta nella strip** marcato `artifact` (il commento di testa lo
+dichiarava già: «un buco va mostrato, non nascosto» — ora il codice lo fa); il flag `artifact` viene
+**serializzato nel report** (prima si perdeva: impossibile distinguere le controfigure a posteriori);
+il prompt (**v4**) dichiara neri e card come confini di montaggio. Ri-misura: sonda su 5 scene
+incriminate → 0 controfigure, gi132 f01 luma 9,4 — lo stacco ora è visibile al giudice.
+
+**Dichiarato ciò che NON risolve**: i tagli secchi d'inquadratura fra frame luminosi (gi30 f04→f05)
+sono grammatica TV lecita che il giudice deve leggere; se il prossimo run li condanna ancora, la strada
+è annotare i confini d'inquadratura nella strip, non cambiare la regia. Convalida incrociata che resta
+valida: gi168/gi138 critical per l'AI Vision e >70% fuori quadro per il censimento — lì il problema è
+la **mira**, ed è del gioco. `test:vision` 43/43.
+
 ### 7.509.0 — La taglia si allarga: il collaudo PO boccia lo 0,24
 
 Verdetto dal dispositivo: **«lo zoom è troppo stretto durante gli highlights»**. La taglia del 7.505
