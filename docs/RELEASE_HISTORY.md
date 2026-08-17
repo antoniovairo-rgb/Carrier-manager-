@@ -1,5 +1,20 @@
 # Cronologia delle release — Korward Elite
 
+### 7.508.0 — I codici sono chip: il taccuino a tre tocchi
+
+Collaudo PO: «creami dei pulsanti rapidi nel taccuino». La legenda dei codici (000 gesti scoordinati ·
+001 apertura scena · 002 eroe fuori posizione · 007 traballa · 008 palla da sola · 111 portiere fuori
+tempo) finora andava scritta a mano sul telefono, in pausa, a memoria. Ora è una **striscia di chip** nel
+taccuino: un tocco appende la riga etichettata («codice 007 — camera traballa») e rende la nota
+salvabile — flusso minimo **tre tocchi**: ⚠️ → codice → salva.
+
+Idempotente per codice (il secondo tocco non duplica), chip evidenziata se il codice è già nel testo
+(anche via auto-bozza del 007), testo sempre editabile: la chip aiuta, non ingabbia. **Verificato su
+pagina vera**: 6 chip, riga appesa, una sola occorrenza dopo due tocchi, salva attivo.
+
+L'ordine mette **007 per primo**: è il codice del collaudo in corso (7.507), e le note che arriveranno da
+lì sono il verdetto del rimedio. Suite CI 7/7, fingerprint `00001505`.
+
 ### 7.507.0 — Codice 007: il bersaglio dello sguardo è legale prima del lerp
 
 Il PO, da collaudo rapido sul dispositivo dopo F6, segnala che il 007 c'è ancora. **Coerente coi libri**:
