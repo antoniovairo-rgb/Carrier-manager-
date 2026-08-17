@@ -116,7 +116,7 @@
     "match-full": "node match-full-test.mjs",
     "bg-rhythm": "node bg-rhythm-test.mjs",
     "camera-hands": "node camera-hands-test.mjs",
-    "framing-guard": "CPM_MED_MIN=0.14 CPM_FUORI_MAX=11 node hero-framing-census.mjs"
+    "framing-guard": "CPM_MED_MIN=0.11 CPM_FUORI_MAX=10 node hero-framing-census.mjs"
   },
   "dependencies": {
     "playwright": "^1.48.0",

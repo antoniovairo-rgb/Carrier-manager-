@@ -508,12 +508,15 @@ scena · **007** classe TRABALLA della camera (auto-etichettata dal taccuino con
 pallone che viaggia da solo (chiuso: «il pallone va a un uomo, non a un punto») · **111/112** portiere
 non sincronizzato col pallone nel tuffo.
 
-**La taglia è regia (7.505.0, F6).** Il bersaglio di camera negli highlight si stringe sull'eroe fino a
-~0,17 di altezza apparente (costante 0,24 nel codice: il percorso reale rende ~0,75 del chiesto), subito
-**prima** del richiamo target-level 7.225 — mai dopo i lerp, che è il motivo per cui la manopola di prova
-triplicava il fuori quadro. Esente con soggetto-palla, pesata su `camHL`. Guardiano `npm run
-framing-guard` (= il censimento validato con soglie `CPM_MED_MIN`/`CPM_FUORI_MAX`), prova del rosso
-`CPM_NO505=1` → mediana 0,053. Misurato: 0,054→0,167 · figurina 86%→1% · fuori quadro 4,7%→6,9%.
+**La taglia è regia (7.505.0, F6; ritarata 7.509.0 su collaudo PO).** Il bersaglio di camera negli
+highlight si stringe sull'eroe subito **prima** del richiamo target-level 7.225 — mai dopo i lerp, che è
+il motivo per cui la manopola di prova triplicava il fuori quadro. Esente con soggetto-palla, pesata su
+`camHL`. Costante nel codice 0,18 (il percorso reale rende ~0,75 del chiesto → mediana 0,140): la 0,24
+del 7.505 (mediana 0,173) è stata **bocciata dal dispositivo del PO** («zoom troppo stretto») — il
+telefono comanda sulle soglie euristiche headless, e infatti il costo dichiarato è 68% di scene sotto la
+soglia 0,15 del censimento. Guardiano `npm run framing-guard` (= il censimento validato, soglie
+`CPM_MED_MIN=0.11`/`CPM_FUORI_MAX=10`), prova del rosso `CPM_NO505=1` → mediana 0,056. Misurato a 0,18:
+mediana 0,140 · figurine 1% · fuori quadro 6,3%.
 ⚠️ **Un guardiano nuovo non si scrive accanto a un censimento validato**: il primo tentativo divergeva su
 entrambi i bracci (20,1% dove il censimento dice 4,7%) — le soglie si mettono sullo strumento che ha
 preso la decisione. ⚠️ Le otto passate della camera restano **contate** (`__CPM_CAM503`, `npm run

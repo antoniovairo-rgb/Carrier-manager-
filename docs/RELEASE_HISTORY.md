@@ -1,5 +1,33 @@
 # Cronologia delle release — Korward Elite
 
+### 7.509.0 — La taglia si allarga: il collaudo PO boccia lo 0,24
+
+Verdetto dal dispositivo: **«lo zoom è troppo stretto durante gli highlights»**. La taglia del 7.505
+(costante 0,24 → mediana reale 0,173 sulle 191 scene, ri-misurata oggi) era la MIA scelta su delega —
+il telefono l'ha bocciata, e il telefono comanda sulle euristiche headless (stessa lezione del 007).
+
+I numeri hanno escluso il rimedio sbagliato: la distribuzione a 0,24 era **tutta** stretta (q10 0,138 →
+max 0,267, zero scene sopra 0,30), quindi niente tetto sulle code — correzione **globale**: costante
+0,24 → **0,18**, un punto di taratura già misurato in passato.
+
+Ri-misura (191 scene): mediana **0,140** (quadro **+43% di area**), fuori quadro 6,6% → **6,3%**,
+figurine ferme all'1%, eroe comunque **~2,5×** il pre-F6. Prova del rosso: `__CPM_NO505` → mediana
+crolla a 0,056 (< 0,10) ✅.
+
+**Costo dichiarato**: le scene sotto la soglia euristica 0,15 («gesto non distinguibile») salgono dal
+24% al **68%**. Se dal collaudo il gesto tornasse illeggibile, la strada non è ri-stringere in blocco ma
+un compromesso per famiglia di scena. Guardiano ritarato: `framing-guard` con `CPM_MED_MIN=0.11`
+`CPM_FUORI_MAX=10` (margine ~0,03 sotto il misurato, come prima).
+
+### 7.508.1 — Un run nuovo per Pages: il re-run non ripara un deploy con artifact duplicati
+
+La 7.508.0 non è mai arrivata online: il run di deploy #969 è fallito per un transitorio lato GitHub, e
+i RE-RUN non potevano ripararlo — ogni re-run ricarica un artifact `github-pages` nello **stesso** run e
+`deploy-pages@v4` rifiuta gli artifact multipli («Artifact count is 4»); ogni tentativo peggiorava il
+conteggio. Push di solo numero di versione per innescare un run **nuovo**, con namespace artifact pulito.
+**Regola operativa**: se «Deploy to GitHub Pages» fallisce al passo finale, mai re-run — sempre un run
+fresco (push o workflow_dispatch).
+
 ### 7.508.0 — I codici sono chip: il taccuino a tre tocchi
 
 Collaudo PO: «creami dei pulsanti rapidi nel taccuino». La legenda dei codici (000 gesti scoordinati ·
