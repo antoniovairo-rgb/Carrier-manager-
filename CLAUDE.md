@@ -23,6 +23,18 @@ carica su richiesta; questa disciplina no). Il playbook esteso di ciascuna sta n
    permanente. Un difetto che si ripresenta due volte merita sempre una probe nuova. → skill `game-qa`
 6. **Non chiudere senza il rituale.** Gate 14/14 · guardiani se l'area li richiede · bump versione · commit ·
    push · promozione su `main`. → skill `production-ready`
+   ⚠️ **IL GATE NON E' LA CI.** Il workflow `validate-situations.yml` esegue **sette** passi in due job, e
+   `npm run validate-situations` e' **uno solo**. Verificare quello e dichiarare «verde» ha prodotto nove
+   release consecutive promosse su `main` con la CI rossa, scoperte solo perche' il PO ha mostrato la
+   casella di posta piena di «Run failed». Prima di ogni push, dalla cartella `tests/visual`:
+   ```bash
+   npm run test:vision && npm run test:logic && npm run typing-shortcuts \
+     && npm run validate-situations && npm run save-compat && npm run replay \
+     && npm run career-critical
+   ```
+   ⚠️ E la CI gira su runner **piu' lenti e piu' contesi** di una sessione cloud: un check che qui e'
+   marginale li' e' rosso stabile. E' successo con `post-highlight`, che misurava velocita' x intervallo
+   (7.502.0): in locale falliva 1 volta su 2, in CI quasi sempre.
 
 ### Le 10 Project Skill (`.claude/skills/`)
 
