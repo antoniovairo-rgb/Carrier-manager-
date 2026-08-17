@@ -1,5 +1,31 @@
 # Cronologia delle release — Korward Elite
 
+### 7.502.0 — Il check `post-highlight` misurava velocità × intervallo
+
+Release di **strumenti**: il gioco non cambia. Viene **prima di F6** perché è il metro con cui F6 andrà
+giudicata, e un metro che sbanda non serve.
+
+**Causa misurata.** Dal 7.500 il check è diventato instabile: **tre rossi su cinque passate**, ogni volta
+su una **scena diversa** (`gi79: salto camera 36,7` · `gi0: 39,8`, soglia 30), col fingerprint che tornava
+identico alla baseline `00001505` appena la passata riusciva; e il 7.500 rilanciato da solo era verde.
+
+`maxCam` è la **distanza** fra due campioni consecutivi presi a intervalli nominali di 110 ms — ma i
+fotogrammi **non portavano un timestamp**. Se il poll slitta (contesa di CPU, GC, headless sotto carico)
+la stessa camera che scorre liscia produce un numero più grande, e il check lo chiama «cambio
+inquadratura brusco». È la stessa trappola già pagata due volte su questo repo — **7.360** sul pallone e
+**7.478** sul varco — dove sta scritto che un salto misurato fra due campioni è *velocità × intervallo*.
+
+**Rimedio.** Il campione porta il proprio `t`; le coppie con intervallo oltre il **doppio** del nominale
+si **scartano**; e una scena che resta con meno di 4 coppie ben spaziate viene dichiarata **non
+giudicata** (warning) invece di essere contata come verde — una misura che ha buttato via metà dei
+campioni deve dirlo.
+
+**Ri-misura:** due passate consecutive verdi, fingerprint `00001505` in entrambe.
+
+⚠️ **I salti veri restano catturati**, e va verificato invece che dedotto: in isolamento, una scena con 9
+coppie ben spaziate e `maxCam` 99 esce ancora come **issue**, mentre una con 2 coppie su 10 esce come
+warning «camera non giudicata».
+
 ### 7.501.0 — F5 Match Experience: la partita ha un ritmo, non una cadenza
 
 Direttiva PO: «fase normale → costruzione → sviluppo → azione pericolosa → attesa · devono esistere anche

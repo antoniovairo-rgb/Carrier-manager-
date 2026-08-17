@@ -447,10 +447,13 @@ metterebbe due regole giuste una contro l'altra. ⚠️ **Cambiare la densità p
 rompere `bg-decision`**: è successo (69,0% → 51,3%) perché le famiglie di `pericolo` hanno repertori
 sottili — il premio di famiglia ora **scala col repertorio** (×7 sulle sottili). Non si abbassa la soglia
 di un guardiano per far passare una fase nuova.
-⚠️ **`post-highlight` è instabile dal 7.500**: tre rossi su cinque passate, scena diversa ogni volta
-(`gi79` 36,7 · `gi0` 39,8, soglia 30), fingerprint identico alla baseline quando passa. Nesso causale
-**non stabilito** — il gate forza le situation e F4/F5 vivono nel tick di `playing`, che lì non gira.
-Prima di dichiarare una regressione: rilanciare e confrontare il fingerprint.
+⚠️ **`post-highlight` misurava velocità × intervallo, ed è stato riparato (7.502.0).** `maxCam` è la
+distanza fra due campioni a 110 ms nominali, ma i fotogrammi non portavano il tempo: un poll slittato
+gonfiava il numero e il check lo chiamava «cambio inquadratura brusco» — tre rossi su cinque passate, ogni
+volta su una scena diversa. Ora il campione porta `t`, le coppie oltre il doppio del nominale si
+**scartano**, e una scena con meno di 4 coppie buone è dichiarata **non giudicata**. Stessa trappola di
+7.360 e 7.478. ⚠️ **Ogni check che confronta due campioni deve portarsi dietro il tempo**: senza, misura
+il proprio scheduler.
 
 **La partita dura novanta minuti (7.500.0, F4).** Il fischio finale non dipende più dall'esaurimento
 degli highlight: quelli si spalmano su **[8, 84]** e, finiti, si torna al gioco fluido — a chiudere resta

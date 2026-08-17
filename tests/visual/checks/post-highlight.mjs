@@ -19,7 +19,10 @@ export default {
       if (s.durMs == null) { warnings.push(`gi${s.gi}: durata post-highlight non catturata`); continue; }
       durs.push(s.durMs);
       if (s.durMs < DUR_MIN || s.durMs > DUR_MAX) issues.push(`gi${s.gi}: durata ${s.durMs}ms fuori range [${DUR_MIN},${DUR_MAX}]`);
-      if (s.maxCam > CAM_CUT) issues.push(`gi${s.gi}: salto camera ${s.maxCam.toFixed(1)} > ${CAM_CUT} (cambio inquadratura brusco)`);
+      /* [7.502.0] una scena i cui campioni sono quasi tutti mal spaziati non e' «senza salti»: e' non
+         misurata, e va detto invece di contarla come verde. */
+      if (s.coppie != null && s.coppie < 4) { warnings.push(`gi${s.gi}: solo ${s.coppie} coppie ben spaziate (${s.scartati} scartate) — camera non giudicata`); }
+      else if (s.maxCam > CAM_CUT) issues.push(`gi${s.gi}: salto camera ${s.maxCam.toFixed(1)} > ${CAM_CUT} (cambio inquadratura brusco)`);
       if (s.maxBall > BALL_TP) issues.push(`gi${s.gi}: salto palla ${s.maxBall.toFixed(1)} > ${BALL_TP} (teletrasporto/anim incoerente)`);
       if (s.movers > MOVERS_MAX) warnings.push(`gi${s.gi}: ${s.movers} giocatori in movimento simultaneo (>${MOVERS_MAX})`);
     }

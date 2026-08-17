@@ -205,6 +205,11 @@ export async function samplePostHighlight(page, gi, { settle = 600, k = 0, pollM
     }));
     if (d.dur) durMs = d.dur;
     if (d.probe && d.probe.ok) frames.push({
+      /* [7.502.0] QUANDO e' stato preso il campione. Senza, chi confronta due fotogrammi misura una
+         DISTANZA e la chiama salto — ma fra due poll possono passare 110 ms o 400, e la stessa camera
+         che scorre liscia produce numeri diversi: e' velocita' x intervallo, la trappola gia' pagata due
+         volte su questo repo (7.360 sul pallone, 7.478 sul varco). Il tempo va portato dietro. */
+      t: Date.now(),
       cam: d.probe.camera,
       ball: d.probe.ball ? d.probe.ball.world : null,
       players: (d.st && d.st.players) ? d.st.players.map(p => ({ x: p.x, y: p.y })) : null,

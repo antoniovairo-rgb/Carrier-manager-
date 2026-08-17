@@ -180,15 +180,26 @@ const GOLDEN = path.join(HERE, 'golden-sigs.json');
     const D = (a, b) => Math.hypot(a.x - b.x, (a.z != null ? a.z : a.y) - (b.z != null ? b.z : b.y));
     const phSamples = [];
     for (const gi of phIdx) {
-      const s = await samplePostHighlight(page, gi, { windowMs: 1100, pollMs: 110 });
-      let maxCam = 0, maxBall = 0, movers = 0;
+      const POLL = 110;
+      const s = await samplePostHighlight(page, gi, { windowMs: 1100, pollMs: POLL });
+      let maxCam = 0, maxBall = 0, movers = 0, scartati = 0, coppie = 0;
       for (let i = 1; i < s.frames.length; i++) {
         const f0 = s.frames[i - 1], f1 = s.frames[i];
+        /* [7.502.0] NON SI GIUDICA SU UNA COPPIA MAL SPAZIATA. `maxCam` e' una DISTANZA fra due campioni:
+           se il poll e' stato ritardato (contesa di CPU, GC, headless sotto carico) la stessa camera che
+           scorre liscia produce un numero piu' grande, e il check lo chiama «cambio inquadratura brusco».
+           E' successo davvero: tre rossi su cinque passate dal 7.500, ogni volta su una SCENA DIVERSA
+           (gi79 36,7 · gi0 39,8, soglia 30) e col fingerprint che tornava identico alla baseline appena
+           la passata riusciva. Le coppie con intervallo oltre il doppio del nominale si SCARTANO — e si
+           contano, perche' una misura che ha buttato via meta' dei campioni deve dirlo. */
+        const dt = (f0.t != null && f1.t != null) ? (f1.t - f0.t) : POLL;
+        if (dt > POLL * 2.2) { scartati++; continue; }
+        coppie++;
         if (f0.cam && f1.cam) maxCam = Math.max(maxCam, Math.hypot(f1.cam.x - f0.cam.x, f1.cam.y - f0.cam.y, f1.cam.z - f0.cam.z));
         if (f0.ball && f1.ball) maxBall = Math.max(maxBall, D(f0.ball, f1.ball));
         if (f0.players && f1.players) { let mv = 0; for (let p = 0; p < f0.players.length; p++) if (f1.players[p] && Math.hypot(f1.players[p].x - f0.players[p].x, f1.players[p].y - f0.players[p].y) > 0.8) mv++; movers = Math.max(movers, mv); }
       }
-      phSamples.push({ gi, durMs: s.durMs, maxCam, maxBall, movers });
+      phSamples.push({ gi, durMs: s.durMs, maxCam, maxBall, movers, scartati, coppie });
       try { replayRefs.push(writeReplayTrace(OUT, s)); } catch (_e) { /* trace best-effort, non blocca il gate */ }
       await sleep(300);
     }
