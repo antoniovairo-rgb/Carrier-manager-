@@ -1,5 +1,53 @@
 # Cronologia delle release — Korward Elite
 
+### 7.503.0 — F6/1: quante mani toccano l'inquadratura (solo osservazione)
+
+Nessun comportamento cambiato: solo contatori. L'arbitro arriva dopo, con questi numeri in mano.
+
+**Premessa corretta.** L'audit aveva scritto «31 scrittori sulla camera in sequenza sullo stesso
+fotogramma». Rileggendo il blocco la frase è risultata **imprecisa**, e la correzione conta più del
+numero: la **selezione** della regia è pulita — una catena `if/else if` **mutuamente esclusiva** (walkout ·
+rigore · punizione · testa · tackle · cross · tiro · filtrante · dribbling), quindi un solo ramo scrive.
+Il problema sta **dopo**, nelle passate correttive indipendenti che si sommano.
+
+**Misurato** (`npm run camera-hands`, 246 fotogrammi di highlight su 30 scene):
+
+| | |
+|---|---|
+| passate per fotogramma | **1,85** |
+| fotogrammi con più d'una | **119 = 48,4%** |
+| `guinzaglio` | **100%** dei fotogrammi |
+| `porta` · `gk` | 37% ciascuna, **sempre insieme** (91×) |
+| `bordo-lift` | 11,4% |
+| `bordo-tanh` | **0** |
+
+⚠️ **E la misura ha smentito la diagnosi già comunicata al PO.** Avevo indicato le righe 16264 e 16275
+come «due correzioni allo stesso sintomo che si pestano i piedi», perché condividono la condizione
+`isHL && tPx < -46`. Misurato: **non coesistono mai** (0 fotogrammi su 246). La prima **consuma** la
+condizione — `bordo-lift` spinge `tPx` sopra −46 — quindi la seconda trova già falso il proprio `if`. Non
+è un conflitto: **`bordo-tanh` è codice morto** su queste scene, una rete che sembra esserci e non scatta.
+L'affollamento vero è `porta+gk+guinzaglio`, ed è lì che andrà l'arbitro.
+
+⚠️ **I numeri sono un pavimento**: hanno un nome 5 passate su 8. Restano fuori l'arretramento per
+bisezione, la guardia sullo snap e il clamp sulla vista reale, che vivono più a valle.
+
+**Sweep della taglia** completato sulle 191 scene (`CPM_TARGET`):
+
+| taglia | mediana | «figurina» <0,08 | <0,15 | fuori quadro |
+|---|---|---|---|---|
+| 0 (oggi) | 0,054 | 86% | 100% | **4,7%** |
+| 0,12 | 0,118 | 1% | 99% | 6,7% |
+| 0,20 | 0,197 | 0% | 1% | **12,2%** |
+| 0,28 | 0,277 | 0% | 0% | **15,8%** |
+
+**Decisione delegata dal PO: la taglia è 0,18** — sopra 0,15, che è la soglia sotto cui il censimento
+stesso dichiara il gesto non distinguibile (a 0,12 il 99% delle scene resterebbe sotto, cioè si
+risolverebbe metà problema). **Ma non si spedisce prima della mira**: stringere da solo triplica il fuori
+quadro, ed è la stessa lezione già pagata nel 7.482.
+
+Prova del rosso `__CPM_NO503`. **Prima release della sessione verificata con la suite CI completa** (7
+passi, tutti EXIT=0), non col solo gate.
+
 ### 7.502.0 — Il check `post-highlight` misurava velocità × intervallo
 
 Release di **strumenti**: il gioco non cambia. Viene **prima di F6** perché è il metro con cui F6 andrà
