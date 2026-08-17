@@ -491,6 +491,18 @@ affamerebbe il repertorio — lezione del 7.486). ⚠️ **Il guardiano misura a
 60,9%): un accordo alto comprato con le ripetizioni non è un miglioramento, e senza quel numero il primo
 si può far salire barando. ⚠️ È una **lettura**, non un sorteggio → nessun impatto sul determinismo.
 
+**La taglia è regia (7.505.0, F6).** Il bersaglio di camera negli highlight si stringe sull'eroe fino a
+~0,17 di altezza apparente (costante 0,24 nel codice: il percorso reale rende ~0,75 del chiesto), subito
+**prima** del richiamo target-level 7.225 — mai dopo i lerp, che è il motivo per cui la manopola di prova
+triplicava il fuori quadro. Esente con soggetto-palla, pesata su `camHL`. Guardiano `npm run
+framing-guard` (= il censimento validato con soglie `CPM_MED_MIN`/`CPM_FUORI_MAX`), prova del rosso
+`CPM_NO505=1` → mediana 0,053. Misurato: 0,054→0,167 · figurina 86%→1% · fuori quadro 4,7%→6,9%.
+⚠️ **Un guardiano nuovo non si scrive accanto a un censimento validato**: il primo tentativo divergeva su
+entrambi i bracci (20,1% dove il censimento dice 4,7%) — le soglie si mettono sullo strumento che ha
+preso la decisione. ⚠️ Le otto passate della camera restano **contate** (`__CPM_CAM503`, `npm run
+camera-hands`): 65,8% dei fotogrammi con più d'una mano, cluster dello sguardo (`porta+gk+guinzaglio`).
+Un arbitrio si giustifica solo se questi numeri peggiorano.
+
 **Il testo propone, lo stato reale limita (7.498.0, F3a).** `ballTargetRef.current` non prende più
 direttamente `ev.bpos`: la destinazione dichiarata dalla riga di cronaca è una **proposta**, limitata a
 **45 unità** dalla posizione reale del pallone. Guardiano `npm run bg-continuity`, prova del rosso

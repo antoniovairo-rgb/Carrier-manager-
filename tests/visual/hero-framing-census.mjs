@@ -52,6 +52,7 @@ for (let gi = 0; gi < N; gi += PASSO) {
   const ok = await forceSituation(page, gi, { settle: 400, choose: true }).then(() => true).catch(() => false);
   if (!ok) continue;
   await page.evaluate(t => { window.__CPM_FRAME480 = null; window.__CPM_FORCE_OUTCOME = 'success'; window.__CPM_FRAMET480 = t || null; }, TARGET);
+  if (process.env.CPM_NO505) await page.evaluate(() => { window.__CPM_NO505 = 1; });/* [7.505.0] prova del rosso della taglia in regia */
   const info = await page.evaluate(() => {
     const s = window.__CPM_STATE && window.__CPM_STATE();
     const a = (window.__CPM_ACTS && window.__CPM_ACTS()) || [];
@@ -102,6 +103,28 @@ const peggiori = [...righe].sort((a, c) => a.max - c.max).slice(0, 15);
 console.log(`\n=== le 15 scene in cui l'eroe e' piu' piccolo ===`);
 for (const r of peggiori) console.log(`  gi${String(r.gi).padStart(3)} ${String(r.max.toFixed(3)).padStart(6)} · ${String(r.tipo || '—').padEnd(9)} · «${(r.azione || '—').slice(0, 46)}»`);
 
+/* [7.505.0 F6/3] MODALITA' GUARDIANO — il censimento diventa anche il giudice, con soglie da env.
+   PERCHE' QUI e non in un test separato: il primo guardiano della taglia era uno script NUOVO con un
+   campionamento suo, e i suoi assoluti divergevano dal censimento SU ENTRAMBI I BRACCI (braccio rosso
+   20,1% di fuori quadro dove questo strumento, sulla stessa configurazione, misura 4,7%). Uno strumento
+   nuovo non e' un guardiano: e' una seconda opinione non calibrata. Le soglie si applicano ALLO
+   strumento validato — zero duplicazione, stessi numeri dello sweep con cui la decisione e' stata presa.
+   Uso: CPM_MED_MIN=0.14 CPM_FUORI_MAX=11 [CPM_ROSSO=1 con __CPM_NO505 gia' acceso via env CPM_NO505=1]. */
+const MED_MIN = +(process.env.CPM_MED_MIN || 0);
+const FUORI_MAX = +(process.env.CPM_FUORI_MAX || 0);
+const G_ROSSO = !!process.env.CPM_ROSSO;
+if (MED_MIN || FUORI_MAX) {
+  const _med = q(0.5), _pf = totFr ? 100 * totFuori / totFr : 0;
+  if (G_ROSSO) {
+    if (_med < 0.10) { console.log(`\n✅ prova del rosso riuscita: senza la taglia in regia la mediana crolla a ${_med.toFixed(3)}`); }
+    else { console.log(`\n❌ PROVA DEL ROSSO FALLITA: mediana ${_med.toFixed(3)} anche con la taglia spenta`); process.exitCode = 2; }
+  } else {
+    let _ko = false;
+    if (MED_MIN && _med < MED_MIN) { console.log(`\n❌ la taglia si e' persa: mediana ${_med.toFixed(3)} sotto ${MED_MIN}`); _ko = true; }
+    if (FUORI_MAX && _pf > FUORI_MAX) { console.log(`\n❌ la taglia e' stata comprata col fuori quadro: ${_pf.toFixed(1)}% > ${FUORI_MAX}%`); _ko = true; }
+    if (_ko) process.exitCode = 2; else console.log(`\n✅ l'eroe si vede (mediana ${_med.toFixed(3)}) e resta nel quadro (${_pf.toFixed(1)}%)`);
+  }
+}
 fs.mkdirSync('out/framing', { recursive: true });
 fs.writeFileSync('out/framing/hero-framing.json', JSON.stringify({ generatedAt: null, target: TARGET || null, scene: righe.length, mediana: q(0.5), media, sotto15: sotto15.length, sotto08: sotto08.length, assenti: assenti.map(r => r.gi), righe }, null, 1));
 console.log(`\ndettaglio → out/framing/hero-framing.json`);

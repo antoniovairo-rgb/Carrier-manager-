@@ -1,5 +1,50 @@
 # Cronologia delle release — Korward Elite
 
+### 7.505.0 — F6/3: la taglia è regia — l'eroe si vede, e resta nel quadro
+
+**Prima modifica visibile di F6**, e chiusura della famiglia di note «non si vede il gesto tecnico»
+(misurata dal 7.480: mediana 0,054, 86% delle scene sotto 0,08 — una figurina).
+
+**Cosa cambia.** La taglia decisa con lo sweep sulle 191 (delegata dal PO) entra in **regia**: il
+bersaglio di camera si stringe verso l'eroe fino all'altezza apparente voluta, **subito prima** del
+richiamo target-level del 7.225 — così la mira lavora sul quadro già stretto e le reti a valle partono
+allineate. È il punto opposto della manopola di prova (`__CPM_FRAMET480`), che spostava la camera
+**reale** dopo tutti i lerp: per quello stringere con lei triplicava il fuori quadro (4,7%→12,2% a 0,20).
+
+**Misurato sulle 191** (stesso strumento dello sweep):
+
+| | prima | dopo |
+|---|---|---|
+| mediana altezza apparente | 0,054 | **0,167** (×3) |
+| «figurina» (<0,08) | 86% | **1%** |
+| fuori quadro | 4,7% | **6,9%** (la strada naif: 12-19%) |
+
+Esente quando il soggetto è la palla (`_subjBall50`), pesata sul blend `camHL`, spenta sotto la manopola
+di prova. **Golden invariato**: la firma cattura la camera prima della stretta — zero deriva.
+
+⚠️ **La costante è tarata sul percorso reale.** 0,18 chiesti rendevano mediana 0,136 (il bersaglio viene
+mediato dal blend e dalle reti): si chiede **0,24** per ottenere ~0,17 **sullo schermo**, che è dove la
+taglia si misura.
+
+⚠️ **Il primo guardiano della taglia era uno strumento nuovo, ed è stato buttato.** Campionava a modo suo
+e divergeva dal censimento **su entrambi i bracci** (braccio rosso: 20,1% di fuori quadro dove il
+censimento, stessa configurazione, misura 4,7%). Una seconda opinione non calibrata non è un guardiano:
+le soglie si applicano allo strumento **validato** — `npm run framing-guard` è il censimento stesso con
+`CPM_MED_MIN=0.14` e `CPM_FUORI_MAX=11`. **Prova del rosso** `CPM_NO505=1`: mediana crolla a 0,053, la
+regia vecchia esatta.
+
+**Bilancio F6, detto intero.** Fatte: censimento completo delle otto passate (65,8% dei fotogrammi con
+più d'una mano, cluster dello sguardo identificato), `post-highlight` riparato due volte (tempo +
+stacchi neri), taglia+mira in regia coi numeri sopra. **Non fatte, con le ragioni:** (a) il «selettore di
+inquadratura unico» della roadmap nasceva da una premessa che la misura ha corretto — la selezione È già
+esclusiva; il difetto misurato era il fuori quadro, chiuso a livello di bersaglio; le otto passate
+restano contate (`__CPM_CAM503`) e un loro arbitrio si giustificherà solo se i numeri torneranno a
+peggiorare; (b) le 8 varianti che collassano sulla clip `kick` richiedono **asset GLB nuovi** (clip
+d'animazione), che non si possono autorare da qui: è una voce di produzione asset, decisione PO.
+Il collaudo percettivo finale — «sembra davvero una partita» — resta il telefono del PO.
+
+Suite CI completa: **7/7 EXIT=0**, fingerprint `00001505`.
+
 ### 7.504.0 — F6/2: tutte e otto le mani contate, e il salto di gi79 era regia
 
 **Prima parte: il censimento completo.** Il 7.503 aveva dato un nome a 5 passate su 8 e i suoi numeri
