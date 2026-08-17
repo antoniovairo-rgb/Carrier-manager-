@@ -6,7 +6,7 @@
    NON blocca MAI la CI: è secondo livello (l'esito è informativo). */
 import fs from 'node:fs';
 import { buildPrompt, parseModelJson } from './prompts.mjs';
-import { aggregate } from './scoring.mjs';
+import { aggregate, VIDEO_EXCLUDE } from './scoring.mjs';
 import { CacheStore, cacheKey } from './cache.mjs';
 import { PROMPT_VERSION } from './config.mjs';
 
@@ -72,7 +72,7 @@ export class VisionReviewEngine {
       if (!parsed) {
         result = this._blocked(hl, 'invalid_response', 'risposta non parsabile a JSON', { attempts, raw: String(out.text).slice(0, 200) });
       } else {
-        const agg = aggregate(parsed);
+        const agg = aggregate(parsed, (hl.context && hl.context.mode === 'video') ? { exclude: VIDEO_EXCLUDE } : undefined);/* [7.506.0] un filmstrip non puo' giudicare la cronaca: fuori dalla media, non dentro a 50 fisso */
         result = {
           id: hl.id, gi: hl.context && hl.context.gi, situation: hl.context && hl.context.text,
           intent: hl.context && hl.context.intent,

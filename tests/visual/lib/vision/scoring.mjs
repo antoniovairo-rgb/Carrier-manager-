@@ -19,9 +19,17 @@ export const WEIGHTS = {
 const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
 const VERDICT_RANK = { PASS: 0, WARNING: 1, FAIL: 2, BLOCKED: 3 };
 
-export function qualityScore(scores) {
+/* [7.506.0] DIMENSIONI NON VALUTABILI PER MODALITA'. Il run PO del 16/08 (video, 30 highlight) ha dato
+   `commentaryConsistency` = 50 su TUTTE e trenta le scene — un solo valore distinto: un filmstrip di
+   fotogrammi della conclusione non contiene abbastanza testo a schermo per giudicarla, e il modello ha
+   emesso una costante che pero' pesava 1/12 della media. Una dimensione inassegnabile non si media: si
+   esclude, e `wsum` rinormalizza (il totale resta spiegabile). Retro-compatibile: senza `exclude` nulla
+   cambia, la modalita' frames continua a valutarla. */
+export const VIDEO_EXCLUDE = ['commentaryConsistency'];
+export function qualityScore(scores, exclude) {
   let sum = 0, wsum = 0;
   for (const d of DIMENSIONS) {
+    if (exclude && exclude.indexOf(d) >= 0) continue;
     const v = scores && typeof scores[d] === 'number' ? clamp(scores[d], 0, 100) : null;
     if (v == null) continue;
     sum += v * WEIGHTS[d]; wsum += WEIGHTS[d];
@@ -59,9 +67,9 @@ export function priority(severity, confidence) {
 }
 
 // aggrega l'output grezzo del modello (già parsato a JSON) in un verdetto strutturato completo
-export function aggregate(parsed) {
+export function aggregate(parsed, opts) {
   const scores = (parsed && parsed.scores) || {};
-  const score = qualityScore(scores);
+  const score = qualityScore(scores, opts && opts.exclude);
   const derived = deriveVerdict(score);
   const verdict = reconcileVerdict(parsed && parsed.verdict, derived);
   const sev = severity(verdict, score);

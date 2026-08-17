@@ -1,5 +1,29 @@
 # Cronologia delle release — Korward Elite
 
+### 7.506.0 — L'AI Vision smette di misurare se stessa
+
+Il gioco non cambia: è la taratura promessa dello strumento percettivo, **prima** del re-run PO con
+ollama. Due correzioni, entrambe nate dalla lettura del report del 16/08 (30 highlight, 23 FAIL):
+
+1. **`commentaryConsistency` fuori dalla media in modalità video.** Dava 50 **identico** su tutte e
+   trenta le scene — un filmstrip della conclusione non contiene abbastanza testo a schermo per
+   giudicarla, e quella costante pesava 1/12 della media. Ora in video esce dal punteggio
+   (`VIDEO_EXCLUDE`, `wsum` rinormalizza; retro-compatibile, la modalità frames non cambia). Misurato:
+   lo stesso set di punteggi passa da 78,2 a 80,0.
+2. **Il prompt video dichiara gli stacchi di regia.** 17 scene su 30 accusavano «ball teleport», ma il
+   censimento F1a ha attribuito i riposizionamenti secchi del pallone **tutti dentro lo stacco nero**
+   (4/4). Il prompt ora spiega che un salto a cavallo di un frame scuro è un taglio di montaggio voluto —
+   la grammatica di una regia TV — e chiede di chiamare teleport solo un salto fra due frame adiacenti
+   **entrambi luminosi** della stessa inquadratura. E ricorda che a ~110 ms/frame velocità × intervallo
+   non è un teletrasporto: la trappola del 7.360, stavolta spiegata al modello.
+
+**`PROMPT_VERSION` v2→v3**: la cache è indicizzata sul prompt — risposte v2 su un prompt v3 sarebbero
+misure di ieri con l'etichetta di oggi. `test:vision` 43/43, suite CI 7/7.
+
+⚠️ **Cosa questo non fa.** Non cambia il giudizio del modello sulle cose vere — animazioni, fluidità,
+intelligenza calcistica. Toglie solo il rumore già smascherato a mano. Se il prossimo run resta severo
+lì, quello è segnale, non rumore.
+
 ### 7.505.0 — F6/3: la taglia è regia — l'eroe si vede, e resta nel quadro
 
 **Prima modifica visibile di F6**, e chiusura della famiglia di note «non si vede il gesto tecnico»

@@ -71,4 +71,4 @@ export function getConfig(env = process.env) {
   });
 }
 
-export const PROMPT_VERSION = 'v2';
+export const PROMPT_VERSION = 'v3';/* [7.506.0] v3: stacchi di regia dichiarati nel prompt video + `commentaryConsistency` fuori dalla media in video. Il bump invalida la cache: risposte v2 su un prompt v3 sarebbero misure di ieri con l'etichetta di oggi. */
