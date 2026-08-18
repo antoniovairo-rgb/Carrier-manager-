@@ -1,5 +1,19 @@
 # Cronologia delle release — Korward Elite
 
+### 7.514.0 — Restyling R2/3: la respinta nasce dal contatto
+
+L'audit diceva «velocità estratte a caso a fine arco»; la misura ha trovato di peggio: **il deflect non
+aveva una componente X** — la palla parata restava sulla linea di porta a rimbalzare in laterale.
+
+Ora l'impulso della parata è la **riflessione del volo in arrivo**, smorzata (k=0,28 — stessa famiglia
+della restituzione a terra già in uso), più la spazzata della mano nella direzione del tuffo. `hlPostVX`
+esiste, integra con lo stesso smorzamento della z e muore col cambio scena.
+
+Misurato (testimone `__CPM_RESP514`): verde **vx sempre negativa** (la respinta rientra in campo);
+rosso `__CPM_NO514` **vx=0 sempre**. Dichiarato: la varietà residua fra due repliche della stessa scena
+viene dal **bersaglio dell'arco** (`Math.random` pre-esistente nel target, fuori perimetro) — la
+respinta è deterministica *dato* l'arco. Guardiano `gesture-window` a quattro misure.
+
 ### 7.513.0 — Restyling R2/2: il contatto è una proprietà della tabella
 
 Audit: «cross e passaggi partono a contatto zero — la palla è già partita quando la gamba passa sul

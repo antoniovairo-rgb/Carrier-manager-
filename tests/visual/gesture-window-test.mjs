@@ -20,7 +20,7 @@ const srv = await startServer(); const port = srv.address().port;
 const b = await launchBrowser();
 const page = await b.newPage({ viewport: { width: 412, height: 915 } });
 await installCdnRoutes(page);
-await page.addInitScript(r => { window.__CPM_GLB = false; window.__CPM_VITA512 = []; window.__CPM_PRE513 = []; if (r) { window.__CPM_NO467 = 1; window.__CPM_NO512 = 1; window.__CPM_NO513 = 1; } }, ROSSO);/* niente __CPM_REC: accende lo scrittore per-frame che sovrascrive __CPM_ARC */
+await page.addInitScript(r => { window.__CPM_GLB = false; window.__CPM_VITA512 = []; window.__CPM_PRE513 = []; window.__CPM_RESP514 = []; if (r) { window.__CPM_NO467 = 1; window.__CPM_NO512 = 1; window.__CPM_NO513 = 1; window.__CPM_NO514 = 1; } }, ROSSO);/* niente __CPM_REC: accende lo scrittore per-frame che sovrascrive __CPM_ARC */
 await openMatch(page, port);
 await sleep(600);
 
@@ -40,6 +40,14 @@ const passDur = [];
 for (const gi of [111, 174]) { const r = await scena(gi); if (r.arc && (r.arc.t === 'pass' || r.arc.t === 'build')) passDur.push(r.arc.dur); }
 await scena(42);/* [7.513.0] un cross per la misura del caricamento */
 const pre = await page.evaluate(() => window.__CPM_PRE513 || []);
+/* [7.514.0 R2/3] quarta misura: la RESPINTA della parata. Si forza un tiro parato (gi12, fail) e si
+   aspetta l'atterraggio (il rallentatore porta il contatto a ~4-5s reali: l'attesa e' a sondaggio, mai
+   fissa — lezione 7.460). Verde: vx<0, la respinta RIENTRA in campo (derivata dal volo); rosso
+   __CPM_NO514: vx=0 — il deflect vecchio non aveva una componente X. */
+await forceSituation(page, 12, { settle: 400, choose: true });
+await page.evaluate(() => { window.__CPM_FORCE_OUTCOME = 'fail'; window.__CPM_RESOLVE(0); });
+for (let k = 0; k < 8; k++) { await sleep(1200); const n = await page.evaluate(() => (window.__CPM_RESP514 || []).length); if (n > 0) break; }
+const resp = await page.evaluate(() => window.__CPM_RESP514 || []);
 await b.close(); srv.close();
 /* [7.513.0 R2/2] terza misura: il CARICAMENTO per famiglia (testimone alla concessione). Verde: cross>=0,30
    e pass>=0,25; rosso __CPM_NO513: cross e pass tornano a 0 (lista storica), freekick resta 0,24 in
@@ -47,6 +55,7 @@ await b.close(); srv.close();
 const preCross = pre.filter(x => x.t === 'cross').map(x => x.pre);
 const prePass = pre.filter(x => x.t === 'pass').map(x => x.pre);
 console.log(`caricamenti: cross ${preCross.join('/') || '—'} · pass ${prePass.join('/') || '—'}`);
+console.log(`respinta parata: ${resp.map(r => 'vx' + r.vx + '/vz' + r.vz).join(' · ') || '—'}`);
 
 const minPass = passDur.length ? Math.min(...passDur) : null;
 console.log(`vite header: ${vite.map(v => v.toFixed(2)).join(' · ') || '—'}`);
@@ -56,6 +65,8 @@ if (vite.length < 2 || passDur.length < 1) { console.log('❌ SONDA CIECA: misur
 if (ROSSO) {
   const okA = vite.every(v => v <= 0.85), okB = minPass >= 0.5;
   const okC = preCross.concat(prePass).every(v => v === 0);
+  const okD = resp.length >= 1 && resp.every(r => r.vx === 0);
+  if (!okD) { console.log(`❌ PROVA DEL ROSSO (respinta): attesa vx=0, misurato ${JSON.stringify(resp)}`); process.exit(2); }
   if (okA && okB && okC) { console.log('✅ prova del rosso riuscita: testa troncata, passaggi a durata fissa, caricamento negato'); process.exit(0); }
   console.log(`❌ PROVA DEL ROSSO FALLITA: vita ${vite.map(v => v.toFixed(2))} / minPass ${minPass} / pre ${preCross}/${prePass}`); process.exit(2);
 }
@@ -64,5 +75,6 @@ if (!vite.every(v => v >= 1.05 && v <= 1.35)) { console.log('❌ la vita del ges
 if (minPass >= 0.40) { console.log(`❌ il passaggio corto non scala con la distanza (min ${minPass})`); ko = true; }
 if (!(preCross.length && preCross.every(v => v >= 0.30))) { console.log('❌ il cross non carica prima del contatto'); ko = true; }
 if (!(prePass.length && prePass.every(v => v >= 0.25))) { console.log('❌ il passaggio non carica prima del contatto'); ko = true; }
+if (!(resp.length >= 1 && resp.every(r => r.vx < 0))) { console.log('❌ la respinta della parata non rientra in campo (vx>=0 o nessuna misura)'); ko = true; }
 console.log(ko ? '' : '✅ finestra unica viva: testa intera, passaggi a velocita' + String.fromCharCode(39) + ' di famiglia');
 process.exit(ko ? 2 : 0);
