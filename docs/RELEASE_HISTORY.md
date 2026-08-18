@@ -1,5 +1,40 @@
 # Cronologia delle release — Korward Elite
 
+### 7.524.0 — La trama del possesso, la cronaca leggibile, la bozza onesta
+
+Collaudo PO su 7.523: «sicuramente meglio la cronaca, ma non ci sono schemi, azioni ragionate, è tutto un
+po' confusionario. Inoltre la riga di testo della cronaca è illegibile, troppo piccola». Tre misure:
+
+1. **Cronaca leggibile** — righe del feed 10→13px (lineHeight 1,4), minuto 8→10, anteprima mobile 8→11,
+   etichetta 7→9, su entrambi i siti (pannello desktop e ticker mobile richiudibile).
+2. **LA TRAMA** — causa del «confusionario»: il moto di possesso 7.511 era un random-walk (passo avanti
+   sorteggiato + jitter laterale A OGNI TICK → la rotta cambiava di continuo, e la cronaca — che dal
+   7.499 descrive dove sta la palla — raccontava quel vagare). Ora il possesso ha un piano: **fase** letta
+   dalla posizione (palleggio nel proprio terzo → avanzata → rifinitura, lettura-non-sorteggio come F3b),
+   **corridoio persistente** (sx/centro/dx, cambio gioco raro ~14% a giocata di sviluppo) e **giocate a
+   waypoint** con rotta fissa fino all'arrivo. Flusso seedato dedicato `ballRngRef` — mai `_rndM`
+   (invariante 7.511: replay intatto). Rosso `__CPM_NO527` = motore 7.511; testimone `__CPM_TRAMA527`.
+   **Misurato a copertura piena** (3 partite per braccio, 96/100 coppie interne): deviazione di rotta per
+   passo interno 56,0°→**11,0°** (-80%), svolte secche >45° 46,0%→**7,3%**, permanenza mediana nel
+   corridoio 13→**25 tick**. Guardiano `npm run trama` (verde ≤20° e ≤16% svolte · rosso ≥38°).
+   Taratura in tre lezioni pagate: una partita sola è cieca (~50 passi), `__CPM_FORCED_MODE` inchioda il
+   wizard in hl_result (cronaca mai viva), e la svolta a fine giocata/ripresa è voluta — si giudicano i
+   passi INTERNI (marcatore `ng` del motore).
+3. **Bozza onesta + attribuzione** — le note 7.523 portavano numeri IDENTICI su scene e PARTITE diverse
+   (camera 6,8u@190u/s · indietro 14,4u). Misurato: force-path pulito (camera ≤1,0u, drawdown ≤1,0u);
+   nel flusso il ripiego «ultimi 7s» della finestra (scena scelta col selettore ◀ non più nell'anello)
+   misurava la **cronaca congelata in pausa** — drawdown 51,2u su campioni f=1 (arco BG verso la propria
+   metà: gioco sano) — e la spacciava per l'azione, identica per ogni nota della seduta. Rimedi: una scena
+   sovrascritta ora si **dichiara** («la registrazione non copre più questa azione»), la riga INDIETRO
+   esce solo su finestre ancorate alla scena, e ogni riga porta **quando** (secondi dall'inizio scena) e
+   **chi** (codice scrittore `_ws524`: anello del testimone 14→15 float, 14 firme — arco, inseguitore,
+   portatore, consegna, buildup…, pattern 7.404 «porta la misura dov'è il fenomeno»). La prossima nota
+   del PO inchioda il colpevole da sola.
+4. **Due codici nuovi nel taccuino** (direttiva PO, stessa sessione): **011 palla congelata** (freeze +
+   ripresa anomala — la bozza etichetta già 011 la riga «palla FERMA con arco vivo») · **012
+   verticalizzazione all'indietro** (consegna dichiarata in avanti che viaggia verso la propria porta —
+   la bozza etichetta 012 la riga «tornato INDIETRO»). Chips in testa tra i collaudi caldi; 15 chip totali.
+
 ### 7.521.0-bis — Sette codici nuovi nel taccuino (OK del PO, stessa release)
 
 Dalla lettura del taccuino reale, con approvazione esplicita: **003 esito bugiardo** (tabellone ≠ schermo)

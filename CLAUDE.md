@@ -531,6 +531,26 @@ archi BG (`_rcv526`, handoff a u>=1). Chi tocca la cronaca 3D preserva l'invaria
 terra senza portatore selezionato. Guardiano `npm run ball-attended` (accudita >=52%, rosso `__CPM_NO526`
 ~34%). ⚠️ MAI ancorare la palla LOGICA a `matchPlayers` (ha Math.random: romperebbe il replay).
 
+**La trama del possesso (7.524.0).** Il drift R1 non è più un random-walk: `tramaRef` tiene
+{dir, corridoio, waypoint, fase} e la rotta resta FISSA fino all'arrivo della giocata (fase letta dalla
+posizione, mai sorteggiata — pattern F3b). Chi tocca il drift: (a) consuma SOLO `_r511()` dal flusso
+dedicato `ballRngRef` (mai `_rndM` — sposterebbe i sorteggi della cronaca e romperebbe il replay);
+(b) non reintroduce jitter di rotta per-tick — il «confusionario» del collaudo PO era esattamente quello.
+Rosso `__CPM_NO527` = motore 7.511; testimone `__CPM_TRAMA527` (scrive in entrambi i bracci).
+Guardiano `npm run trama` (misurato: verde 11,0°/passo interno vs rosso 56,0° — soglie 20°/16%/38°).
+⚠️ Taratura: una partita sola è cieca (~50 passi drift); MAI `__CPM_FORCED_MODE` con l'autoplay per
+misurare la cronaca (inchioda il wizard in hl_result e `playing` non torna più); la svolta a cambio
+giocata/ripresa è voluta e marcata `ng` — si giudicano i passi interni.
+
+**La bozza del taccuino misura SOLO la scena (7.524.0).** Se la sk scelta non è più nell'anello, la bozza
+DICHIARA («la registrazione non copre più questa azione») — mai il ripiego «ultimi 7s», che in pausa è
+cronaca congelata e produce numeri identici su note diverse (misurato: drawdown 51,2u su campioni f=1 di
+gioco sano). L'anello del testimone è a 15 float: `[o+14]` = codice scrittore `_ws524` (0=nessuno, 14
+firme; il reset per-frame sta DOPO la scrittura dell'anello nel loop, quindi il codice accanto a una
+posizione è esattamente chi l'ha prodotta). Chi aggiunge uno scrittore del pallone aggiunge la SUA firma
+`_ws524` e il nome in `_WS524` della bozza. Numeri identici su scene diverse = strumento rotto, non gioco
+rotto: prima si ripara la sonda (lezioni 7.360/7.466/7.524).
+
 **Il soggetto della regia è uno stato (7.520.0, R4/1).** `_subjBall50` viene da `sr.current._subj520`
 (isteresi: alla palla >10u per 0,35s · all'eroe <7u per 0,25s) — mai riportarlo a booleano istantaneo.
 Rosso strutturale `__CPM_NO520`. ⚠️ La lista per-scena del censimento framing VARIA fra esecuzioni
