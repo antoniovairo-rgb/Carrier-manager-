@@ -1,5 +1,21 @@
 # Cronologia delle release — Korward Elite
 
+### 7.517.0 — Restyling R3/2: il corpo guarda dove calcia
+
+Audit: «il corpo non è orientato verso la direzione del passaggio/tiro; l'eroe conclude di fianco».
+Causa: l'unica sorgente di yaw era il **delta di posizione** con gate `_gsp>0.03` (~1,8 u/s) — appena
+l'eroe decelerava per calciare, la rotazione si spegneva e il gesto si giocava col facing
+dell'avvicinamento.
+
+Rimedio: al **montaggio della clip** si latcha la mira verso il bersaglio dell'arco (esclusi GK e gesti
+non direzionali) e un turn-rate dedicato comanda per tutto il gesto; la mira muore col rilascio.
+Misurato al rilascio (`__CPM_AIM517`, col bersaglio annotato in **entrambi** i bracci): verde mediana
+**0,01 rad** (p90 0,14) · rosso `__CPM_NO517` mediana **1,07** (p90 2,14) — separazione ~100×.
+
+**Lezione di metodo incisa**: la prima soglia del rosso (≥1,2) veniva da un campione di 3 rilasci ed era
+sbagliata — le soglie si fissano **dopo** la misura a copertura piena, anche per i rossi. Guardiano
+`npm run aim-latch`; `frozen-mate` di regressione verde.
+
 ### 7.516.0 — Restyling R3/1: nessun compagno congelato
 
 Primo colpo di R3, sul bug **critico** dell'audit: il compagno che conclude restava con la posa del

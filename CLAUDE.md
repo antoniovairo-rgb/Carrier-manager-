@@ -517,6 +517,12 @@ telefono comanda sulle soglie euristiche headless, e infatti il costo dichiarato
 soglia 0,15 del censimento. Guardiano `npm run framing-guard` (= il censimento validato, soglie
 `CPM_MED_MIN=0.11`/`CPM_FUORI_MAX=10`), prova del rosso `CPM_NO505=1` → mediana 0,056. Misurato a 0,18:
 mediana 0,140 · figurine 1% · fuori quadro 6,3%.
+**La mira si latcha al montaggio (7.517.0, R3/2).** Durante un gesto direzionale il facing lo comanda
+`_a._aim517` (bersaglio dell'arco al momento del mount, turn-rate dt*7), non il moto residuo; muore col
+rilascio. Il testimone `__CPM_AIM517` annota il bersaglio in ENTRAMBI i bracci e misura l'errore al
+rilascio. ⚠️ Le soglie (anche dei ROSSI) si fissano dopo la misura a copertura piena: la prima soglia
+rossa veniva da 3 campioni ed era sbagliata. Guardiano `npm run aim-latch` (rosso `__CPM_NO517`).
+
 **Il rilascio del gesto non dipende dall'ingresso (7.516.0, R3/1).** L'avatar entra nel ramo gesti anche
 con `_gName` montato o peso residuo (`_ent516`): il decadimento gira SEMPRE fino a zero — mai richiudere
 l'ingresso al solo `_mateWant` (compagno congelato, 321 fotogrammi-orfano misurati col rosso). Testimone

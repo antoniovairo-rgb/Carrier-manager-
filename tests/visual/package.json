@@ -45,6 +45,7 @@
     "ball-alive": "node ball-alive-test.mjs",
     "gesture-window": "node gesture-window-test.mjs",
     "frozen-mate": "node frozen-mate-test.mjs",
+    "aim-latch": "node aim-latch-test.mjs",
     "look-inversion": "node look-inversion-census.mjs",
     "hero-framing": "node hero-framing-census.mjs",
     "framing-choices": "node framing-choices-shot.mjs",
