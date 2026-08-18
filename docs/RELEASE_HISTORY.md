@@ -1,5 +1,21 @@
 # Cronologia delle release — Korward Elite
 
+### 7.519.0 — Restyling R3/4: le reazioni di reparto
+
+Audit: «nelle scene di tiro/testa/cross gli avversari sono comparse — nessuno chiude, nessuno salta con
+l'eroe, nessuno attacca il cross». Le reazioni scriptate esistevano per 4 casi soltanto (portiere, un
+difensore su tackle/dribble, l'intercetto del passaggio, la barriera).
+
+Ora, accanto ai trigger del portiere in `fireConclusion`: **tiro** → il difensore più vicino si allunga
+(tackle) · **testa** → il marcatore salta con l'eroe (header) · **cross** → il difensore più vicino al
+punto d'atterraggio attacca di testa. Canale `_mateFx` collaudato, uso **sequenziale** dello slot (sul
+cross il finalizzatore lo riprende dopo), tetto 9u: uno smarcato resta smarcato — gi44 non reagisce,
+ed è giusto così.
+
+Misurato (`__CPM_REA519`): verde tiro 3,6u · testa 0,4-7,9u · cross 4,1-8,9u, tre famiglie; rosso
+`__CPM_NO519` zero. Guardiano `npm run squad-react`; `gesture-window` e `gk-dive-sync` di regressione
+verdi.
+
 ### 7.518.0 — Restyling R3/3: la locomozione ha direzioni
 
 Audit: «movimenti laterali e all'indietro sembrano pattinate» — `anim-jog-back`, `anim-strafe-left` e

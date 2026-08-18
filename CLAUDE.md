@@ -517,6 +517,10 @@ telefono comanda sulle soglie euristiche headless, e infatti il costo dichiarato
 soglia 0,15 del censimento. Guardiano `npm run framing-guard` (= il censimento validato, soglie
 `CPM_MED_MIN=0.11`/`CPM_FUORI_MAX=10`), prova del rosso `CPM_NO505=1` → mediana 0,056. Misurato a 0,18:
 mediana 0,140 · figurine 1% · fuori quadro 6,3%.
+**Il reparto reagisce (7.519.0, R3/4).** Su tiro/testa/cross un avversario di movimento riceve un gesto
+via `_mateFx` (tackle/header, tetto 9u, slot sequenziale). Chi aggiunge reazioni usa QUESTO canale — mai
+un secondo slot parallelo. Testimone `__CPM_REA519`, rosso `__CPM_NO519`, guardiano `npm run squad-react`.
+
 **La locomozione ha direzioni (7.518.0, R3/3).** `_a.run` PUNTA al canale di locomozione attivo
 (run/jog-back/strafe): chi scrive peso o timeScale scrive sul canale giusto per costruzione — mai
 riferirsi a un'azione specifica. Il canale precedente si spegne con `_a._locoFade` (dissolvenza esplicita
