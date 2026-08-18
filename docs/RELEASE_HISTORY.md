@@ -1,5 +1,30 @@
 # Cronologia delle release — Korward Elite
 
+### 7.521.0-bis — Sette codici nuovi nel taccuino (OK del PO, stessa release)
+
+Dalla lettura del taccuino reale, con approvazione esplicita: **003 esito bugiardo** (tabellone ≠ schermo)
+· **004 gesto senza preparazione** · **005 palla da biliardo** · **006 reparto fermo** · **009 direzione
+sbagliata** (la sforbiciata al contrario) · **010 pattinata** (collauda il 7.518) · **113 portiere doppio
+gesto** (distinto da 111/112: ripetizione vs fuori tempo). Ordine: i collaudi caldi per primi; **008 in
+coda marcato «chiuso»** — se ricompare è una regressione e la nota vale doppio. Sonda: 13 chip, riga
+appesa, idempotente, salva attivo.
+
+### 7.521.0 — Restyling R4/2: l'arbitro d'inerzia sui bersagli di camera (codice 007)
+
+La caccia a sei bracci (bisezione spenta, coppia bordo spenta, taglia, sguardo legale, combinazioni) ha
+dato un esito netto: **nessun interruttore separa** — il tremore è **rumore distribuito** dei bersagli
+(0,14-0,20 flip/frame aggregati su 10 scene difensive ≈ 12 inv/s a 60fps: i numeri del taccuino PO).
+
+Rimedio, quello che l'audit prescriveva: **un arbitro a valle di tutte le passate** — inerzia EMA
+(τ≈150ms) sui sei bersagli di camera, con **bypass sui tagli di regia** (salto oltre 25u/30u = stacco
+voluto: si salta secco, il montaggio resta libero). Il respiro lento della wide (periodi 20-35s) passa
+intatto: l'inerzia taglia il tremore di frame, non il movimento.
+
+**Cecità headless dichiarata prima di spedire**: al probe (~7fps) il passo EMA è ~0,95/frame e l'inerzia
+non agisce — bracci misurati identici (0,070 vs 0,073). A 60fps il passo è 0,11: lisciatura ~9×. **Il
+telefono è il giudice**: le bozze automatiche del taccuino stampano inversioni/s — bersaglio: dalla
+banda 13-16 a <2. Ritirata pronta: `__CPM_NO521A`. Gate di non-regressione: censimento framing.
+
 ### 7.520.0-bis — Barre ricentrate e il dossier 007 strumentato (stessa release)
 
 **Barre possesso/momentum ricentrate** (collaudo PO): blocchi `width:80` sotto `textAlign:center` non si

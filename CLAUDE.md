@@ -517,6 +517,13 @@ telefono comanda sulle soglie euristiche headless, e infatti il costo dichiarato
 soglia 0,15 del censimento. Guardiano `npm run framing-guard` (= il censimento validato, soglie
 `CPM_MED_MIN=0.11`/`CPM_FUORI_MAX=10`), prova del rosso `CPM_NO505=1` → mediana 0,056. Misurato a 0,18:
 mediana 0,140 · figurine 1% · fuori quadro 6,3%.
+**L'arbitro d'inerzia sui bersagli di camera (7.521.0, R4/2 — codice 007).** A valle di TUTTE le passate,
+prima dei testimoni e dei lerp: EMA τ≈150ms sui sei bersagli (`sr.current._iner521`), bypass sui tagli
+(>25u/30u). Chi aggiunge passate di camera scrive PRIMA dell'arbitro — mai dopo. ⚠️ L'headless è cieco a
+questo rimedio (a ~7fps il passo EMA≈0,95): il giudice è il taccuino PO (inversioni/s), la non-regressione
+è il censimento framing. Ritirata `__CPM_NO521A`. La caccia che ha portato qui: OSC521/A+B con attribuzione
+— sei bracci di esclusione, nessun colpevole singolo (rumore distribuito).
+
 **Il soggetto della regia è uno stato (7.520.0, R4/1).** `_subjBall50` viene da `sr.current._subj520`
 (isteresi: alla palla >10u per 0,35s · all'eroe <7u per 0,25s) — mai riportarlo a booleano istantaneo.
 Rosso strutturale `__CPM_NO520`. ⚠️ La lista per-scena del censimento framing VARIA fra esecuzioni
