@@ -9,6 +9,42 @@ gesto** (distinto da 111/112: ripetizione vs fuori tempo). Ordine: i collaudi ca
 coda marcato «chiuso»** — se ricompare è una regressione e la nota vale doppio. Sonda: 13 chip, riga
 appesa, idempotente, salva attivo.
 
+### 7.523.0 — Il portatore: la palla ha sempre un padrone visibile
+
+Direttiva PO a priorità **altissima**: «il pallone è scollegato dall'azione — INGUARDABILE». Causa
+strutturale misurata: in cronaca **nessun sistema possiede la palla** (giocatori su formazione, palla
+logica in deriva R1, archi del testo verso zone vuote) — accudita (un giocatore entro 3u) solo **32,0%**,
+mediana 4,3u dal più vicino.
+
+**Architettura nuova — il PORTATORE**: ogni fotogramma ha un portatore (isteresi 2u; preferenza al lato
+in possesso entro 12u; palla vagante = il più vicino di chiunque; l'eroe solo se già addosso), che corre
+sulla palla con canale dedicato `_carry526` (de-registrato dal driver di formazione e dalla separazione),
+la incolla ai piedi (glue con cede dell'inseguitore, pattern 7.515) e la **conduce** verso il punto
+logico; i passaggi del testo mirano a **riceventi reali** (tetto 32u) che corrono a incontrarli e a fine
+volo **diventano il nuovo portatore**.
+
+Sei tarature guidate da **diagnosi per-fotogramma** (mai manopole alla cieca): il plateau a 52% è stato
+sciolto leggendo i campioni — portatore che correva sul logico invece che sulla mesh, ricezione che si
+sfilava (glue tenuto fino a 25u dal logico), riceventi affamati dal tetto 18u (→32).
+
+**Risultato: accudita 62-80% · spiegabile (accudita o palla in volo) 80-85% · rosso `__CPM_NO526`
+33,9%.** Replay **intatto** (tutto lato mesh; `matchPlayers` ha `Math.random` e ancorarvi il logico
+l'avrebbe rotto — dichiarato). Guardiano `npm run ball-attended`; `ball-alive`, `bg-continuity`,
+`bg-decision` verdi. Include il 7.522 (soggetto sulla consegna), mai promosso da solo.
+
+### 7.522.0 — Restyling R4/3: sulla consegna il viaggio è la storia
+
+Collaudo PO, codice **008** su «uno-due e smista subito» — confermato **a vista** sulla strip gi118:
+banner ASSIST al frame 3, poi quattro fotogrammi di **palla da sola in primo piano** con la camera
+incollata all'eroe; il ricevente mai inquadrato. Il possesso motore era pulito (F2: 0 anonimi, 0
+conflitti sulla scena): non era il pallone, era la **regia**.
+
+L'attesa di 0,35s dell'isteresi 7.520 (giusta per i casi ambigui) è troppa per un volo di 0,5s: quando
+l'**arco di una consegna è vivo**, il soggetto passa alla palla **subito** (>6u, senza attesa) e non
+torna all'eroe finché vola. Ri-cattura a vista: ricevente e prosecuzione ora in quadro. Rosso
+`__CPM_NO525`. **Residuo dichiarato**: il banner d'esito prematuro (prima del gesto) — famiglia
+003/reveal, prossimo bersaglio.
+
 ### 7.521.0 — Restyling R4/2: l'arbitro d'inerzia sui bersagli di camera (codice 007)
 
 La caccia a sei bracci (bisezione spenta, coppia bordo spenta, taglia, sguardo legale, combinazioni) ha

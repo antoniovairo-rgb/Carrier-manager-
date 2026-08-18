@@ -43,6 +43,7 @@
     "outcome-not-goal": "node outcome-not-goal-test.mjs",
     "ball-jump-census": "node ball-jump-census.mjs",
     "ball-alive": "node ball-alive-test.mjs",
+    "ball-attended": "node ball-attended-test.mjs",
     "gesture-window": "node gesture-window-test.mjs",
     "frozen-mate": "node frozen-mate-test.mjs",
     "aim-latch": "node aim-latch-test.mjs",

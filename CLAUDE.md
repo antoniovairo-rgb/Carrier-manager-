@@ -524,6 +524,13 @@ questo rimedio (a ~7fps il passo EMA≈0,95): il giudice è il taccuino PO (inve
 è il censimento framing. Ritirata `__CPM_NO521A`. La caccia che ha portato qui: OSC521/A+B con attribuzione
 — sei bracci di esclusione, nessun colpevole singolo (rumore distribuito).
 
+**Il portatore (7.523.0).** In `playing` la palla ha SEMPRE un padrone visibile: `sr.current._por526`
+(mesh+lato), corsa via `_carry526` (chi ce l'ha è FUORI dal driver di formazione e dalla separazione —
+liste r.~14746/14905), glue ai piedi con cede dell'inseguitore (`_porGlue526`), riceventi reali sugli
+archi BG (`_rcv526`, handoff a u>=1). Chi tocca la cronaca 3D preserva l'invariante: mai una palla a
+terra senza portatore selezionato. Guardiano `npm run ball-attended` (accudita >=52%, rosso `__CPM_NO526`
+~34%). ⚠️ MAI ancorare la palla LOGICA a `matchPlayers` (ha Math.random: romperebbe il replay).
+
 **Il soggetto della regia è uno stato (7.520.0, R4/1).** `_subjBall50` viene da `sr.current._subj520`
 (isteresi: alla palla >10u per 0,35s · all'eroe <7u per 0,25s) — mai riportarlo a booleano istantaneo.
 Rosso strutturale `__CPM_NO520`. ⚠️ La lista per-scena del censimento framing VARIA fra esecuzioni
