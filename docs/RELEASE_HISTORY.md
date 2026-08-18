@@ -1,5 +1,17 @@
 # Cronologia delle release — Korward Elite
 
+### Indagine 001-flusso (post-7.525, nessuna release: rimedio REVOCATO con misura invariata)
+
+La sonda «scene lente» (25s in scelta, il ritmo del PO) sembrava riprodurre il 001: apertura difensiva
+con palla a 73,5u dall'eroe. Il rimedio (snap difensivo sul portatore, `__CPM_NO529`) NON ha spostato
+la misura — e ri-misurando con `__CPM_PRESENT=1` la verita' e' emersa: **in `cpmtest` il taglio del
+teatro e' spento** (`_asIfPlay`, 7.345) — i 73,5u erano un artefatto dell'harness, non il gioco. Col
+teatro attivo gi44 apre a 29u in ENTRAMBI i bracci (drammaturgia difensiva legittima + residuo ~30u
+della nota 7.400). Revoca completa, file di gioco byte-identico alla 7.525. Due lezioni incise:
+le sonde di apertura scena DEVONO armare `__CPM_PRESENT=1`; e il 77,1u del PO su 7.524 era con ogni
+probabilita' il drift-durante-le-scene, gia' chiuso dal gate di fase della 7.525 — verdetto al
+taccuino del PO sulla 7.525.
+
 ### 7.525.0 — Le righe seguono la trama, i gol ambientali si vedono
 
 Quattro direttive PO nella stessa sessione di collaudo su 7.524:

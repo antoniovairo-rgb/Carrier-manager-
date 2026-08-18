@@ -546,6 +546,13 @@ ambientali hanno bpos NELLO specchio (98/2) e `at:"shot"` esplicito: mai rimappa
 misurare la cronaca (inchioda il wizard in hl_result e `playing` non torna più); la svolta a cambio
 giocata/ripresa è voluta e marcata `ng` — si giudicano i passi interni.
 
+**In `cpmtest` il taglio del teatro è SPENTO (`_asIfPlay`, 7.345) — ogni sonda che giudica le APERTURE
+di scena deve armare `__CPM_PRESENT=1`, o misura un teatro che va a piedi (artefatto: 73,5u su gi44,
+rimedio `__CPM_NO529` REVOCATO con misura invariata — col teatro attivo i due bracci erano identici a
+29u).** Per i difetti «solo sul dispositivo» del flusso: sonda SCENE LENTE (25s in scelta) — l'autoplay
+risolve in 2-3s e maschera ciò che accumula col tempo di scena. Il residuo ~30u dello snap sul commit
+vecchio resta il cantiere della nota 7.400.
+
 **La bozza del taccuino misura SOLO la scena (7.524.0).** Se la sk scelta non è più nell'anello, la bozza
 DICHIARA («la registrazione non copre più questa azione») — mai il ripiego «ultimi 7s», che in pausa è
 cronaca congelata e produce numeri identici su note diverse (misurato: drawdown 51,2u su campioni f=1 di
