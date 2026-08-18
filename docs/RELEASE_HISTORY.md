@@ -1,5 +1,31 @@
 # Cronologia delle release — Korward Elite
 
+### 7.512.0 — Restyling R2/1: la finestra del gesto è una, il portiere suona sul suo tuffo
+
+Prima tranche del **contatto** (R2). Tre rimedi dall'audit, tutti con prova del rosso.
+
+**La tabella unica `GESTURE_WIN`.** Le finestre del gesto vivevano in tre catene if/else divergenti
+(`_T` vita · `_T2` approccio · `_wT56` clip): la vita del **colpo di testa** era rimasta a 0,75s con la
+clip scalata a 1,15s — `actType` moriva a `u>=1` sul numero vecchio, gesto **troncato al 65%** («chiuso
+in 7.467», non lo era). Misurato **alla sorgente** (testimone `__CPM_VITA512` sulla riga dove il gesto
+muore): vita 1,16-1,17 verde contro 0,76-0,77 rosso. Il tackle resta divergente **per scelta** (scivolata
+1,7 · corsa 0,6), ora dichiarato in tabella; l'approccio penalty resta 0,55 com'era spedito, divergenza
+dichiarata e non più nascosta.
+
+**Il portiere suona sul suo tuffo.** La clip GLB del portiere era scalata su `_wT56` dell'**eroe**;
+ora scala su `_diveDur` — lo stesso orologio dell'estensione 7.465. Non giudicabile headless (dichiarato):
+regressione coperta da `gk-dive-sync` (distesa completa a -0,10/-0,11s dall'arrivo), verdetto finale al
+taccuino PO (codici 111/112).
+
+**Velocità coerenti per tutte le famiglie.** La normalizzazione 7.196 era in **testa** alla catena d'arco
+e copriva 5 famiglie su 9 (incidente di concatenazione: il fallback `_vRef=17` esisteva già). Spostata a
+valle dell'intera catena: passaggio corto **0,58→0,24s**, lungo **0,98→1,54s**; famiglie storiche
+identiche alla virgola; **dribble escluso e dichiarato** (si normalizza già da sé, 7.369).
+
+Lezioni per gli strumenti: due sonde «dagli effetti» (salto, arti) non discriminavano rosso da verde —
+la misura vive dove il numero muore; e armare un testimone con `__CPM_REC` accende lo scrittore per-frame
+che sovrascrive `__CPM_ARC` — flag dedicati, sempre. Guardiano `npm run gesture-window` (verde+rosso).
+
 ### 7.511.0 — Restyling R1: il pallone vive, la cronaca ha un attore
 
 Primo tratto della spina dorsale MatchEvent disegnata dall'audit del restyling (52 cause radice, 5

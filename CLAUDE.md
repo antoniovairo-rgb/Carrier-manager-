@@ -517,6 +517,13 @@ telefono comanda sulle soglie euristiche headless, e infatti il costo dichiarato
 soglia 0,15 del censimento. Guardiano `npm run framing-guard` (= il censimento validato, soglie
 `CPM_MED_MIN=0.11`/`CPM_FUORI_MAX=10`), prova del rosso `CPM_NO505=1` → mediana 0,056. Misurato a 0,18:
 mediana 0,140 · figurine 1% · fuori quadro 6,3%.
+**La finestra del gesto è UNA (7.512.0, R2).** `GESTURE_WIN` (vita/approccio/clip per famiglia, r.~12345)
+è la sola sorgente: mai reintrodurre catene locali. La vita governa la morte di `actType` (`u>=1`);
+testimone `__CPM_VITA512` (flag dedicato — MAI armarlo con `__CPM_REC`, che accende lo scrittore per-frame
+che sovrascrive `__CPM_ARC`). La normalizzazione degli archi è la passata unica a valle della catena
+(`_old512/_nuove512`); dribble escluso per scelta (7.369). La clip del GK in reazione scala su `_diveDur`.
+Guardiani: `npm run gesture-window` (rosso `__CPM_NO512`+`__CPM_NO467`), `gk-dive-sync`.
+
 **Il pallone vive in cronaca (7.511.0, restyling R1).** In `playing` il pallone raggiunge il dichiarato
 con passo 0,65/tick (per-tick = deterministico fra velocità) e poi il **possesso avanza** con deriva
 seedata su flusso dedicato (`ballRngRef`, mai `_rndM`: sposterebbe i sorteggi della cronaca e romperebbe
