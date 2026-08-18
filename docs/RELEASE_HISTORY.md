@@ -1,5 +1,23 @@
 # Cronologia delle release — Korward Elite
 
+### 7.515.0 — Restyling R2/4: la mappa dei padroni e l'arbitro leggero (R2 chiusa)
+
+L'audit: «62 scrittori di `ball.position`, vince l'ultimo, 48,4% di moti anonimi». Prima **la mappa**:
+firmati i tre grandi anonimi (inseguitore del bersaglio logico, respinta post-arco, rimbalzo dal palo) —
+anonimi **54,3% → 6,2%** del movimento. E la firma ha scoperchiato il conflitto vero: **605 fotogrammi**
+su 3 partite con inseguitore e colla-conduzione che scrivevano nello stesso frame (il censimento storico
+ne vedeva 51: erano nascosti dall'anonimato).
+
+Poi **l'arbitro leggero**: se la colla scriverà (conduzione vera, palla dietro il passo minimo — valutato
+sulla stessa posizione pre-scrittura), l'inseguitore **cede il fotogramma**. Equivalenza visiva esatta
+(la colla scrive posizioni assolute): conflitti **605 → 22**, e il residuo è il passaggio di consegne
+legittimo. Prova del rosso `__CPM_NO515`: **461**. Guardiano sulle soglie dello strumento validato:
+`CPM_IA_MAX=120 npm run ball-owner`.
+
+Dichiarato: `buildup-volo+testa` (22-24 casi) resta per R3 — è dentro la macchina del build-up che R3
+tocca comunque. **Con questa release R2 (il contatto) è completa**: finestra unica, GK sul suo tuffo,
+velocità per famiglia, caricamento in tabella, respinta derivata, un padrone per fotogramma.
+
 ### 7.514.0 — Restyling R2/3: la respinta nasce dal contatto
 
 L'audit diceva «velocità estratte a caso a fine arco»; la misura ha trovato di peggio: **il deflect non

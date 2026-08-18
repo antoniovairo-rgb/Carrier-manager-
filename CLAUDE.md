@@ -517,6 +517,13 @@ telefono comanda sulle soglie euristiche headless, e infatti il costo dichiarato
 soglia 0,15 del censimento. Guardiano `npm run framing-guard` (= il censimento validato, soglie
 `CPM_MED_MIN=0.11`/`CPM_FUORI_MAX=10`), prova del rosso `CPM_NO505=1` → mediana 0,056. Misurato a 0,18:
 mediana 0,140 · figurine 1% · fuori quadro 6,3%.
+**Un padrone per fotogramma (7.515.0, R2/4).** I grandi scrittori del pallone sono FIRMATI nel testimone
+F2 (`inseguitore`, `addosso`, `respinta`, `palo`, + i 10 storici): chi aggiunge un writer lo firma, sempre —
+l'anonimato al 54% ha nascosto 605 conflitti/3 partite. L'arbitro leggero: l'inseguitore cede il fotogramma
+se la colla-conduzione scriverà (stessa condizione, valutata pre-scrittura). Guardiano: `CPM_IA_MAX=120
+npm run ball-owner` (rosso `CPM_ROSSO515=1 CPM_NO515=1`, torna a ~460). Residuo dichiarato per R3:
+`buildup-volo+testa`.
+
 **La finestra del gesto è UNA (7.512.0, R2).** `GESTURE_WIN` (vita/approccio/clip per famiglia, r.~12345)
 è la sola sorgente: mai reintrodurre catene locali. La vita governa la morte di `actType` (`u>=1`);
 testimone `__CPM_VITA512` (flag dedicato — MAI armarlo con `__CPM_REC`, che accende lo scrittore per-frame

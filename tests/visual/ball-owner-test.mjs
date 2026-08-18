@@ -45,11 +45,12 @@ async function partita(i) {
   const page = await b.newPage({ viewport: { width: 412, height: 915 } });
   await installCdnRoutes(page);
   page.on('pageerror', e => errs.push(String(e.message).slice(0, 110)));
-  await page.addInitScript(r => {
+  await page.addInitScript(({ r, n515 }) => {
     window.__CPM_GLB = false; window.__CPM_REC = true; window.__CPM_CINE = 1; window.__CPM_PRESENT = 1;
     try { localStorage.setItem('cpm-devtools', '1'); } catch (e) {}
     if (r) window.__CPM_NO497 = 1;   /* l'interruttore VERO del conteggio */
-  }, ROSSO);
+    if (n515) window.__CPM_NO515 = 1; /* [7.515.0] rosso dell'arbitro inseguitore/colla */
+  }, { r: ROSSO, n515: !!process.env.CPM_NO515 });
   try {
     await openMatch(page, port, { skipLoadAll: true, name: 'Owner' + i });
     await page.evaluate(s => window.__CPM_AUTOPLAY(true, { seed: s, policy: 'seeded', tickMs: 350 }), 500 + i * 91);
@@ -97,4 +98,18 @@ if (ROSSO) {
 }
 /* ⚠️ un censimento che non ha osservato non e' verde, e' cieco */
 if (!tot.f || !tot.mosso) { console.log('\n❌ CIECO: nessun fotogramma osservato (o pallone mai mosso) — non c\'e\' misura'); process.exit(2); }
+/* [7.515.0 R2/4] MODALITA' GUARDIANO sulla COPPIA piu' rumorosa — soglie sullo strumento validato (lezione
+   framing: mai un guardiano nuovo accanto a un censimento buono). Baseline con l'arbitro leggero: 50
+   inseguitore+addosso su 3 partite (i passaggi di consegne legittimi); senza arbitro (__CPM_NO515): 605.
+   CPM_IA_MAX giudica; CPM_ROSSO515=1 (con __CPM_NO515 acceso via env) esige il ritorno del conflitto. */
+const IA_MAX = +(process.env.CPM_IA_MAX || 0);
+if (IA_MAX) {
+  const _ia = tot.coppie['inseguitore+addosso'] || 0;
+  if (process.env.CPM_ROSSO515) {
+    if (_ia > IA_MAX * 2) { console.log(`\n✅ prova del rosso 515 riuscita: senza arbitro il conflitto torna (${_ia})`); process.exit(0); }
+    console.log(`\n❌ PROVA DEL ROSSO 515 FALLITA: ${_ia} conflitti anche senza arbitro`); process.exit(2);
+  }
+  if (_ia > IA_MAX) { console.log(`\n❌ l'arbitro si e' perso: ${_ia} conflitti inseguitore+addosso > ${IA_MAX}`); process.exit(2); }
+  console.log(`\n✅ un padrone per fotogramma sulla coppia inseguitore/colla (${_ia} <= ${IA_MAX})`);
+}
 console.log(`\n✅ baseline F2 misurata su ${tot.f} fotogrammi · ${tot.anon} movimenti senza padrone da attribuire`);
