@@ -1,5 +1,21 @@
 # Cronologia delle release — Korward Elite
 
+### 7.518.0 — Restyling R3/3: la locomozione ha direzioni
+
+Audit: «movimenti laterali e all'indietro sembrano pattinate» — `anim-jog-back`, `anim-strafe-left` e
+`anim-strafe-right` erano **su disco con zero riferimenti**: asset pagati e mai montati.
+
+Rimedio: le tre clip entrano nella `Promise.all`; un **selettore direzionale** nel loop avatar sceglie il
+canale dall'angolo moto-vs-facing (avanti / jog-back / strafe per segno), con isteresi a tempo (0,25s)
+contro lo sfarfallio. Le `AnimationAction` nascono **pigre** al primo uso (niente 66 azioni preventive sul
+budget mobile). Lo scambio **ripunta `_a.run`** — tutte le scritture esistenti di peso e timeScale seguono
+il canale attivo — con dissolvenza **esplicita** del canale precedente (lezione 7.516: un canale
+abbandonato con peso alto resta impresso). Esclusi portieri e arbitro.
+
+Misurato (`__CPM_LOCO518`, 2 minuti di autoplay GLB-ON): verde **strR 20 · back 7 · strL 3 · run 28**
+(lo scambio è bidirezionale); rosso `__CPM_NO518` **zero selezioni**. Guardiano `npm run
+loco-directional`; `aim-latch` (0,01 rad) e `frozen-mate` (0 orfani) di regressione verdi.
+
 ### 7.517.0 — Restyling R3/2: il corpo guarda dove calcia
 
 Audit: «il corpo non è orientato verso la direzione del passaggio/tiro; l'eroe conclude di fianco».

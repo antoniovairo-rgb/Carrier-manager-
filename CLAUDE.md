@@ -517,6 +517,12 @@ telefono comanda sulle soglie euristiche headless, e infatti il costo dichiarato
 soglia 0,15 del censimento. Guardiano `npm run framing-guard` (= il censimento validato, soglie
 `CPM_MED_MIN=0.11`/`CPM_FUORI_MAX=10`), prova del rosso `CPM_NO505=1` → mediana 0,056. Misurato a 0,18:
 mediana 0,140 · figurine 1% · fuori quadro 6,3%.
+**La locomozione ha direzioni (7.518.0, R3/3).** `_a.run` PUNTA al canale di locomozione attivo
+(run/jog-back/strafe): chi scrive peso o timeScale scrive sul canale giusto per costruzione — mai
+riferirsi a un'azione specifica. Il canale precedente si spegne con `_a._locoFade` (dissolvenza esplicita
++ stop): mai abbandonare un canale con peso alto. Azioni pigre in `_a._locoActs`; il canale avanti
+originale sopravvive in `_a._runFwd`. Guardiano `npm run loco-directional` (rosso `__CPM_NO518`).
+
 **La mira si latcha al montaggio (7.517.0, R3/2).** Durante un gesto direzionale il facing lo comanda
 `_a._aim517` (bersaglio dell'arco al momento del mount, turn-rate dt*7), non il moto residuo; muore col
 rilascio. Il testimone `__CPM_AIM517` annota il bersaglio in ENTRAMBI i bracci e misura l'errore al
