@@ -562,6 +562,14 @@ posizione è esattamente chi l'ha prodotta). Chi aggiunge uno scrittore del pall
 `_ws524` e il nome in `_WS524` della bozza. Numeri identici su scene diverse = strumento rotto, non gioco
 rotto: prima si ripara la sonda (lezioni 7.360/7.466/7.524).
 
+**Il finalizzatore guarda la porta (7.527.0).** I canali del compagno che conclude (`_rcvT`
+riceve-e-tira e `crossRcvMesh` all'attacco del cross) ruotano la mesh verso lo specchio con slerp
+`aDt*9` durante il gesto — il congelamento del driver di corsa (5.43.11) NON congela più l'orientamento.
+Chi aggiunge un canale di finalizzazione per un compagno aggiunge la rotazione (e la firma nel
+testimone __CPM_FIN531, coppia {e0,e1}). Sonda `finisher-facing` = strumento di collaudo, NON
+guardiano di gate (instradamento raro e instabile; nel rosso un campione si corregge da solo 95°→6°:
+c'è un secondo rotatore non identificato — indagine aperta). Rosso `__CPM_NO531`.
+
 **Il soggetto della regia è uno stato (7.520.0, R4/1).** `_subjBall50` viene da `sr.current._subj520`
 (isteresi: alla palla >10u per 0,35s · all'eroe <7u per 0,25s) — mai riportarlo a booleano istantaneo.
 Rosso strutturale `__CPM_NO520`. ⚠️ La lista per-scena del censimento framing VARIA fra esecuzioni

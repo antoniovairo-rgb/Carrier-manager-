@@ -44,6 +44,7 @@
     "ball-jump-census": "node ball-jump-census.mjs",
     "ball-alive": "node ball-alive-test.mjs",
     "trama": "node trama-test.mjs",
+    "finisher-facing": "node finisher-facing-test.mjs",
     "ball-attended": "node ball-attended-test.mjs",
     "gesture-window": "node gesture-window-test.mjs",
     "frozen-mate": "node frozen-mate-test.mjs",

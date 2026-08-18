@@ -1,5 +1,21 @@
 # Cronologia delle release — Korward Elite
 
+### 7.527.0 — Il finalizzatore guarda la porta
+
+Collaudo PO ×2 su 7.525 (#47/#163): «il compagno ha tirato/segnato con il corpo **all'indietro**
+rispetto alla porta». Causa: il canale riceve-e-tira (`_rcvT`, 3DV-14b) congela di proposito il driver
+di corsa ma nessuno girava la mesh — restava la rotazione dell'ultima corsa (5.43.11): chi arrivava
+incontro al pallone concludeva di spalle. Rimedio: slerp rapido verso lo specchio durante il gesto
+(pattern aim-latch 7.517), su entrambi i canali del compagno (riceve-e-tira e attacco al cross).
+**Taratura**: errore corpo→porta al tiro **136°** (rosso `__CPM_NO531` = esattamente la nota del PO)
+→ **1°** (verde). E una lezione di sonda: chi arriva già girato verso la porta conclude bene anche
+senza rotazione (rosso a 14° su un arrivo favorevole) — quindi la prova del rosso è sulla
+**correzione** (e1≈e0 = il gesto non corregge), non sull'errore finale. Testimone a coppia {e0,e1};
+sonda `npm run finisher-facing` come **strumento di collaudo, non guardiano di gate**: l'instradamento
+dal canale riceve-e-tira è raro e instabile fra i giri (1-2 su 12 scene), e nel braccio rosso un
+campione si è corretto da solo (95°→6°) — esiste un **secondo rotatore non identificato** (indagine
+aperta; se coesiste con lo slerp convergono comunque sullo stesso bersaglio, la porta).
+
 ### 7.526.0 — Lo sguardo ha un nome (strumento)
 
 Nota PO su 7.525: «lo SGUARDO oscilla **31,7 inversioni/s**, ampiezza 8,9°» — un flip per-frame
