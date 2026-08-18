@@ -1,5 +1,19 @@
 # Cronologia delle release — Korward Elite
 
+### 7.526.0 — Lo sguardo ha un nome (strumento)
+
+Nota PO su 7.525: «lo SGUARDO oscilla **31,7 inversioni/s**, ampiezza 8,9°» — un flip per-frame
+dell'asse ottico (a 60fps: un'inversione ogni 2 fotogrammi, firma da doppio scrittore alternato).
+L'headless è **cieco per Nyquist** (~7fps): la misura vive solo sul dispositivo — quindi, pattern
+7.404/7.524, l'attribuzione entra nel testimone. Anello 15→16 float: per ogni fotogramma le passate
+camera (conteggio×10 + codice dell'ultima: lerp · porta · guinzaglio · gk · bordo-tanh · bordo-lift ·
+bisezione · snap · sguardo-pre · vista-reale, da `_tocc503`, che si azzera DOPO la scrittura
+dell'anello: allineamento esatto come `_ws524`). Le righe SGUARDO/BECCHEGGIA della bozza nominano le
+due passate dominanti e la media passate/fotogramma. Strumento puro, zero cambi di comportamento:
+la prossima nota 007 porta il colpevole scritto. Intanto dal taccuino 7.525: **il 001 gigante è
+sparito** (da 77,1u a 9,9u, su un rimorchio dove la palla sta legittimamente arrivando) — conferma
+sul campo della diagnosi drift-durante-le-scene chiusa dal gate di fase.
+
 ### Indagine 001-flusso (post-7.525, nessuna release: rimedio REVOCATO con misura invariata)
 
 La sonda «scene lente» (25s in scelta, il ritmo del PO) sembrava riprodurre il 001: apertura difensiva
