@@ -1,5 +1,34 @@
 # Cronologia delle release — Korward Elite
 
+### 7.525.0 — Le righe seguono la trama, i gol ambientali si vedono
+
+Quattro direttive PO nella stessa sessione di collaudo su 7.524:
+
+1. **«La palla va sbattendo, non ci sono schemi»** — la trama governava il moto FRA le righe, ma ogni
+   riga estratta lanciava ancora il pallone verso il suo punto di zona canonico. Rimedio (rosso
+   `__CPM_NO528`): peso di zona 7.486 in **2D** (y compresso 0,6 — una riga della fascia opposta pesava
+   come una vicina) con bande lontane crollate (0,35→0,18 · 0,12→0,05); tetto di spostamento per riga
+   45→**30u** (una consegna è un passaggio — i gol restano esenti); atterraggio ammorbidito **35% verso
+   il corridoio** della trama. Misurato (2 partite/braccio, 1330 campioni): **passo max 15,4→8,8u** —
+   lo strattone peggiore dimezzato; mediana invariata (0,63u: il moto normale non si tocca).
+2. **«I gol dove non partecipa l'eroe non sono visibili»** — la riga `team_goal` dichiarava bpos x:85 e
+   `opp_goal` x:15 (15u fuori dalla porta), e il gol subìto armava per giunta un arco 'save' (mappa pd).
+   Ora bpos **98/2** + `at:"shot"` esplicito: il pallone vola dentro lo specchio, il portiere si tuffa
+   (canale 439), pausa d'enfasi 7.490 già attiva. È l'origine dei vecchi 003 «goal ma palla lontana».
+   I gol li forza il microsim (niente pesca pesata): il bpos non tocca i pesi di zona. E dopo il gol
+   si riparte **dal centro** (4 tick): senza calcio d'inizio la palla restava parcheggiata in rete —
+   dove l'unico uomo è il portiere, non-portatore per regola — e `ball-attended` è sceso a 45,8%
+   (<52) al primo giro di rituale. Il calcio è fatto anche di riprese del gioco.
+3. **Carattere cronaca, secondo giro** — righe 13→15px, minuto 11, anteprima mobile 12, etichette 10.
+4. **Zoom** — WIDE cronaca più stretta (-74→-67, 47→42), CLOSE highlight più larga (-16→-18, 9,2→9,8);
+   un passo per direzione, il censimento framing (taglia mediana ≥0,11) impedisce di comprarne di più.
+
+Strumento: la regex `_isDefSc` della bozza copre `recover`/`save`/`block` — il codice 001 non scatta più
+sulle scene difensive (falso positivo della nota PO su #45). **Residuo dichiarato**: 001-flusso (eroe a
+77,1u dalla palla all'apertura SOLO nel live concatenato — in isolamento 0,0-0,7u su gi75) e
+012-flusso (verticalizzazioni all'indietro su gi27/gi123, pulite in isolamento): sonde di flusso
+dedicate in 7.526, la bozza col codice scrittore continua a raccogliere i casi dal dispositivo.
+
 ### 7.524.0 — La trama del possesso, la cronaca leggibile, la bozza onesta
 
 Collaudo PO su 7.523: «sicuramente meglio la cronaca, ma non ci sono schemi, azioni ragionate, è tutto un

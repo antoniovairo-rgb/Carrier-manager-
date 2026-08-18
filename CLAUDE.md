@@ -538,6 +538,10 @@ dedicato `ballRngRef` (mai `_rndM` — sposterebbe i sorteggi della cronaca e ro
 (b) non reintroduce jitter di rotta per-tick — il «confusionario» del collaudo PO era esattamente quello.
 Rosso `__CPM_NO527` = motore 7.511; testimone `__CPM_TRAMA527` (scrive in entrambi i bracci).
 Guardiano `npm run trama` (misurato: verde 11,0°/passo interno vs rosso 56,0° — soglie 20°/16%/38°).
+[7.525.0] LE RIGHE SEGUONO LA TRAMA (rosso `__CPM_NO528`): peso di zona 2D con bande lontane 0,18/0,05,
+tetto di spostamento per riga 30u (gol ESENTI — il volo in rete e' loro di diritto), atterraggio +35%
+verso il corridoio. Chi aggiunge righe BG_MATCH con bpos lontani sappia che usciranno di rado. I gol
+ambientali hanno bpos NELLO specchio (98/2) e `at:"shot"` esplicito: mai rimappare opp_goal su 'save'.
 ⚠️ Taratura: una partita sola è cieca (~50 passi drift); MAI `__CPM_FORCED_MODE` con l'autoplay per
 misurare la cronaca (inchioda il wizard in hl_result e `playing` non torna più); la svolta a cambio
 giocata/ripresa è voluta e marcata `ng` — si giudicano i passi interni.
