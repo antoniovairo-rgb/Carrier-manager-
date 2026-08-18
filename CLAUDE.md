@@ -522,7 +522,9 @@ mediana 0,140 · figurine 1% · fuori quadro 6,3%.
 testimone `__CPM_VITA512` (flag dedicato — MAI armarlo con `__CPM_REC`, che accende lo scrittore per-frame
 che sovrascrive `__CPM_ARC`). La normalizzazione degli archi è la passata unica a valle della catena
 (`_old512/_nuove512`); dribble escluso per scelta (7.369). La clip del GK in reazione scala su `_diveDur`.
-Guardiani: `npm run gesture-window` (rosso `__CPM_NO512`+`__CPM_NO467`), `gk-dive-sync`.
+Il CARICAMENTO è la colonna `pre` (7.513: cross 0,32 · pass 0,27 · storiche 0,24; testimone `__CPM_PRE513`,
+rosso `__CPM_NO513`). Guardiani: `npm run gesture-window` (tre misure, rosso `__CPM_NO512`+`NO467`+`NO513`),
+`gk-dive-sync`.
 
 **Il pallone vive in cronaca (7.511.0, restyling R1).** In `playing` il pallone raggiunge il dichiarato
 con passo 0,65/tick (per-tick = deterministico fra velocità) e poi il **possesso avanza** con deriva

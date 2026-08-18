@@ -1,5 +1,18 @@
 # Cronologia delle release — Korward Elite
 
+### 7.513.0 — Restyling R2/2: il contatto è una proprietà della tabella
+
+Audit: «cross e passaggi partono a contatto zero — la palla è già partita quando la gamba passa sul
+pallone». Il wind-up era un `if` con lista di 4 famiglie (-0,24s dal 6.74): ora è la colonna **`pre`**
+di `GESTURE_WIN` — **cross 0,32s** e **pass 0,27s** (≈ vita/2, il picco dell'inviluppo `sin(u·π)`, cioè
+lo stesso principio da cui veniva il -0,24 dei tiri: 0,55/2≈0,275), le 4 storiche restano a 0,24,
+build/dribble/tackle a 0 perché hanno la loro macchina (`_hold415`/poke).
+
+Misurato col testimone `__CPM_PRE513` sulla riga della concessione: verde cross 0,32 · pass 0,27/0,27;
+rosso `__CPM_NO513` cross 0 · pass 0/0 — e freekick 0,24 **in entrambi i bracci** (la non-regressione
+delle famiglie storiche è verificata dentro la prova del rosso stessa). `gk-dive-sync` e `ball-alive`
+verdi. Guardiano `gesture-window` esteso alla terza misura.
+
 ### 7.512.0 — Restyling R2/1: la finestra del gesto è una, il portiere suona sul suo tuffo
 
 Prima tranche del **contatto** (R2). Tre rimedi dall'audit, tutti con prova del rosso.
