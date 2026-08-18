@@ -517,6 +517,12 @@ telefono comanda sulle soglie euristiche headless, e infatti il costo dichiarato
 soglia 0,15 del censimento. Guardiano `npm run framing-guard` (= il censimento validato, soglie
 `CPM_MED_MIN=0.11`/`CPM_FUORI_MAX=10`), prova del rosso `CPM_NO505=1` → mediana 0,056. Misurato a 0,18:
 mediana 0,140 · figurine 1% · fuori quadro 6,3%.
+**Il soggetto della regia è uno stato (7.520.0, R4/1).** `_subjBall50` viene da `sr.current._subj520`
+(isteresi: alla palla >10u per 0,35s · all'eroe <7u per 0,25s) — mai riportarlo a booleano istantaneo.
+Rosso strutturale `__CPM_NO520`. ⚠️ La lista per-scena del censimento framing VARIA fra esecuzioni
+(staging dallo stato vivo): giudicare quota globale e lunghezza lista, mai una singola scena su un run.
+⚠️ gi138/gi168 NON erano flicker del soggetto (attribuzione audit confutata): causa ancora aperta in R4.
+
 **Il reparto reagisce (7.519.0, R3/4).** Su tiro/testa/cross un avversario di movimento riceve un gesto
 via `_mateFx` (tackle/header, tetto 9u, slot sequenziale). Chi aggiunge reazioni usa QUESTO canale — mai
 un secondo slot parallelo. Testimone `__CPM_REA519`, rosso `__CPM_NO519`, guardiano `npm run squad-react`.

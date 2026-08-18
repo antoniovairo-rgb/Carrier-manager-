@@ -1,5 +1,37 @@
 # Cronologia delle release — Korward Elite
 
+### 7.520.0-bis — Barre ricentrate e il dossier 007 strumentato (stessa release)
+
+**Barre possesso/momentum ricentrate** (collaudo PO): blocchi `width:80` sotto `textAlign:center` non si
+centrano — serviva `margin:auto`; il difetto era nato col pulsante velocità unico (7.494) che ha
+allargato la riga dell'orologio. Verificato nel DOM: 42px/42px.
+
+**La caccia al 007, coi numeri.** Il taccuino PO misura 13-16 inversioni/s anche su 7.519: il rimedio
+7.507 è fallito sul dispositivo. Due testimoni permanenti nuovi, fps-indipendenti: `__CPM_OSC521`
+(inversioni del **bersaglio** dello sguardo, con attribuzione alle mani) e `__CPM_OSC521B` (asse **reso**
+al lookAt). Verdetti: il bersaglio flippa 0,03-0,22/frame ma l'asse reso flippa **zero** su gi127/gi130
+(il lerp assorbe, come da teoria) e **0,105/frame su gi33** — che a 60fps sono ~6 inv/s, la banda malata
+— con mani «nessuna»: **l'oscillatore è nel bersaglio di POSIZIONE (tP), non nello sguardo**.
+Confutati con misura (e ritirati): cuscino sulla bisezione, taglia (`NO505`), sguardo legale (`NO507`) —
+nessuno separa. Prossimo passo: strumentazione per-scrittore della catena tP.
+
+### 7.520.0 — Restyling R4/1: il soggetto è uno stato con isteresi
+
+Audit: «basta un fotogramma oltre soglia perché la camera cambi protagonista» — e il passaggio di
+soggetto spegne in blocco tutte le reti che tengono l'eroe in quadro. Ora il passaggio alla palla
+richiede **>10u per 0,35s**, il ritorno all'eroe **<7u per 0,25s** (soglie doppie + permanenza minima);
+l'esenzione difensiva 7.482.1 resta identica.
+
+Misurato (censimento 191 scene): scene con eroe fuori >50% **da 7 a 4** · fuori globale **5,9%→5,6%** ·
+mediana stabile. **Onestà sull'attribuzione**: gi138 (76→71%) e gi168 (62→59%) si muovono appena — il
+flicker del soggetto **non era** la loro causa dominante (scene difensive, già esenti): la loro diagnosi
+è il prossimo passo di R4 (anticipo + arbitro delle 16 correzioni).
+
+Prova del rosso **strutturale e dichiarata**: `__CPM_NO520` ripristina il booleano vecchio carattere per
+carattere; una prova stocastica sul censimento sarebbe non conclusiva — la lista per-scena varia fra
+esecuzioni (lo staging dipende dallo stato vivo della partita), giudicano la quota globale e la lunghezza
+della lista via `framing-guard` permanente.
+
 ### 7.519.0 — Restyling R3/4: le reazioni di reparto
 
 Audit: «nelle scene di tiro/testa/cross gli avversari sono comparse — nessuno chiude, nessuno salta con
