@@ -517,6 +517,12 @@ telefono comanda sulle soglie euristiche headless, e infatti il costo dichiarato
 soglia 0,15 del censimento. Guardiano `npm run framing-guard` (= il censimento validato, soglie
 `CPM_MED_MIN=0.11`/`CPM_FUORI_MAX=10`), prova del rosso `CPM_NO505=1` → mediana 0,056. Misurato a 0,18:
 mediana 0,140 · figurine 1% · fuori quadro 6,3%.
+**Il rilascio del gesto non dipende dall'ingresso (7.516.0, R3/1).** L'avatar entra nel ramo gesti anche
+con `_gName` montato o peso residuo (`_ent516`): il decadimento gira SEMPRE fino a zero — mai richiudere
+l'ingresso al solo `_mateWant` (compagno congelato, 321 fotogrammi-orfano misurati col rosso). Testimone
+`__CPM_ORF516`; guardiano `npm run frozen-mate` (GLB-ON; i gesti dei compagni si armano via l'attore della
+cronaca R1, rosso `__CPM_NO516`).
+
 **Un padrone per fotogramma (7.515.0, R2/4).** I grandi scrittori del pallone sono FIRMATI nel testimone
 F2 (`inseguitore`, `addosso`, `respinta`, `palo`, + i 10 storici): chi aggiunge un writer lo firma, sempre —
 l'anonimato al 54% ha nascosto 605 conflitti/3 partite. L'arbitro leggero: l'inseguitore cede il fotogramma

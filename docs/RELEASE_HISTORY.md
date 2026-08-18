@@ -1,5 +1,19 @@
 # Cronologia delle release — Korward Elite
 
+### 7.516.0 — Restyling R3/1: nessun compagno congelato
+
+Primo colpo di R3, sul bug **critico** dell'audit: il compagno che conclude restava con la posa del
+calcio impressa su tutte le 53 ossa (clampWhenFinished, mediata col jog) **per il resto della partita**.
+Causa: il decadimento del peso viveva dentro il ramo a cui il compagno accedeva solo con `_mateWant`
+attivo — scaduto il timer, nessuno spegneva più il gesto.
+
+Rimedio: l'ingresso al ramo include il **rilascio** (`_gName` montato o peso residuo >0,02); dentro,
+`_want=null` rilascia e il peso decade a zero. Misurato col testimone `__CPM_ORF516` (avatar fuori dal
+ramo con peso >0,5), armando i gesti via l'**attore della cronaca** di R1 — che rende il difetto
+misurabile anche headless GLB-ON: verde **0 orfani** in 2 minuti · rosso `__CPM_NO516` **321
+fotogrammi-orfano su 3 avatar**. Guardiano `npm run frozen-mate` (si dichiara cieco se i GLB non
+montano). `gesture-window` di regressione verde.
+
 ### 7.515.0 — Restyling R2/4: la mappa dei padroni e l'arbitro leggero (R2 chiusa)
 
 L'audit: «62 scrittori di `ball.position`, vince l'ultimo, 48,4% di moti anonimi». Prima **la mappa**:
