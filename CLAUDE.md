@@ -301,6 +301,13 @@ PLAYWRIGHT_BROWSERS_PATH=/opt/pw-browsers \
 npm run validate-situations
 ```
 
+> ⚠️ **`CPM_CHROME` è OBBLIGATORIO, non un vezzo** (lezione 7.529): il modulo `playwright` risolto dai
+> `node_modules` può pretendere una build browser NON presente in `/opt/pw-browsers` (es. chiede
+> `chromium_headless_shell-1234` quando esiste solo `-1194`) e il lancio muore con l'invito a
+> `npx playwright install` — che in queste sessioni **non va MAI eseguito** (rete bloccata/spreco disco).
+> Ogni sonda/rituale esporti `CPM_CHROME=/opt/pw-browsers/chromium` (symlink stabile alla build vera):
+> l'harness lo usa come `executablePath` e la versione pretesa dal modulo diventa irrilevante.
+
 > **Setup bundle (sessioni cloud con CDN bloccati):** l'harness intercetta le route CDN e serve React/Three/Babel/Phaser dai `node_modules` locali. Le versioni **esatte** che l'HTML fissa sono ora in `devDependencies` (`react`/`react-dom` 18.2.0, `three` 0.128.0, `@babel/standalone` **7.23.6**, `phaser` 3.80.1) → `npm install` configura tutto. ⚠️ Babel **deve** essere 7.x: la 8.x non transpila l'`import` e la pagina non monta.
 
 Le **14 categorie**: `initial-state · orientation · visual · movements · golden · final-state · determinism · post-highlight · data-coherence · timeline · motion · ball-motion · bg-coherence · live-smoke`. Output atteso: `✅ PASS` con tutte verdi (i `warn` non bloccano).
@@ -728,6 +735,11 @@ rifiuta prima di chiamare.
 ## Key Patterns
 
 - **No build tool:** edit diretti nel `.html`. JSX valido dentro `<script type="text/babel">`.
+- **Commenti in JSX: SEMPRE `{/* … */}`** (lezione 7.529): un `/* … */` messo come **figlio JSX nudo**
+  (dopo un tag di chiusura, dentro la lista figli) NON è un commento — Babel lo **renderizza come testo
+  in pagina**. È successo due volte (banner cronaca 7.529, testata serie rigori 7.327 — in produzione per
+  mesi). Dentro le graffe di un'espressione (ternari, ecc.) il `/* */` è invece un commento vero. Dopo
+  ogni ritocco JSX con commento a fianco: prova fotografica della schermata toccata.
 - **Coordinate:** logica `{x:0–100,y:0–100}`; mondo Three.js `{x:-50..+50, z:-30..+30}`.
 - **Random seedato:** usa `hashStr` + aritmetica per tutto ciò che deve essere riproducibile tra save. `rng()`/`pick()` solo per eventi one-off. ⚠️ Mai far dipendere setup/render dal random non seedato (rompe `determinism`/`golden`).
 - **Save compat:** incrementa `SAVE_VERSION` aggiungendo campi obbligatori; aggiungi migration backward-compat nel `useEffect(()=>{...},[])` di `CareerApp` che rileva/riempie i campi mancanti (`calendar`/`standings`/nuovi campi). Ultimo bump: **v8** (`bankBalance`/`perkTrainer`/`perkNutrition`, FASE 3.2 5.81.0) — pattern: `if(!('foot' in newP)){newP={...newP,foot:...};changed=true;}`. ⚠️ La stabilizzazione 6.32→6.37 è **additiva/repair** (nessun bump SAVE): la migration di `CareerApp` ora RICONCILIA la classifica (non l'azzera, STAB-12), ripara la lega pro rotta, normalizza la forma sul valore grezzo (STAB-17) e sblocca i tornei Nazionali al rollover (STAB-3).

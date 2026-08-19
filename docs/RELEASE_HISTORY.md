@@ -1,5 +1,49 @@
 # Cronologia delle release — Korward Elite
 
+### 7.529.0 — R5: la luce (e la regia su misura del PO)
+
+1. **Catena colore vera** sul renderer partita — ACES + sRGB + esposizione 1,02 (l'unico ACES del file
+   stava nella scena Gala). Le compensazioni cotte rimosse **nello stesso passo e sotto lo stesso
+   interruttore** (`__CPM_NO533`): erba 0,72/0,88 → 0,96/0,98, floor emissivo kit 0,14 → 0,06 — il
+   commento storico confessava («per compensare l'assenza di tonemapping»). ACES desatura i colori
+   pieni (giallo→crema, rosso→salmone nelle foto gi12 notte): i kit difesi con pre-boost di
+   saturazione — l'identità dei club non si tocca. Il primo tentativo (+0,12 sul solo ramo tinta
+   unita) **non bastava**: la foto finale contro la 7.528 mostrava il bordeaux ancora rosa. La
+   taratura vera è **+0,30 HSL a monte** (difende anche la texture `kitPatternTex`, che dipinge con
+   lo stesso colore) e il darkening 7.8.2 dei saturi scuri dimezzato 0,60→0,30 — compensava un
+   clipping delle luci che ora fa ACES, e sommato alla desaturazione ACES produceva il rosa. Erba
+   notte 0,98→0,90 (a 0,98 il prato notturno sembrava mezzogiorno). Confronto fotografico
+   prima/dopo in `out/r5-*`: la piattezza dell'audit è sparita a vista.
+2. **Blob-shadow** sotto i 22 su mobile (texture radiale condivisa, piano figlio dell'avatar): i corpi
+   toccano terra — su telefono i giocatori non proiettavano ombra.
+3. **Collaudo PO live sulla 7.528**: banner cronaca ridotto e abbassato (15px, bottom 1,5%), box
+   cronaca esterni nascosti (ridondanti col banner in campo), camera cronaca più vicina (-56/35),
+   highlight più lontana (-23/11,2 — il censimento taglia-eroe resta il pavimento).
+4. **«In sovraimpressione le scritte tiro, parata, passaggio ecc. Non servono più!»** — spente le
+   targhette ATE-3 (nate quando la cronaca 3D era muta; col banner FM doppiavano ogni battuta).
+   Setter disattivato, hook lasciato al suo posto per stabilità React.
+5. **«Mostra l'ombra del pallone, a volte non si capisce nemmeno dov'è, è molto piccolo»** (rosso
+   `__CPM_NO534`) — il colpevole era il 3DV-12: pallone renderizzato al **68%** proprio in cronaca,
+   dove la camera è la più larga (raggio effettivo ~0,22). Scala di leggibilità invertita: 1,10 in
+   playing (~0,35, stile FM), highlight invariati (0,53 a camera stretta). Più un **blob-ombra
+   dedicato al pallone** (i blob 7.529 coprivano solo i giocatori): segue la palla sul prato, si
+   allarga e sbiadisce quando vola — è l'ombra che dice dove ricade. Alone dietro-i-corpi
+   0,04→0,085 in cronaca.
+6. **Bug mio, trovato dalla prova fotografica**: il commento tecnico del banner 15px era figlio JSX
+   *nudo* e Babel lo **renderizzava dentro il banner** («*/ 17->15, bottom 4%->1,5% */» in campo).
+   Chiuso in graffe `{/* */}`; stessa cura al gemello storico 7.327 nella testata della serie
+   rigori, renderizzato da mesi senza che nessuno lo notasse. Regola permanente in CLAUDE.md.
+
+Dichiarato: golden e check `visual` rigenerati deliberatamente (una catena colore nuova cambia ogni
+pixel per definizione — precedente 5.94); fps e resa percepita al giudizio del dispositivo del PO.
+Dal taccuino 7.528 in coda 7.530: **catena assist** (011 congelata ×2 su velo/rimorchio + 008 + «L»),
+003-in-rete, rovesciata specchiata (clip). Il lotto W.25-26 (arrivato durante la chiusura 7.529) dà
+all'indagine 003 **entrambe le direzioni**: #39 sponda per il rimorchio → «chance» ma palla IN RETE,
+e #45 corpo sulla traiettoria → «goal_against» ma palla FERMA a 50,2u con **nessuno scrittore**
+sull'ultimo tratto (l'arco vive 153 fotogrammi orfani). Sonda pronta (gi91/20/182/39/45, misura
+penetrazione in entrambi gli specchi via anello del testimone). Due «registrazione non copre» nello
+stesso lotto rilanciano la proposta anello 30000→60000 campioni (~3,8 MB, da pesare sul telefono).
+
 ### 7.528.0 — Il gol si costruisce, la cronaca è protagonista
 
 Lotto taccuino + tre direttive PO nella stessa sessione:
