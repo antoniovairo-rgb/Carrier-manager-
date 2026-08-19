@@ -1,5 +1,39 @@
 # Cronologia delle release — Korward Elite
 
+### 7.528.0 — Il gol si costruisce, la cronaca è protagonista
+
+Lotto taccuino + tre direttive PO nella stessa sessione:
+
+1. **«I gol arrivano da centrocampo senza azioni di attacco»** — il 7.525, rendendo visibile il gol
+   ambientale, l'aveva reso un lancio da centrocampo in rete (esente dal tetto di spostamento). Ora il
+   gol del microsim è un'**azione pendente**: riga di lancio fissa («azione manovrata» — nessun sorteggio
+   nuovo), palla che avanza 4u/tick verso l'ultimo terzo lungo il corridoio, tiro solo da zona
+   rifinitura (x≥72/≤28, tetto 8 tick). La prima stesura SOPPRIMEVA le righe durante l'avanzata e il
+   guardiano `bg-rhythm` è diventato cieco (sviluppo 6 coppie, pericolo 2, contro 14/13 storici) — e
+   drammaticamente era sbagliato: nel momento più caldo la telecronaca taceva. Ora le righe **escono e
+   raccontano l'avanzata** (la decisione F3b segue la palla che sale: sviluppo/pericolo emergono da
+   soli) ma non muovono il pallone: guida la pendenza, la riga descrive. E l'avanzata viaggia a
+   **3u/tick** (~7u/s, il passo del portatore): a 4 la palla correva a 9,5u/s davanti a tutti e
+   `ball-attended` è sceso a 46,8% — poi scagionata dall'esclusione: era il CARICO delle corsie
+   parallele (in isolamento 61,5%; `ball-attended` entra nella classe dei marginali-sotto-carico con
+   motion e framing). Il taglio 0,52 della costruzione è stato provato e REVOCATO (strafaceva:
+   sviluppo affamato a 5 coppie); il buco vero era l'avanzata che attraversa lo sviluppo sparando
+   righe isolate → durante l'azione pendente la telecronaca è FITTA come nel pericolo (densità 1,30):
+   più righe consecutive nella fase calda — la telecronaca dell'azione, stile FM. Rosso `__CPM_NO532`.
+2. **«La cronaca non è protagonista, come Football Manager»** — la battuta corrente è **in campo**:
+   banner a tutta larghezza sopra il prato durante `playing` (17px bold, colore evento, dissolvenza
+   per battuta), più terzo giro font (feed 15→17, minuto 12, anteprima mobile 13).
+3. **Camera** — un passo per direzione: WIDE cronaca -67→-62/42→39, CLOSE highlight -18→-20/9,8→10,4.
+4. **Strumento** — le righe «CAMERA salta 10,7-23,5u (400-782 u/s) a 3,7s» FOTOCOPIA su partite diverse
+   erano il **taglio di regia voluto sull'esito** (setCutFx, coperto dallo stacco nero) scambiato per
+   difetto: bit 16 nell'anello = maschera di taglio attiva (stessa finestra del mask BJ478), e le
+   misure camera della bozza graziano quei fotogrammi. Il 007 vero torna leggibile.
+
+Verdi dal campo: la dichiarazione onesta 7.524 lavora («la registrazione non copre più questa azione»
+×2). Aperte, in ordine: **003-in-rete** («nothing/chance ma palla IN RETE», gi91/gi20 — indagine col
+guardiano outcome-not-goal), **008 su onetwo** (regressione dichiarata, vale doppio), 111+004 sulla
+famiglia «mischia in area», giratone #123 (macchina-stati gesti / decisione clip).
+
 ### 7.527.0 — Il finalizzatore guarda la porta
 
 Collaudo PO ×2 su 7.525 (#47/#163): «il compagno ha tirato/segnato con il corpo **all'indietro**
