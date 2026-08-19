@@ -1,5 +1,40 @@
 # Cronologia delle release — Korward Elite
 
+### 7.530.0 — La cronaca è calcio vero (lotto 1)
+
+Direttiva PO in un fiato: «durante la cronaca non si vedono azioni/schemi, i gol non sono ben
+visibili e non vengono costruiti, serve enfasi sull'azione da gol, **non si riparte dal centro dopo
+un gol**, non ci sono **calci d'angolo, rigori, punizioni, falli** — è ancora molto trigger di
+passaggi quasi casuali».
+
+1. **Lo specchio obbedisce all'esito** (rosso `__CPM_NO535`). La sonda sui casi del taccuino
+   (gi45 «goal_against ma palla ferma») ha mostrato il buco: il bersaglio del gol subito è gx 1,5
+   (mondo −48,5), **0,1u prima del piano dei pali** — il lerp muore asintotico a −47,3 e uno
+   scrittore anonimo trascina poi la palla fuori specchio (z 2,2→5,6). Il canale «in rete» esisteva
+   solo per la porta avversaria. Ora c'è `in_net_own`, gemello speculare, agganciato a fine arco;
+   e un **guardiano geometrico**: la palla può abitare lo specchio solo mentre un canale-rete la
+   certifica — senza certificato scivola oltre il palo. Chiude il 003 («chance ma IN RETE») per
+   geometria, senza toccare la mappa analitica (lezione della revoca 7.477). Una rete di sicurezza
+   pre-arco è stata **provata e rimossa**: partiva prima del tiro e rompeva la sequenza (misurato).
+2. **La ripartenza si recita** (rosso `__CPM_NO536`). Il calcio d'inizio 7.525 toccava il centro
+   per un tick (300ms): un lampo. Ora la palla si **tiene** al centro e le righe già sorteggiate si
+   dirottano su due battute di ripartenza («la palla torna al centro… tocca a noi/loro»), con il
+   lato giusto (chi ha subito rimette). Ordine dei sorteggi intatto — la riga pescata si scarta.
+3. **Le giocate piazzate si recitano** (rosso `__CPM_NO537`). Le righe corner/fallo/rigore aprono
+   recite multi-riga con lo stesso pattern di dirottamento: corner nei due versi
+   (vertice→traversone→risoluzione), punizione (tiro deviato in angolo / pennellata respinta /
+   alta — o battuta corta a centrocampo), rigore ambientale **raro** (w 0,3). La risoluzione è
+   deterministica (hash su testo sorteggiato+minuto: stesso save → stessa recita) e **non segna
+   mai**: i gol restano monopolio del microsim per l'integrità del punteggio — il rigore ambientale
+   esce solo parato/alto, e lo dichiariamo qui invece di nasconderlo. La sonda in volo (partite piene
+   seedate, pesi `sp` gonfiati ×30 col gancio di collaudo `__CPM_SPBOOST`) ha trovato e chiuso un bug
+   di concatenazione: il dirottamento kickoff azzera il suo conto nello stesso giro e la macchina
+   piazzati **sovrascriveva la seconda battuta di ripartenza** — flag di giro `_koHij536`, ri-misurato
+   sugli stessi semi: ripartenze 2/2 complete, recite 3/3, e la punizione sospesa dal gol si risolve
+   subito dopo il kickoff. Le macchine si cedono il passo: kickoff > gol costruito > piazzati.
+4. **Enfasi sull'azione da gol**: banner ambra per tutta l'azione pendente (la densità calda 1,30
+   del 7.528 già incalza il ritmo); il gol subito ora ha il suo viaggio in rete completo.
+
 ### 7.529.0 — R5: la luce (e la regia su misura del PO)
 
 1. **Catena colore vera** sul renderer partita — ACES + sRGB + esposizione 1,02 (l'unico ACES del file

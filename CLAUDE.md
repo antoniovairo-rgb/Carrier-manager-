@@ -553,6 +553,20 @@ ambientali hanno bpos NELLO specchio (98/2) e `at:"shot"` esplicito: mai rimappa
 misurare la cronaca (inchioda il wizard in hl_result e `playing` non torna più); la svolta a cambio
 giocata/ripresa è voluta e marcata `ng` — si giudicano i passi interni.
 
+**Le recite di cronaca (7.530.0).** Tre macchine dirottano le righe GIÀ SORTEGGIATE (il sorteggio si
+consuma, l'ordine resta intatto — la riga pescata si scarta): il gol costruito (`pendingGoalRef`,
+7.528, rosso `__CPM_NO532`), la ripartenza dal centro (`kickoffRef`/`kickoffSideRef`, rosso
+`__CPM_NO536`: 2 battute con palla TENUTA al centro in `setBallPos`) e le giocate piazzate
+(`spRef`, rosso `__CPM_NO537`: righe `sp` in BG_MATCH → corner nei due versi/punizione/rigore raro,
+risoluzione deterministica `hashStr(testo+minuto)`). PRECEDENZA: kickoff > pendingGoal > sp — e il
+flag di giro `_koHij536` è OBBLIGATORIO: il dirottamento kickoff azzera il conto nello stesso giro e
+senza flag la macchina sp sovrascriveva la seconda battuta (misurato in sonda). INVARIANTE: le recite
+NON SEGNANO MAI — i gol sono monopolio del microsim (il rigore ambientale esce solo parato/alto,
+dichiarato). `window.__CPM_SPBOOST` (solo collaudo) gonfia ×30 i pesi `sp` per testare le recite in
+volo. Specchio (rosso `__CPM_NO535`): `in_net_own` è il gemello del gol subito; la palla abita lo
+specchio solo con certificato `_netOk535` — senza, scivola oltre il palo (mai ritoccare la mappa
+analitica per questo: revoca 7.477).
+
 **In `cpmtest` il taglio del teatro è SPENTO (`_asIfPlay`, 7.345) — ogni sonda che giudica le APERTURE
 di scena deve armare `__CPM_PRESENT=1`, o misura un teatro che va a piedi (artefatto: 73,5u su gi44,
 rimedio `__CPM_NO529` REVOCATO con misura invariata — col teatro attivo i due bracci erano identici a
