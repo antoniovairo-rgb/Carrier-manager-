@@ -553,6 +553,12 @@ ambientali hanno bpos NELLO specchio (98/2) e `at:"shot"` esplicito: mai rimappa
 misurare la cronaca (inchioda il wizard in hl_result e `playing` non torna più); la svolta a cambio
 giocata/ripresa è voluta e marcata `ng` — si giudicano i passi interni.
 
+**Trappola falso-verde, variante MONITOR (7.531):** un watcher `tail -n +1 -f` armato nello stesso
+istante del rituale può leggere i marcatori `COMPLETA` del giro PRECEDENTE prima che la troncatura li
+cancelli (race sull'inode) — è arrivato un «B verde + A 8/8» a rituale appena partito. Armare i
+watcher con `tail -n 0 -f` (solo righe nuove) e diffidare di ogni traguardo «troppo presto»: i
+timestamp dei passi nel file sono il giudice.
+
 **Le recite di cronaca (7.530.0).** Tre macchine dirottano le righe GIÀ SORTEGGIATE (il sorteggio si
 consuma, l'ordine resta intatto — la riga pescata si scarta): il gol costruito (`pendingGoalRef`,
 7.528, rosso `__CPM_NO532`), la ripartenza dal centro (`kickoffRef`/`kickoffSideRef`, rosso

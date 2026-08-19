@@ -1,5 +1,51 @@
 # Cronologia delle release — Korward Elite
 
+### 7.531.0 — La trama ha un'identità di modulo
+
+Direttiva PO: «ogni squadra deve avere anche in base alla tattica, formazione, mentalità il suo
+sviluppo di gioco. Un 433 è diverso da un 352». Rosso `__CPM_NO538`.
+
+1. **Quattro pomelli per modulo** (`TRAMA_ID538`): pesi dei corridoi (il 4-3-3 vive sulle ali
+   1,25/0,70/1,25; il 3-5-2 palleggia al centro 0,85/1,35/0,85), frequenza del cambio gioco (0,17 nel
+   433, 0,09 nel 532), passo di sviluppo (il 5-3-2 riparte lungo 1,28×, il 3-5-2 corto 0,92×),
+   propensione allo scarico in rifinitura (il 4-2-3-1 ragiona 0,34, il 5-3-2 va dentro 0,20).
+   L'avversario usa il modulo **dichiarato** (`oppTactic.formation`, quello del pannello tattico);
+   la nostra squadra lo **deriva dai ruoli della rosa**.
+2. **Invariante di ferro**: i pomelli cambiano solo soglie e scale sui *medesimi* sorteggi `_r511` —
+   mai il numero né l'ordine (replay/determinismo, lezione 7.511).
+3. **Il guardiano si giudica per enumerazione, non per statistica** — e le due stesure buttate
+   restano a verbale con le loro misure: la quota di *dwell* nel corridoio centrale era cieca per
+   costruzione (corridoio persistente ⇒ ~5 scelte effettive a partita: 31 punti di «separazione» col
+   rimedio SPENTO, puro rumore); il testimone per-scelta raccoglieva 5 pick in 2 partite. La scelta
+   di corridoio è troppo rara per qualunque campionamento: lo sweep (`__CPM_IDMAP538`, 200 punti ×
+   2 direzioni, percorre profilo+mappa VERI) verifica la mappa per intero, e la partita in volo
+   verifica solo il cablaggio. Verde: 433 centro **22,0%** / 352 **44,5%** (teoria al decimale),
+   zona di divergenza 36/31 punti-griglia, volo 2/2. Rosso onesto: entrambi collassano sul 34,0%
+   storico. Nel rituale: corsia B, verde+rosso.
+4. **Il ritmo ritarato in due mosse misurate** — l'identità ha rallentato il racconto dello sviluppo
+   (intervallo 3,90→4,60 min: i passi di modulo 1,12/1,28 attraversano la fase in fretta) e
+   `bg-rhythm` è sceso rosso a 1,25×. Prima mossa: costruzione 0,60→0,56 (il cartello del guardiano:
+   «ritmo più marcato, non soglia più bassa») — non bastava, 1,27×, perché il collo era l'altro capo.
+   Seconda: **sviluppo 1,00→1,08** — arricchisce la fase affamata invece di affamare l'altra (la
+   strada 0,52 era già stata revocata per questo) e racconta l'avanzata più fitta, in linea con la
+   direttiva FM. Ri-misura: **1,32×**, sviluppo a 10 coppie.
+5. **La linea arretra con la palla profonda** (rosso `__CPM_NO539`) — l'identità ha spostato le forme
+   pre-scena e il marginale storico di `motion` (5ª apparizione: minDist 24,5-27,5 attorno alla
+   soglia 24, carico/isolamento lo spostavano di ±2u) è diventato un rosso stabile su gi0. La causa
+   era in cronaca: i difensori **non convergevano mai sulla palla profonda** — oltre x72 la linea
+   ospite ora arretra verso il pallone (e specularmente la nostra sotto x28), e le scene ereditano
+   un ingresso col difensore addosso al portatore. **Non bastava**: la varianza d'ingresso restava
+   (17,5u in un giro, 24,2 in quello dopo — la soglia è 24) perché il buco vero era **in scena**: il
+   pressing ingaggia i difensori sull'*eroe*, ma sulla palla filtrante di gi0 il pallone sta 15-25u
+   davanti a lui, e `defNear` restava 0. Nel calcio vero il difensore rincorre la palla profonda,
+   non l'uomo: ora il primo ingaggiato insegue il pallone quando è oltre l'eroe e in zona profonda.
+   È il pensionamento del marginale per cura della causa (in due strati: linea di cronaca + rincorsa
+   di scena), non per rilancio in isolamento.
+6. **Luce ritarata dal telefono del PO** — «partita troppo troppo luminosa, i colori sono sbiaditi»:
+   la taratura fotografica headless della 7.529 (esposizione 1,02, erba 0,96/0,90) sullo schermo
+   vero lavava. Esposizione **0,90**, erba **0,88/0,82** — nelle foto di controllo il verde torna
+   pieno e il bordeaux profondo, senza perdere ombre e profondità R5. Il telefono resta il giudice.
+
 ### 7.530.0 — La cronaca è calcio vero (lotto 1)
 
 Direttiva PO in un fiato: «durante la cronaca non si vedono azioni/schemi, i gol non sono ben
