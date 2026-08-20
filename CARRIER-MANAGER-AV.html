@@ -4826,7 +4826,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="7.536.0"; // [7.536.0 — LE TRE VOCI NON SI PESTANO I PIEDI, tre note di collaudo PO nello stesso giro]: (a) «le indicazioni dalla panchina si accavallano» (rosso __CPM_NO548): la fascia bassa era due scatole ASSOLUTE che si contendevano lo stesso spazio — banner telecronaca a bottom 1,5% con altezza VARIABILE (una riga lunga ne occupa due: e' il caso dello screenshot) e riquadro panchina a bottom FISSO 8,5%; ora vivono nello stesso contenitore in COLONNA, la panchina appoggiata sopra la cronaca qualunque altezza abbia — l'accavallamento non e' corretto, e' reso impossibile (guardiano hud-voci sui rettangoli veri del DOM: verde 0 px² di intersezione e 8,7px di spazio, rosso 3282 px² e -49px); (b) «i cori dei tifosi devono avere un'iconcina e scritte piu' carine, sono quasi illeggibili» (stesso rosso): il coro era testo NUDO (13px, maiuscole con letterSpacing 1,5, nessun fondo) sopra una curva chiara e affollata, dove l'alone del textShadow non basta — ora e' una PILLOLA con fondo scuro, bordo nel colore del momento, ICONCINA per tipo (🧣 coro, 📣 spinta, 🎉 gol, 😱 pericolo, 😠 fallo, 😞 gol subito) e corpo 15-16px con letterSpacing 0,8 (le maiuscole molto spaziate erano parte del problema di lettura); (c) «c'e' un'indicazione del mister a meta' schermo ogni tanto che non rientra nel flusso» (rosso __CPM_NO549): trovata la SETTIMA voce del mister — il banner `subEvent` a top 12%, largo quasi quanto lo schermo, 3,5s, emesso al 65'-70' col cambio; sfuggita al censimento 7.532 (sei siti) perche' non passava da addCom e aveva una UI propria. Ora vale la regola delle tre voci, la stessa dell'intervallo: l'EVENTO lo racconta la telecronaca, la RICHIESTA del mister vive in panchina (testi riscritti in prima persona: «Il mister chiede…» detto dal mister era la spia che veniva da un altro mondo), il banner centrale sparisce. Il guardiano ha un terzo controllo: durante `playing` nessun riquadro di testo largo puo' vivere nella fascia centrale — un'ottava voce nascosta non passa piu' inosservata.
+const GAME_VERSION="7.537.0"; // [7.537.0 — L'AZIONE SI VEDE E SI SEGUE, quattro note di collaudo PO]: (a) L'OMBRA DEL PALLONE HA UN COLORE (rosso __CPM_NO550): era un radiale nero su erba verde — il nero e' quello che il prato in ombra ha gia' addosso, e il segno spariva proprio quando serve (e' lui che dice dove ricade la palla); ora nucleo scuro + anello AMBRA a meta' raggio (resta un'ombra, non un disco fluo), misura sui pixel del fotogramma: 2423 pixel in banda ambra contro 1329 del braccio storico. (b) LA CATENA DI POSSESSO (rosso __CPM_NO551, primo pezzo di MP-2 in cronaca): la MISURA prima del rimedio dice che il difetto non era «palla ferma su un giocatore» ma una palla che VAGA — a piu' di 2,5u da chiunque per il 77% del tempo, in fascia centrale per l'80%, toccata da 9 uomini su 21. Ora la cronaca costruisce catene di 3-5 tocchi fra uomini REALI del lato in possesso: ogni passo nomina passatore e ricevente dai cognomi di `matchPlayers`, la palla punta la POSIZIONE del ricevente (non una zona vuota), il ricevente le va incontro, il reparto accompagna e all'apertura i tre uomini piu' avanzati attaccano lo spazio. L'evento porta actor e — campo NUOVO — `rcv` fino al 3D, che consegna la palla all'uomo NOMINATO invece di indovinarlo per prossimita' (7.523). Misure sulla versione spedita (catena di 2-3 tocchi, una ogni 6' di gioco, alternata col commento, ogni passo OBBLIGATO a guadagnare campo): il segnale solido arriva dal guardiano del ritmo — la fase SVILUPPO passa da 4 a 21 coppie e la costruzione da 51 a 26 (rapporto 1,50x, soglia 1,30): il gioco esce dal centro e la telecronaca ha di nuovo tre respiri invece di uno. ⚠️ La sonda del possesso NON conferma né smentisce: sugli stessi giri misura la fascia centrale fra 80% e 93% e gli uomini che toccano palla fra 5 e 14 — varianza troppo alta per giudicare (campiona a orologio su una partita accelerata), dichiarata come tale invece di scegliere il giro che fa comodo. Le stesure piu' larghe (3-5 tocchi consecutivi) davano numeri migliori sul possesso (733u, 67%) ma AFFAMAVANO la telecronaca: col confronto diretto acceso/spento il guardiano bg-decision e' cieco CON la catena e verde SENZA — una giocata raccontata bene non puo' costare il repertorio, e il campione del guardiano e' stato portato a 5 partite (20 righe utili, accordo 90%). ⚠️ DICHIARATO NON RISOLTO: la concentrazione a centrocampo (80%→85%) — la radice e' il drift della trama e i turni di possesso parcheggiati (7.532), non la catena; due stesure intermedie sono state buttate con le loro misure (v1 senza vincolo d'avanzamento: 93% in fascia centrale; v2 con vincolo rigido: catene troppo rare). (c) I COLORI TORNANO DENSI (rosso __CPM_NO552): misura su tre scene CONGELATE a SEED IDENTICO — con nomi diversi i due bracci giravano su partite e kit diversi e i numeri si scambiavano fra un giro e l'altro — il divario col mondo pre-7.529 NON e' nella saturazione (-4,0%) ma nella LUMINOSITA' (+42%), ed e' quella che fa leggere «slavato»; esposizione 0,78→0,60: saturazione -4,0%→-2,5%, luminosita' +42%→+29,6%. Provato e REVOCATO con la sua misura: saturare erba e kit a monte peggiorava (-9,9%), perche' ACES comprime verso il bianco proprio i colori piu' intensi. (d) strumenti: censimento del possesso (stazionamento, portatori, viaggio, fascia centrale) e sonda di saturazione a fotogrammi controllati.
 // [nota 7.449.0] [7.449.0 MESSA IN SICUREZZA · P0 #3 dell'audit forense — IL RIFERIMENTO ALLA GARA APERTA SOPRAVVIVEVA ALL'USCITA]: `_playingMdRef` descrive la gara di CLUB aperta da startMatch, ma veniva azzerato SOLO da onMatchEnd: uscire dal pre-partita (onQuit) o essere respinti dai suoi return anticipati («non convocato», avversario non risolvibile) lo lasciava CARICO. E il consumo in onMatchEnd avveniva per QUALUNQUE fine partita, comprese quelle di Nazionale, che non passano da startMatch e non lo impostano mai. Catena: apro il pre-partita di campionato, torno indietro, gioco in Nazionale — e il commit registra come giocata una giornata di campionato mai disputata, che la bonifica chiude subito dopo. Stagione a 33 su 34 senza che nulla lo segnali. CICLO DI VITA RICOSTRUITO invece di un reset indiscriminato: il riferimento nasce all'apertura della gara, si INVALIDA su ogni percorso d'uscita dal pre-partita (onQuit e i due return anticipati) e si CONSUMA solo nei contesti di CLUB (career/cup/euro) — una gara di Nazionale non tocca piu' una giornata di campionato, ed e' la rete che copre anche le uscite non previste. +sonda test-only `__CPM_CAREER.mdRef()`: senza, il guardiano misurerebbe gli effetti e non la causa. GUARDIANO playing-mdref-test, NEL GATE: prova del ROSSO (__CPM_NO_P0_3: nel pre-partita il riferimento e' carico e resta carico dopo l'uscita) + i percorsi — uscita che invalida, calendario e presenze immutati dopo un'uscita, riapertura coerente con la gara vera, partita realmente giocata che si committa ancora.
 // [nota 7.448.0] [7.448.0 MESSA IN SICUREZZA · P0 #2 dell'audit forense — UN SALVATAGGIO PIU' VECCHIO POTEVA SOVRASCRIVERE IL PIU' RECENTE]: `storage.save` e' async e non aveva ne' coda ne' sequenza. Nel browser non si vede (localStorage e' sincrono) ma la build pubblicata su Play Store gira su `window.storage` = @capacitor/preferences, iniettato da tools/build-dist.mjs, dove la scrittura passa da un BRIDGE ASINCRONO: due salvataggi concorrenti potevano completare FUORI ORDINE, e `savedAt` veniva scritto ma mai riletto, quindi nulla se ne accorgeva. DIMOSTRATO a runtime con un bridge finto a latenza pilotata: stato A → parte l'autosave (bridge occupato) → stato B → l'app va in background → il flush salva B → il salvataggio di A completa DOPO e riscrive il disco con lo stato vecchio (memoria 2222, disco 1111). Su Android significa perdere una partita, una settimana, a volte una stagione — ed e' anche una spiegazione a monte della «partita gia' giocata», perche' un save che torna indietro riporta in calendario una gara gia' disputata. CURA MINIMA, nessuna infrastruttura nuova e formato del salvataggio IMMUTATO: una CODA per chiave (le scritture si susseguono nell'ordine in cui sono state chieste, mai sovrapposte) e uno SCARTO delle scritture gia' superate (se mentre A aspetta il turno e' arrivata B, A non viene scritta: il suo contenuto e' vecchio per definizione). GUARDIANO save-monotonic-test, NEL GATE: prova del ROSSO incorporata (__CPM_NO_P0_2 ripristina le scritture concorrenti → il disco torna a 1111) e sei scenari — vecchio-lento contro nuovo-veloce, tre scritture a latenza decrescente, salvataggio normale non bloccato, ramo browser invariato, ramo bridge nativo, riapertura dell'app che rilegge l'ultimo stato.
 // [nota 7.447.0] [7.447.0 MESSA IN SICUREZZA · P0 #1 dell'audit forense — IL RECUPERO DOPO UN RIAVVIO CONFONDEVA LE COMPETIZIONI]: e' la vera causa della «partita gia' giocata» che il PO segnala da nove collaudi. Il recovery del sidecar cercava la gara nel calendario per AVVERSARIO e SEDE, senza mai guardare la competizione; siccome l'avversario di Coppa viene sorteggiato DALLA STESSA LEGA e il turno R16 e' cablato «in casa», per costruzione esiste SEMPRE una voce di campionato in casa contro quel club. RIPRODOTTO: recuperando una gara di Coppa, la classifica di campionato passava da 17 a 18 partite e da 40 a 43 punti per una gara mai giocata, e la giornata di lega spariva marcata come giocata. Aggravante: le due ref che portano l'identita' della gara vivono nella SESSIONE e dopo il riavvio sono vuote — `matchTypeRef` torna al default "league" (l'unico writer "cup" e' startMatch, che dopo il reboot non passa mai) e `_playingMdRef` e' null, quindi anche il ramo di commit era quello di lega. DUE CURE MINIME: (1) i candidati si filtrano per COMPETIZIONE, derivata da `result.context` che era gia' nel sidecar dal 7.24.3 — nessun campo nuovo, e un sidecar senza contesto (scritto da una versione precedente) non viene filtrato ne' scartato, mantenendo il comportamento storico; (2) prima del dispatch si ricostruiscono `matchTypeRef` e `_playingMdRef` dalla voce ritrovata, cosi' il commit marca la voce giusta per NUMERO di giornata e registra quella giornata. GUARDIANO recovery-competition-test, NEL GATE: prova del ROSSO incorporata (interruttore __CPM_NO_P0_1 che ripristina la vecchia logica: la voce di lega torna a essere marcata, classifica 18) + casi A-G (coppa committata in coppa, campionato intatto a 17/40, turno di coppa avanzato, nessuna regressione sul recupero di lega). Gli assert leggono lo stato PERSISTITO, non la memoria.
@@ -11332,7 +11332,7 @@ function ThreeMatchView(props){
        0,14): mai l'una senza l'altra, o si somma doppia correzione. Esposizione tarata sul confronto
        fotografico (r5-prima/r5-dopo, 6 scene campione). */
     const _R5ON=!(typeof window!=='undefined'&&window.__CPM_NO533);
-    if(_R5ON){renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=0.78;/* [7.531.0 collaudo PO dal telefono: «partita troppo troppo luminosa, i colori sono sbiaditi» — 1,02 in headless reggeva, sullo schermo vero lavava; 0,90 ancora chiara (screenshot 7.531, giorno velato): 0,78 — le intensita' del rig giorno (amb 0,66/hemi 0,46) sono dell'era SENZA tonemapping e con ACES si sommano */renderer.outputEncoding=THREE.sRGBEncoding;}/* esposizione 1,06->1,02: al primo giro fotografico tribune lavate */
+    if(_R5ON){renderer.toneMapping=(typeof window!=='undefined'&&window.__CPM_TM552==='cineon')?THREE.CineonToneMapping:(typeof window!=='undefined'&&window.__CPM_TM552==='reinhard')?THREE.ReinhardToneMapping:(typeof window!=='undefined'&&window.__CPM_TM552==='none')?THREE.NoToneMapping:THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=(typeof window!=='undefined'&&window.__CPM_EXPO552)?window.__CPM_EXPO552:((typeof window!=='undefined'&&window.__CPM_NO552)?0.78:0.60);/* [7.537.0 collaudo PO «i colori non sono ancora vividi come prima delle modifiche sulle luci» — rosso __CPM_NO552] LA DENSITA' TORNA DALL'ESPOSIZIONE, NON DALLA SATURAZIONE. Misurato su tre scene congelate a seed identico: col 7.536 la saturazione e' a -4,0% dal mondo pre-7.529 (poco), ma la luminosita' e' a +42% (molto) — ed e' quella che fa leggere «slavato». 0,78→0,60 riporta la scena verso la densita' di prima; il rosso riaccende il mondo del 7.536. *//* [7.531.0 collaudo PO dal telefono: «partita troppo troppo luminosa, i colori sono sbiaditi» — 1,02 in headless reggeva, sullo schermo vero lavava; 0,90 ancora chiara (screenshot 7.531, giorno velato): 0,78 — le intensita' del rig giorno (amb 0,66/hemi 0,46) sono dell'era SENZA tonemapping e con ACES si sommano */renderer.outputEncoding=THREE.sRGBEncoding;}/* esposizione 1,06->1,02: al primo giro fotografico tribune lavate */
     renderer.setClearColor(skyCol);
     /* [7.535.0] LA PERDITA DEL CONTESTO NON E' PIU' MUTA (vedi la nota gemella su `glbTry` in LiveMatch).
        `preventDefault()` sull'evento di perdita e' la CONDIZIONE perche' il browser tenti il ripristino:
@@ -11366,7 +11366,27 @@ function ThreeMatchView(props){
     // Campo — Sprint 3D-G1: di giorno scurisco l'erba (0.82×) per compensare l'assenza di tonemapping; notte invariata
     const _gA=new THREE.Color(pal.grassA),_gB=new THREE.Color(pal.grassB);
     // 3DV-10: dim globale erba su tutti i TOD (notte 0.88×, giorno 0.72×) — riduce fluorescenza
-    {const _k533=_R5ON?(tod==="day"?0.80:0.75):(tod==="day"?0.72:0.88);/* [7.531.0 collaudo PO «troppo luminosa, colori sbiaditi»] 0,96/0,90→0,88/0,82 · [7.532.0 secondo giro dal telefono: «ancora troppo luminosa e chiara»] →0,80/0,75 con esposizione 0,78 */_gA.multiplyScalar(_k533);_gB.multiplyScalar(_k533);}/* [7.529.0 R5] il dim 0,72/0,88 era la compensazione dell'assenza di tonemapping (lo dice il commento storico qui sopra): con ACES si toglie quasi tutto — resta un filo, tarato sulle foto: 0,96 giorno · 0,90 notte (a 0,98 il prato notturno sembrava mezzogiorno, foto gi12) */
+    {const _k533=_R5ON?(tod==="day"?0.80:0.75):(tod==="day"?0.72:0.88);/* [7.531.0 collaudo PO «troppo luminosa, colori sbiaditi»] 0,96/0,90→0,88/0,82 · [7.532.0 secondo giro dal telefono: «ancora troppo luminosa e chiara»] →0,80/0,75 con esposizione 0,78 */_gA.multiplyScalar(_k533);_gB.multiplyScalar(_k533);
+      /* [7.537.0 collaudo PO «i colori non sono ancora vividi come prima delle modifiche sulle luci» —
+         rosso __CPM_NO552] LA VIVACITA' SI RESTITUISCE AI MATERIALI, NON ALLA CURVA. Misura su tre scene
+         CONGELATE (stessa camera, stesso istante — la prima sonda scattava in autoplay e leggeva
+         inquadrature diverse: la stessa esposizione dava -1,1% e -15,1% in due giri, misurava la scena):
+         con la catena R5 la saturazione media del fotogramma e' **-7,7%** rispetto al mondo pre-7.529.
+         Provate e SCARTATE con le loro misure: abbassare l'esposizione (0,78→0,56 recupera appena 1,8
+         punti e spegne la scena) e cambiare curva (Cineon e nessun tone mapping risalgono a -4% ma
+         portano la luminosita' a +47% sul pre-7.529, cioe' proprio il «troppo luminosa» del collaudo
+         precedente; Reinhard peggiora a -12,3%). La desaturazione e' della curva ACES per costruzione:
+         si compensa dove nasce il colore — qui il prato, sotto il kit — riportando in HSL cio' che il
+         tone mapping toglie. */
+      /* ⚠️ RIMEDIO PROVATO E REVOCATO, e la traccia resta perche' vale piu' del rimedio: saturare erba e
+         kit a monte (offsetHSL +0,16 / kit 0,30→0,44) ha PEGGIORATO la misura — saturazione -9,9% contro
+         il -4,0% di partenza, seed identico. La ragione e' nella curva: ACES comprime verso il bianco
+         proprio i colori piu' intensi, quindi piu' si satura la sorgente piu' il tone mapping desatura.
+         La misura pulita (tre scene congelate, STESSO seed — con nomi diversi i bracci giravano su
+         partite e kit diversi e i numeri si scambiavano fra un giro e l'altro) dice che il divario col
+         mondo pre-7.529 non e' nella saturazione (-4,0%) ma nella LUMINOSITA': +42%. Un fotogramma piu'
+         chiaro legge come slavato anche a saturazione quasi uguale — ed e' la stessa nota che il PO
+         aveva gia' dato («troppo luminosa»). Si agisce li'. */}/* [7.529.0 R5] il dim 0,72/0,88 era la compensazione dell'assenza di tonemapping (lo dice il commento storico qui sopra): con ACES si toglie quasi tutto — resta un filo, tarato sulle foto: 0,96 giorno · 0,90 notte (a 0,98 il prato notturno sembrava mezzogiorno, foto gi12) */
     // 5.49.16: VARIETÀ PRATO — meteo (bagnato scuro / neve sbiancata / sole più chiaro) + importanza (strisce più nette) + stadio (n°/orientamento strisce da seed).
     const _wStr=((typeof weather==="string"?weather:(weather&&((weather.id||"")+" "+(weather.name||"")+" "+(weather.pitchFx||""))))||"").toLowerCase();
     if(/rain|pioggia|temporal|storm|drizzle/.test(_wStr)){_gA.multiplyScalar(0.80);_gB.multiplyScalar(0.80);}
@@ -11755,7 +11775,17 @@ function ThreeMatchView(props){
        dal cono luce) — segue la palla sul piano erba, si allarga e sbiadisce quando la palla vola. */
     const _no534=(typeof window!=='undefined'&&window.__CPM_NO534);
     const _bShadow534=(function(){const c=document.createElement('canvas');c.width=c.height=64;const x=c.getContext('2d');
-      const g=x.createRadialGradient(32,32,2,32,32,30);g.addColorStop(0,'rgba(0,0,0,0.60)');g.addColorStop(0.65,'rgba(0,0,0,0.32)');g.addColorStop(1,'rgba(0,0,0,0)');
+      /* [7.537.0 collaudo PO «l'ombra del pallone la farei di un altro colore, in modo da individuarlo
+         subito» — rosso __CPM_NO550] L'OMBRA SI STACCA DAL PRATO. Era un radiale NERO su erba verde: il
+         nero e' il colore che il prato in ombra ha gia' addosso, quindi il segno si confondeva proprio
+         quando serviva (ed e' lei che dice DOVE ricade la palla, 7.534). Resta un'OMBRA — nucleo scuro,
+         non un disco fluo — ma porta un anello AMBRA a meta' raggio: l'ambra e' quasi il complementare
+         del verde del campo, quindi si separa a colpo d'occhio in pieno sole come in notturna, senza
+         accendere il prato. */
+      const _no550=(typeof window!=='undefined'&&window.__CPM_NO550);
+      const g=x.createRadialGradient(32,32,2,32,32,30);
+      if(_no550){g.addColorStop(0,'rgba(0,0,0,0.60)');g.addColorStop(0.65,'rgba(0,0,0,0.32)');g.addColorStop(1,'rgba(0,0,0,0)');}
+      else{g.addColorStop(0,'rgba(26,14,0,0.72)');g.addColorStop(0.42,'rgba(120,64,0,0.60)');g.addColorStop(0.66,'rgba(255,176,44,0.62)');g.addColorStop(0.86,'rgba(255,196,80,0.26)');g.addColorStop(1,'rgba(255,200,90,0)');}
       x.fillStyle=g;x.fillRect(0,0,64,64);
       const m=new THREE.Mesh(new THREE.PlaneGeometry(1.05,1.05),new THREE.MeshBasicMaterial({map:new THREE.CanvasTexture(c),transparent:true,opacity:0.85,depthWrite:false}));
       m.rotation.x=-Math.PI/2;m.position.y=0.032;m.renderOrder=1;m.visible=!_no534;scene.add(m);return m;})();
@@ -14569,6 +14599,15 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                if(((_ba.side||'home')==='away')!==(src.team==='away'))return;const _m=pp.mesh;if(!_m)return;
                if(_fx6!=null&&Math.hypot(_m.position.x-_fx6,_m.position.z-_fz6)<2)return;/* non il passatore */
                const _d=Math.hypot(_m.position.x-_wx6,_m.position.z-_wz6);if(_d<_rd6){_rd6=_d;_rv6=_m;}});
+             /* [7.537.0 NO551] IL RICEVENTE DICHIARATO VINCE SULL'INDOVINELLO: se l'evento porta `rcv`
+                (le catene di possesso lo dichiarano), l'arco mira alla mesh di QUEL cognome invece della
+                piu' vicina alla destinazione — il 3D consegna la palla all'uomo che la cronaca nomina. */
+             if(_ba.rcv&&!(typeof window!=='undefined'&&window.__CPM_NO546)){
+               const _rn=String(_ba.rcv).trim().toUpperCase();
+               sr.current.players.forEach((pp,ii)=>{const src=(P.allPlayers||[])[ii];if(!src||src.gk)return;
+                 if((_ba.side==='away')!==(src.team==='away'))return;const _m=pp.mesh;if(!_m)return;
+                 if(String(src.name||"").toUpperCase()===_rn){_rv6=_m;_rd6=Math.hypot(_m.position.x-_wx6,_m.position.z-_wz6);}});
+             }
              if(_rv6&&_rd6<32){ballArcTgtX=_rv6.position.x;ballArcTgtZ=_rv6.position.z;/* [taratura 6] tetto 18->32u: con 18 solo ~8 archi su 20 trovavano un ricevente e il resto atterrava nel vuoto (spiegabile fermo a 71%) — a 32 il ricevente parte col volo e arriva un attimo dopo la palla */
                _rv6._carry526={x:ballArcTgtX,z:ballArcTgtZ,t:Math.max(0.5,(ballArcDur||0.5)+0.3)};
                sr.current._rcv526=_rv6;
@@ -19935,6 +19974,17 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   const possTurnRef=useRef(1);/* [7.532.0 NO543] il TURNO di possesso: chi ha la palla ADESSO (1=casa) — la trama consuma questo, non la statistica % */
   const possSpellRef=useRef(35);const possExtRef=useRef(0);/* [7.532.0 NO543 v2] durata dello spell di possesso in tick: il censimento ha mostrato che le righe di recupero NON bastano a passare il turno (i pesi di zona le schiacciano a palla alta → 0 flip anche coi turni): nel calcio vero il possesso si alterna ogni 30-60s comunque — lo spell seedato (10-17 tick, pesato sulla % di possesso) garantisce l'alternanza, le righe di recupero restano gli override narrativi */
   const counterArmRef=useRef(null),counterCoolRef=useRef(-99);
+  /* [7.537.0 collaudo PO «molto possesso a centrocampo, a volte anche troppo da fermo su un singolo
+     giocatore» — rosso __CPM_NO551] LA CATENA DI POSSESSO (MP-2 applicato alla cronaca). La MISURA prima
+     del rimedio (sonda possesso-550, partita intera): la palla sta a piu' di 2,5u da CHIUNQUE per il
+     **77% del tempo** e vive nella fascia centrale per l'**80%**, toccata da 9 uomini su 21 — non e'
+     «ferma su un giocatore», e' una palla che VAGA DA SOLA a centrocampo, ed e' esattamente cio' che
+     toglie l'aria di partita vera. Il rimedio non e' un altro pomello sul drift: e' dare alla cronaca
+     una CATENA — 3-5 tocchi fra uomini REALI del lato in possesso, ognuno con passatore e ricevente
+     nominati, la palla che punta il ricevente (non una zona vuota) e il ricevente che le va incontro.
+     E' il primo pezzo del linguaggio Beat: l'evento porta gia' actor/ballEnd veri dal canale MP-0 e il
+     gesto dal vocabolario MP-1, quindi il 3D segue la stessa catena che il testo racconta. */
+  const azioneRef=useRef(null),_lastCatRef=useRef(-1);/* [7.537.0 v4] minuto dell'ultima battuta di catena: serve per alternare con il repertorio */
   const ponteRef=useRef(null),ponteIdxRef=useRef(-1);/* [7.532.0 NO544 — collaudo PO «da centrocampo in cronaca all'improvviso highlights di attacco: nessuna concatenazione»] IL PONTE: ~2' prima dell'highlight in calendario la cronaca SCORTA la palla verso il punto di nascita della scena (hlBallSpot della situation in arrivo) e le righe raccontano l'avvicinamento — l'highlight si apre dove il racconto ha portato il gioco *//* [7.532.0 v2] l'innesco vive nella TRAMA (flip di possesso con palla nel terzo difensivo del nuovo padrone), NON nel sorteggio di una riga poss: i pesi di zona 7.525 schiacciano le righe di recupero proprio quando la palla e' alta (misurato: 0 lanci in 2 partite). Cooldown 6' di gioco. *//* [7.530.0 collaudo PO «Non si riparte dal centro dopo un gol!» — rosso __CPM_NO536] il 7.525 toccava il centro per UN tick (300ms): un lampo, non una ripartenza. Ora allo scadere del conto kickRef nasce una RIPARTENZA RECITATA: kickoffRef tick di attesa al centro, le righe gia' sorteggiate vengono DIROTTATE su battute di calcio d'inizio (ordine sorteggi intatto), side = chi rimette in gioco (chi ha subito) */
   const pendingGoalRef=useRef(null);/* [7.528.0 IL GOL SI COSTRUISCE] {ev,dir,ticks}: il gol del microsim aspetta che la palla arrivi nell'ultimo terzo *//* [7.525.0] tick al CALCIO D'INIZIO dopo un gol ambientale: col pallone che ora vola DENTRO lo specchio (bpos 98/2), senza ripresa dal centro restava parcheggiato in rete dove l'unico uomo e' il portiere (non-portatore per regola) — ball-attended misurato 45,8% < 52 al primo giro */
   /* [7.485.0 direttiva PO «la cronaca deve rispecchiare ed essere sincronizzata con i movimenti sul campo»]
@@ -21038,6 +21088,30 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
             if(_pd<6)ponteRef.current.arrived=true;
             else{_tp.x=clamp(_tp.x+_pdx/_pd*4,2,98);_tp.y=clamp(_tp.y+_pdy/_pd*4,4,96);}}
         }
+        /* [7.537.0 NO551] AVANZAMENTO DELLA CATENA: mentre un passo e' in volo la palla punta il
+           RICEVENTE (non una zona), e il ricevente le va incontro — e' qui che muore il «77% del tempo
+           senza padrone». Un highlight in corso mette in pausa, come per le altre macchine. */
+        if(!(typeof window!=='undefined'&&window.__CPM_NO551)&&azioneRef.current&&!_inHL77&&!pendingGoalRef.current&&!counterRef.current){
+          const _az=azioneRef.current,_p=_az.passi[_az.i];
+          if(_p){const _t551=ballTargetRef.current;
+            const _dx=_p.to.x-_t551.x,_dy=_p.to.y-_t551.y,_d=Math.hypot(_dx,_dy);
+            if(_d>1.2){_t551.x=clamp(_t551.x+_dx/_d*Math.min(6,_d),2,98);_t551.y=clamp(_t551.y+_dy/_d*Math.min(6,_d),4,96);}
+            else _az.arrivato=true;
+            /* il ricevente accorcia sulla palla: senza questo la palla arriva in una zona vuota e resta
+               orfana (il difetto misurato), con questo il possesso ha sempre un uomo */
+            /* [7.537.0 v2] LA SQUADRA ACCOMPAGNA: il ricevente accorcia sulla palla e il resto del reparto
+               in possesso GUADAGNA CAMPO (1,1u/tick verso la porta attaccata). Senza questo la catena non
+               trova mai un uomo piu' avanti — la formazione resta compatta al centro e il possesso ruota
+               attorno al cerchio: e' la misura che ha bocciato la v1 (93% del tempo in fascia centrale). */
+            const _dir2=_az.nostra?1:-1,_lt=_az.nostra?"home":"away";
+            setMatchPlayers(prev=>prev.map((pl,idx)=>{if(!pl||pl.team==="ref")return pl;
+              if(idx===_p.rcvIdx){const _ddx=_t551.x-pl.x,_ddy=_t551.y-pl.y,_dd=Math.hypot(_ddx,_ddy);
+                if(_dd<1.4)return pl;const _st=Math.min(3.2,_dd);
+                return{...pl,x:clamp(pl.x+_ddx/_dd*_st,2,98),y:clamp(pl.y+_ddy/_dd*_st,3,97)};}
+              if(pl.team!==_lt||pl.gk)return pl;
+              return{...pl,x:clamp(pl.x+_dir2*1.1,2,96)};}));
+          }
+        }
         if(bgCoolRef.current>0)bgCoolRef.current--;
         const _pausa485=(typeof window!=='undefined'&&window.__CPM_NO485)?false:(bgCoolRef.current>0);/* prova del rosso: `__CPM_NO485` toglie il pavimento */
         if(_simEv77||(_rndM()<_bgProb&&!_inHL77&&!_pausa485)){/* [7.528.0 v2] durante l'azione pendente le righe ESCONO e raccontano l'avanzata (la decisione F3b segue la palla che sale: sviluppo/pericolo emergono da soli — la prima stesura le sopprimeva e il guardiano bg-rhythm e' diventato CIECO: sviluppo 6 coppie, pericolo 2, contro 14/13 storici); a non muovere il pallone ci pensa il blocco _bt498 qui sotto */
@@ -21184,6 +21258,92 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
             ev=_arm542.dir<0?{txt:"⚡ Palla persa alta! {A} riparte in campo aperto — che pericolo!",ef:null,w:1,bpos:null,pd:_dec499}
                :{txt:"⚡ Recupero altissimo di {H}! Si ribalta il fronte in un lampo!",ef:null,w:1,bpos:null,pd:_dec499};}
           else if(counterArmRef.current&&(_no542||ev.ef))counterArmRef.current=null;/* armato ma il momento e' passato (gol in mezzo / rosso): si disarma senza recitare */}
+          /* [7.537.0 NO551] LA CATENA DI POSSESSO SI RECITA. Ultima delle macchine per precedenza (cede a
+             kickoff, gol costruito, giocate piazzate, contropiede e ponte): quando nessun'altra parla, la
+             cronaca costruisce una CATENA di 3-5 tocchi fra uomini VERI del lato in possesso. Ogni passo
+             nomina passatore e ricevente presi da `matchPlayers` (gli stessi cognomi che il 3D ha sulle
+             maglie: il canale MP-0 li usa per far calciare l'uomo giusto), la palla punta la posizione
+             del ricevente e il ricevente le va incontro. Deterministico: la scelta esce da hashStr su
+             minuto+passo, mai da `_rndM` (invariante 7.511 sull'ordine dei sorteggi). */
+          if(!(typeof window!=='undefined'&&window.__CPM_NO551)&&!/goal$/.test(String(ev.ef||""))&&!_koHij536&&kickoffRef.current<=0&&!pendingGoalRef.current&&!counterRef.current&&!spRef.current&&!ponteRef.current){
+            const _mp551=(matchPlayersRef.current||[]);
+            const _lato551=(possTurnRef.current<0)?"away":"home";
+            const _mio551=(i)=>{const q=_mp551[i];return !!q&&q.team===_lato551&&!q.gk;};
+            /* [7.537.0 v5] LA CATENA HA UN INTERVALLO. Con l'alternanza (v4) il guardiano `bg-decision`
+               restava sul filo — 17 righe utili in isolamento, 14 (sotto il minimo di 15) dentro la
+               corsia: il numero di righe dirottate OSCILLA perche' la catena si arma dalle posizioni dei
+               giocatori, che portano un jitter casuale (debito noto r.21058). Un guardiano che passa o no
+               a seconda del jitter non e' un guardiano: la catena si apre al massimo una volta ogni 3
+               minuti di gioco, cosi' il repertorio pescato ha sempre il suo spazio e la telecronaca
+               alterna azione e commento invece di essere un elenco di passaggi. */
+            if(!azioneRef.current&&_mp551.length>=11&&(nx-(_lastCatRef.current|0)>=6||_lastCatRef.current<0)){/* [7.537.0 v6] intervallo 3'→6' */
+              /* si apre solo se c'e' un portatore plausibile vicino alla palla */
+              const _b551=ballPosRef.current||{x:50,y:50};
+              let _hold=-1,_hd=1e9;_mp551.forEach((q,i)=>{if(!_mio551(i))return;const d=Math.hypot(q.x-_b551.x,q.y-_b551.y);if(d<_hd){_hd=d;_hold=i;}});
+              if(_hold>=0&&_hd<26){
+                const _dir551=(_lato551==="home")?1:-1;
+                const _n551=2+(Math.abs(hashStr("cat|"+nx+"|"+_hold))%2);/* [7.537.0 v6] 2-3 tocchi, non 3-5: col confronto diretto (guardiano acceso/spento) la catena da 5 passi alternati occupava circa meta' della telecronaca e affamava il repertorio pescato — 14 righe utili contro le 15 minime CON la catena, verde SENZA. Una giocata di due-tre tocchi si racconta meglio e lascia parlare il commento. */
+                const passi=[];let _cur=_hold;
+                for(let k=0;k<_n551;k++){
+                  const _cq=_mp551[_cur];if(!_cq)break;
+                  /* il ricevente e' un compagno PIU' AVANTI (o in appoggio laterale al cambio gioco),
+                     entro un raggio da passaggio: la catena guadagna campo senza teletrasporti */
+                  let _best=-1,_bs=-1e9;
+                  _mp551.forEach((q,i)=>{if(i===_cur||!_mio551(i))return;
+                    const _fw=(q.x-_cq.x)*_dir551,_dd=Math.hypot(q.x-_cq.x,q.y-_cq.y);
+                    if(_dd<4||_dd>40)return;
+                    if(_fw<2)return;/* [7.537.0 v7] il passo DEVE guadagnare campo: col vincolo a -1 la catena
+                       accettava appoggi laterali e teneva la palla al centro — il guardiano `bg-rhythm` e'
+                       andato cieco sulla fase SVILUPPO (4 coppie contro le 8 minime, costruzione 51): una
+                       telecronaca che parla solo di costruzione non ha piu' respiro. *//* [7.537.0 v2] OGNI PASSO GUADAGNA CAMPO: la v1 pesava l'avanzamento (x1,6) ma non lo pretendeva, e con la formazione compatta al centro la catena girava in orizzontale — misurato: tempo nella fascia centrale 80%→93%, cioe' il contrario di cio' che serviva. Un passaggio all'indietro non e' vietato nel calcio, ma questa macchina esiste per PORTARE la palla: se non c'e' nessuno piu' avanti, la catena si chiude e lascia parlare le altre voci. */
+                    const _sc=_fw*4.5-Math.abs(_dd-22)*0.35+((Math.abs(hashStr("rx|"+nx+"|"+k+"|"+i))%100)/100)*3;
+                    if(_sc>_bs){_bs=_sc;_best=i;}});
+                  if(_best<0)break;
+                  const _bq=_mp551[_best];
+                  const _fw2=(_bq.x-_cq.x)*_dir551;
+                  const _kind=(_fw2>13)?"filtrante":(Math.abs(_bq.y-_cq.y)>22)?"cambio":(_fw2>4)?"verticale":"appoggio";
+                  passi.push({daIdx:_cur,rcvIdx:_best,da:String(_cq.name||"").trim(),a:String(_bq.name||"").trim(),kind:_kind,to:{x:_bq.x,y:_bq.y}});
+                  _cur=_best;
+                }
+                if(passi.length>=2){azioneRef.current={passi,i:0,nostra:_lato551==="home",arrivato:false,t0:nx};
+                  /* [7.537.0 v3] LA CATENA APRE LA PROFONDITA'. Le v1/v2 sono state buttate con le loro
+                     misure: pretendere l'avanzamento a ogni passo (v2) non basta se davanti non c'e'
+                     NESSUNO — in cronaca i ventidue vivono ammassati attorno al cerchio (misura: 80-93%
+                     del tempo in fascia centrale), quindi la catena non trovava riceventi e si chiudeva
+                     subito. All'apertura i tre uomini piu' avanzati del lato in possesso ATTACCANO lo
+                     spazio (+7u verso la porta): e' lo stesso principio dello staging pre-azione degli
+                     highlight, portato nella cronaca — prima si crea la giocata, poi la si racconta. */
+                  const _d3=(_lato551==="home")?1:-1;
+                  setMatchPlayers(prev=>{const idxs=prev.map((q,i)=>({q,i})).filter(o=>o.q&&o.q.team===_lato551&&!o.q.gk)
+                      .sort((a,c)=>((c.q.x-a.q.x)*_d3)).slice(0,3).map(o=>o.i);
+                    return prev.map((pl,idx)=>(idxs.indexOf(idx)>=0&&pl)?{...pl,x:clamp(pl.x+_d3*7,4,94)}:pl);});}
+              }
+            }
+            /* [7.537.0 v4] LA CATENA ALTERNA CON IL REPERTORIO. La v3 dirottava OGNI riga finche' i passi
+               finivano: tre-cinque battute consecutive tutte di macchina, e il guardiano `bg-decision`
+               (che misura il repertorio PESCATO, escluse le recite) e' diventato CIECO — 14 righe utili
+               contro le 15 minime. E' anche un difetto di racconto, non solo di misura: una telecronaca
+               che per mezzo minuto dice solo «X per Y» smette di essere la telecronaca ampia chiesta dal
+               PO. Ora un passo si recita SOLO se la battuta precedente non era di catena: il passaggio e
+               il commento si alternano, come in televisione. */
+            if(azioneRef.current&&_lastCatRef.current===nx){/* battuta precedente gia' di catena in questo giro: si lascia parlare il repertorio */}
+            else if(azioneRef.current){
+              const _az=azioneRef.current,_p=_az.passi[_az.i];
+              if(!_p||(_az.t0!=null&&nx-_az.t0>6))azioneRef.current=null;/* la catena non vive piu' di 6 minuti di gioco */
+              else{
+                _recHij545=true;_recKind546="catena";_recSide546=_az.nostra?"home":"away";
+                const _cog=(n)=>{const t=String(n||"").trim();return t?t.charAt(0)+t.slice(1).toLowerCase():"un compagno";};
+                const _da=_cog(_p.da),_a=_cog(_p.a);
+                const _V=_p.kind==="filtrante"?["🎯 "+_da+" verticalizza per "+_a+": la difesa si allunga!","⚡ Filtrante di "+_da+" — "+_a+" attacca lo spazio!"]
+                  :_p.kind==="cambio"?["↔️ "+_da+" cambia gioco: la palla vola dall'altra parte per "+_a+".","🧭 Apertura di "+_da+" a scavalcare il campo: la riceve "+_a+"."]
+                  :_p.kind==="verticale"?["⚙️ "+_da+" appoggia in avanti per "+_a+", la manovra sale.","📈 "+_da+" trova "+_a+" fra le linee: si guadagna campo."]
+                  :["🔁 "+_da+" scarica su "+_a+" e la squadra riprende posizione.","⚪ Giro palla: "+_da+" per "+_a+", si cerca il varco."];
+                const _vi=Math.abs(hashStr("cv|"+nx+"|"+_az.i))%_V.length;
+                ev={txt:_V[_vi],ef:null,w:1,bpos:{x:_p.to.x,y:_p.to.y},at:(_p.kind==="filtrante"?"pass":"pass"),pd:_dec499,_az551:_p};
+                _az.i++;_lastCatRef.current=nx;if(_az.i>=_az.passi.length)azioneRef.current=null;
+              }
+            }
+          }
           /* [7.532.0 NO544] LE RIGHE DEL PONTE: durante la scorta verso la scena imminente, la battuta
              sorteggiata racconta l'avvicinamento (pattern kickoff: sorteggio consumato, si scarta la riga). */
           if(!(typeof window!=='undefined'&&window.__CPM_NO544)&&ponteRef.current&&!ponteRef.current.arrived&&!/goal$/.test(String(ev.ef||""))&&!_koHij536&&kickoffRef.current<=0&&!pendingGoalRef.current&&!counterRef.current&&!spRef.current){
@@ -21420,10 +21580,14 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           const _rk546=_recKind546||(pendingGoalRef.current?"pending":null);
           if(_rk546)cpmEv("recita",{min:nx,kind:_rk546,side:_side546,ex:_end546.x,ey:_end546.y,arc:_arcType||null});
           if(_arcType){
-            const _act511=String((_side546==="away"?aN:hN)||"").replace(/\s*\(.*$/,"")||null;
+            /* [7.537.0 NO551] quando parla la CATENA, l'attore non e' un nome pescato dal testo ma il
+               passatore dichiarato, e il ricevente viaggia con l'evento (`rcv`): l'audit MP segnalava
+               che il 3D lo indovinava per prossimita' (7.523) — ora la palla vola all'uomo NOMINATO. */
+            const _az551=ev._az551||null;
+            const _act511=_az551?String(_az551.da||"").trim():(String((_side546==="away"?aN:hN)||"").replace(/\s*\(.*$/,"")||null);
             setBgAction({type:_arcType,t:Date.now(),ballEnd:_end546,
               from:{x:+(ballPosRef.current.x||50).toFixed(1),y:+(ballPosRef.current.y||50).toFixed(1)},
-              side:_side546,actor:_act511,ef:ev.ef||null,pd:ev.pd||null});
+              side:_side546,actor:_act511,rcv:_az551?String(_az551.a||"").trim():null,ef:ev.ef||null,pd:ev.pd||null});
           }
           if(typeof window!=='undefined'&&window.__CPM_TXT487!==undefined){try{const _t=(window.__CPM_TXT487=window.__CPM_TXT487||[]);if(_t.length<300)_t.push({m:nx,txt:evTxt,pd:ev.pd||null,ef:ev.ef||null});}catch(_e){}}
           /* [7.496.0 F1b] LA RIGA DI CRONACA NEL REGISTRO, con cio' che DICHIARA: la zona (`pd`), dove

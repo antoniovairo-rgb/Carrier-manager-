@@ -1,5 +1,48 @@
 # Cronologia delle release — Korward Elite
 
+### 7.537.0 — L'azione si vede e si segue
+
+Quattro note di collaudo PO. Rossi: `__CPM_NO550` (ombra), `__CPM_NO551` (catena), `__CPM_NO552` (colori).
+
+1. **L'ombra del pallone ha un colore.** Era un radiale **nero** su erba verde — il nero è quello che il
+   prato in ombra ha già addosso, e il segno spariva proprio quando serve (è l'ombra che dice *dove
+   ricade* la palla, 7.534). Ora nucleo scuro + **anello ambra** a metà raggio: resta un'ombra, non
+   diventa un disco fluo. Misura sui pixel del fotogramma: **2423** pixel in banda ambra contro **1329**
+   del braccio storico.
+2. **La catena di possesso** (primo pezzo di MP-2 portato nella cronaca). La misura *prima* del rimedio
+   ha corretto la diagnosi: il difetto non era «palla ferma su un giocatore» (stazionamento p90 0,52s) ma
+   una palla che **vaga** — oltre 2,5u da chiunque per il **77%** del tempo, in fascia centrale per
+   l'**80%**, toccata da 9 uomini su 21. Ora la cronaca costruisce **catene di 3-5 tocchi fra uomini
+   reali**: ogni passo nomina passatore e ricevente dai cognomi di `matchPlayers`, la palla punta la
+   **posizione del ricevente** (non una zona vuota), il ricevente le va incontro, il reparto accompagna e
+   all'apertura i tre uomini più avanzati attaccano lo spazio. L'evento porta `actor` e — campo **nuovo**
+   — `rcv` fino al 3D, che consegna la palla all'uomo **nominato** invece di indovinarlo per prossimità
+   (7.523). **Misure sulla versione spedita** (catena di **2-3 tocchi**, una ogni 6' di gioco, **alternata** col
+   commento, ogni passo **obbligato a guadagnare campo**): il segnale solido arriva dal guardiano del
+   ritmo — la fase **sviluppo passa da 4 a 21 coppie** e la costruzione da 51 a 26 (rapporto 1,50×,
+   soglia 1,30): il gioco esce dal centro e la telecronaca torna ad avere tre respiri invece di uno.
+   ⚠️ La sonda del possesso **non conferma né smentisce**: sugli stessi giri misura la fascia centrale fra
+   80% e 93% e gli uomini che toccano palla fra 5 e 14 — varianza troppo alta per giudicare (campiona a
+   orologio su una partita accelerata). Dichiarata così invece di scegliere il giro che fa comodo.
+   Sette stesure, quattro buttate con le loro misure: senza vincolo d'avanzamento la catena girava in
+   orizzontale; col vincolo rigido diventava rara; a 3-5 tocchi consecutivi affamava il repertorio
+   (`bg-decision` cieco **con** la catena e verde **senza**); a passi laterali spegneva la fase sviluppo.
+   Il campione del guardiano è stato portato a 5 partite: 20 righe utili, accordo **90%**, varietà 70%. ⚠️ **Non risolto e dichiarato**: la concentrazione a centrocampo (80%→85%) — la
+   radice è il drift della trama e i **turni di possesso parcheggiati** dal 7.532, non la catena. Due
+   stesure intermedie **buttate con le loro misure**: senza vincolo d'avanzamento la catena girava in
+   orizzontale (93% in fascia centrale); col vincolo rigido (+1,5u obbligatori) le catene diventavano
+   troppo rare.
+3. **I colori tornano densi.** Misura su tre scene **congelate** a **seed identico** — con nomi diversi i
+   due bracci giravano su partite e kit diversi, e i numeri **si scambiavano** fra un giro e l'altro
+   (−10,4%/−3,8% poi −4,0%/−10,0%): il rumore era di nuovo lo strumento. Con la misura pulita il divario
+   col mondo pre-7.529 **non è nella saturazione** (−4,0%) ma nella **luminosità** (+42%), ed è quella che
+   fa leggere «slavato». Esposizione **0,78→0,60**: saturazione **−4,0%→−2,5%**, luminosità
+   **+42%→+29,6%**. ⚠️ **Provato e revocato con la sua misura**: saturare erba e kit a monte peggiorava
+   (**−9,9%**), perché ACES comprime verso il bianco proprio i colori più intensi — la saturazione
+   aggiunta alla sorgente viene mangiata dalla curva.
+4. **Strumenti nuovi**: censimento del possesso (stazionamento del portatore, uomini diversi, viaggio,
+   fascia centrale) e sonda di saturazione a fotogrammi controllati.
+
 ### 7.536.0 — Le tre voci non si pestano i piedi
 
 Tre note di collaudo PO nello stesso giro. Rossi: `__CPM_NO548` (a+b), `__CPM_NO549` (c).
