@@ -573,6 +573,17 @@ volo. Specchio (rosso `__CPM_NO535`): `in_net_own` è il gemello del gol subito;
 specchio solo con certificato `_netOk535` — senza, scivola oltre il palo (mai ritoccare la mappa
 analitica per questo: revoca 7.477).
 
+**Il canale dice la verità (7.533.0, MP-0 — rosso `__CPM_NO546`).** Ogni macchina che dirotta una riga
+DICHIARA lato e kind (`_recSide546`/`_recKind546`) e li mette nel registro (`cpmEv("recita")`); il
+payload `setBgAction` porta side dalla macchina (mai dalla regex su `ef`), `ballEnd` dal bersaglio
+VERO (`ballTargetRef`) sulle righe in volo (mai 50,50), e l'`actor` dichiarato VINCOLA il gesto 3D
+(match per cognome UPPERCASE sulle mesh del lato, tetto 22u, fallback prossimità). Chi aggiunge una
+macchina di recita DEVE dichiarare i tre campi. Certificato-rete: si nega su
+`hlOutcomeKind==="chance"` (la firma del falso 003) e si azzera al cambio di fase — MAI negarlo sul
+PREMIO: i gol del compagno viaggiano con reward `assist` e verrebbero espulsi. Gli scrittori build-up
+(11/12/13) hanno il clamp specchio: il build-up muore SULLA linea, l'ingresso in rete è monopolio dei
+canali certificati.
+
 **In `cpmtest` il taglio del teatro è SPENTO (`_asIfPlay`, 7.345) — ogni sonda che giudica le APERTURE
 di scena deve armare `__CPM_PRESENT=1`, o misura un teatro che va a piedi (artefatto: 73,5u su gi44,
 rimedio `__CPM_NO529` REVOCATO con misura invariata — col teatro attivo i due bracci erano identici a

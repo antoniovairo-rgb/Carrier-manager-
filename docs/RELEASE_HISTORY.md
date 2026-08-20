@@ -1,5 +1,62 @@
 # Cronologia delle release — Korward Elite
 
+### 7.533.0 — MP-0: il canale dice la verità (missione Match Presentation, lotto 0)
+
+Apre la missione **macro-gestualità** del PO. Prima mossa del piano in 6 lotti (`mp-audit/00-piano.md`,
+dai 4 audit della pipeline cronaca→sim→eventi→scena): prima di insegnare i gesti, il canale che li
+trasporta deve smettere di mentire. Rosso unico di release: `__CPM_NO546`.
+
+**I quattro fix del canale** (sonda `canale-546.mjs`, 2 partite seedate):
+
+1. **Side dalle macchine, non dalla regex**: `setBgAction.side` usciva da `/^opp_/`+oppShots — il
+   contropiede avversario e il ponte difensivo arrivavano al 3D come `side:"home"`, e gesto+ricevente
+   si cercavano fra i NOSTRI. Ora ogni macchina di recita dichiara il lato (`_recSide546`: kickoff dal
+   `kickoffSideRef`, sp dal kind, counter/ponte dal verso) e l'azione pendente porta il suo `dir`.
+   Misura: 0 recite con side incoerente col kind (rosso: la regex torna).
+2. **BallEnd vero per le righe in volo**: pending/counter/ponte viaggiano con `bpos` nullo e l'arco 3D
+   volava a **(50,50)** — il centro — mentre la palla logica correva in area (il retarget 7.523
+   agganciava un ricevente vicino al centro: il 3D contraddiceva la recita). Ora insegue
+   `ballTargetRef`, il bersaglio che le macchine avanzano ogni tick. Misura: 7 righe in volo, **0 a
+   (50,50)** (rosso: tornano al centro).
+3. **L'attore dichiarato vincola**: il 3D ignorava `actor` e ri-derivava il gesto per prossimità — il
+   nome sul banner e l'uomo che calciava in scena divergevano. Ora il cognome risolto nel testo, se
+   esiste fra le mesh del lato dichiarato entro 22u, suona la clip (fallback prossimità: eroe e panchina
+   non hanno mesh). Misura: **79% dei gesti di cronaca assegnati per NOME** (23/29; rosso: 0%).
+4. **Le recite entrano nel registro**: `cpmEv("recita")` con kind/side/destinazione da tutte le
+   macchine (19 eventi in 2 partite — prima **zero**: i guardiani non potevano vederle).
+
+**Indagine 003-in-rete** (ipotesi H1–H6 dell'audit 4; rimedi **non-di-mappa**, lezione 7.477 — il
+dispatch e i canali-rete restano identici per `data-coherence`):
+
+- **H1 — il certificato si nega sull'esito**: `in_net`/`in_net_high` concedevano il certificato-rete
+  (`_netOk535`) incondizionatamente; ora si nega su `hlOutcomeKind==="chance"` — la firma esatta del
+  falso (il remap r.21909 delle catene). ⚠️ La prima stesura negava sul PREMIO (`reward!=="goal"`) ed è
+  stata corretta PRIMA di spedirla: avrebbe espulso i gol veri del compagno (reward `assist`,
+  r.13501/13325); su un tiro puro `_hs===true` implica `outKind==="goal"` (r.3456), quindi il premio
+  non distingue nulla che l'esito non distingua già. A certificato negato il volo resta (mappa intatta)
+  ma a canale chiuso il guardiano 7.530 espelle: **lo stato finale — quello che le note PO fotografano —
+  dice occasione**. Il volo di 1,9s si corregge in MP-1/2 col dispatch a vocabolario.
+- **H2 — clamp specchio sugli scrittori build-up** (11/12/13): depositavano da coordinate dichiarate
+  (`to.x` fino a 98,6 game = oltre la linea) col guardiano cieco (arco vivo) — quadro esatto del
+  taccuino #184 «through ma palla in rete». Ora il build-up muore SULLA linea, mai dentro lo specchio.
+- **H3 — il «wide» esce dallo specchio**: il settle del tiro wide/out/corner portava la x oltre la
+  linea (~48,5) lasciando la z dov'era — un «di poco a lato» quasi centrale moriva DENTRO lo specchio
+  col guardiano spento dal post-arco vivo (geometria gi45). Ora la z scivola oltre il palo dal verso
+  già preso dalla palla.
+- **H4 — il certificato non sopravvive al cambio di fase**: azzerato in r.14311 accanto al reset
+  post-arco (era solo allo snap; la race consegna-383 lo lasciava stantio → guardiano cieco nella
+  scena dopo).
+- **Misure** (sonda `inrete-529.mjs`, 16 scene forzate: 5 casi storici del taccuino ×2 + 6 shot-family):
+  stato finale **fuori dallo specchio 15/16** — l'unica palla in rete è un'incornata con premio GOL
+  vero (collettore `__CPM_NET546`: `cert=1`, legittima). Collettore d'attribuzione permanente nei 3
+  canali-rete + guardiano-espulsore + wide-slide.
+- **Dichiarato NON verificato**: la firma H1 (`kind==="chance"` che arma `in_net`) **non è stata
+  pescata** dal campione di 16 scene — il gate è difeso dal ragionamento sul codice e dai guardiani
+  di corsia (outcome-not-goal/outcome-reality/data-coherence), non da una riproduzione diretta.
+  Idem H4: la race non è riproducibile a comando; il reset è una difesa passiva.
+
+Rituale completo B (9 passi) + A (8 canonici).
+
 ### 7.532.0 — Una partita vera si respira
 
 Quattro direttive PO nella stessa sessione: «telecronaca e indicazioni del mister mischiate, vanno
