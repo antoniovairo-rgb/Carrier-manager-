@@ -1,5 +1,37 @@
 # Cronologia delle release — Korward Elite
 
+### 7.535.0 — Lo stadio non può più sparire
+
+Collaudo PO: «grave regressione, cartelloni pubblicitari, striscioni, bandiere, sciarpe non ci sono
+più» — e poi la frase che è la diagnosi: **«alla partita successiva si vedono»**. Un arredo che torna
+da solo non è stato rimosso: è stato **perduto**.
+
+1. **Il contesto grafico può morire, e nessuno lo sapeva** (rosso `__CPM_NO535GL`). Il browser di un
+   telefono revoca il contesto WebGL quando la memoria stringe. Il gioco non ascoltava né
+   `webglcontextlost` né `webglcontextrestored`, e **senza `preventDefault()` il browser non tenta
+   nemmeno il ripristino**: le mesh restano in scena, le loro texture no — e un piano con texture
+   perduta su materiale opaco si vede **nero**. È il quadro esatto dello screenshot (stadio abitato,
+   arredo nero o assente) e spiega perché la partita dopo è a posto: è una scena nuova. Ora la perdita
+   si intercetta e il ripristino **rimonta la vista** riusando la chiave del «Riprova» 7.264 — stessa
+   partita, stadio ricostruito. **Misura** (revoca reale con `WEBGL_lose_context`): verde 2 perdite
+   intercettate, 1 ripristino, 192 piani texturizzati di nuovo in scena; rosso 0 e 0.
+2. **Il budget delle texture** (censimento permanente `__CPM_DECOR`): 192 piani d'arredo tenevano
+   **120 texture GPU distinte per ~44,5 MB**, moltissime identiche — le sciarpe della curva disegnavano
+   lo stesso canvas 512×48 **quarantasei volte**, una per cella. Ora i generatori (cartelloni fantasia e
+   brand, teli, sciarpe) sono memoizzati per chiave: **120 → 68 texture, 44,5 → 33,7 MB (−24%)** senza
+   un pixel di differenza, cioè meno occasioni di toccare il limite dove l'allocazione fallisce.
+3. **Il catch che nascondeva lo stadio rotto**: attorno a `buildStadium` c'era un `catch` **vuoto**. Se
+   la costruzione si interrompe restano gradinate e folla (lo stadio *sembra* abitato) ma mancano
+   muretti e striscioni, e `crowdMats`/`_curveGeo` restano nulli — la scenografia del tifo ripiega su una
+   geometria stimata e appende teli fuori posto. Ora l'errore si registra (`__CPM_STADFAIL` + console).
+
+**Dichiarato NON verificato**: il difetto **non è stato riprodotto headless** — sweep sui 10 template di
+stadio con folla piena: 0 texture nere, 0 interruzioni di costruzione, arredo sempre completo. Serve la
+memoria di un telefono vero. La causa è quindi **ricostruita dalle firme** (mesh presenti + texture
+vuota = nero; transitorio; risolto dalla scena successiva), non colta sul fatto. Non ho nemmeno prova
+che sia una regressione *recente*: può essere un limite raggiunto ora. Se ricapita, `__CPM_GLLOST` e
+`__CPM_STADFAIL` diranno quale dei due percorsi è stato.
+
 ### 7.534.0 — MP-1 prima ondata: il vocabolario del gesto
 
 Secondo lotto della missione Match Presentation. Rosso di release: `__CPM_NO547`.

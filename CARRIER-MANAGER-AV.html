@@ -4826,7 +4826,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="7.534.0"; // [7.534.0 — MP-1 PRIMA ONDATA: IL VOCABOLARIO DEL GESTO (rosso __CPM_NO547)]: la tabella GESTI (r.~12458) e' il punto unico famiglia→variante→{clip, profilo}: (a) LA CLIP DAL VOCABOLARIO — la catena if actType→clip (r.~17290, nove famiglie/sei clip) diventa il lookup gestoDi(), risoluzione per risoluzione IDENTICA alla catena storica (guardiano gesto-vocabolario: 17 casi enumerati verdi, shot_volley→volley, lunge→kick, press/call→locomozione, aerial→header...); (b) IL VOLO HA UN PROFILO — ballArcProf dalla tabella, consumato nell'unico punto della pancia (r.~13040): «tesa» sin^0.7 (la sassata sale presto e viaggia piatta), «campana» sin(u^0.72·π) (il pallonetto e la panenka scollinano a u~0,38 e scendono lunghi), null = seno 7.213; vale 0 agli estremi in TUTTI i profili — contatto e arrivo non cambiano di un millimetro (lezione 7.477: traiettorie sopra i bersagli), e si azzera a OGNI armo d'arco (testa del dispatcher + arco BG: un profilo stantio e' la classe di difetto del certificato 003/H4); (c) +volley e +lift ai COMPAGNI (r.~11662): la girata del compagno che finalizza non suona piu' il kick generico e il canale d'esultanza dei compagni (r.15872) — che chiedeva `lift` da 7.384 e risolveva null — smette di essere un ramo morto. MISURE: guardiano gesto-vocabolario-test.mjs (enumerazione via hook __CPM_GESTI, lezione trama-identita: le risoluzioni sono troppo rare per il campionamento) — verde 17/17 + 4 firme distinte famiglia shot, rosso __CPM_NO547 = tabella appiattita alla base, 1 firma, varianti mute; in volo la sassata misurata dal testimone (pancia 0,94 su 11 campioni, chiusa a terra); DICHIARATO NON VERIFICATO: la campana in volo non e' catturabile dalla sonda — il pallonetto su gi0 NON VOLA MAI (fase inchiodata hl_result, __CPM_DISPATCH nullo) e la misura sulla BASELINE 7.533 dice identico: difetto PRE-esistente, aperto come indagine MP (possibile parente della nota «giocata senza senso»); la campana resta raggiungibile via penalty_panenka. Colonne future (contactAt/vRef/spin/tgtY/foot) si aggiungono alla tabella, ognuna col suo consumatore e la sua misura.
+const GAME_VERSION="7.535.0"; // [7.535.0 — LO STADIO NON PUO' PIU' SPARIRE, collaudo PO «cartelloni pubblicitari, striscioni, bandiere, sciarpe non ci sono piu'» + «alla partita successiva si vedono»]: la seconda frase e' la diagnosi — un arredo che torna da solo non e' stato rimosso, e' stato PERDUTO. Tre rimedi, tutti misurati: (a) IL CONTESTO GRAFICO PUO' MORIRE E NESSUNO LO SAPEVA (rosso __CPM_NO535GL): il browser di un telefono revoca il contesto WebGL sotto pressione di memoria; il gioco non ascoltava ne' `webglcontextlost` ne' `webglcontextrestored` e senza `preventDefault()` il browser non tenta nemmeno il ripristino — le mesh restano in scena, le loro texture no, e un piano con texture perduta su materiale opaco si vede NERO (lo screenshot del PO: stadio abitato, arredo nero/assente, e la partita dopo tutto a posto perche' e' una scena nuova). Ora la perdita si intercetta e il ripristino RIMONTA la vista riusando la chiave del «Riprova» 7.264: stessa partita, stadio ricostruito. Prova con revoca reale (estensione WEBGL_lose_context): verde 2 perdite intercettate + 1 ripristino + 192 piani texturizzati di nuovo in scena; rosso 0 e 0. (b) IL BUDGET DELLE TEXTURE (censimento permanente __CPM_DECOR, test-only): 192 piani d'arredo per scena tenevano 120 texture GPU distinte per ~44,5 MB, moltissime IDENTICHE — le sciarpe della curva disegnavano lo stesso canvas 512x48 quarantasei volte, una per cella. I generatori d'arredo (cartelloni fantasia e brand, teli, sciarpe) sono ora memoizzati per CHIAVE: 120 → 68 texture uniche, 44,5 → 33,7 MB (-24%) senza un pixel di differenza in scena, quindi meno occasioni di arrivare al limite dove l'allocazione fallisce. (c) IL CATCH CHE NASCONDEVA LO STADIO ROTTO: attorno a `buildStadium` c'era un catch VUOTO — se la costruzione si interrompe restano gradinate e folla (lo stadio sembra abitato) ma mancano muretti e striscioni, e `crowdMats`/`_curveGeo` restano nulli, cosi' la scenografia del tifo ripiega su una geometria stimata; ora l'errore si registra (__CPM_STADFAIL + console). ⚠️ DICHIARATO NON VERIFICATO: il difetto NON e' stato riprodotto headless (sweep sui 10 template dello stadio: 0 texture nere, 0 interruzioni) — serve la memoria di un telefono vero; la causa e' quindi ricostruita dalle firme, non colta sul fatto, e non ho prova che sia una regressione recente invece di un limite raggiunto ora.
 // [nota 7.449.0] [7.449.0 MESSA IN SICUREZZA · P0 #3 dell'audit forense — IL RIFERIMENTO ALLA GARA APERTA SOPRAVVIVEVA ALL'USCITA]: `_playingMdRef` descrive la gara di CLUB aperta da startMatch, ma veniva azzerato SOLO da onMatchEnd: uscire dal pre-partita (onQuit) o essere respinti dai suoi return anticipati («non convocato», avversario non risolvibile) lo lasciava CARICO. E il consumo in onMatchEnd avveniva per QUALUNQUE fine partita, comprese quelle di Nazionale, che non passano da startMatch e non lo impostano mai. Catena: apro il pre-partita di campionato, torno indietro, gioco in Nazionale — e il commit registra come giocata una giornata di campionato mai disputata, che la bonifica chiude subito dopo. Stagione a 33 su 34 senza che nulla lo segnali. CICLO DI VITA RICOSTRUITO invece di un reset indiscriminato: il riferimento nasce all'apertura della gara, si INVALIDA su ogni percorso d'uscita dal pre-partita (onQuit e i due return anticipati) e si CONSUMA solo nei contesti di CLUB (career/cup/euro) — una gara di Nazionale non tocca piu' una giornata di campionato, ed e' la rete che copre anche le uscite non previste. +sonda test-only `__CPM_CAREER.mdRef()`: senza, il guardiano misurerebbe gli effetti e non la causa. GUARDIANO playing-mdref-test, NEL GATE: prova del ROSSO (__CPM_NO_P0_3: nel pre-partita il riferimento e' carico e resta carico dopo l'uscita) + i percorsi — uscita che invalida, calendario e presenze immutati dopo un'uscita, riapertura coerente con la gara vera, partita realmente giocata che si committa ancora.
 // [nota 7.448.0] [7.448.0 MESSA IN SICUREZZA · P0 #2 dell'audit forense — UN SALVATAGGIO PIU' VECCHIO POTEVA SOVRASCRIVERE IL PIU' RECENTE]: `storage.save` e' async e non aveva ne' coda ne' sequenza. Nel browser non si vede (localStorage e' sincrono) ma la build pubblicata su Play Store gira su `window.storage` = @capacitor/preferences, iniettato da tools/build-dist.mjs, dove la scrittura passa da un BRIDGE ASINCRONO: due salvataggi concorrenti potevano completare FUORI ORDINE, e `savedAt` veniva scritto ma mai riletto, quindi nulla se ne accorgeva. DIMOSTRATO a runtime con un bridge finto a latenza pilotata: stato A → parte l'autosave (bridge occupato) → stato B → l'app va in background → il flush salva B → il salvataggio di A completa DOPO e riscrive il disco con lo stato vecchio (memoria 2222, disco 1111). Su Android significa perdere una partita, una settimana, a volte una stagione — ed e' anche una spiegazione a monte della «partita gia' giocata», perche' un save che torna indietro riporta in calendario una gara gia' disputata. CURA MINIMA, nessuna infrastruttura nuova e formato del salvataggio IMMUTATO: una CODA per chiave (le scritture si susseguono nell'ordine in cui sono state chieste, mai sovrapposte) e uno SCARTO delle scritture gia' superate (se mentre A aspetta il turno e' arrivata B, A non viene scritta: il suo contenuto e' vecchio per definizione). GUARDIANO save-monotonic-test, NEL GATE: prova del ROSSO incorporata (__CPM_NO_P0_2 ripristina le scritture concorrenti → il disco torna a 1111) e sei scenari — vecchio-lento contro nuovo-veloce, tre scritture a latenza decrescente, salvataggio normale non bloccato, ramo browser invariato, ramo bridge nativo, riapertura dell'app che rilegge l'ultimo stato.
 // [nota 7.447.0] [7.447.0 MESSA IN SICUREZZA · P0 #1 dell'audit forense — IL RECUPERO DOPO UN RIAVVIO CONFONDEVA LE COMPETIZIONI]: e' la vera causa della «partita gia' giocata» che il PO segnala da nove collaudi. Il recovery del sidecar cercava la gara nel calendario per AVVERSARIO e SEDE, senza mai guardare la competizione; siccome l'avversario di Coppa viene sorteggiato DALLA STESSA LEGA e il turno R16 e' cablato «in casa», per costruzione esiste SEMPRE una voce di campionato in casa contro quel club. RIPRODOTTO: recuperando una gara di Coppa, la classifica di campionato passava da 17 a 18 partite e da 40 a 43 punti per una gara mai giocata, e la giornata di lega spariva marcata come giocata. Aggravante: le due ref che portano l'identita' della gara vivono nella SESSIONE e dopo il riavvio sono vuote — `matchTypeRef` torna al default "league" (l'unico writer "cup" e' startMatch, che dopo il reboot non passa mai) e `_playingMdRef` e' null, quindi anche il ramo di commit era quello di lega. DUE CURE MINIME: (1) i candidati si filtrano per COMPETIZIONE, derivata da `result.context` che era gia' nel sidecar dal 7.24.3 — nessun campo nuovo, e un sidecar senza contesto (scritto da una versione precedente) non viene filtrato ne' scartato, mantenendo il comportamento storico; (2) prima del dispatch si ricostruiscono `matchTypeRef` e `_playingMdRef` dalla voce ritrovata, cosi' il commit marca la voce giusta per NUMERO di giornata e registra quella giornata. GUARDIANO recovery-competition-test, NEL GATE: prova del ROSSO incorporata (interruttore __CPM_NO_P0_1 che ripristina la vecchia logica: la voce di lega torna a essere marcata, classifica 18) + casi A-G (coppa committata in coppa, campionato intatto a 17/40, turno di coppa avanzato, nessuna regressione sul recupero di lega). Gli assert leggono lo stato PERSISTITO, non la memoria.
@@ -11282,6 +11282,26 @@ function ThreeMatchView(props){
     else if(wfx==="storm"){fogNear=Math.max(fogNear*0.65,60);fogFar*=0.62;ambInt*=0.65;sunInt*=0.45;if(tod==="day")skyCol=0x3c4756;}// FOG-1: fogNear era *0.55 (→52) → campo invisibile; ora min 60
     else if(wfx==="snow"){fogNear*=0.90;fogFar*=0.97;ambInt*=1.05;if(tod==="day")skyCol=0xa8b6c4;}/* [7.0.0] nebbia neve meno aggressiva · [7.6.1 collaudo PO «sparite le porte con la neve»] fog ancora più lontano (0.85/0.92→0.90/0.97) + cielo overcast più SCURO (0xc8d8e8→0xa8b6c4) → i pali bianchi non affogano più nel fondo biancastro */
     const scene=new THREE.Scene();
+    /* [7.535.0 collaudo PO «cartelloni, striscioni, bandiere, sciarpe non ci sono più»] CENSIMENTO
+       DELL'ARREDO (solo collaudo): l'occhio non distingue «la mesh non c'è» da «la mesh c'è ma la sua
+       texture è vuota» — e sono due difetti diversi con due rimedi diversi. Questo hook percorre la scena,
+       conta i piani con texture e CAMPIONA il canvas di ognuno: una texture vuota (tutta trasparente o
+       tutta nera) si dichiara da sola. Senza questo, ogni indagine sull'arredo parte da uno screenshot. */
+    if(typeof window!=='undefined')window.__CPM_DECOR=()=>{try{
+      const out={n:0,piani:0,conTex:0,texVuote:0,neri:0,esempi:[],uniche:0,mb:0};const _seen=new Set();
+      scene.traverse(o=>{if(!o.isMesh)return;out.n++;
+        const g=o.geometry;if(!g||!g.type||!/Plane/.test(g.type))return;out.piani++;
+        const m=o.material;if(!m||!m.map||!m.map.image)return;out.conTex++;
+        const img=m.map.image;let vuota=null;
+        if(!_seen.has(m.map.uuid)){_seen.add(m.map.uuid);out.uniche++;out.mb+=((img.width|0)*(img.height|0)*4)/1048576;
+          const _k=(img.width|0)+"x"+(img.height|0);(out.dim=out.dim||{})[_k]=((out.dim||{})[_k]||0)+1;}
+        try{if(img.getContext){const cx=img.getContext('2d');const w=img.width|0,h=img.height|0;
+          if(w>0&&h>0){const d=cx.getImageData(0,0,Math.min(w,64),Math.min(h,64)).data;let alpha=0,lum=0;
+            for(let i=0;i<d.length;i+=4){alpha+=d[i+3];lum+=d[i]+d[i+1]+d[i+2];}
+            vuota=(alpha===0)||(lum===0);}else vuota=true;}}catch(_e){vuota=null;}
+        if(vuota===true){out.texVuote++;if(out.esempi.length<6)out.esempi.push({w:img.width|0,h:img.height|0,trasp:!!m.transparent,pos:[+o.position.x.toFixed(1),+o.position.y.toFixed(1),+o.position.z.toFixed(1)]});}
+        if(!m.transparent&&vuota===true)out.neri++;});
+      return out;}catch(e){return{err:String(e&&e.message||e)};}};
     scene.background=new THREE.Color(skyCol);
     scene.fog=new THREE.Fog(fogCol,fogNear,fogFar);
     const camera=new THREE.PerspectiveCamera(56,W/H,0.1,420);
@@ -11314,6 +11334,18 @@ function ThreeMatchView(props){
     const _R5ON=!(typeof window!=='undefined'&&window.__CPM_NO533);
     if(_R5ON){renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=0.78;/* [7.531.0 collaudo PO dal telefono: «partita troppo troppo luminosa, i colori sono sbiaditi» — 1,02 in headless reggeva, sullo schermo vero lavava; 0,90 ancora chiara (screenshot 7.531, giorno velato): 0,78 — le intensita' del rig giorno (amb 0,66/hemi 0,46) sono dell'era SENZA tonemapping e con ACES si sommano */renderer.outputEncoding=THREE.sRGBEncoding;}/* esposizione 1,06->1,02: al primo giro fotografico tribune lavate */
     renderer.setClearColor(skyCol);
+    /* [7.535.0] LA PERDITA DEL CONTESTO NON E' PIU' MUTA (vedi la nota gemella su `glbTry` in LiveMatch).
+       `preventDefault()` sull'evento di perdita e' la CONDIZIONE perche' il browser tenti il ripristino:
+       senza, il contesto resta morto per sempre e la scena vive con le texture perdute (arredo nero). Al
+       ripristino si avvisa LiveMatch, che rimonta la vista e ricostruisce lo stadio nella stessa partita.
+       I due contatori restano leggibili in collaudo: un difetto che si vede solo sul telefono del PO deve
+       almeno lasciare un numero. */
+    try{const _gl535=renderer.domElement;
+      if(typeof window!=='undefined'&&window.__CPM_NO535GL)throw new Error("rosso 7.535: nessun ascolto del contesto");/* prova del rosso: si torna al mondo pre-7.535 (perdita muta, nessun ripristino) */
+      _gl535.addEventListener('webglcontextlost',(ev)=>{try{ev.preventDefault();}catch(_e){}
+        try{if(typeof window!=='undefined'){window.__CPM_GLLOST=(window.__CPM_GLLOST||0)+1;console.warn("[CPM-GL] contesto grafico perso: la scena verra' ricostruita al ripristino");}}catch(_e){}},false);
+      _gl535.addEventListener('webglcontextrestored',()=>{try{if(typeof window!=='undefined'){window.__CPM_GLRESTORED=(window.__CPM_GLRESTORED||0)+1;window.dispatchEvent(new CustomEvent('cpm-gl-restored'));}}catch(_e){}},false);
+    }catch(_e535){}
     mount.appendChild(renderer.domElement);
 
     // Luci dalla palette di lega, intensità modulata da orario/meteo
@@ -11434,7 +11466,17 @@ function ThreeMatchView(props){
         const _ft=STADIUM_TEMPLATES[window.__CPM_STADIUM_TPL_FORCE];
         _c={..._c,template:window.__CPM_STADIUM_TPL_FORCE,rings:_ft.rings,corner:_ft.corner,roof:_ft.roof,tower:_ft.tower,fence:_ft.fence,standH:_ft.standH,dist:_ft.dist,megaCurva:!!_ft.megaCurva,asym:!!_ft.asym,modernity:_ft.mod,ledBoards:_ft.mod>0.55,screens:2};
       }
-      return _c;})()});if(_sc){sr.current.crowdMats=_sc;sr.current.goalNet=_sc.goalNet;sr.current._curveGeo=_sc.curve||null;/* [7.185.0] geometria REALE delle curve per la scenografia tifo */}}catch(e){}
+      return _c;})()});if(_sc){sr.current.crowdMats=_sc;sr.current.goalNet=_sc.goalNet;sr.current._curveGeo=_sc.curve||null;/* [7.185.0] geometria REALE delle curve per la scenografia tifo */}}
+    catch(e){/* [7.535.0 collaudo PO «cartelloni, striscioni, bandiere, sciarpe non ci sono più» — IL CATCH
+       CHE NASCONDEVA LO STADIO ROTTO] Questo catch era VUOTO: se `buildStadium` si interrompe a metà, la
+       scena resta con le parti già aggiunte (gradinate e folla: ecco perché lo stadio sembra abitato) ma
+       senza tutto ciò che viene dopo il punto di rottura — muretti, striscioni della competizione — e
+       soprattutto senza il valore di ritorno: `crowdMats` (animazioni della folla) e `_curveGeo` restano
+       nulli, e la scenografia tifo a valle ripiega sulla geometria STIMATA, che su un template diverso da
+       quello storico appende teli e bandiere fuori posto. Un difetto così non deve poter essere muto:
+       ora l'errore si registra (e in collaudo si legge da `__CPM_STADFAIL`). Il catch resta — una scena
+       senza stadio è meglio di una schermata nera — ma smette di mentire. */
+      try{if(typeof window!=='undefined'){window.__CPM_STADFAIL={msg:String((e&&e.message)||e),stack:String((e&&e.stack)||"").slice(0,600)};console.warn("[CPM-STADIO] costruzione interrotta:",(e&&e.message)||e);}}catch(_e535){}}
 
     // Factory giocatore (MeshPhong procedurale)
     // Sprint 3D-6: varietà deterministica per indice — altezza/corporatura + carnagione,
@@ -11742,7 +11784,19 @@ function ThreeMatchView(props){
     const _mkLed=(z)=>{for(let i=0;i<LED_SEG;i++){const m=new THREE.Mesh(new THREE.BoxGeometry(_segW*0.9,0.7,0.12),new THREE.MeshBasicMaterial({color:0xffffff}));m.position.set(-50+_segW*0.5+i*_segW,0.42,z);scene.add(m);ledStrips.push(m);}};
     _mkLed(-34.4);_mkLed(34.4);
     // item 2 (5.49.12): CARTELLONI col LOGO DEL GIOCO — "ELEVORA" ben VISIBILE: DIETRO entrambe le porte (di fronte alla camera broadcast) + lungo le linee laterali. Look LED da bordo campo.
-    const _mkAdTex=(bg,fg)=>{const c=document.createElement("canvas");c.width=1024;c.height=160;const x=c.getContext("2d");x.fillStyle=bg;x.fillRect(0,0,1024,160);/* [7.42.2 collaudo PO «cartelloni più definiti»] risoluzione 2× */
+    /* [7.535.0 collaudo PO «cartelloni, striscioni, bandiere, sciarpe non ci sono più» — IL BUDGET DELLE
+       TEXTURE] Censimento (hook __CPM_DECOR): 192 piani texturizzati per scena, **120 texture GPU distinte
+       per ~44,5 MB** di solo arredo (mipmap escluse) — e moltissime IDENTICHE fra loro: le sciarpe della
+       curva, per dire, disegnano lo stesso canvas 512×48 quarantasei volte, una per cella, perché ogni
+       chiamata creava la propria CanvasTexture. Su un telefono quel conto si somma a folla, kit, volti e
+       modelli: quando l'allocazione non riesce, la mesh resta ma la sua texture è vuota — e una texture
+       vuota su materiale opaco è NERA. È la firma esatta della segnalazione («alla partita successiva si
+       vedono»: scena nuova, memoria libera). Qui i generatori d'arredo diventano memoizzati per CHIAVE:
+       stessi parametri → stessa texture riusata, nessun pixel diverso in scena. */
+    const _texMemo535=new Map();
+    const _memoTex535=(k,fn)=>{let t=_texMemo535.get(k);if(!t){t=fn();_texMemo535.set(k,t);}return t;};
+    const _mkAdTex=(bg,fg)=>_memoTex535("ad|"+bg+"|"+fg,()=>_mkAdTexRaw(bg,fg));
+    const _mkAdTexRaw=(bg,fg)=>{const c=document.createElement("canvas");c.width=1024;c.height=160;const x=c.getContext("2d");x.fillStyle=bg;x.fillRect(0,0,1024,160);/* [7.42.2 collaudo PO «cartelloni più definiti»] risoluzione 2× */
       _cvWordmark(x,512,80,96,fg,false);
       x.strokeStyle=fg;x.globalAlpha=0.5;x.lineWidth=6;x.strokeRect(16,16,992,128);x.globalAlpha=1;const t=new THREE.CanvasTexture(c);t.anisotropy=8;return t;};
     /* [7.44.0 direttiva PO «inventa pubblicità, sempre diverse da stagione a stagione, da club a club, da
@@ -11758,7 +11812,8 @@ function ThreeMatchView(props){
     const AD_BRANDS=[["VOLTARA",{it:"carica istantanea",en:"energy drink",de:"Energydrink",fr:"boisson énergisante",es:"bebida energética",pt:"bebida energética",nl:"energiedrank",tr:"enerji içeceği"},"#0b1c2e","#ffd24a"],["BANCA MERIDIA",{it:"dal 1921",en:"since 1921",de:"seit 1921",fr:"depuis 1921",es:"desde 1921",pt:"desde 1921",nl:"sinds 1921",tr:"1921'den beri"},"#101418","#9fd3ff"],["SKYLINEA",{it:"voli low cost",en:"low-cost flights",de:"Billigflüge",fr:"vols low cost",es:"vuelos low cost",pt:"voos low cost",nl:"goedkope vluchten",tr:"ucuz uçuş"},"#0e2038","#ffffff"],["FORTEZZA",{it:"assicurazioni",en:"insurance",de:"Versicherungen",fr:"assurances",es:"seguros",pt:"seguros",nl:"verzekeringen",tr:"sigorta"},"#161233","#f0a63a"],["LUNACOLA",{it:"gusto notturno",en:"night taste",de:"Geschmack der Nacht",fr:"goût nocturne",es:"sabor nocturno",pt:"sabor noturno",nl:"smaak van de nacht",tr:"gecenin tadı"},"#1a0d20","#ff7ab8"],["PIXEL+",{it:"la TV che vive",en:"the TV that lives",de:"Fernsehen, das lebt",fr:"la TV qui vit",es:"la tele que vive",pt:"a TV que vive",nl:"tv die leeft",tr:"yaşayan televizyon"},"#0a0a12","#7dff9a"],["MONTEVERDE",{it:"caffè d'autore",en:"signature coffee",de:"Kaffeekunst",fr:"café d'auteur",es:"café de autor",pt:"café de autor",nl:"koffie met karakter",tr:"özel kahve"},"#14210f","#ffe9c4"],["RAPIDO",{it:"fibra & mobile",en:"fibre & mobile",de:"Glasfaser & Mobil",fr:"fibre & mobile",es:"fibra y móvil",pt:"fibra e móvel",nl:"glasvezel & mobiel",tr:"fiber ve mobil"},"#211010","#ff9d5c"],["NORDIK",{it:"abbigliamento sportivo",en:"sportswear",de:"Sportbekleidung",fr:"vêtements de sport",es:"ropa deportiva",pt:"roupa desportiva",nl:"sportkleding",tr:"spor giyim"},"#0f1a24","#bfe3ff"],["OLIMPO",{it:"scarpe da gara",en:"race shoes",de:"Laufschuhe",fr:"chaussures de course",es:"zapatillas de carrera",pt:"sapatilhas de corrida",nl:"hardloopschoenen",tr:"yarış ayakkabısı"},"#191308","#ffd700"],["VELATOUR",{it:"viaggi su misura",en:"tailor-made travel",de:"Reisen nach Maß",fr:"voyages sur mesure",es:"viajes a medida",pt:"viagens à medida",nl:"reizen op maat",tr:"size özel seyahat"},"#0c2226","#8ef4e0"],["GRANFORNO",{it:"pizza in 5'",en:"pizza in 5 min",de:"Pizza in 5 Min",fr:"pizza en 5 min",es:"pizza en 5 min",pt:"pizza em 5 min",nl:"pizza in 5 min",tr:"5 dakikada pizza"}/* [7.282.0 collaudo PO «vedo ancora cartelloni con la lingua sbagliata»: «PIZZA IN 5'» era identico in italiano e inglese, quindi in Inghilterra si leggeva comunque italiano */,"#241108","#ffcf8a"],["ORAFICIO",{it:"orologi svizzeri",en:"swiss watches",de:"Schweizer Uhren",fr:"montres suisses",es:"relojes suizos",pt:"relógios suíços",nl:"zwitserse horloges",tr:"isviçre saatleri"},"#141414","#e8d9a0"],["TITANIO",{it:"motori elettrici",en:"electric motors",de:"Elektromotoren",fr:"moteurs électriques",es:"motores eléctricos",pt:"motores elétricos",nl:"elektromotoren",tr:"elektrikli motorlar"},"#0d1220","#c3ccf0"],["BRIOSNACK",{it:"la pausa giusta",en:"the right break",de:"die richtige Pause",fr:"la bonne pause",es:"la pausa perfecta",pt:"a pausa certa",nl:"de juiste pauze",tr:"doğru mola"},"#231b06","#fff06a"],["CRISTALLA",{it:"acqua di sorgente",en:"spring water",de:"Quellwasser",fr:"eau de source",es:"agua de manantial",pt:"água da nascente",nl:"bronwater",tr:"kaynak suyu"},"#0a1c2c","#aee4ff"],["FALCOMOTO",{it:"due ruote libere",en:"two free wheels",de:"zwei freie Räder",fr:"deux roues libres",es:"dos ruedas libres",pt:"duas rodas livres",nl:"twee vrije wielen",tr:"özgür iki teker"},"#1c0d0d","#ff6a4a"],["METEORA",{it:"videogiochi",en:"video games",de:"Videospiele",fr:"jeux vidéo",es:"videojuegos",pt:"videojogos",nl:"videogames",tr:"video oyunları"},"#160a26","#c07aff"],["PONTE",{it:"finanza semplice",en:"simple finance",de:"einfache Finanzen",fr:"finance simple",es:"finanzas simples",pt:"finanças simples",nl:"eenvoudig financieren",tr:"kolay finans"},"#0d1e16","#8ce8b0"],["QUADRIFOGLIO",{it:"auto ibride",en:"hybrid cars",de:"Hybridautos",fr:"voitures hybrides",es:"coches híbridos",pt:"carros híbridos",nl:"hybride auto's",tr:"hibrit otomobil"},"#0f2010","#b6ff7d"],["SIRENA",{it:"musica in streaming",en:"music streaming",de:"Musik-Streaming",fr:"musique en streaming",es:"música en streaming",pt:"música em streaming",nl:"muziekstreaming",tr:"müziği akıtan"},"#081826","#6ad6ff"],["VULCANO GYM",{it:"allenati vero",en:"train for real",de:"trainiere richtig",fr:"entraîne-toi vraiment",es:"entrena de verdad",pt:"treina a sério",nl:"echt trainen",tr:"gerçekten çalış"},"#200a0a","#ffb04a"]];
     const _adLang=_ultrasLang(stadiumHomeNat||homeClub?.nat||"");
     const _adTag=(b)=>{const t=b[1];return (typeof t==="string")?t:((t&&(t[_adLang]||t.it))||"");};
-    const _mkBrandTex=(b,styleK)=>{const c=document.createElement("canvas");c.width=1024;c.height=160;const x=c.getContext("2d");
+    const _mkBrandTex=(b,styleK)=>_memoTex535("br|"+String(b&&b[0])+"|"+_adTag(b)+"|"+styleK,()=>_mkBrandTexRaw(b,styleK));/* [7.535.0] stesso brand+stile = stessa texture (i cartelloni si ripetono lungo tutto il perimetro) */
+    const _mkBrandTexRaw=(b,styleK)=>{const c=document.createElement("canvas");c.width=1024;c.height=160;const x=c.getContext("2d");
       /* [7.51.1 collaudo PO «mancano i cartelloni in questo stadio»] c'erano ECCOME, ma i bg dei brand sono quasi
          neri → di notte/da lontano leggevano come strisce SPENTE. Ora: metà dei cartelloni a palette INVERTITA
          (fondo = colore accento VIVO, testo scuro) + bande luminose top/bottom su tutti → LED leggibili sempre. */
@@ -12241,7 +12296,12 @@ function ThreeMatchView(props){
     if(_tifoAway)_mkStriscione(_muroX(false),0,Math.PI/2,_tACol,_ac2,_ultrasName(_stadAN,_tifoSeed+13,5,_stadANat,_stadAId),_muroY);
     // onda di SCIARPE alzate — strip con texture a sciarpe affiancate, oscillazione lenta + boost al gol
     const scarfMs=[];
-    const _mkScarf=(x,z,rotY,c1Hex,c2Hex,y,_scW)=>{const sc=document.createElement("canvas");sc.width=512;sc.height=48;const sx=sc.getContext("2d");
+    /* [7.535.0] LA SCIARPATA CONDIVIDE IL DISEGNO: il canvas dipende solo dai due colori sociali, ma la
+       `repeat.x` (che allarga la striscia al segmento) vive sulla TEXTURE, non sul materiale — quindi la
+       chiave include il repeat, arrotondato a 1/4 di cella: 46 texture identiche diventano una manciata,
+       e la scala delle celle resta indistinguibile a occhio. */
+    const _mkScarfTex535=(c1Hex,c2Hex,rep)=>_memoTex535("sc|"+c1Hex+"|"+c2Hex+"|"+rep.toFixed(2),()=>{const t=_mkScarfTexRaw(c1Hex,c2Hex);t.wrapS=THREE.RepeatWrapping;t.repeat.x=rep;return t;});
+    const _mkScarfTexRaw=(c1Hex,c2Hex)=>{const sc=document.createElement("canvas");sc.width=512;sc.height=48;const sx=sc.getContext("2d");
       /* [7.171.0 TIFO 2.0] SCIARPATA vera: ogni cella è una SCIARPA (fasce alle estremità + banda centrale, frange
          in basso, inclinazione alternata) invece dei blocchi pieni alternati — a distanza legge come muro di sciarpe */
       for(let i=0;i<16;i++){const inv=i%2===1;const ca=inv?c2Hex:c1Hex,cb=inv?c1Hex:c2Hex;
@@ -12250,7 +12310,10 @@ function ThreeMatchView(props){
         sx.fillStyle=cb;sx.fillRect(-13,-21,26,7);sx.fillRect(-13,14,26,7);sx.fillRect(-13,-4,26,8);
         sx.strokeStyle=cb;sx.lineWidth=2;for(let f=-11;f<=11;f+=4){sx.beginPath();sx.moveTo(f,21);sx.lineTo(f,26);sx.stroke();}
         sx.restore();}
-      const tex=new THREE.CanvasTexture(sc);const _sw84=(typeof _scW==="number"&&_scW>0)?_scW:26;tex.wrapS=THREE.RepeatWrapping;tex.repeat.x=_sw84/26;/* [7.184.0] striscia allargabile a TUTTA la curva: celle-sciarpa a taglia costante via repeat */
+      return new THREE.CanvasTexture(sc);};
+    const _mkScarf=(x,z,rotY,c1Hex,c2Hex,y,_scW)=>{
+      const _sw84=(typeof _scW==="number"&&_scW>0)?_scW:26;
+      const tex=_mkScarfTex535(c1Hex,c2Hex,Math.max(0.25,Math.round((_sw84/26)*4)/4));/* [7.184.0] striscia allargabile a TUTTA la curva: celle-sciarpa a taglia costante via repeat · [7.535.0] repeat quantizzato = texture condivisa */
       const m=new THREE.Mesh(new THREE.PlaneGeometry(_sw84,1.7),new THREE.MeshBasicMaterial({map:tex,side:THREE.DoubleSide,transparent:true,opacity:0.9,depthWrite:false}));
       m.position.set(x,y||3.0,z);m.rotation.y=rotY;m._home=(c1Hex===_tHCol);m._baseY=y||3.0;scene.add(m);scarfMs.push(m);};// 5.45.2: tag lato + baseY · [6.5.1] tag su colore sociale
     // [7.124.0] MURO DI SCIARPE più alto: 5 file a quote diverse per curva + 2 sulla tribuna casa · gate dal contesto (§7/§8)
@@ -12278,7 +12341,8 @@ function ThreeMatchView(props){
     // [7.124.0] TELO COREOGRAFICO — grande drappo bicolore con l'abbreviazione del club sulla curva di casa (e ospiti se
     //   pieno): plane SEGMENTATO → onda reale (traveling wave sui vertici) nel render-loop, si accende al gol/ingresso.
     const teloMs=[];
-    const _mkTeloTex=(c1Hex,c2Hex,label)=>{const tc=document.createElement("canvas");tc.width=512;tc.height=160;const tx=tc.getContext("2d");
+    const _mkTeloTex=(c1Hex,c2Hex,label)=>_memoTex535("tl|"+c1Hex+"|"+c2Hex+"|"+String(label||""),()=>_mkTeloTexRaw(c1Hex,c2Hex,label));/* [7.535.0] i teli ripetono poche combinazioni colore+parola */
+    const _mkTeloTexRaw=(c1Hex,c2Hex,label)=>{const tc=document.createElement("canvas");tc.width=512;tc.height=160;const tx=tc.getContext("2d");
       tx.fillStyle=c1Hex;tx.fillRect(0,0,512,160);
       tx.fillStyle=c2Hex;tx.globalAlpha=0.9;tx.beginPath();tx.moveTo(0,0);tx.lineTo(104,0);tx.lineTo(0,160);tx.closePath();tx.fill();tx.beginPath();tx.moveTo(512,0);tx.lineTo(408,0);tx.lineTo(512,160);tx.closePath();tx.fill();tx.globalAlpha=1;
       if(label){const _L=String(label).toUpperCase();let _fs=104;tx.font="900 "+_fs+"px Arial, sans-serif";const _mw=456;/* [7.125.0] FIT-TO-WIDTH: la scritta (club o parola-coro) si adatta al telo, niente più slice(0,3) */if(tx.measureText(_L).width>_mw){_fs=Math.max(38,Math.floor(_fs*_mw/tx.measureText(_L).width));tx.font="900 "+_fs+"px Arial, sans-serif";}tx.textAlign="center";tx.textBaseline="middle";tx.lineWidth=10;tx.lineJoin="round";tx.strokeStyle="rgba(0,0,0,0.5)";tx.strokeText(_L,256,86);tx.fillStyle="rgba(255,255,255,0.98)";tx.fillText(_L,256,86);}/* [7.171.0] contorno scuro → scritta leggibile anche su teli chiari */
@@ -19655,6 +19719,17 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
      giocare senza modelli 3D — che resta una SUA decisione, mai un ripiego silenzioso del gioco. */
   const [glbFail,setGlbFail]=useState(null);
   const [glbTry,setGlbTry]=useState(0);
+  /* [7.535.0 collaudo PO «cartelloni, striscioni, bandiere, sciarpe non ci sono più» + «alla partita
+     successiva si vedono»] IL CONTESTO GRAFICO PUO' MORIRE, E NESSUNO LO SAPEVA. Il browser di un telefono
+     revoca il contesto WebGL quando la memoria stringe (`webglcontextlost`): le mesh restano in scena ma le
+     loro texture no — un piano con texture perduta e materiale opaco si vede NERO, ed e' esattamente il
+     quadro dello screenshot (stadio abitato, arredo nero o assente). Finora il gioco non ascoltava
+     l'evento: senza `preventDefault()` il browser non ripristina nemmeno il contesto, e la scena restava
+     monca fino alla partita dopo — che infatti «si vede». Ora la perdita si INTERCETTA e il ripristino
+     RIMONTA la scena riusando la stessa chiave del «Riprova» 7.264: stessa partita, stadio ricostruito. */
+  useEffect(()=>{const _onRestore=()=>{try{setGlbTry(t=>t+1);}catch(_e){}};
+    window.addEventListener('cpm-gl-restored',_onRestore);
+    return()=>window.removeEventListener('cpm-gl-restored',_onRestore);},[]);
   // [7.13.0 Sprint «Presentazione» — backlog PO] SERATA DI PRESENTAZIONE: il PRIMO match CASALINGO di lega
   //   della stagione (S≥2) apre con lo speaker che annuncia la squadra durante il walkout (che è già la scena
   //   3D con orbita a 360° sullo stadio) + fuochi d'artificio (riuso pirotecnica big-match). Per costruzione
