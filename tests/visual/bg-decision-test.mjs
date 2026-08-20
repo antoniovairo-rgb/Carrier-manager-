@@ -74,7 +74,8 @@ const righe = [];
 for (let i = 0; i < PARTITE; i++) righe.push(...(await partita(i)));
 await b.close(); srv.close();
 
-const val = righe.filter(r => r.dec && r.pd && !r.ef);
+const recite = righe.filter(r => r.rec).length;
+const val = righe.filter(r => r.dec && r.pd && !r.ef && !r.rec);/* [7.532.0] le righe di RECITA (kickoff/piazzati/contropiedi/ponte) sono teatro deterministico con pd=dec PER COSTRUZIONE e pool finiti: dentro le metriche gonfiavano l'accordo e affamavano la varieta' del repertorio PESCATO — si misurano a parte (contatore) e si escludono da accordo+varieta'. */
 console.log(`\n=== LA CRONACA RACCONTA L'EVENTO DECISO${ROSSO ? ' · PROVA DEL ROSSO (__CPM_NO499)' : ''} ===`);
 if (val.length < MIN_RIGHE) { console.log(`  ⚠ solo ${val.length} righe utili (minimo ${MIN_RIGHE})\n❌ CIECO: non abbastanza righe`); process.exit(2); }
 
@@ -82,7 +83,7 @@ const esatto = val.filter(r => r.pd === r.dec).length;
 const largo = val.filter(r => r.pd === r.dec || (VIC[r.dec] || []).indexOf(r.pd) >= 0).length;
 const pEs = 100 * esatto / val.length, pLa = 100 * largo / val.length;
 
-console.log(`  righe misurate        ${val.length}  (gol esclusi)`);
+console.log(`  righe misurate        ${val.length}  (gol esclusi · ${recite} righe di recita escluse)`);
 console.log(`  accordo ESATTO        ${esatto}/${val.length} = ${pEs.toFixed(1)}%   (soglia ${SOGLIA_ESATTO}%)`);
 console.log(`  accordo LARGO         ${largo}/${val.length} = ${pLa.toFixed(1)}%   (decisa o confinante)`);
 

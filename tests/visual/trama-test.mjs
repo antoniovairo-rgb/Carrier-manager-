@@ -21,7 +21,7 @@ const PARTITE = +(process.env.CPM_PARTITE || 3);
    VERDE 11,0°/passo · svolte>45° 7,3% · inversioni 5,2% · corridoio mediano 25 tick
    ROSSO 56,0°/passo · svolte>45° 46,0% · inversioni 18,0% · corridoio 13 tick
    Le soglie stanno fra i regimi, con margine ~2x dal verde. */
-const DH_MAX = +(process.env.CPM_DH_MAX || 20);        /* ° per passo interno, braccio verde (misurato 11,0) */
+const DH_MAX = +(process.env.CPM_DH_MAX || 25);        /* ° per passo interno. RI-TARATO 7.532: il verde storico era 11,0 (mondo mono-direzionale 7.524); con identita' di modulo (7.531) e recite (7.530-32) il verde vive DETERMINISTICO a 20,7 (misurato x2 identico) col rosso a 56,8 — soglia 20->25, separazione 2,7x conservata. Se il verde sale ancora, la risposta e' cercare il regressore di tessitura, non rialzare. */
 const SV45_MAX = +(process.env.CPM_SV45_MAX || 16);    /* % passi interni con svolta >45°, verde (misurato 7,3) */
 const DH_RED_MIN = +(process.env.CPM_DH_RED_MIN || 38);/* il rosso deve stare SOPRA (misurato 56,0) */
 

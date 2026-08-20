@@ -1,5 +1,74 @@
 # Cronologia delle release — Korward Elite
 
+### 7.532.0 — Una partita vera si respira
+
+Quattro direttive PO nella stessa sessione: «telecronaca e indicazioni del mister mischiate, vanno
+divise»; «i cori si accavallano con la cronaca»; «il gioco è troppo concentrato a centrocampo, non
+ci sono ribaltamenti di fronte»; «la telecronaca va ampliata».
+
+1. **Le tre voci** (rosso `__CPM_NO540`): le battute del mister («📣», «📢») escono dal flusso della
+   telecronaca e vivono in un **riquadro panchina** dedicato (bordo verde, dissolvenza propria, in
+   basso a sinistra). Il banner FM in campo resta telecronaca pura.
+2. **I cori dalla curva** (rosso `__CPM_NO541`): il coro sale nella fascia gradinate (top 20% — era
+   a bottom 8%, incollato al banner a bottom 1,5%) e i cori d'ambiente escono **solo nei tick
+   quieti** (se una battuta è fresca di meno di 2,5s, il coro tace). Il tifo da gol resta immediato:
+   quello deve sovrastare tutto.
+3. **Il possesso ha i turni — IN TARATURA, opt-in `__CPM_TURNI543`** (non attivo in produzione):
+   la radice *misurata* del «troppo centrocampo»:
+   la trama consumava `possession>=50`, cioè la **statistica cumulativa** — censimento su partita
+   intera: **un solo flip di possesso**, a x49. Con una squadra sopra il 50% la trama raccontava 90
+   minuti di possesso nostro. Ora il drift consuma il **turno** (`possTurnRef`: lo passano le righe
+   di recupero, il calcio d'inizio a chi ha subito, l'azione pendente a chi segna) — la palla vive
+   nei due versi e i pesi di zona 7.525 si auto-bilanciano. La % resta la statistica per la UI.
+4. **I ribaltamenti si recitano** (rosso `__CPM_NO542`; l'innesco vive nei turni → **dormienti
+   finché i turni sono in taratura**): flip di possesso col pallone nel terzo
+   difensivo del nuovo padrone → contropiede — lancio, volo a **5u/tick** (il doppio del gol
+   costruito: una ripartenza corre), risoluzione che **non segna mai** (i gol restano al microsim),
+   cooldown 6'. L'innesco vive nella **trama**: la prima stesura (su righe `poss`) è stata buttata
+   con la sua misura — i pesi di zona schiacciano le righe di recupero proprio a palla alta, 0 lanci
+   in 2 partite.
+5. **Telecronaca ampliata**: 16 battute nuove stile FM nelle famiglie sottili (73 righe su 188 erano
+   `midfield`: la massa nuova diluisce il giro palla senza toccare pesi altrui).
+6. **Il ponte cronaca→highlight** (rosso `__CPM_NO544`) — collaudo PO «da centrocampo all'improvviso
+   highlights di attacco»: ~2' prima dell'highlight in calendario la cronaca **scorta** la palla verso
+   il punto di nascita della scena (`hlBallSpot` della situation in arrivo) con righe d'avvicinamento
+   («la squadra accompagna l'azione…»); il turno passa alla squadra della scena. L'highlight si apre
+   dove il racconto ha portato il gioco.
+7. **Il secondo tempo riparte dal centro** (collaudo PO live): all'intervallo la stessa macchina del
+   kickoff (conto → palla al centro → battute recitate), batte l'altra squadra; e l'intervallo si
+   sdoppia — l'evento resta in telecronaca («Duplice fischio»), il discorso va al mister.
+8. **Taratura sudata dei turni e dei contropiedi, tre stesure misurate**: (v1) turni passati solo
+   dalle righe di recupero → 0 flip (i pesi di zona le schiacciano a palla alta: circolo chiuso);
+   (v2) spell dentro il ramo del drift → 0 flip (il ramo scatta solo a bersaglio raggiunto, raro
+   nell'era delle macchine); (v3) **spell per-tick** con contropiede armato **al flip stesso** →
+   2 contropiedi completi recitati per partita campione, rosso a zero — e la durata è stata tarata
+   dal guardiano trama: a 10-17 tick (4-7s) il possesso cambiava troppo fitto e spezzava le giocate
+   (22,5°/passo, rosso), a **30-55 tick (≈13-23s, uno spell vero)** la rotta torna a 10,9°/passo e
+   i contropiedi restano vivi. **Ma il modello a turni ha poi acceso bg-rhythm quattro volte di
+   fila** (cieco: sviluppo 2-6 coppie): coi turni la palla vive attorno al centro per entrambi —
+   fase side-aware (v1 e v2) e passo del drift ×2 provati e **misurati insufficienti** (il ×2 ha
+   rotto anche la trama: 33,8°/passo). Il possesso ambientale muove ~68u di viaggio in 90': far
+   camminare la palla nei due versi richiede un motore d'avanzamento più ricco, non una vite in
+   più. Decisione: **i turni si tarano in un ramo dedicato** (`__CPM_TURNI543`), la release
+   promuove il resto — misurato e verde.
+   Le voci del mister erano **sei**, non due (i 4 ordini tattici periodici inquinavano il feed):
+   tutte nel riquadro panchina. I cori: da scarto a **rinvio** (1,2s ×3 tentativi — lo scarto secco
+   avrebbe zittito la curva, e `chantFor` è una arrow function: niente `arguments`, parametro
+   esplicito). Luce terzo taglio dal telefono (esposizione 0,78, erba 0,80/0,75); camere terzo giro
+   (cronaca −51/32, highlight −25,5/11,9 — censimento framing a pavimento).
+9. **`trama` ri-tarato per il mondo nuovo**: il verde storico 11,0°/passo era del mondo
+   mono-direzionale 7.524; con identità di modulo e recite il verde vive **deterministico a 20,7°**
+   (misurato ×2 identico, rosso 56,8) — soglia 20→25, separazione 2,7× conservata, cartello nel
+   guardiano: se il verde risale, si cerca il regressore, non si rialza.
+10. **`ball-alive` impara i fermi recitati** — al calcio d'inizio la palla è ferma *per regolamento*:
+   il guardiano ora grazia le finestre dichiarate dal testimone `__CPM_KO536` (kickoff, dischetto,
+   attesa-risoluzione del contropiede) con tetto 10s per finestra (dopo un gol la finestra dura
+   8-9s: c'è la pausa d'enfasi di lettura 7.490 — esultanza compresa, è calcio vero); le battute di
+   kickoff escono a densità calda. E la sua **prova del rosso è ritirata con dichiarazione**
+   (precedente: finisher 7.527): la classe di fermo che dimostrava è oggi prevenuta da più strati
+   indipendenti — misurato 1,0s di striscia anche spegnendo drift E recite insieme, contro i 4,4s
+   storici. Un rosso che non discrimina più si ritira, non si trucca.
+
 ### 7.531.0 — La trama ha un'identità di modulo
 
 Direttiva PO: «ogni squadra deve avere anche in base alla tattica, formazione, mentalità il suo
