@@ -1,5 +1,47 @@
 # Cronologia delle release — Korward Elite
 
+### 7.536.0 — Le tre voci non si pestano i piedi
+
+Tre note di collaudo PO nello stesso giro. Rossi: `__CPM_NO548` (a+b), `__CPM_NO549` (c).
+
+1. **«Le indicazioni dalla panchina si accavallano»**. La fascia bassa erano **due scatole assolute**
+   che si contendevano lo stesso spazio: banner telecronaca a `bottom 1,5%` con **altezza variabile**
+   (una riga lunga ne occupa due — è il caso dello screenshot) e riquadro panchina a `bottom` **fisso**
+   8,5%. Ora vivono nello stesso contenitore **in colonna**: la panchina si appoggia sopra la cronaca
+   qualunque altezza essa abbia. L'accavallamento non è corretto, è reso **impossibile**.
+2. **«I cori devono avere un'iconcina e scritte più carine, sono quasi illeggibili»**. Il coro era
+   **testo nudo** (13px, maiuscole con `letterSpacing` 1,5, nessun fondo) sopra una curva chiara e
+   affollata, dove l'alone del `textShadow` non basta. Ora è una **pillola**: fondo scuro, bordo nel
+   colore del momento, **iconcina per tipo** (🧣 coro · 📣 spinta · 🎉 gol · 😱 pericolo · 😠 fallo ·
+   😞 gol subito) e corpo 15-16px con `letterSpacing` 0,8 — le maiuscole molto spaziate erano parte del
+   problema di lettura, non della resa.
+3. **«Un'indicazione del mister a metà schermo, fuori dal flusso»**. Trovata la **settima voce**: il
+   banner `subEvent` a `top:12%`, largo quasi quanto lo schermo, 3,5s, emesso col cambio fra 65' e 70'.
+   Era sfuggita al censimento del 7.532 (sei siti) perché **non passava da `addCom`** e aveva una UI
+   tutta sua. Ora vale la regola delle tre voci, la stessa dell'intervallo: l'**evento** lo racconta la
+   telecronaca, la **richiesta** del mister vive in panchina (testi riscritti in prima persona — «Il
+   mister chiede…» detto *dal* mister era la spia che quella voce veniva da un altro mondo), il banner
+   centrale sparisce.
+
+**In coda alla release, un difetto dello STRUMENTO** (non del gioco). Il guardiano `motion` si è fermato
+due release di fila su gi0 («palla in metà offensiva ma nessun difensore entro 24u»). Misurato quattro
+volte sulla **stessa build**: a macchina scarica **21,0 e 22,5** (verde), sotto il carico della passata
+piena **25,4 e 26,9** (rosso). Non peggiorava la scena: peggiorava la misura — il campionatore osservava
+**un secondo d'orologio del test**, ma headless, con la CPU contesa, in quel secondo la scena vive una
+frazione di quanto vive scarica, e il difensore non fa in tempo ad arrivare. Ora il gioco espone i
+**secondi di scena** davvero trascorsi (somma dei `dt` del render-loop, test-only) e la finestra si
+chiude su quelli (1,2s di gioco, tetto d'orologio come rete): gi0 misura **20,3** e la corsia A è verde
+**sotto carico**. ⚠️ La prima stesura del rimedio è stata **buttata con la sua misura**: «fermati quando
+il difensore smette di avvicinarsi» veniva ingannata dalla lentezza (sotto carico il difensore si muove
+meno di 0,05u per campione, il criterio scattava subito → 26,3, di nuovo il carico).
+
+**Guardiano nuovo `hud-voci`** (corsia B, verde+rosso): misura sui **rettangoli veri del DOM**, non a
+occhio, con una riga di cronaca lunga (due righe, il caso fotografato) e le tre voci accese insieme
+tramite l'hook di collaudo `__CPM_HUD_FORCE`. Verde: **0 px²** di intersezione panchina×banner, 8,7px di
+spazio, coro 16px con fondo proprio, **0 voci fuori zona**. Rosso: **3282 px²** di sovrapposizione,
+spazio −49px, coro nudo 13px. Terzo controllo permanente: durante il gioco nessun riquadro di testo
+largo può vivere nella fascia centrale — un'ottava voce nascosta non passa più inosservata.
+
 ### 7.535.0 — Lo stadio non può più sparire
 
 Collaudo PO: «grave regressione, cartelloni pubblicitari, striscioni, bandiere, sciarpe non ci sono

@@ -4826,7 +4826,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="7.535.0"; // [7.535.0 — LO STADIO NON PUO' PIU' SPARIRE, collaudo PO «cartelloni pubblicitari, striscioni, bandiere, sciarpe non ci sono piu'» + «alla partita successiva si vedono»]: la seconda frase e' la diagnosi — un arredo che torna da solo non e' stato rimosso, e' stato PERDUTO. Tre rimedi, tutti misurati: (a) IL CONTESTO GRAFICO PUO' MORIRE E NESSUNO LO SAPEVA (rosso __CPM_NO535GL): il browser di un telefono revoca il contesto WebGL sotto pressione di memoria; il gioco non ascoltava ne' `webglcontextlost` ne' `webglcontextrestored` e senza `preventDefault()` il browser non tenta nemmeno il ripristino — le mesh restano in scena, le loro texture no, e un piano con texture perduta su materiale opaco si vede NERO (lo screenshot del PO: stadio abitato, arredo nero/assente, e la partita dopo tutto a posto perche' e' una scena nuova). Ora la perdita si intercetta e il ripristino RIMONTA la vista riusando la chiave del «Riprova» 7.264: stessa partita, stadio ricostruito. Prova con revoca reale (estensione WEBGL_lose_context): verde 2 perdite intercettate + 1 ripristino + 192 piani texturizzati di nuovo in scena; rosso 0 e 0. (b) IL BUDGET DELLE TEXTURE (censimento permanente __CPM_DECOR, test-only): 192 piani d'arredo per scena tenevano 120 texture GPU distinte per ~44,5 MB, moltissime IDENTICHE — le sciarpe della curva disegnavano lo stesso canvas 512x48 quarantasei volte, una per cella. I generatori d'arredo (cartelloni fantasia e brand, teli, sciarpe) sono ora memoizzati per CHIAVE: 120 → 68 texture uniche, 44,5 → 33,7 MB (-24%) senza un pixel di differenza in scena, quindi meno occasioni di arrivare al limite dove l'allocazione fallisce. (c) IL CATCH CHE NASCONDEVA LO STADIO ROTTO: attorno a `buildStadium` c'era un catch VUOTO — se la costruzione si interrompe restano gradinate e folla (lo stadio sembra abitato) ma mancano muretti e striscioni, e `crowdMats`/`_curveGeo` restano nulli, cosi' la scenografia del tifo ripiega su una geometria stimata; ora l'errore si registra (__CPM_STADFAIL + console). ⚠️ DICHIARATO NON VERIFICATO: il difetto NON e' stato riprodotto headless (sweep sui 10 template dello stadio: 0 texture nere, 0 interruzioni) — serve la memoria di un telefono vero; la causa e' quindi ricostruita dalle firme, non colta sul fatto, e non ho prova che sia una regressione recente invece di un limite raggiunto ora.
+const GAME_VERSION="7.536.0"; // [7.536.0 — LE TRE VOCI NON SI PESTANO I PIEDI, tre note di collaudo PO nello stesso giro]: (a) «le indicazioni dalla panchina si accavallano» (rosso __CPM_NO548): la fascia bassa era due scatole ASSOLUTE che si contendevano lo stesso spazio — banner telecronaca a bottom 1,5% con altezza VARIABILE (una riga lunga ne occupa due: e' il caso dello screenshot) e riquadro panchina a bottom FISSO 8,5%; ora vivono nello stesso contenitore in COLONNA, la panchina appoggiata sopra la cronaca qualunque altezza abbia — l'accavallamento non e' corretto, e' reso impossibile (guardiano hud-voci sui rettangoli veri del DOM: verde 0 px² di intersezione e 8,7px di spazio, rosso 3282 px² e -49px); (b) «i cori dei tifosi devono avere un'iconcina e scritte piu' carine, sono quasi illeggibili» (stesso rosso): il coro era testo NUDO (13px, maiuscole con letterSpacing 1,5, nessun fondo) sopra una curva chiara e affollata, dove l'alone del textShadow non basta — ora e' una PILLOLA con fondo scuro, bordo nel colore del momento, ICONCINA per tipo (🧣 coro, 📣 spinta, 🎉 gol, 😱 pericolo, 😠 fallo, 😞 gol subito) e corpo 15-16px con letterSpacing 0,8 (le maiuscole molto spaziate erano parte del problema di lettura); (c) «c'e' un'indicazione del mister a meta' schermo ogni tanto che non rientra nel flusso» (rosso __CPM_NO549): trovata la SETTIMA voce del mister — il banner `subEvent` a top 12%, largo quasi quanto lo schermo, 3,5s, emesso al 65'-70' col cambio; sfuggita al censimento 7.532 (sei siti) perche' non passava da addCom e aveva una UI propria. Ora vale la regola delle tre voci, la stessa dell'intervallo: l'EVENTO lo racconta la telecronaca, la RICHIESTA del mister vive in panchina (testi riscritti in prima persona: «Il mister chiede…» detto dal mister era la spia che veniva da un altro mondo), il banner centrale sparisce. Il guardiano ha un terzo controllo: durante `playing` nessun riquadro di testo largo puo' vivere nella fascia centrale — un'ottava voce nascosta non passa piu' inosservata.
 // [nota 7.449.0] [7.449.0 MESSA IN SICUREZZA · P0 #3 dell'audit forense — IL RIFERIMENTO ALLA GARA APERTA SOPRAVVIVEVA ALL'USCITA]: `_playingMdRef` descrive la gara di CLUB aperta da startMatch, ma veniva azzerato SOLO da onMatchEnd: uscire dal pre-partita (onQuit) o essere respinti dai suoi return anticipati («non convocato», avversario non risolvibile) lo lasciava CARICO. E il consumo in onMatchEnd avveniva per QUALUNQUE fine partita, comprese quelle di Nazionale, che non passano da startMatch e non lo impostano mai. Catena: apro il pre-partita di campionato, torno indietro, gioco in Nazionale — e il commit registra come giocata una giornata di campionato mai disputata, che la bonifica chiude subito dopo. Stagione a 33 su 34 senza che nulla lo segnali. CICLO DI VITA RICOSTRUITO invece di un reset indiscriminato: il riferimento nasce all'apertura della gara, si INVALIDA su ogni percorso d'uscita dal pre-partita (onQuit e i due return anticipati) e si CONSUMA solo nei contesti di CLUB (career/cup/euro) — una gara di Nazionale non tocca piu' una giornata di campionato, ed e' la rete che copre anche le uscite non previste. +sonda test-only `__CPM_CAREER.mdRef()`: senza, il guardiano misurerebbe gli effetti e non la causa. GUARDIANO playing-mdref-test, NEL GATE: prova del ROSSO (__CPM_NO_P0_3: nel pre-partita il riferimento e' carico e resta carico dopo l'uscita) + i percorsi — uscita che invalida, calendario e presenze immutati dopo un'uscita, riapertura coerente con la gara vera, partita realmente giocata che si committa ancora.
 // [nota 7.448.0] [7.448.0 MESSA IN SICUREZZA · P0 #2 dell'audit forense — UN SALVATAGGIO PIU' VECCHIO POTEVA SOVRASCRIVERE IL PIU' RECENTE]: `storage.save` e' async e non aveva ne' coda ne' sequenza. Nel browser non si vede (localStorage e' sincrono) ma la build pubblicata su Play Store gira su `window.storage` = @capacitor/preferences, iniettato da tools/build-dist.mjs, dove la scrittura passa da un BRIDGE ASINCRONO: due salvataggi concorrenti potevano completare FUORI ORDINE, e `savedAt` veniva scritto ma mai riletto, quindi nulla se ne accorgeva. DIMOSTRATO a runtime con un bridge finto a latenza pilotata: stato A → parte l'autosave (bridge occupato) → stato B → l'app va in background → il flush salva B → il salvataggio di A completa DOPO e riscrive il disco con lo stato vecchio (memoria 2222, disco 1111). Su Android significa perdere una partita, una settimana, a volte una stagione — ed e' anche una spiegazione a monte della «partita gia' giocata», perche' un save che torna indietro riporta in calendario una gara gia' disputata. CURA MINIMA, nessuna infrastruttura nuova e formato del salvataggio IMMUTATO: una CODA per chiave (le scritture si susseguono nell'ordine in cui sono state chieste, mai sovrapposte) e uno SCARTO delle scritture gia' superate (se mentre A aspetta il turno e' arrivata B, A non viene scritta: il suo contenuto e' vecchio per definizione). GUARDIANO save-monotonic-test, NEL GATE: prova del ROSSO incorporata (__CPM_NO_P0_2 ripristina le scritture concorrenti → il disco torna a 1111) e sei scenari — vecchio-lento contro nuovo-veloce, tre scritture a latenza decrescente, salvataggio normale non bloccato, ramo browser invariato, ramo bridge nativo, riapertura dell'app che rilegge l'ultimo stato.
 // [nota 7.447.0] [7.447.0 MESSA IN SICUREZZA · P0 #1 dell'audit forense — IL RECUPERO DOPO UN RIAVVIO CONFONDEVA LE COMPETIZIONI]: e' la vera causa della «partita gia' giocata» che il PO segnala da nove collaudi. Il recovery del sidecar cercava la gara nel calendario per AVVERSARIO e SEDE, senza mai guardare la competizione; siccome l'avversario di Coppa viene sorteggiato DALLA STESSA LEGA e il turno R16 e' cablato «in casa», per costruzione esiste SEMPRE una voce di campionato in casa contro quel club. RIPRODOTTO: recuperando una gara di Coppa, la classifica di campionato passava da 17 a 18 partite e da 40 a 43 punti per una gara mai giocata, e la giornata di lega spariva marcata come giocata. Aggravante: le due ref che portano l'identita' della gara vivono nella SESSIONE e dopo il riavvio sono vuote — `matchTypeRef` torna al default "league" (l'unico writer "cup" e' startMatch, che dopo il reboot non passa mai) e `_playingMdRef` e' null, quindi anche il ramo di commit era quello di lega. DUE CURE MINIME: (1) i candidati si filtrano per COMPETIZIONE, derivata da `result.context` che era gia' nel sidecar dal 7.24.3 — nessun campo nuovo, e un sidecar senza contesto (scritto da una versione precedente) non viene filtrato ne' scartato, mantenendo il comportamento storico; (2) prima del dispatch si ricostruiscono `matchTypeRef` e `_playingMdRef` dalla voce ritrovata, cosi' il commit marca la voce giusta per NUMERO di giornata e registra quella giornata. GUARDIANO recovery-competition-test, NEL GATE: prova del ROSSO incorporata (interruttore __CPM_NO_P0_1 che ripristina la vecchia logica: la voce di lega torna a essere marcata, classifica 18) + casi A-G (coppa committata in coppa, campionato intatto a 17/40, turno di coppa avanzato, nessuna regressione sul recupero di lega). Gli assert leggono lo stato PERSISTITO, non la memoria.
@@ -12808,7 +12808,14 @@ function ThreeMatchView(props){
     const _DEVT344=(typeof devToolsOn==="function")?devToolsOn():false;
     const loop=()=>{
       sr.current.raf=requestAnimationFrame(loop);
-      const now=performance.now();const _rdt=Math.min((now-last)/1000,0.05);last=now;const dt=(typeof window!=='undefined'&&window.__CPM_FROZEN)?0:_rdt;// VISUAL-TEST: dt=0 → anim/lerp congelati per screenshot golden deterministico
+      const now=performance.now();const _rdt=Math.min((now-last)/1000,0.05);last=now;const dt=(typeof window!=='undefined'&&window.__CPM_FROZEN)?0:_rdt;
+      /* [7.536.0] IL TEMPO DI SCENA, ESPOSTO (solo collaudo). Le sonde misuravano finestre di OROLOGIO:
+         headless, sotto la contesa di CPU di una passata piena, in un secondo d'orologio la scena vive
+         una frazione di quello che vive a macchina scarica — e una misura di reattivita' («il difensore
+         arriva sul portatore?») diventa cosi' funzione del carico invece che del gioco (misurato sulla
+         stessa build: minDist 21,0/22,5 scarico contro 25,4/26,9 sotto carico). Questo contatore e' la
+         grandezza fisica giusta a cui ancorarle: secondi di GIOCO davvero trascorsi. */
+      if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){try{window.__CPM_SCENET=(window.__CPM_SCENET||0)+dt;}catch(_e536){}}// VISUAL-TEST: dt=0 → anim/lerp congelati per screenshot golden deterministico
       updateFootballState();// F2: aggiornato OGNI frame → i consumatori (off-ball AI) leggono uno stato deterministico e fresco
       /* [7.339.0 direttiva PO «alla pressione del pulsante di warning il gioco deve essere anche in grado di
          ABBOZZARE gli appunti del bug rispetto a quello che ha visto realtime nel live match»] TESTIMONE
@@ -19837,6 +19844,14 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     window.__CPM_CLOCK=()=>{try{return clockRef.current|0;}catch(e){return null;}};/* [7.500.0 F4] il MINUTO dal ref di LiveMatch: come fase e tabellone, sopravvive allo smontaggio del 3D al fischio finale — `__CPM_STATE().clock` li' resta congelato, ed e' la trappola gia' pagata tre volte */
     window.__CPM_SCORE=()=>{try{return{home:scoreRef.current.home|0,away:scoreRef.current.away|0};}catch(e){return null;}};
     window.__CPM_KO536=()=>{try{return (kickRef.current|0)>0||(kickoffRef.current|0)>0||!!(spRef.current&&spRef.current.kind==="pen_for")||!!(counterRef.current&&counterRef.current.fin);}catch(e){return false;}};/* [7.532.0 v2] il FERMO DICHIARATO include anche il rigore sul dischetto e l'attesa di risoluzione del contropiede: teatro con copione, come il kickoff (striscia 2,3s misurata oltre grazia) *//* [7.532.0] testimone della FINESTRA DI KICKOFF per ball-alive: al calcio d'inizio la palla E' ferma per regolamento — il guardiano grazia la finestra dichiarata (tetto 6s), col rosso NO536 la macchina non esiste e la grazia muore da sola */
+    /* [7.536.0] LE TRE VOCI INSIEME, A COMANDO (test-only): telecronaca, panchina e coro hanno gate
+       diversi (la riga esce dalla trama, la panchina dai momenti del mister, il coro dai tick quieti) e
+       coincidono di rado — senza questo hook il guardiano dell'accavallamento dovrebbe aspettare una
+       combinazione fortunata invece di misurare il caso che il PO ha fotografato. */
+    window.__CPM_HUD_FORCE=(o)=>{try{o=o||{};if(o.com)addCom(o.com,"#f8fafc",clockRef.current|0);
+      if(o.coach)addCoach(o.coach,clockRef.current|0);
+      if(o.chant)setCrowdChant({text:o.chant,type:o.type||"support",key:Date.now(),clubCol:"#4ade80"});
+      return true;}catch(e){return "error:"+(e&&e.message);}};
     window.__CPM_IDMAP538=(dir,u)=>{try{if(window.__CPM_NO538)return u<0.34?0:u<0.67?-1:1;return _corPick538(u,_prof538(dir));}catch(e){return null;}};/* [7.531.0] sweep di collaudo: percorre profilo+mappa VERI (il corridoio in volo nasce ~2,5 volte a partita — troppo raro per qualsiasi statistica: la mappa si giudica per enumerazione, il volo solo per cablaggio) *//* [7.496.0 F1b] il TABELLONE dal ref di LiveMatch: come la fase, sopravvive allo smontaggio del 3D al fischio finale — leggerlo da `__CPM_STATE` avrebbe la stessa malattia gia' pagata tre volte. `scoreRef` e' anche il punteggio LOGICO, quello che i gol incrementano SUBITO (7.113/7.120), non il `setScore` differito. */
     // [7.31.0] hook di collaudo RIGORI: forza pareggio+90' e chiama _goEndOrCeremony (il contesto KO deve
     //   essere vero: si usa da una partita di Coppa reale). Test-only, spento in store build.
@@ -20733,11 +20748,22 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
         subFiredRef.current=true;
         // 5.49.18: messaggio COLLEGATO all'andamento reale (punteggio + momentum), non più generico
         const _scS=scoreRef.current,_gapS=(_scS.home||0)-(_scS.away||0),_momS=momentumRef.current||50;
-        const sub=_gapS>0?{txt:"🛡️ Il mister chiede di gestire il vantaggio: equilibrio e attenzione.",energy:5,mom:4}
-          :_gapS<0?{txt:"🎯 Cambio offensivo: serve il gol, spingi sull'acceleratore!",energy:10,mom:12}
-          :(_momS>=55?{txt:"🔥 Il momento è nostro: il mister chiede l'ultimo sforzo per il gol!",energy:8,mom:10}
-                     :{txt:"💪 Cambio per dare energia fresca alla manovra.",energy:8,mom:8});
-        setSubEvent(sub.txt);
+        /* [7.536.0] due testi, uno per voce: la telecronaca RACCONTA il cambio, il mister CHIEDE — in prima
+           persona, come le altre battute di panchina («Il mister chiede…» detto dal mister era la spia che
+           questa voce veniva da un altro mondo). */
+        const sub=_gapS>0?{txt:"🛡️ Il mister chiede di gestire il vantaggio: equilibrio e attenzione.",com:"🔁 Cambio in campo: si passa alla gestione del vantaggio.",coach:"«Equilibrio e attenzione — questo vantaggio ce lo teniamo!»",energy:5,mom:4}
+          :_gapS<0?{txt:"🎯 Cambio offensivo: serve il gol, spingi sull'acceleratore!",com:"🔁 Cambio offensivo: entra forza fresca davanti.",coach:"«Serve il gol — spingete sull'acceleratore!»",energy:10,mom:12}
+          :(_momS>=55?{txt:"🔥 Il momento è nostro: il mister chiede l'ultimo sforzo per il gol!",com:"🔁 Cambio mentre la squadra spinge: forze fresche in avanti.",coach:"«Il momento è nostro: ancora uno sforzo e la sblocchiamo!»",energy:8,mom:10}
+                     :{txt:"💪 Cambio per dare energia fresca alla manovra.",com:"🔁 Cambio: gambe fresche in mezzo al campo.",coach:"«Dentro energia nuova — muovete palla più veloce!»",energy:8,mom:8});
+        /* [7.536.0 collaudo PO «c'e' un'indicazione del mister che compare a meta' schermo ogni tanto, che
+           non rientra nel flusso specifico» — rosso __CPM_NO549] LA SETTIMA VOCE TORNA NEL CORO DELLE TRE.
+           Il censimento 7.532 aveva ricondotto SEI siti di voce del mister al riquadro panchina; questo
+           settimo e' sfuggito perche' non passava da `addCom`: aveva una UI tutta sua — un banner a
+           `top:12%`, largo quasi quanto lo schermo, in mezzo alla scena per 3,5s. Ora vale la regola delle
+           tre voci, la stessa dell'intervallo 7.532: l'EVENTO (il cambio) lo racconta la telecronaca, la
+           RICHIESTA del mister vive in panchina, e il banner centrale sparisce. Col rosso ricompare. */
+        if(typeof window!=='undefined'&&window.__CPM_NO549)setSubEvent(sub.txt);
+        else{addCom(sub.com,"#93c5fd",ck);addCoach("📢 "+sub.coach,ck);}
         if(sub.energy>0)setEnergy(e=>clamp(e+sub.energy,0,100));
         setMomentum(m=>clamp(m+sub.mom,0,100));
         const tid3=setTimeout(()=>setSubEvent(null),3500);
@@ -23212,14 +23238,35 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                   CORRENTE E' IN CAMPO: banner a tutta larghezza sopra il prato durante la cronaca — la telecronaca
                   si LEGGE guardando la partita, non in un feed laterale. Solo in `playing` (gli highlight hanno la
                   loro drammaturgia); la chiave sulla riga fa ripartire la dissolvenza a ogni battuta. */}
-              {phase==="playing"&&!paused&&coms.length>0&&coms[0]&&(
-                <div key={"fmrow"+coms[0].t+String(coms[0].text||"").slice(0,18)} style={{position:"absolute",left:"3%",right:"3%",bottom:"1.5%",zIndex:21,pointerEvents:"none",textAlign:"center",animation:"chantPulse 5s ease-out forwards"}}>
+              {/* [7.536.0 collaudo PO «le indicazioni dalla panchina si accavallano» — rosso __CPM_NO548]
+                  LA FASCIA BASSA E' UNA COLONNA, NON DUE QUOTE FISSE. Il banner della telecronaca ha
+                  altezza VARIABILE (una riga lunga ne occupa due: e' il caso dello screenshot) mentre il
+                  riquadro panchina stava a un `bottom` FISSO dell'8,5%: due scatole assolute che si
+                  contendono la stessa fascia, quindi prima o poi si toccano. Ora vivono nello STESSO
+                  contenitore in colonna — la panchina si appoggia SOPRA la cronaca qualunque altezza essa
+                  abbia: l'accavallamento non e' corretto, e' reso IMPOSSIBILE. Col rosso la panchina torna
+                  fuori dal flusso e si sovrappone di nuovo (prova del difetto). */}
+              {phase==="playing"&&!paused&&(coms.length>0||coachMsg)&&(()=>{
+                const _no548=(typeof window!=='undefined'&&window.__CPM_NO548);
+                return <div data-cpm="voci" style={{position:"absolute",left:"3%",right:"3%",bottom:"1.5%",zIndex:21,pointerEvents:"none",display:"flex",flexDirection:"column",alignItems:"stretch",gap:6}}>
+                {coachMsg&&(
+                  <div data-cpm="panchina" key={coachMsg.key} style={{...(_no548?{position:"absolute",left:0,bottom:0}:{alignSelf:"flex-start"}),pointerEvents:"none",animation:"chantPulse 6s ease-out forwards"}}>
+                    <div style={{display:"inline-block",background:"rgba(10,18,12,0.9)",border:"1px solid rgba(134,239,172,0.35)",borderLeft:"3px solid #4ade80",borderRadius:8,padding:"5px 11px",maxWidth:"74vw",textAlign:"left"}}>
+                      <span style={{fontSize:9,fontWeight:800,color:"#86efac",letterSpacing:1.2,textTransform:"uppercase",marginRight:7}}>Panchina</span>
+                      <span style={{fontSize:12.5,fontWeight:600,color:"#d1fae5",lineHeight:1.3}}><EmoText>{coachMsg.text}</EmoText></span>
+                    </div>
+                  </div>
+                )}
+                {coms.length>0&&coms[0]&&(
+                <div data-cpm="fmrow" key={"fmrow"+coms[0].t+String(coms[0].text||"").slice(0,18)} style={{pointerEvents:"none",textAlign:"center",animation:"chantPulse 5s ease-out forwards"}}>
                   <div style={{display:"inline-block",maxWidth:"100%",background:"linear-gradient(90deg,rgba(3,6,16,0),rgba(3,6,16,0.88) 12%,rgba(3,6,16,0.88) 88%,rgba(3,6,16,0))",borderRadius:10,padding:"6px 16px"}}>
                     <span style={{fontSize:10,fontWeight:800,color:"rgba(255,255,255,0.45)",marginRight:7}}>{coms[0].t}&apos;</span>
                     <span style={{fontSize:15,fontWeight:700,color:coms[0].color||"#f8fafc",lineHeight:1.35,textShadow:"0 2px 8px rgba(0,0,0,0.9)"}}>{coms[0].text}</span>{/* [7.529.0 collaudo PO «leggermente ridotto e abbassato»] 17->15, bottom 4%->1,5% — ⚠️ il commento DEVE stare in graffe: come figlio JSX nudo Babel lo rende TESTO nel banner (visto in foto cronaca-534) */}
                   </div>
                 </div>
-              )}
+                )}
+                </div>;
+              })()}
               {/* [7.532.0 collaudo PO «i cori si accavallano quasi o del tutto con la cronaca testuale» — rosso
                   __CPM_NO541] IL CORO VIENE DALLA CURVA: sale nella fascia gradinate (top 20%), non piu' a
                   bottom 8% incollato al banner (bottom 1,5%). Col rosso torna dov'era. Il gate dei tick quieti
@@ -23232,17 +23279,28 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                 const fs=isGoal?20:13;
                 const _up541=!(typeof window!=='undefined'&&window.__CPM_NO541);
                 const _pos541=_up541?{top:"20%"}:{bottom:"8%"};
-                return <div key={crowdChant.key} style={{position:"absolute",..._pos541,left:"5%",right:"5%",textAlign:"center",fontSize:fs,fontWeight:900,color:col,textShadow:`0 0 22px ${col},0 2px 10px rgba(0,0,0,0.95)`,animation:"chantPulse 2.8s ease-out forwards",zIndex:22,pointerEvents:"none",letterSpacing:1.5,textTransform:"uppercase",padding:"5px 10px",background:isGoal?`linear-gradient(90deg,transparent,rgba(0,0,0,0.55),transparent)`:"transparent",borderRadius:8}}><EmoText>{crowdChant.text}</EmoText></div>;
+                /* [7.536.0 collaudo PO «i cori dei tifosi devono avere un'iconcina e scritte piu' carine,
+                   sono quasi illeggibili» — rosso __CPM_NO548] IL CORO DIVENTA UNA PILLOLA. Era testo NUDO
+                   (nessun fondo, 13px, maiuscole con letterSpacing 1,5) sopra le gradinate: il contrasto lo
+                   reggeva solo l'alone del textShadow, e su una curva chiara e affollata l'alone non basta —
+                   nella foto del PO la frase si perde nella folla. Ora: fondo scuro proprio + bordo nel
+                   colore del momento + ICONCINA per tipo (la curva ha una voce riconoscibile a colpo
+                   d'occhio) + corpo 15px con letterSpacing 0,8: le maiuscole molto spaziate erano parte del
+                   problema di lettura, non della resa. Col rosso torna il testo nudo. */
+                const _ico536=isGoal?"🎉":isDanger?"😱":isFoul?"😠":(crowdChant.type==="urgenza"?"📣":crowdChant.type==="away_goal"?"😞":"🧣");
+                const _no548c=(typeof window!=='undefined'&&window.__CPM_NO548);
+                const _fs536=_no548c?fs:(isGoal?20:15);
+                return <div data-cpm="coro" key={crowdChant.key} style={{position:"absolute",..._pos541,left:"5%",right:"5%",textAlign:"center",animation:"chantPulse 2.8s ease-out forwards",zIndex:22,pointerEvents:"none",...(_no548c?{fontSize:fs,fontWeight:900,color:col,textShadow:`0 0 22px ${col},0 2px 10px rgba(0,0,0,0.95)`,letterSpacing:1.5,textTransform:"uppercase",padding:"5px 10px",background:isGoal?`linear-gradient(90deg,transparent,rgba(0,0,0,0.55),transparent)`:"transparent",borderRadius:8}:{})}}>
+                  {_no548c?<EmoText>{crowdChant.text}</EmoText>:(
+                    <span data-cpm="coro-pill" style={{display:"inline-flex",alignItems:"center",gap:8,maxWidth:"92%",background:"rgba(8,12,20,0.72)",border:`1px solid ${col}`,boxShadow:`0 2px 14px rgba(0,0,0,0.55),0 0 18px ${col}44`,borderRadius:999,padding:"6px 15px"}}>
+                      <span style={{fontSize:_fs536+1,lineHeight:1}}>{_ico536}</span>
+                      <span style={{fontSize:_fs536,fontWeight:900,color:col,letterSpacing:0.8,textTransform:"uppercase",lineHeight:1.25,textShadow:"0 2px 8px rgba(0,0,0,0.9)"}}><EmoText>{crowdChant.text}</EmoText></span>
+                    </span>
+                  )}
+                </div>;
               })()}
-              {/* [7.532.0 NO540] IL RIQUADRO PANCHINA: la voce del mister, separata dalla telecronaca */}
-              {phase==="playing"&&!paused&&coachMsg&&(
-                <div key={coachMsg.key} style={{position:"absolute",left:"3%",bottom:"8.5%",zIndex:21,pointerEvents:"none",animation:"chantPulse 6s ease-out forwards"}}>
-                  <div style={{display:"inline-block",background:"rgba(10,18,12,0.9)",border:"1px solid rgba(134,239,172,0.35)",borderLeft:"3px solid #4ade80",borderRadius:8,padding:"5px 11px",maxWidth:"74vw",textAlign:"left"}}>
-                    <span style={{fontSize:9,fontWeight:800,color:"#86efac",letterSpacing:1.2,textTransform:"uppercase",marginRight:7}}>Panchina</span>
-                    <span style={{fontSize:12.5,fontWeight:600,color:"#d1fae5",lineHeight:1.3}}><EmoText>{coachMsg.text}</EmoText></span>
-                  </div>
-                </div>
-              )}
+              {/* [7.532.0 NO540 · 7.536.0] IL RIQUADRO PANCHINA vive ora nella colonna delle voci qui sopra:
+                  restare qui, fuori dal flusso, era la causa dell'accavallamento segnalato dal PO. */}
               {/* [7.9.3] Kickoff hold — attesa elegante finché il CH38 non è agganciato (mai burattini in campo) */}
               {kickoffHold&&!paused&&phase==="playing"&&glbFail&&(
                 <div style={{position:"absolute",inset:0,background:"rgba(5,8,20,0.94)",backdropFilter:"blur(6px)",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",zIndex:41,padding:"0 26px",textAlign:"center"}}>

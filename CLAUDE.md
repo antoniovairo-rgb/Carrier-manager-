@@ -592,6 +592,14 @@ arrivo NON cambiano — e `ballArcProf` si azzera a OGNI armo d'arco (testa del 
 Guardiano `gesto-vocabolario` (enumerazione, in corsia B verde+rosso). Aperto pre-esistente: il
 pallonetto su gi0 non vola mai (hl_result inchiodato, dispatch nullo — identico su baseline 7.533).
 
+**Le tre voci hanno tre case (7.532 → 7.536).** Telecronaca = banner in campo; mister = riquadro
+PANCHINA (`addCoach`); curva = pillola del coro in gradinata. INVARIANTI: (1) ogni nuova voce del mister
+passa da `addCoach` — mai una UI propria (il banner `subEvent` a metà schermo è sfuggito così per quattro
+release); (2) banner e panchina vivono nella STESSA colonna in basso (`data-cpm="voci"`), mai a quote
+fisse separate: l'altezza della cronaca cambia col testo; (3) nessun riquadro di testo largo nella fascia
+centrale durante `playing`. Guardiano `hud-voci` (rossi `__CPM_NO548`/`__CPM_NO549`) misura tutti e tre
+sui rettangoli del DOM, con l'hook `__CPM_HUD_FORCE` che accende le tre voci insieme.
+
 **In `cpmtest` il taglio del teatro è SPENTO (`_asIfPlay`, 7.345) — ogni sonda che giudica le APERTURE
 di scena deve armare `__CPM_PRESENT=1`, o misura un teatro che va a piedi (artefatto: 73,5u su gi44,
 rimedio `__CPM_NO529` REVOCATO con misura invariata — col teatro attivo i due bracci erano identici a

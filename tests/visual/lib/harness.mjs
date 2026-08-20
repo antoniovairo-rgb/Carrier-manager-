@@ -226,16 +226,36 @@ export async function samplePostHighlight(page, gi, { settle = 600, k = 0, pollM
    posizioni MESH reali (__CPM_STATE().players, derivate da mesh.position) durante la fase ATTIVA off-ball,
    SENZA risolvere l'azione. Ritorna metriche di vivacità: quanti giocatori si muovono davvero + salto max.
    Usato dal check `motion` (No Dead Players / liveness off-ball). */
-export async function sampleMotion(page, gi, { settle = 500, pollMs = 100, windowMs = 1000 } = {}) {
+export async function sampleMotion(page, gi, { settle = 500, pollMs = 100, windowMs = 9000 } = {}) {
   await page.evaluate(([i, c]) => window.__CPM_FORCE_SIT(i, c), [gi, true]);
   await sleep(settle);
   await page.evaluate(() => { window.__CPM_FROZEN = false; }); // off-ball AI gira solo con dt>0
+  /* [7.536.0] LA FINESTRA SEGUE LA SCENA, NON L'OROLOGIO DEL TEST. La misura di reattività (#24: «un
+     difensore arriva a impegnare il portatore?») campionava un secondo d'OROLOGIO — ma headless, sotto
+     la contesa di CPU di una passata piena, in quel secondo il gioco avanza molto meno, e il difensore
+     semplicemente non fa in tempo ad arrivare: la stessa build misurata due volte a macchina scarica dà
+     minDist 21,0 e 22,5 (verde) e due volte sotto carico 25,4 e 26,9 (rosso). Non peggiorava la scena,
+     peggiorava la misura — ed e' la trappola gia' pagata piu' volte in questa serie («lo strumento
+     sbaglia prima del codice»). Ora si campiona finche' il difensore piu' vicino SMETTE di avvicinarsi
+     (assestamento: 6 campioni senza progresso) con un tetto di 4s: a macchina scarica finisce presto
+     come prima, sotto carico aspetta che la scena viva. La domanda del check e' «arriva o non arriva»,
+     non «arriva entro un secondo del test». */
   const frames = []; const end = Date.now() + windowMs;
+  /* la finestra si chiude sui SECONDI DI SCENA (window.__CPM_SCENET, somma dei dt del render-loop), non
+     sull'orologio: sotto carico serve piu' tempo reale per la stessa quantita' di gioco. Tetto d'orologio
+     come rete di sicurezza. Prima stesura di questo rimedio — «fermati quando il difensore smette di
+     avvicinarsi» — e' stata BUTTATA con la sua misura: sotto carico il difensore si muove meno di 0,05u
+     per campione e il criterio scattava subito, misurando di nuovo il carico (26,3 contro 21 isolato). */
+  const sceneT0 = await page.evaluate(() => window.__CPM_SCENET || 0);
+  const TARGET_SCENE = 1.2;
+  let sceneNow = sceneT0;
   while (Date.now() < end) {
     const st = await page.evaluate(() => (typeof window.__CPM_STATE === 'function' ? window.__CPM_STATE() : null));
     const players = ((st && st.players) || []).map(p => ({ x: p.x, y: p.y, team: p.team, gk: p.gk }));
     const ball = (st && st.ball) ? { x: st.ball.x, y: st.ball.y } : null;
     frames.push({ players, ball });
+    sceneNow = await page.evaluate(() => window.__CPM_SCENET || 0);
+    if (sceneNow - sceneT0 >= TARGET_SCENE && frames.length >= 8) break;
     await sleep(pollMs);
   }
   const n = frames.length ? frames[0].players.length : 0;
