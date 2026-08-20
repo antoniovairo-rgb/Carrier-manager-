@@ -1,5 +1,88 @@
 # Cronologia delle release — Korward Elite
 
+### 7.538.0 — La partita vera, primo lotto: il minuto è una giocata
+
+Mandato esplicito del PO: «basta rifiniture, partita vera è la missione».
+Rossi: `__CPM_NO553` (taratura a secondi + turni spenti), `__CPM_NO554` (piazzato non battuto).
+
+1. **La radice, misurata e non indovinata.** Il metronomo della partita batte un tick e **ogni tick avanza
+   il cronometro di un minuto** (`setClock(c=>c+1)`). Ma tutte le costanti del possesso ambientale erano
+   state scelte leggendo il tick come un **secondo reale**: passo del pallone 0,55-1,05u, waypoint a 8-13u,
+   spell di possesso 30-55 tick. Tradotto in minuti di gioco: la palla avanzava **0,8 unità al minuto**
+   (68u in 90') e la stessa squadra teneva palla **per mezzo tempo**. In novanta minuti il pallone non
+   attraversava il campo nemmeno una volta — ed è tutto il «gira sempre a centrocampo»: nessuna corsa dei
+   ventidue può rimediare a un bersaglio che non si muove.
+2. **Il cancello che spegneva il motore.** Il drift avanza solo a pallone «arrivato» sul bersaglio, con
+   soglia **0,6u**: giusta per un passo di 0,8, cieca per un passo di minuto (la palla resta 1,4-2,5u dal
+   bersaglio per due o tre tick). Il testimone della trama lo dice in chiaro: **40 tick di piano in TRE
+   partite**, cioè il motore del possesso girava **una volta ogni sette minuti di gioco**. Soglia resa
+   proporzionale al passo: **40 → 97 tick**, e la fase **rifinitura** (quella in cui si entra in area) da
+   **0% a 11%**.
+3. **I reparti seguono la palla.** Il movimento ambientale dei ventidue puntava **slot di formazione fissi**
+   — l'unico legame col pallone stava nel renderer (`_lineShift`, ±9u al massimo). Ora lo slot **trasla con
+   l'avanzamento del pallone** per entrambe le squadre (il gioco si comprime attorno alla palla, come in
+   una partita vera) e l'uomo più vicino del lato in possesso **ci va davvero**.
+
+**Misura — sei partite intere per braccio, sonda a sorgente unica:**
+
+| grandezza | 7.537 | 7.538 | obiettivo |
+|---|---|---|---|
+| palla in fascia centrale (x35-65) | 78% (57-88) | **59%** (52-64) | ≤60 ✅ |
+| palla senza padrone (>2,5u) | 30% (17-49) | 33% (23-34) | ≤40 ✅ |
+| cambi di portatore in 90' | 13 (6-17) | **15** (9-17) | ≥15 ✅ |
+| uomini diversi che toccano palla | 10 | 12 | ≥15 ❌ |
+| viaggio della palla | 477u | **609u** | |
+| dove vive la palla (quinti, difesa→attacco) | 1·9·**60**·24·6 | 3·11·**45**·32·8 | |
+
+La varianza fra partite crolla (52-64 contro 57-88): non è più una partita diversa a ogni giro.
+
+⚠️ **Dichiarato non centrato**: gli uomini diversi che toccano palla restano **12 su 22** contro i 15
+promessi. **Provata e revocata con la sua misura** la rotazione del portatore fra i quattro candidati a
+portata (uomini 12→12, cambi 15→13, senza padrone 33%→36%): designare un uomo lontano non gli mette la
+palla tra i piedi, gli chiede di **andare a prenderla** — e mentre ci va la palla non è di nessuno. Quel
+numero si sposta dando ai compagni un **ruolo nella giocata**, non cambiando l'etichetta di chi ce l'ha.
+
+⚠️ **Corretto un mio numero.** Il «66% di palla senza padrone» dichiarato nel 7.537 era un artefatto dello
+**strumento**: leggeva la palla dalle mesh e i giocatori da `matchPlayers` (l'array **logico**), due
+sorgenti che divergono di 15-20u — la stessa trappola già pagata nel 7.322 e nel 7.370. Con una sola
+sorgente il valore vero era **22%**, cioè già dentro l'obiettivo: l'unico numero fuori posto era la fascia
+centrale.
+
+4. **Il piazzato si batte.** Censendo le scene in cui il pallone non viaggia sono emersi quattro calci
+   d'angolo (gi6, gi50, gi76, gi77): **2,1u** di spostamento in tutta la scena, e **due volte su quattro
+   la palla finiva in rete da lì** (candidata alla nota «esito chance ma palla IN RETE»). La palla **nasce
+   giusta** — `hlBallSpot` la mette sulla bandierina (97; 2,5) — e nemmeno il piano era assente:
+   `buildHLTimeline` ne costruisce uno, ma parte 47-59 unità più indietro, cioè **il piano e il pallone
+   erano due partite diverse**. Due difetti veri: quel ramo **piazza la palla e basta** (la consegna
+   d'apertura vive nell'`else if` accanto, riservato alle ricezioni) e la **ri-piazzava a ogni
+   ri-esecuzione** dell'effetto, riportandola indietro appena partiva. Ora il corner si batte: percorso del
+   pallone **30-70u**, guardiano `battuta` con prova del rosso che si riproduce (3/4 sotto soglia).
+5. **La classifica europea conta tutta la stagione.** Collaudo PO sul salvataggio vero (FC Rotterdam → FC
+   Partenope a stagione in corso, 42 gol di cui 26 con la maglia precedente). Sono **due numeri diversi** e
+   solo uno era sbagliato: gli **8** del duello capocannoniere di **Lega A** sono **giusti** — chi cambia
+   campionato non porta i suoi gol nella classifica marcatori del nuovo (invariante 7.336, nata da un
+   collaudo PO precedente) — ma **Re dei Bomber e Trofeo d'Oro** giocano in **Europa**, e lì i 26 gol
+   contano: dicevano 8, ora dicono **34**. Campo nuovo `lgAll` nel travaso, letto da `euroSeasonGoalsOf`.
+   ⚠️ Per le carriere **già a stagione inoltrata** al momento dell'aggiornamento `lgAll` non esiste e si
+   ripiega sul totale dello spell precedente: è una **stima per eccesso, dichiarata**, perché la
+   ripartizione lega/coppe della maglia precedente non è mai stata salvata e inventarla sarebbe peggio.
+   Dalla prossima cessione il numero è esatto. Guardiano `europei` (lega 8 · Europa 34 · Primavera fuori ·
+   travaso a parità di lega intatto).
+
+⚠️ **Non riprodotto e dichiarato**: l'etichetta pre-partita «LEGA A · GIORNATA 34 DI 34» sulla finale di
+Champions. Caricato il salvataggio del PO e percorso il flusso fino in fondo: pannello walkout e prompt
+Gioca/Simula dicono entrambi «⭐ Korward Champions Cup · Finale · FC Amsterdam», e il calendario è **sano**
+(giornata 33 marcata giocata, storico coerente, nessun doppione). La diagnosi precedente era mia ed era
+sbagliata. Il «se esco e riapro funziona» del PO punta a uno **stato in memoria che diverge dal
+salvataggio**, e resta aperto invece di essere chiuso con una spiegazione che non regge.
+
+6. **Strumenti.** Sonda del possesso **rifatta**: una sola sorgente (palla, ventidue ed eroe tutti dalle
+   mesh, via il nuovo hook `__CPM_OWN`), un campione per **minuto di gioco** invece che a orologio su una
+   partita accelerata, dispersione fra partite invece di un numero solo, e i giri con poco gioco vivo
+   **scartati e dichiarati** invece di finire nella mediana. Più i censimenti che hanno aperto il lotto
+   (dove nasce l'azione, cosa dice il piano della timeline, dove vive la palla per quinti di campo).
+
+
 ### 7.537.0 — L'azione si vede e si segue
 
 Quattro note di collaudo PO. Rossi: `__CPM_NO550` (ombra), `__CPM_NO551` (catena), `__CPM_NO552` (colori).

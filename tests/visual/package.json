@@ -129,7 +129,11 @@
     "framing-guard": "CPM_MED_MIN=0.11 CPM_FUORI_MAX=10 node hero-framing-census.mjs",
     "trama-identita": "node trama-identita-test.mjs",
     "gesto-vocabolario": "node gesto-vocabolario-test.mjs",
-    "hud-voci": "node hud-overlap-test.mjs"
+    "hud-voci": "node hud-overlap-test.mjs",
+    "battuta": "node battuta-test.mjs",
+    "europei": "node europei-test.mjs",
+    "possesso": "node possesso-538.mjs",
+    "primavera-awards": "node primavera-awards-test.mjs"
   },
   "dependencies": {
     "playwright": "^1.48.0",

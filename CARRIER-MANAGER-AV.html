@@ -4826,7 +4826,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="7.537.0"; // [7.537.0 — L'AZIONE SI VEDE E SI SEGUE, quattro note di collaudo PO]: (a) L'OMBRA DEL PALLONE HA UN COLORE (rosso __CPM_NO550): era un radiale nero su erba verde — il nero e' quello che il prato in ombra ha gia' addosso, e il segno spariva proprio quando serve (e' lui che dice dove ricade la palla); ora nucleo scuro + anello AMBRA a meta' raggio (resta un'ombra, non un disco fluo), misura sui pixel del fotogramma: 2423 pixel in banda ambra contro 1329 del braccio storico. (b) LA CATENA DI POSSESSO (rosso __CPM_NO551, primo pezzo di MP-2 in cronaca): la MISURA prima del rimedio dice che il difetto non era «palla ferma su un giocatore» ma una palla che VAGA — a piu' di 2,5u da chiunque per il 77% del tempo, in fascia centrale per l'80%, toccata da 9 uomini su 21. Ora la cronaca costruisce catene di 3-5 tocchi fra uomini REALI del lato in possesso: ogni passo nomina passatore e ricevente dai cognomi di `matchPlayers`, la palla punta la POSIZIONE del ricevente (non una zona vuota), il ricevente le va incontro, il reparto accompagna e all'apertura i tre uomini piu' avanzati attaccano lo spazio. L'evento porta actor e — campo NUOVO — `rcv` fino al 3D, che consegna la palla all'uomo NOMINATO invece di indovinarlo per prossimita' (7.523). Misure sulla versione spedita (catena di 2-3 tocchi, una ogni 6' di gioco, alternata col commento, ogni passo OBBLIGATO a guadagnare campo): il segnale solido arriva dal guardiano del ritmo — la fase SVILUPPO passa da 4 a 21 coppie e la costruzione da 51 a 26 (rapporto 1,50x, soglia 1,30): il gioco esce dal centro e la telecronaca ha di nuovo tre respiri invece di uno. ⚠️ La sonda del possesso NON conferma né smentisce: sugli stessi giri misura la fascia centrale fra 80% e 93% e gli uomini che toccano palla fra 5 e 14 — varianza troppo alta per giudicare (campiona a orologio su una partita accelerata), dichiarata come tale invece di scegliere il giro che fa comodo. Le stesure piu' larghe (3-5 tocchi consecutivi) davano numeri migliori sul possesso (733u, 67%) ma AFFAMAVANO la telecronaca: col confronto diretto acceso/spento il guardiano bg-decision e' cieco CON la catena e verde SENZA — una giocata raccontata bene non puo' costare il repertorio, e il campione del guardiano e' stato portato a 5 partite (20 righe utili, accordo 90%). ⚠️ DICHIARATO NON RISOLTO: la concentrazione a centrocampo (80%→85%) — la radice e' il drift della trama e i turni di possesso parcheggiati (7.532), non la catena; due stesure intermedie sono state buttate con le loro misure (v1 senza vincolo d'avanzamento: 93% in fascia centrale; v2 con vincolo rigido: catene troppo rare). (c) I COLORI TORNANO DENSI (rosso __CPM_NO552): misura su tre scene CONGELATE a SEED IDENTICO — con nomi diversi i due bracci giravano su partite e kit diversi e i numeri si scambiavano fra un giro e l'altro — il divario col mondo pre-7.529 NON e' nella saturazione (-4,0%) ma nella LUMINOSITA' (+42%), ed e' quella che fa leggere «slavato»; esposizione 0,78→0,60: saturazione -4,0%→-2,5%, luminosita' +42%→+29,6%. Provato e REVOCATO con la sua misura: saturare erba e kit a monte peggiorava (-9,9%), perche' ACES comprime verso il bianco proprio i colori piu' intensi. (d) strumenti: censimento del possesso (stazionamento, portatori, viaggio, fascia centrale) e sonda di saturazione a fotogrammi controllati.
+const GAME_VERSION="7.538.0"; // [7.538.0 — LA PARTITA VERA, primo lotto: IL MINUTO E' UNA GIOCATA]: mandato esplicito del PO («basta rifiniture, partita vera e' la missione»). (a) LA RADICE, MISURATA E NON INDOVINATA (rosso __CPM_NO553): il metronomo della partita batte un tick e ogni tick avanza il cronometro di UN MINUTO (setClock c=>c+1), ma tutte le costanti del possesso ambientale erano state scelte leggendo il tick come un secondo reale — passo del pallone 0,55-1,05u, waypoint a 8-13u, spell di possesso 30-55 tick. Tradotto in minuti di gioco: il pallone avanzava ~0,8 unita' AL MINUTO (68u in 90') e la stessa squadra teneva palla per mezzo tempo. In novanta minuti la palla non attraversava il campo nemmeno una volta: e' questo il «gira sempre a centrocampo», e nessuna corsa dei ventidue poteva rimediare a un bersaglio che non si muove. (b) IL CANCELLO CHE SPEGNEVA IL MOTORE: il drift avanza solo a pallone «arrivato» sul bersaglio, con soglia 0,6u — giusta per un passo di 0,8, cieca per un passo di minuto (la palla resta 1,4-2,5u dal bersaglio per due o tre tick). Il testimone della trama lo dice in chiaro: 40 tick di piano in TRE partite, cioe' il motore del possesso girava una volta ogni sette minuti di gioco e tutto il resto del tempo la palla la muovevano gli altri. Soglia resa proporzionale al passo: 40 -> 97 tick, e la fase RIFINITURA (quella in cui si entra in area) da 0% a 11%. (c) I REPARTI SEGUONO LA PALLA: il movimento ambientale dei ventidue puntava slot di formazione FISSI — l'unico legame con il pallone stava nel renderer (_lineShift, +-9u). Ora lo slot trasla con l'avanzamento del pallone per ENTRAMBE le squadre (il gioco si comprime attorno alla palla) e l'uomo piu' vicino del lato in possesso ci va davvero. MISURA, sei partite intere per braccio, sonda a SORGENTE UNICA (palla, ventidue ed eroe tutti dalle mesh): fascia centrale 78% (57-88) -> 59% (52-64); palla senza padrone 30% -> 33%; cambi di portatore in 90' 13 -> 15; viaggio della palla 477u -> 609u; dove vive la palla per quinti di campo 1/9/60/24/6 -> 3/11/45/32/8. La varianza fra partite crolla (52-64 contro 57-88). ⚠️ DICHIARATO NON CENTRATO: gli uomini diversi che toccano palla restano 12 su 22 contro i 15 dell'obiettivo. Provata e REVOCATA con la sua misura la rotazione del portatore (uomini 12->12, cambi 15->13, senza padrone 33%->36%): designare un uomo lontano non gli mette la palla tra i piedi, gli chiede di andare a prenderla. ⚠️ CORRETTO UN MIO NUMERO: il «66% senza padrone» del 7.537 era un artefatto dello STRUMENTO — palla letta dalle mesh e giocatori da matchPlayers (l'array logico), due sorgenti che divergono di 15-20u (7.322). Con una sola sorgente il valore vero era 22%, cioe' gia' dentro l'obiettivo: l'unico numero fuori posto era la fascia centrale. (d) IL PIAZZATO SI BATTE (rosso __CPM_NO554): quattro calci d'angolo (gi6, gi50, gi76, gi77) restavano sulla bandierina per tutta la scena — 2,1u di spostamento, due volte su quattro in rete da li'. La palla NASCE giusta (hlBallSpot la mette a 97;2,5): il difetto e' che quel ramo la PIAZZA e basta — la consegna d'apertura vive nell'else if accanto, riservato alle ricezioni — e la RI-PIAZZAVA a ogni ri-esecuzione dell'effetto, riportandola indietro. Ora il corner si batte: percorso del pallone 30-70u. (e) LA CLASSIFICA EUROPEA CONTA TUTTA LA STAGIONE (collaudo PO sul salvataggio vero, FC Rotterdam -> FC Partenope a stagione in corso): gli 8 gol del duello capocannoniere di Lega A sono GIUSTI (chi cambia campionato non li porta nella classifica del nuovo, invariante 7.336), ma il Re dei Bomber e il Trofeo d'Oro giocano in Europa e li' i 26 gol precedenti contano: dicevano 8, ora dicono 34. Campo nuovo `lgAll` nel travaso; per le carriere gia' a stagione inoltrata si ripiega sul totale dello spell (stima per eccesso, dichiarata: la ripartizione lega/coppe della maglia precedente non e' mai stata salvata). (f) NON RIPRODOTTO E DICHIARATO: l'etichetta pre-partita «LEGA A · GIORNATA 34 DI 34» sulla finale di Champions. Caricato il salvataggio del PO e percorso il flusso: pannello e prompt dicono entrambi «Korward Champions Cup · Finale», e il calendario e' sano (giornata 33 marcata giocata, nessun doppione). La diagnosi precedente era mia ed era sbagliata; il «se esco e riapro funziona» punta a uno stato in memoria che diverge dal salvataggio, e resta aperto. (g) strumenti: sonda del possesso rifatta (sorgente unica, un campione per MINUTO di gioco, dispersione fra partite invece di un numero solo, giri con poco gioco vivo scartati e dichiarati) + hook __CPM_OWN + guardiani `battuta` e `europei`.
 // [nota 7.449.0] [7.449.0 MESSA IN SICUREZZA · P0 #3 dell'audit forense — IL RIFERIMENTO ALLA GARA APERTA SOPRAVVIVEVA ALL'USCITA]: `_playingMdRef` descrive la gara di CLUB aperta da startMatch, ma veniva azzerato SOLO da onMatchEnd: uscire dal pre-partita (onQuit) o essere respinti dai suoi return anticipati («non convocato», avversario non risolvibile) lo lasciava CARICO. E il consumo in onMatchEnd avveniva per QUALUNQUE fine partita, comprese quelle di Nazionale, che non passano da startMatch e non lo impostano mai. Catena: apro il pre-partita di campionato, torno indietro, gioco in Nazionale — e il commit registra come giocata una giornata di campionato mai disputata, che la bonifica chiude subito dopo. Stagione a 33 su 34 senza che nulla lo segnali. CICLO DI VITA RICOSTRUITO invece di un reset indiscriminato: il riferimento nasce all'apertura della gara, si INVALIDA su ogni percorso d'uscita dal pre-partita (onQuit e i due return anticipati) e si CONSUMA solo nei contesti di CLUB (career/cup/euro) — una gara di Nazionale non tocca piu' una giornata di campionato, ed e' la rete che copre anche le uscite non previste. +sonda test-only `__CPM_CAREER.mdRef()`: senza, il guardiano misurerebbe gli effetti e non la causa. GUARDIANO playing-mdref-test, NEL GATE: prova del ROSSO (__CPM_NO_P0_3: nel pre-partita il riferimento e' carico e resta carico dopo l'uscita) + i percorsi — uscita che invalida, calendario e presenze immutati dopo un'uscita, riapertura coerente con la gara vera, partita realmente giocata che si committa ancora.
 // [nota 7.448.0] [7.448.0 MESSA IN SICUREZZA · P0 #2 dell'audit forense — UN SALVATAGGIO PIU' VECCHIO POTEVA SOVRASCRIVERE IL PIU' RECENTE]: `storage.save` e' async e non aveva ne' coda ne' sequenza. Nel browser non si vede (localStorage e' sincrono) ma la build pubblicata su Play Store gira su `window.storage` = @capacitor/preferences, iniettato da tools/build-dist.mjs, dove la scrittura passa da un BRIDGE ASINCRONO: due salvataggi concorrenti potevano completare FUORI ORDINE, e `savedAt` veniva scritto ma mai riletto, quindi nulla se ne accorgeva. DIMOSTRATO a runtime con un bridge finto a latenza pilotata: stato A → parte l'autosave (bridge occupato) → stato B → l'app va in background → il flush salva B → il salvataggio di A completa DOPO e riscrive il disco con lo stato vecchio (memoria 2222, disco 1111). Su Android significa perdere una partita, una settimana, a volte una stagione — ed e' anche una spiegazione a monte della «partita gia' giocata», perche' un save che torna indietro riporta in calendario una gara gia' disputata. CURA MINIMA, nessuna infrastruttura nuova e formato del salvataggio IMMUTATO: una CODA per chiave (le scritture si susseguono nell'ordine in cui sono state chieste, mai sovrapposte) e uno SCARTO delle scritture gia' superate (se mentre A aspetta il turno e' arrivata B, A non viene scritta: il suo contenuto e' vecchio per definizione). GUARDIANO save-monotonic-test, NEL GATE: prova del ROSSO incorporata (__CPM_NO_P0_2 ripristina le scritture concorrenti → il disco torna a 1111) e sei scenari — vecchio-lento contro nuovo-veloce, tre scritture a latenza decrescente, salvataggio normale non bloccato, ramo browser invariato, ramo bridge nativo, riapertura dell'app che rilegge l'ultimo stato.
 // [nota 7.447.0] [7.447.0 MESSA IN SICUREZZA · P0 #1 dell'audit forense — IL RECUPERO DOPO UN RIAVVIO CONFONDEVA LE COMPETIZIONI]: e' la vera causa della «partita gia' giocata» che il PO segnala da nove collaudi. Il recovery del sidecar cercava la gara nel calendario per AVVERSARIO e SEDE, senza mai guardare la competizione; siccome l'avversario di Coppa viene sorteggiato DALLA STESSA LEGA e il turno R16 e' cablato «in casa», per costruzione esiste SEMPRE una voce di campionato in casa contro quel club. RIPRODOTTO: recuperando una gara di Coppa, la classifica di campionato passava da 17 a 18 partite e da 40 a 43 punti per una gara mai giocata, e la giornata di lega spariva marcata come giocata. Aggravante: le due ref che portano l'identita' della gara vivono nella SESSIONE e dopo il riavvio sono vuote — `matchTypeRef` torna al default "league" (l'unico writer "cup" e' startMatch, che dopo il reboot non passa mai) e `_playingMdRef` e' null, quindi anche il ramo di commit era quello di lega. DUE CURE MINIME: (1) i candidati si filtrano per COMPETIZIONE, derivata da `result.context` che era gia' nel sidecar dal 7.24.3 — nessun campo nuovo, e un sidecar senza contesto (scritto da una versione precedente) non viene filtrato ne' scartato, mantenendo il comportamento storico; (2) prima del dispatch si ricostruiscono `matchTypeRef` e `_playingMdRef` dalla voce ritrovata, cosi' il commit marca la voce giusta per NUMERO di giornata e registra quella giornata. GUARDIANO recovery-competition-test, NEL GATE: prova del ROSSO incorporata (interruttore __CPM_NO_P0_1 che ripristina la vecchia logica: la voce di lega torna a essere marcata, classifica 18) + casi A-G (coppa committata in coppa, campionato intatto a 17/40, turno di coppa avanzato, nessuna regressione sul recupero di lega). Gli assert leggono lo stato PERSISTITO, non la memoria.
@@ -7969,14 +7969,54 @@ const buildSeasonCarry=(p,newClub)=>{
   const _mhLg=(p.matchHistory||[]).filter(m=>m&&!m.cup&&!m.euro&&!m.national);
   const _sameLg=!!(p.club&&newClub&&p.club.lg===newClub.lg&&(p.proStatus||"u18")==="pro");
   const _prevOk=_pSC&&(!_pSC.lgName||_pSC.lgName===(newClub&&newClub.lg));
+  /* [7.538.0 collaudo PO «e i gol con l'altra squadra non li conti. errore anche gala della classifica
+     capocannonieri»] IL CAPOCANNONIERE DI LEGA E QUELLO D'EUROPA NON SONO LO STESSO NUMERO.
+     `lg` e' il travaso per la classifica DELLA PROPRIA LEGA e resta a zero quando si cambia campionato:
+     e' corretto (7.336) — chi arriva dall'Eredivisie non porta i suoi gol nella classifica di Lega A, e
+     nel salvataggio del PO gli 8 gol del duello capocannoniere sono giusti. Ma i premi EUROPEI (Re dei
+     Bomber, Trofeo d'Oro) confrontano l'intera stagione europea, e li' i 26 gol segnati prima del
+     trasferimento CONTANO: la classifica europea mostrava 8 invece di 34. `lgAll` e' quel secondo numero —
+     gol di LEGA di ogni maglia della stagione, indipendentemente dal campionato — scritto qui una volta e
+     letto da `euroSeasonGoalsOf`. `lg` NON cambia: nessuna classifica di lega si muove. */
+  const _lgAllPrev=_pSC?((_pSC.lgAll!=null)?_pSC.lgAll:(_pSC.lg||0)):0;
+  const _laAllPrev=_pSC?((_pSC.laAll!=null)?_pSC.laAll:(_pSC.la||0)):0;
+  const _proNow=(p.proStatus||"u18")==="pro";/* la Primavera non entra in Europa (invariante 7.336) */
   return{season:p.season||1,lgName:(newClub&&newClub.lg)||null,
     lg:_sameLg?((_prevOk?(_pSC.lg||0):0)+_mhLg.reduce((x,m)=>x+(m.goals||0),0)):0,
     la:_sameLg?((_prevOk?(_pSC.la||0):0)+_mhLg.reduce((x,m)=>x+(m.assists||0),0)):0,
+    lgAll:_lgAllPrev+(_proNow?_mhLg.reduce((x,m)=>x+(m.goals||0),0):0),
+    laAll:_laAllPrev+(_proNow?_mhLg.reduce((x,m)=>x+(m.assists||0),0):0),
     spells:[..._pSp,{n:(p.club&&p.club.n)||"",g:Math.max(0,(p.goals||0)-_sum("g")),a:Math.max(0,(p.assists||0)-_sum("a")),m:Math.max(0,(p.matches||0)-_sum("m"))}]};};
 const leagueGoalsOf=(p)=>{const c=_scOf(p),h=(p.matchHistory||[]).filter(m=>m&&!m.cup&&!m.euro&&!m.national);/* [7.115.0 audit · +!m.national] trappola latente: se un risultato di Nazionale entrasse in matchHistory di club gonfierebbe il capocannoniere/MVP di lega */
   if(h.length)return (c?(c.lg||0):0)+h.reduce((s,m)=>s+(m.goals||0),0);
   if(c)return c.lg||0;/* appena trasferito: lo storico e' vuoto, contano solo i gol travasati (non `p.goals`, che include coppe ed Europa) */
   return (p.matchHistory||[]).length?0:(p.goals||0);};
+/* [7.538.0] LA STAGIONE EUROPEA. Somma i gol di LEGA di TUTTE le maglie vestite quest'anno (non solo di
+   quella attuale): e' il numero che serve al Re dei Bomber e al Trofeo d'Oro, dove il campo di gara e'
+   l'Europa e non un singolo campionato. Su `leagueGoalsOf` non si tocca niente.
+   ⚠️ SALVATAGGI GIA' IN CORSO: `lgAll` nasce oggi, quindi per una carriera gia' a stagione inoltrata al
+   momento dell'aggiornamento non esiste. In quel caso — e SOLO in quello — si ripiega sul totale dello
+   spell precedente (`spells[].g`, che include coppe ed Europa): e' una STIMA PER ECCESSO, dichiarata,
+   perche' la ripartizione lega/coppe della maglia precedente non e' mai stata salvata e inventarla sarebbe
+   peggio che approssimarla in modo trasparente. Dalla prossima cessione il numero e' esatto. */
+const euroSeasonGoalsOf=(p)=>{try{
+  const c=(p&&p.seasonCarry&&p.seasonCarry.season===(p.season||1))?p.seasonCarry:null;
+  const h=(p.matchHistory||[]).filter(m=>m&&!m.cup&&!m.euro&&!m.national);
+  const _qui=h.reduce((s,m)=>s+(m.goals||0),0);
+  if(!c)return h.length?_qui:(p.goals||0);
+  let _prima=c.lgAll;
+  if(_prima==null){const sp=c.spells||[];_prima=sp.slice(0,Math.max(0,sp.length-1)).reduce((s,x)=>s+(x.g||0),0)||(c.lg||0);}
+  return _prima+(h.length?_qui:0);
+}catch(_e){return (typeof leagueGoalsOf==="function")?leagueGoalsOf(p):(p.goals||0);}};
+const euroSeasonAssistsOf=(p)=>{try{
+  const c=(p&&p.seasonCarry&&p.seasonCarry.season===(p.season||1))?p.seasonCarry:null;
+  const h=(p.matchHistory||[]).filter(m=>m&&!m.cup&&!m.euro&&!m.national);
+  const _qui=h.reduce((s,m)=>s+(m.assists||0),0);
+  if(!c)return h.length?_qui:(p.assists||0);
+  let _prima=c.laAll;
+  if(_prima==null){const sp=c.spells||[];_prima=sp.slice(0,Math.max(0,sp.length-1)).reduce((s,x)=>s+(x.a||0),0)||(c.la||0);}
+  return _prima+(h.length?_qui:0);
+}catch(_e){return (typeof leagueAssistsOf==="function")?leagueAssistsOf(p):(p.assists||0);}};
 const leagueAssistsOf=(p)=>{const c=_scOf(p),h=(p.matchHistory||[]).filter(m=>m&&!m.cup&&!m.euro&&!m.national);
   if(h.length)return (c?(c.la||0):0)+h.reduce((s,m)=>s+(m.assists||0),0);
   if(c)return c.la||0;
@@ -8177,11 +8217,12 @@ function generateSeasonAwards(player, finalStandings){
     const goals=Math.max(18,Math.round(club.p*0.30+(_h(i*19+5)%14)));
     return{name,goals,club:club.n,league:club.lg};
   });
+  const myEuGoals=(typeof euroSeasonGoalsOf==="function")?euroSeasonGoalsOf(player):myGoals;/* [7.538.0] in Europa contano i gol di lega di TUTTE le maglie della stagione */
   const allEuScorers=[...euScorerCands,...(_topFl?allLeagueScorers.filter(s=>!s.isPlayer).slice(0,3).map(s=>({...s,league:lg})):[]),/* [7.9.2] i 3 top di lega per la Scarpa d'Oro ora vengono dalla STESSA classifica marcatori (coerenza premi⟺tabella) · [7.336.0] solo se la lega è massima divisione */
-    ...(_topFl?[{name:player.name,goals:myGoals,club:player.club?.n,league:lg,isPlayer:true}]:[])]
+    ...(_topFl?[{name:player.name,goals:myEuGoals,club:player.club?.n,league:lg,isPlayer:true}]:[])]
     .sort((a,b)=>b.goals-a.goals);
   const euScorerPos=allEuScorers.findIndex(s=>s.isPlayer);
-  const playerWinsScarpaOro=euScorerPos===0&&myGoals>=28; // 28+ gol E primo in Europa
+  const playerWinsScarpaOro=euScorerPos===0&&myEuGoals>=28; // 28+ gol E primo in Europa
 
   /* [7.289.0 collaudo PO «ha davvero meritato il trofeo d'oro?»] L'EUROPA È UNA SOLA. I candidati al Trofeo
      d'Oro erano GENERATI UNA SECONDA VOLTA, con nomi e formula diversi da quelli del Re dei Bomber (qui
@@ -8200,13 +8241,14 @@ function generateSeasonAwards(player, finalStandings){
   });
   const _myTrofei=(isChampion?18:0)+(player.cup?.champion?8:0)+(player.euro?.champion?10:0);
   const _myTrLbl=[isChampion?"campione":null,player.cup?.champion?"coppa nazionale":null,player.euro?.champion?"Europa":null].filter(Boolean).join(" · ")||null;
-  const playerPalScore=myOvr*0.38+myGoals*1.1+myAssists*0.75+_myTrofei;
-  const allEuPal=[...euPalCands,...(_topFl?[{name:player.name,club:player.club?.n,league:lg,ovr:myOvr,goals:myGoals,assists:myAssists,trofei:_myTrLbl,score:playerPalScore,isPlayer:true}]:[])]/* [7.336.0] il Trofeo d'Oro non si vince (né si compare nel podio) da una 2ª divisione */
+  const myEuAssists=(typeof euroSeasonAssistsOf==="function")?euroSeasonAssistsOf(player):myAssists;
+  const playerPalScore=myOvr*0.38+myEuGoals*1.1+myEuAssists*0.75+_myTrofei;/* [7.538.0] il Trofeo d'Oro gioca nello STESSO campo del Re dei Bomber (invariante 7.289): se li' contano i gol di tutta la stagione europea, qui non possono contarne meno */
+  const allEuPal=[...euPalCands,...(_topFl?[{name:player.name,club:player.club?.n,league:lg,ovr:myOvr,goals:myEuGoals,assists:myEuAssists,trofei:_myTrLbl,score:playerPalScore,isPlayer:true}]:[])]/* [7.336.0] il Trofeo d'Oro non si vince (né si compare nel podio) da una 2ª divisione */
     .sort((a,b)=>b.score-a.score);
   const _euPalTop5=allEuPal.slice(0,5).some(c=>c.isPlayer);
   // Requisiti eccezionali: OVR≥85, campione, 22+ gol O (18+ gol + 10+ assist)
   const playerWinsPalloneOro=allEuPal[0].isPlayer&&_euPalTop5&&myOvr>=85&&isChampion&&
-    (myGoals>=22||(myGoals>=18&&myAssists>=10));
+    (myEuGoals>=22||(myEuGoals>=18&&myEuAssists>=10));
 
   // --- Record stagionale ---
   const beatSeasonRecord=myGoals>lgRec.seasonRecord.goals;
@@ -8225,7 +8267,7 @@ function generateSeasonAwards(player, finalStandings){
   return{
     // Europei
     palloneOro:{winner:allEuPal[0],playerWins:playerWinsPalloneOro,top3:allEuPal.slice(0,3)},
-    scarpaOro:{winner:allEuScorers[0],playerWins:playerWinsScarpaOro,top3:allEuScorers.slice(0,3),playerPos:euScorerPos,playerGoals:myGoals},/* [7.289.0] il numero mostrato dev'essere QUELLO su cui si fa la classifica (gol di lega): la riga stampava `player.goals` di TUTTE le competizioni, quindi si leggeva «5ª con 48 gol» sotto un podio che partiva da 39 */
+    scarpaOro:{winner:allEuScorers[0],playerWins:playerWinsScarpaOro,top3:allEuScorers.slice(0,3),playerPos:euScorerPos,playerGoals:myEuGoals},/* [7.289.0] il numero mostrato dev'essere QUELLO su cui si fa la classifica (gol di lega): la riga stampava `player.goals` di TUTTE le competizioni, quindi si leggeva «5ª con 48 gol» sotto un podio che partiva da 39 */
     // Di lega (Sprint 134)
     leagueMvp:{winner:allLeagueMvp[0],playerWins:playerWinsLeagueMvp,top3:allLeagueMvp.slice(0,3)},
     leagueTopScorer:{winner:allLeagueScorers[0],playerWins:playerWinsLeagueTopScorer,top3:allLeagueScorers.slice(0,3),playerPos:playerLeagueScorerPos},
@@ -11199,7 +11241,7 @@ function bgMicroTick(ctx){
   if(roll<_gHe+_gAe)return{side:"away"};
   return null;
 }
-if(typeof window!=='undefined'){try{window.__CPM_PARATA_C=ParataBus3D;}catch(_e469){}window.__CPM_DRAFTNOTE=draftBugNote;/* [7.462.0] il taccuino automatico e' una funzione PURA di uno snapshot: esposta per poterlo far girare da una sonda sulle scene VERE e misurare quanto spesso le sue righe scattano su gioco sano — una soglia si giudica sulla distribuzione, non a naso (il 7.408 l'aveva abbassata a 1,2u su un'ipotesi, e da allora ogni nota del PO nasce con una riga-camera attaccata). */window.buildHLTimeline=buildHLTimeline;window.validateHLTimeline=validateHLTimeline;window.resolveTimeline=resolveTimeline;window.decideExecution=decideExecution;window.resolveDefensiveOutcome=resolveDefensiveOutcome;window.bgMicroTick=bgMicroTick;window.intentLabel=intentLabel;window.deriveIntent=deriveIntent;window.deriveHL=deriveHL;/* [7.1.2] esposto per l'audit massivo situations↔3D */window.__CPM_SITS=SITUATIONS;window.hlBallState=hlBallState;window.filterSitActions=filterSitActions;window.hlOverlay=hlOverlay;/* [7.217.0] esposto per la probe di coerenza legno colpito ⟺ legno detto */window.__CPM_MISS_TX=_MISS_TX;window.__CPM_BAR_TX=_BAR_TX;window.__CPM_BG=BG_MATCH;/* B: cronaca BG per il check bg-coherence del gate */window.generateLocalPressAnalysis=generateLocalPressAnalysis;/* [7.277.0] esposta per la probe di stabilita' della rassegna stampa */window.buildSeasonCarry=buildSeasonCarry;window.leagueGoalsOf=leagueGoalsOf;window.generateSeasonAwards=generateSeasonAwards;/* [7.336.0] esposti per il guardiano primavera-awards-test (travaso per lega + premi europei top-flight) */window.ritiroPlan=ritiroPlan;window.ritiroHierarchyVerdict=ritiroHierarchyVerdict;window.ritiroFriendlies=ritiroFriendlies;/* [7.337.0] esposti per il guardiano ritiro2-test */window.refuseEcho=refuseEcho;/* [7.338.0] esposto per il guardiano refuse-echo-test */window.draftBugNote=draftBugNote;/* [7.339.0] esposto per il guardiano della bozza automatica */window.VITA_EVENTS=VITA_EVENTS;window.pickVitaEvent=pickVitaEvent;window.markVitaEvent=markVitaEvent;/* [7.412.0] esposti per il guardiano della varieta' vita-variety-test */}
+if(typeof window!=='undefined'){try{window.__CPM_PARATA_C=ParataBus3D;}catch(_e469){}window.__CPM_DRAFTNOTE=draftBugNote;/* [7.462.0] il taccuino automatico e' una funzione PURA di uno snapshot: esposta per poterlo far girare da una sonda sulle scene VERE e misurare quanto spesso le sue righe scattano su gioco sano — una soglia si giudica sulla distribuzione, non a naso (il 7.408 l'aveva abbassata a 1,2u su un'ipotesi, e da allora ogni nota del PO nasce con una riga-camera attaccata). */window.buildHLTimeline=buildHLTimeline;window.validateHLTimeline=validateHLTimeline;window.resolveTimeline=resolveTimeline;window.decideExecution=decideExecution;window.resolveDefensiveOutcome=resolveDefensiveOutcome;window.bgMicroTick=bgMicroTick;window.intentLabel=intentLabel;window.deriveIntent=deriveIntent;window.deriveHL=deriveHL;/* [7.1.2] esposto per l'audit massivo situations↔3D */window.__CPM_SITS=SITUATIONS;window.hlBallState=hlBallState;window.filterSitActions=filterSitActions;window.hlOverlay=hlOverlay;/* [7.217.0] esposto per la probe di coerenza legno colpito ⟺ legno detto */window.__CPM_MISS_TX=_MISS_TX;window.__CPM_BAR_TX=_BAR_TX;window.__CPM_BG=BG_MATCH;/* B: cronaca BG per il check bg-coherence del gate */window.generateLocalPressAnalysis=generateLocalPressAnalysis;/* [7.277.0] esposta per la probe di stabilita' della rassegna stampa */window.buildSeasonCarry=buildSeasonCarry;window.leagueGoalsOf=leagueGoalsOf;window.euroSeasonGoalsOf=euroSeasonGoalsOf;window.euroSeasonAssistsOf=euroSeasonAssistsOf;/* [7.538.0] esposti per il guardiano della classifica europea */window.generateSeasonAwards=generateSeasonAwards;/* [7.336.0] esposti per il guardiano primavera-awards-test (travaso per lega + premi europei top-flight) */window.ritiroPlan=ritiroPlan;window.ritiroHierarchyVerdict=ritiroHierarchyVerdict;window.ritiroFriendlies=ritiroFriendlies;/* [7.337.0] esposti per il guardiano ritiro2-test */window.refuseEcho=refuseEcho;/* [7.338.0] esposto per il guardiano refuse-echo-test */window.draftBugNote=draftBugNote;/* [7.339.0] esposto per il guardiano della bozza automatica */window.VITA_EVENTS=VITA_EVENTS;window.pickVitaEvent=pickVitaEvent;window.markVitaEvent=markVitaEvent;/* [7.412.0] esposti per il guardiano della varieta' vita-variety-test */}
 // ── LMQP-1 (Phase 2 / M2 — EVENT + TIMELINE LAYER) ──────────────────────────────
 //   Bus eventi OSSERVABILE del Live Match: registra la SEQUENZA reale dei beat di un highlight
 //   (HighlightForced · ActionResolved · HighlightAdvance · MatchStart …) in un ring buffer leggibile
@@ -12514,6 +12556,21 @@ function ThreeMatchView(props){
          6 item su 10 esaurivano il limite di 9 secondi. Qui c'è solo quello che serve a capire se la palla si
          muove ancora. Test-only, come tutto il resto del blocco. */
       window.__CPM_BALL=function(){try{return{x:+(ball.position.x+50).toFixed(2),y:+(ball.position.z/0.68+50).toFixed(2),worldY:+ball.position.y.toFixed(2)};}catch(_e){return null;}};
+      /* [7.538.0 missione «partita vera»] IL PADRONE DEL PALLONE, DA UNA SOLA SORGENTE. La misura del
+         possesso ambientale (7.537) leggeva la palla dalle MESH e i giocatori da `matchPlayers` (l'array
+         LOGICO): sono due partite diverse — il 7.322 ha misurato scarti fino a 15-20 unita' fra le due —
+         e con due sorgenti «palla senza padrone» e' un numero che non dimostra niente (e' esattamente la
+         trappola che il 7.322 e il 7.370 hanno gia' pagato). Qui palla, giocatori ed eroe escono TUTTI
+         dalle mesh, cioe' da cio' che l'utente vede; niente proiezione ndc, niente serializzazione dei 22
+         (__CPM_STATE costa ~530 ms a lettura, inutilizzabile come campionatore). Test-only. */
+      window.__CPM_OWN=function(){try{
+        const bx=ball.position.x+50,by=ball.position.z/0.68+50;
+        let bi=-1,bd=1e9;
+        players.forEach((pp,i)=>{const m=(pp&&pp.mesh)||pp;if(!m||!m.position)return;const d=Math.hypot(m.position.x+50-bx,m.position.z/0.68+50-by);if(d<bd){bd=d;bi=i;}});
+        if(hero&&hero.position){const hd=Math.hypot(hero.position.x+50-bx,hero.position.z/0.68+50-by);if(hd<bd){bd=hd;bi=-2;}}
+        const pr=propsRef.current||{};
+        return{x:+bx.toFixed(2),y:+by.toFixed(2),i:bi,d:+bd.toFixed(2),c:pr.matchClock||0,ph:pr.matchPhase||null};
+      }catch(_e){return null;}};
       // F1: probe del FOOTBALL STATE osservatore (lo aggiorna on-demand e lo ritorna) — per le metriche F0.
       window.__CPM_FOOTBALL_STATE=function(){try{updateFootballState();}catch(e){} return (sr.current&&sr.current.football)||null;};
       // [6.3.0 R0/LMQP-10] drain del recorder live: ritorna il buffer e lo svuota (il runner lo scarica a intervalli)
@@ -19537,6 +19594,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   const _stagedSpotRef=useRef(null);/* [7.402.0 codice 001] il punto-palla che lo staging ha usato per piazzare il battitore: il piazzamento della palla lo RIUSA — una sorgente sola, niente doppio calcolo di hlBallSpot con esiti diversi */
   const deliverRef=useRef(null);/* [7.383.0] la CASSETTA POSTALE della consegna: React ci lascia cosa serve, il renderer ci mette l'origine vera quando ha i ventidue in posizione */
   const _dlvSeenRef=useRef(null);/* [7.383.0] una consegna per scena: l'effetto che la contiene dipende da `pPos` e si ri-esegue di continuo */
+  const _batRef=useRef({arm:null,done:null});/* [7.538.0] il piazzato battuto: `arm` = scena in cui il timer e' partito, `done` = scena in cui la palla ha gia' lasciato la bandierina (da li' in poi il ramo NON la rimette piu' li') */
   const meshDefRef=useRef(null);/* [7.322.0] ponte verso le posizioni VERE dei difensori nella scena 3D (lettura a richiesta, nessun costo per frame) — il marcatore dev'essere quello che l'utente vede */
   useEffect(()=>{pPosRef.current=pPos;},[pPos]);
   const [mStats,setMStats]=useState((resumeState&&resumeState.ms&&typeof resumeState.ms.goals==="number")?{goals:resumeState.ms.goals||0,assists:resumeState.ms.assists||0,rb:resumeState.ms.rb||0,xg:resumeState.ms.xg||0}:{goals:0,assists:0,rb:0,xg:0});
@@ -20997,8 +21055,8 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
            due versi e la decisione dice `midfield` 10/17). adv = x per noi, 100−x per loro; le soglie
            58/78 ricalcano la trama. La decisione resta casa-centrica: le famiglie di riga raccontano cosa
            VIVIAMO a quella x, ed e' gia' side-corretto. */
-        const _advT501=((typeof window!=='undefined'&&window.__CPM_TURNI543)&&possTurnRef.current<0)?(100-_bx499):_bx499;
-        const _fase501=(typeof window!=='undefined'&&window.__CPM_TURNI543)?(_advT501>=78?"pericolo":_advT501>=58?"sviluppo":"costruzione"):((_dec499==="attack_goal"||_dec499==="defend_goal")?"pericolo":(_dec499==="attack"||_dec499==="wide_right")?"sviluppo":"costruzione");
+        const _advT501=(!(typeof window!=='undefined'&&window.__CPM_NO553)&&possTurnRef.current<0)?(100-_bx499):_bx499;
+        const _fase501=(!(typeof window!=='undefined'&&window.__CPM_NO553))?(_advT501>=78?"pericolo":_advT501>=58?"sviluppo":"costruzione"):((_dec499==="attack_goal"||_dec499==="defend_goal")?"pericolo":(_dec499==="attack"||_dec499==="wide_right")?"sviluppo":"costruzione");
         const _rit501=(typeof window!=='undefined'&&window.__CPM_NO501)?1:((pendingGoalRef.current||counterRef.current||kickoffRef.current>0)?1.30:(_fase501==="pericolo"?1.30:_fase501==="sviluppo"?1.08:0.56));/* [7.532.0 NO542] anche il ribaltamento e' telecronaca CALDA *//* [7.531.0] taratura in DUE mosse misurate: (a) costruzione 0,60→0,56 (cartello del guardiano: «ritmo piu' marcato, non soglia piu' bassa») — non bastava, 1,25→1,27×, perche' il collo era l'ALTRO capo: l'identita' di modulo attraversa lo sviluppo col passo 1,12/1,28 e la fase restava povera (9 coppie, intervallo 4,67 vs 3,90 storico); (b) sviluppo 1,00→1,08 — arricchisce la fase affamata invece di affamare l'altra (la strada 0,52 e' gia' stata revocata per questo) e racconta l'avanzata piu' fitta, in linea con la direttiva FM del PO *//* [7.528.0 v5] Due lezioni misurate in un giro solo: (a) il taglio 0,52 della costruzione e' REVOCATO — ha strafatto (costruzione 45 coppie, sviluppo affamato a 5: guardiano cieco); (b) il buco vero era che l'AZIONE PENDENTE attraversa lo sviluppo in 3-4 tick sparando una riga isolata (v2: sviluppo 12 coppie ma intervallo 4,50 vs 3,90 storico, rapporto 1,27): durante l'avanzata la telecronaca ora e' FITTA come nel pericolo (1,30) — piu' righe consecutive nella fase calda, coppie vere, ed e' la telecronaca dell'azione che il PO chiede (stile FM). */
         const _momX=Math.abs(momentumRef.current-50)/50,_bgProb=((typeof window!=='undefined'&&window.__CPM_NO485)?(0.18+_momX*0.12):(0.55+_momX*0.25))*_rit501;
         const _inHL77=["hl_intro","hl_move","hl_choose","hl_result"].includes(phaseRef.current);
@@ -21649,20 +21707,53 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           setMomentum(m=>clamp(Math.round(m+(50-m)*0.08),0,100));
         }
         // Formation micro-drift — ogni 3 tick i giocatori si avvicinano lentamente al preset corrente
+        /* [7.538.0 missione «partita vera» — rosso __CPM_NO553] I REPARTI SEGUONO LA PALLA, E LA PALLA HA UN
+           PADRONE. Questo blocco era l'UNICO movimento dei ventidue durante il gioco ambientale, e il suo
+           bersaglio e' uno SLOT FISSO di formazione: i giocatori tornavano sempre allo stesso punto del campo
+           qualunque cosa facesse il pallone. Il solo legame con la palla stava nel renderer (`_lineShift`,
+           +-9u al massimo): ecco perche' l'utente vede ventidue che non giocano e un pallone che vaga da
+           solo. MISURATO prima del rimedio, con palla e giocatori letti dalla STESSA sorgente (__CPM_OWN):
+           palla senza padrone il 22% dei minuti, 12 uomini su 22 la toccano, 15 cambi di portatore in 90'.
+           Ora lo slot TRASLA con l'avanzamento del pallone (il reparto sale e scende come una linea, e lo
+           fanno entrambe le squadre: il gioco si comprime attorno alla palla come in una partita vera) e
+           l'uomo piu' vicino del lato in possesso ci va DAVVERO — e' lui il portatore, e quando la palla si
+           sposta il portatore cambia. Solo a gioco vivo: durante un highlight la scena e' dell'executor. */
         if(nx%3===0&&driftTargetsRef.current){
           const dt=driftTargetsRef.current;
-          setMatchPlayers(prev=>prev.map((pl,idx)=>{
+          const _q553=!(typeof window!=='undefined'&&window.__CPM_NO553)&&phaseRef.current==='playing';
+          const _bb553=(_q553&&ballTargetRef.current)?ballTargetRef.current:null;
+          const _av553=_bb553?clamp(_bb553.x-50,-46,46):0;
+          setMatchPlayers(prev=>{
+            let _cI553=-1;
+            /* ⚠️ [7.538.0] PROVATA E REVOCATA CON LA SUA MISURA: la ROTAZIONE del portatore. Il portatore
+               e' sempre l'uomo piu' vicino, quindi la palla la toccano sempre gli stessi (12 su 22 in 90
+               minuti, contro i 16-20 di una partita vera). Ho provato a ruotare fra i quattro candidati
+               entro 22u, col minuto come indice — deterministico, nessun sorteggio nuovo. Misura su sei
+               partite intere: uomini diversi 12 → 12 (nessun guadagno), cambi di portatore 15 → 13,
+               palla senza padrone 33% → 36%. Il motivo si legge nei numeri: designare un uomo lontano non
+               gli mette il pallone tra i piedi, gli chiede di ANDARE a prenderlo — e mentre ci va la palla
+               non e' di nessuno. Il conteggio «uomini diversi» resta quindi DICHIARATO NON CENTRATO (12
+               contro i 15 promessi): si sposta dando ai compagni un ruolo nella giocata (appoggio, taglio,
+               scarico), non cambiando l'etichetta di chi ce l'ha. */
+            if(_bb553){let _cD=1e9;const _lt=(possTurnRef.current>0)?"home":"away";
+              prev.forEach((pl,i)=>{if(!pl||pl.team!==_lt||pl.gk)return;const d=Math.hypot((pl.x||50)-_bb553.x,(pl.y||50)-_bb553.y);if(d<_cD){_cD=d;_cI553=i;}});}
+            return prev.map((pl,idx)=>{
             if(pl.team==="ref")return pl;
+            let sx,sy,k;
             if(pl.team==="home"){
               const s=dt[Math.min(idx,dt.length-1)];
-              // 4.85.0: micro-jitter ridotto (era 0.6) → movimento verso lo slot, niente twitch casuale
-              return{...pl,x:clamp(pl.x+(s.x-pl.x)*0.04+(Math.random()-0.5)*0.2,2,98),y:clamp(pl.y+(s.y-pl.y)*0.04+(Math.random()-0.5)*0.2,2,98)};
+              sx=s.x;sy=s.y;k=0.04;// 4.85.0: micro-jitter ridotto (era 0.6) → movimento verso lo slot, niente twitch casuale
+            }else{
+              // Away (difensori): mantengono la LINEA verso lo slot di formazione, jitter minimo (era 0.7, puro random)
+              const as=FORMATION_AWAY[Math.min(Math.max(idx-11,0),FORMATION_AWAY.length-1)]||{};
+              sx=as[0]!=null?as[0]:pl.x;sy=as[1]!=null?as[1]:pl.y;k=0.03;
             }
-            // Away (difensori): mantengono la LINEA verso lo slot di formazione, jitter minimo (era 0.7, puro random)
-            const as=FORMATION_AWAY[Math.min(Math.max(idx-11,0),FORMATION_AWAY.length-1)]||{};
-            const asx=as[0]!=null?as[0]:pl.x, asy=as[1]!=null?as[1]:pl.y;
-            return{...pl,x:clamp(pl.x+(asx-pl.x)*0.03+(Math.random()-0.5)*0.2,2,98),y:clamp(pl.y+(asy-pl.y)*0.03+(Math.random()-0.5)*0.2,2,98)};
-          }));
+            if(_bb553&&!pl.gk){
+              sx=clamp(sx+_av553*0.62,4,96);sy=clamp(sy+(_bb553.y-50)*0.28,4,96);
+              if(idx===_cI553){sx=_bb553.x;sy=_bb553.y;k=0.55;}
+            }
+            return{...pl,x:clamp(pl.x+(sx-pl.x)*k+(Math.random()-0.5)*0.2,2,98),y:clamp(pl.y+(sy-pl.y)*k+(Math.random()-0.5)*0.2,2,98)};
+          });});
         }
         // Heat map: sample player position every 4 ticks
         if(nx%4===0){
@@ -21712,7 +21803,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
            continuo — censimento: 0 flip anche con lo spell). Pesato sulla % (60% possesso ≈ 60% di spell
            nostri), flusso seedato dedicato, mai _rndM (invariante 7.511). Fermo durante kickoff/azione
            pendente/contropiede: li' il padrone lo dice la recita. */
-        if((typeof window!=='undefined'&&window.__CPM_TURNI543)&&phaseRef.current==='playing'&&kickoffRef.current<=0&&!pendingGoalRef.current&&!counterRef.current){/* [7.532.0] TURNI IN TARATURA: opt-in __CPM_TURNI543 — il modello a turni ha acceso 3 guardiani (trama 22,5°/33,8°, bg-rhythm cieco x4) e si tara in un ramo dedicato, non in produzione */
+        if(!(typeof window!=='undefined'&&window.__CPM_NO553)&&phaseRef.current==='playing'&&kickoffRef.current<=0&&!pendingGoalRef.current&&!counterRef.current){/* [7.532.0] TURNI IN TARATURA: opt-in __CPM_TURNI543 — il modello a turni ha acceso 3 guardiani (trama 22,5°/33,8°, bg-rhythm cieco x4) e si tara in un ramo dedicato, non in produzione */
           possSpellRef.current--;
           if(possSpellRef.current<=0){
             if(!ballRngRef.current)ballRngRef.current=(((bgSimSeedRef.current||1)>>>0)^0x9e3779b9)>>>0;
@@ -21723,12 +21814,12 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                questo, coi turni la palla viveva attorno al centro per entrambi e lo sviluppo non
                accumulava mai (bg-rhythm cieco: 5-6 coppie, censimento fasi 13/15 costruzione). */
             const _bAdv543=(possTurnRef.current>0)?b.x:100-b.x;
-            if(_bAdv543>=58&&(possExtRef.current|0)<2){possExtRef.current=(possExtRef.current|0)+1;possSpellRef.current=8+Math.floor(_rr543()*8);}
+            if(_bAdv543>=58&&(possExtRef.current|0)<2){possExtRef.current=(possExtRef.current|0)+1;possSpellRef.current=(typeof window!=='undefined'&&window.__CPM_NO553)?(8+Math.floor(_rr543()*8)):(2+Math.floor(_rr543()*3));}
             else{possExtRef.current=0;
             const _pb543=clamp((possessionRef.current||50)/100,0.30,0.70);
             const _prevT543=possTurnRef.current;
             possTurnRef.current=(_rr543()<_pb543)?1:-1;
-            possSpellRef.current=30+Math.floor(_rr543()*25);/* [7.532.0 v3b] 10-17→30-55 tick (≈13-23s reali): a 4-7s il possesso cambiava troppo fitto e SPEZZAVA le giocate — guardiano trama rosso a 22,5°/passo (soglia 20, storico 11°). Uno spell vero dura 15-25s. */
+            possSpellRef.current=(typeof window!=='undefined'&&window.__CPM_NO553)?(30+Math.floor(_rr543()*25)):(4+Math.floor(_rr543()*6));/* [7.538.0] 4-9 TICK = 4-9 MINUTI DI GIOCO: il 30-55 era stato scelto leggendo i tick come secondi reali («13-23s»), ma un tick E' un minuto — quello spell teneva la palla alla stessa squadra per mezzo tempo. *//* [7.532.0 v3b] 10-17→30-55 tick (≈13-23s reali): a 4-7s il possesso cambiava troppo fitto e SPEZZAVA le giocate — guardiano trama rosso a 22,5°/passo (soglia 20, storico 11°). Uno spell vero dura 15-25s. */
             /* [7.532.0 NO542 v3] il CONTROPIEDE si arma QUI, al flip vero (la v2 armava alla nascita-trama,
                ramo che scatta di rado: 1 armato e 0 recitati su partita intera): flip col pallone nel terzo
                difensivo del nuovo padrone + cooldown 6'. */
@@ -21752,7 +21843,19 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
            highlight — col rimbalzo a x82 il danno restava sotto soglia; la trama, direzionale, accumulava
            e trascinava il pallone staged fino a x90-93, dove i difensori di formazione non arrivano piu'
            (guardiano `motion`: minDist 25,7-26,3 > 24, due giri rossi del gate 7.525). */
-        if(Math.abs(dx)<0.6&&Math.abs(dy)<0.6&&phaseRef.current==='playing'){
+        /* [7.538.0 missione «partita vera»] LA SOGLIA DI «PALLA ARRIVATA» E' RELATIVA AL PASSO.
+           Questo cancello esiste per una ragione giusta: se qualcun altro (una recita della cronaca, una
+           scena, un calcio d'inizio) ha spostato il bersaglio lontano, il drift non deve mettersi in mezzo
+           — aspetta che il pallone ci arrivi. Ma la soglia era 0,6 unita' su un passo di 0,8: bastava, a
+           malapena. Col passo portato alla scala del MINUTO il pallone resta a 1,4-2,5u dal bersaglio per
+           due o tre tick, e il drift non avanzava. MISURATO col testimone della trama: 40 tick di piano in
+           TRE partite (≈13 a partita su 88 minuti) — il motore del possesso ambientale girava una volta
+           ogni sette minuti di gioco, e tutto il resto del tempo la palla la muovevano gli altri.
+           Ora la soglia scala col passo: «arrivata» vuol dire arrivata rispetto a quanto le si e' chiesto
+           di percorrere. Col rosso __CPM_NO553 la soglia torna 0,6 esatta. */
+        const _k553=(typeof window!=='undefined'&&window.__CPM_NO553)?1:6.5;
+        const _gate553=Math.max(0.6,_k553*0.42);
+        if(Math.abs(dx)<_gate553&&Math.abs(dy)<_gate553&&phaseRef.current==='playing'){
           if(!ballRngRef.current)ballRngRef.current=(((bgSimSeedRef.current||1)>>>0)^0x9e3779b9)>>>0;
           const _r511=()=>{let _s=ballRngRef.current;_s=((_s*1664525)+1013904223)>>>0;ballRngRef.current=_s;return _s/4294967296;};
           /* [7.532.0 collaudo PO «il gioco e' troppo concentrato a centrocampo, non ci sono ribaltamenti» —
@@ -21762,7 +21865,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
              passato dalle righe di recupero e dai calci d'inizio): la palla vive nei due versi, e i pesi di
              zona 7.525 si auto-bilanciano (quando il possesso e' loro la palla scende, e le righe difensive
              — recuperi compresi — tornano pescabili). La % resta la statistica per la UI. */
-          const _dir=(typeof window!=='undefined'&&window.__CPM_TURNI543)?(possTurnRef.current||1):(possessionRef.current>=50?1:-1);/* [7.532.0] turni opt-in per la taratura */
+          const _dir=(!(typeof window!=='undefined'&&window.__CPM_NO553))?(possTurnRef.current||1):(possessionRef.current>=50?1:-1);/* [7.532.0] turni opt-in per la taratura */
           /* [7.524.0 LA TRAMA — collaudo PO «non ci sono schemi, azioni ragionate, e' tutto un po'
              confusionario»] Il possesso 7.511 era un random-walk: passo avanti sorteggiato + jitter
              laterale A OGNI TICK — la rotta cambiava di continuo, e la cronaca (che dal 7.499 DESCRIVE
@@ -21778,6 +21881,17 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
             _t.x=clamp(_t.x+_dir*_step,4,96);_t.y=clamp(_t.y+(_r511()-0.5)*1.4,6,94);
           }else{
             let _tr=tramaRef.current;
+            /* [7.538.0 missione «partita vera» — rosso __CPM_NO553] IL MINUTO E' UNA GIOCATA, NON UN PASSO.
+               MISURA che apre il lotto: il metronomo della partita batte un tick ogni MATCH_TICK_MS e ogni
+               tick avanza il cronometro di UN MINUTO (setClock c=>c+1) — ma tutte le costanti del possesso
+               ambientale erano state scelte leggendo il tick come un secondo reale: passo 0,55-1,05u,
+               waypoint a 8-13u, spell di possesso 30-55 tick. Tradotto in minuti di gioco: il pallone
+               avanzava ~0,8 unita' AL MINUTO (68u in 90') e la stessa squadra teneva palla per mezzo tempo.
+               Ecco perche' «gira sempre a centrocampo»: in novanta minuti la palla non attraversava il campo
+               nemmeno una volta, e nessuna corsa dei ventidue poteva rimediare a un bersaglio che non si
+               muove. Qui la scala del PASSO e della GIOCATA passa ai minuti (K=6,5 sul passo, waypoint x2,2:
+               ~3-4 passi interni per giocata, cosi' il guardiano della trama continua ad avere materiale su
+               cui giudicare la rotta). __CPM_NO553 ripristina la taratura a secondi per la prova del rosso. */
             const _no538=(typeof window!=='undefined'&&window.__CPM_NO538);const _idp=_no538?null:_prof538(_dir);/* [7.531.0] identita' di modulo */
             if(!_tr||_tr.dir!==_dir){
               /* [7.532.0 NO542 — v2 dell'innesco contropiede] flip di possesso con palla nel terzo difensivo
@@ -21799,15 +21913,15 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
             if(!_tr.wp||(Math.abs(_tr.wp.x-_t.x)<1.2&&Math.abs(_tr.wp.y-_t.y)<1.2)){
               const _cy=_tr.cor<0?24:_tr.cor>0?76:50;
               let _wx,_wy;
-              if(_fase==="costruzione"){_wx=_t.x+_dir*(-2+_r511()*8);_wy=_cy+(_r511()-0.5)*26;}
-              else if(_fase==="sviluppo"){_wx=_t.x+_dir*((5+_r511()*7)*(_no538?1:_idp.passo));_wy=_cy+(_r511()-0.5)*18;/* [7.531.0] passo di modulo: il 5-3-2 riparte lungo (1,28), il 3-5-2 palleggia (0,92) */
+              if(_fase==="costruzione"){_wx=_t.x+_dir*(_k553<1.5?(-2+_r511()*8):(-4+_r511()*24));_wy=_cy+(_r511()-0.5)*(_k553<1.5?26:32);}
+              else if(_fase==="sviluppo"){_wx=_t.x+_dir*(((_k553<1.5?5:12)+_r511()*(_k553<1.5?7:16))*(_no538?1:_idp.passo));_wy=_cy+(_r511()-0.5)*(_k553<1.5?18:24);/* [7.531.0] passo di modulo: il 5-3-2 riparte lungo (1,28), il 3-5-2 palleggia (0,92) */
                 if(_r511()<(_no538?0.14:_idp.cambio)){const _c1=_r511();_tr.cor=_tr.cor===0?(_c1<0.5?-1:1):0;}/* cambio gioco — frequenza di modulo (433 0,17 · 532 0,09) */}
-              else{if(_r511()<(_no538?0.30:_idp.scarico)){_wx=_t.x-_dir*(3+_r511()*5);_wy=_cy+(_r511()-0.5)*20;}/* scarico — di modulo: il 4231 rifinisce ragionando (0,34), il 532 va dentro (0,20) */
+              else{if(_r511()<(_no538?0.30:_idp.scarico)){_wx=_t.x-_dir*(_k553<1.5?(3+_r511()*5):(7+_r511()*12));_wy=_cy+(_r511()-0.5)*20;}/* scarico — di modulo: il 4231 rifinisce ragionando (0,34), il 532 va dentro (0,20) */
                 else{_wx=_dir>0?80+_r511()*8:20-_r511()*8;_wy=50+(_r511()-0.5)*24;}/* dentro l'area — tetto 88/12, NON 90: il motore 7.511 rimbalzava a x>82 e l'inviluppo storico (staging, reattivita' difensori) e' tarato li'; a x93 il guardiano motion ha misurato difensori a 26,3u dal portatore (soglia 24, gate rosso al primo giro 7.525) */}
               _tr.wp={x:clamp(_wx,4,96),y:clamp(_wy,6,94)};_tr.fase=_fase;_tr.ng=1;/* [7.524.0] tick di NUOVA GIOCATA: la svolta qui e' voluta (fine giocata) — il guardiano giudica la rotta sui passi INTERNI */
             }
             const _wdx=_tr.wp.x-_t.x,_wdy=_tr.wp.y-_t.y;const _wd=Math.hypot(_wdx,_wdy)||1;
-            const _st=Math.min(_wd,(0.55+_r511()*0.5)*((typeof window!=='undefined'&&window.__CPM_TURNI543)?2.0:1));/* [7.532.0 NO543] PASSO x2 NELL'ERA DEI TURNI: misurato — il drift muoveva ~0,8u x 85 passi = ~68u di viaggio in 90', e col possesso spalmato nei due versi la palla non raggiungeva mai le aree (bg-rhythm cieco 3 volte: sviluppo 2-6 coppie). Il possessore ora AVANZA davvero durante il suo spell (~4,7u/s di bersaglio, sotto il passo del portatore). La rotta non cambia: cambia quanta strada si fa per giocata. */
+            const _st=Math.min(_wd,(0.55+_r511()*0.5)*_k553);/* [7.532.0 NO543] PASSO x2 NELL'ERA DEI TURNI: misurato — il drift muoveva ~0,8u x 85 passi = ~68u di viaggio in 90', e col possesso spalmato nei due versi la palla non raggiungeva mai le aree (bg-rhythm cieco 3 volte: sviluppo 2-6 coppie). Il possessore ora AVANZA davvero durante il suo spell (~4,7u/s di bersaglio, sotto il passo del portatore). La rotta non cambia: cambia quanta strada si fa per giocata. */
             _t.x=clamp(_t.x+_wdx/_wd*_st,4,96);_t.y=clamp(_t.y+_wdy/_wd*_st,6,94);
           }
           if(typeof window!=='undefined'&&window.__CPM_TRAMA527!==undefined){try{const _tw=window.__CPM_TRAMA527;const _tr7=tramaRef.current;const _ng7=(!window.__CPM_NO527&&_tr7&&_tr7.ng)?1:0;if(_tr7)_tr7.ng=0;if(_tw.length<9000)_tw.push({x:+_t.x.toFixed(2),y:+_t.y.toFixed(2),f:(!window.__CPM_NO527&&_tr7)?_tr7.fase:null,c:(!window.__CPM_NO527&&_tr7)?_tr7.cor:null,ng:_ng7,ph:phaseRef.current,d:(_tr7&&_tr7.dir)||0});/* [7.531.0] d: a chi appartiene il possesso — il guardiano identita' separa i moduli */}catch(_e){}}
@@ -21853,7 +21967,54 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
          non so dimostrare non e' un fix. Il difetto resta REALE e misurato — vedi il criterio nuovo in
          delivery-origin-test.mjs — e va ripreso capendo PERCHE' la spinta del renderer non arriva su
          questo ramo, non aggiungendone un'altra. */
-      if(_sp.at!=="hero"&&_sp.at!=="gk"){ballTargetRef.current={x:_sp.x,y:_sp.y};setBallPos({x:_sp.x,y:_sp.y});}
+      if(_sp.at!=="hero"&&_sp.at!=="gk"){
+        const _kb554=hlIdx+(_forceSeqRef.current||0)*10000;
+        const _bat554=(_sp.at==="corner"||_sp.at==="throw")&&!(typeof window!=="undefined"&&window.__CPM_NO554);
+        /* ⚠️ IL PIAZZAMENTO SI RI-ASSERISCE A OGNI RI-ESECUZIONE. E' questa la ragione vera per cui il
+           corner non partiva: l'effetto dipende da `pPos` e gira decine di volte per scena, e ogni giro
+           RIMETTEVA la palla sulla bandierina — misurato dopo aver armato la battuta: il pallone si
+           spostava di 2,6-7,2u e veniva risucchiato indietro. Da quando la battuta e' partita, la palla
+           non si ripiazza piu': la scena e' in mano a chi l'ha calciata. */
+        if(!_bat554||_batRef.current.done!==_kb554){ballTargetRef.current={x:_sp.x,y:_sp.y};setBallPos({x:_sp.x,y:_sp.y});}
+        /* [7.538.0 missione «partita vera» — rosso __CPM_NO554] IL CORNER NON LO BATTEVA NESSUNO.
+           Trovato censendo le scene in cui il pallone non viaggia (<3u dall'apertura all'esito): quattro
+           di esse sono calci d'angolo (gi6, gi50, gi76, gi77) e il difetto NON e' la conclusione ne' la
+           nascita del pallone — `hlBallSpot` lo mette correttamente sulla bandierina (97; 2,5). E' che
+           questo ramo PIAZZA la palla e basta: la consegna d'apertura (7.350/7.383) vive nell'`else if`
+           qui sotto, quindi per i piazzati non viene mai armata. Risultato misurato: la palla resta sulla
+           bandierina per tutta la scena, si sposta di 2,1 unita' e due volte su quattro finisce in rete da
+           li' — mentre il piano costruito da `buildHLTimeline` per quelle stesse scene parte da 47-59 unita'
+           piu' indietro: il piano e il pallone erano due partite diverse. Ora il piazzato si BATTE: la palla
+           parte dalla bandierina e vola sull'eroe, che e' esattamente cio' che la scena promette. Origine
+           FISSA (la bandierina), quindi niente cassetta postale del 7.383 — quella serve a trovare un
+           compagno d'appoggio, e su un corner l'appoggio e' la bandierina stessa. */
+        if(phase==="hl_intro"&&_bat554){
+          if(_batRef.current.arm!==_kb554){
+            _batRef.current.arm=_kb554;
+            const _tb554=setTimeout(()=>{try{
+              /* ⚠️ NIENTE CLEANUP RESTITUITA. Questo effetto dipende da `pPos` e si ri-esegue di continuo:
+                 la prima stesura restituiva `()=>clearTimeout(_tb554)` e la ri-esecuzione successiva —
+                 che esce subito dalla guardia «una battuta per scena» — faceva scattare quella pulizia
+                 uccidendo il timer prima dei 620 ms. MISURATO: 0 battute armate su 4 corner. Al posto
+                 della pulizia, il timer verifica DA SOLO di appartenere ancora alla scena corrente. */
+              if(hlIdx+(_forceSeqRef.current||0)*10000!==_kb554)return;
+              _batRef.current.done=_kb554;
+              /* DOVE ARRIVA IL CROSS: la mesh dell'eroe e' la sorgente giusta (e' quella che l'utente vede,
+                 lezione 7.322/7.428) MA solo quando ha finito di raggiungere il suo posto — a 620 ms dallo
+                 stacco di scena puo' ancora venire da dove stava nella scena precedente. MISURATO su gi6:
+                 mesh a (34;48) contro uno schieramento che la vuole a (80;42), cioe' un corner battuto
+                 verso il cerchio di centrocampo. Quando la mesh e' ancora lontana dal posto assegnato si
+                 usa il posto assegnato: e' li' che l'eroe sara' quando la palla arriva. */
+              let _d554=null;const _pl554=(pPosRef&&pPosRef.current)?pPosRef.current:{x:pPos.x,y:pPos.y};
+              try{const _rd=meshDefRef.current&&meshDefRef.current();
+                if(_rd&&_rd.hero&&_rd.hero.x!=null&&Math.hypot(_rd.hero.x-_pl554.x,_rd.hero.y-_pl554.y)<=12)_d554={x:clamp(_rd.hero.x,2,98),y:clamp(_rd.hero.y,2,98)};}catch(_e){}
+              if(!_d554)_d554={x:_pl554.x,y:_pl554.y};
+              ballTargetRef.current=_d554;setBallPos(_d554);
+              if(typeof window!=="undefined"&&window.__CPM_BAT554)window.__CPM_BAT554.push({k:_kb554,at:_sp.at,fx:+_sp.x.toFixed(1),fy:+_sp.y.toFixed(1),tx:+_d554.x.toFixed(1),ty:+_d554.y.toFixed(1)});
+            }catch(_e){}},620);
+          }
+        }
+      }
       /* [7.350.0] LA CONSEGNA. Su una RICEZIONE la scena non si apre col pallone gia' tra i piedi: nasce da
          CHI CE L'HA — la fascia da cui parte il cross — e ARRIVA all'eroe. Tutto dentro `hl_intro`, che dura
          2,5s: alla fine dell'intro la palla e' arrivata, quindi da `hl_move` in poi nulla cambia rispetto a

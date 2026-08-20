@@ -16,7 +16,13 @@
 import { startServer, launchBrowser, installCdnRoutes, openMatch, matchPhase, sleep } from './lib/harness.mjs';
 
 const ROSSO = !!process.env.CPM_ROSSO;
-const PARTITE = +(process.env.CPM_PARTITE || 3);
+/* [7.538.0] IL CAMPIONE E' CRESCIUTO PERCHE' LE GIOCATE SI SONO ACCORCIATE IN PASSI, NON IN QUALITA'.
+   Col passo del possesso portato alla scala del MINUTO (7.538) una giocata si consuma in 3-4 passi invece
+   che in una dozzina: le COPPIE INTERNE per partita crollano e a 2-3 partite la sonda finisce sotto il suo
+   stesso minimo (misurato: 114 passi, 26 coppie, minimo 40) — cieca, non rossa. La rotta era sana proprio
+   in quel giro (16,9°/passo contro soglia 25, svolte >45% all'11,5% contro 16). Si allarga il campione,
+   NON si abbassa la soglia: e' la stessa scelta fatta nel 7.537 per bg-decision. */
+const PARTITE = +(process.env.CPM_PARTITE || 5);
 /* TARATURA a copertura piena (3 partite per braccio, 96/100 coppie interne):
    VERDE 11,0°/passo · svolte>45° 7,3% · inversioni 5,2% · corridoio mediano 25 tick
    ROSSO 56,0°/passo · svolte>45° 46,0% · inversioni 18,0% · corridoio 13 tick
