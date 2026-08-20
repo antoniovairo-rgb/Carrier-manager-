@@ -1,5 +1,38 @@
 # Cronologia delle release — Korward Elite
 
+### 7.534.0 — MP-1 prima ondata: il vocabolario del gesto
+
+Secondo lotto della missione Match Presentation. Rosso di release: `__CPM_NO547`.
+
+1. **La tabella GESTI** — punto unico famiglia→variante→{clip, profilo}: la clip dell'eroe usciva da
+   una catena if (nove famiglie, sei clip, varianti mute fuori da `shot_volley`); ora è un DATO
+   consultabile (`gestoDi()`, hook `__CPM_GESTI`), risoluzione per risoluzione **identica alla catena
+   storica** — le colonne future (contactAt, vRef, spin, tgtY, foot) si aggiungono qui, ognuna col suo
+   consumatore e la sua misura.
+2. **Il volo ha un profilo**: `ballArcProf` dalla tabella, consumato nell'unico punto della pancia
+   dell'arco — «tesa» (sin^0.7: la sassata sale presto e viaggia piatta; shot_power/first_time/volley,
+   rigore, tuffo di testa), «campana» (sin(u^0.72·π): apice anticipato a u~0,38 e discesa lunga; chip e
+   panenka), null = seno storico (curled tiene la pancia a giro, 1v1 resta rasoterra). **Zero agli
+   estremi in tutti i profili**: contatto e arrivo non cambiano di un millimetro (lezione 7.477) — e il
+   profilo si azzera a OGNI armo d'arco (la lezione del certificato stantio H4 applicata in anticipo).
+3. **+volley e +lift ai compagni**: la girata del compagno che finalizza non suona più il `kick`
+   generico, e il canale d'esultanza dei compagni (r.15872) — che chiedeva `lift` dal 7.384 e
+   risolveva null — smette di essere un ramo morto. Due AnimationAction in più a testa, clip già caricate.
+
+**Misure.** Guardiano nuovo `gesto-vocabolario-test.mjs` (in corsia B, verde+rosso): enumerazione via
+hook — le risoluzioni sono troppo rare per il campionamento (lezione trama-identita). Verde: 17/17 casi
+della catena storica + 4 firme distinte nella famiglia shot + profili al posto giusto; rosso
+(`__CPM_NO547` appiattisce il lookup alla riga base): 1 firma, shot_volley suona `kick`, la panenka
+perde la campana. In volo: la sassata misurata dal testimone (pancia 0,94 su 11 campioni, chiusa a
+terra a fine volo).
+
+**Dichiarato NON verificato**: la campana in volo non è catturabile dalla sonda — il pallonetto su gi0
+**non vola mai** (fase inchiodata `hl_result`, dispatch nullo) e la stessa misura sulla baseline 7.533
+dice identico: difetto **pre-esistente**, aperto come indagine MP (possibile parente della nota
+«giocata senza senso, colpo di testa da centrocampo»). La campana resta raggiungibile via panenka.
+
+Rituale completo B (11 passi: +gesto-vocabolario verde e rosso) + A (8 canonici).
+
 ### 7.533.0 — MP-0: il canale dice la verità (missione Match Presentation, lotto 0)
 
 Apre la missione **macro-gestualità** del PO. Prima mossa del piano in 6 lotti (`mp-audit/00-piano.md`,

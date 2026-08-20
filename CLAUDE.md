@@ -584,6 +584,14 @@ PREMIO: i gol del compagno viaggiano con reward `assist` e verrebbero espulsi. G
 (11/12/13) hanno il clamp specchio: il build-up muore SULLA linea, l'ingresso in rete è monopolio dei
 canali certificati.
 
+**Il vocabolario del gesto (7.534.0, MP-1 — rosso `__CPM_NO547`).** La clip dell'eroe e il profilo del
+volo si risolvono SOLO dalla tabella `GESTI` (`gestoDi(famiglia,variante)`, hook `__CPM_GESTI`) — mai
+catene if nuove. Colonne nuove (contactAt/vRef/spin/tgtY/foot) si aggiungono alla tabella col loro
+consumatore e la loro misura. I profili di pancia («tesa»/«campana») valgono 0 agli estremi: contatto e
+arrivo NON cambiano — e `ballArcProf` si azzera a OGNI armo d'arco (testa del dispatcher + arco BG).
+Guardiano `gesto-vocabolario` (enumerazione, in corsia B verde+rosso). Aperto pre-esistente: il
+pallonetto su gi0 non vola mai (hl_result inchiodato, dispatch nullo — identico su baseline 7.533).
+
 **In `cpmtest` il taglio del teatro è SPENTO (`_asIfPlay`, 7.345) — ogni sonda che giudica le APERTURE
 di scena deve armare `__CPM_PRESENT=1`, o misura un teatro che va a piedi (artefatto: 73,5u su gi44,
 rimedio `__CPM_NO529` REVOCATO con misura invariata — col teatro attivo i due bracci erano identici a

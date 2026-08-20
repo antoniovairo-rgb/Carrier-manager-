@@ -127,7 +127,8 @@
     "bg-rhythm": "node bg-rhythm-test.mjs",
     "camera-hands": "node camera-hands-test.mjs",
     "framing-guard": "CPM_MED_MIN=0.11 CPM_FUORI_MAX=10 node hero-framing-census.mjs",
-    "trama-identita": "node trama-identita-test.mjs"
+    "trama-identita": "node trama-identita-test.mjs",
+    "gesto-vocabolario": "node gesto-vocabolario-test.mjs"
   },
   "dependencies": {
     "playwright": "^1.48.0",
