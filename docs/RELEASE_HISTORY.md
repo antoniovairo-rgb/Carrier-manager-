@@ -1,5 +1,57 @@
 # Cronologia delle release — Korward Elite
 
+### 7.540.0 — Il passaggio è un evento, la conduzione è un percorso
+
+Rosso: `__CPM_NO558`. Quarto tentativo sull'unico numero della missione ancora fuori bersaglio — **gli
+uomini diversi che toccano palla** in 90 minuti (obiettivo 15 su 22).
+
+**I tre precedenti, tutti misurati, due buttati con la loro misura:**
+
+| tentativo | cosa cambiava | esito |
+|---|---|---|
+| 7.538 | ruotare l'**etichetta** del portatore | uomini 12→12 · cambi 15→13 · senza padrone 33%→36% → **revocato** |
+| 7.539 | la giocata finisce su un **uomo**, non su una coordinata | senza padrone 33%→26-27% · uomini invariati → **tenuto** (sposta altro) |
+| 7.539.1 | i compagni **appoggiano** attorno al portatore | uomini 12→11 · cambi 16→12 · senza padrone 27%→31% · centrale 58%→60% → **revocato** |
+
+**La lezione delle tre**, ed è quella che ha prodotto il rimedio: il numero non si sposta né cambiando
+**chi** riceve né **dove stanno** gli altri, perché finché il pallone **scivola** da un punto all'altro
+attraversa erba vuota per tre o quattro tick e «chi ce l'ha» resta indefinito. In una partita vera il
+possesso è fatto di **due cose diverse**: una **conduzione** (l'uomo corre col pallone — è un *percorso*,
+ed è su quello che si giudica la rotta) e un **passaggio** (la palla lascia un uomo e arriva a un altro —
+è un *evento*, non un percorso). Il motore le trattava come la stessa cosa.
+
+Ora alla fine di una conduzione la palla **passa**: il bersaglio salta in un tick sulla posizione del
+ricevente scelto vicino all'intenzione del modulo (tetto **22u** — oltre è un lancio, e un lancio va
+raccontato), e il nuovo portatore **conduce** verso l'intenzione successiva. I passi interni restano
+quelli della conduzione, quindi il guardiano della trama continua ad avere la sua materia.
+
+**Misura alla pari** (6 partite su 6 per braccio, rosso `__CPM_NO558` contro verde, stesso momento):
+
+| grandezza | rosso | verde | obiettivo |
+|---|---|---|---|
+| uomini diversi che toccano palla | 11 (8-13) | **13** (11-14) | ≥15 |
+| palla in fascia centrale | 66% (48-76) | **61%** (51-70) | ≤60 |
+| quinto centrale del campo | 53% | **47%** | |
+| quinto d'attacco | 25% | **31%** | |
+| minuti consecutivi sullo stesso uomo | 3 | **2** | |
+| palla senza padrone | 25% | 30% | ≤40 |
+| cambi di portatore | 15 | 12 | ≥15 |
+
+**Il prezzo, dichiarato.** La palla senza padrone sale da 25% a 30% e i cambi di portatore scendono da 15
+a 12. Il primo **non è una regressione di realismo** ma la definizione stessa di passaggio: una palla **in
+volo** non è di nessuno, ed è giusto che la sonda la conti così. Il secondo è un effetto della stessa cosa
+(la sonda conta tratte di vicinanza consecutive, e il volo le spezza).
+
+⚠️ **Il numero resta fuori bersaglio**: 13 su 22 contro i 15 dichiarati. Più vicino e molto più stabile
+(l'intervallo si stringe da 8-13 a 11-14), ma non centrato — e va detto così.
+
+⚠️ **Quanto pesa il rumore.** Fra due giri dello **stesso** braccio la fascia centrale si è mossa fra 58% e
+66%: la sonda gira su partite intere, ma sei partite non bastano a distinguere scarti di cinque punti. I
+confronti qui sopra valgono perché fatti a **campione uguale** (6/6 contro 6/6) nello stesso momento; un
+confronto contro un giro vecchio a 5/6 non sarebbe valso, ed è la ragione per cui il braccio di controllo è
+stato **rifatto** invece di riusare il numero che c'era già.
+
+
 ### 7.539.0 — I colori tornano densi (per davvero) e la giocata finisce su un uomo
 
 Rossi: `__CPM_NO556` (luce+esposizione pre-7.539), `__CPM_NO555` (giocata su coordinata).
