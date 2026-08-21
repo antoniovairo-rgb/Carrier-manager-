@@ -1,5 +1,56 @@
 # Cronologia delle release — Korward Elite
 
+### 7.543.0 — La partita si guarda alla velocità del calcio
+
+Rossi: `__CPM_NO564` (metronomo a 900 ms), `__CPM_NO565` (tasto Salta sopra la cronaca).
+
+1. **Il metronomo** — direttiva PO, scelta esplicita fra tre opzioni: «~2,5 minuti».
+   Un tick avanza il cronometro di **un minuto** (invariante 7.538), quindi 90 tick × 900 ms facevano
+   **81 secondi reali per 90 minuti di gioco**. Da lì nasceva il collaudo «parecchi giro giro tondo con il
+   pallone»: in **~10 secondi di visione passavano undici minuti di gioco**, mentre uno spell di possesso
+   ne dura 4-9 — dentro una sola occhiata la palla cambiava padrone e risaliva il campo nei due versi.
+   Non un difetto del modello: **il modello guardato a una velocità che non è quella del calcio** — e
+   infatti nel 7.542 due tarature che curavano il sintomo erano state provate e buttate con le loro misure.
+
+   **900 → 1700 ms**: la compressione passa da **11 a 5** minuti di gioco per occhiata, cioè *dentro* la
+   durata di uno spell — si vede una squadra che attacca, non due che si scambiano il pallone. Il bersaglio
+   del pallone scende da **7,2 a 3,9 unità al secondo**. Le tre velocità continuano a dividere questo
+   tempo: a 2× si torna a 850 ms, cioè al ritmo di prima per chi lo preferisce.
+
+   **Effetto collaterale misurato**, e va nella direzione giusta — il mondo lento è più facile da abitare
+   per i ventidue: `ball-attended` 84,9% accudita / 90,0% spiegabile; `framing-guard` fuori quadro **7,2%**
+   (era **10,2%** contro una soglia del 10%, cioè rosso marginale).
+
+   ⚠️ **Controllo anti-falso-verde.** Un guardiano che passa perché ho rallentato la partita non misura più
+   niente. Stesso guardiano nei due mondi:
+
+   | | veloce (900 ms) | lento (1700 ms) |
+   |---|---|---|
+   | palla in moto | 78,6% | **80,5%** |
+   | striscia massima di fermo | 0,6s | **1,8s** |
+
+   I due numeri vanno in **direzioni opposte**: il metro discrimina ancora, e 1,8s di pallone fermo è
+   dentro quello che il calcio ha davvero.
+
+2. **Il tasto Salta non copre più la telecronaca** — collaudo PO. **Terzo occupante della fascia bassa**:
+   il 7.536 aveva già risolto la stessa classe fra panchina e cronaca (*«ora vivono nello stesso contenitore
+   in colonna: l'accavallamento non è corretto, è reso impossibile»*), ma il tasto non era mai stato portato
+   dentro quel ragionamento — `position:absolute` a bottom 14 / right 14 con `zIndex:25`, sopra la cronaca
+   (21) e nello stesso angolo. Copriva **l'ultima riga scritta** nelle due fasi in cui compare (uscito per
+   sostituzione · in panchina in attesa). Ora quella fascia è **sua** e la colonna delle voci si ferma
+   sopra; nel gioco normale non cambia un pixel.
+
+   | | rosso | verde |
+   |---|---|---|
+   | sovrapposizione tasto × telecronaca | **6.273 px²** | **0** (margine 11 px) |
+
+   Il tasto **non si sposta**: è l'unica uscita da quelle due fasi (7.132/7.135), già collaudate dal PO.
+
+3. **Strumenti**: `hud-voci` estende la misura al tasto Salta, con la leva di collaudo
+   `__CPM_FORCE_SUBOFF` — senza, il guardiano avrebbe dovuto aspettare una sostituzione vera, cioè non
+   avrebbe mai misurato il caso segnalato.
+
+
 ### 7.542.0 — Il gol arriva in fondo alla sua azione, e il mister guarda la partita
 
 Due collaudi PO nella stessa release: «la partita è ancora confusionaria, **non ci sono vere azioni e non
