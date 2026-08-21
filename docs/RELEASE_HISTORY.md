@@ -1,5 +1,54 @@
 # Cronologia delle release — Korward Elite
 
+### 7.539.0 — I colori tornano densi (per davvero) e la giocata finisce su un uomo
+
+Rossi: `__CPM_NO556` (luce+esposizione pre-7.539), `__CPM_NO555` (giocata su coordinata).
+
+1. **I colori — terza segnalazione del PO** («i colori sono ancora un po' slavati», screenshot serale).
+   La misura ha spostato il bersaglio **due volte**, e in entrambi i casi stavo cercando dalla parte
+   sbagliata. Congelando l'**ora** con `__CPM_TOD` — cosa che la sonda del 7.537 **non faceva**, quindi
+   misurava un'ora qualunque e **la notte non è mai stata misurata**:
+   · **non è la notte**: di sera lo scarto col mondo pre-7.529 è *minore* che di giorno (saturazione
+     −3,2% contro −7,7%);
+   · **non è la saturazione**: il numero grosso è la **luce** — luminosità **+25,6%** di notte e
+     **+40,8%** di giorno, contrasto −4,3% e −9,7%.
+   «Slavato» è una scena **troppo chiara e troppo piatta**, non una scena poco colorata: ecco perché il
+   7.537, che agiva sulla sola esposizione guardando la saturazione, non aveva chiuso la nota.
+   Spazzolata la coppia **luce × esposizione** su scene congelate a seed fisso: luce **×0,62**
+   (0,80/0,75 → 0,50/0,47) ed esposizione **0,60 → 0,52**.
+
+   | | riferimento pre-7.529 | 7.538 | 7.539 |
+   |---|---|---|---|
+   | **notte** luminosità | 0 | +25,6% | **+0,1%** |
+   | **notte** saturazione | 0 | −7,3% | −5,0% |
+   | **giorno** luminosità | 0 | +40,8% | **+13,3%** |
+   | **giorno** saturazione | 0 | −4,5% | −2,2% |
+
+   ⚠️ **Non risolto e dichiarato**: il **contrasto** resta −5%/−10%, ed è ACES che comprime verso il
+   bianco. **Provate e scartate con le loro misure**: Cineon peggiora (−15,9% di contrasto) e togliere del
+   tutto il tone mapping restituisce il contrasto (+0,3%) ma fa esplodere la luminosità (+40%) e uccide la
+   saturazione (−12,4%). ⚠️ Dichiarato anche il **residuo del giorno** (+13,3%): la taratura è stata scelta
+   guardando la **sera**, che è quando il PO gioca.
+   ⚠️ **Lo strumento, di nuovo**: fra due giri il braccio di **riferimento** muove le sue stesse medie del
+   3-4% — quanto l'effetto da misurare. La sonda ora **ripete ogni braccio** e stampa la mediana invece di
+   fidarsi di un giro solo.
+
+2. **La giocata finisce su un uomo, non su una coordinata** (MP-3b). Il waypoint della trama era insieme
+   l'**intenzione** della squadra *e* la **destinazione** del pallone: cioè un punto vuoto del prato. Ora
+   l'intenzione resta quella del modulo (fase, corridoio, identità: intatte) e poi si cerca il **compagno
+   più vicino a quell'intenzione** entro 18u — se c'è, il waypoint diventa la **sua posizione**, e la
+   giocata è un passaggio a un uomo vero. Misura su sei partite, **due giri indipendenti**: palla senza
+   padrone **33% → 26-27%**, cambi di portatore **15 → 16**.
+   ⚠️ **Resta non centrato**: gli uomini diversi che toccano palla, **12 su 22** contro l'obiettivo 15 (la
+   coda migliora, 14 → 16; la mediana no). Nel 7.538 era già stata provata e revocata la rotazione
+   dell'**etichetta** del portatore: questa è la **seconda** strada tentata sullo stesso numero, e va
+   dichiarata come parziale invece che venduta come chiusa.
+
+3. **Strumenti.** Sonda colori giorno/notte a **ora congelata**, con il **contrasto** accanto a saturazione
+   e luminosità; spazzola luce × esposizione; pomello di collaudo `__CPM_K533` sulle luci (il 7.537 aveva
+   un pomello per la curva ma non per la luce, ed è la luce che il fotogramma legge come «slavato»).
+
+
 ### 7.538.0 — La partita vera, primo lotto: il minuto è una giocata
 
 Mandato esplicito del PO: «basta rifiniture, partita vera è la missione».

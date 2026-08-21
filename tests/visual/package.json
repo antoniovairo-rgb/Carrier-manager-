@@ -133,7 +133,8 @@
     "battuta": "node battuta-test.mjs",
     "europei": "node europei-test.mjs",
     "possesso": "node possesso-538.mjs",
-    "primavera-awards": "node primavera-awards-test.mjs"
+    "primavera-awards": "node primavera-awards-test.mjs",
+    "colori": "node colori-539.mjs"
   },
   "dependencies": {
     "playwright": "^1.48.0",
