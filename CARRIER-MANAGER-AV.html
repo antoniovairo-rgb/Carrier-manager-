@@ -4826,7 +4826,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="7.540.0"; // [7.540.0 — IL PASSAGGIO E' UN EVENTO, LA CONDUZIONE E' UN PERCORSO]: quarto tentativo sull'unico numero della missione ancora fuori bersaglio — gli uomini diversi che toccano palla in 90 minuti (obiettivo 15 su 22). I TRE PRECEDENTI, tutti misurati e due buttati con la loro misura: ruotare l'ETICHETTA del portatore (7.538: uomini 12->12, cambi 15->13, senza padrone 33%->36% — revocato); far finire la giocata su un UOMO invece che su una coordinata (7.539: TENUTO, perche' ha spostato la palla senza padrone da 33% a 26-27%, ma non questo numero); tirare i compagni ad APPOGGIARE attorno al portatore (7.539.1: uomini 12->11, cambi 16->12, senza padrone 27%->31%, fascia centrale 58%->60% — peggiorava tutto e revocato, perche' i tre compagni piu' vicini ammucchiati sul pallone vengono tolti da dove la squadra vuole andare). LA LEZIONE DELLE TRE: il numero non si sposta ne' cambiando CHI riceve ne' DOVE stanno gli altri, perche' finche' il pallone SCIVOLA da un punto all'altro attraversa erba vuota per tre o quattro tick e «chi ce l'ha» resta indefinito. In una partita vera il possesso e' fatto di DUE cose diverse: una CONDUZIONE (l'uomo corre col pallone: e' un percorso, e la rotta si giudica su quello) e un PASSAGGIO (la palla lascia un uomo e arriva a un altro: e' un evento, non un percorso). Il motore le trattava come la stessa cosa. Ora alla fine di una conduzione la palla PASSA — il bersaglio salta in un tick sulla posizione del ricevente scelto vicino all'intenzione del modulo, tetto 22u (oltre e' un lancio, e un lancio va raccontato) — e il nuovo portatore CONDUCE verso l'intenzione successiva: i passi interni restano quelli della conduzione, quindi il guardiano della trama continua ad avere la sua materia. MISURA ALLA PARI (6 partite su 6 per braccio, rosso __CPM_NO558 contro verde): uomini diversi 11 (8-13) -> 13 (11-14); fascia centrale 66% (48-76) -> 61% (51-70); il quinto centrale del campo 53% -> 47% e il quinto d'attacco 25% -> 31%; stazionamento sullo stesso uomo 3 -> 2 minuti. IL PREZZO, DICHIARATO: la palla senza padrone sale da 25% a 30% e i cambi di portatore scendono da 15 a 12. Il primo NON e' una regressione di realismo ma la definizione stessa di passaggio — una palla IN VOLO non e' di nessuno, ed e' giusto che la sonda la conti cosi'; il secondo e' un effetto della stessa cosa (la sonda conta tratte di vicinanza consecutive, e il volo le spezza). ⚠️ IL NUMERO RESTA FUORI BERSAGLIO: 13 su 22 contro i 15 dichiarati. Piu' vicino e molto piu' stabile (l'intervallo si stringe da 8-13 a 11-14), ma non centrato, e va detto cosi'. ⚠️ E VA DETTO ANCHE QUANTO PESA IL RUMORE: fra due giri dello STESSO braccio la fascia centrale si e' mossa fra 58% e 66% — la sonda gira su partite intere ma sei partite non bastano a distinguere scarti di cinque punti. I confronti qui sopra sono validi perche' fatti a campione uguale (6/6 contro 6/6) nello stesso momento; un confronto contro un giro vecchio a 5/6 non lo sarebbe stato, ed e' la ragione per cui il braccio di controllo e' stato rifatto invece di riusare il numero che c'era gia'.
+const GAME_VERSION="7.542.0"; // [7.542.0 — IL GOL ARRIVA IN FONDO ALLA SUA AZIONE, E IL MISTER GUARDA LA PARTITA]: due collaudi PO nella stessa release. (a) «non ci sono vere azioni e non si vedono i gol» (rosso __CPM_NO559). La misura ha smentito la mia prima ipotesi: ZERO gol su otto sono scritti fuori dall'ultimo terzo, quindi il tetto di sicurezza dell'azione pendente non scatta mai e l'azione manovrata funziona. Il difetto era il RACCONTO: fra due righe consecutive passano cinque minuti di gioco e la palla attraversa 40-50 unita' senza che nessuno lo dica (43' x42 · 48' x50 · 50' GOL a x2), e sei gol su otto arrivano senza una riga di pericolo prima. Due cause nello stesso punto: la CATENA — l'unica macchina che racconta una giocata come sequenza di uomini nominati — era esclusa proprio quando c'e' un gol in arrivo; e la PAUSA D'ENFASI vale 7 tick, cioe' i 6,3 secondi di lettura per cui fu scelta (7.490) ma SETTE MINUTI di gioco (stessa classe dell'invariante 7.538). Ora, mentre il gol si costruisce, la catena parla a ogni tick, la pausa si scavalca e l'avanzata cieca cede il pallone alla catena. QUATTRO ITERAZIONI, ognuna con la sua misura, e la quarta ha girato il problema al contrario. Le prime tre allargavano la FINESTRA del racconto: forzatura ovunque = 6/8 ma ritmo rotto (bg-rhythm 1,29x contro 1,30, la costruzione non respirava piu'); solo oltre l'avanzamento 58 = 4/7; da meta' campo (45) = 5/8. Restava sempre fuori un gol su tre, e la ragione e' strutturale: la rete si scrive quando la palla tocca una COORDINATA (avanzamento 72) e certi attacchi ci arrivano in due tick — nessuna taratura della finestra puo' dare tre battute a un'azione che ne dura due. Il verso giusto e' l'opposto: non allargare la finestra ma far ASPETTARE LA RETE. Un gol si scrive quando la sua azione e' stata raccontata (tre righe), non quando la palla tocca un punto; il tetto di sicurezza dei 10 tick resta e ha l'ultima parola, quindi nessun gol puo' restare in sospeso. MISURA (4 partite per braccio, soglia dichiarata PRIMA di scrivere il codice): gol che arrivano in fondo alla loro azione — almeno tre righe nei quattro minuti precedenti — da 0/8 a 7/8 (soglia >=6/8); minuti fra l'ultima riga di pericolo e la rete da 3 a 1; righe di cronaca per partita da 16-18 a 23-29. ⚠️ RI-TARATO DAL GUARDIANO, non contro di lui: la prima stesura forzava la riga anche in COSTRUZIONE e bg-rhythm e' sceso a 1,29x contro 1,30 (la costruzione aveva smesso di respirare). La forzatura vale solo fuori dalla costruzione — una telecronaca non si accende col pallone nella propria meta', si accende quando l'azione ARRIVA — e il rapporto risale a 1,94x. La soglia non e' stata toccata. (b) «le indicazioni del mister sono senza senso e scollegate dalla dinamica della partita» (rosso __CPM_NO562): `pickCoachShout` leggeva `possessionRef`, la percentuale CUMULATIVA della barra in alto. La panchina gridava «Vai sul fondo! Crossa!» perche' NEL COMPLESSO avevamo il 59% di possesso, mentre il pallone era nella nostra area. E' il difetto tolto alla trama nel 7.532 e mai propagato a questa voce. Ora consuma i due fatti veri che la cronaca usa da tre release — TURNO (chi ha la palla adesso) e FASE (dove sta) — con la statistica come ripiego. Il vocabolario non cambia: erano le frasi giuste scelte col criterio sbagliato. ⚠️ La fase si RICALCOLA nel sito del mister invece di prendere in prestito `_fase501`, che e' dichiarato quaranta righe piu' sotto: `const` in zona morta temporale, cioe' ReferenceError alla prima grida — un difetto che scatta ogni sei minuti con probabilita' 34% e che lo smoke non poteva vedere. (c) ⚠️ DICHIARATO NON RISOLTO: «parecchi giro giro tondo col pallone». Tre ipotesi, due smentite dalla misura. NON e' la compressione della squadra introdotta nel 7.538 (verde e rosso identici: 21,8u contro 21,6u di distanza mediana dal pallone). NON lo vedono i giocatori a finestra corta: a 3 secondi la rettilineita' e' 0,90 e il giro in tondo l'1% — a 10 secondi diventano 0,40 e 41%, perche' a 3 secondi si vede una sola gamba dello zigzag. LA LEZIONE SULLO STRUMENTO, la quarta della serie: la lunghezza della finestra era la differenza fra «non c'e' niente» e «il difetto e' enorme». Il numero che chiude la diagnosi: in ~10 secondi di visione passano UNDICI minuti di gioco, mentre uno spell di possesso ne dura 4-9 — dentro una sola occhiata la palla cambia padrone e risale il campo nei due versi. Non e' un difetto del modello: e' il modello guardato a una velocita' che non e' quella del calcio, e va deciso a livello di progetto (quanto deve durare la parte ambientale di una partita), non tarato di nascosto. DUE STESURE BUTTATE CON LE LORO MISURE: pretendere il ricevente in avanti (rettilineita' 0,22->0,27 ma senza padrone 30%->40%; col ripiego il guadagno sparisce, 0,26) e allungare lo spell a 9-19 minuti (0,27->0,31 isolato, ma fascia centrale 61%->65%). (d) strumenti: censimento dei gol col DUMP delle frasi vere + sonda del «giro giro tondo» (rettilineita' e giro attorno al pallone, per uomini e per pallone, con i minuti di gioco che stanno dentro la finestra).
 // [nota 7.449.0] [7.449.0 MESSA IN SICUREZZA · P0 #3 dell'audit forense — IL RIFERIMENTO ALLA GARA APERTA SOPRAVVIVEVA ALL'USCITA]: `_playingMdRef` descrive la gara di CLUB aperta da startMatch, ma veniva azzerato SOLO da onMatchEnd: uscire dal pre-partita (onQuit) o essere respinti dai suoi return anticipati («non convocato», avversario non risolvibile) lo lasciava CARICO. E il consumo in onMatchEnd avveniva per QUALUNQUE fine partita, comprese quelle di Nazionale, che non passano da startMatch e non lo impostano mai. Catena: apro il pre-partita di campionato, torno indietro, gioco in Nazionale — e il commit registra come giocata una giornata di campionato mai disputata, che la bonifica chiude subito dopo. Stagione a 33 su 34 senza che nulla lo segnali. CICLO DI VITA RICOSTRUITO invece di un reset indiscriminato: il riferimento nasce all'apertura della gara, si INVALIDA su ogni percorso d'uscita dal pre-partita (onQuit e i due return anticipati) e si CONSUMA solo nei contesti di CLUB (career/cup/euro) — una gara di Nazionale non tocca piu' una giornata di campionato, ed e' la rete che copre anche le uscite non previste. +sonda test-only `__CPM_CAREER.mdRef()`: senza, il guardiano misurerebbe gli effetti e non la causa. GUARDIANO playing-mdref-test, NEL GATE: prova del ROSSO (__CPM_NO_P0_3: nel pre-partita il riferimento e' carico e resta carico dopo l'uscita) + i percorsi — uscita che invalida, calendario e presenze immutati dopo un'uscita, riapertura coerente con la gara vera, partita realmente giocata che si committa ancora.
 // [nota 7.448.0] [7.448.0 MESSA IN SICUREZZA · P0 #2 dell'audit forense — UN SALVATAGGIO PIU' VECCHIO POTEVA SOVRASCRIVERE IL PIU' RECENTE]: `storage.save` e' async e non aveva ne' coda ne' sequenza. Nel browser non si vede (localStorage e' sincrono) ma la build pubblicata su Play Store gira su `window.storage` = @capacitor/preferences, iniettato da tools/build-dist.mjs, dove la scrittura passa da un BRIDGE ASINCRONO: due salvataggi concorrenti potevano completare FUORI ORDINE, e `savedAt` veniva scritto ma mai riletto, quindi nulla se ne accorgeva. DIMOSTRATO a runtime con un bridge finto a latenza pilotata: stato A → parte l'autosave (bridge occupato) → stato B → l'app va in background → il flush salva B → il salvataggio di A completa DOPO e riscrive il disco con lo stato vecchio (memoria 2222, disco 1111). Su Android significa perdere una partita, una settimana, a volte una stagione — ed e' anche una spiegazione a monte della «partita gia' giocata», perche' un save che torna indietro riporta in calendario una gara gia' disputata. CURA MINIMA, nessuna infrastruttura nuova e formato del salvataggio IMMUTATO: una CODA per chiave (le scritture si susseguono nell'ordine in cui sono state chieste, mai sovrapposte) e uno SCARTO delle scritture gia' superate (se mentre A aspetta il turno e' arrivata B, A non viene scritta: il suo contenuto e' vecchio per definizione). GUARDIANO save-monotonic-test, NEL GATE: prova del ROSSO incorporata (__CPM_NO_P0_2 ripristina le scritture concorrenti → il disco torna a 1111) e sei scenari — vecchio-lento contro nuovo-veloce, tre scritture a latenza decrescente, salvataggio normale non bloccato, ramo browser invariato, ramo bridge nativo, riapertura dell'app che rilegge l'ultimo stato.
 // [nota 7.447.0] [7.447.0 MESSA IN SICUREZZA · P0 #1 dell'audit forense — IL RECUPERO DOPO UN RIAVVIO CONFONDEVA LE COMPETIZIONI]: e' la vera causa della «partita gia' giocata» che il PO segnala da nove collaudi. Il recovery del sidecar cercava la gara nel calendario per AVVERSARIO e SEDE, senza mai guardare la competizione; siccome l'avversario di Coppa viene sorteggiato DALLA STESSA LEGA e il turno R16 e' cablato «in casa», per costruzione esiste SEMPRE una voce di campionato in casa contro quel club. RIPRODOTTO: recuperando una gara di Coppa, la classifica di campionato passava da 17 a 18 partite e da 40 a 43 punti per una gara mai giocata, e la giornata di lega spariva marcata come giocata. Aggravante: le due ref che portano l'identita' della gara vivono nella SESSIONE e dopo il riavvio sono vuote — `matchTypeRef` torna al default "league" (l'unico writer "cup" e' startMatch, che dopo il reboot non passa mai) e `_playingMdRef` e' null, quindi anche il ramo di commit era quello di lega. DUE CURE MINIME: (1) i candidati si filtrano per COMPETIZIONE, derivata da `result.context` che era gia' nel sidecar dal 7.24.3 — nessun campo nuovo, e un sidecar senza contesto (scritto da una versione precedente) non viene filtrato ne' scartato, mantenendo il comportamento storico; (2) prima del dispatch si ricostruiscono `matchTypeRef` e `_playingMdRef` dalla voce ritrovata, cosi' il commit marca la voce giusta per NUMERO di giornata e registra quella giornata. GUARDIANO recovery-competition-test, NEL GATE: prova del ROSSO incorporata (interruttore __CPM_NO_P0_1 che ripristina la vecchia logica: la voce di lega torna a essere marcata, classifica 18) + casi A-G (coppa committata in coppa, campionato intatto a 17/40, turno di coppa avanzato, nessuna regressione sul recupero di lega). Gli assert leggono lo stato PERSISTITO, non la memoria.
@@ -18952,9 +18952,32 @@ const COACH_SHOUTS={
   fin_neutral:["Restiamo concentrati!","Massima attenzione!","Ci siamo, dai!","Ultimo sforzo!","Testa alta!"],
 };
 // fase derivata da: minuto+punteggio (finale) → tattica/possesso/momentum (offensiva/difensiva/possesso). style allenatore = bias leggero.
-function pickCoachShout(ck,diff,momentum,poss,driftKey,style,last){
+/* [7.542.0 collaudo PO «le indicazioni del mister sono senza senso e scollegate dalla dinamica della
+   partita»] IL MISTER LEGGEVA LA STATISTICA, NON LA PARTITA. `poss` qui e' `possessionRef`, cioe' la
+   percentuale CUMULATIVA che sta nella barra in alto: si muove di un punto ogni tanto e resta li'.
+   Quindi la panchina gridava «Vai sul fondo! Crossa!» perche' NEL COMPLESSO della partita avevamo il 59%
+   di possesso, mentre in quel momento il pallone era nella nostra area — e viceversa. E' esattamente il
+   difetto tolto alla trama nel 7.532 («`possession>=50` e' la STATISTICA cumulativa — ora il drift
+   consuma il TURNO»): la voce del mister non era mai stata aggiornata e leggeva ancora il numero
+   sbagliato. Ora consuma i due fatti VERI che la cronaca usa da tre release — `turno` (chi ha la palla
+   adesso) e `fase` (dove sta la palla adesso, gia' corretta per il lato) — e la statistica resta il
+   ripiego per i percorsi che quei due non li hanno. Il vocabolario non cambia: erano le frasi giuste
+   scelte col criterio sbagliato. Rosso `__CPM_NO562`. */
+function pickCoachShout(ck,diff,momentum,poss,driftKey,style,last,turno,fase){
   const tLeft=90-ck;let pool;
+  const _vivo=(typeof window==='undefined'||!window.__CPM_NO562)&&(turno===1||turno===-1)&&!!fase;
   if(tLeft<=10){pool=diff>=1?COACH_SHOUTS.fin_hold:diff<=-1?COACH_SHOUTS.fin_push:COACH_SHOUTS.fin_neutral;}
+  else if(_vivo){
+    /* la palla e' NOSTRA o LORO, e sta in costruzione / sviluppo / pericolo: sei combinazioni, tre voci.
+       Loro in pericolo = stanno arrivando, si copre; noi in pericolo = siamo in area, si attacca;
+       a meta' campo si palleggia, con chi non ha la palla che stringe. */
+    const _nostra=(turno===1);
+    if(fase==="pericolo")pool=_nostra?COACH_SHOUTS.off:COACH_SHOUTS.def;
+    else if(fase==="sviluppo")pool=_nostra?COACH_SHOUTS.off:COACH_SHOUTS.def;
+    else pool=_nostra?COACH_SHOUTS.pos:COACH_SHOUTS.def;
+    if(style==="Difensivo"&&pool===COACH_SHOUTS.pos)pool=COACH_SHOUTS.def;
+    if(style==="Offensivo"&&pool===COACH_SHOUTS.pos)pool=COACH_SHOUTS.off;
+  }
   else{
     let att=driftKey==="attack"||driftKey==="attack_goal"||poss>=58||momentum>=64;
     let def=driftKey==="retreat"||driftKey==="defend_goal"||poss<=42||momentum<=36;
@@ -21017,7 +21040,15 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
         if(!["hl_intro","hl_move","hl_choose","hl_result"].includes(phaseRef.current)&&nx-lastShoutRef.current.ck>=6&&_rndM()<0.34){
           const _scS=scoreRef.current,_diffS=_scS.home-_scS.away;
           const _dkS=Object.keys(DRIFT_PRESETS).find(k=>DRIFT_PRESETS[k]===driftTargetsRef.current)||null;
-          const _shout=pickCoachShout(nx,_diffS,momentumRef.current,possessionRef.current,_dkS,player.coach?.style||null,lastShoutRef.current.txt);
+          /* ⚠️ LA FASE SI RICALCOLA QUI, NON SI PRENDE IN PRESTITO. Prima stesura: passavo `_fase501`, che pero'
+             e' dichiarato QUARANTA righe piu' sotto — `const` in zona morta temporale, cioe' ReferenceError alla
+             prima grida del mister. Lo smoke non l'ha visto perche' questo ramo scatta una volta ogni sei minuti
+             di gioco con probabilita' 34%: un difetto che si presenta raramente e' un difetto che arriva al PO.
+             Stessa formula della cronaca (soglie 58/78 sull'avanzamento del lato in possesso), calcolata da qui. */
+          const _bC542=ballPosRef.current||{x:50,y:50};const _tnC542=(possTurnRef.current>0?1:-1);
+          const _advC542=(_tnC542<0)?(100-_bC542.x):_bC542.x;
+          const _faseC542=_advC542>=78?"pericolo":_advC542>=58?"sviluppo":"costruzione";
+          const _shout=pickCoachShout(nx,_diffS,momentumRef.current,possessionRef.current,_dkS,player.coach?.style||null,lastShoutRef.current.txt,_tnC542,_faseC542);/* [7.542.0] turno e fase: gli stessi due fatti che la cronaca consuma */
           if(_shout){lastShoutRef.current={ck:nx,txt:_shout};addCoach("📣 «"+_shout+"»",nx);}/* [7.532.0 NO540] la voce del mister va nel riquadro panchina, non in telecronaca */
         }
         // 3DV-FIX3: cronaca meno fitta — base 18%/tick — sospesa durante gli HL.
@@ -21105,15 +21136,25 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           const _pg532=pendingGoalRef.current;
           if(_simEv77&&!_pg532){
             const _nostro532=_simEv77.ef==="team_goal";
-            pendingGoalRef.current={ev:_simEv77,dir:_nostro532?1:-1,ticks:0};
+            pendingGoalRef.current={ev:_simEv77,dir:_nostro532?1:-1,ticks:0,righe:0};
             if(!(typeof window!=='undefined'&&window.__CPM_NO543))possTurnRef.current=_nostro532?1:-1;/* [7.532.0 NO543] l'azione pendente e' di chi segnera' */
             _simEv77=null;
             addCom(_nostro532?"⚡ Azione manovrata: la squadra sale in blocco verso l'area!":"⚠️ L'avversario avanza compatto — pericolo in costruzione…",_nostro532?"#4ade80":"#f87171",nx);
           }else if(_pg532&&!_inHL77){
             _pg532.ticks++;
             const _t532=ballTargetRef.current;const _b532=ballPosRef.current||{x:50,y:50};
-            _t532.x=clamp(_t532.x+_pg532.dir*3,2,98);/* [v3] 4->3 u/tick (~7u/s): a 4 la palla correva a 9,5u/s, oltre il passo del portatore (7-9u/s) — ball-attended crollato a 46,8% (<52): l'azione manovrata viaggia CON la squadra, non davanti a tutti */_t532.y=clamp(_t532.y+(50-_t532.y)*0.25,6,94);
-            if((_pg532.dir>0&&_b532.x>=72)||(_pg532.dir<0&&_b532.x<=28)||_pg532.ticks>=10){_simEv77=_pg532.ev;pendingGoalRef.current=null;}/* [v3] tetto 8->10, coerente col passo ridotto */
+            if(!(azioneRef.current&&!(typeof window!=='undefined'&&window.__CPM_NO559)))_t532.x=clamp(_t532.x+_pg532.dir*3,2,98);/* [7.541.0] se la catena sta raccontando, e' LEI a portare la palla: due scrittori sullo stesso pallone si annullano, e quello cieco (+3u verso la porta) non nomina nessuno *//* [v3] 4->3 u/tick (~7u/s): a 4 la palla correva a 9,5u/s, oltre il passo del portatore (7-9u/s) — ball-attended crollato a 46,8% (<52): l'azione manovrata viaggia CON la squadra, non davanti a tutti */_t532.y=clamp(_t532.y+(50-_t532.y)*0.25,6,94);
+            /* [7.542.0 v4 — collaudo PO «non si vedono i gol»] LA RETE ASPETTA LA SUA AZIONE. Tre
+               iterazioni sulla FINESTRA del racconto (forzatura ovunque: 6/8 ma ritmo rotto a 1,29x;
+               solo oltre l'avanzamento 58: 4/7; da meta' campo: 5/8) hanno sempre lasciato fuori un gol
+               su tre, perche' la rete si scrive ad avanzamento 72 mentre la finestra piena parte prima:
+               certi attacchi hanno solo due o tre tick per farsi raccontare, e nessuna taratura della
+               finestra puo' dare tre battute a un'azione che ne dura due. Il verso giusto e' l'opposto —
+               non allargare la finestra, ma far ASPETTARE la rete: un gol si scrive quando la sua azione
+               e' stata raccontata (tre righe), non quando la palla tocca una coordinata. Il tetto di
+               sicurezza dei 10 tick resta ed e' l'ultima parola: nessun gol puo' restare in sospeso. */
+            const _rg532=(typeof window!=='undefined'&&window.__CPM_NO563)?true:((_pg532.righe|0)>=3);
+            if((((_pg532.dir>0&&_b532.x>=72)||(_pg532.dir<0&&_b532.x<=28))&&_rg532)||_pg532.ticks>=10){_simEv77=_pg532.ev;pendingGoalRef.current=null;}/* [v3] tetto 8->10, coerente col passo ridotto */
           }
         }
         /* [7.532.0 collaudo PO «non ci sono molti ribaltamenti di fronte, non sembra una vera partita» —
@@ -21149,7 +21190,21 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
         /* [7.537.0 NO551] AVANZAMENTO DELLA CATENA: mentre un passo e' in volo la palla punta il
            RICEVENTE (non una zona), e il ricevente le va incontro — e' qui che muore il «77% del tempo
            senza padrone». Un highlight in corso mette in pausa, come per le altre macchine. */
-        if(!(typeof window!=='undefined'&&window.__CPM_NO551)&&azioneRef.current&&!_inHL77&&!pendingGoalRef.current&&!counterRef.current){
+        /* [7.541.0 collaudo PO «la partita e' ancora confusionaria, non ci sono vere azioni e non si
+           vedono i gol» — rosso __CPM_NO559] LA CATENA RACCONTA ANCHE IL GOL. Censimento su partite vere:
+           6 gol su 8 arrivano senza NESSUNA riga di pericolo prima, e fra due righe consecutive passano
+           cinque minuti di gioco in cui la palla attraversa 40-50 unita' di campo senza che nessuno lo
+           dica (dump: 43' palla a x42 · 48' palla a x50 · 50' GOL con palla a x2). Due cause, e sono
+           entrambe qui: (a) la catena — l'unica macchina che racconta una giocata come SEQUENZA di uomini
+           nominati — era esclusa proprio quando c'e' un gol in arrivo, cioe' nel momento che merita di
+           essere raccontato piu' di ogni altro; (b) la pausa d'enfasi vale 7 TICK, che in tempo reale
+           sono i 6,3 secondi di lettura per cui era stata scelta ma in tempo di GIOCO sono SETTE MINUTI
+           (stessa classe dell'invariante 7.538: una costante tarata sul lettore dentro un motore che
+           batte a minuti). Ora, mentre il gol e' in costruzione, la catena PARLA — e parla a ogni tick,
+           senza cedere il turno al repertorio — cosi' la rete arriva in fondo alla sua azione invece che
+           dopo un silenzio. Il contropiede resta escluso: ha gia' la sua recita. */
+        const _cat559=!(typeof window!=='undefined'&&window.__CPM_NO559);
+        if(!(typeof window!=='undefined'&&window.__CPM_NO551)&&azioneRef.current&&!_inHL77&&(_cat559||!pendingGoalRef.current)&&!counterRef.current){
           const _az=azioneRef.current,_p=_az.passi[_az.i];
           if(_p){const _t551=ballTargetRef.current;
             const _dx=_p.to.x-_t551.x,_dy=_p.to.y-_t551.y,_d=Math.hypot(_dx,_dy);
@@ -21172,13 +21227,31 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
         }
         if(bgCoolRef.current>0)bgCoolRef.current--;
         const _pausa485=(typeof window!=='undefined'&&window.__CPM_NO485)?false:(bgCoolRef.current>0);/* prova del rosso: `__CPM_NO485` toglie il pavimento */
-        if(_simEv77||(_rndM()<_bgProb&&!_inHL77&&!_pausa485)){/* [7.528.0 v2] durante l'azione pendente le righe ESCONO e raccontano l'avanzata (la decisione F3b segue la palla che sale: sviluppo/pericolo emergono da soli — la prima stesura le sopprimeva e il guardiano bg-rhythm e' diventato CIECO: sviluppo 6 coppie, pericolo 2, contro 14/13 storici); a non muovere il pallone ci pensa il blocco _bt498 qui sotto */
+        /* [7.541.0] LA PAUSA D'ENFASI NON PUO' COPRIRE L'AZIONE DEL GOL. `bgCoolRef` vale 7 tick dopo
+           un evento importante: sono i 6,3 secondi di lettura per cui fu scelta (7.490) e in tempo reale
+           sono giusti, ma un tick e' un MINUTO di gioco — quindi dopo un tiro la telecronaca tace per
+           SETTE MINUTI di partita, ed e' li' dentro che il gol si costruisce e nessuno lo racconta.
+           Mentre il gol e' pendente la pausa si scavalca. ⚠️ `_rndM()` resta estratto COMUNQUE una volta
+           per tick: e' il flusso seedato della cronaca (invariante 7.511) e saltarne un'estrazione
+           sposterebbe tutti i sorteggi a valle — cioe' cambierebbe la partita, non solo la sua pausa. */
+        const _draw541=_rndM()<_bgProb;
+        /* ⚠️ RI-TARATO DOPO IL GUARDIANO, non contro di lui. La prima stesura forzava la riga per TUTTA
+           l'azione pendente, costruzione compresa: `bg-rhythm` e' sceso a 1,29x contro la soglia 1,30
+           (costruzione da 5,77 a 2,91 minuti d'intervallo, sviluppo da 3,86 a 2,26) — cioe' la
+           costruzione aveva smesso di respirare e scorreva come lo sviluppo. Il guardiano aveva ragione,
+           e la correzione e' anche piu' vera: una telecronaca non si accende quando il pallone e' ancora
+           nella propria meta', si accende quando l'azione ARRIVA. Da qui la forzatura vale solo fuori
+           dalla costruzione — la rete continua ad arrivare in fondo alla sua azione, ma l'attesa prima
+           resta. */
+        const _forza541=(_cat559&&!!pendingGoalRef.current&&!_inHL77&&_advT501>=45);/* [7.542.0 v3] LA FINESTRA DEL RACCONTO COMINCIA A META' CAMPO, NON AL LIMITE DELL'AREA. La v2 apriva la forzatura solo fuori dalla costruzione, cioe' da avanzamento 58: ma il gol si scrive a 72, quindi l'attacco aveva solo la striscia 58-72 per farsi raccontare — due o tre tick, proprio sul filo della soglia «tre righe nei quattro minuti prima», e la misura infatti restava a 4/7. Ora la finestra si apre quando l'azione supera la meta' campo (45), che e' anche quando una telecronaca vera alza la voce. Resta fuori il palleggio nella propria meta', che e' il respiro che bg-rhythm difende. */
+        if(_simEv77||(_draw541&&!_inHL77&&!_pausa485)||_forza541){/* [7.528.0 v2] durante l'azione pendente le righe ESCONO e raccontano l'avanzata (la decisione F3b segue la palla che sale: sviluppo/pericolo emergono da soli — la prima stesura le sopprimeva e il guardiano bg-rhythm e' diventato CIECO: sviluppo 6 coppie, pericolo 2, contro 14/13 storici); a non muovere il pallone ci pensa il blocco _bt498 qui sotto */
           /* [7.490.0 direttiva PO §9 «eventi importanti: piu' enfasi e tempo di lettura»] LA PAUSA SI ARMA
              DOPO, E PESA L'EVENTO. Fino a qui era uniforme: un gol aveva lo stesso respiro di una rimessa
              laterale, e in un feed di testo il respiro E' l'enfasi — non c'e' altro modo di dire «questo
              conta» a chi legge. Il valore vero si assegna piu' sotto, quando l'evento e' noto (qui non lo
              e' ancora): questa riga tiene solo il minimo, cosi' nessun percorso resta senza pausa. */
           bgCoolRef.current=3;
+          try{if(pendingGoalRef.current)pendingGoalRef.current.righe=(pendingGoalRef.current.righe|0)+1;}catch(_e563){}/* [7.542.0 v4] quante righe ha gia' avuto questa azione: e' la condizione perche' la rete si scriva */
           const _sc76=scoreRef.current;const _sd76=_sc76.home-_sc76.away;const _sctx76=_sd76>0?"winning":_sd76<0?"losing":"drawing";
           // Sprint 113: dedup — exclude last 3 BG events to avoid repetition
           const _lastBG=lastBGEvtRef.current;
@@ -21323,7 +21396,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
              maglie: il canale MP-0 li usa per far calciare l'uomo giusto), la palla punta la posizione
              del ricevente e il ricevente le va incontro. Deterministico: la scelta esce da hashStr su
              minuto+passo, mai da `_rndM` (invariante 7.511 sull'ordine dei sorteggi). */
-          if(!(typeof window!=='undefined'&&window.__CPM_NO551)&&!/goal$/.test(String(ev.ef||""))&&!_koHij536&&kickoffRef.current<=0&&!pendingGoalRef.current&&!counterRef.current&&!spRef.current&&!ponteRef.current){
+          if(!(typeof window!=='undefined'&&window.__CPM_NO551)&&!/goal$/.test(String(ev.ef||""))&&!_koHij536&&kickoffRef.current<=0&&(_cat559||!pendingGoalRef.current)&&!counterRef.current&&!spRef.current&&!ponteRef.current){
             const _mp551=(matchPlayersRef.current||[]);
             const _lato551=(possTurnRef.current<0)?"away":"home";
             const _mio551=(i)=>{const q=_mp551[i];return !!q&&q.team===_lato551&&!q.gk;};
@@ -21334,7 +21407,8 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                a seconda del jitter non e' un guardiano: la catena si apre al massimo una volta ogni 3
                minuti di gioco, cosi' il repertorio pescato ha sempre il suo spazio e la telecronaca
                alterna azione e commento invece di essere un elenco di passaggi. */
-            if(!azioneRef.current&&_mp551.length>=11&&(nx-(_lastCatRef.current|0)>=6||_lastCatRef.current<0)){/* [7.537.0 v6] intervallo 3'→6' */
+            const _urg559=_cat559&&!!pendingGoalRef.current;/* [7.542.0 v2] LA CATENA SI APRE IN OGNI FASE, LA PAUSA SI SCAVALCA SOLO FUORI DALLA COSTRUZIONE. La v1 gate-ava tutt'e tre le cose sulla fase e ha pagato il ritmo col racconto: bg-rhythm da 1,29x a 2,89x (soglia 1,30) ma i gol raccontati da 6/8 a 4/7, sotto la soglia dichiarata. Col ritmo a piu' del doppio del minimo c'e' margine per restituire: qui si separa cio' che detta il RESPIRO (la pausa d'enfasi, che in costruzione resta) da cio' che detta il RACCONTO (che la catena sia aperta e non ceda il turno, e quello serve sempre). *//* [7.541.0] vedi la nota sulla forzatura: in costruzione la cronaca prende tempo, come prima *//* [7.541.0] il gol in arrivo non aspetta il turno: la catena si apre subito e non alterna */
+            if(!azioneRef.current&&_mp551.length>=11&&(_urg559||nx-(_lastCatRef.current|0)>=6||_lastCatRef.current<0)){/* [7.537.0 v6] intervallo 3'→6' */
               /* si apre solo se c'e' un portatore plausibile vicino alla palla */
               const _b551=ballPosRef.current||{x:50,y:50};
               let _hold=-1,_hd=1e9;_mp551.forEach((q,i)=>{if(!_mio551(i))return;const d=Math.hypot(q.x-_b551.x,q.y-_b551.y);if(d<_hd){_hd=d;_hold=i;}});
@@ -21384,10 +21458,10 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                che per mezzo minuto dice solo «X per Y» smette di essere la telecronaca ampia chiesta dal
                PO. Ora un passo si recita SOLO se la battuta precedente non era di catena: il passaggio e
                il commento si alternano, come in televisione. */
-            if(azioneRef.current&&_lastCatRef.current===nx){/* battuta precedente gia' di catena in questo giro: si lascia parlare il repertorio */}
+            if(azioneRef.current&&_lastCatRef.current===nx&&!(_cat559&&pendingGoalRef.current)){/* battuta precedente gia' di catena in questo giro: si lascia parlare il repertorio — ma non mentre il gol si costruisce, li' la catena e' il racconto */}
             else if(azioneRef.current){
               const _az=azioneRef.current,_p=_az.passi[_az.i];
-              if(!_p||(_az.t0!=null&&nx-_az.t0>6))azioneRef.current=null;/* la catena non vive piu' di 6 minuti di gioco */
+              if(!_p||(_az.t0!=null&&nx-_az.t0>6&&!(_cat559&&pendingGoalRef.current)))azioneRef.current=null;/* la catena non vive piu' di 6 minuti di gioco */
               else{
                 _recHij545=true;_recKind546="catena";_recSide546=_az.nostra?"home":"away";
                 const _cog=(n)=>{const t=String(n||"").trim();return t?t.charAt(0)+t.slice(1).toLowerCase():"un compagno";};
@@ -21834,7 +21908,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
             const _pb543=clamp((possessionRef.current||50)/100,0.30,0.70);
             const _prevT543=possTurnRef.current;
             possTurnRef.current=(_rr543()<_pb543)?1:-1;
-            possSpellRef.current=(typeof window!=='undefined'&&window.__CPM_NO553)?(30+Math.floor(_rr543()*25)):(4+Math.floor(_rr543()*6));/* [7.538.0] 4-9 TICK = 4-9 MINUTI DI GIOCO: il 30-55 era stato scelto leggendo i tick come secondi reali («13-23s»), ma un tick E' un minuto — quello spell teneva la palla alla stessa squadra per mezzo tempo. *//* [7.532.0 v3b] 10-17→30-55 tick (≈13-23s reali): a 4-7s il possesso cambiava troppo fitto e SPEZZAVA le giocate — guardiano trama rosso a 22,5°/passo (soglia 20, storico 11°). Uno spell vero dura 15-25s. */
+            possSpellRef.current=(typeof window!=='undefined'&&window.__CPM_NO553)?(30+Math.floor(_rr543()*25)):(4+Math.floor(_rr543()*6));/* ⚠️ [7.542.0] PROVATO E REVOCATO CON LA SUA MISURA: portare lo spell a 9-19 minuti perche' coprisse una finestra di visione. Rettilineita' del pallone 0,27->0,31 nel giro isolato, ma col ripiego sul ricevente il guadagno sparisce (0,26) e il possesso peggiora (fascia centrale 61%->65%, senza padrone 30%->40%). Il numero che conta resta quello sotto. *//* [7.542.0 collaudo PO «parecchi giro giro tondo col pallone» — rosso __CPM_NO561] LO SPELL DEVE DURARE PIU' DI UNA FINESTRA DI VISIONE. Misura che chiude la diagnosi: in ~10 secondi di visione passano ELEVEN minuti di gioco (la sonda li conta dal cronometro), mentre uno spell di possesso durava 4-9 minuti — quindi dentro una sola occhiata la palla cambiava padrone una o due volte e risaliva il campo nei due versi. Non era un difetto del modello: era il modello giusto guardato a velocita' sbagliata, e da fuori si legge «giro giro tondo». Portato a 9-19 minuti, uno spell copre almeno una finestra: chi guarda vede UNA squadra che attacca, non due che si scambiano il pallone sotto gli occhi. Restano ~5-7 ribaltamenti a partita, che e' quello che il 7.532 cercava quando i turni erano fermi a uno solo. *//* [7.538.0] 4-9 TICK = 4-9 MINUTI DI GIOCO: il 30-55 era stato scelto leggendo i tick come secondi reali («13-23s»), ma un tick E' un minuto — quello spell teneva la palla alla stessa squadra per mezzo tempo. *//* [7.532.0 v3b] 10-17→30-55 tick (≈13-23s reali): a 4-7s il possesso cambiava troppo fitto e SPEZZAVA le giocate — guardiano trama rosso a 22,5°/passo (soglia 20, storico 11°). Uno spell vero dura 15-25s. */
             /* [7.532.0 NO542 v3] il CONTROPIEDE si arma QUI, al flip vero (la v2 armava alla nascita-trama,
                ramo che scatta di rado: 1 armato e 0 recitati su partita intera): flip col pallone nel terzo
                difensivo del nuovo padrone + cooldown 6'. */
@@ -21929,7 +22003,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
               const _cy=_tr.cor<0?24:_tr.cor>0?76:50;
               let _wx,_wy;
               if(_fase==="costruzione"){_wx=_t.x+_dir*(_k553<1.5?(-2+_r511()*8):(-4+_r511()*24));_wy=_cy+(_r511()-0.5)*(_k553<1.5?26:32);}
-              else if(_fase==="sviluppo"){_wx=_t.x+_dir*(((_k553<1.5?5:12)+_r511()*(_k553<1.5?7:16))*(_no538?1:_idp.passo));_wy=_cy+(_r511()-0.5)*(_k553<1.5?18:24);/* [7.531.0] passo di modulo: il 5-3-2 riparte lungo (1,28), il 3-5-2 palleggia (0,92) */
+              else if(_fase==="sviluppo"){_wx=_t.x+_dir*(((_k553<1.5?5:12)+_r511()*(_k553<1.5?7:16))*(_no538?1:_idp.passo));_wy=_cy+(_r511()-0.5)*(_k553<1.5?18:24);/* ⚠️ [7.542.0] PROVATO E REVOCATO CON LA SUA MISURA: stringere lo scarto laterale della giocata da +-12u a +-5,5u per «percorrere il corridoio invece di zigzagarlo». Non sposta il difetto: rettilineita' del pallone 0,27 -> 0,24, finestre in cui torna su se stesso 5/8 -> 5/8, giro attorno alla palla 36% -> 42%. Il ping-pong laterale non era la causa. VECCHIA NOTA: IL CORRIDOIO E' UN CORRIDOIO. Ogni nuova giocata pescava la sua meta con uno scarto di +-12u attorno al centro del corridoio: sommato al passo in avanti, la rotta cambiava lato a ogni giocata e la palla attraversava il campo di traverso invece di risalirlo. Misurato su finestre di ~10s di scena: 89-96 unita' di percorso per tornare quasi al punto di partenza. Lo scarto laterale scende a +-5,5u: il corridoio si percorre, non si zigzaga. *//* [7.531.0] passo di modulo: il 5-3-2 riparte lungo (1,28), il 3-5-2 palleggia (0,92) */
                 if(_r511()<(_no538?0.14:_idp.cambio)){const _c1=_r511();_tr.cor=_tr.cor===0?(_c1<0.5?-1:1):0;}/* cambio gioco — frequenza di modulo (433 0,17 · 532 0,09) */}
               else{if(_r511()<(_no538?0.30:_idp.scarico)){_wx=_t.x-_dir*(_k553<1.5?(3+_r511()*5):(7+_r511()*12));_wy=_cy+(_r511()-0.5)*20;}/* scarico — di modulo: il 4231 rifinisce ragionando (0,34), il 532 va dentro (0,20) */
                 else{_wx=_dir>0?80+_r511()*8:20-_r511()*8;_wy=50+(_r511()-0.5)*24;}/* dentro l'area — tetto 88/12, NON 90: il motore 7.511 rimbalzava a x>82 e l'inviluppo storico (staging, reattivita' difensori) e' tarato li'; a x93 il guardiano motion ha misurato difensori a 26,3u dal portatore (soglia 24, gate rosso al primo giro 7.525) */}
@@ -21967,7 +22041,30 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                  Tetto di 22u sul passaggio: oltre e' un lancio, e un lancio va raccontato, non subito. */
               const _no558=(typeof window!=='undefined'&&window.__CPM_NO558);
               if(!(typeof window!=='undefined'&&window.__CPM_NO555)){try{
+                /* [7.542.0 collaudo PO «parecchi giro giro tondo con il pallone sia a centrocampo che in
+                   area avversaria» — rosso __CPM_NO560] IL PASSAGGIO NON TORNA INDIETRO. Il ricevente si
+                   sceglieva come il compagno piu' VICINO all'intenzione, senza chiedergli di stare avanti:
+                   se il piu' vicino era alle spalle del pallone, la giocata seguente lo riportava indietro
+                   e la successiva di nuovo avanti — il pallone zigzagava fra tre uomini senza andare da
+                   nessuna parte. MISURATO su finestre di ~10 secondi di scena: il pallone percorre 96,5
+                   unita' e torna quasi al punto di partenza (rettilineita' 0,22), in 6 finestre su 8; il
+                   41% delle tracce dei giocatori descrive un giro attorno alla palla (200° di angolo).
+                   Il vincolo esiste gia' — e per la stessa ragione — nella catena della cronaca (7.537 v7:
+                   «il passo DEVE guadagnare campo»): qui mancava. Si ammette un piccolo scarico
+                   all'indietro (fino a 4u) perche' nel calcio esiste, ma non un passaggio che rinuncia al
+                   campo guadagnato.
+                   ⚠️ LEZIONE SULLO STRUMENTO, la quarta di questa serie: con una finestra di 3 secondi la
+                   stessa sonda dava rettilineita' 0,90 e «l'1% gira in tondo» — cioe' NESSUN difetto. A 3
+                   secondi si vede una sola gamba dello zigzag e tutto sembra dritto. La lunghezza della
+                   finestra era la differenza fra «non c'e' niente» e «il difetto e' enorme». */
                 const _mp555=matchPlayersRef.current||[];const _lt555=(_dir>0)?"home":"away";
+                /* ⚠️ [7.542.0] PROVATO E REVOCATO CON LA SUA MISURA: pretendere che il ricevente stia
+                   AVANTI (come fa la catena della cronaca dal 7.537 v7). Da solo alzava la rettilineita' del
+                   pallone da 0,22 a 0,27 ma lasciava la palla su erba vuota quando davanti non c'era nessuno:
+                   senza padrone dal 30% al 40%, intervalli disgiunti. Col ripiego «se non c'e' nessuno avanti,
+                   il piu' vicino qualunque» il possesso tornava a posto (33%) ma il guadagno di rettilineita'
+                   spariva del tutto (0,26, giro in tondo 40%): il vincolo funzionava solo finche' faceva danno
+                   altrove. Revocato tutto invece di tenere un pezzo che non misura niente. */
                 let _bi555=-1,_bd555=18;
                 for(let _i5=0;_i5<_mp555.length;_i5++){const _pl=_mp555[_i5];
                   if(!_pl||_pl.team!==_lt555||_pl.gk)continue;

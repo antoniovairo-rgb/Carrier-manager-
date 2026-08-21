@@ -15,7 +15,7 @@ const tutte = [];
 for (let i = 0; i < PARTITE; i++) {
   const page = await b.newPage({ viewport: { width: 412, height: 915 } });
   await installCdnRoutes(page);
-  await page.addInitScript(() => { window.__CPM_GLB = false; });
+  await page.addInitScript((r) => { window.__CPM_GLB = false; if (r) window.__CPM_NO559 = 1; }, !!process.env.CPM_ROSSO);
   await openMatch(page, port, { skipLoadAll: true, name: 'Gol' + i });
   await page.evaluate(s => window.__CPM_AUTOPLAY(true, { seed: s, policy: 'seeded', tickMs: 300 }), 7100 + i * 13);
   const t0 = Date.now();
@@ -62,3 +62,18 @@ console.log(`  gol scritti con la palla FUORI dall'ultimo terzo (adv<72): ${lont
 console.log(`  gol senza NESSUNA riga di «pericolo» prima: ${senzaAnnuncio}/${nGol}`);
 console.log(`  minuti fra l'ultima riga di pericolo e la rete: mediana ${med(ritardi)} · max ${ritardi.length ? Math.max(...ritardi) : '-'}`);
 console.log(`  righe di cronaca fra pericolo e rete: mediana ${med(righeInMezzo)} · max ${righeInMezzo.length ? Math.max(...righeInMezzo) : '-'}`);
+/* LA SOGLIA DICHIARATA PRIMA DI SCRIVERE IL CODICE (7.541): un gol deve arrivare in fondo alla SUA
+   azione, cioe' con almeno tre righe di cronaca nei quattro minuti che lo precedono. Misura d'apertura:
+   2 su 8. E il pallone non deve poter attraversare mezzo campo fra due righe consecutive senza che
+   nessuno lo dica: il salto MEDIANO fra righe consecutive e' l'altra faccia dello stesso difetto. */
+let raccontati = 0, salti = [];
+for (const EV of tutte) {
+  const ch = EV.filter(e => e.ev === 'chronicle');
+  for (let k = 1; k < ch.length; k++) if (ch[k].bx != null && ch[k - 1].bx != null) salti.push(Math.abs(ch[k].bx - ch[k - 1].bx));
+  for (const g of ch.filter(e => /goal$/.test(String(e.ef || '')))) {
+    if (ch.filter(e => e.min < g.min && e.min >= g.min - 4).length >= 3) raccontati++;
+  }
+}
+console.log(`\n  GOL RACCONTATI (>=3 righe nei 4' precedenti): ${raccontati}/${nGol}   soglia >=6/8`);
+console.log(`  salto della palla fra due righe consecutive: mediana ${med(salti)}u · max ${salti.length ? Math.max(...salti).toFixed(0) : '-'}u`);
+console.log(`  righe di cronaca per partita: ${tutte.map(EV => EV.filter(e => e.ev === 'chronicle').length).join(', ')}`);

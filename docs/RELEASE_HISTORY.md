@@ -1,5 +1,136 @@
 # Cronologia delle release — Korward Elite
 
+### 7.542.0 — Il gol arriva in fondo alla sua azione, e il mister guarda la partita
+
+Due collaudi PO nella stessa release: «la partita è ancora confusionaria, **non ci sono vere azioni e non
+si vedono i gol**» e «**le indicazioni del mister sono senza senso e scollegate dalla dinamica della
+partita**». Rossi: `__CPM_NO559`, `__CPM_NO562`.
+
+**La misura ha smentito la mia prima ipotesi.** Pensavo che i gol nascessero da lontano, per via del tetto
+di sicurezza dell'azione pendente (10 tick = **10 minuti** di gioco). Censimento su partite vere: **zero
+gol su otto** scritti fuori dall'ultimo terzo — il tetto non scatta mai, l'azione manovrata funziona.
+
+Il difetto era un altro, e il **dump delle frasi** lo mostra in chiaro:
+
+```
+--- rete al 50' (opp_goal) ---
+  43'  fase=costruzione  dec=midfield  palla x=42
+  48'  fase=costruzione  dec=midfield  palla x=50
+  50'  fase=costruzione  dec=midfield  palla x=2   · GOL
+```
+
+Fra due righe consecutive passano **cinque minuti di gioco** e la palla attraversa **40-50 unità** senza
+che nessuno lo dica; **sei gol su otto** arrivano senza una sola riga di pericolo prima. Non è che il gol
+venga da lontano: è che **l'avvicinamento non viene raccontato**.
+
+**Due cause, entrambe nello stesso punto:**
+1. la **catena** — l'unica macchina che racconta una giocata come *sequenza di uomini nominati* (7.537) —
+   era esclusa proprio quando c'è un gol in arrivo, cioè nel momento che merita di essere raccontato più di
+   ogni altro;
+2. la **pausa d'enfasi** vale **7 tick**: in tempo reale sono i 6,3 secondi di lettura per cui fu scelta
+   (7.490) e sono giusti, ma un tick è un **minuto di gioco** — dopo un tiro la telecronaca tace per
+   **sette minuti di partita**, ed è lì dentro che il gol si costruisce. Stessa classe dell'invariante
+   7.538: una costante tarata sul **lettore** dentro un motore che batte a **minuti**.
+
+Ora, mentre il gol è in costruzione, la catena **parla a ogni tick** senza cedere il turno al repertorio,
+la pausa si scavalca, e l'avanzata cieca dell'azione pendente (+3u verso la porta) **cede il pallone alla
+catena**: due scrittori sullo stesso pallone si annullano, e quello cieco non nomina nessuno. Il
+contropiede resta escluso — ha già la sua recita.
+
+**Misura** (4 partite per braccio, rosso contro verde; **soglia dichiarata prima di scrivere il codice**):
+
+**Quattro iterazioni, e la quarta ha girato il problema al contrario.** Le prime tre allargavano la
+**finestra** del racconto — forzatura ovunque: **6/8** ma ritmo rotto (`bg-rhythm` 1,29× contro 1,30);
+solo oltre l'avanzamento 58: **4/7**; da metà campo: **5/8**. Restava sempre fuori un gol su tre, e la
+ragione è strutturale: **la rete si scrive quando la palla tocca una coordinata** (avanzamento 72) e certi
+attacchi ci arrivano in due tick — nessuna taratura della finestra può dare tre battute a un'azione che ne
+dura due.
+
+Il verso giusto è l'opposto: non allargare la finestra, ma **far aspettare la rete**.
+
+> Un gol si scrive quando la sua azione è stata **raccontata** (tre righe), non quando la palla tocca un
+> punto del campo.
+
+Il tetto di sicurezza dei 10 tick resta e ha l'ultima parola: nessun gol può restare in sospeso.
+
+| grandezza | rosso | verde | soglia |
+|---|---|---|---|
+| gol che arrivano in fondo alla loro azione (≥3 righe nei 4' precedenti) | **0/8** | **7/8** | ≥6/8 ✅ |
+| minuti fra l'ultima riga di pericolo e la rete | 3 | **1** | |
+| righe di cronaca per partita | 16-18 | 23-29 | |
+| `bg-rhythm` costruzione/sviluppo | 1,94× | **1,69×** | ≥1,30 ✅ |
+
+La densità in più sta **dentro** le finestre del gol, non spalmata sulla partita.
+
+⚠️ **Non risolto e dichiarato**: il salto della palla fra due righe consecutive resta invariato (mediana
+8u, **massimo 48u**) *fuori* dalle finestre del gol — la manovra normale ha ancora buchi in cui il pallone
+attraversa mezzo campo in silenzio. È il pezzo successivo.
+⚠️ `_rndM()` resta estratto **una volta per tick** anche quando la pausa si scavalca: è il flusso seedato
+della cronaca (invariante 7.511), e saltarne un'estrazione sposterebbe tutti i sorteggi a valle — cioè
+cambierebbe la partita, non solo la sua pausa.
+
+
+⚠️ **Ri-tarato dal guardiano, non contro di lui.** La prima stesura forzava la riga anche in
+**costruzione**, e `bg-rhythm` è sceso a **1,29×** contro la soglia 1,30 (costruzione da 5,77 a 2,91
+minuti d'intervallo): la costruzione aveva smesso di respirare e scorreva come lo sviluppo. La correzione
+è anche più vera — una telecronaca non si accende col pallone nella propria metà, si accende quando
+l'azione **arriva** — e il rapporto risale a **1,94×**. La soglia non è stata toccata: un guardiano che si
+abbassa quando dà fastidio non è un guardiano.
+
+### Il mister guardava la statistica, non la partita
+
+`pickCoachShout` leggeva `possessionRef`, cioè la **percentuale cumulativa** della barra in alto: quella
+che si muove di un punto ogni tanto e resta lì. La panchina gridava «Vai sul fondo! Crossa!» perché *nel
+complesso* della partita avevamo il 59% di possesso, mentre in quel momento il pallone era nella nostra
+area. È esattamente il difetto tolto alla trama nel **7.532** («`possession>=50` è la statistica
+cumulativa — ora il drift consuma il **turno**») e **mai propagato a questa voce**.
+
+Ora consuma i due fatti veri che la cronaca usa da tre release — **turno** (chi ha la palla adesso) e
+**fase** (dove sta, già corretta per il lato) — con la statistica come ripiego per i percorsi che quei due
+non li hanno. Il vocabolario non cambia: erano le frasi giuste scelte col criterio sbagliato.
+
+| situazione vera | cosa grida ora |
+|---|---|
+| loro in area nostra | *Stringi! · Scala! · Attento dietro! · Marca!* |
+| noi in area loro | *Vai sul fondo! · Attacca il secondo palo! · Muoviti!* |
+| noi a metà campo | *Cambia lato! · Tieni palla! · Gioca semplice! · Calma!* |
+| loro a metà campo | *Attento dietro! · Raddoppia! · Chiudi!* |
+
+⚠️ La fase si **ricalcola** nel sito del mister invece di prendere in prestito `_fase501`, che è dichiarato
+**quaranta righe più sotto**: `const` in zona morta temporale, cioè **ReferenceError alla prima grida**.
+Un difetto che scatta una volta ogni sei minuti con probabilità 34% — lo smoke non poteva vederlo, il PO sì.
+
+### ⚠️ Dichiarato non risolto: «parecchi giro giro tondo col pallone»
+
+Tre ipotesi, **due smentite dalla misura**:
+1. **non** è la compressione della squadra introdotta nel 7.538 — verde e rosso identici (distanza mediana
+   dal pallone 21,8u contro 21,6u; ampiezza 13,1/15,3 contro 13,4/15,2);
+2. **non** lo vedono i giocatori a finestra corta:
+
+   | finestra della sonda | rettilineità | «giro giro tondo» |
+   |---|---|---|
+   | 3 secondi | 0,90 | 1% |
+   | 10 secondi | 0,40 | **41%** |
+
+   **La lezione sullo strumento, la quarta della serie**: a 3 secondi si vede una sola gamba dello zigzag.
+   La lunghezza della finestra era la differenza fra «non c'è niente» e «il difetto è enorme».
+
+Il numero che chiude la diagnosi: **in ~10 secondi di visione passano undici minuti di gioco**, mentre uno
+spell di possesso ne dura 4-9. Dentro una sola occhiata la palla cambia padrone e risale il campo nei due
+versi. **Non è un difetto del modello: è il modello guardato a una velocità che non è quella del calcio**,
+e va deciso a livello di progetto — quanto deve durare la parte ambientale di una partita — non tarato di
+nascosto.
+
+**Due stesure buttate con le loro misure**: pretendere il ricevente **in avanti** (rettilineità 0,22→0,27
+ma palla senza padrone 30%→40%, intervalli disgiunti; col ripiego «il più vicino qualunque» il possesso
+torna a posto ma il guadagno sparisce, 0,26) e allungare lo **spell** a 9-19 minuti (0,27→0,31 isolato, ma
+fascia centrale 61%→65%).
+
+**Strumento**: censimento dei gol (quanti arrivano raccontati, quanti minuti di silenzio prima, quanto
+salta la palla fra due righe) **col dump delle frasi vere** — le percentuali dicono *che* c'è un buco,
+solo il testo dice *com'è fatto*.
+
+
 ### 7.540.0 — Il passaggio è un evento, la conduzione è un percorso
 
 Rosso: `__CPM_NO558`. Quarto tentativo sull'unico numero della missione ancora fuori bersaglio — **gli
