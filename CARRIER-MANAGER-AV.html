@@ -13138,6 +13138,7 @@ function ThreeMatchView(props){
              il fotogramma — equivalenza visiva esatta (la colla scrive posizioni ASSOLUTE), conflitto a zero
              per costruzione. __CPM_NO515 = rosso (doppia scrittura di prima). */
           let _colla515=false,_porGlue526=false;
+          if(typeof window!=='undefined')window.__CPM_COLLA=0;
           {const _pr6=sr.current._por526;
            if(_pr6&&_pr6.mesh&&_pr6.mesh!==hero&&!ballArcActive&&P.matchPhase==='playing'&&!(typeof window!=='undefined'&&window.__CPM_NO526)){
              const _pm6=_pr6.mesh;const _db6=Math.hypot(ball.position.x-_pm6.position.x,ball.position.z-_pm6.position.z);
@@ -13152,7 +13153,7 @@ function ThreeMatchView(props){
           if(hero&&!P.hlDef&&!P.hlSetPiece&&!(typeof window!=='undefined'&&window.__CPM_NO515)){
             const _cvx5=hero._hvx||0,_cvz5=hero._hvz||0;const _csp5=Math.hypot(_cvx5,_cvz5);
             if(_csp5>0.6){const _cbx5=ball.position.x-hero.position.x,_cbz5=ball.position.z-hero.position.z;
-              if(Math.hypot(_cbx5,_cbz5)<3.2&&(_cbx5*(_cvx5/_csp5)+_cbz5*(_cvz5/_csp5))<0.28)_colla515=true;}}
+              if(Math.hypot(_cbx5,_cbz5)<3.2&&(_cbx5*(_cvx5/_csp5)+_cbz5*(_cvz5/_csp5))<0.28){_colla515=true;if(typeof window!=='undefined')window.__CPM_COLLA=1;}}}
           if(_dd>0.02&&!_colla515&&!_porGlue526){const _step=Math.min(_dd,Math.min(_dd*5.2+2.2,34)*aDt);ball.position.x+=_dx/_dd*_step;ball.position.z+=_dz/_dd*_step;if((sr.current._ws524=3)&&sr.current._bj0)(sr.current._bj0.src='inseguitore',sr.current._bj0.srcs.push('inseguitore'));}
 
           if(_porGlue526){const _pm6=sr.current._por526.mesh;
@@ -20032,7 +20033,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     window.__CPM_BALL3=()=>{try{const m=(window.__CPM_BALL&&window.__CPM_BALL())||null;
       return{t:{x:+ballTargetRef.current.x.toFixed(2),y:+ballTargetRef.current.y.toFixed(2)},
              l:{x:+ballPosRef.current.x.toFixed(2),y:+ballPosRef.current.y.toFixed(2)},
-             m:m?{x:m.x,y:m.y}:null,ko:(kickRef.current|0),kf:(kickoffRef.current|0),c:clockRef.current|0};}catch(e){return null;}};
+             m:m?{x:m.x,y:m.y}:null,ko:(kickRef.current|0),kf:(kickoffRef.current|0),c:clockRef.current|0,g:(typeof window!=='undefined'&&window.__CPM_COLLA)?1:0};}catch(e){return null;}};
     window.__CPM_MP=()=>{try{return (matchPlayersRef&&matchPlayersRef.current?matchPlayersRef.current:matchPlayers||[]).map(q=>q?{t:q.team,x:Math.round(q.x*10)/10,y:Math.round(q.y*10)/10,n:q.name||"",gk:!!q.gk}:null);}catch(e){return null;}};/* [7.130.0] +n (cognome dorso) +gk per la verifica *//* [BL-07] stato LOGICO LiveMatch (pre-3D) per isolare lo strato che perde lo shading */
     window.__CPM_AUTOPLAY=(on,opts)=>{try{
       if(_apT){clearInterval(_apT);_apT=null;}

@@ -45,7 +45,7 @@ for (const { gol, b3 } of out) for (const g of gol) {
   console.log(`  ${String(g.min).padStart(2)}' ${g.ef.padEnd(10)} bersaglio ${bt.toFixed(1)}u · logico ${bl.toFixed(1)}u · mesh ${bm.toFixed(1)}u  dalla linea`);
   /* la corsa, tick per tick, da quando il bersaglio entra in area */
   const seq = w.filter(q => Math.abs(gx - q.t.x) <= 12).slice(0, 10);
-  if (seq.length) console.log(`        corsa: ${seq.map(q => `t${q.t.x.toFixed(0)}/m${q.m ? q.m.x.toFixed(0) : '?'}${q.ko ? '[ko' + q.ko + ']' : ''}${q.kf ? '[kf' + q.kf + ']' : ''}`).join(' -> ')}`);
+  if (seq.length) console.log(`        corsa: ${seq.map(q => `t${q.t.x.toFixed(0)}/m${q.m ? q.m.x.toFixed(0) : '?'}${(q.g?'[COLLA]':'')+(q.src?'{'+q.src+'}':'{-}')+(q.ko ? '[ko' + q.ko + ']' : '')}${q.kf ? '[kf' + q.kf + ']' : ''}`).join(' -> ')}`);
 }
 console.log(`\n  bersaglio in rete (<=4u): ${bersOk}/${tot}   ·   mesh in rete (<=6u): ${meshOk}/${tot}`);
 console.log(bersOk > meshOk ? '\n>> IL BERSAGLIO CI VA, LA MESH NO: la corsa non sta nei tick del calcio d\'inizio.'
