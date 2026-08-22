@@ -1,5 +1,52 @@
 # Cronologia delle release — Korward Elite
 
+### 7.547.0 — La cronaca ritrova il respiro, e il pallone resta in rete
+
+Rosso: `__CPM_NO569`. Collaudo PO: «è inutile lucidare la carrozzeria se il motore ancora non funziona».
+
+**Ripara una regressione mia, in produzione per mezza giornata.** Il 7.545 aveva allungato la finestra
+dopo il gol da 4 a 6 tick per dare alla mesh il tempo di arrivare in porta. Ha funzionato — e ha rotto il
+ritmo della telecronaca. **Non l'ho visto perché avevo messo `bg-rhythm` fra i guardiani dichiaratamente
+saltati** del rituale mirato. Trovata misurando il riferimento sulla versione già spedita.
+
+**Il rimedio è un tick: 6→5. E non c'era nessun baratto**, che era la mia paura dichiarata.
+
+| grandezza | prima del 7.545 | 7.545 (rotta) | 7.547 |
+|---|---|---|---|
+| ritmo della cronaca | 1,32× | **1,06×** | **1,50×** ✅ |
+| pallone in rete | — | 2/3 | **3/3** |
+
+Il ritmo non è solo riparato: è **migliore del punto di partenza**. Avevo scritto di temere una coperta
+corta fra «vedere il gol» e «il respiro della cronaca» — la misura dice che la coperta bastava, era la
+taratura a essere sbagliata da entrambi i lati.
+
+⚠️ **Il guardiano è affidabile, e il mio sospetto era sbagliato.** Vedendo `bg-rhythm` dare otto valori
+in una giornata (1,32 · 1,12 · 1,10 · 1,13 · 1,06 · 1,14 · 1,50 · 1,14) ho sospettato che non fosse
+ripetibile, e che parte delle diagnosi di oggi fosse rumore letto come segnale. **Misurato: due giri
+sullo stesso codice danno 1,50× e 1,55×.** Il guardiano tiene.
+
+⚠️ **E il 1,14× che me lo aveva fatto sospettare non era rumore:** quel braccio aveva anche la conversione
+di spazio colore, e **il suo costo sposta il ritmo**. Il passaggio sulla scena pesa abbastanza da cambiare
+la dinamica della partita. Dato conservato sul ramo dei colori: va risolto prima di spedirli.
+
+**Regola cambiata:** `bg-rhythm` entra nel rituale di **qualsiasi** modifica che tocchi la partita. In una
+giornata ha reagito a **tre rimedi indipendenti** — l'innesco degli highlight, la finestra del gol, i pesi
+della cronaca. Il rituale mirato fa risparmiare tempo, ma i guardiani saltati sono difetti che possono
+entrare senza essere visti, e stavolta è successo.
+
+⚠️ **Dichiarato non verificato:** che il 3/3 del gol sia un miglioramento vero e non rumore. Il caso chiuso
+oggi sul «pallone lento» ha misurato che quelle distanze **non sono ripetibili** fra giri identici: vale
+che 5 tick non peggiorano, non il tasso.
+
+⚠️ **I colori restano fuori, su direttiva PO.** Causa trovata e misurata — doppia conversione di spazio
+colore introdotta dal 7.529, con i conti che tornano al decimale sullo screenshot del PO — e rimedio
+pronto sul ramo `claude/colori-srgb-7547`.
+
+**Rituale** (con `bg-rhythm` dentro): `bg-rhythm` ✅ 1,50× e 1,55× · `bg-decision` ✅ · `bg-continuity` ✅
+0% · `match-full` ✅ 3/3 al 90' · `gol` ✅ 6/7 · `colori` ✅. Saltati: camera, framing, giro, sparpaglio,
+possesso, trama, hud-voci, europei, `career-critical` (girato verde stamattina; questo è un solo numero
+di tempo e non tocca carriera, salvataggi, classifiche né mercato).
+
 ### 7.546.0 — Gli eventi fermi esistono
 
 Sonda nuova: `fermi-547`. Registro: `sp` e `at`. Pezzo 5 della roadmap.

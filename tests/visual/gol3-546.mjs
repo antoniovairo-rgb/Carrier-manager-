@@ -49,4 +49,7 @@ for (const { gol, b3 } of out) for (const g of gol) {
 }
 console.log(`\n  bersaglio in rete (<=4u): ${bersOk}/${tot}   ·   mesh in rete (<=6u): ${meshOk}/${tot}`);
 console.log(bersOk > meshOk ? '\n>> IL BERSAGLIO CI VA, LA MESH NO: la corsa non sta nei tick del calcio d\'inizio.'
-                            : '\n>> Nemmeno il bersaglio ci va: qualcuno lo riscrive prima.');
+          : meshOk === tot ? '\n>> Bersaglio e mesh arrivano entrambi: la finestra basta.'
+          : bersOk < tot ? '\n>> Nemmeno il bersaglio ci va: qualcuno lo riscrive prima.'
+          : '\n>> Bersaglio e mesh pari sotto il totale: il residuo non e\' la finestra.');
+console.log('⚠️ campione piccolo: queste distanze NON sono ripetibili fra giri (caso 7.545), il tasso vale poco.');

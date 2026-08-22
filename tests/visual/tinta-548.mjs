@@ -49,10 +49,10 @@ async function braccio(tm, expo, no570, k570) {
     window.__CPM_GLB = false; window.__CPM_TOD = a.tod;
     if (a.tm) window.__CPM_TM552 = a.tm;
     if (a.expo) window.__CPM_EXPO552 = a.expo;
-    if (a.no570) window.__CPM_NO570 = 1;
+    if (a.no570) window.__CPM_NO571 = 1;
     if (a.k570 != null) window.__CPM_K570 = a.k570;
   }, { tod: TOD, tm, expo, no570: arguments[2], k570: arguments[3] });
-  await openMatch(page, port, { name: 'SatFix' });   /* stesso nome delle sonde colore: il seed nasce anche dal nome */
+  await openMatch(page, port, { name: k570 || 'SatFix' });   /* il seed di partita nasce anche dal NOME: nomi diversi = club di casa diversi = PALETTE DIVERSE */
   const hues = []; let sSum = 0, vSum = 0, n = 0;
   for (const gi of SCENE) {
     await forceSituation(page, gi, { settle: 900, choose: true });
@@ -78,22 +78,28 @@ async function braccio(tm, expo, no570, k570) {
      (banda 20-35, saturo) e il kit — la mediana le mescola e non misura ne' l'una ne' l'altra. */
   const bande = new Array(24).fill(0);
   for (const h of hues) { const k = Math.floor(((h + 360) % 360) / 15); bande[k]++; }
-  return { tm: (no570 ? 'ROSSO-verde pieno' : (k570 != null ? 'k=' + k570 : 'rimedio k=0.30')), expo: expo || 0.52, h: med(hues), n: hues.length, S: sSum / n, V: vSum / n, bande };
+  return { tm: (no570 ? 'ROSSO senza conv · ' : 'con conversione · ') + (k570 || 'SatFix'), expo: expo || 0.52, h: med(hues), n: hues.length, S: sSum / n, V: vSum / n, bande };
 }
 
 const bracci = [];
-for (const a of [[null, null, 1, null], [null, null, 0, null], [null, null, 0, 0.15], [null, null, 0, 0.0]]) {
-  bracci.push(await braccio(a[0], a[1], a[2], a[3]));
+/* RIPRODURRE PRIMA DI RIMEDIARE. Il difetto del PO (kit a 24,5 gradi) NON si vede nelle mie scene, dove
+   il kit sta a 330-345. `getStadiumPalette(club)` deriva la palette dello stadio — LUCI COMPRESE — dal
+   colore della squadra di CASA, e le sonde giravano sempre sullo stesso nome, cioe' sempre lo stesso
+   stadio. Qui si prova una manciata di stadi diversi: se la tinta del kit si muove fra loro, la palette
+   e' la causa e il difetto e' riproducibile scegliendo il club giusto. */
+/* verde = con la conversione · ROSSO = senza (`__CPM_NO571`, il mondo dal 7.529 a oggi) */
+for (const a of [[1, 'SatFix'], [0, 'SatFix'], [1, 'Tinta2'], [0, 'Tinta2']]) {
+  bracci.push(await braccio(null, null, a[0], a[1]));
 }
 srv.close(); await b.close();
 
 console.log(`\n=== LA TINTA DEL ROSSO · ora congelata: ${TOD} · nominale #dc2626 = ${NOMINALE} gradi ===\n`);
 console.log('  tonemap    espo   tinta   scarto dal nominale        sat     lum    pixel');
 for (const r of bracci) {
-  if (r.h == null) { console.log(`  ${r.tm.padEnd(20)} ${String(r.expo).padEnd(6)} nessun pixel di maglia isolato`); continue; }
+  if (r.h == null) { console.log(`  ${r.tm.padEnd(28)} ${String(r.expo).padEnd(6)} nessun pixel di maglia isolato`); continue; }
   const d = dHue(r.h, NOMINALE);
   const verso = d > 3 ? 'verso ARANCIONE' : d < -3 ? 'verso magenta' : 'in tinta';
-  console.log(`  ${r.tm.padEnd(20)} ${String(r.expo).padEnd(6)} ${r.h.toFixed(1).padStart(5)}   ${(d >= 0 ? '+' : '') + d.toFixed(1)}  ${verso.padEnd(16)} ${r.S.toFixed(3)}  ${r.V.toFixed(3)}  ${r.n}`);
+  console.log(`  ${r.tm.padEnd(28)} ${String(r.expo).padEnd(6)} ${r.h.toFixed(1).padStart(5)}   ${(d >= 0 ? '+' : '') + d.toFixed(1)}  ${verso.padEnd(16)} ${r.S.toFixed(3)}  ${r.V.toFixed(3)}  ${r.n}`);
 }
 for (const r of bracci) {
   if (!r.bande) continue;
