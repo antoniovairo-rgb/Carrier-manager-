@@ -4826,7 +4826,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="7.543.0"; // [7.543.0 — LA PARTITA SI GUARDA ALLA VELOCITA' DEL CALCIO]: (a) IL METRONOMO (direttiva PO, scelta esplicita fra tre opzioni: «~2,5 minuti» — rosso __CPM_NO564). Un tick avanza il cronometro di UN MINUTO (invariante 7.538), quindi 90 tick x 900 ms facevano 81 secondi reali per 90 minuti di gioco. Da li' nasceva il collaudo «parecchi giro giro tondo con il pallone»: la sonda ha misurato che in ~10 secondi di visione passavano UNDICI minuti di gioco mentre uno spell di possesso ne dura 4-9 — dentro una sola occhiata la palla cambiava padrone e risaliva il campo nei due versi. Non un difetto del modello: il modello guardato a una velocita' che non e' quella del calcio, e infatti nel 7.542 due tarature che cercavano di curare il sintomo (ricevente obbligato in avanti, spell 9-19 minuti) erano state provate e BUTTATE con le loro misure. 900 -> 1700 ms: la compressione del tempo passa da 11 a 5 minuti di gioco per occhiata, cioe' dentro la durata di uno spell — chi guarda vede UNA squadra che attacca, non due che si scambiano il pallone. Il bersaglio del pallone scende da 7,2 a 3,9 unita' al secondo. Le tre velocita' continuano a dividere questo tempo: a 2x si torna a 850 ms, cioe' al ritmo di prima per chi lo preferisce. EFFETTO COLLATERALE MISURATO, e va nella direzione giusta: il mondo lento e' piu' facile da abitare per i ventidue. ball-attended 84,9% accudita / 90,0% spiegabile; framing-guard fuori quadro 7,2% (era 10,2% contro una soglia del 10%, cioe' rosso marginale). ⚠️ CONTROLLO ANTI-FALSO-VERDE: un guardiano che passa perche' ho rallentato la partita non misura piu' niente. Stesso guardiano nei due mondi — veloce (NO564) contro lento: palla in moto 78,6% -> 80,5% MA striscia massima di fermo 0,6s -> 1,8s. I due numeri vanno in direzioni OPPOSTE: il metro discrimina ancora, e 1,8s di pallone fermo e' dentro quello che il calcio ha davvero. (b) IL TASTO SALTA NON COPRE PIU' LA TELECRONACA (collaudo PO — rosso __CPM_NO565). Terzo occupante della fascia bassa: il 7.536 aveva gia' risolto la stessa classe fra panchina e cronaca («ora vivono nello STESSO contenitore in colonna: l'accavallamento non e' corretto, e' reso IMPOSSIBILE»), ma il tasto non era mai stato portato dentro quel ragionamento — position:absolute a bottom 14/right 14 con zIndex 25, sopra la cronaca (21) e nello stesso angolo. Copriva l'ultima riga scritta nelle due fasi in cui compare (uscito per sostituzione · in panchina in attesa). Ora quella fascia e' SUA e la colonna delle voci si ferma sopra; nel gioco normale non cambia un pixel. MISURA: sovrapposizione tasto x telecronaca 6273 px² -> 0 (margine 11 px). Il tasto NON si sposta: e' l'unica uscita da quelle due fasi (7.132/7.135), gia' collaudate dal PO. (c) strumenti: `hud-voci` estende la misura al tasto Salta + leva di collaudo `__CPM_FORCE_SUBOFF` — senza, il guardiano avrebbe dovuto aspettare una sostituzione vera, cioe' non avrebbe mai misurato il caso segnalato.
+const GAME_VERSION="7.544.0"; // [7.544.0 — IL CANCELLO CHE TENEVA FERMI I VENTIDUE]: (a) LA SCOPERTA. `driftTargetsRef` nasce a null e viene assegnato SOLO quando il mister da' un ordine tattico con un preset di movimento: il cancello `if(nx%3===0&&driftTargetsRef.current)` spegneva l'INTERO movimento ambientale dei ventidue — compresa la traslazione dei reparti col pallone (7.538) e il portatore che va sulla palla (7.538/7.539). Tre release di lavoro erano inerti fino al primo ordine tattico. E' emerso misurando la ripartenza dopo il gol: il rimedio non spostava il numero di un punto (33%→25%→25%) e il confronto fra le DUE sorgenti escludeva il renderer — anche il modello LOGICO non era schierato. Un rimedio che non muove NIENTE non e' sbagliato: e' codice che non viene percorso. ⚠️ E CORREGGE UNA CONCLUSIONE PRECEDENTE: nel 7.542, misurando il «giro giro tondo», verde e rosso erano IDENTICI (21,8u contro 21,6u) e ne avevo dedotto «la traslazione dei reparti non c'entra». Erano identici perche' in NESSUNO dei due bracci quel codice girava — giusto per la ragione sbagliata, che e' peggio che sbagliato. (b) L'ANELLO, trovato aprendo il cancello: con i ventidue che seguono davvero il pallone, l'aggancio del waypoint al compagno piu' vicino entro 18u e' diventato un ciclo — i giocatori si stringono sulla palla, la palla si aggancia a loro, il gioco torna a centrocampo (fascia centrale 61%→78%, quinto centrale 47%→63%). Raggio 18→8: l'aggancio fa quello per cui era nato (la giocata finisce sui piedi di un uomo, non su erba vuota) senza poter TIRARE l'intenzione del modulo verso un grappolo lontano. MISURA — i quattro obiettivi della missione, centrati tutti per la prima volta: fascia centrale 61%→59% (obiettivo <=60); palla senza padrone 30%→11% (<=40); UOMINI DIVERSI CHE TOCCANO PALLA 13→15 (>=15, il numero che aveva resistito a QUATTRO tentativi); cambi di portatore 12→33 (>=15); viaggio del pallone 570u→701u; quinti del campo 4/13/47/31/6 → 7/12/47/23/11. (c) LA BANDIERA SEGUE IL GIOCATORE (collaudo PO «ma e' spagnolo!»): il capitolo dell'esordio in nazionale era scritto a mano per l'Italia — tricolore e «maglia azzurra» — mentre NAT_CLUB_DATA ha bandiera e colori di ogni nazione ed e' gia' la fonte che il resto del gioco consulta. (d) LA CONVOCAZIONE IN UN POSTO SOLO (collaudo PO «ci ha messo troppo»): MISURATO su carriera simulata, il controllo girava in 13 settimane su 114 e SETTE cadevano nelle settimane escluse — sei tiri di dado in quattro stagioni invece di un centinaio. Viveva dentro `doAdvanceWeek`, ma la settimana avanza quasi sempre dal percorso della PARTITA. Ora e' una funzione chiamata da ogni percorso, e restano escluse solo le due settimane di sosta. Il salvataggio del PO: OVR 81 (soglia Spagna) gia' alla S.3, poi 85/86/88 con 31-40 gol a stagione, popolarita' 100, zero presenze alla S.7. ⚠️ DICHIARATO NON CENTRATO: la ripartenza dopo il gol (29% di riprese schierate contro l'80%). Il ramo VIENE percorso (9 volte nella finestra, contatore in pagina) ma altri scrittori dello stesso array sovrascrivono subito dopo. Diagnosi scritta, rimedio non ancora. ⚠️ E lo STRUMENTO sbagliava prima: la prima sonda filtrava su «palla vicino al centro» e contava 35 riprese in due partite quando i gol sono 3-4 — misurava il gioco normale che passa dal cerchio. Ora filtra sulla finestra vera (hook __CPM_KO544).
 // [nota 7.449.0] [7.449.0 MESSA IN SICUREZZA · P0 #3 dell'audit forense — IL RIFERIMENTO ALLA GARA APERTA SOPRAVVIVEVA ALL'USCITA]: `_playingMdRef` descrive la gara di CLUB aperta da startMatch, ma veniva azzerato SOLO da onMatchEnd: uscire dal pre-partita (onQuit) o essere respinti dai suoi return anticipati («non convocato», avversario non risolvibile) lo lasciava CARICO. E il consumo in onMatchEnd avveniva per QUALUNQUE fine partita, comprese quelle di Nazionale, che non passano da startMatch e non lo impostano mai. Catena: apro il pre-partita di campionato, torno indietro, gioco in Nazionale — e il commit registra come giocata una giornata di campionato mai disputata, che la bonifica chiude subito dopo. Stagione a 33 su 34 senza che nulla lo segnali. CICLO DI VITA RICOSTRUITO invece di un reset indiscriminato: il riferimento nasce all'apertura della gara, si INVALIDA su ogni percorso d'uscita dal pre-partita (onQuit e i due return anticipati) e si CONSUMA solo nei contesti di CLUB (career/cup/euro) — una gara di Nazionale non tocca piu' una giornata di campionato, ed e' la rete che copre anche le uscite non previste. +sonda test-only `__CPM_CAREER.mdRef()`: senza, il guardiano misurerebbe gli effetti e non la causa. GUARDIANO playing-mdref-test, NEL GATE: prova del ROSSO (__CPM_NO_P0_3: nel pre-partita il riferimento e' carico e resta carico dopo l'uscita) + i percorsi — uscita che invalida, calendario e presenze immutati dopo un'uscita, riapertura coerente con la gara vera, partita realmente giocata che si committa ancora.
 // [nota 7.448.0] [7.448.0 MESSA IN SICUREZZA · P0 #2 dell'audit forense — UN SALVATAGGIO PIU' VECCHIO POTEVA SOVRASCRIVERE IL PIU' RECENTE]: `storage.save` e' async e non aveva ne' coda ne' sequenza. Nel browser non si vede (localStorage e' sincrono) ma la build pubblicata su Play Store gira su `window.storage` = @capacitor/preferences, iniettato da tools/build-dist.mjs, dove la scrittura passa da un BRIDGE ASINCRONO: due salvataggi concorrenti potevano completare FUORI ORDINE, e `savedAt` veniva scritto ma mai riletto, quindi nulla se ne accorgeva. DIMOSTRATO a runtime con un bridge finto a latenza pilotata: stato A → parte l'autosave (bridge occupato) → stato B → l'app va in background → il flush salva B → il salvataggio di A completa DOPO e riscrive il disco con lo stato vecchio (memoria 2222, disco 1111). Su Android significa perdere una partita, una settimana, a volte una stagione — ed e' anche una spiegazione a monte della «partita gia' giocata», perche' un save che torna indietro riporta in calendario una gara gia' disputata. CURA MINIMA, nessuna infrastruttura nuova e formato del salvataggio IMMUTATO: una CODA per chiave (le scritture si susseguono nell'ordine in cui sono state chieste, mai sovrapposte) e uno SCARTO delle scritture gia' superate (se mentre A aspetta il turno e' arrivata B, A non viene scritta: il suo contenuto e' vecchio per definizione). GUARDIANO save-monotonic-test, NEL GATE: prova del ROSSO incorporata (__CPM_NO_P0_2 ripristina le scritture concorrenti → il disco torna a 1111) e sei scenari — vecchio-lento contro nuovo-veloce, tre scritture a latenza decrescente, salvataggio normale non bloccato, ramo browser invariato, ramo bridge nativo, riapertura dell'app che rilegge l'ultimo stato.
 // [nota 7.447.0] [7.447.0 MESSA IN SICUREZZA · P0 #1 dell'audit forense — IL RECUPERO DOPO UN RIAVVIO CONFONDEVA LE COMPETIZIONI]: e' la vera causa della «partita gia' giocata» che il PO segnala da nove collaudi. Il recovery del sidecar cercava la gara nel calendario per AVVERSARIO e SEDE, senza mai guardare la competizione; siccome l'avversario di Coppa viene sorteggiato DALLA STESSA LEGA e il turno R16 e' cablato «in casa», per costruzione esiste SEMPRE una voce di campionato in casa contro quel club. RIPRODOTTO: recuperando una gara di Coppa, la classifica di campionato passava da 17 a 18 partite e da 40 a 43 punti per una gara mai giocata, e la giornata di lega spariva marcata come giocata. Aggravante: le due ref che portano l'identita' della gara vivono nella SESSIONE e dopo il riavvio sono vuote — `matchTypeRef` torna al default "league" (l'unico writer "cup" e' startMatch, che dopo il reboot non passa mai) e `_playingMdRef` e' null, quindi anche il ramo di commit era quello di lega. DUE CURE MINIME: (1) i candidati si filtrano per COMPETIZIONE, derivata da `result.context` che era gia' nel sidecar dal 7.24.3 — nessun campo nuovo, e un sidecar senza contesto (scritto da una versione precedente) non viene filtrato ne' scartato, mantenendo il comportamento storico; (2) prima del dispatch si ricostruiscono `matchTypeRef` e `_playingMdRef` dalla voce ritrovata, cosi' il commit marca la voce giusta per NUMERO di giornata e registra quella giornata. GUARDIANO recovery-competition-test, NEL GATE: prova del ROSSO incorporata (interruttore __CPM_NO_P0_1 che ripristina la vecchia logica: la voce di lega torna a essere marcata, classifica 18) + casi A-G (coppa committata in coppa, campionato intatto a 17/40, turno di coppa avanzato, nessuna regressione sul recupero di lega). Gli assert leggono lo stato PERSISTITO, non la memoria.
@@ -17391,6 +17391,30 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
         for(const _n of _t503)_w503.per[_n]=(_w503.per[_n]||0)+1;
         if(_t503.length>1){_w503.multi++;const _k=_t503.join('+');_w503.combo[_k]=(_w503.combo[_k]||0)+1;}
       }}catch(_e503){}
+      /* ⚠️ [7.544.0 collaudo PO codice 007, 11 note] PROVATO E REVOCATO CON LE SUE MISURE — ma la
+         DIAGNOSI resta, ed e' il pezzo che vale.
+         PUNTO DI PARTENZA: il 7.521 aveva scritto il rimedio giusto — «UN arbitro a valle di TUTTE le
+         passate», inerzia EMA sui bersagli — ma l'ordine del codice lo smentisce: l'arbitro gira qui sopra
+         (~17245) e le reti post-lerp (`bisezione`, `snap`, `vista-reale`) ~60 righe piu' giu'. Un arbitro
+         che non ha l'ultima parola non e' un arbitro. MISURA coi due testimoni gia' in produzione
+         (OSC521 = bersaglio prima del rendering · OSC521B = asse RESO): su gi130 il bersaglio inverte 0,2
+         volte al secondo e l'asse reso 5,3 — VENTISEI volte tanto.
+         QUATTRO TARATURE, tutte misurate in ENTRAMBI i versi (oscillazione dell'asse e fuori quadro, con
+         il riferimento rimisurato nello stesso giro a rimedio spento: 6,5%):
+           inerzia su tutto, tau 120ms      asse 0,0 inv/s   fuori quadro 22,9%  (soglia 10)
+           + legalita' esente               asse 0,0         fuori quadro 10,7%
+           + tau 60ms                       asse 0,0         fuori quadro 10,1%
+           + isteresi 0,33s sulla legalita' asse 0,3 · MA gi130 sale a 11,3 (peggio del 5,3 di partenza)
+         L'ultima riga e' il verdetto: su gi130 la rete di legalita' ingaggia quasi OGNI fotogramma
+         (`bisezione x47 · bisezione+vista-reale x42`), quindi l'isteresi tiene l'arbitro zitto per sempre.
+         E quel dato dice la cosa che conta davvero: li' COMPOSIZIONE e LEGALITA' SI CONTRADDICONO a ogni
+         fotogramma — la prima vuole inquadrare un punto che la seconda dichiara illegale, e il ping-pong
+         E' il tremore. Non e' un problema di smorzamento e nessuna taratura dell'inerzia lo chiude.
+         IL PROSSIMO PASSO, che segue da qui: quando la rete di legalita' ingaggia in modo RIPETUTO, non
+         va corretto il bersaglio ogni fotogramma — va cambiata la COMPOSIZIONE (arretrare/allargare finche'
+         il soggetto e' legale, cosa che la bisezione a ~17105 sa gia' fare) e poi tenerla ferma. Un
+         arbitro che decide una volta, non due passate che si correggono a vicenda sessanta volte al
+         secondo. */
       /* [testimone B 007] l'asse RESO, dopo lerp E reti post-lerp: e' cio' che lo schermo vede. */
       if(typeof window!=='undefined'&&window.__CPM_OSC521B!==undefined){try{const _ob=window.__CPM_OSC521B;
         const _alB=Math.atan2(camLook.x-camera.position.x,camLook.z-camera.position.z);
@@ -19976,6 +20000,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     //   ceremony-visual.mjs monta LiveMatch (?sit=) e chiama questo per catturare i 4 beat senza dover vincere un titolo.
     window.__CPM_FORCE_CEREMONY=(o)=>{try{setCeremony({name:(o&&o.name)||"CAMPIONI D'ITALIA",kind:(o&&o.kind)||"league"});setPhase("ceremony");return true;}catch(e){return false;}};
     window.__CPM_PHASE=()=>{try{return phaseRef.current;}catch(e){return null;}};// [7.2.0] fase corrente per il collaudo cerimonia
+    window.__CPM_KO544=()=>{try{return (kickRef.current>0)||(kickoffRef.current>0);}catch(e){return false;}};/* [7.544.0] la FINESTRA vera della ripartenza: la prima sonda filtrava su «palla vicino al centro» e contava 35 riprese in due partite (i gol sono 3-4) — misurava il gioco normale che passa dal cerchio, non i calci d'inizio */
     window.__CPM_HLTIMES=()=>{try{return (hlTimesRef.current||[]).slice();}catch(e){return[];}};/* [7.500.0 F4] il CALENDARIO degli highlight: e' la parte deterministica del rimedio, quindi e' quella su cui una prova del rosso puo' davvero separare */
     window.__CPM_CLOCK=()=>{try{return clockRef.current|0;}catch(e){return null;}};/* [7.500.0 F4] il MINUTO dal ref di LiveMatch: come fase e tabellone, sopravvive allo smontaggio del 3D al fischio finale — `__CPM_STATE().clock` li' resta congelato, ed e' la trappola gia' pagata tre volte */
     window.__CPM_SCORE=()=>{try{return{home:scoreRef.current.home|0,away:scoreRef.current.away|0};}catch(e){return null;}};
@@ -21809,12 +21834,35 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
            fanno entrambe le squadre: il gioco si comprime attorno alla palla come in una partita vera) e
            l'uomo piu' vicino del lato in possesso ci va DAVVERO — e' lui il portatore, e quando la palla si
            sposta il portatore cambia. Solo a gioco vivo: durante un highlight la scena e' dell'executor. */
-        if(nx%3===0&&driftTargetsRef.current){
-          const dt=driftTargetsRef.current;
+        /* [7.544.0 — LA SCOPERTA CHE VALE PIU' DEL RIMEDIO] QUESTO BLOCCO NON GIRAVA QUASI MAI.
+           `driftTargetsRef` nasce a `null` e viene assegnato SOLO quando il mister da' un ordine tattico
+           con un preset di movimento: fino ad allora il cancello `&&driftTargetsRef.current` spegneva
+           l'INTERO movimento dei ventidue — compresa la traslazione dei reparti col pallone (7.538) e il
+           portatore che va sulla palla (7.538/7.539).
+           E' emerso misurando la ripartenza dopo il gol: il rimedio non spostava il numero nemmeno di un
+           punto (33% → 25% → 25%), e il confronto fra le DUE sorgenti ha escluso il renderer — anche il
+           modello LOGICO non era schierato. Un rimedio che non muove NIENTE non e' un rimedio sbagliato:
+           e' codice che non viene percorso.
+           ⚠️ E OBBLIGA A CORREGGERE UNA CONCLUSIONE PRECEDENTE: nel 7.542, misurando il «giro giro tondo»,
+           verde e rosso erano risultati IDENTICI (21,8u contro 21,6u) e ne avevo dedotto «la traslazione
+           dei reparti del 7.538 non c'entra». Erano identici perche' in NESSUNO dei due bracci quel codice
+           girava. La conclusione era giusta per la ragione sbagliata, ed e' peggio che sbagliata.
+           Ora il preset di partenza e' lo schieramento di riposo: il blocco gira dal calcio d'inizio. */
+        if(nx%3===0){
+          const dt=driftTargetsRef.current||DRIFT_PRESETS.midfield;
           const _q553=!(typeof window!=='undefined'&&window.__CPM_NO553)&&phaseRef.current==='playing';
           const _bb553=(_q553&&ballTargetRef.current)?ballTargetRef.current:null;
           const _av553=_bb553?clamp(_bb553.x-50,-46,46):0;
           setMatchPlayers(prev=>{
+            /* [7.544.0] finestra della ripartenza: dal conto dopo il gol fino all'ultima battuta recitata */
+            const _ko544=(kickRef.current>0||kickoffRef.current>0);
+            if(typeof window!=='undefined'&&window.__CPM_KOC!==undefined){try{window.__CPM_KOC.blocco=(window.__CPM_KOC.blocco||0)+1;if(_ko544)window.__CPM_KOC.ko=(window.__CPM_KOC.ko||0)+1;}catch(_e){}}
+            const _koLato544=kickoffSideRef.current||"home";
+            const _cerchio544=[];
+            if(_ko544){let _bd=[];prev.forEach((pl,i)=>{if(!pl||pl.gk||pl.team==="ref")return;
+              if((pl.team==="home")!==(_koLato544==="home"))return;
+              _bd.push({i,d:Math.hypot((pl.x||50)-50,(pl.y||50)-50)});});
+              _bd.sort((a,c)=>a.d-c.d);_bd.slice(0,2).forEach(q=>_cerchio544.push(q.i));}
             let _cI553=-1;
             /* ⚠️ [7.538.0] PROVATA E REVOCATA CON LA SUA MISURA: la ROTAZIONE del portatore. Il portatore
                e' sempre l'uomo piu' vicino, quindi la palla la toccano sempre gli stessi (12 su 22 in 90
@@ -21854,7 +21902,40 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
               const as=FORMATION_AWAY[Math.min(Math.max(idx-11,0),FORMATION_AWAY.length-1)]||{};
               sx=as[0]!=null?as[0]:pl.x;sy=as[1]!=null?as[1]:pl.y;k=0.03;
             }
-            if(_bb553&&!pl.gk){
+            if(_ko544&&!pl.gk){
+              /* [7.544.0 direttiva PO «dopo un gol i giocatori devono rientrare verso il centrocampo,
+                 disporsi nuovamente e riprendere il gioco dalla propria meta' campo, invece di continuare
+                 con movimenti scollegati»] LA RIPARTENZA E' UNO SCHIERAMENTO, NON UN'ATTESA.
+                 MISURA del difetto: dopo il gol il PALLONE torna al centro (7.525) ma i ventidue no —
+                 continuano a inseguire lo slot TRASLATO con la palla, con guadagno 0,04/0,03 ogni tre tick,
+                 cioe' ~25 minuti di gioco per ritrovare la posizione. Il pallone e' fermo a centrocampo e
+                 attorno la squadra si muove come se l'azione continuasse: e' il «movimenti scollegati».
+                 Qui, per tutta la finestra della ripartenza, lo slot torna quello BASE (nessuna traslazione:
+                 il pallone e' al centro, non c'e' niente da seguire) e il guadagno sale a 0,35 — i ventidue
+                 rientrano nella propria meta' e si dispongono in una manciata di secondi, come in una
+                 partita vera. Chi batte resta al centro: i due piu' avanzati del lato che riparte si
+                 piazzano sul cerchio. */
+              /* ⚠️ RI-TARATO DAL GUARDIANO. Riportare i ventidue allo slot BASE non bastava: 40% di riprese
+                 schierate contro la soglia dell'80%, mediana 7 uomini su 10 nella propria meta'. Il motivo
+                 e' che lo schieramento base NON e' uno schieramento da calcio d'inizio — le punte stanno a
+                 cavallo della linea di meta' campo (gli ospiti le hanno a x 40-45, cioe' gia' dall'altra
+                 parte). In una partita vera al calcio d'inizio TUTTI stanno dalla propria meta', e solo i
+                 due che battono sono nel cerchio. Qui lo slot si RIPIEGA nella propria meta': la squadra
+                 tiene la sua forma ma la comprime dietro la linea, che e' esattamente cio' che si vede in
+                 televisione un istante prima del fischio. */
+              const _casa544=(pl.team==="home");
+              sx=_casa544?Math.min(sx,46):Math.max(sx,54);
+              const _mia544=_casa544===(_koLato544==="home");
+              if(_mia544&&_cerchio544.indexOf(idx)>=0){sx=_casa544?48:52;sy=_cerchio544.indexOf(idx)===0?50:(_casa544?46:54);}
+              /* ⚠️ SECONDA TARATURA DAL GUARDIANO, e stavolta e' aritmetica: lo schieramento gira ogni TRE
+                 tick e la finestra della ripartenza ne dura ~6 — due sole occasioni di muoversi. Con
+                 guadagno 0,35 i ventidue coprivano meta' strada e la misura restava al 33% contro l'80%.
+                 Ma una ripartenza NON e' un inseguimento: e' un'interruzione, e in televisione le squadre
+                 sono gia' schierate quando l'arbitro fischia. Qui e' uno SNAP, come lo snap di scena degli
+                 highlight — il riposizionamento e' voluto e istantaneo, non un movimento da guardare. */
+              k=0.92;
+            }
+            else if(_bb553&&!pl.gk){
               sx=clamp(sx+_av553*0.62,4,96);sy=clamp(sy+(_bb553.y-50)*0.28,4,96);
               if(idx===_cI553){sx=_bb553.x;sy=_bb553.y;k=0.55;}
             }
@@ -22082,7 +22163,13 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                    il piu' vicino qualunque» il possesso tornava a posto (33%) ma il guadagno di rettilineita'
                    spariva del tutto (0,26, giro in tondo 40%): il vincolo funzionava solo finche' faceva danno
                    altrove. Revocato tutto invece di tenere un pezzo che non misura niente. */
-                let _bi555=-1,_bd555=18;
+                let _bi555=-1,_bd555=8;/* [7.544.0] RAGGIO 18→8. Con il cancello del movimento aperto (vedi la nota
+                   sopra) i ventidue seguono davvero il pallone, e l'aggancio del waypoint al compagno piu'
+                   vicino e' diventato un ANELLO: i giocatori si stringono attorno alla palla, la palla si
+                   aggancia a loro, e il gioco torna a centrocampo — misurato, fascia centrale dal 61% al
+                   78% e quinto centrale dal 47% al 63%. A 8 unita' l'aggancio fa quello per cui era nato
+                   (la giocata finisce sui piedi di un uomo invece che su erba vuota) senza poter TIRARE
+                   l'intenzione del modulo verso un grappolo lontano. */
                 for(let _i5=0;_i5<_mp555.length;_i5++){const _pl=_mp555[_i5];
                   if(!_pl||_pl.team!==_lt555||_pl.gk)continue;
                   const _dd=Math.hypot((_pl.x||50)-_wx,(_pl.y||50)-_wy);
@@ -32172,7 +32259,7 @@ const getThisWeekMatchday=()=>{
       // — [7.23.0 LA PRIMA MAGLIA AZZURRA — backlog favola] l'esordio in Nazionale (1ª-2ª presenza, chiave
       //   career-wide; l'avversario vero dall'ultima voce di natHistory se disponibile). —
       const _capsN=p.nationalCaps||0;
-      if(_capsN>=1&&_capsN<=4&&!seen["natdebut"])/* [7.164.0 M6] finestra 2→4 presenze: l'esordio azzurro non si perde più */{const _lastNat=((p.natHistory||[])[ (p.natHistory||[]).length-1 ]||null);return{key:"natdebut",e:"🇮🇹",title:"La prima maglia azzurra",body:`L'inno con la mano sul petto${_lastNat?`, l'esordio contro ${_lastNat.opp}`:""}: da oggi sei un giocatore della Nazionale. La maglia dell'esordio non si lava — si incornicia.`,fx:{morale:5,popularity:4}};}
+      if(_capsN>=1&&_capsN<=4&&!seen["natdebut"])/* [7.164.0 M6] finestra 2→4 presenze: l'esordio azzurro non si perde più */{const _lastNat=((p.natHistory||[])[ (p.natHistory||[]).length-1 ]||null);const _nz=(typeof NAT_CLUB_DATA!=="undefined"&&NAT_CLUB_DATA[p.nation||"Italia"])||null;/* [7.544.0 collaudo PO «ma è spagnolo!»] LA BANDIERA SEGUE IL GIOCATORE. Il capitolo dell'esordio era scritto a mano per l'Italia — tricolore e «maglia azzurra» — mentre `NAT_CLUB_DATA` ha bandiera e colori di OGNI nazione ed e' gia' la fonte che il resto del gioco consulta. A un attaccante spagnolo veniva raccontato l'esordio in azzurro. */return{key:"natdebut",e:(_nz&&_nz.nat)||"🏳️",title:`La prima maglia ${p.nation||"della Nazionale"}`,body:`L'inno con la mano sul petto${_lastNat?`, l'esordio contro ${_lastNat.opp}`:""}: da oggi sei un giocatore della Nazionale ${p.nation||""}. La maglia dell'esordio non si lava — si incornicia.`,fx:{morale:5,popularity:4}};}
       // — [7.23.0 LA FASCIA — backlog favola] la nomina a capitano (7.5.0: onore da veterano) ha il suo
       //   capitolo (chiave career-wide). —
       if(p.isCaptain&&!seen["captain_arm"])return{key:"captain_arm",e:"©️",title:"La fascia al braccio",body:`Il mister te l'ha consegnata davanti a tutti, e il vecchio capitano ha applaudito per primo: ora sei tu a portare la fascia. Non è un pezzo di stoffa — è la fiducia di uno spogliatoio intero.`,fx:{morale:4,coachTrust:3}};
@@ -33316,6 +33403,61 @@ const getThisWeekMatchday=()=>{
     });
   };
 
+  /* [7.544.0] IL CONTROLLO SULLA CONVOCAZIONE, in un posto solo. */
+  const _tryNatCallup=(weekVal)=>{
+    const isInU18=(player.proStatus||"u18")==="u18";
+    const _callupBusyWk=[19,20].includes(weekVal);
+    /* [7.544.0 collaudo PO «ma è spagnolo! e ci ha messo anche troppo per la prima convocazione»] TESTIMONE
+       DELLA CONVOCAZIONE (test-only). Il salvataggio del PO dice: nazione Spagna (soglia OVR 81), OVR 81
+       gia' in S.3 e poi 85/86/88, 31-40 gol a stagione, popolarita' 100 — e `nationalCaps: 0` alla S.7.
+       Con quei numeri la probabilita' settimanale supera il 40%: quattro stagioni senza chiamata non e'
+       sfortuna, e' un ramo che non viene percorso. Qui si registra OGNI valutazione del cancello con i suoi
+       valori, cosi' la diagnosi la fa la misura e non il ragionamento. */
+    if(typeof window!=='undefined'&&window.__CPM_CALLUP!==undefined){try{const _w=window.__CPM_CALLUP;
+      if(_w.length<400)_w.push({s:player.season||1,w:weekVal,u18:!!isInU18,busy:!!_callupBusyWk,inj:!!player.injured,ovr:player.ovr||0,caps:player.nationalCaps||0});}catch(_e){}}
+    if(!isInU18&&!_callupBusyWk&&!player.injured){
+      const caps=player.nationalCaps||0;
+      const lastNat=player.lastNationalSeason||0;
+      const curSeas=player.season||1;
+      const isFirst=caps===0;
+      const seasonOpen=curSeas>lastNat;
+      // Sprint NAZ — convocazione meritocratica: livello nazionale, OVR, età, rendimento, continuità, reputazione.
+      // Forza della nazionale: le top sono molto più selettive; le minori più permissive ma sempre credibili.
+      const NAT_LEVEL={"Brasile":92,"Francia":91,"Argentina":90,"Spagna":89,"Inghilterra":89,"Germania":87,"Portogallo":87,"Italia":86,"Olanda":85,"Belgio":84};
+      const natLvl=NAT_LEVEL[player.nation]||72;  // nazioni minori: soglia più bassa
+      const ovrGate=natLvl-8;                      // es. Italia 86 → serve OVR≥78; minore 72 → ≥64
+      const ovr=player.ovr||60,age=player.age||18,frm=player.form||70,rep=player.popularity||20;
+      const sg=player.goals||0,sa=player.assists||0,sm=player.matches||0;
+      const contrib=sm>0?(sg+sa*0.5)/sm:0;         // gol+assist per partita giocata
+      const continuity=Math.min(1,sm/14);          // titolarità/continuità nella stagione
+      // Idoneità: di quanto il giocatore supera la soglia, pesando rendimento, continuità, forma e reputazione.
+      let elig=(ovr-ovrGate)+contrib*10+continuity*6+(rep-50)*0.10+(frm-70)*0.10;
+      if(isFirst&&age<20)elig-=(20-age)*4;         // niente convocazioni stabili solo per il potenziale
+      if(curSeas<=2)elig-=(3-curSeas)*5;           // freno alle primissime stagioni
+      if(typeof window!=='undefined'&&window.__CPM_CALLUP!==undefined){try{const _w=window.__CPM_CALLUP;const _l=_w[_w.length-1];
+        if(_l&&_l.s===(player.season||1)&&_l.w===weekVal){_l.gate=ovrGate;_l.elig=+elig.toFixed(1);_l.pend=(player.calendar||[]).some(md=>md.type==="national"&&!md.played);_l.passa=(ovr>=ovrGate&&elig>0&&(isFirst||seasonOpen)&&!_l.pend);}}catch(_e){}}
+      if(ovr>=ovrGate&&elig>0&&(isFirst||seasonOpen)&&!(player.calendar||[]).some(md=>md.type==="national"&&!md.played)){
+        const baseP=isFirst?0.10:0.16;
+        const callP=clamp(baseP+elig*0.012,0.03,0.55);
+        // [6.81.0 direttiva PO «calendarizzate, simulabili, nulla al caso»] roll e avversario SEEDATI
+        //   (nazione+stagione+settimana → stessa carriera, stessa convocazione) e amichevole nel CALENDARIO
+        //   alla prima settimana LIBERA (pausa internazionale di fatto): si gioca/simula dal flusso standard.
+        const _cuR=seededRng((Math.abs(hashStr((player.nation||"x")+"|natfr|"+(player.season||1)+"|"+weekVal))>>>0)||1);
+        if(_cuR()<callP){
+          const _allNat=["Italia","Spagna","Francia","Germania","Inghilterra","Portogallo","Brasile","Argentina","Olanda","Belgio"];
+          const _oppPool=_allNat.filter(n=>n!==(player.nation||"Italia"));
+          const _callupOpp=_oppPool[Math.floor(_cuR()*_oppPool.length)]||"Avversario";
+          const _usedW=new Set((player.calendar||[]).filter(m=>!m.played).map(m=>m.week));
+          let _natW=weekVal;do{_natW++;}while(_natW<=37&&_usedW.has(_natW));
+          if(_natW<=37){
+            setPlayer(pp=>({...pp,calendar:[...(pp.calendar||[]),{matchday:1470+_natW/* [7.160.0 super-test · CAL-F1] era 970+W: per W20-29 il matchday cadeva in 990-999 = namespace di Coppa (990+round) ed euro KO (996+koRound) → le marcature per matchday cross-contaminavano (semifinale euro marcata dal risultato dell'amichevole, o non più giocabile via _committedMdRef). 1470+W (1475-1507) non collide con nessun range (lega 1-34, euro group 900-905, cup 990-994, euro KO 995-999). Save-safe: unico produttore, identità sempre per uguaglianza esatta dalla stessa voce */,week:_natW,opponentId:"nt-"+_callupOpp.toLowerCase().slice(0,3),opponentName:_callupOpp,isHome:true,played:false,result:null,type:"national",competition:"Amichevole Internazionale"}]}));
+            setTimeout(()=>notify(`🌍 Convocazione in Nazionale! Amichevole vs ${_callupOpp} — settimana ${_natW}.`,TH.accent),700);
+          }
+        }
+      }
+    }
+  };
+
   // advance week: calendar-driven, simulates missed matches; intercepts season end for rich screen
   const doAdvanceWeek=()=>{
     /* [P0 #4] un doppio tocco su «Conferma avanzamento» avanzava di DUE settimane */
@@ -33898,46 +34040,18 @@ const getThisWeekMatchday=()=>{
     if((player.week||1)===1){const cid=player.club?.id||player.club?.n;const cShift=(player.clubPrestigeShifts||{})[cid||""]||0;if(cid&&cShift<=-10)setTimeout(()=>notify(`⚠️ ${player.club?.n||"Il tuo club"} è in crisi! Presidenza instabile.`,"#ef4444"),1500);}
     // S41: cup auto-sim notifications are fired inside the auto-sim block (via setTimeout)
     // ── National team call-up check (BUG4 fix: skip busy weeks to avoid modal/screen conflicts) ──
-    const _callupBusyWk=[9,10,19,20,28,35].includes(weekVal);
-    if(!isInU18&&!_callupBusyWk&&!player.injured){
-      const caps=player.nationalCaps||0;
-      const lastNat=player.lastNationalSeason||0;
-      const curSeas=player.season||1;
-      const isFirst=caps===0;
-      const seasonOpen=curSeas>lastNat;
-      // Sprint NAZ — convocazione meritocratica: livello nazionale, OVR, età, rendimento, continuità, reputazione.
-      // Forza della nazionale: le top sono molto più selettive; le minori più permissive ma sempre credibili.
-      const NAT_LEVEL={"Brasile":92,"Francia":91,"Argentina":90,"Spagna":89,"Inghilterra":89,"Germania":87,"Portogallo":87,"Italia":86,"Olanda":85,"Belgio":84};
-      const natLvl=NAT_LEVEL[player.nation]||72;  // nazioni minori: soglia più bassa
-      const ovrGate=natLvl-8;                      // es. Italia 86 → serve OVR≥78; minore 72 → ≥64
-      const ovr=player.ovr||60,age=player.age||18,frm=player.form||70,rep=player.popularity||20;
-      const sg=player.goals||0,sa=player.assists||0,sm=player.matches||0;
-      const contrib=sm>0?(sg+sa*0.5)/sm:0;         // gol+assist per partita giocata
-      const continuity=Math.min(1,sm/14);          // titolarità/continuità nella stagione
-      // Idoneità: di quanto il giocatore supera la soglia, pesando rendimento, continuità, forma e reputazione.
-      let elig=(ovr-ovrGate)+contrib*10+continuity*6+(rep-50)*0.10+(frm-70)*0.10;
-      if(isFirst&&age<20)elig-=(20-age)*4;         // niente convocazioni stabili solo per il potenziale
-      if(curSeas<=2)elig-=(3-curSeas)*5;           // freno alle primissime stagioni
-      if(ovr>=ovrGate&&elig>0&&(isFirst||seasonOpen)&&!(player.calendar||[]).some(md=>md.type==="national"&&!md.played)){
-        const baseP=isFirst?0.10:0.16;
-        const callP=clamp(baseP+elig*0.012,0.03,0.55);
-        // [6.81.0 direttiva PO «calendarizzate, simulabili, nulla al caso»] roll e avversario SEEDATI
-        //   (nazione+stagione+settimana → stessa carriera, stessa convocazione) e amichevole nel CALENDARIO
-        //   alla prima settimana LIBERA (pausa internazionale di fatto): si gioca/simula dal flusso standard.
-        const _cuR=seededRng((Math.abs(hashStr((player.nation||"x")+"|natfr|"+(player.season||1)+"|"+weekVal))>>>0)||1);
-        if(_cuR()<callP){
-          const _allNat=["Italia","Spagna","Francia","Germania","Inghilterra","Portogallo","Brasile","Argentina","Olanda","Belgio"];
-          const _oppPool=_allNat.filter(n=>n!==(player.nation||"Italia"));
-          const _callupOpp=_oppPool[Math.floor(_cuR()*_oppPool.length)]||"Avversario";
-          const _usedW=new Set((player.calendar||[]).filter(m=>!m.played).map(m=>m.week));
-          let _natW=weekVal;do{_natW++;}while(_natW<=37&&_usedW.has(_natW));
-          if(_natW<=37){
-            setPlayer(pp=>({...pp,calendar:[...(pp.calendar||[]),{matchday:1470+_natW/* [7.160.0 super-test · CAL-F1] era 970+W: per W20-29 il matchday cadeva in 990-999 = namespace di Coppa (990+round) ed euro KO (996+koRound) → le marcature per matchday cross-contaminavano (semifinale euro marcata dal risultato dell'amichevole, o non più giocabile via _committedMdRef). 1470+W (1475-1507) non collide con nessun range (lega 1-34, euro group 900-905, cup 990-994, euro KO 995-999). Save-safe: unico produttore, identità sempre per uguaglianza esatta dalla stessa voce */,week:_natW,opponentId:"nt-"+_callupOpp.toLowerCase().slice(0,3),opponentName:_callupOpp,isHome:true,played:false,result:null,type:"national",competition:"Amichevole Internazionale"}]}));
-            setTimeout(()=>notify(`🌍 Convocazione in Nazionale! Amichevole vs ${_callupOpp} — settimana ${_natW}.`,TH.accent),700);
-          }
-        }
-      }
-    }
+    /* [7.544.0 collaudo PO «ci ha messo troppo per la prima convocazione» — MISURATO: il controllo
+       girava in 13 settimane su 114, e sette cadevano nelle settimane escluse: SEI tiri di dado in quattro
+       stagioni invece di un centinaio. Il salvataggio del PO ha OVR 81 (soglia della Spagna) gia' alla S.3,
+       poi 85/86/88 con 31-40 gol a stagione e popolarita' 100 — e zero presenze alla S.7.
+       LA CAUSA: il controllo viveva SOLO dentro `doAdvanceWeek`, ma la settimana avanza quasi sempre da un
+       altro percorso — quello della partita (`simulateAndAdvance` la incrementa per conto suo). Su ~38
+       settimane di stagione ne vedeva tre o quattro. E la lista delle settimane escluse era stata scritta
+       dando per scontato che girasse OGNI settimana: girandone 13, quelle sei ne mangiavano piu' della meta'.
+       Ora e' una funzione sola, chiamata da OGNI percorso che fa avanzare la settimana (un solo posto che
+       sa), e restano escluse solo le due settimane della sosta di meta' stagione. */
+    _tryNatCallup(weekVal);
+
   };
 
   const doRetire=()=>{

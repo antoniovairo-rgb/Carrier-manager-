@@ -1,0 +1,1934 @@
+{
+ "generatedAt": null,
+ "target": null,
+ "scene": 191,
+ "mediana": 0.1436,
+ "media": 0.14281413612565444,
+ "sotto15": 115,
+ "sotto08": 4,
+ "assenti": [
+  78,
+  33,
+  14,
+  132,
+  161,
+  138,
+  13,
+  15,
+  44,
+  45,
+  124
+ ],
+ "righe": [
+  {
+   "gi": 0,
+   "tipo": null,
+   "azione": "🦵 Tiro angolato",
+   "n": 38,
+   "min": 0.1137,
+   "max": 0.1899,
+   "fuori": 0,
+   "ultimo": 0.1899
+  },
+  {
+   "gi": 1,
+   "tipo": null,
+   "azione": "🤸 Rovesciata!",
+   "n": 33,
+   "min": 0.1104,
+   "max": 0.1404,
+   "fuori": 0,
+   "ultimo": 0.1268
+  },
+  {
+   "gi": 2,
+   "tipo": null,
+   "azione": "🦵 Spingila dentro!",
+   "n": 23,
+   "min": 0.1083,
+   "max": 0.1525,
+   "fuori": 0,
+   "ultimo": 0.1525
+  },
+  {
+   "gi": 3,
+   "tipo": null,
+   "azione": "🦵 Tiro a giro",
+   "n": 26,
+   "min": 0.1095,
+   "max": 0.1654,
+   "fuori": 3,
+   "ultimo": 0.129
+  },
+  {
+   "gi": 4,
+   "tipo": null,
+   "azione": "🦵 Deviazione istintiva",
+   "n": 27,
+   "min": 0.1121,
+   "max": 0.1575,
+   "fuori": 0,
+   "ultimo": 0.1373
+  },
+  {
+   "gi": 5,
+   "tipo": null,
+   "azione": "💥 Angolato rasoterra",
+   "n": 30,
+   "min": 0.0716,
+   "max": 0.1531,
+   "fuori": 0,
+   "ultimo": 0.0716
+  },
+  {
+   "gi": 6,
+   "tipo": null,
+   "azione": "✈️ Stacco di testa",
+   "n": 27,
+   "min": 0.0679,
+   "max": 0.1315,
+   "fuori": 0,
+   "ultimo": 0.0837
+  },
+  {
+   "gi": 7,
+   "tipo": null,
+   "azione": "✈️ Colpo di testa",
+   "n": 28,
+   "min": 0.0503,
+   "max": 0.114,
+   "fuori": 0,
+   "ultimo": 0.0573
+  },
+  {
+   "gi": 8,
+   "tipo": null,
+   "azione": "💥 Tiro di potenza",
+   "n": 25,
+   "min": 0.1155,
+   "max": 0.1617,
+   "fuori": 0,
+   "ultimo": 0.1532
+  },
+  {
+   "gi": 9,
+   "tipo": null,
+   "azione": "⚽ Volée potente",
+   "n": 25,
+   "min": 0.1141,
+   "max": 0.1636,
+   "fuori": 0,
+   "ultimo": 0.1593
+  },
+  {
+   "gi": 10,
+   "tipo": null,
+   "azione": "🎯 Pallonetto preciso",
+   "n": 22,
+   "min": 0.1209,
+   "max": 0.1277,
+   "fuori": 0,
+   "ultimo": 0.1277
+  },
+  {
+   "gi": 11,
+   "tipo": null,
+   "azione": "💥 Collo pieno!",
+   "n": 22,
+   "min": 0.1132,
+   "max": 0.1848,
+   "fuori": 0,
+   "ultimo": 0.1848
+  },
+  {
+   "gi": 12,
+   "tipo": null,
+   "azione": "🦵 Esterno a giro",
+   "n": 23,
+   "min": 0.1112,
+   "max": 0.1601,
+   "fuori": 0,
+   "ultimo": 0.1601
+  },
+  {
+   "gi": 13,
+   "tipo": null,
+   "azione": "🎯 Punizione a giro",
+   "n": 25,
+   "min": 0.1305,
+   "max": 0.2361,
+   "fuori": 13,
+   "ultimo": 0.19
+  },
+  {
+   "gi": 14,
+   "tipo": null,
+   "azione": "↗️ Cross basso teso",
+   "n": 29,
+   "min": 0.1451,
+   "max": 0.2243,
+   "fuori": 20,
+   "ultimo": 0.2243
+  },
+  {
+   "gi": 15,
+   "tipo": null,
+   "azione": "↗️ Cross basso teso",
+   "n": 26,
+   "min": 0.1478,
+   "max": 0.1809,
+   "fuori": 13,
+   "ultimo": 0.1683
+  },
+  {
+   "gi": 16,
+   "tipo": null,
+   "azione": "↗️ Cross teso",
+   "n": 23,
+   "min": 0.1138,
+   "max": 0.1296,
+   "fuori": 0,
+   "ultimo": 0.127
+  },
+  {
+   "gi": 17,
+   "tipo": null,
+   "azione": "↗️ Cross teso",
+   "n": 22,
+   "min": 0.1114,
+   "max": 0.1286,
+   "fuori": 0,
+   "ultimo": 0.1272
+  },
+  {
+   "gi": 18,
+   "tipo": null,
+   "azione": "🌀 Dribbling netto",
+   "n": 22,
+   "min": 0.1121,
+   "max": 0.1438,
+   "fuori": 0,
+   "ultimo": 0.1275
+  },
+  {
+   "gi": 19,
+   "tipo": null,
+   "azione": "🌀 Dribbling netto",
+   "n": 22,
+   "min": 0.11,
+   "max": 0.1422,
+   "fuori": 1,
+   "ultimo": 0.1136
+  },
+  {
+   "gi": 20,
+   "tipo": null,
+   "azione": "🌀 Dribbling netto",
+   "n": 20,
+   "min": 0.1117,
+   "max": 0.1593,
+   "fuori": 0,
+   "ultimo": 0.1593
+  },
+  {
+   "gi": 21,
+   "tipo": null,
+   "azione": "⚡ Doppio passo esplosivo",
+   "n": 19,
+   "min": 0.1132,
+   "max": 0.1284,
+   "fuori": 0,
+   "ultimo": 0.1283
+  },
+  {
+   "gi": 22,
+   "tipo": null,
+   "azione": "⚡ Sprint e tiro",
+   "n": 21,
+   "min": 0.1114,
+   "max": 0.1359,
+   "fuori": 0,
+   "ultimo": 0.1212
+  },
+  {
+   "gi": 23,
+   "tipo": null,
+   "azione": "⚡ Scatto e tiro",
+   "n": 24,
+   "min": 0.12,
+   "max": 0.172,
+   "fuori": 0,
+   "ultimo": 0.1646
+  },
+  {
+   "gi": 24,
+   "tipo": null,
+   "azione": "🎯 Assist filtrante",
+   "n": 26,
+   "min": 0.1133,
+   "max": 0.1526,
+   "fuori": 4,
+   "ultimo": 0.1517
+  },
+  {
+   "gi": 25,
+   "tipo": null,
+   "azione": "🎯 Filtrante millimetrico",
+   "n": 25,
+   "min": 0.1147,
+   "max": 0.1438,
+   "fuori": 0,
+   "ultimo": 0.1375
+  },
+  {
+   "gi": 26,
+   "tipo": null,
+   "azione": "💫 Tacco preciso",
+   "n": 21,
+   "min": 0.112,
+   "max": 0.1413,
+   "fuori": 0,
+   "ultimo": 0.1413
+  },
+  {
+   "gi": 27,
+   "tipo": null,
+   "azione": "🎯 Triangolo e tiro",
+   "n": 22,
+   "min": 0.1189,
+   "max": 0.1605,
+   "fuori": 0,
+   "ultimo": 0.1535
+  },
+  {
+   "gi": 28,
+   "tipo": null,
+   "azione": "⚡ Verticale",
+   "n": 24,
+   "min": 0.1021,
+   "max": 0.1224,
+   "fuori": 0,
+   "ultimo": 0.1064
+  },
+  {
+   "gi": 29,
+   "tipo": null,
+   "azione": "🏃 Lancia il contropiede",
+   "n": 21,
+   "min": 0.1058,
+   "max": 0.1223,
+   "fuori": 1,
+   "ultimo": 0.1223
+  },
+  {
+   "gi": 30,
+   "tipo": null,
+   "azione": "🌀 Dribbling centrale e conduci",
+   "n": 20,
+   "min": 0.1173,
+   "max": 0.1458,
+   "fuori": 0,
+   "ultimo": 0.1443
+  },
+  {
+   "gi": 31,
+   "tipo": null,
+   "azione": "🛡️ Scivolata netta",
+   "n": 24,
+   "min": 0.1004,
+   "max": 0.1414,
+   "fuori": 0,
+   "ultimo": 0.1303
+  },
+  {
+   "gi": 32,
+   "tipo": null,
+   "azione": "✋ Anticipo di posizione",
+   "n": 21,
+   "min": 0.0457,
+   "max": 0.0622,
+   "fuori": 0,
+   "ultimo": 0.0622
+  },
+  {
+   "gi": 33,
+   "tipo": null,
+   "azione": "🧱 Blocca con il corpo",
+   "n": 22,
+   "min": 0.116,
+   "max": 0.155,
+   "fuori": 16,
+   "ultimo": 0.141
+  },
+  {
+   "gi": 34,
+   "tipo": null,
+   "azione": "🏃 Pressing aggressivo",
+   "n": 22,
+   "min": 0.0652,
+   "max": 0.0866,
+   "fuori": 0,
+   "ultimo": 0.0866
+  },
+  {
+   "gi": 35,
+   "tipo": null,
+   "azione": "⚡ Sprint di rientro",
+   "n": 24,
+   "min": 0.102,
+   "max": 0.163,
+   "fuori": 7,
+   "ultimo": 0.123
+  },
+  {
+   "gi": 36,
+   "tipo": null,
+   "azione": "✈️ Stacco di testa",
+   "n": 22,
+   "min": 0.0787,
+   "max": 0.1504,
+   "fuori": 9,
+   "ultimo": 0.1051
+  },
+  {
+   "gi": 37,
+   "tipo": null,
+   "azione": "⚡ Taglio in profondità e rimorchio",
+   "n": 22,
+   "min": 0.0484,
+   "max": 0.0585,
+   "fuori": 0,
+   "ultimo": 0.0556
+  },
+  {
+   "gi": 38,
+   "tipo": null,
+   "azione": "↩️ Dai e vai preciso",
+   "n": 20,
+   "min": 0.1074,
+   "max": 0.1186,
+   "fuori": 0,
+   "ultimo": 0.1076
+  },
+  {
+   "gi": 39,
+   "tipo": null,
+   "azione": "📐 Sponda per il rimorchio",
+   "n": 19,
+   "min": 0.0836,
+   "max": 0.1163,
+   "fuori": 0,
+   "ultimo": 0.1029
+  },
+  {
+   "gi": 40,
+   "tipo": null,
+   "azione": "🌀 Tunnel perfetto",
+   "n": 20,
+   "min": 0.11,
+   "max": 0.1412,
+   "fuori": 0,
+   "ultimo": 0.1412
+  },
+  {
+   "gi": 41,
+   "tipo": null,
+   "azione": "🔄 Rovesciata spettacolare",
+   "n": 20,
+   "min": 0.1092,
+   "max": 0.1416,
+   "fuori": 0,
+   "ultimo": 0.1416
+  },
+  {
+   "gi": 42,
+   "tipo": null,
+   "azione": "🦶 Rabona cross",
+   "n": 21,
+   "min": 0.1141,
+   "max": 0.129,
+   "fuori": 0,
+   "ultimo": 0.1272
+  },
+  {
+   "gi": 43,
+   "tipo": null,
+   "azione": "💥 Botta col collo pieno",
+   "n": 20,
+   "min": 0.1147,
+   "max": 0.1574,
+   "fuori": 0,
+   "ultimo": 0.1567
+  },
+  {
+   "gi": 44,
+   "tipo": null,
+   "azione": "✈️ Stacco di testa deciso",
+   "n": 22,
+   "min": 0.1035,
+   "max": 0.1588,
+   "fuori": 11,
+   "ultimo": 0.1375
+  },
+  {
+   "gi": 45,
+   "tipo": null,
+   "azione": "🧱 Corpo sulla traiettoria",
+   "n": 22,
+   "min": 0.0101,
+   "max": 0.148,
+   "fuori": 11,
+   "ultimo": 0.0814
+  },
+  {
+   "gi": 46,
+   "tipo": null,
+   "azione": "↗️ Cross al centro",
+   "n": 20,
+   "min": 0.1092,
+   "max": 0.1318,
+   "fuori": 0,
+   "ultimo": 0.131
+  },
+  {
+   "gi": 47,
+   "tipo": null,
+   "azione": "🎯 Assist al compagno",
+   "n": 20,
+   "min": 0.1112,
+   "max": 0.1198,
+   "fuori": 0,
+   "ultimo": 0.1151
+  },
+  {
+   "gi": 48,
+   "tipo": null,
+   "azione": "🦵 Spinta di prima",
+   "n": 24,
+   "min": 0.1096,
+   "max": 0.1658,
+   "fuori": 0,
+   "ultimo": 0.1658
+  },
+  {
+   "gi": 49,
+   "tipo": null,
+   "azione": "🦵 Deviazione al volo",
+   "n": 26,
+   "min": 0.1104,
+   "max": 0.1607,
+   "fuori": 0,
+   "ultimo": 0.1415
+  },
+  {
+   "gi": 50,
+   "tipo": null,
+   "azione": "🎯 Triangolo e cross",
+   "n": 27,
+   "min": 0.1265,
+   "max": 0.1436,
+   "fuori": 0,
+   "ultimo": 0.1269
+  },
+  {
+   "gi": 51,
+   "tipo": null,
+   "azione": "↗️ In area per l'incornata del compagno",
+   "n": 22,
+   "min": 0.136,
+   "max": 0.1904,
+   "fuori": 6,
+   "ultimo": 0.173
+  },
+  {
+   "gi": 52,
+   "tipo": null,
+   "azione": "✈️ Colpo di testa sulla porta",
+   "n": 22,
+   "min": 0.1097,
+   "max": 0.128,
+   "fuori": 0,
+   "ultimo": 0.1227
+  },
+  {
+   "gi": 53,
+   "tipo": null,
+   "azione": "🦵 Prima intenzione!",
+   "n": 21,
+   "min": 0.1091,
+   "max": 0.1415,
+   "fuori": 0,
+   "ultimo": 0.1415
+  },
+  {
+   "gi": 54,
+   "tipo": null,
+   "azione": "🏃 Pressing aggressivo",
+   "n": 27,
+   "min": 0.0951,
+   "max": 0.1617,
+   "fuori": 5,
+   "ultimo": 0.0966
+  },
+  {
+   "gi": 55,
+   "tipo": null,
+   "azione": "✈️ Stacco sul palo lontano",
+   "n": 24,
+   "min": 0.0899,
+   "max": 0.1108,
+   "fuori": 0,
+   "ultimo": 0.0968
+  },
+  {
+   "gi": 56,
+   "tipo": null,
+   "azione": "⚡ Scatto perfetto",
+   "n": 23,
+   "min": 0.1025,
+   "max": 0.132,
+   "fuori": 1,
+   "ultimo": 0.132
+  },
+  {
+   "gi": 57,
+   "tipo": null,
+   "azione": "⚡ Spunto esplosivo",
+   "n": 20,
+   "min": 0.1137,
+   "max": 0.1623,
+   "fuori": 8,
+   "ultimo": 0.1623
+  },
+  {
+   "gi": 58,
+   "tipo": null,
+   "azione": "💥 Angolo basso — potenza",
+   "n": 23,
+   "min": 0.1028,
+   "max": 0.1472,
+   "fuori": 0,
+   "ultimo": 0.1472
+  },
+  {
+   "gi": 59,
+   "tipo": null,
+   "azione": "🔥 Prendo in mano la squadra",
+   "n": 26,
+   "min": 0.0737,
+   "max": 0.1185,
+   "fuori": 0,
+   "ultimo": 0.1185
+  },
+  {
+   "gi": 60,
+   "tipo": null,
+   "azione": "🌀 Li salto e servo il compagno libero",
+   "n": 22,
+   "min": 0.0839,
+   "max": 0.1162,
+   "fuori": 0,
+   "ultimo": 0.1115
+  },
+  {
+   "gi": 61,
+   "tipo": null,
+   "azione": "🤝 Sponda corta e tira",
+   "n": 23,
+   "min": 0.1099,
+   "max": 0.1404,
+   "fuori": 0,
+   "ultimo": 0.1401
+  },
+  {
+   "gi": 62,
+   "tipo": null,
+   "azione": "💥 Tiro di prima potente",
+   "n": 27,
+   "min": 0.1101,
+   "max": 0.1608,
+   "fuori": 3,
+   "ultimo": 0.1116
+  },
+  {
+   "gi": 63,
+   "tipo": null,
+   "azione": "🎯 Incrociato sul palo lontano",
+   "n": 28,
+   "min": 0.0947,
+   "max": 0.1579,
+   "fuori": 2,
+   "ultimo": 0.0947
+  },
+  {
+   "gi": 64,
+   "tipo": null,
+   "azione": "✈️ Testa potente angolato",
+   "n": 26,
+   "min": 0.1119,
+   "max": 0.1212,
+   "fuori": 0,
+   "ultimo": 0.1212
+  },
+  {
+   "gi": 65,
+   "tipo": null,
+   "azione": "🛑 Stop e tiro netto",
+   "n": 25,
+   "min": 0.1113,
+   "max": 0.16,
+   "fuori": 0,
+   "ultimo": 0.16
+  },
+  {
+   "gi": 66,
+   "tipo": null,
+   "azione": "↘️ Tocco sotto morbido",
+   "n": 23,
+   "min": 0.1101,
+   "max": 0.1214,
+   "fuori": 0,
+   "ultimo": 0.1146
+  },
+  {
+   "gi": 67,
+   "tipo": null,
+   "azione": "🦶 Mancino angolato",
+   "n": 22,
+   "min": 0.1107,
+   "max": 0.1713,
+   "fuori": 2,
+   "ultimo": 0.1713
+  },
+  {
+   "gi": 68,
+   "tipo": null,
+   "azione": "⚡ Sforbiciata al volo",
+   "n": 26,
+   "min": 0.1141,
+   "max": 0.1646,
+   "fuori": 0,
+   "ultimo": 0.1466
+  },
+  {
+   "gi": 69,
+   "tipo": null,
+   "azione": "🔄 Tacco in porta",
+   "n": 24,
+   "min": 0.111,
+   "max": 0.1556,
+   "fuori": 0,
+   "ultimo": 0.1556
+  },
+  {
+   "gi": 70,
+   "tipo": null,
+   "azione": "🦵 Cucchiaio rasoterra",
+   "n": 24,
+   "min": 0.1084,
+   "max": 0.1512,
+   "fuori": 0,
+   "ultimo": 0.1512
+  },
+  {
+   "gi": 71,
+   "tipo": null,
+   "azione": "🌀 Finta e interno",
+   "n": 24,
+   "min": 0.1103,
+   "max": 0.1634,
+   "fuori": 0,
+   "ultimo": 0.1634
+  },
+  {
+   "gi": 72,
+   "tipo": null,
+   "azione": "💥 Potenza sul palo corto",
+   "n": 21,
+   "min": 0.1112,
+   "max": 0.1424,
+   "fuori": 0,
+   "ultimo": 0.1424
+  },
+  {
+   "gi": 73,
+   "tipo": null,
+   "azione": "🤸 Acrobazia istintiva in porta",
+   "n": 21,
+   "min": 0.1081,
+   "max": 0.145,
+   "fuori": 0,
+   "ultimo": 0.145
+  },
+  {
+   "gi": 74,
+   "tipo": null,
+   "azione": "⚽ Prima intenzione — dentro!",
+   "n": 26,
+   "min": 0.1071,
+   "max": 0.155,
+   "fuori": 0,
+   "ultimo": 0.1089
+  },
+  {
+   "gi": 75,
+   "tipo": null,
+   "azione": "🦵 Prima intenzione subito!",
+   "n": 26,
+   "min": 0.1072,
+   "max": 0.1542,
+   "fuori": 0,
+   "ultimo": 0.1504
+  },
+  {
+   "gi": 76,
+   "tipo": null,
+   "azione": "🦵 Tiro di prima all'angolino",
+   "n": 27,
+   "min": 0.0833,
+   "max": 0.1541,
+   "fuori": 0,
+   "ultimo": 0.1541
+  },
+  {
+   "gi": 77,
+   "tipo": null,
+   "azione": "🦵 Deviazione rasoterra",
+   "n": 27,
+   "min": 0.0968,
+   "max": 0.1537,
+   "fuori": 2,
+   "ultimo": 0.1537
+  },
+  {
+   "gi": 78,
+   "tipo": null,
+   "azione": "📐 Curva a rientrare",
+   "n": 26,
+   "min": 0.1376,
+   "max": 0.2123,
+   "fuori": 19,
+   "ultimo": 0.1425
+  },
+  {
+   "gi": 79,
+   "tipo": null,
+   "azione": "⚡ Scatto in profondità e ultimo passaggio",
+   "n": 24,
+   "min": 0.1147,
+   "max": 0.1499,
+   "fuori": 3,
+   "ultimo": 0.1499
+  },
+  {
+   "gi": 80,
+   "tipo": null,
+   "azione": "✈️ Taglio sul secondo palo",
+   "n": 23,
+   "min": 0.1096,
+   "max": 0.1347,
+   "fuori": 0,
+   "ultimo": 0.1347
+  },
+  {
+   "gi": 81,
+   "tipo": null,
+   "azione": "💥 Botta sopra la barriera",
+   "n": 22,
+   "min": 0.1211,
+   "max": 0.1449,
+   "fuori": 0,
+   "ultimo": 0.125
+  },
+  {
+   "gi": 82,
+   "tipo": null,
+   "azione": "🎯 Cross a rientrare",
+   "n": 29,
+   "min": 0.114,
+   "max": 0.1305,
+   "fuori": 0,
+   "ultimo": 0.1256
+  },
+  {
+   "gi": 83,
+   "tipo": null,
+   "azione": "↗️ Cross immediato in area",
+   "n": 24,
+   "min": 0.112,
+   "max": 0.1285,
+   "fuori": 0,
+   "ultimo": 0.1246
+  },
+  {
+   "gi": 84,
+   "tipo": null,
+   "azione": "🎯 Cross a rientrare perfetto",
+   "n": 23,
+   "min": 0.1093,
+   "max": 0.1271,
+   "fuori": 0,
+   "ultimo": 0.1253
+  },
+  {
+   "gi": 85,
+   "tipo": null,
+   "azione": "↘️ Rasoterra preciso al compagno",
+   "n": 20,
+   "min": 0.1096,
+   "max": 0.1165,
+   "fuori": 0,
+   "ultimo": 0.1108
+  },
+  {
+   "gi": 86,
+   "tipo": null,
+   "azione": "✈️ Stacco sul secondo palo",
+   "n": 22,
+   "min": 0.1001,
+   "max": 0.1117,
+   "fuori": 0,
+   "ultimo": 0.1107
+  },
+  {
+   "gi": 87,
+   "tipo": null,
+   "azione": "⚡ Cross cieco di prima",
+   "n": 22,
+   "min": 0.1276,
+   "max": 0.1411,
+   "fuori": 0,
+   "ultimo": 0.1276
+  },
+  {
+   "gi": 88,
+   "tipo": null,
+   "azione": "⚽ Volée di collo potente",
+   "n": 21,
+   "min": 0.1063,
+   "max": 0.1505,
+   "fuori": 0,
+   "ultimo": 0.1505
+  },
+  {
+   "gi": 89,
+   "tipo": null,
+   "azione": "🌀 Esterno a rientrare",
+   "n": 21,
+   "min": 0.0988,
+   "max": 0.1171,
+   "fuori": 0,
+   "ultimo": 0.102
+  },
+  {
+   "gi": 90,
+   "tipo": null,
+   "azione": "✈️ Testa di potenza",
+   "n": 18,
+   "min": 0.0807,
+   "max": 0.1279,
+   "fuori": 0,
+   "ultimo": 0.0807
+  },
+  {
+   "gi": 91,
+   "tipo": null,
+   "azione": "↗️ Cross sul primo palo",
+   "n": 20,
+   "min": 0.1077,
+   "max": 0.1358,
+   "fuori": 0,
+   "ultimo": 0.1344
+  },
+  {
+   "gi": 92,
+   "tipo": null,
+   "azione": "🔄 Roulette di classe",
+   "n": 19,
+   "min": 0.1162,
+   "max": 0.1301,
+   "fuori": 0,
+   "ultimo": 0.129
+  },
+  {
+   "gi": 93,
+   "tipo": null,
+   "azione": "🌀 Elastico e tiro netto",
+   "n": 19,
+   "min": 0.111,
+   "max": 0.1409,
+   "fuori": 0,
+   "ultimo": 0.1407
+  },
+  {
+   "gi": 94,
+   "tipo": null,
+   "azione": "🦵 Step-over e scatto",
+   "n": 22,
+   "min": 0.1135,
+   "max": 0.1255,
+   "fuori": 0,
+   "ultimo": 0.1226
+  },
+  {
+   "gi": 95,
+   "tipo": null,
+   "azione": "💨 Finta rapida e scatto",
+   "n": 22,
+   "min": 0.115,
+   "max": 0.1437,
+   "fuori": 0,
+   "ultimo": 0.1404
+  },
+  {
+   "gi": 96,
+   "tipo": null,
+   "azione": "↗️ Cross al centro da fondo",
+   "n": 27,
+   "min": 0.1096,
+   "max": 0.1297,
+   "fuori": 0,
+   "ultimo": 0.1237
+  },
+  {
+   "gi": 97,
+   "tipo": null,
+   "azione": "🌀 Scarta col dribbling",
+   "n": 24,
+   "min": 0.1212,
+   "max": 0.1647,
+   "fuori": 1,
+   "ultimo": 0.137
+  },
+  {
+   "gi": 98,
+   "tipo": null,
+   "azione": "🌀 Tunnel e tiro netto",
+   "n": 24,
+   "min": 0.1076,
+   "max": 0.1613,
+   "fuori": 0,
+   "ultimo": 0.1613
+  },
+  {
+   "gi": 99,
+   "tipo": null,
+   "azione": "⚡ Scatto esplosivo in profondità",
+   "n": 23,
+   "min": 0.0806,
+   "max": 0.1139,
+   "fuori": 0,
+   "ultimo": 0.1116
+  },
+  {
+   "gi": 100,
+   "tipo": null,
+   "azione": "🔄 Hocus pocus e cross",
+   "n": 24,
+   "min": 0.1133,
+   "max": 0.1287,
+   "fuori": 0,
+   "ultimo": 0.1255
+  },
+  {
+   "gi": 101,
+   "tipo": null,
+   "azione": "🌀 Virata istantanea e scatto",
+   "n": 22,
+   "min": 0.1205,
+   "max": 0.1583,
+   "fuori": 0,
+   "ultimo": 0.1568
+  },
+  {
+   "gi": 102,
+   "tipo": null,
+   "azione": "🌀 Dribbling netto e cross",
+   "n": 26,
+   "min": 0.1135,
+   "max": 0.1299,
+   "fuori": 0,
+   "ultimo": 0.1248
+  },
+  {
+   "gi": 103,
+   "tipo": null,
+   "azione": "🤸 Controllo acrobatico e tira",
+   "n": 22,
+   "min": 0.1104,
+   "max": 0.139,
+   "fuori": 0,
+   "ultimo": 0.1384
+  },
+  {
+   "gi": 104,
+   "tipo": null,
+   "azione": "🌀 Dribbling stretto e tiro",
+   "n": 22,
+   "min": 0.1103,
+   "max": 0.1509,
+   "fuori": 0,
+   "ultimo": 0.1505
+  },
+  {
+   "gi": 105,
+   "tipo": null,
+   "azione": "🔄 Lancio lungo di prima",
+   "n": 28,
+   "min": 0.1028,
+   "max": 0.1554,
+   "fuori": 1,
+   "ultimo": 0.1554
+  },
+  {
+   "gi": 106,
+   "tipo": null,
+   "azione": "🎯 Chip millimetrico",
+   "n": 22,
+   "min": 0.0781,
+   "max": 0.1152,
+   "fuori": 0,
+   "ultimo": 0.1068
+  },
+  {
+   "gi": 107,
+   "tipo": null,
+   "azione": "🕳️ Filtrante tra i centrali",
+   "n": 25,
+   "min": 0.1115,
+   "max": 0.1415,
+   "fuori": 0,
+   "ultimo": 0.118
+  },
+  {
+   "gi": 108,
+   "tipo": null,
+   "azione": "✈️ Spizzata di testa",
+   "n": 27,
+   "min": 0.0925,
+   "max": 0.1248,
+   "fuori": 0,
+   "ultimo": 0.1248
+  },
+  {
+   "gi": 109,
+   "tipo": null,
+   "azione": "🎯 Stop e tiro preciso",
+   "n": 29,
+   "min": 0.1103,
+   "max": 0.1623,
+   "fuori": 0,
+   "ultimo": 0.1252
+  },
+  {
+   "gi": 110,
+   "tipo": null,
+   "azione": "🏃 Faccio il velo e attacco",
+   "n": 24,
+   "min": 0.0896,
+   "max": 0.1275,
+   "fuori": 0,
+   "ultimo": 0.1275
+  },
+  {
+   "gi": 111,
+   "tipo": null,
+   "azione": "⚡ Rasoterra preciso per il compagno",
+   "n": 19,
+   "min": 0.1054,
+   "max": 0.1151,
+   "fuori": 0,
+   "ultimo": 0.1144
+  },
+  {
+   "gi": 112,
+   "tipo": null,
+   "azione": "🌀 Dribbling centrale e tiro",
+   "n": 19,
+   "min": 0.114,
+   "max": 0.1442,
+   "fuori": 0,
+   "ultimo": 0.1439
+  },
+  {
+   "gi": 113,
+   "tipo": null,
+   "azione": "🎯 Assist di prima senza guardare",
+   "n": 21,
+   "min": 0.1035,
+   "max": 0.1193,
+   "fuori": 0,
+   "ultimo": 0.1056
+  },
+  {
+   "gi": 114,
+   "tipo": null,
+   "azione": "↩️ Rimorchio e tiro",
+   "n": 22,
+   "min": 0.1172,
+   "max": 0.1548,
+   "fuori": 0,
+   "ultimo": 0.154
+  },
+  {
+   "gi": 115,
+   "tipo": null,
+   "azione": "🦶 Tacco in porta",
+   "n": 24,
+   "min": 0.1151,
+   "max": 0.1619,
+   "fuori": 0,
+   "ultimo": 0.161
+  },
+  {
+   "gi": 116,
+   "tipo": null,
+   "azione": "💡 Finta e scarta il difensore",
+   "n": 21,
+   "min": 0.112,
+   "max": 0.161,
+   "fuori": 0,
+   "ultimo": 0.161
+  },
+  {
+   "gi": 117,
+   "tipo": null,
+   "azione": "🎯 Taglio diagonale e tiro",
+   "n": 21,
+   "min": 0.1176,
+   "max": 0.1549,
+   "fuori": 0,
+   "ultimo": 0.1547
+  },
+  {
+   "gi": 118,
+   "tipo": null,
+   "azione": "⚡ Uno-due e smista subito",
+   "n": 23,
+   "min": 0.0887,
+   "max": 0.1181,
+   "fuori": 0,
+   "ultimo": 0.1025
+  },
+  {
+   "gi": 119,
+   "tipo": null,
+   "azione": "📏 Lancio lungo 50m di prima",
+   "n": 25,
+   "min": 0.0785,
+   "max": 0.1154,
+   "fuori": 0,
+   "ultimo": 0.1138
+  },
+  {
+   "gi": 120,
+   "tipo": null,
+   "azione": "🎯 Verticale filtrante di prima",
+   "n": 25,
+   "min": 0.1174,
+   "max": 0.1469,
+   "fuori": 0,
+   "ultimo": 0.1353
+  },
+  {
+   "gi": 121,
+   "tipo": null,
+   "azione": "🔥 Triangolo e vai",
+   "n": 25,
+   "min": 0.1068,
+   "max": 0.1438,
+   "fuori": 1,
+   "ultimo": 0.1438
+  },
+  {
+   "gi": 122,
+   "tipo": null,
+   "azione": "🌀 Parabola d'esterno 40m",
+   "n": 19,
+   "min": 0.0775,
+   "max": 0.1185,
+   "fuori": 0,
+   "ultimo": 0.0965
+  },
+  {
+   "gi": 123,
+   "tipo": null,
+   "azione": "🌀 Giratone e conduci",
+   "n": 21,
+   "min": 0.0792,
+   "max": 0.1175,
+   "fuori": 0,
+   "ultimo": 0.1046
+  },
+  {
+   "gi": 124,
+   "tipo": null,
+   "azione": "✈️ Colpo di testa e smista",
+   "n": 16,
+   "min": 0.0965,
+   "max": 0.1933,
+   "fuori": 8,
+   "ultimo": 0.0965
+  },
+  {
+   "gi": 125,
+   "tipo": null,
+   "azione": "⚡ Lancio in profondità immediato",
+   "n": 17,
+   "min": 0.1148,
+   "max": 0.1458,
+   "fuori": 0,
+   "ultimo": 0.1424
+  },
+  {
+   "gi": 126,
+   "tipo": null,
+   "azione": "✈️ Stacco e indirizza il compagno",
+   "n": 25,
+   "min": 0.0673,
+   "max": 0.1675,
+   "fuori": 6,
+   "ultimo": 0.0751
+  },
+  {
+   "gi": 127,
+   "tipo": null,
+   "azione": "💪 Contrasto duro sull'avversario",
+   "n": 25,
+   "min": 0.0393,
+   "max": 0.0639,
+   "fuori": 0,
+   "ultimo": 0.0639
+  },
+  {
+   "gi": 128,
+   "tipo": null,
+   "azione": "🛑 Chiusura immediata",
+   "n": 20,
+   "min": 0.1402,
+   "max": 0.1512,
+   "fuori": 2,
+   "ultimo": 0.1436
+  },
+  {
+   "gi": 129,
+   "tipo": null,
+   "azione": "🤼 Raddoppio coordinato col compagno",
+   "n": 21,
+   "min": 0.0812,
+   "max": 0.1363,
+   "fuori": 0,
+   "ultimo": 0.1363
+  },
+  {
+   "gi": 130,
+   "tipo": null,
+   "azione": "✋ Anticipo sulla traiettoria",
+   "n": 20,
+   "min": 0.1015,
+   "max": 0.1376,
+   "fuori": 0,
+   "ultimo": 0.1362
+  },
+  {
+   "gi": 131,
+   "tipo": null,
+   "azione": "🛡️ Fallo intelligente in zona",
+   "n": 23,
+   "min": 0.0469,
+   "max": 0.0725,
+   "fuori": 0,
+   "ultimo": 0.0725
+  },
+  {
+   "gi": 132,
+   "tipo": null,
+   "azione": "🧱 Blocco col corpo sulla traiettoria",
+   "n": 22,
+   "min": 0.008,
+   "max": 0.1434,
+   "fuori": 15,
+   "ultimo": 0.083
+  },
+  {
+   "gi": 133,
+   "tipo": null,
+   "azione": "🏃 Sprint disperato sulla linea",
+   "n": 20,
+   "min": 0.0867,
+   "max": 0.1396,
+   "fuori": 0,
+   "ultimo": 0.0867
+  },
+  {
+   "gi": 134,
+   "tipo": null,
+   "azione": "✈️ Stacco dominante",
+   "n": 21,
+   "min": 0.1031,
+   "max": 0.1486,
+   "fuori": 2,
+   "ultimo": 0.1114
+  },
+  {
+   "gi": 135,
+   "tipo": null,
+   "azione": "🤝 Copro la sua posizione",
+   "n": 19,
+   "min": 0.1118,
+   "max": 0.1373,
+   "fuori": 1,
+   "ultimo": 0.1299
+  },
+  {
+   "gi": 136,
+   "tipo": null,
+   "azione": "🛑 Blocca il cross con il corpo",
+   "n": 20,
+   "min": 0.1126,
+   "max": 0.1544,
+   "fuori": 0,
+   "ultimo": 0.1126
+  },
+  {
+   "gi": 137,
+   "tipo": null,
+   "azione": "⚡ Tackle in corsa preciso",
+   "n": 21,
+   "min": 0.1029,
+   "max": 0.1087,
+   "fuori": 0,
+   "ultimo": 0.1029
+  },
+  {
+   "gi": 138,
+   "tipo": null,
+   "azione": "📣 Allineamento difensivo immediato",
+   "n": 22,
+   "min": 0.0697,
+   "max": 0.1462,
+   "fuori": 12,
+   "ultimo": 0.135
+  },
+  {
+   "gi": 139,
+   "tipo": null,
+   "azione": "🏃 Pressing a zona coordinato",
+   "n": 22,
+   "min": 0.0995,
+   "max": 0.1517,
+   "fuori": 9,
+   "ultimo": 0.1068
+  },
+  {
+   "gi": 140,
+   "tipo": null,
+   "azione": "🔥 Porta palla nell'angolo",
+   "n": 23,
+   "min": 0.077,
+   "max": 0.1168,
+   "fuori": 0,
+   "ultimo": 0.1092
+  },
+  {
+   "gi": 141,
+   "tipo": null,
+   "azione": "💥 Tiro dalla distanza!",
+   "n": 23,
+   "min": 0.1189,
+   "max": 0.1595,
+   "fuori": 0,
+   "ultimo": 0.1588
+  },
+  {
+   "gi": 142,
+   "tipo": null,
+   "azione": "🌧️ Tiro rasoterra sul bagnato",
+   "n": 23,
+   "min": 0.117,
+   "max": 0.1657,
+   "fuori": 0,
+   "ultimo": 0.1601
+  },
+  {
+   "gi": 143,
+   "tipo": null,
+   "azione": "🔥 Tiro potente — adrenalina pura",
+   "n": 26,
+   "min": 0.1185,
+   "max": 0.1653,
+   "fuori": 1,
+   "ultimo": 0.1365
+  },
+  {
+   "gi": 144,
+   "tipo": null,
+   "azione": "💥 Gol dell'ex — silenzio assoluto",
+   "n": 24,
+   "min": 0.1128,
+   "max": 0.1605,
+   "fuori": 0,
+   "ultimo": 0.1605
+  },
+  {
+   "gi": 145,
+   "tipo": null,
+   "azione": "🌟 Gol dell'anno — ci provo!",
+   "n": 25,
+   "min": 0.115,
+   "max": 0.1664,
+   "fuori": 0,
+   "ultimo": 0.1453
+  },
+  {
+   "gi": 146,
+   "tipo": null,
+   "azione": "🛡️ Blocca con tutto il fisico",
+   "n": 25,
+   "min": 0.0931,
+   "max": 0.159,
+   "fuori": 5,
+   "ultimo": 0.0932
+  },
+  {
+   "gi": 147,
+   "tipo": null,
+   "azione": "🎯 Sfrutta lo spazio in più",
+   "n": 17,
+   "min": 0.0987,
+   "max": 0.1169,
+   "fuori": 0,
+   "ultimo": 0.0997
+  },
+  {
+   "gi": 148,
+   "tipo": null,
+   "azione": "🏃 Scatto in profondità e cross basso",
+   "n": 18,
+   "min": 0.119,
+   "max": 0.1334,
+   "fuori": 0,
+   "ultimo": 0.131
+  },
+  {
+   "gi": 149,
+   "tipo": null,
+   "azione": "⚡ Ricevi e scatta in profondità",
+   "n": 20,
+   "min": 0.0961,
+   "max": 0.1173,
+   "fuori": 0,
+   "ultimo": 0.1145
+  },
+  {
+   "gi": 150,
+   "tipo": null,
+   "azione": "🌀 Dribbling provocatorio — il fallo c'è!",
+   "n": 18,
+   "min": 0.1105,
+   "max": 0.1412,
+   "fuori": 0,
+   "ultimo": 0.1412
+  },
+  {
+   "gi": 151,
+   "tipo": null,
+   "azione": "⚡ Arriva di sprint sulla ribattuta",
+   "n": 22,
+   "min": 0.108,
+   "max": 0.1678,
+   "fuori": 0,
+   "ultimo": 0.1678
+  },
+  {
+   "gi": 152,
+   "tipo": null,
+   "azione": "📋 Schema a tre — dai, ricevi, tira",
+   "n": 21,
+   "min": 0.0921,
+   "max": 0.1187,
+   "fuori": 0,
+   "ultimo": 0.0969
+  },
+  {
+   "gi": 153,
+   "tipo": null,
+   "azione": "💥 Bordata potente",
+   "n": 21,
+   "min": 0.1135,
+   "max": 0.1396,
+   "fuori": 1,
+   "ultimo": 0.1396
+  },
+  {
+   "gi": 154,
+   "tipo": null,
+   "azione": "🌀 Dribbling individuale feroce",
+   "n": 18,
+   "min": 0.1118,
+   "max": 0.1422,
+   "fuori": 0,
+   "ultimo": 0.1422
+  },
+  {
+   "gi": 155,
+   "tipo": null,
+   "azione": "🧠 Anticipi la giocata avversaria",
+   "n": 26,
+   "min": 0.1069,
+   "max": 0.1512,
+   "fuori": 8,
+   "ultimo": 0.1215
+  },
+  {
+   "gi": 156,
+   "tipo": null,
+   "azione": "🎯 Lancio in profondità perfetto",
+   "n": 20,
+   "min": 0.1173,
+   "max": 0.1463,
+   "fuori": 0,
+   "ultimo": 0.1306
+  },
+  {
+   "gi": 157,
+   "tipo": null,
+   "azione": "🤸 Gettati sulla traiettoria",
+   "n": 23,
+   "min": 0.1134,
+   "max": 0.1579,
+   "fuori": 7,
+   "ultimo": 0.1142
+  },
+  {
+   "gi": 158,
+   "tipo": null,
+   "azione": "🔙 Smarcati per ricevere",
+   "n": 21,
+   "min": 0.0879,
+   "max": 0.1381,
+   "fuori": 0,
+   "ultimo": 0.1381
+  },
+  {
+   "gi": 159,
+   "tipo": null,
+   "azione": "⚽ Taglio preciso sul palo lontano",
+   "n": 21,
+   "min": 0.1094,
+   "max": 0.1321,
+   "fuori": 0,
+   "ultimo": 0.1321
+  },
+  {
+   "gi": 160,
+   "tipo": null,
+   "azione": "⚡ Tiro immediato prima che esca",
+   "n": 25,
+   "min": 0.1188,
+   "max": 0.1349,
+   "fuori": 0,
+   "ultimo": 0.1349
+  },
+  {
+   "gi": 161,
+   "tipo": null,
+   "azione": "📐 Punizione a rientrare",
+   "n": 28,
+   "min": 0.1071,
+   "max": 0.1749,
+   "fuori": 17,
+   "ultimo": 0.1071
+  },
+  {
+   "gi": 162,
+   "tipo": null,
+   "azione": "🎯 Esterno piede preciso",
+   "n": 26,
+   "min": 0.098,
+   "max": 0.1175,
+   "fuori": 0,
+   "ultimo": 0.1067
+  },
+  {
+   "gi": 163,
+   "tipo": null,
+   "azione": "💥 Collo pieno potente",
+   "n": 27,
+   "min": 0.116,
+   "max": 0.2027,
+   "fuori": 8,
+   "ultimo": 0.146
+  },
+  {
+   "gi": 164,
+   "tipo": null,
+   "azione": "🌀 Rientra e tira col sinistro",
+   "n": 27,
+   "min": 0.111,
+   "max": 0.1246,
+   "fuori": 0,
+   "ultimo": 0.1151
+  },
+  {
+   "gi": 165,
+   "tipo": null,
+   "azione": "🌀 Rientra e tira col destro",
+   "n": 23,
+   "min": 0.1138,
+   "max": 0.132,
+   "fuori": 0,
+   "ultimo": 0.1319
+  },
+  {
+   "gi": 166,
+   "tipo": null,
+   "azione": "🌀 Slalom completato e tiro",
+   "n": 21,
+   "min": 0.1101,
+   "max": 0.1477,
+   "fuori": 0,
+   "ultimo": 0.1477
+  },
+  {
+   "gi": 167,
+   "tipo": null,
+   "azione": "🦵 Controbalzo secco al volo",
+   "n": 21,
+   "min": 0.1108,
+   "max": 0.1399,
+   "fuori": 0,
+   "ultimo": 0.1399
+  },
+  {
+   "gi": 168,
+   "tipo": null,
+   "azione": "🛡️ Tackle duro — rischio rosso",
+   "n": 24,
+   "min": 0.0189,
+   "max": 0.1406,
+   "fuori": 9,
+   "ultimo": 0.1406
+  },
+  {
+   "gi": 169,
+   "tipo": null,
+   "azione": "💥 Tiro da distanza sul palo lontano",
+   "n": 20,
+   "min": 0.1143,
+   "max": 0.1784,
+   "fuori": 3,
+   "ultimo": 0.1784
+  },
+  {
+   "gi": 170,
+   "tipo": null,
+   "azione": "🔥 Tiro di rabbia — per i tifosi",
+   "n": 18,
+   "min": 0.1114,
+   "max": 0.1448,
+   "fuori": 0,
+   "ultimo": 0.1448
+  },
+  {
+   "gi": 171,
+   "tipo": null,
+   "azione": "✈️ Stacco in corsa potente",
+   "n": 23,
+   "min": 0.1077,
+   "max": 0.1343,
+   "fuori": 0,
+   "ultimo": 0.1089
+  },
+  {
+   "gi": 172,
+   "tipo": null,
+   "azione": "🦵 Tiro sul palo più lontano",
+   "n": 23,
+   "min": 0.1097,
+   "max": 0.159,
+   "fuori": 0,
+   "ultimo": 0.159
+  },
+  {
+   "gi": 173,
+   "tipo": null,
+   "azione": "🎯 Cucchiaio a giro angolato",
+   "n": 23,
+   "min": 0.1102,
+   "max": 0.1548,
+   "fuori": 0,
+   "ultimo": 0.1548
+  },
+  {
+   "gi": 174,
+   "tipo": null,
+   "azione": "🎯 Verticalizzazione precisa",
+   "n": 24,
+   "min": 0.0751,
+   "max": 0.1148,
+   "fuori": 0,
+   "ultimo": 0.0887
+  },
+  {
+   "gi": 175,
+   "tipo": null,
+   "azione": "⚡ Arriva in tempo sulla ribattuta",
+   "n": 25,
+   "min": 0.1073,
+   "max": 0.156,
+   "fuori": 0,
+   "ultimo": 0.1532
+  },
+  {
+   "gi": 176,
+   "tipo": null,
+   "azione": "🌀 Sterzata d'esterno verso il fondo",
+   "n": 27,
+   "min": 0.1428,
+   "max": 0.169,
+   "fuori": 0,
+   "ultimo": 0.1617
+  },
+  {
+   "gi": 177,
+   "tipo": null,
+   "azione": "🌀 Sterzata esterna e fuga verso il fondo",
+   "n": 25,
+   "min": 0.1009,
+   "max": 0.1558,
+   "fuori": 0,
+   "ultimo": 0.1061
+  },
+  {
+   "gi": 178,
+   "tipo": null,
+   "azione": "⚡ Sterzata d'esterno e brucia il terzino",
+   "n": 26,
+   "min": 0.1402,
+   "max": 0.1594,
+   "fuori": 0,
+   "ultimo": 0.1404
+  },
+  {
+   "gi": 179,
+   "tipo": null,
+   "azione": "↩️ Dai e vai in verticale",
+   "n": 24,
+   "min": 0.093,
+   "max": 0.1185,
+   "fuori": 0,
+   "ultimo": 0.1007
+  },
+  {
+   "gi": 180,
+   "tipo": null,
+   "azione": "🔺 Combinazione stretta e tiro",
+   "n": 21,
+   "min": 0.1196,
+   "max": 0.1581,
+   "fuori": 0,
+   "ultimo": 0.1527
+  },
+  {
+   "gi": 181,
+   "tipo": null,
+   "azione": "↔️ Lancio diagonale a cambiare fronte",
+   "n": 19,
+   "min": 0.0748,
+   "max": 0.1157,
+   "fuori": 0,
+   "ultimo": 0.0941
+  },
+  {
+   "gi": 182,
+   "tipo": null,
+   "azione": "🔄 Palla lunga a ribaltare l'azione",
+   "n": 25,
+   "min": 0.0836,
+   "max": 0.1154,
+   "fuori": 0,
+   "ultimo": 0.1154
+  },
+  {
+   "gi": 183,
+   "tipo": null,
+   "azione": "🧠 Anticipa il pallone sulla punta",
+   "n": 26,
+   "min": 0.1177,
+   "max": 0.1679,
+   "fuori": 9,
+   "ultimo": 0.1325
+  },
+  {
+   "gi": 184,
+   "tipo": null,
+   "azione": "✋ Intercetta il filtrante",
+   "n": 22,
+   "min": 0.1375,
+   "max": 0.1454,
+   "fuori": 0,
+   "ultimo": 0.1437
+  },
+  {
+   "gi": 185,
+   "tipo": null,
+   "azione": "🔁 Scarico e ricevi sul fondo",
+   "n": 22,
+   "min": 0.1081,
+   "max": 0.1176,
+   "fuori": 0,
+   "ultimo": 0.1082
+  },
+  {
+   "gi": 186,
+   "tipo": null,
+   "azione": "👟 Appoggio di prima e inserimento",
+   "n": 23,
+   "min": 0.1184,
+   "max": 0.1557,
+   "fuori": 0,
+   "ultimo": 0.1507
+  },
+  {
+   "gi": 187,
+   "tipo": null,
+   "azione": "🎯 Palla filtrante a scavalcare",
+   "n": 24,
+   "min": 0.0834,
+   "max": 0.1223,
+   "fuori": 0,
+   "ultimo": 0.1223
+  },
+  {
+   "gi": 188,
+   "tipo": null,
+   "azione": "🔀 Sposta il pallone sul lato opposto",
+   "n": 25,
+   "min": 0.0854,
+   "max": 0.1166,
+   "fuori": 0,
+   "ultimo": 0.1166
+  },
+  {
+   "gi": 189,
+   "tipo": null,
+   "azione": "🧠 Anticipa sul primo controllo",
+   "n": 23,
+   "min": 0.0598,
+   "max": 0.1308,
+   "fuori": 0,
+   "ultimo": 0.1308
+  },
+  {
+   "gi": 190,
+   "tipo": null,
+   "azione": "✋ Intercetta lo scarico centrale",
+   "n": 23,
+   "min": 0.0585,
+   "max": 0.1328,
+   "fuori": 0,
+   "ultimo": 0.1328
+  }
+ ]
+}

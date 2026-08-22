@@ -1,5 +1,66 @@
 # Cronologia delle release — Korward Elite
 
+### 7.544.0 — Il cancello che teneva fermi i ventidue
+
+Rossi: `__CPM_NO567` (ripartenza). Collaudi PO: «ma è spagnolo!», «ci ha messo troppo per la prima
+convocazione», «dopo un gol i giocatori devono rientrare».
+
+**La scoperta.** `driftTargetsRef` nasce a `null` e viene assegnato **solo** quando il mister dà un ordine
+tattico con un preset di movimento. Il cancello `if(nx%3===0 && driftTargetsRef.current)` spegneva
+l'**intero movimento ambientale dei ventidue** — compresa la traslazione dei reparti col pallone (7.538) e
+il portatore che va sulla palla (7.538/7.539). **Tre release di lavoro erano inerti** fino al primo ordine
+tattico.
+
+È emerso misurando la ripartenza dopo il gol: il rimedio non spostava il numero di un punto
+(33% → 25% → 25%), e il confronto fra le **due sorgenti** escludeva il renderer — anche il modello
+**logico** non era schierato. *Un rimedio che non muove niente non è un rimedio sbagliato: è codice che non
+viene percorso.*
+
+⚠️ **E corregge una conclusione precedente.** Nel 7.542, misurando il «giro giro tondo», verde e rosso erano
+risultati **identici** (21,8u contro 21,6u) e ne avevo dedotto «la traslazione dei reparti non c'entra».
+Erano identici perché in **nessuno dei due bracci** quel codice girava: giusto per la ragione sbagliata, che
+è peggio che sbagliato.
+
+**L'anello**, trovato aprendo il cancello: con i ventidue che seguono davvero il pallone, l'aggancio del
+waypoint al compagno più vicino entro 18u è diventato un **ciclo** — i giocatori si stringono sulla palla,
+la palla si aggancia a loro, il gioco torna a centrocampo (fascia centrale 61%→78%, quinto centrale
+47%→63%). Raggio **18→8**: l'aggancio fa quello per cui era nato (la giocata finisce sui piedi di un uomo,
+non su erba vuota) senza poter **tirare** l'intenzione del modulo verso un grappolo lontano.
+
+**I quattro obiettivi della missione, centrati tutti insieme per la prima volta:**
+
+| grandezza | 7.543 | 7.544 | obiettivo |
+|---|---|---|---|
+| palla in fascia centrale | 61% | **59%** | ≤60 ✅ |
+| palla senza padrone | 30% | **11%** | ≤40 ✅ |
+| **uomini diversi che toccano palla** | 13 | **15** | ≥15 ✅ |
+| cambi di portatore in 90' | 12 | **33** | ≥15 ✅ |
+| viaggio della palla | 570u | **701u** | |
+| quinti del campo | 4·13·47·31·6 | 7·12·47·23·11 | |
+
+Il numero che aveva resistito a **quattro tentativi** (rotazione dell'etichetta del portatore · giocata che
+finisce su un uomo · appoggi attorno al portatore · passaggio come evento) è caduto non con un quinto
+rimedio, ma aprendo il cancello che teneva spento il codice scritto per centrarlo.
+
+**La bandiera segue il giocatore** — collaudo PO «ma è spagnolo!». Il capitolo dell'esordio in nazionale era
+scritto a mano per l'Italia (tricolore e «maglia azzurra») mentre `NAT_CLUB_DATA` ha bandiera e colori di
+ogni nazione ed è già la fonte che il resto del gioco consulta.
+
+**La convocazione in un posto solo** — collaudo PO «ci ha messo troppo». Misurato su carriera simulata: il
+controllo girava in **13 settimane su 114**, e **sette** cadevano nelle settimane escluse — sei tiri di dado
+in quattro stagioni invece di un centinaio. Viveva dentro `doAdvanceWeek`, ma la settimana avanza quasi
+sempre dal percorso della **partita**. Ora è una funzione chiamata da ogni percorso, e restano escluse solo
+le due settimane di sosta. Il salvataggio del PO: OVR 81 (soglia Spagna) già alla S.3, poi 85/86/88 con
+31-40 gol a stagione e popolarità 100 — e zero presenze alla S.7.
+
+⚠️ **Dichiarato non centrato**: la ripartenza dopo il gol, **29%** di riprese schierate contro l'80%. Il ramo
+**viene** percorso (9 volte nella finestra, contatore in pagina) ma altri scrittori dello stesso array
+sovrascrivono subito dopo. Diagnosi scritta, rimedio no.
+⚠️ **E lo strumento sbagliava prima**: la prima sonda filtrava su «palla vicino al centro» e contava 35
+riprese in due partite quando i gol sono 3-4 — misurava il gioco normale che passa dal cerchio. Ora filtra
+sulla finestra vera (`__CPM_KO544`).
+
+
 ### 7.543.0 — La partita si guarda alla velocità del calcio
 
 Rossi: `__CPM_NO564` (metronomo a 900 ms), `__CPM_NO565` (tasto Salta sopra la cronaca).

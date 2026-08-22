@@ -137,7 +137,9 @@
     "colori": "node colori-539.mjs",
     "gol": "node gol-541.mjs",
     "giro": "node giro-542.mjs",
-    "sparpaglio": "node sparpaglio-542.mjs"
+    "sparpaglio": "node sparpaglio-542.mjs",
+    "ripartenza": "node ripartenza-test.mjs",
+    "camera-osc": "node camera-544.mjs"
   },
   "dependencies": {
     "playwright": "^1.48.0",
