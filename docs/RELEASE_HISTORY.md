@@ -1,6 +1,64 @@
 # Cronologia delle release — Korward Elite
 
-### 7.545 — REVOCATA: l'highlight nasce dalla cronaca (diagnosi conservata, rimedio no)
+### 7.545.0 — Il pallone arriva in rete
+
+Rosso: `__CPM_NO569`. Sonde nuove: `gol-546` (il pallone arriva in rete?), `gol3-546` (i tre palloni),
+`fatti-546` (la riga afferma un fatto: è accaduto?). Hook nuovo: `__CPM_BALL3`.
+Collaudo PO: «non si vedono i gol».
+
+**La misura che mancava.** Il 7.542 aveva spedito «gol raccontati 7/8», e quel numero è vero: misura che il
+gol abbia la sua **azione raccontata** in cronaca. Nessuno aveva mai misurato se il **pallone** ci
+arrivasse. La sonda nuova dice che arriva in area — 7,3 · 13,5 · 3,3 unità dalla linea — e **non entra** in
+due casi su tre.
+
+**I tre palloni.** Il gioco ne ha tre: il **bersaglio** (dove il gioco lo manda), il **logico** (dove il
+modello lo crede) e la **mesh** (dove lo spettatore lo vede). Finora erano misurabili solo a due a due;
+l'hook `__CPM_BALL3` li mette insieme, e il quadro si chiude subito:
+
+| | dalla linea |
+|---|---|
+| bersaglio | **3/3 a 2,0u** — ci va sempre |
+| mesh | 3,9 · **14,1** · 4,0u |
+
+La riga del gol porta `bpos:{x:98}` e il gol del microsim **riusa quella riga**: il bersaglio è giusto. È la
+mesh a non arrivarci, e il motivo sta nell'**invariante delle due sorgenti**: il gol si scrive quando il
+pallone **logico** raggiunge `x>=72`, ma la mesh in quel momento è a **45-59** — quindici-venticinque unità
+indietro — e deve coprire 40-53u nei tick che restano prima che il calcio d'inizio la richiami al centro.
+*Non un bersaglio sbagliato, non una corsa lenta: una finestra troppo corta per la distanza che la mesh ha
+ancora davanti.*
+
+**Il rimedio è un numero solo.** `kickRef` 4→6 tick, cioè ~5,4 secondi: il volo in rete ci sta, e l'attesa
+in più è quella dell'esultanza.
+
+| grandezza | prima | dopo |
+|---|---|---|
+| mesh dalla linea, caso peggiore | **14,1u** | **3,6u** |
+| gli altri due casi | 3,9 · 4,0 | 3,4 · 6,2 |
+| gol raccontati (`gol`) | 7/8 | **8/8** |
+| salto della palla fra due righe (`bg-continuity`) | 5,7u | **2,7u** |
+| ripartenze schierate | 29% | **41%** |
+
+⚠️ **Dichiarato parziale.** Sulla soglia binaria (≤6u dalla linea) resta **2/3**, perché il terzo caso
+sfiora a 6,2u. Il caso patologico è chiuso, il conteggio no.
+
+⚠️ **Un guadagno non cercato, dichiarato per quello che è.** Le ripartenze schierate salgono da 29% a 41%:
+più tempo prima del ritorno al centro è più tempo anche per schierarsi. **Osservato, non attribuito** — il
+29% viene da una misura di un'altra sessione e il riferimento non è stato girato nello stesso giro.
+
+⚠️ **Caso aperto, dal censimento dei tre palloni.** La mesh avanza a **~15 u/s a scatti** e resta **ferma
+per sette campioni** (~420ms) con il bersaglio a 33 unità. Non è il lerp che rallenta avvicinandosi: è
+ferma **lontano** dal bersaglio. Sospetto il tetto di spostamento del 7.498, la cui esenzione per il gol
+potrebbe non coprire il percorso del microsim. Se fosse, il gol entrerebbe 3/3 e cadrebbe anche il «salto
+della palla fra due righe» rimasto aperto. **Si censisce prima di toccare.**
+
+**Rituale mirato** (raggio d'azione: la finestra dopo il gol): `gol` ✅ 8/8 · `match-full` ✅ 3/3 al 90' ·
+`bg-continuity` ✅ 0% oltre mezzo campo · `career-critical` ✅ tutti gli invarianti · `ripartenza` 41%
+(sotto soglia, ma in salita dal 29%). **Saltati e dichiarati:** colori, camera-osc, framing-guard,
+camera-hands, giro, sparpaglio, possesso, battuta, parata, trama, hud-voci, europei, bg-rhythm,
+bg-decision. La modifica è un solo numero — quanti tick passano fra il gol e il ritorno al centro — e non
+tocca rendering, carriera, salvataggi, classifiche né mercato.
+
+### Tentativo revocato (22 agosto) — l'highlight nasce dalla cronaca
 
 Collaudo PO: «l'innesco degli highlight è scollegato dalla cronaca: deve esserci una catena coerente —
 evento reale → cronaca → trigger → 3D». Lavoro conservato sul ramo `claude/hl-event-driven-7545`
