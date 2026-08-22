@@ -11583,6 +11583,24 @@ function ThreeMatchView(props){
       // 3D-H2: separazione busto/fianchi — upper body lag su cambi direzione
       const torso=new THREE.Group();const hip=new THREE.Group();g.add(torso);g.add(hip);
       // 3DV-2: desatura colore maglia 20% (tessuto opaco, non fluorescente), shininess 55→16
+      /* [7.547.0 — collaudo PO, QUARTA segnalazione: «il rosso del Liverpool sembra quasi arancione»
+         · rosso __CPM_NO571] IL COLORE VIENE CONVERTITO DUE VOLTE. Il 7.529 (R5, la luce) ha introdotto
+         `renderer.outputEncoding = sRGBEncoding` sul renderer della partita — prima non c'era ne' quello
+         ne' il tonemap. Da allora Three converte l'uscita da LINEARE a sRGB, ma i colori dei kit sono
+         esadecimali che sono GIA' sRGB: la conversione avviene una seconda volta. In r128 non esiste
+         ColorManagement, quindi i colori dei materiali vanno portati in lineare a mano — e in tutto il
+         file non c'era una sola `convertSRGBToLinear`.
+         I CONTI TORNANO AL DECIMALE. Il verde di #dc2626 vale 0,149; convertito una volta di troppo:
+         1,055 * 0,149^(1/2,4) - 0,055 = 0,422. Sullo screenshot del PO ho misurato G = 0,436. Rosso e blu
+         si spostano poco (uno alto, uno basso), il verde sta dove la curva morde di piu' e QUASI TRIPLICA:
+         un rosso con del verde dentro E' arancione. E spiega perche' saturazione e luminosita' risultavano
+         CORRETTE (0,848 contro 0,827 · 0,875 contro 0,863) mentre l'occhio vedeva arancione: il difetto e'
+         solo nella TINTA, e la tinta non era fra i tre numeri che misuravo dal 7.539.
+         ⚠️ IL PO AVEVA RAGIONE SULLA DATA: «prima che lavorassi sulle luci i colori erano fantastici».
+         Nel 7.528 il renderer della partita non aveva outputEncoding. Non era il display del telefono —
+         ipotesi mia, sbagliata — ed erano cadute prima anche ACES (che anzi PROTEGGE il rosso: toglierlo
+         fa crollare il picco dal 35% al 14%), la luce verde da terra (desaturata fino al grigio: la tinta
+         non si muove) e la palette del club (sei stadi diversi, 42-43 gradi identici). */
       const _jc=new THREE.Color(col);const _jh={h:0,s:0,l:0};_jc.getHSL(_jh);_jc.setHSL(_jh.h,_jh.s*0.80,_jh.l*0.92);
       const jM=new THREE.MeshPhongMaterial({color:_jc,shininess:16});
       const sM=new THREE.MeshPhongMaterial({color:0x0d1226});
@@ -12922,8 +12940,42 @@ function ThreeMatchView(props){
        build (7.342.0 aveva corretto solo il tasto e la card). Letto UNA volta qui: `devToolsOn()` legge
        localStorage e non puo' stare dentro un loop a 60 fps. */
     const _DEVT344=(typeof devToolsOn==="function")?devToolsOn():false;
+    /* [7.547.0 — collaudo PO, QUARTA e QUINTA segnalazione sui colori: «il rosso del Liverpool sembra
+       quasi arancione», poi «il problema non e' solo sulle maglie, ma anche degli spalti, striscioni,
+       ecc» · rosso __CPM_NO571] IL COLORE VIENE CONVERTITO DUE VOLTE, SU TUTTA LA SCENA.
+       Il 7.529 (R5, la luce) ha introdotto `renderer.outputEncoding = sRGBEncoding` sul renderer della
+       partita — nel 7.528 non c'era ne' quello ne' il tonemap. Da allora Three converte l'uscita da
+       LINEARE a sRGB, ma i colori del gioco sono esadecimali che sono GIA' sRGB: la conversione avviene
+       una seconda volta. In r128 non esiste ColorManagement, quindi i colori dei materiali vanno portati
+       in lineare a mano — e in tutto il file non c'era una sola `convertSRGBToLinear`.
+       I CONTI TORNANO AL DECIMALE. Il verde di #dc2626 vale 0,149; convertito una volta di troppo:
+       1,055 * 0,149^(1/2,4) - 0,055 = 0,422. Sullo screenshot del PO: G = 0,436. Rosso e blu si spostano
+       poco (uno alto, uno basso), il verde sta dove la curva morde di piu' e QUASI TRIPLICA: un rosso con
+       del verde dentro E' arancione. E spiega perche' saturazione e luminosita' risultavano CORRETTE
+       (0,848 contro 0,827 · 0,875 contro 0,863) mentre l'occhio vedeva arancione — il difetto e' solo
+       nella TINTA, che non era fra i tre numeri misurati dal 7.539.
+       ⚠️ PRIMA STESURA BUTTATA: la conversione applicata ai soli KIT. Il PO ha corretto il raggio —
+       tribune, striscioni e cartelloni virano allo stesso modo, perche' il difetto e' del renderer, non
+       delle maglie. Un passaggio SULLA SCENA INTERA, con marcatore per materiale (`__cpm571`) perche'
+       convertire due volte sarebbe lo stesso difetto al contrario. Ogni 20 fotogrammi, cosi' prende anche
+       i materiali creati dopo (i ventidue nascono a partita avviata); col marcatore, dopo il primo giro
+       non fa lavoro.
+       ⚠️ IL PO AVEVA RAGIONE SULLA DATA: «prima che lavorassi sulle luci i colori erano fantastici».
+       Non era il display del telefono (ipotesi mia, sbagliata), e prima erano cadute anche ACES (che anzi
+       PROTEGGE il rosso: toglierlo fa crollare il picco dal 35% al 14%), la luce verde da terra
+       (desaturata fino al grigio: la tinta non si muove) e la palette del club (sei stadi, 42-43 gradi
+       identici). Cinque ipotesi mie, tutte smentite dalla misura. */
+    const _conv571=(root)=>{try{
+      if(typeof window!=='undefined'&&window.__CPM_NO571)return;
+      root.traverse((o)=>{const mm=o&&o.material;if(!mm)return;
+        (Array.isArray(mm)?mm:[mm]).forEach((m)=>{if(!m||m.__cpm571)return;m.__cpm571=1;
+          if(m.color&&m.color.convertSRGBToLinear)m.color.convertSRGBToLinear();
+          if(m.emissive&&m.emissive.convertSRGBToLinear)m.emissive.convertSRGBToLinear();});});
+    }catch(_e){}};
+    let _cf571=0;
     const loop=()=>{
       sr.current.raf=requestAnimationFrame(loop);
+      if((_cf571++%20)===0)_conv571(scene);
       const now=performance.now();const _rdt=Math.min((now-last)/1000,0.05);last=now;const dt=(typeof window!=='undefined'&&window.__CPM_FROZEN)?0:_rdt;
       /* [7.536.0] IL TEMPO DI SCENA, ESPOSTO (solo collaudo). Le sonde misuravano finestre di OROLOGIO:
          headless, sotto la contesa di CPU di una passata piena, in un secondo d'orologio la scena vive
@@ -21658,7 +21710,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
             var _cap528=_no528?45:30;
             if(_dd498>_cap528)_bt498={x:clamp(_cb498.x+_dx498/_dd498*_cap528,2,98),y:clamp(_cb498.y+_dy498/_dd498*_cap528,2,98)};
           }
-          if(/goal$/.test(String(ev.ef||""))&&!(typeof window!=='undefined'&&window.__CPM_NO528)){kickRef.current=(typeof window!=='undefined'&&window.__CPM_NO569)?4:6;kickoffSideRef.current=(ev.ef==="team_goal")?"away":"home";if(!(typeof window!=='undefined'&&window.__CPM_NO543))possTurnRef.current=(ev.ef==="team_goal")?-1:1;/* [7.532.0 NO543] il calcio d'inizio passa il turno a chi ha subito */}/* [7.545.0 — collaudo PO «non si vedono i gol», rosso __CPM_NO569] 4->6 TICK: MISURATO coi tre palloni
+          if(/goal$/.test(String(ev.ef||""))&&!(typeof window!=='undefined'&&window.__CPM_NO528)){kickRef.current=(typeof window!=='undefined'&&window.__CPM_NO569)?4:5;kickoffSideRef.current=(ev.ef==="team_goal")?"away":"home";if(!(typeof window!=='undefined'&&window.__CPM_NO543))possTurnRef.current=(ev.ef==="team_goal")?-1:1;/* [7.532.0 NO543] il calcio d'inizio passa il turno a chi ha subito */}/* [7.545.0 — collaudo PO «non si vedono i gol», rosso __CPM_NO569] 4->6 TICK: MISURATO coi tre palloni
    insieme (hook __CPM_BALL3). Il BERSAGLIO del pallone va in rete sempre, 3/3 a 2,0u dalla linea: la
    riga del gol porta bpos x98 e il gol del microsim riusa quella riga. E' la MESH a non arrivarci —
    3,9 / 14,1 / 4,0u. Il motivo sta nell'invariante delle due sorgenti: il gol si scrive quando il
