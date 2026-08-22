@@ -1,5 +1,51 @@
 # Cronologia delle release — Korward Elite
 
+### 7.545 — REVOCATA: l'highlight nasce dalla cronaca (diagnosi conservata, rimedio no)
+
+Collaudo PO: «l'innesco degli highlight è scollegato dalla cronaca: deve esserci una catena coerente —
+evento reale → cronaca → trigger → 3D». Lavoro conservato sul ramo `claude/hl-event-driven-7545`
+(commit `00d2443`). **Il ramo principale resta al 7.544.**
+
+**Il difetto è reale e misurato.** L'innesco era `nx >= hlTimes[hlIdx]`: una griglia di minuti costruita
+al calcio d'inizio, prima che la partita esistesse. Guardiano nuovo `hltrigger` con rosso `__CPM_NO568`:
+**0/7 = 0%** delle scene nasceva da un evento di cronaca.
+
+**Il rimedio funziona sul suo obiettivo e rompe un altro guardiano.** La cronaca lascia un biglietto
+(`hlWantRef`), il trigger lo legge, la tabella resta come rete con tolleranza: **6/6 = 100%** contro la
+soglia dell'80%, con al massimo 1 minuto fra la riga e la scena. Ma `bg-rhythm` cade da **1,32× a
+1,10-1,13×** in tutte e quattro le stesure provate.
+
+**Quattro stesure, quattro misure, quattro diagnosi sbagliate.**
+
+| stesura | trigger | ritmo |
+|---|---|---|
+| biglietto solo su eventi importanti o in area, rete +6 | 40% | non misurato |
+| biglietto su tutto cio' che non e' costruzione, rete +10 | **100%** | 1,12x |
+| biglietto solo in fase `pericolo`, rete +10 | 83% | 1,10x |
+| ponte riagganciato al minuto della rete | **100%** | 1,13x |
+
+Ipotesi smentite, in ordine: *(1)* rubo silenzio alla costruzione — **no**, la costruzione non si muove,
+e' lo sviluppo a rallentare; *(2)* restringere il biglietto al pericolo basta — **no**, 1,10x; *(3)* il
+cronometro corre durante le scene e ogni scena e' un buco — **no**, misurato: il clock si ferma, 0 minuti
+persi su 90; *(4)* il ponte del 7.532 forza `possTurnRef` sul minuto in calendario — vero ma non
+sufficiente, 1,13x.
+
+⚠️ **LA CAUSA, dal numero che il guardiano dice di non giudicare.** L'intervallo in fase `pericolo` passa
+da **1,13** minuti (7.545 spenta) a **3,60-4,38** in tutte e tre le varianti accese. E' li' che il rimedio
+morde, ed e' esattamente dove il biglietto viene lasciato: **la scena parte dentro il momento caldo e lo
+interrompe**. Le sequenze fitte di pericolo — quelle da un minuto l'una — vengono spezzate a meta', e il
+respiro si appiattisce su tutte le fasi. Non e' una taratura sbagliata: e' la forma dell'innesco.
+
+**La forma giusta, per la ripresa.** La scena non deve *interrompere* il momento che la giustifica ma
+*seguirlo*: il biglietto si lascia sull'evento, la scena parte quando la sequenza calda si e' **conclusa**,
+entro un paio di minuti. Resta event-driven — l'evento la giustifica — senza rubare righe alla fase.
+
+**La soglia di `bg-rhythm` non e' stata toccata.** Il guardiano `hltrigger` non e' registrato in
+`package.json`: senza il rimedio fallirebbe, e un guardiano che fallisce sul ramo sano non e' un guardiano.
+
+**Strumenti conservati sul ramo principale** (misurano, non giudicano): `fatti-546.mjs` (la riga afferma
+un fatto: e' accaduto?) e `gol-546.mjs` (il pallone arriva in rete?).
+
 ### 7.544.0 — Il cancello che teneva fermi i ventidue
 
 Rossi: `__CPM_NO567` (ripartenza). Collaudi PO: «ma è spagnolo!», «ci ha messo troppo per la prima
