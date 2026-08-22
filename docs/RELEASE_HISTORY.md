@@ -1,5 +1,63 @@
 # Cronologia delle release — Korward Elite
 
+### 7.548.0 — Il gioco si distende: tolto ciò che lo schiacciava
+
+Sonda: `possesso`. Collaudo PO: «è inutile lucidare la carrozzeria se il motore ancora non funziona».
+
+**Una regressione mia, della stessa giornata.** Il 7.546 aveva aggiunto diciassette voci di palla ferma
+**e raddoppiato il peso** dei quattro tipi che la recita sa mettere in scena. Gli eventi fermi sono saliti
+(0,7 → 3,0 a partita) ma il gioco si è **schiacciato a centrocampo** — il difetto che questa missione
+esiste per risolvere. Non l'ho visto perché `possesso` era fra i guardiani **dichiaratamente saltati**:
+seconda volta in un giorno, dopo `bg-rhythm`.
+
+**La causa era nei pesi, non nei moduli — e i pesi li avevo alzati io.** Delle diciassette voci nuove,
+quelle che **escono** vivono a centrocampo e in difesa (falli a x 58-78, punizioni difensive a x 30-40);
+le cinque che porterebbero il gioco in area (angoli per noi, x 90-93) non escono mai, perché la pesca
+ripesa sulla zona **vera** del pallone. *Avevo raddoppiato il peso di ciò che tira indietro il pallone e
+non di ciò che lo porta avanti.*
+
+**Due rimedi buttati, con la loro misura, prima di guardare nella direzione giusta:**
+
+| stesura | fascia centrale | uomini | nostra area |
+|---|---|---|---|
+| 7.547 (rotto) | 66% | 14 | 5% |
+| fase d'assalto (`attack_goal` x78→x88, difesa 25→32) | 59% | **12** | **9%** |
+| catena continua (30/60/78-84) | **68%** | 12 | 5% |
+| **revoca del moltiplicatore** | **48%** | 12 | 13% |
+
+Il 7.544 batteva **entrambe** le mie varianti.
+
+⚠️ **La lezione, ed è la seconda volta oggi** (col ritmo ne avevo bruciati quattro): **quando un numero
+peggiora dopo una mia modifica, la prima cosa da provare è disfare quella modifica**, non costruirne
+un'altra sopra.
+
+**La revoca non ripara: migliora oltre il punto di partenza.** Le voci nuove **restano** — non fanno danno
+e aggiungono varietà — sparisce solo il raddoppio.
+
+| grandezza | 7.544 | 7.547 | **7.548** |
+|---|---|---|---|
+| palla in fascia centrale | 59% | 66% | **48%** ← il più basso mai misurato |
+| quinto centrale | 49% | 50% | **39%** |
+| palla in area d'attacco | 11% | 6% | **11%** |
+| viaggio della palla | 627u | 577u | **618u** |
+| quinti del campo | 5·14·49·21·11 | 5·14·50·24·6 | **13·10·39·27·11** |
+| ritmo della cronaca | 1,32× | 1,06× | **2,03×** |
+| eventi fermi a partita | — | 3,0 | 2,7 (palla ferma 8/8) |
+
+⚠️ **Dichiarato non centrato:** uomini che toccano palla **12** contro i 14 di ieri, cambi di portatore
+**16** contro 23. Con la varianza misurata oggi su queste sonde non so se sia rumore o costo reale, e non
+fingo di saperlo.
+
+⚠️ **E il pezzo 4 è centrato per la ragione sbagliata, che nei libri conta come non centrato.** La fascia
+centrale sta sotto la soglia (48% contro ≤55) perché ho tolto un mio errore, **non** perché i reparti si
+muovano per fase. I moduli d'assalto che ho provato erano tutti peggiori. *Il numero è a posto, il motore
+no.*
+
+**Rituale** (con `bg-rhythm` dentro, da regola nuova): `bg-rhythm` ✅ **2,03×** · `bg-decision` ✅ ·
+`bg-continuity` ✅ salto mediano **0,5u** · `match-full` ✅ 3/3 al 90' · `gol` ✅ · `possesso` ✅.
+Saltati: camera, framing, colori, trama, hud-voci, europei, `career-critical` (girato verde stamattina;
+questa release cambia solo pesi di righe di cronaca).
+
 ### 7.547.0 — La cronaca ritrova il respiro, e il pallone resta in rete
 
 Rosso: `__CPM_NO569`. Collaudo PO: «è inutile lucidare la carrozzeria se il motore ancora non funziona».
