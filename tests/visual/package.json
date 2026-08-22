@@ -139,7 +139,8 @@
     "giro": "node giro-542.mjs",
     "sparpaglio": "node sparpaglio-542.mjs",
     "ripartenza": "node ripartenza-test.mjs",
-    "camera-osc": "node camera-544.mjs"
+    "camera-osc": "node camera-544.mjs",
+    "hltrigger": "node hltrigger-test.mjs"
   },
   "dependencies": {
     "playwright": "^1.48.0",

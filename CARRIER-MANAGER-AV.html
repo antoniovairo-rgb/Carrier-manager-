@@ -20092,6 +20092,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     return TRAMA_ID538[form]||TRAMA_ID538.dflt;};
   const kickRef=useRef(0);
   const kickoffRef=useRef(0),kickoffSideRef=useRef("away");
+  const hlWantRef=useRef(null),lastHlMinRef=useRef(-99);/* [7.545.0] la RICHIESTA di highlight lasciata dalla cronaca, e il minuto dell'ultima scena */
   const spRef=useRef(null);const recVarRef=useRef(0);/* [7.532.0] contatore di recita: le varianti delle battute di macchina erano legate al MINUTO (due righe nello stesso minuto = stessa variante; ogni gol ripeteva la stessa rimessa) — varieta' bg-decision 54,5%<55 *//* [7.530.0 NO537] giocata piazzata in recita: {kind,step,x,y} */
   const counterRef=useRef(null);/* [7.532.0 NO542] ribaltamento di fronte in recita: {dir,ticks,fin} — collaudo PO «il gioco e' troppo concentrato a centrocampo, non ci sono ribaltamenti di fronte» */
   const possTurnRef=useRef(1);/* [7.532.0 NO543] il TURNO di possesso: chi ha la palla ADESSO (1=casa) — la trama consuma questo, non la statistica % */
@@ -21045,7 +21046,18 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
         const _lead38=scoreRef.current.home-scoreRef.current.away;
         const _mgmt38=_lead38>=2&&nx>=78&&(hashStr((player.name||"x")+"|mg38|"+(player.season||1)+"_"+(player.week||0))%5)<3;/* seedato ~60%: mai routine fissa */
         const _subDue38=!onBenchRef.current&&!subbedOffRef.current&&!benchStart&&(context==="career"||context==="cup")&&((subOffAtRef.current!=null&&nx>=subOffAtRef.current)||_mgmt38);
-        if(!_subDue38&&hlIdx<hlTimesRef.current.length&&nx>=hlTimesRef.current[hlIdx]){
+        /* [7.545.0] IL TRIGGER LEGGE LA CRONACA, NON L'OROLOGIO. Fino a ieri: `nx>=hlTimes[hlIdx]`, cioe'
+           una griglia di minuti equidistanti costruita al calcio d'inizio — due flussi paralleli sullo
+           stesso cronometro, ed e' per questo che partiva un corner mentre la telecronaca raccontava un
+           palleggio a centrocampo. Ora la scena nasce dal BIGLIETTO che la cronaca ha appena lasciato.
+           La tabella resta come RETE, non come metronomo: se dal minuto previsto passano piu' di 6 minuti
+           senza che la cronaca produca un evento degno, la scena parte lo stesso — una partita bloccata
+           non puo' restare senza highlight, e la carriera dell'eroe dipende dalle sue occasioni.
+           Conseguenza voluta: il NUMERO di highlight smette di essere deciso in anticipo. */
+        const _w568=(typeof window!=='undefined'&&window.__CPM_NO568)?null:hlWantRef.current;
+        const _daCron568=!!(_w568&&(nx-_w568.min)<=1&&(nx-(lastHlMinRef.current|0))>=4);
+        const _rete568=nx>=(hlTimesRef.current[hlIdx]+((typeof window!=='undefined'&&window.__CPM_NO568)?0:10));
+        if(!_subDue38&&hlIdx<hlTimesRef.current.length&&(_daCron568||_rete568)){
           if(onBenchRef.current||subbedOffRef.current){setHlIdx(hi=>hi+1);}else{
             const _sc=scoreRef.current;
             const _realCtx=_sc.home>_sc.away?"winning":_sc.home<_sc.away?"losing":"drawing";
@@ -21060,6 +21072,9 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
               const _fresh79=selectContextualSituations([...SITUATIONS],1,player,_lzSeed,{scoreCtx:_realCtx,clock:nx,momentum:momentumRef.current,possession:possessionRef.current,opponentId:opponent?.id||opponent?.n||null,weatherFx:(weather&&weather.pitchFx)||null,oppRed:oppRedRef.current,ballX:((ballTargetRef.current||ballPosRef.current||{}).x),/* [7.204.0] continuità territoriale: la prossima azione nasce vicino a dove il gioco si è fermato */exclude:_used79});
               if(_fresh79.length>0)setSituations(prev=>{const c=[...prev];c[hlIdx]=_fresh79[0];return c;});
             }
+            lastHlMinRef.current=nx;
+            if(typeof window!=='undefined'&&window.__CPM_HLSRC!==undefined){try{window.__CPM_HLSRC.push({min:nx,cron:_daCron568?1:0,dec:_w568&&_daCron568?_w568.dec:null,fase:_w568&&_daCron568?_w568.fase:null,dt:_w568?(nx-_w568.min):null,sit:(situationsRef.current[hlIdx]||{}).text||null});}catch(_e){}}
+            if(_daCron568)hlWantRef.current=null;
             setBgAction(null);setPhase("hl_intro");// COERENZA: spegni la cronaca BG (testo+arco) entrando nell'highlight
           }
           return nx;
@@ -21216,7 +21231,17 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
            palla verso il punto di nascita della scena: l'highlight si apre DOVE il racconto ha portato il
            gioco, non dal nulla. Il turno passa alla squadra della scena (attacco=nostro, difesa=loro). */
         if(!(typeof window!=='undefined'&&window.__CPM_NO544)&&!_inHL77&&kickoffRef.current<=0&&!pendingGoalRef.current&&!counterRef.current){
-          const _nt544=(hlTimesRef.current||[])[hlIdx];
+          /* [7.545.0] IL PONTE SEGUE LA RETE, NON LA TABELLA. Il ponte nasce nel 7.532 per far aprire
+             la scena DOVE il racconto ha portato il gioco, e per farlo forza `possTurnRef` due minuti
+             prima del minuto in CALENDARIO. Con l'innesco event-driven quel minuto non e' piu' quando
+             la scena parte: il ponte scortava la palla verso una scena che sarebbe nata altrove, e la
+             forzatura del turno cadeva in momenti scollegati — il turno decide la FASE, e la fase e'
+             cio' che il ritmo misura (bg-rhythm 1,32x -> 1,12x). Quando la scena nasce dalla cronaca
+             il ponte non serve: la scena si apre dove il racconto sta gia' portando il gioco, per
+             costruzione. Resta solo per le scene che arrivano dalla RETE DI SICUREZZA, e quindi si
+             arma sul minuto della rete (+10), non su quello della tabella. */
+          const _rete544=(typeof window!=='undefined'&&window.__CPM_NO568)?0:10;
+          const _nt544=(()=>{const t=(hlTimesRef.current||[])[hlIdx];return t==null?null:t+_rete544;})();
           if(_nt544!=null&&clockRef.current>=_nt544-2&&clockRef.current<_nt544&&ponteIdxRef.current!==hlIdx){
             ponteIdxRef.current=hlIdx;
             const _s544=situations[hlIdx];
@@ -21798,6 +21823,16 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
               incalza in area, si prende tempo in costruzione. */
            const _cool501=(typeof window!=='undefined'&&window.__CPM_NO501)?3:(_fase501==="pericolo"?2:_fase501==="sviluppo"?3:5);
            bgCoolRef.current=(typeof window!=='undefined'&&window.__CPM_NO490)?3:(_imp?7:_cool501);
+           /* [7.545.0 direttiva PO «l'innesco degli highlight e' scollegato dalla cronaca: deve esserci
+              una catena evento reale → cronaca → trigger highlight → 3D»] LA CRONACA LASCIA LA RICHIESTA.
+              Qui la riga e' appena stata scritta e si sa TUTTO di lei: se e' importante (`_imp`: gol,
+              rosso, palo, rigore, parata, un tiro nelle statistiche), in che fase e' la partita, dove sta
+              il pallone. Se merita una scena, si lascia il biglietto; a raccoglierlo e' il sito del
+              trigger, che fino a ieri guardava solo l'orologio. Rosso __CPM_NO568. */
+           if(!(typeof window!=='undefined'&&window.__CPM_NO568)){
+             const _mer568=_imp||_fase501!=="costruzione"||/attack_goal|defend_goal|recover/.test(String(_dec499||""));
+             if(_mer568)hlWantRef.current={min:nx,dec:_dec499||null,fase:_fase501||null,bx:(ev.bpos?ev.bpos.x:null),by:(ev.bpos?ev.bpos.y:null),ef:ev.ef||null,imp:!!_imp};
+           }
            if(typeof window!=='undefined'&&window.__CPM_IMP490!==undefined){try{const _w=(window.__CPM_IMP490=window.__CPM_IMP490||[]);if(_w.length<200)_w.push({m:nx,imp:!!_imp,t:Math.round(performance.now())});}catch(_e){}}}
           tcCountRef.current++;
           /* ⚠️ RITARDO E FREQUENZA CORRETTI DOPO LA MISURA: la prima stesura usava 950 ms e una riga su
