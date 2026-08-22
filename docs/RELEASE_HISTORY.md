@@ -1,5 +1,58 @@
 # Cronologia delle release — Korward Elite
 
+### 7.546.0 — Gli eventi fermi esistono
+
+Sonda nuova: `fermi-547`. Registro: `sp` e `at`. Pezzo 5 della roadmap.
+
+**Il censimento ha ribaltato la diagnosi.** La baseline `fatti-546` diceva «palla ferma 0/4» e ne avevo
+dedotto che la recita non funzionasse. **Falso, e lo sbaglio era nello strumento**: classificavo le righe
+dal *testo*, pescando frasi che *nominano* un corner senza aprire nessuna recita. Col marcatore vero
+(`sp` nel registro) il numero è l'opposto: **quando una riga di palla ferma esce, il pallone si ferma 11
+volte su 11**. La recita del 7.530 funziona.
+
+**Il difetto è che le righe non escono.** Le righe `sp` pesavano 11,5 su 381 = **3,0%**, cioè 0,78 attese a
+partita — e la misura ne ha contate 0,7. *Modello e strumento concordano, il che valida entrambi.*
+
+**Non ho gonfiato i pesi.** Per arrivare a 8 a partita coi soli moltiplicatori servirebbe **10,2×** su
+sette frasi, e la cronaca diventerebbe una filastrocca. Medicina del 7.532: allargare il repertorio.
+Diciassette voci nuove, più un moltiplicatore 2× sui quattro tipi che la recita sa mettere in scena,
+**rigore escluso** — resta raro apposta, la recita ambientale non segna mai.
+
+| grandezza | prima | dopo |
+|---|---|---|
+| eventi fermi a partita | 0,7 | **3,0** |
+| di cui il pallone si ferma davvero | — | **9/9 = 100%** |
+| peso delle righe di palla ferma | 3,0% | 19,5% |
+| voci di palla ferma nel repertorio | 7 | **24** |
+
+**Una stesura buttata, con la sua misura.** Le prime quattordici voci coprivano attacco, centrocampo e la
+nostra area e **nessuna il ripiegamento**; col 3×, `bg-decision` è caduto a **48%** (soglia 60) con
+`retreat 0/8`. *Allargare un repertorio in modo sbilanciato affama le famiglie che non si toccano.*
+Corretto con tre voci in ripiegamento e 3×→2×: **60,7%**, retreat 3/5, varietà 76%→**89%**.
+
+⚠️ **Dichiarato non centrato:** obiettivo ≥8 a partita, raggiunto 3,0. E il motivo è **misurato**: i
+**corner per noi restano a zero**. Le loro righe vivono a x 90-93 e la pesca ripesa ogni riga sulla zona
+*vera* del pallone — se in area d'attacco non ci arriva, non escono mai. È lo stesso muro che ferma il
+pezzo 6. **Il pezzo 5 è limitato dal pezzo 4**, che perciò passa davanti nella roadmap.
+
+⚠️⚠️ **Una regressione mia, in produzione da stamattina, trovata misurando il riferimento.**
+`bg-rhythm` sulla **7.545 già spedita** vale **1,06×** contro soglia 1,30 — prima della 7.545 era 1,32×.
+L'ha rotto il rimedio del gol (`kickRef` 4→6): con tre-quattro gol a partita sono sei-otto righe su
+venticinque che cambiano fase. **Non l'ho visto perché avevo messo `bg-rhythm` fra i guardiani
+dichiaratamente saltati** del rituale mirato, giudicando che due tick dopo il gol non toccassero il
+respiro della cronaca. È il costo del rituale mirato, e stavolta si è materializzato davvero.
+
+**Regola cambiata:** `bg-rhythm` entra nel rituale di **qualsiasi** modifica che tocchi la partita — oggi
+ha reagito a due rimedi indipendenti (l'innesco degli highlight e la finestra del gol).
+
+Questo pezzo **non aggrava: migliora** il numero rotto, 1,06× → 1,14×. Il ritmo è la priorità della
+prossima release, sopra il resto della roadmap.
+
+**Rituale** (con `bg-rhythm` dentro, da ora): `bg-decision` ✅ 60,7% · `bg-continuity` ✅ 0% ·
+`match-full` ✅ 3/3 · `gol` ✅ 6/7, salto 11u→8u · `bg-rhythm` ❌ 1,14× (in salita da 1,06). Saltati:
+colori, camera, framing, giro, sparpaglio, possesso, trama, hud-voci, europei, `career-critical` (girato
+verde sulla 7.545 poche ore fa; questo pezzo tocca solo la tabella della cronaca).
+
 ### 7.545.0 — Il pallone arriva in rete
 
 Rosso: `__CPM_NO569`. Sonde nuove: `gol-546` (il pallone arriva in rete?), `gol3-546` (i tre palloni),
