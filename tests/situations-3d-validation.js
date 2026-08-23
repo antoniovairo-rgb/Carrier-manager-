@@ -65,16 +65,33 @@ const rzIdx=findLine(/const _rz=\(Math\.random\(\)-\.5\)/);
 // normalizzazione della DURATA sulla distanza, che fa parte della traiettoria e va valutata anche qui.
 let arcEnd=-1;for(let i=rzIdx;i<rzIdx+220;i++){if(/ARC_BLOCK_END/.test(L[i])){
   // dal marcatore si avanza fino alla graffa che CHIUDE il blocco di normalizzazione (riga di sola parentesi)
-  for(let j=i;j<i+24;j++){if(/^\s*\}\s*$/.test(L[j])){arcEnd=j;break;}}
+  // [7.554.0] la graffa che chiude il blocco puo' essere INCOLLATA a un commento: dal 7.512.0 la riga e'
+  //   `...guardia dell'else-chain. */}` e il vecchio schema (riga di SOLA parentesi) non la vedeva piu'.
+  //   L'estrattore moriva col FATAL e il check a valle ereditava il JSON del giro precedente — sei giorni
+  //   di verde falso in locale contro il rosso vero in CI. Ora si accetta anche la graffa a fine riga.
+  for(let j=i;j<i+24;j++){if(/^\s*\}\s*$/.test(L[j])||/\*\/\}\s*$/.test(L[j])){arcEnd=j;break;}}
   break;}}// finestra 220: il blocco-arco cresce a ogni rifinitura delle traiettorie (F4/F5/F6, 7.213-7.216) — se e troppo stretta l'estrazione fallisce e la suite muore con un FATAL invece di validare
 if(arcEnd<0){console.error('FATAL: ramo freekick dell\'arco non trovato — il blocco potrebbe essere cambiato');process.exit(1);}
 const arcBlock=L.slice(rzIdx,arcEnd+1).join('\n');
+/* [7.554.0] IL VOCABOLARIO DEI GESTI ENTRA NEL MODELLO. Dal 7.534 il blocco-arco chiede a `gestoDi(fam,var)`
+   la FORMA del volo (`prof`: tesa · campana · null) — e nel sandbox del modello quella funzione non esisteva:
+   `computeArc ha lanciato: gestoDi is not defined`, 218 combinazioni su 573. Restava invisibile perche' il
+   check a valle rileggeva un JSON vecchio di sei giorni. Ora il vocabolario si ESTRAE DAL SORGENTE come tutto
+   il resto (niente copia a mano che marcisce): se domani una variante cambia profilo, il modello lo segue. */
+const gIdx=findLine(/^\s*const GESTI=\{/);
+if(gIdx<0){console.error('FATAL: vocabolario GESTI non trovato nel sorgente');process.exit(1);}
+let gEnd=-1;for(let i=gIdx;i<gIdx+40;i++){if(/const gestoDi=/.test(L[i])){gEnd=i;break;}}
+if(gEnd<0){console.error('FATAL: gestoDi non trovato dopo GESTI');process.exit(1);}
+let gClose=-1;for(let i=gEnd;i<gEnd+8;i++){if(/return \(varn&&f\[varn\]\)\|\|f\.base\|\|null;\};/.test(L[i])){gClose=i;break;}}
+if(gClose<0){console.error('FATAL: chiusura di gestoDi non trovata');process.exit(1);}
+const gestiBlock=L.slice(gIdx,gClose+1).join('\n');
 function computeArc(t,variant,playerY,rnd,playerX=50){
   // arcBlock usa Math.random(): lo shadowiamo passandolo come parametro a una IIFE
   // (niente "var Math" nello scope esterno → evita il trap di hoisting che lo rende undefined).
   const fn=`(function(t,P,AWAY_GOAL_X,RND){
     var ballArcH=0,ballArcDur=0,ballArcTgtX=0,ballArcTgtZ=0,ballArcT=0,ballArcActive=false,ballArcTgtY=0.65;/* [7.215.0] altezza d'arrivo dell'arco */
     var clamp=function(v,a,b){return Math.max(a,Math.min(b,v));};/* F4/F5: l'arco reale usa clamp (traiettoria=conseguenza della DECISIONE) → va fornito nello scope eval */
+    ${gestiBlock}
     (function(Math){
       ${arcBlock}
     })(Object.assign(Object.create(globalThis.Math),{random:RND}));
@@ -88,7 +105,17 @@ const guards=[];
 const guard=(name,ok)=>guards.push({name,ok});
 guard('AWAY_GOAL_X=46 nel sorgente', /const AWAY_GOAL_X=46/.test(src));
 guard('G2X=(gx-50)', /G2X=gx=>\(gx-50\)/.test(src));
-guard('parabola y=0.65+sin(u*PI)*ballArcH', /ball\.position\.y=0\.65\+Math\.sin\(u\*Math\.PI\)\*ballArcH/.test(src));
+/* [7.554.0] LA GUARDIA ERA VECCHIA, NON IL MOTORE. Dal 7.547 l'altezza dell'arco non e' piu' una sinusoide
+   scritta a mano ma un PROFILO DI PANCIA (`_belly547`): 'tesa' e 'campana' sono varianti, e in assenza di
+   profilo il valore torna esattamente a Math.sin(u*PI) — cioe' la parabola classica e' conservata come
+   DEFAULT. La guardia cercava ancora il letterale vecchio e falliva su un motore corretto.
+   Ora si asserisce l'INVARIANTE, in due pezzi: la forma dell'altezza (pancia x ampiezza + corda fra quota di
+   contatto e quota d'arrivo) e il fatto che senza profilo la pancia SIA la sinusoide. Cosi' la guardia non
+   marcisce alla prossima rifinitura del profilo, ma continua a inchiodare un cambio di forma vero.
+   ⚠️ LIMITE DICHIARATO: questo modello analitico valuta il profilo DEFAULT. Sui rami 'tesa' e 'campana' le
+   sue quote sono un'approssimazione — non un errore del motore, un limite del modello, ed e' scritto qui. */
+guard('altezza dell\'arco: pancia*ampiezza + corda contatto→arrivo', /ball\.position\.y=0\.65\+[A-Za-z0-9_$]+\*ballArcH\+\(ballArcY0-0\.65\)\*\(1-u\)\+\(ballArcTgtY-0\.65\)\*u/.test(src));
+guard('senza profilo la pancia resta sin(u*PI) (parabola classica conservata)', /:Math\.sin\(u\*Math\.PI\);/.test(src));
 guard('arco con quota di contatto e di arrivo (7.214/7.215)', /\(ballArcY0-0\.65\)\*\(1-u\)\+\(ballArcTgtY-0\.65\)\*u/.test(src));
 guard('outcome: goal→in_net/in_net_high', /hlPostArcType=\(_hv==="shot_chip"\|\|_hv==="shot_volley"\)\?"in_net_high":"in_net"/.test(src));
 guard('outcome: cross→cross_goal', /_ht==="cross"\)\{hlPostArcT=0;hlPostArcType="cross_goal"/.test(src));

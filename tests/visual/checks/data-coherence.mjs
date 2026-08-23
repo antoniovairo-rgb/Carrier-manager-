@@ -26,6 +26,15 @@ export default {
              .replace(/'\/home\/user\/Carrier-manager-\/docs\/situations_validation\.json'/g, JSON.stringify(tmpJson));
     const tmpHarness = path.join(tmpDir, '_analytic.cjs');
     fs.writeFileSync(tmpHarness, src);
+    /* [7.554.0 collaudo PO «una marea di run failed»] IL FALSO VERDE PIU' PERICOLOSO DELLA MISSIONE.
+       Questo check leggeva `situations_validation.json` DOPO aver lanciato la suite analitica — ma senza
+       cancellarlo prima. Se la suite moriva (FATAL, timeout, crash) il file RESTAVA quello del giro
+       precedente, e il check leggeva 0 fallimenti: verde. In CI, dove il checkout e' pulito e il file non
+       c'e', lo stesso identico codice andava in FAIL. MISURATO il 23 agosto: il JSON sulla macchina di
+       sviluppo era del 17 agosto — SEI GIORNI prima — e per sei giorni il gate locale ha detto ✅ leggendo
+       una risposta vecchia mentre GitHub diceva ❌. Ora il file si cancella PRIMA: se la suite non lo
+       riscrive, il check lo dice invece di ereditare un verde. */
+    try { fs.rmSync(tmpJson, { force: true }); } catch {}
     const res = spawnSync(process.execPath, [tmpHarness], { encoding: 'utf8', timeout: 120000 });
     const out = (res.stdout || '') + (res.stderr || '');
     let info = { raw: out.split('\n').filter(l => /clean:|FAIL:|scores|coverage|coerenza|catalogo/.test(l)).join(' | ') };
@@ -41,7 +50,13 @@ export default {
       fails += gBad.length;
       info = { clean: j.clean, warns: j.warns, fails: j.fails, catFails: j.catFails, guardsFailed: gBad.length, scores: j.scores };
       for (const g of gBad) issues.push(`guardia di consistenza fallita: ${g.name} — il modello analitico non rispecchia più il motore (aggiorna la guardia o correggi il sorgente)`);
-      if (fails > 0 && Array.isArray(j.worst)) for (const w of j.worst.slice(0, 10)) issues.push(`[${w.si}/${w.ai}] ${w.sit}: ${(w.issues || []).join('; ')}`);
+      /* [7.554.0] IL MESSAGGIO ERA ILLEGGIBILE. `w.issues` non e' un elenco di stringhe ma di OGGETTI, e la
+         join stampava «[object Object]»: dieci fallimenti tutti uguali e nessuno che dicesse cosa non va.
+         Un guardiano che non si riesce a leggere non protegge nessuno — e' la lezione della giornata, qui
+         applicata al testo del suo stesso referto. */
+      const _leggi = x => typeof x === 'string' ? x
+        : (x && typeof x === 'object') ? (x.msg || x.why || x.code || x.name || JSON.stringify(x)) : String(x);
+      if (fails > 0 && Array.isArray(j.worst)) for (const w of j.worst.slice(0, 10)) issues.push(`[${w.si}/${w.ai}] ${w.sit}: ${(w.issues || []).map(_leggi).join('; ')}`);
     } catch {
       const m = out.match(/FAIL:\s*(\d+)/); fails = m ? +m[1] : (res.status === 0 ? 0 : 1);
       if (fails > 0) issues.push('suite analitica: ' + (info.raw || 'fallimenti rilevati'));
