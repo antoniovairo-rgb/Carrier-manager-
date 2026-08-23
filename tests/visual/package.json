@@ -37,6 +37,7 @@
     "pass-mesh-direction": "node pass-mesh-direction-census.mjs",
     "delivery-arrival": "node delivery-arrival-test.mjs",
     "gk-dive-sync": "node gk-dive-sync-test.mjs",
+    "portiere": "node portiere-552.mjs",
     "camera-cut-mask": "node camera-cut-mask-test.mjs",
     "cup-final-replay": "node cup-final-replay-test.mjs",
     "pass-forward": "node pass-forward-test.mjs",
