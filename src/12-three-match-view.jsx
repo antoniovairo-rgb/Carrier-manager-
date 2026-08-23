@@ -2192,7 +2192,23 @@ function ThreeMatchView(props){
               }
             }
           }}}
-      else if(hlPostArcT>=0&&!tlOn){hlPostArcT+=aDt;/* 5.43.9: l'arco di conclusione (in_net/deflect/...) NON avanza finché il build-up è in corso (tlOn) → su conduzioni/build-up lunghi (BALL_CARRY) la palla entra DAVVERO in rete dopo la conduzione, senza che l'arco scada/confligga col ball-pin */
+      else if(hlPostArcT>=0&&!tlOn){hlPostArcT+=aDt;
+        /* [7.557.0 P0b — ANCHE LA FASE D'ESITO DICE CHI MUOVE IL PALLONE]
+           Il censimento per fase del 7.555 ha diviso il verdetto in due meta' opposte: nella CRONACA
+           l'anagrafe e' completa (2891 fotogrammi col pallone in moto, DUE senza nome: 0,07%), nella fase
+           d'ESITO no — il 44-55% del movimento e' scritto da nessuno, identico col rosso e col verde, quindi
+           un buco che c'era da prima. La causa e' semplice e strutturale: la macchina del post-arco
+           (in rete, palo, traversa, respinta, consegna del cross, uno-due, parata, fuori, dribbling) ha ~20
+           punti che scrivono `ball.position` e NON UNO porta una firma. E' la fase che il giocatore guarda
+           davvero: finche' resta anonima, «la palla sbatte a terra e poi sale» o «esito gol ma la palla non
+           e' mai arrivata» non hanno un colpevole da nominare.
+           Il rimedio non e' venti etichette sparse — si sporcherebbe ogni ramo e la prossima aggiunta
+           nascerebbe di nuovo anonima. Qui si fotografa il pallone all'INGRESSO della macchina e si
+           confronta all'USCITA: se e' cambiato, lo scrittore e' la macchina d'esito, e il nome porta con se'
+           il TIPO dichiarato (`esito:in_net`, `esito:hit_post`, ...). Una riga sola, che copre anche i rami
+           che verranno. Sola strumentazione: nessun moto cambiato. */
+        const _pa557=(ball&&!(typeof window!=='undefined'&&window.__CPM_NO557))?{x:ball.position.x,y:ball.position.y,z:ball.position.z}:null;const _pt557=hlPostArcType;/* __CPM_NO557 = rosso: nessuna firma sull'esito, l'anagrafe del 7.556 */
+        /* 5.43.9: l'arco di conclusione (in_net/deflect/...) NON avanza finché il build-up è in corso (tlOn) → su conduzioni/build-up lunghi (BALL_CARRY) la palla entra DAVVERO in rete dopo la conduzione, senza che l'arco scada/confligga col ball-pin */
         if(typeof window!=='undefined'&&window.__CPM_REC){try{window.__CPM_AR52={pat:+(+hlPostArcT).toFixed(2),ty:hlPostArcType,n:((window.__CPM_AR52&&window.__CPM_AR52.n)||0)+1};}catch(_e){}}/* [7.240.0 strumentazione permanente, solo __CPM_REC] contatore di vitalità della catena post-arco */
         if(hlPostArcType==="in_net"){
           /* [7.533.0 MP-0e — indagine 003, ipotesi H1: r.13078 sceglie in_net su `_hs===true` + famiglia
@@ -2503,7 +2519,10 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
              const _zw546=((Math.abs(ball.position.z)>0.25?ball.position.z:(ballArcTgtZ||1))>=0)?4.5:-4.5;
              ball.position.z+=(_zw546-ball.position.z)*Math.min(aDt*5,1);
              if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)&&sr.current._netLog546!==P.hlSitKey+"|wide"){sr.current._netLog546=P.hlSitKey+"|wide";try{const _n5=(window.__CPM_NET546=window.__CPM_NET546||[]);if(_n5.length<60)_n5.push({ch:"wide_slide",ht:P.hlType||null,rew:P.hlReward||null,ok:P.hlOutcomeKind||null,cert:0});}catch(_e){}}}}/* [7.251.0 gi35/54 «il pallone deve andare avanti / non deve tornare indietro»] il settle dei miss è roba d'ATTACCO: sugli HL difensivi il beaten manda la palla in avanti col contropiede e questo pull (px+16 verso la porta avversaria) la RITRASCINAVA indietro = inversione visibile. La palla difensiva è del _defTraj, il settle non la tocca */
-          if(hlPostArcT>2.5){hlPostArcT=-1;hlPostArcType=null;hlPostVY=0;hlPostVX=0;}}}
+          if(hlPostArcT>2.5){hlPostArcT=-1;hlPostArcType=null;hlPostVY=0;hlPostVX=0;}}
+        if(_pa557&&ball&&(Math.abs(ball.position.x-_pa557.x)+Math.abs(ball.position.y-_pa557.y)+Math.abs(ball.position.z-_pa557.z))>1e-6){
+          const _nm557='esito:'+(_pt557||'?');
+          if((sr.current._ws524=16)&&sr.current._bj0){sr.current._bj0.src=_nm557;sr.current._bj0.srcs.push(_nm557);}}}
       /* [7.214.0 revisione PO — le azioni aeree partivano con la palla a terra] QUOTA DI CONTATTO.
          Fuori dall'arco il pallone tornava SEMPRE a 0.65 (sull'erba). Nelle situazioni che il motore classifica
          `aerial` (cross che pende, corner, rimbalzo, sponda) questo è il difetto che il PO vede: si sceglie una
