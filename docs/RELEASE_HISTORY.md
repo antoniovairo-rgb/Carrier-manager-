@@ -1,5 +1,68 @@
 # Cronologia delle release — Korward Elite
 
+### 7.549.0 — Le due giocate che mancavano
+
+Rosso: `__CPM_NO573`. Strumenti nuovi: `scala-549` (la curva del girotondo a quattro scale), `chi-549`
+(chi tocca il pallone, non quanti), `tools/mappa.mjs`, `tools/bisect.sh`.
+Collaudi PO: «vedo ancora girotondo, addirittura in area avversaria», «non ci sono schemi», «i portatori
+sono sempre gli stessi», «una marea di run failed, come mai?».
+
+**Il difetto isolato dalla curva a quattro scale.** Dentro **una** giocata il pallone va dritto
+(rettilineità 0,63); su **due** torna al punto di partenza **4 volte su 4**. Non sono le giocate a essere
+brutte: *si annullano a vicenda*, e il gioco non accumula niente.
+
+⚠️ **E la sonda base diceva che andava tutto bene.** Misurava finestre di 3 secondi e dava 0,71. Il PO
+guarda la partita per minuti. La trappola era già nei libri — la stessa sonda a 3 s dava 0,90 e a 10 s
+0,40 — e ci sono ricascato.
+
+**Due stesure buttate, con la loro misura.**
+
+| stesura | rettilineità (2 giocate) | palla senza padrone | cambi |
+|---|---|---|---|
+| 7.548 | 0,42 | 22% | 16 |
+| vietato il secondo scarico | **0,49** ✅ | **55%** ❌ | **6** ❌ |
+| + ripartenza corta | — | 48% ❌ | 9 ❌ |
+| **repertorio allargato** | **0,50** ✅ | **22%** ✅ | **18** ✅ |
+
+**La causa non era la taratura: il repertorio aveva due voci, entrambe agli estremi** — indietro di 7-19
+unità, oppure lancio dentro l'area a x 80-88. Niente in mezzo. Vietando l'appoggio, il pallone finiva per
+forza nel lancio lungo e atterrava dove non c'era nessuno. *Con due opzioni agli estremi uno schema non è
+nemmeno rappresentabile.*
+
+**Le due giocate scritte:** **verticalizzazione corta** (avanti 8-18u nel proprio corridoio — il pallone
+progredisce restando a portata di un compagno) al 30%, e **cambio di fronte** (stessa altezza, corridoio
+opposto — la giocata che apre l'area quando la difesa è schierata) al 16%. Il lancio in area resta ma
+smette di essere l'unica alternativa all'indietro.
+
+| grandezza | 7.548 | **7.549** | soglia |
+|---|---|---|---|
+| il pallone torna dov'era (2 giocate) | 4/4 | **2/4** | ≤2/4 ✅ |
+| rettilineità (2 giocate) | 0,42 | **0,50** | ≥0,45 ✅ |
+| rettilineità (1 giocata) | 0,63 | **0,73** | non peggiorare ✅ |
+| girotondo (1 giocata) | 12% | **7%** | |
+| viaggio del pallone | 618u | **639u** | il massimo mai misurato |
+| cambi di portatore | 16 | **18** | ≥15 ✅ |
+
+⚠️ **IL QUALITY GATE È INSTABILE, E L'HO MISURATO.** Il gate di GitHub falliva a ogni push **da giorni** e
+non l'avevo mai guardato in una giornata intera di release. Riprodotto in locale: 13 categorie su 14
+verdi, fallisce solo `motion` — «palla in area ma difensori a 26,9 m contro soglia 24». **Tre giri sullo
+stesso identico codice: ❌ ❌ ✅.** Il gate oscilla perché il difetto vive **a un passo dalla soglia**: è
+il modo peggiore in cui un controllo può fallire — abbastanza spesso da diventare rumore, non abbastanza
+da sembrare un difetto. Il bisect (❌✅✅❌✅) non trovava quattro colpevoli: fotografava l'oscillazione.
+
+⚠️ **Due mie letture smentite prima di arrivarci**, entrambe dichiarate al PO *prima* di verificarle:
+«il gate peggiora perché la palla arriva più spesso in area» (smentita dal pattern non monotono) e «il
+gate è ripetibile» (dichiarata su **due** giri, smentita dal terzo). *Ci si ferma al secondo giro solo
+quando i primi due concordano e il numero non decide una spedizione.*
+
+⚠️ **Il difetto che il gate segnala è reale.** 27 metri fra il pallone in area e il difensore più vicino
+sono la misura, in metri, del difetto che l'audit di oggi ha messo al centro: **il pallone non ha un
+padrone, quindi nessuno glielo contende**. È la fase 1 della roadmap nuova.
+
+**Rituale:** `possesso` ✅ · `scala-549` ✅ entrambe le soglie · `bg-rhythm` ✅ · `bg-decision` ✅ ·
+`bg-continuity` ✅ · `match-full` ✅ · `gol` ✅. Il `validate-situations` **non blocca**: oscilla sullo
+stesso codice, e va reso stabile prima di poter essere una porta.
+
 ### 7.548.0 — Il gioco si distende: tolto ciò che lo schiacciava
 
 Sonda: `possesso`. Collaudo PO: «è inutile lucidare la carrozzeria se il motore ancora non funziona».
