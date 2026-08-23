@@ -28,7 +28,7 @@ const MISURA = () => {
 /* (a) apertura delle scene */
 const page = await b.newPage({ viewport: { width: 412, height: 915 } });
 await installCdnRoutes(page);
-await page.addInitScript(() => { window.__CPM_GLB = false; window.__CPM_CINE = 1; });
+await page.addInitScript(r => { window.__CPM_GLB = false; window.__CPM_CINE = 1; window.__CPM_STG555 = { n: 0, dif: 0, off: 0, app: 0, cop: 0, noMid: 0 }; if (r) window.__CPM_NO555 = 1; }, process.env.CPM_NO555 ? 1 : 0);
 const { total } = await openMatch(page, port); await sleep(500);
 const scene = [], tardi = [];
 const passo = Math.max(1, Math.floor(total / N));
@@ -36,9 +36,10 @@ for (let gi = 0; gi < total; gi += passo) {
   let ok = false; try { ok = await page.evaluate(g => window.__CPM_FORCE_SIT(g, true), gi); } catch (e) {}
   if (!ok) continue;
   await sleep(300);
-  const r = await page.evaluate(MISURA); if (r) scene.push(r);
+  const dif = await page.evaluate(() => (window.__CPM_STG555 || {}).lastDef);
+  const r = await page.evaluate(MISURA); if (r) scene.push({ ...r, dif });
   await sleep(1300);
-  const r2 = await page.evaluate(MISURA); if (r2) tardi.push(r2);
+  const r2 = await page.evaluate(MISURA); if (r2) tardi.push({ ...r2, dif });
 }
 await page.close();
 
@@ -68,6 +69,8 @@ const stampa = (nome, R) => {
 console.log(`\n=== L'APPOGGIO — quanti compagni sono giocabili dal portatore ===`);
 stampa("APERTURA DELLE SCENE", scene);
 stampa("APERTURA + 1,6 s (i giocatori hanno camminato)", tardi);
+stampa("APERTURA + 1,6 s — SOLO SCENE OFFENSIVE (dove il rimedio si applica)", tardi.filter(r => !r.dif));
+stampa("APERTURA + 1,6 s — solo scene DIFENSIVE (marginali per disegno: 16% del catalogo)", tardi.filter(r => r.dif));
 stampa("CRONACA, PARTITA VERA", cron);
 console.log(`\n  Riferimento del calcio vero: con la palla in gioco un compagno sta quasi sempre entro 10-15 m,`);
 console.log(`  e due o tre sono giocabili. Un solo appoggio a 14 m non e' una squadra: e' un uomo e venti figuranti.`);

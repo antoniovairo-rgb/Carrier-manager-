@@ -13,7 +13,13 @@ const srv = await startServer(); const port = srv.address().port;
 const b = await launchBrowser();
 const page = await b.newPage({ viewport: { width: 412, height: 915 } });
 await installCdnRoutes(page);
-await page.addInitScript(r => { window.__CPM_GLB = false; window.__CPM_CINE = 1; if (r) window.__CPM_NO554 = 1; /* rosso: il padrone torna dentro la sola cronaca */ }, process.env.CPM_NO554 ? 1 : 0);
+await page.addInitScript(() => { window.__CPM_GLB = false; window.__CPM_CINE = 1; });
+/* ⚠️ [correzione 23 ago] QUESTA SONDA NON HA UNA PROVA DEL ROSSO, e prima ne millantava una: usava
+   `__CPM_NO554` dicendo «il padrone torna dentro la sola cronaca». Verificato sul sorgente: `__CPM_NO554`
+   (r.22342) spegne LA BATTUTA DEL CALCIO D'ANGOLO e non ha niente a che vedere col portatore. Un
+   interruttore che non spegne quello che dice e' peggio di nessun interruttore: fa credere che il
+   confronto rosso/verde sia stato fatto. Questa resta una BASELINE DI SOLA OSSERVAZIONE — i suoi numeri
+   valgono come fotografia dello stato, non come giudizio su un rimedio. */
 const { total } = await openMatch(page, port);
 await sleep(500);
 const righe = [];
