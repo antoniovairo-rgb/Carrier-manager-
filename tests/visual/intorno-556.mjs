@@ -36,20 +36,35 @@
    misurando SOLO SE STESSA — il suo pavimento di rumore. E' l'uso giusto al primo giro: una soglia
    piu' stretta del rumore non e' una soglia, e' un sorteggio.
 
-   SOGLIE, dichiarate PRIMA di qualunque rimedio (baseline misurata sul flusso vero il 23/8):
-     cronaca  d1     ≤  8,0 m   (baseline 11,7)     cronaca  vuoti  ≤ 20%   (baseline 49%)
-     cronaca  gioc   ≥  2       (baseline 1)        scena    att    ≤ 25 m  (baseline ~40)
-     scena    tripla ≥ 60%      (baseline da leggere sotto)
-   Scelte DOVE FANNO MALE: nessuna e' gia' centrata dalla baseline. Una soglia che passa al primo
-   colpo non ha dimostrato niente (lezione della baseline della fase 1, 23/8).
+   SOGLIE, dichiarate PRIMA di qualunque rimedio. Fra parentesi la BASELINE misurata da questa stessa
+   sonda sul flusso vero il 23/8 (2 giri x 150 s, braccio verde):
+     cronaca  d1     ≤  8,0 m   (10,8)      cronaca  vuoti  ≤ 20%   (36,1%)
+     cronaca  gioc   ≥  2       (1)         scena    d1     ≤  8,0 m (5,1  — l'unica gia' centrata)
+     scena    vuoti  ≤ 20%      (26,9%)     scena    tripla ≥ 60%    (32,6%)
+     scena    att    ≤ 25 m     (28,3)
+   Sei soglie su sette NON sono raggiunte dalla baseline: sono scelte dove fanno male. Una soglia che
+   passa al primo colpo non ha dimostrato niente (lezione della baseline della fase 1, 23/8).
 
-     CPM_CHROME=... node intorno-556.mjs [CPM_MS=60000] [CPM_GIRI=2] [CPM_ROSSO=__CPM_NO556]
+   IL SUO PAVIMENTO DI RUMORE, MISURATO (23/8, due passate a vuoto — rosso inesistente, quindi i due
+   bracci sono LO STESSO CODICE e tutto lo scarto e' rumore dello strumento):
+     CPM_MS=55000  · scena 16-17 campioni per giro → rumore 23,5 punti su «nessuno entro 12 m»: CIECA.
+     CPM_MS=150000 · cronaca 628-656 campioni  → rumore 1,51 m su d1 · 11,5 punti su «vuoti» · 2,19 su «tripla»
+                     scena     63-93 campioni  → rumore 7,3 m su d1 · 59,6 punti su «vuoti»: ANCORA CIECA,
+                     perche' UN giro su quattro ha pescato una popolazione di scene diversa (63 campioni,
+                     in maggioranza difensive) e da solo ha spostato la mediana da 5,1 a 12,4 m.
+     ⚠️ E a due giri lo strumento ha prodotto un FALSO «PEGGIORA» su `cronaca · 1º compagno` (9,28 → 10,82
+        con rumore 1,51: scarto 1,54, cioe' tre centesimi oltre la soglia) su codice IDENTICO nei due bracci.
+        Quindi: PUNTO DI ESERCIZIO = CPM_GIRI=3 e CPM_MS>=150000, e un rimedio si dichiara buono solo se
+        batte il rumore con MARGINE — non di un pelo. Il braccio SCENA va considerato non giudicante finche'
+        non si stratifica per tipo di scena (offensiva / difensiva): oggi mescola due popolazioni.
+
+     CPM_CHROME=... node intorno-556.mjs [CPM_MS=180000] [CPM_GIRI=3] [CPM_ROSSO=__CPM_NO556]
    ========================================================================== */
 import { startServer, launchBrowser, installCdnRoutes, openMatch, sleep } from './lib/harness.mjs';
 import { paragone, stampaParagone } from './lib/paragone.mjs';
 
 const MS    = +(process.env.CPM_MS || 180000);/* gli highlight sono RARI: sotto i ~180 s il braccio SCENA raccoglie 16-17 campioni e il suo rumore misurato e' 23 punti — cioe' non decide niente */
-const GIRI  = Math.max(2, +(process.env.CPM_GIRI || 2));/* due giri per colore sono il minimo: un numero non ripetuto non e' un numero (lezione paragone) */
+const GIRI  = Math.max(2, +(process.env.CPM_GIRI || 3));/* due giri per colore sono il minimo: un numero non ripetuto non e' un numero (lezione paragone) */
 const ROSSO = process.env.CPM_ROSSO || '__CPM_NO556';
 const VICINO = 12, INTORNO = 15;
 

@@ -48,6 +48,17 @@ jobs:
           npx playwright install --with-deps chromium
 
       # Test node-side (veloci, no browser): falliscono PRIMA del gate costoso (fail-fast)
+      # [7.554] IL SORGENTE E' IN FRAMMENTI, E IL FILE GENERATO NON SI MODIFICA A MANO.
+      #   Da oggi CARRIER-MANAGER-AV.html si RICOMPONE da src/ (20 frammenti, stesso scope, stessa
+      #   semantica: la concatenazione e' byte-identica). Il rischio nuovo che questo introduce e' uno solo,
+      #   e va sorvegliato qui: che qualcuno modifichi il file generato invece dei frammenti e perda il
+      #   lavoro al rebuild successivo. Questo passo e' l'unica difesa, e sta PRIMA di tutto il resto
+      #   perche' e' istantaneo e perche' se fallisce ogni altro numero del gate parla di un file
+      #   che non e' quello che qualcuno ha scritto.
+      - name: Il sorgente e i frammenti coincidono (byte per byte)
+        working-directory: .
+        run: node tools/check-src.mjs
+
       - name: Unit tests — AI Vision engine (test:vision, 28)
         run: npm run test:vision
 
