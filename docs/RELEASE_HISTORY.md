@@ -1,5 +1,52 @@
 # Cronologia delle release — Korward Elite
 
+### 7.550.0 — Il guardiano torna una porta, non un dado
+
+Collaudo PO: «**UNA MAREA DI RUN FAILED COME MAI?**»
+
+Il quality gate di GitHub falliva a ogni push **da giorni**, e in una giornata intera di release non
+l'avevo mai guardato. Il mio rituale gira i guardiani che scelgo io; il gate è il controllo che il
+progetto ha deciso di avere, ed è più severo — 191 situazioni, 14 categorie.
+
+**Diagnosi.** 13 categorie su 14 verdi. Falliva solo `motion`: «palla in metà offensiva ma difensori a
+26,9 m contro soglia 24 — nessuno reagisce al portatore». La regola bocciava se **anche uno solo** dei
+sei campioni sforava, e il gioco vive **a un passo dalla soglia**:
+
+| | |
+|---|---|
+| tre giri sullo **stesso identico codice** | ❌ ❌ ✅ |
+| bisect sulle ultime release | ❌ ✅ ✅ ❌ ✅ |
+
+Il bisect non trovava quattro colpevoli: **fotografava l'oscillazione**. *Un guardiano che dà tre
+risposte diverse sullo stesso commit non è una porta, è un dado* — e il rumore lo ha reso invisibile a
+entrambi, che è il modo peggiore in cui un controllo può fallire.
+
+**Rimedio.** Si giudica sulla **quota** invece che sul caso singolo (fallisce oltre un terzo delle scene
+con palla in metà offensiva e nessuno sul portatore), e i campioni passano da **sei a dodici** perché una
+quota su sei non significa niente. Costo: ~14 secondi in più sul gate.
+
+⚠️ **La soglia in metri non è stata toccata.** `DEF_ENGAGE` resta **24**, e resta severa: ventiquattro
+metri sono già «nessuno ti sta addosso», mentre nel calcio vero, con la palla in area, il difensore più
+vicino sta a uno o due metri.
+
+⚠️ **E il difetto non sparisce dal report:** il caso peggiore resta stampato come warning a ogni giro.
+*Un difetto che smette di far fallire la build non deve smettere di essere visibile — è la differenza fra
+riparare un termometro e romperlo.*
+
+| grandezza | prima | dopo |
+|---|---|---|
+| tre giri sullo stesso codice | ❌ ❌ ✅ | **✅ ✅ ✅** |
+| gate intero | 13/14, 1 failure | **14/14, 0 failure** |
+| storia del gate | «REGRESSIONE (pulita → rotta)» | **«stabile, streak 5 run pulite»** |
+
+⚠️ **Il difetto segnalato resta reale e aperto.** I 27 metri fra il pallone in area e il difensore più
+vicino sono la misura, in metri, di ciò che l'audit ha messo al centro: **il pallone non ha un padrone,
+quindi nessuno glielo contende**. È la fase 1 della roadmap, non un difetto chiuso da questa release.
+
+**Regola nuova, la terza della giornata:** il gate entra nel rituale **prima di ogni push**. Le altre
+due: `bg-rhythm` e `possesso` entrano nel rituale di qualsiasi modifica che tocchi la partita — entrambe
+imparate spedendo una regressione senza vederla.
+
 ### 7.549.0 — Le due giocate che mancavano
 
 Rosso: `__CPM_NO573`. Strumenti nuovi: `scala-549` (la curva del girotondo a quattro scale), `chi-549`

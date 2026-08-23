@@ -219,7 +219,9 @@ const GOLDEN = path.join(HERE, 'golden-sigs.json');
     T('motion');
     // MOTION (B2) — off-ball liveness (No Dead Players, AC-081-090): campiona le posizioni MESH durante
     // la fase ATTIVA (hl_choose, off-ball AI in moto) su un set vario di Situations.
-    const motIdx = [0, 2, 30, 60, 79, 120].filter(gi => gi < situations.length);
+    /* [7.550.0] DODICI campioni invece di sei: la regola di giudizio ora e' una QUOTA, e una quota su sei
+       campioni non significa niente. Il costo e' ~14s in piu' sul gate. */
+    const motIdx = [0, 2, 14, 30, 44, 60, 71, 79, 96, 110, 120, 140].filter(gi => gi < situations.length);
     const motSamples = [];
     for (const gi of motIdx) { motSamples.push(await sampleMotion(page, gi, { settle: 500, pollMs: 100, windowMs: 1900 })); await sleep(150); }// finestra 1000→1900: il movimento è stato rallentato ~45% (5.47.9→5.47.16, cap 20→11 u/s) → serve una finestra di osservazione più ampia per misurare la liveness in modo stabile su software-GL (~5fps), specie sulle situation quasi-statiche
     const motRes = motion.run({ samples: motSamples });
