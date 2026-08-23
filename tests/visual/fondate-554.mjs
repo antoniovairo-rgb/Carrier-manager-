@@ -80,8 +80,9 @@ for (let i = 0; i < PARTITE; i++) {
       try {
         const o = window.__CPM_OWN && window.__CPM_OWN(); if (!o || o.ph !== 'playing') return;
         const T = window.__CPM_TRACCIA, u = T[T.length - 1];
-        if (u && u.c === o.c) { u.n++; u.x = o.x; u.y = o.y; if (o.x > u.xmax) u.xmax = o.x; if (o.x < u.xmin) u.xmin = o.x; if (o.d < u.dmin) { u.dmin = o.d; u.imin = o.i; } return; }
-        T.push({ c: o.c, x0: o.x, y0: o.y, x: o.x, y: o.y, xmax: o.x, xmin: o.x, dmin: o.d, imin: o.i, n: 1 });
+        const _l = (o.i >= 10 ? 1 : 0); /* [7.554.0] lato del piu' vicino al pallone: 0-9 e l'eroe (-2) sono i nostri, 10-20 gli avversari. E' GEOMETRIA, non una dichiarazione: cosi' la sonda non e' ingannabile dalla riga che dice di aver cambiato possesso. */
+        if (u && u.c === o.c) { u.n++; u.x = o.x; u.y = o.y; if (_l !== u.l) u.lmix = 1; if (o.x > u.xmax) u.xmax = o.x; if (o.x < u.xmin) u.xmin = o.x; if (o.d < u.dmin) { u.dmin = o.d; u.imin = o.i; } return; }
+        T.push({ c: o.c, x0: o.x, y0: o.y, x: o.x, y: o.y, xmax: o.x, xmin: o.x, dmin: o.d, imin: o.i, n: 1, l: _l, lmix: 0 });
       } catch (_e) {}
     }, 60);
   });
@@ -125,6 +126,14 @@ for (const { righe, recite: rc, tr } of tutte) {
       const fermo = w.some(s => Math.hypot(s.x - s.x0, s.y - s.y0) < FERMO_U && s.n >= 3);
       claim.push({ k: 'fermo', ok: fermo, nota: fermo ? 'la palla si ferma' : 'la palla non si ferma mai' });
     }
+    /* [7.554.0] LE RIGHE DI RECUPERO ENTRANO NEL GIUDIZIO. `poss` e' nel registro dal 7.554: una riga che
+       dichiara di spostare il possesso e' verificabile come tutte le altre — il turno di possesso nella
+       traccia deve cambiare entro la finestra. Prima erano incassate in MUTA per difetto, ed erano 31 su
+       223 del repertorio: la sonda dichiarava il proprio limite invece di misurarlo. */
+    if (r.poss) {
+      const l0 = qui.l, cambia = qui.lmix === 1 || w.some(s => s.l !== l0 || s.lmix === 1);
+      claim.push({ k: 'possesso', ok: cambia, nota: cambia ? 'il pallone cambia lato' : 'il pallone non cambia lato' });
+    }
     if (!claim.length) { C.MUTA.push({ min: r.min, pd: r.pd, rec: r.rec, at: r.at }); continue; }
     const tutti = claim.every(c => c.ok);
     (tutti ? C.FONDATA : C.SMENTITA).push({ min: r.min, pd: r.pd, rec: r.rec, why: claim.map(c => `${c.k}: ${c.nota}`).join(' · ') });
@@ -139,8 +148,7 @@ console.log(`  righe SCARTATE dal giudizio   ${scartate}     (minuto assente o c
 console.log(`  FONDATA   ${String(C.FONDATA.length).padStart(4)}/${righeTot} = ${p(C.FONDATA.length).padStart(6)}   marcatore + fatto visto nella traccia`);
 console.log(`  SMENTITA  ${String(C.SMENTITA.length).padStart(4)}/${righeTot} = ${p(C.SMENTITA.length).padStart(6)}   marcatore ma il fatto non si vede`);
 console.log(`  MUTA      ${String(C.MUTA.length).padStart(4)}/${righeTot} = ${p(C.MUTA.length).padStart(6)}   nessun marcatore: niente da verificare`);
-console.log(`\n  ⚠️ le righe di RECUPERO cadono in MUTA per difetto: \`poss\` non entra nel registro (gioco r.21849).`);
-console.log(`     Finche' quel campo manca, la quota MUTA e' un TETTO e la quota FONDATA un PAVIMENTO.`);
+console.log(`\n  ✔ le righe di RECUPERO sono ora giudicate: \`poss\` e' nel registro dal 7.554 e il turno si verifica nella traccia.`);
 if (C.SMENTITA.length) {
   console.log('\n  smentite (prime 8):');
   C.SMENTITA.slice(0, 8).forEach(x => console.log(`    ${String(x.min).padStart(3)}'  pd=${String(x.pd).padEnd(12)} ${x.why}`));
