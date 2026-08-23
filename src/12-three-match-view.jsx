@@ -1887,6 +1887,7 @@ function ThreeMatchView(props){
         if(_useTgt||_tackleCarrier){
           const _bak=_tackleCarrier?Math.min(1,aDt*10):Math.min(1,aDt*(3.5/Math.max(ballArcDur,0.2)));
           ball.position.x+=(_btX-ball.position.x)*_bak;ball.position.z+=(_btZ-ball.position.z)*_bak;
+          if((sr.current._ws524=15)&&sr.current._bj0)(sr.current._bj0.src='avvicinamento',sr.current._bj0.srcs.push('avvicinamento'));/* [7.555.0 P0] questo lerp era l'UNICO scrittore senza nome: il censimento per fase lo vedeva come «anonimo» sull'11,5% dei fotogrammi di hl_result (11 su 96). Non e' un bug di moto, e' un buco di anagrafe: ora la firma copre anche l'avvicinamento al bersaglio dell'esito. */
         } else {
           /* [7.194.0 S1] LA PALLA VIAGGIA A VELOCITÀ REALE. Fuori dall'arco il pallone inseguiva la posizione
              logica con un lerp esponenziale (ak≈dt·6.5): copre l'86% in mezzo secondo sulle distanze corte, ma su
@@ -1919,9 +1920,25 @@ function ThreeMatchView(props){
             const _cvx5=hero._hvx||0,_cvz5=hero._hvz||0;const _csp5=Math.hypot(_cvx5,_cvz5);
             if(_csp5>0.6){const _cbx5=ball.position.x-hero.position.x,_cbz5=ball.position.z-hero.position.z;
               if(Math.hypot(_cbx5,_cbz5)<3.2&&(_cbx5*(_cvx5/_csp5)+_cbz5*(_cvz5/_csp5))<0.28){_colla515=true;if(typeof window!=='undefined')window.__CPM_COLLA=1;}}}
-          if(_dd>0.02&&!_colla515&&!_porGlue526){const _step=Math.min(_dd,Math.min(_dd*5.2+2.2,34)*aDt);ball.position.x+=_dx/_dd*_step;ball.position.z+=_dz/_dd*_step;if((sr.current._ws524=3)&&sr.current._bj0)(sr.current._bj0.src='inseguitore',sr.current._bj0.srcs.push('inseguitore'));}
+          /* [7.555.0 P1 — IL PADRONE DEL PALLONE E' UNO SOLO, E SI ELEGGE PRIMA DI SCRIVERE]
+             Il censimento per fase (sonda scrittori-555, 1908 fotogrammi) ha smentito la stima «77% di
+             scritture anonime»: gli scrittori senza nome sono lo 0,8%. Il difetto vero e' un altro ed e'
+             STRUTTURALE: tre rami indipendenti (inseguitore/portatore/addosso) decidevano ciascuno per conto
+             proprio, e su 18 fotogrammi DUE scrivevano lo stesso pallone — portatore+addosso x11 (la colla
+             dell'eroe sovrascriveva il compagno che il 7.523 aveva dichiarato portatore) e inseguitore+addosso
+             x7 (l'addosso valutava il pallone GIA' spostato dall'inseguitore, quindi su un fotogramma non era
+             una correzione ma una seconda scrittura). I gate del 7.515/7.523 erano rattoppi: prevedevano cosa
+             avrebbe fatto il ramo successivo invece di decidere una volta. Qui l'elezione e' UNA e a monte —
+             il compagno dichiarato portatore batte tutti, poi l'eroe in conduzione, poi nessuno (e allora
+             comanda l'inseguitore). I tre rami diventano esclusivi PER COSTRUZIONE, non per previsione.
+             __CPM_NO555 = rosso: rimette i tre gate indipendenti di prima. */
+          const _no555=(typeof window!=='undefined'&&window.__CPM_NO555);
+          const _pad555=_no555?null:(_porGlue526?'portatore':(_colla515?'eroe':'nessuno'));
+          sr.current._pad555=_pad555;/* il padrone eletto resta leggibile a valle (cronaca, volo, sonde) */
+          if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST))window.__CPM_PAD555=_pad555;
+          if((_no555?(!_colla515&&!_porGlue526):(_pad555==='nessuno'))&&_dd>0.02){const _step=Math.min(_dd,Math.min(_dd*5.2+2.2,34)*aDt);ball.position.x+=_dx/_dd*_step;ball.position.z+=_dz/_dd*_step;if((sr.current._ws524=3)&&sr.current._bj0)(sr.current._bj0.src='inseguitore',sr.current._bj0.srcs.push('inseguitore'));}
 
-          if(_porGlue526){const _pm6=sr.current._por526.mesh;
+          if(_no555?_porGlue526:(_pad555==='portatore')){const _pm6=sr.current._por526.mesh;
             const _vx6=_pm6._pvx526||0,_vz6=_pm6._pvz526||0;const _sp6=Math.hypot(_vx6,_vz6);
             let _ux6=1,_uz6=0;
             if(_sp6>0.3){_ux6=_vx6/_sp6;_uz6=_vz6/_sp6;}
@@ -1936,7 +1953,7 @@ function ThreeMatchView(props){
              palla sulla direzione di marcia REALE del corpo (velocita' del modello fisico, non la logica) e
              clamp a un passo minimo davanti, conservando la componente laterale (il tocco di esterno resta).
              Solo in conduzione vera: palla vicina, eroe in moto, niente set-piece/difensivo/arco/esito. */
-          if(hero&&!P.hlDef&&!P.hlSetPiece){
+          if(hero&&!P.hlDef&&!P.hlSetPiece&&(_no555||_pad555==='eroe')){
             const _hvx3=hero._hvx||0,_hvz3=hero._hvz||0;const _hsp3=Math.hypot(_hvx3,_hvz3);
             const _bdx3=ball.position.x-hero.position.x,_bdz3=ball.position.z-hero.position.z;
             if(_hsp3>0.6&&Math.hypot(_bdx3,_bdz3)<3.2){
@@ -1998,7 +2015,7 @@ function ThreeMatchView(props){
         if(isResult&&!P.hlDef&&(P.hlType==="pass"||P.hlOneTwo===true)&&P.hlSuccess===true&&passTargetMesh&&passTargetMesh._runToX!=null){const _rz205=(passTargetMesh._runToZ!=null?passTargetMesh._runToZ:passTargetMesh.position.z);animOne(passTargetMesh,passTargetMesh._runToX,_rz205,aDt,ak,passTargetMesh._runToX,_rz205);}/* [7.415.0 gi180] anche il MURO dell'uno-due ha questo driver: le situations uno-due sono `build`/`shot` (7.348), quindi il cancello `pass` lo escludeva e la corsa post-tocco non aveva chi la portasse */
         const _early74=(isResult&&!P.hlDef&&P.hlType==="cross"&&P.hlSuccess===true&&u>=0.85);// [6.74.0 3D-5] sul cross-GOL il 2° tocco parte con la palla ancora in QUOTA (~metà discesa), niente atterraggio sul prato + "incornata da sola"
         if(u>=1||_early74){
-          if(ballArcIsBG&&sr.current._rcv526&&!(typeof window!=='undefined'&&window.__CPM_NO526)){sr.current._por526={mesh:sr.current._rcv526,lato:sr.current._lato526||'home'};sr.current._rcv526=null;}/* [7.523.0] la ricezione: chi ha ricevuto e' il nuovo portatore */
+          if(ballArcIsBG&&sr.current._rcv526&&!(typeof window!=='undefined'&&window.__CPM_NO526)){sr.current._por526={mesh:sr.current._rcv526,lato:sr.current._lato526||'home'};sr.current._rcv526=null;sr.current._att556=null;/* [7.556.0 P2] la palla e' arrivata: il passatore dichiarato non e' piu' il padrone */}/* [7.523.0] la ricezione: chi ha ricevuto e' il nuovo portatore */
           if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){try{const _ae=(window.__CPM_ARCEND457=window.__CPM_ARCEND457||[]);if(_ae.length<40)_ae.push({u:+(+u).toFixed(2),early:!!_early74,bg:!!ballArcIsBG,ht:P.hlType||null,hs:P.hlSuccess,def:!!P.hlDef,rew:P.hlReward||null,kind:P.hlOutcomeKind||null,ph:P.matchPhase||null,bx:+ball.position.x.toFixed(1),sk:(P.hlSitKey!=null?P.hlSitKey:null)});}catch(_e){}}/* [7.459.0] IL BLOCCO DI COMPLETAMENTO HA UN TESTIMONE: e' qui che nasce il post-arco, e su 4 gol su 6 il post-arco non nasce. Se questo marcatore non compare, l'arco e' stato ucciso prima; se compare e il post-arco resta nullo, e' la catena di rami a non prenderlo (i campi dicono quale). */ballArcActive=false;_arcSrcX=null;_arcSrcZ=null;// 3DV-9: trigger animazione fine azione in base all'esito
           if(isResult){const _cc460=_no460?null:sr.current._ccx460;const P=(_cc460&&(propsRef.current.hlType==null||propsRef.current.hlSuccess==null))?_cc460:propsRef.current;/* [7.460.0] SI LEGGE IL CONTESTO DICHIARATO AL LANCIO, non quello del fotogramma d'atterraggio — ma SOLO quando i props vivi hanno gia' perso la conclusione: sul percorso sano questa riga vale `propsRef.current` ed e' bit-identica a prima. */const _hs=P.hlSuccess,_ht=P.hlType,_hv=P.hlVariant;
             // [7.54.0 BL-15 · AC-049/050] l'ARCO D'ESITO è arrivato (impatto parata/palo/fuori/assestamento):
@@ -3416,6 +3433,23 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
               ora mira alla mesh di movimento del lato dichiarato piu' vicina alla destinazione (tetto 18u),
               che CORRE a riceverla (_carry526); a fine volo diventa il nuovo portatore (handoff a u>=1). */
            sr.current._lato526=_ba.side||'home';
+           /* [7.556.0 P2 — LA CRONACA DICHIARA ANCHE CHI HA IL PALLONE, NON SOLO CHI LO RICEVE]
+              Il 7.537 aveva gia' fatto meta' del ponte: se l'evento porta `rcv`, l'arco mira alla mesh di
+              QUEL cognome invece della piu' vicina alla destinazione. Ma `actor` — il passatore, che la
+              cronaca nomina nello STESSO evento — restava inutilizzato: il 3D lo escludeva soltanto «per
+              prossimita' al punto di partenza» (<2u) e poi rieleggeva il portatore per vicinanza al
+              pallone (r.~4851). Due sorgenti di verita' sulla stessa domanda, e quella che indovina
+              vinceva su quella che sa. Qui il passatore NOMINATO diventa il portatore del fotogramma in
+              cui l'arco parte: la scena smette di indovinare chi ha appena giocato la palla.
+              __CPM_NO556 = rosso: torna all'indovinello per prossimita'. */
+           if(_ba.actor&&!(typeof window!=='undefined'&&(window.__CPM_NO556||window.__CPM_NO526))){
+             const _an6=String(_ba.actor).trim().toUpperCase();
+             if(_an6){sr.current.players.forEach((pp,ii)=>{const src=(P.allPlayers||[])[ii];if(!src||src.gk)return;
+               if((_ba.side==='away')!==(src.team==='away'))return;const _m=pp.mesh;if(!_m)return;
+               if(String(src.name||"").toUpperCase()===_an6){sr.current._por526={mesh:_m,lato:_ba.side||'home'};sr.current._att556=_m;
+                 if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){const _w=(window.__CPM_ATT556=window.__CPM_ATT556||{tot:0,nom:0});_w.nom++;}}});}
+             if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){const _w=(window.__CPM_ATT556=window.__CPM_ATT556||{tot:0,nom:0});_w.tot++;}
+           }
            if(!(typeof window!=='undefined'&&window.__CPM_NO526)){
              let _rv6=null,_rd6=1e9;const _wx6=G2X(_ba.ballEnd.x),_wz6=G2Z(_ba.ballEnd.y);
              const _fx6=_ba.from?G2X(_ba.from.x):null,_fz6=_ba.from?G2Z(_ba.from.y):null;
@@ -4841,6 +4875,12 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
         /* [taratura 2] L'EROE e' portatore SOLO se e' gia' sulla palla (<3u): non ha il canale di corsa
            (driver logico suo) e sceglierlo da lontano lasciava la palla non accudita — misurato 47-49%. */
         if(_lato6==='home'&&hero&&hero.visible&&!P.hlDef){const _dh6=Math.hypot(hero.position.x-_lbx6,hero.position.z-_lbz6);if(_dh6<3&&_dh6<_bd6){_bd6=_dh6;_bm6=hero;}}
+        /* [7.556.0 P2] il passatore DICHIARATO batte l'indovinello finche' e' plausibilmente sulla palla
+           (12u): l'isteresi qui sotto protegge un portatore *eletto*, questo protegge un portatore *detto*. */
+        {const _at6=sr.current._att556;
+         if(_at6&&!(typeof window!=='undefined'&&window.__CPM_NO556)){
+           const _da6=Math.hypot(_at6.position.x-_lbx6,_at6.position.z-_lbz6);
+           if(_da6<12){_bm6=_at6;_bd6=_da6;} else sr.current._att556=null;}}
         const _cur6=sr.current._por526;
         if(_cur6&&_cur6.mesh&&_cur6.mesh!==_bm6&&_cur6.lato===_lato6){
           const _dc6=Math.hypot(_cur6.mesh.position.x-_lbx6,_cur6.mesh.position.z-_lbz6);
@@ -6551,6 +6591,13 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
         if(_nW>1){_w.multi++;const _k=_b0.srcs.slice(0,3).join('+');_w.coppie[_k]=(_w.coppie[_k]||0)+1;}
         const _mv=Math.hypot(ball.position.x-_b0.x,ball.position.z-_b0.z);
         if(_mv>0.05){_w.mosso++; if(_nW===0)_w.anon++;}
+        /* [7.555.0 MISSIONE — IL CENSIMENTO SEPARA LE FASI. Il numero aggregato non serviva a niente: la
+           cronaca e gli highlight hanno scrittori diversi e problemi diversi, e sommarli nascondeva
+           entrambi. E' la stessa lezione della sonda dei compagni, che misurava i giocatori mentre
+           camminavano fuori scena perche' non distingueva il transito dalla scena. */
+        {const _ph=((propsRef.current&&propsRef.current.matchPhase)||'?');
+         const _pf=(_w.perFase=_w.perFase||{});const _b=(_pf[_ph]=_pf[_ph]||{f:0,mosso:0,anon:0,multi:0});
+         _b.f++; if(_nW>1)_b.multi++; if(_mv>0.05){_b.mosso++; if(_nW===0)_b.anon++;}}
         }
         }catch(_e){}/* [7.478.0] fotogrammi VISTI dal varco: «zero salti» non vale niente se il varco non ha guardato (la trappola del censimento che leggeva una chiave inesistente) */
         const _dBJ=Math.hypot(ball.position.x-_b0.x,ball.position.z-_b0.z);
