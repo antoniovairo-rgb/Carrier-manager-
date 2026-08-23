@@ -1,5 +1,39 @@
 # Cronologia delle release — Korward Elite
 
+### 7.551.0 — La rovesciata si rovescia
+
+Rosso: `__CPM_NO575`. Collaudo PO, **terza segnalazione**, riproducibile: «rovesciata al contrario».
+
+**Il difetto era una lettera.** Il gesto `shot_volley` alzava l'eroe di 1,5, portava le gambe all'indietro
+e ruotava il busto — ma sull'asse **Y**, l'imbardata: il giocatore *si gira su se stesso*.
+
+È la scelta giusta per ogni altro tiro — in un tiro normale il busto ruota di lato, e così fanno
+`shot_curled`, `shot_first_time`, `shot_one_on_one`, `shot_power`. Ma è sbagliata per **l'unico gesto in
+cui il corpo si rovescia all'indietro**: quello è l'asse **X**, e nel codice non c'era affatto.
+
+*Gambe che vanno indietro con il busto dritto: da fuori è una rovesciata al contrario.*
+
+| | com'era | ora |
+|---|---|---|
+| busto, asse del rovesciamento | **0°** | **−109°** |
+| salto | 1,5 | 1,8 |
+| apertura delle braccia | 1,8 / −1,2 | 2,4 / −2,0 |
+| forbice delle gambe | −3,2 / −1,6 | invariata |
+
+La forbice era già giusta: mancava il corpo attorno.
+
+⚠️ **Dichiarato per quello che è: una verifica aritmetica, non visiva.** Ho confrontato i valori che il
+codice assegna, non fotografato la scena — per uno screenshot servirebbe forzare questa variante dentro
+una scena reale e non esiste un hook che lo faccia. È certo che il codice **non assegnava alcuna
+rotazione sull'asse del rovesciamento** e che ora lo fa; il collaudo definitivo resta l'occhio del PO.
+
+**Scelta deliberata sul rischio.** Preso dalla coda il difetto più contenuto e più visibile, non il più
+grosso: tocca la posa di un gesto dentro una scena, non il motore, non i salvataggi, non la cronaca. Se
+il numero fosse sbagliato, il peggio è una rovesciata brutta invece di una al contrario.
+
+**Rituale:** `gesto-vocabolario` ✅ · **quality gate ✅ PASS** (0 failure, streak 6 run pulite) — il gate
+è nel rituale di ogni push dalla regola del 7.550.
+
 ### 7.550.0 — Il guardiano torna una porta, non un dado
 
 Collaudo PO: «**UNA MAREA DI RUN FAILED COME MAI?**»
