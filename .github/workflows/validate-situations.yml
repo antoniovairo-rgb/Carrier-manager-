@@ -67,6 +67,36 @@ jobs:
       - name: Run quality gate (191 Situations, 14 categorie)
         run: npm run validate-situations
 
+      # [7.554] IL VERDETTO DEL GATE SI LEGGE SENZA SCARICARE NIENTE.
+      #   Il gate falliva in CI e passava in locale, e per giorni nessuno ha saputo QUALE categoria fosse
+      #   rossa: il verdetto viveva solo nel log del passo e nell'artifact da 6 MB. Un guardiano che non si
+      #   riesce a leggere non protegge nessuno. Ora il riepilogo del run porta la tabella delle 14 categorie
+      #   e l'elenco dei fallimenti, visibile dalla pagina del run (e quindi anche da chi legge la mail).
+      - name: Verdetto del gate nel riepilogo (anche quando e' rosso)
+        if: always()
+        run: |
+          {
+            echo "## Quality gate — verdetto"
+            if [ -f out/validate/run-summary.json ]; then
+              node -e '
+                const s = require("./out/validate/run-summary.json");
+                console.log("");
+                console.log("gameVersion **" + s.gameVersion + "** · " + s.total + " Situations · fingerprint `" + s.fingerprint + "`");
+                console.log("");
+                console.log("| | categoria | issue | warn |");
+                console.log("|---|---|---:|---:|");
+                for (const c of s.checks) console.log("| " + (c.pass ? "✅" : "❌") + " | " + c.id + " | " + c.issues + " | " + c.warnings + " |");
+                console.log("");
+                const rotte = s.checks.filter(c => !c.pass).map(c => c.id);
+                console.log(rotte.length ? "**FAIL — " + rotte.join(", ") + "**" : "**PASS**");
+                const f = (s.failures || []).slice(0, 25);
+                if (f.length) { console.log(""); console.log("### I primi " + f.length + " fallimenti"); console.log("```"); for (const x of f) console.log(JSON.stringify(x)); console.log("```"); }
+              '
+            else
+              echo "\`run-summary.json\` **assente**: il gate e' morto prima di scrivere il report (guarda il FATAL nel log del passo)."
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+
       # Save path GATE-BLIND: esercita la migration reale su save storici sintetici (AC-131..140)
       - name: Save-compat test (migration)
         run: npm run save-compat
