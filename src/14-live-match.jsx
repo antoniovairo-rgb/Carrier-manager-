@@ -4532,8 +4532,35 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
      = la stessa fase già calcolata per il pannello walkout (_tvComp.phase — una sola fonte). */
   const _roundLabel=(()=>{try{
     if(context==="career"){const lg=(player.calendar||[]).filter(m=>m&&(!m.type||m.type==="league"));
-      const cur=lg.find(m=>m.week===(player.week||1)&&!m.played)||lg.find(m=>!m.played);
-      return cur?`Giornata ${cur.matchday} di ${lg.length}`:null;}
+      /* [7.566.0 collaudo PO «partita gia' giocata! di nuovo!» — 9a ricorrenza, su «Giornata 34 di 34»]
+         (1) L'ETICHETTA NOMINA LA GARA CHE SI STA GIOCANDO, non la prima che capita. Fin qui derivava la
+         giornata da sola — «la prima voce di lega non giocata di questa settimana» — senza guardare CHI si
+         ha di fronte: se il calendario porta una voce stantia (il difetto che tutte le reti A→H combattono),
+         l'etichetta poteva dire un numero di giornata DIVERSO da quello della gara servita. Un'etichetta che
+         sbaglia numero e' essa stessa una segnalazione di «gia' giocata». Ora la voce si cerca prima per
+         AVVERSARIO, che qui e' noto: cosi' il numero e' quello della partita che si sta per giocare. */
+      const _oid=(opponent&&(opponent.id||opponent.n))||null,_onm=(opponent&&opponent.n)||null;
+      const _wk=(player.week||1);
+      const cur=lg.find(m=>!m.played&&m.week===_wk&&((_oid&&(m.opponentId===_oid))||(_onm&&m.opponentName===_onm)))
+        ||lg.find(m=>!m.played&&((_oid&&(m.opponentId===_oid))||(_onm&&m.opponentName===_onm)))
+        ||lg.find(m=>m.week===_wk&&!m.played)||lg.find(m=>!m.played);
+      if(!cur)return null;
+      /* (2) LA SPIA CHE MI SERVE, e che finora non avevo. La classe «partita gia' giocata» ha nove
+         ricorrenze e otto reti (A→H), e ogni rete si appoggia a un REGISTRO: la voce gemella marcata, lo
+         storico, il numero di giornata, il registro persistente, la classifica. Se il commit del risultato
+         non atterra, NESSUN registro sa che la gara e' stata giocata e nessuna rete puo' accorgersene —
+         e da un telefono io non ho modo di sapere quale dei due casi sia. L'invariante sano e' semplice:
+         la giornata N si gioca con N-1 gare gia' in classifica. Quando non torna, l'etichetta lo dice in
+         chiaro — cosi' il prossimo collaudo porta il NUMERO invece dell'impressione, e si sapra' subito se
+         a mancare e' il commit (classifica indietro) o la rete (classifica avanti). Se torna, non appare
+         nulla. */
+      let _sp="";
+      try{const _st=player.standings||[];const _cid=player.club&&(player.club.id||player.club.n);
+        const _me=_st.find(r=>r&&(r.id===_cid||r.clubId===_cid||r.n===(player.club&&player.club.n)));
+        if(_me&&cur.matchday!=null){const _pl=_me.played||0;if(_pl!==cur.matchday-1)_sp=` ⚠︎ ${_pl}g`;}
+        else if(!_me&&_st.length>=2)_sp=" ⚠︎ ?g";/* la mia riga in classifica non si trova: e' proprio la cecita' che spegne le reti (E) e (H) */
+      }catch(_e){}
+      return `Giornata ${cur.matchday} di ${lg.length}${_sp}`;}
     if(context==="trial")return null;
     if(context==="national")return"Amichevole internazionale";/* [7.72.2] nationsCup: cade su _tvComp.phase (13798) → «Fase a gironi · Giornata N/3» o «Finale» (prima leggeva player.nationsCup inesistente → sempre «Giornata 1 di 3») */
     return(_tvComp&&_tvComp.phase&&_tvComp.phase!==_compLabel)?_tvComp.phase:null;
