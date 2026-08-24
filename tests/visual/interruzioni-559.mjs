@@ -18,7 +18,7 @@ async function giro(rosso, seed) {
   await installCdnRoutes(page);
   await page.addInitScript(([r]) => {
     window.__CPM_GLB = false; window.__CPM_REC = true;
-    if (r) window.__CPM_NO559 = true;
+    if (r) { window.__CPM_NO559 = true; window.__CPM_NO566 = true; }
     window.__CPM_TRACCIA = [];
     setInterval(() => {
       try {

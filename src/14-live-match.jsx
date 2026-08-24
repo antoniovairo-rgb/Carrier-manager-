@@ -2872,6 +2872,53 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
             chantTimersRef.current.push(setTimeout(()=>{try{if(typeof window!=='undefined'&&window.__CPM_TC486)window.__CPM_TC486.usc++;}catch(_e){}addCom("🎧 "+(_tcv?_tcv.t:"Commento tecnico")+": «"+_fr+"»","#c4b5fd",nx);},_dlyT));
           }
         }
+        /* [7.566.0 missione — L'INTERRUZIONE SI STACCA DALLA RIGA DI CRONACA]
+           Il 7.559 ha reso il fermo un fatto del pallone, ma l'ha fatto nascere DENTRO il blocco che emette
+           una riga di telecronaca — e quel blocco gira ~25 volte a partita, non a ogni minuto. Da li' il
+           tetto misurato: 3,0-4,5 interruzioni a partita, e alzare la probabilita' da 0,52 a 0,74 non
+           spostava il conto perche' il collo di bottiglia non era il sorteggio, era la CADENZA DEL RACCONTO.
+           Un fischio non aspetta che il telecronista abbia qualcosa da dire. Qui l'armamento vive nel TICK,
+           dove batte il minuto di gioco: ~90 occasioni invece di ~25. Il tipo si legge da DOVE sta il
+           pallone (fondo -> angolo o rinvio · fascia -> rimessa · resto -> fallo), non piu' da cosa
+           dichiarava la riga: cosi' non serve nemmeno che una riga esista. Il racconto resta un di piu' e
+           si prende una riga libera quando c'e'. Sorteggio seedato su `nx`: il replay non si rompe.
+           DURATA: due tick. Un tick e' un minuto di gioco — una rimessa che ne dura quattro sarebbe una
+           partita ferma piu' che giocata (25 interruzioni x 4 tick = 100 tick su 90 di partita). */
+        /* [7.566 strumento] QUANTE OCCASIONI ARRIVANO DAVVERO AL FISCHIO. Il primo giro per tick ha reso
+           5,0 interruzioni a partita invece delle ~12 che il conto prometteva (~90 tick x probabilita').
+           Prima di rialzare il sorteggio — l'ho gia' fatto una volta, da 0,52 a 0,74, e non sposto' nulla —
+           si conta QUANTI tick arrivano qui e chi li ferma. */
+        if(typeof window!=='undefined'&&window.__CPM_REC){try{const _y=(window.__CPM_TICKBLK566=window.__CPM_TICKBLK566||{tick:0,fase:0,out:0,fermo:0,sp:0,gol:0,counter:0,ko:0,kick:0,ok:0,zona:{fondo:0,fascia:0,centro:0},esce:0});
+          _y.tick++;
+          if(phaseRef.current!=="playing")_y.fase++;else if(outRef.current)_y.out++;else if(fermoRef.current)_y.fermo++;else if(spRef.current)_y.sp++;else if(pendingGoalRef.current)_y.gol++;else if(counterRef.current)_y.counter++;else if(kickoffRef.current>0)_y.ko++;else if(kickRef.current>0)_y.kick++;else{
+            _y.ok++;const _b=ballPosRef.current||{x:50,y:50};const _bx2=_b.x==null?50:_b.x,_by2=_b.y==null?50:_b.y;
+            if(_bx2>=88||_bx2<=12)_y.zona.fondo++;else if(_by2>=84||_by2<=16)_y.zona.fascia++;else _y.zona.centro++;}
+        }catch(_e){}}
+        if(!(typeof window!=='undefined'&&window.__CPM_NO566)&&!outRef.current&&!fermoRef.current&&!spRef.current
+           &&!pendingGoalRef.current&&!counterRef.current&&kickoffRef.current<=0&&kickRef.current<=0&&phaseRef.current==="playing"){
+          const _bp=ballPosRef.current||{x:50,y:50};
+          const _bx=_bp.x==null?50:_bp.x,_by=_bp.y==null?50:_bp.y;
+          const _r1=(Math.abs(hashStr("tick|"+nx))%1000)/1000,_r2=(Math.abs(hashStr("tick2|"+nx))%1000)/1000;
+          let _k=null,_no=true;
+          if(_bx>=88){_k=_r2<0.38?"corner":"goal_kick";_no=(_k==="corner");}
+          else if(_bx<=12){_k=_r2<0.38?"corner":"goal_kick";_no=(_k==="goal_kick");}
+          else if(_by>=84||_by<=16){if(_r1<0.55)_k="throw",_no=_r2<((possessionRef.current||50)/100);}
+          else if(_r1<0.20)_k="foul",_no=_r2<0.5;
+          if(_k){
+            const _ox=_k==="throw"?clamp(_bx,8,92):_k==="corner"?(_no?98:2):_k==="goal_kick"?(_no?6:94):clamp(_bx,8,92);
+            const _oy=_k==="throw"?(_by>=50?98:2):_k==="corner"?(_by>=50?96:4):_k==="goal_kick"?50:clamp(_by,6,94);
+            outRef.current={kind:_k,nostra:_no,x:_ox,y:_oy,step:0,ttl:4};
+            fermoRef.current={x:_ox,y:_oy,t:4,kind:_k};/* [7.566] DUE TICK NON BASTAVANO, e la misura lo ha detto: col fermo a 2 il pallone stava davvero fermo solo 5 volte su 10 (a 4 era 6 su 6). Il motivo non e' il tempo di GIOCO ma quello REALE: la mesh deve arrivare sul punto, e il conto scorre ora nel tick — che passa quando passa. */
+            ballTargetRef.current={x:_ox,y:_oy};setBallPos({x:_ox,y:_oy});
+            if(typeof window!=='undefined'&&window.__CPM_REC){try{const _w=(window.__CPM_INT559=window.__CPM_INT559||{n:0,tipi:{},min:[]});_w.n++;_w.tipi[_k]=(_w.tipi[_k]||0)+1;if(_w.min&&_w.min.length<400)_w.min.push({m:nx,k:_k});}catch(_e){}}
+          }
+        }
+        /* [7.566.0] e il FERMO scorre nel tick, non nella riga: altrimenti un'interruzione nata fra due
+           battute resterebbe congelata finche' il telecronista non riapre bocca. */
+        if(fermoRef.current&&!(typeof window!=='undefined'&&window.__CPM_NO559)){
+          const _f=fermoRef.current;ballTargetRef.current={x:_f.x,y:_f.y};
+          _f.t--;if(_f.t<=0)fermoRef.current=null;}
+        if(outRef.current&&!(typeof window!=='undefined'&&window.__CPM_NO566)){if(--outRef.current.ttl<=0){outRef.current=null;fermoRef.current=null;}}
         // Possession drift + momentum drift every ~8 ticks
         if(nx%8===0){
           setPossession(p=>clamp(p+(Math.floor(_rndM()*5)-2),20,80));/* [7.489.0] seedato: alimenta la lambda del micro-sim, quindi il RISULTATO */
