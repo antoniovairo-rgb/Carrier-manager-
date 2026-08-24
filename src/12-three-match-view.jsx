@@ -1009,20 +1009,13 @@ function ThreeMatchView(props){
     const _trZ=_cg185?Math.max(34.2,_cg185.endZ-(_cg185.depthEnd+3)/2-0.14):(_fez-3);
     if(_tifoHome){_mkStriscione(-12,-_trZ,0,_tHCol,_hc2,_ultrasName(_stadHN,_tifoSeed,0,_stadHNat,_stadHId),_muroY);_mkStriscione(12,-_trZ,0,_tHCol,_hc2,_ultrasName(_stadHN,_tifoSeed,1,_stadHNat,_stadHId),_muroY);
       _mkStriscione(-12,_trZ,Math.PI,_tHCol,_hc2,_ultrasName(_stadHN,_tifoSeed,2,_stadHNat,_stadHId),_muroY);_mkStriscione(12,_trZ,Math.PI,_tHCol,_hc2,_ultrasName(_stadHN,_tifoSeed,3,_stadHNat,_stadHId),_muroY);}
-    // item 8 (5.49.2): CARTELLONE COMPETIZIONE sulla TRIBUNA EST (z+) — logo (emblema) + nome ufficiale, coerente per tutta la partita (statico).
-    {const bc=document.createElement("canvas");bc.width=1024;bc.height=240;const b2=bc.getContext("2d");
-     const _grd=b2.createLinearGradient(0,0,1024,0);_grd.addColorStop(0,"#091226");_grd.addColorStop(0.5,"#14233f");_grd.addColorStop(1,"#091226");b2.fillStyle=_grd;b2.fillRect(0,0,1024,240);
-     const _lk=/coppa|cup|champions|europa|conference|continental/i.test(_compLbl)?"cup":/mondiale|europeo|nazional/i.test(_compLbl)?"nation":"league";
-     const _emCol=_lk==="cup"?"#f5c542":_lk==="nation"?"#34d399":"#d27f8c";// 5.49.17: cartellone competizione di campionato in granata chiaro
-     b2.strokeStyle=_emCol;b2.lineWidth=6;b2.strokeRect(7,7,1010,226);
-     // emblema: LOGO DEL GIOCO (badge granata + barre + pallone) al posto della vecchia stella
-     _cvLogoBadge(b2,140,118,150);
-     // [6.69.0] nome competizione in bold (il badge del logo accanto porta già l'identità di brand; niente wordmark inline → nessun "Korward Elite" doppio nel nome coppa)
-     {let _bfs=60;const _bMaxW=740;b2.font="bold "+_bfs+"px sans-serif";let _bw=b2.measureText(_compLbl).width;if(_bw>_bMaxW){_bfs=Math.max(30,Math.floor(_bfs*_bMaxW/_bw));b2.font="bold "+_bfs+"px sans-serif";}/* [7.42.2 collaudo PO «la scritta della Conference strasborda»] il nome si ADATTA al cartellone */b2.fillStyle="#ffffff";b2.textAlign="left";b2.textBaseline="middle";b2.fillText(_compLbl,250,110);}
-     b2.fillStyle="rgba(255,255,255,0.55)";b2.font="600 26px sans-serif";b2.textAlign="left";b2.textBaseline="middle";b2.fillText("OFFICIAL COMPETITION",252,168);
-     const _bt=new THREE.CanvasTexture(bc);
-     const _board=new THREE.Mesh(new THREE.PlaneGeometry(40,9.4),new THREE.MeshBasicMaterial({map:_bt,transparent:true,opacity:0.97,side:THREE.DoubleSide,depthWrite:false}));
-     _board.position.set(0,10.5,_fez-3.4);_board.rotation.y=Math.PI;_board.rotation.x=0.05;scene.add(_board);}
+    /* [7.562.0 richiesta PO «puoi togliere quel tabellone dalla tribuna est con il nome della competizione»]
+       RIMOSSO — item 8 (5.49.2), il CARTELLONE COMPETIZIONE sulla tribuna est: un pannello 40x9,4 sospeso a
+       quota 10,5 e a z = tribuna-3,4, cioe' DENTRO il volume dello stadio, non appoggiato alla struttura.
+       Non era solo un ingombro estetico: nel provino della camera laterale (7.561) e' il rettangolo scuro
+       che taglia il campo a meta' — sporgeva abbastanza da finire fra una camera di lato e il gioco. Il nome
+       della competizione resta comunque leggibile in tre punti gia' presenti: la fascia sui muretti delle
+       tribune (7.301), il nastro a bordo campo e il tappeto cerimoniale all'ingresso delle squadre. */
     // item 9 (5.49.2): TAPPETO CERIMONIALE — grande logo competizione a centrocampo, visibile solo durante l'ingresso (walkout).
     let _ceremonyCarpet=null;
     {const cc=document.createElement("canvas");cc.width=cc.height=1024;const c2=cc.getContext("2d");// 5.49.12: risoluzione 2× + ELEVORA grande/bold/contornato → leggibile a centrocampo
