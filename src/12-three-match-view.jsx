@@ -5579,7 +5579,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
         const bxq=bx*_m561,bzq=bz*_m561,axq=ax*_m561,azq=az*_m561;/* coordinate canoniche: la camera sta sempre dietro la porta a x negativo */
         const _bAttk=P.matchPhase==="playing"?clamp(Math.abs(bxq)/42,0,1):0;/* [6.76.0 LMV-C2] zoom SIMMETRICO: prima solo bx>0 → quando l'avversario attaccava la porta di casa niente zoom e fuoco clampato a -8 mentre l'azione era a -46 (difesa sotto-inquadrata) */
         const wPxq=(-51+(_r561?(bxq>=0?_bAttk*13:-_bAttk*7):_bAttk*(bxq>=0?13:6)))+clamp(axq,-50,50)*0.14+Math.sin(now*0.00025)*2.5,/* [7.561.0] con la palla nella NOSTRA meta' la camera arretra (fino a -58) invece di avanzare: e' l'unico verso che avvicina inquadratura e azione *//* 1.0a-CAM3: avanti -88→-74; [7.525.0] -74→-67. [7.528.0] -67→-62 · [7.529.0 PO «più vicina al campo!»] -62→-56 · [7.532.0 PO secondo giro «in cronaca un po' più vicina»] -56→-51 (avanzata 14→13) */
-              wPy=(32-_bAttk*7)+Math.sin(now*0.00018)*1.8,/* 1.0a-CAM3: 54→47; [7.525.0] 47→42 · [7.528.0] 42→39 · [7.529.0] 39→35 · [7.532.0] 35→32 (piu' vicina = anche un filo piu' bassa) */
+              wPy0=(32-_bAttk*7)+Math.sin(now*0.00018)*1.8,/* 1.0a-CAM3: 54→47; [7.525.0] 47→42 · [7.528.0] 42→39 · [7.529.0] 39→35 · [7.532.0] 35→32 (piu' vicina = anche un filo piu' bassa) */
               wPzq=azq*0.34;
         // [7.54.1 BL-10 · CAM-LEAD] ANTICIPAZIONE BROADCAST: in "playing" il fuoco della WIDE non insegue più
         //   la palla in ritardo (fuoco = posizione corrente) ma la PRECEDE nella direzione del moto — velocità
@@ -5603,7 +5603,49 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
            a meta' campo non cambia niente, sulla nostra linea il fuoco e' il pallone. */
         const _seg561=_r561?clamp((-bxq)/34,0,1)*0.85:0;
         const wLxr=wLxq+((bxq+6)-wLxq)*_seg561,wLzr=wLzq+(bzq*0.9-wLzq)*_seg561;
-        const wPx=wPxq*_m561,wPz=wPzq*_m561,wLx=wLxr*_m561,wLz=wLzr*_m561;/* 1.0a-CAM3: fuoco un filo più avanti+basso; [6.76.0 LMV-C2] lato difensivo: fuoco fino a -34 (l'azione resta in quadro), path offensivo INVARIATO; [7.54.1] +lead di anticipazione */
+        /* [7.564.0 — IMPIANTO CAMERA DELLA CRONACA: LA TRIBUNA EST. Scelta del PO, dopo aver guardato i
+           provini del 7.561: «impianto camera vero ed inversione di campo tra primo e secondo tempo».
+           PERCHE' SERVIVA UN IMPIANTO E NON UNA TARATURA. Da dietro la porta la geometria e' asimmetrica
+           per costruzione: l'azione nella propria meta' finisce quasi SOTTO la camera, e il 7.561 poteva
+           solo contenerla (fuori quadro 30,6% -> 1,2%), non renderla grande. Di lato le due meta' del
+           campo sono equivalenti: la stessa azione si vede uguale da una parte e dall'altra.
+           IL VINCOLO CHE HA DECISO I NUMERI e' il quadro VERTICALE del telefono. Il semiquadro
+           ORIZZONTALE vale atan(tan(fov/2)*aspect): a fov 46 e aspect 0,45 sono ~11 gradi, e alla distanza
+           della tribuna significano ~20 unita' di lunghezza di campo — troppo poche. Il rimedio non e'
+           allontanare la camera (fuori c'e' la tribuna) ma APRIRE L'OTTICA: a fov 64 il semiquadro
+           orizzontale sale a ~15 gradi e si inquadrano ~33 unita' di lunghezza, mentre in VERTICALE ci
+           sta l'INTERA larghezza del campo (66 unita', entrambe le linee laterali). E' la composizione
+           che il formato verticale sa reggere: tutta la larghezza, un terzo della lunghezza, il pallone
+           al centro. L'ottica si apre SOLO qui: negli highlight resta 46 e la firma golden non si muove.
+           QUOTA E DISTANZA sono prese dalla geometria REALE dello stadio (`_curveGeo`), non da costanti:
+           z sul fronte della tribuna, y fra il primo e il secondo anello — sopra i cartelloni a bordo
+           campo, sotto il tetto. Il maxischermo sta a x=+55, dietro la porta: non entra in questa linea
+           di vista (e il cartellone della competizione, che ci finiva in mezzo, e' stato tolto nel 7.562).
+           INVERSIONE DI CAMPO: la rotazione di 180 gradi del 7.561 vale anche qui — nella ripresa la
+           camera passa alla tribuna opposta, quindi chi attaccava verso destra attacca verso sinistra.
+           __CPM_NO564 = rosso: torna la camera da dietro la porta del 7.561. */
+        let wPy=wPy0;/* [7.564.0] la quota della regia larga smette di essere una costante della formula: l'impianto laterale la ricalcola dalla geometria dello stadio */
+        let wPx=wPxq*_m561,wPz=wPzq*_m561,wLx=wLxr*_m561,wLz=wLzr*_m561;
+        let _fov564=46;
+        if(_r561&&!(typeof window!=='undefined'&&window.__CPM_NO564)){
+          const _cg=sr.current._curveGeo||null;
+          const _ez=(_cg&&_cg.endZ)||50,_eh=(_cg&&_cg.hEnd)||13;
+          const _lead=clamp((sr.current._camVbx||0)*0.22,-7,7);
+          wPz=(_ez-1.5)*_m561;
+          /* [7.564.0 — LA QUOTA E L'OTTICA SI SCELGONO GUARDANDO, E IL PRIMO GIRO ERA SBAGLIATO.
+             Con la camera a quota 15-26 e ottica 64 il provino mostrava un terzo di schermo occupato da
+             tetto e cielo e, in basso, i cartelloni della linea vicina dentro l'inquadratura. La causa e'
+             angolare e si calcola: la depressione verso il pallone era ~21 gradi contro un semiquadro
+             verticale di 32 — quindi il bordo alto puntava 11 gradi SOPRA l'orizzonte e il bordo basso
+             cadeva a 53, cioe' sulle strutture vicine. Alzando la camera la depressione cresce e il quadro
+             scende sul campo; chiudendo l'ottica il bordo basso risale sopra i cartelloni (a 58 gradi di
+             fov il bordo si ferma a ~59, i cartelloni vicini stanno a ~62: fuori per costruzione). */
+          wPy=clamp(_eh*0.9+16,24,32);
+          wPx=(clamp(bxq+_lead,-42,42))*_m561;/* [7.564.0] LA CORSA DEL CARRELLO, e un'ipotesi mia smentita dalla sua misura. Avevo attribuito le 61 uscite «di lato» del censimento al fermo del carrello a ±30 (linea di porta a ±48,6): allargato a ±42, le uscite di lato sono rimaste 64. NON era quello. Il residuo (2,5% dei fotogrammi) e' il RITARDO dei lerp — camera e sguardo inseguono il bersaglio con una costante di tempo, e su un pallone a 34u/s lo scarto vale una decina di unita', che a questa distanza e' il bordo del quadro. La corsa a ±42 resta comunque, ma per la ragione giusta: un carrello che accompagna l'azione fin dentro l'area tiene il gioco al centro invece di guardarlo da lontano. */
+          wLx=bx;wLz=bz*0.30;
+          _fov564=58;
+        }
+        if(camera&&Math.abs((camera.fov||46)-_fov564)>0.01){camera.fov=_fov564;camera.updateProjectionMatrix();}/* 1.0a-CAM3: fuoco un filo più avanti+basso; [6.76.0 LMV-C2] lato difensivo: fuoco fino a -34 (l'azione resta in quadro), path offensivo INVARIATO; [7.54.1] +lead di anticipazione */
         // CLOSE — stacco ravvicinato; il punto di fuoco scivola dall'eroe alla palla a fine azione
         /* [7.363.0 collaudo PO #76 «sul corner la camera e' troppo lontana»] IL FUOCO ABBANDONAVA L'EROE.
            La regia CLOSE interpola il punto di fuoco dall'eroe ALLA PALLA (`bf` cresce durante l'azione):

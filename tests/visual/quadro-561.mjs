@@ -14,7 +14,7 @@ const out = { verde: [], rosso: [] };
 async function giro(rosso, seed) {
   const page = await b.newPage({ viewport: { width: 412, height: 915 } });
   await installCdnRoutes(page);
-  await page.addInitScript(([r]) => { window.__CPM_GLB = false; window.__CPM_REC = true; if (r) window.__CPM_NO561 = true; }, [rosso]);
+  await page.addInitScript(([r]) => { window.__CPM_GLB = false; window.__CPM_REC = true; if (r) window.__CPM_NO564 = true; }, [rosso]);
   await openMatch(page, port, { skipLoadAll: true, name: rosso ? 'Ro' : 'Ve' });
   await page.evaluate((s) => window.__CPM_AUTOPLAY(true, { seed: s, policy: 'seeded', tickMs: 300 }), seed);
   await sleep(MS);
