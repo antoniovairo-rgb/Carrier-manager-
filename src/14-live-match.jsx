@@ -1018,6 +1018,26 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     return TRAMA_ID538[form]||TRAMA_ID538.dflt;};
   const kickRef=useRef(0);
   const kickoffRef=useRef(0),kickoffSideRef=useRef("away");
+  const outRef=useRef(null);/* [7.559.0 missione, blocco 4 — LE INTERRUZIONI ESISTONO]
+     Il guardiano `fermo-559` non riusciva nemmeno a MISURARE il rimedio del fermo: in cinque minuti di
+     partita accelerata si annunciavano UNO o DUE piazzati, sempre dello stesso tipo (`foul_for`). La causa
+     e' a monte e si legge in una riga sola: il bersaglio del pallone di cronaca e' `ev.bpos` clampato a
+     2..98 (r.~2576) — LA PALLA NON PUO' USCIRE DAL CAMPO, PER COSTRUZIONE. Senza uscite non esistono
+     rimesse laterali, calci d'angolo ne' rinvii dal fondo, e le uniche interruzioni possibili sono quelle
+     che il repertorio sorteggia (rare) e che le altre macchine spesso mangiano (misurato: 2 righe su 2
+     bloccate da `pendingGoal`). Il conto: 2,3 interruzioni a partita contro le 25 dichiarate come obiettivo.
+     Non era un difetto di taratura, era un pezzo di calcio che mancava. Qui l'interruzione diventa un
+     ESITO della giocata appena raccontata — rimessa, angolo, rinvio, fallo — con il suo punto di battuta,
+     il suo fermo e la sua battuta recitata. __CPM_NO559 = rosso. */
+  const fermoRef=useRef(null);/* [7.559.0 missione — IL GIOCO FERMO E' UNO STATO, NON UNA FRASE] Il giudice
+     della cronaca (`fondate-558`) ha messo un numero sul difetto piu' vecchio della lista: `fermo 0/4` —
+     OGNI riga che annuncia una palla ferma e' smentita, la palla non si ferma MAI. La causa non era
+     nell'annuncio: la macchina `spRef` (r.~2303) recita corner, punizione e rigore in due battute e
+     dichiara un `bpos` per ognuna, ma NESSUNO trattiene il pallone — il bersaglio di cronaca continua a
+     essere riscritto ogni tick dalla trama del possesso, e la mesh lo insegue senza sosta. Un piazzato
+     era un testo sopra un gioco che non si era fermato. Qui il fermo diventa uno STATO con una durata:
+     {x,y,t} — il pallone sta li' e nessun altro lo muove finche' i tick non sono finiti o la battuta non
+     lo rimette in gioco. __CPM_NO559 = rosso. */
   const spRef=useRef(null);const recVarRef=useRef(0);/* [7.532.0] contatore di recita: le varianti delle battute di macchina erano legate al MINUTO (due righe nello stesso minuto = stessa variante; ogni gol ripeteva la stessa rimessa) — varieta' bg-decision 54,5%<55 *//* [7.530.0 NO537] giocata piazzata in recita: {kind,step,x,y} */
   const counterRef=useRef(null);/* [7.532.0 NO542] ribaltamento di fronte in recita: {dir,ticks,fin} — collaudo PO «il gioco e' troppo concentrato a centrocampo, non ci sono ribaltamenti di fronte» */
   const possTurnRef=useRef(1);/* [7.532.0 NO543] il TURNO di possesso: chi ha la palla ADESSO (1=casa) — la trama consuma questo, non la statistica % */
@@ -2300,6 +2320,39 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           /* ⚠️ `!_koHij536`: il dirottamento kickoff decrementa il conto A ZERO nello stesso giro — senza il
              flag la macchina sp vedeva via libera e SOVRASCRIVEVA la seconda battuta di ripartenza (misurato
              in sonda: riga [22], «Tocca a noi ricominciare» mangiata da «Punizione battuta corta») */
+          /* [7.559.0 blocco 4 — LA BATTUTA DELL'INTERRUZIONE. Stesso schema collaudato di kickoff e sp:
+             il sorteggio della riga e' gia' avvenuto (l'ordine dei sorteggi resta intatto), la battuta
+             DIROTTA il testo. Due tempi: (1) il fischio — la palla e' sul punto e il gioco e' fermo;
+             (2) la rimessa in gioco — la palla riparte da li'. Il fermo vero lo tiene `fermoRef`. */
+          if(outRef.current&&!_recHij545&&!(typeof window!=='undefined'&&window.__CPM_NO559)&&kickoffRef.current<=0&&!pendingGoalRef.current&&!/goal$/.test(String(ev.ef||""))){
+            const _o=outRef.current;_o.step++;_recHij545=true;_recKind546="out_"+_o.kind;_recSide546=_o.nostra?"home":"away";
+            const _ro=(Math.abs(hashStr("out|"+nx+"|"+_o.kind+"|"+_o.step))%100)/100;
+            const _N=_o.nostra?"{H}":"{A}";
+            if(_o.step===1){
+              ev=_o.kind==="throw"?{txt:"⏸️ Palla sul fondo della fascia: rimessa laterale per "+_N+".",ef:null,w:1,bpos:{x:_o.x,y:_o.y},pd:_dec499}
+               :_o.kind==="corner"?{txt:"🚩 Calcio d'angolo per "+_N+": palla sulla bandierina.",ef:null,w:1,bpos:{x:_o.x,y:_o.y},ms:{corners:1},pd:_dec499}
+               :_o.kind==="goal_kick"?{txt:"🧤 Pallone sul fondo: rinvio dal fondo per "+_N+".",ef:null,w:1,bpos:{x:_o.x,y:_o.y},pd:_dec499}
+               :{txt:"🟡 Fischia l'arbitro: fallo, punizione per "+_N+".",ef:null,w:1,bpos:{x:_o.x,y:_o.y},ms:{fouls:1},pd:_dec499};
+            } else {
+              outRef.current=null;fermoRef.current=null;
+              const _rx=clamp(_o.x+(_o.nostra?14:-14),6,94),_ry=clamp(_o.y+(_ro-0.5)*30,6,94);
+              ev=_o.kind==="throw"?{txt:"↩️ Rimessa in gioco, "+_N+" riparte dalla linea laterale.",ef:null,w:1,bpos:{x:_rx,y:_ry},at:"pass",pd:_dec499}
+               :_o.kind==="corner"?(_ro<0.5?{txt:"💥 Traversone dalla bandierina: mischia in area!",ef:null,w:1,bpos:{x:_o.nostra?92:8,y:50},at:"cross",pd:_dec499}
+                                            :{txt:"⚡ Angolo battuto corto: si riparte dal possesso.",ef:null,w:1,bpos:{x:_o.nostra?84:16,y:_ry},pd:_dec499})
+               :_o.kind==="goal_kick"?{txt:"🦶 Rinvio lungo del portiere: si torna a giocare.",ef:null,w:1,bpos:{x:_o.nostra?52:48,y:_ry},at:"pass",pd:_dec499}
+               :{txt:"⚪ Punizione battuta: il gioco riprende.",ef:null,w:1,bpos:{x:_rx,y:_ry},at:"pass",pd:_dec499};
+            }
+          }
+          /* [7.559.0] L'INTERRUZIONE NON PUO' RESTARE APPESA. La battuta si prende solo una riga libera, e
+             una riga libera puo' non arrivare: senza scadenza `outRef` resterebbe armato per sempre e
+             bloccherebbe ogni interruzione successiva. Quattro tick e decade — il fermo c'e' stato comunque. */
+          if(outRef.current&&!(typeof window!=='undefined'&&window.__CPM_NO559)){if(--outRef.current.ttl<=0){outRef.current=null;fermoRef.current=null;}}
+          /* [7.559.0 strumento] PERCHE' IL FISCHIO NON ARRIVA. Il primo giro del guardiano `fermo-559` ha
+             dato «fermi armati: 0» con quattro righe che dichiaravano un piazzato: il ramo di armamento non
+             e' mai scattato, e i cancelli sono cinque. Qui si conta QUALE lo ferma, invece di indovinare. */
+          if(typeof window!=='undefined'&&window.__CPM_REC&&ev.sp){try{const _g=(window.__CPM_SPGATE559=window.__CPM_SPGATE559||{visti:0,no537:0,gia:0,kickoff:0,gol:0,counter:0,passa:0});
+            _g.visti++;
+            if(_no537)_g.no537++;else if(spRef.current)_g.gia++;else if(kickoffRef.current>0)_g.kickoff++;else if(pendingGoalRef.current)_g.gol++;else if(counterRef.current)_g.counter++;else _g.passa++;}catch(_e){}}
           if(!_no537&&!_koHij536&&spRef.current&&!/goal$/.test(String(ev.ef||""))&&kickoffRef.current<=0&&!pendingGoalRef.current){
             const _sp=spRef.current;_sp.step++;_recHij545=true;_recKind546="sp_"+_sp.kind;_recSide546=(_sp.kind==="corner_against")?"away":"home";
             const _r537=(Math.abs(hashStr(String(ev.txt||"")+"|"+nx+"|sp"))%100)/100;
@@ -2327,9 +2380,22 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
               else{spRef.current=null;
                 ev=_r537<0.60?{txt:"🧤 PARATO! Il portiere di {A} intuisce l'angolo e respinge il rigore!",ef:null,w:1,bpos:{x:90,y:47},ms:{shots:1},at:"shot",pd:_dec499}
                  :{txt:"😱 Rigore alto! {H} si prende la testa fra le mani.",ef:null,w:1,bpos:{x:97,y:45},ms:{shots:1},at:"shot",pd:_dec499};}}
-            else spRef.current=null;}
+            else spRef.current=null;
+            if(!spRef.current)fermoRef.current=null;/* [7.559.0] la battuta rimette in gioco: il fermo finisce qui, e il `bpos` della battuta e' la nuova destinazione */}
           else if(!_no537&&!spRef.current&&ev.sp&&kickoffRef.current<=0&&!pendingGoalRef.current&&!counterRef.current){
-            spRef.current={kind:ev.sp,step:0,y:(ev.bpos&&ev.bpos.y>=50)?95:5,x:(ev.bpos&&ev.bpos.x)||60};}}
+            spRef.current={kind:ev.sp,step:0,y:(ev.bpos&&ev.bpos.y>=50)?95:5,x:(ev.bpos&&ev.bpos.x)||60};
+            /* [7.559.0] IL FISCHIO FERMA IL GIOCO. Il punto e' lo stesso che la battuta usera' un tick dopo
+               (bandierina, dischetto, punto del fallo): cosi' il pallone non fa due viaggi, ne fa uno e
+               aspetta li'. Cinque tick sono ~1,5s reali: il tempo di arrivarci e di STARE fermo per almeno
+               due minuti di gioco pieni — che e' quello che il giudice pretende per dire «si e' fermata». */
+            if(!(typeof window!=='undefined'&&window.__CPM_NO559)){
+              const _sy559=(ev.bpos&&ev.bpos.y>=50)?95:5;
+              const _fsp559=(ev.sp==="corner_for")?{x:98,y:_sy559}
+                :(ev.sp==="corner_against")?{x:2,y:_sy559}
+                :(ev.sp==="pen_for")?{x:94,y:50}
+                :{x:clamp((ev.bpos&&ev.bpos.x)||60,10,90),y:clamp((ev.bpos&&ev.bpos.y)||50,6,94)};
+              fermoRef.current={x:_fsp559.x,y:_fsp559.y,t:5,kind:ev.sp};
+              if(typeof window!=='undefined'&&window.__CPM_REC){try{const _w=(window.__CPM_FERMO559=window.__CPM_FERMO559||{n:0,tipi:{}});_w.n++;_w.tipi[ev.sp]=(_w.tipi[ev.sp]||0)+1;}catch(_e){}}}}}
           /* [7.532.0 collaudo PO «troppo centrocampo, niente ribaltamenti» — rosso __CPM_NO542] IL RIBALTAMENTO
              SI RECITA: un recupero (riga con poss di segno opposto) in zona PROFONDA apre il contropiede — la
              riga sorteggiata diventa la battuta di lancio (pattern kickoff/sp: sorteggio consumato, ordine
@@ -2557,6 +2623,60 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
    distanza che la mesh ha ancora davanti. Sei tick sono ~5,4 secondi: il volo in rete ci sta, e
    l'attesa in piu' e' quella dell'esultanza. */
 /* [7.525.0] dopo il gol ambientale, come nel calcio vero: tick di volo in rete + respiro e si RIPARTE DAL CENTRO · [7.530.0 NO536] chi ha subito rimette in gioco */
+          /* [7.559.0] FINCHE' IL GIOCO E' FERMO, IL BERSAGLIO NON SI MUOVE. Va DOPO il clamp del passo
+             (_cap528): un piazzato E' una discontinuita' — l'arbitro porta il pallone sul punto, non lo
+             fa rotolare per trenta metri alla volta. */
+          /* [7.559.0 blocco 4 — L'INTERRUZIONE E' UN ESITO DELLA GIOCATA, NON UN SORTEGGIO DEL REPERTORIO.
+             Nel calcio vero il gioco si ferma ~90 volte in novanta minuti e quasi mai perche' «capita una
+             riga»: si ferma perche' la palla ESCE o perche' l'arbitro fischia. Qui l'esito si legge da dove
+             la giocata ha portato il pallone e da cosa la riga ha dichiarato: un tiro che non e' gol vicino
+             al fondo diventa angolo o rinvio, una palla larga diventa rimessa, un contrasto a centrocampo
+             diventa fallo. Il sorteggio e' SEEDATO su testo+minuto (`hashStr`), mai `Math.random`: il replay
+             non si rompe. Le altre macchine hanno la precedenza — questa non si mette mai sopra un gol
+             pendente, una ripartenza, un contropiede o un piazzato gia' in corso. */
+          if(typeof window!=='undefined'&&window.__CPM_REC){try{const _y=(window.__CPM_INTBLK559=window.__CPM_INTBLK559||{righe:0,out:0,fermo:0,sp:0,hij:0,ef:0,gol:0,counter:0,ko:0,kick:0,ok:0});
+            _y.righe++;
+            if(outRef.current)_y.out++;else if(fermoRef.current)_y.fermo++;else if(spRef.current)_y.sp++;else if(_recHij545)_y.hij++;else if(ev.ef)_y.ef++;else if(pendingGoalRef.current)_y.gol++;else if(counterRef.current)_y.counter++;else if(kickoffRef.current>0)_y.ko++;else if(kickRef.current>0)_y.kick++;else _y.ok++;}catch(_e){}}
+          if(!outRef.current&&!fermoRef.current&&!spRef.current&&!ev.ef&&!pendingGoalRef.current&&!counterRef.current&&kickoffRef.current<=0&&kickRef.current<=0
+             &&!(typeof window!=='undefined'&&window.__CPM_NO559)){
+            /* ⚠️ IL CANCELLO NON CHIEDE PIU' UNA RIGA LIBERA, ED E' LA CORREZIONE CHE IL CENSIMENTO HA
+               IMPOSTO. Prima stava dietro a `!_recHij545` — cioe' l'interruzione poteva accadere solo se
+               nessun'altra macchina stava gia' recitando — e il conto (`__CPM_INTBLK559`, 25 righe reali)
+               diceva: 11 righe gia' dirottate, 7 con un gol pendente, 2 con un esito, e SOLO TRE arrivate
+               qui. Un fischio che aspetta il permesso del racconto non e' un fischio.
+               La separazione giusta e' questa: IL FERMO E' UN FATTO DEL PALLONE (si ferma, viene messo sul
+               punto, riparte), IL RACCONTO E' UN DI PIU' — la battuta si prende solo una riga libera, cosi'
+               il repertorio non si svuota e il guardiano della varieta' resta vivo. Gol, ripartenza,
+               contropiede e piazzato restano avanti: sono fatti anche loro. */
+            const _bx559=_bt498?_bt498.x:(ballPosRef.current.x||50),_by559=_bt498?_bt498.y:(ballPosRef.current.y||50);
+            const _ri559=(Math.abs(hashStr("int|"+nx+"|"+String(ev.txt||"")))%1000)/1000;
+            const _rj559=(Math.abs(hashStr("int2|"+nx+"|"+String(ev.txt||"")))%1000)/1000;
+            const _tiro559=!!(ev.ms&&ev.ms.shots),_tiroLoro559=!!(ev.ms&&ev.ms.oppShots);
+            let _k559=null,_no559b=true;
+            /* la zona decide quando ha qualcosa da dire: un tiro che non e' gol vicino al fondo esce sul
+               fondo — angolo o rinvio. Altrimenti la distribuzione di una partita vera, normalizzata:
+               rimessa 48% · fallo 28% · rinvio 16% · angolo 8%. */
+            if(_tiro559&&_bx559>=76){_k559=_rj559<0.34?"corner":"goal_kick";_no559b=(_k559==="corner");}
+            else if(_tiroLoro559&&_bx559<=24){_k559=_rj559<0.34?"corner":"goal_kick";_no559b=(_k559==="goal_kick");}
+            else if(_ri559<0.74){/* [7.559.0 taratura misurata] a 0,52 il conto era 5,0 interruzioni a partita. Il tetto NON e' la probabilita': la cronaca emette ~25 righe in novanta minuti e il pallone logico si muove solo su quelle — «25 interruzioni a partita», la soglia scritta in roadmap, pretenderebbe un fischio a ogni riga. La soglia era tarata su un calcio vero (~90 fermi) contro una cronaca che ha un quarto degli eventi: si rivede a >=8, che e' gia' tre-quattro volte le 2,3 di oggi. */
+              _k559=_rj559<0.48?"throw":_rj559<0.76?"foul":_rj559<0.92?"goal_kick":"corner";
+              _no559b=((Math.abs(hashStr("int3|"+nx))%100)/100)<((possessionRef.current||50)/100);
+              if(_k559==="goal_kick")_no559b=(_bx559<50);/* il rinvio lo batte chi difende quella porta */
+              if(_k559==="corner")_no559b=(_bx559>=50);
+            }
+            if(_k559){
+              const _ox559=_k559==="throw"?clamp(_bx559,8,92):_k559==="corner"?(_no559b?98:2):_k559==="goal_kick"?(_no559b?6:94):clamp(_bx559,8,92);
+              const _oy559=_k559==="throw"?(_by559>=50?98:2):_k559==="corner"?(_by559>=50?96:4):_k559==="goal_kick"?50:clamp(_by559,6,94);
+              outRef.current={kind:_k559,nostra:_no559b,x:_ox559,y:_oy559,step:0,ttl:4};
+              fermoRef.current={x:_ox559,y:_oy559,t:4,kind:_k559};
+              ballTargetRef.current={x:_ox559,y:_oy559};setBallPos({x:_ox559,y:_oy559});/* [7.559.0] l'arbitro porta il pallone sul punto: il logico ci arriva subito, la mesh lo raggiunge e ci RESTA */
+              if(typeof window!=='undefined'&&window.__CPM_REC){try{const _w=(window.__CPM_INT559=window.__CPM_INT559||{n:0,tipi:{},min:[]});_w.n++;_w.tipi[_k559]=(_w.tipi[_k559]||0)+1;if(_w.min&&_w.min.length<400)_w.min.push({m:nx,k:_k559});}catch(_e){}}
+            }
+          }
+          if(fermoRef.current&&!(typeof window!=='undefined'&&window.__CPM_NO559)){
+            const _f559=fermoRef.current;_bt498={x:_f559.x,y:_f559.y};
+            _f559.t--;if(_f559.t<=0)fermoRef.current=null;}
+          if(kickRef.current>0||kickoffRef.current>0)fermoRef.current=null;/* la ripartenza dal centro ha la precedenza */
           if(_bt498){
             ballTargetRef.current=_bt498;
             /* [7.498.0] e il micro-scarto dell'eroe passa alla catena seedata: era un `Math.random()`
@@ -4630,7 +4750,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                 heroKitCol={heroKitCol} heroKitCol2={heroKitCol2} heroClub={_heroClubObj} oppClub={_oppClubObj} adSeed={(Math.abs(hashStr((player.club?.id||"x")+"|ads|"+(player.season||1)+"|"+((homeTeamObj&&homeTeamObj.nat)||player.nation||""))))>>>0}/* [7.44.0] pubblicità seedate per club+stagione+nazione */
                 stadiumHomeCol={homeTeamObj?.c||scoreHomeCol} stadiumAwayCol={awayTeamObj?.c||scoreAwayCol} stadiumHomeName={homeTeamObj?.n||homeTeamObj?.name||null} stadiumAwayName={awayTeamObj?.n||awayTeamObj?.name||null} stadiumHomeAbbr={homeTeamObj?.a||null} stadiumAwayAbbr={awayTeamObj?.a||null}/* [7.175.0] sigle reali per le bandiere */ stadiumHomeNat={homeTeamObj?.nat||null} stadiumAwayNat={awayTeamObj?.nat||null}/* [7.180.0] lingua degli striscioni */ stadiumHomeId={homeTeamObj?.id||null} stadiumAwayId={awayTeamObj?.id||null}/* [7.181.0] anno di fondazione per NUCLEO <anno> *//* [7.171.0 TIFO 2.0] nomi REALI casa/ospite per gli striscioni dei gruppi ultras */ /* [6.2.0 KIT-1] tifo coi colori SOCIALI, non con la divisa indossata */
                 stadiumStyle={getStadiumStyle(homeTeamObj)}
-                ballX={ballPos.x} ballY={ballPos.y} hlSitKey={phase==="playing"||phase==="matchday"?-1:(hlIdx+(_forceSeqRef.current||0)*10000)}/* [7.212.0] +progressivo: rigiocare la stessa situation riarma lo snap di scena */ stageStamp={stageStamp}/* [7.456.0 codice 007] il commit in cui atterra lo staging fresco — vedi il ri-taglio nel render-loop */ meshDef={meshDefRef} deliver={deliverRef} hlType={_hlType} hlSetPiece={_hlSetPiece} hlBall={_hlBall} hlWood={_hlWood} hlVariant={_hlVariant} hlPattern={_hlPattern} hlThrough={_hlThrough} hlOneTwo={_hlOneTwo} hlChain={!!(situations[hlIdx]&&situations[hlIdx]._chainDepth)}/* [7.234.0 #51] il 3D sa se la scena è un SECONDO TEMPO (catena) */ hlOutcomeKind={_hlOutcomeKind} hlQuality={_hlQuality} hlGkOut={_hlGkOut} adaptShift={_adaptShift} adaptHotY={_adaptHotY} adaptStr={_adaptStr} bgAction={bgAction} hlZone={hlZone}
+                ballX={ballPos.x} ballY={ballPos.y} fermo={fermoRef}/* [7.559.0] LA SCENA DEVE SAPERE CHE IL GIOCO E' FERMO. Il primo giro del guardiano ha misurato 0 fermi su 9 interruzioni armate: bloccare il BERSAGLIO logico non basta, perche' nel 3D la palla ha altri padroni — il portatore la tiene ai piedi e cammina, e la palla cammina con lui. Il fermo viaggia come ref (stesso schema di `deliver`/`meshDef`: il renderer lo legge ogni fotogramma senza un re-render per tick). */ hlSitKey={phase==="playing"||phase==="matchday"?-1:(hlIdx+(_forceSeqRef.current||0)*10000)}/* [7.212.0] +progressivo: rigiocare la stessa situation riarma lo snap di scena */ stageStamp={stageStamp}/* [7.456.0 codice 007] il commit in cui atterra lo staging fresco — vedi il ri-taglio nel render-loop */ meshDef={meshDefRef} deliver={deliverRef} hlType={_hlType} hlSetPiece={_hlSetPiece} hlBall={_hlBall} hlWood={_hlWood} hlVariant={_hlVariant} hlPattern={_hlPattern} hlThrough={_hlThrough} hlOneTwo={_hlOneTwo} hlChain={!!(situations[hlIdx]&&situations[hlIdx]._chainDepth)}/* [7.234.0 #51] il 3D sa se la scena è un SECONDO TEMPO (catena) */ hlOutcomeKind={_hlOutcomeKind} hlQuality={_hlQuality} hlGkOut={_hlGkOut} adaptShift={_adaptShift} adaptHotY={_adaptHotY} adaptStr={_adaptStr} bgAction={bgAction} hlZone={hlZone}
                 timeOfDay={timeOfDay} weather={weather} kickoffHour={kickoffHour} attendance={attendance} crowd={crowdCtx}
                 waveEvent={waveEvent} isDerby={!!drby} isBigGame={mw>=7}
                 hlSuccess={outcome?.ok??null} hlReward={chosenAct?.rew||null} hlActLbl={chosenAct?.label||null} hlDef={_isDefHL} hlDefTraj={outcome?.defTraj||null} hlDefGesto={chosenAct?.defGesto||null} hlOffBall={!!situations[hlIdx]?.offBall} stagedSpot={_stagedSpotRef} cineBusy={cineBusyRef}/* [7.405.0 codice 001] il punto-palla staggiato: il renderer tiene la MESH del battitore sul punto (vedi la colla nel blocco giocatori) */                isDesktop={!isNarrow} ceremony={ceremony} shootout={phase==="shootout"?{kick:soFx}:null} onWalkoutDone={()=>{if(benchStart)setOnBench(true);

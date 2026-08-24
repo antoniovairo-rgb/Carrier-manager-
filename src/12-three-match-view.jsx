@@ -1932,6 +1932,17 @@ function ThreeMatchView(props){
              il compagno dichiarato portatore batte tutti, poi l'eroe in conduzione, poi nessuno (e allora
              comanda l'inseguitore). I tre rami diventano esclusivi PER COSTRUZIONE, non per previsione.
              __CPM_NO555 = rosso: rimette i tre gate indipendenti di prima. */
+          /* [7.559.0 — QUANDO IL GIOCO E' FERMO, IL PALLONE STA SUL PUNTO E BASTA]
+             Il guardiano ha misurato 0 fermi su 9 interruzioni armate: fermare il bersaglio LOGICO non
+             bastava, perche' nel 3D il pallone ha altri padroni — il portatore designato la tiene ai piedi
+             e cammina (`_carry526`), e la palla cammina con lui. L'elezione unica del 7.555 e' esattamente
+             il posto giusto per dirlo: c'e' un padrone che batte tutti, e si chiama FERMO. */
+          const _fm559=(P.fermo&&P.fermo.current)||null;
+          if(_fm559&&!(typeof window!=='undefined'&&window.__CPM_NO559)){
+            ball.position.x=G2X(_fm559.x);ball.position.z=G2Z(_fm559.y);ball.position.y=0.11;
+            sr.current._pad555='fermo';
+            if((sr.current._ws524=17)&&sr.current._bj0){sr.current._bj0.src='fermo';sr.current._bj0.srcs.push('fermo');}
+          } else {
           const _no555=(typeof window!=='undefined'&&window.__CPM_NO555);
           const _pad555=_no555?null:(_porGlue526?'portatore':(_colla515?'eroe':'nessuno'));
           sr.current._pad555=_pad555;/* il padrone eletto resta leggibile a valle (cronaca, volo, sonde) */
@@ -1966,6 +1977,7 @@ function ThreeMatchView(props){
                 ball.position.z=hero.position.z+_uz3*0.28+(_ux3)*_lc3;
               }
             }
+          }
           }
         }}}
       // Sprint 3D-BALL: parabola sull'esito — arco in base al tipo di azione
