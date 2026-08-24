@@ -81,6 +81,7 @@ for (let i = 0; i < PARTITE; i++) {
   await page.addInitScript(() => {
     window.__CPM_GLB = false;
     window.__CPM_TRACCIA = [];
+    window.__CPM_TR571 = [];/* [7.571.0] la traccia buona la scrive IL GIOCO, un campione per MINUTO */
     setInterval(() => {
       try {
         const o = window.__CPM_OWN && window.__CPM_OWN(); if (!o || o.ph !== 'playing') return;
@@ -98,16 +99,26 @@ for (let i = 0; i < PARTITE; i++) {
   tutte.push(await page.evaluate(() => ({
     righe: (window.__CPM_EV ? window.__CPM_EV() : []).filter(e => e.ev === 'chronicle'),
     recite: (window.__CPM_EV ? window.__CPM_EV() : []).filter(e => e.ev === 'recita'),
-    tr: window.__CPM_TRACCIA || [],
+    tr: window.__CPM_TRACCIA || [], trT: window.__CPM_TR571 || [],
   })));
   await page.close();
 }
 srv.close(); await b.close();
 
+/* il minuto della riga di cronaca successiva: da li' in poi il pallone ha un'altra destinazione dichiarata */
+const prossimaRiga = (righe, r) => { let best = null;
+  for (const o of righe) { const m = o.min | 0; if (m > (r.min | 0) && (o.bx != null || o.ef) && (best == null || m < best)) best = m; }
+  return best; };
 const C = { FONDATA: [], SMENTITA: [], MUTA: [] };
 const TIRI = [];
 let recite = 0, righeTot = 0, scartate = 0;
-for (const { righe, recite: rc, tr } of tutte) {
+let _fonteTick = 0, _fonteOro = 0;
+for (const { righe, recite: rc, tr: _trOro, trT } of tutte) {
+  /* [7.571.0] si preferisce la traccia a passo di MINUTO scritta dal gioco: e' deterministica.
+     Quella campionata a orologio resta come ripiego, e il verdetto dichiara quale ha usato. */
+  const _usaTick = (trT && trT.length >= 20);
+  if (_usaTick) _fonteTick++; else _fonteOro++;
+  const tr = _usaTick ? trT.map(t => ({ c: t.c, x0: t.x0, y0: t.y0, x: t.x, y: t.y, xmax: t.xmax, xmin: t.xmin, ymax: t.ymax, ymin: t.ymin, dmin: 99, imin: -1, n: Math.max(t.n, 4), l: t.l, lmix: t.lmix })) : _trOro;
   recite += rc.length;
   const byMin = new Map(); tr.forEach(s => byMin.set(s.c, s));
   const fin = m => { const o = []; for (let k = 0; k <= FINESTRA; k++) { const s = byMin.get(m + k); if (s) o.push(s); } return o; };
@@ -172,8 +183,21 @@ for (const { righe, recite: rc, tr } of tutte) {
     /* [7.558.0] LA DESTINAZIONE DICHIARATA. Una riga che porta `bpos` dice dove finisce il pallone: dal
        7.556 la scena la consegna a un uomo NOMINATO, quindi ora si puo' pretendere che la palla ci arrivi. */
     if (r.bx != null && r.by != null) {
-      const d = Math.min(...w.map(s2 => Math.hypot(s2.x - r.bx, s2.y - r.by)));
-      claim.push({ k: 'destinazione', ok: d <= DEST_U, nota: `la palla arriva a ${d.toFixed(1)}u dal punto dichiarato` });
+      /* [7.571.0 — LA DESTINAZIONE VALE FINCHE' NESSUNO NE DICHIARA UN'ALTRA.
+         Con `tiro` riparato il totale continuava a ballare, e il mobile era diventato questa famiglia:
+         40/48 e 36/48 su codice identico. La causa e' la finestra: si concedevano TRE minuti di gioco al
+         pallone per arrivare al punto dichiarato, ma in quei tre minuti la cronaca emette spesso un'ALTRA
+         riga con un'ALTRA destinazione — e da quel momento il pallone e' legittimamente diretto altrove.
+         Pretendere che arrivi lo stesso significa giudicare la riga per una decisione presa DOPO di lei.
+         Ora la finestra si chiude al minuto della riga successiva: si chiede al pallone di andare dove la
+         riga ha detto FINCHE' quella riga e' l'ultima parola. E' la stessa disciplina del `tiro`: la regola
+         deve poter essere soddisfatta da chi la deve rispettare. */
+      const _nxt = prossimaRiga(righe, r);
+      const _fin = _nxt == null ? (r.min | 0) + FINESTRA : Math.min((r.min | 0) + FINESTRA, _nxt - 1);
+      const w2 = w.filter(s2 => s2.c <= _fin);
+      const _ww = w2.length ? w2 : [w[0]];
+      const d = Math.min(..._ww.map(s2 => Math.hypot(s2.x - r.bx, s2.y - r.by)));
+      claim.push({ k: 'destinazione', ok: d <= DEST_U, nota: `la palla arriva a ${d.toFixed(1)}u dal punto dichiarato (finestra ${r.min|0}'-${_fin}')` });
     }
     if (!claim.length) { C.MUTA.push({ min: r.min, pd: r.pd, rec: r.rec, at: r.at }); continue; }
     const tutti = claim.every(c => c.ok);
@@ -184,6 +208,7 @@ for (const { righe, recite: rc, tr } of tutte) {
 if (!righeTot) { console.log('nessuna riga giudicabile'); process.exit(1); }
 const p = n => (100 * n / righeTot).toFixed(1) + '%';
 console.log(`\n=== QUANTE RIGHE DI CRONACA POGGIANO SU UN FATTO (${tutte.length} partite) ===\n`);
+console.log(`  traccia usata: ${_fonteTick} partite a PASSO DI MINUTO (deterministica, scritta dal gioco) · ${_fonteOro} a orologio da parete (ripiego)\n`);
 console.log(`  righe emesse e giudicabili   ${righeTot}     (di cui ${C.FONDATA.concat(C.SMENTITA, C.MUTA).filter(x => x.rec).length} dirottate da una macchina di recita · ${recite} recite nel registro)`);
 console.log(`  righe SCARTATE dal giudizio   ${scartate}     (minuto assente o con meno di ${MIN_CAMP} campioni: gli estremi non direbbero niente)\n`);
 console.log(`  FONDATA   ${String(C.FONDATA.length).padStart(4)}/${righeTot} = ${p(C.FONDATA.length).padStart(6)}   marcatore + fatto visto nella traccia`);

@@ -6790,6 +6790,28 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
          e in cronaca la camera larga sta SEMPRE dietro la nostra porta (wPx ~ -51..-38), quindi quando
          l'avversario attacca la nostra area l'azione finisce sotto il bordo basso del quadro. Qui si conta,
          separando le due meta' del campo: senza questo numero «segue l'azione» resta un'impressione. */
+      /* [7.571.0 — LA TRACCIA DEL PALLONE A PASSO DI MINUTO, e non a orologio da parete]
+         Il giudice della cronaca dava 40/48, 36/48 e 35/48 su tre passate con gli STESSI SEMI: il gioco e'
+         deterministico, i suoi numeri no. La causa e' la stessa che il 7.554 aveva trovato in `fatti-546` e
+         che continuo a incontrare: la sonda campiona la traccia con un `setInterval` a 60 ms di orologio
+         REALE, mentre la partita avanza a TICK. Quanti campioni cadano dentro un minuto di gioco dipende
+         quindi dalla velocita' della macchina, e ogni verdetto costruito su estremi o minimi di quei
+         campioni eredita quella variabilita'. Non e' rumore simmetrico: piu' campioni = estremi piu' larghi.
+         Qui la traccia la scrive IL GIOCO, un campione per MINUTO DI GIOCO — l'ultimo fotogramma del minuto,
+         cioe' la posizione con cui quel minuto si chiude. Il conteggio dei campioni sparisce dal giudizio, e
+         con esso la sua deriva. Sola strumentazione: nessun comportamento cambia. */
+      if(typeof window!=='undefined'&&(window.__CPM_REC||_CPM_TEST||_SIT_TEST)&&ball&&P.matchPhase==='playing'){try{
+        const _o571=window.__CPM_OWN&&window.__CPM_OWN();
+        if(_o571&&_o571.c!=null){const _T=(window.__CPM_TR571=window.__CPM_TR571||[]);
+          const _u=_T[_T.length-1];
+          const _l571=(_o571.i>=10?1:0);
+          if(_u&&_u.c===_o571.c){_u.x=+_o571.x.toFixed(2);_u.y=+_o571.y.toFixed(2);
+            if(_o571.x>_u.xmax)_u.xmax=+_o571.x.toFixed(2);if(_o571.x<_u.xmin)_u.xmin=+_o571.x.toFixed(2);
+            if(_o571.y>_u.ymax)_u.ymax=+_o571.y.toFixed(2);if(_o571.y<_u.ymin)_u.ymin=+_o571.y.toFixed(2);
+            if(_l571!==_u.l)_u.lmix=1;/* [7.571.0] il cambio di lato DENTRO il minuto va conservato: la prima stesura teneva solo l'ultimo proprietario e la famiglia `possesso` del giudice e' crollata da 5/5 a 0/5 — un campione per minuto non deve voler dire perdere cio' che nel minuto e' successo */
+            _u.n++;}
+          else if(_T.length<4000)_T.push({c:_o571.c,x0:+_o571.x.toFixed(2),y0:+_o571.y.toFixed(2),x:+_o571.x.toFixed(2),y:+_o571.y.toFixed(2),xmax:+_o571.x.toFixed(2),xmin:+_o571.x.toFixed(2),ymax:+_o571.y.toFixed(2),ymin:+_o571.y.toFixed(2),l:_l571,lmix:0,n:1});}
+      }catch(_e571){}}
       if(typeof window!=='undefined'&&(window.__CPM_REC||_CPM_TEST||_SIT_TEST)&&ball&&camera&&P.matchPhase==='playing'){try{
         const _Q=(sr.current._q561||(sr.current._q561={v:new THREE.Vector3()}));
         _Q.v.set(ball.position.x,ball.position.y+0.2,ball.position.z).project(camera);
