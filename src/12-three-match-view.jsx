@@ -5563,24 +5563,54 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
       } else {
         // WIDE — broadcast dietro la porta di casa, segue il centro azione con leggero parallasse
         // 3DV-5: attack zoom — camera avanza/scende quando palla in area avanzata (bx>0→bx>42)
-        const _bAttk=P.matchPhase==="playing"?clamp(Math.abs(bx)/42,0,1):0;/* [6.76.0 LMV-C2] zoom SIMMETRICO: prima solo bx>0 → quando l'avversario attaccava la porta di casa niente zoom e fuoco clampato a -8 mentre l'azione era a -46 (difesa sotto-inquadrata) */
-        const wPx=(-51+_bAttk*(bx>=0?13:6))+clamp(ax,-50,50)*0.14+Math.sin(now*0.00025)*2.5,/* 1.0a-CAM3: avanti -88→-74; [7.525.0] -74→-67. [7.528.0] -67→-62 · [7.529.0 PO «più vicina al campo!»] -62→-56 · [7.532.0 PO secondo giro «in cronaca un po' più vicina»] -56→-51 (avanzata 14→13) */
+        /* [7.561.0 — LA CRONACA SEGUE L'AZIONE ANCHE QUANDO ATTACCA L'AVVERSARIO, E CAMBIA CAMPO A META']
+           Collaudo PO 24 ago: «il pallone spesso esce fuori dalla scena, la telecamera non segue l'azione;
+           le giocate offensive avversarie sono nascoste dalla curva e tribuna». Censimento `quadro-561` su
+           2396 fotogrammi di cronaca: FUORI QUADRO il 41,3% dei fotogrammi quando attacca l'avversario,
+           lo 0,0% quando attacchiamo noi, con `ndc.y` fino a -102 — e -102 non e' «un po' fuori»: e' il
+           pallone DIETRO la camera. La causa sono due costanti che si sommano, entrambe scritte per il
+           verso offensivo e mai riviste per l'altro:
+             (1) lo zoom d'attacco (6.76.0) fu reso «simmetrico» usando |bx|, quindi quando la palla scende
+                 nella NOSTRA meta' la camera AVANZA verso il centro (fino a +6) mentre il pallone va
+                 all'estremo opposto: si allontanano l'uno dall'altra;
+             (2) il punto di fuoco e' clampato a -34 mentre il pallone arriva a -48,6 (linea di porta).
+           Insieme: camera a -38, fuoco a -34, pallone a -48 → il pallone e' dieci unita' DIETRO l'obiettivo.
+           Qui lo zoom d'attacco diventa asimmetrico per davvero — avanza quando attacchiamo, ARRETRA
+           quando ci attaccano — e il fuoco puo' seguire il pallone fin sulla linea.
+           E il CAMBIO CAMPO chiesto dal PO: nella ripresa tutto il calcolo gira su coordinate ruotate di
+           180 gradi (x e z, cosi' e' una rotazione e non uno specchio: le tribune si scambiano di posto
+           invece di ribaltarsi) e il risultato si riporta indietro. La simulazione non viene toccata.
+           __CPM_NO561 = rosso: camera del 7.560, nessun cambio campo. */
+        const _r561=!(typeof window!=='undefined'&&window.__CPM_NO561)&&P.matchPhase==="playing"&&!P.ceremony&&!P.shootout&&!replaying;
+        const _m561=(_r561&&P.half===2)?-1:1;/* +1 primo tempo · -1 ripresa (rotazione di 180°) */
+        const bxq=bx*_m561,bzq=bz*_m561,axq=ax*_m561,azq=az*_m561;/* coordinate canoniche: la camera sta sempre dietro la porta a x negativo */
+        const _bAttk=P.matchPhase==="playing"?clamp(Math.abs(bxq)/42,0,1):0;/* [6.76.0 LMV-C2] zoom SIMMETRICO: prima solo bx>0 → quando l'avversario attaccava la porta di casa niente zoom e fuoco clampato a -8 mentre l'azione era a -46 (difesa sotto-inquadrata) */
+        const wPxq=(-51+(_r561?(bxq>=0?_bAttk*13:-_bAttk*7):_bAttk*(bxq>=0?13:6)))+clamp(axq,-50,50)*0.14+Math.sin(now*0.00025)*2.5,/* [7.561.0] con la palla nella NOSTRA meta' la camera arretra (fino a -58) invece di avanzare: e' l'unico verso che avvicina inquadratura e azione *//* 1.0a-CAM3: avanti -88→-74; [7.525.0] -74→-67. [7.528.0] -67→-62 · [7.529.0 PO «più vicina al campo!»] -62→-56 · [7.532.0 PO secondo giro «in cronaca un po' più vicina»] -56→-51 (avanzata 14→13) */
               wPy=(32-_bAttk*7)+Math.sin(now*0.00018)*1.8,/* 1.0a-CAM3: 54→47; [7.525.0] 47→42 · [7.528.0] 42→39 · [7.529.0] 39→35 · [7.532.0] 35→32 (piu' vicina = anche un filo piu' bassa) */
-              wPz=az*0.34;
+              wPzq=azq*0.34;
         // [7.54.1 BL-10 · CAM-LEAD] ANTICIPAZIONE BROADCAST: in "playing" il fuoco della WIDE non insegue più
         //   la palla in ritardo (fuoco = posizione corrente) ma la PRECEDE nella direzione del moto — velocità
         //   EMA dt-corretta, bounded (±9u x · ±6u z), azzerata sui teleport di setup (cut di scena, non moto).
         //   SOLO in "playing": nelle fasi HL la regia è autoriale per-tipo (e la firma golden resta intatta).
         {const _cs9=sr.current;
-         if(_cs9._camPbx==null){_cs9._camPbx=bx;_cs9._camPbz=bz;_cs9._camVbx=0;_cs9._camVbz=0;}
-         if(Math.abs(bx-_cs9._camPbx)>12||Math.abs(bz-_cs9._camPbz)>12){_cs9._camVbx=0;_cs9._camVbz=0;}
+         if(_cs9._camPbx==null){_cs9._camPbx=bxq;_cs9._camPbz=bzq;_cs9._camVbx=0;_cs9._camVbz=0;}
+         if(Math.abs(bxq-_cs9._camPbx)>12||Math.abs(bzq-_cs9._camPbz)>12){_cs9._camVbx=0;_cs9._camVbz=0;}/* il cambio campo a meta' partita e' un salto di 2x: questa guardia lo tratta gia' come un teleport e azzera l'anticipo, che e' quello che serve */
          else if(dt>0){const _ka9=Math.min(dt*4,1);
-           _cs9._camVbx+=(clamp((bx-_cs9._camPbx)/dt,-40,40)-_cs9._camVbx)*_ka9;
-           _cs9._camVbz+=(clamp((bz-_cs9._camPbz)/dt,-40,40)-_cs9._camVbz)*_ka9;}
-         _cs9._camPbx=bx;_cs9._camPbz=bz;}
+           _cs9._camVbx+=(clamp((bxq-_cs9._camPbx)/dt,-40,40)-_cs9._camVbx)*_ka9;
+           _cs9._camVbz+=(clamp((bzq-_cs9._camPbz)/dt,-40,40)-_cs9._camVbz)*_ka9;}
+         _cs9._camPbx=bxq;_cs9._camPbz=bzq;}
         const _ld9=(P.matchPhase==="playing"&&!P.ceremony&&!P.shootout)?1:0;
         const _ldx9=clamp((sr.current._camVbx||0)*0.30,-9,9)*_ld9,_ldz9=clamp((sr.current._camVbz||0)*0.30,-6,6)*_ld9;
-        const wLx=clamp(clamp(ax*0.5+bx*_bAttk*0.2+(bx>=0?14:4),bx<0?-34:-8,52)+_ldx9,-38,54)+Math.sin(now*0.00031)*1.2,wLy=1.4,wLz=az*0.6+_ldz9;/* 1.0a-CAM3: fuoco un filo più avanti+basso; [6.76.0 LMV-C2] lato difensivo: fuoco fino a -34 (l'azione resta in quadro), path offensivo INVARIATO; [7.54.1] +lead di anticipazione */
+        const wLxq=clamp(clamp(axq*0.5+bxq*_bAttk*0.2+(bxq>=0?14:4),bxq<0?(_r561?Math.max(-47,Math.min(-34,bxq-2)):-34):-8,52)+_ldx9,_r561?-49:-38,54)+Math.sin(now*0.00031)*1.2,wLy=1.4,wLzq=azq*0.6+_ldz9;/* [7.561.0] con la palla nella nostra meta' il fuoco la SEGUE fin sulla linea (-47) invece di fermarsi a -34 lasciandola fuori */
+        /* [7.561.0] si torna dalle coordinate canoniche al mondo: nella ripresa e' una rotazione di 180° */
+        /* [7.561.0] E IL FUOCO SEGUE DAVVERO. Contenere non basta: col fuoco ancorato all'eroe (formula
+           storica) il pallone nella nostra meta' restava a diciassette unita' dal punto guardato e la
+           camera compensava ARRETRANDO — l'azione finiva incollata al bordo basso del quadro. Piu' il
+           gioco scende verso la nostra porta, piu' il fuoco si sposta SUL pallone (un filo davanti):
+           a meta' campo non cambia niente, sulla nostra linea il fuoco e' il pallone. */
+        const _seg561=_r561?clamp((-bxq)/34,0,1)*0.85:0;
+        const wLxr=wLxq+((bxq+6)-wLxq)*_seg561,wLzr=wLzq+(bzq*0.9-wLzq)*_seg561;
+        const wPx=wPxq*_m561,wPz=wPzq*_m561,wLx=wLxr*_m561,wLz=wLzr*_m561;/* 1.0a-CAM3: fuoco un filo più avanti+basso; [6.76.0 LMV-C2] lato difensivo: fuoco fino a -34 (l'azione resta in quadro), path offensivo INVARIATO; [7.54.1] +lead di anticipazione */
         // CLOSE — stacco ravvicinato; il punto di fuoco scivola dall'eroe alla palla a fine azione
         /* [7.363.0 collaudo PO #76 «sul corner la camera e' troppo lontana»] IL FUOCO ABBANDONAVA L'EROE.
            La regia CLOSE interpola il punto di fuoco dall'eroe ALLA PALLA (`bf` cresce durante l'azione):
@@ -6604,6 +6634,24 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
         if(!_dentro)_g.fuori++;
         _g.fase=P.matchPhase||null;
       }catch(_e480){}}
+      /* [7.561.0 missione — IL PALLONE ESCE DALL'INQUADRATURA, E IN CRONACA NESSUNO LO RIPORTA DENTRO]
+         Collaudo PO del 24 agosto: «il pallone spesso esce fuori dalla scena, la telecamera non segue
+         l'azione. Le giocate offensive avversarie sono nascoste dalla curva e tribuna». La rete che tiene
+         il soggetto nel quadro (`_out6`, r.~5984) e' gated su `isHL`: negli highlight gira, in CRONACA no —
+         e in cronaca la camera larga sta SEMPRE dietro la nostra porta (wPx ~ -51..-38), quindi quando
+         l'avversario attacca la nostra area l'azione finisce sotto il bordo basso del quadro. Qui si conta,
+         separando le due meta' del campo: senza questo numero «segue l'azione» resta un'impressione. */
+      if(typeof window!=='undefined'&&(window.__CPM_REC||_CPM_TEST||_SIT_TEST)&&ball&&camera&&P.matchPhase==='playing'){try{
+        const _Q=(sr.current._q561||(sr.current._q561={v:new THREE.Vector3()}));
+        _Q.v.set(ball.position.x,ball.position.y+0.2,ball.position.z).project(camera);
+        const _dentro=Math.abs(_Q.v.x)<=1&&Math.abs(_Q.v.y)<=1&&_Q.v.z<1;
+        const _nostra=(ball.position.x<0);/* la nostra porta e' a x negativo: qui attacca l'avversario */
+        const _w=(window.__CPM_QUADRO561=window.__CPM_QUADRO561||{f:0,fuori:0,nostra:{f:0,fuori:0},loro:{f:0,fuori:0},sotto:0,sopra:0,lati:0,ymin:9,ymax:-9});
+        _w.f++;const _b=_nostra?_w.nostra:_w.loro;_b.f++;
+        if(_Q.v.y<_w.ymin)_w.ymin=+_Q.v.y.toFixed(2);if(_Q.v.y>_w.ymax)_w.ymax=+_Q.v.y.toFixed(2);
+        if(!_dentro){_w.fuori++;_b.fuori++;
+          if(_Q.v.y<-1)_w.sotto++;else if(_Q.v.y>1)_w.sopra++;else _w.lati++;}
+      }catch(_e561){}}
       if(sr.current._bj0){const _b0=sr.current._bj0;sr.current._bj0=null;try{window.__CPM_BJN478=(window.__CPM_BJN478||0)+1;
         /* [7.497.0 F2 — OSSERVAZIONE, NON ARBITRATO] Quanti sistemi hanno scritto il pallone in QUESTO
            fotogramma. L'audit ha contato 62 righe che ne scrivono la posizione senza un arbitro; qui si
