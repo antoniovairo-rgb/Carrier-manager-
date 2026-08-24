@@ -2352,7 +2352,25 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                :{txt:"🟡 Fischia l'arbitro: fallo, punizione per "+_N+".",ef:null,w:1,bpos:{x:_o.x,y:_o.y},ms:{fouls:1},pd:_dec499};
             } else {
               outRef.current=null;fermoRef.current=null;
-              const _rx=clamp(_o.x+(_o.nostra?14:-14),6,94),_ry=clamp(_o.y+(_ro-0.5)*30,6,94);
+              /* [7.572.0 — LA RIMESSA LATERALE RIMANDA IL PALLONE DENTRO IL CAMPO, e questo difetto l'ho
+                 introdotto io al 7.559 e trovato con il giudice che ho riparato un'ora fa.
+                 La misura: le destinazioni piu' sbagliate della cronaca erano TUTTE righe `defend_goal`, e
+                 confrontando il punto dichiarato con dove sta il pallone il difetto si legge in chiaro —
+                 dichiara (6,50) e il pallone sta a (8,98); dichiara (16,48) e sta a (8,99). La x e' giusta,
+                 la Y E' INCHIODATA ALLA LINEA LATERALE. L'unica riga in tutto il gioco che porta la y a 98
+                 e' la mia rimessa (r.~2926), e la sua battuta la rimetteva in gioco con uno scarto
+                 simmetrico di +-15: da 98 restava fra 83 e 94, cioe' ancora sulla linea. Il pallone
+                 rimaneva a bordo campo per minuti mentre la telecronaca raccontava il centro dell'area.
+                 Una rimessa vera va DENTRO: lo scarto qui e' orientato verso il campo, non simmetrico.
+                 ⚠️ MA QUESTO DA SOLO NON BASTAVA, e la misura l'ha detto subito: con la sola correzione
+                 dello scarto il pallone restava a (8,98) agli stessi minuti. Perche' questa battuta si
+                 prende solo una RIGA LIBERA — e quando la riga libera non arriva, l'interruzione scade per
+                 ttl e nessuno rimette il pallone in gioco: `fermoRef` si spegne ma `ballTargetRef` resta
+                 puntato sul punto della rimessa. Il vero rimedio sta nella SCADENZA (vedi la rimessa
+                 silenziosa nel tick), non qui. __CPM_NO572 = rosso: lo scarto simmetrico di prima. */
+              const _dentro572=!(typeof window!=='undefined'&&window.__CPM_NO572)&&_o.kind==="throw";
+              const _rx=clamp(_o.x+(_o.nostra?14:-14),6,94);
+              const _ry=_dentro572?clamp(_o.y>=50?_o.y-(16+_ro*26):_o.y+(16+_ro*26),8,92):clamp(_o.y+(_ro-0.5)*30,6,94);
               ev=_o.kind==="throw"?{txt:"↩️ Rimessa in gioco, "+_N+" riparte dalla linea laterale.",ef:null,w:1,bpos:{x:_rx,y:_ry},at:"pass",pd:_dec499}
                :_o.kind==="corner"?(_ro<0.5?{txt:"💥 Traversone dalla bandierina: mischia in area!",ef:null,w:1,bpos:{x:_o.nostra?92:8,y:50},at:"cross",pd:_dec499}
                                             :{txt:"⚡ Angolo battuto corto: si riparte dal possesso.",ef:null,w:1,bpos:{x:_o.nostra?84:16,y:_ry},pd:_dec499})
@@ -2935,7 +2953,26 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
         if(fermoRef.current&&!(typeof window!=='undefined'&&window.__CPM_NO559)){
           const _f=fermoRef.current;ballTargetRef.current={x:_f.x,y:_f.y};
           _f.t--;if(_f.t<=0)fermoRef.current=null;}
-        if(outRef.current&&!(typeof window!=='undefined'&&window.__CPM_NO566)){if(--outRef.current.ttl<=0){outRef.current=null;fermoRef.current=null;}}
+        if(outRef.current&&!(typeof window!=='undefined'&&window.__CPM_NO566)){if(--outRef.current.ttl<=0){
+          /* [7.572.0] LA RIMESSA SILENZIOSA. La battuta dell'interruzione si prende solo una riga libera:
+             se quella riga non arriva, l'interruzione scade e finora NESSUNO rimetteva il pallone in gioco.
+             `fermoRef` si spegneva, ma `ballTargetRef` restava puntato sul punto della rimessa — e il
+             pallone rimaneva li' finche' una riga di cronaca non ne dichiarava un altro, cioe' per minuti.
+             Misurato dal giudice della cronaca: le destinazioni piu' sbagliate erano tutte righe
+             `defend_goal` con la x giusta e la y inchiodata a 98, cioe' sulla linea laterale.
+             Il gioco riprende comunque: il pallone torna DENTRO il campo anche quando il telecronista non
+             ha avuto modo di dirlo. Un arbitro non aspetta che qualcuno commenti. */
+          const _o572=outRef.current;outRef.current=null;fermoRef.current=null;
+          if(!(typeof window!=='undefined'&&window.__CPM_NO572)){
+            const _q572=(Math.abs(hashStr("rip|"+nx))%100)/100;
+            const _rx572=clamp(_o572.x+(_o572.nostra?14:-14),8,92);
+            const _ry572=_o572.kind==="throw"?clamp(_o572.y>=50?_o572.y-(16+_q572*26):_o572.y+(16+_q572*26),8,92)
+                        :_o572.kind==="corner"?clamp(50+(_q572-0.5)*30,10,90)
+                        :clamp(_o572.y+(_q572-0.5)*24,8,92);
+            ballTargetRef.current={x:_rx572,y:_ry572};setBallPos({x:_rx572,y:_ry572});
+            if(typeof window!=='undefined'&&window.__CPM_REC){try{const _w=(window.__CPM_RIP572=window.__CPM_RIP572||{n:0});_w.n++;}catch(_e){}}
+          }
+        }}
         // Possession drift + momentum drift every ~8 ticks
         if(nx%8===0){
           setPossession(p=>clamp(p+(Math.floor(_rndM()*5)-2),20,80));/* [7.489.0] seedato: alimenta la lambda del micro-sim, quindi il RISULTATO */

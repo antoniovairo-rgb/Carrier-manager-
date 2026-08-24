@@ -111,6 +111,7 @@ const prossimaRiga = (righe, r) => { let best = null;
   return best; };
 const C = { FONDATA: [], SMENTITA: [], MUTA: [] };
 const TIRI = [];
+const DEST = [];
 let recite = 0, righeTot = 0, scartate = 0;
 let _fonteTick = 0, _fonteOro = 0;
 for (const { righe, recite: rc, tr: _trOro, trT } of tutte) {
@@ -197,7 +198,9 @@ for (const { righe, recite: rc, tr: _trOro, trT } of tutte) {
       const w2 = w.filter(s2 => s2.c <= _fin);
       const _ww = w2.length ? w2 : [w[0]];
       const d = Math.min(..._ww.map(s2 => Math.hypot(s2.x - r.bx, s2.y - r.by)));
-      claim.push({ k: 'destinazione', ok: d <= DEST_U, nota: `la palla arriva a ${d.toFixed(1)}u dal punto dichiarato (finestra ${r.min|0}'-${_fin}')` });
+      DEST.push(+d.toFixed(1));
+      const _vic = _ww.reduce((a, s2) => { const dd = Math.hypot(s2.x - r.bx, s2.y - r.by); return dd < a.d ? { d: dd, x: s2.x, y: s2.y } : a; }, { d: 1e9, x: 0, y: 0 });
+      claim.push({ k: 'destinazione', ok: d <= DEST_U, nota: `dichiara (${r.bx},${r.by}), il pallone al piu' vicino sta a (${_vic.x.toFixed(0)},${_vic.y.toFixed(0)}) = ${d.toFixed(1)}u (finestra ${r.min|0}'-${_fin}')` });
     }
     if (!claim.length) { C.MUTA.push({ min: r.min, pd: r.pd, rec: r.rec, at: r.at }); continue; }
     const tutti = claim.every(c => c.ok);
@@ -227,6 +230,19 @@ if (C.SMENTITA.length) {
   console.log('\n  mute per famiglia dichiarata: ' + Object.entries(per).sort((a, c) => c[1] - a[1]).map(([k, v]) => `${k} ${v}`).join(' · '));
 }
 const qF = 100 * C.FONDATA.length / righeTot, qS = 100 * C.SMENTITA.length / righeTot;
+if (DEST.length) {
+  /* [7.571.0] UNA GRANDEZZA CONTINUA SI MISURA CON UNA MEDIANA, non con un si/no su una soglia.
+     Il conteggio «quante entro 14u» e' l'unico verdetto rimasto instabile (37/48 e 33/48 su codice
+     identico): una manciata di casi al bordo della soglia lo fanno ballare. La distanza mediana usa gli
+     stessi dati ma non ha bordi, quindi dice la stessa cosa senza tremare — ed e' anche piu' utile per
+     lavorarci: dice DI QUANTO la cronaca sbaglia, non solo quante volte. */
+  const _s = DEST.slice().sort((a, b2) => a - b2);
+  const _md = _s.length % 2 ? _s[(_s.length - 1) / 2] : (_s[_s.length / 2 - 1] + _s[_s.length / 2]) / 2;
+  const _p90 = _s[Math.min(_s.length - 1, Math.floor(_s.length * 0.9))];
+  console.log(`\n  --- DESTINAZIONE: quanto lontano finisce il pallone dal punto che la riga dichiara ---`);
+  console.log(`  mediana ${_md.toFixed(1)}u · p90 ${_p90.toFixed(1)}u · peggiore ${_s[_s.length-1].toFixed(1)}u · su ${_s.length} righe`);
+  console.log(`  (la soglia del si/no e' ${DEST_U}u: e' il conteggio a soglia a ballare, non i dati)`);
+}
 if (TIRI.length) {
   console.log(`\n  --- LA FAMIGLIA `+'`tiro`'+` SOTTO LA LENTE (e' quella che fa ballare il totale di sei punti) ---`);
   console.log(`  la regola: fondata se il pallone ARRIVA entro 18u dalla porta (in area) oppure si avvicina di ${AVV_MIN}u.`);
