@@ -4778,10 +4778,74 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                  indietro con il busto dritto: da fuori e' una rovesciata al contrario, ed e' quello che il PO ha visto tre
                  volte. Qui il busto si rovescia davvero (-1,9 rad al culmine, ~109 gradi), le braccia si aprono per
                  bilanciare come fa chi va in acrobazia, e il salto sale a 1,8. La forbice delle gambe resta com'era. */
+              /* [7.569.0 collaudo PO, SESTA segnalazione: «la rovesciata e' proprio concepita al contrario,
+                 il piede che calcia non e' rivolto verso la porta» — e la frase che chiude la diagnosi]
+                 IL GESTO ERA UNO SOLO PER DUE AZIONI DIVERSE. La variante `shot_volley` raccoglie DUE
+                 famiglie di giocate che nel calcio non si somigliano affatto:
+                   ROVESCIATA / SFORBICIATA  spalle alla porta, corpo orizzontale, gamba che passa sopra
+                                             la testa — un gesto acrobatico;
+                   VOLEE' / TIRO AL VOLO     fronte alla porta, in piedi, gamba che colpisce a mezz'aria —
+                                             un tiro normale su palla che scende.
+                 Il repertorio le distingue nei nomi («Volee' potente», «Tiro di prima al volo», «Mezza
+                 volee'» da una parte; «Rovesciata spettacolare», «Sforbiciata acrobatica», «Mezza
+                 rovesciata» dall'altra), ma il 3D no: entrambe finivano nella posa acrobatica. Una volee'
+                 recitata come una rovesciata e' sbagliata SEMPRE, e con il corpo rovesciato all'indietro
+                 il piede finisce rivolto dalla parte opposta alla porta — che e' esattamente cio' che il PO
+                 ha visto e descritto sei volte. Le mie tre correzioni precedenti (7.551 asse, 7.553 corpo
+                 intero, 7.560 verso) hanno lavorato tutte sulla posa acrobatica: era giusta la posa,
+                 sbagliata l'attribuzione.
+                 L'etichetta dell'azione arriva gia' al renderer (`hlActLbl`): basta leggerla.
+                 __CPM_NO569 = rosso: una posa sola per tutt'e due, com'era. */
+              const _acro569=(typeof window!=='undefined'&&window.__CPM_NO569)?true:/rovesciat|sforbiciat|acrobat/i.test(String(P.hlActLbl||""));
+              if(u>=0.99)sr.current._rovY569=null;/* gesto finito: la prossima rovesciata ricongela la sua imbardata */
+              if(!_acro569){
+                /* VOLEE': in piedi, fronte alla porta, gamba che colpisce a mezz'aria. Niente rotazione del
+                   corpo — e' il tiro di un giocatore in equilibrio, non un'acrobazia. */
+                hero._lR.rotation.x=-2.9*sw;hero._lL.rotation.x=0.5*sw;
+                hero._aL.rotation.x=1.3*sw;hero._aR.rotation.x=-0.9*sw;
+                hero.position.y=sw*0.55;
+                if(hero._torso){hero._torso.rotation.x=-0.22*sw;hero._torso.rotation.y=sw*0.3;}
+                if(_CPM_TEST&&typeof window!=='undefined'){try{window.__CPM_VOLLEY={u:+u.toFixed(2),acro:0,tx:+((hero._torso&&hero._torso.rotation.x)||0).toFixed(2),ty:+((hero._torso&&hero._torso.rotation.y)||0).toFixed(2),y:+hero.position.y.toFixed(2),rx:+(hero.rotation.x||0).toFixed(2),lR:+hero._lR.rotation.x.toFixed(2)};}catch(_e){}}
+              } else {
               const _rv575=(typeof window!=='undefined'&&window.__CPM_NO575)?0:1;
               hero._lR.rotation.x=-3.2*sw;hero._lL.rotation.x=-1.6*sw;hero._aL.rotation.x=(_rv575?2.4:1.8)*sw;hero._aR.rotation.x=(_rv575?-2.0:-1.2)*sw;hero.position.y=sw*(_rv575?1.8:1.5);
-              if(hero._torso){hero._torso.rotation.y=sw*0.5;}if(_rv575){hero.rotation.x=-1.5*sw;if(hero._ring553)hero._ring553.rotation.x=Math.PI/2+1.5*sw;}/* [7.560.0 — collaudo PO «rovesciata al contrario», QUINTA segnalazione, la seconda dopo un mio rimedio. Il 7.553 aveva messo la rotazione del corpo intero sull'asse giusto (X) ma con il VERSO sbagliato, e stavolta lo dice una fotografia, non un conto: al culmine del salto l'eroe ha la TESTA IN ALTO e le GAMBE IN BASSO — un tuffo in avanti, non una rovesciata. In una rovesciata vera al momento del colpo la testa e' bassa, vicino al terreno, e il piede che colpisce e' alto. Il segno si inverte, e l'aureola compensa nell'altro verso per restare in piano. *//* [7.553.0] l'aureola resta in piano mentre il corpo gira: e' un segno di regia, non una parte del corpo */
-              if(_CPM_TEST&&typeof window!=='undefined'){try{window.__CPM_VOLLEY={u:+u.toFixed(2),tx:+((hero._torso&&hero._torso.rotation.x)||0).toFixed(2),ty:+((hero._torso&&hero._torso.rotation.y)||0).toFixed(2),y:+hero.position.y.toFixed(2),lR:+hero._lR.rotation.x.toFixed(2)};}catch(_e){}} /* [7.553 sonda] TESTIMONE DELLA ROVESCIATA, DOPO LE ASSEGNAZIONI. La prima stesura leggeva PRIMA, e restituiva i valori che `animOne` aveva lasciato all'inizio del fotogramma: salto 0,05 e gamba 0,22 al posto di 1,8 e -3,2. Un testimone messo nel punto sbagliato non misura il gesto, misura chi lo precede. */
+              if(hero._torso){hero._torso.rotation.y=sw*0.5;}if(_rv575){
+                /* [7.569.0 — LA ROVESCIATA RUOTAVA ATTORNO ALL'ASSE SBAGLIATO, e questa e' la frase del PO:
+                   «il piede che calcia non e' rivolto verso la porta». In three.js l'ordine di Eulero
+                   predefinito e' XYZ, cioe' la rotazione su X si applica attorno all'asse X DEL MONDO,
+                   PRIMA dell'imbardata. Il giocatore pero' e' girato verso la porta con `rotation.y`, e la
+                   porta sta dove capita: cosi' il ribaltamento lo stendeva DI TRAVERSO rispetto alla
+                   direzione del tiro — in una scena sembrava giusto, in un'altra i piedi puntavano di lato.
+                   Le mie tre correzioni precedenti hanno cercato il verso (7.551 asse, 7.553 corpo intero,
+                   7.560 segno) senza mai chiedersi attorno a QUALE asse stesse girando: era il fotogramma
+                   comodo a farmele sembrare giuste.
+                   Con l'ordine YXZ l'imbardata viene applicata per prima, quindi X diventa il ribaltamento
+                   attorno all'asse LOCALE del giocatore: il corpo va indietro rispetto a DOVE GUARDA, e i
+                   piedi salgono verso la porta qualunque sia la sua posizione in campo. Su `hero` la X e'
+                   usata solo qui, quindi cambiare ordine non tocca nessun'altra posa. */
+                hero.rotation.order='YXZ';
+                /* [7.569.0 collaudo PO sul provino: «lo vedi che e' al contrario, devi girarlo di 180 gradi»]
+                   L'IMBARDATA. Nella rovesciata il giocatore ha le SPALLE alla porta: si stacca dandole le
+                   spalle e la gamba passa sopra la testa verso di essa. Il rig invece lo tiene girato verso
+                   il bersaglio come in ogni altro tiro, e con l'ordine YXZ il ribaltamento parte da li' —
+                   quindi la figura viene fuori esatta ma voltata dalla parte sbagliata. Mezzo giro, e il
+                   gesto legge come deve.
+                   L'imbardata si CONGELA all'inizio del gesto invece di sommare mezzo giro a ogni
+                   fotogramma: sommarlo a una `rotation.y` che il rig riscrive ogni frame funzionerebbe solo
+                   finche' il rig la riscrive davvero, e basterebbe un fotogramma in cui non lo fa perche' il
+                   giocatore cominci a girare su se stesso. In mezzo secondo di acrobazia il corpo non
+                   ri-mira: e' anche piu' vero. */
+                if(sr.current._rovY569==null||u<0.06)sr.current._rovY569=hero.rotation.y||0;
+                if(!(typeof window!=='undefined'&&window.__CPM_NO569B))hero.rotation.y=sr.current._rovY569+Math.PI;
+                /* [7.569.0] IL SEGNO SI E' SCELTO GUARDANDO, non calcolando: con l'ordine YXZ i due versi
+                   danno due gesti diversi e riconoscibili. +1 stende il corpo di fianco (testa da una parte,
+                   piedi dall'altra, a terra). -1 da' la sagoma vera della rovesciata: TESTA BASSA, gambe in
+                   alto, il piede che colpisce sul pallone e rivolto verso la porta — che e' esattamente il
+                   criterio che il PO ha dettato. La manopola resta per i provini futuri. */
+                const _sg569=(typeof window!=='undefined'&&window.__CPM_ROV_SGN)?(+window.__CPM_ROV_SGN||-1):-1;
+                hero.rotation.x=1.5*sw*_sg569;if(hero._ring553)hero._ring553.rotation.x=Math.PI/2-1.5*sw*_sg569;}/* [7.560.0 — collaudo PO «rovesciata al contrario», QUINTA segnalazione, la seconda dopo un mio rimedio. Il 7.553 aveva messo la rotazione del corpo intero sull'asse giusto (X) ma con il VERSO sbagliato, e stavolta lo dice una fotografia, non un conto: al culmine del salto l'eroe ha la TESTA IN ALTO e le GAMBE IN BASSO — un tuffo in avanti, non una rovesciata. In una rovesciata vera al momento del colpo la testa e' bassa, vicino al terreno, e il piede che colpisce e' alto. Il segno si inverte, e l'aureola compensa nell'altro verso per restare in piano. *//* [7.553.0] l'aureola resta in piano mentre il corpo gira: e' un segno di regia, non una parte del corpo */
+              if(_CPM_TEST&&typeof window!=='undefined'){try{window.__CPM_VOLLEY={u:+u.toFixed(2),acro:1,rx:+(hero.rotation.x||0).toFixed(2),lR:+hero._lR.rotation.x.toFixed(2),tx:+((hero._torso&&hero._torso.rotation.x)||0).toFixed(2),ty:+((hero._torso&&hero._torso.rotation.y)||0).toFixed(2),y:+hero.position.y.toFixed(2),lR:+hero._lR.rotation.x.toFixed(2)};}catch(_e){}} /* [7.553 sonda] TESTIMONE DELLA ROVESCIATA, DOPO LE ASSEGNAZIONI. La prima stesura leggeva PRIMA, e restituiva i valori che `animOne` aveva lasciato all'inizio del fotogramma: salto 0,05 e gamba 0,22 al posto di 1,8 e -3,2. Un testimone messo nel punto sbagliato non misura il gesto, misura chi lo precede. */
+              }
             }else if(P.hlVariant==="shot_curled"){// tiro a giro: rotazione anca pronunciata, interno collo-piede
               hero._lR.rotation.x=-2.6*sw;hero._lL.rotation.x=0.6*sw;hero._aL.rotation.x=1.2*sw;hero._aR.rotation.x=-0.4*sw;hero.rotation.y=Math.sin(u*Math.PI)*0.45;if(hero._torso)hero._torso.rotation.y=sw*0.4;
             }else if(P.hlVariant==="shot_first_time"){// colpo di prima/tap-in: kick breve e immediato, nessun caricamento
