@@ -4201,7 +4201,24 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                  Uno STACCO DI SCENA non e' un movimento: qui il pallone viene messo dove deve stare, nello
                  stesso fotogramma in cui i ventidue ci vengono messi. Da qui in poi comanda di nuovo il
                  moto normale, che ha gia' il bersaglio giusto. */
-              try{ball.position.x=G2X(_pt383.x);ball.position.z=G2Z(_pt383.y);ball.position.y=0.65;sr.current._lastBallKey=P.hlSitKey;sr.current._ballSnap=false;if((sr.current._ws524=10)&&sr.current._bj0)(sr.current._bj0.src='consegna',sr.current._bj0.srcs.push('consegna'));}catch(_e2){}if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){const _c=(window.__CPM_DLV383=window.__CPM_DLV383||{});_c.push=(_c.push||0)+1;_c.last={x:+_pt383.x.toFixed(1),y:+_pt383.y.toFixed(1),key:P.hlSitKey,kind:_dv383.kind};}}
+              /* [7.568.0 collaudo PO sul 7.567: «SALTO del pallone di 23,9 unita' in 41 ms (a 19,9s
+                 dall'inizio scena, scrittore: consegna) — 582 u/s, sembra un teletrasporto»]
+                 UNO STACCO DI SCENA E' UNO STACCO SOLO AL TAGLIO. La regola giusta era gia' scritta nel
+                 commento qui sopra dal 7.383 — «uno stacco di scena non e' un movimento» — ma il codice
+                 non verificava MAI di trovarsi davvero a uno stacco: bastava che la consegna fosse armata
+                 e che il descrittore arrivasse, e il pallone veniva riassegnato di colpo QUANDO CHE FOSSE.
+                 Il collaudo del PO l'ha inchiodata a venti secondi dall'apertura, cioe' in piena azione e
+                 sotto gli occhi: li' non e' una regia, e' un teletrasporto. E il colpevole ha un nome
+                 perche' dal 7.556-7.557 ogni scrittore del pallone ce l'ha: senza quell'anagrafe questa
+                 riga sarebbe ancora una fra sessanta sospette.
+                 Ora il teletrasporto vale solo dentro la finestra dello stacco (`_cutAt`, il timbro del
+                 taglio); dopo, la consegna fa comunque il suo lavoro — spinge l'origine a React, che e' la
+                 riga sopra — e il pallone ci ARRIVA col moto normale, che ha gia' il bersaglio giusto.
+                 __CPM_NO568 = rosso: il teletrasporto senza orario, com'era. */
+              const _dtCut568=now-(sr.current._cutAt||0);
+              const _tagl568=(_dtCut568<900)||(typeof window!=='undefined'&&window.__CPM_NO568);
+              if(typeof window!=='undefined'&&(window.__CPM_REC||_CPM_TEST||_SIT_TEST)){try{const _c=(window.__CPM_DLV383=window.__CPM_DLV383||{});_c.tot=(_c.tot||0)+1;if(!_tagl568){_c.tardi=(_c.tardi||0)+1;(_c.dt=_c.dt||[]).push(Math.round(_dtCut568));}}catch(_e){}}
+              if(_tagl568)try{ball.position.x=G2X(_pt383.x);ball.position.z=G2Z(_pt383.y);ball.position.y=0.65;sr.current._lastBallKey=P.hlSitKey;sr.current._ballSnap=false;if((sr.current._ws524=10)&&sr.current._bj0)(sr.current._bj0.src='consegna',sr.current._bj0.srcs.push('consegna'));}catch(_e2){}if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){const _c=(window.__CPM_DLV383=window.__CPM_DLV383||{});_c.push=(_c.push||0)+1;_c.last={x:+_pt383.x.toFixed(1),y:+_pt383.y.toFixed(1),key:P.hlSitKey,kind:_dv383.kind};}}
             else if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){const _c=(window.__CPM_DLV383=window.__CPM_DLV383||{});_c.nopt=(_c.nopt||0)+1;}
           }
         }catch(_e383){}}
