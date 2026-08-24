@@ -5631,7 +5631,17 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
           const _cg=sr.current._curveGeo||null;
           const _ez=(_cg&&_cg.endZ)||50,_eh=(_cg&&_cg.hEnd)||13;
           const _lead=clamp((sr.current._camVbx||0)*0.22,-7,7);
-          wPz=(_ez-1.5)*_m561;
+          /* [7.565.0 collaudo PO «la copertura della tribuna impalla la camera»] LA CAMERA STA DAVANTI AL
+             FILO DELLA FALDA, e il filo non si indovina: lo esporta buildStadium. La copertura vera (7.437)
+             e' a SBALZO — sporge verso il campo di 0,40-0,62 volte la profondita' del settore — quindi negli
+             impianti grandi arrivava DAVANTI alla camera del 7.564 e ne tagliava la linea di vista. Qui la
+             camera si appende due unita' e mezzo PIU' AVANTI del filo, come una gru sotto la pensilina:
+             cosi' il tetto resta sempre alle sue spalle, per costruzione e per ogni taglia di stadio,
+             invece che per una quota scelta a occhio. Se un impianto non ha copertura, non c'e' vincolo. */
+          const _rf=(_cg&&_cg.roofEnd)||null;
+          const _zc=Math.min(_ez-1.5,_rf?(_rf.frontZ-2.5):1e9);
+          wPz=_zc*_m561;
+          if(typeof window!=='undefined'&&(window.__CPM_REC||_CPM_TEST||_SIT_TEST)){try{window.__CPM_RIG565={camZ:+_zc.toFixed(2),roofZ:_rf?+_rf.frontZ.toFixed(2):null,roofY:_rf?+_rf.top.toFixed(2):null,endZ:+_ez.toFixed(2),endH:+_eh.toFixed(2),davanti:_rf?(_zc<_rf.frontZ?1:0):1};}catch(_e){}}/* [7.565.0] l'invariante si puo' CONTROLLARE, non solo guardare: la camera deve stare piu' vicina al campo del filo della falda */
           /* [7.564.0 — LA QUOTA E L'OTTICA SI SCELGONO GUARDANDO, E IL PRIMO GIRO ERA SBAGLIATO.
              Con la camera a quota 15-26 e ottica 64 il provino mostrava un terzo di schermo occupato da
              tetto e cielo e, in basso, i cartelloni della linea vicina dentro l'inquadratura. La causa e'

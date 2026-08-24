@@ -1180,7 +1180,32 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
      la scenografia tifo (in ThreeMatchView) piazzava tutto a quote fisse vicino al bordo campo perché NON conosceva
      la geometria vera della gradinata. Qui la esportiamo: posizione/profondità/altezza/anelli delle due curve →
      il tifo può salire lungo la PENDENZA reale (mLow/mUp di addStand) invece di ammassarsi in basso. */
-  const _curveGeo={sideX,sideW,depthHome:(_sudH>sideH?sideD*1.15:sideD),depthAway:sideD,hHome:_sudH,hAway:sideH,tiers:_tiers,endZ,depthEnd:endD,hEnd:endH};/* [7.189.0] + tribune Est/Ovest: servono per appoggiare gli striscioni al loro MURO */
+  /* [7.565.0 collaudo PO «la copertura della tribuna impalla la camera»] IL FILO DELLA FALDA, ESPORTATO.
+     L'impianto camera del 7.564 sceglieva la quota dall'altezza della tribuna e la distanza dal suo fronte,
+     ma non sapeva NIENTE del tetto — e la copertura vera del 7.437 e' a SBALZO: la falda sporge verso il
+     campo di 0,40-0,62 volte la profondita' del settore, quindi negli impianti grandi il suo filo arriva
+     DAVANTI al punto in cui la camera stava. Da li' la falda taglia la linea di vista, ed e' esattamente
+     quello che il PO vede. Qui si esporta la geometria REALE del tetto delle due tribune di fondo (quota
+     della falda e z del filo verso il campo, gia' in coordinate mondo) cosi' la camera puo' mettersi
+     DAVANTI al filo invece di indovinare una quota. Stessa disciplina del 7.185: la scenografia non
+     stima piu' la gradinata, la legge. */
+  const _roofEnd=(function(){try{
+    const _mk=(nt,on)=>{ if(!on) return null;
+      const _rTop=(nt>=3)?endH*1.34+2.4:endH+1.8;
+      const _lv=_lvl437;
+      const _zBack=endD*((nt>=3)?0.52:(_lv<=0?0.34:0.36));
+      const _dp=(_lv<=0)?endD*0.20:endD*(_lv>=3?0.62:_lv>=2?0.52:0.40);
+      const _zFrontLocal=(_lv<=0)?(_zBack-_dp/2):(_zBack-_dp);/* [lv<=0] la pensilina e' una scatola centrata su _zBack */
+      return {top:_rTop,frontZ:endZ+_zFrontLocal};/* local -z guarda il campo: il filo in mondo e' endZ + zFrontLocal */
+    };
+    const _e=_mk((T&&T.asym)?1:_tiers,_roofFor("est")),_o=_mk(_tiers,_roofFor("ovest"));
+    if(!_e&&!_o)return null;
+    /* si tiene il piu' SPORGENTE dei due: la camera dev'essere davanti al filo peggiore, non a quello comodo */
+    const _f=Math.min(_e?_e.frontZ:1e9,_o?_o.frontZ:1e9);
+    const _t=Math.max(_e?_e.top:0,_o?_o.top:0);
+    return {frontZ:_f,top:_t};
+  }catch(_e){return null;}})();
+  const _curveGeo={sideX,sideW,depthHome:(_sudH>sideH?sideD*1.15:sideD),depthAway:sideD,hHome:_sudH,hAway:sideH,tiers:_tiers,endZ,depthEnd:endD,hEnd:endH,roofEnd:_roofEnd};/* [7.189.0] + tribune Est/Ovest: servono per appoggiare gli striscioni al loro MURO */
   return {homeMats,awayMats,goalNet:awayGoalNet,crowdAnims,frontRows,idleMs,burstMs,curve:_curveGeo,endH,lvl:_lvl437};// materiali per il goal pulse · redraw animati · prime file 3D (LOD1) · geometria curve per il tifo · [7.455.0] +endH/lvl: l'altezza REALE della tribuna di fondo e il livello architettonico, perche' il maxischermo si appoggi a cio' che c'e' davvero dietro invece che a una quota fissa
 }
 
