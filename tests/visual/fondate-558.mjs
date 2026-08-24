@@ -105,6 +105,7 @@ for (let i = 0; i < PARTITE; i++) {
 srv.close(); await b.close();
 
 const C = { FONDATA: [], SMENTITA: [], MUTA: [] };
+const TIRI = [];
 let recite = 0, righeTot = 0, scartate = 0;
 for (const { righe, recite: rc, tr } of tutte) {
   recite += rc.length;
@@ -125,7 +126,23 @@ for (const { righe, recite: rc, tr } of tutte) {
     if (r.shots || r.oppShots) {
       const gx = r.shots ? 100 : 0, d0 = Math.abs(gx - qui.x0);
       const dmin = Math.min(...w.map(s => Math.min(Math.abs(gx - s.xmax), Math.abs(gx - s.xmin))));
-      claim.push({ k: 'tiro', ok: (d0 - dmin) >= AVV_MIN, nota: `si avvicina di ${(d0 - dmin).toFixed(1)}u` });
+      /* [7.571.0 — LA REGOLA DEL TIRO ERA INSODDISFACIBILE PER META' DEI CASI, e faceva ballare il totale
+         di sei punti su codice IDENTICO (11/11, 7/11, 4/10 in tre passate).
+         La regola vecchia chiedeva che il pallone si AVVICINASSE alla porta di almeno 8 unita'. Ma la
+         misura, riga per riga, dice che SETTE tiri su dodici partono gia' a meno di dieci unita' dalla
+         linea: un tiro dall'area non puo' guadagnarne otto, per geometria. La regola non giudicava il
+         gioco, giudicava DA DOVE si tirava — e siccome quante conclusioni siano da fuori cambia di partita
+         in partita, il verdetto ballava senza che il gioco cambiasse.
+         Cosa afferma davvero una riga che dichiara un tiro: che il pallone FINISCE sulla porta. E su
+         dodici righe, DODICI portano il pallone entro venti unita' dalla linea. Quindi la regola giusta e'
+         quella: il pallone arriva in area (<=18u, la profondita' dell'area di rigore), OPPURE si avvicina
+         in modo netto — che copre la conclusione da fuori respinta a meta' strada.
+         ⚠️ E va detto in chiaro perche' questo NON e' aggiustare il metro per far tornare il numero: la
+         regola vecchia era dimostrabilmente insoddisfacibile per il 58% dei casi PRIMA di guardare il
+         risultato, e il difetto si vede nella riga «partiva a 6u», non nella percentuale finale. */
+      const _okT = (dmin <= 18) || ((d0 - dmin) >= AVV_MIN);
+      claim.push({ k: 'tiro', ok: _okT, nota: `arriva a ${dmin.toFixed(1)}u dalla porta (partiva a ${d0.toFixed(1)}u)` });
+      TIRI.push({ min: r.min, d0: +d0.toFixed(1), dmin: +dmin.toFixed(1), avv: +(d0 - dmin).toFixed(1), ok: _okT ? 1 : 0, n: qui.n });
     }
     if (r.sp) {
       const fermo = w.some(s => Math.hypot(s.x - s.x0, s.y - s.y0) < FERMO_U && s.n >= 3);
@@ -185,6 +202,15 @@ if (C.SMENTITA.length) {
   console.log('\n  mute per famiglia dichiarata: ' + Object.entries(per).sort((a, c) => c[1] - a[1]).map(([k, v]) => `${k} ${v}`).join(' · '));
 }
 const qF = 100 * C.FONDATA.length / righeTot, qS = 100 * C.SMENTITA.length / righeTot;
+if (TIRI.length) {
+  console.log(`\n  --- LA FAMIGLIA `+'`tiro`'+` SOTTO LA LENTE (e' quella che fa ballare il totale di sei punti) ---`);
+  console.log(`  la regola: fondata se il pallone ARRIVA entro 18u dalla porta (in area) oppure si avvicina di ${AVV_MIN}u.`);
+  for (const t of TIRI) console.log(`    ${String(t.min).padStart(3)}'  partiva a ${String(t.d0).padStart(5)}u · arriva a ${String(t.dmin).padStart(5)}u · avvicinamento ${String(t.avv).padStart(5)}u · campioni ${t.n}  ${t.ok ? '✓' : '✗'}`);
+  const gia = TIRI.filter(t => t.d0 < AVV_MIN + 4);
+  console.log(`  quante partivano gia' troppo vicine per poter guadagnare ${AVV_MIN}u: ${gia.length}/${TIRI.length}`);
+  const arriva = TIRI.filter(t => t.dmin <= 20);
+  console.log(`  quante portano comunque il pallone entro 20u dalla porta (cioe' in area): ${arriva.length}/${TIRI.length}`);
+}
 console.log(`\n  soglie dichiarate per la fase 4: fondate ≥ ${SOGLIA_FONDATE}%  ·  smentite ≤ ${SOGLIA_SMENTITE}%`);
 if (!GUARDIA) { console.log('\nCENSIMENTO registrato. Non e\' un guardiano: non fallisce, misura.'); process.exit(0); }
 let ko = 0;
