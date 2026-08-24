@@ -2249,7 +2249,24 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           const _isAtkTactic=_activeDriftKey&&(_atkPd.includes(_activeDriftKey)||_activeDriftKey==="attack_goal");
           const _isDefTactic=_activeDriftKey&&(_defPd.includes(_activeDriftKey)||_activeDriftKey==="retreat");
           const _noGoal77=e=>e.ef!=="team_goal"&&e.ef!=="opp_goal";// [5.77.0 MOT-1] i gol li decide SOLO il micro-sim
-          let eligible=BG_MATCH.filter(e=>_noGoal77(e)&&(!e.minClock||nx>=e.minClock)&&(!e.maxClock||nx<=e.maxClock)&&(!e.derbyOnly||!!drby)&&(!e.ctx||e.ctx===_sctx76)&&!_lastBG.includes(e.txt)&&(!onBenchRef.current||!e.txt.includes("{P}"))&&(!e.momThreshold||(momentumRef.current>=e.momThreshold[0]&&momentumRef.current<=e.momThreshold[1])))
+          /* [7.570.0 missione — NON SI ANNUNCIA UN FATTO CHE IL MOTORE NON PUO' FAR ACCADERE]
+             Il giudice della cronaca (`fondate-558`) tiene aperta da tre release la famiglia peggiore:
+             `fermo 0/4` — OGNI riga che annuncia un piazzato viene smentita, la palla non si ferma. Il
+             7.559 ha reso il fermo un fatto vero, ma quelle righe restavano smentite lo stesso, e il
+             censimento dei cancelli ha detto perche' senza lasciare dubbi: su quattro righe con `sp`,
+             QUATTRO erano bloccate da `pendingGoal`. La macchina dei piazzati (7.537) non si arma mentre
+             un'azione da gol e' pendente — ed e' giusto cosi': un corner in mezzo a un attacco che sta per
+             concludersi non ha senso. Il difetto non e' il cancello, e' che la riga ESCE COMUNQUE: la
+             telecronaca annuncia una punizione che nessuno battera' mai.
+             Il rimedio sta a monte, nella pesca: finche' il motore non puo' onorare un piazzato, le righe
+             che ne annunciano uno non entrano nel sorteggio. Restano UN FILTRO e non un peso — al
+             contrario delle famiglie di zona (7.486/7.499, dove un filtro affamerebbe il repertorio) —
+             perche' qui non si sta scegliendo COME raccontare, si sta togliendo di mezzo un'affermazione
+             che sarebbe falsa in partenza; e sono 4 righe su 223, quindi il repertorio non si assottiglia.
+             __CPM_NO570 = rosso: le righe di piazzato escono comunque, com'era. */
+          const _spOff570=!(typeof window!=='undefined'&&window.__CPM_NO570)&&(!!pendingGoalRef.current||!!counterRef.current||kickoffRef.current>0||!!spRef.current||!!outRef.current);
+          if(typeof window!=='undefined'&&(window.__CPM_REC||_CPM_TEST)){try{const _g=(window.__CPM_SP570=window.__CPM_SP570||{tick:0,off:0});_g.tick++;if(_spOff570)_g.off++;}catch(_e){}}
+          let eligible=BG_MATCH.filter(e=>_noGoal77(e)&&(!_spOff570||!e.sp)&&(!e.minClock||nx>=e.minClock)&&(!e.maxClock||nx<=e.maxClock)&&(!e.derbyOnly||!!drby)&&(!e.ctx||e.ctx===_sctx76)&&!_lastBG.includes(e.txt)&&(!onBenchRef.current||!e.txt.includes("{P}"))&&(!e.momThreshold||(momentumRef.current>=e.momThreshold[0]&&momentumRef.current<=e.momThreshold[1])))
             .map(e=>{if(!_activeDriftKey||!e.pd)return e;if(_isAtkTactic&&_atkPd.includes(e.pd))return{...e,w:e.w*1.8};if(_isDefTactic&&_defPd.includes(e.pd))return{...e,w:e.w*1.8};return e;})
             /* [7.486.0 direttiva PO «la cronaca deve descrivere effettivamente cio' che accade»] LA RIGA
                SI SCEGLIE DA DOVE SI STA GIOCANDO. Fino a qui la selezione guardava minuto, punteggio,
