@@ -5533,7 +5533,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
          passate che girano PIU' A VALLE (arretramento per bisezione, guardia sullo snap, clamp sulla vista
          reale) restavano fuori dal conto, e il censimento diceva 5 su 8 senza poter fare di meglio. Qui si
          azzera una volta per fotogramma e si raccoglie alla fine, quando tutte hanno parlato. */
-      sr.current._tocc503=[];
+      sr.current._tocc503=[];sr.current._leg563=0;/* [7.563.0] quante reti di LEGALITA' hanno gia' scritto in questo fotogramma */
       if(sr.current._cutZoomSnap){camHL=_hlTgt;sr.current._cutZoomSnap=false;}
       let tPx,tPy,tPz,tLx,tLy,tLz,kp,kl;
       if(isWalk){
@@ -6004,7 +6004,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
            dominante. La costante resta 1 (bordo storico); la parametrizzazione di _out6 resta per il
            prossimo esperimento, l'attribuzione per-inversione decide il vero colpevole. */
         const _cusc522=1;
-        if(_out6(tPx,tPy,tPz)&&!(typeof window!=='undefined'&&window.__CPM_NO523)){try{if(sr.current._tocc503)sr.current._tocc503.push('bisezione');}catch(_e){}/* [7.503.1] *//* [caccia 007] __CPM_NO523: bisezione SPENTA del tutto — il cuscino ne cambiava l'atterraggio, non l'ingaggio: scagionarla richiede questo interruttore */
+        if(_out6(tPx,tPy,tPz)&&!(typeof window!=='undefined'&&window.__CPM_NO523)){/* [7.503.1] *//* [caccia 007] __CPM_NO523: bisezione SPENTA del tutto — il cuscino ne cambiava l'atterraggio, non l'ingaggio: scagionarla richiede questo interruttore */
           const ux=tPx-tLx,uz=tPz-tLz,ul=Math.hypot(ux,uz)||1;
           let lo6=0,hi6=34;
           /* [7.398.0 collaudo PO #33] L'ARRETRAMENTO SI FERMA AL CONFINE DELLO STADIO. Questo blocco gira
@@ -6020,7 +6020,10 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
           /* se nemmeno il massimo arretramento inquadra (pallone praticamente alle spalle) si lascia fare
              alla rete su camLook: meglio nessuno spostamento che una camera spedita a 34u per nulla. */
           if(!_out6(tPx+ux/ul*hi6,tPy,tPz+uz/ul*hi6,_cusc522)){
-            tPx=clamp(tPx+ux/ul*hi6,-112,44);tPz=clamp(tPz+uz/ul*hi6,-74,74);}
+            tPx=clamp(tPx+ux/ul*hi6,-112,44);tPz=clamp(tPz+uz/ul*hi6,-74,74);sr.current._leg563=(sr.current._leg563|0)+1;
+            try{if(sr.current._tocc503)sr.current._tocc503.push('bisezione');}catch(_e){}/* [7.563.0] l'etichetta si spinge quando la rete AGISCE, non quando si sveglia: prima bastava l'ingaggio, e il censimento non distingueva una doppia scrittura da un passaggio di consegne */
+          } else {
+            try{if(sr.current._tocc503)sr.current._tocc503.push('bisezione-ceduta');}catch(_e){}/* svegliata ma il soggetto e' praticamente alle spalle: CEDE alla rete su camLook. E' un passaggio di consegne, non un conflitto — e il censimento ora sa distinguerli. *//* [7.563.0] la legalita' ha parlato per questo fotogramma */}
         }
       }
       /* [7.425.0 evolutiva celebrazioni] LA REGIA DELLA CERIMONIA: durante la premiazione i bersagli
@@ -6149,8 +6152,28 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
          il 94% del semiquadro (il richiamo target-level resta il regista; questa è solo la rete), correzione
          limitata in velocità (dt-corretta) perché il caso patologico eroe-dietro-camera diventi una panoramica
          rapida e non un colpo di frusta. Solo camLook, mai la posizione → firma golden intatta per costruzione. */
+      /* [7.563.0 — CODICE 007: LA LEGALITA' PARLA UNA VOLTA SOLA PER FOTOGRAMMA]
+         La nota PO dal telefono porta la firma esatta: «ultima passata per fotogramma: vista-reale 51% +
+         bisezione 49% · 2,5 passate/fotogramma». Sono DUE reti di legalita' che scrivono lo stesso asse
+         nello stesso fotogramma, una sul BERSAGLIO (bisezione, prima dei lerp) e una sulla VISTA RESA
+         (vista-reale, dopo): la prima porta il bersaglio dentro il quadro, la seconda giudica la vista che
+         il lerp non ha ancora raggiunto e la ritira indietro — e al fotogramma dopo si scambiano i ruoli.
+         E' lo stesso difetto che il pallone aveva prima del 7.556: due padroni, nessuna elezione. Il
+         censimento in laboratorio lo conferma dal lato strutturale: il 51,3% dei fotogrammi di highlight
+         ha PIU' DI UNA passata di camera.
+         Qui l'elezione: se la bisezione ha gia' sistemato il BERSAGLIO in questo fotogramma, la rete sulla
+         vista resa TACE — il bersaglio e' gia' legale, quello che resta e' solo il ritardo del lerp, e
+         correggerlo ogni fotogramma E' il tremore. La rete resta come paracadute per i fotogrammi in cui
+         la bisezione non ha avuto niente da dire.
+         ⚠️ LIMITE DICHIARATO, e vale piu' del rimedio: QUESTA MISURA IN LABORATORIO NON VEDE IL FENOMENO.
+         L'asse reso inverte 0,2 volte al secondo headless contro le 41,5 misurate sul telefono del PO:
+         duecento volte meno. Il motivo e' che le reti correggono per FOTOGRAMMA con tetti dt-corretti, e
+         a 7 fps headless il moto reale domina il passo mentre a 60 fps dominano le microcorrezioni. Il
+         numero che si puo' difendere qui e' quello STRUTTURALE (passate per fotogramma); la conferma sul
+         tremore la puo' dare solo il collaudo sul dispositivo. __CPM_NO563 = rosso. */
       let _gCor50=false;
-      if(isHL&&!_subjBall50&&!P.ceremony&&!P.shootout&&!replaying&&subEntryT<0&&subExitT<0&&hero&&hero.visible){/* [7.237.0 #50] col soggetto passato alla palla anche la guardia reale sull'eroe cede */
+      if(isHL&&!_subjBall50&&!P.ceremony&&!P.shootout&&!replaying&&subEntryT<0&&subExitT<0&&hero&&hero.visible
+         &&!((sr.current._leg563|0)>0&&!(typeof window!=='undefined'&&window.__CPM_NO563))){/* [7.237.0 #50] col soggetto passato alla palla anche la guardia reale sull'eroe cede */
         const _cxG=camera.position.x,_cyG=camera.position.y,_czG=camera.position.z;
         const _dxG=hero.position.x-_cxG,_dzG=hero.position.z-_czG,_dyG=(hero.position.y+1.1)-_cyG;
         const _lxG=camLook.x-_cxG,_lzG=camLook.z-_czG,_lyG=camLook.y-_cyG;
