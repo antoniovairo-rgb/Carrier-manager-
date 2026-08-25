@@ -271,7 +271,8 @@ if (TIRI.length) {
   console.log('\n  --- LE DESTINAZIONI SBAGLIATE: CHIEDEVANO L\'IMPOSSIBILE, O NO? ---');
   console.log('  il motore sposta al massimo 30u per riga (tetto 7.498/7.528): oltre quella soglia la riga e\' bugiarda per costruzione');
   console.log('  destinazioni sbagliate ' + ko.length + '  ·  chiedevano PIU\' di 30u: ' + oltre.length + '  ·  chiedevano il possibile: ' + dentro.length);
-  if (oltre.length) console.log('    impossibili: ' + oltre.map(o => o.min + "'" + o.pd + '(' + o.chiesta + 'u)').join(' · '));
+  if (oltre.length) console.log('    impossibili: ' + oltre.map(o => o.min + "'" + o.pd + '(' + o.chiesta + 'u' + (o.rec ? ', RECITATA' : '') + ')').join(' · '));
+  if (oltre.length) console.log('    di cui costruite da una macchina di recita: ' + oltre.filter(o => o.rec).length + '/' + oltre.length + '  ← queste NON passano dal repertorio, quindi il filtro 7.577 non le vede');
   if (dentro.length) console.log('    possibili ma mancate: ' + dentro.map(o => o.min + "'" + o.pd + '(chiesta ' + o.chiesta + 'u, scarto ' + o.scarto + 'u)').join(' · '));
   /* [7.576.0] LE RIGHE CHE PROMETTONO UNA DESTINAZIONE CHE IL MOTORE NON APPLICA MAI. Sono quelle in cui
      il registro porta `bx` ma non `bex`: la riga dichiara al giocatore dove va il pallone, e il motore

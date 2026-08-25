@@ -2343,6 +2343,25 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
               if(!e.pd||!_dec499)return e;
               if(e.pd===_dec499)return{...e,w:e.w*((_dec499==="attack_goal"||_dec499==="defend_goal"||_dec499==="wide_right")?7.0:3.0)};
               return{...e,w:e.w*((_VIC499[_dec499]||[]).indexOf(e.pd)>=0?0.8:0.14)};});
+          /* [7.577.0 — UNA RIGA CHE CHIEDE PIU' DI QUANTO IL MOTORE CONCEDE E' FALSA IN PARTENZA,
+             rosso __CPM_NO577] Il peso di zona del 7.486/7.525 rende IMPROBABILI le righe lontane, non
+             impossibili: oltre le 32 unita' il peso e' 0,18, e su sei partite QUATTORDICI righe sono
+             uscite comunque dichiarando 36-66u di spostamento. Ma il motore ne concede al massimo 30 per
+             riga (freno 7.498/7.528): quelle righe non potevano essere mantenute NEMMENO IN LINEA DI
+             PRINCIPIO — la cronaca annunciava una parata del portiere col pallone a meta' campo.
+             Qui vale la stessa distinzione gia' scritta nel 7.570 per i piazzati: il PESO sceglie COME
+             raccontare, il FILTRO toglie di mezzo un'affermazione falsa in partenza. E come li', il
+             filtro e' l'unico strumento onesto, perche' un peso basso non e' zero.
+             DUE ESENZIONI, entrambe per ragioni gia' scritte altrove: i GOL (esenti dal freno per scelta
+             del 7.525, «il volo fino in rete e' suo di diritto») e le righe senza destinazione, che non
+             affermano niente da smentire. E una GUARDIA: se il filtro svuotasse il repertorio, non si
+             applica — meglio una riga lontana che nessuna riga (il ripiego del 7.486 vale ancora). */
+          if(!(typeof window!=='undefined'&&window.__CPM_NO577)){
+            const _bp577=(!(typeof window!=='undefined'&&window.__CPM_NO576)&&pendingGoalRef.current&&ballTargetRef.current)?{x:ballTargetRef.current.x,y:ballTargetRef.current.y}:(ballPosRef.current||{x:50,y:50});
+            const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(e.bpos.y-_bp577.y)*0.6)<=30);
+            if(typeof window!=='undefined'&&(window.__CPM_REC||_CPM_TEST)){try{const _g=(window.__CPM_F577=window.__CPM_F577||{tick:0,tolte:0,vuoto:0});_g.tick++;_g.tolte+=(eligible.length-_vic577.length);if(!_vic577.length)_g.vuoto++;}catch(_e){}}
+            if(_vic577.length)eligible=_vic577;
+          }
           if(typeof window!=='undefined'&&window.__CPM_SPBOOST)eligible=eligible.map(e=>e.sp?{...e,w:e.w*30}:e);/* [7.530.0 SOLO COLLAUDO] gonfia le righe `sp` per testare le recite in volo senza aspettare la pesca: flag spento = mappa identica */
           let ev=_simEv77||wPick(eligible.length>0?eligible:BG_MATCH.filter(e=>_noGoal77(e)&&(!e.minClock||nx>=e.minClock)&&(!e.maxClock||nx<=e.maxClock)&&(!onBenchRef.current||!e.txt.includes("{P}"))),_rndM);
           /* [7.530.0 collaudo PO «Non si riparte dal centro dopo un gol!» — rosso __CPM_NO536] LA RIPARTENZA
