@@ -222,8 +222,8 @@ console.log(`\n  ✔ dal 7.558 si giudicano anche la ZONA dichiarata (\`pd\`) e 
   for (const x of C.FONDATA.concat(C.SMENTITA)) for (const c of (x.claim || [])) if (per[c.k]) per[c.k][c.ok ? 'ok' : 'ko']++;
   console.log('  per tipo di affermazione: ' + Object.entries(per).filter(([, v]) => v.ok + v.ko).map(([k, v]) => `${k} ${v.ok}/${v.ok + v.ko}`).join(' · ')); }
 if (C.SMENTITA.length) {
-  console.log('\n  smentite (prime 8):');
-  C.SMENTITA.slice(0, 8).forEach(x => console.log(`    ${String(x.min).padStart(3)}'  pd=${String(x.pd).padEnd(12)} ${x.why}`));
+  console.log('\n  smentite (prime 20):');
+  C.SMENTITA.slice(0, 20).forEach(x => console.log(`    ${String(x.min).padStart(3)}'  pd=${String(x.pd).padEnd(12)} ${x.why}`));
 }
 {
   const per = {}; C.MUTA.forEach(x => per[x.pd] = (per[x.pd] || 0) + 1);

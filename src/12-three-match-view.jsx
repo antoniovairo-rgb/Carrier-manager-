@@ -687,7 +687,17 @@ function ThreeMatchView(props){
        larghezza = passo + piccolo overlap (niente buchi), + ogni cartellone scostato di un epsilon in PROFONDITÀ
        (x per le porte, z per le fasce) → l'overlap NON è complanare, quindi niente z-fighting/lampeggio (la
        regressione del 7.105.0 evitata per costruzione). */
-    [-24,-12,0,12,24].forEach((z,i)=>{_mkAdBoard(50.2+i*0.03,z,-Math.PI/2,i,z!==0,12.5);_mkAdBoard(-50.2-i*0.03,z,Math.PI/2,i+1,z!==0,12.5);});/* dietro le porte: Korward al centro + fantasia ai lati · passo 12, w 12.5 (overlap 0.5), x-stagger anti-flicker */
+    /* [7.573.0 collaudo PO «i cartelloni pubblicitari in prima fila non sono cartelli pubblicitari» —
+       rosso __CPM_NO573B] IL CARTELLONE PIU' INQUADRATO DELLO STADIO PORTAVA IL MARCHIO DEL GIOCO.
+       Dietro ogni porta i cinque board erano costruiti con `brandMode = z!==0`: quello CENTRALE (z=0)
+       cadeva quindi nel ramo `_mkAdTex`, che non disegna un inserzionista ma il wordmark KORWARD su una
+       tinta piatta (`_adPal`). Ed e' esattamente lo spazio che la camera inquadra sempre — dietro la
+       porta, al centro: in una trasmissione vera quello e' il board che si vende piu' caro, e qui era
+       l'unico che non vendeva niente. Da fuori si legge come il PO l'ha letto: una tinta piatta in mezzo
+       alla pubblicita'. Ora l'intero perimetro sono inserzionisti (`AD_BRANDS`, seedati per partita e
+       nella lingua di chi ospita, invarianti 7.44/7.282); il marchio del gioco vive gia' nella UI e sul
+       tabellone e non ha bisogno del bordo campo. */
+    [-24,-12,0,12,24].forEach((z,i)=>{const _br573=(typeof window!=='undefined'&&window.__CPM_NO573B)?(z!==0):true;_mkAdBoard(50.2+i*0.03,z,-Math.PI/2,i,_br573,12.5);_mkAdBoard(-50.2-i*0.03,z,Math.PI/2,i+1,_br573,12.5);});/* dietro le porte · passo 12, w 12.5 (overlap 0.5), x-stagger anti-flicker */
     // lungo le linee laterali (lato TRIBUNA, camera-side z- e opposta z+): TUTTE pubblicità di fantasia seedate
     // [7.129.0 collaudo PO «i cartelloni devono stare DIETRO la linea della rimessa laterale e dunque anche della
     //   bandierina»] erano a z=±33.2 = SULLA touchline (e alla stessa z delle bandierine d'angolo _TLZ) → ora a ±34.8,
@@ -882,7 +892,26 @@ function ThreeMatchView(props){
       fl.position.set(1.2*_fsc,0,0);piv.add(fl);fg.add(piv);fg._fl=piv;fg._home=home!==undefined?home:(tex===_fhTex);fg.position.set(x,0,z);scene.add(fg);flagGroups.push(fg);};// 5.45.2: tag lato
     // CROWD 2.0 (§5/§7/§8): la SCENOGRAFIA tifo (bandiere/striscioni/sciarpe) segue il contesto folla —
     // niente coreografie a stadio freddo/vuoto (provini/amichevoli scarse); il lato ospite dipende da awayFill.
-    const _tifoHome=_crowdCtx?_crowdCtx.fill>=0.45:true,_tifoAway=_crowdCtx?_crowdCtx.awayFill>=0.45:true;
+    /* [7.573.0 collaudo PO «gli striscioni, sciarpe e bandiere della tifoseria ospite non ci sono» — rosso
+       __CPM_NO573T] LO STESSO NUMERO SU DUE SCALE DIVERSE, ed era un errore di categoria.
+       I due cancelli confrontavano entrambi con 0,45, ma le due grandezze non vivono sulla stessa scala:
+       `fill` e' il riempimento dell'impianto, `awayFill` e' GIA' moltiplicato per la quota di seguito
+       ospite (`CROWD_CFG.awayShare`: campionato 0,55 · coppa 0,46 · Europa 0,34 · derby e finale 1,0).
+       Chiedere `awayFill >= 0,45` significa quindi chiedere all'impianto di essere pieno al:
+           campionato 81,8%  ·  coppa 97,8%  ·  Europa 132,4% (ARITMETICAMENTE IMPOSSIBILE)
+       — e il tifo ospite spariva in tutto il calendario tranne derby, finali e turni a eliminazione.
+       MISURATO con `tifo-ospiti-573` su un campionato pieno al 72% (cioe' awayFill 0,396, il valore che
+       la formula del gioco produce davvero): casa 41 bandiere e 24 sciarpe, OSPITI ZERO E ZERO.
+       PERCHE' NESSUN COLLAUDO L'AVEVA VISTO: `tifo-shot`, l'unica sonda che fotografa la scenografia,
+       forza `awayFill:0.98` — guarda cioe' un derby col tutto esaurito, l'unico caso in cui il cancello
+       si apriva. La sonda misurava sempre lo scenario che non poteva fallire.
+       IL CANCELLO GIUSTO sta sulla scala del SETTORE OSPITE: `awayFill` e' il riempimento della Curva
+       Nord (e' il valore che `buildStadium` le passa come fill, r.929 del frammento ui-kit). Una curva
+       piena al 40% ha i suoi striscioni; una deserta no. La soglia diventa quindi «non deserta» — e il
+       provino, che ha awayFill 0 per progetto, resta correttamente senza scenografia. */
+    const _tifoHome=_crowdCtx?_crowdCtx.fill>=0.45:true;
+    const _sogliaAway573=(typeof window!=='undefined'&&window.__CPM_NO573T)?0.45:0.18;
+    const _tifoAway=_crowdCtx?_crowdCtx.awayFill>=_sogliaAway573:true;
     const _tifoHot=_crowdCtx?_crowdCtx.intensity>=0.9:false;// derby/finale: coreografia extra (§9)
     // 3DV-11: flags a 2u davanti alla faccia frontale della tribuna (visibili, non sepolti nella geometria)
     // §5: le TRIBUNE (z±) sono di casa/famiglie → bandiere di CASA su entrambe (gli ospiti stanno in Curva Nord)
@@ -1189,6 +1218,19 @@ function ThreeMatchView(props){
       if(_tifoHome)_mkTelo(_sideX-2.6,0,-Math.PI/2,_tHCol,_hc2,_teloLbl,true);/* [7.171.0] stesso fix specchio del telo (la scritta ULTRAS/club era mirrored) */
       if(_tifoAway)_mkTelo(-_sideX+2.6,0,Math.PI/2,_tACol,_ac2,"",false);
     }
+    /* [7.573.0 collaudo PO «gli striscioni, sciarpe e bandiere della tifoseria ospite non ci sono»]
+       CENSIMENTO DELLA SCENOGRAFIA PER LATO (solo collaudo). L'occhio non distingue «l'arredo ospite non
+       e' stato costruito» da «e' stato costruito ma sta fuori inquadratura»: sono due difetti diversi.
+       Questo hook conta cio' che e' stato COSTRUITO, lato per lato, e dichiara il contesto folla che ha
+       deciso i cancelli `_tifoHome`/`_tifoAway`. Senza, ogni indagine sull'arredo parte da uno screenshot. */
+    if(typeof window!=='undefined')window.__CPM_TIFO=()=>{try{
+      const _c=(arr,h)=>arr.filter(o=>!!o._home===h).length;
+      return{ctx:{fill:_crowdCtx?+(_crowdCtx.fill||0).toFixed(3):null,awayFill:_crowdCtx?+(_crowdCtx.awayFill||0).toFixed(3):null,intensity:_crowdCtx?+(_crowdCtx.intensity||0).toFixed(3):null},
+        cancelli:{home:!!_tifoHome,away:!!_tifoAway},tier:_ctier,
+        bandiere:{home:_c(flagGroups,true),away:_c(flagGroups,false)},
+        sciarpe:{home:_c(scarfMs,true),away:_c(scarfMs,false)},
+        teli:{home:_c(teloMs,true),away:_c(teloMs,false)}};
+    }catch(e){return{err:String(e&&e.message||e)};}};
     // Sprint 3D-G3C: particelle coriandoli al gol (pre-allocate, attivate sul goal burst)
     const CONF_N=64,confPos=new Float32Array(CONF_N*3),confVel=new Float32Array(CONF_N*3);
     const confGeo=new THREE.BufferGeometry();confGeo.setAttribute('position',new THREE.BufferAttribute(confPos,3));
@@ -1780,7 +1822,31 @@ function ThreeMatchView(props){
          del registratore infilato davanti a un `else if` e' gia' stata pagata nel 7.457). Il renderer non
          chiede nulla e non decide nulla: dice soltanto se build-up, arco o post-arco sono ancora vivi. Chi
          chiude la scena legge questo invece di indovinare dal cronometro quanto ci vuole. */
-      if(P.cineBusy){try{P.cineBusy.current={on:isResult,tl:!!tlOn,arc:!!ballArcActive,pa:hlPostArcT>=0};}catch(_e461){}}
+      /* [7.573.0 — IL PALLONE DEVE ARRIVARE IN RETE PRIMA CHE SI RIPARTA DAL CENTRO]
+         Il giudice della cronaca, ora stabile, ha isolato la famiglia peggiore rimasta: sui GOL di cronaca
+         la riga dichiara la porta (98,50) e il pallone si vede a 27 unita' dalla linea — 44 unita' di
+         scarto, e lo stesso minuto su partite diverse (deterministico).
+         Due ipotesi mie, ENTRAMBE SMENTITE guardando il codice invece del sintomo: non e' il tetto di
+         spostamento per riga (il blocco che lo applica e' gia' esente sulle righe con esito — «i GOL
+         restano esenti», 7.498) e non e' un bersaglio sbagliato (il bersaglio E' la porta).
+         La causa e' quella che il 7.525 aveva gia' scritto e non chiuso: la mesh, quando il gol si scrive,
+         sta 40-53 unita' indietro e viaggia al massimo a 34 u/s — le servono ~1,3 s, e il conto della
+         ripartenza gliene concede 1,5 con qualunque rallentamento a mangiarseli. Alzare quel conto sarebbe
+         un rattoppo su una costante: il numero giusto dipende da quanto e' lontana la mesh, che cambia ogni
+         volta.
+         Il meccanismo per farlo bene esiste gia' ed e' del 7.461: il renderer DICHIARA se ha ancora
+         qualcosa da mostrare e la simulazione aspetta. Qui si aggiunge un motivo a quella dichiarazione —
+         «il pallone e' in volo verso la rete» — cosi' la ripartenza dal centro non parte finche' il gol
+         non si e' visto. E' la stessa precedenza che il PO aveva gia' stabilito: e' la SCENA ad avere la
+         precedenza. __CPM_NO573 = rosso. */
+      let _rete573=false;
+      if(!(typeof window!=='undefined'&&window.__CPM_NO573)&&P.matchPhase==='playing'&&ball&&!isHL){
+        const _tgx=(P.ballX==null?50:P.ballX);
+        if(_tgx>=95||_tgx<=5){const _gx=G2X(_tgx>=95?98.6:1.4);
+          if(Math.abs(ball.position.x-_gx)>3.2)_rete573=true;}
+      }
+      if(typeof window!=='undefined'&&(window.__CPM_REC||_CPM_TEST||_SIT_TEST)&&_rete573){try{const _w=(window.__CPM_RETE573=window.__CPM_RETE573||{f:0});_w.f++;}catch(_e){}}
+      if(P.cineBusy){try{P.cineBusy.current={on:isResult,tl:!!tlOn,arc:!!ballArcActive,pa:hlPostArcT>=0,rete:_rete573};}catch(_e461){}}
       /* [7.457.0 — MISURA, «esito dichiarato ≠ 3D»] PERCHE' IL BUILD-UP E' ANCORA VIVO? Il post-arco
          che porta la palla in rete aspetta la fine del build-up (guardia 5.43.9, r.~12542). Le prove
          del PO dicono «arco/post-arco vivi 30 · 17 · 118 · 144 fotogrammi» con la palla ferma: qui si

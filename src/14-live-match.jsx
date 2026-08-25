@@ -625,6 +625,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   // 5.43.4 — REGOLA GENERALE: l'esultanza ("GOL"+grafica+coriandoli+boato) parte SOLO quando la palla ENTRA in
   //   rete (callback onGoalInNet dal renderer 3D), non al momento della scelta → niente accavallamento con l'azione.
   //   Fallback di sicurezza (timeout) se il segnale d'ingresso non arriva (es. renderer 2D / arco anomalo).
+  const kickAtt573=useRef(0),kickGx573=useRef(null),kickIn573=useRef(false);/* [7.573.0] la ripartenza aspetta che il pallone sia ENTRATO: quale porta, quanti tick ha gia' atteso (tetto dieci), e se l'ingresso e' gia' avvenuto (latch: un rimbalzo fuori non riapre l'attesa) *//* [7.573.0] quanti tick la ripartenza ha gia' aspettato che il pallone arrivasse in rete (tetto: dieci) */
   const cineBusyRef=useRef(null);/* [7.461.0 direttiva PO «le azioni/scene/highlights possono prendersi anche piu' tempo»] IL RENDERER DICHIARA SE HA ANCORA QUALCOSA DA MOSTRARE. Il 7.460 aveva lasciato aperto, e portato al PO, un conflitto fra due sistemi: la finestra d'esito e' un `setTimeout` in tempo REALE mentre la catena cinematica (build-up → arco → post-arco) gira sul CLOCK DI SCENA, che `dt` tappa a 0.05 — a fps bassi, headless o telefono lento, il clock di scena avanza meno della meta' del reale e la finestra si chiudeva con l'arco ancora in volo, lasciando il pallone a meta' campo su un gol contato. La precedenza l'ha decisa il PO: e' la SCENA ad avere la precedenza. Qui il renderer scrive, ogni fotogramma, se build-up/arco/post-arco sono vivi; l'auto-avanzamento (r.~20360) non chiude finche' non ha finito. */
   const goalCelebRef=useRef(null);
   const [celebPlan,setCelebPlan]=useState(null);/* [7.371.0] il PIANO d'esultanza deciso alla conferma del gol */
@@ -2648,7 +2649,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
             var _cap528=_no528?45:30;
             if(_dd498>_cap528)_bt498={x:clamp(_cb498.x+_dx498/_dd498*_cap528,2,98),y:clamp(_cb498.y+_dy498/_dd498*_cap528,2,98)};
           }
-          if(/goal$/.test(String(ev.ef||""))&&!(typeof window!=='undefined'&&window.__CPM_NO528)){kickRef.current=(typeof window!=='undefined'&&window.__CPM_NO569)?4:5;kickoffSideRef.current=(ev.ef==="team_goal")?"away":"home";if(!(typeof window!=='undefined'&&window.__CPM_NO543))possTurnRef.current=(ev.ef==="team_goal")?-1:1;/* [7.532.0 NO543] il calcio d'inizio passa il turno a chi ha subito */}/* [7.545.0 — collaudo PO «non si vedono i gol», rosso __CPM_NO569] 4->6 TICK: MISURATO coi tre palloni
+          if(/goal$/.test(String(ev.ef||""))&&!(typeof window!=='undefined'&&window.__CPM_NO528)){kickRef.current=(typeof window!=='undefined'&&window.__CPM_NO569)?4:5;kickGx573.current=(ev.ef==="team_goal")?100:0;kickIn573.current=false;kickAtt573.current=0;/* [7.573.0] da qui la ripartenza sa DOVE il pallone deve arrivare prima di tornare al centro */kickoffSideRef.current=(ev.ef==="team_goal")?"away":"home";if(!(typeof window!=='undefined'&&window.__CPM_NO543))possTurnRef.current=(ev.ef==="team_goal")?-1:1;/* [7.532.0 NO543] il calcio d'inizio passa il turno a chi ha subito */}/* [7.545.0 — collaudo PO «non si vedono i gol», rosso __CPM_NO569] 4->6 TICK: MISURATO coi tre palloni
    insieme (hook __CPM_BALL3). Il BERSAGLIO del pallone va in rete sempre, 3/3 a 2,0u dalla linea: la
    riga del gol porta bpos x98 e il gol del microsim riusa quella riga. E' la MESH a non arrivarci —
    3,9 / 14,1 / 4,0u. Il motivo sta nell'invariante delle due sorgenti: il gol si scrive quando il
@@ -3120,10 +3121,40 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
       setBallPos(b=>{
         /* [7.525.0] CALCIO D'INIZIO ambientale: allo scadere del conto il pallone RIPARTE dal centro
            (riposizionamento voluto, come lo snap di scena) e la trama rinasce col possesso nuovo. */
-        if(kickRef.current>0){kickRef.current--;
-          if(kickRef.current===0){ballTargetRef.current={x:50,y:50};tramaRef.current=null;
-            if(!(typeof window!=='undefined'&&window.__CPM_NO536))kickoffRef.current=2;/* [7.530.0] parte la ripartenza recitata: 2 battute di calcio d'inizio */
-            return{x:50,y:50};}}
+        /* [7.573.0 — LA RIPARTENZA DAL CENTRO ASPETTA CHE IL GOL SI SIA VISTO]
+           Il conto della ripartenza scorreva a tick fissi: cinque tick, ~1,5 s. Ma quando il gol si scrive
+           la mesh del pallone sta 40-53 unita' dalla linea e viaggia al massimo a 34 u/s — le servono ~1,3 s,
+           e qualunque rallentamento se li mangia. Da qui il difetto che il giudice misura: la riga dichiara
+           la porta (98,50) e il pallone si vede a 27 unita' dalla linea, sempre allo stesso minuto.
+           Alzare il conto sarebbe un rattoppo su una costante: il numero giusto dipende da quanto e' lontana
+           la mesh, che cambia ogni volta. Qui il conto si FERMA finche' il renderer dichiara che il pallone
+           e' ancora in volo verso la rete — lo stesso schema del 7.461, dove la simulazione aspetta la
+           scena. Con un tetto, perche' nulla resti appeso se il volo non finisce mai. */
+        if(kickRef.current>0){
+          const _no573=(typeof window!=='undefined'&&window.__CPM_NO573);
+          /* [7.573.0] IL PALLONE E' GIA' ENTRATO? Due testimoni, e basta che uno dica di no.
+             (a) LA SIMULAZIONE: il pallone logico deve aver toccato la linea (x>=95 o x<=5). Misurato con
+                 `gol-573` su sei partite: dalla riga di gol il pallone ci mette 2-3 tick, non zero.
+             (b) LA SCENA: il renderer dichiara `rete` finche' la mesh e' a piu' di 3,2u dalla porta —
+                 sul telefono la mesh insegue il logico e puo' restare indietro anche quando il logico
+                 e' arrivato. Headless non lo vede: quel testimone resta NON VERIFICATO in laboratorio. */
+          const _gx573=kickGx573.current;
+          if(_gx573!=null&&(_gx573>50?(b.x>=95):(b.x<=5)))kickIn573.current=true;
+          const _simFuori573=(_gx573!=null&&!kickIn573.current);
+          const _cb573=_no573?null:cineBusyRef.current;
+          const _meshFuori573=!!(_cb573&&_cb573.rete);
+          if(!_no573&&(_simFuori573||_meshFuori573)&&(kickAtt573.current|0)<10){
+            /* il pallone e' ancora in volo verso la rete: il conto ATTENDE, la scena ha la precedenza
+               (stesso schema del 7.461). Col tetto, perche' nulla resti appeso se il volo non finisce mai. */
+            kickAtt573.current=(kickAtt573.current|0)+1;
+            if(typeof window!=='undefined'&&window.__CPM_K573)window.__CPM_K573.att=(window.__CPM_K573.att|0)+1;
+          }else{
+            kickAtt573.current=0;kickRef.current--;
+            if(kickRef.current===0){kickGx573.current=null;kickIn573.current=false;ballTargetRef.current={x:50,y:50};tramaRef.current=null;
+              if(!(typeof window!=='undefined'&&window.__CPM_NO536))kickoffRef.current=2;/* [7.530.0] parte la ripartenza recitata: 2 battute di calcio d'inizio */
+              return{x:50,y:50};}
+          }
+        }
         if(kickoffRef.current>0&&!(typeof window!=='undefined'&&window.__CPM_NO536)){
           /* [7.530.0 NO536] TENUTA al centro finche' le battute di ripartenza non sono uscite: niente drift,
              niente strattoni delle righe (le righe in questa finestra sono dirottate su battute di kickoff
