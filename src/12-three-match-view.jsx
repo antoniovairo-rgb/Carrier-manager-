@@ -6230,7 +6230,28 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
            dominante. La costante resta 1 (bordo storico); la parametrizzazione di _out6 resta per il
            prossimo esperimento, l'attribuzione per-inversione decide il vero colpevole. */
         const _cusc522=1;
-        if(_out6(tPx,tPy,tPz)&&!(typeof window!=='undefined'&&window.__CPM_NO523)){/* [7.503.1] *//* [caccia 007] __CPM_NO523: bisezione SPENTA del tutto — il cuscino ne cambiava l'atterraggio, non l'ingaggio: scagionarla richiede questo interruttore */
+        /* [7.584.0 — LA BISEZIONE SI ACCENDE E SI SPEGNE SUL FILO, rosso __CPM_NO584]
+           COLLAUDO PO (appunti 7.581): dopo il 7.580 e il 7.581 lo sguardo e' sceso a UNA mano per
+           fotogramma (da 3,6 e 2,5) e le inversioni da 29-30 al secondo a 3,0 — ma il residuo c'e' ancora,
+           e lo scrittore dominante e' ora `bisezione` all'87%.
+           LA CAUSA E' UN INTERRUTTORE SENZA ISTERESI. La rete si ingaggia su un booleano secco: appena la
+           camera e' rientrata nel cono, `_out6` diventa falso, la rete molla, la camera riesce e la rete
+           riprende — un ciclo limite sul filo della soglia, che e' esattamente cio' che si vede come
+           tremolio. Non e' un conflitto fra due scrittori (quelli sono chiusi): e' UNO scrittore che
+           commuta. Il cuscino del 7.522 non poteva curarlo, e la sua nota lo dice: «cambiava l'ATTERRAGGIO,
+           non l'INGAGGIO».
+           IL RIMEDIO NON INVENTA PARAMETRI: `_out6` prende gia' un moltiplicatore sui margini angolari.
+           Quando la rete e' ingaggiata il cono si stringe (0,82), cioe' per mollare il soggetto deve essere
+           rientrato CON MARGINE, non appena appena. E' l'isteresi con cui si cura ogni interruttore che
+           sfarfalla, e qui si esprime in un numero solo.
+           MISURA: non la frequenza (3 inversioni al secondo contro 7fps headless sono invisibili) ma le
+           COMMUTAZIONI della rete, che sono un conteggio e non una frequenza — `__CPM_BIS584`. */
+        const _lat584=(sr.current._bis584K===sr.current._actSitKey403)&&(sr.current._bis584===true);
+        const _mf584=(typeof window!=='undefined'&&window.__CPM_NO584)?1:(_lat584?0.82:1);
+        const _eng584=_out6(tPx,tPy,tPz,_mf584);
+        if(typeof window!=='undefined'&&(_CPM_TEST||window.__CPM_REC)){try{if(_eng584!==_lat584){const _B=(window.__CPM_BIS584=window.__CPM_BIS584||{comm:0,frame:0});_B.comm++;}const _B2=(window.__CPM_BIS584=window.__CPM_BIS584||{comm:0,frame:0});_B2.frame++;}catch(_e584){}}
+        sr.current._bis584=_eng584;sr.current._bis584K=sr.current._actSitKey403;
+        if(_eng584&&!(typeof window!=='undefined'&&window.__CPM_NO523)){/* [7.503.1] *//* [caccia 007] __CPM_NO523: bisezione SPENTA del tutto — il cuscino ne cambiava l'atterraggio, non l'ingaggio: scagionarla richiede questo interruttore */
           const ux=tPx-tLx,uz=tPz-tLz,ul=Math.hypot(ux,uz)||1;
           let lo6=0,hi6=34;
           /* [7.398.0 collaudo PO #33] L'ARRETRAMENTO SI FERMA AL CONFINE DELLO STADIO. Questo blocco gira

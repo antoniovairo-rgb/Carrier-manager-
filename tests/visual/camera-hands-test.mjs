@@ -46,6 +46,11 @@ for (let i = 0; i < total && gi.length < SCENE; i += PASSO) gi.push(i);
 for (const g of gi) { try { await forceSituation(page, g, { settle: 420, choose: true }); await sleep(220); } catch (_e) {} }
 
 const d = await page.evaluate(() => window.__CPM_CAM503 || null);
+/* [7.584.0] LE COMMUTAZIONI DELLA BISEZIONE. Un interruttore che sfarfalla non si vede dalla FREQUENZA
+   (3 inversioni al secondo contro 7fps headless: Nyquist le nasconde), ma si CONTA: quante volte la rete
+   passa da ingaggiata a mollata e viceversa, sui fotogrammi osservati. E' la misura giusta per giudicare
+   un'isteresi, ed e' immune al frame rate perche' e' un conteggio e non una frequenza. */
+const B584 = await page.evaluate(() => window.__CPM_BIS584 || null);
 await page.close().catch(() => {}); await b.close(); srv.close();
 
 console.log(`\n=== QUANTE MANI TOCCANO L'INQUADRATURA${ROSSO ? ' · PROVA DEL ROSSO (__CPM_NO503)' : ''} ===`);
@@ -71,3 +76,5 @@ const dup = Object.entries(d.combo || {}).filter(([k]) => k.includes('bordo-lift
 console.log(`\n  le DUE correzioni sullo stesso sintomo (bordo-lift + bordo-tanh) insieme: ${dup} fotogrammi`);
 for (const e of errs.slice(0, 3)) console.log('  ⚠ pageerror: ' + e);
 console.log('\n✅ baseline F6 misurata — nessun comportamento cambiato, solo contato');
+if (B584 && B584.frame) console.log('\n  bisezione: ' + B584.comm + ' commutazioni su ' + B584.frame + ' fotogrammi = ' + (100 * B584.comm / B584.frame).toFixed(1) + '% dei fotogrammi cambia stato');
+else console.log('\n  bisezione: nessun dato di commutazione (il contatore non ha girato)');
