@@ -2358,7 +2358,13 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
              applica — meglio una riga lontana che nessuna riga (il ripiego del 7.486 vale ancora). */
           if(!(typeof window!=='undefined'&&window.__CPM_NO577)){
             const _bp577=(!(typeof window!=='undefined'&&window.__CPM_NO576)&&pendingGoalRef.current&&ballTargetRef.current)?{x:ballTargetRef.current.x,y:ballTargetRef.current.y}:(ballPosRef.current||{x:50,y:50});
-            const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(e.bpos.y-_bp577.y)*0.6)<=30);
+            /* ⚠️ [7.579.0] PROVATO E REVOCATO CON LA SUA MISURA: stringere il raggio della pesca da 30u a
+               14u quando la riga non comanda piu' il pallone («una riga che descrive deve descrivere da
+               vicino»). Sembrava il completamento naturale dell'inversione; la misura dice il contrario —
+               scarto MEDIANO 6,9u -> 8,4u, p90 21,2 -> 31,7, peggiore 35,3 -> 61,7. Il raggio stretto
+               affama il repertorio e la guardia ripiega troppo spesso sul pool intero, che non ha filtro
+               affatto: stringere il cancello lo apriva. Il raggio resta quello del tetto. */
+const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(e.bpos.y-_bp577.y)*0.6)<=30);
             if(typeof window!=='undefined'&&(window.__CPM_REC||_CPM_TEST)){try{const _g=(window.__CPM_F577=window.__CPM_F577||{tick:0,tolte:0,vuoto:0});_g.tick++;_g.tolte+=(eligible.length-_vic577.length);if(!_vic577.length)_g.vuoto++;}catch(_e){}}
             if(_vic577.length)eligible=_vic577;
           }
@@ -2794,7 +2800,44 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
             const _f559=fermoRef.current;_bt498={x:_f559.x,y:_f559.y};
             _f559.t--;if(_f559.t<=0)fermoRef.current=null;}
           if(kickRef.current>0||kickoffRef.current>0)fermoRef.current=null;/* la ripartenza dal centro ha la precedenza */
+          /* [7.579.0 — L'INVERSIONE DEL VERSO, IN PROVA: opt-in `__CPM_INV579`]
+             MP-4/6 della roadmap, ed e' l'unico pezzo strutturale rimasto della missione «partita vera».
+             Oggi la riga di cronaca COMANDA il pallone: `ballTargetRef = ev.bpos`. Per questo puo' mentire —
+             e infatti mente, misurato: `destinazione` sta attorno al 70%, e la meta' delle righe dichiara un
+             punto che il motore non applica nemmeno. Nessuna taratura di pesi o filtri puo' chiudere quel
+             divario, perche' il divario E' il verso: chi parla decide.
+             Nel verso giusto la SIMULAZIONE muove il pallone e la riga DESCRIVE cio' che e' accaduto — il
+             `bpos` smette di essere un comando e resta solo un SELETTORE per la pesca (7.486/7.577), che
+             gia' sceglie la riga piu' vicina a dove il gioco sta.
+             RESTANO COMANDI, e non e' un'eccezione ma la stessa regola: il pallone FERMO si piazza (7.578) e
+             il GOL vola in rete di diritto (7.525). Li' non c'e' niente da descrivere, c'e' da eseguire.
+             MISURA APPAIATA, sulla DISTRIBUZIONE dello scarto (che non ha soglie, al contrario della
+             percentuale di righe fondate, che dipende da dove si mette il taglio):
+                 scarto mediano   6,7u -> 6,9u      (fermo)
+                 p90             22,5u -> 21,2u
+                 PEGGIORE        66,5u -> 35,3u     (dimezzato)
+                 spread fra semi  40-94%  ->  67,9-77,8%
+             Il totale delle righe fondate NON si muove (73,2% -> 72,0%), e non deve stupire: l'inversione
+             toglie alla riga il COMANDO, non la PRETESA — la riga smette di strattonare il pallone, ma
+             continua a dichiarare un punto.
+             NON E' ATTIVA, ED E' UNA DECISIONE PRESA CONTRO IL MIO STESSO ENTUSIASMO. L'evidenza e' sottile:
+             un valore ESTREMO dimezzato su sei partite, con p90 che migliora di poco e mediana ferma, su un
+             metro che so oscillare di sette punti fra passate identiche. La regola che mi sono dato dopo il
+             7.578 e' di decidere sui contatori deterministici, e questo non lo e'. Resta opt-in
+             (`__CPM_INV579`) finche' non avro' una misura che regga: il codice c'e', provato e strumentato.
+             ⚠️ E UNA MISURA DA CESTINARE, perche' non voglio che qualcuno la ritrovi e ci creda: avevo
+             riferito che l'inversione RADDOPPIAVA il movimento del pallone (43,3% -> 57,9%, fermo 45,7s ->
+             22,0s). Era un artefatto: la revoca del raggio stretto aveva lasciato un riferimento a una
+             costante cancellata, la cronaca lanciava a ogni tick e il pallone lo muoveva solo la deriva —
+             in ENTRAMBI i bracci. Su codice sano non c'e' differenza: 63,9% -> 65,5% in moto, fermo 4,4s ->
+             4,9s. Il guardiano `ball-alive` resta rosso in tutt'e due (soglia 2s): difetto preesistente. */
+          const _inv579=(typeof window!=='undefined'&&window.__CPM_INV579)&&!ev.ef&&!_fermo578&&!fermoRef.current&&!pendingGoalRef.current;
+          if(_bt498&&_inv579){
+            if(typeof window!=='undefined'&&(window.__CPM_REC||_CPM_TEST)){try{const _g=(window.__CPM_INV=window.__CPM_INV||{descrive:0,comanda:0});_g.descrive++;}catch(_e){}}
+            _bt498=null;/* la riga DESCRIVE: non tocca il pallone */
+          }
           if(_bt498){
+            if(typeof window!=='undefined'&&(window.__CPM_REC||_CPM_TEST)){try{const _g=(window.__CPM_INV=window.__CPM_INV||{descrive:0,comanda:0});_g.comanda++;}catch(_e){}}
             ballTargetRef.current=_bt498;
             /* [7.498.0] e il micro-scarto dell'eroe passa alla catena seedata: era un `Math.random()`
                rimasto dentro il tick dopo il giro F0, dove `_rndM` e' in scope. */
