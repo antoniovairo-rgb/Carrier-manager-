@@ -51,6 +51,7 @@ await page.addInitScript(n => {
 await openMatch(page, port); await sleep(800);
 
 const righe = [];
+const nonVisti = [];/* [7.583.0] scene in cui l'istante d'ARRIVO non e' stato campionato: non giudicabili, mai da giudicare a naso */
 for (const gi of SCENE) {
   let ok = false; try { ok = await page.evaluate(g => window.__CPM_FORCE_SIT(g, true), gi); } catch (e) {}
   if (!ok) continue;
@@ -75,18 +76,36 @@ for (const gi of SCENE) {
      del portiere ma della mia lettura. */
   let iArr = -1;
   for (let i = 0; i < F.length; i++) { if (F[i].arcD > 0 && F[i].arcT / F[i].arcD >= 0.98) { iArr = i; break; } }
-  if (iArr < 0) { let mx = -1; for (let i = 0; i < F.length; i++) { if (!(F[i].arcD > 0)) continue; const p = F[i].arcT / F[i].arcD; if (p > mx) { mx = p; iArr = i; } } }
-  if (iArr < 0) continue;
+  /* [7.583.0 — IL RIPIEGO GIUDICAVA UN FOTOGRAMMA IN CUI LA PALLA NON ERA ANCORA ARRIVATA.
+     Quando nessun campione raggiungeva il 98% dell'arco, questa sonda prendeva il fotogramma piu' avanzato
+     che aveva e lo trattava come l'ARRIVO. Ma GLB-ON headless gira a frazioni di fps: fra due campioni puo'
+     passare tutta la coda del volo, e allora quel fotogramma non e' l'arrivo — e' un istante qualunque a
+     meta' strada. Da li' i due «MAI» che questa stessa sonda dichiarava come residuo e indicava come
+     prossimo bersaglio: gi43 giudicato con l'arco al 61% (distesa 67%) e gi51 col 75% (distesa 84%) —
+     cioe' il portiere era AVANTI alla palla, non in ritardo. Un difetto che non esisteva.
+     Ora una scena in cui l'arrivo non e' stato campionato si dichiara NON GIUDICABILE e si conta a parte:
+     un guardiano non deve inventarsi l'istante che gli serve. E' la stessa classe di errore che la nota in
+     testa a questo file gia' descriveva per i «MAI» al 27-30%: ricompare appena si allenta la disciplina. */
+  if (iArr < 0) { nonVisti.push(gi); continue; }
+  { const _pArr = F[iArr].arcD > 0 ? F[iArr].arcT / F[iArr].arcD : 0;
+    if (_pArr < 0.90) { nonVisti.push(gi); continue; } }
   const prog = Math.abs(F[iArr].gz - z0) / span;
   let iFull = -1; for (let i = 0; i < F.length; i++) if (Math.abs(F[i].gz - z0) / span >= 0.95) { iFull = i; break; }
   const dtMs = iFull >= 0 ? (F[iFull].t - F[iArr].t) : null;
   righe.push({ gi, prog, dtMs, arcD: F[0].arcD, dvD: F[0].dvD, n: F.length });
-  if (VERB) console.log(`  gi${gi} · arco ${F[0].arcD}s · tuffo ${F[0].dvD}s · progresso all'arrivo ${(prog * 100).toFixed(0)}% · distesa completa ${dtMs == null ? 'mai' : (dtMs / 1000).toFixed(2) + 's'} rispetto alla palla`);
+  /* [7.583.0] QUANTI FOTOGRAMMI HA VISTO DAVVERO, e quanto era avanti l'arco nel fotogramma giudicato.
+     GLB-ON headless gira a frazioni di fps: fra due campioni puo' passare TUTTA la coda dell'arco, e allora
+     «distesa al 17%» non dice che il portiere e' lento — dice che nessuno l'ha guardato mentre finiva.
+     E' la stessa classe di errore che questa sonda ha gia' corretto una volta (nota in testa, i «MAI» al
+     27-30%). Senza questi due numeri accanto, il verdetto non e' interpretabile. */
+  const arcAtArr = F[iArr].arcD > 0 ? F[iArr].arcT / F[iArr].arcD : null;
+  if (VERB) console.log(`  gi${gi} · arco ${F[0].arcD}s · tuffo ${F[0].dvD}s · progresso all'arrivo ${(prog * 100).toFixed(0)}% · distesa completa ${dtMs == null ? 'mai' : (dtMs / 1000).toFixed(2) + 's'} rispetto alla palla · FOTOGRAMMI VISTI ${F.length} · arco nel fotogramma giudicato ${arcAtArr == null ? '?' : (arcAtArr * 100).toFixed(0) + '%'}`);
 }
 await b.close(); srv.close();
 
 if (!righe.length) { console.log('❌ nessun tuffo misurato: il guardiano e\' cieco, non verde'); process.exit(2); }
 console.log(`\n=== ${righe.length} tuffi misurati (anticipo tollerato: ${ANTICIPO_MAX}ms) ===`);
+if (nonVisti.length) console.log(`  ⚠ ${nonVisti.length} scene NON GIUDICABILI (l'istante d'arrivo della palla non e' stato campionato: gi${nonVisti.join(', gi')}) — dichiarate, mai indovinate`);
 /* DUE CLASSI, e il guardiano ne giudica UNA SOLA — quella che il 7.465 ha chiuso e che quindi puo'
    tornare indietro:
      GIUDICATA · ANTICIPO: il portiere completa la distesa e lo fa TROPPO PRESTO, poi resta a terra ad
