@@ -112,6 +112,7 @@ const prossimaRiga = (righe, r) => { let best = null;
 const C = { FONDATA: [], SMENTITA: [], MUTA: [] };
 const TIRI = [];
 const DEST = [];
+const DEST_CHIESTA = [];/* [7.576.0] quanta strada chiedeva ogni riga */
 let recite = 0, righeTot = 0, scartate = 0;
 let _fonteTick = 0, _fonteOro = 0;
 for (const { righe, recite: rc, tr: _trOro, trT } of tutte) {
@@ -200,7 +201,20 @@ for (const { righe, recite: rc, tr: _trOro, trT } of tutte) {
       const d = Math.min(..._ww.map(s2 => Math.hypot(s2.x - r.bx, s2.y - r.by)));
       DEST.push(+d.toFixed(1));
       const _vic = _ww.reduce((a, s2) => { const dd = Math.hypot(s2.x - r.bx, s2.y - r.by); return dd < a.d ? { d: dd, x: s2.x, y: s2.y } : a; }, { d: 1e9, x: 0, y: 0 });
-      claim.push({ k: 'destinazione', ok: d <= DEST_U, nota: `dichiara (${r.bx},${r.by}), il pallone al piu' vicino sta a (${_vic.x.toFixed(0)},${_vic.y.toFixed(0)}) = ${d.toFixed(1)}u (finestra ${r.min|0}'-${_fin}')` });
+      /* [7.576.0] QUANTA STRADA CHIEDEVA LA RIGA. Il motore ha un tetto di spostamento per riga
+         (`_cap528` = 30u, 7.498/7.528): una riga che dichiara un punto piu' lontano di cosi' e' bugiarda
+         PER COSTRUZIONE — il pallone non ci puo' arrivare, per progetto. Stamparlo accanto allo scarto
+         separa due famiglie di difetto con due rimedi diversi: «la riga chiede l'impossibile» e «la riga
+         chiede il possibile e il pallone va altrove». */
+      const _chiesta = Math.hypot(qui.x0 - r.bx, qui.y0 - r.by);
+      /* [7.576.0] LE TRE DISTANZE, che finora erano una sola. `bx/by` e' cio' che la RIGA dichiara;
+         `bex/bey` e' dove il MOTORE manda davvero il pallone (dopo il freno del 7.498); il punto piu'
+         vicino della traccia e' dove il PALLONE finisce. Separandole si legge di chi e' la colpa:
+           freno   = il motore ha accorciato la proposta della riga (la riga chiede l'impossibile)
+           deriva  = il motore ha mandato il pallone dove diceva, e poi qualcun altro l'ha spostato */
+      const _freno = (r.bex == null) ? null : +Math.hypot(r.bex - r.bx, r.bey - r.by).toFixed(1);
+      DEST_CHIESTA.push({ min: r.min | 0, pd: r.pd, rec: r.rec | 0, sp: r.sp || null, ef: r.ef || null, chiesta: +_chiesta.toFixed(1), scarto: +d.toFixed(1), freno: _freno, ok: d <= DEST_U });
+      claim.push({ k: 'destinazione', ok: d <= DEST_U, nota: `dichiara (${r.bx},${r.by}), il pallone al piu' vicino sta a (${_vic.x.toFixed(0)},${_vic.y.toFixed(0)}) = ${d.toFixed(1)}u — la riga chiedeva ${_chiesta.toFixed(0)}u di spostamento (tetto 30) (finestra ${r.min|0}'-${_fin}')` });
     }
     if (!claim.length) { C.MUTA.push({ min: r.min, pd: r.pd, rec: r.rec, at: r.at }); continue; }
     const tutti = claim.every(c => c.ok);
@@ -251,6 +265,40 @@ if (TIRI.length) {
   console.log(`  quante partivano gia' troppo vicine per poter guadagnare ${AVV_MIN}u: ${gia.length}/${TIRI.length}`);
   const arriva = TIRI.filter(t => t.dmin <= 20);
   console.log(`  quante portano comunque il pallone entro 20u dalla porta (cioe' in area): ${arriva.length}/${TIRI.length}`);
+}
+{
+  const ko = DEST_CHIESTA.filter(o => !o.ok), oltre = ko.filter(o => o.chiesta > 30), dentro = ko.filter(o => o.chiesta <= 30);
+  console.log('\n  --- LE DESTINAZIONI SBAGLIATE: CHIEDEVANO L\'IMPOSSIBILE, O NO? ---');
+  console.log('  il motore sposta al massimo 30u per riga (tetto 7.498/7.528): oltre quella soglia la riga e\' bugiarda per costruzione');
+  console.log('  destinazioni sbagliate ' + ko.length + '  ·  chiedevano PIU\' di 30u: ' + oltre.length + '  ·  chiedevano il possibile: ' + dentro.length);
+  if (oltre.length) console.log('    impossibili: ' + oltre.map(o => o.min + "'" + o.pd + '(' + o.chiesta + 'u)').join(' · '));
+  if (dentro.length) console.log('    possibili ma mancate: ' + dentro.map(o => o.min + "'" + o.pd + '(chiesta ' + o.chiesta + 'u, scarto ' + o.scarto + 'u)').join(' · '));
+  /* [7.576.0] LE RIGHE CHE PROMETTONO UNA DESTINAZIONE CHE IL MOTORE NON APPLICA MAI. Sono quelle in cui
+     il registro porta `bx` ma non `bex`: la riga dichiara al giocatore dove va il pallone, e il motore
+     scarta quella destinazione per scelta (durante un'azione recitata il pallone lo guida la recita).
+     Vanno contate a parte: non e' «il pallone e' andato altrove», e' «la cronaca ha promesso una cosa
+     che nessuno aveva intenzione di mantenere». */
+  {
+    const senza = DEST_CHIESTA.filter(o => o.freno == null);
+    const koS = senza.filter(o => !o.ok);
+    console.log('\n  --- RIGHE CHE DICHIARANO UNA DESTINAZIONE CHE IL MOTORE NON APPLICA MAI ---');
+    console.log('  sono ' + senza.length + '/' + DEST_CHIESTA.length + ' delle righe con una destinazione dichiarata  ·  di queste sbagliano ' + koS.length);
+    const perRec = {}; senza.forEach(o => { const k = (o.rec ? 'recitata' : 'normale') + (o.sp ? '+piazzato' : '') + (o.ef ? '+esito' : ''); perRec[k] = (perRec[k] || 0) + 1; });
+    console.log('  composizione: ' + Object.entries(perRec).map(([k, v]) => k + ' ' + v).join(' · '));
+    const perPd = {}; koS.forEach(o => perPd[o.pd] = (perPd[o.pd] || 0) + 1);
+    console.log('  zone delle sbagliate: ' + Object.entries(perPd).sort((a, b) => b[1] - a[1]).map(([k, v]) => k + ' ' + v).join(' · '));
+  }
+  const conFreno = DEST_CHIESTA.filter(o => o.freno != null);
+  if (conFreno.length) {
+    const frenate = conFreno.filter(o => o.freno > 1), koFrenate = frenate.filter(o => !o.ok);
+    console.log('\n  --- DI CHI E\' LA COLPA: IL FRENO DEL MOTORE, O QUALCUNO CHE SPOSTA IL PALLONE DOPO? ---');
+    console.log('  righe in cui il motore ha ACCORCIATO la proposta della riga: ' + frenate.length + '/' + conFreno.length + '  ·  di queste, sbagliate: ' + koFrenate.length);
+    const koLibere = conFreno.filter(o => !o.ok && o.freno <= 1);
+    console.log('  righe che il motore ha onorato ALLA LETTERA e che sbagliano lo stesso: ' + koLibere.length + '  ← qui il pallone lo sposta qualcun altro dopo');
+    if (koLibere.length) console.log('    ' + koLibere.slice(0, 14).map(o => o.min + "'" + o.pd + '(scarto ' + o.scarto + 'u)').join(' · '));
+  }
+  const okk = DEST_CHIESTA.filter(o => o.ok);
+  if (okk.length) console.log('  per confronto, le destinazioni CENTRATE chiedevano in media ' + (okk.reduce((a, o) => a + o.chiesta, 0) / okk.length).toFixed(1) + 'u');
 }
 console.log(`\n  soglie dichiarate per la fase 4: fondate ≥ ${SOGLIA_FONDATE}%  ·  smentite ≤ ${SOGLIA_SMENTITE}%`);
 if (!GUARDIA) { console.log('\nCENSIMENTO registrato. Non e\' un guardiano: non fallisce, misura.'); process.exit(0); }
