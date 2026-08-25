@@ -18071,6 +18071,22 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                montaggio per istanza d'azione», per il solo EROE — i compagni hanno catene legittime a due
                gesti (ricevi→tira) che vivono su azioni diverse e non c'entrano col codice 000. */
             {const _gk396=(actType||'')+'|'+((propsRef.current&&propsRef.current.hlSitKey)||'');
+             /* [7.582.0 — CONTARE I GESTI DELL'EROE PER SCENA, e farlo contare AL GIOCO.
+                Collaudo PO (appunti 7.578, SIT #45): «codice 000 — gesto scoordinato». La guardia del
+                7.396 concede UN montaggio per istanza d'azione, ma la chiave include `actType`: quando
+                l'esito si risolve il tipo d'azione cambia, la chiave cambia con lui e la porta si RIAPRE.
+                Un secondo gesto dentro la stessa scena e' esattamente la «doppia alzata» del PO.
+                PERCHE' IL CONTEGGIO STA QUI E NON IN UNA SONDA: GLB-ON headless gira a ~0,3 fotogrammi al
+                secondo (lezione 7.372, stessa ragione del contatore delle esultanze) — una sonda che
+                campiona da fuori vede due fotogrammi per scena e conclude sempre «un gesto solo». Il gioco
+                invece lo sa fotogramma per fotogramma. Sola strumentazione: nessun comportamento cambia. */
+             if(_ai===0&&typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)&&_want&&_want!=='lift'&&_a._gName!==_want){try{
+               const _sc582=String((propsRef.current&&propsRef.current.hlSitKey)||'?');
+               const _G=(window.__CPM_G000=window.__CPM_G000||{});
+               const _e=(_G[_sc582]=_G[_sc582]||{n:0,gesti:[],tipi:[]});
+               _e.n++;if(_e.gesti.length<8)_e.gesti.push(String(_want));
+               const _t582=String(actType||'-');if(_e.tipi[_e.tipi.length-1]!==_t582)_e.tipi.push(_t582);
+             }catch(_e582){}}
              if(_ai===0&&_want&&_want!=='lift'&&_a._gKey396===_gk396&&_a._gName!==_want)_want=null;
              if(_ai===0&&_want&&_a._gName!==_want)_a._gKey396=_gk396;}/* [7.247.0 gi33 «sembra uno zombie che vola»] una clip BREVE finita (kick 0.54s) restava CLAMPATA sull'ultimo frame per il resto della finestra actType (fino a 1.2s) mentre il corpo continuava a muoversi = statua che plana. A clip conclusa il gesto si rilascia (fade 0.22s) e la locomozione riprende; la scivolata (tackle, riscalata 1.75x per riempire la finestra) tiene la sua posa */
             /* [7.372.0] CONTATORE STICKY del gesto d'esultanza (test-only). Campionare __CPM_GST da
