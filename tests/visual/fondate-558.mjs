@@ -218,7 +218,7 @@ for (const { righe, recite: rc, tr: _trOro, trT, seme } of tutte) {
            freno   = il motore ha accorciato la proposta della riga (la riga chiede l'impossibile)
            deriva  = il motore ha mandato il pallone dove diceva, e poi qualcun altro l'ha spostato */
       const _freno = (r.bex == null) ? null : +Math.hypot(r.bex - r.bx, r.bey - r.by).toFixed(1);
-      DEST_CHIESTA.push({ min: r.min | 0, pd: r.pd, rec: r.rec | 0, sp: r.sp || null, ef: r.ef || null, chiesta: +_chiesta.toFixed(1), scarto: +d.toFixed(1), freno: _freno, ok: d <= DEST_U });
+      DEST_CHIESTA.push({ min: r.min | 0, pd: r.pd, rec: r.rec | 0, rk: r.rk || null, sp: r.sp || null, ef: r.ef || null, chiesta: +_chiesta.toFixed(1), scarto: +d.toFixed(1), freno: _freno, ok: d <= DEST_U });
       claim.push({ k: 'destinazione', ok: d <= DEST_U, nota: `dichiara (${r.bx},${r.by}), il pallone al piu' vicino sta a (${_vic.x.toFixed(0)},${_vic.y.toFixed(0)}) = ${d.toFixed(1)}u — la riga chiedeva ${_chiesta.toFixed(0)}u di spostamento (tetto 30) (finestra ${r.min|0}'-${_fin}')` });
     }
     if (!claim.length) { C.MUTA.push({ min: r.min, pd: r.pd, rec: r.rec, at: r.at }); continue; }
@@ -312,6 +312,26 @@ if (TIRI.length) {
     console.log('  composizione: ' + Object.entries(perRec).map(([k, v]) => k + ' ' + v).join(' · '));
     const perPd = {}; koS.forEach(o => perPd[o.pd] = (perPd[o.pd] || 0) + 1);
     console.log('  zone delle sbagliate: ' + Object.entries(perPd).sort((a, b) => b[1] - a[1]).map(([k, v]) => k + ' ' + v).join(' · '));
+  }
+  /* [7.578.0] IL FRENO E LE RIGHE RECITATE. Un angolo mette il pallone sulla bandierina, un rinvio dal
+     fondo lo manda a meta' campo: sono eventi che RILOCANO il pallone per natura, come il gol. Se il tetto
+     di 30u per riga li tronca, e' il tetto a smentire la riga, non la riga a mentire — e il rimedio sarebbe
+     l'opposto del filtro 7.577: un'esenzione, come quella che i gol hanno gia' dal 7.525. Qui si misura,
+     separando recitate e non recitate, quante volte il freno morde e di quanto. */
+  {
+    const conF = DEST_CHIESTA.filter(o => o.freno != null);
+    const med = a => { if (!a.length) return '—'; const b = a.slice().sort((x, y) => x - y); return b[b.length >> 1].toFixed(1) + 'u'; };
+    const _fermo = o => /^(out_|sp_)/.test(String(o.rk || '')) || o.rk === 'kickoff';
+    const rec = conF.filter(o => o.rec && !_fermo(o)), fermo = conF.filter(o => _fermo(o)), nor = conF.filter(o => !o.rec);
+    console.log('\n  --- IL FRENO DEL MOTORE E LE TRE FAMIGLIE DI RIGA ---');
+    console.log('  «palla ferma» = rimessa, angolo, rinvio, calcio d\'inizio: RICOLLOCANO il pallone per natura (esenti dal 7.578)');
+    console.log('  «recitate» = contropiede e catena di gioco: li\' il pallone si gioca, il tetto resta');
+    for (const [nome, arr] of [['palla ferma', fermo], ['recitate', rec], ['normali', nor]]) {
+      const fr = arr.filter(o => o.freno > 1);
+      console.log('    ' + nome.padEnd(9) + ' ' + String(arr.length).padStart(3) + ' righe  ·  frenate ' + String(fr.length).padStart(3) +
+        ' (' + (arr.length ? (100 * fr.length / arr.length).toFixed(0) : '0') + '%)  ·  accorciamento mediano ' + med(fr.map(o => o.freno)) +
+        '  ·  fra le frenate, sbagliate ' + fr.filter(o => !o.ok).length);
+    }
   }
   const conFreno = DEST_CHIESTA.filter(o => o.freno != null);
   if (conFreno.length) {
