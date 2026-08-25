@@ -21898,6 +21898,13 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
            senza cedere il turno al repertorio — cosi' la rete arriva in fondo alla sua azione invece che
            dopo un silenzio. Il contropiede resta escluso: ha gia' la sua recita. */
         const _cat559=!(typeof window!=='undefined'&&window.__CPM_NO559);
+        /* ⚠️ [7.588.0] PROVATO E REVOCATO CON LA SUA MISURA: durante la ripresa togliere ai ventidue lo
+           scrittore della CATENA di gioco, per lasciare campo libero al ripiegamento (l'idea del padrone
+           unico, 7.556). La misura dice il contrario — giocatori nella meta' sbagliata: mediana 5 -> 6,
+           e nei primi 900 ms 9 -> 10. Silenziando la catena i ventidue restano fermi DI PIU': il
+           ripiegamento, da solo, non li muove affatto. E questo e' il dato che conta, perche' restringe
+           la caccia: il suo aggiornamento (bersaglio 78, guadagno 0,92, quindi 44 -> 75 in un tick) viene
+           SCARTATO da qualcun altro fra una passata e l'altra. Il colpevole non e' la catena. */
         if(!(typeof window!=='undefined'&&window.__CPM_NO551)&&azioneRef.current&&!_inHL77&&(_cat559||!pendingGoalRef.current)&&!counterRef.current){
           const _az=azioneRef.current,_p=_az.passi[_az.i];
           if(_p){const _t551=ballTargetRef.current;
@@ -22892,6 +22899,10 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                  tiene la sua forma ma la comprime dietro la linea, che e' esattamente cio' che si vede in
                  televisione un istante prima del fischio. */
               const _casa544=(pl.team==="home");
+              /* [7.588.0 SOLO COLLAUDO] cosa vede DAVVERO il ripiegamento, giocatore per giocatore. Tre
+                 ipotesi mie sulla causa sono gia' cadute (non e' un ritardo, il blocco gira otto volte per
+                 ripresa, gli slot sono in coordinate di campo): resta da guardare cosa arriva QUI. */
+              if(typeof window!=='undefined'&&window.__CPM_RIP544){try{const _R=window.__CPM_RIP544;if(_R.length<400)_R.push({i:idx,t:String(pl.team||"?"),gk:!!pl.gk,pre:+Number(sx).toFixed(1),x:+Number(pl.x).toFixed(1)});}catch(_e){}}
               sx=_casa544?Math.min(sx,46):Math.max(sx,54);
               const _mia544=_casa544===(_koLato544==="home");
               if(_mia544&&_cerchio544.indexOf(idx)>=0){sx=_casa544?48:52;sy=_cerchio544.indexOf(idx)===0?50:(_casa544?46:54);}
