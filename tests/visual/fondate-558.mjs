@@ -59,6 +59,7 @@
 import { startServer, launchBrowser, installCdnRoutes, openMatch, sleep, matchPhase } from './lib/harness.mjs';
 
 const PARTITE = +(process.env.CPM_PARTITE || 2);
+const ROSSO = process.env.CPM_ROSSO || null;/* [7.578.0] es. CPM_ROSSO=__CPM_NO577: stesse partite, rimedio spento */
 const GUARDIA = !!process.env.CPM_GUARDIA;
 const SOGLIA_FONDATE = +(process.env.CPM_SOGLIA || 90);
 const SOGLIA_SMENTITE = +(process.env.CPM_SMENT || 5);
@@ -78,8 +79,9 @@ const tutte = [];
 for (let i = 0; i < PARTITE; i++) {
   const page = await b.newPage({ viewport: { width: 412, height: 915 } });
   await installCdnRoutes(page);
-  await page.addInitScript(() => {
+  await page.addInitScript((rosso) => {
     window.__CPM_GLB = false;
+    if (rosso) window[rosso] = 1;/* [7.578.0] prova del rosso parametrica: la stessa passata, sugli stessi semi, col rimedio spento */
     window.__CPM_TRACCIA = [];
     window.__CPM_TR571 = [];/* [7.571.0] la traccia buona la scrive IL GIOCO, un campione per MINUTO */
     setInterval(() => {
@@ -91,7 +93,7 @@ for (let i = 0; i < PARTITE; i++) {
         T.push({ c: o.c, x0: o.x, y0: o.y, x: o.x, y: o.y, xmax: o.x, xmin: o.x, ymax: o.y, ymin: o.y, dmin: o.d, imin: o.i, n: 1, l: _l, lmix: 0 });
       } catch (_e) {}
     }, 60);
-  });
+  }, ROSSO);
   await openMatch(page, port, { skipLoadAll: true, name: 'Fd' + i });
   await page.evaluate(s => window.__CPM_AUTOPLAY(true, { seed: s, policy: 'seeded', tickMs: 300 }), 7300 + i * 37);
   const t0 = Date.now();
@@ -99,8 +101,9 @@ for (let i = 0; i < PARTITE; i++) {
   tutte.push(await page.evaluate(() => ({
     righe: (window.__CPM_EV ? window.__CPM_EV() : []).filter(e => e.ev === 'chronicle'),
     recite: (window.__CPM_EV ? window.__CPM_EV() : []).filter(e => e.ev === 'recita'),
-    tr: window.__CPM_TRACCIA || [], trT: window.__CPM_TR571 || [],
+    tr: window.__CPM_TRACCIA || [], trT: window.__CPM_TR571 || [], f577: window.__CPM_F577 || null, seme: 0,
   })));
+  tutte[tutte.length - 1].seme = 7300 + i * 37;
   await page.close();
 }
 srv.close(); await b.close();
@@ -115,7 +118,9 @@ const DEST = [];
 const DEST_CHIESTA = [];/* [7.576.0] quanta strada chiedeva ogni riga */
 let recite = 0, righeTot = 0, scartate = 0;
 let _fonteTick = 0, _fonteOro = 0;
-for (const { righe, recite: rc, tr: _trOro, trT } of tutte) {
+const PER_SEME = [];/* [7.578.0] il verdetto SEME PER SEME: e' l'unico modo di confrontare rosso e verde senza farsi ingannare dalla varianza fra passate */
+for (const { righe, recite: rc, tr: _trOro, trT, seme } of tutte) {
+  const _f0 = C.FONDATA.length, _s0 = C.SMENTITA.length;
   /* [7.571.0] si preferisce la traccia a passo di MINUTO scritta dal gioco: e' deterministica.
      Quella campionata a orologio resta come ripiego, e il verdetto dichiara quale ha usato. */
   const _usaTick = (trT && trT.length >= 20);
@@ -220,6 +225,7 @@ for (const { righe, recite: rc, tr: _trOro, trT } of tutte) {
     const tutti = claim.every(c => c.ok);
     (tutti ? C.FONDATA : C.SMENTITA).push({ min: r.min, pd: r.pd, rec: r.rec, claim, why: claim.filter(c => !c.ok).map(c => `${c.k}: ${c.nota}`).join(' · ') });
   }
+  PER_SEME.push({ seme, f: C.FONDATA.length - _f0, s: C.SMENTITA.length - _s0 });
 }
 
 if (!righeTot) { console.log('nessuna riga giudicabile'); process.exit(1); }
@@ -231,6 +237,20 @@ console.log(`  righe SCARTATE dal giudizio   ${scartate}     (minuto assente o c
 console.log(`  FONDATA   ${String(C.FONDATA.length).padStart(4)}/${righeTot} = ${p(C.FONDATA.length).padStart(6)}   marcatore + fatto visto nella traccia`);
 console.log(`  SMENTITA  ${String(C.SMENTITA.length).padStart(4)}/${righeTot} = ${p(C.SMENTITA.length).padStart(6)}   marcatore ma il fatto non si vede`);
 console.log(`  MUTA      ${String(C.MUTA.length).padStart(4)}/${righeTot} = ${p(C.MUTA.length).padStart(6)}   nessun marcatore: niente da verificare`);
+/* [7.578.0 — IL VERDETTO SEME PER SEME, e perche' serve.
+   Tre passate del 7.577 sugli STESSI semi hanno dato 73,0% · 72,1% · 65,8%: sette punti di oscillazione,
+   e le righe emesse erano 126 · 140 · 146. Il campione cambia sotto i piedi perche' gli highlight durano a
+   OROLOGIO DA PARETE: su una macchina carica mangiano piu' tick di gioco, e la cronaca di sfondo ne emette
+   meno. Il totale di una passata non puo' quindi reggere un confronto rosso/verde da cinque punti.
+   Con il verdetto per seme, e con `CPM_ROSSO=<bandiera>` che rigira le STESSE partite col rimedio spento,
+   il confronto diventa APPAIATO: si guarda la differenza seme per seme, non due totali di passate diverse. */
+{
+  console.log('\n  --- IL VERDETTO SEME PER SEME (il totale di una passata sola non regge un confronto) ---');
+  PER_SEME.forEach(o => { const t = o.f + o.s; console.log('    seme ' + o.seme + '   righe ' + String(t).padStart(3) + '   fondate ' + String(o.f).padStart(3) + ' = ' + (t ? (100 * o.f / t).toFixed(1) : '—') + '%'); });
+  const q = PER_SEME.map(o => (o.f + o.s) ? 100 * o.f / (o.f + o.s) : null).filter(v => v != null).sort((a, b) => a - b);
+  if (q.length) console.log('    fra i semi: minimo ' + q[0].toFixed(1) + '%  ·  mediana ' + q[q.length >> 1].toFixed(1) + '%  ·  massimo ' + q[q.length - 1].toFixed(1) + '%');
+  if (ROSSO) console.log('    ⚠ PASSATA ROSSA: ' + ROSSO + ' era acceso, cioe\' il rimedio era SPENTO');
+}
 console.log(`\n  ✔ dal 7.558 si giudicano anche la ZONA dichiarata (\`pd\`) e la DESTINAZIONE dichiarata (\`bpos\`): erano l'80% di cio' che il vecchio giudice chiamava «muta».`);
 { const per = {}; for (const k of ['zona', 'destinazione', 'possesso', 'gol', 'tiro', 'fermo']) per[k] = { ok: 0, ko: 0 };
   for (const x of C.FONDATA.concat(C.SMENTITA)) for (const c of (x.claim || [])) if (per[c.k]) per[c.k][c.ok ? 'ok' : 'ko']++;
@@ -272,6 +292,10 @@ if (TIRI.length) {
   console.log('  il motore sposta al massimo 30u per riga (tetto 7.498/7.528): oltre quella soglia la riga e\' bugiarda per costruzione');
   console.log('  destinazioni sbagliate ' + ko.length + '  ·  chiedevano PIU\' di 30u: ' + oltre.length + '  ·  chiedevano il possibile: ' + dentro.length);
   if (oltre.length) console.log('    impossibili: ' + oltre.map(o => o.min + "'" + o.pd + '(' + o.chiesta + 'u' + (o.rec ? ', RECITATA' : '') + ')').join(' · '));
+  { const f = tutte.map(t => t.f577).filter(Boolean);
+    if (f.length) { const tick = f.reduce((a, o) => a + (o.tick | 0), 0), tolte = f.reduce((a, o) => a + (o.tolte | 0), 0), vuoto = f.reduce((a, o) => a + (o.vuoto | 0), 0);
+      console.log('    il filtro 7.577 ha girato su ' + tick + ' pesche e ha tolto ' + tolte + ' righe in tutto (' + (tolte / Math.max(1, tick)).toFixed(1) + ' per pesca) · pesche in cui avrebbe svuotato il repertorio: ' + vuoto); }
+    else console.log('    ⚠ il contatore del filtro 7.577 NON e\' stato scritto: il filtro non ha girato in questa passata'); }
   if (oltre.length) console.log('    di cui costruite da una macchina di recita: ' + oltre.filter(o => o.rec).length + '/' + oltre.length + '  ← queste NON passano dal repertorio, quindi il filtro 7.577 non le vede');
   if (dentro.length) console.log('    possibili ma mancate: ' + dentro.map(o => o.min + "'" + o.pd + '(chiesta ' + o.chiesta + 'u, scarto ' + o.scarto + 'u)').join(' · '));
   /* [7.576.0] LE RIGHE CHE PROMETTONO UNA DESTINAZIONE CHE IL MOTORE NON APPLICA MAI. Sono quelle in cui
