@@ -2632,7 +2632,22 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                avrebbe corretto l'unico evento che ha il diritto di spostare il gioco da parte a parte.
                ⚠️ Questo NON e' tutto F3: e' il primo punto in cui lo stato reale prevale sul testo. La
                selezione della riga resta una pesca pesata (col peso di zona del 7.486). */
-          var _bt498=ev.bpos||null;
+          /* [7.574.0 — IL REPERTORIO DELLA CRONACA SI RISCRIVEVA DA SOLO, rosso __CPM_NO574]
+             `ev.bpos` e' un oggetto del repertorio, che e' una COSTANTE LETTERALE. Passandolo cosi' com'e'
+             a `ballTargetRef.current` (r. piu' sotto) il bersaglio del pallone diventava LO STESSO OGGETTO
+             della riga — e il motore del possesso muove il bersaglio SUL POSTO (`_t.x = _t.x + ...`).
+             Risultato: ogni deriva riscriveva la destinazione DICHIARATA dalla riga, per il resto della
+             partita e per tutte le successive nella stessa sessione.
+             PERCHE' TOCCAVA PROPRIO I GOL, ed e' l'esenzione del 7.525 a farlo: quasi tutte le righe
+             passano dal tetto di spostamento qui sotto, che RICOSTRUISCE l'oggetto e quindi spezza
+             l'alias per caso. Le righe di gol no — sono esenti per scelta («il volo fino in rete e' suo
+             di diritto»), quindi erano le uniche a restare agganciate al repertorio.
+             MISURATO (sonda nuova `repertorio-574`, fotografia di `__CPM_BG` prima e dopo una partita):
+             1 riga riscritta su 223, ed e' la riga del gol subito — dichiarava (2,50), a fine partita
+             dichiarava (25,5 · 51,0), spostata di 23,5u. E' l'origine dei `bpos` bugiardi che `gol-573`
+             contava come «il pallone non entra mai».
+             IL RIMEDIO E' UNA COPIA, e vale per ogni riga: il repertorio torna a essere una costante. */
+          var _bt498=(typeof window!=='undefined'&&window.__CPM_NO574)?(ev.bpos||null):(ev.bpos?{x:ev.bpos.x,y:ev.bpos.y}:null);
           if(pendingGoalRef.current&&!/goal$/.test(String(ev.ef||"")))_bt498=null;/* [7.528.0 v2] azione pendente: guida la pendenza (4u/tick verso l'area), la riga DESCRIVE senza strattonare il pallone altrove */
           if(_bt498&&!(typeof window!=='undefined'&&window.__CPM_NO498)&&!ev.ef){
             var _cb498=ballPosRef.current||{x:50,y:50};
