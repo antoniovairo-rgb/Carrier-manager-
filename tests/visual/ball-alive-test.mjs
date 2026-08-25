@@ -19,6 +19,7 @@ import { startServer, launchBrowser, installCdnRoutes, openMatch, sleep } from '
 const ROSSO = !!process.env.CPM_ROSSO;
 const MIN = +(process.env.CPM_MINUTI || 4);
 const MOTO_MIN = +(process.env.CPM_MOTO_MIN || 25);      /* SOLO pavimento di sanita': la % e' cieca ai passi sotto-intero */
+const DIAG_RETE = !!process.env.CPM_DIAG_RETE;/* [7.580.0] diagnosi: scusa anche la finestra col pallone in rete, per vedere quanto fermo resta senza */
 const STILL_MAX = +(process.env.CPM_STILL_MAX || 2.0);   /* striscia massima di fermo, s (baseline 4,4) */
 
 const srv = await startServer(); const port = srv.address().port;
@@ -36,7 +37,10 @@ await page.evaluate(() => {
     const s = window.__CPM_STATE && window.__CPM_STATE();
     const ph = window.__CPM_PHASE && window.__CPM_PHASE();
     const ko = !!(window.__CPM_KO536 && window.__CPM_KO536());/* [7.532.0] finestra kickoff dichiarata */
-    if (s && s.ball) window.__R1S.push({ t: Date.now(), ph, lx: s.ball.x, ly: s.ball.y, ko });
+    const h = (window.__CPM_HOLD && window.__CPM_HOLD()) || null;/* [7.580.0] il gioco dichiara quando TRATTIENE il pallone */
+    const fermo = !!(h && (h.fermo || h.out || h.sp));
+    const rete = !!(h && h.kick);/* [7.580.0 SOLO DIAGNOSI] la finestra fra il gol e la ripresa dal centro: il pallone e' in rete e il gioco e' fermo. Non e' graziata per default — serve a capire se il fermo residuo E' questa finestra o qualcos'altro. */
+    if (s && s.ball) window.__R1S.push({ t: Date.now(), ph, lx: s.ball.x, ly: s.ball.y, ko, fermo, rete, hf: !!(h && h.fermo), ho: !!(h && h.out), hs: !!(h && h.sp) });
   } catch (e) {} }, 120);
 });
 await sleep(MIN * 60000);
@@ -45,7 +49,7 @@ const errs = await page.evaluate(() => window.__CPM_PAGEERR || null).catch(() =>
 await b.close(); srv.close();
 
 const P = S.filter(s => s.ph === 'playing');
-let mossi = 0, coppie = 0, still = 0, maxStill = 0, grazia = 0, graziaTot = 0;
+let mossi = 0, coppie = 0, still = 0, maxStill = 0, grazia = 0, graziaTot = 0, graziaF = 0, graziaFTot = 0, graziaR = 0, strFrom = 0, peggiore = null;
 for (let i = 1; i < P.length; i++) {
   const dt = P[i].t - P[i - 1].t; if (dt > 400) { still = 0; continue; }
   coppie++;
@@ -55,13 +59,32 @@ for (let i = 1; i < P.length; i++) {
      con TETTO di 10s per finestra (misurato: dopo un GOL la finestra dura 8-9s perche' include la pausa d'enfasi di lettura 7.490 prima delle battute — esultanza compresa, e' calcio vero; una tenuta oltre 10s torna difetto). NEL ROSSO (NO511, motore
      vecchio) la grazia e' SPENTA: la macchina kickoff resta viva li' e avrebbe nascosto il fermo che
      il rosso deve dimostrare (misurato: rosso 1,9s con grazia attiva = prova rotta). */
+  /* [7.580.0] LA GRAZIA DELL'INTERRUZIONE, per la stessa ragione del calcio d'inizio. Dal 7.559 il gioco
+     ha rimesse, angoli, rinvii e punizioni: durante quelle il pallone STA FERMO, ed e' calcio, non un
+     difetto. Finora il guardiano non poteva distinguerle perche' non sapeva quando ce n'era una in corso;
+     ora il gioco lo DICHIARA (`__CPM_HOLD`). Con tetto di 6s: un fermo che dura piu' di cosi' non e' piu'
+     una rimessa, e' il pallone dimenticato — e torna a contare. Spenta nel rosso, come la grazia del
+     calcio d'inizio: li' la trattenuta nasconderebbe il fermo che il rosso deve dimostrare. */
+  if (!ROSSO && DIAG_RETE && P[i].rete) { graziaR += dt; still = 0; continue; }
+  if (!ROSSO && P[i].fermo && graziaF < 6000) { graziaF += dt; graziaFTot += dt; still = 0; continue; }
+  if (!P[i].fermo) graziaF = 0;
   if (!ROSSO && P[i].ko && grazia < 10000) { grazia += dt; graziaTot += dt; still = 0; continue; }
   if (!P[i].ko) grazia = 0;
-  if (d > 0.05) { mossi++; still = 0; } else { still += dt; if (still > maxStill) maxStill = still; }
+  if (d > 0.05) { mossi++; still = 0; strFrom = i; } else { still += dt; if (still > maxStill) { maxStill = still; peggiore = { da: strFrom, a: i }; } }
 }
 const pctMoto = 100 * mossi / Math.max(1, coppie);
 console.log(`campioni 'playing': ${P.length} · coppie valide ${coppie}`);
-console.log(`palla in moto: ${pctMoto.toFixed(1)}% · striscia massima di fermo: ${(maxStill / 1000).toFixed(1)}s · graziato kickoff: ${(graziaTot / 1000).toFixed(1)}s`);
+/* [7.581.0] DOVE succede il fermo piu' lungo, non solo quanto dura. Un numero solo non dice se il pallone
+   e' dimenticato al centro, appoggiato a una bandierina o parcheggiato in rete: e sono tre difetti diversi. */
+if (peggiore) {
+  const a = P[peggiore.da], b = P[peggiore.a];
+  const stati = [];
+  for (let k = peggiore.da; k <= peggiore.a; k++) { const q = P[k];
+    const e = [q.ko && 'kickoff', q.hf && 'fermo', q.ho && 'out', q.hs && 'piazzato', q.rete && 'rete'].filter(Boolean).join('+');
+    if (!stati.includes(e || 'gioco aperto')) stati.push(e || 'gioco aperto'); }
+  console.log(`  il fermo piu' lungo: dal punto (${a.lx},${a.ly}) al punto (${b.lx},${b.ly}) · stato del gioco: ${stati.join(' , ')}`);
+}
+console.log(`palla in moto: ${pctMoto.toFixed(1)}% · striscia massima di fermo: ${(maxStill / 1000).toFixed(1)}s · graziato kickoff: ${(graziaTot / 1000).toFixed(1)}s · graziate interruzioni: ${(graziaFTot / 1000).toFixed(1)}s${DIAG_RETE ? ' · [DIAGNOSI] graziata anche la rete: ' + (graziaR / 1000).toFixed(1) + 's' : ''}`);
 
 if (coppie < 300) { console.log('❌ SONDA CIECA: coppie insufficienti — «vivo» su cosi\' poco non e\' un risultato'); process.exit(2); }
 if (ROSSO) {
