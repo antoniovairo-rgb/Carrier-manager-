@@ -4867,7 +4867,23 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
               if(!_acro569){
                 /* VOLEE': in piedi, fronte alla porta, gamba che colpisce a mezz'aria. Niente rotazione del
                    corpo — e' il tiro di un giocatore in equilibrio, non un'acrobazia. */
-                hero._lR.rotation.x=-2.9*sw;hero._lL.rotation.x=0.5*sw;
+                /* [7.586.0 — LA VOLEE' AVEVA LE GAMBE DELLA ROVESCIATA, rosso __CPM_NO586]
+                   COLLAUDO PO, seconda volta sulla stessa cosa (appunti 7.584, SIT #167 «Controbalzo
+                   improvviso in area» → «Controbalzo secco al volo»): «Rovesciata al contrario, va girata
+                   di 180 gradi». Il 7.569 aveva separato volee' e rovesciata leggendo l'ETICHETTA
+                   dell'azione, e su questa scena l'etichetta non contiene nessuna delle parole cercate:
+                   il ramo giusto (volee': in piedi, fronte alla porta) veniva imboccato — ma dentro il ramo
+                   la gamba che calcia stava a -2,9 radianti, cioe' CENTOSESSANTASEI GRADI ALL'INDIETRO.
+                   In questo codice il positivo e' in avanti: la scivolata estende la gamba a +1,8, e
+                   l'incespicata la porta a +1,8 con l'altra a -0,7. A -2,9 la gamba non calcia: viene
+                   scagliata sopra la testa — il gesto della rovesciata — mentre il corpo resta fronte alla
+                   porta e nessuno lo gira. Da fuori si legge esattamente come il PO l'ha scritto: una
+                   rovesciata al contrario, da girare di 180 gradi.
+                   Non era dunque la SCELTA fra i due gesti a sbagliare (quella il 7.569 l'ha sistemata):
+                   era la volee' ad avere le gambe della rovesciata. Ora la gamba colpisce IN AVANTI e
+                   l'altra resta d'appoggio, che e' cio' che fa un giocatore in equilibrio. */
+                const _v586=(typeof window!=='undefined'&&window.__CPM_NO586);
+                hero._lR.rotation.x=(_v586?-2.9:2.4)*sw;hero._lL.rotation.x=(_v586?0.5:-0.35)*sw;
                 hero._aL.rotation.x=1.3*sw;hero._aR.rotation.x=-0.9*sw;
                 hero.position.y=sw*0.55;
                 if(hero._torso){hero._torso.rotation.x=-0.22*sw;hero._torso.rotation.y=sw*0.3;}
