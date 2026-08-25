@@ -24,6 +24,11 @@ await page.addInitScript(() => {
        con cui il pallone raggiunge la rete — il PO scrive «tiro ad L nel finale, la traiettoria del gol non
        e' lineare», e un pallone che entra a gomito non si legge come un tiro, quindi il gol «non si vede»
        anche se il pallone arriva e la camera lo guarda (misurato: 8 gol su 8 arrivano, scarto camera 1,8u). */
+    /* [7.587.0] IL PIU' VICINO AL PALLONE MENTRE IL GOL SI COSTRUISCE. Il PO scrive «il pallone rimbalza
+       spesso senza portatore»: se il bersaglio salta ma nessun giocatore e' li', il passaggio va a uno
+       spazio vuoto e il pallone attraversa il campo da solo. */
+    const h = window.__CPM_HOLD && window.__CPM_HOLD();
+    if (h && h.pg) { const o = window.__CPM_OWN && window.__CPM_OWN(); if (o && o.d != null) { const V = window.__CPM_VIC || (window.__CPM_VIC = []); if (V.length < 2000) V.push(+o.d.toFixed(1)); } }
     const S = window.__CPM_SCIA || (window.__CPM_SCIA = []);
     if (S.length < 4000) S.push({ x: +gx.toFixed(1), y: +gy.toFixed(1), ph: window.__CPM_PHASE && window.__CPM_PHASE() });
     if (gx == null || (gx < 95 && gx > 5)) return;
@@ -38,6 +43,10 @@ const t0 = Date.now();
 while (Date.now() - t0 < 600000) { await sleep(1500); const ph = await matchPhase(page); if (ph === 'ended' || ph === 'ceremony') break; }
 const G = await page.evaluate(() => window.__CPM_GOLV || []);
 const SCIA = await page.evaluate(() => window.__CPM_SCIA || []);
+const PG = await page.evaluate(() => (window.__CPM_PG587 || {}).azioni || []);
+const VIC = await page.evaluate(() => window.__CPM_VIC || []);
+const FESTA = await page.evaluate(() => window.__CPM_FESTA || []);
+const FESTA2 = await page.evaluate(() => window.__CPM_FESTA2 || []);
 await b.close(); srv.close();
 
 /* il pallone sta in coordinate di gioco (0-100), la camera in coordinate mondo: 1 unita' di gioco lungo x
@@ -80,5 +89,40 @@ console.log('  fasi in cui succede: ' + Object.entries(fasi).sort((a, c) => c[1]
     const v = rette.map(r => r.r).sort((a, c) => a - c);
     console.log('    mediana ' + v[v.length >> 1].toFixed(2) + '  ·  peggiore ' + v[0].toFixed(2) + '  su ' + v.length + ' ingressi');
   }
+}
+/* [7.587.0] QUANTI PASSAGGI HA L'AZIONE CHE PORTA AL GOL. Un passaggio e' un SALTO del bersaglio del
+   pallone oltre le sei unita'; la marcia della costruzione lo sposta di tre a tick, quindi non conta.
+   Zero passaggi = il pallone ha attraversato il campo da solo, ed e' cio' che il PO descrive come
+   «il gol non si vede» e «non ci sono trame di gioco». */
+{
+  const az = PG.filter(a => (a.tick | 0) >= 2);
+  console.log('\n  --- L\'AZIONE CHE PORTA AL GOL: quanti passaggi? ---');
+  if (!az.length) console.log('    nessuna azione di costruzione osservata');
+  else {
+    for (const a of az) console.log('    azione da (' + a.da + ') · ' + a.tick + ' tick · passaggi ' + a.passaggi + ' · salto piu\' lungo ' + a.max + 'u · percorso del bersaglio ' + a.perc.toFixed(0) + 'u');
+    const senza = az.filter(a => !a.passaggi).length;
+    console.log('    azioni SENZA nemmeno un passaggio: ' + senza + '/' + az.length);
+  }
+}
+{
+  console.log('\n  --- MENTRE IL GOL SI COSTRUISCE, QUANTO E\' LONTANO IL PIU\' VICINO AL PALLONE? ---');
+  if (!VIC.length) console.log('    nessun campione');
+  else { const v = VIC.slice().sort((a, c) => a - c); const q = p => v[Math.min(v.length - 1, Math.floor(p * v.length))];
+    console.log('    campioni ' + v.length + '  ·  minimo ' + v[0].toFixed(1) + '  ·  MEDIANA ' + q(0.5).toFixed(1) + '  ·  terzo quarto ' + q(0.75).toFixed(1) + '  ·  massimo ' + v[v.length - 1].toFixed(1) + ' unita\'');
+    for (const s2 of [3, 6, 12]) { const n = v.filter(x => x > s2).length; console.log('    campioni col piu\' vicino oltre ' + String(s2).padStart(2) + 'u: ' + String(n).padStart(4) + '/' + v.length + ' = ' + (100 * n / v.length).toFixed(0) + '%'); } }
+}
+{
+  /* [7.587.0] QUANTO PRIMA PARTE LA FESTA. L'esultanza si arma quando esce la RIGA di gol; il pallone
+     arriva dopo. Se la festa comincia col pallone a meta' campo, il giocatore vede il boato e poi un
+     pallone che entra in ritardo: non vede MAI il gol, vede l'annuncio e poi l'arrivo. */
+  console.log('\n  --- QUANDO PARTE LA FESTA, DOV\'E\' IL PALLONE? ---');
+  if (!FESTA.length) console.log('    nessuna festa registrata');
+  else for (const f of FESTA) {
+    const dist = Math.min(Math.abs(98.6 - f.bx), Math.abs(f.bx - 1.4));
+    console.log('    riga di gol scritta con il pallone a x' + f.bx + '  ·  ' + dist.toFixed(0) + ' unita\' dalla linea di porta');
+  }
+  if (FESTA2.length) { console.log('    ── e il BOATO e\' partito con il pallone a:');
+    for (const f of FESTA2) { const d2 = Math.min(Math.abs(98.6 - f.bx), Math.abs(f.bx - 1.4));
+      console.log('       x' + f.bx + '  ·  ' + d2.toFixed(0) + ' unita\' dalla linea  ·  atteso ' + f.att + ' tick' + (f.tetto ? '  (tetto raggiunto)' : '')); } }
 }
 console.log('\nCENSIMENTO registrato. Non e\' un guardiano: non fallisce, misura.\n');

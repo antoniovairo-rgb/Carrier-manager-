@@ -625,6 +625,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   // 5.43.4 — REGOLA GENERALE: l'esultanza ("GOL"+grafica+coriandoli+boato) parte SOLO quando la palla ENTRA in
   //   rete (callback onGoalInNet dal renderer 3D), non al momento della scelta → niente accavallamento con l'azione.
   //   Fallback di sicurezza (timeout) se il segnale d'ingresso non arriva (es. renderer 2D / arco anomalo).
+  const festa587=useRef(null);/* [7.587.0] la festa del gol in attesa che il pallone ENTRI: {home,stadiumHome,gx,ticks} */
   const golAttesa575=useRef(null);/* [7.575.0] il gol che il micro-simulatore ha gia' deciso ma che non puo' ancora essere scritto: aspetta il calcio d'inizio del gol precedente. Non si perde mai — il tabellino resta quello del microsim */
   const kickAtt573=useRef(0),kickGx573=useRef(null),kickIn573=useRef(false);/* [7.573.0] la ripartenza aspetta che il pallone sia ENTRATO: quale porta, quanti tick ha gia' atteso (tetto dieci), e se l'ingresso e' gia' avvenuto (latch: un rimbalzo fuori non riapre l'attesa) *//* [7.573.0] quanti tick la ripartenza ha gia' aspettato che il pallone arrivasse in rete (tetto: dieci) */
   const cineBusyRef=useRef(null);/* [7.461.0 direttiva PO «le azioni/scene/highlights possono prendersi anche piu' tempo»] IL RENDERER DICHIARA SE HA ANCORA QUALCOSA DA MOSTRARE. Il 7.460 aveva lasciato aperto, e portato al PO, un conflitto fra due sistemi: la finestra d'esito e' un `setTimeout` in tempo REALE mentre la catena cinematica (build-up → arco → post-arco) gira sul CLOCK DI SCENA, che `dt` tappa a 0.05 — a fps bassi, headless o telefono lento, il clock di scena avanza meno della meta' del reale e la finestra si chiudeva con l'arco ancora in volo, lasciando il pallone a meta' campo su un gol contato. La precedenza l'ha decisa il PO: e' la SCENA ad avere la precedenza. Qui il renderer scrive, ogni fotogramma, se build-up/arco/post-arco sono vivi; l'auto-avanzamento (r.~20360) non chiude finche' non ha finito. */
@@ -872,7 +873,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
        poteva scusare le interruzioni perche' non aveva modo di sapere quando ce n'era una in corso.
        Senza questo, «il pallone e' fermo 4 secondi» non distingue il difetto dalla regola del gioco.
        Sola strumentazione: legge dei ref, non tocca stato ne' render. */
-    window.__CPM_HOLD=()=>{try{return{fermo:!!fermoRef.current,out:!!outRef.current,sp:!!spRef.current,ko:(kickoffRef.current|0)>0,kick:(kickRef.current|0)>0};}catch(_e){return null;}};
+    window.__CPM_HOLD=()=>{try{return{fermo:!!fermoRef.current,out:!!outRef.current,sp:!!spRef.current,ko:(kickoffRef.current|0)>0,kick:(kickRef.current|0)>0,pg:!!pendingGoalRef.current};}catch(_e){return null;}};/* [7.587.0] +pg: la finestra in cui il gol si COSTRUISCE, per poter chiedere «e mentre si costruisce, qualcuno tocca il pallone?» */
     window.__CPM_BG_INJECT=(ty,x,y)=>{setHlIdx(99999);setPhase("playing");setBgAction({type:ty,t:Date.now(),ballEnd:{x:x,y:y}});return true;};/* [collaudo PO «il portiere sembra imbabolato»] iniettore test-only di un'azione di CRONACA (stesso setBgAction del feed reale, r.19015): gli archi BG veri arrivano ~3/minuto — il guardiano gk-bg-react non puo' aspettarli. setHlIdx oltre hlTimes: raggiunto l'orario di un highlight, OGNI tick di clock in "playing" rientrava in hl_intro azzerando bgAction — l'iniezione rimbalzava senza mai lanciare l'arco */
     window.__CPM_FORCE_SIT=(gi,choose,ppos)=>{ const sit=SITUATIONS[gi]; if(!sit)return false;
       /* [7.212.0 collaudo PO «tra un rivedi e un altro il portiere e un altro giocatore non si fermano mai»]
@@ -2142,6 +2143,25 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
            microsim) e, rientrando dalla porta principale, si prende anche la sua azione costruita (7.528).
            Il tetto di sicurezza del gol pendente resta l'ultima parola, ma neanche lui puo' scavalcare la
            ripartenza: altrimenti l'invariante avrebbe un'eccezione, e un'eccezione la annulla. */
+        /* [7.587.0 — LA FESTA PARTIVA VENTISEI METRI PRIMA DEL GOL, rosso __CPM_NO587]
+           COLLAUDO PO (appunti 7.584, due volte): «il gol non si vede». Cinque ipotesi mie, tutte SMENTITE
+           dalla misura: il pallone non arriva (arriva, 8 su 8) · la camera guarda altrove (scarto mediano
+           1,8u) · la traiettoria e' a L (rettilineita' 0,96) · l'azione non ha passaggi (ne ha 3 e 1) ·
+           nessuno tocca il pallone (il piu' vicino sta a 1,5u di mediana). Ogni misura MECCANICA era verde.
+           LA SESTA HA UN NUMERO: il boato parte con il pallone a x27,8 — VENTISEI UNITA' dalla linea di
+           porta. Coriandoli, scossa e «GOL!» si armano sulla RIGA di cronaca, mentre il pallone deve ancora
+           percorrere quei ventisei metri (due tick, misurati col 7.573). Quando entra, la festa e' finita:
+           il giocatore vede l'annuncio e poi un pallone che arriva in ritardo, e non vede MAI il gol.
+           E' esattamente il difetto che il 7.573 ha chiuso per la RIPARTENZA — «e' la scena ad avere la
+           precedenza» — lasciato aperto sull'esultanza. Ora la festa aspetta che il pallone sia ENTRATO,
+           col solito tetto di dieci tick perche' nulla resti appeso. */
+        if(festa587.current&&!(typeof window!=='undefined'&&window.__CPM_NO587)){
+          const _f=festa587.current;const _b587=ballPosRef.current||{x:50};
+          const _dentro=(_f.gx>50)?((_b587.x||50)>=95):((_b587.x||50)<=5);
+          _f.ticks=(_f.ticks|0)+1;
+          if(_dentro||_f.ticks>=10){festa587.current=null;setWaveEvent({t:Date.now(),home:_f.home,stadiumHome:_f.stadiumHome});
+            if(typeof window!=='undefined'&&(_CPM_TEST||window.__CPM_REC)){try{(window.__CPM_FESTA2=window.__CPM_FESTA2||[]).push({bx:+(_b587.x||50).toFixed(1),att:_f.ticks,tetto:_dentro?0:1});}catch(_e587b){}}}
+        }
         const _rip575=!(typeof window!=='undefined'&&window.__CPM_NO575)&&((kickRef.current|0)>0||(kickoffRef.current|0)>0);
         if(!(typeof window!=='undefined'&&window.__CPM_NO575)){
           if(_simEv77&&_rip575){if(!golAttesa575.current)golAttesa575.current=_simEv77;_simEv77=null;}
@@ -2158,6 +2178,20 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           }else if(_pg532&&!_inHL77){
             _pg532.ticks++;
             const _t532=ballTargetRef.current;const _b532=ballPosRef.current||{x:50,y:50};
+            /* [7.587.0 — QUANTI BERSAGLI ATTRAVERSA IL PALLONE MENTRE IL GOL SI COSTRUISCE.
+               Collaudo PO: «il gol non si vede» e «non ci sono trame di gioco, passaggi». Misurato con
+               `golvisto-587`: un ingresso in rete va IN LINEA RETTA dal dischetto di centrocampo alla porta
+               (46 unita', rettilineita' 0,96) senza che nessuno tocchi il pallone. La riga qui sotto e' il
+               perche': il bersaglio avanza di tre unita' a tick lungo la x, con la y tirata al centro — una
+               marcia, non un'azione. Un'azione vera ha dei BERSAGLI, uno per passaggio; una marcia ne ha
+               uno solo che si sposta. Contarli separa le due cose, e la rettilineita' no: anche una catena
+               di passaggi in avanti e' quasi rettilinea. Sola strumentazione. */
+            /* ⚠️ un passaggio e' un SALTO del bersaglio, non uno scorrimento: la marcia lo sposta di tre
+               unita' a ogni tick, quindi contare «e' cambiato» conterebbe otto passaggi in una scivolata.
+               Si contano solo i salti oltre le sei unita' — piu' del doppio del passo della marcia. */
+            if(typeof window!=='undefined'&&(_CPM_TEST||window.__CPM_REC)){try{const _P=(window.__CPM_PG587=window.__CPM_PG587||{azioni:[]});const _a=_P.azioni[_P.azioni.length-1];const _px=_t532.x,_py=_t532.y;
+              if(_a&&_a.tick===(_pg532.ticks|0)-1){_a.tick=_pg532.ticks|0;const _sal=Math.hypot(_px-_a.lx,_py-_a.ly);if(_sal>6){_a.passaggi++;if(_sal>_a.max)_a.max=+_sal.toFixed(1);}_a.lx=_px;_a.ly=_py;_a.perc+=_sal;}
+              else _P.azioni.push({tick:_pg532.ticks|0,passaggi:0,max:0,perc:0,lx:_px,ly:_py,da:Math.round(_px)+","+Math.round(_py)});}catch(_e587){}}
             if(!(azioneRef.current&&!(typeof window!=='undefined'&&window.__CPM_NO559)))_t532.x=clamp(_t532.x+_pg532.dir*3,2,98);/* [7.541.0] se la catena sta raccontando, e' LEI a portare la palla: due scrittori sullo stesso pallone si annullano, e quello cieco (+3u verso la porta) non nomina nessuno *//* [v3] 4->3 u/tick (~7u/s): a 4 la palla correva a 9,5u/s, oltre il passo del portatore (7-9u/s) — ball-attended crollato a 46,8% (<52): l'azione manovrata viaggia CON la squadra, non davanti a tutti */_t532.y=clamp(_t532.y+(50-_t532.y)*0.25,6,94);
             /* [7.542.0 v4 — collaudo PO «non si vedono i gol»] LA RETE ASPETTA LA SUA AZIONE. Tre
                iterazioni sulla FINESTRA del racconto (forzatura ovunque: 6/8 ma ritmo rotto a 1,29x;
@@ -2867,7 +2901,8 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
           /* [7.511.0 R1] `setBgAction` NON parte piu' qui: questo punto gira PRIMA che i nomi siano risolti
              (nota 7.485 sul testimone) e l'audit ha misurato che il 3D perdeva attore e origine. La chiamata
              vive ora DOPO la risoluzione dei nomi, col payload completo. */
-          if(ev.ef==="team_goal"||ev.ef==="opp_goal")setWaveEvent({t:Date.now(),home:ev.ef==="team_goal",stadiumHome:(ev.ef==="team_goal")===isMatchHome});// [6.24.0] stadiumHome = lato TRIBUNA reale che ha segnato (team_goal=eroe → casa iff isMatchHome; opp_goal → casa iff !isMatchHome)
+          if(ev.ef==="team_goal"||ev.ef==="opp_goal"){if(typeof window!=='undefined'&&(_CPM_TEST||window.__CPM_REC)){try{(window.__CPM_FESTA=window.__CPM_FESTA||[]).push({t:Date.now(),bx:+(ballPosRef.current.x||50).toFixed(1)});}catch(_ef){}}
+          if(!(typeof window!=='undefined'&&window.__CPM_NO587)){festa587.current={home:ev.ef==="team_goal",stadiumHome:(ev.ef==="team_goal")===isMatchHome,gx:(ev.ef==="team_goal")?100:0,ticks:0};} else /* [7.587.0] QUANDO parte la festa, e dov'era il pallone in quel momento. L'esultanza si arma sulla RIGA; il pallone ci mette due tick ad arrivare in rete (misurato col 7.573). Se la festa parte col pallone ancora a meta' strada, il momento e' finito prima che il gol accada — ed e' un'ipotesi che si controlla con un numero, non a naso. */setWaveEvent({t:Date.now(),home:ev.ef==="team_goal",stadiumHome:(ev.ef==="team_goal")===isMatchHome});}// [6.24.0] stadiumHome = lato TRIBUNA reale che ha segnato (team_goal=eroe → casa iff isMatchHome; opp_goal → casa iff !isMatchHome)
           // Crowd chant triggers — tutti i setTimeout tracciati in chantTimersRef
           if(ev.ef==="team_goal"){
             chantTimersRef.current.push(setTimeout(()=>chantFor("goal",3800),200));
