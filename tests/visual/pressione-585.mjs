@@ -19,6 +19,7 @@ const page = await b.newPage({ viewport: { width: 412, height: 915 } });
 await installCdnRoutes(page);
 await page.addInitScript(() => { window.__CPM_GLB = false; });
 const { total } = await openMatch(page, port);
+const SIT = await page.evaluate(() => (window.__CPM_SITS || []).map(s => ({ intent: s && s.intent || null })));/* [7.585.0] il TIPO di ogni scena, per dire se la coda e' una famiglia o e' sparsa */
 const N = Math.min(+(process.env.CPM_SCENE || 40), total || 40);
 const righe = [];
 for (let gi = 0; gi < N; gi++) {
@@ -38,6 +39,21 @@ console.log('    difensori entro 15 m, in media: ' + (press.reduce((a, r) => a +
 for (const s of [10, 15, 24]) {
   const n = d.filter(v => v > s).length;
   console.log('    scene in cui il piu\' vicino sta oltre ' + String(s).padStart(2) + ' m: ' + String(n).padStart(3) + '/' + press.length + ' = ' + (100 * n / press.length).toFixed(0) + '%');
+}
+/* [7.585.0] CHI STA NELLA CODA. Sapere che una scena su sette lascia il portatore solo non basta a
+   rimediare: se sono un TIPO preciso di azione il bersaglio e' quello, se sono sparse la causa sta nello
+   schieramento. La differenza decide il rimedio, quindi va stampata. */
+{
+  const sole = press.filter(r => r.defMinEver > 24).sort((a, c) => c.defMinEver - a.defMinEver);
+  const vicine = press.filter(r => r.defMinEver <= 10);
+  const tipo = r => (SIT[r.gi] || {}).intent || '?';
+  const conta = arr => { const m = {}; for (const r of arr) m[tipo(r)] = (m[tipo(r)] || 0) + 1; return Object.entries(m).sort((a, c) => c[1] - a[1]).map(([k, v]) => k + ' ' + v).join(' · ') || '—'; };
+  console.log('\n  --- CHI STA NELLA CODA (portatore solo oltre 24 m) ---');
+  console.log('    scene: ' + sole.map(r => 'gi' + r.gi + '(' + tipo(r) + ', ' + r.defMinEver.toFixed(0) + 'm, palla a x' + r.ballX + ')').join(' · '));
+  console.log('    per tipo di azione — nella coda: ' + conta(sole));
+  console.log('    per confronto, scene con pressione vera (<=10 m): ' + conta(vicine));
+  const vx = arr => arr.length ? (arr.reduce((a, r) => a + r.ballX, 0) / arr.length).toFixed(0) : '—';
+  console.log('    x media del pallone — nella coda ' + vx(sole) + ' · con pressione vera ' + vx(vicine));
 }
 console.log('\n  (il gate usa 24 m e ~8 scene: qui la stessa grandezza su ' + press.length + ' scene, e senza soglia)');
 console.log('\nCENSIMENTO registrato. Non e\' un guardiano: non fallisce, misura.\n');
