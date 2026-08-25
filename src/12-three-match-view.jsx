@@ -5885,7 +5885,28 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
           cLx=cLx*0.70+GOAL_LINE_X*0.30;cLz*=(0.70+0.26*_wd);
         }
         // 3DV-5: GK tracking — lookat si sposta verso il portiere su tiro/rigore/testa
-        if(isHL&&awayGkMesh&&(P.hlType==="shot"||P.hlType==="penalty"||P.hlType==="header")){_tc503('gk');cLx=cLx*0.65+awayGkMesh.position.x*0.35;cLz=cLz*0.65+awayGkMesh.position.z*0.35;}
+        /* [7.581.0 — DUE INTENTI DI INQUADRATURA, NESSUN ARBITRO, rosso __CPM_NO581]
+           COLLAUDO PO (appunti 7.578, SIT #155 e #115): «lo SGUARDO oscilla — 4,5 inversioni al secondo,
+           ampiezza 7,7°, ultima passata per fotogramma: guinzaglio 45% + gk 31%». La bozza automatica
+           nomina la coppia, e le due passate vogliono due cose diverse sulla STESSA scena di tiro:
+           questa tira lo sguardo VERSO IL PORTIERE (35%), il guinzaglio (r. piu' sotto) lo riaggancia
+           entro 22 unita' DALL'EROE. Su un tiro da fuori area l'eroe e il portiere sono piu' lontani di
+           cosi': una tira fuori, l'altra riporta dentro, ogni fotogramma.
+           NON E' UN CONFLITTO DA ARBITRARE, E' UNA COMPOSIZIONE DA FARE. In una regia vera quella non e'
+           una scelta fra due soggetti: e' UN'INQUADRATURA SOLA che li contiene entrambi. Qui la meta si
+           costruisce gia' dentro il guinzaglio — si punta verso il portiere ma non oltre il raggio che
+           l'eroe concede, con un margine — quindi quando il guinzaglio arriva non trova piu' niente da
+           correggere: una mano sola sullo sguardo, e il tiro alla fune sparisce per costruzione.
+           ⚠️ NON MISURABILE QUI, come il 7.580: 4,5 inversioni al secondo contro 7fps headless, Nyquist
+           le nasconde. Il giudice e' il dispositivo del PO, e la sua bozza NOMINA la coppia — quindi
+           l'attribuzione resta possibile anche con due rimedi alla camera in volo insieme. */
+        if(isHL&&awayGkMesh&&(P.hlType==="shot"||P.hlType==="penalty"||P.hlType==="header")){_tc503('gk');
+          let _gx581=cLx*0.65+awayGkMesh.position.x*0.35,_gz581=cLz*0.65+awayGkMesh.position.z*0.35;
+          if(!(typeof window!=='undefined'&&window.__CPM_NO581)){
+            const _R581=22*0.92,_dx581=_gx581-hx,_dz581=_gz581-hz,_d581=Math.hypot(_dx581,_dz581);
+            if(_d581>_R581){const _k581=_R581/_d581;_gx581=hx+_dx581*_k581;_gz581=hz+_dz581*_k581;}
+          }
+          cLx=_gx581;cLz=_gz581;}
         // 5.43.10: alla CONCLUSIONE d'attacco la camera INQUADRA LA PORTA + IL PORTIERE (la parata/il gol devono vedersi). Solo isResult → la firma golden (catturata al framing choose) NON cambia; resta sopra il campo.
         if(isResult&&!P.hlDef&&awayGkMesh&&(P.hlType==="shot"||P.hlType==="penalty"||P.hlType==="header"||P.hlType==="freekick")&&!(P.hlOutcomeKind==="wide"||P.hlOutcomeKind==="out"||P.hlOutcomeKind==="corner")){/* [7.90.0] !P.hlDef: su HL difensivo NON inquadrare la porta AVVERSARIA (era la palla «verso la porta sbagliata») */
           // [6.76.0 LMV-C1] su tiro FUORI/deviato in angolo NON inchiodare il lookAt sul portiere fermo (la palla
@@ -5985,8 +6006,14 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
            dall'eroe il motore passa deliberatamente il soggetto (`_subjBall50`, 7.237) e la camera deve
            poter seguire il pallone — la stessa condizione, ricalcolata qui perche' quella variabile nasce
            piu' a valle. */
-        if(isHL&&!(isResult&&Math.hypot(bx-hx,bz-hz)>10)){_tc503('guinzaglio');const _fl63=22,_dlx63=tLx-hx,_dlz63=tLz-hz,_dll63=Math.hypot(_dlx63,_dlz63);
-          if(_dll63>_fl63){const _sc63=_fl63/_dll63;tLx=hx+_dlx63*_sc63;tLz=hz+_dlz63*_sc63;}}
+        /* [7.581.0] L'ETICHETTA SI SPINGE QUANDO IL GUINZAGLIO TIRA, NON QUANDO SI SVEGLIA. E' la stessa
+           disciplina gia' scritta per la bisezione nel 7.563, e senza di essa il censimento delle mani non
+           puo' misurare questo rimedio: il guinzaglio risultava una mano sullo sguardo anche nei fotogrammi
+           in cui non correggeva nulla, quindi «due mani» non distingueva un tiro alla fune da un passaggio
+           di consegne. L'etichetta all'azione vale SEMPRE, anche col rosso acceso: e' strumentazione, e
+           un rosso che cambia insieme il rimedio e il metro misurerebbe lo strumento invece del gioco. */
+        if(isHL&&!(isResult&&Math.hypot(bx-hx,bz-hz)>10)){const _fl63=22,_dlx63=tLx-hx,_dlz63=tLz-hz,_dll63=Math.hypot(_dlx63,_dlz63);
+          if(_dll63>_fl63){_tc503('guinzaglio');const _sc63=_fl63/_dll63;tLx=hx+_dlx63*_sc63;tLz=hz+_dlz63*_sc63;}}
         /* [7.503.0 F6/1] RACCOLTA. Quante passate correttive hanno toccato l'inquadratura in QUESTO
            fotogramma, e quali insieme. Sta qui e non piu' a valle per restare nello stesso scope di
            `_tocc503`: un contatore che lancia un ReferenceError non conta niente. */
