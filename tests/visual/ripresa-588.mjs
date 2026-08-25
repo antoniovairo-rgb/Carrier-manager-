@@ -14,7 +14,7 @@ const b = await launchBrowser();
 const page = await b.newPage({ viewport: { width: 412, height: 915 } });
 await installCdnRoutes(page);
 await page.addInitScript(() => {
-  window.__CPM_GLB = false; window.__CPM_RIP = [];
+  window.__CPM_GLB = false; window.__CPM_RIP = []; window.__CPM_KOC = {};/* [7.588.0] contatore gia' nel gioco (7.544): quante volte lo schieramento gira, e quante di quelle durante una ripresa */
   setInterval(() => { try {
     const h = window.__CPM_HOLD && window.__CPM_HOLD();
     /* [7.588.0] da quanto e' aperta la finestra: lo schieramento della ripresa scatta ogni tre tick di
@@ -25,14 +25,20 @@ await page.addInitScript(() => {
     const st = window.__CPM_STATE && window.__CPM_STATE(); if (!st || !st.players) return;
     const R = window.__CPM_RIP; if (R.length > 600) return;
     let casaFuori = 0, ospFuori = 0, tot = 0, cerchio = 0;
-    for (const p of st.players) {
+    /* [7.588.0] CHI sono quelli fuori posto, non solo quanti. Il codice PROVA a ripiegarli (7.544:
+       bersaglio schiacciato a 46/54, guadagno 0,92) e cinque non ci arrivano: senza sapere il loro indice
+       e se sono portieri, la causa resta indovinabile — ed e' esattamente il modo in cui oggi ho gia'
+       sbagliato piu' volte. */
+    const fuori = [];
+    for (let _i = 0; _i < st.players.length; _i++) { const p = st.players[_i];
       if (!p || p.x == null) continue; tot++;
+      if ((p.team === 'home' && p.x > 52) || (p.team === 'away' && p.x < 48)) fuori.push(_i + (p.gk ? 'P' : '') + ':' + p.team.slice(0, 1) + Math.round(p.x));
       /* meta' campo: casa difende x<50 e deve stare sotto 50; ospiti sopra. Il cerchio e' attorno a x50. */
       if (Math.abs(p.x - 50) <= 9) cerchio++;
       if (p.team === 'home' && p.x > 52) casaFuori++;
       if (p.team === 'away' && p.x < 48) ospFuori++;
     }
-    R.push({ tot, casaFuori, ospFuori, cerchio, eta });
+    R.push({ tot, casaFuori, ospFuori, cerchio, eta, fuori });
   } catch (_e) {} }, 150);
 });
 await openMatch(page, port, { skipLoadAll: true, name: 'Rp' });
@@ -40,6 +46,7 @@ await page.evaluate(() => window.__CPM_AUTOPLAY(true, { seed: 7300, policy: 'see
 const t0 = Date.now();
 while (Date.now() - t0 < 600000) { await sleep(1500); const ph = await matchPhase(page); if (ph === 'ended' || ph === 'ceremony') break; }
 const R = await page.evaluate(() => window.__CPM_RIP || []);
+const KOC = await page.evaluate(() => window.__CPM_KOC || {});
 await b.close(); srv.close();
 
 console.log('\n=== DOPO UN GOL, LE SQUADRE TORNANO NELLE PROPRIE META\'? ===\n');
@@ -61,4 +68,16 @@ console.log('  giocatori dentro il cerchio di centrocampo (nel calcio sono DUE):
     console.log('    ' + nome.padEnd(14) + ' campioni ' + String(g.length).padStart(3) + '  ·  nella meta\' sbagliata (mediana) ' + m[m.length >> 1] + '  ·  nel cerchio (mediana) ' + c[c.length >> 1]);
   }
 }
+{
+  const tardi = R.filter(o => o.eta > 6);
+  const cnt = {};
+  for (const o of tardi) for (const f of (o.fuori || [])) { const k = f.split(':')[0]; cnt[k] = (cnt[k] || 0) + 1; }
+  const tot = tardi.length || 1;
+  console.log('\n  --- CHI RESTA FUORI POSTO (oltre 900 ms, ' + tardi.length + ' campioni) ---');
+  console.log('  (indice del giocatore · P = portiere · quota di campioni in cui e\' fuori)');
+  console.log('    ' + Object.entries(cnt).sort((a, c) => c[1] - a[1]).slice(0, 12).map(([k, v]) => k + ' ' + (100 * v / tot).toFixed(0) + '%').join('  ·  '));
+  const es = (tardi.find(o => (o.fuori || []).length) || {}).fuori;
+  if (es) console.log('    esempio di un campione: ' + es.join(' · '));
+}
+console.log('\n  lo schieramento ha girato ' + (KOC.blocco || 0) + ' volte, di cui ' + (KOC.ko || 0) + ' durante una ripresa' + ((KOC.ko | 0) === 0 ? '  ← MAI: il ripiegamento non ha nemmeno la possibilita\' di applicarsi' : ''));
 console.log('\nCENSIMENTO registrato. Non e\' un guardiano: non fallisce, misura.\n');
