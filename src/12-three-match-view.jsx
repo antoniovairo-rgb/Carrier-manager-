@@ -6341,6 +6341,38 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
               if(_o.att){const _k=(_o.hPrev||'?')+' -> '+_hands521;_o.att[_k]=(_o.att[_k]||0)+1;}}
             _o.s=_sg;}}
         _o.p=_al521;_o.hPrev=_hands521;_o.f=(_o.f||0)+1;}catch(_e){}}
+      /* [7.580.0 — LA GUARDIA CORREGGE LA MIRA, NON LA FOTOGRAFIA, rosso __CPM_NO580]
+         COLLAUDO PO (appunti 7.578, quattro scene su quattro): «lo SGUARDO della camera oscilla —
+         29,1 e 30,6 inversioni al secondo, ampiezza 7,6-7,8°, ultima passata per fotogramma:
+         vista-reale 56% + lerp 34%, 3,6 passate per fotogramma». Trenta inversioni al secondo sono un
+         flip A OGNI FOTOGRAMMA, e la bozza automatica nomina la coppia che se lo contende.
+         LA CAUSA, e si legge nell'ordine delle righe. La guardia del quadro reale (7.226) scrive
+         `camLook` DIRETTAMENTE, cioe' corregge l'immagine gia' composta. Il fotogramma dopo, il lerp
+         qui sotto ricalcola `camLook` dal bersaglio `tL*`, che di quella correzione non sa niente: la
+         butta via, il soggetto riesce dal quadro, la guardia ricorregge. Due mani sullo stesso valore,
+         una per fotogramma ciascuna, per sempre. E' la stessa classe del doppio scrittore sul pallone
+         che il 7.556 ha chiuso eleggendo un padrone unico — qui il padrone non si elegge, si cambia
+         COSA scrive la guardia: la MIRA (`tL*`), non la fotografia (`camLook`).
+         Il bias e' angolare, si accumula finche' la guardia insiste e DECADE quando smette (0,86 a
+         fotogramma, ~0,3s di memoria): senza il decadimento la camera resterebbe storta dopo che il
+         soggetto e' rientrato. Con questo il lerp non ha piu' niente da disfare: converge.
+         ⚠️ NON MISURABILE IN LABORATORIO, e va detto: l'oscillazione e' a frequenza di fotogramma e
+         headless gira a 7fps — Nyquist la rende invisibile (lo dichiara gia' il 7.526). Cio' che SI
+         misura headless e' la CAUSA invece dell'effetto: quante mani toccano l'asse dello sguardo per
+         fotogramma (`_tocc503`), che e' un conteggio e non una frequenza. La prova sul difetto resta
+         al dispositivo del PO. Solo `camLook`/`tL*`, mai la posizione camera: firma golden intatta. */
+      if(!(typeof window!=='undefined'&&window.__CPM_NO580)){
+        const _b580=sr.current._bias580||(sr.current._bias580={a:0,e:0});
+        if(_b580.a||_b580.e){
+          const _cx580=camera.position.x,_cy580=camera.position.y,_cz580=camera.position.z;
+          const _dx580=tLx-_cx580,_dz580=tLz-_cz580,_h580=Math.hypot(_dx580,_dz580)||1;
+          const _a580=Math.atan2(_dz580,_dx580)+_b580.a;
+          tLx=_cx580+Math.cos(_a580)*_h580;tLz=_cz580+Math.sin(_a580)*_h580;
+          tLy=clamp(_cy580+Math.tan(Math.atan2(tLy-_cy580,_h580)+_b580.e)*_h580,0.4,26);
+        }
+        _b580.a*=0.86;_b580.e*=0.86;
+        if(Math.abs(_b580.a)<1e-4)_b580.a=0;if(Math.abs(_b580.e)<1e-4)_b580.e=0;
+      }
       camLook.x+=(tLx-camLook.x)*kl;camLook.y+=(tLy-camLook.y)*kl;camLook.z+=(tLz-camLook.z)*kl;
       /* [7.226.0 #43] GUARDIA SUL QUADRO REALE. Il richiamo 7.225.0 garantisce che l'eroe stia nel quadro della
          camera TARGET — ma la camera REALE lo insegue coi lerp (posizione kp, sguardo kl): durante uno stacco
@@ -6403,14 +6435,16 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
              48→48). Ipotesi caduta, codice revocato: questa riga e' quella di prima, byte per byte. */
           let _corA=_dAG-Math.sign(_dAG)*_aMG*0.98;const _capA=Math.min(Math.abs(_corA),dt*2.5);_corA=Math.sign(_corA)*_capA;
           _hyBump478(sr,'g',_corA);
-          const _a2G=_aLG+_corA;camLook.x=_cxG+Math.cos(_a2G)*_hlG;camLook.z=_czG+Math.sin(_a2G)*_hlG;}
+          const _a2G=_aLG+_corA;camLook.x=_cxG+Math.cos(_a2G)*_hlG;camLook.z=_czG+Math.sin(_a2G)*_hlG;
+          if(!(typeof window!=='undefined'&&window.__CPM_NO580)){const _b=sr.current._bias580||(sr.current._bias580={a:0,e:0});_b.a=clamp(_b.a+_corA,-0.5,0.5);}/* [7.580.0] la correzione entra nella MIRA: il fotogramma dopo il lerp parte gia' corretto invece di disfarla */}
         const _gdG=Math.hypot(_dxG,_dzG)||1;
         const _eLG=Math.atan2(_lyG,_hlG),_eHG=Math.atan2(_dyG,_gdG);
         const _eMG=Math.atan(_tHG)*0.90;const _dEG=_eHG-_eLG;
         if(Math.abs(_dEG)>_eMG){_gCor50=true;
           let _corE=_dEG-Math.sign(_dEG)*_eMG*0.98;const _capE=Math.min(Math.abs(_corE),dt*1.8);_corE=Math.sign(_corE)*_capE;
           _hyBump478(sr,'ge',_corE);
-          camLook.y=clamp(_cyG+Math.tan(_eLG+_corE)*_hlG,0.4,26);}
+          camLook.y=clamp(_cyG+Math.tan(_eLG+_corE)*_hlG,0.4,26);
+          if(!(typeof window!=='undefined'&&window.__CPM_NO580)){const _b=sr.current._bias580||(sr.current._bias580={a:0,e:0});_b.e=clamp(_b.e+_corE,-0.5,0.5);}/* [7.580.0] idem per l'elevazione */}
       }
       /* [7.237.0 #50 misurato su gi15 «punizione dalla fascia» FALLITA: palla fuori quadro in 8/10 campioni
          di volo, ndc x fino a −22 — la regia del punto di battuta non segue il pallone respinto verso l'area]

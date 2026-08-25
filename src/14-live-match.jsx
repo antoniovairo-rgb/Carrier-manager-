@@ -866,6 +866,13 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     // forza la situation gi: posiziona l'eroe alla startZone e va DIRETTO al framing interattivo
     // (salta hl_intro, cinematico). Replica la transizione reale: mm===0 (e non lock) → hl_choose, altrimenti hl_move.
     window.__CPM_PPOS=()=>pPosRef.current;/* [7.399.0 codice 002] sonda test-only: lo stato LOGICO vivo dell'eroe, senza passare dai props del renderer (che possono essere stantii — ed e' esattamente cio' che si sta misurando) */
+    /* [7.580.0] LO STATO DI TRATTENUTA DEL PALLONE, per le sonde. Dal 7.559 il gioco ha le interruzioni:
+       durante una rimessa, un angolo o un rinvio il pallone STA FERMO, ed e' giusto che stia fermo — e'
+       calcio. Il guardiano `ball-alive` scusa gia' il calcio d'inizio per la stessa ragione, ma non
+       poteva scusare le interruzioni perche' non aveva modo di sapere quando ce n'era una in corso.
+       Senza questo, «il pallone e' fermo 4 secondi» non distingue il difetto dalla regola del gioco.
+       Sola strumentazione: legge dei ref, non tocca stato ne' render. */
+    window.__CPM_HOLD=()=>{try{return{fermo:!!fermoRef.current,out:!!outRef.current,sp:!!spRef.current,ko:(kickoffRef.current|0)>0,kick:(kickRef.current|0)>0};}catch(_e){return null;}};
     window.__CPM_BG_INJECT=(ty,x,y)=>{setHlIdx(99999);setPhase("playing");setBgAction({type:ty,t:Date.now(),ballEnd:{x:x,y:y}});return true;};/* [collaudo PO «il portiere sembra imbabolato»] iniettore test-only di un'azione di CRONACA (stesso setBgAction del feed reale, r.19015): gli archi BG veri arrivano ~3/minuto — il guardiano gk-bg-react non puo' aspettarli. setHlIdx oltre hlTimes: raggiunto l'orario di un highlight, OGNI tick di clock in "playing" rientrava in hl_intro azzerando bgAction — l'iniezione rimbalzava senza mai lanciare l'arco */
     window.__CPM_FORCE_SIT=(gi,choose,ppos)=>{ const sit=SITUATIONS[gi]; if(!sit)return false;
       /* [7.212.0 collaudo PO «tra un rivedi e un altro il portiere e un altro giocatore non si fermano mai»]

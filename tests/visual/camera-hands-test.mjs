@@ -37,7 +37,8 @@ const b = await launchBrowser();
 const page = await b.newPage({ viewport: { width: 412, height: 915 } });
 await installCdnRoutes(page);
 const errs = []; page.on('pageerror', e => errs.push(String(e.message).slice(0, 120)));
-await page.addInitScript(r => { window.__CPM_GLB = false; if (r) window.__CPM_NO503 = 1; }, ROSSO);
+const BAND = process.env.CPM_BANDIERA || null;/* [7.580.0] una bandiera qualunque, per confrontare quante mani tocchino lo sguardo con un rimedio acceso e spento */
+await page.addInitScript(([r, b]) => { window.__CPM_GLB = false; if (b) window[b] = 1; if (r) window.__CPM_NO503 = 1; }, [ROSSO, BAND]);
 const { total } = await openMatch(page, port);
 
 const gi = [];
