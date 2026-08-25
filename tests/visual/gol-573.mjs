@@ -13,14 +13,14 @@ const tutte = [];
 for (let i = 0; i < PARTITE; i++) {
   const page = await b.newPage({ viewport: { width: 412, height: 915 } });
   await installCdnRoutes(page);
-  await page.addInitScript(() => { window.__CPM_GLB = false; window.__CPM_TR571 = []; });
+  await page.addInitScript(() => { window.__CPM_GLB = false; window.__CPM_TR571 = []; window.__CPM_K573 = { att: 0, log: [] }; });
   await openMatch(page, port, { skipLoadAll: true, name: (process.env.NOME || 'Gl') + i });
   await page.evaluate(s => window.__CPM_AUTOPLAY(true, { seed: s, policy: 'seeded', tickMs: 300 }), 7300 + i * 37);
   const t0 = Date.now();
   while (Date.now() - t0 < 600000) { await sleep(1500); const ph = await matchPhase(page); if (ph === 'ended' || ph === 'ceremony') break; }
   tutte.push(await page.evaluate(() => ({
     righe: (window.__CPM_EV ? window.__CPM_EV() : []).filter(e => e.ev === 'chronicle'),
-    trT: window.__CPM_TR571 || [],
+    trT: window.__CPM_TR571 || [], k573: (window.__CPM_K573 || {}).att | 0, klog: (window.__CPM_K573 || {}).log || [],
   })));
   await page.close();
 }
@@ -31,7 +31,7 @@ for (let i = 0; i < tutte.length; i++) {
   const { righe, trT } = tutte[i];
   const byMin = new Map(); for (const t of trT) byMin.set(t.c | 0, t);
   const gol = righe.filter(r => /goal$/.test(String(r.ef || '')));
-  console.log('  partita ' + (i + 1) + ' — minuti tracciati ' + trT.length + ' · righe di gol ' + gol.length);
+  console.log('  partita ' + (i + 1) + ' — minuti tracciati ' + trT.length + ' · righe di gol ' + gol.length + ' · tick in cui la ripartenza HA ATTESO: ' + (tutte[i].k573 | 0));
   for (const g of gol) {
     const m = g.min | 0;
     console.log("    " + m + "'  ef=" + g.ef + '  dichiara (' + g.bx + ',' + g.by + ')');
@@ -39,6 +39,8 @@ for (let i = 0; i < tutte.length; i++) {
       const t = byMin.get(k); if (!t) { console.log('        ' + k + "'  (nessun campione)"); continue; }
       console.log('        ' + k + "'  x " + t.x0.toFixed(0) + '→' + t.x.toFixed(0) + '  [' + t.xmin.toFixed(0) + '..' + t.xmax.toFixed(0) + ']   y ' + t.y.toFixed(0) + '   campioni ' + t.n);
     }
+    const lg = (tutte[i].klog || []).filter(o => o.c >= m - 1 && o.c <= m + 6);
+    if (lg.length) console.log('        ripartenza: ' + lg.map(o => o.c + "'kr" + o.kr + (o.gx == null ? '/gx-' : '/gx' + o.gx) + (o.in ? '/DENTRO' : '') + ' palla' + o.bx + '→bersaglio' + o.tx).join('  |  '));
     console.log('');
   }
 }

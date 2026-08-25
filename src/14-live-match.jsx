@@ -625,6 +625,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   // 5.43.4 — REGOLA GENERALE: l'esultanza ("GOL"+grafica+coriandoli+boato) parte SOLO quando la palla ENTRA in
   //   rete (callback onGoalInNet dal renderer 3D), non al momento della scelta → niente accavallamento con l'azione.
   //   Fallback di sicurezza (timeout) se il segnale d'ingresso non arriva (es. renderer 2D / arco anomalo).
+  const golAttesa575=useRef(null);/* [7.575.0] il gol che il micro-simulatore ha gia' deciso ma che non puo' ancora essere scritto: aspetta il calcio d'inizio del gol precedente. Non si perde mai — il tabellino resta quello del microsim */
   const kickAtt573=useRef(0),kickGx573=useRef(null),kickIn573=useRef(false);/* [7.573.0] la ripartenza aspetta che il pallone sia ENTRATO: quale porta, quanti tick ha gia' atteso (tetto dieci), e se l'ingresso e' gia' avvenuto (latch: un rimbalzo fuori non riapre l'attesa) *//* [7.573.0] quanti tick la ripartenza ha gia' aspettato che il pallone arrivasse in rete (tetto: dieci) */
   const cineBusyRef=useRef(null);/* [7.461.0 direttiva PO «le azioni/scene/highlights possono prendersi anche piu' tempo»] IL RENDERER DICHIARA SE HA ANCORA QUALCOSA DA MOSTRARE. Il 7.460 aveva lasciato aperto, e portato al PO, un conflitto fra due sistemi: la finestra d'esito e' un `setTimeout` in tempo REALE mentre la catena cinematica (build-up → arco → post-arco) gira sul CLOCK DI SCENA, che `dt` tappa a 0.05 — a fps bassi, headless o telefono lento, il clock di scena avanza meno della meta' del reale e la finestra si chiudeva con l'arco ancora in volo, lasciando il pallone a meta' campo su un gol contato. La precedenza l'ha decisa il PO: e' la SCENA ad avere la precedenza. Qui il renderer scrive, ogni fotogramma, se build-up/arco/post-arco sono vivi; l'auto-avanzamento (r.~20360) non chiude finche' non ha finito. */
   const goalCelebRef=useRef(null);
@@ -2121,6 +2122,24 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
            palla avanza 4u/tick verso l'ultimo terzo lungo il corridoio, e il tiro parte solo quando e' in
            zona rifinitura (x>=72 / x<=28) o dopo 8 tick di sicurezza. Un highlight in corso mette in
            pausa l'avanzata. Rosso __CPM_NO532 = gol immediato (comportamento 7.525-7.527). */
+        /* [7.575.0 — DUE GOL A UN TICK DI DISTANZA, SENZA CALCIO D'INIZIO IN MEZZO, rosso __CPM_NO575]
+           MISURATO col tracciato tick per tick di `gol-573`: al 49' segniamo noi, la riga dichiara la porta
+           e il pallone parte davvero (50 -> 81,2 in un tick). Al tick DOPO la cronaca scrive il gol
+           AVVERSARIO — con il pallone a 81, cioe' dentro l'area di chi avrebbe appena segnato. Il volo del
+           nostro gol viene abortito a meta' strada e il pallone riparte nel verso opposto: da fuori si legge
+           come «esito goal ma la palla non e' mai arrivata in porta», che e' la nota storica del PO.
+           NON ERA UN DIFETTO DEL VOLO: era che il gol successivo non aspettava il calcio d'inizio del
+           precedente. Nel calcio quell'invariante non si discute — fra due reti c'e' SEMPRE una ripresa dal
+           centro. Qui il gol gia' deciso dal micro-simulatore viene PARCHEGGIATO e riproposto al primo tick
+           in cui non c'e' piu' una ripartenza in sospeso: non si perde (il tabellino resta quello del
+           microsim) e, rientrando dalla porta principale, si prende anche la sua azione costruita (7.528).
+           Il tetto di sicurezza del gol pendente resta l'ultima parola, ma neanche lui puo' scavalcare la
+           ripartenza: altrimenti l'invariante avrebbe un'eccezione, e un'eccezione la annulla. */
+        const _rip575=!(typeof window!=='undefined'&&window.__CPM_NO575)&&((kickRef.current|0)>0||(kickoffRef.current|0)>0);
+        if(!(typeof window!=='undefined'&&window.__CPM_NO575)){
+          if(_simEv77&&_rip575){if(!golAttesa575.current)golAttesa575.current=_simEv77;_simEv77=null;}
+          else if(!_simEv77&&!_rip575&&golAttesa575.current){_simEv77=golAttesa575.current;golAttesa575.current=null;}
+        }
         if(!(typeof window!=='undefined'&&window.__CPM_NO532)){
           const _pg532=pendingGoalRef.current;
           if(_simEv77&&!_pg532){
@@ -2143,7 +2162,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                e' stata raccontata (tre righe), non quando la palla tocca una coordinata. Il tetto di
                sicurezza dei 10 tick resta ed e' l'ultima parola: nessun gol puo' restare in sospeso. */
             const _rg532=(typeof window!=='undefined'&&window.__CPM_NO563)?true:((_pg532.righe|0)>=3);
-            if((((_pg532.dir>0&&_b532.x>=72)||(_pg532.dir<0&&_b532.x<=28))&&_rg532)||_pg532.ticks>=10){_simEv77=_pg532.ev;pendingGoalRef.current=null;}/* [v3] tetto 8->10, coerente col passo ridotto */
+            if(!_rip575&&((((_pg532.dir>0&&_b532.x>=72)||(_pg532.dir<0&&_b532.x<=28))&&_rg532)||_pg532.ticks>=10)){_simEv77=_pg532.ev;pendingGoalRef.current=null;}/* [7.575.0] nemmeno il tetto di sicurezza scavalca la ripartenza: l'azione resta pendente un tick in piu' *//* [v3] tetto 8->10, coerente col passo ridotto */
           }
         }
         /* [7.532.0 collaudo PO «non ci sono molti ribaltamenti di fronte, non sembra una vera partita» —
@@ -3155,6 +3174,18 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                  e' arrivato. Headless non lo vede: quel testimone resta NON VERIFICATO in laboratorio. */
           const _gx573=kickGx573.current;
           if(_gx573!=null&&(_gx573>50?(b.x>=95):(b.x<=5)))kickIn573.current=true;
+          /* [7.575.0 — IL GOL VOLAVA IN RETE E QUALCUN ALTRO GLI SPOSTAVA LA RETE SOTTO, rosso __CPM_NO575]
+             Il 7.573 tratteneva il CONTO della ripartenza finche' il pallone non era entrato, e non bastava:
+             a essere contesa non era la ripartenza, era la DESTINAZIONE. Misurato con `gol-573`, partita 2:
+             al 49' segniamo noi (la riga dichiara 98), il pallone risale fino a 72 e poi TORNA INDIETRO fino
+             a 4 — perche' al 51' segnano loro, e la macchina del gol pendente avversaria (7.528) stava gia'
+             trascinando il pallone verso la loro area a 4u/tick. Il gol nostro non e' mai arrivato in rete:
+             gliel'hanno portata via mentre era in volo.
+             Il rimedio e' lo stesso principio del 7.461 applicato al bersaglio invece che al conto: finche'
+             il pallone di un gol non e' ENTRATO, la sua destinazione e' la porta e nessun'altra macchina la
+             puo' cambiare. Dura quanto la finestra del 7.573 (tetto dieci tick), quindi non puo' incantarsi. */
+          if(!_no573&&_gx573!=null&&!kickIn573.current&&!(typeof window!=='undefined'&&window.__CPM_NO575))ballTargetRef.current={x:_gx573>50?98:2,y:50};
+          if(typeof window!=='undefined'&&window.__CPM_K573&&window.__CPM_K573.log)window.__CPM_K573.log.push({c:clockRef.current|0,kr:kickRef.current|0,gx:_gx573,in:kickIn573.current?1:0,bx:+b.x.toFixed(1),tx:+(ballTargetRef.current.x||0).toFixed(1)});/* strumentazione: cosa vede la ripartenza, tick per tick */
           const _simFuori573=(_gx573!=null&&!kickIn573.current);
           const _cb573=_no573?null:cineBusyRef.current;
           const _meshFuori573=!!(_cb573&&_cb573.rete);
