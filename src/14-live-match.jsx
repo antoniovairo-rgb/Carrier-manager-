@@ -1105,6 +1105,25 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   const possTurnRef=useRef(1);/* [7.532.0 NO543] il TURNO di possesso: chi ha la palla ADESSO (1=casa) — la trama consuma questo, non la statistica % */
   const possSpellRef=useRef(35);const possExtRef=useRef(0);/* [7.532.0 NO543 v2] durata dello spell di possesso in tick: il censimento ha mostrato che le righe di recupero NON bastano a passare il turno (i pesi di zona le schiacciano a palla alta → 0 flip anche coi turni): nel calcio vero il possesso si alterna ogni 30-60s comunque — lo spell seedato (10-17 tick, pesato sulla % di possesso) garantisce l'alternanza, le righe di recupero restano gli override narrativi */
   const counterArmRef=useRef(null),counterCoolRef=useRef(-99);
+  /* [7.616.0 — SPRINT PO «PARTITA VERA», Fase A — IL TURNO HA UN SOLO SCRITTORE, E OGNI SCRITTURA UNA CAUSA]
+     L'audit del motore ha contato SEI siti che scrivono possTurnRef, di cui UNO solo causale (la riga di
+     recupero) — e il cuore era la ri-estrazione a orologio: una Bernoulli senza memoria che a possesso 50%
+     meta' delle volte non cambia nulla ma resetta lo spell, e che poteva REVOCARE un recupero narrato il
+     tick dopo, perche' i flip causali non azzeravano lo spell. Da qui in poi ogni scrittura passa da
+     setTurn616(dir, causa): azzera spell/estensioni (salvo keepSpell, per il sito a orologio che ha il suo
+     sorteggio da non spostare — invariante 7.511), registra la causa nel libro mastro (cpmEv "turn") e in
+     __CPM_TURN616, cosi' il rapporto flip-causali/flip-a-orologio diventa UN NUMERO misurabile — il
+     numero-guida dello sprint. Le cause nuove (interruzioni, esiti di scena) e la sospensione dello spell
+     durante i fermi stanno sotto il rosso __CPM_NO616; la registrazione e' strumentazione e resta sempre. */
+  const setTurn616=(dir,causa,opts)=>{try{
+    const _d=dir>0?1:-1;const _prev=possTurnRef.current;
+    possTurnRef.current=_d;
+    if(!(opts&&opts.keepSpell)){possSpellRef.current=6;possExtRef.current=0;}
+    cpmEv("turn",{min:clockRef.current|0,dir:_d,flip:_prev!==_d?1:0,causa:String(causa||"?")});
+    if(typeof window!=='undefined'&&window.__CPM_TURN616){const _g=window.__CPM_TURN616;
+      _g.n=(_g.n|0)+1;const _k=String(causa||"?");(_g.per=_g.per||{})[_k]=((_g.per||{})[_k]|0)+1;
+      if(_prev!==_d)_g.flip=(_g.flip|0)+1;}
+  }catch(_e){}};
   /* [7.537.0 collaudo PO «molto possesso a centrocampo, a volte anche troppo da fermo su un singolo
      giocatore» — rosso __CPM_NO551] LA CATENA DI POSSESSO (MP-2 applicato alla cronaca). La MISURA prima
      del rimedio (sonda possesso-550, partita intera): la palla sta a piu' di 2,5u da CHIUNQUE per il
@@ -2174,7 +2193,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           const _htD77=scoreRef.current.home-scoreRef.current.away;
           addCom("⏸️ Duplice fischio: squadre negli spogliatoi.","#93c5fd",45);
           addCoach(_htD77>0?"⏸️ «Siamo in vantaggio — testa dritta nel secondo!»":_htD77<0?"⏸️ «Reagiamo nel secondo tempo — ci crediamo!»":"⏸️ «Tutto ancora aperto — il gol cambia tutto.»",45);/* [7.532.0 NO540] l'evento resta in telecronaca, il DISCORSO e' del mister */
-          if(!(typeof window!=='undefined'&&window.__CPM_NO536)){kickRef.current=3;ripT0Ref.current=Date.now();/* [7.590.0] anche il duplice fischio e' una ripresa */kickoffSideRef.current=(isMatchHome?"away":"home");if(!(typeof window!=='undefined'&&window.__CPM_NO543))possTurnRef.current=isMatchHome?-1:1;}/* [7.532.0 collaudo PO «a fine primo tempo, il secondo non riparte da centrocampo»] IL SECONDO TEMPO HA IL SUO CALCIO D'INIZIO: stessa macchina della ripartenza (conto → palla al centro → 2 battute recitate); convenzione: il secondo lo batte l'altra squadra */
+          if(!(typeof window!=='undefined'&&window.__CPM_NO536)){kickRef.current=3;ripT0Ref.current=Date.now();/* [7.590.0] anche il duplice fischio e' una ripresa */kickoffSideRef.current=(isMatchHome?"away":"home");if(!(typeof window!=='undefined'&&window.__CPM_NO543))setTurn616(isMatchHome?-1:1,"secondo-tempo");}/* [7.532.0 collaudo PO «a fine primo tempo, il secondo non riparte da centrocampo»] IL SECONDO TEMPO HA IL SUO CALCIO D'INIZIO: stessa macchina della ripartenza (conto → palla al centro → 2 battute recitate); convenzione: il secondo lo batte l'altra squadra */
           if(!_inHL77)chantFor("half",2000);
           setMomentum(m=>clamp(Math.round(m+(50-m)*0.5+_htD77*5),0,100));
           streakRef.current=0;
@@ -2249,7 +2268,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           if(_simEv77&&!_pg532){
             const _nostro532=_simEv77.ef==="team_goal";
             pendingGoalRef.current={ev:_simEv77,dir:_nostro532?1:-1,ticks:0,righe:0};
-            if(!(typeof window!=='undefined'&&window.__CPM_NO543))possTurnRef.current=_nostro532?1:-1;/* [7.532.0 NO543] l'azione pendente e' di chi segnera' */
+            if(!(typeof window!=='undefined'&&window.__CPM_NO543))setTurn616(_nostro532?1:-1,"gol-in-costruzione");/* [7.532.0 NO543] l'azione pendente e' di chi segnera' */
             _simEv77=null;
             addCom(_nostro532?"⚡ Azione manovrata: la squadra sale in blocco verso l'area!":"⚠️ L'avversario avanza compatto — pericolo in costruzione…",_nostro532?"#4ade80":"#f87171",nx);
           }else if(_pg532&&!_inHL77){
@@ -2306,7 +2325,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
             const _s544=situations[hlIdx];
             if(_s544){try{const _spb=hlBallSpot(_s544,(pPosRef.current&&pPosRef.current.x)||60,(pPosRef.current&&pPosRef.current.y)||50);
               ponteRef.current={x:_spb.x,y:_spb.y,def:_s544.type==="def"};
-              if(!(typeof window!=='undefined'&&window.__CPM_NO543))possTurnRef.current=_s544.type==="def"?-1:1;}catch(_e){}}
+              if(!(typeof window!=='undefined'&&window.__CPM_NO543))setTurn616(_s544.type==="def"?-1:1,"ponte-scena");}catch(_e){}}
           }
           if(ponteRef.current){const _tp=ballTargetRef.current;
             const _pdx=ponteRef.current.x-_tp.x,_pdy=ponteRef.current.y-_tp.y;const _pd=Math.hypot(_pdx,_pdy);
@@ -2802,7 +2821,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
           if(ev.txt&&(ev.txt.includes("PALO")||ev.txt.includes("TRAVERSA"))&&ev.ms?.shots)pushMatchEvent(nx,"post",em=>"🔩 Palo/traversa al "+em+"'");
           if(ev.poss){
             setPossession(p=>clamp(p+(ev.poss||0),20,80));
-            if(!(typeof window!=='undefined'&&window.__CPM_NO543))possTurnRef.current=ev.poss>0?1:-1;/* [7.532.0 NO543] la riga di recupero passa il TURNO: e' il «chi ha la palla adesso» che la trama consumera' */
+            if(!(typeof window!=='undefined'&&window.__CPM_NO543))setTurn616(ev.poss>0?1:-1,"riga-recupero");/* [7.532.0 NO543] la riga di recupero passa il TURNO: e' il «chi ha la palla adesso» che la trama consumera' */
             const isHomeGain=ev.poss>0;
             const ball=ballPosRef.current;
             setMatchPlayers(prev=>prev.map((pl,idx)=>{
@@ -2908,7 +2927,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
             var _cap528=_no528?45:30;
             if(_dd498>_cap528)_bt498={x:clamp(_cb498.x+_dx498/_dd498*_cap528,2,98),y:clamp(_cb498.y+_dy498/_dd498*_cap528,2,98)};
           }
-          if(/goal$/.test(String(ev.ef||""))&&!(typeof window!=='undefined'&&window.__CPM_NO528)){kickRef.current=(typeof window!=='undefined'&&window.__CPM_NO569)?4:5;ripT0Ref.current=Date.now();/* [7.590.0] QUI nasce la ripresa dopo un gol: e' l'istante da cui contano i suoi pochi secondi */kickGx573.current=(ev.ef==="team_goal")?100:0;kickIn573.current=false;kickAtt573.current=0;/* [7.573.0] da qui la ripartenza sa DOVE il pallone deve arrivare prima di tornare al centro */kickoffSideRef.current=(ev.ef==="team_goal")?"away":"home";if(!(typeof window!=='undefined'&&window.__CPM_NO543))possTurnRef.current=(ev.ef==="team_goal")?-1:1;/* [7.532.0 NO543] il calcio d'inizio passa il turno a chi ha subito */}/* [7.545.0 — collaudo PO «non si vedono i gol», rosso __CPM_NO569] 4->6 TICK: MISURATO coi tre palloni
+          if(/goal$/.test(String(ev.ef||""))&&!(typeof window!=='undefined'&&window.__CPM_NO528)){kickRef.current=(typeof window!=='undefined'&&window.__CPM_NO569)?4:5;ripT0Ref.current=Date.now();/* [7.590.0] QUI nasce la ripresa dopo un gol: e' l'istante da cui contano i suoi pochi secondi */kickGx573.current=(ev.ef==="team_goal")?100:0;kickIn573.current=false;kickAtt573.current=0;/* [7.573.0] da qui la ripartenza sa DOVE il pallone deve arrivare prima di tornare al centro */kickoffSideRef.current=(ev.ef==="team_goal")?"away":"home";if(!(typeof window!=='undefined'&&window.__CPM_NO543))setTurn616((ev.ef==="team_goal")?-1:1,"calcio-inizio");/* [7.532.0 NO543] il calcio d'inizio passa il turno a chi ha subito */}/* [7.545.0 — collaudo PO «non si vedono i gol», rosso __CPM_NO569] 4->6 TICK: MISURATO coi tre palloni
    insieme (hook __CPM_BALL3). Il BERSAGLIO del pallone va in rete sempre, 3/3 a 2,0u dalla linea: la
    riga del gol porta bpos x98 e il gol del microsim riusa quella riga. E' la MESH a non arrivarci —
    3,9 / 14,1 / 4,0u. Il motivo sta nell'invariante delle due sorgenti: il gol si scrive quando il
@@ -2963,6 +2982,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               const _ox559=_k559==="throw"?clamp(_bx559,8,92):_k559==="corner"?(_no559b?98:2):_k559==="goal_kick"?(_no559b?6:94):clamp(_bx559,8,92);
               const _oy559=_k559==="throw"?(_by559>=50?98:2):_k559==="corner"?(_by559>=50?96:4):_k559==="goal_kick"?50:clamp(_by559,6,94);
               outRef.current={kind:_k559,nostra:_no559b,x:_ox559,y:_oy559,step:0,ttl:4};
+              if(!(typeof window!=='undefined'&&window.__CPM_NO616))setTurn616(_no559b?1:-1,"interruzione-"+_k559);/* [7.616.0] l'interruzione SA di chi e' la palla (lo scrive in outRef.nostra da sempre) e finora lo buttava via: da qui il fatto diventa il turno */
               fermoRef.current={x:_ox559,y:_oy559,t:4,kind:_k559};
             /* [7.608.0 — IL PALLONE VIAGGIA VERSO LA BATTUTA, NON SI TELETRASPORTA. Rosso __CPM_NO608]
                COLLAUDO PO, due appunti con la stessa causa: «il pallone si muove come calamitato ma non ci
@@ -3263,7 +3283,8 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
           if(_k){
             const _ox=_k==="throw"?clamp(_bx,8,92):_k==="corner"?(_no?98:2):_k==="goal_kick"?(_no?6:94):clamp(_bx,8,92);
             const _oy=_k==="throw"?(_by>=50?98:2):_k==="corner"?(_by>=50?96:4):_k==="goal_kick"?50:clamp(_by,6,94);
-            outRef.current={kind:_k,nostra:_no,x:_ox,y:_oy,step:0,ttl:4,t0:Date.now()};/* [7.602.0] anche l'ora: vedi la scadenza in tempo vero nel clock tick */
+            outRef.current={kind:_k,nostra:_no,x:_ox,y:_oy,step:0,ttl:4,t0:Date.now()};
+            if(!(typeof window!=='undefined'&&window.__CPM_NO616))setTurn616(_no?1:-1,"interruzione-"+_k);/* [7.616.0] vedi il sito gemello della riga *//* [7.602.0] anche l'ora: vedi la scadenza in tempo vero nel clock tick */
             fermoRef.current={x:_ox,y:_oy,t:4,kind:_k};/* [7.566] DUE TICK NON BASTAVANO, e la misura lo ha detto: col fermo a 2 il pallone stava davvero fermo solo 5 volte su 10 (a 4 era 6 su 6). Il motivo non e' il tempo di GIOCO ma quello REALE: la mesh deve arrivare sul punto, e il conto scorre ora nel tick — che passa quando passa. */
             /* [7.608.0] stessa regola del sito 559: da lontano il pallone VIAGGIA verso la battuta. */
             ballTargetRef.current={x:_ox,y:_oy};
@@ -3575,7 +3596,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
            continuo — censimento: 0 flip anche con lo spell). Pesato sulla % (60% possesso ≈ 60% di spell
            nostri), flusso seedato dedicato, mai _rndM (invariante 7.511). Fermo durante kickoff/azione
            pendente/contropiede: li' il padrone lo dice la recita. */
-        if(!(typeof window!=='undefined'&&window.__CPM_NO553)&&phaseRef.current==='playing'&&kickoffRef.current<=0&&!pendingGoalRef.current&&!counterRef.current){/* [7.532.0] TURNI IN TARATURA: opt-in __CPM_TURNI543 — il modello a turni ha acceso 3 guardiani (trama 22,5°/33,8°, bg-rhythm cieco x4) e si tara in un ramo dedicato, non in produzione */
+        if(!(typeof window!=='undefined'&&window.__CPM_NO553)&&phaseRef.current==='playing'&&kickoffRef.current<=0&&!pendingGoalRef.current&&!counterRef.current&&((typeof window!=='undefined'&&window.__CPM_NO616)||(!fermoRef.current&&!outRef.current&&!spRef.current))){/* [7.616.0] lo spell NON corre a palla ferma: il turno cambiava a orologio mentre outRef.nostra dichiarava il contrario — le due verita' divergevano senza riconciliazione *//* [7.532.0] TURNI IN TARATURA: opt-in __CPM_TURNI543 — il modello a turni ha acceso 3 guardiani (trama 22,5°/33,8°, bg-rhythm cieco x4) e si tara in un ramo dedicato, non in produzione */
           possSpellRef.current--;
           if(possSpellRef.current<=0){
             if(!ballRngRef.current)ballRngRef.current=(((bgSimSeedRef.current||1)>>>0)^0x9e3779b9)>>>0;
@@ -3590,7 +3611,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
             else{possExtRef.current=0;
             const _pb543=clamp((possessionRef.current||50)/100,0.30,0.70);
             const _prevT543=possTurnRef.current;
-            possTurnRef.current=(_rr543()<_pb543)?1:-1;
+            setTurn616((_rr543()<_pb543)?1:-1,"orologio",{keepSpell:true});/* [7.616.0] il sorteggio e la durata dello spell restano QUI (invariante 7.511 sull'ordine dei sorteggi): il writer registra soltanto */
             possSpellRef.current=(typeof window!=='undefined'&&window.__CPM_NO553)?(30+Math.floor(_rr543()*25)):(4+Math.floor(_rr543()*6));/* ⚠️ [7.542.0] PROVATO E REVOCATO CON LA SUA MISURA: portare lo spell a 9-19 minuti perche' coprisse una finestra di visione. Rettilineita' del pallone 0,27->0,31 nel giro isolato, ma col ripiego sul ricevente il guadagno sparisce (0,26) e il possesso peggiora (fascia centrale 61%->65%, senza padrone 30%->40%). Il numero che conta resta quello sotto. *//* [7.542.0 collaudo PO «parecchi giro giro tondo col pallone» — rosso __CPM_NO561] LO SPELL DEVE DURARE PIU' DI UNA FINESTRA DI VISIONE. Misura che chiude la diagnosi: in ~10 secondi di visione passano ELEVEN minuti di gioco (la sonda li conta dal cronometro), mentre uno spell di possesso durava 4-9 minuti — quindi dentro una sola occhiata la palla cambiava padrone una o due volte e risaliva il campo nei due versi. Non era un difetto del modello: era il modello giusto guardato a velocita' sbagliata, e da fuori si legge «giro giro tondo». Portato a 9-19 minuti, uno spell copre almeno una finestra: chi guarda vede UNA squadra che attacca, non due che si scambiano il pallone sotto gli occhi. Restano ~5-7 ribaltamenti a partita, che e' quello che il 7.532 cercava quando i turni erano fermi a uno solo. *//* [7.538.0] 4-9 TICK = 4-9 MINUTI DI GIOCO: il 30-55 era stato scelto leggendo i tick come secondi reali («13-23s»), ma un tick E' un minuto — quello spell teneva la palla alla stessa squadra per mezzo tempo. *//* [7.532.0 v3b] 10-17→30-55 tick (≈13-23s reali): a 4-7s il possesso cambiava troppo fitto e SPEZZAVA le giocate — guardiano trama rosso a 22,5°/passo (soglia 20, storico 11°). Uno spell vero dura 15-25s. */
             /* [7.532.0 NO542 v3] il CONTROPIEDE si arma QUI, al flip vero (la v2 armava alla nascita-trama,
                ramo che scatta di rado: 1 armato e 0 recitati su partita intera): flip col pallone nel terzo
@@ -4730,6 +4751,14 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
         else{_rx=44+_rr()*12;_drift="midfield";}
         ballTargetRef.current={x:_rx,y:_ry};setBallPos({x:_rx,y:_ry});// SNAP immediato (target=pos) → niente lerp/scivolamento all'indietro
         driftTargetsRef.current=DRIFT_PRESETS[_drift]||DRIFT_PRESETS.midfield;
+        /* [7.616.0] L'ESITO DELLA SCENA CLASSIFICA GIA' IL TURNOVER E NON LO PROPAGAVA: questo stesso
+           ramo sceglie il punto di ripresa PROPRIO per outKey (parata → retrovie nostre, tiro fuori →
+           l'avversario rilancia) ma il turno ambientale restava quello del sorteggio a orologio — in
+           contraddizione con la scena appena vista. Ora il fatto scrive anche il turno, con la sua causa. */
+        if(!(typeof window!=='undefined'&&window.__CPM_NO616)){
+          const _t616=(_ok==="save"||_ok==="recovery"||_ok==="intercept"||_ok==="assist"||_ok==="through")?1:(_ok==="wide"||_ok==="miss"||_ok==="post")?-1:0;
+          if(_t616)setTurn616(_t616,"esito-scena-"+_ok);
+        }
         setCutFx({key:Date.now(),dur:360});// stacco cinematografico che maschera il riposizionamento
         setPhase("playing");
       }
