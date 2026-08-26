@@ -1,6 +1,6 @@
 # CPM — Report Validazione Automatica Situations (motore 3D)
 
-_GAME_VERSION 7.227.0_
+_GAME_VERSION 7.593.0_
 
 ## Sommario
 | Metrica | Valore |
@@ -25,37 +25,38 @@ _GAME_VERSION 7.227.0_
 ## Anomalie per categoria
 | Categoria | fail | warn |
 |---|---|---|
-| ball | 0 | 0 |
+| ball | 0 | 3 |
 | sync | 0 | 0 |
 | camera | 0 | 0 |
 | posthl | 0 | 0 |
 | hero | 0 | 0 |
-| coerenza | 0 | 13 |
+| coerenza | 0 | 11 |
 
 ## Guardie di consistenza modello↔sorgente
-✅ Tutte le 17 guardie superate — il modello rispecchia il motore reale.
+✅ Tutte le 18 guardie superate — il modello rispecchia il motore reale.
 
 ## Raccomandazioni azionabili
 1. Nessuna raccomandazione critica — catalogo coerente.
 
 ## Problemi più frequenti
-- **12×** [warn] (coerenza) cross da posizione centrale (…)
+- **10×** [warn] (coerenza) cross da posizione centrale (…)
+- **3×** [warn] (ball) velocità di picco non plausibile (…)
 - **1×** [warn] (coerenza) volée su palla non aerea (…)
 
 ## Classifica — 50 situations peggiori (per Realism Score)
 | # | Realism | Situation | Azione | type/variant | Problemi |
 |---|---|---|---|---|---|
-| 1 | 97 | 🎯 Tiro ad incrociare sul palo | ↗️ Cross basso sul secondo | cross/cross_far_post | 🟡cross da posizione centrale (non laterale) |
-| 2 | 97 | 🦶 Tiro col mancino a sorpresa | ↗️ Cross col mancino | cross/cross_near_post | 🟡cross da posizione centrale (non laterale) |
-| 3 | 97 | ⚡ Cross di prima senza guardar | ⚡ Cross cieco di prima | cross/cross_near_post | 🟡cross da posizione centrale (non laterale) |
-| 4 | 97 | ⚡ Cross di prima senza guardar | 🎯 Cross a rientrare guard | cross/cross_cutback | 🟡cross da posizione centrale (non laterale) |
-| 5 | 97 | 🌀 Elastico in area! | ↗️ Cross dopo dribbling | cross/cross_near_post | 🟡cross da posizione centrale (non laterale) |
-| 6 | 97 | 🦵 Step-over e via! | 🌀 Step-over e cross | cross/cross_near_post | 🟡cross da posizione centrale (non laterale) |
-| 7 | 97 | 💨 Finta di corpo e scatto! | 🌀 Finta di corpo e cross | cross/cross_near_post | 🟡cross da posizione centrale (non laterale) |
-| 8 | 97 | ⚡ Scatto puro — nessuno ti seg | ↗️ Cross al volo in corsa | cross/cross_near_post | 🟡cross da posizione centrale (non laterale) |
-| 9 | 97 | 🌀 Cambio di direzione a 180°! | 🎯 Giro e cross | cross/cross_near_post | 🟡cross da posizione centrale (non laterale) |
-| 10 | 97 | 🛑 Cross basso in area — inter | 🛑 Blocca il cross con il  | cross/cross_near_post | 🟡cross da posizione centrale (non laterale) |
-| 11 | 97 | 🏃 Rimessa dal portiere — vert | 🏃 Scatto in profondità e  | cross/cross_far_post | 🟡cross da posizione centrale (non laterale) |
+| 1 | 93 | 🏃 Rimessa dal portiere — vert | 🏃 Scatto in profondità e  | cross/cross_far_post | 🟡velocità di picco non plausibile (81 u/s); 🟡cross da posizione centrale (non laterale) |
+| 2 | 96 | ⚡ Corsa di inserimento sul cro | 🦵 Tiro di prima | shot/shot_first_time | 🟡velocità di picco non plausibile (75 u/s) |
+| 3 | 96 | 🎯 Lancio millimetrico in prof | 💥 Missile a scavalcare la | shot/shot_power | 🟡velocità di picco non plausibile (80 u/s) |
+| 4 | 97 | 🎯 Tiro ad incrociare sul palo | ↗️ Cross basso sul secondo | cross/cross_far_post | 🟡cross da posizione centrale (non laterale) |
+| 5 | 97 | 🦶 Tiro col mancino a sorpresa | ↗️ Cross col mancino | cross/cross_near_post | 🟡cross da posizione centrale (non laterale) |
+| 6 | 97 | 🌀 Elastico in area! | ↗️ Cross dopo dribbling | cross/cross_near_post | 🟡cross da posizione centrale (non laterale) |
+| 7 | 97 | 🦵 Step-over e via! | 🌀 Step-over e cross | cross/cross_near_post | 🟡cross da posizione centrale (non laterale) |
+| 8 | 97 | 💨 Finta di corpo e scatto! | 🌀 Finta di corpo e cross | cross/cross_near_post | 🟡cross da posizione centrale (non laterale) |
+| 9 | 97 | ⚡ Scatto puro — nessuno ti seg | ↗️ Cross al volo in corsa | cross/cross_near_post | 🟡cross da posizione centrale (non laterale) |
+| 10 | 97 | 🌀 Cambio di direzione a 180°! | 🎯 Giro e cross | cross/cross_near_post | 🟡cross da posizione centrale (non laterale) |
+| 11 | 97 | 🛑 Cross basso in area — inter | 🛑 Blocca il cross con il  | cross/cross_near_post | 🟡cross da posizione centrale (non laterale) |
 | 12 | 97 | 🎯 Cucchiaio a giro sul palo l | ↗️ Cross sul secondo palo | cross/cross_far_post | 🟡cross da posizione centrale (non laterale) |
 | 13 | 97 | 👟 Muro di prima e scatto — da | ⚡ Uno-due e conclusione al | shot/shot_power | 🟡volée su palla non aerea (feet) |
 | 14 | 100 | ⚡ Solo davanti al portiere! | 🦵 Tiro angolato | shot/shot_one_on_one | — |
@@ -114,12 +115,12 @@ _GAME_VERSION 7.227.0_
 | Zona | Sits |
 |---|---|
 | trequarti | 88 |
-| bordo | 87 |
+| bordo | 86 |
 | area | 69 |
 | centro | 41 |
 | difesa | 29 |
 | propria | 14 |
-| fascia | 4 |
+| fascia | 5 |
 
 _Situations con campo `tactic`: **191** / 191_
 

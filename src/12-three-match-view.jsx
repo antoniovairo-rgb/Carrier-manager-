@@ -1667,7 +1667,11 @@ function ThreeMatchView(props){
       if(d>0.5)ta=Math.atan2(dx,dz);
       else if(bx!==undefined){const fx=bx-mesh.position.x,fz=bz-mesh.position.z;if(Math.hypot(fx,fz)>0.6)ta=Math.atan2(fx,fz);}
       let _rotApplied=0;
-      if(ta!==undefined){const da=((ta-mesh.rotation.y+Math.PI*3)%(Math.PI*2))-Math.PI;_rotApplied=da*Math.min((d>0.5?6:3)*dt,1);mesh.rotation.y+=_rotApplied;}// item 5 (5.49.1): rotazioni più MORBIDE (turn-rate 9→6) → niente giravolte innaturali
+      /* [7.611.0] il lucchetto dell'acrobazia: se un gesto ha appena dichiarato di possedere l'imbardata
+         (entro 300 ms), il facing di corsa NON la tocca. E' il rimedio al ping-pong misurato col testimone
+         sulla proprieta' — 22 scritture del gesto contro 21 di questa riga, alternate una a una. */
+      const _lock611=!(typeof window!=='undefined'&&window.__CPM_NO611)&&mesh._yawLock611&&((typeof performance!=='undefined'?performance.now():0)-mesh._yawLock611)<300;
+      if(ta!==undefined&&!_lock611){const da=((ta-mesh.rotation.y+Math.PI*3)%(Math.PI*2))-Math.PI;_rotApplied=da*Math.min((d>0.5?6:3)*dt,1);mesh.rotation.y+=_rotApplied;}// item 5 (5.49.1): rotazioni più MORBIDE (turn-rate 9→6) → niente giravolte innaturali
       // 3D-H2: torso lag — busto segue direzione con ritardo, inerzia corporea
       if(mesh._torso){mesh._tRot=(mesh._tRot||0)*(1-Math.min(dt*4.5,0.95))-_rotApplied*0.5;mesh._torso.rotation.y=clamp(mesh._tRot,-0.45,0.45);}
       // 3D-LOCO (Sprint B): crossfade continuo corsa↔idle — niente soglia dura (via "T-pose glide"
@@ -5157,8 +5161,61 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                    IL COMPORTAMENTO RESTA QUELLO DEL 7.569: revocarlo non migliora (12-19-57 contro 37 sono
                    scene diverse, non un confronto), e togliere codice senza una misura che lo condanni e'
                    un'altra scommessa. Si tocca quando si sa. */
+                /* [7.611.0 SOLO COLLAUDO] IL TESTIMONE SULL'IMBARDATA: chi riscrive hero.rotation.y
+                   durante l'acrobazia. Il PO l'ha segnalata SETTE volte e il mio strumento precedente si
+                   guardava allo specchio (leggeva dentro il blocco che scrive). Qui si intercetta la
+                   PROPRIETA' stessa: ogni scrittura fra l'inizio e la fine del gesto finisce nel registro
+                   con il valore e l'impronta della pila. Costo zero senza bandiera. */
+                if(typeof window!=='undefined'&&window.__CPM_ROV611&&!hero._rov611){hero._rov611=1;try{
+                  const _eu=hero.rotation;let _val=_eu.y;
+                  Object.defineProperty(_eu,'y',{configurable:true,get(){return _val;},set(v){
+                    try{const R=window.__CPM_ROV611;if(R.length<400){const st=(new Error()).stack||'';
+                      R.push({v:+(+v).toFixed(2),st:st.split('\n')[2]?String(st.split('\n')[2]).slice(0,90):'?'});}}catch(_e){}
+                    _val=v;if(_eu._onChangeCallback)_eu._onChangeCallback();}});
+                }catch(_e){}}
                 if(sr.current._rovY569==null||u<0.06)sr.current._rovY569=hero.rotation.y||0;
-                if(!(typeof window!=='undefined'&&window.__CPM_NO569B))hero.rotation.y=sr.current._rovY569+Math.PI;
+                /* [7.611.0 — DURANTE L'ACROBAZIA L'IMBARDATA HA UN SOLO PADRONE, rosso __CPM_NO611]
+                   COLLAUDO PO, SETTIMA segnalazione: «rovesciata al contrario, il piede che calcia deve
+                   stare in direzione della porta». Il testimone sulla PROPRIETA' (Object.defineProperty su
+                   rotation.y, che il mio strumento precedente non aveva: si guardava allo specchio) ha
+                   nominato i colpevoli in una riga: 22 scritture da QUESTO blocco e 21 da animOne, a
+                   PING-PONG a ogni fotogramma (7,12 · 6,93 · 7,12 · 6,93...). Il mezzo giro del 7.569
+                   veniva scritto e mezzo disfatto dal facing di corsa, ogni fotogramma, per tutto il
+                   gesto: SESTA istanza della patologia della giornata. Qui si arma un lucchetto a tempo;
+                   animOne lo rispetta (vedi la sua nota). */
+                hero._yawLock611=(typeof performance!=='undefined')?performance.now():1;
+                /* ⚠️ [7.611.0 — IL MEZZO GIRO DEL 7.569 ERA LUI IL DIFETTO: REVOCATO, con la prova]
+                   COLLAUDO PO, SETTIMA segnalazione: «rovesciata al contrario, il piede che calcia deve
+                   stare in direzione della porta». La prova e' arrivata in due pezzi, entrambi misurati:
+                   (1) il testimone sulla PROPRIETA' rotation.y (Object.defineProperty) ha mostrato un
+                   PING-PONG a ogni fotogramma fra questo blocco e animOne (22 contro 21 scritture,
+                   7,12 · 6,93 · 7,12 · 6,93...): il facing di corsa disfaceva il mezzo giro ogni frame —
+                   sesta istanza di «piu' autorita' sulla stessa grandezza», curata col lucchetto qui sotto;
+                   (2) col lucchetto attivo il testimone ha mostrato la cattura pre-gesto PULITA: 3,74 rad,
+                   cioe' GIA' spalle alla porta — il rig arrivava al gesto orientato bene, e il +Math.PI
+                   di questo rammento lo girava verso la porta. Cinque release di correzioni (7.551, 7.553,
+                   7.560, 7.569, 7.597) hanno inseguito un difetto che era stato INTRODOTTO qui, e ognuna
+                   misurava col ping-pong attivo che rendeva ogni braccio uguale all'altro.
+                   Il mezzo giro muore; resta la cattura (per il freeze del gesto) e il lucchetto.
+                   MISURATO dopo la sola revoca, col lucchetto attivo: ancora 37° e 30° — la revoca
+                   toglieva il danno ma da sola non bastava; il dovere (spalle alla porta, ~180°) arriva
+                   col set assoluto qui sotto. __CPM_ROV_MEZZOGIRO lo riaccende per i provini. */
+                if(typeof window!=='undefined'&&window.__CPM_ROV_MEZZOGIRO)hero.rotation.y=sr.current._rovY569+Math.PI;
+                /* [7.611.0 — LA ROVESCIATA SI GIRA DA SOLA, IN ASSOLUTO. Rosso __CPM_NO611B]
+                   Ultimo pezzo, e chiude il cerchio: tolto il mezzo giro e fermato il ping-pong, la misura
+                   sui fotogrammi freschi diceva ANCORA 37°/30° — perche' l'eroe ENTRA nel gesto guardando
+                   la porta (animOne lo stava portando sul pallone) e senza scrittori resta cosi'. Un
+                   mezzo giro RELATIVO era la risposta sbagliata a prescindere: dipendeva da come arrivavi.
+                   Qui l'imbardata si fissa in ASSOLUTO, spalle alla porta, dalla posizione vera del
+                   giocatore — il criterio dettato dal PO alla settima segnalazione. Convenzione di mk:
+                   fx=sin(ry) e' la componente x di gioco, fy=-cos(ry) la y. Spalle alla porta (100,50):
+                   sin(ry)=-(100-gx)/n, cos(ry)=(50-gy)/n.
+                   MISURATO (sonda 596 con filtro freschezza t611, solo fotogrammi del gesto):
+                   gi1 180°, gi41 180°, gi68 180° dal facing alla porta — prima: 38°, 30°, 96°. */
+                if(!(typeof window!=='undefined'&&window.__CPM_NO611B)){
+                  const _gx611=(hero.position.x+50),_gy611=(hero.position.z/0.68+50);
+                  hero.rotation.y=Math.atan2(-(100-_gx611),(50-_gy611));
+                }
                 /* [7.569.0] IL SEGNO SI E' SCELTO GUARDANDO, non calcolando: con l'ordine YXZ i due versi
                    danno due gesti diversi e riconoscibili. +1 stende il corpo di fianco (testa da una parte,
                    piedi dall'altra, a terra). -1 da' la sagoma vera della rovesciata: TESTA BASSA, gambe in
@@ -5166,7 +5223,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                    criterio che il PO ha dettato. La manopola resta per i provini futuri. */
                 const _sg569=(typeof window!=='undefined'&&window.__CPM_ROV_SGN)?(+window.__CPM_ROV_SGN||-1):-1;
                 hero.rotation.x=1.5*sw*_sg569;if(hero._ring553)hero._ring553.rotation.x=Math.PI/2-1.5*sw*_sg569;}/* [7.560.0 — collaudo PO «rovesciata al contrario», QUINTA segnalazione, la seconda dopo un mio rimedio. Il 7.553 aveva messo la rotazione del corpo intero sull'asse giusto (X) ma con il VERSO sbagliato, e stavolta lo dice una fotografia, non un conto: al culmine del salto l'eroe ha la TESTA IN ALTO e le GAMBE IN BASSO — un tuffo in avanti, non una rovesciata. In una rovesciata vera al momento del colpo la testa e' bassa, vicino al terreno, e il piede che colpisce e' alto. Il segno si inverte, e l'aureola compensa nell'altro verso per restare in piano. *//* [7.553.0] l'aureola resta in piano mentre il corpo gira: e' un segno di regia, non una parte del corpo */
-              if(_CPM_TEST&&typeof window!=='undefined'){try{window.__CPM_VOLLEY={u:+u.toFixed(2),acro:1,rx:+(hero.rotation.x||0).toFixed(2),lR:+hero._lR.rotation.x.toFixed(2),tx:+((hero._torso&&hero._torso.rotation.x)||0).toFixed(2),ty:+((hero._torso&&hero._torso.rotation.y)||0).toFixed(2),y:+hero.position.y.toFixed(2),lR:+hero._lR.rotation.x.toFixed(2)};}catch(_e){}} /* [7.553 sonda] TESTIMONE DELLA ROVESCIATA, DOPO LE ASSEGNAZIONI. La prima stesura leggeva PRIMA, e restituiva i valori che `animOne` aveva lasciato all'inizio del fotogramma: salto 0,05 e gamba 0,22 al posto di 1,8 e -3,2. Un testimone messo nel punto sbagliato non misura il gesto, misura chi lo precede. */
+              if(_CPM_TEST&&typeof window!=='undefined'){try{window.__CPM_VOLLEY={u:+u.toFixed(2),acro:1,t611:(typeof performance!=='undefined'?Math.round(performance.now()):0),rx:+(hero.rotation.x||0).toFixed(2),lR:+hero._lR.rotation.x.toFixed(2),tx:+((hero._torso&&hero._torso.rotation.x)||0).toFixed(2),ty:+((hero._torso&&hero._torso.rotation.y)||0).toFixed(2),y:+hero.position.y.toFixed(2),lR:+hero._lR.rotation.x.toFixed(2)};}catch(_e){}} /* [7.553 sonda] TESTIMONE DELLA ROVESCIATA, DOPO LE ASSEGNAZIONI. La prima stesura leggeva PRIMA, e restituiva i valori che `animOne` aveva lasciato all'inizio del fotogramma: salto 0,05 e gamba 0,22 al posto di 1,8 e -3,2. Un testimone messo nel punto sbagliato non misura il gesto, misura chi lo precede. */
               }
             }else if(P.hlVariant==="shot_curled"){// tiro a giro: rotazione anca pronunciata, interno collo-piede
               hero._lR.rotation.x=-2.6*sw;hero._lL.rotation.x=0.6*sw;hero._aL.rotation.x=1.2*sw;hero._aR.rotation.x=-0.4*sw;hero.rotation.y=Math.sin(u*Math.PI)*0.45;if(hero._torso)hero._torso.rotation.y=sw*0.4;

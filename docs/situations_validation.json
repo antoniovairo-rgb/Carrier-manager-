@@ -23,7 +23,11 @@
       "ok": true
     },
     {
-      "name": "parabola y=0.65+sin(u*PI)*ballArcH",
+      "name": "altezza dell'arco: pancia*ampiezza + corda contatto→arrivo",
+      "ok": true
+    },
+    {
+      "name": "senza profilo la pancia resta sin(u*PI) (parabola classica conservata)",
       "ok": true
     },
     {
@@ -85,6 +89,68 @@
   ],
   "worst": [
     {
+      "si": 148,
+      "ai": 0,
+      "realismo": 93,
+      "sit": "🏃 Rimessa dal portiere — verticale!",
+      "act": "🏃 Scatto in profondità e cross basso",
+      "cls": {
+        "type": "cross",
+        "pattern": "FAR_POST_CROSS",
+        "variant": "cross_far_post"
+      },
+      "issues": [
+        {
+          "cat": "ball",
+          "sev": "warn",
+          "msg": "velocità di picco non plausibile (81 u/s)"
+        },
+        {
+          "cat": "coerenza",
+          "sev": "warn",
+          "msg": "cross da posizione centrale (non laterale)"
+        }
+      ]
+    },
+    {
+      "si": 39,
+      "ai": 1,
+      "realismo": 96,
+      "sit": "⚡ Corsa di inserimento sul cross!",
+      "act": "🦵 Tiro di prima",
+      "cls": {
+        "type": "shot",
+        "pattern": "EDGE_SHOT",
+        "variant": "shot_first_time"
+      },
+      "issues": [
+        {
+          "cat": "ball",
+          "sev": "warn",
+          "msg": "velocità di picco non plausibile (75 u/s)"
+        }
+      ]
+    },
+    {
+      "si": 156,
+      "ai": 2,
+      "realismo": 96,
+      "sit": "🎯 Lancio millimetrico in profondità!",
+      "act": "💥 Missile a scavalcare la difesa",
+      "cls": {
+        "type": "shot",
+        "pattern": "EDGE_SHOT",
+        "variant": "shot_power"
+      },
+      "issues": [
+        {
+          "cat": "ball",
+          "sev": "warn",
+          "msg": "velocità di picco non plausibile (80 u/s)"
+        }
+      ]
+    },
+    {
       "si": 63,
       "ai": 2,
       "realismo": 97,
@@ -113,44 +179,6 @@
         "type": "cross",
         "pattern": "NEAR_POST_CROSS",
         "variant": "cross_near_post"
-      },
-      "issues": [
-        {
-          "cat": "coerenza",
-          "sev": "warn",
-          "msg": "cross da posizione centrale (non laterale)"
-        }
-      ]
-    },
-    {
-      "si": 87,
-      "ai": 0,
-      "realismo": 97,
-      "sit": "⚡ Cross di prima senza guardare!",
-      "act": "⚡ Cross cieco di prima",
-      "cls": {
-        "type": "cross",
-        "pattern": "NEAR_POST_CROSS",
-        "variant": "cross_near_post"
-      },
-      "issues": [
-        {
-          "cat": "coerenza",
-          "sev": "warn",
-          "msg": "cross da posizione centrale (non laterale)"
-        }
-      ]
-    },
-    {
-      "si": 87,
-      "ai": 1,
-      "realismo": 97,
-      "sit": "⚡ Cross di prima senza guardare!",
-      "act": "🎯 Cross a rientrare guardato",
-      "cls": {
-        "type": "cross",
-        "pattern": "CUTBACK",
-        "variant": "cross_cutback"
       },
       "issues": [
         {
@@ -265,25 +293,6 @@
         "type": "cross",
         "pattern": "NEAR_POST_CROSS",
         "variant": "cross_near_post"
-      },
-      "issues": [
-        {
-          "cat": "coerenza",
-          "sev": "warn",
-          "msg": "cross da posizione centrale (non laterale)"
-        }
-      ]
-    },
-    {
-      "si": 148,
-      "ai": 0,
-      "realismo": 97,
-      "sit": "🏃 Rimessa dal portiere — verticale!",
-      "act": "🏃 Scatto in profondità e cross basso",
-      "cls": {
-        "type": "cross",
-        "pattern": "FAR_POST_CROSS",
-        "variant": "cross_far_post"
       },
       "issues": [
         {

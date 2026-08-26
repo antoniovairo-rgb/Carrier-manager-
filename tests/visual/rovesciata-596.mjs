@@ -25,6 +25,10 @@ console.log(`  intento della scena #${GI}: ${intent || '(non dichiarato)'}`);
 await page.evaluate(() => { window.__CPM_ROVT = setInterval(() => { try {
   const v = window.__CPM_VOLLEY; const st = window.__CPM_STATE && window.__CPM_STATE();
   if (!v || !v.acro || !st || !st.hero) return;
+  /* [7.611.0] SOLO fotogrammi in cui il gesto ha scritto DAVVERO in questo giro: il registro __CPM_VOLLEY
+     resta stantio dopo il gesto, e la sonda misurava l'imbardata post-gesto spacciandola per acrobazia —
+     e' il motivo per cui tre rimedi diversi davano lo stesso angolo. */
+  if (v.t611 == null || (performance.now() - v.t611) > 300) return;
   const R = window.__CPM_ROV; if (R.length > 60) return;
   /* l'eroe attacca la porta a gx=100: la direzione della porta e' quella dal giocatore verso x=100. */
   const dx = 100 - st.hero.x, dy = 50 - st.hero.y;

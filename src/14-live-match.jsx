@@ -3301,6 +3301,19 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
           if(outRef.current&&outRef.current.t0&&(_now602-outRef.current.t0)>5000){outRef.current=null;fermoRef.current=null;}
           if(spRef.current&&spRef.current.t0&&(_now602-spRef.current.t0)>5000){spRef.current=null;}
         }
+        /* [7.610.0 — ANCHE LA RIPRESA SCADE IN TEMPO VERO, rosso __CPM_NO610]
+           Il gemello dichiarato del 7.602, gia' misurato nel 7.590 e rimasto aperto: `kickRef` e
+           `kickoffRef` scendono solo quando la cronaca aggancia una riga, e restano sopra zero per 19-28
+           SECONDI a ogni gol. Il censimento degli stati dice che questo vale il 21% DELLA PARTITA — piu'
+           di highlight e fermi messi insieme — e per tutto quel tempo il gol resta parcheggiabile
+           (7.575), la palla esente dai guardiani del fermo (7.578) e il gioco in un limbo che non e' ne'
+           festa ne' partita. La recita vera (pallone in rete, boato, rientro) sta nei primi secondi:
+           MISURATO nel 7.590, la finestra utile dura 2-4,5 s. Otto secondi dall'armamento bastano a
+           qualunque recita; oltre, i contatori mentono. `ripT0Ref` e' gia' armato nei tre siti giusti
+           (gol, duplice fischio, calcio d'inizio recitato) dal 7.590. */
+        if(!(typeof window!=='undefined'&&window.__CPM_NO610)&&ripT0Ref.current>0&&(Date.now()-ripT0Ref.current)>8000&&((kickRef.current|0)>0||(kickoffRef.current|0)>0)){
+          kickRef.current=0;kickoffRef.current=0;ripT0Ref.current=0;
+        }
         const _koNow590=((kickRef.current|0)>0||(kickoffRef.current|0)>0);
         ripTickRef.current=_koNow590?((ripTickRef.current|0)+1):0;
         /* [7.590.0] la finestra si apre SOLO dove la ripresa viene ARMATA (gol, duplice fischio, calcio
