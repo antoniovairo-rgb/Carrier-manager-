@@ -2917,7 +2917,20 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               const _oy559=_k559==="throw"?(_by559>=50?98:2):_k559==="corner"?(_by559>=50?96:4):_k559==="goal_kick"?50:clamp(_by559,6,94);
               outRef.current={kind:_k559,nostra:_no559b,x:_ox559,y:_oy559,step:0,ttl:4};
               fermoRef.current={x:_ox559,y:_oy559,t:4,kind:_k559};
-              ballTargetRef.current={x:_ox559,y:_oy559};setBallPos({x:_ox559,y:_oy559});/* [7.559.0] l'arbitro porta il pallone sul punto: il logico ci arriva subito, la mesh lo raggiunge e ci RESTA */
+            /* [7.608.0 — IL PALLONE VIAGGIA VERSO LA BATTUTA, NON SI TELETRASPORTA. Rosso __CPM_NO608]
+               COLLAUDO PO, due appunti con la stessa causa: «il pallone si muove come calamitato ma non ci
+               sono portatori» e «il portiere fa giro giro tondo». MISURATO (teleball-607/giro-gk-607):
+               2,5 teletrasporti del pallone al minuto (>10 u in UN fotogramma), 4 su 5 verso il punto del
+               rinvio dal fondo (94,50); e i portieri, che si rigirano a ogni salto per guardare il
+               pallone, fanno 3,2 e 4,7 GIRI COMPLETI al minuto. La causa era il setBallPos istantaneo di
+               questa riga (7.559: «il logico ci arriva subito») da QUALUNQUE punto del campo.
+               Ora: se il punto di battuta e' lontano piu' di 8 unita', si consegna solo il BERSAGLIO e il
+               lerp del pallone ce lo porta (~1 s per mezzo campo) — un raccattapalle di fatto; da vicino
+               resta lo snap, che a corto raggio l'occhio non vede. Il fermo dichiarato parte comunque:
+               arriva il pallone, e ci resta. */
+              ballTargetRef.current={x:_ox559,y:_oy559};
+              {const _b608=ballPosRef.current||{x:50,y:50};const _lont608=Math.hypot(_ox559-_b608.x,_oy559-_b608.y)>8;
+               if((typeof window!=='undefined'&&window.__CPM_NO608)||!_lont608)setBallPos({x:_ox559,y:_oy559});}
               if(typeof window!=='undefined'&&window.__CPM_REC){try{const _w=(window.__CPM_INT559=window.__CPM_INT559||{n:0,tipi:{},min:[]});_w.n++;_w.tipi[_k559]=(_w.tipi[_k559]||0)+1;if(_w.min&&_w.min.length<400)_w.min.push({m:nx,k:_k559});}catch(_e){}}
             }
           }
@@ -3195,7 +3208,10 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
             const _oy=_k==="throw"?(_by>=50?98:2):_k==="corner"?(_by>=50?96:4):_k==="goal_kick"?50:clamp(_by,6,94);
             outRef.current={kind:_k,nostra:_no,x:_ox,y:_oy,step:0,ttl:4,t0:Date.now()};/* [7.602.0] anche l'ora: vedi la scadenza in tempo vero nel clock tick */
             fermoRef.current={x:_ox,y:_oy,t:4,kind:_k};/* [7.566] DUE TICK NON BASTAVANO, e la misura lo ha detto: col fermo a 2 il pallone stava davvero fermo solo 5 volte su 10 (a 4 era 6 su 6). Il motivo non e' il tempo di GIOCO ma quello REALE: la mesh deve arrivare sul punto, e il conto scorre ora nel tick — che passa quando passa. */
-            ballTargetRef.current={x:_ox,y:_oy};setBallPos({x:_ox,y:_oy});
+            /* [7.608.0] stessa regola del sito 559: da lontano il pallone VIAGGIA verso la battuta. */
+            ballTargetRef.current={x:_ox,y:_oy};
+            {const _b608b=ballPosRef.current||{x:50,y:50};const _lont608b=Math.hypot(_ox-_b608b.x,_oy-_b608b.y)>8;
+             if((typeof window!=='undefined'&&window.__CPM_NO608)||!_lont608b)setBallPos({x:_ox,y:_oy});}
             if(typeof window!=='undefined'&&window.__CPM_REC){try{const _w=(window.__CPM_INT559=window.__CPM_INT559||{n:0,tipi:{},min:[]});_w.n++;_w.tipi[_k]=(_w.tipi[_k]||0)+1;if(_w.min&&_w.min.length<400)_w.min.push({m:nx,k:_k});}catch(_e){}}
           }
         }
