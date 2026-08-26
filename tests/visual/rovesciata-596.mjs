@@ -28,7 +28,7 @@ await page.evaluate(() => { window.__CPM_ROVT = setInterval(() => { try {
   const R = window.__CPM_ROV; if (R.length > 60) return;
   /* l'eroe attacca la porta a gx=100: la direzione della porta e' quella dal giocatore verso x=100. */
   const dx = 100 - st.hero.x, dy = 50 - st.hero.y;
-  R.push({ u: v.u, ry: st.hero.ry, rx: v.rx, gx: st.hero.x, gy: st.hero.y, gdx: +dx.toFixed(1), gdy: +dy.toFixed(1) });
+  R.push({ u: v.u, ry: st.hero.ry, ry0: v.ry0, ryF: v.ryF, rx: v.rx, gx: st.hero.x, gy: st.hero.y, gdx: +dx.toFixed(1), gdy: +dy.toFixed(1) });
 } catch (_e) {} }, 60); });
 await page.evaluate(() => window.__CPM_RESOLVE && window.__CPM_RESOLVE(0));/* [7.596.0] l'acrobazia esiste solo se la scena arriva alla CONCLUSIONE: senza questo la sonda guardava una scena che non tirava mai */
 const shots = [];
@@ -64,5 +64,18 @@ const angoli = base.map(r => { const fx = Math.sin(r.ry), fy = -Math.cos(r.ry); 
 const media = angoli[Math.floor(angoli.length / 2)];
 console.log(`  fotogrammi del CORPO del gesto (u fra 0,1 e 0,9): ${corpo.length} su ${R.length}${corpo.length ? '' : "  ⚠ nessuno: si ripiega su tutti, e il numero vale meno"}`);
 console.log(`\n  angolo MEDIO verso la porta: ${media.toFixed(0)}°  (deve stare vicino a 180: spalle alla porta)`);
+/* [7.596.0] IL MEZZO GIRO SI VERIFICA DENTRO LA SCENA, non fra due run. */
+{const c2 = (corpo.length ? corpo : R).filter(r => r.ry0 != null && r.ryF != null);
+ if (!c2.length) console.log("  ⚠ imbardata di partenza non esposta: il mezzo giro NON e' verificabile");
+ else { const d = c2.map(r => { let g = (r.ryF - r.ry0) * 180 / Math.PI; while (g > 180) g -= 360; while (g < -180) g += 360; return Math.abs(g); }).sort((a, b2) => a - b2);
+   const md = d[Math.floor(d.length / 2)];
+   console.log(`\n  mezzo giro applicato (rotation.y meno imbardata di partenza): ${md.toFixed(0)}°  — deve fare 180`);
+   /* ⚠️ [7.597.0] QUESTO NUMERO NON DICE QUELLO CHE SEMBRA, e mi ha ingannato: `ry0` e `ryF` sono letti
+      DENTRO il blocco della rovesciata, un istante dopo che il blocco stesso li ha scritti. Misurano la
+      scrittura, non il risultato. La mesh vera e' `st.hero.ry`, letta a fine fotogramma — ed e' diversa.
+      Serve solo a dire se il blocco fa il suo mestiere, non se l'effetto sopravvive. */
+   console.log(`  ${md > 170 ? '~ il blocco SCRIVE il mezzo giro (ma questo non dice se sopravvive: vedi nota)' : '✘ il blocco non scrive nemmeno il mezzo giro'}`);
+   console.log(`  imbardata di partenza (mediana): ${(c2.map(r => r.ry0 * 180 / Math.PI).sort((a, b2) => a - b2)[Math.floor(c2.length / 2)]).toFixed(0)}°`);
+ }}
 console.log(`  ${media > 135 ? "✔ l'imbardata e' quella giusta: se il gesto si vede storto, la causa NON e' questa" : media < 45 ? '✘ il giocatore GUARDA la porta: e\' voltato al contrario' : '~ imbardata di traverso: ne\' di spalle ne\' di fronte'}`);
 console.log(`\n  immagini: ${shots.join(' · ')}\n`);

@@ -5085,6 +5085,23 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                    finche' il rig la riscrive davvero, e basterebbe un fotogramma in cui non lo fa perche' il
                    giocatore cominci a girare su se stesso. In mezzo secondo di acrobazia il corpo non
                    ri-mira: e' anche piu' vero. */
+                /* ⚠️ [7.597.0 — INDAGINE APERTA, e uno strumento che si guardava allo specchio]
+                   COLLAUDO PO, SESTA segnalazione: «la rovesciata e' al contrario». Il criterio e' il suo:
+                   nella rovesciata il giocatore ha le SPALLE alla porta, quindi l'angolo fra la direzione
+                   in cui e' voltato e la direzione della porta deve stare vicino a 180.
+                   IL DIFETTO E' CONFERMATO E MISURATO su tre scene di rovesciata (gi1, gi41, gi68), col
+                   mezzo giro REVOCATO in prova: 12°, 19°, 57°. Il giocatore guarda la porta. Col mezzo
+                   giro attivo, su gi1: 37°. La guarda lo stesso. Ne' con ne' senza.
+                   ⚠️ E UNA MISURA MIA VA BUTTATA: avevo concluso «il mezzo giro arriva alla mesh, 180°
+                   esatti» leggendo `_rovY569` e `rotation.y` DENTRO questo blocco — cioe' misurando la mia
+                   stessa scrittura un istante dopo averla fatta. Lo strumento si guardava allo specchio.
+                   Letta dalla mesh a fine fotogramma (`__CPM_STATE().players`), l'imbardata NON e' quella
+                   che scrivo qui: qualcuno la riscrive dopo. Quello e' il filo da tirare, e finche' non so
+                   CHI non tocco l'imbardata — cinque release fa ho gia' aggiunto mezzo giro «scegliendo il
+                   segno guardando, non calcolando», ed e' cosi' che si arriva alla sesta segnalazione.
+                   IL COMPORTAMENTO RESTA QUELLO DEL 7.569: revocarlo non migliora (12-19-57 contro 37 sono
+                   scene diverse, non un confronto), e togliere codice senza una misura che lo condanni e'
+                   un'altra scommessa. Si tocca quando si sa. */
                 if(sr.current._rovY569==null||u<0.06)sr.current._rovY569=hero.rotation.y||0;
                 if(!(typeof window!=='undefined'&&window.__CPM_NO569B))hero.rotation.y=sr.current._rovY569+Math.PI;
                 /* [7.569.0] IL SEGNO SI E' SCELTO GUARDANDO, non calcolando: con l'ordine YXZ i due versi

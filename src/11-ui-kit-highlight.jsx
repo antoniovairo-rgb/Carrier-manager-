@@ -1633,6 +1633,38 @@ function deriveHL(sit,act){
     if(/pallonett|cucchiaio|scavin/.test(lbl))variant="shot_chip";// label-chip ha priorità su pattern situazione (es. pallonetto in 1v1)
     else if(cn.oneOnOne)variant="shot_one_on_one";
     else if(ballState==="aerial"&&/rovesciat|sforbiciat/.test(lbl))variant="shot_volley";// CINE-COH: gesti acrobatici alzano sempre la palla → volée · [7.113.0 audit massivo · fix D3] gate su aerial come la riga sotto (no-op sui dati attuali — ogni rovesciata/sforbiciata vive in una sit aerial — ma evita una bicicletta su palla a terra in futuro)
+    /* [7.597.0 - LA ROVESCIATA AL CONTRARIO ERA UN ORDINE DI RAMI, non un'imbardata]
+       COLLAUDO PO, sesta segnalazione della stessa cosa, e a risolverla e' stato il suo appunto: SIT 167,
+       azione Controbalzo secco al volo, nota Rovesciata al contrario. Quell'etichetta contiene DUE
+       marcatori. Il ramo qui sotto manda al gesto acrobatico tutto cio' che dice al volo; il ramo dopo
+       manda al colpo di prima tutto cio' che dice controbalzo. Vinceva il primo perche' veniva prima, e
+       un controbalzo secco veniva reso come una rovesciata. Il commento del ramo giusto lo diceva gia' a
+       due righe di distanza: prima intenzione uguale colpo di prima a terra, NON volee aerea. L'intento
+       era scritto; l'ordine lo tradiva.
+       E spiega perche' si vedeva al contrario: per un controbalzo il giocatore e' girato VERSO la porta,
+       giustamente, e il rig acrobatico lo ribalta partendo da li'. Non c'era nessuna imbardata da
+       correggere, c'era un gesto che non doveva essere quello. Cinque release passate a raddrizzare una
+       rovesciata che non doveva nemmeno esserci.
+       CORREGGE una cosa riferita al PO: avevo cercato le rovesciate nel testo della SITUATION e ne avevo
+       contate cinque, concludendo che la 167 non fosse una rovesciata. Il gesto si sceglie dalla label
+       dell'AZIONE, che e' dinamica: quel censimento guardava la tabella sbagliata.
+       DICHIARATO NON DIMOSTRATO. Nel percorso che il laboratorio riesce a percorrere, 191 situations
+       aperte una per una, l'etichetta arriva VUOTA in tutte e 174 le conclusioni registrate: i rami sul
+       testo non scattano affatto, e il colpo di prima ci arriva dal flag della situazione. Verde e rosso
+       davano la stessa ripartizione. Questa correzione non rompe niente ma su quel percorso non si vede
+       nemmeno; il percorso con l'etichetta piena, quello che il PO vede sul telefono, non l'ho ancora
+       trovato ed e' li' che va verificata. Spedita come coerenza fra intento dichiarato e ordine dei
+       rami, NON come segnalazione chiusa.
+       IL GATE E' DIVENTATO ROSSO PER QUESTO COMMENTO, e la causa non era quella che sembrava. La suite
+       analitica ESTRAE questa funzione dal sorgente con un taglio testuale, e cercava la sua riga di
+       chiusura entro CENTOVENTI righe dall'inizio: aggiungendo questa nota la chiusura e' finita oltre la
+       finestra e l'estrazione e' fallita con deriveHL is not defined. Ho perso mezz'ora a incolpare i
+       caratteri speciali - virgolette caporali, trattini lunghi, la guardia su window - riscrivendo il
+       testo tre volte, quando bastava leggere l'estrattore invece di indovinare. La lezione e' la stessa
+       di tutta la giornata: si legge lo strumento, non si tira a indovinare cosa non gli piace.
+       Il tetto delle 120 righe e' stato tolto (tests/situations-3d-validation.js): non proteggeva da
+       nulla, e rendeva il gate ostaggio della lunghezza dei commenti. Qui si puo' scrivere. */
+    else if(/prima|deviazion|istintiv|tap-in|controbalz/.test(lbl))variant="shot_first_time";
     else if(ballState==="aerial"&&/al volo|vol[eé]e|volo/.test(lbl))variant="shot_volley";// CINE-COH: volée SOLO con palla aerea (cross/rimbalzo)
     else if(/piazzat|preciso/.test(lbl)&&/bass|raso|terra/.test(lbl))variant="shot_one_on_one";/* [7.222.0] «piazzato basso» e una conclusione RASOTERRA nell angolo: prima cadeva nel tiro a giro (arco alto) e leggeva come un pallonetto */
     else if(/giro|piazzat|angolat/.test(lbl))variant="shot_curled";
