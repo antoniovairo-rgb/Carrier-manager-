@@ -4662,11 +4662,38 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                  let _bm414=null,_bd414=1e9;const _ttx=G2X(sg.to[0]),_ttz=G2Z(sg.to[1]);
                  sr.current.players.forEach((pp,ii)=>{const _s4=(P.allPlayers||[])[ii];if(_s4&&_s4.team==='home'&&!_s4.gk&&pp.mesh&&pp.mesh!==hero){const _d4=Math.hypot(pp.mesh.position.x-_ttx,pp.mesh.position.z-_ttz);if(_d4<_bd414){_bd414=_d4;_bm414=pp.mesh;}}});
                  if(_bm414)tlMap[_nid395]=_bm414;
-                 sr.current._thrMap414=P.hlSitKey+':'+bi;}
+                 sr.current._thrMap414=P.hlSitKey+':'+bi;sr.current._rm613=1;/* [7.613.0 strumentazione] questo frame ha rimappato il ricevente */}
                const _nm395=(_nid395==='HERO')?hero:((tlMap&&_nid395)?tlMap[_nid395]:null);
-               if(_nm395){const _ngx395=_nm395.position.x+50,_ngy395=_nm395.position.z/0.68+50,_w395=p*p;
+               if(_nm395){const _ngx395=_nm395.position.x+50,_ngy395=_nm395.position.z/0.68+50,_w395=(typeof window!=='undefined'&&window.__CPM_NO613B)?(p*p):((p<0.5)?(2*p*p):(1-2*(1-p)*(1-p)));/* [7.613.0] il rendez-vous ARRIVA: con p^2 il peso a fine volo (p 0,92 all'ultimo frame utile) vale 0,85 e il 15% di strada verso il piede si saltava in UN frame all'ingresso della conduzione — misurato 3,8-3,9u (i SEAM residui dell'anello). Easing simmetrico che vale 1 a p=1 (a 0,92: 0,988): stessa prima meta' del volo, arrivo consegnato. Rosso __CPM_NO613B. */
                  _bxg=_bxg*(1-_w395)+_ngx395*_w395;_byg=_byg*(1-_w395)+_ngy395*_w395;}}}
+            /* [7.613.0 — LA CONDUZIONE E' DEL CORPO, NON DEL PIANO. Rosso __CPM_NO613]
+               COLLAUDO PO, SIT #10 «SALTO del pallone di 8,1u in 32 ms (buildup-volo)» + SIT #102
+               «nel dribbling il pallone e l'eroe si separano: gap >4u per 2,8 s (max 6,2u)» — stessa causa,
+               MISURATA con l'anello __CPM_BV613 e l'attribuzione a due meta' (chi ha mosso il pallone fra
+               due scritture del volo): nei beat di CONDUZIONE due autorita' scrivono ogni frame — la colla
+               mette il pallone al piede del portatore (corpo tappato a ~11 u/s, 7.236) e QUESTO lerp lo
+               riscrive sul punto del piano (che avanza anche a 25 u/s): tiro alla fune da 8-17u per frame
+               (gi28 beat carry: altrui 14u / volo 17,4u; gi38: 8,1/12,2). L'ultimo a scrivere e' il piano,
+               quindi il pallone corre avanti da solo e il corpo insegue — il gap del PO. OTTAVA istanza
+               del pattern «piu' autorita' sulla stessa grandezza». Qui la conduzione segue il CORPO:
+               il pallone sta al piede del portatore del beat (fromId/toId -> tlMap, eroe come ripiego,
+               stessa anagrafe della guardia 7.414); il piano resta la rotta del portatore, non del pallone
+               — e' la lezione del 7.540: il passaggio e' un evento, la conduzione e' un percorso. */
+            if((sg.kind==='carry'||sg.kind==='dribble')&&!(typeof window!=='undefined'&&window.__CPM_NO613)){
+              const _cid613=(typeof sg.fromId==='string')?sg.fromId:((typeof sg.toId==='string')?sg.toId:null);
+              const _cm613=(_cid613==='HERO')?hero:((tlMap&&_cid613&&tlMap[_cid613])||hero);
+              if(_cm613&&_cm613.position){_bxg=_cm613.position.x+50;_byg=_cm613.position.z/0.68+50;}
+            }
+            const _pre613=(typeof window!=='undefined'&&window.__CPM_BV613!==undefined)?{x:+(ball.position.x+50).toFixed(2),y:+(ball.position.z/0.68+50).toFixed(2)}:null;/* [7.613.0] dov'era il pallone PRIMA di questa scrittura: se fra il frame scorso e questo l'ha mosso un ALTRO scrittore, il salto e' suo, non del volo */
             ball.position.x=(typeof window!=='undefined'&&window.__CPM_NO546)?G2X(_bxg):clamp(G2X(_bxg),-(GOAL_LINE_X-0.8),GOAL_LINE_X-0.8);/* [7.533.0 MP-0e H2] clamp specchio dello scrittore 13 (nota al sito 11): il volo dichiarato puo' puntare 98,6 game, la palla muore SULLA linea */ball.position.z=G2Z(_byg);if((sr.current._ws524=13)&&sr.current._bj0)(sr.current._bj0.src='buildup-volo',sr.current._bj0.srcs.push('buildup-volo'));
+            /* [7.613.0 strumentazione, solo collaudo] IL VOLO DI COSTRUZIONE SI RACCONTA FRAME PER FRAME.
+               COLLAUDO PO (SIT #10, dal DISPOSITIVO a 60 fps, quindi non un singhiozzo del laboratorio):
+               «SALTO del pallone di 8,1 unita' in 32 ms, scrittore buildup-volo». Un lerp non salta da solo:
+               o si cuce male un cambio di beat, o la rimappatura del ricevente (7.414) sposta il bersaglio
+               con p gia' alto, o il rendez-vous 7.395 aggancia un piede lontano. Qui si registra cio' che
+               serve a distinguerli: beat, p, posizione, e se QUESTO frame ha rimappato. */
+            if(typeof window!=='undefined'&&window.__CPM_BV613!==undefined){try{const _a613=window.__CPM_BV613;
+              if(_a613.length<3000)_a613.push({t:Math.round(performance.now()),bi,k:sg.kind||null,p:+p.toFixed(3),x:+_bxg.toFixed(2),y:+_byg.toFixed(2),fx:+_f0387[0].toFixed(1),tx:+sg.to[0].toFixed(1),rm:sr.current._rm613?1:0,bx0:_pre613?_pre613.x:null,by0:_pre613?_pre613.y:null,fu:(_f0387===sg.from)?0:1});sr.current._rm613=0;}catch(_e){}}
             const _arcH=sg.kind==="cross"?4.2:sg.kind==="through"?0.35:(sg.kind==="pass"||sg.kind==="give")?1.0:0.0;
             ball.position.y=(_aerTL!=null)?(_aerTL+Math.sin(p*Math.PI)*Math.max(_arcH,0.35)):(0.65+Math.sin(p*Math.PI)*_arcH);/* [7.222.0] nelle situazioni aeree il pallone e IN VOLO per tutta la costruzione: non deve mai toccare l erba */
             /* [7.390.0 collaudo PO «si porta solo la palla avanti e fine» · «durante i movimenti si muove
