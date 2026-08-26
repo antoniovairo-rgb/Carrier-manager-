@@ -2150,6 +2150,17 @@ function ThreeMatchView(props){
               // [7.1.2 AUDIT MASSIVO situations↔3D] AZIONE-CONCLUSIONE che vale ASSIST (tacco/appoggio/scarico, cross e
               //   «palla in area» su PUNIZIONE): la palla va CONSEGNATA a un compagno che finalizza, MAI in rete
               //   «dall'eroe». Chiude il cluster di 28 conclusioni che entravano in rete pur essendo un assist.
+              /* ⚠️ [7.604.0 — INDAGINE APERTA, collaudo PO su SIT #51: «esito goal ma la palla si e'
+                 fermata a 15,6 unita' dalla porta, e il portiere non si tuffa»] RIPRODOTTO in laboratorio
+                 con l'esito forzato: arco fino a x 92, poi cross_goal -> deflect, pallone parcheggiato a
+                 x 89 = 15,7 unita' dalla linea — il numero del PO alla cifra. Il deflect su «occasione» e'
+                 il comportamento GIUSTO (occasione = mai rete, 5.78.0); il ramo sospetto e' questo qui
+                 sotto, che manda in cross_goal OGNI punizione — anche una BORDATA DIRETTA con premio gol —
+                 aspettandosi che un compagno la incorni: se il compagno non aggancia, il gol dichiarato non
+                 si disegna mai e il portiere non ha nulla su cui tuffarsi. NON ancora corretto perche' il
+                 ramo gol-vero non e' riproducibile con FORCE_OUTCOME (che forza il successo ma lascia il
+                 kind a «chance»): serve o un seme che produca il gol naturale o un gancio sul kind. E' il
+                 prossimo lavoro su questa riga. */
               if(_ht==="freekick"){hlPostArcT=0;hlPostArcType="cross_goal";}// punizione battuta in area (compagno incorna; chance→deflect)
               else{if(passTargetMesh){passTargetMesh._rcvT=0;passTargetMesh._runToX=Math.min(passTargetMesh.position.x+12,AWAY_GOAL_X-6);passTargetMesh._runToZ=passTargetMesh.position.z;/* [7.240.0 gi26 «Non si vede il compagno che riceve»] il puntatore RESTA (vedi sito gemello del pass): senza, il ricevente del tacco/scarico spariva dal driver dopo il gesto */}
                 else{let _rdA712=1e9,_rmA712=null;const _hxA712=hero.position.x,_hzA712=hero.position.z;sr.current.players.forEach((pp,ii)=>{const src=(P.allPlayers||[])[ii];if(src&&src.team==="home"&&!src.gk&&pp.mesh!==hero){const _fw=pp.mesh.position.x-_hxA712;if(_fw>-2){const _dh53=Math.hypot(_fw,pp.mesh.position.z-_hzA712);const _sc=_dh53-Math.max(0,_fw)*0.6+(_dh53<6?14:0);if(_sc<_rdA712){_rdA712=_sc;_rmA712=pp.mesh;}}}});if(_rmA712){_rmA712._rcvT=0;_rmA712._runToX=Math.min(_rmA712.position.x+12,AWAY_GOAL_X-6);_rmA712._runToZ=_rmA712.position.z;passTargetMesh=_rmA712;}}
