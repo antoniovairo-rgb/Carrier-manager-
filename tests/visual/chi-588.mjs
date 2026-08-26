@@ -19,21 +19,23 @@ await page.waitForTimeout(150000);
 const M = await page.evaluate(() => (window.__CPM_W588 && window.__CPM_W588.mosse) || []);
 await b.close(); srv.close();
 
-console.log(`\n=== CHI SPOSTA L'OSPITE i${IDX} (soglia 1,5 unita') ===\n`);
+console.log(`\n=== CHI SPOSTA IL GIOCATORE i${IDX} (soglia 1,5 unita') ===\n`);
 console.log(`  scritture registrate: ${M.length}\n`);
 const per = new Map();
 for (const m of M) {
   const k = m.fn || '(?)';
-  const e = per.get(k) || { n: 0, indietro: 0, avanti: 0, somma: 0, es: m };
+  const e = per.get(k) || { n: 0, indietro: 0, avanti: 0, somma: 0, ko: 0, koSomma: 0, es: m };
   e.n++; const d = m.a - m.da; e.somma += d;
   if (d < 0) e.indietro++; else e.avanti++;
+  if (m.ko) { e.ko++; e.koSomma += d; }
   per.set(k, e);
 }
 const righe = [...per.entries()].sort((a, c) => c[1].n - a[1].n);
 for (const [k, e] of righe) {
   console.log(`  ${String(e.n).padStart(3)} scritture · indietro ${e.indietro} · avanti ${e.avanti} · spostamento medio ${(e.somma / e.n).toFixed(1)}u`);
+  console.log(`      di cui DURANTE una ripresa: ${e.ko}${e.ko ? ` (spostamento medio ${(e.koSomma / e.ko).toFixed(1)}u)` : ''}`);
   console.log(`      esempio: ${e.es.da} -> ${e.es.a}`);
-  console.log(`      impronta: ${k.slice(0, 140)}`);
+  console.log(`      impronta: ${k.slice(0, 400)}`);
 }
 if (!M.length) { console.log('  NESSUNA scrittura registrata: il testimone non ha visto niente. NON GIUDICABILE.'); process.exit(1); }
 console.log('\nCENSIMENTO registrato. Non e\' un guardiano: non fallisce, nomina.\n');

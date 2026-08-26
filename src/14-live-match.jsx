@@ -378,7 +378,10 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           const m=st.split('\n').slice(1,6).join(' | ');
           /* l'IMPRONTA dello scrittore e' il suo stesso codice: la pila di Babel non torna alle righe del
              sorgente, il testo dell'aggiornamento si'. */
-          (W.mosse=W.mosse||[]).push({da:+Number(a.x).toFixed(1),a:+Number(b.x).toFixed(1),fn:String(u).replace(/\s+/g,' ').slice(0,150),st:m.slice(0,160)});
+          /* [7.589.0] e SE IL CANCELLO ERA APERTO: senza questo non si distingue una scrittura durante la
+             ripresa da una a gioco vivo, e la colpa torna a essere un'opinione. */
+          const _ko=((kickRef.current|0)>0||(kickoffRef.current|0)>0);
+          (W.mosse=W.mosse||[]).push({da:+Number(a.x).toFixed(1),a:+Number(b.x).toFixed(1),ko:_ko,fn:String(u).replace(/\s+/g,' ').slice(0,420),st:m.slice(0,160)});
           if(W.mosse.length>120)W.mosse.shift();
         }
       }catch(_e){}
@@ -953,6 +956,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     //   ceremony-visual.mjs monta LiveMatch (?sit=) e chiama questo per catturare i 4 beat senza dover vincere un titolo.
     window.__CPM_FORCE_CEREMONY=(o)=>{try{setCeremony({name:(o&&o.name)||"CAMPIONI D'ITALIA",kind:(o&&o.kind)||"league"});setPhase("ceremony");return true;}catch(e){return false;}};
     window.__CPM_PHASE=()=>{try{return phaseRef.current;}catch(e){return null;}};// [7.2.0] fase corrente per il collaudo cerimonia
+    window.__CPM_RIPBREVE=()=>{try{const _e0=+ripT0Ref.current||0;const _ms=_e0?(Date.now()-_e0):-1;return{tick:(ripTickRef.current|0),ms:_ms,breve:(_e0>0&&_ms<=4500)};}catch(e){return null;}};/* [7.590.0] la finestra BREVE, per le sonde */
     window.__CPM_KO544=()=>{try{return (kickRef.current>0)||(kickoffRef.current>0);}catch(e){return false;}};/* [7.544.0] la FINESTRA vera della ripartenza: la prima sonda filtrava su «palla vicino al centro» e contava 35 riprese in due partite (i gol sono 3-4) — misurava il gioco normale che passa dal cerchio, non i calci d'inizio */
     window.__CPM_HLTIMES=()=>{try{return (hlTimesRef.current||[]).slice();}catch(e){return[];}};/* [7.500.0 F4] il CALENDARIO degli highlight: e' la parte deterministica del rimedio, quindi e' quella su cui una prova del rosso puo' davvero separare */
     window.__CPM_CLOCK=()=>{try{return clockRef.current|0;}catch(e){return null;}};/* [7.500.0 F4] il MINUTO dal ref di LiveMatch: come fase e tabellone, sopravvive allo smontaggio del 3D al fischio finale — `__CPM_STATE().clock` li' resta congelato, ed e' la trappola gia' pagata tre volte */
@@ -1052,6 +1056,30 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     return TRAMA_ID538[form]||TRAMA_ID538.dflt;};
   const kickRef=useRef(0);
   const kickoffRef=useRef(0),kickoffSideRef=useRef("away");
+  /* [7.590.0 — LA RIPRESA DUREVA MEZZO MINUTO, rosso __CPM_NO590] MISURATO, e smentisce una cosa che
+     avevo appena riferito: `kickoffRef` e `kickRef` NON sono un tempo, sono contatori di eventi che
+     scendono solo quando la cronaca aggancia. In partita restano sopra zero per 19,6 e 27,8 secondi
+     (kickRef 10,2 e 18,8). Per tutto quel tempo il 7.544 schiaccia i ventidue nella propria meta'
+     (clamp 46/54, guadagno 0,92) e il 7.589 spegne la macchina delle corsie: mezzo minuto dopo OGNI gol
+     la partita non e' una partita — niente trame, niente pressing, ventidue pinnati dietro la linea.
+     E la misura dice anche che la ripresa vera FUNZIONA GIA': nei primi 3 secondi — cio' che il PO vede —
+     i fuori posto sono 0,0 sia nel modello logico sia nelle mesh; il 4,4 che avevo riportato viene tutto
+     da OLTRE i 3 secondi, cioe' da gioco gia' ripreso, dove i ventidue DEVONO essere sparsi.
+     Quindi la finestra della ripresa diventa un TEMPO: i primi 14 tick (~4,2 s) da quando si apre. Dopo,
+     il gioco riprende davvero. */
+  const ripTickRef=useRef(0),ripT0Ref=useRef(0);
+  /* ⚠️ [7.590.0] SECONDO ERRORE MIO NELLA STESSA STESURA, e l'ha trovato lo strumento non io: avevo
+     scritto `ripT0Ref.current|0` per difendermi dai valori nulli. Ma `|0` tronca a 32 bit, e un istante
+     di `Date.now()` vale ~1,78e12: il confronto lavorava su un numero corrotto e la finestra non si
+     apriva MAI (breve=true in 0 campioni su 469, con «eta'» stampata a 1786706395183 ms). Su un
+     timestamp non si usa un operatore bit a bit. */
+  /* ⚠️ [7.590.0] PRIMA STESURA SBAGLIATA, e l'ha detto lo strumento: avevo contato la finestra in TICK
+     (soglia 14). Misurato: il contatore arriva a mediana 8 e MAX 14 mentre la finestra dura 23-26
+     secondi — cioe' durante una ripresa il tick di gioco gira una volta ogni ~1,6 s invece che ogni
+     300 ms, cinque volte piu' lento. Quattordici tick non erano 4,2 secondi: erano ventitre. La soglia
+     a tick era un no-op travestito da rimedio. La finestra e' quindi un TEMPO VERO in millisecondi.
+     (E il rallentamento del tick durante la ripresa resta un fatto MISURATO e NON spiegato: annotato
+     perche' tocca anche «il pallone rimbalza senza portatore», che e' un altro appunto del PO.) */
   const outRef=useRef(null);/* [7.559.0 missione, blocco 4 — LE INTERRUZIONI ESISTONO]
      Il guardiano `fermo-559` non riusciva nemmeno a MISURARE il rimedio del fermo: in cinque minuti di
      partita accelerata si annunciavano UNO o DUE piazzati, sempre dello stesso tipo (`foul_for`). La causa
@@ -1798,7 +1826,9 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
          un'interruzione — il pallone e' fermo al centro, non c'e' nessuna corsia da inseguire — quindi la
          macchina delle corsie si ferma e AZZERA la memoria di velocita', cosi' che alla ripartenza nessuno
          riparta con la spinta di prima. Fuori dalla ripresa non cambia niente. */
-      const _ripresa589=!(typeof window!=='undefined'&&window.__CPM_NO589)&&((kickRef.current|0)>0||(kickoffRef.current|0)>0);
+      /* [7.590.0] la finestra e' quella BREVE (primi 14 tick): spegnere le corsie per i 20-28 secondi in
+         cui il contatore resta sopra zero significava togliere il gioco per mezzo minuto dopo ogni gol. */
+      const _ripresa589=!(typeof window!=='undefined'&&window.__CPM_NO589)&&((kickRef.current|0)>0||(kickoffRef.current|0)>0)&&(!(typeof window!=='undefined'&&window.__CPM_NO590)?(ripT0Ref.current>0&&(Date.now()-ripT0Ref.current)<=4500):true);
       if(_ripresa589){try{const _V=velRef.current;for(const _k in _V){const _v=_V[_k];if(_v){_v.vx=0;_v.vy=0;}}}catch(_e){}}
       else setMatchPlayers(prev=>prev.map((pl,idx)=>{
         if(pl.team==="ref")return pl;
@@ -2144,7 +2174,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           const _htD77=scoreRef.current.home-scoreRef.current.away;
           addCom("⏸️ Duplice fischio: squadre negli spogliatoi.","#93c5fd",45);
           addCoach(_htD77>0?"⏸️ «Siamo in vantaggio — testa dritta nel secondo!»":_htD77<0?"⏸️ «Reagiamo nel secondo tempo — ci crediamo!»":"⏸️ «Tutto ancora aperto — il gol cambia tutto.»",45);/* [7.532.0 NO540] l'evento resta in telecronaca, il DISCORSO e' del mister */
-          if(!(typeof window!=='undefined'&&window.__CPM_NO536)){kickRef.current=3;kickoffSideRef.current=(isMatchHome?"away":"home");if(!(typeof window!=='undefined'&&window.__CPM_NO543))possTurnRef.current=isMatchHome?-1:1;}/* [7.532.0 collaudo PO «a fine primo tempo, il secondo non riparte da centrocampo»] IL SECONDO TEMPO HA IL SUO CALCIO D'INIZIO: stessa macchina della ripartenza (conto → palla al centro → 2 battute recitate); convenzione: il secondo lo batte l'altra squadra */
+          if(!(typeof window!=='undefined'&&window.__CPM_NO536)){kickRef.current=3;ripT0Ref.current=Date.now();/* [7.590.0] anche il duplice fischio e' una ripresa */kickoffSideRef.current=(isMatchHome?"away":"home");if(!(typeof window!=='undefined'&&window.__CPM_NO543))possTurnRef.current=isMatchHome?-1:1;}/* [7.532.0 collaudo PO «a fine primo tempo, il secondo non riparte da centrocampo»] IL SECONDO TEMPO HA IL SUO CALCIO D'INIZIO: stessa macchina della ripartenza (conto → palla al centro → 2 battute recitate); convenzione: il secondo lo batte l'altra squadra */
           if(!_inHL77)chantFor("half",2000);
           setMomentum(m=>clamp(Math.round(m+(50-m)*0.5+_htD77*5),0,100));
           streakRef.current=0;
@@ -2831,7 +2861,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
             var _cap528=_no528?45:30;
             if(_dd498>_cap528)_bt498={x:clamp(_cb498.x+_dx498/_dd498*_cap528,2,98),y:clamp(_cb498.y+_dy498/_dd498*_cap528,2,98)};
           }
-          if(/goal$/.test(String(ev.ef||""))&&!(typeof window!=='undefined'&&window.__CPM_NO528)){kickRef.current=(typeof window!=='undefined'&&window.__CPM_NO569)?4:5;kickGx573.current=(ev.ef==="team_goal")?100:0;kickIn573.current=false;kickAtt573.current=0;/* [7.573.0] da qui la ripartenza sa DOVE il pallone deve arrivare prima di tornare al centro */kickoffSideRef.current=(ev.ef==="team_goal")?"away":"home";if(!(typeof window!=='undefined'&&window.__CPM_NO543))possTurnRef.current=(ev.ef==="team_goal")?-1:1;/* [7.532.0 NO543] il calcio d'inizio passa il turno a chi ha subito */}/* [7.545.0 — collaudo PO «non si vedono i gol», rosso __CPM_NO569] 4->6 TICK: MISURATO coi tre palloni
+          if(/goal$/.test(String(ev.ef||""))&&!(typeof window!=='undefined'&&window.__CPM_NO528)){kickRef.current=(typeof window!=='undefined'&&window.__CPM_NO569)?4:5;ripT0Ref.current=Date.now();/* [7.590.0] QUI nasce la ripresa dopo un gol: e' l'istante da cui contano i suoi pochi secondi */kickGx573.current=(ev.ef==="team_goal")?100:0;kickIn573.current=false;kickAtt573.current=0;/* [7.573.0] da qui la ripartenza sa DOVE il pallone deve arrivare prima di tornare al centro */kickoffSideRef.current=(ev.ef==="team_goal")?"away":"home";if(!(typeof window!=='undefined'&&window.__CPM_NO543))possTurnRef.current=(ev.ef==="team_goal")?-1:1;/* [7.532.0 NO543] il calcio d'inizio passa il turno a chi ha subito */}/* [7.545.0 — collaudo PO «non si vedono i gol», rosso __CPM_NO569] 4->6 TICK: MISURATO coi tre palloni
    insieme (hook __CPM_BALL3). Il BERSAGLIO del pallone va in rete sempre, 3/3 a 2,0u dalla linea: la
    riga del gol porta bpos x98 e il gol del microsim riusa quella riga. E' la MESH a non arrivarci —
    3,9 / 14,1 / 4,0u. Il motivo sta nell'invariante delle due sorgenti: il gol si scrive quando il
@@ -3239,7 +3269,15 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
            dunque a OGNI tick: la ripresa e' un'interruzione, non un inseguimento, e le squadre si
            schierano mentre l'arbitro aspetta. Fuori dalla ripresa il passo resta di tre tick — quello
            regola il costo, e non c'e' ragione di toccarlo. */
-        const _ognitick588=!(typeof window!=='undefined'&&window.__CPM_NO588)&&((kickRef.current|0)>0||(kickoffRef.current|0)>0);
+        const _koNow590=((kickRef.current|0)>0||(kickoffRef.current|0)>0);
+        ripTickRef.current=_koNow590?((ripTickRef.current|0)+1):0;
+        /* [7.590.0] la finestra si apre SOLO dove la ripresa viene ARMATA (gol, duplice fischio, calcio
+           d'inizio recitato) e non si riapre da sola. Prima la aprivo qui, al primo tick con un contatore
+           sopra zero: e i contatori NON tornano quasi mai a zero — misurato, l'eta' della finestra
+           arrivava a 46,4 s con mediana 19,1 s, cioe' era aperta per meta' partita. Qui si CHIUDE soltanto. */
+        if(!_koNow590)ripT0Ref.current=0;
+        const _breve590=_koNow590&&(!(typeof window!=='undefined'&&window.__CPM_NO590)?(ripT0Ref.current>0&&(Date.now()-ripT0Ref.current)<=4500):true);
+        const _ognitick588=!(typeof window!=='undefined'&&window.__CPM_NO588)&&_breve590;
         if(nx%3===0||_ognitick588){
           const dt=driftTargetsRef.current||DRIFT_PRESETS.midfield;
           const _q553=!(typeof window!=='undefined'&&window.__CPM_NO553)&&phaseRef.current==='playing';
@@ -3247,7 +3285,9 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
           const _av553=_bb553?clamp(_bb553.x-50,-46,46):0;
           setMatchPlayers(prev=>{
             /* [7.544.0] finestra della ripartenza: dal conto dopo il gol fino all'ultima battuta recitata */
-            const _ko544=(kickRef.current>0||kickoffRef.current>0);
+            /* [7.590.0] la finestra e' quella BREVE: vedi la nota sul contatore. Fuori dai primi 14 tick
+               il ramo della ripresa non deve piu' schiacciare nessuno nella propria meta'. */
+            const _ko544=_breve590;
             if(typeof window!=='undefined'&&window.__CPM_KOC!==undefined){try{window.__CPM_KOC.blocco=(window.__CPM_KOC.blocco||0)+1;if(_ko544)window.__CPM_KOC.ko=(window.__CPM_KOC.ko||0)+1;}catch(_e){}}
             const _koLato544=kickoffSideRef.current||"home";
             const _cerchio544=[];
@@ -3315,12 +3355,17 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                  due che battono sono nel cerchio. Qui lo slot si RIPIEGA nella propria meta': la squadra
                  tiene la sua forma ma la comprime dietro la linea, che e' esattamente cio' che si vede in
                  televisione un istante prima del fischio. */
-              const _casa544=(pl.team==="home");
               /* [7.588.0 SOLO COLLAUDO] cosa vede DAVVERO il ripiegamento, giocatore per giocatore. Tre
                  ipotesi mie sulla causa sono gia' cadute (non e' un ritardo, il blocco gira otto volte per
                  ripresa, gli slot sono in coordinate di campo): resta da guardare cosa arriva QUI. */
-              if(typeof window!=='undefined'&&window.__CPM_RIP544){try{const _R=window.__CPM_RIP544;if(_R.length<400)_R.push({i:idx,t:String(pl.team||"?"),gk:!!pl.gk,pre:+Number(sx).toFixed(1),x:+Number(pl.x).toFixed(1)});}catch(_e){}}
-              sx=_casa544?Math.min(sx,46):Math.max(sx,54);
+              const _casa544=(pl.team==="home");
+              const _post589=_casa544?Math.min(sx,46):Math.max(sx,54);
+              if(typeof window!=='undefined'&&window.__CPM_RIP544){/* [7.589.0] FINESTRA SCORREVOLE, non un tetto: con un tetto fisso il registro si riempiva alla PRIMA
+                 ripresa (190+210 = 400 voci in una sola) e poi taceva — gli esempi raccontavano il calcio d'inizio
+                 e li ho quasi presi per la ripresa dopo il gol. Uno strumento che si riempie e' uno strumento che
+                 mente per omissione. */
+              try{const _R=window.__CPM_RIP544;_R.push({i:idx,t:String(pl.team||"?"),gk:!!pl.gk,pre:+Number(sx).toFixed(1),x:+Number(pl.x).toFixed(1),post:_post589});if(_R.length>400)_R.shift();}catch(_e){}}
+              sx=_post589;
               const _mia544=_casa544===(_koLato544==="home");
               if(_mia544&&_cerchio544.indexOf(idx)>=0){sx=_casa544?48:52;sy=_cerchio544.indexOf(idx)===0?50:(_casa544?46:54);}
               /* ⚠️ SECONDA TARATURA DAL GUARDIANO, e stavolta e' aritmetica: lo schieramento gira ogni TRE
@@ -3402,7 +3447,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
           }else{
             kickAtt573.current=0;kickRef.current--;
             if(kickRef.current===0){kickGx573.current=null;kickIn573.current=false;ballTargetRef.current={x:50,y:50};tramaRef.current=null;
-              if(!(typeof window!=='undefined'&&window.__CPM_NO536))kickoffRef.current=2;/* [7.530.0] parte la ripartenza recitata: 2 battute di calcio d'inizio */
+              if(!(typeof window!=='undefined'&&window.__CPM_NO536)){kickoffRef.current=2;ripT0Ref.current=Date.now();}/* [7.530.0] parte la ripartenza recitata: 2 battute di calcio d'inizio · [7.590.0] e da qui contano i suoi secondi */
               return{x:50,y:50};}
           }
         }
