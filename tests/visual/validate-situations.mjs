@@ -221,7 +221,22 @@ const GOLDEN = path.join(HERE, 'golden-sigs.json');
     // la fase ATTIVA (hl_choose, off-ball AI in moto) su un set vario di Situations.
     /* [7.550.0] DODICI campioni invece di sei: la regola di giudizio ora e' una QUOTA, e una quota su sei
        campioni non significa niente. Il costo e' ~14s in piu' sul gate. */
-    const motIdx = [0, 2, 14, 30, 44, 60, 71, 79, 96, 110, 120, 140].filter(gi => gi < situations.length);
+    /* [7.596.0 — IL GUARDIANO SI ROMPEVA DA SOLO, e la prova e' incontrovertibile] `motion` e' andato in
+       rosso tre volte in una giornata, e l'ultima su codice di gioco BYTE-IDENTICO a un run verde: il
+       commit conteneva solo una sonda nuova, che il rituale non esegue nemmeno. Non e' quindi una
+       regressione del gioco, e' lo strumento.
+       L'aritmetica lo spiega. Il verdetto e' una QUOTA su otto scene con soglia al 34%: due scene valgono
+       25%, tre valgono 37,5% — fra i due valori non c'e' niente, quindi la soglia significa in realta'
+       «al massimo due scene su otto», e una sola scena al limite ribalta l'esito. E le scene al limite ci
+       sono: la distanza minima misurata su gi96 vale 26,2 m in un run e 29,7 in un altro, contro una
+       soglia di 24. Con dodici campioni il gate ballava di 12,5 punti per una scena.
+       LA RIPARAZIONE NON ALLENTA NULLA: stessa soglia, stesso criterio, PIU' CAMPIONI. Ventiquattro
+       situations invece di dodici portano la granularita' della quota da 12,5 a ~4 punti, e una scena al
+       limite non decide piu' da sola. Costa una decina di secondi sul gate.
+       ⚠️ E' la terza volta oggi che un conteggio con SOGLIA su pochi campioni mi inganna: aveva gia'
+       inventato un miglioramento nel 7.591 e un difetto nel 7.594. La lezione, scritta anche li': una
+       quota su pochi campioni non e' una misura, e' un'estrazione. */
+    const motIdx = [0, 2, 8, 14, 20, 26, 30, 36, 44, 52, 60, 66, 71, 79, 84, 90, 96, 104, 110, 116, 120, 128, 134, 140].filter(gi => gi < situations.length);
     const motSamples = [];
     for (const gi of motIdx) { motSamples.push(await sampleMotion(page, gi, { settle: 500, pollMs: 100, windowMs: 1900 })); await sleep(150); }// finestra 1000→1900: il movimento è stato rallentato ~45% (5.47.9→5.47.16, cap 20→11 u/s) → serve una finestra di osservazione più ampia per misurare la liveness in modo stabile su software-GL (~5fps), specie sulle situation quasi-statiche
     const motRes = motion.run({ samples: motSamples });
