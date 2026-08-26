@@ -4770,6 +4770,26 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
         if(oppActType&&oppMesh){
           oppActT+=aDt;const _OT=oppActType==="gk_dive"?((!(typeof window!=='undefined'&&window.__CPM_NO465)&&ballArcActive)?Math.max(oppMesh._diveDur||0.90,oppActT+0.05):(oppMesh._diveDur||0.90))/* [7.465.0] IL TUFFO NON PUO' FINIRE PRIMA DEL PALLONE. Anche con la durata calcolata sul volo, su 2 tuffi su 5 il gesto si spegneva col portiere a meta' distesa (26% e 45%): stimare la durata non basta, perche' il tempo d'arrivo dipende anche dal rallentatore e dal frame-rate. Finche' l'arco della conclusione e' VIVO il tuffo resta vivo — non si indovina la durata, si guarda il pallone. */:oppActType==="opp_tackle"?0.85:oppActType==="gk_block"?(((typeof window!=='undefined'&&window.__CPM_NO576)?0:1)&&ballArcActive?Math.max(0.62,oppActT+0.05):0.62)/* [7.552.0 codice 111 «portiere fuori tempo» + «Non ha effettuato la parata»] IL RIFLESSO MUORE PRIMA DEL PALLONE. Il 7.465 ha legato la vita del TUFFO a quella dell'arco («non si indovina la durata, si guarda il pallone») ma ha lasciato fuori il RIFLESSO, che resta inchiodato a 0,62s fissi. MISURATO (portiere-552): su gk_block il gesto si spegne con il volo del pallone al 71% e al 35% — il portiere si oppone, finisce, torna in piedi normale, E POI arriva la palla. Da fuori e' esattamente «non ha effettuato la parata». Ora vale la stessa regola del tuffo: finche' l'arco e' vivo, il riflesso e' vivo. */:0.55,u=Math.min(oppActT/_OT,1),sw=Math.sin(u*Math.PI);/* [7.203.0] il riflesso è più RAPIDO del tuffo · [7.215.0] la durata del tuffo segue quella del tiro: il portiere arriva sulla palla, non prima */
           if(_CPM_TEST&&typeof window!=='undefined'){try{const _W=window.__CPM_GKW||(window.__CPM_GKW={ev:[],cur:null});const _isGk=(oppActType==='gk_dive'||oppActType==='gk_block'||oppActType==='gk_catch');const _c=_W.cur;if(!_c||_c.type!==oppActType||_c.m!==oppMesh||u<_c.lu-1e-6){if(_c){_W.ev.push(_c.o);if(_c.lu<0.95&&_c.o.gk)_W.ev.push({k:'cut',from:_c.type,atU:+_c.lu.toFixed(2),to:oppActType,same:_c.m===oppMesh?1:0});}_W.cur={type:oppActType,m:oppMesh,lu:u,o:{k:'gest',type:oppActType,gk:_isGk?1:0,dur:+_OT.toFixed(2),arc:ballArcActive?1:0,arcDur:+(ballArcDur||0).toFixed(2),dz0:null,dzMin:1e9,uAtMin:null,uEnd:0}};}const _o=_W.cur.o;_W.cur.lu=u;_o.uEnd=+u.toFixed(2);_o.arcEnd=ballArcActive?+clamp(ballArcT/Math.max(ballArcDur,0.01),0,9).toFixed(2):null;if(_isGk&&oppMesh){const _dw=Math.hypot(ball.position.x-oppMesh.position.x,ball.position.z-oppMesh.position.z);if(_o.dz0==null)_o.dz0=+_dw.toFixed(2);if(_dw<_o.dzMin){_o.dzMin=+_dw.toFixed(2);_o.uAtMin=+u.toFixed(2);}}}catch(_e){}} /* [7.552 sonda] TESTIMONE DEL PORTIERE: per ogni gesto GK registra durata, distanza minima dal pallone e la FRAZIONE del gesto in cui quel minimo cade (0,5 = portiere disteso quando la palla passa); `cut` marca un gesto interrotto prima della fine = doppio gesto. */
+          /* [7.603.0 — UN PORTIERE NON SI TUFFA DUE VOLTE IN TRE SECONDI, rosso __CPM_NO603]
+             COLLAUDO PO su SIT #105: «il portiere si e' tuffato 4-5 volte consecutive, sembrava un ninja e
+             poi ha subito gol». LA CAUSA NON E' RIPRODOTTA, e va detto per primo: in laboratorio i tuffi
+             sono 3 in 150 s di ambientale (mai due a meno di 4,7 s) e NESSUNA delle 64 scene provate ne
+             produce due nella stessa scena. I siti che armano `gk_dive` sono cinque, tutti gated su
+             `!oppActType`: la raffica puo' nascere solo da ri-armamenti consecutivi a tuffo finito, e con
+             ogni probabilita' dipende dal frame-rate del dispositivo (qui 7 fps, li' 60). Cacciarla alla
+             cieca sarebbe indovinare.
+             Quello che si puo' fare senza indovinare e' scrivere la regola che nel calcio esiste comunque:
+             fra un tuffo e l'altro passano almeno TRE SECONDI VERI. In laboratorio questa guardia e' un
+             NO-OP DIMOSTRATO (l'intervallo minimo misurato e' 4,7 s, sopra il tetto): non cambia nulla di
+             cio' che i guardiani vedono. Sul dispositivo tronca la raffica al primo tuffo, che e' l'unico
+             che racconta qualcosa. La verifica e' il collaudo del PO. Il registro __CPM_DIVE603 resta. */
+          if(oppActT===aDt&&oppActType==="gk_dive"){
+            const _now603=(typeof performance!=='undefined')?performance.now():0;
+            const _last603=sr.current._dive603||0;
+            if(!(typeof window!=='undefined'&&window.__CPM_NO603)&&_last603&&(_now603-_last603)<3000){oppActType=null;oppActT=0;}
+            else{sr.current._dive603=_now603;
+              if(typeof window!=='undefined'&&window.__CPM_DIVE603){try{const D=window.__CPM_DIVE603;if(D.length<200)D.push(_now603);}catch(_e){}}}
+          }
           if(oppActType==="gk_dive"){// item 1 (5.49.0): tuffo CREDIBILE — estensione COMPLETA verso la palla, mani avanti, FACING FISSO, niente recoil/molla
             if(oppMesh._diveYaw!=null)oppMesh.rotation.y=oppMesh._diveYaw;
             const _dpz=(oppMesh._divePz||0),_dtz=(oppMesh._diveToZ!=null?oppMesh._diveToZ:_dpz+oppDiveDir*5);
