@@ -13,8 +13,10 @@ const srv = await startServer(); const port = srv.address().port;
 const b = await launchBrowser();
 const page = await b.newPage({ viewport: { width: 412, height: 915 } });
 await installCdnRoutes(page);
-await page.addInitScript(() => {
-  window.__CPM_GLB = false; window.__CPM_RIP = []; window.__CPM_KOC = {};/* [7.588.0] contatore gia' nel gioco (7.544): quante volte lo schieramento gira, e quante di quelle durante una ripresa */
+const ROSSO = !!process.env.CPM_ROSSO;/* [7.588.0] prova del rosso: stessa sonda, rimedio spento */
+await page.addInitScript((rosso) => {
+  if(rosso){ window.__CPM_NO588 = true; window.__CPM_NO589 = true; }/* [7.589.0] il rosso spegne TUTTO il rimedio della ripresa: lo schieramento a ogni tick e l'autorita' unica sulla posizione */
+  window.__CPM_GLB = false; window.__CPM_RIP = []; window.__CPM_KOC = {}; window.__CPM_RIP544 = [];/* [7.588.0] contatore gia' nel gioco (7.544): quante volte lo schieramento gira, e quante di quelle durante una ripresa */
   setInterval(() => { try {
     const h = window.__CPM_HOLD && window.__CPM_HOLD();
     /* [7.588.0] da quanto e' aperta la finestra: lo schieramento della ripresa scatta ogni tre tick di
@@ -40,13 +42,14 @@ await page.addInitScript(() => {
     }
     R.push({ tot, casaFuori, ospFuori, cerchio, eta, fuori });
   } catch (_e) {} }, 150);
-});
+}, ROSSO);
 await openMatch(page, port, { skipLoadAll: true, name: 'Rp' });
 await page.evaluate(() => window.__CPM_AUTOPLAY(true, { seed: 7300, policy: 'seeded', tickMs: 300 }));
 const t0 = Date.now();
 while (Date.now() - t0 < 600000) { await sleep(1500); const ph = await matchPhase(page); if (ph === 'ended' || ph === 'ceremony') break; }
 const R = await page.evaluate(() => window.__CPM_RIP || []);
 const KOC = await page.evaluate(() => window.__CPM_KOC || {});
+const R544 = await page.evaluate(() => window.__CPM_RIP544 || []);
 await b.close(); srv.close();
 
 console.log('\n=== DOPO UN GOL, LE SQUADRE TORNANO NELLE PROPRIE META\'? ===\n');
@@ -80,4 +83,15 @@ console.log('  giocatori dentro il cerchio di centrocampo (nel calcio sono DUE):
   if (es) console.log('    esempio di un campione: ' + es.join(' · '));
 }
 console.log('\n  lo schieramento ha girato ' + (KOC.blocco || 0) + ' volte, di cui ' + (KOC.ko || 0) + ' durante una ripresa' + ((KOC.ko | 0) === 0 ? '  ← MAI: il ripiegamento non ha nemmeno la possibilita\' di applicarsi' : ''));
+{
+  console.log('\n  --- COSA VEDE IL RIPIEGAMENTO, giocatore per giocatore (dal gioco, non dedotto) ---');
+  if (!R544.length) console.log('    ⚠ il ripiegamento non e\' MAI stato raggiunto: il ramo non gira');
+  else {
+    const perT = {}; for (const r of R544) perT[r.t] = (perT[r.t] || 0) + 1;
+    console.log('    passaggi nel ramo: ' + R544.length + '  ·  per squadra: ' + Object.entries(perT).map(([k, v]) => k + ' ' + v).join(' · '));
+    const osp = R544.filter(r => r.t !== 'home' && !r.gk).slice(0, 8);
+    console.log('    esempi OSPITI (indice · squadra · bersaglio prima del ripiegamento · x attuale):');
+    for (const r of osp) console.log('      i' + r.i + ' · ' + r.t + ' · bersaglio ' + r.pre + ' · sta a ' + r.x);
+  }
+}
 console.log('\nCENSIMENTO registrato. Non e\' un guardiano: non fallisce, misura.\n');

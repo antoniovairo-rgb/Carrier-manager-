@@ -336,7 +336,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
      bumpato insieme alle nuove posizioni, quindi ATTERRA NELLO STESSO COMMIT: quando il renderer
      vede il numero cambiare, i bersagli freschi sono gia' nei props — non un fotogramma prima. */
   const [stageStamp,setStageStamp]=useState(0);
-  const [matchPlayers,setMatchPlayers]=useState(()=>{
+  const [matchPlayers,_setMPraw]=useState(()=>{
     const j=(x,y,d=4)=>({x:clamp(x+rng(-d,d),3,97),y:clamp(y+rng(-d,d),3,97)});
     // Sprint 79 — prestige-aware away formation: elite teams press higher (lower x = closer to home goal)
     const _oppP79=opponent?.p||opponent?.prestige||65;
@@ -361,6 +361,30 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
       let _hi=0,_ai=0;_mp.forEach(e=>{e.name=(e.team==="home")?_surn(_heroRoster,_hi++):_surn(_oppRoster,_ai++);});}catch(_e){}
     return _mp;
   });
+  /* [7.588.0 SOLO COLLAUDO, spento se manca la bandiera] CHI RIMETTE INDIETRO GLI OSPITI.
+     Il censimento della ripresa dice una cosa che la mia spiegazione non regge: il ripiegamento vede
+     bersaglio 62 e trova il giocatore a 44, PASSATA DOPO PASSATA, con guadagno 0,92 — dopo una sola
+     passata dovrebbe stare a 60,6. Qualcuno lo riporta indietro fra una passata e l'altra, e i dodici
+     scrittori usano tutti `prev.map`, quindi non e' un elenco ricostruito: e' una SCRITTURA. Qui il
+     setter si annota da QUALE RIGA parte ogni aggiornamento e quanto sposta l'indice sorvegliato: la
+     riga colpevole si legge, non si indovina. Nessun costo a bandiera spenta. */
+  const setMatchPlayers=React.useMemo(()=>{
+    if(typeof window==='undefined'||!window.__CPM_W588)return _setMPraw;
+    return (u)=>{const st=(new Error()).stack||"";return _setMPraw(prev=>{
+      const nx=(typeof u==='function')?u(prev):u;
+      try{const W=window.__CPM_W588,I=W.idx|0;
+        const a=prev&&prev[I],b=nx&&nx[I];
+        if(a&&b&&Math.abs((b.x||0)-(a.x||0))>1.5){
+          const m=st.split('\n').slice(1,6).join(' | ');
+          /* l'IMPRONTA dello scrittore e' il suo stesso codice: la pila di Babel non torna alle righe del
+             sorgente, il testo dell'aggiornamento si'. */
+          (W.mosse=W.mosse||[]).push({da:+Number(a.x).toFixed(1),a:+Number(b.x).toFixed(1),fn:String(u).replace(/\s+/g,' ').slice(0,150),st:m.slice(0,160)});
+          if(W.mosse.length>120)W.mosse.shift();
+        }
+      }catch(_e){}
+      return nx;
+    });};
+  },[_setMPraw]);
   useEffect(()=>{matchPlayersRef.current=matchPlayers;},[matchPlayers]);/* [BL-07] specchio live per __CPM_MP */
 
   // Sprint 3D-1 — renderer 3D (default; resta dentro il sistema HL). 2D Classic/Phaser selezionabili dal toggle.
@@ -1753,7 +1777,30 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
       const _cA=_awDef?0.74:1.02,_kAB=_awDef?0.55:0.34,_kAM=_awDef?0.48:0.34,_kAF=_awDef?0.30:0.18;
       const _hmDef=poss<50;
       const _cH=_hmDef?0.74:1.02,_kHB=_hmDef?0.55:0.34,_kHM=_hmDef?0.48:0.34,_kHF=_hmDef?0.30:0.18;
-      setMatchPlayers(prev=>prev.map((pl,idx)=>{
+      /* [7.589.0 — DUE AUTORITA' SULLA STESSA POSIZIONE, rosso __CPM_NO589]
+         COLLAUDO PO: «dopo un gol le squadre non tornano nelle meta' campo proprie».
+         SEI IPOTESI MIE CADUTE, ognuna con la sua misura (non e' un ritardo · il ripiegamento gira · gli
+         slot sono in coordinate di campo · non e' la catena di gioco · nessuno ricostruisce l'elenco · non
+         basta farlo girare a ogni tick). Il censimento diceva una cosa che nessuna di quelle spiegazioni
+         regge: il ripiegamento legge bersaglio 62 e trova il giocatore a 44 PASSATA DOPO PASSATA, con
+         guadagno 0,92 — dopo una sola passata dovrebbe stare a 60,6.
+         Allora ho smesso di dedurre e ho messo un TESTIMONE sul setter, che si annota l'impronta di chi
+         scrive. Il colpevole si e' nominato da solo: sull'ospite i19, in una partita, 78 scritture da QUI
+         (media -4,0u, 77 su 78 all'INDIETRO) contro 35 dello schieramento della ripresa (media +7,5u).
+         Non e' un difetto di taratura: sono DUE AUTORITA' sulla stessa coordinata che tirano in direzioni
+         opposte, e vince quella che scrive piu' spesso. Questo blocco insegue le corsie con `awayDepth-30`
+         — durante una ripresa awayDepth vale ~62, quindi le punte ospiti hanno bersaglio x~32, cioe' la
+         META' SBAGLIATA.
+         E c'e' di peggio della frequenza: `velRef` e' una MEMORIA di velocita'. Lo schieramento sposta la
+         posizione ma non la velocita', quindi appena finito lo snap questo blocco riprende con la sua
+         spinta negativa gia' carica e se lo riporta indietro.
+         RIMEDIO STRUTTURALE, non un rattoppo: durante la ripresa comanda UNO SOLO. Una ripresa e'
+         un'interruzione — il pallone e' fermo al centro, non c'e' nessuna corsia da inseguire — quindi la
+         macchina delle corsie si ferma e AZZERA la memoria di velocita', cosi' che alla ripartenza nessuno
+         riparta con la spinta di prima. Fuori dalla ripresa non cambia niente. */
+      const _ripresa589=!(typeof window!=='undefined'&&window.__CPM_NO589)&&((kickRef.current|0)>0||(kickoffRef.current|0)>0);
+      if(_ripresa589){try{const _V=velRef.current;for(const _k in _V){const _v=_V[_k];if(_v){_v.vx=0;_v.vy=0;}}}catch(_e){}}
+      else setMatchPlayers(prev=>prev.map((pl,idx)=>{
         if(pl.team==="ref")return pl;
         if(pl.team==="away"){
           const ai=idx-10;
@@ -3178,7 +3225,22 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
            dei reparti del 7.538 non c'entra». Erano identici perche' in NESSUNO dei due bracci quel codice
            girava. La conclusione era giusta per la ragione sbagliata, ed e' peggio che sbagliata.
            Ora il preset di partenza e' lo schieramento di riposo: il blocco gira dal calcio d'inizio. */
-        if(nx%3===0){
+        /* [7.588.0 — LA RIPRESA NON HA IL TEMPO DI SCHIERARSI, rosso __CPM_NO588]
+           COLLAUDO PO: «dopo un gol le squadre non tornano nelle meta' campo proprie». Misurato mediana
+           CINQUE giocatori nella meta' sbagliata, tutti ospiti fra x30 e x45.
+           CINQUE IPOTESI MIE CADUTE, ognuna con la sua misura: non e' un ritardo · non e' che il
+           ripiegamento non giri · non e' un sistema di riferimento sbagliato (i bersagli sono 78 e 62,
+           giusti) · non e' la catena di gioco (silenziarla PEGGIORA: 5 -> 6) · non e' uno scrittore che
+           ricostruisce l'elenco (tutti e dodici usano `prev.map`, nessuno scarta il lavoro altrui).
+           RESTA L'UNICA SPIEGAZIONE COMPATIBILE, e il codice se l'era gia' scritta nel 7.544: «lo
+           schieramento gira ogni TRE tick e la finestra ne dura ~6 — due sole occasioni di muoversi».
+           Con un guadagno di 0,92 due occasioni basterebbero; una sola no, e quando la finestra si chiude
+           prima della seconda i ventidue restano dov'erano. Durante una ripresa lo schieramento gira
+           dunque a OGNI tick: la ripresa e' un'interruzione, non un inseguimento, e le squadre si
+           schierano mentre l'arbitro aspetta. Fuori dalla ripresa il passo resta di tre tick — quello
+           regola il costo, e non c'e' ragione di toccarlo. */
+        const _ognitick588=!(typeof window!=='undefined'&&window.__CPM_NO588)&&((kickRef.current|0)>0||(kickoffRef.current|0)>0);
+        if(nx%3===0||_ognitick588){
           const dt=driftTargetsRef.current||DRIFT_PRESETS.midfield;
           const _q553=!(typeof window!=='undefined'&&window.__CPM_NO553)&&phaseRef.current==='playing';
           const _bb553=(_q553&&ballTargetRef.current)?ballTargetRef.current:null;

@@ -28,9 +28,11 @@ await page.evaluate(() => window.__CPM_AUTOPLAY(true, { seed: 7300, policy: 'see
 const t0 = Date.now();
 while (Date.now() - t0 < 90000) { await sleep(1200); if ((await matchPhase(page)) === 'playing') break; }
 await sleep(4000);
+/* [7.578.0] tre fotografie a distanza, non una: la prima cade spesso sulla presentazione di scena, e una
+   sola inquadratura non dice se l'arredo si vede DURANTE la cronaca — che e' quando il PO lo guarda. */
+for (const k of [0, 1, 2]) { await page.screenshot({ path: 'out/tifo-ospiti-573-' + k + '.png' }); if (k < 2) await sleep(9000); }
 const cen = await page.evaluate(() => (window.__CPM_TIFO ? window.__CPM_TIFO() : { err: 'hook assente' }));
 const dec = await page.evaluate(() => (window.__CPM_DECOR ? window.__CPM_DECOR() : {}));
-await page.screenshot({ path: 'out/tifo-ospiti-573.png' });
 await b.close(); srv.close();
 
 console.log('\n=== SCENOGRAFIA TIFO IN UNA PARTITA NORMALE (folla non forzata) ===\n');
@@ -47,5 +49,5 @@ else {
 }
 console.log('');
 console.log('  costo in scena: mesh totali ' + (dec.n != null ? dec.n : '?') + '  ·  texture uniche ' + (dec.uniche != null ? dec.uniche : '?') + '  ·  ' + (dec.mb != null ? dec.mb.toFixed(1) : '?') + ' MB di texture  ·  texture vuote ' + (dec.texVuote != null ? dec.texVuote : '?'));
-console.log('\n  fotografia: out/tifo-ospiti-573.png');
+console.log('\n  fotografie: out/tifo-ospiti-573-{0,1,2}.png');
 console.log('  pageerror: ' + (errors.length ? errors.join(' | ') : 'nessuno') + '\n');
