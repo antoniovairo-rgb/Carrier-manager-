@@ -37,10 +37,22 @@ await page.addInitScript(([rosso, r591]) => {
        vive mediana 19,1 s e fino a 46,4 s — campionare tutta quella durata voleva dire chiamare «ripresa
        disordinata» mezzo minuto di gioco normale, dove i ventidue DEVONO essere sparsi. E' l'errore che
        ho commesso e riferito. Se il gioco non espone la finestra breve, si dichiara e non si giudica. */
+    const st = window.__CPM_STATE && window.__CPM_STATE(); if (!st || !st.players) return;
+    /* [7.591.0] LO SCARTO ANCHE FUORI DALLA RIPRESA: senza un termine di paragone «15 metri» non vuol
+       dire niente. Se la mesh sta a 15 metri dal modello anche a gioco vivo, allora non e' un difetto
+       della ripresa — e' come funziona il renderer, che il bersaglio se lo ricalcola sempre. */
+    try { const MP0 = window.__CPM_MP && window.__CPM_MP();
+      if (MP0 && st.players) { let sd = 0, sn = 0;
+        for (let _j = 0; _j < st.players.length && _j < MP0.length; _j++) {
+          const a = st.players[_j], b3 = MP0[_j];
+          if (!a || !b3 || a.gk || a.x == null || b3.x == null) continue;
+          if (String(a.team || '') !== String(b3.t || '')) continue;
+          sd += Math.abs(a.x - b3.x); sn++; }
+        if (sn) { const F = (window.__CPM_FUORI = window.__CPM_FUORI || { rip: [], vivo: [] });
+          (_breve ? F.rip : F.vivo).push(sd / sn); } } } catch (_e) {}
     if (_breve === null) { window.__CPM_KOT = 0; return; }
     if (!_breve) { window.__CPM_KOT = 0; return; }
     const eta = (window.__CPM_KOT = (window.__CPM_KOT || 0) + 1);
-    const st = window.__CPM_STATE && window.__CPM_STATE(); if (!st || !st.players) return;
     /* [7.589.0 — LE DUE SORGENTI, NELLO STESSO ISTANTE] `__CPM_STATE().players` legge le MESH del
        renderer, non il modello logico: e' scritto nella sua stessa definizione (`mesh.position` ->
        `w2g`). Finche' questa sonda leggeva una sorgente sola non poteva dire SE il difetto e' nella
@@ -97,6 +109,7 @@ await page.evaluate(() => window.__CPM_AUTOPLAY(true, { seed: 7300, policy: 'see
 const t0 = Date.now();
 while (Date.now() - t0 < 600000) { await sleep(1500); const ph = await matchPhase(page); if (ph === 'ended' || ph === 'ceremony') break; }
 const R = await page.evaluate(() => window.__CPM_RIP || []);
+const FUORI = await page.evaluate(() => window.__CPM_FUORI || null);
 const DUR = await page.evaluate(() => window.__CPM_DUR || null);
 const KOC = await page.evaluate(() => window.__CPM_KOC || {});
 const R544 = await page.evaluate(() => window.__CPM_RIP544 || []);
@@ -216,6 +229,11 @@ console.log('\n  lo schieramento ha girato ' + (KOC.blocco || 0) + ' volte, di c
       for (const r of camp.slice(0, 6)) console.log('      i' + r.i + ' · bersaglio ' + r.pre + ' -> dopo il ripiegamento ' + r.post + ' · sta a ' + r.x);
     }
   }
+}
+if (FUORI) { const q = (a) => { if (!a.length) return 'nessun campione'; const b = a.slice().sort((x, y) => x - y); return `mediana ${b[Math.floor(b.length / 2)].toFixed(2)} m su ${b.length} campioni`; };
+  console.log('\n  --- LO SCARTO MESH/MODELLO HA UN TERMINE DI PARAGONE ---');
+  console.log('    durante la ripresa : ' + q(FUORI.rip));
+  console.log('    a gioco vivo       : ' + q(FUORI.vivo));
 }
 if (DUR) { const q = (a) => a.length ? a.map(v => (v * 150 / 1000).toFixed(1) + 's').join(' · ') : 'mai chiusa/mai aperta';
   console.log('\n  --- QUANTO DURANO DAVVERO I DUE CONTATORI DELLA RIPRESA ---');

@@ -3658,9 +3658,27 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
            E il numero che chiude la strada e' un altro: lo SCARTO fra dove la partita mette un giocatore e
            dove il renderer lo disegna resta 15-17 metri di mediana IN ENTRAMBI I BRACCI, con gli indici
            verificati allineati (zero coppie con squadra diversa su 19 valide). Un rimedio che non muove lo
-           scarto non e' un rimedio debole: e' la prova che la premessa e' sbagliata. Le due sorgenti non
-           descrivono lo stesso oggetto — `allPlayers` non e' `matchPlayers` — e finche' non so QUALE
-           sorgente il renderer legge davvero, qualunque cosa scriva qui la sto scrivendo alla cieca.
+           scarto non e' un rimedio debole: e' la prova che qualcosa nella mia ricostruzione non regge.
+           ⚠️ RETTIFICA, scritta un'ora dopo la revoca perche' avevo chiuso con una conclusione FALSA: qui
+           c'era scritto «le due sorgenti non descrivono lo stesso oggetto, `allPlayers` non e'
+           `matchPlayers`». E' vero il contrario, e bastava una riga per saperlo — il componente 3D riceve
+           `allPlayers={matchPlayers}`: sono lo STESSO array. Quindi lo scarto di 15-17 metri e' reale e
+           misura esattamente cio' che dice, quanto la mesh disegnata si discosta dal modello. La premessa
+           era giusta; a non reggere era la mia spiegazione del perche' i rimedi non lo muovessero.
+           Ho lasciato passare una supposizione per una causa proprio mentre annotavo una strada morta, che
+           e' il posto peggiore dove farlo: una nota di revoca la legge chi ripercorrera' la strada.
+           E IL TERMINE DI PARAGONE, misurato subito dopo, cambia la domanda: lo scarto vale 16,08 m di
+           mediana durante la ripresa (143 campioni) ma 10,55 m A GIOCO VIVO (1176 campioni). Non e' quindi
+           un difetto della ripresa: e' STRUTTURALE. Dove la partita mette un giocatore e dove il renderer
+           lo disegna distano dieci metri in media, sempre, per tutti e ventidue — un giocatore intero di
+           distanza dalla posizione che la simulazione ha deciso.
+           E' la scoperta che vale piu' del rimedio mancato, perche' l'utente guarda il RENDERER: quando il
+           PO scrive «non ci sono trame di gioco, passaggi, pressing», sta guardando una partita che non e'
+           quella che la simulazione sta giocando. Finche' questi due numeri non convergono, ogni rimedio
+           scritto nella simulazione arriva all'occhio attenuato di dieci metri.
+           NON E' UN DIFETTO DA CORREGGERE QUI E ORA: questo blocco corregge il bersaglio APPOSTA (pressing,
+           marcature, forma del reparto) e buona parte di quei dieci metri e' voluta. Quello che manca e'
+           sapere QUANTA parte e' voluta e quanta e' deriva — e va misurato per scrittore, non a occhio.
            LEZIONE, e vale piu' del rimedio mancato: il guadagno della stesura (1) era un conteggio con
            SOGLIA su una partita sola, e le partite ballano di un giocatore intero. La misura continua
            (lo scarto in metri) lo ha smentito. Quando un numero ha una soglia, due partite diverse bastano
