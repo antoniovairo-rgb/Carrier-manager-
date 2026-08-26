@@ -1513,9 +1513,20 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
              const _isChain=!!(_curSit&&_curSit._chainDepth);
              const _pv=ballTargetRef.current||ballPosRef.current||{x:58,y:50};/* [7.399.0 codice 002] il bersaglio, non la posizione a meta' volo: leggere `ballPosRef` qui trovava la palla fuori zona e ripiegava sul punto casuale (vedi il commento sopra) — il privilegio del bersaglio era gia' riconosciuto alle catene dal 7.34.1, e la ragione vale per tutte */
              const _in=_pv.x>=_sz.x[0]&&_pv.x<=_sz.x[1]&&_pv.y>=_sz.y[0]&&_pv.y<=_sz.y[1];
+             /* [7.621.0 — SPRINT «PARTITA VERA»: LA SCENA NASCE DOV'ERA DIRETTO IL GIOCO. Rosso __CPM_NO621]
+                L'audit highlights (punto 2): «la continuita' butta via il ponte» — bersaglio fuori dalla
+                startZone e la scena nasceva su un punto SORTEGGIATO della zona (getStartPos), cioe' il
+                «salto di campo» che spezza il racconto. Il rimedio esiste nel codice dal 7.34.1, ma solo
+                per le catene: il CLAMP MINIMO dentro la zona («slide di pochi passi invece del punto a
+                caso»). Qui si estende a tutte le scene: il punto di nascita e' il punto della zona piu'
+                vicino a dove la palla era diretta. E' anche la strada indicata dalla revoca del verso
+                (7.579/7.621-muta, entrambe piatte): a tenere il gioco al centro sono le SCENE che
+                nascono altrove, non il comando delle righe — l'80% partiva nel corridoio centrale. */
              sp=_in?{x:_pv.x,y:_pv.y}
-               :_isChain?{x:clamp(_pv.x,_sz.x[0],_sz.x[1]),y:clamp(_pv.y,_sz.y[0],_sz.y[1])}
-               :(getStartPos(_curSit)||{x:(_sz.x[0]+_sz.x[1])/2,y:(_sz.y[0]+_sz.y[1])/2}); }
+               :(_isChain||!(typeof window!=='undefined'&&window.__CPM_NO621))?{x:clamp(_pv.x,_sz.x[0],_sz.x[1]),y:clamp(_pv.y,_sz.y[0],_sz.y[1])}
+               :(getStartPos(_curSit)||{x:(_sz.x[0]+_sz.x[1])/2,y:(_sz.y[0]+_sz.y[1])/2});
+             if(typeof window!=='undefined'&&window.__CPM_CONT621!==undefined){try{const _c1=window.__CPM_CONT621;
+               if(_c1.length<300)_c1.push({d:+Math.hypot(sp.x-_pv.x,sp.y-_pv.y).toFixed(1),in:_in?1:0,ch:_isChain?1:0});}catch(_e){}} }
       setPPos(sp);
       stageSitPositions(situations[hlIdx],sp);/* [7.224.0] estratto in helper — lo chiama anche __CPM_FORCE_SIT */
     }
@@ -3059,6 +3070,15 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
             if(typeof window!=='undefined'&&(window.__CPM_REC||_CPM_TEST)){try{const _g=(window.__CPM_INV=window.__CPM_INV||{descrive:0,comanda:0});_g.descrive++;}catch(_e){}}
             _bt498=null;/* la riga DESCRIVE: non tocca il pallone */
           }
+          /* ⚠️ [7.621.0 — FASE B/1] PROVATO E REVOCATO CON LA SUA MISURA, come l'inversione intera:
+             togliere il comando del pallone alle SOLE righe MUTE (le 107 su 223 che non affermano alcun
+             fatto, eppure propongono centri all'86%). Misura appaiata sulle fasce, stesso seed:
+             centrale 77% contro 74% del rosso — PIATTA, dentro il rumore, identico esito del 7.579.
+             La lezione, terza dello stesso filo: il comando delle righe NON e' cio' che tiene il pallone
+             al centro — a dominare la posizione sono gli ALTRI scrittori (le scene, che partono nel
+             corridoio centrale nell'80% dei casi, e la trama che guida solo il 5% del tempo). La Fase B
+             sul verso non paga finche' il MOTORE non possiede il pallone (A2) e le SCENE non nascono
+             dove il gioco sta: e' li' che va il prossimo colpo, non su questo interruttore. */
           if(_bt498){
             if(typeof window!=='undefined'&&(window.__CPM_REC||_CPM_TEST)){try{const _g=(window.__CPM_INV=window.__CPM_INV||{descrive:0,comanda:0});_g.comanda++;}catch(_e){}}
             ballTargetRef.current=_bt498;
