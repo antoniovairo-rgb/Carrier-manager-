@@ -12,7 +12,9 @@ const srv = await startServer(); const port = srv.address().port;
 const b = await launchBrowser();
 const page = await b.newPage({ viewport: { width: 412, height: 915 } });
 await installCdnRoutes(page);
-await page.addInitScript(() => {
+const ROSSO = !!process.env.CPM_ROSSO;/* [7.594.0] prova del rosso: stesso binario, rimedio spento */
+await page.addInitScript((rosso) => {
+  if (rosso) window.__CPM_NO594 = true;
   window.__CPM_GLB = false; window.__CPM_TR = { n: 0, ai: 0, cambi: 0, uomini: {}, dist: [], volo: 0, voloMax: 0, _cur: null, _volo: 0 };
   setInterval(() => { try {
     const st = window.__CPM_STATE && window.__CPM_STATE(); if (!st || !st.players || !st.ball) return;
@@ -22,6 +24,12 @@ await page.addInitScript(() => {
     let vic = null, vd = 1e9;
     for (const [p, id] of tutti) { if (!p || p.x == null) continue; const d = Math.hypot(p.x - bx, p.y - by); if (d < vd) { vd = d; vic = id; } }
     T.n++; T.dist.push(+vd.toFixed(1));
+    /* [7.594.0] LA METRICA MENO RUMOROSA: la distanza del piu' vicino al pallone su TUTTI i campioni
+       dentro la finestra della ripresa, non solo su quelli gia' classificati «di nessuno». Le mediane
+       per stato ballano di un metro fra due partite perche' contano poche decine di campioni ciascuna —
+       e su numeri cosi' ho gia' letto oggi un miglioramento che non c'era. */
+    try { const rb = window.__CPM_RIPBREVE && window.__CPM_RIPBREVE();
+      if (rb && rb.breve) (T.rip = T.rip || []).push(+vd.toFixed(1)); } catch (_e) {}
     /* «ai piedi» = entro due metri: e' la distanza a cui un giocatore controlla il pallone. */
     if (vd <= 2) { T.ai++;
       if (T._cur && T._cur !== vic) { T.cambi++; }
@@ -39,10 +47,16 @@ await page.addInitScript(() => {
         : (st.ball.worldY != null && st.ball.worldY > 2.5) ? 'pallone ALTO (volo)'
         : (bx < 2 || bx > 98 || by < 2 || by > 98) ? 'pallone sulla riga' : 'GIOCO VIVO, pallone basso';
       T.dove = T.dove || {}; T.dove[k] = (T.dove[k] || 0) + 1;
+      /* [7.594.0] E A CHE DISTANZA sta il piu' vicino, in ciascuno stato. Sospetto sul MIO strumento: la
+         soglia «ai piedi» e' 2,0 m, e durante la ripresa il codice piazza chi batte a ESATTAMENTE due
+         unita' dal centro (7.544, `sx=48` col pallone a 50). Se il piu' vicino sta a 2,0-2,5 m, allora il
+         «pallone di nessuno» durante le pause e' un artefatto della mia soglia, non un difetto del gioco —
+         e il settanta per cento delle assenze che ho appena riferito si sgonfia. */
+      T.dist2 = T.dist2 || {}; (T.dist2[k] = T.dist2[k] || []).push(+vd.toFixed(1));
       if (T._volo === 15) { T.lunghe = T.lunghe || {}; T.lunghe[k] = (T.lunghe[k] || 0) + 1; }
     }
   } catch (_e) {} }, 200);
-});
+}, ROSSO);
 await openMatch(page, port, { skipLoadAll: true, name: 'Tr' });
 await page.evaluate(() => window.__CPM_AUTOPLAY(true, { seed: 7300, policy: 'seeded', tickMs: 300 }));
 await sleep(90000);
@@ -65,6 +79,20 @@ if (T.dove) { console.log('\n  quando il pallone e\' DI NESSUNO, il gioco sta co
   const tot = Object.values(T.dove).reduce((a, v) => a + v, 0);
   for (const [k, v] of Object.entries(T.dove).sort((a, b2) => b2[1] - a[1]))
     console.log(`    ${(v / tot * 100).toFixed(0).padStart(3)}%  ${k}`);
+}
+if (T.rip && T.rip.length) { const q = T.rip.slice().sort((a, b2) => a - b2);
+  console.log(`\n  DENTRO LA FINESTRA DELLA RIPRESA · distanza del piu' vicino al pallone`);
+  console.log(`    mediana ${q[Math.floor(q.length / 2)].toFixed(1)} m · quarto basso ${q[Math.floor(q.length * .25)].toFixed(1)} · quarto alto ${q[Math.floor(q.length * .75)].toFixed(1)}  [${q.length} campioni]`);
+} else console.log('\n  ⚠ nessun campione dentro la finestra della ripresa: NON GIUDICABILE su quel punto');
+if (T.dist2) { console.log('\n  ...e a CHE DISTANZA sta il piu\' vicino, in ciascuno stato (mediana):');
+  console.log('\n  ⚠ ATTENZIONE A COME SI LEGGONO LE RIGHE QUI SOTTO: sono un campione CONDIZIONATO — solo');
+  console.log('    gli istanti in cui NESSUNO era entro due metri. In quel sottoinsieme la distanza e\' alta');
+  console.log('    per DEFINIZIONE, e leggerla come «gravita\' del difetto» e\' una tautologia: e\' l\'errore');
+  console.log('    che mi ha fatto scrivere e poi revocare il 7.594. Il numero NON condizionato sta sopra.');
+  for (const [k, arr] of Object.entries(T.dist2).sort((a, b2) => b2[1].length - a[1].length)) {
+    const q = arr.slice().sort((x, y) => x - y);
+    console.log(`    ${q[Math.floor(q.length / 2)].toFixed(1).padStart(5)} m   ${k}  [${arr.length} campioni]`);
+  }
 }
 if (T.lunghe) { console.log('\n  le assenze LUNGHE (oltre 3 s) cominciano qui:');
   for (const [k, v] of Object.entries(T.lunghe).sort((a, b2) => b2[1] - a[1])) console.log(`    ${String(v).padStart(3)} volte  ${k}`);

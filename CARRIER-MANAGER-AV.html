@@ -12899,6 +12899,22 @@ function ThreeMatchView(props){
            Resta una domanda vera, ma e' una DECISIONE DI PRODOTTO e non un difetto: dieci metri di
            scostamento medio sono tanti, e se si vuole che l'occhio veda cio' che la simulazione decide,
            quel numero va scelto — non corretto di nascosto. Chi riprende questo filo parta da li'. */
+        /* ⚠️ [7.594.0 PROVATO E REVOCATO CON LA SUA MISURA — «durante una pausa la mesh non ha niente da
+           rendere morbido»] Avevo alzato prontezza e passo SOLO dentro la finestra della ripresa (primo
+           stadio da 1,25 a 6,0; secondo stadio ×2,2), convinto da questa catena: quando il pallone e' «di
+           nessuno», il 45% delle volte i contatori di ripresa sono aperti e li' il piu' vicino sta a 6,8
+           metri dal pallone, mentre il modello ce lo mette a due.
+           VERDE CONTRO ROSSO, stesso binario: distanza mediana del piu' vicino al pallone dentro la
+           finestra 1,2 m col rimedio contro 0,7 m senza, quarto alto 4,1 contro 1,1. PEGGIORA, e di molto.
+           ⚠️ MA IL VERO GUADAGNO E' SCOPRIRE PERCHE' LA PREMESSA ERA FALSA, ed e' un errore mio di metodo
+           — il terzo oggi della stessa famiglia. Quei «6,8 metri» venivano da un campione CONDIZIONATO:
+           li avevo misurati solo negli istanti in cui nessuno era entro due metri. In quel sottoinsieme la
+           distanza e' alta per DEFINIZIONE. Ho misurato una tautologia e l'ho letta come difetto.
+           La misura non condizionata dice l'opposto: durante la ripresa il piu' vicino al pallone sta a
+           0,7 metri. Chi deve battere CE L'HA. Non c'era niente da riparare.
+           LEZIONE: quando un numero descrive «quanto e' grave X», il campione non puo' essere selezionato
+           su X. Vale anche per i 3,5 m «a gioco vivo» dello stesso censimento — stessa tautologia, stessa
+           inaffidabilita'. */
         const _tsm=Math.min(dt*(1.25+mesh._react*0.95),1);mesh._ctx+=(tx-mesh._ctx)*_tsm;mesh._ctz+=(tz-mesh._ctz)*_tsm;// bersaglio commesso smussato, con prontezza PER GIOCATORE
         const cdx=mesh._ctx-mesh.position.x,cdz=mesh._ctz-mesh.position.z,cd=Math.hypot(cdx,cdz);
         const _dn=cd>1e-3?1/cd:0,_ds=Math.min(cd*3,mesh._vmax);
