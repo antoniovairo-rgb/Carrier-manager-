@@ -6675,7 +6675,24 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
            deve DERIVARE (tempo di gioco, non fotogrammi) per far riaccendere la rete. Solo camLook, mai la
            posizione camera → firma golden intatta per costruzione. `__CPM_NO478C` rimette il comportamento
            di prima (prova del rosso). */
-        if(Math.abs(_dAG)>_aMG){_gCor50=true;try{if(sr.current._tocc503)sr.current._tocc503.push('vista-reale');}catch(_e){}/* [7.503.1] l'ottava passata: la rete che riporta il soggetto dentro il quadro REALE, dopo i lerp */
+        /* [7.598.0 — UNA SOLA RETE PER FOTOGRAMMA, anche questa. Rosso __CPM_NO598]
+           COLLAUDO PO su SIT #3: «codice 007 - lo sguardo oscilla: 26,1 inversioni/s, ampiezza 6,3 gradi -
+           vista-reale 51% + lerp 49% · 3,5 passate/fotogramma». Le due voci che si alternano sono nominate
+           dal gioco stesso, e 3,5 passate per fotogramma contro l'1,0 misurato dal PO sul 7.581 dicono
+           dov'e' il problema: piu' reti riscrivono lo SGUARDO nello stesso fotogramma, l'ultima vince, e
+           a fotogrammi alterni vince l'altra. E' la firma dell'oscillazione, ed e' la stessa classe di
+           difetto trovata oggi altre tre volte - piu' autorita' sulla stessa grandezza.
+           Il principio esiste gia' nel file: `_leg563` conta le reti di legalita' che hanno gia' scritto,
+           e una guardia lo rispetta. Questa rete no. Ora lo rispetta: se una rete ha gia' corretto lo
+           sguardo in questo fotogramma, la rete del quadro aspetta il prossimo. Non rinuncia a
+           correggere, rinuncia a correggere DUE VOLTE nello stesso istante.
+           ⚠️ IL GUADAGNO NON E' MISURATO, e va detto. Il laboratorio gira a ~7 fps e ventisei inversioni
+           al secondo stanno oltre Nyquist: non le vede. E non riproduce nemmeno la causa - qui le passate
+           per fotogramma valgono 1,2 su SIT #3, 1,4 su #155 e 1,5 su #45, contro i 3,5 del dispositivo.
+           Cio' che il laboratorio SA misurare e' il fuori quadro (portato dal 41,3% al 3,0% nel 7.545), ed
+           e' quello che questa modifica potrebbe rompere: quel numero e' il collaudo che ho fatto prima di
+           spedire. Le inversioni le puo' collaudare solo il PO sul telefono. */
+        if(Math.abs(_dAG)>_aMG&&!((sr.current._leg563|0)>0&&!(typeof window!=='undefined'&&window.__CPM_NO598))){_gCor50=true;sr.current._leg563=(sr.current._leg563|0)+1;try{if(sr.current._tocc503)sr.current._tocc503.push('vista-reale');}catch(_e){}/* [7.503.1] l'ottava passata: la rete che riporta il soggetto dentro il quadro REALE, dopo i lerp */
           /* ⚠️ [7.483.0] QUI C'ERA LA SECONDA MODIFICA, ED E' STATA REVOCATA. L'ipotesi era che su gi138
              la rete fosse solo TROPPO LENTA (ingaggia 13 volte e non recupera), curabile con un tetto di
              velocita' che cresce con quanto il soggetto e' fuori. Misurata a tre bracci su 3 passate
