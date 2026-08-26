@@ -6324,8 +6324,32 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
            pieno sotto y 18 (le pose basse di lettura/esito, il difetto originale), zero sopra il bordo
            curva (y 26), liscio in mezzo — una soglia secca farebbe saltare la x di ±12 col respiro
            sinusoidale della wide, cioe' il traballio che si sta togliendo. */
-        if(isHL&&tPx<-46&&!(typeof window!=='undefined'&&window.__CPM_NO524)){_tc503('bordo-lift');const _w33=clamp((26-tPy)/8,0,1);
-          if(_w33>0){tPy+=Math.min(9,(-46-tPx)*0.45)*_w33;tPx+=(-46-tPx)*_w33;}}
+        /* [7.614.0 — IL SOLLEVATORE DI BORDO NON RESPIRA. Rosso __CPM_NO614]
+           COLLAUDO PO su build 7.612 (SIT #44 e altri due appunti): «lo SGUARDO oscilla: 5,0 inversioni/s,
+           ampiezza 7,9° — ultima passata per fotogramma: bordo-lift 64% + lerp 26%». La causa e' leggibile
+           qui senza misura nuova: questa passata convertiva lo sconfinamento oltre il confine curva
+           (tPx<-46) in QUOTA, ricalcolata OGNI FRAME sull'overshoot ISTANTANEO — e la base respira
+           sinusoidalmente attorno a -46 (nota 7.415), quindi la quota pompava su e giu' al ritmo del
+           respiro e l'asse ottico oscillava. In piu' tirava anche la x (tPx+=overshoot), duplicando il
+           bordo-tanh qui sotto che scatta sulla STESSA condizione (duplicazione gia' denunciata dal
+           censimento 7.503): nona istanza del pattern «piu' autorita' sulla stessa grandezza».
+           Ora: la x appartiene al SOLO tanh; la quota insegue lo sconfinamento LISCIATO (~2,5/s), cosi'
+           il respiro della base non arriva piu' all'asse ottico. Etichetta solo quando corregge (7.581).
+           ⚠️ NON MISURABILE IN LABORATORIO: 5 inv/s contro 7 fps headless (Nyquist), e nei provini la
+           classe non si riproduce (l'ultima mano esce vista-reale/gk/guinzaglio, non bordo-lift: la posa
+           profonda nasce transitando dal LIVE). Riparato per costruzione come il 7.581; il giudice e' il
+           dispositivo del PO, la cui bozza nomina l'ultima passata. */
+        if(isHL&&!(typeof window!=='undefined'&&window.__CPM_NO524)){
+          if(typeof window!=='undefined'&&window.__CPM_NO614){
+            if(tPx<-46){_tc503('bordo-lift');const _w33=clamp((26-tPy)/8,0,1);
+              if(_w33>0){tPy+=Math.min(9,(-46-tPx)*0.45)*_w33;tPx+=(-46-tPx)*_w33;}}
+          }else{
+            const _st614=sr.current._lift614||(sr.current._lift614={ov:0});
+            _st614.ov+=(Math.max(0,-46-tPx)-_st614.ov)*Math.min(1,dt*2.5);
+            if(_st614.ov>0.05){_tc503('bordo-lift');const _w33=clamp((26-tPy)/8,0,1);
+              if(_w33>0)tPy+=Math.min(9,_st614.ov*0.45)*_w33;}
+          }
+        }
         /* [7.415.0 collaudo PO gi148 «traballa» in intro/lettura] ANCHE SOPRA IL BORDO, LA CAMERA NON
            VA DIETRO IL MURO. Il pavimento 7.400 pesa zero sopra y 26 di proposito («a quella quota la
            gradinata sta sotto l'asse ottico») — ma non prevede la camera 10 unita' DIETRO la curva:
