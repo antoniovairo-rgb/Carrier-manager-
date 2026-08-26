@@ -11,6 +11,12 @@ const srv = await startServer(); const port = srv.address().port;
 const b = await launchBrowser();
 const page = await b.newPage({ viewport: { width: 412, height: 915 } });
 await installCdnRoutes(page);
+/* CPM_INV=1: braccio appaiato con l'inversione del verso 7.579 accesa (la riga descrive, la trama comanda).
+   CPM_FLAGS="NO612,NO528": bandiere __CPM_* da accendere (bracci appaiati coi rossi, stessa build).
+   CPM_SEED: seed dell'autoplay (default 7300). */
+if (process.env.CPM_INV === '1') await page.addInitScript(() => { window.__CPM_INV579 = true; });
+if (process.env.CPM_FLAGS) await page.addInitScript((fl) => { for (const f of fl) window['__CPM_' + f] = true; }, process.env.CPM_FLAGS.split(',').map(s => s.trim()).filter(Boolean));
+const SEED = (process.env.CPM_SEED | 0) || 7300;
 await page.addInitScript(() => {
   window.__CPM_GLB = false; window.__CPM_FS = { ys: [], cambi: 0, _lato: 0, corse: [], _corsa: 0, xs: [] };
   setInterval(() => { try {
@@ -26,7 +32,7 @@ await page.addInitScript(() => {
   } catch (_e) {} }, 200);
 });
 await openMatch(page, port, { skipLoadAll: true, name: 'Fa' });
-await page.evaluate(() => window.__CPM_AUTOPLAY(true, { seed: 7300, policy: 'seeded', tickMs: 300 }));
+await page.evaluate((sd) => window.__CPM_AUTOPLAY(true, { seed: sd, policy: 'seeded', tickMs: 300 }), SEED);
 await sleep(150000);
 const F = await page.evaluate(() => window.__CPM_FS || null);
 await b.close(); srv.close();
@@ -48,16 +54,11 @@ if (F.corse && F.corse.length) { const c = F.corse.slice().sort((a, b2) => a - b
   console.log(`  quanto dura una permanenza sullo stesso lato · mediana ${(c[Math.floor(c.length / 2)] * 0.2).toFixed(1)} s`); }
 const xs = F.xs.slice().sort((a, c) => a - c);
 console.log(`\n  x del pallone · mediana ${xs[Math.floor(n / 2)].toFixed(0)} (per confronto: il campo va da 0 a 100)`);
-console.log('\n  PRIME DUE TRACCE (misurate con __CPM_IDPICK538, il registro dei sorteggi del gioco):');
-console.log('    1. in 2 minuti la catena di gioco sorteggia il corridoio SOLO 5 VOLTE - la trama nasce');
-console.log('       solo al cambio di possesso, quindi per quasi tutta la partita il pallone non e\' della');
-console.log('       catena ma delle scene e delle pause;');
-console.log('    2. il sorteggio E\' simmetrico (esiti -1/0/+1 registrati: 1/1/3) ma la y del pallone non');
-console.log('       scende MAI sotto 39,4: il corridoio basso viene SCELTO e mai RAGGIUNTO. Qualcuno');
-console.log('       sovrascrive o non consegna quel waypoint - e\' il filo da tirare.');
-console.log('\n  E LA TERZA TRACCIA, quella che chiude il quadro (gancio __CPM_TRAMA527): in 120 s la');
-console.log('    catena di gioco - la sola parte del motore che HA gli schemi, coi corridoi e il cambio di');
-console.log('    fronte - ha guidato il pallone per 20 tick su ~400: il CINQUE per cento del tempo. Il');
-console.log('    resto e\' scene (che per l\'80% partono nel corridoio centrale: 153 su 191 startZone) e');
-console.log('    pause. Non e\' che gli schemi siano scritti male: e\' che non toccano quasi mai palla.');
+/* ⚠️ SANATA: qui c'erano tre «tracce» stampate come misure ma erano TESTO FISSO — il censimento
+   fatto a mano alla nascita della sonda (7.600), ristampato identico a ogni run. Due bracci diversi
+   uscivano con gli stessi numeri e per poco non li ho confrontati come risultati. Uno strumento che
+   ristampa il passato come presente e' uno strumento che mente. Il contenuto storico (per il lettore,
+   dichiarato come storico): al 7.600 la trama guidava il pallone ~5% del tempo (20 tick su ~400,
+   __CPM_TRAMA527), l'80% delle scene partiva nel corridoio centrale (153/191 startZone), il corridoio
+   basso veniva sorteggiato ma la y non scendeva mai sotto 39,4. Se serve di nuovo, si RIMISURA. */
 console.log('\nCENSIMENTO registrato. Non e\' un guardiano: non fallisce, misura.\n');

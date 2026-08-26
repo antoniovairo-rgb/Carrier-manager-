@@ -13,7 +13,9 @@ const srv = await startServer(); const port = srv.address().port;
 const b = await launchBrowser();
 const page = await b.newPage({ viewport: { width: 412, height: 915 } });
 await installCdnRoutes(page);
-await page.addInitScript(() => { window.__CPM_GLB = false; window.__CPM_WSLOG = {}; 
+/* CPM_INV=1: braccio appaiato con l'inversione del verso 7.579 accesa (la riga descrive, la trama comanda) */
+if (process.env.CPM_INV === '1') await page.addInitScript(() => { window.__CPM_INV579 = true; });
+await page.addInitScript(() => { window.__CPM_GLB = false; window.__CPM_WSLOG = {};
   setInterval(() => { try {
     const s = window.__CPM_WATCH_SNAP && window.__CPM_WATCH_SNAP();
     if (!s || !s.samples) return;
@@ -25,7 +27,7 @@ await page.evaluate(() => window.__CPM_AUTOPLAY(true, { seed: 7300, policy: 'see
 await sleep(120000);
 const L = await page.evaluate(() => window.__CPM_WSLOG || {});
 await b.close(); srv.close();
-const NOMI = { 0: 'NESSUNO (ball lerp ambientale/other)', 1: 'snap di scena', 4: 'portatore', 5: 'addosso', 6: 'palo', 7: 'respinta', 9: 'ricevente', 14: 'testa', 15: 'avvicinamento', 16: 'catena-557', 17: 'fermo' };
+const NOMI = { 0: 'NESSUNO (ball lerp ambientale/other)', 1: 'snap di scena', 2: 'arco (volo)', 3: 'inseguitore (scivolamento senza padrone)', 4: 'portatore', 5: 'addosso', 6: 'palo', 7: 'respinta', 9: 'ricevente', 14: 'testa', 15: 'avvicinamento', 16: 'catena-557', 17: 'fermo' };/* 2 e 3 letti dal sorgente (r.1981 e r.2070 di src/12): erano usciti come «codice N» nel primo censimento */
 const tot = L._n || 0; delete L._n;
 console.log(`campioni scrittore: ${tot}`);
 for (const [k, n] of Object.entries(L).sort((a, c) => c[1] - a[1]))

@@ -2856,7 +2856,18 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
             var _no528=(typeof window!=='undefined'&&window.__CPM_NO528);
             if(!_no528){const _tr528=tramaRef.current;
               if(_tr528&&_tr528.cor!=null){const _cy528=_tr528.cor<0?24:_tr528.cor>0?76:50;
-                _bt498={x:_bt498.x,y:clamp(_bt498.y+(_cy528-_bt498.y)*0.35,2,98)};}}
+                /* [7.612.0 — IL CORRIDOIO SI CONSEGNA, NON SI ACCENNA. Rosso __CPM_NO612]
+                   COLLAUDO PO (piu' volte): «il pallone viaggia sempre in verticale in mezzo al campo,
+                   mai sulle fasce». MISURATO (fasce-600): corridoio centrale 78% del tempo, 0,4 cambi di
+                   lato/min, quarto basso della y a 40 — e il 40 non e' un caso, e' l'EQUILIBRIO di questo
+                   richiamo: ogni riga ripropone il centro (y≈50) e il 35% verso cy=24 converge a
+                   0,65·50+0,35·24 ≈ 41. Il corridoio veniva sorteggiato e mai raggiunto PER ARITMETICA.
+                   (Prima ipotesi caduta con misura appaiata: l'inversione del verso 7.579 — fasce e
+                   scrittori identici nei due bracci, vedi la sua nota.) Qui, quando la trama e' su una
+                   FASCIA, il richiamo diventa 0,8: equilibrio ≈29, dentro la fascia vera. Al centro resta
+                   0,35 (rafforzarlo li' ricentralizzerebbe, cioe' il contrario del difetto). */
+                const _k612=(!(typeof window!=='undefined'&&window.__CPM_NO612)&&_tr528.cor!==0)?0.8:0.35;
+                _bt498={x:_bt498.x,y:clamp(_bt498.y+(_cy528-_bt498.y)*_k612,2,98)};}}
             var _dx498=_bt498.x-_cb498.x,_dy498=_bt498.y-_cb498.y,_dd498=Math.hypot(_dx498,_dy498);
             var _cap528=_no528?45:30;
             if(_dd498>_cap528)_bt498={x:clamp(_cb498.x+_dx498/_dd498*_cap528,2,98),y:clamp(_cb498.y+_dy498/_dd498*_cap528,2,98)};
@@ -2968,7 +2979,17 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
              22,0s). Era un artefatto: la revoca del raggio stretto aveva lasciato un riferimento a una
              costante cancellata, la cronaca lanciava a ogni tick e il pallone lo muoveva solo la deriva —
              in ENTRAMBI i bracci. Su codice sano non c'e' differenza: 63,9% -> 65,5% in moto, fermo 4,4s ->
-             4,9s. Il guardiano `ball-alive` resta rosso in tutt'e due (soglia 2s): difetto preesistente. */
+             4,9s. Il guardiano `ball-alive` resta rosso in tutt'e due (soglia 2s): difetto preesistente.
+             [7.612.0 — ARCHIVIATA ANCHE COL METRO NUOVO] Rimisurata appaiata (stesso seed 7300) con le
+             sonde nate dopo (scrittori-601, fasce-600), che misurano ESATTAMENTE i difetti del PO:
+                 fasce bassa/centro/alta   13/78/8%  ->  20/71/8%   (dentro il rumore dichiarato)
+                 cambi di lato              0,4/min  ->  0,4/min    (identico)
+                 scivolamento (ws=3)            16%  ->  16%        (identico)
+                 portatore / catena          42%/1%  ->  41%/1%     (identici)
+             Togliere il comando alla riga non sposta il possesso: il pallone resta centrale perche' la
+             y d'arrivo di OGNI proposta e' centrale e il richiamo di corridoio (35%, qui sopra) converge
+             a y≈41 per aritmetica — 0,65·50+0,35·24 — che e' il «quarto basso 40» misurato. Il rimedio
+             giusto sta nel richiamo, non nel verso: vedi 7.612. Resta opt-in per studio. */
           const _inv579=(typeof window!=='undefined'&&window.__CPM_INV579)&&!ev.ef&&!_fermo578&&!fermoRef.current&&!pendingGoalRef.current;
           if(_bt498&&_inv579){
             if(typeof window!=='undefined'&&(window.__CPM_REC||_CPM_TEST)){try{const _g=(window.__CPM_INV=window.__CPM_INV||{descrive:0,comanda:0});_g.descrive++;}catch(_e){}}
