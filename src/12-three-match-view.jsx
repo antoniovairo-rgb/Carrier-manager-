@@ -6746,6 +6746,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
         const _aM7=Math.atan(_tH7*((camera&&camera.aspect)||0.75))*0.90;
         if(Math.abs(_dA7)>_aM7){const _a27=_aL7+(_dA7-Math.sign(_dA7)*_aM7);
           tLx=_cx7+Math.cos(_a27)*_hl7;tLz=_cz7+Math.sin(_a27)*_hl7;
+          if(!(typeof window!=='undefined'&&window.__CPM_NO619))sr.current._leg563=(sr.current._leg563|0)+1;/* [7.619.0] lo sguardo-pre ENTRA nel conteggio delle reti di legalita': era l'unica mano legale che scriveva senza registrarsi (audit regia) — bisezione, vista-reale e guardia-palla potevano scrivere nello stesso frame sopra di lui */
           try{if(sr.current._tocc503)sr.current._tocc503.push('sguardo-pre');}catch(_e){}}
         const _gd7=Math.hypot(_dx7,_dz7)||1;
         const _eL7=Math.atan2(_ly7,Math.hypot(tLx-_cx7,tLz-_cz7)||1),_eH7=Math.atan2(_dy7,_gd7);
@@ -6924,7 +6925,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
          dove la palla sta a ndc.y −1.37 (sotto il bordo inferiore) per l'INTERA scena. Ora la guardia vale
          su tutte le fasi dell'highlight: l'eroe mantiene la priorita' (se ha corretto lui, la palla aspetta
          il frame dopo) e la correzione resta rate-capped e solo su camLook → posizione camera intatta. */
-      if(isHL&&!_gCor50&&!P.ceremony&&!P.shootout&&!replaying){
+      if(isHL&&!_gCor50&&!P.ceremony&&!P.shootout&&!replaying&&!((sr.current._leg563|0)>0&&!(typeof window!=='undefined'&&window.__CPM_NO619))){/* [7.619.0 — LA GUARDIA-PALLA RISPETTA CHI HA GIA' SCRITTO. Rosso __CPM_NO619] COLLAUDO PO su 7.615 (SIT #21/#184): «5,8-6,4 inversioni/s — ultima passata: bisezione ~50% + lerp». L'audit regia aveva gia' nominato il buco: la guardia-palla consultava solo _gCor50 (la correzione di vista-reale) ma NON _leg563 — in un frame in cui la BISEZIONE ha agito (vista-reale tace per disciplina 7.563) la guardia-palla scriveva comunque camLook: e' la coppia bersaglio<->vista-resa che il 7.563 ha chiuso per l'eroe e che sul pallone restava aperta. Ora, se una rete di legalita' ha gia' scritto in questo frame, la palla aspetta il frame dopo — la stessa frase che il codice usa per l'eroe. ⚠️ NON MISURABILE a 7 fps (Nyquist, come 7.581/7.614): giudice il dispositivo, la cui bozza nomina l'ultima passata. */
         const _cxB=camera.position.x,_cyB=camera.position.y,_czB=camera.position.z;
         const _dxB=ball.position.x-_cxB,_dzB=ball.position.z-_czB,_dyB=(ball.position.y+0.2)-_cyB;
         const _lxB=camLook.x-_cxB,_lzB=camLook.z-_czB,_lyB=camLook.y-_cyB;
