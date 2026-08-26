@@ -31,6 +31,13 @@ const tot = m('tot');
 for (const [n, v] of righe) console.log(`  ${v.toFixed(2).padStart(6)} m   ${n}`);
 console.log(`  ${'-'.repeat(6)}`);
 console.log(`  ${tot.toFixed(2).padStart(6)} m   SCARTO COMPLESSIVO modello -> mesh disegnata   [${D.n} misure]`);
+if (D.n12) {
+  console.log('\n  --- IL RITARDO DI RESA, DIVISO FRA I SUOI DUE STADI ---');
+  console.log(`    stadio 1 · bersaglio commesso indietro rispetto al bersaglio : ${(D.st1 / D.n12).toFixed(2)} m`);
+  console.log(`    stadio 2 · mesh indietro rispetto al bersaglio commesso      : ${(D.st2 / D.n12).toFixed(2)} m`);
+  console.log(`    velocita' massima concessa ${(D.vmax / D.n12).toFixed(2)} · velocita' effettiva media (modulo) ${(D.vcur / D.n12).toFixed(2)}`);
+  if (D.vxdt) console.log(`    passo VOLUTO su x (|vx*dt|) ${(D.vxdt / D.n12).toFixed(3)} m  — da confrontare col passo EFFETTIVO su x qui sotto`);
+} else console.log("\n  ⚠ i due stadi NON sono separabili in questa run: NON GIUDICABILE");
 if (D.nn) {
   console.log(`\n  --- E' UN TETTO DI VELOCITA' O UN BERSAGLIO CHE OSCILLA? ---`);
   console.log(`    passo del BERSAGLIO per fotogramma : ${(D.passoTg / D.nn).toFixed(3)} m`);

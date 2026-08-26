@@ -12883,7 +12883,22 @@ function ThreeMatchView(props){
            fra `_ctx` e la posizione disegnata ci sia un SECONDO smorzamento (l'inerzia su `_vx`/`_vz`), e
            che due smorzamenti in cascata moltiplichino il ritardo invece di sommarlo.
            NON TOCCO NIENTE QUI finche' non l'ho misurato: alzare una costante che non ho capito e' come
-           ho gia' sbagliato oggi due volte. */
+           ho gia' sbagliato oggi due volte.
+           ⚠️ MISURATO POI, E LA CONCLUSIONE E' L'OPPOSTA DI QUELLA CHE MI ASPETTAVO. Il ritardo si divide
+           in stadio 1 (bersaglio commesso indietro sul bersaglio) 2,27 m e stadio 2 (mesh indietro sul
+           bersaglio commesso) 3,96 m. E l'integrazione e' ESATTA: passo voluto |vx*dt| 0,163 m contro
+           passo effettivo 0,163 m, identici. Nessun difetto di calcolo, nessuna velocita' persa.
+           Quindi i dieci metri fra la partita e cio' che si vede sono in larghissima parte PROGETTATI:
+           forma del reparto 5,79 (la linea scorre col pallone, voluto) · pressing 3,73 (voluto) · i due
+           stadi del ritardo 2,27 + 3,96 (voluti: sono esattamente cio' che rende il movimento non
+           robotico — la rampa d'arrivo, il limitatore di sterzata, il freno per girarsi, tutti scritti
+           apposta e con la loro misura nelle note qui sopra).
+           ⚠️ E QUESTO CORREGGE UNA COSA CHE AVEVO SCRITTO IO due note fa: «l'utente guarda una partita che
+           non e' quella che la simulazione sta giocando» era vero come descrizione e SBAGLIATO come
+           accusa. La resa e' fatta per discostarsi dal modello; non e' deriva.
+           Resta una domanda vera, ma e' una DECISIONE DI PRODOTTO e non un difetto: dieci metri di
+           scostamento medio sono tanti, e se si vuole che l'occhio veda cio' che la simulazione decide,
+           quel numero va scelto — non corretto di nascosto. Chi riprende questo filo parta da li'. */
         const _tsm=Math.min(dt*(1.25+mesh._react*0.95),1);mesh._ctx+=(tx-mesh._ctx)*_tsm;mesh._ctz+=(tz-mesh._ctz)*_tsm;// bersaglio commesso smussato, con prontezza PER GIOCATORE
         const cdx=mesh._ctx-mesh.position.x,cdz=mesh._ctz-mesh.position.z,cd=Math.hypot(cdx,cdz);
         const _dn=cd>1e-3?1/cd:0,_ds=Math.min(cd*3,mesh._vmax);
@@ -12922,6 +12937,7 @@ function ThreeMatchView(props){
         const _dvx=_tvx-(mesh._vx||0),_dvz=_tvz-(mesh._vz||0),_dv=Math.hypot(_dvx,_dvz),_lim=_amax*dt;
         if(_dv>_lim&&_dv>1e-4){mesh._vx=(mesh._vx||0)+_dvx/_dv*_lim;mesh._vz=(mesh._vz||0)+_dvz/_dv*_lim;}
         else{mesh._vx=_tvx;mesh._vz=_tvz;}
+        if(typeof window!=='undefined'&&window.__CPM_D592)window.__CPM_DT592=dt;/* [7.592.0 collaudo] il dt vero del passo di integrazione */
         mesh.position.x+=mesh._vx*dt;mesh.position.z+=mesh._vz*dt;
         /* IL CAMPO È UN VINCOLO. Col vecchio lerp la velocità decadeva da sola avvicinandosi al bersaglio, quindi
            nessuno usciva mai; con l'accelerazione limitata un giocatore lanciato ha bisogno di spazio per frenare
@@ -15431,6 +15447,17 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                mesh insegue avanti e indietro e non ci arriva mai). Sono due difetti opposti e chiedono
                rimedi opposti, quindi vanno distinti PRIMA di scrivere il rimedio. */
             const _mx=pp.mesh.position.x+50;
+            /* [7.592.0] I DUE STADI SEPARATI, che e' la misura che manca per sapere DOVE intervenire:
+               `_ctx` e' il bersaglio commesso (uscita del primo smorzamento), `mesh.position` e' cio' che
+               si vede (uscita del secondo, quello con inerzia, rampa d'arrivo e limitatore di sterzata).
+               Senza separarli, «cinque metri e mezzo di ritardo» non dice quale dei due li produce. */
+            if(pp.mesh._ctx!=null){D.st1=(D.st1||0)+Math.abs((pp.mesh._ctx+50)-t.x);D.st2=(D.st2||0)+Math.abs(_mx-(pp.mesh._ctx+50));D.n12=(D.n12||0)+1;
+              D.vmax=(D.vmax||0)+(pp.mesh._vmax||0);D.vcur=(D.vcur||0)+Math.hypot(pp.mesh._vx||0,pp.mesh._vz||0);
+              /* ⚠️ [7.592.0] stavo per concludere che la mesh «non si muove alla velocita' che dichiara»,
+                 confrontando 5,28 m/s di MODULO con 0,166 m di passo sulla sola X. Non e' un confronto:
+                 il modulo mescola x e z, e la z e' pure in un'altra scala (G2Z moltiplica per 0,68). Qui
+                 si confronta cio' che e' confrontabile — |vx*dt| contro il passo effettivo su x. */
+              D.vxdt=(D.vxdt||0)+Math.abs((pp.mesh._vx||0)*(window.__CPM_DT592||0));}
             if(pp.mesh._px592!=null){D.passoMesh=(D.passoMesh||0)+Math.abs(_mx-pp.mesh._px592);D.passoTg=(D.passoTg||0)+Math.abs(t.x-pp.mesh._ptg592);D.nn=(D.nn||0)+1;
               /* quante volte il bersaglio INVERTE il verso: e' la firma dell'oscillazione */
               const _dv=t.x-pp.mesh._ptg592;if(pp.mesh._pdv592!=null&&_dv*pp.mesh._pdv592<0)D.inv=(D.inv||0)+1;if(Math.abs(_dv)>0.01)pp.mesh._pdv592=_dv;}
