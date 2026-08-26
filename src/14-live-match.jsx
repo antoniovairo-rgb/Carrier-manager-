@@ -2601,7 +2601,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
             else spRef.current=null;
             if(!spRef.current)fermoRef.current=null;/* [7.559.0] la battuta rimette in gioco: il fermo finisce qui, e il `bpos` della battuta e' la nuova destinazione */}
           else if(!_no537&&!spRef.current&&ev.sp&&kickoffRef.current<=0&&!pendingGoalRef.current&&!counterRef.current){
-            spRef.current={kind:ev.sp,step:0,y:(ev.bpos&&ev.bpos.y>=50)?95:5,x:(ev.bpos&&ev.bpos.x)||60};
+            spRef.current={kind:ev.sp,step:0,y:(ev.bpos&&ev.bpos.y>=50)?95:5,x:(ev.bpos&&ev.bpos.x)||60,t0:Date.now()};/* [7.602.0] anche l'ora */
             /* [7.559.0] IL FISCHIO FERMA IL GIOCO. Il punto e' lo stesso che la battuta usera' un tick dopo
                (bandierina, dischetto, punto del fallo): cosi' il pallone non fa due viaggi, ne fa uno e
                aspetta li'. Cinque tick sono ~1,5s reali: il tempo di arrivarci e di STARE fermo per almeno
@@ -3193,7 +3193,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
           if(_k){
             const _ox=_k==="throw"?clamp(_bx,8,92):_k==="corner"?(_no?98:2):_k==="goal_kick"?(_no?6:94):clamp(_bx,8,92);
             const _oy=_k==="throw"?(_by>=50?98:2):_k==="corner"?(_by>=50?96:4):_k==="goal_kick"?50:clamp(_by,6,94);
-            outRef.current={kind:_k,nostra:_no,x:_ox,y:_oy,step:0,ttl:4};
+            outRef.current={kind:_k,nostra:_no,x:_ox,y:_oy,step:0,ttl:4,t0:Date.now()};/* [7.602.0] anche l'ora: vedi la scadenza in tempo vero nel clock tick */
             fermoRef.current={x:_ox,y:_oy,t:4,kind:_k};/* [7.566] DUE TICK NON BASTAVANO, e la misura lo ha detto: col fermo a 2 il pallone stava davvero fermo solo 5 volte su 10 (a 4 era 6 su 6). Il motivo non e' il tempo di GIOCO ma quello REALE: la mesh deve arrivare sul punto, e il conto scorre ora nel tick — che passa quando passa. */
             ballTargetRef.current={x:_ox,y:_oy};setBallPos({x:_ox,y:_oy});
             if(typeof window!=='undefined'&&window.__CPM_REC){try{const _w=(window.__CPM_INT559=window.__CPM_INT559||{n:0,tipi:{},min:[]});_w.n++;_w.tipi[_k]=(_w.tipi[_k]||0)+1;if(_w.min&&_w.min.length<400)_w.min.push({m:nx,k:_k});}catch(_e){}}
@@ -3269,6 +3269,22 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
            dunque a OGNI tick: la ripresa e' un'interruzione, non un inseguimento, e le squadre si
            schierano mentre l'arbitro aspetta. Fuori dalla ripresa il passo resta di tre tick — quello
            regola il costo, e non c'e' ragione di toccarlo. */
+        /* [7.602.0 — LE BANDIERE DELL'INTERRUZIONE SCADONO IN TEMPO VERO, rosso __CPM_NO602]
+           TERZA ISTANZA DELLA STESSA PATOLOGIA in due giorni, dopo kickRef (7.590) e la finestra della
+           ripresa: il ttl di `outRef` scala PER RIGA DI CRONACA («la battuta si prende solo una riga
+           libera», 7.559) e le righe arrivano ogni parecchi secondi. MISURATO: la partita passa il 40% del
+           tempo con le bandiere out/sp alzate, e in 26 punti su 40 il pallone SI MUOVE (>2 u/s) mentre lo
+           stato dice «palla ferma». In quel quarto di partita i ventidue si comportano da rimessa, la
+           catena degli schemi non gira (e' una delle ragioni del suo 5%), e il pallone insegue bersagli di
+           battuta stantii. La scadenza per righe RESTA (e' il contratto con la cronaca); qui si aggiunge
+           il tetto che mancava: un'interruzione dura al massimo cinque secondi VERI. Nel calcio una
+           rimessa si batte in quattro-cinque secondi; qui e' anche il tempo oltre il quale lo stato
+           mentirebbe al resto del motore. */
+        if(!(typeof window!=='undefined'&&window.__CPM_NO602)){
+          const _now602=Date.now();
+          if(outRef.current&&outRef.current.t0&&(_now602-outRef.current.t0)>5000){outRef.current=null;fermoRef.current=null;}
+          if(spRef.current&&spRef.current.t0&&(_now602-spRef.current.t0)>5000){spRef.current=null;}
+        }
         const _koNow590=((kickRef.current|0)>0||(kickoffRef.current|0)>0);
         ripTickRef.current=_koNow590?((ripTickRef.current|0)+1):0;
         /* [7.590.0] la finestra si apre SOLO dove la ripresa viene ARMATA (gol, duplice fischio, calcio
