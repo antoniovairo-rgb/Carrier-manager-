@@ -13,8 +13,10 @@ const srv = await startServer(); const port = srv.address().port;
 const b = await launchBrowser();
 const page = await b.newPage({ viewport: { width: 412, height: 915 } });
 await installCdnRoutes(page);
-/* CPM_INV=1: braccio appaiato con l'inversione del verso 7.579 accesa (la riga descrive, la trama comanda) */
+/* CPM_INV=1: braccio appaiato con l'inversione del verso 7.579 accesa (la riga descrive, la trama comanda).
+   CPM_FLAGS="NO617,...": bandiere __CPM_* da accendere (bracci appaiati coi rossi, stessa build). */
 if (process.env.CPM_INV === '1') await page.addInitScript(() => { window.__CPM_INV579 = true; });
+if (process.env.CPM_FLAGS) await page.addInitScript((fl) => { for (const f of fl) window['__CPM_' + f] = true; }, process.env.CPM_FLAGS.split(',').map(s => s.trim()).filter(Boolean));
 await page.addInitScript(() => { window.__CPM_GLB = false; window.__CPM_WSLOG = {};
   setInterval(() => { try {
     const s = window.__CPM_WATCH_SNAP && window.__CPM_WATCH_SNAP();

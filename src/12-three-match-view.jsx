@@ -2067,6 +2067,19 @@ function ThreeMatchView(props){
           const _pad555=_no555?null:(_porGlue526?'portatore':(_colla515?'eroe':'nessuno'));
           sr.current._pad555=_pad555;/* il padrone eletto resta leggibile a valle (cronaca, volo, sonde) */
           if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST))window.__CPM_PAD555=_pad555;
+          /* ⚠️ [7.617.0 — SPRINT A2] PROVATO E REVOCATO CON LE SUE DUE MISURE, una per meta': domare
+             l'inseguitore accoppiandolo al portatore eletto. (1) divieto di ALLONTANARE la palla dal
+             portatore in corsa: «palla entro 3u del portatore» 51% -> 53%, PIATTO — appena il corpo
+             rientrava sotto 2,2u la palla ripartiva a 34 u/s e il ciclo attacca/stacca ricominciava.
+             (2) tetto a passo d'uomo (9,5 u/s) sulla palla condotta: 43% -> 33%, PEGGIO DI DIECI PUNTI —
+             perche' l'ELEZIONE sceglie il portatore piu' vicino al punto LOGICO, non alla palla-mesh:
+             rallentando la mesh ho allargato la forbice mesh<->logico che l'elezione ignora, e il
+             portatore eletto stava avanti col logico mentre la palla arrancava dietro. LEZIONE DOPPIA:
+             (a) il difetto e' nell'ANAGRAFE del possesso (elezione ancorata al logico, handoff solo a
+             fine arco, niente elezione nelle fasi HL) — non nel trasporto, che e' solo il sintomo;
+             (b) il metro stesso (__CPM_POR526 acc) balla di +-10 punti fra run a codice identico (il
+             tick logico ha Math.random dichiarato): prima del redesign serve un metro che regga.
+             Il rimedio vero e' il punto A2 completo della ricetta d'audit, non una taratura qui. */
           if((_no555?(!_colla515&&!_porGlue526):(_pad555==='nessuno'))&&_dd>0.02){const _step=Math.min(_dd,Math.min(_dd*5.2+2.2,34)*aDt);ball.position.x+=_dx/_dd*_step;ball.position.z+=_dz/_dd*_step;if((sr.current._ws524=3)&&sr.current._bj0)(sr.current._bj0.src='inseguitore',sr.current._bj0.srcs.push('inseguitore'));}
 
           if(_no555?_porGlue526:(_pad555==='portatore')){const _pm6=sr.current._por526.mesh;

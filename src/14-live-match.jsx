@@ -2596,27 +2596,27 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
             if(_sp.kind==="corner_for"){
               if(_sp.step===1)ev={txt:"⚪ {H} si incarica del traversone: palla sistemata sul vertice.",ef:null,w:1,bpos:{x:98,y:_sp.y},pd:_dec499};
               else{spRef.current=null;
-                ev=_r537<0.30?{txt:"💥 Traversone dal corner: incornata di {H2}! Fuori di un soffio.",ef:null,w:1,bpos:{x:96,y:44},ms:{shots:1},at:"cross",pd:_dec499}
-                 :_r537<0.58?{txt:"🧤 Corner in mezzo: esce il portiere di {A} e fa sua la palla.",ef:null,w:1,bpos:{x:94,y:50},at:"cross",pd:_dec499}
-                 :_r537<0.85?{txt:"🛡️ Cross dal vertice respinto: la difesa di {A} libera ai margini dell'area.",ef:null,w:1,bpos:{x:74,y:52},at:"cross",pd:_dec499}
-                 :{txt:"⚡ Corner battuto corto: {H} e {H2} tengono il possesso sulla fascia.",ef:null,w:1,bpos:{x:84,y:78},pd:_dec499};}}
+                ev=_r537<0.30?{txt:"💥 Traversone dal corner: incornata di {H2}! Fuori di un soffio.",ef:null,w:1,bpos:{x:96,y:44},ms:{shots:1},at:"cross",pd:_dec499,tn617:-1}
+                 :_r537<0.58?{txt:"🧤 Corner in mezzo: esce il portiere di {A} e fa sua la palla.",ef:null,w:1,bpos:{x:94,y:50},at:"cross",pd:_dec499,tn617:-1}
+                 :_r537<0.85?{txt:"🛡️ Cross dal vertice respinto: la difesa di {A} libera ai margini dell'area.",ef:null,w:1,bpos:{x:74,y:52},at:"cross",pd:_dec499,tn617:-1}
+                 :{txt:"⚡ Corner battuto corto: {H} e {H2} tengono il possesso sulla fascia.",ef:null,w:1,bpos:{x:84,y:78},pd:_dec499,tn617:1};}}
             else if(_sp.kind==="corner_against"){
               if(_sp.step===1)ev={txt:"⚠️ Corner per {A}: palla al vertice, la nostra area si affolla.",ef:null,w:1,bpos:{x:2,y:_sp.y},pd:_dec499};
               else{spRef.current=null;
-                ev=_r537<0.35?{txt:"🧤 Il nostro portiere esce sul cross e smanaccia: pericolo sventato.",ef:null,w:1,bpos:{x:8,y:46},pd:_dec499}
-                 :_r537<0.70?{txt:"🛡️ Testa della difesa: spazzata lunga fuori area.",ef:null,w:1,bpos:{x:28,y:50},pd:_dec499}
-                 :{txt:"😨 Incornata di {A} sugli sviluppi del corner! Alta di un soffio.",ef:null,w:1,bpos:{x:4,y:52},ms:{oppShots:1},at:"shot",pd:_dec499};}}
+                ev=_r537<0.35?{txt:"🧤 Il nostro portiere esce sul cross e smanaccia: pericolo sventato.",ef:null,w:1,bpos:{x:8,y:46},pd:_dec499,tn617:1}
+                 :_r537<0.70?{txt:"🛡️ Testa della difesa: spazzata lunga fuori area.",ef:null,w:1,bpos:{x:28,y:50},pd:_dec499,tn617:1}
+                 :{txt:"😨 Incornata di {A} sugli sviluppi del corner! Alta di un soffio.",ef:null,w:1,bpos:{x:4,y:52},ms:{oppShots:1},at:"shot",pd:_dec499,tn617:1};}}
             else if(_sp.kind==="foul_for"){
               spRef.current=null;/* un passo: la punizione si batte */
-              ev=(_sp.x>=68)?(_r537<0.45?{txt:"🎯 Punizione dal limite: {H} calcia forte — deviazione in angolo!",ef:null,w:1,bpos:{x:90,y:60},ms:{shots:1},at:"shot",pd:_dec499}
-                     :_r537<0.75?{txt:"↗ Punizione pennellata in area: la difesa di {A} respinge di testa.",ef:null,w:1,bpos:{x:80,y:50},at:"cross",pd:_dec499}
-                     :{txt:"💨 Punizione alta sopra la barriera, sopra la traversa.",ef:null,w:1,bpos:{x:95,y:42},ms:{shots:1},at:"shot",pd:_dec499})
+              ev=(_sp.x>=68)?(_r537<0.45?{txt:"🎯 Punizione dal limite: {H} calcia forte — deviazione in angolo!",ef:null,w:1,bpos:{x:90,y:60},ms:{shots:1},at:"shot",pd:_dec499,tn617:1}
+                     :_r537<0.75?{txt:"↗ Punizione pennellata in area: la difesa di {A} respinge di testa.",ef:null,w:1,bpos:{x:80,y:50},at:"cross",pd:_dec499,tn617:-1}
+                     :{txt:"💨 Punizione alta sopra la barriera, sopra la traversa.",ef:null,w:1,bpos:{x:95,y:42},ms:{shots:1},at:"shot",pd:_dec499,tn617:-1})
                  :{txt:((recVarRef.current=(recVarRef.current+1)|0)%2)?"⚪ Punizione battuta corta: {H} fa ripartire il giro palla.":"⚪ {H} sceglie la gestione: punizione rapida e possesso consolidato.",ef:null,w:1,bpos:{x:clamp(_sp.x,20,70),y:55},pd:_dec499};}
             else if(_sp.kind==="pen_for"){
               if(_sp.step===1)ev={txt:"😶 {H} sul dischetto. Lo stadio trattiene il fiato…",ef:null,w:1,bpos:{x:94,y:50},pd:_dec499};
               else{spRef.current=null;
-                ev=_r537<0.60?{txt:"🧤 PARATO! Il portiere di {A} intuisce l'angolo e respinge il rigore!",ef:null,w:1,bpos:{x:90,y:47},ms:{shots:1},at:"shot",pd:_dec499}
-                 :{txt:"😱 Rigore alto! {H} si prende la testa fra le mani.",ef:null,w:1,bpos:{x:97,y:45},ms:{shots:1},at:"shot",pd:_dec499};}}
+                ev=_r537<0.60?{txt:"🧤 PARATO! Il portiere di {A} intuisce l'angolo e respinge il rigore!",ef:null,w:1,bpos:{x:90,y:47},ms:{shots:1},at:"shot",pd:_dec499,tn617:-1}
+                 :{txt:"😱 Rigore alto! {H} si prende la testa fra le mani.",ef:null,w:1,bpos:{x:97,y:45},ms:{shots:1},at:"shot",pd:_dec499,tn617:-1};}}
             else spRef.current=null;
             if(!spRef.current)fermoRef.current=null;/* [7.559.0] la battuta rimette in gioco: il fermo finisce qui, e il `bpos` della battuta e' la nuova destinazione */}
           else if(!_no537&&!spRef.current&&ev.sp&&kickoffRef.current<=0&&!pendingGoalRef.current&&!counterRef.current){
@@ -2644,12 +2644,12 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
           if(!_no542&&_ct&&!/goal$/.test(String(ev.ef||""))&&!_koHij536&&kickoffRef.current<=0&&!pendingGoalRef.current){
             _recHij545=true;_recKind546="counter";_recSide546=_ct.dir>0?"home":"away";const _rc542=(Math.abs(hashStr(String(ev.txt||"")+"|"+nx+"|ct"))%100)/100;
             if(_ct.fin){counterRef.current=null;
-              ev=_ct.dir>0?(_rc542<0.4?{txt:"💥 La ripartenza si chiude col tiro di {H}: il portiere di {A} devia in tuffo!",ef:null,w:1,bpos:{x:88,y:52},ms:{shots:1},at:"shot",pd:_dec499}
-                 :_rc542<0.7?{txt:"↗ Contropiede: cross basso di {H} — la difesa di {A} spazza in extremis.",ef:null,w:1,bpos:{x:82,y:60},at:"cross",pd:_dec499}
-                 :{txt:"⚡ La ripartenza sfuma: {A} raddoppia su {H} e chiude al limite.",ef:null,w:1,bpos:{x:74,y:48},pd:_dec499})
-               :(_rc542<0.4?{txt:"😨 Ripartenza di {A}: tiro dal limite — il nostro portiere respinge coi pugni!",ef:null,w:1,bpos:{x:10,y:48},ms:{oppShots:1},at:"shot",pd:_dec499}
-                 :_rc542<0.7?{txt:"🛡️ Contropiede avversario: {H} rincula e chiude in scivolata al momento giusto.",ef:null,w:1,bpos:{x:18,y:52},at:"tackle",pd:_dec499}
-                 :{txt:"😮‍💨 {A} sciupa la ripartenza: ultimo passaggio lungo, rimessa dal fondo.",ef:null,w:1,bpos:{x:14,y:40},pd:_dec499});}
+              ev=_ct.dir>0?(_rc542<0.4?{txt:"💥 La ripartenza si chiude col tiro di {H}: il portiere di {A} devia in tuffo!",ef:null,w:1,bpos:{x:88,y:52},ms:{shots:1},at:"shot",pd:_dec499,tn617:-1}
+                 :_rc542<0.7?{txt:"↗ Contropiede: cross basso di {H} — la difesa di {A} spazza in extremis.",ef:null,w:1,bpos:{x:82,y:60},at:"cross",pd:_dec499,tn617:-1}
+                 :{txt:"⚡ La ripartenza sfuma: {A} raddoppia su {H} e chiude al limite.",ef:null,w:1,bpos:{x:74,y:48},pd:_dec499,tn617:-1})
+               :(_rc542<0.4?{txt:"😨 Ripartenza di {A}: tiro dal limite — il nostro portiere respinge coi pugni!",ef:null,w:1,bpos:{x:10,y:48},ms:{oppShots:1},at:"shot",pd:_dec499,tn617:1}
+                 :_rc542<0.7?{txt:"🛡️ Contropiede avversario: {H} rincula e chiude in scivolata al momento giusto.",ef:null,w:1,bpos:{x:18,y:52},at:"tackle",pd:_dec499,tn617:1}
+                 :{txt:"😮‍💨 {A} sciupa la ripartenza: ultimo passaggio lungo, rimessa dal fondo.",ef:null,w:1,bpos:{x:14,y:40},pd:_dec499,tn617:1});}
             else{const _cv542=(recVarRef.current=(recVarRef.current+1)|0)%4;
             const _CF=_ct.dir>0?["🏃 {H} brucia il centrocampo in conduzione — campo aperto!","⚡ Ripartiamo in verticale: {H} lancia {H2} oltre la linea!","💨 Tre tocchi e via: {H} porta il contropiede oltre la meta' campo.","🎯 {H2} accompagna la ripartenza: due contro due, che occasione!"]
               :["⚠️ {A} attraversa il centrocampo a tutta velocita'!","😰 Ripartenza fulminea di {A} — la difesa rincula!","🚨 Campo aperto per {A}: rincorsa disperata dei nostri.","⛔ {A} galoppa in transizione: serve un fallo tattico o una diagonale."];
@@ -2791,6 +2791,14 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               ?["⚠️ Gli avversari guadagnano metri: il nostro blocco si abbassa.","😤 {A} muove il pallone con pazienza verso la nostra trequarti.","🛑 {A} cambia lato e accelera: la nostra linea scala all'indietro.","📢 Il capitano richiama tutti dietro la linea della palla: {A} spinge."]
               :["⚙️ La squadra accompagna l'azione: si sale verso l'area di {A}.","🏃 {H} detta i tempi: la manovra si sposta nell'ultimo terzo.","🧭 {H} e {H2} scambiano corto e guadagnano campo, metro dopo metro.","📈 Baricentro alto: {H} orchestra e la squadra lo segue in blocco."];
             ev={txt:_pp544[_pv544],ef:null,w:1,bpos:null,pd:_dec499};_recHij545=true;_recKind546="ponte";_recSide546=ponteRef.current.def?"away":"home";}}/* [7.532.0] pd=_dec499: la riga di scorta DESCRIVE il momento (palla ancora in viaggio), non la destinazione — con pd:"attack" fisso l'accordo bg-decision crollava (famiglia attack 0/4, esatto 59,4%<60) */
+          /* [7.617.0 — SPRINT A3: LE RISOLUZIONI NARRATE PASSANO IL TURNO. Rosso __CPM_NO617]
+             L'audit (punto D): le risoluzioni di contropiede e piazzati raccontano passaggi di possesso
+             espliciti («il portiere fa sua la palla», «la difesa spazza», «{A} sciupa: rimessa dal
+             fondo») e non spostavano nulla — il turno restava al sorteggio, in contraddizione col testo
+             appena stampato. Ogni letterale di risoluzione ora dichiara il suo esito (tn617, deciso ramo
+             per ramo leggendo il testo: il contropiede finisce SEMPRE con la palla all'altro lato, tutti
+             e sei i rami); qui il fatto diventa il turno, con la causa della macchina che l'ha scritto. */
+          if(ev&&ev.tn617&&!(typeof window!=='undefined'&&window.__CPM_NO617))setTurn616(ev.tn617,"risoluzione-"+(_recKind546||"macchina"));
           // Sprint 113: record event in dedup buffer
           lastBGEvtRef.current=[ev.txt,..._lastBG].slice(0,6);
           /* [7.486.0] LA TELECRONACA SI PRESENTA, una volta, come in televisione. */
