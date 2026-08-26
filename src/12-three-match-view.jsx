@@ -3876,7 +3876,27 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
           const dxb=_bGX-src.x,dyb=_bGY-src.y,db=Math.hypot(dxb,dyb);
           if(!_setPiece&&db<24&&db>1.5&&_hm!==_homeBall){const _sup=(_fs&&_fs.superiority)||0,_mySup=_hm?_sup:-_sup;const _pm=clamp(1+_mySup*0.12,0.7,1.35);// §4: pressa di più in superiorità numerica vicino alla palla, meno in inferiorità
             const _pk=(i===_pr1)?1.6:(i===_pr2)?0.85:0.3;
-            const press=clamp((24-db)/24,0,1)*_pk*_pm;tx+=dxb/db*press;ty+=dyb/db*press;}
+            /* [7.593.0 — IL PRIMO PRESSORE CHIUDE, NON SI SPORGE, rosso __CPM_NO593]
+               COLLAUDO PO, scritto due volte: «non ci sono trame di gioco, passaggi, pressing» e «non c'e'
+               pressing». MISURATO a gioco vivo sulle mesh che l'utente guarda (336 campioni con un
+               portatore riconoscibile): il difensore piu' vicino a chi ha la palla sta a 9,9 metri di
+               MEDIANA, il secondo a 12,1. Solo il 28% dei campioni ha qualcuno entro cinque metri, il 9%
+               entro tre. Nel calcio vero il piu' vicino sta a due-cinque metri per la gran parte del
+               possesso: per il settantadue per cento del tempo, qui, non c'e' nessuno addosso.
+               E la causa e' in questa riga, non in una taratura: `press` e' uno SPOSTAMENTO ASSOLUTO in
+               unita' di campo, non una chiusura. Il massimo vale (24-1,5)/24 * 1,6 * 1,35 = 2,0 unita':
+               il primo pressore avvicina il proprio bersaglio di due metri e basta. Un difensore a
+               quindici metri si sporge di 1,2 e resta a 13,8 — non arrivera' MAI. Il pressing, cosi'
+               com'e' scritto, e' un'inclinazione del bersaglio, non un'intercettazione.
+               Il primo pressore ora ha come bersaglio il PORTATORE: si mette fra il pallone e la propria
+               porta, a due metri — che e' dove sta un difensore che accorcia. Il secondo resta in appoggio
+               e gli altri si compattano, come prima: e' il primo che deve chiudere, non tutti e dieci.
+               ⚠️ Il difendente e' l'AVVERSARIO dell'eroe (`_hm!==_homeBall`): qui non si aggiungono azioni
+               difensive all'eroe, si fa esistere la pressione che l'eroe subisce. */
+            const _p593=!(typeof window!=='undefined'&&window.__CPM_NO593);
+            if(_p593&&i===_pr1){const _gx593=_hm?0:100,_dgx=_gx593-_bGX,_dgy=50-_bGY,_dgn=Math.hypot(_dgx,_dgy)||1;
+              tx=_bGX+_dgx/_dgn*2.0;ty=_bGY+_dgy/_dgn*2.0;}
+            else{const press=clamp((24-db)/24,0,1)*_pk*_pm;tx+=dxb/db*press;ty+=dyb/db*press;}}
           // ENGINE Fase 2 (AI tattica continua): obiettivo per RUOLO che legge la palla ogni frame.
           //   ATT → attaccano lo spazio con corse differenziate (primo palo/secondo palo/profondità) man mano
           //   che la palla avanza; CEN → offrono una linea di passaggio attorno al portatore. Deterministico.
