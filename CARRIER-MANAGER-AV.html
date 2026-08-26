@@ -12869,6 +12869,21 @@ function ThreeMatchView(props){
           mesh._acc=1.55+((_h>>>11)%100)/100*1.05;    /* spunto: chi è più pesante impiega di più a lanciarsi */
           mesh._react=0.30+((_h>>>19)%100)/100*0.70;  /* prontezza: non partono tutti nello stesso frame */
         }
+        /* [7.592.0 — MISURATO QUI, NON ANCORA SPIEGATO] La scomposizione dei dieci metri fra il modello e
+           cio' che si vede (22.895 misure) dice che il pezzo piu' grosso NON e' una scelta di regia:
+             forma del reparto 5,86 m (voluta: la linea scorre col pallone) · richiamo di ruolo 0,96 ·
+             pressing 3,74 (voluto) · marcature e coperture 0,43 · MESH CHE INSEGUE IL BERSAGLIO 5,42.
+           Quei 5,42 metri sono ritardo puro, non regia. E non sono ne' un tetto di velocita' ne'
+           un'oscillazione: la mesh copre il 71% del passo del bersaglio (0,166 m contro 0,233 per
+           fotogramma) e il bersaglio inverte il verso solo nell'8% dei fotogrammi.
+           NON E' NEMMENO UN ARTEFATTO DEL LABORATORIO A 7 FPS: questo smorzamento e' compensato in `dt`,
+           quindi il ritardo e' lo stesso a 60 fps. La sua costante di tempo vale 1/1,25 = 0,8 s, e con un
+           bersaglio che viaggia a 1,63 m/s il ritardo ATTESO e' 1,3 metri. Ne misuro 5,42: quattro volte
+           tanto. Il primo stadio non basta a spiegarlo, e il sospetto — DICHIARATO NON VERIFICATO — e' che
+           fra `_ctx` e la posizione disegnata ci sia un SECONDO smorzamento (l'inerzia su `_vx`/`_vz`), e
+           che due smorzamenti in cascata moltiplichino il ritardo invece di sommarlo.
+           NON TOCCO NIENTE QUI finche' non l'ho misurato: alzare una costante che non ho capito e' come
+           ho gia' sbagliato oggi due volte. */
         const _tsm=Math.min(dt*(1.25+mesh._react*0.95),1);mesh._ctx+=(tx-mesh._ctx)*_tsm;mesh._ctz+=(tz-mesh._ctz)*_tsm;// bersaglio commesso smussato, con prontezza PER GIOCATORE
         const cdx=mesh._ctx-mesh.position.x,cdz=mesh._ctz-mesh.position.z,cd=Math.hypot(cdx,cdz);
         const _dn=cd>1e-3?1/cd:0,_ds=Math.min(cd*3,mesh._vmax);
@@ -15116,6 +15131,12 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
             {const _ob=_tgPool[_tgN]||(_tgPool[_tgN]={});_tgN++;_ob.x=_gx;_ob.y=_gy;_ob.gk=true;_ob.hm=i<10;_ob.li=0;_ob.att=false;_ob.def=false;_tg.push(_ob);}continue;}
           const _hm=i<10,_li=_hm?i:i-10; // 1-4=DIF, 5-7=CEN, 8+=ATT (0=GK)
           let tx=src.x,ty=src.y;
+          /* [7.592.0 SOLO COLLAUDO, spento senza bandiera] I DIECI METRI, TAPPA PER TAPPA. Misurato che la
+             mesh disegnata dista 10,55 m dal modello a gioco vivo e 16,08 m durante una ripresa. Buona
+             parte e' VOLUTA — questo blocco corregge il bersaglio apposta — ma «buona parte» non e' un
+             numero. Qui si registra quanto sposta ciascuna tappa, cosi' la domanda «quanta e' deriva»
+             smette di essere un'opinione. */
+          const _b592=tx;
           // shape-flow: il blocco squadra scorre su/giù col pallone (DIF pieno, CEN ridotto, ATT minimo)
           if(_li>=1&&_li<=4)tx+=_lineShift; else if(_li>=5&&_li<=7)tx+=_lineShift*0.6; else tx+=_lineShift*0.3;
           // F2: shift possession-aware — la tua squadra attacca (sale) se ha il pallone, difende (arretra) se no.
@@ -15127,6 +15148,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
              tempo. Il pull sposta il target di una frazione della distanza da casa (DIF 10% · CEN 7% · ATT 5%)
              → pressing e corse di ruolo DOMINANO vicino alla palla, la forma si RICOMPATTA lontano. Ancore per
              slot (x per reparto, y per corsia — speculari per l'away), deterministico, sospeso sui set-piece. */
+          const _a592=tx;/* [7.592.0] fine forma: scorrimento della linea + scarto di possesso */
           if(!_setPiece&&_li>=1){
             const _R4Y=[50,30,45,55,70,32,50,68,28,50,72],_R4XL=[0,20,20,20,20,40,40,40,60,60,60];
             const _hxR4=_hm?_R4XL[_li]:100-_R4XL[_li];const _hyR4=_R4Y[_li]||50;
@@ -15141,6 +15163,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
           // pressing: SOLO la squadra che difende chiude sulla palla, con priorità (DEF-2) — il 1° pressore
           //   (il più logico: il difendente più vicino) a piena intensità, il 2° in appoggio, gli altri si
           //   compattano appena senza abbandonare la propria zona
+          const _r592=tx;/* [7.592.0] fine richiamo alla zona di competenza */
           const dxb=_bGX-src.x,dyb=_bGY-src.y,db=Math.hypot(dxb,dyb);
           if(!_setPiece&&db<24&&db>1.5&&_hm!==_homeBall){const _sup=(_fs&&_fs.superiority)||0,_mySup=_hm?_sup:-_sup;const _pm=clamp(1+_mySup*0.12,0.7,1.35);// §4: pressa di più in superiorità numerica vicino alla palla, meno in inferiorità
             const _pk=(i===_pr1)?1.6:(i===_pr2)?0.85:0.3;
@@ -15215,7 +15238,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
             }else{const _dxh=_hxg-src.x,_dyh=_hyg-src.y,_dh=Math.hypot(_dxh,_dyh);
               if(_dh<30&&_dh>2){const _p=clamp((30-_dh)/30,0,1)*_pt*3.5;tx+=_dxh/_dh*_p;ty+=_dyh/_dh*_p;}}
           }
-          {const _ob=_tgPool[_tgN]||(_tgPool[_tgN]={});_tgN++;_ob.x=tx;_ob.y=ty;_ob.gk=false;_ob.hm=_hm;_ob.li=_li;_ob.att=_li>=8;_ob.def=_li>=1&&_li<=4;_tg.push(_ob);}
+          {const _ob=_tgPool[_tgN]||(_tgPool[_tgN]={});_tgN++;_ob.x=tx;_ob.y=ty;_ob.gk=false;_ob.hm=_hm;_ob.li=_li;_ob.att=_li>=8;_ob.def=_li>=1&&_li<=4;_ob.b592=_b592;_ob.a592=_a592;_ob.r592=_r592;_ob.c592=tx;_tg.push(_ob);}
         }
         // HL STAGING (#1/#3) — PRIMO POSIZIONAMENTO coerente: all'avvio di un highlight la scena deve MOSTRARE i giocatori
         //   che l'azione presuppone, non lasciare l'Eroe solo in campo aperto. Porta vicino all'Eroe il compagno e
@@ -15391,6 +15414,29 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
           sr.current._reSnap401=P.hlSitKey;_hlSnap=true;sr.current._cutSrc456="staging";
           sr.current._ballSnap=true;sr.current._sceneCut=true;sr.current._cutZoomSnap=true;
           if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){const _c=(window.__CPM_RSNP401=window.__CPM_RSNP401||[]);if(_c.length<40)_c.push({k:P.hlSitKey,t:Math.round(now-(sr.current._cutAt||0)),src:"staging"});}}
+        /* [7.592.0 SOLO COLLAUDO] la scomposizione si chiude QUI, dove il bersaglio e' definitivo e la
+           mesh e' quella che l'utente vede: cosi' l'ultimo pezzo — quanto la mesh resta indietro rispetto
+           al bersaglio — non si confonde con le correzioni che il bersaglio ha gia' subito. */
+        if(typeof window!=='undefined'&&window.__CPM_D592){try{const D=window.__CPM_D592;
+          for(let i=0;i<_players.length;i++){const t=_tg[i],pp=_players[i];
+            if(!t||!pp||!pp.mesh||t.gk||t.b592==null)continue;
+            D.forma=(D.forma||0)+Math.abs(t.a592-t.b592);
+            D.ruolo=(D.ruolo||0)+Math.abs(t.r592-t.a592);
+            D.pressing=(D.pressing||0)+Math.abs(t.c592-t.r592);
+            D.dopo=(D.dopo||0)+Math.abs(t.x-t.c592);
+            D.mesh=(D.mesh||0)+Math.abs((pp.mesh.position.x+50)-t.x);
+            D.tot=(D.tot||0)+Math.abs((pp.mesh.position.x+50)-t.b592);
+            /* [7.592.0] e QUANTO SI MUOVONO, per fotogramma: un ritardo di cinque metri puo' essere un
+               tetto di velocita' troppo basso (la mesh non ce la fa) oppure un bersaglio che oscilla (la
+               mesh insegue avanti e indietro e non ci arriva mai). Sono due difetti opposti e chiedono
+               rimedi opposti, quindi vanno distinti PRIMA di scrivere il rimedio. */
+            const _mx=pp.mesh.position.x+50;
+            if(pp.mesh._px592!=null){D.passoMesh=(D.passoMesh||0)+Math.abs(_mx-pp.mesh._px592);D.passoTg=(D.passoTg||0)+Math.abs(t.x-pp.mesh._ptg592);D.nn=(D.nn||0)+1;
+              /* quante volte il bersaglio INVERTE il verso: e' la firma dell'oscillazione */
+              const _dv=t.x-pp.mesh._ptg592;if(pp.mesh._pdv592!=null&&_dv*pp.mesh._pdv592<0)D.inv=(D.inv||0)+1;if(Math.abs(_dv)>0.01)pp.mesh._pdv592=_dv;}
+            pp.mesh._px592=_mx;pp.mesh._ptg592=t.x;
+            D.n=(D.n||0)+1;}
+        }catch(_e){}}
         const _readFreeze=(_asIfPlay&&_inRead&&_chooseT>=0),_doSnap=(_hlSnap&&_asIfPlay);
         for(let i=0;i<_players.length&&!P.ceremony&&!P.shootout;i++){const t=_tg[i],pp=_players[i];if(!t||!pp)continue;/* [7.2.0] durante la premiazione il movimento off-ball è guidato dal blocco ceremony (giro/curva/podio) */
           // FIX passaggio: il compagno destinatario/ricevente NON si sposta — resta fermo ad accogliere la palla (ricezione leggibile)
