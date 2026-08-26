@@ -3645,6 +3645,26 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
         //   invece di allargarsi, e i compagni si spargevano invece di pressare. Ora l'HL difensivo forza casa=difende.
         const _homeBall=(propsRef.current&&propsRef.current.hlDef)?false:((_fs&&_fs.attackingHome!=null)?_fs.attackingHome:(_bGX>50));// possesso AFFIDABILE (palla logica), non mesh
         // FIX rigore/punizione: su un set-piece i giocatori NON pressano/corrono — restano schierati fuori area.
+        /* ⚠️ [7.591.0 PROVATO IN TRE STESURE E REVOCATO CON LA SUA MISURA — «la resa non segue il modello
+           durante la ripresa»] Il 7.590 aveva separato le due sorgenti e sembrava chiaro: durante la
+           ripresa vera il modello LOGICO schiera i ventidue (casa 0,2 · ospiti 0,2) e le MESH no (casa 1,3
+           · ospiti 4,9). Ho provato, nell'ordine: (1) trattare la ripresa come un calcio piazzato, perche'
+           questo blocco non USA `src.x` ma lo CORREGGE — pressing entro 24 unita' verso un pallone fermo
+           al centro, richiamo alla zona di competenza che per le punte ospiti ancora a x=40. Guadagno
+           apparente: mesh ospiti 4,9 -> 3,4, con tutti e sei i colpevoli in calo (i18 dall'85% al 49%).
+           (2) riportare il bersaglio al modello in un punto solo, dopo tutti gli scrittori: 3,4 -> 4,4.
+           (3) far fare alla resa lo stesso SNAP del modello, una volta al primo fotogramma: verde contro
+           rosso, scarto 16,71 m contro 15,31 · mesh ospiti 6,0 contro 4,8. PEGGIORA.
+           E il numero che chiude la strada e' un altro: lo SCARTO fra dove la partita mette un giocatore e
+           dove il renderer lo disegna resta 15-17 metri di mediana IN ENTRAMBI I BRACCI, con gli indici
+           verificati allineati (zero coppie con squadra diversa su 19 valide). Un rimedio che non muove lo
+           scarto non e' un rimedio debole: e' la prova che la premessa e' sbagliata. Le due sorgenti non
+           descrivono lo stesso oggetto — `allPlayers` non e' `matchPlayers` — e finche' non so QUALE
+           sorgente il renderer legge davvero, qualunque cosa scriva qui la sto scrivendo alla cieca.
+           LEZIONE, e vale piu' del rimedio mancato: il guadagno della stesura (1) era un conteggio con
+           SOGLIA su una partita sola, e le partite ballano di un giocatore intero. La misura continua
+           (lo scarto in metri) lo ha smentito. Quando un numero ha una soglia, due partite diverse bastano
+           a inventare un miglioramento. */
         const _setPiece=isHL&&(P.hlType==="penalty"||P.hlType==="freekick"||!!P.hlSetPiece);/* [7.8.8] flag set-piece dalla situation → il muro si schiera fin dall'AIMING (prima P.hlType poteva non essere ancora "freekick" in hl_choose → nessuna barriera) */
         /* [7.311.0 collaudo PO «le punizioni con l'eroe: postura sbagliata del corpo, deve essere direzionato
            verso la porta!»] SUL PIAZZATO L'EROE GUARDA LA PORTA. Il facing dell'eroe e' derivato dal MOVIMENTO

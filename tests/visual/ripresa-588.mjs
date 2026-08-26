@@ -14,8 +14,10 @@ const b = await launchBrowser();
 const page = await b.newPage({ viewport: { width: 412, height: 915 } });
 await installCdnRoutes(page);
 const ROSSO = !!process.env.CPM_ROSSO;/* [7.588.0] prova del rosso: stessa sonda, rimedio spento */
-await page.addInitScript((rosso) => {
-  if(rosso){ window.__CPM_NO588 = true; window.__CPM_NO589 = true; }/* [7.589.0] il rosso spegne TUTTO il rimedio della ripresa: lo schieramento a ogni tick e l'autorita' unica sulla posizione */
+const R591 = !!process.env.CPM_ROSSO591;
+await page.addInitScript(([rosso, r591]) => {
+  if(rosso){ window.__CPM_NO588 = true; window.__CPM_NO589 = true; window.__CPM_NO590 = true; }
+  if(r591) window.__CPM_NO591 = true;/* [7.591.0] rosso SOLO della resa: la partita resta col rimedio, cosi' lo scarto mesh/modello isola il piano della resa *//* [7.589.0] il rosso spegne TUTTO il rimedio della ripresa: lo schieramento a ogni tick e l'autorita' unica sulla posizione */
   window.__CPM_GLB = false; window.__CPM_RIP = []; window.__CPM_KOC = {}; window.__CPM_RIP544 = [];/* [7.588.0] contatore gia' nel gioco (7.544): quante volte lo schieramento gira, e quante di quelle durante una ripresa */
   setInterval(() => { try {
     const h = window.__CPM_HOLD && window.__CPM_HOLD();
@@ -45,10 +47,26 @@ await page.addInitScript((rosso) => {
        simulazione o nella resa — ed e' il bias che oggi mi ha gia' ingannato due volte. Ora conta i
        fuori posto in ENTRAMBE, allo stesso istante: se il logico e' schierato e la mesh no, il residuo
        e' del renderer e si corregge la' — non nella partita. */
-    let logCasa = 0, logOsp = 0, logTot = 0;
+    let logCasa = 0, logOsp = 0, logTot = 0, scartoX = null, scartoN = 0, disall = 0;
     try { const MP = window.__CPM_MP && window.__CPM_MP();
       if (MP) for (const q of MP) { if (!q || q.x == null) continue; logTot++;
-        if (q.t === 'home' && q.x > 52) logCasa++; if (q.t === 'away' && q.x < 48) logOsp++; } } catch (_e) {}
+        if (q.t === 'home' && q.x > 52) logCasa++; if (q.t === 'away' && q.x < 48) logOsp++; }
+      /* [7.591.0] LO SCARTO IN METRI fra la mesh e il modello, giocatore per giocatore. Il conteggio
+         «quanti sono fuori posto» ha una SOGLIA, e con una soglia due partite diverse ballano di un
+         intero giocatore: e' cosi' che ho appena letto un peggioramento dove non e' detto che ci sia.
+         Questa e' una misura continua e dice esattamente cio' che il rimedio deve fare — la resa segue
+         il modello, o no. */
+      if (MP && st.players) { let sd = 0, sn = 0;
+        for (let _j = 0; _j < st.players.length && _j < MP.length; _j++) {
+          const a = st.players[_j], b2 = MP[_j];
+          if (!a || !b2 || a.gk || a.x == null || b2.x == null) continue;
+          /* [7.591.0] PRIMA di credere allo scarto: le due sorgenti parlano dello STESSO giocatore?
+             Uno scarto mediano di 13,8 metri su tutti e ventidue non somiglia a un ritardo, somiglia a un
+             disallineamento di indici — e accoppiare per posizione nell'array e' esattamente il modo in
+             cui uno strumento inventa un difetto. */
+          if (String(a.team || '') !== String(b2.t || '')) { disall++; continue; }
+          sd += Math.abs(a.x - b2.x); sn++; }
+        if (sn) { scartoX = sd / sn; scartoN = sn; } } } catch (_e) {}
     const R = window.__CPM_RIP; if (R.length > 600) return;
     let casaFuori = 0, ospFuori = 0, tot = 0, cerchio = 0;
     /* [7.588.0] CHI sono quelli fuori posto, non solo quanti. Il codice PROVA a ripiegarli (7.544:
@@ -71,9 +89,9 @@ await page.addInitScript((rosso) => {
     const _c = (st.clock == null) ? null : String(st.clock);
     const _fermo = (_c !== null && _c === window.__CPM_LASTC);
     window.__CPM_LASTC = _c;
-    R.push({ tot, casaFuori, ospFuori, cerchio, eta, fuori, logCasa, logOsp, logTot, orologioFermo: !!_fermo, hasC: _c !== null, breve: _breve, rtick: _rtick, rms: _rms });
+    R.push({ tot, casaFuori, ospFuori, cerchio, eta, fuori, logCasa, logOsp, logTot, orologioFermo: !!_fermo, hasC: _c !== null, breve: _breve, rtick: _rtick, rms: _rms, scartoX, scartoN, disall });
   } catch (_e) {} }, 150);
-}, ROSSO);
+}, [ROSSO, R591]);
 await openMatch(page, port, { skipLoadAll: true, name: 'Rp' });
 await page.evaluate(() => window.__CPM_AUTOPLAY(true, { seed: 7300, policy: 'seeded', tickMs: 300 }));
 const t0 = Date.now();
@@ -100,6 +118,15 @@ console.log('    di cui in casa ' + (R.reduce((a, o) => a + o.casaFuori, 0) / R.
     const m = (f) => (conLog.reduce((a, o) => a + f(o), 0) / conLog.length).toFixed(1);
     console.log(`    MESH (renderer)  · casa ${m(o => o.casaFuori)} · ospiti ${m(o => o.ospFuori)}`);
     console.log(`    LOGICO (partita) · casa ${m(o => o.logCasa)} · ospiti ${m(o => o.logOsp)}   [${conLog.length} campioni con entrambe le sorgenti]`);
+    const sc = R.map(o => o.scartoX).filter(v => v != null).sort((a, b) => a - b);
+    if (!sc.length) console.log("    ⚠ scarto mesh/modello NON misurabile");
+    else {
+      console.log(`    SCARTO mesh contro modello (metri, media per giocatore) · mediana ${sc[Math.floor(sc.length / 2)].toFixed(2)} · min ${sc[0].toFixed(2)} · max ${sc[sc.length - 1].toFixed(2)}  [${sc.length} campioni]`);
+      const dis = R.map(o => o.disall || 0), md = dis.reduce((a, v) => a + v, 0) / dis.length;
+      const nn = R.map(o => o.scartoN || 0), mn = nn.reduce((a, v) => a + v, 0) / nn.length;
+      console.log(`      coppie con SQUADRA DIVERSA (indici disallineati): ${md.toFixed(1)} per campione · coppie valide ${mn.toFixed(1)}`);
+      if (md > 0.5) console.log('      ⚠ le due sorgenti NON sono accoppiabili per indice: lo scarto sopra NON e\' giudicabile');
+    }
     const conC = R.filter(o => o.hasC);
     if (!conC.length) console.log('    ⚠ orologio non leggibile: NON GIUDICABILE se il tick giri durante la ripresa');
     else {
