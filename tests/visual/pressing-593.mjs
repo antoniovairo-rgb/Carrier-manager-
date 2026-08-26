@@ -11,9 +11,11 @@ const srv = await startServer(); const port = srv.address().port;
 const b = await launchBrowser();
 const page = await b.newPage({ viewport: { width: 412, height: 915 } });
 await installCdnRoutes(page);
-const ROSSO = !!process.env.CPM_ROSSO;/* [7.593.0] prova del rosso: stesso binario, rimedio spento */
-await page.addInitScript((rosso) => {
+const ROSSO = !!process.env.CPM_ROSSO;
+const R595 = !!process.env.CPM_ROSSO595;/* [7.593.0] prova del rosso: stesso binario, rimedio spento */
+await page.addInitScript(([rosso, r595]) => {
   if (rosso) window.__CPM_NO593 = true;
+  if (r595) window.__CPM_NO595 = true;/* [7.595.0] rosso SOLO dell'anticipo: il bersaglio del 7.593 resta */
   window.__CPM_GLB = false; window.__CPM_PR = [];
   setInterval(() => { try {
     const st = window.__CPM_STATE && window.__CPM_STATE(); if (!st || !st.players || !st.ball) return;
@@ -32,7 +34,7 @@ await page.addInitScript((rosso) => {
     if (!n) return;
     R.push({ vic: +vic.toFixed(1), vic2: +vic2.toFixed(1), bx: +bx.toFixed(0), team: port.team });
   } catch (_e) {} }, 200);
-}, ROSSO);
+}, [ROSSO, R595]);
 await openMatch(page, port, { skipLoadAll: true, name: 'Pr' });
 await page.evaluate(() => window.__CPM_AUTOPLAY(true, { seed: 7300, policy: 'seeded', tickMs: 300 }));
 await sleep(90000);

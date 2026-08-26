@@ -15217,6 +15217,27 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                ⚠️ Il difendente e' l'AVVERSARIO dell'eroe (`_hm!==_homeBall`): qui non si aggiungono azioni
                difensive all'eroe, si fa esistere la pressione che l'eroe subisce. */
             const _p593=!(typeof window!=='undefined'&&window.__CPM_NO593);
+            /* ⚠️ [7.595.0 PROVATO E REVOCATO CON LA SUA MISURA — «il pressore mira dove il pallone sara'»]
+               Il 7.593 da' al primo pressore il bersaglio giusto (due metri dal pallone, lato porta) ma la
+               mesh ci arriva con 5-6 metri di ritardo (7.592). Ridurre quel ritardo e' una decisione di
+               prodotto che non mi arrogo; qui avevo provato la via che NON lo tocca: compensarlo mirando
+               avanti, cioe' al punto in cui il pallone sara' fra mezzo secondo (velocita' stimata per
+               fotogramma e smussata, anticipo limitato a otto metri). Un difensore vero fa esattamente
+               questo.
+               TRE COPPIE di run verde/rosso, perche' una sola sta dentro il rumore che questa sonda ha
+               gia' dimostrato di avere:
+                 distanza mediana   verde 7,0 · 8,8 · 7,3  (media 7,7)   rosso 7,5 · 7,5 · 8,0  (media 7,7)
+                 entro 3 m          verde  14% · 13% · 10%              rosso  11% ·  7% ·  8%
+                 entro 8 m          verde  57% · 41% · 58%              rosso  56% · 56% · 51%
+               L'anticipo migliora la CODA VICINA in tutte e tre le coppie (+3,6 punti entro tre metri),
+               ma non sposta la mediana di nulla e PEGGIORA la fascia entro otto metri. Due indicatori su
+               tre non reggono: non e' un rimedio provato, e tenerlo perche' «uno dei tre migliora» sarebbe
+               scegliere il numero che mi da' ragione. Revocato.
+               LA STRADA NON E' CHIUSA, ed e' scritta qui per chi la riprende: mezzo secondo di anticipo e'
+               probabilmente troppo — spiega insieme il guadagno sotto i tre metri (chi arriva, arriva bene)
+               e la perdita sotto gli otto (chi e' lontano parte verso un punto che il pallone non
+               raggiungera'). Un anticipo PROPORZIONALE alla distanza, corto da lontano, e' la variante da
+               misurare. Serviranno di nuovo tre coppie: su questa sonda una sola non decide. */
             if(_p593&&i===_pr1){const _gx593=_hm?0:100,_dgx=_gx593-_bGX,_dgy=50-_bGY,_dgn=Math.hypot(_dgx,_dgy)||1;
               tx=_bGX+_dgx/_dgn*2.0;ty=_bGY+_dgy/_dgn*2.0;}
             else{const press=clamp((24-db)/24,0,1)*_pk*_pm;tx+=dxb/db*press;ty+=dyb/db*press;}}
