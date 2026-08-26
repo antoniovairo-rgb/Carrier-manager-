@@ -4679,6 +4679,15 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
       setHlTimes(prev=>{const c=[...prev];c.splice(nx,0,9999);hlTimesRef.current=c;return c;});
       setNumHL(prev=>{const v=prev+1;numHLRef.current=v;return v;});
       setHlIdx(nx);setOutcome(null);setChosenAct(null);
+      /* [7.620.0 — ANCHE LA CATENA STACCA. Rosso __CPM_NO620]
+         COLLAUDO PO su 7.615 (SIT #84, cross -> chance riuscita): «la CAMERA salta: passo di 4,0 unita'
+         fra due fotogrammi a scena in corso (188 u/s), a 13,8 s dall'inizio». L'audit highlights l'aveva
+         gia' inchiodato (punto 7): il ramo catena era L'UNICA uscita di scena SENZA stacco — gol 420 ms,
+         «SI CONTINUA» 380, montaggio 360, catena NIENTE — e in piu' RI-STAGIA i 22 (l'effetto staging
+         scatta sulla nuova situation): corpi e camera saltavano a vista. Il tempo del PO combacia: un
+         cross riuscito innesca sponda/mischia/second_ball proprio da qui. Uno stacco corto (300 ms)
+         maschera il ri-staging senza rompere il ritmo della catena — il float «CATENA!» resta. */
+      if(!(typeof window!=='undefined'&&window.__CPM_NO620))setCutFx({key:Date.now(),dur:300});
       setFloatGoal({text:"⚡ CATENA!",col:"#f59e0b",key:Date.now()});
       setPhase("hl_intro");
       return;
