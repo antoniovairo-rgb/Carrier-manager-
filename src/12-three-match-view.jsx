@@ -2045,7 +2045,17 @@ function ThreeMatchView(props){
              il posto giusto per dirlo: c'e' un padrone che batte tutti, e si chiama FERMO. */
           const _fm559=(P.fermo&&P.fermo.current)||null;
           if(_fm559&&!(typeof window!=='undefined'&&window.__CPM_NO559)){
-            ball.position.x=G2X(_fm559.x);ball.position.z=G2Z(_fm559.y);ball.position.y=0.11;
+            /* [7.609.0 — IL FERMO E IL RIPOSO DEVONO ESSERE D'ACCORDO SU DOV'E' TERRA. Rosso __CPM_NO609]
+               COLLAUDO PO: «sembra che il portatore di palla spesso palleggi». MISURATO (palleggio-609 +
+               istogramma delle quote): col pallone ai piedi di qualcuno l'altezza sta a 0,65 nell'86% dei
+               campioni e a ~0,25 nell'11%, con 15 inversioni in 90 s — le transizioni al punto di
+               inversione sono 0,65<->0,27, avanti e indietro. DUE AUTORITA' in disaccordo su dov'e' terra:
+               questo scrittore del fermo diceva 0,11 (mezzo pallone SOTTOTERRA: il raggio e' 0,32) e il
+               riposo dice 0,65 — quando i due si alternano il pallone molleggia, ed e' il palleggio.
+               La quota del fermo diventa quella del riposo: stessa convenzione, un'autorita' sola.
+               (Che la convenzione 0,65 faccia levitare un pallone di raggio 0,32 e' un altro discorso,
+               storico e ovunque: non si tocca qui di passaggio.) */
+            ball.position.x=G2X(_fm559.x);ball.position.z=G2Z(_fm559.y);ball.position.y=(typeof window!=='undefined'&&window.__CPM_NO609)?0.11:0.65;
             sr.current._pad555='fermo';
             if((sr.current._ws524=17)&&sr.current._bj0){sr.current._bj0.src='fermo';sr.current._bj0.srcs.push('fermo');}
           } else {
