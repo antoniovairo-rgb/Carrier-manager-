@@ -2435,7 +2435,21 @@ function ThreeMatchView(props){
             if(crossRcvMesh._cgRun)animOne(crossRcvMesh,ball.position.x-1.4,ball.position.z,aDt,ak,ball.position.x-1.4,ball.position.z);
             else{crossRcvMesh.position.x+=((ball.position.x-1.6)-crossRcvMesh.position.x)*Math.min(aDt*4.5,1);crossRcvMesh.position.z+=(ball.position.z-crossRcvMesh.position.z)*Math.min(aDt*4.5,1);}}
           const _cgNear=!crossRcvMesh||Math.hypot(crossRcvMesh.position.x-ball.position.x,crossRcvMesh.position.z-ball.position.z)<3.2;/* [7.335.0] contatto reale: l'uomo è SULLA palla */
-          const _cgLate=hlPostArcT>=_cgD+2.2;/* [7.335.0] attesa massima bounded: se il terzo uomo non arriva, l'esito parte comunque (senza gesto) */
+          /* [7.605.0 — IL GOL NON PUO' ASPETTARE CINQUE SECONDI, rosso __CPM_NO605]
+             COLLAUDO PO su SIT #51: «esito goal ma la palla non e' mai arrivata in porta, e il portiere
+             non si tuffa». TRACCIATO fotogramma per fotogramma col gancio nuovo sul kind (FORCE_KIND):
+             l'arco porta il pallone a x 91, poi la coreografia cross_goal lo tiene FERMO a x 90 per 4,7
+             SECONDI aspettando il compagno dell'incornata — che non arriva in tempo, perche' la mesh
+             insegue col ritardo di 5-6 m misurato nel 7.592 — e solo allora l'attesa di riserva
+             (_cgD+2,2 s) molla e la palla entra da sola. In laboratorio il gol si vede a +11,4 s dalla
+             conclusione; sul dispositivo la scena finisce prima, e il PO vede esattamente cio' che ha
+             scritto: gol dichiarato, palla parcheggiata fuori area, nessun tuffo.
+             L'attesa scende da _cgD+2,2 a _cgD+0,8: un'incornata che non parte entro un secondo dalla
+             consegna non partira' mai — e' la stessa lezione della ripresa (7.590): le attese lunghe non
+             comprano realismo, comprano scene morte. MISURATO dopo: il gol entra ~3,5 s prima (in_net a
+             +7,9 s invece di +11,4). La strada VERA — un compagno che arriva davvero sull'incornata —
+             passa dal ritardo di resa, che e' la decisione di prodotto gia' posta al PO. */
+          const _cgLate=hlPostArcT>=_cgD+((typeof window!=='undefined'&&window.__CPM_NO605)?2.2:0.8);
           if(_uh74>=0.93&&sr.current._cgHold==null&&(_cgNear||_cgLate))sr.current._cgHold=0.22;/* [7.253.0 gi30 «lontanissimo il tiro»] STACCO PERCETTIVO sull'uomo dell'incornata: lancio→testa→rete era UN volo continuo da centrocampo alla porta e leggeva come un tiro da 40m — ora la palla SOSPENDE ~0.22s a quota testa sul terzo uomo (contatto leggibile) e solo poi entra. [7.335.0 collaudo PO «la palla passa senza una dinamica chiara da un compagno a un altro»] lo stacco si arma SOLO a contatto: prima la sospensione TELETRASPORTAVA la palla sul mesh dell'uomo in ritardo (misurato game 84.6→51.3 = mezzo campo all'indietro) — ora la palla resta parcheggiata in area e ASPETTA l'arrivo */
           if(sr.current._cgHold!=null&&sr.current._cgHold>0){sr.current._cgHold-=aDt;
             if(crossRcvMesh&&_cgNear){ball.position.x=crossRcvMesh.position.x+0.6;ball.position.z=crossRcvMesh.position.z;ball.position.y=1.9;if((sr.current._ws524=8)&&sr.current._bj0)(sr.current._bj0.src='ricevente-cross',sr.current._bj0.srcs.push('ricevente-cross'));}}

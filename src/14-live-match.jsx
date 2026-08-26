@@ -5206,6 +5206,11 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               //   (fist/deflect) NON scattava → ramo in_net → la palla ENTRAVA in porta (finto gol) prima della catena.
               //   Ora la chance su SUCCESSO è propagata al 3D → il primo tocco resta al piede, niente rete.
               if(outcome&&outcome.ok===true&&outcome.outKind==="chance")_hlOutcomeKind="chance";
+              /* [7.604.0 SOLO COLLAUDO, attivo solo in test/review come FORCE_OUTCOME (7.211)] il gancio
+                 sul KIND: senza, il ramo «gol vero» dei piazzati non e' riproducibile — FORCE_OUTCOME forza
+                 il successo ma il kind resta «chance», e il difetto del PO (SIT #51, gol dichiarato con la
+                 palla ferma a 15,6u) vive proprio nel ramo che qui non si riesce a percorrere. */
+              if((_SIT_TEST||_CPM_TEST||(typeof window!=='undefined'&&window.__CPM_REVIEW))&&typeof window!=='undefined'&&window.__CPM_FORCE_KIND!==undefined){_hlOutcomeKind=window.__CPM_FORCE_KIND;}
             }
           }
           return(
