@@ -3871,6 +3871,27 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
           if(typeof window!=='undefined'&&window.__CPM_TRAMA527!==undefined){try{const _tw=window.__CPM_TRAMA527;const _tr7=tramaRef.current;const _ng7=(!window.__CPM_NO527&&_tr7&&_tr7.ng)?1:0;if(_tr7)_tr7.ng=0;if(_tw.length<9000)_tw.push({x:+_t.x.toFixed(2),y:+_t.y.toFixed(2),f:(!window.__CPM_NO527&&_tr7)?_tr7.fase:null,c:(!window.__CPM_NO527&&_tr7)?_tr7.cor:null,ng:_ng7,ph:phaseRef.current,d:(_tr7&&_tr7.dir)||0});/* [7.531.0] d: a chi appartiene il possesso — il guardiano identita' separa i moduli */}catch(_e){}}
           dx=_t.x-b.x;dy=_t.y-b.y;
         }else if(tramaRef.current)tramaRef.current.chase=1;/* [7.524.0] c'e' un bersaglio da inseguire: al ritorno del drift la prima rotta e' nuova per costruzione */
+        /* [7.626.0 — IL PORTATORE LOGICO AVANZA A OGNI TICK DI PALLA. Rosso __CPM_NO626]
+           Giudicato stavolta sul testimone per-tick A FASE PIENA (il metro precedente campionava solo la
+           fase 0 del ciclo di schieramento — cieco proprio dove la cadenza morde: fase 0 9,1u ma fasi
+           1-2 a 13,3-13,7u, mediana piena 10,1u). Un uomo solo, passo umano. */
+        /* ⚠️ [7.626.0 — A4/1] QUATTRO RIMEDI E CINQUE CATTURE DI METODO, TUTTO REVOCATO TRANNE IL TESTIMONE.
+           La sequenza, a verbale perche' e' il lavoro della notte: (1) k 0,85 sul portatore — in banda;
+           (2) inversione del verso — in banda (definitiva); (3) waypoint sul ricevente vivo — in banda;
+           (4) portatore che avanza A OGNI tick — GIRAVA (19 esecuzioni/60s, contatore) ed effetto di
+           DECIMALI. Il metro «qualificato» campionava solo la fase 0 del ciclo di schieramento (quinta
+           cattura: cieco di fase — il testimone qui sotto misura il ciclo pieno: fase 0 9,1u, fasi 1-2
+           13,3-13,7u, mediana vera 10,1u). E il verdetto finale e' aritmetico: il bersaglio-palla avanza
+           4-5u/tick (riscala 7.538), un uomo ne fa ~2,6 — IL PALLONE AMBIENTALE E' PIU' VELOCE DI UN UOMO:
+           la custodia in volo e' impossibile per costruzione, si vince SOLO AGLI ARRIVI. La ricezione come
+           stato (A4) ha ora la sua definizione operativa: il volo termina su un uomo vivo e vi SOSTA. */
+        /* [testimone 7.626, SOLO MISURA non spedita finche' non produce un verdetto] custodia a OGNI
+           tick di palla, con la fase del ciclo di schieramento: se d oscilla con la fase, la diagnosi
+           di cadenza e' giusta; se e' piatta, il generatore e' altrove. */
+        if(typeof window!=='undefined'&&window.__CPM_NPDT!==undefined&&phaseRef.current==='playing'&&!fermoRef.current&&kickRef.current<=0&&kickoffRef.current<=0){try{
+          const _ltT=possTurnRef.current>0?"home":"away";let _dT=null,_iT=-1;
+          (matchPlayersRef.current||[]).forEach((q,i)=>{if(!q||q.team!==_ltT||q.gk)return;const _dd=Math.hypot((q.x||50)-b.x,(q.y||50)-b.y);if(_dT==null||_dd<_dT){_dT=_dd;_iT=i;}});
+          if(_dT!=null&&window.__CPM_NPDT.length<3000)window.__CPM_NPDT.push({c:clockRef.current|0,ph:(clockRef.current|0)%3,d:+_dT.toFixed(1),i:_iT,bx:+b.x.toFixed(1),tx:+(ballTargetRef.current?ballTargetRef.current.x:0).toFixed(1)});}catch(_e){}}
         const _nx=b.x+dx*0.65,_ny=b.y+dy*0.65;
         if(typeof window!=='undefined'&&window.__CPM_NO478D)return{x:_nx,y:_ny};/* prova del rosso 7.478 */
         return{x:clamp(_nx,0,100),y:clamp(_ny,0,100)};
