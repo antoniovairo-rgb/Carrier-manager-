@@ -3854,7 +3854,17 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               let _wx,_wy;
               if(_fase==="costruzione"){_wx=_t.x+_dir*(_k553<1.5?(-2+_r511()*8):(-4+_r511()*24));_wy=_cy+(_r511()-0.5)*(_k553<1.5?26:32);}
               else if(_fase==="sviluppo"){_wx=_t.x+_dir*(((_k553<1.5?5:12)+_r511()*(_k553<1.5?7:16))*(_no538?1:_idp.passo));_wy=_cy+(_r511()-0.5)*(_k553<1.5?18:24);/* ⚠️ [7.542.0] PROVATO E REVOCATO CON LA SUA MISURA: stringere lo scarto laterale della giocata da +-12u a +-5,5u per «percorrere il corridoio invece di zigzagarlo». Non sposta il difetto: rettilineita' del pallone 0,27 -> 0,24, finestre in cui torna su se stesso 5/8 -> 5/8, giro attorno alla palla 36% -> 42%. Il ping-pong laterale non era la causa. VECCHIA NOTA: IL CORRIDOIO E' UN CORRIDOIO. Ogni nuova giocata pescava la sua meta con uno scarto di +-12u attorno al centro del corridoio: sommato al passo in avanti, la rotta cambiava lato a ogni giocata e la palla attraversava il campo di traverso invece di risalirlo. Misurato su finestre di ~10s di scena: 89-96 unita' di percorso per tornare quasi al punto di partenza. Lo scarto laterale scende a +-5,5u: il corridoio si percorre, non si zigzaga. *//* [7.531.0] passo di modulo: il 5-3-2 riparte lungo (1,28), il 3-5-2 palleggia (0,92) */
-                if(_r511()<(_no538?0.14:_idp.cambio)){const _c1=_r511();_tr.cor=_tr.cor===0?(_c1<0.5?-1:1):0;}/* cambio gioco — frequenza di modulo (433 0,17 · 532 0,09) */}
+                if(_r511()<(_no538?0.14:_idp.cambio)){const _c1=_r511();
+                  /* [7.631.0 — IL CAMBIO GIOCO PUO' ATTRAVERSARE. Rosso __CPM_NO631]
+                     MISURATO (fasce-600 dopo il 7.630): ZERO cambi di lato, permanenza mediana ~2 minuti
+                     sullo stesso lato, fascia bassa 0-1%. L'aritmetica: il corridoio si elegge solo al
+                     flip di possesso (~5 estrazioni a partita, lotteria bloccata dal seed) e questo
+                     cambio gioco da laterale andava SOLO verso il centro (cor!=0 -> 0) — il lato opposto
+                     era raggiungibile solo dal cambio di fronte in rifinitura (p0,16 di un ramo raro).
+                     Nel calcio il cambio campo da fascia a fascia e' LA giocata che apre la difesa
+                     schierata: da laterale ora 50% centro, 50% lato opposto. Stesso sorteggio _c1,
+                     nessuna estrazione nuova (invariante 7.511). */
+                  _tr.cor=_tr.cor===0?(_c1<0.5?-1:1):((typeof window!=='undefined'&&window.__CPM_NO631)?0:(_c1<0.5?0:-_tr.cor));}/* cambio gioco — frequenza di modulo (433 0,17 · 532 0,09) */}
               else{
                 /* [7.549.0 — pezzo 4 della roadmap, nella sua forma VERA · rosso __CPM_NO573]
                    IL REPERTORIO AVEVA DUE VOCI, ENTRAMBE AGLI ESTREMI. In rifinitura il pallone poteva solo
