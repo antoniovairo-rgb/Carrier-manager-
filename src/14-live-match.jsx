@@ -3050,6 +3050,23 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
             var _dx498=_bt498.x-_cb498.x,_dy498=_bt498.y-_cb498.y,_dd498=Math.hypot(_dx498,_dy498);
             var _cap528=_no528?45:30;
             if(_dd498>_cap528)_bt498={x:clamp(_cb498.x+_dx498/_dd498*_cap528,2,98),y:clamp(_cb498.y+_dy498/_dd498*_cap528,2,98)};
+            /* [7.639.0 — LA RIGA CONSEGNA AI PIEDI DI UN UOMO. Rosso __CPM_NO639]
+               CENSIMENTO A4 (a4count, 63' di gioco): la TRAMA apre 4 giocate e fa 1 passaggio vero a
+               partita — il pallone lo muovono le RIGHE (una ogni 2-3 tick, fino a 30u), ed e' sulle
+               righe che «la palla rimbalza senza portatore e ricevente» (collaudo PO). Stessa cura del
+               7.538.1: il punto d'arrivo della riga di GIOCO APERTO (fermi, gol e azione pendente sono
+               gia' esclusi da questo blocco) si aggancia ai piedi del compagno del lato in possesso piu'
+               vicino entro 8u — il raggio del 7.544, che non tira l'intenzione verso grappoli lontani.
+               Nessun sorteggio nuovo (invariante 7.511). La sosta e' implicita: il bersaglio agganciato
+               resta sui piedi finche' la prossima riga non muove il gioco. */
+            if(!(typeof window!=='undefined'&&window.__CPM_NO639)){try{
+              const _mp639=matchPlayersRef.current||[];const _lt639=(possTurnRef.current>0)?"home":"away";
+              let _bi639=-1,_bd639=8;
+              for(let _i9=0;_i9<_mp639.length;_i9++){const _p9=_mp639[_i9];if(!_p9||_p9.team!==_lt639||_p9.gk)continue;
+                const _d9=Math.hypot((_p9.x||50)-_bt498.x,(_p9.y||50)-_bt498.y);if(_d9<_bd639){_bd639=_d9;_bi639=_i9;}}
+              if(typeof window!=='undefined'&&window.__CPM_REC){try{const _w=(window.__CPM_A4=window.__CPM_A4||{pass:0,agg:0,wp:0});if(_bi639>=0)_w.riga=(_w.riga|0)+1;else _w.rigaN=(_w.rigaN|0)+1;}catch(_e){}}
+              if(_bi639>=0)_bt498={x:clamp(_mp639[_bi639].x,2,98),y:clamp(_mp639[_bi639].y,2,98)};
+            }catch(_e639){}}
           }
           if(/goal$/.test(String(ev.ef||""))&&!(typeof window!=='undefined'&&window.__CPM_NO528)){kickRef.current=(typeof window!=='undefined'&&window.__CPM_NO569)?4:5;ripT0Ref.current=Date.now();/* [7.590.0] QUI nasce la ripresa dopo un gol: e' l'istante da cui contano i suoi pochi secondi */kickGx573.current=(ev.ef==="team_goal")?100:0;kickIn573.current=false;kickAtt573.current=0;/* [7.573.0] da qui la ripartenza sa DOVE il pallone deve arrivare prima di tornare al centro */kickoffSideRef.current=(ev.ef==="team_goal")?"away":"home";if(!(typeof window!=='undefined'&&window.__CPM_NO543))setTurn616((ev.ef==="team_goal")?-1:1,"calcio-inizio");/* [7.532.0 NO543] il calcio d'inizio passa il turno a chi ha subito */}/* [7.545.0 — collaudo PO «non si vedono i gol», rosso __CPM_NO569] 4->6 TICK: MISURATO coi tre palloni
    insieme (hook __CPM_BALL3). Il BERSAGLIO del pallone va in rete sempre, 3/3 a 2,0u dalla linea: la
@@ -4062,13 +4079,23 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                   if(!_pl||_pl.team!==_lt555||_pl.gk)continue;
                   const _dd=Math.hypot((_pl.x||50)-_wx,(_pl.y||50)-_wy);
                   if(_dd<_bd555){_bd555=_dd;_bi555=_i5;}}
+                if(typeof window!=='undefined'&&window.__CPM_REC){try{const _w=(window.__CPM_A4=window.__CPM_A4||{pass:0,agg:0,wp:0});_w.wp++;if(_bi555>=0)_w.agg++;}catch(_e){}}/* [7.639 strumento] quante giocate trovano un uomo (agg) e quante diventano passaggio vero (pass) */
                 if(_bi555>=0){
                   const _rx=_mp555[_bi555].x,_ry=_mp555[_bi555].y;
                   if(_no558){_wx=_rx;_wy=_ry;}
                   else{
                     /* IL PASSAGGIO: la palla lascia il portatore e arriva ai piedi del ricevente in un tick */
                     const _pd=Math.hypot(_rx-_t.x,_ry-_t.y);
-                    if(_pd<=22&&_pd>1.5){_t.x=clamp(_rx,4,96);_t.y=clamp(_ry,6,94);}
+                    if(_pd<=22&&_pd>1.5){_t.x=clamp(_rx,4,96);_t.y=clamp(_ry,6,94);
+                      /* [7.639.0 — LA RICEZIONE E' UNA SOSTA. Rosso __CPM_NO639] La definizione operativa
+                         di A4 e' a verbale dal 7.626: «il pallone ambientale e' piu' veloce di un uomo, la
+                         custodia si vince SOLO AGLI ARRIVI: il volo termina su un uomo vivo e vi sosta».
+                         Il passaggio del 7.540 portava la palla ai piedi del ricevente — e la marcia
+                         ripartiva il tick DOPO: mai un istante di controllo, ed e' il «rimbalza senza
+                         portatore e ricevente» del PO. Due tick di sosta: la palla ARRIVA, sta ai piedi,
+                         poi la giocata successiva parte. */
+                      if(!(typeof window!=='undefined'&&window.__CPM_NO639))_tr.hold639=2;
+                      if(typeof window!=='undefined'&&window.__CPM_REC){try{const _w=(window.__CPM_A4=window.__CPM_A4||{pass:0,agg:0,wp:0});_w.pass++;}catch(_e){}}}
                     else{_wx=_rx;_wy=_ry;}
                   }
                   _tr.rcv=_bi555;}
@@ -4076,9 +4103,12 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               }catch(_e555){}}
               _tr.wp={x:clamp(_wx,4,96),y:clamp(_wy,6,94)};_tr.fase=_fase;_tr.ng=1;/* [7.524.0] tick di NUOVA GIOCATA: la svolta qui e' voluta (fine giocata) — il guardiano giudica la rotta sui passi INTERNI */
             }
+            if(!(typeof window!=='undefined'&&window.__CPM_NO639)&&(_tr.hold639|0)>0){_tr.hold639--;}/* [7.639.0] la sosta di ricezione: il bersaglio resta sui piedi del ricevente, la marcia aspetta */
+            else{
             const _wdx=_tr.wp.x-_t.x,_wdy=_tr.wp.y-_t.y;const _wd=Math.hypot(_wdx,_wdy)||1;
             const _st=Math.min(_wd,(0.55+_r511()*0.5)*_k553);/* [7.532.0 NO543] PASSO x2 NELL'ERA DEI TURNI: misurato — il drift muoveva ~0,8u x 85 passi = ~68u di viaggio in 90', e col possesso spalmato nei due versi la palla non raggiungeva mai le aree (bg-rhythm cieco 3 volte: sviluppo 2-6 coppie). Il possessore ora AVANZA davvero durante il suo spell (~4,7u/s di bersaglio, sotto il passo del portatore). La rotta non cambia: cambia quanta strada si fa per giocata. */
             _t.x=clamp(_t.x+_wdx/_wd*_st,4,96);_t.y=clamp(_t.y+_wdy/_wd*_st,6,94);
+            }
           }
           if(typeof window!=='undefined'&&window.__CPM_TRAMA527!==undefined){try{const _tw=window.__CPM_TRAMA527;const _tr7=tramaRef.current;const _ng7=(!window.__CPM_NO527&&_tr7&&_tr7.ng)?1:0;if(_tr7)_tr7.ng=0;if(_tw.length<9000)_tw.push({x:+_t.x.toFixed(2),y:+_t.y.toFixed(2),f:(!window.__CPM_NO527&&_tr7)?_tr7.fase:null,c:(!window.__CPM_NO527&&_tr7)?_tr7.cor:null,ng:_ng7,ph:phaseRef.current,d:(_tr7&&_tr7.dir)||0});/* [7.531.0] d: a chi appartiene il possesso — il guardiano identita' separa i moduli */}catch(_e){}}
           dx=_t.x-b.x;dy=_t.y-b.y;
