@@ -2334,7 +2334,18 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                e' stata raccontata (tre righe), non quando la palla tocca una coordinata. Il tetto di
                sicurezza dei 10 tick resta ed e' l'ultima parola: nessun gol puo' restare in sospeso. */
             const _rg532=(typeof window!=='undefined'&&window.__CPM_NO563)?true:((_pg532.righe|0)>=3);
-            if(!_rip575&&((((_pg532.dir>0&&_b532.x>=72)||(_pg532.dir<0&&_b532.x<=28))&&_rg532)||_pg532.ticks>=10)){_simEv77=_pg532.ev;pendingGoalRef.current=null;}/* [7.575.0] nemmeno il tetto di sicurezza scavalca la ripartenza: l'azione resta pendente un tick in piu' *//* [v3] tetto 8->10, coerente col passo ridotto */
+            /* [7.638.0 — IL GOL NASCE IN AREA, NON A META' STRADA. Rosso __CPM_NO638]
+               Collaudo PO: «i gol arrivano da oltre 30 metri senza azioni». MISURATO (golpos-637, due
+               partite): la riga di gol si scrive con la palla a 23-24u dalla porta, SEMPRE — perche'
+               la soglia qui sotto era x72/28, scelta al 7.542 per il racconto (le 3 righe) e mai per la
+               geografia. La rete ora aspetta l'AREA (x84/16): il volo finale scende da ~26u a ~14u, la
+               festa (7.587, che gia' aspetta il pallone in rete) arriva a palla vicina, e l'azione
+               attraversa davvero l'ultimo terzo. Il tetto di sicurezza sale in proporzione (10->14
+               tick: al passo di 3u/tick da centrocampo all'area servono ~11 tick) e resta l'ultima
+               parola: nessun gol puo' restare in sospeso. */
+            const _no638=(typeof window!=='undefined'&&window.__CPM_NO638);
+            const _gx638=_no638?72:84,_gxb638=_no638?28:16,_cap638=_no638?10:14;
+            if(!_rip575&&((((_pg532.dir>0&&_b532.x>=_gx638)||(_pg532.dir<0&&_b532.x<=_gxb638))&&_rg532)||_pg532.ticks>=_cap638)){_simEv77=_pg532.ev;pendingGoalRef.current=null;}/* [7.575.0] nemmeno il tetto di sicurezza scavalca la ripartenza: l'azione resta pendente un tick in piu' *//* [v3] tetto 8->10, coerente col passo ridotto */
           }
         }
         /* [7.532.0 collaudo PO «non ci sono molti ribaltamenti di fronte, non sembra una vera partita» —
