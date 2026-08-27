@@ -2691,7 +2691,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                alterna azione e commento invece di essere un elenco di passaggi. */
             const _urg559=_cat559&&!!pendingGoalRef.current;/* [7.542.0 v2] LA CATENA SI APRE IN OGNI FASE, LA PAUSA SI SCAVALCA SOLO FUORI DALLA COSTRUZIONE. La v1 gate-ava tutt'e tre le cose sulla fase e ha pagato il ritmo col racconto: bg-rhythm da 1,29x a 2,89x (soglia 1,30) ma i gol raccontati da 6/8 a 4/7, sotto la soglia dichiarata. Col ritmo a piu' del doppio del minimo c'e' margine per restituire: qui si separa cio' che detta il RESPIRO (la pausa d'enfasi, che in costruzione resta) da cio' che detta il RACCONTO (che la catena sia aperta e non ceda il turno, e quello serve sempre). *//* [7.541.0] vedi la nota sulla forzatura: in costruzione la cronaca prende tempo, come prima *//* [7.541.0] il gol in arrivo non aspetta il turno: la catena si apre subito e non alterna */
             const _cg615=(typeof window!=='undefined'&&window.__CPM_CAT615)||null;/* [7.615.0 strumentazione] il cancello della catena si racconta: quante volte prova, e dove muore */
-            if(_cg615)_cg615.tick=(_cg615.tick|0)+1;
+            if(_cg615){_cg615.tick=(_cg615.tick|0)+1;if(pendingGoalRef.current){_cg615.pgTick=(_cg615.pgTick|0)+1;if(azioneRef.current)_cg615.pgConCat=(_cg615.pgConCat|0)+1;}}/* [7.622.0] quanti tick di COSTRUZIONE DEL GOL vedono questo sito, e quanti hanno gia' una catena aperta: e' il buco dei «gol nudi» */
             if(!azioneRef.current&&_mp551.length>=11&&(_urg559||nx-(_lastCatRef.current|0)>=6||_lastCatRef.current<0)){/* [7.537.0 v6] intervallo 3'→6' */
               if(_cg615)_cg615.gate=(_cg615.gate|0)+1;
               /* si apre solo se c'e' un portatore plausibile vicino alla palla */
@@ -2776,10 +2776,10 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                che per mezzo minuto dice solo «X per Y» smette di essere la telecronaca ampia chiesta dal
                PO. Ora un passo si recita SOLO se la battuta precedente non era di catena: il passaggio e
                il commento si alternano, come in televisione. */
-            if(azioneRef.current&&_lastCatRef.current===nx&&!(_cat559&&pendingGoalRef.current)){/* battuta precedente gia' di catena in questo giro: si lascia parlare il repertorio — ma non mentre il gol si costruisce, li' la catena e' il racconto */}
+            if(azioneRef.current&&_lastCatRef.current===nx&&!(_cat559&&pendingGoalRef.current)){if(_cg615)_cg615.skipAlt=(_cg615.skipAlt|0)+1;/* battuta precedente gia' di catena in questo giro: si lascia parlare il repertorio — ma non mentre il gol si costruisce, li' la catena e' il racconto */}
             else if(azioneRef.current){
               const _az=azioneRef.current,_p=_az.passi[_az.i];
-              if(!_p||(_az.t0!=null&&nx-_az.t0>6&&!(_cat559&&pendingGoalRef.current)))azioneRef.current=null;/* la catena non vive piu' di 6 minuti di gioco */
+              if(!_p||(_az.t0!=null&&nx-_az.t0>6&&!(_cat559&&pendingGoalRef.current))){azioneRef.current=null;if(_cg615)_cg615.dead=(_cg615.dead|0)+1;}/* la catena non vive piu' di 6 minuti di gioco */
               else{
                 _recHij545=true;_recKind546="catena";_recSide546=_az.nostra?"home":"away";
                 const _cog=(n)=>{const t=String(n||"").trim();return t?t.charAt(0)+t.slice(1).toLowerCase():"un compagno";};
@@ -2790,7 +2790,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                   :["🔁 "+_da+" scarica su "+_a+" e la squadra riprende posizione.","⚪ Giro palla: "+_da+" per "+_a+", si cerca il varco."];
                 const _vi=Math.abs(hashStr("cv|"+nx+"|"+_az.i))%_V.length;
                 ev={txt:_V[_vi],ef:null,w:1,bpos:{x:_p.to.x,y:_p.to.y},at:(_p.kind==="filtrante"?"pass":"pass"),pd:_dec499,_az551:_p};
-                _az.i++;_lastCatRef.current=nx;if(_az.i>=_az.passi.length)azioneRef.current=null;
+                _az.i++;_lastCatRef.current=nx;if(_cg615)_cg615.rec=(_cg615.rec|0)+1;if(_az.i>=_az.passi.length)azioneRef.current=null;
               }
             }
           }
