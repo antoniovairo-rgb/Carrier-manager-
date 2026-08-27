@@ -359,6 +359,12 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     try{const _heroRoster=isMatchHome?homeRoster:awayRoster,_oppRoster=isMatchHome?awayRoster:homeRoster;
       const _surn=(r,idx)=>{const nm=((r&&r[idx]&&r[idx].name)||"").trim();const pp=nm.split(/\s+/);return (pp[pp.length-1]||"").toUpperCase();};
       let _hi=0,_ai=0;_mp.forEach(e=>{e.name=(e.team==="home")?_surn(_heroRoster,_hi++):_surn(_oppRoster,_ai++);});}catch(_e){}
+    /* [7.641.0 — F1a del piano B: I VENTUNO HANNO UN RUOLO] Decisione strategica (docs/SPRINT §B):
+       l'analisi ha censito che i giocatori di sfondo non hanno campo ruolo — slot per indice e
+       basta — e il motore del possesso non puo' scegliere un ricevente «da regista» o «da ala».
+       Il ruolo nasce dallo SLOT di formazione (la disposizione qui sopra e' gia' per reparti):
+       0/10 GK · 1-4/11-14 DF · 5-7/15-17 MF · 8-9/18-20 AT. E' l'anagrafe del Match Engine. */
+    _mp.forEach((e,i)=>{const _k=(i===0||i===10)?"GK":((i>=1&&i<=4)||(i>=11&&i<=14))?"DF":((i>=5&&i<=7)||(i>=15&&i<=17))?"MF":"AT";e.rl=_k;});
     return _mp;
   });
   /* [7.588.0 SOLO COLLAUDO, spento se manca la bandiera] CHI RIMETTE INDIETRO GLI OSPITI.
@@ -1092,6 +1098,11 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
      a tick era un no-op travestito da rimedio. La finestra e' quindi un TEMPO VERO in millisecondi.
      (E il rallentamento del tick durante la ripresa resta un fatto MISURATO e NON spiegato: annotato
      perche' tocca anche «il pallone rimbalza senza portatore», che e' un altro appunto del PO.) */
+  const carrierRef=useRef(null);/* [7.641.0 — F1a: IL PORTATORE E' UNO STATO, NON UNA DEDUZIONE] Decisione B:
+     il portatore persistente {i} (indice in matchPlayers) scritto SOLO agli EVENTI — passaggio della
+     trama (ricevente), aggancio riga->uomo, passo di catena — e azzerato quando il possesso cambia per
+     evento o il gioco si ferma. In questa release e' PASSIVO (anagrafe + testimone __CPM_CARRIER641):
+     la baseline di copertura si misura PRIMA che il motore lo usi. Rosso __CPM_NO641. */
   const outStoryRef=useRef(0);/* [7.632.0 v7 — IL RACCONTO CAMPIONA I FISCHI] righe d'arbitro emesse in questa partita: col fischio sempre-raccontato le ~30 righe/90' andavano sature (8 d'arbitro) e la catena e' crollata a 1 riga (guardiano rosso). In TV non ogni rimessa ha la sua riga: oltre il tetto (~1 ogni 12 minuti) il fischio nasce muto — ferma il gioco, scrive registro e turno, si risolve in silenzio (7.572) — e la telecronaca resta alle altre voci. */
   const outRef=useRef(null);/* [7.559.0 missione, blocco 4 — LE INTERRUZIONI ESISTONO]
      Il guardiano `fermo-559` non riusciva nemmeno a MISURARE il rimedio del fermo: in cinque minuti di
@@ -1131,6 +1142,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   const setTurn616=(dir,causa,opts)=>{try{
     const _d=dir>0?1:-1;const _prev=possTurnRef.current;
     possTurnRef.current=_d;
+    if(_prev!==_d&&!(typeof window!=='undefined'&&window.__CPM_NO641))carrierRef.current=null;/* [7.641.0 F1a] al cambio di possesso il portatore decade: si rielegge al prossimo ARRIVO */
     if(!(opts&&opts.keepSpell)){possSpellRef.current=6;possExtRef.current=0;}
     cpmEv("turn",{min:clockRef.current|0,dir:_d,flip:_prev!==_d?1:0,causa:String(causa||"?")});
     if(typeof window!=='undefined'&&window.__CPM_TURN616){const _g=window.__CPM_TURN616;
@@ -2895,6 +2907,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                   :["🔁 "+_da+" scarica su "+_a+" e la squadra riprende posizione.","⚪ Giro palla: "+_da+" per "+_a+", si cerca il varco."];
                 const _vi=Math.abs(hashStr("cv|"+nx+"|"+_az.i))%_V.length;
                 ev={txt:_V[_vi],ef:null,w:1,bpos:{x:_p.to.x,y:_p.to.y},at:(_p.kind==="filtrante"?"pass":"pass"),pd:_dec499,_az551:_p};
+                if(_p.rcvIdx!=null&&!(typeof window!=='undefined'&&window.__CPM_NO641))carrierRef.current={i:_p.rcvIdx};/* [7.641.0 F1a] il passo di catena elegge il portatore: il ricevente nominato */
                 _az.i++;_lastCatRef.current=nx;if(_cg615)_cg615.rec=(_cg615.rec|0)+1;if(_az.i>=_az.passi.length)azioneRef.current=null;
               }
             }
@@ -3065,7 +3078,8 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               for(let _i9=0;_i9<_mp639.length;_i9++){const _p9=_mp639[_i9];if(!_p9||_p9.team!==_lt639||_p9.gk)continue;
                 const _d9=Math.hypot((_p9.x||50)-_bt498.x,(_p9.y||50)-_bt498.y);if(_d9<_bd639){_bd639=_d9;_bi639=_i9;}}
               if(typeof window!=='undefined'&&window.__CPM_REC){try{const _w=(window.__CPM_A4=window.__CPM_A4||{pass:0,agg:0,wp:0});if(_bi639>=0)_w.riga=(_w.riga|0)+1;else _w.rigaN=(_w.rigaN|0)+1;}catch(_e){}}
-              if(_bi639>=0)_bt498={x:clamp(_mp639[_bi639].x,2,98),y:clamp(_mp639[_bi639].y,2,98)};
+              if(_bi639>=0){_bt498={x:clamp(_mp639[_bi639].x,2,98),y:clamp(_mp639[_bi639].y,2,98)};
+                if(!(typeof window!=='undefined'&&window.__CPM_NO641))carrierRef.current={i:_bi639};/* [7.641.0 F1a] la consegna della riga elegge il portatore */}
             }catch(_e639){}}
           }
           if(/goal$/.test(String(ev.ef||""))&&!(typeof window!=='undefined'&&window.__CPM_NO528)){kickRef.current=(typeof window!=='undefined'&&window.__CPM_NO569)?4:5;ripT0Ref.current=Date.now();/* [7.590.0] QUI nasce la ripresa dopo un gol: e' l'istante da cui contano i suoi pochi secondi */kickGx573.current=(ev.ef==="team_goal")?100:0;kickIn573.current=false;kickAtt573.current=0;/* [7.573.0] da qui la ripartenza sa DOVE il pallone deve arrivare prima di tornare al centro */kickoffSideRef.current=(ev.ef==="team_goal")?"away":"home";if(!(typeof window!=='undefined'&&window.__CPM_NO543))setTurn616((ev.ef==="team_goal")?-1:1,"calcio-inizio");/* [7.532.0 NO543] il calcio d'inizio passa il turno a chi ha subito */}/* [7.545.0 — collaudo PO «non si vedono i gol», rosso __CPM_NO569] 4->6 TICK: MISURATO coi tre palloni
@@ -3638,6 +3652,10 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
             const _bN=ballPosRef.current;const _ltN=possTurnRef.current>0?"home":"away";let _dN=null;
             (matchPlayersRef.current||[]).forEach(q=>{if(!q||q.team!==_ltN||q.gk)return;const _dd=Math.hypot((q.x||50)-_bN.x,(q.y||50)-_bN.y);if(_dN==null||_dd<_dN)_dN=_dd;});
             if(_dN!=null&&window.__CPM_NPD.length<4000)window.__CPM_NPD.push(+_dN.toFixed(1));}catch(_e){}}
+          if(typeof window!=='undefined'&&window.__CPM_CARRIER641!==undefined&&phaseRef.current==='playing'&&!fermoRef.current&&!outRef.current){try{
+            const _c641=carrierRef.current;const _b641=ballPosRef.current;let _d641=null;
+            if(_c641&&_c641.i!=null){const _q641=(matchPlayersRef.current||[])[_c641.i];if(_q641)_d641=+Math.hypot((_q641.x||50)-_b641.x,(_q641.y||50)-_b641.y).toFixed(1);}
+            const _W641=window.__CPM_CARRIER641;if(_W641.length<4000)_W641.push({c:_c641?1:0,d:_d641});}catch(_e){}}/* [7.641.0 F1a strumento] copertura del portatore-stato e distanza dal pallone: la BASELINE prima che il motore lo usi */
           const _q553=!(typeof window!=='undefined'&&window.__CPM_NO553)&&phaseRef.current==='playing';
           const _bb553=(_q553&&ballTargetRef.current)?ballTargetRef.current:null;
           const _av553=_bb553?clamp(_bb553.x-50,-46,46):0;
@@ -4098,7 +4116,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                       if(typeof window!=='undefined'&&window.__CPM_REC){try{const _w=(window.__CPM_A4=window.__CPM_A4||{pass:0,agg:0,wp:0});_w.pass++;}catch(_e){}}}
                     else{_wx=_rx;_wy=_ry;}
                   }
-                  _tr.rcv=_bi555;}
+                  _tr.rcv=_bi555;if(!(typeof window!=='undefined'&&window.__CPM_NO641))carrierRef.current={i:_bi555};/* [7.641.0 F1a] il passaggio elegge il portatore */}
                 else _tr.rcv=null;
               }catch(_e555){}}
               _tr.wp={x:clamp(_wx,4,96),y:clamp(_wy,6,94)};_tr.fase=_fase;_tr.ng=1;/* [7.524.0] tick di NUOVA GIOCATA: la svolta qui e' voluta (fine giocata) — il guardiano giudica la rotta sui passi INTERNI */
