@@ -9458,7 +9458,7 @@ const getThisWeekMatchday=()=>{
           {/* Albo d'oro trofei */}
           {(player.trophies||[]).length>0&&(
             <Card bg={TH.bgAmber} border="#fde68a">
-              <div style={{fontSize:10,color:TH.txAmber,textTransform:"uppercase",letterSpacing:1.5,fontWeight:700,marginBottom:8}}>🏆 Albo d'oro — {(player.trophies||[]).length} trofeo{(player.trophies||[]).length!==1?"i":""}</div>
+              <div style={{fontSize:10,color:TH.txAmber,textTransform:"uppercase",letterSpacing:1.5,fontWeight:700,marginBottom:8}}>🏆 Albo d'oro — {(player.trophies||[]).length} trofe{(player.trophies||[]).length!==1?"i":"o"}</div>
               {(player.trophies||[]).map((t,i)=>(
                 <div key={i} style={{display:"flex",alignItems:"center",gap:8,padding:"5px 0",borderBottom:i<(player.trophies||[]).length-1?"1px solid #fde68a":"none"}}>
                   <span style={{fontSize:18}}>🏆</span>
