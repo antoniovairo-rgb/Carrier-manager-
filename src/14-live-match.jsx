@@ -2562,7 +2562,28 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               ev=_o.kind==="throw"?{txt:"⏸️ Palla sul fondo della fascia: rimessa laterale per "+_N+".",ef:null,w:1,bpos:{x:_o.x,y:_o.y},pd:_dec499}
                :_o.kind==="corner"?{txt:"🚩 Calcio d'angolo per "+_N+": palla sulla bandierina.",ef:null,w:1,bpos:{x:_o.x,y:_o.y},ms:{corners:1},pd:_dec499}
                :_o.kind==="goal_kick"?{txt:"🧤 Pallone sul fondo: rinvio dal fondo per "+_N+".",ef:null,w:1,bpos:{x:_o.x,y:_o.y},pd:_dec499}
+               :_o.pen629?(_o.nostra?{txt:"📢 RIGORE! Fallo in piena area su di noi: l'arbitro indica il dischetto.",ef:null,w:1,bpos:{x:94,y:50},ms:{fouls:1},sp:"pen_for",pd:_dec499}
+                                    :{txt:"😨 Rigore per {A}: fallo in area nostra, il fischio non lascia dubbi.",ef:null,w:1,bpos:{x:6,y:50},ms:{fouls:1},sp:"pen_against",pd:_dec499})
                :{txt:"🟡 Fischia l'arbitro: fallo, punizione per "+_N+".",ef:null,w:1,bpos:{x:_o.x,y:_o.y},ms:{fouls:1},pd:_dec499};
+              /* [7.629.0 — IL RIGORE NASCE DAL FALLO, NON DAL SORTEGGIO. Rosso __CPM_NO629 (a monte).
+                 Collaudo PO 7.627: «ZERO schemi, punizioni, rigori». Il fallo in area E' un rigore — regola
+                 del calcio, non probabilita' extra: quando l'armamento ha marcato `pen629` la riga del
+                 fischio annuncia il rigore e porta `sp`, cosi' la macchina dei piazzati ESISTENTE recita
+                 dischetto ed esito (parato/alto — i gol restano al microsim, vincolo 7.530 dichiarato).
+                 Un solo binario, nessuna seconda macchina: qui si spegne solo la battuta di punizione. */
+              if(_o.pen629){outRef.current=null;_recKind546="out_pen";
+                /* [7.629.0 v2 — IL TESTIMONE PASSA DI MANO, NON PER POSTA] La v1 lasciava armare la
+                   macchina sp al giro generico su `ev.sp` (r.~2633 piu' in basso), che pretende un tick
+                   con contropiede e gol-pendente spenti: misurato su seed 512, il fischio «RIGORE!»
+                   usciva al 32' e il dischetto MAI — la riga annunciava e spariva. Qui l'armamento e'
+                   ATOMICO col fischio (pattern kickoff 7.530): il gioco e' gia' fermo per definizione,
+                   non c'e' precedenza da contendere. Catena e armamento counter cedono da soli
+                   (`!spRef.current` nei loro cancelli); il dirottamento sp NON mangia questa stessa
+                   riga grazie alla guardia `!_recHij545` sul suo cancello. */
+                const _pk629=_o.nostra?"pen_for":"pen_against",_px629=_o.nostra?94:6;
+                spRef.current={kind:_pk629,step:0,y:50,x:_px629,sx:_px629,sy:50,t0:Date.now()};
+                fermoRef.current={x:_px629,y:50,t:5,kind:_pk629};
+                ballTargetRef.current={x:_px629,y:50};}
             } else {
               outRef.current=null;fermoRef.current=null;
               /* [7.572.0 — LA RIMESSA LATERALE RIMANDA IL PALLONE DENTRO IL CAMPO, e questo difetto l'ho
@@ -2601,8 +2622,16 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
           if(typeof window!=='undefined'&&window.__CPM_REC&&ev.sp){try{const _g=(window.__CPM_SPGATE559=window.__CPM_SPGATE559||{visti:0,no537:0,gia:0,kickoff:0,gol:0,counter:0,passa:0});
             _g.visti++;
             if(_no537)_g.no537++;else if(spRef.current)_g.gia++;else if(kickoffRef.current>0)_g.kickoff++;else if(pendingGoalRef.current)_g.gol++;else if(counterRef.current)_g.counter++;else _g.passa++;}catch(_e){}}
-          if(!_no537&&!_koHij536&&spRef.current&&!/goal$/.test(String(ev.ef||""))&&kickoffRef.current<=0&&!pendingGoalRef.current){
-            const _sp=spRef.current;_sp.step++;_recHij545=true;_recKind546="sp_"+_sp.kind;_recSide546=(_sp.kind==="corner_against")?"away":"home";
+          if(typeof window!=='undefined'&&window.__CPM_REC&&spRef.current){try{const _g=(window.__CPM_SPHIJ629=window.__CPM_SPHIJ629||{visti:0,no537:0,ko:0,rec:0,goal:0,kickoff:0,pg:0,passa:0,min:[]});_g.visti++;if(_no537)_g.no537++;else if(_koHij536)_g.ko++;else if(_recHij545)_g.rec++;else if(/goal$/.test(String(ev.ef||"")))_g.goal++;else if(kickoffRef.current>0)_g.kickoff++;else if(pendingGoalRef.current)_g.pg++;else _g.passa++;if(_g.min.length<40)_g.min.push({m:nx,st:spRef.current.step,k:spRef.current.kind});}catch(_e){}}/* [7.629.0 strumento] QUALE cancello ferma la recita piazzata, riga per riga: il dischetto senza esito (seed 512) non si spiega a occhio */
+          if(!_no537&&!_koHij536&&!_recHij545&&spRef.current&&!/goal$/.test(String(ev.ef||""))&&kickoffRef.current<=0&&(!(typeof window!=='undefined'&&window.__CPM_NO629B)||!pendingGoalRef.current)){/* [7.629.0] `!_recHij545`: se la macchina out ha appena scritto questa riga (il fischio del rigore arma spRef NELLO STESSO giro), il dischetto aspetta la riga dopo — prima il fischio si legge, poi si recita */
+            /* [7.629.0 — LA CERIMONIA ARMATA HA PRECEDENZA SULLA COSTRUZIONE DEL GOL. Stesso rosso NO629B.
+               CENSIMENTO DEL CANCELLO (seed 512): dischetto al 39', poi pg=4 — il pendingGoal del gol
+               microsim (away, 50') chiude il cancello dal 40' e la valvola stacca al 57': esito MAI.
+               La precedenza e' sicura per una garanzia d'ordine gia' scolpita: spRef NON PUO' armarsi
+               sopra un pendingGoal attivo (lo vietano il fischio out, r.~2557, e l'armamento su ev.sp,
+               r.~2633). Se la macchina sp e' viva, era li' PRIMA: si chiude in una-due righe e la
+               costruzione riprende con tutte le sue. Il gol resta del microsim, sempre. */
+            const _sp=spRef.current;_sp.step++;if(!(typeof window!=='undefined'&&window.__CPM_NO629B))_sp.t0=Date.now();/* [7.629.0 — LA RECITA CHE AVANZA NON SCADE] la scadenza 7.602 conta l'INATTIVITA', non la vita intera: ogni passo rinfresca l'orologio */_recHij545=true;_recKind546="sp_"+_sp.kind;_recSide546=(_sp.kind==="corner_against"||_sp.kind==="pen_against")?"away":"home";/* [7.629.0] anche il rigore contro gioca per loro */
             const _r537=(Math.abs(hashStr(String(ev.txt||"")+"|"+nx+"|sp"))%100)/100;
             if(_sp.kind==="corner_for"){
               if(_sp.step===1)ev={txt:"⚪ {H} si incarica del traversone: palla sistemata sul vertice.",ef:null,w:1,bpos:{x:98,y:_sp.y},pd:_dec499};
@@ -2628,6 +2657,11 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               else{spRef.current=null;
                 ev=_r537<0.60?{txt:"🧤 PARATO! Il portiere di {A} intuisce l'angolo e respinge il rigore!",ef:null,w:1,bpos:{x:90,y:47},ms:{shots:1},at:"shot",pd:_dec499,tn617:-1}
                  :{txt:"😱 Rigore alto! {H} si prende la testa fra le mani.",ef:null,w:1,bpos:{x:97,y:45},ms:{shots:1},at:"shot",pd:_dec499,tn617:-1};}}
+            else if(_sp.kind==="pen_against"){/* [7.629.0] il rigore CONTRO: prima d'ora l'arbitro fischiava rigori solo per noi — mezza regola. Stesso vincolo: mai gol per costruzione */
+              if(_sp.step===1)ev={txt:"😶 {A} dal dischetto: il nostro portiere resta sulla linea, occhi negli occhi…",ef:null,w:1,bpos:{x:6,y:50},pd:_dec499};
+              else{spRef.current=null;
+                ev=_r537<0.60?{txt:"🧤 PARATO! Il nostro portiere vola sull'angolo e respinge il rigore di {A}!",ef:null,w:1,bpos:{x:10,y:53},ms:{oppShots:1},at:"shot",pd:_dec499,tn617:1}
+                 :{txt:"😮‍💨 Dal dischetto {A} calcia alto! Il pericolo piu' grande sfuma da solo.",ef:null,w:1,bpos:{x:3,y:55},ms:{oppShots:1},at:"shot",pd:_dec499,tn617:1};}}
             else spRef.current=null;
             if(!spRef.current)fermoRef.current=null;/* [7.559.0] la battuta rimette in gioco: il fermo finisce qui, e il `bpos` della battuta e' la nuova destinazione */}
           else if(!_no537&&!spRef.current&&ev.sp&&kickoffRef.current<=0&&!pendingGoalRef.current&&!counterRef.current){
@@ -2641,8 +2675,10 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               const _fsp559=(ev.sp==="corner_for")?{x:98,y:_sy559}
                 :(ev.sp==="corner_against")?{x:2,y:_sy559}
                 :(ev.sp==="pen_for")?{x:94,y:50}
+                :(ev.sp==="pen_against")?{x:6,y:50}/* [7.629.0] dischetto nostro */
                 :{x:clamp((ev.bpos&&ev.bpos.x)||60,10,90),y:clamp((ev.bpos&&ev.bpos.y)||50,6,94)};
               fermoRef.current={x:_fsp559.x,y:_fsp559.y,t:5,kind:ev.sp};
+              if(spRef.current){spRef.current.sx=_fsp559.x;spRef.current.sy=_fsp559.y;}/* [7.629.0] il punto della cerimonia viaggia con la macchina: serve a ri-tenere la palla se il fermo scade prima della riga dopo */
               if(typeof window!=='undefined'&&window.__CPM_REC){try{const _w=(window.__CPM_FERMO559=window.__CPM_FERMO559||{n:0,tipi:{}});_w.n++;_w.tipi[ev.sp]=(_w.tipi[ev.sp]||0)+1;}catch(_e){}}}}}
           /* [7.532.0 collaudo PO «troppo centrocampo, niente ribaltamenti» — rosso __CPM_NO542] IL RIBALTAMENTO
              SI RECITA: un recupero (riga con poss di segno opposto) in zona PROFONDA apre il contropiede — la
@@ -3316,11 +3352,14 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
           if(_rT<0.30){const _dirC=counterRef.current.dir;counterRef.current=null;
             const _bpT=ballPosRef.current||{x:50,y:50};
             const _oxT=clamp(_bpT.x,8,92),_oyT=clamp(_bpT.y,6,94);
-            outRef.current={kind:"foul",nostra:_dirC>0,x:_oxT,y:_oyT,step:0,ttl:4,t0:Date.now()};/* il fallo tattico lo commette chi rincorre: la punizione e' di chi RIPARTIVA (dir del counter) */
+            /* [7.629.0] il fallo tattico che arriva TARDI — contropiede gia' in area — e' rigore: il caso
+               da manuale (chi rincorre stende chi ripartiva davanti al portiere). Stesso rosso __CPM_NO629. */
+            const _penT629=!(typeof window!=='undefined'&&window.__CPM_NO629)&&_oyT>=30&&_oyT<=70&&((_dirC>0&&_oxT>=84)||(_dirC<0&&_oxT<=16));
+            outRef.current={kind:"foul",nostra:_dirC>0,x:_oxT,y:_oyT,step:0,ttl:4,t0:Date.now(),pen629:_penT629};/* il fallo tattico lo commette chi rincorre: la punizione e' di chi RIPARTIVA (dir del counter) */
             fermoRef.current={x:_oxT,y:_oyT,t:4,kind:"foul"};
             ballTargetRef.current={x:_oxT,y:_oyT};
             if(!(typeof window!=='undefined'&&window.__CPM_NO616))setTurn616(_dirC>0?1:-1,"interruzione-foul-tattico");
-            if(typeof window!=='undefined'&&window.__CPM_REC){try{const _w=(window.__CPM_INT559=window.__CPM_INT559||{n:0,tipi:{},min:[]});_w.n++;_w.tipi["foul_tattico"]=(_w.tipi["foul_tattico"]||0)+1;}catch(_e){}}
+            if(typeof window!=='undefined'&&window.__CPM_REC){try{const _w=(window.__CPM_INT559=window.__CPM_INT559||{n:0,tipi:{},min:[]});_w.n++;const _ktT629=_penT629?"pen_tattico":"foul_tattico";_w.tipi[_ktT629]=(_w.tipi[_ktT629]||0)+1;}catch(_e){}}
           }
         }
         if(!(typeof window!=='undefined'&&window.__CPM_NO566)&&!outRef.current&&!fermoRef.current&&!spRef.current
@@ -3349,14 +3388,20 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
           if(_k){
             const _ox=_k==="throw"?clamp(_bx,8,92):_k==="corner"?(_no?98:2):_k==="goal_kick"?(_no?6:94):clamp(_bx,8,92);
             const _oy=_k==="throw"?(_by>=50?98:2):_k==="corner"?(_by>=50?96:4):_k==="goal_kick"?50:clamp(_by,6,94);
-            outRef.current={kind:_k,nostra:_no,x:_ox,y:_oy,step:0,ttl:4,t0:Date.now()};
+            /* [7.629.0 — FALLO IN AREA = RIGORE, rosso __CPM_NO629] Non un sorteggio in piu': la REGOLA.
+               Area: x oltre 84 (o sotto 16) con y centrale 30-70. `nostra` dice di chi e' la punizione:
+               se e' nostra dentro l'area LORO e' rigore per noi; se e' loro dentro l'area NOSTRA e' rigore
+               per loro. La riga del fischio (macchina out, step 1) lo annuncia e passa il testimone alla
+               macchina sp. Atteso raro per costruzione (~86% dei tick liberi sta al centro): giusto cosi'. */
+            const _pen629=!(typeof window!=='undefined'&&window.__CPM_NO629)&&_k==="foul"&&_oy>=30&&_oy<=70&&((_no&&_ox>=84)||(!_no&&_ox<=16));
+            outRef.current={kind:_k,nostra:_no,x:_ox,y:_oy,step:0,ttl:4,t0:Date.now(),pen629:_pen629};
             if(!(typeof window!=='undefined'&&window.__CPM_NO616))setTurn616(_no?1:-1,"interruzione-"+_k);/* [7.616.0] vedi il sito gemello della riga *//* [7.602.0] anche l'ora: vedi la scadenza in tempo vero nel clock tick */
             fermoRef.current={x:_ox,y:_oy,t:4,kind:_k};/* [7.566] DUE TICK NON BASTAVANO, e la misura lo ha detto: col fermo a 2 il pallone stava davvero fermo solo 5 volte su 10 (a 4 era 6 su 6). Il motivo non e' il tempo di GIOCO ma quello REALE: la mesh deve arrivare sul punto, e il conto scorre ora nel tick — che passa quando passa. */
             /* [7.608.0] stessa regola del sito 559: da lontano il pallone VIAGGIA verso la battuta. */
             ballTargetRef.current={x:_ox,y:_oy};
             {const _b608b=ballPosRef.current||{x:50,y:50};const _lont608b=Math.hypot(_ox-_b608b.x,_oy-_b608b.y)>8;
              if((typeof window!=='undefined'&&window.__CPM_NO608)||!_lont608b)setBallPos({x:_ox,y:_oy});}
-            if(typeof window!=='undefined'&&window.__CPM_REC){try{const _w=(window.__CPM_INT559=window.__CPM_INT559||{n:0,tipi:{},min:[]});_w.n++;_w.tipi[_k]=(_w.tipi[_k]||0)+1;if(_w.min&&_w.min.length<400)_w.min.push({m:nx,k:_k});}catch(_e){}}
+            if(typeof window!=='undefined'&&window.__CPM_REC){try{const _w=(window.__CPM_INT559=window.__CPM_INT559||{n:0,tipi:{},min:[]});_w.n++;const _kT629=_pen629?"pen":_k;_w.tipi[_kT629]=(_w.tipi[_kT629]||0)+1;if(_w.min&&_w.min.length<400)_w.min.push({m:nx,k:_kT629});}catch(_e){}}
           }
         }
         /* [7.566.0] e il FERMO scorre nel tick, non nella riga: altrimenti un'interruzione nata fra due
@@ -3442,8 +3487,24 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
            mentirebbe al resto del motore. */
         if(!(typeof window!=='undefined'&&window.__CPM_NO602)){
           const _now602=Date.now();
-          if(outRef.current&&outRef.current.t0&&(_now602-outRef.current.t0)>5000){outRef.current=null;fermoRef.current=null;}
-          if(spRef.current&&spRef.current.t0&&(_now602-spRef.current.t0)>5000){spRef.current=null;}
+          /* [7.629.0 — LA GHIGLIOTTINA DEI 5 SECONDI AFFAMAVA LE RECITE PIAZZATE. Rosso __CPM_NO629B]
+             MISURATO (seed 512): fischio «RIGORE!» al 32', dischetto MAI — e nei censimenti 7.628 le righe
+             sp_* sono ZERO su intere partite. Il perche' e' aritmetico: la macchina sp avanza solo quando
+             la cronaca le porta una riga, e le righe arrivano ogni 10-20 secondi reali; una scadenza a 5s
+             sulla VITA INTERA uccide ogni recita prima della seconda battuta. E' la radice del «ZERO
+             schemi, punizioni, rigori» del PO: le macchine esistono dal 7.530, ma dal 7.602 muoiono di
+             fame in silenzio. Il contratto 7.602 («lo stato non mente») si onora al contrario: finche' il
+             piazzato e' armato la palla si TIENE al punto della cerimonia (fermo ri-armato) — palla ferma
+             VERA, stato onesto — e la valvola di sicurezza scatta a 30s di inattivita' (l'orologio si
+             rinfresca a ogni passo della recita). Il fischio-rigore in attesa della sua riga vive 20s:
+             un rigore fischiato non evapora. */
+          const _no629b=(typeof window!=='undefined'&&window.__CPM_NO629B);
+          const _capOut629=(outRef.current&&outRef.current.pen629&&!_no629b)?20000:5000;
+          if(outRef.current&&outRef.current.t0&&(_now602-outRef.current.t0)>_capOut629){outRef.current=null;fermoRef.current=null;}
+          else if(!_no629b&&outRef.current&&outRef.current.pen629&&!fermoRef.current){fermoRef.current={x:outRef.current.x,y:outRef.current.y,t:4,kind:"foul"};}
+          const _capSp629=_no629b?5000:30000;
+          if(spRef.current&&spRef.current.t0&&(_now602-spRef.current.t0)>_capSp629){if(typeof window!=='undefined'&&window.__CPM_REC){try{const _v=(window.__CPM_SPVALV629=window.__CPM_SPVALV629||{n:0,verb:[]});_v.n++;if(_v.verb.length<20)_v.verb.push({m:nx,st:spRef.current.step,k:spRef.current.kind});}catch(_e){}}spRef.current=null;if(!_no629b)fermoRef.current=null;}
+          else if(!_no629b&&spRef.current&&!fermoRef.current){fermoRef.current={x:spRef.current.sx!=null?spRef.current.sx:spRef.current.x,y:spRef.current.sy!=null?spRef.current.sy:50,t:4,kind:spRef.current.kind};}
         }
         /* [7.610.0 — ANCHE LA RIPRESA SCADE IN TEMPO VERO, rosso __CPM_NO610]
            Il gemello dichiarato del 7.602, gia' misurato nel 7.590 e rimasto aperto: `kickRef` e

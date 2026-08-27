@@ -47,8 +47,15 @@ test/realismo) hanno mappato dove la catena causale si rompe. I cinque punti por
 - **Fase B — Il verso.** La cronaca descrive i fatti del motore (l'interruttore `__CPM_INV579`
   esiste; si accende quando il motore regge il pallone). Repertorio: le 107 righe mute perdono il
   comando; famiglie di gesto (appoggio/verticalizzazione/filtrante oggi = 7% delle righe).
-- **Fase C — Tattica e eventi veri.** Moduli/stili sulle decisioni della macchina; falli da
-  contrasti, vantaggio, seconde palle ambientali, mischie; cartellini riabilitati sotto collaudo.
+- **Fase C — Tattica e eventi veri.** ✅ (7.628) arbitro ambientale: fischi 2→8-10/90', fallo
+  tattico sul contropiede. ✅ (7.629) rigore causale (fallo in area = rigore, pen_for/pen_against,
+  esito mai-gol dichiarato) + **scoperta strutturale**: la scadenza 5s del 7.602 su `spRef`
+  affamava OGNI recita piazzata (righe ogni 10-20s reali) — radice misurata dello «ZERO schemi,
+  punizioni, rigori» del PO; ora la scadenza conta l'inattività per passo (valvola 30s), la palla
+  si tiene al punto della cerimonia, e la cerimonia armata ha precedenza sul pendingGoal (garanzia
+  d'ordine: spRef mai armabile sopra un pendingGoal). Restano: rimesse/corner nel ritmo (legati ad
+  ampiezza), falli 8-10 vs banda 20-30, vantaggio, mischie, cartellini sotto collaudo, rigore-che-
+  segna via instradamento microsim (grande, da progettare).
 - **Fase D — Highlights leggibili.** `hlType` vero anche in lettura; reveal sul clock di scena;
   arbitro unico della regia (le mani non censite entrano nel censimento); ramo catena con stacco.
 
