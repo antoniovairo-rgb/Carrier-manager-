@@ -36,6 +36,8 @@ test/realismo) hanno mappato dove la catena causale si rompe. I cinque punti por
 
 - **Fase A — Il motore del possesso causale.**
   A1 ✅ (7.616) turno: writer unico + cause vere + spell sospeso a palla ferma.
+  A3 ✅ (7.617) risoluzioni contropiede/piazzati passano il turno (causali 100%).
+  ✅ (7.618) la palla vagante ha un raccoglitore · ✅ (7.621) la scena nasce dov'era diretto il gioco.
   A2 il PADRONE del pallone come decisione persistente (elezione fuori da `playing`, niente
      prossimità nei requisiti, «chi ha calciato» resta padrone fino all'handoff).
   A3 cambi di possesso causali restanti: risoluzioni contropiede/piazzati, errore del passaggio
@@ -52,14 +54,19 @@ test/realismo) hanno mappato dove la catena causale si rompe. I cinque punti por
 
 ## I metri d'accettazione (automatici, per ogni release dello sprint)
 
-| metro | oggi | obiettivo |
-|---|---|---|
-| scritture del turno causali (`__CPM_TURN616`) | **90%** (7.616) | ≥85% stabile |
-| pallone senza padrone (scrittori-601: ws 3+0) | 26% | →0 (Fase A2) |
-| gol con manovra alle spalle (manovra-615) | 0/5 | tutti i gol ambientali |
-| fasce (fasce-600, corridoio centrale) | 63-67% | ≤40% |
-| catena schemi (righe/passata) | 3 | apre attorno ai gol |
-| interruzioni con ciclo completo causa→battuta→ripresa | non misurato | ≥90% |
+| metro | avvio sprint | dopo 7.615-7.622 | obiettivo |
+|---|---|---|---|
+| scritture del turno causali (`__CPM_TURN616`) | non misurabile | **100%** (orologio 0) | ≥85% stabile |
+| pallone senza padrone (scrittori-601: ws 3+0) | 26% | 26% (A2 revocato: il difetto è l'anagrafe) | →0 (A2 redesign) |
+| gol con manovra alle spalle | **0/5** | **3/8** (catena aperta in costruzione, recite=registro) | tutti i gol ambientali |
+| fasce (corridoio centrale) | 78% | 63-77% (balla; scene-birth clampata nel 7.621) | ≤40% |
+| catena schemi (righe/passata) | 0 | 16 (con recita durante pendingGoal) | apre attorno a OGNI gol |
+| nascita scena dal gioco (fuori zona, mediana) | 38u (sorteggio) | **26,5u** (clamp = minimo geometrico) | ≈bordo zona |
+
+Revoche misurate del giorno (il verso NON è la leva): inversione intera 7.579 (2ª misura),
+metà-muta 7.621, trasporto A2 (43→33%). Prossimi bersagli nominati dai numeri: secondo passo
+della catena nel finale (steps0 10/21), anagrafe del possesso (elezione ancorata al logico),
+startZone laterali delle scene (80% centrali), cartellini sotto collaudo.
 
 Regole invariate: zero regressioni su carriera/salvataggi/classifiche/mercato; rituale 7 passi +
 career-critical verdi a ogni release; ogni rimedio col suo rosso e la sua misura prima/dopo;
