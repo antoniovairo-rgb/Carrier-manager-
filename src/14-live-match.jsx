@@ -2739,9 +2739,18 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                        guadagno di campo resta la regola, questo e' il suo punto e virgola. Il dai-e-vai
                        (tornare sul primo passatore) e' compreso: e' calcio vero. */
                     if(k<1||(typeof window!=='undefined'&&window.__CPM_NO615B))break;
+                    /* [7.623.0 — LA CHIUSURA E' UN RETROPASSAGGIO VERO. Rosso __CPM_NO623]
+                       MISURATO col registro s0 (dopo il 7.615): meta' delle morti residue e' «n:1» —
+                       la verticale c'e', ma il ricevente e' l'uomo PIU' avanzato e la finestra dello
+                       scarico (fino a 4u indietro, raggio 26) e' VUOTA quando tutti i compagni stanno
+                       8-20u dietro. Nel calcio quello si chiama retropassaggio, ed e' nella lista §2
+                       della direttiva PO. La chiusura ammette fino a 14u all'indietro, raggio 30 —
+                       SOLO come ultimo passo dopo una verticale: v7 resta la legge dei passi veri. */
+                    const _bkw623=(typeof window!=='undefined'&&window.__CPM_NO623)?-4:-14;
+                    const _bkr623=(typeof window!=='undefined'&&window.__CPM_NO623)?26:30;
                     _mp551.forEach((q,i)=>{if(i===_cur||!_mio551(i))return;
                       const _fw=(q.x-_cq.x)*_dir551,_dd=Math.hypot(q.x-_cq.x,q.y-_cq.y);
-                      if(_dd<4||_dd>26||_fw<-4)return;
+                      if(_dd<4||_dd>_bkr623||_fw<_bkw623)return;
                       const _sc=-Math.abs(_dd-14)*0.5+((Math.abs(hashStr("sx|"+nx+"|"+k+"|"+i))%100)/100)*3;
                       if(_sc>_bs){_bs=_sc;_best=i;}});
                     if(_best<0)break;
