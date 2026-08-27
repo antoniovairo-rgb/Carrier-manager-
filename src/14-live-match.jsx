@@ -3440,6 +3440,15 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
         const _ognitick588=!(typeof window!=='undefined'&&window.__CPM_NO588)&&_breve590;
         if(nx%3===0||_ognitick588){
           const dt=driftTargetsRef.current||DRIFT_PRESETS.midfield;
+          /* [7.625.1 strumentazione] CUSTODIA PER TICK, non alla riga: il metro npd-alla-riga (7.624) e'
+             SQUALIFICATO anche lui — campiona l'istante del lancio (la riga muove il bersaglio, la palla
+             parte) e quindi misura la GITTATA dei passaggi, non la custodia: per questo ne' il guadagno
+             dell'inseguitore ne' l'inversione del verso lo muovevano — quarta cattura della classe
+             «campione condizionato» (7.594). Qui si campiona ogni tick di gioco vivo, ~150 campioni/run. */
+          if(typeof window!=='undefined'&&window.__CPM_NPD!==undefined&&phaseRef.current==='playing'&&!fermoRef.current&&!outRef.current&&kickRef.current<=0&&kickoffRef.current<=0){try{
+            const _bN=ballPosRef.current;const _ltN=possTurnRef.current>0?"home":"away";let _dN=null;
+            (matchPlayersRef.current||[]).forEach(q=>{if(!q||q.team!==_ltN||q.gk)return;const _dd=Math.hypot((q.x||50)-_bN.x,(q.y||50)-_bN.y);if(_dN==null||_dd<_dN)_dN=_dd;});
+            if(_dN!=null&&window.__CPM_NPD.length<4000)window.__CPM_NPD.push(+_dN.toFixed(1));}catch(_e){}}
           const _q553=!(typeof window!=='undefined'&&window.__CPM_NO553)&&phaseRef.current==='playing';
           const _bb553=(_q553&&ballTargetRef.current)?ballTargetRef.current:null;
           const _av553=_bb553?clamp(_bb553.x-50,-46,46):0;
@@ -3538,7 +3547,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
             }
             else if(_bb553&&!pl.gk){
               sx=clamp(sx+_av553*0.62,4,96);sy=clamp(sy+(_bb553.y-50)*0.28,4,96);
-              if(idx===_cI553){sx=_bb553.x;sy=_bb553.y;k=0.55;}
+              if(idx===_cI553){sx=_bb553.x;sy=_bb553.y;k=0.55;}/* [7.625.0] k 0,85 RIGIUDICATO anche sul metro qualificato (custodia per-tick): 6,1/6,8/6,1/4,2 contro banda rossa 6,0-6,4 — in banda, revoca DEFINITIVA. Idem l'inversione del verso (6,2/6,4/6,0/4,2). La lettura strutturale: con le righe che ricollocano il pallone ogni 2-3 tick l'ambientale e' quasi sempre IN VOLO — la custodia non si vince inseguendo, si vince alla RICEZIONE (lo stato mancante A4 dell'audit: l'arrivo ai piedi di un uomo). *//* ⚠️ [7.625.0] PROVATO E REVOCATO CON LA SUA MISURA: k 0,55->0,85 sul portatore logico per «tenere il passo» — npd mediana 6,8-10,3 contro banda rossa 6,4-10,3: IN BANDA, nessun effetto. Il modello d'equilibrio era sbagliato: il sistema non e' mai a equilibrio, perche' le righe di cronaca ricollocano il bersaglio (fino a 30u) piu' in fretta di quanto qualsiasi inseguitore converga — npd misura transitori perpetui. Il guadagno del correttore non puo' nulla contro i salti del comando: la pista giusta e' misurare npd con l'inversione del verso (INV579), mai giudicata su QUESTO metro. */
             }
             return{...pl,x:clamp(pl.x+(sx-pl.x)*k+(Math.random()-0.5)*0.2,2,98),y:clamp(pl.y+(sy-pl.y)*k+(Math.random()-0.5)*0.2,2,98)};
           });});
