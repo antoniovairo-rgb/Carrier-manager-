@@ -1191,7 +1191,12 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     attack:    [{x:5,y:50},{x:22,y:18},{x:22,y:38},{x:22,y:62},{x:22,y:82},{x:44,y:25},{x:44,y:75},{x:64,y:22},{x:64,y:50},{x:64,y:78}],
     attack_goal:[{x:5,y:50},{x:25,y:20},{x:25,y:42},{x:25,y:58},{x:25,y:80},{x:44,y:22},{x:44,y:78},{x:65,y:16},{x:78,y:50},{x:65,y:84}],
     wide_right: [{x:5,y:50},{x:22,y:18},{x:22,y:38},{x:22,y:62},{x:22,y:82},{x:44,y:25},{x:44,y:75},{x:62,y:88},{x:70,y:72},{x:76,y:92}],
-    midfield:  [{x:5,y:50},{x:22,y:18},{x:22,y:38},{x:22,y:62},{x:22,y:82},{x:44,y:25},{x:44,y:50},{x:44,y:75},{x:57,y:30},{x:57,y:70}],
+    /* [7.634.0 — GLI ESTERNI ALTI TENGONO L'AMPIEZZA. Rosso __CPM_NO634] Mappa 7.627: nel preset
+       DOMINANTE gli uomini piu' avanzati (x57) stavano a y 30/70 — l'ampiezza vera (18/82) era solo
+       dei difensori a x22, lontani dai punti d'arrivo dei voli; gli ospiti tengono gia' 20/80.
+       A 22/78 gli esterni abitano il corridoio largo (centri 18/82 dal 7.630): il cambio campo
+       del 7.631 ha finalmente un uomo da trovare. */
+    midfield:  [{x:5,y:50},{x:22,y:18},{x:22,y:38},{x:22,y:62},{x:22,y:82},{x:44,y:25},{x:44,y:50},{x:44,y:75},{x:57,y:(typeof window!=='undefined'&&window.__CPM_NO634)?30:22},{x:57,y:(typeof window!=='undefined'&&window.__CPM_NO634)?70:78}],
     retreat:   [{x:5,y:50},{x:12,y:25},{x:12,y:50},{x:12,y:75},{x:25,y:15},{x:25,y:50},{x:25,y:85},{x:35,y:30},{x:35,y:55},{x:35,y:70}],
     defend_goal:[{x:5,y:50},{x:8,y:20},{x:8,y:42},{x:8,y:58},{x:8,y:80},{x:16,y:30},{x:16,y:50},{x:16,y:70},{x:26,y:38},{x:26,y:62}],
     opp_goal:  [{x:5,y:50},{x:75,y:18},{x:75,y:38},{x:75,y:62},{x:75,y:82},{x:64,y:25},{x:64,y:75},{x:52,y:22},{x:52,y:50},{x:52,y:78}],
