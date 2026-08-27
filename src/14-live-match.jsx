@@ -1047,6 +1047,16 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     const f=(d>=5)?"5-3-2":(d<=3)?"3-5-2":(a>=3)?"4-3-3":(m>=4&&a<=1)?"4-2-3-1":"4-4-2";
     _c[key]=f;return f;};
   const _corPick538=(u,p)=>{const _w=p.corW,_T=_w[0]+_w[1]+_w[2],_v=u*_T;return _v<_w[1]?0:_v<_w[1]+_w[0]?-1:1;};/* [7.531.0] LA mappa corridoio pesata — unica, usata dal drift E dal gancio di collaudo __CPM_IDMAP538: cosi' lo sweep del guardiano percorre il codice vero */
+  const corY528=(c)=>{/* [7.630.0 — LE FASCE ESISTONO DA DOVE PASSA IL PALLONE. Rosso __CPM_NO630]
+     MAPPA AMPIEZZA 7.627 + censimento tick 7.628: i centri di corridoio laterale stavano INCHIODATI
+     a y 24/76 in TRE siti gemelli (richiamo riga, waypoint trama, cambio di fronte) — undicesima
+     istanza del pattern «piu' autorita' sulla stessa grandezza», qui sanata con l'helper unico.
+     L'aritmetica del confinamento: il richiamo converge al 35% verso 76 DA SOTTO, quindi il pallone
+     tocca y>=74 per caso e la fascia vera (74-98) non esiste per costruzione — zona.fascia 0/16 tick
+     liberi, rimesse ambientali quasi mai, cross dalla linea mai. Centri a 18/82: meta' strada fra il
+     vecchio binario e la linea, dentro la banda dei corridoi veri (il quinto di campo esterno). */
+    const _lat=(typeof window!=='undefined'&&window.__CPM_NO630)?[24,76]:[18,82];
+    return c<0?_lat[0]:c>0?_lat[1]:50;};
   const _prof538=(dir)=>{/* dir>0 = attacca la squadra di CASA (stadio), dir<0 = ospiti */
     const _f5=(typeof window!=='undefined'&&window.__CPM_FORCE_FORM538)||null;
     const _homeIsHero=isMatchHome;const _ot=oppTacticRef.current;
@@ -2974,7 +2984,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                che il possesso sta raccontando invece di sbattere da una fascia all'altra. */
             var _no528=(typeof window!=='undefined'&&window.__CPM_NO528);
             if(!_no528){const _tr528=tramaRef.current;
-              if(_tr528&&_tr528.cor!=null){const _cy528=_tr528.cor<0?24:_tr528.cor>0?76:50;
+              if(_tr528&&_tr528.cor!=null){const _cy528=corY528(_tr528.cor);/* [7.630.0] helper unico dei centri di corridoio */
                 /* [7.612.0 — IL CORRIDOIO SI CONSEGNA, NON SI ACCENNA. Rosso __CPM_NO612]
                    COLLAUDO PO (piu' volte): «il pallone viaggia sempre in verticale in mezzo al campo,
                    mai sulle fasce». MISURATO (fasce-600): corridoio centrale 78% del tempo, 0,4 cambi di
@@ -3840,7 +3850,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
             const _adv=_dir>0?_t.x:100-_t.x;
             const _fase=_adv<45?"costruzione":_adv<72?"sviluppo":"rifinitura";
             if(!_tr.wp||(Math.abs(_tr.wp.x-_t.x)<1.2&&Math.abs(_tr.wp.y-_t.y)<1.2)){
-              const _cy=_tr.cor<0?24:_tr.cor>0?76:50;
+              const _cy=corY528(_tr.cor);/* [7.630.0] helper unico dei centri di corridoio */
               let _wx,_wy;
               if(_fase==="costruzione"){_wx=_t.x+_dir*(_k553<1.5?(-2+_r511()*8):(-4+_r511()*24));_wy=_cy+(_r511()-0.5)*(_k553<1.5?26:32);}
               else if(_fase==="sviluppo"){_wx=_t.x+_dir*(((_k553<1.5?5:12)+_r511()*(_k553<1.5?7:16))*(_no538?1:_idp.passo));_wy=_cy+(_r511()-0.5)*(_k553<1.5?18:24);/* ⚠️ [7.542.0] PROVATO E REVOCATO CON LA SUA MISURA: stringere lo scarto laterale della giocata da +-12u a +-5,5u per «percorrere il corridoio invece di zigzagarlo». Non sposta il difetto: rettilineita' del pallone 0,27 -> 0,24, finestre in cui torna su se stesso 5/8 -> 5/8, giro attorno alla palla 36% -> 42%. Il ping-pong laterale non era la causa. VECCHIA NOTA: IL CORRIDOIO E' UN CORRIDOIO. Ogni nuova giocata pescava la sua meta con uno scarto di +-12u attorno al centro del corridoio: sommato al passo in avanti, la rotta cambiava lato a ogni giocata e la palla attraversava il campo di traverso invece di risalirlo. Misurato su finestre di ~10s di scena: 89-96 unita' di percorso per tornare quasi al punto di partenza. Lo scarto laterale scende a +-5,5u: il corridoio si percorre, non si zigzaga. *//* [7.531.0] passo di modulo: il 5-3-2 riparte lungo (1,28), il 3-5-2 palleggia (0,92) */
@@ -3868,7 +3878,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                   _wx=_t.x+_dir*(8+_r511()*10);_wy=_cy+(_r511()-0.5)*18;}
                 else if(!(typeof window!=='undefined'&&window.__CPM_NO573)&&_g573<0.46){/* cambio di fronte */
                   _tr.cor=_tr.cor===0?(_r511()<0.5?-1:1):(_tr.cor>0?-1:1);
-                  _wx=_t.x+_dir*(2+_r511()*6);_wy=(_tr.cor<0?24:_tr.cor>0?76:50)+(_r511()-0.5)*14;}
+                  _wx=_t.x+_dir*(2+_r511()*6);_wy=corY528(_tr.cor)+(_r511()-0.5)*14;}
                 else if(_r511()<(_no538?0.30:_idp.scarico)){_wx=_t.x-_dir*(_k553<1.5?(3+_r511()*5):(7+_r511()*12));_wy=_cy+(_r511()-0.5)*20;}/* scarico — di modulo: il 4231 rifinisce ragionando (0,34), il 532 va dentro (0,20) */
                 else{_wx=_dir>0?80+_r511()*8:20-_r511()*8;_wy=50+(_r511()-0.5)*24;}/* dentro l'area — tetto 88/12, NON 90: il motore 7.511 rimbalzava a x>82 e l'inviluppo storico (staging, reattivita' difensori) e' tarato li'; a x93 il guardiano motion ha misurato difensori a 26,3u dal portatore (soglia 24, gate rosso al primo giro 7.525) */}
               /* [7.538.1 missione «partita vera», MP-3b — rosso __CPM_NO555] LA GIOCATA FINISCE SU UN UOMO,
