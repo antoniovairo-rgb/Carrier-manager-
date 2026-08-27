@@ -78,3 +78,67 @@ startZone laterali delle scene (80% centrali), cartellini sotto collaudo.
 Regole invariate: zero regressioni su carriera/salvataggi/classifiche/mercato; rituale 7 passi +
 career-critical verdi a ogni release; ogni rimedio col suo rosso e la sua misura prima/dopo;
 niente architetture parallele.
+
+
+## DECISIONE STRATEGICA (28/08, direttiva PO «fermatevi e valutate») — SI SCEGLIE B, NELLA FORMA INCREMENTALE
+
+Analisi tecnica eseguita da 5 letture indipendenti del codice (workflow, evidenze con file:riga).
+Risposte alle domande della direttiva:
+
+1. **Architettura reale**: clock per-minuto attivo solo in `playing`; highlight a calendario
+   seedato ma ri-pescati col contesto vivo; gol non-eroe = monopolio di `bgMicroTick` (input:
+   prestigio/momentum/possesso/OVR — **zero tattica**); cronaca = pesca pesata + 7 macchine in
+   precedenza fissa; palla = lerp 0,65/tick verso un bersaglio scritto da **31 mani** (24 siti
+   diretti + 7 mutazioni).
+2. **Casualità**: quasi tutta seedata e replay-safe; gli esiti sono in maggioranza derivati dallo
+   stato. MA il possesso evolve a lotteria: turno «orologio» (Bernoulli a fine spell) pesato su
+   una % di possesso che è un **random-walk ±2** (r.3524) — non una misura del gioco.
+3. **Stato della partita**: esiste ed è buono (turno a writer unico con causa, fermo/out/sp/
+   counter/pendingGoal/catena).
+4. **Possesso vero**: di squadra sì; **il portatore individuale NO** — è una deduzione per-tick, e
+   il codice stesso dichiara (r.4127) che la palla ambientale è più veloce di un uomo: la custodia
+   è impossibile per costruzione.
+5. **Concatenazione causale**: parziale. Il verso portante resta invertito: il microsim decide il
+   gol PRIMA, la costruzione lo mette in scena (esito→racconto). Le macchine sono causali, il cuore no.
+6. **Ruoli individuali**: NO. I 21 di sfondo non hanno campo `role`; slot per indice; i ruoli del
+   roster servono solo a scegliere i cognomi in cronaca. `FORMATION_HOME` è dead code.
+7. **Tattiche**: mordono solo la trama (4 pomelli per modulo, veri) e ±4u di linea; **mai il
+   punteggio**.
+8. **Conseguenze**: parziali (gialli→rosso reali, reazioni al gol) ma i gol non dipendono dal
+   gioco che si vede.
+9. **Lavoro per A**: 26 release in 2 giorni hanno portato metriche in banda (turno causale 100%,
+   arbitro, catena 14-20 righe, gol in area) ma la percezione PO resta «non è calcio»: il difetto
+   è il VERSO e l'assenza di portatore/ruoli — non si tara via, si rifonda.
+10. **Lavoro per B**: più piccolo del temuto. Il renderer è GIÀ disaccoppiato (0 scritture di
+    stato in src/12); il turno è già canalizzato (setTurn616); pendingGoal/counter sono isolati
+    (2-3 siti); da sostituire ~59 siti in UN solo file. Le macchine esistenti (arbitro, piazzati,
+    catena, ponte) diventano braccia del motore, non si buttano.
+11. **Probabilità entro deadline**: B-incrementale > A. A ha dimostrato convergenza asintotica.
+
+### Il piano operativo (B in 3 fasi, rossi e guardiano a ogni tappa)
+
+**F1 — MATCH ENGINE, il possesso diventa azione (3-4 giorni)**
+- `engineTick()`: UNICO scrittore di ballTarget (pattern setTurn616, già provato) — i 31 siti
+  diventano richieste al motore.
+- Stato AZIONE: {lato, **portatore persistente (id)**, ricevente, fase, passi}; passaggio =
+  evento portatore→ricevente scelto per **ruolo** (campo `role` sui 21, dal roster che già lo ha);
+  velocità palla ≤ uomo salvo lanci dichiarati.
+- Il turno cambia SOLO per eventi (contrasto, intercetto, fallo, fuori, parata): il sito
+  «orologio» muore; la % di possesso diventa una MISURA (tempo col turno), il random-walk muore.
+- **Il microsim resta l'autorità del PUNTEGGIO** (integrità carriera/save intoccata): i suoi gol
+  diventano un BUDGET — «al minuto X segna il lato Y» — e il motore COSTRUISCE l'azione che ci
+  arriva (pendingGoal si evolve in «azione a esito noto» con portatori e passaggi veri).
+  Transizioni/pressing: pressure → distanza d'ingaggio del lato senza palla.
+- Tattiche: i 4 pomelli TRAMA_ID entrano nelle decisioni del motore (già pronti).
+
+**F2 — NARRATIVE, la cronaca campiona il motore (1-2 giorni)**
+- Le righe raccontano gli EVENTI importanti del motore (il tetto-racconto dell'arbitro è già
+  questo pattern); le 223 righe diventano template con slot; niente riga che comanda il campo:
+  il sito ev.bpos→ballTarget muore con F1.
+
+**F3 — HIGHLIGHTS dal motore (1-2 giorni)**
+- Gli HL nascono da stati del motore (transizione, rifinitura, piazzato) col calendario come
+  fallback di ritmo; il 3D consuma gli stessi eventi (è già solo-lettura).
+
+Non-scope confermato per sempre: VAR, replay, autogol, allenamento.
+Build «partita credibile» da collaudo pieno: attesa ~5/09, dentro la deadline.
