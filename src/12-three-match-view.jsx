@@ -7141,6 +7141,16 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
               }
             }
           }
+          /* [7.636.0 — LA MIRA SI LATCHA ANCHE IN RITARDO. Rosso __CPM_NO636]
+             Collaudo PO (3 segnalazioni): «il marcatore segna col corpo non rivolto alla porta».
+             Il latch 7.517 si arma SOLO se l'arco e' gia' vivo al montaggio del gesto — ma il gesto
+             di calcio monta PRIMA che la palla parta: `ballArcActive` false, mira nulla, e il corpo
+             resta col facing dell'avvicinamento (misurato sul gemello procedurale: 134-151 gradi dal
+             tiro al decollo). Qui la mira si arma PIGRA: al primo fotogramma del gesto in cui l'arco
+             esiste. Esclusi GK e gesti non direzionali, come nel 7.517. */
+          if(_a._gName&&_a._tgt517==null&&!_a._isGk&&ballArcActive&&_a._gName!=='lift'&&_a._gName!=='receive'&&!(typeof window!=='undefined'&&window.__CPM_NO636)){
+            _a._tgt517=Math.atan2(ballArcTgtX-_p.position.x,ballArcTgtZ-_p.position.z);
+            _a._aim517=(typeof window!=='undefined'&&window.__CPM_NO517)?null:_a._tgt517;}
           if(_a._gName&&_a._aim517!=null&&!_a._isGk){/* [7.517.0 R3/2] durante il gesto comanda la MIRA
             latchata al montaggio: prima la rotazione si spegneva sotto ~1,8 u/s (gate _gsp) e il tiro si
             giocava col facing dell'avvicinamento. Turn-rate dedicato, continuo per tutto il gesto. */
