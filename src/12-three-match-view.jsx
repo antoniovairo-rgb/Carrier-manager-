@@ -1663,8 +1663,15 @@ function ThreeMatchView(props){
       mesh._px=mesh.position.x;mesh._pz=mesh.position.z;
       mesh._sp+=(rawSp-mesh._sp)*Math.min(dt*8,1);const sp=mesh._sp;
       // facing: verso il movimento se in corsa, altrimenti verso la palla
+      /* [7.635.0 — IL PORTIERE NON DA' MAI LE SPALLE AL CAMPO. Rosso __CPM_NO635]
+         Collaudo PO su 7.633: «il portiere gira nella sua area». MISURATO (girogk3, 100s di cronaca):
+         7 giri COMPLETI di imbardata cumulati, netto -827° sull'ospite, con 36-45u di camminate dentro
+         un riquadro di 9u — il gk fa la spola nel suo box e QUESTA riga gli girava il corpo verso la
+         direzione di marcia a ogni passetto: ogni ritorno un dietrofront. La regola giusta esiste gia'
+         per il GLB (7.166: il portiere guarda SEMPRE la palla): qui vale anche per il procedurale —
+         lo spostamento resta nelle gambe, il petto resta al campo. */
       let ta;
-      if(d>0.5)ta=Math.atan2(dx,dz);
+      if(d>0.5&&(!mesh._isGk||(typeof window!=='undefined'&&window.__CPM_NO635)))ta=Math.atan2(dx,dz);
       else if(bx!==undefined){const fx=bx-mesh.position.x,fz=bz-mesh.position.z;if(Math.hypot(fx,fz)>0.6)ta=Math.atan2(fx,fz);}
       let _rotApplied=0;
       /* [7.611.0] il lucchetto dell'acrobazia: se un gesto ha appena dichiarato di possedere l'imbardata
