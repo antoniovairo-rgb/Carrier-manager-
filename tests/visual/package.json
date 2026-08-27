@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "validate-situations": "node validate-situations.mjs",
-    "ci": "npm run impulsi-contesto && npm run test:vision && npm run test:logic && npm run typing-shortcuts && npm run validate-situations && npm run save-compat && npm run replay",
+    "ci": "npm run impulsi-contesto && npm run test:vision && npm run test:logic && npm run typing-shortcuts && npm run validate-situations && npm run save-compat && npm run replay && npm run partita-vera",
+    "partita-vera": "node partita-vera-guardian.mjs",
     "quick-gate": "node quick-gate.mjs",
     "validate-situations:update-golden": "node validate-situations.mjs --update-golden",
     "validate-situations:update-baseline": "CPM_UPDATE_BASELINE=1 node validate-situations.mjs",

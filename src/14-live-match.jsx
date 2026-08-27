@@ -3305,18 +3305,47 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
           _y.tick++;
           if(phaseRef.current!=="playing")_y.fase++;else if(outRef.current)_y.out++;else if(fermoRef.current)_y.fermo++;else if(spRef.current)_y.sp++;else if(pendingGoalRef.current)_y.gol++;else if(counterRef.current)_y.counter++;else if(kickoffRef.current>0)_y.ko++;else if(kickRef.current>0)_y.kick++;else{
             _y.ok++;const _b=ballPosRef.current||{x:50,y:50};const _bx2=_b.x==null?50:_b.x,_by2=_b.y==null?50:_b.y;
-            if(_bx2>=88||_bx2<=12)_y.zona.fondo++;else if(_by2>=84||_by2<=16)_y.zona.fascia++;else _y.zona.centro++;}
+            if(_bx2>=80||_bx2<=20)_y.zona.fondo++;else if(_by2>=74||_by2<=26)_y.zona.fascia++;else _y.zona.centro++;/* [7.628 v2] bin allineati alle soglie del trigger: il testimone non deve mentire sulla fascia */}
         }catch(_e){}}
+        /* [7.628.0 v2 — IL FALLO TATTICO FERMA LA RIPARTENZA. stesso rosso __CPM_NO628]
+           Il censimento dei tick: il contropiede tiene 6 minuti a partita intoccabili dall'arbitro — ma
+           nel calcio la ripartenza che muore per fallo (tattico) e' un classico. p 0,30 sul minuto: il
+           contropiede si chiude, il fallo arma punizione+fermo, il turno passa a chi l'ha subito. */
+        if(!(typeof window!=='undefined'&&window.__CPM_NO628)&&!(typeof window!=='undefined'&&window.__CPM_NO566)&&counterRef.current&&!counterRef.current.fin&&!outRef.current&&!fermoRef.current&&!spRef.current&&!pendingGoalRef.current&&kickoffRef.current<=0&&kickRef.current<=0&&phaseRef.current==="playing"){
+          const _rT=(Math.abs(hashStr("tackfoul|"+nx))%1000)/1000;
+          if(_rT<0.30){const _dirC=counterRef.current.dir;counterRef.current=null;
+            const _bpT=ballPosRef.current||{x:50,y:50};
+            const _oxT=clamp(_bpT.x,8,92),_oyT=clamp(_bpT.y,6,94);
+            outRef.current={kind:"foul",nostra:_dirC>0,x:_oxT,y:_oyT,step:0,ttl:4,t0:Date.now()};/* il fallo tattico lo commette chi rincorre: la punizione e' di chi RIPARTIVA (dir del counter) */
+            fermoRef.current={x:_oxT,y:_oyT,t:4,kind:"foul"};
+            ballTargetRef.current={x:_oxT,y:_oyT};
+            if(!(typeof window!=='undefined'&&window.__CPM_NO616))setTurn616(_dirC>0?1:-1,"interruzione-foul-tattico");
+            if(typeof window!=='undefined'&&window.__CPM_REC){try{const _w=(window.__CPM_INT559=window.__CPM_INT559||{n:0,tipi:{},min:[]});_w.n++;_w.tipi["foul_tattico"]=(_w.tipi["foul_tattico"]||0)+1;}catch(_e){}}
+          }
+        }
         if(!(typeof window!=='undefined'&&window.__CPM_NO566)&&!outRef.current&&!fermoRef.current&&!spRef.current
            &&!pendingGoalRef.current&&!counterRef.current&&kickoffRef.current<=0&&kickRef.current<=0&&phaseRef.current==="playing"){
           const _bp=ballPosRef.current||{x:50,y:50};
           const _bx=_bp.x==null?50:_bp.x,_by=_bp.y==null?50:_bp.y;
           const _r1=(Math.abs(hashStr("tick|"+nx))%1000)/1000,_r2=(Math.abs(hashStr("tick2|"+nx))%1000)/1000;
           let _k=null,_no=true;
+          /* [7.628.0 — L'ARBITRO ESISTE: le soglie di zona diventano RAGGIUNGIBILI. Rosso __CPM_NO628]
+             COLLAUDO PO su 7.627: «ZERO schemi, punizioni, rigori — non e' una partita vera». MISURATO
+             (bilancio-628 + censimento tick 7.566): 2 interruzioni in 90' contro le 15-25 vere, e il
+             perche' e' geometrico — dei 45 tick ambientali, 18 li mangia la costruzione del gol e 6 il
+             contropiede; i 16 liberi sono TUTTI al centro (fondo 0, fascia 0), perche' la rimessa chiedeva
+             y>=84 ma i corridoi della trama arrivano a cy 76, e il corner chiedeva x>=88 col rimbalzo
+             storico a 82: soglie IRRAGGIUNGIBILI per costruzione. Tre viti: rimessa dal bordo corridoio
+             (74/26), corner ambientale da x>=80 (prob 0,10), fallo 0,20->0,35 sui tick centrali.
+             Atteso ~10-15 fischi/90' (banda reale minima), misurato sotto. */
+          const _no628=(typeof window!=='undefined'&&window.__CPM_NO628);
+          const _thF628=_no628?84:74,_thF628b=_no628?16:26,_cx628=_no628?88:80,_foul628=_no628?0.20:0.55;/* [7.628 v2] 0,35 non bastava: sui ~16 minuti superstiti il sorteggio per-minuto a seed fisso e' una lotteria a estrazioni bloccate, e ogni fischio congela 4 tick (tetto strutturale ~3-4). A 0,55 l'atteso sui superstiti e' ~8, auto-limitato dal fermo a ~5 */
           if(_bx>=88){_k=_r2<0.38?"corner":"goal_kick";_no=(_k==="corner");}
           else if(_bx<=12){_k=_r2<0.38?"corner":"goal_kick";_no=(_k==="goal_kick");}
-          else if(_by>=84||_by<=16){if(_r1<0.55)_k="throw",_no=_r2<((possessionRef.current||50)/100);}
-          else if(_r1<0.20)_k="foul",_no=_r2<0.5;
+          else if(!_no628&&_bx>=_cx628&&_r1<0.10){_k=_r2<0.55?"corner":"goal_kick";_no=(_k==="corner");}
+          else if(!_no628&&_bx<=100-_cx628&&_r1<0.10){_k=_r2<0.55?"corner":"goal_kick";_no=(_k==="goal_kick");}
+          else if(_by>=_thF628||_by<=_thF628b){if(_r1<0.55)_k="throw",_no=_r2<((possessionRef.current||50)/100);}
+          else if(_r1<_foul628)_k="foul",_no=_r2<0.5;
           if(_k){
             const _ox=_k==="throw"?clamp(_bx,8,92):_k==="corner"?(_no?98:2):_k==="goal_kick"?(_no?6:94):clamp(_bx,8,92);
             const _oy=_k==="throw"?(_by>=50?98:2):_k==="corner"?(_by>=50?96:4):_k==="goal_kick"?50:clamp(_by,6,94);
