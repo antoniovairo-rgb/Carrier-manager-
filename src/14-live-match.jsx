@@ -1098,6 +1098,8 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
      a tick era un no-op travestito da rimedio. La finestra e' quindi un TEMPO VERO in millisecondi.
      (E il rallentamento del tick durante la ripresa resta un fatto MISURATO e NON spiegato: annotato
      perche' tocca anche «il pallone rimbalza senza portatore», che e' un altro appunto del PO.) */
+  const holdArrRef=useRef(0);/* [7.642.0 v4] la sosta d'arrivo: tick in cui il bersaglio resta sui piedi dell'eletto */
+  const ballLagRef=useRef(false);/* [7.642.0 v5 — IL BERSAGLIO ASPETTA LA PALLA] misurato in v4: la palla e' entro 2,5u di un uomo solo 3 tick su 36 — le marce delle macchine avanzano il bersaglio anche con la palla lontana e il viaggio non si completa mai. Con la palla a >6u dal bersaglio, le quattro marce (gol-in-costruzione, contropiede, catena, trama) NON avanzano quel tick: prima si arriva, poi si riparte. */
   const carrierRef=useRef(null);/* [7.641.0 — F1a: IL PORTATORE E' UNO STATO, NON UNA DEDUZIONE] Decisione B:
      il portatore persistente {i} (indice in matchPlayers) scritto SOLO agli EVENTI — passaggio della
      trama (ricevente), aggancio riga->uomo, passo di catena — e azzerato quando il possesso cambia per
@@ -2335,7 +2337,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
             if(typeof window!=='undefined'&&(_CPM_TEST||window.__CPM_REC)){try{const _P=(window.__CPM_PG587=window.__CPM_PG587||{azioni:[]});const _a=_P.azioni[_P.azioni.length-1];const _px=_t532.x,_py=_t532.y;
               if(_a&&_a.tick===(_pg532.ticks|0)-1){_a.tick=_pg532.ticks|0;const _sal=Math.hypot(_px-_a.lx,_py-_a.ly);if(_sal>6){_a.passaggi++;if(_sal>_a.max)_a.max=+_sal.toFixed(1);}_a.lx=_px;_a.ly=_py;_a.perc+=_sal;}
               else _P.azioni.push({tick:_pg532.ticks|0,passaggi:0,max:0,perc:0,lx:_px,ly:_py,da:Math.round(_px)+","+Math.round(_py)});}catch(_e587){}}
-            if(!(azioneRef.current&&!(typeof window!=='undefined'&&window.__CPM_NO559)))_t532.x=clamp(_t532.x+_pg532.dir*3,2,98);/* [7.541.0] se la catena sta raccontando, e' LEI a portare la palla: due scrittori sullo stesso pallone si annullano, e quello cieco (+3u verso la porta) non nomina nessuno *//* [v3] 4->3 u/tick (~7u/s): a 4 la palla correva a 9,5u/s, oltre il passo del portatore (7-9u/s) — ball-attended crollato a 46,8% (<52): l'azione manovrata viaggia CON la squadra, non davanti a tutti */_t532.y=clamp(_t532.y+(50-_t532.y)*0.25,6,94);
+            if(!(azioneRef.current&&!(typeof window!=='undefined'&&window.__CPM_NO559))&&!ballLagRef.current)_t532.x=clamp(_t532.x+_pg532.dir*3,2,98);/* [7.642 v5] il bersaglio aspetta la palla *//* [7.541.0] se la catena sta raccontando, e' LEI a portare la palla: due scrittori sullo stesso pallone si annullano, e quello cieco (+3u verso la porta) non nomina nessuno *//* [v3] 4->3 u/tick (~7u/s): a 4 la palla correva a 9,5u/s, oltre il passo del portatore (7-9u/s) — ball-attended crollato a 46,8% (<52): l'azione manovrata viaggia CON la squadra, non davanti a tutti */_t532.y=clamp(_t532.y+(50-_t532.y)*0.25,6,94);
             /* [7.542.0 v4 — collaudo PO «non si vedono i gol»] LA RETE ASPETTA LA SUA AZIONE. Tre
                iterazioni sulla FINESTRA del racconto (forzatura ovunque: 6/8 ma ritmo rotto a 1,29x;
                solo oltre l'avanzamento 58: 4/7; da meta' campo: 5/8) hanno sempre lasciato fuori un gol
@@ -2369,7 +2371,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           const _ct542=counterRef.current;
           if(!_ct542.fin){_ct542.ticks++;
             const _t542=ballTargetRef.current;
-            _t542.x=clamp(_t542.x+_ct542.dir*5,4,96);_t542.y=clamp(_t542.y+(50-_t542.y)*0.20,6,94);
+            if(!ballLagRef.current){_t542.x=clamp(_t542.x+_ct542.dir*5,4,96);_t542.y=clamp(_t542.y+(50-_t542.y)*0.20,6,94);}/* [7.642 v5] il bersaglio aspetta la palla */
             const _b542=ballPosRef.current||{x:50,y:50};
             if((_ct542.dir>0&&_b542.x>=76)||(_ct542.dir<0&&_b542.x<=24)||_ct542.ticks>=9)_ct542.fin=true;}
         }
@@ -2418,7 +2420,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           const _az=azioneRef.current,_p=_az.passi[_az.i];
           if(_p){const _t551=ballTargetRef.current;
             const _dx=_p.to.x-_t551.x,_dy=_p.to.y-_t551.y,_d=Math.hypot(_dx,_dy);
-            if(_d>1.2){_t551.x=clamp(_t551.x+_dx/_d*Math.min(6,_d),2,98);_t551.y=clamp(_t551.y+_dy/_d*Math.min(6,_d),4,96);}
+            if(_d>1.2&&!ballLagRef.current){_t551.x=clamp(_t551.x+_dx/_d*Math.min(6,_d),2,98);_t551.y=clamp(_t551.y+_dy/_d*Math.min(6,_d),4,96);}/* [7.642 v5] il bersaglio aspetta la palla */
             else _az.arrivato=true;
             /* il ricevente accorcia sulla palla: senza questo la palla arriva in una zona vuota e resta
                orfana (il difetto misurato), con questo il possesso ha sempre un uomo */
@@ -3652,6 +3654,10 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
             const _bN=ballPosRef.current;const _ltN=possTurnRef.current>0?"home":"away";let _dN=null;
             (matchPlayersRef.current||[]).forEach(q=>{if(!q||q.team!==_ltN||q.gk)return;const _dd=Math.hypot((q.x||50)-_bN.x,(q.y||50)-_bN.y);if(_dN==null||_dd<_dN)_dN=_dd;});
             if(_dN!=null&&window.__CPM_NPD.length<4000)window.__CPM_NPD.push(+_dN.toFixed(1));}catch(_e){}}
+          if(!(typeof window!=='undefined'&&window.__CPM_NO642)&&carrierRef.current&&carrierRef.current.i!=null){try{
+            const _qd642=(matchPlayersRef.current||[])[carrierRef.current.i];const _bt642=ballTargetRef.current;
+            if(_qd642&&_bt642&&Math.hypot((_qd642.x||50)-(_bt642.x||50),(_qd642.y||50)-(_bt642.y||50))>12)carrierRef.current=null;/* [7.642.0 v2] DECADENZA: la palla mandata oltre 12u dal portatore lo scavalca — non e' piu' suo, finche' un arrivo non elegge il prossimo */
+          }catch(_e){}}
           if(typeof window!=='undefined'&&window.__CPM_CARRIER641!==undefined&&phaseRef.current==='playing'&&!fermoRef.current&&!outRef.current){try{
             const _c641=carrierRef.current;const _b641=ballPosRef.current;let _d641=null;
             if(_c641&&_c641.i!=null){const _q641=(matchPlayersRef.current||[])[_c641.i];if(_q641)_d641=+Math.hypot((_q641.x||50)-_b641.x,(_q641.y||50)-_b641.y).toFixed(1);}
@@ -3782,6 +3788,13 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               }
               k=0.35;
             }
+            else if(!(typeof window!=='undefined'&&window.__CPM_NO642)&&carrierRef.current&&carrierRef.current.i===idx&&!pl.gk&&phaseRef.current==='playing'&&tramaRef.current&&tramaRef.current.wp&&!fermoRef.current&&Math.hypot((pl.x||50)-(ballTargetRef.current.x||50),(pl.y||50)-(ballTargetRef.current.y||50))<8){
+              /* [7.642.0 F1b-1 v2] IL PORTATORE CONDUCE SOLO CON LA PALLA AI PIEDI (<8u dal bersaglio):
+                 la v1 senza questo gate lo faceva correre al waypoint anche quando una riga aveva mandato
+                 la palla altrove — misurato: distanza portatore-palla 16,3->28u, PEGGIO. Con la palla sua,
+                 il suo slot e' l'intenzione della trama (waypoint), a passo umano (k 0,5 sul ciclo). */
+              sx=clamp(tramaRef.current.wp.x,4,96);sy=clamp(tramaRef.current.wp.y,6,94);k=0.5;
+            }
             else if(_bb553&&!pl.gk){
               sx=clamp(sx+_av553*0.62,4,96);sy=clamp(sy+(_bb553.y-50)*0.28,4,96);
               if(idx===_cI553){sx=_bb553.x;sy=_bb553.y;k=0.55;}/* [7.625.0] k 0,85 RIGIUDICATO anche sul metro qualificato (custodia per-tick): 6,1/6,8/6,1/4,2 contro banda rossa 6,0-6,4 — in banda, revoca DEFINITIVA. Idem l'inversione del verso (6,2/6,4/6,0/4,2). La lettura strutturale: con le righe che ricollocano il pallone ogni 2-3 tick l'ambientale e' quasi sempre IN VOLO — la custodia non si vince inseguendo, si vince alla RICEZIONE (lo stato mancante A4 dell'audit: l'arrivo ai piedi di un uomo). *//* ⚠️ [7.625.0] PROVATO E REVOCATO CON LA SUA MISURA: k 0,55->0,85 sul portatore logico per «tenere il passo» — npd mediana 6,8-10,3 contro banda rossa 6,4-10,3: IN BANDA, nessun effetto. Il modello d'equilibrio era sbagliato: il sistema non e' mai a equilibrio, perche' le righe di cronaca ricollocano il bersaglio (fino a 30u) piu' in fretta di quanto qualsiasi inseguitore converga — npd misura transitori perpetui. Il guadagno del correttore non puo' nulla contro i salti del comando: la pista giusta e' misurare npd con l'inversione del verso (INV579), mai giudicata su QUESTO metro. */
@@ -3796,6 +3809,25 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
         }
         return nx;
       });
+      /* [7.642.0 v4 — L'ARRIVO SI VEDE SOLO GUARDANDO OGNI TICK] Le v1-v3 sono cadute con le loro
+         misure (28u; 13%; 13% identico): la lezione finale e' che l'elezione all'arrivo girava ogni
+         3 tick mentre la finestra d'arrivo (palla <2,5u da un uomo) dura MENO di un tick — il
+         campione la mancava per costruzione, sesta cattura della classe «campione cieco». Qui
+         l'elezione gira A OGNI TICK, a valle di macchine e trama e prima del moto della palla, e
+         l'arrivo apre una SOSTA: 2 tick col bersaglio sui piedi dell'eletto (1 durante la
+         costruzione del gol, che ha il suo tetto) — il ciclo controllo->passaggio del calcio. */
+      if(typeof window!=='undefined'&&window.__CPM_REC){try{const _z=(window.__CPM_ELEZ642=window.__CPM_ELEZ642||{giri:0,liberi:0,elez:0,md:[]});_z.giri++;if(phaseRef.current==='playing'&&!fermoRef.current&&!outRef.current&&!spRef.current&&kickoffRef.current<=0&&kickRef.current<=0)_z.liberi++;}catch(_e){}}
+      if(!(typeof window!=='undefined'&&window.__CPM_NO642)&&phaseRef.current==='playing'&&!fermoRef.current&&!outRef.current&&!spRef.current&&kickoffRef.current<=0&&kickRef.current<=0){try{
+        const _bA=ballPosRef.current;const _ltA=possTurnRef.current>0?"home":"away";let _biA=-1,_bdA=2.5;
+        ballLagRef.current=Math.hypot((_bA.x||50)-(ballTargetRef.current.x||50),(_bA.y||50)-(ballTargetRef.current.y||50))>6;/* [v5] la palla e' in ritardo sul bersaglio: le marce aspettano */
+        (matchPlayersRef.current||[]).forEach((q,i)=>{if(!q||q.team!==_ltA||q.gk)return;const _d=Math.hypot((q.x||50)-_bA.x,(q.y||50)-_bA.y);if(_d<_bdA){_bdA=_d;_biA=i;}});
+        if(typeof window!=='undefined'&&window.__CPM_ELEZ642){try{const _z=window.__CPM_ELEZ642;if(_z.md.length<300)_z.md.push(+_bdA.toFixed(1));}catch(_e){}}
+        if(_biA>=0&&(!carrierRef.current||carrierRef.current.i!==_biA)){carrierRef.current={i:_biA};holdArrRef.current=pendingGoalRef.current?1:2;if(typeof window!=='undefined'&&window.__CPM_ELEZ642){try{window.__CPM_ELEZ642.elez++;}catch(_e){}}}
+        if((holdArrRef.current|0)>0&&carrierRef.current&&carrierRef.current.i!=null){
+          const _qh=(matchPlayersRef.current||[])[carrierRef.current.i];
+          if(_qh){ballTargetRef.current={x:clamp(_qh.x,2,98),y:clamp(_qh.y,2,98)};}
+          holdArrRef.current--;}
+      }catch(_e){}}
       // Ball lerp — interpolazione continua verso il target ad ogni tick (300ms)
       /* [7.478.0 «esito dichiarato != 3D», e il difetto NON era quello che la nota diceva] IL PALLONE NON
          ESCE DAL CAMPO. Misurato su gi55/gi80 col percorso forzato: la palla LOGICA arriva a 103,5 su un
@@ -4123,9 +4155,21 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
             }
             if(!(typeof window!=='undefined'&&window.__CPM_NO639)&&(_tr.hold639|0)>0){_tr.hold639--;}/* [7.639.0] la sosta di ricezione: il bersaglio resta sui piedi del ricevente, la marcia aspetta */
             else{
+            /* [7.642.0 — F1b-1 del piano B: LA PALLA VIAGGIA COL PORTATORE. Rosso __CPM_NO642]
+               Il verdetto aritmetico del 7.626 («il pallone ambientale e' piu' veloce di un uomo: la
+               custodia in volo e' impossibile per costruzione») si chiude qui: quando il portatore-stato
+               (7.641) e' vivo e del lato in possesso, NON marcia piu' il bersaglio verso il waypoint —
+               marcia L'UOMO (vedi il ramo nello schieramento) e il bersaglio della palla sono i suoi
+               piedi. Un'autorita' sola: questo ramo si biforca, non si duplica. Baseline da demolire:
+               copertura 43%, distanza portatore-palla 16,3u. */
+            const _cw642=(!(typeof window!=='undefined'&&window.__CPM_NO642)&&carrierRef.current&&carrierRef.current.i!=null)?(matchPlayersRef.current||[])[carrierRef.current.i]:null;
+            if(_cw642&&_cw642.team===((_dir>0)?"home":"away")&&!_cw642.gk){
+              _t.x=clamp(_cw642.x,4,96);_t.y=clamp(_cw642.y,6,94);
+            }else{
             const _wdx=_tr.wp.x-_t.x,_wdy=_tr.wp.y-_t.y;const _wd=Math.hypot(_wdx,_wdy)||1;
             const _st=Math.min(_wd,(0.55+_r511()*0.5)*_k553);/* [7.532.0 NO543] PASSO x2 NELL'ERA DEI TURNI: misurato — il drift muoveva ~0,8u x 85 passi = ~68u di viaggio in 90', e col possesso spalmato nei due versi la palla non raggiungeva mai le aree (bg-rhythm cieco 3 volte: sviluppo 2-6 coppie). Il possessore ora AVANZA davvero durante il suo spell (~4,7u/s di bersaglio, sotto il passo del portatore). La rotta non cambia: cambia quanta strada si fa per giocata. */
-            _t.x=clamp(_t.x+_wdx/_wd*_st,4,96);_t.y=clamp(_t.y+_wdy/_wd*_st,6,94);
+            if(!ballLagRef.current){_t.x=clamp(_t.x+_wdx/_wd*_st,4,96);_t.y=clamp(_t.y+_wdy/_wd*_st,6,94);}/* [7.642 v5] il bersaglio aspetta la palla */
+            }
             }
           }
           if(typeof window!=='undefined'&&window.__CPM_TRAMA527!==undefined){try{const _tw=window.__CPM_TRAMA527;const _tr7=tramaRef.current;const _ng7=(!window.__CPM_NO527&&_tr7&&_tr7.ng)?1:0;if(_tr7)_tr7.ng=0;if(_tw.length<9000)_tw.push({x:+_t.x.toFixed(2),y:+_t.y.toFixed(2),f:(!window.__CPM_NO527&&_tr7)?_tr7.fase:null,c:(!window.__CPM_NO527&&_tr7)?_tr7.cor:null,ng:_ng7,ph:phaseRef.current,d:(_tr7&&_tr7.dir)||0});/* [7.531.0] d: a chi appartiene il possesso — il guardiano identita' separa i moduli */}catch(_e){}}
