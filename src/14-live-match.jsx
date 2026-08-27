@@ -2220,6 +2220,12 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           halfFiredRef.current=true;
           try{AudioMgr.event({type:'HalfTime'});}catch(_a){}/* [7.62.0 AUDIO] fischio d'intervallo */
           const _htD77=scoreRef.current.home-scoreRef.current.away;
+          /* [7.637.0 — L'INTERVALLO E' UNO STACCO, NON UNA RIGA. Rosso __CPM_NO637] Collaudo PO:
+             «tra il primo e secondo tempo non c'e' uno stacco di camera». Il duplice fischio aveva
+             fischio audio, riga e discorso del mister, ma la CAMERA continuava come se nulla fosse —
+             in TV l'intervallo e' una cesura. Stesso stacco della catena (7.620), tenuto piu' a lungo. */
+          if(!(typeof window!=='undefined'&&window.__CPM_NO637)){setCutFx({key:Date.now(),dur:700});
+            if(typeof window!=='undefined'&&window.__CPM_REC){try{window.__CPM_HT637=(window.__CPM_HT637||0)+1;}catch(_e){}}}
           addCom("⏸️ Duplice fischio: squadre negli spogliatoi.","#93c5fd",45);
           addCoach(_htD77>0?"⏸️ «Siamo in vantaggio — testa dritta nel secondo!»":_htD77<0?"⏸️ «Reagiamo nel secondo tempo — ci crediamo!»":"⏸️ «Tutto ancora aperto — il gol cambia tutto.»",45);/* [7.532.0 NO540] l'evento resta in telecronaca, il DISCORSO e' del mister */
           if(!(typeof window!=='undefined'&&window.__CPM_NO536)){kickRef.current=3;ripT0Ref.current=Date.now();/* [7.590.0] anche il duplice fischio e' una ripresa */kickoffSideRef.current=(isMatchHome?"away":"home");if(!(typeof window!=='undefined'&&window.__CPM_NO543))setTurn616(isMatchHome?-1:1,"secondo-tempo");}/* [7.532.0 collaudo PO «a fine primo tempo, il secondo non riparte da centrocampo»] IL SECONDO TEMPO HA IL SUO CALCIO D'INIZIO: stessa macchina della ripartenza (conto → palla al centro → 2 battute recitate); convenzione: il secondo lo batte l'altra squadra */
