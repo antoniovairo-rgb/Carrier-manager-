@@ -2281,7 +2281,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
         })();
         const _dp647=direttoreRef.current;
         if(_dp647.f!==_d647.f||_dp647.l!==_d647.l){
-          direttoreRef.current={f:_d647.f,l:_d647.l,dal:nx,lib:_d647.lib?1:0,fino:_d647.fino|0};
+          direttoreRef.current={f:_d647.f,l:_d647.l,dal:nx,lib:_d647.lib?1:0,fino:_d647.fino|0,ann:0};/* [7.653.0] la scena decisa non e' ancora stata DICHIARATA in cronaca */
           if(typeof window!=='undefined'&&window.__CPM_REC){try{const _S=(window.__CPM_SCENE=window.__CPM_SCENE||[]);if(_S.length<300)_S.push({m:nx,f:_d647.f,l:_d647.l,d:_d647.lib?1:0});}catch(_e647){}}
         }else if(_d647.lib&&!_dp647.lib){direttoreRef.current={..._dp647,lib:1,fino:_d647.fino|0};}}
         // [5.77.0 MOT-4] INTERVALLO REALE: prima riassunto/coro/reset scattavano SOLO se un evento BG usciva
@@ -2675,7 +2675,8 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
            dalla costruzione — la rete continua ad arrivare in fondo alla sua azione, ma l'attesa prima
            resta. */
         const _forza541=(_cat559&&!!pendingGoalRef.current&&!_inHL77&&((pendingGoalRef.current.piano&&!(typeof window!=='undefined'&&window.__CPM_NO649)&&(pendingGoalRef.current.step|0)<pendingGoalRef.current.piano.length)||_advT501>=45||(!(typeof window!=='undefined'&&window.__CPM_NO644)&&(pendingGoalRef.current.righeLato|0)===0&&(pendingGoalRef.current.ticks|0)>=4)));/* [7.644.0] LA COSTRUZIONE MUTA NON RESTA MUTA: da 4 tick senza una riga del suo lato, la riga esce comunque (con la catena aperta dall'armamento e' un passo nominato). Il caso fotografato: armamento profondo + tetto-14 = gol senza NESSUNA riga del lato. *//* [7.542.0 v3] LA FINESTRA DEL RACCONTO COMINCIA A META' CAMPO, NON AL LIMITE DELL'AREA. La v2 apriva la forzatura solo fuori dalla costruzione, cioe' da avanzamento 58: ma il gol si scrive a 72, quindi l'attacco aveva solo la striscia 58-72 per farsi raccontare — due o tre tick, proprio sul filo della soglia «tre righe nei quattro minuti prima», e la misura infatti restava a 4/7. Ora la finestra si apre quando l'azione supera la meta' campo (45), che e' anche quando una telecronaca vera alza la voce. Resta fuori il palleggio nella propria meta', che e' il respiro che bg-rhythm difende. */
-        if(_simEv77||(_draw541&&!_inHL77&&!_pausa485)||_forza541){/* [7.528.0 v2] durante l'azione pendente le righe ESCONO e raccontano l'avanzata (la decisione F3b segue la palla che sale: sviluppo/pericolo emergono da soli — la prima stesura le sopprimeva e il guardiano bg-rhythm e' diventato CIECO: sviluppo 6 coppie, pericolo 2, contro 14/13 storici); a non muovere il pallone ci pensa il blocco _bt498 qui sotto */
+        const _annScena653=(!(typeof window!=='undefined'&&window.__CPM_NO653)&&!_inHL77&&direttoreRef.current&&direttoreRef.current.lib&&!direttoreRef.current.ann&&!pendingGoalRef.current&&!counterRef.current&&!outRef.current&&!spRef.current&&!ponteRef.current&&!azioneRef.current&&kickoffRef.current<=0);/* [7.653 v3: +azioneRef — le guardie della forzatura DEVONO essere le stesse del hijack, o la riga si forza e l annuncio non la prende (misurato: 1 annuncio su 5 scene) */ /* [7.653 v2] MISURATO 0 annunci su 10 scene decise: l'annuncio aspettava la lotteria delle righe con tutte le macchine libere (3-8 tick a partita). La riga della dichiarazione di scena si FORZA al primo tick buono (pattern forza541): il sorteggio resta consumato nell'ordine. */
+        if(_simEv77||(_draw541&&!_inHL77&&!_pausa485)||_forza541||_annScena653){/* [7.528.0 v2] durante l'azione pendente le righe ESCONO e raccontano l'avanzata (la decisione F3b segue la palla che sale: sviluppo/pericolo emergono da soli — la prima stesura le sopprimeva e il guardiano bg-rhythm e' diventato CIECO: sviluppo 6 coppie, pericolo 2, contro 14/13 storici); a non muovere il pallone ci pensa il blocco _bt498 qui sotto */
           /* [7.490.0 direttiva PO §9 «eventi importanti: piu' enfasi e tempo di lettura»] LA PAUSA SI ARMA
              DOPO, E PESA L'EVENTO. Fino a qui era uniforme: un gol aveva lo stesso respiro di una rimessa
              laterale, e in un feed di testo il respiro E' l'enfasi — non c'e' altro modo di dire «questo
@@ -2990,6 +2991,24 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
             ev=_arm542.dir<0?{txt:"⚡ Palla persa alta! {A} riparte in campo aperto — che pericolo!",ef:null,w:1,bpos:null,pd:_dec499}
                :{txt:"⚡ Recupero altissimo di {H}! Si ribalta il fronte in un lampo!",ef:null,w:1,bpos:null,pd:_dec499};}
           else if(counterArmRef.current&&(_no542||ev.ef))counterArmRef.current=null;/* armato ma il momento e' passato (gol in mezzo / rosso): si disarma senza recitare */}
+          /* [7.653.0 - LA SCENA DECISA SI DICHIARA (FASE 5a roadmap). Rosso __CPM_NO653]
+             Direttiva PO: la cronaca deve far percepire ritmo, possesso, costruzione, pressione -
+             E le fasi tranquille. Il direttore (7.648) decide le scene libere ma erano INVISIBILI:
+             nessuna riga le nominava. Ora la PRIMA riga libera di ogni scena decisa la dichiara
+             (pattern kickoff: sorteggio consumato, ordine dei sorteggi intatto), col lato giusto.
+             Un annuncio per scena (2-4 a partita): il repertorio non si affama. */
+          if(!(typeof window!=='undefined'&&window.__CPM_NO653)&&!_koHij536&&!/goal$/.test(String(ev.ef||""))&&kickoffRef.current<=0&&!pendingGoalRef.current&&!counterRef.current&&!spRef.current&&!ponteRef.current&&!outRef.current&&!azioneRef.current){
+            const _sc653=direttoreRef.current;
+            if(_sc653&&_sc653.lib&&!_sc653.ann){_sc653.ann=1;
+              const _n653=_sc653.l>=0;
+              const _T653=({quiete:[_n653?"⚪ Fase di studio: {H} e compagni fanno girare il pallone senza forzare.":"⚪ {A} addormenta il ritmo: giro palla ragionato nella propria meta'."],
+                costruzione:[_n653?"⚙️ {H} imposta da dietro: la squadra sale compatta, senza fretta.":"⚙️ {A} costruisce con pazienza dalla difesa."],
+                sviluppo:[_n653?"📈 La manovra si accende: {H} guadagna metri fra le linee.":"📈 {A} alza il baricentro: la giocata si sposta nella nostra meta'."],
+                pressione:[_n653?"🔥 Pressing alto dei nostri: {A} fatica a uscire dal basso.":"⚠️ {A} alza il pressing: serve lucidita' per uscire dal basso."]})[_sc653.f];
+              if(_T653){_recHij545=true;_recKind546="scena";_recSide546=_n653?"home":"away";
+                ev={txt:_T653[0],ef:null,w:1,bpos:null,pd:_dec499};}
+            }
+          }
           /* [7.537.0 NO551] LA CATENA DI POSSESSO SI RECITA. Ultima delle macchine per precedenza (cede a
              kickoff, gol costruito, giocate piazzate, contropiede e ponte): quando nessun'altra parla, la
              cronaca costruisce una CATENA di 3-5 tocchi fra uomini VERI del lato in possesso. Ogni passo
@@ -3022,7 +3041,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                PO. Ora un passo si recita SOLO se la battuta precedente non era di catena: il passaggio e
                il commento si alternano, come in televisione. */
             if(azioneRef.current&&_lastCatRef.current===nx&&!(_cat559&&pendingGoalRef.current)){if(_cg615)_cg615.skipAlt=(_cg615.skipAlt|0)+1;/* battuta precedente gia' di catena in questo giro: si lascia parlare il repertorio — ma non mentre il gol si costruisce, li' la catena e' il racconto */}
-            else if(azioneRef.current){
+            else if(azioneRef.current&&_recKind546!=="scena"){/* [7.653 v4] la catena NON ruba la dichiarazione di scena appena armata (misurato: ann bruciato senza riga, 1 annuncio su 9) */
               const _az=azioneRef.current,_p=_az.passi[_az.i];
               if(!_p||(_az.t0!=null&&nx-_az.t0>6&&!(_cat559&&pendingGoalRef.current))){azioneRef.current=null;if(_cg615)_cg615.dead=(_cg615.dead|0)+1;}/* la catena non vive piu' di 6 minuti di gioco */
               else{
