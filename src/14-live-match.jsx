@@ -5921,6 +5921,16 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                   setPhase("playing");}} celebPlan={celebPlan} onGoalInNet={fireGoalCeleb} onOutcomeShown={fireOutcomeReveal} onCutNeeded={()=>{try{setCutFx({key:Date.now(),dur:340});}catch(_e){}}}/* [7.471.0 codice 007] IL RENDERER PUO' CHIEDERE LO STACCO. Il taglio nero e' uno stato React di LiveMatch, ma chi SA che la camera sta per teletrasportarsi e' il render-loop: senza questo filo poteva solo subirlo. */ />
               {/* [7.65.0 Phase 4 · POST-PROCESSING] VIGNETTE cinematografica sul 3D — bordi scuri morbidi (look da broadcast) + micro-grana ai bordi. Overlay DOM (pointer-events off) → zero recolor del 3D, zero costo GPU, invisibile al gate (che cattura il canvas). */}
               <div style={{position:"absolute",inset:0,pointerEvents:"none",zIndex:3,background:"radial-gradient(ellipse 118% 96% at 50% 44%, rgba(0,0,0,0) 56%, rgba(0,0,0,0.14) 82%, rgba(0,0,0,0.30) 100%)"}}/>
+               {/* [7.661.0 - LA CRONACA IN PRIMO PIANO, GRANDE E CENTRALE. Richiesta PO in collaudo: «il testo della cronaca quando non ci sono azioni deve essere piu grande e centrale e carino, deve emozionare». Con la cronaca visuale spenta (7.660) lo stadio e il palcoscenico e il TESTO e lo spettacolo: l ultima riga appare grande al centro, col suo colore, ombra da broadcast e ingresso morbido (remount su key). Il feed sotto resta la storia completa. Rosso __CPM_NO661. */}
+               {phase==="playing"&&coms[0]&&!(typeof window!=="undefined"&&window.__CPM_NO661)&&(
+                 <div key={"com661-"+coms[0].t+"-"+String(coms[0].text||"").slice(0,18)} style={{position:"absolute",left:"7%",right:"7%",top:"38%",zIndex:5,pointerEvents:"none",textAlign:"center",animation:"cpmComIn661 .55s ease-out"}}>
+                   <style>{"@keyframes cpmComIn661{from{opacity:0;transform:translateY(14px) scale(.97)}to{opacity:1;transform:none}}"}</style>
+                   <div style={{display:"inline-block",padding:"10px 16px",borderRadius:14,background:"radial-gradient(ellipse at center, rgba(5,8,16,0.62) 0%, rgba(5,8,16,0.28) 70%, transparent 100%)"}}>
+                     <div style={{fontSize:19,lineHeight:1.35,fontWeight:800,color:coms[0].color||"#e8edf6",textShadow:"0 2px 10px rgba(0,0,0,0.85), 0 0 26px rgba(0,0,0,0.5)",letterSpacing:0.2}}>{coms[0].text}</div>
+                     <div style={{marginTop:5,fontSize:11,fontWeight:700,color:"rgba(232,237,246,0.55)"}}>{(coms[0].t??clock)}′</div>
+                   </div>
+                 </div>
+               )}
               {screenFlash&&<div style={{position:"absolute",inset:0,background:screenFlash.col,zIndex:20,pointerEvents:"none",animation:`fadeFlash ${screenFlash.dur}ms ease-out forwards`}}/>}
               {cutFx&&<div key={cutFx.key} style={{position:"absolute",inset:0,background:"#000",zIndex:30,pointerEvents:"none",animation:`blackCut ${cutFx.dur}ms ease-in-out forwards`}}/>}
               {/* [7.2.0] PREMIAZIONE — banner celebrativo + skip. Il 3D sotto mostra giro di campo/curva/podio. */}

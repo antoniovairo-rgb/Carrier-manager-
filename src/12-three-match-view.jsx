@@ -6792,6 +6792,21 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
           try{camera.position.set(tPx,tPy,tPz);camLook.set(tLx,tLy,tLz);}catch(_e){}
         }
       }
+      /* [7.660.0 - LA CRONACA VISUALE FULL SI SPEGNE. Rosso __CPM_NO660]
+         Decisione di prodotto del PO (a domanda esplicita, 28/08 sera): durante il playing lo
+         schermo mostra TESTO in primo piano + STADIO di sfondo vivo (atmosfera, tifo, luci)
+         SENZA i 22 simulati - "nessun pallone che vaga". Qui si spegne solo la RESA: il modello
+         logico (turni, macchine, cronaca, punteggio) continua identico, le mesh restano
+         aggiornate ma invisibili (le sonde leggono le position come prima); nelle scene
+         dell'eroe, in cerimonia, nei rigori e nel walkout tutto riappare. Il visible di ogni
+         mesh viene salvato all'ingresso e ripristinato all'uscita (un sistema che avesse
+         nascosto qualcuno per suo conto lo ritrova com'era). */
+      {const _off660=!(typeof window!=='undefined'&&window.__CPM_NO660)&&P.matchPhase==="playing"&&!P.ceremony&&!P.shootout&&!replaying;
+       if(_off660!==!!sr.current._off660was){sr.current._off660was=_off660;
+         try{const _all660=[...(sr.current.players||[]).map(pp=>pp&&(pp.mesh||pp)),ball,typeof refMesh!=='undefined'?refMesh:null,hero,typeof heroMark!=='undefined'?heroMark:null,typeof ballHalo!=='undefined'?ballHalo:null,typeof zoneRing!=='undefined'?zoneRing:null];/* [7.660 v2] anche il diamante dell'eroe e l'alone della palla: erano i due residui visibili sullo screenshot */
+           for(const _m of _all660){if(!_m)continue;
+             if(_off660){_m._vis660=_m.visible;_m.visible=false;}
+             else{_m.visible=(_m._vis660!==undefined)?_m._vis660:true;delete _m._vis660;}}}catch(_e660){}}}
       if(sr.current._led657)for(const _tl of sr.current._led657){_tl.offset.x=(_tl.offset.x+dt*0.045)%1;}/* [7.657.0] lo scorrimento del LED: lento, da tabellone vero */
       camera.position.x+=(tPx-camera.position.x)*kp;camera.position.y+=(tPy-camera.position.y)*kp;camera.position.z+=(tPz-camera.position.z)*kp;
       /* [7.507.0 codice 007 — IL BERSAGLIO DELLO SGUARDO E' LEGALE PRIMA DEL LERP]
