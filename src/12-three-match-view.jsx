@@ -27,7 +27,7 @@
 function ThreeMatchView(props){
   const {playerX,playerY,homeCol,oppCol,allPlayers,homeClub,heroClub=null,oppClub=null,heroKitCol,avatarId=0,heroNum=10,subEntry=0,
     scoreHome=0,scoreAway=0,homeAbbr="HOM",awayAbbr="AWA",competitionLabel,
-    stadiumHomeCol,stadiumAwayCol,stadiumHomeName=null,stadiumAwayName=null,stadiumHomeAbbr=null,stadiumAwayAbbr=null,stadiumHomeNat=null,stadiumAwayNat=null,stadiumHomeId=null,stadiumAwayId=null,stadiumStyle=0,ballX,ballY,
+    stadiumHomeCol,stadiumAwayCol,stadiumHomeName=null,stadiumAwayName=null,stadiumHomeAbbr=null,stadiumAwayAbbr=null,stadiumHomeNat=null,stadiumAwayNat=null,stadiumHomeId=null,stadiumAwayId=null,stadiumVenue=null,stadiumStyle=0,ballX,ballY,
     matchPhase,onWalkoutDone,isDesktop=false,
     timeOfDay,weather,kickoffHour,attendance,crowd=null,
     isDerby=false,isBigGame=false,bgAction=null,hlZone=null,shootout=null}=props;/* [7.31.0] rigori 3D */
@@ -1026,6 +1026,15 @@ function ThreeMatchView(props){
         sx.textAlign="center";sx.textBaseline="middle";sx.lineWidth=9;sx.lineJoin="round";sx.strokeStyle="rgba(0,0,0,0.6)";sx.strokeText(text,512,57);sx.fillStyle="#f4f4f6";sx.fillText(text,512,57);
         sx.fillStyle=c2Hex;[64,960].forEach(x0=>{sx.save();sx.translate(x0,55);sx.rotate(Math.PI/4);sx.fillRect(-14,-14,28,28);sx.restore();});}
       const stex=new THREE.CanvasTexture(sc);const sm=new THREE.Mesh(new THREE.PlaneGeometry(30,3.4),new THREE.MeshBasicMaterial({map:stex,side:THREE.FrontSide,transparent:true,opacity:0.97,depthWrite:false}));/* [7.171.0] FrontSide: da dietro (camera set-piece oltre la curva) il retro mostrava la scritta SPECCHIATA */sm.position.set(cx,yPos!=null?yPos:5.5,z);sm.rotation.y=rotY;scene.add(sm);};
+    /* [7.658.0 - IL CARTELLONE COL NOME DELLO STADIO, PICCOLO E A LED. Precisazione PO (collaudo):
+       «non gli striscioni/cartelloni dei tifosi devono essere led piccoli ma il cartellone con il
+       nome dello stadio, es. Stadio Meneghino dei Rossoneri». Il nome VERO arriva dalla prop
+       stadiumVenue (getStadiumName); il pannello usa la modalita' LED di _mkStriscione (14x1.6,
+       testo ambra a scorrimento) su ENTRAMBE le facciate laterali, centrato, sopra i board. */
+    if(stadiumVenue){try{const _vn658=String(stadiumVenue).toUpperCase();
+      _mkStriscione(0,-35.6,0,'#0a0c10','#ffb020',_vn658,9.2,true);
+      _mkStriscione(0,35.6,Math.PI,'#0a0c10','#ffb020',_vn658,9.2,true);
+    }catch(_e658){}}
     const _stadHN=stadiumHomeName||homeClub?.n||"",_stadAN=stadiumAwayName||"";const _stadHNat=stadiumHomeNat||homeClub?.nat||"",_stadANat=stadiumAwayNat||"";const _stadHId=stadiumHomeId||homeClub?.id||"",_stadAId=stadiumAwayId||"";
     // 2 striscioni per tribuna — SOLO colori di casa (§5); il lato ospite vive nella Curva Nord
     /* [7.189.0 collaudo PO «gli striscioni… devono essere appoggiati proprio sul MURO delle tribune»] anche i drappi
@@ -1050,8 +1059,8 @@ function ThreeMatchView(props){
     const _muroD=(home)=>((_cg185?(home?_cg185.depthHome:_cg185.depthAway):16)+3)/2;
     const _muroX=(home)=>home?(_sideX-_muroD(true)-0.14):(-_sideX+_muroD(false)+0.14),_muroY=2.42;/* centrato sul muro ma sopra i cartelloni (alti ~1.3): appeso al parapetto e interamente leggibile */
     const _trZ=_cg185?Math.max(34.2,_cg185.endZ-(_cg185.depthEnd+3)/2-0.14):(_fez-3);
-    if(_tifoHome){_mkStriscione(-12,-_trZ,0,_tHCol,_hc2,_ultrasName(_stadHN,_tifoSeed,0,_stadHNat,_stadHId),_muroY,true);_mkStriscione(12,-_trZ,0,_tHCol,_hc2,_ultrasName(_stadHN,_tifoSeed,1,_stadHNat,_stadHId),_muroY,true);/* [7.657.0] le tribune laterali (quelle inquadrate) portano il LED piccolo */
-      _mkStriscione(-12,_trZ,Math.PI,_tHCol,_hc2,_ultrasName(_stadHN,_tifoSeed,2,_stadHNat,_stadHId),_muroY,true);_mkStriscione(12,_trZ,Math.PI,_tHCol,_hc2,_ultrasName(_stadHN,_tifoSeed,3,_stadHNat,_stadHId),_muroY,true);}
+    if(_tifoHome){_mkStriscione(-12,-_trZ,0,_tHCol,_hc2,_ultrasName(_stadHN,_tifoSeed,0,_stadHNat,_stadHId),_muroY);_mkStriscione(12,-_trZ,0,_tHCol,_hc2,_ultrasName(_stadHN,_tifoSeed,1,_stadHNat,_stadHId),_muroY);/* [7.658.0 REVOCA della 7.657: «non gli striscioni dei tifosi» (parole PO) — i drappi ultras tornano stoffa com'erano; il LED e' del cartellone col NOME DELLO STADIO qui sotto */
+      _mkStriscione(-12,_trZ,Math.PI,_tHCol,_hc2,_ultrasName(_stadHN,_tifoSeed,2,_stadHNat,_stadHId),_muroY);_mkStriscione(12,_trZ,Math.PI,_tHCol,_hc2,_ultrasName(_stadHN,_tifoSeed,3,_stadHNat,_stadHId),_muroY);}
     /* [7.562.0 richiesta PO «puoi togliere quel tabellone dalla tribuna est con il nome della competizione»]
        RIMOSSO — item 8 (5.49.2), il CARTELLONE COMPETIZIONE sulla tribuna est: un pannello 40x9,4 sospeso a
        quota 10,5 e a z = tribuna-3,4, cioe' DENTRO il volume dello stadio, non appoggiato alla struttura.
