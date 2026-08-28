@@ -1144,6 +1144,9 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
      durante i fermi stanno sotto il rosso __CPM_NO616; la registrazione e' strumentazione e resta sempre. */
   const setTurn616=(dir,causa,opts)=>{try{
     const _d=dir>0?1:-1;const _prev=possTurnRef.current;
+    if(!(typeof window!=='undefined'&&window.__CPM_NO646)&&pendingGoalRef.current&&_d!==pendingGoalRef.current.dir&&String(causa||"")!=="gol-in-costruzione"){/* [7.646.0 — SOTTO COSTRUZIONE IL TURNO E' INVIOLABILE. Rosso __CPM_NO646] MISURATO (golback644b post-7.645): TUTTI i gol nudi restanti erano costruzioni AWAY con la finestra PIENA di righe del lato sbagliato — le righe di repertorio con poss di casa (27:2 il rapporto del repertorio), forzate proprio durante la costruzione, RISCRIVEVANO il turno; da li' la catena si apriva per il lato sbagliato e righeLato restava 0 fino al tetto. L'azione pendente e' DI CHI SEGNERA' (7.532): finche' vive, nessuna causa puo' togliergli il pallone. Il rifiuto non e' una scrittura: __CPM_TURN616 non lo conta, il testimone __CPM_TURN646 si'. */
+      if(typeof window!=='undefined'&&window.__CPM_REC){try{const _w=(window.__CPM_TURN646=window.__CPM_TURN646||{rifiuti:0,per:{}});_w.rifiuti++;const _k646=String(causa||"?");_w.per[_k646]=(_w.per[_k646]|0)+1;}catch(_e){}}
+      return;}
     possTurnRef.current=_d;
     if(_prev!==_d&&!(typeof window!=='undefined'&&window.__CPM_NO641)){carrierRef.current=null;pendingBtRef.current=null;/* [7.641/7.643] al cambio di possesso decadono portatore E proposta in coda */}
     if(!(opts&&opts.keepSpell)){possSpellRef.current=6;possExtRef.current=0;}
@@ -2610,7 +2613,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
              __CPM_NO570 = rosso: le righe di piazzato escono comunque, com'era. */
           const _spOff570=!(typeof window!=='undefined'&&window.__CPM_NO570)&&(!!pendingGoalRef.current||!!counterRef.current||kickoffRef.current>0||!!spRef.current||!!outRef.current);
           if(typeof window!=='undefined'&&(window.__CPM_REC||_CPM_TEST)){try{const _g=(window.__CPM_SP570=window.__CPM_SP570||{tick:0,off:0});_g.tick++;if(_spOff570)_g.off++;}catch(_e){}}
-          let eligible=BG_MATCH.filter(e=>_noGoal77(e)&&(!_spOff570||!e.sp)&&(!e.minClock||nx>=e.minClock)&&(!e.maxClock||nx<=e.maxClock)&&(!e.derbyOnly||!!drby)&&(!e.ctx||e.ctx===_sctx76)&&!_lastBG.includes(e.txt)&&(!onBenchRef.current||!e.txt.includes("{P}"))&&(!e.momThreshold||(momentumRef.current>=e.momThreshold[0]&&momentumRef.current<=e.momThreshold[1])))
+          let eligible=BG_MATCH.filter(e=>_noGoal77(e)&&(!_spOff570||!e.sp)&&((typeof window!=='undefined'&&window.__CPM_NO646)||!pendingGoalRef.current||!e.poss||((e.poss>0?1:-1)===pendingGoalRef.current.dir))&&/* [7.646.0] durante la costruzione una riga che sposta il possesso all'ALTRO lato sarebbe una bugia (e prima del writer-guard ribaltava il turno): fuori dal sorteggio, come i piazzati del 7.570 — filtro, non peso: sono ~31 righe su 223 */(!e.minClock||nx>=e.minClock)&&(!e.maxClock||nx<=e.maxClock)&&(!e.derbyOnly||!!drby)&&(!e.ctx||e.ctx===_sctx76)&&!_lastBG.includes(e.txt)&&(!onBenchRef.current||!e.txt.includes("{P}"))&&(!e.momThreshold||(momentumRef.current>=e.momThreshold[0]&&momentumRef.current<=e.momThreshold[1])))
             .map(e=>{if(!_activeDriftKey||!e.pd)return e;if(_isAtkTactic&&_atkPd.includes(e.pd))return{...e,w:e.w*1.8};if(_isDefTactic&&_defPd.includes(e.pd))return{...e,w:e.w*1.8};return e;})
             /* [7.486.0 direttiva PO «la cronaca deve descrivere effettivamente cio' che accade»] LA RIGA
                SI SCEGLIE DA DOVE SI STA GIOCANDO. Fino a qui la selezione guardava minuto, punteggio,
