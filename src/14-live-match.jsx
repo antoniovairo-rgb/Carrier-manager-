@@ -2249,16 +2249,41 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           if(spRef.current||outRef.current||fermoRef.current)return{f:'palla-inattiva',l:possTurnRef.current};
           if(_inHL77)return{f:'scena-eroe',l:1};
           if(_fase501==='pericolo')return{f:'pericolo',l:possTurnRef.current};
-          if(_fase501==='sviluppo')return{f:'sviluppo',l:possTurnRef.current};
-          if(Math.abs((momentumRef.current||50)-50)>=20)return{f:'pressione',l:(momentumRef.current||50)>50?1:-1};
-          if(_advT501<42)return{f:'quiete',l:possTurnRef.current};
-          return{f:'costruzione',l:possTurnRef.current};
+          if(typeof window!=='undefined'&&window.__CPM_NO648){/* rosso F1b: torna il derivatore completo (osservatore 7.647) */
+            if(_fase501==='sviluppo')return{f:'sviluppo',l:possTurnRef.current};
+            if(Math.abs((momentumRef.current||50)-50)>=20)return{f:'pressione',l:(momentumRef.current||50)>50?1:-1};
+            if(_advT501<42)return{f:'quiete',l:possTurnRef.current};
+            return{f:'costruzione',l:possTurnRef.current};
+          }
+          /* [7.648.0 - IL DIRETTORE DECIDE LE SCENE LIBERE (FASE 1b). Rosso __CPM_NO648]
+             Quando nessuna macchina comanda, la scena non si DERIVA piu' dalla x della palla: la
+             DECIDE il direttore, con durata propria (1-4') ed estrazione deterministica (hashStr
+             sul minuto: replay-safe, flusso _rndM intoccato, invariante 7.511). Pesi dal
+             contesto: momentum sbilanciato spinge la pressione, il finale spinge lo sviluppo,
+             dopo una scena calda la quiete respira (direttiva PO: "devono esistere anche fasi
+             tranquille"). La scena decisa comanda la FASE DELLA TRAMA (sito waypoint): la palla
+             SEGUE la scena, non il contrario, e famiglie/ritmo si allineano dalla geografia
+             senza doppio comando. */
+          const _cur648=direttoreRef.current;
+          if(_cur648.lib&&(_cur648.fino|0)>nx)return{f:_cur648.f,l:possTurnRef.current,lib:1,fino:_cur648.fino};
+          const _h648=(Math.abs(hashStr("dir648|"+nx))%1000)/1000;
+          const _mo648=momentumRef.current||50;
+          let _w648={quiete:0.30,costruzione:0.30,sviluppo:0.25,pressione:0.15};
+          if(Math.abs(_mo648-50)>=15){_w648.pressione*=2;_w648.quiete*=0.5;}
+          if(nx>=78)_w648.sviluppo*=1.4;
+          if(/attacco|transizione|pericolo|scena-eroe/.test(String(_cur648.f||'')))_w648.quiete*=1.6;
+          const _tot648=_w648.quiete+_w648.costruzione+_w648.sviluppo+_w648.pressione;
+          let _acc648=0,_sc648='costruzione';
+          for(const _k of ['quiete','costruzione','sviluppo','pressione']){_acc648+=_w648[_k]/_tot648;if(_h648<_acc648){_sc648=_k;break;}}
+          const _du648=({quiete:[2,4],costruzione:[2,3],sviluppo:[1,3],pressione:[1,3]})[_sc648];
+          const _dv648=_du648[0]+Math.abs(hashStr("dur648|"+nx))%(_du648[1]-_du648[0]+1);
+          return{f:_sc648,l:possTurnRef.current,lib:1,fino:nx+_dv648};
         })();
         const _dp647=direttoreRef.current;
         if(_dp647.f!==_d647.f||_dp647.l!==_d647.l){
-          direttoreRef.current={f:_d647.f,l:_d647.l,dal:nx};
-          if(typeof window!=='undefined'&&window.__CPM_REC){try{const _S=(window.__CPM_SCENE=window.__CPM_SCENE||[]);if(_S.length<300)_S.push({m:nx,f:_d647.f,l:_d647.l});}catch(_e647){}}
-        }}
+          direttoreRef.current={f:_d647.f,l:_d647.l,dal:nx,lib:_d647.lib?1:0,fino:_d647.fino|0};
+          if(typeof window!=='undefined'&&window.__CPM_REC){try{const _S=(window.__CPM_SCENE=window.__CPM_SCENE||[]);if(_S.length<300)_S.push({m:nx,f:_d647.f,l:_d647.l,d:_d647.lib?1:0});}catch(_e647){}}
+        }else if(_d647.lib&&!_dp647.lib){direttoreRef.current={..._dp647,lib:1,fino:_d647.fino|0};}}
         // [5.77.0 MOT-4] INTERVALLO REALE: prima riassunto/coro/reset scattavano SOLO se un evento BG usciva
         //   esattamente al tick 45 (~25% delle partite). Ora il 45' è un momento garantito, una volta sola.
         if(nx>=45&&!halfFiredRef.current){
@@ -4082,11 +4107,19 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               _tr=tramaRef.current={dir:_dir,cor:_cor0,wp:null,fase:null};}
             if(_tr.chase){_tr.chase=0;_tr.ng=1;}/* [7.524.0] ripresa dopo un inseguimento (una riga di cronaca ha spostato il bersaglio): la rotta verso il waypoint riparte da un altro punto — svolta legittima, marcata per il testimone */
             const _adv=_dir>0?_t.x:100-_t.x;
-            const _fase=_adv<45?"costruzione":_adv<72?"sviluppo":"rifinitura";
+            const _fase=(function(){const _f0=_adv<45?"costruzione":_adv<72?"sviluppo":"rifinitura";
+              if(typeof window!=='undefined'&&window.__CPM_NO648)return _f0;
+              const _sc=direttoreRef.current;if(!_sc||!_sc.lib)return _f0;/* [7.648.0] solo le scene LIBERE comandano la trama: quelle di macchina hanno gia' i loro scrittori */
+              if(_sc.f==='quiete')return "quiete648";
+              if(_sc.f==='pressione')return "costruzione";/* il possessore schiacciato palleggia basso */
+              if(_sc.f==='costruzione')return "costruzione";
+              if(_sc.f==='sviluppo')return _adv<72?"sviluppo":"rifinitura";
+              return _f0;})();
             if(!_tr.wp||(Math.abs(_tr.wp.x-_t.x)<1.2&&Math.abs(_tr.wp.y-_t.y)<1.2)){
               const _cy=corY528(_tr.cor);/* [7.630.0] helper unico dei centri di corridoio */
               let _wx,_wy;
-              if(_fase==="costruzione"){_wx=_t.x+_dir*(_k553<1.5?(-2+_r511()*8):(-4+_r511()*24));_wy=_cy+(_r511()-0.5)*(_k553<1.5?26:32);}
+              if(_fase==="quiete648"){_wx=_t.x+_dir*(-7+_r511()*10);_wy=_cy+(_r511()-0.5)*30;}/* [7.648.0] QUIETE: giro palla, anche all'indietro - la scena tranquilla della direttiva PO */
+              else if(_fase==="costruzione"){_wx=_t.x+_dir*(_k553<1.5?(-2+_r511()*8):(-4+_r511()*24));_wy=_cy+(_r511()-0.5)*(_k553<1.5?26:32);}
               else if(_fase==="sviluppo"){_wx=_t.x+_dir*(((_k553<1.5?5:12)+_r511()*(_k553<1.5?7:16))*(_no538?1:_idp.passo));_wy=_cy+(_r511()-0.5)*(_k553<1.5?18:24);/* ⚠️ [7.542.0] PROVATO E REVOCATO CON LA SUA MISURA: stringere lo scarto laterale della giocata da +-12u a +-5,5u per «percorrere il corridoio invece di zigzagarlo». Non sposta il difetto: rettilineita' del pallone 0,27 -> 0,24, finestre in cui torna su se stesso 5/8 -> 5/8, giro attorno alla palla 36% -> 42%. Il ping-pong laterale non era la causa. VECCHIA NOTA: IL CORRIDOIO E' UN CORRIDOIO. Ogni nuova giocata pescava la sua meta con uno scarto di +-12u attorno al centro del corridoio: sommato al passo in avanti, la rotta cambiava lato a ogni giocata e la palla attraversava il campo di traverso invece di risalirlo. Misurato su finestre di ~10s di scena: 89-96 unita' di percorso per tornare quasi al punto di partenza. Lo scarto laterale scende a +-5,5u: il corridoio si percorre, non si zigzaga. *//* [7.531.0] passo di modulo: il 5-3-2 riparte lungo (1,28), il 3-5-2 palleggia (0,92) */
                 if(_r511()<(_no538?0.14:_idp.cambio)){const _c1=_r511();
                   /* [7.631.0 — IL CAMBIO GIOCO PUO' ATTRAVERSARE. Rosso __CPM_NO631]
