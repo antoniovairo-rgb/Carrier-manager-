@@ -131,6 +131,17 @@ Risposte alle domande della direttiva:
   Transizioni/pressing: pressure → distanza d'ingaggio del lato senza palla.
 - Tattiche: i 4 pomelli TRAMA_ID entrano nelle decisioni del motore (già pronti).
 
+**Stato F1 al 28/08 (7.641-7.644)**: anagrafe ruoli (`rl`) sui 21 ✅ · portatore persistente
+(`carrierRef`, elezione all'arrivo per-tick, sosta di ricezione, coda consegne) ✅ · budget-gol:
+fotografia completa (golback644b): 4 gol su 10 senza racconto del lato → 7.644 (righeLato, rete
+che aspetta il racconto del SUO lato, costruttore catena condiviso chiamato all'armamento) → 3/10.
+I 3 restanti hanno cause nominate: (a) gol sovrapposti a costruzione pendente si applicano diretti
+(bypass r.2433) e calpestano la costruzione — LA PROSSIMA VITE (coda dei gol, un'azione alla
+volta); (b) gol da highlight: genere a parte, mai dal pendingGoal; (c) cadenza cronaca ~1 riga
+ogni 5-8 minuti di gioco: metro da spostare sulla costruzione intera. Buco latente CENSITO, da
+misurare prima di toccare: il fischio del 90' non svuota `pendingGoalRef` (r.2132) — costruzione
+viva al fischio = gol perso dal tabellone.
+
 **F2 — NARRATIVE, la cronaca campiona il motore (1-2 giorni)**
 - Le righe raccontano gli EVENTI importanti del motore (il tetto-racconto dell'arbitro è già
   questo pattern); le 223 righe diventano template con slot; niente riga che comanda il campo:

@@ -2308,6 +2308,121 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           if(_dentro||_f.ticks>=10){festa587.current=null;setWaveEvent({t:Date.now(),home:_f.home,stadiumHome:_f.stadiumHome});
             if(typeof window!=='undefined'&&(_CPM_TEST||window.__CPM_REC)){try{(window.__CPM_FESTA2=window.__CPM_FESTA2||[]).push({bx:+(_b587.x||50).toFixed(1),att:_f.ticks,tetto:_dentro?0:1});}catch(_e587b){}}}
         }
+        /* [7.644.0 — IL COSTRUTTORE DELLA CATENA E' UNA FUNZIONE, NON UN SITO. Rosso __CPM_NO644]
+           FOTOGRAFATO (golback644b, 3 realizzazioni, seed 7300): 4 gol su 10 chiusi senza UNA riga
+           del lato che segna. Cause: il costruttore viveva SOLO dentro l'emissione-riga (se la riga
+           non usciva, la catena non si apriva), `righe` contava righe di chiunque, e il tetto
+           scavalcava muto. Qui il costruttore estratto VERBATIM (solo hashStr, mai _rndM:
+           l'invariante 7.511 sull'ordine dei sorteggi non si tocca), chiamato dal sito-riga come
+           prima E dall'armamento del pendingGoal. */
+        const _apriCatena644=(_lato551)=>{
+          const _mp551=(matchPlayersRef.current||[]);
+          if(azioneRef.current||_mp551.length<11)return false;
+          const _mio551=(i)=>{const q=_mp551[i];return !!q&&q.team===_lato551&&!q.gk;};
+          const _cg615=(typeof window!=='undefined'&&window.__CPM_CAT615)||null;
+          if(_cg615)_cg615.gate=(_cg615.gate|0)+1;
+              /* si apre solo se c'e' un portatore plausibile vicino alla palla */
+              const _b551=ballPosRef.current||{x:50,y:50};
+              let _hold=-1,_hd=1e9;_mp551.forEach((q,i)=>{if(!_mio551(i))return;const d=Math.hypot(q.x-_b551.x,q.y-_b551.y);if(d<_hd){_hd=d;_hold=i;}});
+              if(_cg615&&!(_hold>=0&&_hd<26)){_cg615.farHold=(_cg615.farHold|0)+1;if((_cg615.fh=_cg615.fh||[]).length<40)_cg615.fh.push(+_hd.toFixed(1));}
+              if(_hold>=0&&_hd<26){
+                const _dir551=(_lato551==="home")?1:-1;
+                const _n551=2+(Math.abs(hashStr("cat|"+nx+"|"+_hold))%2);/* [7.537.0 v6] 2-3 tocchi, non 3-5: col confronto diretto (guardiano acceso/spento) la catena da 5 passi alternati occupava circa meta' della telecronaca e affamava il repertorio pescato — 14 righe utili contro le 15 minime CON la catena, verde SENZA. Una giocata di due-tre tocchi si racconta meglio e lascia parlare il commento. */
+                const passi=[];let _cur=_hold;
+                for(let k=0;k<_n551;k++){
+                  const _cq=_mp551[_cur];if(!_cq)break;
+                  /* il ricevente e' un compagno PIU' AVANTI (o in appoggio laterale al cambio gioco),
+                     entro un raggio da passaggio: la catena guadagna campo senza teletrasporti */
+                  let _best=-1,_bs=-1e9;
+                  _mp551.forEach((q,i)=>{if(i===_cur||!_mio551(i))return;
+                    const _fw=(q.x-_cq.x)*_dir551,_dd=Math.hypot(q.x-_cq.x,q.y-_cq.y);
+                    if(_dd<4||_dd>40)return;
+                    if(_fw<2)return;/* [7.537.0 v7] il passo DEVE guadagnare campo: col vincolo a -1 la catena
+                       accettava appoggi laterali e teneva la palla al centro — il guardiano `bg-rhythm` e'
+                       andato cieco sulla fase SVILUPPO (4 coppie contro le 8 minime, costruzione 51): una
+                       telecronaca che parla solo di costruzione non ha piu' respiro. *//* [7.537.0 v2] OGNI PASSO GUADAGNA CAMPO: la v1 pesava l'avanzamento (x1,6) ma non lo pretendeva, e con la formazione compatta al centro la catena girava in orizzontale — misurato: tempo nella fascia centrale 80%→93%, cioe' il contrario di cio' che serviva. Un passaggio all'indietro non e' vietato nel calcio, ma questa macchina esiste per PORTARE la palla: se non c'e' nessuno piu' avanti, la catena si chiude e lascia parlare le altre voci. */
+                    /* [7.615.0 — LA CATENA NON SI MANGIA IL CAMPO IN UN BOCCONE. Rosso __CPM_NO615]
+                       MISURATO col censimento del cancello (__CPM_CAT615): il portatore c'e' SEMPRE
+                       (farHold 0/17) e il cancello passa (16/17), ma la catena apriva 1 volta su 16 —
+                       QUINDICI morti al secondo passo, quattordici con ESATTAMENTE un passo costruito.
+                       L'aritmetica: il punteggio premiava l'avanzamento con peso 4,5 SENZA tetto, quindi
+                       il primo passo saltava sull'uomo piu' avanzato (anche +30-40u, il limite era il
+                       raggio dd<40) e da li' davanti non restava nessuno con fw>=2: la macchina degli
+                       schemi si affamava da sola al primo boccone — ed e' il perche' del «catena: 0
+                       righe» su intere passate (manovra-615) e dell'1% di fotogrammi (scrittori-601).
+                       Col tetto a 12 il passo ideale resta la verticale corta (8-18u, la stessa banda
+                       del repertorio 7.549) e lo spazio davanti avanza per i passi successivi. */
+                    const _fwS615=(typeof window!=='undefined'&&window.__CPM_NO615)?_fw:Math.min(_fw,12);
+                    const _sc=_fwS615*4.5-Math.abs(_dd-22)*0.35+((Math.abs(hashStr("rx|"+nx+"|"+k+"|"+i))%100)/100)*3;
+                    if(_sc>_bs){_bs=_sc;_best=i;}});
+                  let _last615=false;
+                  if(_best<0){
+                    /* [7.615.0 — L'ULTIMO PASSO PUO' ESSERE UNO SCARICO. Rosso __CPM_NO615B]
+                       Anche col tetto sull'avanzamento, 10 tentativi su 14 morivano al secondo passo:
+                       dal ricevente avanzato nessuno sta piu' davanti con fw>=2, e una catena da UN passo
+                       non e' una catena (serve passi>=2). Nel calcio la manovra si chiude cosi': verticale,
+                       e SCARICO corto d'appoggio (anche all'indietro fino a 4u, raggio 4-26). Ammesso solo
+                       DOPO almeno un passo in avanti (k>=1) e come passo FINALE — il vincolo v7 sul
+                       guadagno di campo resta la regola, questo e' il suo punto e virgola. Il dai-e-vai
+                       (tornare sul primo passatore) e' compreso: e' calcio vero. */
+                    if(k<1){
+                      /* [7.633.0 — IL PRIMO PASSO PUO' USCIRE DAL TRAFFICO. Rosso __CPM_NO633B]
+                         CENSIMENTO nella realizzazione del guardiano (name Pv): 5 morti su 9 occasioni a
+                         steps0, portatore AVANZATO (x 65-72) — davanti nessuno con fw>=2, e a passo zero
+                         nemmeno lo scarico 7.623 e' concesso (k>=1): la catena moriva sul nascere.
+                         Nel calcio l'uscita dal traffico e' l'appoggio laterale, POI la verticale.
+                         Concesso solo come PRIMO passo e la catena PROSEGUE (non e' una chiusura):
+                         la legge v7 sul guadagno di campo torna dal passo successivo. */
+                      if(typeof window!=='undefined'&&window.__CPM_NO633B)break;
+                      _mp551.forEach((q,i)=>{if(i===_cur||!_mio551(i))return;
+                        const _fwL=(q.x-_cq.x)*_dir551,_ddL=Math.hypot(q.x-_cq.x,q.y-_cq.y);
+                        if(_ddL<4||_ddL>26||_fwL<-8)return;
+                        const _scL=-Math.abs(_ddL-12)*0.5+((Math.abs(hashStr("lx|"+nx+"|"+k+"|"+i))%100)/100)*3;
+                        if(_scL>_bs){_bs=_scL;_best=i;}});
+                      if(_best<0)break;
+                    }else{
+                    if(typeof window!=='undefined'&&window.__CPM_NO615B)break;
+                    /* [7.623.0 — LA CHIUSURA E' UN RETROPASSAGGIO VERO. Rosso __CPM_NO623]
+                       MISURATO col registro s0 (dopo il 7.615): meta' delle morti residue e' «n:1» —
+                       la verticale c'e', ma il ricevente e' l'uomo PIU' avanzato e la finestra dello
+                       scarico (fino a 4u indietro, raggio 26) e' VUOTA quando tutti i compagni stanno
+                       8-20u dietro. Nel calcio quello si chiama retropassaggio, ed e' nella lista §2
+                       della direttiva PO. La chiusura ammette fino a 14u all'indietro, raggio 30 —
+                       SOLO come ultimo passo dopo una verticale: v7 resta la legge dei passi veri. */
+                    const _bkw623=(typeof window!=='undefined'&&window.__CPM_NO623)?-4:-14;
+                    const _bkr623=(typeof window!=='undefined'&&window.__CPM_NO623)?26:30;
+                    _mp551.forEach((q,i)=>{if(i===_cur||!_mio551(i))return;
+                      const _fw=(q.x-_cq.x)*_dir551,_dd=Math.hypot(q.x-_cq.x,q.y-_cq.y);
+                      if(_dd<4||_dd>_bkr623||_fw<_bkw623)return;
+                      const _sc=-Math.abs(_dd-14)*0.5+((Math.abs(hashStr("sx|"+nx+"|"+k+"|"+i))%100)/100)*3;
+                      if(_sc>_bs){_bs=_sc;_best=i;}});
+                    if(_best<0)break;
+                    _last615=true;
+                    }
+                  }
+                  const _bq=_mp551[_best];
+                  const _fw2=(_bq.x-_cq.x)*_dir551;
+                  const _kind=(_fw2>13)?"filtrante":(Math.abs(_bq.y-_cq.y)>22)?"cambio":(_fw2>4)?"verticale":"appoggio";
+                  passi.push({daIdx:_cur,rcvIdx:_best,da:String(_cq.name||"").trim(),a:String(_bq.name||"").trim(),kind:_kind,to:{x:_bq.x,y:_bq.y}});
+                  _cur=_best;
+                  if(_last615)break;
+                }
+                if(_cg615){if(passi.length>=2)_cg615.opened=(_cg615.opened|0)+1;else{_cg615.steps0=(_cg615.steps0|0)+1;if((_cg615.s0=_cg615.s0||[]).length<40)_cg615.s0.push({n:passi.length,hx:+(_mp551[_hold].x||0).toFixed(1),hy:+(_mp551[_hold].y||0).toFixed(1)});}}
+                if(passi.length>=2){azioneRef.current={passi,i:0,nostra:_lato551==="home",arrivato:false,t0:nx};
+                  /* [7.537.0 v3] LA CATENA APRE LA PROFONDITA'. Le v1/v2 sono state buttate con le loro
+                     misure: pretendere l'avanzamento a ogni passo (v2) non basta se davanti non c'e'
+                     NESSUNO — in cronaca i ventidue vivono ammassati attorno al cerchio (misura: 80-93%
+                     del tempo in fascia centrale), quindi la catena non trovava riceventi e si chiudeva
+                     subito. All'apertura i tre uomini piu' avanzati del lato in possesso ATTACCANO lo
+                     spazio (+7u verso la porta): e' lo stesso principio dello staging pre-azione degli
+                     highlight, portato nella cronaca — prima si crea la giocata, poi la si racconta. */
+                  const _d3=(_lato551==="home")?1:-1;
+                  setMatchPlayers(prev=>{const idxs=prev.map((q,i)=>({q,i})).filter(o=>o.q&&o.q.team===_lato551&&!o.q.gk)
+                      .sort((a,c)=>((c.q.x-a.q.x)*_d3)).slice(0,3).map(o=>o.i);
+                    return prev.map((pl,idx)=>(idxs.indexOf(idx)>=0&&pl)?{...pl,x:clamp(pl.x+_d3*7,4,94)}:pl);});}
+              }
+          return !!azioneRef.current;
+        };
         const _rip575=!(typeof window!=='undefined'&&window.__CPM_NO575)&&((kickRef.current|0)>0||(kickoffRef.current|0)>0);
         if(!(typeof window!=='undefined'&&window.__CPM_NO575)){
           if(_simEv77&&_rip575){if(!golAttesa575.current)golAttesa575.current=_simEv77;_simEv77=null;}
@@ -2317,10 +2432,11 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           const _pg532=pendingGoalRef.current;
           if(_simEv77&&!_pg532){
             const _nostro532=_simEv77.ef==="team_goal";
-            pendingGoalRef.current={ev:_simEv77,dir:_nostro532?1:-1,ticks:0,righe:0};
+            pendingGoalRef.current={ev:_simEv77,dir:_nostro532?1:-1,ticks:0,righe:0,righeLato:0};
             if(!(typeof window!=='undefined'&&window.__CPM_NO543))setTurn616(_nostro532?1:-1,"gol-in-costruzione");/* [7.532.0 NO543] l'azione pendente e' di chi segnera' */
             _simEv77=null;
             addCom(_nostro532?"⚡ Azione manovrata: la squadra sale in blocco verso l'area!":"⚠️ L'avversario avanza compatto — pericolo in costruzione…",_nostro532?"#4ade80":"#f87171",nx);
+            if(!(typeof window!=='undefined'&&window.__CPM_NO644))_apriCatena644(_nostro532?"home":"away");/* [7.644.0] LA COSTRUZIONE NASCE COL SUO RACCONTO: la catena si apre all'armamento, non aspetta che il sorteggio peschi una riga — fotografato il contrario su 4 gol su 10 (zero righe del lato) */
           }else if(_pg532&&!_inHL77){
             _pg532.ticks++;
             const _t532=ballTargetRef.current;const _b532=ballPosRef.current||{x:50,y:50};
@@ -2336,8 +2452,8 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                unita' a ogni tick, quindi contare «e' cambiato» conterebbe otto passaggi in una scivolata.
                Si contano solo i salti oltre le sei unita' — piu' del doppio del passo della marcia. */
             if(typeof window!=='undefined'&&(_CPM_TEST||window.__CPM_REC)){try{const _P=(window.__CPM_PG587=window.__CPM_PG587||{azioni:[]});const _a=_P.azioni[_P.azioni.length-1];const _px=_t532.x,_py=_t532.y;
-              if(_a&&_a.tick===(_pg532.ticks|0)-1){_a.tick=_pg532.ticks|0;const _sal=Math.hypot(_px-_a.lx,_py-_a.ly);if(_sal>6){_a.passaggi++;if(_sal>_a.max)_a.max=+_sal.toFixed(1);}_a.lx=_px;_a.ly=_py;_a.perc+=_sal;}
-              else _P.azioni.push({tick:_pg532.ticks|0,passaggi:0,max:0,perc:0,lx:_px,ly:_py,da:Math.round(_px)+","+Math.round(_py)});}catch(_e587){}}
+              if(_a&&_a.tick===(_pg532.ticks|0)-1){_a.tick=_pg532.ticks|0;_a.mn=nx;const _sal=Math.hypot(_px-_a.lx,_py-_a.ly);if(_sal>6){_a.passaggi++;if(_sal>_a.max)_a.max=+_sal.toFixed(1);}_a.lx=_px;_a.ly=_py;_a.perc+=_sal;}
+              else _P.azioni.push({tick:_pg532.ticks|0,mn:nx,mn0:nx,passaggi:0,max:0,perc:0,lx:_px,ly:_py,da:Math.round(_px)+","+Math.round(_py)});/* [7.644 strumentazione] mn/mn0: minuto d'inizio e ultimo minuto — servono ad agganciare azione e gol nel metro */}catch(_e587){}}
             if(!(azioneRef.current&&!(typeof window!=='undefined'&&window.__CPM_NO559))&&!ballLagRef.current)_t532.x=clamp(_t532.x+_pg532.dir*3,2,98);/* [7.642 v5] il bersaglio aspetta la palla *//* [7.541.0] se la catena sta raccontando, e' LEI a portare la palla: due scrittori sullo stesso pallone si annullano, e quello cieco (+3u verso la porta) non nomina nessuno *//* [v3] 4->3 u/tick (~7u/s): a 4 la palla correva a 9,5u/s, oltre il passo del portatore (7-9u/s) — ball-attended crollato a 46,8% (<52): l'azione manovrata viaggia CON la squadra, non davanti a tutti */_t532.y=clamp(_t532.y+(50-_t532.y)*0.25,6,94);
             /* [7.542.0 v4 — collaudo PO «non si vedono i gol»] LA RETE ASPETTA LA SUA AZIONE. Tre
                iterazioni sulla FINESTRA del racconto (forzatura ovunque: 6/8 ma ritmo rotto a 1,29x;
@@ -2348,7 +2464,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                non allargare la finestra, ma far ASPETTARE la rete: un gol si scrive quando la sua azione
                e' stata raccontata (tre righe), non quando la palla tocca una coordinata. Il tetto di
                sicurezza dei 10 tick resta ed e' l'ultima parola: nessun gol puo' restare in sospeso. */
-            const _rg532=(typeof window!=='undefined'&&window.__CPM_NO563)?true:((_pg532.righe|0)>=3);
+            const _rg532=(typeof window!=='undefined'&&window.__CPM_NO563)?true:(((_pg532.righe|0)>=3)&&((typeof window!=='undefined'&&window.__CPM_NO644)||((_pg532.righeLato|0)>=1)));/* [7.644.0] tre righe qualsiasi E almeno UNA del lato che segna: prima bastavano tre righe di chiunque. Il tetto resta l'ultima parola (nessun gol in sospeso). */
             /* [7.638.0 — IL GOL NASCE IN AREA, NON A META' STRADA. Rosso __CPM_NO638]
                Collaudo PO: «i gol arrivano da oltre 30 metri senza azioni». MISURATO (golpos-637, due
                partite): la riga di gol si scrive con la palla a 23-24u dalla porta, SEMPRE — perche'
@@ -2456,7 +2572,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
            nella propria meta', si accende quando l'azione ARRIVA. Da qui la forzatura vale solo fuori
            dalla costruzione — la rete continua ad arrivare in fondo alla sua azione, ma l'attesa prima
            resta. */
-        const _forza541=(_cat559&&!!pendingGoalRef.current&&!_inHL77&&_advT501>=45);/* [7.542.0 v3] LA FINESTRA DEL RACCONTO COMINCIA A META' CAMPO, NON AL LIMITE DELL'AREA. La v2 apriva la forzatura solo fuori dalla costruzione, cioe' da avanzamento 58: ma il gol si scrive a 72, quindi l'attacco aveva solo la striscia 58-72 per farsi raccontare — due o tre tick, proprio sul filo della soglia «tre righe nei quattro minuti prima», e la misura infatti restava a 4/7. Ora la finestra si apre quando l'azione supera la meta' campo (45), che e' anche quando una telecronaca vera alza la voce. Resta fuori il palleggio nella propria meta', che e' il respiro che bg-rhythm difende. */
+        const _forza541=(_cat559&&!!pendingGoalRef.current&&!_inHL77&&(_advT501>=45||(!(typeof window!=='undefined'&&window.__CPM_NO644)&&(pendingGoalRef.current.righeLato|0)===0&&(pendingGoalRef.current.ticks|0)>=4)));/* [7.644.0] LA COSTRUZIONE MUTA NON RESTA MUTA: da 4 tick senza una riga del suo lato, la riga esce comunque (con la catena aperta dall'armamento e' un passo nominato). Il caso fotografato: armamento profondo + tetto-14 = gol senza NESSUNA riga del lato. *//* [7.542.0 v3] LA FINESTRA DEL RACCONTO COMINCIA A META' CAMPO, NON AL LIMITE DELL'AREA. La v2 apriva la forzatura solo fuori dalla costruzione, cioe' da avanzamento 58: ma il gol si scrive a 72, quindi l'attacco aveva solo la striscia 58-72 per farsi raccontare — due o tre tick, proprio sul filo della soglia «tre righe nei quattro minuti prima», e la misura infatti restava a 4/7. Ora la finestra si apre quando l'azione supera la meta' campo (45), che e' anche quando una telecronaca vera alza la voce. Resta fuori il palleggio nella propria meta', che e' il respiro che bg-rhythm difende. */
         if(_simEv77||(_draw541&&!_inHL77&&!_pausa485)||_forza541){/* [7.528.0 v2] durante l'azione pendente le righe ESCONO e raccontano l'avanzata (la decisione F3b segue la palla che sale: sviluppo/pericolo emergono da soli — la prima stesura le sopprimeva e il guardiano bg-rhythm e' diventato CIECO: sviluppo 6 coppie, pericolo 2, contro 14/13 storici); a non muovere il pallone ci pensa il blocco _bt498 qui sotto */
           /* [7.490.0 direttiva PO §9 «eventi importanti: piu' enfasi e tempo di lettura»] LA PAUSA SI ARMA
              DOPO, E PESA L'EVENTO. Fino a qui era uniforme: un gol aveva lo stesso respiro di una rimessa
@@ -2786,108 +2902,8 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
             const _urg559=_cat559&&!!pendingGoalRef.current;/* [7.542.0 v2] LA CATENA SI APRE IN OGNI FASE, LA PAUSA SI SCAVALCA SOLO FUORI DALLA COSTRUZIONE. La v1 gate-ava tutt'e tre le cose sulla fase e ha pagato il ritmo col racconto: bg-rhythm da 1,29x a 2,89x (soglia 1,30) ma i gol raccontati da 6/8 a 4/7, sotto la soglia dichiarata. Col ritmo a piu' del doppio del minimo c'e' margine per restituire: qui si separa cio' che detta il RESPIRO (la pausa d'enfasi, che in costruzione resta) da cio' che detta il RACCONTO (che la catena sia aperta e non ceda il turno, e quello serve sempre). *//* [7.541.0] vedi la nota sulla forzatura: in costruzione la cronaca prende tempo, come prima *//* [7.541.0] il gol in arrivo non aspetta il turno: la catena si apre subito e non alterna */
             const _cg615=(typeof window!=='undefined'&&window.__CPM_CAT615)||null;/* [7.615.0 strumentazione] il cancello della catena si racconta: quante volte prova, e dove muore */
             if(_cg615){_cg615.tick=(_cg615.tick|0)+1;if(pendingGoalRef.current){_cg615.pgTick=(_cg615.pgTick|0)+1;if(azioneRef.current)_cg615.pgConCat=(_cg615.pgConCat|0)+1;}}/* [7.622.0] quanti tick di COSTRUZIONE DEL GOL vedono questo sito, e quanti hanno gia' una catena aperta: e' il buco dei «gol nudi» */
-            if(!azioneRef.current&&_mp551.length>=11&&(_urg559||nx-(_lastCatRef.current|0)>=6||_lastCatRef.current<0)){/* [7.537.0 v6] intervallo 3'→6' */
-              if(_cg615)_cg615.gate=(_cg615.gate|0)+1;
-              /* si apre solo se c'e' un portatore plausibile vicino alla palla */
-              const _b551=ballPosRef.current||{x:50,y:50};
-              let _hold=-1,_hd=1e9;_mp551.forEach((q,i)=>{if(!_mio551(i))return;const d=Math.hypot(q.x-_b551.x,q.y-_b551.y);if(d<_hd){_hd=d;_hold=i;}});
-              if(_cg615&&!(_hold>=0&&_hd<26)){_cg615.farHold=(_cg615.farHold|0)+1;if((_cg615.fh=_cg615.fh||[]).length<40)_cg615.fh.push(+_hd.toFixed(1));}
-              if(_hold>=0&&_hd<26){
-                const _dir551=(_lato551==="home")?1:-1;
-                const _n551=2+(Math.abs(hashStr("cat|"+nx+"|"+_hold))%2);/* [7.537.0 v6] 2-3 tocchi, non 3-5: col confronto diretto (guardiano acceso/spento) la catena da 5 passi alternati occupava circa meta' della telecronaca e affamava il repertorio pescato — 14 righe utili contro le 15 minime CON la catena, verde SENZA. Una giocata di due-tre tocchi si racconta meglio e lascia parlare il commento. */
-                const passi=[];let _cur=_hold;
-                for(let k=0;k<_n551;k++){
-                  const _cq=_mp551[_cur];if(!_cq)break;
-                  /* il ricevente e' un compagno PIU' AVANTI (o in appoggio laterale al cambio gioco),
-                     entro un raggio da passaggio: la catena guadagna campo senza teletrasporti */
-                  let _best=-1,_bs=-1e9;
-                  _mp551.forEach((q,i)=>{if(i===_cur||!_mio551(i))return;
-                    const _fw=(q.x-_cq.x)*_dir551,_dd=Math.hypot(q.x-_cq.x,q.y-_cq.y);
-                    if(_dd<4||_dd>40)return;
-                    if(_fw<2)return;/* [7.537.0 v7] il passo DEVE guadagnare campo: col vincolo a -1 la catena
-                       accettava appoggi laterali e teneva la palla al centro — il guardiano `bg-rhythm` e'
-                       andato cieco sulla fase SVILUPPO (4 coppie contro le 8 minime, costruzione 51): una
-                       telecronaca che parla solo di costruzione non ha piu' respiro. *//* [7.537.0 v2] OGNI PASSO GUADAGNA CAMPO: la v1 pesava l'avanzamento (x1,6) ma non lo pretendeva, e con la formazione compatta al centro la catena girava in orizzontale — misurato: tempo nella fascia centrale 80%→93%, cioe' il contrario di cio' che serviva. Un passaggio all'indietro non e' vietato nel calcio, ma questa macchina esiste per PORTARE la palla: se non c'e' nessuno piu' avanti, la catena si chiude e lascia parlare le altre voci. */
-                    /* [7.615.0 — LA CATENA NON SI MANGIA IL CAMPO IN UN BOCCONE. Rosso __CPM_NO615]
-                       MISURATO col censimento del cancello (__CPM_CAT615): il portatore c'e' SEMPRE
-                       (farHold 0/17) e il cancello passa (16/17), ma la catena apriva 1 volta su 16 —
-                       QUINDICI morti al secondo passo, quattordici con ESATTAMENTE un passo costruito.
-                       L'aritmetica: il punteggio premiava l'avanzamento con peso 4,5 SENZA tetto, quindi
-                       il primo passo saltava sull'uomo piu' avanzato (anche +30-40u, il limite era il
-                       raggio dd<40) e da li' davanti non restava nessuno con fw>=2: la macchina degli
-                       schemi si affamava da sola al primo boccone — ed e' il perche' del «catena: 0
-                       righe» su intere passate (manovra-615) e dell'1% di fotogrammi (scrittori-601).
-                       Col tetto a 12 il passo ideale resta la verticale corta (8-18u, la stessa banda
-                       del repertorio 7.549) e lo spazio davanti avanza per i passi successivi. */
-                    const _fwS615=(typeof window!=='undefined'&&window.__CPM_NO615)?_fw:Math.min(_fw,12);
-                    const _sc=_fwS615*4.5-Math.abs(_dd-22)*0.35+((Math.abs(hashStr("rx|"+nx+"|"+k+"|"+i))%100)/100)*3;
-                    if(_sc>_bs){_bs=_sc;_best=i;}});
-                  let _last615=false;
-                  if(_best<0){
-                    /* [7.615.0 — L'ULTIMO PASSO PUO' ESSERE UNO SCARICO. Rosso __CPM_NO615B]
-                       Anche col tetto sull'avanzamento, 10 tentativi su 14 morivano al secondo passo:
-                       dal ricevente avanzato nessuno sta piu' davanti con fw>=2, e una catena da UN passo
-                       non e' una catena (serve passi>=2). Nel calcio la manovra si chiude cosi': verticale,
-                       e SCARICO corto d'appoggio (anche all'indietro fino a 4u, raggio 4-26). Ammesso solo
-                       DOPO almeno un passo in avanti (k>=1) e come passo FINALE — il vincolo v7 sul
-                       guadagno di campo resta la regola, questo e' il suo punto e virgola. Il dai-e-vai
-                       (tornare sul primo passatore) e' compreso: e' calcio vero. */
-                    if(k<1){
-                      /* [7.633.0 — IL PRIMO PASSO PUO' USCIRE DAL TRAFFICO. Rosso __CPM_NO633B]
-                         CENSIMENTO nella realizzazione del guardiano (name Pv): 5 morti su 9 occasioni a
-                         steps0, portatore AVANZATO (x 65-72) — davanti nessuno con fw>=2, e a passo zero
-                         nemmeno lo scarico 7.623 e' concesso (k>=1): la catena moriva sul nascere.
-                         Nel calcio l'uscita dal traffico e' l'appoggio laterale, POI la verticale.
-                         Concesso solo come PRIMO passo e la catena PROSEGUE (non e' una chiusura):
-                         la legge v7 sul guadagno di campo torna dal passo successivo. */
-                      if(typeof window!=='undefined'&&window.__CPM_NO633B)break;
-                      _mp551.forEach((q,i)=>{if(i===_cur||!_mio551(i))return;
-                        const _fwL=(q.x-_cq.x)*_dir551,_ddL=Math.hypot(q.x-_cq.x,q.y-_cq.y);
-                        if(_ddL<4||_ddL>26||_fwL<-8)return;
-                        const _scL=-Math.abs(_ddL-12)*0.5+((Math.abs(hashStr("lx|"+nx+"|"+k+"|"+i))%100)/100)*3;
-                        if(_scL>_bs){_bs=_scL;_best=i;}});
-                      if(_best<0)break;
-                    }else{
-                    if(typeof window!=='undefined'&&window.__CPM_NO615B)break;
-                    /* [7.623.0 — LA CHIUSURA E' UN RETROPASSAGGIO VERO. Rosso __CPM_NO623]
-                       MISURATO col registro s0 (dopo il 7.615): meta' delle morti residue e' «n:1» —
-                       la verticale c'e', ma il ricevente e' l'uomo PIU' avanzato e la finestra dello
-                       scarico (fino a 4u indietro, raggio 26) e' VUOTA quando tutti i compagni stanno
-                       8-20u dietro. Nel calcio quello si chiama retropassaggio, ed e' nella lista §2
-                       della direttiva PO. La chiusura ammette fino a 14u all'indietro, raggio 30 —
-                       SOLO come ultimo passo dopo una verticale: v7 resta la legge dei passi veri. */
-                    const _bkw623=(typeof window!=='undefined'&&window.__CPM_NO623)?-4:-14;
-                    const _bkr623=(typeof window!=='undefined'&&window.__CPM_NO623)?26:30;
-                    _mp551.forEach((q,i)=>{if(i===_cur||!_mio551(i))return;
-                      const _fw=(q.x-_cq.x)*_dir551,_dd=Math.hypot(q.x-_cq.x,q.y-_cq.y);
-                      if(_dd<4||_dd>_bkr623||_fw<_bkw623)return;
-                      const _sc=-Math.abs(_dd-14)*0.5+((Math.abs(hashStr("sx|"+nx+"|"+k+"|"+i))%100)/100)*3;
-                      if(_sc>_bs){_bs=_sc;_best=i;}});
-                    if(_best<0)break;
-                    _last615=true;
-                    }
-                  }
-                  const _bq=_mp551[_best];
-                  const _fw2=(_bq.x-_cq.x)*_dir551;
-                  const _kind=(_fw2>13)?"filtrante":(Math.abs(_bq.y-_cq.y)>22)?"cambio":(_fw2>4)?"verticale":"appoggio";
-                  passi.push({daIdx:_cur,rcvIdx:_best,da:String(_cq.name||"").trim(),a:String(_bq.name||"").trim(),kind:_kind,to:{x:_bq.x,y:_bq.y}});
-                  _cur=_best;
-                  if(_last615)break;
-                }
-                if(_cg615){if(passi.length>=2)_cg615.opened=(_cg615.opened|0)+1;else{_cg615.steps0=(_cg615.steps0|0)+1;if((_cg615.s0=_cg615.s0||[]).length<40)_cg615.s0.push({n:passi.length,hx:+(_mp551[_hold].x||0).toFixed(1),hy:+(_mp551[_hold].y||0).toFixed(1)});}}
-                if(passi.length>=2){azioneRef.current={passi,i:0,nostra:_lato551==="home",arrivato:false,t0:nx};
-                  /* [7.537.0 v3] LA CATENA APRE LA PROFONDITA'. Le v1/v2 sono state buttate con le loro
-                     misure: pretendere l'avanzamento a ogni passo (v2) non basta se davanti non c'e'
-                     NESSUNO — in cronaca i ventidue vivono ammassati attorno al cerchio (misura: 80-93%
-                     del tempo in fascia centrale), quindi la catena non trovava riceventi e si chiudeva
-                     subito. All'apertura i tre uomini piu' avanzati del lato in possesso ATTACCANO lo
-                     spazio (+7u verso la porta): e' lo stesso principio dello staging pre-azione degli
-                     highlight, portato nella cronaca — prima si crea la giocata, poi la si racconta. */
-                  const _d3=(_lato551==="home")?1:-1;
-                  setMatchPlayers(prev=>{const idxs=prev.map((q,i)=>({q,i})).filter(o=>o.q&&o.q.team===_lato551&&!o.q.gk)
-                      .sort((a,c)=>((c.q.x-a.q.x)*_d3)).slice(0,3).map(o=>o.i);
-                    return prev.map((pl,idx)=>(idxs.indexOf(idx)>=0&&pl)?{...pl,x:clamp(pl.x+_d3*7,4,94)}:pl);});}
-              }
+            if(!azioneRef.current&&_mp551.length>=11&&(_urg559||nx-(_lastCatRef.current|0)>=6||_lastCatRef.current<0)){/* [7.537.0 v6] intervallo 3'→6' *//* [7.644.0] il costruttore vive in _apriCatena644, condiviso con l'armamento del pendingGoal: MAI due copie */
+              _apriCatena644(_lato551);
             }
             /* [7.537.0 v4] LA CATENA ALTERNA CON IL REPERTORIO. La v3 dirottava OGNI riga finche' i passi
                finivano: tre-cinque battute consecutive tutte di macchina, e il guardiano `bg-decision`
@@ -3377,6 +3393,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
              manda il pallone (`bpos`) e quali statistiche si porta dietro (`ms`). E' il verso invertito
              che l'audit ha misurato — il testo che comanda il campo e il box-score — e serve poterlo
              contare prima di raddrizzarlo in F3. Registrato alla SORGENTE, non dal DOM (nota 7.487). */
+          if(pendingGoalRef.current&&!(typeof window!=='undefined'&&window.__CPM_NO644)){try{const _pgL644=pendingGoalRef.current;const _ltN644=_pgL644.dir>0?"home":"away";if((_recHij545&&_recSide546===_ltN644)||(!_recHij545&&possTurnRef.current===_pgL644.dir))_pgL644.righeLato=(_pgL644.righeLato|0)+1;}catch(_e644){}}/* [7.644.0] LA RIGA CONTA PER LA RETE SOLO SE E' DEL LATO CHE SEGNA: macchina che dichiara il lato giusto, o repertorio emesso col turno del lato. FOTOGRAFATO (golback644b): `righe` contava righe di CHIUNQUE — costruzioni chiuse regolari (righe>=3) con ZERO racconto del lato che poi segnava. */
           cpmEv("chronicle",{min:nx,dec:_dec499,fase:_fase501,tn:possTurnRef.current,rec:_recHij545?1:0,poss:(ev.poss||0),muta:(!ev.ef&&!ev.ms&&!ev.poss&&!ev.sp)?1:0,/* [7.554.0 MISSIONE — IL REGISTRO DICE TUTTO QUELLO CHE LA RIGA FA] Il registro portava esito, tabellino, palla ferma e zona, ma NON il possesso: due famiglie di verdetti della sonda `fatti-546` leggevano campi inesistenti e stampavano ZERO in silenzio a ogni passata, perche' una famiglia assente non fa rumore. Con 31 righe su 223 che spostano il possesso, oggi NESSUNA sonda puo' dire quante righe lo muovono. E `muta` dichiara in chiaro cio' che finora si deduceva per esclusione: la riga non afferma NIENTE — ne' un esito, ne' una statistica, ne' un possesso, ne' una palla ferma. Sono 107 su 223, e muovono comunque pallone, schieramento e gesto. Sola strumentazione: `cpmEv` non tocca stato ne' render. */pd:ev.pd||null,rk:_recKind546||null,/* [7.578.0] QUALE macchina ha scritto la riga (kickoff · out_* · sp_* · counter · catena · ponte). Senza, `rec:1` mette nello stesso mucchio il pallone fermo e il gioco aperto, che hanno regole opposte: il primo RICOLLOCA il pallone per natura, il secondo no. Una sonda che li somma non puo' dire se il tetto del 7.498 stia proteggendo o smentendo. */concorda:(ev.pd===_dec499),ef:ev.ef||null,bx:ev.bpos?ev.bpos.x:null,by:ev.bpos?ev.bpos.y:null,bex:_bt498?+_bt498.x.toFixed(1):null,bey:_bt498?+_bt498.y.toFixed(1):null,bax:+ballPosRef.current.x.toFixed(1),bay:+ballPosRef.current.y.toFixed(1),npd:(function(){try{const _b=ballPosRef.current;const _lt=(possTurnRef.current>0)?"home":"away";let _d=null;(matchPlayersRef.current||[]).forEach(q=>{if(!q||q.team!==_lt||q.gk)return;const _dd=Math.hypot((q.x||50)-_b.x,(q.y||50)-_b.y);if(_d==null||_dd<_d)_d=_dd;});return _d==null?null:+_d.toFixed(1);}catch(_e){return null;}})(),/* [7.624.0 strumentazione] CUSTODIA LOGICA alla riga: distanza del piu' vicino uomo del lato in possesso dalla palla logica. Serve il metro per il redesign A2: due metri a fotogrammi (POR526 e l'anello ws) sono stati SQUALIFICATI con lo studio di ripetibilita' (±10-15 punti fra run a codice identico — campionamento a orologio su renderer col jitter); questo campiona un EVENTO del tick logico, quasi-seedato. cpmEv e' inerte per costruzione. *//* [7.576.0 — IL REGISTRO SEPARA CIO' CHE LA RIGA DICE DA CIO' CHE IL MOTORE FA] Finora il registro portava solo `bx/by`, cioe' la destinazione PROPOSTA dalla riga. Ma fra la proposta e il pallone ci sono due passaggi: il FRENO del 7.498 (tetto 30u per riga, piu' il richiamo verso il corridoio del 7.528) puo' accorciare la proposta, e poi il motore del possesso puo' portare il pallone altrove. Con un solo numero le tre cose sono indistinguibili, e il giudice della cronaca non puo' dire di CHI e' la colpa: se la riga ha mentito, se il freno l'ha smentita, o se qualcun altro ha spostato il pallone dopo. `bex/bey` = dove il motore manda DAVVERO il pallone (dopo il freno); `bax/bay` = dov'era il pallone quando la riga e' uscita. Sola strumentazione: `cpmEv` non tocca stato ne' render. */shots:(ev.ms&&ev.ms.shots)||0,oppShots:(ev.ms&&ev.ms.oppShots)||0,sp:ev.sp||null,at:ev.at||null}/* [7.545.0] `sp` e `at` nel registro: senza, una riga che ANNUNCIA una palla ferma non e' distinguibile da una che non lo fa, e il pezzo «gli eventi fermi esistono» non ha come misurarsi */);/* [7.532.0] tn: il turno al momento della riga — strumentazione permanente per il ritmo side-aware */
           let cColor=ev.ef==="team_goal"?"#16a34a":ev.ef==="opp_goal"?"#dc2626":ev.ef==="opp_red"?"#16a34a":ev.ef==="opp_injury"?"#f59e0b":ATE3_ARCCOL[_arcType]||TH.faint;
           if(pendingGoalRef.current&&!ev.ef)cColor="#fbbf24";/* [7.530.0 collaudo PO «quando c'è un'azione offensiva che può portare al gol ci deve essere maggiore enfasi/suspance»] durante l'azione pendente il banner scala sull'ambra calda: si VEDE che sta montando qualcosa (la densita' 1,30 del 7.528 gia' incalza il ritmo) */
