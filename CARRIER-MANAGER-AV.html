@@ -21194,6 +21194,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
      (E il rallentamento del tick durante la ripresa resta un fatto MISURATO e NON spiegato: annotato
      perche' tocca anche «il pallone rimbalza senza portatore», che e' un altro appunto del PO.) */
   const holdArrRef=useRef(0);/* [7.642.0 v4] la sosta d'arrivo: tick in cui il bersaglio resta sui piedi dell'eletto */
+  const pendingBtRef=useRef(null);/* [7.643.0] la proposta di bersaglio in coda: parte quando la consegna corrente si completa */
   const ballLagRef=useRef(false);/* [7.642.0 v5 — IL BERSAGLIO ASPETTA LA PALLA] misurato in v4: la palla e' entro 2,5u di un uomo solo 3 tick su 36 — le marce delle macchine avanzano il bersaglio anche con la palla lontana e il viaggio non si completa mai. Con la palla a >6u dal bersaglio, le quattro marce (gol-in-costruzione, contropiede, catena, trama) NON avanzano quel tick: prima si arriva, poi si riparte. */
   const carrierRef=useRef(null);/* [7.641.0 — F1a: IL PORTATORE E' UNO STATO, NON UNA DEDUZIONE] Decisione B:
      il portatore persistente {i} (indice in matchPlayers) scritto SOLO agli EVENTI — passaggio della
@@ -21239,7 +21240,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   const setTurn616=(dir,causa,opts)=>{try{
     const _d=dir>0?1:-1;const _prev=possTurnRef.current;
     possTurnRef.current=_d;
-    if(_prev!==_d&&!(typeof window!=='undefined'&&window.__CPM_NO641))carrierRef.current=null;/* [7.641.0 F1a] al cambio di possesso il portatore decade: si rielegge al prossimo ARRIVO */
+    if(_prev!==_d&&!(typeof window!=='undefined'&&window.__CPM_NO641)){carrierRef.current=null;pendingBtRef.current=null;/* [7.641/7.643] al cambio di possesso decadono portatore E proposta in coda */}
     if(!(opts&&opts.keepSpell)){possSpellRef.current=6;possExtRef.current=0;}
     cpmEv("turn",{min:clockRef.current|0,dir:_d,flip:_prev!==_d?1:0,causa:String(causa||"?")});
     if(typeof window!=='undefined'&&window.__CPM_TURN616){const _g=window.__CPM_TURN616;
@@ -23314,7 +23315,18 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
              dove il gioco sta: e' li' che va il prossimo colpo, non su questo interruttore. */
           if(_bt498){
             if(typeof window!=='undefined'&&(window.__CPM_REC||_CPM_TEST)){try{const _g=(window.__CPM_INV=window.__CPM_INV||{descrive:0,comanda:0});_g.comanda++;}catch(_e){}}
-            ballTargetRef.current=_bt498;
+            /* [7.643.0 — LA CODA DELLE CONSEGNE. Rosso __CPM_NO643] Collo misurato del 7.642: la palla
+               e' entro 2,5u di un uomo solo 3 tick su 36 perche' le RIGHE riscrivono il bersaglio ogni
+               ~2 tick e il viaggio non si completa mai. Una riga di GIOCO APERTO non scavalca una
+               consegna in corso: se la palla e' ancora a >6u dal bersaglio corrente, la proposta si
+               ACCODA (coda da 1: l'ultima vince) e parte quando la consegna si completa. I gol e i
+               fermi restano esenti (non passano da qui o hanno le loro macchine). */
+            const _inFlight643=!(typeof window!=='undefined'&&window.__CPM_NO643)&&!ev.ef&&!_fermo578
+              &&Math.hypot((ballPosRef.current.x||50)-(ballTargetRef.current.x||50),(ballPosRef.current.y||50)-(ballTargetRef.current.y||50))>6;
+            if(_inFlight643){pendingBtRef.current=_bt498;
+              if(typeof window!=='undefined'&&window.__CPM_REC){try{const _q=(window.__CPM_CODA643=window.__CPM_CODA643||{acc:0,diretti:0,part:0});_q.acc++;}catch(_e){}}}
+            else{ballTargetRef.current=_bt498;
+              if(typeof window!=='undefined'&&window.__CPM_REC){try{const _q=(window.__CPM_CODA643=window.__CPM_CODA643||{acc:0,diretti:0,part:0});_q.diretti++;}catch(_e){}}}
             /* [7.498.0] e il micro-scarto dell'eroe passa alla catena seedata: era un `Math.random()`
                rimasto dentro il tick dopo il giro F0, dove `_rndM` e' in scope. */
             if(!onBenchRef.current)setPPos(p=>({x:clamp(p.x+(_bt498.x-p.x)*0.08+(_rndM()-0.5)*1.5,3,97),y:clamp(p.y+(_bt498.y-p.y)*0.06+(_rndM()-0.5)*1.5,3,97)}));
@@ -23922,6 +23934,10 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
           const _qh=(matchPlayersRef.current||[])[carrierRef.current.i];
           if(_qh){ballTargetRef.current={x:clamp(_qh.x,2,98),y:clamp(_qh.y,2,98)};}
           holdArrRef.current--;}
+        else if(!ballLagRef.current&&pendingBtRef.current&&!(typeof window!=='undefined'&&window.__CPM_NO643)){
+          /* [7.643.0] SCODAMENTO: consegna completata e sosta finita — la proposta accodata parte ora */
+          ballTargetRef.current=pendingBtRef.current;pendingBtRef.current=null;
+          if(typeof window!=='undefined'&&window.__CPM_REC){try{const _q=(window.__CPM_CODA643=window.__CPM_CODA643||{acc:0,diretti:0,part:0});_q.part++;}catch(_e){}}}
       }catch(_e){}}
       // Ball lerp — interpolazione continua verso il target ad ogni tick (300ms)
       /* [7.478.0 «esito dichiarato != 3D», e il difetto NON era quello che la nota diceva] IL PALLONE NON
