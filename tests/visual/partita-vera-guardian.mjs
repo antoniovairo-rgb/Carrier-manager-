@@ -13,7 +13,7 @@ const srv = await startServer(); const port = srv.address().port;
 const b = await launchBrowser();
 const page = await b.newPage({ viewport: { width: 412, height: 915 } });
 await installCdnRoutes(page);
-await page.addInitScript(() => { window.__CPM_GLB = false; window.__CPM_TURN616 = {}; window.__CPM_NPD = []; });
+await page.addInitScript(() => { window.__CPM_GLB = false; window.__CPM_TURN616 = {}; window.__CPM_NPD = []; window.__CPM_REC = true; window.__CPM_CARRIER641 = []; });/* [7.643] +REC e +CARRIER641: misura lunga del portatore-stato (informativa finche' la realizzazione non e' stabile, poi banda) */
 await openMatch(page, port, { skipLoadAll: true, name: 'Pv' });
 await page.evaluate(() => window.__CPM_AUTOPLAY(true, { seed: 7300, policy: 'seeded', tickMs: 300 }));
 const all = [];
@@ -22,6 +22,8 @@ for (let k = 0; k < 12; k++) { await sleep(20000);
   all.push(...chunk); }
 const T = await page.evaluate(() => window.__CPM_TURN616 || {});
 const NPD = await page.evaluate(() => window.__CPM_NPD || []);
+const CAR = await page.evaluate(() => window.__CPM_CARRIER641 || []);
+const CODA = await page.evaluate(() => window.__CPM_CODA643 || null);
 await b.close(); srv.close();
 
 const rows = all.filter(e => e.ev === 'chronicle');
@@ -45,6 +47,11 @@ const checks = [
   ['gol-con-manovra', `${golCoperti}/${goals.length} gol con riga di macchina nei 4' prima`, goals.length >= 3 ? golCoperti >= 1 : null],
 ];
 console.log('\n=== GUARDIANO PARTITA-VERA ===\n');
+{ /* [7.643] misura informativa del portatore-stato (F1b): diventa banda quando 2-3 run confermano la stabilita' */
+  const _con = CAR.filter(q => q.c).length;
+  const _dd = CAR.filter(q => q.d != null).map(q => q.d).sort((a, c) => a - c);
+  console.log(`  [info] portatore-stato: campioni ${CAR.length} · copertura ${CAR.length ? Math.round(_con / CAR.length * 100) : 0}% · dist mediana ${_dd.length ? _dd[_dd.length >> 1] : '?'}u · coda consegne ${JSON.stringify(CODA)}`);
+}
 let fail = 0;
 for (const [nome, det, ok] of checks) {
   const tag = ok === null ? '· non giudicabile (campione sotto minimo)' : ok ? '✅' : '❌';
