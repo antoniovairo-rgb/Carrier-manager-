@@ -1,5 +1,10 @@
 # SPRINT «PARTITA VERA» — piano operativo
 
+> ⚠️ **SUPERATO (28/08)** — direttiva PO: la missione «partita vera» come simulazione completa
+> è dichiarata FALLITA e abbandonata. La strategia attiva è in
+> **`ROADMAP-PARTITA-NARRATIVA.md`** (partita narrativa credibile: cronaca → azioni salienti →
+> highlights dell'eroe). Questo documento resta come archivio dell'audit e delle misure.
+
 Direttiva PO (26/08, priorità assoluta): la partita deve essere riconoscibile, causale, credibile.
 Criterio d'accettazione: *«sto guardando una partita di calcio»* — non «gli eventi esistono», ma
 gli eventi formano una partita, collegati causalmente.
