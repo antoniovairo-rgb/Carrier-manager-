@@ -1168,6 +1168,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   const azioneRef=useRef(null),_lastCatRef=useRef(-1);/* [7.537.0 v4] minuto dell'ultima battuta di catena: serve per alternare con il repertorio */
   const ponteRef=useRef(null),ponteIdxRef=useRef(-1);/* [7.532.0 NO544 — collaudo PO «da centrocampo in cronaca all'improvviso highlights di attacco: nessuna concatenazione»] IL PONTE: ~2' prima dell'highlight in calendario la cronaca SCORTA la palla verso il punto di nascita della scena (hlBallSpot della situation in arrivo) e le righe raccontano l'avvicinamento — l'highlight si apre dove il racconto ha portato il gioco *//* [7.532.0 v2] l'innesco vive nella TRAMA (flip di possesso con palla nel terzo difensivo del nuovo padrone), NON nel sorteggio di una riga poss: i pesi di zona 7.525 schiacciano le righe di recupero proprio quando la palla e' alta (misurato: 0 lanci in 2 partite). Cooldown 6' di gioco. *//* [7.530.0 collaudo PO «Non si riparte dal centro dopo un gol!» — rosso __CPM_NO536] il 7.525 toccava il centro per UN tick (300ms): un lampo, non una ripartenza. Ora allo scadere del conto kickRef nasce una RIPARTENZA RECITATA: kickoffRef tick di attesa al centro, le righe gia' sorteggiate vengono DIROTTATE su battute di calcio d'inizio (ordine sorteggi intatto), side = chi rimette in gioco (chi ha subito) */
   const pendingGoalRef=useRef(null);/* [7.528.0 IL GOL SI COSTRUISCE] {ev,dir,ticks}: il gol del microsim aspetta che la palla arrivi nell'ultimo terzo *//* [7.525.0] tick al CALCIO D'INIZIO dopo un gol ambientale: col pallone che ora vola DENTRO lo specchio (bpos 98/2), senza ripresa dal centro restava parcheggiato in rete dove l'unico uomo e' il portiere (non-portatore per regola) — ball-attended misurato 45,8% < 52 al primo giro */
+  const direttoreRef=useRef({f:null,l:0,dal:0});/* [7.647.0 F1a] la scena narrativa corrente {f,l,dal}: il direttore di partita della roadmap narrativa */
   const golCoda645=useRef([]);/* [7.645.0] LA CODA DEI GOL SOVRAPPOSTI: il microsim e' un budget, le costruzioni escono una alla volta */
   /* [7.485.0 direttiva PO «la cronaca deve rispecchiare ed essere sincronizzata con i movimenti sul campo»]
      PAUSA MINIMA FRA DUE RIGHE DI CRONACA. Ogni riga DICHIARA dove va il pallone (`bpos`) e come si
@@ -2233,6 +2234,31 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
         const _rit501=(typeof window!=='undefined'&&window.__CPM_NO501)?1:((pendingGoalRef.current||counterRef.current||kickoffRef.current>0)?1.30:(_fase501==="pericolo"?1.30:_fase501==="sviluppo"?1.08:0.56));/* [7.532.0 NO542] anche il ribaltamento e' telecronaca CALDA *//* [7.531.0] taratura in DUE mosse misurate: (a) costruzione 0,60→0,56 (cartello del guardiano: «ritmo piu' marcato, non soglia piu' bassa») — non bastava, 1,25→1,27×, perche' il collo era l'ALTRO capo: l'identita' di modulo attraversa lo sviluppo col passo 1,12/1,28 e la fase restava povera (9 coppie, intervallo 4,67 vs 3,90 storico); (b) sviluppo 1,00→1,08 — arricchisce la fase affamata invece di affamare l'altra (la strada 0,52 e' gia' stata revocata per questo) e racconta l'avanzata piu' fitta, in linea con la direttiva FM del PO *//* [7.528.0 v5] Due lezioni misurate in un giro solo: (a) il taglio 0,52 della costruzione e' REVOCATO — ha strafatto (costruzione 45 coppie, sviluppo affamato a 5: guardiano cieco); (b) il buco vero era che l'AZIONE PENDENTE attraversa lo sviluppo in 3-4 tick sparando una riga isolata (v2: sviluppo 12 coppie ma intervallo 4,50 vs 3,90 storico, rapporto 1,27): durante l'avanzata la telecronaca ora e' FITTA come nel pericolo (1,30) — piu' righe consecutive nella fase calda, coppie vere, ed e' la telecronaca dell'azione che il PO chiede (stile FM). */
         const _momX=Math.abs(momentumRef.current-50)/50,_bgProb=((typeof window!=='undefined'&&window.__CPM_NO485)?(0.18+_momX*0.12):(0.55+_momX*0.25))*_rit501;
         const _inHL77=["hl_intro","hl_move","hl_choose","hl_result"].includes(phaseRef.current);
+        /* [7.647.0 — IL DIRETTORE DI PARTITA OSSERVA. FASE 1a della roadmap narrativa (docs/ROADMAP-PARTITA-NARRATIVA.md)]
+           Lo stato NARRATIVO della partita, per minuto: una scena e' cio' che uno spettatore direbbe
+           stia succedendo (quiete, costruzione, sviluppo, pericolo, pressione, transizione, palla
+           inattiva, attacco obbligato dal punteggio, ripresa, scena dell'eroe). In F1a il direttore
+           DERIVA la scena dalle macchine esistenti e la registra (__CPM_SCENE, su cambio scena):
+           nessun effetto sul gioco — e' il fondamento su cui F2 (event grammar) agganciera' le
+           produzioni. Le fasi TRANQUILLE sono cittadine di prima classe: quiete = giro palla nella
+           propria meta' senza spinta. Rosso non necessario: effetto zero per costruzione. */
+        {const _d647=(function(){
+          if((kickRef.current|0)>0||(kickoffRef.current|0)>0)return{f:'ripresa',l:possTurnRef.current};
+          if(pendingGoalRef.current)return{f:'attacco-obbligato',l:pendingGoalRef.current.dir};
+          if(counterRef.current)return{f:'transizione',l:counterRef.current.dir>0?1:-1};
+          if(spRef.current||outRef.current||fermoRef.current)return{f:'palla-inattiva',l:possTurnRef.current};
+          if(_inHL77)return{f:'scena-eroe',l:1};
+          if(_fase501==='pericolo')return{f:'pericolo',l:possTurnRef.current};
+          if(_fase501==='sviluppo')return{f:'sviluppo',l:possTurnRef.current};
+          if(Math.abs((momentumRef.current||50)-50)>=20)return{f:'pressione',l:(momentumRef.current||50)>50?1:-1};
+          if(_advT501<42)return{f:'quiete',l:possTurnRef.current};
+          return{f:'costruzione',l:possTurnRef.current};
+        })();
+        const _dp647=direttoreRef.current;
+        if(_dp647.f!==_d647.f||_dp647.l!==_d647.l){
+          direttoreRef.current={f:_d647.f,l:_d647.l,dal:nx};
+          if(typeof window!=='undefined'&&window.__CPM_REC){try{const _S=(window.__CPM_SCENE=window.__CPM_SCENE||[]);if(_S.length<300)_S.push({m:nx,f:_d647.f,l:_d647.l});}catch(_e647){}}
+        }}
         // [5.77.0 MOT-4] INTERVALLO REALE: prima riassunto/coro/reset scattavano SOLO se un evento BG usciva
         //   esattamente al tick 45 (~25% delle partite). Ora il 45' è un momento garantito, una volta sola.
         if(nx>=45&&!halfFiredRef.current){
