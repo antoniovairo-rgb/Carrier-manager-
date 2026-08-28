@@ -2388,6 +2388,18 @@ function ThreeMatchView(props){
              Rosso __CPM_NO546 = certificato incondizionato (comportamento 7.530-7.532). */
           const _cert546=(typeof window!=='undefined'&&window.__CPM_NO546)?true:(P.hlOutcomeKind!=="chance");
           if(_cert546)sr.current._netOk535=true;
+          /* [7.652.0 - ANCHE IL GOL DA DRIBBLING MERITA UN TUFFO. Rosso __CPM_NO652]
+             COLLAUDO PO (SIT #92, roulette->goal, nota ripetuta): «il portiere non si tuffa, non
+             tenta la parata». CENSITO: i sei armamenti di gk_dive coprono cross/incornata, assist,
+             chance e i tiri CON arco (ballArc) - ma i gol che entrano nel canale in_net DIRETTO
+             (dribbling/pressing-gol, r.~2240, e il «dai ricevi TIRA» r.~2234) non armavano nulla:
+             la palla scivolava in rete davanti a un portiere fermo. Stesso tuffo corto e battuto
+             degli altri siti (fattore 0,55: il gol sta entrando), armato UNA volta quando la palla
+             e' nell'ultimo tratto. */
+          if(!(typeof window!=='undefined'&&window.__CPM_NO652)&&awayGkMesh&&!P.hlDef&&!oppActType&&ball.position.x>GOAL_LINE_X-14){
+            oppActType="gk_dive";oppActT=0;oppMesh=awayGkMesh;oppDiveDir=ball.position.z>=oppMesh.position.z?1:-1;oppMesh._divePz=oppMesh.position.z;oppMesh._diveYaw=oppMesh.rotation.y;oppMesh._diveToZ=clamp(oppMesh.position.z+(ball.position.z-oppMesh.position.z)*0.55,oppMesh.position.z-6,oppMesh.position.z+6);
+            if(typeof window!=='undefined'&&window.__CPM_REC){try{const _w=(window.__CPM_DIVE652=window.__CPM_DIVE652||{arm:0});_w.arm++;}catch(_e652){}}
+          }
           if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)&&sr.current._netLog546!==P.hlSitKey+"|in_net"){sr.current._netLog546=P.hlSitKey+"|in_net";try{const _n5=(window.__CPM_NET546=window.__CPM_NET546||[]);if(_n5.length<60)_n5.push({ch:"in_net",ht:P.hlType||null,rew:P.hlReward||null,ok:P.hlOutcomeKind||null,cert:_cert546?1:0});}catch(_e){}}/* [7.533.0] collettore d'attribuzione 003 (test-only): ogni ingresso in rete dichiara premio/esito e se ha avuto il certificato */
           // [6.6.0 R3 ball] INGRESSO IN RETE FLUIDO: moto CONTINUO — la palla avanza oltre
           //   la linea SENZA fermarsi/scattare, converge nello specchio NELLA DIREZIONE del tiro (continuità, non
