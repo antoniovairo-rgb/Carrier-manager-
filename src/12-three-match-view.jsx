@@ -1004,7 +1004,21 @@ function ThreeMatchView(props){
       return _fill(cand[_k%cand.length]);};
     if(_CPM_TEST&&typeof window!=='undefined'){window.__CPM_ULTRAS=(nm,seed,slot,nat,fid)=>_ultrasName(nm,seed,slot,nat,fid);window.__CPM_ULTRAS.cls=(nm)=>({t:_ultrasToken(nm),c:_TOK_CLASS[_ultrasToken(nm)]||"P"});}/* [7.191.0] classe grammaticale del token esposta alla probe *//* [7.187.0] hook test-only per la probe identità/collisioni (spento in store build) *//* [7.174.0 collaudo PO «c è quasi sempre BRIGATA»] causa VERA: adSeed deriva dal club dell EROE+stagione → identico in ogni gara, e il nome del club NON entrava nell indice → ogni stadio mostrava la stessa struttura (BRIGATA <città>). Ora il nome è nell hash (+ avalanche _mix32) → gruppo diverso per club, stabile nella stagione. *//* [7.174.0 collaudo PO «c è quasi sempre BRIGATA»] l indice senza avalanche collassava: i seed hashStr di club/slot simili condividono il residuo mod 11 → stesso nome ovunque. _mix32 decorrelALL i bucket. */
     const _dkTifo=(h,f)=>{try{const n=parseInt(String(h).replace('#',''),16);return 'rgb('+Math.round(((n>>16)&255)*f)+','+Math.round(((n>>8)&255)*f)+','+Math.round((n&255)*f)+')';}catch(e){return '#20242c';}};
-    const _mkStriscione=(cx,z,rotY,c1Hex,c2Hex,text,yPos)=>{const sc=document.createElement("canvas");sc.width=1024;sc.height=110;const sx=sc.getContext("2d");
+    const _mkStriscione=(cx,z,rotY,c1Hex,c2Hex,text,yPos,led657)=>{const sc=document.createElement("canvas");sc.width=1024;sc.height=110;const sx=sc.getContext("2d");
+      /* [7.657.0 - IL CARTELLONE DEL NOME E' UN LED PICCOLO CHE SCORRE. Collaudo PO (screenshot):
+         "il pannello/cartellone con il nome dello stadio deve essere molto piu' piccolo e con led
+         a scorrimento". In modalita' led657: fondo quasi nero, testo color LED con scanline,
+         pannello 14x1.6 (era 30x3.4), texture in RepeatWrapping e offset animato nel loop
+         (sr.current._led657). I drappi delle curve restano stoffa, come lo stadio vero. */
+      if(led657){sx.fillStyle="#07090c";sx.fillRect(0,0,1024,110);
+        const _txtL=String(text||"").toUpperCase()+"  •  ";
+        sx.font="900 78px 'Courier New', monospace";sx.textAlign="left";sx.textBaseline="middle";
+        sx.fillStyle="#ffb020";sx.shadowColor="#ff8c00";sx.shadowBlur=14;sx.fillText(_txtL,18,57);sx.shadowBlur=0;
+        sx.fillStyle="rgba(0,0,0,0.38)";for(let yy=0;yy<110;yy+=4)sx.fillRect(0,yy,1024,2);
+        const stexL=new THREE.CanvasTexture(sc);stexL.wrapS=THREE.RepeatWrapping;
+        const smL=new THREE.Mesh(new THREE.PlaneGeometry(14,1.6),new THREE.MeshBasicMaterial({map:stexL,side:THREE.FrontSide,transparent:true,opacity:0.98,depthWrite:false}));
+        smL.position.set(cx,yPos!=null?yPos:5.5,z);smL.rotation.y=rotY;scene.add(smL);
+        (sr.current._led657=sr.current._led657||[]).push(stexL);return;}
       sx.fillStyle=_dkTifo(c1Hex,0.42);sx.fillRect(0,0,1024,110);
       const _fg=sx.createLinearGradient(0,0,0,110);_fg.addColorStop(0,"rgba(255,255,255,0.10)");_fg.addColorStop(1,"rgba(0,0,0,0.22)");sx.fillStyle=_fg;sx.fillRect(0,0,1024,110);
       sx.fillStyle=c2Hex;sx.fillRect(0,0,1024,9);sx.fillRect(0,101,1024,9);
@@ -1036,8 +1050,8 @@ function ThreeMatchView(props){
     const _muroD=(home)=>((_cg185?(home?_cg185.depthHome:_cg185.depthAway):16)+3)/2;
     const _muroX=(home)=>home?(_sideX-_muroD(true)-0.14):(-_sideX+_muroD(false)+0.14),_muroY=2.42;/* centrato sul muro ma sopra i cartelloni (alti ~1.3): appeso al parapetto e interamente leggibile */
     const _trZ=_cg185?Math.max(34.2,_cg185.endZ-(_cg185.depthEnd+3)/2-0.14):(_fez-3);
-    if(_tifoHome){_mkStriscione(-12,-_trZ,0,_tHCol,_hc2,_ultrasName(_stadHN,_tifoSeed,0,_stadHNat,_stadHId),_muroY);_mkStriscione(12,-_trZ,0,_tHCol,_hc2,_ultrasName(_stadHN,_tifoSeed,1,_stadHNat,_stadHId),_muroY);
-      _mkStriscione(-12,_trZ,Math.PI,_tHCol,_hc2,_ultrasName(_stadHN,_tifoSeed,2,_stadHNat,_stadHId),_muroY);_mkStriscione(12,_trZ,Math.PI,_tHCol,_hc2,_ultrasName(_stadHN,_tifoSeed,3,_stadHNat,_stadHId),_muroY);}
+    if(_tifoHome){_mkStriscione(-12,-_trZ,0,_tHCol,_hc2,_ultrasName(_stadHN,_tifoSeed,0,_stadHNat,_stadHId),_muroY,true);_mkStriscione(12,-_trZ,0,_tHCol,_hc2,_ultrasName(_stadHN,_tifoSeed,1,_stadHNat,_stadHId),_muroY,true);/* [7.657.0] le tribune laterali (quelle inquadrate) portano il LED piccolo */
+      _mkStriscione(-12,_trZ,Math.PI,_tHCol,_hc2,_ultrasName(_stadHN,_tifoSeed,2,_stadHNat,_stadHId),_muroY,true);_mkStriscione(12,_trZ,Math.PI,_tHCol,_hc2,_ultrasName(_stadHN,_tifoSeed,3,_stadHNat,_stadHId),_muroY,true);}
     /* [7.562.0 richiesta PO «puoi togliere quel tabellone dalla tribuna est con il nome della competizione»]
        RIMOSSO — item 8 (5.49.2), il CARTELLONE COMPETIZIONE sulla tribuna est: un pannello 40x9,4 sospeso a
        quota 10,5 e a z = tribuna-3,4, cioe' DENTRO il volume dello stadio, non appoggiato alla struttura.
@@ -6769,6 +6783,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
           try{camera.position.set(tPx,tPy,tPz);camLook.set(tLx,tLy,tLz);}catch(_e){}
         }
       }
+      if(sr.current._led657)for(const _tl of sr.current._led657){_tl.offset.x=(_tl.offset.x+dt*0.045)%1;}/* [7.657.0] lo scorrimento del LED: lento, da tabellone vero */
       camera.position.x+=(tPx-camera.position.x)*kp;camera.position.y+=(tPy-camera.position.y)*kp;camera.position.z+=(tPz-camera.position.z)*kp;
       /* [7.507.0 codice 007 — IL BERSAGLIO DELLO SGUARDO E' LEGALE PRIMA DEL LERP]
          Il meccanismo dell'oscillazione, gia' letto nel 7.475/7.478C ma mai chiuso alla radice: il lerp

@@ -1357,7 +1357,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           if(pl.team==="away"){
             const ai=idx-10;
             if(ai===0)return{...pl,x:97,y:50}; // Away GK on goal line
-            if(isPenalty){return{...pl,x:82+(ai%3)*5,y:20+ai*7};}
+            if(isPenalty){const _no657=(typeof window!=='undefined'&&window.__CPM_NO657);return{...pl,x:_no657?(82+(ai%3)*5):(75+(ai%4)*2),y:20+ai*7};}/* [7.657.0 - SUL RIGORE SI STA FUORI DALL'AREA. Collaudo PO (screenshot, SIT #5): un avversario dentro l'area accanto alla porta durante il rigore. Lo staging metteva TUTTI a x 82-92 - in piena area (limite ~82, rete 84+). Ora al limite: x 75-81, pronti al rimbalzo, come da regolamento. Rosso __CPM_NO657. */
             if(isFlankFK){
               // Pack the box for flank/corner FK
               const bx=[84,87,90,82,86,88,79,83,77,75];
@@ -1379,7 +1379,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
             return{...pl,x:clamp(_mx[ai-5]||87,szX+11,95),y:_my[ai-5]||50};
           }else{
             if(idx===0)return{...pl,x:4,y:50}; // Home GK
-            if(isPenalty){return{...pl,x:82+(idx%3)*5,y:20+idx*7};}
+            if(isPenalty){const _no657b=(typeof window!=='undefined'&&window.__CPM_NO657);return{...pl,x:_no657b?(82+(idx%3)*5):(75+(idx%4)*2),y:20+idx*7};}/* [7.657.0] stessi limiti per i compagni del battitore */
             if(isFlankFK){
               // Runners in box + wide support
               const bx=[88,91,88,84,82,76,76,72,68];
