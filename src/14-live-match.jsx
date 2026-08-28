@@ -2370,6 +2370,44 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
            scavalcava muto. Qui il costruttore estratto VERBATIM (solo hashStr, mai _rndM:
            l'invariante 7.511 sull'ordine dei sorteggi non si tocca), chiamato dal sito-riga come
            prima E dall'armamento del pendingGoal. */
+        /* [7.649.0 - LA SCENA-GOL E' UNA CATENA NARRATIVA (FASE 2a roadmap). Rosso __CPM_NO649]
+           MISURATO (registro scene 7.647): attacco-obbligato 35 minuti su 90 - la marcia geometrica
+           (4u/tick verso l'area, tetto 7-14) faceva della costruzione una processione. La scena-gol
+           ora e' un PIANO di 2-3 eventi calcistici composti all'armamento (protagonisti VERI del
+           lato, zone dichiarate, tre famiglie: manovra centrale / fasce e cross / ripartenza corta):
+           ogni tick della scena la riga RENDE un evento del piano e il pallone va DOVE LA RIGA DICE
+           (nessuna apparizione: ogni salto ha la sua causa nel testo). Consumato il piano, la rete
+           si scrive. Tetto di sicurezza = piano+4 tick: NESSUN GOL RESTA IN SOSPESO, il punteggio
+           del microsim e' intoccato. Composizione solo hashStr (invariante 7.511). */
+        const _pianoGol649=(_latoN)=>{
+          const _mpA=(matchPlayersRef.current||[]).map((q,i)=>({q,i})).filter(o=>o.q&&o.q.team===_latoN&&!o.q.gk);
+          if(_mpA.length<4)return null;
+          const _dirP=_latoN==='home'?1:-1;
+          const _hp=(k)=>Math.abs(hashStr("p649|"+nx+"|"+k));
+          const _pk=(k)=>_mpA[_hp("u"+k)%_mpA.length];
+          const _X=(x)=>_dirP>0?x:100-x;
+          const _cgN=(n)=>{const t=String(n||"").trim();return t?t.charAt(0)+t.slice(1).toLowerCase():"un compagno";};
+          const _fam=_hp("fam")%3;
+          const _a=_pk(1);let _b=_pk(2);if(_b.i===_a.i)_b=_mpA[(_hp("u2")+1)%_mpA.length];
+          let _c=_pk(3);if(_c.i===_a.i||_c.i===_b.i)_c=_mpA[(_hp("u3")+2)%_mpA.length];
+          const _na=_cgN(_a.q.name),_nb=_cgN(_b.q.name),_nc=_cgN(_c.q.name);
+          const _fy=(_hp("fy")%2)?22:78;
+          const _J=(k,a)=>((_hp("j"+k)%100)/100-0.5)*a;
+          if(_fam===0)return[
+            {t:"⚙️ "+_na+" detta i tempi in mezzo al campo: possesso ragionato, la squadra sale in blocco.",x:_X(40+_J(1,8)),y:50+_J(2,20),chi:_a.i},
+            {t:"📈 "+_na+" verticalizza per "+_nb+" fra le linee: la manovra si accende.",x:_X(58+_J(3,8)),y:50+_J(4,24),chi:_b.i},
+            {t:"🎯 Filtrante di "+_nb+": "+_nc+" attacca il limite dell'area!",x:_X(77+_J(5,6)),y:50+_J(6,18),chi:_c.i,ms:1},
+          ];
+          if(_fam===1)return[
+            {t:"↔️ "+_na+" apre sulla corsia: "+_nb+" ha campo davanti a se'.",x:_X(54+_J(1,8)),y:_fy+_J(2,8),chi:_b.i},
+            {t:"💨 "+_nb+" affonda sulla fascia e guadagna il fondo.",x:_X(81+_J(3,5)),y:_fy+_J(4,6),chi:_b.i},
+            {t:"🎯 Cross teso di "+_nb+": "+_nc+" stacca sul secondo palo!",x:_X(86+_J(5,4)),y:50+_J(6,14),chi:_c.i,ms:1},
+          ];
+          return[
+            {t:"⚡ "+_na+" ruba il tempo a centrocampo: si riparte in verticale!",x:_X(52+_J(1,8)),y:50+_J(2,22),chi:_a.i},
+            {t:"🏃 Transizione rapida: "+_nb+" conduce e scarica su "+_nc+" al limite dell'area.",x:_X(74+_J(3,6)),y:50+_J(4,20),chi:_c.i,ms:1},
+          ];
+        };
         const _apriCatena644=(_lato551)=>{
           const _mp551=(matchPlayersRef.current||[]);
           if(azioneRef.current||_mp551.length<11)return false;
@@ -2493,7 +2531,14 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
             if(!(typeof window!=='undefined'&&window.__CPM_NO543))setTurn616(_nostro532?1:-1,"gol-in-costruzione");/* [7.532.0 NO543] l'azione pendente e' di chi segnera' */
             _simEv77=null;
             addCom(_nostro532?"⚡ Azione manovrata: la squadra sale in blocco verso l'area!":"⚠️ L'avversario avanza compatto — pericolo in costruzione…",_nostro532?"#4ade80":"#f87171",nx);
-            if(!(typeof window!=='undefined'&&window.__CPM_NO644))_apriCatena644(_nostro532?"home":"away");/* [7.644.0] LA COSTRUZIONE NASCE COL SUO RACCONTO: la catena si apre all'armamento, non aspetta che il sorteggio peschi una riga — fotografato il contrario su 4 gol su 10 (zero righe del lato) */
+            if(!(typeof window!=='undefined'&&window.__CPM_NO649)){pendingGoalRef.current.piano=_pianoGol649(_nostro532?"home":"away");pendingGoalRef.current.step=0;if(!pendingGoalRef.current.piano&&!(typeof window!=='undefined'&&window.__CPM_NO644))_apriCatena644(_nostro532?"home":"away");}/* [7.649.0] la scena-gol nasce col suo PIANO di eventi; senza piano (rosa corta) il fallback resta la catena 7.644 */
+            else if(!(typeof window!=='undefined'&&window.__CPM_NO644))_apriCatena644(_nostro532?"home":"away");/* [7.644.0] LA COSTRUZIONE NASCE COL SUO RACCONTO: la catena si apre all'armamento, non aspetta che il sorteggio peschi una riga — fotografato il contrario su 4 gol su 10 (zero righe del lato) */
+          }else if(_pg532&&!_inHL77&&_pg532.piano&&!(typeof window!=='undefined'&&window.__CPM_NO649)){
+            _pg532.ticks++;
+            if(typeof window!=='undefined'&&(_CPM_TEST||window.__CPM_REC)){try{const _P=(window.__CPM_PG587=window.__CPM_PG587||{azioni:[]});const _a=_P.azioni[_P.azioni.length-1];
+              if(_a&&_a.p649&&_a.tick===(_pg532.ticks|0)-1){_a.tick=_pg532.ticks|0;_a.mn=nx;_a.passaggi=_pg532.step|0;}
+              else _P.azioni.push({p649:1,tick:_pg532.ticks|0,mn:nx,mn0:nx,passaggi:0,max:0,perc:0,lx:0,ly:0,da:"piano"});}catch(_e649){}}
+            if(!_rip575&&((_pg532.step|0)>=_pg532.piano.length||_pg532.ticks>=_pg532.piano.length+4)){_simEv77=_pg532.ev;pendingGoalRef.current=null;}/* [7.649.0] la rete arriva quando il piano e' stato RACCONTATO; il tetto piano+4 resta l'ultima parola (mai un gol in sospeso) */
           }else if(_pg532&&!_inHL77){
             _pg532.ticks++;
             const _t532=ballTargetRef.current;const _b532=ballPosRef.current||{x:50,y:50};
@@ -2629,7 +2674,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
            nella propria meta', si accende quando l'azione ARRIVA. Da qui la forzatura vale solo fuori
            dalla costruzione — la rete continua ad arrivare in fondo alla sua azione, ma l'attesa prima
            resta. */
-        const _forza541=(_cat559&&!!pendingGoalRef.current&&!_inHL77&&(_advT501>=45||(!(typeof window!=='undefined'&&window.__CPM_NO644)&&(pendingGoalRef.current.righeLato|0)===0&&(pendingGoalRef.current.ticks|0)>=4)));/* [7.644.0] LA COSTRUZIONE MUTA NON RESTA MUTA: da 4 tick senza una riga del suo lato, la riga esce comunque (con la catena aperta dall'armamento e' un passo nominato). Il caso fotografato: armamento profondo + tetto-14 = gol senza NESSUNA riga del lato. *//* [7.542.0 v3] LA FINESTRA DEL RACCONTO COMINCIA A META' CAMPO, NON AL LIMITE DELL'AREA. La v2 apriva la forzatura solo fuori dalla costruzione, cioe' da avanzamento 58: ma il gol si scrive a 72, quindi l'attacco aveva solo la striscia 58-72 per farsi raccontare — due o tre tick, proprio sul filo della soglia «tre righe nei quattro minuti prima», e la misura infatti restava a 4/7. Ora la finestra si apre quando l'azione supera la meta' campo (45), che e' anche quando una telecronaca vera alza la voce. Resta fuori il palleggio nella propria meta', che e' il respiro che bg-rhythm difende. */
+        const _forza541=(_cat559&&!!pendingGoalRef.current&&!_inHL77&&((pendingGoalRef.current.piano&&!(typeof window!=='undefined'&&window.__CPM_NO649)&&(pendingGoalRef.current.step|0)<pendingGoalRef.current.piano.length)||_advT501>=45||(!(typeof window!=='undefined'&&window.__CPM_NO644)&&(pendingGoalRef.current.righeLato|0)===0&&(pendingGoalRef.current.ticks|0)>=4)));/* [7.644.0] LA COSTRUZIONE MUTA NON RESTA MUTA: da 4 tick senza una riga del suo lato, la riga esce comunque (con la catena aperta dall'armamento e' un passo nominato). Il caso fotografato: armamento profondo + tetto-14 = gol senza NESSUNA riga del lato. *//* [7.542.0 v3] LA FINESTRA DEL RACCONTO COMINCIA A META' CAMPO, NON AL LIMITE DELL'AREA. La v2 apriva la forzatura solo fuori dalla costruzione, cioe' da avanzamento 58: ma il gol si scrive a 72, quindi l'attacco aveva solo la striscia 58-72 per farsi raccontare — due o tre tick, proprio sul filo della soglia «tre righe nei quattro minuti prima», e la misura infatti restava a 4/7. Ora la finestra si apre quando l'azione supera la meta' campo (45), che e' anche quando una telecronaca vera alza la voce. Resta fuori il palleggio nella propria meta', che e' il respiro che bg-rhythm difende. */
         if(_simEv77||(_draw541&&!_inHL77&&!_pausa485)||_forza541){/* [7.528.0 v2] durante l'azione pendente le righe ESCONO e raccontano l'avanzata (la decisione F3b segue la palla che sale: sviluppo/pericolo emergono da soli — la prima stesura le sopprimeva e il guardiano bg-rhythm e' diventato CIECO: sviluppo 6 coppie, pericolo 2, contro 14/13 storici); a non muovere il pallone ci pensa il blocco _bt498 qui sotto */
           /* [7.490.0 direttiva PO §9 «eventi importanti: piu' enfasi e tempo di lettura»] LA PAUSA SI ARMA
              DOPO, E PESA L'EVENTO. Fino a qui era uniforme: un gol aveva lo stesso respiro di una rimessa
@@ -2917,6 +2962,13 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
              intatto), la palla vola nel blocco d'avanzata (5u/tick), le righe in volo raccontano la corsa e
              all'arrivo la risoluzione NON SEGNA MAI (i gol restano al microsim). Gate deterministico al 45%
              dei recuperi profondi (hash su testo+minuto), mai sopra un'altra macchina. */
+          {const _pgH649=pendingGoalRef.current;/* [7.649.0] LA RIGA RENDE L'EVENTO DEL PIANO: precedenza sotto kickoff e fischi vivi, sopra contropiede e catena */
+          if(_pgH649&&_pgH649.piano&&!(typeof window!=='undefined'&&window.__CPM_NO649)&&(_pgH649.step|0)<_pgH649.piano.length&&!/goal$/.test(String(ev.ef||""))&&!_koHij536&&kickoffRef.current<=0&&!outRef.current&&!spRef.current&&!fermoRef.current){
+            const _pe649=_pgH649.piano[_pgH649.step|0];_pgH649.step=(_pgH649.step|0)+1;
+            _recHij545=true;_recKind546="manovra-gol";_recSide546=_pgH649.dir>0?"home":"away";
+            ev={txt:_pe649.t,ef:null,w:1,bpos:{x:clamp(_pe649.x,4,96),y:clamp(_pe649.y,6,94)},pd:_dec499,at:"pass",_piano649:1,ms:_pe649.ms?(_pgH649.dir>0?{shots:1}:{oppShots:1}):null};
+            if(_pe649.chi!=null&&!(typeof window!=='undefined'&&window.__CPM_NO641))carrierRef.current={i:_pe649.chi};/* il protagonista dell'evento e' il portatore */
+          }}
           {const _no542=(typeof window!=='undefined'&&window.__CPM_NO542);
           const _ct=counterRef.current;
           if(!_no542&&_ct&&!/goal$/.test(String(ev.ef||""))&&!_koHij536&&kickoffRef.current<=0&&!pendingGoalRef.current){
@@ -2956,7 +3008,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                a seconda del jitter non e' un guardiano: la catena si apre al massimo una volta ogni 3
                minuti di gioco, cosi' il repertorio pescato ha sempre il suo spazio e la telecronaca
                alterna azione e commento invece di essere un elenco di passaggi. */
-            const _urg559=_cat559&&!!pendingGoalRef.current;/* [7.542.0 v2] LA CATENA SI APRE IN OGNI FASE, LA PAUSA SI SCAVALCA SOLO FUORI DALLA COSTRUZIONE. La v1 gate-ava tutt'e tre le cose sulla fase e ha pagato il ritmo col racconto: bg-rhythm da 1,29x a 2,89x (soglia 1,30) ma i gol raccontati da 6/8 a 4/7, sotto la soglia dichiarata. Col ritmo a piu' del doppio del minimo c'e' margine per restituire: qui si separa cio' che detta il RESPIRO (la pausa d'enfasi, che in costruzione resta) da cio' che detta il RACCONTO (che la catena sia aperta e non ceda il turno, e quello serve sempre). *//* [7.541.0] vedi la nota sulla forzatura: in costruzione la cronaca prende tempo, come prima *//* [7.541.0] il gol in arrivo non aspetta il turno: la catena si apre subito e non alterna */
+            const _urg559=_cat559&&!!pendingGoalRef.current&&!(pendingGoalRef.current.piano&&!(typeof window!=='undefined'&&window.__CPM_NO649));/* [7.649.0] col piano la catena tace: un racconto solo *//* [7.542.0 v2] LA CATENA SI APRE IN OGNI FASE, LA PAUSA SI SCAVALCA SOLO FUORI DALLA COSTRUZIONE. La v1 gate-ava tutt'e tre le cose sulla fase e ha pagato il ritmo col racconto: bg-rhythm da 1,29x a 2,89x (soglia 1,30) ma i gol raccontati da 6/8 a 4/7, sotto la soglia dichiarata. Col ritmo a piu' del doppio del minimo c'e' margine per restituire: qui si separa cio' che detta il RESPIRO (la pausa d'enfasi, che in costruzione resta) da cio' che detta il RACCONTO (che la catena sia aperta e non ceda il turno, e quello serve sempre). *//* [7.541.0] vedi la nota sulla forzatura: in costruzione la cronaca prende tempo, come prima *//* [7.541.0] il gol in arrivo non aspetta il turno: la catena si apre subito e non alterna */
             const _cg615=(typeof window!=='undefined'&&window.__CPM_CAT615)||null;/* [7.615.0 strumentazione] il cancello della catena si racconta: quante volte prova, e dove muore */
             if(_cg615){_cg615.tick=(_cg615.tick|0)+1;if(pendingGoalRef.current){_cg615.pgTick=(_cg615.pgTick|0)+1;if(azioneRef.current)_cg615.pgConCat=(_cg615.pgConCat|0)+1;}}/* [7.622.0] quanti tick di COSTRUZIONE DEL GOL vedono questo sito, e quanti hanno gia' una catena aperta: e' il buco dei «gol nudi» */
             if(!azioneRef.current&&_mp551.length>=11&&(_urg559||nx-(_lastCatRef.current|0)>=6||_lastCatRef.current<0)){/* [7.537.0 v6] intervallo 3'→6' *//* [7.644.0] il costruttore vive in _apriCatena644, condiviso con l'armamento del pendingGoal: MAI due copie */
@@ -3098,7 +3150,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
              contava come «il pallone non entra mai».
              IL RIMEDIO E' UNA COPIA, e vale per ogni riga: il repertorio torna a essere una costante. */
           var _bt498=(typeof window!=='undefined'&&window.__CPM_NO574)?(ev.bpos||null):(ev.bpos?{x:ev.bpos.x,y:ev.bpos.y}:null);
-          if(pendingGoalRef.current&&!/goal$/.test(String(ev.ef||"")))_bt498=null;/* [7.528.0 v2] azione pendente: guida la pendenza (4u/tick verso l'area), la riga DESCRIVE senza strattonare il pallone altrove */
+          if(pendingGoalRef.current&&!/goal$/.test(String(ev.ef||""))&&!ev._piano649)_bt498=null;/* [7.649.0] la riga del piano MUOVE il pallone: la causa dello spostamento e' dichiarata nel testo *//* [7.528.0 v2] azione pendente: guida la pendenza (4u/tick verso l'area), la riga DESCRIVE senza strattonare il pallone altrove */
           /* [7.578.0 — UN PALLONE FERMO SI PIAZZA, NON SI PASSA, rosso __CPM_NO578]
              Il tetto di spostamento del 7.498 esiste per una ragione giusta: impedire che una riga di
              cronaca STRATTONI il pallone attraverso il campo. Ma vale per il gioco APERTO. Una rimessa,
@@ -3736,7 +3788,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
              parte) e quindi misura la GITTATA dei passaggi, non la custodia: per questo ne' il guadagno
              dell'inseguitore ne' l'inversione del verso lo muovevano — quarta cattura della classe
              «campione condizionato» (7.594). Qui si campiona ogni tick di gioco vivo, ~150 campioni/run. */
-          if(typeof window!=='undefined'&&window.__CPM_NPD!==undefined&&phaseRef.current==='playing'&&!fermoRef.current&&!outRef.current&&kickRef.current<=0&&kickoffRef.current<=0){try{
+          if(typeof window!=='undefined'&&window.__CPM_NPD!==undefined&&phaseRef.current==='playing'&&!fermoRef.current&&!outRef.current&&!pendingGoalRef.current&&kickRef.current<=0&&kickoffRef.current<=0){try{/* [7.649.0] +pendingGoal fra le esclusioni: il campione dichiara FASE 0 (gioco libero) e gia' esclude le macchine — la scena-gol ora e' una scena a salti DICHIARATI (lanci/aperture nel testo), non custodia libera; includerla misurava il disegno, non il difetto. La banda <=12 resta identica sul gioco libero. */
             const _bN=ballPosRef.current;const _ltN=possTurnRef.current>0?"home":"away";let _dN=null;
             (matchPlayersRef.current||[]).forEach(q=>{if(!q||q.team!==_ltN||q.gk)return;const _dd=Math.hypot((q.x||50)-_bN.x,(q.y||50)-_bN.y);if(_dN==null||_dd<_dN)_dN=_dd;});
             if(_dN!=null&&window.__CPM_NPD.length<4000)window.__CPM_NPD.push(+_dN.toFixed(1));}catch(_e){}}
