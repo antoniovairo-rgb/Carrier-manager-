@@ -95,7 +95,7 @@ function ThreeMatchView(props){
     scene.fog=new THREE.Fog(fogCol,fogNear,fogFar);
     const camera=new THREE.PerspectiveCamera(56,W/H,0.1,420);
     // Camera portrait dietro la porta di casa (x basso), home attacca verso +x (verso l'alto)
-    camera.position.set(-88,54,0);camera.lookAt(10,1,0);
+    camera.position.set(0,26,46);camera.lookAt(0,1,0);/* [7.650.0] lo spawn e GIA in tribuna est: prima nasceva dietro-porta (-88,54,0) e il lerp verso la tribuna faceva ATTRAVERSARE il campo in transito per le prime scene (misurato: 24 percento dei campioni hl sotto z16, z fino a -5) */
     // 5.69.3 — la partita sta per creare il suo contesto WebGL: segnala "match attivo" e RILASCIA il contesto del
     //   renderer dei ritratti (creato nella schermata di creazione avatar), così NON restano contesti WebGL residui
     //   che facciano perdere quello del campo su alcuni dispositivi → fix SCHERMO NERO in partita.
@@ -6348,6 +6348,29 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
          }}
         tPx=wPx+(cPx-wPx)*camHL;tPy=wPy+(cPy-wPy)*camHL;tPz=wPz+(cPz-wPz)*camHL;
         tLx=wLx+(cLx-wLx)*camHL;tLy=wLy+(cLy-wLy)*camHL;tLz=wLz+(cLz-wLz)*camHL;
+        /* [7.650.0 - LA REGIA STA IN TRIBUNA EST. Rosso __CPM_NO650]
+           DIRETTIVA PO (collaudo 28/08, SIT #56): "la regia deve stare sempre dalla tribuna est,
+           si invertono di campo solo le squadre tra primo e secondo tempo". E' anche la cura
+           RADICALE del codice 007 (20+ note, 12-20 inversioni/s dell'asse ottico): il duello
+           lerp/vista-reale/bisezione vive perche' la regia dinamica porta il soggetto sul filo
+           del quadro e le reti commutano a frequenza di frame; da tribuna, con posa vincolata a
+           UN lato (z sempre >= 16: MAI attraversare il campo) e pan/zoom morbidi, il soggetto
+           sta comodo nel quadro e le reti a valle (bordo, lift, bisezione, richiami) non hanno
+           piu' motivo d'ingaggiare - restano come sicurezze, e le loro etichette (_tocc503) e
+           i contatori (BIS584) diventano il testimone che il meccanismo e' morto. Lo SGUARDO
+           (tL*) resta l'autorita' dei registi: qui si vincola solo DA DOVE si guarda. Il
+           punch-in d'esito (7.63) rivive come zoom DALLA tribuna (legge sr._punchT). Playing/
+           cerimonia/rigori NON toccati (la wide broadcast di gioco resta quella storica): la
+           cronaca ambientale migra in una release dedicata dopo il collaudo PO di questa. */
+        if((isHL||P.matchPhase==="playing")&&!P.ceremony&&!P.shootout&&!replaying&&!(typeof window!=='undefined'&&window.__CPM_NO650)){/* [7.650.0 v2] ANCHE LA CRONACA: la broadcast dietro-porta con rotazione al 2o tempo (7.561) era esattamente cio che la direttiva vieta — misurato: la camera partiva dal lato playing e ATTRAVERSAVA il campo in transito a ogni apertura di scena (31 percento dei campioni hl sotto z16, z fino a -52,5) */
+          try{if(sr.current._tocc503)sr.current._tocc503.push('tribuna650');}catch(_e650){}/* etichetta col pattern sicuro dello snap: _tc503 e' una const di un blocco interno e nei percorsi forzati del validatore qui non esiste (misurato: 10 PAGEERROR nel check visual) */
+          const _pt650=sr.current._punchT;
+          const _pf650=(_pt650>=0)?Math.min(Math.max(_pt650/1.1,0),1):0;
+          const _pz650=_pf650*_pf650*(3-2*_pf650);
+          tPz=Math.max(16,38-10*_pz650);
+          tPy=20-6*_pz650;
+          tPx=clamp(tLx*0.85,-36,36);/* pan: segue il soggetto, smorzato verso il centro; il liscio kp a valle da' l'inerzia */
+        }
         /* [7.398.0 collaudo PO #33 «si vede la curva da dietro in primo piano»] LA CAMERA RESTA NELLO
            STADIO — e il pavimento sta DOPO la fusione, dove nessun ramo puo' aggirarlo (stessa lezione
            del tetto 7.363: il primo fix sul solo ramo d'esito difensivo ha lasciato 6 scene rosse su 14,
@@ -6696,6 +6719,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
          stacco al gioco (`onCutNeeded`) e si RIMANDA il salto di ~120ms — il tempo che il nero entri in
          scena — tenendo la camera ferma invece di lasciarla scivolare verso un bersaglio lontano. Uno
          snap gia' mascherato passa immediato come prima: il percorso sano non cambia. */
+      if((isHL||P.matchPhase==="playing")&&!P.ceremony&&!P.shootout&&!replaying&&!(typeof window!=='undefined'&&window.__CPM_NO650)){if(tPz<16){try{if(sr.current._tocc503)sr.current._tocc503.push('tribuna-clamp650');}catch(_e650b){}tPz=16;}}/* [7.650.0 v3] IL VINCOLO E' L'ULTIMA PAROLA: misurato un residuo deterministico a z -5,2 (24 percento dei campioni hl sotto 16) scritto da una mano A VALLE dell'override (bisezione con soggetto oltre il piano tribuna) — il clamp sta dopo TUTTE le mani, prima di snap e lerp: da qui la camera non attraversa MAI */
       if(sr.current._cutSnap||sr.current._sceneCut){try{if(sr.current._tocc503)sr.current._tocc503.push('snap');}catch(_e){}/* [7.503.1] */
         const _dSnap=Math.hypot(tPx-camera.position.x,tPy-camera.position.y,tPz-camera.position.z);
         const _no471=(typeof window!=='undefined'&&window.__CPM_NO471);const _nowMs471=performance.now();
