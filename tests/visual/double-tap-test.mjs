@@ -115,7 +115,15 @@ async function evento(rompi) {
   const page = await apri(mkSave({ weekLived: false }), rompi);
   const leggi = () => page.evaluate(() => { try { const p = JSON.parse(localStorage.getItem('cpm-v3')).player; return { fatigue: p.fatigue, pop: p.popularity, trust: p.coachTrust, morale: p.morale }; } catch (e) { return null; } });
   await page.evaluate(() => { const b2 = Array.from(document.querySelectorAll('button')).find(x => /Vivi la Settimana/i.test(x.textContent || '')); if (b2) b2.click(); });
-  await page.waitForFunction(() => /IMPULSO|SPOGLIATOIO|SETTIMANA \d+ —/i.test(document.body.innerText || ''), { timeout: 15000 }).catch(() => {});
+  await page.waitForFunction(() => /IMPULSO|SPOGLIATOIO|SETTIMANA \d+ —/i.test(document.body.innerText || ''), { timeout: 30000 }).catch(() => {});
+  /* [CI 28/08] IL RUNNER E' LENTO E LA SONDA ERA CIECA: sul runner GitHub (2 vCPU) il modal della
+     cascata arriva DOPO lo sleep secco — tre run rossi con «scelta non trovata» mentre in locale
+     e' verde. Si aspetta il BOTTONE di scelta (poll fino a 12s), non un numero di millisecondi:
+     l'invariante misurato (numero di applicazioni) non cambia di una virgola. */
+  await page.waitForFunction(() => {
+    const inModal = (el) => { let n = el; while (n && n !== document.body) { const s = getComputedStyle(n); if (s.position === 'fixed' && (parseInt(s.zIndex) || 0) > 1000) return true; n = n.parentElement; } return false; };
+    return Array.from(document.querySelectorAll('button')).some(x => { const t = (x.textContent || '').trim(); return t.length > 6 && t.length < 90 && inModal(x) && !/Home|Stagione|Club|Carriera|Agente|Opzioni|Salva|Sostieni|Idee|Gioca vs|Vivi la/i.test(t); });
+  }, { timeout: 12000 }).catch(() => {});
   await sleep(1200);
   const pre = await leggi();
   await page.evaluate(() => { window.__CPM_TAP449 = { adv: 0, evt: 0 }; });
@@ -137,7 +145,7 @@ async function evento(rompi) {
    un handler diverso: si riprova finche' non si incontra davvero una scelta d'impulso (n>0), altrimenti
    si misurerebbe un modal che non c'entra. */
 async function eventoConImpulso(rompi) {
-  for (let i = 0; i < 5; i++) { const r = await evento(rompi); if (r && r.n > 0) return r; }
+  for (let i = 0; i < 8; i++) { const r = await evento(rompi); if (r && r.n > 0) return r; }/* [CI 28/08] 5->8 tentativi: la cascata puo' pescare spogliatoio piu' volte di fila e il runner ricarica il gioco intero a ogni giro */
   return null;
 }
 {
