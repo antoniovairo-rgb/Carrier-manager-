@@ -3193,7 +3193,17 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                si ammorbidisce verso il CORRIDOIO corrente della trama (35%): il gioco resta sul binario
                che il possesso sta raccontando invece di sbattere da una fascia all'altra. */
             var _no528=(typeof window!=='undefined'&&window.__CPM_NO528);
-            if(!_no528){const _tr528=tramaRef.current;
+            /* [7.655.0 - LA RECITA DICHIARA IL SUO PUNTO, E IL PUNTO SI ONORA. Rosso __CPM_NO655]
+               MISURATO (fondate-558, 2 partite): fondate 63%, e il collo e' la DESTINAZIONE — le
+               righe RECITATE (contropiede, catena, piano-gol, arbitro, kickoff) venivano frenate
+               nell'86% dei casi con accorciamento mediano di 29,4u (5 smentite su 6): il richiamo
+               di corridoio e il cap 30u esistono per le righe PESCATE dal repertorio (che
+               strattonavano il pallone), ma la recita E' il motore che gioca — il suo bpos e' il
+               piano della giocata (la corsa del counter, il piede del ricevente), e frenarlo
+               significa SMENTIRE cio' che la cronaca ha appena detto. Stessa esenzione gia' data
+               alle palle ferme dal 7.578. */
+            var _recita655=!(typeof window!=='undefined'&&window.__CPM_NO655)&&_recHij545;
+            if(!_no528&&!_recita655){const _tr528=tramaRef.current;
               if(_tr528&&_tr528.cor!=null){const _cy528=corY528(_tr528.cor);/* [7.630.0] helper unico dei centri di corridoio */
                 /* [7.612.0 — IL CORRIDOIO SI CONSEGNA, NON SI ACCENNA. Rosso __CPM_NO612]
                    COLLAUDO PO (piu' volte): «il pallone viaggia sempre in verticale in mezzo al campo,
@@ -3209,7 +3219,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                 _bt498={x:_bt498.x,y:clamp(_bt498.y+(_cy528-_bt498.y)*_k612,2,98)};}}
             var _dx498=_bt498.x-_cb498.x,_dy498=_bt498.y-_cb498.y,_dd498=Math.hypot(_dx498,_dy498);
             var _cap528=_no528?45:30;
-            if(_dd498>_cap528)_bt498={x:clamp(_cb498.x+_dx498/_dd498*_cap528,2,98),y:clamp(_cb498.y+_dy498/_dd498*_cap528,2,98)};
+            if(_dd498>_cap528&&!_recita655)_bt498={x:clamp(_cb498.x+_dx498/_dd498*_cap528,2,98),y:clamp(_cb498.y+_dy498/_dd498*_cap528,2,98)};/* [7.655.0] il cap resta per il repertorio pescato */
             /* [7.639.0 — LA RIGA CONSEGNA AI PIEDI DI UN UOMO. Rosso __CPM_NO639]
                CENSIMENTO A4 (a4count, 63' di gioco): la TRAMA apre 4 giocate e fa 1 passaggio vero a
                partita — il pallone lo muovono le RIGHE (una ogni 2-3 tick, fino a 30u), ed e' sulle
