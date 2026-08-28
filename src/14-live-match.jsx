@@ -2710,7 +2710,15 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
              __CPM_NO570 = rosso: le righe di piazzato escono comunque, com'era. */
           const _spOff570=!(typeof window!=='undefined'&&window.__CPM_NO570)&&(!!pendingGoalRef.current||!!counterRef.current||kickoffRef.current>0||!!spRef.current||!!outRef.current);
           if(typeof window!=='undefined'&&(window.__CPM_REC||_CPM_TEST)){try{const _g=(window.__CPM_SP570=window.__CPM_SP570||{tick:0,off:0});_g.tick++;if(_spOff570)_g.off++;}catch(_e){}}
-          let eligible=BG_MATCH.filter(e=>_noGoal77(e)&&(!_spOff570||!e.sp)&&((typeof window!=='undefined'&&window.__CPM_NO646)||!pendingGoalRef.current||!e.poss||((e.poss>0?1:-1)===pendingGoalRef.current.dir))&&/* [7.646.0] durante la costruzione una riga che sposta il possesso all'ALTRO lato sarebbe una bugia (e prima del writer-guard ribaltava il turno): fuori dal sorteggio, come i piazzati del 7.570 — filtro, non peso: sono ~31 righe su 223 */(!e.minClock||nx>=e.minClock)&&(!e.maxClock||nx<=e.maxClock)&&(!e.derbyOnly||!!drby)&&(!e.ctx||e.ctx===_sctx76)&&!_lastBG.includes(e.txt)&&(!onBenchRef.current||!e.txt.includes("{P}"))&&(!e.momThreshold||(momentumRef.current>=e.momThreshold[0]&&momentumRef.current<=e.momThreshold[1])))
+          /* [7.656.0 - DURANTE UN FERMO LA CRONACA NON DICHIARA VIAGGI. Rosso __CPM_NO656]
+             FOTOGRAFATO (fondate-558, cluster 41'-43' su ENTRAMBI i semi): durante un fermo il
+             pallone sta correttamente sul punto del fischio, ma la riga pescata dichiara
+             destinazioni a 20-30u - una bugia per costruzione, e il giudice la boccia (e' la
+             famiglia dominante delle 15 smentite residue). Stesso rimedio del 7.570 (filtro alla
+             pesca, non peso): con un fermo vivo le righe con bpos oltre 15u dal punto escono dal
+             sorteggio; passano le righe senza destinazione (commento) e quelle vicine. */
+          const _fermo656=(!(typeof window!=='undefined'&&window.__CPM_NO656)&&fermoRef.current)?fermoRef.current:null;
+          let eligible=BG_MATCH.filter(e=>_noGoal77(e)&&(!_spOff570||!e.sp)&&(!_fermo656||!e.bpos||Math.hypot(e.bpos.x-_fermo656.x,e.bpos.y-_fermo656.y)<=15)&&((typeof window!=='undefined'&&window.__CPM_NO646)||!pendingGoalRef.current||!e.poss||((e.poss>0?1:-1)===pendingGoalRef.current.dir))&&/* [7.646.0] durante la costruzione una riga che sposta il possesso all'ALTRO lato sarebbe una bugia (e prima del writer-guard ribaltava il turno): fuori dal sorteggio, come i piazzati del 7.570 — filtro, non peso: sono ~31 righe su 223 */(!e.minClock||nx>=e.minClock)&&(!e.maxClock||nx<=e.maxClock)&&(!e.derbyOnly||!!drby)&&(!e.ctx||e.ctx===_sctx76)&&!_lastBG.includes(e.txt)&&(!onBenchRef.current||!e.txt.includes("{P}"))&&(!e.momThreshold||(momentumRef.current>=e.momThreshold[0]&&momentumRef.current<=e.momThreshold[1])))
             .map(e=>{if(!_activeDriftKey||!e.pd)return e;if(_isAtkTactic&&_atkPd.includes(e.pd))return{...e,w:e.w*1.8};if(_isDefTactic&&_defPd.includes(e.pd))return{...e,w:e.w*1.8};return e;})
             /* [7.486.0 direttiva PO «la cronaca deve descrivere effettivamente cio' che accade»] LA RIGA
                SI SCEGLIE DA DOVE SI STA GIOCANDO. Fino a qui la selezione guardava minuto, punteggio,
