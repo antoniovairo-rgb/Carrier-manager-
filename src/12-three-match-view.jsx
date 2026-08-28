@@ -6367,8 +6367,8 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
           const _pt650=sr.current._punchT;
           const _pf650=(_pt650>=0)?Math.min(Math.max(_pt650/1.1,0),1):0;
           const _pz650=_pf650*_pf650*(3-2*_pf650);
-          tPz=Math.max(16,38-10*_pz650);
-          tPy=20-6*_pz650;
+          tPz=Math.max(16,isHL?(42-10*_pz650):38);
+          tPy=isHL?(30-8*_pz650):20;/* [7.651 v2 — precisazione PO in collaudo: «SOLO negli highlights dell eroe la camera deve essere verticale!» La cronaca (playing) resta in tribuna est a quota normale (y20/z38, la 7.650); la verticale alta (y30/z42) e degli HL. *//* [7.651.0 — COLLAUDO PO SULLA 7.650: «lo zoom nell highlight deve essere minore» + «la camera negli highlights deve essere verticale!» + 007 residuo 10,1 inv/s (lerp 68 + bisezione 16). Camera piu ALTA (y 20->30) e piu arretrata (z 38->42): piu a piombo il formato portrait mostra il campo in altezza, e da piu lontano gli spostamenti del soggetto sottendono angoli minori — meno lavoro per lerp e bisezione. */
           tPx=clamp(tLx*0.85,-36,36);/* pan: segue il soggetto, smorzato verso il centro; il liscio kp a valle da' l'inerzia */
         }
         /* [7.398.0 collaudo PO #33 «si vede la curva da dietro in primo piano»] LA CAMERA RESTA NELLO
