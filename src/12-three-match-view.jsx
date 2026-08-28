@@ -6376,12 +6376,20 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
            cronaca ambientale migra in una release dedicata dopo il collaudo PO di questa. */
         if((isHL||P.matchPhase==="playing")&&!P.ceremony&&!P.shootout&&!replaying&&!(typeof window!=='undefined'&&window.__CPM_NO650)){/* [7.650.0 v2] ANCHE LA CRONACA: la broadcast dietro-porta con rotazione al 2o tempo (7.561) era esattamente cio che la direttiva vieta — misurato: la camera partiva dal lato playing e ATTRAVERSAVA il campo in transito a ogni apertura di scena (31 percento dei campioni hl sotto z16, z fino a -52,5) */
           try{if(sr.current._tocc503)sr.current._tocc503.push('tribuna650');}catch(_e650){}/* etichetta col pattern sicuro dello snap: _tc503 e' una const di un blocco interno e nei percorsi forzati del validatore qui non esiste (misurato: 10 PAGEERROR nel check visual) */
-          const _pt650=sr.current._punchT;
-          const _pf650=(_pt650>=0)?Math.min(Math.max(_pt650/1.1,0),1):0;
-          const _pz650=_pf650*_pf650*(3-2*_pf650);
-          tPz=Math.max(16,isHL?(42-10*_pz650):38);
-          tPy=isHL?(30-8*_pz650):20;/* [7.651 v2 — precisazione PO in collaudo: «SOLO negli highlights dell eroe la camera deve essere verticale!» La cronaca (playing) resta in tribuna est a quota normale (y20/z38, la 7.650); la verticale alta (y30/z42) e degli HL. *//* [7.651.0 — COLLAUDO PO SULLA 7.650: «lo zoom nell highlight deve essere minore» + «la camera negli highlights deve essere verticale!» + 007 residuo 10,1 inv/s (lerp 68 + bisezione 16). Camera piu ALTA (y 20->30) e piu arretrata (z 38->42): piu a piombo il formato portrait mostra il campo in altezza, e da piu lontano gli spostamenti del soggetto sottendono angoli minori — meno lavoro per lerp e bisezione. */
-          tPx=clamp(tLx*0.85,-36,36);/* pan: segue il soggetto, smorzato verso il centro; il liscio kp a valle da' l'inerzia */
+          /* [7.654.0 v2 - NEGLI HIGHLIGHT TORNA LA REGIA STORICA, CON MENO ZOOM-IN]
+             Chiarimento finale del PO (terza iterazione, stavolta con le sue parole esatte):
+             «la camera verticale negli highlights: come era PRIMA della modifica full tribuna
+             est ma con meno zoom in». La fusione wide/close storica (gia' verticale da
+             dietro-porta per costruzione) NON si tocca: l'unico intervento e' un DOLLY-OUT del
+             18% lungo l'asse camera-fuoco (meno zoom-in, la sua sola richiesta). In PLAYING
+             resta la tribuna laterale (7.650, mai contestata) col suo clamp z>=16. */
+          if(isHL){
+            tPx+=(tPx-tLx)*0.18;tPy+=(tPy-tLy)*0.18;tPz+=(tPz-tLz)*0.18;
+          }else{
+            tPz=38;
+            tPy=20;
+            tPx=clamp(tLx*0.85,-36,36);/* pan cronaca: il liscio kp a valle da' l'inerzia */
+          }
         }
         /* [7.398.0 collaudo PO #33 «si vede la curva da dietro in primo piano»] LA CAMERA RESTA NELLO
            STADIO — e il pavimento sta DOPO la fusione, dove nessun ramo puo' aggirarlo (stessa lezione
@@ -6731,7 +6739,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
          stacco al gioco (`onCutNeeded`) e si RIMANDA il salto di ~120ms — il tempo che il nero entri in
          scena — tenendo la camera ferma invece di lasciarla scivolare verso un bersaglio lontano. Uno
          snap gia' mascherato passa immediato come prima: il percorso sano non cambia. */
-      if((isHL||P.matchPhase==="playing")&&!P.ceremony&&!P.shootout&&!replaying&&!(typeof window!=='undefined'&&window.__CPM_NO650)){if(tPz<16){try{if(sr.current._tocc503)sr.current._tocc503.push('tribuna-clamp650');}catch(_e650b){}tPz=16;}}/* [7.650.0 v3] IL VINCOLO E' L'ULTIMA PAROLA: misurato un residuo deterministico a z -5,2 (24 percento dei campioni hl sotto 16) scritto da una mano A VALLE dell'override (bisezione con soggetto oltre il piano tribuna) — il clamp sta dopo TUTTE le mani, prima di snap e lerp: da qui la camera non attraversa MAI */
+      if((isHL||P.matchPhase==="playing")&&!P.ceremony&&!P.shootout&&!replaying&&!(typeof window!=='undefined'&&window.__CPM_NO650)){if(!isHL&&tPz<16){try{if(sr.current._tocc503)sr.current._tocc503.push('tribuna-clamp650');}catch(_e650b){}tPz=16;}}/* [7.654.0 v2] il clamp resta solo sulla CRONACA in tribuna (z>=16): negli HL comanda la regia storica, come chiesto dal PO *//* [7.650.0 v3] IL VINCOLO E' L'ULTIMA PAROLA: misurato un residuo deterministico a z -5,2 (24 percento dei campioni hl sotto 16) scritto da una mano A VALLE dell'override (bisezione con soggetto oltre il piano tribuna) — il clamp sta dopo TUTTE le mani, prima di snap e lerp: da qui la camera non attraversa MAI */
       if(sr.current._cutSnap||sr.current._sceneCut){try{if(sr.current._tocc503)sr.current._tocc503.push('snap');}catch(_e){}/* [7.503.1] */
         const _dSnap=Math.hypot(tPx-camera.position.x,tPy-camera.position.y,tPz-camera.position.z);
         const _no471=(typeof window!=='undefined'&&window.__CPM_NO471);const _nowMs471=performance.now();
