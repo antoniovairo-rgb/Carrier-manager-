@@ -1004,7 +1004,7 @@ function ThreeMatchView(props){
       return _fill(cand[_k%cand.length]);};
     if(_CPM_TEST&&typeof window!=='undefined'){window.__CPM_ULTRAS=(nm,seed,slot,nat,fid)=>_ultrasName(nm,seed,slot,nat,fid);window.__CPM_ULTRAS.cls=(nm)=>({t:_ultrasToken(nm),c:_TOK_CLASS[_ultrasToken(nm)]||"P"});}/* [7.191.0] classe grammaticale del token esposta alla probe *//* [7.187.0] hook test-only per la probe identità/collisioni (spento in store build) *//* [7.174.0 collaudo PO «c è quasi sempre BRIGATA»] causa VERA: adSeed deriva dal club dell EROE+stagione → identico in ogni gara, e il nome del club NON entrava nell indice → ogni stadio mostrava la stessa struttura (BRIGATA <città>). Ora il nome è nell hash (+ avalanche _mix32) → gruppo diverso per club, stabile nella stagione. *//* [7.174.0 collaudo PO «c è quasi sempre BRIGATA»] l indice senza avalanche collassava: i seed hashStr di club/slot simili condividono il residuo mod 11 → stesso nome ovunque. _mix32 decorrelALL i bucket. */
     const _dkTifo=(h,f)=>{try{const n=parseInt(String(h).replace('#',''),16);return 'rgb('+Math.round(((n>>16)&255)*f)+','+Math.round(((n>>8)&255)*f)+','+Math.round((n&255)*f)+')';}catch(e){return '#20242c';}};
-    const _mkStriscione=(cx,z,rotY,c1Hex,c2Hex,text,yPos,led657)=>{const sc=document.createElement("canvas");sc.width=1024;sc.height=110;const sx=sc.getContext("2d");
+    const _mkStriscione=(cx,z,rotY,c1Hex,c2Hex,text,yPos,led657,ledW,ledH)=>{const sc=document.createElement("canvas");sc.width=1024;sc.height=110;const sx=sc.getContext("2d");
       /* [7.657.0 - IL CARTELLONE DEL NOME E' UN LED PICCOLO CHE SCORRE. Collaudo PO (screenshot):
          "il pannello/cartellone con il nome dello stadio deve essere molto piu' piccolo e con led
          a scorrimento". In modalita' led657: fondo quasi nero, testo color LED con scanline,
@@ -1016,7 +1016,7 @@ function ThreeMatchView(props){
         sx.fillStyle="#ffb020";sx.shadowColor="#ff8c00";sx.shadowBlur=14;sx.fillText(_txtL,18,57);sx.shadowBlur=0;
         sx.fillStyle="rgba(0,0,0,0.38)";for(let yy=0;yy<110;yy+=4)sx.fillRect(0,yy,1024,2);
         const stexL=new THREE.CanvasTexture(sc);stexL.wrapS=THREE.RepeatWrapping;
-        const smL=new THREE.Mesh(new THREE.PlaneGeometry(14,1.6),new THREE.MeshBasicMaterial({map:stexL,side:THREE.FrontSide,transparent:true,opacity:0.98,depthWrite:false}));
+        const smL=new THREE.Mesh(new THREE.PlaneGeometry(ledW||14,ledH||1.6),new THREE.MeshBasicMaterial({map:stexL,side:THREE.FrontSide,transparent:true,opacity:0.98,depthWrite:false}));
         smL.position.set(cx,yPos!=null?yPos:5.5,z);smL.rotation.y=rotY;scene.add(smL);
         (sr.current._led657=sr.current._led657||[]).push(stexL);return;}
       sx.fillStyle=_dkTifo(c1Hex,0.42);sx.fillRect(0,0,1024,110);
@@ -1032,9 +1032,9 @@ function ThreeMatchView(props){
        stadiumVenue (getStadiumName); il pannello usa la modalita' LED di _mkStriscione (14x1.6,
        testo ambra a scorrimento) su ENTRAMBE le facciate laterali, centrato, sopra i board. */
     if(stadiumVenue){try{const _vn658=String(stadiumVenue).toUpperCase();
-      _mkStriscione(0,-35.6,0,'#0a0c10','#ffb020',_vn658,9.2,true);
-      _mkStriscione(0,35.6,Math.PI,'#0a0c10','#ffb020',_vn658,9.2,true);
-    }catch(_e658){}}
+      _mkStriscione(0,-36.2,0,'#0a0c10','#ffb020',_vn658,20.5,true,19,2.2);
+      _mkStriscione(0,36.2,Math.PI,'#0a0c10','#ffb020',_vn658,20.5,true,19,2.2);
+    }catch(_e658){}}/* [7.659.0] PO in collaudo: «un po piu grande ed in alto, all altezza della copertura» — y 9,2 -> 20,5 (il bordo gradinata sta a 23-26), pannello 14x1.6 -> 19x2.2 */
     const _stadHN=stadiumHomeName||homeClub?.n||"",_stadAN=stadiumAwayName||"";const _stadHNat=stadiumHomeNat||homeClub?.nat||"",_stadANat=stadiumAwayNat||"";const _stadHId=stadiumHomeId||homeClub?.id||"",_stadAId=stadiumAwayId||"";
     // 2 striscioni per tribuna — SOLO colori di casa (§5); il lato ospite vive nella Curva Nord
     /* [7.189.0 collaudo PO «gli striscioni… devono essere appoggiati proprio sul MURO delle tribune»] anche i drappi
