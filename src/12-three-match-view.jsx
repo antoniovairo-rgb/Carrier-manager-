@@ -1010,15 +1010,31 @@ function ThreeMatchView(props){
          a scorrimento". In modalita' led657: fondo quasi nero, testo color LED con scanline,
          pannello 14x1.6 (era 30x3.4), texture in RepeatWrapping e offset animato nel loop
          (sr.current._led657). I drappi delle curve restano stoffa, come lo stadio vero. */
-      if(led657){sx.fillStyle="#07090c";sx.fillRect(0,0,1024,110);
-        const _txtL=String(text||"").toUpperCase()+"  •  ";
-        sx.font="900 78px 'Courier New', monospace";sx.textAlign="left";sx.textBaseline="middle";
-        sx.fillStyle="#ffb020";sx.shadowColor="#ff8c00";sx.shadowBlur=14;sx.fillText(_txtL,18,57);sx.shadowBlur=0;
-        sx.fillStyle="rgba(0,0,0,0.38)";for(let yy=0;yy<110;yy+=4)sx.fillRect(0,yy,1024,2);
-        const stexL=new THREE.CanvasTexture(sc);stexL.wrapS=THREE.RepeatWrapping;
-        const smL=new THREE.Mesh(new THREE.PlaneGeometry(ledW||14,ledH||1.6),new THREE.MeshBasicMaterial({map:stexL,side:THREE.FrontSide,transparent:true,opacity:0.98,depthWrite:false}));
+      if(led657){/* [7.661.0 LED v2 - collaudo PO in diretta: font moderno (niente monospace), pannello
+           piu' lungo e piu' in alto, LOGO squadra fisso ai due lati, e il GOL festeggiato dal
+           cartellone (texture dedicata lampeggiante, gestita nel loop su P.waveEvent). */
+        sc.width=2048;const _mkLed662=(t662,col662)=>{const c2=document.createElement("canvas");c2.width=2048;c2.height=110;const x2=c2.getContext("2d");
+          x2.fillStyle="#07090c";x2.fillRect(0,0,2048,110);
+          x2.font="900 74px Arial, sans-serif";x2.textAlign="left";x2.textBaseline="middle";
+          x2.fillStyle=col662;x2.shadowColor=col662;x2.shadowBlur=16;x2.fillText(t662,24,57);x2.shadowBlur=0;
+          x2.fillStyle="rgba(0,0,0,0.34)";for(let yy=0;yy<110;yy+=4)x2.fillRect(0,yy,2048,2);
+          const tx2=new THREE.CanvasTexture(c2);tx2.wrapS=THREE.RepeatWrapping;return tx2;};
+        const stexL=_mkLed662(String(text||"").toUpperCase()+"   •   ","#ffb020");
+        const stexG=_mkLed662("⚽ GOL!   ⚽ GOL!   ⚽ GOL!   ","#7dff8a");
+        const _matL=new THREE.MeshBasicMaterial({map:stexL,side:THREE.FrontSide,transparent:true,opacity:0.98,depthWrite:false});
+        const smL=new THREE.Mesh(new THREE.PlaneGeometry(ledW||14,ledH||1.6),_matL);
         smL.position.set(cx,yPos!=null?yPos:5.5,z);smL.rotation.y=rotY;scene.add(smL);
-        (sr.current._led657=sr.current._led657||[]).push(stexL);return;}
+        /* i loghi fissi: quadrati coi colori e la sigla del club, ai due capi del pannello */
+        const _mkLogo662=(sig,cc1,cc2)=>{const cl=document.createElement("canvas");cl.width=128;cl.height=128;const xl=cl.getContext("2d");
+          xl.fillStyle=cc1||"#1b2436";xl.fillRect(0,0,128,128);xl.strokeStyle=cc2||"#ffffff";xl.lineWidth=8;xl.strokeRect(4,4,120,120);
+          xl.font="900 52px Arial, sans-serif";xl.textAlign="center";xl.textBaseline="middle";xl.fillStyle="#ffffff";xl.fillText(String(sig||"").slice(0,3).toUpperCase(),64,66);
+          return new THREE.CanvasTexture(cl);};
+        const _sig662=String((typeof stadiumHomeAbbr!=='undefined'&&stadiumHomeAbbr)||(homeClub&&homeClub.a)||"").toUpperCase();
+        const _lw662=(ledW||14)/2+1.6;
+        for(const _sx662 of [-_lw662,_lw662]){const _lg=new THREE.Mesh(new THREE.PlaneGeometry(2.3,2.3),new THREE.MeshBasicMaterial({map:_mkLogo662(_sig662,(typeof stadiumHomeCol!=='undefined'&&stadiumHomeCol)||"#1b2436","#ffffff"),side:THREE.FrontSide,transparent:true,opacity:0.98,depthWrite:false}));
+          const _ca=Math.cos(rotY),_sa=Math.sin(rotY);
+          _lg.position.set(cx+_sx662*_ca,yPos!=null?yPos:5.5,z-_sx662*_sa);_lg.rotation.y=rotY;scene.add(_lg);}
+        (sr.current._led657=sr.current._led657||[]).push({tex:stexL,texGol:stexG,mat:_matL});return;}
       sx.fillStyle=_dkTifo(c1Hex,0.42);sx.fillRect(0,0,1024,110);
       const _fg=sx.createLinearGradient(0,0,0,110);_fg.addColorStop(0,"rgba(255,255,255,0.10)");_fg.addColorStop(1,"rgba(0,0,0,0.22)");sx.fillStyle=_fg;sx.fillRect(0,0,1024,110);
       sx.fillStyle=c2Hex;sx.fillRect(0,0,1024,9);sx.fillRect(0,101,1024,9);
@@ -1032,8 +1048,8 @@ function ThreeMatchView(props){
        stadiumVenue (getStadiumName); il pannello usa la modalita' LED di _mkStriscione (14x1.6,
        testo ambra a scorrimento) su ENTRAMBE le facciate laterali, centrato, sopra i board. */
     if(stadiumVenue){try{const _vn658=String(stadiumVenue).toUpperCase();
-      _mkStriscione(0,-36.2,0,'#0a0c10','#ffb020',_vn658,20.5,true,19,2.2);
-      _mkStriscione(0,36.2,Math.PI,'#0a0c10','#ffb020',_vn658,20.5,true,19,2.2);
+      _mkStriscione(0,-36.2,0,'#0a0c10','#ffb020',_vn658,23.5,true,28,2.4);
+      _mkStriscione(0,36.2,Math.PI,'#0a0c10','#ffb020',_vn658,23.5,true,28,2.4);/* [7.661.0] piu' lungo (19->28) e piu' in alto (20,5->23,5), come chiesto in collaudo */
     }catch(_e658){}}/* [7.659.0] PO in collaudo: «un po piu grande ed in alto, all altezza della copertura» — y 9,2 -> 20,5 (il bordo gradinata sta a 23-26), pannello 14x1.6 -> 19x2.2 */
     const _stadHN=stadiumHomeName||homeClub?.n||"",_stadAN=stadiumAwayName||"";const _stadHNat=stadiumHomeNat||homeClub?.nat||"",_stadANat=stadiumAwayNat||"";const _stadHId=stadiumHomeId||homeClub?.id||"",_stadAId=stadiumAwayId||"";
     // 2 striscioni per tribuna — SOLO colori di casa (§5); il lato ospite vive nella Curva Nord
@@ -6807,7 +6823,13 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
            for(const _m of _all660){if(!_m)continue;
              if(_off660){_m._vis660=_m.visible;_m.visible=false;}
              else{_m.visible=(_m._vis660!==undefined)?_m._vis660:true;delete _m._vis660;}}}catch(_e660){}}}
-      if(sr.current._led657)for(const _tl of sr.current._led657){_tl.offset.x=(_tl.offset.x+dt*0.045)%1;}/* [7.657.0] lo scorrimento del LED: lento, da tabellone vero */
+      if(sr.current._led657){
+        const _weT662=(P.waveEvent&&P.waveEvent.t)||0;
+        if(_weT662&&_weT662!==sr.current._ledWeSeen662){sr.current._ledWeSeen662=_weT662;sr.current._ledGoalUntil662=performance.now()+6000;}/* [7.661.0] il GOL si festeggia anche sul cartellone */
+        const _golOn662=(sr.current._ledGoalUntil662||0)>performance.now();
+        for(const _tl of sr.current._led657){const _o=_tl.tex?_tl:{tex:_tl,texGol:null,mat:null};
+          if(_o.mat){_o.mat.map=(_golOn662&&_o.texGol)?_o.texGol:_o.tex;_o.mat.opacity=_golOn662?(0.62+0.36*Math.abs(Math.sin(performance.now()*0.012))):0.98;}
+          const _t=_o.mat?_o.mat.map:_o.tex;if(_t)_t.offset.x=(_t.offset.x+dt*(_golOn662?0.18:0.045))%1;}}
       camera.position.x+=(tPx-camera.position.x)*kp;camera.position.y+=(tPy-camera.position.y)*kp;camera.position.z+=(tPz-camera.position.z)*kp;
       /* [7.507.0 codice 007 — IL BERSAGLIO DELLO SGUARDO E' LEGALE PRIMA DEL LERP]
          Il meccanismo dell'oscillazione, gia' letto nel 7.475/7.478C ma mai chiuso alla radice: il lerp

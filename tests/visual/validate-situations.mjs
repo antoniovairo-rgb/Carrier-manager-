@@ -82,6 +82,15 @@ const GOLDEN = path.join(HERE, 'golden-sigs.json');
     const { total } = await openMatch(page, port);
     console.log(`match pronto · ${total} Situations · gameVersion ${gameVersion}`);
 
+    /* [7.661.0] WARM-UP dichiarato — due rossi da 'avvio freddo' (golden htx 37.3 sul gate 7.660,
+       initial-state palla a 53u sul gate 7.661) sono caduti SEMPRE sulla PRIMA forzatura dopo il
+       load (gi 0) e MAI sulle ricatture (il check determinism ri-forza gi 0 e combacia con la
+       baseline; prova appaiata fuori gate: 12/12 pulite). La prima forzatura paga compile/JIT/
+       texture del primo ingresso in scena: una forzatura di riscaldamento SCARTATA prima del giro
+       toglie quel tempo dal metro SENZA toccare nessuna banda — i check misurano esattamente
+       cio' che misuravano, su uno stato che ha avuto il tempo di essere costruito. */
+    await forceSituation(page, 0, { settle: 1200, choose: true });
+
     T('situations (191 × force+check+shot)');
     for (let gi = 0; gi < total; gi++) {
       const sit = situations[gi] || { text: '?', type: 'off', actions: [] };

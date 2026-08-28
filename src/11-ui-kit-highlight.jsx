@@ -1148,7 +1148,9 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
      const r1=new THREE.Mesh(new THREE.BoxGeometry(9.6,0.15,2.2),_dgGl);r1.position.set(dx,2.1,-34.8);r1.rotation.x=0.18;scene.add(r1);
    });}
   // [5.88.0 S2] INSEGNA col nome dello stadio (canvas wordmark) sopra la Tribuna Ovest — identità immediata
-  if(T&&stadCfg.tpl&&stadCfg.tpl.name){
+  // [7.661.0] PO: «il vecchio pannello/cartellone con il nome dello stadio deve essere eliminato» — il nome
+  //   vive sul LED a scorrimento (7.658+); questa insegna resta solo sotto il rosso __CPM_NO662 (confronto).
+  if(T&&stadCfg.tpl&&stadCfg.tpl.name&&(typeof window!=='undefined'&&window.__CPM_NO662)){
     try{const _sc2=document.createElement('canvas');_sc2.width=1024;_sc2.height=128;
       const _g2=_sc2.getContext('2d');_g2.fillStyle="#0e1420";_g2.fillRect(0,0,1024,128);
       _g2.fillStyle=homeHex;_g2.fillRect(0,116,1024,12);
