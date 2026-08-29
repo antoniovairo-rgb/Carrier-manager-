@@ -6978,7 +6978,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
           let _cl=null,_w=0;const _sopra=[];
           try{for(const k in (a.gestures||{})){const g=a.gestures[k];
             const _pw=(g&&typeof g.getEffectiveWeight==='function')?g.getEffectiveWeight():0;
-            if(_pw>0.3)_sopra.push(k+':'+_pw.toFixed(2));
+            if(_pw>0.25)_sopra.push(k+':'+_pw.toFixed(2));/* [7.677.0] la soglia di giudizio sta nella sonda, non qui: il censimento riporta, non decide */
             if(_pw>_w){_w=_pw;_cl=k;}}}catch(_e){}
           if(!_cl&&a._gName){_cl=a._gName;_w=+(a._gw||0);}
           const _p=a.proc||{};

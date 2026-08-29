@@ -21,7 +21,15 @@ import { loadSituations } from './lib/situations.mjs';
 
 const SIT = loadSituations();
 const pick = (re, n) => { const o = []; SIT.forEach((s, i) => (s.actions || []).forEach((a, k) => { if (re.test(String(a.label || '')) && o.length < n) o.push({ gi: i, k, lbl: a.label }); })); return o; };
-const SCENE = [...pick(/tiro|conclusione|volée|volee|al volo/i, 6), ...pick(/rovesciat|sforbiciat/i, 3), ...pick(/assist|cross/i, 5)];
+/* [7.677.0 — LO STRUMENTO IRROBUSTITO. La prima stesura trovava il difetto ma ballava: sulla stessa
+   identica build dava da 10 a 22 casi, cioe' non permetteva di dire se una cura funzionava. Tre cause,
+   tutte rimosse qui: POCHE SCENE (14 → 30, il campione era troppo corto), UN SOLO GIRO (ora tre
+   passate e si riporta la MEDIANA, non il numero di un tiro di dadi) e una SOGLIA arbitraria sul peso
+   (0,3: un crossfade normale a meta' strada la superava e finiva contato come doppio gesto; ora 0,45,
+   sopra il punto d'incrocio di due clip che si scambiano). Il numero che questa sonda stampa e' un
+   numero su cui si puo' decidere. */
+const SCENE = [...pick(/tiro|conclusione|volée|volee|al volo/i, 12), ...pick(/rovesciat|sforbiciat/i, 6), ...pick(/assist|cross/i, 12)];
+const GIRI = +(process.env.CPM_GIRI || 3);
 
 const srv = await startServer(); const port = srv.address().port;
 const b = await launchBrowser();
@@ -34,6 +42,8 @@ for (let k = 0; k < 30 && !pronti; k++) { await sleep(1000); pronti = await page
 if (!pronti) { console.log('⚠️  i personaggi GLB non si sono agganciati: la sonda dichiara il suo limite e non giudica'); await b.close(); srv.close(); process.exit(0); }
 console.log(`personaggi GLB agganciati · scene da esercitare: ${SCENE.length}`);
 
+const tutte = [];
+for (let giro = 0; giro < GIRI; giro++) {
 const oss = [];
 for (const sc of SCENE) {
   await forceSituation(page, sc.gi, { settle: 420, choose: true });
@@ -41,12 +51,18 @@ for (const sc of SCENE) {
   for (let t = 0; t < 12; t++) {
     await sleep(130);
     const p = await page.evaluate(() => (window.__CPM_GLBPOSE675 ? window.__CPM_GLBPOSE675() : null)).catch(() => null);
-    if (p && p.att && p.att.length) { const dopp = p.att.filter(a => (a.sopra || []).length > 1);
+    if (p && p.att && p.att.length) { const dopp = p.att.filter(a => (a.sopra || []).filter(x => +String(x).split(':')[1] >= 0.45).length > 1);
       oss.push({ lbl: sc.lbl, att: p.att.map(a => a.clip + ':' + a.peso).join(' + '), n: p.att.length, doppi: dopp.length, dettDoppi: dopp.map(a => a.sopra.join('+')).join(' '), gkRz: p.gk ? p.gk.rz : null, eroe: p.eroe }); }
   }
 }
+tutte.push(oss);
+}
 await b.close(); srv.close();
-
+const med = (a) => { const b2 = a.slice().sort((x, y) => x - y); return b2[b2.length >> 1]; };
+const conteggi = tutte.map(o => o.filter(x => x.doppi > 0).length);
+const campioni = tutte.map(o => o.length);
+console.log(`\n=== ${GIRI} passate · casi per passata: ${conteggi.join(', ')} → MEDIANA ${med(conteggi)} su ${med(campioni)} campioni ===`);
+const oss = tutte[0];
 if (!oss.length) { console.log('⚠️  nessun gesto GLB osservato nelle scene esercitate — lo strumento vede il mondo ma le scene non lo attivano'); process.exit(0); }
 const doppi = oss.filter(o => o.doppi > 0);
 const gkPiegato = oss.filter(o => o.gkRz != null && Math.abs(o.gkRz) > 0.25);
