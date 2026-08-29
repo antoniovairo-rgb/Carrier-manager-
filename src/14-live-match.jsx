@@ -33,23 +33,23 @@
    serve alla sonda dei metri (deja-vu, classi, copertura). Deterministico: hash FNV, zero
    Math.random. L'aggancio alla partita vera arriva in L5, a metri verdi, col suo rosso. */
 const LIB662={
-  C1:{cl:0,s:["C3","C5","C6","A4"]},C2:{cl:1,s:["A4","F1","F7","T6"]},C3:{cl:0,s:["C4","C5","A3","A4"]},
-  C4:{cl:0,fa:1,s:["F2","F1","F4","F8"]},C5:{cl:0,s:["A1","A3","A5","Z1"]},C6:{cl:0,fa:1,s:["F1","F3","F8","D6"]},
-  C7:{cl:0,s:["C1","C3","C4"]},C8:{cl:1,s:["A3","A7","C4"]},
-  A1:{cl:0,s:["Z2","Z4","D7","A8"]},A2:{cl:0,s:["A7","Z1","Z2","F4"]},A3:{cl:0,s:["A7","Z1","Z4","D1"]},
-  A4:{cl:0,s:["A6","D6","A8"]},A5:{cl:0,s:["Z3","Z6","D7"]},A6:{cl:0,s:["Z2","A8","D4"]},
-  A7:{cl:0,s:["Z4","Z6","D7"]},A8:{cl:1,s:["Z4","Z6","Z3"]},
-  F1:{cl:0,fa:1,s:["F4","F5","F6"]},F2:{cl:0,fa:1,s:["D1","D2"]},F3:{cl:1,fa:1,s:["F4","F6"]},
-  F4:{cl:0,fa:1,t:1,s:[]},F5:{cl:0,fa:1,t:1,s:[]},F6:{cl:1,fa:1,s:["Z2","Z3"]},
-  F7:{cl:0,fa:1,s:["F1","F2","F4"]},F8:{cl:1,fa:1,s:["Z1","A1","F1"]},
-  T1:{cl:2,s:["D4"]},T2:{cl:1,s:["Z1","Z2","A1"]},T3:{cl:0,s:["A2","A7","F7"]},
-  T4:{cl:1,s:["T1","A2","F4"]},T5:{cl:1,t:1,s:[]},T6:{cl:1,s:["A7","Z4","F4"]},T7:{cl:1,s:["T1","A2","F4"]},
-  D1:{cl:0,s:["Z4","F4","F6","A1"]},D2:{cl:0,t:1,s:[]},D3:{cl:0,s:["T3"]},D4:{cl:1,s:["Z4","Z6"]},
-  D5:{cl:0,s:["Z5","A6","Z7"]},D6:{cl:0,s:["A6","C7","D7"]},D7:{cl:0,s:["P1","P2","P3","P8"]},D8:{cl:0,t:1,s:[]},
-  Z1:{cl:0,t:1,s:[]},Z2:{cl:0,t:1,s:[]},Z3:{cl:1,t:1,s:[]},Z4:{cl:0,t:1,s:[]},Z5:{cl:0,t:1,s:[]},
-  Z6:{cl:1,t:1,s:[]},Z7:{cl:0,s:["Z2","Z6","P7"]},Z8:{cl:2,s:["Z7"]},Z9:{cl:1,s:["P4","P5","P6","T7"]},Z10:{cl:9,t:1,s:[]},
-  P1:{cl:2,t:1,s:[]},P2:{cl:1,t:1,s:[]},P3:{cl:0,s:["D5"]},P4:{cl:1,fa:1,s:["F4","F5","F6"]},
-  P5:{cl:0,s:["D5"]},P6:{cl:1,s:["Z1"]},P7:{cl:1,s:["Z6","D8","D7"]},P8:{cl:2,t:1,s:[]},
+  C1:{cl:0,s:["C3","C5","C6","A4"],z:'retreat'},C2:{cl:1,s:["A4","F1","F7","T6"],z:'midfield'},C3:{cl:0,s:["C4","C5","A3","A4"],z:'midfield'},
+  C4:{cl:0,fa:1,s:["F2","F1","F4","F8"],z:'attack'},C5:{cl:0,s:["A1","A3","A5","Z1"],z:'attack'},C6:{cl:0,fa:1,s:["F1","F3","F8","D6"],z:'attack'},
+  C7:{cl:0,s:["C1","C3","C4"],z:'retreat'},C8:{cl:1,s:["A3","A7","C4"],z:'midfield'},
+  A1:{cl:0,s:["Z2","Z4","D7","A8"],z:'attack_goal'},A2:{cl:0,s:["A7","Z1","Z2","F4"],z:'attack'},A3:{cl:0,s:["A7","Z1","Z4","D1"],z:'attack'},
+  A4:{cl:0,s:["A6","D6","A8"],z:'attack'},A5:{cl:0,s:["Z3","Z6","D7"],z:'attack_goal'},A6:{cl:0,s:["Z2","A8","D4"],z:'attack_goal'},
+  A7:{cl:0,s:["Z4","Z6","D7"],z:'attack_goal'},A8:{cl:1,s:["Z4","Z6","Z3"],z:'attack_goal'},
+  F1:{cl:0,fa:1,s:["F4","F5","F6"],z:'attack'},F2:{cl:0,fa:1,s:["D1","D2"],z:'attack'},F3:{cl:1,fa:1,s:["F4","F6"],z:'attack'},
+  F4:{cl:0,fa:1,t:1,s:[],z:'attack_goal'},F5:{cl:0,fa:1,t:1,s:[],z:'attack_goal'},F6:{cl:1,fa:1,s:["Z2","Z3"],z:'attack_goal'},
+  F7:{cl:0,fa:1,s:["F1","F2","F4"],z:'attack'},F8:{cl:1,fa:1,s:["Z1","A1","F1"],z:'attack_goal'},
+  T1:{cl:2,s:["D4"],z:'attack_goal'},T2:{cl:1,s:["Z1","Z2","A1"],z:'attack'},T3:{cl:0,s:["A2","A7","F7"],z:'attack'},
+  T4:{cl:1,s:["T1","A2","F4"],z:'midfield'},T5:{cl:1,t:1,s:[],z:'defend_goal'},T6:{cl:1,s:["A7","Z4","F4"],z:'attack'},T7:{cl:1,s:["T1","A2","F4"],z:'midfield'},
+  D1:{cl:0,s:["Z4","F4","F6","A1"],z:'attack'},D2:{cl:0,t:1,s:[],z:'midfield'},D3:{cl:0,s:["T3"],z:'midfield'},D4:{cl:1,s:["Z4","Z6"],z:'attack_goal'},
+  D5:{cl:0,s:["Z5","A6","Z7"],z:'attack_goal'},D6:{cl:0,s:["A6","C7","D7"],z:'attack'},D7:{cl:0,s:["P1","P2","P3","P8"],z:'attack'},D8:{cl:0,t:1,s:[],z:'retreat'},
+  Z1:{cl:0,t:1,s:[],z:'attack_goal'},Z2:{cl:0,t:1,s:[],z:'attack_goal'},Z3:{cl:1,t:1,s:[],z:'attack_goal'},Z4:{cl:0,t:1,s:[],z:'attack_goal'},Z5:{cl:0,t:1,s:[],z:'attack_goal'},
+  Z6:{cl:1,t:1,s:[],z:'attack_goal'},Z7:{cl:0,s:["Z2","Z6","P7"],z:'attack_goal'},Z8:{cl:2,s:["Z7"],z:'attack_goal'},Z9:{cl:1,s:["P4","P5","P6","T7"],z:'attack_goal'},Z10:{cl:9,t:1,s:[],z:'attack_goal'},
+  P1:{cl:2,t:1,s:[],z:'attack_goal'},P2:{cl:1,t:1,s:[],z:'attack'},P3:{cl:0,s:["D5"],z:'attack_goal'},P4:{cl:1,fa:1,s:["F4","F5","F6"],z:'attack_goal'},
+  P5:{cl:0,s:["D5"],z:'attack_goal'},P6:{cl:1,s:["Z1"],z:'attack_goal'},P7:{cl:1,s:["Z6","D8","D7"],z:'attack_goal'},P8:{cl:2,t:1,s:[],z:'attack_goal'},
 };
 const LIB662_START=["C1","C2","C3","C4","C5","C6","C7","C8","T1","T2","T3","T4","T6","T7","P1","P2","P3","P4","P5","P6","P8"];
 const _libH662=(str)=>{let h=2166136261>>>0;for(let i=0;i<str.length;i++){h^=str.charCodeAt(i);h=Math.imul(h,16777619);}/* [7.664.0] FINALIZZAZIONE A VALANGA: FNV-1a lascia CORRELATI i bit bassi fra semi quasi identici ("...|es0" vs "...|es1"), e il selettore usa proprio quelli (modulo 100000) — misurato: 2 esiti distinti su 8 tiri sulla stessa struttura, dove la tabella ne offriva quattro. Tre passate di mescola e i bit bassi diventano indipendenti; resta deterministico. */h^=h>>>16;h=Math.imul(h,2246822507);h^=h>>>13;h=Math.imul(h,3266489909);h^=h>>>16;return h>>>0;};
@@ -829,6 +829,9 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   //   `nx` grezzo → i minuti dei gol ambientali potevano non essere monotòni). Ora tutti coerenti per costruzione.
   const pushMatchEvent=(min,type,txt)=>setMatchEvents(prev=>{const _lm=prev.length>0?prev[prev.length-1].min:-1;const _em=Math.min(90,_lm>=min?_lm+1:min);return[...prev,{min:_em,type,txt:(typeof txt==="function"?txt(_em):txt)}].slice(-12);});
   const lastBGEvtRef=useRef([]); // Sprint 113: ultimi txt BG_MATCH esclusi dal picker — dedup (finestra 3→6 in 7.48.0: col pool a ~135 voci l'eligible resta ampio)
+  /* [7.666.0 L5] l'azione della libreria in corso e il registro anti-ripetizione (partita + recenti) */
+  const libAzRef666=useRef(null);
+  const libRegRef666=useRef({partita:[],recenti:[],ultima:-99});
   const [waveEvent,setWaveEvent]=useState(null);
   const [bgAction,setBgAction]=useState(null); // ATE-1: tipo azione corrente per arco palla 3D
   const [actionEffect,setActionEffect]=useState(null);
@@ -2865,7 +2868,14 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
            resta. */
         const _forza541=(_cat559&&!!pendingGoalRef.current&&!_inHL77&&((pendingGoalRef.current.piano&&!(typeof window!=='undefined'&&window.__CPM_NO649)&&(pendingGoalRef.current.step|0)<pendingGoalRef.current.piano.length)||_advT501>=45||(!(typeof window!=='undefined'&&window.__CPM_NO644)&&(pendingGoalRef.current.righeLato|0)===0&&(pendingGoalRef.current.ticks|0)>=4)));/* [7.644.0] LA COSTRUZIONE MUTA NON RESTA MUTA: da 4 tick senza una riga del suo lato, la riga esce comunque (con la catena aperta dall'armamento e' un passo nominato). Il caso fotografato: armamento profondo + tetto-14 = gol senza NESSUNA riga del lato. *//* [7.542.0 v3] LA FINESTRA DEL RACCONTO COMINCIA A META' CAMPO, NON AL LIMITE DELL'AREA. La v2 apriva la forzatura solo fuori dalla costruzione, cioe' da avanzamento 58: ma il gol si scrive a 72, quindi l'attacco aveva solo la striscia 58-72 per farsi raccontare — due o tre tick, proprio sul filo della soglia «tre righe nei quattro minuti prima», e la misura infatti restava a 4/7. Ora la finestra si apre quando l'azione supera la meta' campo (45), che e' anche quando una telecronaca vera alza la voce. Resta fuori il palleggio nella propria meta', che e' il respiro che bg-rhythm difende. */
         const _annScena653=(!(typeof window!=='undefined'&&window.__CPM_NO653)&&!_inHL77&&direttoreRef.current&&direttoreRef.current.lib&&!direttoreRef.current.ann&&!pendingGoalRef.current&&!counterRef.current&&!outRef.current&&!spRef.current&&!ponteRef.current&&!azioneRef.current&&kickoffRef.current<=0);/* [7.653 v3: +azioneRef — le guardie della forzatura DEVONO essere le stesse del hijack, o la riga si forza e l annuncio non la prende (misurato: 1 annuncio su 5 scene) */ /* [7.653 v2] MISURATO 0 annunci su 10 scene decise: l'annuncio aspettava la lotteria delle righe con tutte le macchine libere (3-8 tick a partita). La riga della dichiarazione di scena si FORZA al primo tick buono (pattern forza541): il sorteggio resta consumato nell'ordine. */
-        if(_simEv77||(_draw541&&!_inHL77&&!_pausa485)||_forza541||_annScena653){/* [7.528.0 v2] durante l'azione pendente le righe ESCONO e raccontano l'avanzata (la decisione F3b segue la palla che sale: sviluppo/pericolo emergono da soli — la prima stesura le sopprimeva e il guardiano bg-rhythm e' diventato CIECO: sviluppo 6 coppie, pericolo 2, contro 14/13 storici); a non muovere il pallone ci pensa il blocco _bt498 qui sotto */
+        /* [7.666.0 — IL RITMO DELL'AZIONE. Misurato con la libreria appena innestata: l'azione
+           ESCE (corner corto → la difesa si schiaccia → palla dietro → tiro dal limite → deviazione
+           in angolo) ma spalmata su TREDICI minuti, perche' ogni beat aspettava il sorteggio del
+           ritmo — un'azione a puntate, non un'azione. Finche' una sequenza e' aperta la riga esce a
+           ogni tick: cinque beat = cinque minuti, che e' la durata dichiarata nel catalogo. La
+           forzatura vale solo fuori dagli highlight e muore con l'ultimo beat. */
+        const _forzaLib666=!!(libAzRef666.current&&!_inHL77&&!(typeof window!=='undefined'&&window.__CPM_NO666));
+        if(_simEv77||(_draw541&&!_inHL77&&!_pausa485)||_forza541||_annScena653||_forzaLib666){/* [7.528.0 v2] durante l'azione pendente le righe ESCONO e raccontano l'avanzata (la decisione F3b segue la palla che sale: sviluppo/pericolo emergono da soli — la prima stesura le sopprimeva e il guardiano bg-rhythm e' diventato CIECO: sviluppo 6 coppie, pericolo 2, contro 14/13 storici); a non muovere il pallone ci pensa il blocco _bt498 qui sotto */
           /* [7.490.0 direttiva PO §9 «eventi importanti: piu' enfasi e tempo di lettura»] LA PAUSA SI ARMA
              DOPO, E PESA L'EVENTO. Fino a qui era uniforme: un gol aveva lo stesso respiro di una rimessa
              laterale, e in un feed di testo il respiro E' l'enfasi — non c'e' altro modo di dire «questo
@@ -3264,6 +3274,59 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               ?["⚠️ Gli avversari guadagnano metri: il nostro blocco si abbassa.","😤 {A} muove il pallone con pazienza verso la nostra trequarti.","🛑 {A} cambia lato e accelera: la nostra linea scala all'indietro.","📢 Il capitano richiama tutti dietro la linea della palla: {A} spinge."]
               :["⚙️ La squadra accompagna l'azione: si sale verso l'area di {A}.","🏃 {H} detta i tempi: la manovra si sposta nell'ultimo terzo.","🧭 {H} e {H2} scambiano corto e guadagnano campo, metro dopo metro.","📈 Baricentro alto: {H} orchestra e la squadra lo segue in blocco."];
             ev={txt:_pp544[_pv544],ef:null,w:1,bpos:null,pd:_dec499};_recHij545=true;_recKind546="ponte";_recSide546=ponteRef.current.def?"away":"home";}}/* [7.532.0] pd=_dec499: la riga di scorta DESCRIVE il momento (palla ancora in viaggio), non la destinazione — con pd:"attack" fisso l'accordo bg-decision crollava (famiglia attack 0/4, esatto 59,4%<60) */
+          /* [7.666.0 v2 — DOVE si innesta, e perche' proprio qui. La v1 stava a valle, appena prima
+             della costruzione del testo, e BLOCCAVA LA PARTITA al 68' (misurato: «Cannot read properties
+             of null (reading shots)», orologio fermo, prova del rosso pulita col NO666). Causa: la riga
+             che accumula le statistiche registra un aggiornamento DIFFERITO che legge `ev.ms` piu' tardi,
+             in fase di render — e nel frattempo io riassegnavo `ev`. Una closure sulla VARIABILE, non sul
+             valore: il difetto classico del `let` riassegnato sotto i piedi di chi l'ha catturato. Ora la
+             sostituzione avviene QUI, dopo che tutte le macchine hanno dirottato e PRIMA che chiunque
+             catturi `ev`: da qui in giu' la riga della libreria e' l'unica verita' del tick. */
+          /* [7.666.0 — L5: LA LIBRERIA SCRIVE IN CRONACA (rosso __CPM_NO666).
+             LA MISURA CHE HA APERTO IL CANTIERE (collaudo PO «le azioni salienti extra eroe non
+             scattano»): una partita intera produce 17 righe in 89 minuti, una ogni cinque, e ZERO
+             minuti con piu' di una riga — nessuna sequenza, solo frasi isolate: «recupero altissimo!»
+             e poi silenzio. Le macchine si armavano 22 volte ma scrivevano 1,1 righe a testa: non
+             erano azioni, erano annunci. Qui l'azione DIVENTA sequenza: il compositore sceglie una
+             struttura di 2-5 moduli col contesto della partita, la rende in battute, e le battute
+             escono UNA PER TICK, di fila, chiuse dall'esito che nomina la sua conseguenza.
+             DOVE si innesta: QUI, a valle di tutte le macchine — se una recita ha parlato, o se una
+             scena-gol e' armata, la libreria TACE. Il sorteggio del repertorio resta consumato
+             (ordine intatto, lezione 7.511): la riga viene sostituita, non saltata.
+             I NOMI: i beat non portano nomi propri ma i segnaposto del gioco ({H}, {H2}, {A}), che
+             la riga sotto riempie con la rosa vera e coerente per zona. LIMITE DICHIARATO: il nome e'
+             pescato per ZONA, non per RUOLO — il «regista» del beat non e' garantito essere il regista
+             della rosa. Il ruolo vero arriva in L6.
+             LA ZONA: ogni riga porta la zona d'uscita del suo modulo, quindi resta causale per il
+             guardiano e giudicabile dal giudice di fondatezza. */
+          if(!(typeof window!=='undefined'&&window.__CPM_NO666)&&typeof libCompose662==='function'){try{
+            const _LR=libRegRef666.current;const _LA=libAzRef666.current;
+            /* i NOMI: due segnaposto distinti, e i ruoli che compaiono INSIEME in uno stesso beat
+               non possono condividerlo — misurato: «Bruno rifiuta il rilancio e apre corto per Bruno».
+               {H} e {H2} sono due uomini diversi per costruzione (H2 esclude H). */
+            const _RUOLI666={portiere:'{H}',centrale:'{H2}',regista:'{H}',mediano:'{H2}',mezzala:'{H2}',
+              terzino:'{H}',esterno:'{H2}',punta:'{H}',trequartista:'{H2}',portatore:'{H}',specialista:'{H}'};
+            if(_LA&&_LA.i<_LA.righe.length){
+              const _r=_LA.righe[_LA.i++];
+              ev={...ev,txt:_r.txt,pd:_r.pd||ev.pd||null,bpos:null,ef:null,ms:null,_lib666:1};
+              if(_LA.i>=_LA.righe.length){libAzRef666.current=null;_LR.ultima=nx;}
+            } else if(!_LA&&!pendingGoalRef.current&&!_recHij545&&!_koHij536&&nx>2&&nx<88&&(nx-(_LR.ultima|0))>=4){
+              const _seme666=String((opponent&&(opponent.n||opponent.name))||'x')+'|'+((player&&player.week)||0)+'|'+nx;
+              const _ctx666={stile:'equilibrato',dominio:0,mn:nx,
+                diff:((scoreRef.current&&scoreRef.current.home)||0)-((scoreRef.current&&scoreRef.current.away)||0)};
+              const _st666=libCompose662(_seme666,_LR,_ctx666);
+              if(_st666&&typeof libRender664==='function'){
+                const _rd666=libRender664(_st666,_ctx666,_RUOLI666,false,_seme666);
+                if(_rd666&&_rd666.righe&&_rd666.righe.length>1){
+                  const _rr666=_rd666.righe.map(r2=>({txt:r2.txt,pd:(LIB662[r2.mod]&&LIB662[r2.mod].z)||null,cons:r2.cons||null}));
+                  libAzRef666.current={righe:_rr666,i:1,sig:_st666.sig};
+                  _LR.partita.push(_st666.sig);
+                  ev={...ev,txt:_rr666[0].txt,pd:_rr666[0].pd||ev.pd||null,bpos:null,ef:null,ms:null,_lib666:1};
+                  if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){try{(window.__CPM_LIB666=window.__CPM_LIB666||[]).push({min:nx,sig:_st666.sig,n:_rr666.length});}catch(_e){}}
+                }
+              }
+            }
+          }catch(_e666){}}
           /* [7.617.0 — SPRINT A3: LE RISOLUZIONI NARRATE PASSANO IL TURNO. Rosso __CPM_NO617]
              L'audit (punto D): le risoluzioni di contropiede e piazzati raccontano passaggi di possesso
              espliciti («il portiere fa sua la palla», «la difesa spazza», «{A} sciupa: rimessa dal

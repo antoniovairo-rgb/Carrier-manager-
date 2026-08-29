@@ -38,7 +38,7 @@ senza motivo» è grammaticalmente impossibile, non solo sconsigliato.
 
 Ogni modulo è una mini-scheda: 1-3 beat di cronaca, ruoli, zona IN → zona OUT, condizioni
 d'uso, ganci per l'eroe. Le categorie sono quelle chieste dal PO. Inventario iniziale:
-**58 moduli** (elenco; ogni modulo avrà la sua scheda completa prima del codice).
+**57 moduli** (elenco; ogni modulo avrà la sua scheda completa prima del codice).
 
 **COSTRUZIONE (8)** — C1 costruzione dal basso a tre · C2 uscita dalla pressione (il palleggio
 sotto pressing che libera) · C3 possesso prolungato (la cronaca conta i passaggi) · C4 cambio
@@ -171,7 +171,7 @@ CONSEGUENZA raccontata → ritorno alla cronaca. Contratti:
 
 ## 9 · Quanta varietà genera (il conto, da verificare col metro)
 
-58 moduli, catene di 2-5 moduli sotto regole di compatibilità: MISURATO con
+57 moduli, catene di 2-5 moduli sotto regole di compatibilità: MISURATO con
 `tools/enumera-strutture.mjs` sulle schede complete (MODULI-AZIONI-SALIENTI.md): **418
 sequenze valide, 587 con le corsie speculari**; varianti e branch moltiplicano le
 realizzazioni in migliaia.
@@ -201,7 +201,7 @@ pattern?»* — si misura così:
 
 ## 11 · Ordine di consegna
 
-1. **L1** — schede complete dei 58 moduli (beat, zone, condizioni, branch) in questo documento
+1. **L1** — schede complete dei 57 moduli (beat, zone, condizioni, branch) in questo documento
    → passaggio del PO;
 2. **L2** — motore di composizione (grammatica + validatore di continuità) con registro
    `__CPM_LIB` e metri, DIETRO flag: la partita non cambia finché i metri non sono verdi;
