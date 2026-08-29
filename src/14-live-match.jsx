@@ -23,6 +23,73 @@
  * ========================================================================
  */
 /* CMAV-SRC-HEADER-END */
+/* [7.662.0 — L2 DELLA LIBRERIA AZIONI SALIENTI: IL COMPOSITORE, DIETRO IL VETRO.
+   Direttiva PO 29/08 («libreria ampia, mai ripetitiva») → docs/LIBRERIA-AZIONI-SALIENTI.md +
+   docs/MODULI-AZIONI-SALIENTI.md (le 58 schede). Questo blocco e' il MOTORE DI COMPOSIZIONE:
+   dato un seme e il registro anti-ripetizione, cammina il grafo degli SBOCCHI (identico
+   all'enumeratore tools/enumera-strutture.mjs: 418 sequenze, 587 con corsie) e produce una
+   STRUTTURA (catena di moduli + corsia). E' INERTE PER IL GIOCATORE: nessun percorso di
+   partita lo chiama — si raggiunge solo dall'hook di test __CPM_LIB_COMPOSE (cpmtest), che
+   serve alla sonda dei metri (deja-vu, classi, copertura). Deterministico: hash FNV, zero
+   Math.random. L'aggancio alla partita vera arriva in L5, a metri verdi, col suo rosso. */
+const LIB662={
+  C1:{cl:0,s:["C3","C5","C6","A4"]},C2:{cl:1,s:["A4","F1","F7","T6"]},C3:{cl:0,s:["C4","C5","A3","A4"]},
+  C4:{cl:0,fa:1,s:["F2","F1","F4","F8"]},C5:{cl:0,s:["A1","A3","A5","Z1"]},C6:{cl:0,fa:1,s:["F1","F3","F8","D6"]},
+  C7:{cl:0,s:["C1","C3","C4"]},C8:{cl:1,s:["A3","A7","C4"]},
+  A1:{cl:0,s:["Z2","Z4","D7","A8"]},A2:{cl:0,s:["A7","Z1","Z2","F4"]},A3:{cl:0,s:["A7","Z1","Z4","D1"]},
+  A4:{cl:0,s:["A6","D6","A8"]},A5:{cl:0,s:["Z3","Z6","D7"]},A6:{cl:0,s:["Z2","A8","D4"]},
+  A7:{cl:0,s:["Z4","Z6","D7"]},A8:{cl:1,s:["Z4","Z6","Z3"]},
+  F1:{cl:0,fa:1,s:["F4","F5","F6"]},F2:{cl:0,fa:1,s:["D1","D2"]},F3:{cl:1,fa:1,s:["F4","F6"]},
+  F4:{cl:0,fa:1,t:1,s:[]},F5:{cl:0,fa:1,t:1,s:[]},F6:{cl:1,fa:1,s:["Z2","Z3"]},
+  F7:{cl:0,fa:1,s:["F1","F2","F4"]},F8:{cl:1,fa:1,s:["Z1","A1","F1"]},
+  T1:{cl:2,s:["D4"]},T2:{cl:1,s:["Z1","Z2","A1"]},T3:{cl:0,s:["A2","A7","F7"]},
+  T4:{cl:1,s:["T1","A2","F4"]},T5:{cl:1,t:1,s:[]},T6:{cl:1,s:["A7","Z4","F4"]},T7:{cl:1,s:["T1","A2","F4"]},
+  D1:{cl:0,s:["Z4","F4","F6","A1"]},D2:{cl:0,t:1,s:[]},D3:{cl:0,s:["T3"]},D4:{cl:1,s:["Z4","Z6"]},
+  D5:{cl:0,s:["Z5","A6","Z7"]},D6:{cl:0,s:["A6","C7","D7"]},D7:{cl:0,s:["P1","P2","P3","P8"]},D8:{cl:0,t:1,s:[]},
+  Z1:{cl:0,t:1,s:[]},Z2:{cl:0,t:1,s:[]},Z3:{cl:1,t:1,s:[]},Z4:{cl:0,t:1,s:[]},Z5:{cl:0,t:1,s:[]},
+  Z6:{cl:1,t:1,s:[]},Z7:{cl:0,s:["Z2","Z6","P7"]},Z8:{cl:2,s:["Z7"]},Z9:{cl:1,s:["P4","P5","P6","T7"]},Z10:{cl:9,t:1,s:[]},
+  P1:{cl:2,t:1,s:[]},P2:{cl:1,t:1,s:[]},P3:{cl:0,s:["D5"]},P4:{cl:1,fa:1,s:["F4","F5","F6"]},
+  P5:{cl:0,s:["D5"]},P6:{cl:1,s:["Z1"]},P7:{cl:1,s:["Z6","D8","D7"]},P8:{cl:2,t:1,s:[]},
+};
+const LIB662_START=["C1","C2","C3","C4","C5","C6","C7","C8","T1","T2","T3","T4","T6","T7","P1","P2","P3","P4","P5","P6","P8"];
+const _libH662=(str)=>{let h=2166136261>>>0;for(let i=0;i<str.length;i++){h^=str.charCodeAt(i);h=Math.imul(h,16777619);}return h>>>0;};
+/* reg = { partita: [strutture di QUESTA partita], recenti: [array per partita, 0=la piu' recente] }
+   Regole del §5 della libreria: stessa struttura mai 2 volte in partita; penalita' 0,15/0,4/0,7
+   sulle ultime 3 partite; penalita' di PREFISSO (primi 2 moduli) dentro la partita (x0,4). */
+function libCompose662(seme,reg){
+  reg=reg||{partita:[],recenti:[]};
+  /* [metro deja-vu §10: ZERO ripetizioni su 4 partite consecutive, nessuna struttura >2 su 10.
+     Una penalita' probabilistica non puo' GARANTIRE lo zero (misurato: 2 violazioni su 10 partite
+     sonda): le ultime 3 partite escludono DURO, e oltre vale un tetto di 2 occorrenze sulle
+     ultime 9 — le bande diventano vere per costruzione, non per fortuna. */
+  const _pen=(sig)=>{if((reg.partita||[]).includes(sig))return 0;
+    const _r=reg.recenti||[];for(let k=0;k<Math.min(3,_r.length);k++){if((_r[k]||[]).includes(sig))return 0;}
+    let _occ=0;for(let k=0;k<Math.min(9,_r.length);k++){if((_r[k]||[]).includes(sig))_occ++;}
+    if(_occ>=2)return 0;
+    return _occ?0.5:1;};
+  const _pesoCl=[1,0.42,0.2,0.05];
+  for(let tent=0;tent<10;tent++){
+    const _salt=seme+"#"+tent;
+    const _pick=(cands,salt2,path)=>{const _pref=path.length===1?path[0]+">":null;
+      const w=cands.map(id=>{const m=LIB662[id];let x=_pesoCl[Math.min(m.cl,3)]||0.02;
+        if(_pref&&(reg.partita||[]).some(s2=>s2.startsWith(_pref+id)))x*=0.4;/* prefisso gia' visto in partita */
+        return x;});
+      let tot=0;for(const x of w)tot+=x;if(tot<=0)return cands[0];
+      let r=(_libH662(_salt+"|"+salt2)%100000)/100000*tot;
+      for(let i=0;i<cands.length;i++){r-=w[i];if(r<=0)return cands[i];}return cands[cands.length-1];};
+    let cur=_pick(LIB662_START,"start",[]);const path=[cur];
+    while(path.length<5&&!LIB662[cur].t){const nxt=(LIB662[cur].s||[]).filter(id=>!path.includes(id));
+      if(!nxt.length)break;cur=_pick(nxt,"n"+path.length,path);path.push(cur);}
+    if(path.length<2||(!LIB662[cur].t&&path.length<5))continue;/* catena monca: si ritenta col sale */
+    const corsia=path.some(id=>LIB662[id].fa)?((_libH662(_salt+"|lato")%2)?"dx":"sx"):null;
+    const sig=path.join(">")+(corsia?"|"+corsia:"");
+    if(_pen(sig)===0)continue;/* gia' vista in partita: MAI due volte (regola dura) */
+    if(_pen(sig)<1&&(_libH662(_salt+"|rec")%100)/100>_pen(sig))continue;/* penalita' recenti */
+    return {sig,path,corsia,cls:Math.max(...path.map(id=>Math.min(LIB662[id].cl,3)))};
+  }
+  return null;/* dieci tentativi respinti dall'anti-ripetizione: il chiamante allarga il registro */
+}
+if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){try{window.__CPM_LIB_COMPOSE=libCompose662;window.__CPM_LIB_GRAFO=LIB662;}catch(_e){}}
 /* [7.484.0 direttiva PO «le partite devono essere piu' serene, tranquille, meno frenetiche — fai
    decidere al giocatore la velocita' 1x 1,25x 2x»] IL RITMO DELLA PARTITA HA UNA COSTANTE E UNA MANOPOLA.
    Il tick del clock e' il metronomo di tutto cio' che scorre in `playing`: un minuto di gioco per tick,
