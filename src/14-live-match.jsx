@@ -2874,7 +2874,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
            ritmo — un'azione a puntate, non un'azione. Finche' una sequenza e' aperta la riga esce a
            ogni tick: cinque beat = cinque minuti, che e' la durata dichiarata nel catalogo. La
            forzatura vale solo fuori dagli highlight e muore con l'ultimo beat. */
-        const _forzaLib666=!!(libAzRef666.current&&!_inHL77&&!(typeof window!=='undefined'&&window.__CPM_NO666));
+        const _forzaLib666=!!(libAzRef666.current&&!_inHL77&&(typeof window!=='undefined'&&window.__CPM_LIB666_ON));
         if(_simEv77||(_draw541&&!_inHL77&&!_pausa485)||_forza541||_annScena653||_forzaLib666){/* [7.528.0 v2] durante l'azione pendente le righe ESCONO e raccontano l'avanzata (la decisione F3b segue la palla che sale: sviluppo/pericolo emergono da soli — la prima stesura le sopprimeva e il guardiano bg-rhythm e' diventato CIECO: sviluppo 6 coppie, pericolo 2, contro 14/13 storici); a non muovere il pallone ci pensa il blocco _bt498 qui sotto */
           /* [7.490.0 direttiva PO §9 «eventi importanti: piu' enfasi e tempo di lettura»] LA PAUSA SI ARMA
              DOPO, E PESA L'EVENTO. Fino a qui era uniforme: un gol aveva lo stesso respiro di una rimessa
@@ -3299,7 +3299,25 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
              della rosa. Il ruolo vero arriva in L6.
              LA ZONA: ogni riga porta la zona d'uscita del suo modulo, quindi resta causale per il
              guardiano e giudicabile dal giudice di fondatezza. */
-          if(!(typeof window!=='undefined'&&window.__CPM_NO666)&&typeof libCompose662==='function'){try{
+          /* [7.667.0 — REVOCA IN PRODUZIONE DELL'AGGANCIO 7.666, con la sua misura contraria.
+             DIRETTIVA PO: «la telecronaca non deve inventare cavolate ma raccontare la realta' in
+             maniera credibile». Ho misurato la 7.666 col giudice di fondatezza: le righe fondate sono
+             CROLLATE dal 74,5% al 56,3%. Il racconto e' piu' fitto (31 righe contro 17, sequenze che si
+             leggono) ma piu' BUGIARDO, ed e' esattamente il contrario di cio' che serve — tanto piu'
+             adesso che il pallone e' l'unico attore in campo (7.665) e nessuno copre la bugia.
+             CAUSA: ho agganciato il TESTO e non il PALLONE. La libreria racconta «cross rasoterra sul
+             primo palo» mentre la palla vive la sua vita a centrocampo.
+             TENTATIVO DI CURA, PROVATO E REVOCATO NELLO STESSO GIRO: dare a ogni beat la destinazione
+             della sua zona (bpos) perche' il motore ci portasse la palla. Misura: fondatezza 32,9%,
+             ANCORA PEGGIO — la zona del modulo e' ASSOLUTA (attack_goal = x85) e la palla sta dove sta,
+             quindi ogni riga chiedeva 45-75 unita' di spostamento contro un tetto di 30: bugie
+             garantite per costruzione. Le due misure insieme dicono la cosa giusta da fare, e non e'
+             una pezza: l'azione deve NASCERE da dove il pallone si trova (innesco compatibile con la
+             zona corrente) e avanzare per TAPPE dentro il tetto del motore. E' il contratto che avevo
+             scritto nel catalogo e non ho onorato nel codice.
+             Fino ad allora la libreria non parla al giocatore: si accende solo con __CPM_LIB666_ON
+             (collaudo). Restano in gioco, misurati e verdi, il compositore e i suoi metri. */
+          if((typeof window!=='undefined'&&window.__CPM_LIB666_ON)&&typeof libCompose662==='function'){try{
             const _LR=libRegRef666.current;const _LA=libAzRef666.current;
             /* i NOMI: due segnaposto distinti, e i ruoli che compaiono INSIEME in uno stesso beat
                non possono condividerlo — misurato: «Bruno rifiuta il rilancio e apre corto per Bruno».
