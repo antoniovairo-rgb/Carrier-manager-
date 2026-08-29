@@ -7659,6 +7659,14 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
             //   morbido (τ≈0.22s) — clampWhenFinished tiene la posa finale estrema e il ritorno secco era uno snap.
             const _gTgt=_a._gName?1:0;_a._gw+=(_gTgt-_a._gw)*Math.min(dt*(_gTgt>_a._gw?10:4.5),1);
             if(_a._gAct)_a._gAct.weight=_a._gw;
+            /* [7.678.0 — IPOTESI PROVATA E REVOCATA, e con lei una lezione sullo strumento.
+               Col metro del 7.677 il residuo del 113 sembrava tutto nel CROSSFADE fra due parate
+               («dive + block»): ho reso il fade quattro volte piu' rapido per il solo portiere e la
+               mediana e' scesa a 9. Sembrava fatta. Poi la prova del rosso: SENZA il rimedio la stessa
+               build misura 10. Nove contro dieci: nessun guadagno. E il numero che conta di piu' e' un
+               altro — la stessa build che ieri dava mediana 16 oggi ne da' 10, quindi la varianza
+               residua della sonda vale ancora quanto l'effetto che cerco di misurare. Riga tolta, e
+               prima di attaccare di nuovo il 113 va stretta la sonda, non il codice. */
             if(_a._gPrev){_a._gPw+=(0-_a._gPw)*Math.min(dt*7,1);_a._gPrev.weight=_a._gPw;if(_a._gPw<0.02){_a._gPrev.setEffectiveWeight(0);_a._gPrev=null;_a._gPw=0;}}
             if(_ai===0&&(sr.current._cerLift===1||sr.current._celLift371===1)&&_a._gName==='lift'&&_a._gAct){/* [7.384.0] il congelamento all'apice esisteva SOLO per la cerimonia: senza, la clip d'esultanza arrivava in fondo, veniva rilasciata e ri-armata al fotogramma dopo — misurato un ri-armo per esultanza anche a scala corretta. Braccia al cielo si TENGONO. */const _ld=_a._gAct.getClip().duration||1;_a._gAct.paused=true;_a._gAct.time=Math.min((_a._gAct.time||0)+aDt*1.4,_ld*0.34);}/* [7.24.1] avanza fino all'APICE della rimessa (mani sopra la testa) e CONGELA — niente lancio */
             {const _gTot=Math.min(1,_a._gw+(_a._gPw||0)),_lbW=_lb*_lb*(3-2*_lb);/* [7.49.0 BL-06] smoothstep sul blend idle↔corsa (estremi morbidi) + il totale gesto include il prev in fade → pesi sempre ≈1 */

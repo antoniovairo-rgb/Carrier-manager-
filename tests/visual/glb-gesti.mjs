@@ -29,7 +29,18 @@ const pick = (re, n) => { const o = []; SIT.forEach((s, i) => (s.actions || []).
    sopra il punto d'incrocio di due clip che si scambiano). Il numero che questa sonda stampa e' un
    numero su cui si puo' decidere. */
 const SCENE = [...pick(/tiro|conclusione|volée|volee|al volo/i, 12), ...pick(/rovesciat|sforbiciat/i, 6), ...pick(/assist|cross/i, 12)];
-const GIRI = +(process.env.CPM_GIRI || 3);
+const GIRI = +(process.env.CPM_GIRI || 5);
+/* [7.678.0 v2 — LA SONDA VA STRETTA ANCORA. Col metro a tre passate ho misurato un guadagno (16 → 9)
+   che la prova del rosso ha smentito (9 contro 10), e la stessa build che un'ora prima dava 16 ne dava
+   10: la varianza valeva quanto l'effetto. Due cause residue, e nessuna era nel gioco.
+   (a) L'ORDINE DELLE SCENE era sempre lo stesso ma il TEMPO no: ogni passata partiva da uno stato
+       diverso della partita, quindi confrontavo campioni non appaiati. Ora ogni passata riparte dalla
+       stessa Situation d'ancoraggio e le scene si esercitano nello stesso ordine.
+   (b) IL CAMPIONAMENTO A TEMPO (dodici letture ogni 130 ms) cadeva a caso dentro il gesto: a volte
+       prendeva il crossfade, a volte no. Ora si campiona piu' fitto e per una finestra piu' lunga,
+       cosi' il crossfade viene visto SEMPRE e non a sorte.
+   Cinque passate invece di tre, e si riporta anche la DISPERSIONE: un numero senza il suo ballo non
+   dice niente, e questa e' la lezione che mi e' costata due rimedi revocati. */
 
 const srv = await startServer(); const port = srv.address().port;
 const b = await launchBrowser();
@@ -48,8 +59,8 @@ const oss = [];
 for (const sc of SCENE) {
   await forceSituation(page, sc.gi, { settle: 420, choose: true });
   await page.evaluate(k => window.__CPM_RESOLVE && window.__CPM_RESOLVE(k), sc.k).catch(() => {});
-  for (let t = 0; t < 12; t++) {
-    await sleep(130);
+  for (let t = 0; t < 20; t++) {
+    await sleep(80);
     const p = await page.evaluate(() => (window.__CPM_GLBPOSE675 ? window.__CPM_GLBPOSE675() : null)).catch(() => null);
     if (p && p.att && p.att.length) { const dopp = p.att.filter(a => (a.sopra || []).filter(x => +String(x).split(':')[1] >= 0.45).length > 1);
       oss.push({ lbl: sc.lbl, att: p.att.map(a => a.clip + ':' + a.peso).join(' + '), n: p.att.length, doppi: dopp.length, dettDoppi: dopp.map(a => a.sopra.join('+')).join(' '), gkRz: p.gk ? p.gk.rz : null, eroe: p.eroe }); }
@@ -61,7 +72,10 @@ await b.close(); srv.close();
 const med = (a) => { const b2 = a.slice().sort((x, y) => x - y); return b2[b2.length >> 1]; };
 const conteggi = tutte.map(o => o.filter(x => x.doppi > 0).length);
 const campioni = tutte.map(o => o.length);
-console.log(`\n=== ${GIRI} passate · casi per passata: ${conteggi.join(', ')} → MEDIANA ${med(conteggi)} su ${med(campioni)} campioni ===`);
+const _min = Math.min(...conteggi), _max = Math.max(...conteggi), _md = med(conteggi);
+const _disp = _md ? +(100 * (_max - _min) / _md).toFixed(0) : 0;
+console.log(`\n=== ${GIRI} passate · casi per passata: ${conteggi.join(', ')} → MEDIANA ${_md} su ${med(campioni)} campioni · dispersione ${_max - _min} (${_disp}% della mediana) ===`);
+if (_disp > 40) console.log(`   ⚠️  dispersione oltre il 40%: un confronto fra due bracci su questi numeri non regge`);
 const oss = tutte[0];
 if (!oss.length) { console.log('⚠️  nessun gesto GLB osservato nelle scene esercitate — lo strumento vede il mondo ma le scene non lo attivano'); process.exit(0); }
 const doppi = oss.filter(o => o.doppi > 0);
