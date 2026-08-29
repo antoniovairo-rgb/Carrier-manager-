@@ -1854,8 +1854,8 @@ function ThreeMatchView(props){
            l'anello si riempie DIMEZZA la risoluzione (tiene un campione su due) e raddoppia il tempo coperto —
            30.000 campioni = ~8 min a 60fps, poi ~17 min a 30Hz, poi ~33 min a 15Hz. Nessuna azione va perduta:
            si perde solo dettaglio sui minuti più vecchi, e le anomalie che cerchiamo vivono su scale ≥0,2s. */
-        const W=sr.current._wd||(sr.current._wd={n:0,i:0,cap:30000,step:1,skip:0,full:false,buf:new Float32Array(30000*16)});
-        if(W.buf.length<W.cap*16){W.buf=new Float32Array(W.cap*16);W.n=0;W.i=0;W.full=false;}/* [7.526.0] 15->16: +SCRITTORE DELLO SGUARDO (ultima passata camera del fotogramma + conteggio) — la nota PO «SGUARDO oscilla 31,7 inv/s amp 8,9°» e' un flip per-frame: solo l'attribuzione sul dispositivo puo' nominare la coppia di passate che si alterna (headless cieco per Nyquist a 7fps) *//* [7.524.0] anello 14→15 float: +CODICE SCRITTORE del pallone (_ws524) — la bozza dice CHI ha mosso la palla nel fotogramma incriminato *//* [7.408.0] anello 11→14 float: +ASSE DI SGUARDO (camLook). Le bozze del PO su scene «traballa» NON mostravano la riga-camera del 7.404: la POSIZIONE e' calma sotto soglia — il tremolio vive altrove, e il primo indiziato e' l'asse ottico, che i richiami 7.225/7.237 ruotano ogni fotogramma. */
+        const W=sr.current._wd||(sr.current._wd={n:0,i:0,cap:30000,step:1,skip:0,full:false,buf:new Float32Array(30000*17)});
+        if(W.buf.length<W.cap*17){W.buf=new Float32Array(W.cap*17);W.n=0;W.i=0;W.full=false;}/* [7.526.0] 15->16: +SCRITTORE DELLO SGUARDO (ultima passata camera del fotogramma + conteggio) — la nota PO «SGUARDO oscilla 31,7 inv/s amp 8,9°» e' un flip per-frame: solo l'attribuzione sul dispositivo puo' nominare la coppia di passate che si alterna (headless cieco per Nyquist a 7fps) *//* [7.524.0] anello 14→15 float: +CODICE SCRITTORE del pallone (_ws524) — la bozza dice CHI ha mosso la palla nel fotogramma incriminato *//* [7.408.0] anello 11→14 float: +ASSE DI SGUARDO (camLook). Le bozze del PO su scene «traballa» NON mostravano la riga-camera del 7.404: la POSIZIONE e' calma sotto soglia — il tremolio vive altrove, e il primo indiziato e' l'asse ottico, che i richiami 7.225/7.237 ruotano ogni fotogramma. */
         const _pw=propsRef.current||{};
         let _mdN=99,_mdX=0;/* compagno di movimento più vicino alla palla (esclusi portieri): dice se «chi doveva arrivarci» è arrivato */
         try{((sr.current&&sr.current.players)||[]).forEach((pp,ii)=>{const src=(_pw.allPlayers||[])[ii];
@@ -1885,9 +1885,9 @@ function ThreeMatchView(props){
            fotogramma. `step`/`skip` restano a 1 per compatibilita' con chi li legge. */
         {
         if(W.n>=W.cap){W.i=W.i%W.cap;W.full=true;}
-        const o=W.i*16;
+        const o=W.i*17;/* [7.680.0] 16->17: +LA QUOTA Z DELL'EROE. Senza, la bozza del PO poteva misurare la lontananza dell'eroe dal pallone solo come differenza di X — un asse, non una distanza — mentre il compagno la misurava con hypot: due metri diversi confrontati con la stessa soglia di 3,5. */
         W.buf[o]=now;W.buf[o+1]=ball.position.x;W.buf[o+2]=ball.position.y;W.buf[o+3]=ball.position.z;
-        W.buf[o+4]=hero.position.x;W.buf[o+5]=_mdN>90?-1:_mdN;
+        W.buf[o+4]=hero.position.x;W.buf[o+5]=_mdN>90?-1:_mdN;W.buf[o+16]=hero.position.z;
         W.buf[o+6]=(ballArcActive?1:0)+(hlPostArcType?2:0)+(tlOn?4:0)+(/^hl/.test(_pw.matchPhase||'')?8:0)+(((now-Math.max(_CUT471.at,(sr.current._cutAt471||-1e9)))<Math.max(300,_CUT471.dur||0))?16:0);/* [7.528.0] bit 16: MASCHERA DI TAGLIO ATTIVA (stessa finestra del mask BJ478). Le note PO su 7.526/7.527 portavano «CAMERA salta 10,7-23,5u (400-782 u/s) a 3,7s dall'inizio scena» IDENTICO su scene e partite diverse: era il TAGLIO DI REGIA VOLUTO sull'esito (setCutFx, coperto dallo stacco nero) — la grazia della bozza copriva gli stacchi di scena ma non i tagli mascherati a meta' scena. *//* [7.420.0] bit 8: SONO NELLA SCENA (fase hl). La chiave sk resta invariata anche DOPO l'esito, fino all'highlight successivo: senza questo bit la finestra della bozza sconfinava nella cronaca BG — e un gol vero del BG diventava «l'esito dichiarato e' recovery ma la palla e' finita IN RETE» (tre bozze false dal dispositivo, gi168×2/gi105: force-path pulito su sei repliche). Quarta bozza falsa della famiglia 7.360/7.361/7.364, stessa lezione: lo strumento sbaglia prima del codice. */
         W.buf[o+7]=(_pw.hlSitKey!=null?+_pw.hlSitKey:-1);/* [7.339.0] chiave di SCENA: al cambio scena la palla viene riposizionata di proposito — non e' un teletrasporto (lezione del Live Validator 6.3.1, dove questa trappola marcava meta' degli highlight come FAIL) */
         W.buf[o+8]=camera.position.x;W.buf[o+9]=camera.position.y;W.buf[o+10]=camera.position.z;/* [7.404.0 collaudo PO «traballa» ×6 in un lotto, su tre release] LA CAMERA ENTRA NEL TESTIMONE. Sei strumenti in headless non hanno mai riprodotto il tremolio: vive solo a 60fps sul dispositivo del PO. Invece di un settimo strumento cieco, si porta la misura DOV'E' il fenomeno: la bozza automatica ora conta inversioni e passi della camera nella scena segnalata. */
@@ -1906,8 +1906,8 @@ function ThreeMatchView(props){
           /* [7.360.0] con l'anello circolare il campione piu' vecchio sta in `w.i`, non in 0: senza questo
              giro la traccia tornava spezzata a meta' e il taccuino leggeva un salto temporale all'indietro. */
           const _st=w.full?w.i%w.cap:0;
-          for(let _k=0;_k<w.n;_k++){const k=(_st+_k)%w.cap;const q=k*16;
-            out.push({t:w.buf[q],x:w.buf[q+1],y:w.buf[q+2],z:w.buf[q+3],hx:w.buf[q+4],md:w.buf[q+5],f:w.buf[q+6],sk:w.buf[q+7],cx:w.buf[q+8],cy:w.buf[q+9],cz:w.buf[q+10],lx:w.buf[q+11],ly:w.buf[q+12],lz:w.buf[q+13],ws:w.buf[q+14],wl:w.buf[q+15]});}
+          for(let _k=0;_k<w.n;_k++){const k=(_st+_k)%w.cap;const q=k*17;
+            out.push({t:w.buf[q],x:w.buf[q+1],y:w.buf[q+2],z:w.buf[q+3],hx:w.buf[q+4],md:w.buf[q+5],f:w.buf[q+6],sk:w.buf[q+7],cx:w.buf[q+8],cy:w.buf[q+9],cz:w.buf[q+10],lx:w.buf[q+11],ly:w.buf[q+12],lz:w.buf[q+13],ws:w.buf[q+14],wl:w.buf[q+15],hz:w.buf[q+16]});}
           return{samples:out,goalX:GOAL_LINE_X,homeX:-GOAL_LINE_X,now:performance.now(),span:out.length?+((out[out.length-1].t-out[0].t)/1000).toFixed(1):0,res:w.step};}catch(_e){return null;}};
       }catch(_e){}}
       /* [6.3.0 R0/LMQP-10] RECORDER per-frame del Live Match Validator (test-only, spento nella build store):

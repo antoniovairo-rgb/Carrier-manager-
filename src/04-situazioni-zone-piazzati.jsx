@@ -405,8 +405,18 @@ S("🎯 Assist di prima al compagno libero!",["trequarti","bordo"],{x:[58,86],y:
   A("🎯 Assist di prima senza guardare","passaggio",7,"assist","intercept",12),A("💥 Tiro a sorpresa senza assist","tiro",2,"goal","miss",14),A("🌀 Finta e serve dopo la finta","tecnica",4,"assist","intercept",10)],false,-1,"","off",null,{pressure:"low",support:2,nearby_def:1,lanes:[]}),
 S("↩️ Rimorchio al limite dell'area!",["trequarti","bordo"],{x:[60,84],y:[22,78]},{x:[62,76],y:[28,72]},[
   A("↩️ Rimorchio e tiro","tecnica",5,"goal","miss",14),A("🎯 Rimorchio e serve il compagno","passaggio",6,"assist","intercept",10),A("⚡ Rimorchio e scatto","velocità",4,"goal","intercept",15)],false,-1,"","off",null,{pressure:"medium",support:2,nearby_def:1,lanes:[]}),
+/* [7.680.0 collaudo PO su SIT #115: «il tacco non puo' essere un tiro, cambia eventualmente nome
+   all'azione da scegliere»]. Ha ragione sulla ZONA: questa scena vive fra bordo e trequarti (gx 62-84),
+   e un tacco scagliato in porta da fuori area non e' un colpo di classe, e' una cosa che non si vede.
+   Il tacco resta dov'e' vero — lo SCARICO per il compagno libero, terza opzione, invariata — e la
+   conclusione diventa quella che da li' si tenta davvero. NON tocco l'altra «Tacco in porta» (scena
+   «Spalle alla porta in area»): li' il gesto e' al posto giusto, in area e con le spalle girate.
+   ⚠️ E IL TITOLO DELLA SCENA NON SI TOCCA: avevo provato a riscriverlo «scarico o conclusione?» e il
+   gate ha trovato la firma golden divergente su gi115 — l'INTENTO si deriva dal testo (7.318), e la
+   parola «scarico» faceva leggere la scena come un uno-due invece che come un tiro, cambiandone la
+   meccanica. Il PO ha chiesto di cambiare il nome dell'AZIONE: si cambia quello e basta. */
 S("🦶 Tacco al limite! Colpo di classe.",["bordo","trequarti"],{x:[62,84],y:[25,75]},{x:[64,76],y:[30,70]},[
-  A("🦶 Tacco in porta","tecnica",-3,"goal","miss",20),A("🦵 Tiro interno piede classico","tiro",3,"goal","miss",13),A("↩️ Tacco per il compagno libero","passaggio",4,"assist","intercept",10)],false,-1,"","off",null,{pressure:"medium",support:2,nearby_def:1,lanes:[]}),
+  A("🌀 Tiro a giro sul secondo palo","tecnica",-3,"goal","miss",20),A("🦵 Tiro interno piede classico","tiro",3,"goal","miss",13),A("↩️ Tacco per il compagno libero","passaggio",4,"assist","intercept",10)],false,-1,"","off",null,{pressure:"medium",support:2,nearby_def:1,lanes:[]}),
 S("💡 Smarcamento improvviso!",["trequarti","bordo"],{x:[55,84],y:[22,78]},{x:[58,72],y:[28,72]},[
   A("💡 Finta e scarta il difensore","dribbling",6,"goal","intercept",16),A("⚡ Taglio improvviso diagonale","velocità",5,"goal","intercept",14),A("🎯 Schema concordato coi compagni","passaggio",6,"assist","intercept",10)],false,-1,"","off",null,{pressure:"medium",support:2,nearby_def:1,lanes:[]}),
 S("🎯 Taglio diagonale e tiro!",["trequarti","bordo"],{x:[58,86],y:[22,78]},{x:[60,74],y:[28,72]},[

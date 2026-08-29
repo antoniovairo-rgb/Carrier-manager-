@@ -27,8 +27,22 @@ const tot = await page.evaluate(() => (window.__CPM_SITS || []).length);
 const PASSO = Number(process.env.CPM_PASSO || 4);
 const GIs = process.env.CPM_GI ? [Number(process.env.CPM_GI)] : Array.from({ length: tot }, (_, i) => i).filter(i => i % PASSO === 0);
 const out = [];
+const window_sits = await page.evaluate(() => (window.__CPM_SITS || []).map(s => ({ type: s.type, zones: s.zones })));
 for (const gi of GIs) {
-  try { await page.evaluate(([i, c]) => window.__CPM_FORCE_SIT(i, c), [gi, true]); } catch (_e) { continue; }
+  /* ⚠️ [7.680.0 — IL REGIME MANCANTE: LA CONTINUITA'. Col metro del dispositivo su tutte e 191 le
+     scene questo censimento dava 4/161, e nessuna delle quattro era una delle scene che il PO
+     segnala (#68 #115 #169 #186). Non e' la scena a essere diversa: e' il REGIME. In carriera una
+     scena arriva DOPO un'altra — l'eroe viene da dove stava prima e la fase hl_intro viene percorsa
+     davvero — mentre `__CPM_FORCE_SIT(gi,true)` parte da stato pulito e salta l'intro, che e'
+     esattamente la fase in cui il 7.428 aveva trovato la consegna che punta a un eroe che non c'e'
+     piu'. Con CPM_VIVO=1 si misura come misura il telefono: posizione precedente LONTANA + intro
+     percorsa, lo stesso «vivo emulato» del guardiano recv-delivery-dest. */
+  const VIVO = process.env.CPM_VIVO === '1';
+  try {
+    if (VIVO) await page.evaluate(g => { window.__CPM_FORCE_INTRO = 1; window.__CPM_FORCE_INTRO_MS = 2400; return window.__CPM_FORCE_SIT(g, true, { x: 40, y: 40 }); }, gi);
+    else await page.evaluate(([i, c]) => window.__CPM_FORCE_SIT(i, c), [gi, true]);
+  } catch (_e) { continue; }
+  if (VIVO) await page.waitForFunction(() => { try { const s = window.__CPM_STATE && window.__CPM_STATE(); return s && s.phase !== 'hl_intro'; } catch (_e) { return false; } }, { timeout: 20000 }).catch(() => {});
   /* ⚠️ [7.599.0] 260 ms non bastano: con quel tempo gi0, gi4, gi8 e gi12 davano numeri IDENTICI
      (17,3 · 13,8 · 1,3), e quattro scene diverse non possono coincidere - stavo leggendo lo stato
      residuo della scena precedente. Quando i numeri si ripetono, il sospetto va allo strumento. */
@@ -38,6 +52,38 @@ for (const gi of GIs) {
      (50 · 53,9) mentre il suo bersaglio logico e' (90 · 59) — cioe' la palla e' ancora IN VIAGGIO.
      Un'attesa a tempo fisso misura il transitorio; qui si aspetta che il pallone ARRIVI dove la
      scena lo vuole (ballTarget), con un tetto di 3 s per non appendere il censimento. */
+  /* [7.680.0 — IL METRO DEL DISPOSITIVO, NON IL MIO. Le note [KE 7.678] rimisurano il 001 sul telefono
+     mentre il mio laboratorio dava 0/40: due metri diversi che si davano torto a vicenda. La bozza
+     automatica (specifica incisa nel 7.417) misura cosi': finestra 0,75-2,4 s DAL VIA, pallone oltre
+     3,5 u sia dall'eroe sia dal compagno di movimento piu' vicino, per almeno 3/4 dei campioni, solo
+     scene offensive. Io misuravo a 2 u, su UN campione, e su una scena su quattro — cioe' non stavo
+     misurando la stessa cosa. Con CPM_METRO=disp la sonda usa il metro del PO e i due numeri tornano
+     confrontabili. */
+  if (process.env.CPM_METRO === 'disp') {
+    const camp = [];
+    await sleep(750);
+    for (let k = 0; k < 17; k++) {
+      const c = await page.evaluate(() => { try {
+        const st = window.__CPM_STATE && window.__CPM_STATE(); if (!st || !st.ball || !st.hero) return null;
+        const bx = st.ball.x, by = st.ball.y;
+        let dC = 1e9, dA = 1e9;
+        for (const p2 of (st.players || [])) { if (!p2 || p2.x == null || p2.gk) continue;
+          const d = Math.hypot(p2.x - bx, p2.y - by);
+          if (p2.team === 'home') { if (d < dC) dC = d; } else if (d < dA) dA = d; }
+        return { e: Math.hypot(st.hero.x - bx, st.hero.y - by), c: dC, a: dA }; } catch (_e) { return null; } });
+      if (c) camp.push(c);
+      await sleep(100);
+    }
+    if (camp.length) {
+      const orfani = camp.filter(c => c.e > 3.5 && c.c > 3.5).length;
+      const med = (a) => { const q2 = a.slice().sort((x, y) => x - y); return q2[Math.floor(q2.length / 2)]; };
+      const S2 = (window_sits[gi] || {});
+      out.push({ gi, eroe: +med(camp.map(c => c.e)).toFixed(1), comp: +med(camp.map(c => c.c)).toFixed(1),
+                 avv: +med(camp.map(c => c.a)).toFixed(1), quota: orfani / camp.length, campioni: camp.length,
+                 tipo: String(S2.type || ''), zona: String((S2.zones && S2.zones[0]) || '') });
+    }
+    continue;
+  }
   await sleep(400);
   for (let k = 0; k < 26; k++) {
     const vicino = await page.evaluate(() => { try {
@@ -83,7 +129,10 @@ console.log(`  distanza pallone-AVVERSARIO piu' vicino · mediana ${q(out.filter
    prima stesura erano quasi tutte def/propria con l'avversario a 0,4-0,9 unita': il gioco faceva bene.
    Il difetto vero e' una scena OFFENSIVA che si apre senza che il pallone sia di nessuno dei nostri. */
 const off = out.filter(o => o.tipo !== 'def');
-const orfane = off.filter(o => o.eroe > 2 && (o.comp < 0 || o.comp > 2));
+const DISP = process.env.CPM_METRO === 'disp';
+const orfane = DISP ? off.filter(o => (o.quota || 0) >= 0.75)
+                    : off.filter(o => o.eroe > 2 && (o.comp < 0 || o.comp > 2));
+if (DISP) console.log(`\n  [metro del DISPOSITIVO: 3,5 u da eroe E compagno, >=3/4 dei campioni nella finestra 0,75-2,4 s]`);
 {const dif = out.filter(o => o.tipo === 'def');
  const difOk = dif.filter(o => o.avv >= 0 && o.avv <= 2).length;
  console.log(`\n  scene DIFENSIVE: ${dif.length} · con il pallone ai piedi di un avversario (come deve essere) ${difOk}`);}

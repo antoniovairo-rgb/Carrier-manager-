@@ -693,9 +693,25 @@ const draftBugNote=(snap,ctx)=>{try{
        grazia del riposizionamento resta fuori), palla lontana sia dal compagno di movimento piu'
        vicino (md, gia' nell'anello) sia dall'eroe per almeno tre quarti dei campioni. Solo scene
        offensive: in una difensiva il pallone ce l'ha l'avversario, ed e' giusto cosi'. */
-    if(!_isDefSc&&W.length>=6){const _t001=W[0].t;let _fN=0,_wN=0,_fMin=1e9,_fHer=1e9;
+    /* ⚠️ [7.680.0 — DUE DIFETTI NELLO STRUMENTO CHE SCRIVE LE NOTE DEL PO, trovati inseguendo il 001
+       in quattro regimi di laboratorio senza mai riprodurlo (laboratorio secco, con presentazione,
+       col metro del dispositivo su tutte e 191 le scene, e in «vivo emulato» con intro percorsa:
+       3-4 scene su 161, e mai una di quelle che il PO segnala).
+       (1) L'EROE ERA MISURATO SU UN ASSE SOLO. `Math.abs(q.x-q.hx)` e' la differenza di X fra pallone
+       ed eroe, non la loro distanza — mentre il compagno (`md`) e' un `hypot` vero. Due metri diversi
+       confrontati con la stessa soglia di 3,5: quello dell'eroe SOTTOSTIMA (un eroe dall'altra parte
+       del campo alla stessa altezza dava zero). Era cosi' perche' l'anello non portava la z dell'eroe:
+       ora la porta (16->17 float) e la distanza e' una distanza.
+       (2) IL 001 POTEVA MISURARE A CAVALLO DI DUE SCENE. Quando la chiave di scena non aggancia
+       (`_skHit524` falso) la finestra qui sopra prende gli ULTIMI 7 SECONDI, che possono contenere la
+       coda della scena precedente — e `W[0].t`, preso come «via della scena», e' allora solo il
+       campione piu' vecchio del buffer. Un eroe che nella scena di prima stava altrove diventa un 001
+       che nessuno ha vissuto. Ora il codice 001 esce SOLO con i campioni agganciati alla scena: meglio
+       tacere che accusare a cavallo di due azioni. */
+    if(!_isDefSc&&_skHit524&&W.length>=6){const _t001=W[0].t;let _fN=0,_wN=0,_fMin=1e9,_fHer=1e9;
       for(const q of W){const _dt0=q.t-_t001;if(_dt0<750||_dt0>2400)continue;_wN++;
-        const _dm=(q.md==null||q.md<0)?99:q.md,_dh0=Math.abs(q.x-(q.hx!=null?q.hx:q.x));
+        const _dm=(q.md==null||q.md<0)?99:q.md;
+        const _dh0=(q.hx==null)?0:Math.hypot(q.x-q.hx,(q.z||0)-(q.hz==null?(q.z||0):q.hz));
         if(_dm>3.5&&_dh0>3.5){_fN++;if(_dm<_fMin)_fMin=_dm;if(_dh0<_fHer)_fHer=_dh0;}}
       if(_wN>=4&&_fN>=_wN*0.75)L.push(`codice 001 MISURATO: all'apertura il pallone non è ai piedi di nessuno dei nostri (compagno più vicino ${_fMin>90?">90":_fMin.toFixed(1)}u, eroe ≥${_fHer.toFixed(1)}u per ${_fN} campioni)`);}
     /* [7.339.0] il compagno lo si aspetta SOLO dove l'azione lo prevede (passaggio/cross/assist/catena):
