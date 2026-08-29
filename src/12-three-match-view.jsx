@@ -6818,11 +6818,47 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
          mesh viene salvato all'ingresso e ripristinato all'uscita (un sistema che avesse
          nascosto qualcuno per suo conto lo ritrova com'era). */
       {const _off660=!(typeof window!=='undefined'&&window.__CPM_NO660)&&P.matchPhase==="playing"&&!P.ceremony&&!P.shootout&&!replaying;
-       if(_off660!==!!sr.current._off660was){sr.current._off660was=_off660;
-         try{const _all660=[...(sr.current.players||[]).map(pp=>pp&&(pp.mesh||pp)),ball,typeof refMesh!=='undefined'?refMesh:null,hero,typeof heroMark!=='undefined'?heroMark:null,typeof ballHalo!=='undefined'?ballHalo:null,typeof zoneRing!=='undefined'?zoneRing:null];/* [7.660 v2] anche il diamante dell'eroe e l'alone della palla: erano i due residui visibili sullo screenshot */
+       /* [7.665.0 v2 — LA MISURA HA BOCCIATO LA v1: 45 corpi ancora in campo con GLB acceso.
+          Causa vera: lo spegnimento agiva SOLO alla transizione di fase, ma i personaggi GLB si
+          agganciano in modo ASINCRONO qualche secondo dopo il fischio, e l'aggancio RIACCENDE il
+          corpo (r.476: «proc.visible=true» — il modello GLB e' figlio del procedurale). La mia
+          decisione veniva sovrascritta da un evento che arrivava dopo. Ora, finche' la telecronaca
+          e' in corso, lo spegnimento si RIAPPLICA a ogni fotogramma: e' idempotente e costa
+          quarantacinque assegnazioni, e nessun aggancio tardivo puo' piu' rimettere in campo i
+          ventidue. Il ripristino resta alla transizione, com'era. */
+       if(_off660||_off660!==!!sr.current._off660was){sr.current._off660was=_off660;
+         /* [7.665.0 collaudo PO «durante la telecronaca si vedono ancora i giocatori, si deve vedere
+            SOLO il pallone con la sua ombra»] DUE DIFETTI IN UNA RIGA SOLA, e li dichiaro tutti e due.
+            (1) IL 7.660 SPEGNEVA I FANTASMI. La lista prendeva `pp.mesh` = il corpo PROCEDURALE, che
+            con i personaggi GLB (il default del gioco, il modo in cui il PO gioca) e' gia' nascosto da
+            `_hideProc`: spegnevo cio' che era gia' spento e lasciavo in campo i ventidue veri, che
+            vivono in `glbAvatars[].root`. Il gate gira GLB-OFF per velocita' — ecco perche' le mie
+            fotografie mostravano il campo vuoto e il telefono del PO no: la sonda non vedeva il mondo
+            in cui il difetto esisteva. Ora si spengono ENTRAMBE le anagrafi.
+            (2) IL PALLONE DEVE RESTARE. Era nella lista degli spenti: il PO lo vuole in campo con la
+            sua ombra (quella ambra del 7.537, che dice dove ricade) — e' l'unica cosa che si muove
+            mentre si legge la cronaca. Fuori dalla lista lui e fuori l'ombra; restano spenti i
+            segnalini (diamante dell'eroe, alone, anello di zona): sono didascalie, non pallone. */
+         try{const _all660=[...(sr.current.players||[]).map(pp=>pp&&(pp.mesh||pp)),...((glbAvatars||[]).map(a=>a&&a.root)),typeof refMesh!=='undefined'?refMesh:null,hero,typeof heroMark!=='undefined'?heroMark:null,typeof ballHalo!=='undefined'?ballHalo:null,typeof zoneRing!=='undefined'?zoneRing:null];
            for(const _m of _all660){if(!_m)continue;
-             if(_off660){_m._vis660=_m.visible;_m.visible=false;}
-             else{_m.visible=(_m._vis660!==undefined)?_m._vis660:true;delete _m._vis660;}}}catch(_e660){}}}
+             /* [7.665.0 v3 — IL GATE HA BOCCIATO LA v2: 191 rossi «22 giocatori non renderizzati»,
+                cioe' i corpi restavano spenti ANCHE nelle scene dell'eroe. Causa: riapplicando a ogni
+                fotogramma, il valore da ripristinare veniva RISALVATO gia' spento (false), e al
+                ripristino tornava false per sempre. Lo stato d'origine si fotografa UNA volta sola,
+                la prima; poi si spegne e basta. La v2 senza questa riga era una perdita di memoria
+                del valore vero — la stessa classe di difetto del pallone con due padroni. */
+             if(_off660){if(_m._vis660===undefined)_m._vis660=_m.visible;_m.visible=false;}
+             else{_m.visible=(_m._vis660!==undefined)?_m._vis660:true;delete _m._vis660;}}
+           if(_off660){if(ball){ball.visible=true;if(ball._vis660!==undefined)delete ball._vis660;}
+             if(typeof _bShadow534!=='undefined'&&_bShadow534){_bShadow534.visible=true;if(_bShadow534._vis660!==undefined)delete _bShadow534._vis660;}}
+           }catch(_e660){}}}
+      /* [7.665.0] LA MISURA DOV'E' IL FENOMENO: il guardiano contava solo i procedurali
+         (__CPM_PROCVIS, 7.264) — con GLB acceso quel numero e' zero anche a campo pieno. Questo
+         censimento conta ENTRAMBE le anagrafi piu' pallone e ombra: e' cio' che il PO vede. */
+      if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)&&!window.__CPM_VIS665){try{window.__CPM_VIS665=()=>{let _pc=0,_gc=0;
+        try{((sr.current&&sr.current.players)||[]).forEach(pp=>{if(pp&&pp.mesh&&pp.mesh.visible)_pc++;});if(hero&&hero.visible)_pc++;}catch(_x){}
+        try{(glbAvatars||[]).forEach(a=>{if(a&&a.root&&a.root.visible)_gc++;});}catch(_x){}
+        return{proc:_pc,glb:_gc,ball:!!(ball&&ball.visible),ombra:!!(typeof _bShadow534!=='undefined'&&_bShadow534&&_bShadow534.visible),fase:(propsRef.current&&propsRef.current.matchPhase)||null};};}catch(_e){}}
       if(sr.current._led657){
         const _weT662=(P.waveEvent&&P.waveEvent.t)||0;
         if(_weT662&&_weT662!==sr.current._ledWeSeen662){sr.current._ledWeSeen662=_weT662;sr.current._ledGoalUntil662=performance.now()+6000;}/* [7.661.0] il GOL si festeggia anche sul cartellone */
