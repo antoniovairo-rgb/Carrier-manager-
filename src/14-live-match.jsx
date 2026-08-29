@@ -56,7 +56,22 @@ const _libH662=(str)=>{let h=2166136261>>>0;for(let i=0;i<str.length;i++){h^=str
 /* reg = { partita: [strutture di QUESTA partita], recenti: [array per partita, 0=la piu' recente] }
    Regole del §5 della libreria: stessa struttura mai 2 volte in partita; penalita' 0,15/0,4/0,7
    sulle ultime 3 partite; penalita' di PREFISSO (primi 2 moduli) dentro la partita (x0,4). */
-function libCompose662(seme,reg){
+/* [L3] IL CONTESTO COMANDA (§3 della libreria): ctx={stile,blocco,pressingLoro,dominio,mn,diff}.
+   Le condizioni DURE azzerano (C3 senza dominio; C3 sotto di 2 dopo l'80'; T1 senza avversario
+   sbilanciato); gli stili RIPESANO le categorie nel verso delle schede. Direzione misurata dalla
+   sonda lib663 (banda: per ogni stile, la sua categoria di firma cresce vs equilibrato). */
+function _libCtxW662(id,ctx){if(!ctx)return 1;const m=LIB662[id];let w=1;const cat=id[0];
+  const st=ctx.stile||"equilibrato";
+  if(st==="possesso"){if(id==="C1"||id==="C3"||id==="C5"||id==="C7"||id==="P4")w*=2.2;if(cat==="T")w*=0.55;}
+  else if(st==="fasce"){if(cat==="F"||id==="C4"||id==="C6")w*=2.2;}
+  else if(st==="diretta"){if(id==="A4"||id==="T7"||id==="C8"||id==="A6")w*=2.2;if(id==="C3")w*=0.5;}
+  else if(st==="contropiede"){if(cat==="T")w*=2.5;if(id==="C3"||id==="C7")w*=0.45;}
+  if(ctx.blocco){if(id==="Z1"||id==="P6")w*=3;if(cat==="P")w*=1.4;if(id==="A7"||id==="T1")w*=0.3;}
+  if(ctx.pressingLoro){if(id==="C2")w*=3;if(id==="T6")w*=2;if(id==="T2")w*=0.6;}
+  if(id==="C3"&&((ctx.dominio!=null&&ctx.dominio<1)||((ctx.mn||0)>80&&(ctx.diff!=null&&ctx.diff<=-2))))return 0;
+  if(id==="T1"&&ctx.dominio!=null&&ctx.dominio>0&&!ctx.pressingLoro)w*=0.35;
+  return w;}
+function libCompose662(seme,reg,ctx){
   reg=reg||{partita:[],recenti:[]};
   /* [metro deja-vu §10: ZERO ripetizioni su 4 partite consecutive, nessuna struttura >2 su 10.
      Una penalita' probabilistica non puo' GARANTIRE lo zero (misurato: 2 violazioni su 10 partite
@@ -71,7 +86,7 @@ function libCompose662(seme,reg){
   for(let tent=0;tent<10;tent++){
     const _salt=seme+"#"+tent;
     const _pick=(cands,salt2,path)=>{const _pref=path.length===1?path[0]+">":null;
-      const w=cands.map(id=>{const m=LIB662[id];let x=_pesoCl[Math.min(m.cl,3)]||0.02;
+      const w=cands.map(id=>{const m=LIB662[id];let x=(_pesoCl[Math.min(m.cl,3)]||0.02)*_libCtxW662(id,ctx);
         if(_pref&&(reg.partita||[]).some(s2=>s2.startsWith(_pref+id)))x*=0.4;/* prefisso gia' visto in partita */
         return x;});
       let tot=0;for(const x of w)tot+=x;if(tot<=0)return cands[0];
