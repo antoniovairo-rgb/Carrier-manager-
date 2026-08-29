@@ -33,23 +33,23 @@
    serve alla sonda dei metri (deja-vu, classi, copertura). Deterministico: hash FNV, zero
    Math.random. L'aggancio alla partita vera arriva in L5, a metri verdi, col suo rosso. */
 const LIB662={
-  C1:{cl:0,s:["C3","C5","C6","A4"],z:'retreat'},C2:{cl:1,s:["A4","F1","F7","T6"],z:'midfield'},C3:{cl:0,s:["C4","C5","A3","A4"],z:'midfield'},
-  C4:{cl:0,fa:1,s:["F2","F1","F4","F8"],z:'attack'},C5:{cl:0,s:["A1","A3","A5","Z1"],z:'attack'},C6:{cl:0,fa:1,s:["F1","F3","F8","D6"],z:'attack'},
-  C7:{cl:0,s:["C1","C3","C4"],z:'retreat'},C8:{cl:1,s:["A3","A7","C4"],z:'midfield'},
-  A1:{cl:0,s:["Z2","Z4","D7","A8"],z:'attack_goal'},A2:{cl:0,s:["A7","Z1","Z2","F4"],z:'attack'},A3:{cl:0,s:["A7","Z1","Z4","D1"],z:'attack'},
-  A4:{cl:0,s:["A6","D6","A8"],z:'attack'},A5:{cl:0,s:["Z3","Z6","D7"],z:'attack_goal'},A6:{cl:0,s:["Z2","A8","D4"],z:'attack_goal'},
-  A7:{cl:0,s:["Z4","Z6","D7"],z:'attack_goal'},A8:{cl:1,s:["Z4","Z6","Z3"],z:'attack_goal'},
-  F1:{cl:0,fa:1,s:["F4","F5","F6"],z:'attack'},F2:{cl:0,fa:1,s:["D1","D2"],z:'attack'},F3:{cl:1,fa:1,s:["F4","F6"],z:'attack'},
-  F4:{cl:0,fa:1,t:1,s:[],z:'attack_goal'},F5:{cl:0,fa:1,t:1,s:[],z:'attack_goal'},F6:{cl:1,fa:1,s:["Z2","Z3"],z:'attack_goal'},
-  F7:{cl:0,fa:1,s:["F1","F2","F4"],z:'attack'},F8:{cl:1,fa:1,s:["Z1","A1","F1"],z:'attack_goal'},
-  T1:{cl:2,s:["D4"],z:'attack_goal'},T2:{cl:1,s:["Z1","Z2","A1"],z:'attack'},T3:{cl:0,s:["A2","A7","F7"],z:'attack'},
-  T4:{cl:1,s:["T1","A2","F4"],z:'midfield'},T5:{cl:1,t:1,s:[],z:'defend_goal'},T6:{cl:1,s:["A7","Z4","F4"],z:'attack'},T7:{cl:1,s:["T1","A2","F4"],z:'midfield'},
-  D1:{cl:0,s:["Z4","F4","F6","A1"],z:'attack'},D2:{cl:0,t:1,s:[],z:'midfield'},D3:{cl:0,s:["T3"],z:'midfield'},D4:{cl:1,s:["Z4","Z6"],z:'attack_goal'},
-  D5:{cl:0,s:["Z5","A6","Z7"],z:'attack_goal'},D6:{cl:0,s:["A6","C7","D7"],z:'attack'},D7:{cl:0,s:["P1","P2","P3","P8"],z:'attack'},D8:{cl:0,t:1,s:[],z:'retreat'},
-  Z1:{cl:0,t:1,s:[],z:'attack_goal'},Z2:{cl:0,t:1,s:[],z:'attack_goal'},Z3:{cl:1,t:1,s:[],z:'attack_goal'},Z4:{cl:0,t:1,s:[],z:'attack_goal'},Z5:{cl:0,t:1,s:[],z:'attack_goal'},
-  Z6:{cl:1,t:1,s:[],z:'attack_goal'},Z7:{cl:0,s:["Z2","Z6","P7"],z:'attack_goal'},Z8:{cl:2,s:["Z7"],z:'attack_goal'},Z9:{cl:1,s:["P4","P5","P6","T7"],z:'attack_goal'},Z10:{cl:9,t:1,s:[],z:'attack_goal'},
-  P1:{cl:2,t:1,s:[],z:'attack_goal'},P2:{cl:1,t:1,s:[],z:'attack'},P3:{cl:0,s:["D5"],z:'attack_goal'},P4:{cl:1,fa:1,s:["F4","F5","F6"],z:'attack_goal'},
-  P5:{cl:0,s:["D5"],z:'attack_goal'},P6:{cl:1,s:["Z1"],z:'attack_goal'},P7:{cl:1,s:["Z6","D8","D7"],z:'attack_goal'},P8:{cl:2,t:1,s:[],z:'attack_goal'},
+  C1:{cl:0,s:["C3","C5","C6","A4"],z:'retreat',zi:'defend_goal'},C2:{cl:1,s:["A4","F1","F7","T6"],z:'midfield',zi:'retreat'},C3:{cl:0,s:["C4","C5","A3","A4"],z:'midfield',zi:'midfield'},
+  C4:{cl:0,fa:1,s:["F2","F1","F4","F8"],z:'attack',zi:'midfield'},C5:{cl:0,s:["A1","A3","A5","Z1"],z:'attack',zi:'midfield'},C6:{cl:0,fa:1,s:["F1","F3","F8","D6"],z:'attack',zi:'retreat'},
+  C7:{cl:0,s:["C1","C3","C4"],z:'retreat',zi:'attack'},C8:{cl:1,s:["A3","A7","C4"],z:'midfield',zi:'retreat'},
+  A1:{cl:0,s:["Z2","Z4","D7","A8"],z:'attack_goal',zi:'attack'},A2:{cl:0,s:["A7","Z1","Z2","F4"],z:'attack',zi:'midfield'},A3:{cl:0,s:["A7","Z1","Z4","D1"],z:'attack',zi:'midfield'},
+  A4:{cl:0,s:["A6","D6","A8"],z:'attack',zi:'midfield'},A5:{cl:0,s:["Z3","Z6","D7"],z:'attack_goal',zi:'attack'},A6:{cl:0,s:["Z2","A8","D4"],z:'attack_goal',zi:'attack'},
+  A7:{cl:0,s:["Z4","Z6","D7"],z:'attack_goal',zi:'attack'},A8:{cl:1,s:["Z4","Z6","Z3"],z:'attack_goal',zi:'attack'},
+  F1:{cl:0,fa:1,s:["F4","F5","F6"],z:'attack',zi:'attack'},F2:{cl:0,fa:1,s:["D1","D2"],z:'attack',zi:'attack'},F3:{cl:1,fa:1,s:["F4","F6"],z:'attack',zi:'attack'},
+  F4:{cl:0,fa:1,t:1,s:[],z:'attack_goal',zi:'attack'},F5:{cl:0,fa:1,t:1,s:[],z:'attack_goal',zi:'attack'},F6:{cl:1,fa:1,s:["Z2","Z3"],z:'attack_goal',zi:'attack'},
+  F7:{cl:0,fa:1,s:["F1","F2","F4"],z:'attack',zi:'attack'},F8:{cl:1,fa:1,s:["Z1","A1","F1"],z:'attack_goal',zi:'attack'},
+  T1:{cl:2,s:["D4"],z:'attack_goal',zi:'retreat'},T2:{cl:1,s:["Z1","Z2","A1"],z:'attack',zi:'attack'},T3:{cl:0,s:["A2","A7","F7"],z:'attack',zi:'midfield'},
+  T4:{cl:1,s:["T1","A2","F4"],z:'midfield',zi:'defend_goal'},T5:{cl:1,t:1,s:[],z:'defend_goal',zi:'attack'},T6:{cl:1,s:["A7","Z4","F4"],z:'attack',zi:'midfield'},T7:{cl:1,s:["T1","A2","F4"],z:'midfield',zi:'defend_goal'},
+  D1:{cl:0,s:["Z4","F4","F6","A1"],z:'attack',zi:'attack'},D2:{cl:0,t:1,s:[],z:'midfield',zi:'attack'},D3:{cl:0,s:["T3"],z:'midfield',zi:'midfield'},D4:{cl:1,s:["Z4","Z6"],z:'attack_goal',zi:'attack'},
+  D5:{cl:0,s:["Z5","A6","Z7"],z:'attack_goal',zi:'attack_goal'},D6:{cl:0,s:["A6","C7","D7"],z:'attack',zi:'attack'},D7:{cl:0,s:["P1","P2","P3","P8"],z:'attack',zi:'attack'},D8:{cl:0,t:1,s:[],z:'retreat',zi:'retreat'},
+  Z1:{cl:0,t:1,s:[],z:'attack_goal',zi:'attack'},Z2:{cl:0,t:1,s:[],z:'attack_goal',zi:'attack_goal'},Z3:{cl:1,t:1,s:[],z:'attack_goal',zi:'attack_goal'},Z4:{cl:0,t:1,s:[],z:'attack_goal',zi:'attack_goal'},Z5:{cl:0,t:1,s:[],z:'attack_goal',zi:'attack_goal'},
+  Z6:{cl:1,t:1,s:[],z:'attack_goal',zi:'attack_goal'},Z7:{cl:0,s:["Z2","Z6","P7"],z:'attack_goal',zi:'attack_goal'},Z8:{cl:2,s:["Z7"],z:'attack_goal',zi:'attack_goal'},Z9:{cl:1,s:["P4","P5","P6","T7"],z:'attack_goal',zi:'attack_goal'},Z10:{cl:9,t:1,s:[],z:'attack_goal',zi:'attack_goal'},
+  P1:{cl:2,t:1,s:[],z:'attack_goal',zi:'attack_goal'},P2:{cl:1,t:1,s:[],z:'attack',zi:'attack'},P3:{cl:0,s:["D5"],z:'attack_goal',zi:'attack'},P4:{cl:1,fa:1,s:["F4","F5","F6"],z:'attack_goal',zi:'attack_goal'},
+  P5:{cl:0,s:["D5"],z:'attack_goal',zi:'attack_goal'},P6:{cl:1,s:["Z1"],z:'attack_goal',zi:'attack_goal'},P7:{cl:1,s:["Z6","D8","D7"],z:'attack_goal',zi:'attack_goal'},P8:{cl:2,t:1,s:[],z:'attack_goal',zi:'attack_goal'},
 };
 const LIB662_START=["C1","C2","C3","C4","C5","C6","C7","C8","T1","T2","T3","T4","T6","T7","P1","P2","P3","P4","P5","P6","P8"];
 const _libH662=(str)=>{let h=2166136261>>>0;for(let i=0;i<str.length;i++){h^=str.charCodeAt(i);h=Math.imul(h,16777619);}/* [7.664.0] FINALIZZAZIONE A VALANGA: FNV-1a lascia CORRELATI i bit bassi fra semi quasi identici ("...|es0" vs "...|es1"), e il selettore usa proprio quelli (modulo 100000) — misurato: 2 esiti distinti su 8 tiri sulla stessa struttura, dove la tabella ne offriva quattro. Tre passate di mescola e i bit bassi diventano indipendenti; resta deterministico. */h^=h>>>16;h=Math.imul(h,2246822507);h^=h>>>13;h=Math.imul(h,3266489909);h^=h>>>16;return h>>>0;};
@@ -82,7 +82,13 @@ function libCompose662(seme,reg,ctx){
     let _occ=0;for(let k=0;k<Math.min(9,_r.length);k++){if((_r[k]||[]).includes(sig))_occ++;}
     if(_occ>=2)return 0;
     return _occ?0.5:1;};
-  const _pesoCl=[1,0.32,0.15,0.04];/* [7.664.0] ritarato dopo la valanga dell'hash e la chiusura sui terminali: la quota dei COMUNI era scesa al 48% (banda 50-70) */
+  const _pesoCl=[1,0.32,0.15,0.04];
+  /* [7.669.0] L'AZIONE NASCE DOVE STA IL PALLONE. Le due misure contrarie del 7.666/7.667 (fondatezza
+     74,5 -> 56,3 -> 32,9%) hanno un'unica radice: la struttura si sceglieva senza guardare il campo, e
+     poi il racconto chiedeva al pallone di essere altrove. Qui l'innesco si filtra sulla ZONA CORRENTE:
+     se in quella zona nessun modulo puo' aprire, non si apre nessuna azione — meglio tacere che mentire. */
+  const _start669=(ctx&&ctx.zona)?LIB662_START.filter(id=>LIB662[id].zi===ctx.zona):LIB662_START;
+  if(!_start669.length)return null;/* [7.664.0] ritarato dopo la valanga dell'hash e la chiusura sui terminali: la quota dei COMUNI era scesa al 48% (banda 50-70) */
   for(let tent=0;tent<10;tent++){
     const _salt=seme+"#"+tent;
     const _pick=(cands,salt2,path)=>{const _pref=path.length===1?path[0]+">":null;
@@ -92,7 +98,7 @@ function libCompose662(seme,reg,ctx){
       let tot=0;for(const x of w)tot+=x;if(tot<=0)return cands[0];
       let r=(_libH662(_salt+"|"+salt2)%100000)/100000*tot;
       for(let i=0;i<cands.length;i++){r-=w[i];if(r<=0)return cands[i];}return cands[cands.length-1];};
-    let cur=_pick(LIB662_START,"start",[]);const path=[cur];
+    let cur=_pick(_start669,"start",[]);const path=[cur];
     while(path.length<5&&!LIB662[cur].t){let nxt=(LIB662[cur].s||[]).filter(id=>!path.includes(id));
       if(!nxt.length)break;
       /* [7.664.0] L'AZIONE DEVE CHIUDERSI. Sei strutture su cinquanta finivano su un nodo di passaggio
@@ -117,6 +123,57 @@ if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){try{window.__CPM_LIB_COM
    il GOL entra in tabella SOLO se il budget del microsim lo ha ordinato (autorita' intoccabile).
    Ogni esito NOMINA la sua conseguenza: la riga dopo la raccoglie, mai un applauso generico.
    Sempre dietro il vetro: si raggiunge solo da __CPM_LIB_RENDER (cpmtest). */
+/* [7.669.0 — LE SCHEDE DELLE INTERAZIONI (EROE PROTAGONISTA). Direttiva PO: «niente frasi generiche
+   ripetute: contesto, varieta', personalita', conseguenze, memoria, impatto». Ogni scheda dichiara
+   QUANDO puo' uscire (cond, sullo stato vero della partita), COSA dice, e la CONSEGUENZA che lascia
+   nello stato — cosi' il seguito cambia davvero e non e' solo una battuta. Tre famiglie piu' le
+   iniziative dell'eroe; l'anti-ripetizione e' sulla SITUAZIONE, non sulla frase (§4 della proposta):
+   una scheda gia' uscita non torna, e fra due interazioni passano almeno dodici minuti. */
+const INTX669=[
+ /* [7.669.0 v2 — MISURATO: una sola interazione a partita contro la banda 2-4, perche' quasi tutte
+    le schede aspettavano che l'eroe avesse gia' inciso (duelli, occasioni). Ma una partita ha momenti
+    suoi anche prima: la consegna tattica, la parola all'intervallo, la tensione che sale nel finale.
+    Queste vivono sul MOMENTO della gara — restano contestuali, non generiche. */
+ {id:"mi_cons",fam:"MISTER",cond:c=>c.mn>=20&&c.mn<=34,
+  txt:c=>"📣 Il mister chiama "+c.eroe+" a bordo campo e gli indica lo spazio alle spalle del loro terzino: «Li'. Vacci ogni volta che la palla gira.»",cons:{zona:1}},
+ {id:"co_int",fam:"COMPAGNI",cond:c=>c.mn>=46&&c.mn<=58,
+  txt:c=>"🤝 Si riparte, e "+c.compagno+" gli dice due parole camminando: «Io taglio dentro, tu resta largo. Ci troviamo.»",cons:{intesa:1}},
+ {id:"av_fin",fam:"AVVERSARI",cond:c=>c.mn>=74&&Math.abs(c.diff)<=1,
+  txt:c=>"😠 Ultimi venti minuti e il gioco si e' fatto ruvido: il difensore lo aspetta un metro piu' avanti, adesso ogni pallone e' un duello.",cons:{marcatura:1}},
+ {id:"er_prende",fam:"EROE",cond:c=>c.mn>=60&&c.diff<0,
+  txt:c=>"✊ Sotto di un gol, "+c.eroe+" comincia a scendere a prendersi il pallone da solo: se la partita non passa da lui, ce la porta lui.",cons:{coinv:2}},
+ {id:"mi_acc",fam:"MISTER",cond:c=>c.mn>=68&&c.diff===0,
+  txt:c=>"📣 Il mister a bordo campo: «Cosi' non basta! Alzate il baricentro, "+c.eroe+", vai a prendertela tu la palla!»",cons:{coinv:1}},
+ {id:"mi_ges",fam:"MISTER",cond:c=>c.mn>=78&&c.diff>=1,
+  txt:c=>"📣 Dalla panchina: «Gestione! Palla lunga e sui piedi, non regaliamo niente adesso.»",cons:{}},
+ {id:"mi_rea",fam:"MISTER",cond:c=>c.golSubDaPoco,
+  txt:c=>"📣 Il mister richiama la squadra: «Testa alta, ci sono venti minuti. "+c.eroe+", tu resta alto.»",cons:{coinv:1}},
+ {id:"mi_lato",fam:"MISTER",cond:c=>c.duelliP>=2,
+  txt:c=>"📣 Indicazione dalla panchina: «Ti hanno preso le misure, "+c.eroe+" — cambia lato, vai a cercarli dall'altra parte.»",cons:{zona:1}},
+ {id:"co_inc",fam:"COMPAGNI",cond:c=>c.occFallite>=1,
+  txt:c=>"🤝 Il capitano lo raggiunge e gli batte una mano sul petto: «La prossima entra. Continua a metterti li'.»",cons:{fiducia:1}},
+ {id:"co_pal",fam:"COMPAGNI",cond:c=>c.giocate>=1&&c.mn>=30,
+  txt:c=>"🤝 "+c.compagno+" allarga le braccia e lo chiama: adesso lo cercano tutti, "+c.eroe+" e' diventato il riferimento.",cons:{coinv:2}},
+ {id:"co_tri",fam:"COMPAGNI",cond:c=>c.giocate>=2,
+  txt:c=>"🤝 Intesa a memoria con "+c.compagno+": si guardano una volta sola e sanno gia' cosa fare.",cons:{intesa:1}},
+ {id:"co_disc",fam:"COMPAGNI",cond:c=>c.duelliP>=1&&c.diff<0,
+  txt:c=>"🤝 Scambio acceso a centrocampo: "+c.compagno+" voleva la palla prima, "+c.eroe+" allarga le braccia. Dura un attimo, poi si riparte.",cons:{}},
+ {id:"av_str",fam:"AVVERSARI",cond:c=>c.duelliV>=2,
+  txt:c=>"😠 Il difensore avversario non lo molla piu' di un metro: da adesso "+c.eroe+" ha un'ombra addosso.",cons:{marcatura:1}},
+ {id:"av_pro",fam:"AVVERSARI",cond:c=>c.duelliV>=1&&c.mn>=40,
+  txt:c=>"😠 Parole in faccia dopo il contrasto: il difensore gli dice qualcosa, "+c.eroe+" non risponde e si rialza.",cons:{}},
+ {id:"av_ris",fam:"AVVERSARI",cond:c=>c.giocate>=3,
+  txt:c=>"👏 Anche l'avversario che lo marca allarga le braccia verso la panchina: quella giocata non si poteva difendere.",cons:{fiducia:1}},
+ {id:"av_fal",fam:"AVVERSARI",cond:c=>c.duelliV>=3,
+  txt:c=>"😠 Lo prendono in ritardo, stavolta e' fallo netto: il difensore aveva gia' capito che non lo teneva.",cons:{}},
+ {id:"er_chi",fam:"EROE",cond:c=>c.mn>=25&&c.giocate===0,
+  txt:c=>"✊ "+c.eroe+" va a prendersi la palla venti metri piu' indietro: se non arriva, se la va a cercare.",cons:{coinv:2}},
+ {id:"er_zona",fam:"EROE",cond:c=>c.marcatura>=1,
+  txt:c=>"✊ "+c.eroe+" si sposta dall'altra parte senza dire niente: l'ombra addosso resta a marcare uno spazio vuoto.",cons:{zona:1,marcatura:-1}},
+ {id:"er_reaz",fam:"EROE",cond:c=>c.occFallite>=2,
+  txt:c=>"✊ Non abbassa la testa: "+c.eroe+" chiama la palla un'altra volta, e la chiama forte.",cons:{fiducia:1}},
+]
+
 const BEAT664={
   C1:["{portiere} rifiuta il rilancio lungo e apre corto per {centrale}.","{regista} si abbassa fra i centrali e riceve fronte al campo: l'uscita e' impostata."],
   C2:["Due maglie addosso a {centrale}: qui si esce solo giocando.","{mediano} si smarca sul lato cieco e la protegge con un controllo orientato.","Scarico di prima per {terzino}, libero: la pressione e' saltata."],
@@ -830,6 +887,12 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   const pushMatchEvent=(min,type,txt)=>setMatchEvents(prev=>{const _lm=prev.length>0?prev[prev.length-1].min:-1;const _em=Math.min(90,_lm>=min?_lm+1:min);return[...prev,{min:_em,type,txt:(typeof txt==="function"?txt(_em):txt)}].slice(-12);});
   const lastBGEvtRef=useRef([]); // Sprint 113: ultimi txt BG_MATCH esclusi dal picker — dedup (finestra 3→6 in 7.48.0: col pool a ~135 voci l'eligible resta ampio)
   /* [7.666.0 L5] l'azione della libreria in corso e il registro anti-ripetizione (partita + recenti) */
+  /* [7.669.0 — EROE PROTAGONISTA, prima release. Direttiva PO: «interazioni eroe con mister,
+     compagni ed avversari zero». Questo e' lo STATO NARRATIVO della proposta (docs/PROPOSTA-EROE-
+     PROTAGONISTA.md §1), tenuto leggero: quel che serve per scegliere con criterio e non ripetersi.
+     Nessun campo tocca il punteggio: il microsim resta l'unica autorita' del risultato. */
+  const narrRef669=useRef({duelliV:0,duelliP:0,occFallite:0,giocate:0,golSub:0,golFatti:0,
+    ultima:-99,fatte:[],marcatura:0,intesa:0});
   const libAzRef666=useRef(null);
   const libRegRef666=useRef({partita:[],recenti:[],ultima:-99});
   const [waveEvent,setWaveEvent]=useState(null);
@@ -2874,8 +2937,28 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
            ritmo — un'azione a puntate, non un'azione. Finche' una sequenza e' aperta la riga esce a
            ogni tick: cinque beat = cinque minuti, che e' la durata dichiarata nel catalogo. La
            forzatura vale solo fuori dagli highlight e muore con l'ultimo beat. */
+        /* [7.669.0 v3 — MISURATO: una sola interazione a partita, e non per mancanza di schede (ne
+           bastavano quattro delle diciannove) ma per mancanza di OCCASIONI: la cronaca emette una
+           ventina di righe in tutta la gara e quasi tutte se le prendono le macchine di recita. Cosi'
+           l'interazione decide PRIMA se ha diritto di parlare, e in quel caso si prende il suo tick —
+           come gia' fanno gli annunci di scena (7.653). Resta rara per costruzione: tetto tre, dodici
+           minuti di distanza, mai dentro un highlight o sopra una scena-gol. */
+        var _intxK669=null;
+        if(!(typeof window!=='undefined'&&window.__CPM_NO670)&&!_inHL77&&!pendingGoalRef.current&&!_recHij545
+           &&nx>=18&&nx<=88&&typeof INTX669!=='undefined'){try{
+          const _N=narrRef669.current;
+          if(_N.fatte.length<3&&(nx-(_N.ultima|0))>=12){
+            const _sc=scoreRef.current||{home:0,away:0};
+            const _mio=isMatchHome?_sc.home:_sc.away,_suo=isMatchHome?_sc.away:_sc.home;
+            const _c669={mn:nx,diff:_mio-_suo,duelliV:_N.duelliV,duelliP:_N.duelliP,occFallite:_N.occFallite,
+              giocate:_N.giocate,marcatura:_N.marcatura,golSubDaPoco:(_N.golSub>0&&(nx-(_N.golSubMn|0))<=6),eroe:"",compagno:""};
+            const _el=INTX669.filter(k=>_N.fatte.indexOf(k.id)<0&&(function(){try{return !!k.cond(_c669);}catch(_e){return false;}})());
+            if(_el.length)_intxK669=_el[Math.floor(_rndM()*_el.length)];
+          }
+        }catch(_e){}}
+        const _forzaIntx669=!!_intxK669;
         const _forzaLib666=!!(libAzRef666.current&&!_inHL77&&(typeof window!=='undefined'&&window.__CPM_LIB666_ON));
-        if(_simEv77||(_draw541&&!_inHL77&&!_pausa485)||_forza541||_annScena653||_forzaLib666){/* [7.528.0 v2] durante l'azione pendente le righe ESCONO e raccontano l'avanzata (la decisione F3b segue la palla che sale: sviluppo/pericolo emergono da soli — la prima stesura le sopprimeva e il guardiano bg-rhythm e' diventato CIECO: sviluppo 6 coppie, pericolo 2, contro 14/13 storici); a non muovere il pallone ci pensa il blocco _bt498 qui sotto */
+        if(_simEv77||(_draw541&&!_inHL77&&!_pausa485)||_forza541||_annScena653||_forzaLib666||_forzaIntx669){/* [7.528.0 v2] durante l'azione pendente le righe ESCONO e raccontano l'avanzata (la decisione F3b segue la palla che sale: sviluppo/pericolo emergono da soli — la prima stesura le sopprimeva e il guardiano bg-rhythm e' diventato CIECO: sviluppo 6 coppie, pericolo 2, contro 14/13 storici); a non muovere il pallone ci pensa il blocco _bt498 qui sotto */
           /* [7.490.0 direttiva PO §9 «eventi importanti: piu' enfasi e tempo di lettura»] LA PAUSA SI ARMA
              DOPO, E PESA L'EVENTO. Fino a qui era uniforme: un gol aveva lo stesso respiro di una rimessa
              laterale, e in un feed di testo il respiro E' l'enfasi — non c'e' altro modo di dire «questo
@@ -3274,6 +3357,48 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               ?["⚠️ Gli avversari guadagnano metri: il nostro blocco si abbassa.","😤 {A} muove il pallone con pazienza verso la nostra trequarti.","🛑 {A} cambia lato e accelera: la nostra linea scala all'indietro.","📢 Il capitano richiama tutti dietro la linea della palla: {A} spinge."]
               :["⚙️ La squadra accompagna l'azione: si sale verso l'area di {A}.","🏃 {H} detta i tempi: la manovra si sposta nell'ultimo terzo.","🧭 {H} e {H2} scambiano corto e guadagnano campo, metro dopo metro.","📈 Baricentro alto: {H} orchestra e la squadra lo segue in blocco."];
             ev={txt:_pp544[_pv544],ef:null,w:1,bpos:null,pd:_dec499};_recHij545=true;_recKind546="ponte";_recSide546=ponteRef.current.def?"away":"home";}}/* [7.532.0] pd=_dec499: la riga di scorta DESCRIVE il momento (palla ancora in viaggio), non la destinazione — con pd:"attack" fisso l'accordo bg-decision crollava (famiglia attack 0/4, esatto 59,4%<60) */
+          /* [7.669.0 — LE INTERAZIONI DELL'EROE ENTRANO IN CRONACA (rosso __CPM_NO670).
+             Direttiva PO: «interazioni eroe con mister, compagni ed avversari zero». Ecco le prime.
+             RITMO: rare per costruzione — al massimo TRE a partita, almeno dodici minuti fra una e
+             l'altra, mai dentro un highlight ne' sopra una scena-gol. E' la banda «2-4 momenti
+             significativi» della proposta: se diventassero frequenti sarebbe il GDR di dialoghi che il
+             PO non vuole.
+             CONTESTO: ogni scheda decide da se' se ha diritto di uscire, guardando lo stato vero
+             (minuto, differenza reti, duelli vinti e persi dall'eroe, occasioni fallite, giocate
+             riuscite, marcatura). Se nessuna ha le condizioni, non si dice niente.
+             CONSEGUENZA: la scheda lascia una traccia nello stato (coinvolgimento, fiducia, intesa,
+             marcatura stretta, cambio di zona) — ed e' quella traccia che apre le schede successive:
+             due dribbling vinti fanno stringere la marcatura, la marcatura stretta abilita il cambio
+             di zona dell'eroe. La catena del PO, per intero.
+             ONESTA' DELLA CRONACA: queste righe NON dichiarano zone ne' destinazioni del pallone, e
+             non muovono niente in campo — raccontano quello che succede attorno al gioco. Percio' non
+             possono mentire sul pallone, ed e' anche la ragione per cui posso spedirle mentre la
+             libreria delle azioni resta ferma. */
+          if(_intxK669){try{
+            const _N=narrRef669.current;
+            const _sc=scoreRef.current||{home:0,away:0};
+            const _mio=isMatchHome?_sc.home:_sc.away,_suo=isMatchHome?_sc.away:_sc.home;
+            const _eroe=((player&&player.name)||"").trim().split(/\s+/).pop()||"il numero dieci";
+            /* [7.669.0] il nome del compagno viene dalla ROSA vera. La prima stesura leggeva
+               `_ourR170`, che a questo punto del tick non e' ancora dichiarato (nasce settecento righe
+               piu' sotto): il catch restituiva sempre «il compagno», e una frase con un nome generico
+               e' esattamente la genericita' che il PO non vuole. Qui si legge la rosa alla fonte. */
+            const _cmp=(function(){try{const _rr=((isMatchHome?homeRoster:awayRoster)||homeRoster||[]);
+              const _r=_rr.filter(m=>m&&m.name&&m.name!==player.name);
+              const _m=_r[Math.floor(_rndM()*_r.length)];return _m?(_surnBG(_m.name)||"il compagno"):"il compagno";}catch(_e){return "il compagno";}})();
+            const _ctx={mn:nx,diff:_mio-_suo,eroe:_eroe,compagno:_cmp,duelliV:_N.duelliV,duelliP:_N.duelliP,
+              occFallite:_N.occFallite,giocate:_N.giocate,marcatura:_N.marcatura,
+              golSubDaPoco:(_N.golSub>0&&(nx-(_N.golSubMn|0))<=6)};
+            let _t=null;try{_t=_intxK669.txt(_ctx);}catch(_e){_t=null;}
+            if(_t){
+              _N.fatte.push(_intxK669.id);_N.ultima=nx;
+              const _c=_intxK669.cons||{};
+              if(_c.marcatura)_N.marcatura=Math.max(0,(_N.marcatura|0)+_c.marcatura);
+              if(_c.intesa)_N.intesa=(_N.intesa|0)+_c.intesa;
+              ev={...ev,txt:_t,ef:null,ms:null,bpos:null,pd:null,_intx669:_intxK669.fam};
+              if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){try{(window.__CPM_INTX669=window.__CPM_INTX669||[]).push({min:nx,id:_intxK669.id,fam:_intxK669.fam,txt:_t});}catch(_e){}}
+            }
+          }catch(_e670){}}
           /* [7.666.0 v2 — DOVE si innesta, e perche' proprio qui. La v1 stava a valle, appena prima
              della costruzione del testo, e BLOCCAVA LA PARTITA al 68' (misurato: «Cannot read properties
              of null (reading shots)», orologio fermo, prova del rosso pulita col NO666). Causa: la riga
@@ -3324,22 +3449,34 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                {H} e {H2} sono due uomini diversi per costruzione (H2 esclude H). */
             const _RUOLI666={portiere:'{H}',centrale:'{H2}',regista:'{H}',mediano:'{H2}',mezzala:'{H2}',
               terzino:'{H}',esterno:'{H2}',punta:'{H}',trequartista:'{H2}',portatore:'{H}',specialista:'{H}'};
+            /* [7.669.0] LA TAPPA. Il motore sposta al massimo 30 unita' per riga (freno 7.498/7.528):
+               una destinazione assoluta come «area avversaria» chiede 45-75 unita' quando la palla e'
+               nella nostra meta', ed e' una bugia garantita — misurata, 32,9% di fondatezza. La riga
+               dichiara quindi un PASSO verso la zona del suo modulo, lungo al massimo 26 unita': il
+               pallone ci arriva davvero, e l'azione avanza di tappa in tappa come una vera manovra. */
+            const _ZX669={defend_goal:18,retreat:34,midfield:50,attack:68,attack_goal:85};
+            const _tappa669=(_z,_corsia)=>{try{if(!_z)return null;
+              const _b=ballPosRef.current||{x:50,y:50};
+              const _tx=_ZX669[_z]||50,_ty=(_z==='attack_goal'||_z==='defend_goal')?50:(_corsia==='sx'?30:_corsia==='dx'?70:50);
+              const _dx=_tx-_b.x,_dy=_ty-_b.y,_d=Math.hypot(_dx,_dy);
+              if(_d<=26)return{x:+_tx.toFixed(1),y:+_ty.toFixed(1)};
+              const _k=26/_d;return{x:+(_b.x+_dx*_k).toFixed(1),y:+(_b.y+_dy*_k).toFixed(1)};}catch(_e){return null;}};
             if(_LA&&_LA.i<_LA.righe.length){
               const _r=_LA.righe[_LA.i++];
-              ev={...ev,txt:_r.txt,pd:_r.pd||ev.pd||null,bpos:null,ef:null,ms:null,_lib666:1};
+              ev={...ev,txt:_r.txt,pd:_r.pd||ev.pd||null,bpos:_tappa669(_r.pd,_LA.corsia),ef:null,ms:null,_lib666:1};
               if(_LA.i>=_LA.righe.length){libAzRef666.current=null;_LR.ultima=nx;}
             } else if(!_LA&&!pendingGoalRef.current&&!_recHij545&&!_koHij536&&nx>2&&nx<88&&(nx-(_LR.ultima|0))>=4){
               const _seme666=String((opponent&&(opponent.n||opponent.name))||'x')+'|'+((player&&player.week)||0)+'|'+nx;
-              const _ctx666={stile:'equilibrato',dominio:0,mn:nx,
+              const _ctx666={stile:'equilibrato',dominio:0,mn:nx,zona:_dec499||null,
                 diff:((scoreRef.current&&scoreRef.current.home)||0)-((scoreRef.current&&scoreRef.current.away)||0)};
               const _st666=libCompose662(_seme666,_LR,_ctx666);
               if(_st666&&typeof libRender664==='function'){
                 const _rd666=libRender664(_st666,_ctx666,_RUOLI666,false,_seme666);
                 if(_rd666&&_rd666.righe&&_rd666.righe.length>1){
                   const _rr666=_rd666.righe.map(r2=>({txt:r2.txt,pd:(LIB662[r2.mod]&&LIB662[r2.mod].z)||null,cons:r2.cons||null}));
-                  libAzRef666.current={righe:_rr666,i:1,sig:_st666.sig};
+                  libAzRef666.current={righe:_rr666,i:1,sig:_st666.sig,corsia:_st666.corsia||null};
                   _LR.partita.push(_st666.sig);
-                  ev={...ev,txt:_rr666[0].txt,pd:_rr666[0].pd||ev.pd||null,bpos:null,ef:null,ms:null,_lib666:1};
+                  ev={...ev,txt:_rr666[0].txt,pd:_rr666[0].pd||ev.pd||null,bpos:_tappa669(_rr666[0].pd,_st666.corsia),ef:null,ms:null,_lib666:1};
                   if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){try{(window.__CPM_LIB666=window.__CPM_LIB666||[]).push({min:nx,sig:_st666.sig,n:_rr666.length});}catch(_e){}}
                 }
               }
@@ -3480,6 +3617,11 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                piano della giocata (la corsa del counter, il piede del ricevente), e frenarlo
                significa SMENTIRE cio' che la cronaca ha appena detto. Stessa esenzione gia' data
                alle palle ferme dal 7.578. */
+            /* [7.669.0 — IPOTESI PROVATA E REVOCATA, con la sua misura: esentare le righe della
+               libreria dal richiamo di corridoio (come le recite) perche' dichiarano la loro corsia.
+               Fondatezza 55,1% PRIMA e 55,1% DOPO: nessun guadagno, quindi la riga non resta. Il
+               problema e' piu' a monte, ed e' scritto nel diario: la libreria scrive il testo ma non
+               PILOTA il pallone come fanno le macchine di recita. */
             var _recita655=!(typeof window!=='undefined'&&window.__CPM_NO655)&&_recHij545;
             if(!_no528&&!_recita655){const _tr528=tramaRef.current;
               if(_tr528&&_tr528.cor!=null){const _cy528=corY528(_tr528.cor);/* [7.630.0] helper unico dei centri di corridoio */
@@ -3811,7 +3953,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
              contare prima di raddrizzarlo in F3. Registrato alla SORGENTE, non dal DOM (nota 7.487). */
           if(pendingGoalRef.current&&!(typeof window!=='undefined'&&window.__CPM_NO644)){try{const _pgL644=pendingGoalRef.current;const _ltN644=_pgL644.dir>0?"home":"away";if((_recHij545&&_recSide546===_ltN644)||(!_recHij545&&possTurnRef.current===_pgL644.dir))_pgL644.righeLato=(_pgL644.righeLato|0)+1;}catch(_e644){}}/* [7.644.0] LA RIGA CONTA PER LA RETE SOLO SE E' DEL LATO CHE SEGNA: macchina che dichiara il lato giusto, o repertorio emesso col turno del lato. FOTOGRAFATO (golback644b): `righe` contava righe di CHIUNQUE — costruzioni chiuse regolari (righe>=3) con ZERO racconto del lato che poi segnava. */
           cpmEv("chronicle",{min:nx,dec:_dec499,fase:_fase501,tn:possTurnRef.current,rec:_recHij545?1:0,poss:(ev.poss||0),muta:(!ev.ef&&!ev.ms&&!ev.poss&&!ev.sp)?1:0,/* [7.554.0 MISSIONE — IL REGISTRO DICE TUTTO QUELLO CHE LA RIGA FA] Il registro portava esito, tabellino, palla ferma e zona, ma NON il possesso: due famiglie di verdetti della sonda `fatti-546` leggevano campi inesistenti e stampavano ZERO in silenzio a ogni passata, perche' una famiglia assente non fa rumore. Con 31 righe su 223 che spostano il possesso, oggi NESSUNA sonda puo' dire quante righe lo muovono. E `muta` dichiara in chiaro cio' che finora si deduceva per esclusione: la riga non afferma NIENTE — ne' un esito, ne' una statistica, ne' un possesso, ne' una palla ferma. Sono 107 su 223, e muovono comunque pallone, schieramento e gesto. Sola strumentazione: `cpmEv` non tocca stato ne' render. */pd:ev.pd||null,rk:_recKind546||null,/* [7.578.0] QUALE macchina ha scritto la riga (kickoff · out_* · sp_* · counter · catena · ponte). Senza, `rec:1` mette nello stesso mucchio il pallone fermo e il gioco aperto, che hanno regole opposte: il primo RICOLLOCA il pallone per natura, il secondo no. Una sonda che li somma non puo' dire se il tetto del 7.498 stia proteggendo o smentendo. */concorda:(ev.pd===_dec499),ef:ev.ef||null,bx:ev.bpos?ev.bpos.x:null,by:ev.bpos?ev.bpos.y:null,bex:_bt498?+_bt498.x.toFixed(1):null,bey:_bt498?+_bt498.y.toFixed(1):null,bax:+ballPosRef.current.x.toFixed(1),bay:+ballPosRef.current.y.toFixed(1),npd:(function(){try{const _b=ballPosRef.current;const _lt=(possTurnRef.current>0)?"home":"away";let _d=null;(matchPlayersRef.current||[]).forEach(q=>{if(!q||q.team!==_lt||q.gk)return;const _dd=Math.hypot((q.x||50)-_b.x,(q.y||50)-_b.y);if(_d==null||_dd<_d)_d=_dd;});return _d==null?null:+_d.toFixed(1);}catch(_e){return null;}})(),/* [7.624.0 strumentazione] CUSTODIA LOGICA alla riga: distanza del piu' vicino uomo del lato in possesso dalla palla logica. Serve il metro per il redesign A2: due metri a fotogrammi (POR526 e l'anello ws) sono stati SQUALIFICATI con lo studio di ripetibilita' (±10-15 punti fra run a codice identico — campionamento a orologio su renderer col jitter); questo campiona un EVENTO del tick logico, quasi-seedato. cpmEv e' inerte per costruzione. *//* [7.576.0 — IL REGISTRO SEPARA CIO' CHE LA RIGA DICE DA CIO' CHE IL MOTORE FA] Finora il registro portava solo `bx/by`, cioe' la destinazione PROPOSTA dalla riga. Ma fra la proposta e il pallone ci sono due passaggi: il FRENO del 7.498 (tetto 30u per riga, piu' il richiamo verso il corridoio del 7.528) puo' accorciare la proposta, e poi il motore del possesso puo' portare il pallone altrove. Con un solo numero le tre cose sono indistinguibili, e il giudice della cronaca non puo' dire di CHI e' la colpa: se la riga ha mentito, se il freno l'ha smentita, o se qualcun altro ha spostato il pallone dopo. `bex/bey` = dove il motore manda DAVVERO il pallone (dopo il freno); `bax/bay` = dov'era il pallone quando la riga e' uscita. Sola strumentazione: `cpmEv` non tocca stato ne' render. */shots:(ev.ms&&ev.ms.shots)||0,oppShots:(ev.ms&&ev.ms.oppShots)||0,sp:ev.sp||null,at:ev.at||null}/* [7.545.0] `sp` e `at` nel registro: senza, una riga che ANNUNCIA una palla ferma non e' distinguibile da una che non lo fa, e il pezzo «gli eventi fermi esistono» non ha come misurarsi */);/* [7.532.0] tn: il turno al momento della riga — strumentazione permanente per il ritmo side-aware */
-          let cColor=ev.ef==="team_goal"?"#16a34a":ev.ef==="opp_goal"?"#dc2626":ev.ef==="opp_red"?"#16a34a":ev.ef==="opp_injury"?"#f59e0b":ATE3_ARCCOL[_arcType]||TH.faint;
+          let cColor=ev._intx669?(ev._intx669==="MISTER"?"#f0b33a":ev._intx669==="AVVERSARI"?"#f87171":ev._intx669==="EROE"?"#93c5fd":"#86efac"):ev.ef==="team_goal"?"#16a34a":ev.ef==="opp_goal"?"#dc2626":ev.ef==="opp_red"?"#16a34a":ev.ef==="opp_injury"?"#f59e0b":ATE3_ARCCOL[_arcType]||TH.faint;
           if(pendingGoalRef.current&&!ev.ef)cColor="#fbbf24";/* [7.530.0 collaudo PO «quando c'è un'azione offensiva che può portare al gol ci deve essere maggiore enfasi/suspance»] durante l'azione pendente il banner scala sull'ambra calda: si VEDE che sta montando qualcosa (la densita' 1,30 del 7.528 gia' incalza il ritmo) */
           else if(counterRef.current&&!ev.ef)cColor=counterRef.current.dir>0?"#fbbf24":"#f87171";/* [7.532.0 NO542] il ribaltamento ha il suo colore: ambra il nostro, rosso il loro */
           if(_arcType&&ATE3_TYPEMS[_arcType]){chantTimersRef.current.push(setTimeout(()=>addCom(evTxt,cColor,nx),Math.round(ATE3_TYPEMS[_arcType]/2)));}
@@ -5079,6 +5221,16 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
         _wood=(!_lowG&&(Math.abs(hashStr("wood|"+((action.label)||"")+"|"+hlIdx+"|"+((_fkSit&&_fkSit.text)||"")))%100)<40)?"bar":"post";
       }
     }catch(_e){_outKind=null;}}
+    /* [7.669.0] LO STATO NARRATIVO IMPARA DA CIO' CHE L'EROE FA: e' l'unico modo perche' le
+       interazioni abbiano memoria vera (il difensore che stringe la marcatura DOPO due dribbling
+       subiti, il compagno che incoraggia DOPO un'occasione divorata). Solo conteggi, nessun effetto
+       sul risultato. */
+    try{const _N=narrRef669.current;
+      if(ok&&/dribble|onetwo|progression/.test(String(action&&action.stat||""))) _N.duelliV++;
+      if(!ok&&/dispossessed|blocked|beaten/.test(String(_outKind||""))) _N.duelliP++;
+      if(!ok&&/miss|saved|wide|post/.test(String(_outKind||""))) _N.occFallite++;
+      if(ok) _N.giocate++;
+    }catch(_e669){}
     if(_outKind==="corner")setMxStats(s=>({...s,corners:(s.corners||0)+1}));/* [6.4.1 R2.2] l angolo guadagnato dall azione dell eroe entra nel box-score (prima solo la cronaca BG) */
     if(_outKind==="fouled"||_outKind==="win_freekick")setMxStats(s=>({...s,fouls:(s.fouls||0)+1}));/* [6.4.2 R2.3] fallo subito → conta tra i falli avversari */
     // [5.78.0 SIT-4] L'ASSIST NON È PIÙ UN GOL GARANTITO: sui passaggi chiave (through/onetwo) il Decision
@@ -6381,7 +6533,12 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                     </div>
                   </div>
                 )}
-                {coms.length>0&&coms[0]&&(
+                {/* [7.669.0 collaudo PO «la telecronaca testuale sotto va eliminata»] LA STRISCIA IN
+                   BASSO ESCE DI SCENA quando c'e' il racconto grande al centro (7.661): erano due volte
+                   la stessa frase nello stesso schermo, e la seconda rubava spazio al campo. Resta viva
+                   dove il testo centrale non c'e' (highlight, cerimonie, rigori) e sotto il rosso
+                   __CPM_NO669, che la riaccende per il confronto. */}
+                {coms.length>0&&coms[0]&&!(phase==="playing"&&!(typeof window!=="undefined"&&window.__CPM_NO661)&&!(typeof window!=="undefined"&&window.__CPM_NO669))&&(
                 <div data-cpm="fmrow" key={"fmrow"+coms[0].t+String(coms[0].text||"").slice(0,18)} style={{pointerEvents:"none",textAlign:"center",animation:"chantPulse 5s ease-out forwards"}}>
                   <div style={{display:"inline-block",maxWidth:"100%",background:"linear-gradient(90deg,rgba(3,6,16,0),rgba(3,6,16,0.88) 12%,rgba(3,6,16,0.88) 88%,rgba(3,6,16,0))",borderRadius:10,padding:"6px 16px"}}>
                     <span style={{fontSize:10,fontWeight:800,color:"rgba(255,255,255,0.45)",marginRight:7}}>{coms[0].t}&apos;</span>
