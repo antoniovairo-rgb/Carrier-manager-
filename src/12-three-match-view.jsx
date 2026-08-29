@@ -1936,6 +1936,22 @@ function ThreeMatchView(props){
       }catch(_e){}}
       const P=propsRef.current,all=P.allPlayers||[],k=Math.min(1,dt*6.5);
       /* [7.209.0] il gesto del compagno che conclude dura poco e si spegne da solo (one-shot) */
+      /* [7.673.0 — collaudo PO: «il corpo del marcatore non e' in direzione della porta!» (SIT #169,
+         assist per il compagno in area). Il gesto di conclusione del compagno esiste dal 7.209 — chi
+         finalizza chiede la sua clip di calcio nell'istante del tocco — ma NESSUNO LO GIRA: la clip
+         parte sul corpo com'era orientato, cioe' come stava correndo, e da fuori il tiro parte di
+         spalle o di fianco alla porta. All'eroe questo trattamento c'e' gia' (7.611b lo orienta prima
+         del gesto); al compagno mancava, ed e' la stessa asimmetria della volee' chiusa nel 7.672:
+         curato l'attore principale, dimenticate le comparse — che pero' sono quelle che segnano meta'
+         dei gol. Qui chi conclude verso la porta avversaria viene girato verso di essa un istante
+         prima del gesto; chi difende o rinvia no. __CPM_NO673 = rosso. */
+      const _versoPorta673=(m673,nome673)=>{try{
+        if(!m673||(typeof window!=='undefined'&&window.__CPM_NO673))return;
+        if(nome673!=='kick'&&nome673!=='header'&&nome673!=='volley')return;
+        const _gx673=(m673.position.x<0&&nome673==='kick'&&false)?HOME_GOAL_X:AWAY_GOAL_X;
+        m673.rotation.y=Math.atan2(_gx673-m673.position.x,0-m673.position.z);
+        if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){try{(window.__CPM_FACE673=window.__CPM_FACE673||[]).push({g:nome673,x:+m673.position.x.toFixed(1),ry:+m673.rotation.y.toFixed(2)});}catch(_e){}}
+      }catch(_e673){}};
       if(sr.current._mateFx){sr.current._mateFx.t-=dt;if(sr.current._mateFx.t<=0)sr.current._mateFx=null;}/* ⚠️ `dt` e non `aDt`: qui aDt non è ancora dichiarato (TDZ) */
       // Sprint 3D-8a: slow-motion sull'esito — bullet-time sul tiro (0.28x) poi ritorno a 1x in ~1.6s.
       // Solo le animazioni rallentano (aDt/ak); la camera resta in tempo reale → movimento fluido.
@@ -2602,7 +2618,7 @@ function ThreeMatchView(props){
           if(_uh74>=0.93&&sr.current._cgHold!=null&&sr.current._cgHold<=0){sr.current._cgHold=null;/* [7.252.0 gi30 «rimbalza in area senza senso»] l'incornata del terzo uomo colpisce la palla IN ARIA (~93% dell'arco, ancora in discesa) — prima la transizione aspettava il tocco a terra e la ripartenza verso la rete leggeva come un rimbalzo */
             // [5.83.0 IA-3] il tuffo sul CROSS arriva al 2° TOCCO (l'incornata), non al lancio del traversone
             if(awayGkMesh&&!P.hlDef&&!oppActType){oppActType="gk_dive";oppActT=0;oppMesh=awayGkMesh;oppDiveDir=ball.position.z>=oppMesh.position.z?1:-1;oppMesh._divePz=oppMesh.position.z;oppMesh._diveYaw=oppMesh.rotation.y;oppMesh._diveToZ=clamp(oppMesh.position.z+(ball.position.z-oppMesh.position.z)*0.55,oppMesh.position.z-6,oppMesh.position.z+6);}/* [6.74.0 3D-3] anche sull'incornata da cross il tuffo resta corto (il gol sta entrando) */
-            if(crossRcvMesh&&_cgNear){sr.current._mateFx={mesh:crossRcvMesh,name:"header",t:0.55};if(crossRcvMesh._cgRun&&crossRcvMesh._rcvT==null)crossRcvMesh._rcvT=0;/* [7.244.0] anche l'uomo d'emergenza fa il GESTO dell'incornata (procedurale) all'impatto — durante lo sprint il gesto è rinviato, suona qui al tocco */if(_CPM_TEST&&typeof window!=='undefined'){try{const _c=window.__CPM_MATEFX||(window.__CPM_MATEFX={kick:0,header:0});_c.header++;}catch(_e){}}}/* [7.209.0] l'incornata sul cross è un GESTO del compagno, non solo un cambio di traiettoria */
+            if(crossRcvMesh&&_cgNear){sr.current._mateFx={mesh:crossRcvMesh,name:"header",t:0.55};_versoPorta673(crossRcvMesh,"header");if(crossRcvMesh._cgRun&&crossRcvMesh._rcvT==null)crossRcvMesh._rcvT=0;/* [7.244.0] anche l'uomo d'emergenza fa il GESTO dell'incornata (procedurale) all'impatto — durante lo sprint il gesto è rinviato, suona qui al tocco */if(_CPM_TEST&&typeof window!=='undefined'){try{const _c=window.__CPM_MATEFX||(window.__CPM_MATEFX={kick:0,header:0});_c.header++;}catch(_e){}}}/* [7.209.0] l'incornata sul cross è un GESTO del compagno, non solo un cambio di traiettoria */
             if(crossRcvMesh)crossRcvMesh._cgRun=null;sr.current._cgDur=null;/* [7.244.0] cleanup consegna d'emergenza */
             hlPostArcType="in_net";hlPostArcT=0;hlInNetFlashed=false;contactFlashT=0;crossRcvMesh=null;}}// 3DV-14: flash al secondo tocco
         else if(hlPostArcType==="onetwo_back"){/* [7.321.0] LA SPONDA TORNA — secondo tempo dell'uno-due.
@@ -2757,7 +2773,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                predefinite»] È IL COMPAGNO CHE CALCIA: fino a qui il pallone partiva verso la porta mentre chi
                concludeva restava in corsa (nessun gesto era registrato sui giocatori diversi dall'eroe e dai
                portieri). Ora chi finalizza chiede la propria clip di calcio nell'istante esatto del tocco. */
-            if(_rm){sr.current._mateFx={mesh:_rm,name:"kick",t:0.55};if(_CPM_TEST&&typeof window!=='undefined'){try{const _c=window.__CPM_MATEFX||(window.__CPM_MATEFX={kick:0,header:0,trans:0,noMesh:0});_c.kick++;}catch(_e){}}}
+            if(_rm){sr.current._mateFx={mesh:_rm,name:"kick",t:0.55};_versoPorta673(_rm,"kick");if(_CPM_TEST&&typeof window!=='undefined'){try{const _c=window.__CPM_MATEFX||(window.__CPM_MATEFX={kick:0,header:0,trans:0,noMesh:0});_c.kick++;}catch(_e){}}}
             else if(_CPM_TEST&&typeof window!=='undefined'){try{const _c=window.__CPM_MATEFX||(window.__CPM_MATEFX={kick:0,header:0,trans:0,noMesh:0});_c.noMesh++;}catch(_e){}}
             if(_CPM_TEST&&typeof window!=='undefined'){try{const _c=window.__CPM_MATEFX||(window.__CPM_MATEFX={kick:0,header:0,trans:0,noMesh:0});_c.trans++;}catch(_e){}}}}
         else if(hlPostArcType==="assist_shot"){// assist → compagno tocca → tiro verso AWAY_GOAL_X
@@ -3632,7 +3648,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
               /* [7.244.0 gi45 «Non si vede l'avversario che calcia»] la consegna inbound partiva da un punto
                  senza autore: il mesh sorgente ora ESEGUE il calcio nell'istante in cui il pallone parte
                  (gesto procedurale _rcvT — swing di gamba generico per ogni mesh — + clip GLB via _mateFx). */
-              if(_sm58){_sm58._rcvT=0;sr.current._mateFx={mesh:_sm58,name:"kick",t:0.55};}
+              if(_sm58){_sm58._rcvT=0;sr.current._mateFx={mesh:_sm58,name:"kick",t:0.55};_versoPorta673(_sm58,"kick");}
               /* [7.248.0 gi45 «Sembra un autogol»] sul GOL SUBITO la palla non passa PER l'eroe (che poi la
                  «accompagnerebbe» in rete = autogoal percepito): il tiro lo SUPERA di fianco — consegna offset
                  di ~3u laterali, l'eroe si lancia e manca, la traiettoria d'esito prosegue in porta da lì. */
