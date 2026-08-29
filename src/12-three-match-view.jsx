@@ -7342,7 +7342,25 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
            storiche della catena (7.245/7.361/6.40/6.41, gi146) vivono nella tabella e in questo commento. */
         if(actType==='tackle'){const _dgG=(sr.current._dgFar440===((propsRef.current&&propsRef.current.hlSitKey)))?'press':(propsRef.current&&propsRef.current.hlDefGesto);/* [gi146] gesto partito lontano → press = locomozione anche GLB-ON. E la clip parte SOLO col gesto (actT>0): durante l'attesa 7.415 la mappa montava comunque la scivolata al momento della risoluzione */
           if(actT<=0)_gName=null;else{const _gg=gestoDi('tackle',(_dgG==='lunge'||_dgG==='press'||_dgG==='call'||_dgG==='aerial'||_dgG==='slide')?_dgG:null);_gName=(_gg&&_gg.clip)||null;}}
-        else if(actType){const _gg=gestoDi(actType,(propsRef.current&&propsRef.current.hlVariant)||null);_gName=(_gg&&_gg.clip)||null;}
+        else if(actType){const _gg=gestoDi(actType,(propsRef.current&&propsRef.current.hlVariant)||null);_gName=(_gg&&_gg.clip)||null;
+          /* [7.672.0 — collaudo PO, SETTIMA segnalazione: «la volee' e' una rovesciata al contrario»
+             (SIT #88, azione «Volee' di collo potente»). LA DISTINZIONE C'ERA, MA SOLO NEL MONDO
+             SBAGLIATO. Il 7.569 aveva gia' separato le due giocate — volee' fronte alla porta in
+             piedi, rovesciata acrobatica spalle alla porta — leggendo l'etichetta dell'azione: ma
+             quella separazione vive nella posa PROCEDURALE, e il gioco vero usa i personaggi GLB,
+             dove `shot_volley` sceglie la clip `volley` per ENTRAMBE. La clip e' acrobatica, quindi
+             ogni volee' veniva recitata come una rovesciata — con il corpo rovesciato all'indietro e
+             il piede rivolto dalla parte opposta alla porta, esattamente la frase del PO.
+             Stessa lezione della 7.665 sui giocatori che non sparivano: avevo curato il ramo che le
+             mie sonde vedono, non quello che il PO guarda.
+             Qui la stessa etichetta decide anche la CLIP: acrobatica solo se l'azione lo dice, e per
+             la volee' il tiro normale in piedi. __CPM_NO672 = rosso. */
+          if(_gName==='volley'&&!(typeof window!=='undefined'&&window.__CPM_NO672)){
+            const _lbl672=String((propsRef.current&&propsRef.current.hlActLbl)||"");
+            if(!/rovesciat|sforbiciat|acrobat/i.test(_lbl672)){_gName='kick';
+              if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){try{(window.__CPM_GEST672=window.__CPM_GEST672||[]).push({lbl:_lbl672.slice(0,40),clip:'kick'});}catch(_e){}}}
+            else if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){try{(window.__CPM_GEST672=window.__CPM_GEST672||[]).push({lbl:_lbl672.slice(0,40),clip:'volley'});}catch(_e){}}
+          }}
         /* [7.403.0 collaudo PO gi52 «fa prima un tiro poi tenta il colpo di testa» · gi184 «sembra un
            ballerino»] IL GESTO DELLA SCENA VECCHIA NON SI MONTA. `actType` e' una variabile del renderer
            che resta quella della scena PRECEDENTE finche' `fireConclusion` non scatta — e scatta a fine
