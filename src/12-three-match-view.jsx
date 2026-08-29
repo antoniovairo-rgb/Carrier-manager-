@@ -4439,6 +4439,17 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
              RUMORE dello strumento di popolazione (ordine-dipendente), non dal fix: i controlli gi142/144/106
              misurati con lo strumento mirato stanno a 0,0 con e senza. E con la mesh addosso, la regola
              7.389 fa scendere da sola il pallone dalla quota aerea ai piedi. */
+          /* [7.679.0 — REVOCATO IL RIMEDIO, IL DIFETTO ERA IL MIO METRO. Qui, per due giorni, ho
+             tenuto un blocco che all'apertura di una scena offensiva portava il compagno piu' vicino
+             sul pallone, perche' la sonda apertura-599 diceva «4 scene su 40 si aprono col pallone di
+             nessuno dei nostri». Due difetti dello STRUMENTO, non del gioco: (1) la sonda girava senza
+             `__CPM_PRESENT`, e sotto cpmtest quel flag spegne snap e freeze di presentazione — cioe'
+             proprio i blocchi che mettono gli uomini dove la scena dice (gi8: eroe a 42,5 u senza, a
+             0,0 u con); (2) misurava a 750 ms fissi, cogliendo il pallone ANCORA IN VIAGGIO verso il
+             suo bersaglio (gi0: palla a 50·53,9, bersaglio 90·59). Corretti i due, il censimento da'
+             0/40 — e la prova del rosso da' 0/40 anche SENZA il rimedio. Riga tolta: nessun guadagno
+             misurabile, e un blocco che sposta uomini ogni fotogramma di lettura non si tiene «per
+             sicurezza». Resta la sonda, che ora misura il regime del giocatore. */
           if(_asIfPlay&&_inRead){
             const _ss405=P.stagedSpot&&P.stagedSpot.current,_src405=(P.allPlayers||[])[i];
             if(_ss405&&_src405&&_src405._taker402){

@@ -11,17 +11,42 @@ const srv = await startServer(); const port = srv.address().port;
 const b = await launchBrowser();
 const page = await b.newPage({ viewport: { width: 412, height: 915 } });
 await installCdnRoutes(page);
-await page.addInitScript(() => { window.__CPM_GLB = false; });
+/* ⚠️ [7.679.0 — LA SONDA MISURAVA UN REGIME CHE NEL GIOCO NON ESISTE.
+   Senza `__CPM_PRESENT` il flag interno `_asIfPlay` e' FALSO sotto cpmtest, e con lui restano spenti
+   lo SNAP e il FREEZE di presentazione: cioe' esattamente i blocchi che mettono gli uomini dove la
+   scena dice. Misurato appaiato sulle quattro scene «peggiori» del censimento: gi8 passa da eroe a
+   42,5 u a eroe a 0,0 u; gi76 da compagno a 42,6 u a compagno a 1,4 u. Il 10% di scene orfane era in
+   buona parte un artefatto dello strumento, non un difetto del gioco. Da qui in poi si misura con la
+   presentazione ACCESA, che e' il regime del giocatore. */
+/* [7.679.0] CPM_GLBON=1 misura col ramo GLB ACCESO — il ramo del gioco vero. Tre difetti diversi di
+   questa settimana avevano la stessa radice (curare il procedurale e credere di aver curato il gioco):
+   questa sonda non deve poter mentire allo stesso modo. */
+await page.addInitScript((g) => { window.__CPM_GLB = !!g; window.__CPM_PRESENT = 1; }, !!process.env.CPM_GLBON);
 await openMatch(page, port, { skipLoadAll: true, name: 'Ap' });
 const tot = await page.evaluate(() => (window.__CPM_SITS || []).length);
-const GIs = process.env.CPM_GI ? [Number(process.env.CPM_GI)] : Array.from({ length: tot }, (_, i) => i).filter(i => i % 4 === 0);
+const PASSO = Number(process.env.CPM_PASSO || 4);
+const GIs = process.env.CPM_GI ? [Number(process.env.CPM_GI)] : Array.from({ length: tot }, (_, i) => i).filter(i => i % PASSO === 0);
 const out = [];
 for (const gi of GIs) {
   try { await page.evaluate(([i, c]) => window.__CPM_FORCE_SIT(i, c), [gi, true]); } catch (_e) { continue; }
   /* ⚠️ [7.599.0] 260 ms non bastano: con quel tempo gi0, gi4, gi8 e gi12 davano numeri IDENTICI
      (17,3 · 13,8 · 1,3), e quattro scene diverse non possono coincidere - stavo leggendo lo stato
      residuo della scena precedente. Quando i numeri si ripetono, il sospetto va allo strumento. */
-  await sleep(750);
+  /* ⚠️ [7.679.0 — 750 ms NON BASTANO NEMMENO ADESSO, e le ultime due «orfane» erano tempo, non gioco.
+     gi0 e gi4 restavano nella lista delle peggiori con la stessa identica terna (17,1 · 13,8 · 0,9):
+     leggendole a 1400 ms, gi4 ha il pallone ai piedi dell'EROE a 0,0 u e gi0 mostra il pallone a
+     (50 · 53,9) mentre il suo bersaglio logico e' (90 · 59) — cioe' la palla e' ancora IN VIAGGIO.
+     Un'attesa a tempo fisso misura il transitorio; qui si aspetta che il pallone ARRIVI dove la
+     scena lo vuole (ballTarget), con un tetto di 3 s per non appendere il censimento. */
+  await sleep(400);
+  for (let k = 0; k < 26; k++) {
+    const vicino = await page.evaluate(() => { try {
+      const st = window.__CPM_STATE && window.__CPM_STATE(); if (!st || !st.ballTarget || st.ballTarget.x == null) return true;
+      return Math.hypot(st.ball.x - st.ballTarget.x, st.ball.y - st.ballTarget.y) < 2; } catch (_e) { return true; } });
+    if (vicino) break;
+    await sleep(100);
+  }
+  await sleep(150);
   const r = await page.evaluate((g) => { try {
     const st = window.__CPM_STATE && window.__CPM_STATE(); if (!st || !st.ball || !st.hero) return null;
     const bx = st.ball.x, by = st.ball.y;
@@ -32,6 +57,7 @@ for (const gi of GIs) {
       if (p.team === 'home') { if (d < dComp) dComp = d; } else if (d < dAvv) dAvv = d; }
     const S = (window.__CPM_SITS || [])[g] || {};
     return { gi: g, eroe: +dEroe.toFixed(1), comp: +(dComp < 1e8 ? dComp : -1).toFixed(1), avv: +(dAvv < 1e8 ? dAvv : -1).toFixed(1),
+             fase: String((window.__CPM_STATE_PHASE && window.__CPM_STATE_PHASE()) || st.phase || ''),
              tipo: String(S.type || ''), zona: String((S.zones && S.zones[0]) || '') };
   } catch (_e) { return null; } }, gi);
   if (r) out.push(r);
