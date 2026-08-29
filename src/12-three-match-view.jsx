@@ -7598,7 +7598,26 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                  guadagno. Quindi la riga non resta: le due clip del portiere non passano da questa
                  transizione, e la caccia continua dove nasce `_gkWant`. Lo STRUMENTO invece resta, ed
                  e' il vero guadagno del giro: adesso questo difetto si misura. */
-              if(_a._gAct&&_a._gw>0.05){_a._gPrev=_a._gAct;_a._gPw=_a._gw;}// [7.49.0 BL-06] il gesto precedente non si azzera di colpo (pop): sfuma in _gPrev
+              /* [7.676.0 — CODICE 113, LA CAUSA VERA: UNA CLIP CHE RESTA APPESA. Rosso __CPM_NO676.
+                 La sonda GLB (7.675) misura il difetto — «dive 0,87 + block 0,48» sullo stesso corpo —
+                 e il primo rimedio (transizione secca fra gesti esclusivi) non l'ha spostato: 17 contro
+                 20, dentro il rumore. Guardando qui si capisce perche': lo slot del gesto precedente e'
+                 UNO SOLO. Quando un terzo gesto arriva mentre il secondo sta ancora sfumando, questa
+                 riga SOVRASCRIVE `_gPrev` — e la clip che c'era prima resta accesa al suo peso, senza
+                 piu' nessuno che la spenga, perche' l'unico che lo fa e' il fade di `_gPrev`. Il
+                 portiere che si tuffa, poi para basso, poi si rialza lascia dietro un tuffo a mezzo
+                 peso: e' il doppio gesto del PO, ed e' una perdita di riferimento, non un problema di
+                 fusione. Ora chi viene sfrattato dallo slot si spegne prima di uscire. */
+              if(_a._gAct&&_a._gw>0.05){
+                if(!(typeof window!=='undefined'&&window.__CPM_NO676)&&_a._gPrev&&_a._gPrev!==_a._gAct){try{_a._gPrev.setEffectiveWeight(0);_a._gPrev.stop();}catch(_e676){}}
+                _a._gPrev=_a._gAct;_a._gPw=_a._gw;}
+              /* [7.676.0 — AFFONDO PROVATO E REVOCATO: spegnere, all'avvio di un gesto, TUTTE le clip
+                 di quel personaggio tranne la nuova e quella in uscita. Sembrava la regola definitiva
+                 («un corpo, una clip») e invece la misura la boccia: 12 casi contro i 10 della stesura
+                 semplice, cioe' peggio. Ipotesi su cosa succede, non verificata: spegnere di forza una
+                 clip che il mixer sta ancora fondendo la fa ripartire al retrigger successivo con peso
+                 pieno. Resta la stesura semplice — chi viene sfrattato dallo slot si spegne — che il
+                 rosso conferma: 10 contro 17. */// [7.49.0 BL-06] il gesto precedente non si azzera di colpo (pop): sfuma in _gPrev
               _a._gName=_want;_a._gAct=_a.gestures[_want];_a._gAct.reset().play();
               /* [7.517.0 R3/2 — LA MIRA SI LATCHA AL MONTAGGIO: audit «il corpo non e' orientato verso la
                  direzione del passaggio/tiro»] Al montaggio del gesto si fissa la direzione VERSO il bersaglio
