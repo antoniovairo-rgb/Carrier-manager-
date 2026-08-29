@@ -482,8 +482,10 @@ alto (rarissimo, solo con stato mentale pesante dichiarato — mai gratuito).
 
 ## Il conto della varietà (da enumerare in L2, non a naso)
 
-58 moduli · catene valide di 3-5 moduli sotto le regole di compatibilità qui dichiarate
-(SBOCCHI espliciti scheda per scheda) · 2 corsie speculari dove la scheda usa una fascia ·
-branch non annunciati su ogni finalizzazione. La stima resta «migliaia di strutture distinte»:
-il numero VERO lo darà l'enumeratore del grafo in L2, e finirà nel DONE insieme al metro
-déjà-vu (zero strutture ripetute su 4 partite consecutive).
+MISURATO (tools/enumera-strutture.mjs, che codifica ESATTAMENTE gli SBOCCHI di queste schede):
+**418 sequenze valide** di 2-5 moduli dall'innesco all'esito, **587 con le corsie speculari**
+(169 attraversano una fascia e giocano su due lati). Per lunghezza: 11 da 2 moduli, 52 da 3,
+131 da 4, 224 da 5. Con ~5 salienti a partita e l'anti-ripetizione strutturale, servono oltre
+100 partite prima che una sequenza DEBBA ripetersi — e le varianti di beat/finale dentro ogni
+scheda più i branch degli esiti (4-6 per finalizzazione) moltiplicano le realizzazioni in
+migliaia. Il metro déjà-vu resta il giudice: zero strutture ripetute su 4 partite consecutive.

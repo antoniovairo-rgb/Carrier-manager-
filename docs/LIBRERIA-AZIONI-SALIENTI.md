@@ -171,9 +171,10 @@ CONSEGUENZA raccontata → ritorno alla cronaca. Contratti:
 
 ## 9 · Quanta varietà genera (il conto, da verificare col metro)
 
-58 moduli, catene di 3-5 moduli sotto regole di compatibilità: le strutture VALIDE stimate
-sono nell'ordine delle migliaia (stima da verificare enumerando il grafo di compatibilità
-quando i moduli avranno le schede complete — il numero vero sarà nel DONE, non a naso).
+58 moduli, catene di 2-5 moduli sotto regole di compatibilità: MISURATO con
+`tools/enumera-strutture.mjs` sulle schede complete (MODULI-AZIONI-SALIENTI.md): **418
+sequenze valide, 587 con le corsie speculari**; varianti e branch moltiplicano le
+realizzazioni in migliaia.
 Con ~5 salienti a partita, l'anti-ripetizione strutturale (§5) e i tetti di classe (§6),
 il criterio del PO — *«quante azioni realmente diverse prima che il giocatore riconosca i
 pattern?»* — si misura così:
