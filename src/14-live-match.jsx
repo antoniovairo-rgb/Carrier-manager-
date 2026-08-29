@@ -135,43 +135,43 @@ const INTX669=[
     suoi anche prima: la consegna tattica, la parola all'intervallo, la tensione che sale nel finale.
     Queste vivono sul MOMENTO della gara — restano contestuali, non generiche. */
  {id:"mi_cons",fam:"MISTER",cond:c=>c.mn>=20&&c.mn<=34,
-  txt:c=>"📣 Il mister chiama "+c.eroe+" a bordo campo e gli indica lo spazio alle spalle del loro terzino: «Li'. Vacci ogni volta che la palla gira.»",cons:{zona:1}},
+  txt:c=>"📣 Il mister chiama "+c.eroe+" a bordo campo e gli indica lo spazio alle spalle del loro terzino: «Li'. Vacci ogni volta che la palla gira.»",cons:{zona:1},sc:[{et:"Vado a cercare quello spazio",es:c=>"Alla prima palla che gira "+c.eroe+" parte alle spalle del terzino: il mister annuisce senza smettere di urlare.",cons:{zona:1,fiducia:1}},{et:"Resto dove mi trovo bene",es:c=>c.eroe+" resta dov'e', in mezzo al campo. Il mister allarga le braccia e torna in panchina.",cons:{coinv:1,fiducia:-1}}]},
  {id:"co_int",fam:"COMPAGNI",cond:c=>c.mn>=46&&c.mn<=58,
-  txt:c=>"🤝 Si riparte, e "+c.compagno+" gli dice due parole camminando: «Io taglio dentro, tu resta largo. Ci troviamo.»",cons:{intesa:1}},
+  txt:c=>"🤝 Si riparte, e "+c.compagno+" gli dice due parole camminando: «Io taglio dentro, tu resta largo. Ci troviamo.»",cons:{intesa:1},sc:[{et:"Ci sto: tu dentro, io largo",es:c=>"Due minuti dopo lo fanno davvero: "+c.compagno+" taglia, "+c.eroe+" resta largo e riceve nello spazio che si e' aperto.",cons:{intesa:2}},{et:"Facciamo il contrario",es:c=>c.eroe+" indica l'interno: taglia lui e lascia la fascia a "+c.compagno+". Ci mettono un po' a capirsi.",cons:{coinv:1,intesa:-1}}]},
  {id:"av_fin",fam:"AVVERSARI",cond:c=>c.mn>=74&&Math.abs(c.diff)<=1,
-  txt:c=>"😠 Ultimi venti minuti e il gioco si e' fatto ruvido: il difensore lo aspetta un metro piu' avanti, adesso ogni pallone e' un duello.",cons:{marcatura:1}},
+  txt:c=>"😠 Ultimi venti minuti e il gioco si e' fatto ruvido: il difensore lo aspetta un metro piu' avanti, adesso ogni pallone e' un duello.",cons:{marcatura:1},sc:[{et:"Gli tengo testa",es:c=>c.eroe+" non arretra di un metro: il primo pallone lo protegge di corpo e si prende il fallo.",cons:{fiducia:1,marcatura:1}},{et:"Mi allargo, cerco spazio",es:c=>c.eroe+" si sfila e va a cercarsi il pallone lontano dal duello: il difensore lo segue meno volentieri.",cons:{zona:1,marcatura:-1}}]},
  {id:"er_prende",fam:"EROE",cond:c=>c.mn>=60&&c.diff<0,
-  txt:c=>"✊ Sotto di un gol, "+c.eroe+" comincia a scendere a prendersi il pallone da solo: se la partita non passa da lui, ce la porta lui.",cons:{coinv:2}},
+  txt:c=>"✊ Sotto di un gol, "+c.eroe+" comincia a scendere a prendersi il pallone da solo: se la partita non passa da lui, ce la porta lui.",cons:{coinv:2},sc:[{et:"Me la prendo io",es:c=>c.eroe+" scende a prendersi ogni pallone: la squadra passa da lui, nel bene e nel male.",cons:{coinv:2}},{et:"Resto avanti e aspetto",es:c=>c.eroe+" resta alto: se arriva, arriva buona. Ma per qualche minuto non arriva niente.",cons:{coinv:-1,zona:1}}]},
  {id:"mi_acc",fam:"MISTER",cond:c=>c.mn>=68&&c.diff===0,
-  txt:c=>"📣 Il mister a bordo campo: «Cosi' non basta! Alzate il baricentro, "+c.eroe+", vai a prendertela tu la palla!»",cons:{coinv:1}},
+  txt:c=>"📣 Il mister a bordo campo: «Cosi' non basta! Alzate il baricentro, "+c.eroe+", vai a prendertela tu la palla!»",cons:{coinv:1},sc:[{et:"Alzo il baricentro",es:c=>c.eroe+" sale di venti metri: la squadra lo segue e la partita si sposta.",cons:{coinv:1,fiducia:1}},{et:"Gioco come so",es:c=>c.eroe+" fa spallucce e continua a giocare la sua partita. Dalla panchina non arrivano piu' indicazioni.",cons:{fiducia:-1}}]},
  {id:"mi_ges",fam:"MISTER",cond:c=>c.mn>=78&&c.diff>=1,
-  txt:c=>"📣 Dalla panchina: «Gestione! Palla lunga e sui piedi, non regaliamo niente adesso.»",cons:{}},
+  txt:c=>"📣 Dalla panchina: «Gestione! Palla lunga e sui piedi, non regaliamo niente adesso.»",cons:{},sc:[{et:"Gestisco io il pallone",es:c=>c.eroe+" tiene palla vicino alla bandierina e fa scorrere il tempo: la panchina applaude.",cons:{fiducia:1,coinv:1}},{et:"Non ci sto: si attacca",es:c=>c.eroe+" prova comunque a servire chi parte: bello da vedere, il mister meno d'accordo.",cons:{fiducia:-1,coinv:1}}]},
  {id:"mi_rea",fam:"MISTER",cond:c=>c.golSubDaPoco,
-  txt:c=>"📣 Il mister richiama la squadra: «Testa alta, ci sono venti minuti. "+c.eroe+", tu resta alto.»",cons:{coinv:1}},
+  txt:c=>"📣 Il mister richiama la squadra: «Testa alta, ci sono venti minuti. "+c.eroe+", tu resta alto.»",cons:{coinv:1},sc:[{et:"Testa alta, resto alto",es:c=>c.eroe+" resta sul difensore centrale e richiama i compagni: si riparte da subito.",cons:{coinv:1,fiducia:1}},{et:"Scendo a dare una mano",es:c=>c.eroe+" torna a centrocampo per far respirare la squadra: piu' palloni toccati, meno vicino alla porta.",cons:{coinv:1,zona:-1}}]},
  {id:"mi_lato",fam:"MISTER",cond:c=>c.duelliP>=2,
-  txt:c=>"📣 Indicazione dalla panchina: «Ti hanno preso le misure, "+c.eroe+" — cambia lato, vai a cercarli dall'altra parte.»",cons:{zona:1}},
+  txt:c=>"📣 Indicazione dalla panchina: «Ti hanno preso le misure, "+c.eroe+" — cambia lato, vai a cercarli dall'altra parte.»",cons:{zona:1},sc:[{et:"Cambio lato",es:c=>c.eroe+" si sposta dall'altra parte: il terzino che lo aveva in consegna resta a marcare l'aria.",cons:{zona:1,marcatura:-1}},{et:"Insisto da questa parte",es:c=>c.eroe+" ci riprova dallo stesso lato: prima o poi quel difensore lo salta.",cons:{marcatura:1,fiducia:1}}]},
  {id:"co_inc",fam:"COMPAGNI",cond:c=>c.occFallite>=1,
-  txt:c=>"🤝 Il capitano lo raggiunge e gli batte una mano sul petto: «La prossima entra. Continua a metterti li'.»",cons:{fiducia:1}},
+  txt:c=>"🤝 Il capitano lo raggiunge e gli batte una mano sul petto: «La prossima entra. Continua a metterti li'.»",cons:{fiducia:1},sc:[{et:"Continuo a mettermi li'",es:c=>c.eroe+" torna nella stessa posizione al cross successivo. Il capitano lo cerca subito.",cons:{fiducia:1,coinv:1}},{et:"Cambio movimento",es:c=>c.eroe+" attacca il primo palo invece del secondo: i compagni ci mettono un attimo a trovarlo.",cons:{zona:1,intesa:-1}}]},
  {id:"co_pal",fam:"COMPAGNI",cond:c=>c.giocate>=1&&c.mn>=30,
-  txt:c=>"🤝 "+c.compagno+" allarga le braccia e lo chiama: adesso lo cercano tutti, "+c.eroe+" e' diventato il riferimento.",cons:{coinv:2}},
+  txt:c=>"🤝 "+c.compagno+" allarga le braccia e lo chiama: adesso lo cercano tutti, "+c.eroe+" e' diventato il riferimento.",cons:{coinv:2},sc:[{et:"Mi prendo la responsabilita'",es:c=>c.eroe+" chiede palla ogni volta: la squadra gioca su di lui e la manovra rallenta ma passa da lui.",cons:{coinv:2}},{et:"Faccio giocare gli altri",es:c=>c.eroe+" gioca di prima e apre per i compagni: meno palloni suoi, squadra piu' rapida.",cons:{intesa:2,coinv:-1}}]},
  {id:"co_tri",fam:"COMPAGNI",cond:c=>c.giocate>=2,
-  txt:c=>"🤝 Intesa a memoria con "+c.compagno+": si guardano una volta sola e sanno gia' cosa fare.",cons:{intesa:1}},
+  txt:c=>"🤝 Intesa a memoria con "+c.compagno+": si guardano una volta sola e sanno gia' cosa fare.",cons:{intesa:1},sc:[{et:"Andiamo a memoria",es:c=>"Si cercano a occhi chiusi: "+c.compagno+" e "+c.eroe+" fanno due triangoli di fila e si liberano in mezzo.",cons:{intesa:2}},{et:"Provo la giocata da solo",es:c=>c.eroe+" tenta l'iniziativa personale: "+c.compagno+" era libero e allarga le braccia.",cons:{coinv:1,intesa:-1}}]},
  {id:"co_disc",fam:"COMPAGNI",cond:c=>c.duelliP>=1&&c.diff<0,
-  txt:c=>"🤝 Scambio acceso a centrocampo: "+c.compagno+" voleva la palla prima, "+c.eroe+" allarga le braccia. Dura un attimo, poi si riparte.",cons:{}},
+  txt:c=>"🤝 Scambio acceso a centrocampo: "+c.compagno+" voleva la palla prima, "+c.eroe+" allarga le braccia. Dura un attimo, poi si riparte.",cons:{},sc:[{et:"Chiedo scusa e vado avanti",es:c=>c.eroe+" alza una mano verso "+c.compagno+": chiusa li', si torna a giocare.",cons:{intesa:1}},{et:"Gliela dico anche io",es:c=>"Botta e risposta acceso: si separano ancora nervosi e per un po' non si cercano.",cons:{intesa:-2,coinv:1}}]},
  {id:"av_str",fam:"AVVERSARI",cond:c=>c.duelliV>=2,
-  txt:c=>"😠 Il difensore avversario non lo molla piu' di un metro: da adesso "+c.eroe+" ha un'ombra addosso.",cons:{marcatura:1}},
+  txt:c=>"😠 Il difensore avversario non lo molla piu' di un metro: da adesso "+c.eroe+" ha un'ombra addosso.",cons:{marcatura:1},sc:[{et:"Lo porto a spasso",es:c=>c.eroe+" comincia a muoversi lontano dalla palla e si trascina dietro l'ombra: si apre uno spazio per gli altri.",cons:{marcatura:-1,intesa:1}},{et:"Cerco il duello",es:c=>c.eroe+" gli va addosso ogni volta: sono botte, e l'arbitro comincia a guardarli.",cons:{marcatura:1,fiducia:1}}]},
  {id:"av_pro",fam:"AVVERSARI",cond:c=>c.duelliV>=1&&c.mn>=40,
-  txt:c=>"😠 Parole in faccia dopo il contrasto: il difensore gli dice qualcosa, "+c.eroe+" non risponde e si rialza.",cons:{}},
+  txt:c=>"😠 Parole in faccia dopo il contrasto: il difensore gli dice qualcosa, "+c.eroe+" non risponde e si rialza.",cons:{},sc:[{et:"Non rispondo",es:c=>c.eroe+" si rialza e va via senza voltarsi. Il difensore resta li' a parlare da solo.",cons:{fiducia:1}},{et:"Rispondo per le rime",es:c=>"Faccia a faccia: l'arbitro arriva di corsa e li divide. Adesso e' una questione personale.",cons:{marcatura:1,coinv:1}}]},
  {id:"av_ris",fam:"AVVERSARI",cond:c=>c.giocate>=3,
-  txt:c=>"👏 Anche l'avversario che lo marca allarga le braccia verso la panchina: quella giocata non si poteva difendere.",cons:{fiducia:1}},
+  txt:c=>"👏 Anche l'avversario che lo marca allarga le braccia verso la panchina: quella giocata non si poteva difendere.",cons:{fiducia:1},sc:[{et:"Ringrazio e vado",es:c=>c.eroe+" alza una mano verso l'avversario: rispetto, e si torna in posizione.",cons:{fiducia:1}},{et:"Me la godo",es:c=>c.eroe+" si gira verso la curva a braccia larghe: lo stadio esplode, la panchina avversaria molto meno.",cons:{coinv:1,marcatura:1}}]},
  {id:"av_fal",fam:"AVVERSARI",cond:c=>c.duelliV>=3,
-  txt:c=>"😠 Lo prendono in ritardo, stavolta e' fallo netto: il difensore aveva gia' capito che non lo teneva.",cons:{}},
+  txt:c=>"😠 Lo prendono in ritardo, stavolta e' fallo netto: il difensore aveva gia' capito che non lo teneva.",cons:{},sc:[{et:"Mi rialzo subito",es:c=>c.eroe+" si rimette in piedi prima che l'arbitro fischi: la squadra riparte veloce.",cons:{fiducia:1,coinv:1}},{et:"Resto a terra, chiedo il cartellino",es:c=>c.eroe+" resta giu' e indica il taschino: l'arbitro ammonisce, ma il pubblico avversario ha trovato il suo bersaglio.",cons:{marcatura:1}}]},
  {id:"er_chi",fam:"EROE",cond:c=>c.mn>=25&&c.giocate===0,
-  txt:c=>"✊ "+c.eroe+" va a prendersi la palla venti metri piu' indietro: se non arriva, se la va a cercare.",cons:{coinv:2}},
+  txt:c=>"✊ "+c.eroe+" va a prendersi la palla venti metri piu' indietro: se non arriva, se la va a cercare.",cons:{coinv:2},sc:[{et:"Vado a prendermela",es:c=>c.eroe+" arretra fino alla linea di centrocampo e comincia a toccare palloni: la partita si accende.",cons:{coinv:2}},{et:"Aspetto il mio momento",es:c=>c.eroe+" resta la' davanti e aspetta. Passano altri minuti senza che la palla arrivi.",cons:{coinv:-1,fiducia:-1}}]},
  {id:"er_zona",fam:"EROE",cond:c=>c.marcatura>=1,
-  txt:c=>"✊ "+c.eroe+" si sposta dall'altra parte senza dire niente: l'ombra addosso resta a marcare uno spazio vuoto.",cons:{zona:1,marcatura:-1}},
+  txt:c=>"✊ "+c.eroe+" si sposta dall'altra parte senza dire niente: l'ombra addosso resta a marcare uno spazio vuoto.",cons:{zona:1,marcatura:-1},sc:[{et:"Cambio zona in silenzio",es:c=>"Nessuno se ne accorge subito: quando la palla arriva dall'altra parte, "+c.eroe+" e' solo.",cons:{zona:1,marcatura:-1}},{et:"Resto e me la gioco",es:c=>c.eroe+" resta dov'e' con l'ombra addosso: ogni pallone sara' un corpo a corpo.",cons:{marcatura:1,fiducia:1}}]},
  {id:"er_reaz",fam:"EROE",cond:c=>c.occFallite>=2,
-  txt:c=>"✊ Non abbassa la testa: "+c.eroe+" chiama la palla un'altra volta, e la chiama forte.",cons:{fiducia:1}},
+  txt:c=>"✊ Non abbassa la testa: "+c.eroe+" chiama la palla un'altra volta, e la chiama forte.",cons:{fiducia:1},sc:[{et:"La chiamo ancora",es:c=>c.eroe+" alza la mano e la chiama forte: alla terza gliela danno.",cons:{fiducia:1,coinv:1}},{et:"Abbasso la testa e corro",es:c=>c.eroe+" smette di chiedere e comincia a correre per la squadra: meno palloni, piu' chilometri.",cons:{coinv:-1,intesa:1}}]},
 ]
 
 const BEAT664={
@@ -893,6 +893,11 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
      Nessun campo tocca il punteggio: il microsim resta l'unica autorita' del risultato. */
   const narrRef669=useRef({duelliV:0,duelliP:0,occFallite:0,giocate:0,golSub:0,golFatti:0,
     ultima:-99,fatte:[],marcatura:0,intesa:0});
+  /* [7.681.0] LA SCELTA IN SOSPESO: quale scheda ha appena parlato, con che opzioni e con quale
+     contesto era stata scritta la frase. Vive in un ref e non in uno stato perche' il banner la legge
+     durante il render e il tick la scrive: uno stato in piu' rifarebbe il render della partita a ogni
+     riga di cronaca. */
+  const intxPendRef681=useRef(null),intxCtxRef681=useRef({});
   const libAzRef666=useRef(null);
   const libRegRef666=useRef({partita:[],recenti:[],ultima:-99});
   const [waveEvent,setWaveEvent]=useState(null);
@@ -1486,7 +1491,49 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   const opponents=useRef([{x:76,y:35},{x:82,y:50},{x:79,y:65}]);
 
   const lastComWallRef=useRef(0);/* [7.532.0] orologio di parete dell'ultima battuta: i cori si armonizzano sui tick quieti */
-  const addCom=useCallback((text,color,t)=>{lastComWallRef.current=Date.now();setComs(p=>[{text,color,t:t??clockRef.current},...p].slice(0,16));},[]); // stable — clockRef via ref, non dipende da clock state
+  /* [7.681.0 direttiva PO «L'eroe non interagisce per niente durante la telecronaca, deve essere
+     interattiva, a scelta!»] LA RIGA PUO' PORTARE DELLE SCELTE. Quarto argomento opzionale: quando
+     c'e', il banner in campo disegna i bottoni sotto la frase. Nessuna riga esistente cambia — chi
+     chiama addCom con tre argomenti si comporta esattamente come prima. */
+  /* [7.681.0] SCEGLIERE. Applica le conseguenze allo stato narrativo, scrive la riga d'esito e
+     marca la riga come gia' scelta (cosi' i bottoni spariscono e non si puo' rispondere due volte).
+     ⚠️ IL PUNTEGGIO NON SI TOCCA: il microsim resta l'autorita' del risultato. Qui si muovono soltanto
+     coinvolgimento, intesa, fiducia, zona e marcatura — cioe' chi ti cerca e chi ti marca. */
+  const scegli681=useCallback((idx,auto)=>{
+    const P=intxPendRef681.current; if(!P||!P.sc||!P.sc[idx])return;
+    intxPendRef681.current=null;
+    const opt=P.sc[idx],N=narrRef669.current||{};
+    try{const c=opt.cons||{};
+      if(c.marcatura)N.marcatura=Math.max(0,(N.marcatura|0)+c.marcatura);
+      if(c.intesa)N.intesa=(N.intesa|0)+c.intesa;
+      if(c.coinv)N.coinv=(N.coinv|0)+c.coinv;
+      if(c.fiducia)N.fiducia=(N.fiducia|0)+c.fiducia;
+      if(c.zona)N.zona=(N.zona|0)+c.zona;
+      (N.scelte=N.scelte||[]).push(P.id+"#"+idx);/* [7.681.0] la chiave anti-ripetizione include il RAMO: la stessa scheda, un'altra partita, si apre su un ramo diverso */
+    }catch(_e){}
+    let _t=null;try{_t=opt.es(P.ctx||{});}catch(_e){_t=null;}
+    setComs(p=>{const q=p.slice();if(q[0])q[0]={...q[0],sci:idx,scAuto:!!auto};return q;});
+    if(_t)setTimeout(()=>{try{addComRef681.current&&addComRef681.current(_t,"#c4b5fd",clockRef.current);}catch(_e){}},260);
+    if(typeof window!=='undefined'){try{(window.__CPM_SC681=window.__CPM_SC681||[]).push({id:P.id,idx,auto:!!auto,min:P.min});}catch(_e){}}
+  },[]);
+  const addComRef681=useRef(null),scegli681Ref=useRef(null);
+  const addCom=useCallback((text,color,t,sc)=>{lastComWallRef.current=Date.now();
+    /* [7.681.0] SE UNA SCELTA E' ANCORA APERTA E ARRIVA UNA RIGA NUOVA, la si chiude sull'opzione
+       neutra prima di coprirla: altrimenti la conseguenza non verrebbe mai applicata e il giocatore
+       si troverebbe con una domanda sparita dallo schermo e senza risposta. */
+    try{if(!sc&&intxPendRef681.current&&scegli681Ref.current)scegli681Ref.current(0,true);}catch(_e681){}setComs(p=>[{text,color,t:t??clockRef.current,sc:sc||null,sci:null},...p].slice(0,16));},[]);
+  addComRef681.current=addCom;scegli681Ref.current=scegli681;
+  /* [7.681.0] IL RESPIRO DELLA SCELTA. Nove secondi: poco piu' del respiro che la cronaca gia' concede
+     agli eventi importanti (7 tick, 6,3 s a velocita' 1), abbastanza per leggere due righe e decidere.
+     Scaduto il tempo si applica la PRIMA opzione della scheda — quella scritta per essere neutra — e
+     la riga lo dichiara («scelta da sola») invece di far finta che il giocatore avesse deciso. */
+  useEffect(()=>{
+    const c0=coms&&coms[0];
+    if(!c0||!c0.sc||c0.sci!=null)return;
+    const ms=(typeof window!=='undefined'&&+window.__CPM_SCMS681)||9000;
+    const h=setTimeout(()=>{try{scegli681(0,true);}catch(_e){}},ms);
+    return()=>clearTimeout(h);
+  },[coms,scegli681]); // stable — clockRef via ref, non dipende da clock state
   /* [7.532.0 collaudo PO «nella cronaca testuale sono mischiati telecronaca ed indicazioni del mister, vanno
      divise in maniera armoniosa» — rosso __CPM_NO540] LA VOCE DELLA PANCHINA HA IL SUO POSTO: le battute del
      mister non entrano piu' nel flusso della telecronaca (e quindi nel banner FM) — vivono in un riquadro
@@ -3389,13 +3436,14 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
             const _ctx={mn:nx,diff:_mio-_suo,eroe:_eroe,compagno:_cmp,duelliV:_N.duelliV,duelliP:_N.duelliP,
               occFallite:_N.occFallite,giocate:_N.giocate,marcatura:_N.marcatura,
               golSubDaPoco:(_N.golSub>0&&(nx-(_N.golSubMn|0))<=6)};
+            try{intxCtxRef681.current=_ctx;}catch(_e681){}
             let _t=null;try{_t=_intxK669.txt(_ctx);}catch(_e){_t=null;}
             if(_t){
               _N.fatte.push(_intxK669.id);_N.ultima=nx;
               const _c=_intxK669.cons||{};
               if(_c.marcatura)_N.marcatura=Math.max(0,(_N.marcatura|0)+_c.marcatura);
               if(_c.intesa)_N.intesa=(_N.intesa|0)+_c.intesa;
-              ev={...ev,txt:_t,ef:null,ms:null,bpos:null,pd:null,_intx669:_intxK669.fam};
+              ev={...ev,txt:_t,ef:null,ms:null,bpos:null,pd:null,_intx669:_intxK669.fam,_intxSc681:(_intxK669.sc||null),_intxId681:_intxK669.id};
               if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){try{(window.__CPM_INTX669=window.__CPM_INTX669||[]).push({min:nx,id:_intxK669.id,fam:_intxK669.fam,txt:_t});}catch(_e){}}
             }
           }catch(_e670){}}
@@ -3956,8 +4004,13 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
           let cColor=ev._intx669?(ev._intx669==="MISTER"?"#f0b33a":ev._intx669==="AVVERSARI"?"#f87171":ev._intx669==="EROE"?"#93c5fd":"#86efac"):ev.ef==="team_goal"?"#16a34a":ev.ef==="opp_goal"?"#dc2626":ev.ef==="opp_red"?"#16a34a":ev.ef==="opp_injury"?"#f59e0b":ATE3_ARCCOL[_arcType]||TH.faint;
           if(pendingGoalRef.current&&!ev.ef)cColor="#fbbf24";/* [7.530.0 collaudo PO «quando c'è un'azione offensiva che può portare al gol ci deve essere maggiore enfasi/suspance»] durante l'azione pendente il banner scala sull'ambra calda: si VEDE che sta montando qualcosa (la densita' 1,30 del 7.528 gia' incalza il ritmo) */
           else if(counterRef.current&&!ev.ef)cColor=counterRef.current.dir>0?"#fbbf24":"#f87171";/* [7.532.0 NO542] il ribaltamento ha il suo colore: ambra il nostro, rosso il loro */
-          if(_arcType&&ATE3_TYPEMS[_arcType]){chantTimersRef.current.push(setTimeout(()=>addCom(evTxt,cColor,nx),Math.round(ATE3_TYPEMS[_arcType]/2)));}
-          else addCom(evTxt,cColor,nx);
+          const _sc681=ev._intxSc681||null;
+          if(_arcType&&ATE3_TYPEMS[_arcType]){chantTimersRef.current.push(setTimeout(()=>addCom(evTxt,cColor,nx,_sc681),Math.round(ATE3_TYPEMS[_arcType]/2)));}
+          else addCom(evTxt,cColor,nx,_sc681);
+          /* [7.681.0] il contesto della scheda serve anche DOPO, per scrivere l'esito della scelta:
+             lo si mette da parte insieme all'id, cosi' il ramo che applica la scelta non deve
+             ricostruirlo (e non puo' divergere da quello con cui la frase e' stata scritta). */
+          if(_sc681){try{intxPendRef681.current={id:ev._intxId681,sc:_sc681,ctx:intxCtxRef681.current,min:nx};}catch(_e681){}}
           /* [7.486.0] LA SECONDA VOCE. Non racconta l'azione: la LEGGE, e parla DOPO la prima — e' cio'
              che distingue un commento tecnico da una riga di cronaca in piu'. Una volta ogni cinque, mai
              sui gol (li' la scena ha gia' la sua voce), e agganciata all'apice dell'arco come la prima
@@ -3981,7 +4034,12 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               resta e ha la PRECEDENZA: e' il momento in cui si deve leggere. Sotto, il respiro cambia — si
               incalza in area, si prende tempo in costruzione. */
            const _cool501=(typeof window!=='undefined'&&window.__CPM_NO501)?3:(_fase501==="pericolo"?2:_fase501==="sviluppo"?3:5);
-           bgCoolRef.current=(typeof window!=='undefined'&&window.__CPM_NO490)?3:(_imp?7:_cool501);
+           /* [7.681.0] UNA RIGA CHE CHIEDE DI DECIDERE HA IL RESPIRO PIU' LUNGO DI TUTTI. Misurato alla
+              prima stesura: su tre interazioni una sola arrivava a produrre una scelta, perche' le altre
+              due venivano spinte fuori dal banner da una riga di cronaca successiva prima che il timer
+              scattasse — i bottoni sparivano dallo schermo e la decisione restava li' in sospeso. Dodici
+              tick: piu' dei sette di un gol, perche' un gol si guarda e una scelta si prende. */
+           bgCoolRef.current=(typeof window!=='undefined'&&window.__CPM_NO490)?3:(_sc681?12:(_imp?7:_cool501));
            if(typeof window!=='undefined'&&window.__CPM_IMP490!==undefined){try{const _w=(window.__CPM_IMP490=window.__CPM_IMP490||[]);if(_w.length<200)_w.push({m:nx,imp:!!_imp,t:Math.round(performance.now())});}catch(_e){}}}
           tcCountRef.current++;
           /* ⚠️ RITARDO E FREQUENZA CORRETTI DOPO LA MISURA: la prima stesura usava 950 ms e una riga su
@@ -6345,11 +6403,32 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               <div style={{position:"absolute",inset:0,pointerEvents:"none",zIndex:3,background:"radial-gradient(ellipse 118% 96% at 50% 44%, rgba(0,0,0,0) 56%, rgba(0,0,0,0.14) 82%, rgba(0,0,0,0.30) 100%)"}}/>
                {/* [7.661.0 - LA CRONACA IN PRIMO PIANO, GRANDE E CENTRALE. Richiesta PO in collaudo: «il testo della cronaca quando non ci sono azioni deve essere piu grande e centrale e carino, deve emozionare». Con la cronaca visuale spenta (7.660) lo stadio e il palcoscenico e il TESTO e lo spettacolo: l ultima riga appare grande al centro, col suo colore, ombra da broadcast e ingresso morbido (remount su key). Il feed sotto resta la storia completa. Rosso __CPM_NO661. */}
                {phase==="playing"&&coms[0]&&!(typeof window!=="undefined"&&window.__CPM_NO661)&&(
-                 <div key={"com661-"+coms[0].t+"-"+String(coms[0].text||"").slice(0,18)} style={{position:"absolute",left:"7%",right:"7%",top:"38%",zIndex:5,pointerEvents:"none",textAlign:"center",animation:"cpmComIn661 .55s ease-out"}}>
+                 <div data-cpm="com661"/* [7.681.0] etichetta stabile: senza, per misurare il banner servivano selettori sullo STILE, che si rompono al primo ritocco grafico */ key={"com661-"+coms[0].t+"-"+String(coms[0].text||"").slice(0,18)} style={{position:"absolute",left:"7%",right:"7%",top:"38%",zIndex:5,pointerEvents:"none",textAlign:"center",animation:"cpmComIn661 .55s ease-out"}}>
                    <style>{"@keyframes cpmComIn661{from{opacity:0;transform:translateY(14px) scale(.97)}to{opacity:1;transform:none}}"}</style>
                    <div style={{display:"inline-block",padding:"10px 16px",borderRadius:14,background:"radial-gradient(ellipse at center, rgba(5,8,16,0.62) 0%, rgba(5,8,16,0.28) 70%, transparent 100%)"}}>
                      <div style={{fontSize:19,lineHeight:1.35,fontWeight:800,color:coms[0].color||"#e8edf6",textShadow:"0 2px 10px rgba(0,0,0,0.85), 0 0 26px rgba(0,0,0,0.5)",letterSpacing:0.2}}>{coms[0].text}</div>
                      <div style={{marginTop:5,fontSize:11,fontWeight:700,color:"rgba(232,237,246,0.55)"}}>{(coms[0].t??clock)}′</div>
+                     {/* [7.681.0 direttiva PO «deve essere interattiva, a scelta!»] I BOTTONI SOTTO LA FRASE.
+                         Appaiono solo sulle righe che portano delle scelte (le interazioni dell'eroe: due o
+                         tre a partita), e solo finche' nessuno ha risposto. Nessuna schermata nuova, nessuna
+                         modale: la decisione sta dov'e' gia' il racconto.
+                         ⚠️ LA PARTITA NON ASPETTA. Se non si sceglie entro il respiro della riga, il timer
+                         qui sotto applica l'opzione NEUTRA (la prima della scheda) e la gara prosegue: si
+                         gioca sul telefono, a volte guardando altro, e un gioco che si blocca in attesa di
+                         un tocco e' un gioco rotto. */}
+                     {coms[0].sc&&coms[0].sci==null&&(
+                       <div style={{marginTop:9,display:"flex",flexDirection:"column",gap:6,pointerEvents:"auto"}}>
+                         {coms[0].sc.map((o,oi)=>(
+                           <button key={oi} onClick={()=>scegli681(oi,false)}
+                             style={{padding:"9px 12px",borderRadius:11,border:"1px solid rgba(196,181,253,0.45)",background:"rgba(24,20,48,0.86)",color:"#e9e4ff",fontSize:14,fontWeight:800,lineHeight:1.25,textAlign:"left",cursor:"pointer"}}>{o.et}</button>
+                         ))}
+                       </div>
+                     )}
+                     {coms[0].sc&&coms[0].sci!=null&&(
+                       <div style={{marginTop:7,fontSize:12.5,fontWeight:700,color:"rgba(196,181,253,0.9)"}}>
+                         {"\u2713 "+String(coms[0].sc[coms[0].sci]&&coms[0].sc[coms[0].sci].et||"")+(coms[0].scAuto?"  (scelta da sola)":"")}
+                       </div>
+                     )}
                    </div>
                  </div>
                )}

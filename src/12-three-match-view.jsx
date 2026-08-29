@@ -5393,8 +5393,16 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                 if(typeof window!=='undefined'&&window.__CPM_ROV611&&!hero._rov611){hero._rov611=1;try{
                   const _eu=hero.rotation;let _val=_eu.y;
                   Object.defineProperty(_eu,'y',{configurable:true,get(){return _val;},set(v){
+                    /* ⚠️ [7.681.0 — IL REGISTRO NON DISTINGUEVA DENTRO E FUORI DAL GESTO. Rileggendolo a
+                       freddo: il testimone si arma UNA volta e da li' registra per sempre, anche la corsa
+                       normale dopo l'acrobazia. Cosi' «43 scritture di animOne contro 25 del blocco» non
+                       dice niente — le 43 possono essere tutte successive al gesto. Ora ogni scrittura porta
+                       con se' se il LUCCHETTO era attivo (`L`) e l'avanzamento del gesto (`u`): senza quei
+                       due campi il conteggio e' un numero che sembra una prova e non lo e'. */
                     try{const R=window.__CPM_ROV611;if(R.length<400){const st=(new Error()).stack||'';
-                      R.push({v:+(+v).toFixed(2),st:st.split('\n')[2]?String(st.split('\n')[2]).slice(0,90):'?'});}}catch(_e){}
+                      const _now611=(typeof performance!=='undefined'?performance.now():0);
+                      const _L611=!!(hero._yawLock611&&(_now611-hero._yawLock611)<300);
+                      R.push({v:+(+v).toFixed(2),L:_L611?1:0,u:+(+u).toFixed(2),st:st.split('\n')[2]?String(st.split('\n')[2]).slice(0,90):'?'});}}catch(_e){}
                     _val=v;if(_eu._onChangeCallback)_eu._onChangeCallback();}});
                 }catch(_e){}}
                 if(sr.current._rovY569==null||u<0.06)sr.current._rovY569=hero.rotation.y||0;
