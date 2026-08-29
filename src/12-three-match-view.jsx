@@ -7228,6 +7228,50 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
               if(_ob.att){_ob.att[_handsB]=(_ob.att[_handsB]||0)+1;}}
             _ob.s=_sgB;}}
         _ob.p=_alB;_ob.f=(_ob.f||0)+1;}catch(_e){}}
+      /* [7.671.0 — CODICE 007: L'OCCHIO NON PUO' GIRARE PIU' IN FRETTA DI COSI'. Rosso __CPM_NO671.
+         VENTI E PIU' NOTE DEL PO, sei solo nell'ultimo collaudo, sempre la stessa firma: «lo sguardo
+         oscilla, 10-30 inversioni al secondo, ampiezza 6-8 gradi — lerp 52-75% + vista-reale 19-33%,
+         da 2,2 a 4,5 passate per fotogramma». Cinque volte (7.475, 7.478, 7.563, 7.598, 7.619) ho
+         tolto un contendente alla volta all'asse ottico, e ogni volta ne restava un altro: e' una
+         gara fra scrittori che si rincorrono a frequenza di fotogramma, e vincerla togliendo pezzi
+         significa rifare il conto ogni volta che nasce una rete nuova.
+         CAMBIO DI STRATEGIA, e stavolta non riguarda CHI scrive ma QUANTO IN FRETTA si puo' girare.
+         Qualunque sia l'ultima mano del fotogramma, l'asse reso non ruota piu' di 150 gradi al
+         secondo: un ping-pong di sei gradi a venti hertz chiederebbe 240 gradi al secondo e viene
+         schiacciato in una panoramica continua, mentre una panoramica vera (che sta ampiamente sotto)
+         passa intatta. E' un limite di VELOCITA', non una correzione di posizione: non sposta il
+         bersaglio, non decide dove guardare, non tocca la posizione della camera — quindi la firma
+         golden resta intatta per costruzione, come nel 7.478 e nel 7.563.
+         ESENZIONI, perche' un limite senza eccezioni diventa un difetto: i TAGLI di scena (dove
+         l'occhio DEVE saltare) e il primo fotogramma dopo uno stacco, riconosciuti dalla distanza —
+         oltre mezzo radiante non e' oscillazione, e' un cambio d'inquadratura.
+         ⚠️ IL GUADAGNO NON E' MISURABILE QUI, e lo dichiaro come nel 7.598: il laboratorio gira a
+         7 fps e vede 0,2 inversioni al secondo dove il telefono del PO ne misura 41 — servirebbero
+         69 fps per esprimere quel numero. Cio' che il laboratorio PUO' dire e' che la panoramica
+         legittima non viene rallentata (metro: la camera raggiunge il bersaglio entro la scena) e
+         che nessun test cambia colore. Il verdetto sul tremore lo da' il dispositivo. */
+      {const _no671=(typeof window!=='undefined'&&window.__CPM_NO671);
+       const _cs671=sr.current;
+       const _ax671=Math.atan2(camLook.x-camera.position.x,camLook.z-camera.position.z);
+       const _ay671=Math.atan2(camLook.y-camera.position.y,Math.hypot(camLook.x-camera.position.x,camLook.z-camera.position.z));
+       if(!_no671&&_cs671._ax671!=null&&dt>0&&dt<0.5){
+         let _dax=((_ax671-_cs671._ax671+Math.PI*3)%(Math.PI*2))-Math.PI;
+         let _day=_ay671-_cs671._ay671;
+         const _max671=2.62*dt;/* 150 gradi al secondo */
+         const _taglio671=(Math.abs(_dax)>0.5||!!_cs671._cutSnap||!!_cs671._sceneCut);
+         if(!_taglio671&&(Math.abs(_dax)>_max671||Math.abs(_day)>_max671)){
+           const _axC=_cs671._ax671+Math.max(-_max671,Math.min(_max671,_dax));
+           const _ayC=_cs671._ay671+Math.max(-_max671,Math.min(_max671,_day));
+           const _r671=Math.hypot(camLook.x-camera.position.x,camLook.z-camera.position.z)||1;
+           camLook.x=camera.position.x+Math.sin(_axC)*_r671;
+           camLook.z=camera.position.z+Math.cos(_axC)*_r671;
+           camLook.y=camera.position.y+Math.tan(Math.max(-1.2,Math.min(1.2,_ayC)))*_r671;
+           try{if(_cs671._tocc503)_cs671._tocc503.push('freno671');}catch(_e){}
+           if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){try{window.__CPM_FRENO671=(window.__CPM_FRENO671||0)+1;}catch(_e){}}
+         }
+       }
+       _cs671._ax671=Math.atan2(camLook.x-camera.position.x,camLook.z-camera.position.z);
+       _cs671._ay671=Math.atan2(camLook.y-camera.position.y,Math.hypot(camLook.x-camera.position.x,camLook.z-camera.position.z));}
       camera.lookAt(camLook.x,camLook.y,camLook.z);
 
       // ---- Meteo: caduta particelle + flash temporale ----
