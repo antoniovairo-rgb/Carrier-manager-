@@ -1013,27 +1013,61 @@ function ThreeMatchView(props){
       if(led657){/* [7.661.0 LED v2 - collaudo PO in diretta: font moderno (niente monospace), pannello
            piu' lungo e piu' in alto, LOGO squadra fisso ai due lati, e il GOL festeggiato dal
            cartellone (texture dedicata lampeggiante, gestita nel loop su P.waveEvent). */
-        sc.width=2048;const _mkLed662=(t662,col662)=>{const c2=document.createElement("canvas");c2.width=2048;c2.height=110;const x2=c2.getContext("2d");
-          x2.fillStyle="#07090c";x2.fillRect(0,0,2048,110);
-          x2.font="900 74px Arial, sans-serif";x2.textAlign="left";x2.textBaseline="middle";
-          x2.fillStyle=col662;x2.shadowColor=col662;x2.shadowBlur=16;x2.fillText(t662,24,57);x2.shadowBlur=0;
-          x2.fillStyle="rgba(0,0,0,0.34)";for(let yy=0;yy<110;yy+=4)x2.fillRect(0,yy,2048,2);
-          const tx2=new THREE.CanvasTexture(c2);tx2.wrapS=THREE.RepeatWrapping;return tx2;};
+        /* [7.668.0 collaudo PO «il tabellone led deve essere piu' moderno»] IL PANNELLO DIVENTA UN
+           DOT-MATRIX VERO. Prima era testo pieno con scanline orizzontali: da lontano leggeva come una
+           scritta su fondo nero, non come un LED. Ora il testo si stampa e poi passa sotto una GRIGLIA
+           (passo 4 px in entrambe le direzioni) che ne ritaglia i punti: e' cosi' che si vede un
+           tabellone vero, dove le lettere sono fatte di lampadine. In piu': fondo con gradiente
+           verticale (i pannelli veri non sono neri uniformi), alone morbido a due passate invece della
+           singola ombra dura, e il separatore romboidale fra due passaggi del nome. */
+        sc.width=2048;const _mkLed662=(t662,col662)=>{const c2=document.createElement("canvas");c2.width=2048;c2.height=128;const x2=c2.getContext("2d");
+          const _bg=x2.createLinearGradient(0,0,0,128);_bg.addColorStop(0,"#0b0e14");_bg.addColorStop(0.5,"#05070a");_bg.addColorStop(1,"#0b0e14");
+          x2.fillStyle=_bg;x2.fillRect(0,0,2048,128);
+          x2.font="800 76px 'Segoe UI', 'Helvetica Neue', Arial, sans-serif";x2.textAlign="left";x2.textBaseline="middle";
+          x2.letterSpacing&&(x2.letterSpacing="4px");
+          x2.shadowColor=col662;x2.shadowBlur=26;x2.fillStyle=col662;x2.fillText(t662,28,66);
+          x2.shadowBlur=10;x2.fillStyle="#ffffff";x2.globalAlpha=0.55;x2.fillText(t662,28,66);x2.globalAlpha=1;x2.shadowBlur=0;
+          /* la GRIGLIA che trasforma la scritta in lampadine: righe E colonne, non solo scanline */
+          x2.globalCompositeOperation="destination-out";
+          for(let yy=0;yy<128;yy+=4)x2.fillRect(0,yy+3,2048,1);
+          for(let xx=0;xx<2048;xx+=4)x2.fillRect(xx+3,0,1,128);
+          x2.globalCompositeOperation="source-over";
+          const tx2=new THREE.CanvasTexture(c2);tx2.wrapS=THREE.RepeatWrapping;tx2.anisotropy=4;return tx2;};
         const stexL=_mkLed662(String(text||"").toUpperCase()+"   •   ","#ffb020");
         const stexG=_mkLed662("⚽ GOL!   ⚽ GOL!   ⚽ GOL!   ","#7dff8a");
         const _matL=new THREE.MeshBasicMaterial({map:stexL,side:THREE.FrontSide,transparent:true,opacity:0.98,depthWrite:false});
         const smL=new THREE.Mesh(new THREE.PlaneGeometry(ledW||14,ledH||1.6),_matL);
         smL.position.set(cx,yPos!=null?yPos:5.5,z);smL.rotation.y=rotY;scene.add(smL);
         /* i loghi fissi: quadrati coi colori e la sigla del club, ai due capi del pannello */
-        const _mkLogo662=(sig,cc1,cc2)=>{const cl=document.createElement("canvas");cl.width=128;cl.height=128;const xl=cl.getContext("2d");
-          xl.fillStyle=cc1||"#1b2436";xl.fillRect(0,0,128,128);xl.strokeStyle=cc2||"#ffffff";xl.lineWidth=8;xl.strokeRect(4,4,120,120);
-          xl.font="900 52px Arial, sans-serif";xl.textAlign="center";xl.textBaseline="middle";xl.fillStyle="#ffffff";xl.fillText(String(sig||"").slice(0,3).toUpperCase(),64,66);
-          return new THREE.CanvasTexture(cl);};
+        /* [7.668.0 collaudo PO «il logo deve essere disegnato meglio»] DA QUADRATO A SCUDETTO. Era un
+           riquadro piatto con tre lettere: adesso e' un crest — sagoma a scudo, banda diagonale col
+           secondo colore sociale, bordo chiaro, sigla in rilievo con la sua ombra. Canvas 256 (era 128):
+           da vicino, sul pannello alto, i bordi non sfarinano piu'. */
+        const _mkLogo662=(sig,cc1,cc2)=>{const cl=document.createElement("canvas");cl.width=256;cl.height=256;const xl=cl.getContext("2d");
+          const _scudo=()=>{xl.beginPath();xl.moveTo(30,26);xl.lineTo(226,26);xl.lineTo(226,140);
+            xl.quadraticCurveTo(226,206,128,238);xl.quadraticCurveTo(30,206,30,140);xl.closePath();};
+          _scudo();const _g=xl.createLinearGradient(0,26,0,238);_g.addColorStop(0,cc1||"#1b2436");_g.addColorStop(1,"#0a0f18");
+          xl.fillStyle=_g;xl.fill();
+          xl.save();_scudo();xl.clip();/* banda diagonale col colore secondario */
+          xl.fillStyle=cc2||"#ffffff";xl.globalAlpha=0.9;xl.beginPath();xl.moveTo(30,150);xl.lineTo(226,60);xl.lineTo(226,104);xl.lineTo(30,194);xl.closePath();xl.fill();
+          xl.globalAlpha=1;xl.restore();
+          _scudo();xl.strokeStyle="rgba(255,255,255,0.92)";xl.lineWidth=9;xl.lineJoin="round";xl.stroke();
+          xl.font="900 92px 'Segoe UI', Arial, sans-serif";xl.textAlign="center";xl.textBaseline="middle";
+          xl.lineWidth=10;xl.strokeStyle="rgba(0,0,0,0.55)";xl.strokeText(String(sig||"").slice(0,3).toUpperCase(),128,126);
+          xl.fillStyle="#ffffff";xl.fillText(String(sig||"").slice(0,3).toUpperCase(),128,126);
+          const _t=new THREE.CanvasTexture(cl);_t.anisotropy=4;return _t;};
         const _sig662=String((typeof stadiumHomeAbbr!=='undefined'&&stadiumHomeAbbr)||(homeClub&&homeClub.a)||"").toUpperCase();
         const _lw662=(ledW||14)/2+1.6;
-        for(const _sx662 of [-_lw662,_lw662]){const _lg=new THREE.Mesh(new THREE.PlaneGeometry(2.3,2.3),new THREE.MeshBasicMaterial({map:_mkLogo662(_sig662,(typeof stadiumHomeCol!=='undefined'&&stadiumHomeCol)||"#1b2436","#ffffff"),side:THREE.FrontSide,transparent:true,opacity:0.98,depthWrite:false}));
+        /* [7.668.0] LA PIASTRA DIETRO I CREST: nella fotografia di collaudo i loghi sembravano
+           appoggiati sulle gradinate, non parte del tabellone. Un pannello scuro della stessa altezza
+           li incastona, e il tabellone torna a leggersi come un blocco unico: crest, LED, crest. */
+        for(const _sx668 of [-_lw662,_lw662]){const _pl=new THREE.Mesh(new THREE.PlaneGeometry(3.2,(ledH||1.6)*1.35),
+            new THREE.MeshBasicMaterial({color:0x07090c,side:THREE.FrontSide,transparent:true,opacity:0.97,depthWrite:false}));
+          const _ca8=Math.cos(rotY),_sa8=Math.sin(rotY);
+          _pl.position.set(cx+_sx668*_ca8,yPos!=null?yPos:5.5,z-_sx668*_sa8);_pl.rotation.y=rotY;scene.add(_pl);}
+        for(const _sx662 of [-_lw662,_lw662]){const _lg=new THREE.Mesh(new THREE.PlaneGeometry(2.5,2.8),new THREE.MeshBasicMaterial({map:_mkLogo662(_sig662,(typeof stadiumHomeCol!=='undefined'&&stadiumHomeCol)||"#1b2436","#ffffff"),side:THREE.FrontSide,transparent:true,opacity:0.98,depthWrite:false}));
           const _ca=Math.cos(rotY),_sa=Math.sin(rotY);
-          _lg.position.set(cx+_sx662*_ca,yPos!=null?yPos:5.5,z-_sx662*_sa);_lg.rotation.y=rotY;scene.add(_lg);}
+          _lg.position.set(cx+_sx662*_ca+Math.sin(rotY)*0.06,yPos!=null?yPos:5.5,z-_sx662*_sa+Math.cos(rotY)*0.06);_lg.rotation.y=rotY;_lg.renderOrder=7;scene.add(_lg);}
         (sr.current._led657=sr.current._led657||[]).push({tex:stexL,texGol:stexG,mat:_matL});return;}
       sx.fillStyle=_dkTifo(c1Hex,0.42);sx.fillRect(0,0,1024,110);
       const _fg=sx.createLinearGradient(0,0,0,110);_fg.addColorStop(0,"rgba(255,255,255,0.10)");_fg.addColorStop(1,"rgba(0,0,0,0.22)");sx.fillStyle=_fg;sx.fillRect(0,0,1024,110);
@@ -1048,8 +1082,15 @@ function ThreeMatchView(props){
        stadiumVenue (getStadiumName); il pannello usa la modalita' LED di _mkStriscione (14x1.6,
        testo ambra a scorrimento) su ENTRAMBE le facciate laterali, centrato, sopra i board. */
     if(stadiumVenue){try{const _vn658=String(stadiumVenue).toUpperCase();
-      _mkStriscione(0,-36.2,0,'#0a0c10','#ffb020',_vn658,23.5,true,28,2.4);
-      _mkStriscione(0,36.2,Math.PI,'#0a0c10','#ffb020',_vn658,23.5,true,28,2.4);/* [7.661.0] piu' lungo (19->28) e piu' in alto (20,5->23,5), come chiesto in collaudo */
+      /* [7.668.0 collaudo PO «deve essere piu' in alto, alla fine della copertura delle tribune»]
+         LA QUOTA NON SI SCEGLIE PIU' A OCCHIO. Lo stadio esporta gia' la geometria vera della
+         pensilina (curve.roofEnd.top, 7.437/7.565): il pannello si appende LI', appena sotto il filo
+         della copertura, e cosi' segue ogni taglia d'impianto — alto negli stadi con la falda, piu'
+         basso in provincia — invece di stare a una costante che va bene solo per uno. */
+      const _yLed668=(function(){try{const _rf=sr.current&&sr.current.crowdMats&&sr.current.crowdMats.curve&&sr.current.crowdMats.curve.roofEnd;
+        return (_rf&&_rf.top)?Math.max(12,_rf.top-1.2):23.5;}catch(_e){return 23.5;}})();
+      _mkStriscione(0,-36.2,0,'#0a0c10','#ffb020',_vn658,_yLed668,true,28,2.4);
+      _mkStriscione(0,36.2,Math.PI,'#0a0c10','#ffb020',_vn658,_yLed668,true,28,2.4);/* [7.661.0] piu' lungo (19->28) e piu' in alto (20,5->23,5), come chiesto in collaudo */
     }catch(_e658){}}/* [7.659.0] PO in collaudo: «un po piu grande ed in alto, all altezza della copertura» — y 9,2 -> 20,5 (il bordo gradinata sta a 23-26), pannello 14x1.6 -> 19x2.2 */
     const _stadHN=stadiumHomeName||homeClub?.n||"",_stadAN=stadiumAwayName||"";const _stadHNat=stadiumHomeNat||homeClub?.nat||"",_stadANat=stadiumAwayNat||"";const _stadHId=stadiumHomeId||homeClub?.id||"",_stadAId=stadiumAwayId||"";
     // 2 striscioni per tribuna — SOLO colori di casa (§5); il lato ospite vive nella Curva Nord
