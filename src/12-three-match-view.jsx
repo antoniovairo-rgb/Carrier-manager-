@@ -6952,6 +6952,42 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
         try{((sr.current&&sr.current.players)||[]).forEach(pp=>{if(pp&&pp.mesh&&pp.mesh.visible)_pc++;});if(hero&&hero.visible)_pc++;}catch(_x){}
         try{(glbAvatars||[]).forEach(a=>{if(a&&a.root&&a.root.visible)_gc++;});}catch(_x){}
         return{proc:_pc,glb:_gc,ball:!!(ball&&ball.visible),ombra:!!(typeof _bShadow534!=='undefined'&&_bShadow534&&_bShadow534.visible),fase:(propsRef.current&&propsRef.current.matchPhase)||null};};}catch(_e){}}
+      /* [7.675.0 — LO STRUMENTO CHE MANCAVA: UNA FINESTRA SUL MONDO GLB.
+         Tre difetti diversi segnalati dal PO nello stesso giorno (7.665 i giocatori che non sparivano,
+         7.672 la volee' recitata come rovesciata, 7.674 il portiere con due gesti sovrapposti) avevano
+         la stessa radice: il rimedio andava nel ramo PROCEDURALE — l'unico che le sonde sanno leggere —
+         mentre il gioco vero gira sui personaggi GLB. E due rimedi di fila (7.673, 7.674) li ho dovuti
+         spedire DICHIARANDOLI non verificati, perche' nessuna sonda riesce nemmeno a esercitare quel
+         ramo. Curare al buio proprio la parte che il PO guarda non e' sostenibile: prima dello stesso
+         rimedio viene lo strumento.
+         Questo censimento dice, per ogni personaggio GLB in campo: quale CLIP sta suonando e con che
+         peso, se il corpo procedurale sotto e' nascosto o no, e la posa vera (quota, inclinazione,
+         imbardata) — cioe' esattamente le grandezze su cui vivono le note del PO. Test-only: fuori dal
+         collaudo la funzione non esiste e non costa niente. */
+      if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)&&!window.__CPM_GLBPOSE675){try{window.__CPM_GLBPOSE675=()=>{
+        const out={pronti:!!(typeof window!=='undefined'&&window.__CPM_GLB_READY),avatar:0,att:[],gk:null,eroe:null};
+        try{(glbAvatars||[]).forEach((a,i)=>{if(!a||!a.root)return;out.avatar++;
+          /* le gestures sono AnimationAction dirette (r.521: out[k]=a), non oggetti che le contengono:
+             la prima stesura leggeva `g.action` e non trovava mai niente — lo strumento vedeva il mondo
+             e lo dichiarava vuoto. Si legge anche `_gName`/`_gw`, che il loop tiene aggiornati. */
+          /* [7.675.0 v2] SI CONTANO LE CLIP SULLO STESSO CORPO. La prima lettura restituiva una clip
+             per avatar e la sonda sommava scene intere: «kick + dive + tackle» sembrava un gesto
+             triplo ma erano tre PERSONE diverse — l'attaccante che tira, il portiere che vola, il
+             difensore che entra. Cioe' calcio normale. Il doppio gesto vero e' DUE CLIP SULLO STESSO
+             PERSONAGGIO, e per vederlo serve l'elenco, non il massimo. */
+          let _cl=null,_w=0;const _sopra=[];
+          try{for(const k in (a.gestures||{})){const g=a.gestures[k];
+            const _pw=(g&&typeof g.getEffectiveWeight==='function')?g.getEffectiveWeight():0;
+            if(_pw>0.3)_sopra.push(k+':'+_pw.toFixed(2));
+            if(_pw>_w){_w=_pw;_cl=k;}}}catch(_e){}
+          if(!_cl&&a._gName){_cl=a._gName;_w=+(a._gw||0);}
+          const _p=a.proc||{};
+          const rec={i,clip:_cl,peso:+_w.toFixed(2),sopra:_sopra,procVis:!!(_p&&_p.visible),
+            y:+((_p.position&&_p.position.y)||0).toFixed(2),rz:+((_p.rotation&&_p.rotation.z)||0).toFixed(3),ry:+((_p.rotation&&_p.rotation.y)||0).toFixed(2)};
+          if(_w>0.05)out.att.push(rec);
+          if(a._isGk&&_p===awayGkMesh)out.gk=rec;
+          if(i===0)out.eroe=rec;});}catch(_e){}
+        return out;};}catch(_e){}}
       if(sr.current._led657){
         const _weT662=(P.waveEvent&&P.waveEvent.t)||0;
         if(_weT662&&_weT662!==sr.current._ledWeSeen662){sr.current._ledWeSeen662=_weT662;sr.current._ledGoalUntil662=performance.now()+6000;}/* [7.661.0] il GOL si festeggia anche sul cartellone */
@@ -7552,6 +7588,16 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
             if(_ai===0&&typeof window!=='undefined'&&window.__CPM_REC){try{const _bm46=sr.current.ball;window.__CPM_GST={g:_g,want:_want,has:_g?!!_a.gestures[_g]:null,cur:_a._gName,ts:(function(){try{return +_a._gAct.getEffectiveTimeScale().toFixed(2);}catch(_e){return null;}})(),cdur:(function(){try{return +_a._gAct.getClip().duration.toFixed(2);}catch(_e){return null;}})(),/* [7.356.0] scala e durata della clip: senza, «il gesto e' troncato» non e' verificabile dal vivo */w:_a._gw!=null?+_a._gw.toFixed(2):null,at:actType||null,aT:+(actT||0).toFixed(2),ry:+_a.root.position.y.toFixed(2),py:+_p.position.y.toFixed(2),db:_bm46?+Math.hypot(_p.position.x-_bm46.position.x,_p.position.z-_bm46.position.z).toFixed(1):null};}catch(_e){}}/* [7.245.0 strumentazione permanente, solo __CPM_REC] stato del gesto GLB dell'EROE: ha inchiodato la classe «il gesto tecnico finale non si vede GLB-ON» · [7.246.0] +ry/py (affondo root vs proc) e db (distanza eroe-palla) per «posizione sbagliata» */
             if(_a._isGk&&typeof window!=='undefined'&&window.__CPM_REC){try{const _bm46b=sr.current.ball;const _tl46=window.__CPM_GKTL||(window.__CPM_GKTL=[]);if(_tl46.length<600)_tl46.push({opp:oppActType||null,oppT:oppActType?+(oppActT||0).toFixed(2):null,isOpp:_a.proc===oppMesh,want:_gkWant,cur:_a._gName||null,w:_a._gw!=null?+_a._gw.toFixed(2):null,pz:+_p.position.z.toFixed(1),tz:_p._diveToZ!=null?+_p._diveToZ.toFixed(1):null,py:+_p.position.y.toFixed(2),/* [7.465.0 codice 111/112 «il portiere non si tuffa nel tempo giusto, sincronizzato col pallone»] IL PALLONE ENTRA NEL COLLETTORE. Finora qui c'era SOLO il portiere: si poteva vedere che il tuffo partiva e dove arrivava, ma non se arrivasse IN TEMPO — e «fuori tempo rispetto alla traiettoria del pallone» e' una relazione fra due corpi, non una proprieta' di uno. Senza la palla, il difetto del PO non era nemmeno esprimibile in numeri. */t:+performance.now().toFixed(0),bx:+_bm46b.position.x.toFixed(1),bz:+_bm46b.position.z.toFixed(1),by:+_bm46b.position.y.toFixed(2),arcT:+(+ballArcT).toFixed(2),arcD:+(+ballArcDur).toFixed(2),dvD:_p._diveDur!=null?+_p._diveDur.toFixed(2):null,gx:+_p.position.x.toFixed(1)});}catch(_e){}}/* [collaudo PO «il portiere sembra imbabolato»] gemello di __CPM_GST per il PORTIERE: trigger logico vs gesto GLB montato vs traslazione del tuffo, fotogramma per fotogramma dentro il loop (headless GLB-ON gira a frazioni di fps: campionare da fuori misura il caso) */
             if(_want&&_a._gName!==_want){
+              /* [7.675.0 — RIMEDIO TENTATO E REVOCATO, con la sua misura. La sonda GLB (nuova, qui
+                 sotto) ha trovato la causa del codice 113: su 164 campioni con un gesto attivo,
+                 TREDICI hanno due clip sopra soglia sullo STESSO personaggio, e la piu' frequente e'
+                 «dive 0,87 + block 0,48» — il portiere che si tuffa e para basso nello stesso istante,
+                 esattamente la nota del PO. Ho provato a rendere secca la transizione fra gesti
+                 esclusivi (due modi di parare, due modi di calciare: non c'e' niente da fondere).
+                 MISURA APPAIATA: 17 casi col rimedio contro 20 col rosso — dentro il rumore, nessun
+                 guadagno. Quindi la riga non resta: le due clip del portiere non passano da questa
+                 transizione, e la caccia continua dove nasce `_gkWant`. Lo STRUMENTO invece resta, ed
+                 e' il vero guadagno del giro: adesso questo difetto si misura. */
               if(_a._gAct&&_a._gw>0.05){_a._gPrev=_a._gAct;_a._gPw=_a._gw;}// [7.49.0 BL-06] il gesto precedente non si azzera di colpo (pop): sfuma in _gPrev
               _a._gName=_want;_a._gAct=_a.gestures[_want];_a._gAct.reset().play();
               /* [7.517.0 R3/2 — LA MIRA SI LATCHA AL MONTAGGIO: audit «il corpo non e' orientato verso la
