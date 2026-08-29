@@ -52,7 +52,7 @@ const LIB662={
   P5:{cl:0,s:["D5"]},P6:{cl:1,s:["Z1"]},P7:{cl:1,s:["Z6","D8","D7"]},P8:{cl:2,t:1,s:[]},
 };
 const LIB662_START=["C1","C2","C3","C4","C5","C6","C7","C8","T1","T2","T3","T4","T6","T7","P1","P2","P3","P4","P5","P6","P8"];
-const _libH662=(str)=>{let h=2166136261>>>0;for(let i=0;i<str.length;i++){h^=str.charCodeAt(i);h=Math.imul(h,16777619);}return h>>>0;};
+const _libH662=(str)=>{let h=2166136261>>>0;for(let i=0;i<str.length;i++){h^=str.charCodeAt(i);h=Math.imul(h,16777619);}/* [7.664.0] FINALIZZAZIONE A VALANGA: FNV-1a lascia CORRELATI i bit bassi fra semi quasi identici ("...|es0" vs "...|es1"), e il selettore usa proprio quelli (modulo 100000) — misurato: 2 esiti distinti su 8 tiri sulla stessa struttura, dove la tabella ne offriva quattro. Tre passate di mescola e i bit bassi diventano indipendenti; resta deterministico. */h^=h>>>16;h=Math.imul(h,2246822507);h^=h>>>13;h=Math.imul(h,3266489909);h^=h>>>16;return h>>>0;};
 /* reg = { partita: [strutture di QUESTA partita], recenti: [array per partita, 0=la piu' recente] }
    Regole del §5 della libreria: stessa struttura mai 2 volte in partita; penalita' 0,15/0,4/0,7
    sulle ultime 3 partite; penalita' di PREFISSO (primi 2 moduli) dentro la partita (x0,4). */
@@ -82,7 +82,7 @@ function libCompose662(seme,reg,ctx){
     let _occ=0;for(let k=0;k<Math.min(9,_r.length);k++){if((_r[k]||[]).includes(sig))_occ++;}
     if(_occ>=2)return 0;
     return _occ?0.5:1;};
-  const _pesoCl=[1,0.42,0.2,0.05];
+  const _pesoCl=[1,0.32,0.15,0.04];/* [7.664.0] ritarato dopo la valanga dell'hash e la chiusura sui terminali: la quota dei COMUNI era scesa al 48% (banda 50-70) */
   for(let tent=0;tent<10;tent++){
     const _salt=seme+"#"+tent;
     const _pick=(cands,salt2,path)=>{const _pref=path.length===1?path[0]+">":null;
@@ -93,9 +93,14 @@ function libCompose662(seme,reg,ctx){
       let r=(_libH662(_salt+"|"+salt2)%100000)/100000*tot;
       for(let i=0;i<cands.length;i++){r-=w[i];if(r<=0)return cands[i];}return cands[cands.length-1];};
     let cur=_pick(LIB662_START,"start",[]);const path=[cur];
-    while(path.length<5&&!LIB662[cur].t){const nxt=(LIB662[cur].s||[]).filter(id=>!path.includes(id));
-      if(!nxt.length)break;cur=_pick(nxt,"n"+path.length,path);path.push(cur);}
-    if(path.length<2||(!LIB662[cur].t&&path.length<5))continue;/* catena monca: si ritenta col sale */
+    while(path.length<5&&!LIB662[cur].t){let nxt=(LIB662[cur].s||[]).filter(id=>!path.includes(id));
+      if(!nxt.length)break;
+      /* [7.664.0] L'AZIONE DEVE CHIUDERSI. Sei strutture su cinquanta finivano su un nodo di passaggio
+         (niente tabella d'esito = azione senza finale): all'ultimo passo utile si scelgono SOLO gli
+         sbocchi terminali, se ce ne sono. Nessuna banda toccata, una regola in piu'. */
+      if(path.length>=4){const _t=nxt.filter(id=>LIB662[id].t);if(_t.length)nxt=_t;}
+      cur=_pick(nxt,"n"+path.length,path);path.push(cur);}
+    if(path.length<2||!LIB662[cur].t)continue;/* catena monca o senza finale: si ritenta col sale */
     const corsia=path.some(id=>LIB662[id].fa)?((_libH662(_salt+"|lato")%2)?"dx":"sx"):null;
     const sig=path.join(">")+(corsia?"|"+corsia:"");
     if(_pen(sig)===0)continue;/* gia' vista in partita: MAI due volte (regola dura) */
@@ -105,6 +110,108 @@ function libCompose662(seme,reg,ctx){
   return null;/* dieci tentativi respinti dall'anti-ripetizione: il chiamante allarga il registro */
 }
 if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){try{window.__CPM_LIB_COMPOSE=libCompose662;window.__CPM_LIB_GRAFO=LIB662;}catch(_e){}}
+/* [7.664.0 — L4 DELLA LIBRERIA: I BEAT E I BRANCH. La grammatica smette di essere solo una
+   sequenza di sigle e diventa CRONACA: ogni modulo porta le sue battute scritte a mano (dalle
+   schede di docs/MODULI-AZIONI-SALIENTI.md) coi segnaposto dei ruoli, e ogni FINALIZZAZIONE
+   porta la sua tabella di esiti pesata sul contesto — l'esito non e' mai annunciato prima, e
+   il GOL entra in tabella SOLO se il budget del microsim lo ha ordinato (autorita' intoccabile).
+   Ogni esito NOMINA la sua conseguenza: la riga dopo la raccoglie, mai un applauso generico.
+   Sempre dietro il vetro: si raggiunge solo da __CPM_LIB_RENDER (cpmtest). */
+const BEAT664={
+  C1:["{portiere} rifiuta il rilancio lungo e apre corto per {centrale}.","{regista} si abbassa fra i centrali e riceve fronte al campo: l'uscita e' impostata."],
+  C2:["Due maglie addosso a {centrale}: qui si esce solo giocando.","{mediano} si smarca sul lato cieco e la protegge con un controllo orientato.","Scarico di prima per {terzino}, libero: la pressione e' saltata."],
+  C3:["Giro palla lungo, {regista} detta i tempi: otto passaggi, nove, l'avversario rincorre.","La squadra sale di venti metri col pallone tra i piedi."],
+  C4:["{regista} alza la testa: la difesa e' tutta schiacciata sul lato palla.","Traversone di quaranta metri sul lato debole, {esterno} la addomestica di petto."],
+  C5:["Triangolo veloce {mediano}-{mezzala}-{regista}, tre tocchi tutti di prima.","La palla esce dal traffico sui piedi di {mezzala}, fronte alla trequarti."],
+  C6:["{terzino} avanza palla al piede fino alla trequarti.","Appoggio verticale per {esterno}, che viene incontro spalle alla porta."],
+  C7:["La strada e' chiusa: {portatore} torna indietro su {centrale}, e lo stadio mugugna.","Si ricomincia dall'altra parte: la pazienza e' una scelta."],
+  C8:["Nessuno esce su {centrale}: si prende venti metri palla al piede.","La linea avversaria si rompe, una maglia esce e dietro si apre lo spazio."],
+  A1:["{punta} viene incontro col marcatore addosso e apre il triangolo con {mezzala}.","Dai e vai: {mezzala} la restituisce nello spazio, il marcatore e' tagliato fuori."],
+  A2:["{portatore} appoggia su {punta} e SCATTA.","Tocco di ritorno di prima: il centrocampo avversario e' alle spalle."],
+  A3:["{regista} aspetta che {trequartista} esca dal cono d'ombra del mediano.","Filtrante rasoterra fra le linee: ricezione fronte alla porta, la difesa si alza di colpo."],
+  A4:["Un tocco solo: verticale di venticinque metri di {regista} per {punta}, che protegge."],
+  A5:["{punta} fa da sponda bassa, il centrocampo avversario segue la palla.","{mezzala} parte alle spalle del mediano: e' servito dentro l'area."],
+  A6:["Palla addosso a {punta}, spalle alla porta: sponda di petto.","{mezzala} rifinisce di prima, la restituzione arriva sul lato cieco del marcatore."],
+  A7:["La linea avversaria sale di due passi: il varco e' dietro.","Palla nel corridoio, {punta} parte sul filo del fuorigioco — la bandierina resta giu'."],
+  A8:["{punta} taglia forte sul primo palo e si porta via il centrale.","Nel corridoio che si apre entra {mezzala}: la difesa deve scegliere, e sceglie male."],
+  F1:["{esterno} punta il terzino e si ferma sul piu' bello: aspetta.","Sovrapposizione di {terzino}, che riceve sull'out: fondo guadagnato."],
+  F2:["Isolamento sulla fascia: {esterno} contro il suo uomo, uno contro uno."],
+  F3:["Dai e vai stretto {esterno}-{terzino} sulla riga laterale.","Il secondo scambio libera il fondo: il raddoppio e' saltato in velocita'."],
+  F4:["Cross rasoterra teso sul primo palo: la palla attraversa lo specchio."],
+  F5:["Parabola sul secondo palo, dove {centrale} ha attaccato lo spazio."],
+  F6:["Sul fondo la difesa si schiaccia sulla porta aspettando il cross.","Palla dietro rasoterra: {mezzala} arriva frontale al limite dell'area piccola."],
+  F7:["Palla dentro a {regista}, che la gira subito sull'altro lato.","Il lato debole attacca in superiorita': il terzino avversario e' solo contro due."],
+  F8:["{esterno} non va sul fondo: rientra sul piede forte verso il centro.","Due avversari convergono, e lo spazio si apre alle loro spalle."],
+  T1:["Palla recuperata bassa mentre gli avversari sono tutti nella nostra meta'.","Sessanta metri di corsa di {esterno}, la difesa rincula: adesso si gioca."],
+  T2:["Pressing alto: {punta} e {mezzala} chiudono le due uscite.","L'appoggio avversario e' corto, palla strappata a venticinque metri dalla porta."],
+  T3:["{mediano} legge la traiettoria e intercetta a centrocampo.","Primo passaggio immediato in verticale: la transizione e' viva."],
+  T4:["Corner avversario spazzato di testa da {centrale}: la palla esce su {esterno}, rimasto alto.","Campo aperto, tre contro due: si va."],
+  T5:["Palla persa in avanti da {portatore}, e adesso si torna indietro tutti.","Ribaltamento in due passaggi: il campo si apre alle nostre spalle."],
+  T6:["Il centrale avversario esce a pressare: il buco e' ai suoi lati.","Palla immediata nel mezzo spazio, {mezzala} ci si infila prima che la linea scali."],
+  T7:["{portiere} blocca e rilancia con le mani in un secondo: niente pausa.","{esterno} riceve in corsa a centrocampo, meta' avversari sono ancora in area nostra."],
+  D1:["Finta di corpo e cambio di passo: {portatore} lo salta di netto."],
+  D2:["Il difensore non ci casca: corpo fra palla e uomo, sfera portata via pulita."],
+  D3:["Contrasto franco sul pallone conteso: il piu' deciso se la porta via."],
+  D4:["Spalla a spalla in velocita': l'inseguitore prova a portarlo fuori strada."],
+  D5:["Stacco a due sul punto di caduta: chi sale prima la tocca."],
+  D6:["{portatore} mette il corpo: la palla e' coperta, il difensore morde e non trova niente."],
+  D7:["Il difensore arriva in ritardo: FISCHIO, punizione per noi."],
+  D8:["Ritardo nostro: fischio contro, e non c'e' niente da discutere."],
+  Z1:["Sistemata e collo pieno dai venticinque metri."],
+  Z2:["La combinazione consegna il tiro pulito dal limite: piazzato d'interno."],
+  Z3:["Botta di prima intenzione, senza controllo: solo tempismo."],
+  Z4:["L'angolo si apre: conclusione sul palo lontano."],
+  Z5:["Incornata schiacciata verso il basso."],
+  Z6:["La palla arriva sporca a due metri: conta solo l'istinto."],
+  Z7:["La respinta e' corta: la seconda palla e' viva."],
+  Z8:["LEGNO PIENO: il suono si sente fin quassu'."],
+  Z9:["Il portiere vola e la toglie da sotto l'incrocio."],
+  Z10:["E' DENTRO. GOL."],
+  P1:["Barriera a quattro, il portiere la sistema urlando.","{specialista} sulla palla: lo stadio trattiene il fiato."],
+  P2:["Due uomini sulla palla, lo schema parte solo quando parte il tocco corto."],
+  P3:["Palla ferma sul punto del fallo: traiettoria tesa in area, stacchi armati."],
+  P4:["Corner battuto corto: il primo uomo e' saltato, la difesa deve rifare le marcature."],
+  P5:["Parabola lunga sul secondo palo, dove {centrale} e' salito col suo marcatore."],
+  P6:["Corner giu' dal cielo, palla arretrata al limite dove non marca nessuno."],
+  P7:["Flipper in area: respinta corta, rimpallo, un tocco a testa."],
+  P8:["Fischio, e l'area si svuota: sul dischetto restano solo {specialista} e il portiere."],
+};
+/* le TABELLE DEGLI ESITI: [id, testo, conseguenza dichiarata, peso base]. `gol` entra solo col
+   budget. La conseguenza e' il gancio che la riga successiva deve raccogliere (metro di L4). */
+const ESITI664={
+  Z1:[["gol","La palla si infila sotto l'incrocio: GOL.","rete",1],["parata","Il portiere ci arriva con la punta delle dita: in angolo.","corner",1.1],["legno","Traversa piena!","seconda-palla",0.35],["murato","Murata dal corpo del difensore.","mischia",0.9],["fuori","Di poco alto sopra la traversa.","rinvio",1.2]],
+  Z2:[["gol","Piatto preciso, palo interno e dentro: GOL.","rete",1],["parata","Il portiere respinge coi pugni.","seconda-palla",1.2],["deviata","Deviazione decisiva in angolo.","corner",1],["fuori","Larga di un soffio.","rinvio",1]],
+  Z3:[["gol","Al volo, senza pensarci: GOL.","rete",1],["parata","Riflesso del portiere a botta sicura.","corner",1.3],["murato","Il difensore ci mette il corpo.","mischia",1.1],["fuori","La spara sopra la traversa.","rinvio",0.9]],
+  Z4:[["gol","Palo lontano, imprendibile: GOL.","rete",1],["parata","Il portiere si distende e la devia.","corner",1.2],["chiusa","Il difensore in recupero la sporca.","rimessa",1.1],["fuori","Fuori di un niente.","rinvio",0.9]],
+  Z5:[["gol","Incornata secca: GOL.","rete",1],["parata","Il portiere la alza sopra la traversa.","corner",1.2],["fuori","Di testa, a lato.","rinvio",1.1],["salvata","Salvataggio sulla linea!","seconda-palla",0.4]],
+  Z6:[["gol","Da due metri non sbaglia: GOL.","rete",1],["parata","Il portiere gli chiude lo specchio addosso.","seconda-palla",1.2],["divorata","LA DIVORA! Da posizione impossibile da sbagliare.","rinvio",1],["murata","Murata sulla linea.","corner",0.8]],
+  F4:[["gol","Tocco vincente sul primo palo: GOL.","rete",1],["anticipo","Il difensore anticipa tutti e mette in angolo.","corner",1.2],["volo","Conclusione al volo, respinta corta.","seconda-palla",1],["nessuno","Nessuno ci arriva, la palla attraversa l'area e muore sul fondo.","rimessa",1.1],["portiere","Uscita bassa del portiere, presa sicura.","ripartenza-loro",0.9]],
+  F5:[["gol","Stacco imperioso: GOL.","rete",1],["respinta","Il marcatore la respinge di testa.","seconda-palla",1.2],["uscita","Il portiere esce coi pugni e libera.","rinvio",1],["fallo","Fallo in attacco nella spinta: fischio.","punizione-loro",0.8]],
+  T5:[["golsubito","Non li prendiamo piu': GOL SUBITO.","rete-loro",1],["parata","Il nostro portiere ci mette una pezza.","corner-loro",1.2],["rientro","{mediano} rientra e la spazza in fallo laterale.","rimessa-loro",1.1]],
+  D2:[["persa","Palla persa, si riparte dall'altra parte.","ripartenza-loro",1.2],["fallo","Il difensore lo stende: punizione per noi.","punizione",0.9],["rimessa","La palla schizza in fallo laterale.","rimessa",1]],
+  D8:[["punizione","Punizione da posizione pericolosa.","punizione-loro",1.2],["giallo","Fallo tattico: cartellino giallo.","punizione-loro",0.6],["nulla","L'arbitro lascia correre: vantaggio.","vantaggio",0.5]],
+  P1:[["gol","La parabola scavalca la barriera e si infila all'incrocio: GOL.","rete",1],["barriera","La barriera respinge.","seconda-palla",1.2],["parata","Il portiere la toglie dall'angolino.","corner",1],["fuori","Sopra la traversa.","rinvio",1.1]],
+  P2:[["gol","Lo schema funziona: GOL.","rete",1],["murata","Muro della barriera in uscita.","mischia",1.2],["parata","Presa a terra del portiere.","ripartenza-loro",1]],
+  P8:[["gol","Angolo scelto, portiere spiazzato: GOL.","rete",1],["parata","PARATO! Il portiere indovina l'angolo.","seconda-palla",0.9],["palo","Palo pieno dal dischetto.","seconda-palla",0.3],["fuori","Alto sopra la traversa: incredibile.","rinvio",0.2]],
+};
+function libRender664(struct,ctx,ruoli,budgetGol,seme){
+  if(!struct||!struct.path)return null;
+  const R=ruoli||{};const _nome=(k)=>R[k]||("il "+k);
+  const righe=[];
+  for(let i=0;i<struct.path.length;i++){const id=struct.path[i];const bs=BEAT664[id]||[];
+    for(const b of bs)righe.push({mod:id,txt:String(b).replace(/\{(\w+)\}/g,(m,k)=>_nome(k))});}
+  const ult=struct.path[struct.path.length-1];
+  const tab=ESITI664[ult];
+  let esito=null;
+  if(tab){const cands=tab.filter(e=>(e[0]!=="gol"&&e[0]!=="golsubito")||budgetGol);
+    let tot=0;for(const c of cands)tot+=c[3];
+    let r=(_libH662(seme+"|esito")%100000)/100000*tot;let pick=cands[cands.length-1];
+    for(const c of cands){r-=c[3];if(r<=0){pick=c;break;}}
+    esito={id:pick[0],txt:String(pick[1]).replace(/\{(\w+)\}/g,(m,k)=>_nome(k)),cons:pick[2]};
+    righe.push({mod:ult,txt:esito.txt,esito:esito.id,cons:esito.cons});}
+  return {sig:struct.sig,corsia:struct.corsia,righe,esito};
+}
+if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){try{window.__CPM_LIB_RENDER=libRender664;window.__CPM_LIB_BEAT=BEAT664;window.__CPM_LIB_ESITI=ESITI664;}catch(_e){}}
 /* [7.484.0 direttiva PO «le partite devono essere piu' serene, tranquille, meno frenetiche — fai
    decidere al giocatore la velocita' 1x 1,25x 2x»] IL RITMO DELLA PARTITA HA UNA COSTANTE E UNA MANOPOLA.
    Il tick del clock e' il metronomo di tutto cio' che scorre in `playing`: un minuto di gioco per tick,
