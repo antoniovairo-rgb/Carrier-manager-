@@ -2146,7 +2146,27 @@ function ThreeMatchView(props){
                La quota del fermo diventa quella del riposo: stessa convenzione, un'autorita' sola.
                (Che la convenzione 0,65 faccia levitare un pallone di raggio 0,32 e' un altro discorso,
                storico e ovunque: non si tocca qui di passaggio.) */
-            ball.position.x=G2X(_fm559.x);ball.position.z=G2Z(_fm559.y);ball.position.y=(typeof window!=='undefined'&&window.__CPM_NO609)?0.11:0.65;
+            /* [7.670.0 — IL PALLONE NON SI TELETRASPORTA AL PIAZZATO. Rosso __CPM_NO670B.
+               COLLAUDO PO, tre volte: «SALTO del pallone di 49 unita' in 26 ms, sembra un teletrasporto».
+               Il censimento (ball-jump-census) ha nominato l'autore: dei 31 salti di una partita,
+               QUATTORDICI sono scoperti — cioe' li vede il giocatore, non li copre nessun taglio — e
+               vengono tutti da qui, da 6,3 a 30,4 unita'. La riga assegnava la posizione del pallone
+               fermo in un fotogramma: logicamente giusto (una rimessa E' un ricollocamento), visivamente
+               un salto. E adesso che in telecronaca si vede SOLO il pallone (7.665), quel salto e'
+               l'unica cosa che si muove — quindi e' anche l'unico errore che si nota.
+               Ora il pallone ci ARRIVA: sotto le due unita' si assegna come prima, sopra si percorre la
+               distanza a velocita' alta ma finita (55 u/s: mezzo secondo per trenta unita'), che e' il
+               tempo che ci mette un giocatore a portare la palla sulla bandierina. La posizione LOGICA
+               resta quella del piazzato: cambia solo cio' che si vede, quindi nessuna macchina e nessun
+               metro logico si muove. */
+            {const _tx670=G2X(_fm559.x),_tz670=G2Z(_fm559.y);
+             const _dx670=_tx670-ball.position.x,_dz670=_tz670-ball.position.z;
+             const _dd670=Math.hypot(_dx670,_dz670);
+             const _no670b=(typeof window!=='undefined'&&window.__CPM_NO670B);
+             if(_no670b||_dd670<=2||dt<=0){ball.position.x=_tx670;ball.position.z=_tz670;}
+             else{const _pas670=Math.min(_dd670,55*dt);
+               ball.position.x+=_dx670/_dd670*_pas670;ball.position.z+=_dz670/_dd670*_pas670;}}
+            ball.position.y=(typeof window!=='undefined'&&window.__CPM_NO609)?0.11:0.65;
             sr.current._pad555='fermo';
             if((sr.current._ws524=17)&&sr.current._bj0){sr.current._bj0.src='fermo';sr.current._bj0.srcs.push('fermo');}
           } else {
