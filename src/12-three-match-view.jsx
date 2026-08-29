@@ -5021,9 +5021,25 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
             const _now603=(typeof performance!=='undefined')?performance.now():0;
             const _last603=sr.current._dive603||0;
             if(!(typeof window!=='undefined'&&window.__CPM_NO603)&&_last603&&(_now603-_last603)<3000){oppActType=null;oppActT=0;}
-            else{sr.current._dive603=_now603;
+            else{sr.current._dive603=_now603;if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){try{(window.__CPM_GK113=window.__CPM_GK113||[]).push({t:+(performance.now()/1000).toFixed(2),sit:String((propsRef.current&&propsRef.current.hlSitKey)||""),ph:String((propsRef.current&&propsRef.current.matchPhase)||"")});}catch(_e){}}
               if(typeof window!=='undefined'&&window.__CPM_DIVE603){try{const D=window.__CPM_DIVE603;if(D.length<200)D.push(_now603);}catch(_e){}}}
           }
+          /* [7.674.0 — CODICE 113: «PORTIERE DOPPIO GESTO». Rosso __CPM_NO674.
+             MISURATO in due passi, e il primo mi ha dato il numero sbagliato: contando gli ARMAMENTI
+             del tuffo ne trovavo trentacinque nella stessa scena, uno ogni tre centesimi — ma sono
+             tentativi che il filtro anti-raffica (7.603) gia' sopprime; contando i tuffi ESEGUITI sono
+             3 su 3 scene, zero doppi. Il difetto quindi non e' una sequenza di due tuffi: sono DUE
+             GESTI SIMULTANEI. Questo blocco scrive ventitre volte su corpo, braccia e quota del
+             portiere SENZA MAI CHIEDERSI se quel personaggio e' gia' animato dalla sua clip GLB — e
+             il gioco vero usa i GLB. Il portiere si tuffa due volte insieme: una con la clip, una con
+             la posa procedurale che gli scrive sopra.
+             E' la TERZA volta oggi che lo stesso errore mi si presenta con una faccia diversa (7.665
+             i giocatori che non sparivano, 7.672 la volee' acrobatica): curo il ramo procedurale, che
+             e' quello che le mie sonde vedono, e dimentico quello GLB, che e' quello che il PO guarda.
+             Qui, se il portiere e' guidato dal GLB, la posa procedurale lascia fare alla clip: restano
+             solo la POSIZIONE (il portiere deve comunque spostarsi verso la palla) e l'imbardata. */
+          const _glb674=!!(oppMesh&&oppMesh._glbDriven)&&!(typeof window!=='undefined'&&window.__CPM_NO674);
+          if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)&&oppMesh&&oppActType==="gk_dive"){try{window.__CPM_GKPOSE674=+oppMesh.rotation.z.toFixed(3);}catch(_e){}}
           if(oppActType==="gk_dive"){// item 1 (5.49.0): tuffo CREDIBILE — estensione COMPLETA verso la palla, mani avanti, FACING FISSO, niente recoil/molla
             if(oppMesh._diveYaw!=null)oppMesh.rotation.y=oppMesh._diveYaw;
             const _dpz=(oppMesh._divePz||0),_dtz=(oppMesh._diveToZ!=null?oppMesh._diveToZ:_dpz+oppDiveDir*5);
@@ -5070,10 +5086,10 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                mesh sopra, il portiere finiva SOPRA LA TRAVERSA (2.44 m). Un portiere che si distende alza il corpo
                di poco piu di mezzo metro: sono le BRACCIA ad arrivare in alto, ed e la rotazione a farle arrivare.
                Cap duro a 1.05 m, cosi il volo resta proporzionato al tiro ma resta un tuffo, non un decollo. */
-            oppMesh.position.y=Math.min(1.05,Math.sin(_e*Math.PI)*(0.45+_hiD*0.45)+_ext*(0.08+_hiD*0.18));// stacco proporzionato alla quota della palla, ma da portiere
-            oppMesh.rotation.z=oppDiveDir*_ext*(1.75-_hiD*0.45);// raso = corpo ORIZZONTALE · alto = più inclinato che disteso
-            {const _ax=-_ext*(2.7-_hiD*1.5);oppMesh._aL.rotation.x=_ax;oppMesh._aR.rotation.x=_ax;}// braccia TESE avanti sul raso, ALTE sul pallone alto
-            oppMesh._aL.rotation.z=-oppDiveDir*_ext*1.15;oppMesh._aR.rotation.z=-oppDiveDir*_ext*1.15;// mani verso la palla
+            if(!_glb674)oppMesh.position.y=Math.min(1.05,Math.sin(_e*Math.PI)*(0.45+_hiD*0.45)+_ext*(0.08+_hiD*0.18));// stacco proporzionato alla quota della palla, ma da portiere
+            if(!_glb674)oppMesh.rotation.z=oppDiveDir*_ext*(1.75-_hiD*0.45);// raso = corpo ORIZZONTALE · alto = più inclinato che disteso
+            if(!_glb674){const _ax=-_ext*(2.7-_hiD*1.5);oppMesh._aL.rotation.x=_ax;oppMesh._aR.rotation.x=_ax;}// braccia TESE avanti sul raso, ALTE sul pallone alto
+            if(!_glb674){oppMesh._aL.rotation.z=-oppDiveDir*_ext*1.15;oppMesh._aR.rotation.z=-oppDiveDir*_ext*1.15;}// mani verso la palla
             if(oppMesh._lR)oppMesh._lR.rotation.x=-_ext*0.7;if(oppMesh._lL)oppMesh._lL.rotation.x=-_ext*0.7;}// gambe DISTESE (estensione completa del corpo)
           else if(oppActType==="gk_block"){/* [7.203.0] RIFLESSO: il portiere si oppone col CORPO — resta in piedi
               (corpo appena inclinato verso la palla, niente rotazione orizzontale), scarica il peso sulle gambe
@@ -5082,23 +5098,23 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
             const _bpz=(oppMesh._divePz||0),_btz=(oppMesh._diveToZ!=null?oppMesh._diveToZ:_bpz);
             const _be=Math.min(((typeof window!=='undefined'&&window.__CPM_NO576)?(u/0.30):(oppActT/0.19)),1),_bx=_be*_be*(3-2*_be);// scatto rapido, poi tiene la posa /* [7.552.0] LO SCATTO E' UN TEMPO, NON UNA FRAZIONE. Con la vita del gesto ora legata al volo del pallone, `u/0.30` avrebbe allungato anche lo SCATTO in proporzione all'arco: un riflesso che si apre in mezzo secondo non e' piu' un riflesso. Ancorato a 190ms assoluti (gli stessi 0,30x0,62 di prima), poi tiene la posa quanto serve. */
             oppMesh.position.z=_bpz+(_btz-_bpz)*_bx;
-            oppMesh.position.y=Math.sin(_be*Math.PI)*0.28;// piccolo stacco sulle gambe, mai corpo a terra
-            oppMesh.rotation.z=oppDiveDir*_bx*0.30;// solo un'inclinazione verso il lato del pallone
-            oppMesh._aL.rotation.z=-_bx*1.35;oppMesh._aR.rotation.z=_bx*1.35;// braccia LARGHE (occupa spazio)
-            oppMesh._aL.rotation.x=-_bx*0.55;oppMesh._aR.rotation.x=-_bx*0.55;
+            if(!_glb674)oppMesh.position.y=Math.sin(_be*Math.PI)*0.28;// piccolo stacco sulle gambe, mai corpo a terra
+            if(!_glb674)oppMesh.rotation.z=oppDiveDir*_bx*0.30;// solo un'inclinazione verso il lato del pallone
+            if(!_glb674){oppMesh._aL.rotation.z=-_bx*1.35;oppMesh._aR.rotation.z=_bx*1.35;}// braccia LARGHE (occupa spazio)
+            if(!_glb674){oppMesh._aL.rotation.x=-_bx*0.55;oppMesh._aR.rotation.x=-_bx*0.55;}
             if(oppMesh._lR)oppMesh._lR.rotation.x=-_bx*0.30;if(oppMesh._lL)oppMesh._lL.rotation.x=_bx*0.30;}
           else if(oppActType==="gk_catch"){// [5.83.0 IA-3] USCITA IN PRESA sul cross (clip GLB finora morta): passo verso la palla, braccia in alto, raccolta al petto
             if(oppMesh._diveYaw!=null)oppMesh.rotation.y=oppMesh._diveYaw;
             const _cpz=(oppMesh._divePz||0),_ctz=(oppMesh._diveToZ!=null?oppMesh._diveToZ:_cpz);
             oppMesh.position.z=_cpz+(_ctz-_cpz)*Math.min(u/0.5,1);
-            oppMesh.position.y=Math.sin(Math.min(u/0.6,1)*Math.PI)*0.55;// piccolo stacco per la presa alta
+            if(!_glb674)oppMesh.position.y=Math.sin(Math.min(u/0.6,1)*Math.PI)*0.55;// piccolo stacco per la presa alta
             oppMesh._aL.rotation.x=-Math.sin(u*Math.PI)*2.6;oppMesh._aR.rotation.x=-Math.sin(u*Math.PI)*2.6;}// braccia sopra la testa → al petto
-          else if(oppActType==="opp_stumble"){oppMesh.rotation.z=sw*1.0;oppMesh.position.y=-sw*0.15;oppMesh._lR.rotation.x=sw*1.8;oppMesh._lL.rotation.x=-sw*0.7;}
+          else if(oppActType==="opp_stumble"){if(!_glb674)oppMesh.rotation.z=sw*1.0;if(!_glb674)oppMesh.position.y=-sw*0.15;oppMesh._lR.rotation.x=sw*1.8;oppMesh._lL.rotation.x=-sw*0.7;}
           else if(oppActType==="opp_spin"){if(oppMesh._spinYaw==null)oppMesh._spinYaw=oppMesh.rotation.y;oppMesh.rotation.y+=aDt*(u<0.5?9:3);}// [6.76.0 LMV-A3] salva lo yaw d'origine → il cleanup lo ripristina (prima restava girato di spalle ~190°)
-          else if(oppActType==="opp_intercept"){oppMesh.position.y=sw*0.45;oppMesh._aL.rotation.x=sw*1.5;oppMesh._aR.rotation.x=sw*1.5;oppMesh.rotation.z=sw*0.28;}// 3DV-13: si china + tende le braccia
+          else if(oppActType==="opp_intercept"){if(!_glb674)oppMesh.position.y=sw*0.45;oppMesh._aL.rotation.x=sw*1.5;oppMesh._aR.rotation.x=sw*1.5;if(!_glb674)oppMesh.rotation.z=sw*0.28;}// 3DV-13: si china + tende le braccia
           else if(oppActType==="opp_tackle"){// 5.43.2 SCIVOLATA: il difensore si abbassa a terra, allunga la gamba sulla palla e scivola nella linea di passaggio
             const _d=oppDiveDir||1;
-            oppMesh.position.y=-sw*0.30;oppMesh.rotation.z=_d*sw*0.9;
+            if(!_glb674)oppMesh.position.y=-sw*0.30;if(!_glb674)oppMesh.rotation.z=_d*sw*0.9;
             oppMesh._lR.rotation.x=-sw*2.1;oppMesh._lL.rotation.x=sw*0.9;
             oppMesh._aL.rotation.x=sw*1.1;oppMesh._aR.rotation.x=-sw*0.5;
             if(oppMesh._slideToX!=null){oppMesh.position.x+=(oppMesh._slideToX-oppMesh.position.x)*Math.min(aDt*3.2,1);oppMesh.position.z+=((oppMesh._slideToZ!=null?oppMesh._slideToZ:oppMesh.position.z)-oppMesh.position.z)*Math.min(aDt*3.2,1);}}/* 5.43.9: scivolata più morbida (lerp 5→3.2, durata 0.64→0.85) */
@@ -5108,7 +5124,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                faceva andare: misurato su tre repliche, a fine scena il pallone giace SOLO con
                l'avversario piu' vicino a 8-10u. Dopo la scivolata sul dribbling perso, il difensore
                si rialza e va a raccogliere (driver sotto, fino a 1,2u dalla palla). */
-            oppActType=null;if(oppMesh){oppMesh.position.y=0;oppMesh.rotation.z=0;if(oppMesh._aL){oppMesh._aL.rotation.z=0;oppMesh._aR.rotation.z=0;oppMesh._aL.rotation.x=0;oppMesh._aR.rotation.x=0;}if(oppMesh._lR){oppMesh._lR.rotation.x=0;oppMesh._lL.rotation.x=0;}/* [7.203.0] le pose del riflesso sono ASSEGNAZIONI ASSOLUTE (non scalate da sw, che si azzera da solo): senza cleanup il portiere restava a braccia larghe */if(oppMesh._spinYaw!=null){oppMesh.rotation.y=oppMesh._spinYaw;oppMesh._spinYaw=null;}oppMesh._slideToX=null;oppMesh._slideToZ=null;oppMesh._diveToZ=null;oppMesh._diveBallY=null;oppMesh._diveDur=null;oppMesh=null;}}
+            oppActType=null;if(oppMesh){if(!_glb674)oppMesh.position.y=0;if(!_glb674)oppMesh.rotation.z=0;if(oppMesh._aL){oppMesh._aL.rotation.z=0;oppMesh._aR.rotation.z=0;oppMesh._aL.rotation.x=0;oppMesh._aR.rotation.x=0;}if(oppMesh._lR){oppMesh._lR.rotation.x=0;oppMesh._lL.rotation.x=0;}/* [7.203.0] le pose del riflesso sono ASSEGNAZIONI ASSOLUTE (non scalate da sw, che si azzera da solo): senza cleanup il portiere restava a braccia larghe */if(oppMesh._spinYaw!=null){oppMesh.rotation.y=oppMesh._spinYaw;oppMesh._spinYaw=null;}oppMesh._slideToX=null;oppMesh._slideToZ=null;oppMesh._diveToZ=null;oppMesh._diveBallY=null;oppMesh._diveDur=null;oppMesh=null;}}
         }
         if(typeof window!=='undefined'&&window.__CPM_COL618!==undefined&&sr.current._pkCol415){try{const _g8=window.__CPM_COL618;_g8.drv=(_g8.drv|0);_g8.act=oppActType||null;_g8.res=isResult?1:0;_g8.km=(sr.current._pkCol415.k===P.hlSitKey)?1:0;}catch(_e){}}
         if(sr.current._pkCol415&&sr.current._pkCol415.k===P.hlSitKey&&isResult&&!oppActType){const _pc415=sr.current._pkCol415.m;
