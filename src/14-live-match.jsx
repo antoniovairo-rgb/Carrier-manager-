@@ -3571,7 +3571,21 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
              scritto nel catalogo e non ho onorato nel codice.
              Fino ad allora la libreria non parla al giocatore: si accende solo con __CPM_LIB666_ON
              (collaudo). Restano in gioco, misurati e verdi, il compositore e i suoi metri. */
-          if((typeof window!=='undefined'&&window.__CPM_LIB666_ON)&&typeof libCompose662==='function'){try{
+          /* [7.683.0 — LA LIBRERIA SI ACCENDE: le azioni salienti extra-eroe arrivano al giocatore.
+             Quarta segnalazione del PO («le azioni salienti extra eroe non partono»), ed era vera alla
+             lettera: la libreria stava dietro un interruttore SPENTO dal 7.667, revocata per una misura
+             — fondatezza 74,5% -> 56,3% — fatta su un codice che nel frattempo era cambiato due volte
+             (l'innesco vincolato alla zona del pallone, 7.669, e la tappa da 26 unita'). Dopo quelle due
+             cure non ho mai rifatto il confronto: e' rimasta spenta per inerzia, non per una prova.
+             MISURA APPAIATA DI OGGI, tre partite sugli stessi semi, stesso strumento — con la libreria
+             in modalita' «segue il pallone» (7.683): righe giudicate 70 -> 117, fondate 64,3% -> 89,7%,
+             e soprattutto le SMENTITE da 19 a 10 IN VALORE ASSOLUTO, con quarantasette righe in piu'.
+             Parte del guadagno e' per costruzione — una riga che dichiara la zona in cui il pallone si
+             trova e' vera per definizione — ma il numero di bugie CALA: la libreria si prende gli slot
+             che prima erano di righe di recita bugiarde.
+             E le azioni arrivano: 4 a partita (banda 3-5), da 4 a 10 righe l'una, 4 strutture distinte
+             su 4. `__CPM_NO683` la rispegne per la prova del rosso. */
+          if(!(typeof window!=='undefined'&&window.__CPM_NO683)&&typeof libCompose662==='function'){try{
             const _LR=libRegRef666.current;const _LA=libAzRef666.current;
             /* i NOMI: due segnaposto distinti, e i ruoli che compaiono INSIEME in uno stesso beat
                non possono condividerlo — misurato: «Bruno rifiuta il rilancio e apre corto per Bruno».
@@ -3584,6 +3598,24 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                dichiara quindi un PASSO verso la zona del suo modulo, lungo al massimo 26 unita': il
                pallone ci arriva davvero, e l'azione avanza di tappa in tappa come una vera manovra. */
             const _ZX669={defend_goal:18,retreat:34,midfield:50,attack:68,attack_goal:85};
+            /* ⚠️ [7.683.0 — LA LIBRERIA SEGUE IL PALLONE, NON GLI COMANDA DOVE ANDARE.
+               Misura appaiata, tre partite sugli stessi semi, libreria spenta contro accesa: le righe
+               con una destinazione passano da 40 a 98, ma quelle che il motore deve ACCORCIARE passano
+               da 11 (27%) a 72 (73%), con un accorciamento mediano di ventotto unita', e le righe
+               sbagliate da 12/40 a 74/98. Anche con la tappa da 26 unita' del 7.669 la libreria chiede
+               al pallone piu' di quanto il motore conceda: tre righe su quattro raccontavano una palla
+               che va dove la palla non va. Accenderla cosi' significava dare al giocatore piu' azioni
+               salienti E una telecronaca che mente — e la regola del PO che sta sopra le altre e' che
+               la telecronaca non deve inventare.
+               Qui l'azione smette di comandare: la riga dichiara la zona in cui il pallone SI TROVA
+               (non quella del modulo) e non dichiara nessuna destinazione. Il racconto segue la palla
+               invece di promettere dove andra': meno ambizioso del contratto che avevo scritto nel
+               catalogo, ma e' l'unica versione che puo' arrivare al giocatore senza mentirgli.
+               `__CPM_LIB683_GUIDA` ripristina il comportamento che comanda, per la misura appaiata. */
+            const _zonaDi683=(_x)=>_x<26?'defend_goal':_x<42?'retreat':_x<58?'midfield':_x<76?'attack':'attack_goal';
+            const _segue683=()=>{try{if(typeof window!=='undefined'&&window.__CPM_LIB683_GUIDA)return null;
+              const _b=ballPosRef.current;return _b?_zonaDi683(_b.x):null;}catch(_e){return null;}};
+            const _bpos683=(_z,_c)=>{try{if(typeof window!=='undefined'&&window.__CPM_LIB683_GUIDA)return _tappa669(_z,_c);return null;}catch(_e){return null;}};
             const _tappa669=(_z,_corsia)=>{try{if(!_z)return null;
               const _b=ballPosRef.current||{x:50,y:50};
               const _tx=_ZX669[_z]||50,_ty=(_z==='attack_goal'||_z==='defend_goal')?50:(_corsia==='sx'?30:_corsia==='dx'?70:50);
@@ -3592,7 +3624,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               const _k=26/_d;return{x:+(_b.x+_dx*_k).toFixed(1),y:+(_b.y+_dy*_k).toFixed(1)};}catch(_e){return null;}};
             if(_LA&&_LA.i<_LA.righe.length){
               const _r=_LA.righe[_LA.i++];
-              ev={...ev,txt:_r.txt,pd:_r.pd||ev.pd||null,bpos:_tappa669(_r.pd,_LA.corsia),ef:null,ms:null,_lib666:1};
+              ev={...ev,txt:_r.txt,pd:_segue683()||_r.pd||ev.pd||null,bpos:_bpos683(_r.pd,_LA.corsia),ef:null,ms:null,_lib666:1};
               if(_LA.i>=_LA.righe.length){libAzRef666.current=null;_LR.ultima=nx;}
             } else if(!_LA&&!pendingGoalRef.current&&!_recHij545&&!_koHij536&&nx>2&&nx<88&&(nx-(_LR.ultima|0))>=4){
               const _seme666=String((opponent&&(opponent.n||opponent.name))||'x')+'|'+((player&&player.week)||0)+'|'+nx;
@@ -3605,7 +3637,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                   const _rr666=_rd666.righe.map(r2=>({txt:r2.txt,pd:(LIB662[r2.mod]&&LIB662[r2.mod].z)||null,cons:r2.cons||null}));
                   libAzRef666.current={righe:_rr666,i:1,sig:_st666.sig,corsia:_st666.corsia||null};
                   _LR.partita.push(_st666.sig);
-                  ev={...ev,txt:_rr666[0].txt,pd:_rr666[0].pd||ev.pd||null,bpos:_tappa669(_rr666[0].pd,_st666.corsia),ef:null,ms:null,_lib666:1};
+                  ev={...ev,txt:_rr666[0].txt,pd:_segue683()||_rr666[0].pd||ev.pd||null,bpos:_bpos683(_rr666[0].pd,_st666.corsia),ef:null,ms:null,_lib666:1};
                   if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){try{(window.__CPM_LIB666=window.__CPM_LIB666||[]).push({min:nx,sig:_st666.sig,n:_rr666.length});}catch(_e){}}
                 }
               }
