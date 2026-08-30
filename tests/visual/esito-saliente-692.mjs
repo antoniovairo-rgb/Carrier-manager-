@@ -12,11 +12,12 @@ for (const seme of [7300, 8100, 9200]) {
   const ctx = await b.newContext({ viewport: { width: 412, height: 915 } });
   const page = await ctx.newPage();
   await installCdnRoutes(page);
-  await page.addInitScript(() => { window.__CPM_GLB = false; window.__CPM_REC = true; });
+  const rossi = (process.env.CPM_ROSSO || '').split(',').map(x => x.trim()).filter(Boolean);
+  await page.addInitScript(r => { window.__CPM_GLB = false; window.__CPM_REC = true; for (const k of r) window['__CPM_NO' + k] = true; }, rossi);
   await openMatch(page, port, { skipLoadAll: true, name: 'Es' });
   await page.evaluate(s => window.__CPM_AUTOPLAY(true, { seed: s, policy: 'seeded', tickMs: 300 }), seme);
   let cur = null;
-  for (let k = 0; k < 300; k++) {
+  for (let k = 0; k < 520; k++) {
     await sleep(400);
     const r = await page.evaluate(() => { try {
       const st = window.__CPM_STATE && window.__CPM_STATE();

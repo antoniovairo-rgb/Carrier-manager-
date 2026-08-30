@@ -1250,7 +1250,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
        poteva scusare le interruzioni perche' non aveva modo di sapere quando ce n'era una in corso.
        Senza questo, «il pallone e' fermo 4 secondi» non distingue il difetto dalla regola del gioco.
        Sola strumentazione: legge dei ref, non tocca stato ne' render. */
-    window.__CPM_HOLD=()=>{try{return{fermo:!!fermoRef.current,out:!!outRef.current,sp:!!spRef.current,ko:(kickoffRef.current|0)>0,kick:(kickRef.current|0)>0,pg:!!pendingGoalRef.current};}catch(_e){return null;}};/* [7.587.0] +pg: la finestra in cui il gol si COSTRUISCE, per poter chiedere «e mentre si costruisce, qualcuno tocca il pallone?» */
+    window.__CPM_HOLD=()=>{try{return{fermo:!!fermoRef.current,out:!!outRef.current,sp:!!spRef.current,ko:(kickoffRef.current|0)>0,kick:(kickRef.current|0)>0,pg:!!pendingGoalRef.current,pgStep:(pendingGoalRef.current&&pendingGoalRef.current.piano)?(pendingGoalRef.current.step|0):null,pgLen:(pendingGoalRef.current&&pendingGoalRef.current.piano)?pendingGoalRef.current.piano.length:null,pgTicks:pendingGoalRef.current?(pendingGoalRef.current.ticks|0):null,pgDir:pendingGoalRef.current?(pendingGoalRef.current.dir|0):null};}catch(_e){return null;}};/* [7.693 strumentazione] pgStep/pgLen/pgTicks: a che punto del PIANO e' la costruzione. Senza, «la scena si chiude prima del tiro» resta un'impressione. *//* [7.587.0] +pg: la finestra in cui il gol si COSTRUISCE, per poter chiedere «e mentre si costruisce, qualcuno tocca il pallone?» */
     window.__CPM_BG_INJECT=(ty,x,y)=>{setHlIdx(99999);setPhase("playing");setBgAction({type:ty,t:Date.now(),ballEnd:{x:x,y:y}});return true;};/* [collaudo PO «il portiere sembra imbabolato»] iniettore test-only di un'azione di CRONACA (stesso setBgAction del feed reale, r.19015): gli archi BG veri arrivano ~3/minuto — il guardiano gk-bg-react non puo' aspettarli. setHlIdx oltre hlTimes: raggiunto l'orario di un highlight, OGNI tick di clock in "playing" rientrava in hl_intro azzerando bgAction — l'iniezione rimbalzava senza mai lanciare l'arco */
     window.__CPM_FORCE_SIT=(gi,choose,ppos)=>{ const sit=SITUATIONS[gi]; if(!sit)return false;
       /* [7.212.0 collaudo PO «tra un rivedi e un altro il portiere e un altro giocatore non si fermano mai»]
@@ -1518,6 +1518,15 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
      gesto dal vocabolario MP-1, quindi il 3D segue la stessa catena che il testo racconta. */
   const azioneRef=useRef(null),_lastCatRef=useRef(-1);/* [7.537.0 v4] minuto dell'ultima battuta di catena: serve per alternare con il repertorio */
   const ponteRef=useRef(null),ponteIdxRef=useRef(-1);/* [7.532.0 NO544 — collaudo PO «da centrocampo in cronaca all'improvviso highlights di attacco: nessuna concatenazione»] IL PONTE: ~2' prima dell'highlight in calendario la cronaca SCORTA la palla verso il punto di nascita della scena (hlBallSpot della situation in arrivo) e le righe raccontano l'avvicinamento — l'highlight si apre dove il racconto ha portato il gioco *//* [7.532.0 v2] l'innesco vive nella TRAMA (flip di possesso con palla nel terzo difensivo del nuovo padrone), NON nel sorteggio di una riga poss: i pesi di zona 7.525 schiacciano le righe di recupero proprio quando la palla e' alta (misurato: 0 lanci in 2 partite). Cooldown 6' di gioco. *//* [7.530.0 collaudo PO «Non si riparte dal centro dopo un gol!» — rosso __CPM_NO536] il 7.525 toccava il centro per UN tick (300ms): un lampo, non una ripartenza. Ora allo scadere del conto kickRef nasce una RIPARTENZA RECITATA: kickoffRef tick di attesa al centro, le righe gia' sorteggiate vengono DIROTTATE su battute di calcio d'inizio (ordine sorteggi intatto), side = chi rimette in gioco (chi ha subito) */
+  const pianoLock693=useRef(0);/* [7.693.0 — IL PIANO DEL GOL POSSIEDE IL PALLONE. Rosso __CPM_NO693]
+     MISURATO (traccia-693, tre costruzioni in una partita): il piano ESCE tutto (3/3, 2/2, 3/3) e le sue
+     righe propongono davvero il limite dell'area (bx 84, e il freno non le tocca: bex 84). Ma il pallone
+     LOGICO in quelle stesse finestre resta a 37-48: non si muove di un metro verso la porta. La proposta
+     del piano viene cancellata NELLO STESSO TICK da altri due scrittori che arrivano dopo — l'elezione del
+     portatore (7.642) riscrive il bersaglio sui piedi dell'uomo piu' vicino alla palla, e la trama (7.538)
+     lo riscrive sul proprio waypoint. Il PO lo descrive esattamente: «si vede solo gioco finto a
+     centrocampo». Questo contatore e' la stessa regola del 7.646 applicata al PALLONE invece che al turno:
+     finche' il piano ha una parola da dire, nessun altro scrittore tocca il bersaglio. */
   const pendingGoalRef=useRef(null);/* [7.528.0 IL GOL SI COSTRUISCE] {ev,dir,ticks}: il gol del microsim aspetta che la palla arrivi nell'ultimo terzo *//* [7.525.0] tick al CALCIO D'INIZIO dopo un gol ambientale: col pallone che ora vola DENTRO lo specchio (bpos 98/2), senza ripresa dal centro restava parcheggiato in rete dove l'unico uomo e' il portiere (non-portatore per regola) — ball-attended misurato 45,8% < 52 al primo giro */
   const direttoreRef=useRef({f:null,l:0,dal:0});/* [7.647.0 F1a] la scena narrativa corrente {f,l,dal}: il direttore di partita della roadmap narrativa */
   const golCoda645=useRef([]);/* [7.645.0] LA CODA DEI GOL SOVRAPPOSTI: il microsim e' un budget, le costruzioni escono una alla volta */
@@ -2816,7 +2825,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           ];
           return[
             {t:"⚡ "+_na+" ruba il tempo a centrocampo: si riparte in verticale!",x:_X(52+_J(1,8)),y:50+_J(2,22),chi:_a.i},
-            {t:"🏃 Transizione rapida: "+_nb+" conduce e scarica su "+_nc+" al limite dell'area.",x:_X(74+_J(3,6)),y:50+_J(4,20),chi:_c.i,ms:1},
+            {t:"🏃 Transizione rapida: "+_nb+" conduce e scarica su "+_nc+" al limite dell'area.",x:_X(79+_J(3,6)),y:50+_J(4,20),chi:_c.i,ms:1},/* [7.693.0] 74→79: il testo dice «al limite dell'area» e il limite sta a 78-84 — a 74 il racconto mandava il pallone tre metri prima di cio' che nominava, e con la custodia del piano quella differenza ora si VEDE */
           ];
         };
         const _apriCatena644=(_lato551)=>{
@@ -2949,7 +2958,8 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
             if(typeof window!=='undefined'&&(_CPM_TEST||window.__CPM_REC)){try{const _P=(window.__CPM_PG587=window.__CPM_PG587||{azioni:[]});const _a=_P.azioni[_P.azioni.length-1];
               if(_a&&_a.p649&&_a.tick===(_pg532.ticks|0)-1){_a.tick=_pg532.ticks|0;_a.mn=nx;_a.passaggi=_pg532.step|0;}
               else _P.azioni.push({p649:1,tick:_pg532.ticks|0,mn:nx,mn0:nx,passaggi:0,max:0,perc:0,lx:0,ly:0,da:"piano"});}catch(_e649){}}
-            if(!_rip575&&((_pg532.step|0)>=_pg532.piano.length||_pg532.ticks>=_pg532.piano.length+4)){_simEv77=_pg532.ev;pendingGoalRef.current=null;}/* [7.649.0] la rete arriva quando il piano e' stato RACCONTATO; il tetto piano+4 resta l'ultima parola (mai un gol in sospeso) */
+            const _arr693=(()=>{try{if(typeof window!=='undefined'&&window.__CPM_NO693)return true;const _lt=_pg532.lastTg;if(!_lt)return true;if(((_pg532.att693|0))>=1)return true;const _b=ballPosRef.current||{x:50,y:50};if(Math.hypot((_b.x||50)-_lt.x,(_b.y||50)-_lt.y)<=8)return true;_pg532.att693=(_pg532.att693|0)+1;return false;}catch(_e){return true;}})();/* [7.693.0 v2] l'attesa vale UN tick solo: alla prima stesura consumava tutto il tetto piano+4 e il gol scivolava fuori dai quattro minuti in cui il guardiano cerca la riga di macchina (gol-con-manovra 3/4 -> 1/4). E a due tick il testimone della custodia — che esclude la costruzione per progetto — scendeva a 5 campioni su 8, sotto il minimo del guardiano: una banda che non puo' giudicare e' peggio di una banda rossa. *//* [7.693.0 — LA RETE ASPETTA IL PALLONE] Col piano finalmente padrone del bersaglio, l'ultimo passo manda la palla al limite dell'area: ma il lerp ne copre il 65% per tick e la rete arrivava il tick dopo, con il pallone ancora a meta' strada. Il tetto piano+4 resta l'ultima parola, quindi l'attesa e' limitata per costruzione. */
+            if(!_rip575&&(((_pg532.step|0)>=_pg532.piano.length&&_arr693)||_pg532.ticks>=_pg532.piano.length+4)){_simEv77=_pg532.ev;pendingGoalRef.current=null;}/* [7.649.0] la rete arriva quando il piano e' stato RACCONTATO; il tetto piano+4 resta l'ultima parola (mai un gol in sospeso) */
           }else if(_pg532&&!_inHL77){
             _pg532.ticks++;
             const _t532=ballTargetRef.current;const _b532=ballPosRef.current||{x:50,y:50};
@@ -3457,6 +3467,11 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
             _recHij545=true;_recKind546="manovra-gol";_recSide546=_pgH649.dir>0?"home":"away";
             ev={txt:_pe649.t,ef:null,w:1,bpos:{x:clamp(_pe649.x,4,96),y:clamp(_pe649.y,6,94)},pd:_dec499,at:"pass",_piano649:1,ms:_pe649.ms?(_pgH649.dir>0?{shots:1}:{oppShots:1}):null};
             if(_pe649.chi!=null&&!(typeof window!=='undefined'&&window.__CPM_NO641))carrierRef.current={i:_pe649.chi};/* il protagonista dell'evento e' il portatore */
+            if(!(typeof window!=='undefined'&&window.__CPM_NO693)){pianoLock693.current=3;_pgH649.lastTg={x:clamp(_pe649.x,4,96),y:clamp(_pe649.y,6,94)};/* [7.693.0] dove il racconto ha mandato il pallone l'ultima volta: la rete aspetta che ci ARRIVI *//* [7.693.0] tre tick di custodia: questo, piu' i due in cui il pallone viaggia */
+              /* [7.693.0] IL RICEVENTE VA DOVE VA LA PALLA. Spostare solo il pallone lo lascerebbe senza
+                 padrone (e la banda custodia del guardiano andrebbe giu' per un difetto che non c'e'):
+                 l'uomo che il testo NOMINA si porta sul punto d'arrivo, come farebbe in campo. */
+              }
           }}
           {const _no542=(typeof window!=='undefined'&&window.__CPM_NO542);
           const _ct=counterRef.current;
@@ -4085,7 +4100,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                consegna in corso: se la palla e' ancora a >6u dal bersaglio corrente, la proposta si
                ACCODA (coda da 1: l'ultima vince) e parte quando la consegna si completa. I gol e i
                fermi restano esenti (non passano da qui o hanno le loro macchine). */
-            const _inFlight643=!(typeof window!=='undefined'&&window.__CPM_NO643)&&!ev.ef&&!_fermo578
+            const _inFlight643=!(typeof window!=='undefined'&&window.__CPM_NO643)&&!ev.ef&&!_fermo578&&!(ev._piano649&&!(typeof window!=='undefined'&&window.__CPM_NO693))/* [7.693.0] la riga del piano non si mette in coda dietro una consegna: e' LEI la consegna */
               &&Math.hypot((ballPosRef.current.x||50)-(ballTargetRef.current.x||50),(ballPosRef.current.y||50)-(ballTargetRef.current.y||50))>6;
             if(_inFlight643){pendingBtRef.current=_bt498;
               if(typeof window!=='undefined'&&window.__CPM_REC){try{const _q=(window.__CPM_CODA643=window.__CPM_CODA643||{acc:0,diretti:0,part:0});_q.acc++;}catch(_e){}}}
@@ -4717,6 +4732,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
          l'elezione gira A OGNI TICK, a valle di macchine e trama e prima del moto della palla, e
          l'arrivo apre una SOSTA: 2 tick col bersaglio sui piedi dell'eletto (1 durante la
          costruzione del gol, che ha il suo tetto) — il ciclo controllo->passaggio del calcio. */
+      if((pianoLock693.current|0)>0)pianoLock693.current--;/* [7.693.0] la custodia del piano dura in tick, e scade qui: a valle delle righe (che la accendono) e a monte del moto della palla */
       if(typeof window!=='undefined'&&window.__CPM_REC){try{const _z=(window.__CPM_ELEZ642=window.__CPM_ELEZ642||{giri:0,liberi:0,elez:0,md:[]});_z.giri++;if(phaseRef.current==='playing'&&!fermoRef.current&&!outRef.current&&!spRef.current&&kickoffRef.current<=0&&kickRef.current<=0)_z.liberi++;}catch(_e){}}
       if(!(typeof window!=='undefined'&&window.__CPM_NO642)&&phaseRef.current==='playing'&&!fermoRef.current&&!outRef.current&&!spRef.current&&kickoffRef.current<=0&&kickRef.current<=0){try{
         const _bA=ballPosRef.current;const _ltA=possTurnRef.current>0?"home":"away";let _biA=-1,_bdA=2.5;
@@ -4726,7 +4742,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
         if(_biA>=0&&(!carrierRef.current||carrierRef.current.i!==_biA)){carrierRef.current={i:_biA};holdArrRef.current=pendingGoalRef.current?1:2;if(typeof window!=='undefined'&&window.__CPM_ELEZ642){try{window.__CPM_ELEZ642.elez++;}catch(_e){}}}
         if((holdArrRef.current|0)>0&&carrierRef.current&&carrierRef.current.i!=null){
           const _qh=(matchPlayersRef.current||[])[carrierRef.current.i];
-          if(_qh){ballTargetRef.current={x:clamp(_qh.x,2,98),y:clamp(_qh.y,2,98)};}
+          if(_qh&&!((pianoLock693.current|0)>0&&!!pendingGoalRef.current&&!(typeof window!=='undefined'&&window.__CPM_NO693)))ballTargetRef.current={x:clamp(_qh.x,2,98),y:clamp(_qh.y,2,98)};/* [7.693.0] sotto il piano del gol il bersaglio non torna sui piedi del portatore: e' li' che la costruzione moriva a centrocampo */
           holdArrRef.current--;}
         else if(!ballLagRef.current&&pendingBtRef.current&&!(typeof window!=='undefined'&&window.__CPM_NO643)){
           /* [7.643.0] SCODAMENTO: consegna completata e sosta finita — la proposta accodata parte ora */
@@ -4868,6 +4884,14 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
            di percorrere. Col rosso __CPM_NO553 la soglia torna 0,6 esatta. */
         const _k553=(typeof window!=='undefined'&&window.__CPM_NO553)?1:6.5;
         const _gate553=Math.max(0.6,_k553*0.42);
+        /* ⚠️ [7.693.0 — SILENZIARE LA TRAMA: PROVATO E REVOCATO CON LA MISURA CONTRARIA.] Avevo contato la
+           trama fra i ladri del bersaglio, e in astratto lo e'. Ma questo cancello si apre solo quando il
+           pallone e' ARRIVATO (entro ~2,7u dal bersaglio): durante il volo di un passo del piano la trama
+           non tocca niente, e non era lei a cancellare la proposta. Spegnerla ha pagato caro e misurato:
+           custodia da 7,4-7,7u (banda 12, otto campioni, due giri di riferimento) a 12,8-18u, e copertura
+           del portatore da 14-16% a ZERO. Il ladro vero e' uno solo — l'elezione del portatore, che
+           riscrive il bersaglio A OGNI TICK senza aspettare nessun arrivo — e a quello basta il freno
+           mirato. Revocato invece di tenerlo: un rimedio che rompe una banda non e' un rimedio. */
         if(Math.abs(dx)<_gate553&&Math.abs(dy)<_gate553&&phaseRef.current==='playing'){
           if(!ballRngRef.current)ballRngRef.current=(((bgSimSeedRef.current||1)>>>0)^0x9e3779b9)>>>0;
           const _r511=()=>{let _s=ballRngRef.current;_s=((_s*1664525)+1013904223)>>>0;ballRngRef.current=_s;return _s/4294967296;};
