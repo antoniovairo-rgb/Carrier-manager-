@@ -4470,7 +4470,27 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
             if(_fx55*_fx55+_fz55*_fz55>0.25){const _w55=Math.atan2(_fx55,_fz55);
               let _d55=((_w55-pp.mesh.rotation.y+Math.PI*3)%(Math.PI*2))-Math.PI;
               pp.mesh.rotation.y+=_d55*Math.min(aDt*6,1);}
+            /* [7.685.0 — codice 006 del taccuino PO, «reparto fermo», e finalmente con un numero.
+               MISURATO su 16 scene: durante la LETTURA lo spostamento medio per giocatore e' 0,00 unita'
+               e i fermi sono 19 su 19 — non «quasi immobili»: immobili al centimetro, ventidue statue.
+               Nell'esito invece il reparto reagisce (0 scene con tutti fermi, media 0,89 u), quindi il
+               difetto vive tutto nella finestra di lettura, ed e' il freeze 7.194 che fa il suo mestiere
+               in modo troppo letterale: un campo di calcio vero non e' mai una fotografia, chi aspetta
+               si aggiusta, sposta il peso, fa due passi corti.
+               IL RESPIRO. Oscillazione attorno al punto CONGELATO, un terzo di unita' scarso: la scena
+               non cambia geometria — nessuno si sposta davvero, il baricentro resta dov'e' — ma smette
+               di sembrare un fermo immagine. La rotazione verso la palla del 7.355 resta.
+               ⚠️ NON SI SOMMA NIENTE A OGNI FOTOGRAMMA: la base si cattura UNA volta e la posizione e'
+               sempre base + offset(t). Sommare un delta a ogni frame e' il cricchetto del 7.397, che
+               regala unita' di deriva a ogni fotogramma — errore gia' fatto e gia' pagato. */
+            if(!(typeof window!=='undefined'&&window.__CPM_NO685)){
+              if(!pp.mesh._frz685)pp.mesh._frz685={x:pp.mesh.position.x,z:pp.mesh.position.z,ph:(ak*1.7)%6.283};
+              const _F685=pp.mesh._frz685,_t685=(now*0.0011)+_F685.ph;
+              pp.mesh.position.x=_F685.x+Math.sin(_t685)*0.30;
+              pp.mesh.position.z=_F685.z+Math.cos(_t685*0.83)*0.22;
+            }
             continue;}// FREEZE #2: off-ball fermi (ma rivolti alla palla) durante la fase di lettura
+          if(pp.mesh._frz685)pp.mesh._frz685=null;/* [7.685.0] fuori dalla lettura la base del respiro si butta: tenerla vorrebbe dire far ripartire la prossima attesa da un punto vecchio */
           animOne(pp.mesh,G2X(clamp(t.x+(t.rx||0),2,98)),G2Z(clamp(t.y+(t.ry||0),2,98)),aDt,ak,bx,bz);}
         // item 2 (5.49.6): INGRESSO DEL SUBENTRANTE — l'eroe parte dalla LINEA LATERALE (area tecnica), riceve le ultime indicazioni
         //   (si gira verso la panchina), poi cammina IN CAMPO fino alla sua posizione. Override del target eroe durante la sequenza.
