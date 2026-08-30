@@ -11,15 +11,27 @@
 import { startServer, launchBrowser, installCdnRoutes, openMatch, sleep } from './lib/harness.mjs';
 const srv = await startServer(); const port = srv.address().port;
 const b = await launchBrowser();
-const page = await b.newPage({ viewport: { width: 412, height: 915 } });
-await installCdnRoutes(page);
-await page.addInitScript(() => { window.__CPM_GLB = false; window.__CPM_TURN616 = {}; window.__CPM_NPD = []; window.__CPM_REC = true; window.__CPM_CARRIER641 = []; });/* [7.643] +REC e +CARRIER641: misura lunga del portatore-stato (informativa finche' la realizzazione non e' stabile, poi banda) */
-await openMatch(page, port, { skipLoadAll: true, name: 'Pv' });
-await page.evaluate(() => window.__CPM_AUTOPLAY(true, { seed: 7300, policy: 'seeded', tickMs: 300 }));
-const all = [];
-for (let k = 0; k < 12; k++) { await sleep(20000);
-  const chunk = await page.evaluate(() => { const e = (window.__CPM_EV && window.__CPM_EV()) || []; if (window.__CPM_EV_RESET) window.__CPM_EV_RESET(); return e; });
-  all.push(...chunk); }
+/* [7.684.0] DUE PARTITE, non una: vedi la nota sulla banda «catena-viva». Ognuna in un CONTESTO
+   PULITO — riaprire la partita nella stessa pagina fa ritrovare al gioco la carriera salvata e la
+   seconda gara non si apre piu' (misurato due volte: timeout su openMatch). */
+const PARTITE_G = +(process.env.CPM_PARTITE_G || 2);
+const all = []; let page = null, ctx = null;
+for (let g = 0; g < PARTITE_G; g++) {
+  if (ctx) await ctx.close();
+  ctx = await b.newContext({ viewport: { width: 412, height: 915 } });
+  page = await ctx.newPage();
+  await installCdnRoutes(page);
+  /* [7.684.0] PROVA DEL ROSSO PARAMETRICA, come in fondate-558: `CPM_ROSSO=__CPM_NO683` rigioca le
+     stesse partite col rimedio spento. ⚠️ Senza questo il guardiano IGNORAVA la variabile d'ambiente,
+     e due mie misure «a libreria spenta» erano in realta' a libreria accesa: ho creduto di aver
+     scagionato un imputato che non era nemmeno stato interrogato. */
+  await page.addInitScript((rosso) => { window.__CPM_GLB = false; window.__CPM_TURN616 = {}; window.__CPM_NPD = []; window.__CPM_REC = true; window.__CPM_CARRIER641 = []; if (rosso) String(rosso).split(',').forEach(r => { window[r.trim()] = 1; }); }, process.env.CPM_ROSSO || null);/* [7.684.0] accetta piu' rossi separati da virgola: la banda «manovra-viva» copre due sistemi e per farla fallire vanno spenti entrambi *//* [7.643] +REC e +CARRIER641 */
+  await openMatch(page, port, { skipLoadAll: true, name: 'Pv' });
+  await page.evaluate((s2) => window.__CPM_AUTOPLAY(true, { seed: s2, policy: 'seeded', tickMs: 300 }), 7300 + g * 911);
+  for (let k = 0; k < 12; k++) { await sleep(20000);
+    const chunk = await page.evaluate(() => { const e = (window.__CPM_EV && window.__CPM_EV()) || []; if (window.__CPM_EV_RESET) window.__CPM_EV_RESET(); return e; });
+    all.push(...chunk); }
+}
 const T = await page.evaluate(() => window.__CPM_TURN616 || {});
 const NPD = await page.evaluate(() => window.__CPM_NPD || []);
 const CAR = await page.evaluate(() => window.__CPM_CARRIER641 || []);
@@ -30,6 +42,9 @@ const rows = all.filter(e => e.ev === 'chronicle');
 const goals = all.filter(e => e.ev === 'goal');
 const turni = all.filter(e => e.ev === 'turn');
 const catRows = rows.filter(r => r.rk === 'catena');
+/* [7.684.0] LE RIGHE CHE RACCONTANO UNA MANOVRA, da qualunque sistema vengano. */
+const libRows = rows.filter(r => r.lib === 1);
+const manovraRows = rows.filter(r => r.rk === 'catena' || r.lib === 1);
 const fischi = turni.filter(t => /^interruzione-/.test(t.causa || '')).length;
 const orologio = (T.per && T.per['orologio']) | 0; const totT = T.n | 0;
 const causali = totT ? Math.round((totT - orologio) / totT * 100) : null;
@@ -41,7 +56,31 @@ for (const g of goals) { const lato = g.side === 'home' ? 1 : -1;
 
 const checks = [
   ['turno-causale', `scritture causali ${causali}% (orologio ${orologio}/${totT})`, totT >= 8 ? causali >= 85 : null],
-  ['catena-viva', `${catRows.length} righe di catena`, catRows.length >= 5],
+  /* ⚠️ [7.684.0 — QUESTA BANDA AVEVA CONSUMATO TUTTO IL SUO MARGINE, e me ne sono accorto solo quando
+     ha bocciato una release che non c'entrava. Misurato per esclusione, sullo STESSO strumento e sullo
+     STESSO seme: 7.682 -> 10 righe · 7.683 alla spedizione -> 8 · 7.683, codice identico, rimisurato
+     un'ora dopo -> 5 · con le punizioni del 7.684 -> 4, tre passate su tre. Lo stesso build che da' 8 e
+     poi 5 dice che il conteggio oscilla di TRE righe, e la soglia stava a 5: dentro il rumore. Le
+     punizioni spostavano UNA riga e si sono prese la colpa di un metro fragile.
+     La regola scritta in testa a questo file e' «ogni banda ha margine largo sotto il misurato, e le
+     bande si stringono a mano quando i numeri salgono, mai si allentano per far passare un rosso».
+     Qui NON si allenta: la severita' per-partita resta identica (cinque righe di catena per partita) e
+     si RADDOPPIA IL CAMPIONE — due partite, banda dieci. Un campione piu' grande riduce i falsi rossi
+     E i falsi verdi: e' l'unico modo onesto di rendere stabile un conteggio a soglia.
+     La prova che questo metro vede ancora un difetto vero e' piu' sotto (`__CPM_NO528`). */
+  /* ⚠️ [7.684.0 — QUESTA BANDA MISURAVA UN MECCANISMO, NON UNA QUALITA', e per questo ha bocciato un
+     miglioramento. Misurato, stesso guardiano a due partite: 7.682 -> 18 righe di catena; oggi -> 9;
+     e con la libreria DAVVERO spenta (`CPM_ROSSO=__CPM_NO683`) -> 18 di nuovo. La causa e' la libreria
+     delle azioni salienti (7.683): si prende gli slot che prima erano della catena. Non e' una perdita,
+     e' una SOSTITUZIONE — e verso l'alto: le righe della libreria sono fondate all'89,7% contro il
+     64,3% della cronaca senza. Chiamare «regressione» il rimpiazzo di righe meno vere con righe piu'
+     vere sarebbe difendere il meccanismo invece della qualita'.
+     Percio' la banda conta ora le righe che RACCONTANO UNA MANOVRA, da qualunque sistema vengano —
+     catena o libreria — con la stessa severita' di prima (cinque a partita). Il conteggio della sola
+     catena resta stampato: se un giorno la libreria si spegne senza che nessuno se ne accorga, quel
+     numero lo dice. Il campione resta raddoppiato per il motivo dell'altra nota: su una partita sola
+     questo conteggio oscillava di tre righe con la soglia a cinque. */
+  ['manovra-viva', `${manovraRows.length} righe di manovra su ${PARTITE_G} partite (catena ${catRows.length} + libreria ${libRows.length}) · banda ${5 * PARTITE_G}`, manovraRows.length >= 5 * PARTITE_G],
   ['arbitro-esiste', `${fischi} interruzioni ambientali`, fischi >= 6],
   ['custodia', `mediana ${npdMed}u su ${npds.length} campioni (fase 0)`, npds.length >= 6 ? npdMed <= 12 : null],
   ['gol-con-manovra', `${golCoperti}/${goals.length} gol con riga di macchina nei 4' prima`, goals.length >= 3 ? golCoperti >= 1 : null],

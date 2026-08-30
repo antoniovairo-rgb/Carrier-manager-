@@ -21,6 +21,12 @@ await openMatch(page, port, { skipLoadAll: true, name: 'Fk' });
 const cand = await page.evaluate(() => (window.__CPM_SITS || []).map((s, i) => ({ i, t: String(s.text || s.title || ''), z: (s.zones || [])[0], bs: s.ballState, it: s.intent }))
   .filter(r => /punizion|calcio di punizione|freekick/i.test(r.t) || r.it === 'freekick'));
 console.log(`\n=== DOVE SI BATTONO LE PUNIZIONI? ===\n  scene trovate: ${cand.length}\n`);
+/* ⚠️ [7.684.0] WARM-UP DICHIARATO. Senza, le prime due scene forzate dopo il caricamento davano mesh
+   IDENTICHE fra loro — eroe (34,48), pallone (50.7,52.8): le posizioni di default, con le mesh non
+   ancora mosse. E' lo stesso flake da avvio freddo del 7.660, ed e' la terza volta in una giornata che
+   mi inganna: la regola incisa nel 7.599 («quando due scene diverse danno la stessa terna, il sospetto
+   va allo strumento») va applicata PRIMA di accusare il gioco, non dopo. */
+await page.evaluate(() => window.__CPM_FORCE_SIT(81, true)); await sleep(1800);
 for (const c of cand) {
   await page.evaluate(([i, ch]) => window.__CPM_FORCE_SIT(i, ch), [c.i, true]);
   await sleep(1200);

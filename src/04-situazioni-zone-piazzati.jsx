@@ -159,11 +159,23 @@ S("🦵 Tiro con l'esterno del piede!",["bordo","area"],{x:[70,90],y:[20,80]},{x
   A("🦵 Esterno a giro","tiro",3,"goal","miss",13),A("🎯 Rientra e tira","tecnica",5,"goal","miss",14),A("🤸 Colpo d'esterno","tiro",-3,"goal","miss",12)],false,-1,"","off",null,{pressure:"medium",support:1,nearby_def:2,lanes:["central_run"]}),
 
 /* === SET PIECES CENTRALI === */
-S("📐 Punizione dal limite — tiro diretto!",["trequarti","bordo"],{x:[64,68],y:[46,54]},{x:[65,67],y:[48,52]},[
+/* [7.684.0 collaudo PO su SIT #15: «Punizione da oltre meta' campo»] LE PUNIZIONI SI BATTEVANO
+   TROPPO LONTANO. Censito con `punizioni-683`: «dal limite — tiro diretto» apriva col pallone a gx 66,
+   cioe' TRENTAQUATTRO unita' dalla porta, quando il limite dell'area sta a 84; «dalla fascia» a 37-38.
+   Per confronto, le due che leggono bene stanno a 17-20 («posizione defilata», «guadagna una
+   punizione»). Non era un difetto del piazzamento — quello onora la zona dichiarata, verificato
+   confrontando bersaglio logico e mesh — erano i DATI a mandare la palla a meta' campo.
+   Le nuove distanze sono quelle del calcio: tiro diretto a 20-24 unita' (una ventina di metri), fascia
+   a 26-30, indiretta al limite dell'area a 19-23, punizione a effetto a 24-28. Il muro a 9 metri (gi81,
+   27 u) era gia' giusto e non si tocca.
+   ⚠️ Cambiando la zona di partenza cambia la FIRMA GOLDEN di queste scene: la baseline va rigenerata,
+   e il diff dev'essere limitato a loro — se tocca altro, la rigenerazione sta mascherando una
+   regressione, ed e' esattamente il rischio di aggiornare un golden. */
+S("📐 Punizione dal limite — tiro diretto!",["trequarti","bordo"],{x:[76,82],y:[46,54]},{x:[77,80],y:[48,52]},[
   A("🎯 Punizione a giro","tiro",8,"goal","miss",10),A("💥 Tiro rasoterra","tiro",4,"goal","miss",10),A("↗️ Palla in area","passaggio",5,"assist","miss",8)],true,-1,"","off",null,{pressure:"none",support:1,nearby_def:0,lanes:[]}),
-S("📐 Punizione dalla fascia sinistra!",["trequarti"],{x:[60,64],y:[8,14]},{x:[61,63],y:[9,12]},[
+S("📐 Punizione dalla fascia sinistra!",["trequarti"],{x:[70,75],y:[8,14]},{x:[71,74],y:[9,12]},[
   A("↗️ Cross basso teso","passaggio",6,"assist","intercept",8),A("↗️ Cross alto","passaggio",4,"assist","miss",8),A("🌀 Giocata corta","tecnica",3,"assist","nothing",6)],true,-1,"","off",null,{pressure:"none",support:2,nearby_def:0,lanes:["overlap_left"]}),
-S("📐 Punizione dalla fascia destra!",["trequarti"],{x:[60,64],y:[86,92]},{x:[61,63],y:[87,91]},[
+S("📐 Punizione dalla fascia destra!",["trequarti"],{x:[70,75],y:[86,92]},{x:[71,74],y:[87,91]},[
   A("↗️ Cross basso teso","passaggio",6,"assist","intercept",8),A("↗️ Cross alto","passaggio",4,"assist","miss",8),A("🌀 Giocata corta","tecnica",3,"assist","nothing",6)],true,-1,"","off",null,{pressure:"none",support:2,nearby_def:0,lanes:["overlap_right"]}),
 
 /* === CROSS E FASCE === */
@@ -256,7 +268,7 @@ S("↘️ Cross basso teso! Devia verso la porta.",["area","bordo"],{x:[74,94],y
 S("📐 Schema corto da corner! Sorpresa tattica.",["trequarti","bordo"],{x:[58,86],y:[85,97]},{x:[60,74],y:[86,95]},[
   A("🎯 Triangolo e cross","passaggio",7,"assist","intercept",10),A("💥 Tiro a giro","tiro",4,"goal","miss",14),A("🌀 Dribbling e cross","tecnica",5,"assist","nothing",12)],false,3,"📐 Schema! Angolo corto — sorprendi la difesa con il triangolo.","off",null,{pressure:"low",support:2,nearby_def:1,lanes:["overlap_right"]}),
 /* Punizione indiretta in area */
-S("📐 Punizione indiretta a 5 metri dall'area!",["trequarti"],{x:[62,66],y:[44,56]},{x:[63,65],y:[46,54]},[
+S("📐 Punizione indiretta a 5 metri dall'area!",["trequarti"],{x:[77,82],y:[44,56]},{x:[78,81],y:[46,54]},[
   A("↗️ In area per l'incornata del compagno","passaggio",8,"assist","intercept",8),A("💥 Bordata sotto la barriera","tiro",6,"goal","miss",12),A("🌀 Giocata corta","tecnica",5,"assist","nothing",6)],true,-1,"","off",null,{pressure:"none",support:2,nearby_def:0,lanes:[]}),// 5.43.5: label chiarita — l'eroe BATTE la punizione in area, è il COMPAGNO a incornare (prima "per il colpo di testa" sembrava l'eroe a giocare di testa su palla ferma)
 /* Uscita alta portiere avversario */
 S("✈️ Lancio lungo! Il portiere esce. Attacca la palla!",["area","bordo"],{x:[74,96],y:[30,70]},{x:[76,86],y:[35,65]},[
@@ -325,7 +337,7 @@ S("🏳️ Corner sul primo palo!",["area","bordo"],{x:[76,96],y:[75,90]},{x:[78
   A("🦵 Tiro di prima all'angolino","tiro",4,"goal","miss",16),A("🔄 Tacco verso compagno","tecnica",-2,"assist","intercept",12),A("✈️ Stacco sul primo palo","fisico",5,"goal","miss",14)],false,-1,"","off",null,{pressure:"high",support:3,nearby_def:3,lanes:["central_run"]}),
 S("⚡ Corner basso teso — devia!",["area"],{x:[78,96],y:[25,75]},{x:[80,90],y:[30,70]},[
   A("🦵 Deviazione rasoterra","tecnica",6,"goal","miss",14),A("💥 Prima intenzione potente","tiro",4,"goal","miss",13),A("🤝 Sponda per il compagno","passaggio",5,"assist","intercept",8)],false,-1,"","off",null,{pressure:"high",support:2,nearby_def:3,lanes:[]}),
-S("📐 Punizione a effetto — curva!",["trequarti"],{x:[62,72],y:[40,60]},{x:[64,70],y:[43,57]},[
+S("📐 Punizione a effetto — curva!",["trequarti"],{x:[72,78],y:[40,60]},{x:[73,77],y:[43,57]},[
   A("📐 Curva a rientrare","tiro",8,"goal","miss",12),A("💥 Tiro piatto rasoterra","tiro",5,"goal","miss",11),A("↗️ Palla sul secondo palo","passaggio",6,"assist","miss",8)],true,-1,"","off",null,{pressure:"none",support:2,nearby_def:0,lanes:[]}),
 S("⚡ Rimessa rapida dal portiere!",["difesa","centro"],{x:[5,30],y:[30,70]},{x:[8,22],y:[38,62]},[
   A("⚡ Scatto in profondità e ultimo passaggio","velocità",7,"assist","intercept",18),A("🎯 Posizionamento smarcato","posizionamento",5,"recovery","intercept",14),A("🔄 Schema combinato rapido","passaggio",4,"assist","intercept",10)],false,-1,"","off",null,{pressure:"low",support:2,nearby_def:0,lanes:[]}),
