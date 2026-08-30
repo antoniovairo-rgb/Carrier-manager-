@@ -50,8 +50,11 @@ ti fa arrivare più palloni; disobbedire e riuscire alza morale e reputazione ma
 
 Le regole già in esercizio nel 7.669 valgono anche per le scelte:
 - una scheda non si ripete nella stessa partita (`fatte`), tetto 3, dodici minuti di distanza;
-- **in più**: la chiave anti-ripetizione include la SCELTA fatta, così la stessa scheda ripresentata
-  in una partita futura si apre su un ramo diverso da quello già giocato;
+- **in più**: la chiave anti-ripetizione include la SCELTA fatta — ⚠️ **il ramo viene registrato
+  (`N.scelte`) ma la memoria NON sopravvive alla fine della partita**: fra una gara e l'altra lo stato
+  narrativo riparte da zero, quindi oggi la stessa scheda può ripresentarsi con lo stesso ramo. È
+  scritto qui perché non diventi una cosa che credo di aver fatto: serve la persistenza, e la misura
+  di copertura dirà se vale la pena;
 - gli esiti sono scritti a coppie divergenti: non esiste il ramo «va sempre bene».
 
 ## 5. Conseguenze che si vedono, non che si dichiarano
@@ -66,8 +69,14 @@ Una conseguenza che nessuno nota è una conseguenza che non esiste. Ogni effetto
 ## 6. Come lo misuro (prima di scriverlo)
 
 - **densità**: 2-4 momenti a partita su 10 partite seedate, mai 0, mai 5;
-- **scelta reale**: su 30 partite ogni opzione dev'essere scelta almeno una volta dal bot casuale,
-  e nessun ramo deve valere più del 50% (altrimenti una delle opzioni è finta);
+- ~~**scelta reale**: nessun ramo oltre il 50% delle scelte del bot casuale~~ — **METRO SBAGLIATO,
+  ritirato**. Se a scegliere è un bot casuale il risultato è 50/50 per costruzione: quel numero
+  direbbe soltanto che il mio generatore casuale funziona, non che le opzioni sono vere. Al suo posto,
+  due domande che si possono davvero sbagliare:
+  - **copertura**: su N partite, quante delle 19 schede si affacciano almeno una volta? Se escono
+    sempre le stesse tre, il giocatore vede lo stesso film e la libreria è finta;
+  - **ripetizioni fra partite**: quante volte torna la stessa coppia (scheda, ramo) — che è la
+    ripetizione che si nota davvero, molto più della scheda ripetuta con un esito diverso;
 - **conseguenza visibile**: per ogni conseguenza, la quota di partite in cui si manifesta entro
   10 minuti — banda ≥70%, altrimenti l'effetto è dichiarato e non reale;
 - **niente blocchi**: in 10 partite senza mai scegliere, la partita finisce sempre al 90';
