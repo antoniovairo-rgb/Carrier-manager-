@@ -458,6 +458,8 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     ||(context==="euro_ko"&&player.euro?.phase==="final")
     ||(context==="euroMondiale_ko"&&player.euroMondiale?.koPhase==="final")
     ||(context==="nationsCup"&&!!player.nationsCupQueue?.isFinal&&(player.nationsCupQueue?.matchIdx||0)>=((player.nationsCupQueue?.opponents||[]).length-1));/* [7.41.0] la FINALE della Coppa delle Nazioni (ultima gara della coda estesa) è in campo neutro come le altre finali (6.78) */
+  /* [7.686.0] i contesti in cui in campo c'e' la NAZIONALE e non il club. */
+  const _natCtx686=(context==="nationsCup"||context==="euro_ko"||context==="euroMondiale_ko"||context==="nazionale"||context==="euroMondiale");
   const [stadium]=useState(()=>{
     if(context==="trial"||(player.club?.isU18))return pick(STADIUMS);
     if(_isNeutralFinal)return "Stadio Internazionale — Finale";
@@ -1574,10 +1576,16 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   },[]);
   const addComRef681=useRef(null),scegli681Ref=useRef(null);
   const addCom=useCallback((text,color,t,sc)=>{lastComWallRef.current=Date.now();
-    /* [7.681.0] SE UNA SCELTA E' ANCORA APERTA E ARRIVA UNA RIGA NUOVA, la si chiude sull'opzione
-       neutra prima di coprirla: altrimenti la conseguenza non verrebbe mai applicata e il giocatore
-       si troverebbe con una domanda sparita dallo schermo e senza risposta. */
-    try{if(!sc&&intxPendRef681.current&&scegli681Ref.current)scegli681Ref.current(0,true);}catch(_e681){}
+    /* ⚠️ [7.686.0 collaudo PO: «le interazioni in cronaca devono freezare piu' a lungo, a volte non ho
+       il tempo nemmeno di leggere»] LA RIGA NUOVA ASPETTA, LA DOMANDA NO.
+       Nel 7.681 avevo scritto il contrario: se arrivava una riga mentre la scelta era aperta, chiudevo
+       la scelta sull'opzione neutra per non lasciarla in sospeso. Sembrava prudenza, ed era il motivo
+       per cui la domanda spariva prima che il PO potesse leggerla — con il tick fermo di righe nuove
+       ne arrivano pochissime (solo quelle gia' programmate da un timer), ma bastava una per portarsi
+       via la scelta. Adesso e' la riga a farsi da parte: finche' c'e' una domanda aperta, la cronaca
+       non scrive. La scelta si chiude quando il giocatore decide o quando scade il suo tempo — che
+       sono gli unici due modi in cui deve chiudersi. */
+    if(!sc&&intxPendRef681.current)return;
     if(sc)setScFreeze681(true);/* [7.682.0] la partita si ferma qui, e riparte quando la scelta e' presa */setComs(p=>[{text,color,t:t??clockRef.current,sc:sc||null,sci:null},...p].slice(0,16));},[]);
   addComRef681.current=addCom;scegli681Ref.current=scegli681;
   /* [7.681.0] IL RESPIRO DELLA SCELTA. Nove secondi: poco piu' del respiro che la cronaca gia' concede
@@ -1589,7 +1597,9 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     if(!c0||!c0.sc||c0.sci!=null)return;
     /* [7.682.0 direttiva PO «almeno 20 secondi»] con la partita ferma il tempo di lettura non costa
        piu' ritmo alla cronaca: si puo' dare quello che serve per leggere tre opzioni e sceglierne una. */
-    const ms=(typeof window!=='undefined'&&+window.__CPM_SCMS681)||20000;
+    /* [7.686.0] da venti a trentacinque secondi: il PO ha collaudato i venti e ha detto che a volte non
+       bastano. Con la partita ferma il tempo di lettura non costa niente a nessuno. */
+    const ms=(typeof window!=='undefined'&&+window.__CPM_SCMS681)||35000;
     const h=setTimeout(()=>{try{scegli681(0,true);}catch(_e){}},ms);
     return()=>clearTimeout(h);
   },[coms,scegli681]); // stable — clockRef via ref, non dipende da clock state
@@ -7256,7 +7266,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
             <div style={{fontSize:46,lineHeight:1,animation:"trophyRise 1s ease-out, trophyGlow 1.6s ease-in-out infinite 1s"}}>🏆</div>
             <div style={{fontSize:20,fontWeight:900,color:"#fff",letterSpacing:1,marginTop:6,textShadow:"0 2px 8px rgba(0,0,0,0.4)"}}>{ceremony.kind==="league"?"CAMPIONI!":ceremony.kind==="int"?"TRIONFO!":"TITOLO VINTO!"}</div>
             <div style={{fontSize:13,fontWeight:700,color:"#ffe9b0",marginTop:3}}>{ceremony.name}</div>
-            <div style={{fontSize:11,color:"rgba(255,255,255,0.85)",marginTop:2}}>{player.club?.n||player.club?.name||""} · Stagione {player.season||1}</div>
+            <div style={{fontSize:11,color:"rgba(255,255,255,0.85)",marginTop:2}}>{/* [7.686.0 collaudo PO con screenshot: sotto «Coppa delle Nazioni» c'era scritto «FC Merseyside»] CHI ALZA IL TROFEO. Il sottotitolo della premiazione mostrava SEMPRE il club, anche quando il trofeo e' della NAZIONALE: in una Coppa delle Nazioni vinta con la Spagna leggere il nome del club inglese e' una cosa che non sta ne' in cielo ne' in terra. Nei contesti di nazionale si scrive la NAZIONE. */}{_natCtx686?(player.nation||"Nazionale"):(player.club?.n||player.club?.name||"")} · Stagione {player.season||1}</div>
           </div>)}
           {/* [6.88.0 collaudo PO «post-partita più moderno, in linea con prematch/rassegna»] HERO BROADCAST:
               banda scura con hairline nel colore della competizione, squadre con spina-colore, esito chiaro +

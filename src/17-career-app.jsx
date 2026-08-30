@@ -23,6 +23,18 @@
  * ========================================================================
  */
 /* CMAV-SRC-HEADER-END */
+/* [7.686.0] LA REGOLA IN UN POSTO SOLO, e pura: «in questa gara si alza la Coppa delle Nazioni?».
+   Stava scritta due volte in due modi diversi — qui la cerimonia («fine girone con 7+ punti») e piu'
+   sopra l'assegnazione vera («solo vincendo la finale») — e nessuna delle due sapeva dell'altra.
+   Due copie di una regola divergono sempre: prima o poi una viene aggiornata e l'altra no, ed e'
+   esattamente quello che e' successo quando la finale e' stata aggiunta al torneo.
+   `__CPM_NO686` ripristina la regola vecchia per la prova del rosso. */
+const natCupStake686=(q)=>{
+  if(!q)return false;
+  if(typeof window!=='undefined'&&window.__CPM_NO686)return ((q.matchIdx||0)+1>=(q.opponents||[]).length&&(q.pts||0)+3>=7);
+  return !!q.isFinal&&(q.matchIdx||0)+1>=(q.opponents||[]).length;
+};
+
 function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLang,onNewGamePlusCB,onExitToMenu}){
   const L=LOCALE[lang]||LOCALE.IT;
   const _dk=window.innerWidth>=640; // desktop = keyboard hints visible
@@ -1064,6 +1076,8 @@ const getThisWeekMatchday=()=>{
   useEffect(()=>{if(_CPM_TEST&&typeof window!=='undefined'){
     window.__CPM_CAREER={
       goScreen:(sc)=>{try{setScreen(sc);return true;}catch(e){return "error:"+(e&&e.message);}},
+      /* [7.686.0] la regola del trofeo della Coppa delle Nazioni, interrogabile su una coda qualsiasi. */
+      natCupStake:(q)=>{try{return !!natCupStake686(q);}catch(e){return "error:"+(e&&e.message);}},
       thisWeekMd:()=>{try{const m=getThisWeekMatchday();return m?{matchday:m.matchday,week:m.week,opp:m.opponentName,type:m.type||null}:null;}catch(e){return "error:"+(e&&e.message);}},/* [7.312.0] la probe anti-duplicato interroga la stessa funzione che serve la gara al giocatore */
       goTab:(t)=>{try{setTab(t);setScreen(t);return true;}catch(e){return "error:"+(e&&e.message);}},
       addioPool:()=>{try{return WEEKLY_IMPULSES.filter(im=>im.addio&&(!im.cond||im.cond(player))&&!((player.impulseSeen||{})[im.id])).length;}catch(e){return "error:"+(e&&e.message);}},/* [7.433.0] la sonda della stagione d'addio */
@@ -5551,13 +5565,29 @@ const getThisWeekMatchday=()=>{
   if(screen==="match"&&matchOpp){
     const phaserMatchEnd=stats=>onMatchEnd({goals:stats.playerGoals||stats.goals||0,assists:stats.playerAssists||stats.assists||0,homeScore:stats.squadAGoals,awayScore:stats.squadBGoals,won:stats.result==="WIN",drew:stats.result==="DRAW",opponent:matchOpp?.name||matchOpp?.n,oppAbbr:matchOpp?.a||matchOpp?.abbr,oppCol:matchOpp?.col||matchOpp?.c,rating:stats.rating,context:matchContext||"career",oppTactic:null,scoutReport:null});
     // 5.49.23: titleStakes — vincere QUESTA partita assegna un titolo? → cerimonia 3D sul campo al fischio finale.
+    /* [7.686.0 SOLO COLLAUDO] la DECISIONE della cerimonia, interrogabile da fuori. Senza, la regola
+       «il trofeo si alza solo vincendo la finale» resta una riga che nessun test puo' esercitare — ed
+       e' esattamente cosi' che due regole contraddittorie hanno convissuto per release senza che
+       nessuno se ne accorgesse, finche' il PO non ha visto il trofeo alzarsi a meta' torneo. */
     const _titleStakes=(()=>{
       const mc=matchContext||"career";
       // Finali a eliminazione diretta: vinci la partita = alzi il trofeo
       if(mc==="cup"&&(player.cup?.round||1)===4)return{kind:"cup",name:"Coppa Nazionale"};
       if(mc==="euro_ko"&&player.euro?.phase==="final"){const _ecn={UCL:"Korward Champions Cup",UEL:"Korward Europa Cup",UECL:"Korward Conference Cup"};return{kind:"int",name:_ecn[player.euro?.competition]||"Coppa Continentale"};}
       if(mc==="euroMondiale_ko"&&(player.euroMondiale?.koPhase||"r16")==="final")return{kind:"int",name:player.euroMondiale?.type||"Torneo"};
-      if(mc==="nationsCup"){const q=player.nationsCupQueue;if(q&&(q.matchIdx||0)+1>=(q.opponents||[]).length&&(q.pts||0)+3>=7)return{kind:"int",name:"Coppa delle Nazioni"};}
+      /* ⚠️ [7.686.0 collaudo PO con screenshot: «ho vinto la coppa alla 3a giornata e poi dopo c'e' la
+         finale da giocare, brutto bug!»] IL TROFEO SI ALZAVA A FINE GIRONE, CON LA FINALE ANCORA IN
+         CALENDARIO. Due regole scritte in momenti diversi che si contraddicevano:
+           · la coda della Coppa delle Nazioni viene ESTESA con una finale quando il girone chiude con
+             4 o piu' punti (7.41, vedi `isFinal` + quarto avversario);
+           · qui la cerimonia del trofeo scattava a `(pts+3)>=7` sull'ultima gara del GIRONE.
+         Con tre vittorie sono nove punti: si va in finale E si alza il trofeo, nella stessa serata.
+         La soglia dei sette punti e' la regola VECCHIA, di quando il torneo finiva col girone: e'
+         rimasta li' quando la finale e' stata aggiunta, e nessuno dei due pezzi sapeva dell'altro.
+         Ora il trofeo si alza SOLO vincendo la finale — `isFinal` vero e ultima gara della coda —
+         che e' esattamente la condizione gia' usata dal resto del codice per i rigori e per il campo
+         neutro (7.72.2). Il girone non assegna niente: qualifica, e basta. */
+      if(mc==="nationsCup"&&natCupStake686(player.nationsCupQueue))return{kind:"int",name:"Coppa delle Nazioni"};
       // Campionato: clinch matematico — vincere questa gara rende il 1° posto irraggiungibile (e non lo era già prima).
       if(mc==="career"){
         const md=(player.calendar||[]).find(m=>m.week===(player.week||1)&&!m.played);
@@ -5594,6 +5624,8 @@ const getThisWeekMatchday=()=>{
       }
       return null;
     })();
+    /* [7.686.0 SOLO COLLAUDO] la decisione esposta: `null` = nessun trofeo in palio in questa gara. */
+    try{if(typeof window!=='undefined'&&/[?&]cpmtest=1\b/.test(window.location.search||""))window.__CPM_TITLESTAKES=_titleStakes||null;}catch(_e686){}
     return(
       <div style={{width:"100%",height:"100%",display:"flex",flexDirection:"column"}}>
         {/* [6.55.0 collaudo PO «il tasto home non deve essere presente nel live match / se esco di lì il risultato
