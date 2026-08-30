@@ -6264,7 +6264,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
      si vedrebbero mai — che e' proprio la meta' della richiesta del PO («azioni da gol pericolose,
      espulsioni, rigori»). Qui l'evento arma una finestra a tempo: sei secondi per guardare il dischetto
      o il cartellino, e poi si torna alla telecronaca. */
-  const salIstRef691=useRef(0);
+  const salIstRef691=useRef(0),salPgRef692=useRef(false),salT692=useRef(0);
   /* [7.691.0 SOLO COLLAUDO] la finestra istantanea si arma anche da fuori. Su quattro partite seedate
      non e' capitato NE' un rigore NE' un rosso — sono eventi rari — e senza questo il ramo nuovo
      resterebbe non provato: spedirlo perche' «il codice sembra giusto» e' esattamente il modo in cui
@@ -6281,9 +6281,42 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
        («palla persa alta, riparte in campo aperto»): e' l'azione pericolosa per definizione, e vale
        tanto quando la subiamo quanto quando la facciamo noi. Restano fuori i momenti morti: qui si
        apre solo su cio' che il motore ha gia' dichiarato pericoloso, mai su un minuto qualunque. */
+    /* ⚠️ [7.692.0 collaudo PO: «sono comparse azioni 3D extra eroe ma non erano assolutamente salienti,
+       non ha portato a nulla... tiro pericoloso, gol, parata del portiere, punizione ecc»]
+       MOSTRAVO L'ATTESA E NASCONDEVO LA CONCLUSIONE. Misurato su tre partite, otto finestre: solo due
+       portavano a qualcosa, e sulle scene di GOL erano ZERO SU TRE — col pallone che dentro la finestra
+       non superava mai gx 58, cioe' non entrava mai in area. La causa e' che la finestra era governata
+       dallo STESSO stato che segna la fine: `pendingGoalRef` si azzera QUANDO la rete arriva, quindi la
+       scena si chiudeva un istante PRIMA del gol. Sette secondi di uomini che girano a centrocampo, poi
+       il campo si svuota: «non ha portato a nulla» era la descrizione esatta.
+       Ora la conclusione sta DENTRO: quando il gol pendente si chiude, la finestra resta aperta altri
+       cinque secondi — il tempo della rete, della parata, dell'esultanza. */
     const _ist691=(salIstRef691.current||0)>Date.now();
     const _rig691=!!(outRef.current&&outRef.current.pen629);
-    const _on=!!pendingGoalRef.current||!!counterRef.current||_rig691||_ist691;
+    const _pg692=!!pendingGoalRef.current;
+    if(_pg692)salPgRef692.current=true;
+    else if(salPgRef692.current){salPgRef692.current=false;try{salIstRef691.current=Math.max(salIstRef691.current||0,Date.now()+5000);}catch(_e){}}
+    /* ⚠️ [7.692.0 — RESTRIZIONE REVOCATA CON LA MISURA CONTRARIA. Avevo stretto il contropiede «solo
+       oltre la trequarti», ragionando che un ribaltamento spento a meta' campo non e' un'azione. La
+       misura ha detto il contrario: le due sole finestre che portavano a qualcosa erano proprio
+       ribaltamenti, e ci arrivavano perche' la scena si apriva PRESTO e restava aperta fino all'area.
+       Stringendo, le ho tagliate: da 2 su 8 a ZERO su 6. Il contropiede torna com'era, e a decidere se
+       la scena vale non e' il momento in cui si apre ma se il pallone ARRIVA da qualche parte —
+       per questo la finestra ora resta aperta finche' la palla e' in un terzo estremo. */
+    const _cnt692=!!counterRef.current;
+    const _terzo692=(()=>{try{const bx=(ballPosRef.current&&ballPosRef.current.x);
+      return bx!=null&&(bx>=70||bx<=30);}catch(_e){return false;}})();
+    /* [7.692.0] la scena non si chiude mentre il pallone e' ancora in una zona dove puo' succedere
+       qualcosa: se sta in un terzo estremo, si resta a guardare. */
+    const _era692=!!(window&&window.__CPM_SAL689_ON);
+    /* ⚠️ [7.692.0] IL TETTO DI DURATA. Tenere la scena aperta finche' il pallone sta in un terzo estremo
+       ha portato le finestre che concludono da 0 a 3 su 6 — ma le ha fatte durare QUARANTA-CINQUANTA
+       SECONDI, e per chi ha chiesto «in telecronaca si deve vedere solo il pallone» quaranta secondi di
+       ventidue uomini in campo non sono una scena, sono un altro film. Diciotto secondi: il tempo di
+       un'azione vera, e poi si torna alla cronaca anche se la palla e' ancora la'. */
+    if(!_era692)salT692.current=Date.now();
+    const _troppo692=(Date.now()-(salT692.current||0))>18000;
+    const _on=(_pg692||_cnt692||_rig691||_ist691||(_era692&&_terzo692))&&!_troppo692;
     if(typeof window!=='undefined'){window.__CPM_SAL689_ON=_on;
       /* [7.691.0] la CAUSA della finestra, non solo il fatto che sia aperta: senza, il ramo nuovo
          (rigori ed espulsioni) resta invisibile alla misura e potrei spedirlo senza saperlo. */
