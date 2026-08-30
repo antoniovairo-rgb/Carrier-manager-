@@ -2799,6 +2799,15 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
            (nessuna apparizione: ogni salto ha la sua causa nel testo). Consumato il piano, la rete
            si scrive. Tetto di sicurezza = piano+4 tick: NESSUN GOL RESTA IN SOSPESO, il punteggio
            del microsim e' intoccato. Composizione solo hashStr (invariante 7.511). */
+        /* ⚠️ [7.694.0 — IL TEMPO CHE MANCAVA: LA CONCLUSIONE. Collaudo PO: «tiro pericoloso, gol,
+           parata del portiere, punizione»] Col 7.693 il pallone arriva finalmente dove il racconto lo
+           manda, ma il racconto si fermava un tempo prima: l'ultimo passo NOMINA il limite dell'area e
+           li' si chiudeva, con la rete che arrivava senza che nessuno avesse calciato. Misurato: le
+           costruzioni che portano il pallone IN AREA erano 2 su 9, e non si erano mosse ne' col 7.692
+           ne' col 7.693 — il tetto non era il motore, era il PIANO, che non nominava mai il tiro.
+           Ogni famiglia ha ora il suo quarto tempo, e il pallone ci va davvero: 92-94, dentro l'area.
+           Il tiro nel tabellino si sposta SULLA CONCLUSIONE: resta uno per gol, ma ora sta sulla riga
+           che lo racconta invece che su quella che prepara. */
         const _pianoGol649=(_latoN)=>{
           const _mpA=(matchPlayersRef.current||[]).map((q,i)=>({q,i})).filter(o=>o.q&&o.q.team===_latoN&&!o.q.gk);
           if(_mpA.length<4)return null;
@@ -2816,16 +2825,19 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           if(_fam===0)return[
             {t:"⚙️ "+_na+" detta i tempi in mezzo al campo: possesso ragionato, la squadra sale in blocco.",x:_X(40+_J(1,8)),y:50+_J(2,20),chi:_a.i},
             {t:"📈 "+_na+" verticalizza per "+_nb+" fra le linee: la manovra si accende.",x:_X(58+_J(3,8)),y:50+_J(4,24),chi:_b.i},
-            {t:"🎯 Filtrante di "+_nb+": "+_nc+" attacca il limite dell'area!",x:_X(77+_J(5,6)),y:50+_J(6,18),chi:_c.i,ms:1},
+            {t:"🎯 Filtrante di "+_nb+": "+_nc+" attacca il limite dell'area!",x:_X(77+_J(5,6)),y:50+_J(6,18),chi:_c.i},
+            {t:"💥 Conclusione secca di "+_nc+" dal limite: il pallone parte teso verso la porta!",x:_X(93+_J(7,3)),y:50+_J(8,10),chi:_c.i,ms:1},
           ];
           if(_fam===1)return[
             {t:"↔️ "+_na+" apre sulla corsia: "+_nb+" ha campo davanti a se'.",x:_X(54+_J(1,8)),y:_fy+_J(2,8),chi:_b.i},
             {t:"💨 "+_nb+" affonda sulla fascia e guadagna il fondo.",x:_X(81+_J(3,5)),y:_fy+_J(4,6),chi:_b.i},
-            {t:"🎯 Cross teso di "+_nb+": "+_nc+" stacca sul secondo palo!",x:_X(86+_J(5,4)),y:50+_J(6,14),chi:_c.i,ms:1},
+            {t:"🎯 Cross teso di "+_nb+": "+_nc+" stacca sul secondo palo!",x:_X(86+_J(5,4)),y:50+_J(6,14),chi:_c.i},
+            {t:"💥 Incornata di "+_nc+" a botta sicura!",x:_X(94+_J(7,2)),y:50+_J(8,8),chi:_c.i,ms:1},
           ];
           return[
             {t:"⚡ "+_na+" ruba il tempo a centrocampo: si riparte in verticale!",x:_X(52+_J(1,8)),y:50+_J(2,22),chi:_a.i},
-            {t:"🏃 Transizione rapida: "+_nb+" conduce e scarica su "+_nc+" al limite dell'area.",x:_X(79+_J(3,6)),y:50+_J(4,20),chi:_c.i,ms:1},/* [7.693.0] 74→79: il testo dice «al limite dell'area» e il limite sta a 78-84 — a 74 il racconto mandava il pallone tre metri prima di cio' che nominava, e con la custodia del piano quella differenza ora si VEDE */
+            {t:"🏃 Transizione rapida: "+_nb+" conduce e scarica su "+_nc+" al limite dell'area.",x:_X(79+_J(3,6)),y:50+_J(4,20),chi:_c.i},/* [7.693.0] 74→79: il testo dice «al limite dell'area» e il limite sta a 78-84 — a 74 il racconto mandava il pallone tre metri prima di cio' che nominava, e con la custodia del piano quella differenza ora si VEDE */
+            {t:"💥 "+_nc+" calcia di prima, senza controllare!",x:_X(92+_J(7,3)),y:50+_J(8,10),chi:_c.i,ms:1},
           ];
         };
         const _apriCatena644=(_lato551)=>{
