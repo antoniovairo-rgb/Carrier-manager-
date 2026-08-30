@@ -6910,7 +6910,19 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
          stacco al gioco (`onCutNeeded`) e si RIMANDA il salto di ~120ms — il tempo che il nero entri in
          scena — tenendo la camera ferma invece di lasciarla scivolare verso un bersaglio lontano. Uno
          snap gia' mascherato passa immediato come prima: il percorso sano non cambia. */
-      if((isHL||P.matchPhase==="playing")&&!P.ceremony&&!P.shootout&&!replaying&&!(typeof window!=='undefined'&&window.__CPM_NO650)){if(!isHL&&tPz<16){try{if(sr.current._tocc503)sr.current._tocc503.push('tribuna-clamp650');}catch(_e650b){}tPz=16;}}/* [7.654.0 v2] il clamp resta solo sulla CRONACA in tribuna (z>=16): negli HL comanda la regia storica, come chiesto dal PO *//* [7.650.0 v3] IL VINCOLO E' L'ULTIMA PAROLA: misurato un residuo deterministico a z -5,2 (24 percento dei campioni hl sotto 16) scritto da una mano A VALLE dell'override (bisezione con soggetto oltre il piano tribuna) — il clamp sta dopo TUTTE le mani, prima di snap e lerp: da qui la camera non attraversa MAI */
+      /* [7.689.0 direttiva PO: «le azioni salienti mostrale con camera orizzontale dalla tribuna est»]
+         LA REGIA DELLA SCENA SALIENTE. In telecronaca la camera sta gia' in tribuna est (7.650) ma alta
+         e inclinata: guarda il campo dall'alto, che va bene per seguire un pallone e non per guardare
+         un'azione. Qui scende a quota nove e punta all'altezza del gioco — l'occhio di chi sta in
+         tribuna, non del dirigibile. Segue il pallone lungo la linea laterale restando parallela al
+         campo: e' la ripresa da bordo campo di una partita in TV. */
+      if(P.salienteOn&&!P.ceremony&&!P.shootout&&!replaying&&!(typeof window!=='undefined'&&window.__CPM_NO689C)){
+        const _bx689=ball?ball.position.x:0,_bz689=ball?ball.position.z:0;
+        tPx=clamp(_bx689,-38,38);tPy=9;tPz=40;
+        tLx=clamp(_bx689*0.85,-34,34);tLy=1.6;tLz=clamp(_bz689*0.5,-12,12);
+        try{if(sr.current._tocc503)sr.current._tocc503.push('saliente689');}catch(_e){}
+      }
+      else if((isHL||P.matchPhase==="playing")&&!P.ceremony&&!P.shootout&&!replaying&&!(typeof window!=='undefined'&&window.__CPM_NO650)){if(!isHL&&tPz<16){try{if(sr.current._tocc503)sr.current._tocc503.push('tribuna-clamp650');}catch(_e650b){}tPz=16;}}/* [7.654.0 v2] il clamp resta solo sulla CRONACA in tribuna (z>=16): negli HL comanda la regia storica, come chiesto dal PO *//* [7.650.0 v3] IL VINCOLO E' L'ULTIMA PAROLA: misurato un residuo deterministico a z -5,2 (24 percento dei campioni hl sotto 16) scritto da una mano A VALLE dell'override (bisezione con soggetto oltre il piano tribuna) — il clamp sta dopo TUTTE le mani, prima di snap e lerp: da qui la camera non attraversa MAI */
       if(sr.current._cutSnap||sr.current._sceneCut){try{if(sr.current._tocc503)sr.current._tocc503.push('snap');}catch(_e){}/* [7.503.1] */
         const _dSnap=Math.hypot(tPx-camera.position.x,tPy-camera.position.y,tPz-camera.position.z);
         const _no471=(typeof window!=='undefined'&&window.__CPM_NO471);const _nowMs471=performance.now();
@@ -6949,7 +6961,9 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
          dell'eroe, in cerimonia, nei rigori e nel walkout tutto riappare. Il visible di ogni
          mesh viene salvato all'ingresso e ripristinato all'uscita (un sistema che avesse
          nascosto qualcuno per suo conto lo ritrova com'era). */
-      {const _off660=!(typeof window!=='undefined'&&window.__CPM_NO660)&&P.matchPhase==="playing"&&!P.ceremony&&!P.shootout&&!replaying;
+      /* [7.689.0] durante una SCENA SALIENTE i corpi tornano in campo: e' il punto della scena. Fuori
+         di li' la telecronaca resta com'e' — solo pallone e ombra, come il PO ha chiesto nel 7.660. */
+      {const _off660=!(typeof window!=='undefined'&&window.__CPM_NO660)&&P.matchPhase==="playing"&&!P.ceremony&&!P.shootout&&!replaying&&!P.salienteOn;
        /* [7.665.0 v2 — LA MISURA HA BOCCIATO LA v1: 45 corpi ancora in campo con GLB acceso.
           Causa vera: lo spegnimento agiva SOLO alla transizione di fase, ma i personaggi GLB si
           agganciano in modo ASINCRONO qualche secondo dopo il fischio, e l'aggancio RIACCENDE il

@@ -143,6 +143,44 @@ const INTX669=[
     gli slot. Queste NOVE schede vivono sul MOMENTO della gara — l'inizio, l'intervallo, il finale,
     il punteggio, il pubblico — e non chiedono nessun contatore: sono quelle che aprono il paniere.
     Restano contestuali: ognuna sa in che minuto e con che risultato si sta giocando. */
+ /* [7.689.0 direttiva PO, due richieste in una: «le interazioni in telecronaca sono ripetitive, devono
+    essere collegate anche alle indicazioni del mister» e «l eroe deve spronare anche i compagni in base
+    alle situazioni». Le prime ventotto schede avevano due buchi che il PO ha visto subito: (1) ogni
+    momento era un ISOLA — la consegna del mister non tornava mai, qualunque cosa il giocatore avesse
+    scelto, e tre momenti scollegati si assomigliano tutti; (2) le schede COMPAGNI erano quasi tutte
+    «loro parlano a te», mancava il verso opposto, l eroe che carica il gruppo. Queste dieci chiudono
+    entrambi: le prime cinque RISPONDONO a una scelta gia' fatta (`c.scelto`), le altre cinque sono
+    l eroe che si rivolge alla squadra a seconda di come sta andando. */
+ {id:"mi_eco1",fam:"MISTER",cond:c=>c.mn>=34&&c.scelto("mi_cons",0),
+  txt:c=>"\ud83d\udce3 Quello spazio si apre davvero: il mister indica di nuovo la fascia e batte le mani. «Adesso ci sei.»",cons:{fiducia:1},
+  sc:[{et:"Ci vado ancora",es:c=>c.eroe+" ci torna due volte di fila: il terzino avversario comincia a guardarsi le spalle.",cons:{zona:1,coinv:1}},{et:"Adesso mi aspettano",es:c=>c.eroe+" legge che l hanno capito e cambia zona: il mister annuisce, e' la lettura giusta.",cons:{zona:1,fiducia:1}},{et:"Chiamo un compagno li'",es:c=>c.eroe+" manda un compagno in quello spazio e resta lui a dare l appoggio: due teste sulla stessa idea.",cons:{intesa:2}}]},
+ {id:"mi_eco2",fam:"MISTER",cond:c=>c.mn>=40&&c.scelto("mi_cons",1),
+  txt:c=>"\ud83d\udce3 Il mister non ha dimenticato: lo richiama a bordo campo e stavolta non chiede, dice. «Quella zona. Ora.»",cons:{},
+  sc:[{et:"Va bene, ci vado",es:c=>c.eroe+" esegue senza discutere: la panchina si rilassa e il pallone comincia ad arrivargli.",cons:{fiducia:2,coinv:1}},{et:"Gli spiego cosa vedo",es:c=>c.eroe+" indica il campo e spiega perche' non funziona: il mister ascolta, poi cambia lui l indicazione.",cons:{fiducia:1,intesa:1}},{et:"Faccio finta di niente",es:c=>c.eroe+" torna in campo senza rispondere. Alla panchina non e' sfuggito.",cons:{fiducia:-2,coinv:1}}]},
+ {id:"co_eco1",fam:"COMPAGNI",cond:c=>c.mn>=50&&c.scelto("co_int",0),
+  txt:c=>"\ud83e\udd1d Lo schema concordato funziona: "+c.compagno+" taglia dentro e trova "+c.eroe+" largo, esattamente come si erano detti.",cons:{intesa:1},
+  sc:[{et:"Rifacciamolo",es:c=>"Lo ripetono due volte in cinque minuti: gli avversari non riescono a leggerlo.",cons:{intesa:2,coinv:1}},{et:"Cambiamo, ci hanno capito",es:c=>"Invertono i ruoli al volo: stavolta e' "+c.eroe+" a tagliare dentro.",cons:{zona:1,intesa:1}},{et:"Basta cosi', giochiamo semplice",es:c=>"Tornano al gioco semplice: meno spettacolo, meno rischi.",cons:{fiducia:1}}]},
+ {id:"av_eco1",fam:"AVVERSARI",cond:c=>c.mn>=55&&(c.scelto("av_pres",1)||c.scelto("av_pro",1)),
+  txt:c=>"\ud83d\ude20 Il difensore non ha dimenticato lo scambio di prima: entra durissimo sul primo pallone e l arbitro estrae il giallo.",cons:{marcatura:1},
+  sc:[{et:"Lo guardo e basta",es:c=>c.eroe+" si rialza e lo fissa in silenzio: adesso e' l altro a dover stare attento.",cons:{fiducia:1,marcatura:-1}},{et:"Provo a saltarlo subito",es:c=>c.eroe+" lo punta al primo pallone utile: con un giallo addosso, il difensore non puo' piu' fermarlo.",cons:{coinv:2}},{et:"Cambio fascia",es:c=>c.eroe+" si sposta dall altra parte e lo lascia li' con il suo cartellino.",cons:{zona:1,marcatura:-1}}]},
+ {id:"er_eco1",fam:"EROE",cond:c=>c.mn>=60&&c.scelto("er_prende",0),
+  txt:c=>"\u270a "+c.eroe+" si e preso la squadra sulle spalle da venti minuti: adesso i compagni lo cercano anche quando non e' smarcato.",cons:{coinv:1},
+  sc:[{et:"Continuo cosi'",es:c=>"Ogni pallone passa da lui: la squadra ha un solo riferimento, nel bene e nel male.",cons:{coinv:2,fiducia:-1}},{et:"Ridistribuisco il gioco",es:c=>c.eroe+" comincia a giocare di prima e ad allargare: la squadra respira e attacca in cinque.",cons:{intesa:2}},{et:"Chiedo aiuto al mister",es:c=>"Un cenno alla panchina e arriva il cambio giusto: adesso non e' piu' solo.",cons:{fiducia:1,intesa:1}}]},
+ {id:"er_carica",fam:"EROE",cond:c=>c.golSubDaPoco,
+  txt:c=>"\u270a Gol subito, e "+c.eroe+" e' il primo ad andare a prendere il pallone in rete: lo porta a centrocampo di corsa.",cons:{},
+  sc:[{et:"Carico tutti a voce",es:c=>c.eroe+" urla ai compagni di rialzare la testa: la squadra riparte forte e guadagna trenta metri.",cons:{intesa:2,coinv:1}},{et:"Parlo solo alla difesa",es:c=>c.eroe+" va dai difensori e sistema le distanze: dietro non si concede piu' niente.",cons:{intesa:1,fiducia:1}},{et:"Rispondo giocando",es:c=>c.eroe+" non dice una parola e si mette a giocare ogni pallone: chi vuole capire, capisce.",cons:{coinv:2}}]},
+ {id:"er_sprona",fam:"EROE",cond:c=>c.occFallite>=1&&c.mn>=35,
+  txt:c=>"\u270a Occasione buttata, e il compagno resta a terra a mangiarsi le mani: "+c.eroe+" lo va a tirare su.",cons:{},
+  sc:[{et:"«La prossima entra»",es:c=>"Due parole e una pacca: dieci minuti dopo lo stesso compagno ci riprova, e stavolta la mette dentro.",cons:{intesa:2,fiducia:1}},{et:"«Dovevi darmela»",es:c=>c.eroe+" glielo dice in faccia. Ha ragione, ma da adesso quel compagno lo cerca meno.",cons:{coinv:1,intesa:-2}},{et:"Non dico niente e vado",es:c=>c.eroe+" torna in posizione senza fermarsi: c e' ancora mezz ora da giocare.",cons:{}}]},
+ {id:"er_richiama",fam:"EROE",cond:c=>c.diff<0&&c.mn>=70,
+  txt:c=>"\u270a Sotto di un gol a venti minuti dalla fine: "+c.eroe+" raduna i compagni prima della rimessa.",cons:{},
+  sc:[{et:"«Alziamo tutti di venti metri»",es:c=>"La squadra sale e comincia a pressare alto: rischioso, ma gli avversari non escono piu'.",cons:{coinv:1,intesa:1}},{et:"«Palla a me e state larghi»",es:c=>c.eroe+" si prende la responsabilita' e chiede spazio: la squadra lo asseconda.",cons:{coinv:2,fiducia:-1}},{et:"«Con calma, c e' tempo»",es:c=>c.eroe+" invita tutti a non buttarla lunga: la manovra si ordina e il gioco torna a filare.",cons:{intesa:2,fiducia:1}}]},
+ {id:"er_difesa",fam:"EROE",cond:c=>c.diff>=1&&c.mn>=80,
+  txt:c=>"\u270a Si difende un vantaggio, e "+c.eroe+" vede due compagni che non rientrano: li chiama con un gesto secco.",cons:{},
+  sc:[{et:"Li rimetto in riga",es:c=>"Rientrano tutti: la squadra si compatta e gli ultimi minuti passano senza affanni.",cons:{intesa:2,fiducia:1}},{et:"Rientro io per loro",es:c=>c.eroe+" copre lui lo spazio scoperto: corre il doppio, ma il risultato regge.",cons:{fiducia:1,coinv:-1}},{et:"Li lascio avanti a cercare il secondo",es:c=>c.eroe+" fa segno di restare alti: chi vince la partita non la difende, la chiude.",cons:{coinv:1}}]},
+ {id:"er_giovane",fam:"EROE",cond:c=>c.mn>=25&&c.giocate>=1&&c.intesa<=0,
+  txt:c=>"\u270a Un compagno piu' giovane sbaglia due appoggi di fila e comincia a nascondersi: "+c.eroe+" se ne accorge e va da lui.",cons:{},
+  sc:[{et:"«Chiedimela ancora»",es:c=>"Il ragazzo torna a farsi vedere: al terzo pallone gioca la giocata giusta.",cons:{intesa:2}},{et:"Gli semplifico il compito",es:c=>c.eroe+" gli si mette accanto e gli offre sempre l appoggio corto: niente piu' scelte difficili.",cons:{intesa:1,coinv:1}},{et:"Lo lascio sfogare da solo",es:c=>c.eroe+" decide che deve cavarsela: il ragazzo resta in ombra fino alla fine.",cons:{coinv:1}}]},
  {id:"mi_avv",fam:"MISTER",cond:c=>c.mn>=18&&c.mn<=28,
   txt:c=>"\ud83d\udce3 Il mister lo ferma mentre rientra: «Il loro numero sei esce sempre sul portatore. Quando esce, quello spazio e' tuo.»",cons:{zona:1},
   sc:[{et:"Attacco quello spazio",es:c=>"Alla prima uscita del sei, "+c.eroe+" e' gia' partito: la squadra lo trova e il campo si apre.",cons:{zona:1,fiducia:1}},{et:"Prima guardo come si muovono",es:c=>c.eroe+" studia per qualche minuto prima di muoversi: si perde due occasioni ma capisce il meccanismo.",cons:{intesa:1,coinv:-1}},{et:"Lo dico ai compagni",es:c=>c.eroe+" gira l'indicazione a tutto il reparto: adesso quello spazio lo attaccano in tre a turno.",cons:{intesa:2}}]},
@@ -1567,7 +1605,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
       try{if(typeof localStorage!=='undefined'){let _r=[];try{_r=JSON.parse(localStorage.getItem('cpm-intx-recenti')||'[]')||[];}catch(_e){_r=[];}
         if(!_r._apertaDaQuestaGara){}
         if(!Array.isArray(_r[0])||N._mem682!==1){_r.unshift([]);N._mem682=1;}
-        _r[0].push(P.id+"#"+idx);localStorage.setItem('cpm-intx-recenti',JSON.stringify(_r.slice(0,4)));}}catch(_e){}/* [7.681.0] la chiave anti-ripetizione include il RAMO: la stessa scheda, un'altra partita, si apre su un ramo diverso */
+        _r[0].push(P.id+"#"+idx);localStorage.setItem('cpm-intx-recenti',JSON.stringify(_r.slice(0,5)));}}catch(_e){}/* [7.690.0] cinque partite di storia: due di esclusione dura + tre di penalizzazione *//* [7.681.0] la chiave anti-ripetizione include il RAMO: la stessa scheda, un'altra partita, si apre su un ramo diverso */
     }catch(_e){}
     let _t=null;try{_t=opt.es(P.ctx||{});}catch(_e){_t=null;}
     setComs(p=>{const q=p.slice();if(q[0])q[0]={...q[0],sci:idx,scAuto:!!auto};return q;});
@@ -3065,11 +3103,29 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
         if(!(typeof window!=='undefined'&&window.__CPM_NO670)&&!_inHL77&&!pendingGoalRef.current&&!_recHij545
            &&nx>=18&&nx<=88&&typeof INTX669!=='undefined'){try{
           const _N=narrRef669.current;
-          if(_N.fatte.length<3&&(nx-(_N.ultima|0))>=12){
+          /* [7.690.0 decisione PO: «quattro e con memoria piu' lunga»] IL TETTO SALE A QUATTRO.
+             La misura diceva che il collo di bottiglia non era piu' il paniere ma il tetto: con
+             trentotto schede e tre momenti a partita servivano tredici partite per vederle tutte, e le
+             tre schede della finestra d'apertura tornavano di continuo. Il costo e' una pausa in piu'
+             (ogni interazione ferma la gara per 35 s, tempo che il PO ha scelto lui): messa in conto,
+             la distanza minima scende a 10 minuti perche' quattro momenti stiano dentro i settanta
+             minuti utili della finestra 18-88. */
+          if(_N.fatte.length<4&&(nx-(_N.ultima|0))>=10){
             const _sc=scoreRef.current||{home:0,away:0};
             const _mio=isMatchHome?_sc.home:_sc.away,_suo=isMatchHome?_sc.away:_sc.home;
+            /* [7.689.0 direttiva PO: «le interazioni devono essere collegate anche alle indicazioni del
+               mister»] IL CONTESTO SA COSA E' GIA' SUCCESSO. Finora una scheda poteva guardare solo lo
+               stato della partita (minuto, punteggio, duelli); non sapeva quali schede fossero gia'
+               uscite ne' quale RAMO il giocatore avesse scelto, e cosi' ogni momento era un'isola.
+               Con `fatte` e `scelte` una scheda puo' rispondere a una precedente: la consegna del
+               mister accettata torna quando quello spazio si apre davvero, e quella ignorata torna
+               quando la panchina se ne accorge. E' cio' che trasforma tre momenti sparsi in un filo. */
             const _c669={mn:nx,diff:_mio-_suo,duelliV:_N.duelliV,duelliP:_N.duelliP,occFallite:_N.occFallite,
-              giocate:_N.giocate,marcatura:_N.marcatura,golSubDaPoco:(_N.golSub>0&&(nx-(_N.golSubMn|0))<=6),eroe:"",compagno:""};
+              giocate:_N.giocate,marcatura:_N.marcatura,golSubDaPoco:(_N.golSub>0&&(nx-(_N.golSubMn|0))<=6),eroe:"",compagno:"",
+              fatte:(_N.fatte||[]),scelte:(_N.scelte||[]),
+              scelto:(id,ramo)=>{try{return (_N.scelte||[]).indexOf(id+"#"+ramo)>=0;}catch(_e){return false;}},
+              haFatto:(id)=>{try{return (_N.fatte||[]).indexOf(id)>=0;}catch(_e){return false;}},
+              coinv:(_N.coinv|0),fiducia:(_N.fiducia|0),intesa:(_N.intesa|0),zona:(_N.zona|0)};
             let _el=INTX669.filter(k=>_N.fatte.indexOf(k.id)<0&&(function(){try{return !!k.cond(_c669);}catch(_e){return false;}})());
             /* [7.682.0 — LA MEMORIA FRA UNA PARTITA E L'ALTRA, che nel 7.681 avevo promesso e non fatto.
                Lo stato narrativo riparte da zero a ogni gara, quindi la stessa scheda poteva ripresentarsi
@@ -3082,11 +3138,15 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
             let _rec682=[];
             try{if(typeof localStorage!=='undefined'){const _r=localStorage.getItem('cpm-intx-recenti');if(_r)_rec682=JSON.parse(_r)||[];}}catch(_e682){_rec682=[];}
             if(!(typeof window!=='undefined'&&window.__CPM_NO682)&&_rec682.length&&_el.length>1){
-              const _ult=(_rec682[0]||[]).map(x=>String(x).split('#')[0]);
+              /* [7.690.0] MEMORIA PIU' LUNGA: l'esclusione dura copre le ULTIME DUE partite, non una.
+                 Con una sola, le schede d'apertura si alternavano a coppie e tornavano ogni due gare —
+                 misurato: mi_avv in tre partite su sei, mi_cons in tre, co_prima in tre. Due partite di
+                 memoria le mandano in fondo abbastanza a lungo perche' le altre abbiano il loro turno. */
+              const _ult=[].concat((_rec682[0]||[]),(_rec682[1]||[])).map(x=>String(x).split('#')[0]);
               const _prima=_el.filter(k=>_ult.indexOf(k.id)<0);
               if(_prima.length)_el=_prima;
               else{/* tutte gia' viste ieri: si tiene il paniere pieno, meglio una ripetizione che il silenzio */}
-              const _vecchi={};for(let _i=1;_i<Math.min(4,_rec682.length);_i++)for(const _x of (_rec682[_i]||[]))_vecchi[String(_x).split('#')[0]]=1;
+              const _vecchi={};for(let _i=2;_i<Math.min(5,_rec682.length);_i++)for(const _x of (_rec682[_i]||[]))_vecchi[String(_x).split('#')[0]]=1;
               const _fresche=_el.filter(k=>!_vecchi[k.id]);
               if(_fresche.length)_el=_fresche;
             }
@@ -6187,6 +6247,29 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
      Ora il flag segue il FATTO: la serie e' stata giocata (`soDoneRef`) oppure il pari e' arrivato al 90'. */
   const _drawShootout=!!_koSeed&&score.home===score.away&&(clock>=90||(soDoneRef.current===true));
   const _shootoutWon=_drawShootout&&typeof koShootoutWin==="function"&&koShootoutWin(player,_koSeed);
+  /* [7.689.0 direttiva PO: «le azioni salienti extra eroe devono essere visualizzate in 3D non solo in
+     telecronaca — azioni da gol pericolose, espulsioni, rigori — logica stile The Manager 1991»]
+     LA FINESTRA DELLA SCENA SALIENTE. Non si inventa niente: quando il microsim decide un gol, il gioco
+     lo sa IN ANTICIPO e arma un piano (`pendingGoalRef`) che porta il pallone verso la porta raccontando
+     l'avvicinamento. Quella finestra — dal «gol in costruzione» alla rete — e' l'azione saliente, ed e'
+     gia' li': mancava soltanto di FARLA VEDERE, perche' in telecronaca i corpi sono spenti (7.660, che
+     il PO aveva chiesto per vedere solo il pallone) e la camera guarda dall'alto.
+     Durante la finestra il renderer riaccende i ventidue e scende in tribuna est, orizzontale. La regola
+     che tiene tutto onesto: la scena ILLUSTRA un evento gia' deciso dal microsim, non ne crea uno — se
+     si vede un gol, quel gol e' gia' nel tabellone. `__CPM_NO689` la spegne per la prova del rosso. */
+  const _sal689=(()=>{try{
+    if(typeof window!=='undefined'&&window.__CPM_NO689)return false;
+    if(phase!=="playing"||paused)return false;
+    /* [7.689.0] QUALI MOMENTI MERITANO LA SCENA. Il gol in costruzione e' il primo, ed e' raro per
+       costruzione (uno o due a partita): da solo darebbe una scena sola e il PO ne vedrebbe quanto
+       niente. Si aggiunge il RIBALTAMENTO — il contropiede che il gioco gia' riconosce e racconta
+       («palla persa alta, riparte in campo aperto»): e' l'azione pericolosa per definizione, e vale
+       tanto quando la subiamo quanto quando la facciamo noi. Restano fuori i momenti morti: qui si
+       apre solo su cio' che il motore ha gia' dichiarato pericoloso, mai su un minuto qualunque. */
+    const _on=!!pendingGoalRef.current||!!counterRef.current;
+    if(typeof window!=='undefined')window.__CPM_SAL689_ON=_on;/* testimone per il guardiano */
+    return _on;
+  }catch(_e){return false;}})();
   const _isFinalKO=(context==="euroMondiale_ko"&&player.euroMondiale?.koPhase==="final")||(context==="euro_ko"&&player.euro?.phase==="final")||(context==="cup"&&(player.cup?.round||0)>=4)||(context==="nationsCup"&&_isNeutralFinal);/* [7.72.2] finale Coppa delle Nazioni → festa big-win */
   const pct=Math.round((clock/90)*100);
   const show3D=["playing","hl_move","hl_choose","hl_result","hl_intro","ceremony","shootout"].includes(phase);/* [7.2.0] ceremony: il 3D resta montato per la premiazione · [7.31.0] shootout: rigori 3D dal dischetto */
@@ -6586,7 +6669,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                 ballX={ballPos.x} ballY={ballPos.y} half={clock>=45?2:1}/* [7.561.0 richiesta PO «opterei anche per il cambio campo tra il primo ed il secondo tempo come nella realta'»] La simulazione NON scambia le porte — toccarla vorrebbe dire rimettere mano al segno di ogni gol, e non si fa per un'inquadratura. Cambia la CAMERA: nella ripresa la regia larga di cronaca ruota di 180 gradi attorno all'asse verticale, cosi' chi attaccava verso destra ora attacca verso sinistra e le tribune si scambiano di posto — che e' esattamente cio' che si vede in TV dopo il cambio campo. */ fermo={fermoRef}/* [7.559.0] LA SCENA DEVE SAPERE CHE IL GIOCO E' FERMO. Il primo giro del guardiano ha misurato 0 fermi su 9 interruzioni armate: bloccare il BERSAGLIO logico non basta, perche' nel 3D la palla ha altri padroni — il portatore la tiene ai piedi e cammina, e la palla cammina con lui. Il fermo viaggia come ref (stesso schema di `deliver`/`meshDef`: il renderer lo legge ogni fotogramma senza un re-render per tick). */ hlSitKey={phase==="playing"||phase==="matchday"?-1:(hlIdx+(_forceSeqRef.current||0)*10000)}/* [7.212.0] +progressivo: rigiocare la stessa situation riarma lo snap di scena */ stageStamp={stageStamp}/* [7.456.0 codice 007] il commit in cui atterra lo staging fresco — vedi il ri-taglio nel render-loop */ meshDef={meshDefRef} deliver={deliverRef} hlType={_hlType} hlSetPiece={_hlSetPiece} hlBall={_hlBall} hlWood={_hlWood} hlVariant={_hlVariant} hlPattern={_hlPattern} hlThrough={_hlThrough} hlOneTwo={_hlOneTwo} hlChain={!!(situations[hlIdx]&&situations[hlIdx]._chainDepth)}/* [7.234.0 #51] il 3D sa se la scena è un SECONDO TEMPO (catena) */ hlOutcomeKind={_hlOutcomeKind} hlQuality={_hlQuality} hlGkOut={_hlGkOut} adaptShift={_adaptShift} adaptHotY={_adaptHotY} adaptStr={_adaptStr} bgAction={bgAction} hlZone={hlZone}
                 timeOfDay={timeOfDay} weather={weather} kickoffHour={kickoffHour} attendance={attendance} crowd={crowdCtx}
                 waveEvent={waveEvent} isDerby={!!drby} isBigGame={mw>=7}
-                hlSuccess={outcome?.ok??null} hlReward={chosenAct?.rew||null} hlActLbl={chosenAct?.label||null} hlDef={_isDefHL} hlDefTraj={outcome?.defTraj||null} hlDefGesto={chosenAct?.defGesto||null} hlOffBall={!!situations[hlIdx]?.offBall} stagedSpot={_stagedSpotRef} cineBusy={cineBusyRef}/* [7.405.0 codice 001] il punto-palla staggiato: il renderer tiene la MESH del battitore sul punto (vedi la colla nel blocco giocatori) */                isDesktop={!isNarrow} ceremony={ceremony} shootout={phase==="shootout"?{kick:soFx}:null} onWalkoutDone={()=>{if(benchStart)setOnBench(true);
+                hlSuccess={outcome?.ok??null} hlReward={chosenAct?.rew||null} hlActLbl={chosenAct?.label||null} salienteOn={_sal689}/* [7.689.0] scena saliente extra-eroe in corso: il renderer riaccende i corpi e va in tribuna est */ hlDef={_isDefHL} hlDefTraj={outcome?.defTraj||null} hlDefGesto={chosenAct?.defGesto||null} hlOffBall={!!situations[hlIdx]?.offBall} stagedSpot={_stagedSpotRef} cineBusy={cineBusyRef}/* [7.405.0 codice 001] il punto-palla staggiato: il renderer tiene la MESH del battitore sul punto (vedi la colla nel blocco giocatori) */                isDesktop={!isNarrow} ceremony={ceremony} shootout={phase==="shootout"?{kick:soFx}:null} onWalkoutDone={()=>{if(benchStart)setOnBench(true);
                   // [6.88.0 collaudo PO «maggiore pathos durante la cronaca»] il calcio d'inizio dei BIG MATCH
                   //   apre con una riga d'atmosfera dedicata (finale > big match), scelta deterministica.
                   if(mw>=7||_isNeutralFinal){const _bmPool=_isNeutralFinal
