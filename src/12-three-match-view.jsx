@@ -6972,7 +6972,22 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
             mentre si legge la cronaca. Fuori dalla lista lui e fuori l'ombra; restano spenti i
             segnalini (diamante dell'eroe, alone, anello di zona): sono didascalie, non pallone. */
          try{const _all660=[...(sr.current.players||[]).map(pp=>pp&&(pp.mesh||pp)),...((glbAvatars||[]).map(a=>a&&a.root)),typeof refMesh!=='undefined'?refMesh:null,hero,typeof heroMark!=='undefined'?heroMark:null,typeof ballHalo!=='undefined'?ballHalo:null,typeof zoneRing!=='undefined'?zoneRing:null];
+           /* ⚠️ [7.688.0 collaudo PO: «non si vedono piu' le sostituzioni in ingresso ed uscita
+              dell'eroe»] E' UNA REGRESSIONE MIA, del 7.660/7.665. Quel blocco spegne i corpi durante la
+              telecronaca — che e' cio' che il PO aveva chiesto, «si deve vedere solo il pallone con la
+              sua ombra» — ma nella lista degli spenti c'e' anche `hero`, e la cerimonia d'ingresso e
+              d'uscita del subentrante (5.49.6) si svolge PROPRIO in fase `playing`. Risultato: gli si
+              spegneva il protagonista mentre entrava in campo.
+              Durante la sequenza l'eroe resta acceso — lui e il suo avatar GLB, che e' figlio del mesh
+              procedurale ma ha una visibilita' sua e va riacceso a parte (lezione del 7.665). Il resto
+              del campo rimane spento: una sostituzione non e' una scusa per rimettere in scena i
+              ventidue. `__CPM_NO688` ripristina il comportamento vecchio per la prova del rosso. */
+           const _subVivo688=!(typeof window!=='undefined'&&window.__CPM_NO688)&&(subEntryT>=0||subExitT>=0);
+           const _heroGlb688=(()=>{try{const a=(glbAvatars||[]).find(x=>x&&x.proc===hero);return a?a.root:null;}catch(_e){return null;}})();
            for(const _m of _all660){if(!_m)continue;
+             if(_subVivo688&&(_m===hero||(_heroGlb688&&_m===_heroGlb688))){
+               if(_m._vis660!==undefined)delete _m._vis660;
+               _m.visible=true;continue;}
              /* [7.665.0 v3 — IL GATE HA BOCCIATO LA v2: 191 rossi «22 giocatori non renderizzati»,
                 cioe' i corpi restavano spenti ANCHE nelle scene dell'eroe. Causa: riapplicando a ogni
                 fotogramma, il valore da ripristinare veniva RISALVATO gia' spento (false), e al
