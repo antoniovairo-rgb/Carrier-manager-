@@ -3798,6 +3798,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
             {const _oppR0=(isMatchHome?awayRoster:homeRoster)||awayRoster;const _oppR=_oppR0.filter(r=>r&&!/portiere|goalkeeper|^gk$/i.test(r.role||""));const _oppScorer=_surnBG((((_oppR.length?_oppR:_oppR0)[Math.floor(_rndM()*Math.min(11,(_oppR.length||_oppR0.length)))]||{}).name)||"")||"avversario";/* [7.178.0 RC-3] il PORTIERE avversario non firma più i gol ambientali (slot 0 del roster era in pool) *//* [7.170.0] cognome suffisso-aware */_evName170=_oppScorer;pushMatchEvent(nx,"opp_goal","😨 Gol di "+_oppScorer);setFloatGoal({text:"⚽ GOL — "+_oppScorer,col:"#94a3b8",key:Date.now()});}/* [6.49.0 RC] il gol AVVERSARIO usa la rosa dell'OPPONENTE (isMatchHome?away:home) · [7.112.0] badge col nome del marcatore avversario */
             // Dynamic HL — queue a reactive highlight a few minutes after conceding
             if(nx<75&&numHLRef.current<8&&!onBenchRef.current&&!subbedOffRef.current&&!heroRedRef.current)reactiveHLQueueRef.current.push(/* [7.178.0 RC-17] niente «il momento è tuo» a eroe fuori dal campo *//* [7.489.0] minuto SEEDATO: un highlight e' un evento, e deve cadere allo stesso minuto a tutte le velocita' */nx+4+Math.floor(_rndM()*5));}
+          if(/red|injury/.test(String(ev.ef||""))){try{salIstRef691.current=Date.now()+6000;}catch(_e691){}}/* [7.691.0] rosso o infortunio: sei secondi di scena */
           if(ev.ef==="opp_red"){if(oppRedRef.current){setMomentum(m=>clamp(m+6,0,100));/* [7.178.0 RC-5] SECONDO rosso estratto: solo un filo di momentum — niente evento/flash/possesso duplicati (il modello ha UN rosso) */}else{oppRedRef.current=true;setMomentum(m=>clamp(m+20,0,100));setPossession(p=>clamp(p+8,20,80));flashScreen({col:"rgba(22,163,74,0.20)",dur:600});pushMatchEvent(nx,"red",em=>"🟥 Espulsione avversaria al "+em+"'");}}
           if(ev.ef==="opp_injury"){setMomentum(m=>clamp(m+8,0,100));flashScreen({col:"rgba(245,158,11,0.15)",dur:400});}
           // Sprint 113: track palo/traversa in match events
@@ -6257,6 +6258,20 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
      Durante la finestra il renderer riaccende i ventidue e scende in tribuna est, orizzontale. La regola
      che tiene tutto onesto: la scena ILLUSTRA un evento gia' deciso dal microsim, non ne crea uno — se
      si vede un gol, quel gol e' gia' nel tabellone. `__CPM_NO689` la spegne per la prova del rosso. */
+  /* [7.691.0 — RIGORI ED ESPULSIONI: gli eventi ISTANTANEI vogliono una finestra loro. Nel 7.690 la
+     scena saliente si apriva su gol in costruzione e contropiedi, cioe' su stati che DURANO; un rigore
+     fischiato e un rosso estratto invece succedono e sono gia' finiti, e senza una finestra propria non
+     si vedrebbero mai — che e' proprio la meta' della richiesta del PO («azioni da gol pericolose,
+     espulsioni, rigori»). Qui l'evento arma una finestra a tempo: sei secondi per guardare il dischetto
+     o il cartellino, e poi si torna alla telecronaca. */
+  const salIstRef691=useRef(0);
+  /* [7.691.0 SOLO COLLAUDO] la finestra istantanea si arma anche da fuori. Su quattro partite seedate
+     non e' capitato NE' un rigore NE' un rosso — sono eventi rari — e senza questo il ramo nuovo
+     resterebbe non provato: spedirlo perche' «il codice sembra giusto» e' esattamente il modo in cui
+     due regole contraddittorie hanno convissuto per release nella Coppa delle Nazioni. */
+  useEffect(()=>{try{if(typeof window==='undefined')return;
+    window.__CPM_FORCE_SAL691=(ms)=>{try{salIstRef691.current=Date.now()+(+ms||6000);return true;}catch(_e){return false;}};
+  }catch(_e){}},[]);
   const _sal689=(()=>{try{
     if(typeof window!=='undefined'&&window.__CPM_NO689)return false;
     if(phase!=="playing"||paused)return false;
@@ -6266,8 +6281,13 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
        («palla persa alta, riparte in campo aperto»): e' l'azione pericolosa per definizione, e vale
        tanto quando la subiamo quanto quando la facciamo noi. Restano fuori i momenti morti: qui si
        apre solo su cio' che il motore ha gia' dichiarato pericoloso, mai su un minuto qualunque. */
-    const _on=!!pendingGoalRef.current||!!counterRef.current;
-    if(typeof window!=='undefined')window.__CPM_SAL689_ON=_on;/* testimone per il guardiano */
+    const _ist691=(salIstRef691.current||0)>Date.now();
+    const _rig691=!!(outRef.current&&outRef.current.pen629);
+    const _on=!!pendingGoalRef.current||!!counterRef.current||_rig691||_ist691;
+    if(typeof window!=='undefined'){window.__CPM_SAL689_ON=_on;
+      /* [7.691.0] la CAUSA della finestra, non solo il fatto che sia aperta: senza, il ramo nuovo
+         (rigori ed espulsioni) resta invisibile alla misura e potrei spedirlo senza saperlo. */
+      window.__CPM_SAL689_WHY=_on?(_rig691?"rigore":(_ist691?"cartellino":(pendingGoalRef.current?"gol":"contropiede"))):null;}
     return _on;
   }catch(_e){return false;}})();
   const _isFinalKO=(context==="euroMondiale_ko"&&player.euroMondiale?.koPhase==="final")||(context==="euro_ko"&&player.euro?.phase==="final")||(context==="cup"&&(player.cup?.round||0)>=4)||(context==="nationsCup"&&_isNeutralFinal);/* [7.72.2] finale Coppa delle Nazioni → festa big-win */

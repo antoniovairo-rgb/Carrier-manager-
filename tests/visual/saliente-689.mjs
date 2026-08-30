@@ -11,6 +11,7 @@
 import { startServer, launchBrowser, installCdnRoutes, openMatch, sleep } from './lib/harness.mjs';
 const srv = await startServer(); const port = srv.address().port;
 const b = await launchBrowser();
+const srv2 = srv, port2 = port, b2 = b;/* stesso server e stesso browser: il ramo istantaneo gira in coda alla partita principale */
 async function partita(rosso) {
   const ctx = await b.newContext({ viewport: { width: 412, height: 915 } });
   const page = await ctx.newPage();
@@ -48,7 +49,27 @@ console.log(`    finestre aperte nella partita: ${V.finestre}`);
 console.log(`    dentro:  campioni ${V.dentro} · con i ventidue in campo ${V.corpiDentro} · con camera in tribuna est bassa ${V.camOk}`);
 console.log(`    fuori:   campioni ${V.fuori} · con il campo vuoto (come dev'essere) ${V.corpiFuori}`);
 for (const d of V.dettagli) console.log(`      · ${d}`);
-await b.close(); srv.close();
 const ok = V.finestre >= 1 && V.corpiDentro >= V.dentro * 0.7 && V.camOk >= V.dentro * 0.7 && V.corpiFuori >= V.fuori * 0.9;
-console.log(ok ? '\n✅ PASS — l\'azione saliente si vede, e solo lei.\n' : '\n❌ FAIL — la scena non regge le bande.\n');
-process.exit(ok ? 0 : 1);
+/* [7.691.0] IL RAMO DEGLI EVENTI ISTANTANEI — rigori ed espulsioni. Su quattro partite seedate non e'
+   capitato NE' un rigore NE' un rosso (sono rari), quindi quel ramo resterebbe non provato: qui la
+   finestra si arma da fuori e si verifica che la scena risponda. ⚠️ Questo prova la FINESTRA, non
+   l'aggancio all'evento vero: quello lo confermera' il primo rigore che il PO incontrera' giocando. */
+const ctx2 = await b2.newContext({ viewport: { width: 412, height: 915 } });
+const p2 = await ctx2.newPage();
+await installCdnRoutes(p2);
+await p2.addInitScript(() => { window.__CPM_GLB = false; window.__CPM_REC = true; });
+await openMatch(p2, port2, { skipLoadAll: true, name: 'Ist' });
+await p2.evaluate(() => window.__CPM_AUTOPLAY(true, { seed: 7300, policy: 'seeded', tickMs: 300 }));
+await sleep(9000);
+const pre2 = await p2.evaluate(() => (window.__CPM_STATE().players || []).filter(x => x && x.visible).length);
+await p2.evaluate(() => window.__CPM_FORCE_SAL691(6000));
+await sleep(1500);
+let dentro2 = 0;
+for (let k = 0; k < 6; k++) { const d = await p2.evaluate(() => { const st = window.__CPM_STATE(); return { v: (st.players || []).filter(x => x && x.visible).length, w: window.__CPM_SAL689_WHY || null, y: st.camera.y }; }); if (d.w === 'cartellino' && d.v >= 10 && d.y <= 14) dentro2++; await sleep(600); }
+await sleep(4000);
+const post2 = await p2.evaluate(() => (window.__CPM_STATE().players || []).filter(x => x && x.visible).length);
+await ctx2.close(); await b2.close(); srv2.close();
+console.log(`  ramo cartellino/rigore: prima ${pre2} corpi · dentro ${dentro2}/6 campioni buoni · dopo ${post2} corpi`);
+const okIst = pre2 === 0 && dentro2 >= 4 && post2 === 0;
+console.log((ok && okIst) ? '\n✅ PASS — l\'azione saliente si vede, e solo lei.\n' : '\n❌ FAIL — la scena non regge le bande.\n');
+process.exit((ok && okIst) ? 0 : 1);
