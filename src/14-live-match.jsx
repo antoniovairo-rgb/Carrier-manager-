@@ -3607,6 +3607,17 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                nella nostra meta', ed e' una bugia garantita — misurata, 32,9% di fondatezza. La riga
                dichiara quindi un PASSO verso la zona del suo modulo, lungo al massimo 26 unita': il
                pallone ci arriva davvero, e l'azione avanza di tappa in tappa come una vera manovra. */
+            /* [7.687.0] I NOMI PER LE RIGHE PROGRAMMATE. La riga che passa dal tick li prende da
+               `_pickN` piu' a valle, fuori dalla portata del timer: qui si legge il roster ALLA FONTE,
+               come gia' fanno le interazioni dal 7.669 (dove leggere una variabile dichiarata settecento
+               righe piu' sotto mi aveva dato «il compagno» al posto di un nome). k=1 e 2 sono due dei
+               nostri, sempre diversi fra loro; k=0 e' un avversario. */
+            const _nm687=(k)=>{try{
+              const _R=(isMatchHome?homeRoster:awayRoster)||homeRoster||[],_O=(isMatchHome?awayRoster:homeRoster)||awayRoster||[];
+              const _L=(k===0?_O:_R)||[];if(!_L.length)return k===0?"un avversario":"un compagno";
+              const _i=(k===2?1:0)+Math.floor(((nx||1)*7+k*13)%Math.max(1,_L.length-1));
+              const _p=_L[_i%_L.length]||{};const _n=String(_p.n||_p.name||"").trim();
+              return _n?_n.split(/\s+/).pop():(k===0?"un avversario":"un compagno");}catch(_e){return k===0?"un avversario":"un compagno";}};
             const _ZX669={defend_goal:18,retreat:34,midfield:50,attack:68,attack_goal:85};
             /* ⚠️ [7.683.0 — LA LIBRERIA SEGUE IL PALLONE, NON GLI COMANDA DOVE ANDARE.
                Misura appaiata, tre partite sugli stessi semi, libreria spenta contro accesa: le righe
@@ -3633,9 +3644,24 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               if(_d<=26)return{x:+_tx.toFixed(1),y:+_ty.toFixed(1)};
               const _k=26/_d;return{x:+(_b.x+_dx*_k).toFixed(1),y:+(_b.y+_dy*_k).toFixed(1)};}catch(_e){return null;}};
             if(_LA&&_LA.i<_LA.righe.length){
-              const _r=_LA.righe[_LA.i++];
-              ev={...ev,txt:_r.txt,pd:_segue683()||_r.pd||ev.pd||null,bpos:_bpos683(_r.pd,_LA.corsia),ef:null,ms:null,_lib666:1};
-              if(_LA.i>=_LA.righe.length){libAzRef666.current=null;_LR.ultima=nx;}
+              /* ⚠️ [7.687.0 — L'AZIONE SALIENTE SI RACCONTA IN SECONDI, NON IN MINUTI. Quarta segnalazione
+                 del PO, e le mie misure dicevano tutte «ci sono»: quattro azioni a partita, 4-10 righe
+                 l'una, strutture mai ripetute. Erano vere e non servivano a niente. Guardando il BANNER
+                 invece del registro: l'azione si apriva all'8' e le sue righe uscivano al 12', 17', 18' —
+                 una per TICK, e la cronaca emette una riga ogni tre o quattro minuti di gioco. Cinque
+                 righe diventavano un quarto d'ora, con cori e commenti tecnici in mezzo: da fuori non e'
+                 un'azione, sono frasi sconnesse. Ed e' esattamente cio' che il PO vedeva.
+                 Ora l'azione, appena si apre, PROGRAMMA le sue righe a 1,3 secondi l'una dall'altra e
+                 se le porta a casa in una decina di secondi reali — come la si guarderebbe in TV. Il
+                 tick non la governa piu': governa solo QUANDO comincia. */
+              /* ⚠️ [7.687.0] se le righe sono state PROGRAMMATE (`auto`), il tick non ne consuma: la
+                 prima stesura faceva entrambe le cose e nel banner e' uscita una riga DOPPIA. */
+              if(_LA.auto){/* le porta a casa il timer */}
+              else{
+                const _r=_LA.righe[_LA.i++];
+                ev={...ev,txt:_r.txt,pd:_segue683()||_r.pd||ev.pd||null,bpos:_bpos683(_r.pd,_LA.corsia),ef:null,ms:null,_lib666:1};
+                if(_LA.i>=_LA.righe.length){libAzRef666.current=null;_LR.ultima=nx;}
+              }
             } else if(!_LA&&!pendingGoalRef.current&&!_recHij545&&!_koHij536&&nx>2&&nx<88&&(nx-(_LR.ultima|0))>=4){
               const _seme666=String((opponent&&(opponent.n||opponent.name))||'x')+'|'+((player&&player.week)||0)+'|'+nx;
               const _ctx666={stile:'equilibrato',dominio:0,mn:nx,zona:_dec499||null,
@@ -3645,7 +3671,34 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                 const _rd666=libRender664(_st666,_ctx666,_RUOLI666,false,_seme666);
                 if(_rd666&&_rd666.righe&&_rd666.righe.length>1){
                   const _rr666=_rd666.righe.map(r2=>({txt:r2.txt,pd:(LIB662[r2.mod]&&LIB662[r2.mod].z)||null,cons:r2.cons||null}));
-                  libAzRef666.current={righe:_rr666,i:1,sig:_st666.sig,corsia:_st666.corsia||null};
+                  libAzRef666.current={righe:_rr666,i:1,sig:_st666.sig,corsia:_st666.corsia||null,auto:!(typeof window!=='undefined'&&window.__CPM_NO687)};
+                  /* [7.687.0] le righe restanti dell'azione escono SUBITO DOPO, a 1,3 s l'una: e' la
+                     differenza fra un'azione e un elenco di frasi. `__CPM_NO687` torna al vecchio ritmo
+                     (una riga per tick) per la prova del rosso. */
+                  if(!(typeof window!=='undefined'&&window.__CPM_NO687)){
+                    for(let _k687=1;_k687<_rr666.length;_k687++){
+                      chantTimersRef.current.push(setTimeout(((_ix)=>()=>{try{
+                        const _LA2=libAzRef666.current;if(!_LA2||_LA2.sig!==_st666.sig)return;
+                        const _r2=_LA2.righe[_ix];if(!_r2)return;
+                        _LA2.i=_ix+1;
+                        /* ⚠️ [7.687.0] I SEGNAPOSTO VANNO SOSTITUITI ANCHE QUI. La riga che passa dal
+                           tick attraversa la sostituzione dei nomi ({H}, {H2}, {A}...); le righe che
+                           programmo io la saltavano, e nel banner e' comparso «Palla dentro a {H}, che
+                           la gira subito sull'altro lato» — un segnaposto crudo davanti al giocatore.
+                           Stessa tabella della riga normale, presa da qui. */
+                        let _t687=String(_r2.txt||"");
+                        try{_t687=_t687.replace(/\{H2\}/g,_nm687(2)).replace(/\{H\}/g,_nm687(1)).replace(/\{A\}/g,_nm687(0));}catch(_e){}
+                        addComRef681.current&&addComRef681.current(_t687,"#dbeafe",clockRef.current);
+                        /* ⚠️ [7.687.0] LA RIGA PROGRAMMATA DEVE ENTRARE NEL REGISTRO come quella del tick.
+                           Senza, il guardiano contava «libreria 6» dove prima erano 28: non era il gioco
+                           a essere peggiorato, era la misura a non vedere piu' le righe che non passano
+                           dal tick. Una misura che sottostima e' una misura che mente, e questa l'avrei
+                           spedita insieme al rimedio che la rende cieca. */
+                        try{cpmEv("chronicle",{min:clockRef.current,lib:1,rk:"libreria",txt:_t687});}catch(_e){}
+                        if(_LA2.i>=_LA2.righe.length){libAzRef666.current=null;_LR.ultima=clockRef.current;}
+                      }catch(_e687){}})(_k687),1300*_k687));
+                    }
+                  }
                   _LR.partita.push(_st666.sig);
                   ev={...ev,txt:_rr666[0].txt,pd:_segue683()||_rr666[0].pd||ev.pd||null,bpos:_bpos683(_rr666[0].pd,_st666.corsia),ef:null,ms:null,_lib666:1};
                   if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){try{(window.__CPM_LIB666=window.__CPM_LIB666||[]).push({min:nx,sig:_st666.sig,n:_rr666.length});}catch(_e){}}
@@ -4169,7 +4222,19 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               ventisei in tutta la gara, fanno ventisette tick di silenzio in piu', e la catena degli
               schemi e' la prima a pagarli. Sette, come un gol: il tempo per LEGGERE non serve piu' qui,
               perche' adesso lo da' il freeze, che ferma la partita di suo. */
-           bgCoolRef.current=(typeof window!=='undefined'&&window.__CPM_NO490)?3:(_sc681?7:(_imp?7:_cool501));
+           /* ⚠️ [7.687.0 — LE AZIONI SALIENTI USCIVANO A RATE, e per questo il PO non le vedeva.
+              Quarta segnalazione, e le misure precedenti dicevano tutte «ci sono»: 4 azioni composte a
+              partita, 4-10 righe l'una, strutture distinte. Erano vere e non servivano a niente.
+              Guardando il BANNER invece del registro, riga per riga: la libreria apre un'azione all'8',
+              al 43' e all'84', ma le sue righe compaiono al 12', 17', 18', 45', 84' — una ogni tre o
+              quattro minuti, con altre frasi in mezzo. La cronaca emette una riga ogni ~3,5 minuti di
+              gioco, quindi un'azione da cinque righe si spalma su quindici minuti: nessuno la puo'
+              riconoscere come un'azione, e da fuori sono frasi sconnesse.
+              Una mini-sequenza calcistica dura dieci secondi. Finche' un'azione della libreria e' in
+              corso il respiro scende al minimo: le sue righe si incalzano come l'azione che raccontano,
+              e l'azione finisce prima che ne cominci un'altra. */
+           const _libVivo687=!!(libAzRef666.current&&libAzRef666.current.i<(libAzRef666.current.righe||[]).length);
+           bgCoolRef.current=(typeof window!=='undefined'&&window.__CPM_NO490)?3:((_libVivo687&&!(typeof window!=='undefined'&&window.__CPM_NO687))?1:(_sc681?7:(_imp?7:_cool501)));
            if(typeof window!=='undefined'&&window.__CPM_IMP490!==undefined){try{const _w=(window.__CPM_IMP490=window.__CPM_IMP490||[]);if(_w.length<200)_w.push({m:nx,imp:!!_imp,t:Math.round(performance.now())});}catch(_e){}}}
           tcCountRef.current++;
           /* ⚠️ RITARDO E FREQUENZA CORRETTI DOPO LA MISURA: la prima stesura usava 950 ms e una riga su
