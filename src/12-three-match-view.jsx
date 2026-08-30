@@ -1526,6 +1526,7 @@ function ThreeMatchView(props){
       return map;
     };
     let oppActType=null,oppActT=0,oppMesh=null,oppDiveDir=1; // CIN-2: animazione reazione avversario
+    let _lastGk695=0;/* [7.695.0] ultimo segnale di parata gia' consumato: il tuffo si arma sul CAMBIO, non sulla presenza */
     let hlPostArcT=-1,hlPostArcType=null,hlPostVZ=0,hlPostVX=0; // 3DV-9: animazione post-arco · [7.514.0 R2/3] VX: il deflect non aveva una componente X — la palla parata restava sulla linea di porta a rimbalzare in laterale
     let heroPostT=-1,heroPostType=null; // 3DV-13: reazione eroe post-azione fallita
     let gkSaveCelebT=-1,gkSaveMesh=null; // 3DV-13: portiere si rialza dopo parata
@@ -5032,6 +5033,23 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
         if(isHL&&preActionT>=0)preActionT+=dt; // CINE-4: avanza timer pre-action
         if(_curPh==="hl_choose"&&_chooseT>=0)_chooseT+=dt; // FREEZE #2: avanza il timer della fase di lettura
         // CIN-2: reazione avversario — gk_dive (portiere), opp_stumble/opp_spin (difensore); si applica DOPO animOne per sovrascriverlo
+        /* ⚠️ [7.695.0 — IL PORTIERE SI TUFFA ANCHE FUORI DALLE SCENE DELL'EROE] I cinque siti che armano
+           `gk_dive` stanno tutti dentro il ramo highlight: nella partita ambiente il portiere non si e' MAI
+           tuffato, e il PO che chiede «la parata del portiere» guardava proprio quella. Qui il segnale
+           arriva dalla riga di cronaca che NOMINA il portiere (7.695 in live-match), e para il portiere
+           del lato che NON attacca. Una sola fonte per il testo e per il gesto: non possono divergere.
+           Il ramo cede a qualunque reazione gia' in corso, quindi il cancello del 7.603 («un portiere non
+           si tuffa due volte in tre secondi») resta valido. Rosso __CPM_NO695. */
+        if(!(typeof window!=='undefined'&&window.__CPM_NO695)&&P.gkSave&&P.gkSave.current&&P.gkSave.current.t&&P.gkSave.current.t!==_lastGk695&&!oppActType&&sr.current&&sr.current.players){
+          _lastGk695=P.gkSave.current.t;
+          try{const _tm695=(P.gkSave.current.side==='home')?'away':'home';let _gk695=null;
+            sr.current.players.forEach((pp,ii)=>{const src=(P.allPlayers||[])[ii];if(src&&src.team===_tm695&&src.gk&&pp&&pp.mesh)_gk695=pp.mesh;});
+            if(_gk695){oppActType="gk_dive";oppActT=0;oppMesh=_gk695;oppDiveDir=ball.position.z>=_gk695.position.z?1:-1;
+              _gk695._divePz=_gk695.position.z;_gk695._diveYaw=_gk695.rotation.y;
+              _gk695._diveToZ=clamp(ball.position.z,_gk695.position.z-9,_gk695.position.z+9);_gk695._diveDur=0.95;
+              if(typeof window!=='undefined'&&window.__CPM_REC){try{const _w=(window.__CPM_GK695=window.__CPM_GK695||{tuffi:0});_w.tuffi++;}catch(_e){}}}
+          }catch(_e695){}
+        }
         if(oppActType&&oppMesh){
           oppActT+=aDt;const _OT=oppActType==="gk_dive"?((!(typeof window!=='undefined'&&window.__CPM_NO465)&&ballArcActive)?Math.max(oppMesh._diveDur||0.90,oppActT+0.05):(oppMesh._diveDur||0.90))/* [7.465.0] IL TUFFO NON PUO' FINIRE PRIMA DEL PALLONE. Anche con la durata calcolata sul volo, su 2 tuffi su 5 il gesto si spegneva col portiere a meta' distesa (26% e 45%): stimare la durata non basta, perche' il tempo d'arrivo dipende anche dal rallentatore e dal frame-rate. Finche' l'arco della conclusione e' VIVO il tuffo resta vivo — non si indovina la durata, si guarda il pallone. */:oppActType==="opp_tackle"?0.85:oppActType==="gk_block"?(((typeof window!=='undefined'&&window.__CPM_NO576)?0:1)&&ballArcActive?Math.max(0.62,oppActT+0.05):0.62)/* [7.552.0 codice 111 «portiere fuori tempo» + «Non ha effettuato la parata»] IL RIFLESSO MUORE PRIMA DEL PALLONE. Il 7.465 ha legato la vita del TUFFO a quella dell'arco («non si indovina la durata, si guarda il pallone») ma ha lasciato fuori il RIFLESSO, che resta inchiodato a 0,62s fissi. MISURATO (portiere-552): su gk_block il gesto si spegne con il volo del pallone al 71% e al 35% — il portiere si oppone, finisce, torna in piedi normale, E POI arriva la palla. Da fuori e' esattamente «non ha effettuato la parata». Ora vale la stessa regola del tuffo: finche' l'arco e' vivo, il riflesso e' vivo. */:0.55,u=Math.min(oppActT/_OT,1),sw=Math.sin(u*Math.PI);/* [7.203.0] il riflesso è più RAPIDO del tuffo · [7.215.0] la durata del tuffo segue quella del tiro: il portiere arriva sulla palla, non prima */
           if(_CPM_TEST&&typeof window!=='undefined'){try{const _W=window.__CPM_GKW||(window.__CPM_GKW={ev:[],cur:null});const _isGk=(oppActType==='gk_dive'||oppActType==='gk_block'||oppActType==='gk_catch');const _c=_W.cur;if(!_c||_c.type!==oppActType||_c.m!==oppMesh||u<_c.lu-1e-6){if(_c){_W.ev.push(_c.o);if(_c.lu<0.95&&_c.o.gk)_W.ev.push({k:'cut',from:_c.type,atU:+_c.lu.toFixed(2),to:oppActType,same:_c.m===oppMesh?1:0});}_W.cur={type:oppActType,m:oppMesh,lu:u,o:{k:'gest',type:oppActType,gk:_isGk?1:0,dur:+_OT.toFixed(2),arc:ballArcActive?1:0,arcDur:+(ballArcDur||0).toFixed(2),dz0:null,dzMin:1e9,uAtMin:null,uEnd:0}};}const _o=_W.cur.o;_W.cur.lu=u;_o.uEnd=+u.toFixed(2);_o.arcEnd=ballArcActive?+clamp(ballArcT/Math.max(ballArcDur,0.01),0,9).toFixed(2):null;if(_isGk&&oppMesh){const _dw=Math.hypot(ball.position.x-oppMesh.position.x,ball.position.z-oppMesh.position.z);if(_o.dz0==null)_o.dz0=+_dw.toFixed(2);if(_dw<_o.dzMin){_o.dzMin=+_dw.toFixed(2);_o.uAtMin=+u.toFixed(2);}}}catch(_e){}} /* [7.552 sonda] TESTIMONE DEL PORTIERE: per ogni gesto GK registra durata, distanza minima dal pallone e la FRAZIONE del gesto in cui quel minimo cade (0,5 = portiere disteso quando la palla passa); `cut` marca un gesto interrotto prima della fine = doppio gesto. */
@@ -6918,8 +6936,17 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
          campo: e' la ripresa da bordo campo di una partita in TV. */
       if(P.salienteOn&&!P.ceremony&&!P.shootout&&!replaying&&!(typeof window!=='undefined'&&window.__CPM_NO689C)){
         const _bx689=ball?ball.position.x:0,_bz689=ball?ball.position.z:0;
-        tPx=clamp(_bx689,-38,38);tPy=9;tPz=40;
-        tLx=clamp(_bx689*0.85,-34,34);tLy=1.6;tLz=clamp(_bz689*0.5,-12,12);
+        /* ⚠️ [7.695.0 — FOTOGRAFATA. Collaudo PO sul 7.694: «le azioni pericolose, gol e tentativi non si
+           vedono»] Per quattro release ho misurato NUMERI del pallone e li ho visti salire: in area 6 su 9,
+           avanzata mediana 86. Poi ho SCATTATO durante una finestra col pallone a gx 91, e il difetto era
+           tutto li': la camera a quota 9 e a quaranta metri riempiva mezzo fotogramma di tribuna e cielo,
+           il gioco stava in una striscia sottile in mezzo, e il look-at tappato a 34 lasciava PORTA E AREA
+           FUORI INQUADRATURA proprio quando il pallone ci arrivava. Il pallone c'era davvero: non si vedeva.
+           Nessuna sonda numerica poteva accorgersene — misuravano il campo, non il fotogramma.
+           Ora: piu' vicina (27 invece di 40) e piu' bassa (6,5 invece di 9), cosi' il prato riempie il
+           quadro; e il look-at arriva a 46, cioe' fino al palo, seguendo il pallone anche in profondita'. */
+        tPx=clamp(_bx689*0.92,-42,42);tPy=6.5;tPz=27;
+        tLx=clamp(_bx689,-46,46);tLy=1.4;tLz=clamp(_bz689*0.9,-18,18);
         try{if(sr.current._tocc503)sr.current._tocc503.push('saliente689');}catch(_e){}
       }
       else if((isHL||P.matchPhase==="playing")&&!P.ceremony&&!P.shootout&&!replaying&&!(typeof window!=='undefined'&&window.__CPM_NO650)){if(!isHL&&tPz<16){try{if(sr.current._tocc503)sr.current._tocc503.push('tribuna-clamp650');}catch(_e650b){}tPz=16;}}/* [7.654.0 v2] il clamp resta solo sulla CRONACA in tribuna (z>=16): negli HL comanda la regia storica, come chiesto dal PO *//* [7.650.0 v3] IL VINCOLO E' L'ULTIMA PAROLA: misurato un residuo deterministico a z -5,2 (24 percento dei campioni hl sotto 16) scritto da una mano A VALLE dell'override (bisezione con soggetto oltre il piano tribuna) — il clamp sta dopo TUTTE le mani, prima di snap e lerp: da qui la camera non attraversa MAI */

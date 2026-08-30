@@ -1518,6 +1518,8 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
      gesto dal vocabolario MP-1, quindi il 3D segue la stessa catena che il testo racconta. */
   const azioneRef=useRef(null),_lastCatRef=useRef(-1);/* [7.537.0 v4] minuto dell'ultima battuta di catena: serve per alternare con il repertorio */
   const ponteRef=useRef(null),ponteIdxRef=useRef(-1);/* [7.532.0 NO544 — collaudo PO «da centrocampo in cronaca all'improvviso highlights di attacco: nessuna concatenazione»] IL PONTE: ~2' prima dell'highlight in calendario la cronaca SCORTA la palla verso il punto di nascita della scena (hlBallSpot della situation in arrivo) e le righe raccontano l'avvicinamento — l'highlight si apre dove il racconto ha portato il gioco *//* [7.532.0 v2] l'innesco vive nella TRAMA (flip di possesso con palla nel terzo difensivo del nuovo padrone), NON nel sorteggio di una riga poss: i pesi di zona 7.525 schiacciano le righe di recupero proprio quando la palla e' alta (misurato: 0 lanci in 2 partite). Cooldown 6' di gioco. *//* [7.530.0 collaudo PO «Non si riparte dal centro dopo un gol!» — rosso __CPM_NO536] il 7.525 toccava il centro per UN tick (300ms): un lampo, non una ripartenza. Ora allo scadere del conto kickRef nasce una RIPARTENZA RECITATA: kickoffRef tick di attesa al centro, le righe gia' sorteggiate vengono DIROTTATE su battute di calcio d'inizio (ordine sorteggi intatto), side = chi rimette in gioco (chi ha subito) */
+  const gkSave695=useRef({t:0,side:null});/* [7.695.0] IL SEGNALE DELLA PARATA. Identita' stabile: il renderer lo legge a ogni fotogramma e si arma sul cambio di `t`, senza che una parata costi un re-render (stesso pattern di stagedSpot e cineBusy). */
+  const occCool695=useRef(-99);/* [7.695.0] minuto dell'ultima occasione: una ogni undici minuti al massimo, o la partita diventa un tiro al bersaglio */
   const pianoLock693=useRef(0);/* [7.693.0 — IL PIANO DEL GOL POSSIEDE IL PALLONE. Rosso __CPM_NO693]
      MISURATO (traccia-693, tre costruzioni in una partita): il piano ESCE tutto (3/3, 2/2, 3/3) e le sue
      righe propongono davvero il limite dell'area (bx 84, e il freno non le tocca: bex 84). Ma il pallone
@@ -2840,6 +2842,43 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
             {t:"💥 "+_nc+" calcia di prima, senza controllare!",x:_X(92+_J(7,3)),y:50+_J(8,10),chi:_c.i,ms:1},
           ];
         };
+        /* ⚠️ [7.695.0 — LA PARATA. Collaudo PO: «tiro pericoloso, gol, parata del portiere, punizione»]
+           Fino al 7.694 il PIANO esisteva solo per i gol: ogni costruzione finiva in rete, e le occasioni
+           FALLITE — che in una partita vera sono la maggioranza — non avevano nessuna scena. Il portiere,
+           in 3D, non si tuffava mai fuori dalle scene dell'eroe: i cinque siti che armano `gk_dive` sono
+           tutti dentro il ramo highlight. Qui nasce l'azione che NON diventa gol: stessa macchina del piano
+           (quindi stessa custodia del pallone del 7.693 e stessa finestra 3D del 7.689), ma senza evento
+           del microsim in fondo — il punteggio non lo tocca nessuno, e il tabellino prende un tiro, che e'
+           quello che e' successo. L'ultimo tempo NOMINA il portiere e accende il tuffo. Rosso __CPM_NO695. */
+        const _pianoOcc695=(_latoN)=>{
+          const _mpO=(matchPlayersRef.current||[]).map((q,i)=>({q,i})).filter(o=>o.q&&o.q.team===_latoN&&!o.q.gk);
+          if(_mpO.length<3)return null;
+          const _dirO=_latoN==='home'?1:-1;
+          const _hpO=(k)=>Math.abs(hashStr("o695|"+nx+"|"+k));
+          const _XO=(x)=>_dirO>0?x:100-x;
+          const _cgO=(n)=>{const t=String(n||"").trim();return t?t.charAt(0)+t.slice(1).toLowerCase():"un compagno";};
+          const _JO=(k,a)=>((_hpO("j"+k)%100)/100-0.5)*a;
+          const _a=_mpO[_hpO("u1")%_mpO.length];let _b=_mpO[_hpO("u2")%_mpO.length];if(_b.i===_a.i)_b=_mpO[(_hpO("u2")+1)%_mpO.length];
+          const _na=_cgO(_a.q.name),_nb=_cgO(_b.q.name);
+          const _gkO=(matchPlayersRef.current||[]).find(q=>q&&q.team===(_latoN==='home'?'away':'home')&&q.gk);
+          const _ngk=_cgO(_gkO&&_gkO.name)||"Il portiere";
+          const _fO=_hpO("fam")%3;
+          if(_fO===0)return[
+            {t:"\u26a1 "+_na+" guadagna il fondo e mette dentro: mischia in area!",x:_XO(84+_JO(1,5)),y:50+_JO(2,16),chi:_a.i},
+            {t:"\ud83d\udca5 "+_nb+" calcia da due passi!",x:_XO(93+_JO(3,3)),y:50+_JO(4,8),chi:_b.i,ms:1},
+            {t:"\ud83e\udde4 "+_ngk+" ci mette il corpo e respinge: che parata!",x:_XO(96),y:50+_JO(5,6),gk:1},
+          ];
+          if(_fO===1)return[
+            {t:"\ud83c\udfaf "+_na+" si accentra e cerca il giro sul secondo palo.",x:_XO(78+_JO(1,6)),y:50+_JO(2,18),chi:_a.i},
+            {t:"\ud83d\udca5 Conclusione a giro di "+_na+": palla verso l'incrocio!",x:_XO(94+_JO(3,2)),y:50+_JO(4,10),chi:_a.i,ms:1},
+            {t:"\ud83e\udde4 "+_ngk+" vola e la toglie da sotto l'incrocio: in angolo!",x:_XO(96),y:50+_JO(5,8),gk:1},
+          ];
+          return[
+            {t:"\ud83d\udcc8 "+_na+" verticalizza per "+_nb+": e' solo davanti al portiere!",x:_XO(80+_JO(1,6)),y:50+_JO(2,14),chi:_b.i},
+            {t:"\ud83d\udca5 "+_nb+" a tu per tu, calcia di prima!",x:_XO(92+_JO(3,3)),y:50+_JO(4,8),chi:_b.i,ms:1},
+            {t:"\ud83e\udde4 Uscita bassa di "+_ngk+": gli chiude lo specchio addosso!",x:_XO(95),y:50+_JO(5,6),gk:1},
+          ];
+        };
         const _apriCatena644=(_lato551)=>{
           const _mp551=(matchPlayersRef.current||[]);
           if(azioneRef.current||_mp551.length<11)return false;
@@ -2955,7 +2994,30 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           if(!(typeof window!=='undefined'&&window.__CPM_NO645)&&!_simEv77&&!_rip575&&!pendingGoalRef.current&&golCoda645.current.length){_simEv77=golCoda645.current.shift();if(nx<90)_simEv77={..._simEv77,_cap645:7};/* [7.645 v2] la costruzione del gol accodato ha un tetto DIMEZZATO (7): meta' saturazione, stessa regola d'area */if(nx>=90){_simEv77={..._simEv77,_diretto645:true};if(typeof window!=='undefined'&&window.__CPM_REC){try{const _w=(window.__CPM_REC645=window.__CPM_REC645||{coda:0,codaMax:0,dir:0,rec:0,forza92:0});_w.dir++;}catch(_e){}}}}/* [7.645.0] il gol in coda entra quando il campo e' libero e si costruisce come gli altri; nel RECUPERO entra diretto (copia marcata: il template BG_MATCH e' condiviso, non si muta) perche' il recupero e' bordato */
         }
         if(!(typeof window!=='undefined'&&window.__CPM_NO532)){
-          const _pg532=pendingGoalRef.current;
+          /* [7.695.0] L'OCCASIONE SI ARMA QUANDO IL CAMPO E' LIBERO E LA SQUADRA E' AVANTI: nessun'altra
+             macchina in corso, pallone gia' oltre meta' campo nel verso di chi ha il turno, e non piu' di
+             una ogni otto minuti — un'azione pericolosa e' un evento, non il ritmo della partita. */
+          if(typeof window!=='undefined'&&window.__CPM_REC){try{const _g=(window.__CPM_OCC695G=window.__CPM_OCC695G||{giri:0,ev:0,pg:0,ct:0,hl:0,out:0,sp:0,fermo:0,ko:0,min:0,cool:0,adv:0,dado:0,piano:0,ok:0});_g.giri++;
+            if(_simEv77)_g.ev++;else if(pendingGoalRef.current)_g.pg++;else if(counterRef.current)_g.ct++;else if(_inHL77)_g.hl++;else if(outRef.current)_g.out++;else if(spRef.current)_g.sp++;else if(fermoRef.current)_g.fermo++;else if(kickoffRef.current>0||kickRef.current>0)_g.ko++;else if(!(nx>6&&nx<86))_g.min++;else if((nx-(occCool695.current|0))<8)_g.cool++;else{const _b=ballPosRef.current||{x:50,y:50};const _d=(possTurnRef.current>0)?1:-1;const _a=_d>0?(_b.x||50):100-(_b.x||50);if(_a<48)_g.adv++;else if((Math.abs(hashStr("occ695|"+nx+"|"+((bgSimSeedRef.current|0))))%100)>=72)_g.dado++;else _g.ok++;}}catch(_e){}}/* [7.695 strumento] QUALE cancello ferma l'occasione, tick per tick: senza, «zero occasioni armate» non si spiega */
+          if(!(typeof window!=='undefined'&&window.__CPM_NO695)&&!_simEv77&&!pendingGoalRef.current&&!counterRef.current&&!_inHL77&&!outRef.current&&!spRef.current&&!fermoRef.current&&kickoffRef.current<=0&&kickRef.current<=0&&nx>6&&nx<86&&(nx-(occCool695.current|0))>=8){try{
+            const _bO695=ballPosRef.current||{x:50,y:50};const _dO695=(possTurnRef.current>0)?1:-1;
+            const _advO695=_dO695>0?(_bO695.x||50):100-(_bO695.x||50);
+            if(_advO695>=48&&(Math.abs(hashStr("occ695|"+nx+"|"+((bgSimSeedRef.current|0))))%100)<72){
+              const _piO695=_pianoOcc695(_dO695>0?"home":"away");
+              if(_piO695){occCool695.current=nx;pendingGoalRef.current={ev:null,occ:1,dir:_dO695,ticks:0,righe:0,righeLato:0,cap:0,piano:_piO695,step:0};
+                if(typeof window!=='undefined'&&window.__CPM_REC){try{const _w=(window.__CPM_OCC695=window.__CPM_OCC695||{armate:0,parate:0,min:[]});_w.armate++;if(_w.min.length<40)_w.min.push(nx);}catch(_e){}}}}
+          }catch(_eO695){}}
+          let _pg532=pendingGoalRef.current;
+          /* ⚠️ [7.695.0 — UN'OCCASIONE NON PUO' RITARDARE UN GOL. Misurato nel rituale, non temuto.]
+             Con le occasioni che occupano la stessa macchina del piano, un gol del microsim arrivato
+             mentre un'occasione era in corso finiva in CODA (7.645) e usciva minuti dopo: il guardiano
+             `gol-con-manovra` e' sceso a DUE gol su due partite, sotto il minimo del campione, cioe' e'
+             diventato cieco. Una banda che non puo' giudicare e' peggio di una banda rossa, ed e' la
+             seconda volta che questa lezione mi si presenta in due release. La gerarchia e' ovvia una
+             volta scritta: il gol e' un FATTO del microsim, l'occasione e' solo racconto. Se arrivano
+             insieme, e' l'occasione a farsi da parte, subito e senza coda. */
+          if(_simEv77&&_pg532&&_pg532.occ&&!(typeof window!=='undefined'&&window.__CPM_NO695)){pendingGoalRef.current=null;_pg532=null;
+            if(typeof window!=='undefined'&&window.__CPM_REC){try{const _w=(window.__CPM_OCC695=window.__CPM_OCC695||{armate:0,parate:0,min:[]});_w.cedute=(_w.cedute|0)+1;}catch(_e){}}}
           if(_simEv77&&_pg532&&!(typeof window!=='undefined'&&window.__CPM_NO645)&&!_simEv77._diretto645&&golCoda645.current.length<1){golCoda645.current.push(_simEv77);_simEv77=null;/* [7.645 v2] coda MAX 1: il guardiano e' andato rosso (arbitro 3<6, causali 84%) con le costruzioni serializzate — ogni gol in coda paga ~14 tick di pendingGoal e sotto costruzione l'arbitro tace per progetto. Un solo gol aspetta; un eventuale terzo entra diretto, com'era prima del 7.645. */if(typeof window!=='undefined'&&window.__CPM_REC){try{const _w=(window.__CPM_REC645=window.__CPM_REC645||{coda:0,codaMax:0,dir:0,rec:0,forza92:0});_w.coda++;if(golCoda645.current.length>_w.codaMax)_w.codaMax=golCoda645.current.length;}catch(_e){}}}/* [7.645.0 — UN GOL ALLA VOLTA. Rosso __CPM_NO645] FOTOGRAFATO (golback644b): un gol rotolato MENTRE un'altra costruzione e' pendente non aveva NESSUN ramo — si applicava diretto senza racconto (50' Pv) e la sua festa+kickoff calpestavano il finale della costruzione viva (56' Pv, nudo). Ora si mette in CODA e avra' la sua costruzione quando il campo e' libero. */
           if(_simEv77&&!_pg532&&!_simEv77._diretto645){
             const _nostro532=_simEv77.ef==="team_goal";
@@ -2971,7 +3033,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
               if(_a&&_a.p649&&_a.tick===(_pg532.ticks|0)-1){_a.tick=_pg532.ticks|0;_a.mn=nx;_a.passaggi=_pg532.step|0;}
               else _P.azioni.push({p649:1,tick:_pg532.ticks|0,mn:nx,mn0:nx,passaggi:0,max:0,perc:0,lx:0,ly:0,da:"piano"});}catch(_e649){}}
             const _arr693=(()=>{try{if(typeof window!=='undefined'&&window.__CPM_NO693)return true;const _lt=_pg532.lastTg;if(!_lt)return true;if(((_pg532.att693|0))>=1)return true;const _b=ballPosRef.current||{x:50,y:50};if(Math.hypot((_b.x||50)-_lt.x,(_b.y||50)-_lt.y)<=8)return true;_pg532.att693=(_pg532.att693|0)+1;return false;}catch(_e){return true;}})();/* [7.693.0 v2] l'attesa vale UN tick solo: alla prima stesura consumava tutto il tetto piano+4 e il gol scivolava fuori dai quattro minuti in cui il guardiano cerca la riga di macchina (gol-con-manovra 3/4 -> 1/4). E a due tick il testimone della custodia — che esclude la costruzione per progetto — scendeva a 5 campioni su 8, sotto il minimo del guardiano: una banda che non puo' giudicare e' peggio di una banda rossa. *//* [7.693.0 — LA RETE ASPETTA IL PALLONE] Col piano finalmente padrone del bersaglio, l'ultimo passo manda la palla al limite dell'area: ma il lerp ne copre il 65% per tick e la rete arrivava il tick dopo, con il pallone ancora a meta' strada. Il tetto piano+4 resta l'ultima parola, quindi l'attesa e' limitata per costruzione. */
-            if(!_rip575&&(((_pg532.step|0)>=_pg532.piano.length&&_arr693)||_pg532.ticks>=_pg532.piano.length+4)){_simEv77=_pg532.ev;pendingGoalRef.current=null;}/* [7.649.0] la rete arriva quando il piano e' stato RACCONTATO; il tetto piano+4 resta l'ultima parola (mai un gol in sospeso) */
+            if(!_rip575&&(((_pg532.step|0)>=_pg532.piano.length&&_arr693)||_pg532.ticks>=_pg532.piano.length+4)){if(_pg532.ev)_simEv77=_pg532.ev;pendingGoalRef.current=null;}/* [7.695.0] senza evento del microsim in fondo (l'occasione) la macchina si chiude e basta: il punteggio non lo tocca nessuno *//* [7.649.0] la rete arriva quando il piano e' stato RACCONTATO; il tetto piano+4 resta l'ultima parola (mai un gol in sospeso) */
           }else if(_pg532&&!_inHL77){
             _pg532.ticks++;
             const _t532=ballTargetRef.current;const _b532=ballPosRef.current||{x:50,y:50};
@@ -3123,6 +3185,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
            minuti di distanza, mai dentro un highlight o sopra una scena-gol. */
         var _intxK669=null;
         if(!(typeof window!=='undefined'&&window.__CPM_NO670)&&!_inHL77&&!pendingGoalRef.current&&!_recHij545
+           &&!((typeof window!=='undefined'&&window.__CPM_SAL689_ON)&&!(typeof window!=='undefined'&&window.__CPM_NO695))/* [7.695.0] NIENTE SCHEDE NUOVE SOPRA L'AZIONE: una scheda di scelta occupa mezzo telefono, e fotografata sopra l'area copriva esattamente cio' che il PO diceva di non vedere. Le interazioni erano gia' escluse durante il gol in costruzione; ora lo sono per tutta la finestra saliente, contropiedi e rigori compresi. */
            &&nx>=18&&nx<=88&&typeof INTX669!=='undefined'){try{
           const _N=narrRef669.current;
           /* [7.690.0 decisione PO: «quattro e con memoria piu' lunga»] IL TETTO SALE A QUATTRO.
@@ -3478,6 +3541,8 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
             const _pe649=_pgH649.piano[_pgH649.step|0];_pgH649.step=(_pgH649.step|0)+1;
             _recHij545=true;_recKind546="manovra-gol";_recSide546=_pgH649.dir>0?"home":"away";
             ev={txt:_pe649.t,ef:null,w:1,bpos:{x:clamp(_pe649.x,4,96),y:clamp(_pe649.y,6,94)},pd:_dec499,at:"pass",_piano649:1,ms:_pe649.ms?(_pgH649.dir>0?{shots:1}:{oppShots:1}):null};
+            if(_pe649.gk&&!(typeof window!=='undefined'&&window.__CPM_NO695)){gkSave695.current={t:Date.now(),side:_pgH649.dir>0?"home":"away"};/* [7.695.0] la riga che NOMINA il portiere accende il tuffo: una sola fonte, il testo e il gesto non possono divergere */
+              if(typeof window!=='undefined'&&window.__CPM_REC){try{const _w=(window.__CPM_OCC695=window.__CPM_OCC695||{armate:0,parate:0,min:[]});_w.parate++;}catch(_e){}}}
             if(_pe649.chi!=null&&!(typeof window!=='undefined'&&window.__CPM_NO641))carrierRef.current={i:_pe649.chi};/* il protagonista dell'evento e' il portatore */
             if(!(typeof window!=='undefined'&&window.__CPM_NO693)){pianoLock693.current=3;_pgH649.lastTg={x:clamp(_pe649.x,4,96),y:clamp(_pe649.y,6,94)};/* [7.693.0] dove il racconto ha mandato il pallone l'ultima volta: la rete aspetta che ci ARRIVI *//* [7.693.0] tre tick di custodia: questo, piu' i due in cui il pallone viaggia */
               /* [7.693.0] IL RICEVENTE VA DOVE VA LA PALLA. Spostare solo il pallone lo lascerebbe senza
@@ -6356,9 +6421,10 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
     if(typeof window!=='undefined'){window.__CPM_SAL689_ON=_on;
       /* [7.691.0] la CAUSA della finestra, non solo il fatto che sia aperta: senza, il ramo nuovo
          (rigori ed espulsioni) resta invisibile alla misura e potrei spedirlo senza saperlo. */
-      window.__CPM_SAL689_WHY=_on?(_rig691?"rigore":(_ist691?"cartellino":(pendingGoalRef.current?"gol":"contropiede"))):null;}
+      window.__CPM_SAL689_WHY=_on?(_rig691?"rigore":(_ist691?"cartellino":(pendingGoalRef.current?(pendingGoalRef.current.occ?"occasione":"gol"):"contropiede"))):null;}
     return _on;
   }catch(_e){return false;}})();
+  const _sot695=_sal689&&!(typeof window!=='undefined'&&window.__CPM_NO695);/* [7.695.0] la cronaca in sottopancia: acceso solo dentro la scena saliente */
   const _isFinalKO=(context==="euroMondiale_ko"&&player.euroMondiale?.koPhase==="final")||(context==="euro_ko"&&player.euro?.phase==="final")||(context==="cup"&&(player.cup?.round||0)>=4)||(context==="nationsCup"&&_isNeutralFinal);/* [7.72.2] finale Coppa delle Nazioni → festa big-win */
   const pct=Math.round((clock/90)*100);
   const show3D=["playing","hl_move","hl_choose","hl_result","hl_intro","ceremony","shootout"].includes(phase);/* [7.2.0] ceremony: il 3D resta montato per la premiazione · [7.31.0] shootout: rigori 3D dal dischetto */
@@ -6758,7 +6824,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                 ballX={ballPos.x} ballY={ballPos.y} half={clock>=45?2:1}/* [7.561.0 richiesta PO «opterei anche per il cambio campo tra il primo ed il secondo tempo come nella realta'»] La simulazione NON scambia le porte — toccarla vorrebbe dire rimettere mano al segno di ogni gol, e non si fa per un'inquadratura. Cambia la CAMERA: nella ripresa la regia larga di cronaca ruota di 180 gradi attorno all'asse verticale, cosi' chi attaccava verso destra ora attacca verso sinistra e le tribune si scambiano di posto — che e' esattamente cio' che si vede in TV dopo il cambio campo. */ fermo={fermoRef}/* [7.559.0] LA SCENA DEVE SAPERE CHE IL GIOCO E' FERMO. Il primo giro del guardiano ha misurato 0 fermi su 9 interruzioni armate: bloccare il BERSAGLIO logico non basta, perche' nel 3D la palla ha altri padroni — il portatore la tiene ai piedi e cammina, e la palla cammina con lui. Il fermo viaggia come ref (stesso schema di `deliver`/`meshDef`: il renderer lo legge ogni fotogramma senza un re-render per tick). */ hlSitKey={phase==="playing"||phase==="matchday"?-1:(hlIdx+(_forceSeqRef.current||0)*10000)}/* [7.212.0] +progressivo: rigiocare la stessa situation riarma lo snap di scena */ stageStamp={stageStamp}/* [7.456.0 codice 007] il commit in cui atterra lo staging fresco — vedi il ri-taglio nel render-loop */ meshDef={meshDefRef} deliver={deliverRef} hlType={_hlType} hlSetPiece={_hlSetPiece} hlBall={_hlBall} hlWood={_hlWood} hlVariant={_hlVariant} hlPattern={_hlPattern} hlThrough={_hlThrough} hlOneTwo={_hlOneTwo} hlChain={!!(situations[hlIdx]&&situations[hlIdx]._chainDepth)}/* [7.234.0 #51] il 3D sa se la scena è un SECONDO TEMPO (catena) */ hlOutcomeKind={_hlOutcomeKind} hlQuality={_hlQuality} hlGkOut={_hlGkOut} adaptShift={_adaptShift} adaptHotY={_adaptHotY} adaptStr={_adaptStr} bgAction={bgAction} hlZone={hlZone}
                 timeOfDay={timeOfDay} weather={weather} kickoffHour={kickoffHour} attendance={attendance} crowd={crowdCtx}
                 waveEvent={waveEvent} isDerby={!!drby} isBigGame={mw>=7}
-                hlSuccess={outcome?.ok??null} hlReward={chosenAct?.rew||null} hlActLbl={chosenAct?.label||null} salienteOn={_sal689}/* [7.689.0] scena saliente extra-eroe in corso: il renderer riaccende i corpi e va in tribuna est */ hlDef={_isDefHL} hlDefTraj={outcome?.defTraj||null} hlDefGesto={chosenAct?.defGesto||null} hlOffBall={!!situations[hlIdx]?.offBall} stagedSpot={_stagedSpotRef} cineBusy={cineBusyRef}/* [7.405.0 codice 001] il punto-palla staggiato: il renderer tiene la MESH del battitore sul punto (vedi la colla nel blocco giocatori) */                isDesktop={!isNarrow} ceremony={ceremony} shootout={phase==="shootout"?{kick:soFx}:null} onWalkoutDone={()=>{if(benchStart)setOnBench(true);
+                hlSuccess={outcome?.ok??null} hlReward={chosenAct?.rew||null} hlActLbl={chosenAct?.label||null} salienteOn={_sal689} gkSave={gkSave695}/* [7.695.0] il segnale della parata: ref stabile, letto dal renderer a ogni fotogramma *//* [7.689.0] scena saliente extra-eroe in corso: il renderer riaccende i corpi e va in tribuna est */ hlDef={_isDefHL} hlDefTraj={outcome?.defTraj||null} hlDefGesto={chosenAct?.defGesto||null} hlOffBall={!!situations[hlIdx]?.offBall} stagedSpot={_stagedSpotRef} cineBusy={cineBusyRef}/* [7.405.0 codice 001] il punto-palla staggiato: il renderer tiene la MESH del battitore sul punto (vedi la colla nel blocco giocatori) */                isDesktop={!isNarrow} ceremony={ceremony} shootout={phase==="shootout"?{kick:soFx}:null} onWalkoutDone={()=>{if(benchStart)setOnBench(true);
                   // [6.88.0 collaudo PO «maggiore pathos durante la cronaca»] il calcio d'inizio dei BIG MATCH
                   //   apre con una riga d'atmosfera dedicata (finale > big match), scelta deterministica.
                   if(mw>=7||_isNeutralFinal){const _bmPool=_isNeutralFinal
@@ -6769,12 +6835,20 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               {/* [7.65.0 Phase 4 · POST-PROCESSING] VIGNETTE cinematografica sul 3D — bordi scuri morbidi (look da broadcast) + micro-grana ai bordi. Overlay DOM (pointer-events off) → zero recolor del 3D, zero costo GPU, invisibile al gate (che cattura il canvas). */}
               <div style={{position:"absolute",inset:0,pointerEvents:"none",zIndex:3,background:"radial-gradient(ellipse 118% 96% at 50% 44%, rgba(0,0,0,0) 56%, rgba(0,0,0,0.14) 82%, rgba(0,0,0,0.30) 100%)"}}/>
                {/* [7.661.0 - LA CRONACA IN PRIMO PIANO, GRANDE E CENTRALE. Richiesta PO in collaudo: «il testo della cronaca quando non ci sono azioni deve essere piu grande e centrale e carino, deve emozionare». Con la cronaca visuale spenta (7.660) lo stadio e il palcoscenico e il TESTO e lo spettacolo: l ultima riga appare grande al centro, col suo colore, ombra da broadcast e ingresso morbido (remount su key). Il feed sotto resta la storia completa. Rosso __CPM_NO661. */}
+               {/* ⚠️ [7.695.0 — LA TELECRONACA NON DEVE COPRIRE L'AZIONE. Domanda del PO: «durante le azioni
+                   salienti/pericolose come possiamo mostrare la telecronaca senza che sia invadente?»]
+                   FOTOGRAFATO: col pallone dentro l'area il banner sedeva al 38% dell'altezza, cioe' in
+                   mezzo alla porta, e una scheda di scelta aperta al 28' era ancora a schermo al 36' con
+                   tre bottoni che occupavano meta' telefono. Il gioco c'era e non si vedeva.
+                   Durante la scena la cronaca diventa SOTTOPANCIA: fascia bassa, una riga sola, corpo 14,
+                   niente minuto e niente bottoni — la grafica di una partita in TV. Fuori dalla scena
+                   resta esattamente com'era (grande e centrale, com'e' stato chiesto nel 7.661). */}
                {phase==="playing"&&coms[0]&&!(typeof window!=="undefined"&&window.__CPM_NO661)&&(
-                 <div data-cpm="com661"/* [7.681.0] etichetta stabile: senza, per misurare il banner servivano selettori sullo STILE, che si rompono al primo ritocco grafico */ key={"com661-"+coms[0].t+"-"+String(coms[0].text||"").slice(0,18)} style={{position:"absolute",left:"7%",right:"7%",top:"38%",zIndex:5,pointerEvents:"none",textAlign:"center",animation:"cpmComIn661 .55s ease-out"}}>
+                 <div data-cpm="com661"/* [7.681.0] etichetta stabile: senza, per misurare il banner servivano selettori sullo STILE, che si rompono al primo ritocco grafico */ key={"com661-"+coms[0].t+"-"+String(coms[0].text||"").slice(0,18)} style={_sot695?{position:"absolute",left:"4%",right:"4%",bottom:"11%",zIndex:5,pointerEvents:"none",textAlign:"center",animation:"cpmComIn661 .55s ease-out"}:{position:"absolute",left:"7%",right:"7%",top:"38%",zIndex:5,pointerEvents:"none",textAlign:"center",animation:"cpmComIn661 .55s ease-out"}}>
                    <style>{"@keyframes cpmComIn661{from{opacity:0;transform:translateY(14px) scale(.97)}to{opacity:1;transform:none}}"}</style>
-                   <div style={{display:"inline-block",padding:"10px 16px",borderRadius:14,background:"radial-gradient(ellipse at center, rgba(5,8,16,0.62) 0%, rgba(5,8,16,0.28) 70%, transparent 100%)"}}>
-                     <div style={{fontSize:19,lineHeight:1.35,fontWeight:800,color:coms[0].color||"#e8edf6",textShadow:"0 2px 10px rgba(0,0,0,0.85), 0 0 26px rgba(0,0,0,0.5)",letterSpacing:0.2}}>{coms[0].text}</div>
-                     <div style={{marginTop:5,fontSize:11,fontWeight:700,color:"rgba(232,237,246,0.55)"}}>{(coms[0].t??clock)}′</div>
+                   <div /* [7.695.0] sottopancia: il contenitore prende tutta la larghezza e la riga si taglia con i puntini, invece di uscire dallo schermo come faceva la prima stesura (fotografata) */ style={_sot695?{display:"block",width:"100%",boxSizing:"border-box",padding:"7px 12px",borderRadius:10,background:"linear-gradient(90deg, rgba(5,8,16,0) 0%, rgba(5,8,16,0.78) 12%, rgba(5,8,16,0.78) 88%, rgba(5,8,16,0) 100%)"}:{display:"inline-block",padding:"10px 16px",borderRadius:14,background:"radial-gradient(ellipse at center, rgba(5,8,16,0.62) 0%, rgba(5,8,16,0.28) 70%, transparent 100%)"}}>
+                     <div style={_sot695?{fontSize:14,lineHeight:1.3,fontWeight:800,color:coms[0].color||"#e8edf6",textShadow:"0 2px 10px rgba(0,0,0,0.9)",letterSpacing:0.1,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis",maxWidth:"100%"}:{fontSize:19,lineHeight:1.35,fontWeight:800,color:coms[0].color||"#e8edf6",textShadow:"0 2px 10px rgba(0,0,0,0.85), 0 0 26px rgba(0,0,0,0.5)",letterSpacing:0.2}}>{coms[0].text}</div>
+                     {!_sot695&&(<div style={{marginTop:5,fontSize:11,fontWeight:700,color:"rgba(232,237,246,0.55)"}}>{(coms[0].t??clock)}′</div>)}
                      {/* [7.681.0 direttiva PO «deve essere interattiva, a scelta!»] I BOTTONI SOTTO LA FRASE.
                          Appaiono solo sulle righe che portano delle scelte (le interazioni dell'eroe: due o
                          tre a partita), e solo finche' nessuno ha risposto. Nessuna schermata nuova, nessuna
@@ -6783,7 +6857,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                          qui sotto applica l'opzione NEUTRA (la prima della scheda) e la gara prosegue: si
                          gioca sul telefono, a volte guardando altro, e un gioco che si blocca in attesa di
                          un tocco e' un gioco rotto. */}
-                     {coms[0].sc&&coms[0].sci==null&&(
+                     {coms[0].sc&&coms[0].sci==null&&(/* [7.695.0] i bottoni NON si nascondono durante la scena: una scelta gia' aperta deve restare rispondibile, o resterebbe appesa. A non farne nascere di nuove ci pensa il cancello qui sopra. */
                        <div style={{marginTop:9,display:"flex",flexDirection:"column",gap:6,pointerEvents:"auto"}}>
                          {coms[0].sc.map((o,oi)=>(
                            <button key={oi} onClick={()=>scegli681(oi,false)}

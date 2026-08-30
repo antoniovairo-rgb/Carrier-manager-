@@ -23,7 +23,7 @@ for (const seme of [7300, 8100, 9200]) {
       const st = window.__CPM_STATE && window.__CPM_STATE();
       const ev = (window.__CPM_EV && window.__CPM_EV()) || [];
       return { w: window.__CPM_SAL689_WHY || null, bx: st && st.ball ? st.ball.x : null, clock: st ? st.clock : null,
-               gol: ev.filter(e => e.ev === 'goal').length, tiri: ev.filter(e => e.ev === 'chronicle' && e.ms && (e.ms.shots || e.ms.oppShots)).length };
+               gol: ev.filter(e => e.ev === 'goal').length, tiri: ev.filter(e => e.ev === 'chronicle' && (e.shots || e.oppShots)).length };
     } catch (_e) { return null; } });
     if (!r) continue;
     if (r.w && !cur) cur = { causa: r.w, bxMax: r.bx || 50, bxMin: r.bx || 50, gol0: r.gol, tiri0: r.tiri, n: 0 };
