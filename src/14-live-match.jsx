@@ -2330,7 +2330,16 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
             //   che li aveva già): prima cadeva nel clamp generico x∈[44,98] → violazione possibile del bound
             //   del gate (away GK x≥75) su transizioni con velocità residua.
             const vg=velRef.current[idx]||{vx:0,vy:0};
-            const gvx=clamp(vg.vx*0.70+(97-pl.x)*0.14,-6,6),gvy=clamp(vg.vy*0.70+(clamp(50+(ballY-50)*0.35,30,70)-pl.y)*0.11,-6,6);
+            /* [7.705.0 — IL PORTIERE TIENE LO SPECCHIO. Rosso __CPM_NO705]
+               Collaudo PO: «il portiere sembra che sta in piscina». MISURATO (piscina-705, traccia logica
+               vs mesh su una parata con esito corner): il pallone parcheggiato all'angolo (2,94) dalla
+               palla morta 7.702 e' comunque `ballY`, e questo inseguimento — guadagno 0,35 — portava il
+               portiere OSPITE, a novanta unita' dall'azione, a farsi 15u di passeggiata laterale
+               (y 49→65,6, combacia con clamp(50+(94-50)*0.35)=65,4). Un portiere vero si allinea al
+               pallone solo quando il pallone e' nella sua zona: a palla morta, o con la palla oltre
+               il centrocampo lontano dalla sua porta, sta al centro dello specchio. */
+            const _spec705=!(typeof window!=='undefined'&&window.__CPM_NO705)&&(!!fermoRef.current||!!outRef.current||ball.x<62);
+            const gvx=clamp(vg.vx*0.70+(97-pl.x)*0.14,-6,6),gvy=clamp(vg.vy*0.70+((_spec705?50:clamp(50+(ballY-50)*0.35,30,70))-pl.y)*0.11,-6,6);
             velRef.current[idx]={vx:gvx,vy:gvy};
             return{...pl,x:clamp(pl.x+gvx,88,98),y:clamp(pl.y+gvy,33,67)};
           }
@@ -2353,7 +2362,9 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           let tx,ty;
           if(hi===0){
             // GK: stays within goal posts (game_y 36-64), minimal lateral tracking
-            tx=3;ty=clamp(50+(ballY-50)*0.10,38,62);
+            /* [7.705.0] lo specchio vale anche per il GK di casa (guadagno 0,10: deriva minore, stessa regola) */
+            const _spec705h=!(typeof window!=='undefined'&&window.__CPM_NO705)&&(!!fermoRef.current||!!outRef.current||ball.x>38);
+            tx=3;ty=_spec705h?50:clamp(50+(ballY-50)*0.10,38,62);
           }else{
             let _lnH=2;
             if(hi<=4){tx=homeDepth-4;ty=_lane(_LN_B[hi-1],_cH,_kHB);_lnH=0;}

@@ -1729,6 +1729,7 @@ function ThreeMatchView(props){
         else{mesh._vx=_tvx;mesh._vz=_tvz;}
         if(typeof window!=='undefined'&&window.__CPM_D592)window.__CPM_DT592=dt;/* [7.592.0 collaudo] il dt vero del passo di integrazione */
         mesh.position.x+=mesh._vx*dt;mesh.position.z+=mesh._vz*dt;
+        if(mesh._isGk&&typeof window!=='undefined'&&window.__CPM_REC){try{const _w=(window.__CPM_GKV705=window.__CPM_GKV705||{});_w[mesh.position.x<0?'home':'away']={vz:+(mesh._vz||0).toFixed(1),z:+mesh.position.z.toFixed(1)};}catch(_e){}}/* [7.705 strumentazione] velocita' residua del portiere: se dopo il tuffo _vz resta carica, il nuoto e' inerzia dell'integratore */
         /* IL CAMPO È UN VINCOLO. Col vecchio lerp la velocità decadeva da sola avvicinandosi al bersaglio, quindi
            nessuno usciva mai; con l'accelerazione limitata un giocatore lanciato ha bisogno di spazio per frenare
            e può SBORDARE oltre la linea (65 casi rilevati dal gate). Ora il bordo campo ferma il giocatore e
@@ -3753,7 +3754,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                oppMesh=_g439;oppActT=0;oppDiveDir=_tz439>=_g439.position.z?1:-1;
                _g439._divePz=_g439.position.z;_g439._diveYaw=_g439.rotation.y;_g439._diveBallY=0.65;
                if(_ba.type==='save'&&_dz439<2.4){oppActType="gk_block";_g439._diveToZ=clamp(_tz439,_g439.position.z-3,_g439.position.z+3);}
-               else if(_ba.type==='save'){oppActType="gk_dive";_g439._diveToZ=clamp(_tz439,_g439.position.z-9,_g439.position.z+9);_g439._diveDur=clamp(ballArcDur*1.15,0.55,1.0);}
+               else if(_ba.type==='save'){const _rch439=(typeof window!=='undefined'&&window.__CPM_NO705)?9:4.5;/* [7.705.0] MISURATO (piscina-705 v5): il morsetto ±9 world-z vale 13,4u di campo — con l'esito all'angolo il portiere volava a y 63 e tornava a piedi, meta' del nuoto residuo. Stesso ±4.5 del tuffo ambientale: un corpo copre lo specchio, non l'area. */oppActType="gk_dive";_g439._diveToZ=clamp(_tz439,_g439.position.z-_rch439,_g439.position.z+_rch439);_g439._diveDur=clamp(ballArcDur*1.15,0.55,1.0);}
                else {oppActType="gk_dive";_g439._diveToZ=clamp(_g439.position.z+(_tz439-_g439.position.z)*0.55,_g439.position.z-6,_g439.position.z+6);_g439._diveDur=clamp(ballArcDur*1.15,0.55,1.0);}}}
            /* [7.511.0 R1 — LA CRONACA HA UN ATTORE: audit «durante la cronaca nessuno calcia»] L'arco volava
               senza che nessun giocatore facesse il gesto: `bgAction` non portava un attore e nessun ramo
@@ -4065,14 +4066,21 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
             // item 6 (5.49.0): durante un HIGHLIGHT il portiere RESTA FERMO in posizione di pronto sulla linea fino alla conclusione
             //   reale (la reazione è SOLO il tuffo gk_dive, innescato all'esito) → niente "uscita anticipata". L'uscita per stringere
             //   l'angolo (F13) resta solo in GIOCO APERTO (cronaca), dove è realistica e non anticipa alcun tiro interattivo.
-            if(!isHL&&!_setPiece&&(_awG?_homeBall:!_homeBall)){
+            /* [7.705.0] LO SPECCHIO VALE ANCHE QUI. MISURATO (piscina-705 v5, bersaglio del builder in
+               stampa): con il pallone morto parcheggiato all'angolo (2,94) dalla palla morta 7.702 questa
+               uscita teneva il bersaglio y del portiere INCHIODATO a 62 per tre secondi — meta' del nuoto.
+               A palla morta, o con la palla lontana dalla sua porta, il bersaglio resta quello logico,
+               che il gemello di questa regola in live-match riporta al centro dello specchio. */
+            const _spec705r=!(typeof window!=='undefined'&&window.__CPM_NO705)&&(!!(P.fermo&&P.fermo.current)||(_awG?_bGX<62:_bGX>38));
+            if(!isHL&&!_setPiece&&!_spec705r&&(_awG?_homeBall:!_homeBall)){
               const _goalX=_awG?94:6,_adv=_awG?clamp((_bGX-50)/44,0,1):clamp((50-_bGX)/44,0,1),_ctr=clamp(1-Math.abs(_bGY-50)/45,0,1);
               const _step=_adv*_ctr*4.5;_gx=_awG?clamp(_goalX-_step,80,_goalX):clamp(_goalX+_step,_goalX,20);_gy=clamp(50+(_bGY-50)*0.28,38,62);// uscita/spostamento RIDOTTI → resta in posizione di pronto sulla linea
             }
             else if(isHL&&_awG&&propsRef.current&&propsRef.current.hlGkOut){/* [7.248.0 gi52 «Non si vede il portiere che esce»] la regola «GK fermo sulla linea durante l'HL» (5.49.0) vale per i tiri normali — ma la scena che DICHIARA l'uscita (flag factory gkOutSit) la deve MOSTRARE: il GK avversario esce incontro alla palla per tutto l'highlight. Bound del gate rispettati (away GK ≥80) e uscita deterministica dalla posizione palla. */
               _gx=clamp(_bGX+7,80,92);_gy=clamp(50+(_bGY-50)*0.35,36,64);
             }
-            {const _ob=_tgPool[_tgN]||(_tgPool[_tgN]={});_tgN++;_ob.x=_gx;_ob.y=_gy;_ob.gk=true;_ob.hm=i<10;_ob.li=0;_ob.att=false;_ob.def=false;_tg.push(_ob);}continue;}
+            {const _ob=_tgPool[_tgN]||(_tgPool[_tgN]={});_tgN++;_ob.x=_gx;_ob.y=_gy;_ob.gk=true;_ob.hm=i<10;_ob.li=0;_ob.att=false;_ob.def=false;_tg.push(_ob);
+             if(typeof window!=='undefined'&&window.__CPM_REC){try{const _w=(window.__CPM_GKT705=window.__CPM_GKT705||{});_w[_ob.hm?'home':'away']={x:+_gx.toFixed(1),y:+_gy.toFixed(1)};}catch(_e){}}/* [7.705 strumentazione] il BERSAGLIO del portiere, per attribuire il nuoto: sopra 62 = scrittore a monte, mesh oltre il bersaglio = scrittore a valle */}continue;}
           const _hm=i<10,_li=_hm?i:i-10; // 1-4=DIF, 5-7=CEN, 8+=ATT (0=GK)
           let tx=src.x,ty=src.y;
           /* [7.592.0 SOLO COLLAUDO, spento senza bandiera] I DIECI METRI, TAPPA PER TAPPA. Misurato che la
@@ -5055,9 +5063,21 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
           _lastGk695=P.gkSave.current.t;
           try{const _tm695=(P.gkSave.current.side==='home')?'away':'home';let _gk695=null;
             sr.current.players.forEach((pp,ii)=>{const src=(P.allPlayers||[])[ii];if(src&&src.team===_tm695&&src.gk&&pp&&pp.mesh)_gk695=pp.mesh;});
-            if(_gk695){oppActType="gk_dive";oppActT=0;oppMesh=_gk695;oppDiveDir=ball.position.z>=_gk695.position.z?1:-1;
+            if(_gk695){/* [7.705.0 — IL TUFFO VA DOVE VA IL PALLONE VERO, E QUANTO UN CORPO ARRIVA. Rosso __CPM_NO705]
+                 MISURATO (piscina-705, logica ferma a y 50 dopo lo specchio): la mesh del paratore faceva
+                 comunque 42,7u in 5s, con un salto di 11u dentro il tuffo. Due difetti in questa riga:
+                 (a) il bersaglio era `ball.position.z` del pallone RENDERER, che in regia ambientale sta
+                 a centrocampo mentre il pallone LOGICO — quello che la riga di cronaca ha appena parato —
+                 sta in area (divergevano di 60u: tuffo verso un fantasma); (b) il morsetto ±9 world-z vale
+                 13,4u di campo, un tuffo di nove metri — i siti gemelli delle scene eroe usano ±4/±6.
+                 Ora: bersaglio = z del pallone logico (stessa fonte del testo), morsetto ±4.5 come il
+                 sito dell'incornata (2810). */
+              const _no705=(typeof window!=='undefined'&&window.__CPM_NO705);
+              const _bz705=_no705?ball.position.z:G2Z(P.ballY==null?50:P.ballY);
+              const _rch705=_no705?9:4.5;
+              oppActType="gk_dive";oppActT=0;oppMesh=_gk695;oppDiveDir=_bz705>=_gk695.position.z?1:-1;
               _gk695._divePz=_gk695.position.z;_gk695._diveYaw=_gk695.rotation.y;
-              _gk695._diveToZ=clamp(ball.position.z,_gk695.position.z-9,_gk695.position.z+9);_gk695._diveDur=0.95;
+              _gk695._diveToZ=clamp(_bz705,_gk695.position.z-_rch705,_gk695.position.z+_rch705);_gk695._diveDur=0.95;
               if(typeof window!=='undefined'&&window.__CPM_REC){try{const _w=(window.__CPM_GK695=window.__CPM_GK695||{tuffi:0});_w.tuffi++;}catch(_e){}}}
           }catch(_e695){}
         }
@@ -5184,7 +5204,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                faceva andare: misurato su tre repliche, a fine scena il pallone giace SOLO con
                l'avversario piu' vicino a 8-10u. Dopo la scivolata sul dribbling perso, il difensore
                si rialza e va a raccogliere (driver sotto, fino a 1,2u dalla palla). */
-            oppActType=null;if(oppMesh){if(!_glb674)oppMesh.position.y=0;if(!_glb674)oppMesh.rotation.z=0;if(oppMesh._aL){oppMesh._aL.rotation.z=0;oppMesh._aR.rotation.z=0;oppMesh._aL.rotation.x=0;oppMesh._aR.rotation.x=0;}if(oppMesh._lR){oppMesh._lR.rotation.x=0;oppMesh._lL.rotation.x=0;}/* [7.203.0] le pose del riflesso sono ASSEGNAZIONI ASSOLUTE (non scalate da sw, che si azzera da solo): senza cleanup il portiere restava a braccia larghe */if(oppMesh._spinYaw!=null){oppMesh.rotation.y=oppMesh._spinYaw;oppMesh._spinYaw=null;}oppMesh._slideToX=null;oppMesh._slideToZ=null;oppMesh._diveToZ=null;oppMesh._diveBallY=null;oppMesh._diveDur=null;oppMesh=null;}}
+            oppActType=null;if(oppMesh){if(!_glb674)oppMesh.position.y=0;if(!_glb674)oppMesh.rotation.z=0;if(oppMesh._aL){oppMesh._aL.rotation.z=0;oppMesh._aR.rotation.z=0;oppMesh._aL.rotation.x=0;oppMesh._aR.rotation.x=0;}if(oppMesh._lR){oppMesh._lR.rotation.x=0;oppMesh._lL.rotation.x=0;}/* [7.203.0] le pose del riflesso sono ASSEGNAZIONI ASSOLUTE (non scalate da sw, che si azzera da solo): senza cleanup il portiere restava a braccia larghe */if(oppMesh._spinYaw!=null){oppMesh.rotation.y=oppMesh._spinYaw;oppMesh._spinYaw=null;}oppMesh._slideToX=null;oppMesh._slideToZ=null;oppMesh._diveToZ=null;oppMesh._diveBallY=null;oppMesh._diveDur=null;if(oppMesh._isGk&&!(typeof window!=='undefined'&&window.__CPM_NO705)){oppMesh._vx=0;oppMesh._vz=0;}/* [7.705.0] MISURATO (v5): il tuffo teletrasporta il corpo oltre il bersaglio mentre _vz resta carica a +6 u/s — l'integratore prosegue per 12u prima di frenare (62→74) e torna a -7. Chi atterra da un tuffo non ha slancio di corsa: la velocita' muore col gesto. */oppMesh=null;}}
         }
         if(typeof window!=='undefined'&&window.__CPM_COL618!==undefined&&sr.current._pkCol415){try{const _g8=window.__CPM_COL618;_g8.drv=(_g8.drv|0);_g8.act=oppActType||null;_g8.res=isResult?1:0;_g8.km=(sr.current._pkCol415.k===P.hlSitKey)?1:0;}catch(_e){}}
         if(sr.current._pkCol415&&sr.current._pkCol415.k===P.hlSitKey&&isResult&&!oppActType){const _pc415=sr.current._pkCol415.m;
