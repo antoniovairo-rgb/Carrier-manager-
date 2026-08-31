@@ -1146,6 +1146,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
       act:_act,out:o?(o.outKey||o.outKind||null):null,ok:o?!!o.ok:null,def:!!(sit&&sit.type==="def"),
       sceneKey:["hl_intro","hl_move","hl_choose","hl_result"].includes(phase)?(hlIdx+(_forceSeqRef.current||0)*10000):null};
   }catch(_e){return{v:GAME_VERSION,min:clock,phase};}};
+  if(typeof window!=='undefined'){try{window.__CPM_BUGCTX=_bugCtx;}catch(_e){}}/* [7.698 strumentazione] LA SONDA DEVE CHIAMARE IL DETECTOR COME LO CHIAMA IL GIOCO. Censendo i codici del PO ho passato a `draftBugNote` la sola chiave di scena: senza `intent`/`out` il test «e' una scena difensiva?» e' sempre falso, e il codice 001 — che per progetto esce SOLO sulle offensive — scattava anche su una scena `recover`. Il falso positivo era nel mio strumento, non nel gioco, e mi avrebbe fatto inseguire un difetto inesistente su meta' del campione. Esposto il costruttore vero: una fonte sola per il gioco e per la misura. */
   /* [7.344.0 collaudo PO «a volte l'azione sfugge perche' parte quella successiva»] QUALE AZIONE PROPORRE.
      Il momento in cui si preme ⚠️ non e' il momento dell'azione da segnalare: quando ci si accorge del
      difetto la scena e' finita, ne e' partita un'altra e la camera si e' allargata. Quindi:
@@ -1252,6 +1253,8 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
        Sola strumentazione: legge dei ref, non tocca stato ne' render. */
     window.__CPM_HOLD=()=>{try{return{fermo:!!fermoRef.current,out:!!outRef.current,sp:!!spRef.current,ko:(kickoffRef.current|0)>0,kick:(kickRef.current|0)>0,pg:!!pendingGoalRef.current,pgStep:(pendingGoalRef.current&&pendingGoalRef.current.piano)?(pendingGoalRef.current.step|0):null,pgLen:(pendingGoalRef.current&&pendingGoalRef.current.piano)?pendingGoalRef.current.piano.length:null,pgTicks:pendingGoalRef.current?(pendingGoalRef.current.ticks|0):null,pgDir:pendingGoalRef.current?(pendingGoalRef.current.dir|0):null};}catch(_e){return null;}};/* [7.693 strumentazione] pgStep/pgLen/pgTicks: a che punto del PIANO e' la costruzione. Senza, «la scena si chiude prima del tiro» resta un'impressione. *//* [7.587.0] +pg: la finestra in cui il gol si COSTRUISCE, per poter chiedere «e mentre si costruisce, qualcuno tocca il pallone?» */
     window.__CPM_BG_INJECT=(ty,x,y)=>{setHlIdx(99999);setPhase("playing");setBgAction({type:ty,t:Date.now(),ballEnd:{x:x,y:y}});return true;};/* [collaudo PO «il portiere sembra imbabolato»] iniettore test-only di un'azione di CRONACA (stesso setBgAction del feed reale, r.19015): gli archi BG veri arrivano ~3/minuto — il guardiano gk-bg-react non puo' aspettarli. setHlIdx oltre hlTimes: raggiunto l'orario di un highlight, OGNI tick di clock in "playing" rientrava in hl_intro azzerando bgAction — l'iniezione rimbalzava senza mai lanciare l'arco */
+    window.__CPM_CURSIT=()=>{try{const _s=(situationsRef.current||[])[hlIdxRef.current|0];if(!_s)return null;
+      return{i:hlIdxRef.current|0,t:String(_s.text||"").slice(0,60),type:_s.type||null,def:!!_s.def,intent:(typeof deriveIntent==="function"?(deriveIntent(_s)||null):null),offBall:!!_s.offBall,gi:(typeof SITUATIONS!=='undefined'?SITUATIONS.indexOf(_s):-1)};}catch(_e){return null;}};/* [7.698 strumentazione] QUALE situazione sta girando: senza, il censimento dei codici del PO dice QUANTE scene hanno il difetto e non QUALI — e la nota del 7.391 accusa proprio una famiglia (le scene off-ball, che piazzano il pallone in un punto geometrico cieco a dove siano i compagni). Sola lettura. */
     window.__CPM_FORCE_SIT=(gi,choose,ppos)=>{ const sit=SITUATIONS[gi]; if(!sit)return false;
       /* [7.212.0 collaudo PO «tra un rivedi e un altro il portiere e un altro giocatore non si fermano mai»]
          lo snap di scena (7.194.0) si arma al CAMBIO di `hlSitKey`, che è l'indice della situation: rigiocando
@@ -6872,11 +6875,25 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                  const _sgH=String((homeTeamObj&&(homeTeamObj.a||homeTeamObj.n))||"").slice(0,3).toUpperCase();
                  const _sgA=String((awayTeamObj&&(awayTeamObj.a||awayTeamObj.n))||"").slice(0,3).toUpperCase();
                  const _cH=(homeTeamObj&&homeTeamObj.c)||"#ef4444",_cA=(awayTeamObj&&awayTeamObj.c)||"#3b82f6";
-                 const _cell={flex:1,display:"flex",alignItems:"center",gap:5,padding:"3px 9px",fontSize:10.5,fontWeight:900,letterSpacing:1.1,color:"#f1f5f9",textShadow:"0 1px 4px rgba(0,0,0,0.9)"};
+                 /* ⚠️ [7.698.0 collaudo PO: «nuovo pannello con le frecce televisivo, meno invadente e
+                     piu' moderno»] La prima stesura (7.697) era una fascia piena da bordo a bordo coi due
+                     colori a tutta altezza: leggibile ma pesante — in fotografia sembra un cartello
+                     appiccicato sopra lo stadio, non una grafica di partita. Ora e' una capsula piccola e
+                     centrata, vetro scuro traslucido con bordo a filo, il colore della squadra ridotto a
+                     un accento verticale di tre pixel e le frecce come chevron tenui: la sigla sta nella
+                     meta' che DIFENDE e il chevron indica la porta che ATTACCA. Stessa informazione,
+                     un decimo dell'inchiostro. */
+                 const _pill={display:"flex",alignItems:"center",gap:5};
+                 const _sg={fontSize:9.5,fontWeight:800,letterSpacing:1.4,color:"rgba(241,245,249,0.92)"};
+                 const _ch={fontSize:11,lineHeight:1,fontWeight:700,color:"rgba(241,245,249,0.42)"};
+                 const _acc=(c)=>({width:3,height:11,borderRadius:2,background:c,display:"inline-block",flex:"0 0 auto"});
                  return(
-                 <div data-cpm="verso697" style={{position:"absolute",left:"6%",right:"6%",top:"2.5%",zIndex:5,pointerEvents:"none",display:"flex",borderRadius:8,overflow:"hidden",border:"1px solid rgba(255,255,255,0.14)"}}>
-                   <div style={{..._cell,justifyContent:"flex-start",background:"linear-gradient(90deg,"+_cH+"cc,"+_cH+"55)"}}>{_sgH}<span style={{opacity:0.85}}>&#9654;</span></div>
-                   <div style={{..._cell,justifyContent:"flex-end",background:"linear-gradient(90deg,"+_cA+"55,"+_cA+"cc)"}}><span style={{opacity:0.85}}>&#9664;</span>{_sgA}</div>
+                 <div data-cpm="verso697" style={{position:"absolute",left:0,right:0,top:"1.8%",zIndex:5,pointerEvents:"none",display:"flex",justifyContent:"center"}}>
+                   <div style={{display:"flex",alignItems:"center",gap:9,padding:"3px 11px",borderRadius:999,background:"rgba(9,13,22,0.44)",backdropFilter:"blur(6px)",WebkitBackdropFilter:"blur(6px)",border:"1px solid rgba(255,255,255,0.10)",boxShadow:"0 1px 8px rgba(0,0,0,0.32)"}}>
+                     <span style={_pill}><i style={_acc(_cH)}/><span style={_sg}>{_sgH}</span><span style={_ch}>&#8250;</span></span>
+                     <span style={{width:22,height:1,background:"rgba(255,255,255,0.16)"}}/>
+                     <span style={_pill}><span style={_ch}>&#8249;</span><span style={_sg}>{_sgA}</span><i style={_acc(_cA)}/></span>
+                   </div>
                  </div>);})()}
                {phase==="playing"&&coms[0]&&!(typeof window!=="undefined"&&window.__CPM_NO661)&&(
                  <div data-cpm="com661"/* [7.681.0] etichetta stabile: senza, per misurare il banner servivano selettori sullo STILE, che si rompono al primo ritocco grafico */ key={"com661-"+coms[0].t+"-"+String(coms[0].text||"").slice(0,18)} style={_sot695?{position:"absolute",left:"4%",right:"4%",bottom:"11%",zIndex:5,pointerEvents:"none",textAlign:"center",animation:"cpmComIn661 .55s ease-out"}:{position:"absolute",left:"7%",right:"7%",top:"38%",zIndex:5,pointerEvents:"none",textAlign:"center",animation:"cpmComIn661 .55s ease-out"}}>

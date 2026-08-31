@@ -31,6 +31,7 @@ while (scene < SCENE_TARGET && Date.now() - t0 < BUDGET_MS) {
   if (ph === 'playing') await page.evaluate(() => { window.__CPM_QUEUE_REACTIVE && window.__CPM_QUEUE_REACTIVE(); });
   const ok = await page.waitForFunction(() => { try { return window.__CPM_PHASE && window.__CPM_PHASE() === 'hl_choose'; } catch (e) { return false; } }, { timeout: 60000 }).then(() => true).catch(() => false);
   if (!ok) { await sleep(600); continue; }
+  const sit = await page.evaluate(() => { try { return window.__CPM_CURSIT && window.__CPM_CURSIT(); } catch (e) { return null; } }).catch(() => null);
   await page.evaluate(() => window.__CPM_RESOLVE && window.__CPM_RESOLVE(0)).catch(() => {});
   await page.waitForFunction(() => { try { return !window.__CPM_PHASE || window.__CPM_PHASE() !== 'hl_result'; } catch (e) { return true; } }, { timeout: 90000 }).catch(() => {});
   scene++; await sleep(200);
@@ -41,7 +42,12 @@ while (scene < SCENE_TARGET && Date.now() - t0 < BUDGET_MS) {
     if (!ks.length) return null;
     const k = Math.max(...ks); const W = S.filter(s => s.sk === k);
     if (W.length < 8) return null;
-    let txt = ''; try { txt = window.__CPM_DRAFTNOTE(snap, { sceneKey: k }) || ''; } catch (e) { txt = 'ERR ' + e.message; }
+    /* ⚠️ il detector si chiama COME LO CHIAMA IL GIOCO: col contesto vero (`__CPM_BUGCTX`), non con la
+       sola chiave di scena. Senza `intent`/`out` il test «scena difensiva?» e' sempre falso e il codice
+       001 scattava anche su una `recover`, dove per progetto non deve uscire. */
+    let ctx = null; try { ctx = window.__CPM_BUGCTX ? window.__CPM_BUGCTX(null) : null; } catch (e) { ctx = null; }
+    if (ctx) ctx.sceneKey = k; else ctx = { sceneKey: k };
+    let txt = ''; try { txt = window.__CPM_DRAFTNOTE(snap, ctx) || ''; } catch (e) { txt = 'ERR ' + e.message; }
     /* ⚠️ la riga del detector si accende solo oltre soglia: su sette scene ne accende una, e su UN
        campione non si giudica niente. Qui si calcola la STESSA matematica (inversioni del solo yaw,
        per secondo reale, escludendo gli stacchi) per OGNI scena, cosi' il metro ha risoluzione su
@@ -72,7 +78,7 @@ while (scene < SCENE_TARGET && Date.now() - t0 < BUDGET_MS) {
       (inverte ? gsRev : gsPan).push(gs); }
     return { n: W.length, txt, inv: +(yRev / dur).toFixed(2), pass: passN ? +(pass / passN).toFixed(2) : null, gsPan, gsRev };
   }).catch(() => null);
-  if (r) righe.push(r);
+  if (r) righe.push({ ...r, sit });
 }
 await b.close(); srv.close();
 const rx = /lo SGUARDO della camera oscilla: ([\d.]+) inversioni\/s/;
@@ -97,4 +103,19 @@ console.log(`  scene con «la camera BECCHEGGIA»: ${bec.length}/${righe.length}
 console.log(`  scene con «la CAMERA trema/salta»: ${salt}/${righe.length}`);
 console.log('');
 for (const r of righe.slice(0, 6)) { const l = r.txt.split('\n').filter(x => /007/.test(x)); if (l.length) console.log('  · ' + l.join('\n  · ')); }
+/* ⚠️ [7.698] LO STESSO GIRO CENSISCE TUTTI I CODICI, non solo il 007. Il regime che riproduce il
+   tremore — highlight REATTIVI con avversario fisso — e' l'unico in cui il detector vero gira su
+   scene vive: se il 001 («all'apertura il pallone non e' ai piedi di nessuno») vive qui, si vede
+   qui. Il 7.680 dichiara quattro regimi provati senza mai riprodurlo (3-4 scene su 161): questo
+   e' il quinto, ed e' l'unico che ha gia' dimostrato di contenere un difetto che il PO segnala. */
+const CODICI = ['001', '003', '004', '006', '007', '011', '012', 'SALTO', 'uscita dal campo'];
+console.log('\n  SCENE, UNA PER UNA (situazione · codici):');
+for (const r of righe) { /* ⚠️ le righe della bozza arrivano con un puntino elenco davanti: filtrando su `^codice` la lista
+     per-scena usciva TUTTA vuota mentre il censimento contava 2/5. Un elenco che dice «nessun difetto»
+     accanto a un totale che ne conta due e' peggio di nessun elenco: si cerca DENTRO la riga. */
+  const cods = r.txt.split('\n').map(x => x.trim()).filter(x => /codice \d|SALTO del pallone|uscita dal campo/.test(x)).map(x => { const m = x.match(/codice (\d+)/); return m ? m[1] : (/SALTO/.test(x) ? 'SALTO' : 'fuori'); }).join(',') || '—';
+  const S = r.sit || {}; console.log(`    ${String('gi' + (S.gi != null ? S.gi : '?')).padEnd(7)} type=${String(S.type || '?').padEnd(5)} def=${S.def ? 'SI' : 'no'} intent=${String(S.intent || '—').padEnd(10)} ${S.offBall ? 'OFF-BALL' : '        '} · ${cods}`); }
+console.log('\n  CENSIMENTO DI TUTTI I CODICI su queste ' + righe.length + ' scene:');
+for (const c of CODICI) { const n = righe.filter(r => r.txt.split('\n').some(x => x.includes('codice ' + c) || (c === 'SALTO' && /^SALTO/.test(x.trim())) || (c === 'uscita dal campo' && x.includes('uscita dal campo')))).length;
+  console.log(`    ${String(c).padEnd(18)} ${n}/${righe.length}${n ? '  ' + (righe.find(r => r.txt.includes('codice ' + c) || (c === 'SALTO' && /SALTO/.test(r.txt)) || (c === 'uscita dal campo' && r.txt.includes('uscita dal campo'))).txt.split('\n').find(x => x.includes(c) || (c === 'SALTO' && /SALTO/.test(x))) || '').trim().slice(0, 120) : ''}`); }
 console.log('');
