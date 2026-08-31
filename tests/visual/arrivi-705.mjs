@@ -21,31 +21,34 @@ for (const seme of [7300, 9200]) {
       const ev = (window.__CPM_EV && window.__CPM_EV()) || [];
       const st = window.__CPM_STATE && window.__CPM_STATE();
       const piani = ev.filter(e => e.ev === 'chronicle' && (e.rk === 'manovra-gol'));
-      return { n: piani.length, c: st ? st.clock : null };
+      const h = window.__CPM_HOLD && window.__CPM_HOLD();/* [v2] il verso del piano si legge QUI, al trigger: 700ms dopo il piano puo' essere gia' chiuso e pgDir e' null */
+      return { n: piani.length, c: st ? st.clock : null, dir: (h && h.pgDir) || null };
     } catch (_e) { return null; } });
     if (!r) continue;
     if (r.n > nPrev) { nPrev = r.n;
+      const dir705 = r.dir || 1;
       await sleep(700); /* il volo: ~2 campioni */
-      const m = await page.evaluate(() => { try {
+      const m = await page.evaluate((d) => { try {
         const st = window.__CPM_STATE && window.__CPM_STATE(); if (!st || !st.players || !st.ball) return null;
-        const h = window.__CPM_HOLD && window.__CPM_HOLD();
-        const d = (h && h.pgDir) || 1; const lato = d > 0 ? 'home' : 'away';
-        const bx = st.ball.x + 50, by = st.ball.z / 0.68 + 50;
+        const lato = d > 0 ? 'home' : 'away';
+        const bx = st.ball.x, by = st.ball.y;/* [v2] st.ball e' GIA' in coordinate gioco (x,y) — la v1 leggeva .z inesistente: by=NaN, nessun confronto passava, mediana=sentinella 1e9 */
         let md = 1e9; st.players.forEach(p => { if (p.team !== lato || p.gk) return; const dd = Math.hypot(p.x - bx, p.y - by); if (dd < md) md = dd; });
         return { md: +md.toFixed(1) };
-      } catch (e) { return null; } });
-      if (m) arrivi.push(m.md);
+      } catch (e) { return null; } }, dir705);
+      if (m && m.md < 1e8) arrivi.push({ md: m.md, dir: r.dir });/* [v3] +dir per smascherare gli arrivi attribuiti alla squadra sbagliata (dir null al trigger → default home) */
     }
     if (r.c != null && r.c >= 89) break;
   }
   await page.close();
 }
 await b.close(); srv.close();
-const ord = arrivi.slice().sort((a, c) => a - c);
+const vals = arrivi.map(a => a.md);
+const ord = vals.slice().sort((a, c) => a - c);
 console.log(`\n=== GLI ARRIVI DEL PIANO SONO CUSTODITI? ${process.env.CPM_ROSSO ? '· ROSSO ' + process.env.CPM_ROSSO : '· VERDE'} ===\n`);
-console.log(`  arrivi misurati: ${arrivi.length}`);
+console.log(`  arrivi misurati: ${arrivi.length} · senza verso al trigger (dir null → assunto home): ${arrivi.filter(a => !a.dir).length}`);
 if (arrivi.length) {
   console.log(`  distanza uomo-piu'-vicino → pallone: mediana ${ord[ord.length >> 1]}u · p90 ${ord[Math.floor(ord.length * 0.9)]}u · max ${ord[ord.length - 1]}u`);
-  console.log(`  arrivi CUSTODITI (<4u): ${arrivi.filter(v => v < 4).length}/${arrivi.length}`);
+  console.log(`  arrivi CUSTODITI (<4u): ${vals.filter(v => v < 4).length}/${vals.length}`);
+  console.log(`  elenco (md@dir): ${arrivi.map(a => `${a.md}@${a.dir == null ? '?' : a.dir}`).join(' · ')}`);
 }
 console.log('');
