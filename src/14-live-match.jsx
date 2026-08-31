@@ -2813,6 +2813,24 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
            Ogni famiglia ha ora il suo quarto tempo, e il pallone ci va davvero: 92-94, dentro l'area.
            Il tiro nel tabellino si sposta SULLA CONCLUSIONE: resta uno per gol, ma ora sta sulla riga
            che lo racconta invece che su quella che prepara. */
+        /* ⚠️ [7.699.0 — «VIENE SIMULATO MOLTO IL CENTROCAMPO»: era nel PIANO, non nella regia. Terza
+           direttiva del PO sulla stessa cosa, e le prime due volte ho curato il capo sbagliato.]
+           Ho provato a togliere il centrocampo regolando la FINESTRA: prima ritardandone l'apertura, poi
+           chiudendola quando l'azione muore. Misurate tutt'e due contro il rosso: quota di centrocampo da
+           21,0% a 23,0% e a 23,4% — le finestre si accorciano e non si puliscono, perche' tolgono tanto
+           gioco pericoloso quanto morto. Revocate entrambe.
+           Poi ho scomposto la misura per TIPO di finestra, con un metro che conta TUTTI i campioni (fascia
+           centrale gx 35-65, senza bisogno di sapere chi attacca — il precedente escludeva dal numeratore
+           proprio la coda dopo il gol e i cartellini, che sono centrocampo puro: quel 21-contro-23
+           confrontava due numeri che non misuravano la stessa cosa; ripetibile, 21,1% e 21,0% su due
+           passate). Il risultato nomina il colpevole: le finestre di OCCASIONE stanno a 0-15% di
+           centrocampo, quelle di GOL a 24-65%. La differenza non e' la regia, e' il piano: quello
+           dell'occasione (7.695) parte col pallone gia' a 78-84, quello del gol partiva a 40-52, cioe' a
+           meta' campo per progetto. Il primo tempo del racconto del gol ERA il centrocampo che il PO vede.
+           Ora i primi tempi si alzano nella meta' avversaria (62/66/64 invece di 40/54/52, e il secondo
+           della prima famiglia da 58 a 72): la costruzione si ACCORCIA invece di essere guardata per
+           intero, e il palleggio nella propria meta' resta in telecronaca, dove sta bene. Il numero dei
+           tempi non cambia, quindi la banda `gol-con-manovra` continua a trovare le sue righe. */
         const _pianoGol649=(_latoN)=>{
           const _mpA=(matchPlayersRef.current||[]).map((q,i)=>({q,i})).filter(o=>o.q&&o.q.team===_latoN&&!o.q.gk);
           if(_mpA.length<4)return null;
@@ -2828,19 +2846,19 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           const _fy=(_hp("fy")%2)?22:78;
           const _J=(k,a)=>((_hp("j"+k)%100)/100-0.5)*a;
           if(_fam===0)return[
-            {t:"⚙️ "+_na+" detta i tempi in mezzo al campo: possesso ragionato, la squadra sale in blocco.",x:_X(40+_J(1,8)),y:50+_J(2,20),chi:_a.i},
-            {t:"📈 "+_na+" verticalizza per "+_nb+" fra le linee: la manovra si accende.",x:_X(58+_J(3,8)),y:50+_J(4,24),chi:_b.i},
+            {t:"⚙️ "+_na+" alza il ritmo nella meta' avversaria: la squadra sale in blocco.",x:_X(62+_J(1,8)),y:50+_J(2,20),chi:_a.i},
+            {t:"📈 "+_na+" verticalizza per "+_nb+" fra le linee: la manovra si accende.",x:_X(72+_J(3,8)),y:50+_J(4,24),chi:_b.i},
             {t:"🎯 Filtrante di "+_nb+": "+_nc+" attacca il limite dell'area!",x:_X(77+_J(5,6)),y:50+_J(6,18),chi:_c.i},
             {t:"💥 Conclusione secca di "+_nc+" dal limite: il pallone parte teso verso la porta!",x:_X(93+_J(7,3)),y:50+_J(8,10),chi:_c.i,ms:1},
           ];
           if(_fam===1)return[
-            {t:"↔️ "+_na+" apre sulla corsia: "+_nb+" ha campo davanti a se'.",x:_X(54+_J(1,8)),y:_fy+_J(2,8),chi:_b.i},
+            {t:"↔️ "+_na+" apre sulla corsia: "+_nb+" ha campo davanti a se'.",x:_X(66+_J(1,8)),y:_fy+_J(2,8),chi:_b.i},
             {t:"💨 "+_nb+" affonda sulla fascia e guadagna il fondo.",x:_X(81+_J(3,5)),y:_fy+_J(4,6),chi:_b.i},
             {t:"🎯 Cross teso di "+_nb+": "+_nc+" stacca sul secondo palo!",x:_X(86+_J(5,4)),y:50+_J(6,14),chi:_c.i},
             {t:"💥 Incornata di "+_nc+" a botta sicura!",x:_X(94+_J(7,2)),y:50+_J(8,8),chi:_c.i,ms:1},
           ];
           return[
-            {t:"⚡ "+_na+" ruba il tempo a centrocampo: si riparte in verticale!",x:_X(52+_J(1,8)),y:50+_J(2,22),chi:_a.i},
+            {t:"⚡ "+_na+" ruba il tempo alla trequarti: si riparte in verticale!",x:_X(64+_J(1,8)),y:50+_J(2,22),chi:_a.i},
             {t:"🏃 Transizione rapida: "+_nb+" conduce e scarica su "+_nc+" al limite dell'area.",x:_X(79+_J(3,6)),y:50+_J(4,20),chi:_c.i},/* [7.693.0] 74→79: il testo dice «al limite dell'area» e il limite sta a 78-84 — a 74 il racconto mandava il pallone tre metri prima di cio' che nominava, e con la custodia del piano quella differenza ora si VEDE */
             {t:"💥 "+_nc+" calcia di prima, senza controllare!",x:_X(92+_J(7,3)),y:50+_J(8,10),chi:_c.i,ms:1},
           ];
