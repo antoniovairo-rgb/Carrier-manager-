@@ -7449,7 +7449,23 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
        if(!_no671&&_cs671._ax671!=null&&dt>0&&dt<0.5){
          let _dax=((_ax671-_cs671._ax671+Math.PI*3)%(Math.PI*2))-Math.PI;
          let _day=_ay671-_cs671._ay671;
-         const _max671=2.62*dt;/* 150 gradi al secondo */
+         /* ⚠️ [7.697.0 — IL TETTO GIUSTO, MISURATO INVECE CHE STIMATO. Rosso __CPM_NO697C]
+            Il tetto del 7.671 (150 gradi/s) non si e' MAI acceso su questo difetto: le note del PO danno
+            5,1-7,5 gradi d'ampiezza a 13-16 inversioni/s, cioe' 66-120 gradi/s, sempre sotto. L'avevo
+            scelto a stima, dichiarando che non sapevo misurarlo.
+            CENSIMENTO (sguardo-696, sette scene, 1151 campioni di yaw separati in due popolazioni):
+            la PANORAMICA legittima — fotogrammi senza inversione, n 1060 — sta a mediana 0 gradi/s,
+            p90 16, p99 63; il TREMORE — fotogrammi con inversione, n 91 — sta a mediana 85, p90 120.
+            Le due popolazioni si sfiorano solo nell'1% piu' veloce delle panoramiche: il tetto giusto
+            esiste e vale ~70 gradi/s.
+            Non lo si puo' pero' applicare a tutto: ci sono panoramiche legittime fino a 239 gradi/s e
+            schiacciarle a 70 le renderebbe lente. Il tetto stretto vale SOLO quando il movimento
+            INVERTE rispetto al fotogramma precedente — che e' esattamente il criterio con cui le due
+            popolazioni sono separate. Una spazzata continua passa a 150 com'era; un ping-pong viene
+            schiacciato a 70. E qui il rimedio TOGLIE energia: il tentativo revocato nel 7.696 ne
+            aggiungeva, ed era quello il suo difetto di segno. */
+         const _inv697=(!(typeof window!=='undefined'&&window.__CPM_NO697C)&&_cs671._sgn671&&Math.sign(_dax)!==0&&Math.sign(_dax)!==_cs671._sgn671);
+         const _max671=(_inv697?1.22:2.62)*dt;/* 70 gradi/s sulle inversioni, 150 sulle panoramiche */
          const _taglio671=(Math.abs(_dax)>0.5||!!_cs671._cutSnap||!!_cs671._sceneCut);
          if(!_taglio671&&(Math.abs(_dax)>_max671||Math.abs(_day)>_max671)){
            const _axC=_cs671._ax671+Math.max(-_max671,Math.min(_max671,_dax));
@@ -7462,6 +7478,9 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
            if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){try{window.__CPM_FRENO671=(window.__CPM_FRENO671||0)+1;}catch(_e){}}
          }
        }
+       {const _nx697=Math.atan2(camLook.x-camera.position.x,camLook.z-camera.position.z);
+        if(_cs671._ax671!=null){let _d697=((_nx697-_cs671._ax671+Math.PI*3)%(Math.PI*2))-Math.PI;
+          if(Math.abs(_d697)>0.006)_cs671._sgn671=Math.sign(_d697);}}/* [7.697.0] il verso dell'ultimo movimento VERO reso a schermo: e' il riferimento su cui si riconosce l'inversione, e i micro-movimenti sotto la soglia del detector non lo sporcano */
        _cs671._ax671=Math.atan2(camLook.x-camera.position.x,camLook.z-camera.position.z);
        _cs671._ay671=Math.atan2(camLook.y-camera.position.y,Math.hypot(camLook.x-camera.position.x,camLook.z-camera.position.z));}
       camera.lookAt(camLook.x,camLook.y,camLook.z);

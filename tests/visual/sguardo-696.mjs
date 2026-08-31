@@ -19,14 +19,14 @@ await installCdnRoutes(page);
 await page.addInitScript(r => { window.__CPM_GLB = false; window.__CPM_CINE = 1; window.__CPM_PRESENT = 1;
   for (const k of r) window['__CPM_NO' + k] = true;
   try { localStorage.setItem('cpm-devtools', '1'); } catch (e) {} }, (process.env.CPM_ROSSO || '').split(',').map(x => x.trim()).filter(Boolean));
-await openMatch(page, port, { skipLoadAll: true });
+await openMatch(page, port, { skipLoadAll: true, name: 'Sg' });/* [7.697] avversario e nome FISSI: la sonda ne estraeva uno diverso a ogni giro, ed e' la prima sospetta della varianza fra passate a codice invariato */
 await sleep(700);
 let secchi = 0, scene = 0; const righe = [];
 const t0 = Date.now();
 while (scene < SCENE_TARGET && Date.now() - t0 < BUDGET_MS) {
   const ph = await matchPhase(page);
-  if (ph === 'ended' || ph === 'ceremony' || ph === 'shootout') { secchi = 0; try { await openMatch(page, port, { skipLoadAll: true }); await sleep(700); } catch (e) { break; } continue; }
-  if (ph == null) { if (++secchi >= 12) { secchi = 0; try { await openMatch(page, port, { skipLoadAll: true }); await sleep(700); } catch (e) { break; } } else await sleep(700); continue; }
+  if (ph === 'ended' || ph === 'ceremony' || ph === 'shootout') { secchi = 0; try { await openMatch(page, port, { skipLoadAll: true, name: 'Sg' });/* [7.697] avversario e nome FISSI: la sonda ne estraeva uno diverso a ogni giro, ed e' la prima sospetta della varianza fra passate a codice invariato */ await sleep(700); } catch (e) { break; } continue; }
+  if (ph == null) { if (++secchi >= 12) { secchi = 0; try { await openMatch(page, port, { skipLoadAll: true, name: 'Sg' });/* [7.697] avversario e nome FISSI: la sonda ne estraeva uno diverso a ogni giro, ed e' la prima sospetta della varianza fra passate a codice invariato */ await sleep(700); } catch (e) { break; } } else await sleep(700); continue; }
   secchi = 0;
   if (ph === 'playing') await page.evaluate(() => { window.__CPM_QUEUE_REACTIVE && window.__CPM_QUEUE_REACTIVE(); });
   const ok = await page.waitForFunction(() => { try { return window.__CPM_PHASE && window.__CPM_PHASE() === 'hl_choose'; } catch (e) { return false; } }, { timeout: 60000 }).then(() => true).catch(() => false);
@@ -54,7 +54,23 @@ while (scene < SCENE_TARGET && Date.now() - t0 < BUDGET_MS) {
       let dy = ((y2 - y1 + Math.PI * 3) % (Math.PI * 2)) - Math.PI;
       if (Math.abs(dy) > 0.006) { if (yPrev && Math.sign(dy) !== Math.sign(yPrev)) yRev++; yPrev = dy; } }
     for (const q of W) { if (q.wl == null) continue; pass += Math.floor(Math.round(q.wl) / 10); passN++; }
-    return { n: W.length, txt, inv: +(yRev / dur).toFixed(2), pass: passN ? +(pass / passN).toFixed(2) : null };
+    /* ⚠️ QUANTO VELOCE RUOTA UNA PANORAMICA VERA. Il freno del 7.671 taglia a 150 gradi/s e non si
+       accende mai (il tremore viaggia a 66-120). Prima di abbassarlo serve sapere di quanto si puo':
+       il censimento esistente misura la velocita' POSIZIONALE della camera (43,8 u/s mediana), che non
+       dice niente sull'asse ottico. Qui si raccolgono i gradi/s dello yaw fotogramma per fotogramma,
+       separando i campioni con inversione (il tremore) da quelli SENZA (la panoramica legittima):
+       il tetto giusto, se esiste, sta fra i due. */
+    const gsPan = [], gsRev = []; let yp2 = 0;
+    for (let i = 1; i < W.length; i++) { const a2 = W[i - 1], b2 = W[i];
+      if (a2.lx == null || b2.lx == null || a2.cx == null || b2.cx == null) continue;
+      const dtm = (b2.t - a2.t) / 1000; if (!(dtm > 0.004 && dtm < 0.4)) continue;
+      const y1 = Math.atan2(a2.lx - a2.cx, a2.lz - a2.cz), y2 = Math.atan2(b2.lx - b2.cx, b2.lz - b2.cz);
+      let dy = ((y2 - y1 + Math.PI * 3) % (Math.PI * 2)) - Math.PI;
+      const gs = Math.abs(dy) * 57.2958 / dtm; if (gs > 400) continue;
+      const inverte = yp2 && Math.sign(dy) !== Math.sign(yp2) && Math.abs(dy) > 0.006;
+      if (Math.abs(dy) > 0.006) yp2 = dy;
+      (inverte ? gsRev : gsPan).push(gs); }
+    return { n: W.length, txt, inv: +(yRev / dur).toFixed(2), pass: passN ? +(pass / passN).toFixed(2) : null, gsPan, gsRev };
   }).catch(() => null);
   if (r) righe.push(r);
 }
@@ -70,6 +86,11 @@ const passes = righe.map(r => r.pass).filter(v => v != null).sort((a, b2) => a -
 console.log(`\n=== CODICE 007 — LO SGUARDO ${process.env.CPM_ROSSO ? '· ROSSO ' + process.env.CPM_ROSSO : '· VERDE'} ===\n`);
 if (invs.length) console.log(`  inversioni/s su OGNI scena: mediana ${invs[invs.length >> 1].toFixed(2)} · max ${invs[invs.length - 1].toFixed(2)} · scene sopra 2,0: ${invs.filter(v => v >= 2).length}/${invs.length}`);
 if (passes.length) console.log(`  passate camera per fotogramma: mediana ${passes[passes.length >> 1].toFixed(2)} · max ${passes[passes.length - 1].toFixed(2)}`);
+const pan = righe.flatMap(r => r.gsPan || []).sort((a, b2) => a - b2);
+const rev = righe.flatMap(r => r.gsRev || []).sort((a, b2) => a - b2);
+const q = (A, p) => A.length ? A[Math.min(A.length - 1, Math.floor(A.length * p))] : null;
+if (pan.length) console.log(`  yaw SENZA inversione (panoramica): n ${pan.length} · mediana ${q(pan,0.5).toFixed(0)}°/s · p90 ${q(pan,0.9).toFixed(0)} · p99 ${q(pan,0.99).toFixed(0)} · max ${pan[pan.length-1].toFixed(0)}`);
+if (rev.length) console.log(`  yaw CON inversione (tremore)   : n ${rev.length} · mediana ${q(rev,0.5).toFixed(0)}°/s · p90 ${q(rev,0.9).toFixed(0)} · max ${rev[rev.length-1].toFixed(0)}`);
 console.log(`  scene utili: ${righe.length}`);
 console.log(`  scene con «lo SGUARDO oscilla»  : ${osc.length}/${righe.length}${osc.length ? ` · inversioni/s ${Math.min(...osc).toFixed(1)}-${Math.max(...osc).toFixed(1)}` : ''}`);
 console.log(`  scene con «la camera BECCHEGGIA»: ${bec.length}/${righe.length}${bec.length ? ` · inversioni/s ${Math.min(...bec).toFixed(1)}-${Math.max(...bec).toFixed(1)}` : ''}`);
