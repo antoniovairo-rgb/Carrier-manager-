@@ -3002,7 +3002,15 @@ const getThisWeekMatchday=()=>{
       const _ncOpp=(_ncq.opponents||[])[_ncq.matchIdx||0]||"?";
       const _ncIdx=_ncq.matchIdx||0;
       const _clubMd=getThisWeekMatchday();
-      return{label:`🌍 Gioca vs ${_ncOpp} — Coppa Nazioni`,sub:`Partita ${_ncIdx+1}/3 · ${_ncq.pts||0}pt${_clubMd?` · poi: ${_clubMd.opponentName} W.${_clubMd.week}`:""}`,color:TH.txBlue,disabled:false,action:"nationsCup"};
+      /* ⚠️ [7.700.0 collaudo PO, screenshot «Coppa Nazioni · Partita 4/3 · 9pt»] IL CARTELLO DICEVA UN
+         NUMERO IMPOSSIBILE. Il totale era CABLATO a tre, ma dal 7.41 la coppa ha una FINALE vera: superato
+         il girone la coda si allunga a quattro gare, e la quarta veniva annunciata come «Partita 4/3».
+         Il calendario aveva ragione, il cartello no — e un numero impossibile fa sembrare rotto anche cio'
+         che funziona (il PO ha scritto «mi vuole far rigiocare la finale!» guardando questa riga).
+         Ora il totale si legge dalla coda, e la finale si chiama col suo nome invece che con un numero. */
+      const _ncTot700=Math.max(1,(_ncq.opponents||[]).length);
+      const _ncFin700=!!_ncq.isFinal&&_ncIdx>=_ncTot700-1;
+      return{label:`🌍 Gioca vs ${_ncOpp} — Coppa Nazioni`,sub:`${_ncFin700?"FINALE":`Partita ${_ncIdx+1}/${_ncTot700}`} · ${_ncq.pts||0}pt${_clubMd?` · poi: ${_clubMd.opponentName} W.${_clubMd.week}`:""}`,color:TH.txBlue,disabled:false,action:"nationsCup"};
     }
     const _em=player.euroMondiale;
     if(_em?.active&&!_em?.done){
