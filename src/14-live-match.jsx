@@ -2887,17 +2887,17 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           if(_fO===0)return[
             {t:"\u26a1 "+_na+" guadagna il fondo e mette dentro: mischia in area!",x:_XO(84+_JO(1,5)),y:50+_JO(2,16),chi:_a.i},
             {t:"\ud83d\udca5 "+_nb+" calcia da due passi!",x:_XO(93+_JO(3,3)),y:50+_JO(4,8),chi:_b.i,ms:1},
-            {t:"\ud83e\udde4 "+_ngk+" ci mette il corpo e respinge: che parata!",x:_XO(96),y:50+_JO(5,6),gk:1},
+            {t:"\ud83e\udde4 "+_ngk+" ci mette il corpo e la devia in angolo: che parata!",x:_XO(96),y:50+_JO(5,6),gk:1,esito:"corner"},
           ];
           if(_fO===1)return[
             {t:"\ud83c\udfaf "+_na+" si accentra e cerca il giro sul secondo palo.",x:_XO(78+_JO(1,6)),y:50+_JO(2,18),chi:_a.i},
             {t:"\ud83d\udca5 Conclusione a giro di "+_na+": palla verso l'incrocio!",x:_XO(94+_JO(3,2)),y:50+_JO(4,10),chi:_a.i,ms:1},
-            {t:"\ud83e\udde4 "+_ngk+" vola e la toglie da sotto l'incrocio: in angolo!",x:_XO(96),y:50+_JO(5,8),gk:1},
+            {t:"\ud83e\udde4 "+_ngk+" vola e la toglie da sotto l'incrocio: in angolo!",x:_XO(96),y:50+_JO(5,8),gk:1,esito:"corner"},
           ];
           return[
             {t:"\ud83d\udcc8 "+_na+" verticalizza per "+_nb+": e' solo davanti al portiere!",x:_XO(80+_JO(1,6)),y:50+_JO(2,14),chi:_b.i},
             {t:"\ud83d\udca5 "+_nb+" a tu per tu, calcia di prima!",x:_XO(92+_JO(3,3)),y:50+_JO(4,8),chi:_b.i,ms:1},
-            {t:"\ud83e\udde4 Uscita bassa di "+_ngk+": gli chiude lo specchio addosso!",x:_XO(95),y:50+_JO(5,6),gk:1},
+            {t:"\ud83e\udde4 Uscita bassa di "+_ngk+": blocca a terra e fa ripartire i suoi.",x:_XO(95),y:50+_JO(5,6),gk:1,esito:"goal_kick"},
           ];
         };
         const _apriCatena644=(_lato551)=>{
@@ -3054,7 +3054,26 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
               if(_a&&_a.p649&&_a.tick===(_pg532.ticks|0)-1){_a.tick=_pg532.ticks|0;_a.mn=nx;_a.passaggi=_pg532.step|0;}
               else _P.azioni.push({p649:1,tick:_pg532.ticks|0,mn:nx,mn0:nx,passaggi:0,max:0,perc:0,lx:0,ly:0,da:"piano"});}catch(_e649){}}
             const _arr693=(()=>{try{if(typeof window!=='undefined'&&window.__CPM_NO693)return true;const _lt=_pg532.lastTg;if(!_lt)return true;if(((_pg532.att693|0))>=1)return true;const _b=ballPosRef.current||{x:50,y:50};if(Math.hypot((_b.x||50)-_lt.x,(_b.y||50)-_lt.y)<=8)return true;_pg532.att693=(_pg532.att693|0)+1;return false;}catch(_e){return true;}})();/* [7.693.0 v2] l'attesa vale UN tick solo: alla prima stesura consumava tutto il tetto piano+4 e il gol scivolava fuori dai quattro minuti in cui il guardiano cerca la riga di macchina (gol-con-manovra 3/4 -> 1/4). E a due tick il testimone della custodia — che esclude la costruzione per progetto — scendeva a 5 campioni su 8, sotto il minimo del guardiano: una banda che non puo' giudicare e' peggio di una banda rossa. *//* [7.693.0 — LA RETE ASPETTA IL PALLONE] Col piano finalmente padrone del bersaglio, l'ultimo passo manda la palla al limite dell'area: ma il lerp ne copre il 65% per tick e la rete arrivava il tick dopo, con il pallone ancora a meta' strada. Il tetto piano+4 resta l'ultima parola, quindi l'attesa e' limitata per costruzione. */
-            if(!_rip575&&(((_pg532.step|0)>=_pg532.piano.length&&_arr693)||_pg532.ticks>=_pg532.piano.length+4)){if(_pg532.ev)_simEv77=_pg532.ev;pendingGoalRef.current=null;}/* [7.695.0] senza evento del microsim in fondo (l'occasione) la macchina si chiude e basta: il punteggio non lo tocca nessuno *//* [7.649.0] la rete arriva quando il piano e' stato RACCONTATO; il tetto piano+4 resta l'ultima parola (mai un gol in sospeso) */
+            if(!_rip575&&(((_pg532.step|0)>=_pg532.piano.length&&_arr693)||_pg532.ticks>=_pg532.piano.length+4)){if(_pg532.ev)_simEv77=_pg532.ev;
+              /* ⚠️ [7.702.0 — DOPO LA PARATA C'E' UNA PALLA MORTA, NON UN FLIPPER. Rosso __CPM_NO702B]
+                 Collaudo PO: «ping pong di 4-5 volte tra il portiere scoordinato e un avversario, davvero
+                 poco realistico». Avevo costruito la parata (7.695) ma non il DOPO-parata: l'occasione si
+                 chiudeva lasciando il pallone VIVO sulla linea di porta, l'elezione del portatore lo dava
+                 all'attaccante piu' vicino, le reti lo ritiravano, e via cosi'. Nel calcio vero dopo una
+                 parata c'e' una transizione morta: angolo, o il portiere blocca e rinvia. La transizione
+                 esiste gia' nel motore (outRef+fermoRef, 7.559) e qui la si usa: l'esito lo dichiara il
+                 TESTO dell'ultimo tempo (una fonte sola, come per il tuffo), il possesso va a chi
+                 difendeva per il rinvio e a chi attaccava per l'angolo, come da regolamento. */
+              if(_pg532.occ&&_pg532.esito703&&!(typeof window!=='undefined'&&window.__CPM_NO702B)){try{
+                const _es702=_pg532.esito703;const _atk702=(_pg532.dir|0)>0;
+                const _no702=_es702==="corner"?_atk702:!_atk702;
+                const _ox702=_es702==="corner"?(_atk702?98:2):(_atk702?94:6);
+                const _oy702=_es702==="corner"?((Math.abs(hashStr("occ702|"+nx))%2)?96:4):50;
+                outRef.current={kind:_es702,nostra:_no702,x:_ox702,y:_oy702,step:0,ttl:4};
+                if(!(typeof window!=='undefined'&&window.__CPM_NO616))setTurn616(_no702?1:-1,"interruzione-"+_es702);
+                fermoRef.current={x:_ox702,y:_oy702,t:4,kind:_es702};
+              }catch(_e702){}}
+              pendingGoalRef.current=null;}/* [7.695.0] senza evento del microsim in fondo (l'occasione) la macchina si chiude e basta: il punteggio non lo tocca nessuno *//* [7.649.0] la rete arriva quando il piano e' stato RACCONTATO; il tetto piano+4 resta l'ultima parola (mai un gol in sospeso) */
           }else if(_pg532&&!_inHL77){
             _pg532.ticks++;
             const _t532=ballTargetRef.current;const _b532=ballPosRef.current||{x:50,y:50};
@@ -3562,7 +3581,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
             const _pe649=_pgH649.piano[_pgH649.step|0];_pgH649.step=(_pgH649.step|0)+1;
             _recHij545=true;_recKind546="manovra-gol";_recSide546=_pgH649.dir>0?"home":"away";
             ev={txt:_pe649.t,ef:null,w:1,bpos:{x:clamp(_pe649.x,4,96),y:clamp(_pe649.y,6,94)},pd:_dec499,at:"pass",_piano649:1,ms:_pe649.ms?(_pgH649.dir>0?{shots:1}:{oppShots:1}):null};
-            if(_pe649.gk&&!(typeof window!=='undefined'&&window.__CPM_NO695)){gkSave695.current={t:Date.now(),side:_pgH649.dir>0?"home":"away"};/* [7.695.0] la riga che NOMINA il portiere accende il tuffo: una sola fonte, il testo e il gesto non possono divergere */
+            if(_pe649.gk&&!(typeof window!=='undefined'&&window.__CPM_NO695)){gkSave695.current={t:Date.now(),side:_pgH649.dir>0?"home":"away"};_pgH649.esito703=_pe649.esito||null;/* [7.702.0] l'esito da regolamento dichiarato dal TESTO: alla chiusura arma la palla morta corrispondente *//* [7.695.0] la riga che NOMINA il portiere accende il tuffo: una sola fonte, il testo e il gesto non possono divergere */
               if(typeof window!=='undefined'&&window.__CPM_REC){try{const _w=(window.__CPM_OCC695=window.__CPM_OCC695||{armate:0,parate:0,min:[]});_w.parate++;}catch(_e){}}}
             if(_pe649.chi!=null&&!(typeof window!=='undefined'&&window.__CPM_NO641))carrierRef.current={i:_pe649.chi};/* il protagonista dell'evento e' il portatore */
             if(!(typeof window!=='undefined'&&window.__CPM_NO693)){pianoLock693.current=3;_pgH649.lastTg={x:clamp(_pe649.x,4,96),y:clamp(_pe649.y,6,94)};/* [7.693.0] dove il racconto ha mandato il pallone l'ultima volta: la rete aspetta che ci ARRIVI *//* [7.693.0] tre tick di custodia: questo, piu' i due in cui il pallone viaggia */
@@ -4657,6 +4676,20 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
         if(!_koNow590)ripT0Ref.current=0;
         const _breve590=_koNow590&&(!(typeof window!=='undefined'&&window.__CPM_NO590)?(ripT0Ref.current>0&&(Date.now()-ripT0Ref.current)<=4500):true);
         const _ognitick588=!(typeof window!=='undefined'&&window.__CPM_NO588)&&_breve590;
+        /* ⚠️ [7.702.0 — IL TESTIMONE DELLA CUSTODIA TRADIVA LA PROPRIA DICHIARAZIONE, DAL 7.625.]
+           Il suo commento promette «si campiona ogni tick di gioco vivo, ~150 campioni/run», ma il
+           blocco stava DENTRO il cancello dello schieramento (un tick su tre) e dopo le esclusioni
+           restavano 5-8 campioni per run: la banda ha giudicato per settanta release su un campione
+           venti volte piu' piccolo del progettato, e le palle morte regolamentari del 7.702 (angolo o
+           rinvio dopo la parata) l'hanno fatta scendere sotto il minimo — due giri identici a 5
+           campioni, «non giudicabile». Un metro che una transizione da regolamento rende cieco e' un
+           metro rotto: il prelievo torna dove il suo commento ha sempre detto che stava, fuori dal
+           cancello, a ogni tick di gioco vivo. Le esclusioni (fermo, out, costruzione, calci) restano
+           identiche: cambia il QUANDO si guarda, non il COSA. */
+        if(typeof window!=='undefined'&&window.__CPM_NPD!==undefined&&phaseRef.current==='playing'&&!fermoRef.current&&!outRef.current&&!pendingGoalRef.current&&kickRef.current<=0&&kickoffRef.current<=0){try{/* [7.649.0] +pendingGoal fra le esclusioni: il campione dichiara FASE 0 (gioco libero) e gia' esclude le macchine — la scena-gol ora e' una scena a salti DICHIARATI (lanci/aperture nel testo), non custodia libera; includerla misurava il disegno, non il difetto. La banda <=12 resta identica sul gioco libero. */
+            const _bN=ballPosRef.current;const _ltN=possTurnRef.current>0?"home":"away";let _dN=null;
+            (matchPlayersRef.current||[]).forEach(q=>{if(!q||q.team!==_ltN||q.gk)return;const _dd=Math.hypot((q.x||50)-_bN.x,(q.y||50)-_bN.y);if(_dN==null||_dd<_dN)_dN=_dd;});
+            if(_dN!=null&&window.__CPM_NPD.length<4000)window.__CPM_NPD.push(+_dN.toFixed(1));}catch(_e){}}
         if(nx%3===0||_ognitick588){
           const dt=driftTargetsRef.current||DRIFT_PRESETS.midfield;
           /* [7.625.1 strumentazione] CUSTODIA PER TICK, non alla riga: il metro npd-alla-riga (7.624) e'
@@ -4664,10 +4697,6 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
              parte) e quindi misura la GITTATA dei passaggi, non la custodia: per questo ne' il guadagno
              dell'inseguitore ne' l'inversione del verso lo muovevano — quarta cattura della classe
              «campione condizionato» (7.594). Qui si campiona ogni tick di gioco vivo, ~150 campioni/run. */
-          if(typeof window!=='undefined'&&window.__CPM_NPD!==undefined&&phaseRef.current==='playing'&&!fermoRef.current&&!outRef.current&&!pendingGoalRef.current&&kickRef.current<=0&&kickoffRef.current<=0){try{/* [7.649.0] +pendingGoal fra le esclusioni: il campione dichiara FASE 0 (gioco libero) e gia' esclude le macchine — la scena-gol ora e' una scena a salti DICHIARATI (lanci/aperture nel testo), non custodia libera; includerla misurava il disegno, non il difetto. La banda <=12 resta identica sul gioco libero. */
-            const _bN=ballPosRef.current;const _ltN=possTurnRef.current>0?"home":"away";let _dN=null;
-            (matchPlayersRef.current||[]).forEach(q=>{if(!q||q.team!==_ltN||q.gk)return;const _dd=Math.hypot((q.x||50)-_bN.x,(q.y||50)-_bN.y);if(_dN==null||_dd<_dN)_dN=_dd;});
-            if(_dN!=null&&window.__CPM_NPD.length<4000)window.__CPM_NPD.push(+_dN.toFixed(1));}catch(_e){}}
           if(!(typeof window!=='undefined'&&window.__CPM_NO642)&&carrierRef.current&&carrierRef.current.i!=null){try{
             const _qd642=(matchPlayersRef.current||[])[carrierRef.current.i];const _bt642=ballTargetRef.current;
             if(_qd642&&_bt642&&Math.hypot((_qd642.x||50)-(_bt642.x||50),(_qd642.y||50)-(_bt642.y||50))>12)carrierRef.current=null;/* [7.642.0 v2] DECADENZA: la palla mandata oltre 12u dal portatore lo scavalca — non e' piu' suo, finche' un arrivo non elegge il prossimo */

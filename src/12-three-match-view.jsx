@@ -7222,6 +7222,19 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
          non puo' funzionare, e si dimostra col conto: taglia a 150 gradi/s e il tremore viaggia a
          66-120 gradi/s, quindi non si accende mai; (3) la strada «correzione persistente» e' chiusa di
          principio finche' la rete rimisura cio' che ha gia' corretto, non e' questione di taratura. */
+      /* ⚠️ [7.702.0 — SECONDO RIMEDIO STRUTTURALE SUL CODICE 007, SCRITTO, MISURATO E REVOCATO.]
+         Dopo l'accumulo sul bersaglio (revocato: retroazione positiva), il tentativo opposto: se nel
+         fotogramma precedente una rete correttiva aveva scritto sull'asse ottico, la morbidezza rallentava
+         a un terzo — la correzione restava in piedi invece di essere strattonata via. MISURA APPAIATA sul
+         banco ripetibile (avversario fisso, GLB spenti — il regime va DICHIARATO nel comando: una passata
+         l'ho buttata perche' il default GLB della sonda era rimasto acceso da un altro esperimento, e a
+         2 fps il filtro temporale scarta tutto e il banco e' cieco in tutt'e due i bracci):
+         inversioni/s mediana 0,24 contro 0,21, scene sopra soglia 2/7 contro 1/7, campioni di tremore
+         108 contro 105. NON SCENDE NIENTE: le reti si riarmano a qualunque passo della morbidezza.
+         La lezione, dopo due bocciature simmetriche: il duello non si spegne A VALLE — ne' aggiungendo
+         energia al bersaglio ne' togliendone alla morbidezza. Va tolto il motivo per cui la rete si
+         riarma: il regista che ricalcola `tL` DA ZERO a ogni fotogramma, cieco alle correzioni del
+         fotogramma prima. E' un lavoro sul regista, non sui freni, e resta a verbale come strada. */
       camLook.x+=(tLx-camLook.x)*kl;camLook.y+=(tLy-camLook.y)*kl;camLook.z+=(tLz-camLook.z)*kl;
       /* [7.226.0 #43] GUARDIA SUL QUADRO REALE. Il richiamo 7.225.0 garantisce che l'eroe stia nel quadro della
          camera TARGET — ma la camera REALE lo insegue coi lerp (posizione kp, sguardo kl): durante uno stacco

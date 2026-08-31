@@ -82,7 +82,7 @@ const checks = [
      questo conteggio oscillava di tre righe con la soglia a cinque. */
   ['manovra-viva', `${manovraRows.length} righe di manovra su ${PARTITE_G} partite (catena ${catRows.length} + libreria ${libRows.length}) · banda ${5 * PARTITE_G}`, manovraRows.length >= 5 * PARTITE_G],
   ['arbitro-esiste', `${fischi} interruzioni ambientali`, fischi >= 6],
-  ['custodia', `mediana ${npdMed}u su ${npds.length} campioni (fase 0)`, npds.length >= 6 ? npdMed <= 12 : null],
+  ['custodia', `mediana ${npdMed}u su ${npds.length} campioni (ogni tick vivo)`, npds.length >= 6 ? npdMed <= 12 : null],
   ['gol-con-manovra', `${golCoperti}/${goals.length} gol con riga di macchina nei 4' prima`, goals.length >= 3 ? golCoperti >= 1 : null],
 ];
 console.log('\n=== GUARDIANO PARTITA-VERA ===\n');
