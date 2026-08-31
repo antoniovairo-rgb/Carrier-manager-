@@ -7275,6 +7275,22 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
         const _aLG=Math.atan2(_lzG,_lxG),_aHG=Math.atan2(_dzG,_dxG);
         let _dAG=_aHG-_aLG;while(_dAG>Math.PI)_dAG-=2*Math.PI;while(_dAG<-Math.PI)_dAG+=2*Math.PI;
         const _aMG=Math.atan(_tHG*((camera&&camera.aspect)||0.75))*0.94;
+        /* ⚠️ [7.704.0 — L'ELEZIONE CHE MANCAVA: LA VISTA-REALE NON GIUDICA UNA VISTA IN VIAGGIO.
+           Rosso __CPM_NO704] La nota qui sotto (7.556-bis) aveva gia' scritto la diagnosi con le parole
+           del pallone: «una rete sul BERSAGLIO (bisezione, prima dei lerp) e una sulla VISTA RESA
+           (vista-reale, dopo): la prima porta il bersaglio dentro il quadro, la seconda giudica la vista
+           che il lerp NON HA ANCORA RAGGIUNTO e la ritira indietro — due padroni, nessuna elezione».
+           Dopo che DUE rimedi a valle sono stati bocciati dalla misura (accumulo sul bersaglio: peggiora;
+           freno sulla morbidezza: non muove niente), l'elezione si fa qui, alla radice: se il soggetto
+           sta gia' dentro il quadro del BERSAGLIO verso cui la vista converge, questa rete ASPETTA — la
+           convergenza e' la correzione, e strattonare una vista in viaggio e' il tremore stesso. Si
+           accende solo quando anche il bersaglio e' fuori (soggetto praticamente alle spalle), che e' il
+           caso d'emergenza per cui era nata. Direttiva PO: «sto tremore deve essere risolto
+           definitivamente, mi raccomando!». */
+        const _viaggia704=(()=>{try{if(typeof window!=='undefined'&&window.__CPM_NO704)return false;
+          const _lxT=tLx-_cxG,_lzT=tLz-_czG;const _aLT=Math.atan2(_lzT,_lxT);
+          let _dAT=_aHG-_aLT;while(_dAT>Math.PI)_dAT-=2*Math.PI;while(_dAT<-Math.PI)_dAT+=2*Math.PI;
+          return Math.abs(_dAT)<=_aMG;}catch(_e){return false;}})();
         /* [7.478.0 codice 007 — L'OSCILLAZIONE DELLO SGUARDO, con l'ISTERESI che il 7.475 aveva prescritto e
            non fatto] Il 7.475 ha censito la banda sana (0,1-0,3 inversioni/s) e provato che gli 8,8 e 34,7
            del dispositivo sono reali, 30-300 volte quella banda; ha anche stabilito che nessuna sonda di
@@ -7305,7 +7321,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
            Cio' che il laboratorio SA misurare e' il fuori quadro (portato dal 41,3% al 3,0% nel 7.545), ed
            e' quello che questa modifica potrebbe rompere: quel numero e' il collaudo che ho fatto prima di
            spedire. Le inversioni le puo' collaudare solo il PO sul telefono. */
-        if(Math.abs(_dAG)>_aMG&&!((sr.current._leg563|0)>0&&!(typeof window!=='undefined'&&window.__CPM_NO598))){_gCor50=true;sr.current._leg563=(sr.current._leg563|0)+1;try{if(sr.current._tocc503)sr.current._tocc503.push('vista-reale');}catch(_e){}/* [7.503.1] l'ottava passata: la rete che riporta il soggetto dentro il quadro REALE, dopo i lerp */
+        if(Math.abs(_dAG)>_aMG&&!_viaggia704&&!((sr.current._leg563|0)>0&&!(typeof window!=='undefined'&&window.__CPM_NO598))){_gCor50=true;sr.current._leg563=(sr.current._leg563|0)+1;try{if(sr.current._tocc503)sr.current._tocc503.push('vista-reale');}catch(_e){}/* [7.503.1] l'ottava passata: la rete che riporta il soggetto dentro il quadro REALE, dopo i lerp */
           /* ⚠️ [7.483.0] QUI C'ERA LA SECONDA MODIFICA, ED E' STATA REVOCATA. L'ipotesi era che su gi138
              la rete fosse solo TROPPO LENTA (ingaggia 13 volte e non recupera), curabile con un tetto di
              velocita' che cresce con quanto il soggetto e' fuori. Misurata a tre bracci su 3 passate

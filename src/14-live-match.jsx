@@ -4839,7 +4839,16 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               sx=clamp(tramaRef.current.wp.x,4,96);sy=clamp(tramaRef.current.wp.y,6,94);k=0.5;
             }
             else if(_bb553&&!pl.gk){
-              sx=clamp(sx+_av553*0.62,4,96);sy=clamp(sy+(_bb553.y-50)*0.28,4,96);
+              /* ⚠️ [7.703 — PROVATO E REVOCATO IN UN'ORA: LA MANOPOLA NON E' COLLEGATA AL VOLANTE.]
+                 Il codice 006 quantificato (baricentro difensivo a 37,5u dal pallone, correlazione 0,336)
+                 indicava questo termine come leva ovvia: tira gli slot verso la x del pallone, 0,62 per
+                 tutti. Alzarlo a 0,85 per il lato che difende — +37% — NON HA MOSSO NIENTE: correlazione
+                 0,314 contro 0,313, distanza 38,2 contro 37,5. Su 37 unita' di distanza, zero. Quindi la
+                 posizione del blocco e' governata ALTROVE e questo termine e' cosmetico: prima di provare
+                 la prossima manopola serve il censimento di quale ramo decide davvero il bersaglio di ogni
+                 difensore (il testimone __CPM_SCH703 qui sotto), o si ricomincia a girare manopole a caso. */
+              if(typeof window!=='undefined'&&window.__CPM_REC){try{const _w=(window.__CPM_SCH703=window.__CPM_SCH703||{ball:0,avSum:0,avN:0});_w.ball++;_w.avSum+=Math.abs(_av553);_w.avN++;}catch(_e){}}
+              sx=clamp(sx+_av553*0.62,4,96);
               if(idx===_cI553){sx=_bb553.x;sy=_bb553.y;k=0.55;}/* [7.625.0] k 0,85 RIGIUDICATO anche sul metro qualificato (custodia per-tick): 6,1/6,8/6,1/4,2 contro banda rossa 6,0-6,4 — in banda, revoca DEFINITIVA. Idem l'inversione del verso (6,2/6,4/6,0/4,2). La lettura strutturale: con le righe che ricollocano il pallone ogni 2-3 tick l'ambientale e' quasi sempre IN VOLO — la custodia non si vince inseguendo, si vince alla RICEZIONE (lo stato mancante A4 dell'audit: l'arrivo ai piedi di un uomo). *//* ⚠️ [7.625.0] PROVATO E REVOCATO CON LA SUA MISURA: k 0,55->0,85 sul portatore logico per «tenere il passo» — npd mediana 6,8-10,3 contro banda rossa 6,4-10,3: IN BANDA, nessun effetto. Il modello d'equilibrio era sbagliato: il sistema non e' mai a equilibrio, perche' le righe di cronaca ricollocano il bersaglio (fino a 30u) piu' in fretta di quanto qualsiasi inseguitore converga — npd misura transitori perpetui. Il guadagno del correttore non puo' nulla contro i salti del comando: la pista giusta e' misurare npd con l'inversione del verso (INV579), mai giudicata su QUESTO metro. */
             }
             return{...pl,x:clamp(pl.x+(sx-pl.x)*k+(Math.random()-0.5)*0.2,2,98),y:clamp(pl.y+(sy-pl.y)*k+(Math.random()-0.5)*0.2,2,98)};
