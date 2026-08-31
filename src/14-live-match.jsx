@@ -6404,7 +6404,22 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
        Stringendo, le ho tagliate: da 2 su 8 a ZERO su 6. Il contropiede torna com'era, e a decidere se
        la scena vale non e' il momento in cui si apre ma se il pallone ARRIVA da qualche parte —
        per questo la finestra ora resta aperta finche' la palla e' in un terzo estremo. */
-    const _cnt692=!!counterRef.current;
+    /* ⚠️ [7.697.0 — «FAI VEDERE SOLO LE AZIONI PERICOLOSE!». Direttiva PO, e la misura le da' ragione.]
+       Il ribaltamento apriva la scena per il fatto di ESSERE un ribaltamento, ovunque fosse il pallone:
+       misurato, e' la causa piu' frequente di tutte — 184-215 campioni a partita contro gli 80-99 del gol
+       e dell'occasione — ed e' esattamente la finestra che mostra gioco a meta' campo. Ora un ribaltamento
+       apre la scena solo quando ARRIVA: pallone oltre il 70 nel verso di chi riparte, cioe' dentro
+       l'ultimo quarto. Sotto quella soglia il contropiede resta in telecronaca e basta.
+       ⚠️ NON E' LA RESTRIZIONE REVOCATA NEL 7.692, e la differenza va detta o fra un mese la rifaccio
+       uguale. Quella tagliava sulla soglia della TREQUARTI (45) e all'epoca era l'unica causa che
+       portasse a qualcosa, perche' ne' i gol ne' le occasioni avevano una conclusione: toglierla ha
+       portato le finestre utili da 2/8 a ZERO su 6. Oggi il gol arriva in area (7.694) e l'occasione
+       finisce in parata (7.695): le cause che concludono ci sono, e il ribaltamento spento a meta' campo
+       non e' piu' l'unica cosa da guardare, e' rumore in mezzo alle altre. */
+    const _cnt692=(()=>{try{const _ct=counterRef.current;if(!_ct)return false;
+      if(typeof window!=='undefined'&&window.__CPM_NO697)return true;
+      const _bx=(ballPosRef.current&&ballPosRef.current.x);if(_bx==null)return false;
+      return ((_ct.dir>0)?_bx:100-_bx)>=70;}catch(_e){return false;}})();
     const _terzo692=(()=>{try{const bx=(ballPosRef.current&&ballPosRef.current.x);
       return bx!=null&&(bx>=70||bx<=30);}catch(_e){return false;}})();
     /* [7.692.0] la scena non si chiude mentre il pallone e' ancora in una zona dove puo' succedere
@@ -6843,11 +6858,31 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                    Durante la scena la cronaca diventa SOTTOPANCIA: fascia bassa, una riga sola, corpo 14,
                    niente minuto e niente bottoni — la grafica di una partita in TV. Fuori dalla scena
                    resta esattamente com'era (grande e centrale, com'e' stato chiesto nel 7.661). */}
+               {/* ⚠️ [7.697.0 collaudo PO: «durante la telecronaca non si capisce bene chi attacca e chi
+                   difende, mostra qualcosa che faccia capire chi gioca in una meta' campo e chi
+                   nell'altra»] Fotografia del PO al 57': un angolo di prato, nessun giocatore in quadro,
+                   nessun segno di verso. La regia in tribuna est guarda il campo di lato e il pallone puo'
+                   stare ovunque: senza un riferimento fisso, chi legge non ha modo di sapere da che parte
+                   si sta andando. Qui c'e' la convenzione della TV: una fascia che RISPECCHIA il campo,
+                   meta' e meta' coi colori delle due squadre, ognuna con la sigla nella meta' che
+                   DIFENDE e la freccia verso la porta che attacca. Nel motore la casa attacca sempre a
+                   destra (portieri fissi a gx 4 e 97), quindi la mappa e' stabile e non mente.
+                   Rosso __CPM_NO697B. */}
+               {phase==="playing"&&!(typeof window!=="undefined"&&window.__CPM_NO697B)&&(()=>{
+                 const _sgH=String((homeTeamObj&&(homeTeamObj.a||homeTeamObj.n))||"").slice(0,3).toUpperCase();
+                 const _sgA=String((awayTeamObj&&(awayTeamObj.a||awayTeamObj.n))||"").slice(0,3).toUpperCase();
+                 const _cH=(homeTeamObj&&homeTeamObj.c)||"#ef4444",_cA=(awayTeamObj&&awayTeamObj.c)||"#3b82f6";
+                 const _cell={flex:1,display:"flex",alignItems:"center",gap:5,padding:"3px 9px",fontSize:10.5,fontWeight:900,letterSpacing:1.1,color:"#f1f5f9",textShadow:"0 1px 4px rgba(0,0,0,0.9)"};
+                 return(
+                 <div data-cpm="verso697" style={{position:"absolute",left:"6%",right:"6%",top:"2.5%",zIndex:5,pointerEvents:"none",display:"flex",borderRadius:8,overflow:"hidden",border:"1px solid rgba(255,255,255,0.14)"}}>
+                   <div style={{..._cell,justifyContent:"flex-start",background:"linear-gradient(90deg,"+_cH+"cc,"+_cH+"55)"}}>{_sgH}<span style={{opacity:0.85}}>&#9654;</span></div>
+                   <div style={{..._cell,justifyContent:"flex-end",background:"linear-gradient(90deg,"+_cA+"55,"+_cA+"cc)"}}><span style={{opacity:0.85}}>&#9664;</span>{_sgA}</div>
+                 </div>);})()}
                {phase==="playing"&&coms[0]&&!(typeof window!=="undefined"&&window.__CPM_NO661)&&(
                  <div data-cpm="com661"/* [7.681.0] etichetta stabile: senza, per misurare il banner servivano selettori sullo STILE, che si rompono al primo ritocco grafico */ key={"com661-"+coms[0].t+"-"+String(coms[0].text||"").slice(0,18)} style={_sot695?{position:"absolute",left:"4%",right:"4%",bottom:"11%",zIndex:5,pointerEvents:"none",textAlign:"center",animation:"cpmComIn661 .55s ease-out"}:{position:"absolute",left:"7%",right:"7%",top:"38%",zIndex:5,pointerEvents:"none",textAlign:"center",animation:"cpmComIn661 .55s ease-out"}}>
                    <style>{"@keyframes cpmComIn661{from{opacity:0;transform:translateY(14px) scale(.97)}to{opacity:1;transform:none}}"}</style>
                    <div /* [7.695.0] sottopancia: il contenitore prende tutta la larghezza e la riga si taglia con i puntini, invece di uscire dallo schermo come faceva la prima stesura (fotografata) */ style={_sot695?{display:"block",width:"100%",boxSizing:"border-box",padding:"7px 12px",borderRadius:10,background:"linear-gradient(90deg, rgba(5,8,16,0) 0%, rgba(5,8,16,0.78) 12%, rgba(5,8,16,0.78) 88%, rgba(5,8,16,0) 100%)"}:{display:"inline-block",padding:"10px 16px",borderRadius:14,background:"radial-gradient(ellipse at center, rgba(5,8,16,0.62) 0%, rgba(5,8,16,0.28) 70%, transparent 100%)"}}>
-                     <div style={_sot695?{fontSize:14,lineHeight:1.3,fontWeight:800,color:coms[0].color||"#e8edf6",textShadow:"0 2px 10px rgba(0,0,0,0.9)",letterSpacing:0.1,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis",maxWidth:"100%"}:{fontSize:19,lineHeight:1.35,fontWeight:800,color:coms[0].color||"#e8edf6",textShadow:"0 2px 10px rgba(0,0,0,0.85), 0 0 26px rgba(0,0,0,0.5)",letterSpacing:0.2}}>{coms[0].text}</div>
+                     <div /* ⚠️ [7.697.0 collaudo PO: «la telecronaca durante le azioni pericolose e' tagliata, deve leggersi per intera»] IL DIFETTO ERA MIO E DI MEZZA GIORNATA FA: per tenere il sottopancia su una riga avevo messo `nowrap` piu' i puntini, e una riga di telecronaca sta in una riga sola quasi mai. Il sottopancia serve a NON coprire l'azione, non a nascondere il testo: ora va a capo fino a tre righe, resta in basso e il testo si legge tutto. */ style={_sot695?{fontSize:14,lineHeight:1.32,fontWeight:800,color:coms[0].color||"#e8edf6",textShadow:"0 2px 10px rgba(0,0,0,0.9)",letterSpacing:0.1,display:"-webkit-box",WebkitLineClamp:3,WebkitBoxOrient:"vertical",overflow:"hidden",maxWidth:"100%"}:{fontSize:19,lineHeight:1.35,fontWeight:800,color:coms[0].color||"#e8edf6",textShadow:"0 2px 10px rgba(0,0,0,0.85), 0 0 26px rgba(0,0,0,0.5)",letterSpacing:0.2}}>{coms[0].text}</div>
                      {!_sot695&&(<div style={{marginTop:5,fontSize:11,fontWeight:700,color:"rgba(232,237,246,0.55)"}}>{(coms[0].t??clock)}′</div>)}
                      {/* [7.681.0 direttiva PO «deve essere interattiva, a scelta!»] I BOTTONI SOTTO LA FRASE.
                          Appaiono solo sulle righe che portano delle scelte (le interazioni dell'eroe: due o

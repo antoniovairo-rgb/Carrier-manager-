@@ -1834,6 +1834,17 @@ function ThreeMatchView(props){
     const _DEVT344=(typeof devToolsOn==="function")?devToolsOn():false;
     const loop=()=>{
       sr.current.raf=requestAnimationFrame(loop);
+      /* ⚠️ [7.696.0 — STRUMENTO PROVATO E REVOCATO CON LA MISURA CONTRARIA, PRIMA DI SPEDIRLO]
+         Avevo messo qui un flag per far avanzare il tempo di scena di 1/60 per fotogramma, convinto che
+         il laboratorio non potesse vedere il codice 007 perche' gira a 7 fps (era la mia nota del 7.598).
+         Due misure appaiate, dieci scene ciascuna, hanno smentito TUTT'E DUE le mie convinzioni: nel
+         regime STORICO il difetto si vede eccome — 1 scena su 7, 15,9 inversioni/s, con la stessa firma
+         che il PO riporta dal telefono (lerp 60% + vista-reale 36%) — e nel regime «telefono» NON si
+         vede piu': zero su sette. Il detector conta le inversioni per secondo REALE, non per secondo di
+         scena: rallentare il tempo di scena abbassa il numero invece di alzarlo. Flag revocato — uno
+         strumento che non fa cio' che il suo commento dichiara e' peggio di nessuno strumento. Resta il
+         guadagno vero del giro: il laboratorio PUO' misurare il codice 007, e il fondo si prende nel
+         regime storico. */
       const now=performance.now();const _rdt=Math.min((now-last)/1000,0.05);last=now;const dt=(typeof window!=='undefined'&&window.__CPM_FROZEN)?0:_rdt;
       /* [7.536.0] IL TEMPO DI SCENA, ESPOSTO (solo collaudo). Le sonde misuravano finestre di OROLOGIO:
          headless, sotto la contesa di CPU di una passata piena, in un secondo d'orologio la scena vive
@@ -7193,6 +7204,24 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
         _b580.a*=0.86;_b580.e*=0.86;
         if(Math.abs(_b580.a)<1e-4)_b580.a=0;if(Math.abs(_b580.e)<1e-4)_b580.e=0;
       }
+      /* ⚠️ [7.696.0 — RIMEDIO SCRITTO, MISURATO, REVOCATO. Il codice 007 resta aperto, con tre cose
+         in meno da provare.] L'ipotesi era buona e la causa e' confermata: `camLook` e' persistente e
+         ogni fotogramma si avvicina a `tL`, che il regista RICALCOLA DA ZERO; le reti di legalita'
+         (vista-reale) correggono `camLook` e non toccano `tL`, quindi il fotogramma dopo la morbidezza
+         ritira lo sguardo verso lo stesso bersaglio fuori quadro e la rete ricorregge — 2,2-4,5 passate
+         per fotogramma sull'asse ottico, che e' esattamente cio' che il PO vede tremare.
+         Avevo reso la correzione PERSISTENTE SUL BERSAGLIO: accumulata in un offset che ruotava `tL`
+         prima della morbidezza. MISURA APPAIATA, sette scene per braccio, stesso laboratorio: scene
+         sopra soglia da 1/7 (rosso) a 3/7 (verde), massimo da 3,29 a 11,90 inversioni/s, passate per
+         fotogramma da 2,19 a 2,64. PEGGIORA, e si capisce perche': accumulando, la rete rimisura
+         l'inquadratura GIA' corretta, decide che serve ancora e ne aggiunge — retroazione positiva,
+         non smorzamento. Curato il sintomo giusto col segno sbagliato. Revocato.
+         CIO' CHE RESTA A VERBALE, perche' vale piu' del codice tolto: (1) il laboratorio PUO' misurare
+         il codice 007 — la mia nota del 7.598 («solo il telefono puo' collaudarlo») era sbagliata, nel
+         regime storico il difetto si vede con la stessa firma del dispositivo; (2) il freno del 7.671
+         non puo' funzionare, e si dimostra col conto: taglia a 150 gradi/s e il tremore viaggia a
+         66-120 gradi/s, quindi non si accende mai; (3) la strada «correzione persistente» e' chiusa di
+         principio finche' la rete rimisura cio' che ha gia' corretto, non e' questione di taratura. */
       camLook.x+=(tLx-camLook.x)*kl;camLook.y+=(tLy-camLook.y)*kl;camLook.z+=(tLz-camLook.z)*kl;
       /* [7.226.0 #43] GUARDIA SUL QUADRO REALE. Il richiamo 7.225.0 garantisce che l'eroe stia nel quadro della
          camera TARGET — ma la camera REALE lo insegue coi lerp (posizione kp, sguardo kl): durante uno stacco
