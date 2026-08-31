@@ -116,7 +116,7 @@
     "save-monotonic": "node save-monotonic-test.mjs",
     "playing-mdref": "node playing-mdref-test.mjs",
     "double-tap": "node double-tap-test.mjs",
-    "career-critical": "npm run recovery-competition && npm run save-monotonic && npm run playing-mdref && npm run double-tap && npm run stale-matchday && npm run playedmd-registry && npm run career-invariants && npm run pending-mr-durable && npm run cup-final-replay && npm run coppa-nazioni",
+    "career-critical": "npm run recovery-competition && npm run save-monotonic && npm run playing-mdref && npm run double-tap && npm run stale-matchday && npm run playedmd-registry && npm run career-invariants && npm run pending-mr-durable && npm run cup-final-replay && npm run coppa-nazioni && npm run coppa-intera",
     "playedmd-registry": "node playedmd-registry-test.mjs",
     "impulsi-contesto": "node impulsi-contesto-test.mjs",
     "slot-card-layout": "node slot-card-layout-test.mjs",
@@ -145,7 +145,8 @@
     "cronaca-censimento": "node cronaca-censimento-554.mjs",
     "fondate": "node fondate-554.mjs",
     "camera-osc": "node camera-544.mjs",
-    "intorno": "node intorno-556.mjs"
+    "intorno": "node intorno-556.mjs",
+    "coppa-intera": "node coppa-intera-700.mjs"
   },
   "dependencies": {
     "playwright": "^1.48.0",

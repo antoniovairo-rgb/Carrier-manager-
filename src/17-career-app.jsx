@@ -35,6 +35,25 @@ const natCupStake686=(q)=>{
   return !!q.isFinal&&(q.matchIdx||0)+1>=(q.opponents||[]).length;
 };
 
+/* [7.700.0] LA REGOLA DI AVANZAMENTO DELLA COPPA, PURA E IN UN POSTO SOLO — stessa medicina del 7.686,
+   e per la stessa ragione scritta li': «due copie di una regola divergono sempre».
+   Il collaudo PO («mi vuole far rigiocare la finale!») e' passato perche' nessun test poteva far girare
+   una Coppa INTERA: la regola viveva dentro un aggiornatore di stato React, dove nessuna sonda arriva.
+   Qui e' una funzione di due argomenti, quindi interrogabile: data una coda e un risultato, qual e' la
+   coda dopo. L'avversario della finale resta a carico del chiamante (dipende dal pool della nazione e
+   dal seme di stagione): la REGOLA e' quando la coda si allunga e quando si chiude, ed e' questa.
+   `__CPM_CAREER.natCupNext` la espone al banco. */
+const natCupNext700=(q,res,finalOpp)=>{
+  if(!q)return q;
+  const idx=(q.matchIdx||0)+1;
+  const pts=(q.pts||0)+((res&&res.won)?3:(res&&res.drew)?1:0);
+  const matches=[...(q.matches||[]),{opp:(res&&res.opponent)||null,won:!!(res&&res.won),drew:!!(res&&res.drew),homeScore:(res&&res.homeScore)!=null?res.homeScore:null,awayScore:(res&&res.awayScore)!=null?res.awayScore:null}];
+  const esaurita=idx>=(q.opponents||[]).length;
+  /* [7.41.0] la finale si aggiunge UNA VOLTA SOLA: girone esaurito, non gia' in finale, e almeno 4 punti. */
+  if(esaurita&&!q.isFinal&&pts>=4&&finalOpp)return{...q,matchIdx:idx,pts,matches,done:false,isFinal:true,finalOpp,opponents:[...(q.opponents||[]),finalOpp]};
+  return{...q,matchIdx:idx,pts,matches,done:esaurita};
+};
+
 function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLang,onNewGamePlusCB,onExitToMenu}){
   const L=LOCALE[lang]||LOCALE.IT;
   const _dk=window.innerWidth>=640; // desktop = keyboard hints visible
@@ -1078,6 +1097,7 @@ const getThisWeekMatchday=()=>{
       goScreen:(sc)=>{try{setScreen(sc);return true;}catch(e){return "error:"+(e&&e.message);}},
       /* [7.686.0] la regola del trofeo della Coppa delle Nazioni, interrogabile su una coda qualsiasi. */
       natCupStake:(q)=>{try{return !!natCupStake686(q);}catch(e){return "error:"+(e&&e.message);}},
+      natCupNext:(q,res,fo)=>{try{return natCupNext700(q,res,fo||null);}catch(e){return "error:"+(e&&e.message);}},/* [7.700.0] la regola di avanzamento della coppa, interrogabile: il banco fa girare un torneo intero senza toccare la UI */
       thisWeekMd:()=>{try{const m=getThisWeekMatchday();return m?{matchday:m.matchday,week:m.week,opp:m.opponentName,type:m.type||null}:null;}catch(e){return "error:"+(e&&e.message);}},/* [7.312.0] la probe anti-duplicato interroga la stessa funzione che serve la gara al giocatore */
       goTab:(t)=>{try{setTab(t);setScreen(t);return true;}catch(e){return "error:"+(e&&e.message);}},
       addioPool:()=>{try{return WEEKLY_IMPULSES.filter(im=>im.addio&&(!im.cond||im.cond(player))&&!((player.impulseSeen||{})[im.id])).length;}catch(e){return "error:"+(e&&e.message);}},/* [7.433.0] la sonda della stagione d'addio */
@@ -3221,9 +3241,9 @@ const getThisWeekMatchday=()=>{
           if(allDone2&&!newNCQ.isFinal&&nPts>=4){
             const _fp41=natOppPool(NAT_POOL_EU.includes(p.nation||"Italia")?"Europeo":"Mondiale").filter(n=>n!==(p.nation||"Italia")&&!(newNCQ.opponents||[]).includes(n));
             const _fo41=_fp41.length?_fp41[hashStr((p.nation||"x")+"|ncfin|"+(p.season||1))%_fp41.length]:(newNCQ.opponents||[])[0];
-            newNCQ={...newNCQ,matchIdx:nIdx,pts:nPts,matches:nMatches,done:false,isFinal:true,finalOpp:_fo41,opponents:[...(newNCQ.opponents||[]),_fo41]};
+            newNCQ=natCupNext700(newNCQ,result,_fo41);/* [7.700.0] una fonte sola: la regola sta nella funzione pura, qui resta la scelta dell'avversario */
           }else{
-            newNCQ={...newNCQ,matchIdx:nIdx,pts:nPts,matches:nMatches,done:allDone2};
+            newNCQ=natCupNext700(newNCQ,result,null);
           }
         }
         // Sprint 51: diary for national events
