@@ -1139,7 +1139,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
       sit:sc.sit,gi:sc.gi,intent:sc.intent,act:sc.act,out:sc.out,ok:sc.ok,sceneKey:sc.key};
     const sit=(situations||[])[hlIdx]||null,o=outcome||null;
     const _act=(o&&(o.actionLabel||o.label))||null;
-    return{v:GAME_VERSION,when:`S.${player.season||1} W.${player.week||1}`,min:clock,phase,
+    return{v:GAME_VERSION,when:`S.${player.season||1} W.${player.week||1}`,fps:(typeof window!=='undefined'&&window.__CPM_FPS708)?Math.round(window.__CPM_FPS708):null,/* [7.708.0] il frame-rate REALE del dispositivo nella nota: e' il numero che decide se i difetti da basso-fps (camera in tempo-di-scena, verbale ai lerp) esistono dal PO */min:clock,phase,
       opp:(opponent&&(opponent.n||opponent.a))||"?",score:`${score.home}-${score.away}`,
       sit:sit?String(sit.text||"").slice(0,90):null,gi:sit?((typeof SITUATIONS!=="undefined"?SITUATIONS.indexOf(sit):-1)):-1,
       intent:sit?((typeof deriveIntent==="function"?deriveIntent(sit,null):null)||sit.it||null):null,

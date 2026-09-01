@@ -1846,7 +1846,7 @@ function ThreeMatchView(props){
          strumento che non fa cio' che il suo commento dichiara e' peggio di nessuno strumento. Resta il
          guadagno vero del giro: il laboratorio PUO' misurare il codice 007, e il fondo si prende nel
          regime storico. */
-      const now=performance.now();const _raw708=(now-last)/1000;const _rdt=Math.min(_raw708,0.05);sr.current._dtReal708=Math.min(_raw708,0.3);/* [7.708 revocato] il TEMPO VERO del fotogramma resta esposto come strumentazione (il riscalo dei lerp che lo usava e' revocato — verbale al sito dei lerp camera) */last=now;const dt=(typeof window!=='undefined'&&window.__CPM_FROZEN)?0:_rdt;
+      const now=performance.now();const _raw708=(now-last)/1000;const _rdt=Math.min(_raw708,0.05);sr.current._dtReal708=Math.min(_raw708,0.3);if(_raw708>0.001&&_raw708<1)window.__CPM_FPS708=(window.__CPM_FPS708||60)*0.95+(1/_raw708)*0.05;/* [7.708.0 — IL TELEFONO DICHIARA I SUOI FPS] EMA del frame-rate reale, sempre attiva (una moltiplicazione a fotogramma): entra nel contesto delle bozze-nota, cosi' ogni nota KE del PO porta il numero che decide se il difetto «camera in tempo-di-scena» (riscalo revocato, verbale ai lerp) esiste sul suo dispositivo — vive solo sotto i 20fps. */last=now;const dt=(typeof window!=='undefined'&&window.__CPM_FROZEN)?0:_rdt;
       /* [7.536.0] IL TEMPO DI SCENA, ESPOSTO (solo collaudo). Le sonde misuravano finestre di OROLOGIO:
          headless, sotto la contesa di CPU di una passata piena, in un secondo d'orologio la scena vive
          una frazione di quello che vive a macchina scarica — e una misura di reattivita' («il difensore
