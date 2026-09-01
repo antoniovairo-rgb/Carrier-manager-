@@ -9,8 +9,9 @@ const b = await launchBrowser();
 const page = await b.newPage({ viewport: { width: 412, height: 915 } });
 await installCdnRoutes(page);
 await page.addInitScript(o => { window.__CPM_GLB = o.glb; window.__CPM_REC = true; }, { glb: GLB });
-await openMatch(page, port, { skipLoadAll: true, name: 'Om' });
-await page.evaluate(() => window.__CPM_AUTOPLAY(true, { seed: 7300, policy: 'seeded', tickMs: 300 }));
+await openMatch(page, port, { skipLoadAll: true, name: process.env.CPM_NOME || 'Om' });/* [v2] il MONDO lo determina il name (lezione banco 007): multi-seed vero = nomi diversi. Il primo giro «multi-seed» con CPM_SEME cambiava solo le scelte autoplay — gol sempre al 61' su tre run, stessa partita. */
+const SEME = +(process.env.CPM_SEME || 7300);
+await page.evaluate(sm => window.__CPM_AUTOPLAY(true, { seed: sm, policy: 'seeded', tickMs: 300 }), SEME);
 const camp = [];
 for (let k = 0; k < 900; k++) {
   await sleep(250);
