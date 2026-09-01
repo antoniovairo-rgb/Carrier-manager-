@@ -576,6 +576,13 @@ const draftBugNote=(snap,ctx)=>{try{
        comunque. I primi 750 ms della scena non si giudicano. */
     if(W.length)snapT.push(W[0].t);
     const nearSnap=(t)=>snapT.some(st=>t-st>=-60&&t-st<=750);
+    /* [7.710.0 — CODICE 014 «PALLA FLIPPER»: il detector che mancava. Collaudo PO 01/09, testuale:
+       «azioni pericolose sembrano un flipper». In laboratorio le finestre di piano misurano PULITE
+       (0 virate >120 gradi su polilinea resa) — il fenomeno vive sull'occhio e sul dispositivo, come
+       il 007: quindi si misura DOV'E', nella bozza. Si contano le INVERSIONI della palla resa (virata
+       oltre 120 gradi con entrambi i passi >=1,2u, fuori dalla grazia degli stacchi) e si firma lo
+       scrittore di ogni vertice: la prossima nota «flipper» arrivera' con numero e colpevoli. */
+    let _fl014=0,_fl014W={},_flPdx=null,_flPdz=null,_flPd=0,_fl014T=0;
     for(let i=1;i<W.length;i++){
       const a=W[i-1],b=W[i],dt=(b.t-a.t)/1000;if(dt<=0||dt>0.5)continue;
       const dx=b.x-a.x,dz=b.z-a.z,d=Math.hypot(dx,dz);
@@ -604,7 +611,8 @@ const draftBugNote=(snap,ctx)=>{try{
           if(-dx>_bkStep){_bkStep=-dx;_bkWs=b.ws||0;_bkDt=dt;_bkStepT=b.t;}/* [7.524.0] il passo all'indietro peggiore, col suo scrittore */}}
       /* teletrasporto = VELOCITÀ impossibile, non distanza cruda: a frame rate basso un tiro vero percorre
          parecchi metri fra due fotogrammi (nessun pallone del motore supera ~60 u/s). */
-      if(dt<=0.05&&d/dt>200&&d>jump){jump=d;jumpAt=b;jumpDt=dt;}/* [7.360.0] DUE CORREZIONI, entrambe misurate. (a) Il giudizio si da' SOLO su un intervallo che e' davvero un fotogramma (<=50ms): con l'anello che perdeva risoluzione si giudicava su finestre da mezzo secondo e si chiamava «fotogramma». (b) 85 u/s non e' una velocita' impossibile per un pallone calciato — il commento del 7.341 diceva «nessun pallone del motore supera ~60 u/s», ma misurando si vedono conclusioni oltre gli 85 e riposizionamenti a 300-1100. La soglia sta dove sta il confine vero: sopra i 200 u/s non e' piu' un tiro, e' un teletrasporto. */
+      if(dt<=0.05&&d/dt>200&&d>jump){jump=d;jumpAt=b;jumpDt=dt;}
+      if(d>=1.2){if(_flPdx!=null&&_flPd>=1.2){const _c14=(dx*_flPdx+dz*_flPdz)/(d*_flPd);if(_c14<-0.5){_fl014++;const _w14=_WS524[b.ws||0]||String(b.ws||0);_fl014W[_w14]=(_fl014W[_w14]||0)+1;}}_flPdx=dx;_flPdz=dz;_flPd=d;_fl014T+=dt;}/* [7.710.0] cos<-0.5 = virata oltre 120 gradi *//* [7.360.0] DUE CORREZIONI, entrambe misurate. (a) Il giudizio si da' SOLO su un intervallo che e' davvero un fotogramma (<=50ms): con l'anello che perdeva risoluzione si giudicava su finestre da mezzo secondo e si chiamava «fotogramma». (b) 85 u/s non e' una velocita' impossibile per un pallone calciato — il commento del 7.341 diceva «nessun pallone del motore supera ~60 u/s», ma misurando si vedono conclusioni oltre gli 85 e riposizionamenti a 300-1100. La soglia sta dove sta il confine vero: sopra i 200 u/s non e' piu' un tiro, e' un teletrasporto. */
       /* [7.341.0] la palla FERMA conta solo DOPO che è partita: con l'arco già armato l'eroe carica il tiro e il
          pallone aspetta sul posto (misurato: 0,7-1,9s di attesa a inizio scena su tiri, punizioni e dribbling —
          era la rincorsa, non un difetto, e faceva scattare la segnalazione su 14 azioni sane su 25). */
@@ -678,6 +686,7 @@ const draftBugNote=(snap,ctx)=>{try{
      if(_yRevS>=2)L.push(`codice 007 — lo SGUARDO della camera oscilla: ${_yRevS.toFixed(1)} inversioni/s dell'asse ottico (ampiezza max ${(_yMax*57.3).toFixed(1)}°)${_wlTop526?` — ultima passata per fotogramma: ${_wlTop526} · ${_wlMed526} passate/fotogramma`:""}`);
      if(_pRevS>=2)L.push(`codice 007 — la camera BECCHEGGIA: ${_pRevS.toFixed(1)} inversioni/s su-giù dell'asse ottico (ampiezza max ${(_pMax*57.3).toFixed(1)}°)${_wlTop526?` — ultima passata: ${_wlTop526}`:""}`);}
     if(backDD>=12&&_skHit524)L.push(`codice 012 — il pallone è tornato INDIETRO di ${backDD.toFixed(1)} unità durante l'azione (dal punto più avanzato, verso la propria metà campo)${_bkT!=null?` — massimo arretramento a ${_tRel524(_bkT)}s dall'inizio scena`:""}${_bkStep>0.5?`; passo peggiore ${_bkStep.toFixed(1)}u in ${Math.round(_bkDt*1000)}ms a ${_bkStepT!=null?_tRel524(_bkStepT):"?"}s, scrittore: ${_WS524[_bkWs]||_bkWs}`:""}`);
+    if(_fl014>=4&&_fl014T>0&&_fl014/_fl014T>=0.6){const _wl14=Object.entries(_fl014W).sort((a2,b2)=>b2[1]-a2[1]).slice(0,3).map(([k,v])=>`${k} x${v}`).join(' + ');L.push(`codice 014 — palla FLIPPER: ${_fl014} inversioni oltre 120° in ${_fl014T.toFixed(1)}s di moto (${(_fl014/_fl014T).toFixed(1)}/s) — scrittori ai vertici: ${_wl14}`);}/* [7.710.0] vedi la nota del detector in testa al giro */
     if(jump>=6)L.push(`SALTO del pallone di ${jump.toFixed(1)} unità in ${Math.round(jumpDt*1000)} ms${jumpAt?` (a x ${jumpAt.x.toFixed(1)}, a ${_tRel524(jumpAt.t)}s dall'inizio scena, scrittore: ${_WS524[jumpAt.ws||0]||jumpAt.ws})`:""} — ${Math.round(jump/jumpDt)} u/s, sembra un teletrasporto`);/* [7.360.0] la bozza dichiara l'INTERVALLO REALE e la velocità: «in un fotogramma» era una promessa che la sonda non poteva mantenere, e ha fatto finire la stessa riga falsa in quattro note del PO */
     /* [7.341.0] in una scena DIFENSIVA l'arco è un segnaposto (la traiettoria vera la decide il post-guard
        difensivo) e il pallone resta legittimamente ai piedi dell'avversario mentre si consuma il duello:
