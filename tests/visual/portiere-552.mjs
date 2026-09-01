@@ -8,13 +8,14 @@
 import { startServer, launchBrowser, installCdnRoutes, openMatch, sleep } from './lib/harness.mjs';
 const VERB = process.argv.includes('--verbose');
 const SCENE = (process.env.CPM_SIT || '4,8,12,13,21,27,40,43,51,61,63,79,83,91,97,116,181').split(',').map(Number);
-const MODI = (process.env.CPM_MODI || 'fail,goal').split(',');
+const MODI = (process.env.CPM_MODI || 'fail,success').split(',');/* [7.709] FORCE_OUTCOME accetta 'success'/'fail' (r.5696): il vecchio default 'goal' valeva FAIL — meta' delle misure storiche di questa sonda erano due volte lo stesso braccio */
 const srv = await startServer(); const port = srv.address().port;
 const b = await launchBrowser();
 const page = await b.newPage({ viewport: { width: 412, height: 915 } });
 await installCdnRoutes(page);
 const errs = []; page.on('pageerror', e => errs.push(String(e.message).slice(0, 140)));
-await page.addInitScript(n => { window.__CPM_GLB = false; window.__CPM_REC = true; window.__CPM_CINE = 1; if (n) window.__CPM_NO576 = 1; /* prova del rosso: il riflesso torna a 0,62s fissi */ }, process.env.CPM_NO576 ? 1 : 0);
+const GLB = process.env.CPM_GLB !== '0';/* [direttiva PO 01/09] «i test li devi fare con GLB ON»: il 111 del PO vive sulla clip GLB, non sul procedurale */
+await page.addInitScript(o => { window.__CPM_GLB = o.glb; window.__CPM_REC = true; window.__CPM_CINE = 1; if (o.n) window.__CPM_NO576 = 1; /* prova del rosso: il riflesso torna a 0,62s fissi */ }, { n: process.env.CPM_NO576 ? 1 : 0, glb: GLB });
 await openMatch(page, port); await sleep(800);
 
 const righe = [];

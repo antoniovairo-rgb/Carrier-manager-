@@ -1160,7 +1160,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     if(!inHL&&L.length)return _bugCtx(L[L.length-1]);
     if(L.length>=2&&L[L.length-1].out==null&&L[L.length-2].out!=null)return _bugCtx(L[L.length-2]);
   }catch(_e){}return _bugCtx();};
-  const _bugFmt=(n)=>`[KE ${n.ctx.v}] ${n.ctx.when||""} · ${n.ctx.min}' · ${n.ctx.phase}${n.ctx.opp?` · vs ${n.ctx.opp} (${n.ctx.score||"-"})`:""}\n`
+  const _bugFmt=(n)=>`[KE ${n.ctx.v}] ${n.ctx.when||""} · ${n.ctx.min}' · ${n.ctx.phase}${n.ctx.fps?` · ${n.ctx.fps}fps`:""}${n.ctx.opp?` · vs ${n.ctx.opp} (${n.ctx.score||"-"})`:""}\n`/* [7.708.1] gli fps nel TESTO della nota: il 7.708.0 li aveva messi nel contesto ma non nella stampa — le prime note dal telefono sono arrivate senza il numero per cui la release era nata */
     +(n.ctx.sit?`SIT${n.ctx.gi>=0?` #${n.ctx.gi}`:""}${n.ctx.intent?` [${n.ctx.intent}]`:""}: «${n.ctx.sit}»\n`:"")
     +(n.ctx.act?`AZIONE: «${n.ctx.act}» → esito ${n.ctx.out||"?"}${n.ctx.ok===false?" (fallita)":n.ctx.ok===true?" (riuscita)":""}\n`:"")
     +`NOTA: ${n.txt}`;
