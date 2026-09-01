@@ -60,12 +60,21 @@ cronaca + piani) decide cosa si vede — trascinandosi dietro pallone e corpi. L
   (§13 missione: narratore, non creatore). [V concettuale]
 - Sottopancia com661 (7.696) per le finestre salienti. [V]
 
-## 6. FOOTBALL STATE oggi
-- Esiste (F1 5.17.0, 12-three ~1800: osservatore continuo — held/baricentri/superiority). CONSUMATO
-  davvero solo dal pressing (§4 _fs.superiority → _pm) e da poco altro. Il resto lo ignora. [V/DV:
-  censire TUTTI i consumatori con grep _fs]
-- Il Match State della missione (marcature, linee, spazi, momentum, memoria eventi) è SPARSO:
-  poss/momentum in live-match, marcature nel builder renderer, memoria inesistente. [V]
+## 6. FOOTBALL STATE oggi — CENSITO [V 01/09]
+- `sr.current.football` ha esattamente TRE riferimenti nel gioco: lo scrittore (12-three r.1826),
+  il testimone di collaudo (r.1455) e UN consumatore (r.3908: `_fs.superiority` → moltiplicatore
+  del pressing nel builder mesh; `_fs.attackingHome` x2). In 14-live-match: ZERO consumi — dove
+  le azioni si decidono, il «cervello» non parla. [V grep]
+- Contenuto attuale: t, phase, ball, possessor(held), attackingHome, nearBall{home,away},
+  superiority, home/away shapes — 7 campi contro i 16 del Match State della missione (§1):
+  mancano minuto/risultato, possesso ufficiale, ruoli/zone, pressione, marcature, linee, spazi,
+  modulo, metodologia, atteggiamento, momentum, stato eroe, memoria eventi. [V r.1826-1829]
+- FATTO ARCHITETTURALE CHIAVE: oggi il FS è derivato DALLE MESH nel renderer (posizioni rese) —
+  cioè la vista osserva sé stessa. La missione lo vuole al tick LOGICO come sorgente. Il rovescio
+  è totale, MA il quasi-vuoto di consumatori è una fortuna: la Fase 2 costruisce su tabula rasa,
+  senza dover districare dipendenze. [V]
+- Il Match State della missione è SPARSO: poss/momentum in live-match, marcature nel builder
+  renderer, memoria inesistente. [V]
 
 ## 7. Duplicazioni e conflitti NOTI (dai verbali, tutti misurati)
 - Due palle (logica/resa) · due deployment · tre driver GK + due siti di tuffo (doppio tuffo
@@ -83,7 +92,7 @@ cronaca + piani) decide cosa si vede — trascinandosi dietro pallone e corpi. L
   che vi converge; conflitti eventuali → decisione PO con numeri.
 
 ## 9. Prossimi passi dell'audit (per chiudere la Fase 1)
-- [ ] grep-census dei consumatori di Football State (`_fs`).
+- [x] grep-census dei consumatori di Football State — FATTO, vedi §6.
 - [ ] enumerazione fasi/phase machine completa.
 - [ ] autorità del possesso: poss% vs possTurnRef vs righe.
 - [ ] mappa di TUTTI i punti che scrivono ballPosRef/ballTargetRef.
