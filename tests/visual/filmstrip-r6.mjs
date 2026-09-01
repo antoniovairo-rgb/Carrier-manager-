@@ -12,7 +12,8 @@ const page = await b.newPage({ viewport: { width: 412, height: 915 } });
 await installCdnRoutes(page);
 await page.addInitScript(() => { window.__CPM_GLB = false; window.__CPM_REC = true; });
 await openMatch(page, port, { skipLoadAll: true, name: 'Fs' });
-await page.evaluate(() => window.__CPM_AUTOPLAY(true, { seed: 7300, policy: 'seeded', tickMs: 300 }));
+const SEME = +(process.env.CPM_SEME || 7300);/* [v2] parametrizzato: un mondo nuovo a ogni giro di guardia */
+await page.evaluate((sm) => window.__CPM_AUTOPLAY(true, { seed: sm, policy: 'seeded', tickMs: 300 }), SEME);
 let scene = 0, pgPrev = false;
 for (let k = 0; k < 900 && scene < 6; k++) {
   await sleep(250);
