@@ -6800,7 +6800,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
            spenta), ma il quadro guadagna ~43% di area. Non e' un tetto sulle code: la distribuzione a
            0,24 era TUTTA stretta (q10 0,138 → max 0,267, zero scene sopra 0,30), quindi la correzione e'
            globale. */
-        const _want5=Math.max(3.5,1.75/(2*0.18*_tf5));
+        const _want5=Math.max(3.5,1.75/(2*0.12*_tf5));/* [7.713.0 — LA TAGLIA SCENDE DI DUE TACCHE: collaudo PO 01/09, «zoom in minore durante gli highlights dell'eroe!» e, viste le foto della prima tacca, «zoomerei anche un po' di meno». La discesa guidata dal telefono: 0,24 → «troppo stretto» (7.509) → 0,18 (reale ~0,136) → 0,15 (foto approvate ma ancora troppo) → 0,12 (reale atteso ~0,09, quasi il doppio d'area rispetto a 0,18). AVVERTENZA A VERBALE: lo sweep 7.505 marcava «gesto poco distinguibile» sotto 0,15 misurato e «figurina» verso 0,08 — 0,12 sta nel mezzo, scelto dall'occhio del PO che comanda sull'headless (lezione 007). Piano di rientro dichiarato: se arriva «non si vede il gesto», tacca a 0,165. */
         if(_d5>_want5){
           const _sc5=1-(1-_want5/_d5)*camHL;
           tPx=_hx5+_vx5*_sc5;tPy=Math.max(2.1,_hy5+_vy5*_sc5);tPz=_hz5+_vz5*_sc5;
