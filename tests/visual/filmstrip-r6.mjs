@@ -6,11 +6,12 @@
 import { startServer, launchBrowser, installCdnRoutes, openMatch, sleep } from './lib/harness.mjs';
 import fs from 'node:fs';
 const dir = 'out/filmstrip'; fs.rmSync(dir, { recursive: true, force: true }); fs.mkdirSync(dir, { recursive: true });
+const GLB = process.env.CPM_GLB !== '0';/* [direttiva PO 01/09] «i test li devi fare con GLB ON»: acceso di default, si spegne SOLO dichiarandolo nel comando */
 const srv = await startServer(); const port = srv.address().port;
 const b = await launchBrowser();
 const page = await b.newPage({ viewport: { width: 412, height: 915 } });
 await installCdnRoutes(page);
-await page.addInitScript(() => { window.__CPM_GLB = false; window.__CPM_REC = true; });
+await page.addInitScript((o) => { window.__CPM_GLB = o.glb; window.__CPM_REC = true; }, { glb: GLB });
 await openMatch(page, port, { skipLoadAll: true, name: 'Fs' });
 const SEME = +(process.env.CPM_SEME || 7300);/* [v2] parametrizzato: un mondo nuovo a ogni giro di guardia */
 await page.evaluate((sm) => window.__CPM_AUTOPLAY(true, { seed: sm, policy: 'seeded', tickMs: 300 }), SEME);

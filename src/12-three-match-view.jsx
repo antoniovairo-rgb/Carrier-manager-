@@ -1846,7 +1846,7 @@ function ThreeMatchView(props){
          strumento che non fa cio' che il suo commento dichiara e' peggio di nessuno strumento. Resta il
          guadagno vero del giro: il laboratorio PUO' misurare il codice 007, e il fondo si prende nel
          regime storico. */
-      const now=performance.now();const _rdt=Math.min((now-last)/1000,0.05);last=now;const dt=(typeof window!=='undefined'&&window.__CPM_FROZEN)?0:_rdt;
+      const now=performance.now();const _raw708=(now-last)/1000;const _rdt=Math.min(_raw708,0.05);sr.current._dtReal708=Math.min(_raw708,0.3);/* [7.708 revocato] il TEMPO VERO del fotogramma resta esposto come strumentazione (il riscalo dei lerp che lo usava e' revocato — verbale al sito dei lerp camera) */last=now;const dt=(typeof window!=='undefined'&&window.__CPM_FROZEN)?0:_rdt;
       /* [7.536.0] IL TEMPO DI SCENA, ESPOSTO (solo collaudo). Le sonde misuravano finestre di OROLOGIO:
          headless, sotto la contesa di CPU di una passata piena, in un secondo d'orologio la scena vive
          una frazione di quello che vive a macchina scarica — e una misura di reattivita' («il difensore
@@ -7123,6 +7123,17 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
         for(const _tl of sr.current._led657){const _o=_tl.tex?_tl:{tex:_tl,texGol:null,mat:null};
           if(_o.mat){_o.mat.map=(_golOn662&&_o.texGol)?_o.texGol:_o.tex;_o.mat.opacity=_golOn662?(0.62+0.36*Math.abs(Math.sin(performance.now()*0.012))):0.98;}
           const _t=_o.mat?_o.mat.map:_o.tex;if(_t)_t.offset.x=(_t.offset.x+dt*(_golOn662?0.18:0.045))%1;}}
+      /* [7.708.0 — LA CAMERA CORRE IN TEMPO REALE. Rosso __CPM_NO708]
+         Direttiva PO: «i test li devi fare con GLB ON». Rifatta l'inquadratura in quel regime: fuori
+         quadro 23% contro l'8% del GLB-off, con campioni CONSECUTIVI IDENTICI — camera congelata. La
+         causa e' il clock di scena tappato a 0,05s/fotogramma (7.471, giusto per la simulazione): i
+         fattori dei lerp sono per-FOTOGRAMMA, quindi sotto i 20fps la regia panora in tempo-di-scena,
+         non in tempo reale — su un telefono lento la camera e' strutturalmente in ritardo, ed e' un
+         pezzo del «confusionario» che le sonde GLB-off non potevano vedere. Qui il fattore si riscala
+         sull'esponenziale del tempo vero, 1-(1-k)^(dtReale/dt): a 60fps vale k identico (rapporto 1),
+         a 2fps recupera i fotogrammi mancanti. Cambia SOLO la velocita' di convergenza della camera —
+         bersagli, reti e ordine delle passate restano intatti; kp=0 (attesa stacco) resta 0. */
+      /* [7.708 — PROVATO E REVOCATO CON LE SUE MISURE: «la camera corre in tempo reale»] La direttiva PO «i test con GLB ON» ha smascherato la camera CONGELATA nell'headless lento (fuori quadro 23% contro 8%): il clock di scena tappato a 0,05s/fotogramma rende i lerp per-FOTOGRAMMA, quindi SOTTO i 20fps la regia panora in tempo-di-scena. Rimedio provato: fattore riscalato su 1-(1-k)^(dtReale/dt). Ha funzionato dove doveva (fuori quadro 23%→0% in GLB ON) ma ha toccato cio' che non doveva: il banco tremore, in tre tarature di perimetro (globale · saliente · saliente+!isHL), ha prodotto scene 007 a 1,4/3,9/3,6 inversioni/s (v3: 1 sporca su 4 giri) contro il rosso pulito 2/2 (max 0,36/0,53). Ipotesi a verbale: con la convergenza rapida la camera arriva alle scene eroe SOTTO la soglia dello stacco-nero (_dSnap<=6), niente snap duro, e i lerp negoziano con le reti sugli ultimi metri — il duello che il 7.704 aveva spento. E il difetto curato vive SOLO sotto i 20fps (sopra, il tappo non morde): nessuna prova che il telefono del PO ci scenda. Costo misurato sul metro sacro, beneficio non provato sul dispositivo: revocato. CHI RIPRENDE: prima misuri gli fps del telefono; poi la strada giusta e' probabilmente lo SNAP D'INGRESSO scena piu' permissivo, non il riscalo. */
       camera.position.x+=(tPx-camera.position.x)*kp;camera.position.y+=(tPy-camera.position.y)*kp;camera.position.z+=(tPz-camera.position.z)*kp;
       /* [7.507.0 codice 007 — IL BERSAGLIO DELLO SGUARDO E' LEGALE PRIMA DEL LERP]
          Il meccanismo dell'oscillazione, gia' letto nel 7.475/7.478C ma mai chiuso alla radice: il lerp

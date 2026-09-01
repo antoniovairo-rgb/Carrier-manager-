@@ -5,6 +5,7 @@
    Qui: a ogni riga di piano (rk manovra-gol) si misura, DUE campioni dopo (il volo), la distanza fra il
    pallone e l'uomo piu' vicino della squadra che attacca. Arrivo custodito = sotto 4u. */
 import { startServer, launchBrowser, installCdnRoutes, openMatch, sleep } from './lib/harness.mjs';
+const GLB = process.env.CPM_GLB !== '0';/* [direttiva PO 01/09] «i test li devi fare con GLB ON»: acceso di default, si spegne SOLO dichiarandolo nel comando */
 const srv = await startServer(); const port = srv.address().port;
 const b = await launchBrowser();
 const arrivi = [];
@@ -12,7 +13,7 @@ for (const seme of [7300, 9200]) {
   const page = await b.newPage({ viewport: { width: 412, height: 915 } });
   await installCdnRoutes(page);
   const ROSSO = process.env.CPM_ROSSO || '';/* [v4] braccio rosso: CPM_ROSSO=706 accende __CPM_NO706 */
-  await page.addInitScript((o) => { window.__CPM_GLB = false; window.__CPM_REC = true; if (o.r) window['__CPM_NO' + o.r] = true; if (o.rk) window.__CPM_RK_PROBE = o.rk; }, { r: ROSSO, rk: process.env.CPM_RK || '' });
+  await page.addInitScript((o) => { window.__CPM_GLB = o.glb; window.__CPM_REC = true; if (o.r) window['__CPM_NO' + o.r] = true; if (o.rk) window.__CPM_RK_PROBE = o.rk; }, { r: ROSSO, rk: process.env.CPM_RK || '', glb: GLB });
   await openMatch(page, port, { skipLoadAll: true, name: 'Ar' });
   await page.evaluate(s => window.__CPM_AUTOPLAY(true, { seed: s, policy: 'seeded', tickMs: 300 }), seme);
   let nPrev = 0;

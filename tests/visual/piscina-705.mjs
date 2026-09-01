@@ -11,8 +11,9 @@ const srv = await startServer(); const port = srv.address().port;
 const b = await launchBrowser();
 const page = await b.newPage({ viewport: { width: 412, height: 915 } });
 await installCdnRoutes(page);
+const GLB = process.env.CPM_GLB !== '0';/* [direttiva PO 01/09] «i test li devi fare con GLB ON»: acceso di default, si spegne SOLO dichiarandolo nel comando */
 const ROSSO = process.env.CPM_ROSSO || '';/* [v4] braccio rosso: CPM_ROSSO=705 accende __CPM_NO705 (numero corto, come le altre sonde mie) */
-await page.addInitScript((r) => { window.__CPM_GLB = false; window.__CPM_REC = true; if (r) window['__CPM_NO' + r] = true; }, ROSSO);
+await page.addInitScript((o) => { window.__CPM_GLB = o.glb; window.__CPM_REC = true; if (o.r) window['__CPM_NO' + o.r] = true; }, { r: ROSSO, glb: GLB });
 await openMatch(page, port, { skipLoadAll: true, name: 'Pi' });
 await page.evaluate(() => window.__CPM_AUTOPLAY(true, { seed: 7300, policy: 'seeded', tickMs: 300 }));
 let parPrev = 0, prese = 0;

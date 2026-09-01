@@ -6,8 +6,9 @@ const srv = await startServer(); const port = srv.address().port;
 const b = await launchBrowser();
 const page = await b.newPage({ viewport: { width: 412, height: 915 } });
 await installCdnRoutes(page);
+const GLB = process.env.CPM_GLB !== '0';/* [direttiva PO 01/09] «i test li devi fare con GLB ON»: acceso di default, si spegne SOLO dichiarandolo nel comando */
 const ROSSO = process.env.CPM_ROSSO || '';
-await page.addInitScript((r) => { window.__CPM_GLB = false; window.__CPM_REC = true; if (r) window['__CPM_NO' + r] = true; }, ROSSO);
+await page.addInitScript((o) => { window.__CPM_GLB = o.glb; window.__CPM_REC = true; if (o.r) window['__CPM_NO' + o.r] = true; }, { r: ROSSO, glb: GLB });
 await openMatch(page, port, { skipLoadAll: true, name: 'Iq' });
 const SEME = +(process.env.CPM_SEME || 7300);/* [v4] stesso parametro della filmstrip: il numero accanto agli occhi, sullo stesso mondo */
 await page.evaluate((sm) => window.__CPM_AUTOPLAY(true, { seed: sm, policy: 'seeded', tickMs: 300 }), SEME);
