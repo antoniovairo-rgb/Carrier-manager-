@@ -2451,6 +2451,27 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           eroe:{x:+(pPosRef.current.x||50).toFixed(1),y:+(pPosRef.current.y||50).toFixed(1)},
           mem:msMemRef.current.slice(),
           manca:["modulo","metodologia","atteggiamento","spazi-per-corsia"]};
+        /* [7.712.0 — IL DANGER SYSTEM IN MODALITA' OMBRA (§10 della missione). Primo consumatore del
+           Match State. Calcola un threat 0-100 da SOLE grandezze di stato — avanzata, ultimo quarto,
+           velocita' della spinta, attaccanti liberi, superiorita', pressione assente — e lo LOGGA
+           soltanto: nessuna decisione, nessun comportamento. Il banco ombra confrontera' i suoi picchi
+           con le finestre che oggi i piani aprono a dado (adv>=48 + dado<72%): se l'ombra nomina le
+           occasioni meglio del dado, i ruoli si scambiano (strangler). Formula v1 trasparente e
+           tarabile, pesi dichiarati; la storia del threat resta sul MS (threat + comp). */
+        try{const _ms712=matchStateRef.current;
+          const _adv712=_ms712.turn>0?_ms712.ball.x:100-_ms712.ball.x;
+          const _pAdv712=(matchStateRef._prevAdv712!=null&&matchStateRef._prevTurn712===_ms712.turn)?matchStateRef._prevAdv712:_adv712;
+          matchStateRef._prevAdv712=_adv712;matchStateRef._prevTurn712=_ms712.turn;
+          const _cl712=(v)=>Math.max(0,Math.min(1,v));
+          const _zona=_cl712((_adv712-50)/50),_porta=_cl712((_adv712-75)/25);
+          const _spinta=_cl712((_adv712-_pAdv712)/3);
+          const _lib=_cl712((_ms712.marcature.liberi||0)/3);
+          const _sup=_cl712((_ms712.turn>0?_ms712.superiorita:-_ms712.superiorita)/2);
+          const _noPress=_ms712.fermo||_ms712.out?0:_cl712(1-(_ms712.pressione.addosso||0)/3);
+          const _thr712=Math.round(100*_cl712(0.30*_zona+0.25*_porta+0.15*_spinta+0.15*_lib+0.10*_sup+0.05*_noPress));
+          _ms712.threat=_thr712;_ms712.threatComp={zona:+_zona.toFixed(2),porta:+_porta.toFixed(2),spinta:+_spinta.toFixed(2),lib:+_lib.toFixed(2),sup:+_sup.toFixed(2),noPress:+_noPress.toFixed(2)};
+          if(typeof window!=='undefined'&&window.__CPM_REC){const _tr=(window.__CPM_THREAT=window.__CPM_THREAT||[]);if(_tr.length<1200)_tr.push({min:_ms712.min,t:_thr712,turn:_ms712.turn});}
+        }catch(_e712){}
       }catch(_e711){}
     },300);
     return()=>clearInterval(iv);
