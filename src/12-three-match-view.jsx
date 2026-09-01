@@ -4231,7 +4231,9 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
             }else{const _dxh=_hxg-src.x,_dyh=_hyg-src.y,_dh=Math.hypot(_dxh,_dyh);
               if(_dh<30&&_dh>2){const _p=clamp((30-_dh)/30,0,1)*_pt*3.5;tx+=_dxh/_dh*_p;ty+=_dyh/_dh*_p;}}
           }
-          {const _ob=_tgPool[_tgN]||(_tgPool[_tgN]={});_tgN++;_ob.x=tx;_ob.y=ty;_ob.gk=false;_ob.hm=_hm;_ob.li=_li;_ob.att=_li>=8;_ob.def=_li>=1&&_li<=4;_ob.b592=_b592;_ob.a592=_a592;_ob.r592=_r592;_ob.c592=tx;_tg.push(_ob);}
+          const _m706f=!!(src&&src._m706)&&!(typeof window!=='undefined'&&window.__CPM_NO706);
+          if(_m706f){tx=src.x;ty=src.y;}/* [7.706.0] L'ELETTO ALLA CONTESA NON SI RIVESTE. MISURATO (arrivi-705 v6): i tre difensori eletti stanno a 2-8u dal pallone in LOGICA, ma entro 6u di MESH la mediana e' 0 — corsie, scarto di possesso e richiami di questo builder tiravano il bersaglio via dalla mischia. Per l'eletto il bersaglio e' la posizione logica pura, che il deployment ha gia' messo sull'anello goal-side. */
+          {const _ob=_tgPool[_tgN]||(_tgPool[_tgN]={});_tgN++;_ob.x=tx;_ob.y=ty;_ob.gk=false;_ob.hm=_hm;_ob.li=_li;_ob.att=_li>=8;_ob.def=_li>=1&&_li<=4;_ob.m706=_m706f;_ob.b592=_b592;_ob.a592=_a592;_ob.r592=_r592;_ob.c592=tx;_tg.push(_ob);}
         }
         // HL STAGING (#1/#3) — PRIMO POSIZIONAMENTO coerente: all'avvio di un highlight la scena deve MOSTRARE i giocatori
         //   che l'azione presuppone, non lasciare l'Eroe solo in campo aperto. Porta vicino all'Eroe il compagno e
@@ -4260,7 +4262,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
         //   squadra (i difensori di casa marcano gli ospiti e viceversa) → un solo Set basta.
         if(!sr.current._mkClaimB)sr.current._mkClaimB=new Set();
         const _mkClaim=sr.current._mkClaimB;_mkClaim.clear();
-        for(let i=0;i<_tg.length;i++){const t=_tg[i];if(!t||t.gk||!t.def||i===_pr1||i===_pr2)continue;// [6.76.0 LMV-M1] i pressori attivi NON marcano: la marcatura li trascinava via dal portatore (due attrattori in conflitto sullo stesso frame)
+        for(let i=0;i<_tg.length;i++){const t=_tg[i];if(!t||t.gk||t.m706||!t.def||i===_pr1||i===_pr2)continue;/* [7.706.0] l'eletto alla contesa non marca: ha gia' un uomo, il pallone */// [6.76.0 LMV-M1] i pressori attivi NON marcano: la marcatura li trascinava via dal portatore (due attrattori in conflitto sullo stesso frame)
           let nd=28,nmx=null,nmy=null,nj=-1;
           for(let j=0;j<_tg.length;j++){const o=_tg[j];if(!o||o.gk||o.hm===t.hm||o.li<5||_mkClaim.has(j))continue;
             const dd=Math.hypot(o.x-t.x,o.y-t.y);if(dd<nd){nd=dd;nmx=o.x;nmy=o.y;nj=j;}}

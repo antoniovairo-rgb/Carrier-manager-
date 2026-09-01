@@ -2321,7 +2321,24 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
          cui il contatore resta sopra zero significava togliere il gioco per mezzo minuto dopo ogni gol. */
       const _ripresa589=!(typeof window!=='undefined'&&window.__CPM_NO589)&&((kickRef.current|0)>0||(kickoffRef.current|0)>0)&&(!(typeof window!=='undefined'&&window.__CPM_NO590)?(ripT0Ref.current>0&&(Date.now()-ripT0Ref.current)<=4500):true);
       if(_ripresa589){try{const _V=velRef.current;for(const _k in _V){const _v=_V[_k];if(_v){_v.vx=0;_v.vy=0;}}}catch(_e){}}
-      else setMatchPlayers(prev=>prev.map((pl,idx)=>{
+      else setMatchPlayers(prev=>{
+        /* [7.706.0 — LA MISCHIA E' CONTESA. Rosso __CPM_NO706]
+           Collaudo PO: «le azioni pericolose sono confusionarie, irreali... non ci sono azioni ben
+           manovrate». MISURATO (arrivi-705 v4): gli arrivi del piano sono gia' CUSTODITI dagli
+           attaccanti (14/16 sotto 5u, mediana ~2u) ma la CONTESA non c'e' — mediana 2 difensori entro
+           12u dal pallone, e il filmstrip mostra la mischia recitata tra soli attaccanti: da qui
+           l'aria da allenamento. Mentre un piano e' vivo, i TRE difensori piu' vicini del lato che
+           difende convergono goal-side sul pallone (anello a 4,5u, ventaglio di 3u): solo bersagli
+           del deployment — pallone, righe e microsim intoccati. */
+        let _mark706=null;
+        if(!(typeof window!=='undefined'&&window.__CPM_NO706)&&pendingGoalRef.current&&pendingGoalRef.current.piano&&!fermoRef.current&&!outRef.current){
+          const _pgD706=pendingGoalRef.current.dir|0;const _defT706=_pgD706>0?"away":"home";
+          const _c706=[];prev.forEach((q,qi)=>{if(q&&q.team===_defT706&&!q.gk)_c706.push({qi,d:Math.hypot((q.x||50)-ball.x,(q.y||50)-ball.y)});});
+          _c706.sort((a,b)=>a.d-b.d);
+          _mark706={set:new Set(_c706.slice(0,3).map(c=>c.qi)),gx:_pgD706>0?97:3};
+          if(typeof window!=='undefined'&&window.__CPM_REC){try{window.__CPM_N706=(window.__CPM_N706||0)+1;window.__CPM_D706=_c706.slice(0,3).map(c=>+c.d.toFixed(1));}catch(_e){}}/* [7.706 strumentazione] +D706: le distanze dei tre eletti dal pallone al momento dell'elezione — dice se non arrivano perche' partono da lontano o perche' non si muovono *//* [7.706 strumentazione] tick con elezione attiva: distingue «non gira» da «gira ma il righello non lo vede» */
+        }
+        return prev.map((pl,idx)=>{
         if(pl.team==="ref")return pl;
         if(pl.team==="away"){
           const ai=idx-10;
@@ -2352,11 +2369,13 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
              potevano sfasarsi di 12u e chiudere il varco fra le corsie → sovrapposizioni. Nel calcio una
              linea scorre COME UN BLOCCO: stessa fase per reparto e ampiezza ridotta ⇒ i varchi non si chiudono. */
           ty+=Math.cos(T*0.9+_lnA*2.1)*2.6;
+          const _el706a=_mark706&&_mark706.set.has(idx);
+          if(_el706a){const _dxm=_mark706.gx-ball.x,_dym=50-ball.y,_dn=Math.hypot(_dxm,_dym)||1;tx=clamp(ball.x+_dxm/_dn*4.5,4,96);ty=clamp(ball.y+_dym/_dn*4.5+((idx%3)-1)*3,4,96);}/* [7.706.0] eletto alla contesa: anello goal-side */
           const va=velRef.current[idx]||{vx:0,vy:0};
-          const nvxa=clamp(va.vx*0.70+(tx-pl.x)*0.14,-6,6);
-          const nvya=clamp(va.vy*0.70+(ty-pl.y)*0.11,-6,6);
+          const nvxa=clamp(va.vx*0.70+(tx-pl.x)*(_el706a?0.35:0.14),-6,6);
+          const nvya=clamp(va.vy*0.70+(ty-pl.y)*(_el706a?0.35:0.11),-6,6);/* [7.706.0] MISURATO (v6): coi guadagni di corsia gli eletti restavano a 4-15u dal pallone — il passo dell'eletto e' quello del primo pressore (0,35), o l'anello non si forma prima che la riga cambi */
           velRef.current[idx]={vx:nvxa,vy:nvya};
-          return{...pl,x:clamp(pl.x+nvxa,44,98),y:clamp(pl.y+nvya,3,97)};
+          return{...pl,_m706:(_mark706&&_mark706.set.has(idx))?1:0,x:clamp(pl.x+nvxa,44,98),y:clamp(pl.y+nvya,3,97)};/* [7.706.0] il marchio viaggia col giocatore: il renderer lo legge da allPlayers e non riveste il suo bersaglio */
         }else{
           const hi=idx;
           let tx,ty;
@@ -2377,15 +2396,17 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
             }
             tx+=Math.sin(T*0.85+hi*1.5)*4;
             ty+=Math.cos(T*0.75+_lnH*2.1)*2.4;// [7.202.0] sway laterale per REPARTO (vedi nota sul lato ospite)
+            if(_mark706&&_mark706.set.has(idx)){const _dxm=_mark706.gx-ball.x,_dym=50-ball.y,_dn=Math.hypot(_dxm,_dym)||1;tx=clamp(ball.x+_dxm/_dn*4.5,4,96);ty=clamp(ball.y+_dym/_dn*4.5+((idx%3)-1)*3,4,96);}/* [7.706.0] eletto alla contesa: anello goal-side */
           }
+          const _el706h=_mark706&&_mark706.set.has(idx)&&hi!==0;
           const vh=velRef.current[idx]||{vx:0,vy:0};
-          const nvxh=clamp(vh.vx*0.70+(tx-pl.x)*0.12,-6,6);
-          const nvyh=clamp(vh.vy*0.70+(ty-pl.y)*0.10,-6,6);
+          const nvxh=clamp(vh.vx*0.70+(tx-pl.x)*(_el706h?0.35:0.12),-6,6);
+          const nvyh=clamp(vh.vy*0.70+(ty-pl.y)*(_el706h?0.35:0.10),-6,6);/* [7.706.0] passo del pressore per l'eletto (vedi lato ospite) */
           velRef.current[idx]={vx:nvxh,vy:nvyh};
           if(hi===0)return{...pl,x:clamp(pl.x+nvxh,2,12),y:clamp(pl.y+nvyh,33,67)};
-          return{...pl,x:clamp(pl.x+nvxh,2,92),y:clamp(pl.y+nvyh,3,97)};
+          return{...pl,_m706:(_mark706&&_mark706.set.has(idx))?1:0,x:clamp(pl.x+nvxh,2,92),y:clamp(pl.y+nvyh,3,97)};/* [7.706.0] idem lato casa */
         }
-      }));
+      });});
     },300);
     return()=>clearInterval(iv);
   },[phase,paused,kickoffHold]);

@@ -11,7 +11,8 @@ const arrivi = [];
 for (const seme of [7300, 9200]) {
   const page = await b.newPage({ viewport: { width: 412, height: 915 } });
   await installCdnRoutes(page);
-  await page.addInitScript(() => { window.__CPM_GLB = false; window.__CPM_REC = true; });
+  const ROSSO = process.env.CPM_ROSSO || '';/* [v4] braccio rosso: CPM_ROSSO=706 accende __CPM_NO706 */
+  await page.addInitScript((r) => { window.__CPM_GLB = false; window.__CPM_REC = true; if (r) window['__CPM_NO' + r] = true; }, ROSSO);
   await openMatch(page, port, { skipLoadAll: true, name: 'Ar' });
   await page.evaluate(s => window.__CPM_AUTOPLAY(true, { seed: s, policy: 'seeded', tickMs: 300 }), seme);
   let nPrev = 0;
@@ -32,10 +33,10 @@ for (const seme of [7300, 9200]) {
         const st = window.__CPM_STATE && window.__CPM_STATE(); if (!st || !st.players || !st.ball) return null;
         const lato = d > 0 ? 'home' : 'away';
         const bx = st.ball.x, by = st.ball.y;/* [v2] st.ball e' GIA' in coordinate gioco (x,y) — la v1 leggeva .z inesistente: by=NaN, nessun confronto passava, mediana=sentinella 1e9 */
-        let md = 1e9; st.players.forEach(p => { if (p.team !== lato || p.gk) return; const dd = Math.hypot(p.x - bx, p.y - by); if (dd < md) md = dd; });
-        return { md: +md.toFixed(1) };
+        let md = 1e9, nd = 0, nd6 = 0; st.players.forEach(p => { if (p.gk) return; const dd = Math.hypot(p.x - bx, p.y - by); if (p.team === lato) { if (dd < md) md = dd; } else { if (dd < 12) nd++; if (dd < 6) nd6++; } });/* [v5] +nd6: l'anello del 7.706 sta a 4,5u — a 12u il righello non lo distingue dai difensori che c'erano gia' *//* [v4] +nd: DIFENSORI entro 12u dal pallone — l'ipotesi dal filmstrip: l'azione sembra «non manovrata» perche' non e' CONTESA */
+        return { md: +md.toFixed(1), nd, nd6, n706: (window.__CPM_N706 || 0), d706: (window.__CPM_D706 || []).join('/') };
       } catch (e) { return null; } }, dir705);
-      if (m && m.md < 1e8) arrivi.push({ md: m.md, dir: r.dir });/* [v3] +dir per smascherare gli arrivi attribuiti alla squadra sbagliata (dir null al trigger → default home) */
+      if (m && m.md < 1e8) arrivi.push({ md: m.md, dir: r.dir, nd: m.nd, nd6: m.nd6, n706: m.n706, d706: m.d706 });/* [v3] +dir per smascherare gli arrivi attribuiti alla squadra sbagliata (dir null al trigger → default home) */
     }
     if (r.c != null && r.c >= 89) break;
   }
@@ -50,5 +51,12 @@ if (arrivi.length) {
   console.log(`  distanza uomo-piu'-vicino → pallone: mediana ${ord[ord.length >> 1]}u · p90 ${ord[Math.floor(ord.length * 0.9)]}u · max ${ord[ord.length - 1]}u`);
   console.log(`  arrivi CUSTODITI (<4u): ${vals.filter(v => v < 4).length}/${vals.length}`);
   console.log(`  elenco (md@dir): ${arrivi.map(a => `${a.md}@${a.dir == null ? '?' : a.dir}`).join(' · ')}`);
+  const nds = arrivi.map(a => a.nd).sort((a, c) => a - c);
+  console.log(`  DIFENSORI entro 12u dal pallone: mediana ${nds[nds.length >> 1]} · arrivi senza NESSUN difensore: ${nds.filter(v => v === 0).length}/${nds.length}`);
+  console.log(`  elenco difensori: ${arrivi.map(a => a.nd).join(' · ')}`);
+  const n6 = arrivi.map(a => a.nd6).sort((a, c) => a - c);
+  console.log(`  DIFENSORI entro 6u: mediana ${n6[n6.length >> 1]} · elenco: ${arrivi.map(a => a.nd6).join(' · ')}`);
+  console.log(`  tick con elezione 706 attiva (cumulativo per arrivo): ${arrivi.map(a => a.n706).join(' · ')}`);
+  console.log(`  distanze eletti al tick dell'arrivo: ${arrivi.map(a => a.d706 || '?').join(' · ')}`);
 }
 console.log('');
