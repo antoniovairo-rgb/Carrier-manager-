@@ -7257,6 +7257,26 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
          energia al bersaglio ne' togliendone alla morbidezza. Va tolto il motivo per cui la rete si
          riarma: il regista che ricalcola `tL` DA ZERO a ogni fotogramma, cieco alle correzioni del
          fotogramma prima. E' un lavoro sul regista, non sui freni, e resta a verbale come strada. */
+      /* [7.707.0 — LA SALIENTE NON PERDE IL PALLONE. Rosso __CPM_NO707]
+         Collaudo R6 per fotografia + misura (inquadratura-r6): nelle finestre di piano il pallone sta
+         FUORI dal quadro reso nel 15% dei campioni (ndc fino a +-3,7, uscite tutte laterali), e il 100%
+         dei campioni e' in regime saliente: il bersaglio segue il pallone ma il lerp non gli sta dietro
+         quando il racconto salta di 20-30u per riga. La lezione del 7.704 vieta una seconda rete (due
+         padroni = tremore): qui NON si cambia direzione — si accorcia il viaggio. Se il pallone e' oltre
+         il semiangolo orizzontale della vista corrente, kl/kp crescono in proporzione allo sforo (tetto
+         2,6x, cap assoluti 0,5/0,4) e tornano normali appena il pallone rientra: convergenza monotona
+         verso lo stesso bersaglio, mai un'inversione. */
+      if(P.salienteOn&&!(typeof window!=='undefined'&&window.__CPM_NO707)&&ball){try{
+        const _cx7=camera.position.x,_cz7=camera.position.z;
+        const _aB7=Math.atan2(ball.position.z-_cz7,ball.position.x-_cx7);
+        const _aL7=Math.atan2(camLook.z-_cz7,camLook.x-_cx7);
+        let _dA7=_aB7-_aL7;while(_dA7>Math.PI)_dA7-=2*Math.PI;while(_dA7<-Math.PI)_dA7+=2*Math.PI;
+        const _tH7=Math.tan(((camera&&camera.fov)||46)*Math.PI/360);
+        const _aM7=Math.atan(_tH7*((camera&&camera.aspect)||0.75))*0.94;
+        const _ov7=Math.abs(_dA7)-_aM7;
+        if(_ov7>0){const _b7=Math.min(4.0,1+_ov7*6.0);kl=Math.min(kl*_b7,0.7);kp=Math.min(kp*_b7,0.55);/* [7.707.0 v2] col primo giro (tetto 2,6, pendenza 3) lo sforo scendeva da ndc 3,7 a 2,3 ma il pallone restava fuori: il passo raddoppia ancora, sempre monotono */
+          try{if(sr.current._tocc503)sr.current._tocc503.push('passo-707');}catch(_e){}}
+      }catch(_e7){}}
       camLook.x+=(tLx-camLook.x)*kl;camLook.y+=(tLy-camLook.y)*kl;camLook.z+=(tLz-camLook.z)*kl;
       /* [7.226.0 #43] GUARDIA SUL QUADRO REALE. Il richiamo 7.225.0 garantisce che l'eroe stia nel quadro della
          camera TARGET — ma la camera REALE lo insegue coi lerp (posizione kp, sguardo kl): durante uno stacco
