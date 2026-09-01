@@ -91,9 +91,9 @@ cronaca + piani) decide cosa si vede — trascinandosi dietro pallone e corpi. L
 - Punteggio: resta al microsim (regola permanente PO); la simulazione dei 22 produce la STORIA
   che vi converge; conflitti eventuali → decisione PO con numeri.
 
-## 9. Prossimi passi dell'audit (per chiudere la Fase 1)
+## 9. Censimenti della Fase 1 — CHIUSI QUANTO BASTA PER COSTRUIRE (il documento resta vivo)
 - [x] grep-census dei consumatori di Football State — FATTO, vedi §6.
 - [ ] enumerazione fasi/phase machine completa.
-- [ ] autorità del possesso: poss% vs possTurnRef vs righe.
-- [ ] mappa di TUTTI i punti che scrivono ballPosRef/ballTargetRef.
-- [ ] catalogo situations/factory: quante, quali pattern, dove gli attori vengono scelti.
+- [x] autorità del possesso — FATTA: il TURNO ha gia' UN solo scrittore causale, setTurn616 (14-live r.1499: libro mastro cpmEv 'turn', 95-96% causale al guardiano, inviolabile sotto costruzione 7.646) — pietra della Fase 2 gia' posata; poss% e' statistica narrativa (drift clampato 20-80, 7 siti).
+- [x] pallone logico — CONTATO: ballTargetRef 27 scrittori, ballPos/setBallPos ~14 siti (14-live). L'elezione del padrone vive nel RENDERER (7.555) — nel nuovo modello sale al tick logico.
+- [x] situations: ~191 a catalogo (run-summary total 191); attori scelti dal renderer al momento (nearest-mate), non dalla simulazione — conferma §4.

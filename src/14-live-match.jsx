@@ -560,6 +560,14 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   const [momentum,setMomentum]=useState(resumeState&&typeof resumeState.momentum==="number"?clamp(resumeState.momentum,0,100):50); // 0=away dominance, 100=home dominance
   const momentumRef=useRef(resumeState&&typeof resumeState.momentum==="number"?clamp(resumeState.momentum,0,100):50);
   useEffect(()=>{momentumRef.current=momentum;},[momentum]);
+  /* [7.711.0 — FASE 2 MISSIONE DEFINITIVA: IL MATCH STATE UNICO NASCE QUI]
+     La direttiva PO (01/09) vuole una sola realta' al tick logico che alimenti ogni decisione.
+     L'audit (docs/AUDIT-PARTITA.md) ha misurato che il Football State attuale vive nel renderer,
+     e' derivato dalle mesh e ha UN consumatore: qui si costruisce il sostituto al posto giusto —
+     assemblato ogni tick (300ms) SOLO da autorita' logiche (possTurnRef/ballPosRef/matchPlayersRef/
+     scoreRef/momentumRef/pPosRef), con memoria degli eventi (anello alimentato da setTurn616).
+     Alla nascita ha ZERO consumatori: prima le fondamenta, poi i piani (strangler). */
+  const matchStateRef=useRef(null);const msMemRef=useRef([]);
   const phaseRef=useRef(context==="trial"?"playing":"matchday");
   const heatPointsRef=useRef([]); // {x,y}[] — sampled every 4 playing ticks
   const [showHeatMap,setShowHeatMap]=useState(false);
@@ -1344,6 +1352,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
              l:{x:+ballPosRef.current.x.toFixed(2),y:+ballPosRef.current.y.toFixed(2)},
              m:m?{x:m.x,y:m.y}:null,ko:(kickRef.current|0),kf:(kickoffRef.current|0),c:clockRef.current|0,g:(typeof window!=='undefined'&&window.__CPM_COLLA)?1:0};}catch(e){return null;}};
     window.__CPM_MP=()=>{try{return (matchPlayersRef&&matchPlayersRef.current?matchPlayersRef.current:matchPlayers||[]).map(q=>q?{t:q.team,x:Math.round(q.x*10)/10,y:Math.round(q.y*10)/10,n:q.name||"",gk:!!q.gk}:null);}catch(e){return null;}};/* [7.130.0] +n (cognome dorso) +gk per la verifica *//* [BL-07] stato LOGICO LiveMatch (pre-3D) per isolare lo strato che perde lo shading */
+    window.__CPM_MS=()=>{try{return matchStateRef.current;}catch(e){return null;}};/* [7.711.0] il testimone del Match State unico */
     window.__CPM_FERMO_NOW=()=>{try{const _f=fermoRef.current;return _f?{x:_f.x,y:_f.y,kind:_f.kind||null,t:_f.t}:null;}catch(e){return null;}};/* [7.633.0] gancio di sola lettura: il fermo corrente, per la sonda dello schieramento da palla inattiva */
     window.__CPM_FERMO_SET=(k,x,y,t)=>{try{fermoRef.current={x:+x,y:+y,t:(t|0)||12,kind:String(k)};return true;}catch(e){return false;}};/* [7.633.0 SOLO COLLAUDO] forza un fermo per misurare lo schieramento da palla inattiva senza aspettare la lotteria dei sorteggi (pattern __CPM_FORCE_SIT) */
     window.__CPM_AUTOPLAY=(on,opts)=>{try{
@@ -1505,6 +1514,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     if(_prev!==_d&&!(typeof window!=='undefined'&&window.__CPM_NO641)){carrierRef.current=null;pendingBtRef.current=null;/* [7.641/7.643] al cambio di possesso decadono portatore E proposta in coda */}
     if(!(opts&&opts.keepSpell)){possSpellRef.current=6;possExtRef.current=0;}
     cpmEv("turn",{min:clockRef.current|0,dir:_d,flip:_prev!==_d?1:0,causa:String(causa||"?")});
+    if(_prev!==_d){try{const _mm=msMemRef.current;_mm.push({min:clockRef.current|0,ev:"turn",dir:_d,causa:String(causa||"?")});if(_mm.length>8)_mm.shift();}catch(_e){}}/* [7.711.0] la MEMORIA del Match State: gli ultimi 8 eventi che hanno cambiato il possesso, con la causa */
     if(typeof window!=='undefined'&&window.__CPM_TURN616){const _g=window.__CPM_TURN616;
       _g.n=(_g.n|0)+1;const _k=String(causa||"?");(_g.per=_g.per||{})[_k]=((_g.per||{})[_k]|0)+1;
       if(_prev!==_d)_g.flip=(_g.flip|0)+1;}
@@ -2407,6 +2417,41 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           return{...pl,_m706:(_mark706&&_mark706.set.has(idx))?1:0,x:clamp(pl.x+nvxh,2,92),y:clamp(pl.y+nvyh,3,97)};/* [7.706.0] idem lato casa */
         }
       });});
+      /* [7.711.0 — L'ASSEMBLAGGIO DEL MATCH STATE, ogni tick, solo da autorita' logiche.
+         matchPlayersRef puo' essere indietro di UN tick (il commit di React e' asincrono): dichiarato,
+         irrilevante per decisioni a 300ms. I campi mancanti rispetto al §1 della direttiva sono
+         dichiarati nel campo `manca` finche' non esistono davvero (modulo/metodologia/atteggiamento). */
+      try{
+        const _pl711=(matchPlayersRef&&matchPlayersRef.current)?matchPlayersRef.current:[];
+        const _bx711=ball.x,_by711=ball.y,_turn711=possTurnRef.current|0;
+        const _defT711=_turn711>0?"away":"home",_attT711=_turn711>0?"home":"away";
+        let _nH711=0,_nA711=0,_pd711=1e9,_press711=0;
+        const _linee711={home:{def:[],mid:[],att:[]},away:{def:[],mid:[],att:[]}};
+        for(let _i711=0;_i711<_pl711.length;_i711++){const _q=_pl711[_i711];if(!_q||_q.team==="ref")continue;
+          const _dq=Math.hypot((_q.x||50)-_bx711,(_q.y||50)-_by711);
+          if(_dq<12){if(_q.team==="home")_nH711++;else _nA711++;}
+          if(!_q.gk&&_q.team===_defT711){if(_dq<_pd711)_pd711=_dq;if(_dq<8)_press711++;}
+          const _li711=_q.team==="home"?_i711:_i711-10;
+          if(!_q.gk&&_linee711[_q.team]){const _rep=_li711<=4?"def":_li711<=7?"mid":"att";_linee711[_q.team][_rep].push(_q.x||50);}}
+        const _med711=(a)=>a.length?+(a.reduce((x,y)=>x+y,0)/a.length).toFixed(1):null;
+        let _marc711=0,_lib711=0;
+        for(let _i711=0;_i711<_pl711.length;_i711++){const _q=_pl711[_i711];if(!_q||_q.gk||_q.team!==_attT711)continue;
+          let _md711=1e9;for(let _j711=0;_j711<_pl711.length;_j711++){const _o=_pl711[_j711];if(!_o||_o.gk||_o.team!==_defT711)continue;
+            const _dd=Math.hypot((_q.x||50)-(_o.x||50),(_q.y||50)-(_o.y||50));if(_dd<_md711)_md711=_dd;}
+          if(_md711<6)_marc711++;else if(_md711>10)_lib711++;}
+        matchStateRef.current={v:1,min:clockRef.current|0,score:{h:scoreRef.current.home|0,a:scoreRef.current.away|0},
+          turn:_turn711,poss:poss|0,momentum:momentumRef.current|0,
+          ball:{x:+_bx711.toFixed(1),y:+_by711.toFixed(1)},carrier:(carrierRef.current&&carrierRef.current.i!=null)?carrierRef.current.i:null,
+          fermo:!!fermoRef.current,out:!!outRef.current,costruzione:!!pendingGoalRef.current,
+          pressione:{addosso:_press711,vicino:+( _pd711===1e9?99:_pd711).toFixed(1)},
+          marcature:{presi:_marc711,liberi:_lib711},
+          linee:{home:{def:_med711(_linee711.home.def),mid:_med711(_linee711.home.mid),att:_med711(_linee711.home.att)},
+                 away:{def:_med711(_linee711.away.def),mid:_med711(_linee711.away.mid),att:_med711(_linee711.away.att)}},
+          superiorita:_nH711-_nA711,
+          eroe:{x:+(pPosRef.current.x||50).toFixed(1),y:+(pPosRef.current.y||50).toFixed(1)},
+          mem:msMemRef.current.slice(),
+          manca:["modulo","metodologia","atteggiamento","spazi-per-corsia"]};
+      }catch(_e711){}
     },300);
     return()=>clearInterval(iv);
   },[phase,paused,kickoffHold]);
