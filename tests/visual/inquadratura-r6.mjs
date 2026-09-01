@@ -9,7 +9,8 @@ await installCdnRoutes(page);
 const ROSSO = process.env.CPM_ROSSO || '';
 await page.addInitScript((r) => { window.__CPM_GLB = false; window.__CPM_REC = true; if (r) window['__CPM_NO' + r] = true; }, ROSSO);
 await openMatch(page, port, { skipLoadAll: true, name: 'Iq' });
-await page.evaluate(() => window.__CPM_AUTOPLAY(true, { seed: 7300, policy: 'seeded', tickMs: 300 }));
+const SEME = +(process.env.CPM_SEME || 7300);/* [v4] stesso parametro della filmstrip: il numero accanto agli occhi, sullo stesso mondo */
+await page.evaluate((sm) => window.__CPM_AUTOPLAY(true, { seed: sm, policy: 'seeded', tickMs: 300 }), SEME);
 const finestre = []; let cur = null;
 for (let k = 0; k < 900; k++) {
   await sleep(250);
@@ -17,7 +18,8 @@ for (let k = 0; k < 900; k++) {
     const h = window.__CPM_HOLD && window.__CPM_HOLD();
     const st = window.__CPM_STATE && window.__CPM_STATE();
     const bl = st && st.ball;
-    return { pg: !!(h && h.pg), on: !!(bl && bl.onScreen), c: st ? st.clock : null,
+    const vivo = !!(h && h.pg && h.pgStep != null && h.pgLen != null && h.pgStep < h.pgLen);/* [v5] SOLO racconto in corso: nella coda post-esito il pallone giace in rete e la camera sta giustamente sulla festa — contarla come fuori-quadro e' il righello sbagliato (stessa lezione di vedo-695: pg resta vivo nella coda) */
+    return { pg: vivo, on: !!(bl && bl.onScreen), c: st ? st.clock : null,
       ndc: bl && bl.ndc ? { x: +bl.ndc.x.toFixed(2), y: +bl.ndc.y.toFixed(2) } : null,
       bx: bl ? bl.x : null, by: bl ? bl.y : null, sal: !!window.__CPM_SAL689_ON };/* [v3] la finestra e' in regime saliente? separa «camera larga che non insegue» da «lerp lento della saliente» *//* [v2] da che bordo esce e dov'era il pallone: nomina lo scrittore prima del rimedio */
   } catch (_e) { return null; } });
