@@ -12,7 +12,7 @@ for (const seme of [7300, 9200]) {
   const page = await b.newPage({ viewport: { width: 412, height: 915 } });
   await installCdnRoutes(page);
   const ROSSO = process.env.CPM_ROSSO || '';/* [v4] braccio rosso: CPM_ROSSO=706 accende __CPM_NO706 */
-  await page.addInitScript((r) => { window.__CPM_GLB = false; window.__CPM_REC = true; if (r) window['__CPM_NO' + r] = true; }, ROSSO);
+  await page.addInitScript((o) => { window.__CPM_GLB = false; window.__CPM_REC = true; if (o.r) window['__CPM_NO' + o.r] = true; if (o.rk) window.__CPM_RK_PROBE = o.rk; }, { r: ROSSO, rk: process.env.CPM_RK || '' });
   await openMatch(page, port, { skipLoadAll: true, name: 'Ar' });
   await page.evaluate(s => window.__CPM_AUTOPLAY(true, { seed: s, policy: 'seeded', tickMs: 300 }), seme);
   let nPrev = 0;
@@ -21,13 +21,14 @@ for (const seme of [7300, 9200]) {
     const r = await page.evaluate(() => { try {
       const ev = (window.__CPM_EV && window.__CPM_EV()) || [];
       const st = window.__CPM_STATE && window.__CPM_STATE();
-      const piani = ev.filter(e => e.ev === 'chronicle' && (e.rk === 'manovra-gol'));
+      const RK = window.__CPM_RK_PROBE || 'manovra-gol';/* [v7] parametrizzata: CPM_RK=counter misura i contropiedi con lo stesso metro */
+      const piani = ev.filter(e => e.ev === 'chronicle' && (e.rk === RK));
       const h = window.__CPM_HOLD && window.__CPM_HOLD();/* [v2] il verso del piano si legge QUI, al trigger: 700ms dopo il piano puo' essere gia' chiuso e pgDir e' null */
-      return { n: piani.length, c: st ? st.clock : null, dir: (h && h.pgDir) || null };
+      return { n: piani.length, c: st ? st.clock : null, dir: (h && h.pgDir) || null, bx: st && st.ball ? st.ball.x : null };
     } catch (_e) { return null; } });
     if (!r) continue;
     if (r.n > nPrev) { nPrev = r.n;
-      const dir705 = r.dir || 1;
+      const dir705 = r.dir || (r.bx != null && r.bx > 50 ? 1 : -1);/* [v7] i contropiedi non hanno pgDir: il verso si stima dalla meta' campo del pallone al trigger */
       await sleep(700); /* il volo: ~2 campioni */
       const m = await page.evaluate((d) => { try {
         const st = window.__CPM_STATE && window.__CPM_STATE(); if (!st || !st.players || !st.ball) return null;
