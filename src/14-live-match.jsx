@@ -1714,7 +1714,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
          — se non segna, silenzio: la storia emerge dai fatti (§6/§13). Rosso __CPM_NO719. */
       if(!(typeof window!=='undefined'&&window.__CPM_NO719)&&((P.id==="er_sprona"&&idx===0)||(P.id==="co_inc"&&idx===0))){
         const _scP=scoreRef.current||{home:0,away:0};
-        N.prom719={id:P.id,min:P.min|0,mio:isMatchHome?(_scP.home|0):(_scP.away|0)};
+        N.prom719={id:P.id,min:P.min|0,mio:(_scP.home|0)};/* [7.725.0] frame eroe-centrico: home = noi, sempre */
         if(typeof window!=='undefined'){try{(window.__CPM_PROM719=window.__CPM_PROM719||{armate:0,mantenute:0,scadute:0}).armate++;}catch(_e){}}}
       /* [7.682.0] e si scrive nella memoria fra partite: le ultime quattro gare, in testa la piu' recente. */
       try{if(typeof localStorage!=='undefined'){let _r=[];try{_r=JSON.parse(localStorage.getItem('cpm-intx-recenti')||'[]')||[];}catch(_e){_r=[];}
@@ -2456,11 +2456,11 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
         let _mk720=null;
         if(!(typeof window!=='undefined'&&window.__CPM_NO720)&&(((narrRef669.current||{}).marcatura|0)>=2)&&!fermoRef.current&&!outRef.current){
           const _hp720=pPosRef.current||{x:58,y:50};
-          if(isMatchHome?_hp720.x>40:_hp720.x<60){
-            const _oppT720=isMatchHome?"away":"home";
+          if(_hp720.x>40){/* [7.725.0] frame eroe-centrico: l'eroe attacca SEMPRE verso x 97 e i suoi avversari sono SEMPRE il lato «away» — la prima stesura leggeva isMatchHome e in trasferta avrebbe eletto un COMPAGNO come ombra */
+            const _oppT720="away";
             let _bi720=-1,_bd720=1e9;
             prev.forEach((q,qi)=>{if(!q||q.team!==_oppT720||q.gk)return;if(_mark706&&_mark706.set.has(qi))return;const _d=Math.hypot((q.x||50)-_hp720.x,(q.y||50)-_hp720.y);if(_d<_bd720){_bd720=_d;_bi720=qi;}});
-            if(_bi720>=0&&_bd720<30){const _gx720=isMatchHome?97:3;const _dx=_gx720-_hp720.x,_dy=50-_hp720.y,_dn=Math.hypot(_dx,_dy)||1;
+            if(_bi720>=0&&_bd720<30){const _gx720=97;const _dx=_gx720-_hp720.x,_dy=50-_hp720.y,_dn=Math.hypot(_dx,_dy)||1;
               _mk720={qi:_bi720,tx:clamp(_hp720.x+_dx/_dn*3,4,96),ty:clamp(_hp720.y+_dy/_dn*3,4,96)};
               if(typeof window!=='undefined'&&window.__CPM_REC){try{window.__CPM_MK720={qi:_bi720,d:+_bd720.toFixed(1)};}catch(_e){}}}}
         }
@@ -2621,7 +2621,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
       if(!(typeof window!=='undefined'&&window.__CPM_NO721)){try{
         const _N1=narrRef669.current;
         if(_N1){const _s1=scoreRef.current||{home:0,away:0};
-          const _mio1=isMatchHome?(_s1.home|0):(_s1.away|0),_suo1=isMatchHome?(_s1.away|0):(_s1.home|0),_mn1=clockRef.current|0;
+          const _mio1=(_s1.home|0),_suo1=(_s1.away|0),_mn1=clockRef.current|0;/* [7.725.0] frame eroe-centrico */
           if(_N1._scMio721==null){_N1._scMio721=_mio1;_N1._scSuo721=_suo1;}
           if(_mio1>_N1._scMio721){_N1.golFatti=(_N1.golFatti|0)+(_mio1-_N1._scMio721);_N1.golFattoMn=_mn1;_N1._scMio721=_mio1;}
           if(_suo1>_N1._scSuo721){_N1.golSub=(_N1.golSub|0)+(_suo1-_N1._scSuo721);_N1.golSubMn=_mn1;_N1._scSuo721=_suo1;}}
@@ -2629,7 +2629,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
       if(!(typeof window!=='undefined'&&window.__CPM_NO719)){try{
         const _N7=narrRef669.current,_p7=_N7&&_N7.prom719;
         if(_p7){const _sc7=scoreRef.current||{home:0,away:0};
-          const _mio7=isMatchHome?(_sc7.home|0):(_sc7.away|0);
+          const _mio7=(_sc7.home|0);/* [7.725.0] frame eroe-centrico */
           const _mn7=clockRef.current|0;
           if(_mio7>_p7.mio){_N7.prom719=null;
             const _tx7=_p7.id==="co_inc"?"🤝 Il capitano l'aveva promesso a bordo campo: «la prossima entra». Ed e' entrata davvero.":"✊ Gliel'aveva detto rialzandolo da terra: «la prossima entra». La squadra l'ha messa dentro davvero.";
@@ -3236,7 +3236,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                      palla va davvero li'. Nessun highlight viene inventato: e' un tocco nel flusso, come
                      nel calcio vero. Testimone __CPM_EROE724{passi,tentativi}. */
                   if(k>=1&&!(typeof window!=='undefined'&&window.__CPM_NO724)){try{
-                    const _ladoE724=isMatchHome?"home":"away";
+                    const _ladoE724="home";/* [7.725.0] frame eroe-centrico: la squadra dell'eroe e' SEMPRE «home» nel mondo dei 22 (isMatchHome governa solo nomi, maglie e tabellone) */
                     if(_lato551===_ladoE724&&phaseRef.current==='playing'){
                       const _hp=pPosRef.current||{x:58,y:50};
                       const _fwE=(_hp.x-_cq.x)*_dir551,_ddE=Math.hypot(_hp.x-_cq.x,_hp.y-_cq.y);
@@ -3579,7 +3579,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           const _riserva722=!_no722&&!_ev722&&nx<46&&(_N.pt722|0)>=2;
           if(_N.fatte.length<_tetto722&&(nx-(_N.ultima|0))>=_dist722&&!_riserva722){
             const _sc=scoreRef.current||{home:0,away:0};
-            const _mio=isMatchHome?_sc.home:_sc.away,_suo=isMatchHome?_sc.away:_sc.home;
+            const _mio=_sc.home|0,_suo=_sc.away|0;/* [7.725.0 — IL FRAME E' EROE-CENTRICO] `score.home` e' SEMPRE la squadra dell'eroe (gol nostro → home+1, gol subito → away+1; il tabellone scambia solo la visualizzazione): il vecchio `isMatchHome?home:away` invertiva la differenza reti IN TRASFERTA — le schede «sotto di un gol» uscivano quando si era in vantaggio. Trovato leggendo, non misurato: tutti i banchi sono provini in casa. */
             /* [7.689.0 direttiva PO: «le interazioni devono essere collegate anche alle indicazioni del
                mister»] IL CONTESTO SA COSA E' GIA' SUCCESSO. Finora una scheda poteva guardare solo lo
                stato della partita (minuto, punteggio, duelli); non sapeva quali schede fossero gia'
@@ -4052,7 +4052,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
           if(_intxK669){try{
             const _N=narrRef669.current;
             const _sc=scoreRef.current||{home:0,away:0};
-            const _mio=isMatchHome?_sc.home:_sc.away,_suo=isMatchHome?_sc.away:_sc.home;
+            const _mio=_sc.home|0,_suo=_sc.away|0;/* [7.725.0 — IL FRAME E' EROE-CENTRICO] `score.home` e' SEMPRE la squadra dell'eroe (gol nostro → home+1, gol subito → away+1; il tabellone scambia solo la visualizzazione): il vecchio `isMatchHome?home:away` invertiva la differenza reti IN TRASFERTA — le schede «sotto di un gol» uscivano quando si era in vantaggio. Trovato leggendo, non misurato: tutti i banchi sono provini in casa. */
             const _eroe=((player&&player.name)||"").trim().split(/\s+/).pop()||"il numero dieci";
             /* [7.669.0] il nome del compagno viene dalla ROSA vera. La prima stesura leggeva
                `_ourR170`, che a questo punto del tick non e' ancora dichiarato (nasce settecento righe
