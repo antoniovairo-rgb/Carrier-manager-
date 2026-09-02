@@ -6,13 +6,14 @@ const srv = await startServer(); const port = srv.address().port;
 const b = await launchBrowser();
 const page = await b.newPage({ viewport: { width: 412, height: 915 } });
 await installCdnRoutes(page);
-await page.addInitScript(() => { window.__CPM_GLB = true; window.__CPM_REC = true; });
+const ROSSO = process.env.CPM_ROSSO || '';
+await page.addInitScript(r => { window.__CPM_GLB = true; window.__CPM_REC = true; if (r) window['__CPM_NO' + r] = true; }, ROSSO);
 await openMatch(page, port, { skipLoadAll: true, name: 'De' });
 await page.evaluate(() => window.__CPM_AUTOPLAY(true, { seed: 7300, policy: 'seeded', tickMs: 300 }));
 /* [v4] il registro e' un ANELLO col tetto: letto a fine partita perde le righe vecchie — si raccoglie
    DURANTE, deduplicando per ts. */
 let c = 0; const visti = new Set(); const R = [];
-while (c < 89) { await sleep(4000);
+while (c < 89) { await sleep(1000);/* [v6] IL PALLONE OGNI SECONDO, NON OGNI 4: con la polilinea rada l'origine del confronto era stantia fino a 4s e la direzione era spazzatura — il «coseno -0,26» del 7.717 e' figlio di questo, e tre run successive hanno dato -0,26/0,72/0,83: strumento instabile, nessun verdetto valido finora. */
   const batch = await page.evaluate(() => { const st = window.__CPM_STATE && window.__CPM_STATE();
     const b3 = (window.__CPM_BALL3 && window.__CPM_BALL3()) || null;
     return { c: st ? st.clock : 0, ball: b3 && b3.l ? { ts: Date.now(), x: b3.l.x, y: b3.l.y } : null }; });

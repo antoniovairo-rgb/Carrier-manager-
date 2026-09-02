@@ -568,6 +568,29 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
      scoreRef/momentumRef/pPosRef), con memoria degli eventi (anello alimentato da setTurn616).
      Alla nascita ha ZERO consumatori: prima le fondamenta, poi i piani (strangler). */
   const matchStateRef=useRef(null);const msMemRef=useRef([]);
+  /* [7.718.0] decidi715 ESTRATTA come funzione chiamabile (il disegno FASE3-SCAMBIO impone: riusata,
+     non copiata): la stessa mente decide per l'ombra E per le macchine che via via le si consegnano. */
+  const decidi715=(turno)=>{try{
+    const _att=turno>0?"home":"away",_def=turno>0?"away":"home",_sgn=turno>0?1:-1;
+    const _b=ballPosRef.current||{x:50,y:50};const _bx=_b.x,_by=_b.y;
+    const _pl=(matchPlayersRef&&matchPlayersRef.current)?matchPlayersRef.current:[];
+    let _best=null,_bs=-1e9;
+    for(let _i=0;_i<_pl.length;_i++){const _q=_pl[_i];if(!_q||_q.gk||_q.team!==_att)continue;
+      const _dx=(_q.x||50)-_bx,_dy=(_q.y||50)-_by,_dd=Math.hypot(_dx,_dy);if(_dd<3||_dd>45)continue;
+      const _fw=_dx*_sgn;
+      let _blk=0,_mk=0;
+      for(let _j=0;_j<_pl.length;_j++){const _o=_pl[_j];if(!_o||_o.gk||_o.team!==_def)continue;
+        const _t=Math.max(0,Math.min(1,(((_o.x||50)-_bx)*_dx+((_o.y||50)-_by)*_dy)/(_dd*_dd)));
+        const _px=_bx+_dx*_t,_py=_by+_dy*_t;
+        if(Math.hypot((_o.x||50)-_px,(_o.y||50)-_py)<3.5)_blk=1;
+        if(Math.hypot((_o.x||50)-(_q.x||50),(_o.y||50)-(_q.y||50))<5)_mk=1;}
+      const _sc=Math.min(_fw,14)*1.2-Math.abs(_dd-16)*0.4-_blk*25-_mk*6;
+      if(_sc>_bs){_bs=_sc;_best={i:_i,x:+(_q.x||50).toFixed(1),y:+(_q.y||50).toFixed(1),fw:+_fw.toFixed(1),d:+_dd.toFixed(1),blk:_blk,mk:_mk};}}
+    const _adv=turno>0?_bx:100-_bx;
+    const _thr=(matchStateRef.current&&matchStateRef.current.threat)|0;
+    const _act=(_adv>=75&&_thr>=55)?"tira":(_best&&(_best.fw>2?_bs>-10:_bs>-4))?"passa":"conduci";
+    return {act:_act,rcv:_act==="passa"?_best:null,score:+_bs.toFixed(1)};
+  }catch(_e){return {act:"conduci",rcv:null,score:0};}};
   const phaseRef=useRef(context==="trial"?"playing":"matchday");
   const heatPointsRef=useRef([]); // {x,y}[] — sampled every 4 playing ticks
   const [showHeatMap,setShowHeatMap]=useState(false);
@@ -2480,25 +2503,9 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
              copione, e la qualita' dei riceventi scelti: lo scambio (le righe raccontano la decisione
              invece di inventarla) avverra' solo quando l'ombra batte il copione in misura. */
           if(!_ms712.fermo&&!_ms712.out&&!_ms712.costruzione){try{
-            const _att715=_ms712.turn>0?"home":"away",_def715=_ms712.turn>0?"away":"home";
-            const _sgn715=_ms712.turn>0?1:-1;const _bx7=_ms712.ball.x,_by7=_ms712.ball.y;
-            const _pl715=(matchPlayersRef&&matchPlayersRef.current)?matchPlayersRef.current:[];
-            let _best715=null,_bs715=-1e9;
-            for(let _i=0;_i<_pl715.length;_i++){const _q=_pl715[_i];if(!_q||_q.gk||_q.team!==_att715)continue;
-              const _dx=(_q.x||50)-_bx7,_dy=(_q.y||50)-_by7,_dd=Math.hypot(_dx,_dy);if(_dd<3||_dd>45)continue;
-              const _fw=_dx*_sgn715;
-              let _blk=0,_mk=0;
-              for(let _j=0;_j<_pl715.length;_j++){const _o=_pl715[_j];if(!_o||_o.gk||_o.team!==_def715)continue;
-                const _t=Math.max(0,Math.min(1,(((_o.x||50)-_bx7)*_dx+((_o.y||50)-_by7)*_dy)/(_dd*_dd)));
-                const _px=_bx7+_dx*_t,_py=_by7+_dy*_t;
-                if(Math.hypot((_o.x||50)-_px,(_o.y||50)-_py)<3.5)_blk=1;
-                if(Math.hypot((_o.x||50)-(_q.x||50),(_o.y||50)-(_q.y||50))<5)_mk=1;}
-              const _sc=Math.min(_fw,14)*1.2-Math.abs(_dd-16)*0.4-_blk*25-_mk*6;/* [7.716 taratura] tetto 14u sull'avanzamento: senza, il lancio da 30u dominava sempre (mediana 22,9u contro gli 8-18 del calcio vero) — stessa classe del 7.615 della catena */
-              if(_sc>_bs715){_bs715=_sc;_best715={i:_i,x:+(_q.x||50).toFixed(1),y:+(_q.y||50).toFixed(1),fw:+_fw.toFixed(1),d:+_dd.toFixed(1),blk:_blk,mk:_mk};}}
-            const _adv715=_ms712.turn>0?_bx7:100-_bx7;
-            const _act715=(_adv715>=75&&_thr712>=55)?"tira":(_best715&&(_best715.fw>2?_bs715>-10:_bs715>-4))?"passa":"conduci";/* [7.716 taratura] anche il passaggio LATERALE e' calcio (la circolazione): si accetta con linea buona (soglia piu' severa, -4); conduci resta il ripiego di chi non ha linee */
-            _ms712.decisione={act:_act715,rcv:_act715==="passa"?_best715:null,score:+_bs715.toFixed(1)};
-            if(typeof window!=='undefined'&&window.__CPM_REC){const _dc=(window.__CPM_DEC=window.__CPM_DEC||[]);if(_dc.length<1200)_dc.push({ts:Date.now(),min:_ms712.min,turn:_ms712.turn,act:_act715,rcv:_best715,thr:_thr712});}
+            const _dec715=decidi715(_ms712.turn);/* [7.718.0] la mente e' UNA: la stessa funzione per l'ombra e per le macchine consegnate */
+            _ms712.decisione=_dec715;
+            if(typeof window!=='undefined'&&window.__CPM_REC){const _dc=(window.__CPM_DEC=window.__CPM_DEC||[]);if(_dc.length<1200)_dc.push({ts:Date.now(),min:_ms712.min,turn:_ms712.turn,act:_dec715.act,rcv:_dec715.rcv,thr:_thr712});}
           }catch(_e715){}}
         }catch(_e712){}
       }catch(_e711){}
@@ -3067,6 +3074,27 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                     const _fwS615=(typeof window!=='undefined'&&window.__CPM_NO615)?_fw:Math.min(_fw,12);
                     const _sc=_fwS615*4.5-Math.abs(_dd-22)*0.35+((Math.abs(hashStr("rx|"+nx+"|"+k+"|"+i))%100)/100)*3;
                     if(_sc>_bs){_bs=_sc;_best=i;}});
+                  /* [7.718.0 — IL PRIMO PASSO DELLA CATENA E' UNA DECISIONE VERA. Rosso __CPM_NO718]
+                     Primo bisturi del disegno FASE3-SCAMBIO: al passo d'apertura (k=0, portatore vicino
+                     alla palla, quindi origine≈pallone come vuole la mente) il ricevente lo indica
+                     decidi715 — la stessa funzione dell'ombra, misurata a profilo-calcio (mediana 13,6u,
+                     linee pulite 90%). I cancelli DURI della catena restano la rete di sicurezza: il
+                     candidato deve essere del lato, non il portatore, avanti di 2u e in raggio 4-40 —
+                     se la decisione non li passa (o dice conduci/tira), vale l'euristica di prima. Ai
+                     passi successivi (origine avanti al pallone logico: la mente li giudicherebbe dal
+                     punto sbagliato) resta l'euristica finche' il pallone non seguira' la catena tick
+                     per tick. Bersaglio dichiarato: il coseno decisione<->pallone di accordo-717 sale
+                     da -0,26. */
+                  if(k===0&&!(typeof window!=='undefined'&&window.__CPM_NO718)){try{
+                    const _d718=decidi715(_dir551);
+                    if(_d718.act==="passa"&&_d718.rcv&&_d718.rcv.i!==_cur&&_mio551(_d718.rcv.i)){
+                      const _q718=_mp551[_d718.rcv.i];
+                      const _fw718=(_q718.x-_cq.x)*_dir551,_dd718=Math.hypot(_q718.x-_cq.x,_q718.y-_cq.y);
+                      if(_fw718>=2&&_dd718>=4&&_dd718<=40){_best=_d718.rcv.i;_bs=999;
+                        if(typeof window!=='undefined'&&window.__CPM_REC){try{const _w=(window.__CPM_CAT718=window.__CPM_CAT718||{decisi:0,ripieghi:0});_w.decisi++;}catch(_e){}}}
+                      else if(typeof window!=='undefined'&&window.__CPM_REC){try{const _w=(window.__CPM_CAT718=window.__CPM_CAT718||{decisi:0,ripieghi:0});_w.ripieghi++;}catch(_e){}}
+                    }else if(typeof window!=='undefined'&&window.__CPM_REC){try{const _w=(window.__CPM_CAT718=window.__CPM_CAT718||{decisi:0,ripieghi:0});_w.ripieghi++;}catch(_e){}}
+                  }catch(_e718){}}
                   let _last615=false;
                   if(_best<0){
                     /* [7.615.0 — L'ULTIMO PASSO PUO' ESSERE UNO SCARICO. Rosso __CPM_NO615B]
