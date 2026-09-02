@@ -1287,6 +1287,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     // forza la situation gi: posiziona l'eroe alla startZone e va DIRETTO al framing interattivo
     // (salta hl_intro, cinematico). Replica la transizione reale: mm===0 (e non lock) → hl_choose, altrimenti hl_move.
     window.__CPM_PPOS=()=>pPosRef.current;/* [7.399.0 codice 002] sonda test-only: lo stato LOGICO vivo dell'eroe, senza passare dai props del renderer (che possono essere stantii — ed e' esattamente cio' che si sta misurando) */
+    window.__CPM_NARR669=()=>narrRef669.current;/* [7.720.0] sonda test-only: lo stato narrativo delle interazioni (marcatura, intesa, coinv...) — serve al banco ombra-720 per pilotare la marcatura senza aspettare la pesca delle schede. Ritorna il ref vivo: il banco lo puo' mutare, il gioco non lo legge mai da qui. */
     /* [7.580.0] LO STATO DI TRATTENUTA DEL PALLONE, per le sonde. Dal 7.559 il gioco ha le interruzioni:
        durante una rimessa, un angolo o un rinvio il pallone STA FERMO, ed e' giusto che stia fermo — e'
        calcio. Il guardiano `ball-alive` scusa gia' il calcio d'inizio per la stessa ragione, ma non
@@ -1385,7 +1386,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
       return{t:{x:+ballTargetRef.current.x.toFixed(2),y:+ballTargetRef.current.y.toFixed(2)},
              l:{x:+ballPosRef.current.x.toFixed(2),y:+ballPosRef.current.y.toFixed(2)},
              m:m?{x:m.x,y:m.y}:null,ko:(kickRef.current|0),kf:(kickoffRef.current|0),c:clockRef.current|0,g:(typeof window!=='undefined'&&window.__CPM_COLLA)?1:0};}catch(e){return null;}};
-    window.__CPM_MP=()=>{try{return (matchPlayersRef&&matchPlayersRef.current?matchPlayersRef.current:matchPlayers||[]).map(q=>q?{t:q.team,x:Math.round(q.x*10)/10,y:Math.round(q.y*10)/10,n:q.name||"",gk:!!q.gk}:null);}catch(e){return null;}};/* [7.130.0] +n (cognome dorso) +gk per la verifica *//* [BL-07] stato LOGICO LiveMatch (pre-3D) per isolare lo strato che perde lo shading */
+    window.__CPM_MP=()=>{try{return (matchPlayersRef&&matchPlayersRef.current?matchPlayersRef.current:matchPlayers||[]).map(q=>q?{t:q.team,x:Math.round(q.x*10)/10,y:Math.round(q.y*10)/10,n:q.name||"",gk:!!q.gk,m720:q._m720?1:0}:null);}catch(e){return null;}};/* [7.130.0] +n (cognome dorso) +gk per la verifica *//* [BL-07] stato LOGICO LiveMatch (pre-3D) per isolare lo strato che perde lo shading */
     window.__CPM_MS=()=>{try{return matchStateRef.current;}catch(e){return null;}};/* [7.711.0] il testimone del Match State unico */
     window.__CPM_FERMO_NOW=()=>{try{const _f=fermoRef.current;return _f?{x:_f.x,y:_f.y,kind:_f.kind||null,t:_f.t}:null;}catch(e){return null;}};/* [7.633.0] gancio di sola lettura: il fermo corrente, per la sonda dello schieramento da palla inattiva */
     window.__CPM_FERMO_SET=(k,x,y,t)=>{try{fermoRef.current={x:+x,y:+y,t:(t|0)||12,kind:String(k)};return true;}catch(e){return false;}};/* [7.633.0 SOLO COLLAUDO] forza un fermo per misurare lo schieramento da palla inattiva senza aspettare la lotteria dei sorteggi (pattern __CPM_FORCE_SIT) */
@@ -2391,6 +2392,28 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           _mark706={set:new Set(_c706.slice(0,3).map(c=>c.qi)),gx:_pgD706>0?97:3};
           if(typeof window!=='undefined'&&window.__CPM_REC){try{window.__CPM_N706=(window.__CPM_N706||0)+1;window.__CPM_D706=_c706.slice(0,3).map(c=>+c.d.toFixed(1));}catch(_e){}}/* [7.706 strumentazione] +D706: le distanze dei tre eletti dal pallone al momento dell'elezione — dice se non arrivano perche' partono da lontano o perche' non si muovono *//* [7.706 strumentazione] tick con elezione attiva: distingue «non gira» da «gira ma il righello non lo vede» */
         }
+        /* [7.720.0 — L'OMBRA ADDOSSO E' UN AVVERSARIO VERO. Rosso __CPM_NO720]
+           Fase 6B della missione (§7 «interazioni con conseguenze REALI»): finora la conseguenza
+           `marcatura` delle schede viveva solo nello stato narrativo, letta dai soli `cond` — le
+           carte dicevano «hai un'ombra addosso» e in campo NESSUNO marcava l'eroe (l'eroe e' un
+           sistema parallelo ai 22: nessun bersaglio del deployment lo guardava). Ora, quando la
+           marcatura narrativa e' stretta (>=2), l'avversario di movimento piu' vicino all'eroe
+           viene eletto OMBRA: il suo bersaglio diventa il punto goal-side a 3u dall'eroe, finche'
+           la marcatura non cala (le carte che la sciolgono — «lo porto a spasso», «cambio fascia»
+           — ora liberano DAVVERO). Cancello: solo con l'eroe nella meta' offensiva (il clamp di
+           corsia degli ospiti ferma comunque a x44), mai un eletto della contesa 706, mai a palla
+           ferma/out. Solo bersagli del deployment: pallone, righe e microsim intoccati. */
+        let _mk720=null;
+        if(!(typeof window!=='undefined'&&window.__CPM_NO720)&&(((narrRef669.current||{}).marcatura|0)>=2)&&!fermoRef.current&&!outRef.current){
+          const _hp720=pPosRef.current||{x:58,y:50};
+          if(isMatchHome?_hp720.x>40:_hp720.x<60){
+            const _oppT720=isMatchHome?"away":"home";
+            let _bi720=-1,_bd720=1e9;
+            prev.forEach((q,qi)=>{if(!q||q.team!==_oppT720||q.gk)return;if(_mark706&&_mark706.set.has(qi))return;const _d=Math.hypot((q.x||50)-_hp720.x,(q.y||50)-_hp720.y);if(_d<_bd720){_bd720=_d;_bi720=qi;}});
+            if(_bi720>=0&&_bd720<30){const _gx720=isMatchHome?97:3;const _dx=_gx720-_hp720.x,_dy=50-_hp720.y,_dn=Math.hypot(_dx,_dy)||1;
+              _mk720={qi:_bi720,tx:clamp(_hp720.x+_dx/_dn*3,4,96),ty:clamp(_hp720.y+_dy/_dn*3,4,96)};
+              if(typeof window!=='undefined'&&window.__CPM_REC){try{window.__CPM_MK720={qi:_bi720,d:+_bd720.toFixed(1)};}catch(_e){}}}}
+        }
         return prev.map((pl,idx)=>{
         if(pl.team==="ref")return pl;
         if(pl.team==="away"){
@@ -2424,11 +2447,13 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           ty+=Math.cos(T*0.9+_lnA*2.1)*2.6;
           const _el706a=_mark706&&_mark706.set.has(idx);
           if(_el706a){const _dxm=_mark706.gx-ball.x,_dym=50-ball.y,_dn=Math.hypot(_dxm,_dym)||1;tx=clamp(ball.x+_dxm/_dn*4.5,4,96);ty=clamp(ball.y+_dym/_dn*4.5+((idx%3)-1)*3,4,96);}/* [7.706.0] eletto alla contesa: anello goal-side */
+          const _sh720a=_mk720&&_mk720.qi===idx&&!_el706a;
+          if(_sh720a){tx=_mk720.tx;ty=_mk720.ty;}/* [7.720.0] ombra dell'eroe: goal-side a 3u */
           const va=velRef.current[idx]||{vx:0,vy:0};
-          const nvxa=clamp(va.vx*0.70+(tx-pl.x)*(_el706a?0.35:0.14),-6,6);
-          const nvya=clamp(va.vy*0.70+(ty-pl.y)*(_el706a?0.35:0.11),-6,6);/* [7.706.0] MISURATO (v6): coi guadagni di corsia gli eletti restavano a 4-15u dal pallone — il passo dell'eletto e' quello del primo pressore (0,35), o l'anello non si forma prima che la riga cambi */
+          const nvxa=clamp(va.vx*0.70+(tx-pl.x)*(_el706a?0.35:_sh720a?0.30:0.14),-6,6);
+          const nvya=clamp(va.vy*0.70+(ty-pl.y)*(_el706a?0.35:_sh720a?0.30:0.11),-6,6);/* [7.706.0] MISURATO (v6): coi guadagni di corsia gli eletti restavano a 4-15u dal pallone — il passo dell'eletto e' quello del primo pressore (0,35), o l'anello non si forma prima che la riga cambi *//* [7.720.0] l'ombra cammina col passo del marcatore (0,30): meno del pressore, piu' della corsia */
           velRef.current[idx]={vx:nvxa,vy:nvya};
-          return{...pl,_m706:(_mark706&&_mark706.set.has(idx))?1:0,x:clamp(pl.x+nvxa,44,98),y:clamp(pl.y+nvya,3,97)};/* [7.706.0] il marchio viaggia col giocatore: il renderer lo legge da allPlayers e non riveste il suo bersaglio */
+          return{...pl,_m706:(_mark706&&_mark706.set.has(idx))?1:0,_m720:_sh720a?1:0,x:clamp(pl.x+nvxa,44,98),y:clamp(pl.y+nvya,3,97)};/* [7.706.0] il marchio viaggia col giocatore: il renderer lo legge da allPlayers e non riveste il suo bersaglio */
         }else{
           const hi=idx;
           let tx,ty;
@@ -2452,12 +2477,14 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
             if(_mark706&&_mark706.set.has(idx)){const _dxm=_mark706.gx-ball.x,_dym=50-ball.y,_dn=Math.hypot(_dxm,_dym)||1;tx=clamp(ball.x+_dxm/_dn*4.5,4,96);ty=clamp(ball.y+_dym/_dn*4.5+((idx%3)-1)*3,4,96);}/* [7.706.0] eletto alla contesa: anello goal-side */
           }
           const _el706h=_mark706&&_mark706.set.has(idx)&&hi!==0;
+          const _sh720h=_mk720&&_mk720.qi===idx&&hi!==0&&!_el706h;
+          if(_sh720h){tx=_mk720.tx;ty=_mk720.ty;}/* [7.720.0] ombra dell'eroe (eroe in trasferta): goal-side a 3u */
           const vh=velRef.current[idx]||{vx:0,vy:0};
-          const nvxh=clamp(vh.vx*0.70+(tx-pl.x)*(_el706h?0.35:0.12),-6,6);
-          const nvyh=clamp(vh.vy*0.70+(ty-pl.y)*(_el706h?0.35:0.10),-6,6);/* [7.706.0] passo del pressore per l'eletto (vedi lato ospite) */
+          const nvxh=clamp(vh.vx*0.70+(tx-pl.x)*(_el706h?0.35:_sh720h?0.30:0.12),-6,6);
+          const nvyh=clamp(vh.vy*0.70+(ty-pl.y)*(_el706h?0.35:_sh720h?0.30:0.10),-6,6);/* [7.706.0] passo del pressore per l'eletto (vedi lato ospite) */
           velRef.current[idx]={vx:nvxh,vy:nvyh};
           if(hi===0)return{...pl,x:clamp(pl.x+nvxh,2,12),y:clamp(pl.y+nvyh,33,67)};
-          return{...pl,_m706:(_mark706&&_mark706.set.has(idx))?1:0,x:clamp(pl.x+nvxh,2,92),y:clamp(pl.y+nvyh,3,97)};/* [7.706.0] idem lato casa */
+          return{...pl,_m706:(_mark706&&_mark706.set.has(idx))?1:0,_m720:_sh720h?1:0,x:clamp(pl.x+nvxh,2,92),y:clamp(pl.y+nvyh,3,97)};/* [7.706.0] idem lato casa */
         }
       });});
       /* [7.711.0 — L'ASSEMBLAGGIO DEL MATCH STATE, ogni tick, solo da autorita' logiche.
