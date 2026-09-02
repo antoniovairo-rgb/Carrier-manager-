@@ -3121,10 +3121,22 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           if(!(typeof window!=='undefined'&&window.__CPM_NO695)&&!_simEv77&&!pendingGoalRef.current&&!counterRef.current&&!_inHL77&&!outRef.current&&!spRef.current&&!fermoRef.current&&kickoffRef.current<=0&&kickRef.current<=0&&nx>6&&nx<86&&(nx-(occCool695.current|0))>=8){try{
             const _bO695=ballPosRef.current||{x:50,y:50};const _dO695=(possTurnRef.current>0)?1:-1;
             const _advO695=_dO695>0?(_bO695.x||50):100-(_bO695.x||50);
-            if(_advO695>=48&&(Math.abs(hashStr("occ695|"+nx+"|"+((bgSimSeedRef.current|0))))%100)<72){
+            /* [7.714.0 — LO SCAMBIO: IL TRIGGER DELLE OCCASIONI PASSA DAL DADO ALLO STATO. Rosso __CPM_NO714]
+               §9 della missione: «SE NON E' REALMENTE PERICOLOSO, NON DIVENTA EXTRA 3D». MISURATO in ombra
+               su 5 partite (3 percorsi + 2 mondi): le finestre aperte dal dado hanno threat mediano 21-27,
+               IL FONDO di cronaca 21-30 — il dado non seleziona pericolo; e ogni mondo ha 3-8 picchi >=70
+               mai mostrati. Ora l'occasione si apre quando lo STATO dice pericolo: threat >= 58 (sopra il
+               p90 del fondo, 54-58). Restano campo-libero e cooldown 8'; resta ANCHE adv>=48 come vincolo
+               di compatibilita' dichiarato — le famiglie del piano presuppongono palla avanzata, e cade
+               quando le Fasi 3-5 faranno nascere l'azione dai 22 invece che dal copione. Il dado muore. */
+            const _thr714=(matchStateRef.current&&matchStateRef.current.threat)|0;
+            const _apri714=(typeof window!=='undefined'&&window.__CPM_NO714)
+              ?(_advO695>=48&&(Math.abs(hashStr("occ695|"+nx+"|"+((bgSimSeedRef.current|0))))%100)<72)
+              :(_advO695>=48&&_thr714>=58);
+            if(_apri714){
               const _piO695=_pianoOcc695(_dO695>0?"home":"away");
               if(_piO695){occCool695.current=nx;pendingGoalRef.current={ev:null,occ:1,dir:_dO695,ticks:0,righe:0,righeLato:0,cap:0,piano:_piO695,step:0};
-                if(typeof window!=='undefined'&&window.__CPM_REC){try{const _w=(window.__CPM_OCC695=window.__CPM_OCC695||{armate:0,parate:0,min:[]});_w.armate++;if(_w.min.length<40)_w.min.push(nx);}catch(_e){}}}}
+                if(typeof window!=='undefined'&&window.__CPM_REC){try{const _w=(window.__CPM_OCC695=window.__CPM_OCC695||{armate:0,parate:0,min:[],thr:[]});_w.armate++;if(_w.min.length<40)_w.min.push(nx);if(_w.thr.length<40)_w.thr.push(_thr714);}catch(_e){}}}}
           }catch(_eO695){}}
           let _pg532=pendingGoalRef.current;
           /* ⚠️ [7.695.0 — UN'OCCASIONE NON PUO' RITARDARE UN GOL. Misurato nel rituale, non temuto.]
