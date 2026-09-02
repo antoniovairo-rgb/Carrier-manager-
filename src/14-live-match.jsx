@@ -2471,6 +2471,35 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           const _thr712=Math.round(100*_cl712(0.30*_zona+0.25*_porta+0.15*_spinta+0.15*_lib+0.10*_sup+0.05*_noPress));
           _ms712.threat=_thr712;_ms712.threatComp={zona:+_zona.toFixed(2),porta:+_porta.toFixed(2),spinta:+_spinta.toFixed(2),lib:+_lib.toFixed(2),sup:+_sup.toFixed(2),noPress:+_noPress.toFixed(2)};
           if(typeof window!=='undefined'&&window.__CPM_REC){const _tr=(window.__CPM_THREAT=window.__CPM_THREAT||[]);if(_tr.length<1200)_tr.push({min:_ms712.min,t:_thr712,turn:_ms712.turn});}
+          /* [7.715.0 — FASE 3 IN OMBRA: LA DECISIONE NASCE DALLO STATO. Secondo consumatore del Match
+             State, solo log. A ogni tick di gioco aperto si calcola la decisione del lato in possesso:
+             ogni compagno e' un candidato ricevente con un punteggio di LINEA (avanzamento pesato 1,2,
+             distanza ideale 16u, linea intercettabile -25 se un avversario sta entro 3,5u dal segmento,
+             ricevente marcato -6 se un difensore entro 5u); tiro se ultimo quarto e threat alto; conduci
+             se nessuna linea avanza. Il banco misurera' l'ACCORDO fra queste decisioni e le righe del
+             copione, e la qualita' dei riceventi scelti: lo scambio (le righe raccontano la decisione
+             invece di inventarla) avverra' solo quando l'ombra batte il copione in misura. */
+          if(!_ms712.fermo&&!_ms712.out&&!_ms712.costruzione){try{
+            const _att715=_ms712.turn>0?"home":"away",_def715=_ms712.turn>0?"away":"home";
+            const _sgn715=_ms712.turn>0?1:-1;const _bx7=_ms712.ball.x,_by7=_ms712.ball.y;
+            const _pl715=(matchPlayersRef&&matchPlayersRef.current)?matchPlayersRef.current:[];
+            let _best715=null,_bs715=-1e9;
+            for(let _i=0;_i<_pl715.length;_i++){const _q=_pl715[_i];if(!_q||_q.gk||_q.team!==_att715)continue;
+              const _dx=(_q.x||50)-_bx7,_dy=(_q.y||50)-_by7,_dd=Math.hypot(_dx,_dy);if(_dd<3||_dd>45)continue;
+              const _fw=_dx*_sgn715;
+              let _blk=0,_mk=0;
+              for(let _j=0;_j<_pl715.length;_j++){const _o=_pl715[_j];if(!_o||_o.gk||_o.team!==_def715)continue;
+                const _t=Math.max(0,Math.min(1,(((_o.x||50)-_bx7)*_dx+((_o.y||50)-_by7)*_dy)/(_dd*_dd)));
+                const _px=_bx7+_dx*_t,_py=_by7+_dy*_t;
+                if(Math.hypot((_o.x||50)-_px,(_o.y||50)-_py)<3.5)_blk=1;
+                if(Math.hypot((_o.x||50)-(_q.x||50),(_o.y||50)-(_q.y||50))<5)_mk=1;}
+              const _sc=_fw*1.2-Math.abs(_dd-16)*0.4-_blk*25-_mk*6;
+              if(_sc>_bs715){_bs715=_sc;_best715={i:_i,x:+(_q.x||50).toFixed(1),y:+(_q.y||50).toFixed(1),fw:+_fw.toFixed(1),d:+_dd.toFixed(1),blk:_blk,mk:_mk};}}
+            const _adv715=_ms712.turn>0?_bx7:100-_bx7;
+            const _act715=(_adv715>=75&&_thr712>=55)?"tira":(_best715&&_best715.fw>2&&_bs715>-10)?"passa":"conduci";
+            _ms712.decisione={act:_act715,rcv:_act715==="passa"?_best715:null,score:+_bs715.toFixed(1)};
+            if(typeof window!=='undefined'&&window.__CPM_REC){const _dc=(window.__CPM_DEC=window.__CPM_DEC||[]);if(_dc.length<1200)_dc.push({min:_ms712.min,turn:_ms712.turn,act:_act715,rcv:_best715,thr:_thr712});}
+          }catch(_e715){}}
         }catch(_e712){}
       }catch(_e711){}
     },300);
