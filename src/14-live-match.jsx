@@ -2467,6 +2467,25 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
               _mk720={qi:_bi720,tx:clamp(_hp720.x+_dx/_dn*3,4,96),ty:clamp(_hp720.y+_dy/_dn*3,4,96)};
               if(typeof window!=='undefined'&&window.__CPM_REC){try{window.__CPM_MK720={qi:_bi720,d:+_bd720.toFixed(1)};}catch(_e){}}}}
         }
+        /* [7.735.0 — FASE 4: IL VENTAGLIO IN POSSESSO. Rosso __CPM_NO735] BASE MISURATA (linee-734): nel
+           75-77% dei tick di possesso nostro NESSUN compagno offre una linea pulita in avanti (mediana 0,
+           media 0,7), e la decisione dice «conduci». La causa e' strutturale, non un eletto: i 21 stanno in
+           CORSIE fisse per reparto che scivolano ball-side — nessuno si scagliona davanti al portatore.
+           Qui, per il lato che ha il TURNO (l'autorita' del 7.532), centrocampisti e attaccanti prendono
+           bersagli a ventaglio rispetto al pallone: tre punte a +16/+18u con ampiezza ±22, tre mezzali a
+           +7/+7/-6u con ampiezza ±11 (una resta d'appoggio dietro), mai oltre la linea difensiva avversaria
+           meno 2u (Match State), passo 0,20. La difesa resta in corsia; chi difende resta in corsia. Solo
+           bersagli del deployment. Testimone __CPM_FAN735{tick}. */
+        let _fan735=null;
+        if(!(typeof window!=='undefined'&&window.__CPM_NO735)&&!fermoRef.current&&!outRef.current&&possTurnRef.current!==0){try{
+          const _side=possTurnRef.current>0?"home":"away";const _d=possTurnRef.current>0?1:-1;
+          const _MSf=matchStateRef.current;const _lineeF=_MSf&&_MSf.linee;
+          const _capDef=_side==="home"?((_lineeF&&_lineeF.away&&_lineeF.away.def)||88):((_lineeF&&_lineeF.home&&_lineeF.home.def)||12);
+          const _bx=ball.x,_by=ball.y;
+          const _pt=(dx,dy)=>{let x=_bx+_d*dx;x=_side==="home"?Math.min(x,_capDef-2):Math.max(x,_capDef+2);return {x:clamp(x,6,94),y:clamp(_by+dy,8,92)};};
+          _fan735={side:_side,F:[_pt(16,-22),_pt(18,0),_pt(16,22)],M:[_pt(7,-11),_pt(-6,0),_pt(7,11)]};
+          if(typeof window!=='undefined'&&window.__CPM_REC){try{const _w=(window.__CPM_FAN735=window.__CPM_FAN735||{tick:0});_w.tick++;}catch(_e){}}
+        }catch(_e735){}}
         return prev.map((pl,idx)=>{
         if(pl.team==="ref")return pl;
         if(pl.team==="away"){
@@ -2502,9 +2521,11 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           if(_el706a){const _dxm=_mark706.gx-ball.x,_dym=50-ball.y,_dn=Math.hypot(_dxm,_dym)||1;tx=clamp(ball.x+_dxm/_dn*4.5,4,96);ty=clamp(ball.y+_dym/_dn*4.5+((idx%3)-1)*3,4,96);}/* [7.706.0] eletto alla contesa: anello goal-side */
           const _sh720a=_mk720&&_mk720.qi===idx&&!_el706a;
           if(_sh720a){tx=_mk720.tx;ty=_mk720.ty;}/* [7.720.0] ombra dell'eroe: goal-side a 3u */
+          const _fn735a=_fan735&&_fan735.side==="away"&&!_el706a&&!_sh720a&&ai>=5;
+          if(_fn735a){const _sl=ai<=7?_fan735.M[ai-5]:_fan735.F[Math.min(ai-8,2)];if(_sl){tx=_sl.x;ty=_sl.y;}}/* [7.735.0] ventaglio del lato in possesso (ospiti) */
           const va=velRef.current[idx]||{vx:0,vy:0};
-          const nvxa=clamp(va.vx*0.70+(tx-pl.x)*(_el706a?0.35:_sh720a?0.30:0.14),-6,6);
-          const nvya=clamp(va.vy*0.70+(ty-pl.y)*(_el706a?0.35:_sh720a?0.30:0.11),-6,6);/* [7.706.0] MISURATO (v6): coi guadagni di corsia gli eletti restavano a 4-15u dal pallone — il passo dell'eletto e' quello del primo pressore (0,35), o l'anello non si forma prima che la riga cambi *//* [7.720.0] l'ombra cammina col passo del marcatore (0,30): meno del pressore, piu' della corsia */
+          const nvxa=clamp(va.vx*0.70+(tx-pl.x)*(_el706a?0.35:_sh720a?0.30:_fn735a?0.20:0.14),-6,6);
+          const nvya=clamp(va.vy*0.70+(ty-pl.y)*(_el706a?0.35:_sh720a?0.30:_fn735a?0.20:0.11),-6,6);/* [7.706.0] MISURATO (v6): coi guadagni di corsia gli eletti restavano a 4-15u dal pallone — il passo dell'eletto e' quello del primo pressore (0,35), o l'anello non si forma prima che la riga cambi *//* [7.720.0] l'ombra cammina col passo del marcatore (0,30): meno del pressore, piu' della corsia */
           velRef.current[idx]={vx:nvxa,vy:nvya};
           return{...pl,_m706:(_mark706&&_mark706.set.has(idx))?1:0,_m720:_sh720a?1:0,x:clamp(pl.x+nvxa,44,98),y:clamp(pl.y+nvya,3,97)};/* [7.706.0] il marchio viaggia col giocatore: il renderer lo legge da allPlayers e non riveste il suo bersaglio */
         }else{
@@ -2532,9 +2553,11 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           const _el706h=_mark706&&_mark706.set.has(idx)&&hi!==0;
           const _sh720h=_mk720&&_mk720.qi===idx&&hi!==0&&!_el706h;
           if(_sh720h){tx=_mk720.tx;ty=_mk720.ty;}/* [7.720.0] ombra dell'eroe (eroe in trasferta): goal-side a 3u */
+          const _fn735h=_fan735&&_fan735.side==="home"&&!_el706h&&!_sh720h&&hi>=5;
+          if(_fn735h){const _sl=hi<=7?_fan735.M[hi-5]:_fan735.F[Math.min(hi-8,2)];if(_sl){tx=_sl.x;ty=_sl.y;}}/* [7.735.0] ventaglio del lato in possesso (casa) */
           const vh=velRef.current[idx]||{vx:0,vy:0};
-          const nvxh=clamp(vh.vx*0.70+(tx-pl.x)*(_el706h?0.35:_sh720h?0.30:0.12),-6,6);
-          const nvyh=clamp(vh.vy*0.70+(ty-pl.y)*(_el706h?0.35:_sh720h?0.30:0.10),-6,6);/* [7.706.0] passo del pressore per l'eletto (vedi lato ospite) */
+          const nvxh=clamp(vh.vx*0.70+(tx-pl.x)*(_el706h?0.35:_sh720h?0.30:_fn735h?0.20:0.12),-6,6);
+          const nvyh=clamp(vh.vy*0.70+(ty-pl.y)*(_el706h?0.35:_sh720h?0.30:_fn735h?0.20:0.10),-6,6);/* [7.706.0] passo del pressore per l'eletto (vedi lato ospite) */
           velRef.current[idx]={vx:nvxh,vy:nvyh};
           if(hi===0)return{...pl,x:clamp(pl.x+nvxh,2,12),y:clamp(pl.y+nvyh,33,67)};
           return{...pl,_m706:(_mark706&&_mark706.set.has(idx))?1:0,_m720:_sh720h?1:0,x:clamp(pl.x+nvxh,2,92),y:clamp(pl.y+nvyh,3,97)};/* [7.706.0] idem lato casa */
