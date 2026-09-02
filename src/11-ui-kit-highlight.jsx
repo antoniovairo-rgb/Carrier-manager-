@@ -2102,7 +2102,7 @@ if(typeof window!=='undefined'){window.__CPM_TIMELINE=function(){try{return MATC
    PROVA DEL ROSSO: `__CPM_NOEV` spegne la registrazione → il guardiano deve diventare CIECO, che e' il
    modo in cui una sonda di misura dimostra di leggere davvero cio' che dice di leggere. */
 const MATCH_EV=[]; const MATCH_EV_MAX=400;
-function cpmEv(type,payload){if(typeof window!=='undefined'&&window.__CPM_NOEV)return;try{const e={ev:type};if(payload)for(const k in payload)e[k]=payload[k];MATCH_EV.push(e);if(MATCH_EV.length>MATCH_EV_MAX)MATCH_EV.shift();}catch(_e){}}
+function cpmEv(type,payload){if(typeof window!=='undefined'&&window.__CPM_NOEV)return;try{const e={ev:type,ts:Date.now()};/* [7.717 strumentazione] il TIMESTAMP su ogni voce del registro: il banco dell'accordo copione<->ombra allineava per minuto (5-8 righe confrontabili a partita) — per timestamp il campione decuplica */if(payload)for(const k in payload)e[k]=payload[k];MATCH_EV.push(e);if(MATCH_EV.length>MATCH_EV_MAX)MATCH_EV.shift();}catch(_e){}}
 function cpmEvReset(){try{MATCH_EV.length=0;}catch(_e){}}
 if(typeof window!=='undefined'){window.__CPM_EV=function(){try{return MATCH_EV.slice();}catch(_e){return[];}};window.__CPM_EV_RESET=cpmEvReset;}
 /* [7.471.0 codice 007] TIMBRO CONDIVISO DELLO STACCO NERO. `setCutFx` e' uno stato di LiveMatch e il

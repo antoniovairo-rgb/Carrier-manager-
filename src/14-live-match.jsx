@@ -2498,7 +2498,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
             const _adv715=_ms712.turn>0?_bx7:100-_bx7;
             const _act715=(_adv715>=75&&_thr712>=55)?"tira":(_best715&&(_best715.fw>2?_bs715>-10:_bs715>-4))?"passa":"conduci";/* [7.716 taratura] anche il passaggio LATERALE e' calcio (la circolazione): si accetta con linea buona (soglia piu' severa, -4); conduci resta il ripiego di chi non ha linee */
             _ms712.decisione={act:_act715,rcv:_act715==="passa"?_best715:null,score:+_bs715.toFixed(1)};
-            if(typeof window!=='undefined'&&window.__CPM_REC){const _dc=(window.__CPM_DEC=window.__CPM_DEC||[]);if(_dc.length<1200)_dc.push({min:_ms712.min,turn:_ms712.turn,act:_act715,rcv:_best715,thr:_thr712});}
+            if(typeof window!=='undefined'&&window.__CPM_REC){const _dc=(window.__CPM_DEC=window.__CPM_DEC||[]);if(_dc.length<1200)_dc.push({ts:Date.now(),min:_ms712.min,turn:_ms712.turn,act:_act715,rcv:_best715,thr:_thr712});}
           }catch(_e715){}}
         }catch(_e712){}
       }catch(_e711){}
