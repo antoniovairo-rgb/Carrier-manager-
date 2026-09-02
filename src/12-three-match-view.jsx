@@ -6284,7 +6284,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
       const wBall=0.6+0.30*bf; // palla più pesante nel centro azione durante l'esito
       const ax=bx*wBall+hx*(1-wBall),az=bz*wBall+hz*(1-wBall);
       // 3DV-5: blend target per fase — intro 55%, move/choose 82%, result 100%
-      const _ph5=P.matchPhase;const _hlTgt=isResult?1.0:(_ph5==="hl_move"||_ph5==="hl_choose")?0.82:_ph5==="hl_intro"?0.55:0;
+      const _ph5=P.matchPhase;const _hlTgt=isResult?1.0:(_ph5==="hl_move"||_ph5==="hl_choose")?((typeof window!=='undefined'&&window.__CPM_NO729)?0.82:0.70):_ph5==="hl_intro"?0.55:0;/* [7.729.0 collaudo PO 02/09 23:06, foto della fase di scelta al 55' «riduci lo zoom in»] LA LETTURA SI ALLARGA. La taglia 0,12 del 7.713 governa gli highlight (esito), ma nella fase di SCELTA (D-pad) il quadro lo decide questo blend largo→stretto: 0,82 teneva l'eroe a 0,084-0,089 del quadro (misurato in hl_choose su gi55/118/30, GLB OFF perche' a 2fps la camera non arriva a destinazione prima dell'auto-tackle). 0,70 = quadro piu' largo SOLO in lettura; intro ed esito invariati. La firma golden del gate e' catturata a hl_choose: rigenerata e dichiarata. Rosso __CPM_NO729. */
       camHL+=(_hlTgt-camHL)*Math.min(dt*(_hlTgt>=camHL?3.2:1.7),1);// 4.86.0: zoom-IN reattivo, zoom-OUT più morbido → niente cambi bruschi tra highlight
       /* [7.228.0 #48 collaudo PO «non si vede il movimento dell'eroe con la palla» ×12] LO STACCO ATTERRA
          SULL'INQUADRATURA NUOVA. Lo snap di scena tagliava la POSIZIONE camera ma al blend WIDE↔CLOSE ancora
