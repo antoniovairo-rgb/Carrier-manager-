@@ -3224,6 +3224,38 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                       else if(typeof window!=='undefined'&&window.__CPM_REC){try{const _w=(window.__CPM_CAT718=window.__CPM_CAT718||{decisi:0,ripieghi:0});_w.ripieghi++;}catch(_e){}}
                     }else if(typeof window!=='undefined'&&window.__CPM_REC){try{const _w=(window.__CPM_CAT718=window.__CPM_CAT718||{decisi:0,ripieghi:0});_w.ripieghi++;}catch(_e){}}
                   }catch(_e718){}}
+                  /* [7.724.0 — L'EROE ENTRA NELLA CATENA. Rosso __CPM_NO724] Direttiva §6-8: l'eroe e' lo
+                     stesso motore, non un sistema a parte. L'audit lo diceva: pPosRef e' parallelo ai 22 e
+                     NESSUNA riga di manovra nominava mai l'eroe come ricevente — le schede promettevano
+                     «adesso lo cercano di piu'» (coinv) e «si trovano a memoria» (intesa) e in campo non
+                     cambiava niente (§7: conseguenze invisibili). Ora, dal secondo passo in poi, la catena
+                     puo' CHIUDERSI sull'eroe come passo finale: deve essere del lato in possesso, avanti di
+                     2u rispetto al portatore, in raggio 6-32, e la probabilita' sale con coinv e intesa
+                     (base 25%, +8% a punto, tetto 75%, roll seedato come il resto della catena). Il passo
+                     porta il pallone LOGICO sull'eroe (to = pPos): la riga non puo' mentire, perche' la
+                     palla va davvero li'. Nessun highlight viene inventato: e' un tocco nel flusso, come
+                     nel calcio vero. Testimone __CPM_EROE724{passi,tentativi}. */
+                  if(k>=1&&!(typeof window!=='undefined'&&window.__CPM_NO724)){try{
+                    const _ladoE724=isMatchHome?"home":"away";
+                    if(_lato551===_ladoE724&&phaseRef.current==='playing'){
+                      const _hp=pPosRef.current||{x:58,y:50};
+                      const _fwE=(_hp.x-_cq.x)*_dir551,_ddE=Math.hypot(_hp.x-_cq.x,_hp.y-_cq.y);
+                      const _NE=narrRef669.current||{};
+                      const _pE=Math.min(0.75,0.25+0.08*((_NE.coinv|0)+(_NE.intesa|0)));
+                      const _rollE=(Math.abs(hashStr("eroe724|"+nx+"|"+k))%100)/100;
+                      if(typeof window!=='undefined'&&window.__CPM_REC){try{const _w=(window.__CPM_EROE724=window.__CPM_EROE724||{passi:0,tentativi:0});_w.tentativi++;(_w.log=_w.log||[]);if(_w.log.length<60)_w.log.push({k,fw:+_fwE.toFixed(1),dd:+_ddE.toFixed(1),p:+_pE.toFixed(2),roll:+_rollE.toFixed(2),hx:+_hp.x.toFixed(0),cx:+_cq.x.toFixed(0)});}catch(_e){}}
+                      /* [7.724 v2] MISURATO (prima stesura, cancello «avanti di 2u»): 0 passi su 4 tentativi,
+                         eroe SEMPRE dietro al portatore (fw -12/-16u: fra una situazione e l'altra l'eroe non
+                         si muove, la catena lo supera). Il passo finale sull'eroe segue allora la stessa legge
+                         dello scarico 7.615 — anche all'indietro fino a 14u, raggio 4-30: e' un appoggio vero,
+                         non una promozione. Che l'eroe si muova NEL FLUSSO e' il prossimo pezzo, non questo. */
+                      if(_fwE>=-14&&_ddE>=4&&_ddE<=30&&_rollE<_pE){
+                        const _nomeE=(typeof _surnBG==="function"&&_surnBG(player.name||""))||String(player.name||"").trim().split(/\s+/).pop()||"il numero dieci";
+                        const _kindE=(_fwE>13)?"filtrante":(Math.abs(_hp.y-_cq.y)>22)?"cambio":(_fwE>4)?"verticale":"appoggio";
+                        passi.push({daIdx:_cur,rcvIdx:null,eroe:1,da:String(_cq.name||"").trim(),a:_nomeE,kind:_kindE,to:{x:+_hp.x.toFixed(1),y:+_hp.y.toFixed(1)}});
+                        if(typeof window!=='undefined'&&window.__CPM_REC){try{const _w=(window.__CPM_EROE724=window.__CPM_EROE724||{passi:0,tentativi:0});_w.passi++;}catch(_e){}}
+                        break;}}
+                  }catch(_e724){}}
                   let _last615=false;
                   if(_best<0){
                     /* [7.615.0 — L'ULTIMO PASSO PUO' ESSERE UNO SCARICO. Rosso __CPM_NO615B]
