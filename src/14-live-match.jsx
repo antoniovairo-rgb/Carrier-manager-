@@ -5816,10 +5816,33 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
           // Protagonist smoothly tracks role-appropriate formation slots each 500ms tick
           // GK→slot 0, DEF→slots 1-4, MID→slots 5-7, ATT→slots 8-9
           const slots=isGK?[0]:isDef?[1,2,3,4]:isMid?[5,6,7]:[8,9];
-          const tgX=slots.reduce((s,i)=>s+(dt[i]?.x||50),0)/slots.length;
+          let tgX=slots.reduce((s,i)=>s+(dt[i]?.x||50),0)/slots.length;
           const tgY=slots.reduce((s,i)=>s+(dt[i]?.y||50),0)/slots.length;
-          // 6% pull per 500ms tick — matches canvas livePos lerp speed
-          nx=clamp(p.x+(tgX-p.x)*0.06+rng(-1,1),3,97);
+          let _gain726=0.06;
+          /* [7.726.0 — L'EROE SI MUOVE NEL FLUSSO. Rosso __CPM_NO726] MISURATO (banco eroe-724): fra una
+             situazione e l'altra l'eroe insegue la media degli slot del suo reparto, cioe' la linea della
+             squadra — e la manovra lo SUPERA: in ogni tentativo della catena stava 12-16u DIETRO al
+             portatore (x 49-58 contro 62-70), quindi poteva ricevere solo di scarico. Nel calcio l'attaccante
+             attacca la profondita' quando la sua squadra ha il pallone: col possesso nostro (turno home =
+             eroe, frame eroe-centrico) il bersaglio in x diventa il pallone piu' un anticipo di ruolo (punta
+             +10u, centrocampista +6u, difensore 0), con il TETTO della linea difensiva avversaria letta dal
+             Match State (mai oltre: niente fuorigioco di posizione), e il passo sale a 0,10. Col possesso
+             loro torna la linea del reparto. Solo il bersaglio dell'eroe: pallone, righe e 22 intoccati. */
+          let _capX726=97;
+          if(!(typeof window!=='undefined'&&window.__CPM_NO726)&&!isGK&&possTurnRef.current>0&&!fermoRef.current&&!outRef.current){try{
+            /* [7.726 v2] MISURATO (prima stesura: riferimento = BERSAGLIO del pallone, tetto solo sul
+               bersaglio): eroe-palla mediana +37u e fino a 6u OLTRE la linea difensiva — un attaccante
+               «sempre in fuorigioco». Ora il riferimento e' il pallone REALE, il tetto sta 2u sotto la
+               linea e vale anche sulla POSIZIONE (la linea arretra, l'eroe non puo' restarle davanti). */
+            const _bp=ballPosRef.current||{x:50,y:50};
+            const _lead=isDef?0:isMid?6:10;
+            const _MS=matchStateRef.current;const _capDef=(_MS&&_MS.linee&&_MS.linee.away&&_MS.linee.away.def)||88;
+            _capX726=Math.min(_capDef-1,92);
+            const _tgAtt=Math.min(Math.max(tgX,(_bp.x||50)+_lead),Math.min(_capDef-2,92));
+            if(_tgAtt>tgX){tgX=_tgAtt;_gain726=0.10;}
+            if(typeof window!=='undefined'&&window.__CPM_REC){try{window.__CPM_EROE726={tg:+tgX.toFixed(1),bx:+(_bp.x||50).toFixed(1),cap:+_capDef.toFixed(1),hx:+p.x.toFixed(1)};}catch(_e){}}
+          }catch(_e726){}}
+          nx=clamp(p.x+(tgX-p.x)*_gain726+rng(-1,1),3,Math.min(97,_capX726));
           ny=clamp(p.y+(tgY-p.y)*0.06+rng(-1.5,1.5),3,97);
         }else{
           // Sprint 113: tighter role-based fallback ranges (more realistic positioning)

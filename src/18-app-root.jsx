@@ -130,7 +130,7 @@ function ReviewWizard({onExit}){
   };
   return <div style={{width:"100%",height:"100vh",position:"relative",background:"#050810",display:"flex",flexDirection:"column"}}>
     <div style={{flex:1,minHeight:0,overflow:"hidden",display:"flex",flexDirection:"column"}}>
-      <MatchErrorBoundary><LiveMatch player={md.player} opponent={md.opp} context="trial" onMatchEnd={()=>{}}/></MatchErrorBoundary>
+      <MatchErrorBoundary><LiveMatch player={md.player} opponent={md.opp} context="trial" isMatchHome={!(typeof window!=='undefined'&&window.__CPM_AWAY_TEST)} onMatchEnd={()=>{}}/></MatchErrorBoundary>{/* [7.726.0 strumento] __CPM_AWAY_TEST: il provino si apre IN TRASFERTA per le sonde (la 7.725 ha corretto per lettura sei siti di frame senza poterli misurare). Default invariato. */}
     </div>
     {/* barra ALTA: avanzamento e uscita */}
     <div style={{position:"fixed",top:6,left:6,right:6,zIndex:99999,display:"flex",gap:8,alignItems:"center",background:"rgba(0,0,0,0.45)",backdropFilter:"blur(2px)",WebkitBackdropFilter:"blur(2px)",padding:"7px 10px",borderRadius:10,fontFamily:"inherit",fontSize:12,color:"#e2e8f0",flexWrap:"wrap",textShadow:"0 1px 2px rgba(0,0,0,0.8)"}}>
@@ -197,7 +197,7 @@ function SitTest({sitN}){
   return <div style={{width:"100%",height:"100vh",position:"relative",background:"#050810",display:"flex",flexDirection:"column"}}>
     {/* 5.43.6: catena flex di altezza (come la match-screen reale) → su mobile il canvas 3D NON collassa più a 0 (campo nero) */}
     <div style={{flex:1,minHeight:0,overflow:"hidden",display:"flex",flexDirection:"column"}}>
-      <MatchErrorBoundary><LiveMatch player={md.player} opponent={md.opp} context="trial" onMatchEnd={()=>force(n)}/></MatchErrorBoundary>
+      <MatchErrorBoundary><LiveMatch player={md.player} opponent={md.opp} context="trial" isMatchHome={!(typeof window!=='undefined'&&window.__CPM_AWAY_TEST)} onMatchEnd={()=>force(n)}/></MatchErrorBoundary>{/* [7.726.0 strumento] idem: apertura in trasferta per le sonde */}
     </div>
     <div style={{position:"fixed",top:6,left:6,right:6,zIndex:99999,display:"flex",gap:8,alignItems:"center",background:"rgba(0,0,0,0.82)",padding:"7px 10px",borderRadius:9,fontFamily:"monospace",fontSize:12,color:"#fff",flexWrap:"wrap",boxShadow:"0 2px 10px rgba(0,0,0,0.5)"}}>
       <b style={{color:"#fbbf24",letterSpacing:1}}>🎬 SIT TEST</b>
