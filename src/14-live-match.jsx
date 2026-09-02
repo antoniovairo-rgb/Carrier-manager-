@@ -257,6 +257,36 @@ const INTX669=[
   txt:c=>"✊ "+c.eroe+" si sposta dall'altra parte senza dire niente: l'ombra addosso resta a marcare uno spazio vuoto.",cons:{zona:1,marcatura:-1},sc:[{et:"Cambio zona in silenzio",es:c=>"Nessuno se ne accorge subito: quando la palla arriva dall'altra parte, "+c.eroe+" e' solo.",cons:{zona:1,marcatura:-1}},{et:"Resto e me la gioco",es:c=>c.eroe+" resta dov'e' con l'ombra addosso: ogni pallone sara' un corpo a corpo.",cons:{marcatura:1,fiducia:1}},{et:"Lo dico al mister",es:c=>c.eroe+" segnala la marcatura alla panchina: arriva l'indicazione di scambiare posizione con l'ala.",cons:{zona:1,fiducia:1}}]},
  {id:"er_reaz",fam:"EROE",cond:c=>c.occFallite>=2,
   txt:c=>"✊ Non abbassa la testa: "+c.eroe+" chiama la palla un'altra volta, e la chiama forte.",cons:{fiducia:1},sc:[{et:"La chiamo ancora",es:c=>c.eroe+" alza la mano e la chiama forte: adesso tutto lo stadio sa che la vuole.",cons:{fiducia:1,coinv:1}},{et:"Abbasso la testa e corro",es:c=>c.eroe+" smette di chiedere e comincia a correre per la squadra: meno palloni, piu' chilometri.",cons:{coinv:-1,intesa:1}},{et:"Cambio zona e riprovo",es:c=>c.eroe+" si sposta di venti metri e chiama da un'altra parte: nuovo angolo, nuova occasione.",cons:{zona:1,coinv:1}}]},
+ /* [7.721.0 — LE SCHEDE DEL TABELLONE. Il momento piu' forte della partita — il gol, fatto o
+    subito, dell'eroe o della squadra — passava senza una parola: le uniche due schede «gol subito»
+    erano morte (golSub mai scritto) e nessuna esisteva per il gol fatto. Otto schede su quei
+    momenti: il gol dell'eroe, il gol di un compagno, il mister e l'avversario dopo la rete, il
+    pareggio riacciuffato, la rimonta compiuta, il doppio vantaggio da gestire, i nervi di chi
+    perde. Regola 7.719: gesti e intenzioni, mai fatti che il motore non produce. */
+ {id:"er_gol",fam:"EROE",cond:c=>c.eroeGolDaPoco,
+  txt:c=>"✊ Ha segnato lui. "+c.eroe+" si ferma un attimo davanti alla curva prima di tornare a centrocampo: adesso la partita ha il suo nome sopra.",cons:{fiducia:1},
+  sc:[{et:"Vado da chi mi ha servito",es:c=>c.eroe+" corre ad abbracciare "+c.compagno+" e gli indica il pubblico: il gol e' di tutti e due.",cons:{intesa:2}},{et:"Zitti tutti: torno a centrocampo",es:c=>c.eroe+" non esulta quasi: raccoglie il pallone e lo porta al centro. Ne vuole un altro.",cons:{coinv:2,fiducia:1}},{et:"Sotto la curva con la squadra",es:c=>c.eroe+" chiama tutti sotto la curva: i compagni lo raggiungono e lo stadio salta.",cons:{intesa:1,coinv:1}}]},
+ {id:"co_gol",fam:"COMPAGNI",cond:c=>c.golFattoDaPoco&&!c.eroeGolDaPoco,
+  txt:c=>"🤝 Gol della squadra: "+c.compagno+" esce dal mucchio dell'esultanza e va a cercare "+c.eroe+". «Adesso ne facciamo un altro, e lo fai tu.»",cons:{intesa:1},
+  sc:[{et:"«Portamela, ci penso io»",es:c=>c.eroe+" gli risponde battendo la mano sul petto: da adesso "+c.compagno+" lo cerchera' per primo.",cons:{coinv:2,intesa:1}},{et:"«Prima la teniamo»",es:c=>c.eroe+" gli chiede calma: il vantaggio si gestisce, il secondo gol si cerca senza scoprirsi.",cons:{fiducia:1,intesa:1}},{et:"Esulto e basta",es:c=>c.eroe+" ride e corre al centro: nessuna promessa, solo la voglia di ricominciare.",cons:{fiducia:1}}]},
+ {id:"mi_gol",fam:"MISTER",cond:c=>c.golFattoDaPoco&&c.diff>=1,
+  txt:c=>"📣 Il mister non esulta: batte le mani due volte e indica il centrocampo. «Non e' finita. "+c.eroe+", riparti come prima.»",cons:{},
+  sc:[{et:"Riparto come prima",es:c=>c.eroe+" annuisce e si rimette in posizione senza guardare il tabellone: la panchina lo apprezza.",cons:{fiducia:2}},{et:"Chiedo di abbassarci",es:c=>c.eroe+" propone di gestire: il mister scuote la testa, ma l'idea la tiene in mente.",cons:{fiducia:-1,intesa:1}},{et:"Carico i compagni",es:c=>c.eroe+" gira fra i compagni battendo le mani: il gol e' fatto, ora si difende in avanti.",cons:{intesa:2,coinv:1}}]},
+ {id:"av_gol",fam:"AVVERSARI",cond:c=>c.golFattoDaPoco&&c.mn>=30,
+  txt:c=>"😠 Dopo il gol il difensore che lo marca spinge il pallone verso il centro con rabbia e gli dice qualcosa passando: per lui la partita e' diventata personale.",cons:{marcatura:1},
+  sc:[{et:"Lo ignoro",es:c=>c.eroe+" non lo guarda nemmeno: chi e' in vantaggio non ha bisogno di rispondere.",cons:{fiducia:1}},{et:"Gli sorrido",es:c=>c.eroe+" gli sorride e indica il tabellone: il difensore adesso gioca con il sangue agli occhi.",cons:{marcatura:1,coinv:1}},{et:"Gli tendo la mano",es:c=>c.eroe+" gli batte una mano sulla spalla: il difensore la scansa, ma il tono si abbassa.",cons:{marcatura:-1,fiducia:1}}]},
+ {id:"co_pari",fam:"COMPAGNI",cond:c=>c.golFattoDaPoco&&c.diff===0&&c.golSub>=1,
+  txt:c=>"🤝 Pareggio riacciuffato: il capitano raduna tutti mentre gli avversari battono. «Adesso la vinciamo. "+c.eroe+", stai alto.»",cons:{coinv:1},
+  sc:[{et:"Sto alto e la chiamo",es:c=>c.eroe+" resta sul difensore centrale e chiede ogni pallone: la squadra sa dove guardare.",cons:{coinv:2}},{et:"«Non prendiamo il terzo»",es:c=>c.eroe+" chiede prima l'equilibrio: un punto in tasca, poi si vede.",cons:{fiducia:1,coinv:-1}},{et:"Chiedo il cambio di ritmo",es:c=>c.eroe+" fa segno di accelerare: si prova a spingere finche' gli avversari sono storditi.",cons:{intesa:1,coinv:1}}]},
+ {id:"er_rimonta",fam:"EROE",cond:c=>c.diff>0&&c.golSub>=1&&c.golFatti>=2&&c.mn>=60,
+  txt:c=>"✊ Erano andati sotto e adesso sono avanti: "+c.eroe+" guarda il tabellone e capisce che questi minuti valgono una stagione.",cons:{fiducia:1},
+  sc:[{et:"Chiudo io la partita",es:c=>c.eroe+" chiede ogni pallone in uscita: vuole essere lui la sponda che fa passare i minuti.",cons:{coinv:2,fiducia:1}},{et:"Tutti dietro la linea della palla",es:c=>c.eroe+" richiama i compagni a rientrare: si difende in undici, e lui e' il primo.",cons:{intesa:2,coinv:-1}},{et:"Cerco il gol che chiude",es:c=>c.eroe+" resta alto a cercare il colpo che spegne la partita: rischio e coraggio.",cons:{coinv:1,zona:1}}]},
+ {id:"mi_dom",fam:"MISTER",cond:c=>c.diff>=2&&c.mn>=55&&c.mn<=75,
+  txt:c=>"📣 Due gol di vantaggio e il mister chiama "+c.eroe+" a bordo campo: «Adesso non regaliamo niente: tieni la palla, fai respirare la squadra.»",cons:{},
+  sc:[{et:"Gestisco il ritmo",es:c=>c.eroe+" rallenta il gioco e tiene il pallone lontano dall'area: il mister annuisce.",cons:{fiducia:2,coinv:-1}},{et:"Voglio il terzo",es:c=>c.eroe+" fa segno che vuole ancora attaccare: il mister allarga le braccia, ma non lo ferma.",cons:{coinv:2,fiducia:-1}},{et:"Faccio giocare gli altri",es:c=>c.eroe+" comincia a servire chi ha toccato meno palloni: la squadra cresce tutta insieme.",cons:{intesa:2}}]},
+ {id:"av_nerv",fam:"AVVERSARI",cond:c=>c.diff>=2&&c.mn>=70,
+  txt:c=>"😠 Sotto di due, gli avversari hanno smesso di parlarsi: il loro capitano urla contro il terzino, e "+c.eroe+" lo sente.",cons:{marcatura:-1},
+  sc:[{et:"Ci vado sopra",es:c=>c.eroe+" punta proprio quel terzino: chi litiga con i suoi non difende con la testa.",cons:{coinv:2,marcatura:-1}},{et:"Rispetto: gioco pulito",es:c=>c.eroe+" abbassa i toni e gioca semplice: nessuna provocazione, nessun rischio.",cons:{fiducia:1}},{et:"Tengo palla vicino alla bandierina",es:c=>c.eroe+" porta il pallone all'angolo e li fa correre: i nervi degli avversari fanno il resto.",cons:{fiducia:1,coinv:1}}]},
 ]
 
 const BEAT664={
@@ -1650,7 +1680,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
      ⚠️ IL PUNTEGGIO NON SI TOCCA: il microsim resta l'autorita' del risultato. Qui si muovono soltanto
      coinvolgimento, intesa, fiducia, zona e marcatura — cioe' chi ti cerca e chi ti marca. */
   const scegli681=useCallback((idx,auto)=>{
-    const P=intxPendRef681.current; if(!P||!P.sc||!P.sc[idx])return;
+    const P=intxPendRef681.current; if(!P||!P.sc||!P.sc[idx]){if(typeof window!=='undefined'){try{window.__CPM_SC681_NOPEND=(window.__CPM_SC681_NOPEND||0)+1;}catch(_e){}}return;}/* [7.721 strumentazione] scelte arrivate SENZA scheda in sospeso */
     intxPendRef681.current=null;setScFreeze681(false);
     const opt=P.sc[idx],N=narrRef669.current||{};
     try{const c=opt.cons||{};
@@ -1691,7 +1721,8 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
        via la scelta. Adesso e' la riga a farsi da parte: finche' c'e' una domanda aperta, la cronaca
        non scrive. La scelta si chiude quando il giocatore decide o quando scade il suo tempo — che
        sono gli unici due modi in cui deve chiudersi. */
-    if(!sc&&intxPendRef681.current)return;
+    if(!sc&&intxPendRef681.current){if(typeof window!=='undefined'){try{window.__CPM_SC681_REF=(window.__CPM_SC681_REF||0)+1;}catch(_e){}}return;}/* [7.721 strumentazione] righe RIFIUTATE perche' c'e' una scelta aperta */
+    if(sc&&typeof window!=='undefined'){try{window.__CPM_SC681_IN=(window.__CPM_SC681_IN||0)+1;}catch(_e){}}/* [7.721 strumentazione] righe con scelta ENTRATE nel banner */
     if(sc)setScFreeze681(true);/* [7.682.0] la partita si ferma qui, e riparte quando la scelta e' presa */setComs(p=>[{text,color,t:t??clockRef.current,sc:sc||null,sci:null},...p].slice(0,16));},[]);
   addComRef681.current=addCom;scegli681Ref.current=scegli681;
   /* [7.681.0] IL RESPIRO DELLA SCELTA. Nove secondi: poco piu' del respiro che la cronaca gia' concede
@@ -1700,14 +1731,16 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
      la riga lo dichiara («scelta da sola») invece di far finta che il giocatore avesse deciso. */
   useEffect(()=>{
     const c0=coms&&coms[0];
+    if(typeof window!=='undefined'&&intxPendRef681.current&&c0&&!c0.sc){try{window.__CPM_SC681_TOP=(window.__CPM_SC681_TOP||[]);window.__CPM_SC681_TOP.push(String(c0.text||"").slice(0,50));}catch(_e){}}/* [7.721 strumentazione] righe salite SOPRA una scelta in sospeso */
     if(!c0||!c0.sc||c0.sci!=null)return;
     /* [7.682.0 direttiva PO «almeno 20 secondi»] con la partita ferma il tempo di lettura non costa
        piu' ritmo alla cronaca: si puo' dare quello che serve per leggere tre opzioni e sceglierne una. */
     /* [7.686.0] da venti a trentacinque secondi: il PO ha collaudato i venti e ha detto che a volte non
        bastano. Con la partita ferma il tempo di lettura non costa niente a nessuno. */
     const ms=(typeof window!=='undefined'&&+window.__CPM_SCMS681)||35000;
-    const h=setTimeout(()=>{try{scegli681(0,true);}catch(_e){}},ms);
-    return()=>clearTimeout(h);
+    if(typeof window!=='undefined'){try{window.__CPM_SC681_TMR=(window.__CPM_SC681_TMR||0)+1;}catch(_e){}}/* [7.721 strumentazione] timer di scadenza ARMATI */
+    const h=setTimeout(()=>{if(typeof window!=='undefined'){try{window.__CPM_SC681_FIRE=(window.__CPM_SC681_FIRE||0)+1;}catch(_e){}}try{scegli681(0,true);}catch(_e){}},ms);
+    return()=>{clearTimeout(h);if(typeof window!=='undefined'){try{window.__CPM_SC681_CLR=(window.__CPM_SC681_CLR||0)+1;}catch(_e){}}};
   },[coms,scegli681]); // stable — clockRef via ref, non dipende da clock state
   /* [7.532.0 collaudo PO «nella cronaca testuale sono mischiati telecronaca ed indicazioni del mister, vanno
      divise in maniera armoniosa» — rosso __CPM_NO540] LA VOCE DELLA PANCHINA HA IL SUO POSTO: le battute del
@@ -2562,6 +2595,20 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
          cerchio (2,6s dopo la riga del gol, per non accavallarsi); se la finestra scade, silenzio
          e la promessa muore senza bugie. Il punteggio resta del microsim: qui si LEGGE soltanto.
          Rosso __CPM_NO719 · testimone __CPM_PROM719{armate,mantenute,scadute}. */
+      /* [7.721.0 — IL TABELLONE ALIMENTA LA STORIA. Rosso __CPM_NO721] Trovato leggendo: `golSub`
+         non era MAI scritto, quindi le due schede «gol subito» (er_carica, mi_rea) erano morte dalla
+         nascita, e nessuna scheda sapeva che la squadra avesse SEGNATO. Qui il punteggio vero (sola
+         lettura, autorita' del microsim) alimenta lo stato narrativo: gol fatti/subiti e il minuto
+         dell'ultimo. Il primo tick fissa la base (una partita ripresa da resumeState non conta i gol
+         gia' avvenuti come «da poco»). */
+      if(!(typeof window!=='undefined'&&window.__CPM_NO721)){try{
+        const _N1=narrRef669.current;
+        if(_N1){const _s1=scoreRef.current||{home:0,away:0};
+          const _mio1=isMatchHome?(_s1.home|0):(_s1.away|0),_suo1=isMatchHome?(_s1.away|0):(_s1.home|0),_mn1=clockRef.current|0;
+          if(_N1._scMio721==null){_N1._scMio721=_mio1;_N1._scSuo721=_suo1;}
+          if(_mio1>_N1._scMio721){_N1.golFatti=(_N1.golFatti|0)+(_mio1-_N1._scMio721);_N1.golFattoMn=_mn1;_N1._scMio721=_mio1;}
+          if(_suo1>_N1._scSuo721){_N1.golSub=(_N1.golSub|0)+(_suo1-_N1._scSuo721);_N1.golSubMn=_mn1;_N1._scSuo721=_suo1;}}
+      }catch(_e721){}}
       if(!(typeof window!=='undefined'&&window.__CPM_NO719)){try{
         const _N7=narrRef669.current,_p7=_N7&&_N7.prom719;
         if(_p7){const _sc7=scoreRef.current||{home:0,away:0};
@@ -3479,6 +3526,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                quando la panchina se ne accorge. E' cio' che trasforma tre momenti sparsi in un filo. */
             const _c669={mn:nx,diff:_mio-_suo,duelliV:_N.duelliV,duelliP:_N.duelliP,occFallite:_N.occFallite,
               giocate:_N.giocate,marcatura:_N.marcatura,golSubDaPoco:(_N.golSub>0&&(nx-(_N.golSubMn|0))<=6),eroe:"",compagno:"",
+              golFatti:(_N.golFatti|0),golSub:(_N.golSub|0),eroeGol:(_N.eroeGol|0),golFattoDaPoco:((_N.golFatti|0)>0&&(nx-(_N.golFattoMn|0))<=6),eroeGolDaPoco:((_N.eroeGol|0)>0&&(nx-(_N.eroeGolMn|0))<=6),/* [7.721.0] il tabellone nel contesto delle schede */
               fatte:(_N.fatte||[]),scelte:(_N.scelte||[]),
               scelto:(id,ramo)=>{try{return (_N.scelte||[]).indexOf(id+"#"+ramo)>=0;}catch(_e){return false;}},
               haFatto:(id)=>{try{return (_N.fatte||[]).indexOf(id)>=0;}catch(_e){return false;}},
@@ -3950,7 +3998,8 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               const _m=_r[Math.floor(_rndM()*_r.length)];return _m?(_surnBG(_m.name)||"il compagno"):"il compagno";}catch(_e){return "il compagno";}})();
             const _ctx={mn:nx,diff:_mio-_suo,eroe:_eroe,compagno:_cmp,duelliV:_N.duelliV,duelliP:_N.duelliP,
               occFallite:_N.occFallite,giocate:_N.giocate,marcatura:_N.marcatura,
-              golSubDaPoco:(_N.golSub>0&&(nx-(_N.golSubMn|0))<=6)};
+              golSubDaPoco:(_N.golSub>0&&(nx-(_N.golSubMn|0))<=6),
+              golFatti:(_N.golFatti|0),golSub:(_N.golSub|0),eroeGol:(_N.eroeGol|0),golFattoDaPoco:((_N.golFatti|0)>0&&(nx-(_N.golFattoMn|0))<=6),eroeGolDaPoco:((_N.eroeGol|0)>0&&(nx-(_N.eroeGolMn|0))<=6)};/* [7.721.0] stessi campi del contesto di selezione, cosi' txt/es non divergono */
             try{intxCtxRef681.current=_ctx;}catch(_e681){}
             let _t=null;try{_t=_intxK669.txt(_ctx);}catch(_e){_t=null;}
             if(_t){
@@ -4019,7 +4068,18 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
              che prima erano di righe di recita bugiarde.
              E le azioni arrivano: 4 a partita (banda 3-5), da 4 a 10 righe l'una, 4 strutture distinte
              su 4. `__CPM_NO683` la rispegne per la prova del rosso. */
-          if(!(typeof window!=='undefined'&&window.__CPM_NO683)&&typeof libCompose662==='function'){try{
+          /* [7.721.0 — LA LIBRERIA TACE NEL TICK DELLA SCHEDA. Rosso __CPM_NO721L] Per lettura: la
+             libreria apriva una nuova azione (o consumava una riga) senza guardare se il tick portava
+             gia' una scheda, e riassegnava `ev` — la scheda sarebbe stata consumata (fatte, ultima,
+             cons) ma MAI mostrata. Collisione reale nel codice, ma RARA: l'avevo accusata dello «una
+             scelta su quattro» del censimento e la misura appaiata l'ha smentita (scelte 6 -> 7 su 24,
+             rumore). Quel difetto era un ARTEFATTO del banco: in autoplay il freeze della scelta e'
+             bypassato (r.~2651), il clock corre a ~2 s/minuto e la scheda successiva (10') arrivava
+             prima dei 35 s del timer, sovrascrivendo la sospesa — misurato coi contatori della catena:
+             timer armati 4, scattati 1, cancellati 4, righe sopra la scelta 0. Al giocatore vero il clock
+             si ferma e questo non accade. Il cancello resta come protezione a costo zero, senza
+             vantarsi di numeri che non ha. */
+          if(!(typeof window!=='undefined'&&window.__CPM_NO683)&&typeof libCompose662==='function'&&!(_intxK669&&!(typeof window!=='undefined'&&window.__CPM_NO721L))){try{
             const _LR=libRegRef666.current;const _LA=libAzRef666.current;
             /* i NOMI: due segnaposto distinti, e i ruoli che compaiono INSIEME in uno stesso beat
                non possono condividerlo — misurato: «Bruno rifiuta il rilancio e apre corto per Bruno».
@@ -4611,7 +4671,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
           /* [7.681.0] il contesto della scheda serve anche DOPO, per scrivere l'esito della scelta:
              lo si mette da parte insieme all'id, cosi' il ramo che applica la scelta non deve
              ricostruirlo (e non puo' divergere da quello con cui la frase e' stata scritta). */
-          if(_sc681){try{intxPendRef681.current={id:ev._intxId681,sc:_sc681,ctx:intxCtxRef681.current,min:nx};}catch(_e681){}}
+          if(_sc681){try{intxPendRef681.current={id:ev._intxId681,sc:_sc681,ctx:intxCtxRef681.current,min:nx};if(typeof window!=='undefined'){window.__CPM_SC681_PEND=(window.__CPM_SC681_PEND||0)+1;window.__CPM_SC681_ARC=(window.__CPM_SC681_ARC||[]);window.__CPM_SC681_ARC.push(String(_arcType||"-"));}}catch(_e681){}}/* [7.721 strumentazione] schede messe in sospeso + arco della riga */
           /* [7.486.0] LA SECONDA VOCE. Non racconta l'azione: la LEGGE, e parla DOPO la prima — e' cio'
              che distingue un commento tecnico da una riga di cronaca in piu'. Una volta ogni cinque, mai
              sui gol (li' la scena ha gia' la sua voce), e agganciata all'apice dell'arco come la prima
@@ -5936,6 +5996,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
       if(!ok&&/dispossessed|blocked|beaten/.test(String(_outKind||""))) _N.duelliP++;
       if(!ok&&/miss|saved|wide|post/.test(String(_outKind||""))) _N.occFallite++;
       if(ok) _N.giocate++;
+      if(ok&&key==="goal"){_N.eroeGol=(_N.eroeGol|0)+1;_N.eroeGolMn=clockRef.current|0;}/* [7.721.0] il gol dell'EROE entra nello stato narrativo: finora nessuna scheda sapeva che aveva segnato */
     }catch(_e669){}
     if(_outKind==="corner")setMxStats(s=>({...s,corners:(s.corners||0)+1}));/* [6.4.1 R2.2] l angolo guadagnato dall azione dell eroe entra nel box-score (prima solo la cronaca BG) */
     if(_outKind==="fouled"||_outKind==="win_freekick")setMxStats(s=>({...s,fouls:(s.fouls||0)+1}));/* [6.4.2 R2.3] fallo subito → conta tra i falli avversari */
