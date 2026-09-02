@@ -263,6 +263,23 @@ const INTX669=[
     momenti: il gol dell'eroe, il gol di un compagno, il mister e l'avversario dopo la rete, il
     pareggio riacciuffato, la rimonta compiuta, il doppio vantaggio da gestire, i nervi di chi
     perde. Regola 7.719: gesti e intenzioni, mai fatti che il motore non produce. */
+ /* [7.723.0 — IL PANIERE D'APERTURA. Fra il 18' e il 30' le schede senza contatori erano quattro
+    (mi_avv, co_prima, mi_cons, av_pres) e la memoria fra partite ne toglie due: restavano due per
+    gara, sempre le stesse a turno. Quattro schede in piu' su quel quarto d'ora — la lettura del
+    primo quarto, l'avversario che studia, il capitano che chiede voce, il mister che corregge la
+    posizione. Regola 7.719: gesti e intenzioni, mai fatti che il motore non produce. */
+ {id:"mi_prim",fam:"MISTER",cond:c=>c.mn>=18&&c.mn<=30&&c.diff===0,
+  txt:c=>"📣 Primo quarto d'ora letto dalla panchina: il mister chiama "+c.eroe+" con due dita e gli indica il compagno di reparto. «Vi state pestando i piedi: uno dentro, uno fuori.»",cons:{zona:1},
+  sc:[{et:"Vado io dentro",es:c=>c.eroe+" stringe verso il centro e lascia la fascia al compagno: la coppia adesso ha due strade.",cons:{zona:1,intesa:1}},{et:"Resto largo, lui dentro",es:c=>c.eroe+" apre le braccia verso la linea laterale e manda il compagno in mezzo: il campo si allarga.",cons:{intesa:1,coinv:1}},{et:"Ne parlo col compagno",es:c=>c.eroe+" si avvicina al compagno e si mettono d'accordo da soli: il mister annuisce e torna a sedersi.",cons:{intesa:2,fiducia:1}}]},
+ {id:"av_stud",fam:"AVVERSARI",cond:c=>c.mn>=19&&c.mn<=31,
+  txt:c=>"😠 Il loro terzino non lo attacca ancora: gli resta a due metri e lo guarda, studia da che parte va. Sta prendendo le misure a "+c.eroe+".",cons:{},
+  sc:[{et:"Lo affronto subito",es:c=>c.eroe+" gli va addosso al primo pallone, prima che finisca di studiarlo: chi aspetta, perde il tempo.",cons:{coinv:2,marcatura:1}},{et:"Cambio sempre piede",es:c=>c.eroe+" alterna destro e sinistro e non gli da' mai lo stesso movimento: le misure non tornano.",cons:{fiducia:1}},{et:"Gioco di prima, non lo faccio entrare",es:c=>c.eroe+" tocca e passa, tocca e passa: il duello non comincia nemmeno.",cons:{intesa:1,marcatura:-1}}]},
+ {id:"co_voce",fam:"COMPAGNI",cond:c=>c.mn>=20&&c.mn<=32,
+  txt:c=>"🤝 Il capitano gli passa accanto durante una rimessa: «Parla di piu'. Da li' vedi tutto, noi no.»",cons:{coinv:1},
+  sc:[{et:"Comincio a dirigere",es:c=>c.eroe+" alza la voce e indica gli spazi ai compagni: da adesso e' lui a chiamare i movimenti.",cons:{coinv:2,intesa:1}},{et:"Parlo solo quando serve",es:c=>c.eroe+" annuisce: dira' due parole al momento giusto, non una in piu'.",cons:{fiducia:1}},{et:"Preferisco far parlare i piedi",es:c=>c.eroe+" fa segno di no con la testa: lui guida con le giocate, non con la voce.",cons:{coinv:1,intesa:-1}}]},
+ {id:"er_lett",fam:"EROE",cond:c=>c.mn>=21&&c.mn<=33&&c.giocate===0&&c.duelliP===0,
+  txt:c=>"✊ Venti minuti senza un pallone che conti: "+c.eroe+" non si innervosisce, guarda dove si apre il campo e aspetta il momento giusto.",cons:{},
+  sc:[{et:"Ho capito: attacco il lato debole",es:c=>c.eroe+" ha visto che il loro terzino sinistro resta alto: comincia a muoversi alle sue spalle.",cons:{zona:1,coinv:1}},{et:"Vengo a prenderla piu' basso",es:c=>c.eroe+" arretra di quindici metri per toccarla: meno pericolo, piu' palloni.",cons:{coinv:2,zona:-1}},{et:"Aspetto ancora",es:c=>c.eroe+" resta in posizione e continua a osservare: la pazienza e' una scelta, non un'assenza.",cons:{fiducia:1,coinv:-1}}]},
  {id:"er_gol",ev:1,fam:"EROE",cond:c=>c.eroeGolDaPoco,
   txt:c=>"✊ Ha segnato lui. "+c.eroe+" si ferma un attimo davanti alla curva prima di tornare a centrocampo: adesso la partita ha il suo nome sopra.",cons:{fiducia:1},
   sc:[{et:"Vado da chi mi ha servito",es:c=>c.eroe+" corre ad abbracciare "+c.compagno+" e gli indica il pubblico: il gol e' di tutti e due.",cons:{intesa:2}},{et:"Zitti tutti: torno a centrocampo",es:c=>c.eroe+" non esulta quasi: raccoglie il pallone e lo porta al centro. Ne vuole un altro.",cons:{coinv:2,fiducia:1}},{et:"Sotto la curva con la squadra",es:c=>c.eroe+" chiama tutti sotto la curva: i compagni lo raggiungono e lo stadio salta.",cons:{intesa:1,coinv:1}}]},
@@ -3505,7 +3522,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
         var _intxK669=null;
         if(!(typeof window!=='undefined'&&window.__CPM_NO670)&&!_inHL77&&!pendingGoalRef.current&&!_recHij545
            &&!((typeof window!=='undefined'&&window.__CPM_SAL689_ON)&&!(typeof window!=='undefined'&&window.__CPM_NO695))/* [7.695.0] NIENTE SCHEDE NUOVE SOPRA L'AZIONE: una scheda di scelta occupa mezzo telefono, e fotografata sopra l'area copriva esattamente cio' che il PO diceva di non vedere. Le interazioni erano gia' escluse durante il gol in costruzione; ora lo sono per tutta la finestra saliente, contropiedi e rigori compresi. */
-           &&nx>=18&&nx<=88&&typeof INTX669!=='undefined'){try{
+           &&nx>=((typeof window!=='undefined'&&window.__CPM_NO723)?18:((narrRef669.current&&narrRef669.current.apre723)||(narrRef669.current.apre723=18+Math.floor(_rndM()*12))))&&nx<=88&&typeof INTX669!=='undefined'){try{/* [7.723.0 — LA PRIMA SCHEDA NON ESCE SEMPRE AL 18'. Rosso __CPM_NO723] MISURATO (censimento 6 partite): la prima scheda usciva SEMPRE al 18', primo minuto della finestra, dove l'unica eleggibile senza contatori era mi_avv (4/6 partite, e la memoria fra partite la rimetteva in gioco ogni tre gare). Ora la finestra si apre in un minuto casuale fra 18 e 29, fissato una volta per partita: la prima pesca trova un paniere di 3-6 schede invece di una. */
           const _N=narrRef669.current;
           /* [7.690.0 decisione PO: «quattro e con memoria piu' lunga»] IL TETTO SALE A QUATTRO.
              La misura diceva che il collo di bottiglia non era piu' il paniere ma il tetto: con
