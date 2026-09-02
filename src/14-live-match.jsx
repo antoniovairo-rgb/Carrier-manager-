@@ -177,7 +177,7 @@ const INTX669=[
  {id:"er_eco1",fam:"EROE",cond:c=>c.mn>=60&&c.scelto("er_prende",0),
   txt:c=>"\u270a "+c.eroe+" si e preso la squadra sulle spalle da venti minuti: adesso i compagni lo cercano anche quando non e' smarcato.",cons:{coinv:1},
   sc:[{et:"Continuo cosi'",es:c=>"Ogni pallone passa da lui: la squadra ha un solo riferimento, nel bene e nel male.",cons:{coinv:2,fiducia:-1}},{et:"Ridistribuisco il gioco",es:c=>c.eroe+" comincia a giocare di prima e ad allargare: la squadra respira e attacca in cinque.",cons:{intesa:2}},{et:"Chiedo aiuto al mister",es:c=>"Un cenno alla panchina: il messaggio arriva, e dalla linea cominciano a dare indicazioni anche agli altri.",cons:{fiducia:1,intesa:1}}]},
- {id:"er_carica",fam:"EROE",cond:c=>c.golSubDaPoco,
+ {id:"er_carica",ev:1,fam:"EROE",cond:c=>c.golSubDaPoco,
   txt:c=>"\u270a Gol subito, e "+c.eroe+" e' il primo ad andare a prendere il pallone in rete: lo porta a centrocampo di corsa.",cons:{},
   sc:[{et:"Carico tutti a voce",es:c=>c.eroe+" urla ai compagni di rialzare la testa: la squadra riparte con un altro piglio.",cons:{intesa:2,coinv:1}},{et:"Parlo solo alla difesa",es:c=>c.eroe+" va dai difensori e sistema le distanze: dietro non si concede piu' niente.",cons:{intesa:1,fiducia:1}},{et:"Rispondo giocando",es:c=>c.eroe+" non dice una parola e si mette a giocare ogni pallone: chi vuole capire, capisce.",cons:{coinv:2}}]},
  {id:"er_sprona",fam:"EROE",cond:c=>c.occFallite>=1&&c.mn>=35,
@@ -231,7 +231,7 @@ const INTX669=[
   txt:c=>"📣 Il mister a bordo campo: «Cosi' non basta! Alzate il baricentro, "+c.eroe+", vai a prendertela tu la palla!»",cons:{coinv:1},sc:[{et:"Alzo il baricentro",es:c=>c.eroe+" sale di venti metri: la squadra lo segue e la partita si sposta.",cons:{coinv:1,fiducia:1}},{et:"Gioco come so",es:c=>c.eroe+" fa spallucce e continua a giocare la sua partita. Dalla panchina non arrivano piu' indicazioni.",cons:{fiducia:-1}},{et:"Alzo io, ma da solo",es:c=>c.eroe+" sale senza aspettare nessuno: si ritrova spesso isolato, ma il difensore ora ha paura.",cons:{coinv:1,marcatura:1}}]},
  {id:"mi_ges",fam:"MISTER",cond:c=>c.mn>=78&&c.diff>=1,
   txt:c=>"📣 Dalla panchina: «Gestione! Palla lunga e sui piedi, non regaliamo niente adesso.»",cons:{},sc:[{et:"Gestisco io il pallone",es:c=>c.eroe+" tiene palla vicino alla bandierina e fa scorrere il tempo: la panchina applaude.",cons:{fiducia:1,coinv:1}},{et:"Non ci sto: si attacca",es:c=>c.eroe+" prova comunque a servire chi parte: bello da vedere, il mister meno d'accordo.",cons:{fiducia:-1,coinv:1}},{et:"Gestisco ma resto pronto",es:c=>c.eroe+" tiene palla e intanto guarda la profondita': se si aprono, riparte.",cons:{fiducia:1,zona:1}}]},
- {id:"mi_rea",fam:"MISTER",cond:c=>c.golSubDaPoco,
+ {id:"mi_rea",ev:1,fam:"MISTER",cond:c=>c.golSubDaPoco,
   txt:c=>"📣 Il mister richiama la squadra: «Testa alta, ci sono venti minuti. "+c.eroe+", tu resta alto.»",cons:{coinv:1},sc:[{et:"Testa alta, resto alto",es:c=>c.eroe+" resta sul difensore centrale e richiama i compagni: si riparte da subito.",cons:{coinv:1,fiducia:1}},{et:"Scendo a dare una mano",es:c=>c.eroe+" torna a centrocampo per far respirare la squadra: piu' palloni toccati, meno vicino alla porta.",cons:{coinv:1,zona:-1}},{et:"Vado a caricare il gruppo",es:c=>c.eroe+" gira per il campo a battere le mani sui compagni: la squadra si ricompatta.",cons:{intesa:2}}]},
  {id:"mi_lato",fam:"MISTER",cond:c=>c.duelliP>=2,
   txt:c=>"📣 Indicazione dalla panchina: «Ti hanno preso le misure, "+c.eroe+" — cambia lato, vai a cercarli dall'altra parte.»",cons:{zona:1},sc:[{et:"Cambio lato",es:c=>c.eroe+" si sposta dall'altra parte: il terzino che lo aveva in consegna resta a marcare l'aria.",cons:{zona:1,marcatura:-1}},{et:"Insisto da questa parte",es:c=>c.eroe+" ci riprova dallo stesso lato: prima o poi quel difensore lo salta.",cons:{marcatura:1,fiducia:1}},{et:"Chiedo un compagno vicino",es:c=>c.eroe+" chiama un appoggio sulla sua fascia: in due contro uno il difensore non basta piu'.",cons:{intesa:1,marcatura:-1}}]},
@@ -263,19 +263,19 @@ const INTX669=[
     momenti: il gol dell'eroe, il gol di un compagno, il mister e l'avversario dopo la rete, il
     pareggio riacciuffato, la rimonta compiuta, il doppio vantaggio da gestire, i nervi di chi
     perde. Regola 7.719: gesti e intenzioni, mai fatti che il motore non produce. */
- {id:"er_gol",fam:"EROE",cond:c=>c.eroeGolDaPoco,
+ {id:"er_gol",ev:1,fam:"EROE",cond:c=>c.eroeGolDaPoco,
   txt:c=>"✊ Ha segnato lui. "+c.eroe+" si ferma un attimo davanti alla curva prima di tornare a centrocampo: adesso la partita ha il suo nome sopra.",cons:{fiducia:1},
   sc:[{et:"Vado da chi mi ha servito",es:c=>c.eroe+" corre ad abbracciare "+c.compagno+" e gli indica il pubblico: il gol e' di tutti e due.",cons:{intesa:2}},{et:"Zitti tutti: torno a centrocampo",es:c=>c.eroe+" non esulta quasi: raccoglie il pallone e lo porta al centro. Ne vuole un altro.",cons:{coinv:2,fiducia:1}},{et:"Sotto la curva con la squadra",es:c=>c.eroe+" chiama tutti sotto la curva: i compagni lo raggiungono e lo stadio salta.",cons:{intesa:1,coinv:1}}]},
- {id:"co_gol",fam:"COMPAGNI",cond:c=>c.golFattoDaPoco&&!c.eroeGolDaPoco,
+ {id:"co_gol",ev:1,fam:"COMPAGNI",cond:c=>c.golFattoDaPoco&&!c.eroeGolDaPoco,
   txt:c=>"🤝 Gol della squadra: "+c.compagno+" esce dal mucchio dell'esultanza e va a cercare "+c.eroe+". «Adesso ne facciamo un altro, e lo fai tu.»",cons:{intesa:1},
   sc:[{et:"«Portamela, ci penso io»",es:c=>c.eroe+" gli risponde battendo la mano sul petto: da adesso "+c.compagno+" lo cerchera' per primo.",cons:{coinv:2,intesa:1}},{et:"«Prima la teniamo»",es:c=>c.eroe+" gli chiede calma: il vantaggio si gestisce, il secondo gol si cerca senza scoprirsi.",cons:{fiducia:1,intesa:1}},{et:"Esulto e basta",es:c=>c.eroe+" ride e corre al centro: nessuna promessa, solo la voglia di ricominciare.",cons:{fiducia:1}}]},
- {id:"mi_gol",fam:"MISTER",cond:c=>c.golFattoDaPoco&&c.diff>=1,
+ {id:"mi_gol",ev:1,fam:"MISTER",cond:c=>c.golFattoDaPoco&&c.diff>=1,
   txt:c=>"📣 Il mister non esulta: batte le mani due volte e indica il centrocampo. «Non e' finita. "+c.eroe+", riparti come prima.»",cons:{},
   sc:[{et:"Riparto come prima",es:c=>c.eroe+" annuisce e si rimette in posizione senza guardare il tabellone: la panchina lo apprezza.",cons:{fiducia:2}},{et:"Chiedo di abbassarci",es:c=>c.eroe+" propone di gestire: il mister scuote la testa, ma l'idea la tiene in mente.",cons:{fiducia:-1,intesa:1}},{et:"Carico i compagni",es:c=>c.eroe+" gira fra i compagni battendo le mani: il gol e' fatto, ora si difende in avanti.",cons:{intesa:2,coinv:1}}]},
- {id:"av_gol",fam:"AVVERSARI",cond:c=>c.golFattoDaPoco&&c.mn>=30,
+ {id:"av_gol",ev:1,fam:"AVVERSARI",cond:c=>c.golFattoDaPoco&&c.mn>=30,
   txt:c=>"😠 Dopo il gol il difensore che lo marca spinge il pallone verso il centro con rabbia e gli dice qualcosa passando: per lui la partita e' diventata personale.",cons:{marcatura:1},
   sc:[{et:"Lo ignoro",es:c=>c.eroe+" non lo guarda nemmeno: chi e' in vantaggio non ha bisogno di rispondere.",cons:{fiducia:1}},{et:"Gli sorrido",es:c=>c.eroe+" gli sorride e indica il tabellone: il difensore adesso gioca con il sangue agli occhi.",cons:{marcatura:1,coinv:1}},{et:"Gli tendo la mano",es:c=>c.eroe+" gli batte una mano sulla spalla: il difensore la scansa, ma il tono si abbassa.",cons:{marcatura:-1,fiducia:1}}]},
- {id:"co_pari",fam:"COMPAGNI",cond:c=>c.golFattoDaPoco&&c.diff===0&&c.golSub>=1,
+ {id:"co_pari",ev:1,fam:"COMPAGNI",cond:c=>c.golFattoDaPoco&&c.diff===0&&c.golSub>=1,
   txt:c=>"🤝 Pareggio riacciuffato: il capitano raduna tutti mentre gli avversari battono. «Adesso la vinciamo. "+c.eroe+", stai alto.»",cons:{coinv:1},
   sc:[{et:"Sto alto e la chiamo",es:c=>c.eroe+" resta sul difensore centrale e chiede ogni pallone: la squadra sa dove guardare.",cons:{coinv:2}},{et:"«Non prendiamo il terzo»",es:c=>c.eroe+" chiede prima l'equilibrio: un punto in tasca, poi si vede.",cons:{fiducia:1,coinv:-1}},{et:"Chiedo il cambio di ritmo",es:c=>c.eroe+" fa segno di accelerare: si prova a spingere finche' gli avversari sono storditi.",cons:{intesa:1,coinv:1}}]},
  {id:"er_rimonta",fam:"EROE",cond:c=>c.diff>0&&c.golSub>=1&&c.golFatti>=2&&c.mn>=60,
@@ -3514,7 +3514,21 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
              (ogni interazione ferma la gara per 35 s, tempo che il PO ha scelto lui): messa in conto,
              la distanza minima scende a 10 minuti perche' quattro momenti stiano dentro i settanta
              minuti utili della finestra 18-88. */
-          if(_N.fatte.length<4&&(nx-(_N.ultima|0))>=10){
+          /* [7.722.0 — GLI SLOT SI DISTRIBUISCONO, GLI EVENTI HANNO LA PRECEDENZA. Rosso __CPM_NO722]
+             MISURATO (censimento 6 partite, regime corretto): 24 schede, tutte pescate a 18'/28'/38'/48'
+             — il tetto di quattro veniva consumato dalle PRIME eleggibili, cosi' il secondo tempo e i
+             gol tardivi non avevano mai uno slot, e le otto schede del tabellone (7.721) sono uscite
+             0 volte su 24. E' il «sempre le stesse» del PO: le schede d'apertura si prendono tutto.
+             Tre regole: (1) nel primo tempo al massimo DUE schede non-evento (due slot restano al
+             secondo tempo); (2) un EVENTO fresco (gol fatto, gol dell'eroe, gol subito) accorcia la
+             distanza minima a 5' ed entra anche a tetto raggiunto (quinto slot, una volta);
+             (3) con un evento fresco il paniere si restringe alle schede-evento, se ce ne sono. */
+          const _no722=(typeof window!=='undefined'&&window.__CPM_NO722);
+          const _ev722=!_no722&&(((_N.golFatti|0)>0&&(nx-(_N.golFattoMn|0))<=6)||((_N.eroeGol|0)>0&&(nx-(_N.eroeGolMn|0))<=6)||((_N.golSub|0)>0&&(nx-(_N.golSubMn|0))<=6));
+          const _tetto722=_no722?4:(_ev722&&!_N.evExtra722?5:4);
+          const _dist722=_no722?10:(_ev722?5:10);
+          const _riserva722=!_no722&&!_ev722&&nx<46&&(_N.pt722|0)>=2;
+          if(_N.fatte.length<_tetto722&&(nx-(_N.ultima|0))>=_dist722&&!_riserva722){
             const _sc=scoreRef.current||{home:0,away:0};
             const _mio=isMatchHome?_sc.home:_sc.away,_suo=isMatchHome?_sc.away:_sc.home;
             /* [7.689.0 direttiva PO: «le interazioni devono essere collegate anche alle indicazioni del
@@ -3555,7 +3569,9 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
               const _fresche=_el.filter(k=>!_vecchi[k.id]);
               if(_fresche.length)_el=_fresche;
             }
-            if(_el.length)_intxK669=_el[Math.floor(_rndM()*_el.length)];
+            if(_ev722){const _ee=_el.filter(k=>k.ev);if(_ee.length)_el=_ee;}/* [7.722.0] evento fresco: prima le schede che lo raccontano */
+            if(_el.length){_intxK669=_el[Math.floor(_rndM()*_el.length)];
+              if(!_no722){if(nx<46)_N.pt722=(_N.pt722|0)+1;if(_ev722&&_N.fatte.length>=4)_N.evExtra722=1;}}
           }
         }catch(_e){}}
         if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){try{window.__CPM_INTX_N=INTX669.length;}catch(_e){}}/* [7.682.0] quante schede esistono, letto dal gioco: le sonde non devono cablare un numero che cambia a ogni release */
