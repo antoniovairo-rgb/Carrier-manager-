@@ -3179,9 +3179,10 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
               if(_hold>=0&&_hd<26){
                 const _dir551=(_lato551==="home")?1:-1;
                 const _n551=2+(Math.abs(hashStr("cat|"+nx+"|"+_hold))%2);/* [7.537.0 v6] 2-3 tocchi, non 3-5: col confronto diretto (guardiano acceso/spento) la catena da 5 passi alternati occupava circa meta' della telecronaca e affamava il repertorio pescato — 14 righe utili contro le 15 minime CON la catena, verde SENZA. Una giocata di due-tre tocchi si racconta meglio e lascia parlare il commento. */
-                const passi=[];let _cur=_hold;
+                const passi=[];let _cur=_hold;let _ovr728=null;/* [7.728.0] origine virtuale dopo una conduzione: il portatore e' avanzato di 7u e il passo dopo si giudica da li' */
                 for(let k=0;k<_n551;k++){
-                  const _cq=_mp551[_cur];if(!_cq)break;
+                  const _cqRaw=_mp551[_cur];if(!_cqRaw)break;
+                  const _cq=(_ovr728&&_ovr728.i===_cur)?{..._cqRaw,x:_ovr728.x,y:_ovr728.y}:_cqRaw;
                   /* il ricevente e' un compagno PIU' AVANTI (o in appoggio laterale al cambio gioco),
                      entro un raggio da passaggio: la catena guadagna campo senza teletrasporti */
                   let _best=-1,_bs=-1e9;
@@ -3227,6 +3228,24 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                   const _dec727=k===0||!(typeof window!=='undefined'&&window.__CPM_NO727);
                   if(_dec727&&!(typeof window!=='undefined'&&window.__CPM_NO718)){try{
                     const _d718=(k===0)?decidi715(_dir551):decidi715(_dir551,{x:_cq.x,y:_cq.y});
+                    /* [7.728.0 — IL PASSO DI CONDUZIONE. Rosso __CPM_NO728] MISURATO (catena-727): ai passi
+                       successivi la mente rispondeva «conduci» quasi sempre (adozione 1/8) e la catena, che
+                       sapeva solo passare, ripiegava sull'euristica — cioe' passava dove la mente avrebbe
+                       portato palla. Ora «conduci» E' un passo: il portatore avanza di 7u nel verso d'attacco
+                       (riga «porta palla», bersaglio del pallone = il portatore, che nel deployment lo
+                       insegue), e il passo dopo si ridecide dalla nuova origine. Cancelli: non l'ultimo passo
+                       della catena (una catena deve chiudersi su un passaggio), nessun avversario entro 5u
+                       davanti (pressato = si passa), mai oltre x 90. Testimone __CPM_CAT728{conduci,pressati}. */
+                    if(_d718.act==="conduci"&&k<_n551-1&&!(typeof window!=='undefined'&&window.__CPM_NO728)){
+                      const _px728=clamp(_cq.x+_dir551*7,4,90),_py728=_cq.y;
+                      let _press728=false;_mp551.forEach((q,i)=>{if(!q||q.gk||q.team===_lato551)return;const _dq=Math.hypot(q.x-_px728,q.y-_py728);if(_dq<5)_press728=true;});
+                      if(!_press728&&Math.abs(_px728-_cq.x)>=3){
+                        passi.push({daIdx:_cur,rcvIdx:_cur,da:String(_cq.name||"").trim(),a:String(_cq.name||"").trim(),kind:"conduci",to:{x:_px728,y:_py728}});
+                        _ovr728={i:_cur,x:_px728,y:_py728};
+                        if(typeof window!=='undefined'&&window.__CPM_REC){try{const _w=(window.__CPM_CAT728=window.__CPM_CAT728||{conduci:0,pressati:0});_w.conduci++;}catch(_e){}}
+                        continue;}
+                      else if(typeof window!=='undefined'&&window.__CPM_REC){try{const _w=(window.__CPM_CAT728=window.__CPM_CAT728||{conduci:0,pressati:0});_w.pressati++;}catch(_e){}}
+                    }
                     if(k>0&&typeof window!=='undefined'&&window.__CPM_REC){try{const _w=(window.__CPM_CAT727=window.__CPM_CAT727||{decisi:0,ripieghi:0});const _okA=_d718.act==="passa"&&_d718.rcv&&_d718.rcv.i!==_cur&&_mio551(_d718.rcv.i)&&(function(){const q=_mp551[_d718.rcv.i];if(!q)return false;const f=(q.x-_cq.x)*_dir551,d=Math.hypot(q.x-_cq.x,q.y-_cq.y);return f>=2&&d>=4&&d<=40;})();if(_okA)_w.decisi++;else _w.ripieghi++;}catch(_e){}}
                     if(_d718.act==="passa"&&_d718.rcv&&_d718.rcv.i!==_cur&&_mio551(_d718.rcv.i)){
                       const _q718=_mp551[_d718.rcv.i];
@@ -4025,7 +4044,8 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                 _recHij545=true;_recKind546="catena";_recSide546=_az.nostra?"home":"away";
                 const _cog=(n)=>{const t=String(n||"").trim();return t?t.charAt(0)+t.slice(1).toLowerCase():"un compagno";};
                 const _da=_cog(_p.da),_a=_cog(_p.a);
-                const _V=_p.kind==="filtrante"?["🎯 "+_da+" verticalizza per "+_a+": la difesa si allunga!","⚡ Filtrante di "+_da+" — "+_a+" attacca lo spazio!"]
+                const _V=_p.kind==="conduci"?["🏃 "+_da+" porta palla e guadagna metri: nessuno esce a chiuderlo.","➡️ "+_da+" avanza palla al piede, la linea avversaria arretra."]/* [7.728.0] il passo di conduzione ha la sua riga: chi porta e' chi riceve */
+                  :_p.kind==="filtrante"?["🎯 "+_da+" verticalizza per "+_a+": la difesa si allunga!","⚡ Filtrante di "+_da+" — "+_a+" attacca lo spazio!"]
                   :_p.kind==="cambio"?["↔️ "+_da+" cambia gioco: la palla vola dall'altra parte per "+_a+".","🧭 Apertura di "+_da+" a scavalcare il campo: la riceve "+_a+"."]
                   :_p.kind==="verticale"?["⚙️ "+_da+" appoggia in avanti per "+_a+", la manovra sale.","📈 "+_da+" trova "+_a+" fra le linee: si guadagna campo."]
                   :["🔁 "+_da+" scarica su "+_a+" e la squadra riprende posizione.","⚪ Giro palla: "+_da+" per "+_a+", si cerca il varco."];
