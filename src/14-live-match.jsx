@@ -628,9 +628,12 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   const matchStateRef=useRef(null);const msMemRef=useRef([]);
   /* [7.718.0] decidi715 ESTRATTA come funzione chiamabile (il disegno FASE3-SCAMBIO impone: riusata,
      non copiata): la stessa mente decide per l'ombra E per le macchine che via via le si consegnano. */
-  const decidi715=(turno)=>{try{
+  const decidi715=(turno,origine)=>{try{
     const _att=turno>0?"home":"away",_def=turno>0?"away":"home",_sgn=turno>0?1:-1;
-    const _b=ballPosRef.current||{x:50,y:50};const _bx=_b.x,_by=_b.y;
+    /* [7.727.0] ORIGINE ESPLICITA: la mente puo' giudicare da un punto diverso dal pallone logico — serve ai
+       passi successivi della catena (il portatore del passo k e' avanti al pallone, e giudicare da li' e'
+       l'unico modo perche' la decisione sia sua). Senza argomento resta il pallone: nessun chiamante cambia. */
+    const _b=(origine&&origine.x!=null)?origine:(ballPosRef.current||{x:50,y:50});const _bx=_b.x,_by=_b.y;
     const _pl=(matchPlayersRef&&matchPlayersRef.current)?matchPlayersRef.current:[];
     let _best=null,_bs=-1e9;
     for(let _i=0;_i<_pl.length;_i++){const _q=_pl[_i];if(!_q||_q.gk||_q.team!==_att)continue;
@@ -3214,15 +3217,24 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                      punto sbagliato) resta l'euristica finche' il pallone non seguira' la catena tick
                      per tick. Bersaglio dichiarato: il coseno decisione<->pallone di accordo-717 sale
                      da -0,26. */
-                  if(k===0&&!(typeof window!=='undefined'&&window.__CPM_NO718)){try{
-                    const _d718=decidi715(_dir551);
+                  /* [7.727.0 — ANCHE I PASSI SUCCESSIVI SONO DECISIONI. Rosso __CPM_NO727] Secondo bisturi
+                     del disegno FASE3-SCAMBIO: il 7.718 consegnava alla mente solo il passo d'apertura,
+                     perche' ai passi successivi l'origine (il portatore) e' avanti al pallone logico e la
+                     mente giudicava dal punto sbagliato. Ora decidi715 accetta l'ORIGINE: ai passi k>=1 la
+                     decisione nasce dal portatore del passo, con gli stessi cancelli duri del 7.718 come
+                     rete (lato, non il portatore, avanti di 2u, raggio 4-40) e ripiego all'euristica.
+                     Testimone __CPM_CAT727{decisi,ripieghi}. */
+                  const _dec727=k===0||!(typeof window!=='undefined'&&window.__CPM_NO727);
+                  if(_dec727&&!(typeof window!=='undefined'&&window.__CPM_NO718)){try{
+                    const _d718=(k===0)?decidi715(_dir551):decidi715(_dir551,{x:_cq.x,y:_cq.y});
+                    if(k>0&&typeof window!=='undefined'&&window.__CPM_REC){try{const _w=(window.__CPM_CAT727=window.__CPM_CAT727||{decisi:0,ripieghi:0});const _okA=_d718.act==="passa"&&_d718.rcv&&_d718.rcv.i!==_cur&&_mio551(_d718.rcv.i)&&(function(){const q=_mp551[_d718.rcv.i];if(!q)return false;const f=(q.x-_cq.x)*_dir551,d=Math.hypot(q.x-_cq.x,q.y-_cq.y);return f>=2&&d>=4&&d<=40;})();if(_okA)_w.decisi++;else _w.ripieghi++;}catch(_e){}}
                     if(_d718.act==="passa"&&_d718.rcv&&_d718.rcv.i!==_cur&&_mio551(_d718.rcv.i)){
                       const _q718=_mp551[_d718.rcv.i];
                       const _fw718=(_q718.x-_cq.x)*_dir551,_dd718=Math.hypot(_q718.x-_cq.x,_q718.y-_cq.y);
                       if(_fw718>=2&&_dd718>=4&&_dd718<=40){_best=_d718.rcv.i;_bs=999;
-                        if(typeof window!=='undefined'&&window.__CPM_REC){try{const _w=(window.__CPM_CAT718=window.__CPM_CAT718||{decisi:0,ripieghi:0});_w.decisi++;}catch(_e){}}}
-                      else if(typeof window!=='undefined'&&window.__CPM_REC){try{const _w=(window.__CPM_CAT718=window.__CPM_CAT718||{decisi:0,ripieghi:0});_w.ripieghi++;}catch(_e){}}
-                    }else if(typeof window!=='undefined'&&window.__CPM_REC){try{const _w=(window.__CPM_CAT718=window.__CPM_CAT718||{decisi:0,ripieghi:0});_w.ripieghi++;}catch(_e){}}
+                        if(typeof window!=='undefined'&&window.__CPM_REC&&k===0){try{const _w=(window.__CPM_CAT718=window.__CPM_CAT718||{decisi:0,ripieghi:0});_w.decisi++;}catch(_e){}}}
+                      else if(typeof window!=='undefined'&&window.__CPM_REC&&k===0){try{const _w=(window.__CPM_CAT718=window.__CPM_CAT718||{decisi:0,ripieghi:0});_w.ripieghi++;}catch(_e){}}
+                    }else if(typeof window!=='undefined'&&window.__CPM_REC&&k===0){try{const _w=(window.__CPM_CAT718=window.__CPM_CAT718||{decisi:0,ripieghi:0});_w.ripieghi++;}catch(_e){}}
                   }catch(_e718){}}
                   /* [7.724.0 — L'EROE ENTRA NELLA CATENA. Rosso __CPM_NO724] Direttiva §6-8: l'eroe e' lo
                      stesso motore, non un sistema a parte. L'audit lo diceva: pPosRef e' parallelo ai 22 e
