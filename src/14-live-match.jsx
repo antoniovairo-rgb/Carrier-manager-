@@ -3166,6 +3166,172 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
             {t:"\ud83e\udde4 Uscita bassa di "+_ngk+": blocca a terra e fa ripartire i suoi.",x:_XO(95),y:50+_JO(5,6),gk:1,esito:"goal_kick"},
           ];
         };
+        /* [7.730.0 — LA CATENA SI COSTRUISCE PASSO PER PASSO. Rosso __CPM_NO730] Il corpo del passo
+           e' UNA funzione (estratta meccanicamente dal ciclo 7.537→7.728: stessi cancelli, stesse
+           misure, stessi testimoni): la costruzione EAGER (rosso) la chiama in ciclo su un'istantanea
+           dei 22; la costruzione LAZY (7.730) la chiama al passo 0 qui e ai passi successivi nel sito
+           della riga, sui 22 VIVI di quel tick — la mente giudica posizioni vere (v2 «fuori budget»
+           revocata: 0/4 di adozione, il collo era l'istantanea). Ritorna 'pass'|'carry'|'hero'|'last'|'stop'. */
+        const _passoCatena730=(S)=>{
+          const _cqRaw=S.mp[S.cur];if(!_cqRaw)return 'stop';
+          const _cq=(S.ovr&&S.ovr.i===S.cur)?{..._cqRaw,x:S.ovr.x,y:S.ovr.y}:_cqRaw;
+          /* il ricevente e' un compagno PIU' AVANTI (o in appoggio laterale al cambio gioco),
+             entro un raggio da passaggio: la catena guadagna campo senza teletrasporti */
+          let _best=-1,_bs=-1e9;
+          S.mp.forEach((q,i)=>{if(i===S.cur||!S.mio(i))return;
+            const _fw=(q.x-_cq.x)*S.dir,_dd=Math.hypot(q.x-_cq.x,q.y-_cq.y);
+            if(_dd<4||_dd>40)return;
+            if(_fw<2)return;/* [7.537.0 v7] il passo DEVE guadagnare campo: col vincolo a -1 la catena
+               accettava appoggi laterali e teneva la palla al centro — il guardiano `bg-rhythm` e'
+               andato cieco sulla fase SVILUPPO (4 coppie contro le 8 minime, costruzione 51): una
+               telecronaca che parla solo di costruzione non ha piu' respiro. *//* [7.537.0 v2] OGNI PASSO GUADAGNA CAMPO: la v1 pesava l'avanzamento (x1,6) ma non lo pretendeva, e con la formazione compatta al centro la catena girava in orizzontale — misurato: tempo nella fascia centrale 80%→93%, cioe' il contrario di cio' che serviva. Un passaggio all'indietro non e' vietato nel calcio, ma questa macchina esiste per PORTARE la palla: se non c'e' nessuno piu' avanti, la catena si chiude e lascia parlare le altre voci. */
+            /* [7.615.0 — LA CATENA NON SI MANGIA IL CAMPO IN UN BOCCONE. Rosso __CPM_NO615]
+               MISURATO col censimento del cancello (__CPM_CAT615): il portatore c'e' SEMPRE
+               (farHold 0/17) e il cancello passa (16/17), ma la catena apriva 1 volta su 16 —
+               QUINDICI morti al secondo passo, quattordici con ESATTAMENTE un passo costruito.
+               L'aritmetica: il punteggio premiava l'avanzamento con peso 4,5 SENZA tetto, quindi
+               il primo passo saltava sull'uomo piu' avanzato (anche +30-40u, il limite era il
+               raggio dd<40) e da li' davanti non restava nessuno con fw>=2: la macchina degli
+               schemi si affamava da sola al primo boccone — ed e' il perche' del «catena: 0
+               righe» su intere passate (manovra-615) e dell'1% di fotogrammi (scrittori-601).
+               Col tetto a 12 il passo ideale resta la verticale corta (8-18u, la stessa banda
+               del repertorio 7.549) e lo spazio davanti avanza per i S.passi successivi. */
+            const _fwS615=(typeof window!=='undefined'&&window.__CPM_NO615)?_fw:Math.min(_fw,12);
+            const _sc=_fwS615*4.5-Math.abs(_dd-22)*0.35+((Math.abs(hashStr("rx|"+nx+"|"+S.k+"|"+i))%100)/100)*3;
+            if(_sc>_bs){_bs=_sc;_best=i;}});
+          /* [7.718.0 — IL PRIMO PASSO DELLA CATENA E' UNA DECISIONE VERA. Rosso __CPM_NO718]
+             Primo bisturi del disegno FASE3-SCAMBIO: al passo d'apertura (S.k=0, portatore vicino
+             alla palla, quindi origine≈pallone come vuole la mente) il ricevente lo indica
+             decidi715 — la stessa funzione dell'ombra, misurata a profilo-calcio (mediana 13,6u,
+             linee pulite 90%). I cancelli DURI della catena restano la rete di sicurezza: il
+             candidato deve essere del lato, non il portatore, avanti di 2u e in raggio 4-40 —
+             se la decisione non li passa (o dice conduci/tira), vale l'euristica di prima. Ai
+             S.passi successivi (origine avanti al pallone logico: la mente li giudicherebbe dal
+             punto sbagliato) resta l'euristica finche' il pallone non seguira' la catena tick
+             per tick. Bersaglio dichiarato: il coseno decisione<->pallone di accordo-717 sale
+             da -0,26. */
+          /* [7.727.0 — ANCHE I PASSI SUCCESSIVI SONO DECISIONI. Rosso __CPM_NO727] Secondo bisturi
+             del disegno FASE3-SCAMBIO: il 7.718 consegnava alla mente solo il passo d'apertura,
+             perche' ai S.passi successivi l'origine (il portatore) e' avanti al pallone logico e la
+             mente giudicava dal punto sbagliato. Ora decidi715 accetta l'ORIGINE: ai S.passi S.k>=1 la
+             decisione nasce dal portatore del passo, con gli stessi cancelli duri del 7.718 come
+             rete (lato, non il portatore, avanti di 2u, raggio 4-40) e ripiego all'euristica.
+             Testimone __CPM_CAT727{decisi,ripieghi}. */
+          const _dec727=S.k===0||!(typeof window!=='undefined'&&window.__CPM_NO727);
+          if(_dec727&&!(typeof window!=='undefined'&&window.__CPM_NO718)){try{
+            const _d718=(S.k===0)?decidi715(S.dir):decidi715(S.dir,{x:_cq.x,y:_cq.y});
+            /* [7.728.0 — IL PASSO DI CONDUZIONE. Rosso __CPM_NO728] MISURATO (catena-727): ai S.passi
+               successivi la mente rispondeva «conduci» quasi sempre (adozione 1/8) e la catena, che
+               sapeva solo passare, ripiegava sull'euristica — cioe' passava dove la mente avrebbe
+               portato palla. Ora «conduci» E' un passo: il portatore avanza di 7u nel verso d'attacco
+               (riga «porta palla», bersaglio del pallone = il portatore, che nel deployment lo
+               insegue), e il passo dopo si ridecide dalla nuova origine. Cancelli: non l'ultimo passo
+               della catena (una catena deve chiudersi su un passaggio), nessun avversario entro 5u
+               davanti (pressato = si passa), mai oltre x 90. Testimone __CPM_CAT728{conduci,pressati}. */
+            if(_d718.act==="conduci"&&S.k<S.n-1&&!(typeof window!=='undefined'&&window.__CPM_NO728)){
+              const _px728=clamp(_cq.x+S.dir*7,4,90),_py728=_cq.y;
+              let _press728=false;S.mp.forEach((q,i)=>{if(!q||q.gk||q.team===S.lato)return;const _dq=Math.hypot(q.x-_px728,q.y-_py728);if(_dq<5)_press728=true;});
+              if(!_press728&&Math.abs(_px728-_cq.x)>=3){
+                S.passi.push({daIdx:S.cur,rcvIdx:S.cur,da:String(_cq.name||"").trim(),a:String(_cq.name||"").trim(),kind:"conduci",to:{x:_px728,y:_py728}});
+                S.ovr={i:S.cur,x:_px728,y:_py728};
+                if(typeof window!=='undefined'&&window.__CPM_REC){try{const _w=(window.__CPM_CAT728=window.__CPM_CAT728||{conduci:0,pressati:0});_w.conduci++;}catch(_e){}}
+                return 'carry';}
+              else if(typeof window!=='undefined'&&window.__CPM_REC){try{const _w=(window.__CPM_CAT728=window.__CPM_CAT728||{conduci:0,pressati:0});_w.pressati++;}catch(_e){}}
+            }
+            if(S.k>0&&typeof window!=='undefined'&&window.__CPM_REC){try{const _w=(window.__CPM_CAT727=window.__CPM_CAT727||{decisi:0,ripieghi:0});const _okA=_d718.act==="passa"&&_d718.rcv&&_d718.rcv.i!==S.cur&&S.mio(_d718.rcv.i)&&(function(){const q=S.mp[_d718.rcv.i];if(!q)return false;const f=(q.x-_cq.x)*S.dir,d=Math.hypot(q.x-_cq.x,q.y-_cq.y);return f>=2&&d>=4&&d<=40;})();if(_okA)_w.decisi++;else _w.ripieghi++;}catch(_e){}}
+            if(_d718.act==="passa"&&_d718.rcv&&_d718.rcv.i!==S.cur&&S.mio(_d718.rcv.i)){
+              const _q718=S.mp[_d718.rcv.i];
+              const _fw718=(_q718.x-_cq.x)*S.dir,_dd718=Math.hypot(_q718.x-_cq.x,_q718.y-_cq.y);
+              if(_fw718>=2&&_dd718>=4&&_dd718<=40){_best=_d718.rcv.i;_bs=999;
+                if(typeof window!=='undefined'&&window.__CPM_REC&&S.k===0){try{const _w=(window.__CPM_CAT718=window.__CPM_CAT718||{decisi:0,ripieghi:0});_w.decisi++;}catch(_e){}}}
+              else if(typeof window!=='undefined'&&window.__CPM_REC&&S.k===0){try{const _w=(window.__CPM_CAT718=window.__CPM_CAT718||{decisi:0,ripieghi:0});_w.ripieghi++;}catch(_e){}}
+            }else if(typeof window!=='undefined'&&window.__CPM_REC&&S.k===0){try{const _w=(window.__CPM_CAT718=window.__CPM_CAT718||{decisi:0,ripieghi:0});_w.ripieghi++;}catch(_e){}}
+          }catch(_e718){}}
+          /* [7.724.0 — L'EROE ENTRA NELLA CATENA. Rosso __CPM_NO724] Direttiva §6-8: l'eroe e' lo
+             stesso motore, non un sistema a parte. L'audit lo diceva: pPosRef e' parallelo ai 22 e
+             NESSUNA riga di manovra nominava mai l'eroe come ricevente — le schede promettevano
+             «adesso lo cercano di piu'» (coinv) e «si trovano a memoria» (intesa) e in campo non
+             cambiava niente (§7: conseguenze invisibili). Ora, dal secondo passo in poi, la catena
+             puo' CHIUDERSI sull'eroe come passo finale: deve essere del lato in possesso, avanti di
+             2u rispetto al portatore, in raggio 6-32, e la probabilita' sale con coinv e intesa
+             (base 25%, +8% a punto, tetto 75%, roll seedato come il resto della catena). Il passo
+             porta il pallone LOGICO sull'eroe (to = pPos): la riga non puo' mentire, perche' la
+             palla va davvero li'. Nessun highlight viene inventato: e' un tocco nel flusso, come
+             nel calcio vero. Testimone __CPM_EROE724{S.passi,tentativi}. */
+          if(S.k>=1&&!(typeof window!=='undefined'&&window.__CPM_NO724)){try{
+            const _ladoE724="home";/* [7.725.0] frame eroe-centrico: la squadra dell'eroe e' SEMPRE «home» nel mondo dei 22 (isMatchHome governa solo nomi, maglie e tabellone) */
+            if(S.lato===_ladoE724&&phaseRef.current==='playing'){
+              const _hp=pPosRef.current||{x:58,y:50};
+              const _fwE=(_hp.x-_cq.x)*S.dir,_ddE=Math.hypot(_hp.x-_cq.x,_hp.y-_cq.y);
+              const _NE=narrRef669.current||{};
+              const _pE=Math.min(0.75,0.25+0.08*((_NE.coinv|0)+(_NE.intesa|0)));
+              const _rollE=(Math.abs(hashStr("eroe724|"+nx+"|"+S.k))%100)/100;
+              if(typeof window!=='undefined'&&window.__CPM_REC){try{const _w=(window.__CPM_EROE724=window.__CPM_EROE724||{passi:0,tentativi:0});_w.tentativi++;(_w.log=_w.log||[]);if(_w.log.length<60)_w.log.push({k:S.k,fw:+_fwE.toFixed(1),dd:+_ddE.toFixed(1),p:+_pE.toFixed(2),roll:+_rollE.toFixed(2),hx:+_hp.x.toFixed(0),cx:+_cq.x.toFixed(0)});}catch(_e){}}
+              /* [7.724 v2] MISURATO (prima stesura, cancello «avanti di 2u»): 0 S.passi su 4 tentativi,
+                 eroe SEMPRE dietro al portatore (fw -12/-16u: fra una situazione e l'altra l'eroe non
+                 si muove, la catena lo supera). Il passo finale sull'eroe segue allora la stessa legge
+                 dello scarico 7.615 — anche all'indietro fino a 14u, raggio 4-30: e' un appoggio vero,
+                 non una promozione. Che l'eroe si muova NEL FLUSSO e' il prossimo pezzo, non questo. */
+              if(_fwE>=-14&&_ddE>=4&&_ddE<=30&&_rollE<_pE){
+                const _nomeE=(typeof _surnBG==="function"&&_surnBG(player.name||""))||String(player.name||"").trim().split(/\s+/).pop()||"il numero dieci";
+                const _kindE=(_fwE>13)?"filtrante":(Math.abs(_hp.y-_cq.y)>22)?"cambio":(_fwE>4)?"verticale":"appoggio";
+                S.passi.push({daIdx:S.cur,rcvIdx:null,eroe:1,da:String(_cq.name||"").trim(),a:_nomeE,kind:_kindE,to:{x:+_hp.x.toFixed(1),y:+_hp.y.toFixed(1)}});
+                if(typeof window!=='undefined'&&window.__CPM_REC){try{const _w=(window.__CPM_EROE724=window.__CPM_EROE724||{passi:0,tentativi:0});_w.passi++;}catch(_e){}}
+                return 'hero';}}
+          }catch(_e724){}}
+          let _last615=false;
+          if(_best<0){
+            /* [7.615.0 — L'ULTIMO PASSO PUO' ESSERE UNO SCARICO. Rosso __CPM_NO615B]
+               Anche col tetto sull'avanzamento, 10 tentativi su 14 morivano al secondo passo:
+               dal ricevente avanzato nessuno sta piu' davanti con fw>=2, e una catena da UN passo
+               non e' una catena (serve S.passi>=2). Nel calcio la manovra si chiude cosi': verticale,
+               e SCARICO corto d'appoggio (anche all'indietro fino a 4u, raggio 4-26). Ammesso solo
+               DOPO almeno un passo in avanti (S.k>=1) e come passo FINALE — il vincolo v7 sul
+               guadagno di campo resta la regola, questo e' il suo punto e virgola. Il dai-e-vai
+               (tornare sul primo passatore) e' compreso: e' calcio vero. */
+            if(S.k<1){
+              /* [7.633.0 — IL PRIMO PASSO PUO' USCIRE DAL TRAFFICO. Rosso __CPM_NO633B]
+                 CENSIMENTO nella realizzazione del guardiano (name Pv): 5 morti su 9 occasioni a
+                 steps0, portatore AVANZATO (x 65-72) — davanti nessuno con fw>=2, e a passo zero
+                 nemmeno lo scarico 7.623 e' concesso (S.k>=1): la catena moriva sul nascere.
+                 Nel calcio l'uscita dal traffico e' l'appoggio laterale, POI la verticale.
+                 Concesso solo come PRIMO passo e la catena PROSEGUE (non e' una chiusura):
+                 la legge v7 sul guadagno di campo torna dal passo successivo. */
+              if(typeof window!=='undefined'&&window.__CPM_NO633B)return 'stop';
+              S.mp.forEach((q,i)=>{if(i===S.cur||!S.mio(i))return;
+                const _fwL=(q.x-_cq.x)*S.dir,_ddL=Math.hypot(q.x-_cq.x,q.y-_cq.y);
+                if(_ddL<4||_ddL>26||_fwL<-8)return;
+                const _scL=-Math.abs(_ddL-12)*0.5+((Math.abs(hashStr("lx|"+nx+"|"+S.k+"|"+i))%100)/100)*3;
+                if(_scL>_bs){_bs=_scL;_best=i;}});
+              if(_best<0)return 'stop';
+            }else{
+            if(typeof window!=='undefined'&&window.__CPM_NO615B)return 'stop';
+            /* [7.623.0 — LA CHIUSURA E' UN RETROPASSAGGIO VERO. Rosso __CPM_NO623]
+               MISURATO col registro s0 (dopo il 7.615): meta' delle morti residue e' «n:1» —
+               la verticale c'e', ma il ricevente e' l'uomo PIU' avanzato e la finestra dello
+               scarico (fino a 4u indietro, raggio 26) e' VUOTA quando tutti i compagni stanno
+               8-20u dietro. Nel calcio quello si chiama retropassaggio, ed e' nella lista §2
+               della direttiva PO. La chiusura ammette fino a 14u all'indietro, raggio 30 —
+               SOLO come ultimo passo dopo una verticale: v7 resta la legge dei S.passi veri. */
+            const _bkw623=(typeof window!=='undefined'&&window.__CPM_NO623)?-4:-14;
+            const _bkr623=(typeof window!=='undefined'&&window.__CPM_NO623)?26:30;
+            S.mp.forEach((q,i)=>{if(i===S.cur||!S.mio(i))return;
+              const _fw=(q.x-_cq.x)*S.dir,_dd=Math.hypot(q.x-_cq.x,q.y-_cq.y);
+              if(_dd<4||_dd>_bkr623||_fw<_bkw623)return;
+              const _sc=-Math.abs(_dd-14)*0.5+((Math.abs(hashStr("sx|"+nx+"|"+S.k+"|"+i))%100)/100)*3;
+              if(_sc>_bs){_bs=_sc;_best=i;}});
+            if(_best<0)return 'stop';
+            _last615=true;
+            }
+          }
+          const _bq=S.mp[_best];
+          const _fw2=(_bq.x-_cq.x)*S.dir;
+          const _kind=(_fw2>13)?"filtrante":(Math.abs(_bq.y-_cq.y)>22)?"cambio":(_fw2>4)?"verticale":"appoggio";
+          S.passi.push({daIdx:S.cur,rcvIdx:_best,da:String(_cq.name||"").trim(),a:String(_bq.name||"").trim(),kind:_kind,to:{x:_bq.x,y:_bq.y}});
+          S.cur=_best;
+          if(_last615)return 'last';
+          return 'pass';
+        };
         const _apriCatena644=(_lato551)=>{
           const _mp551=(matchPlayersRef.current||[]);
           if(azioneRef.current||_mp551.length<11)return false;
@@ -3180,167 +3346,12 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                 const _dir551=(_lato551==="home")?1:-1;
                 const _n551=2+(Math.abs(hashStr("cat|"+nx+"|"+_hold))%2);/* [7.537.0 v6] 2-3 tocchi, non 3-5: col confronto diretto (guardiano acceso/spento) la catena da 5 passi alternati occupava circa meta' della telecronaca e affamava il repertorio pescato — 14 righe utili contro le 15 minime CON la catena, verde SENZA. Una giocata di due-tre tocchi si racconta meglio e lascia parlare il commento. */
                 const passi=[];let _cur=_hold;let _ovr728=null;/* [7.728.0] origine virtuale dopo una conduzione: il portatore e' avanzato di 7u e il passo dopo si giudica da li' */
-                for(let k=0;k<_n551;k++){
-                  const _cqRaw=_mp551[_cur];if(!_cqRaw)break;
-                  const _cq=(_ovr728&&_ovr728.i===_cur)?{..._cqRaw,x:_ovr728.x,y:_ovr728.y}:_cqRaw;
-                  /* il ricevente e' un compagno PIU' AVANTI (o in appoggio laterale al cambio gioco),
-                     entro un raggio da passaggio: la catena guadagna campo senza teletrasporti */
-                  let _best=-1,_bs=-1e9;
-                  _mp551.forEach((q,i)=>{if(i===_cur||!_mio551(i))return;
-                    const _fw=(q.x-_cq.x)*_dir551,_dd=Math.hypot(q.x-_cq.x,q.y-_cq.y);
-                    if(_dd<4||_dd>40)return;
-                    if(_fw<2)return;/* [7.537.0 v7] il passo DEVE guadagnare campo: col vincolo a -1 la catena
-                       accettava appoggi laterali e teneva la palla al centro — il guardiano `bg-rhythm` e'
-                       andato cieco sulla fase SVILUPPO (4 coppie contro le 8 minime, costruzione 51): una
-                       telecronaca che parla solo di costruzione non ha piu' respiro. *//* [7.537.0 v2] OGNI PASSO GUADAGNA CAMPO: la v1 pesava l'avanzamento (x1,6) ma non lo pretendeva, e con la formazione compatta al centro la catena girava in orizzontale — misurato: tempo nella fascia centrale 80%→93%, cioe' il contrario di cio' che serviva. Un passaggio all'indietro non e' vietato nel calcio, ma questa macchina esiste per PORTARE la palla: se non c'e' nessuno piu' avanti, la catena si chiude e lascia parlare le altre voci. */
-                    /* [7.615.0 — LA CATENA NON SI MANGIA IL CAMPO IN UN BOCCONE. Rosso __CPM_NO615]
-                       MISURATO col censimento del cancello (__CPM_CAT615): il portatore c'e' SEMPRE
-                       (farHold 0/17) e il cancello passa (16/17), ma la catena apriva 1 volta su 16 —
-                       QUINDICI morti al secondo passo, quattordici con ESATTAMENTE un passo costruito.
-                       L'aritmetica: il punteggio premiava l'avanzamento con peso 4,5 SENZA tetto, quindi
-                       il primo passo saltava sull'uomo piu' avanzato (anche +30-40u, il limite era il
-                       raggio dd<40) e da li' davanti non restava nessuno con fw>=2: la macchina degli
-                       schemi si affamava da sola al primo boccone — ed e' il perche' del «catena: 0
-                       righe» su intere passate (manovra-615) e dell'1% di fotogrammi (scrittori-601).
-                       Col tetto a 12 il passo ideale resta la verticale corta (8-18u, la stessa banda
-                       del repertorio 7.549) e lo spazio davanti avanza per i passi successivi. */
-                    const _fwS615=(typeof window!=='undefined'&&window.__CPM_NO615)?_fw:Math.min(_fw,12);
-                    const _sc=_fwS615*4.5-Math.abs(_dd-22)*0.35+((Math.abs(hashStr("rx|"+nx+"|"+k+"|"+i))%100)/100)*3;
-                    if(_sc>_bs){_bs=_sc;_best=i;}});
-                  /* [7.718.0 — IL PRIMO PASSO DELLA CATENA E' UNA DECISIONE VERA. Rosso __CPM_NO718]
-                     Primo bisturi del disegno FASE3-SCAMBIO: al passo d'apertura (k=0, portatore vicino
-                     alla palla, quindi origine≈pallone come vuole la mente) il ricevente lo indica
-                     decidi715 — la stessa funzione dell'ombra, misurata a profilo-calcio (mediana 13,6u,
-                     linee pulite 90%). I cancelli DURI della catena restano la rete di sicurezza: il
-                     candidato deve essere del lato, non il portatore, avanti di 2u e in raggio 4-40 —
-                     se la decisione non li passa (o dice conduci/tira), vale l'euristica di prima. Ai
-                     passi successivi (origine avanti al pallone logico: la mente li giudicherebbe dal
-                     punto sbagliato) resta l'euristica finche' il pallone non seguira' la catena tick
-                     per tick. Bersaglio dichiarato: il coseno decisione<->pallone di accordo-717 sale
-                     da -0,26. */
-                  /* [7.727.0 — ANCHE I PASSI SUCCESSIVI SONO DECISIONI. Rosso __CPM_NO727] Secondo bisturi
-                     del disegno FASE3-SCAMBIO: il 7.718 consegnava alla mente solo il passo d'apertura,
-                     perche' ai passi successivi l'origine (il portatore) e' avanti al pallone logico e la
-                     mente giudicava dal punto sbagliato. Ora decidi715 accetta l'ORIGINE: ai passi k>=1 la
-                     decisione nasce dal portatore del passo, con gli stessi cancelli duri del 7.718 come
-                     rete (lato, non il portatore, avanti di 2u, raggio 4-40) e ripiego all'euristica.
-                     Testimone __CPM_CAT727{decisi,ripieghi}. */
-                  const _dec727=k===0||!(typeof window!=='undefined'&&window.__CPM_NO727);
-                  if(_dec727&&!(typeof window!=='undefined'&&window.__CPM_NO718)){try{
-                    const _d718=(k===0)?decidi715(_dir551):decidi715(_dir551,{x:_cq.x,y:_cq.y});
-                    /* [7.728.0 — IL PASSO DI CONDUZIONE. Rosso __CPM_NO728] MISURATO (catena-727): ai passi
-                       successivi la mente rispondeva «conduci» quasi sempre (adozione 1/8) e la catena, che
-                       sapeva solo passare, ripiegava sull'euristica — cioe' passava dove la mente avrebbe
-                       portato palla. Ora «conduci» E' un passo: il portatore avanza di 7u nel verso d'attacco
-                       (riga «porta palla», bersaglio del pallone = il portatore, che nel deployment lo
-                       insegue), e il passo dopo si ridecide dalla nuova origine. Cancelli: non l'ultimo passo
-                       della catena (una catena deve chiudersi su un passaggio), nessun avversario entro 5u
-                       davanti (pressato = si passa), mai oltre x 90. Testimone __CPM_CAT728{conduci,pressati}. */
-                    if(_d718.act==="conduci"&&k<_n551-1&&!(typeof window!=='undefined'&&window.__CPM_NO728)){
-                      const _px728=clamp(_cq.x+_dir551*7,4,90),_py728=_cq.y;
-                      let _press728=false;_mp551.forEach((q,i)=>{if(!q||q.gk||q.team===_lato551)return;const _dq=Math.hypot(q.x-_px728,q.y-_py728);if(_dq<5)_press728=true;});
-                      if(!_press728&&Math.abs(_px728-_cq.x)>=3){
-                        passi.push({daIdx:_cur,rcvIdx:_cur,da:String(_cq.name||"").trim(),a:String(_cq.name||"").trim(),kind:"conduci",to:{x:_px728,y:_py728}});
-                        _ovr728={i:_cur,x:_px728,y:_py728};
-                        if(typeof window!=='undefined'&&window.__CPM_REC){try{const _w=(window.__CPM_CAT728=window.__CPM_CAT728||{conduci:0,pressati:0});_w.conduci++;}catch(_e){}}
-                        continue;}
-                      else if(typeof window!=='undefined'&&window.__CPM_REC){try{const _w=(window.__CPM_CAT728=window.__CPM_CAT728||{conduci:0,pressati:0});_w.pressati++;}catch(_e){}}
-                    }
-                    if(k>0&&typeof window!=='undefined'&&window.__CPM_REC){try{const _w=(window.__CPM_CAT727=window.__CPM_CAT727||{decisi:0,ripieghi:0});const _okA=_d718.act==="passa"&&_d718.rcv&&_d718.rcv.i!==_cur&&_mio551(_d718.rcv.i)&&(function(){const q=_mp551[_d718.rcv.i];if(!q)return false;const f=(q.x-_cq.x)*_dir551,d=Math.hypot(q.x-_cq.x,q.y-_cq.y);return f>=2&&d>=4&&d<=40;})();if(_okA)_w.decisi++;else _w.ripieghi++;}catch(_e){}}
-                    if(_d718.act==="passa"&&_d718.rcv&&_d718.rcv.i!==_cur&&_mio551(_d718.rcv.i)){
-                      const _q718=_mp551[_d718.rcv.i];
-                      const _fw718=(_q718.x-_cq.x)*_dir551,_dd718=Math.hypot(_q718.x-_cq.x,_q718.y-_cq.y);
-                      if(_fw718>=2&&_dd718>=4&&_dd718<=40){_best=_d718.rcv.i;_bs=999;
-                        if(typeof window!=='undefined'&&window.__CPM_REC&&k===0){try{const _w=(window.__CPM_CAT718=window.__CPM_CAT718||{decisi:0,ripieghi:0});_w.decisi++;}catch(_e){}}}
-                      else if(typeof window!=='undefined'&&window.__CPM_REC&&k===0){try{const _w=(window.__CPM_CAT718=window.__CPM_CAT718||{decisi:0,ripieghi:0});_w.ripieghi++;}catch(_e){}}
-                    }else if(typeof window!=='undefined'&&window.__CPM_REC&&k===0){try{const _w=(window.__CPM_CAT718=window.__CPM_CAT718||{decisi:0,ripieghi:0});_w.ripieghi++;}catch(_e){}}
-                  }catch(_e718){}}
-                  /* [7.724.0 — L'EROE ENTRA NELLA CATENA. Rosso __CPM_NO724] Direttiva §6-8: l'eroe e' lo
-                     stesso motore, non un sistema a parte. L'audit lo diceva: pPosRef e' parallelo ai 22 e
-                     NESSUNA riga di manovra nominava mai l'eroe come ricevente — le schede promettevano
-                     «adesso lo cercano di piu'» (coinv) e «si trovano a memoria» (intesa) e in campo non
-                     cambiava niente (§7: conseguenze invisibili). Ora, dal secondo passo in poi, la catena
-                     puo' CHIUDERSI sull'eroe come passo finale: deve essere del lato in possesso, avanti di
-                     2u rispetto al portatore, in raggio 6-32, e la probabilita' sale con coinv e intesa
-                     (base 25%, +8% a punto, tetto 75%, roll seedato come il resto della catena). Il passo
-                     porta il pallone LOGICO sull'eroe (to = pPos): la riga non puo' mentire, perche' la
-                     palla va davvero li'. Nessun highlight viene inventato: e' un tocco nel flusso, come
-                     nel calcio vero. Testimone __CPM_EROE724{passi,tentativi}. */
-                  if(k>=1&&!(typeof window!=='undefined'&&window.__CPM_NO724)){try{
-                    const _ladoE724="home";/* [7.725.0] frame eroe-centrico: la squadra dell'eroe e' SEMPRE «home» nel mondo dei 22 (isMatchHome governa solo nomi, maglie e tabellone) */
-                    if(_lato551===_ladoE724&&phaseRef.current==='playing'){
-                      const _hp=pPosRef.current||{x:58,y:50};
-                      const _fwE=(_hp.x-_cq.x)*_dir551,_ddE=Math.hypot(_hp.x-_cq.x,_hp.y-_cq.y);
-                      const _NE=narrRef669.current||{};
-                      const _pE=Math.min(0.75,0.25+0.08*((_NE.coinv|0)+(_NE.intesa|0)));
-                      const _rollE=(Math.abs(hashStr("eroe724|"+nx+"|"+k))%100)/100;
-                      if(typeof window!=='undefined'&&window.__CPM_REC){try{const _w=(window.__CPM_EROE724=window.__CPM_EROE724||{passi:0,tentativi:0});_w.tentativi++;(_w.log=_w.log||[]);if(_w.log.length<60)_w.log.push({k,fw:+_fwE.toFixed(1),dd:+_ddE.toFixed(1),p:+_pE.toFixed(2),roll:+_rollE.toFixed(2),hx:+_hp.x.toFixed(0),cx:+_cq.x.toFixed(0)});}catch(_e){}}
-                      /* [7.724 v2] MISURATO (prima stesura, cancello «avanti di 2u»): 0 passi su 4 tentativi,
-                         eroe SEMPRE dietro al portatore (fw -12/-16u: fra una situazione e l'altra l'eroe non
-                         si muove, la catena lo supera). Il passo finale sull'eroe segue allora la stessa legge
-                         dello scarico 7.615 — anche all'indietro fino a 14u, raggio 4-30: e' un appoggio vero,
-                         non una promozione. Che l'eroe si muova NEL FLUSSO e' il prossimo pezzo, non questo. */
-                      if(_fwE>=-14&&_ddE>=4&&_ddE<=30&&_rollE<_pE){
-                        const _nomeE=(typeof _surnBG==="function"&&_surnBG(player.name||""))||String(player.name||"").trim().split(/\s+/).pop()||"il numero dieci";
-                        const _kindE=(_fwE>13)?"filtrante":(Math.abs(_hp.y-_cq.y)>22)?"cambio":(_fwE>4)?"verticale":"appoggio";
-                        passi.push({daIdx:_cur,rcvIdx:null,eroe:1,da:String(_cq.name||"").trim(),a:_nomeE,kind:_kindE,to:{x:+_hp.x.toFixed(1),y:+_hp.y.toFixed(1)}});
-                        if(typeof window!=='undefined'&&window.__CPM_REC){try{const _w=(window.__CPM_EROE724=window.__CPM_EROE724||{passi:0,tentativi:0});_w.passi++;}catch(_e){}}
-                        break;}}
-                  }catch(_e724){}}
-                  let _last615=false;
-                  if(_best<0){
-                    /* [7.615.0 — L'ULTIMO PASSO PUO' ESSERE UNO SCARICO. Rosso __CPM_NO615B]
-                       Anche col tetto sull'avanzamento, 10 tentativi su 14 morivano al secondo passo:
-                       dal ricevente avanzato nessuno sta piu' davanti con fw>=2, e una catena da UN passo
-                       non e' una catena (serve passi>=2). Nel calcio la manovra si chiude cosi': verticale,
-                       e SCARICO corto d'appoggio (anche all'indietro fino a 4u, raggio 4-26). Ammesso solo
-                       DOPO almeno un passo in avanti (k>=1) e come passo FINALE — il vincolo v7 sul
-                       guadagno di campo resta la regola, questo e' il suo punto e virgola. Il dai-e-vai
-                       (tornare sul primo passatore) e' compreso: e' calcio vero. */
-                    if(k<1){
-                      /* [7.633.0 — IL PRIMO PASSO PUO' USCIRE DAL TRAFFICO. Rosso __CPM_NO633B]
-                         CENSIMENTO nella realizzazione del guardiano (name Pv): 5 morti su 9 occasioni a
-                         steps0, portatore AVANZATO (x 65-72) — davanti nessuno con fw>=2, e a passo zero
-                         nemmeno lo scarico 7.623 e' concesso (k>=1): la catena moriva sul nascere.
-                         Nel calcio l'uscita dal traffico e' l'appoggio laterale, POI la verticale.
-                         Concesso solo come PRIMO passo e la catena PROSEGUE (non e' una chiusura):
-                         la legge v7 sul guadagno di campo torna dal passo successivo. */
-                      if(typeof window!=='undefined'&&window.__CPM_NO633B)break;
-                      _mp551.forEach((q,i)=>{if(i===_cur||!_mio551(i))return;
-                        const _fwL=(q.x-_cq.x)*_dir551,_ddL=Math.hypot(q.x-_cq.x,q.y-_cq.y);
-                        if(_ddL<4||_ddL>26||_fwL<-8)return;
-                        const _scL=-Math.abs(_ddL-12)*0.5+((Math.abs(hashStr("lx|"+nx+"|"+k+"|"+i))%100)/100)*3;
-                        if(_scL>_bs){_bs=_scL;_best=i;}});
-                      if(_best<0)break;
-                    }else{
-                    if(typeof window!=='undefined'&&window.__CPM_NO615B)break;
-                    /* [7.623.0 — LA CHIUSURA E' UN RETROPASSAGGIO VERO. Rosso __CPM_NO623]
-                       MISURATO col registro s0 (dopo il 7.615): meta' delle morti residue e' «n:1» —
-                       la verticale c'e', ma il ricevente e' l'uomo PIU' avanzato e la finestra dello
-                       scarico (fino a 4u indietro, raggio 26) e' VUOTA quando tutti i compagni stanno
-                       8-20u dietro. Nel calcio quello si chiama retropassaggio, ed e' nella lista §2
-                       della direttiva PO. La chiusura ammette fino a 14u all'indietro, raggio 30 —
-                       SOLO come ultimo passo dopo una verticale: v7 resta la legge dei passi veri. */
-                    const _bkw623=(typeof window!=='undefined'&&window.__CPM_NO623)?-4:-14;
-                    const _bkr623=(typeof window!=='undefined'&&window.__CPM_NO623)?26:30;
-                    _mp551.forEach((q,i)=>{if(i===_cur||!_mio551(i))return;
-                      const _fw=(q.x-_cq.x)*_dir551,_dd=Math.hypot(q.x-_cq.x,q.y-_cq.y);
-                      if(_dd<4||_dd>_bkr623||_fw<_bkw623)return;
-                      const _sc=-Math.abs(_dd-14)*0.5+((Math.abs(hashStr("sx|"+nx+"|"+k+"|"+i))%100)/100)*3;
-                      if(_sc>_bs){_bs=_sc;_best=i;}});
-                    if(_best<0)break;
-                    _last615=true;
-                    }
-                  }
-                  const _bq=_mp551[_best];
-                  const _fw2=(_bq.x-_cq.x)*_dir551;
-                  const _kind=(_fw2>13)?"filtrante":(Math.abs(_bq.y-_cq.y)>22)?"cambio":(_fw2>4)?"verticale":"appoggio";
-                  passi.push({daIdx:_cur,rcvIdx:_best,da:String(_cq.name||"").trim(),a:String(_bq.name||"").trim(),kind:_kind,to:{x:_bq.x,y:_bq.y}});
-                  _cur=_best;
-                  if(_last615)break;
-                }
-                if(_cg615){if(passi.length>=2)_cg615.opened=(_cg615.opened|0)+1;else{_cg615.steps0=(_cg615.steps0|0)+1;if((_cg615.s0=_cg615.s0||[]).length<40)_cg615.s0.push({n:passi.length,hx:+(_mp551[_hold].x||0).toFixed(1),hy:+(_mp551[_hold].y||0).toFixed(1)});}}
-                if(passi.length>=2){azioneRef.current={passi,i:0,nostra:_lato551==="home",arrivato:false,t0:nx};
+                const _lazy730=!(typeof window!=='undefined'&&window.__CPM_NO730);
+                const S730={mp:_mp551,mio:_mio551,lato:_lato551,dir:_dir551,n:_n551,k:0,cur:_cur,passi,ovr:_ovr728,done:false};
+                for(let k=0;k<(_lazy730?1:_n551);k++){S730.k=k;const _r=_passoCatena730(S730);if(_r==='stop'||_r==='hero'||_r==='last'){S730.done=true;break;}}
+                _cur=S730.cur;S730.k++;
+                if(_cg615){if(passi.length>=2&&!_lazy730)_cg615.opened=(_cg615.opened|0)+1;else{_cg615.steps0=(_cg615.steps0|0)+1;if((_cg615.s0=_cg615.s0||[]).length<40)_cg615.s0.push({n:passi.length,hx:+(_mp551[_hold].x||0).toFixed(1),hy:+(_mp551[_hold].y||0).toFixed(1)});}}
+                if(passi.length>=(_lazy730?1:2)){azioneRef.current={passi,i:0,nostra:_lato551==="home",arrivato:false,t0:nx,lazy:_lazy730?S730:null};/* [7.730.0] in modalita' lazy la catena si apre col primo passo e porta con se' il costruttore: i passi successivi nascono al sito della riga */
                   /* [7.537.0 v3] LA CATENA APRE LA PROFONDITA'. Le v1/v2 sono state buttate con le loro
                      misure: pretendere l'avanzamento a ogni passo (v2) non basta se davanti non c'e'
                      NESSUNO — in cronaca i ventidue vivono ammassati attorno al cerchio (misura: 80-93%
@@ -4038,7 +4049,17 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                il commento si alternano, come in televisione. */
             if(azioneRef.current&&_lastCatRef.current===nx&&!(_cat559&&pendingGoalRef.current)){if(_cg615)_cg615.skipAlt=(_cg615.skipAlt|0)+1;/* battuta precedente gia' di catena in questo giro: si lascia parlare il repertorio — ma non mentre il gol si costruisce, li' la catena e' il racconto */}
             else if(azioneRef.current&&!(typeof window!=='undefined'&&window.__CPM_NO684C)&&_recKind546!=="scena"){/* [7.684.0 SOLO COLLAUDO] `__CPM_NO684C` spegne la CATENA: serve alla prova del rosso della banda «manovra-viva», che copre due sistemi e senza questo non avrebbe modo di fallire — un guardiano che non sa andare rosso non fa la guardia a niente. ⚠️ la prima stesura lo metteva DENTRO il ramo, dopo che la riga era gia' decisa: il rosso non spegneva nulla e misurava dieci righe di catena come se fosse acceso. *//* [7.653 v4] la catena NON ruba la dichiarazione di scena appena armata (misurato: ann bruciato senza riga, 1 annuncio su 9) */
-              const _az=azioneRef.current,_p=_az.passi[_az.i];
+              const _az=azioneRef.current;
+              /* [7.730.0] IL PASSO SUCCESSIVO NASCE QUI, DAI 22 VIVI: se la catena e' lazy e ha esaurito i passi
+                 costruiti ma non il budget, il costruttore gira una volta su matchPlayersRef corrente (origine =
+                 posizione VERA del portatore del passo). Testimone __CPM_CAT730{lazy,pass,carry,hero,stop}. */
+              if(_az&&_az.lazy&&_az.i>=_az.passi.length&&!_az.lazy.done&&_az.lazy.k<_az.lazy.n){try{const S=_az.lazy;S.mp=(matchPlayersRef.current||[]);S.ovr=null;const _r=_passoCatena730(S);
+                if(typeof window!=='undefined'&&window.__CPM_REC){try{const _w=(window.__CPM_CAT730=window.__CPM_CAT730||{lazy:0,pass:0,carry:0,hero:0,stop:0,last:0});_w.lazy++;_w[_r]=(_w[_r]|0)+1;}catch(_e){}}
+                if(_r==='stop'||_r==='hero'||_r==='last')S.done=true;else S.k++;
+                if(_r==='carry'&&S.k<S.n){/* dopo una conduzione il passo dopo si decide al prossimo tick, dal portatore che nel frattempo si e' mosso */}
+                if(_az.passi.length===2&&_cg615)_cg615.opened=(_cg615.opened|0)+1;/* [7.730.0] «aperta» = ha raggiunto due passi, come prima */
+              }catch(_e730){_az.lazy.done=true;}}
+              const _p=_az.passi[_az.i];
               if(!_p||(_az.t0!=null&&nx-_az.t0>6&&!(_cat559&&pendingGoalRef.current))){azioneRef.current=null;if(_cg615)_cg615.dead=(_cg615.dead|0)+1;}/* la catena non vive piu' di 6 minuti di gioco */
               else{
                 _recHij545=true;_recKind546="catena";_recSide546=_az.nostra?"home":"away";
@@ -4052,7 +4073,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                 const _vi=Math.abs(hashStr("cv|"+nx+"|"+_az.i))%_V.length;
                 ev={txt:_V[_vi],ef:null,w:1,bpos:{x:_p.to.x,y:_p.to.y},at:(_p.kind==="filtrante"?"pass":"pass"),pd:_dec499,_az551:_p};
                 if(_p.rcvIdx!=null&&!(typeof window!=='undefined'&&window.__CPM_NO641))carrierRef.current={i:_p.rcvIdx};/* [7.641.0 F1a] il passo di catena elegge il portatore: il ricevente nominato */
-                _az.i++;_lastCatRef.current=nx;if(_cg615)_cg615.rec=(_cg615.rec|0)+1;if(_az.i>=_az.passi.length)azioneRef.current=null;
+                _az.i++;_lastCatRef.current=nx;if(_cg615)_cg615.rec=(_cg615.rec|0)+1;if(_az.i>=_az.passi.length&&!(_az.lazy&&!_az.lazy.done&&_az.lazy.k<_az.lazy.n))azioneRef.current=null;/* [7.730.0] la catena lazy resta viva finche' ha budget e il costruttore non dice stop */
               }
             }
           }
