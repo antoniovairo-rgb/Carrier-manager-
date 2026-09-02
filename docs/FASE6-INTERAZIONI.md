@@ -17,11 +17,16 @@ successivo ma non è vero!». Misure fatte, rimedi pianificati; si esegue nel bl
    qualifica 1-3 carte → rotazione percepita di 4-6 per stagione.
 
 ## Rimedi (ordine di esecuzione del blocco)
-A. **L'ASSIST NON È MAI UN DECRETO**: estendere la regola aerea a ogni famiglia — consegna ⇒
-   `chance` + secondo tempo SEMPRE (via `_chance78`→pendingChainSit, plumbing esistente r.6118);
-   il gol si dichiara solo alla palla-in-rete della catena. PRIMA: audit dell'economia
-   (chi accredita l'assist quando segna il compagno nella catena — il ramo aereo lo fa già:
-   fireGoalCeleb by:'mate'; mischia/second_ball da verificare). Rosso NO720.
+A. **L'ASSIST NON È MAI UN DECRETO** — disegno chiuso dall'audit economia (02/09 h8):
+   le catene esistenti (CHAIN_SITS, 13-prepartita r.1206) sono TUTTE eroe-centriche — ogni
+   azione dà goal/assist all'EROE, non esiste un secondo tempo dove il compagno conclude:
+   convertire gli assist a quelle catene affamerebbe la statistica. La via giusta RIUSA il
+   piano: assist riuscito ⇒ MINI-PIANO «conclusione del compagno» (2 righe: ricezione del
+   compagno nominato + suo tiro, reazione GK 695, palla DAVVERO in rete con la custodia 693),
+   esito PRE-DECISO dal roll già vinto ⇒ economia identica (assist accreditato alla rete vera,
+   festa e punteggio alla palla-in-rete), verità totale, eroe protagonista della storia senza
+   esserlo di ogni tocco (§6). Se il roll era fallito niente decreto inverso: l'esito fallito
+   dell'assist resta com'è (intercetto/appoggio sbagliato). Rosso NO720.
 B. **LE CONSEGUENZE TOCCANO IL CAMPO**: ora che il Match State esiste (7.711), le scelte scrivono
    su di lui e il campo risponde — v1: `zona` sposta l'ancora di corsia dell'eroe (visibile),
    `marcatura` modula la distanza del marcatore nel deployment (misurabile col censimento marks
