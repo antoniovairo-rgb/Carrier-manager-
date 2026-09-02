@@ -269,7 +269,7 @@ function ThreeMatchView(props){
        allo stadio: una sola fonte, cosi' il muretto non puo' dire una competizione diversa dal resto. */
     const _cmpLbl301=String(props.competitionLabel||club?.lg||"CAMPIONATO").toUpperCase();
     const _cmpCol301=props.competitionColor||(/coppa|cup|champions|europa|conference|continental/i.test(_cmpLbl301)?"#f5c542":/mondiale|europeo|nazional/i.test(_cmpLbl301)?"#34d399":"#d27f8c");
-    try{const _sc=buildStadium(scene,sHome,sAway,{comp:{lbl:_cmpLbl301,col:_cmpCol301},prestige:club.p||club.prestige||65,style:stadiumStyle,floodColor:pal.flood,crowd:_crowdCtx,isDesktop,tpl:(function(){let _c=(_crowdCtx&&_crowdCtx.stadiumTpl)||((typeof stadiumConfigFor==="function")?stadiumConfigFor(club):null);// [5.89.0 S3] config con evoluzione/atmo dal LiveMatch
+    try{/* [7.732.0 — IL CAMBIO CAMPO SI VEDE: LO STADIO GIRA ALLA RIPRESA. Rosso __CPM_NO732] Collaudo PO 02/09 «non avviene il cambio campo», scelta A. Il frame di gioco e' eroe-centrico (l'eroe attacca sempre verso x 97, la camera sta sempre dietro la sua direzione d'attacco): con questa regia il cambio campo VISIBILE e' lo stadio che si scambia le curve dietro le porte — il 7.561 ruotava di 180 gradi solo la camera del flusso, e negli highlight l'eroe attaccava sempre la stessa curva. Ora TUTTO lo stadio (tribune, curve, striscioni, bandiere, tabelloni) vive in un gruppo-radice che alla ripresa ruota di 180 gradi intorno al centro: pallone, ventidue, eroe, archi e camere restano nel loro frame, la simulazione non e' toccata. */const _root732=(sr.current.stadiumRoot=sr.current.stadiumRoot||(function(){const g=new THREE.Group();g.name='stadiumRoot732';scene.add(g);return g;})());const _sc=buildStadium(_root732,sHome,sAway,{comp:{lbl:_cmpLbl301,col:_cmpCol301},prestige:club.p||club.prestige||65,style:stadiumStyle,floodColor:pal.flood,crowd:_crowdCtx,isDesktop,tpl:(function(){let _c=(_crowdCtx&&_crowdCtx.stadiumTpl)||((typeof stadiumConfigFor==="function")?stadiumConfigFor(club):null);// [5.89.0 S3] config con evoluzione/atmo dal LiveMatch
       // [5.88.0 S2] hook di COLLAUDO template (test-only, spento nella build store): window.__CPM_STADIUM_TPL_FORCE
       if(_c&&typeof window!=="undefined"&&!window.__CPM_STORE_BUILD&&window.__CPM_STADIUM_TPL_FORCE&&STADIUM_TEMPLATES[window.__CPM_STADIUM_TPL_FORCE]){
         const _ft=STADIUM_TEMPLATES[window.__CPM_STADIUM_TPL_FORCE];
@@ -711,7 +711,7 @@ function ThreeMatchView(props){
     // rotation.x SEMPRE -0.5 (bordo alto inclinato verso il campo → la camera alta legge la faccia); rotation.y
     //   orienta la faccia FRONTALE verso il campo così il testo non è specchiato (z<0 → +z guarda il campo → rotY=0;
     //   z>0 → -z guarda il campo → rotY=π). y=3.2 = poggia sul parapetto della prima fila, non fluttua.
-    const _mkFacadeBoard=(x,z,rotY,k,w)=>{const _bi=(_adSeed44+k*13+11)%AD_BRANDS.length;const m=new THREE.Mesh(new THREE.PlaneGeometry(w,3.2),new THREE.MeshBasicMaterial({map:_mkBrandTex(AD_BRANDS[_bi],_adSeed44+k+5),side:THREE.DoubleSide,transparent:true,opacity:0.97}));m.position.set(x,3.2,z);m.rotation.y=rotY;m.rotation.x=-0.5;m.renderOrder=6;scene.add(m);};
+    const _mkFacadeBoard=(x,z,rotY,k,w)=>{const _bi=(_adSeed44+k*13+11)%AD_BRANDS.length;const m=new THREE.Mesh(new THREE.PlaneGeometry(w,3.2),new THREE.MeshBasicMaterial({map:_mkBrandTex(AD_BRANDS[_bi],_adSeed44+k+5),side:THREE.DoubleSide,transparent:true,opacity:0.97}));m.position.set(x,3.2,z);m.rotation.y=rotY;m.rotation.x=-0.5;m.renderOrder=6;(sr.current.stadiumRoot||scene).add(m);};
     // [7.125.0 collaudo PO «i cartelloni con gli sponsor fake devono essere in PRIMA fila e non nella eventuale
     //   SECONDA fila»] la fascia LED rialzata sul fronte delle tribune (facade, 2ª fila, 7.119.0) DOMINAVA la
     //   scena della SOSTITUZIONE (camera bassa vicino al dugout → si vedeva la faccia POSTERIORE del board = testo
@@ -889,7 +889,7 @@ function ThreeMatchView(props){
       const piv=new THREE.Group();piv.position.set(0,4.0,0);
       const fl=new THREE.Mesh(new THREE.PlaneGeometry(2.4,1.4),new THREE.MeshBasicMaterial({map:tex,side:THREE.DoubleSide}));
       const _fsc=0.86+((Math.abs(Math.round(x*7+z*13))+_tifoSeed)%7)*0.045;fl.scale.set(_fsc,_fsc,1);
-      fl.position.set(1.2*_fsc,0,0);piv.add(fl);fg.add(piv);fg._fl=piv;fg._home=home!==undefined?home:(tex===_fhTex);fg.position.set(x,0,z);scene.add(fg);flagGroups.push(fg);};// 5.45.2: tag lato
+      fl.position.set(1.2*_fsc,0,0);piv.add(fl);fg.add(piv);fg._fl=piv;fg._home=home!==undefined?home:(tex===_fhTex);fg.position.set(x,0,z);(sr.current.stadiumRoot||scene).add(fg);flagGroups.push(fg);};// 5.45.2: tag lato
     // CROWD 2.0 (§5/§7/§8): la SCENOGRAFIA tifo (bandiere/striscioni/sciarpe) segue il contesto folla —
     // niente coreografie a stadio freddo/vuoto (provini/amichevoli scarse); il lato ospite dipende da awayFill.
     /* [7.573.0 collaudo PO «gli striscioni, sciarpe e bandiere della tifoseria ospite non ci sono» — rosso
@@ -1037,7 +1037,7 @@ function ThreeMatchView(props){
         const stexG=_mkLed662("⚽ GOL!   ⚽ GOL!   ⚽ GOL!   ","#7dff8a");
         const _matL=new THREE.MeshBasicMaterial({map:stexL,side:THREE.FrontSide,transparent:true,opacity:0.98,depthWrite:false});
         const smL=new THREE.Mesh(new THREE.PlaneGeometry(ledW||14,ledH||1.6),_matL);
-        smL.position.set(cx,yPos!=null?yPos:5.5,z);smL.rotation.y=rotY;scene.add(smL);
+        smL.position.set(cx,yPos!=null?yPos:5.5,z);smL.rotation.y=rotY;(sr.current.stadiumRoot||scene).add(smL);
         /* i loghi fissi: quadrati coi colori e la sigla del club, ai due capi del pannello */
         /* [7.668.0 collaudo PO «il logo deve essere disegnato meglio»] DA QUADRATO A SCUDETTO. Era un
            riquadro piatto con tre lettere: adesso e' un crest — sagoma a scudo, banda diagonale col
@@ -1064,10 +1064,10 @@ function ThreeMatchView(props){
         for(const _sx668 of [-_lw662,_lw662]){const _pl=new THREE.Mesh(new THREE.PlaneGeometry(3.2,(ledH||1.6)*1.35),
             new THREE.MeshBasicMaterial({color:0x07090c,side:THREE.FrontSide,transparent:true,opacity:0.97,depthWrite:false}));
           const _ca8=Math.cos(rotY),_sa8=Math.sin(rotY);
-          _pl.position.set(cx+_sx668*_ca8,yPos!=null?yPos:5.5,z-_sx668*_sa8);_pl.rotation.y=rotY;scene.add(_pl);}
+          _pl.position.set(cx+_sx668*_ca8,yPos!=null?yPos:5.5,z-_sx668*_sa8);_pl.rotation.y=rotY;(sr.current.stadiumRoot||scene).add(_pl);}
         for(const _sx662 of [-_lw662,_lw662]){const _lg=new THREE.Mesh(new THREE.PlaneGeometry(2.5,2.8),new THREE.MeshBasicMaterial({map:_mkLogo662(_sig662,(typeof stadiumHomeCol!=='undefined'&&stadiumHomeCol)||"#1b2436","#ffffff"),side:THREE.FrontSide,transparent:true,opacity:0.98,depthWrite:false}));
           const _ca=Math.cos(rotY),_sa=Math.sin(rotY);
-          _lg.position.set(cx+_sx662*_ca+Math.sin(rotY)*0.06,yPos!=null?yPos:5.5,z-_sx662*_sa+Math.cos(rotY)*0.06);_lg.rotation.y=rotY;_lg.renderOrder=7;scene.add(_lg);}
+          _lg.position.set(cx+_sx662*_ca+Math.sin(rotY)*0.06,yPos!=null?yPos:5.5,z-_sx662*_sa+Math.cos(rotY)*0.06);_lg.rotation.y=rotY;_lg.renderOrder=7;(sr.current.stadiumRoot||scene).add(_lg);}
         (sr.current._led657=sr.current._led657||[]).push({tex:stexL,texGol:stexG,mat:_matL});return;}
       sx.fillStyle=_dkTifo(c1Hex,0.42);sx.fillRect(0,0,1024,110);
       const _fg=sx.createLinearGradient(0,0,0,110);_fg.addColorStop(0,"rgba(255,255,255,0.10)");_fg.addColorStop(1,"rgba(0,0,0,0.22)");sx.fillStyle=_fg;sx.fillRect(0,0,1024,110);
@@ -1075,7 +1075,7 @@ function ThreeMatchView(props){
       if(text){let fs=62;sx.font="900 "+fs+"px Arial, sans-serif";const mw=850;let w=sx.measureText(text).width;if(w>mw){fs=Math.max(30,Math.floor(fs*mw/w));sx.font="900 "+fs+"px Arial, sans-serif";}
         sx.textAlign="center";sx.textBaseline="middle";sx.lineWidth=9;sx.lineJoin="round";sx.strokeStyle="rgba(0,0,0,0.6)";sx.strokeText(text,512,57);sx.fillStyle="#f4f4f6";sx.fillText(text,512,57);
         sx.fillStyle=c2Hex;[64,960].forEach(x0=>{sx.save();sx.translate(x0,55);sx.rotate(Math.PI/4);sx.fillRect(-14,-14,28,28);sx.restore();});}
-      const stex=new THREE.CanvasTexture(sc);const sm=new THREE.Mesh(new THREE.PlaneGeometry(30,3.4),new THREE.MeshBasicMaterial({map:stex,side:THREE.FrontSide,transparent:true,opacity:0.97,depthWrite:false}));/* [7.171.0] FrontSide: da dietro (camera set-piece oltre la curva) il retro mostrava la scritta SPECCHIATA */sm.position.set(cx,yPos!=null?yPos:5.5,z);sm.rotation.y=rotY;scene.add(sm);};
+      const stex=new THREE.CanvasTexture(sc);const sm=new THREE.Mesh(new THREE.PlaneGeometry(30,3.4),new THREE.MeshBasicMaterial({map:stex,side:THREE.FrontSide,transparent:true,opacity:0.97,depthWrite:false}));/* [7.171.0] FrontSide: da dietro (camera set-piece oltre la curva) il retro mostrava la scritta SPECCHIATA */sm.position.set(cx,yPos!=null?yPos:5.5,z);sm.rotation.y=rotY;(sr.current.stadiumRoot||scene).add(sm);};
     /* [7.658.0 - IL CARTELLONE COL NOME DELLO STADIO, PICCOLO E A LED. Precisazione PO (collaudo):
        «non gli striscioni/cartelloni dei tifosi devono essere led piccoli ma il cartellone con il
        nome dello stadio, es. Stadio Meneghino dei Rossoneri». Il nome VERO arriva dalla prop
@@ -1192,7 +1192,7 @@ function ThreeMatchView(props){
       const _zj84=((Math.abs(Math.round(z*13+x*7))+_tifoSeed)%5)-2;/* [7.184.0 collaudo PO «sciarpe e bandiere sparse in TUTTA la curva»] jitter z seedato ±2 → niente griglia regolare/ammassi */
       fg.position.set(x,yv||0,z+_zj84);
       fg.rotation.y=(x>=0)?-Math.PI/2:Math.PI/2;/* [7.171.0] la STOFFA guarda il CAMPO: i piani senza rotazione erano DI TAGLIO per la camera broadcast (si vedevano solo le aste = «palette») */
-      scene.add(fg);flagGroups.push(fg);};// 5.45.2: tag lato
+      (sr.current.stadiumRoot||scene).add(fg);flagGroups.push(fg);};// 5.45.2: tag lato
     // [7.125.0 collaudo PO «le coreografie non devono essere sempre uguali, alternanza anche in base all'importanza»]
     //   TIER COREOGRAFICO (1-3) da IMPORTANZA della gara (mw/finale/derby/big) + intensità folla + SEED per-match:
     //   tier1 = curva SOBRIA (1 fila bandiere · 3 file sciarpe · NIENTE telo · niente ola); tier2 = +2ª fila bandiere,
@@ -1254,7 +1254,7 @@ function ThreeMatchView(props){
       const _sw84=(typeof _scW==="number"&&_scW>0)?_scW:26;
       const tex=_mkScarfTex535(c1Hex,c2Hex,Math.max(0.25,Math.round((_sw84/26)*4)/4));/* [7.184.0] striscia allargabile a TUTTA la curva: celle-sciarpa a taglia costante via repeat · [7.535.0] repeat quantizzato = texture condivisa */
       const m=new THREE.Mesh(new THREE.PlaneGeometry(_sw84,1.7),new THREE.MeshBasicMaterial({map:tex,side:THREE.DoubleSide,transparent:true,opacity:0.9,depthWrite:false}));
-      m.position.set(x,y||3.0,z);m.rotation.y=rotY;m._home=(c1Hex===_tHCol);m._baseY=y||3.0;scene.add(m);scarfMs.push(m);};// 5.45.2: tag lato + baseY · [6.5.1] tag su colore sociale
+      m.position.set(x,y||3.0,z);m.rotation.y=rotY;m._home=(c1Hex===_tHCol);m._baseY=y||3.0;(sr.current.stadiumRoot||scene).add(m);scarfMs.push(m);};// 5.45.2: tag lato + baseY · [6.5.1] tag su colore sociale
     // [7.124.0] MURO DI SCIARPE più alto: 5 file a quote diverse per curva + 2 sulla tribuna casa · gate dal contesto (§7/§8)
     //   l'onda è coordinata nel render-loop (traveling wave verticale → il muro ondeggia insieme)
     /* [7.185.0] SCIARPATE lungo la pendenza: ogni fila sta SULLA gradinata (x,y dal profilo reale della curva),
@@ -1289,7 +1289,7 @@ function ThreeMatchView(props){
       return new THREE.CanvasTexture(tc);};
     const _mkTelo=(x,z,rotY,c1Hex,c2Hex,label,isHome)=>{const w=30,h=7;const geo=new THREE.PlaneGeometry(w,h,20,6);
       const m=new THREE.Mesh(geo,new THREE.MeshBasicMaterial({map:_mkTeloTex(c1Hex,c2Hex,label),side:THREE.FrontSide,transparent:true,opacity:0.97,depthWrite:false})/* [7.171.0] il telo a 0.9 leggeva come lastra slavata sopra la folla */);
-      m.position.set(x,4.8,z);/* [7.171.0] telo più basso (sopra la folla bassa) → lo striscione del gruppo vive sull anello alto senza sovrapporsi */m.rotation.y=rotY;m._home=isHome;m._base=geo.attributes.position.array.slice();scene.add(m);teloMs.push(m);};
+      m.position.set(x,4.8,z);/* [7.171.0] telo più basso (sopra la folla bassa) → lo striscione del gruppo vive sull anello alto senza sovrapporsi */m.rotation.y=rotY;m._home=isHome;m._base=geo.attributes.position.array.slice();(sr.current.stadiumRoot||scene).add(m);teloMs.push(m);};
     // [7.125.0] TELO solo tier≥2 (le partite sobrie NON hanno il drappo → alternanza per importanza); la scritta
     //   ALTERNA per seed tra abbreviazione del club, una parola-coro e solo-colori → varia tra una partita e l'altra.
     const _teloWords=["ULTRAS","FEDELI","ORGOGLIO","CUORE","LA NOSTRA CASA"];
@@ -6337,7 +6337,9 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
            180 gradi (x e z, cosi' e' una rotazione e non uno specchio: le tribune si scambiano di posto
            invece di ribaltarsi) e il risultato si riporta indietro. La simulazione non viene toccata.
            __CPM_NO561 = rosso: camera del 7.560, nessun cambio campo. */
-        const _r561=!(typeof window!=='undefined'&&window.__CPM_NO561)&&P.matchPhase==="playing"&&!P.ceremony&&!P.shootout&&!replaying;
+        const _mir732=!(typeof window!=='undefined'&&window.__CPM_NO732)&&P.half===2;/* [7.732.0] alla ripresa lo stadio ruota di 180 gradi (vedi buildStadium): la camera NON ruota piu' col 7.561, altrimenti l'eroe attaccherebbe verso lo spettatore */
+        {const _rt=sr.current.stadiumRoot;if(_rt){const _ty=_mir732?Math.PI:0;if(Math.abs(_rt.rotation.y-_ty)>1e-6)_rt.rotation.y=_ty;}if(typeof window!=='undefined'&&window.__CPM_REC){try{window.__CPM_MIR732={half:P.half,rot:_rt?+_rt.rotation.y.toFixed(3):null,on:_mir732?1:0};}catch(_e){}}}
+        const _r561=!(typeof window!=='undefined'&&window.__CPM_NO561)&&!_mir732&&P.matchPhase==="playing"&&!P.ceremony&&!P.shootout&&!replaying;
         const _m561=(_r561&&P.half===2)?-1:1;/* +1 primo tempo · -1 ripresa (rotazione di 180°) */
         const bxq=bx*_m561,bzq=bz*_m561,axq=ax*_m561,azq=az*_m561;/* coordinate canoniche: la camera sta sempre dietro la porta a x negativo */
         const _bAttk=P.matchPhase==="playing"?clamp(Math.abs(bxq)/42,0,1):0;/* [6.76.0 LMV-C2] zoom SIMMETRICO: prima solo bx>0 → quando l'avversario attaccava la porta di casa niente zoom e fuoco clampato a -8 mentre l'azione era a -46 (difesa sotto-inquadrata) */
