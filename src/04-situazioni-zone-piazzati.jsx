@@ -244,7 +244,7 @@ S("🦶 Fascia chiusa — cross difficile, angolo stretto!",["trequarti","bordo"
 
 /* === NUOVE SITUATIONS SPRINT 27 === */
 /* Tiro da 30 metri */
-S("💥 Tiro da 30 metri! Nessuno si aspetta questa scelta.",["trequarti","centro"],{x:[55,72],y:[25,75]},{x:[58,68],y:[30,70]},[
+S("💥 Tiro da 30 metri! Nessuno si aspetta questa scelta.",["trequarti","centro"],{x:[55,72],y:[25,75]},{x:[68,76],y:[30,70]},[/* [7.751.0 collaudo PO «tiri da distanza siderale»: la partenza sta a portata del testo (30 m ≈ x 71) */
   A("💥 Botta col collo pieno","tiro",-12,"goal","miss",16),A("🎯 Destro rasoterra","tiro",-8,"goal","miss",14),A("🔄 Serve in area","passaggio",5,"assist","intercept",8)],false,-1,"","off",null,{pressure:"none",support:2,nearby_def:0,lanes:["central_run"]}),
 /* Colpo di testa difensivo */
 S("✈️ Cross avversario in area! Allontana!",["propria","difesa"],{x:[8,24],y:[20,80]},{x:[10,20],y:[30,70]},[
@@ -405,7 +405,7 @@ S("🕳️ Palla al buco tra i centrali!",["trequarti"],{x:[55,78],y:[25,75]},{x
   A("🕳️ Filtrante tra i centrali","passaggio",9,"assist","intercept",12),A("💥 Tiro dal limite invece","tiro",-5,"goal","miss",14),A("⚡ Avanza tu stesso","velocità",4,"goal","intercept",16)],false,-1,"","off",null,{pressure:"low",support:2,nearby_def:0,lanes:["through_ball_lane"]}),
 S("✈️ Spizzata aerea per il compagno!",["trequarti","bordo"],{x:[55,84],y:[25,75]},{x:[58,74],y:[30,70]},[
   A("✈️ Spizzata di testa","fisico",5,"assist","intercept",11),A("🎯 Colpo di testa mirato","fisico",3,"assist","miss",10),A("🔙 Retropassaggio per riorganizzare","passaggio",2,"assist","intercept",6)],false,-1,"","off",null,{pressure:"medium",support:2,nearby_def:1,lanes:["central_run"],bs:"aerial"}),
-S("🎯 Stop e tiro fulmineo!",["trequarti","bordo"],{x:[60,82],y:[25,75]},{x:[62,76],y:[30,70]},[
+S("🎯 Stop e tiro fulmineo!",["trequarti","bordo"],{x:[60,82],y:[25,75]},{x:[68,78],y:[30,70]},[/* [7.751.0 collaudo PO «tiri da distanza siderale»: la partenza sta a portata del testo (30 m ≈ x 71) */
   A("🎯 Stop e tiro preciso","tecnica",5,"goal","miss",14),A("💥 Prima intenzione senza stop","tiro",2,"goal","miss",13),A("↩️ Controlla e serve","passaggio",4,"assist","intercept",8)],false,-1,"","off",null,{pressure:"medium",support:1,nearby_def:1,lanes:[]}),
 S("🏃 Fai il velo per il compagno!",["trequarti","bordo"],{x:[58,84],y:[22,78]},{x:[60,74],y:[28,72]},[
   A("🏃 Faccio il velo e attacco","posizionamento",5,"goal","intercept",16),A("↩️ Ricevo dopo il velo","passaggio",6,"assist","intercept",10),A("⚡ Scatto oltre il velo","velocità",4,"goal","intercept",14)],false,-1,"","off",null,{pressure:"medium",support:2,nearby_def:1,lanes:["central_run"]}),
@@ -431,7 +431,7 @@ S("🦶 Tacco al limite! Colpo di classe.",["bordo","trequarti"],{x:[62,84],y:[2
   A("🌀 Tiro a giro sul secondo palo","tecnica",-3,"goal","miss",20),A("🦵 Tiro interno piede classico","tiro",3,"goal","miss",13),A("↩️ Tacco per il compagno libero","passaggio",4,"assist","intercept",10)],false,-1,"","off",null,{pressure:"medium",support:2,nearby_def:1,lanes:[]}),
 S("💡 Smarcamento improvviso!",["trequarti","bordo"],{x:[55,84],y:[22,78]},{x:[58,72],y:[28,72]},[
   A("💡 Finta e scarta il difensore","dribbling",6,"goal","intercept",16),A("⚡ Taglio improvviso diagonale","velocità",5,"goal","intercept",14),A("🎯 Schema concordato coi compagni","passaggio",6,"assist","intercept",10)],false,-1,"","off",null,{pressure:"medium",support:2,nearby_def:1,lanes:[]}),
-S("🎯 Taglio diagonale e tiro!",["trequarti","bordo"],{x:[58,86],y:[22,78]},{x:[60,74],y:[28,72]},[
+S("🎯 Taglio diagonale e tiro!",["trequarti","bordo"],{x:[58,86],y:[22,78]},{x:[66,76],y:[28,72]},[/* [7.751.0 collaudo PO «tiri da distanza siderale»: la partenza sta a portata del testo (30 m ≈ x 71) */
   A("🎯 Taglio diagonale e tiro","velocità",6,"goal","intercept",18),A("🌀 Dribbling dopo il taglio","dribbling",4,"goal","intercept",14),A("↩️ Appoggio per il compagno","passaggio",4,"assist","intercept",8)],false,-1,"","off",null,{pressure:"medium",support:1,nearby_def:1,lanes:[]}),
 
 /* CENTROCAMPO — AVANZATO */
@@ -543,7 +543,7 @@ S("🦵 Controbalzo improvviso in area!",["area","bordo"],{x:[74,96],y:[22,78]},
   A("🦵 Controbalzo secco al volo","tiro",7,"goal","miss",15),A("🎯 Controllo e tira","tecnica",5,"goal","miss",13),A("↩️ Serve il compagno","passaggio",3,"assist","intercept",8)],false,-1,"","off",null,{pressure:"high",support:1,nearby_def:2,lanes:[],bs:"aerial"}),
 S("🛡️ Ultimo uomo! Devi fermare l'avversario.",["propria","difesa"],{x:[5,28],y:[20,80]},{x:[8,22],y:[30,70]},[
   A("🛡️ Tackle duro — rischio rosso","fisico",10,"recovery","foul",16),A("⚡ Sprint laterale preventivo","velocità",7,"recovery","through",14),A("📣 Guida i compagni e copri","mentalità",5,"recovery","through",10)],false,2,"🚨 Sei l'ultimo! Se passa, è gol sicuro.","def",null,{pressure:"high",support:0,nearby_def:1,lanes:[]}),
-S("😱 Il portiere è fuori dai pali! Tira da lontano.",["trequarti","bordo"],{x:[55,78],y:[28,72]},{x:[58,70],y:[32,68]},[
+S("😱 Il portiere è fuori dai pali! Tira da lontano.",["trequarti","bordo"],{x:[55,78],y:[28,72]},{x:[62,72],y:[32,68]},[/* [7.751.0 collaudo PO «tiri da distanza siderale»: la partenza sta a portata del testo (30 m ≈ x 71) */
   A("💥 Tiro da distanza sul palo lontano","tiro",5,"goal","miss",16),A("🎯 Pallonetto morbido — gol dell'anno","tecnica",3,"goal","miss_easy",14),A("🎯 Assist per il compagno in area","passaggio",6,"assist","intercept",10)],false,-1,"","off",null,{pressure:"medium",support:1,nearby_def:1,lanes:[]}),
 S("🔥 CI CREDIAMO! La rimonta è iniziata.",["bordo","area"],{x:[72,96],y:[22,78]},{x:[74,88],y:[28,72]},[
   A("🔥 Tiro di rabbia — per i tifosi","tiro",6,"goal","miss",16),A("💥 Potenza esplosiva dal limite","tiro",2,"goal","miss",14),A("🌟 Assist da campione","passaggio",7,"assist","intercept",12)],false,3,"🔥 La rimonta è viva. Un gol adesso e tutto è possibile!","special","losing",{pressure:"medium",support:1,nearby_def:1,lanes:[]}),
@@ -570,7 +570,7 @@ S("🏃 Accelerazione sulla fascia — il recupero avversario è lento!",["fasci
    sbagliato) e `bs:"feet"` (palla a terra → invarianti aerei CINE non toccati). */
 S("↩️ Uno-due in verticale — dai e vai!",["trequarti","centro"],{x:[50,80],y:[30,70]},{x:[54,68],y:[35,65]},[
   A("↩️ Dai e vai in verticale","passaggio",6,"assist","intercept",12),A("⚡ Scatta dopo lo scarico","velocità",5,"goal","intercept",14),A("🔺 Triangolo stretto e servi","tecnica",5,"assist","intercept",10)],false,-1,"","off",null,{pressure:"medium",support:3,nearby_def:1,lanes:["central_run"],bs:"feet",it:"onetwo"}),
-S("🔺 Triangolo al limite — combina e concludi!",["bordo","trequarti"],{x:[58,82],y:[32,68]},{x:[60,74],y:[36,64]},[
+S("🔺 Triangolo al limite — combina e concludi!",["bordo","trequarti"],{x:[58,82],y:[32,68]},{x:[68,78],y:[36,64]},[/* [7.751.0 collaudo PO «tiri da distanza siderale»: la partenza sta a portata del testo (30 m ≈ x 71) */
   A("🔺 Combinazione stretta e tiro","tecnica",4,"goal","miss",14),A("↩️ Scarico e ricevi in area","passaggio",6,"assist","intercept",11),A("⚡ Parete e inserimento centrale","velocità",5,"goal","intercept",13)],false,-1,"","off",null,{pressure:"medium",support:2,nearby_def:2,lanes:["central_run"],bs:"feet",it:"onetwo"}),
 S("↔️ Cambio di gioco — ribalta sul lato debole!",["centro","trequarti"],{x:[40,68],y:[30,70]},{x:[44,60],y:[35,65]},[
   A("↔️ Lancio diagonale a cambiare fronte","passaggio",7,"assist","intercept",12),A("🎯 Apri il gioco sull'esterno smarcato","tecnica",5,"assist","intercept",10),A("⚡ Guida e sposta il pallone di lato","velocità",4,"assist","nothing",9)],false,-1,"","off",null,{pressure:"low",support:3,nearby_def:1,lanes:["overlap_right","overlap_left"],bs:"feet",it:"switch"}),

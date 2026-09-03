@@ -1075,7 +1075,7 @@ function ThreeMatchView(props){
       if(text){let fs=62;sx.font="900 "+fs+"px Arial, sans-serif";const mw=850;let w=sx.measureText(text).width;if(w>mw){fs=Math.max(30,Math.floor(fs*mw/w));sx.font="900 "+fs+"px Arial, sans-serif";}
         sx.textAlign="center";sx.textBaseline="middle";sx.lineWidth=9;sx.lineJoin="round";sx.strokeStyle="rgba(0,0,0,0.6)";sx.strokeText(text,512,57);sx.fillStyle="#f4f4f6";sx.fillText(text,512,57);
         sx.fillStyle=c2Hex;[64,960].forEach(x0=>{sx.save();sx.translate(x0,55);sx.rotate(Math.PI/4);sx.fillRect(-14,-14,28,28);sx.restore();});}
-      const stex=new THREE.CanvasTexture(sc);const sm=new THREE.Mesh(new THREE.PlaneGeometry(30,3.4),new THREE.MeshBasicMaterial({map:stex,side:THREE.FrontSide,transparent:true,opacity:0.97,depthWrite:false}));/* [7.171.0] FrontSide: da dietro (camera set-piece oltre la curva) il retro mostrava la scritta SPECCHIATA */sm.position.set(cx,yPos!=null?yPos:5.5,z);sm.rotation.y=rotY;(sr.current.stadiumRoot||scene).add(sm);};
+      const stex=new THREE.CanvasTexture(sc);const sm=new THREE.Mesh(new THREE.PlaneGeometry(ledW||30,3.4),/* [7.751.0 collaudo PO «gli striscioni in tribuna si accavallano»: due drappi larghi 30 con i centri a ±12 si coprivano per 6u — la larghezza ora e' un parametro, e la tribuna lunga li chiede a 23 */new THREE.MeshBasicMaterial({map:stex,side:THREE.FrontSide,transparent:true,opacity:0.97,depthWrite:false}));/* [7.171.0] FrontSide: da dietro (camera set-piece oltre la curva) il retro mostrava la scritta SPECCHIATA */sm.position.set(cx,yPos!=null?yPos:5.5,z);sm.rotation.y=rotY;(sr.current.stadiumRoot||scene).add(sm);};
     /* [7.658.0 - IL CARTELLONE COL NOME DELLO STADIO, PICCOLO E A LED. Precisazione PO (collaudo):
        «non gli striscioni/cartelloni dei tifosi devono essere led piccoli ma il cartellone con il
        nome dello stadio, es. Stadio Meneghino dei Rossoneri». Il nome VERO arriva dalla prop
@@ -1116,8 +1116,8 @@ function ThreeMatchView(props){
     const _muroD=(home)=>((_cg185?(home?_cg185.depthHome:_cg185.depthAway):16)+3)/2;
     const _muroX=(home)=>home?(_sideX-_muroD(true)-0.14):(-_sideX+_muroD(false)+0.14),_muroY=2.42;/* centrato sul muro ma sopra i cartelloni (alti ~1.3): appeso al parapetto e interamente leggibile */
     const _trZ=_cg185?Math.max(34.2,_cg185.endZ-(_cg185.depthEnd+3)/2-0.14):(_fez-3);
-    if(_tifoHome){_mkStriscione(-12,-_trZ,0,_tHCol,_hc2,_ultrasName(_stadHN,_tifoSeed,0,_stadHNat,_stadHId),_muroY);_mkStriscione(12,-_trZ,0,_tHCol,_hc2,_ultrasName(_stadHN,_tifoSeed,1,_stadHNat,_stadHId),_muroY);/* [7.658.0 REVOCA della 7.657: «non gli striscioni dei tifosi» (parole PO) — i drappi ultras tornano stoffa com'erano; il LED e' del cartellone col NOME DELLO STADIO qui sotto */
-      _mkStriscione(-12,_trZ,Math.PI,_tHCol,_hc2,_ultrasName(_stadHN,_tifoSeed,2,_stadHNat,_stadHId),_muroY);_mkStriscione(12,_trZ,Math.PI,_tHCol,_hc2,_ultrasName(_stadHN,_tifoSeed,3,_stadHNat,_stadHId),_muroY);}
+    if(_tifoHome){_mkStriscione(-12,-_trZ,0,_tHCol,_hc2,_ultrasName(_stadHN,_tifoSeed,0,_stadHNat,_stadHId),_muroY,false,23);_mkStriscione(12,-_trZ,0,_tHCol,_hc2,_ultrasName(_stadHN,_tifoSeed,1,_stadHNat,_stadHId),_muroY,false,23);/* [7.658.0 REVOCA della 7.657: «non gli striscioni dei tifosi» (parole PO) — i drappi ultras tornano stoffa com'erano; il LED e' del cartellone col NOME DELLO STADIO qui sotto */
+      _mkStriscione(-12,_trZ,Math.PI,_tHCol,_hc2,_ultrasName(_stadHN,_tifoSeed,2,_stadHNat,_stadHId),_muroY,false,23);_mkStriscione(12,_trZ,Math.PI,_tHCol,_hc2,_ultrasName(_stadHN,_tifoSeed,3,_stadHNat,_stadHId),_muroY,false,23);}
     /* [7.562.0 richiesta PO «puoi togliere quel tabellone dalla tribuna est con il nome della competizione»]
        RIMOSSO — item 8 (5.49.2), il CARTELLONE COMPETIZIONE sulla tribuna est: un pannello 40x9,4 sospeso a
        quota 10,5 e a z = tribuna-3,4, cioe' DENTRO il volume dello stadio, non appoggiato alla struttura.
