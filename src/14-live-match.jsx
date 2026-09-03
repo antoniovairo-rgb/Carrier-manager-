@@ -1614,7 +1614,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
      nominati, la palla che punta il ricevente (non una zona vuota) e il ricevente che le va incontro.
      E' il primo pezzo del linguaggio Beat: l'evento porta gia' actor/ballEnd veri dal canale MP-0 e il
      gesto dal vocabolario MP-1, quindi il 3D segue la stessa catena che il testo racconta. */
-  const azioneRef=useRef(null),_lastCatRef=useRef(-1);const lastPass738Ref=useRef(-99);const lastFatto739Ref=useRef(-99);/* [7.739.0] minuto dell'ultima riga-fatto (ritmo 4') *//* [7.738.0] tick dell'ultimo passaggio eseguito dalla decisione *//* [7.537.0 v4] minuto dell'ultima battuta di catena: serve per alternare con il repertorio */
+  const azioneRef=useRef(null),_lastCatRef=useRef(-1);const lastPass738Ref=useRef(-99);const raccogliRef743=useRef(null);/* [7.743.0] chi va a prendere il pallone fermo: {i,t} */const lastFatto739Ref=useRef(-99);/* [7.739.0] minuto dell'ultima riga-fatto (ritmo 4') *//* [7.738.0] tick dell'ultimo passaggio eseguito dalla decisione *//* [7.537.0 v4] minuto dell'ultima battuta di catena: serve per alternare con il repertorio */
   const ponteRef=useRef(null),ponteIdxRef=useRef(-1);/* [7.532.0 NO544 — collaudo PO «da centrocampo in cronaca all'improvviso highlights di attacco: nessuna concatenazione»] IL PONTE: ~2' prima dell'highlight in calendario la cronaca SCORTA la palla verso il punto di nascita della scena (hlBallSpot della situation in arrivo) e le righe raccontano l'avvicinamento — l'highlight si apre dove il racconto ha portato il gioco *//* [7.532.0 v2] l'innesco vive nella TRAMA (flip di possesso con palla nel terzo difensivo del nuovo padrone), NON nel sorteggio di una riga poss: i pesi di zona 7.525 schiacciano le righe di recupero proprio quando la palla e' alta (misurato: 0 lanci in 2 partite). Cooldown 6' di gioco. *//* [7.530.0 collaudo PO «Non si riparte dal centro dopo un gol!» — rosso __CPM_NO536] il 7.525 toccava il centro per UN tick (300ms): un lampo, non una ripartenza. Ora allo scadere del conto kickRef nasce una RIPARTENZA RECITATA: kickoffRef tick di attesa al centro, le righe gia' sorteggiate vengono DIROTTATE su battute di calcio d'inizio (ordine sorteggi intatto), side = chi rimette in gioco (chi ha subito) */
   const gkSave695=useRef({t:0,side:null});/* [7.695.0] IL SEGNALE DELLA PARATA. Identita' stabile: il renderer lo legge a ogni fotogramma e si arma sul cambio di `t`, senza che una parata costi un re-render (stesso pattern di stagedSpot e cineBusy). */
   const occCool695=useRef(-99);/* [7.695.0] minuto dell'ultima occasione: una ogni undici minuti al massimo, o la partita diventa un tiro al bersaglio */
@@ -2523,6 +2523,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           if(_sh720a){tx=_mk720.tx;ty=_mk720.ty;}/* [7.720.0] ombra dell'eroe: goal-side a 3u */
           const _fn735a=_fan735&&_fan735.side==="away"&&!_el706a&&!_sh720a&&ai>=5;
           if(_fn735a){const _sl=ai<=7?_fan735.M[ai-5]:_fan735.F[Math.min(ai-8,2)];if(_sl){tx=_sl.x;ty=_sl.y;}}/* [7.735.0] ventaglio del lato in possesso (ospiti) */
+          if(!(typeof window!=='undefined'&&window.__CPM_NO743)&&raccogliRef743.current&&raccogliRef743.current.i===idx&&ai!==0&&!fermoRef.current&&!outRef.current){tx=clamp(ball.x,44,98);ty=clamp(ball.y,3,97);}/* [7.743.0] il raccoglitore va sul pallone fermo */
           const va=velRef.current[idx]||{vx:0,vy:0};
           const nvxa=clamp(va.vx*0.70+(tx-pl.x)*(_el706a?0.35:_sh720a?0.30:_fn735a?0.20:0.14),-6,6);
           const nvya=clamp(va.vy*0.70+(ty-pl.y)*(_el706a?0.35:_sh720a?0.30:_fn735a?0.20:0.11),-6,6);/* [7.706.0] MISURATO (v6): coi guadagni di corsia gli eletti restavano a 4-15u dal pallone — il passo dell'eletto e' quello del primo pressore (0,35), o l'anello non si forma prima che la riga cambi *//* [7.720.0] l'ombra cammina col passo del marcatore (0,30): meno del pressore, piu' della corsia */
@@ -2555,6 +2556,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           if(_sh720h){tx=_mk720.tx;ty=_mk720.ty;}/* [7.720.0] ombra dell'eroe (eroe in trasferta): goal-side a 3u */
           const _fn735h=_fan735&&_fan735.side==="home"&&!_el706h&&!_sh720h&&hi>=5;
           if(_fn735h){const _sl=hi<=7?_fan735.M[hi-5]:_fan735.F[Math.min(hi-8,2)];if(_sl){tx=_sl.x;ty=_sl.y;}}/* [7.735.0] ventaglio del lato in possesso (casa) */
+          if(!(typeof window!=='undefined'&&window.__CPM_NO743)&&raccogliRef743.current&&raccogliRef743.current.i===idx&&hi!==0&&!fermoRef.current&&!outRef.current){tx=clamp(ball.x,2,92);ty=clamp(ball.y,3,97);}/* [7.743.0] il raccoglitore va sul pallone fermo */
           const vh=velRef.current[idx]||{vx:0,vy:0};
           const nvxh=clamp(vh.vx*0.70+(tx-pl.x)*(_el706h?0.35:_sh720h?0.30:_fn735h?0.20:0.12),-6,6);
           const nvyh=clamp(vh.vy*0.70+(ty-pl.y)*(_el706h?0.35:_sh720h?0.30:_fn735h?0.20:0.10),-6,6);/* [7.706.0] passo del pressore per l'eletto (vedi lato ospite) */
@@ -2663,7 +2665,18 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                    portatore-stato vive 11 tick su 82 in gioco aperto. Il compagno del lato col turno che ha la palla ai piedi
                    (<=3,5u) e' il portatore, qui, e da qui decide. Se nessuno ce l'ha, la palla e' su erba vuota e non si decide. */
                 let _bi8=-1,_bd8=3.5;for(let _i8=0;_i8<_pl8.length;_i8++){const _q=_pl8[_i8];if(!_q||_q.gk||_q.team!==_side8)continue;const _d=Math.hypot((_q.x||50)-_b8.x,(_q.y||50)-_b8.y);if(_d<_bd8){_bd8=_d;_bi8=_i8;}}
-                if(_bi8>=0){_ci8=_bi8;_q8=_pl8[_bi8];if(!(typeof window!=='undefined'&&window.__CPM_NO641))carrierRef.current={i:_bi8};if(_w8)_w8.eletti++;}else _q8=null;
+                if(_bi8>=0){_ci8=_bi8;_q8=_pl8[_bi8];if(!(typeof window!=='undefined'&&window.__CPM_NO641))carrierRef.current={i:_bi8};if(_w8)_w8.eletti++;raccogliRef743.current=null;}
+                else{_q8=null;
+                  /* [7.743.0 — IL PIU' VICINO VA A PRENDERE LA PALLA. Rosso __CPM_NO743] CENSITO (vuoto-743, due semi, gioco aperto
+                     col nostro turno): il pallone e' FERMO (spostamento per tick 0, anche al p90) e il compagno piu' vicino sta a
+                     6u (mediana, p75 7,6u; entro 8u nel 78-81% dei tick) — cioe' a un passo, ma non lo fa: nessuna macchina manda un
+                     uomo sul pallone fermo, e la soglia dei 3,5u (7.738) non scatta mai. Qui il compagno del lato col turno piu'
+                     vicino entro 10u viene eletto RACCOGLITORE e lo schieramento lo manda sul pallone (bersaglio = palla, precedenza
+                     su ventaglio e corsie); quando arriva (<=3,5u) l'elezione 7.738 lo fa portatore. Scade dopo 12 tick. */
+                  if(!(typeof window!=='undefined'&&window.__CPM_NO743)){const _rc=raccogliRef743.current;
+                    if(!_rc||(tick-(_rc.t|0))>12||!_pl8[_rc.i]||_pl8[_rc.i].team!==_side8){let _ri=-1,_rd=10;for(let _i8=0;_i8<_pl8.length;_i8++){const _q=_pl8[_i8];if(!_q||_q.gk||_q.team!==_side8)continue;const _d=Math.hypot((_q.x||50)-_b8.x,(_q.y||50)-_b8.y);if(_d<_rd){_rd=_d;_ri=_i8;}}
+                      raccogliRef743.current=_ri>=0?{i:_ri,t:tick}:null;if(_ri>=0&&typeof window!=='undefined'&&window.__CPM_REC){try{const _w=(window.__CPM_RACC743=window.__CPM_RACC743||{eletti:0});_w.eletti++;}catch(_e){}}}}
+                }
               }
               if(_q8&&(tick-(lastPass738Ref.current|0))>=6){
                 if(_w8)_w8.pronti++;

@@ -160,3 +160,14 @@ Eroe portatore (palla ai piedi ≤3,5u → decide lui) e ricevente con la stessa
 ## Fase 3 — 7.742 «ritmo della mente 6→3 tick» (REVOCATA)
 
 Sonda `passa-738` con rosso `__CPM_NO742` (=6 tick), due semi: eseguiti 3 vs 3 e 3 vs 3; pronti 10 vs 9 e 4 vs 3 (i tick in più decidono «conduci» 7 vs 6); palla ai piedi 0,11 vs 0,12 e 0,08 vs 0,13. Il ritmo non è il collo. Il collo è la **disponibilità**: in queste due partite la palla sta ai piedi di un compagno solo nell'8-13% dei tick aperti (portatore vivo 5/27 e 8/60), contro il 32-40% delle partite del banco 7.738: la varianza fra partite è grande, e va censita prima di un'altra tacca (chi è il più vicino al pallone e a quanto sta).
+
+## Fase 3 — 7.743 «il più vicino va a prendere la palla» (SPEDITA)
+
+Censimento `vuoto-743`: pallone fermo in gioco aperto (spostamento/tick 0), compagno più vicino a 6u (mediana), entro 8u nel 78-81% dei tick. Raccoglitore entro 10u → bersaglio = palla (precedenza su ventaglio e corsie), scade dopo 12 tick; all'arrivo l'elezione 7.738. Rosso `__CPM_NO743`.
+
+| Seme | palla ai piedi (ON vs rosso) | portatore vivo | dist. mediana | eletti | eseguiti | guadagno/tick |
+|---|---|---|---|---|---|---|
+| 743 | **0,32 vs 0,26** | 34/99 vs 33/99 | 12,8 vs 12,8u | 11 vs 6 | 5 vs 5 | 1,34 vs 1,34 |
+| 7432 | **0,50 vs 0,27** | **81/113 vs 32/100** | **5,7 vs 15,2u** | 12 vs 7 | 7 vs 5 | 0,67 vs 1,35 |
+
+Dichiarato: il guadagno per tick cala sul secondo seme (la palla con un padrone che cammina avanza meno di una palla che vola verso un punto). Prossima tacca: «conduci» eseguito.
