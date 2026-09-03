@@ -1614,7 +1614,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
      nominati, la palla che punta il ricevente (non una zona vuota) e il ricevente che le va incontro.
      E' il primo pezzo del linguaggio Beat: l'evento porta gia' actor/ballEnd veri dal canale MP-0 e il
      gesto dal vocabolario MP-1, quindi il 3D segue la stessa catena che il testo racconta. */
-  const azioneRef=useRef(null),_lastCatRef=useRef(-1);/* [7.537.0 v4] minuto dell'ultima battuta di catena: serve per alternare con il repertorio */
+  const azioneRef=useRef(null),_lastCatRef=useRef(-1);const lastPass738Ref=useRef(-99);/* [7.738.0] tick dell'ultimo passaggio eseguito dalla decisione *//* [7.537.0 v4] minuto dell'ultima battuta di catena: serve per alternare con il repertorio */
   const ponteRef=useRef(null),ponteIdxRef=useRef(-1);/* [7.532.0 NO544 — collaudo PO «da centrocampo in cronaca all'improvviso highlights di attacco: nessuna concatenazione»] IL PONTE: ~2' prima dell'highlight in calendario la cronaca SCORTA la palla verso il punto di nascita della scena (hlBallSpot della situation in arrivo) e le righe raccontano l'avvicinamento — l'highlight si apre dove il racconto ha portato il gioco *//* [7.532.0 v2] l'innesco vive nella TRAMA (flip di possesso con palla nel terzo difensivo del nuovo padrone), NON nel sorteggio di una riga poss: i pesi di zona 7.525 schiacciano le righe di recupero proprio quando la palla e' alta (misurato: 0 lanci in 2 partite). Cooldown 6' di gioco. *//* [7.530.0 collaudo PO «Non si riparte dal centro dopo un gol!» — rosso __CPM_NO536] il 7.525 toccava il centro per UN tick (300ms): un lampo, non una ripartenza. Ora allo scadere del conto kickRef nasce una RIPARTENZA RECITATA: kickoffRef tick di attesa al centro, le righe gia' sorteggiate vengono DIROTTATE su battute di calcio d'inizio (ordine sorteggi intatto), side = chi rimette in gioco (chi ha subito) */
   const gkSave695=useRef({t:0,side:null});/* [7.695.0] IL SEGNALE DELLA PARATA. Identita' stabile: il renderer lo legge a ogni fotogramma e si arma sul cambio di `t`, senza che una parata costi un re-render (stesso pattern di stagedSpot e cineBusy). */
   const occCool695=useRef(-99);/* [7.695.0] minuto dell'ultima occasione: una ogni undici minuti al massimo, o la partita diventa un tiro al bersaglio */
@@ -2628,6 +2628,40 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           if(!_ms712.fermo&&!_ms712.out&&!_ms712.costruzione){try{
             const _dec715=decidi715(_ms712.turn);/* [7.718.0] la mente e' UNA: la stessa funzione per l'ombra e per le macchine consegnate */
             _ms712.decisione=_dec715;
+            /* [7.738.0 — IL PORTATORE DECIDE AL TICK. Rosso __CPM_NO738] Fase 3, il verso giusto nel posto
+               giusto. CENSITO prima di scrivere (scrittori-738, gate-738, morto-738): a cadenza reale il gioco
+               aperto e' il 39% della partita, la costruzione del gol il 37%, la palla morta il 24%; in gioco
+               aperto il bersaglio del pallone sono i PIEDI del portatore (7.642), che cammina verso il suo
+               slot — e la mente, che qui sopra decide ogni 300 ms, produceva ~88 «passa» a partita che nessuno
+               eseguiva: la catena si apre 2-3 volte (sito della riga, ogni >=6'), la trama fa 7-10 giocate,
+               le righe pure di repertorio in gioco aperto sono ZERO su 31 (27 di macchina). Due tentativi
+               revocati con la misura (7.737 sulla trama; v1 di questa sul sito della riga: 1 riga in 66').
+               Qui: gioco aperto (niente fermo/out/costruzione/macchine), turno vivo, portatore del lato con
+               la palla ai piedi (<=3,5u), ritmo di almeno 6 tick (1,8 s) dall'ultimo passaggio: se la mente
+               dice «passa» a un compagno entro 30u, la palla PARTE verso i suoi piedi e lui e' il portatore
+               (7.641) — la stessa meccanica del passo di catena, senza aspettare una riga. «Conduci», «tira»
+               e i lanci lunghi non toccano niente. Testimone __CPM_PASSA738{pronti,eseguiti,lungo,conduci,tira}. */
+            if(!(typeof window!=='undefined'&&window.__CPM_NO738)&&_ms712.turn!==0&&!outRef.current&&!fermoRef.current&&!pendingGoalRef.current&&!counterRef.current&&!spRef.current&&!ponteRef.current&&kickoffRef.current<=0&&(kickRef.current|0)<=0&&phaseRef.current==='playing'){try{
+              const _c8=carrierRef.current;const _pl8=matchPlayersRef.current||[];const _b8=ballPosRef.current||{x:50,y:50};
+              const _side8=_ms712.turn>0?"home":"away";
+              const _w8=(typeof window!=='undefined'&&window.__CPM_REC)?(window.__CPM_PASSA738=window.__CPM_PASSA738||{tick:0,eletti:0,pronti:0,eseguiti:0,lungo:0,conduci:0,tira:0}):null;if(_w8)_w8.tick++;
+              let _ci8=(_c8&&_c8.i!=null)?_c8.i:-1;let _q8=_ci8>=0?_pl8[_ci8]:null;
+              if(!(_q8&&_q8.team===_side8&&!_q8.gk&&Math.hypot((_q8.x||50)-_b8.x,(_q8.y||50)-_b8.y)<=3.5)){
+                /* [7.738 v3] L'ELEZIONE DEL PORTATORE SALE AL TICK LOGICO (audit §3): la v2 non e' mai scattata perche' il
+                   portatore-stato vive 11 tick su 82 in gioco aperto. Il compagno del lato col turno che ha la palla ai piedi
+                   (<=3,5u) e' il portatore, qui, e da qui decide. Se nessuno ce l'ha, la palla e' su erba vuota e non si decide. */
+                let _bi8=-1,_bd8=3.5;for(let _i8=0;_i8<_pl8.length;_i8++){const _q=_pl8[_i8];if(!_q||_q.gk||_q.team!==_side8)continue;const _d=Math.hypot((_q.x||50)-_b8.x,(_q.y||50)-_b8.y);if(_d<_bd8){_bd8=_d;_bi8=_i8;}}
+                if(_bi8>=0){_ci8=_bi8;_q8=_pl8[_bi8];if(!(typeof window!=='undefined'&&window.__CPM_NO641))carrierRef.current={i:_bi8};if(_w8)_w8.eletti++;}else _q8=null;
+              }
+              if(_q8&&(tick-(lastPass738Ref.current|0))>=6){
+                if(_w8)_w8.pronti++;
+                const _r8=_dec715.rcv;
+                if(_dec715.act==="passa"&&_r8&&_r8.i>=0&&_r8.i!==_ci8&&_pl8[_r8.i]&&_pl8[_r8.i].team===_side8){
+                  if(_r8.d<=30){ballTargetRef.current={x:_r8.x,y:_r8.y};pendingBtRef.current=null;carrierRef.current={i:_r8.i};lastPass738Ref.current=tick;if(_w8)_w8.eseguiti++;}
+                  else if(_w8)_w8.lungo++;}
+                else if(_w8)_w8[_dec715.act==="tira"?"tira":"conduci"]++;
+              }
+            }catch(_e738){}}
             if(typeof window!=='undefined'&&window.__CPM_REC){const _dc=(window.__CPM_DEC=window.__CPM_DEC||[]);if(_dc.length<1200)_dc.push({ts:Date.now(),min:_ms712.min,turn:_ms712.turn,act:_dec715.act,rcv:_dec715.rcv,thr:_thr712});}
           }catch(_e715){}}
         }catch(_e712){}
