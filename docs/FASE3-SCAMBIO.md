@@ -219,3 +219,7 @@ Corridore eletto all'armamento, schieramento che lo manda avanti 5u/tick, palla 
 ## Fase 2 — manovra-gol (piano 649): letta, nessuna tacca
 
 Il piano-gol nomina già l'uomo di ogni passo (`chi`) e lo porta sul punto dichiarato: è uomo+punto, coerente col 7.750. Le sue smentite nel censimento (es. 18' attack_goal: riga a (78,84), pallone a (94,50)) sono conflitti di MINUTO col gol del microsim (la palla è già in porta quando la riga del passo esce), non punto-contro-uomo. Resta il ponte (scorta alla scena), che è a punto per natura (la scena nasce in un punto). Chiuso il giro «le recite dichiarano l'uomo»: contropiede fatto (7.750), manovra-gol già conforme, ponte per natura a punto.
+
+## Fase 9 — nota sul piano-gol (non spedita)
+
+Le due smentite «attack_goal 18'» sono passi del piano-gol (famiglia fascia) che chiedono 28u laterali in due tick a 4u/tick: il gol parte col tetto dei tick (passi+4) prima che il pallone arrivi al punto dichiarato. Rimedio possibile: punti di passo a portata (fascia 30/70 invece di 22/78) o velocità del passo; n=2 su due partite, sotto la soglia per una misura. A verbale, non spedita.
