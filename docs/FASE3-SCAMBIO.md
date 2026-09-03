@@ -179,3 +179,7 @@ Il portatore avanza 7u quando la mente dice «conduci» e non è pressato. Sonda
 ## Fase 6 — 7.745 «l'eroe si offre a distanza di ricezione» (REVOCATA)
 
 Bersaglio dell'eroe nel flusso (7.726) con y che scivola verso la palla e x ≤ pallone+16u. Sonda `eroe-741` con rosso `__CPM_NO745`, due semi: eroe-palla mediana 19,3 vs 18,1u e 19,7 vs 20,4u; candidato 8 vs 6 e 9 vs 8; ricevuti 0 vs 0 e 1 vs 0; dati 1 vs 1. Nessun effetto: revocata. Dato utile: con la 7.743 l'eroe è già candidato 6-9 volte a partita e perde il confronto col miglior compagno (stessa legge).
+
+## Fase 6 — 7.746 «l'intesa pesa» (REVOCATA)
+
+Bonus fino a +8 (2 per unità di coinv+intesa) sul punteggio dell'eroe come ricevente. Sonda `eroe-741` con rosso `__CPM_NO746`, due semi: bonus **0 in tutte e quattro le partite** (coinv e intesa restano a zero in autoplay: l'eroe non riceve, quindi non matura intesa, quindi non riceve). Ricevuti 0 vs 0 su entrambi i semi, candidato 3 vs 3 e 3 vs 4. Effetto nullo per costruzione: revocata. Lezione: la memoria narrativa in gioco aperto è vuota finché l'eroe non entra nelle scene; il coinvolgimento in gioco aperto va seminato dalle scene (Fase 5), non dal tick.
