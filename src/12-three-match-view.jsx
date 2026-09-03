@@ -6625,6 +6625,18 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
             tPz=38;
             tPy=20;
             tPx=clamp(tLx*0.85,-36,36);/* pan cronaca: il liscio kp a valle da' l'inerzia */
+            /* [7.766.0 collaudo PO 03/09 «le azioni pericolose sono ancora confusionarie» — rosso __CPM_NO766]
+               IL PALLONE SULLA LINEA VICINA STAVA SOTTO IL QUADRO. Misurato (sonda ballchk, seme 764, 0'-30'):
+               pallone fuori quadro in 44 campioni su 120; fotogramma 11': sette giocatori in corsa e la
+               didascalia del passaggio, e il pallone fuori a sinistra. La geometria: la camera di cronaca
+               sta a z 38 e quota 20, e guarda a z = 0,30·bz — con il pallone a z 32 (gy 95, angolo) il punto
+               guardato e' a 9,6 e il pallone cade 40 gradi sotto il centro del quadro, che ne regge 23. Qui
+               lo sguardo scende verso il pallone quando questo e' nella fascia vicina (z > 14), in modo
+               continuo: a z 34 il pallone resta 18 gradi sotto il centro, dentro il quadro. La camera non
+               si muove: cambia solo dove guarda. */
+            if(!(typeof window!=='undefined'&&window.__CPM_NO766)){const _bz766=ball?ball.position.z:0,_bx766=ball?ball.position.x:tLx;if(_bz766>14){tLz=Math.max(tLz,_bz766*0.30+(_bz766-14)*0.85);}
+              /* e sull'asse lungo: nella RIPRESA (7.732, tribuna che non ruota) lo sguardo torna alla formula storica pesata sull'eroe (ax = 0,6·palla + 0,4·eroe, senza il 7.561) e il pallone puo' stare quindici unita' oltre il punto guardato — misurato 71'→84' fuori quadro per 73 campioni di fila (seme 764). Il semiquadro orizzontale del telefono vale 7-10 unita' a questa distanza: il pallone non puo' stare piu' lontano di 6 dal centro dello sguardo. */
+              const _dx766=_bx766-tLx;if(Math.abs(_dx766)>6){tLx+=_dx766-Math.sign(_dx766)*6;tPx=clamp(tLx*0.85,-36,36);}}
           }
         }
         /* [7.398.0 collaudo PO #33 «si vede la curva da dietro in primo piano»] LA CAMERA RESTA NELLO
@@ -6994,6 +7006,12 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
            quadro; e il look-at arriva a 46, cioe' fino al palo, seguendo il pallone anche in profondita'. */
         tPx=clamp(_bx689*0.92,-42,42);tPy=6.5;tPz=27;
         tLx=clamp(_bx689,-46,46);tLy=1.4;tLz=clamp(_bz689*0.9,-18,18);
+        /* [7.766.0 — rosso __CPM_NO766] LA CAMERA SALIENTE A z 27 AVEVA IL PALLONE ALLE SPALLE quando il
+           gioco stava sulla linea vicina: misurato al 14' (seme 764) il pallone all'angolo (z 32,6) con
+           ndc fuori scala (x -10 → 59: dietro il piano camera) per dieci campioni di fila e 0-1 giocatori
+           in quadro. Con il pallone oltre z 12 la camera arretra e sale in proporzione e lo sguardo puo'
+           seguirlo fino a z 30: a z 32,6 la camera sta a (16,5; 39) e il pallone a 12 gradi sotto il centro. */
+        if(!(typeof window!=='undefined'&&window.__CPM_NO766)&&_bz689>12){const _n766=_bz689-12;tPz=27+_n766*0.6;tPy=6.5+_n766*0.5;tLz=clamp(_bz689*0.9,-30,30);}
         try{if(sr.current._tocc503)sr.current._tocc503.push('saliente689');}catch(_e){}
       }
       else if((isHL||P.matchPhase==="playing")&&!P.ceremony&&!P.shootout&&!replaying&&!(typeof window!=='undefined'&&window.__CPM_NO650)){if(!isHL&&tPz<16){try{if(sr.current._tocc503)sr.current._tocc503.push('tribuna-clamp650');}catch(_e650b){}tPz=16;}}/* [7.654.0 v2] il clamp resta solo sulla CRONACA in tribuna (z>=16): negli HL comanda la regia storica, come chiesto dal PO *//* [7.650.0 v3] IL VINCOLO E' L'ULTIMA PAROLA: misurato un residuo deterministico a z -5,2 (24 percento dei campioni hl sotto 16) scritto da una mano A VALLE dell'override (bisezione con soggetto oltre il piano tribuna) — il clamp sta dopo TUTTE le mani, prima di snap e lerp: da qui la camera non attraversa MAI */

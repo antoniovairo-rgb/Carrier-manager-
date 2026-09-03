@@ -292,3 +292,20 @@ mente 16 · righe-fatto 14 · raccoglitori 52 · esiti 14 · tabellone 2-5 = 2-5
 ## 7.763 — metro fondate: cambio di turno nella finestra a parte
 
 fondate-558 conta ora a parte le destinazioni con un cambio di turno dopo la riga: **0** casi (come gol ed esiti). Fondate 88,2/75,0, smentite 12/128 = 9,4%. Le smentite residue sono derive pure: un altro scrittore sposta il pallone senza gol, tiro né recupero. Il metro è completo; resta il fatto.
+
+## Revisione da spettatore delle «azioni pericolose» (seme 764, 16 fotogrammi GLB ON)
+
+Due costruzioni del gol (28' e 72') fotografate a 8 scatti l'una. Nessun caos di giocatori: campo ordinato, scheda del mister sovrapposta, 5-11 giocatori in quadro. Scatti notevoli: 38'-39' con la tribuna a metà schermo e i giocatori in una striscia lontana (azione sulla linea opposta, camera di cronaca a quota 20); 83' con il pallone solo in un prato vuoto. Sonda camera su 2 semi: elevazione mediana 26°, tratti sotto 12° = 0,2% e 1,6% del tempo. **Il caos di giocatori non c'è; il difetto sta nell'inquadratura del pallone** (sotto).
+
+## 7.766 — il pallone resta nel quadro (SPEDITA dopo prova del rosso)
+
+Sonda strutturale (ballchk, 0'-30'): pallone fuori quadro 44/120 campioni; fotogramma 11': sette giocatori in corsa e la didascalia del passaggio, pallone fuori a sinistra. Geometria: cronaca a z 38 quota 20 con sguardo a 0,30·bz → sulla linea vicina (gy>85, angoli) il pallone cade 40° sotto il centro (il quadro ne regge 23); saliente (7.695) a z 27 con lo sguardo tappato a ±18 → pallone alle spalle (20/20 campioni «dietro» al 14'); nella ripresa (7.732) lo sguardo torna alla formula pesata sull'eroe e il pallone resta fuori per 13-15 minuti (71'→84' seme 764, 59'→74' seme 765).
+Rimedio (rosso `__CPM_NO766`): lo sguardo scende verso il pallone oltre z 14 e non lo lascia mai a più di 6 unità sull'asse lungo; la saliente arretra e sale con il pallone oltre z 12.
+Misura appaiata (quadro-766.mjs, GLB ON, cadenza reale, ~565 campioni a partita):
+
+| seme | in quadro ON | in quadro rosso | fascia vicina ON/rosso | tratto max ON/rosso |
+|---|---|---|---|---|
+| 764 | 85,9% | 66,0% | 59% / 8% | 24 / 72 |
+| 765 | 77,5% | 75,9% | 75% / 55% | 24 / 60 |
+
+Pooled: 81,7% vs 70,9%; fascia vicina 62% vs 21%. **Non provato**: la mano saliente in zona centrale (43% vs 48%, n 69/116) — dichiarato. Residuo aperto: tratti di 10-24 campioni in x nella ripresa (79'→83' seme 764), da guardare col lerp dello sguardo. Lezione di metodo: la sonda camera con `__CPM_REC` acceso senza drenare il buffer rallenta la partita di 5× (30 min reali, fermo 89%): misure a cadenza reale solo senza REC.
