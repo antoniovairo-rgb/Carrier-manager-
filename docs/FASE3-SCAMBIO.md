@@ -268,3 +268,7 @@ Residuo censito: le 8 texture 1024×512 sono i teli della folla (src/10 `quality
 
 Banda «tabellone» su 4 partite: raccontati 2-4, punteggio 2-5. Dei cinque scrittori del punteggio, `goal_against` (scena difensiva dell'eroe) era l'unico senza `cpmEv("goal")`. Corretto. Misura: guardiano a 4 partite dopo il fix (sotto).
 Dopo il fix, guardiano a 4 partite: tabellone gol raccontati 2-5 = punteggio 2-5; le altre bande verdi (mente 16, righe-fatto 14, raccoglitori 51, nomi-veri 14/14, gol-con-manovra 4/7).
+
+## Regressione — salti della palla-mesh dopo la custodia a uomo (ball-jump-census sulla 7.759)
+
+8 salti su 1941 fotogrammi, tutti dentro lo stacco nero (0 visibili): 5 consegne (7,2-17,9u), 3 avvicinamenti (6,2-23,9u). Copertura 7 scene su un minimo di 13: il censimento non giudica, ma non c'è un salto visibile. Nessuna regressione osservata; non verificato a copertura piena.
