@@ -280,3 +280,7 @@ fondate-558 legge ora i minuti dei gol dal libro mastro: una destinazione non ce
 ## 7.761 — ogni esito di scena nel libro mastro (cpmEv «esito») + metro fondate esteso
 
 Prima stesura errata (evento solo nel ramo goal_against) fermata e corretta: l'evento si scrive prima delle statistiche, per ogni esito. Fondate-558 sui semi 7300/7337: fondate 71,9/74,2, smentite 14,0%; destinazioni con gol o esito nella finestra: **0**. Le smentite residue non sono tiri né gol: sono derive (un altro scrittore sposta il pallone dopo la riga). Il metro resta più onesto; la percentuale non cambia. Non regredisce nulla.
+
+## Fase 10 — 7.762 banda «esiti-registrati» (SPEDITA)
+
+≥2 esiti di scena per partita nel libro mastro: 7 su 2 partite. Undici bande nel guardiano.

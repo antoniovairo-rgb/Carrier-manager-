@@ -72,6 +72,7 @@ const _cog = (t) => String(t || '').replace(/[^A-Za-zÀ-ÿ' ]/g, ' ').split(/\s+
 const _rosaSet = new Set(ROSA.map(n => n.charAt(0).toUpperCase() + n.slice(1).toLowerCase()));
 const nomiOk = fattoRows.filter(r => _cog(r.txt).some(w => _rosaSet.has(w))).length;
 /* [7.756.0] TABELLONE COERENTE: i gol del libro mastro (ev 'goal', per lato) devono essere esattamente i gol del punteggio finale. */
+const esiti = all.filter(e => e.ev === 'esito');/* [7.762.0] ogni azione risolta dell'eroe lascia un evento «esito» (7.761): senza, i guardiani della storia sono ciechi sulle scene */
 const _golH = goals.filter(g => g.side === 'home').length, _golA = goals.filter(g => g.side !== 'home').length;
 const _scH = SCORE.reduce((a, s) => a + s.h, 0), _scA = SCORE.reduce((a, s) => a + s.a, 0);
 const checks = [
@@ -111,6 +112,7 @@ const checks = [
   ['mente-esegue', `${mEseg} passaggi eseguiti dalla mente su ${PARTITE_G} partite · banda ${PARTITE_G}`, mEseg >= PARTITE_G],
   ['riga-descrive', `${fattoRows.length} righe-fatto (rk fatto739) su ${PARTITE_G} partite · banda ${PARTITE_G}`, fattoRows.length >= PARTITE_G],
   ['raccoglitore', `${mRacc} raccoglitori eletti su ${PARTITE_G} partite · banda ${2 * PARTITE_G}`, mRacc >= 2 * PARTITE_G],
+  ['esiti-registrati', `${esiti.length} esiti di scena nel libro mastro su ${PARTITE_G} partite · banda ${2 * PARTITE_G}`, esiti.length >= 2 * PARTITE_G],
   ['tabellone', `gol raccontati ${_golH}-${_golA} · punteggio finale ${_scH}-${_scA} su ${SCORE.length} partite`, SCORE.length === PARTITE_G ? (_golH === _scH && _golA === _scA) : null],
   ['nomi-veri', `${nomiOk}/${fattoRows.length} righe-fatto con un cognome della rosa (rosa ${_rosaSet.size} nomi)`, fattoRows.length >= 2 ? nomiOk === fattoRows.length : null],
 ];
