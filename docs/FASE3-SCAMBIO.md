@@ -156,3 +156,7 @@ Dentro il rumore (±0,07): revocata. **Il numero che conta è il rosso**: prima 
 ## Fase 6 — 7.741 «l'eroe è uno dei ventidue al tick» (SPEDITA, numeri piccoli dichiarati)
 
 Eroe portatore (palla ai piedi ≤3,5u → decide lui) e ricevente con la stessa legge di `decidi715`. Sonda `eroe-741`, due semi, ON vs rosso `__CPM_NO741`: dati 1/1 vs 0/0 · ricevuti 0/0 (cand 0/1) · eroe-palla mediana 21-22u vs 20-30u. Verificato che l'autoplay gira alla cadenza reale (1,7 s/min): il gioco aperto col nostro turno vale 33-48 tick di stato a partita (~30 s reali), il sito decide 2-5 volte. Non batte un vecchio: apre l'eroe al mondo dei 22. Prossimo: ritmo della mente e disponibilità dell'eroe nel flusso.
+
+## Fase 3 — 7.742 «ritmo della mente 6→3 tick» (REVOCATA)
+
+Sonda `passa-738` con rosso `__CPM_NO742` (=6 tick), due semi: eseguiti 3 vs 3 e 3 vs 3; pronti 10 vs 9 e 4 vs 3 (i tick in più decidono «conduci» 7 vs 6); palla ai piedi 0,11 vs 0,12 e 0,08 vs 0,13. Il ritmo non è il collo. Il collo è la **disponibilità**: in queste due partite la palla sta ai piedi di un compagno solo nell'8-13% dei tick aperti (portatore vivo 5/27 e 8/60), contro il 32-40% delle partite del banco 7.738: la varianza fra partite è grande, e va censita prima di un'altra tacca (chi è il più vicino al pallone e a quanto sta).
