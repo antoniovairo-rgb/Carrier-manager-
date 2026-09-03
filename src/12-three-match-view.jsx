@@ -631,11 +631,23 @@ function ThreeMatchView(props){
        vedono»: scena nuova, memoria libera). Qui i generatori d'arredo diventano memoizzati per CHIAVE:
        stessi parametri → stessa texture riusata, nessun pixel diverso in scena. */
     const _texMemo535=new Map();
+    /* [7.758.0 — IL PANNELLO NERO DIETRO LA PORTA E' UNA TEXTURE CHE NON SI E' ALLOCATA. Rosso __CPM_NO758]
+       Collaudo PO 03/09 18:01 (Coppa, GLB ON, scena ASSIST): il cartellone centrale dietro la porta e' un rettangolo NERO
+       senza scritta. Il diario 7.535 lo aveva gia' descritto: «quando l'allocazione non riesce, la mesh resta ma la sua
+       texture e' vuota — e una texture vuota su materiale opaco e' NERA». Qui il budget scende dove costa di piu' e non si
+       vede: i cartelloni (1024x160, un canvas per brand e stile) e i drappi (1024x110) si disegnano alla stessa risoluzione
+       di prima e poi si CONSEGNANO alla GPU a meta' lato (512x80 / 512x55, un quarto dei byte), senza mipmap (un altro
+       terzo) e con anisotropia 4. A distanza di cartellone la differenza non si legge; in memoria e' 4x meno per texture.
+       Misura: hook __CPM_DECOR (uniche, mb, dim) ON vs rosso. */
+    const _tex758=(c,anis)=>{try{if(typeof window!=='undefined'&&window.__CPM_NO758){const t0=new THREE.CanvasTexture(c);t0.anisotropy=anis||8;return t0;}
+      const c2=document.createElement("canvas");c2.width=Math.max(64,c.width>>1);c2.height=Math.max(16,c.height>>1);const x2=c2.getContext("2d");x2.imageSmoothingEnabled=true;x2.imageSmoothingQuality="high";x2.drawImage(c,0,0,c2.width,c2.height);
+      const t=new THREE.CanvasTexture(c2);t.generateMipmaps=false;t.minFilter=THREE.LinearFilter;t.magFilter=THREE.LinearFilter;t.anisotropy=Math.min(anis||4,4);return t;}
+      catch(_e){const t0=new THREE.CanvasTexture(c);t0.anisotropy=anis||8;return t0;}};
     const _memoTex535=(k,fn)=>{let t=_texMemo535.get(k);if(!t){t=fn();_texMemo535.set(k,t);}return t;};
     const _mkAdTex=(bg,fg)=>_memoTex535("ad|"+bg+"|"+fg,()=>_mkAdTexRaw(bg,fg));
     const _mkAdTexRaw=(bg,fg)=>{const c=document.createElement("canvas");c.width=1024;c.height=160;const x=c.getContext("2d");x.fillStyle=bg;x.fillRect(0,0,1024,160);/* [7.42.2 collaudo PO «cartelloni più definiti»] risoluzione 2× */
       _cvWordmark(x,512,80,96,fg,false);
-      x.strokeStyle=fg;x.globalAlpha=0.5;x.lineWidth=6;x.strokeRect(16,16,992,128);x.globalAlpha=1;const t=new THREE.CanvasTexture(c);t.anisotropy=8;return t;};
+      x.strokeStyle=fg;x.globalAlpha=0.5;x.lineWidth=6;x.strokeRect(16,16,992,128);x.globalAlpha=1;return _tex758(c,8);};
     /* [7.44.0 direttiva PO «inventa pubblicità, sempre diverse da stagione a stagione, da club a club, da
        nazione a nazione»] pool di BRAND DI FANTASIA (copyright-safe, mai reali) con palette e stile propri;
        la selezione è SEEDATA da props.adSeed (club+stagione+nazione, da LiveMatch) → ogni stadio/stagione
@@ -666,7 +678,7 @@ function ThreeMatchView(props){
       if(st===0){/* nome pieno + tagline */x.fillStyle=fg;_fit(b[0],944,74,"900");x.fillText(b[0],512,64);x.globalAlpha=0.8;const _tg0=_adTag(b);_fit(_tg0,944,30,"italic 600");x.fillText(_tg0,512,122);x.globalAlpha=1;}
       else if(st===1){/* split bicolore */x.fillStyle=fg;x.fillRect(0,0,340,160);x.fillStyle=bg;const _n1=b[0].split(" ")[0].slice(0,8);_fit(_n1,300,56,"900");x.fillText(_n1,170,80);x.fillStyle=fg;const _t1=_adTag(b).toUpperCase();_fit(_t1,624,58,"900");x.textAlign="left";x.fillText(_t1,380,80);x.textAlign="center";}
       else{/* boxed outline */x.strokeStyle=fg;x.lineWidth=8;x.strokeRect(20,20,984,120);x.fillStyle=fg;const _bt=b[0]+" · "+_adTag(b).toUpperCase();_fit(_bt,944,66,"900");x.fillText(_bt,512,82);}
-      const t=new THREE.CanvasTexture(c);t.anisotropy=8;return t;};
+      return _tex758(c,8);};
     const _adSeed44=(props.adSeed>>>0)||1;
     const _adPal=[["#140a0e","#d27f8c"],["#180c10","#ffffff"],["#140a0e","#cf6d7e"]];// 5.49.14: logo ELEVORA in GRANATA CHIARO (non più azzurro)
     /* [7.105.0 collaudo PO «alcuni cartelloni si accavallano, non si leggono, fanno effetto lampeggiante»] CAUSA: i
@@ -1075,7 +1087,7 @@ function ThreeMatchView(props){
       if(text){let fs=62;sx.font="900 "+fs+"px Arial, sans-serif";const mw=850;let w=sx.measureText(text).width;if(w>mw){fs=Math.max(30,Math.floor(fs*mw/w));sx.font="900 "+fs+"px Arial, sans-serif";}
         sx.textAlign="center";sx.textBaseline="middle";sx.lineWidth=9;sx.lineJoin="round";sx.strokeStyle="rgba(0,0,0,0.6)";sx.strokeText(text,512,57);sx.fillStyle="#f4f4f6";sx.fillText(text,512,57);
         sx.fillStyle=c2Hex;[64,960].forEach(x0=>{sx.save();sx.translate(x0,55);sx.rotate(Math.PI/4);sx.fillRect(-14,-14,28,28);sx.restore();});}
-      const stex=new THREE.CanvasTexture(sc);const sm=new THREE.Mesh(new THREE.PlaneGeometry(ledW||30,3.4),/* [7.751.0 collaudo PO «gli striscioni in tribuna si accavallano»: due drappi larghi 30 con i centri a ±12 si coprivano per 6u — la larghezza ora e' un parametro, e la tribuna lunga li chiede a 23 */new THREE.MeshBasicMaterial({map:stex,side:THREE.FrontSide,transparent:true,opacity:0.97,depthWrite:false}));/* [7.171.0] FrontSide: da dietro (camera set-piece oltre la curva) il retro mostrava la scritta SPECCHIATA */sm.position.set(cx,yPos!=null?yPos:5.5,z);sm.rotation.y=rotY;(sr.current.stadiumRoot||scene).add(sm);};
+      const stex=_tex758(sc,4);const sm=new THREE.Mesh(new THREE.PlaneGeometry(ledW||30,3.4),/* [7.751.0 collaudo PO «gli striscioni in tribuna si accavallano»: due drappi larghi 30 con i centri a ±12 si coprivano per 6u — la larghezza ora e' un parametro, e la tribuna lunga li chiede a 23 */new THREE.MeshBasicMaterial({map:stex,side:THREE.FrontSide,transparent:true,opacity:0.97,depthWrite:false}));/* [7.171.0] FrontSide: da dietro (camera set-piece oltre la curva) il retro mostrava la scritta SPECCHIATA */sm.position.set(cx,yPos!=null?yPos:5.5,z);sm.rotation.y=rotY;(sr.current.stadiumRoot||scene).add(sm);};
     /* [7.658.0 - IL CARTELLONE COL NOME DELLO STADIO, PICCOLO E A LED. Precisazione PO (collaudo):
        «non gli striscioni/cartelloni dei tifosi devono essere led piccoli ma il cartellone con il
        nome dello stadio, es. Stadio Meneghino dei Rossoneri». Il nome VERO arriva dalla prop

@@ -258,3 +258,7 @@ Gol del libro mastro per lato = punteggio finale del Match State: 1-2 vs 1-2 su 
 ## Fase 2 — 7.757 «il piano-gol nasce dalla mente» (REVOCATA)
 
 I tre uomini della manovra-gol scelti dallo stato (portatore) e dalla mente (decidi715 a catena) invece del sorteggio. Testimoni: 4 piani, a dallo stato 4/4, b dalla mente 3/4, c 3/4. Fondate-558 appaiato (7300/7337) ON vs rosso `__CPM_NO757`: fondate 75,7/71,9 vs 81,3/82,4; smentite 14,0% vs 9,8%; destinazioni 32/50 vs 34/45. PEGGIO: gli uomini della mente stanno lontani dai punti fissi della famiglia, e la riga che li nomina sul punto è più spesso smentita. Revocata. Lezione: uomini dalla mente e punti di famiglia non si combinano; il piano va rifatto per intero (uomini E punti dal campo), non a metà.
+
+## Collaudo PO 03/09 18:01 «pannello nero dietro la porta» → 7.758
+
+Cartellone centrale dietro la porta nero senza scritta (Coppa, GLB ON, scena ASSIST). Firma 7.535: texture non allocata = mesh nera. Non riproducibile in headless (0 texture nere su 99). Rimedio: cartelloni e drappi consegnati alla GPU a metà lato senza mipmap. `__CPM_DECOR` ON vs rosso: 25,5 MB vs 30,7 MB (−17%), 11 cartelloni 1024×160 → 512×80. Residuo censito: 8 texture 1024×512 (16 MB), 2 LED 2048×128. Da confermare sul telefono.
