@@ -263,3 +263,8 @@ I tre uomini della manovra-gol scelti dallo stato (portatore) e dalla mente (dec
 
 Cartellone centrale dietro la porta nero senza scritta (Coppa, GLB ON, scena ASSIST). Firma 7.535: texture non allocata = mesh nera. Non riproducibile in headless (0 texture nere su 99). Rimedio: cartelloni e drappi consegnati alla GPU a metà lato senza mipmap. `__CPM_DECOR` ON vs rosso: 25,5 MB vs 30,7 MB (−17%), 11 cartelloni 1024×160 → 512×80. Residuo censito: 8 texture 1024×512 (16 MB), 2 LED 2048×128. Da confermare sul telefono.
 Residuo censito: le 8 texture 1024×512 sono i teli della folla (src/10 `quality.texWMobile:1024, texH:512`), 16 MB sul telefono, con mipmap. Prossima tacca di memoria possibile: `texH` 512→384 (−4 MB) o mipmap limitate; da fare solo se il PO conferma che il pannello nero persiste dopo la 7.758.
+
+## 7.759 — il gol subito nella scena difensiva non entrava nel libro mastro (trovato dal guardiano a 4 partite)
+
+Banda «tabellone» su 4 partite: raccontati 2-4, punteggio 2-5. Dei cinque scrittori del punteggio, `goal_against` (scena difensiva dell'eroe) era l'unico senza `cpmEv("goal")`. Corretto. Misura: guardiano a 4 partite dopo il fix (sotto).
+Dopo il fix, guardiano a 4 partite: tabellone gol raccontati 2-5 = punteggio 2-5; le altre bande verdi (mente 16, righe-fatto 14, raccoglitori 51, nomi-veri 14/14, gol-con-manovra 4/7).
