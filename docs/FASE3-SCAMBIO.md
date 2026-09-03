@@ -195,3 +195,7 @@ Tre bande in `partita-vera-guardian.mjs`: mente-esegue (≥1/partita), riga-desc
 ## Fase 5 — 7.748 «la zona è reale» (SPEDITA)
 
 Difetto trovato misurando: le conseguenze di scheda applicavano solo marcatura e intesa (zona/coinv/fiducia mai). Fix: zona 1 dal 17' su due semi vs 0 nel rosso. Effetto sul campo: bersaglio dell'eroe in fascia lato palla; |y-50| 5u → 9-10,5u (base interna piccola), zonaVista 4/partita; mi_eco1 esce solo con zonaVista≥3. Dichiarato debole sul campo, netto in memoria.
+
+## Fase 5/6 — 7.749 «l'intesa pesa» (SPEDITA, rifacimento misurato della 7.746)
+
+Censimento `memoria-749` nel regime corretto delle scelte: coinv 8, intesa 2-5, fiducia 2-4, 5 schede/5 scelte a partita (la 7.746 era stata misurata nel regime senza scelte: bonus 0). Bonus fino a +8 sul punteggio dell'eroe come ricevente. Sonda `int-749`, due semi, ON vs rosso `__CPM_NO749`: ricevuti 2 vs 0 e 2 vs 1; candidato 6 vs 7 e 6 vs 4; eseguiti 8 vs 8. Dichiarato: numeri piccoli, distanza eroe-palla invariata.

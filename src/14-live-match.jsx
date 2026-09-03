@@ -2685,7 +2685,13 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                 if(!_no741&&!_hero8&&_side8==="home"&&_hpE8&&!onBenchRef.current&&_actH!=="tira"){try{
                   const _dxH=_hpE8.x-(_q8.x||50),_dyH=_hpE8.y-(_q8.y||50),_ddH=Math.hypot(_dxH,_dyH);
                   if(_ddH>=4&&_ddH<=30){let _blkH=0,_mkH=0;for(let _j=0;_j<_pl8.length;_j++){const _o=_pl8[_j];if(!_o||_o.gk||_o.team!=="away")continue;const _t=Math.max(0,Math.min(1,(((_o.x||50)-(_q8.x||50))*_dxH+((_o.y||50)-(_q8.y||50))*_dyH)/(_ddH*_ddH)));if(Math.hypot((_o.x||50)-((_q8.x||50)+_dxH*_t),(_o.y||50)-((_q8.y||50)+_dyH*_t))<3.5)_blkH=1;if(Math.hypot((_o.x||50)-_hpE8.x,(_o.y||50)-_hpE8.y)<5)_mkH=1;}
-                    const _scH=Math.min(_dxH,14)*1.2-Math.abs(_ddH-16)*0.4-_blkH*25-_mkH*6;if(_w41)_w41.cand++;
+                    /* [7.749.0 — L'INTESA PESA. Rosso __CPM_NO749] Provata come 7.746 e revocata: bonus 0 in quattro partite. Ma quel banco
+                       girava nel regime dell'autoplay che salta le scelte (coinv 0); nel regime corretto (censimento memoria-749) la memoria
+                       vive: coinv 8, intesa 2-5, fiducia 2-4 a partita. Nel calcio i compagni cercano chi si e' fatto trovare: la memoria
+                       narrativa vale fino a +8 sul punteggio dell'eroe come ricevente (+2 per unita' di coinv+intesa), zero a inizio
+                       partita. Non un dado, non una promozione fissa: una storia che cresce. */
+                    const _NE49=narrRef669.current||{};const _bonus49=(typeof window!=='undefined'&&window.__CPM_NO749)?0:Math.min(8,2*(((_NE49.coinv|0)+(_NE49.intesa|0))));
+                    const _scH=Math.min(_dxH,14)*1.2-Math.abs(_ddH-16)*0.4-_blkH*25-_mkH*6+_bonus49;if(_w41){_w41.cand++;_w41.bonus=_bonus49;}
                     if(_scH>(_dq8.score!=null?_dq8.score:-1e9)&&(_dxH>2?_scH>-10:_scH>-4)){_toHero=true;_actH="passa";_r8={i:-1,x:_hpE8.x,y:_hpE8.y,fw:_dxH,d:_ddH};}}
                 }catch(_eH){}}
                 if(_actH==="passa"&&_r8&&(_toHero||(_r8.i>=0&&_r8.i!==_ci8&&_pl8[_r8.i]&&_pl8[_r8.i].team===_side8))){
