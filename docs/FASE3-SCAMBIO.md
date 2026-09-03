@@ -242,3 +242,11 @@ Nota sul censimento fondate: le due righe del 18' chiedevano 2-6u di spostamento
 
 Il portatore-stato viaggia in allPlayers (`_carr754`); nell'elezione del padrone della palla-mesh (7.555) vince lui se sta entro 14u dal punto logico, la vicinanza decide solo quando lo stato tace. Sonda `por-754` (GLB ON, seme 754), ON vs rosso `__CPM_NO754`: elezione dallo stato 279 fotogrammi, dalla vicinanza 1378; distanza palla-mesh↔portatore-stato mediana 5,7u vs 6,5u; entro 4u 0,46 vs 0,38. Secondo seme in corsa.
 Secondo seme (7542): mediana 9,3u vs 5,5u, entro 4u 0,23 vs 0,41 — contrario al primo. Misura mista su due semi: **7.754 REVOCATA**. Lezione: la palla-mesh ha altri scrittori (arrivi 7.526, «detto» 7.556, colla dell'eroe) e imporre il portatore-stato per 14u tira la palla verso un uomo che la mesh non ha ancora raggiunto. Il renderer come puro esecutore va fatto sugli arrivi (chi riceve nel logico riceve nella mesh), non sull'elezione a distanza.
+
+## Fase 10 — 7.755 banda «nomi-veri» (SPEDITA)
+
+Il guardiano legge la rosa dei 22 per partita e chiede che ogni riga-fatto contenga un cognome della rosa: 7/7 su due partite (rosa 19 nomi). Non giudicabile sotto 2 righe-fatto.
+
+## Fase 2 — arrivi del renderer: letti, nessuna tacca
+
+L'arco ambientale (7.526) consegna già la palla-mesh all'uomo NOMINATO dalla riga (7.546, `_ba.rcv`) e il passatore nominato è il portatore del fotogramma in cui l'arco parte (7.556). I passaggi della mente (7.738) puntano la posizione del ricevente: la vicinanza alla destinazione elegge lui. Il renderer esegue già gli arrivi dello stato; quello che non deve fare è eleggere a distanza (7.754, revocata).

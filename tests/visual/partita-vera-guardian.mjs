@@ -15,7 +15,7 @@ const b = await launchBrowser();
    PULITO — riaprire la partita nella stessa pagina fa ritrovare al gioco la carriera salvata e la
    seconda gara non si apre piu' (misurato due volte: timeout su openMatch). */
 const PARTITE_G = +(process.env.CPM_PARTITE_G || 2);
-const all = []; const MENTE = []; let page = null, ctx = null;
+const all = []; const MENTE = []; const ROSA = []; let page = null, ctx = null;
 for (let g = 0; g < PARTITE_G; g++) {
   if (ctx) await ctx.close();
   ctx = await b.newContext({ viewport: { width: 412, height: 915 } });
@@ -33,6 +33,8 @@ for (let g = 0; g < PARTITE_G; g++) {
     all.push(...chunk); }
   /* [7.747.0] I TESTIMONI DELLA MENTE, per partita: la mente esegue (7.738), la riga descrive (7.739), il raccoglitore va sul pallone (7.743). */
   try { const w = await page.evaluate(() => ({ p: window.__CPM_PASSA738 || null, f: window.__CPM_FATTO739 || null, r: window.__CPM_RACC743 || null })); MENTE.push(w); } catch (_e) { MENTE.push({ p: null, f: null, r: null }); }
+  /* [7.755.0] LA ROSA VERA: i cognomi dei 22 (e dell'eroe) di questa partita, per giudicare che ogni riga-fatto nomini uomini che esistono. */
+  try { const ros = await page.evaluate(() => { const mp = (window.__CPM_MP && window.__CPM_MP()) || []; const n = mp.filter(Boolean).map(q => String(q.n || '').trim()).filter(Boolean); const h = (window.__CPM_NARR669 && window.__CPM_NARR669() && window.__CPM_NARR669().eroe) || null; return n; }); ROSA.push(...ros); } catch (_e) {}
 }
 const T = await page.evaluate(() => window.__CPM_TURN616 || {});
 const NPD = await page.evaluate(() => window.__CPM_NPD || []);
@@ -59,6 +61,14 @@ for (const g of goals) { const lato = g.side === 'home' ? 1 : -1;
 const mEseg = MENTE.reduce((a, w) => a + ((w.p && w.p.eseguiti) | 0), 0);
 const mRacc = MENTE.reduce((a, w) => a + ((w.r && w.r.eletti) | 0), 0);
 const fattoRows = rows.filter(r => r.rk === 'fatto739');
+/* [7.755.0] OGNI RIGA-FATTO NOMINA UOMINI VERI (§12: la telecronaca non inventa il calcio). Si estraggono le parole con
+   l'iniziale maiuscola dal testo e si chiede che almeno due appartengano alla rosa (passatore e ricevente); l'eroe non
+   sta in __CPM_MP ma il suo cognome si accetta se compare in una riga-fatto di un passaggio verso di lui — per non
+   bocciare l'eroe, la banda chiede che TUTTE le righe-fatto abbiano ALMENO UN cognome della rosa, e che nessuna
+   riga-fatto sia vuota. Prova del rosso: CPM_ROSSO=__CPM_NO739 azzera le righe-fatto e la banda diventa non giudicabile. */
+const _cog = (t) => String(t || '').replace(/[^A-Za-zÀ-ÿ' ]/g, ' ').split(/\s+/).filter(w => /^[A-ZÀ-Ý][a-zà-ÿ']{2,}$/.test(w));
+const _rosaSet = new Set(ROSA.map(n => n.charAt(0).toUpperCase() + n.slice(1).toLowerCase()));
+const nomiOk = fattoRows.filter(r => _cog(r.txt).some(w => _rosaSet.has(w))).length;
 const checks = [
   ['turno-causale', `scritture causali ${causali}% (orologio ${orologio}/${totT})`, totT >= 8 ? causali >= 85 : null],
   /* ⚠️ [7.684.0 — QUESTA BANDA AVEVA CONSUMATO TUTTO IL SUO MARGINE, e me ne sono accorto solo quando
@@ -96,6 +106,7 @@ const checks = [
   ['mente-esegue', `${mEseg} passaggi eseguiti dalla mente su ${PARTITE_G} partite · banda ${PARTITE_G}`, mEseg >= PARTITE_G],
   ['riga-descrive', `${fattoRows.length} righe-fatto (rk fatto739) su ${PARTITE_G} partite · banda ${PARTITE_G}`, fattoRows.length >= PARTITE_G],
   ['raccoglitore', `${mRacc} raccoglitori eletti su ${PARTITE_G} partite · banda ${2 * PARTITE_G}`, mRacc >= 2 * PARTITE_G],
+  ['nomi-veri', `${nomiOk}/${fattoRows.length} righe-fatto con un cognome della rosa (rosa ${_rosaSet.size} nomi)`, fattoRows.length >= 2 ? nomiOk === fattoRows.length : null],
 ];
 console.log('\n=== GUARDIANO PARTITA-VERA ===\n');
 { /* [7.643] misura informativa del portatore-stato (F1b): diventa banda quando 2-3 run confermano la stabilita' */
