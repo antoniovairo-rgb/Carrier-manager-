@@ -199,3 +199,7 @@ Difetto trovato misurando: le conseguenze di scheda applicavano solo marcatura e
 ## Fase 5/6 — 7.749 «l'intesa pesa» (SPEDITA, rifacimento misurato della 7.746)
 
 Censimento `memoria-749` nel regime corretto delle scelte: coinv 8, intesa 2-5, fiducia 2-4, 5 schede/5 scelte a partita (la 7.746 era stata misurata nel regime senza scelte: bonus 0). Bonus fino a +8 sul punteggio dell'eroe come ricevente. Sonda `int-749`, due semi, ON vs rosso `__CPM_NO749`: ricevuti 2 vs 0 e 2 vs 1; candidato 6 vs 7 e 6 vs 4; eseguiti 8 vs 8. Dichiarato: numeri piccoli, distanza eroe-palla invariata.
+
+## Fase 8 — censimento della festa del gol (sonda `celeb-750`, GLB ON, due semi)
+
+Strumento temporaneo su `fireGoalCeleb` (da dove parte: rete rilevata dal renderer / fallback a orologio 5200 ms). Un solo gol dell'eroe in due partite: la festa è partita dalla rilevazione in rete dopo 3,9 s; il fallback non è mai scattato. Con n=1 non c'è un difetto da correggere in headless; il caso «fallback prima della rete» resta possibile solo su telefoni lenti con GLB ON e va collaudato lì (non verificato). Strumento rimosso, nessuna release.
