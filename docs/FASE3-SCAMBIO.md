@@ -215,3 +215,7 @@ Fondate 88,2% e 71,0% (soglie dichiarate ≥90%); smentite 13/114 = 11,4% (≤5%
 ## Fase 2 — 7.750 «il contropiede è un uomo che corre» (SPEDITA, vince di misura)
 
 Corridore eletto all'armamento, schieramento che lo manda avanti 5u/tick, palla che lo segue (7.642), righe finali sull'uomo. Fondate-558 appaiato (7300/7337) ON vs rosso `__CPM_NO750`: fondate 78,1/75,0 vs 75,0/71,9; smentite 12,5% vs 14,2%; destinazioni 30/43 vs 28/44; custodia invariata. Dichiarato: +3,1 punti su entrambi i semi, dentro il rumore fra tornate; spedita per direzione concorde e coerenza (una sola autorità sul pallone).
+
+## Fase 2 — manovra-gol (piano 649): letta, nessuna tacca
+
+Il piano-gol nomina già l'uomo di ogni passo (`chi`) e lo porta sul punto dichiarato: è uomo+punto, coerente col 7.750. Le sue smentite nel censimento (es. 18' attack_goal: riga a (78,84), pallone a (94,50)) sono conflitti di MINUTO col gol del microsim (la palla è già in porta quando la riga del passo esce), non punto-contro-uomo. Resta il ponte (scorta alla scena), che è a punto per natura (la scena nasce in un punto). Chiuso il giro «le recite dichiarano l'uomo»: contropiede fatto (7.750), manovra-gol già conforme, ponte per natura a punto.
