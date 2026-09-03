@@ -162,7 +162,7 @@ const INTX669=[
     «loro parlano a te», mancava il verso opposto, l eroe che carica il gruppo. Queste dieci chiudono
     entrambi: le prime cinque RISPONDONO a una scelta gia' fatta (`c.scelto`), le altre cinque sono
     l eroe che si rivolge alla squadra a seconda di come sta andando. */
- {id:"mi_eco1",fam:"MISTER",cond:c=>c.mn>=34&&c.scelto("mi_cons",0),
+ {id:"mi_eco1",fam:"MISTER",cond:c=>c.mn>=34&&c.scelto("mi_cons",0)&&((typeof window!=='undefined'&&window.__CPM_NO748)||c.zonaVista>=3),/* [7.748] «si apre davvero» solo se ci e' andato davvero (>=3 tick nella zona: misurati 4 a partita su due semi) */
   txt:c=>"\ud83d\udce3 Quello spazio si apre davvero: il mister indica di nuovo la fascia e batte le mani. «Adesso ci sei.»",cons:{fiducia:1},
   sc:[{et:"Ci vado ancora",es:c=>c.eroe+" ci torna appena la palla gira: il terzino avversario comincia a guardarsi le spalle.",cons:{zona:1,coinv:1}},{et:"Adesso mi aspettano",es:c=>c.eroe+" legge che l hanno capito e cambia zona: il mister annuisce, e' la lettura giusta.",cons:{zona:1,fiducia:1}},{et:"Chiamo un compagno li'",es:c=>c.eroe+" manda un compagno in quello spazio e resta lui a dare l appoggio: due teste sulla stessa idea.",cons:{intesa:2}}]},
  {id:"mi_eco2",fam:"MISTER",cond:c=>c.mn>=40&&c.scelto("mi_cons",1),
@@ -3749,7 +3749,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
               fatte:(_N.fatte||[]),scelte:(_N.scelte||[]),
               scelto:(id,ramo)=>{try{return (_N.scelte||[]).indexOf(id+"#"+ramo)>=0;}catch(_e){return false;}},
               haFatto:(id)=>{try{return (_N.fatte||[]).indexOf(id)>=0;}catch(_e){return false;}},
-              coinv:(_N.coinv|0),fiducia:(_N.fiducia|0),intesa:(_N.intesa|0),zona:(_N.zona|0)};
+              coinv:(_N.coinv|0),fiducia:(_N.fiducia|0),intesa:(_N.intesa|0),zona:(_N.zona|0),zonaVista:(_N.zonaVista|0)/* [7.748] tick in cui l'eroe e' stato davvero nella zona promessa */};
             let _el=INTX669.filter(k=>_N.fatte.indexOf(k.id)<0&&(function(){try{return !!k.cond(_c669);}catch(_e){return false;}})());
             /* [7.682.0 — LA MEMORIA FRA UNA PARTITA E L'ALTRA, che nel 7.681 avevo promesso e non fatto.
                Lo stato narrativo riparte da zero a ogni gara, quindi la stessa scheda poteva ripresentarsi
@@ -4239,6 +4239,11 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               const _c=_intxK669.cons||{};
               if(_c.marcatura)_N.marcatura=Math.max(0,(_N.marcatura|0)+_c.marcatura);
               if(_c.intesa)_N.intesa=(_N.intesa|0)+_c.intesa;
+              /* [7.748.0] TROVATO MISURANDO (sonda zona-748: mi_avv uscita, zona rimasta 0): a livello di SCHEDA si applicavano solo
+                 marcatura e intesa; zona, coinv e fiducia dichiarati sulla scheda (mi_avv, mi_cons, mi_stg: «cons:{zona:1}») non
+                 hanno mai avuto effetto — la consegna del mister non arrivava nemmeno alla memoria. Ora le cinque voci si applicano
+                 come nella scelta (scegli681). */
+              if(!(typeof window!=='undefined'&&window.__CPM_NO748)){if(_c.coinv)_N.coinv=(_N.coinv|0)+_c.coinv;if(_c.fiducia)_N.fiducia=(_N.fiducia|0)+_c.fiducia;if(_c.zona)_N.zona=(_N.zona|0)+_c.zona;}
               ev={...ev,txt:_t,ef:null,ms:null,bpos:null,pd:null,_intx669:_intxK669.fam,_intxSc681:(_intxK669.sc||null),_intxId681:_intxK669.id};
               if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){try{(window.__CPM_INTX669=window.__CPM_INTX669||[]).push({min:nx,id:_intxK669.id,fam:_intxK669.fam,txt:_t});}catch(_e){}}
             }
@@ -5984,7 +5989,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
           // GK→slot 0, DEF→slots 1-4, MID→slots 5-7, ATT→slots 8-9
           const slots=isGK?[0]:isDef?[1,2,3,4]:isMid?[5,6,7]:[8,9];
           let tgX=slots.reduce((s,i)=>s+(dt[i]?.x||50),0)/slots.length;
-          const tgY=slots.reduce((s,i)=>s+(dt[i]?.y||50),0)/slots.length;
+          let tgY=slots.reduce((s,i)=>s+(dt[i]?.y||50),0)/slots.length;/* [7.748] non piu' const: la zona la sposta */
           let _gain726=0.06;
           /* [7.726.0 — L'EROE SI MUOVE NEL FLUSSO. Rosso __CPM_NO726] MISURATO (banco eroe-724): fra una
              situazione e l'altra l'eroe insegue la media degli slot del suo reparto, cioe' la linea della
@@ -6005,9 +6010,17 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
             const _lead=isDef?0:isMid?6:10;
             const _MS=matchStateRef.current;const _capDef=(_MS&&_MS.linee&&_MS.linee.away&&_MS.linee.away.def)||88;
             _capX726=Math.min(_capDef-1,92);
-            const _tgAtt=Math.min(Math.max(tgX,(_bp.x||50)+_lead),Math.min(_capDef-2,92));
+            /* [7.748.0 — LA ZONA E' REALE. Rosso __CPM_NO748] §7 della missione: «interazioni con conseguenze REALI». La consegna del
+               mister («lo spazio alle spalle del loro terzino: vacci ogni volta che la palla gira») sommava `zona` nella memoria
+               narrativa e la leggevano solo altre schede: una promessa che il campo non manteneva. Ora, con zona>0 e possesso nostro,
+               il bersaglio dell'eroe nel flusso e' quella fascia — lato palla, largo (y 22/78), 4u piu' avanti — e il tick conta i
+               tick in cui ci sta davvero (`zonaVista`: terzo offensivo e largo): e' quel numero, non la scelta, che le schede
+               successive leggono («quello spazio si apre davvero» solo se ci e' andato). */
+            const _NZ48=narrRef669.current||{};const _zona48=!(typeof window!=='undefined'&&window.__CPM_NO748)&&((_NZ48.zona|0)>0);
+            const _tgAtt=Math.min(Math.max(tgX,(_bp.x||50)+_lead+(_zona48?4:0)),Math.min(_capDef-2,92));
             if(_tgAtt>tgX){tgX=_tgAtt;_gain726=0.10;}
-            if(typeof window!=='undefined'&&window.__CPM_REC){try{window.__CPM_EROE726={tg:+tgX.toFixed(1),bx:+(_bp.x||50).toFixed(1),cap:+_capDef.toFixed(1),hx:+p.x.toFixed(1)};}catch(_e){}}
+            if(_zona48&&!isDef){tgY=(_bp.y||50)>=50?78:22;if(p.x>=(_bp.x||50)+4&&Math.abs(p.y-50)>=14){_NZ48.zonaVista=(_NZ48.zonaVista|0)+1;}}/* [7.748 v3] «nella zona» = davanti al pallone (+4u) e nel mezzo spazio (|y-50|>=14): misurato che x>=66 non si raggiunge con la palla a x 40-50 (vista 0 su 74 tick) e che la fascia piena (>=22) non si raggiunge perche' scene e sito della riga riportano l'eroe al centro (|y-50| media 5→9,7u) */
+            if(typeof window!=='undefined'&&window.__CPM_REC){try{window.__CPM_EROE726={tg:+tgX.toFixed(1),bx:+(_bp.x||50).toFixed(1),cap:+_capDef.toFixed(1),hx:+p.x.toFixed(1),hy:+p.y.toFixed(1)};}catch(_e){}}
           }catch(_e726){}}
           nx=clamp(p.x+(tgX-p.x)*_gain726+rng(-1,1),3,Math.min(97,_capX726));
           ny=clamp(p.y+(tgY-p.y)*0.06+rng(-1.5,1.5),3,97);
