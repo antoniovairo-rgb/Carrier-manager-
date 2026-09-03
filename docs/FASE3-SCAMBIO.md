@@ -272,3 +272,11 @@ Dopo il fix, guardiano a 4 partite: tabellone gol raccontati 2-5 = punteggio 2-5
 ## Regressione — salti della palla-mesh dopo la custodia a uomo (ball-jump-census sulla 7.759)
 
 8 salti su 1941 fotogrammi, tutti dentro lo stacco nero (0 visibili): 5 consegne (7,2-17,9u), 3 avvicinamenti (6,2-23,9u). Copertura 7 scene su un minimo di 13: il censimento non giudica, ma non c'è un salto visibile. Nessuna regressione osservata; non verificato a copertura piena.
+
+## 7.760 — metro fondate affinato: un gol nella finestra non è una smentita
+
+fondate-558 legge ora i minuti dei gol dal libro mastro: una destinazione non centrata con un gol nella finestra va in un conto a parte. Corsa sui semi 7300/7337: destinazioni con gol nella finestra **0**, quindi le smentite del 18' (pallone a 94,50) non sono gol ma esiti di scena dell'eroe (tiro parato/fuori: la palla vola alla linea di porta). Fondate 78,8/71,9, smentite 14,2%. Il metro va esteso agli esiti di scena nella finestra: prossimo passo.
+
+## 7.761 — ogni esito di scena nel libro mastro (cpmEv «esito») + metro fondate esteso
+
+Prima stesura errata (evento solo nel ramo goal_against) fermata e corretta: l'evento si scrive prima delle statistiche, per ogni esito. Fondate-558 sui semi 7300/7337: fondate 71,9/74,2, smentite 14,0%; destinazioni con gol o esito nella finestra: **0**. Le smentite residue non sono tiri né gol: sono derive (un altro scrittore sposta il pallone dopo la riga). Il metro resta più onesto; la percentuale non cambia. Non regredisce nulla.
