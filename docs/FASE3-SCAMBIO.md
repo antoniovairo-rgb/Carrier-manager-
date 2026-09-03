@@ -227,3 +227,7 @@ Le due smentite «attack_goal 18'» sono passi del piano-gol (famiglia fascia) c
 ## Collaudo PO 03/09 (sulla 7.719) → 7.751
 
 Rilievi: striscioni accavallati, nessun cambio campo, azioni pericolose confusionarie, tiri da distanza siderale. Il collaudo era sulla 7.719 (`main` prima della promozione): il cambio campo è la 7.732, ora su main con la 7.750. **7.751**: (a) i due drappi ultras della tribuna lunga erano piani da 30u con centri a ±12u, sovrapposti di 6u (scritta del secondo tagliata): larghezza parametrica, 23u, spazio 1u, verificato con scatto GLB ON del provino («SELEZIONE GRANATA» intero); (b) cinque situazioni di tiro nascevano a x 58-68 (32-42u = 34-44 m dalla porta) con testi «30 metri»/«al limite»: partenza a x 68-78 (62-72 per il portiere fuori dai pali). Aperto: «azioni pericolose confusionarie», da ricollaudare sulla 7.750+ con partita e minuto.
+
+## Fase 5 — 7.752 «la fiducia pesa sull'esito» (in rituale)
+
+`fiducia` entra nel tasso di riuscita di handleAction: +2 punti per unità, fra −6 e +8, con riga nel feedback causale. Sonda `fid-752` (regime corretto, GLB ON, seme 752): fiducia finale 2, azioni 2, modificatore 0 sulla prima (prima della scheda) e +0,04 sulla seconda. Meccanismo verificato; l'effetto sugli esiti è per costruzione (le prove del gate girano con fiducia 0).

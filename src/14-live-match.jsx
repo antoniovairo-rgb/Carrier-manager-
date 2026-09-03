@@ -6213,12 +6213,19 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
     //   reparto più FORTE, cala (−5%). Seguire il consiglio del mister aumenta davvero la probabilità di riuscita.
     //   NEUTRO in FORCE-MODE (il gate non ha un avversario reale) → fingerprint invariato (pattern _hgD86).
     const _scout88=(typeof window!=="undefined"&&window.__CPM_FORCED_MODE)?{mod:0,cause:null}:scoutActionMod(action,oppMatchProfile(opponent,player.season));
-    const rate=Math.max(0.05,succRate(action,player.stats,pPos.x,oppPrestige,player.archetype?.id||player.archetype)/100-defPenalty-weatherPenalty+momentumBonus+formMod+moraleMod-fatiguePenalty+tacticMod-fkPenalty+atmoMod+_scout88.mod);
+    /* [7.752.0 — LA FIDUCIA PESA SULL'ESITO. Rosso __CPM_NO752] §7 della missione: la memoria narrativa (`fiducia`, che le
+       schede muovono in +/-1 e +/-2 e che dal 7.748 arriva davvero in memoria) non aveva NESSUN effetto nel mondo: la
+       leggevano solo altre schede. Ora entra nel tasso di riuscita dell'azione dell'eroe: +2 punti percentuali per unita',
+       fra -6 e +8 — la stessa scala dei fattori che il giocatore gia' vede (momento, forma, mister, pubblico) e con la sua
+       riga nel feedback causale, cosi' l'esito INSEGNA anche questo. Le prove del gate (fiducia 0) non cambiano. */
+    const _fid752=(function(){try{if(typeof window!=='undefined'&&window.__CPM_NO752)return 0;const _N=narrRef669.current||{};return clamp(((_N.fiducia|0))*0.02,-0.06,0.08);}catch(_e){return 0;}})();
+    if(typeof window!=='undefined'&&window.__CPM_REC){try{const _w=(window.__CPM_FID752=window.__CPM_FID752||{n:0,con:0,mods:[]});_w.n++;if(_fid752)_w.con++;if(_w.mods.length<40)_w.mods.push(+_fid752.toFixed(2));}catch(_e){}}
+    const rate=Math.max(0.05,succRate(action,player.stats,pPos.x,oppPrestige,player.archetype?.id||player.archetype)/100-defPenalty-weatherPenalty+momentumBonus+formMod+moraleMod-fatiguePenalty+tacticMod-fkPenalty+atmoMod+_scout88.mod+_fid752);
     try{const _tc84=+(safeLS.get("cpm-hl-tips")||0);if(_tc84<5)safeLS.set("cpm-hl-tips",String(_tc84+1));}catch(_e){}// [5.84.0 UX-2c] contatore onboarding
     // [5.84.0 UX-2b] FEEDBACK CAUSALE: il fattore dominante dell'esito arriva a schermo — il motore lo
     //   sapeva già (pressione/fatica/forma/meteo/momentum), il giocatore no. Ora il fallimento INSEGNA.
-    const _negC84=[[defPenalty,"🏃 Difensore addosso −"+Math.round(defPenalty*100)+"%"],[fkPenalty,"🧱 Conclusione su punizione: difficilissima"],[fatiguePenalty,"💧 Stanchezza −"+Math.round(fatiguePenalty*100)+"%"],[weatherPenalty,"🌧️ Meteo avverso"],[-formMod,"📉 Fuori forma"],[-momentumBonus,"⚠️ Momento difficile"],[-moraleMod,"😔 Morale a terra"],[-atmoMod,"🔊 Pressione del pubblico ostile"]].filter(c=>c[0]>0.03).sort((a,b)=>b[0]-a[0]);
-    const _posC84=[[momentumBonus,"🔥 Momento d'oro +"+Math.round(momentumBonus*100)+"%"],[formMod,"⭐ In grande forma"],[tacticMod,"📢 Spinta tattica del mister"],[atmoMod,"📣 Spinta del tuo pubblico"]].filter(c=>c[0]>0.03).sort((a,b)=>b[0]-a[0]);
+    const _negC84=[[defPenalty,"🏃 Difensore addosso −"+Math.round(defPenalty*100)+"%"],[fkPenalty,"🧱 Conclusione su punizione: difficilissima"],[fatiguePenalty,"💧 Stanchezza −"+Math.round(fatiguePenalty*100)+"%"],[weatherPenalty,"🌧️ Meteo avverso"],[-formMod,"📉 Fuori forma"],[-momentumBonus,"⚠️ Momento difficile"],[-moraleMod,"😔 Morale a terra"],[-_fid752,"😶 Fiducia in calo"],[-atmoMod,"🔊 Pressione del pubblico ostile"]].filter(c=>c[0]>0.03).sort((a,b)=>b[0]-a[0]);
+    const _posC84=[[momentumBonus,"🔥 Momento d'oro +"+Math.round(momentumBonus*100)+"%"],[formMod,"⭐ In grande forma"],[tacticMod,"📢 Spinta tattica del mister"],[atmoMod,"📣 Spinta del tuo pubblico"],[_fid752,"💪 Fiducia alta +"+Math.round(_fid752*100)+"%"]].filter(c=>c[0]>0.03).sort((a,b)=>b[0]-a[0]);/* [7.752] la fiducia si vede */
     // [7.88.0] il consiglio del mister è il fattore da INSEGNARE per primo: quando l'azione colpisce il punto debole
     //   (o attacca il reparto forte) la spiegazione va in testa alla causa mostrata nell'hl_result.
     if(_scout88.mod>0&&_scout88.cause)_posC84.unshift([_scout88.mod,_scout88.cause]);
