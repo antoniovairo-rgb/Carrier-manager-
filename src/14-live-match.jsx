@@ -2524,6 +2524,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           const _fn735a=_fan735&&_fan735.side==="away"&&!_el706a&&!_sh720a&&ai>=5;
           if(_fn735a){const _sl=ai<=7?_fan735.M[ai-5]:_fan735.F[Math.min(ai-8,2)];if(_sl){tx=_sl.x;ty=_sl.y;}}/* [7.735.0] ventaglio del lato in possesso (ospiti) */
           if(!(typeof window!=='undefined'&&window.__CPM_NO743)&&raccogliRef743.current&&raccogliRef743.current.i===idx&&ai!==0&&!fermoRef.current&&!outRef.current){tx=clamp(ball.x,44,98);ty=clamp(ball.y,3,97);}/* [7.743.0] il raccoglitore va sul pallone fermo */
+          if(!(typeof window!=='undefined'&&window.__CPM_NO750)&&counterRef.current&&!counterRef.current.fin&&counterRef.current.runner===idx&&ai!==0){tx=clamp((pl.x||50)+counterRef.current.dir*5,44,98);ty=clamp((pl.y||50)+(50-(pl.y||50))*0.2,3,97);}/* [7.750.0] il corridore del contropiede */
           const va=velRef.current[idx]||{vx:0,vy:0};
           const nvxa=clamp(va.vx*0.70+(tx-pl.x)*(_el706a?0.35:_sh720a?0.30:_fn735a?0.20:0.14),-6,6);
           const nvya=clamp(va.vy*0.70+(ty-pl.y)*(_el706a?0.35:_sh720a?0.30:_fn735a?0.20:0.11),-6,6);/* [7.706.0] MISURATO (v6): coi guadagni di corsia gli eletti restavano a 4-15u dal pallone — il passo dell'eletto e' quello del primo pressore (0,35), o l'anello non si forma prima che la riga cambi *//* [7.720.0] l'ombra cammina col passo del marcatore (0,30): meno del pressore, piu' della corsia */
@@ -2557,6 +2558,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           const _fn735h=_fan735&&_fan735.side==="home"&&!_el706h&&!_sh720h&&hi>=5;
           if(_fn735h){const _sl=hi<=7?_fan735.M[hi-5]:_fan735.F[Math.min(hi-8,2)];if(_sl){tx=_sl.x;ty=_sl.y;}}/* [7.735.0] ventaglio del lato in possesso (casa) */
           if(!(typeof window!=='undefined'&&window.__CPM_NO743)&&raccogliRef743.current&&raccogliRef743.current.i===idx&&hi!==0&&!fermoRef.current&&!outRef.current){tx=clamp(ball.x,2,92);ty=clamp(ball.y,3,97);}/* [7.743.0] il raccoglitore va sul pallone fermo */
+          if(!(typeof window!=='undefined'&&window.__CPM_NO750)&&counterRef.current&&!counterRef.current.fin&&counterRef.current.runner===idx&&hi!==0){tx=clamp((pl.x||50)+counterRef.current.dir*5,2,92);ty=clamp((pl.y||50)+(50-(pl.y||50))*0.2,3,97);}/* [7.750.0] il corridore del contropiede */
           const vh=velRef.current[idx]||{vx:0,vy:0};
           const nvxh=clamp(vh.vx*0.70+(tx-pl.x)*(_el706h?0.35:_sh720h?0.30:_fn735h?0.20:0.12),-6,6);
           const nvyh=clamp(vh.vy*0.70+(ty-pl.y)*(_el706h?0.35:_sh720h?0.30:_fn735h?0.20:0.10),-6,6);/* [7.706.0] passo del pressore per l'eletto (vedi lato ospite) */
@@ -3615,9 +3617,11 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           const _ct542=counterRef.current;
           if(!_ct542.fin){_ct542.ticks++;
             const _t542=ballTargetRef.current;
-            if(!ballLagRef.current){_t542.x=clamp(_t542.x+_ct542.dir*5,4,96);_t542.y=clamp(_t542.y+(50-_t542.y)*0.20,6,94);}/* [7.642 v5] il bersaglio aspetta la palla */
-            const _b542=ballPosRef.current||{x:50,y:50};
-            if((_ct542.dir>0&&_b542.x>=76)||(_ct542.dir<0&&_b542.x<=24)||_ct542.ticks>=9)_ct542.fin=true;}
+            const _run750=(!(typeof window!=='undefined'&&window.__CPM_NO750)&&_ct542.runner!=null)?(matchPlayersRef.current||[])[_ct542.runner]:null;
+            if(_run750){/* [7.750] il corridore ha la palla: il bersaglio sono i suoi piedi (7.642), qui non si muove il punto */}
+            else if(!ballLagRef.current){_t542.x=clamp(_t542.x+_ct542.dir*5,4,96);_t542.y=clamp(_t542.y+(50-_t542.y)*0.20,6,94);}/* [7.642 v5] il bersaglio aspetta la palla */
+            const _b542=_run750?{x:_run750.x||50,y:_run750.y||50}:(ballPosRef.current||{x:50,y:50});
+            if((_ct542.dir>0&&_b542.x>=76)||(_ct542.dir<0&&_b542.x<=24)||_ct542.ticks>=9){_ct542.fin=true;if(_run750&&typeof window!=='undefined'&&window.__CPM_REC){try{const _w=(window.__CPM_CT750=window.__CPM_CT750||{eletti:0,fin:0});_w.fin++;}catch(_e){}}}}
         }
         /* [7.532.0 NO544 — IL PONTE] due minuti prima dell'highlight in calendario, la cronaca scorta la
            palla verso il punto di nascita della scena: l'highlight si apre DOVE il racconto ha portato il
@@ -4104,9 +4108,9 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
             if(_ct.fin){counterRef.current=null;
               ev=_ct.dir>0?(_rc542<0.4?{txt:"💥 La ripartenza si chiude col tiro di {H}: il portiere di {A} devia in tuffo!",ef:null,w:1,bpos:{x:88,y:52},ms:{shots:1},at:"shot",pd:_dec499,tn617:-1}
                  :_rc542<0.7?{txt:"↗ Contropiede: cross basso di {H} — la difesa di {A} spazza in extremis.",ef:null,w:1,bpos:{x:82,y:60},at:"cross",pd:_dec499,tn617:-1}
-                 :{txt:"⚡ La ripartenza sfuma: {A} raddoppia su {H} e chiude al limite.",ef:null,w:1,bpos:{x:74,y:48},pd:_dec499,tn617:-1})
+                 :{txt:"⚡ La ripartenza sfuma: {A} raddoppia su {H} e chiude al limite.",ef:null,w:1,bpos:(function(){const _r=(!(typeof window!=='undefined'&&window.__CPM_NO750)&&_ct.runner!=null)?(matchPlayersRef.current||[])[_ct.runner]:null;return _r?{x:_r.x||74,y:_r.y||48}:{x:74,y:48};})(),pd:_dec499,tn617:-1})
                :(_rc542<0.4?{txt:"😨 Ripartenza di {A}: tiro dal limite — il nostro portiere respinge coi pugni!",ef:null,w:1,bpos:{x:10,y:48},ms:{oppShots:1},at:"shot",pd:_dec499,tn617:1}
-                 :_rc542<0.7?{txt:"🛡️ Contropiede avversario: {H} rincula e chiude in scivolata al momento giusto.",ef:null,w:1,bpos:{x:18,y:52},at:"tackle",pd:_dec499,tn617:1}
+                 :_rc542<0.7?{txt:"🛡️ Contropiede avversario: {H} rincula e chiude in scivolata al momento giusto.",ef:null,w:1,bpos:(function(){const _r=(!(typeof window!=='undefined'&&window.__CPM_NO750)&&_ct.runner!=null)?(matchPlayersRef.current||[])[_ct.runner]:null;return _r?{x:_r.x||18,y:_r.y||52}:{x:18,y:52};})(),at:"tackle",pd:_dec499,tn617:1}
                  :{txt:"😮‍💨 {A} sciupa la ripartenza: ultimo passaggio lungo, rimessa dal fondo.",ef:null,w:1,bpos:{x:14,y:40},pd:_dec499,tn617:1});}
             else{const _cv542=(recVarRef.current=(recVarRef.current+1)|0)%4;
             const _CF=_ct.dir>0?["🏃 {H} brucia il centrocampo in conduzione — campo aperto!","⚡ Ripartiamo in verticale: {H} lancia {H2} oltre la linea!","💨 Tre tocchi e via: {H} porta il contropiede oltre la meta' campo.","🎯 {H2} accompagna la ripartenza: due contro due, che occasione!"]
@@ -4115,6 +4119,16 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
           else if(!_no542&&!_ct&&!_koHij536&&counterArmRef.current&&!ev.ef&&!spRef.current&&kickoffRef.current<=0&&!pendingGoalRef.current&&(!outRef.current||(typeof window!=='undefined'&&window.__CPM_NO632))){/* [7.632.0 v4] niente ripartenza recitata sopra un fischio vivo: la palla e' ferma */
             const _arm542=counterArmRef.current;counterArmRef.current=null;
             counterRef.current={dir:_arm542.dir,ticks:0,fin:false};_recHij545=true;_recKind546="counter";_recSide546=_arm542.dir>0?"home":"away";
+            /* [7.750.0 — IL CONTROPIEDE E' UN UOMO CHE CORRE. Rosso __CPM_NO750] CENSITO (fondate-558 sulla 7.749): le 13 smentite
+               sono tutte destinazioni a PUNTO delle recite, che dal 7.738/7.743 perdono contro l'uomo che ha la palla. Il contropiede
+               muoveva il bersaglio del pallone di 5u/tick come un punto, e il portatore-uomo (7.642) lo riportava ai suoi piedi:
+               due autorita' sulla stessa palla. Ora all'armamento si elegge il CORRIDORE (il compagno del lato che riparte piu'
+               vicino alla palla), lo schieramento lo manda avanti di 5u/tick verso il centro, la palla lo segue perche' e' sua, e
+               le righe finali dichiarano dove sta LUI. Testimone __CPM_CT750{eletti,fin}. */
+            if(!(typeof window!=='undefined'&&window.__CPM_NO750)){try{const _mpC=matchPlayersRef.current||[];const _bC=ballPosRef.current||{x:50,y:50};const _sideC=_arm542.dir>0?"home":"away";let _ri=-1,_rd=1e9;
+              for(let _i=0;_i<_mpC.length;_i++){const _q=_mpC[_i];if(!_q||_q.gk||_q.team!==_sideC)continue;const _d=Math.hypot((_q.x||50)-_bC.x,(_q.y||50)-_bC.y);if(_d<_rd){_rd=_d;_ri=_i;}}
+              if(_ri>=0){counterRef.current.runner=_ri;if(!(typeof window!=='undefined'&&window.__CPM_NO641))carrierRef.current={i:_ri};if(typeof window!=='undefined'&&window.__CPM_REC){try{const _w=(window.__CPM_CT750=window.__CPM_CT750||{eletti:0,fin:0});_w.eletti++;}catch(_e){}}}
+            }catch(_e750){}}
             ev=_arm542.dir<0?{txt:"⚡ Palla persa alta! {A} riparte in campo aperto — che pericolo!",ef:null,w:1,bpos:null,pd:_dec499}
                :{txt:"⚡ Recupero altissimo di {H}! Si ribalta il fronte in un lampo!",ef:null,w:1,bpos:null,pd:_dec499};}
           else if(counterArmRef.current&&(_no542||ev.ef))counterArmRef.current=null;/* armato ma il momento e' passato (gol in mezzo / rosso): si disarma senza recitare */}
