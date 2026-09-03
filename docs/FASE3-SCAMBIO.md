@@ -207,3 +207,7 @@ Strumento temporaneo su `fireGoalCeleb` (da dove parte: rete rilevata dal render
 ## Fase 10 — stabilità delle bande della mente su 4 partite
 
 `CPM_PARTITE_G=4 node partita-vera-guardian.mjs`: mente-esegue 12 (banda 4), riga-descrive 12 (banda 4), raccoglitore 33 (banda 8); tutte le altre bande verdi (manovra-viva 136, gol-con-manovra 9/10, custodia 5,7u). Margine ≥3× sotto il misurato: le bande non sono sul filo.
+
+## Fase 9 — censimento «righe fondate» sulla 7.749 (fondate-558, semi 7300/7337)
+
+Fondate 88,2% e 71,0% (soglie dichiarate ≥90%); smentite 13/114 = 11,4% (≤5%). Per famiglia: zona 62/63, tiro 12/12, possesso 3/3, **destinazione 38/51**. Le 13 smentite sono tutte destinazioni: righe di recita (contropiede, difesa, manovra) che dichiarano un punto a 17-71u e trovano il pallone altrove. Il freno 30u non c'entra (le recite ne sono esenti dal 7.655): dopo il 7.738/7.743 il pallone segue un UOMO (portatore, raccoglitore, ricevente della mente) e il punto della riga perde. È la stessa fonte di verità che la missione chiede: la riga deve dichiarare l'uomo, non il punto. Riguarda le macchine di recita a punto fisso (counter, manovra-gol, ponte): materia di Fase 2 (i piani come uomini), non di una tacca. Nessuna release.
