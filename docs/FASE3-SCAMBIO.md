@@ -235,3 +235,10 @@ Rilievi: striscioni accavallati, nessun cambio campo, azioni pericolose confusio
 ## Fase 9 — 7.753 «fascia del piano-gol a portata» (REVOCATA)
 
 Fascia del piano-gol da y 22/78 a 30/70. Fondate-558 appaiato (7300/7337) ON vs rosso `__CPM_NO753`: fondate 68,8/79,4 vs 68,8/78,1; smentite 17/123 vs 17/121; le tre smentite «attack_goal» (18', 67', 79') sono identiche nei due regimi. La riga del 18' dichiara (78,7 · 83,9): non è il piano-gol (la sua fascia con jitter arriva a 82), è un altro scrittore, da censire. Nessun effetto: revocata.
+
+Nota sul censimento fondate: le due righe del 18' chiedevano 2-6u di spostamento (il pallone era lì quando sono uscite) e la finestra 18'-19' del giudice vede poi il pallone in rete (94,50): sono righe vere all'emissione, «smentite» dal gol che segue nella stessa finestra. È un limite del metro, non un difetto del gioco; le soglie 90%/5% vanno rilette al netto dei gol nella finestra.
+
+## Fase 2 — 7.754 «il renderer esegue il portatore dello stato» (in rituale)
+
+Il portatore-stato viaggia in allPlayers (`_carr754`); nell'elezione del padrone della palla-mesh (7.555) vince lui se sta entro 14u dal punto logico, la vicinanza decide solo quando lo stato tace. Sonda `por-754` (GLB ON, seme 754), ON vs rosso `__CPM_NO754`: elezione dallo stato 279 fotogrammi, dalla vicinanza 1378; distanza palla-mesh↔portatore-stato mediana 5,7u vs 6,5u; entro 4u 0,46 vs 0,38. Secondo seme in corsa.
+Secondo seme (7542): mediana 9,3u vs 5,5u, entro 4u 0,23 vs 0,41 — contrario al primo. Misura mista su due semi: **7.754 REVOCATA**. Lezione: la palla-mesh ha altri scrittori (arrivi 7.526, «detto» 7.556, colla dell'eroe) e imporre il portatore-stato per 14u tira la palla verso un uomo che la mesh non ha ancora raggiunto. Il renderer come puro esecutore va fatto sugli arrivi (chi riceve nel logico riceve nella mesh), non sull'elezione a distanza.
