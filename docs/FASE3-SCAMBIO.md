@@ -262,3 +262,4 @@ I tre uomini della manovra-gol scelti dallo stato (portatore) e dalla mente (dec
 ## Collaudo PO 03/09 18:01 «pannello nero dietro la porta» → 7.758
 
 Cartellone centrale dietro la porta nero senza scritta (Coppa, GLB ON, scena ASSIST). Firma 7.535: texture non allocata = mesh nera. Non riproducibile in headless (0 texture nere su 99). Rimedio: cartelloni e drappi consegnati alla GPU a metà lato senza mipmap. `__CPM_DECOR` ON vs rosso: 25,5 MB vs 30,7 MB (−17%), 11 cartelloni 1024×160 → 512×80. Residuo censito: 8 texture 1024×512 (16 MB), 2 LED 2048×128. Da confermare sul telefono.
+Residuo censito: le 8 texture 1024×512 sono i teli della folla (src/10 `quality.texWMobile:1024, texH:512`), 16 MB sul telefono, con mipmap. Prossima tacca di memoria possibile: `texH` 512→384 (−4 MB) o mipmap limitate; da fare solo se il PO conferma che il pannello nero persiste dopo la 7.758.
