@@ -250,3 +250,7 @@ Il guardiano legge la rosa dei 22 per partita e chiede che ogni riga-fatto conte
 ## Fase 2 — arrivi del renderer: letti, nessuna tacca
 
 L'arco ambientale (7.526) consegna già la palla-mesh all'uomo NOMINATO dalla riga (7.546, `_ba.rcv`) e il passatore nominato è il portatore del fotogramma in cui l'arco parte (7.556). I passaggi della mente (7.738) puntano la posizione del ricevente: la vicinanza alla destinazione elegge lui. Il renderer esegue già gli arrivi dello stato; quello che non deve fare è eleggere a distanza (7.754, revocata).
+
+## Fase 10 — 7.756 banda «tabellone» (SPEDITA)
+
+Gol del libro mastro per lato = punteggio finale del Match State: 1-2 vs 1-2 su due partite. Non giudicabile senza il punteggio di ogni partita.

@@ -15,7 +15,7 @@ const b = await launchBrowser();
    PULITO — riaprire la partita nella stessa pagina fa ritrovare al gioco la carriera salvata e la
    seconda gara non si apre piu' (misurato due volte: timeout su openMatch). */
 const PARTITE_G = +(process.env.CPM_PARTITE_G || 2);
-const all = []; const MENTE = []; const ROSA = []; let page = null, ctx = null;
+const all = []; const MENTE = []; const ROSA = []; const SCORE = []; let page = null, ctx = null;
 for (let g = 0; g < PARTITE_G; g++) {
   if (ctx) await ctx.close();
   ctx = await b.newContext({ viewport: { width: 412, height: 915 } });
@@ -34,6 +34,8 @@ for (let g = 0; g < PARTITE_G; g++) {
   /* [7.747.0] I TESTIMONI DELLA MENTE, per partita: la mente esegue (7.738), la riga descrive (7.739), il raccoglitore va sul pallone (7.743). */
   try { const w = await page.evaluate(() => ({ p: window.__CPM_PASSA738 || null, f: window.__CPM_FATTO739 || null, r: window.__CPM_RACC743 || null })); MENTE.push(w); } catch (_e) { MENTE.push({ p: null, f: null, r: null }); }
   /* [7.755.0] LA ROSA VERA: i cognomi dei 22 (e dell'eroe) di questa partita, per giudicare che ogni riga-fatto nomini uomini che esistono. */
+  /* [7.756.0] IL TABELLONE: il punteggio finale del Match State di questa partita, per giudicare che i gol RACCONTATI siano esattamente quelli SEGNATI (§20: mai un gol inventato, mai un gol taciuto). */
+  try { const sc = await page.evaluate(() => { const ms = window.__CPM_MS && window.__CPM_MS(); return ms && ms.score ? { h: ms.score.h | 0, a: ms.score.a | 0 } : null; }); if (sc) SCORE.push(sc); } catch (_e) {}
   try { const ros = await page.evaluate(() => { const mp = (window.__CPM_MP && window.__CPM_MP()) || []; const n = mp.filter(Boolean).map(q => String(q.n || '').trim()).filter(Boolean); const h = (window.__CPM_NARR669 && window.__CPM_NARR669() && window.__CPM_NARR669().eroe) || null; return n; }); ROSA.push(...ros); } catch (_e) {}
 }
 const T = await page.evaluate(() => window.__CPM_TURN616 || {});
@@ -69,6 +71,9 @@ const fattoRows = rows.filter(r => r.rk === 'fatto739');
 const _cog = (t) => String(t || '').replace(/[^A-Za-zÀ-ÿ' ]/g, ' ').split(/\s+/).filter(w => /^[A-ZÀ-Ý][a-zà-ÿ']{2,}$/.test(w));
 const _rosaSet = new Set(ROSA.map(n => n.charAt(0).toUpperCase() + n.slice(1).toLowerCase()));
 const nomiOk = fattoRows.filter(r => _cog(r.txt).some(w => _rosaSet.has(w))).length;
+/* [7.756.0] TABELLONE COERENTE: i gol del libro mastro (ev 'goal', per lato) devono essere esattamente i gol del punteggio finale. */
+const _golH = goals.filter(g => g.side === 'home').length, _golA = goals.filter(g => g.side !== 'home').length;
+const _scH = SCORE.reduce((a, s) => a + s.h, 0), _scA = SCORE.reduce((a, s) => a + s.a, 0);
 const checks = [
   ['turno-causale', `scritture causali ${causali}% (orologio ${orologio}/${totT})`, totT >= 8 ? causali >= 85 : null],
   /* ⚠️ [7.684.0 — QUESTA BANDA AVEVA CONSUMATO TUTTO IL SUO MARGINE, e me ne sono accorto solo quando
@@ -106,6 +111,7 @@ const checks = [
   ['mente-esegue', `${mEseg} passaggi eseguiti dalla mente su ${PARTITE_G} partite · banda ${PARTITE_G}`, mEseg >= PARTITE_G],
   ['riga-descrive', `${fattoRows.length} righe-fatto (rk fatto739) su ${PARTITE_G} partite · banda ${PARTITE_G}`, fattoRows.length >= PARTITE_G],
   ['raccoglitore', `${mRacc} raccoglitori eletti su ${PARTITE_G} partite · banda ${2 * PARTITE_G}`, mRacc >= 2 * PARTITE_G],
+  ['tabellone', `gol raccontati ${_golH}-${_golA} · punteggio finale ${_scH}-${_scA} su ${SCORE.length} partite`, SCORE.length === PARTITE_G ? (_golH === _scH && _golA === _scA) : null],
   ['nomi-veri', `${nomiOk}/${fattoRows.length} righe-fatto con un cognome della rosa (rosa ${_rosaSet.size} nomi)`, fattoRows.length >= 2 ? nomiOk === fattoRows.length : null],
 ];
 console.log('\n=== GUARDIANO PARTITA-VERA ===\n');
