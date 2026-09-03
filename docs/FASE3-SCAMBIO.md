@@ -171,3 +171,7 @@ Censimento `vuoto-743`: pallone fermo in gioco aperto (spostamento/tick 0), comp
 | 7432 | **0,50 vs 0,27** | **81/113 vs 32/100** | **5,7 vs 15,2u** | 12 vs 7 | 7 vs 5 | 0,67 vs 1,35 |
 
 Dichiarato: il guadagno per tick cala sul secondo seme (la palla con un padrone che cammina avanza meno di una palla che vola verso un punto). Prossima tacca: «conduci» eseguito.
+
+## Fase 3 — 7.744 «conduci eseguito» (REVOCATA)
+
+Il portatore avanza 7u quando la mente dice «conduci» e non è pressato. Sonda `passa-738` con rosso `__CPM_NO744`, due semi: «conduci» deciso 2 e 3 volte a partita, **sempre col portatore pressato (<5u)**: eseguiti 0, pressati 2 e 3; ON identico al rosso sul primo seme. La mente dice «conduci» solo quando non ha linee, cioè sotto pressione: lì la conduzione è una perdita e l'azione giusta (scarico protetto, contesa 706) è materia delle Fasi 5/7, non di questa tacca.
