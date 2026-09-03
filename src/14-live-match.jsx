@@ -2646,7 +2646,19 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
               const _side8=_ms712.turn>0?"home":"away";
               const _w8=(typeof window!=='undefined'&&window.__CPM_REC)?(window.__CPM_PASSA738=window.__CPM_PASSA738||{tick:0,eletti:0,pronti:0,eseguiti:0,lungo:0,conduci:0,tira:0}):null;if(_w8)_w8.tick++;
               let _ci8=(_c8&&_c8.i!=null)?_c8.i:-1;let _q8=_ci8>=0?_pl8[_ci8]:null;
-              if(!(_q8&&_q8.team===_side8&&!_q8.gk&&Math.hypot((_q8.x||50)-_b8.x,(_q8.y||50)-_b8.y)<=3.5)){
+              /* [7.741.0 — L'EROE E' UNO DEI VENTIDUE, AL TICK. Rosso __CPM_NO741] Fase 6: la mente del 7.738 vedeva solo
+                 i 21 di matchPlayers; l'eroe (pPos, sistema parallelo) non riceveva mai in gioco aperto e non decideva mai.
+                 Qui, nel frame eroe-centrico (la sua squadra e' «home»): (a) se la palla e' ai SUOI piedi (<=3,5u) e' lui il
+                 portatore e la mente giudica dalla sua posizione; (b) come ricevente, viene valutato con la STESSA legge di
+                 decidi715 (avanzamento, distanza ideale 16u, linea chiusa -25, marcato -6) e vince se il suo punteggio batte
+                 quello del miglior compagno. Nessun dado: e' la geometria del campo che lo coinvolge, o no. Quando riceve,
+                 nessuno dei 21 e' portatore (la palla e' sua) e la memoria narrativa segna il coinvolgimento (coinv).
+                 Testimone __CPM_EROE741{ricevuti,dati,cand,hb}. */
+              let _hero8=false;const _hpE8=pPosRef.current||null;const _no741=(typeof window!=='undefined'&&window.__CPM_NO741);
+              const _w41=(typeof window!=='undefined'&&window.__CPM_REC)?(window.__CPM_EROE741=window.__CPM_EROE741||{ricevuti:0,dati:0,cand:0,hb:null}):null;
+              if(_w41&&_hpE8)_w41.hb=+Math.hypot(_hpE8.x-_b8.x,_hpE8.y-_b8.y).toFixed(1);
+              if(!_no741&&_side8==="home"&&_hpE8&&!onBenchRef.current&&Math.hypot(_hpE8.x-_b8.x,_hpE8.y-_b8.y)<=3.5){_hero8=true;_q8={x:_hpE8.x,y:_hpE8.y,team:"home",name:(typeof _surnBG==="function"&&_surnBG(player.name||""))||String(player.name||"").trim().split(/\s+/).pop()||"il numero dieci",gk:false};_ci8=-1;}
+              if(!_hero8&&!(_q8&&_q8.team===_side8&&!_q8.gk&&Math.hypot((_q8.x||50)-_b8.x,(_q8.y||50)-_b8.y)<=3.5)){
                 /* [7.738 v3] L'ELEZIONE DEL PORTATORE SALE AL TICK LOGICO (audit §3): la v2 non e' mai scattata perche' il
                    portatore-stato vive 11 tick su 82 in gioco aperto. Il compagno del lato col turno che ha la palla ai piedi
                    (<=3,5u) e' il portatore, qui, e da qui decide. Se nessuno ce l'ha, la palla e' su erba vuota e non si decide. */
@@ -2655,9 +2667,17 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
               }
               if(_q8&&(tick-(lastPass738Ref.current|0))>=6){
                 if(_w8)_w8.pronti++;
-                const _r8=_dec715.rcv;
-                if(_dec715.act==="passa"&&_r8&&_r8.i>=0&&_r8.i!==_ci8&&_pl8[_r8.i]&&_pl8[_r8.i].team===_side8){
-                  if(_r8.d<=30){ballTargetRef.current={x:_r8.x,y:_r8.y};pendingBtRef.current=null;carrierRef.current={i:_r8.i};lastPass738Ref.current=tick;if(_w8)_w8.eseguiti++;
+                const _dq8=_hero8?decidi715(_ms712.turn,{x:_q8.x,y:_q8.y}):_dec715;/* [7.741] l'eroe portatore giudica da dove sta */
+                let _r8=_dq8.rcv;let _actH=_dq8.act;let _toHero=false;
+                if(!_no741&&!_hero8&&_side8==="home"&&_hpE8&&!onBenchRef.current&&_actH!=="tira"){try{
+                  const _dxH=_hpE8.x-(_q8.x||50),_dyH=_hpE8.y-(_q8.y||50),_ddH=Math.hypot(_dxH,_dyH);
+                  if(_ddH>=4&&_ddH<=30){let _blkH=0,_mkH=0;for(let _j=0;_j<_pl8.length;_j++){const _o=_pl8[_j];if(!_o||_o.gk||_o.team!=="away")continue;const _t=Math.max(0,Math.min(1,(((_o.x||50)-(_q8.x||50))*_dxH+((_o.y||50)-(_q8.y||50))*_dyH)/(_ddH*_ddH)));if(Math.hypot((_o.x||50)-((_q8.x||50)+_dxH*_t),(_o.y||50)-((_q8.y||50)+_dyH*_t))<3.5)_blkH=1;if(Math.hypot((_o.x||50)-_hpE8.x,(_o.y||50)-_hpE8.y)<5)_mkH=1;}
+                    const _scH=Math.min(_dxH,14)*1.2-Math.abs(_ddH-16)*0.4-_blkH*25-_mkH*6;if(_w41)_w41.cand++;
+                    if(_scH>(_dq8.score!=null?_dq8.score:-1e9)&&(_dxH>2?_scH>-10:_scH>-4)){_toHero=true;_actH="passa";_r8={i:-1,x:_hpE8.x,y:_hpE8.y,fw:_dxH,d:_ddH};}}
+                }catch(_eH){}}
+                if(_actH==="passa"&&_r8&&(_toHero||(_r8.i>=0&&_r8.i!==_ci8&&_pl8[_r8.i]&&_pl8[_r8.i].team===_side8))){
+                  if(_r8.d<=30){ballTargetRef.current={x:_r8.x,y:_r8.y};pendingBtRef.current=null;carrierRef.current=_toHero?null:{i:_r8.i};lastPass738Ref.current=tick;if(_w8)_w8.eseguiti++;
+                    if(_toHero){if(_w41)_w41.ricevuti++;try{const _N=narrRef669.current;if(_N)_N.coinv=(_N.coinv|0)+1;}catch(_e){}}else if(_hero8&&_w41)_w41.dati++;
                     /* [7.739.0 — LA RIGA DESCRIVE UN FATTO GIA' AVVENUTO. Rosso __CPM_NO739] §12 della missione nel verso giusto:
                        il passaggio e' appena stato eseguito dalla mente (riga sopra), e la telecronaca lo racconta QUI, dal fatto,
                        col vocabolario della catena e i cognomi delle maglie — non da una scheda pescata. Provato prima al sito della
@@ -2668,7 +2688,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                     if(!(typeof window!=='undefined'&&window.__CPM_NO739)){try{
                       const _mn9=clockRef.current|0;const _w9=(typeof window!=='undefined'&&window.__CPM_REC)?(window.__CPM_FATTO739=window.__CPM_FATTO739||{righe:0,tenute:0,ultima:null}):null;
                       if(_mn9-(lastFatto739Ref.current|0)>=4){
-                        const _rq9=_pl8[_r8.i];const _fw9=((_rq9.x||50)-(_q8.x||50))*(_ms712.turn>0?1:-1),_dy9=Math.abs((_rq9.y||50)-(_q8.y||50));
+                        const _rq9=_toHero?{x:_r8.x,y:_r8.y,name:(typeof _surnBG==="function"&&_surnBG(player.name||""))||String(player.name||"").trim().split(/\s+/).pop()||"il numero dieci"}:_pl8[_r8.i];const _fw9=((_rq9.x||50)-(_q8.x||50))*(_ms712.turn>0?1:-1),_dy9=Math.abs((_rq9.y||50)-(_q8.y||50));
                         const _k9=(_fw9>13)?"filtrante":(_dy9>22)?"cambio":(_fw9>4)?"verticale":"appoggio";
                         const _cog9=(n)=>{const t=String(n||"").trim();return t?t.charAt(0)+t.slice(1).toLowerCase():"un compagno";};
                         const _da9=_cog9(_q8.name),_a9=_cog9(_rq9.name);
@@ -2676,14 +2696,14 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                           :_k9==="cambio"?["↔️ "+_da9+" cambia gioco: la palla vola dall'altra parte per "+_a9+".","🧭 Apertura di "+_da9+" a scavalcare il campo: la riceve "+_a9+"."]
                           :_k9==="verticale"?["⚙️ "+_da9+" appoggia in avanti per "+_a9+", la manovra sale.","📈 "+_da9+" trova "+_a9+" fra le linee: si guadagna campo."]
                           :["🔁 "+_da9+" scarica su "+_a9+" e la squadra riprende posizione.","⚪ Giro palla: "+_da9+" per "+_a9+", si cerca il varco."];
-                        const _t9=_V9[Math.abs(hashStr("f9|"+_mn9+"|"+_r8.i))%_V9.length];
+                        const _t9=_V9[Math.abs(hashStr("f9|"+_mn9+"|"+(_r8.i|0)))%_V9.length];
                         addCom(_t9,_ms712.turn>0?"#93c5fd":"#fca5a5",_mn9);lastFatto739Ref.current=_mn9;
                         try{cpmEv("chronicle",{min:_mn9,rk:"fatto739",txt:_t9,side:_side8});}catch(_e){}
                         if(_w9){_w9.righe++;_w9.ultima=_t9;}
                       }else if(_w9)_w9.tenute++;
                     }catch(_e739){}}}
                   else if(_w8)_w8.lungo++;}
-                else if(_w8)_w8[_dec715.act==="tira"?"tira":"conduci"]++;
+                else if(_w8)_w8[_actH==="tira"?"tira":"conduci"]++;
               }
             }catch(_e738){}}
             if(typeof window!=='undefined'&&window.__CPM_REC){const _dc=(window.__CPM_DEC=window.__CPM_DEC||[]);if(_dc.length<1200)_dc.push({ts:Date.now(),min:_ms712.min,turn:_ms712.turn,act:_dec715.act,rcv:_dec715.rcv,thr:_thr712});}
