@@ -231,3 +231,7 @@ Rilievi: striscioni accavallati, nessun cambio campo, azioni pericolose confusio
 ## Fase 5 — 7.752 «la fiducia pesa sull'esito» (in rituale)
 
 `fiducia` entra nel tasso di riuscita di handleAction: +2 punti per unità, fra −6 e +8, con riga nel feedback causale. Sonda `fid-752` (regime corretto, GLB ON, seme 752): fiducia finale 2, azioni 2, modificatore 0 sulla prima (prima della scheda) e +0,04 sulla seconda. Meccanismo verificato; l'effetto sugli esiti è per costruzione (le prove del gate girano con fiducia 0).
+
+## Fase 9 — 7.753 «fascia del piano-gol a portata» (REVOCATA)
+
+Fascia del piano-gol da y 22/78 a 30/70. Fondate-558 appaiato (7300/7337) ON vs rosso `__CPM_NO753`: fondate 68,8/79,4 vs 68,8/78,1; smentite 17/123 vs 17/121; le tre smentite «attack_goal» (18', 67', 79') sono identiche nei due regimi. La riga del 18' dichiara (78,7 · 83,9): non è il piano-gol (la sua fascia con jitter arriva a 82), è un altro scrittore, da censire. Nessun effetto: revocata.
