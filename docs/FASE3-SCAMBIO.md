@@ -187,3 +187,7 @@ Bonus fino a +8 (2 per unità di coinv+intesa) sul punteggio dell'eroe come rice
 ## Fase 7 — censimento del vincolo adv≥48 (sonda `occ-747`, due semi)
 
 Tick aperti con threat ≥58: 12 e 2 (3 e 1 minuti distinti); **con adv<48: 0 e 0**. Il vincolo di compatibilità del 7.714 non perde alcuna finestra reale: non è un problema da risolvere. Il sito delle occasioni fa 87 giri a partita: out 40-42, contropiede 15-18, costruzione del gol 9, kickoff 6, finestre aperte 5-6. Le palle morte occupano quasi metà dei giri: è la palla morta (24-33% dei tick), non il vincolo, a comprimere il pericolo.
+
+## Fase 10 — 7.747 il guardiano della mente (SPEDITA)
+
+Tre bande in `partita-vera-guardian.mjs`: mente-esegue (≥1/partita), riga-descrive (≥1/partita), raccoglitore (≥2/partita). ON: 6 · 6 · 16 su due partite. Rosso `CPM_ROSSO=__CPM_NO738`: 0 · 0 · 0, tre bande violate, il resto verde.

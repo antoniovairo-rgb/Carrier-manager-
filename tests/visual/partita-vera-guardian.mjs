@@ -15,7 +15,7 @@ const b = await launchBrowser();
    PULITO — riaprire la partita nella stessa pagina fa ritrovare al gioco la carriera salvata e la
    seconda gara non si apre piu' (misurato due volte: timeout su openMatch). */
 const PARTITE_G = +(process.env.CPM_PARTITE_G || 2);
-const all = []; let page = null, ctx = null;
+const all = []; const MENTE = []; let page = null, ctx = null;
 for (let g = 0; g < PARTITE_G; g++) {
   if (ctx) await ctx.close();
   ctx = await b.newContext({ viewport: { width: 412, height: 915 } });
@@ -31,6 +31,8 @@ for (let g = 0; g < PARTITE_G; g++) {
   for (let k = 0; k < 12; k++) { await sleep(20000);
     const chunk = await page.evaluate(() => { const e = (window.__CPM_EV && window.__CPM_EV()) || []; if (window.__CPM_EV_RESET) window.__CPM_EV_RESET(); return e; });
     all.push(...chunk); }
+  /* [7.747.0] I TESTIMONI DELLA MENTE, per partita: la mente esegue (7.738), la riga descrive (7.739), il raccoglitore va sul pallone (7.743). */
+  try { const w = await page.evaluate(() => ({ p: window.__CPM_PASSA738 || null, f: window.__CPM_FATTO739 || null, r: window.__CPM_RACC743 || null })); MENTE.push(w); } catch (_e) { MENTE.push({ p: null, f: null, r: null }); }
 }
 const T = await page.evaluate(() => window.__CPM_TURN616 || {});
 const NPD = await page.evaluate(() => window.__CPM_NPD || []);
@@ -54,6 +56,9 @@ let golCoperti = 0;
 for (const g of goals) { const lato = g.side === 'home' ? 1 : -1;
   if (rows.some(r => r.rk && r.min != null && r.min >= g.min - 4 && r.min <= g.min && (r.tn | 0) === lato)) golCoperti++; }
 
+const mEseg = MENTE.reduce((a, w) => a + ((w.p && w.p.eseguiti) | 0), 0);
+const mRacc = MENTE.reduce((a, w) => a + ((w.r && w.r.eletti) | 0), 0);
+const fattoRows = rows.filter(r => r.rk === 'fatto739');
 const checks = [
   ['turno-causale', `scritture causali ${causali}% (orologio ${orologio}/${totT})`, totT >= 8 ? causali >= 85 : null],
   /* ⚠️ [7.684.0 — QUESTA BANDA AVEVA CONSUMATO TUTTO IL SUO MARGINE, e me ne sono accorto solo quando
@@ -84,6 +89,13 @@ const checks = [
   ['arbitro-esiste', `${fischi} interruzioni ambientali`, fischi >= 6],
   ['custodia', `mediana ${npdMed}u su ${npds.length} campioni (ogni tick vivo)`, npds.length >= 6 ? npdMed <= 12 : null],
   ['gol-con-manovra', `${golCoperti}/${goals.length} gol con riga di macchina nei 4' prima`, goals.length >= 3 ? golCoperti >= 1 : null],
+  /* [7.747.0 — LA MENTE MUOVE IL PALLONE, E LA CRONACA LO DICE. Tre bande sulla Fase 3 spedita (7.738/7.739/7.743), con
+     margine largo sotto il misurato: eseguiti 4-8 a partita (banda: >=1 per partita sul totale), righe-fatto 4-8 (>=1 per
+     partita), raccoglitori eletti 8-16 (>=2 per partita). Prova del rosso: CPM_ROSSO=__CPM_NO738 spegne la mente e la banda
+     «mente-esegue» va rossa (e con lei «riga-descrive», che vive del fatto). */
+  ['mente-esegue', `${mEseg} passaggi eseguiti dalla mente su ${PARTITE_G} partite · banda ${PARTITE_G}`, mEseg >= PARTITE_G],
+  ['riga-descrive', `${fattoRows.length} righe-fatto (rk fatto739) su ${PARTITE_G} partite · banda ${PARTITE_G}`, fattoRows.length >= PARTITE_G],
+  ['raccoglitore', `${mRacc} raccoglitori eletti su ${PARTITE_G} partite · banda ${2 * PARTITE_G}`, mRacc >= 2 * PARTITE_G],
 ];
 console.log('\n=== GUARDIANO PARTITA-VERA ===\n');
 { /* [7.643] misura informativa del portatore-stato (F1b): diventa banda quando 2-3 run confermano la stabilita' */
