@@ -102,7 +102,8 @@ for (let i = 0; i < PARTITE; i++) {
     righe: (window.__CPM_EV ? window.__CPM_EV() : []).filter(e => e.ev === 'chronicle'),
     recite: (window.__CPM_EV ? window.__CPM_EV() : []).filter(e => e.ev === 'recita'),
     gol: (window.__CPM_EV ? window.__CPM_EV() : []).map(e => e.ev === 'goal' ? (e.min | 0) : null).filter(m => m != null),
-    esiti: (window.__CPM_EV ? window.__CPM_EV() : []).filter(e => e.ev === 'esito' && /goal|miss|save|chance|assist/.test(String(e.key || ''))).map(e => e.min | 0),/* [7.761.0] gli esiti di scena che mandano il pallone alla porta *//* [7.760.0] i minuti dei gol: una destinazione dichiarata poco prima di un gol viene «smentita» dal volo in rete nella stessa finestra — e' il gol, non la riga */
+    esiti: (window.__CPM_EV ? window.__CPM_EV() : []).filter(e => e.ev === 'esito' && /goal|miss|save|chance|assist/.test(String(e.key || ''))).map(e => e.min | 0),/* [7.761.0] gli esiti di scena che mandano il pallone alla porta */
+    turni: (window.__CPM_EV ? window.__CPM_EV() : []).filter(e => e.ev === 'turn' && e.flip).map(e => e.min | 0),/* [7.763.0] i cambi di turno: dopo un recupero avversario la destinazione della riga e' legittimamente abbandonata *//* [7.760.0] i minuti dei gol: una destinazione dichiarata poco prima di un gol viene «smentita» dal volo in rete nella stessa finestra — e' il gol, non la riga */
     tr: window.__CPM_TRACCIA || [], trT: window.__CPM_TR571 || [], f577: window.__CPM_F577 || null, seme: 0,
   })));
   tutte[tutte.length - 1].seme = 7300 + i * 37;
@@ -116,7 +117,7 @@ const prossimaRiga = (righe, r) => { let best = null;
   return best; };
 const C = { FONDATA: [], SMENTITA: [], MUTA: [] };
 const TIRI = [];
-const DEST = []; const GOL_FIN = [];/* [7.760.0] destinazioni non centrate perche' un gol e' arrivato nella finestra */
+const DEST = []; const GOL_FIN = []; const TURN_FIN = [];/* [7.763.0] *//* [7.760.0] destinazioni non centrate perche' un gol e' arrivato nella finestra */
 const DEST_CHIESTA = [];/* [7.576.0] quanta strada chiedeva ogni riga */
 let recite = 0, righeTot = 0, scartate = 0;
 let _fonteTick = 0, _fonteOro = 0;
@@ -222,8 +223,10 @@ for (const { righe, recite: rc, tr: _trOro, trT, seme } of tutte) {
       const _freno = (r.bex == null) ? null : +Math.hypot(r.bex - r.bx, r.bey - r.by).toFixed(1);
       DEST_CHIESTA.push({ min: r.min | 0, pd: r.pd, rec: r.rec | 0, rk: r.rk || null, sp: r.sp || null, ef: r.ef || null, chiesta: +_chiesta.toFixed(1), scarto: +d.toFixed(1), freno: _freno, ok: d <= DEST_U });
       const _golFin = ((qui.gol || []).some(gm => gm >= (r.min | 0) && gm <= _fin)) || ((qui.esiti || []).some(gm => gm >= (r.min | 0) && gm <= _fin));/* [7.760.0/7.761.0] gol o esito di scena nella finestra */
+      const _turnFin = ((qui.turni || []).some(gm => gm > (r.min | 0) && gm <= _fin));/* [7.763.0] cambio di turno DOPO la riga, dentro la finestra */
+      if (_turnFin && !_golFin && d > DEST_U) { TURN_FIN.push({ min: r.min | 0, pd: r.pd, scarto: +d.toFixed(1) }); }
       if (_golFin && d > DEST_U) { GOL_FIN.push({ min: r.min | 0, pd: r.pd, scarto: +d.toFixed(1) }); }
-      claim.push({ k: 'destinazione', ok: (d <= DEST_U) || _golFin, gol: _golFin, nota: `dichiara (${r.bx},${r.by}), il pallone al piu' vicino sta a (${_vic.x.toFixed(0)},${_vic.y.toFixed(0)}) = ${d.toFixed(1)}u — la riga chiedeva ${_chiesta.toFixed(0)}u di spostamento (tetto 30) (finestra ${r.min|0}'-${_fin}')` });
+      claim.push({ k: 'destinazione', ok: (d <= DEST_U) || _golFin || _turnFin, gol: _golFin, turno: _turnFin, nota: `dichiara (${r.bx},${r.by}), il pallone al piu' vicino sta a (${_vic.x.toFixed(0)},${_vic.y.toFixed(0)}) = ${d.toFixed(1)}u — la riga chiedeva ${_chiesta.toFixed(0)}u di spostamento (tetto 30) (finestra ${r.min|0}'-${_fin}')` });
     }
     if (!claim.length) { C.MUTA.push({ min: r.min, pd: r.pd, rec: r.rec, at: r.at }); continue; }
     const tutti = claim.every(c => c.ok);
@@ -349,7 +352,8 @@ if (TIRI.length) {
   const okk = DEST_CHIESTA.filter(o => o.ok);
   if (okk.length) console.log('  per confronto, le destinazioni CENTRATE chiedevano in media ' + (okk.reduce((a, o) => a + o.chiesta, 0) / okk.length).toFixed(1) + 'u');
 }
-console.log(`\n  [7.760.0] destinazioni con un GOL nella finestra (non smentite, non fondate: e' il gol che ha spostato il pallone): ${GOL_FIN.length} — ${GOL_FIN.map(g=>g.min+"'"+g.pd+"("+g.scarto+"u)").join(" · ")}
+console.log(`\n  [7.763.0] destinazioni con un CAMBIO DI TURNO nella finestra (non smentite: il recupero avversario ha cambiato la storia): ${TURN_FIN.length} — ${TURN_FIN.map(g=>g.min+"'"+g.pd+"("+g.scarto+"u)").join(" · ")}
+  [7.760.0] destinazioni con un GOL nella finestra (non smentite, non fondate: e' il gol che ha spostato il pallone): ${GOL_FIN.length} — ${GOL_FIN.map(g=>g.min+"'"+g.pd+"("+g.scarto+"u)").join(" · ")}
   soglie dichiarate per la fase 4: fondate ≥ ${SOGLIA_FONDATE}%  ·  smentite ≤ ${SOGLIA_SMENTITE}%`);
 if (!GUARDIA) { console.log('\nCENSIMENTO registrato. Non e\' un guardiano: non fallisce, misura.'); process.exit(0); }
 let ko = 0;
