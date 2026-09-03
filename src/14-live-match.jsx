@@ -1614,7 +1614,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
      nominati, la palla che punta il ricevente (non una zona vuota) e il ricevente che le va incontro.
      E' il primo pezzo del linguaggio Beat: l'evento porta gia' actor/ballEnd veri dal canale MP-0 e il
      gesto dal vocabolario MP-1, quindi il 3D segue la stessa catena che il testo racconta. */
-  const azioneRef=useRef(null),_lastCatRef=useRef(-1);const lastPass738Ref=useRef(-99);/* [7.738.0] tick dell'ultimo passaggio eseguito dalla decisione *//* [7.537.0 v4] minuto dell'ultima battuta di catena: serve per alternare con il repertorio */
+  const azioneRef=useRef(null),_lastCatRef=useRef(-1);const lastPass738Ref=useRef(-99);const lastFatto739Ref=useRef(-99);/* [7.739.0] minuto dell'ultima riga-fatto (ritmo 4') *//* [7.738.0] tick dell'ultimo passaggio eseguito dalla decisione *//* [7.537.0 v4] minuto dell'ultima battuta di catena: serve per alternare con il repertorio */
   const ponteRef=useRef(null),ponteIdxRef=useRef(-1);/* [7.532.0 NO544 — collaudo PO «da centrocampo in cronaca all'improvviso highlights di attacco: nessuna concatenazione»] IL PONTE: ~2' prima dell'highlight in calendario la cronaca SCORTA la palla verso il punto di nascita della scena (hlBallSpot della situation in arrivo) e le righe raccontano l'avvicinamento — l'highlight si apre dove il racconto ha portato il gioco *//* [7.532.0 v2] l'innesco vive nella TRAMA (flip di possesso con palla nel terzo difensivo del nuovo padrone), NON nel sorteggio di una riga poss: i pesi di zona 7.525 schiacciano le righe di recupero proprio quando la palla e' alta (misurato: 0 lanci in 2 partite). Cooldown 6' di gioco. *//* [7.530.0 collaudo PO «Non si riparte dal centro dopo un gol!» — rosso __CPM_NO536] il 7.525 toccava il centro per UN tick (300ms): un lampo, non una ripartenza. Ora allo scadere del conto kickRef nasce una RIPARTENZA RECITATA: kickoffRef tick di attesa al centro, le righe gia' sorteggiate vengono DIROTTATE su battute di calcio d'inizio (ordine sorteggi intatto), side = chi rimette in gioco (chi ha subito) */
   const gkSave695=useRef({t:0,side:null});/* [7.695.0] IL SEGNALE DELLA PARATA. Identita' stabile: il renderer lo legge a ogni fotogramma e si arma sul cambio di `t`, senza che una parata costi un re-render (stesso pattern di stagedSpot e cineBusy). */
   const occCool695=useRef(-99);/* [7.695.0] minuto dell'ultima occasione: una ogni undici minuti al massimo, o la partita diventa un tiro al bersaglio */
@@ -2657,7 +2657,31 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                 if(_w8)_w8.pronti++;
                 const _r8=_dec715.rcv;
                 if(_dec715.act==="passa"&&_r8&&_r8.i>=0&&_r8.i!==_ci8&&_pl8[_r8.i]&&_pl8[_r8.i].team===_side8){
-                  if(_r8.d<=30){ballTargetRef.current={x:_r8.x,y:_r8.y};pendingBtRef.current=null;carrierRef.current={i:_r8.i};lastPass738Ref.current=tick;if(_w8)_w8.eseguiti++;}
+                  if(_r8.d<=30){ballTargetRef.current={x:_r8.x,y:_r8.y};pendingBtRef.current=null;carrierRef.current={i:_r8.i};lastPass738Ref.current=tick;if(_w8)_w8.eseguiti++;
+                    /* [7.739.0 — LA RIGA DESCRIVE UN FATTO GIA' AVVENUTO. Rosso __CPM_NO739] §12 della missione nel verso giusto:
+                       il passaggio e' appena stato eseguito dalla mente (riga sopra), e la telecronaca lo racconta QUI, dal fatto,
+                       col vocabolario della catena e i cognomi delle maglie — non da una scheda pescata. Provato prima al sito della
+                       riga (v1/v2, mai spedite): quel sito si visita ~30 volte a partita, 25 con una macchina che parla, e il fatto
+                       moriva prima di una riga libera (fresco 1 su 10, misurato). Ritmo: una riga-fatto ogni 4' al massimo (il
+                       repertorio pescato conserva il suo spazio); nessun `bpos`, la riga non tocca il pallone; se c'e' una scelta
+                       aperta addCom la rifiuta da se' (7.686). Testimone __CPM_FATTO739{righe,tenute,ultima}. */
+                    if(!(typeof window!=='undefined'&&window.__CPM_NO739)){try{
+                      const _mn9=clockRef.current|0;const _w9=(typeof window!=='undefined'&&window.__CPM_REC)?(window.__CPM_FATTO739=window.__CPM_FATTO739||{righe:0,tenute:0,ultima:null}):null;
+                      if(_mn9-(lastFatto739Ref.current|0)>=4){
+                        const _rq9=_pl8[_r8.i];const _fw9=((_rq9.x||50)-(_q8.x||50))*(_ms712.turn>0?1:-1),_dy9=Math.abs((_rq9.y||50)-(_q8.y||50));
+                        const _k9=(_fw9>13)?"filtrante":(_dy9>22)?"cambio":(_fw9>4)?"verticale":"appoggio";
+                        const _cog9=(n)=>{const t=String(n||"").trim();return t?t.charAt(0)+t.slice(1).toLowerCase():"un compagno";};
+                        const _da9=_cog9(_q8.name),_a9=_cog9(_rq9.name);
+                        const _V9=_k9==="filtrante"?["🎯 "+_da9+" verticalizza per "+_a9+": la difesa si allunga!","⚡ Filtrante di "+_da9+" — "+_a9+" attacca lo spazio!"]
+                          :_k9==="cambio"?["↔️ "+_da9+" cambia gioco: la palla vola dall'altra parte per "+_a9+".","🧭 Apertura di "+_da9+" a scavalcare il campo: la riceve "+_a9+"."]
+                          :_k9==="verticale"?["⚙️ "+_da9+" appoggia in avanti per "+_a9+", la manovra sale.","📈 "+_da9+" trova "+_a9+" fra le linee: si guadagna campo."]
+                          :["🔁 "+_da9+" scarica su "+_a9+" e la squadra riprende posizione.","⚪ Giro palla: "+_da9+" per "+_a9+", si cerca il varco."];
+                        const _t9=_V9[Math.abs(hashStr("f9|"+_mn9+"|"+_r8.i))%_V9.length];
+                        addCom(_t9,_ms712.turn>0?"#93c5fd":"#fca5a5",_mn9);lastFatto739Ref.current=_mn9;
+                        try{cpmEv("chronicle",{min:_mn9,rk:"fatto739",txt:_t9,side:_side8});}catch(_e){}
+                        if(_w9){_w9.righe++;_w9.ultima=_t9;}
+                      }else if(_w9)_w9.tenute++;
+                    }catch(_e739){}}}
                   else if(_w8)_w8.lungo++;}
                 else if(_w8)_w8[_dec715.act==="tira"?"tira":"conduci"]++;
               }
