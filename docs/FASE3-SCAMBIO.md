@@ -284,3 +284,7 @@ Prima stesura errata (evento solo nel ramo goal_against) fermata e corretta: l'e
 ## Fase 10 — 7.762 banda «esiti-registrati» (SPEDITA)
 
 ≥2 esiti di scena per partita nel libro mastro: 7 su 2 partite. Undici bande nel guardiano.
+
+## Fase 10 — stabilità delle 11 bande su 4 partite (7.762)
+
+mente 16 · righe-fatto 14 · raccoglitori 52 · esiti 14 · tabellone 2-5 = 2-5 · nomi-veri 14/14 · gol-con-manovra 4/7 · custodia 6,1u · manovra-viva 121 · arbitro 51 · turno-causale 96%. Tutte verdi, margine ≥1,75× sotto il misurato sulle bande della mente.
