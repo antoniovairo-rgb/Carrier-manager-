@@ -1088,9 +1088,27 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
   //   chiaro (adattivo per costruzione). depthTest:true → un giocatore davanti alla bocca la occlude correttamente
   //   (niente overdraw sui corpi); fog:false → resta scuro anche nella neve/nebbia bianca. Poco più largo/alto della
   //   bocca (peek dietro pali e traversa), appena dietro la rete di fondo (49.4) e davanti ai cartelloni (50.2).
-  const goalBackdropMat=new THREE.MeshBasicMaterial({color:0x090c11,fog:false});
+  /* [7.768.0 collaudo PO 03/09 18:01 e 04/09 03:19 «pannello nero dietro la porta!» — rosso __CPM_NO768]
+     IL PANNELLO NERO E' QUESTO FONDALE, NON UNA TEXTURE MANCANTE. La diagnosi del 7.758 (allocazione GPU
+     fallita, firma 7.535) era SBAGLIATA e resta a verbale come revoca: il PO l'ha rivisto identico sulla
+     7.767 (63', FC Mers-FC Sociedad), e la sagoma nel suo screenshot — 1,5 porte di larghezza, poco piu'
+     alto della traversa, centrato sulla bocca — e' esattamente questo piano da 11,9x3,2 a 0x090c11. Sul
+     telefono, con l'esposizione del 7.539, un piano opaco quasi nero davanti a cartelloni chiari e' un
+     muro nero. Il fondale serviva ai pali (7.8.26): lo si tiene come OMBRA della cavita', non come parete —
+     largo quanto la bocca piu' un margine di mezzo palo, alto quanto la traversa piu' il margine, e
+     semitrasparente: scurisce quello che sta dietro (i pali bianchi hanno sempre un fondo piu' scuro)
+     senza coprirlo. Misura: fotografia dalla camera di cronaca col pallone in area, ON vs rosso —
+     pixel quasi neri (lum<32) nella zona della porta e luminanza media dietro i pali. */
+  const _bd768=!(typeof window!=='undefined'&&window.__CPM_NO768);
+  /* ⚠️ SECONDA DIAGNOSI, PROVATA CON LA VERNICE: il piano e' a UNA FACCIA (FrontSide, normale +x per entrambe
+     le porte) — dal campo lo si vede solo dietro la porta a -x. Alla ripresa lo stadio ruota di 180 gradi (7.732)
+     e quella porta finisce dove attacca l'eroe: il muro nero compare SOLO nel secondo tempo, ed entrambi gli
+     screenshot del PO sono del secondo tempo (86' e 63'). Nel primo tempo la porta d'attacco non aveva alcun
+     fondale (misurato: mesh in quadro, 0 pixel rossi dipinti). Ora due facce e ombra leggera (0,35): stessa
+     cavita' in entrambi i tempi, nessuna parete. */
+  const goalBackdropMat=_bd768?new THREE.MeshBasicMaterial({color:0x090c11,fog:false,transparent:true,opacity:0.35,depthWrite:false,side:THREE.DoubleSide}):new THREE.MeshBasicMaterial({color:0x090c11,fog:false});
   [[-51,1],[51,-1]].forEach(([gx,sign])=>{
-    const bw=_GW+4.6,bh=_GH+0.8,bd=new THREE.Mesh(new THREE.PlaneGeometry(bw,bh),goalBackdropMat);/* [7.13.1 collaudo PO «manca un pezzo per ogni palo!»] la banda mancante era ESATTAMENTE l'altezza dei cartelloni dietro porta: da viste OBLIQUE il raggio camera→palo esce dal fondale (±4.36) e il palo bianco finisce sul cartellone chiaro → invisibile in quella fascia. Fondale ±5.96 (copre il worst-case realistico ~±5.3) e +0.8 in alto; i bordi esterni dei cartelloni (±6.5) restano visibili frontalmente. */
+    const bw=_bd768?(_GW+1.2):(_GW+4.6),bh=_bd768?(_GH+0.5):(_GH+0.8),bd=new THREE.Mesh(new THREE.PlaneGeometry(bw,bh),goalBackdropMat);/* [7.13.1 collaudo PO «manca un pezzo per ogni palo!»] la banda mancante era ESATTAMENTE l'altezza dei cartelloni dietro porta: da viste OBLIQUE il raggio camera→palo esce dal fondale (±4.36) e il palo bianco finisce sul cartellone chiaro → invisibile in quella fascia. Fondale ±5.96 (copre il worst-case realistico ~±5.3) e +0.8 in alto; i bordi esterni dei cartelloni (±6.5) restano visibili frontalmente. */
     bd.rotation.y=Math.PI/2;bd.position.set(gx+sign*1.35,bh/2-0.02,0);bd.renderOrder=1;scene.add(bd);// fondale porta (dietro la rete)
   });
   /* [7.16.1 collaudo PO «manca l'effetto 3D dei pali interni»] TELAIO POSTERIORE (stanchion): pali interni +
