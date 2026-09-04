@@ -496,3 +496,23 @@ Le due misure precedenti erano entrambe imprecise per ragioni opposte: la prima 
 
 Per proteggere il lavoro del 7.775-7.776 da regressioni future servirebbe una banda nel guardiano. Misurato prima di deciderlo, su una partita intera in autoplay nel regime del gioco vero (costruttore acceso): **2 costruzioni osservate, entrambe a tre uomini, 3 passaggi mediani**. Nel regime del banco (`?cpmtest=1` senza opt-in) le costruzioni sono **0**: il costruttore è spento per scelta dal 7.381, ed è ciò che tiene le firme golden stabili.
 Quindi una banda sul terzo uomo obbligherebbe ad accendere il costruttore dentro il guardiano, cioè a cambiare il regime in cui girano **tutte** le altre undici bande, che sono tarate su misure fatte a costruttore spento. Il costo (rifare la taratura di undici bande) supera il beneficio (proteggere due costruzioni per partita). **Non presa.** Il lavoro resta protetto dai test node sugli invarianti del backbone (31 verdi) e dalla misura appaiata a verbale.
+
+## Collaudo PO 04/09 sulla 7.778 — «codice 011, palla congelata»: DIFETTO MISURATO, due rimedi REVOCATI
+
+Il PO ha collaudato la 7.778 (S.11 W.12 vs FC Bergamo) e ha segnalato **due volte** il codice 011 su un **assist riuscito**: 12' (SIT #23, filtrante) e 69' (SIT #187, apertura a scavalcare). Più: codice 010 «pattinata», codice 000 «gesto scoordinato» e **«gol da centrocampo assurdo»** (31', SIT #122).
+
+**Il difetto esiste, ed è misurato.** Tracciando il pallone a 80 ms nelle scene segnalate:
+
+| scena | tempo fermo | tratto fermo più lungo | palla a >4u da TUTTI i nostri | dove finisce |
+|---|---|---|---|---|
+| gi23 [through] | 48-55% | 1,17 s | 58-61% | (99,55) — linea di fondo |
+| gi187 [switch] | 35-38% | 1,44 s | 51-68% | 10-15u da tutti |
+| gi122 [switch] | 22-25% | 0,75 s | 38-57% | 0,7-4,9u |
+
+Un pallone fermo 1,4 secondi consecutivi a tredici unità da chiunque, a esito concluso, è esattamente «palla congelata».
+
+**Due rimedi provati e revocati, entrambi perché la mano non si attiva mai.**
+1. *Il ricevente dell'assist corre verso il pallone invece che verso un punto fisso davanti.* Sembrava la causa: quel driver punta a `_runToX`, dodici unità più avanti, deciso quando il passaggio parte. Un contatore in pagina ha detto che in queste scene **quel driver non gira mai** (`passTargetMesh` assente). Acceso e rosso: 58/51/57% contro 59/49/61%.
+2. *Un raccoglitore di scena* (gemello del 7.743 della cronaca): se a esito concluso il pallone è fermo da mezzo secondo a più di quattro unità da tutti, il più vicino ci va. Anche questa **non si attiva mai**: le sue guardie (`!ballArcActive && hlPostArcT<0 && !tlOn`) non sono mai tutte vere nella finestra misurata.
+
+**Prossima pista, dichiarata**: strumentare i tre flag (arco, post-arco, timeline) negli ultimi due secondi della scena e scoprire quale resta vivo. Finché non so *quale stato* tiene occupata la fine della scena, ogni rimedio è un colpo al buio — e due colpi al buio sono già stati sparati e revocati.
