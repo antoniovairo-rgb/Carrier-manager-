@@ -364,3 +364,7 @@ Sonda deriva-770 (GLB ON, scene dal gioco vivo #156/#47/#107, varco del pallone 
 | #107 | 0/0/0/0/0 | 7,7/15,4/23,2/34,7/46,2 | scena 1 / fermo 12 |
 
 È la spiegazione più diretta del «001» e del «SALTO» delle note KE del PO: sul telefono a 60 fps il trascinamento a 55 u/s dura mezzo secondo. NON verificato sul telefono.
+
+## Stabilità dopo 7.769/7.770 — guardiano a 4 partite
+
+11 bande verdi: turno-causale 96% · manovra-viva 121 · arbitro 51 · custodia 6,1u · gol-con-manovra 4/8 · mente-esegue 16 · righe-fatto 14 · raccoglitori 50 · esiti 15 · tabellone 3-5 = 3-5 · nomi-veri 14/14. Nessuna regressione misurata. Nota strumentale: in headless il contesto delle note KE porta gli fps (18 in gioco, 17 in scena, GLB ON); nelle note del PO il campo manca → sul suo telefono `__CPM_FPS708` risulta assente: NON spiegato, resta aperto (senza quel numero il budget di 1,09M triangoli non si può giudicare).
