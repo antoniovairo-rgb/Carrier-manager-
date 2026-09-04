@@ -1,6 +1,6 @@
 # Collaudo di chiusura — missione «partita vera»
 
-**Versione da collaudare: KE 7.779.0** (controlla in basso a destra nella schermata di test, o nel diario versione).
+**Versione da collaudare: KE 7.778.0** (controlla in basso a destra nella schermata di test, o nel diario versione).
 Servono **tre partite intere**: una di campionato, una di Coppa, una in trasferta.
 Per ogni difetto: manda la **nota KE** (il gioco la compone da solo) — se nell'intestazione compare `fps`, quel numero mi serve.
 
@@ -18,7 +18,7 @@ Per ogni difetto: manda la **nota KE** (il gioco la compone da solo) — se nell
 
 ## Cosa NON ho potuto verificare (dichiarato)
 
-- **Il tuo telefono**: tutte le release dalla 7.768 alla 7.779 sono verificate solo sul banco, che non ha una scheda grafica vera.
+- **Il tuo telefono**: tutte le release dalla 7.768 alla 7.778 sono verificate solo sul banco, che non ha una scheda grafica vera.
 - **La CI di GitHub**: due volte rossa con banco verde. Ho spedito due mitigazioni e trovato il meccanismo più probabile (il banco aspettava 9 secondi reali e leggeva posizioni intermedie), ma **non posso leggere il log del run**: l'app GitHub non è connessa per l'organizzazione.
 - **Residui misurati e non risolti**: 4 scene difensive su 10 chiudono col pallone lontano dai nostri (poi lo raccoglie la cronaca); il codice «reparto fermo» e «stacco troppo presto» non si riproducono con nessun metro qui.
 - **Memoria fra partite** (Fase 5): mai verificata.
