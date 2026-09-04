@@ -528,3 +528,21 @@ Strumentati i tre flag a ogni fotogramma (`__CPM_FLAG780ON`, test-only) sulle du
 Il meccanismo: su un passaggio (`pass`) il pallone reso non segue il bersaglio dell'arco — quel percorso è riservato ai tiri — ma insegue il punto logico, che durante l'esito **non viene aggiornato**. Quando l'arco non comanda, il pallone resta fermo dov'è: è il codice 011. E siccome la cronaca riparte dal punto logico, la palla può anche «tornare indietro» a fine scena.
 
 Questo tocca la direttiva madre («la simulazione è la source of truth»): qui le due realtà divergono di 9-17 unità mediane dentro la scena. **Prossimo lavoro, con misura appaiata**: far convergere il punto logico e il pallone reso durante l'esito — e la banda naturale è proprio la distanza mesh↔logico, che oggi vale 9,2 e 17,3 unità mediane. Non spedito stanotte: il rimedio tocca il confine fra le due autorità e va misurato prima di essere scritto.
+
+## 7.781 — una sola realtà per il pallone a fine scena (codice 011)
+
+Rimedio alla causa trovata: alla chiusura della scena il punto-palla logico viene riportato **sul pallone reso**, che è quello che il giocatore ha appena visto (il ponte `meshDef` ora espone anche la palla). Così la cronaca riparte da dove sta il pallone e non da dove la macchina credeva che fosse — ed è anche la forma del vecchio codice 012, «il pallone torna indietro». Non tocca la resa: nessun fotogramma cambia, cambia solo ciò che la simulazione crede.
+Misura appaiata in partita vera (autoplay, seme 764), rosso `__CPM_NO781`: distanza reso↔logico alla chiusura della scena **7,9 unità contro 49,1**, mano attiva 2 volte su 2 scene chiuse contro 0. Campione piccolo (2 scene in una partita): dichiarato.
+
+## 7.782 — le presenze in nazionale: una convocazione per stagione era un tetto strutturale
+
+Collaudo PO 04/09 23:56: «assurdo solo 6 presenze in nazionale con una carriera del genere». Samuelito Vairo, Spagna, OVR 92, 350 gol e 164 assist in 438 presenze, dieci stagioni, **primo nella lista del CT per la maglia numero 9** — e sei presenze, mentre i tre NPC dietro di lui ne hanno 15, 16 e 17.
+Causa: `seasonOpen = stagione corrente > ultima stagione con nazionale`. Appena il giocatore vestiva la maglia la porta si chiudeva fino alla stagione dopo: il tetto strutturale era **una presenza a stagione**. Gli NPC della stessa schermata vengono da un'altra formula (`caps = max(2, base/3 − 14 + 2i)`): le due scale non si sono mai parlate.
+Rimedio: fino a quattro finestre per stagione, contate sulla storia vera (`natHistory` della stagione corrente); il gate meritocratico — livello della nazionale, OVR, rendimento, continuità, reputazione — resta identico. Cambia il tetto, non il merito.
+
+| misura (replica dichiarata della formula, 10 stagioni, Spagna, OVR 70→92) | presenze |
+|---|---|
+| regola vecchia (una per stagione) | **6** |
+| regola nuova (fino a quattro) | **24** |
+
+La replica restituisce **esattamente il numero che il PO vede** (6): è la conferma che la diagnosi coglie il caso reale e non un modello di comodo. Ventiquattro presenze in dieci stagioni restano sotto un fuoriclasse vero, ma allineano il giocatore ai suoi pari in lista. Rosso `__CPM_NO782`.

@@ -6677,7 +6677,26 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
       const _kind=isPenaltySit(_sit)?"penalty":((_opts[0]&&_opts[0].spKind)||"fk_near");
       const _ai=pickSetPieceChoiceAI(_kind,player.stats||{},{clock:clockRef.current||0,scoreDiff:score.home-score.away,mw:(typeof mw!=="undefined"?mw:5)},(Math.abs(hashStr("ai|"+String(_legacyDir)+"|"+clockRef.current))>>>0)||1);
       const _pick=_opts.find(o=>o.id===(_ai&&_ai.id))||_opts[0];handleSetPiece(_pick);}catch(_e){}};
+  /* [7.781.0 collaudo PO 04/09 «codice 011 — palla congelata», due volte su un assist riuscito — rosso __CPM_NO781]
+     LA SIMULAZIONE PRENDE ATTO DI DOVE IL PALLONE E' FINITO DAVVERO. Misurato sulle scene segnalate dal PO: dentro
+     l'esito il punto-palla LOGICO resta fermo nel 100% dei campioni mentre il pallone reso si allontana fino a 38 e
+     48 unita' (mediana 9,2 e 17,3). Le due realta' divergono, e la direttiva dice che ce n'e' una sola. Il rimedio
+     minimo e' qui, alla chiusura della scena: il punto logico viene riportato SUL pallone reso, che e' quello che
+     il giocatore ha appena visto. Cosi' la cronaca riparte da dove sta la palla e non da dove la macchina credeva
+     che fosse (ed e' anche la forma del vecchio codice 012, «il pallone torna indietro»). Non tocca la resa: nessun
+     fotogramma cambia, cambia solo cio' che la simulazione crede. */
+  const _allinea781=()=>{try{
+    if(typeof window!=='undefined'&&window.__CPM_NO781)return;
+    const _rd=meshDefRef.current&&meshDefRef.current();
+    const _b=_rd&&_rd.ball; if(!_b||_b.x==null||_b.y==null)return;
+    const _x=clamp(_b.x,1,99),_y=clamp(_b.y,1,99);
+    const _p=ballPosRef.current||{x:50,y:50};
+    if(Math.hypot(_x-(_p.x||50),_y-(_p.y||50))<1.5)return;/* gia' allineati: non si tocca niente */
+    ballTargetRef.current={x:_x,y:_y};setBallPos({x:_x,y:_y});
+    if(typeof window!=='undefined'&&(window.__CPM_REC||/[?&]cpmtest=1\b/.test((window.location&&window.location.search)||""))){try{const _w=(window.__CPM_ALL781=window.__CPM_ALL781||{n:0,d:0});_w.n++;_w.d=+Math.hypot(_x-(_p.x||50),_y-(_p.y||50)).toFixed(1);}catch(_e){}}
+  }catch(_e781){}};
   const handleContinue=()=>{
+    _allinea781();
     // [6.78.0 FLAKE-FIX 2] in FORCE-MODE (gate) l'highlight forzato e' un CAMPIONE STATICO: nessun avanzamento
     //   (ne' "ended" ne' ripresa dal centro ne' catene) — il prossimo stato arriva dal prossimo __CPM_FORCE_SIT.
     //   Prima l'auto-advance sul GOL faceva la ripresa (palla→50,50, phase→playing) MENTRE il poller final-state

@@ -3879,13 +3879,24 @@ const getThisWeekMatchday=()=>{
        sfortuna, e' un ramo che non viene percorso. Qui si registra OGNI valutazione del cancello con i suoi
        valori, cosi' la diagnosi la fa la misura e non il ragionamento. */
     if(typeof window!=='undefined'&&window.__CPM_CALLUP!==undefined){try{const _w=window.__CPM_CALLUP;
-      if(_w.length<400)_w.push({s:player.season||1,w:weekVal,u18:!!isInU18,busy:!!_callupBusyWk,inj:!!player.injured,ovr:player.ovr||0,caps:player.nationalCaps||0});}catch(_e){}}
+      if(_w.length<400)_w.push({s:player.season||1,w:weekVal,u18:!!isInU18,busy:!!_callupBusyWk,inj:!!player.injured,ovr:player.ovr||0,caps:player.nationalCaps||0,nst:(player.natHistory||[]).filter(h=>h&&(h.season||0)===(player.season||1)).length});}catch(_e){}}
     if(!isInU18&&!_callupBusyWk&&!player.injured){
       const caps=player.nationalCaps||0;
       const lastNat=player.lastNationalSeason||0;
       const curSeas=player.season||1;
       const isFirst=caps===0;
-      const seasonOpen=curSeas>lastNat;
+      /* [7.782.0 collaudo PO 04/09 23:56 «assurdo solo 6 presenze in nazionale con una carriera del genere» —
+         rosso __CPM_NO782] UNA CONVOCAZIONE PER STAGIONE, E BASTA. `seasonOpen` chiudeva la porta appena il
+         giocatore vestiva la maglia: dalla seconda convocazione in poi la condizione era falsa fino alla stagione
+         dopo, quindi il tetto strutturale era UNA presenza a stagione. Con dieci stagioni da professionista il
+         massimo teorico era dieci — e lo screenshot del PO mostra il numero 9 titolare della Spagna a quota 6,
+         primo nella lista del CT, mentre i tre NPC dietro di lui ne hanno 15, 16 e 17 (generati da un'altra
+         formula, `caps = max(2, base/3 - 14 + 2i)`: le due scale non si sono mai parlate).
+         Una nazionale gioca piu' finestre per stagione: qui se ne concedono fino a quattro, contate sulla storia
+         vera (`natHistory` della stagione corrente), e il gate meritocratico resta identico — ovr, rendimento,
+         continuita' e reputazione decidono come prima SE si viene chiamati, non piu' quante volte al massimo. */
+      const _natStag782=(()=>{try{return (player.natHistory||[]).filter(h=>h&&(h.season||0)===curSeas).length;}catch(_e782){return 0;}})();
+      const seasonOpen=(typeof window!=='undefined'&&window.__CPM_NO782)?(curSeas>lastNat):(_natStag782<4);
       // Sprint NAZ — convocazione meritocratica: livello nazionale, OVR, età, rendimento, continuità, reputazione.
       // Forza della nazionale: le top sono molto più selettive; le minori più permissive ma sempre credibili.
       const NAT_LEVEL={"Brasile":92,"Francia":91,"Argentina":90,"Spagna":89,"Inghilterra":89,"Germania":87,"Portogallo":87,"Italia":86,"Olanda":85,"Belgio":84};

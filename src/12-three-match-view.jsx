@@ -1424,7 +1424,7 @@ function ThreeMatchView(props){
             const g=_w2g(pp.mesh.position.x,pp.mesh.position.z);
             if(src.gk)_gk=g;else _hm.push(g);});
           const _hg=_w2g(hero.position.x,hero.position.z);
-          return {hero:_hg,away:_aw,home:_hm,gk:_gk};
+          return {hero:_hg,away:_aw,home:_hm,gk:_gk,ball:(ball?_w2g(ball.position.x,ball.position.z):null)};/* [7.781.0] anche il PALLONE nel ponte: la simulazione deve poter sapere dove e' finito davvero, non solo dove lo aveva mandato */
         }catch(_e){return null;}};
       }catch(_e){}
       // STATE probe (4.83.0): stato completo della scena per la validazione logica/tattica.
