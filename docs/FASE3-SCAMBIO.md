@@ -480,3 +480,9 @@ Rimedio: il tetto si scala sul frame-rate osservato (a 60 fps resta 9 s, a 12 fp
 | fingerprint | 00001505 | 00001505 |
 
 La firma non si muove: il determinismo resta intatto, sparisce il margine di fragilità. **NON verificato**: che il rosso della CI fosse questo — il log del run non è leggibile da questa sessione (API GitHub 403).
+
+### 7.777 — il residuo, misura definitiva (e correzione della correzione)
+
+Terza passata, con finestra di 8 secondi e campioni filtrati sulla fase (solo dentro `hl_result`): **il pallone arriva a un nostro in 8 scene su 10** (distanza minima mediana 0,4u) e **a fine scena è ancora suo in 6 su 10** (finale mediana 0,7u). Nelle 4 restanti finisce a 4,7 · 15,7 · 16,6 · 21u; due di queste (gi134, gi138) non lo raggiungono mai (minima 3,2 e 10,7u).
+Le due misure precedenti erano entrambe imprecise per ragioni opposte: la prima leggeva un istante fisso a 2,6 s (sottostima: 18/36 «di nessuno»), la seconda usava una finestra di 3 s che tagliava le scene con volo d'ingresso lungo (sovrastima: 10/10). Il varco del pallone ha chiarito perché: in quelle scene lo scrittore attivo era ancora `buildup-volo`, cioè il cross in arrivo che l'eroe deve difendere — la scena non era all'esito, era ancora all'ingresso.
+**Residuo aperto e non risolto**: 4 scene su 10 chiudono con il pallone lontano dai nostri. Non lo inseguo ora: alla ripresa della cronaca il raccoglitore (7.743) lo prende comunque, quindi l'effetto visibile dura un istante. Costo/beneficio dichiarato, non nascosto.
