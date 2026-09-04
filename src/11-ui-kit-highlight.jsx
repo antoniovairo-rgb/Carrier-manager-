@@ -1747,6 +1747,13 @@ function deriveHL(sit,act){
 //     from/to = id attore ('HERO','MATE1','DEF1','GK','OPP'...) oppure {pt:[x,y]}
 //     kind ∈ pass|give|carry|through|cross|shot|header|loose|dribble
 // ============================================================================
+/* [7.775.0 collaudo PO 04/09 «le azioni pericolose non sono azioni di calcio vero con schemi, passaggi sensati, giocate»
+   — rosso __CPM_NO775] DUE UOMINI, UN PASSAGGIO. Censite 40 scene con l'esecutore cinematico acceso (il regime in cui
+   gioca il PO): beat mediani 3, passaggi mediani 1, uomini che toccano il pallone mediani 2 — e ZERO scene su 40 con tre
+   uomini. Il repertorio piu' frequente e' «passaggio, conduzione, tiro» fra le stesse due persone: e' esattamente
+   «manca lo schema». Qui entra il TERZO UOMO, e a valle del primo passaggio — mai a monte: anteporre un beat
+   sposterebbe l'origine del pallone rispetto a dove la simulazione lo ha messo all'apertura, cioe' il salto chiuso col
+   7.770. Serve un compagno di supporto: senza supporto dichiarato la scena resta a due, com'era. */
 function buildHLTimeline(hl,o){
   o=o||{};
   const sx=clamp(o.x!=null?o.x:38,6,94), sy=clamp(o.y!=null?o.y:50,8,92);
@@ -1755,6 +1762,8 @@ function buildHLTimeline(hl,o){
   const type=hl.type, pat=hl.pattern, variant=hl.variant;
   const GX=98, GY=50;
   const A={}, beats=[];
+  /* [7.775.0] il terzo uomo entra solo se la scena dichiara supporto: senza compagni vicini la giocata resta a due. */
+  const _tre775=(function(){try{if(typeof window!=='undefined'&&window.__CPM_NO775)return false;}catch(_e){}const _s=o.support;return (typeof _s==='number')?_s>=1:!!_s;})();
   const set=(id,x,y)=>{A[id]=[clamp(x,2,98),clamp(y,2,98)];};
   const mv=(id,x,y,run)=>({who:id,to:[clamp(x,2,98),clamp(y,2,98)],run:!!run});
   const B=(tag,dur,ball,moves)=>beats.push({tag,dur,ball,moves:moves||[]});
@@ -1821,12 +1830,22 @@ function buildHLTimeline(hl,o){
   } else if(pat==='EDGE_SHOT'){// TIRO DAL LIMITE: ricezione, tocco di preparazione, tiro (mai dal nulla)
     set('MATE1',sx-8,clamp(sy+side*6,6,94)); set('DEF1',sx+5,sy);
     B('pass',0.40,{from:'MATE1',to:'HERO',kind:'pass'},[mv('DEF1',sx+4,clamp(sy+side*2,6,94))]);
+    if(_tre775){/* [7.775.0] il terzo uomo: scarico e ritorno prima della conclusione */
+      set('MATE2',sx+2,clamp(sy-side*9,6,94));
+      B('layoff',0.36,{from:'HERO',to:'MATE2',kind:'pass'},[mv('HERO',sx+6,clamp(sy+side*2,6,94),true),mv('DEF1',sx+6,clamp(sy+side*1,6,94))]);
+      B('back',0.36,{from:'MATE2',to:'HERO',kind:'give'},[mv('MATE2',sx+6,clamp(sy-side*9,6,94))]);
+    }
     B('control',0.30,{from:'HERO',to:'HERO',kind:'carry'},[mv('HERO',sx+3,sy,true),mv('DEF1',sx+4,sy)]);
     concl('HERO',headerFinish?'header':'shot');
   } else {// BUILDUP / fallback: scambio breve poi conclusione
     set('MATE1',sx-6,clamp(sy+side*7,6,94));
     B('pass',0.40,{from:'HERO',to:'MATE1',kind:'pass'},[mv('HERO',sx+8,sy,true)]);
-    B('return',0.40,{from:'MATE1',to:'HERO',kind:'pass'},[]);
+    if(_tre775){/* [7.775.0] la palla passa da un terzo uomo prima di tornare: e' lo scambio a tre della costruzione */
+      set('MATE2',sx+2,clamp(sy-side*8,6,94));
+      B('switch',0.38,{from:'MATE1',to:'MATE2',kind:'pass'},[mv('HERO',sx+11,clamp(sy+side*2,6,94),true)]);
+      B('return',0.40,{from:'MATE2',to:'HERO',kind:'give'},[]);
+    }
+    else B('return',0.40,{from:'MATE1',to:'HERO',kind:'pass'},[]);
     concl('HERO',headerFinish?'header':'shot');
   }
   return{actors:A,beats,meta:{pattern:pat,type,variant}};

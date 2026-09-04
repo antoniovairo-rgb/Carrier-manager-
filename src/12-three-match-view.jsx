@@ -3651,7 +3651,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
             let _cn=-1;for(let _i=0;_i<tlSeg.length;_i++){if(_cf.indexOf(tlSeg[_i].tag)>=0){_cn=_i;break;}}
             tlBuildN=(_cn>0)?_cn:(tlSeg.length-1);
             tlMap=mapCineActors(_tlc);tlOn=tlBuildN>0;tlT=0;
-            if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){try{window.__CPM_TLSEG={k:P.hlSitKey,n:tlBuildN,seg:tlSeg.map(g=>({tag:g.tag,kind:g.kind,f:g.fromId,t:g.toId,from:g.from,to:g.to,dur:g.dur}))};}catch(_e){}}/* [7.414.0] LA TIMELINE VIVA SI PUO' LEGGERE (test-only): senza, «quale beat ha teletrasportato la palla alla consegna» resta una deduzione dai fotogrammi invece di un piano scritto */
+            if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){try{window.__CPM_TLSEG={k:P.hlSitKey,n:tlBuildN,sup:P.support,pat:P.hlPattern,typ:P.hlType,seg:tlSeg.map(g=>({tag:g.tag,kind:g.kind,f:g.fromId,t:g.toId,from:g.from,to:g.to,dur:g.dur}))};}catch(_e){}}/* [7.414.0] LA TIMELINE VIVA SI PUO' LEGGERE (test-only): senza, «quale beat ha teletrasportato la palla alla consegna» resta una deduzione dai fotogrammi invece di un piano scritto */
             /* [7.395.0 collaudo PO codice 001 + «SALTO del pallone di 8,7u» — l'ULTIMA sorgente, e la piu'
                vista] UN BEAT GIA' AVVENUTO NON SI RIGIOCA ALL'INDIETRO. All'avvio del build-up il pallone
                sta ai piedi dell'Eroe — ce l'ha appena portato la CONSEGNA dell'intro, un passaggio vero e

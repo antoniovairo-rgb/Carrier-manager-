@@ -407,3 +407,17 @@ Il gate final-state è andato rosso (#136: palla a gx 50 a fine finestra): a 6 f
 Ipotesi: sul gol subito il post-arco `in_net_own` si spegne a 1,9 s di scena mentre il pallone entra fra 1,3 e 5,0 s, quindi il cancello del 7.461 (che guarda solo timeline/arco/post-arco) lascerebbe chiudere con la palla fuori — la lettura naturale di «il pallone credo non sia manco entrato · staccata troppo presto». Aggiunto al cineBusy un campo `viaggio` (gol subito annunciato e pallone non oltre la linea) e letto dal cancello.
 **Smentita dalla misura.** Registrando cosa vede il cancello a ogni valutazione: quando valuta, il pallone è già a x −49,1 (la linea è −48,6), in tutte le scene e in entrambi i regimi. Appaiata con CPU rallentata 6× (il regime del telefono): gol visti prima dello stacco 6/6 ON e 6/6 rosso, tempi d'ingresso 2,3-4,9 s in entrambi. Zero differenza: la mano non ha niente da correggere qui. Revocata anche la strumentazione diagnostica aggiunta al cineBusy (gira a ogni fotogramma).
 Resta aperto il fatto del PO: se lo stacco anticipato esiste sul suo telefono, non è questo il meccanismo. Prossima pista dichiarata: il gol subito visto in partita vera (non scena forzata), dove la finestra del result convive con la cronaca.
+
+## 7.775 — il terzo uomo (SPEDITA dopo prova del rosso)
+
+Collaudo PO 04/09: «le azioni pericolose non sono azioni di calcio vero con schemi, passaggi sensati, giocate». Censimento di 40 scene con l'esecutore cinematico acceso (il regime del gioco vero, non del gate): **beat mediani 3, passaggi mediani 1, uomini mediani 2, e 0 scene su 40 con tre uomini**. Lo schema più frequente è «passaggio, conduzione, tiro» fra le stesse due persone.
+Due mani. La prima: nel costruttore, scarico e ritorno su un terzo compagno nei due schemi più frequenti (tiro dal limite, costruzione), sempre **a valle** del primo passaggio — a monte sposterebbe l'origine del pallone rispetto a dove la simulazione l'ha messo, cioè il salto chiuso col 7.770. La seconda, trovata dalla misura: il supporto dichiarato dalla situation **non arrivava** al costruttore, perché il prop non esisteva e il campo veniva cercato in `ctx` (nullo) invece che in `tactic`. Prima della correzione la mano era invisibile: acceso e rosso identici.
+
+| metro (14 scene con supporto dichiarato) | 7.775 | rosso |
+|---|---|---|
+| uomini che toccano il pallone (mediana) | 3 | 2 |
+| passaggi per scena (mediana) | 3 | 1 |
+| scene con tre uomini | 9/14 | 0/14 |
+| scene con almeno due passaggi | 10/14 | 3/14 |
+
+Invarianti del backbone (possesso continuo, niente teletrasporti della palla, colpo di testa solo su palla aerea): 31 test node verdi. Lezione: una mano che non morde va cercata nel filo prima che nel numero — il ramo era giusto, il dato non arrivava.
