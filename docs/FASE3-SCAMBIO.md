@@ -320,3 +320,12 @@ Residuo del 7.766 tracciato con la sonda lag-767 (seme 764, 654 campioni): 105 f
 | 765 | 87,7% | 77,2% | 70% / 38% | 21 / 40 |
 
 Residuo dichiarato: tratti di 15-27 campioni nella ripresa (79'→84') con palla veloce (30 u/s): transitori del liscio (kl 0,12 a fotogramma), non del bersaglio. Non provato: la mano saliente in zona centrale (20-42% ON vs 56-57% rosso, n 20-61: il regime saliente con pallone vicino viene riclassificato come cronaca perché la camera sale sopra quota 12, quindi le due colonne non contano le stesse scene).
+
+## 7.767 — la mano saliente misurata per regime VERO (flag salienteOn dal hook __CPM_CAMT767)
+
+| seme | totale ON / rosso | saliente vicina (gy>85) | saliente centrale |
+|---|---|---|---|
+| 764 | 89,8% / 71,3% | 89% (n35) / 20% (n20) | 20% (n25) / 28% (n40) |
+| 765 | 91,5% / 74,7% | — / — | 64% (n64) / 65% (n78) |
+
+La mano saliente è provata dove agisce (pallone vicino: 89% vs 20%) e neutra dove non agisce (centrale: differenze dentro il rumore). **Difetto residuo, indipendente dal 7.766**: il regime saliente in zona centrale perde il pallone di lato (20-65% in quadro in entrambe le colonne). Prossima misura: tracciare, a 50 ms, il flag salienteOn e i bersagli durante le finestre salienti (ipotesi: il flag oscilla e la camera resta a metà strada fra cronaca e saliente, come visto a quota 12,85 nella sonda lag-767).
