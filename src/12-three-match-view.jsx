@@ -3543,11 +3543,20 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                che prosegue verso la NOSTRA porta. */
             if(P.hlSuccess===false&&!_dt.toOwnGoal&&!_dt.gkClaim)_gx=Math.min(_gx,clamp((ball.position.x+50)-4,4,96));
             ballArcTgtX=G2X(_gx);ballArcTgtZ=G2Z(_gy);
-            if(_dt.seekMate){const _phX=G2X(_px),_phZ=G2Z(_py);let _bm=null,_bs=1e9;
+            /* [7.777.0 collaudo PO «non sono azioni di calcio vero» — rosso __CPM_NO777] LA RESPINTA RIUSCITA NON CERCAVA
+               NESSUNO. Misurato su 10 scene difensive risolte con SUCCESSO: il pallone finiva ai piedi di un nostro solo
+               5 volte, 3 volte lo raccoglieva un avversario e 2 restava di nessuno (12-15 unita' da chiunque). La causa:
+               fra gli esiti riusciti, `short_clear` — la respinta corta, l'esito piu' pesato quando si difende in area —
+               ha `seekMate:null`, cioe' spinge la palla avanti di undici unita' con un'apertura laterale a caso. Gli esiti
+               che tengono il possesso (intercetto, contrasto vinto, ripartenza) un compagno lo cercano gia'. Qui la
+               respinta corta lo cerca ANCHE, ma solo quando l'azione e' RIUSCITA: sul fallimento resta cieca, ed e' giusto
+               che lo sia. La spazzata lunga (`safe_clear`, disperata per definizione) non si tocca. */
+            const _sm777=_dt.seekMate||((!(typeof window!=='undefined'&&window.__CPM_NO777)&&P.hlSuccess===true&&_dt.kind==='short_clear')?'short':null);
+            if(_sm777){const _phX=G2X(_px),_phZ=G2Z(_py);let _bm=null,_bs=1e9;
               sr.current.players.forEach((pp,ii)=>{const src=(P.allPlayers||[])[ii];if(!src||src.team!=='home'||src.gk||pp.mesh===hero)return;
-                const _fwd=pp.mesh.position.x-_phX;if(_dt.seekMate==='forward'&&_fwd<2)return;// il ricevente del contropiede è AVANTI
-                const _rng=_dt.seekMate==='forward'?42:24;const d=Math.hypot(_fwd,pp.mesh.position.z-_phZ);
-                if(d<_rng){const _sc=d-Math.max(0,_fwd)*(_dt.seekMate==='forward'?0.7:0.25);if(_sc<_bs){_bs=_sc;_bm=pp.mesh;}}});
+                const _fwd=pp.mesh.position.x-_phX;if(_sm777==='forward'&&_fwd<2)return;// il ricevente del contropiede è AVANTI
+                const _rng=_sm777==='forward'?42:24;const d=Math.hypot(_fwd,pp.mesh.position.z-_phZ);
+                if(d<_rng){const _sc=d-Math.max(0,_fwd)*(_sm777==='forward'?0.7:0.25);if(_sc<_bs){_bs=_sc;_bm=pp.mesh;}}});
               if(_bm){passTargetMesh=_bm;ballArcTgtX=clamp(_bm.position.x,G2X(6),G2X(68));ballArcTgtZ=_bm.position.z;ballArcH=Math.max(ballArcH,0.9);}}
             /* [7.250.0 gi31 «Non si vede l'eroe che intercetta»] PRIMA IL CONTATTO, POI IL PALLONE VIA: l'arco
                d'esito difensivo partiva a t0 mentre l'eroe arrivava sul pallone a ~0.3s — la palla scappava
