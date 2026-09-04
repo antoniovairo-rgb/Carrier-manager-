@@ -384,3 +384,20 @@ Collaudo PO 04/09 07:28 (gol di Russell 88'). Sonde golsub2/3/4-772 (GLB ON, 10 
 | salto massimo fra campioni (mediana) | 1,6u | 1,6u |
 
 Limiti: il clock di scena headless vale ~0,1 s per secondo reale (misurato: SCENET 0,74 dopo 8,2 s), quindi la convergenza in rete non finisce nella finestra della sonda; sul telefono è più rapida. **Revocata** la prima mano (bersaglio logico a gx 2-12 posticipato a rete certificata): misura identica al rosso — il salto che cercava non esisteva. **Aperto**: tiro da 13-38u (mediana ~24; gi33 fino a 50) — l'avversario dovrebbe avanzare prima del tiro; 4 scene senza canale (gi132/138 arco non concluso nella finestra; gi136/157 non spiegate); «stacco troppo presto»: la finestra del result aspetta il renderer fino a 6 s (7.461), non riprodotto in headless. NON verificato sul telefono.
+
+## 7.773 — sul gol subito l'avversario avanza prima di tirare (SPEDITA dopo prova del rosso)
+
+Sonda avanzata-773 (10 scene difensive con gol subito, GLB ON, origine del tiro dal punto di partenza dell'arco `_arcSrc382`). Il portatore avversario più vicino raggiunge il pallone, lo porta a 19u, poi tira; tuffo del portiere armato al tiro.
+
+| | ON | rosso |
+|---|---|---|
+| origine del tiro (mediana / max) | 13,2u / 18,7u | 22u / 29,5u |
+| tiri oltre 22u | 0/10 | 4/10 |
+| canale in_net_own | 9/10 | 9/10 |
+| oltre la linea nella finestra | 7/10 | 4/10 |
+
+Due stesure intermedie corrette dalla misura: (1) la palla saltava sul portatore (salto 15,8u) → prima lo raggiunge; (2) «arrivato» senza palla ai piedi → il tiro partiva dal punto d'apertura (t 1,63 s, has:false): arrivo = palla ai piedi E 19u. Residuo: gi33 (apertura a 37u) viene ricollocata a 12u dentro lo stacco nero dallo scrittore «scena», identico col rosso. NON verificato sul telefono.
+
+### 7.773 — correzione dopo il gate rosso: tetto in tempo reale
+
+Il gate final-state è andato rosso (#136: palla a gx 50 a fine finestra): a 6 fps il clock di scena vale un decimo e l'attesa del portatore non finiva. Tetto aggiunto: 1,6 s reali (oltre ai 4 s di scena). Gate verde (fingerprint 00001505). Conseguenza misurata: in headless GLB ON (4 fps) l'avanzata non si esercita più (0,14 s di scena, origine = rosso); a cadenza reale (GLB OFF, misura supplementare): gi36 45→32u, gi44 22→18u, gi45 25→18u, gi136 23→21u (rosso: invariate 44/31/19/26); massima 32 vs 44,4; oltre 22u 1/10 vs 3/10; canale in rete 9/10 in entrambe; «oltre la linea nella finestra» 4/10 vs 8/10 nel regime a clock lento (artefatto dichiarato, da verificare sul telefono). Sul telefono a ≥30 fps il tetto vale 12,8u di conduzione.
