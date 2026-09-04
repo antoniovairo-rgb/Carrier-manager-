@@ -352,3 +352,15 @@ Rimedio (rosso `__CPM_NO769`): `renderer.compile(scene,camera)` all'aggancio dei
 | pronto (GLB_READY) dall'avvio pagina | 18,8 s | 13,3 s |
 
 NON verificato: l'effetto sul telefono (la compilazione su GPU mobile è più lenta: il beneficio atteso è maggiore, non misurato); la deriva del pallone dopo la consegna in lettura (3,9u → 22u in 2 s in entrambe le colonne) resta aperta e misurata. Aperto: il budget di 1,09 milioni di triangoli per fotogramma nelle scene (22 modelli da ~45k) — sul telefono è il candidato «non fluido» successivo; serve il numero di fps del PO (7.708) nelle note KE.
+
+## 7.770 — il fermo della cronaca non comanda dentro la scena (SPEDITA dopo prova del rosso)
+
+Sonda deriva-770 (GLB ON, scene dal gioco vivo #156/#47/#107, varco del pallone a 0,4u/fotogramma): dopo la consegna in lettura il pallone si allontanava dalla posa dell'eroe a ~7 u/s fino alla linea laterale (50,98); scrittore nominato: **fermo (17)**. Causa: il fermo del gioco aperto (rimessa/fallo) ha un TTL in tick, il tick non gira nelle scene, `P.fermo` resta armato e lo scrittore trascina il pallone al punto della rimessa a 55 u/s dentro l'highlight. Rimedio (rosso `__CPM_NO770`): il fermo vale solo in `playing`.
+
+| scena | palla→posa eroe a 1/2/3/4,5/6 s — ON | rosso | scrittori ≥0,4u (ON / rosso) |
+|---|---|---|---|
+| #156 | 0/0/0/0/0 | 3/13,6/17,6/25,5/37,5 | scena 1 / fermo 10 |
+| #47 | 0/0/0/0/0 | 7,8/11,7/19,6/31,3/39,1 | scena 1 / fermo 10 |
+| #107 | 0/0/0/0/0 | 7,7/15,4/23,2/34,7/46,2 | scena 1 / fermo 12 |
+
+È la spiegazione più diretta del «001» e del «SALTO» delle note KE del PO: sul telefono a 60 fps il trascinamento a 55 u/s dura mezzo secondo. NON verificato sul telefono.

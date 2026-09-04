@@ -2191,7 +2191,16 @@ function ThreeMatchView(props){
              e cammina (`_carry526`), e la palla cammina con lui. L'elezione unica del 7.555 e' esattamente
              il posto giusto per dirlo: c'e' un padrone che batte tutti, e si chiama FERMO. */
           const _fm559=(P.fermo&&P.fermo.current)||null;
-          if(_fm559&&!(typeof window!=='undefined'&&window.__CPM_NO559)){
+          /* [7.770.0 — IL FERMO DELLA CRONACA NON COMANDA DENTRO LA SCENA. Rosso __CPM_NO770]
+             Sonda deriva-770 (GLB ON, tre scene forzate dal gioco vivo): dopo la consegna in lettura il pallone
+             si allontanava dalla posa dell'eroe a ~7 u/s — 3,9u a 1 s, 22u a 3 s, 37,5u a 6 s, fino alla linea
+             laterale (50,98) — e lo scrittore nominato dal varco era proprio questo: il «fermo» (17). Il fermo
+             e' un'interruzione del GIOCO APERTO (rimessa, fallo, angolo) con un TTL in tick, e il tick non gira
+             durante le scene: entrando nell'highlight con una rimessa pendente, `P.fermo` resta armato e questo
+             scrittore trascina il pallone al punto della rimessa a 55 u/s mentre la scena lo ha messo ai piedi
+             dell'eroe. Sul telefono a 60 fps e' mezzo secondo: e' il «SALTO» e il «001» delle note KE del PO.
+             Qui il fermo vale SOLO in cronaca (`matchPhase==='playing'`): nelle scene comanda la scena. */
+          if(_fm559&&!(typeof window!=='undefined'&&window.__CPM_NO559)&&((P.matchPhase==='playing')||(typeof window!=='undefined'&&window.__CPM_NO770))){
             /* [7.609.0 — IL FERMO E IL RIPOSO DEVONO ESSERE D'ACCORDO SU DOV'E' TERRA. Rosso __CPM_NO609]
                COLLAUDO PO: «sembra che il portatore di palla spesso palleggi». MISURATO (palleggio-609 +
                istogramma delle quote): col pallone ai piedi di qualcuno l'altezza sta a 0,65 nell'86% dei
