@@ -309,3 +309,14 @@ Misura appaiata (quadro-766.mjs, GLB ON, cadenza reale, ~565 campioni a partita)
 | 765 | 77,5% | 75,9% | 75% / 55% | 24 / 60 |
 
 Pooled: 81,7% vs 70,9%; fascia vicina 62% vs 21%. **Non provato**: la mano saliente in zona centrale (43% vs 48%, n 69/116) — dichiarato. Residuo aperto: tratti di 10-24 campioni in x nella ripresa (79'→83' seme 764), da guardare col lerp dello sguardo. Lezione di metodo: la sonda camera con `__CPM_REC` acceso senza drenare il buffer rallenta la partita di 5× (30 min reali, fermo 89%): misure a cadenza reale solo senza REC.
+
+## 7.767 — i margini del quadro seguono la distanza (SPEDITA dopo prova del rosso)
+
+Residuo del 7.766 tracciato con la sonda lag-767 (seme 764, 654 campioni): 105 fuori quadro, 99 con palla LENTA (<12 u/s) e sguardo 10-12 unità lontano dal pallone per minuti. Non era il fotogramma (fps headless 46-56, mediana 50,6): hook test-only `__CPM_CAMT767` (bersagli della regia prima del liscio) → il bersaglio del 7.766 era RAGGIUNTO (look z 25,6 = bersaglio) ma il pallone stava a ndc y −1,06 (un soffio sotto) e a ndc x 1,29: la tolleranza fissa di 6 unità in x è più larga del semiquadro sull'angolo vicino (3,8 unità a z 32,6). Rimedio: coefficiente z 0,85→1,0; margine x = 0,14·(38−z) fra 1,5 e 6.
+
+| seme | in quadro 7.767 | rosso | fascia vicina | tratto max |
+|---|---|---|---|---|
+| 764 | 88,5% | 78,1% | 83% / 35% | 27 / 52 |
+| 765 | 87,7% | 77,2% | 70% / 38% | 21 / 40 |
+
+Residuo dichiarato: tratti di 15-27 campioni nella ripresa (79'→84') con palla veloce (30 u/s): transitori del liscio (kl 0,12 a fotogramma), non del bersaglio. Non provato: la mano saliente in zona centrale (20-42% ON vs 56-57% rosso, n 20-61: il regime saliente con pallone vicino viene riclassificato come cronaca perché la camera sale sopra quota 12, quindi le due colonne non contano le stesse scene).
