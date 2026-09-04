@@ -52,7 +52,20 @@ export async function matchPhase(page) {
   catch (_e) { return null; }
 }
 
+/* [7.779.0 — IL BANCO DEVE ASPETTARE QUANTO SERVE ALLA MACCHINA CHE LO OSPITA]
+   La CI di GitHub e' andata rossa sul job `validate` (7.777 e, prima, 7.719) mentre il banco locale era
+   verde a 0 failure con la stessa suite, e il log del run non e' leggibile dalla sessione. Il meccanismo
+   piu' probabile e' qui: questo tetto e' in tempo REALE (9 s) mentre la scena avanza sul clock di scena,
+   che a frame-rate basso scorre molto piu' lentamente. Sul banco locale 2-3 campioni su 24 gia' finiscono
+   «al limite»; su un runner piu' lento ne finiscono di piu', il check legge una posizione INTERMEDIA e la
+   giudica sbagliata («esito goal_against ma palla a meta' campo» e' esattamente la forma di quell'errore).
+   Ora il tetto si scala sul frame-rate osservato (`__CPM_FPS708`): a 60 fps resta 9 s, a 12 fps diventa
+   22,5 s. Cambia solo QUANTO il banco aspetta — nessun bersaglio, nessuna soglia di giudizio, nessuna
+   riga di gioco. NON VERIFICATO: che il rosso della CI fosse questo; e' l'ipotesi, e questa e' la sua
+   mitigazione strutturale. */
 export async function waitBallSettle(page, { maxMs = 9000, quietMs = 700, pollMs = 110, moveEps = 0.3, groundY = 1.2 } = {}) {
+  try { const _fps = await page.evaluate(() => (window.__CPM_FPS708 || window.__CPM_FPS771 || 0));
+    if (_fps > 0.5) maxMs = Math.round(maxMs * Math.max(1, Math.min(2.5, 60 / _fps))); } catch (_e) {}
   const t0 = Date.now(); let prev = null, quietFrom = null;
   while (Date.now() - t0 < maxMs) {
     let b = null; try { b = await page.evaluate(() => (window.__CPM_BALL ? window.__CPM_BALL() : null)); } catch (_e) {}

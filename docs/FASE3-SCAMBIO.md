@@ -467,3 +467,16 @@ Seconda ipotesi **non mitigata e dichiarata**: `npm install` sul runner prende l
 ## Stabilità dopo 7.775-7.778 — guardiano a 4 partite
 
 11 bande verdi, identiche al giro precedente: turno-causale 96% · manovra-viva 121 · arbitro 51 · custodia 6,1u · gol-con-manovra 4/8 · mente-esegue 16 · righe-fatto 14 · raccoglitori 52 · esiti 14 · tabellone 3-5 = 3-5 · nomi-veri 14/14. Il terzo uomo e la respinta che cerca un compagno non muovono nessuna banda: nessuna regressione misurata sulla partita intera.
+
+## 7.779 — il banco aspetta quanto serve alla macchina che lo ospita (CI robusta)
+
+Trovato il meccanismo che rende il quality gate sensibile alla macchina, e mitigato. `waitBallSettle` aspetta al massimo **9 secondi reali** che il pallone si assesti, mentre la scena avanza sul clock di scena, che a frame-rate basso scorre molto più lentamente. Quando il tetto scatta, il check legge una posizione **intermedia** e la giudica sbagliata: «esito goal_against ma palla a metà campo» — la forma esatta dell'issue vista in locale sulla 7.773. Sul banco 2-3 campioni su 24 finivano già «al limite»; su un runner più lento ne finiscono di più, ed è la spiegazione più semplice di due CI rosse (7.719 e 7.777) con banco verde.
+Rimedio: il tetto si scala sul frame-rate osservato (a 60 fps resta 9 s, a 12 fps diventa 22,5 s). Cambia solo quanto il banco aspetta: nessun bersaglio, nessuna soglia di giudizio, nessuna riga di gioco.
+
+| | prima | dopo |
+|---|---|---|
+| campioni «al limite» | 2-3 / 24 | **0 / 24** |
+| esito del gate | 0 failure | 0 failure |
+| fingerprint | 00001505 | 00001505 |
+
+La firma non si muove: il determinismo resta intatto, sparisce il margine di fragilità. **NON verificato**: che il rosso della CI fosse questo — il log del run non è leggibile da questa sessione (API GitHub 403).
