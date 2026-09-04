@@ -333,3 +333,22 @@ La mano saliente è provata dove agisce (pallone vicino: 89% vs 20%) e neutra do
 ## 7.768 — il pannello nero dietro la porta: REVOCA della diagnosi 7.758 e rimedio vero
 
 Il PO lo ha rivisto sulla 7.767 (63', FC Mers-FC Sociedad). Non è una texture non allocata (diagnosi 7.758, **revocata**): è il fondale scuro dei pali (7.8.26, piano 11,9×3,2 a 0x090c11) a UNA faccia con normale +x. Dal campo si vede solo dietro la porta a −x; alla ripresa lo stadio ruota (7.732) e quella porta finisce davanti all'eroe: muro nero nel SOLO secondo tempo — entrambi gli screenshot del PO sono del secondo tempo (86' e 63'). Prova con la vernice (`__CPM_FONDALE768='paint'`): mesh in quadro → 4049 pixel rossi; nel primo tempo la porta d'attacco non ha alcun fondale (faccia culled). Rimedio 7.768 (rosso `__CPM_NO768`): DoubleSide, 8,5×2,9, opacità 0,35, depthWrite off. Misura: luminanza nel riquadro del fondale con la porta in quadro 101 (ON) vs ~107 senza fondale (rosso, primo tempo) vs ~9 col muro; quasi neri 0%. NON verificato: la riproduzione headless del muro nel secondo tempo (le scene forzate al 48' non inquadrano la porta). Lezione: il 7.758 ha ridotto le texture (utile) con una spiegazione falsa; la prova con la vernice andava fatta subito.
+
+## Note KE del PO sulla 7.767 (63' #156, 41' #107): teletrasporti, 001, 006, 011 — indagine
+
+- Teletrasporti (SALTO 37,6u/21 ms «testa», 6,2u/20 ms): NON riprodotti in headless. 24 scene forzate (8 gi × k 0-2, GLB ON, pallone a 40 ms per 14 s): 0 salti ≥6u fuori dagli stacchi; il censimento in autoplay (1724 fotogrammi) 0 visibili. Lo scrittore «testa» è la colla della conduzione (src/12 ~5053) che incolla il pallone al portatore del beat: salta se il fotogramma precedente era lontano nel tempo.
+- 001 all'apertura: riprodotto sulla PRIMA scena dal gioco vivo (gi156: eroe e pallone fermi 2,5 s nella posa del gioco, posa dichiarata a 17u; da scena a scena invece 0u a 600 ms). Causa a monte misurata con il contatore rAF e il profilo CPU: **compilazione shader sincrona** all'apertura (programmi 13→20; triangoli 12k→1,09M; texture 25→211; 50-66% del CPU dei primi 4 s in getShaderInfoLog/getProgramInfoLog; 0-1 fotogrammi nei primi 1,5-2,5 s). Il salto del pallone è la ripresa del disegno dopo lo stallo.
+- Il headless disegna le scene a 3-4 fps (SwiftShader, 1,09M triangoli): le misure a tempo nelle scene sono sospette; quelle di gioco aperto (12-14k triangoli) no.
+
+## 7.769 — gli shader si compilano prima del fischio (SPEDITA dopo prova del rosso)
+
+Rimedio (rosso `__CPM_NO769`): `renderer.compile(scene,camera)` all'aggancio dei CH38 e «pronto» dichiarato dopo; `checkShaderErrors` off in produzione (dichiarato: gli errori shader non vanno più in console).
+
+| | ON | rosso |
+|---|---|---|
+| programmi shader al fischio | 23 | 13 |
+| CPU in compilazione, prima scena 0-4 s | 0,0% | 49,8% |
+| fotogrammi nei primi 2 s della prima scena viva (gi156) | 8 | 4 |
+| pronto (GLB_READY) dall'avvio pagina | 18,8 s | 13,3 s |
+
+NON verificato: l'effetto sul telefono (la compilazione su GPU mobile è più lenta: il beneficio atteso è maggiore, non misurato); la deriva del pallone dopo la consegna in lettura (3,9u → 22u in 2 s in entrambe le colonne) resta aperta e misurata. Aperto: il budget di 1,09 milioni di triangoli per fotogramma nelle scene (22 modelli da ~45k) — sul telefono è il candidato «non fluido» successivo; serve il numero di fps del PO (7.708) nelle note KE.
