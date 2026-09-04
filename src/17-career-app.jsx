@@ -2040,7 +2040,13 @@ const getThisWeekMatchday=()=>{
       const fn=names.first[Math.floor(sr(i*3+1)*names.first.length)];
       const ln=names.last[Math.floor(sr(i*3+2)*names.last.length)];
       const base=(nd.p||80)-3-i*5+Math.floor(sr(i*3+3)*6);
-      return{name:fn+" "+ln,score:base,caps:Math.max(2,Math.round(base/3)-14+i*2),me:false};
+      /* [7.783.0] LE DUE SCALE DELLE PRESENZE DEVONO PARLARSI. Gli avversari in lista nascevano da questa formula
+         (`base/3 - 14 + 2i`: circa 15-17 presenze per una nazionale forte) mentre il giocatore, col tetto di una
+         convocazione a stagione, ne accumulava sei in dieci anni. Tolto quel tetto, il rapporto si ribalta e il
+         confronto resta falso al contrario. Qui la scala degli avversari sale sullo stesso ordine di grandezza di
+         un titolare di nazionale a fine ventina (30-45 presenze), cosi' la lista del CT dice qualcosa di vero:
+         chi ha giocato di piu' sta piu' in alto, e il numero accanto al nome e' confrontabile col proprio. */
+      return{name:fn+" "+ln,score:base,caps:(typeof window!=='undefined'&&window.__CPM_NO783N)?Math.max(2,Math.round(base/3)-14+i*2):Math.max(4,Math.round(base*0.55)-15+i*3),me:false};
     });
     const g=(typeof leagueGoalsOf==="function")?leagueGoalsOf(p):(p.goals||0);
     const role=p.squadRole||"rotazione";
@@ -3896,7 +3902,17 @@ const getThisWeekMatchday=()=>{
          vera (`natHistory` della stagione corrente), e il gate meritocratico resta identico — ovr, rendimento,
          continuita' e reputazione decidono come prima SE si viene chiamati, non piu' quante volte al massimo. */
       const _natStag782=(()=>{try{return (player.natHistory||[]).filter(h=>h&&(h.season||0)===curSeas).length;}catch(_e782){return 0;}})();
-      const seasonOpen=(typeof window!=='undefined'&&window.__CPM_NO782)?(curSeas>lastNat):(_natStag782<4);
+      /* [7.783.0 — SECONDA CORREZIONE, dopo la domanda del PO: «secondo te 6 presenze sono giuste a 27 anni con una
+         carriera del genere?»] NO, E NEMMENO VENTIQUATTRO. Il 7.782 aveva tolto il tetto di una convocazione a
+         stagione portandolo a quattro (6 presenze → 24 su dieci stagioni), ma la bacheca che il PO ha mandato dice
+         altro: sette campionati, quattro coppe, tre coppe europee, due Trofei d'Oro, sei Giovane dell'Anno, 44 gol
+         in una stagione, OVR 92, Coppa delle Nazioni vinta con la Spagna. Un profilo cosi', a ventisette anni, nel
+         calcio vero sta fra le sessanta e le novanta presenze: quattro finestre a stagione restano un tetto
+         arbitrario, solo meno stretto di prima. Una nazionale jouea otto-dieci gare l'anno fra qualificazioni,
+         amichevoli e tornei: il tetto diventa OTTO, e a decidere quante se ne giocano davvero resta il merito
+         (`callP`, che dipende da ovr, rendimento, continuita' e reputazione) — un fuoriclasse le prende quasi
+         tutte, un comprimario ne prende due. Il tetto smette di essere il vincolo e torna a esserlo il valore. */
+      const seasonOpen=(typeof window!=='undefined'&&window.__CPM_NO782)?(curSeas>lastNat):true;/* [7.783.0] il tetto vero si applica sotto, e dipende dal merito: qui la porta resta aperta */
       // Sprint NAZ — convocazione meritocratica: livello nazionale, OVR, età, rendimento, continuità, reputazione.
       // Forza della nazionale: le top sono molto più selettive; le minori più permissive ma sempre credibili.
       const NAT_LEVEL={"Brasile":92,"Francia":91,"Argentina":90,"Spagna":89,"Inghilterra":89,"Germania":87,"Portogallo":87,"Italia":86,"Olanda":85,"Belgio":84};
@@ -3912,7 +3928,13 @@ const getThisWeekMatchday=()=>{
       if(curSeas<=2)elig-=(3-curSeas)*5;           // freno alle primissime stagioni
       if(typeof window!=='undefined'&&window.__CPM_CALLUP!==undefined){try{const _w=window.__CPM_CALLUP;const _l=_w[_w.length-1];
         if(_l&&_l.s===(player.season||1)&&_l.w===weekVal){_l.gate=ovrGate;_l.elig=+elig.toFixed(1);_l.pend=(player.calendar||[]).some(md=>md.type==="national"&&!md.played);_l.passa=(ovr>=ovrGate&&elig>0&&(isFirst||seasonOpen)&&!_l.pend);}}catch(_e){}}
-      if(ovr>=ovrGate&&elig>0&&(isFirst||seasonOpen)&&!(player.calendar||[]).some(md=>md.type==="national"&&!md.played)){
+      /* [7.783.0] QUANTE FINESTRE A STAGIONE LO DECIDE IL VALORE, non una costante. Con un tetto fisso a otto
+         un fuoriclasse e un comprimario finivano allo stesso numero (misurato: 48 e 48 su dieci stagioni), perche'
+         la probabilita' di chiamata satura al suo massimo per entrambi: il tetto tornava a essere il vincolo. Qui
+         il tetto e' due piu' un sesto dell'idoneita', fra due e otto — chi sta appena sopra la soglia della
+         nazionale gioca due finestre, chi domina il campionato le gioca tutte. */
+      const _capStag783=(typeof window!=='undefined'&&window.__CPM_NO782)?1:clamp(Math.round(2+Math.max(0,elig)/6),2,8);
+      if(ovr>=ovrGate&&elig>0&&(isFirst||seasonOpen)&&(_natStag782<_capStag783||isFirst)&&!(player.calendar||[]).some(md=>md.type==="national"&&!md.played)){
         const baseP=isFirst?0.10:0.16;
         const callP=clamp(baseP+elig*0.012,0.03,0.55);
         // [6.81.0 direttiva PO «calendarizzate, simulabili, nulla al caso»] roll e avversario SEEDATI

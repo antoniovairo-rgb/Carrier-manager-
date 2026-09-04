@@ -546,3 +546,17 @@ Rimedio: fino a quattro finestre per stagione, contate sulla storia vera (`natHi
 | regola nuova (fino a quattro) | **24** |
 
 La replica restituisce **esattamente il numero che il PO vede** (6): è la conferma che la diagnosi coglie il caso reale e non un modello di comodo. Ventiquattro presenze in dieci stagioni restano sotto un fuoriclasse vero, ma allineano il giocatore ai suoi pari in lista. Rosso `__CPM_NO782`.
+
+## 7.783 — le presenze in nazionale le decide il valore, non un tetto
+
+Il PO, dopo il 7.782: «secondo te 6 presenze sono giuste a 27 anni con una carriera del genere?». No — e nemmeno ventiquattro. La bacheca che ha mandato: sette campionati, quattro coppe, tre coppe europee, due Trofei d'Oro, sei Giovane dell'Anno, 44 gol in una stagione, OVR 92, Coppa delle Nazioni vinta con la Spagna. Il 7.782 aveva sostituito un tetto stretto con uno largo: restava un tetto.
+Provato prima il tetto fisso a otto: **fuoriclasse e comprimario finivano allo stesso numero, 48 e 48** su dieci stagioni, perché la probabilità di chiamata satura al massimo per entrambi. Il tetto tornava a essere il vincolo, e il merito spariva. Ora le finestre per stagione valgono `2 + idoneità/6`, fra due e otto: chi sta appena sopra la soglia ne gioca due, chi domina le gioca tutte.
+
+| profilo (replica dichiarata, 10 stagioni) | oggi | 7.783 |
+|---|---|---|
+| fuoriclasse OVR 92, 1,1 gol a partita | 6 | **42** |
+| buon titolare OVR 86 | 6 | **34** |
+| appena sopra la soglia OVR 82 | 6 | **24** |
+
+Allineata anche la scala degli avversari nella lista del CT (da 13-17 a 29-36 presenze): le due scale non si erano mai parlate, e dopo il 7.782 il confronto sarebbe stato falso al contrario — il giocatore molto sopra, gli altri fermi. Rossi `__CPM_NO782` e `__CPM_NO783N`.
+**Dichiarato**: 42 presenze a 27 anni restano sotto un fuoriclasse reale (60-90). È una scelta di prudenza sul bilanciamento — ogni convocazione è una partita in più con fatica e rischio infortunio — e si alza in una riga se il PO la vuole più alta.
