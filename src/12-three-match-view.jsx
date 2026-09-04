@@ -8130,6 +8130,11 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
         if(!_dentro){_w.fuori++;_b.fuori++;
           if(_Q.v.y<-1)_w.sotto++;else if(_Q.v.y>1)_w.sopra++;else _w.lati++;}
       }catch(_e561){}}
+      /* [7.780 strumentazione test-only] QUALE STATO TIENE OCCUPATA LA FINE DELLA SCENA. Due rimedi al codice 011
+         («palla congelata») sono stati revocati perche' le loro guardie non erano mai vere: prima di sparare un terzo
+         colpo, si registra a ogni fotogramma cosa e' vivo. Costa un oggetto per fotogramma e solo sotto banco. */
+      if(typeof window!=='undefined'&&window.__CPM_FLAG780ON&&isResult){try{const _a=(window.__CPM_FLAG780=window.__CPM_FLAG780||[]);
+        if(_a.length<900)_a.push({arc:ballArcActive?1:0,pa:hlPostArcT>=0?1:0,pat:hlPostArcType||null,tl:tlOn?1:0,cel:celebT>=0?1:0,def:P.hlDef?1:0,bx:+(ball.position.x+50).toFixed(1),t:+(sr.current._sceneT780=(sr.current._sceneT780||0)+aDt).toFixed(2)});}catch(_e780){}}
       if(sr.current._bj0){const _b0=sr.current._bj0;sr.current._bj0=null;try{window.__CPM_BJN478=(window.__CPM_BJN478||0)+1;
         /* [7.497.0 F2 — OSSERVAZIONE, NON ARBITRATO] Quanti sistemi hanno scritto il pallone in QUESTO
            fotogramma. L'audit ha contato 62 righe che ne scrivono la posizione senza un arbitro; qui si

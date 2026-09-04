@@ -516,3 +516,15 @@ Un pallone fermo 1,4 secondi consecutivi a tredici unità da chiunque, a esito c
 2. *Un raccoglitore di scena* (gemello del 7.743 della cronaca): se a esito concluso il pallone è fermo da mezzo secondo a più di quattro unità da tutti, il più vicino ci va. Anche questa **non si attiva mai**: le sue guardie (`!ballArcActive && hlPostArcT<0 && !tlOn`) non sono mai tutte vere nella finestra misurata.
 
 **Prossima pista, dichiarata**: strumentare i tre flag (arco, post-arco, timeline) negli ultimi due secondi della scena e scoprire quale resta vivo. Finché non so *quale stato* tiene occupata la fine della scena, ogni rimedio è un colpo al buio — e due colpi al buio sono già stati sparati e revocati.
+
+### Codice 011 — LA CAUSA: dentro la scena il punto-palla logico non si muove, e il pallone reso va per conto suo
+
+Strumentati i tre flag a ogni fotogramma (`__CPM_FLAG780ON`, test-only) sulle due scene segnalate dal PO, con esito forzato RIUSCITO come nelle sue note:
+
+- il tratto fermo più lungo cade **mentre l'arco è dichiarato attivo**: 49 fotogrammi (1,8 s di scena) in gi187, 15 in gi23, con il pallone immobile;
+- il caricamento del gesto per un passaggio dura **0,27 s**, non 1,8: non è il wind-up;
+- **il punto-palla LOGICO è fermo nel 100% dei campioni** di tutta la scena (57,55 in gi187, 55,35 in gi23), mentre il pallone reso si allontana fino a **38 e 48 unità**, con distanza mediana 9,2 e 17,3.
+
+Il meccanismo: su un passaggio (`pass`) il pallone reso non segue il bersaglio dell'arco — quel percorso è riservato ai tiri — ma insegue il punto logico, che durante l'esito **non viene aggiornato**. Quando l'arco non comanda, il pallone resta fermo dov'è: è il codice 011. E siccome la cronaca riparte dal punto logico, la palla può anche «tornare indietro» a fine scena.
+
+Questo tocca la direttiva madre («la simulazione è la source of truth»): qui le due realtà divergono di 9-17 unità mediane dentro la scena. **Prossimo lavoro, con misura appaiata**: far convergere il punto logico e il pallone reso durante l'esito — e la banda naturale è proprio la distanza mesh↔logico, che oggi vale 9,2 e 17,3 unità mediane. Non spedito stanotte: il rimedio tocca il confine fra le due autorità e va misurato prima di essere scritto.
