@@ -372,3 +372,15 @@ Sonda deriva-770 (GLB ON, scene dal gioco vivo #156/#47/#107, varco del pallone 
 ## 7.771 — gli fps nella nota KE, sempre (strumentazione)
 
 Le note del PO dal telefono (7.719→7.767) non portano il campo fps che il 7.708.1 stampa quando `__CPM_FPS708` esiste; in headless c'è (18). Causa sul telefono NON spiegata. Rete: contatore rAF indipendente in LiveMatch (`__CPM_FPS771`), la nota usa il primo dei due. Misura headless: cancellato `__CPM_FPS708`, la nota porta comunque 17 fps. Nessun comportamento di gioco cambia. Serve al giudizio sul budget di 1,09M triangoli nelle scene.
+
+## 7.772 — il gol subito entra in porta (SPEDITA dopo prova del rosso) + una mano REVOCATA
+
+Collaudo PO 04/09 07:28 (gol di Russell 88'). Sonde golsub2/3/4-772 (GLB ON, 10 scene difensive con esito `goal_against` forzato): viaggio continuo (salto massimo fra campioni 1-2u anche col rosso: nessun teletrasporto), arco che finisce a gx 1,8-2,1 (davanti alla linea 1,4), canale `in_net_own` mai acceso (0/10). Causa: a fine arco il ramo difensivo dichiara `in_net_own`, poi il post-arco dei FALLIMENTI (parata/palo/fuori dal tipo del motore) lo sovrascrive con `deflect`. Rimedio (rosso `__CPM_NO772`): sul gol subito quel blocco non ha voce.
+
+| | ON | rosso |
+|---|---|---|
+| canale in_net_own acceso | 6/10 | 0/10 |
+| pallone oltre la linea nella finestra | 3/10 | 0/10 |
+| salto massimo fra campioni (mediana) | 1,6u | 1,6u |
+
+Limiti: il clock di scena headless vale ~0,1 s per secondo reale (misurato: SCENET 0,74 dopo 8,2 s), quindi la convergenza in rete non finisce nella finestra della sonda; sul telefono è più rapida. **Revocata** la prima mano (bersaglio logico a gx 2-12 posticipato a rete certificata): misura identica al rosso — il salto che cercava non esisteva. **Aperto**: tiro da 13-38u (mediana ~24; gi33 fino a 50) — l'avversario dovrebbe avanzare prima del tiro; 4 scene senza canale (gi132/138 arco non concluso nella finestra; gi136/157 non spiegate); «stacco troppo presto»: la finestra del result aspetta il renderer fino a 6 s (7.461), non riprodotto in headless. NON verificato sul telefono.
