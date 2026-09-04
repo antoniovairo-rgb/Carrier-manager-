@@ -434,3 +434,9 @@ Estensione del 7.775 a dai-e-vai (triangolo), filtrante (appoggio e ritorno prim
 | beat per scena (mediana) | 5 | 3 |
 
 Durata della costruzione: da 1,25-1,98 s a 1,73-2,58 s per schema, dentro la finestra dell'esito (il cancello 7.461 tiene aperta la scena finché la costruzione vive). Invarianti del backbone verdi.
+
+## Censimenti dopo il terzo uomo (7.776)
+
+**Costo misurato del terzo uomo (custodia in scena).** 13 scene con costruzione e supporto, 454 campioni: distanza fra pallone e nostro più vicino con mediana 1,4u in entrambi i regimi; campioni oltre 4u 32% con il terzo uomo contro 23% col rosso, p90 8,0u contro 7,0u, massimo 20,8 contro 22,0. È il costo dei passaggi in più: durante un volo il pallone è lontano da tutti, come nel calcio. La custodia non peggiora dove conta (mediana identica, nessun pallone orfano).
+
+**Codice 006 «reparto fermo»: NON riprodotto.** Due metri, entrambi negativi. Nei tre secondi dell'esito si spostano 9/9 compagni e 10/10 avversari, spostamento medio dei nostri 13,1u (18 scene). Durante la LETTURA, che è la fase in cui il PO guarda il campo mentre decide, si muovono 9/9 compagni in 14 scene su 14, con spostamento massimo per campione 2,3-3,1u ogni 220 ms (circa 10 u/s: corsa vera). Zero scene con nessuno fermo o con due soli in movimento. Il fatto del PO resta a verbale: se esiste sul suo telefono, non è «nessuno si muove» ma verosimilmente il movimento reso a scatti sotto i 20 fps, che è la pista già aperta col budget di 1,09 milioni di triangoli.
