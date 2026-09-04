@@ -1190,6 +1190,12 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
      ferma il TICK della partita, e basta. La via d'uscita resta, ma a venti secondi: se nessuno tocca,
      parte l'opzione neutra e la gara riprende da sola. */
   const [scFreeze681,setScFreeze681]=useState(false);
+  /* [7.771.0 — GLI FPS NELLA NOTA, SEMPRE. Le note KE del PO dal telefono (7.719→7.767) arrivano SENZA il campo fps
+     che il 7.708.1 stampa nell'intestazione quando `__CPM_FPS708` esiste: in headless il campo c'e' (18 fps), sul
+     telefono no, e non si sa perche' — quel numero decide se il budget di 1,09 milioni di triangoli delle scene e' il
+     prossimo difetto. Qui un contatore INDIPENDENTE dal loop 3D: un requestAnimationFrame di LiveMatch, media mobile,
+     una moltiplicazione a fotogramma. La nota usa il primo dei due che esiste. */
+  useEffect(()=>{if(typeof window==='undefined'||typeof requestAnimationFrame!=='function')return;let raf=0,last=0;const f=(t)=>{if(last){const d=(t-last)/1000;if(d>0.001&&d<1)window.__CPM_FPS771=(window.__CPM_FPS771||60)*0.95+(1/d)*0.05;}last=t;raf=requestAnimationFrame(f);};raf=requestAnimationFrame(f);return()=>{try{cancelAnimationFrame(raf);}catch(_e){}};},[]);
   const [matchSpeed,setMatchSpeed]=useState(readMatchSpeed);/* [7.484.0] ritmo scelto dal giocatore */
   /* [7.338.0 direttiva PO «prevedere un pulsante di warning per niente invasivo durante il live match che
      permetta di prendere appunti sull'azione sbagliata … la partita deve essere messa in PAUSA finché non mi
@@ -1231,7 +1237,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
       sit:sc.sit,gi:sc.gi,intent:sc.intent,act:sc.act,out:sc.out,ok:sc.ok,sceneKey:sc.key};
     const sit=(situations||[])[hlIdx]||null,o=outcome||null;
     const _act=(o&&(o.actionLabel||o.label))||null;
-    return{v:GAME_VERSION,when:`S.${player.season||1} W.${player.week||1}`,fps:(typeof window!=='undefined'&&window.__CPM_FPS708)?Math.round(window.__CPM_FPS708):null,/* [7.708.0] il frame-rate REALE del dispositivo nella nota: e' il numero che decide se i difetti da basso-fps (camera in tempo-di-scena, verbale ai lerp) esistono dal PO */min:clock,phase,
+    return{v:GAME_VERSION,when:`S.${player.season||1} W.${player.week||1}`,fps:(typeof window!=='undefined'&&(window.__CPM_FPS708||window.__CPM_FPS771))?Math.round(window.__CPM_FPS708||window.__CPM_FPS771):null,/* [7.771.0] il contatore di LiveMatch fa da rete quando quello del loop 3D manca *//* [7.708.0] il frame-rate REALE del dispositivo nella nota: e' il numero che decide se i difetti da basso-fps (camera in tempo-di-scena, verbale ai lerp) esistono dal PO */min:clock,phase,
       opp:(opponent&&(opponent.n||opponent.a))||"?",score:`${score.home}-${score.away}`,
       sit:sit?String(sit.text||"").slice(0,90):null,gi:sit?((typeof SITUATIONS!=="undefined"?SITUATIONS.indexOf(sit):-1)):-1,
       intent:sit?((typeof deriveIntent==="function"?deriveIntent(sit,null):null)||sit.it||null):null,

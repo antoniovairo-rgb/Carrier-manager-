@@ -368,3 +368,7 @@ Sonda deriva-770 (GLB ON, scene dal gioco vivo #156/#47/#107, varco del pallone 
 ## Stabilità dopo 7.769/7.770 — guardiano a 4 partite
 
 11 bande verdi: turno-causale 96% · manovra-viva 121 · arbitro 51 · custodia 6,1u · gol-con-manovra 4/8 · mente-esegue 16 · righe-fatto 14 · raccoglitori 50 · esiti 15 · tabellone 3-5 = 3-5 · nomi-veri 14/14. Nessuna regressione misurata. Nota strumentale: in headless il contesto delle note KE porta gli fps (18 in gioco, 17 in scena, GLB ON); nelle note del PO il campo manca → sul suo telefono `__CPM_FPS708` risulta assente: NON spiegato, resta aperto (senza quel numero il budget di 1,09M triangoli non si può giudicare).
+
+## 7.771 — gli fps nella nota KE, sempre (strumentazione)
+
+Le note del PO dal telefono (7.719→7.767) non portano il campo fps che il 7.708.1 stampa quando `__CPM_FPS708` esiste; in headless c'è (18). Causa sul telefono NON spiegata. Rete: contatore rAF indipendente in LiveMatch (`__CPM_FPS771`), la nota usa il primo dei due. Misura headless: cancellato `__CPM_FPS708`, la nota porta comunque 17 fps. Nessun comportamento di gioco cambia. Serve al giudizio sul budget di 1,09M triangoli nelle scene.
