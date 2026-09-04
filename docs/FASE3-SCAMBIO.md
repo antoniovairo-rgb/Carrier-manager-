@@ -453,3 +453,13 @@ Censimento degli esiti difensivi RIUSCITI (18 scene × 2 azioni = 36 casi): il p
 | distanza mediana dal nostro più vicino | 8,1u | 9,6u |
 
 **Residuo dichiarato**: metà dei casi resta «palla di nessuno», il pallone si ferma a mezza strada dal compagno. Non risolto qui. Prima stesura **revocata**: agiva sul punto-palla LOGICO (`ballTargetRef` su recovery/save) e la misura l'ha smentita subito (5 ripartenze contro 6 del rosso) — nella scena comanda il descrittore 3D, non il bersaglio logico. Sul fallimento la respinta resta cieca; la spazzata lunga non si tocca.
+
+### 7.777 — il residuo, misurato meglio (correzione del verbale)
+
+Il «18/36 palla di nessuno» era misurato a un istante fisso (2,6 s dopo l'esito) e sopravvalutava il difetto. Tracciando la traiettoria a 150 ms su 10 scene difensive riuscite: **il pallone arriva a un nostro in 10/10** (distanza minima mediana 0,9u) e **ci resta a fine scena in 7/10** (distanza finale mediana 1,3u). Nei 3 casi restanti riparte e si allontana (16,4 · 15,5 · 4,4u) dopo essere stato raggiunto. Il residuo vero è quello: non «la respinta non arriva a nessuno», ma «in tre casi su dieci il pallone lascia di nuovo il compagno entro tre secondi».
+
+## 7.778 — la CI di GitHub e il banco locale devono vedere la stessa cosa
+
+Il PO ha mostrato il job `validate` **rosso** sul push della 7.777 (main ccd264a, 16m 6s, exit 1) mentre il rituale locale era **verde a 0 failure** con la stessa suite. Verificato: il workflow esegue esattamente i passi di `npm run ci` (impulsi-contesto, test:vision, test:logic, typing-shortcuts, validate-situations, save-compat, replay, partita-vera) e ognuno passa qui — save-compat rilanciato a parte: 12 pass, 0 fail. Il log del run non è leggibile da questa sessione (l'API GitHub risponde 403: l'app non è connessa per l'organizzazione), quindi **quale categoria sia rossa resta non verificato**.
+Ipotesi più probabile, e mitigata: la mano del 7.777 sceglie il compagno leggendo le posizioni **rese** dei mesh, che dipendono dal frame-rate; su un runner più lento un gate deterministico diverge. Qui la mano viene spenta sotto il gate (stessa regola già scritta per il costruttore cinematico nel 7.381) e resta accesa nel gioco vero. Per costruzione il gate torna al comportamento della 7.776, che su GitHub era verde.
+Seconda ipotesi **non mitigata e dichiarata**: `npm install` sul runner prende l'ultima versione di Playwright e quindi un Chromium diverso dal binario del banco; le firme dHash del golden possono divergere per pixel di rendering. Se il prossimo push resta rosso, questa è la pista da aprire — e serve il log, cioè l'accesso GitHub.

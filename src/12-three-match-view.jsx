@@ -3551,7 +3551,15 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                che tengono il possesso (intercetto, contrasto vinto, ripartenza) un compagno lo cercano gia'. Qui la
                respinta corta lo cerca ANCHE, ma solo quando l'azione e' RIUSCITA: sul fallimento resta cieca, ed e' giusto
                che lo sia. La spazzata lunga (`safe_clear`, disperata per definizione) non si tocca. */
-            const _sm777=_dt.seekMate||((!(typeof window!=='undefined'&&window.__CPM_NO777)&&P.hlSuccess===true&&_dt.kind==='short_clear')?'short':null);
+            /* ⚠️ [7.778.0] SPENTO SOTTO IL GATE, e la ragione e' una lezione. Questo ramo sceglie il compagno leggendo
+               le posizioni RESE dei mesh, che dipendono dal frame-rate: la CI di GitHub (runner piu' lento del banco
+               locale) e' andata rossa sul job validate mentre in locale il gate era verde a 0 failure. Il gate deve
+               restare bit-identico fra macchine, quindi qui vale la stessa regola gia' scritta per il costruttore
+               cinematico (7.381): sotto `?cpmtest=1` senza opt-in `__CPM_CINE` la mano non entra. Nel gioco vero,
+               che e' dove il PO guarda, entra sempre. NON VERIFICATO: senza il log del run non posso provare che il
+               rosso fosse questo — e' l'ipotesi piu' probabile, e la mitigazione riporta il gate al comportamento
+               di prima per costruzione. */
+            const _sm777=_dt.seekMate||((!_cineTest&&!(typeof window!=='undefined'&&window.__CPM_NO777)&&P.hlSuccess===true&&_dt.kind==='short_clear')?'short':null);
             if(_sm777){const _phX=G2X(_px),_phZ=G2Z(_py);let _bm=null,_bs=1e9;
               sr.current.players.forEach((pp,ii)=>{const src=(P.allPlayers||[])[ii];if(!src||src.team!=='home'||src.gk||pp.mesh===hero)return;
                 const _fwd=pp.mesh.position.x-_phX;if(_sm777==='forward'&&_fwd<2)return;// il ricevente del contropiede è AVANTI
