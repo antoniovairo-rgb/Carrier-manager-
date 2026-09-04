@@ -1775,12 +1775,21 @@ function buildHLTimeline(hl,o){
     set('MATE1',sx+9,clamp(sy+side*9,6,94)); set('DEF1',sx+14,sy);
     B('pass',0.45,{from:'HERO',to:'MATE1',kind:'pass'},[mv('HERO',sx+15,sy,true),mv('DEF1',sx+12,clamp(sy+side*5,6,94))]);
     B('control',0.25,{from:'MATE1',to:'MATE1',kind:'carry'},[mv('DEF1',sx+13,clamp(sy+side*7,6,94))]);
-    B('give',0.40,{from:'MATE1',to:'HERO',kind:'give'},[]);
+    if(_tre775){/* [7.775.1] il dai-e-vai diventa TRIANGOLO: la restituzione passa da un terzo uomo */
+      set('MATE2',sx+13,clamp(sy-side*7,6,94));
+      B('scarico',0.34,{from:'MATE1',to:'MATE2',kind:'pass'},[mv('HERO',sx+17,sy,true)]);
+      B('give',0.40,{from:'MATE2',to:'HERO',kind:'give'},[]);
+    } else B('give',0.40,{from:'MATE1',to:'HERO',kind:'give'},[]);
     B('control',0.20,{from:'HERO',to:'HERO',kind:'carry'},[mv('HERO',sx+19,sy,true)]);
     concl('HERO','shot');
   } else if(pat==='THROUGH_BALL'){// FILTRANTE: scatto compagno, linea che sale, palla che attraversa, arrivo
     set('MATE1',sx+3,clamp(sy+side*6,6,94)); set('DEF1',sx+12,clamp(sy+side*3,6,94)); set('DEF2',sx+12,clamp(sy-side*3,6,94));
     B('hold',0.40,{from:'HERO',to:'HERO',kind:'carry'},[mv('MATE1',sx+10,clamp(sy+side*8,6,94),true),mv('DEF1',sx+15,clamp(sy+side*4,6,94)),mv('DEF2',sx+15,clamp(sy-side*2,6,94))]);
+    if(_tre775){/* [7.775.1] appoggio e ritorno prima del filtrante: il pallone passa da un terzo uomo, la palla resta all'eroe per l'apertura */
+      set('MATE2',sx-4,clamp(sy-side*7,6,94));
+      B('appoggio',0.32,{from:'HERO',to:'MATE2',kind:'pass'},[]);
+      B('back',0.34,{from:'MATE2',to:'HERO',kind:'give'},[mv('MATE1',sx+16,clamp(sy+side*7,6,94),true)]);
+    }
     B('through',0.50,{from:'HERO',to:{pt:[sx+26,clamp(sy+side*5,6,94)]},kind:'through'},[mv('MATE1',sx+26,clamp(sy+side*5,6,94),true)]);
     B('control',0.25,{from:{pt:[sx+26,clamp(sy+side*5,6,94)]},to:'MATE1',kind:'carry'},[]);
     concl('MATE1','shot');
@@ -1800,6 +1809,11 @@ function buildHLTimeline(hl,o){
     set('MATE1',sx+6,clamp(sy+side*4,6,94)); set('MATE2',sx+10,clamp(sy-side*8,6,94));
     set('DEF1',sx+12,clamp(sy-side*2,6,94)); set('DEF2',sx+14,clamp(sy-side*6,6,94)); set('DEF3',sx+6,clamp(sy+side*9,6,94));
     B('carry',0.40,{from:'HERO',to:'HERO',kind:'carry'},[mv('HERO',sx+10,clamp(sy+side*11,6,94),true),mv('DEF3',sx+11,clamp(sy+side*10,6,94))]);
+    if(_tre775){/* [7.775.1] scambio corto sulla fascia prima del cross, con il compagno che NON rifinisce: usare il rifinitore lasciava la giocata a due uomini (misurato: cross ancora a 2) */
+      const _spalla=(pat==='FAR_POST_CROSS')?'MATE1':'MATE2';
+      B('scambio',0.30,{from:'HERO',to:_spalla,kind:'pass'},[mv('HERO',sx+13,clamp(sy+side*12,6,94),true)]);
+      B('ritorno',0.30,{from:_spalla,to:'HERO',kind:'give'},[]);
+    }
     B('beat',0.30,{from:'HERO',to:'HERO',kind:'dribble'},[mv('HERO',sx+15,clamp(sy+side*12,6,94),true),mv('DEF3',sx+13,clamp(sy+side*9,6,94))]);
     const tgt=pat==='FAR_POST_CROSS'?[GX-9,clamp(GY-side*12,18,82)]:pat==='CUTBACK'?[GX-16,clamp(GY+side*3,18,82)]:[GX-6,clamp(GY+side*6,18,82)];
     const fin=pat==='FAR_POST_CROSS'?'MATE2':'MATE1';
@@ -1810,6 +1824,11 @@ function buildHLTimeline(hl,o){
     set('MATE1',sx-4,clamp(sy+side*16,6,94)); set('DEF1',sx+2,clamp(sy-side*2,6,94));
     const tgt=[clamp(sx+8,8,96),sy];
     B('run',0.40,{from:'MATE1',to:'MATE1',kind:'carry'},[mv('HERO',sx+6,sy,true),mv('DEF1',sx+5,clamp(sy-side*1,6,94))]);
+    if(_tre775){/* [7.775.1] il cross nasce da uno scarico: tre uomini nella costruzione, la palla resta a chi crossa */
+      set('MATE2',sx-8,clamp(sy+side*8,6,94));
+      B('scarico',0.30,{from:'MATE1',to:'MATE2',kind:'pass'},[]);
+      B('rientro',0.32,{from:'MATE2',to:'MATE1',kind:'give'},[mv('MATE1',sx-2,clamp(sy+side*15,6,94),true)]);
+    }
     B('cross',0.55,{from:'MATE1',to:{pt:tgt},kind:'cross'},[mv('HERO',tgt[0],tgt[1],true)]);
     B('control',0.15,{from:{pt:tgt},to:'HERO',kind:'carry'},[]);
     concl('HERO','header');

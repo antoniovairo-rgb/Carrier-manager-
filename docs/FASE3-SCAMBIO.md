@@ -421,3 +421,16 @@ Due mani. La prima: nel costruttore, scarico e ritorno su un terzo compagno nei 
 | scene con almeno due passaggi | 10/14 | 3/14 |
 
 Invarianti del backbone (possesso continuo, niente teletrasporti della palla, colpo di testa solo su palla aerea): 31 test node verdi. Lezione: una mano che non morde va cercata nel filo prima che nel numero — il ramo era giusto, il dato non arrivava.
+
+## 7.776 — il terzo uomo in tutti gli schemi (SPEDITA dopo prova del rosso)
+
+Estensione del 7.775 a dai-e-vai (triangolo), filtrante (appoggio e ritorno prima dell'apertura), colpo di testa (il cross nasce da uno scarico) e cross (scambio in fascia). Sui cross il primo tentativo usava il rifinitore e la giocata restava a due uomini: misurato, corretto usando il compagno che non rifinisce.
+
+| metro (19 scene con supporto dichiarato) | 7.776 | rosso |
+|---|---|---|
+| scene con tre uomini | 19/19 | 0/19 |
+| scene con almeno due passaggi | 19/19 | 5/19 |
+| passaggi per scena (mediana) | 3 | 1 |
+| beat per scena (mediana) | 5 | 3 |
+
+Durata della costruzione: da 1,25-1,98 s a 1,73-2,58 s per schema, dentro la finestra dell'esito (il cancello 7.461 tiene aperta la scena finché la costruzione vive). Invarianti del backbone verdi.
