@@ -3297,6 +3297,9 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
             if(_L.length<80)_L.push({min:nx,n:_mpO.length,
               top:_ordS.slice(0,4).map(o=>+_av(o).toFixed(1)),
               mediana:+_av(_ordS[_ordS.length>>1]).toFixed(1)});}catch(_e792b){}}
+          /* NOTA: il censimento qui sopra fotografa le posizioni PRIMA della salita del 7.793 — e' quello
+             il numero da confrontare fra rosso e verde, perche' dice da dove si parte. La zona di tiro
+             (`tiroDa` nel registro delle battute) dice invece dove si arriva. */
           /* ⚠️ [7.792.0 — L'OCCASIONE NASCE DA DOVE SONO GLI UOMINI, E LE PAROLE SEGUONO IL CAMPO.
              Rosso __CPM_NO792]
              Nota PO: «le azioni pericolose extra eroe continuano ad essere azioni "matematiche" e non di
@@ -3322,6 +3325,25 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           const _avO=(o)=>_dirO>0?(o.q.x||50):100-(o.q.x||50);
           const _ordO=_mpO.slice().sort((u,v)=>_avO(v)-_avO(u));
           const _cimaO=_ordO.slice(0,Math.min(3,_ordO.length));
+          /* ⚠️ [7.793.0 — REVOCATO, e la diagnosi vale piu' del rimedio. Rosso storico __CPM_NO793.]
+             IL TENTATIVO: far salire di nove unita' i tre uomini piu' avanzati nell'istante in cui
+             l'occasione si arma — lo stesso device della catena del 7.537 (+7u) — e calcolare il piano
+             sulle posizioni PREVISTE, cosi' che la zona del tiro e le parole nascessero da dove gli
+             uomini sarebbero stati.
+             LA MISURA L'HA UCCISO, e ha detto perche'. La zona del tiro saliva da avanzamento mediano
+             63 a 72, con «dal limite» 8 volte su 11 contro le 2 «da fuori»: sembrava funzionare. Ma la
+             distanza d'apertura — quella vera, fra chi riceve e dove atterra il pallone — PEGGIORAVA da
+             7,5u a 14,3u, con 10 casi su 11 oltre la soglia delle 12u. Il conto torna solo in un modo:
+             l'uomo NON SI ERA MOSSO. Alla battuta d'apertura il nominato si misura ancora ad avanzamento
+             54-56, esattamente dov'era prima della salita, e la distanza in piu' e' precisamente le nove
+             unita' che avevo aggiunto al bersaglio. Cioe': la scrittura una-tantum delle posizioni non
+             sopravvive al tick successivo — il sistema di movimento riporta indietro i giocatori — e la
+             «salita» esisteva solo nella mia previsione. Il 72 non era dove si tirava: era dove avevo
+             deciso io che si sarebbe tirato. Avevo reintrodotto, di soppiatto, lo stesso difetto che il
+             7.792 aveva appena tolto: le parole davanti al campo.
+             CONSEGUENZA A VERBALE, oltre la revoca: far salire la squadra non si fa scrivendo una
+             posizione, si fa agendo sul SISTEMA DI MOVIMENTO — e la stessa domanda ora pende sullo
+             staging della catena del 7.537, che usa lo stesso device e non e' mai stato misurato. */
           const _vecchio792=(typeof window!=='undefined'&&window.__CPM_NO792);
           const _a=_vecchio792?_mpO[_hpO("u1")%_mpO.length]:_cimaO[_hpO("u1")%_cimaO.length];
           let _b=_vecchio792?_mpO[_hpO("u2")%_mpO.length]:_cimaO[_hpO("u2")%_cimaO.length];

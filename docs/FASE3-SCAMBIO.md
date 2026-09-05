@@ -1367,3 +1367,34 @@ metri» che la prima stesura annunciava. Una cifra sbagliata è una bugia in pi�
   **movimento**, non del racconto.
 - **Occasioni armate 1,5 a partita** contro le 2,0 della 7.790: il piano manda il pallone altrove, e lo
   stato che apre il cancello cambia di conseguenza. Restano **nove volte** le 0,17 di partenza.
+
+---
+
+## 7.793 — REVOCATA. La salita della squadra non sopravvive al tick, e il numero che «migliorava» era una mia finzione
+
+*(nessun bump: `_apri714`, il piano e le parole restano quelli della 7.792. Si committa la diagnosi.)*
+
+**Il tentativo**: far salire di nove unità i tre uomini più avanzati nell'istante in cui l'occasione si
+arma — lo stesso device della catena del 7.537 (+7u) — e calcolare il piano sulle posizioni **previste**,
+così che la zona del tiro e le parole nascessero da dove gli uomini sarebbero stati.
+
+| | 7.792 | 7.793 (tentativo) | dopo la revoca |
+|---|---|---|---|
+| zona del tiro, avanzamento mediano | 63 | **72** | 63 |
+| «dal limite» / «da fuori» | 2 / 6 | **8 / 2** | 2 / 8 |
+| **apertura: distanza dal ricevente, mediana** | **7,5 u** | **14,3 u** | **6,1 u** |
+| apertura oltre 12 u | **0 / 9** | **10 / 11** | **0 / 11** |
+
+Le prime due righe dicevano «funziona». La terza dice perché era falso: **l'uomo non si era mosso**. Alla
+battuta d'apertura il nominato si misura ancora ad avanzamento 54-56, dov'era prima della salita, e la
+distanza in più è **esattamente** le nove unità che avevo aggiunto al bersaglio. La scrittura una-tantum
+delle posizioni non sopravvive al tick successivo — il sistema di movimento riporta indietro i giocatori
+— e la salita esisteva solo nella mia previsione. Il **72 non era dove si tirava: era dove avevo deciso
+io che si sarebbe tirato.** Avevo reintrodotto di soppiatto lo stesso difetto che il 7.792 aveva appena
+tolto: le parole davanti al campo.
+
+**Conseguenze a verbale**, oltre la revoca:
+1. far salire la squadra non si fa scrivendo una posizione, si fa agendo sul **sistema di movimento**;
+2. la stessa domanda ora pende sullo **staging della catena del 7.537**, che usa lo stesso device (+7u) e
+   **non è mai stato misurato**: se anche lì la scrittura non regge, quel commento descrive un effetto
+   che non c'è.
