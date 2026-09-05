@@ -870,3 +870,32 @@ e la 7.598 era già stata revocata per aver tarato al buio.
 e 60 fps veri; qui il regime col dt del telefono gira a 9,2 fps d'orologio.
 
 career-critical EXIT 0 · CI EXIT 0 · fingerprint 00001505 · 0 failure · 13/13 bande.
+
+## Censimento (nessuna release) — «l'azione viene staccata troppo presto»: non riprodotto, con un margine sottile
+
+Collaudo PO 04/09: *«gol subito… il pallone credo non sia manco entrato. L'azione pericolosa viene
+staccata troppo presto»*. **Aritmetica sospetta**, da due misure già fatte: il cancello che tiene aperta
+la scena ha un tetto di **6000 ms reali** (src/14 r.7012, `_att461<6000`), e la taratura dell'attesa del
+banco (7.784) ha misurato che dopo la risoluzione il pallone si assesta in **7097 ms in media**. Sette
+secondi per arrivare, sei di scena: sembrava la spiegazione.
+
+Misurato sulle scene difensive col fallimento forzato (regime del gioco vero, `__CPM_REALWAIT`):
+
+| scena | il pallone taglia la linea a |
+|---|---|
+| gi44 | 2194 ms |
+| gi157 | 3533 ms |
+| gi133 | 3720 ms |
+| gi136 | 5472 ms |
+
+**4 gol subiti su 4: il pallone entra sempre, e sempre sotto il tetto.** Mediana 3720 ms, massimo
+5472 ms contro 6000 ms di tetto. **Ipotesi non sostenuta**: i 7097 ms della taratura misuravano
+l'assestamento COMPLETO del pallone (fino alla quiete), non il momento in cui taglia la linea.
+
+**MARGINE DICHIARATO**: il caso peggiore sta a **528 ms dal tetto**. Il banco gira a 18 fotogrammi al
+secondo con GLB OFF; su un telefono più lento, o in una scena più lunga di queste, quel margine si
+mangia. **Non alzo il tetto**: non ho una misura che mostri il taglio accadere, e alzarlo su un sospetto
+è esattamente ciò per cui ho già revocato la 7.598. Se il PO rivede l'episodio sulla 7.787, il numero da
+guardare è quanto dura la scena prima dello stacco.
+
+**NON verificato**: il regime del PO (GLB ON, 60 fps, carico del telefono).
