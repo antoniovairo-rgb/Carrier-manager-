@@ -1310,3 +1310,60 @@ stessa schermata di esito. Una scena che finisce non è una scena che comincia.
 
 Serve al PO dire **in quale situazione** l'ha visto (dopo un'espulsione? in Coppa? subito dopo quale
 azione?) — con quello si torna a cercare.
+
+---
+
+## 7.792 — L'occasione nasce da dove sono gli uomini, e le parole seguono il campo
+
+Seconda metà della nota del PO: «le azioni pericolose extra eroe continuano ad essere azioni
+**"matematiche" e non di calcio vero**, devono essere super credibili». Il 7.790 aveva risolto la
+rarità; questa è la credibilità.
+
+### La misura che inchioda
+
+Battuta d'**apertura** di ogni occasione (il passaggio), sei partite:
+
+| | prima | dopo |
+|---|---|---|
+| distanza fra chi RICEVE e dove atterra il pallone — mediana | **37 u** | **7,5 u** |
+| massimo | 74,4 u | **8,4 u** |
+| casi oltre 12 u (il portatore **decade**, palla senza padrone) | **11 / 12** | **0 / 9** |
+
+Le 12 u non sono una soglia inventata: è quella del 7.642 (`src/14` r.5384), oltre la quale il portatore
+viene azzerato. Il passaggio atterrava dove non c'era nessuno, e la palla proseguiva **sola**. È quello
+che si vede e si chiama «matematica».
+
+### Due cause, entrambe nel piano
+
+1. il protagonista si sceglieva a **sorteggio cieco** fra tutti i giocatori di movimento
+   (`_mpO[hash % length]`), senza guardare né dove fosse né che ruolo avesse;
+2. il pallone andava su **coordinate in scatola** — 84, poi 93, poi 96 — mentre l'uomo più avanzato del
+   lato, misurato, sta ad avanzamento mediano **57,6**. L'area la chiedeva il testo, non il campo.
+
+In più il commento del 7.693 — «l'uomo che il testo NOMINA si porta sul punto d'arrivo» — descriveva un
+blocco **vuoto**: quel codice non è mai esistito.
+
+### Il rimedio: si inverte l'ordine
+
+Prima si guarda **chi c'è e dove**, poi si scrive. Il ricevente è uno dei tre più avanzati; il pallone
+gli arriva **addosso** (4-8 unità davanti, nello spazio, come un passaggio vero); la conclusione parte da
+lì e vola in porta — che il pallone lasci il tiratore è calcio, non teletrasporto; il portiere resta
+l'unico a stare sulla linea. Le **parole** si scelgono dopo, dalla zona da cui si tira davvero: in area
+«a due passi», sul limite «dal limite», più lontano «da fuori». Rosso `__CPM_NO792`.
+
+**Un errore mio nella misura, corretto prima di spedire**: contavo anche la battuta del TIRO come
+difetto. Ma lì il pallone *deve* lasciare il piede — misurando la distanza uomo-pallone dopo un tiro,
+contavo come errore proprio ciò che deve succedere. Il verdetto sta sulla sola apertura.
+
+**Tolti i metri dalle frasi**: si tira ad avanzamento mediano 63, molto più lontano dei «venticinque
+metri» che la prima stesura annunciava. Una cifra sbagliata è una bugia in più, e il punto della release
+è togliere le bugie.
+
+### Dichiarato e NON risolto
+
+- **La squadra non sale**: il più avanzato sta ad avanzamento mediano 56, quindi **6 conclusioni su 9
+  partono da fuori area**. L'occasione ora è onesta ma **meno pericolosa** di quanto il vecchio testo
+  fingesse. Il passo successivo è far salire i ventidue quando l'occasione si arma — un cambiamento del
+  **movimento**, non del racconto.
+- **Occasioni armate 1,5 a partita** contro le 2,0 della 7.790: il piano manda il pallone altrove, e lo
+  stato che apre il cancello cambia di conseguenza. Restano **nove volte** le 0,17 di partenza.

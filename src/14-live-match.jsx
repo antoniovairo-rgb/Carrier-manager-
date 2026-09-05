@@ -3287,25 +3287,83 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           const _XO=(x)=>_dirO>0?x:100-x;
           const _cgO=(n)=>{const t=String(n||"").trim();return t?t.charAt(0)+t.slice(1).toLowerCase():"un compagno";};
           const _JO=(k,a)=>((_hpO("j"+k)%100)/100-0.5)*a;
-          const _a=_mpO[_hpO("u1")%_mpO.length];let _b=_mpO[_hpO("u2")%_mpO.length];if(_b.i===_a.i)_b=_mpO[(_hpO("u2")+1)%_mpO.length];
+          /* [7.792 strumentazione] DOVE SONO I PIU' AVANZATI QUANDO L'OCCASIONE NASCE. Serve a decidere il
+             rimedio senza indovinare: se i tre uomini piu' avanti del lato sono gia' alti, basta scegliere
+             loro e le battute nascono vicino a chi c'e'; se stanno a meta' campo, portarli in area sarebbe
+             un teletrasporto e il difetto va affrontato altrove. Sola lettura. */
+          if(typeof window!=='undefined'&&window.__CPM_REC){try{const _av=(o)=>_dirO>0?(o.q.x||50):100-(o.q.x||50);
+            const _ordS=_mpO.slice().sort((u,v)=>_av(v)-_av(u));
+            const _L=(window.__CPM_TOP792=window.__CPM_TOP792||[]);
+            if(_L.length<80)_L.push({min:nx,n:_mpO.length,
+              top:_ordS.slice(0,4).map(o=>+_av(o).toFixed(1)),
+              mediana:+_av(_ordS[_ordS.length>>1]).toFixed(1)});}catch(_e792b){}}
+          /* ⚠️ [7.792.0 — L'OCCASIONE NASCE DA DOVE SONO GLI UOMINI, E LE PAROLE SEGUONO IL CAMPO.
+             Rosso __CPM_NO792]
+             Nota PO: «le azioni pericolose extra eroe continuano ad essere azioni "matematiche" e non di
+             calcio vero, devono essere super credibili». Il 7.790 ha risolto la RARITA' (da 0,17 a 2,00
+             occasioni a partita); questa e' la CREDIBILITA', e il difetto era grosso.
+             MISURATO su sei partite, battuta d'apertura di ogni occasione: la distanza fra l'uomo che il
+             racconto NOMINA e il punto dove manda il pallone aveva mediana 37u, e 11 casi su 12 stavano
+             oltre le 12u — la soglia oltre la quale il 7.642 (r.5384) fa DECADERE il portatore. Cioe':
+             il passaggio atterrava dove non c'era nessuno e la palla proseguiva senza padrone. Due cause,
+             tutte e due nella vecchia stesura di questo piano:
+               (1) il protagonista si sceglieva a SORTEGGIO CIECO su tutti i giocatori di movimento
+                   (`_mpO[hash%length]`), senza guardare ne' dove fosse ne' che ruolo avesse;
+               (2) il pallone andava su COORDINATE IN SCATOLA — 84, poi 93, poi 96 — mentre l'uomo piu'
+                   avanzato del lato, misurato, sta ad avanzamento mediano 57,6 (p75 71,3): l'area la
+                   chiedeva il testo, non il campo. Le due cose insieme fanno la «matematica» che si vede.
+             Ora l'ordine si inverte: prima si guarda CHI c'e' e DOVE, poi si scrive. Il ricevente e' uno
+             dei tre uomini piu' avanzati; il pallone gli arriva ADDOSSO (pochi passi davanti, nello
+             spazio, come un passaggio vero); la conclusione parte da li' e vola in porta — che il pallone
+             lasci il tiratore e' calcio, non teletrasporto; e il PORTIERE resta l'unico a stare sulla
+             linea. Le parole si scelgono DOPO, dalla zona da cui si tira davvero: dentro l'area «a due
+             passi», sul limite «dal limite», da lontano «da fuori». Una conclusione da 30 metri raccontata
+             come un tap-in era il modo piu' rapido di far sembrare finto tutto il resto. */
+          const _avO=(o)=>_dirO>0?(o.q.x||50):100-(o.q.x||50);
+          const _ordO=_mpO.slice().sort((u,v)=>_avO(v)-_avO(u));
+          const _cimaO=_ordO.slice(0,Math.min(3,_ordO.length));
+          const _vecchio792=(typeof window!=='undefined'&&window.__CPM_NO792);
+          const _a=_vecchio792?_mpO[_hpO("u1")%_mpO.length]:_cimaO[_hpO("u1")%_cimaO.length];
+          let _b=_vecchio792?_mpO[_hpO("u2")%_mpO.length]:_cimaO[_hpO("u2")%_cimaO.length];
+          if(_b.i===_a.i){const _alt=_vecchio792?_mpO:_cimaO;_b=_alt[(_hpO("u2")+1)%_alt.length];}
           const _na=_cgO(_a.q.name),_nb=_cgO(_b.q.name);
           const _gkO=(matchPlayersRef.current||[]).find(q=>q&&q.team===(_latoN==='home'?'away':'home')&&q.gk);
           const _ngk=_cgO(_gkO&&_gkO.name)||"Il portiere";
           const _fO=_hpO("fam")%3;
-          if(_fO===0)return[
-            {t:"\u26a1 "+_na+" guadagna il fondo e mette dentro: mischia in area!",x:_XO(84+_JO(1,5)),y:50+_JO(2,16),chi:_a.i},
-            {t:"\ud83d\udca5 "+_nb+" calcia da due passi!",x:_XO(93+_JO(3,3)),y:50+_JO(4,8),chi:_b.i,ms:1},
-            {t:"\ud83e\udde4 "+_ngk+" ci mette il corpo e la devia in angolo: che parata!",x:_XO(96),y:50+_JO(5,6),gk:1,esito:"corner"},
+          if(_vecchio792)return[
+            {t:"⚡ "+_na+" guadagna il fondo e mette dentro: mischia in area!",x:_XO(84+_JO(1,5)),y:50+_JO(2,16),chi:_a.i},
+            {t:"💥 "+_nb+" calcia da due passi!",x:_XO(93+_JO(3,3)),y:50+_JO(4,8),chi:_b.i,ms:1},
+            {t:"🧤 "+_ngk+" ci mette il corpo e la devia in angolo: che parata!",x:_XO(96),y:50+_JO(5,6),gk:1,esito:"corner"},
           ];
-          if(_fO===1)return[
-            {t:"\ud83c\udfaf "+_na+" si accentra e cerca il giro sul secondo palo.",x:_XO(78+_JO(1,6)),y:50+_JO(2,18),chi:_a.i},
-            {t:"\ud83d\udca5 Conclusione a giro di "+_na+": palla verso l'incrocio!",x:_XO(94+_JO(3,2)),y:50+_JO(4,10),chi:_a.i,ms:1},
-            {t:"\ud83e\udde4 "+_ngk+" vola e la toglie da sotto l'incrocio: in angolo!",x:_XO(96),y:50+_JO(5,8),gk:1,esito:"corner"},
-          ];
+          /* IL PUNTO DEL PASSAGGIO: davanti al ricevente, nello spazio, mai piu' di sei passi — cosi' ci
+             arriva davvero e resta lui il padrone del pallone. */
+          const _avB=_avO(_b);
+          const _pxB=clamp(_avB+4+((_hpO("s1")%5)),4,95);/* avanzamento del punto d'arrivo */
+          const _pyB=clamp((_b.q.y||50)+_JO(2,7),8,92);
+          /* LA ZONA DEL TIRO decide le parole, non il contrario */
+          const _zonaO=_pxB>=82?"area":_pxB>=70?"limite":"lontano";
+          const _tiro=(_zonaO==="area")
+            ?["💥 "+_nb+" a tu per tu col portiere, calcia di prima!","💥 "+_nb+" da due passi, tutto solo davanti alla porta!"]
+            :(_zonaO==="limite")
+            ?["💥 "+_nb+" si gira sul limite e lascia partire il destro!","💥 Conclusione secca di "+_nb+" dal vertice dell'area!"]
+            :["💥 "+_nb+" non ci pensa due volte: bordata da fuori!","💥 "+_nb+" prova a sorprendere il portiere da lontanissimo!"];
+            /* ⚠️ nessun numero di metri nelle frasi: MISURATO che da qui si tira ad avanzamento mediano 63,
+               cioe' molto piu' lontano dei «venticinque metri» che la prima stesura annunciava. Una cifra
+               sbagliata e' una bugia in piu', e il punto di questa release e' togliere le bugie. */
+          const _apri=(_zonaO==="area")
+            ?["🎯 "+_na+" la mette dentro per "+_nb+": e' solo in area!","📈 "+_na+" verticalizza per "+_nb+": dentro l'area senza opposizione!"]
+            :(_zonaO==="limite")
+            ?["📈 "+_na+" scarica su "+_nb+" al limite dell'area.","🎯 "+_na+" apre per "+_nb+", che si accentra dal vertice."]
+            :["📈 "+_na+" serve "+_nb+" al limite della trequarti.","🎯 Palla di "+_na+" per "+_nb+", che se la sistema da fuori."];
+          const _par=[
+            {t:"🧤 "+_ngk+" ci arriva in tuffo e la devia in angolo: che parata!",esito:"corner"},
+            {t:"🧤 "+_ngk+" respinge coi pugni, poi la difesa spazza in angolo.",esito:"corner"},
+            {t:"🧤 Presa sicura di "+_ngk+": blocca a terra e fa ripartire i suoi.",esito:"goal_kick"},
+          ][_fO%3];
           return[
-            {t:"\ud83d\udcc8 "+_na+" verticalizza per "+_nb+": e' solo davanti al portiere!",x:_XO(80+_JO(1,6)),y:50+_JO(2,14),chi:_b.i},
-            {t:"\ud83d\udca5 "+_nb+" a tu per tu, calcia di prima!",x:_XO(92+_JO(3,3)),y:50+_JO(4,8),chi:_b.i,ms:1},
-            {t:"\ud83e\udde4 Uscita bassa di "+_ngk+": blocca a terra e fa ripartire i suoi.",x:_XO(95),y:50+_JO(5,6),gk:1,esito:"goal_kick"},
+            {t:_apri[_hpO("ta")%_apri.length],x:_XO(_pxB),y:_pyB,chi:_b.i},
+            {t:_tiro[_hpO("tt")%_tiro.length],x:_XO(93+_JO(3,3)),y:50+_JO(4,8),chi:_b.i,ms:1,tiroDa792:_pxB},
+            {t:_par.t,x:_XO(96),y:50+_JO(5,6),gk:1,esito:_par.esito},
           ];
         };
         /* [7.730.0 — LA CATENA SI COSTRUISCE PASSO PER PASSO. Rosso __CPM_NO730] Il corpo del passo
@@ -4182,6 +4240,21 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
             ev={txt:_pe649.t,ef:null,w:1,bpos:{x:clamp(_pe649.x,4,96),y:clamp(_pe649.y,6,94)},pd:_dec499,at:"pass",_piano649:1,ms:_pe649.ms?(_pgH649.dir>0?{shots:1}:{oppShots:1}):null};
             if(_pe649.gk&&!(typeof window!=='undefined'&&window.__CPM_NO695)){gkSave695.current={t:Date.now(),side:_pgH649.dir>0?"home":"away"};_pgH649.esito703=_pe649.esito||null;/* [7.702.0] l'esito da regolamento dichiarato dal TESTO: alla chiusura arma la palla morta corrispondente *//* [7.695.0] la riga che NOMINA il portiere accende il tuffo: una sola fonte, il testo e il gesto non possono divergere */
               if(typeof window!=='undefined'&&window.__CPM_REC){try{const _w=(window.__CPM_OCC695=window.__CPM_OCC695||{armate:0,parate:0,min:[]});_w.parate++;}catch(_e){}}}
+            /* [7.792 strumentazione] QUANTO DISTA CHI IL RACCONTO NOMINA DAL PUNTO DOVE MANDA LA PALLA.
+               Nota PO: «le azioni pericolose extra eroe continuano ad essere azioni "matematiche" e non
+               di calcio vero». Il piano dell'occasione (`_pianoOcc695`) sceglie il protagonista a
+               SORTEGGIO fra tutti i giocatori di movimento del lato — `_mpO[hash%length]` — senza
+               guardare ne' dove si trova ne' che ruolo abbia, e poi manda il pallone su una coordinata
+               in scatola (84 → 93 → 96). Se i due punti sono lontani, il 7.642 fa DECADERE il portatore
+               (oltre 12u, r.5384): la palla arriva sul punto senza padrone, ed e' esattamente la
+               «matematica» che si vede. Qui si misura la distanza, battuta per battuta. Sola lettura. */
+            if(typeof window!=='undefined'&&window.__CPM_REC){try{const _q792=(_pe649.chi!=null)?(matchPlayersRef.current||[])[_pe649.chi]:null;
+              const _tx792=clamp(_pe649.x,4,96),_ty792=clamp(_pe649.y,6,94);
+              const _B=(window.__CPM_BEAT792=window.__CPM_BEAT792||[]);
+              if(_B.length<120)_B.push({min:nx,occ:_pgH649.occ?1:0,step:(_pgH649.step|0)-1,chi:(_pe649.chi!=null?_pe649.chi:null),
+                px:_q792?+(_q792.x||0).toFixed(1):null,py:_q792?+(_q792.y||0).toFixed(1):null,tx:+_tx792.toFixed(1),ty:+_ty792.toFixed(1),
+                d:_q792?+Math.hypot((_q792.x||0)-_tx792,(_q792.y||0)-_ty792).toFixed(1):null,gk:_pe649.gk?1:0,
+                tiro:_pe649.ms?1:0,tiroDa:(_pe649.tiroDa792!=null?+(_pe649.tiroDa792).toFixed(1):null)});}catch(_e792){}}
             if(_pe649.chi!=null&&!(typeof window!=='undefined'&&window.__CPM_NO641))carrierRef.current={i:_pe649.chi};/* il protagonista dell'evento e' il portatore */
             if(!(typeof window!=='undefined'&&window.__CPM_NO693)){pianoLock693.current=3;_pgH649.lastTg={x:clamp(_pe649.x,4,96),y:clamp(_pe649.y,6,94)};/* [7.693.0] dove il racconto ha mandato il pallone l'ultima volta: la rete aspetta che ci ARRIVI *//* [7.693.0] tre tick di custodia: questo, piu' i due in cui il pallone viaggia */
               /* [7.693.0] IL RICEVENTE VA DOVE VA LA PALLA. Spostare solo il pallone lo lascerebbe senza
