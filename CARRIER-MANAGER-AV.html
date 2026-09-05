@@ -14617,6 +14617,14 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
             else{ballArcH=3.0;ballArcDur=0.84;// near_post: clamp TgtX tra [playerX+5, playerX+45] per evitare cross all'indietro (byline) o troppo veloci
               const _cp=(P.playerX||50)-50;ballArcTgtX=Math.max(_cp+5,Math.min(AWAY_GOAL_X-14+Math.random()*5,_cp+45));
               ballArcTgtZ=_side*(8+Math.random()*6);}/* near post */
+            /* [7.788.0 — REVOCATO QUI, e a verbale perche' e' la terza volta] Avevo agganciato il
+               bersaglio del cross al compagno piu' vicino al punto geometrico. MISURA APPAIATA: 12 cross
+               su 24 senza nessuno entro 3,5u contro i 10 di prima, p90 14,9u contro 9,1 — PEGGIO. E il
+               contatore ha detto perche': il blocco d'arco qui sotto e' stato eseguito UNA volta su otto
+               scene di cross forzate. Con l'esecutore cinematico acceso (il regime del gioco vero) e' la
+               TIMELINE a muovere il pallone lungo il cross, e questo arco quasi non gira: stavo curando
+               un ramo che il PO non vede quasi mai, esattamente come nei due rimedi gia' revocati sul
+               codice 011. Il bersaglio del cross va corretto dove nasce, in buildHLTimeline. */
             // F5 (traiettoria del CROSS = conseguenza della DECISIONE): come F4 per il tiro — la qualità decisa
             //   dal motore plasma PACE e PRECISIONE del cross. q alta → cross teso/veloce e preciso sul target;
             //   q bassa → più morbido/lento e meno angolato (cade verso il centro). Bounded attorno al baseline

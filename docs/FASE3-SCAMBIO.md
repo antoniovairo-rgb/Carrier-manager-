@@ -899,3 +899,49 @@ mangia. **Non alzo il tetto**: non ho una misura che mostri il taglio accadere, 
 guardare è quanto dura la scena prima dello stacco.
 
 **NON verificato**: il regime del PO (GLB ON, 60 fps, carico del telefono).
+
+## Collaudo PO sulla 7.787 — il cross atterra dove non c'è nessuno (aperto, causa non trovata)
+
+**Due note nuove**, entrambe su scene di CROSS, entrambe con esito riuscito:
+- 84' SIT #17 «Cross dalla fascia destra!» → «Cross teso» → chance riuscita · codice 000
+- 55' SIT #87 «Cross di prima senza guardare!» → «Cross cieco di prima» → chance riuscita · codice 000 +
+  **bozza automatica: «codice 001 MISURATO — compagno più vicino 9.9u, eroe ≥41.2u per 74 campioni»**
+
+**Il PO mi smentisce, e ha ragione.** Poche ore fa avevo chiuso il codice 001 come «non riprodotto, 0
+casi su 32», con la riserva che il banco campiona a 7 Hz e il telefono a 60. La riserva si è avverata:
+il mio censimento saltava a passo 6 e **non ha mai aperto né gi17 né gi87**. Un campione regolare non è
+un campione rappresentativo.
+
+Che l'eroe stia a 41u è calcio giusto: ha crossato dalla fascia e resta lì. Il numero che non torna è
+l'altro — **9,9u dal compagno più vicino su un'azione dichiarata riuscita**.
+
+### Misura: 24 scene di cross, esito forzato a riuscito
+
+| | |
+|---|---|
+| cross in cui nessun compagno arriva entro 3,5u | **10/24** |
+| distanza minima, mediana | 3,2u |
+| p90 | 9,1u |
+| massimo (gi84) | 23,7u |
+| gi87, la scena del PO | **21,2u** — peggio dei 9,9 che ha visto lui |
+
+Tutti esiti riusciti: chance, assist, goal. La simulazione dice che un compagno ha avuto l'occasione, e
+sul campo non c'è nessuno.
+
+### REVOCATO — un rimedio che curava un ramo che non gira
+
+Avevo agganciato il bersaglio del cross al compagno più vicino al punto geometrico (src/12, blocco
+d'arco). **Misura appaiata: 12/24 contro 10/24, p90 14,9u contro 9,1 — PEGGIO.** E il contatore ha detto
+perché: quel blocco d'arco è stato eseguito **una volta su otto** scene di cross forzate. Con
+l'esecutore cinematico acceso — il regime del gioco vero — è la TIMELINE a muovere il pallone lungo il
+cross, e quell'arco quasi non gira. Stavo curando un ramo che il PO non vede quasi mai: **la terza volta
+in questa serie** (i due rimedi già revocati sul codice 011 erano lo stesso errore).
+
+### Dove NON è la causa
+
+Nella timeline il beat del cross **manda già il rifinitore sul punto** (`mv(fin, tgt[0], tgt[1], true)`,
+src/11 r.1848). Sulla carta è corretto. Quindi fra «la timeline manda l'uomo sul punto» e «il pallone
+atterra a 21 unità da chiunque» c'è un anello che non ho ancora trovato.
+
+**APERTO, con i numeri e senza rimedio.** Non spedisco un secondo tentativo al buio: il primo era già
+uno.

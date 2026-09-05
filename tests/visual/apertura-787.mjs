@@ -16,7 +16,10 @@ await page.addInitScript((o)=>{window.__CPM_GLB=o.glb;window.__CPM_REC=true;wind
   (o.rossi||[]).forEach(r=>{window[r]=1;});},{glb:GLB,rossi:(process.env.CPM_ROSSO||'').split(',').map(x=>x.trim()).filter(Boolean)});
 await openMatch(page,port);await sleep(GLB?4000:800);
 const tot=await page.evaluate(()=>window.__CPM_SITS.length);
-const GIs=[];for(let i=0;i<tot;i+=PASSO)GIs.push(i);
+/* [7.788] CPM_GI accetta una lista esplicita: il censimento a passo fisso saltava proprio le
+   scene che il PO ha segnalato (gi17 e gi87 non cadono su un multiplo di 6). Un campione regolare non
+   e' un campione rappresentativo. */
+const GIs=process.env.CPM_GI?process.env.CPM_GI.split(',').map(Number):(()=>{const o=[];for(let i=0;i<tot;i+=PASSO)o.push(i);return o;})();
 const R=[];
 for(const gi of GIs){
   let ok=false;try{ok=await page.evaluate(g=>window.__CPM_FORCE_SIT(g,true),gi);}catch(e){}
