@@ -720,3 +720,33 @@ corto in avanti — non è più un tiro, ma non è ancora un uomo.
 
 career-critical EXIT 0 · CI EXIT 0 · fingerprint 00001505 · 0 failure · 13/13 bande.
 NON verificato sul telefono.
+
+## Censimento (nessuna release) — quanto converte l'eroe, sulla 7.786
+
+Il 7.785 lasciava dichiarato: «3,75 gol a partita è SOPRA la banda del calcio vero; la parte ambientale
+è quella progettata, l'eccesso è l'eroe che nell'autoplay converte due scene su due». **Misurato, ed
+era in parte una paura mia.** Sei partite intere fino all'89', sei mondi diversi, sulla 7.786:
+
+```
+1-2 · 1-2 · 0-2 · 1-2 · 1-2 · 1-2      →  17 gol / 6 partite = 2,83 a partita
+```
+
+**2,83 è dentro la banda del calcio vero** (2,6-2,8), non sopra.
+
+| | misura |
+|---|---|
+| scene risolte per partita | 3,83 |
+| gol dell'eroe per scena | 2/23 = **9%** (riferimento: un attaccante vero 12-18%) |
+| scene che diventano un gol della squadra (gol o assist) | 5/23 = 22% |
+| gol ambientali per partita | 2,00 (baseline bgMicroTick 1,86) |
+
+Esiti delle 23 scene: intercept fallita 7 · miss fallita 4 · assist 3 · save 3 · chance 2 · goal 2 ·
+through fallita 1 · recovery 1.
+
+**Dove sbagliavo**: il 3,75 veniva da un campione di QUATTRO mondi sulla versione precedente. Non
+attribuisco la differenza alla 7.786 (tocca sei azioni di testa, non il punteggio): è campione e
+versione insieme. Il numero da tenere è quello di adesso, su sei mondi.
+
+**Resta non verificato**: la resa con partite giocate A MANO. Il banco sceglie con una politica
+seedata; un giocatore vero sceglie diversamente, e la percentuale può cambiare in entrambe le
+direzioni. È l'unico numero che il collaudo del PO può dare e il banco no.
