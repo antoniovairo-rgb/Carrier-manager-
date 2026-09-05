@@ -825,3 +825,48 @@ fra i miei campioni. Questo censimento dice che non è la NORMA, non che non esi
 **Terza volta oggi che lo strumento sbaglia prima del codice** (dopo l'attesa «palla a regime» del
 7.784 e l'arco letto a 1,4 s del 7.786). La regola che ne esce: prima di credere a un numero, chiedersi
 CHE COSA misura il testimone — e chi esclude.
+
+## 7.787.0 — Il metro con l'aritmetica del telefono, e un'ipotesi vecchia che cade
+
+Rilascio di **solo strumento**: una riga di gioco, test-only.
+
+### Il gancio che era documentato ma non esisteva
+
+`sguardo-696` scriveva da release: *«con `__CPM_DT60` il tempo di SCENA avanza di 1/60 per fotogramma
+renderizzato: stessa aritmetica del telefono»*. Nel codice **quel gancio non c'era**, e la sonda lo
+teneva spento con `const DT60 = false`. Uno strumento che si documenta e non si scrive è peggio di uno
+che manca, perché si crede di averlo.
+
+### L'ipotesi del 7.598 cade
+
+Il 7.598 sosteneva: a dt piccolo le reti di legalità della camera non chiudono in una passata, si
+riarmano ogni fotogramma e duellano con la morbidezza — quindi sul telefono il tremore è **peggio**.
+
+**Prima lettura, sbagliata**: 0,14 inversioni/s col dt del telefono contro 0,63 col dt del banco.
+Sembrava un miglioramento ed era solo un **cambio di unità** — con `DT60` un secondo d'orologio
+contiene molto meno gioco, quindi «al secondo» misura due cose diverse.
+
+**Unità onesta: inversioni PER FOTOGRAMMA** (che è anche quella in cui l'ipotesi è formulata).
+
+| | dt del banco | dt del telefono |
+|---|---|---|
+| mediana | 0,035 | **0,008** |
+| p90 | 0,097 | 0,031 |
+| massimo | 0,109 | 0,096 |
+| fps d'orologio | 18,5 | 9,2 |
+
+Con l'aritmetica del telefono la camera è **quattro volte più calma nel caso tipico e uguale nel caso
+peggiore**. L'ipotesi non è sostenuta, e il codice 007 che il banco vede (2-4 scene su 48 sopra soglia)
+è quindi con ogni probabilità un artefatto del dt grande del banco.
+
+**NESSUNA TARATURA DELLA CAMERA in questa release.** Una misura che smentisce non autorizza un rimedio,
+e la 7.598 era già stata revocata per aver tarato al buio.
+
+### Censimento nella stessa passata (48 scene, GLB OFF)
+
+001 · 003 · 004 · 006 · 011 · 012 · 014 · SALTO · uscita dal campo: **tutti 0/48**.
+
+**NON verificato**: che il 007 del PO sia lo stesso fenomeno. Il suo telefono ha GLB ON, carico diverso
+e 60 fps veri; qui il regime col dt del telefono gira a 9,2 fps d'orologio.
+
+career-critical EXIT 0 · CI EXIT 0 · fingerprint 00001505 · 0 failure · 13/13 bande.

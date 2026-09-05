@@ -1873,7 +1873,24 @@ function ThreeMatchView(props){
          strumento che non fa cio' che il suo commento dichiara e' peggio di nessuno strumento. Resta il
          guadagno vero del giro: il laboratorio PUO' misurare il codice 007, e il fondo si prende nel
          regime storico. */
-      const now=performance.now();const _raw708=(now-last)/1000;const _rdt=Math.min(_raw708,0.05);sr.current._dtReal708=Math.min(_raw708,0.3);if(_raw708>0.001&&_raw708<1)window.__CPM_FPS708=(window.__CPM_FPS708||60)*0.95+(1/_raw708)*0.05;/* [7.708.0 — IL TELEFONO DICHIARA I SUOI FPS] EMA del frame-rate reale, sempre attiva (una moltiplicazione a fotogramma): entra nel contesto delle bozze-nota, cosi' ogni nota KE del PO porta il numero che decide se il difetto «camera in tempo-di-scena» (riscalo revocato, verbale ai lerp) esiste sul suo dispositivo — vive solo sotto i 20fps. */last=now;const dt=(typeof window!=='undefined'&&window.__CPM_FROZEN)?0:_rdt;
+      const now=performance.now();const _raw708=(now-last)/1000;let _rdt=Math.min(_raw708,0.05);
+      /* [7.787.0 — IL METRO CON L'ARITMETICA DEL TELEFONO. Solo collaudo: __CPM_DT60]
+         Il banco headless gira a 7-20 fotogrammi al secondo e il gioco riceve dt di 0,05-0,14;
+         il telefono ne riceve 0,0167. La differenza non e' un dettaglio di velocita': le reti di
+         legalita' della camera correggono al massimo una quota PROPORZIONALE a dt, quindi a dt
+         grande chiudono in una passata sola e a dt piccolo non chiudono, si riarmano ogni
+         fotogramma e duellano con la morbidezza (analisi del 7.598). Misurato oggi: sul banco lo
+         sguardo inverte 0,63 volte al secondo in mediana e supera la soglia in 4 scene su 48 — ma
+         a 7 Hz di campionamento non posso nemmeno VEDERE inversioni piu' rapide di 3,5 al secondo.
+         Tarare una camera con un metro cosi' e' come misurare un tremore con una meridiana, e la
+         7.598 e' gia' stata revocata per questo.
+         Con __CPM_DT60 il tempo che il gioco riceve avanza di 1/60 per fotogramma renderizzato:
+         stessa aritmetica del telefono, orologio da parete piu' lento. Il gancio era gia' CITATO
+         da sguardo-696 — «con __CPM_DT60 il tempo di SCENA avanza di 1/60» — ma nel codice non
+         esisteva: la sonda lo teneva spento con una costante e nessuno se n'era accorto. Uno
+         strumento che si documenta e non si scrive e' peggio di uno che manca, perche' si crede
+         di averlo. Test-only: fuori dal collaudo qui non cambia nulla. */
+      try{if(typeof window!=='undefined'&&window.__CPM_DT60)_rdt=1/60;}catch(_e787){}sr.current._dtReal708=Math.min(_raw708,0.3);if(_raw708>0.001&&_raw708<1)window.__CPM_FPS708=(window.__CPM_FPS708||60)*0.95+(1/_raw708)*0.05;/* [7.708.0 — IL TELEFONO DICHIARA I SUOI FPS] EMA del frame-rate reale, sempre attiva (una moltiplicazione a fotogramma): entra nel contesto delle bozze-nota, cosi' ogni nota KE del PO porta il numero che decide se il difetto «camera in tempo-di-scena» (riscalo revocato, verbale ai lerp) esiste sul suo dispositivo — vive solo sotto i 20fps. */last=now;const dt=(typeof window!=='undefined'&&window.__CPM_FROZEN)?0:_rdt;
       /* [7.536.0] IL TEMPO DI SCENA, ESPOSTO (solo collaudo). Le sonde misuravano finestre di OROLOGIO:
          headless, sotto la contesa di CPU di una passata piena, in un secondo d'orologio la scena vive
          una frazione di quello che vive a macchina scarica — e una misura di reattivita' («il difensore
