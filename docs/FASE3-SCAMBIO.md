@@ -789,3 +789,39 @@ numero.
 
 **NON verificato**: che questi siano gli stessi episodi che il PO vede. A 7 Hz il banco vede la coda
 della distribuzione, non il corpo.
+
+## Censimento (nessuna release) — codice 001 nella fase in cui il PO sceglie
+
+Il primo censimento con `codici-787` diceva 001 acceso 1-2 volte su 39. **Ma la finestra del rilevatore
+cadeva nel posto sbagliato**: la sonda risolveva l'azione dopo mezzo secondo, quindi i campioni fra
+0,75 s e 2,4 s stavano DENTRO la cinematica, dove un pallone in volo è legittimamente lontano da tutti.
+Il PO il 001 lo vede mentre SCEGLIE. Rifatto su quella fase (`hl_choose`, sei secondi, scena non
+risolta), 32 scene, GLB OFF.
+
+### Prima passata: un numero catastrofico e falso
+
+custodia mediana 7,5u · 27 scene su 32 col pallone «abbandonato». **Sbagliato**: `md`, il testimone del
+gioco, **esclude l'eroe per costruzione** (src/12 r.1902 salta `pp.mesh===hero`). Misurando solo quello,
+una palla ai piedi del protagonista risultava abbandonata.
+
+### Misura corretta, con l'eroe dentro
+
+| | prima passata | corretta |
+|---|---|---|
+| custodia mediana fra le scene | 7,5u | **0u** |
+| distanza mediana dell'eroe dal pallone | — | **0u** |
+| scene col pallone oltre 3,5u da tutti per ≥75% dei campioni | 27/32 | **3/32** |
+
+E le tre superstiti — gi132 «Blocco del tiro in area», gi138 «Allineati con la difesa», gi168 «Ultimo
+uomo» — sono tutte `type:"def"`: in una scena difensiva il pallone ce l'ha l'avversario, e che i nostri
+siano lontani è calcio giusto. **Il rilevatore vero esclude già le scene difensive dal 001**
+(`!_isDefSc`).
+
+**Verdetto: zero casi veri di codice 001 su 32 scene nella fase interattiva.** Non riprodotto.
+
+**NON verificato**: il banco campiona a ~7 Hz, il telefono a 60. Il fenomeno che il PO vede può vivere
+fra i miei campioni. Questo censimento dice che non è la NORMA, non che non esista.
+
+**Terza volta oggi che lo strumento sbaglia prima del codice** (dopo l'attesa «palla a regime» del
+7.784 e l'arco letto a 1,4 s del 7.786). La regola che ne esce: prima di credere a un numero, chiedersi
+CHE COSA misura il testimone — e chi esclude.

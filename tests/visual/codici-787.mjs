@@ -44,13 +44,20 @@ for(const gi of GIs){
       let ctx=null;try{ctx=window.__CPM_BUGCTX&&window.__CPM_BUGCTX();}catch(e){}
       ctx=ctx?{...ctx,sceneKey:k}:{sceneKey:k};
       let txt='';try{txt=window.__CPM_DRAFTNOTE(snap,ctx)||'';}catch(e){txt='ERR '+e.message;}
-      return{n:W.length,txt,intent:ctx.intent||null,out:ctx.out||null,def:!!ctx.def};
+      /* [7.787] LA TRACCIA DELLA CUSTODIA quando il 001 si accende: `md` e' la distanza del compagno
+         piu' vicino dal pallone, campione per campione. Serve a sapere se qualcuno STA ARRIVANDO (la
+         distanza cala) o se il pallone resta abbandonato (la distanza sta ferma o cresce): sono due
+         difetti diversi e vogliono due rimedi diversi. */
+      const t0=W.length?W[0].t:0;
+      const md=W.map(q=>({s:+((q.t-t0)/1000).toFixed(1),d:(q.md==null||q.md<0)?null:+q.md.toFixed(1)}));
+      return{n:W.length,txt,intent:ctx.intent||null,out:ctx.out||null,def:!!ctx.def,md};
     });
     RIGHE.push({gi,ai,...out});
     const codici=(out.txt||'').match(/codice \d{3}|SALTO|uscita dal campo/g)||[];
     /* [7.787] la RIGA INTERA quando un codice si accende: il nome del codice dice CHE COSA, il testo
        dice QUANTO — e senza il quanto non si sceglie un rimedio. */
     if(codici.length)String(out.txt||'').split('\n').filter(l=>/codice |SALTO|uscita dal campo/.test(l)).forEach(l=>console.log('        '+l.trim()));
+    if(codici.some(c=>/001/.test(c))&&out.md)console.log('        custodia (s:distanza del compagno piu vicino) '+out.md.filter(m=>m.s<=3.2).map(m=>m.s+':'+(m.d==null?'?':m.d)).join(' '));
     console.log('#'+gi+'.'+ai+'  campioni '+(out.n||0)+'  intent '+(out.intent||'?')+'  esito '+(out.out||'?')
       +'  →  '+(codici.length?codici.join(' · '):'—')+(out.err?('  ['+out.err+']'):''));
   }
