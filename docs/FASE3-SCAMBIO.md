@@ -1032,3 +1032,34 @@ cioè per progetto. Non ho ancora un quadro pulito, e oggi ho già revocato due 
 ragionamento che sembrava solido: **nessun rimedio qui**.
 
 **APERTO**, con i numeri, e con il verdetto di stamattina esplicitamente ritirato.
+
+### Il regime della sonda spegneva lo snap — sesta lezione di strumento della giornata
+
+`_asIfPlay = (window.__CPM_PRESENT===1) || !_CPM_TEST` (src/12 r.4480). Le mie sonde girano con
+`?cpmtest=1` e **senza** `__CPM_PRESENT`: quindi `_asIfPlay` era falso, e con lui erano spenti **lo snap
+di scena, il ri-snap del 7.401 e il fermo di lettura**. Nella mia sonda i giocatori non snappavano mai.
+Il contatore l'ha detto senza appello: **ri-snap scattati 0 su 39**.
+
+`sguardo-696` metteva quel flag apposta; io non l'ho copiato.
+
+### Misura corretta, nel regime del gioco
+
+| | sonda sbagliata | regime del gioco |
+|---|---|---|
+| ri-snap del 7.401 scattati | 0/39 | **39/39** |
+| scene aperte senza un fotogramma sotto lo stacco | 28/39 | **4/39** |
+| picco a scena scoperta (primo mezzo secondo), mediana | 5,5u | **0,0u** |
+| p90 | 36,6u | **23,9u** |
+| massimo | 63,7u | **27,7u** |
+| scene col picco scoperto oltre 3,5u | 22/39 | **11/39** |
+
+**Metà di quello che avevo misurato era il banco.** Le altre **11 su 39 sono vere**: c'è un momento, nel
+primo mezzo secondo, senza stacco, in cui nessuno sta entro 3,5 unità dal pallone — fino a 27,7u. Il
+difetto che il PO chiama codice 001 **esiste**, con questa taglia e non con quella che avevo scritto un
+paragrafo fa.
+
+**Cosa resta da capire**: il ri-snap scatta 39/39 ma arriva a 1-2,5 s dal taglio, mentre il picco
+scoperto sta nel primo mezzo secondo. Fra il taglio e il ri-snap c'è una finestra in cui il mondo si
+vede mentre si sistema.
+
+**Nessun rimedio**: oggi ne ho revocati due, e ho appena invalidato una misura mia. Prima il metro.

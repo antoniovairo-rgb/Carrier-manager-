@@ -15,7 +15,7 @@ const PASSO=+(process.env.CPM_PASSO||5);
 const srv=await startServer();const port=srv.address().port;
 const b=await launchBrowser();const page=await b.newPage({viewport:{width:412,height:915}});
 await installCdnRoutes(page);
-await page.addInitScript((o)=>{window.__CPM_GLB=o.glb;window.__CPM_REC=true;window.__CPM_CINE=1;
+await page.addInitScript((o)=>{window.__CPM_GLB=o.glb;window.__CPM_REC=true;window.__CPM_CINE=1;window.__CPM_PRESENT=1;/* ⚠️ [7.788] SENZA QUESTO IL BANCO NON SNAPPA. `_asIfPlay = (__CPM_PRESENT===1) || !cpmtest` (src/12 r.4480): sotto `?cpmtest=1` e senza questo flag sono spenti lo snap di scena, il ri-snap del 7.401 e il fermo di lettura. Misurare l'apertura senza di esso significa misurare il banco, non il gioco: la prima passata dava 22 scene su 39 col pallone abbandonato a scena scoperta, e il ri-snap era scattato ZERO volte su 39. */
   (o.rossi||[]).forEach(r=>{window[r]=1;});},{glb:GLB,rossi:(process.env.CPM_ROSSO||'').split(',').map(x=>x.trim()).filter(Boolean)});
 await openMatch(page,port);await sleep(GLB?4000:900);
 const tot=await page.evaluate(()=>window.__CPM_SITS.length);
@@ -29,11 +29,17 @@ for(const gi of GIs){
   await page.evaluate(()=>{window.__CPM_FROZEN=false;});
   await sleep(2200);
 }
+/* ⚠️ il testimone `__CPM_STG456` registra `snap` PRIMA che il blocco di ri-snap del 7.401 lo
+   accenda (witness a r.~4510, ri-snap a r.~4547): quel `false` non prova che il ri-snap non sia
+   scattato. Il contatore giusto e' `__CPM_RSNP401`, scritto DAL ri-snap quando parte davvero.
+   Letto male una volta: quinta sottigliezza di strumento della giornata. */
 const S=await page.evaluate(()=>window.__CPM_STG456||[]);
+const RS=await page.evaluate(()=>window.__CPM_RSNP401||[]);
 await b.close();srv.close();
 const conBersagliFreschi=S.filter(r=>(r.far|0)>0);
 const senzaTaglio=conBersagliFreschi.filter(r=>!r.snap);
 console.log('cambi di staging registrati: '+S.length);
+console.log('RI-SNAP del 7.401 effettivamente scattati: '+RS.length+'  '+JSON.stringify(RS.slice(0,6)));
 console.log('di cui con bersagli LONTANI (almeno un giocatore oltre 8u dal suo): '+conBersagliFreschi.length);
 console.log('   → di questi, SENZA un taglio armato (i ventidue ci vanno a piedi): '+senzaTaglio.length);
 senzaTaglio.slice(0,14).forEach(r=>console.log('      scena '+r.k+' fase '+r.ph+' · lontani '+r.far+'/'+r.n+' · il piu lontano '+r.dmax+'u · '+r.dt+'ms dal taglio'));

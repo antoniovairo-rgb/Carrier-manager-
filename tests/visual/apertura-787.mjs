@@ -12,7 +12,7 @@ const PASSO=+(process.env.CPM_PASSO||5);
 const srv=await startServer();const port=srv.address().port;
 const b=await launchBrowser();const page=await b.newPage({viewport:{width:412,height:915}});
 await installCdnRoutes(page);
-await page.addInitScript((o)=>{window.__CPM_GLB=o.glb;window.__CPM_REC=true;window.__CPM_CINE=1;
+await page.addInitScript((o)=>{window.__CPM_GLB=o.glb;window.__CPM_REC=true;window.__CPM_CINE=1;window.__CPM_PRESENT=1;/* ⚠️ [7.788] SENZA QUESTO IL BANCO NON SNAPPA. `_asIfPlay = (__CPM_PRESENT===1) || !cpmtest` (src/12 r.4480): sotto `?cpmtest=1` e senza questo flag sono spenti lo snap di scena, il ri-snap del 7.401 e il fermo di lettura. Misurare l'apertura senza di esso significa misurare il banco, non il gioco: la prima passata dava 22 scene su 39 col pallone abbandonato a scena scoperta, e il ri-snap era scattato ZERO volte su 39. */
   (o.rossi||[]).forEach(r=>{window[r]=1;});},{glb:GLB,rossi:(process.env.CPM_ROSSO||'').split(',').map(x=>x.trim()).filter(Boolean)});
 await openMatch(page,port);await sleep(GLB?4000:800);
 const tot=await page.evaluate(()=>window.__CPM_SITS.length);
