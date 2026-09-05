@@ -6319,7 +6319,12 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
       const _ctx={attrs:player.stats||{},pressure:clamp(_press,0,5),support:_tac.support||0,fatigue:player.fatigue||0,morale:player.morale||60,x:pPos.x,weather:(weather&&weather.id)||"clear",
         foot:player.foot||"R",side:(pPos.y<50?"L":"R"),
         seed:hashStr(((_fkSit&&_fkSit.text)||"")+"|"+((action.label)||"")+"|"+hlIdx+"|"+Math.round(player.fatigue||0)+"|"+Math.round(player.form||0))};
-      const _di=_htp==="cross"?"cross":_htp==="dribble"?"dribble":_htp==="pass"?(_hpp==="THROUGH_BALL"?"through":"onetwo"):_htp==="tackle"?"intercept":"shot";
+      /* [7.786.0] LO SMISTAMENTO DI TESTA PRENDE LA LENTE DELLA CONSEGNA. Un colpo di testa con esito
+         assist non e' una conclusione: la lente-tiro non ha «assist» fra i suoi esiti possibili
+         (goal/saved/blocked/post/wide) e il suo fallimento veniva raccontato come una parata. Rosso
+         __CPM_NO786. */
+      const _flick786=(_cn.variant==="header_flick")&&!(typeof window!=='undefined'&&window.__CPM_NO786);
+      const _di=_flick786?"onetwo":_htp==="cross"?"cross":_htp==="dribble"?"dribble":_htp==="pass"?(_hpp==="THROUGH_BALL"?"through":"onetwo"):_htp==="tackle"?"intercept":"shot";
       const _neg=["saved","blocked","wide","post","intercepted","out","corner","dispossessed","fouled","win_freekick","overhit","offside","missed","lost","stopped","deflected_out","shielded_out"];
       const _dd=decideExecution(_di,{..._ctx,seed:(_ctx.seed^0x5f3759df)>>>0}).outcome;
       _outKind=_neg.indexOf(_dd)>=0?_dd:(_di==="dribble"?"dispossessed":(_di==="through"||_di==="onetwo")?"intercepted":_di==="intercept"?"beaten":"saved");/* [7.115.0 audit · fix D4/B1] fallback fuori-whitelist NON più «saved» (parata del portiere) su un fallimento OFFENSIVO al piede: dribbling→dispossessed · passaggio→intercetto (famiglia «murato/fermato», nessun portiere in scena) · difensivo→beaten. «saved» resta solo per tiro/cross (dove il portiere c'è). Coerente col CoherenceCheck (overlay-fam = arc-fam via _missKindNorm) + 3D più corretto (dispossessed/intercepted = perdita possesso, non deflect verso l'area) */

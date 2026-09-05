@@ -3055,9 +3055,43 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
             // CINE-2: variant header — tuffo rasoterra / primo palo / secondo palo
             const _vh=P.hlVariant;
             ballArcProf=(gestoDi('header',_vh)||{}).prof||null;/* [7.534.0 MP-1] il tuffo di testa schiaccia teso */
-            if(_vh==="header_diving"){ballArcH=1.0;ballArcDur=0.56;ballArcTgtX=AWAY_GOAL_X-3+Math.random()*4;ballArcTgtZ=_rz*7;}/* tuffo — arco piatto e basso */
+            /* [7.786.0] SMISTAMENTO DI TESTA: il bersaglio e' un UOMO, non la porta. Le altre tre
+               varianti mirano tutte AWAY_GOAL_X; questa cerca il compagno piu' avanzato davanti a chi
+               incorna — stessa idea del passaggio (r.3145), raggio corto perche' una spizzata e' un
+               tocco, non un lancio — e ci arriva con un arco basso e breve. Se nessuno passa il filtro
+               resta un tocco corto in avanti, mai la porta. Rosso __CPM_NO786. */
+            if(_vh==="header_flick"){ballArcH=1.5;ballArcDur=0.50;ballArcProf=null;
+              /* [7.786.0] `ball` va interrogato con `typeof`: il gate estrae computeArc e la fa girare
+                 ISOLATA, dove quel simbolo non esiste — dieci scene rosse con «ball is not defined».
+                 Il ramo del passaggio se la cava perche' in quel percorso non ci arriva mai. */
+              const _b786=(typeof ball!=='undefined'&&ball&&ball.position)?ball.position:null;
+              /* [7.786.0] nemmeno G2X/G2Z esistono nell'estrazione del gate: la conversione
+                 gioco->mondo si scrive per esteso (G2X=(gx-50), G2Z=(gy-50)*0,68, r.55). */
+              const _fx786=_b786?_b786.x:((P.playerX||50)-50),_fz786=_b786?_b786.z:(((P.playerY||50)-50)*0.68);
+              let _tx786=_fx786+7,_tz786=_fz786+_rz*7,_best786=1e9;passTargetMesh=null;
+              /* [7.786.0] DUE PASSATE, PERCHE' UNA SOLA LASCIAVA META' DEI CASI SENZA UOMO. Misurato sulle
+                 sei scene: col filtro stretto (davanti di almeno -2u, entro 20u) il compagno si trovava in
+                 3 casi su 6, e negli altri tre il pallone finiva sul ripiego cieco «+7 in avanti» — lo
+                 stesso difetto che il 7.464 aveva gia' chiuso sul passaggio («il pallone va a un uomo, non
+                 a un punto»). La seconda passata allarga: una spizzata puo' anche appoggiare di lato o
+                 leggermente indietro a chi sostiene. */
+              /* [7.786.0] terza e ultima: anche `sr` va interrogato con `typeof`. Tre giri di rosso per
+                 la stessa lezione — dentro l'estrazione del gate NIENTE dello scope esterno esiste, e
+                 un ramo nuovo va scritto come se ogni simbolo che non e' un parametro potesse mancare. */
+              const _pl786=((typeof sr!=='undefined')&&sr&&sr.current&&sr.current.players)||[];
+              const _cerca786=(_minAv,_maxD)=>{_pl786.forEach((pp,ii)=>{const src=(P.allPlayers||[])[ii];if(src&&src.team==="home"&&!src.gk){const _av=pp.mesh.position.x-_fx786;if(_av>_minAv){const d=Math.hypot(_av,pp.mesh.position.z-_fz786);if(d>2.5&&d<_maxD){const _sc=d*0.8-Math.min(Math.max(0,_av),10)*1.5;if(_sc<_best786){_best786=_sc;_tx786=pp.mesh.position.x;_tz786=pp.mesh.position.z;passTargetMesh=pp.mesh;}}}}});};
+              _cerca786(-2,20);
+              if(!passTargetMesh)_cerca786(-9,28);
+              ballArcTgtX=_tx786;ballArcTgtZ=_tz786;ballArcTgtY=0.9;
+              if(typeof window!=='undefined'&&window.__CPM_REC){try{const _F=(window.__CPM_FLICK786=window.__CPM_FLICK786||{n:0,conUomo:0,dist:[]});_F.n++;if(passTargetMesh)_F.conUomo++;_F.dist.push(+Math.hypot(_tx786-_fx786,_tz786-_fz786).toFixed(1));}catch(_e786){}}
+            }
+            else if(_vh==="header_diving"){ballArcH=1.0;ballArcDur=0.56;ballArcTgtX=AWAY_GOAL_X-3+Math.random()*4;ballArcTgtZ=_rz*7;}/* tuffo — arco piatto e basso */
             else if(_vh==="header_far_post"){ballArcH=2.0;ballArcDur=0.70;ballArcTgtX=AWAY_GOAL_X-4+Math.random()*5;ballArcTgtZ=-_side*(8+Math.random()*5);}/* secondo palo — z opposto al tiratore via _side */
             else{ballArcH=1.7;ballArcDur=0.63;const _hb=AWAY_GOAL_X-5+Math.random()*6,_hc=(P.playerX||50)-50+45;ballArcTgtX=Math.min(_hb,_hc);ballArcTgtZ=_rz*6;}/* near_post: cap 45u avanti per ridurre velocità da posizioni difensive */
+            /* [7.786 misura] IL BERSAGLIO DEL COLPO DI TESTA NELL'ISTANTE IN CUI VIENE DECISO. Letto da
+               fuori a scena avviata si prende il SECONDO arco (il compagno che conclude, verso la porta):
+               tre misure sbagliate prima di accorgersene. Qui si registra il primo, quello vero. */
+            if(typeof window!=='undefined'&&window.__CPM_REC){try{const _H=(window.__CPM_HDR786=window.__CPM_HDR786||{n:0,tx:[],uomo:0});_H.n++;_H.tx.push(+(+ballArcTgtX).toFixed(1));if(passTargetMesh)_H.uomo++;}catch(_e786){}}
             // F7 (traiettoria della TESTA = conseguenza della DECISIONE): q (fisico/posizionamento/tiro, seedata) plasma
             //   l'incornata. q alta → precisa/decisa/schiacciata in basso; q bassa → verso il centro e più alta (sballata).
             //   Solo l'ARCO: variant e stato-palla aereo restano intatti (invariante CINE testa⇒aerea).
@@ -3068,7 +3102,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
              /* [7.215.0] ALTEZZA D'ARRIVO della testa: un'incornata ben fatta si SCHIACCIA a terra (il colpo di
                 testa che il portiere para meno), una sbagliata sale a mezz'altezza. Il tuffo di testa arriva
                 sempre raso. */
-             ballArcTgtY=(_vh==="header_diving")?clamp(0.30+(1-_q)*0.35,0.28,0.70):clamp(1.35-_q*0.95,0.32,1.55);}}
+             if(_vh!=="header_flick")ballArcTgtY=(_vh==="header_diving")?clamp(0.30+(1-_q)*0.35,0.28,0.70):clamp(1.35-_q*0.95,0.32,1.55);}}/* [7.786.0] lo smistamento tiene la sua quota d'arrivo: la formula qui sopra schiaccia a terra un colpo di testa che va in PORTA, e una palla smistata a un compagno non si schiaccia */
           else if(t==="cross"){ballArcT=0;ballArcActive=true;
             // CINE-1: variant cross — primo palo (stesso lato fascia), secondo palo (lato opposto), cutback (dal fondo)
             const _v=P.hlVariant;// _side definito sopra (globale all'arc block)

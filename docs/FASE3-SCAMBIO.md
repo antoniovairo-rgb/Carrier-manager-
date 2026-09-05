@@ -677,3 +677,46 @@ rosso. Verificata: va rossa col rosso (8 nati, 2 accreditati, 6 mangiati).
 
 career-critical EXIT 0 · CI EXIT 0 · fingerprint 00001505 · 0 failure · 13/13 bande.
 NON verificato sul telefono.
+
+## 7.786.0 — Lo smistamento di testa non mira al palo
+
+Chiude il **residuo dichiarato del 7.784**. Quella release aveva tolto dalla famiglia «tiro» le consegne
+rese come conclusione, lasciando fuori i colpi di testa: sei azioni con esito ASSIST («testa smorzata
+per il compagno», «spizzata di testa», «colpo di testa e smista», «stacco e indirizza il compagno»)
+prendevano comunque una delle tre varianti d'attacco, tutte col bersaglio dell'arco su `AWAY_GOAL_X`
+(la porta avversaria, src/12 r.3058-3060) e la lente-tiro per l'esito, che non ha «assist» fra i suoi
+esiti possibili. Il gesto era giusto — si incorna davvero — il **destinatario** no.
+
+Quarta variante `header_flick`: la clip resta quella del colpo di testa; cambiano il bersaglio (il
+compagno più avanzato davanti, raggio corto perché una spizzata è un tocco) e la lente d'esito
+(`onetwo` invece di tiro).
+
+### Misura appaiata sulle sei scene, rosso `__CPM_NO786`
+
+| | rosso | verde |
+|---|---|---|
+| bersaglio entro 8u dalla porta avversaria | 4/6 | **1/6** |
+| distanza mediana dalla porta | 3,1u | **37,3u** |
+| bersaglio su un compagno vero | 0/6 | 4/6 |
+
+L'unico caso verde ancora vicino alla porta è corretto: è una spizzata per un compagno **dentro l'area
+piccola**.
+
+### Tre errori miei, a verbale
+
+1. **Misura letta nell'istante sbagliato**: leggendo il bersaglio dell'arco da fuori a 1,4 s dalla
+   risoluzione si prende il SECONDO arco (il compagno che conclude, verso la porta). Verde e rosso
+   davano lo stesso numero, x=42 in tutti e sei. Il bersaglio va registrato quando viene deciso.
+2. **Una sola passata di ricerca**: col filtro stretto l'uomo si trovava in 3 casi su 6, e negli altri
+   il pallone finiva sul ripiego cieco «+7 in avanti» — lo stesso difetto che il 7.464 aveva già chiuso
+   sul passaggio. Seconda passata più larga: 4/6.
+3. **Tre giri di gate rosso** per la stessa lezione: `ball is not defined`, poi `G2X is not defined`,
+   poi `sr is not defined`. Il gate estrae `computeArc` e la fa girare ISOLATA — dentro quell'estrazione
+   niente dello scope esterno esiste, e un ramo nuovo va scritto come se ogni simbolo che non è un
+   parametro potesse mancare.
+
+**RESIDUO DICHIARATO**: in 2 casi su 6 nessun compagno passa nemmeno il filtro largo e resta il tocco
+corto in avanti — non è più un tiro, ma non è ancora un uomo.
+
+career-critical EXIT 0 · CI EXIT 0 · fingerprint 00001505 · 0 failure · 13/13 bande.
+NON verificato sul telefono.

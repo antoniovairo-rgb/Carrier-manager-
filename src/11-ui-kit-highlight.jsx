@@ -1662,7 +1662,19 @@ function deriveHL(sit,act){
     else if(/basso|teso|raso/.test(lbl))variant="cross_low_driven";
     else variant="cross_near_post";
   } else if(type==="header"){
-    if(/tuffo|piombo|in corsa/.test(lbl))variant="header_diving";
+    /* [7.786.0 residuo dichiarato del 7.784] LO SMISTAMENTO DI TESTA NON MIRA AL PALO.
+       Il 7.784 ha tolto dalla famiglia «tiro» le consegne rese come conclusione, lasciando fuori i
+       colpi di testa: censiti SEI («testa smorzata per il compagno», «spizzata di testa», «colpo di
+       testa e smista», «stacco e indirizza il compagno») che dichiarano esito ASSIST e prendevano
+       comunque una delle tre varianti d'attacco — tutte con il bersaglio dell'arco su AWAY_GOAL_X, la
+       porta avversaria (src/12 r.3058-3060) — e la lente-tiro per l'esito. Il gesto e' giusto (si
+       incorna davvero), il DESTINATARIO no: la palla va a un compagno.
+       Qui nasce la quarta variante, `header_flick`. Il gesto resta la clip del colpo di testa; cambiano
+       il bersaglio (src/12: il compagno piu' avanzato davanti, come per il passaggio, non la porta) e
+       la lente d'esito (src/14: onetwo, che ha «assist» fra i suoi esiti, invece del tiro che non ce
+       l'ha). Rosso __CPM_NO786. */
+    if(act&&act.rew==="assist"&&!(typeof window!=='undefined'&&window.__CPM_NO786))variant="header_flick";
+    else if(/tuffo|piombo|in corsa/.test(lbl))variant="header_diving";
     else if(/secondo palo|palo lontano|profond/.test(lbl)||cn.fpHeader)variant="header_far_post";
     else variant="header_near_post";
   } else if(type==="shot"){
