@@ -63,7 +63,21 @@ export async function matchPhase(page) {
    22,5 s. Cambia solo QUANTO il banco aspetta — nessun bersaglio, nessuna soglia di giudizio, nessuna
    riga di gioco. NON VERIFICATO: che il rosso della CI fosse questo; e' l'ipotesi, e questa e' la sua
    mitigazione strutturale. */
-export async function waitBallSettle(page, { maxMs = 9000, quietMs = 700, pollMs = 110, moveEps = 0.3, groundY = 1.2 } = {}) {
+/* [7.784.0 lo strumento sbagliava prima del codice] «PALLA FERMA» NON VUOL DIRE «SCENA FINITA».
+   Il gate ha accusato gi136 («Cross basso in area — intercetta!») di un gol subito con il pallone a
+   meta' campo, gx 59,5. Forzando il fallimento sei volte, il pallone finisce SEMPRE nella nostra
+   porta (gx 0,9) — ma ci mette dai 4 ai 7 secondi, perche' dal 7.773 l'avversario prima RAGGIUNGE il
+   pallone e poi lo porta avanti. Tracciato mezzo secondo per volta: nei primi DUE SECONDI il pallone
+   e' immobile a gx 49 (l'avversario sta correndo verso di lui), poi parte. Con 700 ms di quiete
+   questa attesa dichiarava «a regime» dentro quella pausa e fotografava lo stato finale a meta'
+   azione: un falso positivo, non un difetto del gioco.
+   Provata prima una guardia sull'osservabilita' dell'arco (__CPM_ARC): SCARTATA e revocata — quel
+   campo e' una fotografia scritta una volta e mai ripulita (`on:true` per sempre), quindi diceva
+   «occupato» all'infinito: 24 attese su 24 al tetto e il gate da 580 a 1050 secondi. Verde per il
+   motivo sbagliato.
+   Qui la quiete si misura come prima, ma dura piu' della pausa misurata (2,6 s contro 2,0-2,5 s) e
+   non si giudica prima di 3 secondi dalla risoluzione. Il tetto maxMs resta l'ultima parola. */
+export async function waitBallSettle(page, { maxMs = 9000, quietMs = 2600, minMs = 3000, pollMs = 110, moveEps = 0.3, groundY = 1.2 } = {}) {
   try { const _fps = await page.evaluate(() => (window.__CPM_FPS708 || window.__CPM_FPS771 || 0));
     if (_fps > 0.5) maxMs = Math.round(maxMs * Math.max(1, Math.min(2.5, 60 / _fps))); } catch (_e) {}
   const t0 = Date.now(); let prev = null, quietFrom = null;
@@ -73,7 +87,7 @@ export async function waitBallSettle(page, { maxMs = 9000, quietMs = 700, pollMs
     const mv = prev ? Math.hypot(b.x - prev.x, b.y - prev.y) : Infinity;
     prev = b;
     const quiet = mv < moveEps && (b.worldY == null || b.worldY <= groundY);
-    if (quiet) { if (quietFrom == null) quietFrom = Date.now(); else if (Date.now() - quietFrom >= quietMs) return { ms: Date.now() - t0, settled: true }; }
+    if (quiet) { if (quietFrom == null) quietFrom = Date.now(); else if (Date.now() - quietFrom >= quietMs && Date.now() - t0 >= minMs) return { ms: Date.now() - t0, settled: true }; }
     else quietFrom = null;
     await sleep(pollMs);
   }

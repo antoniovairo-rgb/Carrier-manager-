@@ -1628,6 +1628,22 @@ function deriveHL(sit,act){
   }
   if(!type)type=(z==="area"||z==="bordo")?"shot":(z==="fascia")?"cross":"build";
   if(type==="build"&&isCarry&&act&&act.rew==="goal")type="shot";// 5.43.0: la conduzione palla al piede che porta al gol è un TIRO preceduto dal build-up di CONDUZIONE (BALL_CARRY) — non più un gesto neutro di costruzione
+  /* [7.784.0 collaudo PO su SIT #26 «Assist di tacco»: «Il tacco e' una giocata straordinaria non un
+     tiro in porta qualunque, non ha senso proprio l'intent»] CHI CONSEGNA IL PALLONE NON STA TIRANDO.
+     La cascata dei tipi classifica per `stat`; le stat che non sono tiro/passaggio/dribbling ("tecnica",
+     "velocita'", "fisico") non hanno un ramo e cadono nel ripiego di ZONA due righe sopra: in area o al
+     bordo -> "shot". Cosi' un tacco per il compagno libero, uno spunto che finisce in appoggio, una
+     sventagliata, un lancio a scavalcare la difesa venivano resi come CONCLUSIONI IN PORTA, mentre la
+     simulazione diceva assist. E non era solo il gesto: da `type` discende `_di` (src/14 r.6275), la
+     lente con cui il Decision Engine sceglie l'esito — e la lente-tiro non ha "assist" fra i suoi esiti
+     possibili (goal/saved/blocked/post/wide). Il fallimento di un tacco veniva raccontato come una
+     PARATA DEL PORTIERE su un pallone che al portiere non era mai stato indirizzato.
+     La regola e' quella della direttiva: la simulazione e' la sorgente di verita'. Se l'esito dichiarato
+     e' un ASSIST, il pallone va a un compagno, e il gesto e' una CONSEGNA.
+     Restano fuori testa e punizione: li' il gesto e' gia' giusto (si incorna, si batte) e hanno gia'
+     le loro varianti di consegna (header_*, freekick_cross_*). Misura: 9 coppie situation x azione
+     rese come conclusione con esito assist -> 0. */
+  if(type==="shot"&&act&&act.rew==="assist"&&!(typeof window!=="undefined"&&window.__CPM_NO784))type="pass";
   // ── VARIANT (nuovo livello cinematografico) ──
   let variant=null;
   /* [7.386.0 collaudo PO #111 «Non e' rasoterra»] IL PASSAGGIO NON AVEVA VARIANTI. Tiro, cross e colpo
@@ -1731,7 +1747,7 @@ function deriveHL(sit,act){
        la regex sul testo resta solo dove il dato tace. */
     const _itP=sit&&sit.intent;
     pattern=(_itP==="through")?"THROUGH_BALL":(_itP==="switch")?"SWITCH":(_itP==="onetwo")?"COMBINATION"
-      :/filtrante|imbucata|profond/.test(lbl)?"THROUGH_BALL":/scarico|cambia campo|allarg|ribalt|fascia/.test(lbl)?"SWITCH":"COMBINATION";
+      :/filtrante|imbucata|profond|scavalc/.test(lbl)?"THROUGH_BALL":/scarico|cambia campo|allarg|ribalt|fascia|sventagliat/.test(lbl)?"SWITCH":"COMBINATION";/* [7.784.0] due consegne arrivate qui dalla regola sopra avevano il pattern sbagliato per assenza di parola: «Missile a SCAVALCARE la difesa» e' un lancio in profondita' (THROUGH_BALL), la «SVENTAGLIATA improvvisa» e' un cambio di fronte (SWITCH). Senza queste due parole finivano entrambe su COMBINATION, cioe' un uno-due corto. */
   }// 5.43.3: SWITCH = scarico/cambio gioco → palla diagonale verso un compagno sulla fascia (distinto dal passaggio verticale)
   return{type,pattern,variant};
 }

@@ -560,3 +560,53 @@ Provato prima il tetto fisso a otto: **fuoriclasse e comprimario finivano allo s
 
 Allineata anche la scala degli avversari nella lista del CT (da 13-17 a 29-36 presenze): le due scale non si erano mai parlate, e dopo il 7.782 il confronto sarebbe stato falso al contrario — il giocatore molto sopra, gli altri fermi. Rossi `__CPM_NO782` e `__CPM_NO783N`.
 **Dichiarato**: 42 presenze a 27 anni restano sotto un fuoriclasse reale (60-90). È una scelta di prudenza sul bilanciamento — ogni convocazione è una partita in più con fatica e rischio infortunio — e si alza in una riga se il PO la vuole più alta.
+
+## 7.784.0 — Chi consegna il pallone non sta tirando
+
+**Collaudo PO 05/09**, 4 note KE dalla 7.782 (S.11 W.13 vs FC Hammers). Tre dicono la stessa cosa:
+SIT #92 «Roulette» («ero solo confusione»), SIT #26 «Assist di tacco» e SIT #111 «Assist rasoterra»,
+entrambe taggate `[shot]`, con l'appunto «il tacco è una giocata straordinaria non un tiro in porta
+qualunque, non ha senso proprio l'intent».
+
+**Causa** (in `deriveHL`, src/11): il gesto si sceglie dalla `stat` dell'azione, e le stat senza ramo
+proprio — `tecnica`, `velocità`, `fisico` — cadono nel ripiego di ZONA: in area o al bordo → `shot`.
+Da `type` discende poi la lente `_di` con cui il Decision Engine sceglie l'esito (src/14 r.6275), e la
+lente-tiro non ha «assist» fra i suoi esiti (goal/saved/blocked/post/wide): il fallimento di un tacco
+veniva raccontato come una **parata del portiere** su un pallone mai indirizzato al portiere.
+
+**Regola**: se l'esito dichiarato è un `assist`, il pallone va a un compagno → il gesto è una consegna.
+Fuori testa e punizione (hanno già le loro varianti di consegna). Aggiunte due parole al pattern del
+passaggio: `scavalc` → THROUGH_BALL, `sventagliat` → SWITCH.
+
+**Misura** appaiata su 573 coppie situation×azione, rosso `__CPM_NO784`:
+
+| | rosso | verde |
+|---|---|---|
+| esiti assist resi come conclusione | 28 | 19 |
+| di cui famiglia «tiro» | **9** | **0** |
+
+Le 9: gi26, gi41, gi57, gi76, gi102, gi111, gi123, gi150, gi156 — confermate indipendentemente dal
+gate `backbone-regression`, che ha elencato esattamente quelle nove e nessun'altra.
+
+**RESIDUO DICHIARATO**: 6 colpi di testa con esito assist («testa smorzata per il compagno»,
+«spizzata») mirano ancora al palo e prendono ancora la lente-tiro. Manca una variante di smistamento
+di testa: non c'è in questa release.
+
+### Lo strumento, nella stessa release
+
+Il gate è andato rosso su gi136 («esito goal_against ma palla @gx=59,5»). Non era il rimedio — gi136
+non ha un solo esito `assist`, la regola lì non può scattare. Era la **misura**: forzando il
+fallimento sei volte il pallone finisce SEMPRE nella nostra porta (gx 0,9) in 4-7 secondi, e nei primi
+DUE SECONDI resta immobile a gx 49 perché dal 7.773 l'avversario prima lo raggiunge. L'attesa «palla a
+regime» si accontentava di 700 ms di quiete e fotografava lo stato finale dentro quella pausa.
+
+**REVOCATA** una prima guardia sull'osservabilità dell'arco (`__CPM_ARC`): quel campo è scritto una
+volta e mai ripulito (`on:true` per sempre) → 24 attese su 24 al tetto, gate da 580 a 1050 secondi.
+Verde per il motivo sbagliato.
+
+Taratura tenuta: quiete 2,6 s (> della pausa misurata 2,0-2,5 s), mai prima di 3 s dalla risoluzione.
+Risultato: **0/24 al tetto**, assestamento reale medio **7097 ms** contro i 3000 dichiarati prima,
+gate 677 s (+17%), fingerprint 00001505, 0 failure. Stessa classe di errore sospettata per il rosso
+della CI di GitHub sulla 7.777 — **NON verificato** che fosse quello.
+
+career-critical EXIT 0 · CI EXIT 0 · PARTITA-VERA OK. NON verificato sul telefono.
