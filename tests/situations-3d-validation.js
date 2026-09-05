@@ -97,7 +97,7 @@ function computeArc(t,variant,playerY,rnd,playerX=50){
   // arcBlock usa Math.random(): lo shadowiamo passandolo come parametro a una IIFE
   // (niente "var Math" nello scope esterno → evita il trap di hoisting che lo rende undefined).
   const fn=`(function(t,P,AWAY_GOAL_X,RND){
-    var ballArcH=0,ballArcDur=0,ballArcTgtX=0,ballArcTgtZ=0,ballArcT=0,ballArcActive=false,ballArcTgtY=0.65;/* [7.215.0] altezza d'arrivo dell'arco */
+    var ballArcH=0,ballArcDur=0,ballArcTgtX=0,ballArcTgtZ=0,ballArcT=0,ballArcActive=false,ballArcTgtY=0.22;/* [7.215.0] altezza d'arrivo dell'arco · [7.794.0] quota di terra del pallone: 0,65 -> 0,22, il pallone poggia sull'erba */
     var clamp=function(v,a,b){return Math.max(a,Math.min(b,v));};/* F4/F5: l'arco reale usa clamp (traiettoria=conseguenza della DECISIONE) → va fornito nello scope eval */
     ${gestiBlock}
     (function(Math){
@@ -122,9 +122,9 @@ guard('G2X=(gx-50)', /G2X=gx=>\(gx-50\)/.test(src));
    marcisce alla prossima rifinitura del profilo, ma continua a inchiodare un cambio di forma vero.
    ⚠️ LIMITE DICHIARATO: questo modello analitico valuta il profilo DEFAULT. Sui rami 'tesa' e 'campana' le
    sue quote sono un'approssimazione — non un errore del motore, un limite del modello, ed e' scritto qui. */
-guard('altezza dell\'arco: pancia*ampiezza + corda contatto→arrivo', /ball\.position\.y=0\.65\+[A-Za-z0-9_$]+\*ballArcH\+\(ballArcY0-0\.65\)\*\(1-u\)\+\(ballArcTgtY-0\.65\)\*u/.test(src));
+guard('altezza dell\'arco: pancia*ampiezza + corda contatto→arrivo', /ball\.position\.y=0\.22\+[A-Za-z0-9_$]+\*ballArcH\+\(ballArcY0-0\.22\)\*\(1-u\)\+\(ballArcTgtY-0\.22\)\*u/.test(src));
 guard('senza profilo la pancia resta sin(u*PI) (parabola classica conservata)', /:Math\.sin\(u\*Math\.PI\);/.test(src));
-guard('arco con quota di contatto e di arrivo (7.214/7.215)', /\(ballArcY0-0\.65\)\*\(1-u\)\+\(ballArcTgtY-0\.65\)\*u/.test(src));
+guard('arco con quota di contatto e di arrivo (7.214/7.215)', /\(ballArcY0-0\.22\)\*\(1-u\)\+\(ballArcTgtY-0\.22\)\*u/.test(src));
 guard('outcome: goal→in_net/in_net_high', /hlPostArcType=\(_hv==="shot_chip"\|\|_hv==="shot_volley"\)\?"in_net_high":"in_net"/.test(src));
 guard('outcome: cross→cross_goal', /_ht==="cross"\)\{hlPostArcT=0;hlPostArcType="cross_goal"/.test(src));
 guard('outcome success: pass→assist_recv→assist_shot', /_hs===true&&_ht==="pass"\)\{[\s\S]{0,900}?hlPostArcType="assist_recv"/.test(src) && /hlPostArcType===\"assist_shot\"/.test(src) && /:"assist_shot";hlPostArcT=0/.test(src)); // [7.8.28 QA] il ramo pass-success ha ora chance/goal PRIMA di assist_recv (7.1.2/7.8.10) e l'assegnazione assist_shot è un ternario SWITCH→cross_goal (5.43.7) — la guardia valida l'invariante (stage assist_recv→assist_shot raggiungibile), non il literal esatto
@@ -192,7 +192,7 @@ function simulate(sit,act){
   const cls=deriveHL(sit,act); // {type,pattern,variant}
   const sz=sit.startZone||sit.zones&&null;
   const start=zoneCenter(sit.startZone);              // game coords del punto d'avvio (eroe+palla)
-  const S={x:G2X(start.x),y:0.65,z:G2Z(start.y)};
+  const S={x:G2X(start.x),y:0.22,z:G2Z(start.y)};/* [7.794.0] quota di terra del pallone */
   const issues=[];                                    // {cat,sev,msg}
   const add=(cat,sev,msg)=>issues.push({cat,sev,msg});
 
@@ -211,7 +211,7 @@ function simulate(sit,act){
       const N=24,maxSpeed=[];
       let prev=null;
       for(let i=0;i<=N;i++){const u=i/N;
-        const x=S.x+(T.x-S.x)*u, z=S.z+(T.z-S.z)*u, y=0.65+Math.sin(u*Math.PI)*ballArcH+((ballArcTgtY==null?0.65:ballArcTgtY)-0.65)*u;/* [7.215.0] la corda sale verso l'altezza d'arrivo */
+        const x=S.x+(T.x-S.x)*u, z=S.z+(T.z-S.z)*u, y=0.22+Math.sin(u*Math.PI)*ballArcH+((ballArcTgtY==null?0.22:ballArcTgtY)-0.22)*u;/* [7.794.0] quota di terra 0,65 -> 0,22 *//* [7.215.0] la corda sale verso l'altezza d'arrivo */
         const p={x,y,z,u};samples.push(p);
         if(prev){const d=Math.hypot(p.x-prev.x,p.y-prev.y,p.z-prev.z);maxSpeed.push(d/(ballArcDur/N));}
         prev=p;
@@ -298,7 +298,7 @@ function simulate(sit,act){
     cam=camFor(cls,fX,fZ);
     if(cam){
       if(cam.cPy<0.5)add('camera','fail','camera sotto/again al terreno (cPy='+cam.cPy.toFixed(1)+')');
-      const dBall=Math.hypot(cam.cPx-fX,cam.cPy-0.65,cam.cPz-fZ);
+      const dBall=Math.hypot(cam.cPx-fX,cam.cPy-0.22,cam.cPz-fZ);/* [7.794.0] quota di terra del pallone */
       if(dBall<5)add('camera','warn','camera troppo vicina alla palla (rischio dentro i modelli, d='+dBall.toFixed(1)+')');
       if(dBall>130)add('camera','warn','camera troppo lontana (palla poco leggibile, d='+dBall.toFixed(0)+')');
       const dLook=Math.hypot(cam.cLx-fX,cam.cLz-fZ);

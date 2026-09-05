@@ -1398,3 +1398,45 @@ tolto: le parole davanti al campo.
 2. la stessa domanda ora pende sullo **staging della catena del 7.537**, che usa lo stesso device (+7u) e
    **non è mai stato misurato**: se anche lì la scrittura non regge, quel commento descrive un effetto
    che non c'è.
+
+---
+
+## 7.794 — Il pallone è in proporzione e poggia sull'erba
+
+Collaudo PO 06/09, con due fotografie: «il pallone è troppo grande e sproporzionato». Vero, e si misura.
+
+| | prima | dopo | un pallone vero |
+|---|---|---|---|
+| diametro / altezza di un uomo (2,22 u) | **31,7 %** | **19,8 %** | 12,2 % (22 cm su 180) |
+| quanto galleggia sopra l'erba | **0,30 u** (≈ 24 cm) | **0** | 0 |
+
+Era **2,6 volte** troppo grande: un pallone da spiaggia. E non era solo grande, **galleggiava**: la
+convenzione «terra» del pallone era la quota 0,65 scritta a mano in una ventina di punti, mentre l'erba
+sta a y=0 e il raggio effettivo era 0,35.
+
+**Non è una scoperta nuova.** Il 7.609, sistemando il palleggio, l'aveva già messo a verbale: «*che la
+convenzione 0,65 faccia levitare un pallone di raggio 0,32 è un altro discorso, storico e ovunque: non
+si tocca qui di passaggio*». Il discorso è questo, e il momento è adesso che il PO l'ha visto.
+
+Geometria 0,32 → 0,20 (alone 0,46 → 0,29, stessa proporzione) e quota di terra 0,65 → 0,22 in tutti i
+punti. Gli archi non cambiano forma: in ogni formula 0,65 era il riferimento di terra e compare sempre
+in differenza (`quota − 0,65`), quindi spostando il riferimento l'altezza **sopra il terreno** resta
+identica. Rosso `__CPM_NO794`.
+
+### Un errore mio, col gate rosso a testimoniarlo
+
+La prima stesura definiva una costante `_BY794` a livello di modulo. **Gate rosso, 12 rilievi**
+`_BY794 is not defined`. È la lezione già scritta nel 7.786: la suite analitica **estrae** la funzione
+dell'arco dal sorgente e la fa girare **isolata**, dove nessun simbolo di modulo esiste. E due *guardie
+di consistenza* controllano che la formula del motore contenga **letteralmente** la quota di terra —
+apposta perché il modello analitico non possa scollarsi dal motore senza che nessuno se ne accorga.
+Qui il letterale non è pigrizia: è il modo in cui questo progetto tiene onesto il proprio specchio.
+Aggiornati insieme motore, specchio analitico e le due guardie.
+
+### Dichiarato
+
+- **19,8 % è ancora 1,6 volte la proporzione vera**, ed è una scelta: a questa distanza di camera un
+  pallone in proporzione esatta misura una manciata di pixel sul telefono (è il motivo per cui il 3DV-1
+  gli aveva messo un alone). Se il PO lo vuole più piccolo è **un numero solo**.
+- **Nelle riprese ravvicinate** la scala scende a 0,53, quindi lì il pallone resterà ~0,11 sopra l'erba:
+  un decimo di prima. Legare la quota alla scala viva è il passo dopo, e va misurato a parte.

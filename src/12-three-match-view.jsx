@@ -24,6 +24,37 @@
  * ========================================================================
  */
 /* CMAV-SRC-HEADER-END */
+/* ⚠️ [7.794.0 — IL PALLONE E' IN PROPORZIONE E POGGIA SULL'ERBA. Rosso __CPM_NO794]
+   Collaudo PO 06/09, con due fotografie: «il pallone e' troppo grande e sproporzionato». Vero, e si
+   misura. Il giocatore e' alto 2,22 unita' (testa: sfera 0,22 centrata a 2,00); il pallone aveva raggio
+   di geometria 0,32 e nel flusso di gioco viene scalato di 1,10, quindi DIAMETRO 0,70 — il 31,7%
+   dell'altezza di un uomo. Nel calcio vero un pallone e' 22 cm su 180: il 12,2%. Era 2,6 volte troppo
+   grande, cioe' un pallone da spiaggia.
+   E non era solo grande: GALLEGGIAVA. La convenzione «terra» per il pallone era la quota 0,65, scritta
+   a mano in una ventina di punti, mentre l'erba sta a y=0 e il raggio effettivo era 0,35 — il pallone
+   stava sospeso 0,30 unita' sopra il prato, circa 24 cm alla scala del gioco. Non e' una scoperta nuova:
+   il 7.609, sistemando il palleggio, l'aveva gia' scritto — «che la convenzione 0,65 faccia levitare un
+   pallone di raggio 0,32 e' un altro discorso, storico e ovunque: non si tocca qui di passaggio». Il
+   discorso e' questo, e il momento e' adesso che il PO l'ha visto.
+   Ora: geometria 0,32 → 0,20 (diametro 0,44 nel flusso, il 19,8% dell'uomo) e la quota di terra diventa
+   UNA COSTANTE pari al raggio effettivo, cosi' il pallone tocca l'erba. Gli archi non cambiano forma: in
+   tutte le formule 0,65 era il riferimento di terra e compare sempre in differenza (`quota - 0,65`),
+   quindi spostando la costante l'altezza SOPRA il terreno resta identica.
+   DICHIARATO: 19,8% e' ancora 1,6 volte la proporzione vera. Non e' distrazione — a questa distanza di
+   camera un pallone in proporzione esatta misura una manciata di pixel sul telefono, e il 3DV-1 ci aveva
+   gia' messo un alone per farlo vedere. Se il PO lo vuole ancora piu' piccolo e' un numero solo.
+   DICHIARATO 2: nelle riprese ravvicinate la scala scende a 0,53, quindi li' il pallone restera' ~0,11
+   sopra l'erba. E' un decimo di quanto galleggiava prima; legare la quota alla scala viva e' il passo
+   dopo, e va misurato a parte.
+   ⚠️ PERCHE' UN LETTERALE E NON UNA COSTANTE, a verbale: la prima stesura definiva `_BY794` a livello di
+   modulo, e il gate e' andato ROSSO con dodici rilievi «_BY794 is not defined». Il motivo e' la lezione
+   gia' scritta nel 7.786: la suite analitica ESTRAE la funzione dell'arco dal sorgente e la fa girare
+   ISOLATA, dove nessun simbolo di modulo esiste. In piu' due guardie di consistenza controllano che la
+   formula dell'arco nel motore contenga LETTERALMENTE la quota di terra, apposta perche' il modello
+   analitico non possa scollarsi dal motore senza che nessuno se ne accorga. Qui il letterale non e'
+   pigrizia: e' il modo in cui questo progetto tiene onesto il proprio specchio. Il rosso __CPM_NO794
+   rimette il pallone grande e, per non toccare le formule dell'arco, gli ridona la vecchia levitazione
+   con un solo scarto dichiarato nel blocco della scala. */
 function ThreeMatchView(props){
   const {playerX,playerY,homeCol,oppCol,allPlayers,homeClub,heroClub=null,oppClub=null,heroKitCol,avatarId=0,heroNum=10,subEntry=0,
     scoreHome=0,scoreAway=0,homeAbbr="HOM",awayAbbr="AWA",competitionLabel,
@@ -585,10 +616,10 @@ function ThreeMatchView(props){
       x.fillStyle=hiVis?'#2a1000':'#1c2330';[[128,30,5],[36,150,4.5],[220,150,4.5],[128,226,5]].forEach(([u,v,r])=>{x.beginPath();x.arc(u,v,r,0,6.283);x.fill();});
       return new THREE.CanvasTexture(c);};
     const _hiVisBall=(wfx==='snow'||wfx==='fog'||wfx==='storm');// neve/grandine·nebbia/foschia·tempesta → pallone arancione
-    const ball=new THREE.Mesh(new THREE.SphereGeometry(0.32,24,16),new THREE.MeshPhongMaterial({map:_mkBallTex(_hiVisBall),shininess:42}));// 5.47.17: pallone ancora più piccolo (0.36→0.32) + design moderno riconoscibile
+    const ball=new THREE.Mesh(new THREE.SphereGeometry((typeof window!=="undefined"&&window.__CPM_NO794)?0.32:0.20,24,16),new THREE.MeshPhongMaterial({map:_mkBallTex(_hiVisBall),shininess:42}));// 5.47.17: pallone ancora più piccolo (0.36→0.32) + design moderno riconoscibile
     ball.castShadow=true;ball.position.set(G2X(ballX||50),0.65,G2Z(ballY||50));scene.add(ball);
     // Sprint 3D-BALL: alone occlusione (depthTest:false) — palla visibile anche dietro i giocatori — 3DV-1: raggio 0.95, opacità ridotta
-    const ballHalo=new THREE.Mesh(new THREE.SphereGeometry(0.46,10,7),new THREE.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:0.05,depthTest:false,depthWrite:false}));// 5.47.17: halo proporzionato al pallone più piccolo (0.32)
+    const ballHalo=new THREE.Mesh(new THREE.SphereGeometry((typeof window!=="undefined"&&window.__CPM_NO794)?0.46:0.29,10,7),new THREE.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:0.05,depthTest:false,depthWrite:false}));// 5.47.17: halo proporzionato al pallone più piccolo (0.32)
     scene.add(ballHalo);
     /* [7.529.0 collaudo PO «mostra durante la cronaca l'ombra del pallone, a volte non si capisce nemmeno
        dov'e', e' molto piccolo» — rosso __CPM_NO534] Il pallone aveva castShadow ma su telefono le ombre
@@ -1573,8 +1604,8 @@ function ThreeMatchView(props){
     // Sprint 3D-BALL: arco parabolico della palla (shot/header/cross/freekick/penalty)
     let ballArcT=0,ballArcDur=0,ballArcH=0,ballArcActive=false,ballArcProf=null;/* [7.534.0 MP-1] profilo di pancia dell'arco (tesa/campana/null) dalla tabella GESTI — si azzera a OGNI armo d'arco: un profilo stantio della scena prima e' la stessa classe di difetto del certificato 003/H4 */
     // ATE-1/2: arco BG_MATCH — tipo azione, destinazione 3D esatta, flag bg vs HL
-    let prevBgT=0,ballArcIsBG=false,ballArcTgtX=0,ballArcTgtZ=0,ballArcTgtY=0.65;/* [7.215.0] ALTEZZA D'ARRIVO. Prima la parabola finiva SEMPRE a 0.65: qualunque conclusione, dal tiro a giro alla punizione, arrivava sulla linea di porta RASOTERRA. Non esisteva l'angolo alto, e il portiere non aveva nulla in alto da parare — una delle ragioni per cui «la parata non e nitida». Ora l'arco ha un bersaglio anche in altezza; il default 0.65 mantiene identiche le traiettorie che non lo impostano. */
-    let ballArcY0=0.65,_aerT=0;// [7.214.0] quota da cui PARTE l'arco: catturata all'impatto, così una conclusione aerea non teletrasporta il pallone a terra prima di volare
+    let prevBgT=0,ballArcIsBG=false,ballArcTgtX=0,ballArcTgtZ=0,ballArcTgtY=0.22;/* [7.215.0] ALTEZZA D'ARRIVO. Prima la parabola finiva SEMPRE a 0.22: qualunque conclusione, dal tiro a giro alla punizione, arrivava sulla linea di porta RASOTERRA. Non esisteva l'angolo alto, e il portiere non aveva nulla in alto da parare — una delle ragioni per cui «la parata non e nitida». Ora l'arco ha un bersaglio anche in altezza; il default 0.22 mantiene identiche le traiettorie che non lo impostano. */
+    let ballArcY0=0.22,_aerT=0;// [7.214.0] quota da cui PARTE l'arco: catturata all'impatto, così una conclusione aerea non teletrasporta il pallone a terra prima di volare
     const BALL_ARC_BY_TYPE={shot:{h:2.8,dur:0.52},cross:{h:3.2,dur:0.68},save:{h:1.8,dur:0.55},tackle:{h:0.4,dur:0.35},pass:{h:0.9,dur:0.48}};
     // Sprint 3D-11A: reazione folla al gol — burst luce calda + camera shake
     let prevWaveT=0,goalBurstT=-1,goalBurstHome=false,goalBurstStadHome=false,shakePow=0,contactFlashT=-1,celebT=-1,crowdOhT=-1;// ATMO #4: crowdOhT = pulse "ooh" del pubblico su palo/parata (reazione neutrale, non solo gol) · goalBurstStadHome [6.24.0] = lato TRIBUNA che ha segnato (per pubblico/tifo/panchina, distinto dal lato-mesh)
@@ -2111,7 +2142,7 @@ function ThreeMatchView(props){
            stageSitPositions) arriva il commit DOPO, ~30 unita' piu' in la' — e' l'intera scena che trasla,
            non il pallone. Il fix vero e' ri-armare lo snap dei ventidue E della palla sul commit di staging:
            in coda con questa nota. */
-        ball.position.x=G2X(P.ballX==null?50:P.ballX);ball.position.z=G2Z(P.ballY==null?50:P.ballY);ball.position.y=(_sy!=null?_sy:0.65);if((sr.current._ws524=1)&&sr.current._bj0)(sr.current._bj0.src='scena',sr.current._bj0.srcs.push('scena'));}
+        ball.position.x=G2X(P.ballX==null?50:P.ballX);ball.position.z=G2Z(P.ballY==null?50:P.ballY);ball.position.y=(_sy!=null?_sy:0.22);if((sr.current._ws524=1)&&sr.current._bj0)(sr.current._bj0.src='scena',sr.current._bj0.srcs.push('scena'));}
       const obx=ball.position.x,oby=ball.position.y,obz=ball.position.z;
       // ATE-2: durante arco BG usa destinazione 3D esatta + velocità sync con durata arco
       // 3DV-10: skip lerp x/z durante post-arco (deflect/cross_goal/in_net gestiscono x/z propri)
@@ -2136,7 +2167,7 @@ function ThreeMatchView(props){
         if(ballArcT<0){_a.t=(_a.t||0)+aDt;_a.tr=(_a.tr||0)+(sr.current._dtReal708||aDt);/* [7.773.0] tetto anche in tempo REALE: su un dispositivo lento (o nel gate a 6 fps) il clock di scena avanza a un decimo, e senza questo tetto il tiro non partirebbe mai entro la finestra del result — il gate final-state lo ha misurato: #136 con la palla ancora a gx 50 */
           if(_a.mesh){const _dm=Math.hypot(_a.mesh.position.x-ball.position.x,_a.mesh.position.z-ball.position.z);
             if(!_a.has&&_dm>1.6){animOne(_a.mesh,ball.position.x+0.9,ball.position.z,aDt,ak,ball.position.x,ball.position.z);}/* prima RAGGIUNGE il pallone (niente salto della palla verso di lui) */
-            else{_a.has=true;animOne(_a.mesh,_a.tx,_a.tz,aDt,ak,ball.position.x,ball.position.z);ball.position.x=_a.mesh.position.x-0.9;ball.position.z=_a.mesh.position.z;ball.position.y=0.65;if((sr.current._ws524=18)&&sr.current._bj0){sr.current._bj0.src='avanzata773';sr.current._bj0.srcs.push('avanzata773');}}
+            else{_a.has=true;animOne(_a.mesh,_a.tx,_a.tz,aDt,ak,ball.position.x,ball.position.z);ball.position.x=_a.mesh.position.x-0.9;ball.position.z=_a.mesh.position.z;ball.position.y=0.22;if((sr.current._ws524=18)&&sr.current._bj0){sr.current._bj0.src='avanzata773';sr.current._bj0.srcs.push('avanzata773');}}
             const _arr=!!_a.has&&_a.mesh.position.x<=_a.tx+0.6;/* arrivato = con la palla ai piedi E alle 19 unita' */if(!_arr&&_a.t<4.0&&_a.tr<1.6)ballArcT=Math.min(ballArcT,-(aDt+0.03));/* il tiro parte quando il portatore e' arrivato (o dopo 4 s di scena): l'incremento di fine fotogramma non deve riportarlo sopra zero */sr.current._advLog773={t:+_a.t.toFixed(2),has:!!_a.has,arr:_arr,mx:+(_a.mesh.position.x+50).toFixed(1)};}else{sr.current._advLog773={t:+_a.t.toFixed(2),mesh:false};}}
         else if(!_a.done){_a.done=true;sr.current._advLog773=Object.assign({},sr.current._advLog773||{},{fine:true});if(_a.gk&&!oppActType){oppActType="gk_dive";oppActT=0;oppMesh=_a.gk;oppDiveDir=_a.gz>=_a.gk.position.z?1:-1;_a.gk._divePz=_a.gk.position.z;_a.gk._diveYaw=_a.gk.rotation.y;_a.gk._diveToZ=clamp(_a.gz,_a.gk.position.z-6,_a.gk.position.z+6);}sr.current._adv773=null;}}
       else if(sr.current._adv773&&!ballArcActive)sr.current._adv773=null;
@@ -2258,7 +2289,7 @@ function ThreeMatchView(props){
              if(_no670b||_dd670<=2||dt<=0){ball.position.x=_tx670;ball.position.z=_tz670;}
              else{const _pas670=Math.min(_dd670,55*dt);
                ball.position.x+=_dx670/_dd670*_pas670;ball.position.z+=_dz670/_dd670*_pas670;}}
-            ball.position.y=(typeof window!=='undefined'&&window.__CPM_NO609)?0.11:0.65;
+            ball.position.y=(typeof window!=='undefined'&&window.__CPM_NO609)?0.11:0.22;
             sr.current._pad555='fermo';
             if((sr.current._ws524=17)&&sr.current._bj0){sr.current._bj0.src='fermo';sr.current._bj0.srcs.push('fermo');}
           } else {
@@ -2345,7 +2376,7 @@ function ThreeMatchView(props){
            pallonetto), null = seno 7.213. Vale 0 agli estremi in tutti i profili: contatto e arrivo NON
            cambiano di un millimetro — cambia solo il viaggio. Rosso __CPM_NO547 (via gestoDi → prof base). */
         const _belly547=ballArcProf==='tesa'?Math.pow(Math.sin(u*Math.PI),0.7):ballArcProf==='campana'?Math.sin(Math.pow(u,0.72)*Math.PI):Math.sin(u*Math.PI);
-        ball.position.y=0.65+_belly547*ballArcH+(ballArcY0-0.65)*(1-u)+(ballArcTgtY-0.65)*u;/* [7.215.0] la corda va dalla quota di CONTATTO a quella d'ARRIVO; il profilo e' il rigonfiamento sopra la corda */
+        ball.position.y=0.22+_belly547*ballArcH+(ballArcY0-0.22)*(1-u)+(ballArcTgtY-0.22)*u;/* [7.215.0] la corda va dalla quota di CONTATTO a quella d'ARRIVO; il profilo e' il rigonfiamento sopra la corda */
         // [6.74.0 3D-5] il compagno designato ATTACCA il cross correndo sul punto di caduta (prima restava fermo)
         if(isResult&&!P.hlDef&&P.hlType==="cross"&&crossRcvMesh){crossRcvMesh.position.x+=((ballArcTgtX-1.8)-crossRcvMesh.position.x)*Math.min(aDt*3.4,1);crossRcvMesh.position.z+=(ballArcTgtZ-crossRcvMesh.position.z)*Math.min(aDt*3.4,1);
           if(!(typeof window!=='undefined'&&window.__CPM_NO531)){const _tyc531=Math.atan2(48-crossRcvMesh.position.x,0-crossRcvMesh.position.z);let _dyc531=_tyc531-crossRcvMesh.rotation.y;while(_dyc531>Math.PI)_dyc531-=2*Math.PI;while(_dyc531<-Math.PI)_dyc531+=2*Math.PI;crossRcvMesh.rotation.y+=_dyc531*Math.min(1,aDt*9);}/* [7.527.0] anche chi attacca il cross incorna GUARDANDO la porta, non la propria corsa */}
@@ -2645,7 +2676,7 @@ function ThreeMatchView(props){
           if(_bar215){const _cz=clamp(ballArcTgtZ,-3.2,3.2);ball.position.z+=(_cz-ball.position.z)*Math.min(aDt*4.0,1);}
           else{const _pz74=(ballArcTgtZ>=0?3.66:-3.66);ball.position.z+=(_pz74-ball.position.z)*Math.min(aDt*4.0,1);}/* la palla converge sul PALO (±3.66), non verso il centro-porta */
           if(_bar215)ball.position.y+=(2.44-ball.position.y)*Math.min(aDt*6.5,1);// sale a sbattere SOTTO LA TRAVERSA
-          else ball.position.y=0.65+Math.max(0,Math.sin(hlPostArcT*5.5)*1.4*Math.exp(-hlPostArcT*2.5));
+          else ball.position.y=0.22+Math.max(0,Math.sin(hlPostArcT*5.5)*1.4*Math.exp(-hlPostArcT*2.5));
           if(!hlInNetFlashed&&ball.position.x>GOAL_LINE_X-0.8){
             hlInNetFlashed=true;contactFlashT=0;shakePow=0.38;// vibrazione palo più forte
             if(_bar215){hlPostVY=-(2.2+Math.random()*1.8);hlPostVZ*=0.35;}/* [7.215.0] dalla TRAVERSA il pallone ricade, non schizza verso l'alto come dal palo */
@@ -2653,7 +2684,7 @@ function ThreeMatchView(props){
           else if(hlPostArcT>0.9){hlPostArcType="post_rebound";hlPostArcT=0;}}// fallback
         else if(hlPostArcType==="post_rebound"){// CINE-3: palla rimbalza via dal palo
           hlPostVY-=aDt*20;ball.position.y+=hlPostVY*aDt;
-          if(ball.position.y<=0.65&&hlPostVY<0){ball.position.y=0.65;hlPostVY*=-0.22;contactFlashT=0;}
+          if(ball.position.y<=0.22&&hlPostVY<0){ball.position.y=0.22;hlPostVY*=-0.22;contactFlashT=0;}
           ball.position.x+=(34-ball.position.x)*aDt*1.8;// torna indietro dal palo
           if((sr.current._ws524=6)&&sr.current._bj0)(sr.current._bj0.src='palo',sr.current._bj0.srcs.push('palo'));/* [7.515.0 R2/4] firma */
           ball.position.z+=hlPostVZ*aDt;hlPostVZ*=(1-aDt*2.2);
@@ -2673,7 +2704,7 @@ function ThreeMatchView(props){
           const _cgD=sr.current._cgDur||0.65;
           const _u2=Math.min(hlPostArcT/_cgD,1);
           const _uh74=Math.min(_u2+0.25,1);// [6.74.0 3D-5] la testata parte dalla QUOTA a cui arriva il cross (~2.7u, continuità C0), non da terra
-          ball.position.y=0.65+Math.sin(_uh74*Math.PI)*(_cgD>1.0?5.5:3.0);/* [7.250.0 gi30 «troppo distante»] la consegna LUNGA (da centrocampo) vola ALTA (lofted 5.5): un pallone a campanile in area si legge come LANCIO, non come un tiro teso da 40 metri */
+          ball.position.y=0.22+Math.sin(_uh74*Math.PI)*(_cgD>1.0?5.5:3.0);/* [7.250.0 gi30 «troppo distante»] la consegna LUNGA (da centrocampo) vola ALTA (lofted 5.5): un pallone a campanile in area si legge come LANCIO, non come un tiro teso da 40 metri */
           const _cgR=3.8*(0.65/_cgD);
           ball.position.x+=((AWAY_GOAL_X-6)-ball.position.x)*aDt*_cgR;ball.position.z+=(0-ball.position.z)*aDt*_cgR*0.37;/* [7.252.0 gi30 «il tiro del compagno più in profondità»] la consegna atterra a goal-6 (dentro l'area piccola-grande): il terzo uomo conclude da posizione profonda *//* [7.247.0 gi29 «il tiro avviene da distanza siderale»] la consegna ATTERRA IN AREA (goal-8 ≈ il dischetto), non sulla porta: prima puntava AWAY_GOAL_X+1 per tutto il volo e da centrocampo leggeva come un tiro da 40 metri che entra — ora lancio → area → incornata del terzo uomo → in_net fa l'ultimo tratto */
           // [6.74.0 3D-5] il ricevente accompagna/incorna: convergenza sul pallone + gesto di ricezione al 1° frame
@@ -2741,7 +2772,7 @@ function ThreeMatchView(props){
           if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){try{const _pxp=sr.current._o2px;if(_pxp!=null&&ball.position.x<_pxp-1e-4)window.__CPM_O2BK=(window.__CPM_O2BK||0)+(_pxp-ball.position.x);sr.current._o2px=ball.position.x;}catch(_e){}}/* [7.333.0] tracker: moto ALL'INDIETRO cumulato della palla durante il ritorno (deve restare ~0) */
           ball.position.x+=((_o2tx)-ball.position.x)*Math.min(aDt*4.4,1);
           ball.position.z+=((_o2tz)-ball.position.z)*Math.min(aDt*4.4,1);
-          ball.position.y+=(0.65-ball.position.y)*Math.min(aDt*7,1);
+          ball.position.y+=(0.22-ball.position.y)*Math.min(aDt*7,1);
           if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){try{const _d2=+Math.hypot(ball.position.x-_o2hx,ball.position.z-_o2hz).toFixed(2);window.__CPM_O2={t:+hlPostArcT.toFixed(2),d:_d2,fin:sr.current._o2Fin||null};window.__CPM_O2MIN=(window.__CPM_O2MIN==null||_d2<window.__CPM_O2MIN)?_d2:window.__CPM_O2MIN;}catch(_e){}}
           if((Math.hypot(ball.position.x-_o2hx,ball.position.z-_o2hz)<2.0&&hlPostArcT>=0.22)||hlPostArcT>=1.9){/* [7.324.0] fallback 1.5→1.9: e' solo anti-deadlock, ma a 1.5 tagliava la sponda a meta' corsa (l'eroe fa il «vai» e la palla lo raggiunge sulla corsa: serve il tempo che serve) — misurato: consegna morta a 3.4-3.9u dall'uomo */
             heroPostT=0;heroPostType="recv";contactFlashT=0;
@@ -2825,7 +2856,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
               _rm._postDrvX=_rm.position.x;_rm._postDrvZ=_rm.position.z;
               try{window.__CPM_AR54={own:_own56,oth:_post56};}catch(_e){}/* [7.241.0 strumentazione permanente, solo __CPM_REC] attribuzione del moto del ricevente: driver vs altri scrittori — ha inchiodato l'inversione a U del modello di sterzata */
             } else animOne(_rm,ball.position.x,ball.position.z,aDt,ak,ball.position.x,ball.position.z);}
-          ball.position.y+=(0.65-ball.position.y)*Math.min(aDt*7,1);
+          ball.position.y+=(0.22-ball.position.y)*Math.min(aDt*7,1);
           // 5.43.7: per lo SCARICO SULLA FASCIA (SWITCH) il ricevente è LARGO → non tira da lì (irrealistico): CROSSA al centro dove un compagno vicino alla porta finalizza (cross_goal). Per il verticale resta assist_shot.
           /* [7.232.0 #40 collaudo PO «la palla vola in porta senza alcuna dinamica realistica» + misura: tiro
              del compagno da game x≈40] IL COMPAGNO NON SPARA DA CENTROCAMPO. La transizione ricezione→tiro era
@@ -2867,7 +2898,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
           //   «occasione parata», mai una rete che si gonfia senza gol. L'assist vero (gol assegnato) è invariato.
           const _isCh93=P.hlOutcomeKind==="chance";
           const _u3=Math.min(hlPostArcT/0.80,1);
-          ball.position.y=0.65+Math.sin(_u3*Math.PI)*3.2;
+          ball.position.y=0.22+Math.sin(_u3*Math.PI)*3.2;
           ball.position.x+=((AWAY_GOAL_X-(_isCh93?7:2))-ball.position.x)*aDt*3.2;ball.position.z*=(1-aDt*1.6);
           if(_isCh93&&_u3>=0.72){
             if(awayGkMesh&&!oppActType){oppActType="gk_dive";oppActT=0;oppMesh=awayGkMesh;oppDiveDir=ball.position.z>=oppMesh.position.z?1:-1;oppMesh._divePz=oppMesh.position.z;oppMesh._diveYaw=oppMesh.rotation.y;oppMesh._diveToZ=clamp(oppMesh.position.z+(ball.position.z-oppMesh.position.z)*0.55,oppMesh.position.z-6,oppMesh.position.z+6);}
@@ -2884,7 +2915,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
         else if(hlPostArcType==="deflect"){// 3DV-14: deflect con fisica rimbalzo (gravity + restituzione)
           hlPostVY-=aDt*22;// gravità
           ball.position.y+=hlPostVY*aDt;
-          if(ball.position.y<=0.65&&hlPostVY<0){ball.position.y=0.65;hlPostVY*=-0.30;contactFlashT=0;}// rimbalzo + flash
+          if(ball.position.y<=0.22&&hlPostVY<0){ball.position.y=0.22;hlPostVY*=-0.30;contactFlashT=0;}// rimbalzo + flash
           ball.position.z+=hlPostVZ*aDt;hlPostVZ*=(1-aDt*3.2);
           // [5.83.0 IA-1/IA-2a] FIX reverse-boomerang: il pull verso il terzo offensivo vale SOLO per le
           //   CONCLUSIONI (la palla è già lì); un passaggio/dribbling perso a centrocampo si assesta sul punto
@@ -2967,9 +2998,9 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
             if(!_src||!_m||_src.team!=='home'||_src.gk)continue;
             const _q=Math.hypot(_m.position.x-ball.position.x,_m.position.z-ball.position.z);if(_q<_d)_d=_q;}
           return _d<=3.4;}catch(_e){return false;}})();/* la soglia e piu larga di quella con cui il guardiano giudica (3u): il pallone dev essere ai piedi con margine, non al limite esatto */
-        if(_aY!=null&&_addosso389){ball.position.y=(ball.position.y>1.2)?Math.max(0.65,ball.position.y-Math.max(0.35,aDt*9)):0.65;}/* [7.389.0] la discesa e RAPIDA ma non istantanea: da 1,85 al piede in poco piu di un decimo. Con lo smorzamento esponenziale di prima restavano una dozzina di fotogrammi a mezza altezza, cioe esattamente cio che il PO vede */
+        if(_aY!=null&&_addosso389){ball.position.y=(ball.position.y>1.2)?Math.max(0.22,ball.position.y-Math.max(0.35,aDt*9)):0.22;}/* [7.389.0] la discesa e RAPIDA ma non istantanea: da 1,85 al piede in poco piu di un decimo. Con lo smorzamento esponenziale di prima restavano una dozzina di fotogrammi a mezza altezza, cioe esattamente cio che il PO vede */
         else if(_aY!=null){_aerT+=dt;const _fl=_aY+Math.sin(_aerT*2.1)*0.09;if(ball.position.y<_aY-0.8)ball.position.y=_fl;/* la scena AEREA si apre col pallone gia per aria: farlo salire dall'erba sarebbe la stessa bugia al rallentatore */else ball.position.y+=(_fl-ball.position.y)*Math.min(aDt*4.5,1);}/* accumulatore proprio: con dt=0 (freeze del gate) il respiro si ferma → screenshot deterministici */
-        else ball.position.y+=(0.65-ball.position.y)*Math.min(aDt*6,1);}// y rest 0.65
+        else ball.position.y+=(0.22-ball.position.y)*Math.min(aDt*6,1);}// y rest 0.22
       ballHalo.position.copy(ball.position);
       const _hTgt=isHL?0.10:(_no534?0.04:0.085);ballHalo.material.opacity+=(_hTgt-ballHalo.material.opacity)*Math.min(dt*3,1);// 3DV-1: opacità halo ridotta (era 0.18/0.08) · [7.529.0 NO534] in cronaca l'alone torna a farsi vedere: e' il «dov'e' la palla» dietro i corpi
       const moved=Math.hypot(ball.position.x-obx,ball.position.y-oby,ball.position.z-obz);
@@ -2987,9 +3018,14 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
         // LT-1: ring espande da 1× a 3.8× e svanisce in 0.20s
         ctFlash.position.x=ball.position.x;ctFlash.position.z=ball.position.z;ctFlash.scale.setScalar(1+(1-_cf)*2.8);ctFlash.material.opacity=_cf*0.60;
         if(contactFlashT>0.20)contactFlashT=-1;}
-      else{ball.scale.setScalar(_bBase534);ctFlash.material.opacity=0;}// 3DV-12: 0.68 playing → 0.53 close HL (was 1.0) · [7.529.0 NO534] vedi _bBase534
+      else{ball.scale.setScalar(_bBase534);ctFlash.material.opacity=0;}
+      /* [7.794.0] IL ROSSO RIDA' AL PALLONE ANCHE LA SUA VECCHIA LEVITAZIONE. La quota di terra e' un
+         letterale in una ventina di formule (vedi la nota in testa al file: le guardie analitiche la
+         controllano alla lettera), quindi il rosso non puo' passare di li' senza rompere lo specchio.
+         Passa da qui, in un punto solo e dichiarato: 0,65 - 0,22 = 0,43. */
+      if(typeof window!=='undefined'&&window.__CPM_NO794)ball.position.y+=0.43;// 3DV-12: 0.68 playing → 0.53 close HL (was 1.0) · [7.529.0 NO534] vedi _bBase534
       if(_bShadow534.visible){_bShadow534.position.x=ball.position.x;_bShadow534.position.z=ball.position.z;
-        const _bh534=Math.max(0,ball.position.y-0.65);
+        const _bh534=Math.max(0,ball.position.y-0.22);
         _bShadow534.scale.setScalar(Math.max(0.55,ball.scale.x*(1+Math.min(_bh534*0.16,0.8))));
         _bShadow534.material.opacity=Math.max(0.16,0.80-_bh534*0.20);}/* piu' vola, piu' l'ombra si allarga e si spegne — e' lei che dice DOVE ricade */
       const bx=ball.position.x,bz=ball.position.z;
@@ -3016,7 +3052,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                  un lancio percepito] la palla persa nel contrasto viene POKATA VIA di poco (≤9u nella direzione
                  del raccoglitore): è lui che viene a prendersela, non il pallone che vola da lui. */
               const _ddx49=_nm.position.x-hero.position.x,_ddz49=_nm.position.z-hero.position.z,_dl49=Math.hypot(_ddx49,_ddz49)||1,_cl49=Math.min(_dl49,9);
-              ballArcT=0;ballArcActive=true;ballArcIsBG=true;ballArcProf=null;ballArcTgtY=0.65;ballArcH=0.5;ballArcDur=0.42;ballArcTgtX=hero.position.x+_ddx49/_dl49*_cl49;ballArcTgtZ=hero.position.z+_ddz49/_dl49*_cl49;contactFlashT=0;
+              ballArcT=0;ballArcActive=true;ballArcIsBG=true;ballArcProf=null;ballArcTgtY=0.22;ballArcH=0.5;ballArcDur=0.42;ballArcTgtX=hero.position.x+_ddx49/_dl49*_cl49;ballArcTgtZ=hero.position.z+_ddz49/_dl49*_cl49;contactFlashT=0;
               sr.current._mateFx={mesh:_nm,name:"tackle",t:1.1};/* [7.250.0 gi38] il difensore che entra sul pallone SUONA la clip scivolata (GLB) — la slide procedurale era invisibile sotto il CH38 */
               sr.current._pkCol415={m:_nm,k:P.hlSitKey};/* [7.415.0 gi71] e a scivolata finita va a RACCOGLIERE il pallone pokato (driver nel blocco anim). CHIAVATO alla scena: il primo giro senza chiave e' stato beccato dal check motion del gate (gi2, difensori a 27,1u dal portatore) — nel flusso del gate un raccoglitore stantio trascinava un difensore della scena VECCHIA dietro alla palla nuova */}
             else{ballArcActive=false;}
@@ -3026,7 +3062,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
           else if(t==="build"&&P.hlReward==="assist"&&P.hlOutcomeKind!=="chance"&&!P.hlOffBall)actType="pass";/* [7.346.0 collaudo PO «assist di tacco: attacca il pallone con la testa, ma ho il pallone tra i piedi»] UN ASSIST NON SI TIRA IN PORTA. La regola qui sopra esisteva per `build` e mancava per `shot`: 75 azioni su 573 hanno premio ASSIST dentro una situation che deriveHL classifica `shot`, e tutte finivano nel ramo d'arco del TIRO — bersaglio la porta. Misurato su gi26 «Assist di tacco»: ricevente a x=32.5, eroe a x=31.9, arco lanciato a x=46.3 (14 unita' OLTRE il ricevente) con quota massima 2,49 m. Su un TACCO. Il compagno lo attaccava dove il pallone arrivava davvero, cioe' alto e in area: da qui «attacca il pallone con la testa». Il post-arco diceva gia' la cosa giusta (assist_recv, un compagno riceve): erano le due meta' a non parlarsi. Ora l'azione va dove dice il suo premio — al ricevente se e' un appoggio, in area se l'etichetta dice cross (rami gia' esistenti e collaudati, nessuna traiettoria nuova). */else if(P.hlOneTwo===true&&!P.hlOffBall&&(t==="build"||t==="shot")){actType="pass";t="pass";}/* [7.348.0] il MURO dell'uno-due si sceglie solo dentro il ramo d'arco `pass` (7.330): un uno-due classificato `build` non lo raggiungeva mai. */
           else if(t==="shot"&&P.hlReward==="assist"&&P.hlOutcomeKind!=="chance"&&!P.hlOffBall){actType=/cross|traversone|pennell|fondo/i.test(String(P.hlActLbl||""))?"cross":"pass";t=actType;}/* [7.311.0] ...ma NON su una situation OFF-BALL: li' l'eroe non serve nessuno, si smarca per RICEVERE — mimare un passaggio mentre il pallone gli sta arrivando addosso e' la stessa bugia del ramo assist_recv. Resta il gesto «build» = clip receive, cioe' il controllo. *//* [7.245.0 batch PO gi29/30/37 «non si vede il gesto tecnico finale»] il SERVIZIO al compagno (build+reward assist: scatto e servi, lancio lungo, rimorchio) è un CALCIO al pallone — GLB-ON il gesto build era la clip receive da 4.96s di cui si vedeva l'11%: ora suona il kick (0.54s, il gesto del passaggio). Solo gesto/posa: la macchina dell'assist (reward) è invariata */
           // 3DV-11: archi HL con destinazione esplicita verso porta avversaria (+x), non posizione eroe
-          const _rz=(Math.random()-.5),_side=(P.playerY||50)<50?-1:1;ballArcTgtY=0.65;ballArcProf=null;/* [7.534.0 MP-1] il profilo si azzera alla testa del dispatcher: solo le famiglie che lo dichiarano (tabella GESTI) lo impostano nei rami *//* [7.215.0] default rasoterra: ogni famiglia che ha un bersaglio in altezza lo sovrascrive qui sotto */// _side: lato attaccante — usato da cross, shot_curled, header_far_post
+          const _rz=(Math.random()-.5),_side=(P.playerY||50)<50?-1:1;ballArcTgtY=0.22;ballArcProf=null;/* [7.534.0 MP-1] il profilo si azzera alla testa del dispatcher: solo le famiglie che lo dichiarano (tabella GESTI) lo impostano nei rami *//* [7.215.0] default rasoterra: ogni famiglia che ha un bersaglio in altezza lo sovrascrive qui sotto */// _side: lato attaccante — usato da cross, shot_curled, header_far_post
           if(t==="penalty"){// Panenka/cucchiaio → arco molto alto; rigore normale → arco standard
             if(P.hlVariant==="penalty_panenka"){ballArcH=3.6;ballArcDur=1.10;}else{ballArcH=1.15;ballArcDur=0.62;}/* [7.213.0 revisione PO «sembra sempre un pallonetto»] apici in METRI: la traversa sta a 2.44 — un rigore che picchiava a 4.2 passava sopra la porta a metà volo. Il cucchiaio resta alto, ma 9m era una parabola da rinvio */
             ballArcT=0;ballArcActive=true;ballArcTgtX=AWAY_GOAL_X-3+Math.random()*3;ballArcTgtZ=_rz*7;
@@ -3872,7 +3908,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
       {const _ba=P.bgAction;
        if(_ba&&_ba.t&&_ba.t!==prevBgT&&_curPh==="playing"){prevBgT=_ba.t;
          const _arc=BALL_ARC_BY_TYPE[_ba.type];
-         if(_arc&&!ballArcActive){ballArcH=_arc.h;ballArcDur=_arc.dur;ballArcT=0;ballArcActive=true;ballArcTgtY=0.65;ballArcProf=null;/* [7.534.0 MP-1] gli archi di cronaca restano sul seno base: i profili per kind arrivano con MP-2 (beat) */
+         if(_arc&&!ballArcActive){ballArcH=_arc.h;ballArcDur=_arc.dur;ballArcT=0;ballArcActive=true;ballArcTgtY=0.22;ballArcProf=null;/* [7.534.0 MP-1] gli archi di cronaca restano sul seno base: i profili per kind arrivano con MP-2 (beat) */
            ballArcIsBG=true;ballArcTgtX=G2X(_ba.ballEnd.x);ballArcTgtZ=G2Z(_ba.ballEnd.y); // ATE-2
            contactFlashT=0;
            /* [collaudo PO «il portiere non accenna e tenta la parata/tuffo in nessun highlights, sembra
@@ -4853,7 +4889,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
               const _dtCut568=now-(sr.current._cutAt||0);
               const _tagl568=(_dtCut568<900)||(typeof window!=='undefined'&&window.__CPM_NO568);
               if(typeof window!=='undefined'&&(window.__CPM_REC||_CPM_TEST||_SIT_TEST)){try{const _c=(window.__CPM_DLV383=window.__CPM_DLV383||{});_c.tot=(_c.tot||0)+1;if(!_tagl568){_c.tardi=(_c.tardi||0)+1;(_c.dt=_c.dt||[]).push(Math.round(_dtCut568));}}catch(_e){}}
-              if(_tagl568)try{ball.position.x=G2X(_pt383.x);ball.position.z=G2Z(_pt383.y);ball.position.y=0.65;sr.current._lastBallKey=P.hlSitKey;sr.current._ballSnap=false;if((sr.current._ws524=10)&&sr.current._bj0)(sr.current._bj0.src='consegna',sr.current._bj0.srcs.push('consegna'));}catch(_e2){}if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){const _c=(window.__CPM_DLV383=window.__CPM_DLV383||{});_c.push=(_c.push||0)+1;_c.last={x:+_pt383.x.toFixed(1),y:+_pt383.y.toFixed(1),key:P.hlSitKey,kind:_dv383.kind};}}
+              if(_tagl568)try{ball.position.x=G2X(_pt383.x);ball.position.z=G2Z(_pt383.y);ball.position.y=0.22;sr.current._lastBallKey=P.hlSitKey;sr.current._ballSnap=false;if((sr.current._ws524=10)&&sr.current._bj0)(sr.current._bj0.src='consegna',sr.current._bj0.srcs.push('consegna'));}catch(_e2){}if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){const _c=(window.__CPM_DLV383=window.__CPM_DLV383||{});_c.push=(_c.push||0)+1;_c.last={x:+_pt383.x.toFixed(1),y:+_pt383.y.toFixed(1),key:P.hlSitKey,kind:_dv383.kind};}}
             else if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){const _c=(window.__CPM_DLV383=window.__CPM_DLV383||{});_c.nopt=(_c.nopt||0)+1;}
           }
         }catch(_e383){}}
@@ -4936,7 +4972,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
               const _ddx52=_ltx52-_lfx52,_ddz52=_ltz52-_lfz52,_dl52=Math.hypot(_ddx52,_ddz52)||1;
               ball.position.x=_ltx52-_ddx52/_dl52*3.0;ball.position.z=_ltz52-_ddz52/_dl52*3.0;ball.position.y=_aerTL+1.0;if((sr.current._ws524=11)&&sr.current._bj0)(sr.current._bj0.src='buildup-aereo',sr.current._bj0.srcs.push('buildup-aereo'));
               sr.current._aerIn52={x:_ltx52,z:_ltz52,y:_aerTL};
-            } else if(last&&last.kind==='carry'&&(function(){const _cid414=(typeof last.fromId==='string')?last.fromId:((typeof last.toId==='string')?last.toId:null);const _cm414=(_cid414==='HERO')?hero:((tlMap&&_cid414&&tlMap[_cid414])||hero);return _cm414&&_cm414.position&&Math.hypot(ball.position.x-_cm414.position.x,ball.position.z-_cm414.position.z)<3.4;})()){ball.position.y=0.65;/* [7.414.0 gi24/gi79 «zig-zag» / «teletrasporto da 16,5u»] LA GUARDIA VALE PER QUALUNQUE PORTATORE, NON SOLO L'EROE: se l'ultimo beat e' la conduzione di un COMPAGNO tappato a velocita' umana, il corpo arriva corto sul piano (misurato: portatore a 4,5 col piano a 38 — 26u dall'eroe) e la scrittura del punto pianificato era un teletrasporto da 7,8-13,8u proprio al fotogramma della conclusione. Il portatore lo dice il beat (fromId→tlMap), l'eroe resta il ripiego. */
+            } else if(last&&last.kind==='carry'&&(function(){const _cid414=(typeof last.fromId==='string')?last.fromId:((typeof last.toId==='string')?last.toId:null);const _cm414=(_cid414==='HERO')?hero:((tlMap&&_cid414&&tlMap[_cid414])||hero);return _cm414&&_cm414.position&&Math.hypot(ball.position.x-_cm414.position.x,ball.position.z-_cm414.position.z)<3.4;})()){ball.position.y=0.22;/* [7.414.0 gi24/gi79 «zig-zag» / «teletrasporto da 16,5u»] LA GUARDIA VALE PER QUALUNQUE PORTATORE, NON SOLO L'EROE: se l'ultimo beat e' la conduzione di un COMPAGNO tappato a velocita' umana, il corpo arriva corto sul piano (misurato: portatore a 4,5 col piano a 38 — 26u dall'eroe) e la scrittura del punto pianificato era un teletrasporto da 7,8-13,8u proprio al fotogramma della conclusione. Il portatore lo dice il beat (fromId→tlMap), l'eroe resta il ripiego. */
               /* [7.394.0 collaudo PO «SALTO del pallone — sembra un teletrasporto», la sorgente RESIDUA
                  dopo il 7.387] LA CONSEGNA A FINE COSTRUZIONE NON STRAPPA LA PALLA DAL PIEDE. Qui il
                  build-up finisce e il pallone veniva SCRITTO al punto pianificato dell'ultimo beat — ma
@@ -4949,7 +4985,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                  conclude, la consegna E' GIA' AVVENUTA: si lascia dov'e', e l'arco del tiro parte da li'
                  — come nel calcio. Il punto pianificato resta il ripiego per quando il pallone e' lontano
                  (build-up interrotto, portatore perso): meglio la scrittura di ieri che una palla orfana. */}
-            else {ball.position.x=(typeof window!=='undefined'&&window.__CPM_NO546)?G2X(last.to[0]):clamp(G2X(last.to[0]),-(GOAL_LINE_X-0.8),GOAL_LINE_X-0.8);/* [7.533.0 MP-0e H2] clamp specchio dello scrittore 12 (nota al sito 11) */ball.position.z=G2Z(last.to[1]);ball.position.y=0.65;if((sr.current._ws524=12)&&sr.current._bj0)(sr.current._bj0.src='buildup-fine',sr.current._bj0.srcs.push('buildup-fine'));}/* [7.222.0] su una situazione AEREA il build-up CONSEGNA il pallone alla quota del colpo: depositarlo a 0.65 era la causa del «la palla sbatte a terra e poi sale» */
+            else {ball.position.x=(typeof window!=='undefined'&&window.__CPM_NO546)?G2X(last.to[0]):clamp(G2X(last.to[0]),-(GOAL_LINE_X-0.8),GOAL_LINE_X-0.8);/* [7.533.0 MP-0e H2] clamp specchio dello scrittore 12 (nota al sito 11) */ball.position.z=G2Z(last.to[1]);ball.position.y=0.22;if((sr.current._ws524=12)&&sr.current._bj0)(sr.current._bj0.src='buildup-fine',sr.current._bj0.srcs.push('buildup-fine'));}/* [7.222.0] su una situazione AEREA il build-up CONSEGNA il pallone alla quota del colpo: depositarlo alla quota di terra (allora 0.65, oggi `0.22`) era la causa del «la palla sbatte a terra e poi sale» */
             /* [7.236.0 batch «compare e scompare»] il build-up ha PORTATO AVANTI l'eroe (fin sotto porta sul
                burst): memorizzare il punto d'arrivo — la CINE-APPROACH della conclusione deve ancorarsi QUI,
                non a P.playerX (lo spot d'apertura, 12-16u più indietro), o l'eroe si teleporta all'indietro
@@ -5076,7 +5112,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
             if(typeof window!=='undefined'&&window.__CPM_BV613!==undefined){try{const _a613=window.__CPM_BV613;
               if(_a613.length<3000)_a613.push({t:Math.round(performance.now()),bi,k:sg.kind||null,p:+p.toFixed(3),x:+_bxg.toFixed(2),y:+_byg.toFixed(2),fx:+_f0387[0].toFixed(1),tx:+sg.to[0].toFixed(1),rm:sr.current._rm613?1:0,bx0:_pre613?_pre613.x:null,by0:_pre613?_pre613.y:null,fu:(_f0387===sg.from)?0:1});sr.current._rm613=0;}catch(_e){}}
             const _arcH=sg.kind==="cross"?4.2:sg.kind==="through"?0.35:(sg.kind==="pass"||sg.kind==="give")?1.0:0.0;
-            ball.position.y=(_aerTL!=null)?(_aerTL+Math.sin(p*Math.PI)*Math.max(_arcH,0.35)):(0.65+Math.sin(p*Math.PI)*_arcH);/* [7.222.0] nelle situazioni aeree il pallone e IN VOLO per tutta la costruzione: non deve mai toccare l erba */
+            ball.position.y=(_aerTL!=null)?(_aerTL+Math.sin(p*Math.PI)*Math.max(_arcH,0.35)):(0.22+Math.sin(p*Math.PI)*_arcH);/* [7.222.0] nelle situazioni aeree il pallone e IN VOLO per tutta la costruzione: non deve mai toccare l erba */
             /* [7.390.0 collaudo PO «si porta solo la palla avanti e fine» · «durante i movimenti si muove
                solo il pallone e non l'eroe»] UNA RICEZIONE DEVE SEMBRARE UNA RICEZIONE.
                Misurato con buildup-sync-test.mjs: quindici costruzioni su ventisei sono un solo passaggio
