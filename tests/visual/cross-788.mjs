@@ -23,6 +23,14 @@ const CROSS=process.env.CPM_GI?process.env.CPM_GI.split(',').map(Number)
 console.log('scene di cross: '+CROSS.length);
 const R=[];
 for(const gi of CROSS){
+  /* ⚠️ [7.788] LA SONDA NON ERA RIPETIBILE, e me ne sono accorto solo confrontando quattro passate
+     sulla stessa domanda: 10, 12, 9 e 6 cross su 24 «senza nessuno entro 3,5u» con lo stesso codice.
+     Ogni scena forzata partiva dallo stato lasciato dalla precedente, quindi le posizioni dei ventidue
+     si accumulavano diversamente a ogni giro e il rumore era piu' grande dell'effetto che volevo
+     misurare. Il gate fa la cosa giusta da sempre: `__CPM_RESEED(gi)` prima di ogni forzatura, cosi'
+     ogni scena parte dallo stesso dado. Senza questa riga qualunque confronto verde/rosso qui e' una
+     moneta lanciata. */
+  await page.evaluate(g=>{try{window.__CPM_RESEED&&window.__CPM_RESEED(g);}catch(e){}},gi);
   let ok=false;try{ok=await page.evaluate(g=>window.__CPM_FORCE_SIT(g,true),gi);}catch(e){}
   if(!ok)continue;
   await sleep(600);

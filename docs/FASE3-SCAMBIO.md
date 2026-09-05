@@ -945,3 +945,35 @@ atterra a 21 unità da chiunque» c'è un anello che non ho ancora trovato.
 
 **APERTO, con i numeri e senza rimedio.** Non spedisco un secondo tentativo al buio: il primo era già
 uno.
+
+### Cross — secondo rimedio, revocato anch'esso. La lezione è sul metro
+
+Avevo esteso al `cross` la rimappatura del ricevente che il 7.414 aveva scritto per il `through`: il
+rendez-vous del 7.395 piega il bersaglio del volo verso il compagno **mappato**, e `mapCineActors`
+assegna MATE1 al compagno più vicino all'**eroe** — che su un cross sta sulla fascia, non in area. Il
+ragionamento regge, il precedente pure.
+
+**Quello che non regge è la prova.** Quattro passate sulla stessa domanda, stesso codice: **10, 12, 9 e
+6** cross su 24 «senza nessuno entro 3,5u». La sonda non era ripetibile perché ogni scena forzata
+partiva dallo stato lasciato dalla precedente. Aggiunto `__CPM_RESEED(gi)` come fa il gate da sempre:
+
+| | ripetibilità |
+|---|---|
+| quantili (mediana, p90, max) | **stabili** — 1,9/2,0 · 7,5/8,2 · 14,5/14,4 su passate ripetute |
+| conteggio sopra soglia | **ballerino** — da 6 a 11, perché mezze scene stanno proprio intorno a 3,5u |
+
+**Il conteggio era la metrica sbagliata**, ed è quello su cui avevo letto il «miglioramento».
+
+Confronto onesto, due passate per lato con la sonda aggiustata:
+
+| | mediana | p90 | max |
+|---|---|---|---|
+| verde | 1,9 · 2,0 | 7,5 · 8,2 | 14,5 · 14,4 |
+| rosso | 1,7 · 1,9 | 8,4 · 8,6 | 14,5 · 14,4 |
+
+Si sovrappongono. **Il rimedio non parte** — anche se l'ipotesi mi convince: convincere non è misurare.
+
+Il difetto resta **APERTO e documentato**. Per deciderlo serve un metro che risolva differenze di questa
+taglia, e questo non ci arriva.
+
+career-critical EXIT 0 · CI EXIT 0 · fingerprint 00001505 · 0 failure · 13/13 bande.

@@ -16508,6 +16508,25 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                   ricevente reale a 54 — inversione secca a meta' volo). Per il beat `through` il ricevente
                   si RIMAPPA una volta sul compagno di movimento piu' vicino al punto di caduta del piano:
                   i beat successivi (controllo, conclusione) leggono la stessa mappa e restano su di lui. */
+               /* [7.788.0 — SECONDO RIMEDIO AL CROSS, REVOCATO ANCH'ESSO. A verbale perche' la lezione
+                  qui non e' sul calcio, e' sul metro.]
+                  Avevo esteso al `cross` la rimappatura del ricevente che il 7.414 aveva scritto per il
+                  `through`: il rendez-vous del 7.395 piega il bersaglio del volo verso il compagno
+                  MAPPATO, e mapCineActors assegna MATE1 al compagno piu' vicino all'EROE — che su un
+                  cross sta sulla fascia, non in area. Il ragionamento regge ancora, e il precedente pure.
+                  QUELLO CHE NON REGGE E' LA PROVA. Quattro passate sulla stessa domanda, stesso codice:
+                  10, 12, 9 e 6 cross su 24 «senza nessuno entro 3,5u». La sonda non era ripetibile
+                  perche' ogni scena forzata partiva dallo stato lasciato dalla precedente; aggiunto
+                  `__CPM_RESEED(gi)` come fa il gate, e i QUANTILI si sono stabilizzati (mediana 1,9-2,0,
+                  massimo 14,4-14,5 su passate ripetute) mentre il CONTEGGIO sopra soglia ha continuato a
+                  ballare fra 6 e 11 — perche' mezze scene stanno proprio intorno a 3,5u e saltano da una
+                  parte all'altra. Il conteggio era la metrica sbagliata.
+                  Confronto onesto, due passate per lato con la sonda aggiustata:
+                    verde  mediana 1,9 e 2,0 · p90 7,5 e 8,2 · max 14,5 e 14,4
+                    rosso  mediana 1,7 e 1,9 · p90 8,4 e 8,6 · max 14,5 e 14,4
+                  Si sovrappongono. Il rimedio non batte la misura, quindi non parte — anche se
+                  l'ipotesi mi convince: convincere non e' misurare. Il difetto resta APERTO e
+                  documentato; per deciderlo serve un metro che risolva differenze di questa taglia. */
                if(sg.kind==='through'&&_nid395&&_nid395!=='HERO'&&tlMap&&sr.current._thrMap414!==P.hlSitKey+':'+bi){
                  let _bm414=null,_bd414=1e9;const _ttx=G2X(sg.to[0]),_ttz=G2Z(sg.to[1]);
                  sr.current.players.forEach((pp,ii)=>{const _s4=(P.allPlayers||[])[ii];if(_s4&&_s4.team==='home'&&!_s4.gk&&pp.mesh&&pp.mesh!==hero){const _d4=Math.hypot(pp.mesh.position.x-_ttx,pp.mesh.position.z-_ttz);if(_d4<_bd414){_bd414=_d4;_bm414=pp.mesh;}}});
