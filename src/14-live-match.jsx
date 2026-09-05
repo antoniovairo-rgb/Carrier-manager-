@@ -3559,16 +3559,47 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                (`__CPM_OCC695G`) conta ancora il DADO che il 7.714 ha sostituito con la minaccia:
                diceva «ok 7» per una regola che non esiste piu', e per un'ora mi ha mandato a cercare il
                difetto dalla parte sbagliata. */
+            /* ⚠️ [7.790.0 — L'OCCASIONE NASCE DALLA PAUSA: la premessa e' il POTENZIALE, non il PERICOLO.
+               Rosso __CPM_NO790]
+               Questa e' la conclusione del 7.789, misurata. Il cancello chiedeva pericolo alto NELL'ISTANTE
+               in cui il palcoscenico e' libero, e le due cose non convivono: su 23 arrivi in tre partite la
+               minaccia ci arriva con mediana 25 e supera 58 due volte. Scomposta, la minaccia dice perche':
+               `zona` e `porta` pesano il 55% e descrivono DOVE STA LA PALLA ADESSO (in una pausa, a
+               centrocampo: mediana di zona 0,02); `spinta` pesa il 15% ed e' l'avanzamento di UN SOLO tick,
+               quindi in una pausa vale zero per costruzione — misurata 0,00 in tutti e 23 gli istanti,
+               mediana, p90 e massimo. Il 70% del punteggio e' spento proprio dove il cancello guarda.
+               Cio' che nella pausa VIVE eccome e' l'altro 30%: attaccanti liberi (mediana 1,00),
+               superiorita' (0,50), assenza di pressing (0,67). Non dicono «c'e' pericolo» — dicono
+               «da qui puo' nascerne uno», ed e' esattamente la domanda giusta, perche' il pericolo lo
+               costruisce il PIANO dell'occasione, che porta la palla in area beat dopo beat. Chiedere il
+               pericolo prima era chiedere due volte la stessa cosa, e la prima volta era impossibile.
+               PREMESSA = 45% attaccanti liberi + 30% superiorita' + 25% assenza di pressing, 0-100.
+               Sui 23 arrivi: mediana 70, p25 53, p75 92. Soglia 75 → 11/23 (3,7 a partita PRIMA del
+               cooldown), che incrociata con adv>=48 e con gli otto minuti di attesa lascia l'occasione
+               un evento, non il ritmo della partita.
+               Il picco di pericolo vero resta una porta aperta: se la minaccia e' >= 58 si apre come prima,
+               senza chiedere altro. Le due condizioni sono in OR perche' descrivono due momenti diversi —
+               «sta gia' succedendo» e «puo' cominciare adesso». */
+            const _prem790=(()=>{try{const _c=(matchStateRef.current&&matchStateRef.current.threatComp)||null;
+              if(!_c)return 0;return Math.round(100*(0.45*(_c.lib||0)+0.30*(_c.sup||0)+0.25*(_c.noPress||0)));}catch(_e790){return 0;}})();
+            const _pot790=!(typeof window!=='undefined'&&window.__CPM_NO790)&&_prem790>=75;
             const _apri714=(typeof window!=='undefined'&&window.__CPM_NO714)
               ?(_advO695>=48&&(Math.abs(hashStr("occ695|"+nx+"|"+((bgSimSeedRef.current|0))))%100)<72)
-              :(_advO695>=48&&_thr714>=58);
+              :(_advO695>=48&&(_thr714>=58||_pot790));
             /* [7.789 strumentazione] IL CONTATORE DEL CANCELLO ERA VECCHIO. Quello del 7.695 conta
                ancora il DADO che il 7.714 ha sostituito con la minaccia: diceva «ok 7» per una regola
                che non esiste piu', e per un'ora mi ha fatto cercare il difetto dalla parte sbagliata.
                Qui si conta la condizione VERA, pezzo per pezzo. Sola lettura. */
             if(typeof window!=='undefined'&&window.__CPM_REC){try{const _q=(window.__CPM_APRI789=window.__CPM_APRI789||{qui:0,adv:0,thr:0,picco:0,apre:0,piano:0,armate:0,advV:[],thrV:[]});
               _q.qui++;if(_advO695>=48)_q.adv++;if(_thr714>=58)_q.thr++;if(_apri714)_q.apre++;if(_q.pk===undefined)_q.pk=[];if(_q.pk.length<40)_q.pk.push({nx:nx,pm:thrPicco789.current.min|0,pv:thrPicco789.current.val|0});
-              if(_q.advV.length<200)_q.advV.push(Math.round(_advO695));if(_q.thrV.length<200)_q.thrV.push(_thr714);}catch(_e789){}}
+              if(_q.advV.length<200)_q.advV.push(Math.round(_advO695));if(_q.thrV.length<200)_q.thrV.push(_thr714);
+              /* [7.789 strumentazione v2] LE COMPONENTI DELLA MINACCIA ALL'ISTANTE DELLA PAUSA. La minaccia
+                 totale li' vale 25 e non serve a niente, ma non tutte le sue parti dicono la stessa cosa:
+                 `zona` e `porta` (55% del peso) descrivono DOVE STA LA PALLA ADESSO — in una pausa, per
+                 forza, lontano. `spinta`, `sup`, `lib`, `noPress` descrivono CHI STA MEGLIO: quelle in una
+                 pausa esistono eccome. Se una premessa credibile c'e', e' li' che vive. */
+              _q.prem=(_q.prem|0)+(_prem790>=75?1:0);if((_q.prV=_q.prV||[]).length<200)_q.prV.push(_prem790);
+              if((_q.cmp=_q.cmp||[]).length<80){const _c=(matchStateRef.current&&matchStateRef.current.threatComp)||null;if(_c)_q.cmp.push({m:nx,t:_thr714,z:_c.zona,p:_c.porta,s:_c.spinta,l:_c.lib,u:_c.sup,n:_c.noPress});}}catch(_e789){}}
             if(_apri714){
               const _piO695=_pianoOcc695(_dO695>0?"home":"away");
               if(typeof window!=='undefined'&&window.__CPM_REC){try{const _q=window.__CPM_APRI789;if(_q&&_piO695)_q.piano++;}catch(_e){}}

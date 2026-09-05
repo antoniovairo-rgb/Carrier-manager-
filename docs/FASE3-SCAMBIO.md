@@ -1190,3 +1190,67 @@ misura una regola morta è peggio di nessuno strumento.*
 - questo verbale.
 
 **Task #40 aperto**: «l'occasione extra-eroe deve nascere dalla pausa, non aspettare il picco».
+
+---
+
+## 7.790 — L'occasione pericolosa NASCE dalla pausa: la premessa è il POTENZIALE, non il PERICOLO
+
+Questa è la conclusione del 7.789, con il rimedio che le tre tarature non erano riuscite a trovare.
+
+### Prima: la ritrattazione
+
+Nel 7.789 avevo scritto «occasioni armate ZERO, ZERO e ZERO — non rarissime, **inesistenti**». Era
+un'estrapolazione da **tre soli mondi**. Su altri tre lo stesso codice arma **1, 1, 0**. La misura onesta
+su sei mondi è **0,17 a partita**. «Rarissime» era la parola giusta, la mia era troppo grossa.
+
+### La scomposizione che ha aperto la strada
+
+La minaccia agli istanti di pausa vale mediana 25 e non serve. Ma non tutte le sue parti dicono la
+stessa cosa:
+
+| componente | peso | mediana in pausa | che cosa descrive |
+|---|---|---|---|
+| zona | 30% | **0,02** | dove sta la palla ADESSO |
+| porta | 25% | **0,00** | dove sta la palla ADESSO |
+| spinta | 15% | **0,00** (anche p90 e max) | avanzamento di UN SOLO tick |
+| lib | 15% | **1,00** | quanti attaccanti sono liberi |
+| sup | 10% | **0,50** | superiorità numerica |
+| noPress | 5% | **0,67** | assenza di pressing |
+
+**Il 70% del punteggio è spento proprio dove il cancello guarda.** `spinta` in particolare è zero per
+costruzione: in una pausa il pallone non avanza, quindi la sua derivata è nulla — 0,00 in tutti e 23 gli
+istanti, mediana, p90 e massimo.
+
+Il 30% che vive dice un'altra cosa: non «c'è pericolo» ma «**da qui può nascerne uno**». Ed è la domanda
+giusta, perché **il pericolo lo costruisce il piano dell'occasione**, che porta la palla in area beat
+dopo beat. Chiedere il pericolo *prima* era chiederlo due volte, e la prima volta era impossibile.
+
+### Il rimedio
+
+**PREMESSA = 45% attaccanti liberi + 30% superiorità + 25% assenza di pressing** (0-100). Sui 23 arrivi:
+mediana 70, p25 53, p75 92. Soglia **75**. Resta in **OR** il picco di minaccia ≥ 58, che è la porta di
+sempre: due condizioni per due momenti diversi — «sta già succedendo» e «può cominciare adesso».
+Intatti `adv>=48`, il cooldown di otto minuti, e la regola che un'occasione **cede sempre il passo** a un
+gol del microsim. Rosso `__CPM_NO790`.
+
+### La misura appaiata — sei mondi identici, verde contro rosso
+
+| | verde | rosso |
+|---|---|---|
+| **occasioni MOSTRATE in 3D** | **2,00** a partita (12 totali) | **0,17** (1 totale) |
+| parate mostrate | 2,00 | 0,17 |
+| righe che raccontano un fatto pericoloso | 4,33 | 3,67 |
+| **rapporto raccontate / mostrate** | **2,2 a 1** | **22 a 1** |
+| gol accreditati | 4,00 | 3,67 |
+
+Il numero che risponde alla seconda metà della nota del PO («a volte la telecronaca racconta azioni
+importanti ma non si vedono») è l'ultimo rapporto: da **22 racconti per ogni azione mostrata** a **2,2**.
+
+**Dichiarato e NON verificato**: i gol a partita passano da 3,67 a 4,00 — due gol di differenza su 24 in
+sei mondi. Il piano dell'occasione muove giocatori e pallone, e da lì possesso e momentum, che il
+microsim legge: una deriva è possibile. Con sei partite non è distinguibile dal rumore, e non l'ho
+misurata su un campione che possa deciderlo. Il guardiano dice che nulla viene *mangiato*
+(8 gol nati, 8 accreditati, 0 mangiati) e che il tabellone combacia col racconto (6-4 = 6-4).
+
+career-critical EXIT 0 · CI EXIT 0 · fingerprint 00001505 · 0 failure · 191 situazioni · guardiano 12/12.
+NON verificato sul telefono.
