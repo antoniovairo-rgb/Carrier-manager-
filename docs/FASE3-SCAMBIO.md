@@ -1063,3 +1063,58 @@ scoperto sta nel primo mezzo secondo. Fra il taglio e il ri-snap c'è una finest
 vede mentre si sistema.
 
 **Nessun rimedio**: oggi ne ho revocati due, e ho appena invalidato una misura mia. Prima il metro.
+
+## 7.788.0 — La voce del mister: sotto il racconto, più grande, e senza ripetersi
+
+Domanda del PO in collaudo, con fotografia al 69' di FC Mer 3-0 FC Gri: *«le indicazioni del mister sono
+collegate con le azioni? le farei comparire subito sotto la telecronaca e più grandi. Se sono scollegate
+vanno collegate altrimenti non servono a niente e devono essere davvero indicazioni utili e non
+ripetitive»*.
+
+### 1. Sono collegate — e non solo sulla carta
+
+`selectCoachOrder(minuto, punteggio, momentum, stanchezza)` sceglie fra tredici ordini, e l'ordine muove
+davvero bonus tattico, possesso, momentum e linee di squadra. Le grida brevi seguono la fase reale
+(costruzione/sviluppo/pericolo, turno, possesso). Su tre partite intere la sequenza lo mostra da sola:
+
+```
+43'  0-1   «Un gol e torniamo in gioco»
+61'  0-2   «Tutti avanti. Il pareggio non serve»
+86'  1-2   «Cinque minuti. Tutti in attacco. Non tornare — vai!»
+86'  3-2   «Chiudi gli spazi. Un gol subito adesso è un disastro»
+```
+
+Nella fotografia del PO (3-0 al 69') l'ordine era `consolida`: coerente.
+
+### 2. Sotto il racconto, e più grande
+
+Il riquadro viveva nella colonna in fondo — il 7.536 ce l'aveva messo per non farlo accavallare con la
+cronaca. Ma da quando il racconto sale al centro (7.661) la colonna resta giù e **il legame si spezza a
+vista**, anche quando c'è. Ora la panchina segue il racconto: stesso blocco, subito sotto, corpo da
+**12,5 a 15**, e sparisce dalla colonna per non comparire due volte. Nel sottopancia durante l'azione
+pericolosa resta fuori: lì lo spazio è una riga sola (7.695). Rosso `__CPM_NO788B`.
+
+### 3. Non ripetitive
+
+| | prima | dopo |
+|---|---|---|
+| voci diverse | **54%** (30/56) | **70%** (39/56) |
+| la più ripetuta | **6 volte** | **3 volte** |
+
+Due cause, entrambe strutturali:
+- **ogni ordine aveva UNA sola frase**: la decisione giusta si ripresenta spesso (il punteggio resta
+  quello) e con una frase sola il mister sembra un disco. Ora ogni ordine ha un ventaglio scelto col
+  seme del minuto — la DECISIONE non cambia di una virgola, cambiano le parole.
+- **i serbatoi delle grida erano piccoli**: 7-8 frasi per famiglia contro **tredici estrazioni a
+  partita** (il 72% di ciò che il mister dice sono grida brevi). La ripetizione era aritmetica. Le
+  famiglie raddoppiano, e le frasi nuove **nominano la situazione** invece di essere un verbo: «occhio
+  al taglio dietro», «il terzino è alto: attaccalo», «seconda palla, siate pronti».
+
+Rosso `__CPM_NO788C`.
+
+**Un errore mio, a verbale**: spostando il riquadro gli avevo tolto l'etichetta stabile `data-cpm`, e la
+sonda ha contato **zero voci su due partite intere** mentre il gioco le scriveva. È la lezione già
+scritta nel 7.681 — «senza etichetta, per misurare servono selettori sullo stile». Rimessa.
+
+career-critical EXIT 0 · CI EXIT 0 · fingerprint 00001505 · 0 failure · 13/13 bande.
+NON verificato sul telefono.

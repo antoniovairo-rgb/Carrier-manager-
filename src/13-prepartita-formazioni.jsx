@@ -1121,22 +1121,51 @@ if(typeof window!=='undefined'&&!window.__CPM_STORE_BUILD){try{window.__CPM_SELE
 ======================================== */
 // Sprint 34 — istruzioni tattiche mid-match (2 momenti: ~28' e ~63')
 // Ordini del mister — ogni voce ha effetti reali: bonus azioni, delta possesso, delta momentum, preset formazione NPC
+/* ⚠️ [7.788.0 — IL MISTER NON RIPETE LE STESSE PAROLE. Collaudo PO: «le indicazioni del mister sono
+   collegate con le azioni? … devono essere davvero indicazioni utili e non ripetitive».
+   MISURATO su tre partite intere (56 voci di panchina, 18,7 a partita): il COLLEGAMENTO c'e' ed e'
+   solido — la sequenza lo mostra da sola, 43' sotto 0-1 «un gol e torniamo in gioco», 61' sotto 0-2
+   «tutti avanti», 86' sotto 1-2 «cinque minuti, tutti in attacco», 86' avanti 3-2 «chiudi gli spazi,
+   un gol subito adesso e' un disastro». Ma le voci DIVERSE erano solo il 54% (30 su 56), e la peggiore
+   — «Recuperate palla alta» — usciva SEI volte, di cui QUATTRO nella stessa partita.
+   La causa e' qui: ogni ordine aveva UNA sola frase. La decisione tattica giusta si ripresenta spesso
+   (il punteggio resta quello, il momentum pure), e con una frase sola il mister sembra un disco.
+   Ora ogni ordine ha un ventaglio `alt` di formulazioni: la DECISIONE non cambia di una virgola —
+   stesso ordine, stesso bonus, stesso drift, stesso collegamento allo stato — cambiano le parole, e si
+   scelgono col seme del minuto (deterministico: due partite con lo stesso seme restano identiche).
+   Rosso __CPM_NO788C. */
 const COACH_ORDERS={
-  pressing:  {e:"🔴",txt:"Pressing alto",    ctx:"Recuperate palla alta, non lasciate costruire. Intensità massima.",  bonus:0.07,poss:-3,mom:9, drift:"midfield"},
-  possesso:  {e:"🔵",txt:"Tieni palla",      ctx:"Rallenta, costruisci dal basso. Non regalare nulla.",                bonus:0.04,poss:8, mom:-3,drift:"midfield"},
-  verticale: {e:"⚡",txt:"Gioco verticale",  ctx:"Cerca subito la profondità. L'attaccante è libero.",                bonus:0.09,poss:-4,mom:7, drift:"attack"},
-  all_in:    {e:"⚔️",txt:"Attacco totale",   ctx:"Tutti avanti. Il pareggio non serve — vuoi i 3 punti.",             bonus:0.11,poss:-7,mom:14,drift:"attack_goal"},
-  consolida: {e:"🔒",txt:"Consolida",        ctx:"Chiudi gli spazi, non rischiare. Un gol subito adesso è un disastro.", bonus:0.03,poss:8,mom:-6,drift:"retreat"},
-  cerca_gol: {e:"🎯",txt:"Cerca il gol",     ctx:"Un gol e torniamo in gioco. Muoviti nelle zone giuste.",            bonus:0.10,poss:-5,mom:11,drift:"attack_goal"},
-  cavalca:   {e:"🔥",txt:"Cavalca il momento",ctx:"Stiamo dominando. Continua così, hai l'uomo libero.",              bonus:0.12,poss:3, mom:8, drift:"attack"},
-  intelligente:{e:"🧠",txt:"Gioca intelligente",ctx:"Sei stanco, lo vedo. Scegli il momento giusto — non sprecare.",  bonus:0.05,poss:4, mom:0, drift:"midfield"},
-  rimonta:   {e:"🚨",txt:"ORA O MAI PIÙ",    ctx:"Mancano pochi minuti. Dimentica la tattica — VAI e non tornare.",  bonus:0.14,poss:-8,mom:18,drift:"attack_goal"},
-  gestisci_1:{e:"🛡️",txt:"Gestisci il vantaggio",ctx:"Un gol di vantaggio. Tienilo. Spazio zero agli avversari.",   bonus:0.04,poss:6, mom:-4,drift:"retreat"},
-  urgenza_75: {e:"⏱️",txt:"Ultima mezzora",     ctx:"Siamo al 75'. Da adesso ogni pallone conta doppio.",          bonus:0.08,poss:-3,mom:12,drift:"attack"},
-  blocca_ora: {e:"🛑",txt:"Blocca il risultato",ctx:"Non regalare niente. Difendi compatti, poi riparti.",          bonus:0.03,poss:5, mom:-3,drift:"retreat"},
-  assalto_85: {e:"🚨",txt:"ASSALTO FINALE",     ctx:"Cinque minuti. Tutti in attacco. Non tornare — vai!",         bonus:0.16,poss:-9,mom:22,drift:"attack_goal"},
+  pressing:  {e:"🔴",txt:"Pressing alto",    ctx:"Recuperate palla alta, non lasciate costruire. Intensità massima.",  bonus:0.07,poss:-3,mom:9, drift:"midfield",alt:["Addosso a loro, non li fate ragionare. Palla alta, subito.","Aggredite la prima costruzione: il primo passaggio non deve partire."]},
+  possesso:  {e:"🔵",txt:"Tieni palla",      ctx:"Rallenta, costruisci dal basso. Non regalare nulla.",                bonus:0.04,poss:8, mom:-3,drift:"midfield",alt:["Facciamola girare. Nessuna verticale forzata, aspettiamo il varco.","Palla a terra e pazienza: chi corre dietro si stanca prima."]},
+  verticale: {e:"⚡",txt:"Gioco verticale",  ctx:"Cerca subito la profondità. L'attaccante è libero.",                bonus:0.09,poss:-4,mom:7, drift:"attack",alt:["Appena vedete lo spazio, dentro. Niente giri inutili.","Prima palla in avanti: l’attaccante parte, cercatelo."]},
+  all_in:    {e:"⚔️",txt:"Attacco totale",   ctx:"Tutti avanti. Il pareggio non serve — vuoi i 3 punti.",             bonus:0.11,poss:-7,mom:14,drift:"attack_goal",alt:["Non ci interessa il pareggio. Salite tutti, si vince o si perde.","Ultimo assalto: portiere a parte, voglio tutti dall’altra parte."]},
+  consolida: {e:"🔒",txt:"Consolida",        ctx:"Chiudi gli spazi, non rischiare. Un gol subito adesso è un disastro.", bonus:0.03,poss:8,mom:-6,drift:"retreat",alt:["Da adesso zero rischi. Compatti, e la palla lontano dalla nostra area.","Difesa stretta e nessuna giocata di fantasia dietro. Reggiamo."]},
+  cerca_gol: {e:"🎯",txt:"Cerca il gol",     ctx:"Un gol e torniamo in gioco. Muoviti nelle zone giuste.",            bonus:0.10,poss:-5,mom:11,drift:"attack_goal",alt:["Serve un gol per rientrarci: occupate l’area, qualcuno la tocca.","Alzate il baricentro, cercate l’uomo in area. Ci serve adesso."]},
+  cavalca:   {e:"🔥",txt:"Cavalca il momento",ctx:"Stiamo dominando. Continua così, hai l'uomo libero.",              bonus:0.12,poss:3, mom:8, drift:"attack",alt:["Li abbiamo in pugno: insistete finche’ sono in difficolta’.","Non mollate ora, sono lunghi: c’e’ spazio fra le linee."]},
+  intelligente:{e:"🧠",txt:"Gioca intelligente",ctx:"Sei stanco, lo vedo. Scegli il momento giusto — non sprecare.",  bonus:0.05,poss:4, mom:0, drift:"midfield",alt:["Le gambe sono pesanti: scegliete la giocata semplice, non forzate.","Risparmiate energie, giocate corto e alzate la testa prima di correre."]},
+  rimonta:   {e:"🚨",txt:"ORA O MAI PIÙ",    ctx:"Mancano pochi minuti. Dimentica la tattica — VAI e non tornare.",  bonus:0.14,poss:-8,mom:18,drift:"attack_goal",alt:["Non c’e’ piu’ tempo per la tattica: dentro l’area e crederci.","Tutto quello che avete, adesso. Non guardate indietro."]},
+  gestisci_1:{e:"🛡️",txt:"Gestisci il vantaggio",ctx:"Un gol di vantaggio. Tienilo. Spazio zero agli avversari.",   bonus:0.04,poss:6, mom:-4,drift:"retreat",alt:["Un gol basta: teniamolo. Nessuna palla persa a meta’ campo.","Vantaggio in cassaforte: linee corte e niente regali."]},
+  urgenza_75: {e:"⏱️",txt:"Ultima mezzora",     ctx:"Siamo al 75'. Da adesso ogni pallone conta doppio.",          bonus:0.08,poss:-3,mom:12,drift:"attack",alt:["Ultimo quarto d’ora: ogni contrasto vale doppio, svegliatevi.","Da qui alla fine si decide tutto. Concentrazione su ogni pallone."]},
+  blocca_ora: {e:"🛑",txt:"Blocca il risultato",ctx:"Non regalare niente. Difendi compatti, poi riparti.",          bonus:0.03,poss:5, mom:-3,drift:"retreat",alt:["Compatti e ripartenza: non concediamo un centimetro.","Difendiamo bene e aspettiamo il loro errore. Nessuna fretta."]},
+  assalto_85: {e:"🚨",txt:"ASSALTO FINALE",     ctx:"Cinque minuti. Tutti in attacco. Non tornare — vai!",         bonus:0.16,poss:-9,mom:22,drift:"attack_goal",alt:["Cinque minuti: dentro tutto quello che avete, non si torna.","E’ adesso o mai piu’. Tutti in area, la buttiamo dentro."]},
 };
 // Scelta intelligente dell'ordine: legge punteggio, tempo rimanente, momentum, stanchezza
+/* [7.788.0] LA FORMULAZIONE, non la decisione. `selectCoachOrder` qui sotto sceglie COSA dire (ed e'
+   quella collegata a punteggio, tempo, momentum e stanchezza: non si tocca). Questa sceglie CON QUALI
+   PAROLE, fra la frase storica dell'ordine e le sue alternative, con un seme deterministico — stesso
+   seme, stessa partita, stesse parole: due giri con lo stesso dado restano identici, come pretende il
+   gate. Rosso __CPM_NO788C: torna alla frase unica. */
+function coachSay(ord,seme){
+  try{
+    if(!ord)return "";
+    if(typeof window!=='undefined'&&window.__CPM_NO788C)return ord.ctx||"";
+    const pool=[ord.ctx].concat(ord.alt||[]).filter(Boolean);
+    if(pool.length<2)return ord.ctx||"";
+    let h=2166136261>>>0;const k=String(seme);
+    for(let i=0;i<k.length;i++){h^=k.charCodeAt(i);h=Math.imul(h,16777619)>>>0;}
+    return pool[h%pool.length];
+  }catch(_e788){return (ord&&ord.ctx)||"";}
+}
 function selectCoachOrder(ck,score,momentum,fatigue){
   var diff=score.home-score.away;
   var tLeft=90-ck;
@@ -1153,13 +1182,31 @@ function selectCoachOrder(ck,score,momentum,fatigue){
   return isFirstHalf?"pressing":"verticale";
 }
 // MISTER #5 — grida BREVI da bordo campo, sincronizzate alla FASE reale (mai in contraddizione con l'azione).
+/* [7.788.0 — I SERBATOI DELLE GRIDA ERANO TROPPO PICCOLI. Collaudo PO: «devono essere davvero
+   indicazioni utili e non ripetitive». MISURATO su tre partite intere: 18,7 voci di panchina a
+   partita, di cui TREDICI grida brevi e cinque ordini tattici — cioe' il 72% di quello che il mister
+   dice sono due parole generiche. Con sette-otto frasi per famiglia e tredici estrazioni a partita, la
+   ripetizione e' aritmetica: «Scala!» cinque volte, «Girala!» cinque, «Chiudi!» quattro.
+   Qui ogni famiglia raddoppia, e le frasi nuove NOMINANO la situazione invece di limitarsi a un verbo:
+   un mister che dice «occhio al taglio dietro» sta dando un'informazione, uno che dice «Chiudi!» sta
+   riempiendo un silenzio. La scelta resta agganciata alla fase come prima (costruzione/sviluppo/
+   pericolo, turno, momentum, possesso): non cambia CHI parla ne' QUANDO, cambia il ventaglio. */
 const COACH_SHOUTS={
-  def:["Scala!","Chiudi!","Stringi!","Copri il centro!","Raddoppia!","Attento dietro!","Tieni la linea!","Marca!"],
-  off:["Vai sul fondo!","Crossa!","Attacca il primo palo!","Attacca il secondo palo!","Apri il gioco!","Muoviti!","Cerca la profondità!","Vai vai vai!"],
-  pos:["Calma!","Girala!","Tieni palla!","Cambia lato!","Gioca semplice!","Palla a terra!","Fai girare!"],
-  fin_hold:["Difendiamo!","Tutti dietro!","Restiamo concentrati!","Gestiamola!","Non rischiare!","Palla lontana!"],
-  fin_push:["Pressa!","Tutti avanti!","Buttala dentro!","Non molliamo!","Dai che ci siamo!","Ancora!"],
-  fin_neutral:["Restiamo concentrati!","Massima attenzione!","Ci siamo, dai!","Ultimo sforzo!","Testa alta!"],
+  def:["Scala!","Chiudi!","Stringi!","Copri il centro!","Raddoppia!","Attento dietro!","Tieni la linea!","Marca!",
+       "Occhio al taglio dietro!","Non farti saltare!","Accorcia sul portatore!","Palla in mezzo, chiudi il corridoio!",
+       "Reggi la linea, non scappare!","Tempo sul portatore, non buttarti!","Copri il secondo palo!"],
+  off:["Vai sul fondo!","Crossa!","Attacca il primo palo!","Attacca il secondo palo!","Apri il gioco!","Muoviti!","Cerca la profondità!","Vai vai vai!",
+       "Taglia dentro, c'è lo spazio!","Uno-due e dentro!","Alza la testa, sei libero!","Il terzino è alto: attaccalo!",
+       "Palla dietro al difensore!","Vieni incontro e giragli intorno!","Terzo uomo, entra adesso!"],
+  pos:["Calma!","Girala!","Tieni palla!","Cambia lato!","Gioca semplice!","Palla a terra!","Fai girare!",
+       "Fai respirare la squadra!","Due tocchi, non uno!","Aspetta il momento, arriva!","Muovi loro, non la palla!",
+       "Torna indietro e riparti pulito!","Non forzarla, non c'è!"],
+  fin_hold:["Difendiamo!","Tutti dietro!","Restiamo concentrati!","Gestiamola!","Non rischiare!","Palla lontana!",
+            "Fallo tattico se serve!","Porta via il tempo sulla rimessa!","Nessuno si allunghi adesso!","Palla in tribuna, senza pensarci!"],
+  fin_push:["Pressa!","Tutti avanti!","Buttala dentro!","Non molliamo!","Dai che ci siamo!","Ancora!",
+            "Palla in mezzo, qualcuno la tocca!","Anche il portiere sul corner!","Seconda palla, siate pronti!","Non uscire dall'area, restaci!"],
+  fin_neutral:["Restiamo concentrati!","Massima attenzione!","Ci siamo, dai!","Ultimo sforzo!","Testa alta!",
+               "Il prossimo pallone decide!","Nessun errore banale adesso!","Reggiamo e poi ripartiamo!"],
 };
 // fase derivata da: minuto+punteggio (finale) → tattica/possesso/momentum (offensiva/difensiva/possesso). style allenatore = bias leggero.
 /* [7.542.0 collaudo PO «le indicazioni del mister sono senza senso e scollegate dalla dinamica della

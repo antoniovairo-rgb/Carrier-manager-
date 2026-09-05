@@ -2821,7 +2821,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
         if(ord0.poss!==0)setPossession(function(p){return clamp(p+ord0.poss,20,80);});
         setMomentum(function(m){return clamp(m+(ord0.mom||0),0,100);});
         if(ord0.drift&&DRIFT_PRESETS[ord0.drift])driftTargetsRef.current=DRIFT_PRESETS[ord0.drift];
-        addCoach("📢 "+ord0.e+" «"+ord0.ctx+"»",ck);
+        addCoach("📢 "+ord0.e+" «"+coachSay(ord0,String(bgSimSeedRef.current)+"|"+ck+"|0")+"»",ck);/* [7.788.0] la formulazione varia col seme, la decisione no */
       }
       if(ck>=63&&!tacticFiredRef.current[1]){
         tacticFiredRef.current[1]=true;
@@ -2831,7 +2831,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
         if(ord1.poss!==0)setPossession(function(p){return clamp(p+ord1.poss,20,80);});
         setMomentum(function(m){return clamp(m+(ord1.mom||0),0,100);});
         if(ord1.drift&&DRIFT_PRESETS[ord1.drift])driftTargetsRef.current=DRIFT_PRESETS[ord1.drift];
-        addCoach("📢 "+ord1.e+" «"+ord1.ctx+"»",ck);
+        addCoach("📢 "+ord1.e+" «"+coachSay(ord1,String(bgSimSeedRef.current)+"|"+ck+"|1")+"»",ck);/* [7.788.0] */
       }
       /* [7.494.0 F0] SEEDATO: questo ramo sta FUORI dal callback di setClock, quindi non vede `_rndM`
          (dichiarato la' dentro) — e con `Math.random()` era il buco piu' costoso dei cinque, perche' muove
@@ -2873,7 +2873,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
         if(ord2.poss!==0)setPossession(function(p){return clamp(p+ord2.poss,20,80);});
         setMomentum(function(m){return clamp(m+(ord2.mom||0),0,100);});
         if(ord2.drift&&DRIFT_PRESETS[ord2.drift])driftTargetsRef.current=DRIFT_PRESETS[ord2.drift];
-        addCoach("📢 "+ord2.e+" «"+ord2.ctx+"»",ck);
+        addCoach("📢 "+ord2.e+" «"+coachSay(ord2,String(bgSimSeedRef.current)+"|"+ck+"|2")+"»",ck);/* [7.788.0] */
         if(_diff75<=0)chantTimersRef.current.push(setTimeout(()=>chantFor("urgenza",2600),400));
       }
       // Sprint 113 — 85' coach order (final assault if close game)
@@ -2886,7 +2886,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           if(ord3.poss!==0)setPossession(function(p){return clamp(p+ord3.poss,20,80);});
           setMomentum(function(m){return clamp(m+(ord3.mom||0),0,100);});
           if(ord3.drift&&DRIFT_PRESETS[ord3.drift])driftTargetsRef.current=DRIFT_PRESETS[ord3.drift];
-          addCoach("📢 "+ord3.e+" «"+ord3.ctx+"»",ck);
+          addCoach("📢 "+ord3.e+" «"+coachSay(ord3,String(bgSimSeedRef.current)+"|"+ck+"|3")+"»",ck);/* [7.788.0] */
         }
       }
       // Dynamic HL — process reactive queue (e.g. queued after opp_goal)
@@ -4526,7 +4526,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
             if(reactOrd){
               tacticBonusRef.current=reactOrd.bonus;
               if(reactOrd.drift&&DRIFT_PRESETS[reactOrd.drift])driftTargetsRef.current=DRIFT_PRESETS[reactOrd.drift];
-              fxTimeout(function(){addCoach("📢 "+reactOrd.e+" «"+reactOrd.ctx+"»",nx);},300);/* [7.532.0 NO540] reazione del mister → riquadro panchina */
+              fxTimeout(function(){addCoach("📢 "+reactOrd.e+" «"+coachSay(reactOrd,String(bgSimSeedRef.current)+"|"+nx+"|r")+"»",nx);/* [7.788.0] */},300);/* [7.532.0 NO540] reazione del mister → riquadro panchina */
             }
             return{...s,away:newAway};
           });setPossession(p=>clamp(p-4,20,80));flashScreen({col:"rgba(239,68,68,0.22)",dur:500});
@@ -7626,6 +7626,25 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                    <div /* [7.695.0] sottopancia: il contenitore prende tutta la larghezza e la riga si taglia con i puntini, invece di uscire dallo schermo come faceva la prima stesura (fotografata) */ style={_sot695?{display:"block",width:"100%",boxSizing:"border-box",padding:"7px 12px",borderRadius:10,background:"linear-gradient(90deg, rgba(5,8,16,0) 0%, rgba(5,8,16,0.78) 12%, rgba(5,8,16,0.78) 88%, rgba(5,8,16,0) 100%)"}:{display:"inline-block",padding:"10px 16px",borderRadius:14,background:"radial-gradient(ellipse at center, rgba(5,8,16,0.62) 0%, rgba(5,8,16,0.28) 70%, transparent 100%)"}}>
                      <div /* ⚠️ [7.697.0 collaudo PO: «la telecronaca durante le azioni pericolose e' tagliata, deve leggersi per intera»] IL DIFETTO ERA MIO E DI MEZZA GIORNATA FA: per tenere il sottopancia su una riga avevo messo `nowrap` piu' i puntini, e una riga di telecronaca sta in una riga sola quasi mai. Il sottopancia serve a NON coprire l'azione, non a nascondere il testo: ora va a capo fino a tre righe, resta in basso e il testo si legge tutto. */ style={_sot695?{fontSize:14,lineHeight:1.32,fontWeight:800,color:coms[0].color||"#e8edf6",textShadow:"0 2px 10px rgba(0,0,0,0.9)",letterSpacing:0.1,display:"-webkit-box",WebkitLineClamp:3,WebkitBoxOrient:"vertical",overflow:"hidden",maxWidth:"100%"}:{fontSize:19,lineHeight:1.35,fontWeight:800,color:coms[0].color||"#e8edf6",textShadow:"0 2px 10px rgba(0,0,0,0.85), 0 0 26px rgba(0,0,0,0.5)",letterSpacing:0.2}}>{coms[0].text}</div>
                      {!_sot695&&(<div style={{marginTop:5,fontSize:11,fontWeight:700,color:"rgba(232,237,246,0.55)"}}>{(coms[0].t??clock)}′</div>)}
+                     {/* ⚠️ [7.788.0 — LA VOCE DEL MISTER SOTTO IL RACCONTO, E PIU' GRANDE. Richiesta PO in
+                         collaudo, con fotografia al 69' di FC Mer 3-0 FC Gri: «le indicazioni del mister
+                         le farei comparire subito sotto la telecronaca e più grandi».
+                         Nella fotografia le due voci stanno agli antipodi dello schermo: il racconto
+                         grande al centro, la panchina in fondo a corpo 12,5. Il 7.536 le aveva messe
+                         nella STESSA colonna in basso proprio per non farle accavallare, ma quando il
+                         racconto sale al centro (7.661) la colonna resta giu' e il legame si spezza:
+                         l'ordine del mister sembra scollegato da cio' che sta succedendo anche quando —
+                         misurato — non lo e' affatto.
+                         Qui la panchina segue il racconto: quando c'e' il banner centrale la voce esce
+                         SOTTO di lui, nello stesso blocco, a corpo 15. Nel sottopancia (durante l'azione
+                         pericolosa) resta fuori, perche' li' lo spazio e' una riga sola e il 7.695 lo ha
+                         gia' deciso. Rosso __CPM_NO788B. */}
+                     {!_sot695&&coachMsg&&!(typeof window!=='undefined'&&window.__CPM_NO788B)&&(
+                       <div data-cpm="panchina"/* [7.788.0] l'etichetta stabile viaggia col riquadro: il 7.681 l'ha gia' messa a verbale — «senza, per misurare servono selettori sullo STILE, che si rompono al primo ritocco grafico». Spostando il riquadro me l'ero persa, e la sonda ha contato ZERO voci in due partite intere. */ key={"panch661-"+coachMsg.key} style={{marginTop:9,display:"inline-block",background:"rgba(10,18,12,0.9)",border:"1px solid rgba(134,239,172,0.35)",borderLeft:"3px solid #4ade80",borderRadius:9,padding:"7px 13px",maxWidth:"88%",textAlign:"left",animation:"chantPulse 6s ease-out forwards"}}>
+                         <span style={{fontSize:10,fontWeight:800,color:"#86efac",letterSpacing:1.2,textTransform:"uppercase",marginRight:8}}>Panchina</span>
+                         <span style={{fontSize:15,fontWeight:600,color:"#d1fae5",lineHeight:1.35}}><EmoText>{coachMsg.text}</EmoText></span>
+                       </div>
+                     )}
                      {/* [7.681.0 direttiva PO «deve essere interattiva, a scelta!»] I BOTTONI SOTTO LA FRASE.
                          Appaiono solo sulle righe che portano delle scelte (le interazioni dell'eroe: due o
                          tre a partita), e solo finche' nessuno ha risposto. Nessuna schermata nuova, nessuna
@@ -7822,7 +7841,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                    muoverlo significherebbe rimettere le mani su due percorsi gia' collaudati dal PO. */
                 const _salta543=!!(subbedOff||(benchStart&&onBench));
                 return <div data-cpm="voci" style={{position:"absolute",left:"3%",right:"3%",bottom:(_salta543&&!(typeof window!=='undefined'&&window.__CPM_NO565))?60:"1.5%",zIndex:21,pointerEvents:"none",display:"flex",flexDirection:"column",alignItems:"stretch",gap:6}}>
-                {coachMsg&&(
+                {coachMsg&&!(phase==="playing"&&coms[0]&&!(typeof window!=="undefined"&&window.__CPM_NO661)&&!_sot695&&!(typeof window!=='undefined'&&window.__CPM_NO788B))&&(/* [7.788.0] una voce sola: se il racconto centrale ospita gia' la panchina (sopra), qui non si ripete — altrimenti sarebbero due riquadri identici a schermo, che e' esattamente il difetto che il 7.536 aveva chiuso fra cronaca e panchina */
                   <div data-cpm="panchina" key={coachMsg.key} style={{...(_no548?{position:"absolute",left:0,bottom:0}:{alignSelf:"flex-start"}),pointerEvents:"none",animation:"chantPulse 6s ease-out forwards"}}>
                     <div style={{display:"inline-block",background:"rgba(10,18,12,0.9)",border:"1px solid rgba(134,239,172,0.35)",borderLeft:"3px solid #4ade80",borderRadius:8,padding:"5px 11px",maxWidth:"74vw",textAlign:"left"}}>
                       <span style={{fontSize:9,fontWeight:800,color:"#86efac",letterSpacing:1.2,textTransform:"uppercase",marginRight:7}}>Panchina</span>
