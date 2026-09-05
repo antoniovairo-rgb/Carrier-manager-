@@ -610,3 +610,70 @@ gate 677 s (+17%), fingerprint 00001505, 0 failure. Stessa classe di errore sosp
 della CI di GitHub sulla 7.777 — **NON verificato** che fosse quello.
 
 career-critical EXIT 0 · CI EXIT 0 · PARTITA-VERA OK. NON verificato sul telefono.
+
+## 7.785.0 — Il racconto non cancella il fatto
+
+**Collaudo PO 05/09**: «da quando c'è il nuovo motore le partite finiscono quasi sempre con pochi gol e
+le azioni pericolose extra eroe sono rare ed imbarazzanti».
+
+### La misura, e una misura scartata
+
+Primo censimento **SCARTATO**: 4 partite intere davano 0,75 gol/partita e zero gol ambientali, ma
+cambiando SOLO il nome dell'eroe — che semina il sorteggio di club e avversario — le stesse partite
+finivano 3-2 e 1-2. Non misurava il gioco, misurava *un mondo*.
+
+Rifatto su otto mondi: **1,13 gol/partita** contro i 2,6-2,8 del calcio vero, 1 gol non-eroe su 8
+partite. Il micro-simulatore ISOLATO è invece sano (0,73 casa + 1,13 fuori, gara pari, N=800;
+determinismo verde): produce ~2 gol/partita, ed `ev=2` in sei partite su sei. Non è il dado, è la
+consegna.
+
+### La catena, punto per punto
+
+Registro sui punti di uscita (`__CPM_GOL785`, sotto `__CPM_REC`):
+
+```
+nato 2 → costruzione avviata 2 → conclusa col gol 2 → al cancello 2 → DIVENTA la riga 2 → mangiato 2
+```
+
+**Sei gol su sei** mangiati all'ultimo passo dalla sequenza di libreria (7.666), che prende l'evento e
+lo riscrive con `ef:null`. Il tabellone perdeva il gol, la cronaca ci metteva sopra un giro palla.
+Stessi minuti in tutti i mondi: 58/59 e 83/85 — perché la libreria si apre solo se non c'è una
+costruzione in corso, e la costruzione **si chiude nello stesso tick in cui consegna il gol**.
+
+### Il rimedio, e la sua prima stesura corretta
+
+Gerarchia già scritta al 7.695: il gol è un FATTO del microsim, la libreria è RACCONTO.
+
+**v1 CORRETTA PRIMA DI PARTIRE**: chiudeva la porta alla libreria sul tick del gol. Guardiano appaiato:
+righe di libreria 40 col rosso, **0** col verde. Il registro del cancello (`__CPM_LIBGATE785`, stesso
+mondo e seme del guardiano) ha spiegato perché: su 25 tentativi la costruzione ne blocca 16 e la recita
+5-7, e le uniche finestre rimaste erano proprio i tick del gol. Aperture 5 col rosso, 0 col verde. La
+cura era peggiore.
+
+**v2**: la sequenza non perde il TURNO, perde solo la RIGA — parte dal timer, la sua prima riga esce
+1,3 s dopo come tutte le altre.
+
+### Misure
+
+Appaiata su 4 partite per lato, stessi mondi e semi, rosso `__CPM_NO785`:
+
+| | rosso | verde |
+|---|---|---|
+| gol del microsim nati | 8 | 8 |
+| **accreditati a tabellone** | **1** | **8** |
+| mangiati dalla libreria | 7 | 0 |
+| tabellone | 3-0 · 0-0 · 1-0 · 1-0 | 2-2 · 1-2 · 2-2 · 2-2 |
+| gol totali a partita | 1,25 | 3,75 |
+
+Guardiano sulla v2, tre run: gol del microsim 7/7, 6/6 accreditati, 0 mangiati; manovra-viva 63 e 45
+righe (libreria 46 e 32) contro le 35 della 7.784 e le 40 del rosso; tabellone raccontato = segnato.
+
+**DICHIARATO**: 3,75 gol/partita è SOPRA la banda del calcio vero. La parte ambientale è quella
+progettata (2/partita contro baseline 1,86); l'eccesso è l'eroe, che nell'autoplay converte ~2 scene su
+2 — una resa che un giocatore vero non ha. Da riguardare con partite giocate a mano.
+
+Nuova banda **`gol-del-simulatore`**: se un gol del micro-simulatore viene mangiato, il rituale va
+rosso. Verificata: va rossa col rosso (8 nati, 2 accreditati, 6 mangiati).
+
+career-critical EXIT 0 · CI EXIT 0 · fingerprint 00001505 · 0 failure · 13/13 bande.
+NON verificato sul telefono.

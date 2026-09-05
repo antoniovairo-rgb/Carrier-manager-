@@ -15,7 +15,7 @@ const b = await launchBrowser();
    PULITO — riaprire la partita nella stessa pagina fa ritrovare al gioco la carriera salvata e la
    seconda gara non si apre piu' (misurato due volte: timeout su openMatch). */
 const PARTITE_G = +(process.env.CPM_PARTITE_G || 2);
-const all = []; const MENTE = []; const ROSA = []; const SCORE = []; let page = null, ctx = null;
+const all = []; const MENTE = []; const ROSA = []; const SCORE = []; const GOL785 = []; let page = null, ctx = null;
 for (let g = 0; g < PARTITE_G; g++) {
   if (ctx) await ctx.close();
   ctx = await b.newContext({ viewport: { width: 412, height: 915 } });
@@ -36,6 +36,11 @@ for (let g = 0; g < PARTITE_G; g++) {
   /* [7.755.0] LA ROSA VERA: i cognomi dei 22 (e dell'eroe) di questa partita, per giudicare che ogni riga-fatto nomini uomini che esistono. */
   /* [7.756.0] IL TABELLONE: il punteggio finale del Match State di questa partita, per giudicare che i gol RACCONTATI siano esattamente quelli SEGNATI (§20: mai un gol inventato, mai un gol taciuto). */
   try { const sc = await page.evaluate(() => { const ms = window.__CPM_MS && window.__CPM_MS(); return ms && ms.score ? { h: ms.score.h | 0, a: ms.score.a | 0 } : null; }); if (sc) SCORE.push(sc); } catch (_e) {}
+  /* [7.785.0] IL GOL DEL SIMULATORE ARRIVA A TABELLONE. Il registro dei punti di uscita conta i gol del
+     micro-simulatore NATI e quelli MANGIATI prima dell'accredito. Per sei release ne spariva il 90% dentro
+     la sequenza di libreria e nessuna banda se ne accorgeva, perche' tutte guardavano cio' che si vedeva e
+     nessuna cio' che non arrivava. Ora se un gol viene mangiato il rituale va rosso. */
+  try { const gl = await page.evaluate(() => window.__CPM_GOL785 || null); if (gl) GOL785.push(gl); } catch (_e) {}
   try { const ros = await page.evaluate(() => { const mp = (window.__CPM_MP && window.__CPM_MP()) || []; const n = mp.filter(Boolean).map(q => String(q.n || '').trim()).filter(Boolean); const h = (window.__CPM_NARR669 && window.__CPM_NARR669() && window.__CPM_NARR669().eroe) || null; return n; }); ROSA.push(...ros); } catch (_e) {}
 }
 const T = await page.evaluate(() => window.__CPM_TURN616 || {});
@@ -114,6 +119,7 @@ const checks = [
   ['raccoglitore', `${mRacc} raccoglitori eletti su ${PARTITE_G} partite · banda ${2 * PARTITE_G}`, mRacc >= 2 * PARTITE_G],
   ['esiti-registrati', `${esiti.length} esiti di scena nel libro mastro su ${PARTITE_G} partite · banda ${2 * PARTITE_G}`, esiti.length >= 2 * PARTITE_G],
   ['tabellone', `gol raccontati ${_golH}-${_golA} · punteggio finale ${_scH}-${_scA} su ${SCORE.length} partite`, SCORE.length === PARTITE_G ? (_golH === _scH && _golA === _scA) : null],
+  ['gol-del-simulatore', (() => { const n = GOL785.reduce((x, g) => x + ((g.nato | 0)), 0), m = GOL785.reduce((x, g) => x + ((g.mangiato | 0)), 0), a = GOL785.reduce((x, g) => x + ((g.accreditato_casa | 0) + (g.accreditato_ospite | 0)), 0); return `${n} gol del microsim nati · ${a} accreditati · ${m} mangiati prima del tabellone`; })(), GOL785.length === PARTITE_G ? GOL785.reduce((x, g) => x + ((g.mangiato | 0)), 0) === 0 : null],
   ['nomi-veri', `${nomiOk}/${fattoRows.length} righe-fatto con un cognome della rosa (rosa ${_rosaSet.size} nomi)`, fattoRows.length >= 2 ? nomiOk === fattoRows.length : null],
 ];
 console.log('\n=== GUARDIANO PARTITA-VERA ===\n');
