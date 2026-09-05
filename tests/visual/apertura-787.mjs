@@ -22,6 +22,7 @@ const tot=await page.evaluate(()=>window.__CPM_SITS.length);
 const GIs=process.env.CPM_GI?process.env.CPM_GI.split(',').map(Number):(()=>{const o=[];for(let i=0;i<tot;i+=PASSO)o.push(i);return o;})();
 const R=[];
 for(const gi of GIs){
+  await page.evaluate(g=>{try{window.__CPM_RESEED&&window.__CPM_RESEED(g);}catch(e){}},gi);/* [7.788] ripetibilita': ogni scena parte dallo stesso dado, come fa il gate */
   let ok=false;try{ok=await page.evaluate(g=>window.__CPM_FORCE_SIT(g,true),gi);}catch(e){}
   if(!ok)continue;
   await sleep(300);
@@ -43,7 +44,10 @@ for(const gi of GIs){
     const d=W.map(q=>{const m=(q.md==null||q.md<0)?null:q.md;
       const h=(q.hx==null)?null:Math.hypot(q.x-q.hx,(q.z||0)-(q.hz==null?(q.z||0):q.hz));
       const best=(m==null)?h:(h==null?m:Math.min(m,h));
-      return{s:+((q.t-t0)/1000).toFixed(1),d:best==null?null:+best.toFixed(1),h:h==null?null:+h.toFixed(1),m:m==null?null:+m.toFixed(1)};}).filter(x=>x.d!=null);
+      /* [7.788] il bit 16 di `f` e' la MASCHERA DI TAGLIO (stessa finestra del mask, src/12 r.1931):
+         se il transitorio d'apertura cade sotto lo stacco nero, non e' un difetto che si vede; se cade
+         a scena scoperta, e' esattamente il codice 001 del PO. */
+      return{s:+((q.t-t0)/1000).toFixed(1),d:best==null?null:+best.toFixed(1),h:h==null?null:+h.toFixed(1),m:m==null?null:+m.toFixed(1),cut:((q.f|0)&16)?1:0};}).filter(x=>x.d!=null);
     const vals=d.map(x=>x.d).sort((a,c)=>a-c);
     const hv=d.map(x=>x.h).filter(x=>x!=null).sort((a,c)=>a-c);
     return{n:W.length,ph,med:vals.length?vals[vals.length>>1]:null,min:vals.length?vals[0]:null,max:vals.length?vals[vals.length-1]:null,
@@ -52,6 +56,8 @@ for(const gi of GIs){
   if(!o)continue;
   R.push({gi,...o});
   console.log('#'+gi+'  fase '+(o.ph||'?')+'  custodia mediana '+o.med+'u (eroe '+o.medEroe+'u)  (min '+o.min+' max '+o.max+')  oltre 3,5u: '+o.sopra35+'/'+o.tot);
+  if(o.tr)console.log('       traccia (s:tutti/eroe/stacco) '+o.tr.map(x=>x.s+':'+x.d+'/'+x.h+(x.cut?'/STACCO':'/scoperta')).join(' '));
+  if(o.scop!=null)console.log('       campioni con eroe oltre 3,5u A SCENA SCOPERTA: '+o.scop+'  ·  sotto lo stacco: '+o.sott);
 }
 await b.close();srv.close();
 const med=R.map(r=>r.med).filter(x=>x!=null).sort((a,c)=>a-c);

@@ -977,3 +977,58 @@ Il difetto resta **APERTO e documentato**. Per deciderlo serve un metro che riso
 taglia, e questo non ci arriva.
 
 career-critical EXIT 0 · CI EXIT 0 · fingerprint 00001505 · 0 failure · 13/13 bande.
+
+## Collaudo PO sulla 7.787 (secondo giro) — il codice 001 È RIPRODOTTO. La mia chiusura era sbagliata
+
+Tre note nuove, due con i numeri della bozza automatica:
+- 14' SIT #68 «Sforbiciata acrobatica!» → miss · **«compagno più vicino 17.9u, eroe ≥48.9u per 77
+  campioni»** + «sforbiciata scoordinata»
+- 41' SIT #113 «Assist di prima al compagno libero!» → assist riuscita · codice 000
+- 59' SIT #163 «Bordata dal limite!» → «Serve in area» → assist riuscita · **«Segna con il corpo al
+  contrario»**
+
+### Riprodotto, e con il suo numero
+
+Traccia sulla SIT #68 (fase interattiva, scena non risolta):
+
+```
+0,0s   tutti 12,8u   eroe 16,5u
+0,2s   tutti 28,7u   eroe 49,0u      ← il PO ha misurato ≥48,9u
+0,8s   tutti  0,0u   eroe  0,0u
+```
+
+All'apertura c'è un **transitorio**: il pallone è già nella posizione della nuova scena e i giocatori ci
+scivolano sopra. Su otto scene misurate col bit della maschera di taglio:
+
+| scena | eroe | stacco |
+|---|---|---|
+| gi68 | 49,0u | sotto lo stacco |
+| gi87 | 52,5u | sotto lo stacco |
+| gi113 | 16,8u | sotto lo stacco |
+| **gi17** | **29,2u** | **a scena scoperta** |
+| **gi163** | **6,9u** | **a scena scoperta** |
+
+Su 39 scene: **22 hanno almeno un fotogramma A SCENA SCOPERTA in cui nessuno sta entro 3,5 unità dal
+pallone**, fino a 63,1u (gi40) e 57,7u (gi50).
+
+### Perché avevo chiuso «non riprodotto», due volte
+
+1. **Campione a passo fisso**: gi17, gi87, gi68 non cadono su un multiplo di 5 o 6, e non li ho mai
+   aperti. Un campione regolare non è un campione rappresentativo.
+2. **Metrica sbagliata**: guardavo la MEDIANA sull'intera fase interattiva, ed è 0u perché il transitorio
+   dura un decimo o due. **Breve non vuol dire invisibile.** La metrica giusta è «esiste un fotogramma
+   scoperto senza nessuno sul pallone».
+
+### Una pista, con la sua riserva
+
+Lo snap di scena esiste già (`_hlSnap`). Il testimone che il 7.456 ha costruito apposta
+(`__CPM_STG456`) dice che su **39 cambi di staging su 39** i bersagli cambiano in massa (17-19 giocatori
+su 19 oltre 8u dal proprio, il più lontano 21-76u, mediana 39,8u) **senza un taglio armato** — che è
+esattamente ciò che quella nota chiama il difetto: «i ventidue restano dove sono e ci vanno a piedi».
+
+**RISERVA DICHIARATA**: quei cambi arrivano a ~2,5 s dal taglio, mentre il transitorio che ho misurato
+sta a 0-0,3 s. **Sono due eventi diversi**, e il secondo potrebbe essere il rilascio del fermo off-ball,
+cioè per progetto. Non ho ancora un quadro pulito, e oggi ho già revocato due rimedi partiti da un
+ragionamento che sembrava solido: **nessun rimedio qui**.
+
+**APERTO**, con i numeri, e con il verdetto di stamattina esplicitamente ritirato.
