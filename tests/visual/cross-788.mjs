@@ -14,7 +14,7 @@ const GLB=process.env.CPM_GLB!=='0';
 const srv=await startServer();const port=srv.address().port;
 const b=await launchBrowser();const page=await b.newPage({viewport:{width:412,height:915}});
 await installCdnRoutes(page);
-await page.addInitScript((o)=>{window.__CPM_GLB=o.glb;window.__CPM_REC=true;window.__CPM_CINE=1;window.__CPM_REALWAIT=true;
+await page.addInitScript((o)=>{window.__CPM_GLB=o.glb;window.__CPM_REC=true;window.__CPM_CINE=1;window.__CPM_REALWAIT=true;window.__CPM_PRESENT=1;/* ⚠️ [7.788] MANCAVA ANCHE QUI. `_asIfPlay=(window.__CPM_PRESENT===1)||!cpmtest` (src/12 r.4480): senza, snap di scena, ri-snap e fermo di lettura sono tutti spenti, e i ventidue non si posizionano come nel gioco. Le prime misure del cross (10 su 24 senza nessuno entro 3,5u) sono state prese in quel regime: vanno rifatte prima di credergli. */
   (o.rossi||[]).forEach(r=>{window[r]=1;});},{glb:GLB,rossi:(process.env.CPM_ROSSO||'').split(',').map(x=>x.trim()).filter(Boolean)});
 await openMatch(page,port);await sleep(GLB?4000:900);
 /* tutte le situation il cui intento e' `cross`: la famiglia che il PO ha segnalato due volte in una partita */

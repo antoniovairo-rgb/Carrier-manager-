@@ -1118,3 +1118,75 @@ scritta nel 7.681 — «senza etichetta, per misurare servono selettori sullo st
 
 career-critical EXIT 0 · CI EXIT 0 · fingerprint 00001505 · 0 failure · 13/13 bande.
 NON verificato sul telefono.
+
+---
+
+## 7.789 — REVOCATA. «Le azioni pericolose extra eroe sono rarissime»: non sono rare, non esistono
+
+*(nessun bump di versione: non cambia una virgola di ciò che il PO vede. Si committano la diagnosi e
+lo strumento che la regge.)*
+
+Nota PO: «le azioni pericolose extra eroe continuano ad essere azioni "matematiche" e non di calcio
+vero, devono essere super credibili e **sono anche rarissime**. A volte la telecronaca scritta racconta
+azioni importanti ma non si vedono».
+
+### La misura, prima di ogni ipotesi
+
+Tre partite intere, `__CPM_OCC695` letto a fine partita:
+
+| | P1 | P2 | P3 |
+|---|---|---|---|
+| occasioni **armate in 3D** | **0** | **0** | **0** |
+
+Non rarissime: **inesistenti**. Il registro è `null`, cioè il ramo che arma l'occasione non è stato
+imboccato nemmeno una volta in 270 minuti di gioco. La telecronaca però le racconta — da qui il «si
+raccontano ma non si vedono» del PO: è lo stesso difetto visto dal salotto.
+
+### Perché: la premessa del cancello si contraddice da sola
+
+Il cancello vuole **due cose nello stesso istante**:
+
+1. **palcoscenico libero** — niente costruzione in corso, niente contropiede, niente scena dell'eroe,
+   pallone in gioco, non è un calcio d'inizio;
+2. **minaccia ≥ 58** in quel tick.
+
+Nessuna delle due è sbagliata da sola. La minaccia c'è: su **1533 campioni** mediana 25, p75 33, p90 43,
+p95 52, p99 68 — la soglia 58 è il **p97**, severa ma raggiunta **8 · 29 · 20 volte per partita**. E il
+cancello si apre: passa tutte le sue condizioni di scena **6 · 2 · 3 volte** per partita (su 85 giri ne
+blocca 41 col pallone fuori gioco, 9-35 per un contropiede in corso, 4-12 per un calcio d'inizio).
+
+Il difetto è la **congiunzione**. Agli istanti in cui il cancello arriva davvero (5-9 per partita) la
+minaccia ha **mediana 25 e non supera 58 nemmeno una volta**. Il motivo è strutturale, non una taratura
+storta: **un momento libero è una pausa, e in una pausa il pericolo non c'è per definizione**. Pericolo
+massimo e campo libero sono incompatibili per costruzione. Il pericolo sale mentre la scena è occupata;
+quando la scena si libera il pericolo è già sceso.
+
+### Tre rimedi provati, tre revocati
+
+| # | rimedio | misura | esito |
+|---|---|---|---|
+| 1 | memoria del picco a 3' | «picco ricordato **0**» in 3 partite su 3 | **REVOCATO** — difetto mio: il registratore stava **dentro** il cancello e vedeva solo gli istanti affamati |
+| 2 | registratore dove la minaccia vive + finestra 8' | apre **1 volta in 5 partite** | **REVOCATO** — il cancello arriva quasi solo nel primo tempo (9', 13', 18', 31') e il primo picco è al 32' |
+| 3 | seconda porta a soglia 45 per la scena libera | **0** | **REVOCATO** — lì la minaccia sta a 25, 45 è irraggiungibile quanto 58 |
+
+Nessuna taratura salva la premessa. **Serve un'altra premessa**: l'occasione dovrebbe **creare** il
+pericolo partendo dalla pausa — come fa una diretta televisiva quando stacca su un'azione che *nasce* —
+invece di aspettare un pericolo che in quel momento non può esistere. È un **cambio di progetto**, non
+un ritocco, e non si spedisce di soppiatto dentro una release di taratura.
+
+### Un errore mio che è costato un'ora, a verbale
+
+Il contatore `__CPM_OCC695G` conta ancora il **dado** che il 7.714 ha sostituito con la minaccia:
+diceva «ok 7» per una regola **che non esiste più**, e mi ha mandato a cercare il difetto dalla parte
+sbagliata. Sostituito da `__CPM_APRI789`, che conta la condizione **vera** pezzo per pezzo
+(`qui/adv/thr/apre/piano`, più i vettori `advV`/`thrV` e il picco `pk`). Lezione: *uno strumento che
+misura una regola morta è peggio di nessuno strumento.*
+
+### Cosa resta committato
+
+- `_apri714` **identico a prima** (`_advO695>=48 && _thr714>=58`);
+- la strumentazione `__CPM_APRI789` e il testimone `thrPicco789` (sola lettura, dietro `__CPM_REC`);
+- le sonde `tests/visual/occ-789.mjs` e `tests/visual/thr-789.mjs`, ripetibili;
+- questo verbale.
+
+**Task #40 aperto**: «l'occasione extra-eroe deve nascere dalla pausa, non aspettare il picco».

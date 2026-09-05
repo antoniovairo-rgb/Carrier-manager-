@@ -1624,6 +1624,10 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   const azioneRef=useRef(null),_lastCatRef=useRef(-1);const lastPass738Ref=useRef(-99);const raccogliRef743=useRef(null);/* [7.743.0] chi va a prendere il pallone fermo: {i,t} */const lastFatto739Ref=useRef(-99);/* [7.739.0] minuto dell'ultima riga-fatto (ritmo 4') *//* [7.738.0] tick dell'ultimo passaggio eseguito dalla decisione *//* [7.537.0 v4] minuto dell'ultima battuta di catena: serve per alternare con il repertorio */
   const ponteRef=useRef(null),ponteIdxRef=useRef(-1);/* [7.532.0 NO544 — collaudo PO «da centrocampo in cronaca all'improvviso highlights di attacco: nessuna concatenazione»] IL PONTE: ~2' prima dell'highlight in calendario la cronaca SCORTA la palla verso il punto di nascita della scena (hlBallSpot della situation in arrivo) e le righe raccontano l'avvicinamento — l'highlight si apre dove il racconto ha portato il gioco *//* [7.532.0 v2] l'innesco vive nella TRAMA (flip di possesso con palla nel terzo difensivo del nuovo padrone), NON nel sorteggio di una riga poss: i pesi di zona 7.525 schiacciano le righe di recupero proprio quando la palla e' alta (misurato: 0 lanci in 2 partite). Cooldown 6' di gioco. *//* [7.530.0 collaudo PO «Non si riparte dal centro dopo un gol!» — rosso __CPM_NO536] il 7.525 toccava il centro per UN tick (300ms): un lampo, non una ripartenza. Ora allo scadere del conto kickRef nasce una RIPARTENZA RECITATA: kickoffRef tick di attesa al centro, le righe gia' sorteggiate vengono DIROTTATE su battute di calcio d'inizio (ordine sorteggi intatto), side = chi rimette in gioco (chi ha subito) */
   const gkSave695=useRef({t:0,side:null});/* [7.695.0] IL SEGNALE DELLA PARATA. Identita' stabile: il renderer lo legge a ogni fotogramma e si arma sul cambio di `t`, senza che una parata costi un re-render (stesso pattern di stagedSpot e cineBusy). */
+  /* [7.789.0 strumentazione] L'ULTIMO PICCO DI PERICOLO, per la sonda del cancello. Il rimedio che
+     se ne serviva e' REVOCATO (vedi la nota lunga a `_apri714`): resta il testimone, che dice quanto
+     tempo prima del momento libero il pericolo era passato di li'. */
+  const thrPicco789=useRef({min:-99,val:0});
   const occCool695=useRef(-99);/* [7.695.0] minuto dell'ultima occasione: una ogni undici minuti al massimo, o la partita diventa un tiro al bersaglio */
   const pianoLock693=useRef(0);/* [7.693.0 — IL PIANO DEL GOL POSSIEDE IL PALLONE. Rosso __CPM_NO693]
      MISURATO (traccia-693, tre costruzioni in una partita): il piano ESCE tutto (3/3, 2/2, 3/3) e le sue
@@ -2628,6 +2632,13 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           const _thr712=Math.round(100*_cl712(0.30*_zona+0.25*_porta+0.15*_spinta+0.15*_lib+0.10*_sup+0.05*_noPress));
           _ms712.threat=_thr712;_ms712.threatComp={zona:+_zona.toFixed(2),porta:+_porta.toFixed(2),spinta:+_spinta.toFixed(2),lib:+_lib.toFixed(2),sup:+_sup.toFixed(2),noPress:+_noPress.toFixed(2)};
           if(typeof window!=='undefined'&&window.__CPM_REC){const _tr=(window.__CPM_THREAT=window.__CPM_THREAT||[]);if(_tr.length<1200)_tr.push({min:_ms712.min,t:_thr712,turn:_ms712.turn});}
+          /* [7.789.0 strumentazione — IL PICCO SI REGISTRA DOVE LA MINACCIA VIVE, non dove la si
+             consuma.] Lezione a verbale: la prima stesura teneva il registratore DENTRO il cancello
+             delle occasioni, che ci arriva 5-9 volte a partita e proprio in quegli istanti vede una
+             minaccia bassa (mediana 25) perche' il campo e' libero. Registrava «picco 0» in tre partite
+             su tre e mi ha fatto credere che il pericolo non esistesse. Qui il picco si prende a ogni
+             tick, dove la minaccia e' quella vera: 8-29 tick per partita superano la soglia. */
+          if((_thr712|0)>=58)thrPicco789.current={min:_ms712.min|0,val:_thr712|0};
           /* [7.715.0 — FASE 3 IN OMBRA: LA DECISIONE NASCE DALLO STATO. Secondo consumatore del Match
              State, solo log. A ogni tick di gioco aperto si calcola la decisione del lato in possesso:
              ogni compagno e' un candidato ricevente con un punteggio di LINEA (avanzamento pesato 1,2,
@@ -3521,11 +3532,46 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                di compatibilita' dichiarato — le famiglie del piano presuppongono palla avanzata, e cade
                quando le Fasi 3-5 faranno nascere l'azione dai 22 invece che dal copione. Il dado muore. */
             const _thr714=(matchStateRef.current&&matchStateRef.current.threat)|0;
+            /* ⚠️ [7.789.0 — REVOCATO. La premessa del cancello si contraddice da sola, e nessuna
+               taratura la salva. A verbale perche' la diagnosi vale piu' del rimedio.]
+               Nota PO: «le azioni pericolose extra eroe … sono anche rarissime. A volte la telecronaca
+               scritta racconta azioni importanti ma non si vedono». MISURATO su tre partite intere:
+               occasioni armate in 3D ZERO, ZERO e ZERO. Non rarissime — inesistenti.
+               Il cancello (7.695 + 7.714) chiede due cose insieme: palcoscenico LIBERO (niente
+               costruzione, contropiede, scena dell'eroe, pallone fuori, calcio d'inizio) e minaccia
+               >= 58 IN QUELL'ISTANTE. Distribuzione della minaccia su 1533 campioni: mediana 25,
+               p75 33, p90 43, p95 52, p99 68 — la soglia e' il p97. E agli istanti in cui il cancello
+               arriva davvero (5-9 per partita) la minaccia ha mediana 25, mai sopra 58 nemmeno una
+               volta. Il motivo e' strutturale, non una taratura sbagliata: un momento LIBERO e' una
+               pausa, e in una pausa il pericolo non c'e' per definizione. Pericolo massimo e campo
+               libero sono incompatibili per costruzione.
+               TRE RIMEDI PROVATI E TUTTI REVOCATI, ciascuno con la sua misura: (1) memoria del picco a
+               3 minuti — «picco ricordato 0», perche' il registratore stava DENTRO il cancello e vedeva
+               solo gli istanti affamati (difetto mio); (2) registratore spostato dove la minaccia vive
+               e finestra a 8 minuti — apre UNA volta in cinque partite, perche' il cancello arriva
+               quasi solo nel primo tempo (9', 13', 18', 31') e il primo picco e' al 32'; (3) seconda
+               porta a soglia 45 per la scena libera — zero, perche' li' la minaccia sta a 25.
+               Serve un'altra premessa: l'occasione dovrebbe CREARE il pericolo partendo dalla pausa
+               (come fa una diretta televisiva quando stacca su un'azione che nasce), non aspettare un
+               pericolo che in quel momento non puo' esistere. E' un cambio di progetto, non un ritocco,
+               e non si spedisce di soppiatto dentro una release di taratura.
+               RESTA la strumentazione: `__CPM_APRI789` conta la condizione VERA. Il contatore vecchio
+               (`__CPM_OCC695G`) conta ancora il DADO che il 7.714 ha sostituito con la minaccia:
+               diceva «ok 7» per una regola che non esiste piu', e per un'ora mi ha mandato a cercare il
+               difetto dalla parte sbagliata. */
             const _apri714=(typeof window!=='undefined'&&window.__CPM_NO714)
               ?(_advO695>=48&&(Math.abs(hashStr("occ695|"+nx+"|"+((bgSimSeedRef.current|0))))%100)<72)
               :(_advO695>=48&&_thr714>=58);
+            /* [7.789 strumentazione] IL CONTATORE DEL CANCELLO ERA VECCHIO. Quello del 7.695 conta
+               ancora il DADO che il 7.714 ha sostituito con la minaccia: diceva «ok 7» per una regola
+               che non esiste piu', e per un'ora mi ha fatto cercare il difetto dalla parte sbagliata.
+               Qui si conta la condizione VERA, pezzo per pezzo. Sola lettura. */
+            if(typeof window!=='undefined'&&window.__CPM_REC){try{const _q=(window.__CPM_APRI789=window.__CPM_APRI789||{qui:0,adv:0,thr:0,picco:0,apre:0,piano:0,armate:0,advV:[],thrV:[]});
+              _q.qui++;if(_advO695>=48)_q.adv++;if(_thr714>=58)_q.thr++;if(_apri714)_q.apre++;if(_q.pk===undefined)_q.pk=[];if(_q.pk.length<40)_q.pk.push({nx:nx,pm:thrPicco789.current.min|0,pv:thrPicco789.current.val|0});
+              if(_q.advV.length<200)_q.advV.push(Math.round(_advO695));if(_q.thrV.length<200)_q.thrV.push(_thr714);}catch(_e789){}}
             if(_apri714){
               const _piO695=_pianoOcc695(_dO695>0?"home":"away");
+              if(typeof window!=='undefined'&&window.__CPM_REC){try{const _q=window.__CPM_APRI789;if(_q&&_piO695)_q.piano++;}catch(_e){}}
               if(_piO695){occCool695.current=nx;pendingGoalRef.current={ev:null,occ:1,dir:_dO695,ticks:0,righe:0,righeLato:0,cap:0,piano:_piO695,step:0};
                 if(typeof window!=='undefined'&&window.__CPM_REC){try{const _w=(window.__CPM_OCC695=window.__CPM_OCC695||{armate:0,parate:0,min:[],thr:[]});_w.armate++;if(_w.min.length<40)_w.min.push(nx);if(_w.thr.length<40)_w.thr.push(_thr714);}catch(_e){}}}}
           }catch(_eO695){}}
