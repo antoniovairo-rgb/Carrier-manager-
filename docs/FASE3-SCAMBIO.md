@@ -1254,3 +1254,59 @@ misurata su un campione che possa deciderlo. Il guardiano dice che nulla viene *
 
 career-critical EXIT 0 · CI EXIT 0 · fingerprint 00001505 · 0 failure · 191 situazioni · guardiano 12/12.
 NON verificato sul telefono.
+
+---
+
+## 7.791 — La freccetta televisiva guarda dalla parte giusta anche in trasferta
+
+Collaudo PO 05/09, con fotografia al 69': «la direzione della freccetta televisiva è sbagliata, la
+squadra dell'eroe attaccava dall'altro lato».
+
+### Le due «case» — terza volta che questa trappola si presenta
+
+Nel gioco convivono **due nozioni di casa**, ed è la stessa collisione del 7.52.2 (lato-mesh) e del
+7.278 (festa in trasferta):
+
+| | chi è «casa» | dove attacca |
+|---|---|---|
+| **frame 3D** | sempre la squadra dell'**eroe** (src/14 r.775: «l'eroe è sempre reso home nel 3D») | verso x alte, **sempre** |
+| **campo** | `homeTeamObj` (r.7286): in trasferta **l'avversario** | — |
+
+La capsula del verso leggeva la seconda mentre **descriveva la prima**. Il commento del 7.697 se n'era
+convinto in buona fede — «nel motore la casa attacca sempre a destra, quindi la mappa non mente» — ed è
+vero per il motore e falso per la capsula, che prende i **nomi** dall'altra nozione. La stessa
+convenzione eroe-centrica governa `score.h`, che è sempre il punteggio dell'eroe: lo usa `_lead38` per
+decidere se il mister lo risparmia.
+
+### Misura, su carriera vera (sonda `verso-791`)
+
+| | capsula | simulazione (linee difensive) | |
+|---|---|---|---|
+| **casa** prima | CEL › ‹ VER | home x=20,2 · away x=73,8 → a destra attacca CEL | coincide |
+| **trasferta** prima | **PER › ‹ CEL** | home x=20,3 · away x=79,2 → a destra attacca **CEL** | **diverge** |
+| **trasferta** dopo | **CEL › ‹ PER** | idem | coincide |
+| casa dopo | CEL › ‹ VER | idem | coincide |
+
+Rosso `__CPM_NO791`.
+
+### La seconda metà della nota: NON RIPRODOTTA
+
+«Dopo la sostituzione dell'eroe continuavano le interazioni interattive.» Due misure, entrambe a zero:
+
+1. **Sostituzione vera** (carriera, stanchezza 70 → uscita al 66-67'), con la risposta automatica
+   **spenta nell'istante dell'uscita** — da lì una scena interattiva resterebbe bloccata e sarebbe
+   impossibile non vederla: **0 scene** dopo l'uscita su 3 partite (45-106 campioni ciascuna), contro
+   **51 viste prima**.
+2. **Leva d'uscita tirata DENTRO una scena**, per aprire la porta della catena (r.6884/6934, che
+   rientrano in `hl_intro` senza chiedere se l'eroe sia in campo): **0 ingressi in scena nuovi** in
+   4 partite su 4. Si conclude solo la scena **già in volo**, che era partita con l'eroe in campo.
+
+**Due errori miei in questa misura, a verbale.** Il primo strumento usava la leva dentro il *provino*,
+che non è contesto «career» e dove una sostituzione non può avvenire per costruzione — e leggeva la fase
+dallo stato del 3D invece che da `__CPM_PHASE()`, con il cronometro fermo: 200 campioni tutti «playing»
+e mai il 90'. **Un verde da uno strumento fermo non è un verde.** Il secondo contava i **campioni** in
+fase di scena invece delle **scene**: 4 partite su 4 «rosse» con 28 voci, che erano 6-8 letture della
+stessa schermata di esito. Una scena che finisce non è una scena che comincia.
+
+Serve al PO dire **in quale situazione** l'ha visto (dopo un'espulsione? in Coppa? subito dopo quale
+azione?) — con quello si torna a cercare.

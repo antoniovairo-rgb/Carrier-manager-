@@ -7674,9 +7674,26 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                    destra (portieri fissi a gx 4 e 97), quindi la mappa e' stabile e non mente.
                    Rosso __CPM_NO697B. */}
                {phase==="playing"&&!(typeof window!=="undefined"&&window.__CPM_NO697B)&&(()=>{
-                 const _sgH=String((homeTeamObj&&(homeTeamObj.a||homeTeamObj.n))||"").slice(0,3).toUpperCase();
-                 const _sgA=String((awayTeamObj&&(awayTeamObj.a||awayTeamObj.n))||"").slice(0,3).toUpperCase();
-                 const _cH=(homeTeamObj&&homeTeamObj.c)||"#ef4444",_cA=(awayTeamObj&&awayTeamObj.c)||"#3b82f6";
+                 /* ⚠️ [7.791.0 collaudo PO 05/09: «la direzione della freccetta televisiva e' sbagliata,
+                     la squadra dell'eroe attaccava dall'altro lato»] LE DUE CASE. Rosso __CPM_NO791.
+                     E' la terza volta che questa trappola si presenta (7.52.2 sul lato-mesh, 7.278 sulla
+                     festa in trasferta, e adesso qui): nel gioco convivono DUE nozioni di «casa».
+                       · la casa del FRAME 3D — «l'eroe e' sempre reso home nel 3D» (r.775): la squadra
+                         dell'eroe attacca SEMPRE verso le x alte, in casa come in trasferta, e anche
+                         `score.h` e' sempre la sua (lo usa _lead38 per decidere se il mister lo risparmia);
+                       · la casa del CAMPO — `homeTeamObj` (r.7286), che in trasferta e' l'AVVERSARIO.
+                     La capsula leggeva la seconda, e il commento del 7.697 se ne era convinto in buona
+                     fede («nel motore la casa attacca sempre a destra, quindi la mappa non mente»): vero
+                     per il motore, falso per la capsula, perche' la capsula prende i NOMI dall'altra
+                     nozione. MISURATO (sonda verso-791, carriera vera): in casa «CEL › ‹ VER» e a destra
+                     attacca CEL — coincide; in TRASFERTA «PER › ‹ CEL» mentre le linee difensive dicono
+                     home x=20,3 e away x=79,2, cioe' a destra attacca CEL. La freccia indicava
+                     l'avversario. Ora la capsula e' EROE-CENTRICA come il frame che descrive. */
+                 const _eroeObj791=(typeof window!=="undefined"&&window.__CPM_NO791)?homeTeamObj:((isNatCtx||isMatchHome)?homeTeamObj:awayTeamObj);
+                 const _avvObj791=(typeof window!=="undefined"&&window.__CPM_NO791)?awayTeamObj:((isNatCtx||isMatchHome)?awayTeamObj:homeTeamObj);
+                 const _sgH=String((_eroeObj791&&(_eroeObj791.a||_eroeObj791.n))||"").slice(0,3).toUpperCase();
+                 const _sgA=String((_avvObj791&&(_avvObj791.a||_avvObj791.n))||"").slice(0,3).toUpperCase();
+                 const _cH=(_eroeObj791&&_eroeObj791.c)||"#ef4444",_cA=(_avvObj791&&_avvObj791.c)||"#3b82f6";
                  /* ⚠️ [7.698.0 collaudo PO: «nuovo pannello con le frecce televisivo, meno invadente e
                      piu' moderno»] La prima stesura (7.697) era una fascia piena da bordo a bordo coi due
                      colori a tutta altezza: leggibile ma pesante — in fotografia sembra un cartello
