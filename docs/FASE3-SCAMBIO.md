@@ -750,3 +750,42 @@ versione insieme. Il numero da tenere è quello di adesso, su sei mondi.
 **Resta non verificato**: la resa con partite giocate A MANO. Il banco sceglie con una politica
 seedata; un giocatore vero sceglie diversamente, e la percentuale può cambiare in entrambe le
 direzioni. È l'unico numero che il collaudo del PO può dare e il banco no.
+
+## Strumento (nessuna release di gioco) — `codici-787.mjs`: il censimento dei codici del PO
+
+La coda delle note del PO parla per codici, e il gioco ha già il rilevatore che li accende
+(`draftBugNote`, esposto come `__CPM_DRAFTNOTE`: lo stesso che scrive le righe che il PO incolla). Ciò
+che mancava era un modo di farlo girare su un campione decente.
+
+`sguardo-696` lo fa su scene VERE ma aspetta che la partita gliele porti: **misurato oggi, 2 scene
+utili in 25 minuti**, tutte dallo stesso mondo. Su due scene non si giudica niente. Il nuovo strumento
+forza le scene una per una nello stesso regime del gioco vero, e il campione sale a 39.
+
+### Il limite del banco, finalmente con un numero
+
+| regime | campioni per scena | codici accesi |
+|---|---|---|
+| GLB ON | 16-19 (≈2,3 Hz) | **0/12** |
+| GLB OFF | 26-69 (≈7 Hz) | **4/39** |
+| telefono del PO | ~420 per una scena da 7 s (60 Hz) | quelli che segnala |
+
+**Triplicando i campioni compaiono codici che prima erano invisibili.** È la ragione per cui i miei
+censimenti tornano da mesi con «non riprodotto»: non è una difesa del codice, è un limite dello
+strumento, e i detector che vivono sul singolo fotogramma (007 camera, 014 flipper, 011 congelata) a
+2,3 Hz non possono accendersi per costruzione. Lezione già scritta al 7.598 e al 7.665; qui ha un
+numero.
+
+### Cosa si accende davvero sulla 7.786 (39 scene, GLB OFF)
+
+- **codice 001 «apertura scena»** — 2/39: all'apertura il pallone non è ai piedi di nessuno dei nostri
+  (compagno più vicino **3,6u** e **4,0u**, eroe ≥4,6u, per 9-10 campioni). La soglia del rilevatore è
+  3,5u su almeno il 75% dei campioni fra 0,75 s e 2,4 s dall'inizio.
+- **codice 007 «camera trema»** — 2/39: **1,5 e 1,7 inversioni di direzione al secondo**, passo massimo
+  1,84 e 2,21 unità.
+- 003, 004, 006, 011, 012, 014, SALTO, uscita dal campo: **0/39**.
+- 000 «secondo gesto sull'eroe»: 0 scene con due montaggi (contatore in gioco `__CPM_G000`, GLB ON;
+  con GLB OFF il contatore non si accende affatto perché senza modelli non esistono clip — 28 scene
+  aperte, zero registrazioni).
+
+**NON verificato**: che questi siano gli stessi episodi che il PO vede. A 7 Hz il banco vede la coda
+della distribuzione, non il corpo.
