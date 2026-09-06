@@ -1533,3 +1533,52 @@ semplice fermo di gioco. Corretti: aperte 2, **armate 2**, perse 0. Poi ho ipoti
 «scappasse» perché continuava a correre e ho fermato la spinta all'armamento: **4 su 12 contro 3 su 12**,
 nessun effetto — l'ipotesi era sbagliata, e la causa vera resta da trovare (la popolazione è **bimodale**:
 otto aperture buone attorno a 6-8 u e quattro pessime attorno a 25-33 u).
+
+---
+
+## 7.798 — Se il pallone parte, qualcuno l'ha colpito
+
+Codice 000 «gesto scoordinato», segnalato dal PO **quattro volte**: SIT #178 «Sterzata d'esterno e brucia
+il terzino», #113 «Assist di prima senza guardare», #17 «Cross teso», #87 «Cross cieco di prima».
+
+### La misura
+
+| | prima | dopo |
+|---|---|---|
+| azioni che finiscono in **rete o assist** mentre il gesto **non tocca il pallone** | **91 / 573 (15,9 %)** | **0** |
+| — di cui gol | 51 | 0 |
+| — di cui assist | 40 | 0 |
+
+**Una azione su sei.** «Finta e tiro» che segna **senza calciare**. «Dribbling portiere» che segna senza
+calciare. «Scatto e servi il compagno» che serve senza calciare. Tutte di famiglia `dribble` (38) o
+`build` (53). Col rosso `__CPM_NO798` acceso tornano 91.
+
+### La causa
+
+Il vocabolario dei gesti ha **sei voci in tutto** — kick, volley, header, penalty, dribble, tackle — e
+per un'azione che ne richiederebbe **due** (la finta **e poi** il tiro) ne viene resa **una sola**: la
+prima, cioè quella che il pallone non lo manda via.
+
+La regola nuova è quella del 7.784 applicata dall'altro lato: il 7.784 impediva che una **consegna**
+fosse resa come conclusione; questa impedisce che una **conclusione** (o una consegna) sia resa come una
+**conduzione**. Il gesto segue l'esito dichiarato, che è quello che il pallone fa davvero.
+
+### Un errore mio, prima di trovare la forma giusta
+
+Avevo inventato **un lessico mio** di «gesti senza calciata» e contato le etichette che lo usavano:
+**14 casi, e nessuna delle quattro segnalate dal PO**. Solo guardando **esattamente quelle quattro** il
+difetto si è mostrato per quello che è — e il criterio giusto non aveva bisogno di lessici: *se il
+pallone parte, qualcuno deve averlo colpito*.
+
+### Le due baseline, e come sono state rigenerate
+
+Il gate è andato rosso due volte, ed è il suo mestiere. **backbone-regression**: 73 scene, 91 azioni —
+verificato a macchina che **tutte e 91** fossero della forma `dribble/build → shot/pass`, zero
+cambiamenti di altra natura, e il 91 combacia col numero misurato dalla sonda. **timeline**: DRIFT=5 su
+24 nella `decision-baseline`, e le cinque righe cambiano **solo il gesto** — `intent` e stato del
+pallone restano identici. Solo dopo averlo verificato le baseline sono state rigenerate.
+
+### Dichiarato e non risolto
+
+La **finta che precede non si vede comunque**, perché la clip resta una sola: renderne due in sequenza è
+un lavoro sul vocabolario dei gesti, non su questa riga.

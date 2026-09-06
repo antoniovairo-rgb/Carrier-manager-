@@ -1644,6 +1644,25 @@ function deriveHL(sit,act){
      le loro varianti di consegna (header_*, freekick_cross_*). Misura: 9 coppie situation x azione
      rese come conclusione con esito assist -> 0. */
   if(type==="shot"&&act&&act.rew==="assist"&&!(typeof window!=="undefined"&&window.__CPM_NO784))type="pass";
+  /* ⚠️ [7.798.0 — SE IL PALLONE PARTE, QUALCUNO L'HA COLPITO. Rosso __CPM_NO798]
+     Codice 000 «gesto scoordinato», segnalato dal PO QUATTRO volte (SIT #178, #113, #17, #87).
+     MISURATO sul catalogo intero: 91 azioni su 573 — UNA SU SEI — finiscono in RETE (51) o in ASSIST
+     (40) mentre il gesto reso e' una clip di CONDUZIONE (`dribble`), che il pallone non lo tocca mai.
+     Sono tutte di famiglia `dribble` (38) o `build` (53): «Finta e tiro» che segna senza calciare,
+     «Dribbling portiere» che segna senza calciare, «Scatto e servi il compagno» che serve senza
+     calciare. Il vocabolario delle clip ha sei voci in tutto — kick, volley, header, penalty, dribble,
+     tackle — e per un'azione che ne richiederebbe DUE (la finta e poi il tiro) ne viene resa una sola:
+     quella sbagliata, perche' e' la prima e non quella che manda via il pallone.
+     La regola qui e' la stessa del 7.784, applicata dall'altro lato: il 7.784 impediva che una CONSEGNA
+     fosse resa come conclusione; questo impedisce che una CONCLUSIONE — o una consegna — sia resa come
+     una conduzione. Il gesto segue l'esito dichiarato, che e' quello che il pallone fa davvero.
+     Resta aperto, e dichiarato, il difetto piu' fine: la finta che precede non si vede comunque, perche'
+     la clip e' una sola. Renderne due in sequenza e' un lavoro sul vocabolario dei gesti, non su questa
+     riga. */
+  if(act&&(type==="dribble"||type==="build")&&!(typeof window!=="undefined"&&window.__CPM_NO798)){
+    if(act.rew==="goal")type="shot";
+    else if(act.rew==="assist")type="pass";
+  }
   // ── VARIANT (nuovo livello cinematografico) ──
   let variant=null;
   /* [7.386.0 collaudo PO #111 «Non e' rasoterra»] IL PASSAGGIO NON AVEVA VARIANTI. Tiro, cross e colpo
