@@ -1582,3 +1582,49 @@ pallone restano identici. Solo dopo averlo verificato le baseline sono state rig
 
 La **finta che precede non si vede comunque**, perché la clip resta una sola: renderne due in sequenza è
 un lavoro sul vocabolario dei gesti, non su questa riga.
+
+---
+
+## 7.799 — REVOCATA per mancanza di un metro, non per una misura contraria
+
+*(nessun bump: resta il comportamento della 7.798. Si committano strumento e diagnosi.)*
+
+Nota PO (7.787, SIT #153 «Bordata da centrocampo» → goal): «**codice 111 — portiere fuori tempo**».
+
+### L'osservazione c'è, ed è netta
+
+In **tutti** i tuffi che sono riuscito a fotografare — cinque, su più passate — il tuffo si arma a
+**0,58-0,62 s su un volo di 0,57-0,60 s**: rapporto istante/durata ≈ **1,03**. Il portiere si muove
+**quando il pallone è già arrivato**. Non è «tardi»: è «dopo».
+
+**La causa è leggibile**: il ramo del 7.652 voleva un portiere *battuto* — giusto — ma l'ha legato alla
+**posizione** del pallone («ultime quattordici unità»), e una soglia di posizione su una traiettoria che
+finisce in porta scatta per forza alla fine. Un portiere battuto vero **parte quando parte il tiro** e ci
+arriva tardi: è l'allungo a essere corto, non la partenza a essere in ritardo.
+
+### Perché si revoca
+
+Il rimedio provato — armare il tuffo sul **tempo** (tre decimi dalla partenza dell'arco) invece che sulla
+posizione — alla ri-misura **non ha spostato niente**. A quel punto ho guardato il **metro** invece del
+rimedio:
+
+| passata | tuffi osservati |
+|---|---|
+| 1ª | **4** |
+| 2ª | 3 |
+| 3ª | **0** |
+| 4ª | **0** |
+| 5ª | 1 |
+
+Codice quasi identico, campione portato fino a **settantadue azioni forzate**. Un metro che oscilla così
+non può promuovere né bocciare un rimedio — è la stessa lezione del 7.617 sul metro del portatore.
+
+### Due errori miei, entrambi a verbale
+
+1. La prima stesura strumentava **uno solo** dei **nove** siti che armano il tuffo, e contava zero: uno
+   zero che diceva qualcosa sulla sonda e niente sul gioco.
+2. Aggiungendo tre campi al testimone (stato dell'arco e post-arco) il conteggio è andato a **zero due
+   volte di fila** — non perché il gioco fosse cambiato, ma perché **il testimone taceva**.
+
+**Resta la strumentazione su tutti e nove i siti.** Chi riprende il punto parte da un'osservazione
+precisa e da uno strumento che va prima reso ripetibile.
