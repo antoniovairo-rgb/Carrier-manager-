@@ -452,6 +452,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   // Dynamic HL count — based on match conditions, NOT random
   const numHLRef=useRef(0);
   const hlTimesRef=useRef([]);
+  const _ultHL803=useRef({ult:-99,ultMin:-1,storia:[]});
   const [numHL,setNumHL]=useState(()=>{
     if(resumeState){/* [7.150.0] ripresa: gli HL si rischedulano nella SOLA finestra rimanente [clock..88] → conteggio ridotto */
       var _c0=Math.max(0,Math.min(86,resumeState.clock|0));var _nR=clamp(Math.round((88-_c0)/16),1,4);numHLRef.current=_nR;return _nR;}
@@ -2977,7 +2978,69 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
         const _lead38=scoreRef.current.home-scoreRef.current.away;
         const _mgmt38=_lead38>=2&&nx>=78&&(hashStr((player.name||"x")+"|mg38|"+(player.season||1)+"_"+(player.week||0))%5)<3;/* seedato ~60%: mai routine fissa */
         const _subDue38=!onBenchRef.current&&!subbedOffRef.current&&!benchStart&&(context==="career"||context==="cup")&&((subOffAtRef.current!=null&&nx>=subOffAtRef.current)||_mgmt38);
-        if(!_subDue38&&hlIdx<hlTimesRef.current.length&&nx>=hlTimesRef.current[hlIdx]){
+        /* [DIAGNOSI — solo osservazione, nessun cambio di comportamento]
+           Tre tentativi di regista sono morti sulla stessa soglia: «tre voci su cinque
+           dell'andamento». Ma il censimento, fatto leggendo il Match State dall'esterno, diceva
+           che quella soglia e' vera nel 13% dei minuti — e dentro il regista non si accendeva
+           quasi mai. Una delle due misure mente, e il sospetto e' che le grandezze non siano le
+           stesse: il censimento leggeva `ms.poss` e `ms.momentum`, il regista `possessionRef` e
+           `momentumRef`. Qui si registrano le cinque voci ESATTAMENTE dove il regista decideva,
+           a ogni minuto, per confrontarle con il censimento. Sola lettura sotto __CPM_REC. */
+        if(typeof window!=='undefined'&&window.__CPM_REC){try{
+          const _m=matchStateRef.current||null;
+          const _bxD=(_m&&_m.ball&&typeof _m.ball.x==='number')?_m.ball.x:null;
+          const _dGD=(scoreRef.current.home|0)-(scoreRef.current.away|0);
+          const _L=(window.__CPM_VOCI=window.__CPM_VOCI||[]);
+          if(!_L.length||_L[_L.length-1].min!==nx)_L.push({min:nx,
+            turnoMS:(_m&&_m.turn)|0,
+            momMS:(_m&&_m.momentum)|0, momRef:momentumRef.current|0,
+            possMS:(_m&&_m.poss)|0,   possRef:possessionRef.current|0,
+            bx:_bxD==null?null:+_bxD.toFixed(1), dG:_dGD});
+        }catch(_eD){}}
+        /* [PROVA — regista v4: l'andamento si giudica IN RELATIVO. Rosso __CPM_NO803]
+           Direttiva PO: «i momenti dell'eroe non devono essere preconfezionati, ma basarsi
+           sull'andamento della partita» · «il regista deve essere UNO SOLO».
+
+           TRE VERSIONI MORTE, E IL PERCHE' MISURATO. Il registratore della decisione dice che
+           nella prima ora l'andamento non arriva MAI a tre voci su cinque: 0 su 48 minuti in tre
+           partite su quattro, con cancello aperto 45/48 e passo 48/48. Il regista era coerente:
+           non apriva perche' non c'era niente da aprire. Il 9% di minuti forti censito e' quasi
+           tutto DOPO il 56'. E il possesso non supera mai 53 in 336 minuti (mediana 44), quindi
+           la voce «possesso >= 52» era spenta nel 91% dei casi: un posto sprecato su cinque.
+
+           COSA CAMBIA. (a) «Forte» diventa RELATIVO: si tiene la memoria degli ultimi dieci
+           minuti e si apre sul PICCO di quella finestra — cosi' «forte» vuol dire forte PER
+           QUESTA PARTITA, e una gara bloccata ha comunque i suoi momenti migliori. (b) La
+           tabella di marcia e' DISTRIBUITA (attesi = budget x frazione di partita trascorsa)
+           invece della soglia che scattava solo alla fine: era quella a produrre il metronomo
+           [64,72,80,88] in dodici partite su sedici. (c) La voce del possesso scende a 48, sopra
+           la mediana vera. Il passo minimo di otto minuti resta: niente raffiche. */
+        const _no803=(typeof window!=='undefined'&&window.__CPM_NO803);
+        const _prog803=hlTimesRef.current[hlIdx];
+        const _ms803=matchStateRef.current||null;
+        const _bx803=(_ms803&&_ms803.ball&&typeof _ms803.ball.x==='number')?_ms803.ball.x:50;
+        const _dG803=(scoreRef.current.home|0)-(scoreRef.current.away|0);
+        const _sp803=(((_ms803&&_ms803.turn)|0)>0?1:0)+((momentumRef.current|0)>=55?1:0)
+                    +((possessionRef.current|0)>=48?1:0)+(_bx803>=58?1:0)+((_dG803<0&&nx>=60)?1:0);
+        /* memoria degli ultimi dieci minuti: il picco e' relativo alla partita che si sta giocando */
+        const _M803=_ultHL803.current;
+        if(_M803.ultMin!==nx){_M803.ultMin=nx;_M803.storia.push(_sp803);if(_M803.storia.length>10)_M803.storia.shift();}
+        const _max803=_M803.storia.length>1?Math.max.apply(null,_M803.storia.slice(0,-1)):0;
+        const _picco803=(_sp803>=2&&_sp803>=_max803);
+        const _PASSO803=8;
+        const _att803=nx-(_M803.ult|0);
+        const _budget803=hlTimesRef.current.length;
+        const _attesi803=Math.floor(_budget803*Math.max(0,Math.min(1,(nx-12)/76)));
+        const _indietro803=(hlIdx<_attesi803);
+        const _apertoDa803=Math.min(_prog803|0,12);
+        const _apre803=_no803?(nx>=_prog803)
+          :(nx>=_apertoDa803&&_att803>=_PASSO803&&(_picco803||_indietro803));
+        if(typeof window!=='undefined'&&window.__CPM_REC&&!_subDue38&&hlIdx<hlTimesRef.current.length&&_apre803){
+          try{(window.__CPM_HL803=window.__CPM_HL803||[]).push({min:nx,prog:_prog803|0,sp:_sp803,
+            perche:_no803?'orologio':(_picco803?'andamento':'tabella')});}catch(_e803){}
+        }
+        if(!_subDue38&&hlIdx<hlTimesRef.current.length&&_apre803){
+          _M803.ult=nx;
           if(onBenchRef.current||subbedOffRef.current){setHlIdx(hi=>hi+1);}else{
             const _sc=scoreRef.current;
             const _realCtx=_sc.home>_sc.away?"winning":_sc.home<_sc.away?"losing":"drawing";

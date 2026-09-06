@@ -1800,3 +1800,87 @@ verificato.
 sul rimedio — perché tarare contro un banco che oscilla è esattamente il modo di convincersi di
 aver risolto qualcosa. Il codice del regista è stato tolto: in `src/14` resta solo lo strumento
 `__CPM_CRO802` (le righe di telecronaca col loro minuto), che è sola lettura.
+
+---
+
+## 7.802 — Il regista è UNO SOLO, e guarda la partita (dopo tre revoche)
+
+**Direttiva PO 06/09**: «i momenti dell'eroe non devono essere preconfezionati, ma basarsi
+sull'andamento della partita ed altri aspetti» · «il regista in partita degli eventi deve essere
+UNO SOLO».
+
+### La misura che condanna il calendario
+
+16 partite, regime rosso (`__CPM_NO803`, cioè il comportamento di sempre):
+
+| | rosso |
+|---|---|
+| prima scena | **sempre il 15'** — ampiezza 0' su 16 partite |
+| ultima scena | 84-86' |
+| fase forte della partita al momento dell'apertura | **8 su 86 — il 9%** |
+| distanza minima fra due momenti | **1'** (coppie 64-65, 65-66, 79-80) |
+
+Il 9% coincide col censimento dell'andamento: **l'orologio e il caso sono indistinguibili**.
+
+### Il rimedio
+
+Il calendario resta il **budget** — quanti momenti l'eroe ha in quella partita non cambia, e con
+esso la carriera. Il **minuto** lo sceglie un solo punto, che legge l'andamento **in relativo**:
+memoria degli ultimi dieci minuti, si apre sul **picco** di quella finestra. Così «forte» vuol
+dire *forte per questa partita*, e anche una gara bloccata ha i suoi momenti migliori. Passo
+minimo di otto minuti (niente raffiche) e tabella di marcia distribuita sulla partita.
+
+| ON contro rosso, 16 partite per regime, stessi semi | v4 | rosso |
+|---|---|---|
+| momenti aperti dall'**andamento** | **68/76** | 0/86 |
+| momenti aperti dall'**orologio** | 0 | 86/86 |
+| **fase forte all'apertura** (controllo indipendente) | **23/76 — 30 %** | 8/86 — 9 % |
+| ampiezza della prima scena | **17'** | **0'** |
+| distanza minima fra momenti | **8'** | 1' |
+| momenti totali | **76** | 86 |
+
+Il 30 % contro 9 % è il numero che regge il rimedio, perché **non dipende dall'etichetta che dà
+il regista a se stesso**: è la domanda indipendente «al momento in cui la scena si è aperta, la
+partita era davvero in una fase forte?». Tre volte e mezzo meglio del calendario.
+
+**PREZZO DICHIARATO: 76 momenti contro 86, il 12 % in meno.** È il costo di aspettare che la
+partita offra il momento invece di prenderlo a orario, ed è coerente con la regola del PO — «se
+servono meno highlight per rendere la partita più realistica, riduceteli». `career-critical`
+**PASS**: la carriera non si muove.
+
+### Tre versioni revocate prima di questa
+
+- **v1** — una scadenza per ogni tacca: i ritardi si sommavano e si scaricavano in raffica
+  (`[21,85,86,87,88,89]`), con due partite su sedici a **un solo momento**. 3/12 dall'andamento,
+  e qualità *peggiore* dell'orologio (3/12 contro 5/12).
+- **v2** — memoria del minuto invece dell'istante: **1/12**. Peggio.
+- **v3** — soglia assoluta e recupero di coda: un **metronomo**, `[64,72,80,88]` identico in
+  **12 partite su 16**, con l'eroe senza un momento per la prima ora in 13 su 16.
+
+### Il registratore della decisione, che ha spiegato tutto
+
+Minuti 9-56, quattro partite: cancello aperto 45/48, passo 48/48, eroe in panca 0/48, budget
+finito 0/48 — e **andamento ≥ 3 voci: 0 su 48** in tre partite su quattro. Il regista era
+coerente: non apriva perché non c'era niente da aprire.
+
+**Il 9 % di minuti forti è quasi tutto dopo il 56'**, e il possesso **non supera mai 53** su 336
+minuti (mediana 44): la voce «possesso ≥ 52» era spenta nel 91 % dei casi. La soglia assoluta era
+tarata su una partita che non esiste. Da qui il passaggio al criterio relativo.
+
+### Correzione a verbale
+
+Avevo scritto che il momento dell'highlight «non ha una sola lettura del Match State». **È
+falso**: tre agganci reattivi esistono (gol subito, 60', 72'). Il quadro giusto è che il
+calendario è la spina dorsale e due dei tre agganci sono a loro volta orari.
+
+### Aperto
+
+- **La prima scena cade al 12' in 15 partite su 16.** Ho tolto l'orologio dal resto della gara,
+  non dall'apertura.
+- I due agganci reattivi a minuto fisso (60', 72') non sono stati toccati.
+- Una partita su sedici scende a 2 momenti, sotto la banda del rosso.
+
+### Rituali
+
+`career-critical` **PASS** · `npm run ci` **fingerprint 00001505 · 0 failure** · guardiano
+partita-vera 13 bande verdi (tabellone 4-4 = 4-4, gol del microsim 7 nati / 7 accreditati).
