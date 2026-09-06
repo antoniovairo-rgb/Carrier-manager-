@@ -5305,7 +5305,40 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
           }catch(_e695){}
         }
         if(oppActType&&oppMesh){
-          oppActT+=aDt;const _OT=oppActType==="gk_dive"?((!(typeof window!=='undefined'&&window.__CPM_NO465)&&ballArcActive)?Math.max(oppMesh._diveDur||0.90,oppActT+0.05):(oppMesh._diveDur||0.90))/* [7.465.0] IL TUFFO NON PUO' FINIRE PRIMA DEL PALLONE. Anche con la durata calcolata sul volo, su 2 tuffi su 5 il gesto si spegneva col portiere a meta' distesa (26% e 45%): stimare la durata non basta, perche' il tempo d'arrivo dipende anche dal rallentatore e dal frame-rate. Finche' l'arco della conclusione e' VIVO il tuffo resta vivo — non si indovina la durata, si guarda il pallone. */:oppActType==="opp_tackle"?0.85:oppActType==="gk_block"?(((typeof window!=='undefined'&&window.__CPM_NO576)?0:1)&&ballArcActive?Math.max(0.62,oppActT+0.05):0.62)/* [7.552.0 codice 111 «portiere fuori tempo» + «Non ha effettuato la parata»] IL RIFLESSO MUORE PRIMA DEL PALLONE. Il 7.465 ha legato la vita del TUFFO a quella dell'arco («non si indovina la durata, si guarda il pallone») ma ha lasciato fuori il RIFLESSO, che resta inchiodato a 0,62s fissi. MISURATO (portiere-552): su gk_block il gesto si spegne con il volo del pallone al 71% e al 35% — il portiere si oppone, finisce, torna in piedi normale, E POI arriva la palla. Da fuori e' esattamente «non ha effettuato la parata». Ora vale la stessa regola del tuffo: finche' l'arco e' vivo, il riflesso e' vivo. */:0.55,u=Math.min(oppActT/_OT,1),sw=Math.sin(u*Math.PI);/* [7.203.0] il riflesso è più RAPIDO del tuffo · [7.215.0] la durata del tuffo segue quella del tiro: il portiere arriva sulla palla, non prima */
+          /* ⚠️ [7.800.0 — IL PORTIERE HA UN TEMPO DI REAZIONE. Rosso __CPM_NO800]
+             MISURATO (quattro partite intere, 39 tuffi con un arco in corso): l'istante del tuffo era
+             ZERO in tutti e trentanove — mediana, quartili e MASSIMO — contro un volo mediano di 0,52 s.
+             Il portiere partiva NELLO STESSO ISTANTE del pallone, senza un decimo di reazione: su un
+             tiro corto quasi non si nota, su una bordata da centrocampo si buttava subito e restava a
+             terra mentre la palla volava per mezzo secondo. E' il «codice 111 — portiere fuori tempo»
+             del PO, e non era un ritardo: era un ANTICIPO, di tutto il tempo di volo.
+             Il ritardo si mette QUI e in un punto solo, dove il tempo dell'azione avanza — non nei nove
+             siti che armano il tuffo, che e' l'errore che ho gia' fatto due volte su questo punto: il
+             tuffo resta armato nell'istante giusto (la decisione e' presa), ma il CORPO non parte finche'
+             non e' passato il tempo di reazione. Due decimi e mezzo: e' il tempo di un portiere umano, e
+             resta ampiamente dentro il volo mediano di mezzo secondo, quindi il tuffo si vede ancora
+             tutto. Vale solo per il tuffo e solo quando c'e' un arco in corso: sulle palle inattive e
+             sulle altre azioni del portiere non cambia niente. */
+          /* ⚠️ NIENTE `return` QUI DENTRO: questo blocco vive nella funzione di fotogramma, e uscirne
+             salterebbe camera, pallone e tutto il resto del rendering. L'attesa si esprime NON facendo
+             avanzare il tempo dell'azione: con `oppActT` fermo a zero il corpo resta nella posa iniziale
+             — il portiere in piedi — e tutto il resto del fotogramma continua a girare. */
+          let _fermo800=false;
+          if(oppActType==="gk_dive"&&!(typeof window!=='undefined'&&window.__CPM_NO800)){
+            if(oppActT===0&&typeof ballArcActive!=='undefined'&&ballArcActive&&typeof ballArcT!=='undefined'&&ballArcT<0.10&&sr.current._gkWait800==null)sr.current._gkWait800=0.25;
+            if((sr.current._gkWait800||0)>0){
+              sr.current._gkWait800=Math.max(0,sr.current._gkWait800-aDt);
+              sr.current._gkAtt800=(sr.current._gkAtt800||0)+aDt;/* quanto ha atteso davvero: e' la misura */
+              _fermo800=(sr.current._gkWait800>0);
+              if(!_fermo800)sr.current._gkWait800=null;/* attesa finita: si riarma al tuffo successivo */
+            }
+          }
+          if(!_fermo800&&oppActT===0&&typeof window!=='undefined'&&window.__CPM_REC){try{
+            const _M=(window.__CPM_GKM800=window.__CPM_GKM800||[]);
+            if(_M.length<200)_M.push({tipo:String(oppActType),att:+((sr.current._gkAtt800||0)).toFixed(2),
+              t:(typeof ballArcActive!=='undefined'&&ballArcActive&&typeof ballArcT!=='undefined'&&ballArcT!=null)?+(+ballArcT).toFixed(2):null,
+              dur:(typeof ballArcActive!=='undefined'&&ballArcActive&&typeof ballArcDur!=='undefined'&&ballArcDur!=null)?+(+ballArcDur).toFixed(2):null});}catch(_e800){}}
+          if(!_fermo800){if(oppActT===0)sr.current._gkAtt800=0;oppActT+=aDt;}const _OT=oppActType==="gk_dive"?((!(typeof window!=='undefined'&&window.__CPM_NO465)&&ballArcActive)?Math.max(oppMesh._diveDur||0.90,oppActT+0.05):(oppMesh._diveDur||0.90))/* [7.465.0] IL TUFFO NON PUO' FINIRE PRIMA DEL PALLONE. Anche con la durata calcolata sul volo, su 2 tuffi su 5 il gesto si spegneva col portiere a meta' distesa (26% e 45%): stimare la durata non basta, perche' il tempo d'arrivo dipende anche dal rallentatore e dal frame-rate. Finche' l'arco della conclusione e' VIVO il tuffo resta vivo — non si indovina la durata, si guarda il pallone. */:oppActType==="opp_tackle"?0.85:oppActType==="gk_block"?(((typeof window!=='undefined'&&window.__CPM_NO576)?0:1)&&ballArcActive?Math.max(0.62,oppActT+0.05):0.62)/* [7.552.0 codice 111 «portiere fuori tempo» + «Non ha effettuato la parata»] IL RIFLESSO MUORE PRIMA DEL PALLONE. Il 7.465 ha legato la vita del TUFFO a quella dell'arco («non si indovina la durata, si guarda il pallone») ma ha lasciato fuori il RIFLESSO, che resta inchiodato a 0,62s fissi. MISURATO (portiere-552): su gk_block il gesto si spegne con il volo del pallone al 71% e al 35% — il portiere si oppone, finisce, torna in piedi normale, E POI arriva la palla. Da fuori e' esattamente «non ha effettuato la parata». Ora vale la stessa regola del tuffo: finche' l'arco e' vivo, il riflesso e' vivo. */:0.55,u=Math.min(oppActT/_OT,1),sw=Math.sin(u*Math.PI);/* [7.203.0] il riflesso è più RAPIDO del tuffo · [7.215.0] la durata del tuffo segue quella del tiro: il portiere arriva sulla palla, non prima */
           if(_CPM_TEST&&typeof window!=='undefined'){try{const _W=window.__CPM_GKW||(window.__CPM_GKW={ev:[],cur:null});const _isGk=(oppActType==='gk_dive'||oppActType==='gk_block'||oppActType==='gk_catch');const _c=_W.cur;if(!_c||_c.type!==oppActType||_c.m!==oppMesh||u<_c.lu-1e-6){if(_c){_W.ev.push(_c.o);if(_c.lu<0.95&&_c.o.gk)_W.ev.push({k:'cut',from:_c.type,atU:+_c.lu.toFixed(2),to:oppActType,same:_c.m===oppMesh?1:0});}_W.cur={type:oppActType,m:oppMesh,lu:u,o:{k:'gest',type:oppActType,gk:_isGk?1:0,dur:+_OT.toFixed(2),arc:ballArcActive?1:0,arcDur:+(ballArcDur||0).toFixed(2),dz0:null,dzMin:1e9,uAtMin:null,uEnd:0}};}const _o=_W.cur.o;_W.cur.lu=u;_o.uEnd=+u.toFixed(2);_o.arcEnd=ballArcActive?+clamp(ballArcT/Math.max(ballArcDur,0.01),0,9).toFixed(2):null;if(_isGk&&oppMesh){const _dw=Math.hypot(ball.position.x-oppMesh.position.x,ball.position.z-oppMesh.position.z);if(_o.dz0==null)_o.dz0=+_dw.toFixed(2);if(_dw<_o.dzMin){_o.dzMin=+_dw.toFixed(2);_o.uAtMin=+u.toFixed(2);}}}catch(_e){}} /* [7.552 sonda] TESTIMONE DEL PORTIERE: per ogni gesto GK registra durata, distanza minima dal pallone e la FRAZIONE del gesto in cui quel minimo cade (0,5 = portiere disteso quando la palla passa); `cut` marca un gesto interrotto prima della fine = doppio gesto. */
           /* [7.603.0 — UN PORTIERE NON SI TUFFA DUE VOLTE IN TRE SECONDI, rosso __CPM_NO603]
              COLLAUDO PO su SIT #105: «il portiere si e' tuffato 4-5 volte consecutive, sembrava un ninja e

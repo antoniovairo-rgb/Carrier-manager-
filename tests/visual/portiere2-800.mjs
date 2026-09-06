@@ -23,20 +23,24 @@ for(let g=0;g<NOMI.length;g++){
   for(let k=0;k<40;k++){await sleep(20000);
     min=await page.evaluate(()=>{const ms=window.__CPM_MS&&window.__CPM_MS();return ms?(ms.min|0):0;});
     if(min>=89)break;}
-  const G=await page.evaluate(()=>window.__CPM_GK799||[]);
+  /* ⚠️ IL TESTIMONE GIUSTO E' QUELLO DEL MOVIMENTO. `__CPM_GK799` registra quando il tuffo viene
+     ARMATO (la decisione); `__CPM_GKM800` quando il corpo COMINCIA A MUOVERSI. Col tempo di reazione
+     i due istanti non coincidono piu', ed e' il secondo quello che lo spettatore vede. */
+  const G=await page.evaluate(()=>(window.__CPM_GKM800||[]).filter(x=>x.tipo==='gk_dive'));
   /* ⚠️ IL FILTRO GIUSTO E' «ARCO IN CORSO», non «durata non nulla»: senza `act` un tuffo armato quando
    l'arco e' gia' finito porta con se' la durata VECCHIA e un tempo azzerato, e finisce nel mucchio come
    se fosse partito prestissimo. La prima passata leggeva mediana 0 proprio per questo. */
 const conArco=G.filter(x=>x.dur!=null&&x.t!=null&&x.dur>0&&x.act===1);
   const _viv=conArco.filter(x=>x.act===1);
-  perPartita.push({n:NOMI[g],tot:G.length,mis:conArco.length,min,viv:_viv.length,tardi:_viv.filter(x=>x.t/x.dur>=0.9).length});
   TUTTI.push(...conArco);
-  const rami={};G.forEach(x=>{rami[x.tag]=(rami[x.tag]|0)+1;});
+  const att=G.map(x=>+x.att||0);
+  const conAttesa=att.filter(x=>x>=0.15).length;
+  perPartita.push({n:NOMI[g],tot:G.length,min,viv:G.length,tardi:G.length-conAttesa});
   const viv=conArco.filter(x=>x.act===1);
   const tardiP=viv.filter(x=>x.t/x.dur>=0.9).length;
-  console.log('['+NOMI[g]+'] min '+min+' · tuffi '+G.length+' · con ARCO IN CORSO '+viv.length
-    +' · di questi a pallone gia\' arrivato '+tardiP+(viv.length?' ('+Math.round(100*tardiP/viv.length)+'%)':'')
-    +' · rami '+JSON.stringify(rami));
+  console.log('['+NOMI[g]+'] min '+min+' · tuffi '+G.length
+    +' · con un\'ATTESA prima di partire '+conAttesa+(G.length?' ('+Math.round(100*conAttesa/G.length)+'%)':'')
+    +' · attesa mediana '+(att.length?q(att,0.5):'-')+'s');
   await ctx.close();
 }
 await b.close();srv.close();
@@ -49,7 +53,7 @@ console.log('=== '+NOMI.length+' partite intere ===');
 const N=perPartita.map(x=>x.tot);
 console.log('  tuffi per partita: '+JSON.stringify(N)+'  (oscilla per forza: dipende da quanti tiri ci sono)');
 const QP=perPartita.filter(x=>x.viv>0).map(x=>Math.round(100*x.tardi/x.viv));
-if(QP.length>=2){console.log('  QUOTA fuori tempo per partita: '+JSON.stringify(QP)+'%  → spread '+(Math.max(...QP)-Math.min(...QP))+' punti');
+if(QP.length>=2){console.log('  QUOTA SENZA attesa per partita: '+JSON.stringify(QP)+'%  → spread '+(Math.max(...QP)-Math.min(...QP))+' punti');
   console.log('  il metro '+((Math.max(...QP)-Math.min(...QP))<=20?'REGGE: il rimedio si puo\' giudicare':'NON REGGE ANCORA'));}
 if(!TUTTI.length){console.log('  nessun tuffo misurabile nel tempo.');process.exit(0);}
 const R=TUTTI.map(x=>x.t),D=TUTTI.map(x=>x.dur),F=TUTTI.map(x=>+(x.t/x.dur).toFixed(2));

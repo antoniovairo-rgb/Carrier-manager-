@@ -1675,3 +1675,62 @@ Con una frazione a spread zero un rimedio si può giudicare; col conteggio no.
 Serve un **tempo di reazione** (due-tre decimi) fra la partenza del pallone e l'inizio del tuffo, e va
 messo **dove il tuffo nasce**: i tuffi arrivano da **quattro rami diversi**, quindi non basta toccarne
 uno — è l'errore che ho già fatto due volte su questo punto.
+
+---
+
+## 7.801 — Il portiere ha un tempo di reazione (parziale, dichiarato)
+
+**Nota PO** (7.787, SIT #153, 50', «Bordata potente» → goal): *codice 111 — portiere fuori tempo*.
+
+### La misura di partenza
+
+Quattro partite intere, GLB ON, regime del gioco. Filtrando **solo** i tuffi che nascono mentre un
+arco è davvero in corso (`ballArcActive`), il campione è di **39 tuffi**, e l'istante del tuffo
+rispetto alla partenza del pallone è:
+
+| | mediana | p25 | p75 | **max** |
+|---|---|---|---|---|
+| istante del tuffo | 0,00 s | 0,00 s | 0,00 s | **0,00 s** |
+| durata del volo | 0,52 s | — | — | — |
+
+**Trentanove su trentanove partivano a zero**, massimo compreso. Il portiere non era in ritardo: era in
+**anticipo di tutto il tempo di volo**. Su un tiro corto quasi non si nota; su una bordata da
+centrocampo si buttava a terra nell'istante del tiro e ci restava mentre la palla volava mezzo secondo.
+
+### Il rimedio, in un punto solo
+
+I nove siti che **armano** `oppActType="gk_dive"` restano intatti: la decisione del portiere è nel
+momento giusto, è il **corpo** che deve aspettare. Il ritardo sta dove il tempo dell'azione avanza
+(`oppActT+=aDt`, src/12): se il tuffo nasce con un arco appena partito (`ballArcT<0.10`) si arma
+un'attesa di **0,25 s**; finché scorre, il tempo dell'azione non avanza e il corpo non parte.
+Non c'è alcun `return`: camera, pallone e rendering continuano — la prima stesura usava un `return`
+dentro la funzione di fotogramma e avrebbe saltato tutto il resto.
+
+Rosso: `__CPM_NO800`.
+
+### La misura dopo
+
+| | prima | dopo |
+|---|---|---|
+| tuffi con un'attesa | **0 / 39 (0 %)** | **50 / 96 (52 %)** |
+| attesa mediana | — | **0,3 s** |
+
+Per mondo: 34 % · 42 % · 92 % · 100 %.
+
+**PARZIALE E DICHIARATO.** L'attesa si applica solo ai tuffi che nascono **mentre il pallone vola**.
+Quelli armati senza un volo in corso — su palla non in volo, dove non esiste un «istante del tiro» a
+cui agganciarsi — restano da fare. Il 52 % è quella frazione, non un rimedio a metà strada.
+
+### Due ritrattazioni
+
+1. **«Il portiere si tuffa a pallone già arrivato» (rapporto 1,03) era un artefatto della sonda.** La
+   sonda registrava il tempo dell'arco senza chiedere se un arco fosse **in corso**: i tuffi armati ad
+   arco finito portavano la durata vecchia con il tempo azzerato, e il rapporto usciva ≈1. Il difetto
+   vero è l'opposto di come l'avevo scritto.
+2. **Giudicavo la sonda dal conteggio dei tuffi**, che oscilla fra 10 e 25 a partita perché dipende da
+   quanti tiri ci sono. Il metro è la **quota**.
+
+### Rituali
+
+`career-critical` EXIT 0 · `npm run ci` **fingerprint 00001505 · 0 failure** · save-compat 12/0 ·
+replay 8/8 · logic 33/33 · partita-vera OK (tabellone 7-4 = 7-4, gol del microsim 8 nati / 8 accreditati).
