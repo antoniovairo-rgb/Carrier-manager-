@@ -24823,6 +24823,28 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                  pausa esistono eccome. Se una premessa credibile c'e', e' li' che vive. */
               _q.prem=(_q.prem|0)+(_prem790>=75?1:0);if((_q.prV=_q.prV||[]).length<200)_q.prV.push(_prem790);
               if((_q.cmp=_q.cmp||[]).length<80){const _c=(matchStateRef.current&&matchStateRef.current.threatComp)||null;if(_c)_q.cmp.push({m:nx,t:_thr714,z:_c.zona,p:_c.porta,s:_c.spinta,l:_c.lib,u:_c.sup,n:_c.noPress});}}catch(_e789){}}
+            /* ⚠️ [7.797.0 — REVOCATO. La squadra sale davvero, ma il prezzo e' il difetto che il 7.792
+               aveva appena tolto. Rosso storico __CPM_NO797.]
+               Nota PO sulla 7.792: «un tiro da distanza enorme». Il tentativo: l'occasione non si arma
+               piu' di colpo, si apre prima una SALITA — i tre uomini piu' avanzati del lato in possesso
+               ricevono un bersaglio nell'ultimo quarto e un passo vero (0,35) — e dopo due tick il piano
+               nasce sulle posizioni RAGGIUNTE, quelle vere, non previste come nel 7.793.
+               LA LEVA ERA GIUSTA, e viene dal censimento del 7.796 (vedi la nota li'): non era il
+               bersaglio a mancare, era il PASSO — 0,03-0,04 nel 59% dei campioni, cioe' trenta-quaranta
+               secondi per colmare una distanza media di 23,9 unita'. Con un passo vero la squadra SALE
+               per davvero: avanzamento del piu' avanzato da 56 a 66,4 (misurato sulle posizioni reali al
+               momento in cui il piano nasce, non su una previsione), occasioni da 1,5 a 2,0 a partita,
+               zona di tiro da 63 a 67,8.
+               MA IL PREZZO NON E' PAGABILE: le aperture che atterrano dove il ricevente non c'e'
+               passano da ZERO su undici a QUATTRO su dodici (mediana da 6,1 a 8,5 unita', p90 25).
+               E' esattamente la firma della «matematica» che il 7.792 aveva appena cancellato: un
+               guadagno di credibilita' pagato con la ricomparsa del difetto peggiore non e' un guadagno.
+               Provato anche a fermare la spinta nell'istante in cui il piano nasce, pensando che il
+               ricevente scappasse dal punto: 4 su 12 contro 3 su 12, nessun effetto — quindi la mia
+               spiegazione era sbagliata e la causa vera resta da trovare (la popolazione e' bimodale:
+               otto aperture buone attorno a 6-8 unita' e quattro pessime attorno a 25-33).
+               RESTA IL CENSIMENTO, che e' il risultato di questa tornata: la leva del blocco squadra e'
+               il passo. Chi riprendera' il punto #44 parte da li', non piu' dal buio. */
             if(_apri714){
               const _piO695=_pianoOcc695(_dO695>0?"home":"away");
               if(typeof window!=='undefined'&&window.__CPM_REC){try{const _q=window.__CPM_APRI789;if(_q&&_piO695)_q.piano++;}catch(_e){}}
@@ -26771,6 +26793,18 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               sx=clamp(sx+_av553*0.62,4,96);
               if(idx===_cI553){sx=_bb553.x;sy=_bb553.y;k=0.55;}/* [7.625.0] k 0,85 RIGIUDICATO anche sul metro qualificato (custodia per-tick): 6,1/6,8/6,1/4,2 contro banda rossa 6,0-6,4 — in banda, revoca DEFINITIVA. Idem l'inversione del verso (6,2/6,4/6,0/4,2). La lettura strutturale: con le righe che ricollocano il pallone ogni 2-3 tick l'ambientale e' quasi sempre IN VOLO — la custodia non si vince inseguendo, si vince alla RICEZIONE (lo stato mancante A4 dell'audit: l'arrivo ai piedi di un uomo). *//* ⚠️ [7.625.0] PROVATO E REVOCATO CON LA SUA MISURA: k 0,55->0,85 sul portatore logico per «tenere il passo» — npd mediana 6,8-10,3 contro banda rossa 6,4-10,3: IN BANDA, nessun effetto. Il modello d'equilibrio era sbagliato: il sistema non e' mai a equilibrio, perche' le righe di cronaca ricollocano il bersaglio (fino a 30u) piu' in fretta di quanto qualsiasi inseguitore converga — npd misura transitori perpetui. Il guadagno del correttore non puo' nulla contro i salti del comando: la pista giusta e' misurare npd con l'inversione del verso (INV579), mai giudicata su QUESTO metro. */
             }
+            /* [7.796 censimento] QUALE RAMO DECIDE DAVVERO, e con che passo. Il 7.703 aveva provato ad
+               alzare il termine che tira gli slot verso il pallone (0,62 → 0,85, +37%) e NON aveva mosso
+               niente — «la manopola non e' collegata al volante» — chiedendo a verbale il censimento di
+               chi governa il bersaglio. Eccolo: si registra, per ogni giocatore di movimento e per ogni
+               tick, la distanza dal bersaglio e il passo `k` con cui la colma. Se il passo e' piccolo,
+               il bersaglio conta poco: il corpo non ci arriva mai perche' il pallone si e' gia' spostato.
+               Sola lettura. */
+            if(typeof window!=='undefined'&&window.__CPM_REC&&!pl.gk&&pl.team!=="ref"){try{
+              const _K=(window.__CPM_K796=window.__CPM_K796||{n:0,perK:{},dSum:0,dN:0,dV:[]});
+              _K.n++;const _kk=(+k).toFixed(2);_K.perK[_kk]=(_K.perK[_kk]|0)+1;
+              const _dd=Math.hypot(sx-pl.x,sy-pl.y);_K.dSum+=_dd;_K.dN++;
+              if(_K.dV.length<600)_K.dV.push(+_dd.toFixed(1));}catch(_e796){}}
             return{...pl,x:clamp(pl.x+(sx-pl.x)*k+(Math.random()-0.5)*0.2,2,98),y:clamp(pl.y+(sy-pl.y)*k+(Math.random()-0.5)*0.2,2,98)};
           });});
         }

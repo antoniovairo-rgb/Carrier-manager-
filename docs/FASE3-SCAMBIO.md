@@ -1485,3 +1485,51 @@ non una porta chiusa per un secondo.
 
 **Resta lo strumento**, che è la cosa di valore: `tests/visual/pingpong2-795.mjs` riproduce la nota del
 PO in modo ripetibile, sul pallone giusto, con un verdetto in inversioni.
+
+---
+
+## 7.796 — CENSIMENTO: il blocco squadra non lo governa il bersaglio, lo governa il PASSO
+
+*(nessun bump: sola strumentazione. È il risultato che vale di questa tornata.)*
+
+Il 7.703 aveva provato ad alzare del 37% il termine che tira gli slot verso il pallone e **non aveva
+mosso niente** — «la manopola non è collegata al volante» — chiedendo a verbale il censimento di **chi
+governa davvero** il bersaglio di ogni giocatore. Eccolo, su **1919 campioni giocatore-tick**:
+
+| passo `k` | quota | per colmare il 90% della distanza |
+|---|---|---|
+| **0,03** | **31,0 %** | 76 tick ≈ **42 s di gioco** |
+| **0,04** | **28,1 %** | 56 tick ≈ **31 s di gioco** |
+| 0,92 | 29,7 % | 1 tick |
+| 0,35 | 7,9 % | 5 tick ≈ 2,9 s |
+| 0,55 / 0,50 | 3,3 % | 3 tick |
+
+**Distanza dal bersaglio: media 23,9 u · mediana 22,7 · p75 35,6 · p90 49 · max 82,8.**
+
+Per **sei campioni su dieci** un corpo insegue un punto a ventitré unità guadagnandone il tre-quattro
+per cento a tick: **non ci arriva mai**, e nel frattempo il pallone si è già spostato. Il bersaglio è
+cosmetico. La leva è il passo — ed è la spiegazione del mistero che il 7.703 aveva lasciato aperto.
+
+## 7.797 — REVOCATA: la squadra sale davvero, ma il prezzo è il difetto che il 7.792 aveva tolto
+
+Usando la leva giusta: l'occasione si apre con una **salita** (i tre più avanzati, bersaglio nell'ultimo
+quarto, passo 0,35 — 2,9 s per arrivarci) e il piano nasce **due tick dopo**, sulle posizioni
+**raggiunte** — non previste, che era l'errore del 7.793.
+
+| | 7.792 | 7.797 |
+|---|---|---|
+| il più avanzato, avanzamento **reale** | 56 | **66,4** |
+| occasioni a partita | 1,5 | **2,0** |
+| zona di tiro | 63 | 67,8 |
+| **aperture oltre soglia** | **0 / 11** | **4 / 12** |
+
+La leva funziona. **Il prezzo no**: le aperture che atterrano dove il ricevente non c'è tornano da zero
+a quattro su dodici — è **esattamente la firma della «matematica»** che il 7.792 aveva appena cancellato.
+Un guadagno di credibilità pagato con la ricomparsa del difetto peggiore non è un guadagno.
+
+**Due errori miei, entrambi misurati e corretti in corsa**: bruciavo il cooldown a ogni salita anche
+fallita (aperte 2, perse 2, **armate 0** — zero occasioni in sei partite) e annullavo la salita per un
+semplice fermo di gioco. Corretti: aperte 2, **armate 2**, perse 0. Poi ho ipotizzato che il ricevente
+«scappasse» perché continuava a correre e ho fermato la spinta all'armamento: **4 su 12 contro 3 su 12**,
+nessun effetto — l'ipotesi era sbagliata, e la causa vera resta da trovare (la popolazione è **bimodale**:
+otto aperture buone attorno a 6-8 u e quattro pessime attorno a 25-33 u).
