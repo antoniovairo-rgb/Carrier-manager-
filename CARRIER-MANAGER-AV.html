@@ -17336,6 +17336,30 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
            le sono gia' addosso per AI. Regola calcistica: preferenza al lato in possesso entro 12u,
            altrimenti il piu' vicino di CHIUNQUE (contrasto/anticipo visivo); il lato del portatore diventa
            il suo. Tick logico intatto: matchPlayers ha Math.random e ancorarvi la deriva romperebbe il replay. */
+        /* ⚠️ [7.795.0 — REVOCATO. L'ipotesi era ragionevole e la misura l'ha bocciata. Rosso storico
+           __CPM_NO795.]
+           Nota PO sulla 7.792: «ha mostrato un ping pong ripetuto ... non e' calcio ma una sequenza di
+           bug». IL DIFETTO E' RIPRODOTTO, e questa parte resta: nei cinque secondi dopo una parata il
+           pallone RESO inverte il verso tre o piu' volte con ampiezze da oltre due unita' in CINQUE
+           episodi su dieci (mediana 3, massimo 4). Le ampiezze — 2,0 · 2,4 · 3,1 · 4,6 · 5,5 — sono la
+           distanza fra due corpi vicini.
+           PER ARRIVARCI HO SBAGLIATO BERSAGLIO DUE VOLTE, ed e' la parte che vale: cercando dentro le
+           scene dell'eroe, zero su otto; cercando nel flusso ma sul punto-palla LOGICO, zero su otto —
+           inutile, perche' il PO guarda il pallone RESO e il codice 011 ha gia' misurato che i due
+           divergono di 9-17 unita'. Uno zero sul pallone sbagliato non e' un verde.
+           L'IPOTESI: il pallone reso e' incollato al portatore eletto (`ball.position = portatore + 0,9`)
+           e l'elezione sceglie per vicinanza al punto LOGICO, che si muove a ogni tick; quando il
+           vincitore cambia, il pallone salta da un corpo all'altro. Dopo una parata il pallone e' MORTO
+           per regolamento (il 7.702 lo dichiara gia'), e un pallone morto non ha padrone: ho sospeso
+           l'elezione finche' il fischio dura.
+           LA MISURA L'HA BOCCIATO: verde 4 episodi su 8 (mediana 3), rosso 3 su 8 (mediana 2) — nessun
+           miglioramento, semmai il contrario, e comunque dentro il rumore. La sospensione non basta,
+           quasi certamente perche' il pallone resta morto solo per i quattro tick della transizione
+           (~1,2 s) mentre il ping pong si distende su cinque secondi: quando l'elezione riparte, riparte
+           anche il salto. Il rimedio vero e' l'anagrafe del possesso — il redesign A2 che il 7.617 ha
+           gia' messo a verbale — non una porta chiusa per un secondo.
+           RESTA LO STRUMENTO, che e' la cosa di valore: `tests/visual/pingpong2-795.mjs` riproduce la
+           nota del PO in modo ripetibile, sul pallone giusto, con un verdetto in inversioni. */
         let _bm6=null,_bd6=1e9,_bmAny6=null,_bdAny6=1e9,_anySide6=null;
         sr.current.players.forEach((pp,ii)=>{const src=all[ii];if(!src||src.gk)return;
           const _m=pp.mesh;if(!_m)return;const _d=Math.hypot(_m.position.x-_lbx6,_m.position.z-_lbz6);

@@ -1440,3 +1440,48 @@ Aggiornati insieme motore, specchio analitico e le due guardie.
   gli aveva messo un alone). Se il PO lo vuole più piccolo è **un numero solo**.
 - **Nelle riprese ravvicinate** la scala scende a 0,53, quindi lì il pallone resterà ~0,11 sopra l'erba:
   un decimo di prima. Legare la quota alla scala viva è il passo dopo, e va misurato a parte.
+
+---
+
+## 7.795 — «Ping pong ripetuto»: RIPRODOTTO, e il rimedio REVOCATO
+
+*(nessun bump: la revoca lascia il comportamento della 7.794. Si committano la diagnosi e la sonda.)*
+
+Nota PO sulla 7.792 (S.11 W.17, 33', SIT #67): «ha mostrato un **ping pong ripetuto**, un tiro da
+distanza enorme… insomma non è calcio ma una sequenza di bug».
+
+### Il difetto è riprodotto — ma ho sbagliato bersaglio due volte
+
+| dove ho cercato | esito |
+|---|---|
+| dentro le scene dell'eroe (pallone reso) | **0 / 8** |
+| nel flusso, ma sul punto-palla **logico** | **0 / 8** |
+| nel flusso, sul pallone **RESO**, 5 s dopo ogni parata | **5 / 10** — mediana **3** inversioni, max 4 |
+
+I primi due zeri non erano verdi: erano **strumenti puntati sulla cosa sbagliata**. Il PO guarda il
+pallone **reso**, e il codice 011 aveva già misurato che il reso e il logico divergono di 9-17 unità.
+*Uno zero sul pallone sbagliato non è un verde.*
+
+Le ampiezze delle inversioni — 2,0 · 2,4 · 3,1 · 4,6 · 5,5 unità — sono **la distanza fra due corpi
+vicini**, ed è la firma del difetto.
+
+### L'ipotesi, e perché è caduta
+
+Il pallone reso è **incollato al portatore eletto** (`ball.position = portatore + 0,9`), e l'elezione
+sceglie per vicinanza al punto **logico**, che si muove a ogni tick: quando il vincitore cambia, il
+pallone **salta da un corpo all'altro**. Dopo una parata il pallone è morto per regolamento (lo dichiara
+già il 7.702), e un pallone morto non ha padrone → ho **sospeso l'elezione** durante il fischio.
+
+| | verde | rosso |
+|---|---|---|
+| episodi di ping pong | **4 / 8** | 3 / 8 |
+| inversioni, mediana | 3 | 2 |
+
+**Nessun miglioramento, semmai il contrario** — e comunque dentro il rumore. **REVOCATO.** La causa
+probabile del fallimento: il pallone resta morto solo per i quattro tick della transizione (~1,2 s)
+mentre il ping pong si distende su cinque secondi; quando l'elezione riparte, riparte anche il salto.
+Il rimedio vero è **l'anagrafe del possesso** — il redesign A2 che il 7.617 ha già messo a verbale —
+non una porta chiusa per un secondo.
+
+**Resta lo strumento**, che è la cosa di valore: `tests/visual/pingpong2-795.mjs` riproduce la nota del
+PO in modo ripetibile, sul pallone giusto, con un verdetto in inversioni.
