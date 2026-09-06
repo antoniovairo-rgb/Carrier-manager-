@@ -1734,3 +1734,69 @@ cui agganciarsi — restano da fare. Il 52 % è quella frazione, non un rimedio 
 
 `career-critical` EXIT 0 · `npm run ci` **fingerprint 00001505 · 0 failure** · save-compat 12/0 ·
 replay 8/8 · logic 33/33 · partita-vera OK (tabellone 7-4 = 7-4, gol del microsim 8 nati / 8 accreditati).
+
+---
+
+## 7.802 — Il regista unico: DUE tentativi, DUE revoche, e un banco che non regge
+
+**Direttiva PO 06/09**: «i momenti dell'eroe non devono essere preconfezionati, ma basarsi
+sull'andamento della partita ed altri aspetti» · «il regista in partita degli eventi deve essere
+UNO SOLO».
+
+### Prima, una correzione a verbale
+
+Nel rapporto di playtest avevo scritto che il momento dell'highlight «non ha una sola lettura del
+Match State». **È falso**, e il PO ha chiesto conto della frase. Le letture ci sono: tre agganci
+reattivi possono inserire un momento fuori calendario — gol subito (`nx+4…8`), sotto di uno **al
+60' esatto**, disperata **al 72' esatto**. Il quadro giusto: *il calendario è la spina dorsale, i
+tre agganci sono l'eccezione, e due dei tre sono a loro volta orari.*
+
+### Il rimedio, e le sue due morti
+
+Il calendario resta il **budget** (quanti momenti: la carriera non si tocca); il **minuto** lo
+sceglie un solo punto, dentro una finestra di ±6' attorno alla tacca, quando l'andamento è forte
+— tre voci su cinque fra turno, inerzia, possesso, pallone oltre il 58, e il bisogno di chi è
+sotto nell'ultimo terzo. Rosso `__CPM_NO803`.
+
+| misura appaiata, 4 partite, stessi semi | v1 ON | v2 ON | ROSSO |
+|---|---|---|---|
+| momenti totali | 12 | 12 | 12 / **11** |
+| aperti dall'**andamento** | 3/12 | **1/12** | 0 |
+| aperti a **scadenza** | 9/12 | 11/12 | — |
+| **andamento forte all'apertura** | **3/12** | **1/12** | **5/11 · 4/11** |
+
+**v1 revocata**: nove momenti su dodici scadono, e la qualità del momento *peggiora* rispetto
+all'orologio (3/12 contro 5/12). **v2 revocata**: peggio ancora, 1/12.
+
+### Il censimento che assolve la partita
+
+355 minuti su 4 partite intere:
+
+| andamento | quota |
+|---|---|
+| turno nostro | 40 % |
+| inerzia ≥ 55 | 39 % |
+| pallone oltre il 58 | 42 % |
+| possesso ≥ 52 | 19 % |
+| **≥ 3 voci su 5** | **13 %** (47/355) |
+
+Pallone x: mediana 50,1 · **p75 79,6 · p90 92**. La squadra in area ci arriva. Con il 13 % dei
+minuti forti, una finestra di tredici minuti dovrebbe contenerne uno **quattro volte su cinque**:
+il regista lo trovava una volta su quattro (v1) e una su dodici (v2). **Non mancano le occasioni.**
+
+### E il difetto vero: IL BANCO NON È RIPETIBILE
+
+Due passate del regime **ROSSO** — stesso codice, stessi semi, stessi nomi — hanno dato risultati
+diversi: `Gallo` 4 momenti `[15,66,67,86]` alla prima, 3 momenti `[15,66,86]` alla seconda; totale
+12 contro 11. Il rosso deve essere identico a se stesso: se non lo è, **ogni confronto fine a
+n=4 è rumore**, e le due revoche qui sopra potrebbero aver buttato via un rimedio buono o salvato
+un rimedio cattivo — non lo so, ed è il punto.
+
+Causa probabile: gli agganci reattivi dipendono dal punteggio, il punteggio dal microsim, e il
+numero di tick di motore per minuto di gioco dipende dai timer reali sotto carico. Non l'ho
+verificato.
+
+**Conclusione**: il regista si ferma qui. **Prima si rende ripetibile il banco**, poi si torna
+sul rimedio — perché tarare contro un banco che oscilla è esattamente il modo di convincersi di
+aver risolto qualcosa. Il codice del regista è stato tolto: in `src/14` resta solo lo strumento
+`__CPM_CRO802` (le righe di telecronaca col loro minuto), che è sola lettura.

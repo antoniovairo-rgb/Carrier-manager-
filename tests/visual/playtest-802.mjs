@@ -42,8 +42,13 @@ for(let g=0;g<NOMI.length;g++){
       const ms=window.__CPM_MS&&window.__CPM_MS();
       const e=(window.__CPM_EV&&window.__CPM_EV())||[];
       if(window.__CPM_EV_RESET)window.__CPM_EV_RESET();
+      /* ⚠️ IL MATCH STATE NON HA `shots`/`oppShots` — la prima stesura li leggeva e prendeva
+         SEMPRE zero, cioe' «nessuno domina mai»: uno zero silenzioso, il difetto che ho gia'
+         fatto due volte. I campi che esistono davvero sono momentum, pressione, poss, superiorita. */
       return {ms:ms?{min:ms.min|0,h:(ms.score&&ms.score.h)|0,a:(ms.score&&ms.score.a)|0,
-                     sh:ms.shots|0,osh:ms.oppShots|0,turn:ms.turn|0,bx:ms.ball?+ms.ball.x.toFixed(1):null}:null,e};
+                     mom:ms.momentum|0,poss:ms.poss|0,sup:ms.superiorita|0,
+                     press:(ms.pressione&&ms.pressione.addosso)|0,
+                     turn:ms.turn|0,bx:ms.ball?+ms.ball.x.toFixed(1):null}:null,e};
     });
     if(s.e&&s.e.length)EV.push(...s.e);
     if(s.ms){min=s.ms.min;if(stato[min]==null)stato[min]=s.ms;else stato[min]=s.ms;}
@@ -151,8 +156,10 @@ for(const p of P){
   let ctx=0,neutri=0;
   min.forEach(m=>{
     const s=p.stato[m|0]||p.stato[(m|0)-1]||null;if(!s){neutri++;return;}
-    const dTiri=(s.sh|0)-(s.osh|0),dGol=(s.h|0)-(s.a|0);
-    const soffre=dTiri<=-2||dGol<0,domina=dTiri>=2&&dGol>=0,serve=(dGol<=0&&m>=67);
+    const dGol=(s.h|0)-(s.a|0);
+    /* momentum e' l'inerzia della partita (segno = chi spinge), pressione.addosso quanti
+       avversari stanno addosso al portatore, superiorita' lo squilibrio numerico. */
+    const soffre=(s.mom|0)<0||dGol<0||(s.press|0)>=2, domina=(s.mom|0)>0&&dGol>=0, serve=(dGol<=0&&m>=67);
     if(soffre||domina||serve)ctx++;else neutri++;
   });
   exTot+=arm;exCtx+=ctx;
