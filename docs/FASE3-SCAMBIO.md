@@ -1628,3 +1628,50 @@ non può promuovere né bocciare un rimedio — è la stessa lezione del 7.617 s
 
 **Resta la strumentazione su tutti e nove i siti.** Chi riprende il punto parte da un'osservazione
 precisa e da uno strumento che va prima reso ripetibile.
+
+---
+
+## 7.800 — Il portiere non ha tempo di reazione. E una ritrattazione
+
+*(nessun bump: diagnosi e metro. Il rimedio è il passo dopo.)*
+
+### Ritrattazione della diagnosi del 7.799
+
+Avevo scritto che il portiere «si tuffa **quando il pallone è già arrivato**», rapporto istante/durata
+**1,03**. **Era un artefatto della mia sonda**: registravo il tempo dell'arco senza chiedere se un arco
+fosse davvero **in corso**, e un tuffo armato ad arco già finito si portava dietro la **durata vecchia**
+col tempo azzerato — finendo nel mucchio come se fosse partito alla fine. Chiesto `ballArcActive`, quei
+campioni spariscono e **il quadro si ribalta**.
+
+### La misura vera
+
+Quattro partite intere, **39 tuffi con un arco effettivamente in corso**:
+
+| | valore |
+|---|---|
+| istante del tuffo — mediana, p25, p75, **max** | **0,00 s** |
+| durata del volo — mediana | 0,52 s |
+| tuffi partiti a pallone già arrivato | **0 / 39** |
+
+Il portiere parte **nello stesso istante in cui parte il pallone**, senza un decimo di reazione. Su un
+tiro corto quasi non si nota; su una **bordata da centrocampo** si butta subito e poi resta a terra
+mentre la palla vola per mezzo secondo. È quello che il PO ha visto. **Non è in ritardo: è in anticipo,
+di tutto il tempo di volo.**
+
+### Il metro ora regge — e anche qui avevo sbagliato criterio
+
+Giudicavo la sonda dal **conteggio** dei tuffi, che oscilla per forza (10-25 a partita) perché dipende da
+quanti tiri ci sono in quella partita. Il metro giusto è la **quota**, che è una frazione:
+
+| | Oa | Ob | Oc | Pa | spread |
+|---|---|---|---|---|---|
+| tuffi | 25 | 13 | 12 | 10 | — |
+| **quota fuori tempo** | 0 % | 0 % | 0 % | 0 % | **0 punti** |
+
+Con una frazione a spread zero un rimedio si può giudicare; col conteggio no.
+
+### Il rimedio, per chi riprende
+
+Serve un **tempo di reazione** (due-tre decimi) fra la partenza del pallone e l'inizio del tuffo, e va
+messo **dove il tuffo nasce**: i tuffi arrivano da **quattro rami diversi**, quindi non basta toccarne
+uno — è l'errore che ho già fatto due volte su questo punto.
