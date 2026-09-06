@@ -28,7 +28,12 @@ const P=[];   /* una voce per partita */
 for(let g=0;g<NOMI.length;g++){
   const ctx=await b.newContext({viewport:{width:412,height:915}});
   const page=await ctx.newPage();await installCdnRoutes(page);
-  await page.addInitScript((glb)=>{window.__CPM_GLB=glb;window.__CPM_REC=true;window.__CPM_CRO802=[];},GLB);
+  /* ⚠️ REGOLA DEL BANCO, imparata a caro prezzo: chi accelera il gioco deve accelerare ANCHE le
+     attese. A tickMs 300 un minuto di gioco dura 3 s e le schede arrivano ogni ~30 s veri, meno
+     dei 35 s del tempo di lettura: le schede non scadevano mai, `addCom` buttava ogni riga e la
+     misura diceva «la telecronaca tace nel secondo tempo» (-88%). Col tempo di lettura in scala
+     lo stesso codice da' -5%. Il difetto era il banco. */
+  await page.addInitScript((glb)=>{window.__CPM_GLB=glb;window.__CPM_REC=true;window.__CPM_CRO802=[];window.__CPM_SCMS681=3500;},GLB);
   await openMatch(page,port,{skipLoadAll:true,name:NOMI[g]});
   await page.evaluate((s)=>window.__CPM_AUTOPLAY(true,{seed:s,policy:'seeded',tickMs:300}),SEMI[g]);
 

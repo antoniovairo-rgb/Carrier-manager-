@@ -142,3 +142,93 @@ cioè «nessuno domina mai». È lo zero silenzioso in cui sono già cascato due
 sono `momentum`, `pressione.addosso`, `poss`, `superiorita`; la sonda è stata corretta e la
 misura va rifatta. Il numero che la passata ha stampato — «contestualizzate 22 %» — è da
 buttare, non da citare.
+
+---
+
+# RETTIFICA E RAPPORTO n° 2 (06/09, sera)
+
+## Il banco mentiva: quattro rilievi del rapporto n° 1 sono da buttare
+
+Le sonde giravano a `tickMs=300` — dieci volte più veloci del reale — **senza scalare le attese**.
+Le schede di scelta arrivano ogni ~10 minuti di gioco, cioè ~30 s veri, **meno dei 35 s** del tempo
+di lettura: nessuna scadeva, `addCom` rifiutava ogni riga, e mancava l'88 % della telecronaca del
+secondo tempo.
+
+Stesso codice, banco tarato (`__CPM_SCMS681` in scala):
+
+| | rapporto n° 1 (banco rotto) | rapporto n° 2 (banco tarato) |
+|---|---|---|
+| minuti vuoti | 55-84 % | **24-34 %** |
+| vuoto più lungo | 13-19' | **6' in 6 partite su 6** |
+| densità righe/minuto | 0,19-0,73 | **0,96-1,17** |
+| primi 15' → ultimi 15' | 6→1 · 16→2 | **15→14 · 15→15 · 15→13** |
+| voci distinte | 94-100 % | **86-89 %** |
+| frase più ripetuta | 1-2× | **4×** |
+| extra-eroe per partita | 2,25 | **0,83** |
+
+**RITIRATO il P1 «la partita si spegne nel finale»**: è falso, i due quarti d'ora sono identici.
+**REGOLA DEL BANCO, a verbale**: *chi accelera il gioco deve accelerare anche le attese*, altrimenti
+misura una partita che non esiste. Scritta dentro le sonde.
+
+## Cosa dicono i numeri veri
+
+- **Il ritmo è un metronomo (P1).** Densità in banda 0,96-1,17; **15 righe nei primi 15 minuti in 5
+  partite su 6**; vuoto massimo **6' in 6 su 6**. Sei partite con punteggi diversi e lo stesso ritmo.
+- **Enfasi tripla (P1).** 33 % delle righe con marcatori d'enfasi contro **4 eventi** che la meritano.
+- **Eventi isolati 85/376 (23 %) (P1).** Col campione buono il numero non migliora.
+- **Prima scena dell'eroe al 12' in 6 partite su 6**, scene 2-3 (spread 1): nessuna giornata anonima.
+  È il residuo dichiarato spedendo la 7.802.
+- **Azioni extra-eroe 0,83 a partita**: poche, ma tutte in un momento che le giustifica.
+
+## LA PASSATA DA PLAYER (eroe «Ferrari», seme 4242, finale 1-2)
+
+### Ci credo: la storia dell'eroe
+
+```
+34'  il centrale gli si presenta al primo pallone: una spallata e due parole
+36'  Ferrari non batte ciglio: il centrale aspetta una reazione che non arriva
+44'  va a prendersi la palla venti metri più indietro
+56'  dice due parole al gruppo: da lì in poi lo cercano di più
+64'  si sposta dall'altra parte: l'ombra resta a marcare uno spazio vuoto
+66'  quando la palla arriva dall'altra parte, Ferrari è solo → GOL
+66'  «Si riscatta dopo l'occasione fallita di poco fa!»
+69'  il difensore spinge il pallone con rabbia e gli dice qualcosa
+71'  Ferrari non lo guarda nemmeno
+```
+
+Marcatura → nessuna reazione → si abbassa → si smarca → segna → il duello si chiude. **È una
+giornata di carriera, e me la ricorderei.**
+
+### Non ci credo: la storia della squadra
+
+| minuto | cosa rompe |
+|---|---|
+| **88'** | sotto 1-2, tre minuti alla fine: «Scotti abbassa il baricentro. **Palla all'indietro con sicurezza**» |
+| **87'** | «La squadra è in fiamme, il pubblico è in piedi!» mentre sei sotto e loro perdono tempo |
+| **19'** | «Incornata di Bianchi **a botta sicura**!» → non succede niente. Quattro battute che promettono e non consegnano |
+| **36'-49'** | tredici minuti di «la manovra sale», «baricentro alto», «si sale verso l'area»: otto righe che non arrivano da nessuna parte |
+| 13'·30'·33'·36' | la stessa frase del commentatore quattro volte, tre in sei minuti |
+| **10'** | «prova a sorprendere il portiere **da lontanissimo**»: il rilievo del PO è scritto nella libreria |
+
+## Scorecard n° 2 — completa
+
+| # | Area | Voto | Il numero o il fatto che lo sostiene |
+|---|------|:----:|--------------------------------------|
+| 1 | Realismo della partita | **5** | la squadra gioca uguale a 0-0 e a 1-2; palla indietro «con sicurezza» all'88' sotto di uno |
+| 2 | Credibilità da attaccante | **7** | la catena marcatura→movimento→gol è causale e leggibile |
+| 3 | Causalità | **4** | eventi isolati 23 %; costruzioni che non sfociano |
+| 4 | Varietà | **6** | 11-13 tipi, ma la frase più ripetuta esce 4× |
+| 5 | Ritmo | **4** | metronomo: densità 0,96-1,17, vuoto max 6' in 6/6, 15 righe nei primi 15' in 5/6 |
+| 6 | Azioni extra-eroe | **6** | 0,83 a partita, 100 % contestualizzate: poche ma giustificate |
+| 7 | Highlight dell'eroe | **6** | il *quando* ora emerge (7.802: 30 % contro 9 %), ma la prima scena è al 12' in 6/6 |
+| 8 | Telecronaca | **5** | enfasi 33 % contro 4 eventi che la meritano |
+| 9 | Interazioni | **7** | il filo 34'→71' con il difensore è la cosa migliore vista |
+| 10 | Coerenza fra i sistemi | **5** | il racconto afferma stati che il tabellone smentisce |
+| 11 | Immersione | **5** | rotta dalle ripetizioni e dall'enfasi che ignora il punteggio |
+| 12 | Sensazione di carriera | **6** | la giornata dell'eroe ha una forma; la partita intorno è intercambiabile |
+
+## La priorità che ne esce
+
+**La squadra non reagisce al risultato.** È a monte del ritmo, dell'enfasi e degli eventi isolati:
+finché il racconto della squadra è lo stesso sotto di due o avanti di due, ogni altra cura è
+cosmetica. È il prossimo bersaglio.
