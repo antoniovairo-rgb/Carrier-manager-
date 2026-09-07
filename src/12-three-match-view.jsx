@@ -8396,8 +8396,25 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
       if(!(typeof window!=='undefined'&&window.__CPM_NO811)){try{
         const _bl=(propsRef.current||{}).ballLock811;
         if(_bl&&_bl.fino>Date.now()){
+          /* [7.804.0 — IL CANCELLO STA QUI, DOVE IL PALLONE RESO ESISTE. Rosso __CPM_NO812]
+             Regressione trovata dal PO al primo collaudo della 7.803: «il pallone e' andato in rete
+             2 volte consecutive SENZA SENSO ed il tiro e' partito da centrocampo». Vero: la 7.803
+             metteva il pallone in rete ovunque fosse, e spesso e' a meta' campo — un teletrasporto,
+             meno credibile del difetto che curava. Il primo tentativo di cancello leggeva il pallone
+             LOGICO in src/14, che il piano ha gia' portato a 92-94: gattava la palla sbagliata, ed e'
+             lo stesso errore che era costato tre revoche. Qui si legge il pallone RESO — l'unico che
+             il giocatore guarda — e la decisione si prende UNA VOLTA per affermazione. */
+          if(sr.current._bl812!==_bl.fino){
+            sr.current._bl812=_bl.fino;
+            const _gx812=ball.position.x+50;/* inverso di G2X */
+            const _av812=(_bl.x>50)?_gx812:(100-_gx812);
+            sr.current._blOk812=!(typeof window!=='undefined'&&window.__CPM_NO812)?(_av812>=70):true;
+            if(typeof window!=='undefined'&&window.__CPM_REC&&!sr.current._blOk812){try{window.__CPM_LONT812=(window.__CPM_LONT812||0)+1;}catch(_e){}}
+          }
+          if(sr.current._blOk812){
           ball.position.x=G2X(_bl.x);ball.position.z=G2Z(_bl.y);
           if(typeof window!=='undefined'&&window.__CPM_REC){try{window.__CPM_LOCK811=(window.__CPM_LOCK811||0)+1;}catch(_e){}}
+          }
         }
       }catch(_e811r){}}
       renderer.render(scene,camera);

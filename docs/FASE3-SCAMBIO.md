@@ -2091,3 +2091,41 @@ inutile.
 
 `career-critical` EXIT 0 · `npm run ci` **fingerprint 00001505 · 0 failure** · guardiano
 partita-vera 13 bande verdi, comprese le due a rischio: `gol-con-manovra` 8/9 e `custodia` 7,1u.
+
+---
+
+## 7.804 — Il pallone non si teletrasporta: regressione della 7.803, corretta
+
+**Nota PO al PRIMO collaudo della 7.803**: *«da azione pericolosa il pallone è andato in rete 2
+volte consecutive SENZA SENSO ed il tiro è partito da centrocampo»*.
+
+Ha ragione, ed è un difetto **introdotto da me**. La 7.803 metteva il pallone in rete **qualunque
+fosse la sua posizione**, e la misura della 7.803 stessa lo diceva già (colonna «prima»: 48,8 ·
+55,6 · 58,9 · 68). Ho curato «la palla non entra» e creato «la palla entra dal nulla».
+
+### Il rimedio
+
+L'affermazione vale **solo se il pallone è già nell'ultimo terzo** dalla parte giusta
+(avanzamento ≥ 70). Se il gol arriva con la palla lontana non si sposta niente: **un pallone che
+non entra è meno assurdo di un pallone che appare in porta**. La decisione si prende una volta per
+affermazione, non a ogni fotogramma.
+
+**Errore mio prima di azzeccarlo**: il primo cancello leggeva il pallone **LOGICO** in `src/14` —
+che il piano ha già portato a 92-94 — e non gattava niente. È la **terza volta nella stessa
+sessione** che confondo il pallone logico con quello reso: cioè esattamente il difetto che stavo
+curando. Spostato in `src/12`, dove il pallone reso esiste.
+
+| | 7.803 | **7.804** |
+|---|---|---|
+| gol **da lontano** teletrasportati in rete | **4/4** | **0/5** |
+| gol con l'azione **già in zona** che entrano | — | **6/8** |
+| gol in rete in totale | 12/12 | 6/13 |
+
+**BARATTO DICHIARATO**: si vedono **meno** gol finire in rete, ma **nessuno appare dal nulla**. I
+sette che non entrano sono quelli in cui il pallone non è davvero vicino alla porta — e quello è
+**l'altro difetto, ancora aperto**: l'azione non porta il pallone verso la porta.
+
+### Rituali
+
+`career-critical` EXIT 0 · `npm run ci` **fingerprint 00001505 · 0 failure** · guardiano 13 bande
+verdi, `gol-con-manovra` **10/10**.

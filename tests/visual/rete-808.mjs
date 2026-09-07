@@ -71,6 +71,21 @@ if(v.length){
   console.log('  gol in cui il pallone raggiunge la linea: '+dentro+'/'+v.length);
   const visibili=GOL.filter(x=>(x.ddentro|0)>=4).length;
   console.log('  gol in cui ci RESTA abbastanza da vedersi (>=0,5 s): '+visibili+'/'+v.length);
+  /* [7.804] IL TELETRASPORTO E' PEGGIO DEL DIFETTO. Se il pallone entra in rete partendo da meta'
+     campo, il giocatore vede un salto senza senso — segnalato dal PO al primo collaudo. Qui si
+     separano i due casi: gol in cui l'azione era GIA' in zona (prima >=70) da quelli in cui la
+     palla era lontana. I secondi NON devono piu' vedere il pallone in rete. */
+  const inZona=GOL.filter(x=>x.max!=null&&x.max>=70);
+  const lontani=GOL.filter(x=>x.max!=null&&x.max<70);
+  const zonaOk=inZona.filter(x=>x.dmax!=null&&x.dmax>=98).length;
+  const lontOk=lontani.filter(x=>x.dmax!=null&&x.dmax>=98).length;
+  console.log('');
+  console.log('  gol con l\'azione GIA\' IN ZONA (prima >=70): '+inZona.length+'  →  in rete '+zonaOk+'/'+inZona.length+'   (devono entrare)');
+  console.log('  gol con la palla LONTANA   (prima <70):    '+lontani.length+'  →  in rete '+lontOk+'/'+lontani.length+'   (NON devono: sarebbe un teletrasporto)');
+  console.log('');
+  console.log((lontOk===0&&zonaOk===inZona.length)
+    ?'  ✅ il pallone entra quando l\'azione ci arriva, e non salta quando la palla e\' lontana.'
+    :'  ⚠️  '+lontOk+' gol col pallone teletrasportato in rete da lontano.');
   console.log('');
   console.log(dentro===0?'  ⚠️  IN NESSUN GOL il pallone arriva in porta. Il tabellone dice gol, il campo no.'
     :'  '+dentro+' gol su '+v.length+' col pallone in rete.');
