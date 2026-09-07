@@ -2354,3 +2354,32 @@ in 30 ms» nella sua nota KE) il morsetto non morde e ogni arco finisce prima de
 ogni fps) ma annulla il *numero*: la baseline 0/15 è in parte un artefatto. Gancio test-only
 `__CPM_DTREAL` (banco 819): la scena avanza del tempo reale trascorso, tetto 0,3 s. Baseline e
 7.806 si rimisurano **tutte e due** con questo banco; il vecchio numero non si confronta col nuovo.
+
+### Trovato leggendo, da misurare dopo: **il tiro dell'occasione vola come un passaggio**
+
+`src/14` r.4379: ogni battuta del piano esce con `at:"pass"` — anche il tiro e anche la parata.
+L'arco di cronaca prende il tipo da `ev.at` (r.5137), quindi il tiro dell'occasione vola con
+`pass` (altezza 0,9, 0,48 s) e non con `shot` (2,8, 0,52 s); e il sito ATE-2 arma il tuffo del
+portiere solo su `shot`/`save` con bersaglio in area — dalle battute **non parte mai**: il portiere
+dell'occasione vive solo del segnale 7.695. Candidato 7.807, *dopo* il verdetto sulla 7.806: la
+battuta dichiara il proprio tipo (apertura→pass, tiro→shot, parata→save). Non si tocca adesso.
+
+### 7.806 — **REVOCATA** con la coppia a tempo reale
+
+| banco a tempo reale (`__CPM_DTREAL`) | rosso | 7.806 verde |
+|---|---|---|
+| reso arriva al tiro (≤6u) | 2/12 · mediana 23,4u | 0/6 · 20,6u |
+| reso arriva alla parata | 3/11 · 11,2u | 2/6 · 10,4u |
+| archi sostituiti in sei partite | 0 | **1** |
+| arco in volo (quota fotogrammi) | 61% | 61% |
+
+Col tempo del telefono gli archi si sovrappongono **una volta in sei partite**. I 21-27 «buttati»
+a partita erano il banco a 6 fps, non il gioco. La misura non distingue la 7.806 dal nulla: revocata,
+resta disponibile solo a richiesta (`__CPM_SI806`) per dispositivi sotto i 10 fps. `GAME_VERSION`
+torna a 7.805.0 (produzione); il numero 7.806 è bruciato.
+
+**Lezione a verbale (la settima sugli strumenti)**: un banco che rallenta i fotogrammi ma non la
+partita misura un gioco diverso. La baseline 0/15 era per metà un artefatto; la metà vera è questa:
+**al tiro il reso sta a 23u dal punto dichiarato mentre il logico ci arriva (6/12, mediana 4,2u)**.
+Con la sostituzione fuori causa, la domanda torna a dove punta l'arco — `arco-817` col banco a
+tempo reale.

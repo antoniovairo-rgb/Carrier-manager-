@@ -3958,14 +3958,15 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
       {const _ba=P.bgAction;
        if(_ba&&_ba.t&&_ba.t!==prevBgT&&_curPh==="playing"){prevBgT=_ba.t;
          const _arc=BALL_ARC_BY_TYPE[_ba.type];
+         const _sost806=!!(typeof window!=='undefined'&&window.__CPM_SI806);/* dichiarata PRIMA del registro e del contatore che la leggono: const nello stesso blocco = TDZ */
          /* [censimento 817] IL REGISTRO DEGLI ARCHI DI CRONACA: che cosa arriva e che cosa viene
             accettato. Gira ~3 volte al minuto (una per riga di cronaca con un tipo d'arco), non per
             fotogramma: e' la lezione della 7.805 sui contatori, e qui il costo e' nullo. */
          if(typeof window!=='undefined'&&window.__CPM_REC){try{const _R=(window.__CPM_ARCREG=window.__CPM_ARCREG||[]);
            if(_R.length<400)_R.push({t:Date.now(),ty:_ba.type||null,ex:_ba.ballEnd?+(+_ba.ballEnd.x).toFixed(1):null,
-             arco:_arc?1:0,vivo:ballArcActive?1:0,preso:(_arc&&(!ballArcActive||!(typeof window!=='undefined'&&window.__CPM_NO806)))?1:0,
+             arco:_arc?1:0,vivo:ballArcActive?1:0,preso:(_arc&&(!ballArcActive||_sost806))?1:0,
              bx:+(ball.position.x+50).toFixed(1)});}catch(_e){}}
-         if(_arc&&ballArcActive&&(typeof window!=='undefined'&&window.__CPM_NO806)&&window.__CPM_REC){try{window.__CPM_ARCSCART=(window.__CPM_ARCSCART||0)+1;}catch(_e){}}/* [censimento 815] archi di cronaca buttati perche' uno era gia' in volo (dal 7.806 solo col rosso acceso) */
+         if(_arc&&ballArcActive&&!_sost806&&typeof window!=='undefined'&&window.__CPM_REC){try{window.__CPM_ARCSCART=(window.__CPM_ARCSCART||0)+1;}catch(_e){}}/* [censimento 815] archi di cronaca buttati perche' uno era gia' in volo (dal 7.806 solo col rosso acceso) */
          /* ⚠️ [7.806.0 — L'ARCO NUOVO SOSTITUISCE QUELLO IN VOLO. Rosso __CPM_NO806]
             Nota PO 07/09: «le azioni pericolose extra eroe sono terribili, non credibili, non e' calcio».
             MISURATO in tre censimenti (815/816/817, sei partite, GLB ON): il piano dell'occasione e'
@@ -3982,7 +3983,16 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
             pallone com'e' adesso (r.~2188, `_arcSrcX=ball.position.x` a T<=0), e il volo riparte da li'
             verso il punto nuovo — che e' esattamente un passaggio seguito da un tiro. Un solo sito
             cambia; il tipo, la durata e il bersaglio erano gia' quelli giusti. */
-         const _sost806=!(typeof window!=='undefined'&&window.__CPM_NO806);
+         /* ⚠️ [7.806.0 — REVOCATA CON LA MISURA APPAIATA, e la lezione e' sul banco. Verde __CPM_SI806.]
+            Col banco a ~6 fps (dt morsettato a 50 ms) gli archi di cronaca si sovrapponevano SEMPRE e
+            21-27 a partita venivano buttati: la sostituzione dimezzava lo scarto (39,5→31,9u al tiro).
+            Col banco a tempo reale (__CPM_DTREAL, come il telefono a ~30 fps) gli archi si sovrappongono
+            UNA volta in sei partite: 1 sostituzione, reso al tiro 0/6 contro 2/12 del rosso — la misura
+            non la distingue dal nulla. La regola «buttato, mai ritentato» resta vera ma quasi mai
+            attiva nel tempo del telefono; quel che il PO vede (reso a 23u dal punto dichiarato mentre
+            il logico ci arriva 6/12) ha un'altra causa. La sostituzione resta disponibile SOLO a
+            richiesta (__CPM_SI806) per dispositivi che scendono davvero sotto i 10 fps. */
+
          if(_arc&&ballArcActive&&_sost806&&typeof window!=='undefined'&&window.__CPM_REC){try{window.__CPM_SOST806=(window.__CPM_SOST806||0)+1;}catch(_e){}}
          if(_arc&&(!ballArcActive||_sost806)){ballArcH=_arc.h;ballArcDur=_arc.dur;ballArcT=0;ballArcActive=true;ballArcTgtY=0.22;ballArcProf=null;/* [7.534.0 MP-1] gli archi di cronaca restano sul seno base: i profili per kind arrivano con MP-2 (beat) */
            ballArcIsBG=true;ballArcTgtX=G2X(_ba.ballEnd.x);ballArcTgtZ=G2Z(_ba.ballEnd.y); // ATE-2
