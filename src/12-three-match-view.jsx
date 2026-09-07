@@ -1937,7 +1937,16 @@ function ThreeMatchView(props){
          esisteva: la sonda lo teneva spento con una costante e nessuno se n'era accorto. Uno
          strumento che si documenta e non si scrive e' peggio di uno che manca, perche' si crede
          di averlo. Test-only: fuori dal collaudo qui non cambia nulla. */
-      try{if(typeof window!=='undefined'&&window.__CPM_DT60)_rdt=1/60;}catch(_e787){}sr.current._dtReal708=Math.min(_raw708,0.3);if(_raw708>0.001&&_raw708<1)window.__CPM_FPS708=(window.__CPM_FPS708||60)*0.95+(1/_raw708)*0.05;/* [7.708.0 — IL TELEFONO DICHIARA I SUOI FPS] EMA del frame-rate reale, sempre attiva (una moltiplicazione a fotogramma): entra nel contesto delle bozze-nota, cosi' ogni nota KE del PO porta il numero che decide se il difetto «camera in tempo-di-scena» (riscalo revocato, verbale ai lerp) esiste sul suo dispositivo — vive solo sotto i 20fps. */last=now;const dt=(typeof window!=='undefined'&&window.__CPM_FROZEN)?0:_rdt;
+      try{if(typeof window!=='undefined'&&window.__CPM_DT60)_rdt=1/60;}catch(_e787){}
+      /* [banco 819 — IL TEMPO DI SCENA TIENE IL PASSO DEL TEMPO REALE. Solo collaudo: __CPM_DTREAL]
+         MISURATO (duello-816 sulla 7.806): il banco headless col GLB gira a ~6 fps; col morsetto a 50 ms
+         la scena avanza a un terzo del reale, le righe di cronaca (che vanno a tempo reale, 1,7 s a
+         minuto) arrivano ogni mezzo secondo di SCENA e un arco da 0,48 s non finisce mai — il pallone
+         reso resta a meta' strada per tutta l'occasione. Sul telefono del PO (~30 fps, dalla sua nota
+         «10u in 30 ms») il morsetto non morde. Con questo gancio la scena avanza del tempo davvero
+         trascorso (tetto 0,3 s): pochi fotogrammi, ma nel tempo giusto. E' la regola del banco del
+         06/09 vista dall'altro lato: chi rallenta il fotogramma non deve rallentare la partita. */
+      try{if(typeof window!=='undefined'&&window.__CPM_DTREAL)_rdt=Math.min(_raw708,0.3);}catch(_e819){}sr.current._dtReal708=Math.min(_raw708,0.3);if(_raw708>0.001&&_raw708<1)window.__CPM_FPS708=(window.__CPM_FPS708||60)*0.95+(1/_raw708)*0.05;/* [7.708.0 — IL TELEFONO DICHIARA I SUOI FPS] EMA del frame-rate reale, sempre attiva (una moltiplicazione a fotogramma): entra nel contesto delle bozze-nota, cosi' ogni nota KE del PO porta il numero che decide se il difetto «camera in tempo-di-scena» (riscalo revocato, verbale ai lerp) esiste sul suo dispositivo — vive solo sotto i 20fps. */last=now;const dt=(typeof window!=='undefined'&&window.__CPM_FROZEN)?0:_rdt;
       /* [7.536.0] IL TEMPO DI SCENA, ESPOSTO (solo collaudo). Le sonde misuravano finestre di OROLOGIO:
          headless, sotto la contesa di CPU di una passata piena, in un secondo d'orologio la scena vive
          una frazione di quello che vive a macchina scarica — e una misura di reattivita' («il difensore
@@ -3949,8 +3958,33 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
       {const _ba=P.bgAction;
        if(_ba&&_ba.t&&_ba.t!==prevBgT&&_curPh==="playing"){prevBgT=_ba.t;
          const _arc=BALL_ARC_BY_TYPE[_ba.type];
-         if(_arc&&ballArcActive&&typeof window!=='undefined'&&window.__CPM_REC){try{window.__CPM_ARCSCART=(window.__CPM_ARCSCART||0)+1;}catch(_e){}}/* [censimento 815] archi di cronaca buttati perche' uno era gia' in volo */
-         if(_arc&&!ballArcActive){ballArcH=_arc.h;ballArcDur=_arc.dur;ballArcT=0;ballArcActive=true;ballArcTgtY=0.22;ballArcProf=null;/* [7.534.0 MP-1] gli archi di cronaca restano sul seno base: i profili per kind arrivano con MP-2 (beat) */
+         /* [censimento 817] IL REGISTRO DEGLI ARCHI DI CRONACA: che cosa arriva e che cosa viene
+            accettato. Gira ~3 volte al minuto (una per riga di cronaca con un tipo d'arco), non per
+            fotogramma: e' la lezione della 7.805 sui contatori, e qui il costo e' nullo. */
+         if(typeof window!=='undefined'&&window.__CPM_REC){try{const _R=(window.__CPM_ARCREG=window.__CPM_ARCREG||[]);
+           if(_R.length<400)_R.push({t:Date.now(),ty:_ba.type||null,ex:_ba.ballEnd?+(+_ba.ballEnd.x).toFixed(1):null,
+             arco:_arc?1:0,vivo:ballArcActive?1:0,preso:(_arc&&(!ballArcActive||!(typeof window!=='undefined'&&window.__CPM_NO806)))?1:0,
+             bx:+(ball.position.x+50).toFixed(1)});}catch(_e){}}
+         if(_arc&&ballArcActive&&(typeof window!=='undefined'&&window.__CPM_NO806)&&window.__CPM_REC){try{window.__CPM_ARCSCART=(window.__CPM_ARCSCART||0)+1;}catch(_e){}}/* [censimento 815] archi di cronaca buttati perche' uno era gia' in volo (dal 7.806 solo col rosso acceso) */
+         /* ⚠️ [7.806.0 — L'ARCO NUOVO SOSTITUISCE QUELLO IN VOLO. Rosso __CPM_NO806]
+            Nota PO 07/09: «le azioni pericolose extra eroe sono terribili, non credibili, non e' calcio».
+            MISURATO in tre censimenti (815/816/817, sei partite, GLB ON): il piano dell'occasione e'
+            scritto bene e il pallone LOGICO arriva dove le battute lo mandano (al tiro 9/15 entro 6u,
+            alla parata 8/15) — ma il pallone RESO, l'unico che il giocatore guarda, non ci arriva MAI
+            (0/15 e 0/15), e resta a 40-45 unita' dal punto dichiarato: a centrocampo mentre la cronaca
+            scrive «parata in tuffo». Lo scrittore che vince il fotogramma e' questo arco, nel 91% dei
+            campioni, e il suo bersaglio resta FERMO su un valore vecchio per tutta l'occasione.
+            La causa e' la riga qui sotto com'era: `if(_arc&&!ballArcActive)`. `prevBgT` e' gia' stato
+            consumato tre righe sopra, quindi una riga di cronaca che arriva mentre un arco e' ancora in
+            volo viene BUTTATA e mai piu' ritentata — 21-27 archi a partita, e nel tiro dell'occasione
+            due su due, sempre. Il pallone resta dove l'arco vecchio l'ha lasciato.
+            Ora l'arco nuovo SOSTITUISCE quello in volo: `ballArcT=0` fa ricatturare la sorgente sul
+            pallone com'e' adesso (r.~2188, `_arcSrcX=ball.position.x` a T<=0), e il volo riparte da li'
+            verso il punto nuovo — che e' esattamente un passaggio seguito da un tiro. Un solo sito
+            cambia; il tipo, la durata e il bersaglio erano gia' quelli giusti. */
+         const _sost806=!(typeof window!=='undefined'&&window.__CPM_NO806);
+         if(_arc&&ballArcActive&&_sost806&&typeof window!=='undefined'&&window.__CPM_REC){try{window.__CPM_SOST806=(window.__CPM_SOST806||0)+1;}catch(_e){}}
+         if(_arc&&(!ballArcActive||_sost806)){ballArcH=_arc.h;ballArcDur=_arc.dur;ballArcT=0;ballArcActive=true;ballArcTgtY=0.22;ballArcProf=null;/* [7.534.0 MP-1] gli archi di cronaca restano sul seno base: i profili per kind arrivano con MP-2 (beat) */
            ballArcIsBG=true;ballArcTgtX=G2X(_ba.ballEnd.x);ballArcTgtZ=G2Z(_ba.ballEnd.y); // ATE-2
            contactFlashT=0;
            /* [collaudo PO «il portiere non accenna e tenta la parata/tuffo in nessun highlights, sembra

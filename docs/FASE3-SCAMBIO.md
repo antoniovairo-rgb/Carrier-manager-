@@ -2287,3 +2287,70 @@ E dice chi vince il fotogramma:
 
 Novantun per cento a **un solo scrittore**, e non è quello che segue il racconto (#1, «scena»).
 Il censimento 817 (`tests/visual/arco-817.mjs`) chiede all'arco dove sta andando.
+
+## Censimenti 817/818 — l'arco della cronaca: **buttato via**
+
+`arco-817.mjs` (tre partite, 39 battute) guarda l'arco da dentro; `registro-818.mjs` elenca
+riga per riga che cosa arriva al renderer e che cosa viene accettato.
+
+| battuta | fotogrammi con un arco in volo | bersaglio dell'arco vs punto della battuta (mediana) | l'arco punta la battuta (≤6u) | archi **buttati** nella finestra |
+|---|---|---|---|---|
+| apertura | 98% | 31,0u | 1/13 | 14 |
+| tiro | 98% | **40,7u** | **0/13** | **26** (= 2 per battuta, sempre) |
+| parata | 70% | 34,4u | 1/13 | 11 |
+
+E il dettaglio che chiude il caso: dentro una stessa occasione **il bersaglio dell'arco non cambia
+mai** — 54, 54, 54 mentre le battute dichiarano 36 → 6 → 4; 57, 57, 57 mentre dichiarano
+72 → 93 → 96. Il registro lo mostra riga per riga:
+
+```
++ 75.7s  pass -> x 44    vivo 0  presa 1
++ 77.6s  pass -> x 6.6   vivo 1  presa 0   ← l'apertura dell'occasione: BUTTATA
++ 79.7s  pass -> x 4     vivo 1  presa 0   ← il tiro: BUTTATO
++ 83.1s  save -> x 2     vivo 0  presa 1
+```
+
+### La riga
+
+`src/12-three-match-view.jsx`, sito ATE-2: `if(_ba.t!==prevBgT){ prevBgT=_ba.t; … if(_arc&&!ballArcActive){…} }`.
+Il timbro `prevBgT` viene consumato **prima** del controllo sull'arco in volo: la riga che arriva
+mentre un arco vola viene **scartata e mai più ritentata**. Per partita: **21-27 archi buttati**
+(pass 56% accettati, save 50%). Il pallone resta dove l'arco *vecchio* l'ha lasciato, e la
+cronaca va avanti da sola.
+
+### Il banco stira gli archi — dichiarato
+
+Gli archi durano 0,35-0,68 s di scena, ma il registro li vede «vivi» dopo 1,6-4 s reali. Il dt
+per fotogramma è morsettato a 50 ms (r.1923); a ~6-8 fps col GLB il tempo di scena avanza a un
+terzo del reale e un arco da mezzo secondo ne dura due. **Sul banco lo scarto è più frequente che
+sul telefono a 30-60 fps** — ma la regola che butta l'arco è la stessa, le righe di un'occasione
+arrivano a raffica, e il PO lo vede sul suo telefono: il difetto non è del banco, il banco lo
+amplifica. Il fps del banco viene stampato da ogni sonda da qui in poi.
+
+## 7.806 — l'arco nuovo sostituisce quello in volo
+
+Un sito solo, `if(_arc&&!ballArcActive)` → `if(_arc&&(!ballArcActive||_sost806))`. Con
+`ballArcT=0` la sorgente viene ricatturata sul pallone com'è **adesso** (r.~2188), e il volo
+riparte da lì verso il punto nuovo: un passaggio seguito da un tiro, che è calcio. Rosso
+`__CPM_NO806`. Testimone `__CPM_SOST806` (archi sostituiti, ~3/min, non per fotogramma).
+
+### Prima misura della 7.806 (banco a ~6 fps): **non batte** — e il banco spiega perché
+
+| | baseline (816) | 7.806 verde |
+|---|---|---|
+| reso arriva al tiro (≤6u) | 0/15 · mediana 39,7u | **1/12 · mediana 30,9u** |
+| reso arriva alla parata | 0/15 · mediana 44,5u | **2/12 · mediana 27,1u** |
+| archi buttati / sostituiti a partita | 21-27 buttati | 17-24 sostituiti |
+
+Meglio di dieci unità, ma lontano dal bersaglio dichiarato (≥ il logico, 9/15). Con la
+sostituzione l'arco è in volo nel **98%** dei fotogrammi: un arco parte, non finisce, ne parte un
+altro. Il conto: il banco headless col GLB gira a **~6 fps** e il dt per fotogramma è morsettato a
+**50 ms** (r.1923) → la scena avanza a un terzo del reale; le righe di cronaca vanno a tempo reale
+(1,7 s a minuto) e arrivano quindi ogni ~0,5 s di **scena**, cioè prima che un arco da 0,48 s
+finisca. **Sul banco nessun arco arriva mai a destinazione.** Sul telefono del PO (~30 fps: «10u
+in 30 ms» nella sua nota KE) il morsetto non morde e ogni arco finisce prima della riga dopo.
+
+**Il banco misurava un'altra partita.** Non annulla la causa (l'arco buttato è una regola, vale a
+ogni fps) ma annulla il *numero*: la baseline 0/15 è in parte un artefatto. Gancio test-only
+`__CPM_DTREAL` (banco 819): la scena avanza del tempo reale trascorso, tetto 0,3 s. Baseline e
+7.806 si rimisurano **tutte e due** con questo banco; il vecchio numero non si confronta col nuovo.
