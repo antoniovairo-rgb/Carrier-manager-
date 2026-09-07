@@ -41,7 +41,11 @@ pallone (#53, misura in corso).
    piani, 64% dei fotogrammi obbedienti fuori) → **p90 ≤ 3u** fuori dagli archi; zero salti > 8u
    in 30 ms (la nota «SALTO del pallone» del PO).
 2. **S2 — un solo padrone.** `carrierRef` è la verità; il renderer incolla la palla a *quel* corpo
-   e a nessun altro. Misura: padrone eletto = carrier logico ≥ 95% dei fotogrammi in fase
+   e a nessun altro. **Censito (padrone-825, 07/09 notte)**: `carrierRef` è nullo nel 49-69% dei
+   campioni ambientali e l'accordo simulazione↔renderer è al 37-40% — quindi S2 ha due metà:
+   (a) il portatore logico deve *esistere* sempre quando il pallone non vola e non è fermo
+   (src/14, la decadenza a 12u del 7.642 va ripensata); (b) il renderer lo legge e basta
+   (7.810 è il primo taglio: la colla dell'eroe sui dati logici). Misura: padrone eletto = carrier logico ≥ 95% dei fotogrammi in fase
    ambientale; «eroe» eletto durante un piano altrui = 0.
 3. **S3 — la squadra sa il punteggio.** Un *atteggiamento* per lato (assalto / equilibrio /
    gestione / attesa) derivato da punteggio, minuto, superiorità: governa la spinta del microsim,

@@ -2575,3 +2575,29 @@ scarto reso↔logico, salti > 8u.
 
 Non è ancora S2 completo (il portatore-mesh `_por526` resta eletto a fine arco): è il primo taglio,
 quello che toglie all'eroe il pallone degli altri.
+
+### Censimento S2 (rosso, build 7.808) — `padrone-825`, due partite, fase ambientale
+
+| | Pa | Pb |
+|---|---|---|
+| simulazione e renderer d'accordo sul padrone | **37%** | **40%** |
+| la simulazione dice «nessuno» (`carrierRef` nullo) | **~69%** dei campioni | ~49% |
+| il renderer elegge l'eroe | 0% | 3% |
+| scarto reso↔logico (mediana · p90 · max) | 2,7 · 17 · 62u | 4,1 · 16,8 · 44u |
+| **salti > 8u fra due campioni ≤ 110 ms** | **45** | **45** |
+| `__CPM_PADRONE`: fotogrammi fuori > 2u | 40% | 43% |
+
+Due cose nuove e grosse, entrambe a monte del renderer:
+
+1. **La simulazione non sa chi ha la palla per metà-due terzi del tempo.** `carrierRef` (7.641,
+   «il portatore è uno stato») è nullo nel 49-69% dei campioni ambientali: il renderer allora
+   *inventa* un padrone (portatore-mesh 6-21%, «fermo» 22-26%). S2 non è solo «il renderer non
+   legge la simulazione»: è che **la simulazione spesso non ha niente da dire**. Il taglio 7.810
+   (colla dell'eroe sui dati logici) cura il caso dell'occasione; S2 completo richiede che il
+   portatore logico esista sempre quando il pallone non vola e non è fermo.
+2. **Quarantacinque salti > 8u a partita**: un teletrasporto ogni due minuti, in entrambe le
+   partite. È il numero di S1 da battere; lo scarto mediano (2,7-4,1u) è buono, sono le code.
+
+L'eroe eletto sull'intera fase ambientale è raro (0-3%): il danno della colla è concentrato nelle
+occasioni (traccia 820: 100% della finestra). La misura giusta della 7.810 è quindi «eroe eletto
+**dentro un piano**», aggiunta alla sonda prima del verde.
