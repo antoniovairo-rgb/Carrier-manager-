@@ -8387,6 +8387,19 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
             _L.chi=_L.chi||{};_L.chi[_chi]=(_L.chi[_chi]||0)+1;}
         }
       }catch(_ep){}}
+      /* [7.803.0 — L'AFFERMAZIONE VINCE PERCHE' SCRIVE PER ULTIMA. Rosso __CPM_NO811]
+         Il pallone ha quindici scrittori in questo file e vince l'ultimo. Invece di mettere il
+         guinzaglio agli altri quattordici — l'arco di volo vince il 54% delle volte E HA RAGIONE,
+         una palla in volo deve seguire la sua traiettoria — qui si scrive DOPO tutti, e solo
+         mentre la partita sta affermando un fatto (oggi: un gol appena accreditato). Fuori da
+         quella finestra questo blocco non tocca niente. */
+      if(!(typeof window!=='undefined'&&window.__CPM_NO811)){try{
+        const _bl=(propsRef.current||{}).ballLock811;
+        if(_bl&&_bl.fino>Date.now()){
+          ball.position.x=G2X(_bl.x);ball.position.z=G2Z(_bl.y);
+          if(typeof window!=='undefined'&&window.__CPM_REC){try{window.__CPM_LOCK811=(window.__CPM_LOCK811||0)+1;}catch(_e){}}
+        }
+      }catch(_e811r){}}
       renderer.render(scene,camera);
     };
     loop();

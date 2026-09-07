@@ -2048,3 +2048,46 @@ esito), quel fatto batte ciò che la scena sta *animando*. Non è una taratura e
 l'arco vince il 54 % delle volte **a ragione**, e toglierglielo male trasformerebbe il pallone in
 un teletrasporto. Serve la misura appaiata, che c'è già (`rete-808.mjs`, due numeri: entra **e**
 ci resta ≥ 0,5 s; numero da battere **0 su 14**).
+
+---
+
+## 7.803 — IL PALLONE ENTRA IN RETE: la partita afferma, il pallone obbedisce
+
+**Nota PO, due volte in due partite**: *«azione pericolosa extra eroe e gol ma la palla non entra
+in porta!»*
+
+### Il rimedio
+
+Non si mette il guinzaglio ai quattordici scrittori — **l'arco di volo vince il 54 % delle volte e
+ha ragione**. Si usa la loro stessa regola: *vince l'ultimo che scrive*. Un solo blocco scrive
+**dopo tutti**, subito prima del disegno, e **solo mentre la partita afferma un fatto**: oggi una
+finestra di 1,4 s aperta quando un gol viene accreditato, dai quattro siti che lo accreditano.
+Fuori da quella finestra non tocca niente.
+
+| | prima | dopo |
+|---|---|---|
+| gol col pallone in rete | **0 / 14** | **12 / 12** |
+| e ci resta abbastanza da vedersi (≥ 0,5 s) | 0 | **12 / 12** |
+| permanenza | — | **0,96 – 2,40 s** |
+
+Vale su tutte le provenienze: `highlight` (eroe), `microsim` (ambientali), nostri e loro.
+
+### Ritrattazione a verbale
+
+**Due rimedi buttati poche ore prima erano probabilmente buoni.** La sonda misurava gli **undici
+secondi PRIMA** del gol, e il pallone entra in rete **DOPO**: settimo strumento sbagliato della
+sessione, e il primo che ha fatto **scartare una cura che funzionava** invece di spedirne una
+inutile.
+
+### Aperto e dichiarato
+
+1. **L'azione non porta il pallone verso la porta.** Nella colonna «prima» restano 48,8 · 55,6 ·
+   58,9 · 68: il tabellone si muove con la palla a metà campo. Il pallone ora *finisce* in rete e
+   si vede; *come ci arriva* è ancora il racconto di una cosa e il campo di un'altra.
+2. **Il difetto strutturale dei quindici scrittori NON è risolto**: qui se ne prende il caso più
+   visibile, con una regola che vale solo mentre la partita afferma un fatto.
+
+### Rituali
+
+`career-critical` EXIT 0 · `npm run ci` **fingerprint 00001505 · 0 failure** · guardiano
+partita-vera 13 bande verdi, comprese le due a rischio: `gol-con-manovra` 8/9 e `custodia` 7,1u.

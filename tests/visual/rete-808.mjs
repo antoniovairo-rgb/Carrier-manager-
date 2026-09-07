@@ -29,6 +29,19 @@ for(let g=0;g<NOMI.length;g++){
     if(finestra.length>90)finestra.shift();
     if(s.n>visti){visti=s.n;
       const lato=s.ultimo&&s.ultimo.side==='home'?1:-1;
+      /* ⚠️ LA FINESTRA GIUSTA E' ANCHE DOPO. La prima stesura guardava solo gli 11 secondi PRIMA
+         del gol e calcolava li' il massimo avvicinamento: ma il pallone entra in rete DOPO che il
+         gol e' accreditato, in una finestra che non veniva mai campionata. Cosi' un rimedio che
+         funziona (misurato: 100,6 entro 300-450 ms dal gol, e ci resta oltre 1,2 s) risultava
+         fallito 2 volte su 15. Settimo strumento che mente in questa sessione — e il primo che mi
+         ha fatto buttare un rimedio BUONO invece di spedirne uno cattivo. */
+      const dopo=[];
+      for(let _j=0;_j<20;_j++){await sleep(120);
+        const _q=await page.evaluate(()=>{const st=window.__CPM_STATE&&window.__CPM_STATE();
+          return (st&&st.ball)?+st.ball.x.toFixed(1):null;});
+        if(_q!=null)dopo.push(lato>0?_q:100-_q);}
+      let _dmax=dopo.length?Math.max(...dopo):null,_dd=0,_cc=0;
+      dopo.forEach(v=>{if(v>=98){_cc++;if(_cc>_dd)_dd=_cc;}else _cc=0;});
       /* il frame e' eroe-centrico: casa attacca verso 100 */
       const vic=finestra.map(f=>lato>0?f.bx:100-f.bx);
       const max=vic.length?Math.max(...vic):null;
@@ -37,7 +50,8 @@ for(let g=0;g<NOMI.length;g++){
          un lampo, o niente. Si conta anche QUANTI campioni consecutivi il pallone resta oltre la
          linea — a 120 ms l'uno, servono almeno 4 campioni (~0,5 s) perche' un occhio lo veda. */
       let dentro=0,corsa=0;vic.forEach(v=>{if(v>=98){corsa++;if(corsa>dentro)dentro=corsa;}else corsa=0;});
-      GOL.push({partita:NOMI[g],min:s.min,side:s.ultimo&&s.ultimo.side,src:s.ultimo&&s.ultimo.src,max,dentro});
+      GOL.push({partita:NOMI[g],min:s.min,side:s.ultimo&&s.ultimo.side,src:s.ultimo&&s.ultimo.src,
+                max,dentro,dmax:_dmax,ddentro:_dd});
     }
     if(min>=89)break;}
   await ctx.close();
@@ -46,14 +60,16 @@ await b.close();srv.close();
 console.log('=== QUANTO SI AVVICINA IL PALLONE ALLA PORTA, SUL GOL? ('+GOL.length+' gol) ===');
 console.log('  la linea di porta e\' a 100. Sotto 98 il pallone NON entra.');
 GOL.forEach(x=>console.log('  '+x.partita+'  '+String(x.min).padStart(3)+"'  "+String(x.side).padEnd(5)
-  +' ['+String(x.src).padEnd(9)+']  massimo avvicinamento: '+(x.max==null?'n/d':x.max)
-  +(x.max!=null&&x.max<98?'   ← NON ENTRA':'   ✅ in rete per '+x.dentro+' campioni ('+(x.dentro*0.12).toFixed(2)+'s)')));
+  +' ['+String(x.src).padEnd(9)+']  DOPO il gol: '+(x.dmax==null?'n/d':x.dmax)
+  +' per '+(x.ddentro*0.12).toFixed(2)+'s'+(x.dmax!=null&&x.dmax>=98?'  ✅ IN RETE':'  ← non entra')
+  +'   ·   prima: '+(x.max==null?'n/d':x.max)
+  ));
 const v=GOL.filter(x=>x.max!=null).map(x=>x.max).sort((a,b)=>a-b);
 if(v.length){
-  const dentro=v.filter(x=>x>=98).length;
+  const dentro=GOL.filter(x=>x.dmax!=null&&x.dmax>=98).length;
   console.log('\n  massimo avvicinamento: mediana '+v[v.length>>1]+' · p90 '+v[Math.floor(v.length*0.9)]+' · MASSIMO ASSOLUTO '+v[v.length-1]);
   console.log('  gol in cui il pallone raggiunge la linea: '+dentro+'/'+v.length);
-  const visibili=GOL.filter(x=>(x.dentro|0)>=4).length;
+  const visibili=GOL.filter(x=>(x.ddentro|0)>=4).length;
   console.log('  gol in cui ci RESTA abbastanza da vedersi (>=0,5 s): '+visibili+'/'+v.length);
   console.log('');
   console.log(dentro===0?'  ⚠️  IN NESSUN GOL il pallone arriva in porta. Il tabellone dice gol, il campo no.'
