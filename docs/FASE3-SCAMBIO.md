@@ -2188,3 +2188,102 @@ l'unico pericolo fosse che mentisse. I contatori diagnostici si tolgono appena h
 
 `career-critical` PASS · `npm run ci` **fingerprint 00001505 · 0 failure** · guardiano
 partita-vera 13 bande verdi (`gol-del-simulatore` 7 nati / 7 accreditati / 0 mangiati).
+
+---
+
+## Censimento 815 — «le azioni pericolose extra eroe sono rare e disegnate male» (nota PO 07/09)
+
+Nello stesso messaggio il PO ha **chiuso la valutazione sulla telecamera**: *«va bene che la camera
+si muove»*. La camera resta **libera**; non si blocca a centrocampo. A verbale, e non si riapre.
+
+Resta il bersaglio nuovo, in due metà. Prima di toccare qualunque cosa, il censimento —
+`tests/visual/disegno-815.mjs`, sei partite, banco tarato, GLB ON, sola lettura.
+
+Il piano dell'occasione (`_pianoOcc695`) ha **tre battute** — apertura, tiro, parata — e ognuna
+**dichiara** un punto d'arrivo del pallone. La domanda del censimento è una sola: *il pallone che
+il giocatore guarda ci arriva?*
+
+### RARE — il numero vero è 2,00, non 0,83
+
+| | |
+|---|---|
+| occasioni extra-eroe a partita | **2,00** (12 aperture in 6 partite) |
+| battute che arrivano al tiro | **12/12 (100%)** |
+| battute che arrivano alla parata | **12/12 (100%)** |
+
+Il 2,00 corregge lo 0,83 di una misura precedente presa su un banco diverso. E il 100/100 chiude
+una **falsa pista**: le tre battute escono **tutte**, sempre. L'azione pericolosa non muore a metà.
+
+### DISEGNATE MALE — il pallone non ci va. Mai.
+
+| battuta | il pallone RESO arriva (≤6u) | distanza minima mediana | p90 | max |
+|---|---|---|---|---|
+| apertura | **1/12** | 11,7u | 26,2u | 31,1u |
+| tiro | **1/12** | **37,6u** | 49,0u | 55,0u |
+| parata | **1/12** | **40,7u** | 51,6u | 59,8u |
+
+Quaranta unità su un campo lungo cento: mentre la telecronaca scrive *«conclusione secca dal
+vertice dell'area»* e poi *«ci arriva in tuffo e la devia in angolo»*, **il pallone è a
+centrocampo**. Non è un'impressione, sono le parole del PO una per una:
+
+- *«ha detto la telecronaca che c'è stata una parata ma il motore non ha mostrato l'azione»*
+- *«azione pericolosa finta, ha fatto vedere azione insignificante a centrocampo»*
+- *«il tiro è partito da centrocampo»* · *«il pallone va dove gli pare»*
+
+Sono tutte **la stessa cosa**, e questa è la misura che la nomina. Il punto #50 («annunciata e non
+mostrata») non è un difetto a parte: è questo.
+
+### E si tira da lontano
+
+| zona da cui parte la conclusione (avanzamento dichiarato) | |
+|---|---|
+| area (≥82) | **1/12** |
+| limite (70-82) | 4/12 |
+| **lontano (<70)** | **7/12** |
+
+Mediana 64. Conferma il punto #44 («la squadra non sale») dal lato del racconto: sette conclusioni
+su dodici nascono fuori, e il piano le manda comunque a finire sulla linea di porta.
+
+### La domanda che decide il rimedio
+
+Restano due colpevoli, e sono due rimedi diversi:
+
+1. il pallone **logico** non ci va → il difetto è nel piano o nel moto della palla;
+2. il logico ci va e il **reso** non lo segue → è la gerarchia dei **15 scrittori** (punto #31).
+
+`tests/visual/duello-816.mjs` li guarda nello stesso istante e nomina lo scrittore che vince il
+fotogramma (nuovo accessore `__CPM_WS`, sola lettura, test-only). **Nessun rimedio prima della
+risposta.**
+
+## Censimento 816 — la risposta: **il racconto ha ragione, il campo non lo segue**
+
+`tests/visual/duello-816.mjs`, stesse sei partite, i due palloni guardati **nello stesso istante**.
+
+| battuta | il pallone **LOGICO** arriva (≤6u) | mediana | il pallone **RESO** arriva | mediana | scarto reso↔logico (mediana / max) |
+|---|---|---|---|---|---|
+| apertura | 2/15 | 9,7u | 1/15 | 13,4u | 25,2u / 35,2u |
+| tiro | **9/15** | **4,6u** | **0/15** | **39,7u** | **39,7u / 51,7u** |
+| parata | **8/15** | **5,7u** | **0/15** | **44,5u** | **44,6u / 62,1u** |
+
+**Il piano non è il colpevole.** Il pallone logico — quello che telecronaca, piani e microsim
+affermano — al tiro e alla parata **ci arriva davvero**, con mediane di quattro e sei unità. È il
+pallone **reso**, l'unico che il giocatore guarda, a restare quaranta-quarantacinque unità
+indietro: **zero su quindici**, due volte di fila.
+
+Non è quindi il caso di riscrivere il piano dell'occasione, né di aggiungergli battute, né di
+spostare i bersagli. **Il disegno c'è già e non viene mostrato.** È lo stesso difetto strutturale
+del punto #31 — quindici scrittori sul pallone reso e vince l'ultimo — nella sua forma peggiore:
+non uno scarto di qualche unità, ma **mezza lunghezza di campo**, esattamente nei tre secondi in
+cui il gioco dichiara di essere pericoloso.
+
+E dice chi vince il fotogramma:
+
+| scrittore | fotogrammi | quota |
+|---|---|---|
+| **#2 — l'arco della cronaca** | 1147 | **91%** |
+| #17 — il fermo | 63 | 5% |
+| #3 — l'inseguitore | 37 | 3% |
+| #4 — il portatore | 13 | 1% |
+
+Novantun per cento a **un solo scrittore**, e non è quello che segue il racconto (#1, «scena»).
+Il censimento 817 (`tests/visual/arco-817.mjs`) chiede all'arco dove sta andando.

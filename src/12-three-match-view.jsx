@@ -1509,6 +1509,22 @@ function ThreeMatchView(props){
         const pr=propsRef.current||{};
         return{x:+bx.toFixed(2),y:+by.toFixed(2),i:bi,d:+bd.toFixed(2),c:pr.matchClock||0,ph:pr.matchPhase||null};
       }catch(_e){return null;}};
+      /* [censimento 815 — CHI SCRIVE IL PALLONE, ADESSO. Sola lettura, test-only.]
+         Il testimone __CPM_PADRONE accumula su tutta la partita e non sa dire che cosa succede
+         DENTRO una finestra (per esempio i tre secondi di un'azione pericolosa extra-eroe). Qui
+         c'e' la stessa informazione, ma istantanea e a costo zero: il pallone RESO, il pallone
+         LOGICO (cio' che telecronaca e piani affermano) e la firma dello scrittore che ha vinto
+         il fotogramma. Nessun calcolo per fotogramma: legge campi gia' esistenti. */
+      window.__CPM_WS=function(){try{
+        const _P=propsRef.current||{};
+        return{rx:+(ball.position.x+50).toFixed(2),ry:+(ball.position.z/0.68+50).toFixed(2),
+               lx:(_P.ballX==null?null:+(+_P.ballX).toFixed(2)),ly:(_P.ballY==null?null:+(+_P.ballY).toFixed(2)),
+               ws:(sr.current&&sr.current._ws524)|0,
+               src:(sr.current&&sr.current._bj0&&sr.current._bj0.src)||null,
+               arc:{on:ballArcActive?1:0,bg:ballArcIsBG?1:0,
+                    tx:+(ballArcTgtX+50).toFixed(1),ty:+(ballArcTgtZ/0.68+50).toFixed(1),
+                    t:+(+ballArcT||0).toFixed(2),dur:+(+ballArcDur||0).toFixed(2)}};
+      }catch(_e){return null;}};
       // F1: probe del FOOTBALL STATE osservatore (lo aggiorna on-demand e lo ritorna) — per le metriche F0.
       window.__CPM_FOOTBALL_STATE=function(){try{updateFootballState();}catch(e){} return (sr.current&&sr.current.football)||null;};
       // [6.3.0 R0/LMQP-10] drain del recorder live: ritorna il buffer e lo svuota (il runner lo scarica a intervalli)
@@ -3933,6 +3949,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
       {const _ba=P.bgAction;
        if(_ba&&_ba.t&&_ba.t!==prevBgT&&_curPh==="playing"){prevBgT=_ba.t;
          const _arc=BALL_ARC_BY_TYPE[_ba.type];
+         if(_arc&&ballArcActive&&typeof window!=='undefined'&&window.__CPM_REC){try{window.__CPM_ARCSCART=(window.__CPM_ARCSCART||0)+1;}catch(_e){}}/* [censimento 815] archi di cronaca buttati perche' uno era gia' in volo */
          if(_arc&&!ballArcActive){ballArcH=_arc.h;ballArcDur=_arc.dur;ballArcT=0;ballArcActive=true;ballArcTgtY=0.22;ballArcProf=null;/* [7.534.0 MP-1] gli archi di cronaca restano sul seno base: i profili per kind arrivano con MP-2 (beat) */
            ballArcIsBG=true;ballArcTgtX=G2X(_ba.ballEnd.x);ballArcTgtZ=G2Z(_ba.ballEnd.y); // ATE-2
            contactFlashT=0;
