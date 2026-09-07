@@ -4010,7 +4010,8 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
               angolata) — stessa macchina CIN-2 degli highlight, che si ripulisce da sola a fine gesto.
               __CPM_NO439: interruttore test-only per riprodurre il rosso nel guardiano. */
            let _gkDz439=null;
-           if(!oppActType&&(_ba.type==='shot'||_ba.type==='save')&&(_ba.ballEnd.x>=70||_ba.ballEnd.x<=30)&&!(typeof window!=='undefined'&&window.__CPM_NO439)){
+           if(!oppActType&&(_ba.type==='shot'||_ba.type==='save')&&(_ba.ballEnd.x>=70||_ba.ballEnd.x<=30)&&!(typeof window!=='undefined'&&window.__CPM_NO439)
+             &&!(!(typeof window!=='undefined'&&window.__CPM_NO808)&&_ba.type==='save'&&sr.current&&sr.current._t8At808&&(Date.now()-sr.current._t8At808)<8000)/* [7.808.0 v2] MISURATO (quota-821 verde v1): con le battute tipizzate la PARATA (type save) rientrava qui e armava un secondo gesto dopo il tuffo del tiro — 5 occasioni su 13 con due o piu' tuffi. Il «portiere reagisce una volta» vale anche per questo sito: se un tuffo da tiro e' partito negli ultimi OTTO secondi, la riga della parata non arma niente. [v3] MISURATO (quota-821 v2): con 2,5 s il T9 scattava in 11 occasioni su 13 — la riga della parata arriva dopo quella del tiro a cadenza del lettore delle schede, non del tick, e 2,5 s non bastavano; otto secondi coprono un'occasione intera (tre righe). */){
              let _g439=null;
              if(_ba.ballEnd.x>=70)_g439=awayGkMesh;
              else sr.current.players.forEach((pp,ii)=>{const src=(P.allPlayers||[])[ii];if(src&&src.team==='home'&&src.gk)_g439=pp.mesh;});
@@ -4019,7 +4020,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                _g439._divePz=_g439.position.z;_g439._diveYaw=_g439.rotation.y;_g439._diveBallY=0.65;
                if(_ba.type==='save'&&_dz439<2.4){oppActType="gk_block";_g439._diveToZ=clamp(_tz439,_g439.position.z-3,_g439.position.z+3);}
                else if(_ba.type==='save'){const _rch439=(typeof window!=='undefined'&&window.__CPM_NO705)?9:4.5;/* [7.705.0] MISURATO (piscina-705 v5): il morsetto ±9 world-z vale 13,4u di campo — con l'esito all'angolo il portiere volava a y 63 e tornava a piedi, meta' del nuoto residuo. Stesso ±4.5 del tuffo ambientale: un corpo copre lo specchio, non l'area. */oppActType="gk_dive";{try{if(typeof window!=='undefined'&&window.__CPM_REC){const _G=(window.__CPM_GK799=window.__CPM_GK799||[]);if(_G.length<200)_G.push({tag:"T7",t:(typeof ballArcT!=="undefined"&&ballArcT!=null)?+(+ballArcT).toFixed(2):null,act:(typeof ballArcActive!=="undefined"&&ballArcActive)?1:0,dur:(typeof ballArcDur!=="undefined"&&ballArcDur!=null)?+(+ballArcDur).toFixed(2):null});}}catch(_e799){}}_g439._diveToZ=clamp(_tz439,_g439.position.z-_rch439,_g439.position.z+_rch439);_g439._diveDur=clamp(ballArcDur*1.15,0.55,1.0);}
-               else {oppActType="gk_dive";{try{if(typeof window!=='undefined'&&window.__CPM_REC){const _G=(window.__CPM_GK799=window.__CPM_GK799||[]);if(_G.length<200)_G.push({tag:"T8",t:(typeof ballArcT!=="undefined"&&ballArcT!=null)?+(+ballArcT).toFixed(2):null,act:(typeof ballArcActive!=="undefined"&&ballArcActive)?1:0,dur:(typeof ballArcDur!=="undefined"&&ballArcDur!=null)?+(+ballArcDur).toFixed(2):null});}}catch(_e799){}}_g439._diveToZ=clamp(_g439.position.z+(_tz439-_g439.position.z)*0.55,_g439.position.z-6,_g439.position.z+6);_g439._diveDur=clamp(ballArcDur*1.15,0.55,1.0);}}}
+               else {oppActType="gk_dive";if(sr.current)sr.current._t8At808=Date.now();/* [7.808.0] il tuffo dal TIRO di cronaca lascia l'ora: il segnale 7.695 che arriva alla battuta dopo non deve armare un secondo tuffo */{try{if(typeof window!=='undefined'&&window.__CPM_REC){const _G=(window.__CPM_GK799=window.__CPM_GK799||[]);if(_G.length<200)_G.push({tag:"T8",t:(typeof ballArcT!=="undefined"&&ballArcT!=null)?+(+ballArcT).toFixed(2):null,act:(typeof ballArcActive!=="undefined"&&ballArcActive)?1:0,dur:(typeof ballArcDur!=="undefined"&&ballArcDur!=null)?+(+ballArcDur).toFixed(2):null});}}catch(_e799){}}_g439._diveToZ=clamp(_g439.position.z+(_tz439-_g439.position.z)*0.55,_g439.position.z-6,_g439.position.z+6);_g439._diveDur=clamp(ballArcDur*1.15,0.55,1.0);}}}
            /* [7.511.0 R1 — LA CRONACA HA UN ATTORE: audit «durante la cronaca nessuno calcia»] L'arco volava
               senza che nessun giocatore facesse il gesto: `bgAction` non portava un attore e nessun ramo
               assegnava una clip fuori da fireConclusion. Ora l'evento porta origine e lato: il giocatore di
@@ -5345,7 +5346,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
            del lato che NON attacca. Una sola fonte per il testo e per il gesto: non possono divergere.
            Il ramo cede a qualunque reazione gia' in corso, quindi il cancello del 7.603 («un portiere non
            si tuffa due volte in tre secondi») resta valido. Rosso __CPM_NO695. */
-        if(!(typeof window!=='undefined'&&window.__CPM_NO695)&&P.gkSave&&P.gkSave.current&&P.gkSave.current.t&&P.gkSave.current.t!==_lastGk695&&!oppActType&&sr.current&&sr.current.players){
+        if(!(typeof window!=='undefined'&&window.__CPM_NO695)&&P.gkSave&&P.gkSave.current&&P.gkSave.current.t&&P.gkSave.current.t!==_lastGk695&&!oppActType&&!(!(typeof window!=='undefined'&&window.__CPM_NO808)&&sr.current&&sr.current._t8At808&&(Date.now()-sr.current._t8At808)<8000)/* [7.808.0 — IL PORTIERE REAGISCE UNA VOLTA, AL TIRO. Rosso __CPM_NO808] Con le battute che dichiarano il tipo, il tiro dell'occasione arma il tuffo dal sito ATE-2 nell'istante in cui il pallone parte (piu' il tempo di reazione del 7.800); la battuta della parata arriva 1,7 s dopo e questo segnale armerebbe un SECONDO tuffo — il «doppio gesto scoordinato» del PO (#49). Se un tuffo da tiro e' partito negli ultimi 2,5 s, il segnale tace: resta la parata gia' in corso. Misura: quota-821, tuffi per occasione. */&&sr.current&&sr.current.players){
           _lastGk695=P.gkSave.current.t;
           try{const _tm695=(P.gkSave.current.side==='home')?'away':'home';let _gk695=null;
             sr.current.players.forEach((pp,ii)=>{const src=(P.allPlayers||[])[ii];if(src&&src.team===_tm695&&src.gk&&pp&&pp.mesh)_gk695=pp.mesh;});
@@ -7451,7 +7452,12 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
             const _viaBall=_off660&&_nasc814;
             if(ball)ball.visible=!_viaBall;
             if(typeof _bShadow534!=='undefined'&&_bShadow534)_bShadow534.visible=!_viaBall;
-            if(_viaBall&&typeof ballHalo!=='undefined'&&ballHalo)ballHalo.visible=false;}
+            /* ⚠️ [7.808.0 — REGRESSIONE DELLA 7.805 CORRETTA: L'ALONE SI RIACCENDE. Nota PO sulla 7.807: «il
+               pallone adesso e' troppo piccolo». La 7.805 spegneva l'alone insieme al pallone in cronaca
+               testuale e NON lo riaccendeva mai: dal primo minuto di cronaca in poi il pallone negli
+               highlight era senza alone, cioe' visibilmente piu' piccolo. Ora l'alone segue il pallone
+               in tutte e due le direzioni. Misura: alone-822. */
+            if(typeof ballHalo!=='undefined'&&ballHalo){if(typeof window!=='undefined'&&window.__CPM_NO808H){if(_viaBall)ballHalo.visible=false;}else ballHalo.visible=!_viaBall;}}/* rosso __CPM_NO808H = il comportamento della 7.805 (spegne e non riaccende), per la prova appaiata */
            }catch(_e660){}}}
       /* [7.665.0] LA MISURA DOV'E' IL FENOMENO: il guardiano contava solo i procedurali
          (__CPM_PROCVIS, 7.264) — con GLB acceso quel numero e' zero anche a campo pieno. Questo
@@ -7459,7 +7465,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
       if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)&&!window.__CPM_VIS665){try{window.__CPM_VIS665=()=>{let _pc=0,_gc=0;
         try{((sr.current&&sr.current.players)||[]).forEach(pp=>{if(pp&&pp.mesh&&pp.mesh.visible)_pc++;});if(hero&&hero.visible)_pc++;}catch(_x){}
         try{(glbAvatars||[]).forEach(a=>{if(a&&a.root&&a.root.visible)_gc++;});}catch(_x){}
-        return{proc:_pc,glb:_gc,ball:!!(ball&&ball.visible),ombra:!!(typeof _bShadow534!=='undefined'&&_bShadow534&&_bShadow534.visible),fase:(propsRef.current&&propsRef.current.matchPhase)||null,saliente:!!(propsRef.current&&propsRef.current.salienteOn)};};}catch(_e){}}/* [7.805] il testimone dice anche se e' in corso un'azione SALIENTE: senza, la misura non sa distinguere «telecronaca testuale» da «azione mostrata», che e' esattamente il confine del rimedio */
+        return{proc:_pc,glb:_gc,ball:!!(ball&&ball.visible),ombra:!!(typeof _bShadow534!=='undefined'&&_bShadow534&&_bShadow534.visible),fase:(propsRef.current&&propsRef.current.matchPhase)||null,saliente:!!(propsRef.current&&propsRef.current.salienteOn),alone:!!(typeof ballHalo!=='undefined'&&ballHalo&&ballHalo.visible)};};}catch(_e){}}/* [7.805] il testimone dice anche se e' in corso un'azione SALIENTE: senza, la misura non sa distinguere «telecronaca testuale» da «azione mostrata», che e' esattamente il confine del rimedio */
       /* [7.675.0 — LO STRUMENTO CHE MANCAVA: UNA FINESTRA SUL MONDO GLB.
          Tre difetti diversi segnalati dal PO nello stesso giorno (7.665 i giocatori che non sparivano,
          7.672 la volee' recitata come rovesciata, 7.674 il portiere con due gesti sovrapposti) avevano

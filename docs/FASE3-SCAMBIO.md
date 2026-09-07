@@ -2458,3 +2458,78 @@ il racconto**.
 
 `career-critical` **PASS** · `npm run ci` **fingerprint 00001505 · 0 failure** · guardiano
 partita-vera OK (`gol-del-simulatore` 8 nati / 8 accreditati / 0 mangiati). In produzione.
+
+## 7.808 — la battuta dichiara il proprio tipo, e il portiere reagisce una volta, al tiro
+
+**Rosso misurato** (`quota-821`, 4 partite a tempo reale, 24 battute): al tiro dell'occasione il
+pallone sale a quota **1,05** (mediana e p90) — l'altezza di un passaggio (`pass` 0,9; `shot` 2,8) —
+perché tutte e tre le battute escono con `at:"pass"` (src/14 r.4379). Tuffi del portiere dal sito
+ATE-2 (`T8`, quello che reagisce **al tiro**): **0 su 8**. Il portiere vive del solo segnale 7.695
+(`T9`) alla battuta della parata: 8/8, cioè 1,7 s dopo che il tiro è partito.
+
+Due cose in un'unità sola, perché la prima senza la seconda peggiora #49:
+1. `at` per battuta: apertura→`pass`, tiro (`ms`)→`shot`, parata (`gk`)→`save`. L'arco vola da
+   tiro e ATE-2 arma il tuffo nell'istante in cui il pallone parte (+ reazione 7.800).
+2. Il segnale 7.695 **tace** se un tuffo da tiro è partito negli ultimi 2,5 s (`_t8At808`):
+   altrimenti la battuta della parata armerebbe un **secondo** tuffo — il «doppio gesto
+   scoordinato» del PO.
+
+Rosso `__CPM_NO808`. Misura: quota al tiro 1,05 → ≥2,5; tuffi per **occasione** esattamente uno
+(indici distinti di `__CPM_GK799`), con `T8` al tiro.
+
+### Regressione della 7.805 trovata dal PO sulla 7.807: «il pallone adesso è troppo piccolo»
+
+`src/12` r.~7454: la 7.805 spegneva l'**alone** del pallone insieme al pallone in cronaca testuale
+(`if(_viaBall) ballHalo.visible=false`) e **non lo riaccendeva mai**. Dal primo minuto di cronaca in
+poi, il pallone negli highlight era senza alone: più piccolo. Nessuna sonda lo guardava — la
+`nascondi-814` misurava il pallone, non l'alone. Corretta nel treno 7.808 (`ballHalo.visible=!_viaBall`),
+testimone `__CPM_VIS665.alone`, misura `alone-822` (highlight acceso ~100%, cronaca spento ~100%),
+rosso appaiato `__CPM_NO808H` che riproduce il comportamento della 7.805.
+
+Le altre due note della stessa consegna: «la difesa mura la conclusione ma non si vede» (esito
+`intercept` su cross, punto #52, da censire) e «le azioni salienti extra eroe continuano ad essere
+rare e non credibili» — sulla 7.807, che ha reso il pallone fedele al racconto ma non ha toccato
+il disegno (7.808 in misura) né la rarità.
+
+### Censimento #52 — «la difesa mura la conclusione ma non si vede» (cross → `intercept`)
+
+Letto, non ancora misurato. In `src/12` i gesti avversari che vengono **armati** sono quattro:
+`gk_dive` (9 siti), `opp_tackle` (3), `gk_catch` (2), `gk_block` (1). Il gesto `opp_intercept`
+**esiste solo come animazione** (r.5513) e **nessun sito lo arma mai**: codice morto. La variante
+d'esito `blocked` (r.2583, assegnata anche a `intercepted`) **non ha consumatori**. E il ramo delle
+perdite (r.2979) esclude per costruzione `P.hlType!=="cross"`. Quindi: quando la difesa intercetta
+un cross, l'esito lo dice e nessun corpo lo fa. Non è un cancello troppo stretto: il gesto di chi
+mura o intercetta **non c'è**. Punto #52, dopo il treno 7.808.
+
+### 7.808 — seconda e terza stesura, e una diagnosi sbagliata dichiarata
+
+| `quota-821` (4 partite, tempo reale) | rosso | v1 | v2 (parata tace 2,5 s) |
+|---|---|---|---|
+| quota max al tiro (mediana) | 1,05 | 2,0 | **2,94** |
+| tuffi per occasione: esattamente uno | — | 8/13 | 4/13 |
+| tuffi per occasione: due o più | — | 5/13 | **8/13** |
+| T8 (ATE-2) al tiro / T9 (7.695) | 0 / 8 | 7 / 10 | 9 / 11 |
+
+Il tiro vola da tiro. Ma il portiere si tuffa **due volte** più spesso di prima: la finestra di
+2,5 s è più corta della distanza fra la riga del tiro e quella della parata, che arrivano a
+cadenza del lettore delle schede, non del tick. **v3**: otto secondi, un'occasione intera. In misura.
+
+**L'alone non era la causa del «pallone troppo piccolo».** Coppia `alone-822`: verde 100% acceso
+negli highlight, rosso `NO808H` (il comportamento della 7.805) **99%**. La diagnosi era sbagliata:
+qualcosa riaccende l'alone comunque. Il ripristino resta perché innocuo, ma la regressione **non è
+corretta** e la causa va cercata altrove (scala base del pallone `_bBase534`, r.3069). Dichiarato.
+
+### 7.808 v3 — il portiere reagisce una volta
+
+| `quota-821` | rosso | v2 (2,5 s) | **v3 (8 s)** |
+|---|---|---|---|
+| quota max al tiro (mediana · p90) | 1,05 · 1,05 | 2,94 · 2,94 | **2,0 · 2,94** |
+| tuffi per occasione: esattamente uno | — | 4/13 | **6/6** |
+| tuffi per occasione: due o più | — | 8/13 | **0/6** |
+| chi reagisce | T9 8/8 | T8 9 · T9 11 | T8 3 · T9 3 |
+
+Sei occasioni sole (il banco è sceso a 3-6 fps in tre partite su quattro): campione piccolo,
+dichiarato. Ma il verso è netto e appaiato: da otto doppi tuffi su tredici a zero su sei. Quando il
+tiro arma il tuffo (T8, bersaglio in area) il segnale della parata tace; quando non lo arma (tiro
+da fuori, bersaglio sotto il 70), resta il segnale 7.695 (T9): **una reazione per occasione, o al
+tiro o alla parata, mai due**.

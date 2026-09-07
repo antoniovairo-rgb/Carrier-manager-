@@ -4376,7 +4376,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
           if(_pgH649&&_pgH649.piano&&!(typeof window!=='undefined'&&window.__CPM_NO649)&&(_pgH649.step|0)<_pgH649.piano.length&&!/goal$/.test(String(ev.ef||""))&&!_koHij536&&kickoffRef.current<=0&&!outRef.current&&!spRef.current&&!fermoRef.current){
             const _pe649=_pgH649.piano[_pgH649.step|0];_pgH649.step=(_pgH649.step|0)+1;
             _recHij545=true;_recKind546="manovra-gol";_recSide546=_pgH649.dir>0?"home":"away";
-            ev={txt:_pe649.t,ef:null,w:1,bpos:{x:clamp(_pe649.x,4,96),y:clamp(_pe649.y,6,94)},pd:_dec499,at:"pass",_piano649:1,ms:_pe649.ms?(_pgH649.dir>0?{shots:1}:{oppShots:1}):null};
+            ev={txt:_pe649.t,ef:null,w:1,bpos:{x:clamp(_pe649.x,4,96),y:clamp(_pe649.y,6,94)},pd:_dec499,at:((typeof window!=='undefined'&&window.__CPM_NO808)?"pass":(_pe649.gk?"save":(_pe649.ms?"shot":"pass"))),/* [7.808.0 — LA BATTUTA DICHIARA IL PROPRIO TIPO. Rosso __CPM_NO808] Tutte e tre le battute uscivano con at:"pass": l'arco di cronaca (BALL_ARC_BY_TYPE, src/12) faceva volare il TIRO con altezza 0,9 e 0,48 s invece di 2,8 e 0,52 (shot), e il sito ATE-2 — che arma il tuffo del portiere solo su shot/save con bersaglio in area — dalle battute non partiva mai (misurato: tuffi T8 durante le occasioni, vedi quota-821). Ora la battuta col tiro (ms) vola da tiro, quella col portiere (gk) da parata, l'apertura resta un passaggio. Il segnale 7.695 resta a valle. */_piano649:1,ms:_pe649.ms?(_pgH649.dir>0?{shots:1}:{oppShots:1}):null};
             if(_pe649.gk&&!(typeof window!=='undefined'&&window.__CPM_NO695)){gkSave695.current={t:Date.now(),side:_pgH649.dir>0?"home":"away"};_pgH649.esito703=_pe649.esito||null;/* [7.702.0] l'esito da regolamento dichiarato dal TESTO: alla chiusura arma la palla morta corrispondente *//* [7.695.0] la riga che NOMINA il portiere accende il tuffo: una sola fonte, il testo e il gesto non possono divergere */
               if(typeof window!=='undefined'&&window.__CPM_REC){try{const _w=(window.__CPM_OCC695=window.__CPM_OCC695||{armate:0,parate:0,min:[]});_w.parate++;}catch(_e){}}}
             /* [7.792 strumentazione] QUANTO DISTA CHI IL RACCONTO NOMINA DAL PUNTO DOVE MANDA LA PALLA.
@@ -5269,7 +5269,8 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
           else if(counterRef.current&&!ev.ef)cColor=counterRef.current.dir>0?"#fbbf24":"#f87171";/* [7.532.0 NO542] il ribaltamento ha il suo colore: ambra il nostro, rosso il loro */
           const _sc681=ev._intxSc681||null;
           if(_arcType&&ATE3_TYPEMS[_arcType]){chantTimersRef.current.push(setTimeout(()=>addCom(evTxt,cColor,nx,_sc681),Math.round(ATE3_TYPEMS[_arcType]/2)));}
-          else addCom(evTxt,cColor,nx,_sc681);
+          else {if(ev._piano649&&intxPendRef681.current&&!_sc681&&typeof window!=='undefined'&&window.__CPM_REC){try{window.__CPM_REF_PIANO=(window.__CPM_REF_PIANO||0)+1;}catch(_e){}}/* [censimento 823 · playtest n°3 C] una riga di PIANO (apertura/tiro/parata dell'occasione, o della costruzione del gol) che addCom sta per rifiutare perche' c'e' una scheda aperta: e' cosi' che nel diario l'occasione compare come una parata senza il tiro? Sola lettura, per riga. */
+          addCom(evTxt,cColor,nx,_sc681);}
           /* [7.681.0] il contesto della scheda serve anche DOPO, per scrivere l'esito della scelta:
              lo si mette da parte insieme all'id, cosi' il ramo che applica la scelta non deve
              ricostruirlo (e non puo' divergere da quello con cui la frase e' stata scritta). */

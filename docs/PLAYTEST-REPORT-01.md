@@ -232,3 +232,69 @@ giornata di carriera, e me la ricorderei.**
 **La squadra non reagisce al risultato.** È a monte del ritmo, dell'enfasi e degli eventi isolati:
 finché il racconto della squadra è lo stesso sotto di due o avanti di due, ogni altra cura è
 cosmetica. È il prossimo bersaglio.
+
+---
+
+# Rapporto n° 3 — passata da player sulla 7.807 (07/09, sera)
+
+Due partite intere lette come le legge il giocatore (`passata-player.mjs`, GLB ON, banco tarato):
+**Ferrari / seme 4242 → 1-2** (91 righe, 26 minuti su 89 senza niente, silenzio massimo 6') e
+**Rossi / seme 9191 → 1-1** (68 righe, **44 minuti su 89 senza niente**, silenzio massimo 5').
+Richiesta del PO: *«Dai un voto alla credibilità delle partite! Deve essere altissima!»*. Il voto
+lo danno le partite, non la richiesta.
+
+## Le bugie del sistema trovate leggendo (nuove)
+
+| # | la riga | perché non ci credo |
+|---|---|---|
+| A | 53' *«Ferrari scarica su Ferrari»* · 55' *«Giro palla: Ferrari per Ferrari»* · 44' *«Spada appoggia su Spada e SCATTA»* | **un giocatore passa a sé stesso**. Cognomi dei PNG che coincidono con l'eroe o fra loro (Colombo GRA e POL, Spada GRA e POL, Leone, Bianchi): la rosa non evita i doppioni |
+| B | 15' *«L'avversario avanza compatto»* → 16'-19' *«Colombo apre… Leone affonda… Cross di Leone: Bianchi stacca… Incornata di Bianchi a botta sicura!»* → 20' *«Gol avversario»* | le righe della costruzione **non portano la squadra**: con i cognomi condivisi si legge come un NOSTRO attacco che finisce in un gol LORO |
+| C | 16' e 70' (Rossi), 56' (Ferrari): *«Toti ci arriva in tuffo…»* / *«respinge coi pugni»* **da sola** | l'occasione extra-eroe compare come **una parata senza il tiro** in 3 casi su 4: annunciata dall'ultima riga e basta (da verificare se è il banco delle schede o il gioco) |
+| D | 84' sotto 1-2: *«Stiamo dominando — teniamo alta l'intensità!»* · 33' e 36' durante la NOSTRA ripartenza: *«Momento da soffrire»* (5 volte in una partita) | l'enfasi non guarda né il punteggio né chi ha la palla |
+| E | 76': *«La conclusione è respinta — c'è ancora da giocare!»* e subito *«Rete spettacolare!»* | la catena chance→gol si racconta come una contraddizione |
+| F | *«si sale verso l'area di Vallone (POL)»* (Vallone è la loro punta) · *«il portiere di Bianchi (POL)»* | l'area e il portiere prendono il nome di un giocatore di movimento |
+| G | 14'-15' *«L'angolo si apre: conclusione sul palo lontano.» «Fuori di un niente.»* dopo il gol · 45' *«Tocco di ritorno di prima»* dopo il duplice fischio · 20' *«Bruno rifiuta il rilancio lungo»* subito dopo il gol subito | frammenti senza contesto, spostabili in qualunque minuto: **eventi isolati** |
+
+Quello che invece **regge** e va tenuto: il filo del compagno giovane (46'→48'), il mister che
+reagisce all'1-1 (79' *«ci sono venti minuti. Rossi, tu resta alto»*) e il cambio *«gestione del
+vantaggio»* (65'): sono le uniche righe in cui la partita **sa che punteggio c'è**.
+
+## Scorecard n° 3
+
+| # | Area | n°2 | **n°3** | Il fatto che lo sostiene |
+|---|------|:---:|:---:|---|
+| 1 | Realismo della partita | 5 | **5** | a 1-2 sotto, negli ultimi 12' due righe di gioco e «stiamo dominando»; nell'altra, ultimi 10' a 1-1: un fallo |
+| 2 | Credibilità da attaccante | 7 | **6** | la prima scena è al 12' anche stavolta; 76' chance→gol raccontata come contraddizione (E) |
+| 3 | Causalità | 4 | **4** | frammenti isolati (G); parata senza tiro (C) |
+| 4 | Varietà | 6 | **5** | «Momento da soffrire» ×5, «Gol avversario. X buca la nostra difesa» ×3, «brucia il centrocampo» ×2 |
+| 5 | Ritmo | 4 | **4** | 26 e 44 minuti vuoti su 89; blocchi da 5-6 minuti |
+| 6 | Azioni extra-eroe | 6 | **4** | il 3D ora segue il racconto (7.807), ma il racconto mostra solo la parata (C), tira «da lontanissimo», e le righe intorno passano a sé stesse (A) |
+| 7 | Highlight dell'eroe | 6 | **6** | 5 scene in una partita, 2 nell'altra; il *quando* emerge |
+| 8 | Telecronaca | 5 | **4** | D + F + A: tre modi diversi di dire il falso |
+| 9 | Interazioni | 7 | **7** | mister e compagno giovane: le righe migliori della partita |
+| 10 | Coerenza fra i sistemi | 5 | **4** | B: la costruzione avversaria si legge come nostra |
+| 11 | Immersione | 5 | **5** | rotta ogni volta che un cognome è doppio |
+| 12 | Sensazione di carriera | 6 | **6** | la giornata dell'eroe ha forma; la partita intorno no |
+
+**Media: 5,0 su 10** (n°2: 5,5). Non è salita: la 7.807 ha corretto il 3D dell'occasione, ma la
+lettura da player ha trovato bugie di **testo** che nella n°2 non avevo pesato (A, B, F) — e un
+voto che non scende quando trovi bugie nuove non sarebbe un voto.
+
+## Che cosa alza il voto, in ordine
+
+1. **Nomi**: nessun cognome doppio nella stessa partita, mai il cognome dell'eroe fra i PNG (A). È
+   un difetto da generatore di rose, piccolo e a effetto immediato su 8, 10, 11.
+2. **La costruzione dice di chi è** (B): ogni riga di piano porta la squadra come le altre.
+3. **L'occasione ha tutte le sue righe** (C): prima verificare sul banco, poi sul gioco.
+4. **L'enfasi legge il punteggio e il possesso** (D) — a monte del ritmo (5) e della telecronaca (8).
+5. Il tiro «da lontanissimo» (#44) e la rarità: dopo, non prima.
+
+### Rettifica su A, letta nel codice subito dopo
+
+I cognomi dei due eroi delle passate («Ferrari», «Rossi») stanno nel pool comune dei PNG: il
+«Ferrari scarica su Ferrari» è in parte un artefatto della sonda, che sceglie nomi da quel pool.
+Sul telefono del PO l'eroe ha il suo nome. Resta vero e da correggere: (a) il generatore non esclude
+il cognome dell'eroe dai PNG; (b) i doppioni **fra le due squadre** (Colombo GRA e POL, Spada GRA
+e POL) sono realistici nel calcio ma diventano una bugia quando le righe del piano **non portano
+la squadra** — quindi il rimedio è B, e A si riduce a una riga nel generatore. Il voto non cambia:
+B da sola vale la confusione del 16'-20'.
