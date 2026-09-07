@@ -1884,3 +1884,60 @@ calendario è la spina dorsale e due dei tre agganci sono a loro volta orari.
 
 `career-critical` **PASS** · `npm run ci` **fingerprint 00001505 · 0 failure** · guardiano
 partita-vera 13 bande verdi (tabellone 4-4 = 4-4, gol del microsim 7 nati / 7 accreditati).
+
+---
+
+## 7.803 — «La palla non entra in porta»: difetto confermato, DUE rimedi revocati, causa spostata
+
+**Nota PO (06/09, due volte in due partite diverse)**: *«azione pericolosa extra eroe e gol ma la
+palla non entra in porta!»*
+
+### La misura del prima — il difetto è peggio di come lo raccontava il codice
+
+Sei partite, quattordici gol, pallone **reso**, campo 0-100 con le porte a 0 e 100:
+
+| | valore |
+|---|---|
+| gol in cui il pallone raggiunge la linea | **0 su 14** |
+| massimo avvicinamento **assoluto** | **94** |
+| mediana | **80,8** |
+
+Non è «si ferma a quattro metri dalla linea»: su metà dei gol il pallone **non è nemmeno
+nell'ultimo terzo** quando il tabellone si muove, e due gol dell'eroe l'avevano a **26** e **46**.
+
+### I due rimedi, e perché sono stati revocati
+
+**Pezzo 1** — la battuta che segna puntava a 92-94; un taglio duro `clamp(x,4,96)` in tre punti
+l'avrebbe fermata comunque. Ora punta a 101 con la y fra i pali, e il taglio si apre **solo** per
+la battuta marcata `rete`. → **1 gol su 13**, mediana 92.
+
+**Pezzo 2** — la ritenuta dell'arrivo considera il pallone «arrivato» entro **otto unità** dal
+bersaglio: col bersaglio a 101 il piano si chiudeva a **93**, che è esattamente la mediana
+misurata. Per la sola battuta `rete`: soglia a 2 unità, attesa 3 tick. → **2 gol su 16**,
+mediana 84,5.
+
+**REVOCATI ENTRAMBI.** Le tre mediane — 80,8 · 92 · 84,5 — non sono una progressione ma rumore su
+un banco che è stocastico per costruzione (misurato: la stessa partita finisce 6-2 o 5-2). Un
+rimedio che non si distingue dal caso non si spedisce.
+
+### Quello che la misura ha insegnato, e vale più del rimedio
+
+La colonna della provenienza:
+
+```
+Db 76'  home [highlight]         30,8
+Dc 75'  home [highlight]         62
+De 11'  home [highlight]         94
+Dc 67'  away [scena-difensiva]  100,6   ✅ l'unico che entra
+```
+
+**I gol dell'eroe (`highlight`) non passano dal piano-gol**: due ore spese su una strada che quei
+gol non percorrono. E l'unico gol col pallone davvero in rete arriva da una **terza** via,
+`scena-difensiva`, sistemata nel 7.759 per tutt'altro motivo — e quella funziona.
+
+**LA CAUSA VERA È PIÙ A MONTE: esistono almeno tre strade per segnare, e ognuna tratta il pallone
+a modo suo.** Una lo porta in rete, le altre due no. È lo stesso difetto strutturale del regista
+degli eventi (7.802) — più macchine che decidono la stessa cosa — applicato al gol. Il rimedio non
+è una coordinata: è **un solo punto in cui un gol mette il pallone in rete**, qualunque strada
+l'abbia generato. Non l'ho scritto: lo lascio come bersaglio dichiarato, con la misura pronta
+(`tests/visual/rete-808.mjs`) e il numero da battere — **0 su 14**.
