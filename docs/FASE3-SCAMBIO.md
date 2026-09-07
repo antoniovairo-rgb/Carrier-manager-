@@ -2383,3 +2383,78 @@ partita misura un gioco diverso. La baseline 0/15 era per metà un artefatto; la
 **al tiro il reso sta a 23u dal punto dichiarato mentre il logico ci arriva (6/12, mediana 4,2u)**.
 Con la sostituzione fuori causa, la domanda torna a dove punta l'arco — `arco-817` col banco a
 tempo reale.
+
+## Censimento 817 a tempo reale — **l'arco punta la battuta; il pallone non ci resta**
+
+| battuta | arco in volo | bersaglio dell'arco vs punto della battuta (mediana) | punta la battuta (≤6u) | buttati |
+|---|---|---|---|---|
+| apertura | 78% | 5,9u | 3/5 | 1 |
+| tiro | 69% | **3,7u** | 3/5 | 1 |
+| parata | 68% | 15,6u | 2/5 | 0 |
+
+Col tempo del telefono l'arco della cronaca vola **dove la battuta dice** (al tiro, 3,7u). Eppure
+il reso resta lontano: `Da 10'` bersaglio dell'arco a 2,2u, reso a **32,4u**; `Da 76'` arco a 3,7u,
+reso a **22,3u**. L'arco arriva e poi qualcun altro riporta via il pallone: negli stessi giri gli
+scrittori non-arco sono l'**inseguitore** (#3, 17-27%) e il **portatore** (#4, 5-15%) — la palla
+incollata a un corpo che non è ancora arrivato. Prossima misura: la traccia fotogramma per
+fotogramma di UNA occasione (reso, logico, scrittore, arco, corpo del portatore).
+
+## Traccia 820 — **l'eroe si prende il pallone dell'azione extra-eroe**
+
+`traccia-820.mjs`, due partite a tempo reale, ogni battuta d'occasione campionata per 3 s
+(reso · logico · scrittore · arco → x · padrone eletto · corpo del portatore).
+
+Occasione **nostra**, `Da 53'-55'` (battute → 72,2 · 92,7 · 96):
+
+```
+  ms   reso   logico  scrittore  arco     padrone
+ 1849  58.31  83.12   addosso    →63.4    eroe
+ 2016  58.31  83.12   addosso    →63.4    eroe
+  …    (identico per tutta la battuta del tiro)
+ 2041  62.78  91.49   addosso    →69.8    eroe
+```
+
+Il **padrone eletto è l'eroe** (`_pad555 === 'eroe'`) per tutta la finestra, lo scrittore è
+**«addosso»** (7.497: palla incollata all'eroe), il reso resta a 58-62 mentre il logico — col
+compagno nominato dal piano — va a 83 e poi a 91. L'anagrafe del possesso del renderer (elezione
+7.555: prima il portatore-mesh `_por526`, che si aggiorna solo a fine arco, poi la colla dell'eroe)
+non legge `carrierRef` del piano, e la colla vince.
+
+Occasione **avversaria**, `Da 29'` (battuta → 5,5): padrone «portatore», corpo a 66,8 → 35 → 33,6;
+reso fermo a 66 mentre il logico scende a 25 e l'arco va a 4.
+
+È la stessa diagnosi del 7.617 («elezione ancorata al logico, handoff solo a fine arco»), vista
+dal punto in cui fa più male. **Avvertenza sul banco**: i valori restano identici per ~700 ms anche
+a «fps ~17» — i fotogrammi sono radi e le *dinamiche* dell'arco qui non sono leggibili; la
+diagnosi sopra è di **stato** (chi è eletto, dove sta il corpo), e regge.
+
+### 7.807 — durante un piano vivo, il pallone reso insegue il logico e scrive per ultimo
+
+Stesso principio del 7.803 (l'affermazione scrive per ultima), ma senza snap e senza cancello:
+finché `pendingGoalRef.current.piano` è vivo in fase ambientale, a fine fotogramma il pallone reso
+insegue `(P.ballX, P.ballY)` con un inseguimento continuo (95% in ~0,4 s) — sopra la colla
+dell'eroe, l'inseguitore, gli archi stantii. La quota resta dell'arco. Rosso `__CPM_NO807`.
+
+### 7.807 — misura appaiata a tempo reale: **parità col logico**
+
+| `duello-816` + `__CPM_DTREAL` | rosso | **7.807 verde** | logico (tetto per costruzione) |
+|---|---|---|---|
+| reso arriva al tiro (≤6u) | 2/12 · mediana 23,4u | **8/15 · 4,9u** | 8/15 · 4,8u |
+| reso arriva alla parata | 3/11 · 11,2u | **9/15 · 5,2u** | 8/15 · 5,7u |
+| apertura | 5/12 · 6,8u | 3/15 · 9,4u | 3/15 · 8,7u |
+
+Il pallone che il giocatore guarda arriva **dove la telecronaca dice**, esattamente quanto ci
+arriva la simulazione: non può fare di più, perché il logico è il tetto. Al tiro da 2/12 a 8/15;
+alla parata da 3/11 a 9/15. Lo «scarto reso-logico» stampato dalla sonda è il **massimo** nella
+finestra (l'istante del salto del logico, 65% per tick, prima che il reso lo raggiunga in 0,4 s):
+non è una media e non contraddice la parità.
+
+Quello che la 7.807 **non** cambia, e resta aperto: la qualità del disegno (il tiro vola come un
+passaggio, `at:"pass"` su tutte e tre le battute — candidato 7.808), la zona di tiro (7/12 da
+fuori, #44), la rarità (2,00 a partita). La 7.807 fa una cosa sola: **il campo smette di smentire
+il racconto**.
+
+### Rituali 7.807
+
+`career-critical` **PASS** · `npm run ci` **fingerprint 00001505 · 0 failure** · guardiano
+partita-vera OK (`gol-del-simulatore` 8 nati / 8 accreditati / 0 mangiati). In produzione.

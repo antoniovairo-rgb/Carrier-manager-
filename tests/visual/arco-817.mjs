@@ -14,7 +14,7 @@ const TUTTE=[];const SCARTI=[];
 for(let g=0;g<NOMI.length;g++){
   const ctx=await b.newContext({viewport:{width:412,height:915}});
   const page=await ctx.newPage();await installCdnRoutes(page);
-  await page.addInitScript((o)=>{window.__CPM_GLB=true;window.__CPM_REC=true;window.__CPM_SCMS681=3500;if(o.rosso)window.__CPM_NO806=true;if(o.dtreal)window.__CPM_DTREAL=true;},{rosso:!!process.env.CPM_ROSSO,dtreal:!!process.env.CPM_DTREAL});
+  await page.addInitScript((o)=>{window.__CPM_GLB=true;window.__CPM_REC=true;window.__CPM_SCMS681=3500;if(o.rosso)window['__CPM_NO'+o.rosso]=true;if(o.dtreal)window.__CPM_DTREAL=true;},{rosso:(process.env.CPM_ROSSO||''),dtreal:!!process.env.CPM_DTREAL});
   await openMatch(page,port,{skipLoadAll:true,name:NOMI[g]});
   await page.evaluate((s)=>window.__CPM_AUTOPLAY(true,{seed:s,policy:'seeded',tickMs:300}),SEMI[g]);
   let clock=0,visti=0;const aperte=[],battute=[];

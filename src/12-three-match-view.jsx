@@ -1521,6 +1521,8 @@ function ThreeMatchView(props){
                lx:(_P.ballX==null?null:+(+_P.ballX).toFixed(2)),ly:(_P.ballY==null?null:+(+_P.ballY).toFixed(2)),
                ws:(sr.current&&sr.current._ws524)|0,
                src:(sr.current&&sr.current._bj0&&sr.current._bj0.src)||null,
+               pad:(sr.current&&sr.current._pad555)||null,
+               por:(function(){try{const m=sr.current&&sr.current._por526&&sr.current._por526.mesh;return m?+(m.position.x+50).toFixed(1):null;}catch(_e){return null;}})(),
                arc:{on:ballArcActive?1:0,bg:ballArcIsBG?1:0,
                     tx:+(ballArcTgtX+50).toFixed(1),ty:+(ballArcTgtZ/0.68+50).toFixed(1),
                     t:+(+ballArcT||0).toFixed(2),dur:+(+ballArcDur||0).toFixed(2)}};
@@ -8467,6 +8469,32 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
             _L.chi=_L.chi||{};_L.chi[_chi]=(_L.chi[_chi]||0)+1;}
         }
       }catch(_ep){}}
+      /* ⚠️ [7.807.0 — DURANTE UN PIANO VIVO IL PALLONE RESO INSEGUE IL LOGICO, E SCRIVE PER ULTIMO.
+         Rosso __CPM_NO807]
+         Nota PO 07/09: «le azioni pericolose extra eroe sono terribili, non credibili, non e' calcio».
+         MISURATO (censimenti 815-820, banco a tempo reale): il piano dell'occasione e' scritto bene e il
+         pallone LOGICO arriva dove le battute lo mandano (al tiro 6/12 entro 6u, mediana 4,2u); il RESO
+         no (2/12, mediana 23u). L'arco della cronaca punta la battuta (3,7u) e poi qualcun altro riporta
+         via la palla: nella traccia 820 il padrone eletto durante l'occasione NOSTRA e' l'EROE
+         («addosso», 7.497) per tutta la finestra, reso fermo a 58-62 mentre il logico va a 83 e 91 col
+         compagno nominato — l'anagrafe del possesso del renderer (7.555: prima `_por526`, che cambia
+         solo a fine arco, poi la colla dell'eroe) non legge il carrier del piano, e la colla vince.
+         E' la diagnosi del 7.617 nel punto in cui fa piu' male.
+         Il rimedio non elegge nessuno: finche' un piano e' vivo in fase ambientale, a fine fotogramma
+         il pallone reso INSEGUE il logico — inseguimento continuo, 95% in ~0,4 s, niente snap e
+         niente cancello — sopra la colla, l'inseguitore e gli archi stantii. La quota resta dell'arco
+         (il tiro vola ancora). Fuori dal piano non cambia nulla. Stesso principio del 7.803 (che resta
+         a valle e vince sul gol in rete). */
+      if(!(typeof window!=='undefined'&&window.__CPM_NO807)){try{
+        const _P807=propsRef.current||{};
+        const _pg807=_P807.pgRef&&_P807.pgRef.current;
+        if(_pg807&&_pg807.piano&&_P807.ballX!=null&&_P807.matchPhase==="playing"&&!replaying&&!(_P807.fermo&&_P807.fermo.current)){
+          const _tx807=G2X(_P807.ballX),_tz807=G2Z(_P807.ballY==null?50:_P807.ballY);
+          const _k807=1-Math.exp(-8*Math.max(0,Math.min(aDt,0.3)));/* 8/s: 95% in 0,37 s */
+          ball.position.x+=(_tx807-ball.position.x)*_k807;ball.position.z+=(_tz807-ball.position.z)*_k807;
+          if(typeof window!=='undefined'&&window.__CPM_REC){try{window.__CPM_INS807=(window.__CPM_INS807||0)+1;}catch(_e){}}
+        }
+      }catch(_e807){}}
       /* [7.803.0 — L'AFFERMAZIONE VINCE PERCHE' SCRIVE PER ULTIMA. Rosso __CPM_NO811]
          Il pallone ha quindici scrittori in questo file e vince l'ultimo. Invece di mettere il
          guinzaglio agli altri quattordici — l'arco di volo vince il 54% delle volte E HA RAGIONE,
