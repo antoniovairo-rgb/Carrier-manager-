@@ -2617,3 +2617,29 @@ correttezza» negli highlight è una sfera semitrasparente davanti al pallone ch
 vicina, ne spegne il nucleo. La 7.805 lo teneva spento per un errore che *aiutava*. Rimedio
 (7.810): alone solo in fase ambientale, mai negli highlight; misura `taglia-824` ≥ 6 px, in corsa.
 Lezione: «correggere» un comportamento senza misurarlo prima è una pezza al contrario.
+
+### 7.809 — misura appaiata: **42/42 (100%)** contro **0/33 (0%)**
+
+`sigla-826`, tre partite, tutte le battute di piano (occasione e gol): con sigla **42/42** nel
+verde, **0/33** nel rosso `NO809`. Esempio: *«🎯 Palla di Santis (POL) per Spada (POL), che se la
+sistema da fuori.»* — prima *«Palla di Vallone per Spada»*. La costruzione dice di chi è.
+
+### #53 — anche l'alone-solo-in-ambientale non riporta il pallone: 0 px
+
+`taglia-824` sul build 7.810 (alone spento negli highlight): raggio mediano **0 px** (0 · 0 · 0 ·
+1,7 · 2,4 · 0), contro 6,3 px della 7.807 nello stesso giro. **L'alone non c'entra**, seconda
+volta. Qualcosa nel treno 7.808→7.810 fa sparire il pallone dallo screenshot in `hl_result` pur
+con `onScreen` vero. Sonda v2 con diagnostica per campione (quota, visibilità, ndc) e ordine
+invertito, in coda dopo i rituali. Finché non è capito, **il treno non si promuove** anche se
+sigla e rituali sono verdi: un pallone che sparisce negli highlight è P0.
+
+### #53, terza ipotesi — e stavolta letta nel diff, non indovinata
+
+`git diff 75092dc -- src/12` filtrato sulle righe di codice che toccano il pallone: **tre** cambi
+in tutto. Uno è la regola della colla dell'eroe sui dati logici (7.810), e **non era limitata alla
+fase ambientale**: nella scena dell'eroe (`hl_*`) il punto-palla logico è fermo per costruzione
+(#31, «palla congelata») e spesso coincide con l'eroe → distanza ≈ 0 → colla vera per tutta la
+scena → pallone dentro il corpo → **0 px** nello screenshot con `onScreen` vero. Coerente con
+i numeri: 7.807 (senza) 6,3 px; 7.808 v3 (alone in hl) 2,3 px; 7.810 (colla logica in hl) 0 px.
+Rimedio v2: la regola logica vale solo in `playing`; negli highlight resta quella sulle mesh.
+Misura: `taglia-824` v2 (corrente per primo, diagnostica per campione) ≥ 6 px, dopo la catena.
