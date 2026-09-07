@@ -1757,6 +1757,19 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     }catch(_e811){}
   },[]);
   const _golInRete811=useCallback((lato)=>{
+    /* [7.805.0 — SOLO I NOSTRI GOL. §20: MAI AUTOGOL. Rosso __CPM_NO813]
+       Nota PO al collaudo della 7.804: «il secondo gol da azione pericolosa SEMBRAVA UN AUTOGOL,
+       il difensore si e' portato il pallone nella propria porta». E' un difetto che ho introdotto
+       io e che viola la direttiva madre: sul gol SUBITO l'affermazione porta il pallone nella
+       NOSTRA rete, e il cancello del 7.804 la fa scattare solo quando la palla e' gia' dentro la
+       nostra area — cioe' esattamente dove stanno i nostri difensori. Sullo schermo diventa un
+       autogol. L'affermazione resta SOLO per i gol che facciamo noi: il gol subito torna a
+       comportarsi come prima della 7.803, cioe' senza pallone in rete. Meno copertura, nessun
+       autogol apparente — e il §20 non si negozia. */
+    if(lato!=='home'&&!(typeof window!=='undefined'&&window.__CPM_NO813)){
+      if(typeof window!=='undefined'){try{window.__CPM_SUB813=(window.__CPM_SUB813||0)+1;}catch(_e){}}
+      return;
+    }
     const _x=lato==='home'?100.6:-0.6;
     const _y=50+(((hashStr('rete|'+(clockRef.current|0)+'|'+lato)>>>0)%9)-4);
     _affermaPallone811(_x,_y,1400);

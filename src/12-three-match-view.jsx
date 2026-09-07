@@ -7368,8 +7368,27 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                 del valore vero — la stessa classe di difetto del pallone con due padroni. */
              if(_off660){if(_m._vis660===undefined)_m._vis660=_m.visible;_m.visible=false;}
              else{_m.visible=(_m._vis660!==undefined)?_m._vis660:true;delete _m._vis660;}}
-           if(_off660){if(ball){ball.visible=true;if(ball._vis660!==undefined)delete ball._vis660;}
-             if(typeof _bShadow534!=='undefined'&&_bShadow534){_bShadow534.visible=true;if(_bShadow534._vis660!==undefined)delete _bShadow534._vis660;}}
+           /* [7.805.0 — IL PALLONE SPARISCE CON LA TELECRONACA TESTUALE. Direttiva PO 07/09:
+              «nascondi il pallone durante la telecronaca testuale». Rosso __CPM_NO814.
+              E' un rimedio SOTTRATTIVO, ed e' il piu' onesto che abbiamo trovato: durante la
+              telecronaca testuale il pallone reso non sa raccontare cio' che il testo afferma —
+              misurato: obbedisce alla simulazione nel 64% dei fotogrammi, si teletrasporta,
+              atterra dove non c'e' nessuno, e il PO l'ha visto come «un flipper» e come «cross
+              nella terra di nessuno». Invece di aggiungere sistemi per farlo quadrare, si smette
+              di mostrarlo quando non lo sappiamo raccontare. Il pallone resta visibile dove il
+              gioco lo racconta davvero: negli highlight e durante un'azione saliente (`salienteOn`
+              spegne gia' questo blocco). Il 7.660 lo teneva ACCESO qui: e' quella decisione a
+              essere rovesciata. */
+           /* ⚠️ IL RAMO CHE RIMETTE IL PALLONE E' OBBLIGATORIO. La prima stesura scriveva solo
+              quello che NASCONDE: uscendo dalla telecronaca nessuno lo riaccendeva e il pallone
+              spariva anche negli highlight — misurato 0 fotogrammi su 392, cioe' la scena
+              dell'eroe rotta per nascondere una palla. E' il terzo criterio che avevo dichiarato
+              prima di guardare i numeri, ed e' l'unico motivo per cui non l'ho spedito. */
+           {const _nasc814=!(typeof window!=='undefined'&&window.__CPM_NO814);
+            const _viaBall=_off660&&_nasc814;
+            if(ball)ball.visible=!_viaBall;
+            if(typeof _bShadow534!=='undefined'&&_bShadow534)_bShadow534.visible=!_viaBall;
+            if(_viaBall&&typeof ballHalo!=='undefined'&&ballHalo)ballHalo.visible=false;}
            }catch(_e660){}}}
       /* [7.665.0] LA MISURA DOV'E' IL FENOMENO: il guardiano contava solo i procedurali
          (__CPM_PROCVIS, 7.264) — con GLB acceso quel numero e' zero anche a campo pieno. Questo
@@ -7377,7 +7396,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
       if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)&&!window.__CPM_VIS665){try{window.__CPM_VIS665=()=>{let _pc=0,_gc=0;
         try{((sr.current&&sr.current.players)||[]).forEach(pp=>{if(pp&&pp.mesh&&pp.mesh.visible)_pc++;});if(hero&&hero.visible)_pc++;}catch(_x){}
         try{(glbAvatars||[]).forEach(a=>{if(a&&a.root&&a.root.visible)_gc++;});}catch(_x){}
-        return{proc:_pc,glb:_gc,ball:!!(ball&&ball.visible),ombra:!!(typeof _bShadow534!=='undefined'&&_bShadow534&&_bShadow534.visible),fase:(propsRef.current&&propsRef.current.matchPhase)||null};};}catch(_e){}}
+        return{proc:_pc,glb:_gc,ball:!!(ball&&ball.visible),ombra:!!(typeof _bShadow534!=='undefined'&&_bShadow534&&_bShadow534.visible),fase:(propsRef.current&&propsRef.current.matchPhase)||null,saliente:!!(propsRef.current&&propsRef.current.salienteOn)};};}catch(_e){}}/* [7.805] il testimone dice anche se e' in corso un'azione SALIENTE: senza, la misura non sa distinguere «telecronaca testuale» da «azione mostrata», che e' esattamente il confine del rimedio */
       /* [7.675.0 — LO STRUMENTO CHE MANCAVA: UNA FINESTRA SUL MONDO GLB.
          Tre difetti diversi segnalati dal PO nello stesso giorno (7.665 i giocatori che non sparivano,
          7.672 la volee' recitata come rovesciata, 7.674 il portiere con due gesti sovrapposti) avevano

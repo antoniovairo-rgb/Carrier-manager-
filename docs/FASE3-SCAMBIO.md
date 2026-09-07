@@ -2129,3 +2129,62 @@ sette che non entrano sono quelli in cui il pallone non è davvero vicino alla p
 
 `career-critical` EXIT 0 · `npm run ci` **fingerprint 00001505 · 0 failure** · guardiano 13 bande
 verdi, `gol-con-manovra` **10/10**.
+
+---
+
+## 7.805 — Il pallone sparisce con la telecronaca testuale · niente autogol apparente
+
+### (1) Direttiva PO 07/09: «nascondi il pallone durante la telecronaca testuale»
+
+È un rimedio **sottrattivo**, e il più onesto trovato finora. Durante la telecronaca il pallone
+reso non sa raccontare ciò che il testo afferma — obbedisce alla simulazione nel **64 %** dei
+fotogrammi, si teletrasporta, e il PO l'ha visto come *«un flipper»* e come *«cross nella terra di
+nessuno»*. Invece di aggiungere sistemi per farlo quadrare, **si smette di mostrarlo quando non lo
+sappiamo raccontare**.
+
+Il 7.660 nascondeva già i 22 durante il testo ma teneva **esplicitamente** il pallone: è quella
+decisione a essere rovesciata.
+
+| | ON | ROSSO |
+|---|---|---|
+| telecronaca testuale (deve sparire) | **2 %** | 100 % |
+| highlight (deve vedersi) | **100 %** | 100 % |
+| azione saliente (deve vedersi) | **100 %** | 100 % |
+
+Il 2 % residuo sono le transizioni di fase, ~1,5 s a partita.
+
+**Errore intercettato dalla misura**: la prima stesura scriveva solo il ramo che NASCONDE e non
+quello che RIMETTE — il pallone spariva anche negli highlight (**0 fotogrammi su 392**), cioè la
+scena dell'eroe rotta per nascondere una palla. L'ha preso il terzo criterio dichiarato prima di
+guardare i numeri.
+
+### (2) Niente autogol apparente
+
+Nota PO al collaudo della 7.804: *«il secondo gol da azione pericolosa SEMBRAVA UN AUTOGOL, il
+difensore si è portato il pallone nella propria porta»*. Sul gol **subito** l'affermazione portava
+il pallone nella **nostra** rete, e il cancello del 7.804 la fa scattare solo quando la palla è
+già dentro la nostra area — dove stanno i nostri difensori. L'affermazione vale ora **solo per i
+gol che facciamo noi**. Meno copertura, nessun autogol apparente: **il §20 non si negozia**.
+
+### LEZIONE A VERBALE — la strumentazione non è gratis
+
+La CI è stata **rossa due volte su due** (`gol-del-simulatore`, un gol mangiato) mentre:
+
+| | esito |
+|---|---|
+| guardiano da solo, 7.805 | verde **3/3** |
+| CI intera, 7.805 **con** i contatori | rossa **2/2** |
+| CI intera, 7.804 di controllo | verde |
+| CI intera, 7.805 **senza** i contatori | **verde** |
+
+La causa erano **due contatori diagnostici** lasciati accesi a ogni fotogramma. Il banco è
+sensibile ai tempi (misurato: la stessa partita finisce 6-2 o 5-2) e quel peso bastava a far
+sparire un gol dal tabellone.
+
+**Una sonda può cambiare la partita che sta misurando.** Per un giorno intero avevo creduto che
+l'unico pericolo fosse che mentisse. I contatori diagnostici si tolgono appena hanno risposto.
+
+### Rituali
+
+`career-critical` PASS · `npm run ci` **fingerprint 00001505 · 0 failure** · guardiano
+partita-vera 13 bande verdi (`gol-del-simulatore` 7 nati / 7 accreditati / 0 mangiati).
