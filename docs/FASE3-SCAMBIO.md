@@ -2601,3 +2601,19 @@ Due cose nuove e grosse, entrambe a monte del renderer:
 L'eroe eletto sull'intera fase ambientale è raro (0-3%): il danno della colla è concentrato nelle
 occasioni (traccia 820: 100% della finestra). La misura giusta della 7.810 è quindi «eroe eletto
 **dentro un piano**», aggiunta alla sonda prima del verde.
+
+### Bisezione #53 — il pallone piccolo l'ho fatto io, nel treno 7.808
+
+| build | raggio del pallone (SIT #101, `hl_result`) |
+|---|---|
+| 7.805 | 6,1-6,3 px |
+| **7.807 (in produzione)** | **6,3 px** |
+| 7.808 v3 (branch) | **2,3-2,6 px** |
+
+La 7.807 è identica alla 7.805: la nota del PO «adesso è troppo piccolo» **non è riprodotta** da
+questo metro sulla versione che lui usa — dichiarato, resta aperta con un'altra ipotesi da cercare
+(scena diversa, camera). Il pallone piccolo che misuro è del treno 7.808: l'alone riacceso «per
+correttezza» negli highlight è una sfera semitrasparente davanti al pallone che, con la camera
+vicina, ne spegne il nucleo. La 7.805 lo teneva spento per un errore che *aiutava*. Rimedio
+(7.810): alone solo in fase ambientale, mai negli highlight; misura `taglia-824` ≥ 6 px, in corsa.
+Lezione: «correggere» un comportamento senza misurarlo prima è una pezza al contrario.
