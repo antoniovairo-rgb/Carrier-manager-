@@ -33,6 +33,23 @@ Piccole ma certe, in coda: sigla della squadra nelle righe del piano (#55-B, pat
 cognome dell'eroe mai fra i PNG (#54); gesto dell'intercetto/muro mai armato (#52); taglia del
 pallone (#53, misura in corso).
 
+## S1+S2 — il disegno che esce dal censimento (07/09 notte)
+
+Il `carrierRef` nullo per metà-due terzi del tempo **non è un buco**: decade per costruzione
+(7.642) quando il bersaglio della palla è a più di 12u dal portatore — cioè quando la palla è
+**in volo** verso un ricevente. Il portatore torna a esistere all'arrivo (r.5793). La simulazione
+quindi conosce tre stati, e il renderer deve **leggerli**, non rieleggere:
+
+| stato logico | come si riconosce | il pallone reso |
+|---|---|---|
+| **portata** | `carrierRef.i` non nullo | ai piedi di *quel* corpo (mesh), e di nessun altro |
+| **in volo** | `carrierRef` nullo e `ballTarget` lontano dal pallone logico | arco dal punto attuale al bersaglio logico (quota e tempo dell'arco; la destinazione è della simulazione) |
+| **vagante / ferma** | `carrierRef` nullo e bersaglio vicino, oppure `fermo`/`out` | insegue il pallone logico |
+
+Con questa tabella i quindici scrittori si riducono a tre rami, e le elezioni del renderer
+(7.555, `_por526`, colla 7.515) diventano *lettura* di `carrierRef`. È il lavoro di S1 e S2
+insieme; la 7.810 è il primo taglio (la colla dell'eroe sui dati logici).
+
 ## L'ordine e la misura di ciascuna
 
 1. **S1 — un solo pallone.** Il reso è *sempre* il logico più un inviluppo di volo (l'arco dà
