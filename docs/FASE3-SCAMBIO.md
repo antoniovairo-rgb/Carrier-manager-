@@ -2018,3 +2018,33 @@ TRUTH — è in fondo alla fila.
 afferma (un gol, una palla ferma, un esito) batte ciò che la scena sta animando. Non è una
 taratura: è la stessa forma dei due difetti strutturali già trovati oggi — *più macchine che
 decidono la stessa cosa*, dopo il regista degli eventi (7.802) e le cinque strade del gol.
+
+### Quanto obbedisce il pallone reso? 64 %, e metà delle disobbedienze è legittima
+
+Testimone a fine fotogramma (`__CPM_PADRONE`, sola lettura sotto `__CPM_REC`): confronta il
+pallone reso con `G2X(P.ballX)` — cioè con quello che la partita afferma — e, quando divergono,
+legge la **firma che ogni scrittore lascia già** in `sr.current._bj0.src`.
+
+| una partita intera, 1028 fotogrammi | |
+|---|---|
+| il reso **segue** il logico (entro 2u) | **654 — 64 %** |
+| non lo segue | **374 — 36 %** · scarto medio 6,4u · **max 79,2u** |
+| di cui **arco di volo** | 54 % — **legittimo**: una palla in volo deve seguire la sua traiettoria |
+| di cui **senza firma** | 46 % — **non attribuito**, il registro `_bj0` non è compilato lì |
+
+**Il 36 % non è tutto difetto**: metà è il volo, che è calcio. Il difetto certo resta quello
+isolato prima, più stretto e più grave di una percentuale: **quando la partita AFFERMA un gol, il
+pallone logico entra in rete e ci resta 900 ms, e quello reso non si muove** — 6 gol su 6.
+
+**Lezione sugli strumenti, la sesta della giornata**: la prima stesura del testimone inventava un
+campo `_carrier` che non esiste e dava **0 % al portatore**, mettendo i suoi casi nel mucchio
+«altro». *Uno zero netto su un sistema che si sa attivo è sempre lo strumento, non il gioco* —
+riconosciuto in un minuto, non dopo una release.
+
+### Il bersaglio per la prossima sessione
+
+Una **gerarchia del pallone**: quando la partita *afferma* un fatto (un gol, una palla ferma, un
+esito), quel fatto batte ciò che la scena sta *animando*. Non è una taratura ed è rischiosa —
+l'arco vince il 54 % delle volte **a ragione**, e toglierglielo male trasformerebbe il pallone in
+un teletrasporto. Serve la misura appaiata, che c'è già (`rete-808.mjs`, due numeri: entra **e**
+ci resta ≥ 0,5 s; numero da battere **0 su 14**).

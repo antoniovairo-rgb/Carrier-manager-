@@ -19873,6 +19873,27 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
           if(_aBJ.length<300){const _nBJ=performance.now();
             _aBJ.push({d:+_dBJ.toFixed(1),src:_b0.src||'continuo',n:(_b0.srcs?_b0.srcs.length:0),tutti:(_b0.srcs&&_b0.srcs.length>1)?_b0.srcs.slice(0,4).join('+'):null,ph:P.matchPhase||null,sk:(P.hlSitKey!=null?+P.hlSitKey:null),
               mask:((_nBJ-Math.max(_CUT471.at,(sr.current._cutAt471||-1e9)))<Math.max(300,_CUT471.dur||0))});}}catch(_eBJ){}}}
+      /* [testimone 7.803 — CHI VINCE SUL PALLONE. Sola lettura sotto __CPM_REC]
+         Il pallone reso ha QUINDICI scrittori in questo file e uno solo segue il pallone logico
+         (`P.ballX`, cioe' cio' che telecronaca, piani e gol affermano). Misurato: al gol il logico
+         entra in rete e ci resta 900 ms, il reso non si muove. Qui, a fine fotogramma, si registra
+         di quanto il reso si discosta dal logico e QUALI sistemi erano attivi — cosi' il rimedio
+         sa quale dei quattordici togliere di mezzo, invece di spegnerli tutti alla cieca. */
+      if(typeof window!=='undefined'&&window.__CPM_REC){try{
+        const _P=propsRef.current||{};
+        if(_P.ballX!=null){
+          const _atteso=G2X(_P.ballX), _vero=ball.position.x, _d=Math.abs(_vero-_atteso);
+          const _L=(window.__CPM_PADRONE=window.__CPM_PADRONE||{n:0,fuori:0,somma:0,max:0,chi:{}});
+          _L.n++;_L.somma+=_d;if(_d>_L.max)_L.max=_d;
+          if(_d>2){_L.fuori++;
+            /* ⚠️ la prima stesura inventava un campo `_carrier` che NON ESISTE, e dava 0% al
+               portatore mettendo tutti i suoi casi nel mucchio «altro»: uno zero netto su un
+               sistema che si sa attivo e' sempre lo strumento, non il gioco. Il nome vero
+               ce l'ha gia' il codice: ogni scrittore firma `sr.current._bj0.src`. */
+            const _chi=(sr.current&&sr.current._bj0&&sr.current._bj0.src)||(ballArcActive?'arco':'(nessuna firma)');
+            _L.chi=_L.chi||{};_L.chi[_chi]=(_L.chi[_chi]||0)+1;}
+        }
+      }catch(_ep){}}
       renderer.render(scene,camera);
     };
     loop();
