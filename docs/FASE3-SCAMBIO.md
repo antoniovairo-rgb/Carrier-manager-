@@ -2533,3 +2533,45 @@ dichiarato. Ma il verso è netto e appaiato: da otto doppi tuffi su tredici a ze
 tiro arma il tuffo (T8, bersaglio in area) il segnale della parata tace; quando non lo arma (tiro
 da fuori, bersaglio sotto il 70), resta il segnale 7.695 (T9): **una reazione per occasione, o al
 tiro o alla parata, mai due**.
+
+### #53 misurato — «il pallone adesso è troppo piccolo» è vero: 6,1 px → 2,6 px
+
+`taglia-824`: stessa scena forzata (SIT #101, cross, fase `hl_result`), stesso seme, sei
+campioni, raggio del pallone letto dallo screenshot attorno alla sua proiezione ndc:
+
+| build | raggio mediano | campioni |
+|---|---|---|
+| 7.805 (worktree `971d59f`) | **6,1 px** | 6,1 · 6,1 · 5,9 · 6,5 · 7,5 · 4,5 |
+| corrente (7.808 v3) | **2,6 px** | 0 · 1,5 · 2,6 · 2,9 · 2,8 · 0 |
+
+Meno della metà, e due volte su sei il pallone non c'è. Regressione vera fra la 7.805 e oggi.
+Non è l'alone (coppia 822). Candidati: l'inseguimento 7.807 (solo in `playing`, in teoria), il
+ripristino dell'alone nel treno 7.808 (un alone acceso davanti al pallone lo può coprire),
+gli accessori. Bisezione: stessa sonda sulla 7.807 (`75092dc`), in coda.
+
+---
+
+## Treno 7.809 / 7.810 — le prime due voci della roadmap «basta pezze» (sul branch, `main` fermo)
+
+### 7.809 — le righe del piano dicono di chi sono (#55-B)
+
+I due costruttori di piano (`_pianoGol649` r.3344, `_pianoOcc695` r.3383) formattavano i nomi
+senza sigla, mentre ogni altra riga scrive «Pellegrini (GRA)». Con i cognomi condivisi fra le due
+rose (stesso pool nazionale mescolato con seme del club) la costruzione **avversaria** si leggeva
+come un attacco **nostro** che finiva nel gol loro (diario n°3, 15'→20'). Ora attaccante con la
+sigla del lato del piano, portiere con quella opposta. Rosso `__CPM_NO809`. Misura `sigla-826`:
+battute di piano con sigla / totale — rosso atteso 0%, verde atteso 100%.
+
+### 7.810 — S2 (v1): la colla dell'eroe si decide sui dati della simulazione
+
+La regola 7.515 (r.2260) incollava il pallone all'eroe se il pallone **reso** stava entro 3,2u
+dall'eroe **reso** in corsa: due oggetti che la simulazione non governa. Traccia 820: durante
+l'occasione nostra il padrone eletto era l'eroe per tutta la finestra, col pallone reso fermo a
+centrocampo. Ora la distanza è fra pallone **logico** (`P.ballX/Y`) ed eroe **logico**
+(`P.playerX/Y`): la colla scatta solo se la simulazione dice che sono insieme; il verso di corsa
+resta della mesh. Rosso `__CPM_NO810`. Misura `padrone-825` (rosso = censimento sul build 7.808,
+in corso): accordo simulazione↔renderer sul padrone, quota di fotogrammi con l'eroe eletto,
+scarto reso↔logico, salti > 8u.
+
+Non è ancora S2 completo (il portatore-mesh `_por526` resta eletto a fine arco): è il primo taglio,
+quello che toglie all'eroe il pallone degli altri.
