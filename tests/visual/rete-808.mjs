@@ -32,7 +32,12 @@ for(let g=0;g<NOMI.length;g++){
       /* il frame e' eroe-centrico: casa attacca verso 100 */
       const vic=finestra.map(f=>lato>0?f.bx:100-f.bx);
       const max=vic.length?Math.max(...vic):null;
-      GOL.push({partita:NOMI[g],min:s.min,side:s.ultimo&&s.ultimo.side,src:s.ultimo&&s.ultimo.src,max});
+      /* ⚠️ DUE NUMERI, NON UNO. Il massimo avvicinamento da' verde anche se il pallone tocca la
+         rete per un solo campione e viene subito sovrascritto dal movimento: sullo schermo sarebbe
+         un lampo, o niente. Si conta anche QUANTI campioni consecutivi il pallone resta oltre la
+         linea — a 120 ms l'uno, servono almeno 4 campioni (~0,5 s) perche' un occhio lo veda. */
+      let dentro=0,corsa=0;vic.forEach(v=>{if(v>=98){corsa++;if(corsa>dentro)dentro=corsa;}else corsa=0;});
+      GOL.push({partita:NOMI[g],min:s.min,side:s.ultimo&&s.ultimo.side,src:s.ultimo&&s.ultimo.src,max,dentro});
     }
     if(min>=89)break;}
   await ctx.close();
@@ -42,12 +47,14 @@ console.log('=== QUANTO SI AVVICINA IL PALLONE ALLA PORTA, SUL GOL? ('+GOL.lengt
 console.log('  la linea di porta e\' a 100. Sotto 98 il pallone NON entra.');
 GOL.forEach(x=>console.log('  '+x.partita+'  '+String(x.min).padStart(3)+"'  "+String(x.side).padEnd(5)
   +' ['+String(x.src).padEnd(9)+']  massimo avvicinamento: '+(x.max==null?'n/d':x.max)
-  +(x.max!=null&&x.max<98?'   ← NON ENTRA':'   ✅ in rete')));
+  +(x.max!=null&&x.max<98?'   ← NON ENTRA':'   ✅ in rete per '+x.dentro+' campioni ('+(x.dentro*0.12).toFixed(2)+'s)')));
 const v=GOL.filter(x=>x.max!=null).map(x=>x.max).sort((a,b)=>a-b);
 if(v.length){
   const dentro=v.filter(x=>x>=98).length;
   console.log('\n  massimo avvicinamento: mediana '+v[v.length>>1]+' · p90 '+v[Math.floor(v.length*0.9)]+' · MASSIMO ASSOLUTO '+v[v.length-1]);
   console.log('  gol in cui il pallone raggiunge la linea: '+dentro+'/'+v.length);
+  const visibili=GOL.filter(x=>(x.dentro|0)>=4).length;
+  console.log('  gol in cui ci RESTA abbastanza da vedersi (>=0,5 s): '+visibili+'/'+v.length);
   console.log('');
   console.log(dentro===0?'  ⚠️  IN NESSUN GOL il pallone arriva in porta. Il tabellone dice gol, il campo no.'
     :'  '+dentro+' gol su '+v.length+' col pallone in rete.');

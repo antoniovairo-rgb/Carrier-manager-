@@ -1941,3 +1941,54 @@ degli eventi (7.802) — più macchine che decidono la stessa cosa — applicato
 è una coordinata: è **un solo punto in cui un gol mette il pallone in rete**, qualunque strada
 l'abbia generato. Non l'ho scritto: lo lascio come bersaglio dichiarato, con la misura pronta
 (`tests/visual/rete-808.mjs`) e il numero da battere — **0 su 14**.
+
+---
+
+## 7.803 (seguito) — LA SCOPERTA: il pallone che il gioco calcola e il pallone che il player vede sono DUE OGGETTI DIVERSI
+
+Terzo rimedio sul difetto «la palla non entra in porta», e la diagnosi che ne è uscita vale più
+di tutti e tre i tentativi.
+
+### Il terzo rimedio: un punto solo che mette il pallone in rete
+
+Censimento: un gol viene accreditato in **cinque punti** (`highlight`, `microsim`, `cronaca`,
+`setpiece`, `scena-difensiva`) e ognuno tratta il pallone a modo suo. Rimedio: **una** funzione,
+chiamata dai quattro siti che non lo portavano in porta, che mette il pallone nella rete di chi
+subisce e ce lo tiene per un secondo (il pallone ha **undici altri scrittori**).
+
+Misura: **0 gol su 15** col pallone reso in rete. Mediana *peggiorata* a 67,3.
+
+### La diagnosi che spiega tutto
+
+| gol | pallone **logico** | pallone **reso** |
+|---|---|---|
+| 16' | **−1** (in rete, per 900 ms) | **62,9** — immobile |
+| 49' | **101** (in rete) | **93,2** |
+| 59' | **−1** | **26,6** |
+| 84' | **−1** | **71,0** |
+
+Il punto unico **è stato chiamato tutte le volte** (6 su 6) e il pallone **logico entra davvero in
+porta e ci resta**. Il pallone **reso non si muove di un centimetro**.
+
+**SONO DUE OGGETTI DIVERSI.** La telecronaca, i piani e i gol muovono la palla LOGICA; quella RESA
+segue regole sue — è incollata al portatore o all'arco, e finché uno dei due è attivo vince contro
+tutto il resto (`src/12`: `ball.position.x` ha almeno quattro scrittori, e il prop `ballX` è solo
+uno di essi).
+
+### Cosa spiega, tutto insieme
+
+- **«Gol ma la palla non entra in porta»** (nota PO, due volte): il gol muove la palla che non si vede.
+- **Codice 011 «palla congelata»** (task #31), che avevo già misurato dall'altro lato: *«il punto-palla
+  logico è fermo al 100 % e il reso diverge di 9-17u, max 48u»*. È **lo stesso difetto** visto in
+  specchio.
+- Probabilmente il **«pallone sparato da lontanissimo»**: il reso parte da dove sta lui, non da dove
+  l'azione dice.
+
+### Verdetto
+
+**Rimedio revocato** (non produce nulla di visibile: è la regola). **Diagnosi acquisita**, ed è il
+bersaglio vero: *finché il pallone reso non obbedisce a chi racconta la partita, ogni cura sulle
+coordinate è lavoro su un oggetto che il giocatore non guarda.*
+
+Tre rimedi revocati su questo difetto in una notte — battuta che punta in rete, arrivo stretto,
+punto unico — e tutti e tre curavano la palla sbagliata.
