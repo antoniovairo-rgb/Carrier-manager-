@@ -1992,3 +1992,29 @@ coordinate è lavoro su un oggetto che il giocatore non guarda.*
 
 Tre rimedi revocati su questo difetto in una notte — battuta che punta in rete, arrivo stretto,
 punto unico — e tutti e tre curavano la palla sbagliata.
+
+### Il censimento che chiude la diagnosi: QUINDICI scrittori, UNO ascolta la simulazione
+
+`src/12`, tutte le assegnazioni di `ball.position.x`:
+
+| chi scrive il pallone reso | siti |
+|---|---|
+| **il pallone LOGICO** (`P.ballX` — quello che telecronaca, piani e gol muovono) | **1** (r. 2145) |
+| incollato a un giocatore / all'eroe / al ricevente del cross | 5 |
+| l'arco di volo | 1 |
+| bersagli di sistemi vari (670, 383, 546, 52) | 5 |
+| replay, spinta post-highlight, palla ferma | 3 |
+| **TOTALE** | **15** |
+
+**Quattordici voci contro una, e vince l'ultima che scrive.** Il gol mette il pallone in rete
+(misurato: logico a −1/101 per 900 ms) e un fotogramma dopo il portatore o l'arco lo riportano
+dov'erano loro.
+
+Non è un difetto localizzato: **non esiste una gerarchia**. Il pallone non ha un padrone che
+decida chi comanda in quale momento, e la simulazione — che per la direttiva madre è la SOURCE OF
+TRUTH — è in fondo alla fila.
+
+**Il bersaglio, dichiarato**: una gerarchia esplicita del pallone reso, in cui ciò che la partita
+afferma (un gol, una palla ferma, un esito) batte ciò che la scena sta animando. Non è una
+taratura: è la stessa forma dei due difetti strutturali già trovati oggi — *più macchine che
+decidono la stessa cosa*, dopo il regista degli eventi (7.802) e le cinque strade del gol.
