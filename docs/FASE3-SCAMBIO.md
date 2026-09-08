@@ -2820,3 +2820,10 @@ Patch applicata (`__CPM_NO812`, testimone `__CPM_SALVA812`): la sequenza della l
 stesso tick — aspettano il tick dopo, come la libreria già faceva sul gol dal 7.785. Misura
 `rifiuti-827`: occasioni con tutte e tre le righe nel diario, rosso atteso ~0/6, verde atteso 6/6.
 In coda con i rituali.
+
+### 7.812 v1 — **non muove la misura**: occasioni complete nel diario 0/9 (rosso 0/5)
+
+`rifiuti-827`, tre partite per regime: rosso `NO812` 0/5, verde 0/9. La guardia su libreria
+(r.4730/4786) e scheda (r.4575) non basta — o non scatta mai (testimone `__CPM_SALVA812`
+aggiunto alla sonda) o la battuta viene sostituita **altrove**. Prima di revocare o rifare:
+censimento degli scrittori di `ev.txt`/`evTxt` a valle di r.4380, e il conto della guardia.
