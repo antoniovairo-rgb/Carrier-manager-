@@ -535,3 +535,53 @@ perché Q, R e le scene a calendario fisso pesano su quattro aree. Il metro (8,0
 
 **Voto n° 7: 5,3** (n° 6: 5,2): +Y, +Q diagnosticata ma non ancora corretta nel build, ritmo uguale.
 Il metro resta a 8,0.
+
+
+---
+
+# Rapporto n° 8 — build 7.830 (08/09 sera)
+
+Build: 7.818 v5+testimone, 7.822 v3, 7.825-7.830 (assist dall'undici, compagno non portiere, «dominando» con un
+tiro, intervallo che ferma le macchine, occasione con la costruzione, il marcatore è uno solo).
+
+| | Vairo casa | Moretti casa | Galli fuori | Conti fuori |
+|---|---|---|---|---|
+| righe / minuti vuoti | 45 / 55 | 49 / 51 | 60 / 46 | 66 / 39 |
+| scene dell'eroe | 18,26 | 10,26 | 12,55,88 | 10,18 |
+| finale | 0-0 | 1-0 | 2-1 | 4-0 |
+
+## Misurato sul testo (`analisi-diario.py`), n° 7 → n° 8
+
+| bugia | n° 7 | **n° 8** |
+|---|:---:|:---:|
+| Q — chi conclude è chi segna (gol con piano) | 1/5 | **5/5** («Pellegrini segna!», «Bruno segna!», Ferrari/Lombardi/Bruno) |
+| Y — assist da uno dell'undici | 4/4 | 2/2 |
+| Z — occasione a cavallo dell'intervallo | 1 | **0** |
+| AA — il portiere come «compagno» | 1 | **0** («Neri allarga le braccia») |
+| S/T/V/N (portiere, cognomi doppi, margine, riga del gol) | 0 errori | 0 errori |
+| J — corner battuto dopo la parata | +7' | ancora +7/+9' (v6 non in questo build) |
+| occasione extra-eroe: battute | 3 | **5** (costruzione + apertura + tiro + parata) |
+| libreria: aperture per partita · sul tick del gol · palla loro | 0-2 · 0 · 3/5 | 2/1/0/2 · **0** · 3/5 |
+| righe identiche allo stesso minuto (3 legittime) | 8 | 9 |
+
+## Scorecard n° 8
+
+| # | Area | n°7 | **n°8** | Il fatto |
+|---|------|:---:|:---:|---|
+| 1 | Realismo della partita | 5 | **5** | Vairo 0-0 con 50+ minuti muti; Conti 4-0 |
+| 2 | Credibilità da attaccante | 5 | **5** | scene a 10'-26' in tre partite su quattro (calendario fisso, R) |
+| 3 | Causalità | 5 | **6** | Q, Y, Z chiuse; il corner ancora tardi |
+| 4 | Varietà | 5 | **5** | |
+| 5 | Ritmo | 3 | **4** | fuori 39-46 minuti vuoti, in casa ancora oltre 50 |
+| 6 | Azioni extra-eroe | 5 | **6** | cinque battute, con la costruzione; nessuna manovra intrecciata |
+| 7 | Highlight dell'eroe | 5 | **5** | |
+| 8 | Telecronaca | 6 | **6** | |
+| 9 | Interazioni | 7 | **7** | |
+| 10 | Coerenza fra i sistemi | 5 | **6** | un marcatore solo; libreria mai sul gol |
+| 11 | Immersione | 5 | **6** | |
+| 12 | Sensazione di carriera | 6 | **6** | |
+
+**Media: 5,6** (n° 7: 5,3; n° 5: 4,6). Il metro (8,0) è a due punti e mezzo. Le cause che pesano:
+il ritmo in casa (S1/S2/S5 ancora aperte: la squadra a 1-0 smette), il calendario fisso delle scene
+dell'eroe (R), la libreria che parla solo dal nostro lato (U), il corner in ritardo (v6 nel build
+successivo).
