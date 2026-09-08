@@ -2957,3 +2957,19 @@ e tre le righe **6/7 → 4/4** (con la corsa precedente: 5/5). Rituali: career P
 armate 7, corner 6, righe di corner uscite 3 — quindi la riga *può* uscire, ma non nei minuti
 attorno alla parata): rimedio dopo la 7.817. **H**: il testimone non ha visto gol nostri al rigo
 ambientale in sei partite — diagnostica col registro dei gol nel treno 7.817. `main` resta 7.807.
+
+### 7.817 v1 — **REVOCATA**: 20%/14% → 30%/11%, un terzo del bersaglio
+
+`padrone-825`, «palla ai piedi del portatore logico (≤ 3u)»: rosso `NO817` **20% / 14%** (mediana
+10,8 / 13,9u), verde **30% / 11%** (6,8 / 10,9u). Un effetto vero in una partita, nullo nell'altra,
+e comunque a un terzo del bersaglio (≥ 90%). Cambiare il bersaglio dell'inseguitore non basta finché
+l'inseguitore è uno dei quindici scrittori e vince solo quando gli altri tacciono. Resta a richiesta
+(`__CPM_SI817`). Il prossimo passo su S1+S2 non è una taratura: è la riscrittura a tre stati del
+blocco del pallone di `src/12` (portata / in volo / vagante), col resto degli scrittori ridotti a
+proposte.
+
+**H, diagnostica**: in sei partite di sonda **tutti i gol nostri sono highlight** (registro:
+`home/highlight`), i gol del microsim sono solo loro — il rigo ambientale del gol nostro non passa
+mai da lì, e la 7.814 non è misurabile su questi nomi. Si misura con i nomi del playtest (Moretti:
+57' `home/microsim`). **J**: 0/3 anche con finestra 8'. Le righe di corner che escono (3 su 7 palle
+morte) non sono quelle dell'occasione: la palla morta armata alla chiusura non produce la sua riga.
