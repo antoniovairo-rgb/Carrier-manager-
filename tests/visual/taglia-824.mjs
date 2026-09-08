@@ -6,11 +6,14 @@
 import { startServer, launchBrowser, installCdnRoutes, openMatch, forceSituation, sleep, __dirname } from './lib/harness.mjs';
 import { PNG } from 'pngjs';import path from 'path';import fs from 'fs';
 const GI=+(process.env.CPM_GI||101);
-const ROOTS=[['7.805',process.env.CPM_ROOT805||''],['corrente',path.join(__dirname,'..','..','..')]];
+const ROOTS=[['corrente',path.join(__dirname,'..','..','..')],['7.805',process.env.CPM_ROOT805||'']];/* [v2] prima il corrente: esclude l'effetto dell'ordine nello stesso browser */
+if(process.env.CPM_SOLO)ROOTS.splice(1);
 if(process.env.CPM_ROOT805)ROOTS[0][1]=process.env.CPM_ROOT805;
-const b=await launchBrowser();
+/* [v3] UN BROWSER PER GAMBA: misurato che la seconda gamba nello stesso browser rende una scena ferma (ndc identici
+   per 4 campioni) e un pallone «piccolo» — 6,3 px contro 1,3 px a build INVERTITI. L'ordine, non il build. */
 const raggio=(png,cx,cy)=>{let n=0;const R=34;for(let y=Math.max(0,cy-R);y<Math.min(png.height,cy+R);y++)for(let x=Math.max(0,cx-R);x<Math.min(png.width,cx+R);x++){const i=(y*png.width+x)*4;const r=png.data[i],g=png.data[i+1],bb=png.data[i+2];if(Math.min(r,g,bb)>185)n++;}return +Math.sqrt(n/Math.PI).toFixed(1);};
 for(const [tag,root] of ROOTS){
+  const b=await launchBrowser();
   const srv=await startServer(root);const port=srv.address().port;
   const ctx=await b.newContext({viewport:{width:412,height:915},deviceScaleFactor:1});
   const page=await ctx.newPage();await installCdnRoutes(page);
@@ -20,14 +23,14 @@ for(const [tag,root] of ROOTS){
   let fase='?';for(let k=0;k<80;k++){await sleep(150);fase=await page.evaluate(()=>{const s=window.__CPM_STATE&&window.__CPM_STATE();return s?s.phase:'?';});if(fase==='hl_result')break;}
   const R=[],D=[],S=[];
   for(let k=0;k<6;k++){await sleep(250);
-    const st=await page.evaluate(()=>{const s=window.__CPM_STATE();return {ndc:s.ball&&s.ball.ndc,on:s.ball&&s.ball.onScreen,dist:s.dist,phase:s.phase,cam:s.camera};});
+    const st=await page.evaluate(()=>{const s=window.__CPM_STATE();const v=window.__CPM_VIS665&&window.__CPM_VIS665();return {ndc:s.ball&&s.ball.ndc,on:s.ball&&s.ball.onScreen,dist:s.dist,phase:s.phase,cam:s.camera,wy:s.ball&&s.ball.worldY,vis:v?v.ball:null};});
     if(!st.ndc||!st.on)continue;
     const buf=await page.screenshot();const png=PNG.sync.read(buf);
     const cx=Math.round((st.ndc.x+1)/2*png.width),cy=Math.round((1-st.ndc.y)/2*png.height);
-    R.push(raggio(png,cx,cy));D.push(+(+st.dist||0).toFixed(1));S.push(st.phase);
+    R.push(raggio(png,cx,cy));D.push(+(+st.dist||0).toFixed(1));S.push(st.phase+'/y'+(st.wy==null?'?':(+st.wy).toFixed(1))+'/vis'+(st.vis?1:0)+'/ndc'+(st.ndc?(+st.ndc.x).toFixed(2)+','+(+st.ndc.y).toFixed(2):'?'));
     if(k===2)fs.writeFileSync(path.join(__dirname,'..','out','taglia-'+tag.replace('.','_')+'.png'),buf);}
-  await ctx.close();srv.close();
+  await ctx.close();srv.close();await b.close();
   const med=(a)=>{if(!a.length)return null;const s=a.slice().sort((u,v)=>u-v);return s[s.length>>1];};
-  console.log('  '+tag.padEnd(9)+' SIT #'+GI+'  fase '+fase+'  campioni '+R.length+'  raggio pallone mediano '+med(R)+' px  (tutti: '+R.join(',')+')  distanza camera mediana '+med(D));
+  console.log('  '+tag.padEnd(9)+' SIT #'+GI+'  fase '+fase+'  campioni '+R.length+'  raggio pallone mediano '+med(R)+' px  (tutti: '+R.join(',')+')');
+  console.log('     campioni: '+S.join(' · '));
 }
-await b.close();

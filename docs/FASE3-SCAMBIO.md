@@ -2656,3 +2656,24 @@ vs 38-43: banda di rumore, come atteso da una regola che vale solo vicino all'er
 
 Rituali sul build 7.810 (prima della colla limitata a `playing`): career PASS · CI 00001505 ·
 0 failure · gol-del-simulatore 8/8/0. Si rifanno sul build v2.
+
+### #53 — **RITRATTAZIONE**: non c'era nessuna regressione di taglia. Era la sonda.
+
+`taglia-824` v2, ordine invertito (corrente per primo, poi 7.807), stessa scena:
+
+| gamba | build | raggio mediano | i campioni |
+|---|---|---|---|
+| **prima** | corrente (7.810 v2) | **6,3 px** | ndc che avanza: −0,39 → 0,17 |
+| **seconda** | 7.807 | **1,3 px** | ndc **identico per 4 campioni** (0,37, 0,14): scena ferma |
+
+Nella prima misura la 7.805 era prima (6,1) e il corrente secondo (2,6); nella bisezione la 7.807
+era prima (6,3) e il corrente secondo (2,3); qui il corrente è primo (6,3) e la 7.807 seconda (1,3).
+**Decide l'ordine, non il build**: la seconda gamba nello stesso browser rende una scena che non
+avanza (la scena forzata resta al primo fotogramma) e il pallone «piccolo» è un pallone fermo in
+un'altra posa. Quindi: la bisezione di stanotte è **invalida**; «il pallone piccolo l'ho fatto io»
+è **falso**; l'alone in hl e la colla logica in hl **non** sono cause di taglia (la colla limitata
+a `playing` resta perché corretta per un'altra ragione: #31, punto-palla fermo nella scena). La
+nota del PO sulla 7.807 resta **non riprodotta**, senza colpevoli inventati.
+
+**Nona lezione sugli strumenti**: due build nello stesso browser non sono confrontabili — un
+browser per gamba (v3), e prima di credere a una differenza fra build si inverte l'ordine.
