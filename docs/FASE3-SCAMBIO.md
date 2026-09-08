@@ -3184,3 +3184,16 @@ validate e ho committato e spinto (76fd9ac) scrivendo «rituali verdi» **prima 
 exit=1`**. Errore mio, di lettura: il commit è stato **revertito** sul branch, il build torna al
 7.831. Undicesima lezione sugli strumenti: si legge l'exit della CI, non il fingerprint di un suo
 passo. U resta aperta: la strada è la libreria dal lato giusto (beat con {A}/{A2}), non un cancello.
+
+## Censimento R — da dove nascono le scene dell'eroe (`scene-835`, build 7.831.1 testimoni)
+
+Testimone `cpmEv("scena",{min,src})` su tutti gli ingressi in scena. Quattro partite (banco senza
+tempo reale, quindi meno scene del playtest): **calendario-tick 11, secondo-tempo 2, catena 2,
+reattiva 3**. I «due esiti nello stesso minuto» sono **2 su 4 partite e tutti e due sono catene
+chance → gol** (`secondo-tempo`, la stessa azione): coerenti, non contraddizioni. La prima scena
+cade fra il 10' e il 18' in tutte le partite: è il 7.803 («la prima scena presto», `_apertoDa803`
+≤ 12' e passo d'attesa), una scelta di design, non un copione — resta a verbale come cosa che il
+player può notare (sempre entro il quarto d'ora). Le scene reattive a `ck+2` (dopo un gol o un
+cambio di momentum) sono 3 su 18. Il caso del n° 6 (Galli 12': corner → intercept fallito → gol
+nello stesso minuto) non si è ripresentato nel banco: resta aperto con un campione di uno. **R si
+ridimensiona**: nessun rimedio, testimone e sonda restano.
