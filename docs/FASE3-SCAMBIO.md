@@ -2734,3 +2734,20 @@ coda dopo il treno 7.809. Finché non è letta, il punto C del rapporto n°3 **n
 Nessuna differenza fra i build. Il pallone negli highlight ha la stessa taglia dalla 7.805 a oggi.
 La nota del PO «il pallone adesso è troppo piccolo» resta **non riprodotta** con questo metro
 (stessa scena, stessa camera): se torna, servono partita, minuto e fase. Chiuso senza colpevoli.
+
+### 7.809 committata sul branch (`89dfba0`) · `main` resta `75092dc` (7.807)
+
+Rituali: career PASS · CI 00001505 · 0 failure · gol-del-simulatore 7/7/0. Non si promuove:
+il metro «basta pezze» non è raggiunto.
+
+## 7.811 — S3 v1: l'enfasi legge lo stato (sul branch)
+
+`src/14` r.5170: le due famiglie d'enfasi («Stiamo dominando…» con momentum ≥ 80, «Reggiamo…»
+con ≤ 20) uscivano dal solo momentum. Ora la frase viene da una tabella **stato × momentum**
+(sotto / pari / sopra, con la variante del finale dall'80') e dice la cosa vera: sotto e in
+spinta → «serve il gol»; pari e in spinta → «serve il gol che sblocca»; avanti e in spinta →
+«teniamo alta l'intensità»; sotto e schiacciati → «così non si recupera»; avanti e sotto assedio →
+«si difende il risultato». Stessa porta seedata (`_rndM<0.12`), stessa cadenza. Rosso `__CPM_NO811S`.
+Misura `enfasi-829` (4 partite): righe d'enfasi **incoerenti** col tabellone (rosso: la bugia del
+rapporto n°3 «teniamo alta l'intensità» sotto 1-2) → atteso 0 nel verde; righe **mute** sullo
+stato → scendono. In coda dopo la diagnostica S4.
