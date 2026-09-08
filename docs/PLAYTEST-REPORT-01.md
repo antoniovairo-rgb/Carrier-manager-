@@ -628,3 +628,49 @@ falso positivo dell'analisi, che conosce solo il nostro); cognomi doppi 0; margi
 
 **Media: 5,5** (n° 8: 5,6). AD e AE sono S2 sul racconto — un solo padrone: rimedi 7.833 con
 misura sul testo (occasioni spezzate da una scena, azioni di libreria con righe estranee in mezzo).
+
+
+---
+
+# Rapporto n° 10 — build 7.834 (08/09 notte)
+
+| | Vairo casa | Moretti casa | Galli fuori | Conti fuori |
+|---|---|---|---|---|
+| righe / minuti vuoti | 50 / 53 | 59 / 47 | 63 / 44 | 72 / 42 |
+| scene dell'eroe | 18', 26' | 22', 31' | 30', 60', 69', 78' | 10', 33', 64' |
+| finale | 0-0 | 3-0 | 3-1 | 4-1 |
+
+Misurato sul testo, n° 9 → n° 10: **[AD] tiri di battuta senza esito 2 → 0** · **[AE] azioni di
+libreria intrecciate 7 → 0** · chi conclude è chi segna 5/5 · corner al minuto dopo 4/4 · «portiere
+di X» 0 · assist dal portiere 0 · «dominando» sullo 0-0 muto → «Comandiamo il gioco senza pungere»
+(Vairo 89').
+
+## Che cosa resta, letto nei diari
+
+| | la riga | perché non ci credo |
+|---|---|---|
+| **Q-loro** | Conti 41'-44' *«Santis ruba il tempo… Marchetti conduce e scarica su Santoro… Santoro calcia di prima»* → *«Gol avversario. Spada buca la nostra difesa»* | il marcatore del gol LORO è ancora a sorteggio: la 7.814/7.830 firma solo i nostri |
+| AC | Galli 69' *«Imparabile! Galli segna! 2-1»* · Conti 10' | il gol dell'eroe senza un'azione prima |
+| E (n° 3) | Galli 78' *«Filtrante perfetto! La conclusione è respinta — c'è ancora da giocare!»* + *«Destro perfetto — nessuna speranza!»* | la catena chance → gol si racconta come contraddizione |
+| P | *«Palla persa alta! X riparte in campo aperto — che pericolo!»* ×5, mai un seguito | riga isolata |
+| ritmo | 53 / 47 / 44 / 42 | in casa a 0-0 la squadra non tira mai (Vairo: zero conclusioni nostre in 89') |
+
+## Scorecard n° 10
+
+| # | Area | n°9 | **n°10** |
+|---|------|:---:|:---:|
+| 1 Realismo | 5 | **5** |
+| 2 Credibilità da attaccante | 5 | **5** |
+| 3 Causalità | 6 | **6** |
+| 4 Varietà | 5 | **6** (occasioni «da due passi», «a tu per tu», «dal limite», «da fuori», presa/pugni/tuffo) |
+| 5 Ritmo | 4 | **4** |
+| 6 Azioni extra-eroe | 6 | **7** (cinque battute, esito, corner, un regista solo) |
+| 7 Highlight dell'eroe | 5 | **5** |
+| 8 Telecronaca | 6 | **6** |
+| 9 Interazioni | 7 | **7** |
+| 10 Coerenza fra i sistemi | 5 | **6** (AD/AE a zero; Q-loro) |
+| 11 Immersione | 6 | **6** |
+| 12 Carriera | 6 | **6** |
+
+**Media: 5,7** (n° 9: 5,5; n° 5: 4,6). Il metro (8,0) è a 2,3 punti. Prossimi, in ordine: Q-loro,
+il ritmo in casa (la squadra a 0-0 non tira: S3 v2 / S5), AC, E, P.
