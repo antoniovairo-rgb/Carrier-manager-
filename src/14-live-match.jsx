@@ -4852,7 +4852,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                grossa. La U (manovra nostra raccontata sopra un gol loro) cade in gran parte con la W (nasceva sul tick del
                gol subito); il resto della U — raccontare la manovra LORO dal lato loro — e' un lavoro sui beat ({A}/{A2}),
                a verbale. `__CPM_SI822T` riaccende il turno per la misura. */
-            const _turno822=(typeof window!=='undefined'&&window.__CPM_SI822T)?(possTurnRef.current>0):true;
+            const _turno822=(typeof window!=='undefined'&&window.__CPM_NO822T)?true:(possTurnRef.current>0);/* [7.832.0 — LA LIBRERIA PARLA SOLO CON LA PALLA NOSTRA. Rosso __CPM_NO822T] I beat sono scritti dalla nostra parte ({H}, «la squadra sale», «corner avversario spazzato»): aperti con la palla loro (U: 3 su 5 nel n° 8) raccontano una manovra che il 3D smentisce. Con la 7.829 la libreria non e' piu' l'unica fonte di azioni (l'occasione ha la sua costruzione), quindi il turno torna nel cancello: meglio una manovra in meno che una manovra dal lato sbagliato. Misura regia-833: U → 0, aperture per partita a verbale. */
             const _ok822=_no822||(_turno822&&(nx-(_lg822.min|0))>=3&&!(ev&&(ev.ef==="team_goal"||ev.ef==="opp_goal")));
             /* [7.822 v3 — LA PORTA DIFFERITA, non chiusa] Censimento del cancello (regia-833, rosso): su 17-25 tentativi a
                partita la costruzione ne blocca 7-13 e la recita 4-10; le finestre davvero libere sono 0-2 e le aperture
