@@ -3162,3 +3162,5 @@ parata→corner **[1,1,1,1,1]** minuti (v5: [7,1,8]); corner annunciato → batt
 l'occasione del 41'-44' chiusa dal duplice fischio, 7.828, che non arma la palla morta: corretto).
 Sei versioni, quattro ipotesi smentite (ttl a righe, budget a tick, riga persa a valle, chiusura del
 piano) e una sonda cieca: la causa era il dado della cronaca. Rosso `NO818` in coda per il confronto.
+Rosso appaiato NO818 sullo stesso build: corner battuto **0/8**, ritardi [] — contro **5/6** e
+[1,1,1,1,1] col verde. La 7.818 (v2+v3+v4+v5+v6) si dichiara: J chiusa.
