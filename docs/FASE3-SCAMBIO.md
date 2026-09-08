@@ -2863,3 +2863,17 @@ Il residuo (3/11): la battuta arriva all'emissione (p3 = battute) ma esce nel **
 dell'arco** (240-340 ms dopo, r.5317) e lì una scheda aperta la rifiuta senza che il testimone
 `REF_PIANO` — che sta sul ramo sincrono — lo veda. **v3**: la battuta di piano esce subito, come
 il gol. Rosso vero e verde in coda, poi rituali.
+
+### 7.812 v3 — coppia pulita: **0/5 → 5/5 (100%)**
+
+| `rifiuti-827`, tre partite per regime | rosso vero `NO812` | **verde 7.812 v3** |
+|---|---|---|
+| occasioni con tutte e tre le righe nel diario | **0/5** | **5/5** |
+| battute vive a p1/p2/p3 | 6/3/3 · 19/8/8 · 7/4/4 | 16/16/16 · 13/13/13 · 7/7/7 |
+| guardia (catena tace) scattata | 0 | 16 · 11 · 7 |
+| testo cambiato all'emissione | 0 | 0 |
+
+Ogni battuta di piano arriva all'uscita col proprio testo, e il diario le ha tutte e tre.
+Il punto C del rapporto n°3 («parata senza tiro») ha un rimedio misurato. Rituali: career PASS,
+CI in corsa; commit sul branch al verde. (Il container si è riavviato alle ~06:1x: catena
+persa e rilanciata alle 06:20, nessun dato perso oltre la corsa.)
