@@ -2827,3 +2827,13 @@ In coda con i rituali.
 (r.4730/4786) e scheda (r.4575) non basta — o non scatta mai (testimone `__CPM_SALVA812`
 aggiunto alla sonda) o la battuta viene sostituita **altrove**. Prima di revocare o rifare:
 censimento degli scrittori di `ev.txt`/`evTxt` a valle di r.4380, e il conto della guardia.
+
+### 7.812 v1 — **REVOCATA**, e il testimone all'emissione dice dove guardare
+
+`rifiuti-827` col testimone `__CPM_EMIT812` (due partite): battute consumate dal piano **9 e 6**,
+battute arrivate al punto d'emissione **6 e 5**, testo cambiato all'emissione **0**, guardia
+7.812 scattata **0** volte. Quindi: quando la battuta arriva all'emissione esce **col suo testo**;
+il problema è che **una battuta su tre non ci arriva** — consumata (step++, pallone mosso), ma la
+riga del tick non viene emessa. Libreria e scheda non c'entrano: le tre guardie tornano indietro.
+Da cercare: il punto fra la battuta (r.4380) e l'emissione (r.5317) dove la riga del tick si
+perde, o la battuta consumata in un tick che non passa dal sito della riga.
