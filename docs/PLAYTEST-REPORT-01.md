@@ -360,3 +360,71 @@ partite da 40 righe, 2 scene e 58 minuti muti. Il voto del ritmo non è una regr
 **4**, come nel n° 3) ma lo *spread* fra partite è esso stesso il difetto: una partita su due è
 muta per un'ora. **Media n° 4 corretta: 5,2.** Per il n° 5: quattro **nomi** diversi (il seme di
 partita nasce dal nome), non quattro semi.
+
+---
+
+# Rapporto n° 5 — playtest sul build del branch (aea0d01 + 7.818 v1 in sorgente, 08/09 mezzogiorno)
+
+Quattro **partite distinte** stavolta (quattro nomi: Vairo, Moretti in casa; Galli, Conti fuori),
+lette da player, riga per riga. Il banco è lo stesso del n° 4.
+
+| | Vairo casa | Moretti casa | Galli fuori | Conti fuori |
+|---|---|---|---|---|
+| righe / minuti vuoti | 40 / 58 | 53 / 49 | 78 / 39 | 90 / 34 |
+| scene dell'eroe | 17', 28' | 17', 26' | 12', 27', 74', 88' | 17', 30' |
+| gol · finale | 28' · 1-0 | 57' · 1-0 | 12', 27', 57', 67', 88' · 3-2 | 17', 24', 53', 75' · 4-0 |
+
+## La bugia più grossa, vista solo perché le partite erano quattro
+
+| | la riga | perché non ci credo |
+|---|---|---|
+| **M** | 9' *«Spada (POL) serve Santis (POL) al limite della trequarti.»* · 10' *«Santis (POL) prova a sorprendere il portiere da lontanissimo!»* · 11' *«Fontana (GRA) ci arriva in tuffo e la devia in angolo: che parata!»* — **identiche, allo stesso minuto, in 8 diari su 8** (n° 4 + n° 5, casa e fuori; in Galli cambiano solo i cognomi) | la prima occasione di ogni partita è **la stessa**. Il player che gioca la quarta partita la riconosce alla seconda riga e da lì non crede più a niente. Causa letta nel codice: il piano dell'occasione è seminato con `hashStr("o695|"+nx+"|"+k)`, cioè **dal minuto e basta**; il seme di partita (`bgSimSeedRef`) non entra. Censimento: **12 sorteggi** in src/14 seminati solo dal minuto (piano occasione r.3416, piano gol r.3375, racconto della palla morta r.4287, catena r.3706, `rx/lx/sx` r.3559-3680, `eroe724` r.3627, `cv` r.4559, `int/int2` r.5072, catena hl r.7212). Anche il minuto è fisso: il cancello (r.3740) apre dal 7' con la premessa quasi sempre vera, e l'occasione si arma al primo tick libero, cioè al 9'. Stessa famiglia: *«Cambio in campo: si passa alla gestione del vantaggio»* al **65'** in tutte le partite in vantaggio (in Galli cade fra il cross e l'incornata avversaria) |
+
+## Le altre bugie nuove
+
+| | la riga | perché non ci credo |
+|---|---|---|
+| N | Vairo 28' *«Ha visto il taglio prima di tutti.»* → assist → GOL · Conti 17' *«Passaggio da manuale!»* → GOL | **il gol dell'eroe non ha la riga del gol**: nessuno dice chi ha segnato. Al 29' *«Spada esce dal mucchio dell'esultanza»* è l'unico indizio |
+| Q | Conti 22'-24' *«Cross di Spada: Bruno stacca!» «Incornata di Bruno!» «Ferrari segna!» «…dove Pecoraro è salito»* · 74'-76' *«Conclusione secca di Scotti» «Ferrari segna!» «Corner battuto corto…» «…dove Lombardi ha attaccato»* · Moretti 55'-57' Pellegrini/Colombo/Neri | **tre o quattro nomi per un gol**: il piano nomina uno, il microsim ne accredita un altro, la libreria del gol ne racconta un terzo con un'azione diversa (corner corto dopo un tiro dal limite). La 7.814 (H) copre solo il caso in cui il piano è vivo |
+| R | Galli 12' *«Respinta in corner»* → *«Si riscatta dopo l'occasione fallita di poco fa!»* → *«Destro perfetto»* → scena **intercept fallito · goal RIUSCITO** nello stesso minuto · 88' *«il portiere respinge! Occasione ancora aperta!»* + *«Tripletta!»* | l'eroe fallisce un intercetto e segna di destro nello stesso minuto, dopo un corner nostro; «si riscatta» da un'occasione che era di Ferrari. Tre gol dell'eroe in trasferta **senza un'azione prima** («Doppietta personale!» esce dal nulla al 27'): il momento preconfezionato che il PO non vuole |
+| S | Galli 21' *«Toti (POL) riparte in campo aperto»* (Toti è il loro portiere) · 67' *«Lombardi blocca e rilancia con le mani»* (Lombardi è un'ala) · *«rinvio dal fondo per Spada / Pellegrini / Leone / Colombo»* (mai il portiere) | **i ruoli non contano**: il portiere fa il contropiede, l'ala para con le mani, il rinvio dal fondo lo batte chiunque (K del n° 4, ancora lì) |
+| T | *«Triangolo veloce Pecoraro-Pecoraro-Bruno»* · *«Lombardi appoggia su Lombardi e SCATTA»* · *«spazzato di testa da Neri: la palla esce su Neri»* · Spada e Colombo in **tutte e due** le rose | A del n° 3, ancora lì: il pool dei cognomi è condiviso e ammette il doppione |
+| U | Galli 57' gol LORO raccontato con *«Corner avversario spazzato di testa da Neri: la palla esce su Neri, rimasto alto»* · 67' gol LORO con *«Lombardi blocca e rilancia con le mani: niente pausa»* | la storia del gol è scritta **dal lato sbagliato**: racconta il nostro contropiede per un gol subito |
+| V | Conti 24' 2-0, 53' 3-0, 75' 4-0: *«Squadra in vantaggio!»* | la riga del gol non guarda il punteggio (la 7.811 ha corretto l'enfasi, non questa) |
+| W | Galli 68'-71': due contropiedi intrecciati (Lombardi ×4, Neri, Fontana, Bruno) che finiscono con un tiro dai venticinque metri **e** un due contro due · Conti 25'-27': *«PALO!»* + *«Stacco a due… respinta corta… tiro pulito dal limite… respinge coi pugni»* · 54'-56' e 58'-61' (Moretti): il racconto del gol **prosegue per 3-4 minuti dopo il gol** | **due registi**: la libreria del gol continua a recitare dopo il fatto, mentre un altro sistema apre un'azione nuova. «Gol della squadra: Bruno esce dal mucchio dell'esultanza» arriva al 57' per un gol del 53' |
+| P | *«Filtrante di X — Y attacca lo spazio!»* ×3 (Moretti), ×4 (Conti), mai un esito | riga isolata, sempre la stessa |
+
+Ancora lì dal n° 4: **J** (corner annunciato mai battuto: 11', 67', 82' · 11', 81' · 11', 71' · 11', 44' → **0 su 9**), **L** (occasioni identiche), K.
+
+## Scorecard n° 5
+
+| # | Area | n°4 | **n°5** | Il fatto |
+|---|------|:---:|:---:|---|
+| 1 | Realismo della partita | 5 | **5** | in casa 1-0 e la squadra smette al 28' (Vairo: una sola azione nostra in 89'); fuori 4-0 con «Squadra in vantaggio» sul 4-0 (V); le manovre intere di Conti (19'-24', 50'-53', 71'-75') sono le righe migliori mai lette |
+| 2 | Credibilità da attaccante | 6 | **5** | scene al 17' e 26'-30' in tre partite su quattro, poi un'ora senza l'eroe; la tripletta di Galli esce dal nulla (R) |
+| 3 | Causalità | 5 | **4** | N, Q, U, W: il gol non ha un autore, la storia continua dopo il fatto |
+| 4 | Varietà | 4 | **3** | M: la stessa occasione al 9' in otto partite; L; P |
+| 5 | Ritmo | 4 | **4** | 34-58 minuti vuoti; lo spread fra partite (40 righe contro 90) resta |
+| 6 | Azioni extra-eroe | 5 | **4** | intere e firmate ✔, ma sempre la stessa, sempre da fuori, e il corner non si batte (J 0/9) |
+| 7 | Highlight dell'eroe | 5 | **5** | due per partita prima del 30'; Galli quattro, ma tre gol senza azione |
+| 8 | Telecronaca | 5 | **4** | S, T, V, K: ruoli e punteggio ignorati, cognomi doppi |
+| 9 | Interazioni | 7 | **7** | mister che prepara il cambio, il centrale al primo pallone, l'intesa con Scotti: si crede; «esce dal mucchio dell'esultanza» 4' dopo il gol no |
+| 10 | Coerenza fra i sistemi | 5 | **4** | Q, U, W: piano, microsim e libreria raccontano tre gol diversi |
+| 11 | Immersione | 5 | **4** | rotta alla quarta partita dal copione del 9' (M) |
+| 12 | Sensazione di carriera | 6 | **6** | |
+
+**Media: 4,6** (n° 4: 5,2). Non è una regressione del build: il n° 4 aveva due partite giocate due
+volte e il copione fisso non poteva vedersi; con quattro partite vere si vede, e pesa su quattro
+aree. Il metro (≥ 8,0, nessuna area < 7) è a tre punti e mezzo.
+
+## Che cosa alza il voto, in ordine
+
+1. **M** — il seme di partita in tutti i sorteggi del racconto (12 siti), e il minuto dell'occasione
+   che nasce dallo stato della partita, non dal cooldown. Misura: righe identiche allo stesso minuto
+   fra 4 partite (oggi 3 righe × 8/8) → 0; minuto della prima occasione (oggi 9' × 8) → distribuito.
+2. **W + Q + U** — un regista solo per il gol: chi tira è chi segna, la storia finisce col gol, e la
+   storia è del lato che segna (S2 della roadmap, versante racconto).
+3. **N** — la riga del gol dell'eroe.
+4. **S + T + K** — ruoli veri nelle frasi (il rinvio dal fondo lo batte il portiere, nessun portiere
+   in contropiede) e pool dei cognomi senza doppioni.
+5. **J** — diagnostica in corso (testimone J818).
