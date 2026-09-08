@@ -15,7 +15,7 @@ for(let g=0;g<NOMI.length;g++){
   await openMatch(page,port,{skipLoadAll:true,name:NOMI[g]});
   await page.evaluate((s)=>window.__CPM_AUTOPLAY(true,{seed:s,policy:'seeded',tickMs:300}),SEMI[g]);
   let clock=0;for(let k=0;k<3400;k++){await sleep(200);clock=await page.evaluate(()=>{const ms=window.__CPM_MS&&window.__CPM_MS();return ms?(ms.min|0):0;});if(clock>=89)break;}
-  const d=await page.evaluate(()=>({ref:window.__CPM_SC681_REF|0,piano:window.__CPM_REF_PIANO|0,salva:window.__CPM_SALVA812|0,emit:window.__CPM_EMIT812||null,nome:window.__CPM_NOME814||null,beat:(window.__CPM_BEAT792||[]).filter(x=>x&&x.occ),cro:(window.__CPM_CRO802||[]).map(x=>x.txt)}));
+  const d=await page.evaluate(()=>({ref:window.__CPM_SC681_REF|0,piano:window.__CPM_REF_PIANO|0,salva:window.__CPM_SALVA812|0,emit:window.__CPM_EMIT812||null,nome:window.__CPM_NOME814||null,j:window.__CPM_J814||null,beat:(window.__CPM_BEAT792||[]).filter(x=>x&&x.occ),cro:(window.__CPM_CRO802||[]).map(x=>x.txt)}));
   await ctx.close();
   /* un'occasione = tre battute consecutive (step 0,1,2); e' completa se tutte e tre le sue frasi stanno nel diario */
   const occ=[];d.beat.forEach(x=>{if(x.step===0)occ.push([]);if(occ.length)occ[occ.length-1].push(x.txt||'');});
@@ -27,7 +27,7 @@ for(let g=0;g<NOMI.length;g++){
     if(m0!=null&&croT.some(c=>c.t>=m0&&c.t<=m0+4&&/Calcio d'angolo/i.test(c.txt)))cBat++;});
   J_ann=(typeof J_ann==='number'?J_ann:0)+cAnn;J_bat=(typeof J_bat==='number'?J_bat:0)+cBat;
   tRef+=d.ref;tPiano+=d.piano;tBeat+=d.beat.length;tRighe+=d.cro.length;occTot+=occ.length;occComplete+=comp;
-  console.log('  '+NOMI[g]+': righe nel diario '+d.cro.length+' · rifiutate da addCom (scheda aperta) '+d.ref+' · di cui di PIANO '+d.piano+' su '+d.beat.length+' battute · occasioni complete nel diario '+comp+'/'+occ.length+' · guardia 7.812 scattata '+d.salva+' volte · all\'emissione: battute '+(d.emit?d.emit.piano:'?')+', testo cambiato '+(d.emit?d.emit.cambiata:'?')+' · vive a p1/p2/p3: '+(d.emit?(d.emit.p1|0)+'/'+(d.emit.p2|0)+'/'+(d.emit.p3|0):'?'));if(d.nome)console.log('      [H] gol nostri '+d.nome.gol+' · con piano '+(d.nome.conPiano|0)+' · firmati dal protagonista dell\'ultima battuta '+d.nome.firmati);if(d.emit&&d.emit.es)d.emit.es.forEach(e=>console.log('      '+e.min+"' era «"+e.era+'» ora «'+e.ora+'»'));
+  console.log('  '+NOMI[g]+': righe nel diario '+d.cro.length+' · rifiutate da addCom (scheda aperta) '+d.ref+' · di cui di PIANO '+d.piano+' su '+d.beat.length+' battute · occasioni complete nel diario '+comp+'/'+occ.length+' · guardia 7.812 scattata '+d.salva+' volte · all\'emissione: battute '+(d.emit?d.emit.piano:'?')+', testo cambiato '+(d.emit?d.emit.cambiata:'?')+' · vive a p1/p2/p3: '+(d.emit?(d.emit.p1|0)+'/'+(d.emit.p2|0)+'/'+(d.emit.p3|0):'?'));if(d.j)console.log('      [J] palle morte armate dall\'occasione '+d.j.armati+' (corner '+d.j.corner+') · righe di corner uscite '+d.j.righe);if(d.nome)console.log('      [H] gol nostri '+d.nome.gol+' · con piano '+(d.nome.conPiano|0)+' · firmati dal protagonista dell\'ultima battuta '+d.nome.firmati);if(d.emit&&d.emit.es)d.emit.es.forEach(e=>console.log('      '+e.min+"' era «"+e.era+'» ora «'+e.ora+'»'));
 }
 await b.close();srv.close();
 console.log('\n=== LE RIGHE CHE SI PERDONO ('+NOMI.length+' partite) ===');

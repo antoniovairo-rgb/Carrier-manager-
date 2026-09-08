@@ -2911,3 +2911,23 @@ deve *portare* il pallone ai piedi del portatore logico, non solo sapere chi è.
 la palla, il pallone reso sta ai suoi piedi (≤ 3u)?»** — baseline da leggere, bersaglio ≥ 90%.
 Il taglio vero (S1+S2, tre stati nel blocco del pallone di src/12) è il prossimo lavoro
 strutturale, dopo la 7.814.
+
+### Treno 7.814 — letture intermedie, e due cose nuove
+
+`rifiuti-827` sul build 7.814 (tre partite per regime):
+
+| | rosso `NO814` | verde |
+|---|---|---|
+| **[J]** corner annunciato dalla parata → corner battuto entro 4' | **0/5** | **0/3** |
+| battute di piano rifiutate dalla scheda aperta | **6/24 (25%)** | **5/20 (25%)** |
+| occasioni con tutte e tre le righe | 5/8 | 4/7 |
+| **[H]** testimone `__CPM_NOME814` | *mai scritto* | *mai scritto* |
+
+Tre fatti. (1) **J è confermata al 100%**: nessun corner annunciato viene battuto; testimoni
+`__CPM_J814{armati, corner, righe}` aggiunti (palla morta armata dall'occasione → riga «Calcio
+d'angolo»). (2) Con la battuta che esce subito (7.812 v3) la scheda aperta la rifiuta **in modo
+sincrono nel 25% dei casi**: il 5/5 di stanotte era fortuna; **7.816** (S4 v2): la battuta
+rifiutata si accoda e esce alla chiusura della scheda, in ordine, al massimo tre. (3) Il testimone
+di H non è mai stato scritto in sei partite: o nessun gol nostro è passato dal rigo ambientale, o
+il sito non è raggiunto — contatore esteso ai gol loro per distinguere. Rituali 7.814 (career
+PASS) in corsa; il treno 7.816 (build con J2, H2, coda) in coda dopo la baseline S2.
