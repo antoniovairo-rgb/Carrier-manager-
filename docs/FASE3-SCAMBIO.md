@@ -2786,3 +2786,20 @@ una funzione pura (`_frasi811(sd, finale, alto)`, esposta come `__CPM_ENFASI811`
 `tabella-830` la interroga su 20 stati (sotto di 1-2 / pari / sopra di 1-2 × inizio/finale ×
 alto/basso) contando le frasi che contraddicono il tabellone. Rosso atteso > 0 (le terne
 originali dicono «teniamo alta l'intensità» anche sotto di due); verde atteso **0**. In coda.
+
+### 7.811 — la tabella misurata: **16/60 → 2/42**, e le due sono la sonda
+
+`tabella-830`, 20 stati (sotto di 1-2 / pari / sopra di 1-2 × inizio/finale × alto/basso):
+
+| | frasi incoerenti col tabellone |
+|---|---|
+| rosso `NO811S` (le terne originali) | **16/60** — «Stiamo dominando — teniamo alta l'intensità!», «in fiamme», «Momento magico» anche sotto di due |
+| verde 7.811 | **2/42** — entrambe «Sotto nel finale e **tutti avanti**: serve il gol» |
+
+Le due residue sono coerenti (*tutti avanti* = tutta la squadra in attacco) e cadono nella regex
+della sonda che legge «avanti» come «in vantaggio»: si cambia la frase, non il metro («tutta la
+squadra in attacco»). Verde atteso 0/42, in coda.
+
+**CI rossa una volta sul build 811b** (`gol-del-simulatore` 8/7/1) dopo un verde sullo stesso
+codice a meno del refactor in funzione pura; la banda gira su due partite di un banco stocastico.
+Si ripete da sola; rossa due volte = si indaga prima di committare.
