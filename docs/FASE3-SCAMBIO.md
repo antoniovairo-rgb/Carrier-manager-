@@ -3139,3 +3139,18 @@ sorgente è andato avanti (7.826-7.830), si committa il 7.830 coi suoi rituali.
   piano; maiuscole dalla rosa. Rosso `__CPM_NO830`. Misura sul testo: chi conclude = chi segna.
 - **J, +7 minuti**: v5 senza effetto (ritardi 7,1,8 nel bench; 7 su 8 nel diario). Testimone
   `__CPM_J818T` (battuta / chiusura / armamento / riga, col minuto) nel build 7.830.
+
+## Build 7.830 — playtest n° 8: 5,6
+
+- **7.830 (Q) misurata**: chi conclude è chi segna **5/5** (n° 7: 1/5). **7.828 (Z)**: 0 occasioni a
+  cavallo dell'intervallo. **7.826 (AA)**: 0 portieri come «compagno». **7.825 (Y)**: 2/2.
+- **7.829 (S5)**: battute per occasione 3,0 → **5,0** (`rifiuti-827`, 4/4 complete nel diario); nessuna
+  manovra intrecciata nel n° 8. La libreria (v3) apre 2/1/0/2 volte, **0 sul tick del gol**; resta la
+  U (3/5 con la palla loro: racconta dal nostro lato) — lavoro sui beat, a verbale.
+- **J, la causa vera al quinto tentativo**: linea temporale `J818T` — battute 9'-14', chiusura e
+  armamento al 15', riga al 21', in tutti i casi +6/+7. Fra armamento e riga c'era il **dado della
+  cronaca** (`_draw541`/`_bgProb`, r.4174): decide se in quel tick esce una riga, e le battute di
+  piano lo scavalcano da sempre (`_forza541`), la palla morta promessa no. **v6** (sorgente, build
+  7.831): `_forzaOut818` — la palla morta dell'occasione a passo 0 forza il tick. Misura: ritardo
+  parata→corner (oggi 7, bersaglio ≤ 1).
+- Rituali del 7.830 in coda; si committa il 7.831 (v6) coi suoi rituali.
