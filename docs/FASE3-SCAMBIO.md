@@ -3197,3 +3197,17 @@ player può notare (sempre entro il quarto d'ora). Le scene reattive a `ck+2` (d
 cambio di momentum) sono 3 su 18. Il caso del n° 6 (Galli 12': corner → intercept fallito → gol
 nello stesso minuto) non si è ripresentato nel banco: resta aperto con un campione di uno. **R si
 ridimensiona**: nessun rimedio, testimone e sonda restano.
+
+## Playtest n° 9 (build 7.831.1): 5,5 — AD e AE, un solo padrone sul racconto
+
+- **7.833 (AE)** — la libreria ha il microfono o non ce l'ha: (a) finché l'azione della libreria è
+  in recita il tick non sorteggia righe ordinarie (restano gol del microsim, battute di piano, palla
+  morta); (b) se nasce qualcosa di vero (costruzione, contropiede, palla morta, calcio d'inizio,
+  scena) l'azione si tronca (testimone `__CPM_LIB833T`). Rosso `__CPM_NO833`.
+- **7.834 (AD)** — la scena dell'eroe non si apre con un piano aperto (occasione o costruzione
+  del gol): aspetta il tick dopo la chiusura (`_apre803`). Rosso `__CPM_NO834`.
+- K: tre template del contropiede/corner/rigore con «il portiere di {A}» → {GKA}. AA: il compagno
+  dell'assist non è mai il portiere («assist di Fontana»).
+- Misura sul testo (`analisi-diario.py`, baseline n° 9): **[AD] tiri di battuta senza esito 2**,
+  **[AE] azioni di libreria intrecciate 7** (Galli 6). Bersaglio: 0 e ≤ 1. Playtest n° 10 e rituali
+  del 7.834 in catena.
