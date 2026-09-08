@@ -350,3 +350,13 @@ mentre attaccano loro; «gestione del vantaggio» al 65'; nessuna riga d'enfasi 
 le cause che pesano — l'ora muta, l'eroe che sparisce dopo il 30', la squadra che a 1-0 smette,
 l'occasione con una forma sola — sono S1/S2, S3 v2 e S5, non ancora toccate. Il metro (≥ 8,0) è
 lontano tre punti, come ieri.
+
+### Rettifica n° 4 — il ritmo: né il banco né il build
+
+Bisezione sulla stessa partita del n° 3 (Ferrari/4242) col build corrente: **96 righe / 26 vuoti /
+5 scene** senza tempo reale, **93 / 27 / 5** con — identica al n° 3 (91 / 26 / 5). Le 40-62 righe
+del n° 4 sono **le partite di Vairo e Moretti**: il gioco produce partite da 96 righe e 5 scene e
+partite da 40 righe, 2 scene e 58 minuti muti. Il voto del ritmo non è una regressione (torna
+**4**, come nel n° 3) ma lo *spread* fra partite è esso stesso il difetto: una partita su due è
+muta per un'ora. **Media n° 4 corretta: 5,2.** Per il n° 5: quattro **nomi** diversi (il seme di
+partita nasce dal nome), non quattro semi.
