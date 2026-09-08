@@ -2751,3 +2751,28 @@ spinta → «serve il gol»; pari e in spinta → «serve il gol che sblocca»; 
 Misura `enfasi-829` (4 partite): righe d'enfasi **incoerenti** col tabellone (rosso: la bugia del
 rapporto n°3 «teniamo alta l'intensità» sotto 1-2) → atteso 0 nel verde; righe **mute** sullo
 stato → scendono. In coda dopo la diagnostica S4.
+
+### S4 — **la causa vera** (`dump-828`, letta a occhio): la battuta viene sostituita
+
+| minuto | il piano (battuta consumata) | quello che il diario mostra |
+|---|---|---|
+| 18' | 📈 Spada (POL) serve Santis (POL) al limite della trequarti. | ⚡ Filtrante di Neri — Colombo attacca lo spazio! |
+| 53' | 🎯 Palla di Spada (POL) per Santis (POL)… | 🏃 Luca porta palla e guadagna metri… |
+| 54' | 💥 Santis (POL) non ci pensa due volte: bordata da fuori! | ⚙️ Luca appoggia in avanti per Spada, la manovra sale. |
+| 72' | 📈 Spada (POL) serve Santis (POL)… | 🔁 Vallone scarica su Spada e la squadra riprende posizione. |
+
+Le battute del tiro e della parata di solito passano; l'**apertura** quasi mai, e a volte nemmeno
+il tiro. Il piano ha già consumato la battuta (`step++`, il pallone si muove sul punto dichiarato),
+ma la riga che esce è di **un'altra voce** nello stesso tick (riga-fatto 7.739, conduzione,
+scarico). Non è il diario: è il gioco che racconta una cosa e ne mostra un'altra — ed è la
+sorgente di «azione insignificante a centrocampo» e di «parata senza tiro». Due scrittori della
+stessa riga, e la battuta perde. Rimedio S4 v1: quando una battuta di piano è uscita in questo
+tick, nessun'altra voce scrive; misura `rifiuti-827` «occasioni complete nel diario» 0/6 → 6/6.
+
+Letti i sovrascrittori di `ev` a valle della battuta (r.4380-5270) senza guardia sul piano: la
+**sequenza della libreria** (7.666/7.683, r.4730 e r.4786 — la stessa classe del 7.785, che la
+fermò sul gol ma non sulle battute) e la **scheda d'interazione** (7.669, r.4575, che azzera anche
+`bpos`). Le righe viste nel dump («Filtrante di Neri…», «Luca porta palla…», «Luca appoggia…»)
+sono tutte di libreria. Patch 7.812 pronta (`patch-S4.py`, rosso `__CPM_NO812`, testimone
+`__CPM_SALVA812`): la battuta passa, la sequenza aspetta un tick come sul gol. Si applica dopo il
+commit della 7.811; misura `rifiuti-827` «occasioni complete» 0/6 → 6/6.
