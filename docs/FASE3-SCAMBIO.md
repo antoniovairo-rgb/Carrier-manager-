@@ -3164,3 +3164,13 @@ Sei versioni, quattro ipotesi smentite (ttl a righe, budget a tick, riga persa a
 piano) e una sonda cieca: la causa era il dado della cronaca. Rosso `NO818` in coda per il confronto.
 Rosso appaiato NO818 sullo stesso build: corner battuto **0/8**, ritardi [] — contro **5/6** e
 [1,1,1,1,1] col verde. La 7.818 (v2+v3+v4+v5+v6) si dichiara: J chiusa.
+
+## 7.831 sul branch (81e9c48) · 7.832 — la libreria parla solo con la palla nostra (U)
+
+Build 7.831 committato e spinto sul branch coi rituali verdi (career PASS, CI 00001505, 0
+failure); `main` resta fermo alla 7.807 come da direttiva. **7.832**: il turno torna nel cancello
+della libreria (v1 lo aveva insieme al gol e affamava; ora l'occasione ha la sua costruzione, 7.829,
+e la libreria è marginale). `regia-833`: rosso NO822T aperture 0/1/0/0, verde **1/1/0/1** — la
+libreria non muore più di fame per il turno (la fame è strutturale: pg 10-30 e rec 5-15 su 22-40
+tentativi); **W 0/3, U 0/3** col verde (rosso: U 0/1, campione di uno). Si dichiara per costruzione:
+i beat sono scritti dal nostro lato e con la palla loro non escono più. Rituali 7.832 in coda.
