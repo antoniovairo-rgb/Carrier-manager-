@@ -2947,3 +2947,13 @@ vede è a dieci-dodici unità da lui, e una volta su dieci a quaranta. È il num
 un possessore» (codice 001, quattro note del PO) e di «azioni matematiche». Bersaglio: **≥ 90%**.
 Rimedio pronto (**7.817**, S2 v2): l'inseguitore punta il corpo del portatore logico invece del
 punto-palla, così la colla 7.523 lo trova e lo tiene. Si applica dopo il treno 7.816.
+
+### 7.814 + 7.816 committate sul branch
+
+`rifiuti-827` (tre partite per regime): battute di piano rifiutate dalla scheda aperta rosso 2/21
+→ verde 2/12, ma nel verde le rifiutate **escono alla chiusura della scheda**: occasioni con tutte
+e tre le righe **6/7 → 4/4** (con la corsa precedente: 5/5). Rituali: career PASS · CI 00001505 ·
+0 failure · 7/7/0. **J** resta confermata (corner annunciato → battuto 0/6; testimoni: palle morte
+armate 7, corner 6, righe di corner uscite 3 — quindi la riga *può* uscire, ma non nei minuti
+attorno alla parata): rimedio dopo la 7.817. **H**: il testimone non ha visto gol nostri al rigo
+ambientale in sei partite — diagnostica col registro dei gol nel treno 7.817. `main` resta 7.807.

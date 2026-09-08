@@ -1522,6 +1522,7 @@ function ThreeMatchView(props){
                ws:(sr.current&&sr.current._ws524)|0,
                src:(sr.current&&sr.current._bj0&&sr.current._bj0.src)||null,
                pad:(sr.current&&sr.current._pad555)||null,
+               car:(function(){try{const _cr=_P.carrierRef&&_P.carrierRef.current;if(!_cr||_cr.i==null)return null;const _pp=sr.current.players&&sr.current.players[_cr.i];const m=_pp&&_pp.mesh;return m?{i:_cr.i,x:+(m.position.x+50).toFixed(1),y:+(m.position.z/0.68+50).toFixed(1)}:null;}catch(_e){return null;}})(),/* [misura S2] il corpo del portatore che dice la SIMULAZIONE */
                por:(function(){try{const m=sr.current&&sr.current._por526&&sr.current._por526.mesh;return m?+(m.position.x+50).toFixed(1):null;}catch(_e){return null;}})(),
                arc:{on:ballArcActive?1:0,bg:ballArcIsBG?1:0,
                     tx:+(ballArcTgtX+50).toFixed(1),ty:+(ballArcTgtZ/0.68+50).toFixed(1),
@@ -2243,6 +2244,25 @@ function ThreeMatchView(props){
              per costruzione. __CPM_NO515 = rosso (doppia scrittura di prima). */
           let _colla515=false,_porGlue526=false;
           if(typeof window!=='undefined')window.__CPM_COLLA=0;
+          /* ⚠️ [7.813.0 — S2 v2: IL PORTATORE LO DICE LA SIMULAZIONE. Rosso __CPM_NO813]
+             Censimento padrone-825: accordo simulazione↔renderer sul padrone 37-43%; il renderer eleggeva da se'
+             (`_por526` cambiava solo a fine arco, 7.526) e ignorava `carrierRef` — la traccia 820 ha mostrato
+             l'eroe che si prende il pallone dell'occasione altrui. Ora, in fase ambientale, i tre stati li
+             detta la simulazione: `carrierRef.i` non nullo → il pallone sta ai piedi di QUEL corpo (portata);
+             `carrierRef` nullo con un arco in volo → l'arco (in volo); nullo senza arco → nessun padrone, la
+             palla insegue il logico (vagante). Il renderer legge, non elegge. Misura: padrone-825, accordo
+             → >= 90%, salti > 8u in calo. */
+          /* ⚠️ [7.813 v1 — REVOCATA con la coppia: accordo simulazione↔renderer 34/33% (rosso) → 36/36% (verde),
+             salti 38/49 → 32/47. Impostare `_por526` dal carrier NON basta: la colla del portatore (7.523) scatta solo
+             se il pallone reso e' gia' entro 3,2u da quel corpo — e il pallone reso NON ci sta, che e' il difetto. Il
+             renderer deve PORTARE il pallone ai piedi del portatore logico, non solo sapere chi e'. Resta a richiesta
+             (__CPM_SI813); il taglio vero e' S1+S2 nel blocco del pallone. */
+          if((typeof window!=='undefined'&&window.__CPM_SI813)&&P.matchPhase==='playing'&&P.carrierRef){try{
+            const _cr=P.carrierRef.current;
+            if(_cr&&_cr.i!=null){const _pp=sr.current.players&&sr.current.players[_cr.i];const _src=(P.allPlayers||[])[_cr.i];
+              if(_pp&&_pp.mesh&&_pp.mesh!==hero)sr.current._por526={mesh:_pp.mesh,lato:(_src&&_src.team)||'home'};}
+            else if(!ballArcActive){sr.current._por526=null;}
+          }catch(_e813){}}
           {const _pr6=sr.current._por526;
            if(_pr6&&_pr6.mesh&&_pr6.mesh!==hero&&!ballArcActive&&P.matchPhase==='playing'&&!(typeof window!=='undefined'&&window.__CPM_NO526)){
              const _pm6=_pr6.mesh;const _db6=Math.hypot(ball.position.x-_pm6.position.x,ball.position.z-_pm6.position.z);

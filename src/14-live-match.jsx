@@ -1581,7 +1581,8 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   const holdArrRef=useRef(0);/* [7.642.0 v4] la sosta d'arrivo: tick in cui il bersaglio resta sui piedi dell'eletto */
   const pendingBtRef=useRef(null);/* [7.643.0] la proposta di bersaglio in coda: parte quando la consegna corrente si completa */
   const ballLagRef=useRef(false);/* [7.642.0 v5 — IL BERSAGLIO ASPETTA LA PALLA] misurato in v4: la palla e' entro 2,5u di un uomo solo 3 tick su 36 — le marce delle macchine avanzano il bersaglio anche con la palla lontana e il viaggio non si completa mai. Con la palla a >6u dal bersaglio, le quattro marce (gol-in-costruzione, contropiede, catena, trama) NON avanzano quel tick: prima si arriva, poi si riparte. */
-  const carrierRef=useRef(null);/* [7.641.0 — F1a: IL PORTATORE E' UNO STATO, NON UNA DEDUZIONE] Decisione B:
+  const carrierRef=useRef(null);
+  const lastGoalChiRef814=useRef(null);/* [7.814.0 — H del playtest n°4] chi ha fatto l'ultima battuta del piano del gol: e' lui il marcatore, non un nome a caso dalla rosa *//* [7.641.0 — F1a: IL PORTATORE E' UNO STATO, NON UNA DEDUZIONE] Decisione B:
      il portatore persistente {i} (indice in matchPlayers) scritto SOLO agli EVENTI — passaggio della
      trama (ricevente), aggancio riga->uomo, passo di catena — e azzerato quando il possesso cambia per
      evento o il gioco si ferma. In questa release e' PASSIVO (anagrafe + testimone __CPM_CARRIER641):
@@ -1738,6 +1739,8 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   const scegli681=useCallback((idx,auto)=>{
     const P=intxPendRef681.current; if(!P||!P.sc||!P.sc[idx]){if(typeof window!=='undefined'){try{window.__CPM_SC681_NOPEND=(window.__CPM_SC681_NOPEND||0)+1;}catch(_e){}}return;}/* [7.721 strumentazione] scelte arrivate SENZA scheda in sospeso */
     intxPendRef681.current=null;setScFreeze681(false);
+    /* [7.816.0] la scheda si chiude: escono le battute di piano accodate, in ordine (al massimo tre: un'occasione intera) */
+    try{const _q=codaPiano816Ref.current;if(_q&&_q.length){const _out=_q.splice(0,3);_q.length=0;_out.forEach(r=>{try{addComRef681.current&&addComRef681.current(r.text,r.color,r.t);}catch(_e){}});}}catch(_e816){}
     const opt=P.sc[idx],N=narrRef669.current||{};
     try{const c=opt.cons||{};
       if(c.marcatura)N.marcatura=Math.max(0,(N.marcatura|0)+c.marcatura);
@@ -1799,7 +1802,8 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     _affermaPallone811(_x,_y,1400);
   },[_affermaPallone811]);
 
-  const addCom=useCallback((text,color,t,sc)=>{lastComWallRef.current=Date.now();
+  const codaPiano816Ref=useRef([]);/* [7.816.0] le battute di piano rifiutate dalla scheda aperta, in attesa della chiusura */
+  const addCom=useCallback((text,color,t,sc,opts)=>{lastComWallRef.current=Date.now();
     /* ⚠️ [7.686.0 collaudo PO: «le interazioni in cronaca devono freezare piu' a lungo, a volte non ho
        il tempo nemmeno di leggere»] LA RIGA NUOVA ASPETTA, LA DOMANDA NO.
        Nel 7.681 avevo scritto il contrario: se arrivava una riga mentre la scelta era aperta, chiudevo
@@ -1809,7 +1813,13 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
        via la scelta. Adesso e' la riga a farsi da parte: finche' c'e' una domanda aperta, la cronaca
        non scrive. La scelta si chiude quando il giocatore decide o quando scade il suo tempo — che
        sono gli unici due modi in cui deve chiudersi. */
-    if(!sc&&intxPendRef681.current){if(typeof window!=='undefined'){try{window.__CPM_SC681_REF=(window.__CPM_SC681_REF||0)+1;}catch(_e){}}return;}/* [7.721 strumentazione] righe RIFIUTATE perche' c'e' una scelta aperta */
+    if(!sc&&intxPendRef681.current){if(typeof window!=='undefined'){try{window.__CPM_SC681_REF=(window.__CPM_SC681_REF||0)+1;}catch(_e){}}
+      /* ⚠️ [7.816.0 — S4 v2: LA RIGA DI PIANO NON SI PERDE, SI ACCODA. Rosso __CPM_NO816]
+         Con la battuta che esce subito (7.812 v3) la scheda aperta la rifiuta in modo sincrono: misurato 6/24 e 5/20
+         battute rifiutate (25%), occasioni complete 5/8 e 4/7. La scheda va protetta (7.686), ma l'azione non deve
+         sparire: la battuta si mette in coda e esce, in ordine, quando la scheda si chiude (r.1741). */
+      if(opts&&opts.piano&&!(typeof window!=='undefined'&&window.__CPM_NO816)){try{codaPiano816Ref.current.push({text,color,t});if(typeof window!=='undefined'&&window.__CPM_REC){try{window.__CPM_CODA816=(window.__CPM_CODA816||0)+1;}catch(_e){}}}catch(_e816){}}
+      return;}/* [7.721 strumentazione] righe RIFIUTATE perche' c'e' una scelta aperta */
     if(sc&&typeof window!=='undefined'){try{window.__CPM_SC681_IN=(window.__CPM_SC681_IN||0)+1;}catch(_e){}}/* [7.721 strumentazione] righe con scelta ENTRATE nel banner */
     if(typeof window!=='undefined'&&window.__CPM_REC){try{(window.__CPM_CRO802=window.__CPM_CRO802||[]).push({t:(t??clockRef.current)|0,txt:String(text||""),sc:sc?1:0});}catch(_e802){}}/* [strumento PLAYTEST] ogni riga che ENTRA nel banner, con il suo minuto: e' l'unica cosa che il player legge davvero. Il registro `chronicle` non porta il testo (solo le righe-fatto lo fanno), quindi ritmo, ripetitivita' ed enfasi della telecronaca non erano misurabili — e cio' che non si misura, nel red team, diventa opinione. Sola lettura sotto __CPM_REC: non tocca stato ne' render. */if(sc)setScFreeze681(true);/* [7.682.0] la partita si ferma qui, e riparte quando la scelta e' presa */setComs(p=>[{text,color,t:t??clockRef.current,sc:sc||null,sci:null},...p].slice(0,16));},[]);
   addComRef681.current=addCom;scegli681Ref.current=scegli681;
@@ -3861,7 +3871,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
               if(_a&&_a.p649&&_a.tick===(_pg532.ticks|0)-1){_a.tick=_pg532.ticks|0;_a.mn=nx;_a.passaggi=_pg532.step|0;}
               else _P.azioni.push({p649:1,tick:_pg532.ticks|0,mn:nx,mn0:nx,passaggi:0,max:0,perc:0,lx:0,ly:0,da:"piano"});}catch(_e649){}}
             const _arr693=(()=>{try{if(typeof window!=='undefined'&&window.__CPM_NO693)return true;const _lt=_pg532.lastTg;if(!_lt)return true;if(((_pg532.att693|0))>=1)return true;const _b=ballPosRef.current||{x:50,y:50};if(Math.hypot((_b.x||50)-_lt.x,(_b.y||50)-_lt.y)<=8)return true;_pg532.att693=(_pg532.att693|0)+1;return false;}catch(_e){return true;}})();/* [7.693.0 v2] l'attesa vale UN tick solo: alla prima stesura consumava tutto il tetto piano+4 e il gol scivolava fuori dai quattro minuti in cui il guardiano cerca la riga di macchina (gol-con-manovra 3/4 -> 1/4). E a due tick il testimone della custodia — che esclude la costruzione per progetto — scendeva a 5 campioni su 8, sotto il minimo del guardiano: una banda che non puo' giudicare e' peggio di una banda rossa. *//* [7.693.0 — LA RETE ASPETTA IL PALLONE] Col piano finalmente padrone del bersaglio, l'ultimo passo manda la palla al limite dell'area: ma il lerp ne copre il 65% per tick e la rete arrivava il tick dopo, con il pallone ancora a meta' strada. Il tetto piano+4 resta l'ultima parola, quindi l'attesa e' limitata per costruzione. */
-            if(!_rip575&&(((_pg532.step|0)>=_pg532.piano.length&&_arr693)||_pg532.ticks>=_pg532.piano.length+4)){if(_pg532.ev)_simEv77=_pg532.ev;if(_pg532.ev){try{if((typeof window!=='undefined'&&window.__CPM_REC)){const _L=(window.__CPM_GOL785=window.__CPM_GOL785||{});_L['costruzione_conclusa_col_gol']=(_L['costruzione_conclusa_col_gol']|0)+1;}}catch(_e785){}}else{try{if((typeof window!=='undefined'&&window.__CPM_REC)){const _L=(window.__CPM_GOL785=window.__CPM_GOL785||{});_L['costruzione_conclusa_senza_gol']=(_L['costruzione_conclusa_senza_gol']|0)+1;}}catch(_e785){}}
+            if(!_rip575&&(((_pg532.step|0)>=_pg532.piano.length&&_arr693)||_pg532.ticks>=_pg532.piano.length+4)){if(_pg532.ev){_simEv77=_pg532.ev;if(_pg532.lastChi814!=null&&!(typeof window!=='undefined'&&window.__CPM_NO814))lastGoalChiRef814.current={i:_pg532.lastChi814,dir:_pg532.dir|0};}if(_pg532.ev){try{if((typeof window!=='undefined'&&window.__CPM_REC)){const _L=(window.__CPM_GOL785=window.__CPM_GOL785||{});_L['costruzione_conclusa_col_gol']=(_L['costruzione_conclusa_col_gol']|0)+1;}}catch(_e785){}}else{try{if((typeof window!=='undefined'&&window.__CPM_REC)){const _L=(window.__CPM_GOL785=window.__CPM_GOL785||{});_L['costruzione_conclusa_senza_gol']=(_L['costruzione_conclusa_senza_gol']|0)+1;}}catch(_e785){}}
               /* ⚠️ [7.702.0 — DOPO LA PARATA C'E' UNA PALLA MORTA, NON UN FLIPPER. Rosso __CPM_NO702B]
                  Collaudo PO: «ping pong di 4-5 volte tra il portiere scoordinato e un avversario, davvero
                  poco realistico». Avevo costruito la parata (7.695) ma non il DOPO-parata: l'occasione si
@@ -3877,6 +3887,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                 const _ox702=_es702==="corner"?(_atk702?98:2):(_atk702?94:6);
                 const _oy702=_es702==="corner"?((Math.abs(hashStr("occ702|"+nx))%2)?96:4):50;
                 outRef.current={kind:_es702,nostra:_no702,x:_ox702,y:_oy702,step:0,ttl:4};
+                if(typeof window!=='undefined'&&window.__CPM_REC){try{const _J=(window.__CPM_J814=window.__CPM_J814||{armati:0,righe:0,corner:0});_J.armati++;if(_es702==='corner')_J.corner++;}catch(_e){}}/* [censimento J] l'esito dell'occasione arma la palla morta: quante volte, e quante righe di corner ne escono (vedi r.«Calcio d'angolo per») */
                 if(!(typeof window!=='undefined'&&window.__CPM_NO616))setTurn616(_no702?1:-1,"interruzione-"+_es702);
                 fermoRef.current={x:_ox702,y:_oy702,t:4,kind:_es702};
               }catch(_e702){}}
@@ -4270,7 +4281,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
             const _N=_o.nostra?"{H}":"{A}";
             if(_o.step===1){
               ev=_o.kind==="throw"?{txt:"⏸️ Palla sul fondo della fascia: rimessa laterale per "+_N+".",ef:null,w:1,bpos:{x:_o.x,y:_o.y},pd:_dec499}
-               :_o.kind==="corner"?{txt:"🚩 Calcio d'angolo per "+_N+": palla sulla bandierina.",ef:null,w:1,bpos:{x:_o.x,y:_o.y},ms:{corners:1},pd:_dec499}
+               :_o.kind==="corner"?(function(){if(typeof window!=='undefined'&&window.__CPM_REC){try{const _J=(window.__CPM_J814=window.__CPM_J814||{armati:0,righe:0,corner:0});_J.righe++;}catch(_e){}}return {txt:"🚩 Calcio d'angolo per "+_N+": palla sulla bandierina.",ef:null,w:1,bpos:{x:_o.x,y:_o.y},ms:{corners:1},pd:_dec499};})()
                :_o.kind==="goal_kick"?{txt:"🧤 Pallone sul fondo: rinvio dal fondo per "+_N+".",ef:null,w:1,bpos:{x:_o.x,y:_o.y},pd:_dec499}
                :_o.pen629?(_o.nostra?{txt:"📢 RIGORE! Fallo in piena area su di noi: l'arbitro indica il dischetto.",ef:null,w:1,bpos:{x:94,y:50},ms:{fouls:1},sp:"pen_for",pd:_dec499}
                                     :{txt:"😨 Rigore per {A}: fallo in area nostra, il fischio non lascia dubbi.",ef:null,w:1,bpos:{x:6,y:50},ms:{fouls:1},sp:"pen_against",pd:_dec499})
@@ -4426,6 +4437,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                 px:_q792?+(_q792.x||0).toFixed(1):null,py:_q792?+(_q792.y||0).toFixed(1):null,tx:+_tx792.toFixed(1),ty:+_ty792.toFixed(1),
                 d:_q792?+Math.hypot((_q792.x||0)-_tx792,(_q792.y||0)-_ty792).toFixed(1):null,gk:_pe649.gk?1:0,
                 tiro:_pe649.ms?1:0,tiroDa:(_pe649.tiroDa792!=null?+(_pe649.tiroDa792).toFixed(1):null)});}catch(_e792){}}
+            if(_pe649.chi!=null)_pgH649.lastChi814=_pe649.chi;/* [7.814.0] l'ultimo protagonista nominato dal piano */
             if(_pe649.chi!=null&&!(typeof window!=='undefined'&&window.__CPM_NO641))carrierRef.current={i:_pe649.chi};/* il protagonista dell'evento e' il portatore */
             if(!(typeof window!=='undefined'&&window.__CPM_NO693)){pianoLock693.current=3;_pgH649.lastTg={x:clamp(_pe649.x,4,96),y:clamp(_pe649.y,6,94)};/* [7.693.0] dove il racconto ha mandato il pallone l'ultima volta: la rete aspetta che ci ARRIVI *//* [7.693.0] tre tick di custodia: questo, piu' i due in cui il pallone viaggia */
               /* [7.693.0] IL RICEVENTE VA DOVE VA LA PALLA. Spostare solo il pallone lo lascerebbe senza
@@ -4828,7 +4840,18 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
           /* [7.486.0] LA TELECRONACA SI PRESENTA, una volta, come in televisione. */
           if(!tcPresRef.current){tcPresRef.current=true;const _tc=telecronistiRef.current;
             if(_tc)addCom("🎙️ "+_tc.em+": la telecronaca di "+_tc.v+", con "+_tc.t+" al commento tecnico.","#a5b4fc",nx);}
-          let _evName170=null;/* [7.170.0] il marcatore scelto dall'handler firma anche il token {H}/{A} del testo → badge, MOMENTI CHIAVE e cronaca raccontano lo STESSO nome */
+          let _evName170=null;
+          /* ⚠️ [7.814.0 — IL MARCATORE E' CHI HA FATTO L'ULTIMA BATTUTA. Rosso __CPM_NO814]
+             Playtest n°4: 56' «Incornata di Pellegrini (GRA) a botta sicura!» → 57' «Colombo (GRA) segna!». Per i
+             gol NOSTRI `_evName170` restava nullo e il nome del rigo usciva da `_pickN` (rosa a sorteggio): il piano
+             nominava uno e il tabellone ne accreditava un altro. Ora, se il gol arriva da un piano, firma chi ha
+             fatto l'ultima battuta. Testimone __CPM_NOME814{gol,firmati}. */
+          if(ev.ef==="team_goal"&&lastGoalChiRef814.current&&lastGoalChiRef814.current.dir>0&&!(typeof window!=='undefined'&&window.__CPM_NO814)){try{
+            const _q814=(matchPlayersRef.current||[])[lastGoalChiRef814.current.i];const _n814=_q814&&_surnBG(_q814.name||"");
+            if(_n814){_evName170=_n814;if(typeof window!=='undefined'&&window.__CPM_REC){try{const _W=(window.__CPM_NOME814=window.__CPM_NOME814||{gol:0,firmati:0});_W.firmati++;}catch(_e){}}}
+          }catch(_e814){}}
+          if((ev.ef==="team_goal"||ev.ef==="opp_goal")&&typeof window!=='undefined'&&window.__CPM_REC){try{const _W=(window.__CPM_NOME814=window.__CPM_NOME814||{gol:0,firmati:0,loro:0});if(ev.ef==="team_goal"){_W.gol++;_W.conPiano=(_W.conPiano|0)+(lastGoalChiRef814.current?1:0);}else _W.loro++;}catch(_e){}}
+          if(ev.ef==="team_goal"||ev.ef==="opp_goal")lastGoalChiRef814.current=null;/* [7.170.0] il marcatore scelto dall'handler firma anche il token {H}/{A} del testo → badge, MOMENTI CHIAVE e cronaca raccontano lo STESSO nome */
           /* [7.785 registro] CHI HA MANGIATO IL GOL. Fra la scelta della riga e l'accredito ci sono
              venti rami che riscrivono `ev`: alcuni lo sostituiscono di sana pianta (calcio d'inizio,
              interruzioni, piazzati, contropiede, ponte), altri lo tengono e gli azzerano l'effetto
@@ -5316,7 +5339,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
           if(typeof window!=='undefined'&&window.__CPM_REC&&ev&&ev._beatTxt812){try{const _E=(window.__CPM_EMIT812=window.__CPM_EMIT812||{piano:0,cambiata:0,es:[]});_E.piano++;if(String(evTxt)!==String(ev._beatTxt812)){_E.cambiata++;if(_E.es.length<6)_E.es.push({min:nx,era:String(ev._beatTxt812).slice(0,60),ora:String(evTxt).slice(0,60)});}}catch(_e){}}/* [diagnostica 812] all'emissione: la battuta di piano ha ancora il suo testo? */
           if(_arcType&&ATE3_TYPEMS[_arcType]&&!(ev&&ev._piano649&&!(typeof window!=='undefined'&&window.__CPM_NO812))){chantTimersRef.current.push(setTimeout(()=>addCom(evTxt,cColor,nx,_sc681),Math.round(ATE3_TYPEMS[_arcType]/2)));}/* [7.812 v3] la battuta di piano NON passa dal timer dell'arco: 240-340 ms dopo, una scheda aperta la rifiutava e nessun contatore lo vedeva (il testimone REF_PIANO sta sul ramo sincrono). Esce subito, come il gol. */
           else {if(ev._piano649&&intxPendRef681.current&&!_sc681&&typeof window!=='undefined'&&window.__CPM_REC){try{window.__CPM_REF_PIANO=(window.__CPM_REF_PIANO||0)+1;}catch(_e){}}/* [censimento 823 · playtest n°3 C] una riga di PIANO (apertura/tiro/parata dell'occasione, o della costruzione del gol) che addCom sta per rifiutare perche' c'e' una scheda aperta: e' cosi' che nel diario l'occasione compare come una parata senza il tiro? Sola lettura, per riga. */
-          addCom(evTxt,cColor,nx,_sc681);}
+          addCom(evTxt,cColor,nx,_sc681,(ev&&ev._piano649)?{piano:1}:undefined);}
           /* [7.681.0] il contesto della scheda serve anche DOPO, per scrivere l'esito della scelta:
              lo si mette da parte insieme all'id, cosi' il ramo che applica la scelta non deve
              ricostruirlo (e non puo' divergere da quello con cui la frase e' stata scritta). */
@@ -7915,7 +7938,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                 ballX={ballPos.x} ballY={ballPos.y} ballLock811={ballLock811} half={clock>=45?2:1}/* [7.561.0 richiesta PO «opterei anche per il cambio campo tra il primo ed il secondo tempo come nella realta'»] La simulazione NON scambia le porte — toccarla vorrebbe dire rimettere mano al segno di ogni gol, e non si fa per un'inquadratura. Cambia la CAMERA: nella ripresa la regia larga di cronaca ruota di 180 gradi attorno all'asse verticale, cosi' chi attaccava verso destra ora attacca verso sinistra e le tribune si scambiano di posto — che e' esattamente cio' che si vede in TV dopo il cambio campo. */ fermo={fermoRef}/* [7.559.0] LA SCENA DEVE SAPERE CHE IL GIOCO E' FERMO. Il primo giro del guardiano ha misurato 0 fermi su 9 interruzioni armate: bloccare il BERSAGLIO logico non basta, perche' nel 3D la palla ha altri padroni — il portatore la tiene ai piedi e cammina, e la palla cammina con lui. Il fermo viaggia come ref (stesso schema di `deliver`/`meshDef`: il renderer lo legge ogni fotogramma senza un re-render per tick). */ hlSitKey={phase==="playing"||phase==="matchday"?-1:(hlIdx+(_forceSeqRef.current||0)*10000)}/* [7.212.0] +progressivo: rigiocare la stessa situation riarma lo snap di scena */ stageStamp={stageStamp}/* [7.456.0 codice 007] il commit in cui atterra lo staging fresco — vedi il ri-taglio nel render-loop */ meshDef={meshDefRef} deliver={deliverRef} hlType={_hlType} hlSetPiece={_hlSetPiece} hlBall={_hlBall} hlWood={_hlWood} hlVariant={_hlVariant} hlPattern={_hlPattern} hlThrough={_hlThrough} hlOneTwo={_hlOneTwo} hlChain={!!(situations[hlIdx]&&situations[hlIdx]._chainDepth)}/* [7.234.0 #51] il 3D sa se la scena è un SECONDO TEMPO (catena) */ hlOutcomeKind={_hlOutcomeKind} hlQuality={_hlQuality} hlGkOut={_hlGkOut} adaptShift={_adaptShift} adaptHotY={_adaptHotY} adaptStr={_adaptStr} bgAction={bgAction} hlZone={hlZone}
                 timeOfDay={timeOfDay} weather={weather} kickoffHour={kickoffHour} attendance={attendance} crowd={crowdCtx}
                 waveEvent={waveEvent} isDerby={!!drby} isBigGame={mw>=7}
-                hlSuccess={outcome?.ok??null} hlReward={chosenAct?.rew||null} hlActLbl={chosenAct?.label||null} support={(function(){const _s=situations[hlIdx];const _t=_s&&(_s.tactic||_s.ctx);return (_t&&_t.support)||0;})()}/* [7.775.0] i compagni di supporto DICHIARATI dalla situation arrivano al costruttore della scena: senza questo filo `o.support` era undefined e il ramo del terzo uomo non poteva accendersi (misurato: 0 differenze fra acceso e rosso) */ salienteOn={_sal689} gkSave={gkSave695} pgRef={pendingGoalRef}/* [7.807.0] il piano vivo (occasione o gol in costruzione): ref stabile, il renderer lo legge a ogni fotogramma senza re-render *//* [7.695.0] il segnale della parata: ref stabile, letto dal renderer a ogni fotogramma *//* [7.689.0] scena saliente extra-eroe in corso: il renderer riaccende i corpi e va in tribuna est */ hlDef={_isDefHL} hlDefTraj={outcome?.defTraj||null} hlDefGesto={chosenAct?.defGesto||null} hlOffBall={!!situations[hlIdx]?.offBall} stagedSpot={_stagedSpotRef} cineBusy={cineBusyRef}/* [7.405.0 codice 001] il punto-palla staggiato: il renderer tiene la MESH del battitore sul punto (vedi la colla nel blocco giocatori) */                isDesktop={!isNarrow} ceremony={ceremony} shootout={phase==="shootout"?{kick:soFx}:null} onWalkoutDone={()=>{if(benchStart)setOnBench(true);
+                hlSuccess={outcome?.ok??null} hlReward={chosenAct?.rew||null} hlActLbl={chosenAct?.label||null} support={(function(){const _s=situations[hlIdx];const _t=_s&&(_s.tactic||_s.ctx);return (_t&&_t.support)||0;})()}/* [7.775.0] i compagni di supporto DICHIARATI dalla situation arrivano al costruttore della scena: senza questo filo `o.support` era undefined e il ramo del terzo uomo non poteva accendersi (misurato: 0 differenze fra acceso e rosso) */ salienteOn={_sal689} gkSave={gkSave695} pgRef={pendingGoalRef} carrierRef={carrierRef}/* [7.813.0] il portatore della simulazione al renderer, come ref *//* [7.807.0] il piano vivo (occasione o gol in costruzione): ref stabile, il renderer lo legge a ogni fotogramma senza re-render *//* [7.695.0] il segnale della parata: ref stabile, letto dal renderer a ogni fotogramma *//* [7.689.0] scena saliente extra-eroe in corso: il renderer riaccende i corpi e va in tribuna est */ hlDef={_isDefHL} hlDefTraj={outcome?.defTraj||null} hlDefGesto={chosenAct?.defGesto||null} hlOffBall={!!situations[hlIdx]?.offBall} stagedSpot={_stagedSpotRef} cineBusy={cineBusyRef}/* [7.405.0 codice 001] il punto-palla staggiato: il renderer tiene la MESH del battitore sul punto (vedi la colla nel blocco giocatori) */                isDesktop={!isNarrow} ceremony={ceremony} shootout={phase==="shootout"?{kick:soFx}:null} onWalkoutDone={()=>{if(benchStart)setOnBench(true);
                   // [6.88.0 collaudo PO «maggiore pathos durante la cronaca»] il calcio d'inizio dei BIG MATCH
                   //   apre con una riga d'atmosfera dedicata (finale > big match), scelta deterministica.
                   if(mw>=7||_isNeutralFinal){const _bmPool=_isNeutralFinal
