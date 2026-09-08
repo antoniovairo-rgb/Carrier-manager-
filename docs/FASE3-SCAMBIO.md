@@ -2807,3 +2807,16 @@ Si ripete da sola; rossa due volte = si indaga prima di committare.
 ### 7.811 — tabella verde con la frase corretta: **0/42** (rosso 16/60)
 
 `tabella-830`, 20 stati: nessuna frase d'enfasi contraddice più il tabellone. CI ripetuta in corsa.
+
+### 7.811 committata sul branch · `main` resta 7.807
+
+CI ripetuta da sola: fingerprint 00001505 · 0 failure · gol-del-simulatore 8/8/0. Il rosso di 811b
+era stocastico (stesso codice a meno del refactor in funzione pura).
+
+## 7.812 — S4 v1: la battuta del piano non si sostituisce (sul branch)
+
+Patch applicata (`__CPM_NO812`, testimone `__CPM_SALVA812`): la sequenza della libreria
+(r.4730 e r.4786) e la scheda d'interazione (r.4575) non coprono più una riga di piano nello
+stesso tick — aspettano il tick dopo, come la libreria già faceva sul gol dal 7.785. Misura
+`rifiuti-827`: occasioni con tutte e tre le righe nel diario, rosso atteso ~0/6, verde atteso 6/6.
+In coda con i rituali.
