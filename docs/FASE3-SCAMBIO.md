@@ -3220,3 +3220,13 @@ regola (b) della 7.833 troncava l'azione della libreria anche per contropiede, p
 d'inizio; ma quelli nascono solo da righe sorteggiate, che la regola (a) già tace durante la recita
 — il troncamento serviva solo per un piano aperto e per la scena dell'eroe. **v2**: si tronca solo
 per quelli. Misura: il guardiano da solo (`partita-vera`), poi i rituali interi prima del commit.
+
+### 7.833 v2 + 7.834 + 7.835 sul branch (0c956f9)
+
+Guardiano da solo con la v2: `manovra-viva` **17** righe (catena 1 + libreria 16), banda 10.
+Rituali interi: career PASS, **CI exit 0**. Il build sotto rituali conteneva anche la **7.835**
+(il gol LORO firmato dal protagonista dell'ultima battuta del loro piano; rosso `__CPM_NO835`),
+entrata nel sorgente prima della ricostruzione: committata con la sua misura in coda (playtest
+n° 11, «chi conclude è chi segna» sui gol subiti). Nota di metodo: lo script di commit che toglie
+un'eccedenza dal sorgente si è fermato sul primo controllo (l'HTML CONTENEVA l'eccedenza) e non
+ha committato nulla: verificato con `git log` prima di rimettere e committare a mano.
