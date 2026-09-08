@@ -2877,3 +2877,11 @@ Ogni battuta di piano arriva all'uscita col proprio testo, e il diario le ha tut
 Il punto C del rapporto n°3 («parata senza tiro») ha un rimedio misurato. Rituali: career PASS,
 CI in corsa; commit sul branch al verde. (Il container si è riavviato alle ~06:1x: catena
 persa e rilanciata alle 06:20, nessun dato perso oltre la corsa.)
+
+### 7.812 committata sul branch (`41f9f54`) · playtest n° 4 in corsa
+
+Rituali sul build v3: career PASS · CI 00001505 · 0 failure · gol-del-simulatore 7/7/0. `main`
+resta alla 7.807. Subito dopo, sul build del branch, il **playtest n° 4** come vuole il metro:
+quattro partite intere, due in casa e due in trasferta (`passata-player` con `CPM_AWAY`), lette
+come le legge il giocatore. Intanto nel sorgente (non ricostruito) entra la **7.813** — S2 v2: il
+renderer legge `carrierRef` (patch pronta da ieri), misura `padrone-825`.
