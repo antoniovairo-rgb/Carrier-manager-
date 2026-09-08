@@ -2685,3 +2685,20 @@ dell'eroe, che vale solo negli highlight. Una causa improbabile — ma la 7.805 
 peso invisibile può mangiare un gol, e la banda gira su due partite di un banco stocastico. Si
 ripete la CI **da sola** a cascata finita; se è rossa due volte, la modifica si toglie e si
 rimisura. Finché la CI non è verde, il treno 7.809/7.810 **non si committa**.
+
+### 7.810 — **REVOCATA**: la misura non la vede, su otto partite
+
+`padrone-825` «eroe eletto dentro un piano», verde contro rosso `NO810`:
+
+| semi | verde | rosso |
+|---|---|---|
+| Pa / Pb | 0/387 · 0/275 | 0/323 · 0/278 |
+| Da / Dc (quelli della traccia 820) | 0/332 · 0/379 | 0/283 · 0/258 |
+
+Zero uguale zero anche sui semi in cui la traccia aveva visto la colla per tutta un'occasione:
+il banco è stocastico e il fenomeno non torna a comando. Una regola che nessun numero distingue
+non si spedisce — e sul build v2 la CI era rossa (1 gol mangiato). La 7.810 resta a richiesta
+(`__CPM_SI810`); il rimedio vero è la riscrittura S1+S2 (tre stati letti dalla simulazione).
+Anche l'«alone solo in ambientale» torna indietro: nasceva da una regressione che non esisteva.
+Il treno si riduce alla **7.809** (sigla nelle righe del piano, 42/42 vs 0/33) più gli strumenti;
+build, taglia v3 e rituali in coda dopo il censimento delle righe perse.
