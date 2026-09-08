@@ -3060,3 +3060,34 @@ tick): la terza è la prima con un testimone che vede la riga dopo la nascita.
 - **7.824 (T)** — nella libreria i segnaposto si assegnano per riga nell'ordine dei ruoli ({H},
   {H2}, {H3}); il terzo uomo è risolto in tutti e due i percorsi (tick e righe programmate). Rosso
   `__CPM_NO824`. Misura `ruoli-834` [T]: righe con lo stesso cognome due volte.
+
+### 7.822 v1 REVOCATA — la libreria muore di fame (aperture 3/2/2/… → 0/1/0/0)
+
+`regia-833`, 4 partite: col rosso la libreria apre 3/2/2 azioni a partita, **3 su 7 sul tick di un
+gol** e **3 su 7 con la palla avversaria** (le bugie W e U, misurate). Col verde v1 (turno nostro +
+tre minuti dal gol) apre **0/1/0/0**: la banda dichiarata (non sotto 2) è rotta, come la 7.785 v1.
+Le finestre libere del vecchio cancello cadono quasi tutte col turno avversario o sul tick del gol.
+**v2** (build 7.824): resta solo la condizione del gol — mai sul tick del gol, mai nei tre minuti
+dopo. Censimento aggiunto al cancello (`__CPM_LIBGATE785.ok822/b822p/b822g/b822t`) per contare
+quante finestre cadono per turno, per gol vicino, per tick del gol. `__CPM_SI822T` riaccende il
+turno per la misura. La U resta aperta nella parte «raccontare la manovra loro dal lato loro».
+
+### Decima lezione sugli strumenti — J era zero per costruzione
+
+`rifiuti-827` leggeva il diario **dopo** `ctx.close()`: l'`evaluate` falliva, il `catch` restituiva
+`[]`, e «corner battuto entro 8'» era **0 qualunque cosa facesse il gioco**. I tre zeri della 7.818
+(0/9, 0/4, 0/6) erano lo stesso zero della sonda. Le ipotesi v1 (ttl a righe) e v2 (budget a tick)
+restano smentite dai testimoni; la v3 (timer dell'arco, coda della scheda) e la v4 (i tre scrittori
+di `ev` — contropiede, catena, ponte — non sostituiscono la riga della palla morta; J3 dice che la
+riga nasceva e alla libreria non c'era più) sono nel build 7.824 e si misurano ora con la sonda
+corretta, rosso e verde. Il diario del playtest n° 5 (lettore separato, letto prima della chiusura)
+resta la prova che sul build aea0d01 il corner non usciva.
+
+### 7.823/7.824 — la prima misura è cieca sui diari corti
+
+`ruoli-834` senza tempo reale produce diari da 17-45 righe: rinvii dal fondo 0-1, «con le mani» 0.
+La misura vera è sul playtest n° 6 (diari da 40-90 righe) con `analisi-diario.py`; baseline n° 5
+dal testo: rinvio dal fondo battuto da un uomo di movimento **6/6**, portiere in contropiede 1/1,
+«con le mani» detto di un'ala 1/1, cognome doppio in una riga 2, gol dell'eroe con la riga del gol
+**0/5**, «Squadra in vantaggio!» col margine già > 1 **3/4**. Trovato e corretto prima del n° 6:
+{GKH} leggeva le maglie in campo e scriveva «FONTANA (GRA)» — ora legge la rosa.
