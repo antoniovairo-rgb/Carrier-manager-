@@ -3002,7 +3002,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
             //   tempo 32 → clock all'indietro sullo skip). Ora è davvero il PROSSIMO highlight.
             var addT=ck+2;
             setSituations(function(prev){var c=[...prev];c.splice(hlIdx,0,extras[0]);return c;});
-            setHlTimes(function(prev){var v=[...prev];v.splice(hlIdx,0,addT);hlTimesRef.current=v;return v;});
+            setHlTimes(function(prev){var v=[...prev];v.splice(hlIdx,0,addT);hlTimesRef.current=v;return v;});try{cpmEv("scena",{min:addT,src:"reattiva"});}catch(_e){}
             setNumHL(function(prev){var v=prev+1;numHLRef.current=v;return v;});
             addCom("⚡ Risposta immediata — il momento è tuo!",TH.primary,ck);
           }
@@ -3017,7 +3017,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           if(eextra.length>0){
             var etime=63+Math.floor(_rndTick(ck,0x60a1)*5);/* [7.494.0 F0] seedato: il MINUTO di un highlight e' un evento (stessa regola del 7.489 su hlTimes) *//* [6.76.0 LMV-L1] inserimento ordinato (vedi HL reattivi) */
             setSituations(function(prev){var c=[...prev];c.splice(hlIdx,0,eextra[0]);return c;});
-            setHlTimes(function(prev){var v=[...prev];v.splice(hlIdx,0,etime);hlTimesRef.current=v;return v;});
+            setHlTimes(function(prev){var v=[...prev];v.splice(hlIdx,0,etime);hlTimesRef.current=v;return v;});try{cpmEv("scena",{min:etime,src:"sotto-63"});}catch(_e){}
             setNumHL(function(prev){var v=prev+1;numHLRef.current=v;return v;});
             addCom("⚠️ Sotto di uno — è il momento di svegliarsi!","#f59e0b",ck);
           }
@@ -3032,7 +3032,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           if(dextra.length>0){
             var dtime=76+Math.floor(_rndTick(ck,0x72a1)*5);/* [7.494.0 F0] seedato, come sopra *//* [6.76.0 LMV-L1] inserimento ordinato (vedi HL reattivi) */
             setSituations(function(prev){var c=[...prev];c.splice(hlIdx,0,dextra[0]);return c;});
-            setHlTimes(function(prev){var v=[...prev];v.splice(hlIdx,0,dtime);hlTimesRef.current=v;return v;});
+            setHlTimes(function(prev){var v=[...prev];v.splice(hlIdx,0,dtime);hlTimesRef.current=v;return v;});try{cpmEv("scena",{min:dtime,src:"sotto-76"});}catch(_e){}
             setNumHL(function(prev){var v=prev+1;numHLRef.current=v;return v;});
             addCom("🆘 Situazione disperata — serve un miracolo!","#ef4444",ck);
           }
@@ -3141,7 +3141,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
               const _fresh79=selectContextualSituations([...SITUATIONS],1,player,_lzSeed,{scoreCtx:_realCtx,clock:nx,momentum:momentumRef.current,possession:possessionRef.current,opponentId:opponent?.id||opponent?.n||null,weatherFx:(weather&&weather.pitchFx)||null,oppRed:oppRedRef.current,ballX:((ballTargetRef.current||ballPosRef.current||{}).x),/* [7.204.0] continuità territoriale: la prossima azione nasce vicino a dove il gioco si è fermato */exclude:_used79});
               if(_fresh79.length>0)setSituations(prev=>{const c=[...prev];c[hlIdx]=_fresh79[0];return c;});
             }
-            setBgAction(null);setPhase("hl_intro");// COERENZA: spegni la cronaca BG (testo+arco) entrando nell'highlight
+            setBgAction(null);try{cpmEv("scena",{min:nx|0,src:"calendario-tick"});}catch(_e){}setPhase("hl_intro");// COERENZA: spegni la cronaca BG (testo+arco) entrando nell'highlight
           }
           return nx;
         }
@@ -7279,7 +7279,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
     cpmEmit("HighlightAdvance",{from:hlIdx,chained:!!pendingChainSitRef.current});// LMQP-1
     const nx=hlIdx+1;
     // Sprint 77 — Situation Chaining: inject chain before advancing
-    if(pendingChainSitRef.current){
+    if(pendingChainSitRef.current){try{cpmEv("scena",{min:clockRef.current|0,src:"secondo-tempo"});}catch(_e){}
       const chain=pendingChainSitRef.current;
       pendingChainSitRef.current=null;
       setSituations(prev=>{const c=[...prev];c.splice(nx,0,chain);return c;});
@@ -7296,7 +7296,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
          maschera il ri-staging senza rompere il ritmo della catena — il float «CATENA!» resta. */
       if(!(typeof window!=='undefined'&&window.__CPM_NO620))setCutFx({key:Date.now(),dur:300});
       setFloatGoal({text:"⚡ CATENA!",col:"#f59e0b",key:Date.now()});
-      setPhase("hl_intro");
+      try{cpmEv("scena",{min:clockRef.current|0,src:"catena"});}catch(_e){}setPhase("hl_intro");
       return;
     }
     /* [7.500.0 F4 — LA PARTITA FINISCE AL 90', NON QUANDO FINISCONO GLI HIGHLIGHT — direttiva PO «90 veri»]
@@ -7346,7 +7346,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                cut copre anche la ripresa d'attacco, come in una regia vera. */
         setCutFx({key:Date.now(),dur:380});
         setFloatGoal({text:"⚡ SI CONTINUA!",col:"#f59e0b",key:Date.now()});
-        setPhase("hl_intro");
+        try{cpmEv("scena",{min:clockRef.current|0,src:"si-continua"});}catch(_e){}setPhase("hl_intro");
       }else{
         // MONTAGGIO (transizioni): l'azione si è EVOLUTA → scegli un punto di ripresa COERENTE con l'esito e SNAPpa palla+formazione lì,
         //   con uno STACCO (cut) → la cronaca riprende come una regia TV. Elimina il "boomerang" (la palla che scivola indietro verso l'eroe).
@@ -7457,7 +7457,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
         if(phase==="hl_move")setPhase("hl_choose");
         else if(phase==="hl_result"){if(Date.now()-(resultShownRef.current||0)>800)_kbContinue.current();}// [6.76.0 LMV-L6] guardia anti-skip (come il tap)
         // [5.75.0 BUG-9] lo skip da playing saltava DIRETTO a hl_move senza il routing/reset di startHL → DPad e mosse dell'HL precedente. Ora entra da hl_intro come il flusso naturale (che azzera anche la cronaca BG).
-        else if(phase==="playing"&&hlIdx<hlTimes.length){setClock(c=>Math.max(c,hlTimes[hlIdx]));setBgAction(null);setPhase("hl_intro");}// [6.76.0 LMV-L3] il clock non torna MAI indietro (un HL dinamico con tempo già passato non regredisce il minuto)
+        else if(phase==="playing"&&hlIdx<hlTimes.length){setClock(c=>Math.max(c,hlTimes[hlIdx]));setBgAction(null);try{cpmEv("scena",{min:Math.max(clockRef.current|0,hlTimes[hlIdx]|0),src:"calendario"});}catch(_e){}setPhase("hl_intro");}// [6.76.0 LMV-L3] il clock non torna MAI indietro (un HL dinamico con tempo già passato non regredisce il minuto)
       }
     };
     const onU=e=>keysRef.current.delete(e.key);
