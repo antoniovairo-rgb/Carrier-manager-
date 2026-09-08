@@ -298,3 +298,55 @@ il cognome dell'eroe dai PNG; (b) i doppioni **fra le due squadre** (Colombo GRA
 e POL) sono realistici nel calcio ma diventano una bugia quando le righe del piano **non portano
 la squadra** — quindi il rimedio è B, e A si riduce a una riga nel generatore. Il voto non cambia:
 B da sola vale la confusione del 16'-20'.
+
+---
+
+# Rapporto n° 4 — playtest sul build del branch (7.812, 08/09 mattina)
+
+Quattro passate, ma **due partite distinte** (Vairo e Moretti) giocate due volte: `CPM_SEME` e
+`CPM_AWAY` della sonda **non cambiano la partita** (il seme di partita nasce da nome+avversario+
+stagione+settimana; il provino in trasferta non è entrato). Difetto della sonda, da correggere
+prima del n° 5. Righe **40-62** (n° 3: 68-91), minuti vuoti **49-58 su 89**: bisezione banco/gioco
+in coda (la passata girava col tempo reale del banco acceso).
+
+| | Vairo casa | Moretti casa | Vairo «fuori» | Moretti «fuori» |
+|---|---|---|---|---|
+| righe / minuti vuoti | 40 / 58 | 62 / 49 | 41 / 56 | 53 / 51 |
+| scene dell'eroe | 17', 28' | 17', 26' | 17', 28' | 17', 26' |
+| gol · finale | 28' · 1-0 | 57' · 1-0 | 28' · 1-0 | 58' · 1-0 |
+
+## Bugie nuove trovate leggendo
+
+| | la riga | perché non ci credo |
+|---|---|---|
+| H | 56' *«Incornata di Pellegrini (GRA) a botta sicura!»* → 57' *«Colombo (GRA) segna!»* | chi colpisce di testa non è chi segna: il piano nomina uno, il microsim accredita un altro |
+| I | 62' *«Luca verticalizza per Santoro: la difesa si allunga!»* **due volte** allo stesso minuto | riga doppia |
+| J | 11', 67', 82' *«…la devia in angolo: che parata!»* e poi **nessun corner** | l'esito annunciato non ha seguito |
+| K | 88' *«Riflesso felino del portiere di Pellegrini (GRA)»* | il portiere prende il nome di un giocatore di movimento (F del n° 3, ancora lì) |
+| L | tre occasioni avversarie **identiche** in una partita («prova a sorprendere il portiere da lontanissimo» ×2, «Fontana ci arriva in tuffo» ×3) | il piano ha una sola forma |
+
+Quello che le release hanno **davvero** cambiato, e si legge: occasioni intere (9'→11', 65'→67',
+80'→82') con la squadra scritta; costruzione del gol intera (53'→57'); «Momento da soffrire» solo
+mentre attaccano loro; «gestione del vantaggio» al 65'; nessuna riga d'enfasi contro il tabellone.
+
+## Scorecard n° 4
+
+| # | Area | n°3 | **n°4** | Il fatto |
+|---|------|:---:|:---:|---|
+| 1 | Realismo della partita | 5 | **5** | gestione del vantaggio ✔; avanti 1-0 la squadra non attacca più dal 28' |
+| 2 | Credibilità da attaccante | 6 | **6** | 2 scene a 17' e 26'-28' in tutte e quattro, poi un'ora senza l'eroe |
+| 3 | Causalità | 4 | **5** | occasioni e gol interi ✔; H (chi colpisce ≠ chi segna) |
+| 4 | Varietà | 5 | **4** | L; «rinvio dal fondo» ×3 |
+| 5 | Ritmo | 4 | **3** *(provv.)* | 49-58 minuti vuoti; bisezione banco/gioco in coda |
+| 6 | Azioni extra-eroe | 4 | **5** | intere e firmate ✔; identiche, da fuori, corner mai battuto (J) |
+| 7 | Highlight dell'eroe | 6 | **5** | due per partita, tutte prima del 30' |
+| 8 | Telecronaca | 4 | **5** | enfasi coerente ✔; K, I |
+| 9 | Interazioni | 7 | **7** | mister, coppia, il difensore dopo il gol |
+| 10 | Coerenza fra i sistemi | 4 | **5** | sigla ✔; H |
+| 11 | Immersione | 5 | **5** | |
+| 12 | Sensazione di carriera | 6 | **6** | |
+
+**Media: 5,1** (n° 3: 5,0). Le bugie misurate sono sparite dal diario; il voto non sale perché
+le cause che pesano — l'ora muta, l'eroe che sparisce dopo il 30', la squadra che a 1-0 smette,
+l'occasione con una forma sola — sono S1/S2, S3 v2 e S5, non ancora toccate. Il metro (≥ 8,0) è
+lontano tre punti, come ieri.
