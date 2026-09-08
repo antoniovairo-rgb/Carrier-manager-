@@ -585,3 +585,46 @@ tiro, intervallo che ferma le macchine, occasione con la costruzione, il marcato
 il ritmo in casa (S1/S2/S5 ancora aperte: la squadra a 1-0 smette), il calendario fisso delle scene
 dell'eroe (R), la libreria che parla solo dal nostro lato (U), il corner in ritardo (v6 nel build
 successivo).
+
+---
+
+# Rapporto n° 9 — build 7.831.1 (08/09 sera tardi)
+
+| | Vairo casa | Moretti casa | Galli fuori | Conti fuori |
+|---|---|---|---|---|
+| righe / minuti vuoti | 48 / 53 | 55 / 50 | 72 / 44 | 63 / 43 |
+| scene dell'eroe | 18', 26' | 10', 54' | 12', 30', 61', 77' | 10', 18', 65' |
+| finale | 0-0 | 2-0 | 2-1 | 4-1 |
+
+Misurato sul testo: corner 57'→**58'** (1/1, era +7'); chi conclude è chi segna **4/4**; rinvio dal
+fondo 1/6 sbagliato (Toti nel diario di Moretti: il rinvio LORO, «Toti (POL)» è il loro portiere —
+falso positivo dell'analisi, che conosce solo il nostro); cognomi doppi 0; margine 0/1.
+
+## Bugie nuove (viste bene per la prima volta)
+
+| | la riga | perché non ci credo |
+|---|---|---|
+| **AD** | Galli 11' *«Pecoraro serve Colombo al limite»* → 12' *«Murato dalla difesa»* (scena dell'eroe) → 13' *«Colombo prova da lontanissimo»* · Conti 17' *«Scotti si gira sul limite e lascia partire il destro!»* → 18' *«Palla d'oro! Il compagno non riesce a concludere… Conti segna! 2-0»* | **la scena dell'eroe si apre sopra un'occasione in corso** e la spezza: il tiro di Scotti non ha esito, la parata non c'è, il gol dell'eroe arriva nello stesso minuto |
+| **AE** | Galli 37'-44': *«Fontana rifiuta il rilancio… Lombardi si abbassa…»* (libreria) + *«Ripartiamo in verticale… Tre tocchi e via… due contro due»* (contropiede) + *«Sovrapposizione di Lombardi… Parabola sul secondo palo… Il marcatore la respinge»* (libreria) · Moretti 13'-15' e Galli 82'-85': righe di libreria alternate a *fallo*, *rimessa laterale*, *giro palla* | **le righe programmate della libreria (una ogni 1,3 s) non si fermano** per falli, rimesse, contropiedi o scene: tre narratori nello stesso minuto |
+| K | *«il portiere di De Santis (POL) devia in tuffo!»* | il template del contropiede (r.4479) non era passato a {GKA} |
+| AA | *«Galli segna su assist di Fontana!»* | il compagno dell'assist (7.825, dall'undici) può essere il portiere |
+
+## Scorecard n° 9
+
+| # | Area | n°8 | **n°9** |
+|---|------|:---:|:---:|
+| 1 Realismo | 5 | **5** |
+| 2 Credibilità da attaccante | 5 | **5** |
+| 3 Causalità | 6 | **6** |
+| 4 Varietà | 5 | **5** |
+| 5 Ritmo | 4 | **4** |
+| 6 Azioni extra-eroe | 6 | **6** |
+| 7 Highlight dell'eroe | 5 | **5** |
+| 8 Telecronaca | 6 | **6** |
+| 9 Interazioni | 7 | **7** |
+| 10 Coerenza fra i sistemi | 6 | **5** (AD, AE) |
+| 11 Immersione | 6 | **6** |
+| 12 Carriera | 6 | **6** |
+
+**Media: 5,5** (n° 8: 5,6). AD e AE sono S2 sul racconto — un solo padrone: rimedi 7.833 con
+misura sul testo (occasioni spezzate da una scena, azioni di libreria con righe estranee in mezzo).
