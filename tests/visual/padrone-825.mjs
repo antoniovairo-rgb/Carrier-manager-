@@ -6,7 +6,7 @@
    Banco a tempo reale. Sola lettura. */
 import { startServer, launchBrowser, installCdnRoutes, openMatch, sleep } from './lib/harness.mjs';
 const NOMI=(process.env.CPM_NOMI||'Pa,Pb').split(',');
-const SEMI=NOMI.map((_,g)=>9150+g*331);
+const SEMI=process.env.CPM_SEMI?process.env.CPM_SEMI.split(',').map(Number):NOMI.map((_,g)=>9150+g*331);/* CPM_SEMI: i semi della traccia 820 (Da=8150, Dc=9384) dove la colla dell'eroe si e' vista */
 const srv=await startServer();const port=srv.address().port;
 const b=await launchBrowser();
 for(let g=0;g<NOMI.length;g++){
@@ -20,8 +20,8 @@ for(let g=0;g<NOMI.length;g++){
   for(let k=0;k<4000;k++){await sleep(70);
     const s=await page.evaluate(()=>{const ms=window.__CPM_MS&&window.__CPM_MS();const w=window.__CPM_WS&&window.__CPM_WS();const v=window.__CPM_VIS665&&window.__CPM_VIS665();
       const carr=ms&&ms.carrier;const ci=(carr&&typeof carr==='object')?(carr.i!=null?carr.i:null):(typeof carr==='number'?carr:null);
-      const mp=(window.__CPM_MP&&window.__CPM_MP())||null;
-      return {t:Date.now(),min:ms?(ms.min|0):0,w:w,fase:v&&v.fase,sal:v&&v.saliente,ci:ci,eroeLog:!!(ms&&ms.eroe&&(ms.eroe.palla||ms.eroe.possesso||ms.eroe.conPalla))};});
+      const h=window.__CPM_HOLD&&window.__CPM_HOLD();
+      return {t:Date.now(),min:ms?(ms.min|0):0,w:w,fase:v&&v.fase,sal:v&&v.saliente,ci:ci,eroeLog:false,piano:!!(h&&h.pg&&h.pgLen)};});
     if(!s||!s.w)continue;clock=s.min;
     if(s.fase!=='playing'){prev=null;if(clock>=89)break;continue;}
     c.n++;
@@ -29,6 +29,7 @@ for(let g=0;g<NOMI.length;g++){
     const k2=padLog+'→'+padRes;c.tab[k2]=(c.tab[k2]||0)+1;
     if(padLog===padRes)c.accordo++;
     if(padRes==='eroe')c.eroeRes++;if(s.eroeLog)c.eroeLog++;
+    if(s.piano){c.pianoN=(c.pianoN||0)+1;if(padRes==='eroe')c.pianoEroe=(c.pianoEroe||0)+1;}
     if(s.w.lx!=null){c.scarto.push(Math.hypot(s.w.rx-s.w.lx,s.w.ry-s.w.ly));}
     if(prev){const dd=Math.hypot(s.w.rx-prev.rx,s.w.ry-prev.ry);const dt=s.t-prev.t;if(dt<=110&&dd>8)c.salti++;}
     prev={rx:s.w.rx,ry:s.w.ry,t:s.t};
@@ -38,6 +39,7 @@ for(let g=0;g<NOMI.length;g++){
   const q=(a,p)=>{if(!a.length)return 0;const s2=a.slice().sort((u,v)=>u-v);return +s2[Math.min(s2.length-1,Math.floor(p*(s2.length-1)))].toFixed(1);};
   console.log('\n=== '+NOMI[g]+' (fps ~'+fps+') — '+c.n+' campioni in fase ambientale ===');
   console.log('  padrone: simulazione e renderer d\'accordo '+Math.round(100*c.accordo/Math.max(1,c.n))+'%   · renderer elegge l\'EROE '+Math.round(100*c.eroeRes/Math.max(1,c.n))+'% dei campioni (simulazione: '+Math.round(100*c.eroeLog/Math.max(1,c.n))+'%)');
+  console.log('  DENTRO UN PIANO (occasione o gol in costruzione): '+(c.pianoN||0)+' campioni, eroe eletto '+(c.pianoEroe||0)+' ('+Math.round(100*(c.pianoEroe||0)/Math.max(1,c.pianoN||0))+'%)   ← la misura della 7.810');
   console.log('  incroci (logico→reso): '+Object.entries(c.tab).sort((a,b2)=>b2[1]-a[1]).map(([k,v])=>k+' '+Math.round(100*v/c.n)+'%').join(' · '));
   console.log('  scarto reso↔logico: mediana '+q(c.scarto,0.5)+'u  p90 '+q(c.scarto,0.9)+'u  max '+q(c.scarto,1)+'u   · salti >8u fra campioni ≤110 ms: '+c.salti);
   if(P)console.log('  __CPM_PADRONE (tutta la partita): fotogrammi '+P.n+'  fuori >2u '+Math.round(100*P.fuori/Math.max(1,P.n))+'%  scarto medio '+(P.somma/Math.max(1,P.n)).toFixed(1)+'u  max '+P.max.toFixed(1)+'u  · chi: '+Object.entries(P.chi||{}).sort((a,b2)=>b2[1]-a[1]).slice(0,5).map(([k,v])=>k+':'+v).join(' '));

@@ -2643,3 +2643,16 @@ scena → pallone dentro il corpo → **0 px** nello screenshot con `onScreen` v
 i numeri: 7.807 (senza) 6,3 px; 7.808 v3 (alone in hl) 2,3 px; 7.810 (colla logica in hl) 0 px.
 Rimedio v2: la regola logica vale solo in `playing`; negli highlight resta quella sulle mesh.
 Misura: `taglia-824` v2 (corrente per primo, diagnostica per campione) ≥ 6 px, dopo la catena.
+
+### 7.810 — la misura appaiata è **cieca** sui semi Pa/Pb
+
+`padrone-825`, due partite (semi 9150/9481), «eroe eletto dentro un piano»: verde **0/387 e 0/275**,
+rosso `NO810` **0/323 e 0/278**. Zero uguale zero: su questi semi la colla dell'eroe dentro un
+piano non si presenta mai, e la misura non può distinguere. Il fenomeno era stato visto nella
+traccia 820 sul seme 8150 (Da 53'-55', 100% della finestra). Non si spedisce una cosa che la
+misura non vede: la coppia si rifà **sui semi della traccia** (Da 8150, Dc 9384), in coda dopo la
+taglia v2 e i rituali. Sul resto la 7.810 non muove nulla (accordo 40-43% vs 31-39%, salti 34-50
+vs 38-43: banda di rumore, come atteso da una regola che vale solo vicino all'eroe).
+
+Rituali sul build 7.810 (prima della colla limitata a `playing`): career PASS · CI 00001505 ·
+0 failure · gol-del-simulatore 8/8/0. Si rifanno sul build v2.
