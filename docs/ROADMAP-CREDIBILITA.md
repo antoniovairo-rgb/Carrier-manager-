@@ -64,7 +64,15 @@ insieme; la 7.810 è il primo taglio (la colla dell'eroe sui dati logici).
    (src/14, la decadenza a 12u del 7.642 va ripensata); (b) il renderer lo legge e basta
    (7.810 è il primo taglio: la colla dell'eroe sui dati logici). Misura: padrone eletto = carrier logico ≥ 95% dei fotogrammi in fase
    ambientale; «eroe» eletto durante un piano altrui = 0.
-3. **S3 — la squadra sa il punteggio.** Un *atteggiamento* per lato (assalto / equilibrio /
+3. **S3 — la squadra sa il punteggio.** **Censito (08/09)**: le righe d'enfasi escono da
+   `momentumRef` e basta — `src/14` r.5170: `momentum ≥ 80 && rnd < 0.12` → «Stiamo dominando /
+   La squadra è in fiamme / Momento magico»; `≤ 20` → «Reggiamo / Sotto pressione / Teniamo
+   duro». Né punteggio né minuto: da qui «Stiamo dominando — teniamo alta l'intensità!» all'84'
+   sotto 1-2. Il momentum stesso muove di ±25 sui gol e ±4 sui tiri (r.5173-5176). S3 v1: la
+   riga d'enfasi si sceglie da una tabella **stato × momentum** (sotto/pari/sopra × inizio/mezzo/
+   finale), con frasi che dicono la cosa vera («sotto di uno e spingiamo: serve il gol», «avanti
+   e in controllo», «pari, la partita è lì»). S3 v2: lo stesso stato governa la spinta del
+   microsim e la frequenza delle occasioni. Un *atteggiamento* per lato (assalto / equilibrio /
    gestione / attesa) derivato da punteggio, minuto, superiorità: governa la spinta del microsim,
    la frequenza delle occasioni, e **seleziona** il vocabolario d'enfasi (niente riga fuori stato).
    Misura: righe d'enfasi incoerenti con lo stato = 0 su 4 partite (oggi 33% delle righe
