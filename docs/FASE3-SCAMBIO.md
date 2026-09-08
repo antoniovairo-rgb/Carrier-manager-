@@ -3000,3 +3000,30 @@ recita, tipo, kickoff, piano pendente, piazzato, `ef`, ttl) in coda dopo il play
 **H (7.814) misurata dove si può**: Moretti, un gol nostro dal rigo ambientale con piano →
 **firmato dal protagonista dell'ultima battuta 1/1**, in entrambi i regimi (la 7.814 è già nel
 build). Il meccanismo è provato; il campione è di uno.
+
+## 7.819 — il racconto è della partita, non del minuto (bugia M del playtest n° 5)
+
+Otto diari su otto (n° 4 + n° 5) avevano la **stessa prima occasione al 9'**: «X serve Y al limite
+della trequarti» → «prova a sorprendere il portiere da lontanissimo» → «ci arriva in tuffo e la
+devia in angolo». Causa letta nel codice: **dodici sorteggi del racconto** erano seminati con
+`hashStr("…|"+nx+"|…")`, cioè dal minuto e basta — piano dell'occasione (r.3416), piano del gol
+(r.3375), racconto della palla morta (r.4287), catena (r.3706), righe rx/lx/sx (r.3559-3680), dado
+dell'eroe (r.3627), cv (r.4559), int/int2 (r.5072), catena hl (r.7212). Il seme di partita
+(`bgSimSeedRef`) entra in tutti e dodici tramite `_sm819()`. Rosso `__CPM_NO819`.
+
+**Misura appaiata `copione-831`** (4 partite, 4 nomi, 2 casa 2 fuori, stesso banco):
+
+| | rosso NO819 | **7.819** |
+|---|:---:|:---:|
+| righe identiche allo stesso minuto in ≥ 2 partite | 9 | **4** |
+| righe con la stessa struttura allo stesso minuto | 12 | **5** |
+| minuto della prima occasione extra-eroe | 9, 9, 9, 9 | **53, 38, 9, 14** |
+| minuti distinti | 1/4 | **4/4** |
+
+Il minuto è cambiato senza toccare il cancello: la catena e le righe seminate dalla partita
+spostano dove sta la palla nei primi minuti, e il cancello (che apre dal 7') trova il primo tick
+libero in un posto diverso. **Residuo fisso, a verbale**: 1' «La manovra si accende: X guadagna
+metri fra le linee» (4/4, apertura del calcio d'inizio, r.4508), 6' «fallo, punizione per X» (3/4),
+65' «Cambio in campo: si passa alla gestione del vantaggio» (2/4: la consegna del mister a minuto
+fisso, r.2936 — in Galli cade fra il cross e l'incornata avversaria). Sono tre sorgenti a orario,
+non a stato: prossimo giro.
