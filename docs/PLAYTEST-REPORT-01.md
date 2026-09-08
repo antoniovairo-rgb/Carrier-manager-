@@ -674,3 +674,23 @@ di X» 0 · assist dal portiere 0 · «dominando» sullo 0-0 muto → «Comandia
 
 **Media: 5,7** (n° 9: 5,5; n° 5: 4,6). Il metro (8,0) è a 2,3 punti. Prossimi, in ordine: Q-loro,
 il ritmo in casa (la squadra a 0-0 non tira: S3 v2 / S5), AC, E, P.
+
+---
+
+# Rapporto n° 11 — build 0c956f9 (7.833 v2, 7.834, 7.835) — 08/09 notte
+
+| | Vairo casa | Moretti casa | Galli fuori | Conti fuori |
+|---|---|---|---|---|
+| righe / minuti vuoti | 44 / 53 | 59 / 47 | 65 / 41 | 65 / 44 |
+| scene dell'eroe | 18', 30', 61' (tutte fallite) | 22', 31' | 30', 60', 69', 78' | 10', 33', 81' |
+| finale | 0-1 | 3-0 | 2-1 | 4-1 |
+
+Misurato sul testo: **Q-loro 2/2** («Incornata di Spada» → «Spada buca», «Conclusione secca di
+Luca» → «Luca buca»; n° 10: 0/1) · [AD] tiri di battuta senza esito **0** · [AE] azioni di
+libreria intrecciate **0** (con la v2 del troncamento) · chi conclude è chi segna 4/4 · corner
+al minuto dopo · «Comandiamo il gioco senza pungere» sul 3-0 muto di Conti (53').
+
+Vairo: 0-1 in casa con tre scene dell'eroe fallite (intercept, gol subito, «nothing») e nessun
+tiro nostro in 89 minuti — il ritmo in casa è il difetto che resta, e non è di racconto.
+
+**Media: 5,7** (uguale al n° 10; Q-loro chiusa, nessuna area cambia di un punto intero).
