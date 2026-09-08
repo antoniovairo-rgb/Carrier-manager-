@@ -2702,3 +2702,24 @@ non si spedisce — e sul build v2 la CI era rossa (1 gol mangiato). La 7.810 re
 Anche l'«alone solo in ambientale» torna indietro: nasceva da una regressione che non esisteva.
 Il treno si riduce alla **7.809** (sigla nelle righe del piano, 42/42 vs 0/33) più gli strumenti;
 build, taglia v3 e rituali in coda dopo il censimento delle righe perse.
+
+### Censimento S4 (`rifiuti-827`, tre partite) — **le righe non si perdono per la scheda aperta**
+
+| | |
+|---|---|
+| righe rifiutate da `addCom` per scheda aperta | **3 su 217** proposte (1%) |
+| di cui righe di PIANO | **0 su 18** battute |
+| occasioni con tutte e tre le righe nel diario (`__CPM_CRO802`) | **0 su 6** |
+
+L'ipotesi «la scheda aperta mangia il tiro dell'occasione» è **falsa**: nessuna battuta viene
+rifiutata. Eppure nessuna occasione arriva intera nel diario. Quindi le battute prendono un'altra
+strada rispetto ad `addCom` — candidata: la **sottopancia** della scena saliente (7.695, `_sot695`:
+«la cronaca in sottopancia, accesa solo dentro la scena saliente»), che il diario non registra
+ma il giocatore vede in 3D. Da verificare leggendo il canale; se è così, il difetto C del rapporto
+n°3 è in parte del **diario**, e in parte del gioco (la parata che invece compare nel feed).
+
+Letto subito dopo: la sottopancia (7.695) è solo uno **stile** dello stesso `coms[0]` — le righe
+passano comunque da `addCom`, quindi il diario dovrebbe vederle. Il «0/6 complete» resta
+inspiegato: o il testo cambia fra il piano e `addCom`, o il confronto della sonda sbaglia.
+Diagnostica `dump-828` (battute e righe del diario nei minuti attorno, da leggere a occhio) in
+coda dopo il treno 7.809. Finché non è letta, il punto C del rapporto n°3 **non ha una causa**.
