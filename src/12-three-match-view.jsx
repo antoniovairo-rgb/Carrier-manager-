@@ -2201,8 +2201,24 @@ function ThreeMatchView(props){
       else if(sr.current._adv773&&!ballArcActive)sr.current._adv773=null;
       if(!hlPostArcType&&!(isResult&&!ballArcActive)){const _useTgt=(ballArcActive&&ballArcIsBG)||_struckArc;
        if(_useTgt&&ballArcT<=0){_arcSrcX=ball.position.x;_arcSrcZ=ball.position.z;if((_CPM_TEST||_SIT_TEST))sr.current._arcSrc382={x:+ball.position.x.toFixed(1),z:+ball.position.z.toFixed(1)};/* [7.382.0] il punto di PARTENZA dell'arco sopravvive alla fine del volo (test-only): `_arcSrcX` viene azzerato all'arrivo, e il dispatch — che si scrive proprio li' — non poteva piu' dire da dove il pallone fosse partito. Senza questo, «il lancio in profondita' e' orizzontale» si misura dall'eroe-MESH, che al momento del lancio puo' essere gia' altrove, e si finisce per giudicare la direzione sbagliata. */}// [6.74.0 3D-6] cattura la partenza al lancio dell'arco (durante il wind-up 3D-8 resta agganciata al piede)
-       const _btX=_tackleCarrier?_tackleCarrier.position.x:(_useTgt?ballArcTgtX:G2X(P.ballX||50));
-       const _btZ=_tackleCarrier?_tackleCarrier.position.z:(_useTgt?ballArcTgtZ:G2Z(P.ballY||50));
+       /* ⚠️ [7.817.0 — S2 v2: IL PALLONE VA AI PIEDI DEL PORTATORE LOGICO. Rosso __CPM_NO817]
+          La 7.813 (impostare `_por526` dal carrier) e' stata revocata: la colla scatta solo se il pallone e' GIA' entro
+          3,2u dal corpo, e il pallone non ci sta. Qui si cambia il BERSAGLIO dell'inseguitore: quando la simulazione
+          dice chi porta la palla (carrierRef.i), non c'e' un arco in volo e siamo in fase ambientale, il punto da
+          raggiungere e' il corpo di QUEL giocatore (la mesh, che il giocatore vede), non il punto-palla logico che
+          la mesh insegue con ritardo. Cosi' la colla 7.523 trova il pallone vicino e lo tiene. Misura padrone-825:
+          «palla ai piedi del portatore logico (<=3u)». Fuori da questi tre casi non cambia nulla. */
+       let _car817=null;
+       /* ⚠️ [7.817 v1 — REVOCATA con la coppia: palla ai piedi del portatore logico 20%/14% (rosso) → 30%/11% (verde),
+          mediana 10,8/13,9u → 6,8/10,9u. Un effetto, ma un terzo del bersaglio (>= 90%): cambiare il bersaglio
+          dell'inseguitore non basta finche' l'inseguitore stesso e' uno dei quindici scrittori e vince solo quando
+          gli altri tacciono. Resta a richiesta (__CPM_SI817). Il taglio vero e' la riscrittura a tre stati del blocco
+          del pallone (S1+S2), non un'altra taratura. */
+       if((typeof window!=='undefined'&&window.__CPM_SI817)&&!_tackleCarrier&&!_useTgt&&P.matchPhase==='playing'&&P.carrierRef){try{
+         const _cr=P.carrierRef.current;if(_cr&&_cr.i!=null){const _pp=sr.current.players&&sr.current.players[_cr.i];if(_pp&&_pp.mesh&&_pp.mesh!==hero)_car817=_pp.mesh;}
+       }catch(_e817){}}
+       const _btX=_tackleCarrier?_tackleCarrier.position.x:(_useTgt?ballArcTgtX:(_car817?(_car817.position.x-0.9):G2X(P.ballX||50)));
+       const _btZ=_tackleCarrier?_tackleCarrier.position.z:(_useTgt?ballArcTgtZ:(_car817?_car817.position.z:G2Z(P.ballY||50)));
        if(_useTgt&&_arcSrcX!=null){// [6.74.0 3D-6] moto orizzontale UNIFORME su u (in fase con y=sin(u·π)): prima il lerp
          //   esponenziale copriva l'84% della distanza già all'apice e arrivava sul target al ~3% della velocità iniziale
          //   ("frenata a paracadute" su tiri/punizioni lunghe) lasciando pure un gap residuo di 0.3-0.8u a fine arco.

@@ -32,7 +32,7 @@ for(let k=0;k<2000;k++){
 const d=await page.evaluate(()=>({
   cro:window.__CPM_CRO802||[],
   esiti:((window.__CPM_EV&&window.__CPM_EV())||[]).filter(e=>e.ev==='esito'),
-  gol:((window.__CPM_EV&&window.__CPM_EV())||[]).filter(e=>e.ev==='goal')}));
+  gol:((window.__CPM_EV&&window.__CPM_EV())||[]).filter(e=>e.ev==='goal'),nome:window.__CPM_NOME814||null}));
 await ctx.close();await b.close();srv.close();
 const punt={};storia.forEach(s=>{punt[s.min]=s.h+'-'+s.a;});
 const scene={};(d.esiti||[]).forEach(e=>{(scene[e.min|0]=scene[e.min|0]||[]).push((e.key||'?')+(e.ok?' RIUSCITO':' fallito'));});
@@ -55,6 +55,7 @@ for(let m=1;m<=Math.max(min,89);m++){
 console.log('\n══ COSA HA VISSUTO IL PLAYER ══');
 console.log('  righe lette: '+righe+'  ·  minuti senza NIENTE: '+vuoti+'/'+min
   +'  ·  silenzio piu\' lungo: '+maxRun+"' (dal "+maxA+"' al "+maxB+"')");
+if(d.nome)console.log('  [H] gol nostri al rigo '+(d.nome.gol|0)+' · con piano '+(d.nome.conPiano|0)+' · firmati dall\'ultima battuta '+(d.nome.firmati|0)+' · dettaglio '+JSON.stringify(d.nome.det||[]));
 console.log('  scene dell\'eroe: '+Object.keys(scene).length+' ['+Object.keys(scene).join(',')+']');
 console.log('  gol: '+(d.gol||[]).length+' ['+Object.keys(golM).join(',')+']');
 console.log('  risultato finale: '+(punt[min]||'?'));
