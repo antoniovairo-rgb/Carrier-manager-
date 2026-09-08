@@ -80,7 +80,10 @@ più — portata = il corpo del carrier, in volo = l'arco, vagante = nessun padr
    la frequenza delle occasioni, e **seleziona** il vocabolario d'enfasi (niente riga fuori stato).
    Misura: righe d'enfasi incoerenti con lo stato = 0 su 4 partite (oggi 33% delle righe
    d'enfasi); il lato sotto negli ultimi 15' ha più occasioni del lato sopra in ≥ 3 partite su 4.
-4. **S4 — le righe non si perdono.** Le righe di piano si accodano dietro la scheda e escono in
+4. **S4 — le righe non si perdono.** **Censito (08/09)**: la scheda aperta non c'entra (0/18
+   battute rifiutate); la battuta del piano viene **sovrascritta dalla catena** (7.537) nello stesso
+   tick — bisezione coi testimoni p1/p2/p3: 6/3/3 e 12/5/5. 7.812 v2: la catena tace per il tick
+   della battuta; misura «occasioni con tutte e tre le righe nel diario» 0/6 → atteso 100%. Le righe di piano si accodano dietro la scheda e escono in
    ordine; il vuoto è deciso dal regista, non dal rifiuto. Misura: righe di piano rifiutate = 0;
    occasioni con tutte e tre le righe nel diario = 100% (oggi 1/4); minuti vuoti ≤ 25/89.
 5. **S5 — l'occasione è un'azione.** 5-7 battute dal centrocampo con viaggio vero del pallone,
