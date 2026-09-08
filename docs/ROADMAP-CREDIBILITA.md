@@ -51,7 +51,9 @@ Con questa tabella i quindici scrittori si riducono a tre rami, e le elezioni de
 insieme. La 7.810 (colla dell'eroe sui dati logici) è stata **revocata** (misura cieca); il
 taglio vero è la **7.813**: `carrierRef` passa al renderer come ref e `_por526` non si elegge
 più — portata = il corpo del carrier, in volo = l'arco, vagante = nessun padrone. Misura
-`padrone-825`: accordo 37-43% → ≥ 90%, salti > 8u in calo.
+`padrone-825`: **palla ai piedi del portatore logico (≤ 3u)** — baseline **15% / 7%** (08/09),
+bersaglio ≥ 90%; salti > 8u (50-56) in calo. La 7.813 v1 (impostare `_por526`) è stata revocata:
+la colla scatta solo se il pallone è già vicino; la 7.817 cambia il bersaglio dell'inseguitore.
 
 ## L'ordine e la misura di ciascuna
 

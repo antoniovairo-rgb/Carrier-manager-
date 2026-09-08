@@ -2931,3 +2931,19 @@ rifiutata si accoda e esce alla chiusura della scheda, in ordine, al massimo tre
 di H non è mai stato scritto in sei partite: o nessun gol nostro è passato dal rigo ambientale, o
 il sito non è raggiunto — contatore esteso ai gol loro per distinguere. Rituali 7.814 (career
 PASS) in corsa; il treno 7.816 (build con J2, H2, coda) in coda dopo la baseline S2.
+
+## Baseline S2 vera — «quando la simulazione dice chi porta la palla, il pallone sta ai suoi piedi?»
+
+`padrone-825` con l'accessore `car` (il corpo del portatore logico, letto dalla mesh), due partite:
+
+| | Pa | Pb |
+|---|---|---|
+| pallone reso entro 3u dal corpo del portatore logico | **87/596 (15%)** | **63/856 (7%)** |
+| distanza mediana · p90 | 10,8u · 42u | 11,8u · 36u |
+| salti > 8u | 50 | 56 |
+
+**Sette-quindici volte su cento.** Quando il gioco sa chi ha la palla, il pallone che il giocatore
+vede è a dieci-dodici unità da lui, e una volta su dieci a quaranta. È il numero di «la palla non ha
+un possessore» (codice 001, quattro note del PO) e di «azioni matematiche». Bersaglio: **≥ 90%**.
+Rimedio pronto (**7.817**, S2 v2): l'inseguitore punta il corpo del portatore logico invece del
+punto-palla, così la colla 7.523 lo trova e lo tiene. Si applica dopo il treno 7.816.
