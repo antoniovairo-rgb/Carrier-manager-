@@ -2973,3 +2973,15 @@ proposte.
 mai da lì, e la 7.814 non è misurabile su questi nomi. Si misura con i nomi del playtest (Moretti:
 57' `home/microsim`). **J**: 0/3 anche con finestra 8'. Le righe di corner che escono (3 su 7 palle
 morte) non sono quelle dell'occasione: la palla morta armata alla chiusura non produce la sua riga.
+
+## 7.818 — il corner annunciato si batte (J), in misura
+
+La palla morta armata alla chiusura dell'occasione (r.3874) ha `ttl:4` che scala **a ogni riga
+sorteggiata** (r.4347), e la riga del fischio (r.4278) chiede `!_recHij545`: nei cinque secondi in
+cui la scena saliente resta aperta dopo l'occasione (7.692) un'altra recita tiene la mano, quattro
+righe passano e il corner muore muto (testimone `__CPM_OUTDIE632.ttl`). Le tre righe di corner
+viste (su sette palle morte) non erano dell'occasione. **7.818**: la palla morta dell'occasione è
+il seguito che il testo ha promesso — ttl 8, e passa anche sopra una recita. Rosso `__CPM_NO818`.
+Misura `rifiuti-827` sui nomi del playtest (Moretti, Vairo — dove i gol nostri passano dal rigo
+ambientale, così si misura anche H): corner annunciato → battuto entro 8', rosso 0/9 finora, verde
+atteso ≥ 90%. In coda dopo i rituali della 7.817 (revocata).
