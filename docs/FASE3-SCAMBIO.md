@@ -2776,3 +2776,13 @@ fermò sul gol ma non sulle battute) e la **scheda d'interazione** (7.669, r.457
 sono tutte di libreria. Patch 7.812 pronta (`patch-S4.py`, rosso `__CPM_NO812`, testimone
 `__CPM_SALVA812`): la battuta passa, la sequenza aspetta un tick come sul gol. Si applica dopo il
 commit della 7.811; misura `rifiuti-827` «occasioni complete» 0/6 → 6/6.
+
+### 7.811 — la misura sul diario è **cieca** (1 riga in 4 partite), si misura la tabella
+
+`enfasi-829`: righe d'enfasi di r.5170 in quattro partite, rosso **1**, verde **1** (la porta
+seedata `<0,12` con momentum ≥ 80 / ≤ 20 scatta di rado). Zero uguale zero, come per la 7.810 —
+ma qui la cosa da misurare è una **tabella**, e una tabella si misura tutta: la selezione è ora
+una funzione pura (`_frasi811(sd, finale, alto)`, esposta come `__CPM_ENFASI811` sotto test) e
+`tabella-830` la interroga su 20 stati (sotto di 1-2 / pari / sopra di 1-2 × inizio/finale ×
+alto/basso) contando le frasi che contraddicono il tabellone. Rosso atteso > 0 (le terne
+originali dicono «teniamo alta l'intensità» anche sotto di due); verde atteso **0**. In coda.
