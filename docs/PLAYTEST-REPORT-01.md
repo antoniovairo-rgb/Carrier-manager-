@@ -501,3 +501,37 @@ perché Q, R e le scene a calendario fisso pesano su quattro aree. Il metro (8,0
    (8-17' e poi ogni ~step), non dalla partita; e due scene nello stesso minuto si contraddicono.
 4. **Z, AA, Y, AB**: intervallo che ferma le macchine; niente portieri fra i «compagni»; assist
    dall'undici (7.825, già nel sorgente); enfasi sui fatti.
+
+---
+
+# Rapporto n° 7 — build 7.825 (08/09, tardo pomeriggio) — misura di v3/v5/7.825, non un voto nuovo
+
+| | Vairo casa | Moretti casa | Galli fuori | Conti fuori |
+|---|---|---|---|---|
+| righe / minuti vuoti | 44 / 56 | 46 / 57 | 62 / 46 | 78 / 40 |
+| scene dell'eroe | 18', 26' | 22', 31' | 12', 20', 61', 77' | 10', 18' |
+| gol · finale | 18', 26' · 2-0 | 22', 57' · 2-0 | 57', 67', 77' · 2-1 | 18', 24', 53', 75' · 4-0 |
+
+- **Q, causa trovata col testimone**: la 7.814 calcolava il nome giusto in **5 gol su 5** («Pellegrini»,
+  «Pecoraro», «Ferrari», «Lombardi», «Bruno») e la riga ne stampava un altro in 4 su 5. Il
+  sovrascrittore è l'handler del 7.170 (badge/float del gol), che un rigo dopo pescava un marcatore a
+  sorteggio dalla rosa e lo assegnava anche al testo. **7.830** (sorgente): chi ha fatto l'ultima
+  battuta segna, ovunque; maiuscole dalla rosa.
+- **Y chiusa (7.825)**: «Lombardi segna su assist di Vairo», «Moretti segna su assist di Ferrari»:
+  tutti in campo (4/4).
+- **J, v5 senza effetto**: il corner arriva ancora **7 minuti** dopo la parata, in 8 casi su 8
+  (34'→41', 55'→62', 70'→78', 11'→18', 77'→84', 32'→40'…). Non è il ttl, non è il budget, non è la
+  riga persa, non è la chiusura del piano: per 6-7 tick la sezione delle righe non vede la palla morta.
+  Testimone di linea temporale `__CPM_J818T` (battuta / chiusura / armamento / riga) nel sorgente.
+- **7.822 v3 (porta differita)**: la libreria si è riaperta in 2 partite su 4, ma **intrecciata
+  all'occasione** (Galli 13'-17': «Stacco a due… Incornata schiacciata… Salvataggio sulla linea!» in
+  mezzo a «Ferrari scarica su Pecoraro… Conclusione secca… Presa sicura di Toti»; Conti 12'-17' lo
+  stesso). Due registi nello stesso minuto: il cancello dell'occasione non guardava la libreria in
+  recita. **7.829** (sorgente): l'occasione porta la sua costruzione (5 battute, un regista) e non si
+  arma sopra un'azione della libreria in corso.
+- Z (Conti 44'-46' a cavallo dell'intervallo) e AA («Fontana allarga le braccia») ancora lì: 7.826 e
+  7.828 sono nel sorgente, non in questo build.
+- Ritmo: 40-57 minuti vuoti, come il n° 6.
+
+**Voto n° 7: 5,3** (n° 6: 5,2): +Y, +Q diagnosticata ma non ancora corretta nel build, ritmo uguale.
+Il metro resta a 8,0.
