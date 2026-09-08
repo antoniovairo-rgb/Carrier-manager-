@@ -2723,3 +2723,14 @@ passano comunque da `addCom`, quindi il diario dovrebbe vederle. Il «0/6 comple
 inspiegato: o il testo cambia fra il piano e `addCom`, o il confronto della sonda sbaglia.
 Diagnostica `dump-828` (battute e righe del diario nei minuti attorno, da leggere a occhio) in
 coda dopo il treno 7.809. Finché non è letta, il punto C del rapporto n°3 **non ha una causa**.
+
+### #53 — taglia v3 (un browser per gamba): **6,3 px = 6,3 px**
+
+| gamba | build | raggio mediano |
+|---|---|---|
+| prima (browser proprio) | corrente (7.809) | **6,3 px** (6,1 · 6,0 · 6,3 · 6,7 · 8,6 · 4,6) |
+| seconda (browser proprio) | 7.807 | **6,3 px** (0 · 6,3 · 5,9 · 6,4 · 8,2 · 4,3) |
+
+Nessuna differenza fra i build. Il pallone negli highlight ha la stessa taglia dalla 7.805 a oggi.
+La nota del PO «il pallone adesso è troppo piccolo» resta **non riprodotta** con questo metro
+(stessa scena, stessa camera): se torna, servono partita, minuto e fase. Chiuso senza colpevoli.
