@@ -3341,7 +3341,8 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           const _hp=(k)=>Math.abs(hashStr("p649|"+nx+"|"+k));
           const _pk=(k)=>_mpA[_hp("u"+k)%_mpA.length];
           const _X=(x)=>_dirP>0?x:100-x;
-          const _cgN=(n)=>{const t=String(n||"").trim();return t?t.charAt(0)+t.slice(1).toLowerCase():"un compagno";};
+          const _sigN=(lato)=>{try{if(typeof window!=='undefined'&&window.__CPM_NO809)return "";const c=(lato==='home')?_homeClubObj:_awayClubObj;const ab=(c&&c.a)||(c&&c.id?String(c.id).slice(0,3).toUpperCase():"");return ab?" ("+ab+")":"";}catch(_e){return "";}};/* [7.809.0] vedi _sigO */
+          const _cgN=(n,lato)=>{const t=String(n||"").trim();return (t?t.charAt(0)+t.slice(1).toLowerCase():"un compagno")+_sigN(lato||_latoN);};
           const _fam=_hp("fam")%3;
           const _a=_pk(1);let _b=_pk(2);if(_b.i===_a.i)_b=_mpA[(_hp("u2")+1)%_mpA.length];
           let _c=_pk(3);if(_c.i===_a.i||_c.i===_b.i)_c=_mpA[(_hp("u3")+2)%_mpA.length];
@@ -3380,7 +3381,14 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           const _dirO=_latoN==='home'?1:-1;
           const _hpO=(k)=>Math.abs(hashStr("o695|"+nx+"|"+k));
           const _XO=(x)=>_dirO>0?x:100-x;
-          const _cgO=(n)=>{const t=String(n||"").trim();return t?t.charAt(0)+t.slice(1).toLowerCase():"un compagno";};
+          /* [7.809.0 — LE RIGHE DEL PIANO DICONO DI CHI SONO. Rosso __CPM_NO809] Playtest n°3 (B): 15' «l'avversario
+             avanza compatto» → 16'-19' «Colombo apre… Leone affonda… Incornata di Bianchi a botta sicura!» → 20' «Gol
+             avversario»: le battute non portavano la sigla, e con i cognomi condivisi fra le due rose (stesso pool
+             nazionale, generateTeamRoster) la costruzione AVVERSARIA si leggeva come un attacco NOSTRO che finiva
+             nel gol loro. Le altre righe della cronaca scrivono «Pellegrini (GRA)»: da qui lo fanno anche le battute
+             del piano — attaccante col lato del piano, portiere col lato opposto. */
+          const _sigO=(lato)=>{try{if(typeof window!=='undefined'&&window.__CPM_NO809)return "";const c=(lato==='home')?_homeClubObj:_awayClubObj;const ab=(c&&c.a)||(c&&c.id?String(c.id).slice(0,3).toUpperCase():"");return ab?" ("+ab+")":"";}catch(_e){return "";}};
+          const _cgO=(n,lato)=>{const t=String(n||"").trim();return (t?t.charAt(0)+t.slice(1).toLowerCase():"un compagno")+_sigO(lato||_latoN);};
           const _JO=(k,a)=>((_hpO("j"+k)%100)/100-0.5)*a;
           /* [7.792 strumentazione] DOVE SONO I PIU' AVANZATI QUANDO L'OCCASIONE NASCE. Serve a decidere il
              rimedio senza indovinare: se i tre uomini piu' avanti del lato sono gia' alti, basta scegliere
@@ -3445,7 +3453,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           if(_b.i===_a.i){const _alt=_vecchio792?_mpO:_cimaO;_b=_alt[(_hpO("u2")+1)%_alt.length];}
           const _na=_cgO(_a.q.name),_nb=_cgO(_b.q.name);
           const _gkO=(matchPlayersRef.current||[]).find(q=>q&&q.team===(_latoN==='home'?'away':'home')&&q.gk);
-          const _ngk=_cgO(_gkO&&_gkO.name)||"Il portiere";
+          const _ngk=_cgO(_gkO&&_gkO.name,_latoN==='home'?'away':'home')||"Il portiere";
           const _fO=_hpO("fam")%3;
           if(_vecchio792)return[
             {t:"⚡ "+_na+" guadagna il fondo e mette dentro: mischia in area!",x:_XO(84+_JO(1,5)),y:50+_JO(2,16),chi:_a.i},
@@ -4390,7 +4398,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
             if(typeof window!=='undefined'&&window.__CPM_REC){try{const _q792=(_pe649.chi!=null)?(matchPlayersRef.current||[])[_pe649.chi]:null;
               const _tx792=clamp(_pe649.x,4,96),_ty792=clamp(_pe649.y,6,94);
               const _B=(window.__CPM_BEAT792=window.__CPM_BEAT792||[]);
-              if(_B.length<120)_B.push({min:nx,occ:_pgH649.occ?1:0,step:(_pgH649.step|0)-1,chi:(_pe649.chi!=null?_pe649.chi:null),
+              if(_B.length<120)_B.push({min:nx,occ:_pgH649.occ?1:0,step:(_pgH649.step|0)-1,chi:(_pe649.chi!=null?_pe649.chi:null),txt:String(_pe649.t||"").slice(0,80),/* [7.809 misura] il testo della battuta: serve a contare le sigle */
                 px:_q792?+(_q792.x||0).toFixed(1):null,py:_q792?+(_q792.y||0).toFixed(1):null,tx:+_tx792.toFixed(1),ty:+_ty792.toFixed(1),
                 d:_q792?+Math.hypot((_q792.x||0)-_tx792,(_q792.y||0)-_ty792).toFixed(1):null,gk:_pe649.gk?1:0,
                 tiro:_pe649.ms?1:0,tiroDa:(_pe649.tiroDa792!=null?+(_pe649.tiroDa792).toFixed(1):null)});}catch(_e792){}}

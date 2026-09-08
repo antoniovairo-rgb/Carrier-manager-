@@ -2256,7 +2256,25 @@ function ThreeMatchView(props){
              if(_db6<3.2&&_dl6<25)_porGlue526=true;/* [7.523.0] il portatore NON-eroe ha raggiunto la palla e sta presso il logico: la palla e' sua */}}
           if(hero&&!P.hlDef&&!P.hlSetPiece&&!(typeof window!=='undefined'&&window.__CPM_NO515)){
             const _cvx5=hero._hvx||0,_cvz5=hero._hvz||0;const _csp5=Math.hypot(_cvx5,_cvz5);
-            if(_csp5>0.6){const _cbx5=ball.position.x-hero.position.x,_cbz5=ball.position.z-hero.position.z;
+            /* ⚠️ [7.810.0 — S2 della roadmap: LA COLLA DELL'EROE SI DECIDE SUI DATI DELLA SIMULAZIONE. Rosso __CPM_NO810]
+               Traccia 820: durante l'occasione extra-eroe NOSTRA il padrone eletto era l'eroe per tutta la finestra
+               («addosso»), col pallone reso fermo a 58-62 mentre il logico andava a 83 e 91 col compagno nominato.
+               La regola qui sotto misurava la distanza fra il pallone RESO e l'eroe RESO: due oggetti che la
+               simulazione non governa, e quando il reso ritardava a centrocampo l'eroe se lo prendeva. Ora la
+               distanza e' fra il pallone LOGICO (P.ballX/Y) e l'eroe LOGICO (P.playerX/Y): la colla scatta solo
+               se la simulazione dice che sono insieme. Il verso di corsa resta della mesh (e' un fatto visivo). */
+            /* [7.810.0 v2] SOLO IN FASE AMBIENTALE. Nella scena dell'eroe (hl_*) il punto-palla logico e' fermo per
+               costruzione (#31, «palla congelata») e spesso coincide con l'eroe: la regola sui dati logici incollava il
+               pallone all'eroe per tutta la scena, dentro il corpo — misurato con taglia-824: raggio 0 px in hl_result
+               (0·0·0·1,7·2,4·0) contro 6,3 della 7.807. Negli highlight resta la regola sulle mesh, che li' e' la scena. */
+            /* ⚠️ [7.810.0 — REVOCATA. La misura non la vede: «eroe eletto dentro un piano» 0 = 0 su otto partite (semi
+               Pa/Pb e i semi della traccia Da/Dc), verde e rosso. Il fenomeno visto nella traccia 820 (Da 53') non si
+               ripresenta a comando su un banco stocastico; e con la CI rossa sul build v2 (1 gol mangiato) non c'e'
+               ragione di tenere una regola che nessun numero distingue. Resta a richiesta (__CPM_SI810) per la
+               riscrittura S1+S2 (tre stati letti dalla simulazione), che e' il rimedio vero. */
+            if(_csp5>0.6){const _noS2=!(typeof window!=='undefined'&&window.__CPM_SI810)||P.matchPhase!=="playing";
+              const _cbx5=_noS2?(ball.position.x-hero.position.x):(G2X(P.ballX==null?50:P.ballX)-G2X(P.playerX==null?50:P.playerX));
+              const _cbz5=_noS2?(ball.position.z-hero.position.z):(G2Z(P.ballY==null?50:P.ballY)-G2Z(P.playerY==null?50:P.playerY));
               if(Math.hypot(_cbx5,_cbz5)<3.2&&(_cbx5*(_cvx5/_csp5)+_cbz5*(_cvz5/_csp5))<0.28){_colla515=true;if(typeof window!=='undefined')window.__CPM_COLLA=1;}}}
           /* [7.555.0 P1 — IL PADRONE DEL PALLONE E' UNO SOLO, E SI ELEGGE PRIMA DI SCRIVERE]
              Il censimento per fase (sonda scrittori-555, 1908 fotogrammi) ha smentito la stima «77% di
@@ -7457,7 +7475,16 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                testuale e NON lo riaccendeva mai: dal primo minuto di cronaca in poi il pallone negli
                highlight era senza alone, cioe' visibilmente piu' piccolo. Ora l'alone segue il pallone
                in tutte e due le direzioni. Misura: alone-822. */
-            if(typeof ballHalo!=='undefined'&&ballHalo){if(typeof window!=='undefined'&&window.__CPM_NO808H){if(_viaBall)ballHalo.visible=false;}else ballHalo.visible=!_viaBall;}}/* rosso __CPM_NO808H = il comportamento della 7.805 (spegne e non riaccende), per la prova appaiata */
+            /* ⚠️ [7.810.0 — L'ALONE STA SOLO NELLA CRONACA AMBIENTALE, MAI NEGLI HIGHLIGHT. Rosso __CPM_NO808H (=7.805).]
+               MISURATO (taglia-824, stessa scena forzata SIT #101 in hl_result, 6 campioni): raggio del pallone 6,1-6,3 px
+               nella 7.805 e nella 7.807 — che tenevano l'alone spento «per errore» dopo la prima cronaca — contro
+               2,3-2,6 px nel treno 7.808, dove l'avevo riacceso «per correttezza». L'alone e' una sfera semitrasparente
+               davanti al pallone: negli highlight, con la camera vicina, spegne il nucleo bianco e il pallone sembra
+               piu' piccolo e sfocato. Quindi l'alone segue il pallone SOLO in fase ambientale (dove era nato, 3DV-1,
+               per farlo trovare nel campo largo); negli highlight resta spento. La nota PO «troppo piccolo» sulla
+               7.807 NON e' riprodotta da questo metro: dichiarato. */
+            /* [7.810 v2 REVOCATA anche qui: «solo in ambientale» nasceva da una regressione di taglia che non esisteva (sonda a due gambe nello stesso browser). L'alone segue il pallone, come prima della 7.805. */
+            if(typeof ballHalo!=='undefined'&&ballHalo){if(typeof window!=='undefined'&&window.__CPM_NO808H){if(_viaBall)ballHalo.visible=false;}else ballHalo.visible=!_viaBall;}}
            }catch(_e660){}}}
       /* [7.665.0] LA MISURA DOV'E' IL FENOMENO: il guardiano contava solo i procedurali
          (__CPM_PROCVIS, 7.264) — con GLB acceso quel numero e' zero anche a campo pieno. Questo
