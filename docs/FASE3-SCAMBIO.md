@@ -2985,3 +2985,18 @@ il seguito che il testo ha promesso — ttl 8, e passa anche sopra una recita. R
 Misura `rifiuti-827` sui nomi del playtest (Moretti, Vairo — dove i gol nostri passano dal rigo
 ambientale, così si misura anche H): corner annunciato → battuto entro 8', rosso 0/9 finora, verde
 atteso ≥ 90%. In coda dopo i rituali della 7.817 (revocata).
+
+### 7.818 v1 — l'ipotesi del ttl era **sbagliata**: 0/4, e nessuna palla morta muore di ttl
+
+`rifiuti-827` sui nomi del playtest: rosso `NO818` corner annunciato → battuto **0/5**, verde
+**0/4**; palle morte armate dall'occasione 6 (corner 4) nel verde, righe di corner uscite **0**,
+**morte di ttl 0** (il ttl scende di 3-9 righe e non arriva mai a zero). Quindi la palla morta
+dell'occasione resta armata e viva, la riga del fischio viene valutata su quelle 3-9 righe e
+**declina ogni volta**: né il ttl né la recita in corso (che il 7.818 scavalca). Un'altra
+condizione della riga del fischio (r.4278) è falsa per lei: testimone `__CPM_J818` (tick per tick:
+recita, tipo, kickoff, piano pendente, piazzato, `ef`, ttl) in coda dopo il playtest n° 5.
+7.818 v1 resta nel sorgente ma **non si dichiara**: la misura non la vede.
+
+**H (7.814) misurata dove si può**: Moretti, un gol nostro dal rigo ambientale con piano →
+**firmato dal protagonista dell'ultima battuta 1/1**, in entrambi i regimi (la 7.814 è già nel
+build). Il meccanismo è provato; il campione è di uno.
