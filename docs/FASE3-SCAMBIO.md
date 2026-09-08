@@ -2837,3 +2837,15 @@ il problema è che **una battuta su tre non ci arriva** — consumata (step++, p
 riga del tick non viene emessa. Libreria e scheda non c'entrano: le tre guardie tornano indietro.
 Da cercare: il punto fra la battuta (r.4380) e l'emissione (r.5317) dove la riga del tick si
 perde, o la battuta consumata in un tick che non passa dal sito della riga.
+
+### S4 — la bisezione coi testimoni: **è la catena**
+
+Tre testimoni lungo il tick (`p1` dopo il blocco della battuta, `p2` prima della libreria, `p3`
+prima del testo d'uscita), due partite: battute vive a p1/p2/p3 = **6/3/3** e **12/5/5**. La
+battuta muore **fra p1 e p2**, in una su due-tre. In mezzo c'è il blocco della **catena** (7.537),
+che scrive `ev` anche con un piano vivo: `_recKind546` vale «manovra-gol» (non «scena») e con il
+gol pendente la catena «è il racconto» (7.537 v4) — così l'apertura dell'occasione usciva come
+«Filtrante di Neri — Colombo attacca lo spazio!», cioè una riga di catena. Libreria e scheda non
+c'entravano (guardie mai scattate): v1 revocata. **7.812 v2**: se la riga del tick è una battuta
+di piano, la catena tace per quel tick. Rosso `__CPM_NO812`, testimone `__CPM_SALVA812`. Misura
+`rifiuti-827` rosso/verde e rituali in corsa.
