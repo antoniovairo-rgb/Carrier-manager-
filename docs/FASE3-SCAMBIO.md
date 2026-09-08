@@ -3116,3 +3116,26 @@ dal testo: rinvio dal fondo battuto da un uomo di movimento **6/6**, portiere in
   player no (1/4): si guarda dove si perde prima di toccare.
 - 7.826-7.828 sono nel sorgente ma **non nel build 7.825** in catena: entrano nel build successivo con
   la loro misura (playtest n° 8, `analisi-diario.py`).
+
+## Build 7.825 — rituali verdi; playtest n° 7 letto; build 7.830 in catena
+
+Rituali del 7.825: career PASS, CI fingerprint 00001505, 0 failure. Non committato: nel frattempo il
+sorgente è andato avanti (7.826-7.830), si committa il 7.830 coi suoi rituali.
+
+- **7.822 v3 REVOCATA dalla misura** (`regia-833`: aperture 0/0/0 col verde contro 1/1/2/5 col rosso —
+  la prenotazione non trova mai un tick libero: nel censimento del cancello «liberi» è 0 in tre
+  partite su quattro, e 5 aperture su 8 nascevano sul tick del gol). Tre versioni, tre revoche: **il
+  cancello non è la strada**, la libreria compete per gli stessi ~25 slot di riga a partita con le
+  costruzioni (pg 6-14) e le recite (rec 4-11). Nel playtest n° 7 la libreria si è riaperta in 2
+  partite ma **intrecciata** al piano dell'occasione (due manovre nello stesso minuto).
+- **7.829 — S5, l'occasione è un'azione** (sorgente, build 7.830): il piano dell'occasione ha **cinque
+  battute** — due di costruzione (un uomo di mezzo, poi chi apre; pallone addosso al nominato come
+  nel 7.792) più apertura/tiro/parata — e il cancello dell'occasione non si arma sopra un'azione
+  della libreria ancora in recita. Rosso `__CPM_NO829`. Misura: battute per occasione 3,0 → 5,0
+  (`rifiuti-827`), righe per partita, e le manovre intrecciate nel diario.
+- **7.830 — il marcatore è uno solo**: la 7.814 calcolava il nome giusto (testimone `NOME814.det`:
+  5/5) e l'handler del 7.170 (badge/float del gol) lo sovrascriveva un rigo dopo con un sorteggio
+  dalla rosa (4/5 nel n° 7). Ora `_tmScorer` è il protagonista dell'ultima battuta quando c'è un
+  piano; maiuscole dalla rosa. Rosso `__CPM_NO830`. Misura sul testo: chi conclude = chi segna.
+- **J, +7 minuti**: v5 senza effetto (ritardi 7,1,8 nel bench; 7 su 8 nel diario). Testimone
+  `__CPM_J818T` (battuta / chiusura / armamento / riga, col minuto) nel build 7.830.
