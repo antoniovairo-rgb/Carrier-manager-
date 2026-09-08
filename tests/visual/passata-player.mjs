@@ -14,7 +14,7 @@ const srv=await startServer();const port=srv.address().port;
 const b=await launchBrowser();
 const ctx=await b.newContext({viewport:{width:412,height:915}});
 const page=await ctx.newPage();await installCdnRoutes(page);
-await page.addInitScript(()=>{window.__CPM_GLB=true;window.__CPM_REC=true;window.__CPM_CRO802=[];window.__CPM_SCMS681=3500;});
+await page.addInitScript((o)=>{window.__CPM_GLB=true;window.__CPM_REC=true;window.__CPM_CRO802=[];window.__CPM_SCMS681=3500;window.__CPM_DTREAL=true;if(o.away)window.__CPM_AWAY_TEST=true;},{away:!!process.env.CPM_AWAY});/* [playtest n°4] CPM_AWAY=1 apre il provino in TRASFERTA (7.726) — il metro chiede 2 in casa e 2 fuori */
 await openMatch(page,port,{skipLoadAll:true,name:NOME});
 await page.evaluate((s)=>window.__CPM_AUTOPLAY(true,{seed:s,policy:'seeded',tickMs:300}),SEME);
 const SCATTI=[3,23,45,58,74,88];const fatti={};
