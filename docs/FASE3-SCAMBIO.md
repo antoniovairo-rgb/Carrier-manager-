@@ -2885,3 +2885,19 @@ resta alla 7.807. Subito dopo, sul build del branch, il **playtest n° 4** come 
 quattro partite intere, due in casa e due in trasferta (`passata-player` con `CPM_AWAY`), lette
 come le legge il giocatore. Intanto nel sorgente (non ricostruito) entra la **7.813** — S2 v2: il
 renderer legge `carrierRef` (patch pronta da ieri), misura `padrone-825`.
+
+## Dal playtest n° 4 — le bugie H e J, censite
+
+**H — chi colpisce non è chi segna.** `src/14` r.4831-5254: per i gol **nostri** `_evName170` resta
+nullo e il nome del rigo del gol esce da `_pickN` (rosa a sorteggio); il piano del gol nomina il
+suo protagonista battuta per battuta (`_pe649.chi`) e nessuno lo passa al rigo. Per i gol loro
+c'è già `_oppScorer` (r.4857). **7.814**: la battuta ricorda il protagonista (`lastChi814`), la
+chiusura del piano che rilascia il gol lo consegna al rigo (`lastGoalChiRef814`), e il rigo firma
+lui. Rosso `__CPM_NO814`, testimone `__CPM_NOME814{gol, conPiano, firmati}`. Misura: gol nostri con
+piano firmati dal protagonista dell'ultima battuta — rosso 0, verde = conPiano.
+
+**J — il corner annunciato non si batte.** La chiusura dell'occasione (r.3874) arma `outRef`
+(`kind:'corner', ttl:4`) e `fermoRef`; la riga «🚩 Calcio d'angolo per…» la scrive la macchina
+dell'interruzione (r.4266) al passo 1, sotto condizioni (`!_recHij545`, `!pendingGoalRef`,
+`!mute632`, `ttl`). Nel diario del n° 4 dopo tre parate «in angolo» nessun corner. Misura aggiunta
+alla sonda: corner annunciato dalla parata → riga di corner entro 4' (baseline da leggere).
