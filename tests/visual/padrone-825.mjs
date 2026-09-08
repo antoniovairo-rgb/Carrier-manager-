@@ -31,6 +31,7 @@ for(let g=0;g<NOMI.length;g++){
     if(padRes==='eroe')c.eroeRes++;if(s.eroeLog)c.eroeLog++;
     if(s.piano){c.pianoN=(c.pianoN||0)+1;if(padRes==='eroe')c.pianoEroe=(c.pianoEroe||0)+1;}
     if(s.w.lx!=null){c.scarto.push(Math.hypot(s.w.rx-s.w.lx,s.w.ry-s.w.ly));}
+    if(s.w.car){c.carN=(c.carN|0)+1;const dc=Math.hypot(s.w.rx-s.w.car.x,s.w.ry-s.w.car.y);(c.dCar=c.dCar||[]).push(dc);if(dc<=3)c.carOk=(c.carOk|0)+1;}/* [misura S2 vera] quando la simulazione dice chi porta la palla, il pallone reso sta ai suoi piedi? */
     if(prev){const dd=Math.hypot(s.w.rx-prev.rx,s.w.ry-prev.ry);const dt=s.t-prev.t;if(dt<=110&&dd>8)c.salti++;}
     prev={rx:s.w.rx,ry:s.w.ry,t:s.t};
     if(clock>=89)break;}
@@ -39,6 +40,7 @@ for(let g=0;g<NOMI.length;g++){
   const q=(a,p)=>{if(!a.length)return 0;const s2=a.slice().sort((u,v)=>u-v);return +s2[Math.min(s2.length-1,Math.floor(p*(s2.length-1)))].toFixed(1);};
   console.log('\n=== '+NOMI[g]+' (fps ~'+fps+') — '+c.n+' campioni in fase ambientale ===');
   console.log('  padrone: simulazione e renderer d\'accordo '+Math.round(100*c.accordo/Math.max(1,c.n))+'%   · renderer elegge l\'EROE '+Math.round(100*c.eroeRes/Math.max(1,c.n))+'% dei campioni (simulazione: '+Math.round(100*c.eroeLog/Math.max(1,c.n))+'%)');
+  console.log('  PALLA AI PIEDI DEL PORTATORE LOGICO (<=3u): '+(c.carOk|0)+'/'+(c.carN|0)+' ('+Math.round(100*(c.carOk|0)/Math.max(1,c.carN|0))+'%)  · distanza mediana '+q(c.dCar||[],0.5)+'u  p90 '+q(c.dCar||[],0.9)+'u   ← la misura di S2');
   console.log('  DENTRO UN PIANO (occasione o gol in costruzione): '+(c.pianoN||0)+' campioni, eroe eletto '+(c.pianoEroe||0)+' ('+Math.round(100*(c.pianoEroe||0)/Math.max(1,c.pianoN||0))+'%)   ← la misura della 7.810');
   console.log('  incroci (logico→reso): '+Object.entries(c.tab).sort((a,b2)=>b2[1]-a[1]).map(([k,v])=>k+' '+Math.round(100*v/c.n)+'%').join(' · '));
   console.log('  scarto reso↔logico: mediana '+q(c.scarto,0.5)+'u  p90 '+q(c.scarto,0.9)+'u  max '+q(c.scarto,1)+'u   · salti >8u fra campioni ≤110 ms: '+c.salti);

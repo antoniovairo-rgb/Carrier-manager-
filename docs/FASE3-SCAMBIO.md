@@ -2901,3 +2901,13 @@ piano firmati dal protagonista dell'ultima battuta — rosso 0, verde = conPiano
 dell'interruzione (r.4266) al passo 1, sotto condizioni (`!_recHij545`, `!pendingGoalRef`,
 `!mute632`, `ttl`). Nel diario del n° 4 dopo tre parate «in angolo» nessun corner. Misura aggiunta
 alla sonda: corner annunciato dalla parata → riga di corner entro 4' (baseline da leggere).
+
+### 7.813 v1 — **REVOCATA**: accordo 34/33% → 36/36%, salti 38/49 → 32/47
+
+Impostare `_por526` dal `carrierRef` non basta: la colla del portatore (7.523) scatta solo se il
+pallone reso è **già** entro 3,2u da quel corpo — e non ci sta, che è il difetto. Il renderer
+deve *portare* il pallone ai piedi del portatore logico, non solo sapere chi è. Resta a richiesta
+(`__CPM_SI813`). La misura giusta di S2 è ora nella sonda: **«quando la simulazione dice chi porta
+la palla, il pallone reso sta ai suoi piedi (≤ 3u)?»** — baseline da leggere, bersaglio ≥ 90%.
+Il taglio vero (S1+S2, tre stati nel blocco del pallone di src/12) è il prossimo lavoro
+strutturale, dopo la 7.814.
