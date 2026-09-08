@@ -428,3 +428,76 @@ aree. Il metro (≥ 8,0, nessuna area < 7) è a tre punti e mezzo.
 4. **S + T + K** — ruoli veri nelle frasi (il rinvio dal fondo lo batte il portiere, nessun portiere
    in contropiede) e pool dei cognomi senza doppioni.
 5. **J** — diagnostica in corso (testimone J818).
+
+---
+
+# Rapporto n° 6 — playtest sul build 7.824 (08/09 pomeriggio)
+
+Build: 7.818 v4, 7.819-7.824, 7.822 **v2** (che affama la libreria: 0 azioni a partita, vedi
+verbale). Stessi quattro nomi del n° 5.
+
+| | Vairo casa | Moretti casa | Galli fuori | Conti fuori |
+|---|---|---|---|---|
+| righe / minuti vuoti | 43 / 57 | 46 / 57 | 57 / 52 | 73 / 40 |
+| scene dell'eroe | 18', 26' | 22', 31' | 12', 45', 88' | 10', 18', 65' |
+| gol · finale | — · 0-0 | 22', 57' · 2-0 | 12', 58', 68' · 2-1 | 10', 18', 24', 53', 75' · 4-1 |
+
+## Le bugie del n° 5, misurate sul testo (`analisi-diario.py`)
+
+| bugia | n° 5 | **n° 6** |
+|---|:---:|:---:|
+| M — righe identiche allo stesso minuto fra le 4 partite (3 sono legittime: intro, duplice fischio ×2) | 11 | **6** |
+| M — la prima occasione al 9' | 3/4 | 1/4 (Moretti: stessa forma, nomi e varianti diverse) |
+| J — corner annunciato → corner battuto | 0/9 | **5/5**, ma **7 minuti dopo** (55'→62', 11'→18', 77'→84', 35'→42', 76'→83') |
+| N — gol dell'eroe con la riga del gol | 0/5 | **4/4** |
+| V — «Squadra in vantaggio!» col margine già > 1 | 3/4 | **0/0** («Raddoppio», «Partita in mano: 3-0») |
+| S — rinvio dal fondo battuto da un uomo di movimento | 6/6 | **0/3** |
+| S — portiere in contropiede · ala «con le mani» | 1/1 · 1/1 | **0/1 · 0/0** |
+| T — lo stesso cognome due volte in una riga | 2 | **0** (l'unico caso è «Vince Pecoraro», legittimo) |
+| W — la libreria continua dopo il gol | 3 casi | **0** (ma la libreria non apre più: v2 revocata) |
+| U — manovra nostra sopra un gol loro | 2 | **0** |
+
+## Le bugie che restano, e le nuove
+
+| | la riga | perché non ci credo |
+|---|---|---|
+| **Q** | Moretti 56' *«Conclusione secca di Pellegrini»* → 57' *«Colombo segna!»* · Galli 57' *«Incornata di Bruno»* → *«Colombo segna!»* · Conti 74' *«Incornata di Bruno»* → *«Ferrari segna!»* (24' *Ferrari stacca → Ferrari segna* ✔) | chi conclude non è chi segna in **3 gol su 4** con piano: la 7.814 non firma. Testimone di dettaglio aggiunto (`NOME814.det`) per il n° 7 |
+| **R** | Galli 12' *corner → intercept fallito → «Galli segna su assist di Giordano»* nello stesso minuto · 45' *«Para il portiere» · miss · duplice fischio* | scene dell'eroe contraddittorie nello stesso minuto; e le scene cadono sempre fra il 10' e il 22' e fra il 26' e il 31' (calendario fisso `hlTimes`) |
+| **Y** | *«Conti segna su assist di Landi»*, *«Galli segna su assist di Giordano»*: Landi e Giordano **non sono in campo** · 28' *«Moretti corre ad abbracciare Scotti: il gol è di tutti e due»* dopo l'assist di Landi | i compagni dell'assist vengono dalla rosa di carriera, non dall'undici → **7.825** (build successivo) |
+| **Z** | Conti 44'-46': apertura, *duplice fischio*, tiro, parata — l'occasione **a cavallo dell'intervallo** · Galli 45' scena dell'eroe e intervallo nello stesso minuto | il fischio dell'intervallo non ferma le macchine |
+| **AA** | *«Fontana allarga le braccia e lo chiama»*, *«Fontana esce dal mucchio dell'esultanza»* (Fontana è il portiere) ×3 | il «compagno» delle interazioni è pescato anche fra i portieri |
+| **AB** | Vairo 89' *«Stiamo dominando nel finale — serve il colpo che sblocca!»* sullo 0-0 dopo 57 minuti muti e zero tiri nostri | l'enfasi guarda il momentum, non i fatti |
+| **AC** | Conti 10' e 18': *«GOOOOOL! Folla in delirio!»* dal nulla, due volte in otto minuti | il gol dell'eroe senza un'azione prima (già in R del n° 5) |
+| P | *«Filtrante di X — Y attacca lo spazio!»* ×2-3 a partita, mai un esito | ancora lì |
+| ritmo | 57 / 57 / 52 / 40 minuti vuoti | peggio del n° 5 (58/49/39/34): la libreria spenta dalla v2 toglieva 2-3 azioni a partita |
+
+## Scorecard n° 6
+
+| # | Area | n°5 | **n°6** | Il fatto |
+|---|------|:---:|:---:|---|
+| 1 | Realismo della partita | 5 | **5** | Vairo 0-0 con 57' muti e zero tiri nostri; Conti 4-1 con due gol dell'eroe dal nulla; i corner e i tabelloni ora tornano |
+| 2 | Credibilità da attaccante | 5 | **5** | scene sempre negli stessi quarti d'ora; AC; R |
+| 3 | Causalità | 4 | **5** | N ✔, W ✔, corner battuto ✔ ma 7' dopo; Q 3/4 |
+| 4 | Varietà | 3 | **5** | copione del 9' rotto (M 11→6); occasioni «dal limite», «presa sicura», «respinge coi pugni» |
+| 5 | Ritmo | 4 | **3** | 40-57 minuti vuoti, libreria a zero |
+| 6 | Azioni extra-eroe | 4 | **5** | firmate, variate, con l'esito; il corner arriva tardi |
+| 7 | Highlight dell'eroe | 5 | **5** | |
+| 8 | Telecronaca | 4 | **6** | S/T/V ✔; AB; AA |
+| 9 | Interazioni | 7 | **7** | mister e capitano ✔; il portiere come compagno (AA) |
+| 10 | Coerenza fra i sistemi | 4 | **5** | Q, Y, Z |
+| 11 | Immersione | 4 | **5** | |
+| 12 | Sensazione di carriera | 6 | **6** | |
+
+**Media: 5,2** (n° 5: 4,6; n° 4: 5,2). Sette bugie chiuse e misurate; il voto torna dov'era perché
+il ritmo è sceso (libreria spenta, v2 revocata → v3 «porta differita» nel build successivo) e
+perché Q, R e le scene a calendario fisso pesano su quattro aree. Il metro (8,0) resta a tre punti.
+
+## Che cosa alza il voto, in ordine
+
+1. **Ritmo**: 7.822 v3 (la libreria prenota e apre dopo il gol) e, strutturale, S5 (l'occasione è
+   un'azione: la libreria e il piano dell'occasione sono la stessa cosa).
+2. **Q**: perché la 7.814 non firma nel banco del player (testimone di dettaglio nel n° 7).
+3. **R + calendario fisso delle scene**: i minuti delle scene dell'eroe nascono da `hlTimes`
+   (8-17' e poi ogni ~step), non dalla partita; e due scene nello stesso minuto si contraddicono.
+4. **Z, AA, Y, AB**: intervallo che ferma le macchine; niente portieri fra i «compagni»; assist
+   dall'undici (7.825, già nel sorgente); enfasi sui fatti.
