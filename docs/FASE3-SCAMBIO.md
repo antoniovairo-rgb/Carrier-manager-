@@ -3091,3 +3091,28 @@ dal testo: rinvio dal fondo battuto da un uomo di movimento **6/6**, portiere in
 «con le mani» detto di un'ala 1/1, cognome doppio in una riga 2, gol dell'eroe con la riga del gol
 **0/5**, «Squadra in vantaggio!» col margine già > 1 **3/4**. Trovato e corretto prima del n° 6:
 {GKH} leggeva le maglie in campo e scriveva «FONTANA (GRA)» — ora legge la rosa.
+
+## Dopo il n° 6 — build 7.825 in catena (misure + playtest n° 7 + rituali)
+
+- **7.818 v4 misurata con la sonda corretta**: corner annunciato → battuto **2/3** (verde) contro
+  **0/5** (rosso NO818). Ladri visti dal testimone: il ponte 1 (ora guardato). Nel diario del n° 6 il
+  corner esce **5/5 ma 7 minuti dopo** la parata: non era più la riga, era il **piano** che restava
+  aperto 4-7 tick dopo l'ultima battuta (aspettava l'arrivo del pallone o il tetto +4). **v5**: con
+  esito dichiarato il piano si chiude al tick dopo la parata (r.3895, `_chiusa818`). Misura: ritardo
+  parata→corner in minuti (`rifiuti-827`).
+- **7.822 v2 revocata** (0/0/0/0 aperture: il censimento del cancello dice che le finestre libere sono
+  0-2 a partita e che 5 aperture su 8 nascevano sul tick del gol). **v3 — la porta differita**: il tick
+  del gol non apre ma prenota; la libreria si apre al primo tick libero dopo il calcio d'inizio
+  (entro 6', senza aspettare il raffreddamento). Misura `regia-833` rosso/verde.
+- **7.825 (Y)** — l'assist lo fa uno dell'undici: `_matePool` dalla rosa in campo, non da
+  `player.teammates` («assist di Landi», «di Giordano»: non giocavano). Rosso `__CPM_NO825`.
+- **7.826 (AA)** — il compagno delle schede non è il portiere (Fontana ×3). Rosso `__CPM_NO826`.
+- **7.827 (AB)** — «Stiamo dominando» pretende un tiro nostro negli ultimi 12' in cronaca; altrimenti
+  «tanto possesso e nessun tiro». Rosso `__CPM_NO827`.
+- **7.828 (Z)** — il duplice fischio chiude l'occasione aperta e la sua palla morta; il cancello non
+  arma occasioni dal 42' al 46'. Rosso `__CPM_NO828`.
+- **Q, testimone**: `__CPM_NOME814.det` registra minuto, indice e nome trovato a ogni gol nostro
+  con piano; la passata lo stampa. Nel bench dei rifiuti la firma passava (1/1), nel diario del
+  player no (1/4): si guarda dove si perde prima di toccare.
+- 7.826-7.828 sono nel sorgente ma **non nel build 7.825** in catena: entrano nel build successivo con
+  la loro misura (playtest n° 8, `analisi-diario.py`).
