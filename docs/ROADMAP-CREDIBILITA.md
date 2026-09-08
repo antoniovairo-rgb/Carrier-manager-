@@ -96,3 +96,22 @@ la colla scatta solo se il pallone è già vicino; la 7.817 cambia il bersaglio 
 
 Ogni voce: misura rossa prima, rimedio, misura verde, rituali, release sul branch. **Nessuna voce
 si spedisce da sola al PO.** Alla fine: playtest n° 4 su quattro partite, e il metro decide.
+
+## Stato al 08/09 sera (build 7.831 sul branch, 7.832 in rituali)
+
+Playtest da player: n°5 **4,6** → n°6 5,2 → n°7 5,3 → n°8 **5,6**. Metro: 8,0.
+
+| causa | stato |
+|---|---|
+| S1 un solo pallone | aperta (baseline 15%/7% palla ai piedi del portatore) |
+| S2 un solo padrone | racconto: chiuso il marcatore (7.830), la libreria non parla sopra un gol (7.822 v3 + 7.832); campo: aperta |
+| S3 la squadra sa il punteggio | v1 (7.811) + margine (7.821) + «dominando» con un tiro (7.827); aperta la parte «a 1-0 la squadra smette» |
+| S4 le righe non si perdono | chiusa (7.812/7.816); il corner al minuto dopo (7.818 v6) |
+| S5 l'occasione è un'azione | prima metà: cinque battute con la costruzione (7.829); aperta la seconda: zona di tiro (#44), varietà delle famiglie |
+| copione della partita | chiuso (7.819): il seme di partita in tutti i sorteggi del racconto |
+
+Aperte con causa già letta: **R** (scene dell'eroe: prima sempre fra 8' e 17' da `hlTimes`, poi
+scene reattive a `ck+2` che cadono nello stesso minuto di un'altra), **AC** (gol dell'eroe senza
+azione prima), **P** («filtrante… attacca lo spazio» senza esito), **ritmo in casa** (>50 minuti
+vuoti). Strumenti: `analisi-diario.py` sul testo del playtest; sonde con rosso appaiato; il
+diario si legge prima di chiudere il browser (decima lezione).
