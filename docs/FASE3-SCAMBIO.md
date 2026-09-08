@@ -3174,3 +3174,13 @@ e la libreria è marginale). `regia-833`: rosso NO822T aperture 0/1/0/0, verde *
 libreria non muore più di fame per il turno (la fame è strutturale: pg 10-30 e rec 5-15 su 22-40
 tentativi); **W 0/3, U 0/3** col verde (rosso: U 0/1, campione di uno). Si dichiara per costruzione:
 i beat sono scritti dal nostro lato e con la palla loro non escono più. Rituali 7.832 in coda.
+
+### 7.832 REVOCATA — e un commit sbagliato, corretto
+
+La CI del 7.832 era **rossa**: guardiano `partita-vera`, banda `manovra-viva` **1 riga di manovra su
+2 partite (catena 1 + libreria 0), banda 10**. Col turno nel cancello la libreria non apre nel
+mondo del guardiano; la 7.831 (senza) passava. Ho letto «fingerprint 00001505 · 0 failure» del
+validate e ho committato e spinto (76fd9ac) scrivendo «rituali verdi» **prima di leggere `ci
+exit=1`**. Errore mio, di lettura: il commit è stato **revertito** sul branch, il build torna al
+7.831. Undicesima lezione sugli strumenti: si legge l'exit della CI, non il fingerprint di un suo
+passo. U resta aperta: la strada è la libreria dal lato giusto (beat con {A}/{A2}), non un cancello.
