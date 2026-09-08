@@ -48,7 +48,10 @@ quindi conosce tre stati, e il renderer deve **leggerli**, non rieleggere:
 
 Con questa tabella i quindici scrittori si riducono a tre rami, e le elezioni del renderer
 (7.555, `_por526`, colla 7.515) diventano *lettura* di `carrierRef`. È il lavoro di S1 e S2
-insieme; la 7.810 è il primo taglio (la colla dell'eroe sui dati logici).
+insieme. La 7.810 (colla dell'eroe sui dati logici) è stata **revocata** (misura cieca); il
+taglio vero è la **7.813**: `carrierRef` passa al renderer come ref e `_por526` non si elegge
+più — portata = il corpo del carrier, in volo = l'arco, vagante = nessun padrone. Misura
+`padrone-825`: accordo 37-43% → ≥ 90%, salti > 8u in calo.
 
 ## L'ordine e la misura di ciascuna
 
