@@ -3027,3 +3027,36 @@ metri fra le linee» (4/4, apertura del calcio d'inizio, r.4508), 6' «fallo, pu
 65' «Cambio in campo: si passa alla gestione del vantaggio» (2/4: la consegna del mister a minuto
 fisso, r.2936 — in Galli cade fra il cross e l'incornata avversaria). Sono tre sorgenti a orario,
 non a stato: prossimo giro.
+
+### 7.818 v2 — la palla morta viveva 4 tick; ora 10, e **ancora 0/4**: la riga nasce e si perde dopo
+
+Il testimone `__CPM_J818` era vuoto su Moretti (1 corner armato): nessuna riga sorteggiata trovava
+viva la palla morta. Letto il perché: il budget **per tick** del 7.632 (r.5530) la spegneva dopo
+**quattro** tick (il commento diceva «dieci»), e i cinque secondi della scena saliente ne bruciano
+tre senza righe. **v2**: dieci tick per la palla morta dell'occasione. Misura `rifiuti-827` sui nomi
+del playtest (Moretti, Vairo, Rb): rosso 0/5, verde **0/4**. Ma il testimone ora parla: 5 tick con
+la palla morta viva a passo 0 e **tutte le condizioni del fischio vere** (`rec 0, ko 0, pg 0, sp 0,
+ttl 8`), righe di corner **nate** 1-3 a partita (contatore `J814.righe`) — e nessuna nel diario
+entro 8'. Quindi la riga nasce e si perde **a valle**, come le battute di piano prima della 7.812:
+il timer dell'arco (r.5392) e la scheda aperta. **v3** (nel build 7.824, in misura): la riga della
+palla morta dell'occasione (`ev._out818`) non passa dal timer dell'arco e con una scheda aperta si
+accoda come una battuta di piano (7.816); testimone `__CPM_J818E` (p1/p2/p3/arco/diretta) per
+dire dove muore se muore ancora. Ipotesi dichiarata due volte sbagliata (ttl a righe, budget a
+tick): la terza è la prima con un testimone che vede la riga dopo la nascita.
+
+## 7.820-7.824 — le bugie del n° 5 che si leggono nel codice, in misura sul build 7.824
+
+- **7.820 (N)** — il gol dell'eroe ha la riga del gol: «⚽ X segna su assist di Y! 1-0.» subito
+  dopo la frase d'esito (r.6874, `_comFn15`). Rosso `__CPM_NO820`.
+- **7.821 (V)** — la riga del gol guarda il margine: «Squadra in vantaggio!» solo sul primo gol di
+  vantaggio; poi «Raddoppio», «Partita in mano: 3-0» (r.5327). Rosso `__CPM_NO821`.
+- **7.822 (W, U)** — la libreria delle azioni si apre solo con la palla nostra (`possTurnRef`) e a
+  tre minuti dall'ultimo gol, mai sul tick del gol (r.4787): la 7.785 v2 la apriva sul gol e il
+  compositore non guardava il turno. Rosso `__CPM_NO822`. Misura `regia-833`: aperture per partita
+  (banda: non sotto 2), entro 2' da un gol, con la palla loro.
+- **7.823 (S, K)** — {GKH}/{GKA} risolti sul portiere in campo; `_pickN` non pesca il portiere per
+  le righe di movimento; «rinvio dal fondo per {GK}»; i template «il portiere di {A}» → «{GKA}».
+  Rosso `__CPM_NO823`. Misura `ruoli-834`.
+- **7.824 (T)** — nella libreria i segnaposto si assegnano per riga nell'ordine dei ruoli ({H},
+  {H2}, {H3}); il terzo uomo è risolto in tutti e due i percorsi (tick e righe programmate). Rosso
+  `__CPM_NO824`. Misura `ruoli-834` [T]: righe con lo stesso cognome due volte.
