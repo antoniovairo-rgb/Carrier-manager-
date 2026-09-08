@@ -831,6 +831,30 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   useEffect(()=>{clockRef.current=clock;},[clock]);
   const [score,setScore]=useState(_rsScore);
   const scoreRef=useRef(_rsScore);
+  /* [7.811.0 — S3 v1: LA TABELLA DELL'ENFASI, stato x momentum, come FUNZIONE PURA. La misura sul diario e' cieca
+     (una riga d'enfasi in quattro partite: la porta seedata <0.12 su momentum >=80/<=20 scatta di rado), quindi la
+     tabella si misura DIRETTAMENTE su tutta la griglia degli stati (tabella-830): nessuna frase puo' contraddire il
+     tabellone. Rosso __CPM_NO811S = le due terne originali, cieche allo stato. */
+  const _frasi811=useCallback((sd,fin,alto)=>{
+    const _noS3=(typeof window!=='undefined'&&window.__CPM_NO811S);
+    if(alto){
+      if(_noS3)return ["🔥 Stiamo dominando — teniamo alta l'intensità!","💪 La squadra è in fiamme, il pubblico è in piedi!","⚡ Momento magico — ogni pallone è nostro!"];
+      if(sd<0)return fin?["🔥 Sotto nel finale e tutta la squadra in attacco: serve il gol, adesso!","💪 Ultimi minuti, la squadra spinge con tutto: il pareggio è lì!"]
+                       :["🔥 Sotto nel punteggio ma la squadra spinge: serve il gol!","💪 Stiamo dominando, manca solo il gol che rimette in piedi la partita!"];
+      if(sd===0)return fin?["⚡ Finale in pressione: il gol partita lo cerchiamo noi!","🔥 Stiamo dominando nel finale — serve il colpo che sblocca!"]
+                         :["🔥 Stiamo dominando — adesso serve il gol che sblocca!","⚡ Momento magico — ogni pallone è nostro, manca solo la rete!"];
+      return fin?["💪 Avanti e in controllo nel finale: si gestisce con la palla.","🔥 Dominio e vantaggio: il pubblico è in piedi!"]
+                :["🔥 Stiamo dominando — teniamo alta l'intensità!","💪 La squadra è in fiamme, il pubblico è in piedi!","⚡ Momento magico — ogni pallone è nostro!"];
+    }
+    if(_noS3)return ["😤 Reggiamo! Difendiamo compatti e aspettiamo il momento.","🛡️ Sotto pressione — serve carattere adesso.","⚠️ Stanno spingendo forte, ma noi teniamo duro!"];
+    if(sd<0)return fin?["⚠️ Sotto e schiacciati nel finale: così non si recupera.","😤 Finale in salita: sotto nel punteggio e senza il pallone."]
+                     :["😤 Sotto nel punteggio e in difficoltà: serve una scossa.","⚠️ Stanno spingendo e noi siamo sotto: momento delicato."];
+    if(sd===0)return fin?["🛡️ Finale sotto pressione sul pari: si tiene il punto coi denti.","⚠️ Spingono forte nel finale, il pareggio va difeso."]
+                       :["😤 Reggiamo! Difendiamo compatti e aspettiamo il momento.","⚠️ Stanno spingendo forte, ma noi teniamo duro!"];
+    return fin?["🛡️ Avanti nel finale e sotto assedio: si difende il risultato.","😤 Ultimi minuti di sofferenza: il vantaggio va portato a casa."]
+              :["🛡️ Avanti ma sotto pressione: si difende il vantaggio.","⚠️ Spingono forte, noi teniamo il risultato."];
+  },[]);
+  if(typeof window!=='undefined'&&(_CPM_TEST||window.__CPM_REC)){try{window.__CPM_ENFASI811=_frasi811;}catch(_e){}}/* test-only: la tabella si misura da fuori */
   const wasBehindRef=useRef(false);/* [7.8.28 QA] «eri in svantaggio a un certo punto» — serve all'achievement Rimonta (prima confrontava won&&homeScore<awayScore = contraddizione, mai sbloccabile) */
   useEffect(()=>{scoreRef.current=score;if(score.away>score.home)wasBehindRef.current=true;},[score]);
   // Sprint 118/121 — bench phase progression (watching→warmup→entering), warmup at randomized benchWarmupAt
@@ -5167,8 +5191,20 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
              quindi il minuto era gia' riproducibile — ma `pick()` sceglieva QUALE delle tre con un
              generatore non seedato: la stessa partita rigiocata stampava la stessa riga al minuto giusto
              con parole diverse, e il guardiano confronta `minuto|testo`. Un mezzo seed non e' un seed. */
-          if(momentumRef.current>=80&&_rndM()<0.12){const _p94=["🔥 Stiamo dominando — teniamo alta l'intensità!","💪 La squadra è in fiamme, il pubblico è in piedi!","⚡ Momento magico — ogni pallone è nostro!"];addCom(_p94[Math.floor(_rndM()*_p94.length)],"#22c55e",nx);}
-          else if(momentumRef.current<=20&&_rndM()<0.12){const _p94b=["😤 Reggiamo! Difendiamo compatti e aspettiamo il momento.","🛡️ Sotto pressione — serve carattere adesso.","⚠️ Stanno spingendo forte, ma noi teniamo duro!"];addCom(_p94b[Math.floor(_rndM()*_p94b.length)],"#f87171",nx);}
+          /* ⚠️ [7.811.0 — S3 v1: L'ENFASI LEGGE LO STATO, NON SOLO IL MOMENTUM. Rosso __CPM_NO811S]
+             Playtest n°3 (rapporto n°3): «Stiamo dominando — teniamo alta l'intensità!» all'84' SOTTO 1-2, e «Momento
+             da soffrire» durante la nostra ripartenza. Queste due righe leggevano solo `momentumRef` (>=80 / <=20):
+             ne' il punteggio ne' il minuto. Ora la frase si sceglie da una tabella stato x momentum — sotto / pari /
+             sopra, con la variante del finale (dall'80') — e dice la cosa vera. Stessa porta seedata (_rndM<0.12),
+             stessa cadenza: cambia solo che la riga non puo' piu' contraddire il tabellone. */
+          {const _sd811=((scoreRef.current&&scoreRef.current.home)|0)-((scoreRef.current&&scoreRef.current.away)|0);
+           const _fin811=nx>=80;
+           if(momentumRef.current>=80&&_rndM()<0.12){
+             const _p94=_frasi811(_sd811,_fin811,true);
+             addCom(_p94[Math.floor(_rndM()*_p94.length)],"#22c55e",nx);}
+           else if(momentumRef.current<=20&&_rndM()<0.12){
+             const _p94b=_frasi811(_sd811,_fin811,false);
+             addCom(_p94b[Math.floor(_rndM()*_p94b.length)],"#f87171",nx);}}
           // Sprint 17: momentum swings from BG events
           if(ev.ef==="team_goal")setMomentum(m=>clamp(m+25,0,100));
           else if(ev.ef==="opp_goal")setMomentum(m=>clamp(m-25,0,100));
