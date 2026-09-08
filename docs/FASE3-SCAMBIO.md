@@ -3154,3 +3154,11 @@ sorgente è andato avanti (7.826-7.830), si committa il 7.830 coi suoi rituali.
   7.831): `_forzaOut818` — la palla morta dell'occasione a passo 0 forza il tick. Misura: ritardo
   parata→corner (oggi 7, bersaglio ≤ 1).
 - Rituali del 7.830 in coda; si committa il 7.831 (v6) coi suoi rituali.
+
+### 7.818 v6 — il corner si batte al minuto dopo: ritardo 7 → **1** (5/5), J 5/6
+
+`rifiuti-827` sul build 7.831, linea temporale: `close@15F arm@15 riga@15` (era `riga@21`). Ritardo
+parata→corner **[1,1,1,1,1]** minuti (v5: [7,1,8]); corner annunciato → battuto **5/6** (il sesto è
+l'occasione del 41'-44' chiusa dal duplice fischio, 7.828, che non arma la palla morta: corretto).
+Sei versioni, quattro ipotesi smentite (ttl a righe, budget a tick, riga persa a valle, chiusura del
+piano) e una sonda cieca: la causa era il dado della cronaca. Rosso `NO818` in coda per il confronto.
