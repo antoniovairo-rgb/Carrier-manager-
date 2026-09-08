@@ -2677,3 +2677,11 @@ nota del PO sulla 7.807 resta **non riprodotta**, senza colpevoli inventati.
 
 **Nona lezione sugli strumenti**: due build nello stesso browser non sono confrontabili — un
 browser per gamba (v3), e prima di credere a una differenza fra build si inverte l'ordine.
+
+### Rituali sul build 7.810 v2 — **CI rossa**: `gol-del-simulatore` 8 nati / 7 accreditati / 1 mangiato
+
+Il build v2 differisce dal v1 (CI verde: 8/8/0) per una sola condizione nel ramo della colla
+dell'eroe, che vale solo negli highlight. Una causa improbabile — ma la 7.805 ha insegnato che un
+peso invisibile può mangiare un gol, e la banda gira su due partite di un banco stocastico. Si
+ripete la CI **da sola** a cascata finita; se è rossa due volte, la modifica si toglie e si
+rimisura. Finché la CI non è verde, il treno 7.809/7.810 **non si committa**.
