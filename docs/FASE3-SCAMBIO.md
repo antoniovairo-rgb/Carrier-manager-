@@ -2849,3 +2849,17 @@ gol pendente la catena «è il racconto» (7.537 v4) — così l'apertura dell'o
 c'entravano (guardie mai scattate): v1 revocata. **7.812 v2**: se la riga del tick è una battuta
 di piano, la catena tace per quel tick. Rosso `__CPM_NO812`, testimone `__CPM_SALVA812`. Misura
 `rifiuti-827` rosso/verde e rituali in corsa.
+
+### 7.812 v2 — **8/11 (73%)** contro 0/24 — e un rosso che non era rosso
+
+`rifiuti-827` sul build v2: «occasioni con tutte e tre le righe nel diario» **3/5 e 5/6** (guardia
+scattata 9-18 volte a partita, battute vive a p1/p2/p3 = 10/10/10). Il confronto appaiato è con le
+quattro corse precedenti a codice identico meno la guardia: **0/6, 0/9, 0/5, 0/4 → 8/11**.
+Ma la corsa etichettata «rosso» era un secondo verde: la sonda **ignorava `CPM_ROSSO`**
+(decima lezione: il rosso va verificato leggendo il testimone — la guardia «scattata 10 volte»
+nel rosso lo diceva). Sonda corretta.
+
+Il residuo (3/11): la battuta arriva all'emissione (p3 = battute) ma esce nel **timer
+dell'arco** (240-340 ms dopo, r.5317) e lì una scheda aperta la rifiuta senza che il testimone
+`REF_PIANO` — che sta sul ramo sincrono — lo veda. **v3**: la battuta di piano esce subito, come
+il gol. Rosso vero e verde in coda, poi rituali.
