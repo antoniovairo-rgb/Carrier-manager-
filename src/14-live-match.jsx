@@ -753,7 +753,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   const _awayClubObj=isMatchHome?opponent:_heroSideClub;// vera squadra ospite (per sigla {A})
   const _heroSideRoster=isMatchHome?homeRoster:awayRoster;// rosa del lato dell'eroe (già nazionale in nat-ctx)
   /* [7.825.0 — L'ASSIST LO FA UNO CHE E' IN CAMPO. Rosso __CPM_NO825] Playtest n°6: «Moretti segna su assist di Landi! 1-0.» e al 28' «Moretti corre ad abbracciare Scotti: il gol e' di tutti e due». Landi non gioca: i compagni dell'assist venivano da `player.teammates` (la rosa di carriera), non dall'undici in campo. Ora dall'undici; l'archetipo della carriera si recupera per nome quando c'e'. */
-  const _matePool=(_isNatCtx||!(typeof window!=='undefined'&&window.__CPM_NO825))?_heroSideRoster.filter(r=>r&&r.name&&r.name!==player.name).map(r=>{const _tm=(player.teammates||[]).find(q=>q&&q.name===r.name);return {name:r.name,archetype:(_tm&&_tm.archetype)||null};}):(player.teammates||[]);// compagni per assist-link: nazionali in nat-ctx, club altrimenti
+  const _matePool=(_isNatCtx||!(typeof window!=='undefined'&&window.__CPM_NO825))?_heroSideRoster.filter(r=>r&&r.name&&r.name!==player.name&&!/^(POR|GK|Portiere)$/i.test(String(r.pos||r.role||""))).map(r=>{const _tm=(player.teammates||[]).find(q=>q&&q.name===r.name);return {name:r.name,archetype:(_tm&&_tm.archetype)||null};}):(player.teammates||[]);// compagni per assist-link: nazionali in nat-ctx, club altrimenti
   // 22 players + referee — generated once per match
   const matchPlayersRef=useRef(null);/* [BL-07] specchio live per l'hook diagnostico __CPM_MP (pattern ref standard) */
   /* [7.186.0 collaudo PO «punizione senza barriera e giocatori mal posizionati»] predicato UNICO di set-piece:
@@ -3120,7 +3120,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
         const _indietro803=(hlIdx<_attesi803);
         const _apertoDa803=Math.min(_prog803|0,12);
         const _apre803=_no803?(nx>=_prog803)
-          :(nx>=_apertoDa803&&_att803>=_PASSO803&&(_picco803||_indietro803));
+          :(nx>=_apertoDa803&&_att803>=_PASSO803&&(_picco803||_indietro803)&&((typeof window!=='undefined'&&window.__CPM_NO834)||!pendingGoalRef.current));/* [7.834.0 — LA SCENA DELL'EROE NON SI APRE SOPRA UN'OCCASIONE. Rosso __CPM_NO834] Playtest n°9 (AD): Galli 11'-13' «Pecoraro serve Colombo» → scena «Murato dalla difesa» → «Colombo prova da lontanissimo»; Conti 17'-18' il tiro di Scotti resta senza esito perche' la scena dell'eroe entra e segna. Con un piano aperto (occasione o costruzione del gol) la scena aspetta il tick dopo la chiusura. */
         if(typeof window!=='undefined'&&window.__CPM_REC&&!_subDue38&&hlIdx<hlTimesRef.current.length&&_apre803){
           try{(window.__CPM_HL803=window.__CPM_HL803||[]).push({min:nx,prog:_prog803|0,sp:_sp803,
             perche:_no803?'orologio':(_picco803?'andamento':'tabella')});}catch(_e803){}
@@ -4177,7 +4177,14 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
            (`_draw541`, `_bgProb`), che decide se in questo tick esce una riga. Le battute di piano lo scavalcano da
            sempre (`_forza541`); la palla morta promessa dal testo no. Ora lo scavalca anche lei, al primo tick. */
         const _forzaOut818=(!(typeof window!=='undefined'&&window.__CPM_NO818)&&!!(outRef.current&&outRef.current.occ818&&(outRef.current.step|0)===0)&&!_inHL77);
-        if(_simEv77||(_draw541&&!_inHL77&&!_pausa485)||_forza541||_forzaOut818||_annScena653||_forzaLib666||_forzaIntx669){if(_simEv77){try{if((typeof window!=='undefined'&&window.__CPM_REC)){const _L=(window.__CPM_GOL785=window.__CPM_GOL785||{});_L['entrato_nel_cancello_riga']=(_L['entrato_nel_cancello_riga']|0)+1;}}catch(_e785){}}/* [7.528.0 v2] durante l'azione pendente le righe ESCONO e raccontano l'avanzata (la decisione F3b segue la palla che sale: sviluppo/pericolo emergono da soli — la prima stesura le sopprimeva e il guardiano bg-rhythm e' diventato CIECO: sviluppo 6 coppie, pericolo 2, contro 14/13 storici); a non muovere il pallone ci pensa il blocco _bt498 qui sotto */
+        /* [7.833.0 — LA LIBRERIA HA IL MICROFONO, O NON CE L'HA. Rosso __CPM_NO833] Playtest n°9 (AE): Galli 37'-44' tre narratori
+           intrecciati (libreria, contropiede, libreria), Moretti 13'-15' righe di libreria alternate a fallo, rimessa, giro palla.
+           Le righe programmate dal 7.687 escono dai timer a 1,3 s l'una per dieci secondi; nel frattempo il tick continuava a
+           sorteggiare righe di fondo e recite. Due regole: (a) finche' l'azione della libreria e' in recita il tick non sorteggia
+           righe ordinarie (restano gol del microsim, battute di piano, palla morta); (b) se nel frattempo nasce qualcosa di vero
+           — costruzione di un gol, contropiede, palla morta, scena — l'azione della libreria si tronca (vedi il timer). */
+        const _libRec833=(!(typeof window!=='undefined'&&window.__CPM_NO833)&&!!(libAzRef666.current&&libAzRef666.current.auto&&(libAzRef666.current.i|0)<(libAzRef666.current.righe||[]).length));
+        if(_simEv77||(_draw541&&!_inHL77&&!_pausa485&&!_libRec833)||_forza541||_forzaOut818||_annScena653||_forzaLib666||_forzaIntx669){if(_simEv77){try{if((typeof window!=='undefined'&&window.__CPM_REC)){const _L=(window.__CPM_GOL785=window.__CPM_GOL785||{});_L['entrato_nel_cancello_riga']=(_L['entrato_nel_cancello_riga']|0)+1;}}catch(_e785){}}/* [7.528.0 v2] durante l'azione pendente le righe ESCONO e raccontano l'avanzata (la decisione F3b segue la palla che sale: sviluppo/pericolo emergono da soli — la prima stesura le sopprimeva e il guardiano bg-rhythm e' diventato CIECO: sviluppo 6 coppie, pericolo 2, contro 14/13 storici); a non muovere il pallone ci pensa il blocco _bt498 qui sotto */
           /* [7.490.0 direttiva PO §9 «eventi importanti: piu' enfasi e tempo di lettura»] LA PAUSA SI ARMA
              DOPO, E PESA L'EVENTO. Fino a qui era uniforme: un gol aveva lo stesso respiro di una rimessa
              laterale, e in un feed di testo il respiro E' l'enfasi — non c'e' altro modo di dire «questo
@@ -4425,7 +4432,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               if(_sp.step===1)ev={txt:"⚪ {H} si incarica del traversone: palla sistemata sul vertice.",ef:null,w:1,bpos:{x:98,y:_sp.y},pd:_dec499};
               else{spRef.current=null;
                 ev=_r537<0.30?{txt:"💥 Traversone dal corner: incornata di {H2}! Fuori di un soffio.",ef:null,w:1,bpos:{x:96,y:44},ms:{shots:1},at:"cross",pd:_dec499,tn617:-1}
-                 :_r537<0.58?{txt:"🧤 Corner in mezzo: esce il portiere di {A} e fa sua la palla.",ef:null,w:1,bpos:{x:94,y:50},at:"cross",pd:_dec499,tn617:-1}
+                 :_r537<0.58?{txt:"🧤 Corner in mezzo: esce {GKA} e fa sua la palla.",ef:null,w:1,bpos:{x:94,y:50},at:"cross",pd:_dec499,tn617:-1}
                  :_r537<0.85?{txt:"🛡️ Cross dal vertice respinto: la difesa di {A} libera ai margini dell'area.",ef:null,w:1,bpos:{x:74,y:52},at:"cross",pd:_dec499,tn617:-1}
                  :{txt:"⚡ Corner battuto corto: {H} e {H2} tengono il possesso sulla fascia.",ef:null,w:1,bpos:{x:84,y:78},pd:_dec499,tn617:1};}}
             else if(_sp.kind==="corner_against"){
@@ -4443,7 +4450,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
             else if(_sp.kind==="pen_for"){
               if(_sp.step===1)ev={txt:"😶 {H} sul dischetto. Lo stadio trattiene il fiato…",ef:null,w:1,bpos:{x:94,y:50},pd:_dec499};
               else{spRef.current=null;
-                ev=_r537<0.60?{txt:"🧤 PARATO! Il portiere di {A} intuisce l'angolo e respinge il rigore!",ef:null,w:1,bpos:{x:90,y:47},ms:{shots:1},at:"shot",pd:_dec499,tn617:-1}
+                ev=_r537<0.60?{txt:"🧤 PARATO! {GKA} intuisce l'angolo e respinge il rigore!",ef:null,w:1,bpos:{x:90,y:47},ms:{shots:1},at:"shot",pd:_dec499,tn617:-1}
                  :{txt:"😱 Rigore alto! {H} si prende la testa fra le mani.",ef:null,w:1,bpos:{x:97,y:45},ms:{shots:1},at:"shot",pd:_dec499,tn617:-1};}}
             else if(_sp.kind==="pen_against"){/* [7.629.0] il rigore CONTRO: prima d'ora l'arbitro fischiava rigori solo per noi — mezza regola. Stesso vincolo: mai gol per costruzione */
               if(_sp.step===1)ev={txt:"😶 {A} dal dischetto: il nostro portiere resta sulla linea, occhi negli occhi…",ef:null,w:1,bpos:{x:6,y:50},pd:_dec499};
@@ -4510,7 +4517,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
           if(!_no542&&_ct&&!/goal$/.test(String(ev.ef||""))&&!_koHij536&&kickoffRef.current<=0&&!pendingGoalRef.current&&!(ev&&ev._out818)){/* [7.818 v4] la riga della palla morta dell'occasione non si sostituisce: e' il seguito promesso */
             _recHij545=true;_recKind546="counter";_recSide546=_ct.dir>0?"home":"away";const _rc542=(Math.abs(hashStr(String(ev.txt||"")+"|"+nx+"|ct"))%100)/100;
             if(_ct.fin){counterRef.current=null;
-              ev=_ct.dir>0?(_rc542<0.4?{txt:"💥 La ripartenza si chiude col tiro di {H}: il portiere di {A} devia in tuffo!",ef:null,w:1,bpos:{x:88,y:52},ms:{shots:1},at:"shot",pd:_dec499,tn617:-1}
+              ev=_ct.dir>0?(_rc542<0.4?{txt:"💥 La ripartenza si chiude col tiro di {H}: {GKA} devia in tuffo!",ef:null,w:1,bpos:{x:88,y:52},ms:{shots:1},at:"shot",pd:_dec499,tn617:-1}
                  :_rc542<0.7?{txt:"↗ Contropiede: cross basso di {H} — la difesa di {A} spazza in extremis.",ef:null,w:1,bpos:{x:82,y:60},at:"cross",pd:_dec499,tn617:-1}
                  :{txt:"⚡ La ripartenza sfuma: {A} raddoppia su {H} e chiude al limite.",ef:null,w:1,bpos:(function(){const _r=(!(typeof window!=='undefined'&&window.__CPM_NO750)&&_ct.runner!=null)?(matchPlayersRef.current||[])[_ct.runner]:null;return _r?{x:_r.x||74,y:_r.y||48}:{x:74,y:48};})(),pd:_dec499,tn617:-1})
                :(_rc542<0.4?{txt:"😨 Ripartenza di {A}: tiro dal limite — il nostro portiere respinge coi pugni!",ef:null,w:1,bpos:{x:10,y:48},ms:{oppShots:1},at:"shot",pd:_dec499,tn617:1}
@@ -4897,6 +4904,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                     for(let _k687=(_golTick785?0:1);_k687<_rr666.length;_k687++){
                       chantTimersRef.current.push(setTimeout(((_ix)=>()=>{try{
                         const _LA2=libAzRef666.current;if(!_LA2||_LA2.sig!==_st666.sig)return;
+                        if(!(typeof window!=='undefined'&&window.__CPM_NO833)&&_ix>0&&(pendingGoalRef.current||["hl_intro","hl_move","hl_choose","hl_result"].includes(phaseRef.current))){/* [7.833 v2] la CI del 7.834 era rossa (manovra-viva 4/2 partite, banda 10): troncare anche per contropiede, palla morta e calcio d'inizio tagliava troppe righe — e quelle nascono solo da righe sorteggiate, che la regola (a) gia' tace durante la recita. Si tronca solo per un piano aperto o una scena. */_LA2.i=_LA2.righe.length;if(typeof window!=='undefined'&&window.__CPM_REC){try{window.__CPM_LIB833T=(window.__CPM_LIB833T|0)+1;}catch(_e){}}return;}/* [7.833 b] l'azione si tronca: e' nato qualcosa di vero */
                         const _r2=_LA2.righe[_ix];if(!_r2)return;
                         _LA2.i=_ix+1;
                         /* ⚠️ [7.687.0] I SEGNAPOSTO VANNO SOSTITUITI ANCHE QUI. La riga che passa dal
@@ -4946,8 +4954,8 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
              gol NOSTRI `_evName170` restava nullo e il nome del rigo usciva da `_pickN` (rosa a sorteggio): il piano
              nominava uno e il tabellone ne accreditava un altro. Ora, se il gol arriva da un piano, firma chi ha
              fatto l'ultima battuta. Testimone __CPM_NOME814{gol,firmati}. */
-          if(ev.ef==="team_goal"&&lastGoalChiRef814.current&&lastGoalChiRef814.current.dir>0&&!(typeof window!=='undefined'&&window.__CPM_NO814)){try{
-            const _q814=(matchPlayersRef.current||[])[lastGoalChiRef814.current.i];const _n814u=_q814&&_surnBG(_q814.name||"");const _n814=(function(){try{if(!_n814u)return _n814u;const _R=(isMatchHome?homeRoster:awayRoster)||homeRoster||[];const _m=_R.find(r=>r&&r.name&&_surnBG(r.name).toUpperCase()===String(_n814u).toUpperCase());return _m?_surnBG(_m.name):(_n814u.charAt(0)+_n814u.slice(1).toLowerCase());}catch(_e){return _n814u;}})();/* [7.830] dalla rosa, con le maiuscole giuste (le maglie sono in maiuscolo) */
+          if(((ev.ef==="team_goal"&&lastGoalChiRef814.current&&lastGoalChiRef814.current.dir>0)||(ev.ef==="opp_goal"&&lastGoalChiRef814.current&&lastGoalChiRef814.current.dir<0&&!(typeof window!=='undefined'&&window.__CPM_NO835)))&&!(typeof window!=='undefined'&&window.__CPM_NO814)){/* [7.835.0 — ANCHE IL GOL LORO LO SEGNA CHI HA TIRATO. Rosso __CPM_NO835] Playtest n°10 (Q-loro): «Santoro calcia di prima» → «Gol avversario. Spada buca la nostra difesa»: la firma del piano valeva solo per i nostri gol. */try{
+            const _q814=(matchPlayersRef.current||[])[lastGoalChiRef814.current.i];const _n814u=_q814&&_surnBG(_q814.name||"");const _n814=(function(){try{if(!_n814u)return _n814u;const _R=((lastGoalChiRef814.current.dir<0)?((isMatchHome?awayRoster:homeRoster)||awayRoster):((isMatchHome?homeRoster:awayRoster)||homeRoster))||[];const _m=_R.find(r=>r&&r.name&&_surnBG(r.name).toUpperCase()===String(_n814u).toUpperCase());return _m?_surnBG(_m.name):(_n814u.charAt(0)+_n814u.slice(1).toLowerCase());}catch(_e){return _n814u;}})();/* [7.830] dalla rosa, con le maiuscole giuste (le maglie sono in maiuscolo) */
             if(_n814){_evName170=_n814;}if(typeof window!=='undefined'&&window.__CPM_REC){try{const _W=(window.__CPM_NOME814=window.__CPM_NOME814||{gol:0,firmati:0});if(_n814)_W.firmati++;(_W.det=_W.det||[]).push({min:nx,i:lastGoalChiRef814.current.i,n:_n814||null});}catch(_e){}}
           }catch(_e814){}}
           if((ev.ef==="team_goal"||ev.ef==="opp_goal")&&typeof window!=='undefined'&&window.__CPM_REC){try{const _W=(window.__CPM_NOME814=window.__CPM_NOME814||{gol:0,firmati:0,loro:0});if(ev.ef==="team_goal"){_W.gol++;_W.conPiano=(_W.conPiano|0)+(lastGoalChiRef814.current?1:0);}else _W.loro++;}catch(_e){}}
@@ -4977,7 +4985,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
           });setPossession(p=>clamp(p-4,20,80));flashScreen({col:"rgba(239,68,68,0.22)",dur:500});
             // Sprint 113: away fan chant when opponent scores
             chantTimersRef.current.push(setTimeout(()=>{const _awayC=pick(chantPoolFor("away_goal",/^(national|nationsCup|euroMondiale)/.test(context||""),player.nation,player.club?.lg)||["..."]);/* [6.39.0] reazione allo 0-1 nella lingua della curva */setCrowdChant({text:_awayC,type:"away_goal",key:Date.now(),clubCol:"#9ca3af"});const _tid=setTimeout(()=>setCrowdChant(null),2200);chantTimersRef.current.push(_tid);},300));
-            {const _oppR0=(isMatchHome?awayRoster:homeRoster)||awayRoster;const _oppR=_oppR0.filter(r=>r&&!/portiere|goalkeeper|^gk$/i.test(r.role||""));const _oppScorer=_surnBG((((_oppR.length?_oppR:_oppR0)[Math.floor(_rndM()*Math.min(11,(_oppR.length||_oppR0.length)))]||{}).name)||"")||"avversario";/* [7.178.0 RC-3] il PORTIERE avversario non firma più i gol ambientali (slot 0 del roster era in pool) *//* [7.170.0] cognome suffisso-aware */_evName170=_oppScorer;pushMatchEvent(nx,"opp_goal","😨 Gol di "+_oppScorer);setFloatGoal({text:"⚽ GOL — "+_oppScorer,col:"#94a3b8",key:Date.now()});}/* [6.49.0 RC] il gol AVVERSARIO usa la rosa dell'OPPONENTE (isMatchHome?away:home) · [7.112.0] badge col nome del marcatore avversario */
+            {const _oppR0=(isMatchHome?awayRoster:homeRoster)||awayRoster;const _oppR=_oppR0.filter(r=>r&&!/portiere|goalkeeper|^gk$/i.test(r.role||""));const _oppSorteggio=_surnBG((((_oppR.length?_oppR:_oppR0)[Math.floor(_rndM()*Math.min(11,(_oppR.length||_oppR0.length)))]||{}).name)||"")||"avversario";const _oppScorer=(_evName170&&!(typeof window!=='undefined'&&window.__CPM_NO835))?_evName170:_oppSorteggio;/* [7.835.0] il protagonista dell'ultima battuta del loro piano, se c'e' *//* [7.178.0 RC-3] il PORTIERE avversario non firma più i gol ambientali (slot 0 del roster era in pool) *//* [7.170.0] cognome suffisso-aware */_evName170=_oppScorer;pushMatchEvent(nx,"opp_goal","😨 Gol di "+_oppScorer);setFloatGoal({text:"⚽ GOL — "+_oppScorer,col:"#94a3b8",key:Date.now()});}/* [6.49.0 RC] il gol AVVERSARIO usa la rosa dell'OPPONENTE (isMatchHome?away:home) · [7.112.0] badge col nome del marcatore avversario */
             // Dynamic HL — queue a reactive highlight a few minutes after conceding
             if(nx<75&&numHLRef.current<8&&!onBenchRef.current&&!subbedOffRef.current&&!heroRedRef.current)reactiveHLQueueRef.current.push(/* [7.178.0 RC-17] niente «il momento è tuo» a eroe fuori dal campo *//* [7.489.0] minuto SEEDATO: un highlight e' un evento, e deve cadere allo stesso minuto a tutte le velocita' */nx+4+Math.floor(_rndM()*5));}
           if(/red|injury/.test(String(ev.ef||""))){try{salIstRef691.current=Date.now()+6000;}catch(_e691){}}/* [7.691.0] rosso o infortunio: sei secondi di scena */
