@@ -2803,3 +2803,7 @@ squadra in attacco»). Verde atteso 0/42, in coda.
 **CI rossa una volta sul build 811b** (`gol-del-simulatore` 8/7/1) dopo un verde sullo stesso
 codice a meno del refactor in funzione pura; la banda gira su due partite di un banco stocastico.
 Si ripete da sola; rossa due volte = si indaga prima di committare.
+
+### 7.811 — tabella verde con la frase corretta: **0/42** (rosso 16/60)
+
+`tabella-830`, 20 stati: nessuna frase d'enfasi contraddice più il tabellone. CI ripetuta in corsa.
