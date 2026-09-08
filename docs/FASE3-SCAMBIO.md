@@ -3211,3 +3211,12 @@ ridimensiona**: nessun rimedio, testimone e sonda restano.
 - Misura sul testo (`analisi-diario.py`, baseline n° 9): **[AD] tiri di battuta senza esito 2**,
   **[AE] azioni di libreria intrecciate 7** (Galli 6). Bersaglio: 0 e ≤ 1. Playtest n° 10 e rituali
   del 7.834 in catena.
+
+### 7.834 — playtest n° 10 5,7 (AD 2 → 0, AE 7 → 0), ma CI rossa: 7.833 v2
+
+Rituali del 7.834: career PASS, **CI exit 1** — guardiano `manovra-viva` **4 righe di manovra su 2
+partite (catena 1 + libreria 3), banda 10**. Letto l'exit, non il fingerprint: niente commit. La
+regola (b) della 7.833 troncava l'azione della libreria anche per contropiede, palla morta e calcio
+d'inizio; ma quelli nascono solo da righe sorteggiate, che la regola (a) già tace durante la recita
+— il troncamento serviva solo per un piano aperto e per la scena dell'eroe. **v2**: si tronca solo
+per quelli. Misura: il guardiano da solo (`partita-vera`), poi i rituali interi prima del commit.
