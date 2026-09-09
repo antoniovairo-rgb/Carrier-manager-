@@ -3284,3 +3284,13 @@ sul 45' né durante la ripresa (`kickRef`, `kickoffRef`). Nota di banda: la libr
 con le occasioni a cinque battute (7.829) per gli stessi slot di riga — 17, 10, 6 righe nelle ultime
 tre corse del guardiano. Se la v2 resta sotto 10, la scelta è fra tenere AF aperta (una riga su
 quattro partite) e rivedere la banda a verbale; non si tocca la banda di nascosto.
+
+### 7.837 REVOCATA (v1 e v2): il guardiano dice 6 in tutti e due i casi
+
+`partita-vera` sul build v2: `manovra-viva` **6 righe (catena 2 + libreria 4)**, identico alla v1 —
+il mondo del guardiano è seminato, e troncare/non aprire la libreria attorno al 45' gli costa 4
+righe rispetto al 7.836 (10). La banda è 10 e non si tocca di nascosto. Sorgente e HTML riportati al
+7.836 v2 committato (69640c1). **AF resta aperta** e dichiarata: un'azione di libreria che
+prosegue oltre il duplice fischio in una partita su quattro. La strada giusta non è un altro
+cancello: è dare alla libreria uno slot suo (S5, la libreria come corpo dell'occasione) così che la
+banda non dipenda dai cancelli.
