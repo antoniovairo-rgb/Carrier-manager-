@@ -735,3 +735,22 @@ si ferma all'intervallo (7.828 fermava solo l'occasione). → 7.837 (sorgente).
 | 12 Carriera | 6 | **6** |
 
 **Media: 5,9** (n° 11: 5,7). Rituali del 7.836 v2 in corso.
+
+
+---
+
+# Rapporto n° 13 — build 7.837 (09/09 notte)
+
+| | Vairo casa | Moretti casa | Galli fuori | Conti fuori |
+|---|---|---|---|---|
+| righe / minuti vuoti | 74 / 37 | 63 / 47 | 51 / 51 | 81 / 36 |
+| scene dell'eroe | 19,32 | 10,31 | 30,60,69,87 | 10,55,63,82 |
+| finale | 1-0 | 2-0 | 2-1 | 4-2 |
+| tiri nostri nel diario | 3 | 2 | 2 | 4 |
+
+Misurato sul testo: [AD] 0 · [AE] 3 (Moretti 2, Conti 1) · **AF ancora 1**: Vairo 45'-47' la stessa
+azione di libreria dopo il duplice fischio — la 7.837 troncava al fischio, ma l'azione **nasceva sul
+tick stesso del 45'**, dopo il troncamento. → 7.837 v2 (sorgente): la libreria non si apre sul 45'
+né durante la ripresa. In casa la squadra continua a tirare (Vairo 3, Moretti 2).
+
+**Media: 5,9** (uguale al n° 12: nessuna area cambia di un punto intero).
