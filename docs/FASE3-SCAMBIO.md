@@ -3266,3 +3266,11 @@ Finestre libere di Vairo: turno nostro 1/10 → **4/10**, con adv ≥ 48 **0 →
 2 → **4**. Il controllo agisce solo nei tick quieti, che sono pochi: il resto lo scrivono gli
 eventi. Misura che conta per il player: tiri nostri in casa nel diario (playtest n° 12), poi i
 rituali. Si dichiara quello che c'è, non quello che manca.
+
+### 7.836 v2 sul branch (69640c1) — playtest n° 12: 5,9
+
+Rituali: career PASS, CI exit 0, `manovra-viva` 10 righe (banda 10: al limite, dichiarato).
+Playtest n° 12: Vairo in casa **0 → 3 tiri nostri**, minuti muti 53 → 38, 1-0 con tre occasioni e
+il gol dell'eroe subito dopo un corner nostro; media 5,7 → **5,9**. Nuova AF (l'azione della
+libreria continua oltre il duplice fischio) → **7.837** nel sorgente (il fischio tronca anche la
+libreria), non nel build committato.
