@@ -999,3 +999,24 @@ Il seme cambia le partite (Vairo 0-0, Conti 4-2): non è la 7.843, è il mondo c
 | 12 Carriera | 6 | **6** |
 
 **Media: 6,4** (n° 22: 6,3). Metro 8,0. Rituali in corso.
+
+
+---
+
+# Rapporto n° 24 — 7.845 (piazzato e calcio d'inizio non aspettano il dado) + 7.844 (prima scena) — 09/09
+
+| | Vairo casa | Moretti casa | Galli fuori | Conti fuori |
+|---|---|---|---|---|
+| righe / minuti muti (n° 23) | 83 / 34 | 76 / 31 | 85 / 28 | 91 / 31 |
+| righe / minuti muti (**n° 24**) | 113 / **14** | 79 / 30 | 81 / 30 | 84 / 31 |
+| di cui palla morta | 5 | 8 | 9 | 5 |
+| di cui pausa di lettura | 8 | 17 | 15 | 13 |
+| di cui ripresa / calcio d'inizio | 1 | 5 | 6 | 13 |
+| di cui fermo | **0** (era 10) | 0 | 0 | 0 |
+| prima scena dell'eroe | 14' | 13' | 25' | 13' |
+| finale | 0-0 | 1-0 | 2-1 | 3-2 |
+
+**7.845**: il «fermo» senza palla morta sparisce (Vairo 10 → 0; la punizione del 47' che aspettava sei
+minuti ora si batte al minuto dopo). Vairo passa a 14 minuti muti e 113 righe (22 sono del secondo
+commentatore, nessuna ripetizione anomala). **7.844**: prima scena 13/13/13/13 → **14/13/25/13**: due
+partite restano al 13' — l'offset seminato vale 0 per due semi su quattro. Non chiuso: si misura ancora.
