@@ -32,7 +32,7 @@ for(let k=0;k<2000;k++){
 const d=await page.evaluate(()=>({
   cro:window.__CPM_CRO802||[],
   esiti:((window.__CPM_EV&&window.__CPM_EV())||[]).filter(e=>e.ev==='esito'),
-  gol:((window.__CPM_EV&&window.__CPM_EV())||[]).filter(e=>e.ev==='goal'),nome:window.__CPM_NOME814||null,schermo:window.__CPM_SCHERMO843||[],beat:window.__CPM_BEAT792||[]}));
+  gol:((window.__CPM_EV&&window.__CPM_EV())||[]).filter(e=>e.ev==='goal'),nome:window.__CPM_NOME814||null,schermo:window.__CPM_SCHERMO843||[],beat:window.__CPM_BEAT792||[],occg:window.__CPM_OCCG836||[]}));
 await ctx.close();await b.close();srv.close();
 const punt={};storia.forEach(s=>{punt[s.min]=s.h+'-'+s.a;});
 const scene={};(d.esiti||[]).forEach(e=>{(scene[e.min|0]=scene[e.min|0]||[]).push((e.key||'?')+(e.ok?' RIUSCITO':' fallito'));});
@@ -58,6 +58,8 @@ const muti={};for(let m=1;m<=Math.max(min,89);m++){const r=(d.cro||[]).filter(c=
 /* [S5 misura] da dove si tira davvero (tiroDa = avanzamento del tiratore alla battuta del tiro) e le aperture oltre soglia (d > 12u fra il nominato e il punto d'arrivo) */
 {const _b=d.beat||[];const _t=_b.filter(x=>x.tiro&&x.tiroDa!=null);const _z={area:0,limite:0,lontano:0};_t.forEach(x=>{const v=+x.tiroDa;if(v>=82)_z.area++;else if(v>=70)_z.limite++;else _z.lontano++;});const _ap=[];_b.forEach((x,i)=>{if(x.tiro&&i>0&&_b[i-1]&&!_b[i-1].tiro&&!_b[i-1].gk&&_b[i-1].d!=null)_ap.push(_b[i-1]);});const _oltre=_ap.filter(x=>+x.d>12).length;/* l'apertura e' la battuta subito prima del tiro (7.792) */
 const _db=_t.filter(x=>x.db!=null).map(x=>+x.db);const _sul=_db.filter(v=>v<=5).length;console.log('  [S5] tiri di piano '+_t.length+' per zona '+JSON.stringify(_z)+' · tiroDa '+_t.map(x=>Math.round(x.tiroDa)).join(',')+' · aperture oltre 12u '+_oltre+'/'+_ap.length+' · tiratore sul pallone (<=5u) '+_sul+'/'+_db.length+' [db '+_db.join(',')+']');}
+/* [S3 v2 misura] tiri (righe 💥) negli ultimi 15' per lato, con lo stato del punteggio */
+{const _cro=(d.cro||[]).filter(c=>!c.intro&&c.t>=75&&/^💥/.test(c.txt||''));const _n=_cro.filter(c=>/\(GRA\)/.test(c.txt)).length,_l=_cro.filter(c=>/\(POL\)/.test(c.txt)).length;const _fin=(d.occg||[]).filter(x=>x.min>=75);const _finN=_fin.filter(x=>x.turno>0).length,_finA=_fin.filter(x=>x.adv>=48).length;console.log('  [S3] tiri dal 75\': nostri '+_n+' · loro '+_l+' · finestre libere del cancello dal 75\': '+_fin.length+' (turno nostro '+_finN+', palla avanzata '+_finA+')');}
 console.log('\n══ COSA HA VISSUTO IL PLAYER ══');
 console.log('  minuti muti per cosa c\'era sullo schermo: '+JSON.stringify(muti));
 console.log('  righe lette: '+righe+'  ·  minuti senza NIENTE: '+vuoti+'/'+min
