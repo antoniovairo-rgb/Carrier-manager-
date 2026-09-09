@@ -880,3 +880,27 @@ Somma v3-v5: chiusure **8/11**, nomi coerenti 11/11; rosso 0/2.
 **Media: 6,2** (n° 12-13: 5,9). Metro 8,0. Aperte: ritmo (35-44 minuti muti), AF, U, S1, S5 seconda
 metà, e la scena che segna dal titolo generico («Tentativo di cross» → gol di testa: la scelta lo
 spiega, il titolo no).
+
+
+---
+
+# Rapporto n° 20 — 7.842 (AF: il duplice fischio ferma anche la libreria) — 09/09 mattina
+
+| | Vairo casa | Moretti casa | Galli fuori | Conti fuori |
+|---|---|---|---|---|
+| righe / minuti vuoti | 72 / 38 | 86 / 30 | 67 / 42 | 73 / 36 |
+| finale | 1-0 | 2-0 | 3-2 | 4-0 |
+
+**AF**: azioni di libreria oltre il duplice fischio **0/4** (rosso n° 12-19: 1/4, Vairo 45'-47').
+Contropiedi: 4 annunci, chiusure 4/4 (Moretti 25'→28', Galli 16'→19', Galli 42' → fischio, Conti 44'
+→ 46'-47').
+
+Due cose nuove attorno al 45': Vairo 45' «De Santis sfiora il pari: Pellegrini salva sulla linea!»
+subito **dopo** il duplice fischio (una riga ordinaria del dado nello stesso tick del fischio); Conti
+44' «Recupero altissimo di Lombardi» → 45' fischio → 46' «Ripartiamo in verticale: **Lombardi lancia
+Lombardi**» → 47' chiusura: il contropiede attraversa l'intervallo e il nome cotto nel testo fa
+coincidere {H} e {H2}. → 7.842 v2: il fischio spegne anche il contropiede e mette in pausa il dado per
+due tick; il nome del corridore passa dal risolutore dei segnaposto (così {H2} lo esclude).
+
+Media invariata (6,2): AF era un difetto di coerenza in 1 partita su 4, e le due righe nuove attorno al
+fischio lo sostituiscono finché la v2 non è misurata.
