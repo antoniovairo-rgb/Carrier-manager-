@@ -3661,3 +3661,24 @@ Telefono (4 partite, 7.852): pallone ai piedi del padrone 38 / 34 / 19 / 40 % (7
 14): nessuna regressione. Career PASS, CI exit 0 (manovra-viva 67, gol del simulatore 7/7).
 **Sul branch.** Prossima misura: la sonda da telefono con i fotogrammi dei gol letti a occhio (è il
 metro del PO), e `gol74` su quattro partite.
+
+## 7.853 — il portiere sul gol: **REVOCATA** con la coppia
+
+Sonda `gol74` estesa (posizione del portiere avversario alla riga e a +5 s, tuffi nel testimone
+`__CPM_GK799`). Sulla 7.852, gol del microsim: portiere a 8,8-10,2u dalla porta alla riga, tuffi
+nella finestra 0 in 3 gol su 4; nelle scene dell'eroe sta a 3,4-3,6u. Rimedio provato: la battuta
+della rete arma il tuffo col segnale del piano (`gkSave695`) e il portiere sta sulla linea (97,5)
+col pallone in area.
+
+| gol del microsim | rosso `NO853` | 7.853 |
+|---|---|---|
+| portiere alla riga (u dalla porta) | 9,3 · 10,1 · 11,0 | 9,1 · 8,1 · 10,3 · 7,9 |
+| tuffi nella finestra di 5 s | 1 · 0 · 1 | 0 · 0 · 0 · 0 |
+
+Non batte la misura. Perché, a verbale: il segnale del piano è bloccato dalla guardia 7.808 (un
+tuffo T8 armato al tiro negli 8 s precedenti — e il T8 parte al tiro, cioè PRIMA della riga, fuori
+dalla finestra che conto); la posizione non si muove perché la distanza che misuro include la y
+(il portiere sta fra 38 e 62) e il bersaglio visivo passa comunque dagli offset e dall'inseguimento.
+Resta a richiesta (`__CPM_SI853`), sorgente a 7.852. Prima di riprovare: misura la sola x dalla
+linea e conta i tuffi da 1 s prima della riga; poi decidi se il difetto è la posa (portiere fuori
+quadro) o il tuffo (che nei fotogrammi c'è in 2 gol su 5).

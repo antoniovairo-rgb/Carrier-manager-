@@ -15909,7 +15909,9 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                che il gemello di questa regola in live-match riporta al centro dello specchio. */
             const _spec705r=!(typeof window!=='undefined'&&window.__CPM_NO705)&&(!!(P.fermo&&P.fermo.current)||(_awG?_bGX<62:_bGX>38));
             if(!isHL&&!_setPiece&&!_spec705r&&(_awG?_homeBall:!_homeBall)){
-              const _goalX=_awG?94:6,_adv=_awG?clamp((_bGX-50)/44,0,1):clamp((50-_bGX)/44,0,1),_ctr=clamp(1-Math.abs(_bGY-50)/45,0,1);
+              /* [7.853.0] col pallone DENTRO la sua area il portiere sta sulla linea (97,5 / 2,5), non a 6u dal palo: misurato 8,8-10,2u dalla porta sui gol del microsim. Rosso __CPM_NO853 */
+              const _inBox853=(typeof window!=='undefined'&&!!window.__CPM_SI853)&&(_awG?_bGX>=84:_bGX<=16);/* [7.853 REVOCATA: 8-10u dalla porta prima e dopo; a richiesta] */
+              const _goalX=_awG?(_inBox853?97.5:94):(_inBox853?2.5:6),_adv=_awG?clamp((_bGX-50)/44,0,1):clamp((50-_bGX)/44,0,1),_ctr=clamp(1-Math.abs(_bGY-50)/45,0,1);
               const _step=_adv*_ctr*4.5;_gx=_awG?clamp(_goalX-_step,80,_goalX):clamp(_goalX+_step,_goalX,20);_gy=clamp(50+(_bGY-50)*0.28,38,62);// uscita/spostamento RIDOTTI → resta in posizione di pronto sulla linea
             }
             else if(isHL&&_awG&&propsRef.current&&propsRef.current.hlGkOut){/* [7.248.0 gi52 «Non si vede il portiere che esce»] la regola «GK fermo sulla linea durante l'HL» (5.49.0) vale per i tiri normali — ma la scena che DICHIARA l'uscita (flag factory gkOutSit) la deve MOSTRARE: il GK avversario esce incontro alla palla per tutto l'highlight. Bound del gate rispettati (away GK ≥80) e uscita deterministica dalla posizione palla. */
@@ -26007,6 +26009,15 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
             const _pe649=_pgH649.piano[_pgH649.step|0];_pgH649.step=(_pgH649.step|0)+1;
             _recHij545=true;_recKind546="manovra-gol";_recSide546=_pgH649.dir>0?"home":"away";
             ev={txt:_pe649.t,_beatTxt812:_pe649.t,ef:null,w:1,bpos:{x:_pe649.rete?clamp(_pe649.x,-1,101):clamp(_pe649.x,4,96),y:_pe649.rete?clamp(_pe649.y,44,56):clamp(_pe649.y,6,94)},/* [7.852] la battuta della rete passa la linea */pd:_dec499,at:((typeof window!=='undefined'&&window.__CPM_NO808)?"pass":(_pe649.gk?"save":(_pe649.ms?"shot":"pass"))),/* [7.808.0 — LA BATTUTA DICHIARA IL PROPRIO TIPO. Rosso __CPM_NO808] Tutte e tre le battute uscivano con at:"pass": l'arco di cronaca (BALL_ARC_BY_TYPE, src/12) faceva volare il TIRO con altezza 0,9 e 0,48 s invece di 2,8 e 0,52 (shot), e il sito ATE-2 — che arma il tuffo del portiere solo su shot/save con bersaglio in area — dalle battute non partiva mai (misurato: tuffi T8 durante le occasioni, vedi quota-821). Ora la battuta col tiro (ms) vola da tiro, quella col portiere (gk) da parata, l'apertura resta un passaggio. Il segnale 7.695 resta a valle. */_piano649:1,ms:_pe649.ms?(_pgH649.dir>0?{shots:1}:{oppShots:1}):null};
+            /* ⚠️ [7.853.0 — IL PORTIERE C'E', SUL GOL. Rosso __CPM_NO853] Sonda gol74 sulla 7.852 (Conti, Moretti): sui gol del microsim il
+               portiere avversario sta a 8,8-10,2u dalla porta alla riga e i tuffi nella finestra sono 0 in 3 gol su 4; sul telefono
+               «rete si', portiere assente o fermo» in 2 gol su 5. La battuta della rete (7.852) arma il tuffo con lo stesso segnale
+               della parata (r.5432 in src/12: verso il pallone vero), senza esito di palla morta: il tuffo arriva tardi e la palla entra. */
+            /* ⚠️ [7.853 — REVOCATA con la coppia (gol74, Conti+Moretti): portiere alla riga 9,1/8,1/10,3/7,9u contro 9,3/10,1/11,0u del rosso, tuffi nella
+               finestra 0/0/0/0 contro 1/0/1. Il segnale del piano e' bloccato dalla guardia 7.808 (un tuffo T8 armato al tiro nei 8 s precedenti) e
+               la posizione non si muove. Resta a richiesta (__CPM_SI853). Prima di riprovare: misura con la sola x dalla linea (la y del portiere
+               entra nella distanza) e tuffi contati da 1 s PRIMA della riga (il T8 parte al tiro, cioe' prima della riga). */
+            if(_pe649.rete&&(typeof window!=='undefined'&&window.__CPM_SI853)){gkSave695.current={t:Date.now(),side:_pgH649.dir>0?"home":"away"};}
             if(_pe649.gk&&!(typeof window!=='undefined'&&window.__CPM_NO695)){gkSave695.current={t:Date.now(),side:_pgH649.dir>0?"home":"away"};_pgH649.esito703=_pe649.esito||null;/* [7.702.0] l'esito da regolamento dichiarato dal TESTO: alla chiusura arma la palla morta corrispondente *//* [7.695.0] la riga che NOMINA il portiere accende il tuffo: una sola fonte, il testo e il gesto non possono divergere */
               if(typeof window!=='undefined'&&window.__CPM_REC){try{const _w=(window.__CPM_OCC695=window.__CPM_OCC695||{armate:0,parate:0,min:[]});_w.parate++;}catch(_e){}}}
             /* [7.792 strumentazione] QUANTO DISTA CHI IL RACCONTO NOMINA DAL PUNTO DOVE MANDA LA PALLA.

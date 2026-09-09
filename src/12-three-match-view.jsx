@@ -4402,7 +4402,9 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                che il gemello di questa regola in live-match riporta al centro dello specchio. */
             const _spec705r=!(typeof window!=='undefined'&&window.__CPM_NO705)&&(!!(P.fermo&&P.fermo.current)||(_awG?_bGX<62:_bGX>38));
             if(!isHL&&!_setPiece&&!_spec705r&&(_awG?_homeBall:!_homeBall)){
-              const _goalX=_awG?94:6,_adv=_awG?clamp((_bGX-50)/44,0,1):clamp((50-_bGX)/44,0,1),_ctr=clamp(1-Math.abs(_bGY-50)/45,0,1);
+              /* [7.853.0] col pallone DENTRO la sua area il portiere sta sulla linea (97,5 / 2,5), non a 6u dal palo: misurato 8,8-10,2u dalla porta sui gol del microsim. Rosso __CPM_NO853 */
+              const _inBox853=(typeof window!=='undefined'&&!!window.__CPM_SI853)&&(_awG?_bGX>=84:_bGX<=16);/* [7.853 REVOCATA: 8-10u dalla porta prima e dopo; a richiesta] */
+              const _goalX=_awG?(_inBox853?97.5:94):(_inBox853?2.5:6),_adv=_awG?clamp((_bGX-50)/44,0,1):clamp((50-_bGX)/44,0,1),_ctr=clamp(1-Math.abs(_bGY-50)/45,0,1);
               const _step=_adv*_ctr*4.5;_gx=_awG?clamp(_goalX-_step,80,_goalX):clamp(_goalX+_step,_goalX,20);_gy=clamp(50+(_bGY-50)*0.28,38,62);// uscita/spostamento RIDOTTI → resta in posizione di pronto sulla linea
             }
             else if(isHL&&_awG&&propsRef.current&&propsRef.current.hlGkOut){/* [7.248.0 gi52 «Non si vede il portiere che esce»] la regola «GK fermo sulla linea durante l'HL» (5.49.0) vale per i tiri normali — ma la scena che DICHIARA l'uscita (flag factory gkOutSit) la deve MOSTRARE: il GK avversario esce incontro alla palla per tutto l'highlight. Bound del gate rispettati (away GK ≥80) e uscita deterministica dalla posizione palla. */
