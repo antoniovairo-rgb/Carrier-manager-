@@ -3469,3 +3469,24 @@ Causa nel movimento (r.5845): l'eletto è il più vicino al pallone a ogni tick 
 («l'uomo non si era mosso»). → **7.848**: finché la custodia del piano è viva, il portatore è il
 nominato e il suo bersaglio è il punto d'arrivo della battuta. Misura: tiratore sul pallone alla
 battuta del tiro (rosso 0/12). Rosso `__CPM_NO848`.
+
+
+### 7.848 v5 sul branch (6f8a284): il nominato dal piano corre sul punto d'arrivo
+
+Rosso n° 28: alla battuta del tiro il tiratore a 10-26u dal pallone, 0/12. Traccia tick per tick
+(`run848`) e quattro cause tolte una per volta, ognuna con la sua misura:
+1. il portatore scritto dalla battuta veniva riscritto a ogni tick dall'elezione d'arrivo (r.6014) →
+   il nominato si legge dal piano (`lastChi814`);
+2. il blocco del movimento gira un tick su tre (r.5815): un passo di 0,55 ogni tre minuti, 7u in
+   quattro tick → sotto custodia del piano il blocco gira a ogni tick;
+3. la seconda autorità sulle posizioni (le corsie, `velRef`, r.2589) tirava il nominato a y=5 mentre il
+   pallone andava a y=20 → le corsie cedono il nominato finché la custodia è viva;
+4. l'attesa del tiro misurava la distanza dal pallone in volo: il tiro partiva a x 76 con «da due
+   passi» → uomo E pallone sul punto d'arrivo (≤ 5u, tre tick).
+Traccia finale su Vairo: tiratore a 2,3u dal pallone, tiro da x 81. Playtest n° 29: sul pallone
+**6/14** (entro 8u 10/14), da dentro l'area 2/14. Career PASS, CI exit 0 (custodia mediana 4,7u).
+v6 in misura: ogni tiro aspetta (non solo il filtrante), filtrante da avanzamento 58.
+
+Quattordicesima lezione: sulle posizioni ci sono due autorità (il blocco a passo `k` e le corsie a
+velocità) e una terza che elegge il portatore a ogni tick; un nominato dal testo corre solo se tutte
+e tre glielo lasciano fare. Le revoche 7.793 e 7.797 avevano incontrato lo stesso muro senza vederlo.
