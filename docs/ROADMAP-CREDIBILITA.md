@@ -183,3 +183,15 @@ taglia del telefono, non l'Android del PO — GPU, tocco e prestazioni reali res
 automatico, e sul telefono vero l'ultima parola resta sua.
 
 Strumento: `tests/visual/collaudo-telefono.mjs` (fotogrammi + scheda con bande + foglio di contatto).
+
+**Decisione PO 09/09 sera:** `test:vision` (AI Vision con Ollama) tolto dal rituale CI (a3c7de9). Non ha
+mai deciso nulla in questa missione e Ollama non è raggiungibile da qui; il codice resta dormiente.
+
+**Primo difetto dello strumento (misurato, 09/09 sera):** `page.screenshot` sul campo 3D costa 0,5-4,7 s
+per scatto (PNG o JPEG, DPR 2 o 1), e intanto l'orologio della partita avanza: il fotogramma «del tiro»
+mostrava lo schermo di 1-3 minuti DOPO la riga (f25: riga al 60', schermo al 62' con «STREGATO!»; f34:
+riga all'83', schermo all'86' con un'interazione). Un giudizio dato su quei fotogrammi sarebbe stato
+una bugia dello strumento. Sonda v2: cattura continua via CDP screencast, età del fotogramma salvato
+≤ 0,5 s, misurata e scritta nella scheda; i fotogrammi al secondo si misurano nei primi 8 s prima di
+accendere lo screencast («senza sonda») e, a parte, con la sonda accesa; `CPM_FOTO=0` ripete la partita
+senza foto per verificare che i numeri del campo non dipendano dalla sonda.

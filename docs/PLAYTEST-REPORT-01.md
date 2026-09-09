@@ -1203,3 +1203,127 @@ revocata**: prima di una v2 serve il censimento delle finestre libere dal 75' (q
 ## Scorecard n° 31
 
 Uguale al n° 30 in tutte le aree: **media 6,4** (somma 77).
+
+
+---
+
+# Playtest DA TELEFONO n° 1 — 7.849 — 09/09 notte (direttiva PO 09/09 sera: «come se lo facesse da telefono e con grande sguardo critico»)
+
+Strumento: `tests/visual/collaudo-telefono.mjs` v2 (Chromium 412×915 portrait, DPR 2, campo 3D acceso,
+tick reale; cattura continua via CDP screencast, età del fotogramma salvato mediana 0,2-0,6 s, max 1,1 s).
+Quattro partite col seme 4242: Vairo e Moretti in casa, Galli e Conti fuori. I fotogrammi citati stanno in
+`docs/collaudo-telefono/n01/` (nome = partita, fotogramma, minuto DELLO SCHERMO, cosa mostra); le quattro
+schede complete nella stessa cartella. **Dichiarato:** è Chromium con GL software, non l'Android del PO:
+i fotogrammi al secondo (17-22) e i salti possono essere diversi sul telefono vero. Il diario del testo
+(playtest n° 31, 6,4) resta di appoggio: questa scheda giudica quello che lo schermo MOSTRA.
+
+## Le misure del campo (le stesse con e senza foto: Vairo senza foto 9 % / 11,1u / 54 salti)
+
+| | Vairo casa | Moretti casa | Galli fuori | Conti fuori | banda |
+|---|---|---|---|---|---|
+| pallone reso ai piedi del padrone della simulazione (≤ 3u) | 15 % | 17 % | 7 % | 6 % | ≥ 60 % |
+| …a palla a terra (arco spento) | 20 % | 19 % | 10 % | 8 % | ≥ 75 % |
+| distanza reso↔padrone, mediana / p90 (u) | 14,9 / 33,1 | 11,1 / 24,4 | 10,8 / 19,0 | 10,3 / 27,4 | mediana ≤ 3 |
+| scarto pallone reso↔logico, mediana / p90 (u) | 2,6 / 17,1 | 1,4 / 14,6 | 2,0 / 13,5 | 1,2 / 12,3 | p90 ≤ 8 |
+| salti del pallone (> 8u in ≤ 110 ms) | 51 | 52 | 49 | 49 | 0 fuori dagli stacchi |
+| tagli di camera | 6 | 6 | 6 | 12 | informativo |
+| fotogrammi al secondo senza sonda | 20 | 20 | 22 | 17 | ≥ 30 |
+| minuti: gioco · palla morta · ripresa · fermo | 62 · 19 · 3 · 1 | 57 · 20 · 8 · 0 | 58 · 12 · 13 · 1 | 58 · 8 · 18 · 1 | morta+fermo ≤ 15 |
+| righe di cronaca | 77 | 83 | 75 | 90 | 70-110 |
+| finale | 2-0 | 1-0 | 2-1 | 4-0 | |
+
+Chi scrive il pallone quando è a terra e lontano dal padrone della simulazione: `portatore` 125-243
+campioni a partita, `nessuno` 137-218. Cioè: il renderer ha incollato il pallone a un portatore SUO
+(`_por526`) che non è quello di `carrierRef` — la stessa causa scritta nel verbale della 7.813 v1
+revocata («il renderer deve PORTARE il pallone ai piedi del portatore logico, non solo sapere chi è»).
+Il pallone reso segue il pallone logico (scarto mediano 1,2-2,6u): è il pallone LOGICO a stare a
+10-15u da chi la simulazione dice che ce l'ha, e a saltare una volta ogni 3 secondi.
+
+## Quello che i fotogrammi mostrano (e non mostrano)
+
+**Gol.** Dieci gol in quattro partite, nove fotografati (il gol di Vallone per il POL a Galli 57' è sfuggito al filtro della sonda v2, corretto: non giudicato); **sette su nove non sono sul campo** nel fotogramma della riga:
+- Vairo 27' «Colombo segna su assist di Vairo» dopo «Dribbling portiere e appoggia»: centrocampo, tre
+  giocatori, pallone al cerchio (vairo-f13). La scena si era APERTA su un campo vuoto, senza un giocatore
+  né il pallone (vairo-f10).
+- Moretti 54' «Neri segna! Squadra in vantaggio!»: quattro avversari che camminano su una metà campo
+  vuota, nessun rossoblù, nessun pallone, camera «Trequarti» (moretti-f26).
+- Galli 38' «Ferrari segna su assist di Galli» con «Parabola d'esterno 40 m»: centrocampo, pallone
+  invisibile (galli-f13). Galli 65' «Spada segna!»: campo VUOTO, solo un segnalino (galli-f22).
+- Conti 24' «Ferrari segna! Raddoppio»: arco dell'area, nessun pallone, nessuno che salta (conti-f14);
+  54' «Lombardi segna! 3-0»: centrocampo, giocatori che camminano (conti-f24); 75' «Bruno segna! 4-0»
+  con «Cross teso di Lombardi: Bruno stacca sul secondo palo»: pallone A TERRA sull'arco dell'area, porta
+  fuori quadro (conti-f32).
+- Mostrati: Vairo 41' (area inquadrata, mischia; pallone difficile da vedere, vairo-f22) e Conti 15'
+  (porta inquadrata, tre difensori sul secondo palo, **portiere assente**, conti-f08).
+La camera sta nella zona dell'eroe (etichetta «Trequarti» / «Bordo area» / «Centrocampo» in basso a
+destra) e il gol del compagno accade fuori quadro. Con la scena dell'eroe la porta si vede; con
+l'occasione extra-eroe no, 0/5.
+
+**Tiri «da due passi, tutto solo davanti alla porta!»** — 3 su 3 controllati mostrano il pallone lontano
+da tutti e la porta fuori quadro: Vairo 10' (pallone al fondo fra quattro giocatori, camera a 40 m,
+vairo-f02), Vairo 37' (pallone sulla linea laterale, un giocatore solo in primo piano, vairo-f16), Galli
+12' (pallone da solo a metà area, quattro avversari e nessun compagno, galli-f03). Vairo 41' «mischia in
+area»: pallone FUORI area a 10-15u dal gruppo di otto nell'area piccola (vairo-f19).
+
+**Scene dell'eroe.** Credibile: Moretti 39' «Acrobazia istintiva in porta» — eroe sul pallone, difensore
+in scivolata, portiere sulla linea, porta in quadro (moretti-f20). Non credibili: Moretti 28'
+«Conclusione murata … murato dalla difesa» con un solo giocatore in quadro e nessun difensore
+(moretti-f13); Vairo 27' «Dribbling portiere» risolto a centrocampo (vairo-f12/f13); Vairo 27' scena aperta
+su un campo vuoto (vairo-f10). Su sei scene guardate, una convince.
+
+**Campo vuoto.** Vairo 27' (vairo-f10), Galli 49' «Rimessa dal centro per loro» col cerchio vuoto
+(galli-f17), Galli 64' (galli-f22). Lo stato «ripresa» (calcio d'inizio dopo un gol) dura 13' a Galli e
+18' a Conti: dopo ogni gol la partita resta in calcio d'inizio per minuti.
+
+**Telecronaca sullo schermo.** Il riquadro della battuta resta per 2-3 minuti mentre il campo va avanti
+(Vairo 37'-38' f15-f17 «Filtrante di Pecoraro…», 80'-81' f32-f34 «Pecoraro verticalizza per Ferrari…»;
+Moretti 35'-37' f15-f17 Cascioli «Qui la differenza la fa il tempo dell'inserimento» tre volte). Frasi
+ripetute nella stessa partita: «da due passi, tutto solo davanti alla porta!» 3× (Vairo 10', 37', 60'),
+«Traversone dalla bandierina: mischia in area!» 3× (Vairo 41', 64', 84'), «Toti respinge coi pugni, poi la
+difesa spazza in angolo» 3×. Galli: «Spada (POL)» al 50' e «Spada (GRA)» al 63' — lo stesso cognome nelle
+due squadre.
+
+**Cosa regge.** Le interazioni: leggibili, coerenti col tabellone, una alla volta (Vairo 43' il mister
+dopo il gol, 68' il cambio, 86' «gioco ruvido»; Conti 41' «Intesa a memoria»). Il tabellone: «Squadra in
+vantaggio» a 0-0→1-0 e 1-1→2-1, «Raddoppio», «Partita in mano: 3-0» tutti giusti; cercata una frase
+contro il punteggio, non trovata. La barra della carriera in basso (gol, assist, energia, voto 5,8→6,8 e
+5,8→7,1) aggiornata e leggibile; i nomi dei club nell'HUD sono troncati («Selezione …», «Polisporti…»).
+
+## Scorecard DA TELEFONO n° 1
+
+| # | Area | n°31 (diario) | **telefono n°1** | fotogramma / minuto che motiva il voto (< 7) · cosa si è cercato (≥ 7) |
+|---|------|:---:|:---:|---|
+| 1 Realismo | 7 | **4** | pallone ai piedi del padrone 6-17 % (banda 60), 49-52 salti a partita; moretti-f26 54', galli-f22 64' |
+| 2 Credibilità da attaccante | 6 | **4** | 7 gol su 9 fotografati fuori quadro; «da due passi» 3/3 con la porta fuori quadro (vairo-f02, vairo-f16, galli-f03) |
+| 3 Causalità | 7 | **6** | la catena c'è nel riquadro (battuta → tiro → portiere), ma il campo non la porta: conti-f32 73' pallone a terra su «cross teso» |
+| 4 Varietà | 6 | **5** | tre «da due passi» e tre «mischia in area» nella stessa partita (Vairo) |
+| 5 Ritmo | 6 | **5** | palla morta 19-20' in casa (banda 15); «ripresa» 13' Galli, 18' Conti; campo vuoto galli-f17 49' |
+| 6 Azioni extra-eroe | 7 | **5** | esistono nel testo (5 gol dei compagni) e 0/5 sul campo (moretti-f26, conti-f14/f24/f32, galli-f22) |
+| 7 Highlight dell'eroe | 6 | **5** | 1 scena credibile su 6 (moretti-f20 sì; moretti-f13, vairo-f10, vairo-f13 no) |
+| 8 Telecronaca | 6 | **5** | riquadro fermo 2-3' (vairo f15-f17, f32-f34); «Spada» in entrambe le squadre (Galli 50'/63') |
+| 9 Interazioni | 7 | **7** | cercata una scelta illeggibile o contro il punteggio in 6 interazioni: nessuna |
+| 10 Coerenza fra i sistemi | 7 | **7** | cercata una frase contro il tabellone in 10 gol e 4 finali: nessuna |
+| 11 Immersione | 6 | **5** | 17-22 fps senza sonda (banda 30, Chromium GL software), un salto del pallone ogni 3 s, schermo nero al 45' (vairo-f23) |
+| 12 Carriera | 6 | **6** | barra in basso viva e giusta; nomi dei club troncati nell'HUD a 412 px |
+
+**Media DA TELEFONO: 5,3** (somma 64). Metro 8,0, nessuna area sotto 7: **nove aree sotto 7**.
+Il diario diceva 6,4: la differenza (1,1) è il campo, che il diario non guardava. **Nessun «puoi
+collaudare».**
+
+## Bugie P1 (lo schermo smentisce il testo)
+
+1. **Il gol del compagno non è sul campo** (7 su 9 fotografati): la camera resta nella zona dell'eroe.
+2. **«Da due passi, tutto solo davanti alla porta» col pallone lontano da tutti e la porta fuori quadro** (3/3).
+3. **Scena dell'eroe risolta in un altro posto** (Vairo 27' a centrocampo; Moretti 28' senza difensori).
+4. **Campo vuoto** in tre fotogrammi (Vairo 27', Galli 49', Galli 64').
+
+## Cosa dice questa scheda sulla strada
+
+Le S1-S5 della roadmap erano giuste, ma il metro del diario ha promosso S5 («tiratore sul pallone 6/12»)
+guardando le coordinate logiche: sullo schermo il pallone reso sta a 10-15u dal portatore della
+simulazione per metà del tempo, e la porta non è in quadro quando succede la cosa che il testo racconta.
+Le due cause strutturali che i fotogrammi mostrano: (a) **due portatori** — il renderer incolla il
+pallone a `_por526`, la simulazione lo dà a `carrierRef` (S1+S2, verbale 7.813); (b) **la camera non va
+dove va la palla** quando l'azione non è dell'eroe (regia). Nessuna delle due si cura con una frase o un
+cancello. Prossima misura: la stessa sonda, stesse quattro partite, «gol sul campo» ≥ 8/9 e «pallone ai
+piedi del padrone» ≥ 60 %.
