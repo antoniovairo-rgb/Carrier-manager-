@@ -904,3 +904,19 @@ due tick; il nome del corridore passa dal risolutore dei segnaposto (così {H2} 
 
 Media invariata (6,2): AF era un difetto di coerenza in 1 partita su 4, e le due righe nuove attorno al
 fischio lo sostituiscono finché la v2 non è misurata.
+
+
+---
+
+# Rapporto n° 21 — 7.842 v2 — 09/09 mattina
+
+| | Vairo casa | Moretti casa | Galli fuori | Conti fuori |
+|---|---|---|---|---|
+| righe / minuti vuoti | 72 / 37 | 62 / 45 | 67 / 43 | 77 / 37 |
+| finale | 1-0 | 1-0 | 3-2 | 4-0 |
+
+AF **0/4**. Contropiedi: Moretti 30'→33' e Galli 16'→19', 42'→43'→44' chiusi prima del fischio (3/3
+con annuncio, volo e chiusura); nessun «Lombardi lancia Lombardi». Restano attorno al fischio: Vairo
+la riga ordinaria si è spostata dal 45' al **46'** («Vallone sfiora il pari» sul calcio d'inizio della
+ripresa: la pausa di due tick ne copriva uno), e Conti 44' «Recupero altissimo di Bruno» seguito dal
+fischio. → v3: pausa di tre tick e nessun contropiede armato al 44'-45'.
